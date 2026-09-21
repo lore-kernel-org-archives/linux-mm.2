@@ -4,95 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7038C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 03:30:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B90C0C982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 03:33:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 782556B00A1; Sun, 20 Sep 2026 23:30:02 -0400 (EDT)
+	id 762276B00A4; Sun, 20 Sep 2026 23:33:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 732356B00A4; Sun, 20 Sep 2026 23:30:02 -0400 (EDT)
+	id 73A256B00D9; Sun, 20 Sep 2026 23:33:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6211A6B00AF; Sun, 20 Sep 2026 23:30:02 -0400 (EDT)
+	id 64FC36B00DD; Sun, 20 Sep 2026 23:33:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E28D6B00A1
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 23:30:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BFFBA1C2CB8
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:30:01 +0000 (UTC)
-X-FDA: 85236340602.09.EE4A5D1
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0865B40002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:29:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=trDB9T9C;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789961400;
-	b=rlBo27e4WRiqgo1D0B3HmOUAO/syDHquzwIVGcT1ps9ifwSd6s8Pum0sOaUuP/HqrZP8hO
-	c2fANzcnNaCrxCQPXImdJ6bVeQYoX5X1+Yfm7j/1S1gDBwH4kPsxMHBHRN6HYzaZRgQ3pE
-	+7Ei40g/sY87Ig1ysCBSejweUMfTGgc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=trDB9T9C;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 417FD6B00A4
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 23:33:32 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC03C4054B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:33:31 +0000 (UTC)
+X-FDA: 85236349422.10.A0BE27A
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf12.hostedemail.com (Postfix) with ESMTP id DF94F40004
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:33:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gIqEJlLF;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789961400;
+	s=arc-20220608; t=1789961609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ycUlz7DSy4nva9AM8PqQHd06zeVWx1ZyueB3ugH+fHQ=;
-	b=sVLv2glHdwmoj1kFB/nTyUfg4zFUhsCWEOLuKQUW3yl1zvTHKBzJpHDtyzuhqYFP1iuAbm
-	jFWvl1jeIP1kE5KbL7kxYdh+uvUD5hl4zgVwNEiSDDF0Dhu42E+lCA39I7p40OfqYxKrtB
-	67+B1Ev10EWb4Cj6u+ems4ApxJcghmI=
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910a0cefaso229795885a.2
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:29:59 -0700 (PDT)
+	bh=A6VHmJPAAkgAY7kGGRO3HmxKD/ZCEfTtvi3FHnUUDOE=;
+	b=22iZTpA78mm0TZ/GLXS2Fp9jntGGpKaXKxONENX7zwhTNbNixnlrn5IX+s46nZ652xDRWz
+	vM4BKqeToaWiPSSQy7yGRKfKAjf/yg0qAVUCWXNEqY5VCsDDpXu48CUAtdiNz+0EDO3jPn
+	0NXDCJPiUY0L5sVvFwq0Z29vBR5bQI0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gIqEJlLF;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789961609;
+	b=R8MGSkzGJ3zT+3pPbzGZ5ic8LtPbOkse8yA3fHesvsRBZ1XyYxbgeXmLw7PbWfeKAC1KtD
+	KzOPh+YXrIONMRz9ULsc8aNg4dW20CSr5lXaBrlhSO7PaN3X5o/zbjlu/DlPuMFj1dcq22
+	dL7Qx8KQJVlkykkWXCMQmq/uvTgqkdc=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5306abbdccbso29303621cf.1
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:33:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1789961399; x=1790566199; darn=kvack.org;
+        d=gourry.net; s=google; t=1789961609; x=1790566409; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=ycUlz7DSy4nva9AM8PqQHd06zeVWx1ZyueB3ugH+fHQ=;
-        b=trDB9T9Ci2idgXsLxdxNYvXxqUyuRNTQ0XxtaxBR0xcBNmmTuivpDpPaM1h4GHSd6f
-         /ouRo7aG8xciVG77ps61tAokjwOx9I57PNEnXUl0F5PGu/+fhL0FjFyaiA+Vc42GGSUa
-         Zkkamae9il4FoetlelI4AUndnBRUZxBxo0fvv2RwnsoQIu1hLujT4rngcqcssvLKjJy6
-         QTy1kZiueilg0JRkowXG6mqUpnxSTEUq4HSIthdF8GLE9hqUb2kPsXV2oGJfhAiXCzqv
-         stWjAa1PpXp64Zm8Pz/ijt/ArEPR4r7FJVamU1McrY+EPG9uFAVDy5Pld7KFp4dO+O9n
-         LnMg==
+        bh=A6VHmJPAAkgAY7kGGRO3HmxKD/ZCEfTtvi3FHnUUDOE=;
+        b=gIqEJlLFpGGwcM86B58/LliAGSSIfZ+D8xbW/tSqXcMsG1r3qv9soFjOAiah/CXpKh
+         /Y3OkSmpv+SE3xLNcF7ur22035qPFnXn5JBqJE+/5iSdZbZ5n9q0o3sqM6ixnjKO8eCy
+         dAtSb5lD5bCPWvnnPEQxQ0VjEVTxqwCBMISmUuoZfOpYLburzaqWX4l9YqLWHHSBUHCH
+         SZDe+TdHO3REwK2mXMLz2bPWs6122JMA5dtDSWd9u1fXBBC+kc8MfASPBUypxuRCOnhO
+         9ocL353mharK+w1M9rpM7km4fyA0UpK25Q/9sdj0ME5Y0zjKmCWeDZc45EuMx6ID8qvu
+         dIog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789961399; x=1790566199;
+        d=1e100.net; s=20260707; t=1789961609; x=1790566409;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ycUlz7DSy4nva9AM8PqQHd06zeVWx1ZyueB3ugH+fHQ=;
-        b=YWypwY2HqE3BJ+EQg5CbDAkC9827DUORSbXAQOKEUOIB0p+T4wXIUPHgj9cDNt+ddI
-         9Tp3qpicQC+1ALE9qBizd4Uxyr/CiQzXBnSMRFZICwOXaior5nwHxvIA4n0h07e3SPC+
-         HJzcOxqN5N58edqfMUgCxjopiE5Ey8WiJjHkdguEP/xT6s5mwBeYd5uJl+czNEBmxN3N
-         jEC6UGk5UTLEKi2SASy6xc/ZlhVL9K1FdqnfCcWBUEDpdek9LKG+dFw36gUkI39Mu2fa
-         /CYiz/idexbZp5F2+PpiHRLqU8WdrZbv7hdQ5xN/ibp0gzITY7yhOlcGQ1Ynf1ZXhzg6
-         P26w==
-X-Gm-Message-State: AFuF++nINfDU0NRAQ0S2OZcR/xFyn1Wgt+CUpoLlWiVQJEhY0ou1DqFN
-	o3FUNQpo1+6fGYSqIaclJj8Vupm2XDi+S8/QkuzXY9+ck2vKQoIqQ9ZRUtGzL+Rt6vgoByb6Ciy
-	QeEXb
-X-Gm-Gg: AYBFou3Ez/b2Qhi7bUv3KnUfRtISJxUqr+zMa6UTksS9DgUv7/FwH/vxtwiJXkfUuAa
-	VTrsLgthdnc0L9St6j9Du58IPj/WcCyFzFcJmPZhQskh3uMGzrXvuM6viWsepEQlKL/CN8WV96b
-	bPITpVdi7nk3jJAeKW4GlFtSbzMS1+i90gugMOADzXeDrSLV3zDT2a/28NusneiAy3d5k6J9kDy
-	4CzsHOQbdVs5jJG430x8FtAndiHzNiqu46tr5SYw4pl0dlz18j+61+polGTXwPrrfmyBfPmPIoi
-	gaBNBgKuWxnI9bGdNmsyuCZtYnPzXhwUM2Rn1azaaQP8XDv3XMKyUZuKMoMbpAO/G0cBZ8wTT5i
-	db41P/bhj4qJjt27bSvqiL2ihkcAWvWokTXhUhF+tJ1307gEXZdbzg39fmxTsZftIt11OEFTorp
-	cEtmotpz2HG0rwcnxQWx5+r2znuDpex2JmS34Tu70BiTv8AUIY4gkGTMMOzDz6fQQZD/+KF2l9w
-	Dfvk51XSYuc/ORbWn9vzhnSKHjKUgPThHraW4fUECdxw7lpxjcY6Xc=
-X-Received: by 2002:a05:620a:28d3:b0:939:1d67:2231 with SMTP id af79cd13be357-93bf56f85fbmr786905685a.34.1789961399140;
-        Sun, 20 Sep 2026 20:29:59 -0700 (PDT)
+        bh=A6VHmJPAAkgAY7kGGRO3HmxKD/ZCEfTtvi3FHnUUDOE=;
+        b=uJbsplIeu+NDO1OUcPC7aB1jxWVNdlfIik0Lx9k5nZ6zpO2/NK4TQjpv4id4VQOP6L
+         te/1TonCwvVyrkdFOMb6xOvCYz5861VQIp7x7V5m54SLYwKksqb9GPcChLHEc/htyJ+/
+         IUhnDvQwFA9HJ3O2lXyMg8GuLNI4iEkHkoQ+uvST0Jqt69Ti2jzMF0BqBsodWksQlzMt
+         zC+BsIU43YH8FnmyQ+DXmAv+KrxYnUoEHwwsHeTbJ0MCM/K7bflNTqaLcAOY+C5K5+fw
+         UsP7Pl4s9U6qg4y0InP+4UwQUgu2p7dJGOG2+PPdWUfQRkN+mUbwsSwIvvzbIt9dkn9+
+         VgNA==
+X-Gm-Message-State: AFuF++nF7DdFsVxp/uAaMW/jfARNBE8l+HpD7yB7KUKmayi9OPmT8PiV
+	vYY1BDcv8BVsOKPUffh7EnQWENxwGHYFRvllMyuOcuLGTilgYrzJYEoHu7kPb0rKa/U=
+X-Gm-Gg: AYBFou1+A4ZYiqFcnx0gUqMpVmw1SPx8E3/4l0wkHUT8Z7MtDYFIFN0RUqOK5P2ltHA
+	lNKMmLCWl2WwGEBIqied8kRs5XC2cqBmy+Dv+CHfq3EE+dPuOiAdEb1zAzopOubBoxjIJWU/ORa
+	UW7R/tMtTZdRvo6DNpZadqH+I1WiNjizDBkA50uzo88Q7JjuIWisq6JGI9P9BYyN1OTEjAseMNI
+	hcW906DiPtz5mwORKKl/mYIzw99mMURzMY6q7F8Mqy5eLliwh6ODM3MAVJbjE+gzOGgg1c3TdxM
+	XkWbgTotDfL0/KRYATtqTYg/3z2ASQhBOuEupX8S9zAzJuXPM9x2LGhD6F4ZRLlQMIAqa+8u1Za
+	M0b2kNgcV4muTlBIMvumEbWT3xaXMRysE1ZdKceydgdLLaO7xW+7gr5ObyhTk4Go+e1onA7IU0F
+	GLgTu9D8orch5a2wbdYfAaKw71PYTOtAQuMLE0ay5C5BE3sRDuX5/692rFKIYuTX6eWPUxYooRb
+	NWIbkB6I0XiPZiMvvcOsd3Ljfh7i6/2kWbQKFfHZr5c9p6kkEfrWdU=
+X-Received: by 2002:a05:622a:5918:b0:531:2087:63a7 with SMTP id d75a77b69052e-532b73277d4mr83973791cf.19.1789961609053;
+        Sun, 20 Sep 2026 20:33:29 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93bedaaf901sm553769785a.21.2026.09.20.20.29.57
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260aa1db7sm57867246d6.44.2026.09.20.20.33.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 20 Sep 2026 20:29:58 -0700 (PDT)
-Date: Sun, 20 Sep 2026 23:29:55 -0400
+        Sun, 20 Sep 2026 20:33:28 -0700 (PDT)
+Date: Sun, 20 Sep 2026 23:33:26 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Zi Yan <ziy@nvidia.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
@@ -101,22 +100,23 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
 	brendan.jackman@linux.dev, hannes@cmpxchg.org
 Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
  of build_zonelists()
-Message-ID: <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
+Message-ID: <arCkv_0nk-BtW_DW@gourry-fedora-PF4VCD3F>
 References: <20260912030424.2889731-1-gourry@gourry.net>
  <20260912030424.2889731-3-gourry@gourry.net>
  <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
+ <DLKNKTQHSA6H.6XC9WV37LSVR@nvidia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
+In-Reply-To: <DLKNKTQHSA6H.6XC9WV37LSVR@nvidia.com>
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DF94F40004
+X-Stat-Signature: wdasfrpaupsqw6x3tiqst9ye8ke54xf5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0865B40002
-X-Stat-Signature: ffojgzh87x7ynxr386uo1cewoxg346u6
-X-HE-Tag: 1789961399-185667
-X-HE-Meta: U2FsdGVkX1/yFgihqI5CDASLzDrNExgoz709+bUHbHdacECp8H8YqN9NdV+6FhROs5l0N0cgHZ7iUF8YWUGzLmaPPbiilgszQvY18yAHeZjvWzv9JjFzn9gtY3X1udrQmUqPdm8yFC5++RlW4pmmvhaz6r+DZGCbINZ0G61tO0Jmu/vI0bxP5X/4D7dnCiLst4rs+J/rZmTEbLS8BUS0JbQnIyCBzEmYDV074Rx8i444wyiyjnffyxEgjzQpogrFBengR0DkoVZDDrJtNFLFrZsRe2uGk3fxU/RbKKZav/JC0+yyJLJLwTTuDzMrGcKKX767DrEizQNYkI5bhPZFgBK5Myl2Cv073P2S7mx3fDT9BK3+hP2vAFDA6XH/lCdKMNRLU5Ms7qeAUemJBmypMurhoUK0LHecfB7SGxGS+mzqO3xhZtbyW3zKvRhRBoC/Ub1lSquqo3f2Uu+dTJgDT1pkk7lH4CXLeZH8v8apaHOvddOGzT4b1pMBouC2a0+7x64+4OYjGNQIA7847D3poTC31b8Qf0/AdeiPFRM1G6IeOewBi1R1zomVjABzClnWHI6AfTo66h/pQI0VJVzcilNEq60a0f6HNZaCk7j3fXes7Pw8AimGkCB2gM5yI/AehD/tl5p95O/Q+stONFHzY7CgPW3y++NPBfLMUBJysSsOVBUiWW1Cgey5Z2l+uxj0e6zHUGkVBVFsOdBwDbpv0yEBHzaKMM4Nc2LbvCKbZnemhJ92wy8A2wKlKG3jl21D7lKZlJpJ04aH/OKV2I3s5vV9HmOfdv8XRtrs0hBtMSjp8UruFDaDc2aRiHYAZOUMCRlHbs9gzMFyONh7BuQOleX1+X8P37eCJPcZ8E5NEtLEYxmQx1PgbfWU/RTebg3E6Dx5MhH/XExkyp03OvPKgZl/6cfGJXYB+msoDAgIDaU3MQi55ANPNh6vwySPRdkMEjsRGY8xOk4yDISW/o+
- dU95I1OR
- YSL31bxk9jLBOd0nSpeSOKPDiJ4aFIpYmFO/boAHMRGgIPTvk2Rt1ubkEO4UlPizVjYwo08g17MPJHNT15bu0W0rm3+iXY8ue5CVEXm30xyb6kbHGwLT9/Lrb2aUchbjaiGpSiW59YRNgoXBS7lIvI++YqnPETuGFP5b7PwQxwFzfAGSbjT68vBfgqE0kvtgCNSMCAhNo2e1DcJ4o2Fby48PON8gNPDX7jv/0iANfM+hw6SXY4Tbme65P7LIjZYYjRdRlYuRiwvNT0KXG9kPeaXTBUmatxLeXCRrfiI8nGGHadNoClEOsfs2ehjFL4Y1XSf/rvR38J2WHtxdfV/BrW7dsd0ELl5PS/ABGflI4GELJ6wvRil3T3rh9ng==
+X-HE-Tag: 1789961609-81836
+X-HE-Meta: U2FsdGVkX19dWETjXKRDE3cwdLCRRQ6vHKtQmal+50tbbRSG7LBb4FUYyE6IG8JxuPhcqyhHM1SP0Cq5p6IUpeQzwHWpxOfGFyIZkfkFa9kH+SKVJ73ooU0eFX2BjywoVieMiVLye2I0V/Tzx85q+iLn4RApZsIIlE7ebnGb5fyesHy4CLfOZrEN/KJ3zjb+Gz1EUrBCD8UQza8R+FQgZUJC3ZA/AwG1HLdLPA1+Y5zhod91fVqOgjUsDwxVO9sHgUWrjGwB+womMEoXZ4x31RNQ9mruxWTcZCbUN7cvCJLO6PnbUfEbGmLfIq+LD3NjWNaHqL3eLgSmxYcac/kbtHgzLCX0+5mRMIEJ6LQTklKb3OeTvj5xeC9gl4FSJoZh3ONqhhJb+NcA7lKiDvZ7xLyfpVih+y39Etx1zgxE2G+w4q7CrCjt7vT7wQFBJ4HGDLUtBNpb9eEdMLQyTD4oV3qlUH8Mh6bPdgG4DULBnle1uDX+O2P+1cncnE5Z1szAYf+Uyb+1K5uTG2aYqIfoEabiB3WvNST4CmCOcMZ1ZhfpHmAh/7jEJELLgBR13KFdvBBqoqC9cuPuRcpI1CyX56qAyvobFLhOxjmXkGiCNpuL8Ja8/UkfZtmP5fI9YMqL+ja/6xlLGCwpDitAYr4dZ0rqMim0W0lej6vlCzJFysNGssRDOCGi3BUNo6KttMD9DFgkPUpPsijgtpobwC0t7o+Al85VTMG9+ErqgG4OJrf2hjbAO90k4eCVtOkODwobtK5Q2ZwJIXLRn08QHFnaxqkUrhzEWuwTFWp+RwXm4qKH9G0blQ2ozVEqHueWMeYtENG08Rxe+z64KunLyY0DYaDczxkzAJeGzspKOmLz/Ch15KZmXOCZz/X82ST+1MUMjGXYUwW7Q/9t7hHADnsLCdl6Jj2cEnrN33dLPvV3JD42c9XtM24Mg/Pp526o6WFi5HVl4gxzXWyObS0WD2m
+ wSvr/1Xc
+ T33YaauedYxeM5WdXZrLR6TTizHFd5IrvwMcefP66PPzi6iN015EOAk3kq8x5zSkr2dGB0kgmslyX32fYVbzA9/dY+alTTTqPjoqp3sRopJeLjAu73o/mUiFVOh1KYtTfpni/VC1QQvluN3sFE0gMZnHKKhMdrNyzA28LKs37i4JACkOYBQ0DpWyBIsd8JiV4eF0CvfKT3o5X080d6SMKHsuVJ/4MVFii2D1gwDpt6ho45elnuhzdCXSKWRl77nYYMGCFdNqGqBnbvY7Xsnl+MuvY6hPrrgf9uY+jSZ+qZqJz/uERHnRTv06dySHsRC3zJKbt7dMMYUYb1R8nFVIisVvHFWMzYeUZokD43okdGJolpgWBoGNiiowABhiPXZlao9rQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,64 +124,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 10:49:05PM -0400, Zi Yan wrote:
-> On Fri Sep 11, 2026 at 11:04 PM EDT, Gregory Price wrote:
-> > +static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
-> > +				int zlidx)
-> >  {
-> > -	static int node_order[MAX_NUMNODES];
-> > -	int node, nr_nodes = 0;
-> > +	struct zoneref *zonerefs = pgdat->node_zonelists[zlidx]._zonerefs;
+On Sun, Sep 20, 2026 at 10:53:13PM -0400, Zi Yan wrote:
+> >> +static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
+> >> +				int zlidx)
 > 
-> Why does build_node_zonelist() need to have a new zlidx instead of using
-> ZONELIST_FALLBACK like build_zonelists_in_node_order() did?
+> Is build_numa_aware_zonelist() a better name? Since the old comment said
+> "NUMA-aware ording of nodes" and the code uses find_next_best_node_in().
 > 
 
-The intent is to build new zonelist over a set of candidate nodes, and
-it's also just clearer: build ZONELIST_FALLBACK from N_MEMORY.
+I think that's a vestige of older version having different ordering
+options.  Now the zonelists are always numa aware (except for
+!CONFIG_NUMA, which... duh). 
 
-With this we get:
+Anyway numa-aware is implied by "node" in the name.
 
-build_node_zonelists(pgdat, &node_states[N_MEMORY_COMMON], ZONELIST_FALLBACK);
-build_node_zonelists(pgdat, &node_states[N_MEMORY], ZONELIST_PRIVATE);
-#ifdef PAGEALLOC_KTEST
-nodemask_andnot(&private_only, &node_states[N_MEMORY],
-		&node_states[N_MEMORY_COMMON]
-build_node_zonelists(pgdat, &private_only, ZONELIST_KTEST);
-#endif 
-
-
-> > +static void build_zonelists(pg_data_t *pgdat)
-> > +{
-> > +	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK);
-> > +	build_thisnode_zonelists(pgdat);
-> 
-> If build_thisnode_zonelists() means ZONELIST_NOFALLBACK, why
-> cannot build_node_zonelist() imply ZONELIST_FALLBACK?
-> 
-
-thisnode actually means ZONELIST_X+1 as opposed to ZONELIST_NOFALLBACK.
-
-Since folks are adamant about not allowing another GFP flag for zonelist
-selection (beyond GFP_THISNODE), the result of this is that all future
-zonelist additions must carry a FALLBACK + NOFALLBACK variant.
-
-The question you actually want to ask is why build_thisnode_zonelists()
-even exists - it should be part of build_node_zonelist()
-
-I can probably follow up this series by just folding eveything into
-
-/* build zlidx and zlidx+1 (nofallback) */
-build_node_zonelists(pgdat, candidates, zlidx);
-
-And add a BUILD_ON_BUG/ASSERT that forces any CONFIG_NUMA to have
-balanced zonelist additions.
-
-But I don't think it's strictly necessary for any of this, and we're
-just shuffling code from one place to another.  Probably I can just add
-that improvement when we add the next zonelist.  In the meantime - this
-makes it easier to add new zonelists as-is (and just makes the code more
-readable).
+But I don't have strong feelings about the name either way.
 
 ~Gregory
 
