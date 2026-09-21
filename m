@@ -4,132 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DEAC982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 04:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEB2BC982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 04:21:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9CFA6B0096; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
+	id A54C76B00D3; Mon, 21 Sep 2026 00:21:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B745E6B00CF; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
+	id A04FE6B00D9; Mon, 21 Sep 2026 00:21:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A62E26B00E4; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
+	id 91B176B00DB; Mon, 21 Sep 2026 00:21:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8342B6B0096
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1980E40557
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:09:07 +0000 (UTC)
-X-FDA: 85236439134.13.E4EA725
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4A874A0009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:09:05 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fgqpk7b6;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fgqpk7b6;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789963745;
-	b=7vMk2SRI+RcvkzDR3kekefIJFjWQ/eCcbJEop7kH06DQbihM7u3v5OCHBPhmPOSISXOJLv
-	fb+sZPLBR6+qsGVW/48/NbTmaFkiIyxJOMDvRALT2b1kiIuCoR8IM45+M791pD/hOLGNvs
-	2tkCTEq5w807iKafmFifrH1Ua5TbKqw=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F05B6B00D3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:21:26 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 76E80140527
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:21:25 +0000 (UTC)
+X-FDA: 85236470130.14.7632033
+Received: from mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5651F100002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:21:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kynw/lNj";
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789963745;
+	s=arc-20220608; t=1789964483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZ736WQSm180sbvHtkV3uFqBg4iSSs3xixQmjdddUBk=;
-	b=fBFzwi3umiGtf9/6FCkD/GTlWjrr3JqyU21upykxWmskBo8V5/YmImitC+yGPe+onIGE8R
-	p3JHLj24yro37iu2ypaqSkLxIj5Q7HGVihKIiYkrrBB2OMX5qcLb1zSVHFQc5sUN6w8IAc
-	uLSy2KKkWgsuB2uEnElfwbNIL4SC/jc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BDFEF60213;
-	Mon, 21 Sep 2026 04:09:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C301F000FF;
-	Mon, 21 Sep 2026 04:09:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1789963743;
-	bh=LZ736WQSm180sbvHtkV3uFqBg4iSSs3xixQmjdddUBk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=fgqpk7b6eCfprR7zmZiJy9qBQZJsbM5f8s3hI8e6nM8wYRmEU0CAVWtHGL4kzcQi0
-	 wEjzAZst11LRJ9q6W6kXCFZAXji7jeST+bAFloveBQOKkO+TvLOqlAUkcR9HD/Se9Q
-	 iZwtpMlXm4chDCNpRM7SRsEPxwlhnoNITtr0Iqy0=
-Date: Sun, 20 Sep 2026 21:08:59 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Minchan Kim
- <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Peter
- Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
- Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Mark Rutland
- <mark.rutland@arm.com>, Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
- Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
- Clark <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-perf-users@vger.kernel.org, Juergen Gross <jgross@suse.com>, Stefano
- Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, xen-devel@lists.xenproject.org, Eric
- Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk
- Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org, Oscar Salvador
- <osalvador@suse.de>, Chao Yu <chao@kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net, Tal Zussman <tz2294@columbia.edu>,
- Gao Xiang <xiang@kernel.org>, Jan Kara <jack@suse.cz>, Yue Hu
- <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
- Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, Chunhai
- Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
- linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
- <weixugc@google.com>, linux-trace-kernel@vger.kernel.org, Trond Myklebust
- <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- linux-nfs@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze
- <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
- ceph-devel@vger.kernel.org, Richard Weinberger <richard@nod.at>, Zhihao
- Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, Baoquan He
- <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>,
- kexec@lists.infradead.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v5 00/17] Remove PG_private by using page/folio->private
- checks instead
-Message-Id: <20260920210859.a0f75483dc4a12202c8b9516@linux-foundation.org>
-In-Reply-To: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
-References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=6lj2BpIRqnVNDpbWDnMA5HARJLB+CiLv4FMf2YxNF54=;
+	b=N0/5byLtTrtry6kJMwjr99pfqTmoqQxU6Kv2IwOefbNiHY4jHn5gAAiyEX43FLR1YooXN2
+	2p5PGw9+UTTgj8Okws4JUbk2NBvgH6PjnM7grHH9pgUTsRE/lR78QeaHQdjvrFMqp2CaxJ
+	IhhOI097wkyBRdjrAvxt5lx5t4F3wWU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="kynw/lNj";
+	spf=pass (imf14.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789964483;
+	b=xefbp6UWlJsjcIhXe9vvBSTOHukRz8b9Q+iPPSJo56o9AeSq7UWCfLaYMAYyxeWkiM1M8l
+	7g6vXsyeJvo6+QEP42tN2bFHcH8Novy4FlIfid8AXLO0mejSlHOF2rv/qznmGnkcYNtVaW
+	IzLvib1gb/NcWcstTfiCkkvC/hoRME4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=QnBJ2lINDbYZLtvPWtK1dgRGpLQIhKeHYrcIi78w4I0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789964479; v=1; x=1790569279;
+ b=kynw/lNjDWMnyo5YXkrz+F55As/OJhjVnORKp0jV0dMrWXAD5rE35JMiqpw9oK5qCIvBiUhV
+ 68B2gRtYwgEZygyCzCgoQsFEULeeLRYMphHDBKgeN1q9r9mEUkjdluHQ2JQ/euIo1NOWlryMggw
+ eHWgqWzORMSPgC+3aqohtiuI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f6ec75b7ce5dac5b;
+	Mon, 21 Sep 2026 04:21:19 +0000
+X-Mizu-Trace-ID: f6ec75b7ce5dac5b
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 21 Sep 2026 12:21:14 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/slub: refill prefilled sheaves from the barn
+Message-ID: <arCeRr44nni8hykr@fedora>
+References: <20260918114318.124346-1-hao.li@linux.dev>
+ <aq0ylDidEHa2kg4X@thinkstation>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aq0ylDidEHa2kg4X@thinkstation>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5651F100002
+X-Stat-Signature: epmthyacfyfcyk7chfnjfhxch515aaim
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A874A0009
-X-Stat-Signature: hkbwt3r17x9krjr4hxyoq7t5obr1ki4c
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1789963745-267053
-X-HE-Meta: U2FsdGVkX18GPt/+yPwz72LsQzCFpW6oQV+LWtVbUFkTPdOUYmZ0ki43p2NjumDu7wO73ppr+dDg+AucJWV7xBNRBhb1u3SyQWYdiGsMyLGAM8DQM7WsVqxcsQMF/x9Lb4eKxzgWZYbJmAq7CVOJdhxncZyr2S3le5b1WDICQ11VGzxZ9WRqClE/WN9XXasKxzCIOlzutQVGhFIYm344qJv+PNyiTu3cJsqk4gPN9cy2bQ0gmNwk8rYzOYEwJguAgg3u/N3YtO1XhD3hxNPwgeM4TKD7PYEwd4T2OKqiuOzrA8nhXhNYrcxBIGWp54P5ebLB8kEu5shvbEZuCmgJqLp1sHEinyNA7rco9jlL7QlB7UTy3E+hUaB5wKGFnbcpRDJZmAsmaiE7YfGlbk3L7GX3YzUuR1P27pjyxgYZoTy7hq96i5XQuYvtUDXPPfCKXrypPGMmmj0dUWuacCwoz+jxGb7wZaSAFk7s8fQeqXjbQeIpi6q3vh7fbb25sGuG4MJ3jy8Gyis1iis024cz7JIr7N7IoiBwUHqEgduUQwnXU24qwi11VPoI+msyUu22zqPIuNweR3iguG+PUobwUvz3BI4MNugNL+kmZSMN7kiMLETwglacJbOsE87yOAR4czFScoq4gMCtNJhRBMUH1Lkw5K8FbT5YoNUsXHM/ghbxR6nS0qYmeJEqoDClqJ9Btyt9Znoo7GswudXENDuqxSU6pNzAQOydhc29NNVLW8TtV3sU5DxqAwGYesb0n2eK5aB7WzHZwbUU77gDpJUYFL8VUPOWGpnaeCWrTCV/2P+VnjAhsp8j+kayWXygh9mBrVFvZsFCRU+MkkLV4vQ1JdRkP3+vf1WXg9mODwbHt033vfFNVdqPgDDeN/J1FOdhQyJwoRU+xvcIzE3o1DLlWeqAhJX9TgxBi1caObWkG3B2n9Jp8apzx1c1ySfyQXFypqB6GzombL6rcMYRR1z
- Hr/y4YSB
- LK00NE/c693aygMJk/cGCTmbwyooopfz6lmGsO7C7/9wTVYHFTdN/4vrSMymhknfjtd6zwf65gbTHhA2kil4t9b3GIgn6+a7FdtEuKyMhBmbSFFRLIgETPtcX/07YgpKQNXEE5+4a1X+KLQveMeVpGdvSJEf34dqtZBi80LCj0J1EZoAWq1nbz4xIcp+HHgQIAu/HZIrjf2iyc8jHQqwy5mWMVOFSa1FQh7ixSCIzuG59lZRHZqiCuDSu3fvk3405BfcGB3d2jha+BmR2il7RvV9mIV2Jkpgl6/Vzwmqpqpw8f80IqIiitRSVwc4t7uIB9xumehjBuNCpnVGJVWVQ9wi5bN3Iu5NpHCv4tuoQEE0q1lLuBufy1D123MbunpKjjN9XW0PX3qXqCb8=
+X-HE-Tag: 1789964481-530668
+X-HE-Meta: U2FsdGVkX1/JPGnQej6oUUxkJDVrP7ZXCFb+E0w/ZyLZbyQKc2GsRN/gFwASnH6ctgaJic9zSCa4wj+lFVyK9T5iluSTuAgI+Pqj+3kOGMjB1qOGNqnUgIz/XUSEkq3736GA9gnNk+Nrn4AiABnFYsTgC4dxND8wAxjrB/l6JQz1bvRM6W8DqOllpH7q9uc5iWYx4NlAw+jhLwCKf4U0QiVeKEteoysCZJGxDoLFT9neg8CHbwDGVoLiaCZnv/YBmQhM75xrojtzms94b2qlH7m+92xz7ZQGIsMEEr3rBsqS3RXHfxuo1oD7EJEFWwrhWYrWF5TfShdu5JxAft5tiwwviGWu/bFwL08Rj793ysy9ZE95flgRjyE+lhE+/UcWpHKlGYQqFaK9jFr5kxjy0wsdijz+x1QaHGUYOU6M9M6zEpesgdPg9nI841xsL1OvlHB1XFLh3KPpv+fnLv3RQpi6eYknzW5nWwAF1Zuo5fJ0uzAI9TaqprNSaP26i0anYE94NGsNho6xH4xZMHcLLiFrcqpvoFxarY69g1e6rp7QFR0QG4LfCwo31iXTMdwPPAqixYkx7l3+qv/mIu7YP4vQ+z50TWKRCnH9MXsdhizK5BIHUw5pkBUzf4F30asAwWvW9D56Gk4XtpabXcvRM+MyLRLPnboynlv5YaYSbzAb+kUVAZnfqMrS+/RoM0Mcv69IuM+Nsur1PlpH9++9UR0B9OlHcmqsrfu7fyrX8tnk4PBQ04NTBuEafRT/Pe1k+13S+sR31wi5lpDsUnWg9tjfPv5SFgrid1EXgdspDBlG3GymstKCQefyjPRr2uOXS5OznmcxH9BTCsGUlagHKy+JIXEyifLTTeozdUa9eW3wc4pgHcaovqF3QItVq3JCzhXjUYPPBKmXGpZ0Whf8MyG/+72VMh3L4wChuHAHhWOIr5wdR7sItfuRhjWZXv9Bia4pVH0ZF26PzLirLEf
+ tFuoUszQ
+ iuaH4ySC0IS+xNL1ZDcT3C31qSgxBu9pzpTkWiBzevWbnWdxKCuk1QGS55p+xYFPDbIxN0BKJCeKdJic7v2PTE3Ijh4s8usQqgOTDgMn27unOec04KyNedze0bLjcVqYMEH/gYvEEreSRPKACDPhuUlVTz/b+VbzekFXUNfSrBH8O6hN9MdnmxlFliJB5sM2Q0TyT9PxU5m5RYNfcke576yRDYrLkWC8H3L8wLXMiJ5ZUbBddU7ODWu0T4kNtsoTz+kd+VXkf2QE1WM0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,231 +90,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 20 Sep 2026 22:27:56 -0400 Zi Yan <ziy@nvidia.com> wrote:
-
-> Hi all,
+On Fri, Sep 18, 2026 at 04:35:15PM +0100, Harry Yoo wrote:
+> On Fri, Sep 18, 2026 at 07:41:56PM +0800, Hao Li wrote:
+> > Currently, when the prefill API refills a non-full sheaf, it takes the
+> > objects from partial slabs and never from the full sheaves in the barn,
+> > so once the barn's full list becomes saturated, it stays saturated.
+> > 
+> > For objects freed via kfree_rcu(), every RCU sheaf then has to be
+> > flushed to slabs because the barn's full list has no room.
+> > 
+> > To fix this, let the sheaf refill from the barn first, and introduce a
+> > partial sheaf in the barn, which holds the leftover objects.
+> > 
+> > If no partial sheaf exists, take a full sheaf from the barn and return
+> > it to the caller; the non-full sheaf becomes the partial sheaf, or is
+> > put on the barn's empty list if it holds no objects.
+> > 
+> > If a partial sheaf exists and the non-full sheaf and the partial sheaf
+> > together reach capacity, the one holding more objects is filled up from
+> > the other and handed out instead, so no full sheaf needs to be taken
+> > from the barn.
+> > 
+> > If a partial sheaf exists but the two together do not reach capacity,
+> > take a full sheaf from the barn for the caller; the objects of the
+> > non-full sheaf are absorbed into the partial sheaf, and the non-full
+> > sheaf, now empty, is put on the barn's empty list.
 > 
-> This patchset removes PG_private to make space for upcoming PG_folio for
-> identifying pages from a folio (more details in Note below). Instead of
-> checking PG_private, all code is changed to check page/folio->private !=
-> NULL instead.
+> Perhaps let's explain why the slab allocator needs this partial sheaf
+> handling only for prefilled sheaves path?
 
-Thanks, I updated mm-unstable to this version.
+Agreed, that's definitely worth an explanation here!
 
-> Changes in v5:
-> 1. replaced md patches (patch 13 and 14 in v4) with Matthew Wilcox's
->    version (see Matthew's replies to v4).
-> 2. used data_race() inside folio_test_private() and PagePrivate(), so that
->    the new versions can be used without KCSAN warnings while not holding
->    folio lock like before.
-> 3. moved folio_has_attached_private() implementation detail comment next to
->    the code.
+> 
+> while reviewing it i was wondering "why is this just not part of
+> refill_sheaf()"
+> 
+> I assume the reason is: usually we only refill empty sheaves because
+> if it has at least one object, it can serve the allocation.
 
-Here's how v5 altered mm.git:
+I think the distinction is less about why refill_sheaf() doesn't use
+sheaf_partial, and more about what the two paths do beforehand.
 
+For simplicity, let's call the __pcs_replace_empty_main path the
+generic path, to distinguish it from the prefill path.
 
- drivers/md/md-bitmap.c         |   17 ++++++++---------
- fs/buffer.c                    |    8 --------
- include/linux/buffer_head.h    |    2 +-
- include/linux/mm.h             |    3 +--
- include/linux/page-flags.h     |   30 +++++++++++++++++++-----------
- include/trace/events/pagemap.h |    3 +--
- mm/huge_memory.c               |    3 +--
- mm/page-writeback.c            |    3 +--
- 8 files changed, 32 insertions(+), 37 deletions(-)
+In both paths, refill_sheaf() plays an equivalent role: it simply pulls objects
+from n->partial. Since neither involves the barn at that point, sheaf_partial
+doesn't really come into play there.
 
---- a/drivers/md/md-bitmap.c~b
-+++ a/drivers/md/md-bitmap.c
-@@ -516,7 +516,8 @@ static void end_bitmap_write(struct bio
- 
- static void write_file_page(struct bitmap *bitmap, struct page *page, int wait)
- {
--	struct buffer_head *bh = (struct buffer_head *)page_private(page);
-+	struct folio *folio = page_folio(page);
-+	struct buffer_head *bh = folio_buffers(folio);
- 
- 	while (bh && bh->b_blocknr) {
- 		atomic_inc(&bitmap->pending_writes);
-@@ -533,18 +534,15 @@ static void write_file_page(struct bitma
- 
- static void free_buffers(struct page *page)
- {
--	struct buffer_head *bh = (struct buffer_head *)page_private(page);
--
--	if (!bh)
--		return;
-+	struct folio *folio = page_folio(page);
-+	struct buffer_head *bh = folio_detach_private(folio);
- 
- 	while (bh) {
- 		struct buffer_head *next = bh->b_this_page;
- 		free_buffer_head(bh);
- 		bh = next;
- 	}
--	detach_page_private(page);
--	put_page(page);
-+	folio_put(folio);
- }
- 
- /* read a page from a file.
-@@ -559,6 +557,7 @@ static int read_file_page(struct file *f
- {
- 	int ret = 0;
- 	struct inode *inode = file_inode(file);
-+	struct folio *folio = page_folio(page);
- 	struct buffer_head *bh;
- 	sector_t block, blk_cur;
- 	unsigned long blocksize = i_blocksize(inode);
-@@ -566,12 +565,12 @@ static int read_file_page(struct file *f
- 	pr_debug("read bitmap file (%dB @ %llu)\n", (int)PAGE_SIZE,
- 		 (unsigned long long)index << PAGE_SHIFT);
- 
--	bh = alloc_page_buffers(page, blocksize);
-+	bh = folio_alloc_buffers(folio, blocksize, GFP_NOFS | __GFP_ACCOUNT);
- 	if (!bh) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
--	attach_page_private(page, bh);
-+	folio_attach_private(folio, bh);
- 	blk_cur = index << (PAGE_SHIFT - inode->i_blkbits);
- 	while (bh) {
- 		block = blk_cur;
---- a/fs/buffer.c~b
-+++ a/fs/buffer.c
-@@ -773,14 +773,6 @@ no_grow:
- }
- EXPORT_SYMBOL_GPL(folio_alloc_buffers);
- 
--struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size)
--{
--	gfp_t gfp = GFP_NOFS | __GFP_ACCOUNT;
--
--	return folio_alloc_buffers(page_folio(page), size, gfp);
--}
--EXPORT_SYMBOL_GPL(alloc_page_buffers);
--
- static inline void link_dev_buffers(struct folio *folio,
- 		struct buffer_head *head)
- {
---- a/include/linux/buffer_head.h~b
-+++ a/include/linux/buffer_head.h
-@@ -175,6 +175,7 @@ static inline unsigned long bh_offset(co
- 	return (unsigned long)(bh)->b_data & (page_size(bh->b_page) - 1);
- }
- 
-+/* If we *know* folio->private refers to buffer_heads */
- #define folio_buffers(folio)		folio_get_private(folio)
- 
- void buffer_check_dirty_writeback(struct folio *folio,
-@@ -191,7 +192,6 @@ void folio_set_bh(struct buffer_head *bh
- 		  unsigned long offset);
- struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
- 					gfp_t gfp);
--struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size);
- struct buffer_head *create_empty_buffers(struct folio *folio,
- 		unsigned long blocksize, unsigned long b_state);
- void end_buffer_read_sync(struct buffer_head *bh, int uptodate);
---- a/include/linux/mm.h~b
-+++ a/include/linux/mm.h
-@@ -3052,9 +3052,8 @@ static inline int folio_expected_ref_cou
- 		ref_count += !!data_race(folio->mapping) << order;
- 		/*
- 		 * One reference from filesystem private data.
--		 * Use data_race() since folio might not be locked.
- 		 */
--		ref_count += data_race(folio_has_attached_private(folio));
-+		ref_count += folio_has_attached_private(folio);
- 	}
- 
- 	/* One reference per page table mapping. */
---- a/include/linux/page-flags.h~b
-+++ a/include/linux/page-flags.h
-@@ -576,7 +576,12 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
- 
- static __always_inline bool folio_test_private(const struct folio *folio)
- {
--	return folio->private;
-+	/*
-+	 * data_race() is added for readers without holding the folio lock.
-+	 * Only the NULL/non-NULL answer is used and both are valid while
-+	 * private is being attached or detached, so the race is benign.
-+	 */
-+	return data_race(folio->private);
- }
- 
- FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
-@@ -1199,20 +1204,23 @@ static __always_inline void __ClearPageA
-  * @folio: The folio to check.
-  *
-  * Use this in code that may encounter swapcache or hugetlb folios but only
-- * wants to detect attached private data. Swapcache stores swp_entry_t in
-- * folio->swap, a union with folio->private, and hugetlb stores its own flags
-- * in folio->private; both are excluded.
-- *
-- * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as a whole,
-- * so folio_test_swapcache() is not reliable to exclude swapcache.
-- * Use folio_test_swapbacked() instead, since it remains set when a folio is
-- * added to/removed from swapcache.
-+ * wants to detect attached private data.
-  *
-- * Return: true if folio->private is set and the folio is neither swapcache
-- * nor hugetlb.
-+ * Return: true if the folio has private data attached.
-  */
- static inline bool folio_has_attached_private(const struct folio *folio)
- {
-+	/*
-+	 * Swapcache stores swp_entry_t in folio->swap, a union with
-+	 * folio->private, and hugetlb stores its own flags in folio->private;
-+	 * both are excluded.
-+	 *
-+	 * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as
-+	 * a whole, so folio_test_swapcache() is not reliable to exclude
-+	 * swapcache. Use folio_test_swapbacked() instead, since it remains set
-+	 * when a folio is added to/removed from swapcache.
-+	 */
-+
- 	return folio_test_private(folio) && !folio_test_swapbacked(folio) &&
- 	       !folio_test_hugetlb(folio);
- }
---- a/include/trace/events/pagemap.h~b
-+++ a/include/trace/events/pagemap.h
-@@ -22,8 +22,7 @@
- 	(folio_test_swapcache(folio)	? PAGEMAP_SWAPCACHE  : 0) | \
- 	(folio_test_swapbacked(folio)	? PAGEMAP_SWAPBACKED : 0) | \
- 	(folio_test_mappedtodisk(folio)	? PAGEMAP_MAPPEDDISK : 0) | \
--	/* data_race() is used to read attached private locklessly */ \
--	(data_race(folio_has_attached_private(folio))	? PAGEMAP_BUFFERS    : 0) \
-+	(folio_has_attached_private(folio)	? PAGEMAP_BUFFERS    : 0) \
- 	)
- 
- TRACE_EVENT(mm_lru_insertion,
---- a/mm/huge_memory.c~b
-+++ a/mm/huge_memory.c
-@@ -4845,9 +4845,8 @@ static int split_huge_pages_pid(int pid,
- 		 * For folios with private, split_huge_page_to_list_to_order()
- 		 * will try to drop it before split and then check if the folio
- 		 * can be split or not. So skip the check here.
--		 * data_race() is used to read attached private locklessly.
- 		 */
--		if (!data_race(folio_has_attached_private(folio)) &&
-+		if (!folio_has_attached_private(folio) &&
- 		    folio_expected_ref_count(folio) != folio_ref_count(folio))
- 			goto next;
- 
---- a/mm/page-writeback.c~b
-+++ a/mm/page-writeback.c
-@@ -2705,8 +2705,7 @@ bool filemap_dirty_folio(struct address_
- 	if (folio_test_set_dirty(folio))
- 		return false;
- 
--	/* data_race() is used to read attached private locklessly */
--	__folio_mark_dirty(folio, mapping, !data_race(folio_has_attached_private(folio)));
-+	__folio_mark_dirty(folio, mapping, !folio_has_attached_private(folio));
- 
- 	if (mapping->host) {
- 		/* !PageAnon && !swapper_space */
-_
+The real difference is what happens before calling refill_sheaf(). The generic
+path cleanly swaps an empty sheaf for a full one from the barn. But on the
+prefill path, the incoming sheaf isn't necessarily empty, so taking objects
+from the barn usually leaves leftovers. That's why we need a data structure
+to temporarily hold those leftovers, and that's where sheaf_partial comes in.
 
+If this explanation makes sense, I'll add it to the commit message. :)
+
+> 
+> > the gain comes from two sides: every full sheaf taken out makes room on
+> > the barn's full list for a future rcu sheaf, and refilling from the
+> > barn is cheaper than refilling from partial slabs under list_lock.
+> > 
+> > note that putting the non-full sheaf on the full list instead would not
+> > work: it would occupy room on the full list, so the list would stay
+> > saturated and rcu_free_sheaf() would still keep flushing.
+> 
+> [..]
+> 
+> > ---
+> >  mm/slub.c | 142 +++++++++++++++++++++++++++++++++++++++++++++++++++---
+> >  1 file changed, 134 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 54ec12503357..0b1de6b42b61 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -3164,6 +3165,89 @@ static struct slab_sheaf *barn_get_empty_sheaf(struct node_barn *barn,
+> >  	return empty;
+> >  }
+> >  
+> > +/*
+> > + * Exchange @sheaf, which holds fewer objects than requested, for a full one,
+> > + * keeping the leftover objects in the barn's partial sheaf instead of
+> > + * flushing them.
+> > + *
+> > + * Returns a full sheaf, or NULL if the barn cannot make one.
+> > + * The returned sheaf might be @sheaf itself or a new one.
+> > + */
+> > +static struct slab_sheaf *barn_replace_partial_sheaf(struct kmem_cache *s,
+> > +						     struct node_barn *barn,
+> > +						     struct slab_sheaf *sheaf)
+> > +{
+> > +	struct slab_sheaf *full = NULL, *partial;
+> > +	unsigned int to_move;
+> > +	unsigned long flags;
+> > +
+> > +	if (!data_race(barn->nr_full) && !data_race(barn->sheaf_partial))
+> > +		return NULL;
+> > +
+> > +	spin_lock_irqsave(&barn->lock, flags);
+> > +
+> > +	partial = barn->sheaf_partial;
+> > +	if (partial && partial->size + sheaf->size >= s->sheaf_capacity) {
+> > +		/* Fill the larger one to capacity from the smaller */
+> > +		if (partial->size > sheaf->size)
+> > +			swap(partial, sheaf);
+> 
+> Hmm but why switch sheaves when we don't have to?
+
+My thinking was to minimize the amount of data copied via memcpy as much as
+possible, since I was a bit concerned that the copy overhead might stretch the
+lock hold time in the critical section.
+
+> Sounds like we're losing cache affinity unnecessarily.
+
+Yeah, that makes sense to me.
+
+I'll reply to the other points in the next email.
+
+-- 
+Thanks,
+Hao
 
