@@ -4,151 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68E9AC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:04:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E4F4C982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FDE16B00C2; Mon, 21 Sep 2026 15:04:34 -0400 (EDT)
+	id 520F36B00BD; Mon, 21 Sep 2026 15:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B3966B00C3; Mon, 21 Sep 2026 15:04:34 -0400 (EDT)
+	id 4D0E86B00BF; Mon, 21 Sep 2026 15:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59CAE6B00C8; Mon, 21 Sep 2026 15:04:34 -0400 (EDT)
+	id 398676B00C1; Mon, 21 Sep 2026 15:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 31FCA6B00C2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:04:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B413540291
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:04:33 +0000 (UTC)
-X-FDA: 85238695626.23.CEA801F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0764940007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:04:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJ3+MjzP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790017472;
-	b=IF6682d4Lmo8RqjU2JEYHIbTf/MnKjaV7vGglya99fMY03fJ8YhZVus5qCz58pM8ddNP9z
-	hSNZk52sAGycPyldLKCjT37oPpfRd03pEzHB+SIi98RLjP/FMMyInULTVwGNPAxS9HiUAz
-	QWrdP2nhPs9T5+wR59sLCOJKQVpR8Vc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QJ3+MjzP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790017472;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 11FC16B00BD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:21:05 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D629120282
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:21:04 +0000 (UTC)
+X-FDA: 85238737248.04.7F79E5F
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9FB201C000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:21:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="kXW5dH/E";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="kXW5dH/E";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of jannh@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790018462;
+	b=B5p4iAYGCpAFQSFIDjeggCuxJ6iIwIgo1sr1Hiz/6q648UZB+OiGRYu94mvSmWtDZazzbA
+	cCAIH1KE9NPUE35OX0qdkLZSPDKC267snbrB1z+5x/rCdCq71M1pQfH0BvsJjdvE1dT/Gz
+	LKnOy3JOQaQC7UOkZ7iwHuDfSmtWDr8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790018462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HONTjVdIawnS9OZFEKfpfN7ZS4t2FLaSysdX/D7tdUE=;
-	b=6VWe61dIJQnQu2tNWml2NYnebWqjj+8TjRUE1T/Y7NZVT53Y52i8r1BVrg1hiR3Kb1AiIu
-	BxbMZ66ibFB9gnCOSZOSdgI9946KgxE0nut7y45D48A5G7jHdJ4F7I2dG5bR669JZFLMn/
-	XJ9z5w1WR2JK5xhGjKKk/x5IYBVU9+4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F4E060008;
-	Mon, 21 Sep 2026 19:04:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B7A01F00893;
-	Mon, 21 Sep 2026 19:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790017471;
-	bh=HONTjVdIawnS9OZFEKfpfN7ZS4t2FLaSysdX/D7tdUE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=QJ3+MjzPgDkeKuSrv4SpqyxYPNEmxIKP5wF/AHUxIjmrP3oyrVErYktvhec3YEVHK
-	 lijZqldReiaYl3L2hOmRf6iiWW7z7jJRPfhAQ9xlaZ65QohMiicsNgjN4ahmT6bfAA
-	 lIxjqSIRTKWjAXyHlIMnuhALF1vr29ifj/07QF7P94nC/RHNMBK8QOVy27ngiz2zVX
-	 ZPeGo0ZnB+HxxWATYk7hsdLEmCArw4FsfU/43yCsGc+gRGCdQwZsC6w8P3sZyxzOIc
-	 7t6KRLl7kSRyoWJRmHhKPA9EprBmzeG1TbHg/gq9QDC8/bVs7OTYByZA1To4uSIrov
-	 McWVvDuZigCyA==
-Message-ID: <16c8eceb-69f4-4115-a2d5-70db828d07fd@kernel.org>
-Date: Mon, 21 Sep 2026 21:04:19 +0200
+	bh=MEszMFKCmw9FeOOlcidO7gC0SHQCAcCefilt7YkTj2g=;
+	b=x2jAg47AafQoaWfW7ZF5qN7sezndXDzoSaUtOzonIvUDJg2kGjGEqWxmnoIZiSD4b8Y6CP
+	f165c58vF57rhnG2GcyQMlqjTfZv0NYgcGYb+O72RPpjV6W+SqRzKgqDgUxL7AEgVKDEin
+	Yrx4nNVBM0rHwSeTyUPpypB0ofouIHk=
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2db33db4de9so505ad.0
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:21:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790018461; cv=none;
+        d=google.com; s=arc-20260327;
+        b=hTEzFGNxtu4ZnDoLS37TJj4GHOkSUe2odfXl15TObqG6pFLswJGRaBUExFc1J5C2ec
+         vuMZCM847l+XTIBoa1JF/qDtxcEOq3iIStgKuQzOog+eHzDLd3HJ1XzBzCqHAnaq0q5g
+         4fZ6FESi/cwMqkmfhOUcj8K08BAu4Yk8mgPeF8j+Gt2v8hSpS++FVBKnAqWiSER6lBlQ
+         0/XKD3BOXz9ZlUIMmi/yzH+To0G/ZStMSEk40uURvEmh6DAAiLRY6bSkBT97WvihBbxf
+         8mGbB0GikFK0GEgEcywNVZso1xpKSgUoB7/tMYB1vwFJoTdtfsUjZW3FSfC3zSiubdy0
+         Lo0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MEszMFKCmw9FeOOlcidO7gC0SHQCAcCefilt7YkTj2g=;
+        fh=unZTq5aQl+63AfsolZton/IRt372dkD19nDQiqbIQlc=;
+        b=Gv18tMFSkdyc23wP3fLv6mMQ/tnrub+qmybMLGfvEsVlFrUQIJlVUw7Ffi92NW0BbB
+         VzE0o+/AOemU8/sfIx6e6BAWILqWE6k1H0Ka8bOSWe4c8lrSGGyKcVLruUpTiUTG8BTV
+         Uw62oUCfwedvPiO9+BjGwe4wA3v4G30aPL8QTW8FC9wX0bVqNuwqZttM4FwSBFJksDuW
+         Z0cnq69BQxwj1D10Thq1Y4Jk2K86axZ2olqH++woHnSdAuCo/va2iTEgArYj6g12AHYk
+         fhCGu0eLMoaUSqkpe3g8SOCicxDNpQjWJgxW2VhQIan5/imjBRqPE3qk/a7fYsdNvfDd
+         BJWg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790018461; x=1790623261; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=MEszMFKCmw9FeOOlcidO7gC0SHQCAcCefilt7YkTj2g=;
+        b=kXW5dH/EzqpQ8hFsTFyxOCkj93f6zuAGL1E7Lls3KBPatG0QpbeQWt+6hamu1lY223
+         ThaPBPL2DjYKqTdt0fHUbahtX9LbJUoHWlLoymSyKLPDakNPUzVynpWTBlWv3fSD9lL/
+         IfSQoaZOKzhVyte62jsq9HINO4CBeD+BM9kptC/01ZFgzKqOMWdAzx9CRAueevMFfB6Q
+         WO5GxQYKZ1y+tW7TYoDGaQvODqfjUxF8mgBJ3D6f5wWDLKiV9Eg7xWl4nFJm1gBtGhJd
+         Fruzi0MVYJX1/Bxz/LUy1vW1N/0TFFprLYImPGwUsDpBjxQz3nPLNnejv5T9xHarz7Cs
+         xFAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790018461; x=1790623261;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=MEszMFKCmw9FeOOlcidO7gC0SHQCAcCefilt7YkTj2g=;
+        b=lECz6Vfm4ocUeHQUTsbbnhHeARcEqKjlfWv/j6D5oCe6U+WHPQYU4+uCHnjJF+cOLN
+         o0NWGOvL4RtV+uoER6RitUA1xICLaGuOUvot/34MQUssDTU4ppKw/e+LdzcoBCljmqAc
+         5zHIAlDODein0vv06NKqTY4vhi0XpLeJI9uwKpBSPTH+eV2k3vh4xj0rcrN6u+DuZFzW
+         yUPJZX9Vmv61KfFtaX9XWKCSiO4+B69jXVo79FOx2Dqp2/ls5AIVwQlUEy9m/iJRakqy
+         gDrr5DV1fV4o/v79ZlUXfK6l+PEv/7a8M4Nq76LdC97Yvxs+dcaosxxS1Ql0CylaoUso
+         xozg==
+X-Forwarded-Encrypted: i=1; AKwUvBxrrCU9tcoDR0FEr93ytH0NIftQlEsXYOUR46jxEqHPDQcWwBz9R4a0rYnJdUaZ4oNZ0WJjpSTHsg==@kvack.org
+X-Gm-Message-State: AFuF++kGzaalaolKQTyFVrnKGhzhgq79RTf6LDb8yyxqfQQ1g9kjsbUZ
+	+eqVvfdNnORQX81Kg0ZYUSp9rUOCIHaI3LS4KvnXTjPcpoVc2YYvWO8y3n4WwG3s8diBRuhp8N0
+	ntqBieACXPbjZPhnbrlFS1Hjmr3wJRmGrFjk2GuF/
+X-Gm-Gg: AYBFou0a6Sr+60/W40guEnGLn143q56B5GNA5hr2kgEC456eAWSsoUAgr1tuNz3ujVK
+	S/wz0netHfBWtIbbcduq1zOj6eHaN16p+6cFMGMA4D/LaCgnInqyim4HcbHuAI4+rkKCtJnjZ9y
+	g2Tq8P0an3H5gdEZjUrllECtKMcURnzJjEMvVufEwS1ox7exkY6CfL4LjZLsli7jlXFn3ajmxp5
+	IjFhePpGeSRcSocCwKrJPnqu3iLg4Zeb4QXTJx8tjDJWdf4Sa6keNXrgFgWcbwhQMcriBBfp8z7
+	Ew3Ko59p/VKJ/fz3/FyumZi/XzRvHqpk3+MwSjWBaNzlaF3tK4S4gL3RWuYBsAiU2AV/EUjftmm
+	OeaCZITZ/fV2mZ60Tt7+v06VWmRHspakIROmD700eujlCzSRcejE=
+X-Received: by 2002:a17:903:4b4b:b0:2c9:bd54:cf with SMTP id
+ d9443c01a7336-2df5a44e80emr2158055ad.4.1790018460814; Mon, 21 Sep 2026
+ 12:21:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 09/12] mm/sparse: remove SECTION_MARKED_PRESENT
-To: Seongjun Hong <hsj0512@snu.ac.kr>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-References: <20260909-b4-sparsemem_cleanups-v1-0-008fc8d579fe@kernel.org>
- <20260909-b4-sparsemem_cleanups-v1-9-008fc8d579fe@kernel.org>
- <aqK9S1hBpPnujgz9@gremlin> <eb5b465b-c256-4454-84de-517aefcd6d59@kernel.org>
- <vpz5zqg5nwbpolxbkip45vxxdt3lni7j2haal7q42skc3b57tu@uh4cec4x32dq>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <vpz5zqg5nwbpolxbkip45vxxdt3lni7j2haal7q42skc3b57tu@uh4cec4x32dq>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn> <20260831-pidfd-get-paths-v2-1-c59ea6a21b72@black-desk.cn>
+In-Reply-To: <20260831-pidfd-get-paths-v2-1-c59ea6a21b72@black-desk.cn>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 21 Sep 2026 21:20:24 +0200
+X-Gm-Features: AcwNN1U76ul6KsowgCeLOYWUNK5UYTHsLK5_fZAtm1s6K_0yYBp22XKyN_fzxbs
+Message-ID: <CAG48ez3vJrbt+qYh5b-PYxmr2txcg3DAKDRwmBwVzNhRB+8Ueg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] fs: Introduce task path helpers
+To: me@black-desk.cn
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0764940007
-X-Stat-Signature: dw7m7iw3njpig5wu7wq44nrxc94id1xq
-X-HE-Tag: 1790017471-924949
-X-HE-Meta: U2FsdGVkX1+V/SGL397cnkLypjbGQz427qVxS/QmD7Hc/cdgO08cSFiQtHVKqkPVFuoOcUu4xuhH86svIZl+tvfhLc3pULemvg9qGn11S0t4oWKZe1OIPUSzUzo7mjysQqzowmBC9/J3mj3YSJbiYPNmXyHR4TKXX+fotJngpztPF5Mh5v3u1K0Gtu7HvZI+tMbff//6E8iemC7qAcwmiuUtHK5BirQJaa7k6Ya8CH7SvJd7rxnL1qquwCIBcV0G9tDhwX1ii3/3inS4hSvqJvW7VFncjAweJRiBhP6SyLJeGi1V1K7s71M/aWBuKMb2C/c6F5BqoQiXiSEIN9/NBMNSNOa0uxVKSvZSsH6HpZrY4WTtps8kWSrTyIkgtlwo3hiO2wbtjqXuKLDWuFWlS1Pita3dSSjpsrka9GI73rNh3hfKpglp89Wd1CWvqadWpr3GCQySNum3ie7C8hOYZ5I6hiNANty7Py8WDmzIGbx5079fGcpRzP055kWbHctQQl3pRlNvxRgQ5rLI6+oAWgBpOPvu92sisrTawFkpplByQnI7JekIRtfEfA3C7tC62fuv0CIbKMh2zpsNPyDOjNOrPBX3BRf8sUHIh4lXFAjw4feTcXwldKXmsbP32fVl1pK7DZhQCRMY5xEuVIP7YIIHSY0/H9gmPSBKSJAP1ZkJTHOKnK3QATGONW4JGVzE94TTmpFwtjNAxVTNEe+BoWmxytMTWgZRCALBZC3/kYXsuaoZTL/U5tT/+yp9Dpv824DisE/MUsWGR2f3x4pNYaJFwlhrTved6vwV+Tq9NPsEOlaxHaAHWjKAyFJtTHVihvu747eYy2BMaaFUSfNrwyYUgf8kCFWrykEeZUR1gsRlzu3iTaW4XVWOFCMC+wfGrpYDaTU8b0+EIEQUTcd1oUD+O9hXjqoWCuI5Xr9auVE6Sw0hnRHECiLDh4vtibGrGgS3xL1yuS2cmqVA0wa
- lR4PDpJc
- pxOSzrKZag6eptBaKFl8czWCJxue1qoeidwwGnIDODSVrsE/ydUZLdYJry2HjRWzph1zi1Im3IzDNY3ZrkHroo8SURFtTlf3Y+lYETI1LnROimVKj/PszF/8LGQbTgLtWL7Uo+dOEa9VnztwkqqAkYhRAB0ao6vIQFWk6x6aqewfAU433bLuhq9+RJMQM+oLOGpt4DgEwOCGqxHriV49+lxc5Hhd9oYehum6D1WvKy0Ux2gK3Wqrb3j6blN8M+Tn7xAmtJoKssJQ6bzFCAdkZ3VAaQv9LbE8NLIwtuDJHx5mIei6FSUQ9YtYSVVYTxxBhRc79gIvT9QU+mjY=
+X-Rspamd-Queue-Id: 9FB201C000A
+X-Stat-Signature: ytosksk9r3xyi84hafmsqewhtxntymt4
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790018462-717678
+X-HE-Meta: U2FsdGVkX18gMRxTICW/weA3T/8uo/4vWM2Fc8CiaZwfsky183tehK7OI9aVX8DJCRZWYUgYA+0tgCf7MyEHfvt0gBH6Q9BwCOoiqayEgs9EGDrlzVT9CfMWf+LU6qRTYOnCp7auRdWfFky6VIxI9ycnbwVxgzHevFQp1sQC0IL/awN2yHnLir66/x0hT1PUmOIb8rjEiVrAJOZxJZqZtBSh+sSXuxhMpWbj+KmykO/r6buw/7V9kBrUNKZCHjFflng0CiIu7OQkhwD3hyGFWX2ha+rgOTOxwbV8AUbgvoZ+LqBbZOkFlHmW7BLAWy+yiZcQkfcv+FUtGT9vlUUY+n0hE5RIiCPimxSNTSjp4JgppJs+wC5wBXU5VXff2SBxVtlgNVOFh3t92W0VhzptrbYp6wopKSEIUtRKg5WrvJL6ES66LF/PxeEsaCuR0FTxrN1DqA4L0UPEqyxU6OrAisjkdQBs5CixjJthu61+VQI3MON9uk7d6vCHQ2yyoC+v0cN00JAl2p1jN1lqDa1JrTiNt553LCwdMHyErslkVY8gl1HFHAXMVLjX+N3aXYSUIkpQFmXMTYkbFobWuYIF2mmFV0FC0BFF04ZU3ZNqpg69F9G8bKdFUGIGRQZGl32cxF2/6d9V7GEZ/aoHSemBTSmjSDdFjqVDMdGcajUVw8fVYOUKvXc1bpj7/r6q0E97xguhKE53/ygNwvuGrh/tfZkFBKtpspMVYRO4fFq7H73YLdvyXC0KDUTDTM9rQLKD/Ilgbt59MJrXHL8n/80sBMGHL/mQLJrCeXj1FYVTtLc3qWEDdHv2j3o3KQ46WwghMnuz7TlZwrNaQw5UiS2rnc8K8kgzRUhtFNcnx2O3eNYGDJeXqKlmc/U3NE5k3ktK/zIBVsgmMuOtKWUZpXUDwDZeW3uHi3NXM7bbiaOtOrEIg8qH6NtwiLw2mBzYqoKgGvU8Qjb5D1qeopQ5qzS
+ KFelTGIQ
+ QOeP5wvSTmJ6bGFx0LDAfvQk6HaLsiwncVC78Dx2eBxFovWCzhpSirRKo20K9ayg9urD1M0f9wFxiPaunjD1Mww50NaSMNaC6NUjK25r0AFQPljchFegjVghO584+0hXqvL6PeYsvzgZ83jRBN/+dxrAx6PyswtVTRf59He46wotrdMss48fQGvCq7Zi+/B2NZpCKwDtKhVsv6MS2Tjqn+Y4gZgGlpSV5c4r+qM2pY3sAvDnYD7bQ64r9QnqTFztg3+HGKzMUVSQoUB0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,65 +152,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/21/26 18:48, Seongjun Hong wrote:
-> Hi David,
-> 
-> I'm sorry for the delayed response.
-> 
-> On Thu, Sep 10, 2026 at 05:11:36PM +0200, David Hildenbrand (Arm) wrote:
->>>
->>> Seems a bit strage given the code is:
->>>
->>>         try:
->>>             self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
->>>             self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
->>>         except:
->>>             self.SECTION_HAS_MEM_MAP = 1 << 0
->>>             self.SECTION_IS_EARLY = 1 << 2
->>>
->>> Whereas other variables must be available with no try, e.g.:
->>>
->>>         self.PAGE_OFFSET = int(gdb.parse_and_eval("page_offset_base"))
->>>         self.VMEMMAP_START = int(gdb.parse_and_eval("vmemmap_base"))
->>>         self.PHYS_BASE = int(gdb.parse_and_eval("(unsigned long) phys_base"))
->>>
->>> etc.
->>>
->>> Is there some weirdness with gdb? Or is it maybe because there are some configs
->>> without these symbols maybe?
->>
->> TBH, I have absolutely no idea and I was asking myself the same thing (but
->> decided that I couldn't care less about a python gdb script).
->>
->> This code was added in February:
->>
->> commit 55f8b4518d14b7436f70defe27faba4eca0cd4e1
->> Author: Seongjun Hong <hsj0512@snu.ac.kr>
->> Date:   Mon Feb 2 12:42:41 2026 +0900
->>
->>     scripts/gdb: implement x86_page_ops in mm.py
->>
->>     Implement all member functions of x86_page_ops strictly following the
->>     logic of aarch64_page_ops.
->>
->>     This includes full support for SPARSEMEM and standard page translation
->>     functions.
->>
->>     This fixes compatibility with 'lx-' commands on x86_64, preventing
->>     AttributeErrors when using lx-pfn_to_page and others.
->>
->> @Seongjun, why are these conditional and the others not? Trying to support older
->> kernels?
-> 
-> No. TBH I didn't look at the gdb script carefully at that time and just 
-> wanted to avoid a symbol lookup failure. 
-> 
-> It would be better if we remove the try statement.
+On Mon, Aug 31, 2026 at 4:59=E2=80=AFAM Chen Linxuan via B4 Relay
+<devnull+me.black-desk.cn@kernel.org> wrote:
+> Introduce helpers that acquire a referenced struct path for a task's
+> executable, root, and working directory. Reuse them for procfs task
+> links and AppArmor executable-path handling instead of duplicating file
+> and path reference handling at each call site.
+[...]
+> +/**
+> + * get_task_exe_path - acquire a reference to the task's executable path
+> + * @task: The task.
+> + * @exe_path: The task's executable path.
+> + *
+> + * Returns 0 if the task has an executable path, or -ENOENT if it does n=
+ot.
+> + * The caller must release the path through path_put() on success.
+> + */
+> +int get_task_exe_path(struct task_struct *task, struct path *exe_path)
+> +{
+> +       struct file *exe_file =3D get_task_exe_file(task);
+> +
+> +       if (!exe_file)
+> +               return -ENOENT;
+> +
+> +       *exe_path =3D exe_file->f_path;
+> +       path_get(exe_path);
+> +       fput(exe_file);
+> +       return 0;
+> +}
+[...]
+>  static const char *get_current_exe_path(char *buffer, int buffer_size)
+>  {
+> -       struct file *exe_file;
+> -       struct path p;
+> +       struct path p __free(path_put) =3D {};
+>         const char *path_str;
+>
+> -       exe_file =3D get_task_exe_file(current);
+> -       if (!exe_file)
+> +       if (get_task_exe_path(current, &p))
+>                 return ERR_PTR(-ENOENT);
 
-Will do, thanks! :)
-
--- 
-Cheers,
-
-David
+This assumes that when get_task_exe_path() fails, it doesn't set
+members of the path argument to non-NULL values. That should be noted
+in a comment above get_task_exe_path().
 
