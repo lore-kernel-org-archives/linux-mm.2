@@ -4,143 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BBDFC982DA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 00:37:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9166C982DA
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 00:48:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DA466B00E2; Sun, 20 Sep 2026 20:37:15 -0400 (EDT)
+	id 9B8246B00A1; Sun, 20 Sep 2026 20:48:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B2986B00E3; Sun, 20 Sep 2026 20:37:15 -0400 (EDT)
+	id 98FE16B00DB; Sun, 20 Sep 2026 20:48:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C8566B00E4; Sun, 20 Sep 2026 20:37:15 -0400 (EDT)
+	id 8A59E6B00DD; Sun, 20 Sep 2026 20:48:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D356C6B00E2
-	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:37:14 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4AE88C04EE
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:37:14 +0000 (UTC)
-X-FDA: 85235905188.29.5EE4F8A
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 7B930100002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:37:11 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="R7ImQD 2";
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789951032;
-	b=GaQTebZokjeHFH0ZD7u71wbYHeXRny0pr1XSp9bpQkv/c87ZQQ44oWhHB9BchDDr6czwWf
-	+WKaPD6QV3vMBBrcAx4NU/ozPVY8u8M/hPOCACwJLfnDAM835sWrlnnxBdEQbTvi2UWsxz
-	Eo2cZVFxSn+e7ftSaxgY8LU9uSJyRiw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="R7ImQD 2";
-	spf=pass (imf05.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 655A46B00A1
+	for <linux-mm@kvack.org>; Sun, 20 Sep 2026 20:48:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF0F7804E4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:48:42 +0000 (UTC)
+X-FDA: 85235934084.20.67BB101
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 404A7160005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:48:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vxbWiQr+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3536waggKCAQwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3536waggKCAQwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789951032;
+	s=arc-20220608; t=1789951721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jUSdsryHLUcbcflpvGA1b+Rdye8ulVCq+UtIvIPiFvY=;
-	b=I9LmLgMeHkajLwHMI9VwMkGANsZk+VTCVsxqT+lw8M138g7+Y8eN0ySbJsT9NFP7doNCS4
-	Kyyj2rLzchl19+JV3vrPuYnEChd/jhQzkFX+HC8aDLMGUd+VAcK5JV5O9P/ft4+yLJuvCh
-	PrHSQ+La6newTHo91zpdYxDxB+t2BZE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=jUSdsryHLUcbcflpvGA1b+Rdye8ulVCq+UtIvIPiFvY=; b=R7ImQD
-	2/EHjNxEdtg4pd3vjaPfRh/m/a15X13i17xBqOkSfDP9p9pneJaTIM6Xp6GaZOYqW1+V5AyST+DF+
-	q/bM/BU2+dJKginoE6zAuF1w23S9m8LU9ZHn0lBYekN/qL016QZY362rW0Ka9etYntRx8mAYFINYt
-	Z4NNoYQ/bCmXdnnlp27InzAXbgGoER9co/65F8Rgynhim/ysBHbW7O6s4rJcKKUh2n9e9JwAKilUY
-	fQz7VdZyNIemn1Z9mhtM6PeSlGvmduF/R3Wtv3n+7nG14vNPachv2SRbdSpjb0yANRZz7vAmkP1Oo
-	biL6r86xHXNitbpCJNhH1vKfEZcw==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x8S0h-0000000CnAC-3ZS3;
-	Mon, 21 Sep 2026 00:35:55 +0000
-Message-ID: <da13e0e48568da3ccccc304aeb449ababf085e14.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
- Nhat Pham <nphamcs@gmail.com>, Michal Hocko <mhocko@kernel.org>, Roman
- Gushchin	 <roman.gushchin@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Yosry Ahmed	 <yosry@kernel.org>, David
- Hildenbrand <david@kernel.org>, Muchun Song	 <muchun.song@linux.dev>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He	 <baoquan.he@linux.dev>,
- Barry Song <baohua@kernel.org>, YoungJun Park	 <youngjun.park@lge.com>,
- Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)"	
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka
- (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	 <surenb@google.com>, Qi Zheng
- <qi.zheng@linux.dev>, Axel Rasmussen	 <axelrasmussen@google.com>, Yuanchu
- Xie <yuanchu@google.com>, Wei Xu	 <weixugc@google.com>, Gregory Price
- <gourry@gourry.net>, Wenchao Hao	 <haowenchao22@gmail.com>, Jonathan Corbet
- <corbet@lwn.net>, Hugh Dickins	 <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Tejun Heo	 <tj@kernel.org>, Michal
- =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel
- team	 <kernel-team@meta.com>, Linux Memory Management List
- <linux-mm@kvack.org>,  Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn	 <joshua.hahnjy@gmail.com>
-Date: Sun, 20 Sep 2026 20:35:55 -0400
-In-Reply-To: <CACePvbXDDDHo0rwkR3Ln4==teQugYP2=5y87J+A48Lagk1X_zg@mail.gmail.com>
-References: 
-	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-	 <CAMgjq7AHRzBsbmGOx0s=TQFBwcn=DEU1naR443sO6x+pJd6hAg@mail.gmail.com>
-	 <aqBT_35E-eSoN_zj@cmpxchg.org>
-	 <CAKEwX=N4aaq_oD2agTUNrUNXhaYGeQ9vxu+dywFvEFgWFi4uQg@mail.gmail.com>
-	 <CAMgjq7AfNBUpMamcv29JFzpX=7ApNYVLtPjWT4Sm8cXjSLYL9g@mail.gmail.com>
-	 <aqU81l1oqGItb-0C@cmpxchg.org>
-	 <CACePvbWLHAT5DjC=HidzN10XF5_cnkpxXXDR_yfEJjTY_uDvDQ@mail.gmail.com>
-	 <e42d8bb0bb13067609e8ff8c858a26ca056368bd.camel@surriel.com>
-	 <CACePvbXDDDHo0rwkR3Ln4==teQugYP2=5y87J+A48Lagk1X_zg@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	bh=5rIYSaUxr2dmbQ4fWz0MikFLRE1YKdMT0WLnLm0z0eI=;
+	b=0NMl+9hp3dLJS6pSqE7DL3bxshn+iBeq7LZusCKe4tBLgr5cpo8ZIWgrg/sscPTvfK7bAO
+	7FL+/0UFS54wnfIl7EYNUAEwfsot8KA0E9x4dxuNqtsbG/rjluhsAcquKqp/s/DSIgXbP5
+	v+Z2C5883mt2+v/bEKQ6LjTP4Ke+tgo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789951721;
+	b=rvOJIJJDjYqc2/8TJKft2UhNN1OwseB4TCIFNoNKa86aVg6+azSVCFA55/BvSB9QHVGrce
+	Z3BOagTAG9jb7Tmfema7uvQ/INjYQ9QTSCPnVzCme8VKSL2pHMI9w4XI9Rr3W+KLoAXOMu
+	7PZ+h5jNVzU0O/+iwdusk/w1r6Xxo44=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vxbWiQr+;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3536waggKCAQwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com designates 209.85.214.199 as permitted sender) smtp.mailfrom=3536waggKCAQwole0eneksskpi.gsqpmry1-qqozego.svk@flex--skhawaja.bounces.google.com
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d55d8cd938so44523025ad.1
+        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 17:48:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789951720; x=1790556520; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5rIYSaUxr2dmbQ4fWz0MikFLRE1YKdMT0WLnLm0z0eI=;
+        b=vxbWiQr+ISez0Ofv53y72+etPOGcB8oRY6NGY6IA/TeJ6L/eG+eW44G0kW5MjnpEVN
+         JTCePzgPwRs72MagojJws/8dyG1KD5VGjTUX5SnNkGzPtACYIbXYerFUp6Y65ENXSUAa
+         BGijSbPvPt+CwSb/nHw297F5daV/qgt5mHon2jbvLIGNIOwFwkQFncbeGnmEvansVKZQ
+         +//QGqMd9HQhCX+cMcYW9XB7Ms6gnLhZKUEUQRw0l2MJwqs67fDbJ6ujKEOWMAska38x
+         6HdCM8Amj/itwpNDW7nffGCkhFLbGJ6hFcy86d8nwR35Z35mtREEgObKp2SKPCYz2f7u
+         UpvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1789951720; x=1790556520;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=5rIYSaUxr2dmbQ4fWz0MikFLRE1YKdMT0WLnLm0z0eI=;
+        b=SjDHvju0KdLm2QR7LSHaWm42vJ+0hUQdVQhZYKqnKmstwsrEsm2XWS0hL/qKwrbyXd
+         PdwRmQRiSiMl317gu/iycpFyf04OMj99w/sjobFVQfw6lMGh9IWqP1ph67/aT3de6AN6
+         9nyGIU0qn4ZjTc0Gdbj+umS6NifVcL8JPa2MyA1pp1eJMEtq+LHLMCTr1rHv70D9ZTNK
+         yRZ0Roz6zfOtFpxfySwW3e5FC06Z65VQlDO/78ml9PfO40iXmt5NXC+BmunCD1bUg/+n
+         NDOfAENnJPILNo2bz13NVfz2Zcql+LDFVeZGeQT8fwP78Dob41Ts1T1vT5UfmmrEUAgG
+         K/gw==
+X-Forwarded-Encrypted: i=1; AKwUvByc24KvwwvchEybqfQ04myvtC8UBO7DYVgm8WdVXHT0JrwLwyBuCFCpRT130dEUYuDwtKA787mNWg==@kvack.org
+X-Gm-Message-State: AFuF++lkJxGJRamHw8tvEtjd5XzCeKa9Ct89+Vleoob43RLl1V0dnAk2
+	1Y+0aD2b9Jrv4NwyrU04gUlZwfQwWppaQBHswm+Hg1bAzetcslZi7pL77n0WFw9LpchKrxQk9pu
+	8/p9l6C2NwnbjEQ==
+X-Received: from plld8.prod.google.com ([2002:a17:902:7288:b0:2dd:1e7c:bcec])
+ (user=skhawaja job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:3c6b:b0:2dd:c100:9433 with SMTP id d9443c01a7336-2ddc1009c3cmr88814875ad.49.1789951719834;
+ Sun, 20 Sep 2026 17:48:39 -0700 (PDT)
+Date: Mon, 21 Sep 2026 00:48:17 +0000
+In-Reply-To: <20260921004834.2601285-1-skhawaja@google.com>
+Mime-Version: 1.0
+References: <20260921004834.2601285-1-skhawaja@google.com>
+X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
+Message-ID: <20260921004834.2601285-2-skhawaja@google.com>
+Subject: [PATCH v5 01/18] memfd: export memfd_get_seals()
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Samiullah Khawaja <skhawaja@google.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-mm@kvack.org, "Pratyush Yadav (Google)" <pratyush@kernel.org>, Ankit Soni <Ankit.Soni@amd.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, David Matlack <dmatlack@google.com>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7B930100002
-X-Stat-Signature: pypzx4bxp7ns63qjypa4aqk31347jmcg
-X-HE-Tag: 1789951031-219235
-X-HE-Meta: U2FsdGVkX19FirABKi6E7deddtaGyQcfel4/FXSYzaGENb1HZxuFG7V64DXpMhXXcX7gGch2W9qEmRSrq57paXZeuARpTgdXJCmjytalmM1k5eBO+A24Ktomz2XrGw4LJ+3k2+oQUmnoSjHRUF2SHXC1vCoU26cajuGNpB3y2faxEooFYCRE7GyNSUxH8LsNFemDTIEMh05/avB+kOIKEGRYb5VEejIxSNitk+Pa5qsLlsuA5RES08tTPrphaI3LBwogYzo+4/b8fVdPYCFY9bO/DZB4TRrrWcxsCJ8SKilcygPxYNOXLzfFALRr1bceFhmtkJdm67J18EMJEcgTvmBNLRvXkgni7n6WJOkFMF2uTBTCl4H+mJaiY6ak+Fu8Icowwk2yeVXpmzBV20PNeNaE26MHG9OaDe5qUlbclHnuk9dGoOFgtM5n7AWYy317pBOrwGv9thjxaaomgA7Y3GyjAvd4ZBFjRIbDkx8BK5I6TyGGUNhFoshDAmgUbATpJ4pY4Lmq0el+k/DACBGxxAGXEgRDPOy3InuahgBQ8uTRUUohKy803tauBGGyaC59cURSk4klDG7wiJb1j8FfAqJAD8ZJLaY9r6JLhZiG//tOuwUSWHDWqbVwZaePY7zKzNu1c9lNVZK4DDBB1B0oFlbmBQuDvybqK9YCveGX43xShKMk0ciasC187Yq1lLDdfDTTxy9Llnnc/g1E1ObRp6pa1YpDep83Icn8BIFbV0IOwPvn2Kv5dRyMjvfEo0+wP0GALzMP0jQPq9HG0MEO96c3n8J+kqKsm4WqYATw+GdByVQTEh/NyWEqmbgqsZ4rzKiMDUhKc4H02XgNRv8gSNcsyYd85WIAllAlX9arH5g8r+AZ6n+QjNMokooeJM/SF8R+TuxHain8OPFPwavqF7PYBZnPWWi0Opx9gTRfxc3vSxy5rdfL5ZVsanXjiH2n2xC69BQPyIA3dCY+nzU
- G7NJjWYj
- +FZgQiVYdznGzZKLqpU05tSEh7ceT/TzZkcSE19CikMT8Hp4OkV7lIwtdO1hOIV68YTyLw4sbHt2tYoFXVGOnPoO82EU3dhfHyDQkQlHbFof/BNLraOatBulxJ1M00xkpFy9J2m+5bACsAXU9Ufss03rIZCCIGfVoAuI36hRnO/KqG3OoB76agj9bW5VR4gEJZR/A8OxIzLNJfTkuiDUWKF10rnbeNDDjqHAAewJTJbCyUCqtrFEvT51ic2XCVC/KC7yY41IVV70lYFgJnBAYVskQUrfoz8xh3BIfWLCCGcQT0ORJGviRzGJ1KF5HXOY52/V6DlVMjLR+26MInP2v22/2n9zOnLgVhVTT1xlnu16oomoKcyAwJMDQHbzRWSE8ZJj67OPIb0Ir2NpyRhxnzFmyYNwPu0josU89derbIGcr91pbyo/dWAGvjcRKBKB/2lk95fHlzKfX4oY=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 404A7160005
+X-Stat-Signature: e9nogbwm5cwq79z1jju4tr8ofg1fqbus
+X-HE-Tag: 1789951721-936786
+X-HE-Meta: U2FsdGVkX18oXPZxiKffe0gOUiDUtiHEqPi04W2KlJdvd4zCNk+uw0n2Mc3Fkyts8PmgZQLuRuNLWz5oi9V8yqDts0A5yCmREE5bEkuv0JIIi8K8kL8bk8Tl7ZCymb1iC5pPxpdZOnOO0EEN5o3RqQ/fsLSNr1u+OfDlCZbtx17grdoLNfd66V+Jlbnqey5YotvoXWmG1GAVTJQs5ZL6i2Wo2Ao2dFx99pgxvucKe4fHwyIx6dvXY23BTVvJhlmBdH5PLBLAjh+GMnC7DZ8z0i3Ijiq/6FPM+0NmMdT8yJMgNEmdNiHBXFseSR5TIsKwg/bO+cG1qwbz/0ZgIcP3dMDX2OncA0ofi70IvWzboWIKNNn7wfX/wpshU2LRBIqykrlu/XWWAfE+QyaMrW1I8nvAmYnBjIy8TGDiTv6ureDASe0pQ84oTC2KZi6M47nMoAGuBo4KNYv/6iVi0rg02JQzDprw0XMpivDQDiWVTPaqj4ap+3TGslfy5miBtEqPOFILPvsDaJTdFKg62zjKicxhH0JamwWAdbVprdmLxnpD58RRZie3MURhhnktiJ9EkARZZqN13LlwRqYfZIeoCIyxkshihJNY99IdUAMKql6rj/iWYSUQk1bhlJ6du6Ufa9DmZpAfEGvctxGx2JN5KYcsn3HidwhZuaFUeyMVn8Xg7t65Q6WtS3SeqdnajQVCj9ZNIyZZDLJZALWyWHQnA54JZzkIaU0Gypro7+eunioqYOkNr8ZD2CPLdRxwersDOlagJhd0/nXJ7q73aLh21sE1VlACA5pQ0E9n7ZoorVBwoRU0d0+CUNwzTfqB2oCxJ70Tv1B2JFJudhH611hW7H9ZIAbBZSLwjpnUjdocLkloKPiASSTWSoSWYqKaMNdx+4Z48YDPQthUEAyLe0JHfZo0IgAp+K7HF64F11aKL/+xORfBQ8NaLtcdCI/Gg1972RBtUc/Gib7g+cxHqZd
+ yrVVYlbx
+ YIwKpTkVgLmeOtGdF8FwfR8ZFOyEyGv/kIhOB6/hoDdDyKaOc/q3bKm/LHfeuksasaNE5l59hC1OSUcy/gR46cviFTtBCp0EcqQLoxYk5qB+hBrXCreeziCZ8I1hrHJrh6xpMU0zFgtF+XSKuYEFns8zb08dS6xlAtrJ24Ym64aPvGhmgUezUU+HEcYX/dQRwWabfNPJDWSdrW8pxyFIk0SzSTavseB40wrtX9CczXO5OGZ2CHY354zz4FLJV0WCcaAletdTHhllmR6JOv2gr+npdDFAr4lBxgJOljXn9DenRGVVOjBhcDqjz7Xd4rOqzN43QJtjnvSsjIOFMOCt6VcHhDbpa0qxheoCelaB5TBEKlGuHmSEpFuHEAVjOEtywbhXp6OY91WqRjxNeVIRY3e/in0KwsIakuiQcsA8zaZze3jxJLOWAiyF9zL34yucDFLUqIXpL0yQ/SyVELjBlYDPo8IbrnyPPZUbxwIZ7dWi0jSB/TTjkDGJQPLwSfFpKJ0zbHbtpNDRxdsz6E4donENoy+OBzVmfKsRxlstILMlSBUwflRCbCEK6CtBRpbWnalSYc2VXdhihCZUhmxOxvymwoPJNanT5jqihGtZAvRZYkVXs08pixm7vT0qvFbdhPSqkClU6IJ13tWWnsoCyr3CztEUAU7qk9n96o4pdJxfJs6axE0TMu1cVP+0TzXH5YbHLk7RuzoZou6XUZxrtMyuPPcL0GkuriNIWfx+Kwn6tpqabDbttp9IAziDbpSTdVa7UydlgRhfyTizDup2RUxCjO4HpWfVdva5tp/5EhM5pJlDy12ytq2xo4VUjGk/NdeGN19Hwm8xdDZObpY2yKbKUGfECGQXOdhV1H7RCfkyC5dckCPZC4aliqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,38 +116,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-09-20 at 14:18 -1000, Chris Li wrote:
-> On Sat, Sep 19, 2026 at 3:07=E2=80=AFPM Rik van Riel <riel@surriel.com>
-> wrote:
-> >=20
-> > >=20
-> > > For our deployment, we only compress about 7-10% of the system
-> > > memory
-> > > before performance starts to suffer. The feedback loop will scale
-> > > it
-> > > back. I am very curious do you have actual work load to swap out
-> > > 100%
-> > > of the RAM.
-> >=20
-> > One common workload is a web browser with idle tabs.
-> >=20
-> > Those often compress pretty well, a ratio of 4:1 is
-> > not unheard of, which makes it easy to fill up
-> > 1/3 of memory with 133% of memory's worth of compressed
-> > memory.
->=20
-> You did not answer my question. You are talking about user-space
-> processes (browsers). Do you run your browser in the data center, or
-> is that a laptop workload?
+memfd_get_seals() is used by iommufd during preservation to make sure
+that he preserved memfd was sealed when it was mapped into iommufd.
+Since iommufd can be built as a module, export memfd_get_seals() to
+avoid linker error.
 
-The browser runs on the desktop, but the same
-kernel runs on both.
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
 
-The things we build here cannot be optimized for
-just one single workload. They have to work
-everywhere.
+Acked-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Ankit Soni <Ankit.Soni@amd.com>
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+---
+ mm/memfd.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/mm/memfd.c b/mm/memfd.c
+index c708d92533f4..888ccf3778c7 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -6,6 +6,7 @@
+  * use by hugetlbfs as well as tmpfs.
+  */
+ 
++#include <linux/export.h>
+ #include <linux/fs.h>
+ #include <linux/vfs.h>
+ #include <linux/pagemap.h>
+@@ -310,12 +311,19 @@ int memfd_add_seals(struct file *file, unsigned int seals)
+ 	return error;
+ }
+ 
++/**
++ * memfd_get_seals - Gets current seals on a memfd
++ * @file: struct file representing the memfd
++ *
++ * Returns seals if file is a memfd, otherwise returns -EINVAL
++ */
+ int memfd_get_seals(struct file *file)
+ {
+ 	unsigned int *seals = memfd_file_seals_ptr(file);
+ 
+ 	return seals ? *seals : -EINVAL;
+ }
++EXPORT_SYMBOL_GPL(memfd_get_seals);
+ 
+ long memfd_fcntl(struct file *file, unsigned int cmd, unsigned int arg)
+ {
+-- 
+2.55.0.1082.g2b9226bbc0-goog
 
---=20
-All Rights Reversed.
 
