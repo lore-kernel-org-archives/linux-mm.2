@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 580DAC982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE48C982F7
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:31:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77E9A6B00D9; Mon, 21 Sep 2026 08:31:38 -0400 (EDT)
+	id E606C6B00D7; Mon, 21 Sep 2026 08:31:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F9E46B00D7; Mon, 21 Sep 2026 08:31:38 -0400 (EDT)
+	id E38CE6B00DB; Mon, 21 Sep 2026 08:31:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4EA1E6B00D9; Mon, 21 Sep 2026 08:31:38 -0400 (EDT)
+	id D74EC6B00DD; Mon, 21 Sep 2026 08:31:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 263F36B00D5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:31:38 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0DAF4A0166
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:37 +0000 (UTC)
-X-FDA: 85237705434.11.AE50F91
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A543D6B00D7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:31:39 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 13B7E12016E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:39 +0000 (UTC)
+X-FDA: 85237705518.08.518141A
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4F55840007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=D7grE8ZP;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789993895;
-	b=HQ2NfjoZBtu/xqieL17LZD+p7ZuNwdOd1vP4ovtUMA6ls0kMuVhRzE5D2pw2CLJErhgH+M
-	JLj8dVjIfLiYnwjSdfXKskO0kD7SyZhD/vzo6SSBszwBTJTR/AaNj0NpJxciwhloWKRhw/
-	deYok5gbsI05qFnmQtq8kCdnxiovuqA=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=D7grE8ZP;
-	spf=pass (imf07.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5642BC0006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:31:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hC26Q4qe;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789993895;
+	s=arc-20220608; t=1789993897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=itzIMrZmkJ8MCeTVLVRxYjqDuw4fC9HM264ZP4CC/sA=;
-	b=3r+VIXWmXNRE5ps6i3AuewSlyShSddOqm6jfMjkvxKJmfWmzHhxdQf9tJwCVf9V5VfJzBj
-	EFRzWxwoGq1YybKXoTzeBA8uewcFEyGXxS7RlLYVh0t2QgTko02aK+t1Gbu1csb8EOcQh0
-	vUM08MEKhaDJTDN9tZ5b9kiAoeYo3xQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4hgW/FJkW3mwJCGKwE/mUcy/xjFFdmovY7N91WUWEFM=;
+	b=MV3ek6gDuZhiZ75eaHuig+0NFosvME3boHpX9wo/PkdxCsjmG+a56B1sBDnMu0D+Q4FXLe
+	5lCJ9Q5Mm4FjUG8+KsjarWMCKooAQp0l2u77Mfo1hFouyPF0iGhzE72LFupOPxka2/DUCr
+	yZqS0CXB3jvNLy5+IfQQ/A24WsVfUqs=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hC26Q4qe;
+	spf=pass (imf28.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789993897;
+	b=RNX7OwUUcYfBGdfEAuKDUCBBCEEzr+on4uFr2vx77sxq/FrNHlfBzr992oBWfHnwgN9d1T
+	4Vudyc3oVUIACHNGoV/2f7KM4NRvD0S90qmIKyJN00tFP0V2cpUd9vL1fx6PBYC5NEulgg
+	3Zo5DB+HbhSeLAWmRIWUzbsddaGI41s=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=itzIMrZmkJ8MCeTVLVRxYjqDuw4fC9HM264ZP4CC/sA=; b=D7grE8ZPMQxDkp3ySxIdfArfIL
-	+Rap0h8EvJpyGDjwx20BhmclpbVHzdwC0LfiTSBR06n9eyT/uyntHi7VMmOgvC/BR1APlcIIG3qrO
-	hoFzmZr0wIdsUG14ziidDPi+FH76S1cSelpIuQvJyC5tz33I4jMD/NqUnMDNJsaFr5ugC6YtaJecD
-	La8EtZxBX8B9o9xReHGNl9PIoCh5J96j59ztYhYiGLuqNc7+v9sCjW+K8MBl24fdZdP/wlcYuOFxL
-	mlvEnw4K4fc/akIAwqHmzyAxPWWoI80XJX6GBCVXHyJ/7RRaLLud2ftDj6TCh9nMRhAAfM+Bbc9Da
-	FONFwD3Q==;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description;
+	bh=4hgW/FJkW3mwJCGKwE/mUcy/xjFFdmovY7N91WUWEFM=; b=hC26Q4qecCQvJ0tcjkj2v/tsuX
+	qVcXeyp2OjNQ0RE6QFiHeSNjmbFHucskq0RJNSlO4a/tXIf4OIpDe2EOn5vKxmEFs0sbB4CKy5Z3Z
+	R5FbZCYK7t6bfvrSzRG3lZkzqWdH2iV04tpFZ/gD/YScfwm74ZgMas5eXSOajgSJ95j81yjK7dAKY
+	2VUrv+Fh74RgpvQigb6EMxSNZ5FcA36+AVx3vWFX+QIg/9QBgOq20dPr44rK7bfqEdS+YvM22r9gY
+	wH6GqGpg+suQbdImjSp9YEw20Y2A7gVjdK8G+mvV7UNJGGqmssbvSjEh2rqTB8QEdUz+hUIR7Asxu
+	6zOFJ2Tg==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1x8dBB-002CbU-2Y;
-	Mon, 21 Sep 2026 12:31:30 +0000
+	id 1x8dBH-002CbZ-1W;
+	Mon, 21 Sep 2026 12:31:35 +0000
 From: Breno Leitao <leitao@debian.org>
-Subject: [PATCH 0/2] mm: kmemleak: batch the struct page scan
-Date: Mon, 21 Sep 2026 05:30:25 -0700
-Message-Id: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+Date: Mon, 21 Sep 2026 05:30:27 -0700
+Subject: [PATCH 2/2] mm: kmemleak: scan the struct page array in
+ MAX_SCAN_SIZE batches
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGEjsWoC/yXMQQ6CQAyF4auQrm0yEIKjVzEuOqVAQUYyVWNCu
- DujLL+8vH8Fk6RicC1WSPJR02fMKE8F8ECxF9Q2GypXNe5Segw1TrPMD6EJF8q7MUXkM3ETnPd
- cd5C/S5JOv//u7X7Y3mEUfv1isG07CW19I3kAAAA=
-X-Change-ID: 20260918-b4-kmemleak-page-scan-c7ac6b088c4f
+Message-Id: <20260921-b4-kmemleak-page-scan-v1-2-fb97d4801b3a@debian.org>
+References: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+In-Reply-To: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
  Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  Breno Leitao <leitao@debian.org>, kernel-team@meta.com
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1936; i=leitao@debian.org;
- h=from:subject:message-id; bh=bFMsXFJyQ36WfeksTJPCjrhaFvrzgYycx+/jO0rLZYM=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqsSOdebnPkkS0U9mCkMeiu0aKMri1nI9kkUYDp
- xqAwOwP/niJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCarEjnQAKCRA1o5Of/Hh3
- bdSzEACgRVNBpvLdVBMPsKl2a/DZmmoFmxJIp51KzGgZvAoWPG9BZXk9u3x9VgLvQaDA7/VmFHS
- pIP9oCsUz8KvbI04hHjvG4Tzc+k1M5fzjSLZ4RM7kYrX+LkZaPOFkSNJqVYyVoxKJKSxjVZAIdW
- CQ+VmXlfZyECHGUJ+9KVIAG/AyctKttvctwN/MtZDJVXXd78U1/e40rLRnJO7RxxijIKAqwYfdz
- bMuG5GJcVwRsd21VEElIcWxvNKuGYAD0ohCqFPQJl63YolvocA+UdBzKkOFjjzkL4iswh+3m03V
- KG7rxJXBsYA+tRrFoPR22aaP+RguJBVVSnEfvS7F5EsHogm0L/kiYduYlHmQrH0BAnxZ7YWXr29
- WYOQH73i9AcGedZYv2/JHC2SjoV+vrRlkFfJRxahSxxXu3Rovj6sJEV7FCRPIlcPu3jhfrrnkwf
- u3sTeQ7i6M6TrOsElbkF0xXgirqGrkv29Ys+LB60H5o8AA9fFE/hrxXD8W2yCb96AleSvqOMeSo
- Q6rcwzo90PJIEBh4vk/wesHtslQ6r9YD+thveDKf0Q2DF9SxeAuELXQ0dso327rX7qPBsYD/hcW
- uDo11CTZJnhuaf/W2DWzz6yhB4Dh8yz6jL13Va2MeuquKIURhTp3N+gFX3Jm2svDOH5rQthZoii
- JpBFR8Mbml+27Cw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2932; i=leitao@debian.org;
+ h=from:subject:message-id; bh=HJ5nwvE4BGwjNEPPGJ48wKJt/yd7AFzI93B8qcnsppg=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqsSOdriwWS76lw2mmVu50YCXUKoW/8idyboDiJ
+ HUO7c2CQZOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCarEjnQAKCRA1o5Of/Hh3
+ bfwSEACgjjlP64qqLp9HIM9XrwDJpwy21iR+rcS8/Zaa2PBasil6vpvB4qpzQ+0NoUGhUTtTW8L
+ CAH/mHe5ZAXEEYWEO5rsrGQuQ907IrNckn0dO8rRpq/hQihiughnGexmWju2jv5QB8Viksw3ELT
+ 1k5bPp6wQICRp67FYXFljlmVkpkA6dE13CMgFZ4zEfIK9r4C5h7zj6QEVrOrTOPUdpV8LUPwli9
+ 0L+vEiEQyHJq9Z0qEwx4QT//hld93MdLWv72TFhhJXJp9wFKlOEn/PkqXhr7qBRMqu6CT3MmuEX
+ wyR/WQXwPe+JW/oYYep6vCJKiHLQVIRg4ZeFem8acP44UKKaX7U8q0dgYbo/i1aok4s45TPysHT
+ M2V99jOwUdnBZclMOg87JYjGkz3BgeUs7EX3Car4YeMC7Zq3P7gJ8DJ21fJxAalKxbu2ghFH8OA
+ XtPLnJeA77+JqE/MrfzBphMAiPWrG2at/SGHKzwOcyU+F1I50FrxhSDSgMqpyGDKazKrQoAuWdq
+ 0N2TBAPZKABDU4zeUEXt8WZ361DSbCZMkRYYbOmDeGT9zvAf+GcVH3xDz2byU7k4CclpPtab8p1
+ ypNLqooJr9TP+NYbopVSWlBP/hz/QIxvvE4GjHUHymeCW52WfDB0mfbQVITHExZG2docK57XUPD
+ uTYKxgRns17Tm7w==
 X-Developer-Key: i=leitao@debian.org; a=openpgp;
  fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
 X-Debian-User: leitao
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F55840007
-X-Stat-Signature: d4psg4shkcp13byw8953ya8xojej9fk1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5642BC0006
+X-Stat-Signature: anw33j13omojddj377xrooc4ae4sjpg8
 X-Rspam-User: 
-X-HE-Tag: 1789993895-360158
-X-HE-Meta: U2FsdGVkX1/m1fOuGS+CgDZAQj9h+btddTzylV4bhNJVF3sL/DwlNRmlkKAlgeaNfHFPszolKg8m5BzNy4Kwfndvkt1SqwbBfxZeqs69vNC0+33CpTzjxI+aasDP2ac0CmQol7nphvMNaC92qwfKIjMD/Cx6YsREbPVqApZ16zVLu6m0fc2i+QRxt/I3U1kdTYEUBJaqep4uW6gNpOdGNr/ANAjQa9PhICrI9+d0oPT1OZ7Ei+Sl03i+Yhuouveg7Mt+m1IrpByyGWLliCK7xJhZNrKxKwmBtTJwUZWIG62+oR7E/ZdF3M3aS15/GqFHBC/7K7e4ovtxCIrMVoSQI6O1xu1tLIBdjcsmVkgT/NJe7YXDKL7n8sSL55XKktozxPjetQHTrvZ30NkE5Am+8QCGHACE7V6sH/JZkq8k8u2b1YKxrVPqYY1mq5ypOb+4z4AXwSoLecEudgTGMduIeV03aKm5KyTZfmE6wvGEliVFeOYEJMbDNWTAmDLoNs19Vy7d3nNvEPiHqZs5x0F5SFSp/6eCQintlGkFSlEFIWR3kJCk4Y6BcoAVjoKAy72KlFxcS+/U9YiUKfr1ygYp1HeSFEKg/xq6snlaRSa0JYof06D7n0dgPFtw/06jpWya+fY+1Uq7IacmT3lVfCxBWO0OTKTXV/gY4x12MVHgmCmJBSompv71Wv9YYEjvsl0ZPZtmyPGdoYi5v4X0NsILK4MqvaQc/Y7ZljL/l+PEXeMjhmmqUfbasHiHdll46g+YWlqCXcCblM+LvzlSM30CsGcLuJKY0zKm9NBimklCBjWJ5OiMOtG1H2Z8umC0opYkNWkSDJGBTSoYyqHaEjJkjZdR7wZzXCU94u3q30/42Dljk9NUB8ccZtmY3WzEeLyhV69z4roxa1laFQLaXCBM1dy1GX8NAZjGm4D/LrZaHmpbZ7T2URJS6Z1FWi+lYgAqRmoJPxHP2adOjvolo8Y
- GKq7Ry35
- Yc6fKWUpovDv31U2PDw06JvpJXqSL6Wj5PKVCh2nTH+mI74Xnan7Om3vlhtDGEfnjKv1f3N8UHqp44fq9Oe8MckCrrUFAJxN0VWIz6WQ/BjDGGNzDDThe4u13Ymy57K13vO78+hJw8eiBJ7ibGqSfYHY5CuhXfAGv1yqUU1KPBOJTZyFX+JhxPz+FKThUWw+mdMJXsoSx8FWsAsZtz1CUdU6Ps9nJKQQpdwfyoyQRtgtxZx+IfQgGbXFhGQ06nv0b7CVOKezCUm+tXYZqTvKwB8UDaA==
+X-HE-Tag: 1789993897-503951
+X-HE-Meta: U2FsdGVkX1+U3Rhlbr/alEoLlCU0/g64rliuaE72+LdNADY5pOzdA8nPSAI0C1LwteJp6cO5/c0ioutagWUcdamb0wB3hI7qmcoye6LstP0LPb93Egq+u0TxbEUyoaalsih/jwfoKhkgV8m1gMBrXmEDtD6rAj3Pa4MRwkpUWJunF7rDawXeWuYUQAv8pQ9m2JhVVwg1kZ8PLO1km6iEgTOq9SenbmzTC5iPlpbts0fRsoa8dGg1WHTNNQA1G0EXRLG13VgMu4bXbaLKpnkgH7S8w40Hrfmnu9BaaoYY38ZIkMLD+xGitRO1/h3nt4A5zyagM9kqHAjDPE8tSJYWHquAaw0EWfsFIF0yXHNz4nqpxw59V2i0/PX791OpsRJ4fu3Z6KLNNtglFIYezdNpyHtapGWGb4S35a2w9M3kFTaAVNc+BvUX2sQk8Kqw/BPtBrkp5lgd04EWCl+oGtaChPZVh5daAGj7IN7tBD5R1Hl4P9v5HMLIRMlNlK3v9DpzqqhvRrh05SKlp7pmFTeQ4MgsuSdwpPbc3bq7kuvVwA2nfySJ5ArPelqLEklQ3hB8C2i1HDtnBgWk//fE9gkey7iA9qcAfd+Rg6oXlePmXtjJJmZ9Cr1T0E3oF4pEhaVCexIctfP4/jvoVMh6CnJSum2vSHCFM6KOBcgnQ28U8fnkC154BQ/mPhYT3IgvMFC1D436TWO1WcsqvHoYGcpGIZYa+54Tn9jmDWpPXzuTjergA36h4fvg3MSQYHmnEnMzUvEWxjRRx1xmxfHC7m63qP0mHKAhuhP/nbNJ4XAhpTxNZGd4Kks6ByDu1Qv26bZUAK77VIDm+vV0RXFfD3p/E6nhh9INQqPylQ/JV/ajiLB4fiCPfKizJ6vTRKCAmWUaFHOzXQ3Yty6ayXm4XFkGbZnikkJzB9HyrAjtyQoBISzrWmBv2iarc1T72sC1WnLj5A1mviq8AzMiWHFAZe1
+ EZJZanmS
+ KwyKgsaP9oEMzJ1RBdJmFx9Di2z1FuW5XVy0NVJ5Pz/Lksm6UfksGnLcaEbTAZTvrvVbsJgeoPgj6gahbOJ8jKJEtwl2e46GUBkBX+lIMKYTVLyTugtA5G28NecjnT0z+0jHSevCMJRIEQYs8SuL/gGwAdi9ycD4m9J6dBvzHYkb/TauxluLPTPPl7yIv877aDLmDi37JJioNVqzfpAk/brogmnulLVVjR/qg0f30jFRBfNT+RBTY9xtzre0coCyYL9a3XYc7rNhiZG+rQorgQJfzWtym0ddltT6fBpcMRZc+gCZewlwkEr53YTC+n+GcTG08mBCFiQhWJ3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,51 +112,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemleak walks the struct page array as a scan root and hands it to
-scan_block() one page at a time.
+scan_zone_pages() scans the struct page array one page per scan_block()
+call:
+
+	if (scan_block(page, page + 1, NULL))
 
 scan_block() takes kmemleak_lock with interrupts disabled for the
-duration of the call, so the scanner acquires the lock once per online
-PFN in order to look at a single 64-byte struct page.
+duration of the call, so this acquires the lock once per online PFN to
+scan a single struct page.
 
-Batching adjacent pages up to that size keeps exactly the same pages
-under the same maximum lock hold time, with MAX_SCAN_SIZE / pagesize
-fewer acquisitions.
+Gather runs of adjacent eligible struct pages and pass each run to
+scan_block() in one call, capped at MAX_SCAN_SIZE.
 
-Patch 1 lifts the loop out of __kmemleak_scan() into scan_zone_pages()
-with no functional change. Patch 2 does the batching, which is then
-contained in that one function.
+The longest kmemleak_lock is now held is MAX_SCAN_SIZE worth of words,
+the same bound scan_large_block() already applies to the data sections
+and the per-CPU areas.
 
-This improves the performance due to less atomic operations, which is
-not a big deal on a regular machine, but, given kmemleak usually comes
-with extra debug options, such as PROVE_LOCKING, DEBUG_SPINLOCK, etc.
+This can make the scan faster. On an arm64 VM with 24 GiB and ~17 GiB
+in use, the struct page phase goes from 4390k scan_block() calls down
+to 69k for the same 4390k pages scanned, and the whole scan about 20%
+faster (on debug kernel). The win is in the per-acquisition cost, so on
+a kernel built without the lock debugging options the scan time is
+unchanged. I don't think it will be a problem doing more on
+scan_block(), given we have the scan_should_stop() protection.
 
-For instance, measuring Meta's "debug kernel flavor" on an arm64 hosts,
-this improve the scan time by 20%.
-
-It is safe to get more work into scan_block(), given it has the
-protections, added by commit eb11f56eeca560 ("mm/kmemleak: stop the task
-stack scan early when interrupted")
-
-MAX_SCAN_SIZE is also not a new maximum for a single scan_block() call.
-kmemleak_scan_task_stacks() already hands it a whole task stack in one
-go. On arm64 and x86_64 THREAD_SIZE is never below 16 KiB, four times
-MAX_SCAN_SIZE, and it is 64 KiB on arm64 with 64K pages.
+Coverage is unchanged: a temporary assertion comparing the number of
+eligible pages against the number actually passed to scan_block()
+matched on every zone of every scan, including while memory was being
+freed underneath the scan.
 
 Signed-off-by: Breno Leitao <leitao@debian.org>
 ---
-Breno Leitao (2):
-      mm: kmemleak: move the struct page scan into a helper
-      mm: kmemleak: scan the struct page array in MAX_SCAN_SIZE batches
+ mm/kmemleak.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
- mm/kmemleak.c | 70 +++++++++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 47 insertions(+), 23 deletions(-)
----
-base-commit: 3f2425f5b5bbbdd991ca9cdfd5502e68d8895998
-change-id: 20260918-b4-kmemleak-page-scan-c7ac6b088c4f
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 4040547a0af84..cb953df3b414a 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -1862,8 +1862,11 @@ static void dedup_flush(struct xarray *dedup)
+  */
+ static int scan_zone_pages(struct zone *zone)
+ {
++	const unsigned int max_batch = MAX_SCAN_SIZE / sizeof(struct page);
+ 	unsigned long start_pfn = zone->zone_start_pfn;
+ 	unsigned long end_pfn = zone_end_pfn(zone);
++	struct page *first = NULL, *last = NULL;
++	unsigned int batch = 0;
+ 	unsigned long pfn;
+ 
+ 	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
+@@ -1872,19 +1875,29 @@ static int scan_zone_pages(struct zone *zone)
+ 		if (!(pfn & 63))
+ 			cond_resched_tasks_rcu_qs();
+ 
+-		if (!page)
+-			continue;
++		/* only scan in-use pages belonging to this zone */
++		if (page && (page_zone(page) != zone ||
++			     page_count(page) == 0))
++			page = NULL;
+ 
+-		/* only scan pages belonging to this zone */
+-		if (page_zone(page) != zone)
+-			continue;
+-		/* only scan if page is in use */
+-		if (page_count(page) == 0)
++		if (page && first && page == last + 1 &&
++		    batch < max_batch) {
++			last = page;
++			batch++;
+ 			continue;
+-		if (scan_block(page, page + 1, NULL))
++		}
++
++		if (first && scan_block(first, last + 1, NULL))
+ 			return 1;
++
++		first = page;
++		last = page;
++		batch = page ? 1 : 0;
+ 	}
+ 
++	if (first && scan_block(first, last + 1, NULL))
++		return 1;
++
+ 	return 0;
+ }
+ 
 
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+-- 
+2.53.0-Meta
 
 
