@@ -4,126 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B498C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2496FC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 20:19:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 708B36B00A4; Mon, 21 Sep 2026 16:13:06 -0400 (EDT)
+	id 197866B008A; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E0726B00A6; Mon, 21 Sep 2026 16:13:06 -0400 (EDT)
+	id 1484B6B008C; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CFD66B00A5; Mon, 21 Sep 2026 16:13:06 -0400 (EDT)
+	id 086B26B0092; Mon, 21 Sep 2026 16:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4E96B00A6
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:13:06 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 649951A02C5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:13:05 +0000 (UTC)
-X-FDA: 85238868330.01.B059720
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0AADD40004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:13:02 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OkngjAGB;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E01576B008A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:19:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5CC74A40B3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:19:42 +0000 (UTC)
+X-FDA: 85238885004.16.7579214
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C5D6C14000E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:19:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwOwRcBI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VwOwRcBI;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790021980;
+	b=Od3sFTqtf/e+RIwKsmex4Q71mClfT204powBSTP3/yJrkW3+hswP0+tlMl9YxICtNMAd5N
+	sh11o7SSUvCQsN0T7rSjQMdmB2B0VACUvfJVgGh4+IurFR3H4hF+kZjkbgFExo7yctB56N
+	/ZvXJ+E9xnR0l0Rqog+71fHsGNAYolw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790021583;
+	s=arc-20220608; t=1790021980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6chaT+lC13U/LIehoKCT6qfQE0dkbiIKm2cvcaiwV9I=;
-	b=gdedCFr2DG5mBcXmP+GkJkwML4OiG3xwACWpcLdj3FiFIIk99L/M9PJwKTe10HSX9vGd6c
-	p1l9zy4djcSWKYci3d22fzaH4ha70C8nklGg/GOzD5U3kwY5TfmM0/Z9V//mBvQANYHrmF
-	d8Qikoiemok4c3uvvQzKU7pi/nkTLnw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790021583;
-	b=temVQNr5sjvASntELIPcAbwaexCu9O3YCDQA9z3I3La25q/sGvFMG7/pgMUFH/OEPq9yIg
-	DgWB1vYALz2Rg1vxNCDXlEkwcmYM0dH9KZeMjFTMFEC75mfj5oyW1C/Fe8DF68QwdtgDSJ
-	gA/JUgUE3xMwUQVXixVhvNg72rxKdGc=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OkngjAGB;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf01.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790021582;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6chaT+lC13U/LIehoKCT6qfQE0dkbiIKm2cvcaiwV9I=;
-	b=OkngjAGBfL7rYAkdsRDSd0C0LWXynQ/h8jOsP7nJF+Vq6EX+NwC9DfUNc1FZySlfOpK2pI
-	NR3rHQ42ZvuBHEEdS0loQRJW4BSCuRQYOyZ0cFB2DcbXKCabWuVSyE1pXfWYDF5dbmJPF2
-	Tj42l0KdfUJvGMDgTzxPQmwR3JvXwiA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-XVPIjv8BPgi4PlY_UW2Ymw-1; Mon,
- 21 Sep 2026 16:12:57 -0400
-X-MC-Unique: XVPIjv8BPgi4PlY_UW2Ymw-1
-X-Mimecast-MFC-AGG-ID: XVPIjv8BPgi4PlY_UW2Ymw_1790021571
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 686E71828AFC;
-	Mon, 21 Sep 2026 20:12:50 +0000 (UTC)
-Received: from fedora (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id BCA221956042;
-	Mon, 21 Sep 2026 20:12:33 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 21 Sep 2026 22:12:50 +0200 (CEST)
-Date: Mon, 21 Sep 2026 22:12:32 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Ye Liu <liuye@kylinos.cn>,
-	Michal Hocko <mhocko@suse.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	Gregory Price <gourry@gourry.net>, SJ Park <sj@kernel.org>,
-	peterz@infradead.org, paulmck@kernel.org, mingo@redhat.com,
-	rostedt@goodmis.org, jpoimboe@kernel.org, mic@digikod.net,
-	tglx@kernel.org, david@kernel.org, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, rafael@kernel.org, gnoack3000@gmail.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org, rcu@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, rientjes@google.com,
-	shakeel.butt@linux.dev, xu.xin16@zte.com.cn,
-	chengming.zhou@linux.dev, will@kernel.org, boqun@kernel.org,
-	frederic@kernel.org, neeraj.upadhyay@kernel.org,
-	joelagnelf@nvidia.com, josh@joshtriplett.org, urezki@gmail.com,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	tony.luck@intel.com, reinette.chatre@intel.com, x86@kernel.org,
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-	pavel@kernel.org, lance.yang@linux.dev, mhiramat@kernel.org,
-	pmladek@suse.com, longman@redhat.com,
-	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
-	qiang.zhang@linux.dev, dietmar.eggemann@arm.com, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
-	mark.rutland@arm.com, Dave.Martin@arm.com, james.morse@arm.com,
-	babu.moger@amd.com
-Subject: Re: [PATCH v4 14/15] lib: convert process iterator to
- for_each_process_rculock
-Message-ID: <arGPsIWUJXVshwqY@redhat.com>
-References: <20260921092101.89285-1-ye.liu@linux.dev>
- <20260921093311.104814-1-ye.liu@linux.dev>
+	bh=oKuyFvdDafEvPgKBAQD55KsBuofHiKxwkbpxZQsO20o=;
+	b=VLerCtATW1quiyNXi0p81oDRQVBlK3wBC9f8XwL7qaXS6IKPHqDXPKIlDsvd2ToCwuBw1H
+	QiLkp2DV/hBTWd5jDTZy3Pw4TqEny5VIcRjZiheFd+071NJgtYHhU2pvbDPBAph3hk3ZZ0
+	MmeQbBZup1iY3xFL4/3HXeB9tXIwOd4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F025601F0;
+	Mon, 21 Sep 2026 20:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898F01F000FF;
+	Mon, 21 Sep 2026 20:19:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790021980;
+	bh=oKuyFvdDafEvPgKBAQD55KsBuofHiKxwkbpxZQsO20o=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=VwOwRcBIq+8Ch8Vcnm8aDMg2Uws7MJBdBMOCi0S9vQbDC0NvXHjvTgRKnXc9e7yqa
+	 UDSjDbDHGIQVDUHJLK6VgPIX2/mK5oLfKSsHw4QS1ICafyFBFiaYVHK20rZMDf1D5c
+	 FJqu9BZ35FT4BpIBxvIZwFcnalRzhbQ5DpEcru3XAwT4lkJL4uKkaSbJRMI46kw4xb
+	 0To4JfqVk+P8t/ngqFdXbnASTDw7tbRw2XdPVoFwIk0HHGNkKj1x7zrVxvLA8QuXI8
+	 3GRWuvO4/sEo94YcjnoRnbbIo78tPxcvxEl1HTi9GGVmmo9rc3p+jqv1NckjvOWX7/
+	 6aY91McPEWuuQ==
+Content-Type: multipart/mixed; boundary="===============0035746704262275047=="
 MIME-Version: 1.0
-In-Reply-To: <20260921093311.104814-1-ye.liu@linux.dev>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: nZxuTCjU4QOrEY-7yMox4Y0IvN_2uhPxH6LwQWh7sTc_1790021571
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-Id: <76e3a68c2ffd1644b1edc42507d25a1e4717beb9f9d420f04a4036b00e731d67@mail.kernel.org>
+In-Reply-To: <20260921192559.2619635-2-shakeel.butt@linux.dev>
+References: <20260921192559.2619635-2-shakeel.butt@linux.dev>
+Subject: Re: [RFC PATCH 1/4] bpf, cgroup: fix cgroup struct_ops query for a second attach type
+From: bot+bpf-ci@kernel.org
+To: shakeel.butt@linux.dev,akpm@linux-foundation.org,ast@kernel.org
+Cc: hannes@cmpxchg.org,mhocko@kernel.org,roman.gushchin@linux.dev,jp.kobryn@linux.dev,muchun.song@linux.dev,tj@kernel.org,mkoutny@suse.com,ameryhung@gmail.com,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,emil@etsalapatis.com,jolsa@kernel.org,ihor.solodrai@linux.dev,john.fastabend@gmail.com,jiayuan.chen@linux.dev,hui.zhu@linux.dev,donettom@linux.ibm.com,gthelen@google.com,kernel-team@meta.com,linux-mm@kvack.org,bpf@vger.kernel.org,cgroups@vger.kernel.org,linux-kernel@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Mon, 21 Sep 2026 20:19:36 +0000 (UTC)
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0AADD40004
-X-Stat-Signature: gadc56rdonf8eops61ycjnihk6effyz5
-X-HE-Tag: 1790021582-135254
-X-HE-Meta: U2FsdGVkX19PKJrUoBKpNDK2Lqnrf7HaZm4zuhOq51qb5azdCsCTmhGLlCRPtLq8sLO2E72HcsLF2/6Gg0FxKKR24L1t5CQnvDN00NNKbt8PqbX05vVDUaVb1BjyO2dF+P6mHhMd5BSFlIM9OZXpvvUQIivWjbYBbKUhg89J/kA7kT8FNQaYW+l871IQCXEQ1HE8DJ5N1N2+z9hlKsaL1MHejSQrRrE8KNK6gHahXAIXx6t00lnoHhgO0chMFc2PpiKAxB8eJWT5QUi5dM8AJJdQ2HnB/P3W13ManRQ3SAYB5PVrlwHnz9k8GQ3FGLQUwH90bBeTqnG3hLDtoimmGGrj3nRvPKCTJmykXThVaxe1W5RKai5ikucosgyZXp0wHhQMB+3MoNpcwyp4Mak38z2m/EAmJVXlFc1SGFQt5PtjAWevBrTsgTq4CjLG5V5ghXwUSyUQq6X7v6LP/gFwNctM8HyBcDR/m+DTnQH+MPm4hmp2jWSJP+NbjE6a1KljyEt6qqIqbwvDztYsvnaA9KKhUySGKmg9jAOaa1QXAu7Ng9GYor+sDgi1if4pXGXbgbOW5oVlCA1TaUV0INXKw4cE/P6m6vXs5B78Shiycbfv2PAExfMFfLQF8fepOb/tAtrkSv8qP5ZU0hXqIKN1RYgYQQqLnJJukPw85iH9e3SqXS8wSPFv1xJWITdJe/PNpybaJfi+ijzwzTqq/3ge1yWsZFB3JgBXHeLM3ZIrJFxw2Hp/ls/WjlDf5hZ7JV2ewwXxxPxejiKyckqDfKzrI3dKabKnM1v670Rt+PcNbBIHFgv9lX2GKKaZl8JMDWHKZ1SzJ9UBHnQHsvCD5mUdravCV9tcpKQ57KVrM1KxUTliozjQjaUgaB3v/VwPW5fLNwyGdb+r9x3r3NZmSrR58YgOSpWyMBdxEMNZKfbIVUhcdAb9UleTp8VEEpyqerP5telibvZq+8w4uaoPP27
- q1UnyPR7
- 0arHOwFyUNrgwyoTUVH+tr02ETZKnNxBKbTFGmZ7pkS6/dyvC6ng9mR4l8awDPlrfDfy7vlFU5AnZ3L1y8fhEofb6Qzx5hcz8tbIsMQWSEFNIUWayjheJgWeblrq1r6hdIdxpFV1ZWSIfFqBya/P3hgGCaSarZsft3wP1DkIy4/MmA2XACgp8eDXJsSIij5Mmznp6qj7QOe2ouBcJ9wIGDvHQWilCB9MMyxlONN6JAGVziFSANEZ7phyVM9dHwGNBgKHmIMWmdou1WxouPp8NEJjqukIjb+lh0e3KqHFQYIkVgZrnAaFXTwGWLa0KUMxPDwmxMiUkt5jKsmnbyGlnIcHumx39PxBX+4xCX+963B25HT9KeNDF4lnmi8j+7DwbhGrrDdPsGL0VsTQUrJuluV6dmL5iwZ7BaQVBKl34+1+eaXZ100cDAjmhffgxH5M5P2dRZYRq4ZdPH5iBcAHPOMSmQ3IjDRJ3u1PeyUerKr/Cu/NED88/Qrjhdw==
+X-Rspamd-Queue-Id: C5D6C14000E
+X-Stat-Signature: gheuuam5np7cjyo6oem1bp3ws3exejta
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790021980-769256
+X-HE-Meta: U2FsdGVkX1/yCS2pk3i2Mhbz0+IYgg0h1H+zh6/Mg09XcsTc3Pf15+KvyRAEd4nMaBpNe5e7hWJIYoKfgkzDW54EyTmtVIi0pEd8jCEmcscFHF0SEWR4MXbxf3fl6ghL8gCkwRCqLzCaNa1NgCL0VXI3WIP6QAFf21fyLK1Oz40pA8nwPp03APnbMW9P576tXYPaJdoi3v3wpk0wRjFu8rVsc3DTsShYukM25jwzG46jIcSXY2ZWBDlgAi9L0Hj/DFt1Ndg8w62/WExC6ZSaoYjp99zJBN8Qp7lKuE+TJXQ+ADNrFD3hD47vpNHI3ymGW8TfAoc2pkScM+6YSGIFNyuGmGzFymAyq1RVqTwCMsa7lR4GKD8QYGkxOgLbKD7yLnFHOAAlLQT44SC0scdHy/upJp7xMUYUAIqdwU0AOWv/raOeAwx6lgrcaXuZj2CflkLgAABhIRwL7MUs/9s8w46GCpl+o0jCG7Zps/s32Z+PDVDf6VXIaNVAOMzuUZEo5gM7HDMh4OwkhsjLk5fa27gJbvisZYKXJPpFfKIW6pSi565RYd0Gl7XRZdhcqD+K9HSGy2O21yLU2xJNspx3Nvn2nOLk7t4Ide/k93dpD4nYpQtnd3PxgmdN19CgrE8HHQsdMacSn/XXgSULf3m66wHaUNIPQBb9F27DGMf/glXRE5b6AtpNUxVhZ/kIdvMYOhdgyRLtRQMqEGp5F/iJ1TPjkNfajGOyhMEhG9EGQus0BSIG5u5scGI1J3qaVJuoBbwyvkg2Exwt6V5dDVG9Ktr5JDqrXh9tEJ3nHcWen6uPPnIa9Q6c+qrfzistro9xtdo0Qy2aV2cM66TljtQfuSQAkFLYhjBOItNds/JUFDd4M44RHbR+zrlRVAgO8cViORopScrk1e62ZsEff06z615k6qRGRZNnPsmteOuOs4oVMfe4Q19VP75z840szS/qk0q0D46eB5jPGzE5w3k
+ CegsWBVk
+ JHYUPmqOUp4hKwd6jYKUXh+DaViJ0GUySw/FSfmkcj+X+bZ4ofXNTbjsanDDuHZUS3R72E+UmR12fQ1DhicwZqz3SOOtZHeFqFzGPoNN4+bj/Du4bIccr1ySuATJHC5BgKuwCmbe/szMLrn4RIkMVjY+f6sQ0Q3BH6vnPKLooTQPlWvcxCrMYxuSCHgw3KwgLCtLw6jKw8uEFRgucW4uyPCxnu8gYUuLGB9Q1B5Y9uhWgVZ34y0RrCmwuT4sv0Zcn3FOMIZNiz1zVt3X0C8AY5x/tmaXxXFkf7K/7NFQYU/8WCztDLMcNqca6VxSgu1mgQoIz9hhnmmS8Y6a799236VLDOP/I+DJcaiQRvYB8tx8lLGjC9irQFRvJRmPGDzTGFBGwPW3XE9ueCIcI1coA/XIlGAnzk/bT5p/0ogaIpOupMEZCR2lboeGeec4xSWFVwGher6OxG5Bb9B506xDMQgSF9ba7XjBRjxvan2S0y+AgGBpKQMkPvt6Y5RuM0+cUxCwKty+UsvuR9V5WpkleFU8D06gDBXiM3Xh9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,46 +88,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/21, Ye Liu wrote:
+--===============0035746704262275047==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+> bpf, cgroup: fix cgroup struct_ops query for a second attach type
 >
-> diff --git a/lib/is_single_threaded.c b/lib/is_single_threaded.c
-> index 8c98b20bfc41..4e7fe85454ab 100644
-> --- a/lib/is_single_threaded.c
-> +++ b/lib/is_single_threaded.c
-> @@ -26,8 +26,7 @@ bool current_is_single_threaded(void)
->  		return true;
+> Two things in __cgroup_bpf_query() work only because CGROUP_TCP_SOCK_OPS is
+> the only one struct_ops attach type.
 >
->  	ret = false;
-> -	rcu_read_lock();
-> -	for_each_process(p) {
-> +	for_each_process_rculock(p) {
->  		if (unlikely(p->flags & PF_KTHREAD))
->  			continue;
->  		if (unlikely(p == task->group_leader))
-> @@ -48,7 +47,5 @@ bool current_is_single_threaded(void)
->  	}
->  	ret = true;
->  found:
-> -	rcu_read_unlock();
-> -
+> It calls cgroup_bpf_enabled(atype) with an atype that
+> find_atype_by_struct_ops_id() works out at runtime.  That macro is an asm
+> goto and needs a constant.  Today the compiler can see there is only one
+> value; add a second type and the build breaks with "impossible constraint in
+> 'asm'".  Add cgroup_bpf_enabled_runtime(), which reads the key instead, and
+> use it here.  This is a syscall path, so the cost does not matter.
+>
+> And find_atype_by_struct_ops_id() matches on type_id alone.  An attach type
+> whose subsystem is not built keeps type_id 0, so a query for type 0 finds it
+> and returns success with nothing instead of -ENOENT.  Skip such slots.
+>
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+This looks like a bug fix for the struct_ops attach infrastructure.
+Should this include:
+
+  Fixes: 369d9dcd8fb8 ("bpf: Add infrastructure to support attaching struct_ops to cgroups")
 
 
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-but I think that the "found" label and "int ret" can now be removed,
-the for_each_thread() loop can just do
-
-	...
-	if (unlikely(t->mm == mm))
-		return false;
-
-and current_is_single_threaded() can simply return true after
-the main for_each_process_rculock() loop.
-
-But again, I agree with this patch, it looks simple and "obviously correct".
-Even if I am right, the simplifications above need a separate change.
-
-Oleg.
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/35646140734
+--===============0035746704262275047==--
 
