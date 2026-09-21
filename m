@@ -4,173 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7655C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:18:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7295C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 17:54:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FFD46B00B9; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
+	id 8CB1F6B00BF; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D71F6B00C1; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
+	id 854A66B00C1; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79F2F6B00C3; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
+	id 743BB6B00C2; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B70D6B00B9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:33 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B96BA80262
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:18:32 +0000 (UTC)
-X-FDA: 85238428464.29.A5868B5
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013012.outbound.protection.outlook.com [40.93.201.12])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D17372000C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:18:29 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NiMLrSuI;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790011109;
+	by kanga.kvack.org (Postfix) with ESMTP id 46D4D6B00BF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:54:38 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D518FA4168
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:54:37 +0000 (UTC)
+X-FDA: 85238519394.26.FF1F1AF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 37DAC4000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:54:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0lA4uFj;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790013276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
-	b=n4st8cN3iuh1mliEmms7tQYSh0phGpLDYLS4c5q71vP7yaCby9kRQk4IihfROH7X8574x1
-	Yao1kqEz5pWQRPuK1s6oAk72QVwG7RpDOUj5F3mU7tq76Tm+3c6VlVXneW8IvRya0uYK0J
-	NXlxSDpyyLD8z5E6CUt4aHxe5G5Q9W8=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NiMLrSuI;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.12 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790011109;
-	b=23MmB8IXB+cwCZseR80876glnjzphuNhNp+VstR6cRplJYvg11aoE/+nWI/ay5N5yRVtZQ
-	gxHPuSgg6DVGD8TC+k9wpMFHGKH+ZmVuRPlOj/1FfhgcIMlUerBvUEnCZ0NruKl8RPbrFe
-	NFW3s/Kmc1porcgfQRaoz5t+9rPdZxA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iPvzANySFipYLfp41s3/uf3btim9my4pmZtNHiRtk9woPsOjTXD/EIvGjFToUswNTTLWhTVI5P+kyuPuNxpEZ1jqQlluCxLfaY2aTvtgBYAw6t7b27/FSqK0vmos22OzCarMYBZbXNhljTcX8M7NwGqfh3Noyl60g8u9Rn7riNhDz2LLBAQPtJFuH8UW6Z+301J/C6gzNQsMAemZAqX9gzbWEiOZr2Qhwg3/WS8xUoosgdPmNuMuI05t+eVG5/xXpMWaDxexhyX+E5qddfLpYlO7r1Q0Z0VMI6Od1OVZWpUj23x7T8JmCntmTgASTl+9auRR3yXhSc4g15Nq/j5Qfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
- b=ccIfGVBggPKGE6f4//tdEM6UsBlBr25KR1if11jQluBWQUZmCEYPZ6WKHafzDygL1KIkwQrd79OkduUJSLi/GbPtOwddJoyrKy0z9h9tvzhTkdZi2J4pqkP3nb/mNL1veyc6bwmUj6VgOGHRJWHSrA18Fon/HBhkVMlUe3S0Ysrpm3Zfix+nOeHLTaztPGz7hbSK4AwqniHNlsCA0oNuPBHX4GLvNDZDUA/ERaIdoFD+ufMeuKoM+/XylXwWCYkKh6KRhHtvAGoJVFDEXoxj06qW3AoBn0gSU0fhjAIxgavVAphAD5I0Ry5zVL6LpjxJ6mNM6lvciHpuVsamOAKzOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K19FL12+fj35r4rbc/LoPUH5Lj8QwKUn+K9RtxcyAfQ=;
- b=NiMLrSuI6YhSE4YcPSipiOObArxkfntYL4MbQit5prCGv2xG5sTrfUOT7Q+L4+E53IrFpasa8H993Mv3cZSpvQzPWlJ29IcqV1Cb67aU76LLxLn4kfxqh70Uj68oENbFi//iJ74mA4zMJmSMki5l+jtyy8gvpxN7woE30q4oDRkS3opkbUl2UBlLKJzw4lH0KAs3/m9Z+Wvx308cAGcM24kgZyfpByOEZCf3trIxVeL43mP99RnQvWPgtPmVjG99LxmCbNh0KvM5ANcawiFiyOTdtdDX8R1sTC2LpzVJvEgHYEf3UUu4D9dm1Vj1UDxYUunPwydDZ4oI+d8XxFJYpg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CY8PR12MB7729.namprd12.prod.outlook.com (2603:10b6:930:84::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 17:18:21 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 17:18:20 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
- of build_zonelists()
-Date: Mon, 21 Sep 2026 13:18:18 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <9CED0F0C-E5A6-4E69-A6A4-A0361AAC8E30@nvidia.com>
-In-Reply-To: <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
-References: <20260912030424.2889731-1-gourry@gourry.net>
- <20260912030424.2889731-3-gourry@gourry.net>
- <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
- <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
- <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
- <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9PR03CA0896.namprd03.prod.outlook.com
- (2603:10b6:408:13c::31) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=ZauDV3vJKUROsmCoqVdGrpQ07LaYoylUMtCQPyYKr3g=;
+	b=dVnmGu3ms0EVCe7cm3jfLP1dRgMV65knWfNOSlcWSzlBsLwJcm+y9dxlRYJ4hdgQo5xndm
+	g4Oj4M2Ntfu1kI4tFyYsGG68KrEtAanKdNLAK/KSpwkII39lLgPLDRRhKHTA7wiaqi9FvB
+	j+sBuuAQvtX0G6VX92jnyJ8Iz0A58DE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790013276;
+	b=YqDIQro4iLSEAboJJtD0J1jD/AYnRwZM8WAhAylpVXxI3a3BclIeSajfPeJkgIPllcB1fP
+	oyTngvqHfFJ94r1gsVcYs0br/8vdzfCg2wUWmM/9odlx17ZD7L4Mx1a1eDQD8DK0/oYsrl
+	Ubr/szMsAJhcNCcy+374VjXSKNn6EmQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j0lA4uFj;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77BD4417F7;
+	Mon, 21 Sep 2026 17:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975B31F000FF;
+	Mon, 21 Sep 2026 17:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790013275;
+	bh=ZauDV3vJKUROsmCoqVdGrpQ07LaYoylUMtCQPyYKr3g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j0lA4uFjJBcRY6wWftw6EMIqyMIJ3+NR7zrSfOF1Z9f/TpSIZ9Gh4y4jjvxmRONiM
+	 ObFuyLQ3ujm1yOOBV9KrS8elLJVfpjsktABH0b/F1q1DonDxSlGIPFvplEykYNyWru
+	 TlrUJIAlHIsRcMxf5Hseb1ckLHW5wBXYIPyvOsX2gRpDZsTqCte91cFQpVs3/uhjQy
+	 /uSJ4AgrDQbnh845s783rZmk0fA2Mnl9gEqoW27HOmlO9rUd44HaqIaFmOIhFLKK2U
+	 BjNB7hlhY1CcorgDW7hwVfGqMdkjLPpMfT+I78qw5XqoHtqO09h+yru8tFtvcXd+2y
+	 9NHxKZRfAtd9Q==
+Date: Mon, 21 Sep 2026 18:54:25 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, baohua@kernel.org, surenb@google.com, david@kernel.org, 
+	liam@infradead.org, mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev, 
+	vbabka@kernel.org, willy@infradead.org, zhaonanzhe@xiaomi.com, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, 
+	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	loongarch@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com, 
+	hca@linux.ibm.com, gor@linux.ibm.com, borntraeger@linux.ibm.com, 
+	svens@linux.ibm.com, linux-s390@vger.kernel.org, dave.hansen@linux.intel.com, 
+	luto@kernel.org, peterz@infradead.org, tglx@kernel.org, mingo@redhat.com, 
+	bp@alien8.de, x86@kernel.org, hpa@zytor.com, 
+	Hongru Zhang <zhanghongru@xiaomi.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+Message-ID: <arFYRAa-i7CIwmHL@gremlin>
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB7729:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4c9dd6e3-bf6e-4a1b-92b3-08df1804559c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|10067099003|11063799006|5023799004|3023799007|18002099003|22082099003|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	nfxMALzAh9QFU2EB3gElcs/AHVyHXqzCcoF8BIbNNckjGlNKTwEqouuw1rMPmWzmtBSX1LOY0v8Y12jAENW62+IRKdJVqK0Ro+zCnWQlJ1saW2O+ShgO1QeuCeSSrgRx5hJT/0TmEYMWs4tMkrgAD9FGd8N/Jdll+iiLF92Samu01H67IqmAZJxCFqwlfMwhWyNzcHSFLpxmcEokfoFPRj6vbMtdj1cU9VVONpLov2h7+a7sWttj7oSuYs+qEdtpr0zm+GoR6YaGmuzhVMOGo7EkkZfLVDsEb+HmC9+qVwicPJunSIgHsJuQyDIH010KzGX1pTioB4A/K7KKFiiXm1Hg+eXToDMcVuwPGHfCe4PvxmHprzgZF+jO2SOu+ExtGr29mcxDiQxqRwAnBVcaTkgDBg7R7cAO7nOf5lGekmwK6app45j3y6J++6vTEYMDjVLni3lTMfbxOcrZGZBDN7UhFQUIQeWb1gI8RpAr3bFE9tH0/tvp9GTYtrDRXVn+oGU7a94AyvGYixeIi8bgYGZe8sskymCRzv0sjgHXxTwWhZ2fjq7zq/TVPM87Ijq23LjIKejKP7lYeQKcEz08L2+sWxr+mNlrtjoS27CQZXc+0i46rKsy8u4GVXQJTr3JXufNA6vZ2iJLoHocP/dStMM3zc6eHWeHfKwwLPi9lLs=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(10067099003)(11063799006)(5023799004)(3023799007)(18002099003)(22082099003)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?dFZJUFdrRW5jUlhHR3NYNUpPd3cydTZvY2hqRjFCTGdmc0JvdWMrUHlUVzUw?=
- =?utf-8?B?K0liYmJraHBrckNOOEhTWWhYY0JwWlpZM1BUT2ovWlljcWF6OEp1TUFaaHVk?=
- =?utf-8?B?TW1vZTJyQXRJNHpxRHZnWkVzUkVOcXA4TmlUemV0SndrZGw2ZlVLNC9uYk9v?=
- =?utf-8?B?UU40TVdkY3I0Zmk0Qm16dHVJYW5XRjNzWmVTazdXYXluaHI1VXFoR1l5cWNQ?=
- =?utf-8?B?MHpyWXVKM0gyZTBaRW4vaEJlWnpETXV1bUYrbC9OR2tJR3VuV0hVcnAxNjhG?=
- =?utf-8?B?OXdJTGlTRDJJZTZESld6K0ovN0xGY2o1cXcyNXdhMDRZZlVFT0UrZ1BMcXpE?=
- =?utf-8?B?bXFtb3E4bjI5c25HUGdrOU53dTYwNFYxK05zY2FycXU2NlJDUnhxUWtWTkxp?=
- =?utf-8?B?emFDR2d0NGU0aG5jVGFlUTFvMVE5Vnd3TDM5WUZQU2ZuRThML1E2UEJwZFFN?=
- =?utf-8?B?aG5iVXBWOHhqM1ROeFVzOGZVaW1Tdm9WdDBXUEpramdwVVVrVkhGVGZvK0Vq?=
- =?utf-8?B?dCtMNXZrMjV0Z0NteFg0Ly9Ga1NObFQyWkJHVUNicytrNlNxNkNNTEw4bDMx?=
- =?utf-8?B?Z09JMG0rWS9Pb3RiZnZ6ZWlaKzVVVFVRWFhJMlFtZmZsL0RkcWRHaFI1ZnEx?=
- =?utf-8?B?L0FPczE2WUdySXpNalE1YUQ2Z2hiWFkvQ09jK0loRmRaYkgyY0dDcWJlRGxE?=
- =?utf-8?B?MWZQQWN0engxNnpiZEluQXZXSncwck5ZK2JOWnZ6MzRKVFc4YTRwMFh2WFdy?=
- =?utf-8?B?cCtEdDJDV3hyMVdaRmJFZHROMUoxQkNhZyt1RUwvUTdlWXZCNlp3TDA5K1BH?=
- =?utf-8?B?cW93aC9QN214ZmwxQllrU2x0d0FuYTNCUTZhcnhmK3FZYnJseXhxUk9zK1hy?=
- =?utf-8?B?NCttYS9scG9LYk5OZWlReWtxL1NaTXd2TnlTOU5KOWZGQ2R0emVuTVNmSmk3?=
- =?utf-8?B?Z2o1amgvM083RUZ4U01ycWpGQVhURmJSNXdKWFcrdzRxUTA0SWh6SngzQ3Rk?=
- =?utf-8?B?Tnd5SGV2a3N0WXZDalpXN3didFAza3ExajkxMGx3NkUrOXEvdXRWV1Q3SEhI?=
- =?utf-8?B?ZzY5WUlSSytZMTQ3N0F6VUJEY1JJK2IxSHBVdGxTZGwvNzdmUzIzNmx0ZnNN?=
- =?utf-8?B?bG5YdDMvWmE2ZmhzaU9YUjdyazkvanIwZVpKUkNRcVlZOGlkL2h2bVZZRTd0?=
- =?utf-8?B?aDVsTXJ2STFGYUtWd0cwNit1ekp6MjVHM3dCQXUxZW14N2pPa1dGSkI4VHc5?=
- =?utf-8?B?ZnlQMGZkRUZjd3RWVzR3dGdING9aTTJOWG51bjhTVzR5ajlIalNFY1ZkU0tE?=
- =?utf-8?B?RWFsMHNHSDQ3WnRBa3k3d1lRZlF1RXZwZzMxUzJvSzRsK2RMbjgvbFpTZnFN?=
- =?utf-8?B?WTIybzRKZUtTdVAvQXFXM1FCRzNTdnNkSjJGUE1jdTUwNE9aeEhvMlRmK0Vi?=
- =?utf-8?B?dlR4VzdINjNKMXhzbC8wckExYWFLZ0VHcWpSZVg0RkdHcm5qUVprak9NNkZr?=
- =?utf-8?B?dlByMHcxZnN1aUMwTE45YjlrKzB4SEVtUGVxOG82dEYwTkNsWjZaaTJPbUlH?=
- =?utf-8?B?VHJmQ3NKanhnT2krVC9RNzV5TDYzYzdNTzVaOVlheG5DYnVGaHFqdkl5azhi?=
- =?utf-8?B?T21aZHVsRCtHMVlWRi82bzZTemtpWEFLTWNpOUc5emhWRjVPaStQeU1JVVNE?=
- =?utf-8?B?K1YybDlET2taUmgvRWw4S2VEQUttN0E3S1Q4S1JwWTJhMUxIQnJ6YVBLL3pQ?=
- =?utf-8?B?RWcweE4xQnM5eTF3dGd4akRuVWNaWVlrU1lJMGRBZzVwWXJ5SWozZjVQZHU1?=
- =?utf-8?B?R3BIK3RXUlBiWW5TRFkrUUhUL3hNSHhTd0Z2UVBFeXh0NTBIS2ttbzVKSlN2?=
- =?utf-8?B?K2F4N1JpelBEVGt1YWIrR0J2aG5GTmtpSFcwMkNSUnRSbzJ3MjRNd1F5cm9i?=
- =?utf-8?B?cGFvYVJ2V1RJMS9pdDdNR3lCY3h3WEZFb1hPOFVNb2QxYXp3ak8vdXhZaUFM?=
- =?utf-8?B?MlhoQlhoK29nZTJYMVZmMGZFMmprNkt5RmJVZXhMK3dGMmQ1dmN4MHZsV1U0?=
- =?utf-8?B?K2Y4Y0d0Rm5tNmdFZE5yNzhoc0IrM3dMVkRhYlBGdXVIaWFoV3hOUmxHdlJS?=
- =?utf-8?B?a3cxek9xUVNaT2M1WFR6RTFZRlZNMHJoeGpFdjNJVTBqYytONzJwMEwvUEpk?=
- =?utf-8?B?ZE9qOVEzemFQdnZheTNpSWdST0M0MzJSbGdobW1lemZHZGVRSXBwSVJZOGkw?=
- =?utf-8?B?MHplWllHQ1RPMERUd1IwOXQrbDcybjVNOUQ2aE1mWVVRZ1lMVXVDYjh6bUpz?=
- =?utf-8?B?bU9UbkhyUWE4TUxDdkhBaDdySmhCdTF1dm54MUR2Z3JVRlpXVnB3UT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c9dd6e3-bf6e-4a1b-92b3-08df1804559c
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 17:18:20.6435
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: q2SVxQBEfzEVV1szRmtQiOTcYam7Kb6tasbYpBNhINKWyWSYOD/ohJVTPsw3khId
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7729
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D17372000C
-X-Stat-Signature: f6e3omdasruu96xq943cquo87kgwddg5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 37DAC4000A
+X-Stat-Signature: sifujfkfgy67t6tiionpb6ekoe6qhp9h
 X-Rspam-User: 
-X-HE-Tag: 1790011109-39141
-X-HE-Meta: U2FsdGVkX19SVkKFDvN/ttkZAdUwwWBCWFUTzEDXTlmLoUSo0gA/1BXqFIBMmhLaKT+RBgWQTVcGhDhsRgP/+VEUqAwhk9yt7lcr7X3rdI2HlQGNe5JJ1Qr+V1oJcCUt+KszmorcVElSelx5vpPWMJh5Tl0W9dGE0NfKqfivXOQt4Zn9837NniwyHUdhE/o7qWbqp/lvfUw7/5F/4EX0b5f/D5UmInyvlZxKEJhWC1SWEjOeFohjLE0IfAusGIIC9HHv78rtvHfd0vLzl8Ge4/VJuwr9pc8YXSa2eIO8xUoK323Afr717jk2VR4CWdBeZ1tfWSSyECvK2e7nW+kwv0tg3A6/dghMG469aMCT0IEVcPhP0fVUAdCl48sbbYxm4MwdT9g0gg1mq/TgDm9AAeO6WfTo90R6bxLyJ2Kai3P9u3OWPqYq94HZIuDaJpglgosP12cW6EytILZgwUd5Z+eDW0sdWviElZ4R73BKQg98KAz8XazFJnIoM92619oR+3louim6IePEpS4g1UdIqSCUNBkUNZVfAr28rBu14iB1EOJrsxiniGWvLIYTb5w1QlqWPKBI0nd1Bny1CNjOwp1r+lig0Gl4wMQ0y7Xm2L/k1/MOwj1gkduSQGkKRGNKSQA1hDKh/nxL3Lqpg+rKc6VkQs+19ecNUfCOburcn0CdYWLXzIiZEeu+0RN2SQfNghtkb/7qD4z4iibUYD5NTbeivU6UPR7AH48mrbvS+OiUdG8APVkC/hbzUBdCGWPOT3n2DaK0OX1YhPhfxa0t7c78ZpuKO7hx2uFkZQ47L8s0ATOz3RkTlzDUSId91W7oGgFBUB1B8oxzr2CgRSzzXB7SBeh4N4/cVv+IcVyFeU8iYrVwCOIclUGnsh+IXitSQSNMlyLq59NUwCzAsRCEPDq6ZjJ4BZu1hNjKHDBGBVRPK/ne1molM3+hmwDFqGCq0yGftqv+iUKYIKBFqQ6
- QCfSKHy7
- f9OFDO3+ONQ9jswT0iF6zwmGrRL5CAGzLpzo86/dLXFOA/+SUG4uvnaFNXYYdrYIv6SmFYUZpBv18hNvEwxvhwe2TkPRSfD2fM+LFPTrPiBekgF6YVLga5ELjoHbmcJvXMeBkBy/IL3jUQir5R5MO5fsJucl9EehhwRe88cRaQCLSJgGmsnYCaTzKw5KElnr5l/ZzLM1pjxgO9x6dejfpLd1WlqvM2FWMI1JkIXk5WREvS9XPBM3rS7lV4iF7TwRUScaSaVvXyE1VYrl8C+KV9OgJnaFTHx5oCJQ0Bw30X1GOO6Zckh57yAgOrKQlQZOD+fNZLTcl6cbSD2tz6e9LPfOzutqZBxHxPzoOD6f0mdiCR0AISosfHk4d8RBX5ZgzbVpce9hg5strFXg6clNIDmfqK1scc6wS60t51ObkQqmhNvX5LR2ntdVIsOMN2G33+unKnGcjGXScty6eIYUoCBlqMXvqnmDiy670Y978oUdMPJRufRwDA2ENXQ==
+X-HE-Tag: 1790013276-858165
+X-HE-Meta: U2FsdGVkX1+O7oPgbrglgjnUp2IJ5eWKJXGJPmH3pOmeepgOiD0zgc+kyK9OZwpoUNKd1DEd8W/FuwEY6uzzweqmZrAI4kBOsoqAIrahLGwwi38ujRvbjhBYGPU3ABNyPfMJY3v/sxmqVlOhSdCtwcuV46ovQxsAqTsTxopPFpN3EYfrQ7AqhWI28eo+TAlvvPY8EdiVmZH/Qs0Bb1dEN9YtnUjgRW4m7S7G68ovHvO7nuH2Pf3iqt677hxz4JC8FR4PSg77XgSIZypIBtc6OCDGsOAQiPyySciySi6DgG+f0LmLoEpaPseMQV/rs4v3zPHiys9XgRV7joQWZYgCjerv45qwtWemZA7p1Eh/r5iT7Sa5Yxf+KFmC8S061zn9rAqZA6+n2VBbpB5JijfqlzwQENyMFX3L+0nKzy8W5lEiqsTkptXSsLzLmaC6b5S3q0+4frmCYlgJOjMjcJrHtPikuCFyUR7NM1aI3RQVg/E40zUakB/C5s7kdzs4mWKTHa9olPYF/1ajhsDB4837RIiILGTSBOUFQUXRfi0v0qEBcuz0yKcq6DTnu7sAeWlu8OCLzQK1SeYY51+eapfhX4Zl/a5j782JU1bQxsXH0PG6QaU1AD0q4fapfSGDFe7PYkAWHHc4zDQw3b9ls+nAVnHWpIf0eNpepCYNOg6UgKH71OUFIRnaU7MsKdcfnF0uFtpx1RwgTO1r4F4OB9qJAvMfzc3crhITJ3tI2M45NCuyLQps6zHJvv8NScYZM1UyWHocq1uamM7Ww/LsZVH6g3gavEkrzx0PMD0nhSRR5slb6IZwZdpiWoQA/Vmd9bqA8M65UiaECVRrntrmDQ4yQ0uYSrzqOCi0JpihGHaldTootLVUQ1RT+OqcgnOPDENjl0nWzyY0jqpwKLAY5laS/aZUT+cjdhps15adDWbiWhVaFLz7SKmQhfLrjNEVjc/vJAndM07HT7Yj04/FGwd
+ hFJptD6r
+ JXcA3xj0cII9doepZFRp62D+SYphRgUC3dsYqivuKz2f9HtkGdyn+ZsmmRRtDov8KE+lGheSfiQn4vrtnVdn7p9yHpo45qbLa95C7VtaF+Ccq781ZQfys3r+LmzEwZfoSGhue6/hrfnGQh3sqUcpxFt5+uJ1ivfEFXWiRmtABO4x7+SEFX7blVu3mH1jLi4zbt0k0hrITEFbe3b6Esn+cBR4TQd6GL0qx+LVtVwuPHw1xF1t08qgwnlqPYXSVGMw9vR6ubZZ0NmfKuQ/nl+te6K6sdfbdm1rZN2AaQDXrQ6V9w5s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,121 +103,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 21 Sep 2026, at 12:38, Gregory Price wrote:
+OK I finally got to this...
 
-> On Mon, Sep 21, 2026 at 12:18:12PM -0400, Zi Yan wrote:
->> On 20 Sep 2026, at 23:29, Gregory Price wrote:
->>
->> OK, ZONELIST_PRIVATE and ZONELIST_KTEST are not upstream yet, right?
->> In theory, the new zlidx can be added when you add new ZONELIST_ types.
->>
->> I am OK with adding it now, but you could mention this change in
->> the commit message to avoid confusion. Something like,
->> for bulid_node_zonelist(), use ZONELIST_FALLBACK explicitly.
->>
-> ...
->>> And add a BUILD_ON_BUG/ASSERT that forces any CONFIG_NUMA to have
->>> balanced zonelist additions.
->>
->> Got it. Thank you for the explanation. Are all combinations of
->> {ZONELIST_FALLBACK, ZONELIST_PRIVATE, ZONELIST_KTEST} x
->> {N_MEMORY_GENERAL, N_MEMORY, /* private only */} allowed?
->
-> Slight inaccuracy on the way zonelists are actually built.
->
-> Every node has a list in every zonelist.  The contents of each node's
-> list in that zonelist are limited to the candidate nodemask.
+I fear we're going to go round in circles on this/have endless revisions of
+the same thing.
 
-Got it. It makes sense to me now. Thanks.
+So 2 things the patch needs to answer, more or less right away:
 
->
-> So consider the following nodes:  N0, N1, P2   (N=normal, P=private)
->
-> With the following candidate mappings:
->    FALLBACK = N_MEMORY_GENERAL  (_COMMON)  (all normal nodes)
->    PRIVATE  = N_MEMORY                     (all nodes)
->    KTEST    = N_MEMORY & !N_MEMORY_GENERAL (only private nodes)
->
-> FALLBACK
->   0  :  [0,1]
->   1  :  [1,0]
->   2  :  [0,1]  <- private node's fallback list is normal nodes
->
-> NOFALLBACK
->   0  :  [0]
->   1  :  [1]
->   2  :  [2]
->
-> PRIVATE          Accessible via ALLOC_PRIVATE_ZONELIST
->   0  :  [0,1,2]
->   1  :  [1,0,2]
->   2  :  [2,0,1]
->
-> PRIVATE_NOFALLBACK
->   0  :  [0]
->   1  :  [1]
->   2  :  [2]
->
-> KTEST             Not accessible via any flag, completely isolated
->   0  :  [2]
->   1  :  [2]
->   2  :  [2]
->
-> KTEST_NOFALLBACK  Not accessible via any flag, completely isolated
->   0  :  []
->   1  :  []
->   2  :  [2]
->
-> I haven't posted the ktest series yet, but it's how i've made the page
-> allocator ktest-able.  Ktest is empowered to set the fallback list
-> directly rather than requiring a flag - not something any in-tree caller
-> can do - which lets it limit allocations to a private node and makes
-> mutations on the pgdat for that node deterministic from test-to-test.
->
-> Works on UML too, so testing is very fast. :]
->
-> Apologies for the added complexity in the explanation, but I figure it's
-> worth spelling out.
+1. What are you actually optimising for?
 
-Definitely. Great information.
+2. Where does the hurt happen?
 
+Your patch does neither, then goes on to arm wave away all the complexity
+and presents a 'simple' solution that I feel brushes a lot under the rug.
+
+Answer to 1 is 'cold app startup time for a specific set of apps'
+2 is filemap_fault() AFAICT.
+
+You should definitely be stating this upfront.
+
+And I also seem to remember that zygote + multi-threaded apps = fork
+blocking is part of the problem here, which is why there was push-back on
+just holding the VMA lock over I/O.
+
+Looking through filemap_fault() makes me want to cry and looking through
+the other retry logic in the fault code makes me want to live on an island
+with parakeets and coconuts forgetting any of this even exists...
+
+The retry logic is fu.. err.. ndamentally a total mess.
+
+Part of the problem is that each time this patch is respinned we lose
+context on what is a complicated istuation.
+
+VM_FAULT_RETRY can mean a million different things:
+
+1. I dropped the lock and waited for the folio to be unlocked.
+
+do_swap_page(), remove_device_exclusive_entry() -> folio_lock_or_retry()
+
+2. I dropped the lock to start I/O it may or may not be ready when you come
+   back.
+
+filemap_fault() after do_sync_mmap_readahead() or page not uptodate
+synchronous read with lock dropped <- what you are optimising for, or
+shmem_falloc_wait() waiting for a hole punch.
+
+The maybe_unlock_mmap_for_io() stuff.
+
+3. I dropped the lock and nothing was waited for, OOM me on retry!
+
+filemap_fault() allocation failure, gotta retry because we dropped the
+lock!
+
+4. I can't do this under the VMA lock, use an mmap lock
+
+vmf_can_call_fault(), any vm_ops without ->map_pages, __vmf_anon_prepare()
+when mmap_read_trylock() lost, also hugetlb_fault() horror shows.
+
+Also device-private swap entries.
+
+5. Userfaultfd! Because of course!
+
+Userspace has to do something.
+
+handle_userfault() after sleeping for uffd handler, retry should succeed.
+
+ctx->released -> yield to releasing thread.
+
+6. Fatal signal
+
+Arch handlers rely on this, so retry also means 'check signals'. Fun.
+
+7. Some driver insanity
+
+It means all things to all people. Used for waiting on stuff like
+
+LLM says:
+
+- TTM at drivers/gpu/drm/ttm/ttm_bo_vm.c:62 and 144, dma_resv contention
+  and GPU idle wait. Consumers in amdgpu, i915, nouveau, radeon and vmwgfx
+  re-derive "was the reservation unlocked" from ret == VM_FAULT_RETRY &&
+  !NOWAIT.
+
+- xe_bo_cpu_fault_fastpath() at drivers/gpu/drm/xe/xe_bo.c:2021, where
+  RETRY is the default return value, including for "runtime PM not active".
+
+- panthor at drivers/gpu/drm/panthor/panthor_gem.c:831 onwards, where
+  dma_resv_trylock() failure is RETRY and the same error is NOPAGE, SIGBUS
+  or RETRY depending on mmap_lock_held.
+
+- sgx_vepc_fault() at arch/x86/kernel/cpu/sgx/virt.c:91, EBUSY from
+  __sgx_vepc_fault().  All of these call mmap_read_unlock() directly rather
+  than release_fault_lock(). They are only safe because none has
+  ->map_pages, so vmf_can_call_fault() bounces them before ->fault
+  runs. The VMA-lock design rests on that proxy.
+
+So yeah. All that. Wow.
+
+8. Nothing!
+
+LLM says:
+
+  - page_mkwrite() returns in fs/exfat/file.c:951 (inode_trylock lost),
+    fs/nfs/file.c:699, fs/netfs/buffered_write.c:576 and
+    fs/orangefs/inode.c:635 onwards, including the combination
+    VM_FAULT_LOCKED | VM_FAULT_RETRY. do_page_mkwrite() at mm/memory.c only
+    passes through ERROR and NOPAGE, and do_shared_fault() and
+    wp_page_shared() then ignore the returned value entirely. The write
+    fault completes as if page_mkwrite had succeeded.
+
+And maybe I'm missing some stuff too.
+
+there's also places where retries are done which don't even involve
+VM_FAULT_RETRY like migration_entry_wait() and pte_same() mismatches and
+do_page_mkwrite() on truncation and some other places.
+
+I think any patch maybe doesn't have to have a massive essay but it DOES
+need to ack that three are a LOT of meanings and it's a TOTAL DISASTER.
+
+Your perf numbers look very artificial - you create situations where you
+KNOW from the code you'll get mmap lock contention, then have a lot of
+threads contend and gosh darn it, well the contention is really high! :)
+
+I mean - I feel like most of your perf numbers amount to 'contend locks
+gets us lock contention' - and are thus useless really?
+
+I think the bit that _matters_ is what you're actually after which is stuff
+like:
+
+> Tencent Video cold app launch time
 >
->> Any enforcement if not? This is more related your “private node” series,
->> instead of this patchset.
->>
->
-> These zonelists aren't something we're going to allocate dynamically,
-> the enforcement is encoded in the function (build ZONELIST_X over
-> candidates N_MEMORY_Y).
+> +-----------+----------+----------+--------+
+> | Statistic |  Vanilla |  Patched | Change |
+> +-----------+----------+----------+--------+
+> |    Mean   | 1,907 ms | 1,840 ms |  -3.5% |
+> +-----------+----------+----------+--------+
+> |  Maximum  | 3,023 ms | 2,851 ms |  -5.7% |
+> +-----------+----------+----------+--------+
 
-ack.
->
->>>
->>> But I don't think it's strictly necessary for any of this, and we're
->>> just shuffling code from one place to another.  Probably I can just add
->>> that improvement when we add the next zonelist.  In the meantime - this
->>> makes it easier to add new zonelists as-is (and just makes the code more
->>> readable).
->>
->> Sure, no rush.
->>
->> Feel free to add
->>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->>
->> after you add some text on the added zlidx in the commit message.
->>
->
-> ack. hopefully the explanation above helps.
+Which is not earth-shattering to me.
 
-Yep. :)
+Now, while the patch is _small_ it takes all of the above, all of the
+complexity, all of the bigger questions about how to solve this and
+compresses it down into 'just retry the VMA lock'.
 
->
-> I will work that into the commit message in a reduced capacity.
+(I note that you change the tried logic subtly too which is another thing
+but never mind that).
 
-To be clear, I just would like you to mention the addition of
-zlidx to bulid_node_zonelist(). Thanks.
+I worry that we're not doing the REAL work here and this is just shoving
+stuff under the rug for what look to be mediocre performance improvements
+in a very specific workload and costing a bunch of paths (albeit not common
+ones) pointless VMA lock retries.
 
-Best Regards,
-Yan, Zi
+And I worry that maybe that actually _adds_ complexity by the back door a
+bit.
+
+But I worry a LOT more that it's just a HACK (and I know Barry was nice
+about the idea and I appreciate it but I have to be honest).
+
+Instead of dealing with any of the above, we just leave the mess in place +
+just retry the operation under VMA because we happen to know, for this ONE
+workload, it works out better.
+
+And PROBABLY it doesn't add too much overhead to anything else.
+
+SO.
+
+I've written too much again, let's sum it up.
+
+1. WE HAVE TO DECIDE whether we want to accept the hack because it
+   helps in a known case and probably doesn't harm any other cases.
+
+2. WE HAVE TO FIX THIS DAMN MESS. Even if we take something like this WE
+   HAVE TO FIX IT.
+
+I'm inclined to rip out the whole retry thing altogether one way or another
+but I leave that to Matthew to figure out :)
+
+
+If we decide we DO want the hack, then DEAR LORD can we not have this
+horrible duplication across arches? I seem to remember you agreed to take
+that out ([0]), and maybe it's pending what Matthew wants to do, but is
+there not a way to avoid that?
+
+ALSO. It seem we are subtly changing how the tried flag stuff works and
+that really needs to be considered carefully.
+
+And FINALLY if we DO do that, the patch message MUST be honest about the
+goals MUST state EXACTLY what it's trying to optimise, it MUST clearly
+state that in a comment or whatever where the code is.
+
+It must NOT wave its arms and pretend that it's some general solution for
+fault retries the way it does now. It feels like it's hiding what it's
+really intended for at that just adds yet more confusion to this mess.
+
+I REALLY want to hear from Matthew on all this, I don't think we can move
+ahead without his clear feedback.
+
+--
+Cheers, Lorenzo
+
+[0]:https://lore.kernel.org/linux-mm/20260709084752.147379-1-zhanghongru@xiaomi.com/
 
