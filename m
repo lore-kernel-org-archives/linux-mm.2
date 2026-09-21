@@ -4,87 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C6D1C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8BDC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22E066B00E7; Mon, 21 Sep 2026 05:46:17 -0400 (EDT)
+	id D34986B0088; Mon, 21 Sep 2026 05:51:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 205A86B00E8; Mon, 21 Sep 2026 05:46:17 -0400 (EDT)
+	id CE58C6B00DB; Mon, 21 Sep 2026 05:51:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11B396B00EB; Mon, 21 Sep 2026 05:46:17 -0400 (EDT)
+	id BD3886B00DF; Mon, 21 Sep 2026 05:51:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E3D846B00E7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:46:16 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F7C6C05C7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:46:16 +0000 (UTC)
-X-FDA: 85237288752.03.48DFB5D
-Received: from mta1.migadu.com (out-192.mta1.migadu.com [95.215.58.192])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 127BD40004
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:46:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duBSfOvH;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D4EF6B0088
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:51:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D482D140535
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:51:15 +0000 (UTC)
+X-FDA: 85237301310.21.3E055C8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E9B7C80003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:51:13 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PwNXaD+0;
+	spf=pass (imf02.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789983974;
-	b=lZA2fbEib3mp1V9wh0gGrVJAuOoWVSuXd1Z4syqkJGUZwFYEqBX/OAaoRzf9mRMiKpCUxc
-	cXw7jxI4uVve4pwpqrm9Q2mvezsOeSlbtFlhUsGEX+1N9X0m8ViB8FIAyfDL6X9l+oFJns
-	uKpIPV/tGtcVkDKSXfGuyjMX84DxrA8=
+	t=1789984274;
+	b=wjvfshEjbyZ0ZYkYt5xP1rVnvEvPU0tU5onOfvsbuE5bdWehQDwIZ+fuxYmz38GgoMra7g
+	egxMZ0Kt4NDS6IpjKMGCvd+wlRLIAtB7jVnXFDO8wOol+3ysTLCc9mrdFa/FNCCajgwM5k
+	5+tOFUtwysE/7iZ6D53wpEb9l9IIqFw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=duBSfOvH;
-	spf=pass (imf01.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.192 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PwNXaD+0;
+	spf=pass (imf02.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789983974;
+	s=arc-20220608; t=1789984274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=XKt4KEwGdhrgSOygLGhED4kKfOTSxnGoaSQyxFjhAKg=;
-	b=nOvlcJH4GeI6AdcpW9gGSV+qdUm8VpUy+Vqa1A1O0MWOtMl+FPCZMVOll8rFvljidPHC+q
-	99mvSMCY5OVXp/dNO6/oMj/8YdSiTPEahavFTtnbeUnfI90MJa4f1zVlWNCN2s3lQ/GbD1
-	8WzECNfkxf0XFvA+7cNYWWz27lraqPo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=40Pibx3H1OAa4munGp9Mhm2S6yy1ZLpGkJtdxAVMpi0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789983972; v=1; x=1790588772;
- b=duBSfOvHVNfoYWf8+BBkg+mkclj9nFTEnxk+FDIF3L5oOTr+nAWSP9WBJQ4wOkR8ReaOQvuL
- ww+74/zYFqmjtzevm8maeWsKaIfi14Pwnbru4al2MjI4/J851mP/brdrjr4d0jUsvAfmUe8GKo3
- GMxAeBv8+92y6hy9hE5jzVzM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e0b3a8a4092f7f84;
-	Mon, 21 Sep 2026 09:46:12 +0000
-X-Mizu-Trace-ID: e0b3a8a4092f7f84
-X-Migadu-Flow: FLOW_OUT
-From: Hao Li <hao.li@linux.dev>
-To: vbabka@kernel.org,
-	harry@kernel.org,
-	akpm@linux-foundation.org
-Cc: cl@gentwo.org,
-	rientjes@google.com,
-	roman.gushchin@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Li <hao.li@linux.dev>
-Subject: [PATCH v2] mm/slub: refill prefilled sheaves from the barn
-Date: Mon, 21 Sep 2026 17:41:13 +0800
-Message-ID: <20260921094521.141665-1-hao.li@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=zd1jRqYPXZwU2hXU1MHVfUpexFL0QG0Ad5Vt2W87lxs=;
+	b=TKUAAyOTZxrXJCTGONPQanKGCMhkzDhKFKxEOsxZFLVzPmY7fDu0Z/Nr8Wkmw5VcadXNFu
+	o5Vqr8dmbMwYpyEIM0cXV3ZdthZmC3K4Kqr7GAQYUVI/qph2ZurFprO4bAVr8rjguUsTH2
+	e0alPOCoV8XGH7o8TBgZsOOYDNCIOoM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A778153B;
+	Mon, 21 Sep 2026 02:51:09 -0700 (PDT)
+Received: from [10.57.83.12] (unknown [10.57.83.12])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2F7573F86F;
+	Mon, 21 Sep 2026 02:51:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789984273; bh=Yh04mAUW/tMDEOlWdN+OXJwoGQ3qq3vUxi4DFjfm1GY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PwNXaD+0WUdgUn9Bq7v/HPrz6iSdG1Ka6YECPv9iF0/ZzjF26pxz1O08q0ccMYQOB
+	 bwL5+mucY5hunLe30UlgLiO6VVb5ARI9CGDPOGyQ+uv4FlLL6YtNVCUQHpoIMJEw4b
+	 NXAtZ3P9Af5w6Y40kU8Ymb3s0bMrOwUXnW+78CFE=
+Message-ID: <27fb625b-7117-4666-9a34-3b8aa9a43833@arm.com>
+Date: Mon, 21 Sep 2026 10:51:07 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/6] arm64: distinguish HW PTE pointers from SW PTE value
+ pointers
+To: Muhammad Usama Anjum <usama.anjum@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Alexander Potapenko <glider@google.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org
+References: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260914-pte0_arm-v1-0-bb53b663e396@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E9B7C80003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 127BD40004
-X-Stat-Signature: uah3rpgewosx1g4s84sq94tzh1pgpq1d
-X-HE-Tag: 1789983973-679136
-X-HE-Meta: U2FsdGVkX1/CHmxu6cty09q1iu/M1LIzKbl9HQfPj38BgMnSUAQyEaUlyzF7aLkRMipJavwgyp+E+MxkHbf30z9ApqqNqLeducbDJzvOjA3BXuX/f+SN2thA0gT6RLR+P3FKP3PPLKnQutCO5kGrH7TaR7wJaw5AgG9YDWbMA1aqrHxh9yYrcQN1Tkg4l5MP1AvDNOi8GgvQxrnYxW7EVjXdmdsbrIYX73D/xH1ram49w/u+4teq2HGFZOTOly6qCoZdunAK/CkTBXKQVdJSycaNflYnmVjbwN9/F86slClu+hLuVPje86fxd42smMTroeEwoKG7m0+A85sLsvuqc5pvRNpzbp2AhzEQmShOtmVU/1T0T4PMgkaQZY3HLIlh0WE+pnhrhXcFzcJRav0VC1g5e5ymVrBy9sP+eW9jpbM+zHseI8fbkMAHhE6DugJwM++YwMG8DHtRGJaTg0bAxk8JoL8Ul9XVQP24/mucbI5oa8wBjjxHUNNf8vd6RoyAfTpCJicuzwqtif7+fzCNH6q5nhPnrRZR06z4IFJXz4nkmJar2Fiw03k9CpBq4s4KRA8PO70t0rbDrpzus2OmYoyToTbc3d6DJMr/BBQ9t8IXA7qi+NCP1Kg6qfeZTQ1Uunep6bl8GrUoCVHkkCYm2WsGjUdqA3SdqGrxgoNY/E4BAYqtWN0Da5c4VZng9z8tg10PH6knjhFWfT/XHyn3HCSOZOf1jtKzY5TDnwe2YtLRkJ+qHAejrMY1yjNh2q8Z1CQapNNrrgl1Mj3mkJWS63oNZxJHLZanvPy6HVYx5Loul3RgHXIjp2Z34mrfxpceG7p85Uz6ooUMPacsgOBf/PqMMPCrNSGRpNJQRKjbp0N1p0XGAgOVPSojfOP0Gm7gNxvOfGOmLPKdE7Z2NBYuqCvOx5u0iziw/BcIKbTo+8UvLy0AOMvbkt3impCUXdE3pzWVvfsUhFBaFjPWnNN
- 3rxhq0/Q
- 4JrYAbfkZ5rFdM2gZCZV9cMoIN/zOOIKrjkCAhuJdPFbS4hHGDCpnEqV5U/gL8aAgD25YuWCZyRytpiiO8oR+W0A67HTTtSLHXEQF4I0O9j6zXgQ3Qeut4Et2Ys38UVCvFQrslTkkpRtgGsvQvMmg+mD8I+iDfe6DLAfEGzLR92u5qYtXovZ8ma8A5QV2RF6lhuamAG8EyOOSpxsSYrN6UAaGADozoPg1RVWwCE9OKZ9k3LbJxiblSkMVCQ==
+X-Stat-Signature: 1sy5fkh48s49gsjqpp1t86wsy1juf3ss
+X-HE-Tag: 1789984273-274634
+X-HE-Meta: U2FsdGVkX1+fMQsoU++YsFuFlBT9LfqvJrjl31Vp2XmoCtVfAWfITacPILvah/Y2Nq0w6PpsmcRDs+Qjslj9447oJTYrDGlT5gN5Yvx+WdzwKN8YtIXk/r/mUVuLzr56YGcPf3XjW0h8TourFOQyzcWP1yaoOh1VJOLCnieaCDi2P5JBMH2B6dVrwzGrJIqLXpXrcyG2qsTqWTm52HGVQl6Dl9B5ME1w73A/x9agkwm2L6G8vRZpQGgeLpfEbfDnZal6WF2ObdOgoEFeUJbMQwbzRlPUfj73cC4AKHMnXQVZZ8mka8pikMdcHziD9Q6gXBfkqBrmwyrAAKrtORd2f4nBYL7fzVsACEWt/j/ucbnwejoGEszX4MjSsTzV7HIRfE5CD1s9YkzLjqkmXJLgsawKGpggmL1NbNFxApZYyxZkIF4h7p3E+DQLgvntx++FrKzNFr89tjzZGyidCw0aKSWD59LJGoxaQkFekQf4a4qJHi/Jlz1d8FtWPwsB02bing5gpPkxAhBBxv4a6se89pdNCykjA5EhOGRk/8bjn+0OzzdvsEk/xk2ejyNGmMKsDY61jDZrXKO8jYzGMAZyJARHvBmfGVRG5bpJ1RZlCeq0BgZlK0i01p5sXnbbd5TKXKhlNY1VlpredA5vFZAeu+oMBCyHk+oFbPYLbpi4AsIlgpaZbkCroisqyaPcSF81JAT3Vt12B7e9gnwMUSwnPLFm9xCcQWq56rTUsUcXhPhBLNOG6WxSeo0nx2PRhOFGriIzbbwYQ7xNfZYHX8KBxuXWRWdjJ5zptRrZ8OwKm5VbBWDOjpV+eq3fB7dBibDup3shNj5wC0p9I6FSo5j6GJ95Uzlw27ldIpAm/47Y2lY+A8Sx+erpgtWDoWMwKufMGLsjTfDwWp5iSIPSw4vwcDZeoHNqe13YZO1g3iCr3TImyJGDvxMwK/J+dCYf6w1bHb/6w1vKyuXDwSjkfPW
+ Ln/pFGK3
+ v/Xt7Y6h5i147AAomowQEUccvYyln+yZ18zaEva2jx0jYmJikPAJ1xIC+yLk41PTCT6i/l9RnaeuUdKNMyPHZKJQSZrJ5jEhe0BLt//zs+1oeO4q4Jithjkl45R0WfRfJzY4tyPzm22lSu2ikmjiNEuad6aBs7YpCt5gAVva8DQMXFKx4mlQp+klUK8/hMIWsAw+HVTEUr/fAKDj19Oqc9q8uGbzQRLPze1bGStS2YLGCJx3QugH6VSTxZp04yNTIOdOE20+0oIjzI6Jo1RBxA4HnZwmcNmGzEhpQe7o2Sgg2JRXkV56LrHIzjYXr/n94gSzqaHvkjn+74y8K/2F1gv0xoikoZIvnZ+uYszbJ82WEIHucDzzqfkSkLwNvwmkXtHck0te65iOlQ70=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,240 +103,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, when the prefill API refills a non-full sheaf, it takes the
-objects from partial slabs and never from the full sheaves in the barn,
-so once the barn's full list becomes saturated, it stays saturated.
+On 14/09/2026 14:51, Muhammad Usama Anjum wrote:
+> Hi,
+> 
+> The generic series introduces hw_pte_t for HW PTEs, while SW PTE values
+> use pte_t. This series enables the distinct type on arm64 so the
+> compiler can distinguish HW PTE pointers (hw_pte_t *) from SW PTE value
+> pointers (pte_t *).
+> 
+> The conversion updates HW PTE pointers and accessors, including atomic
+> updates, fixmap, and early page-table construction, before selecting
+> ARCH_HAS_HW_PTE_T. Higher-level entry types remain out of scope, and
+> shared helpers retain explicit casts.
+> 
+> The linked generic series is a prerequisite. Its cover contains the
+> Coccinelle script used for most pointer conversions; the remaining sites
+> were converted by hand.
+> 
+> Link: https://lore.kernel.org/all/20260903103002.1091859-1-usama.anjum@arm.com/
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 
-For objects freed via kfree_rcu(), every RCU sheaf then has to be
-flushed to slabs because the barn's full list has no room.
+I've been through this as best I can and provided some minor comments. This all
+looks ok over all. But given the number of small changes, it would probably be
+wise to go big on testing; what level of testing has been performed? I'd suggest
+mm selftests (with all the magic to make all the tests actually run) at minimum
+and all the fastpath benchmarks as a stress test.
 
-To fix this, let the sheaf refill from the barn first, and introduce a
-partial sheaf in the barn, which holds the leftover objects [1].
+I think it's quite ugly (and adds a bit to the cognitive load) to have this
+intermediate state where only ptes are converted. But I understand the need to
+do this incrementally. Hopefully you can follow up with the other levels soon :)
 
-Only the prefill path needs the partial sheaf. The generic allocation
-path (__pcs_replace_empty_main()) exchanges an empty sheaf for a full
-one from the barn, so nothing is left over. The prefill path refills a
-sheaf that is not necessarily empty, so taking objects from the barn
-usually leaves leftovers, and the partial sheaf is where they are
-kept. refill_sheaf() only takes objects from partial slabs and never
-involves the partial sheaf.
+Thanks,
+Ryan
 
-The sheaf is refilled by copying objects from the partial sheaf, and
-then from a full sheaf taken from the barn if it is still not full. A
-sheaf that objects were copied from stays in the barn as the partial
-sheaf if it still holds objects, or goes on the empty list if it is
-empty. The sheaf being refilled is never replaced.
 
-The gain comes from two sides: every full sheaf taken out makes room on
-the barn's full list for a future RCU sheaf, and refilling from the
-barn is cheaper than refilling from partial slabs under list_lock.
-
-Note that putting the sheaf with the leftover objects on the full list
-instead would not work: it would occupy room on the full list, so the
-list would stay saturated and rcu_free_sheaf() would still keep
-flushing.
-
-An earlier version of this patch swapped sheaves instead, to minimize
-the memcpy overhead. As Harry Yoo pointed out [2], replacing the
-caller's sheaf loses cache affinity, filling it directly is more
-straightforward, and testing showed no measurable difference between
-the two approaches, so the approach he suggested is used.
-
-Tested with will-it-scale mmap1 (192 processes, one-minute runs) on the
-maple_node cache.
-
-throughput: 27778727 -> 34500556 (+24.2%)
-
-metric                       baseline           patched        change
-=====================================================================
-alloc_fastpath                 54,124            56,696        +4.75%
-alloc_slab                  7,100,651           159,739       -97.75%
-barn_get                          849       194,460,392    +22904539.81%
-barn_get_fail                       2               217    +10750.00%
-barn_put                          851       182,306,701    +21422544.07%
-barn_put_fail             260,400,484       145,522,675       -44.12%
-cmpxchg_double_fail         1,029,204           334,228       -67.53%
-free_add_partial          326,694,687       181,935,790       -44.31%
-free_fastpath                  13,297            15,611       +17.40%
-free_rcu_sheaf          8,332,839,104    10,490,535,227       +25.89%
-free_remove_partial         7,099,788           158,297       -97.77%
-free_slab                   7,099,788           158,297       -97.77%
-free_slowpath              10,969,156           782,851       -92.86%
-objects                        15,295            14,849        -2.92%
-objects_partial                15,295            14,849        -2.92%
-partial                         1,604             2,336       +45.64%
-sheaf_alloc               137,757,895       141,208,076        +2.50%
-sheaf_flush             8,332,823,922     4,656,725,764       -44.12%
-sheaf_free                137,757,883       141,208,072        +2.50%
-sheaf_prefill_fast      3,337,502,163     4,196,506,116       +25.74%
-sheaf_prefill_slow                685               400       -41.61%
-sheaf_refill            8,343,794,364     4,657,509,724       -44.18%
-sheaf_return_fast       3,337,502,411     4,196,506,382       +25.74%
-sheaf_return_slow                 437               134       -69.34%
-slabs                           1,604             2,336       +45.64%
-total_objects                 102,656           149,504       +45.64%
-
-Here is what the important metric changes mean.
-
-barn_get and barn_put: refills now take full sheaves out of the barn,
-and RCU sheaves are put into the barn again. Before, the barn's full
-list was saturated once and hardly ever consumed.
-
-barn_put_fail: more than half of the RCU sheaves are now put into the
-barn instead of being flushed. The rest are still flushed because they
-arrive while the barn's full list is at its limit.
-
-sheaf_refill and free_add_partial: fewer objects are taken from partial
-slabs to refill sheaves, and fewer slabs are added to the partial list,
-by the same percentage.
-
-alloc_slab and free_slab: the partial list is almost never empty when a
-refill looks at it, so slabs are almost never allocated and freed again
-only to serve refills.
-
-After the test, the maple_node cache holds 1604 slabs without the patch
-and 2336 with it. After a manual shrink
-(echo 1 > /sys/kernel/slab/maple_node/shrink), it holds 485 without
-the patch and 563 with it. So most of the extra slabs are held only by
-objects sitting in sheaves and are returned by a shrink, and what
-remains is a small difference, because objects handed out from the barn
-come from many more slabs than a refill from partial slabs would use.
-
-Link: https://lore.kernel.org/linux-mm/aqPlMzUIw-4g2iOX@fedora/ [1]
-Link: https://lore.kernel.org/linux-mm/aq0ylDidEHa2kg4X@thinkstation/ [2]
-Signed-off-by: Hao Li <hao.li@linux.dev>
----
-v2:
-- Refill the caller's sheaf in place, copying from the partial sheaf
-  and then from a full sheaf, instead of exchanging it for a barn
-  sheaf, as suggested by Harry Yoo. The sheaf is no longer passed by
-  reference, and the pfmemalloc guard and the capacity fixup of the
-  exchanged sheaf go away with the exchange. Thanks Harry!
-v1: https://lore.kernel.org/linux-mm/20260918114318.124346-1-hao.li@linux.dev/
----
- mm/slub.c | 81 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 81 insertions(+)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 54ec12503357..db83b1257440 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -422,6 +422,7 @@ struct node_barn {
- 	spinlock_t lock;
- 	struct list_head sheaves_full;
- 	struct list_head sheaves_empty;
-+	struct slab_sheaf *sheaf_partial;
- 	unsigned int nr_full;
- 	unsigned int nr_empty;
- };
-@@ -3298,6 +3299,7 @@ static void barn_init(struct node_barn *barn)
- 	spin_lock_init(&barn->lock);
- 	INIT_LIST_HEAD(&barn->sheaves_full);
- 	INIT_LIST_HEAD(&barn->sheaves_empty);
-+	barn->sheaf_partial = NULL;
- 	barn->nr_full = 0;
- 	barn->nr_empty = 0;
- }
-@@ -3315,6 +3317,10 @@ static void barn_shrink(struct kmem_cache *s, struct node_barn *barn)
- 	barn->nr_full = 0;
- 	list_splice_init(&barn->sheaves_empty, &empty_list);
- 	barn->nr_empty = 0;
-+	if (barn->sheaf_partial) {
-+		list_add(&barn->sheaf_partial->barn_list, &full_list);
-+		barn->sheaf_partial = NULL;
-+	}
- 
- 	spin_unlock_irqrestore(&barn->lock, flags);
- 
-@@ -5073,12 +5079,87 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
- }
- EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
- 
-+/*
-+ * Refill @sheaf from the barn: from its partial sheaf first, then from its full
-+ * sheaves. A sheaf that objects were copied from stays in the barn as the
-+ * partial sheaf if it still holds objects, or goes on the empty list if it is
-+ * empty.
-+ *
-+ * Returns true if the sheaf is now full, at s->sheaf_capacity.
-+ * Returns false if the sheaf is still not full.
-+ */
-+static bool refill_sheaf_from_barn(struct kmem_cache *s,
-+				   struct slab_sheaf *sheaf)
-+{
-+	struct node_barn *barn = get_barn(s);
-+	struct slab_sheaf *src;
-+	unsigned int to_move;
-+	unsigned long flags;
-+
-+	if (!barn)
-+		return false;
-+
-+	if (!data_race(barn->nr_full) && !data_race(barn->sheaf_partial))
-+		return false;
-+
-+	spin_lock_irqsave(&barn->lock, flags);
-+
-+	/*
-+	 * The partial sheaf can hold fewer objects than @sheaf needs to
-+	 * reach capacity, and a sheaf on the full list is not necessarily
-+	 * full (see the comment in rcu_free_sheaf()), so keep taking from
-+	 * the barn until @sheaf is full or nothing is left.
-+	 */
-+	while (sheaf->size < s->sheaf_capacity) {
-+		src = barn->sheaf_partial;
-+		barn->sheaf_partial = NULL;
-+		if (!src) {
-+			if (!barn->nr_full)
-+				break;
-+			src = list_first_entry(&barn->sheaves_full,
-+					       struct slab_sheaf, barn_list);
-+			list_del(&src->barn_list);
-+			barn->nr_full--;
-+		}
-+
-+		to_move = min(s->sheaf_capacity - sheaf->size, src->size);
-+		src->size -= to_move;
-+		memcpy(&sheaf->objects[sheaf->size], &src->objects[src->size],
-+		       to_move * sizeof(void *));
-+		sheaf->size += to_move;
-+
-+		if (src->size) {
-+			barn->sheaf_partial = src;
-+		} else {
-+			/*
-+			 * No empty-limit check: the sheaf put on the empty list
-+			 * was already in the barn, so the barn holds no more
-+			 * sheaves than before. barn_replace_empty_sheaf() skips
-+			 * the check for the same reason.
-+			 */
-+			list_add(&src->barn_list, &barn->sheaves_empty);
-+			barn->nr_empty++;
-+		}
-+	}
-+
-+	spin_unlock_irqrestore(&barn->lock, flags);
-+
-+	if (sheaf->size < s->sheaf_capacity)
-+		return false;
-+
-+	stat(s, BARN_GET);
-+	return true;
-+}
-+
- static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
- 				      struct slab_sheaf *sheaf, gfp_t gfp)
- {
- 	gfp_t gfp_nomemalloc;
- 	int ret;
- 
-+	if (refill_sheaf_from_barn(s, sheaf))
-+		return 0;
-+
- 	gfp_nomemalloc = gfp | __GFP_NOMEMALLOC;
- 	if (gfp_pfmemalloc_allowed(gfp))
- 		gfp_nomemalloc |= __GFP_NOWARN;
--- 
-2.55.0
+> ---
+> Muhammad Usama Anjum (6):
+>       arm64: use hw_pte_t for HW PTE pointers
+>       arm64: use hw_pte_val for HW PTE atomics
+>       arm64: convert between HW PTEs and SW PTE values
+>       arm64: use hw_pte_t for fixmap HW PTEs
+>       arm64: use HW PTE accessors in early map_range()
+>       arm64: enable a distinct type for HW PTEs
+> 
+>  arch/arm64/Kconfig                |   1 +
+>  arch/arm64/include/asm/hugetlb.h  |  19 ++---
+>  arch/arm64/include/asm/pgalloc.h  |   2 +-
+>  arch/arm64/include/asm/pgtable.h  | 157 ++++++++++++++++++++------------------
+>  arch/arm64/include/asm/vmalloc.h  |   2 +-
+>  arch/arm64/kernel/efi.c           |   3 +-
+>  arch/arm64/kernel/pi/map_kernel.c |   4 +-
+>  arch/arm64/kernel/pi/map_range.c  |  20 +++--
+>  arch/arm64/kernel/pi/pi.h         |   3 +-
+>  arch/arm64/mm/contpte.c           |  49 ++++++------
+>  arch/arm64/mm/fault.c             |  11 +--
+>  arch/arm64/mm/fixmap.c            |   8 +-
+>  arch/arm64/mm/hugetlbpage.c       |  48 ++++++------
+>  arch/arm64/mm/kasan_init.c        |   4 +-
+>  arch/arm64/mm/mmu.c               |  46 ++++++-----
+>  arch/arm64/mm/pageattr.c          |   4 +-
+>  arch/arm64/mm/trans_pgd.c         |   4 +-
+>  include/linux/pgtable_types.h     |   6 ++
+>  18 files changed, 215 insertions(+), 176 deletions(-)
+> ---
+> base-commit: ead700ca770c82167af32622cf8b68c9f87c3c7c
+> change-id: 20260911-pte0_arm-f1b7df7c0b51
+> prerequisite-message-id: 20260903103002.1091859-1-usama.anjum@arm.com
+> prerequisite-patch-id: 0114fcc6ab0dbb739b5bb6fc0fe6b1c8f1fa37a1
+> prerequisite-patch-id: 09fcf65970074620dd3a9cce6850b901beb01db8
+> prerequisite-patch-id: 9b2fdab97c99effabb85526fa7f141c933b3aa23
+> prerequisite-patch-id: 1aa309a26d98a1e93a54742705a03567ee93be71
+> prerequisite-patch-id: ebe32f52c95ad0542982f0b37798d209595e25e1
+> prerequisite-patch-id: a60d249f52d092524176851b2570d7245bb24434
+> prerequisite-patch-id: 81ebd1378e25d40a1771b53973abcc4defa87535
+> prerequisite-patch-id: d982f2b00c5eddb2459f69008a73e4f4ae4d8299
+> 
+> Best regards,
+> --  
+> Usama
+> 
 
 
