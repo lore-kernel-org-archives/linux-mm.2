@@ -4,137 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67761C982FA
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 23:27:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA044C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 23:58:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 719016B00A7; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
+	id 72EB76B0095; Mon, 21 Sep 2026 19:58:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C9EC6B00A9; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
+	id 704F06B00A4; Mon, 21 Sep 2026 19:58:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DFEF6B00AA; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
+	id 5F3DC6B00A5; Mon, 21 Sep 2026 19:58:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 387A76B00A7
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:27:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC9FCA59AD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:27:08 +0000 (UTC)
-X-FDA: 85239357336.01.521414E
-Received: from mail-wm1-f99.google.com (mail-wm1-f99.google.com [209.85.128.99])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0AE7B40009
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:27:05 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=everpuredata.com header.s=google header.b=ZvwyW7lm;
-	dmarc=pass (policy=reject) header.from=everpuredata.com;
-	spf=pass (imf07.hostedemail.com: domain of tmenninger@everpuredata.com designates 209.85.128.99 as permitted sender) smtp.mailfrom=tmenninger@everpuredata.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790033226;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F0BD6B0095
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:58:48 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5E6EA031A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:58:47 +0000 (UTC)
+X-FDA: 85239437094.28.3E44380
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010006.outbound.protection.outlook.com [52.101.46.6])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E489740003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:58:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=diYyJ46e;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.6 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790035125;
+	b=58/MkgmUitbQ1fOAIb/QiOBBTGjng2Mc/fRv0MXGGdQi0tm6ac6qV/qQZzJbNWP+HdxVgk
+	jIDQh7WPAntaHaeda0Si2AQUR2pEBYfYtvUCKduxChYR6tOxSPCpJXCDjouo2LcMFXJXq4
+	vqA9aikTv26o1QwizHgyWOnGiShVpTI=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=diYyJ46e;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.6 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790035125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
-	b=F4aIfRS9Eqt8QchrV2rRGJVY9kEoqp1WaUtpgdyYOwGM5vry3WP72kXCdT6LZhvkuXjplX
-	L077yNnlGC4vX9tHxZjHOhGrms9a7DnLiWP86QEG22su4DMgJbfYD5qBdVFSufC0Zr6xEm
-	bDXgcitXZ0R+D9QC+8ybksMpf4EW3C4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790033226;
-	b=EEFbKoiNKvf9T7xs7CA7bXhvVcpr7xNDDgqBdEkrx50779N4zmW5ymgGOUc13AEOrhQl/A
-	HpymBEXbn9zjDJj2U7sxbGFM+gHEhov3bAAPD0yC+r5hQ7AFwb6wKhHssS0lAJakzwghBt
-	Msdx0+OlRNfFcwCTOfX7Cau7eHNhQdk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=everpuredata.com header.s=google header.b=ZvwyW7lm;
-	dmarc=pass (policy=reject) header.from=everpuredata.com;
-	spf=pass (imf07.hostedemail.com: domain of tmenninger@everpuredata.com designates 209.85.128.99 as permitted sender) smtp.mailfrom=tmenninger@everpuredata.com
-Received: by mail-wm1-f99.google.com with SMTP id 5b1f17b1804b1-49d0b98d6d0so17879695e9.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 16:27:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=everpuredata.com; s=google; t=1790033224; x=1790638024; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
-        b=ZvwyW7lmuxgJ1/i9jcSi0eE2ILVZKNeucp4iKVlA2ne8TXV7Ff0SI38F4gxaLEVKyu
-         1ANoGqzjTOdjtv4lZHitB1IEQVddw9aO63vcetuiOlc/Nmxf3tBGObwVSUGXjP7jaAIn
-         IJEa5rhBZDr5d9UcbZwKnOCluUI7hMLkaNqzYQ8CxZIebx1NPJaw5TmIzIgBci+EZBcN
-         CgVp7qmMhITT6b8rqebdg2+/3cH1KyMKga0rkV1AvyKL+y8Dj37Nq8iN2/txWjl8sgCX
-         HNqPZAWYwLIVop5Nv70s3/JQS+hXU9SC/uftXu+nGisDXRuRmz3kTfZ2O2Sx8WH+cj49
-         cGEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790033224; x=1790638024;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=va/vFiItRvpug1hTbx6eo1iSM5BSyMyaF3MlvXV7MJM=;
-        b=hWIvxabTudcgWRy3pHukKQVvatZs5UPrlffawIMhw0CV5LP5m4pyYYZCiyWy4ed2uJ
-         wk+0fztO7rhxc4OdP8qgVFlF3sJrMLG7hBFkCpmOE+voRW2Ygy03+YKo+6atHnGYw84J
-         9vvtLIqi5WBM318aRsNo7tUi0STKllDjHCrLb1alTy2UfqYqG4zKPFKAUN9mAJZKX0F/
-         qwaveRKOQqQ1rHon5jgRlpnzk8PtmtCHEP03/6He8Gfse+Bg43MLfeJDug5LIEXNIeC+
-         1DNVWzWh0SbqVQAynJnFuaRC//WP/e/sjFoGa55Sv2fBvZND98OTj5yz8lo/aX0Q+lUp
-         yc2w==
-X-Forwarded-Encrypted: i=1; AKwUvBz77yazoVSm6WnjbZ+MHpMGgB4IzJvbGO1iBXpf1zwkcoIYThSgQM1NTmPM9tkigq7NzCcZChHzRw==@kvack.org
-X-Gm-Message-State: AFuF++lyXdbgsgOuR2Ec/G85rloyf1XR12yaON57y45mm/nqwmj6LxCa
-	yNn/FZf1lWTQC/4okbehNywQYgqSMzVKEs9IvnWD/NAeKNdljugz21JRqwFJMwIWUUeKb+VaTok
-	JsRMRwK+WWglp72zT08cHK1WPHK/URpsd/25B
-X-Gm-Gg: AYBFou1lQUdk8mAoVIJ+0rSqssdx415EvuY2C+j+Z+6vMS+uBPsaaWtwkzf4xeHO1fH
-	3pR8FtfykUMhPqBFvdtDVt9U4Y9aPscqiIPR/mSAYGvABkGBpXR6/S1E7YrRUpm1I8R46FGXCm/
-	pT4qqs4ssQojO0Yntu1X0MBDckb328JyF8hBVrvpkt4pVUH4ePP9oR6vnojvrCzvbZeHT/nYP30
-	akPi/w8DySPsaaTey/2iFCUnLftWgPtBjAePJaGyWX4sX24kLmJznhp3oQAXoS8Tkfbf0ygbdVW
-	Oa8l6DTlv1H0KSMJP3SuCH0Coro7lv0+sctkZlHpZIELOKq+aQVrU1VYW58k9YL4MpWjpYbonGj
-	lhd+edMfS3LxfT/icqeFqgStAdUiNTjXvIQT2AsI=
-X-Received: by 2002:a05:600c:a085:b0:49d:25b0:cc60 with SMTP id 5b1f17b1804b1-49fc5747f7bmr184458765e9.29.1790033224386;
-        Mon, 21 Sep 2026 16:27:04 -0700 (PDT)
-Received: from c14-smtp-2023.dev.purestorage.com ([208.88.158.129])
-        by smtp-relay.gmail.com with ESMTPS id 5b1f17b1804b1-49fd8a7d9dcsm4178095e9.6.2026.09.21.16.27.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 16:27:04 -0700 (PDT)
-X-Relaying-Domain: everpuredata.com
-Received: from irdv-tmenninger.dev.purestorage.com (irdv-tmenninger.dev.purestorage.com [10.32.149.15])
-	by c14-smtp-2023.dev.purestorage.com (Postfix) with ESMTPS id A366F3417FF;
-	Mon, 21 Sep 2026 16:27:02 -0700 (PDT)
-From: Tim Menninger <tmenninger@everpuredata.com>
-To: Harry Yoo <harry@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	linux-mm@kvack.org,
-	Chuck Lever <cel@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	Jon Curley <jcurley@everpuredata.com>,
-	Eric Badger <ebadger@everpuredata.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [SLUB] nfs_page cmpxchg_double_fail and perf lock perturbation on dual-socket NFS/RDMA
-Date: Mon, 21 Sep 2026 23:27:02 +0000
-Message-Id: <20260921232702.486161-1-tmenninger@everpuredata.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <arFNKeseUHBvdRCA@thinkstation>
-References: <arFNKeseUHBvdRCA@thinkstation>
+	bh=962Mt2h7QOcLQNVaR1nqT71k5Ww6URNqOqugZkBl6SQ=;
+	b=XKypLf8BZFWfntHt42zX9whXpJcG57R/kmjHh+ZCrtGnoajACU+7GlCJcYk3GXjf0KMGA2
+	QM1oYm0s/gE0QfsDyNv3ceRG6PG7KIPw1mB5yBgTNDhH7YSn4QM5Y8wFfsrj9jgHobmbxJ
+	vV7fE7tQj00FJ/W8ch61nST7df3XeSE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vaWAWvixwO0Ly4G7nvPrPTja/aYf4Uq/HIsx8Y5flRSh7SOXKPJ/ruYgbf2GQkn1MNhwzGfl3m9Ihv3hcDzxkgl+fBmwjV/4GLVt/98WdWnm3SoM0zH34MSLHUkmne+1M6l1rY8r6shLgCbiyAdA/zncgegGJhuwLsFhEmgvguf47DQHW+UGv9QsqRSo1Si59N/d40/f21+Z2q/cA4M+j7cZKLQ+qiqKRgENXl0wLqFvZxGm19mVmGuGn18KoMih3aZd1Hpq+Wg0NZKvW9l5bfrhZ1KqdBnIt5P5wUCYRETSeY315c3pe3b5e0rPhiPpGfcVVnW7lp3cUhB0uBKQIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=962Mt2h7QOcLQNVaR1nqT71k5Ww6URNqOqugZkBl6SQ=;
+ b=tlXJf4XFfkEjGLt9dYmE5PnnHUv5EjLXCjwIY4WV0YCuyKHeh6emkFR2TjWSJoZurXM7sqdYh26SCjBxPq0lWg5SbFFEE+0bHyW4Hg9rWTTGXkpfuItB6CtLOCZ9O7gRp+mvrmDieD7EW9dhozhas11vTB78ql2Mwh2JzqbichmoHucJkZrVQOtJxLYQOrCC9nMiL4p54BZJRQbIoZFy7ugkFDC5FknfqBKVh7yp9SaooiUH1bXMB75H0+K7TMCW/KrqwJ7S24qk0Ck8H8dnfiRLZF21LnwQ7jSc6DBqBmqRT3fq7u4bzte7qM+kxDeGz5hUxFaZKC9SjcQYd8N1Mg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=962Mt2h7QOcLQNVaR1nqT71k5Ww6URNqOqugZkBl6SQ=;
+ b=diYyJ46ekIiNeA1bulj4nZgLclI4tn5OMUrPWgjrVTQvtDhrfp07Qu4IV2z0It/U84OUisNm3PK6LON8ARuhlqitsah/dSeQYgz+w4yDtdGr9fgB5J6S76C/2R77RxkgAaN+/S/VzljUSGhQJsHvhUVTqkQ3e57fsHmRe6Fu5dc/mpWNHANSO8zKA9BxLvoYipPgpsBgIWHtE78xvl9Fs46hg+8Yx2AxhfVK+mXUr5vM77xi/1C92QxoTWmyzsiVYiCIvWDP5pw8tExLWcrIOvACZ1veG1+/DIfmO5s9RcXcDtsVEpJki+Pvg9bdusB5a4HrfeydOqO59vVRzIpYKw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SJ5PPF816B88375.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::99b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Mon, 21 Sep
+ 2026 23:58:39 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
+ 23:58:39 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
+ of build_zonelists()
+Date: Mon, 21 Sep 2026 19:58:38 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <72A76ED6-51F5-4A0B-B34F-C8F5416F640C@nvidia.com>
+In-Reply-To: <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+References: <20260912030424.2889731-1-gourry@gourry.net>
+ <20260912030424.2889731-3-gourry@gourry.net>
+ <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
+ <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
+ <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
+ <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+Content-Type: text/plain
+X-MS-Reactions: disallow
+X-ClientProxiedBy: MN2PR05CA0052.namprd05.prod.outlook.com
+ (2603:10b6:208:236::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SJ5PPF816B88375:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6051b857-a040-4b8e-e403-08df183c41e8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|4143699003|56012099006|11063799006|5023799004|22082099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Bsru9Hhq6gwB6gzsG+1o0XC57MFQO3EqTw1k9CAyH0v1akcxcUimXPUrHpLmNhOrnPOsdk1g6UukjuedgSrvrG4c+9gxJRKYmo7NaVgy9a+ynRUwzwtsVc/H1/W45F9rw8/CFeV63ISYQeVBD0/yarNZRZVhf6p6cfesR6B8SsHrOtyEenH8OWvXI77qpgCMljhcL/sPrbJj5ipB8Rs9e5tU580+fngw+23F+gWZKZIFZIonZUBZ755h2TX1jcRcWsjh+VfdGzoMsXUXrxWwVM3Aiws5au3vIpZEINkz4mqeU0bN+EuW+eP5GvCn21rQ23+oMO9xt9DZGh/gwP0Yto6teRQuD/yTwZKSm4Aj2Ev2iVV5OH94QSBdQv3TF+kCfZIGyp43f/rAqTiAaFvwW09DFNiSHWrFvfkCtl164E4i7kdKlijWj3cVeCSlZs39a1ul5f+pUgNAvXRwE0wOgqQ8K8pa+fx12P3jKZN1OpxUWapbRhkCsqcS5uI6KNYa3esck35VGsqt7iXmWURiM1ywzMECvEg2DaO9T2T+TexK9sdfp1NV5Dj+vkHiII/Hsmo94usltCS39T/vh7rJ/OUnNfyBYsdyixxtetAgTTDrC768N1fzP245O2y2B3EJT+Ywc86ArUk7PQmdAmvAqA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(4143699003)(56012099006)(11063799006)(5023799004)(22082099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?AIw3vjFoCFUxjZrukLvtppCNyk6Am8hJnEnozgG4eYhQBxDAzEgORr/Gy+8X?=
+ =?us-ascii?Q?GInCGxxN3PoOtrx1Wm1EnaKMJIDnpIPMXyPLc6klOdxZjadCUUV5bfqM5q7+?=
+ =?us-ascii?Q?W/fMhtpUUbwnVOQlEdHGzm+hYrBbG7TyoAJ+eGQGfaTFP5yY2ENq5sw0ze5I?=
+ =?us-ascii?Q?eu0bVyEkXWY/NieAk0JZ7zRiItvT4/IhMg2TR7+nBKCIW2pUzF13IB6pz1VF?=
+ =?us-ascii?Q?0JoNjR+DmEag3RcwtQPAoBJ+HydFUap2iFmlzVcH9thhphYicCNZXzmW1uw3?=
+ =?us-ascii?Q?sGNNNjY8qRkiBj0TA9yyMO+l5UljCQMN8IAnSuQ+Ghg2HS2mRdJleZcJtGdH?=
+ =?us-ascii?Q?obaT6Ada13VlGPt6DdVByOELyphpTiiIOBP48OyL2RJiedhAnBsuhQ896xvi?=
+ =?us-ascii?Q?sgNrC11SJVZCEQxebjux22/SaFxjIqBTI+la4wjK/+GS7xZ6SSEGT0F1c6zK?=
+ =?us-ascii?Q?G2HILBXf+EGKx1OJzVx4m5wp0uzlM+TZnosP+7mmEvNyCqAIwHom/E/AfoAl?=
+ =?us-ascii?Q?36ZOOY1G4wX3dTRwaAGSRlGNrxUV7uBP/8cahmj3YwIKa8jz1ADeATZy+TOd?=
+ =?us-ascii?Q?SVdhdtviEvE2ZpddMfuV4SS31PLI2i1ZMVMjJpEWjLQU//QnBtBb6iiEqHtv?=
+ =?us-ascii?Q?t1icJS45oGF+i/WOEWD4B0KcvXIheB5aJYuY68ZwRzohaPzdHxGIfZlvLxK4?=
+ =?us-ascii?Q?KesEGSWaHFlw5Elvo5cGfgoWkFqbmc5k0IAputRjUhu5nBu9n6f2jspPhHT3?=
+ =?us-ascii?Q?/ayKKFALOpDyzGGF6YVFM4D/kk601MgsiXQdYDGOBG8iKBrGLcHhHzIFfBAY?=
+ =?us-ascii?Q?kLqEqyFyLa2ZuzldLrlf5zM7MnpX/8Ci0TAuvSSH1g7qxGHeYfBuTmXJrXsp?=
+ =?us-ascii?Q?SvRIxlpOU7TFF00YtCGd7HoXGVuI67URBKw79c4HELc9VFA5No4UZcaPNCQw?=
+ =?us-ascii?Q?dLw/2hzFoxlg7Jdni0LtygMTEga7TobD5VCTMr3S3Iw3l5Bz2PykLozOGPdl?=
+ =?us-ascii?Q?9ZmbTvT6pZRB6yXkK/vXH/EPqtMLDcsD0AZDw1a2Vq5SQv2IeznNS+bkepVc?=
+ =?us-ascii?Q?O3v1YSRtc0cEsAs28wbCBqxm3ZMBB4Rb2Hpw2tKOPBBhYknQZavymNGlbez1?=
+ =?us-ascii?Q?NSjJLu4mMnP/NtadjggaNGIQuj/KiDQsS6p/j1H1DHvuzjqm2wa0VlsCEw0z?=
+ =?us-ascii?Q?avVUbtg7pG0LPEiVNK2rmLcTNLgDqcCP4RoRCgEs0NwxFSopT6BadKoulPuY?=
+ =?us-ascii?Q?TBtg5VK9dh7CE8NqgTBsQCayVLNqu0Mleyo8RpTDlTq+qvgK6tWBjHROyeA9?=
+ =?us-ascii?Q?6VqiFaPmfyXUcKH6YJwKINAH6GS8Qef+rexRdoCcehOge5sVTREqQtmyw8zv?=
+ =?us-ascii?Q?Mbt4lELE49WRRCit26HHqsvryU+29nNkvZpbru4cid/eOpy0TxtB/SgUU3dF?=
+ =?us-ascii?Q?U6/wut0beHivN1ZVCJBx1SvJTD2Ebnm5f7bdvRgr60PBwigZIxInEFNcyFmk?=
+ =?us-ascii?Q?Xm4x3xUkE3cLG/0gnwCBdqoR5X00+mSo+Bn7IOstB3LnUWwM8cDvPy6/ClwB?=
+ =?us-ascii?Q?C3ZAa8nykJboHtWQqmcSpRU5j3rxO4Ta5LP5FpPaWDK030YUnio7U19VuMuS?=
+ =?us-ascii?Q?UH+aGRBLOaj/jD/7x0636HeuLsPhn5JuZvwMTVQRkAcgQwCW/X+U6HH/JgNX?=
+ =?us-ascii?Q?a9o0QD/oSVRSKmRb5pfmguMdan0OOe9C+pwK0qHdb2p8z86P519cyE+8fHOA?=
+ =?us-ascii?Q?6wWcUpnT6Q=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6051b857-a040-4b8e-e403-08df183c41e8
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 23:58:39.4970
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mF1e4ShaSNoVlVxJhwuOFDEeTTDL7EJA4hoLEQYtPFLk6n4a7WBEAkraBTxWMLAL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF816B88375
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 0AE7B40009
-X-Stat-Signature: pp4ykskrgzazbdyppsq5q73yiex9zmbk
-X-HE-Tag: 1790033225-643454
-X-HE-Meta: U2FsdGVkX1+E8lpQ+tuoi73RKt5KMS0ZJQw02VGOkBv+T0K5NBE11gioRF29d35hQjdGd5GzaGnN54crLyRCeHApuPgh5Bk3Cveog2CorghfC8A69ypnKVeXYbaxU2jBX/ZpFrR2DBkVquJWOGTxei3nVU6solTiFc3NJYaylPYJJPGScvvU0BRxWV4qPWFbH78aN6a8AO0ddoZDzb+JtN7tqABy1NtIIamG10zRgpIdyRsRLCNh6Ads1aonMVLCAaJ2OWBmFrSFdKoDhbSt45l4mMq/KKTOloyf+744271m869N+WrN04mqoNRWdnlbO6dWZ+dlcPuD0Sz7aYfluqV9zd+9uno7jfJM99ydNOoiWWBfp3WfMq4hsF7NaCAwbfYS/NTk0l7O/r4B6+Dl20AmTuM9B4JIexJvBpm8BbkcxfRiVEFrdJzGeELj/vnacVuy5tPLv8qKN9NlQlQBbK6BI21vOgmjl2vEOLFleoul6hD14j+ysyA0ZRAsCB7k7idAjBmcnRjoMIBwJT8KItNane5stSszyKRJDnYi3xvwNyq12TAfCY1nWj++RjJCsWS+Nt/VaqmefBLt/Cl7Ky6f+//+BIeSf+BKGAzziVBacuHFMt+1ALy5CornWj6L67jgK0wfBHTQux5JxRdYcveRyoWQNgzXel0ULu2uBqOrlobsEDL1VydTFT/fEer+++nCapFVodOFYeMzuE6ZEmpCUAWQfPJYd42PZzc1Hv3Ni5M6l/E8NRVNHyl9jDwEvFi0WnykJQtW1+3JHBpqXJf9qRBosxh3XFelHd9fjxf8BdL3R8OrNFxSckeHGQqNnwtk7Tsj/P2Fj+hxM2iDiObaZ4mVkLb35UJvgB0yKH0MZg+AdeURHy8IdUkBfszjH8b83hinyMVYbeoxDve5RAPvjeDCFUQOnt/dOiSV1/t+/1xRzlQjNZC3iriNUFPhGao9uCKbPlNMG3LUzZL
- rOYb5l7e
- pet0O6FsLL2SmJL+An2iEgvmFoaxeYPHEdpu9xGkYKNCIeUNmRaN5hiYiKJFjyABLpfB5WskYzpDPQQLjrq4O+hQ752z8eLJCc2SR/pD+s7kGfes3d61VLz7fHlNbvLfTs5SUNVBXpMJxj+cheq/foCoTyvrJhlVrlGeJtzbea2fO0hMTvHSjPQnamPv5vq+Gp1sRjMEyNc33yNvtxLmHyk4GErUv7oV3l4egW5MAoaAK3yERUeafp/nsmC0SgjGvBvl9qYyryeJmuTuG8FtskmEcXKkdNC768AGQQ4tGkoySdAKfBLIElVf6OhkCoEOXyvB+fbBCs99kw2aLl8YGhIhxQg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E489740003
+X-Stat-Signature: a53eczith1bmo73mibpzhuj7ntzt9m9f
+X-HE-Tag: 1790035124-644356
+X-HE-Meta: U2FsdGVkX1+G3wginDLsiCydFHjI2zFz+5BwE4cOJeDA4wTZ6HREIDs0jidi+GxCuv+RLCZV1jnamCRMTuL6VDlNYR6O2YL8DHXfYy4H37iZ59ZDjzmFFnPqCvOsNs7A3xJD6J48KQyeqxNQQTXjdnVLTotK1DWJYMWfrBKUxpHLOtWIwZK7O2B8Xy67E24yV4zqSDI7ODhXTjujnEOba9vBp6NSy0SjLeDktIAdWfngYQvTCIoyHKdTtbj+bCwyaNMoJErTHLjT+sm0/jY09m4GXe6YJdzLlQVZR+UteGKjblbdn+WoOKQxRqJ61owPr11UUAaOpv3l/lEH9XnrE6Osb9qWRSa3e3l3Db5yjao1DywWw2KvUlvuZfzAj0fV/VtyLVGibH9JX8SzTHlP3Q1r0s9sY3F1kW0VWqIhm66i2d5x6vKo8vrfd5t2w38WE60ErXiSCvp9yidks0mpiCJ+oB9vs2BZLxo+AGoGHSU5Hy/MFz6qqEI2e6FHkgNzrieFB2rZMXtpI+F+02IBEF1QHoPKG8+Tk/g3xOtSB2hSn7TJMhd1EGdQHviC66V1YtuYGKXofdJYrUwcHKfZWyc/d5/pyL08xtlJxm9Iy5co/kRJ6vbp+pMJoRlrpbzolmutE4zACMIct9qfKxjBvjFhAr2AH7hn4mb9bUGsiCgQ0ZlK27kkiF2BDEsfaA6+IuaEY4oCqpMP0ZKOZFyTwYx4iS5v4wMw9gBi09KGkmuP3fhujdv+iEIjG6VjPsGf09Gx/MSj0oR9sNuUfTWLqBFz3Qi4j0mTcOZV+VJvjCnCmXOmgovqMfdx33fUZQNal2SXMHMHZK2qQ3nuX0Sew7LwEeVBTEp5eaWJg8ER3l81RIZBDmrdcDA3NVw2RcHirRceCa8+grWDovZmf90YhQVQZKubelG2p2WOT7gzMt0QwE/P4Mw3p4CtC0jI6jTeXr5L8l/ai2UBBtJR2Dr
+ rHIfPbjY
+ vuZ41Phnl4lCrMDK6PEW/deD5yMiMHsys+dFqaXzxRmltI9kHztqBxV0ljmbKUe2VjddgNxPFJ6J52zTsWycZ+P5ERy4EJtbE/MkwJXAz3ikm/Z0p60pNVzAAI/qDurxofp39TKjZa9oLK+ypHUuBor+1WFPAOIC7ZpI9PS/f2UwOKqSEivo7sRz0zoZNGcxegex4bGRsuXlrM/5du1b59/XZwBaKLxdPn2Ql0fiNVpLzBy79csCSKJNHCvkMqimsHQLfYEq5NC0VijNsV+Dmq3RwhuVDY53GwdJSS40jOTIdW3iMs+CT/aOsdsFKxWRhE0BJxdi8asXtW4dZtP5KqClOtdhrV3hdNyRyRcCwwxGoxF68hUZt9GuOgxDYPjf2LF7ANTbcxzLNfkVbywkdLhx1TieijcTfv4J8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,89 +167,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Did any of that change with slab_nomerge?
+On 21 Sep 2026, at 12:38, Gregory Price wrote:
 
-No. The large change in the SLUB counters still reproduced with
-slab_nomerge when using perf lock record. For example:
-
-                         uninstrumented       perf lock record
-    unpinned/node0
-      free_fastpath          75,366,487          646,378,908
-      free_slowpath          41,594,255          259,704,037
-
-    node0/node0
-      free_fastpath         119,705,541          440,896,371
-      free_slowpath               6,344            6,679,339
-
-    unpinned/balanced
-      free_fastpath          59,404,047          384,715,890
-      free_slowpath          60,602,379          324,936,304
-
-> ... unless perf lock was writing data to an NFS filesystem?
-
-It was not. The perf data file was on the local root filesystem:
-
-    $ df -T linux-mm/
-    Filesystem                        Type
-    /dev/mapper/ubuntu--vg-ubuntu--lv ext4
-
-> You can use the BPF version of perf lock to check lock contention like
-> below. (it only work with 'contention' subcommand.)
+> On Mon, Sep 21, 2026 at 12:18:12PM -0400, Zi Yan wrote:
+>> On 20 Sep 2026, at 23:29, Gregory Price wrote:
+>>
+>> OK, ZONELIST_PRIVATE and ZONELIST_KTEST are not upstream yet, right?
+>> In theory, the new zlidx can be added when you add new ZONELIST_ types.
+>>
+>> I am OK with adding it now, but you could mention this change in
+>> the commit message to avoid confusion. Something like,
+>> for bulid_node_zonelist(), use ZONELIST_FALLBACK explicitly.
+>>
+> ...
+>>> And add a BUILD_ON_BUG/ASSERT that forces any CONFIG_NUMA to have
+>>> balanced zonelist additions.
+>>
+>> Got it. Thank you for the explanation. Are all combinations of
+>> {ZONELIST_FALLBACK, ZONELIST_PRIVATE, ZONELIST_KTEST} x
+>> {N_MEMORY_GENERAL, N_MEMORY, /* private only */} allowed?
 >
-> $ sudo perf lock con -ab sleep 10
+> Slight inaccuracy on the way zonelists are actually built.
 >
-> or
+> Every node has a list in every zonelist.  The contents of each node's
+> list in that zonelist are limited to the candidate nodemask.
 >
-> $ sudo perf lock con -ab -E 5 sleep 10
+> So consider the following nodes:  N0, N1, P2   (N=normal, P=private)
+>
+> With the following candidate mappings:
+>    FALLBACK = N_MEMORY_GENERAL  (_COMMON)  (all normal nodes)
+>    PRIVATE  = N_MEMORY                     (all nodes)
+>    KTEST    = N_MEMORY & !N_MEMORY_GENERAL (only private nodes)
+>
 
-I reran the three placement cases using the BPF version, aggregating
-by lock address:
+One more question. What prevents one adding
+build_node_zonelists(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK)?
+Based on your above mapping, each of ZONELIST_* has its own candidate.
 
-    sudo perf lock con -abl -E 5 -- sleep 10
 
-I ran only perf lock and mpstat concurrently.
-
-The BPF version is substantially less disruptive. Comparing adjacent
-10-second uninstrumented and instrumented windows:
-
-                         uninstrumented       BPF perf lock
-
-    unpinned/node0
-      throughput            45.5 GB/s             43-44 GB/s
-      free_fastpath          76,217,260        118,511,381
-      free_slowpath          39,962,005         22,717,811
-      cmpxchg_double_fail         9,299              9,587
-      system idle               22.74%             10.61%
-
-    node0/node0
-      throughput            46.5 GB/s             46.5 GB/s
-      free_fastpath         119,739,790        148,686,356
-      free_slowpath               5,686              8,791
-      cmpxchg_double_fail         1,483              3,170
-      system idle               83.33%             82.42%
-
-    unpinned/balanced
-      throughput            46.5 GB/s             46.5 GB/s
-      free_fastpath          59,341,738         92,824,030
-      free_slowpath          60,000,396         60,658,896
-      cmpxchg_double_fail         1,742             23,772
-      system idle               68.27%             50.03%
-
-The per-lock-address BPF results are also quite different from the
-perf lock record results:
-
-    unpinned/node0:
-      contended    total wait    avg wait     address
-      8,345,025     12.27 min     88.23 us    ff3ad60e50e85100
-
-    node0/node0:
-      contended    total wait    avg wait     address
-      6,461,976     30.70 sec      4.75 us    ff3ad58ecf36ac80
-
-    unpinned/balanced:
-      contended    total wait    avg wait     address
-      6,592,568      6.50 min     59.18 us    ff3ad60e50e85100
-        143,397    666.98 ms       4.65 us    ff3ad58ecf36ac80
-
-perf identifies these as kmem_cache_node spinlocks.
+Best Regards,
+Yan, Zi
 
