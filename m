@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CB89C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1653C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5D26B00AD; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
+	id B63DA6B00DB; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47C466B00AF; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
+	id AEDEE6B00DF; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36B7A6B00E1; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
+	id 9DDEA6B00E1; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 158956B00AD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:49:37 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B29BC013E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:36 +0000 (UTC)
-X-FDA: 85237448352.24.52F8D83
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 603CA180002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:34 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=erV4TueH;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 76FB16B00DB
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:54:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE40E120125
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:54:34 +0000 (UTC)
+X-FDA: 85237460868.14.B671847
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3A41AA0009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:54:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5ODJA0g;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789987774;
+	s=arc-20220608; t=1789988073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QEWrTZ6OQNeCRFetVug7UdrK+ghkO/zagFf8q9Ojo2U=;
-	b=fK6VgHoM3fg3i9+v2uZN6g6JWgMs3Uw1Cp3xHHJCZoXWFlHsr9Nj/IkAXYTer91JiTnSUK
-	Mu2qxTMdVcuf53AagUh+DFwXJMGh6EsMPnOYM/Q0WfZAoxdmMvbDLE+PoP10+RMQIwfQAx
-	udydRwvsWh2s+BDjkQC3sMfwJ8AfILo=
+	bh=Rjti9mDz9Knd7equnQAAic7A7rHFx56gyrCpEIe4Ags=;
+	b=Mn6g/ou0tDZ0fNgKqoLNcKPSvyOsfNRrhn0dv41XGNB/02b0tQKv1zVp/d+p8RcARxBxua
+	CgcIoeGtw/ePptUTw+L3vDmYwpO+el0Ik7kYLtCU7OXv2oDRTfsmLJWdvc7cCjJVw7aY0G
+	X6IULdAzNzhEtCLmEXQv9WOVcjpTc3U=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=erV4TueH;
-	spf=pass (imf24.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5ODJA0g;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789987774;
-	b=JjMhQlncXJ0MeZ8xFeWWlCdG1FFiwlNYEM42VDHtxDWVAV8RSPThzBuWvaLBok1vgzYgUI
-	7T7dy/RSNnM8h4rtYfgGr5LSEneiMvxhBLnWbE6F1NiC7gG0bqPASYoCwQBX4tmJmrGEbY
-	/5TgLEQ1HXPdlhdXduuZ3lRVbiMmbJo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F32FD1570;
-	Mon, 21 Sep 2026 03:49:29 -0700 (PDT)
-Received: from [10.57.83.12] (unknown [10.57.83.12])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B56643F86C;
-	Mon, 21 Sep 2026 03:49:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789987773; bh=Sh52A48MJo14bixZqGSha3srEquqn/DYNl7bZAm7A1E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=erV4TueHzMTKU7EV61dmBcEuKYzA1op4hwcZB7VEFgaJWmKI5FE7ugnqJLu5ERObj
-	 Q50JhfvJ6lkvid/bPPod28UwjH6vdEo+d+vjjz43+VycruIntOw4hXFlZ850Oh67Co
-	 N6iKAnN/H18buKKpap1r1rQzAeicQUyvZ1ACH5b4=
-Message-ID: <c1ca2256-2516-4f4d-ba08-a2f584fc812b@arm.com>
-Date: Mon, 21 Sep 2026 11:49:28 +0100
+	t=1789988073;
+	b=xSXSOxB96dSUUVXNtisZ6hbbH/eIRx+14YSNbUBKkBQpitavGBEGwidfR4xYuZ3XAp11xR
+	X6lMPYq5yB68qc/imm2J4Vh+HlFvgHY0u9D5GaMCamELbHcXFYxLWVjW+mU3TCTFKhzBaR
+	3yPSxj9Kh1lQMSjs8YRNCHYtvVrB88s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6E9D141FEA;
+	Mon, 21 Sep 2026 10:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE461F000FF;
+	Mon, 21 Sep 2026 10:54:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789988072;
+	bh=Rjti9mDz9Knd7equnQAAic7A7rHFx56gyrCpEIe4Ags=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R5ODJA0gSYeGpPQO16SPXSwTOZ8tih3UjpLvQQDcsnZDQz0jAUM4saHZmFTyuAfHr
+	 vly+FL7XP8n2A54LqdJyLVsIx9WzJuTO0YLEK0YAbcM5AGvGQrTt6BZ/h851aJfqRN
+	 CUKSZGZMDZlJRaG46SDcvG/7ERr48jcVDq8PzSa0WUsDy3OLzpSPGpzp3gVIw9t5Gm
+	 0xtDRYUjSidbnio8BODSultPs4kBweoUhKKW1zhLz5eL+LI80h69YdkdRUaFgmNP27
+	 tmuKmAlLDZv6BPSkkq2obwcJo1SuUOqpSq27Y7QX21+hblbBi1/y66+jlWKqX0E/N4
+	 1Ngql7XGRJ6yA==
+Date: Mon, 21 Sep 2026 13:54:24 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Ingo Molnar <mingo@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3] x86/mm/pat: use pr_warn() for early W^X warnings
+Message-ID: <arEM4HMrY7BC2ykN@kernel.org>
+References: <20260913-fixes-verify-rwx-v3-1-5e1d6a08bd02@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] arm64/mm: Convert READ_ONCE() as pmdp_get() while
- accessing PMD
-To: Anshuman Khandual <anshuman.khandual@arm.com>,
- linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Mark Rtland <mark.rtland@arm.com>,
- linx-arm-kernel@lists.infradead.org, linx-kernel@vger.kernel.org,
- kasan-dev@googlegrops.com
-References: <20260903060657.2717457-1-anshuman.khandual@arm.com>
- <20260903060657.2717457-2-anshuman.khandual@arm.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20260903060657.2717457-2-anshuman.khandual@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 603CA180002
-X-Stat-Signature: qs3tny7d9mfamhuescg8rtyia597jr34
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260913-fixes-verify-rwx-v3-1-5e1d6a08bd02@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1789987774-32910
-X-HE-Meta: U2FsdGVkX19LPhKqr1+2NWPlJI7ef+Gc1LllLlQ67VT/YAXgXGVH1e+ThnX33TNfiMvbsqJi2CL4eJa3SJpnaVDmyKUZIf+CTagBCEY3ZZ80mpDro94INwTF0UnXNmLf4OnaY5Q7ruSCBRVs1KfhP4x36xZBCMH73ZTxYc7yY8WQeY8S+vEjNRZOvOoUuQSh1tFOUMqYf2WaZQOlt0ftG/dNOURJF5Dp66/xZuVYIeCH0NUB5GDMv2LFoQ1zOFG6ORTb8QZ3Cr/AOFLPywKFr0D30opW9gR5k4H5sEU3uJlu1BQFaxd+khz3M03P46kpxMPOb3nYl24W8ze+0LPchAWHkB1tPKHyDFKmcM1H27zYeGRiu/ka0UVWRW6hLl1AkdSsAWhgfNockLEBvNujVUyPxqWU4wSdHOTYMJMbFvQ33fwgdXjAOLjOA008cpgdWdinqZO3BLGGTiQetwufLvrTTxuFGLYUxDtOfKHMyLRaIJGDnbgHRskXlOsJnw0x4432xIH7UR/D6wPeX6Ivd5VhItA2Lo4BT7fgOI3TclmIxM4uJU2emn01erutZYzpfLvP2BR647QUqc5C3Y75ih/HXpIO2fbq99s8OeiB8ykho63x2gRe/m1xJEbEadQ6bwtWy26d9o3JnqJIftCYvZ02UiA15Hk4nSRsO089josPUVByEcfw45Xxlz9MUzk0z1YjZ8800z4LewcnlX8b+zzuf7BYZ6A9hwoDwAjEsAj3CfKyeN3kWUaafnjfs3NIDl7tnkVH8kf6StAiT9q3RM17WIIMehVGCmYECY2yUeaAbkBJik/vWylP+LpPW6kqaINBgnYaUr/y36uHbVSi9sEUmBYyU0RGptMEkAnYTbpC7OFErBeo/9lAfxVtVBn+UUIuKy+yrJ7pBu7BRTicZjkAPRx9P+img0pG88dvFWzuKQvOUdfWvp130dn8+NPNfLW5di5ir/qOUTVz4cs
- HyxxgkKk
- l3mlVFcemQfUKuYiku+U/RgS/v8UKpoySGVw5DarGFPAgUCZRsUZOwYwtXyMM3OJiy9J56UPoGiJgIgyVXVK6Cc80fqwBkc+rE/epI4cBQJY8w2zKvo+HHuERLOVvNv9XlFuX8rPthcOZUZ0vHcJeGjv4DdT7UbQ5syVTYZsdR4huBOC9xTT/q20/ne58BoaQL6JNvvI6GJNMssqV/DAbcGRrCthoqk9Xjr5NnsnTkuGOQl1CXCnSlLlpEWlr+yEPdBUHujDa/ud1oY7Bn30/g1coXRldYQxn9FHvrTjXc9DCR9LAuuWCCUMoyNgRXiHazmC+vQsuHvCMXXyKQPKdd3wUX+ws7oeEvNfu24xX8X42VOApC/DZ+4bqq8GTJRiGvwXkLyvOsm7VJtaPip+g1veHyX1495GMq25Yvja5TSl5b70a8eRPbRuU1htn54UasNXNsBb6mm0MVvcxFemfxi72hRb04agiqf88cqdI6y6P6y4=
+X-Stat-Signature: nss1gzzt4arfpyhrie15f59yqbe1ryxd
+X-Rspamd-Queue-Id: 3A41AA0009
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789988073-504757
+X-HE-Meta: U2FsdGVkX1+X4MlXkbBNJp56gvAQ80Xp6vEkoFYuXckMThJ1mbLTnHEM7OJz4NycDsTFWiyGM5ICjFlK0EJIhonVc4Nva09GTzq9awN8ScK8+7mXOzhID75NpM1xksq0hbcUu7jGNCwzEABjwLv4OY/PAEq1GSqppOJ5el9APj7uazvgSiZPU7EV5TlK02ISTN4QPRR3lkHB7wA7TnEhyU6JXXa91DjHNY8kAPsG9qkHrSo+4WfvUswBUhRcLlIpAQiZV3vKJbaieL0h1d3FJ5+11wnzHx/cCpklR2dzMvSDQB5W+tT9W/qKqg5GFWkJAhmnvy/xB7LbdyZUWt3kylWaGl7c+OOiw+PpOszYmOc50PoFkZPLu07dj5Armh3FR7ihqDuOexCP66B7KQi8gTgHO6rfATg1Jkhb8Uatcci1dA5st3/QPHtNGa4QVESKAzBYKSWUQSoecyxKPGCuDC4FGOfhR+rtgSPIkeTsYa+UrEeLbJTUhYyhDOS5wx66Xr/ACUSVC9mqjO5qoAT9BokKmdRa7u5Rp93PdVcXSssktL157NeviaSXzp17T6wEn9UldfCgdlPN5QrcWo4SeNR1mjIdV7mrrCF0Mh+kxTTzMOCSuJ79sWVWG5xIPsjNQ2Dz3DmGkpIFoWdQ5cscha6rHSrJ/9eCwHWH6tIrF6giD4DJvYLRoKzxueebelekhP8MEtezLl02ZfJXFnZh42JP1oRyBlU0ovz4g0jk3INz2nRqzj8YnuP+EQ0LvLnzH9vz7CnpFQU8GyxyevIBqANd3zz0enlGoCXKjEmY5TjNbGLH70iIzoziF0c8CE41ksL1ZqFe0rjmiqJXzpApGMRtupkCk6i4lFJwIb4loykc4H3t8PbKIZLM3g/KetmQC6HSniV4YvkCUHJgtdjQrJjlmxyl51lDBnAzpaLB//au72zIt3obkb7mpEYP1JvnPiu59Gef+3o3pXn7AYD
+ ZoFW+H/Q
+ dBbzwUiI3kZfTkRksYz6GfyKu7BiOjdVWSo5EM4hX/f8SyFJNJq0gc1pfm8ri2/iJbH8IO+KUw7GFZTqTZ9MYGbumw7PFyUVHmciFNiXl6/JUhmmKaCAxUrqUcp5jasACxzlgbWWlZ6L29aQjVliW5rbbDAW4urSWafFffi1H0UMjAiI2QcQVz6vyPtiexUacNcuDsMx/AXGCaqpIpzze3axtrie+JAx+uynzZN7nDh8cyL0yDCtXgA/Eekqcwtl5jO7RDk+F7RlI23mrpkNEFUo0kBNETr1bk7CMwCextk/pIZ9v4XtDb0Ib1xZjuiH7QhOihYN4GLXQuVTrIscEQ1Pji0DKf+jTFzlgDCYr2p07e9wo62XLfWWVuRLEzECV665gF7Zy7nROYw2ilboOe712YcSfrJcMcQ/0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,279 +96,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 03/09/2026 07:06, Anshuman Khandual wrote:
-> Convert all READ_ONCE() based PMD accesses as pmdp_get() instead which will
-> support both D64 and D128 translation regime going forward. That is because
-> READ_ONCE() would need 128 bit single copy atomic guarantees, while reading
-> 128 bit page table entries which is currently not supported on arm64. Build
-> fails for READ_ONCE() while accessing beyond 64 bits.
+Gentle ping.
+
+On Sun, Sep 13, 2026 at 10:37:27AM +0300, Mike Rapoport (Microsoft) wrote:
+> Nathan Chancellor reports the following warning:
 > 
-> Load Pair/Store Pair (ldp/stp) are only single copy atomic if FEAT_LSE1
-> is supported (which is required when FEAT_D128 is supported). Currently 128
-> bit pgtables is a compile time decision - so we could have chosen to extend
-> READ_ONCE()/WRITE_ONCE() to allow 128 bit for this configuration. But then
-> it's a general purpose API and we were concerned that other users might
-> eventually creep in that expect 128 and then fail to compile in the other
-> configs.
+>   CPA detected W^X violation: 8000000000000123 -> 0000000000000123 range: 0xffffffffc0400000 - 0xffffffffc0400fff PFN 100e00
+>   WARNING: arch/x86/mm/pat/set_memory.c:722 at __change_page_attr_set_clr+0xde7/0x1290, CPU#0: swapper/0/0
+>   Modules linked in:
+>   CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 7.3.0-rc1-debug-00006-g453e78594434 #1 PREEMPT(full)  2950d432dd3910251071a66f3134fe0875432786
+>   Hardware name: ASUS System Product Name/PRIME Z590M-PLUS, BIOS 1801 12/26/2022
+>   RIP: 0010:__change_page_attr_set_clr+0xdff/0x1290
+>   Code: 80 7c 24 42 00 0f 85 3a 04 00 00 48 8d 3d 19 8d 79 02 49 89 d9 4c 89 e1 4c 89 d2 4c 89 f6 4d 8d 84 24 ff 0f 00 00 4c 89 14 24 <67> 48 0f b9 3a 4c 8b 14 24 48 8b 0d 81 44 bf 01 41 f6 c2 01
+>   RSP: 0000:ffffffff87003c60 EFLAGS: 00010246
+>   RAX: 0000000000000002 RBX: 0000000000100e00 RCX: ffffffffc0400000
+>   RDX: 0000000000000123 RSI: 8000000000000123 RDI: ffffffff872e50c0
+>   RBP: 8000000100e00123 R08: ffffffffc0400fff R09: 0000000000100e00
+>   R10: 0000000000000123 R11: 0000000000000001 R12: ffffffffc0400000
+>   R13: 0000000100e00123 R14: 8000000000000123 R15: ffffffff87003d58
+>   FS:  0000000000000000(0000) GS:ffff8ad1777a7000(0000) knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: ffff8ad0a4201000 CR3: 00000007e3022001 CR4: 0000000000770ef0
+>   PKRU: 55555554
+>   Call Trace:
+>    <TASK>
+>    ? _vm_unmap_aliases+0x219/0x280
+>    change_page_attr_set_clr+0x161/0x250
+>    ? events_sysfs_show+0x5d/0x80
+>    set_memory_x+0x39/0x50
+>    apply_retpolines+0x656/0x6d0
+>    ? events_sysfs_show+0x5d/0x80
+>    ? events_sysfs_show+0x6c/0x80
+>    ? events_sysfs_show+0x62/0x80
+>    alternative_instructions+0x3c/0xd0
+>    arch_cpu_finalize_init+0x130/0x190
+>    start_kernel+0x97d/0xa10
+>    x86_64_start_reservations+0x24/0x30
+>    x86_64_start_kernel+0xda/0xe0
+>    common_startup_64+0x13e/0x151
+>    </TASK>
+>   ---[ end trace 0000000000000000 ]---
 > 
-> But worse, we are considering eventually making D128 a boot time option, at
-> which point we'd have to make READ_ONCE() always allow 128 bit at compile
-> time but then it might silently tear at runtime.
+> The warning appears because commit 038176c21617f ("x86/mm/pat: fix
+> effective RW computation in lookup_address_in_pgd_attr()") fixed the
+> effective RW checked by verify_rwx() and it exposed that pages used for ITS
+> trampolines temporarily have RWX permissions.
 > 
-> So our preference is to standardize on these existing helpers, which we can
-> override in arm64 to give the 128 bit single copy guarantee when required.
-
-Perhaps something like this conveys the justification a bit more clearly?:
-
----8<---
-arm64/mm: Use pmdp_get() for PMD accesses
-
-Replace READ_ONCE() with pmdp_get() for PMD accesses in preparation for
-supporting both D64 and D128 translation table formats.
-
-READ_ONCE() cannot currently be used for 128-bit page table entries on arm64
-because it does not provide the required 128-bit single-copy atomicity, causing
-builds to fail for accesses wider than 64 bits.
-
-Although LDP/STP provide the required atomicity when FEAT_LSE is available (as
-required by FEAT_D128), extending READ_ONCE() to support 128-bit accesses is
-undesirable. READ_ONCE() is a general-purpose API, so doing so could encourage
-other 128-bit users that would either fail to build in configurations without
-D128 support or, if D128 becomes a runtime option, silently permit tearing on
-systems without the required hardware support.
-
-Instead, standardize PMD accesses on the existing page-table helpers. These can
-be overridden on arm64 to provide 128-bit single-copy atomicity when required.
----8<---
-
-With that:
-
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-
-
+> The permissions are updated in its_fini_core() after all the ITS
+> trampolines are generated, but since verify_rwx() detects invalid
+> transitions, it warns when its_alloc() makes RW memory executable.
 > 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Mark Rtland <mark.rtland@arm.com>
-> Cc: linx-arm-kernel@lists.infradead.org
-> Cc: linx-kernel@vger.kernel.org
-> Cc: kasan-dev@googlegrops.com
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> At the time of alternatives patching the entire kernel text is mapped
+> RWX, so the warning is bogus anyway.
+> 
+> Since the verification of the entire page table with debug_checkwx() has to
+> be enabled explicitly in the kernel configuration, retain the warning even
+> if it's bogus, but make it scream less loudly: use pr_warn_once() rather
+> than WARN_ONCE().
+> 
+> The warning can be removed once debug_checkwx() becomes unconditional for
+> configurations with CONFIG_STRICT_KERNEL_RWX set.
+> 
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Closes: https://lore.kernel.org/all/20260905044253.GA3816371@ax162
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Tested-by: Nathan Chancellor <nathan@kernel.org>
+> Tested-by: Ihor Solodrai <ihor.solodrai@linux.dev>
 > ---
->  arch/arm64/include/asm/pgtable.h |  3 ++-
->  arch/arm64/mm/fault.c            |  2 +-
->  arch/arm64/mm/fixmap.c           |  2 +-
->  arch/arm64/mm/hugetlbpage.c      |  2 +-
->  arch/arm64/mm/kasan_init.c       |  4 ++--
->  arch/arm64/mm/mmu.c              | 22 +++++++++++-----------
->  arch/arm64/mm/pageattr.c         |  2 +-
->  arch/arm64/mm/trans_pgd.c        |  2 +-
->  8 files changed, 20 insertions(+), 19 deletions(-)
+> v3 changes:
+> * fix stupid copy-paste error
 > 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 61fbfab3e06e..51f55498d43d 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -805,7 +805,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
->  }
+> v2: https://patch.msgid.link/20260911-fixes-verify-rwx-v2-1-e2cde39b6693@kernel.org
+> * Use pr_warn_once() for early violations instad if skipping them entirely
+> 
+> v1: https://lore.kernel.org/all/20260908092730.4002628-1-rppt@kernel.org/
+> ---
+>  arch/x86/mm/pat/set_memory.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index b3060000da8d1..a799f539287e2 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -697,6 +697,21 @@ static inline pgprot_t verify_rwx(pgprot_t old, pgprot_t new, unsigned long star
+>  		return new;
 >  
->  /* Find an entry in the third-level page table. */
-> -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
-> +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
-> +					 pte_index(addr) * sizeof(pte_t))
->  
->  #define pte_set_fixmap(addr)		((pte_t *)set_fixmap_offset(FIX_PTE, addr))
->  #define pte_set_fixmap_offset(pmd, addr)	pte_set_fixmap(pte_offset_phys(pmd, addr))
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index c75bab3c2f4b..cb25cb130e83 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -188,7 +188,7 @@ static void show_pte(unsigned long addr)
->  			break;
->  
->  		pmdp = pmd_offset(pudp, addr);
-> -		pmd = READ_ONCE(*pmdp);
-> +		pmd = pmdp_get(pmdp);
->  		ptval_to_str(pmd_str, pmd_val(pmd));
->  		pr_cont(", pmd=%s", pmd_str);
->  		if (pmd_none(pmd) || pmd_bad(pmd))
-> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
-> index f66a0016dd02..3cdac8021d4f 100644
-> --- a/arch/arm64/mm/fixmap.c
-> +++ b/arch/arm64/mm/fixmap.c
-> @@ -42,7 +42,7 @@ static inline pte_t *fixmap_pte(unsigned long addr)
->  
->  static void __init early_fixmap_init_pte(pmd_t *pmdp, unsigned long addr)
->  {
-> -	pmd_t pmd = READ_ONCE(*pmdp);
-> +	pmd_t pmd = pmdp_get(pmdp);
->  	pte_t *ptep;
->  
->  	if (pmd_none(pmd)) {
-> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> index 8e799c1fe0aa..cdaa4500faf9 100644
-> --- a/arch/arm64/mm/hugetlbpage.c
-> +++ b/arch/arm64/mm/hugetlbpage.c
-> @@ -304,7 +304,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
->  		addr &= CONT_PMD_MASK;
->  
->  	pmdp = pmd_offset(pudp, addr);
-> -	pmd = READ_ONCE(*pmdp);
-> +	pmd = pmdp_get(pmdp);
->  	if (!(sz == PMD_SIZE || sz == CONT_PMD_SIZE) &&
->  	    pmd_none(pmd))
->  		return NULL;
-> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-> index 45fbdce684c8..7ca833c5de5e 100644
-> --- a/arch/arm64/mm/kasan_init.c
-> +++ b/arch/arm64/mm/kasan_init.c
-> @@ -62,7 +62,7 @@ static phys_addr_t __init kasan_alloc_raw_page(int node)
->  static pte_t *__init kasan_pte_offset(pmd_t *pmdp, unsigned long addr, int node,
->  				      bool early)
->  {
-> -	if (pmd_none(READ_ONCE(*pmdp))) {
-> +	if (pmd_none(pmdp_get(pmdp))) {
->  		phys_addr_t pte_phys = early ?
->  				__pa_symbol(kasan_early_shadow_pte)
->  					: kasan_alloc_zeroed_page(node);
-> @@ -138,7 +138,7 @@ static void __init kasan_pmd_populate(pud_t *pudp, unsigned long addr,
->  	do {
->  		next = pmd_addr_end(addr, end);
->  		kasan_pte_populate(pmdp, addr, next, node, early);
-> -	} while (pmdp++, addr = next, addr != end && pmd_none(READ_ONCE(*pmdp)));
-> +	} while (pmdp++, addr = next, addr != end && pmd_none(pmdp_get(pmdp)));
->  }
->  
->  static void __init kasan_pud_populate(p4d_t *p4dp, unsigned long addr,
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index b5de4095d650..32daaa547d09 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -200,7 +200,7 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
->  			       int flags)
->  {
->  	unsigned long next;
-> -	pmd_t pmd = READ_ONCE(*pmdp);
-> +	pmd_t pmd = pmdp_get(pmdp);
->  	pte_t *ptep;
->  
->  	BUG_ON(pmd_leaf(pmd));
-> @@ -257,7 +257,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  	unsigned long next;
->  
->  	do {
-> -		pmd_t old_pmd = READ_ONCE(*pmdp);
-> +		pmd_t old_pmd = pmdp_get(pmdp);
->  
->  		next = pmd_addr_end(addr, end);
->  
-> @@ -272,7 +272,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  			 * only allow updates to the permission attributes.
->  			 */
->  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
-> -						      READ_ONCE(pmd_val(*pmdp))));
-> +						      pmd_val(pmdp_get(pmdp))));
->  		} else {
->  			int ret;
->  
-> @@ -282,7 +282,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  				return ret;
->  
->  			VM_WARN_ON_ONCE(pmd_val(old_pmd) != 0 &&
-> -					pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
-> +					pmd_val(old_pmd) != pmd_val(pmdp_get(pmdp)));
->  		}
->  		phys += next - addr;
->  	} while (pmdp++, addr = next, addr != end);
-> @@ -293,7 +293,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
->  static bool pmd_range_has_valid_noncont(pmd_t *pmdp)
->  {
->  	for (int i = 0; i < CONT_PMDS; i++) {
-> -		pte_t pte = pmd_pte(READ_ONCE(pmdp[i]));
-> +		pte_t pte = pmd_pte(pmdp_get(pmdp + i));
->  
->  		if (pte_valid(pte) && !pte_cont(pte))
->  			return true;
-> @@ -1553,7 +1553,7 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
->  	do {
->  		next = pmd_addr_end(addr, end);
->  		pmdp = pmd_offset(pudp, addr);
-> -		pmd = READ_ONCE(*pmdp);
-> +		pmd = pmdp_get(pmdp);
->  		if (pmd_none(pmd))
->  			continue;
->  
-> @@ -1708,7 +1708,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
->  	do {
->  		next = pmd_addr_end(addr, end);
->  		pmdp = pmd_offset(pudp, addr);
-> -		pmd = READ_ONCE(*pmdp);
-> +		pmd = pmdp_get(pmdp);
->  		if (pmd_none(pmd))
->  			continue;
->  
-> @@ -1729,7 +1729,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
->  	 */
->  	pmdp = pmd_offset(pudp, 0UL);
->  	for (i = 0; i < PTRS_PER_PMD; i++) {
-> -		if (!pmd_none(READ_ONCE(pmdp[i])))
-> +		if (!pmd_none(pmdp_get(pmdp + i)))
->  			return;
->  	}
->  
-> @@ -1881,7 +1881,7 @@ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
->  	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), mk_pmd_sect_prot(prot));
->  
->  	/* Only allow permission changes for now */
-> -	if (!pgattr_change_is_safe(READ_ONCE(pmd_val(*pmdp)),
-> +	if (!pgattr_change_is_safe(pmd_val(pmdp_get(pmdp)),
->  				   pmd_val(new_pmd)))
->  		return 0;
->  
-> @@ -1906,7 +1906,7 @@ int pud_clear_huge(pud_t *pudp)
->  
->  int pmd_clear_huge(pmd_t *pmdp)
->  {
-> -	if (!pmd_leaf(READ_ONCE(*pmdp)))
-> +	if (!pmd_leaf(pmdp_get(pmdp)))
->  		return 0;
->  	pmd_clear(pmdp);
->  	return 1;
-> @@ -1917,7 +1917,7 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
->  	pte_t *table;
->  	pmd_t pmd;
->  
-> -	pmd = READ_ONCE(*pmdp);
-> +	pmd = pmdp_get(pmdp);
->  
->  	if (!pmd_table(pmd)) {
->  		VM_WARN_ON(1);
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index bbe98ac9ad8c..0ca07bd5ded9 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -414,7 +414,7 @@ bool kernel_page_present(struct page *page)
->  		return pud_valid(pud);
->  
->  	pmdp = pmd_offset(pudp, addr);
-> -	pmd = READ_ONCE(*pmdp);
-> +	pmd = pmdp_get(pmdp);
->  	if (pmd_none(pmd))
->  		return false;
->  	if (pmd_leaf(pmd))
-> diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-> index cca9706a875c..b27b2d2c20c3 100644
-> --- a/arch/arm64/mm/trans_pgd.c
-> +++ b/arch/arm64/mm/trans_pgd.c
-> @@ -74,7 +74,7 @@ static int copy_pmd(struct trans_pgd_info *info, pud_t *dst_pudp,
->  
->  	src_pmdp = pmd_offset(src_pudp, start);
->  	do {
-> -		pmd_t pmd = READ_ONCE(*src_pmdp);
-> +		pmd_t pmd = pmdp_get(src_pmdp);
->  
->  		next = pmd_addr_end(addr, end);
->  		if (pmd_none(pmd))
+>  	end = start + npg * PAGE_SIZE - 1;
+> +
+> +	/*
+> +	 * If the kernel text is still RWX, gently complain, this could be a
+> +	 * false positive.
+> +	 * Once debug_checkwx() becomes mandatory for CONFIG_STRICT_KERNEL_RWX,
+> +	 * the warning can be removed completely.
+> +	 */
+> +	if (!kernel_set_to_readonly) {
+> +		pr_warn_once("CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+> +		  (unsigned long long)pgprot_val(old),
+> +		  (unsigned long long)pgprot_val(new),
+> +		  start, end, pfn);
+> +		return new;
+> +	}
+> +
+>  	WARN_ONCE(1, "CPA detected W^X violation: %016llx -> %016llx range: 0x%016lx - 0x%016lx PFN %lx\n",
+>  		  (unsigned long long)pgprot_val(old),
+>  		  (unsigned long long)pgprot_val(new),
+> 
+> ---
+> base-commit: ebaf7c9bbb1e16523d7036e7e1225ad2dfcc6482
+> change-id: 20260910-fixes-verify-rwx-044841b76a38
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
 
+-- 
+Sincerely yours,
+Mike.
 
