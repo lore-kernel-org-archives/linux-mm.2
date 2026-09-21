@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A6EC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:49:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D4A1C982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:49:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3069C6B00C5; Mon, 21 Sep 2026 10:49:08 -0400 (EDT)
+	id 158766B0092; Mon, 21 Sep 2026 10:49:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B75D6B00CC; Mon, 21 Sep 2026 10:49:08 -0400 (EDT)
+	id 130D96B00CD; Mon, 21 Sep 2026 10:49:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CD836B00CD; Mon, 21 Sep 2026 10:49:08 -0400 (EDT)
+	id 01FC66B00CF; Mon, 21 Sep 2026 10:49:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E43406B00C5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:07 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 724D31A016B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:49:07 +0000 (UTC)
-X-FDA: 85238051934.13.F76B5C1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B44256B0092
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:49:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 293441601DD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:49:15 +0000 (UTC)
+X-FDA: 85238052270.30.D226A93
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D6F174000C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:49:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AZS5BWYg;
-	spf=pass (imf27.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790002146;
-	b=a8GXgguXHCQGjI0erU11DG6PZorgL7lE4/teRgeDmF6wYeVaFmgH4d+NChhbJeMjceAxrR
-	Qky3Iu5hfuaHNk3MWdfhNxbfBAAov5vbeeHJJtbpg6K8BqSoNc+LKPLRynrUogE8tc2s1t
-	e4xX0mNU9Ayk3NdmJfancn1uCGj8bXs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AZS5BWYg;
-	spf=pass (imf27.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7AD844000A
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:49:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y+kLs6SQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790002146;
+	s=arc-20220608; t=1790002153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=/Lkgz98kmoNVfPiZtUjlz1I7ZL706Byj55J2FNtyPqQ=;
-	b=uUPZGuggQ7/4Quei1w0iPBCmva5r9zL5h9NYVebSfqO/0pNLcPnCcZqxQkmLsDA9EPghLj
-	WrYmx4zLmW2+UytAxinnmM98wrJml2CVc/lyX2AT1eQhqELotnE8k+b4MU78MuiRtVptBE
-	DmR+b4ah8dhC8us9SYbaHVE9bTE++9Q=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JdzsdQpKyf1oi4MN56R5Qf9hEJiO6vl06z2ni7VOm34=;
+	b=EQavRFnE9bVsVSRb+yCSsjpm9VIu+RWCyMayjTek3hMzyOHCVPwFsDBz/+irZ+Ggg+fKKv
+	6yAQr6VFqAEYSZXR4/xLVqrL5a1A+RV+M+Ff+pfOEe0EMpXjO8aUXZdYmat4+CJF4ULtVL
+	BUYDxltkjCnX4ah96koHllU/fvSQ4hI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790002153;
+	b=JJZqxfzRuDuNWMpDy+XdfydsniNzkZPZZlq1F5ybq52oHddFRe1pshrytC9igxHbsLOJpw
+	kazobVPr5UkCJY8jDY/eA0suXBUddrSu9ZtFY0JJ2KrPmkOL/AdBGSaQsvJGkmhtyMCZkT
+	wxnBGkpMzBo23kupsj3s2zX7YHKyRgI=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y+kLs6SQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 07A364183D;
+	by sea.source.kernel.org (Postfix) with ESMTP id D27FA43EB1;
+	Mon, 21 Sep 2026 14:49:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8793A1F00893;
 	Mon, 21 Sep 2026 14:49:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D581F000FF;
-	Mon, 21 Sep 2026 14:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790002144;
-	bh=/Lkgz98kmoNVfPiZtUjlz1I7ZL706Byj55J2FNtyPqQ=;
-	h=From:To:Cc:Subject:Date;
-	b=AZS5BWYgcRs9dqkQfvQ6iimxVWMS0upWyGswZHtnACOlJPQp6vXIN4W+cmjg3N59a
-	 U0FN3eQ5R/r5/4dF5pqTEC4HteALSLwC/BzUm50j968a9Kioq54AhdIyJDi2fucnSg
-	 vwcxd98mb0Mg9TXXEgvG8WS4ptgAeJ8qJtjLUUj1OuW6JEVB/NNjvyiP8qG/0WarOI
-	 1xMgtBCoN6azE2ESjlDpM4qNAzdTNXkg1g2ugnpVngq7rQi0SuI3CC2OfZYqznaPqr
-	 ZluZjb7lwcLlweCWQ1w0Nj2ujGhRoIHX7XE/xrFKXoKry43DqzFBuRu/qBTE4euDms
-	 LnvETXcMVA0HA==
+	s=k20260515; t=1790002152;
+	bh=JdzsdQpKyf1oi4MN56R5Qf9hEJiO6vl06z2ni7VOm34=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Y+kLs6SQLu85HXfzZNOLdVmzLtG8mzYHcUSGiSn1iF44uWoScyqBbhGJ5r0nsK/ma
+	 FIK15tCOZoLUHS+PwSHzIoVNZTS+z+H9j+yHajmGDZLJeT5W++foKiWJFE27qu/Kvi
+	 TbLBk+PmZ6h/KYLkO/NGiXwmBZc2fy/RXSarlfUmbGTkZFi5PWpPHwLO4U66CAKAK1
+	 jspex32vrRlNo8fuaOWIMQeW23gztZ9EXJCKytESjUn74vf1svigMLszelQIvmvxrU
+	 qZOf+y8QRisgQbX0dfD0v46buL7LDd9OESNuOzlcfExGOhpDBIF4A9TEQW4rUpzpaZ
+	 lS+nUdoKGfTdw==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev,
@@ -87,20 +87,22 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v7 00/13] coco: guest: Add a shared-granule allocator for host-shared memory
-Date: Mon, 21 Sep 2026 20:18:34 +0530
-Message-ID: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v7 01/13] arm64: realm: Add RHI helper to query IPA state change alignment
+Date: Mon, 21 Sep 2026 20:18:35 +0530
+Message-ID: <20260921144847.501151-2-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D6F174000C
-X-Stat-Signature: gqe8xayasswf5t6s6xmwy7ype3r9mboo
-X-HE-Tag: 1790002145-6910
-X-HE-Meta: U2FsdGVkX1/y1BHc5TIzO2PYNifNNrd1zfzBXOV/9X6C8Rd/nmFkQMJNlydSLV9UZ8Xs/VuK7A/1bB2auYwEN81U/Fsde/vaE48Yq7BTNv6/a1PkNjQAf5xJY7OxKidvy2zqYxJCatewKVXJF8+inTiTvazI7t9pSlVktFg6K1za+pqajK+T5L+mGRC23a7UPtBn6FSJz66ss8IFQjuzKCm2jL4f3BHjYbC0mLYHTEnRrJBApUGPuao5BeSuIJ0tc3LzXXnRG5x0dNVDZ5vTln4HhGGeUoUD6/G+vgk8e3VOfYOq+MGwktKU1XnVpv80BytEW7VMaUoEXwFWeXm6N96mutaeISWBgwvA8OZxSrQoiw2wV6UDDap8yrfotmlustTtVxGXa1HM2J+n4glLQGUjhqXSqLrEvsnopdlqHgtxXzcGafELTUaUSEmF8YLhFFiFJf6v6ST/Eh39gJM4j+xbnEMIuSG3waqKw639e6qkOU2RiQrdIxas0PQSKfsHv9XUzpx77OPkPMdPa5TqxNPoKdn173qDQO9GO0LsT4oCDiG4n83l77diHlDXrykCUvU/66uAHv1rF+RkBYMuqZKNzkYEmx5G6/cloXCoNOXWxZ6jDhUc6SPx0/IcH4JHTI4FwpADY7o8CnMg7s8CwrIB4YVSnat4ROn9MfmTrpxw3gbI/m/sUX9qmuncV9KK3jENoqoNyigJSNVW0MITtcQVoit5ZrUhHLOZaRVV/qdlwU4OClkKfqcZtKq76/qUszmhGiU7z/awfdUFxJKGoP0aEc3bMsUeUKuM+bQEl3iPs8t5slfBJSqKNf0ebJ4ulO+g3u0HJ0ceP3+8OhjpXYNHWwFzaSZT1DJBAj+us0LYcn0+7SBbUISXZde+ciEtC3muVBZb6dz0gCctfSuP5BAWATRasOgp/4o1fMPMXNbkkKEAelgdlAAPn4QxLKL3sSl0hS0txfYiXkKYDup
- ChgS7ly3
- 9OzFdFGhoX9aynvmCbMSZXlsBZ4NGjBPYF8I/ttRSVPQX8Obe562I1KpPx3iUtMSd6vAGLMRv+72sm/QLWCJ/2Jxz9OipDejaLC+qMS8SsVMxhJq4JBzPOxtG7dzRH8VZ69+PMuIzgdCIIDkmgb9WxcFOCmh774lwnvj3HtqGpjkmpyFJqYthiO1fv0Dnb5gEYU0jbNA4OTuOY2LBXcMtJlzkgFbQF63QxtBiKE6difsweGE6TGDO0QcPeocr29xPl7QW4+2GTd6oJ7cHulZ7/5WO9Ay66jRBXDDvOPgyq9Dzsf3QUwwXTBL6WPf3Agvw+7OVXrEMsHba2UXP66k65wdcqhjJYw9AFPDZ+K/BUOnjSLUcBotmPjWTY2fKrcww6VK6y+j0t3tg3noZxoAcJJz0qVVK2lEKmBb8DfkT1uMRrC/YG/7hzHKYHTyJZa8FA6yByzDo6pwv1UkF5L0boqJFYLO3mU4YZxuJv+xXeLsB8VjeWoC4gn/hXnd/cI4uXXNP9Q+msQC+GfXnQdzPOG0TNZqL5X9Yb3oCuD5xpWMBrrqaLKC2LM20gfLb7lN+W8HUnqtqNx2FBEVr8znD4jGIH/6PQ4d93As43LHmNec0i9Vzt1jH2O3r5ybC5JUPqJ6IyZCe4Tn3DzqkvpUVb/xK/VaSPZ+QtHhE6AB6PHwWmqfUdcOLs0abf2YI0gH1GHBcKHf6MhIITiMt+xydjDoEN/eRGN9uEQe5q7fMqCVf+iDYxQGXT+Aqi0gN+5b7KftlRUrwq/bhcA2MpNaKxplD1Q==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7AD844000A
+X-Stat-Signature: hce4hq3pj5hedi73b66mkyrh6sjncjrc
+X-HE-Tag: 1790002153-690634
+X-HE-Meta: U2FsdGVkX1+wdBgPJBWuKj0UvwAPHQc0uqE2aar8tD2fDz7G5ke/DmxLEOfwoCycEAatORkUI85VM8y/RaZqC3uLN0/qE9/Yvo6kS9oztSojnV6CI55r2YupbrkMNn3NrquJ5PHPt4JuTyOXvBAwUQS1ifwHG8Q7tiQtaQLwCz+fySpK4dbPjAJ/2Ef1a0VbqcVH9BU8fkceXoMtyY5gArFapJ0lqPlgzipLepmWiS5m+O5bqS4TRhDGKvp2R4BXAz6p3ntlVed9nFY97I0gYYCktiJ+a8p2TD2ZSAxOQYDLQ8dldEomfbP+E1A/j8tcXVoC4lkfNYtsqrBXEv5b6HVHS+WRa2KD7xInNBpVVpZvaqQmrn7530lkZeUklrmQEbYB5l8/EHaqmuOUuUOuTmR6J9/u9bq16SGRl++tv/ggkCKK23QsMxIk5LDvwcIMIL8d45xl74b0yfN8y+ol9DLSABLer0T5Pdhyz/Ye9z+ZGmkj+fvvtFxKSn0/d5brlmGxmTQse4PxZx/LBueB9PADNtBYm+bInLQV7qjbrO934Hirj5b/SRtYG9JUSXSX4+uRZxOS0BQYVsOJyGHvXHX7fw1lfFV/34pq8qi1QJj9mlBMGt+yzw/8mpJAD8Wj0JuYjzaU/25xV7mxo8DA6j7cUncUlg3XQxCi5DP2U5KMtPFArhltY/7hrih/nfaaGZwHxza5qncUjghMSwRbSyCg4jJbg564qCgtgqHCLt6+1ML5Ja2Uq37jt9cSZWAJbBTSuqseeSoyfWP55IyEwDKYt7MlpTriLzH1ED83P3cSnItKd8TxExmYZ1e0ggwOCUqvGTJ0biqEDVg4vQYOz/g5hW/YIBJWCKHUwDyUJmgXUoaY04fM14WPsSDgxklwaw2ubLX2LKcFOFdS4paeWpzcSB0ccGO46QoqlPIpv+6QA0lHlcDK5jyQ/X9dFF1y/Fa/RJ8MgxiAibnCW6D
+ fuyYWpdU
+ PoWud7g1cbyWpv3QLEzExbBqB482RUPsO3GBhVAAnOgA02ownna/wzPb+FoQxcp4Ms8GE3gSzEGMCudGM8MxDd+IXtaQRJwFN51QLpXYfx+NFP9VQ2kXWJL7/ZTQ+F+AioRu/fV0zt/A1ccg7tuQM3lXrEqhSNdJe5fUwvRSDDkE/ZMH3BKBmVgve6uUmY9hyy3Dt07pOwKoi7xz9vijvXfC7KN+obWieBBfVpFCjW07N9BnNVbXTHKiCk6kHZ8njb0gshr5WBFgRmmxakxZIZrdUvandck9F9BB3A3ggvWzNPKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,194 +110,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Arm CCA guests can run with a PAGE_SIZE that is smaller than the granule
+size used by the host to track Realm IPA state. In that configuration,
+changing a guest PAGE_SIZE range between protected and shared state can
+cover only part of the host-owned state-change unit.
 
-This series tightens the alignment requirements for buffers that are shared
-between confidential-computing guests and the host, and adds a common
-allocator for host-shared memory.
+The Realm Host Interface specification (Arm DEN0148) [1] defines the
+Host Configuration interface for querying host capabilities, including
+the IPA state change alignment.
 
-When a guest runs with private memory, buffers shared with the hypervisor
-are not only accessed by the guest. They are also accessed by the host
-kernel, and the host may manage the corresponding shared/private state at a
-granularity larger than the guest page size.
+Add the RHI HostConf definitions and a get_ipa_state_change_alignment()
+helper. The helper uses RSI_HOST_CALL to query the supported HostConf
+version and features, and reads the IPA state change alignment when
+available. It falls back to PAGE_SIZE if the interface is unavailable or
+returns an invalid value.
 
-This matters for CCA systems where the Realm stage-2 mappings managed by
-the RMM can still operate at 4K granularity, while the non-secure host may
-manage the IPA state change at a larger page size, for example 64K. In that
-case, allowing a guest to convert and share only a 4K subrange of a
-host-managed granule is unsafe.
+[1] https://support.arm.com/documentation/den0148/latest/
 
-Architectures such as Arm can detect incorrect accesses to Realm physical
-address space PFNs through GPC faults. However, relying on that as the only
-line of defence is fragile and can still lead to kernel crashes. The risk
-is especially visible for shared buffers that are later mmapped into
-userspace, such as guest_memfd or dma-buf backed allocations. Once
-userspace can access the mapping, the kernel cannot guarantee that
-applications will only touch the intended 4K region rather than the whole
-host page mapped into their address space. Those userspace addresses may
-also be passed back into the kernel and accessed through the linear map,
-resulting in a GPC fault.
-
-To avoid this, host-shared buffers must satisfy two constraints:
-
-  - the address must be aligned to the CoCo shared-granule size
-  - the size must be a multiple of that granule size
-
-The series adds a common CoCo shared-memory layer for enforcing these
-constraints. It provides shared-granule geometry and range-validation
-helpers, byte-oriented private/shared transition helpers, and
-alloc_cc_shared_pages() with a node-aware variant. The allocator rounds a
-request to the architecture shared granule, allocates suitably aligned
-contiguous pages, transitions the complete allocation to shared state, and
-returns the transitioned size alongside the page.
-
-The corresponding free helper restores the complete allocation to private
-state before returning it to the buddy allocator. If private state cannot
-be restored safely, the allocation is deliberately leaked rather than
-returning potentially shared memory for unrelated use. Since a
-private-to-shared transition may modify memory contents, __GFP_ZERO is
-applied after the transition.
-
-The generic shared-granule size defaults to PAGE_SIZE. For arm64 CCA, the
-series queries the host IPA state change alignment through the Realm Host
-Interface, caches it during Realm initialization, and exposes it through
-the arm64 memory-encryption operations.
-
-The common allocator is used for host-shared allocations whose backing is
-owned by an individual caller:
-
-  - GIC ITS command queues and tables
-  - dma-direct allocations backed by CMA or the page allocator
-  - backing allocations for the CoCo atomic DMA pools
-  - dma-buf system_cc_shared heap allocations
-
-Hyper-V users of set_memory_encrypted() and set_memory_decrypted() are not
-changed by this series. Those paths are not currently used by the arm64 CCA
-code path, and therefore are not part of the arm64 CCA IPA state change
-alignment problem addressed here.
-
-NOTE: I have not added explicit MAINTAINERS entries for mm/cc_shared.c and
-include/linux/cc_shared.h, as I am unsure whether we need a separate section
-for common CoCo-related files. I will add the entries based on feedback.
-
-The series is based on:
-  - https://lore.kernel.org/all/20260921053807.354802-1-aneesh.kumar@kernel.org
-
-Changes from v6:
-https://lore.kernel.org/all/20260904103452.1197239-1-aneesh.kumar@kernel.org
-* Add a common allocator and geometry/transition helpers for CoCo host-shared
-  memory.
-* Convert GIC ITS, dma-direct, atomic DMA pools, and the dma-buf
-  system_cc_shared heap to the common allocator.
-* Limit dma-buf scatterlist entries to the requested buffer size so rounded
-  backing is not exposed to importers.
-
-Changes from v5:
-https://lore.kernel.org/all/20260706060432.1375570-1-aneesh.kumar@kernel.org
-* Rebased to latest kernel
-* Drop patch arm64: realm: Move Realm memory encryption ops to RSI code
-
-Changes from v4:
-https://lore.kernel.org/all/20260427063108.909019-1-aneesh.kumar@kernel.org
-* Rename the helpers to use CoCo terminology
-  (mem_cc_shared_granule_size() / mem_cc_align_to_shared_granule() instead of
-  mem_decrypt_granule_size() / mem_decrypt_align()).
-* Use __DMA_ATTR_ALLOC_CC_SHARED to pass CoCo shared allocation requirements
-  down to CMA-based allocation helpers.
-* Add validation for restricted DMA pools to reject pools that are not aligned
-  to the shared granule size.
-* Add dma-buf system heap handling for cc-shared buffers.
-* Split the previous combined DMA/SWIOTLB/ITS change into smaller subsystem
-  patches covering ITS, DMA direct, SWIOTLB, restricted DMA pools, dma-buf
-  system heap, and arm64 Realm support.
-* Rework arm64 Realm support by moving Realm memory encryption ops into RSI
-  code and exposing the CCA shared granule size through arm64_mem_crypt_ops.
-
-Changes from v3:
-https://lore.kernel.org/all/20260309102625.2315725-1-aneesh.kumar@kernel.org
-* Fix build error reported by kernel test robot <lkp@intel.com>
-
-Changes from v2:
-https://lore.kernel.org/all/20251221160920.297689-1-aneesh.kumar@kernel.org
-* Rebase to latest kernel
-* Consider swiotlb always decrypted and don't align when allocating from swiotlb.
-
-Changes from v1:
-* Rename the helper to mem_encrypt_align
-* Improve the commit message
-* Handle DMA allocations from contiguous memory
-* Handle DMA allocations from the pool
-* swiotlb is still considered unencrypted. Support for an encrypted swiotlb pool
-  is left as TODO and is independent of this series.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: christian.koenig@amd.com
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Joerg Roedel (AMD) <joro@8bytes.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>
-Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: dri-devel@lists.freedesktop.org
-Cc: iommu@lists.linux.dev
-Cc: linaro-mm-sig@lists.linaro.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-media@vger.kernel.org
-Cc: linux-mm@kvack.org
-
-
-Aneesh Kumar K.V (Arm) (13):
-  arm64: realm: Add RHI helper to query IPA state change alignment
-  mm: Add an allocator for CoCo shared memory
-  arm64: realm: Expose the CCA shared granule size through mem_encrypt
-    ops
-  irqchip/gic-v3-its: Resolve the default NUMA node explicitly
-  irqchip/gic-v3-its: Allocate shared tables using CoCo shared memory
-    allocator
-  dma-contiguous: Accept an explicit minimum alignment
-  dma-pool: Allocate CoCo atomic pools using CoCo shared memory
-    allocator
-  dma-direct: Align CoCo shared DMA allocations to the shared granule
-    size
-  swiotlb: Align shared IO TLB pools to the shared granule size
-  swiotlb: Reject misaligned restricted DMA pools for CoCo guests
-  dma-buf: system_heap: Limit scatterlist entries to the buffer size
-  dma-buf: system_heap: Allocate shared buffers using CoCo shared memory
-    allocator
-  swiotlb: Make rounded shared pool capacity allocatable
-
- MAINTAINERS                          |   1 +
- arch/arm/mm/dma-mapping.c            |   5 +-
- arch/arm64/include/asm/mem_encrypt.h |   1 +
- arch/arm64/mm/mem_encrypt.c          |  13 +-
- drivers/dma-buf/heaps/system_heap.c  | 126 +++++++++-----------
- drivers/firmware/arm_rmm/rsi.c       |  58 +++++++++
- drivers/iommu/dma-iommu.c            |   2 +-
- drivers/irqchip/irq-gic-v3-its.c     |  43 +++----
- include/linux/arm-rsi-cmds.h         |  10 ++
- include/linux/arm-smccc-rhi.h        |  25 ++++
- include/linux/arm-smccc-rsi.h        |   7 ++
- include/linux/cc_shared.h            |  39 ++++++
- include/linux/dma-map-ops.h          |  10 +-
- kernel/dma/contiguous.c              |  33 +++--
- kernel/dma/direct.c                  |  55 +++++++--
- kernel/dma/ops_helpers.c             |   2 +-
- kernel/dma/pool.c                    |  23 +++-
- kernel/dma/swiotlb.c                 |  81 +++++++++----
- kernel/kexec_file.c                  |   3 +-
- mm/Makefile                          |   1 +
- mm/cc_shared.c                       | 172 +++++++++++++++++++++++++++
- 21 files changed, 552 insertions(+), 158 deletions(-)
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+---
+ MAINTAINERS                    |  1 +
+ drivers/firmware/arm_rmm/rsi.c | 47 ++++++++++++++++++++++++++++++++++
+ include/linux/arm-rsi-cmds.h   | 10 ++++++++
+ include/linux/arm-smccc-rhi.h  | 25 ++++++++++++++++++
+ include/linux/arm-smccc-rsi.h  |  7 +++++
+ 5 files changed, 90 insertions(+)
  create mode 100644 include/linux/arm-smccc-rhi.h
- create mode 100644 include/linux/cc_shared.h
- create mode 100644 mm/cc_shared.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1e543163a8cc..87ec876868eb 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3956,6 +3956,7 @@ F:	drivers/firmware/arm_rmm/
+ F:	drivers/virt/coco/arm-cca-guest/
+ F:	drivers/virt/coco/pkvm-guest/
+ F:	include/linux/arm-rsi-cmds.h
++F:	include/linux/arm-smccc-rhi.h
+ F:	include/linux/arm-smccc-rsi.h
+ F:	tools/testing/selftests/arm64/
+ X:	arch/arm64/boot/dts/
+diff --git a/drivers/firmware/arm_rmm/rsi.c b/drivers/firmware/arm_rmm/rsi.c
+index 0fcc4e33bd92..883f6091ff95 100644
+--- a/drivers/firmware/arm_rmm/rsi.c
++++ b/drivers/firmware/arm_rmm/rsi.c
+@@ -8,7 +8,9 @@
+ #include <linux/psci.h>
+ #include <linux/swiotlb.h>
+ #include <linux/arm-rsi-cmds.h>
++#include <linux/arm-smccc-rhi.h>
+ #include <linux/kobject.h>
++#include <linux/string.h>
+ #include <linux/sysfs.h>
+ 
+ #include <asm/io.h>
+@@ -162,6 +164,51 @@ static int realm_register_memory_enc_ops(void)
+ 	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
+ }
+ 
++/* we need an aligned struct for rsi_host_call. slab is not yet ready */
++static struct rsi_host_call hostconf_call __initdata;
++static unsigned long __maybe_unused __init get_ipa_state_change_alignment(void)
++{
++	long ret;
++	unsigned long shared_granule_size;
++
++	memset(&hostconf_call, 0, sizeof(hostconf_call));
++	hostconf_call.gprs[0] = RHI_HOSTCONF_VERSION;
++	ret = rsi_host_call(lm_alias(&hostconf_call));
++	if (ret != RSI_SUCCESS)
++		goto err_out;
++
++	if (hostconf_call.gprs[0] != RHI_HOSTCONF_VER_1_0)
++		goto err_out;
++
++	memset(&hostconf_call, 0, sizeof(hostconf_call));
++	hostconf_call.gprs[0] = RHI_HOSTCONF_FEATURES;
++	ret = rsi_host_call(lm_alias(&hostconf_call));
++	if (ret != RSI_SUCCESS)
++		goto err_out;
++
++	if (!(hostconf_call.gprs[0] & RHI_HOSTCONF_FEATURE_GET_IPA_CHANGE_ALIGNMENT))
++		goto err_out;
++
++	memset(&hostconf_call, 0, sizeof(hostconf_call));
++	hostconf_call.gprs[0] = RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT;
++	ret = rsi_host_call(lm_alias(&hostconf_call));
++	if (ret != RSI_SUCCESS)
++		goto err_out;
++
++	shared_granule_size = hostconf_call.gprs[0];
++	if (shared_granule_size & (SZ_4K - 1) ||
++	    !is_power_of_2(shared_granule_size))
++		goto err_out;
++
++	return max(PAGE_SIZE, shared_granule_size);
++err_out:
++	/*
++	 * For failure condition assume host is built with 4K page size
++	 * and hence IPA state change alignment can be guest PAGE_SIZE.
++	 */
++	return PAGE_SIZE;
++}
++
+ void __init arm64_rsi_init(void)
+ {
+ 	if (arm_smccc_1_1_get_conduit() != SMCCC_CONDUIT_SMC)
+diff --git a/include/linux/arm-rsi-cmds.h b/include/linux/arm-rsi-cmds.h
+index 3f7a6a833993..996f1621b996 100644
+--- a/include/linux/arm-rsi-cmds.h
++++ b/include/linux/arm-rsi-cmds.h
+@@ -236,4 +236,14 @@ static inline unsigned long rsi_attestation_token_continue(phys_addr_t granule,
+ 	return res.a0;
+ }
+ 
++static inline unsigned long rsi_host_call(struct rsi_host_call *rhi_call)
++{
++	phys_addr_t addr = virt_to_phys(rhi_call);
++	struct arm_smccc_res res;
++
++	arm_smccc_1_1_invoke(SMC_RSI_HOST_CALL, addr, &res);
++
++	return res.a0;
++}
++
+ #endif /* __LINUX_ARM_RSI_CMDS_H_ */
+diff --git a/include/linux/arm-smccc-rhi.h b/include/linux/arm-smccc-rhi.h
+new file mode 100644
+index 000000000000..be89185cddae
+--- /dev/null
++++ b/include/linux/arm-smccc-rhi.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2026 ARM Ltd.
++ */
++
++#ifndef __LINUX_ARM_SMCCC_RHI_H_
++#define __LINUX_ARM_SMCCC_RHI_H_
++
++#include <linux/arm-smccc.h>
++
++#define SMC_RHI_CALL(func)				\
++	ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,		\
++			   ARM_SMCCC_SMC_64,		\
++			   ARM_SMCCC_OWNER_STANDARD_HYP,\
++			   (func))
++
++#define RHI_HOSTCONF_VER_1_0		0x10000
++#define RHI_HOSTCONF_VERSION		SMC_RHI_CALL(0x004E)
++
++#define RHI_HOSTCONF_FEATURE_GET_IPA_CHANGE_ALIGNMENT	BIT(0)
++#define RHI_HOSTCONF_FEATURES		SMC_RHI_CALL(0x004F)
++
++#define RHI_HOSTCONF_GET_IPA_CHANGE_ALIGNMENT	SMC_RHI_CALL(0x0050)
++
++#endif /* __LINUX_ARM_SMCCC_RHI_H_ */
+diff --git a/include/linux/arm-smccc-rsi.h b/include/linux/arm-smccc-rsi.h
+index fddb77986f70..3532a3f08f4e 100644
+--- a/include/linux/arm-smccc-rsi.h
++++ b/include/linux/arm-smccc-rsi.h
+@@ -182,6 +182,13 @@ struct realm_config {
+  */
+ #define SMC_RSI_IPA_STATE_GET			SMC_RSI_FID(0x198)
+ 
++struct rsi_host_call {
++	union {
++		u16 imm;
++		u64 padding0;
++	};
++	u64 gprs[31];
++} __aligned(0x100);
+ /*
+  * Make a Host call.
+  *
 -- 
 2.43.0
 
