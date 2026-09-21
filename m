@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8AB8C982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF0FDC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 19:26:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3966B00C2; Mon, 21 Sep 2026 15:26:24 -0400 (EDT)
+	id 5EBFE6B00C3; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D64136B00C3; Mon, 21 Sep 2026 15:26:24 -0400 (EDT)
+	id 5C48B6B00C5; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A326B00C5; Mon, 21 Sep 2026 15:26:24 -0400 (EDT)
+	id 4D87A6B00C7; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9921D6B00C2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:26:24 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 209271602A4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:24 +0000 (UTC)
-X-FDA: 85238750688.08.97F3156
-Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7EEF6A000C
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cT/jUZ47";
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 220BE6B00C3
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:26:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB05D1602B5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:25 +0000 (UTC)
+X-FDA: 85238750730.16.BAEDB7F
+Received: from mta1.migadu.com (out-100.mta1.migadu.com [95.215.58.100])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 773631C0009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:26:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wFx/yzM/";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790018782;
+	s=arc-20220608; t=1790018783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5C9zdjlfV57TZblDN9O3gzeejsr38PuffqEfn7E99Qg=;
-	b=bfSnv4PLhzjB0i759iblONGdeMkwkbvATXW4A69iFhUwQa4gyh7dLE9OAqupi1tNAYNtsa
-	F3SvwfqIySCQ4HPCgZOJ3ifNNnV/+yY2mrHSQOJ4oCw7iQh1IsUwe+B3Q5VUjfUVG3YPVC
-	x5OMGjTpDbxDy/IAhOR4qEakmIn8ayc=
+	bh=l2m4oRpUkR2vVSm9z+KqoO2GjdHKb41OEmUJERsqeVQ=;
+	b=m1AXiA5s8OkXzwjBCwe43ncvqUOeR9P78z1m6twAq9IxUw1OQo5uskgKqj82Y4Pyx8eovz
+	e/CVAIR1dtYoCx4NrQB25gi7uQU8oR6/Kftqa4iGfgfHKheYyZeWqVBgTOb8id4rw78nD7
+	LXyMT0D4rV5bUZh0sCHaV5CPKDHgX1Q=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cT/jUZ47";
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wFx/yzM/";
+	spf=pass (imf18.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.100 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790018782;
-	b=qtcixDoAOSlO4Y2mQeq2OuuXtG7oZfT2ihKu1qvyO/KJ8rHMezAQilw/4zh1Q1q1/Fn9Ud
-	feTDkD76GxnYn788I3uA+3UiICy9iktVox92nmaDcl3MXTxcgqC6utyQiiTl46j5GBgb68
-	4W0n7zFFj9dbg/YQec2vZVLkkFfd6Rk=
+	t=1790018783;
+	b=aDERnmEqa4Xmz6cFEBD4vjxqaKEOFFwA5Yy6DSArGFK8SJpcyAQTZpsvl7st7+QRY6HpWq
+	FLakwdd5/RhDRFExvP88e++WGcG6VXzqmUnZqOundpJmUzSzsn82S0US/o9qe08ByR4Vfy
+	YXlY6sz/du3caFLSu8Uz6II4YuJG32g=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=N0QLwAgxaBt6p5mr1X5j4hSoGitsMI3jdbKpX7+fG+I=;
+DKIM-Signature: a=rsa-sha256; bh=Rk6vSHsZulU3ylU3QojCy3TlgitfGn9MgxeNvIoe+1s=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790018780; v=1; x=1790623580;
- b=cT/jUZ47A1q794mPy6RU5ZFbHKhIG2TqdrTOhACX1fYDbznHYC1iFduJvMNgxdl/xGS9XTsu
- rT1+YVcjdAkvobwSkfbPlIiNIOb9jV5aBnUoFgaaLcMXAnRDDsBQPSRSv+z3QHthbH7W0kqju9A
- 1EDhpS1si9Swb/8rrmZoMMXU=
+ t=1790018782; v=1; x=1790623582;
+ b=wFx/yzM/t0ddWiHKQ4sYhMKhbWztXPPDtYNJSk9Ge2JyyQsROoisSAFq8JqScjtDlQ/yFrRn
+ 46Zevvsy0S9rPQl8Xtb7RMP1pXdMCTGlxuxvR7QoL2e+m3WY4dtE8k4MdewwkgYgmZK4dNprhZv
+ vlMLv7xnHzWqyPRliFtx8/r8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id c80bc367aa6462a1;
-	Mon, 21 Sep 2026 19:26:19 +0000
-X-Mizu-Trace-ID: c80bc367aa6462a1
+Received: by smtp.migadu.com with ESMTPS id 9b07036d47c80b85;
+	Mon, 21 Sep 2026 19:26:21 +0000
+X-Mizu-Trace-ID: 9b07036d47c80b85
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,22 +92,22 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	bpf@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 1/4] bpf, cgroup: fix cgroup struct_ops query for a second attach type
-Date: Mon, 21 Sep 2026 12:25:56 -0700
-Message-ID: <20260921192559.2619635-2-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 2/4] memcg_ext: add cgroup-attached bpf_memcg_ops
+Date: Mon, 21 Sep 2026 12:25:57 -0700
+Message-ID: <20260921192559.2619635-3-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260921192559.2619635-1-shakeel.butt@linux.dev>
 References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 7EEF6A000C
-X-Stat-Signature: ebfa7x3peymo5mwka7csba9f46bxwrqg
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 773631C0009
+X-Stat-Signature: gzxaj94hone5jxd4qqe3tfjmpmsrzhkf
 X-Rspam-User: 
-X-HE-Tag: 1790018781-129003
-X-HE-Meta: U2FsdGVkX1+0vhe9n84wXWC4kZ9+mMjEhFUUopnutJhKlWUdLgrtO22thQZahWNXSDxTrNI1zM3hCOSG6YXmrX2JyU3qP/dz0l+zqoG6to8AAhXd4hqW6+e9bcOpLMOtnJ6ouL5rQVkw6Oa+hwN271USen4JyH2FWYql8+ZLVjUj6LDv4fHQTKFOytyWXTuB0cKJVy9m5s6vq3yRDzPygjMGeWFCRFbbVlB7OjbDtIasyoj84NwtVzuBMd/Lw1QdUW0VH6F2Xc2MPYEpdG1gRTFZDg/lk31OUVMNgh8N1LN+Rf8JQZw1v2otYOu8db3pNawYMGmngaSBG3hWrqxKogz11w1r/FhuIWS41OZESO3XdRD41/ObFMV4HlrLE92cReb97n8jG5sEIUru/0qsBxCJMm/w+qKdd6uyqQWjQ4bN+YPgUaYBWel4ciui/JHr8Log+XCNVo0fWl7SUgXvCSRM2iKYgOI7rp/IzV5Y2c1fPEmOw2aN8KFxEVX1NgLEoC7rfvIdIGjHlFPH7gEVgrN9uQp0z6UbPG0UyqLIWzPK2Q4W1Fpxe7pxFFU7o4LCYaZDVOVM74RKso3yetG7TDehxRi/mbDP8vTMhSv/bySFnTtFzqCv9xlWSmXTW9Rdgu2NXPQGI9ItrtHkxLDN5yqtU2xz/Wno5MFADf1ilcI3OB+hlA628J/kJsw7c0dYHSUWmTqQ6KhcvrilkKW3wX7MUnrp7XJn6qbsIR+LLo962nNWZPdczwm7G9QgGISYV+k6NqnE6fdy808lnecsqS4nuWbjgu5ziIDsXTKTVGA8TSqdWEmgp/ZlllIzxDXWWuilBdfa1BfLYcwTwgE8KpRVfHpNHmrAgiB9+lSjEK7aka0KIVrJWYVrKbX9nGClVjEsQ5Khft6xzU+iumrNtMiw63p+NjQDygmhTBzpljvALT2BEnG8DY0QyHKTgaPUeBj2KMZiqF4+XAtZ0Wp
- SjZgTdOY
- JELttJuZK1aoXnLeVNeuzc8UBKR/V7wAUhkKmlS3nQ8XyM1Hk0TO8b/TwLP6txDaWWwae5OVnaxiz66Pc7WSjw/2mySmjynyVDM69L9vY/2iDMHcfF+SiZ6qyXE/g3I+Aig1N6+HWcbbqNgxV5/2hWK6V5oQqhn1kZux9X7ziY9tt1CzvfluZC4vguEcqMN43e4MWcAm9J+UrPTg509dTWTQc8YV2ewm7nRPN2tPZpu5zNj3QyTvU3XlZxVHvtDW+7SkcPH0EtlwoW+TFbgpXhbCSPA7uQnrB9kQzwMy7AOQXo8UCloaodcy5In28lLtDzUxRHxVn+2LnrykJ384ox5nAC9TpykPUVs7B
+X-HE-Tag: 1790018783-973844
+X-HE-Meta: U2FsdGVkX18Mgpp+0InAt/KaeCb8nr9mZD3B8gWcMA+WqcAVWZiOGI4ZpTDVLPQbRjXyT8dmUcegXyChlBs2Rmo+nOi53m2udoTE5V81UjCw7LkJNGcT65mHnLNrVpKPjdV/rHccZx785JQzr5VwJSTUW2rC0YXRam6k7xP43qXA3fqZItXGd1Ny+fWFrYcxCPtjDZoH3fSnedgnf22AV7IFtdXL0ZTz3HZjnVRNnL1YsQ7U6MDtNBmmzs57XEm91Zrp0Zlpnp+9waJj+ypVo5RXCV1pS/ba+ScT1x9XK9Z264ENM16JYxAdXv3JKLCrSUbRaXjN6QDhq5rhH2iojEKRGYNIn6/9w3GQAyAKF/NPukWcLX0BD51wjJhHBYXAcmCZG2gDrYWSE+FX9Bgm81xEQcq2XF+8Qi8pZR+N+BORKF/lRrD/njseonldRSYR/Cp5SCx6lqwZpCgkUwl2TMxFJjcpVZcTNSR8d1KjzPrNu0ScR0D7ShoVYwrm+tGtnlpQmqcS7oDHZuoxuqyg+JE7VoJu/O9eeTdzUqtmDD/dqBbKBAEW7TKaDyDMZqsMd/OwHFRCbxkuGd8RlSSbWCfve9DSDefCSwRHppN8eYvbHY4hc39nbVSFQBRJEjekPzEzNpfoQxZ631FlA8Vf1mNJR9EhXx+5QynRUl2e6Ch1+whRziR7qN4t9rRkHPA0qcr/veVHeYctqqFvLMqT8X86Y7Pm0A11TYzPKYgbakYQlPy5YtYWkhFcReebIJu2Wi40gUEUS6B706rCgVJAGMKEMxD0YQDMY9bGrc9BrLkqKzmC2NwiMvKBO/41VRWPkbbPqgqMZyZLsRFPb5s3GomHT6A65du+tUXT7bhezvVdI6wbEMoLcl48xTyYvGFvmBlK68+psKh/znoo3nVTzye4RwHSL21GBb1oz6seTGaS9FQXKMWyVKU+xmcrPu97/AawAIMOZ0t/P5zE2WB
+ pjv4KwQK
+ 0+oEcM+RoTeM0/GNVDNTkKGEjPeG3xwtUv/ZdpQuOYJ6ueJS+oR9iIyWULtn5ZWZL8zSxCLHeYzvzrE0XlGe3Ri/b6HiWFDA7W6mq/quTn5fFG/r+OKsRfiDkL4kfDLU3G/A7suSUVNUnVzm7TqTwQ/uiYA8xQ/RF7lBF6Xc+C02G4vwnAHbap5mMEZFKlFMut97rsFJXG5Zm8Dhi3vI6LvEwMwXS3kMEBSDtVqT57ppIocxwGc97tf5AQdjWUiUqmJ4G//2p+YDdwsyqR8Z4uiRq73JTi6jmBIb2pLmzGDDzmEg4ExheMKpegP5GyZgNv+QA8oV4KZuVs2JYkDFq+8TLlisKpmFgrLn2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,74 +115,261 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Two things in __cgroup_bpf_query() work only because CGROUP_TCP_SOCK_OPS is
-the only one struct_ops attach type.
+Add an empty bpf_memcg_ops type for attaching memory policies to
+cgroups.  This is the first patch of memcg_ext, which makes memcg
+enforcement programmable one hook at a time.  Policy hooks will be added
+later.
 
-It calls cgroup_bpf_enabled(atype) with an atype that
-find_atype_by_struct_ops_id() works out at runtime.  That macro is an asm
-goto and needs a constant.  Today the compiler can see there is only one
-value; add a second type and the build breaks with "impossible constraint in
-'asm'".  Add cgroup_bpf_enabled_runtime(), which reads the key instead, and
-use it here.  This is a syscall path, so the cost does not matter.
+Move the cgroup BPF attach types outside CONFIG_CGROUP_BPF and fix the
+struct_ops registration stub so all supported configurations build.
 
-And find_atype_by_struct_ops_id() matches on type_id alone.  An attach type
-whose subsystem is not built keeps type_id 0, so a query for type 0 finds it
-and returns success with nothing instead of -ENOENT.  Skip such slots.
+This does not change behavior yet.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/bpf-cgroup.h | 9 +++++++++
- kernel/bpf/cgroup.c        | 3 ++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ include/linux/bpf-cgroup-defs.h |  22 ++++---
+ include/linux/bpf-cgroup.h      |   2 +-
+ include/linux/bpf.h             |   2 +-
+ include/linux/bpf_memcontrol.h  |  17 +++++
+ mm/bpf_memcontrol.c             | 108 +++++++++++++++++++++++++++++++-
+ 5 files changed, 140 insertions(+), 11 deletions(-)
+ create mode 100644 include/linux/bpf_memcontrol.h
 
+diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
+index 0147b8bec973..53d2853535c6 100644
+--- a/include/linux/bpf-cgroup-defs.h
++++ b/include/linux/bpf-cgroup-defs.h
+@@ -2,14 +2,6 @@
+ #ifndef _BPF_CGROUP_DEFS_H
+ #define _BPF_CGROUP_DEFS_H
+ 
+-#ifdef CONFIG_CGROUP_BPF
+-
+-#include <linux/list.h>
+-#include <linux/percpu-refcount.h>
+-#include <linux/workqueue.h>
+-
+-struct bpf_prog_array;
+-
+ #ifdef CONFIG_BPF_LSM
+ /* Maximum number of concurrently attachable per-cgroup LSM hooks. */
+ #define CGROUP_LSM_NUM 10
+@@ -17,6 +9,10 @@ struct bpf_prog_array;
+ #define CGROUP_LSM_NUM 0
+ #endif
+ 
++/*
++ * Plain constants, so a subsystem can name its attach type without
++ * depending on CONFIG_CGROUP_BPF.
++ */
+ enum cgroup_bpf_attach_type {
+ 	CGROUP_BPF_ATTACH_TYPE_INVALID = -1,
+ 	CGROUP_INET_INGRESS = 0,
+@@ -48,11 +44,21 @@ enum cgroup_bpf_attach_type {
+ 	CGROUP_UNIX_GETSOCKNAME,
+ 	CGROUP_INET_SOCK_RELEASE,
+ 	CGROUP_TCP_SOCK_OPS,
++	CGROUP_MEMCG_OPS,
+ 	CGROUP_LSM_START,
+ 	CGROUP_LSM_END = CGROUP_LSM_START + CGROUP_LSM_NUM - 1,
+ 	MAX_CGROUP_BPF_ATTACH_TYPE
+ };
+ 
++#ifdef CONFIG_CGROUP_BPF
++
++#include <linux/list.h>
++#include <linux/percpu-refcount.h>
++#include <linux/workqueue.h>
++
++struct bpf_prog_array;
++
++
+ struct cgroup_bpf {
+ 	/* array of effective progs in this cgroup */
+ 	struct bpf_prog_array __rcu *effective[MAX_CGROUP_BPF_ATTACH_TYPE];
 diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
-index 8a75a6cd7309..3b2c127d401d 100644
+index 3b2c127d401d..4e8150848bd2 100644
 --- a/include/linux/bpf-cgroup.h
 +++ b/include/linux/bpf-cgroup.h
-@@ -76,6 +76,14 @@ to_cgroup_bpf_attach_type(enum bpf_attach_type attach_type)
+@@ -127,7 +127,7 @@ struct bpf_prog_list {
  
- extern struct static_key_false cgroup_bpf_enabled_key[MAX_CGROUP_BPF_ATTACH_TYPE];
- #define cgroup_bpf_enabled(atype) static_branch_unlikely(&cgroup_bpf_enabled_key[atype])
-+/*
-+ * Same test when @atype is not a constant.  cgroup_bpf_enabled() uses
-+ * static_branch_unlikely which creates jump-label site and requires statically
-+ * selected key. Since key is selected dynamically, use static_key_enabled here
-+ * and keep it off fast paths.
-+ */
-+#define cgroup_bpf_enabled_runtime(atype) \
-+	static_key_enabled(&cgroup_bpf_enabled_key[atype])
- 
- struct bpf_cgroup_storage_map;
- 
-@@ -508,6 +516,7 @@ static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
+ static inline bool cgroup_bpf_is_struct_ops_atype(enum cgroup_bpf_attach_type atype)
+ {
+-	return atype == CGROUP_TCP_SOCK_OPS;
++	return atype == CGROUP_TCP_SOCK_OPS || atype == CGROUP_MEMCG_OPS;
  }
+ void cgroup_bpf_struct_ops_register(int atype, u32 type_id, void *cfi_stubs, bool mult_trace);
+ int cgroup_bpf_struct_ops_attach(struct bpf_map *map, const union bpf_attr *attr);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 5033b934ffd9..f8eb102e7fc4 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2331,7 +2331,7 @@ int bpf_struct_ops_desc_init(struct bpf_struct_ops_desc *st_ops_desc,
+ void bpf_map_struct_ops_info_fill(struct bpf_map_info *info, struct bpf_map *map);
+ void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_ops_desc);
+ #else
+-#define register_bpf_struct_ops(st_ops, type) ({ (void *)(st_ops); 0; })
++#define register_bpf_struct_ops(st_ops, type) ({ (void)(st_ops); 0; })
+ static inline bool bpf_try_module_get(const void *data, struct module *owner)
+ {
+ 	return try_module_get(owner);
+diff --git a/include/linux/bpf_memcontrol.h b/include/linux/bpf_memcontrol.h
+new file mode 100644
+index 000000000000..8204d894761e
+--- /dev/null
++++ b/include/linux/bpf_memcontrol.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * BPF policy hooks for the memory controller.
++ *
++ * A bpf_memcg_ops is attached to a cgroup.  A charge runs the policies of
++ * that cgroup and of every ancestor, and the kernel combines what they
++ * return.  BPF only picks between things the kernel already does.
++ *
++ * The type has no members yet; they come with the policies that use them.
++ */
++#ifndef _LINUX_BPF_MEMCONTROL_H
++#define _LINUX_BPF_MEMCONTROL_H
++
++struct bpf_memcg_ops {
++};
++
++#endif /* _LINUX_BPF_MEMCONTROL_H */
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+index d8f579c28560..fd6dff150f01 100644
+--- a/mm/bpf_memcontrol.c
++++ b/mm/bpf_memcontrol.c
+@@ -7,6 +7,12 @@
  
- #define cgroup_bpf_enabled(atype) (0)
-+#define cgroup_bpf_enabled_runtime(atype) (0)
- #define BPF_CGROUP_RUN_SA_PROG_LOCK(sk, uaddr, uaddrlen, atype, t_ctx) ({ 0; })
- #define BPF_CGROUP_RUN_SA_PROG(sk, uaddr, uaddrlen, atype) ({ 0; })
- #define BPF_CGROUP_PRE_CONNECT_ENABLED(sk) (0)
-diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
-index 696b27383974..99b4e96f5db7 100644
---- a/kernel/bpf/cgroup.c
-+++ b/kernel/bpf/cgroup.c
-@@ -45,6 +45,7 @@ static enum cgroup_bpf_attach_type find_atype_by_struct_ops_id(u32 type_id)
+ #include <linux/memcontrol.h>
+ #include <linux/bpf.h>
++#include <linux/bpf-cgroup.h>
++#include <linux/bpf_memcontrol.h>
++#include <linux/bpf_verifier.h>
++#include <linux/btf_ids.h>
++#include <linux/cgroup.h>
++#include <linux/sched.h>
  
- 	for (atype = 0; atype < MAX_CGROUP_BPF_ATTACH_TYPE; atype++) {
- 		if (cgroup_bpf_is_struct_ops_atype(atype) &&
-+		    cgroup_struct_ops[atype].type_id &&
- 		    cgroup_struct_ops[atype].type_id == type_id)
- 			return atype;
- 	}
-@@ -1448,7 +1449,7 @@ static int __cgroup_bpf_query(struct cgroup *cgrp, const union bpf_attr *attr,
- 			return -ENOENT;
- 		from_atype = to_atype = atype;
- 		flags = 0;
--		if (!cgroup_bpf_enabled(atype))
-+		if (!cgroup_bpf_enabled_runtime(atype))
- 			goto skip_count;
- 	} else if (type == BPF_LSM_CGROUP) {
- 		if (!effective_query && attr->query.prog_cnt &&
+ #include "internal.h"
+ 
+@@ -235,6 +241,100 @@ static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
+ 	.set            = &bpf_memcontrol_reclaim_kfuncs,
+ };
+ 
++/*
++ * bpf_memcg_ops: memcg policy attached to a cgroup.  A program returns a
++ * request and the kernel acts on it.  Nothing here reclaims or sleeps.
++ */
++
++/* CFI stubs.  A slot points at these while its policy is being detached. */
++static struct bpf_memcg_ops __bpf_memcg_ops = {
++};
++
++static const struct bpf_func_proto *
++bpf_memcg_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
++{
++	/*
++	 * The base set is all a policy needs today, and none of it sleeps.
++	 * Anything added here must be safe from the charge path.
++	 */
++	return bpf_base_func_proto(func_id, prog);
++}
++
++static bool bpf_memcg_is_valid_access(int off, int size,
++				      enum bpf_access_type type,
++				      const struct bpf_prog *prog,
++				      struct bpf_insn_access_aux *info)
++{
++	/* The context is read-only. */
++	if (type != BPF_READ)
++		return false;
++
++	return bpf_tracing_btf_ctx_access(off, size, type, prog, info);
++}
++
++static int bpf_memcg_init_member(const struct btf_type *t,
++				 const struct btf_member *member,
++				 void *kdata, const void *udata)
++{
++	/* Mandatory: the core calls it without a NULL check. */
++	return 0;
++}
++
++static int bpf_memcg_check_member(const struct btf_type *t,
++				  const struct btf_member *member,
++				  const struct bpf_prog *prog)
++{
++	/* Members run from the charge path, which cannot sleep. */
++	if (prog->sleepable)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int bpf_memcg_init(struct btf *btf)
++{
++	return 0;
++}
++
++static int bpf_memcg_validate(void *kdata)
++{
++	return 0;
++}
++
++static const struct bpf_verifier_ops bpf_memcg_verifier_ops = {
++	.get_func_proto		= bpf_memcg_get_func_proto,
++	.is_valid_access	= bpf_memcg_is_valid_access,
++};
++
++static struct bpf_struct_ops bpf_memcg_ops_desc = {
++	.verifier_ops	= &bpf_memcg_verifier_ops,
++	.init		= bpf_memcg_init,
++	.init_member	= bpf_memcg_init_member,
++	.check_member	= bpf_memcg_check_member,
++	.validate	= bpf_memcg_validate,
++	.name		= "bpf_memcg_ops",
++	.cgroup_atype	= CGROUP_MEMCG_OPS,
++	.cfi_stubs	= &__bpf_memcg_ops,
++	.owner		= THIS_MODULE,
++	/*
++	 * .reg/.unreg stay NULL: the cgroup layer does attach and detach, and
++	 * registration fails if a cgroup_atype comes with either.
++	 *
++	 * .free_after_mult_rcu_gp stays false while no member sleeps.  A
++	 * sleepable one would also need a tasks-trace RCU version of
++	 * bpf_cgroup_struct_ops_foreach().
++	 */
++};
++
++static int __init bpf_memcg_ops_register(void)
++{
++	/*
++	 * register_bpf_struct_ops() is a no-op without struct_ops support, so
++	 * this needs no guard of its own.
++	 */
++	return register_bpf_struct_ops(&bpf_memcg_ops_desc, bpf_memcg_ops);
++}
++
+ static int __init bpf_memcontrol_init(void)
+ {
+ 	int err;
+@@ -248,8 +348,14 @@ static int __init bpf_memcontrol_init(void)
+ 
+ 	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_SYSCALL,
+ 					&bpf_memcontrol_reclaim_kfunc_set);
+-	if (err)
++	if (err) {
+ 		pr_warn("error registering bpf reclaim kfuncs: %d\n", err);
++		return err;
++	}
++
++	err = bpf_memcg_ops_register();
++	if (err)
++		pr_warn("error while registering bpf_memcg_ops: %d", err);
+ 
+ 	return err;
+ }
 -- 
 2.53.0-Meta
 
