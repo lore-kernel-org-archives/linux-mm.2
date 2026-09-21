@@ -4,102 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCCDFC982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 06:57:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D4A2C982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 07:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ED406B00DF; Mon, 21 Sep 2026 02:57:00 -0400 (EDT)
+	id 671DC6B00B7; Mon, 21 Sep 2026 03:00:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99DF96B00E1; Mon, 21 Sep 2026 02:57:00 -0400 (EDT)
+	id 622EC6B00D9; Mon, 21 Sep 2026 03:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DBA56B00E2; Mon, 21 Sep 2026 02:57:00 -0400 (EDT)
+	id 511736B00DB; Mon, 21 Sep 2026 03:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FA4B6B00DF
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 02:57:00 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F077C1C2E40
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:56:59 +0000 (UTC)
-X-FDA: 85236862158.23.EC6A285
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 289EF180007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:56:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	by kanga.kvack.org (Postfix) with ESMTP id 2DB5E6B00B7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 03:00:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id ACDE51605DB
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:23 +0000 (UTC)
+X-FDA: 85236870726.01.5C8C0A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id CBBEE20003
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:21 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LLVW2EBf;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789973818;
+	s=arc-20220608; t=1789974021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=;
-	b=LbWTqIjZkfOm23dkF4p4jFrk4QREeYyMKgsyElPwUL1OfE75TCIHXhdrafowf6PhxJ5EGN
-	FJC4b7MGNZVMCGI1JrXZwhpeW3R+NBv4TcA3KuRxLI9eiEWEaXubdRSPMioR79pdkT+mwn
-	j/TRztOq73TkZJl4zD4qwDsMBrbDa98=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gHlvbb647JYtKJVobp9L+WY+i2D3HiyuRdvv6kDImw0=;
+	b=CEjavznB4y2NCyratcU/LTsHRaAghDLl3mfVaFaKkhK2ycHGXz2uqFRq9IwxG89DFLKL/4
+	QwnGsxHDbKs0SkrluWTbWOv56SgDK2Xtlpz7Bkb26JoQe0V0GRfeefRr98GtgqgdvvUl+Z
+	wIXJVbumbBMqU/lFyg/3sIYJm5nWrpY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LLVW2EBf;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789973818;
-	b=h35vLJaQ5l9uB4ATGfwIOv817yn4soYAyENxSRs2Z+V56bCp2E0oXgJb7FzUwErrVThC64
-	mfUYH+VegMVwApLNjP7WCJBz9he5vVGfwaKj3pL0BOTF5gJCRkqOx0cP02844UYutZ+3kI
-	H9TmvsUWV9joeobQlwKS54rVb7PsjFQ=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id CB10D6732A; Mon, 21 Sep 2026 08:56:51 +0200 (CEST)
-Date: Mon, 21 Sep 2026 08:56:51 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Yu Kuai <yukuai@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Josef Bacik <josef@toxicpanda.com>,
-	Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Song Liu <song@kernel.org>, Li Nan <magiclinan@didiglobal.com>,
-	Xiao Ni <xiao@kernel.org>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, Yu Kuai <yukuai@fygo.io>,
-	Christoph Hellwig <hch@lst.de>, Nilay Shroff <nilay@linux.ibm.com>,
-	Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
-	dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v4 2/3] blk-cgroup: store blkcg in bio instead of blkg
-Message-ID: <20260921065651.GA13875@lst.de>
-References: <20260920092351.2434283-1-yukuai@kernel.org> <20260920092351.2434283-3-yukuai@kernel.org>
+	t=1789974021;
+	b=5zak2ZJASWz0zRwEUliFhGsa2j2xer6cW+LNjY1mnlUa+oDMZydNX++Lfa+nshwO28h5F3
+	iYkwrY0Lxhh3PzCv34EE1/NFw57LiZ89GHDhfd0DDXYUJX5YxeUdQhknMn0M5UrX4KW624
+	v5piIRjOGvSE1p6SNwT3rAdJYKO6vCU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CE9F8448DF
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10BF1F0089F
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789974020;
+	bh=gHlvbb647JYtKJVobp9L+WY+i2D3HiyuRdvv6kDImw0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LLVW2EBfsLFXZgiNXk7HC98NkM+VwO00JhtmGfImdK507iki8Y6OysdNppSsmDdnY
+	 7sxUkdlR4mrEc0q484yRBO0IttUM6bX6F1qiMgY7iaGfQN0apb4xg1UNLLIt/hFH+9
+	 hnKBvFvwoNzq75cKGSWMNY3rTlpyzvduCY8wTr1X/qgwL+i3HD6iwYn+ip+KutTRCC
+	 M5E86/zKfV4xim5w6IflhmON1qM9TsaCZbgHcSWuZfPJ9ngR/VYFPzWjbryP9h8N5J
+	 Bja5WfzrsgT4c7/RMuEP99MyQKxjBqhM+fOUYWTctURV9bMYwa0z9hM2CI0gtR4h+5
+	 bVuMbTohk18Og==
+Received: by mail-vs2-f42.google.com with SMTP id 71dfb90a1353d-5c67e4d8d8aso1799996e0c.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:00:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwxK8TM8ybgRyskYS8NGhy9KgpOby27+szHP6pwkOqCGsYTlSsxijjUTvq636enaH5K0uWpGCCjbw==@kvack.org
+X-Gm-Message-State: AFuF++ntlQYWoow2yQLPMDyk5dHqydGPC15KnuQVJx++Ecomw0GqqRkT
+	HrjA7ibbHxhwwrUK1+t+rbSyEiYRfBTlzmpvTQX38coSQFw1VkUiV4dy5lJde0v6epOOz/46wUe
+	dNWPZ82qJWuiT0zU2e/xC/XNrs1iVycY=
+X-Received: by 2002:a05:6122:4896:b0:5c9:a60c:273d with SMTP id
+ 71dfb90a1353d-5c9b59eaf2bmr4648530e0c.21.1789974019896; Mon, 21 Sep 2026
+ 00:00:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920092351.2434283-3-yukuai@kernel.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 289EF180007
-X-Stat-Signature: jx9uyomj9n93it3149ce4kpmkn4zj6bj
+References: <20260920132519.3369946-1-ridong.chen@linux.dev>
+ <CAGsJ_4zCADpQDqVj=BFipOztctBMBhw9Wcj+FLVcj-d8e=0bow@mail.gmail.com> <2e878fe2-473e-4dc1-a669-7e2e37894d6e@linux.dev>
+In-Reply-To: <2e878fe2-473e-4dc1-a669-7e2e37894d6e@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 21 Sep 2026 15:00:07 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yrR1Wn7NjOFVcWdD+_WEEu7AY6LdsKTZDxx0VR3EzQ+g@mail.gmail.com>
+X-Gm-Features: AcwNN1XrdEZ1E-aaP9IeNffRJ6dC3Vjq8bbURZBcSwpV0urbD42mxWoj6_IQ61Y
+Message-ID: <CAGsJ_4yrR1Wn7NjOFVcWdD+_WEEu7AY6LdsKTZDxx0VR3EzQ+g@mail.gmail.com>
+Subject: Re: [PATCH mm-new v2] mm: vmscan: put rotation-missed folios at the
+ LRU tail
+To: Ridong Chen <ridong.chen@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1789973817-687801
-X-HE-Meta: U2FsdGVkX1/wWUl4Uy6x4zqM+yOz6cjj8qZdF3LquvwidvViYyZbTghT9OA+1qOA27K2fbAFVPvh1Wup/PLXi749Qj3ZH+0Q/QJh93daKbpSl8Chrix7x383K8B0vmBbJOHDJEV8lGuS7arZ1cob+wRxAYnJghqWmQ7EMxNj4mOB9FrtrDIAQNFfrA2rQqJ7x8enS+FA1jMvhiHejd4RlNZRTy648SAKBO3IFFHGpN4NSNIF6HLY0RaHJrfnEnF0426kVwcUZR/+PJPDJDqblgYoKvUHlxnVStOYc5gZiHsp2swmMmQ/C0PGgSufbMX4bj+syI6Pd3jQVUVLCJQqkSkknaAvW+58s048/BhP0VjbeCMzuXjHJaZ+oIYHqAOR0sGJ9IeNLIyoUpXfvVmeQjK4wnWNN47ibHmV2p/W2ui9pbqHSPe9JrlAKoJL7n4EUtrv0gNG39liSt/YQm0kHyAeQRo1nC+DpIMFZLI/Y53A2M8qhA1kzm/U3EgGxXiTZvt8To5JV0/de6BIuIs2gAQ4igRjoUOJHj0f8qtvIJ4NnCEzHFdXqmGeSjLjaslYWtkG2DAKRSTQroP95uLolsDjMTcem2vlMofoWAntq4tyijEAjIsZI00wIu8dtHq3nBljugNMHnT+72Ky5Mm+Ztry74xE/B3luvE0FxT3cGdhbZ2YK1bMcIkYLi2VMVp6ptrH/nPNYFZgzXmX0tvz33+4piLN78gOiWBVv0Yw3peUJRwZLIdKG+rtWNKLVbq1mToTef7MLaM+qwfXtQSkIt42DwWeVD0pZF6RcDL+czcTMKuyjv7qHzlvtDLTZvnfCTK2XAXr5gQizUTcLlu1YCNifX68LPYJPvw0yfI7WUnWaR56p+5ExFI4cn59fSyX3Mh/OQmtKkdHK3DcsSi6URsckZbUCo+sGK3gD4yx9fff8zJGo2peIQ8+R0wLQj/JB76ji8ZtnDCMBFPCzhU
- ss1t1+sO
- 7YXYx9dga+QJQg8gyMIJSroI78SHHf7XS2oJE0+g+1Uvy77+hlLpKv6Xg4UV00bGItv6L/wShtNTiR8OyXPu3D/m1xHbMvJfCWHGzBTSrIZ5rRMm35z31RBHKvbLk+CSawgOKTd5Hw+7WOeeUQQzNhCFjd4E0Pd35ruH7SlTY/a+akWH0xVRthFrs33gjrkVyiHBi4ZXsnwH7KGpSDmXPY5E9gv+9AuMjuqjOa8H7BR+mZrujFLmOODVyw9iJuh246AcJ9PCV76istRz9Vn6swEa+ZwaYROofw3ZnYj+NCAyHTtaLkdm4ZnKtoeZlsOSKnXGpE8rF0Hxt0fo=
+X-Stat-Signature: i6euin7us6fz3msio37jkcjdnisay3hi
+X-Rspamd-Queue-Id: CBBEE20003
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1789974021-646034
+X-HE-Meta: U2FsdGVkX1944q7JYTqj7WM6hLHQ6Rv6MO7lSQWS+GJMAWunZmEUgj8aJQ21LN0yUL9Vx5uw4g65m71S13uMkq1QUa8qSs24zHaHDO1Vqd5WkS7mFTyizXCeuaOBi20TuupysA0fmbI8QEQU5d3zmllBHxHdAmtGvEYWbtb12KLEnwCOGqWRRh30EOJdafnXCsRvaHt/bSKJP/yFLX7tX5ocdCOmdMadNgxtvHJBsOVaamc64PhZYy9jVSDyQfz1WC2MEpu9SGKEGDLvj1W0UgSMDu88WO4typ2bBab9p4fI+BdWO1nJInrQyxcfBymfHMK8JrakBfEwZ5qNcIULRtvK6RyEtgKuTt4KsV3QrEzSezyGze29syI4llxtuwJ2MhXA1lNCJdrrpBBfUEPYPuD4HhDjVwynpmvjdFHBmi6uuGRrxk3M3lElNOMLM9LjDPe9pvPAIH2ip8i/K1wJN5aKSNVKbgHapReRJKWyDpaEOqCDqkNkJ/JQ2GASRmg0TnhE5rCimkhkDCejobJMG6F6665rqG7Tejz7Q0zWnv80mJROnw10DKkBrCj6HHa1d5+ffmySITo23JTUM6IVjHSryPrNfl3SxN/7lx0Y/3zm/QSDFuuXYO02ISKKyHpx5HTpHg/Kwgu9CBdBNxjYLJuh98QZoiZzVBj/I3hKvrMFIn4C0a6ELl59iaIJJKoEbdmRTcA7b2oP0ybLLryoyh2a8JWC6x/aIMnHzFCZTEUX1BqG2yFsJ3GXyAkW8ablVewSIto2H7wNCaETylE35zVT0JH7qD+ftqxQN3AkoBFBtKK+UibZ28x4rhL5W39ezMT1gWcgjSxFRVnG1SsQNy47BpjjK5mrM8koVFVUcBMiCDZA69fR3K0vM78lHHH98C7f2Lk7HcRR0p5NJZwaAdn4Q0L5vDlvImAQTo6Am13RC7Wqw7FlnKoKsop83wjUSrw0YmpppE3AKzJxVfF
+ DpPPFT+u
+ 127+zUObMSbwD/on4aPThN2flzpwOngRBJEPtGNfhlk3QcfSSizgx0Tq/EMmIy+yhsnEDVXbT33fz7XI/h0A3a6g3Nia8kZ1WGO9RVwKGFrUldnAIjBT742OXguiAevkt6cyeAEJqu2yeQemXAisnVxWB1aVX70efRdmBmQgaXlJAVjWUBuoLIA6q266JOe5uK28WSu6+PQJ8m7MJvBYRrnsByT5UNQDROBhdwCYoR/wjKHaratyiG1NyNBnav9LZhgkvUP0rP+fv40sLrVNxP8W6sBdnmBU009fX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,8 +109,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Looks good:
+On Mon, Sep 21, 2026 at 2:05=E2=80=AFPM Ridong Chen <ridong.chen@linux.dev>=
+ wrote:
+[...]
+> 3. In move_folios_to_lru, we drop the extra reference and move the folio =
+back to
+> the lruvec.
+>
+> ```
+> ...
+>                 if (unlikely(folio_put_testzero(folio))) {
+>                         __folio_clear_lru_flags(folio);
+> ...
+>                 }
+>
+[...]
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+> Therefore, I believe it should be 'folio_ref_count(folio) =3D=3D
+> folio_expected_ref_count(folio)', not 'folio_ref_count(folio) =3D=3D
+> folio_expected_ref_count(folio) + 1'.
+>
 
+Yes, you're right. I missed the `folio_put_testzero()` above.
+Sorry for the noise.
+
+Best Regards
+Barry
 
