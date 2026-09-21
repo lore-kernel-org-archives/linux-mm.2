@@ -4,118 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72A40C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 04:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1DEAC982DE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 04:09:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4B3186B00D1; Mon, 21 Sep 2026 00:02:29 -0400 (EDT)
+	id B9CFA6B0096; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464216B00D9; Mon, 21 Sep 2026 00:02:29 -0400 (EDT)
+	id B745E6B00CF; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351AB6B00E5; Mon, 21 Sep 2026 00:02:29 -0400 (EDT)
+	id A62E26B00E4; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 13BE56B00D1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:02:29 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 810EC120572
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:02:28 +0000 (UTC)
-X-FDA: 85236422376.26.FB802C0
-Received: from mail-wm2-f9.google.com (mail-wm2-f9.google.com [74.125.225.137])
-	by imf21.hostedemail.com (Postfix) with ESMTP id ABE891C0002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:02:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lueUUEVS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.137 as permitted sender) smtp.mailfrom=memxor@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8342B6B0096
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 00:09:07 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1980E40557
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:09:07 +0000 (UTC)
+X-FDA: 85236439134.13.E4EA725
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4A874A0009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 04:09:05 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fgqpk7b6;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fgqpk7b6;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789963745;
+	b=7vMk2SRI+RcvkzDR3kekefIJFjWQ/eCcbJEop7kH06DQbihM7u3v5OCHBPhmPOSISXOJLv
+	fb+sZPLBR6+qsGVW/48/NbTmaFkiIyxJOMDvRALT2b1kiIuCoR8IM45+M791pD/hOLGNvs
+	2tkCTEq5w807iKafmFifrH1Ua5TbKqw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789963346;
+	s=arc-20220608; t=1789963745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0juRQzdf6nmFbDGjlJJGsvrFrjljT+sRU6VdT0gPqE8=;
-	b=rNaN1bOxLAM663aCj5WhMBpIklQfoSwokG8TX0QDwj3r9y+EDP/HcPmEFB+KkZglOlSUFQ
-	eaDdsza3c6qyKIWAKshkjTJM5P2LT7ybv3AcLTIiUErZcmb2NLU6lC5ux2mFhTCICBU0ZP
-	qadEZdfou3dQNQurbZj7YxGopfuHkkE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789963346;
-	b=yYUvQk9umPlEMaVas4hl4EBoSgJvjDyuFd0RuCsbDp4DyuuoUFhe+fipMlrc31+BS+jC2i
-	zvNttXXVLGnZaUP9yVjn/YLTYueAzlnfcvhSPL9LaFnUUcuweGJhMJA+BltscRTnV6zJRW
-	3ISZdCtRTyULYl7cBSquWQgjAaBDzok=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=lueUUEVS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf21.hostedemail.com: domain of memxor@gmail.com designates 74.125.225.137 as permitted sender) smtp.mailfrom=memxor@gmail.com
-Received: by mail-wm2-f9.google.com with SMTP id 5b1f17b1804b1-49e6e43b9d8so9413605e9.1
-        for <linux-mm@kvack.org>; Sun, 20 Sep 2026 21:02:26 -0700 (PDT)
+	bh=LZ736WQSm180sbvHtkV3uFqBg4iSSs3xixQmjdddUBk=;
+	b=fBFzwi3umiGtf9/6FCkD/GTlWjrr3JqyU21upykxWmskBo8V5/YmImitC+yGPe+onIGE8R
+	p3JHLj24yro37iu2ypaqSkLxIj5Q7HGVihKIiYkrrBB2OMX5qcLb1zSVHFQc5sUN6w8IAc
+	uLSy2KKkWgsuB2uEnElfwbNIL4SC/jc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BDFEF60213;
+	Mon, 21 Sep 2026 04:09:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C301F000FF;
+	Mon, 21 Sep 2026 04:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789963345; x=1790568145; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=0juRQzdf6nmFbDGjlJJGsvrFrjljT+sRU6VdT0gPqE8=;
-        b=lueUUEVSFngDFexqfEEjMyBrvH25f4j9UkrP5l+vWI0WW2PS+DXpDhXHk3vatYLyrF
-         su55SJy+VKf9kKz+qoSwuvBPnH4lkJLnU0nzx1wUXm7L7dkW9LojQPRy2StzAN8za2QI
-         dqXm9dIrLLD9qSO7ZB7K4IS+OU1H9CXhKWLduLblOjH/jVN3zxLOVkOPzWgaeLuqNXfN
-         bHGHVt3Uq3y7ybuQG+7hjgTWxxTgz1XSkKQZCtFx6pUD9peNR36Vqbb//Vx0hJEUkEbK
-         yPowHBDTYLZAVMV2RgD4q+3tZ/y7hAOwi6IxzFQ+hMvXV/lJQL7pquxItFG8vBo/aMzj
-         l2dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1789963345; x=1790568145;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0juRQzdf6nmFbDGjlJJGsvrFrjljT+sRU6VdT0gPqE8=;
-        b=ZigyaK7PDybmGqgfDyWoy1SenKl2iX6RDoCpnmDPNtbpBnyDMyFCea+zp3H2MHqtW1
-         MRwTjoCqSqjijqWbMrj/7JGT2wENGS4IWeTQb2nfOINkwmMus/jQNN9tvooAeNwtvqJ/
-         ajL2k78p1SaVIm5bmqiYtHVjGKQTbakIIhbFoiGkZ9eYH0rEsAFuOCiApTwyHUe4b1DL
-         T0/YHA6rr3hsgyY9yZZ6lnVKdHjfYS0HA71ycIMk11MxGV1dapMPWH6twHOwHknwPpEN
-         8Jma8xbH+WguyCjDT0XqKV7EFXNiBVwT5cNprtEQY3x6FNb9j3RtoS2qfmlH//XLLkB4
-         EdSQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzXoTAg2weNLGGvHhm7kt+TSAmG9CIok69sO/akXdIl1Bi551Gz/1MxxL2TWebJTLG+NeDHEGgqug==@kvack.org
-X-Gm-Message-State: AFuF++l3fmv9MEnbfPEP5agCWu4P+gD7MJuul/KXXPX4RpgUgPFcAdba
-	8SQAWuzXfIjvp7K+CWfu28vKHM+zBtj3tg2mDhsg8sWBfRONHx0rS2Qf
-X-Gm-Gg: AYBFou1/z8un/AqXYnyIlzetIss0AOMvWcKlUfRWaFtI6AwOKeyLp+XKwpNHRnF1Sat
-	j4q8U9BOw7+C99JoMG9Aq0+74Ds6Htm36PTO0cG5lMPVPmNlchF5goebI9vAocI6cY2HtE9smdT
-	yPcUSqgJFe4RrSzGG3S4UWuR578J22XWXZR85ejQo7WbzCBZx1qkd9LzMmtFypDq70I075PBTuf
-	REgL/AN2R0+LsIWgOvF6b2A2E8kAzmMQRIBbA2VKOOfRhaLOqOBiWs7+KrWLmg+9trVi6SQfWEL
-	C+i8jRslhLALm9WQBMdwC4+X5gr3GsJebc5Pv/aGKWM/ogdzPqhlzgs2OcI1ShSknge5qtdJZJY
-	dIL+yGZKiyFUpCdJouS2lHUlbmKDmTkpE1Q+hYzcPt+RxNwVZ9mZLHc6y5OyqK8Au8owEtc0xrU
-	2ppWgCgz87s44iql5qodp1b0RX7PhxcCJzjRNDgEkU/XZq950e3MVuCURdP5ippYgyA3jDpwfqa
-	Eo5uc5/rqYJ4pJvLougpX11Bw+UMac9ldaLlpK5qUAjRmBvOnceMDD4tlrYNLm0n+rD1OqvYYdD
-	CG0roWBXVJFdcJuCax+t+H3dY6t4Z37U2t+qdCd4lixJdrVh
-X-Received: by 2002:a05:600c:138b:b0:49c:f89b:f82 with SMTP id 5b1f17b1804b1-49fc568f8dcmr115799535e9.12.1789963345138;
-        Sun, 20 Sep 2026 21:02:25 -0700 (PDT)
-Received: from localhost (nat-icclus-192-26-29-3.epfl.ch. [192.26.29.3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fc55cd8a8sm256725075e9.0.2026.09.20.21.02.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Sep 2026 21:02:24 -0700 (PDT)
+	d=linux-foundation.org; s=korg; t=1789963743;
+	bh=LZ736WQSm180sbvHtkV3uFqBg4iSSs3xixQmjdddUBk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fgqpk7b6eCfprR7zmZiJy9qBQZJsbM5f8s3hI8e6nM8wYRmEU0CAVWtHGL4kzcQi0
+	 wEjzAZst11LRJ9q6W6kXCFZAXji7jeST+bAFloveBQOKkO+TvLOqlAUkcR9HD/Se9Q
+	 iZwtpMlXm4chDCNpRM7SRsEPxwlhnoNITtr0Iqy0=
+Date: Sun, 20 Sep 2026 21:08:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, Ryan
+ Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Minchan Kim
+ <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Peter
+ Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Arnaldo
+ Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Mark Rutland
+ <mark.rutland@arm.com>, Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian
+ Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, James
+ Clark <james.clark@linaro.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-perf-users@vger.kernel.org, Juergen Gross <jgross@suse.com>, Stefano
+ Stabellini <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, xen-devel@lists.xenproject.org, Eric
+ Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>, Jaegeuk
+ Kim <jaegeuk@kernel.org>, linux-fscrypt@vger.kernel.org, Oscar Salvador
+ <osalvador@suse.de>, Chao Yu <chao@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net, Tal Zussman <tz2294@columbia.edu>,
+ Gao Xiang <xiang@kernel.org>, Jan Kara <jack@suse.cz>, Yue Hu
+ <zbestahu@gmail.com>, Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep
+ Dhavale <dhavale@google.com>, Hongbo Li <hongbohbli@tencent.com>, Chunhai
+ Guo <guochunhai@vivo.com>, linux-erofs@lists.ozlabs.org,
+ linux-fsdevel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>, Masami
+ Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+ <weixugc@google.com>, linux-trace-kernel@vger.kernel.org, Trond Myklebust
+ <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ linux-nfs@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>, Alex Markuze
+ <amarkuze@redhat.com>, Viacheslav Dubeyko <slava@dubeyko.com>,
+ ceph-devel@vger.kernel.org, Richard Weinberger <richard@nod.at>, Zhihao
+ Cheng <chengzhihao1@huawei.com>, linux-mtd@lists.infradead.org, Baoquan He
+ <baoquan.he@linux.dev>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Dave Young <ruirui.yang@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>,
+ kexec@lists.infradead.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 00/17] Remove PG_private by using page/folio->private
+ checks instead
+Message-Id: <20260920210859.a0f75483dc4a12202c8b9516@linux-foundation.org>
+In-Reply-To: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 21 Sep 2026 06:02:24 +0200
-Message-Id: <DLKP1SE3XQ41.2QNDF51ADS0ZT@gmail.com>
-Cc: "Alexander Viro" <viro@zeniv.linux.org.uk>, "Jan Kara" <jack@suse.cz>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, <bpf@vger.kernel.org>
-Subject: Re: [PATCH 0/2] binfmt: fixes for kres reports
-From: "Kumar Kartikeya Dwivedi" <memxor@gmail.com>
-To: "Christian Brauner" <brauner@kernel.org>, "Chris Mason"
- <mason@kernel.org>, <linux-fsdevel@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260918-work-binfmt_misc-fixes-v1-0-647b24bc1c46@kernel.org>
-In-Reply-To: <20260918-work-binfmt_misc-fixes-v1-0-647b24bc1c46@kernel.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: ABE891C0002
-X-Stat-Signature: mkkqazqm95or8nbaifz16czniw9e9afs
-X-HE-Tag: 1789963346-261353
-X-HE-Meta: U2FsdGVkX1/QZVqOVgIyrHCXQoMz/uIFQE0p1kfQbqRi+HcRGQjNNXygtHXBZpRgWWkxpogljCylhmyrZldjawCMQB/i5PON8v8iHI+APG+cn8OemicD/yqovo8g0U+Rxu1dQnqABUyEuhZCQz4j6h8OnVLXH7Uwv2RbdLVtEA6NHcGTm4NrBtpDhtua6AFHvw5eGeUYHelSp5RYX6E8zeJ3CNO02/RhbrPm00ryQ4FWpemvlksfTRNP7UHu34lKU7DgPLKOSW1qjHjSU3DGOu7Wte9xH1KlVqOWtjnMiBx1MyUhd0P4U+oNOrvXaZ3bhYS4ybgG2Qe0BqI61YAJIracoInWs4+VYqprPv7cdHB4aPQl/J+20ykglaq2BZ/buoUknhKcGBZ4OSx2S1Aw0V2RW1UkHP4yWM3Zsd9iIDruEHxVDzEYrnnjIiMRH/5PHAwaBtLXmf0kr11tRv3mfy6Qoc3YYQu5q9U4msZcHyY3UXMBcuJ7RgqF0UIFUUCelZ9kmKlgRY51JFCoA+UTx8/5WxxcJ3v4Gpv/mi3WTVPEkgOmw8mOXUvkZDL3RxxWsDz/HkQi/jwp0cpb1ACd912R49wjHrUrnBN2s86ASzJSJI7KwpiVAh/FEwIu0geff5l9gVWQyyWv2+ryuAC9T1DkESJjcuhBh8Vdjs4EAQdNUI6hdnMY8Eo5FykbbMMKrKi1u8M8+MUlRhEbcu45Vd9BVSX64y5ayeqyvoIlVX/6jDpznd6RqBKEe4jATfzhYTlszb/FK9psrvXJVq4NEHVAR5SjKc097h5khj3ABTz98nAV14EYxX9wZpUH97Oz1oRxZNUqHBXwNoymDq1WNikEKHAS64BL3itnTnLwhwPvwC2izqpwNxkEEKjIA1fLmZwtbTefy7O5pNoqDA3qlRhce15I4aSwKkcBq1cTnn+Bdcy+zWgvQ9nalk6ovbOhJd8d9RPbeKfzOlQtM0J
- S1gKH7+N
- IfVH6WdrJKNNlqhoB24KVyNXgeux8g8wnd43eTW61bbNjDAe1aTBtWQhgjyZS5b/DYXVia6c45zD0Oz11NutyplmltSXpnPgohJlNznt8svJkGRkDKIGHAQ1CvSr+ePduqwHNjvNvJ/Ldkj4sUYUWJwQKoX/oT+XJJIvOOYcHBdi4sf6gLtnytbB/4Q4BR2nM7HVuUTxCZXLT2Uzkoj6LgI9G/k2N/ep0GS+6TCZUO42Z4A3iedMiq/hMXkMj0x8IdoX1gpiNKIQe6fu3PN7mNlYgwovqXZW3KgXMq2Y4kq+NfUDh/jlnBPhpLpm/NiJA4bJWjhQaKKHlWEyZ01Fok13FQyB3yh2f3cU3tGyZQsoueT9NdhQdkP+SUlyzGrBcE3ahx6AM7skeH/emmMsGcwwFdXq+Pi97uI5UxQGUiBsjblfcxokGJIs2+8hNiJ17EYw8Q06/Nxh3qX6lpA6iOJA72/GkdxE0LF1xQ7Y8m804K6bnAkQZfP7PCVuzA0+IY+sEKQ2adRcn0VU=
+X-Rspamd-Queue-Id: 4A874A0009
+X-Stat-Signature: hkbwt3r17x9krjr4hxyoq7t5obr1ki4c
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1789963745-267053
+X-HE-Meta: U2FsdGVkX18GPt/+yPwz72LsQzCFpW6oQV+LWtVbUFkTPdOUYmZ0ki43p2NjumDu7wO73ppr+dDg+AucJWV7xBNRBhb1u3SyQWYdiGsMyLGAM8DQM7WsVqxcsQMF/x9Lb4eKxzgWZYbJmAq7CVOJdhxncZyr2S3le5b1WDICQ11VGzxZ9WRqClE/WN9XXasKxzCIOlzutQVGhFIYm344qJv+PNyiTu3cJsqk4gPN9cy2bQ0gmNwk8rYzOYEwJguAgg3u/N3YtO1XhD3hxNPwgeM4TKD7PYEwd4T2OKqiuOzrA8nhXhNYrcxBIGWp54P5ebLB8kEu5shvbEZuCmgJqLp1sHEinyNA7rco9jlL7QlB7UTy3E+hUaB5wKGFnbcpRDJZmAsmaiE7YfGlbk3L7GX3YzUuR1P27pjyxgYZoTy7hq96i5XQuYvtUDXPPfCKXrypPGMmmj0dUWuacCwoz+jxGb7wZaSAFk7s8fQeqXjbQeIpi6q3vh7fbb25sGuG4MJ3jy8Gyis1iis024cz7JIr7N7IoiBwUHqEgduUQwnXU24qwi11VPoI+msyUu22zqPIuNweR3iguG+PUobwUvz3BI4MNugNL+kmZSMN7kiMLETwglacJbOsE87yOAR4czFScoq4gMCtNJhRBMUH1Lkw5K8FbT5YoNUsXHM/ghbxR6nS0qYmeJEqoDClqJ9Btyt9Znoo7GswudXENDuqxSU6pNzAQOydhc29NNVLW8TtV3sU5DxqAwGYesb0n2eK5aB7WzHZwbUU77gDpJUYFL8VUPOWGpnaeCWrTCV/2P+VnjAhsp8j+kayWXygh9mBrVFvZsFCRU+MkkLV4vQ1JdRkP3+vf1WXg9mODwbHt033vfFNVdqPgDDeN/J1FOdhQyJwoRU+xvcIzE3o1DLlWeqAhJX9TgxBi1caObWkG3B2n9Jp8apzx1c1ySfyQXFypqB6GzombL6rcMYRR1z
+ Hr/y4YSB
+ LK00NE/c693aygMJk/cGCTmbwyooopfz6lmGsO7C7/9wTVYHFTdN/4vrSMymhknfjtd6zwf65gbTHhA2kil4t9b3GIgn6+a7FdtEuKyMhBmbSFFRLIgETPtcX/07YgpKQNXEE5+4a1X+KLQveMeVpGdvSJEf34dqtZBi80LCj0J1EZoAWq1nbz4xIcp+HHgQIAu/HZIrjf2iyc8jHQqwy5mWMVOFSa1FQh7ixSCIzuG59lZRHZqiCuDSu3fvk3405BfcGB3d2jha+BmR2il7RvV9mIV2Jkpgl6/Vzwmqpqpw8f80IqIiitRSVwc4t7uIB9xumehjBuNCpnVGJVWVQ9wi5bN3Iu5NpHCv4tuoQEE0q1lLuBufy1D123MbunpKjjN9XW0PX3qXqCb8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,21 +137,231 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Sep 18, 2026 at 11:19 AM CEST, Christian Brauner wrote:
-> I asked Chris to run his kres tooling on the binfmt with bpf changes
-> merged for this cycle. It found two issues that are fixed in this
-> series. I reproduced both of them.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
-> Chris Mason (2):
->       binfmt_misc: fix OOB read in bpf_binprm_select_interp()
->       binfmt_misc: fix racy checks in bpf set_interp kfuncs
->
->  fs/binfmt_misc_bpf.c | 35 ++++++++++++++++++++++++++++++++---
->  1 file changed, 32 insertions(+), 3 deletions(-)
-> ---
+On Sun, 20 Sep 2026 22:27:56 -0400 Zi Yan <ziy@nvidia.com> wrote:
 
-For the set:
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> Hi all,
+> 
+> This patchset removes PG_private to make space for upcoming PG_folio for
+> identifying pages from a folio (more details in Note below). Instead of
+> checking PG_private, all code is changed to check page/folio->private !=
+> NULL instead.
+
+Thanks, I updated mm-unstable to this version.
+
+> Changes in v5:
+> 1. replaced md patches (patch 13 and 14 in v4) with Matthew Wilcox's
+>    version (see Matthew's replies to v4).
+> 2. used data_race() inside folio_test_private() and PagePrivate(), so that
+>    the new versions can be used without KCSAN warnings while not holding
+>    folio lock like before.
+> 3. moved folio_has_attached_private() implementation detail comment next to
+>    the code.
+
+Here's how v5 altered mm.git:
+
+
+ drivers/md/md-bitmap.c         |   17 ++++++++---------
+ fs/buffer.c                    |    8 --------
+ include/linux/buffer_head.h    |    2 +-
+ include/linux/mm.h             |    3 +--
+ include/linux/page-flags.h     |   30 +++++++++++++++++++-----------
+ include/trace/events/pagemap.h |    3 +--
+ mm/huge_memory.c               |    3 +--
+ mm/page-writeback.c            |    3 +--
+ 8 files changed, 32 insertions(+), 37 deletions(-)
+
+--- a/drivers/md/md-bitmap.c~b
++++ a/drivers/md/md-bitmap.c
+@@ -516,7 +516,8 @@ static void end_bitmap_write(struct bio
+ 
+ static void write_file_page(struct bitmap *bitmap, struct page *page, int wait)
+ {
+-	struct buffer_head *bh = (struct buffer_head *)page_private(page);
++	struct folio *folio = page_folio(page);
++	struct buffer_head *bh = folio_buffers(folio);
+ 
+ 	while (bh && bh->b_blocknr) {
+ 		atomic_inc(&bitmap->pending_writes);
+@@ -533,18 +534,15 @@ static void write_file_page(struct bitma
+ 
+ static void free_buffers(struct page *page)
+ {
+-	struct buffer_head *bh = (struct buffer_head *)page_private(page);
+-
+-	if (!bh)
+-		return;
++	struct folio *folio = page_folio(page);
++	struct buffer_head *bh = folio_detach_private(folio);
+ 
+ 	while (bh) {
+ 		struct buffer_head *next = bh->b_this_page;
+ 		free_buffer_head(bh);
+ 		bh = next;
+ 	}
+-	detach_page_private(page);
+-	put_page(page);
++	folio_put(folio);
+ }
+ 
+ /* read a page from a file.
+@@ -559,6 +557,7 @@ static int read_file_page(struct file *f
+ {
+ 	int ret = 0;
+ 	struct inode *inode = file_inode(file);
++	struct folio *folio = page_folio(page);
+ 	struct buffer_head *bh;
+ 	sector_t block, blk_cur;
+ 	unsigned long blocksize = i_blocksize(inode);
+@@ -566,12 +565,12 @@ static int read_file_page(struct file *f
+ 	pr_debug("read bitmap file (%dB @ %llu)\n", (int)PAGE_SIZE,
+ 		 (unsigned long long)index << PAGE_SHIFT);
+ 
+-	bh = alloc_page_buffers(page, blocksize);
++	bh = folio_alloc_buffers(folio, blocksize, GFP_NOFS | __GFP_ACCOUNT);
+ 	if (!bh) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+-	attach_page_private(page, bh);
++	folio_attach_private(folio, bh);
+ 	blk_cur = index << (PAGE_SHIFT - inode->i_blkbits);
+ 	while (bh) {
+ 		block = blk_cur;
+--- a/fs/buffer.c~b
++++ a/fs/buffer.c
+@@ -773,14 +773,6 @@ no_grow:
+ }
+ EXPORT_SYMBOL_GPL(folio_alloc_buffers);
+ 
+-struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size)
+-{
+-	gfp_t gfp = GFP_NOFS | __GFP_ACCOUNT;
+-
+-	return folio_alloc_buffers(page_folio(page), size, gfp);
+-}
+-EXPORT_SYMBOL_GPL(alloc_page_buffers);
+-
+ static inline void link_dev_buffers(struct folio *folio,
+ 		struct buffer_head *head)
+ {
+--- a/include/linux/buffer_head.h~b
++++ a/include/linux/buffer_head.h
+@@ -175,6 +175,7 @@ static inline unsigned long bh_offset(co
+ 	return (unsigned long)(bh)->b_data & (page_size(bh->b_page) - 1);
+ }
+ 
++/* If we *know* folio->private refers to buffer_heads */
+ #define folio_buffers(folio)		folio_get_private(folio)
+ 
+ void buffer_check_dirty_writeback(struct folio *folio,
+@@ -191,7 +192,6 @@ void folio_set_bh(struct buffer_head *bh
+ 		  unsigned long offset);
+ struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
+ 					gfp_t gfp);
+-struct buffer_head *alloc_page_buffers(struct page *page, unsigned long size);
+ struct buffer_head *create_empty_buffers(struct folio *folio,
+ 		unsigned long blocksize, unsigned long b_state);
+ void end_buffer_read_sync(struct buffer_head *bh, int uptodate);
+--- a/include/linux/mm.h~b
++++ a/include/linux/mm.h
+@@ -3052,9 +3052,8 @@ static inline int folio_expected_ref_cou
+ 		ref_count += !!data_race(folio->mapping) << order;
+ 		/*
+ 		 * One reference from filesystem private data.
+-		 * Use data_race() since folio might not be locked.
+ 		 */
+-		ref_count += data_race(folio_has_attached_private(folio));
++		ref_count += folio_has_attached_private(folio);
+ 	}
+ 
+ 	/* One reference per page table mapping. */
+--- a/include/linux/page-flags.h~b
++++ a/include/linux/page-flags.h
+@@ -576,7 +576,12 @@ FOLIO_FLAG(swapbacked, FOLIO_HEAD_PAGE)
+ 
+ static __always_inline bool folio_test_private(const struct folio *folio)
+ {
+-	return folio->private;
++	/*
++	 * data_race() is added for readers without holding the folio lock.
++	 * Only the NULL/non-NULL answer is used and both are valid while
++	 * private is being attached or detached, so the race is benign.
++	 */
++	return data_race(folio->private);
+ }
+ 
+ FOLIO_FLAG(private_2, FOLIO_HEAD_PAGE)
+@@ -1199,20 +1204,23 @@ static __always_inline void __ClearPageA
+  * @folio: The folio to check.
+  *
+  * Use this in code that may encounter swapcache or hugetlb folios but only
+- * wants to detect attached private data. Swapcache stores swp_entry_t in
+- * folio->swap, a union with folio->private, and hugetlb stores its own flags
+- * in folio->private; both are excluded.
+- *
+- * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as a whole,
+- * so folio_test_swapcache() is not reliable to exclude swapcache.
+- * Use folio_test_swapbacked() instead, since it remains set when a folio is
+- * added to/removed from swapcache.
++ * wants to detect attached private data.
+  *
+- * Return: true if folio->private is set and the folio is neither swapcache
+- * nor hugetlb.
++ * Return: true if the folio has private data attached.
+  */
+ static inline bool folio_has_attached_private(const struct folio *folio)
+ {
++	/*
++	 * Swapcache stores swp_entry_t in folio->swap, a union with
++	 * folio->private, and hugetlb stores its own flags in folio->private;
++	 * both are excluded.
++	 *
++	 * NOTE: For swapcache, folio->swap.val PG_swapcache are not set as
++	 * a whole, so folio_test_swapcache() is not reliable to exclude
++	 * swapcache. Use folio_test_swapbacked() instead, since it remains set
++	 * when a folio is added to/removed from swapcache.
++	 */
++
+ 	return folio_test_private(folio) && !folio_test_swapbacked(folio) &&
+ 	       !folio_test_hugetlb(folio);
+ }
+--- a/include/trace/events/pagemap.h~b
++++ a/include/trace/events/pagemap.h
+@@ -22,8 +22,7 @@
+ 	(folio_test_swapcache(folio)	? PAGEMAP_SWAPCACHE  : 0) | \
+ 	(folio_test_swapbacked(folio)	? PAGEMAP_SWAPBACKED : 0) | \
+ 	(folio_test_mappedtodisk(folio)	? PAGEMAP_MAPPEDDISK : 0) | \
+-	/* data_race() is used to read attached private locklessly */ \
+-	(data_race(folio_has_attached_private(folio))	? PAGEMAP_BUFFERS    : 0) \
++	(folio_has_attached_private(folio)	? PAGEMAP_BUFFERS    : 0) \
+ 	)
+ 
+ TRACE_EVENT(mm_lru_insertion,
+--- a/mm/huge_memory.c~b
++++ a/mm/huge_memory.c
+@@ -4845,9 +4845,8 @@ static int split_huge_pages_pid(int pid,
+ 		 * For folios with private, split_huge_page_to_list_to_order()
+ 		 * will try to drop it before split and then check if the folio
+ 		 * can be split or not. So skip the check here.
+-		 * data_race() is used to read attached private locklessly.
+ 		 */
+-		if (!data_race(folio_has_attached_private(folio)) &&
++		if (!folio_has_attached_private(folio) &&
+ 		    folio_expected_ref_count(folio) != folio_ref_count(folio))
+ 			goto next;
+ 
+--- a/mm/page-writeback.c~b
++++ a/mm/page-writeback.c
+@@ -2705,8 +2705,7 @@ bool filemap_dirty_folio(struct address_
+ 	if (folio_test_set_dirty(folio))
+ 		return false;
+ 
+-	/* data_race() is used to read attached private locklessly */
+-	__folio_mark_dirty(folio, mapping, !data_race(folio_has_attached_private(folio)));
++	__folio_mark_dirty(folio, mapping, !folio_has_attached_private(folio));
+ 
+ 	if (mapping->host) {
+ 		/* !PageAnon && !swapper_space */
+_
+
 
