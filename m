@@ -4,116 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C0D2C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:55:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B22AC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D2216B00A4; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
+	id 499C26B00A6; Mon, 21 Sep 2026 17:57:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3834F6B00A5; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
+	id 471B16B00A7; Mon, 21 Sep 2026 17:57:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 272086B00A6; Mon, 21 Sep 2026 17:55:16 -0400 (EDT)
+	id 386BA6B00A9; Mon, 21 Sep 2026 17:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BB7146B00A4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:55:15 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A022802DB
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:55:15 +0000 (UTC)
-X-FDA: 85239125790.07.0B0CF2D
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7E3E7100002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:55:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UNj1BryT;
-	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 169526B00A6
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:57:05 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D40C802E2
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:57:04 +0000 (UTC)
+X-FDA: 85239130368.03.D46B4D3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A89864000C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:57:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWLymRA4;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790027822;
+	b=CI3AvGfCgHUJ5Z3hgz7mHosUtV6rWLZeqRJ/dRsW4JUQVU97focU1m0bEoo4Hj2AA3r5MP
+	mygKWI2cHHfuSHHcUu8ZbNY1Lp90WnVRsdlaB85GwRKPhURqn1ncMNeVp/5ZEGfDS0qPMy
+	FCOmCj2RRZThJKcYcnY3Kac4ltcFdAw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWLymRA4;
+	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790027713;
+	s=arc-20220608; t=1790027822;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
-	b=jv3/kblNXVZwMufxHjbGiC0fCqzsVRMG2/dImKshPo/QitDtrTPd+TXa+eq8YBUG99sjls
-	c1SDiMiHnll0hbD3k3GQAeuOmeFSd0B4LP3e26gV7ek32G5SlgMKm6BAS465fMur4eizVg
-	xyp7JzzKBuFeVrXQkJKUtpPT5MZ6irs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=UNj1BryT;
-	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790027713;
-	b=JeNGAEAYrA7pKUvZbIrBjq2lJGxUm6Jg3sD+fzK4agVgg2yK8PWVsqYe5YvlK1susfQ7G2
-	LFGkBDCxxi9fyZbUl/jzQ2f8WwnJp981wRKebRJfHi10e8IOdb7L0fBz+fBROhhp1agqyX
-	03huLWAIQ9Wfi7vxtPtVSigrgn93CgQ=
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48586861639so178283f8f.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:55:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790027712; x=1790632512; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
-        b=UNj1BryTgG1IYkUHayRvz/7wfz9HbBhNoojcBQJYV2/O9PUJelU3AP9swtwyNbfLyS
-         VdKfHYs1jQOYdYlpMiXO/t2Qy86z61Fqiftmd6nqxE1GPN2GvwUxz5wz2XyCdpuLNuZy
-         VDG3nCag1bUR5IDJDwhgmLYM9hsGGT3UEJZoFpsxTp52X8cxWcilBowD8NHiLoeyF6vB
-         49BteiceNPdYeXS9lqQY43pECJrdefwGrB4YobE++HhDgXEMLt7nNBeN0hr5CjTq3Mhj
-         m6TSsFS48MLWfe25q+87Tn3SWmnZH2JfAltPtVSZWyN1b70m35ITTUrcmQp0l39Y8zTN
-         obLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790027712; x=1790632512;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=18O+tTI1rRDvA6n53KVT0ktfEAZ7emgcAQWAHdf7HXA=;
-        b=zEC+bQrEHxQ9KwQOYstw+c+tqCZcIhbgP3QX+4CkOBHLJF44LtC7gtn5FLDQpcn5Bn
-         OMh1VYmwfoBblSCh13vRunPUk/753mmrWq8MTfgoibAY3+HyjvRrJqwOrcSiedXh4SzG
-         dvp+5M6gmxlPzSjH4L2yV/6OmIbkXr2osnrmZyg8lZMPVKwIfGVavnVDVF1mPEIHcgKj
-         5oCJ4epnmPrZLhcpnE3fNxYs93eIciSaIt1wnfnMKT8wYR1d1IWRmx2Rlq3VGea7z2p9
-         S/+6isRZchSdtCJzTzxBe3AFlYB39v+A6013jViOqwhX60IvTxshPQFBdu7FvP/XQ+ec
-         TKRQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzzwSaejq6l8wpjz3i7StEqUqpsMjVDc3QjP9vQU8XThOs0RsFm2Usj3MviduYI5yMRO6uj+MT4+A==@kvack.org
-X-Gm-Message-State: AFuF++k7Fmc5TamFcnQCOT98eVDJaSX+Y+cR5ceUKSdffcoOy2sqCEcP
-	bLDDRrsmFkIQEW90/5xUAj98xRZA/d8wvTURPLZgzt/SLXpGqcHxAdJx
-X-Gm-Gg: AYBFou34cwY6bqhenvuEmVfs/h2TAszgfPIsg2EPJatkKbAEjOznd0kj//rZpTQ8C5h
-	sUbs1KzD2ACPDXcp4/fwXwNeBFTJHUKJe7Zm8/NhheXiQdli+RmNIOKNfAKS0mzKnUTrCcLIavK
-	SHZywXAYZQXcK7tGxDFQHuK3rmZfZZkFVQnF98p3MwkLOTP35jn8IZVcDXOeprhhch/JkHYO6bQ
-	Su7y5RB7+R+3tInviWApXV63UG+TyDiKhlIXsU8EbZqQw4g4D8WO4QI07NjEJrGwRc3i/i3D23g
-	bqGCqH0NpXHEHKT/7/ZDbXSCs3VFAsbW/JTkvPi5zmkAz9MSZXogWAvME/+JCPjKUSJLqsfEFPD
-	3e8Kqlur/5skvq6sewJDH4LgcUPd/mpAZVzaiLaAPIAIRQS3ZkhyNHpfYCCgbjVgSkzHmFXxOMH
-	1lKRJoIxCg2CdJawwqgsFOgs3H4HBGAncIKeQ94MLmeh8btQxksi4qTJs=
-X-Received: by 2002:a05:6000:2309:b0:485:a517:6287 with SMTP id ffacd0b85a97d-48860fd75d6mr1502937f8f.17.1790027711846;
-        Mon, 21 Sep 2026 14:55:11 -0700 (PDT)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886228be7fsm442767f8f.37.2026.09.21.14.55.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:55:11 -0700 (PDT)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
-	syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH] percpu_counter: annotate lockless read in _limited_add()
-Date: Mon, 21 Sep 2026 23:55:04 +0200
-Message-ID: <20260921215508.141641-1-azpijr@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qSVVL7TW61oF74m7rSQbYkMlEzrUZT28aAJlLtjv558=;
+	b=gd6fUDyCVOKFdNaEeRPSdA929agKhXRoqZgsJF8UahNhQvXlIPRLHCaUX16QpZGquJEPMF
+	Uk+XQN9+p2jqgruAFrCVlKBVzh5V3+9LWnsR+0aUqgh0Zzkp5PhkQBSOwSE/GOISoOvgIm
+	S2BLNjvUsCEVZN3z08OzRH0zIbe2Zto=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A2CEE40B72
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8639D1F00893
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:57:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790027821;
+	bh=qSVVL7TW61oF74m7rSQbYkMlEzrUZT28aAJlLtjv558=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=UWLymRA4dRaUVCNgxbyFuI0sgH1RptweTBoHL1aoPAuEMPHD2GwK9pr0Y2/F8IjtC
+	 AzsMOelpBRu0ibT+YgaKcQhY81MQunCrgiY+70Hj0oQsicaHoDvg6wzTkgWnekys1o
+	 nH7DX+jrIEledtA+S+0dPk5Gq2D1lzBOG37kumVi5PzgS9UymwW6pillHTZq/mv/oL
+	 g3c/aJpf021oj019kcIeqxkxwSe2KcGcCKuIfazdIUADNGLvQU2/+s9zuMNrre1uHN
+	 nMEU85phY2UHu8nW59GB50G6dPJ9t6WeC20yS8fp5o1FO1Na3An/OIR6q4HgDIOiXW
+	 TZ3uhGwcAxTCg==
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910ad20d4so381925485a.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:57:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByjdXA9zLjNQCVa5WO3FlXm2LTnKtWzG4wsYLYQ+GmGW88mzxRYpUrWjvpJSbYxiQ3aa8KA3LXsng==@kvack.org
+X-Gm-Message-State: AFuF++m/XJS/fnoTfP5rHYTz29pcDwRnoovSNa916WrRzeo9R/p5r3zB
+	Zb6G+O2E6wN28rjimu/22nKSgnQ6OonViu4LRxKv1EpRYcVW+gofbqhxDA8a1YuHJLV4hgI2eTd
+	BzxAecDNdUSYxXbnQ6MLszGNC0buXoBM=
+X-Received: by 2002:a05:620a:2893:b0:937:d6e8:59b0 with SMTP id
+ af79cd13be357-93c15d69efdmr230732985a.10.1790027820912; Mon, 21 Sep 2026
+ 14:57:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260921152449.629486-1-alex@ghiti.fr> <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
+In-Reply-To: <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 22 Sep 2026 05:56:49 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
+X-Gm-Features: AcwNN1VSw5Rr4NROqiaRDFlkbhVNl6ttklStB_B4KIyo7Yo7DDoF7gUuyR6ZS_s
+Message-ID: <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
+Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback completion
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, willy@infradead.org, 
+	jack@suse.cz, liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, 
+	jannh@google.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu, 
+	hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A89864000C
+X-Stat-Signature: 18czt11zh4r136f7ew1huygcwdkmt4tk
 X-Rspam-User: 
-X-Stat-Signature: bdu64gq4ec5dbjagamnu965r8u1ck1w7
-X-Rspamd-Queue-Id: 7E3E7100002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790027713-198008
-X-HE-Meta: U2FsdGVkX19MyyEeMaRfl1bXNX1Ht/1SCNkPAC5V+EUcbnFewqRh4lvL81jsYfdXqOTQfyOUAYoc1PBE8H9m4MKEAvsSlypJf/db5KQ0eHVzMdWe2J99wqn64IhhTInjVETprU/XnIIoA5dOCCxvjdapXhMYhfn1NVpbLWPti5T/+NRNz1RgvrWIhsR+Y6kbTUoYUv6eIcp0jie1V0FTNGnvG1V2Radm4sBgEL4qhVy4zhM//MQmao2PYg82/hA2tZG2M5SDWoqWR/s79n1dDg2HKqWZda9eKubSWxbjaQ6v7dF393qdc78bbOpuUXaNt9Jbc8Lvpb4TYs0su7iiRGQOjYioeSHi8iiB++ydLngNAoXykCMWgtLtBy7XrCNdfNYDnzlXYk3iGuKEOveBm0r7KubOrmySh718OvIYfpr4SqFRnttuTFEh47njNCeG4bk96t4HfvSUol3w/30eQwVLyj74wI9YuKNoFaB6t+xpdfGiU8KN6vtxYUupG+go/RrLt3ghpu72DI+Sq2tCw4hRXQq5/w1Y+HZE7Ew4sNV3SgjGTr+bF5hCjk18mXO6x0eaQnm3w9L3q61vR8677PmIut7z/rhOC1N9Vdvo16FHPRepK6rhsT2hxf7+ABLr8mXWk27OdYrTUWgxkh2Mrl732VdU9RQOrmFseMrY9eVVHLhLxg2pj40yaORFxm+ABqSoGd5JgxyTxVaMGNkthndCTt8OgjseYNfUxwkRIeAiwtzMSna6i4bk8S8pWnI3Seh+l37v55Md3BGpn6Suc0/fS8akG2fOEjodzI/rbydulCu45y5ktTQGL7kU7gzH+PYc+14sefk9d44tv2MqwwtuocBv0rPpLJajCDht268obmMyw/5wTZ/vB8uStZXAWbs2lnuNkIAmtjt3MM4EFsNUOgMfStx51vcHLFgeFAzcT0aBsapLVCrIDbBSxG60l2OwHYUSpWww0KZAjqm
- 1xSlRgiH
- NFERhLJjvIGjxPps54VyOd0gZrf3TcIXecK0uafCWhItR+g4RomfMT8c7g9AXpy+5JC2Z/NZPJapNdtn2eChrZ3Vd/npdnjlt426iyNKVzveqXq1RAQnPeZFPBAYqvDtZAm6JrOruH7khl+ndrQA3lvaGi4MU7RStV+HQyuyc9MvLFg29ZV9RhSs6HXpPK3BggjiScOIgIcIBrK0LHvS8iVReH51CePLE0d9CRtQYW91DAAKGXBNagPA/GDNbWyKLjy12KiiZfeW6fsAB0ieuL2g1NeMeInmATxnTaW/tL3V58l54uA1DcG1Op5SPNwZmlEh23lh2SLkDfS97i/2rt4L9dcT7bAAB9gWjjAq8saEXchhJ/gJSMxW0ytxqYP87MqmokmR4FBTz28MkMVaTYylPfW1Y/xVjdSRuVTqAHvGRb6HV3xH7ksLwkJXy8UHrXhxgLe5J6V0+8rR4jsvlNs80ssjgd85/BahVczLZNvistbRK+TK2Oz/OWjtCETlAK13uWJWmqNjLUmRghLqDHjvR7oaWbFLYg2U7GUuWQ5LfPWAt6RcnxhHekugYtYj7JcEK422Vwkvbt0HybElT167HFd4rhQiojxKlFN87J3uhVnMT8mUAwCqJPX6f6o50NWjzvj3L2IpM8EMbBCT6dYd9/Auf4MnOoljvxq92O+lxn0/v6EmMtgr/DMcKBRpoPsoZ3+/q1obSmsE=
+X-HE-Tag: 1790027822-209932
+X-HE-Meta: U2FsdGVkX1+HFenlgyyJmSEpiN0PpMCXbhQ/m83b9YyjY5+9DwrJMGp/Dgd5ER/2gB4+BMrEfwRLMjhxOjAxDvsQLDPGZTeJwocUWfTP15EDpeZGJwH8bOCEJoqvtBhw84joZI42yuNN80A8z5bPWjeihSnHCJaaJLCgNNxI7RoTOTHZit2brXRVANZmlbh7FFaX+9UZDUTkZ6g/nA4RH7a1KAR0PtcmU1xrebgAGD/A9Pd04gMK6+od0Ps4tv+/o84/Y01lYbVlZhPzAEpUU8sry/7h64l7hMngW97mok0cvZ3GrUb94AOJAi1gzpEE7R185/Y3dfJ8BcnVB0QR9N1dgmexy+CGyokOAQbxT1rv/dOQ09tg+JPE0OKUMjE2/wbj42lARt7AUnPg4HWxsRN+TTswmiW/29wAsjd3BKiaByPkZkpx3DabH3QnEaF5S/QJZDPnbS5nm7kyAPuIeMpyHPeXaXGf83ppVc9IaBq2GWsrHgMSdN4V3mt0pDY1pnnYEaGbIFZfZxFy1aFbqtGh0fgHA3V+GEK7GU1w9npTltinSVaE8r6rrHxG6pbZnf28r+CaP4+93x3OP6zSMzyL+Na9BSPdRvMntTwhmsdSB1PTr2T0FOhYC+Y1LwKBBI5UlWW1XlOwkpFwO8yzpfTTd3Sr5arDa8hHBktzFRMoc0bJ+HJiGYHFeSY3dLw+fP/yrBKZKaenRz56/xTHOeWro1tZ4JswFqj1OdkGhPK3ezUaoWnl2n9VcKZDGJwEZGuxEC6RiYwgXb1l/g8TIy9aZM/PxgkRjIIz2WiDsLrNzDlxWFLvVMrw29en+xRpWqgwyq/K3f8UYtPCyzVwzVeNQJi27BwZKNs/zG0vhf2gPA9ajx8HbOC98faYVXZOJI1Aavz5iG0wbOv8rACyXDdSRQGw+JYQNacyN8fsrNRRUHkuMxXs8QkGkPfsjFSmGHJaoJGGKI/2F8JZUf3
+ uwt85utY
+ 7eQ5PkhAL2wzUEhaf86cuFrWDUITkfX494pY4aD/629EfKBUsRQrLE9RPGz1cnimxCvgyD/YyFyoJVT+oBF8Z7J1XC2qvt1pjQepgCyuzKqZJlmRNY+DC/Avi9bKcffoCRetaUjfPIynTWhU+b5GWLaJhtKUB7OKoGIWv7CAy7/ZtpxyEN1FC1A/+n3BNsPkhWzjuFaQnfRNjEonPfAa3QEMwUv+yNpTxI7yem6pp2z4Z/4PmCN5SnDf6/abNxCzBGx0hsEeTH9HMjJskAFmaZ/4dJKB/Wmmx1Lfzjv+95pz9nxpmsSnGVHPz7ESPl1srPK/7PcDZjpYMfOXpihauqk4gTLZnubbc1UUY1DqLl6LsmW4vzb+PvB7wNzx3nkW0L9/G8qWgYmie5qtUCrt4Fu86b2Jo8bs3k4rw3AvsLWhtvjjbnFGTy9C1Sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,86 +110,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot reports a data race on fbc->count between the lockless read in
-the fast path of __percpu_counter_limited_add() and the locked update
-in percpu_counter_add_batch(), reached via shmem's used_blocks counter:
-the alloc path reads it through percpu_counter_limited_add() while the
-free path updates it through percpu_counter_sub().
+On Mon, Sep 21, 2026 at 11:37=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/21/26 17:24, Alexandre Ghiti wrote:
+> > On an asynchronous swap device MADV_PAGEOUT only marks the folio
+> > PG_reclaim and rotates it to the tail of the inactive list once its
+> > writeback completes, so the memory is not actually freed until a later
+> > reclaim scan removes the by then clean swap cache folio.
+> But we have the same behavior when just reclaiming memory ordinarily? It'=
+s added
+> to the swapcache and only the next scan actually frees up the memory.
+>
+> Wouldn't we memory we reclaim ... just gone, like in the sync case?
 
-Annotate the read rather than change the logic: the lockless read is
-deliberate, only the annotation is missing. It is an approximation,
-not a conservative bound. A concurrent flush moves value between
-fbc->count and a per-cpu counter, and other CPUs' locked slow paths add
-to fbc->count too, so a stale low value can let the fast path proceed
-where the slow path would refuse. The error is bounded by the per-cpu
-slack (unknown = batch * num_online_cpus()). This is existing behavior,
-no functional change intended.
+For synchronous I/O, such as zswap and zram, the memory is released
+immediately after sync I/O is done.
 
-Read it with data_race(READ_ONCE(fbc->count)): data_race() tells KCSAN
-the race is intended (READ_ONCE() alone still triggers the report,
-because KCSAN reports against watchpoints set up by plain accesses),
-while READ_ONCE() stops the compiler from refetching the value, as in
-percpu_counter_read_positive(). The lock-protected accesses stay plain,
-so future buggy lockless writes are still caught.
+For asynchronous I/O, such as NVMe, the swapcache is currently
+expected to be rotated back to the tail of the LRU and wait for
+another scan. Alexandre once mentioned that when he tried handling
+async I/O the same way as sync I/O=E2=80=94releasing the memory once the I/=
+O
+completed=E2=80=94he saw some regression. So, delaying the release until a
+later scan may allow swapcache hits before the folios are eventually
+reclaimed.
 
-Reported-by: syzbot+a3c71b9db9c11c270f59@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a3c71b9db9c11c270f59
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
-Tested with a KCSAN kernel: defconfig + CONFIG_KCSAN=y, CONFIG_KASAN=n,
-CONFIG_KCSAN_SKIP_WATCH=200, CONFIG_KCSAN_UDELAY_TASK=200, KCSAN left off
-at boot and enabled from init via debugfs; 8 vCPU / 4G QEMU/KVM guest,
-gcc 16.2.1.  Stress: 120 s of concurrent write() and unlink()/ftruncate()
-on one size-limited tmpfs (shmem_inode_acct_blocks vs
-shmem_inode_unacct_blocks), which is the pair from the report.
+But we actually have a problem here: this rotation, which puts
+writeback folios at the tail of the LRU, is not reliable at all.
 
-	base/mm-new:  38x "BUG: KCSAN: data-race in __percpu_counter_limited_add
-		/ percpu_counter_add_batch", first hit ~0.3 s after the
-		workers started
-	this commit:  0 percpu_counter reports in the same 120 s
-		(other, unrelated KCSAN reports remain: d_make_discardable,
-		osq_lock)
+`folio_rotate_reclaimable()` would only work reliably if the endio
+happens after the folio has been put back on the LRU head, rather than
+while it is still isolated.
 
-Object code (defconfig, CONFIG_KCSAN=n): __percpu_counter_limited_add() is
-the same size (0x23b) with the same four fbc->count loads and identical
-branch targets; .text differs only in register allocation and compare
-operand order (45 of 2171 bytes).  No functional change intended.
+But nowadays NVMe is very fast. If we isolate N pages and perform
+shrink on them, M pages may finish writeback during the isolation,
+while the remaining N-M pages are still under writeback. M can easily
+be more than 50% of N.
 
- lib/percpu_counter.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+As a result, we can end up with the following cold/hot inversion:
 
-diff --git a/lib/percpu_counter.c b/lib/percpu_counter.c
-index 2891f94a11c6..87b261b87b0b 100644
---- a/lib/percpu_counter.c
-+++ b/lib/percpu_counter.c
-@@ -328,6 +328,7 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
- 				  s64 limit, s64 amount, s32 batch)
- {
- 	s64 count;
-+	s64 gcount;
- 	s64 unknown;
- 	unsigned long flags;
- 	bool good = false;
-@@ -338,11 +339,16 @@ bool __percpu_counter_limited_add(struct percpu_counter *fbc,
- 	local_irq_save(flags);
- 	unknown = batch * num_online_cpus();
- 	count = __this_cpu_read(*fbc->counters);
-+	/*
-+	 * Lockless on purpose: gcount may be stale, so this is only an
-+	 * approximation, bounded by the per-cpu slack ("unknown").
-+	 */
-+	gcount = data_race(READ_ONCE(fbc->count));
+LRU head
+----- M pages whose writeback completed during isolation
+----- other pages
+----- N-M pages that are successfully rotated to the LRU tail
+LRU tail
 
- 	/* Skip taking the lock when safe */
- 	if (abs(count + amount) <= batch &&
--	    ((amount > 0 && fbc->count + unknown <= limit) ||
--	     (amount < 0 && fbc->count - unknown >= limit))) {
-+	    ((amount > 0 && gcount + unknown <= limit) ||
-+	     (amount < 0 && gcount - unknown >= limit))) {
- 		this_cpu_add(*fbc->counters, amount);
- 		local_irq_restore(flags);
- 		return true;
---
-2.55.0
+Now we can see that the M pages were expected to be reclaimed, but
+they are not only left unreclaimed, but are effectively promoted to
+the LRU head.
 
+For MGLRU, commit 359a5e1416ca ("mm: multi-gen LRU: retry folios
+written back while isolated") added the following code to reclaim
+those M pages that finish writeback during isolation by retrying
+`shrink_folio_list()` on them:
+
+                /* retry folios that may have missed
+folio_rotate_reclaimable() */
+                if (!skip_retry && !folio_test_active(folio) &&
+!folio_mapped(folio) &&
+                    !folio_test_dirty(folio) && !folio_test_writeback(folio=
+)) {
+                        list_move(&folio->lru, &clean);
+                        continue;
+                }
+
+This somehow resolves the cold/hot inversion, but leaves the M and
+N-M pages with inconsistent behavior: some are actually reclaimed,
+while others remain at the tail of the LRU.
+
+For the active/inactive LRU and `MADV_PAGEOUT`, we don't have a
+mechanism to restore the missed reclaim opportunity. Ridong's patch[1]
+addresses this cold/hot inversion in the active/inactive LRU reclaim
+path. To my knowledge, there has never been a patch to address the
+same cold/hot inversion in `MADV_PAGEOUT`.
+
+BTW, if `MADV_PAGEOUT` is an explicit hint from userspace to reclaim
+the memory, would it make sense to skip the later scan and reclaim the
+folios immediately once the I/O completes?
+
+[1] https://lore.kernel.org/linux-mm/20260920132519.3369946-1-ridong.chen@l=
+inux.dev/
+
+Best Regards
+Barry
 
