@@ -4,101 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7AA2C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:16:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BD1BC982E6
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 15:17:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C38866B00A1; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
+	id 5F8996B00AB; Mon, 21 Sep 2026 11:17:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE95C6B00A4; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
+	id 5D0B96B00B2; Mon, 21 Sep 2026 11:17:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFFC96B00DF; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
+	id 4BF3A6B00BF; Mon, 21 Sep 2026 11:17:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 88D726B00A1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:16:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15B7CA01F4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:34 +0000 (UTC)
-X-FDA: 85238121108.06.173AE04
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 96A0240006
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:16:30 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790003790;
-	b=Qa6ISDAw5daNIMkPmr1CXavmyDTLsGcXfp2VaGXkheN/o1d97egjaYW/Bv5bru71Md7Ky9
-	sIV77Yylg3UlZwbqn4FtEBZBnbLXE8jf/s1ftAwF0wxgRpw6DZzzctkMJFJR17hj45ADpX
-	U8s6RnyMWrJw+nocvqaLWS2XIvEWsho=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6CD6B00AB
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:17:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9BCA1C1C85
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:17:30 +0000 (UTC)
+X-FDA: 85238123460.09.F9335FB
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 08188C0005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 15:17:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="jfCP2I U";
+	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790003790;
+	s=arc-20220608; t=1790003849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s7sui+l8Lk8Sg0RbbNCSGvk5FN7ev3MFPGREbjtEQec=;
-	b=O6kH+WVshMS9QQY9k/GTPn1M8nHLcuC/G8kDdEC0TIAxjvcd1nJIwn+ZoGVe9wt6IV45Nv
-	TsQtYGEaPHhhNkj7nod9ft/+BZaesTAqJ1x4DtOG78hBDuZDvTinCVKMvX8ucXD+bV3keX
-	VHXLMuUYsWxVHW02NhHDS6+jgYdF8v4=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 68AEC20CF6;
-	Mon, 21 Sep 2026 15:16:22 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>
-Cc: Kairui Song <ryncsn@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Wei Xu <weixugc@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	Tal Zussman <tz2294@columbia.edu>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v6 3/3] mm: zswap: drop cold writeback folios via swap dropbehind
-Date: Mon, 21 Sep 2026 17:13:04 +0200
-Message-ID: <20260921151306.625134-4-alex@ghiti.fr>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921151306.625134-1-alex@ghiti.fr>
-References: <20260921151306.625134-1-alex@ghiti.fr>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=W2+G+uyaywvTjosHHXQQCOH8WG7Itl4tMszraMzJ8Ss=;
+	b=HiNT6e38IakTUTGYklDDCeG+hnK9MmYHYa8kU5eZ7eyL+931bK9lS+ba4mT6Dme3TBU9a8
+	9mk9YLGFIFGS4nfd4/Nl0mS8CEldvei9xjyRYoQ9WkbwozTkr3tz/PtlpnSvu7bTm+4naf
+	5YEmRvNWVlQmi92Reb6eIHHIVPMz7UE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="jfCP2I U";
+	spf=pass (imf22.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790003849;
+	b=ZJqqhOKHA+RDO7JR/3ebmtwm8J3drFaPdfZdI62eh/t1ZC60/SqeqaZxzKUoVkC9Wxtj/I
+	veNbcQAIuTzV0ghAOWSS7XCzT30/ZldDMDCSd4bUcGpis9NhhSYT/7UL5WHSGKkS+fH54R
+	hT67JErpmjZHbarEsae1XOTwOj4bWp0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=W2+G+uyaywvTjosHHXQQCOH8WG7Itl4tMszraMzJ8Ss=; b=jfCP2I
+	UNOb0CUFjSlH8xD3YQYIQR9UCBcVQgmXPkbNVSQ11bZTMujdHnzgiP2EhpeDGg/7r0zlt3EAt/VOF
+	3DzTuKZJZE3rga59XuztNvS/rLI0vmGbwMEck5RHyf/80WN2O25yCkSTDFNdY8MORT9yZbuewnZbs
+	vSyP/zWbNgOuplhVnp6oHvh1NfE6hMIk6RaDfsW4CKOLnjfZ2rrOeqhecunTfKhGhxn12Xrn67Ggk
+	XhQRHbfgoaFGhcIYiOrWmJ53RRRnZoQ0ZDOiHHH9ZHTgoYbiR5+GKXICfJwLZ5s7qSM01f2SOudih
+	imoBUxxwNDeXpHLIG7/Es1+ge+Uw==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x8fkX-0000000D3NB-3H4d;
+	Mon, 21 Sep 2026 15:16:09 +0000
+Message-ID: <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+Subject: Re: Path forward for Virtualized Swap?
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>, Gregory Price <gourry@gourry.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>,
+  Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, Michal
+ Hocko <mhocko@kernel.org>,  Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+ David Hildenbrand	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Kemeng Shi	 <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>,
+ YoungJun Park	 <youngjun.park@lge.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)"
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	 <surenb@google.com>, Qi Zheng
+ <qi.zheng@linux.dev>, Axel Rasmussen	 <axelrasmussen@google.com>, Yuanchu
+ Xie <yuanchu@google.com>, Wei Xu	 <weixugc@google.com>, Wenchao Hao
+ <haowenchao22@gmail.com>, Jonathan Corbet	 <corbet@lwn.net>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Tejun Heo
+ <tj@kernel.org>, Michal =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, Linux Memory Management List	
+ <linux-mm@kvack.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
+ list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
+Date: Mon, 21 Sep 2026 11:16:09 -0400
+In-Reply-To: <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+References: 
+	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+	 <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
+	 <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+	 <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
+	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: dmFkZTE0SYM0WXNjdwubovITJrTYXyTSCwr/PlRPkkCz6KhxaAixi/QamYFRTWojpv77hYY7HjUcktzM93E0S7aP74KErDRnXAJ+8qBUZxDaDQ5JnexSaYr1F6K/qzS9RP6Q9NI0CX3RagQv2c/zqGxQWHxXflkOyoED1Sdwit9/i76dx7VxOUiBK8Q/gl4KmGjDzdQItBSNGWeNMb/7oLm/w9+WdgNkyz1o/4STbT4WL3/jko4pyhjinYBBZBp9KOF1J5FSuZ+4olXkmIuTnf3/D2n3GGfFEmJXsZU+tWWpUdrPtJniqkZUNoy4ZSEspEQMmwoGgTXrRtbYeOlg8rcIdNUZWXA9n5/PlSFk5VE9dwj5B2btg/LeyHrb4ABOY49XQIHak0YNNcycGU778Jq/RcxfzfS9/OkijGlqH6xM8TJRPm34TO8QzBEEplujliQBBl4g1MrFlGeuIL/HWzCO+aXF9QWrFXo3wwSNPvN70PwS4JpAAM8WVlDhfhDJMRKJ9RH2d4/ZKSW2PYTT5Yj+vqvmHHgVMLlTov0N1kJn9YynFmvhzKCargpgIRdwwp9rEjQ/9He1XjXC4a4bWw9fxO3R09ZKij8kswkeSR3egkE8ZzzZEU6Fzzhr//lwcRaGtZZAsXf/Q/YSr4s+b8Ncxxi3GEt0Y/7qxKV+jvAvbAw07w
-X-GND-State: clean
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 96A0240006
-X-Stat-Signature: 138keihjsw3b6wiybpgsd3moweif7r15
-X-HE-Tag: 1790003790-781361
-X-HE-Meta: U2FsdGVkX1/1IOTv+0gKa/TynqpPt0JU0+Xg/Q30MA7nGp/QYoQ403b7P582XK8vjqxuljsjh/AfPe7dDAoQHu4r20eNDckHWseE8mdfc2qtEEeZfReIYgD0WR0cyoxRe7X4z19/3961VZ4tO8628s+1i4gVHQ77/x3lfNneG/qDfEEqQRWihV7iMN3XHfrgoD6ea7aSubKaogWBpCv52TTR+x5XKPAtmrzs8YwCGcx4Xw6QEamw/jePxtKQJNYYZ2qxhX5mROd6IztqhreC2C5U1GVQCMhfNpPqbC4qwyleIYXiImgUKN67165h01Z/3Aq//wreyBbNACZacFUqfv6IMgit1t7HRH5btSCPDtaqPI/xvJAci3QY/+mZPcGBEXQM5Wy9OY6x/eMR/B5uxzbHb+4opoMfxFKkYbWWDfvyq6HgyTn9AcbpVFWBePGo7Mgs6kVz/L443p2UD9XOVewekj21V/tLrDTyqHsjp+A2PWWhgkJroAYvHo5Zkk31hLgD1M7iGGew9NTat8d9E70iz2kjTLO5t9xe4bRtu94oX+ZEdi4F9zbOs4sOFOvsgeJ4YuSazo6fgKe+/81G4rUoyTgg9WuzH2t9zue+pbWULM5vrWSO7u1ZCRWT+4LtpWMIWOdDuNyuL/OC+V6+La1JCffTiKG09ztbGIBSeA+c+tm0tFGj6c15V7Pc6crdPdgpjJTZtLZVkwwZeafkiuUCVYC35vM/XhYd+MtWrUA2wHxMsIQwoL4v5eIptzUcCmi9azTGpOAjpv2lmyHe+3Ru8nIk3EsB5DyX4rBGW+6bBalJleGWb/xK9tgM3hAKB/GuNRK7/ZUlhMNcGzrLr5ewyyiAa+lASk6TIPIVeTWSCOpKoaYb8JXQ6ks0E3CgEvnnknMx/41QMm6aTIa5/oWFH0KKP2iugJnM+IQGEWhHXnpAl/AfSpzPf1jHQfvh7YRgeaXCMq3cUIReCHG
- D7o5jTnA
- 2MbBVzysYKNVuVI24d3r43WG1BPjnukL4wUtnRug+92ZUjL3W7UGKY7pF4D0O1gljCvcHd3FGssIVzrY1fdhHoMqAqfbT+dGUNOdAle//hqTurqL669sbHPonEko1yZ5wBBJ6FMZ4O3DhWISI/QoxQZS6gKnqQxEXkHuj2HHSiJFBqd6/QRb6uzTLYBOVgkUDWDkf
+X-Stat-Signature: rnboqjykb5c4bsbty1xg7wmagc8hga47
+X-Rspamd-Queue-Id: 08188C0005
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790003848-162948
+X-HE-Meta: U2FsdGVkX18wiPIWeoQ9l+kUHK+TrFcF2EgwN5rOLlYHdy+LhoXmwti/A2uzK+Na8n6F2Si58ndXH9xWfLEkmQmAMYBk+igew/t2e+aXg6RemVV4HaDHTR7uOA+ugjRd7JF5V934knLnfLe62SmfNCWFaDn910Gr4BocFlOrIDWTOCOk1WzE7iQBi2Zq/DH8rNLo4JM0ZstSLLpKgYaERYlGyznPpRiR0Cz3rlKth982tlswcWTOJBAws8BDC+h7Z0hwcEOwVd9dUwHTq5l2JeXrIxdb7Vn7SjIMXoLy+X2cfmpTZCx1S7uK3rYs7w4wq0p/S/2OHB36sRPoZHma55/8m76VYrGi/n5Oi6+JL9BcG5xptQo9a6gz/0YmcDHupGJKatQqAX+4Id8c5ZuJ/vwNG8RTgiZFqs3K0zOQh/7nB9n2NXMx0Tbjq2A4Vf5HgkfOHE2/XUROUaeWT74+Lo3MD15+R1FWEn3EeK2d11nY148A+oBRKWL1Ci4/z+jflfdAeBCUDui27GYEHdKTke3pxJ56i+s8q8au8ZPQSK9ODz1odaEotzKz+x2RXvaQ002HkvbqrNNjXlYpcu+0iKB4YOnDr4bhogt9AWvpKeCcOOgvuD5x4gW/aIdrqReXMg9NCdXM9uFgYC6u9Mvikmu+/tbw0ZZPJjKeFXl89njUJo0Y8bFwMBHWoGWEjMG4S1xGj1rrOwO6/mbtgYdwsUqTDsMdRkAVj2qNTPT+ocBsPB/JxE6r4OI/2a2QZSewGJouRjm4Y6TwOsv6kqvA9F1OqezrTJ5C6ajKB7vZhsmbxFRWSha5bYFq8ldeSvapDDN65dXmZ/e1CDCMOVBkBMQA5pVb5PwGKMIV4mWhywWFo7X19TtoETf8mIhVK230h3tKvbmidWUeV5CIeYu6e1YIvRSJpe2Zqdg6u7fzbo/huoQN5TtMpi2SkRLc2ZMCBzZL+mgLaWrUjhgoOVs
+ PmFbG5s+
+ A8Usbbj1d/Jh5F/NCFQo46wXoATmrYOB9H7a2zDTYELo/eKhIXoTR0GIHJifIuuqCF1Gu71Vdll/ZGH7rHcBhCuwdnJHa6oQJuqcxhzN0hmNDX7PuCDRCxmcs2XVQsDFytYHVVn5jGMDpqDkIGqL/DROJImIczLqyRg+/EqD3go7V9U74O/lRe1h4QYSbLF/QD6WrlKM0vWyIX5ysLj5qSVsW2RQTaN6cMT9q3mjQijx/xrsAkLRgN1/WkB92GM6/Vuz+31c0ZxsLTI0Db+QZDZcMl8mxqE2JzT6o/BJR1Rcg8F8BIb/n9hEK+8PC4uZn5quKB8hVLazLs5wdeN0TkaCCMhE7r1vLWkkPr9d5+7PfNKoyb1Iy9gjYtGgaruVb+VcxVsOvXMt+aMNVV/2zucqIvw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,103 +145,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-zswap writeback decompresses an entry into a fresh swap cache folio and
-writes it back. The folio is cold by construction, yet it is left on the
-LRU for reclaim to find and free later, wasting a reclaim scan and keeping
-cold memory resident longer than necessary.
+On Sun, 2026-09-20 at 23:43 -1000, Chris Li wrote:
+>=20
+> I am sorry, that is not actual user usage. You need to start from an
+> actual usage case: I have a workload X, only want to give limit Y for
+> the cgroup jobs but with Z SLO requirement. That kind of actual usage
+> requirement.
 
-Allocate the folio off the LRU and mark it PG_dropbehind so the swap
-dropbehind path frees it from the swap cache once writeback completes.
+Limiting how much anonymous memory can be zswapped
+does not guarantee an SLO, though.
 
-__swap_cache_alloc_folio() evaluates a refault on the new folio, and
-workingset_refault() sets PG_active when it looks recent. Until now
-folio_add_lru() consumed that flag and __page_cache_release() cleared it
-once the folio left the LRU. This folio never reaches the LRU, so nothing
-would clear PG_active and the folio would be freed with a
-PAGE_FLAGS_CHECK_AT_FREE flag set, tripping bad_page() under
-CONFIG_DEBUG_VM. Clear it after allocation.
+We have seen plenty of examples in practice of
+workloads that have swap DISABLED, and are still
+thrashing, because part of the working set of
+that program is in the page cache, and that still
+gets evicted.
 
-That is a workaround: the refault should not be evaluated on a writeback
-buffer at all. A fix for that is on the mailing list [1].
+The way you can guarantee the workload is not
+thrashing is to limit the total (anon + file
+cache) address space of the program to within
+some size.
 
-Link: https://lore.kernel.org/linux-mm/20260911092012.92399-1-alex@ghiti.fr/ [1]
-Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Suggested-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
- mm/zswap.c | 33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+Anything else is not a guarantee.
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 0d2efe21f18a..dc8425d6b21e 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1014,7 +1014,8 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	 */
- 	if (IS_ERR(folio))
- 		return PTR_ERR(folio);
--	folio_add_lru(folio);
-+
-+	folio_clear_active(folio);
- 
- 	/*
- 	 * folio is locked, and the swapcache is now secured against
-@@ -1028,12 +1029,12 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	tree = swap_zswap_tree(swpentry);
- 	if (entry != xa_load(tree, offset)) {
- 		ret = -ENOMEM;
--		goto out;
-+		goto err;
- 	}
- 
- 	if (!zswap_decompress(entry, folio)) {
- 		ret = -EIO;
--		goto out;
-+		goto err;
- 	}
- 
- 	xa_erase(tree, offset);
-@@ -1047,18 +1048,30 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
- 	/* folio is up to date */
- 	folio_mark_uptodate(folio);
- 
--	/* move it to the tail of the inactive list after end_writeback */
--	folio_set_reclaim(folio);
-+	folio_set_dropbehind(folio);
-+
-+	/*
-+	 * Drop our reference before starting writeback so the swap cache holds
-+	 * the only one: the drop in folio_end_writeback() needs that for
-+	 * remove_mapping_set_shadow() to succeed, otherwise the folio is
-+	 * handed back to reclaim instead.
-+	 *
-+	 * Nothing can free the folio in the meantime: we hold the folio lock
-+	 * until writeback starts, PG_writeback then blocks swap cache removal,
-+	 * and folio_end_writeback() takes its own reference before clearing
-+	 * PG_writeback and donates it to the drop.
-+	 */
-+	folio_put(folio);
- 
- 	/* start writeback */
- 	__swap_writepage(&ctx, folio);
- 	swap_write_submit(&ctx);
- 
--out:
--	if (ret) {
--		swap_cache_del_folio(folio);
--		folio_unlock(folio);
--	}
-+	return 0;
-+
-+err:
-+	swap_cache_del_folio(folio);
-+	folio_unlock(folio);
- 	folio_put(folio);
- 	return ret;
- }
--- 
-2.53.0-Meta
+What is it you are actually asking for?
 
+--=20
+All Rights Reversed.
 
