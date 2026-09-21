@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09327C982F0
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:18:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EECBC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:26:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABFE46B00D9; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
+	id 63BD06B00B1; Mon, 21 Sep 2026 09:26:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A708D6B00DB; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
+	id 612D66B00C3; Mon, 21 Sep 2026 09:26:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ADA86B00DD; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
+	id 54F8E6B00C9; Mon, 21 Sep 2026 09:26:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 720976B00D9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:18:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5ADBE12019E
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:04 +0000 (UTC)
-X-FDA: 85237822488.22.93FBFC3
-Received: from mta1.migadu.com (out-62.mta1.migadu.com [95.215.58.62])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 5D11114000A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:18:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myA1+5KR;
-	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 364196B00B1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:26:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 324CBA015B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:26:02 +0000 (UTC)
+X-FDA: 85237842564.11.CE9DD6D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8E33AA0005
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:26:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpJoC3Mz;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789996682;
+	s=arc-20220608; t=1789997160;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KlUeNXTqokj2yuZrGgcrCQUAECPD6R71OqQgjTd+Ltg=;
-	b=z7MybK5Hfg1KG08sRB1zkB5FY2y+266VJ4vy7Q5osYf46iLFJ8w0ysDS7iq0Q0U5nkogId
-	lGMvx2DwhJSlYKLLJYq/tPZWN4GfDouvZo9Kob0xCdqYJ8FTGeJuezX7qSlmc9ObaOV0qL
-	PDzzH1oVqpbfaVbp1uO+vXvs8DYOPxA=
+	bh=nha8ML1H2R/fcgwZZbQPRhZtrvRZFsoDZhBO+DEOQYU=;
+	b=JIwG6MnNheUJIppAA3PLVONST2n56iAgitkg9O4gXpkO967N3Z3a727WIrRxpBZ/mNkldj
+	k8Sovth/m7WKzfNqt3HthARAuw/DLP/4Vl6cMcaIqS5ya6S8fqaf/lQ5qdwjRzVWgCd6o/
+	b6jJmwwIxSwe8FDTjG/kwlicPXHL3QQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789996682;
-	b=EEuNk7WbnHstoFDVfWxxlPoUO2vx7oJzjdirR0zAr7kiW748rrnnmEO3W3NSrdWDf9pVQD
-	qtnOmdR4LYl+MeZJn0xHivQTkVZ0Yr6roXt1MsueZRAQ4WcSZTT6OgIAIQvgnZXPaZj5t3
-	/XBz7VSVRwDKKNxHH8llCWwJF8f2MMU=
+	t=1789997160;
+	b=NqsJmEjlRIqZTapKO9cG1FpSQRz6JfOslw/akKI+0obIhGHyWEb+Ia4ZUI5xG1YiT/p5ud
+	613KtvicMp2MmLMWwlGMKbnVeOkMdP5tR4W6dk0dg+JY8zxKMbfsfoNGEN21HbVnE//Wge
+	wt8xJIu4b06MVlG09CnLdsuLVpkslRg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=myA1+5KR;
-	spf=pass (imf23.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IN3u//Q3+OpLA8rMnVjE8v9xBIK2AikPADGADNf418I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789996681; v=1; x=1790601481;
- b=myA1+5KRkTOpFpgN9Q7qgN+XSlBivE/MVPxxYjs+yMiMagjddcNTGevuYj+9z2O5eA4TEJQt
- X0YPrWdUw+XglWLP4iIDUMuTvTxoEvNYtoUhP968mOD6fsh+JU8gbRzxTXlARXkD5e7AQkcp5M7
- 5HngVexuaiONVCvxe8lRki60=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 28b20bafde2dc762;
-	Mon, 21 Sep 2026 13:18:00 +0000
-X-Mizu-Trace-ID: 28b20bafde2dc762
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Mon, 21 Sep 2026 21:17:23 +0800
-Subject: [PATCH v2 3/3] mm/vmalloc: skip vmalloc_dump_obj for non-vmalloc
- addresses
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpJoC3Mz;
+	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D815A600C8;
+	Mon, 21 Sep 2026 13:25:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26ABF1F000FF;
+	Mon, 21 Sep 2026 13:25:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789997159;
+	bh=nha8ML1H2R/fcgwZZbQPRhZtrvRZFsoDZhBO+DEOQYU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hpJoC3Mzq7wrz0POCEfSBz/THghFV/1UuOP96ueguC1IWtsaaCw1hl2On2e0gqGZH
+	 4cxUib8+dZJEVj76tS8YCx8JopQ7260IhSMfPBpgSoyY/3EbuxVyc1B2PRhlb+zDuC
+	 0qLOTQe5MVh39Zd43qG1+7gjkJJkr9/eJHznJlQfYBhf53YilE6Gp4ataI5yLzrntG
+	 7BiGtB8EgjOSwmnYtxKW3v0OsA1YsjTN7ubyYEe9ql5crvYSVmOlzbk0zqJUimvOmJ
+	 a/EGup8aLynu8hNlSzoRiqa+zAk+pC0nlNzzoDAxmQK0Q/PThNESdnCPbNNHNu+UyA
+	 qpDCowVNO0jWw==
+Date: Mon, 21 Sep 2026 14:25:57 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 6/7] mm/slab: Let a bucket set handle __GFP_ACCOUNT
+Message-ID: <arEvspsSl3bLyYgs@thinkstation>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-6-kees@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-vmalloc_dump_obj-v2-3-73fceb3ed1c8@linux.dev>
-References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
-In-Reply-To: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.14.3
-X-Stat-Signature: fgokwcybi8k7ub1eywg1hmds3q3gnwmb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921075820.1718334-6-kees@kernel.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5D11114000A
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1789996682-804134
-X-HE-Meta: U2FsdGVkX1+TJiW2O2/t1OZ8b6wpMX/KeOzOb+19WbglHP/Fq2cTTEvCYH1Nug8SXnFCZZQOOvN6uV+UBfOi7nrakJchDHI3qKk0EzU68QOsMV8b/MgSLmUYmXUry4hax7lQXLeqXIDiuuXFX6e15peItPeW2Ld9e3UknhVYg/alVyu8eu1VdASfwwcDSKn1trn2tXF4jT7hVqBjjD0R9jE7Qmct5iC2oHtzr+4DobHPRn0BRub3xiyxUrnh4X2+BSuIDeDpMQpjXuaV3cwywbvqYRSFgto/dEnIbrzLj00Ato4AZRD8nhpIhlQ8YeA3uHJ1/BLb8J9M+M5HjYsWKfF73H2Z/xepNO7ZQmJHAD2s9ZoxfMiWj95PmZ4nWHHTV7bYxU1VvafIChOIX4E9GpN6YcPEGkdJ+7EBYsGo9QkCmBKgiRv1hK9wXty9aH7e2bdJBRRMyQPZZxRxDIs2BEnIRaZw9hTqh/LFSyEYAgaXZlp0YZmYIa5begVMkmbcCOAoSt42pQ5nLFYFoW561GfT6NnClf01CjWGUNrmPa0Clna8tHZvVPQjnnWzL4zHXKUVFymAitFeGvf5HyYqwjx5rHf0C6OSM/bgVtN6N1jiduHaw4E2Zb+7E6CIuZFrlYTDEfHMAHXHgF0pV9PcXkf6siA+CTdg0ih6kIhiYescjM/A+MSNv6605hbEdbpjXYhVYyh2tv+GITvPooC9lPlcwxsjQnzesyYMPK4il3x4wwqAZckgfYfZocSh5rOUkNCFsDdRsK1jiqsT+EpBt2u6pBoT4MiEvnTbNqUfd8Jfds/QW7PgB+pzehTpjT0YlPX9IBOWPxt1gEFfTloMBT0iywJkvhhQ/lvEQ360doFKAbnpImTLssMVDoSSQWbaz+rMS0AFdDdDw1cdE6r1N8P3xfRdE8pk9RMNkXByxPefeM6sGkPZDEgxfdLp3KHybsHBJujl64EUF9IQuhl
- DWkR3zFs
- FJHixa8ZGYiPSRnkqKFtUTZa6SmpiUCd5qGLfHIanCtULkELuFhip+Xn2m4Cur94oJxjWZO0IbHOXwbIaINLj9mEuI2+8Ikci40PiXJoI33WLl898Pc2myso5792We17dzQywFJ1xmNCdhd6LkP+mTixoXVKdwMcFWptw8KB7fPu6TAO790WTdSAHpd/X4Z16Ze/36/k1hjv4xuE7cXW6X6iKLeCkLRdq0IlIrQ8FkewkbYzbKmGtVmJuaLPDlMqEWYiUUN07M7drd2F5UWMApyBPi88EEoif+OR2
+X-Stat-Signature: ug83i61ye1s1oye39d7zu3473x649d91
+X-Rspamd-Queue-Id: 8E33AA0005
+X-HE-Tag: 1789997160-474454
+X-HE-Meta: U2FsdGVkX1+lBFclu/4xJsHUZAnl958z6ofP0H6D6C/fIPlehvUYNVYkSCk1ETxrkHGyo5QMYQxJvKqLzBENH/sAkoOCd++E5KbpPQgI26BIX81S2EGVNiRJ2uJVZ1iPvZoq6mxHnu4QYHJgy7WYk38NV0ODpCHVeaYzW31CK+sb5Hq6xcIa+IF3dmRmII3PFIbuK8XWyte4cG31VwQuK6uzbcZfOQWS23JqDL1hjkbZMpQoRgTKDlHapNTVoFIVBQS8IYzRadCyhGTJ42MnQy4RayK9ME4Wm0VON1ws1CISESlgM8uikcoh/4f/ozk0RjAPdKEASIDkmJGgEBkdLlxZjnZplO4RDw8mOzMAlegCqytyd+xLwG0N6tVlKyXvjUcpkAwYmgX53zVsOJxKAIxDyoM4UPPXruZvtHOHJb7aVWloZeuT0Pcb60L1kZp9mtd8v3TcTISd+uc7VE08QIJyD1ppLvjWKrPF/zPFHYep7MCC4dA1lryYTq+WP7xWcrFICNnZpmZk86F3DrdhbX3SQGpDS2hwpqoFm1CwjkwCEZxzxEbIU6wJXwBxxUHDQOm2d7bBaHuNs0Ri1lCN7zVD6KSwwiSiT02Vv1E649CaI2eWQpoDdQIVxCroulBYNM8DvQJd6tAmb0wLIuMsHv3zeuro5bZYBJLHMNINU6a/DMrQIzolCKrxkdTeCA7pWfk/KzvKkg2PbToZTsLh/ktSpJ7EMHZ46eZN0QQxGsJoi7dHiHzz9VWzU/0Jk1Z6aM6oo0JLm8CP/qbwb7pb4xpzIyw1Pzjq+jlfn8LLr+PzH9jfCxgmQAtM4klzOdgx/EoUqvr/eyF6+EoeVphL9uBH68uIRDJ9NidB5OBddiA4VKnuWIG6BeagN9aIeB7vkTmeTQtpqmMFZ4qu3XJxQicALPtVHqLmBAfW+Pqx83mbRjCY4ag7NmN5CsPxbUMkqyeEK+lEYmd9GWMEC+1
+ 9t3IUrVd
+ 5CdiKJWEhFePK0re7kl5PdW1sIfrAJRzbIy5gMYjsjiuEbgGfGdt4NflGOL/RRrCYfTi+DFxdO+f8Letmk79o5heMrMlMk07rDOexd27v7+SuJJ+CrGK3kbMRGjtYnNAK3+BnttpABdgGhEIsMXj/tC3JnTLM1twBwAY90V8uYg4gYGl4O7qEzzIJsV6JVUIYR+vJyq3PyiZD5k7Ajzx0gCE+5R1yqbC2p6caPOzxAHVpC8VM8p+p+iklgNgasr31Oxgrh/falaedstWPa241zQT0y3c5GYGV9aPzOb92RhZagfSEdROUb5YYg2FVVnRgjapD9XaOcGxqVuq/pw4CzR+T0hJLpCQJ6jspXD+JqjlF8gmeaTajEpp5xrKXsVlmxDWHlFI8hqQkI4oMVsPsj0tCoA9HbAeMCfVZK7Iyme0tbEaKxsb/DUU0SZWDlvkVgyAy3fkILz8dCVDzFqiFtOdNbbCJFmkGjmm8fBsZoW51k1pn1tpId50Js7qU8SbQd8iNxhulj8CcsKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,39 +99,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Mon, Sep 21, 2026 at 12:58:17AM -0700, Kees Cook wrote:
+> A bucket set holds one row of caches, cloned from KMALLOC_NORMAL, and an
+> allocation of any other kmalloc type falls back to the general caches.
+> Extend this to handle __GFP_ACCOUNT, so that a single bucket user can
+> isolate either GFP_KERNEL or GFP_KERNEL_ACCOUNT allocations, as is
+> needed for skb data, where AF_UNIX uses:
+> 
+> 	sk->sk_allocation = GFP_KERNEL_ACCOUNT;
+> 
+> The coverage is selected at bucket creation time:
+> 
+> 	b = kmem_buckets_create_types(name, flags, 0, INT_MAX, NULL,
+> 				      BIT(KMEM_BUCKET_NORMAL) |
+> 				      BIT(KMEM_BUCKET_CGROUP));
+> 
+> The prior kmem_buckets_create() function keeps its name and defaults
+> to only KMEM_BUCKET_NORMAL, leaving existing users as-is.
+> 
+> Only the accounted type is offered. Nothing wants a reclaimable or
+> no-obj-ext row, and of the twelve places passing GFP_DMA to an skb
+> allocator, all rare hardware: b44, b43legacy, prestera and s390 ctcm.
+> 
+> The choice is made at creation rather than every set getting every type
+> because the rows, when populated, are not free. Each holds 13 caches, and
+> a cache is a 1208 byte struct plus an unconditional per-cpu allocation,
+> a node struct, and an entry in /proc/slabinfo and under /sys/kernel/slab.
+> 
+> KMEM_BUCKET_CGROUP collapses to KMEM_BUCKET_NORMAL without CONFIG_MEMCG,
+> exactly as KMALLOC_CGROUP does, so NR_KMEM_BUCKET_TYPES is 1 there and a
+> bucket set is the same single row it is today. Where the type is asked for
+> but the system is not creating caches of it (under "cgroup.memory=nokmem")
+> the row is aliased to the normal one, as new_kmalloc_cache() does for the
+> general caches, so those allocations stay isolated rather than falling
+> back to the general caches.
+> 
+> Built and tests pass (and skip as expected) on ARCH=x86_64 defconfig
+> with GCC 16.2.0 in all combinations of CONFIG_SLAB_BUCKETS=y/n and
+> CONFIG_MEMCG=y/n/y+"cgroup.memory=nokmem".
+> 
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Harry Yoo <harry@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Hao Li <hao.li@linux.dev>
+> Cc: Christoph Lameter <cl@gentwo.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: <linux-mm@kvack.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Cc: <linux-hardening@vger.kernel.org>
+> ---
+>  include/linux/slab.h   |  45 ++++++++++++-
+>  mm/slab.h              |  23 ++++++-
+>  lib/tests/slub_kunit.c |  65 +++++++++++++++---
+>  mm/slab_common.c       | 145 ++++++++++++++++++++++++++++++++---------
+>  4 files changed, 235 insertions(+), 43 deletions(-)
+> 
+> diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+> index 823607e06248..58f800582170 100644
+> --- a/lib/tests/slub_kunit.c
+> +++ b/lib/tests/slub_kunit.c
+> @@ -723,15 +723,63 @@ static void test_kmem_buckets_type_fallback(struct kunit *test)
+>  				      "expected a DMA cache, got %s", c->name);
+>  	}
+>  
+> -	/* Nor can one that has to be accounted. */
+> -	if (IS_ENABLED(CONFIG_MEMCG) && !mem_cgroup_kmem_disabled()) {
 
-vmalloc_dump_obj() unconditionally searches all vmap nodes even when
-called with a non-vmalloc address (e.g. a slab or stack pointer from
-mem_dump_obj()).  Add an is_vmalloc_or_module_addr() check at the
-entry to avoid the unnecessary per-node trylock and rb-tree traversal.
 
-Use is_vmalloc_or_module_addr() rather than is_vmalloc_addr() because
-module, BPF, and execmem allocations reside in MODULES_VADDR..MODULES_END
-on x86_64, arm64, and riscv -- outside VMALLOC_START..VMALLOC_END -- but
-are still tracked in the same vmap_nodes rb-tree.
+Didn't take a deeper look at this yet but this is causing an error:
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/vmalloc.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 30c610f678dc..d8095b558365 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -5277,6 +5277,9 @@ bool vmalloc_dump_obj(void *object)
- 	unsigned long addr;
- 	unsigned long nr_pages;
- 
-+	if (!is_vmalloc_or_module_addr(object))
-+		return false;
-+
- 	addr = PAGE_ALIGN_DOWN((unsigned long) object);
- 
- 	/*
+MODPOST Module.symvers
+ERROR: modpost: lib/tests/slub_kunit.ko: symbol 'mem_cgroup_kmem_disabled' undefined!
+make[3]: *** [../scripts/Makefile.modpost:147: Module.symvers] Error 1
+make[2]: *** [/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/Makefile:2179: modpost] Error 2
+make[1]: *** [/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/Makefile:248: __sub-make] Error 2
+make[1]: Leaving directory '/var/lib/jenkins/agent/workspace/harry-linux/ARCH/x86_64/COMPILER/clang/DEBUG/light/PREEMPT/lazy/src/build'
+make: *** [Makefile:248: __sub-make] Error 2
+Build step 'Execute shell' marked build as failure
 
 -- 
-2.25.1
-
+Cheers,
+Harry / Hyeonggon
 
