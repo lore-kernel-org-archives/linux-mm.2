@@ -4,89 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9FFC982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:46:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1CBAC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 12:51:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 294356B00DB; Mon, 21 Sep 2026 08:46:22 -0400 (EDT)
+	id B02F86B008C; Mon, 21 Sep 2026 08:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26B246B00DD; Mon, 21 Sep 2026 08:46:22 -0400 (EDT)
+	id ADACD6B00D5; Mon, 21 Sep 2026 08:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A8F06B00DF; Mon, 21 Sep 2026 08:46:22 -0400 (EDT)
+	id 9F00C6B00DD; Mon, 21 Sep 2026 08:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EC3136B00DB
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:46:21 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4710C12017B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:46:21 +0000 (UTC)
-X-FDA: 85237742562.03.0144D6C
-Received: from mta1.migadu.com (out-57.mta1.migadu.com [95.215.58.57])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BCDC820008
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:46:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=umnMpXgT;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789994779;
-	b=A5MdTmkmAJzkRUoQa0WS/vlfALO5WbtPTcATbLQKNqCClMhiCYEoMJnAHuLvQ1T+CAW/rP
-	dD1YD7blnE5tNsMLsUZG1PxwEWk4ct4eZOvv7sGlp0XFXwTRYE/YLIsFt5gXcrXJsUmiJc
-	xxLO7i2v2nZwI+9d67dCojuBUgNWmAY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=umnMpXgT;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F2BB6B008C
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 08:51:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 04B23140161
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:51:24 +0000 (UTC)
+X-FDA: 85237755330.10.9155AA1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F40D3120008
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 12:51:22 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ShtSmcPD;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789994779;
+	s=arc-20220608; t=1789995083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lYocrc2Re+1wBSTGGtCdSEpnadReNsxjtc7YlAT/WUA=;
-	b=YS2Qu2SfqgUIuRLSFW3ASJUmQ/wKIViD7deH4xTf7huduSCcVSFEmGCMUQzubmb1RjPNju
-	y3fHHh4+ae6YHMc4Dhotz+54RwiKTxDu4GMxTuoW4NZOmWua5ajeWLDzaxRB+pcacYsw9a
-	c8DCb6vA1HZR5oqUJgWtTU7AnolobmM=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LLPYJqhe9zU7AnAPCVJgKLTWemu4LRRS+WljudQLQgk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789994777; v=1; x=1790599577;
- b=umnMpXgTjbXYF6lHWE9otX4Vk3FmE64g9bw5gCf9HiEE0U8msUoDgMA8Vrqp5bGw7HJnPjMq
- 3DcOoZMPwTjXYeE8rsXcwZNSGM4qQwb7Rx92wiR+iBGIaj/b2Oa+CQJSBuKFcqF11N3Hee/YpPU
- yJo4e1YW9uAXej0QI9QTAT38=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 24ca413fc12d1e0d;
-	Mon, 21 Sep 2026 12:46:17 +0000
-X-Mizu-Trace-ID: 24ca413fc12d1e0d
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f27df91d-441b-4b40-abce-ff786b8c89e4@linux.dev>
-Date: Mon, 21 Sep 2026 20:46:10 +0800
+	bh=61Ma0ewUMnjyMeM1Wq480iH1x1T4S9hRZE82Sqp1OUo=;
+	b=YBcwGXxebVGZLqGlI7y37M9SIgoAR2zrvdOoWkEyv0FPORP5irpvoByZX7MWBxqQkgmxtP
+	667J7OXhvjJHQz4VAKVh/XJZ0sUFBwYGhao8jke7nOlmRzd9FS6IPHFUiWAQEXnwzhCXwy
+	kNqUewQ3L1oTXJeDHUwhdM8U6HjGp9w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789995083;
+	b=RS/1Xv0uNK7cvn9jMLnVnwauxAL4uVZOFjPQ7BpvXSU5DRi5EL6bEQCMq8uqWjrXJYgZAU
+	YRQwrmDV4A6OJo89SQe+rhoI/NMvUlpyk+jLWTzF3Xv2t/0kw3xFGKB4eG+g8494j8Ok22
+	qXElepEd0DojJaOBfeIhzBvZaLuLXds=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ShtSmcPD;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7E855176C;
+	Mon, 21 Sep 2026 05:51:18 -0700 (PDT)
+Received: from [10.57.6.224] (unknown [10.57.6.224])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 369BE3F86C;
+	Mon, 21 Sep 2026 05:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1789995082; bh=HXAhdpQuILv12trenzrxa0DxHNLn7f/XIZHr5cv391k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ShtSmcPDUXgPFJquxoISwgyxA0JeEBWLYMWSo5Kp/sAkxe8UArxJYx54OQw5DhKo5
+	 91/PuhmUkjC3DEWhdBC9lka/rh0pM3m0nVfSaqpUkfTDsBcvRFYZZSXMBptKHvfkEq
+	 2RXCaLm+4k0zuOQBpH3bJ8i8jcHuTYYleBbqAy+A=
+Message-ID: <c4a38552-abdd-42e4-8b7d-bb1716888f1f@arm.com>
+Date: Mon, 21 Sep 2026 14:51:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/gup: honour FOLL_PIN in NOMMU
- __get_user_pages_locked()
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- Peter Xu <peterx@redhat.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20260921-nommu_gup_pin-v4-1-c410041cc479@kernel.org>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260921-nommu_gup_pin-v4-1-c410041cc479@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 1/6] set_memory: add number of pages parameter to
+ set_direct_map APIs
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ =?UTF-8?Q?Adrian_Barna=C5=9B?= <abarnas@google.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Len Brown <lenb@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ Pavel Machek <pavel@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>, Sven Schnelle <svens@linux.ibm.com>,
+ Thomas Gleixner <tglx@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, WANG Xuerui <kernel@xen0n.name>,
+ Will Deacon <will@kernel.org>, x86@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ loongarch@lists.linux.dev
+References: <20260903-execmem-set-vm-perms-v0-2-v3-0-949b64a9f755@kernel.org>
+ <20260903-execmem-set-vm-perms-v0-2-v3-1-949b64a9f755@kernel.org>
+ <d299f7c5-6c71-499a-b8cd-aa69c4c81dd1@arm.com> <aqzjBA_101LcKRCD@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <aqzjBA_101LcKRCD@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BCDC820008
-X-Stat-Signature: 1hn3yhep7hmddg9ebutado4naydirpzg
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F40D3120008
+X-Stat-Signature: 388q5u9913fsu59dwqks6w8ihsat8nob
 X-Rspam-User: 
-X-HE-Tag: 1789994778-474745
-X-HE-Meta: U2FsdGVkX1+00QmGDpEOBEd3Vsjc9iQEtSJaBu9n61kXdU699/AX5IjnZ2PU7e99nvmEbBNjOPTGQivPsFDJdxPEKluPpObgQ4o/p8F+LboHuGAJlSRlOJz6rUaKmLc94as5bVSHBWjYeeah+k3H5HlreEnzAKlF0FXt0gyr4Ejj2CUdDQktuGcyRP0SZEiLSZlscJVk3551Y3YD8Y+IU9W1tqjZU+xs1HpFgKWblAefQ40ktHRfYA+SIoKDP3qHENe8NieaoLgXyUMdmlPX6urjHUqi38XbkgIoKcbhUlxC3/E+BLbuyqG05AY+4OjxcCE994Q2P/sa7OmwOYQAzyIlmN76BbYjm/2+h1AzNL84IBC0s2BAsDzhMcWfk8C77XxQLsT9FzTu5kWZQFT+pgfGMLGCjmXTrqoMW5TQoAWVKwJL6at4BPPoyafbco4Div7CMc8wkFe59ZeBAgTcatgGUxid6Tq7tZt88zenhgj/FxWQ2iia1648+MZVvZIOnZ2p8aJ9+2/EQFZeagQB+je6MkN+JXUNZUYmV/WbbyetWe7AQY81Znvd9fLmHxHDzEbHS/kceJE8+INVPdlXu2xQjzpDdxDOxhIZ1JGZMmZzMP0g7dqlTSPf7Vpi4pBWSwXwDjAzOsTePi4zi4ILYKgmUTYOOzv0ODq3hIGK+72nmNzi9luAuFI+E/GmzI28HYvMEhFEwHAmTnRE0QsqUGYCLcsBUuqOVtq0lb28LUWtid8pqWVOVhG03iLIeaepkiIzvmTP4WDmFd7ADPXAyFNiiCS2F6vlPxoAXl1bo46Tfqy22OBhbTu34qu6E9Md6WkYR09hSnDdPTO5gfZZSrnUJuWHsPfir4Aixh0o3cw2TVaWNs6kKRHXwESAJ0GYteKNHjOhlGGpVBlJndufaskyemAQ5aZOdhP9jJcMwAAIVb+S/XL+h8XXoIF/X7cLOxHbNIq5ZwXTo5EfxCo
- Q4ZmDLEs
- gjyRzT12jmL9SSJ+xBnnS/xaKSTXc7QtvBDOQEBMBPvhjjL2cHa01z89SYr1rKtFlngl6bFHOxNhoMRfWSsvLMj8SWPMZrwnxDao0Bi7Jyozp3w4/QtmITrPnIk3zqGFRhNJlbyHEdUgQYgNtH4dte8LXMoA0AxKvOGFD4qdhBkwC1lT8RMdeulkpui9mdhXG0TuxG85nLVuKerv637nua0u92keaGbjcVBm5UgLLyUXUWiJCdqTT16sNTjS0wODcWWuUcrBzb3cWBnYLRJuyRtsMd9Bny0jYDHBY9VIR/Bwk9DM76m074K/Al5IodQV5WYluXVkYjTZsnH05sqz8i6w7OZDy/jMpDD/xiORDJpERapWpXpG1bzNe61bAlKVCr6yIUzmlaFU9DxMgYkfWP0PfQ4zuCqh0k3zYIUh0NiwPxkePs0zunDqKW9hQG4ipRwweWpxE3WHRlJmt4qbEMUilaxjTazP00FBtCqjdbg7ZB3QNhGVWeEHMUAbAicin4xbWrpXG7+bZJSgKHOrfRrZU4Hf/FcchISYnE3f5Kjrv+xm8w4HtT7efyeLL8Rp37nd9
+X-HE-Tag: 1789995082-625792
+X-HE-Meta: U2FsdGVkX1+HztiFhqmrJeR4zhn1VgUBgBrvHoGGd27usl5ynDbU3dMY5yvEYrG5P4cf0ZhABxLLnjMIRk60xjXlxXYj6ZdbPVE4tmY7TG6PHFJ+8zUIo3oKaH1Cqch2d7j6k60rg4Qd2kwf8F4SQkWbH3wPR2XaIaZfcjv7IJk4TfJtHxyMzvhY8dOTKfM1l+yjCmLY42ZQD42oZ8Olqp+EIfZpwHkJEzrdefKTPUM4/Zf4RJ5fmq56M63JjOJJfZA6O0JWvJVAPvKDm2Dgzd8g6+9i9fLBcOKIKERyaMrywnYjzMW5nSRmyyw+m5E2yvaYd174I3jW1Gn/GaYCARjoRLow/DFbO/+kqzMi5jsqtY4Pr1f6nvAKuvaRFR9CeJVzzxff1Pg3d8uLfnlDBnoZM9LylKpvFSjg/Q0XlmZjtS1+CjykRULbtz17zuThb/7ziDB7S/DKecXoajHO2s+iR9dS+kX5qein/+Fg4/XP0tLHpPQtWrbnul6AA/mHwATMTPxINC7vcQNff0FIHf82oastAvKUyRH6/yYRtWhrgJRb+boAh/MhVcbH4W5TC3kth+KhFa3XhZgJoxcZs74cHhCaQSOdfzq73qZd7lGpIperJT+0oKh5yk9pEv2RB89Kv+DqeAyUAxQtSdf1E4PT8z+LbGQSJ6oL7T3yl9e2tBVrw1OXZgTbj11plhq/DZRypvTFdE5vVvtEQxoPVLemvaZmT1cwsouMHscpwvKITIaHkja76IZS8EpRm/kxBjLAVfkfwcxZCoqGIe7Y3MddNHdVMek8rwchJ3vkHVhCNCtyCvNK9Nu4JftWdXiYJV5iKvnLh/DIvQNYN+MeTBoPf25H/QEXAk4M1S514TBztqi1tBjG3WmtTtrSR4T404MWzIH6qRkeZHEbBeRH03CoFNZuItmuDnQefCUSxribLJ7dqkrNgHAWbsDYg+vzTHgRxEhPUidP9OMI+3L
+ FztQsmfb
+ JuhtPfv+K1T87VxV18roSIS7gpz+sqoU6kfbl0tU5C7EQ10q0yoel781cve/j5PcXwZx2vwbRi78+Fjf42+WlMG7ZBUapnRpkQN9GhVr3MogR9RFfltd6K29D/AdRbO1RHWn/ZeVBiPM3+t28gwnhKg/PTV+j4y+ptE9Ki8QqzdIUi35TerkJEkJqrhJrMyxi6Zq9dI0BXVlOSx7rkXqyBlt/LaaNRkegVWBy2IERKwBcN/0vvysJLCt1Y09ef4KT5i8mUoywDb/bwBK9g6KkqiIElvBzdX7fKmtzgalGW8lt4Nc4wciCqxsFqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,56 +115,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 18/09/2026 09:06, Mike Rapoport wrote:
+> On Thu, Sep 17, 2026 at 08:11:22PM +0200, Kevin Brodsky wrote:
+>> On 03/09/2026 11:28, Mike Rapoport (Microsoft) wrote:
+>>> When set_direct_map APIs were introduced by the commit d253ca0c3865
+>>> ("x86/mm/cpa: Add set_direct_map_*() functions") the single page
+>>> parameter made sense because the initial callers (vmalloc and
+>>> hibernation) had sets of unsorted struct pages that required changes of
+>>> their mappings in the direct map.
+>>>
+>>> Since there is an increasing demand for direct map manipulation and it
+>>> is also desirable to be able to update larger physically contiguous
+>>> mappings, for example an entire large folio, extend set_direct_map APIs
+>>> to receive number of pages parameter.
+>>>
+>>> As there is still only a handful of callers, change the existing
+>>> functions directly and update all the call sites rather than adding
+>>> wrappers for single page case.
+>>>
+>>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>>  arch/arm64/include/asm/set_memory.h     | 4 ++--
+>>>  arch/arm64/mm/pageattr.c                | 8 ++++----
+>>>  arch/loongarch/include/asm/set_memory.h | 4 ++--
+>>>  arch/loongarch/mm/pageattr.c            | 8 ++++----
+>>>  arch/riscv/include/asm/set_memory.h     | 4 ++--
+>>>  arch/riscv/mm/pageattr.c                | 8 ++++----
+>>>  arch/s390/include/asm/set_memory.h      | 4 ++--
+>>>  arch/s390/mm/pageattr.c                 | 8 ++++----
+>>>  arch/x86/include/asm/set_memory.h       | 4 ++--
+>>>  arch/x86/mm/pat/set_memory.c            | 8 ++++----
+>>>  include/linux/set_memory.h              | 6 ++++--
+>>>  kernel/power/snapshot.c                 | 4 ++--
+>>>  mm/secretmem.c                          | 6 +++---
+>>>  mm/vmalloc.c                            | 5 +++--
+>>>  14 files changed, 42 insertions(+), 39 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
+>>> index 90f61b17275e1..b07fd4e026eac 100644
+>>> --- a/arch/arm64/include/asm/set_memory.h
+>>> +++ b/arch/arm64/include/asm/set_memory.h
+>>> @@ -11,8 +11,8 @@ bool can_set_direct_map(void);
+>>>  
+>>>  int set_memory_valid(unsigned long addr, int numpages, int enable);
+>>>  
+>>> -int set_direct_map_invalid_noflush(struct page *page);
+>>> -int set_direct_map_default_noflush(struct page *page);
+>>> +int set_direct_map_invalid_noflush(struct page *page, unsigned int numpages);
+>>> +int set_direct_map_default_noflush(struct page *page, unsigned int numpages);
+>> I don't have a strong opinion on whether to call the argument nr or
+>> numpages, but we might as well be consistent across archs :)
+> Well, it's either consistent across archs or consistent within each arch :)
+> Or add a churny patch that renames it everywhere to nr_pages :)
 
+Eh fair enough... Clearly not the biggest inconsistency in the
+set_direct_map API anyway!
 
-On 2026/9/21 17:57, David Hildenbrand (Arm) wrote:
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
-> get_page() reference for each page regardless of foll_flags:
-> 	if (pages[i])
-> 		get_page(pages[i]);
-> 
-> This is reached from pin_user_pages*() with FOLL_PIN set.
-> unpin_user_page() is shared between MMU and NOMMU configurations and
-> unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
-> GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
-> 
-> This means that pin adds 1, and then unpin will subtract 1024.
-> 
-> If a user maps a page (refcount 1), registers it 1023 times as an
-> io_uring fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
-> unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
-> the page is freed and returned to the buddy allocator.  The remaining
-> 1022 unpins write into whatever was reallocated, and the user's VMA
-> still maps the freed page (NOMMU has no MMU to invalidate it).
-> Reallocating the page for an io_uring pbuf_ring then lets userspace
-> corrupt the new owner's data through the stale mapping.
-> 
-> Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
-> for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
-> symmetric. Keep supporting the traditional behavior where users specify
-> a pages array but don't set FOLL_GET.
-> 
-> While at it, don't return NULL pointers in the page array,
-> as this is really not expected for GUP users; instead, just fail and return
-> -EFAULT.
-> 
-> [ david: support traditional behavior with no FOLL_GET, extend
->    description ]
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Jason Gunthorpe <jgg@ziepe.ca>
-> Cc: John Hubbard <jhubbard@nvidia.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Reported-by: Anthropic
-> Fixes: 3faa52c03f44 ("mm/gup: track FOLL_PIN pages")
-> Assisted-by: gkh_clanker_t1000
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-
-Tested-by: Lance Yang <lance.yang@linux.dev>
+- Kevin
 
