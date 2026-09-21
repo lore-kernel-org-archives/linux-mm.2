@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39B7AC982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D500EC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 21:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 828026B0098; Mon, 21 Sep 2026 17:00:55 -0400 (EDT)
+	id 2830C6B0099; Mon, 21 Sep 2026 17:00:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 800606B0099; Mon, 21 Sep 2026 17:00:55 -0400 (EDT)
+	id 25A8A6B009B; Mon, 21 Sep 2026 17:00:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CC926B009B; Mon, 21 Sep 2026 17:00:55 -0400 (EDT)
+	id 123A86B009D; Mon, 21 Sep 2026 17:00:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AFA16B0098
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:00:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7FD02402CA
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:54 +0000 (UTC)
-X-FDA: 85238988828.11.261F57E
-Received: from mail-yx2-f43.google.com (mail-yx2-f43.google.com [74.125.224.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 97BE740011
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OnxdAgkt;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790024452;
-	b=wk3jP7C0Ddlq1taNVzD52+xejyxpX3EMzG4m7MIho6mI0bE1uSheLK3VIXSf6VUPxxBmv3
-	qZJ5q/QgRv0Ncl5OUk7fKETs7LN0DzOiQK2njnOLhjKkoOaB2dcs61NOxocXUbPhsmDTV4
-	5vVa16Iv3esSTqPOP9z2FZvA0G8NMl0=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=OnxdAgkt;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.171 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	by kanga.kvack.org (Postfix) with ESMTP id C18136B0099
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 17:00:57 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2C201402CD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:57 +0000 (UTC)
+X-FDA: 85238988954.03.4EF526C
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 60AFF40006
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:00:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TQwwXq1v;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790024452;
+	s=arc-20220608; t=1790024455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yiFGjgmYdihnRq5zn4J7+lquPNFdcPY4JCSVkkBVe/c=;
-	b=U+//URJWlUCbMREUpxt2n2dYR0CiN+2jGHBz2T4DtyCJiN2Ad30oLGrjBXgI7BRCe9XYuw
-	ycWDE/eBcSug7PaW1LchCgWW+Zuo33sxVrBmum5ztbFnid0o1AAoSgvjuw7O3PITBR+wtm
-	J9Rk68ALVnHlcaQtCzKukt5aGrg4KKs=
-Received: by mail-yx2-f43.google.com with SMTP id 00721157ae682-85d43f9b119so31249057b3.2
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:00:52 -0700 (PDT)
+	bh=/xTOOxWAB7EXdp+9zJNQXlE7w6mryIyyfkbDpuO17P4=;
+	b=nRl61FYYTabME21oMDMQgz37cfokJrKGxyTMej8kix5TcJ86F6ryqg9gexkIh7Jd1QIj0L
+	DrCWQ/UCW4FcRJY7ezv2hh9dsu++QYdZZ7/DbHVI7RE/QdNhE70SJQSP03bK0CJBrs49h1
+	RSRln1kfim8gie70tslmb/mcOoq/lAA=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TQwwXq1v;
+	spf=pass (imf01.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790024455;
+	b=Vt9yWLUbzgUhKclQzpTAN/fI50zZgwd8ZU0sDwfs/Wpg34eCaGTCeWl9dJTNwy9OhZxAsg
+	2vScV9qHMluRELW9ATD484iA+4Xul6UkBRB06+Y6HFgm1zFQfpM7/UvdO/WFgCXgwzHM7V
+	ZN7878JvoKrc4yR4gsqz2aXUNFZp9EY=
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43daa8f4so24460967b3.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:00:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1790024452; x=1790629252; darn=kvack.org;
+        d=soleen.com; s=google; t=1790024454; x=1790629254; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=yiFGjgmYdihnRq5zn4J7+lquPNFdcPY4JCSVkkBVe/c=;
-        b=OnxdAgktc4v2pFgZjCIQUB0AtxtQeKvKbVKXqpoudSlk8FzIEZhU5jjxAJdfF/fZLM
-         dyj2CsMmy3YIjLfp3yeQsAo40FEhU0qy7m/JBSXxImTye12Sc7neGImC5iU50ukrMcC9
-         NZTWK4FYielC/t+Gg6oqX157/kMKkdm4Ees/NABDybp7/4vutG0QTnQaLJMItVeFn7Uh
-         WD8dxUshqvRlI6w37vZ5xZaSeKlUcG4D174rJp7tqeXwhE40vNwePElP2xroyl0/C+q0
-         6S6Ilo9FhashPmNPrF0AoAdoNr6s7dWvOS/r0oLAOMrxDgNeND5VrFJGGOr5hz3v1IzL
-         pPcQ==
+        bh=/xTOOxWAB7EXdp+9zJNQXlE7w6mryIyyfkbDpuO17P4=;
+        b=TQwwXq1vT4CnW4KwWq+fDQeSSQ7U77DBf/k/ND1kJbnU77d+QlBMoScysK+GV9XSyv
+         ypBTdhGoAGyXnLf9hE45QzuyxNO9OwglmHZkUbIM5vKt17YZu7uACGATslghVLa/64OW
+         f+/grfBlj68shtIThDRpTqCSPPp+CsNdqTrVyj0hHyxEVPIP4Tj+lQYBxyAAVZXYujb0
+         2FkJVPVcIP+TiqVCAFnoxAmABGnkT31ixoaZDPriM5XTDTKUzeu+a2cqu9wQ3NNqnPQ4
+         8+uKbDjwjdAPS7Ym6WxnahHi4KAtcFAxE5Boi+W2wqppiFxwyIMCRIYVX/V12s5tVHQD
+         7u4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790024452; x=1790629252;
+        d=1e100.net; s=20260707; t=1790024454; x=1790629254;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=yiFGjgmYdihnRq5zn4J7+lquPNFdcPY4JCSVkkBVe/c=;
-        b=pShKcUReqG6J3PiHzlceU6IUI1Xh8CyFLUVZqchQkOJ6kY6TVL38S/qMTMVIDaou81
-         kVd4yMCv/QI5741MvuGF8Cv0i0d4vhaU4n3j3ZdoeJqqc2YeRtHlpLN5ECLYXSvAu6oq
-         vde+VnauXIJq9gLaLXC2DqWdoGnR5kcvvwex8VmHK036kwFK+3lGnR/4ZvR5oUkJJ718
-         vWxSYG8UQBQ2/Oa9tlz8DWeezwIjkeX3lU2VTlsUCvjHTWB81K0H0f4uS5k6RX1HdMfH
-         WvKrowmL9HAvVF02+EqKz15OvwLaUPMyJNYNXk9o9bTNpuI8xnkIPuQbB2TuuKGyae6t
-         IRUA==
-X-Forwarded-Encrypted: i=1; AKwUvBznPiD7dxOi0J+/Bn5RlxiSZjGkbUSpOodteaKdzKa96sfCOyXfrwPjolJyrf/JMr3e94UEDAhH2g==@kvack.org
-X-Gm-Message-State: AFuF++k7WK2BxAzhRls7U8cok3rQYIPOIZzoU9pr7CFkqh3KB5wHZOvm
-	FOtOYZG21UCLYE6yPB+KcBrPEGFBk5AhjxA7ukK65zYiR+GUjlgI+b7AJxQUcxXrTnI=
-X-Gm-Gg: AYBFou2f1rk0FpHwV+7KJHdqLxs0P0nxa/rl+2SMyeWcCXU6spU7dSm36YbrFt+0aEf
-	xU1yoIc2T5rhVzpM2+V9HXqs13aMg1fWonyIs7dHlhw2WZQcPsVe3Sj8zPoKyQTAL9/1V0LxDVr
-	ygTZ+UojyKG48LOiIxaAXFb7QFBZD1GNuOulHC11h1UgeVclLOaXbBzzYjNbeVryZjb3pDoqqC4
-	LpGLXJj+tsv3MEGJkE2VARr1KWVNp+VaY2SbtImbdQ3IKXCXjOsvBWgZ/oqVMFGCbbTw7Wk68zr
-	Zi90IN+5p17OyDHQsr5ACfJk/o9tleRk9Er9qI6rh8Jry7+5JkNsbpd8QYOUEBrgNSffbudGhiA
-	/bgaVr49TSgaSbHeZ42xOhlniUxIwjXd1BU3kaMFgVe8FMwkBB50mf8u0V5q4fLoADpWIyEmqbo
-	/8ekHAhIlkbcjnThlHIwNgyqzdZ7BjICorHhXu76uS6XMAsNjVpzHCUjdgUtDbzVE5q1fr8IMC2
-	brmXvyHnbDUVxheeSq3h+R1Xefduho1cfwAWrJFzUf9USeeHOYqrVuvzFu7I/6KLrwc4Hcbm1v8
-	eW2sRXGK6asZanuveLI=
-X-Received: by 2002:a05:690c:6:b0:873:5ddf:d85d with SMTP id 00721157ae682-897346e159emr38436627b3.40.1790024451380;
-        Mon, 21 Sep 2026 14:00:51 -0700 (PDT)
+        bh=/xTOOxWAB7EXdp+9zJNQXlE7w6mryIyyfkbDpuO17P4=;
+        b=u7vyenEi/9+U5GSAZTQy0qP+OP5fM6pcLTcWQYV04PqSuBrIzSt0nKQK1dZJNBaf0o
+         Oc0Umm0GAAHJvpGfMCN03Dtp6leP5JBDFmJrTZiC3Hcu4xdSCplfBhwa3OB2yBv50SC4
+         mbFuSk8mKNRjyjfVKj4HApHBQCq4MNOp7bMDZiiSCcHVRp/L/y7inANN7UQsKEcAU72A
+         smyml5UyUGcZJFtcxx5SHWo5SxBfFGQN0M3Q3essuLBDiWk/zDnHMv9kfUQ80LxsGEBA
+         +5xoSpGUBafz+BVZ6Y5slD16fgbet07fGILgvD7KmQLzJy69LhRyXdy8UKm6L/JY5rsi
+         2qrQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwmVV8jegIOwIXuwqRbBzJi65TUGQIdq/Cu/5KXhAr/rLE14lCCbV/DgmQRo3DNhHkfcPg6zNMg2A==@kvack.org
+X-Gm-Message-State: AFuF++nSJ0XvGIN7DgN3FEuSW7HgpIO1yE74Q/kh6wiMqDhAMKopIjZZ
+	AzD84q4wGvW7KfMx5QEiGwFgQoWiUDG90/LgzmUaJT1PRKW3BHqbf0J2c1pqKH0hMKo=
+X-Gm-Gg: AYBFou3iUWQui5iJJT37Iu3u9UAIfPjDS2rOY72z+HSJlEIMNge1cAs51VKMOfjvwnV
+	dgb+5d5Sz1vPbOjNt2A9IFJMoo0r/5DbDVp4TcnkKUYzHdMvAn/48gyM8ofvnLjkk25Ob6cPb2b
+	EHCOBF5c0E0ZgH75q6zs0XvBb9iKpu74P6AlJgCIjxaerC40D0ZYmMGDE2s4dwzuTf7tRpMVB0/
+	FFkD3i5wa4lOuRUebvhakeRUrb6jmDixUJSVdWHnw1H55rH98fxIvLSEtAX1xGyunPXUMaD+ghV
+	fj0WBT6O28T3K28wSv3tTxuTrjNWc/LE08wu2xM/GQcBCVqBzWyT6CUxkmanUnpCPsvhAT5AX/N
+	nZZmJys6IILGx5xouL+B9g9fDSiau9b7NaeZ/gOanmYmlykQ80MwXB0IUs0TC9BvKLd9S5pwmV3
+	/TNcGTdnYLIDavtGPNxGLXDaBj1WYkjebmSBUJJS23yN900K4Yzy4OxCfVRKww3ALuL61se8aoZ
+	2ENGhIWF9EcfVf0NDoruRbQY3PVlx9LzNuj9DFKJ/Y3V0iVSPbne6Zw8O/PTXSpBZcCD2BqNhh8
+	idN/EF6zyJfDppUIh24=
+X-Received: by 2002:a05:690c:7482:b0:884:c7c1:31c4 with SMTP id 00721157ae682-8972b0f46e0mr40971027b3.0.1790024454228;
+        Mon, 21 Sep 2026 14:00:54 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a23c738bdfsm1445297b3.11.2026.09.21.14.00.49
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a23c738bdfsm1445297b3.11.2026.09.21.14.00.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 14:00:50 -0700 (PDT)
+        Mon, 21 Sep 2026 14:00:52 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: linux-kselftest@vger.kernel.org,
 	legion@kernel.org,
@@ -169,23 +169,23 @@ To: linux-kselftest@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	vladimir.murzin@arm.com,
 	kas@kernel.org
-Subject: [RFC PATCH 44/46] KVM: arm64: Implement Caretaker GICv3 CPU interface and arch timer emulation
-Date: Mon, 21 Sep 2026 17:00:32 -0400
-Message-ID: <20260921210034.180424-6-pasha.tatashin@soleen.com>
+Subject: [RFC PATCH 45/46] KVM: arm64: Implement Caretaker system register trap and exception handlers
+Date: Mon, 21 Sep 2026 17:00:33 -0400
+Message-ID: <20260921210034.180424-7-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.55.0.1082.g2b9226bbc0-goog
 In-Reply-To: <20260921210034.180424-1-pasha.tatashin@soleen.com>
 References: <20260920193650.3373435-1-pasha.tatashin@soleen.com>
  <20260921210034.180424-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 60AFF40006
+X-Stat-Signature: qfk9wxf4awfgmis15171ucc39uzrzi1g
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 97BE740011
-X-Stat-Signature: ipqhekd71wedjj38nho1rrrpmposfpsu
-X-HE-Tag: 1790024452-797724
-X-HE-Meta: U2FsdGVkX1/wA/LuQjOp9SSV9OYTlbazj2EHoWbmYQaaUfoNclnv/h5nwIfhMV/miiJE7aRMVTOEZRsDcuMWFYnHF8hNQMu+jNtJoWjkRcyFwc7AClemEuvr1sKh7AghcFfN6WHaDLj+I+IJ9a6uaotvUzGD0h1DuPItCzRvixVwGof15TEIHstDgjjNjHcQXWZBCf2NkxSwWdfDrl83eFWHv/kV2rmqyZTt6LWTwdsZhFxFQGBN1JbbY2b6Hbr3FcCg41KFSbwkVnfIajMlsL8SrDHhRdy/dN0bwrlKKPWqgU6Li1qw+03G9yrOxo0DsxzDBNU6hrEz0TuCTtcRSCYqXBtIpjiiPIW3ndW0qi6VpWpRXGwZEohaXkLjqqMNjZ6DkTpn/2dypIzSWWMC4ix0IPmECTFbxNLnFpZlyMXSSIR5txmnjGbRY1DGNu534v7Qscozk3O0/wzJ3pjoeORFFJGqRzUK11Q3oEwlpxLF+nJFpvbdjvZyJ9n2AOKM0yov5AFWMxpTym2WDBVkNTRKbncdFZkvTpXbAu3TmB7Y6uk0Ut4pJOdYFoy5lqkqchCaH1T+UO/MVZ0UKpsCZBdxHUEuvYgCdJpiHo5nROMZsLi78k/Gq/UP4/BM6D1jpElsDC6Jz9mXFvrMCIy5FmimM9fehSDvszcBNUo8JwpboS343+t9eVYIXIKWF+aOyVwg85Yb3gyR9jP5VU5uhScTPOWudPdVPSbrbDEH8Rb5udpL84l0NftTfidwrsFRpHZTZa8mVuts0PbeEkBNwglw2dPGEtk1CA8ADUt6RUye3a+AJYQy0ibn5k/n1K2fs7DFB22L3pH5ffFODRF7+nPNbjuYij87gEh+915UkMn/SfF2RXQrd73sgraSxz8aSDatLLM7Uzlx8zNf3M5RgbDW8cXLy2Y74dOkFCjTPd66+Tx8p9aI0wawC9NmiXcO8s/1f+IC5L2OHkEi7jn
- kAKpor7x
- btWdccfy+tJ5Gns06psQZlfujQtq8Qq5wTBWYnfzlZFpAOeu5DpOEUEt0JMU2RJJQWCu4FTt1avmm6tdj/kRphX5uWyf9j+yHHDfuNxGzgIdN3vo+/kjiCClAwOpbtQJLGyz5VHBTmCqfYu57+rJUrcGoVJqgGLScwtkMr4U0pUrOOQ0YnM6VAez2qzAC6JnOpJBeg6qUmSBibJY2MSJbCgMeVIlnad4Glpaa0i0C5NkumQHfcniDcLC4QxZWYDEOub19QdG9FcVsKH8TdjFdJk3XPVI08bBo61NkqOwlJJ0aSFB8WEdpDHJRF7PmWa/573yd/9sKEP3XQw0=
+X-HE-Tag: 1790024455-885732
+X-HE-Meta: U2FsdGVkX18sx/gMfB6+DGdRalzEqdcmKTEvu4AtLsbQgsmvuq/CmdupRmIu+LgXvRmfwPT3y/iKqoAS8MLDK3hnvIqlJSowHVrL4JqfsQa8CR+mX5bLeXM24OmZWN0SDh0L63FYMXvAJ6On6Rl3aSbUtPnrFEGwoY+Nb2SpM+ZuUulB3d1xihRUA1utw0fZMk8lVU3ikXaCVo8phedAfMKArpooj9ZPNMreCqmIJnKQevC23eTsoBlaXbSjGOnajxqxrGogSKSUn3tY09P/UJroUh34tNO/vxOUk/nwE0NvlyPzWZJPxUQ8t3aUX1jNN6guvovTbZX+Y52UmiNlG1megIC2DpC7Ot7aKZKo5+jDfVI/0T9r4PFIGSqQENNuZwjnlFKkpLyXr3lzfGGChs9QK+C36TzNK5bRpjSbjKJ7/k3Ytg264NqQ9jXOUDzB4k3zoYlpk24FzryJdmkXhmkNZOi7PoBUOwZNzOAlZtXhBKWyUjQnZXs5Cg+GZCwZ3nwGP+bj9M9ucxOkOezC9B735nsjLoWbfsq1RJ6zVpuTykzouqkIKrc2TyxMRQ4bP5pTsy/OHLiWC8uEfo9M0Z3CuK15HiRDdIBXV0DfS6Jd5geIexmbhgZBzX6vnQAgGPKSFe4cGUk5gD2jML4aMQrsd5Daym2lg57je1pnVldKfxw5I6EhDj7UnwP8bnRgviTM0wNBPApnWKg8BJaJmHaUxES3zO9rsMfvxCwaSuXsvcga5YMSPgsFivyMXPaXyqlAdvaNqTg4Tvo0xKSSihMysgLGhlwnVAOgd5r9LRTo3PKFBWIJCBxSWru1FVRF3wj/NEN4gd4r62QW0kKw/jTsn2skkjdv6X4afLHCqJ4cm6FfLSclI636L2gJiMMSoMsWUNF+zdxQmLEhhyGJrRnWQOMDYq72AOxxqoY7dKSmw/4LidF+jx7VMOLCAnR97eYSf05WDT0WhJJWuDF
+ FlJ/OzU5
+ ar/YWhdHYv9bRosBGyE+g/XDkj9DNQpEPPqUCFDdE4gEbKc0SAP+8TdLR5pZrkUdKs5B5puBVIttRAoCXZHQr//gxzm6GSDAzinjUAZOveRDhFNWEl3qtZiERBkbAabYVXu8710uMqpHMTnxJy6rG3zvThQgfmDnahXftvbmDQDw5OglwecRmgAVrGG8V0xwVrYVYPkwoK7P0dYiJ8hFu7g+nquXL2FHDFQQFU5GAhNwtm8jStVb7t8yjO2yWGAB44kIyt96uoEw5Ex2bY2Kb8ix8yTrhE+B9lGNsIT8/3QinzIvE+V8S0zHRT7CNcqWrD5ke5k1FNvKtgac=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,256 +193,306 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement standalone Caretaker GICv3 ICH_* register save/restore and
-virtual timer deadline emulation in arch/arm64/kvm/caretaker.c.
+Implement standalone Caretaker EL2 exception decoding, system register
+trap handling, and stage-2 non-RAM IPA yield in arch/arm64/kvm/caretaker.c.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- arch/arm64/kvm/caretaker.c | 521 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 521 insertions(+)
- create mode 100644 arch/arm64/kvm/caretaker.c
+ arch/arm64/kvm/caretaker.c | 408 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 405 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/kvm/caretaker.c b/arch/arm64/kvm/caretaker.c
-new file mode 100644
-index 000000000000..65c11fe8c2fa
---- /dev/null
+index 65c11fe8c2fa..6980c1f6b998 100644
+--- a/arch/arm64/kvm/caretaker.c
 +++ b/arch/arm64/kvm/caretaker.c
-@@ -0,0 +1,521 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (c) 2026, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+#include <linux/cpu_preserve.h>
-+#include <linux/delay.h>
-+#include <linux/irqchip/arm-gic-v3.h>
-+#include <linux/kexec_handover.h>
-+#include <linux/kho/abi/kvm.h>
-+#include <linux/kvm_host.h>
-+#include <linux/objtool.h>
-+#include <linux/oncore.h>
-+#include <linux/sched.h>
-+
-+#include <asm/barrier.h>
-+#include <asm/caretaker.h>
-+#include <asm/cpu_ops.h>
-+#include <linux/cpufeature.h>
-+#include <asm/cputype.h>
-+#include <asm/fpsimd.h>
-+#include <asm/kernel-pgtable.h>
-+#include <linux/kexec.h>
-+#include <asm/kvm_emulate.h>
-+#include <asm/kvm_hyp.h>
-+#include <asm/kvm_mmu.h>
-+#include <asm/kvm_pgtable.h>
-+#include <asm/kvm_ptrauth.h>
-+#include <linux/mmu_context.h>
-+#include <linux/pgtable.h>
-+#include <asm/smp_plat.h>
-+#include <asm/sysreg.h>
-+#include <asm/tlbflush.h>
-+#include <asm/vectors.h>
-+
-+#include <kvm/arm_arch_timer.h>
-+#include <kvm/arm_vgic.h>
-+
-+#include "caretaker.h"
-+
-+struct caretaker_fault_info {
-+	u64 elr;
-+	u64 esr;
-+	u64 far;
-+	u64 count;
-+};
-+
-+static struct caretaker_fault_info arm64_caretaker_faults[NR_CPUS] __cpu_preserved_data;
-+
-+void __caretaker_text
-+arm64_caretaker_handle_invalid(u64 elr, u64 esr, u64 far)
+@@ -60,10 +60,8 @@ arm64_caretaker_handle_invalid(u64 elr, u64 esr, u64 far)
+ 	}
+ 
+ 	while (1) {
+-		if (cpu_preserved_should_exit(cpu)) {
+-			cpu_preserved_set_dead(cpu);
++		if (cpu_preserved_should_exit(cpu))
+ 			arch_cpu_preserved_park_finish(cpu);
+-		}
+ 		arch_cpu_preserved_park_wait();
+ 	}
+ }
+@@ -519,3 +517,407 @@ __caretaker_text static void caretaker_vgic_v3_save(struct vgic_v3_cpu_if *cpu_i
+ 	isb();
+ }
+ 
++__caretaker_text static void
++caretaker_arm64_inject_sgi(struct caretaker_arm64_page *target_cap, u32 sgi)
 +{
-+	int cpu = arm64_caretaker_get_pcpu();
++	int slot = -1;
++	int i;
 +
-+	if (cpu >= 0 && cpu < ARRAY_SIZE(arm64_caretaker_faults)) {
-+		arm64_caretaker_faults[cpu].elr = elr;
-+		arm64_caretaker_faults[cpu].esr = esr;
-+		arm64_caretaker_faults[cpu].far = far;
-+		arm64_caretaker_faults[cpu].count++;
++	if (!target_cap)
++		return;
++
++	cpu_preserved_inval(target_cap);
++
++	/* Check if the SGI is already pending or active */
++	for (i = 0; i < target_cap->ctx.vgic_v3.used_lrs; i++) {
++		u64 lr = target_cap->ctx.vgic_v3.vgic_lr[i];
++
++		if ((lr & ICH_LR_VIRTUAL_ID_MASK) == (sgi & 0xf) && (lr & ICH_LR_STATE))
++			return;
++		if ((lr & ICH_LR_STATE) == 0 && slot < 0)
++			slot = i;
 +	}
 +
-+	while (1) {
-+		if (cpu_preserved_should_exit(cpu)) {
-+			cpu_preserved_set_dead(cpu);
-+			arch_cpu_preserved_park_finish(cpu);
-+		}
-+		arch_cpu_preserved_park_wait();
-+	}
-+}
-+
-+__caretaker_text static inline void
-+arm64_caretaker_load_sysregs(struct kvm_cpu_context *ctxt)
-+{
-+	u64 mpidr = ctxt_sys_reg(ctxt, MPIDR_EL1);
-+	u64 midr = read_cpuid_id();
-+
-+	write_sysreg(midr, vpidr_el2);
-+	write_sysreg(mpidr, vmpidr_el2);
-+
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, SCTLR_EL1), SYS_SCTLR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, CPACR_EL1), SYS_CPACR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, TTBR0_EL1), SYS_TTBR0);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, TTBR1_EL1), SYS_TTBR1);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, TCR_EL1), SYS_TCR);
-+	if (cpus_have_final_cap(ARM64_HAS_TCR2)) {
-+		write_sysreg_el1(ctxt_sys_reg(ctxt, TCR2_EL1), SYS_TCR2);
-+		if (cpus_have_final_cap(ARM64_HAS_S1PIE)) {
-+			write_sysreg_el1(ctxt_sys_reg(ctxt, PIR_EL1), SYS_PIR);
-+			write_sysreg_el1(ctxt_sys_reg(ctxt, PIRE0_EL1), SYS_PIRE0);
-+		}
-+	}
-+	if (cpus_have_final_cap(ARM64_HAS_SCTLR2))
-+		write_sysreg_el1(ctxt_sys_reg(ctxt, SCTLR2_EL1), SYS_SCTLR2);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, ESR_EL1), SYS_ESR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, AFSR0_EL1), SYS_AFSR0);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, AFSR1_EL1), SYS_AFSR1);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, FAR_EL1), SYS_FAR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, MAIR_EL1), SYS_MAIR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, VBAR_EL1), SYS_VBAR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, CONTEXTIDR_EL1), SYS_CONTEXTIDR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, AMAIR_EL1), SYS_AMAIR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, CNTKCTL_EL1), SYS_CNTKCTL);
-+	write_sysreg(ctxt_sys_reg(ctxt, PAR_EL1), par_el1);
-+	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL1), tpidr_el1);
-+	write_sysreg(ctxt_sys_reg(ctxt, TPIDR_EL0), tpidr_el0);
-+	write_sysreg(ctxt_sys_reg(ctxt, TPIDRRO_EL0), tpidrro_el0);
-+	write_sysreg(ctxt_sys_reg(ctxt, SP_EL1), sp_el1);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, ELR_EL1), SYS_ELR);
-+	write_sysreg_el1(ctxt_sys_reg(ctxt, SPSR_EL1), SYS_SPSR);
-+	write_sysreg(ctxt_sys_reg(ctxt, MDSCR_EL1), mdscr_el1);
-+}
-+
-+__caretaker_text static inline void
-+arm64_caretaker_save_sysregs(struct kvm_cpu_context *ctxt)
-+{
-+	ctxt_sys_reg(ctxt, SCTLR_EL1) = read_sysreg_el1(SYS_SCTLR);
-+	ctxt_sys_reg(ctxt, CPACR_EL1) = read_sysreg_el1(SYS_CPACR);
-+	ctxt_sys_reg(ctxt, TTBR0_EL1) = read_sysreg_el1(SYS_TTBR0);
-+	ctxt_sys_reg(ctxt, TTBR1_EL1) = read_sysreg_el1(SYS_TTBR1);
-+	ctxt_sys_reg(ctxt, TCR_EL1) = read_sysreg_el1(SYS_TCR);
-+	if (cpus_have_final_cap(ARM64_HAS_TCR2)) {
-+		ctxt_sys_reg(ctxt, TCR2_EL1) = read_sysreg_el1(SYS_TCR2);
-+		if (cpus_have_final_cap(ARM64_HAS_S1PIE)) {
-+			ctxt_sys_reg(ctxt, PIR_EL1) = read_sysreg_el1(SYS_PIR);
-+			ctxt_sys_reg(ctxt, PIRE0_EL1) = read_sysreg_el1(SYS_PIRE0);
-+		}
-+	}
-+	if (cpus_have_final_cap(ARM64_HAS_SCTLR2))
-+		ctxt_sys_reg(ctxt, SCTLR2_EL1) = read_sysreg_el1(SYS_SCTLR2);
-+	ctxt_sys_reg(ctxt, ESR_EL1) = read_sysreg_el1(SYS_ESR);
-+	ctxt_sys_reg(ctxt, AFSR0_EL1) = read_sysreg_el1(SYS_AFSR0);
-+	ctxt_sys_reg(ctxt, AFSR1_EL1) = read_sysreg_el1(SYS_AFSR1);
-+	ctxt_sys_reg(ctxt, FAR_EL1) = read_sysreg_el1(SYS_FAR);
-+	ctxt_sys_reg(ctxt, MAIR_EL1) = read_sysreg_el1(SYS_MAIR);
-+	ctxt_sys_reg(ctxt, VBAR_EL1) = read_sysreg_el1(SYS_VBAR);
-+	ctxt_sys_reg(ctxt, CONTEXTIDR_EL1) = read_sysreg_el1(SYS_CONTEXTIDR);
-+	ctxt_sys_reg(ctxt, AMAIR_EL1) = read_sysreg_el1(SYS_AMAIR);
-+	ctxt_sys_reg(ctxt, CNTKCTL_EL1) = read_sysreg_el1(SYS_CNTKCTL);
-+	ctxt_sys_reg(ctxt, PAR_EL1) = read_sysreg_par();
-+	ctxt_sys_reg(ctxt, TPIDR_EL1) = read_sysreg(tpidr_el1);
-+	ctxt_sys_reg(ctxt, TPIDR_EL0) = read_sysreg(tpidr_el0);
-+	ctxt_sys_reg(ctxt, TPIDRRO_EL0) = read_sysreg(tpidrro_el0);
-+	ctxt_sys_reg(ctxt, SP_EL1) = read_sysreg(sp_el1);
-+	ctxt_sys_reg(ctxt, ELR_EL1) = read_sysreg_el1(SYS_ELR);
-+	ctxt_sys_reg(ctxt, SPSR_EL1) = read_sysreg_el1(SYS_SPSR);
-+	ctxt_sys_reg(ctxt, MDSCR_EL1) = read_sysreg(mdscr_el1);
-+}
-+
-+int arm64_kvm_caretaker_preserve(struct kvm_vcpu *vcpu,
-+				 struct kvm_vcpu_ser *ser)
-+{
-+	struct kvm_s2_mmu *mmu = vcpu->arch.hw_mmu ?
-+				 vcpu->arch.hw_mmu : &vcpu->kvm->arch.mmu;
-+	struct oncore_session *sess = oncore_job_session(vcpu->caretaker.job);
-+	struct arch_timer_context *vtimer;
-+	struct caretaker_arm64_page *head;
-+	struct caretaker_arm64_page *cap;
-+
-+	if (!has_vhe() || is_protected_kvm_enabled() || vcpu_has_nv(vcpu))
-+		return -EOPNOTSUPP;
-+	/*
-+	 * Same predicate as kvm_arch_vcpu_luo_preserve() (kvm_luo.c) and
-+	 * kvm_arm_copy_sys_reg_indices() (sys_regs.c): what matters is whether
-+	 * an in-kernel irqchip exists at all, not whether it has been
-+	 * initialised yet.  vgic_initialized() would let a created-but-not-ready
-+	 * in-kernel VGICv2 through, and the caretaker cannot emulate one.
-+	 */
-+	if (irqchip_in_kernel(vcpu->kvm) &&
-+	    vcpu->kvm->arch.vgic.vgic_model != KVM_DEV_TYPE_ARM_VGIC_V3)
-+		return -EOPNOTSUPP;
-+	if (kvm_has_mte(vcpu->kvm) || kvm_has_s1poe(vcpu->kvm) ||
-+	    vcpu_has_sve(vcpu) || vcpu_has_ptrauth(vcpu) ||
-+	    test_bit(KVM_ARCH_FLAG_WRITABLE_IMP_ID_REGS, &vcpu->kvm->arch.flags))
-+		return -EOPNOTSUPP;
-+
-+	cap = kho_alloc_preserve(sizeof(*cap));
-+	if (IS_ERR(cap)) {
-+		pr_err("caretaker arm64: failed to allocate preserved page\n");
-+		return -ENOMEM;
-+	}
-+	oncore_session_map_buffer(sess, cap, sizeof(*cap));
-+
-+	memset(cap, 0, sizeof(*cap));
-+
-+	kvm_caretaker_init_common_vcpu(&cap->vcpu, &cap->abi.cb, vcpu, cap,
-+				       sizeof(*cap), NULL, cap);
-+
-+	/* Copy architectural execution state */
-+	cap->ctx.ctxt = vcpu->arch.ctxt;
-+	cap->ctx.fault = vcpu->arch.fault;
-+	cap->ctx.hcr_el2 = vcpu->arch.hcr_el2;
-+	cap->ctx.mdcr_el2 = vcpu->arch.mdcr_el2;
-+	cap->ctx.cflags = vcpu->arch.cflags;
-+
-+	cap->ctx.vtcr_el2 = mmu->vtcr;
-+	cap->ctx.vttbr_el2 = kvm_get_vttbr(mmu);
-+
-+	if (vgic_initialized(vcpu->kvm)) {
-+		int i;
-+
-+		cap->ctx.vgic_initialized = true;
-+		cap->ctx.vgic_v3 = vcpu->arch.vgic_cpu.vgic_v3;
-+
-+		for (i = 0; ; i++) {
-+			phys_addr_t rpa;
-+			unsigned long rva;
-+			size_t rsize;
-+
-+			if (gicv3_caretaker_get_redist_region(i, &rpa, &rva, &rsize))
-+				break;
-+			oncore_session_map_range(sess, rpa, rva, rsize,
-+						 pgprot_device(PAGE_KERNEL));
-+		}
++	if (slot < 0 && target_cap->ctx.vgic_v3.used_lrs < VGIC_V3_MAX_LRS) {
++		slot = target_cap->ctx.vgic_v3.used_lrs;
++		target_cap->ctx.vgic_v3.used_lrs++;
 +	}
 +
-+	vtimer = vcpu_vtimer(vcpu);
-+	cap->ctx.cntvoff_el2 = timer_get_offset(vtimer);
-+	cap->ctx.cntv_cval_el0 = timer_get_cval(vtimer);
-+	cap->ctx.cntv_ctl_el0 = timer_get_ctl(vtimer);
-+
-+	head = vcpu->kvm->caretaker_vm;
-+	if (!head) {
-+		cap->next_vcpu = cap;
-+		vcpu->kvm->caretaker_vm = cap;
++	if (slot >= 0) {
++		target_cap->ctx.vgic_v3.vgic_lr[slot] =
++			((u64)sgi & 0xf) |
++			ICH_LR_PENDING_BIT |
++			ICH_LR_GROUP |
++			(GIC_DEFAULT_SGI_PRIO << ICH_LR_PRIORITY_SHIFT);
 +	} else {
-+		struct caretaker_arm64_page *peer;
-+
-+		cap->next_vcpu = head->next_vcpu;
-+		head->next_vcpu = cap;
-+		cpu_preserved_clean(head);
-+
-+		for (peer = cap->next_vcpu; peer != cap; peer = peer->next_vcpu)
-+			oncore_session_map_buffer(sess, peer, sizeof(*peer));
++		target_cap->ctx.pending_sgis |= BIT(sgi & 0xf);
 +	}
 +
++	cpu_preserved_clean(target_cap);
++
++	/* If target vCPU is running on a remote physical CPU, kick it */
++	if (target_cap->abi.cb.pcpu_id >= 0 &&
++	    target_cap->abi.cb.pcpu_id != arm64_caretaker_get_pcpu()) {
++		arch_cpu_preserved_kick(target_cap->abi.cb.pcpu_id);
++	}
++}
++
++__caretaker_text static void
++caretaker_arm64_handle_sgi(struct caretaker_arm64_page *src_cap, u64 reg)
++{
++	struct caretaker_arm64_page *target;
++	u32 sgi = FIELD_GET(ICC_SGI1R_SGI_ID_MASK, reg);
++	unsigned int i;
++
++	if (!src_cap || !src_cap->next_vcpu)
++		return;
++
++	if (reg & BIT_ULL(ICC_SGI1R_IRQ_ROUTING_MODE_BIT)) {
++		/* Broadcast to all other vCPUs */
++		for (target = src_cap->next_vcpu;
++		     target && target != src_cap;
++		     target = target->next_vcpu) {
++			cpu_preserved_inval(target);
++			caretaker_arm64_inject_sgi(target, sgi);
++		}
++	} else {
++		u64 aff3 = FIELD_GET(ICC_SGI1R_AFFINITY_3_MASK, reg);
++		u64 aff2 = FIELD_GET(ICC_SGI1R_AFFINITY_2_MASK, reg);
++		u64 aff1 = FIELD_GET(ICC_SGI1R_AFFINITY_1_MASK, reg);
++		u64 rs = FIELD_GET(ICC_SGI1R_RS_MASK, reg);
++		u64 cluster_mpidr = (aff3 << MPIDR_LEVEL_SHIFT(3)) |
++				    (aff2 << MPIDR_LEVEL_SHIFT(2)) |
++				    (aff1 << MPIDR_LEVEL_SHIFT(1));
++		u64 target_list = FIELD_GET(ICC_SGI1R_TARGET_LIST_MASK, reg);
++
++		for (i = 0; i < 16; i++) {
++			u64 target_mpidr;
++
++			if (!(target_list & BIT(i)))
++				continue;
++
++			target_mpidr = cluster_mpidr |
++				       ((rs * 16 + i) << MPIDR_LEVEL_SHIFT(0));
++
++			target = src_cap;
++			do {
++				cpu_preserved_inval(target);
++				if ((ctxt_sys_reg(&target->ctx.ctxt, MPIDR_EL1) &
++				     MPIDR_HWID_BITMASK) == target_mpidr) {
++					caretaker_arm64_inject_sgi(target, sgi);
++					break;
++				}
++				target = target->next_vcpu;
++			} while (target && target != src_cap);
++		}
++	}
++}
++
++static __caretaker_text int arm64_caretaker_op_enter(void *data)
++{
++	struct caretaker_arm64_page *cap = data;
++	u64 guest_hcr;
++
++	gicv3_caretaker_clear_active_priorities();
++	write_sysreg_s(ICC_PMR_EL1_MASK, SYS_ICC_PMR_EL1);
++	write_sysreg_s(ICC_CTLR_EL1_EOImode_drop, SYS_ICC_CTLR_EL1);
++	write_sysreg_s(ICC_IGRPEN1_EL1_MASK, SYS_ICC_IGRPEN1_EL1);
++	pmr_sync();
++
++	guest_hcr = (cap->ctx.hcr_el2 | HCR_AMO | HCR_IMO | HCR_FMO | HCR_E2H) & ~HCR_TGE;
++	write_sysreg_hcr(guest_hcr);
++	isb();
++
++	cap->last_ret = caretaker_guest_enter(&cap->ctx);
++
++	write_sysreg_hcr(HCR_HOST_VHE_FLAGS);
++	isb();
++
++	return 0;
++}
++
++static __caretaker_text void
++arm64_caretaker_op_arm_timer(void *data, u64 deadline_ticks)
++{
++	if (deadline_ticks) {
++		write_sysreg_s(deadline_ticks, SYS_CNTHP_CVAL_EL2);
++		isb();
++		write_sysreg_s(1, SYS_CNTHP_CTL_EL2);
++	} else {
++		write_sysreg_s(0, SYS_CNTHP_CTL_EL2);
++	}
++	isb();
++}
++
++static __caretaker_text void
++arm64_caretaker_op_disarm_timer(void *data)
++{
++	write_sysreg_s(0, SYS_CNTHP_CTL_EL2);
++	isb();
++}
++
++static __caretaker_text void
++arm64_caretaker_op_decode_exit(void *data, struct kvm_caretaker_exit *exit)
++{
++	struct caretaker_arm64_page *cap = data;
++	u64 ret = cap->last_ret;
++
++	exit->rip = cap->ctx.ctxt.regs.pc;
++	exit->insn_len = 0;
++	exit->type = KVM_CARETAKER_EXIT_UNKNOWN;
++
++	if (ARM_EXCEPTION_CODE(ret) == ARM_EXCEPTION_IRQ) {
++		caretaker_gic_drain_iar();
++		gicv3_caretaker_clear_active_priorities();
++		dsb(sy);
++		isb();
++
++		exit->type = KVM_CARETAKER_EXIT_PREEMPT_TIMER;
++		return;
++	}
++
++	if (ARM_EXCEPTION_IS_TRAP(ret)) {
++		u64 esr = cap->ctx.fault.esr_el2;
++		u8 ec = ESR_ELx_EC(esr);
++
++		exit->insn_len = 4;
++
++		if (ec == ESR_ELx_EC_WFx) {
++			exit->type = KVM_CARETAKER_EXIT_IDLE;
++			return;
++		}
++
++		if (ec == ESR_ELx_EC_SYS64) {
++			u32 iss = ESR_ELx_ISS(esr);
++			u32 sys_op = iss & ESR_ELx_SYS64_ISS_SYS_OP_MASK;
++
++			if (sys_op == ESR_ELx_SYS64_ISS_SYS_ICC_SGI1R_EL1 ||
++			    sys_op == ESR_ELx_SYS64_ISS_SYS_ICC_ASGI1R_EL1 ||
++			    sys_op == ESR_ELx_SYS64_ISS_SYS_ICC_SGI0R_EL1) {
++				u32 rt = ESR_ELx_SYS64_ISS_RT(esr);
++				u64 val = (rt < 31) ? cap->ctx.ctxt.regs.regs[rt] : 0;
++
++				exit->type = KVM_CARETAKER_EXIT_CROSS_VCPU;
++				exit->sgi.sgi_id = FIELD_GET(ICC_SGI1R_SGI_ID_MASK, val);
++				exit->sgi.target_mask = val;
++				return;
++			}
++		}
++
++		if (ec == ESR_ELx_EC_DABT_LOW || ec == ESR_ELx_EC_IABT_LOW) {
++			/*
++			 * Stage-2 abort on a non-RAM IPA (e.g. MMIO device).
++			 * Do not advance PC: yield this vCPU out of guest mode
++			 * so the incoming kernel's real KVM + VMM handles the
++			 * fault on re-attachment.
++			 */
++			exit->type = KVM_CARETAKER_EXIT_IDLE;
++			exit->insn_len = 0;
++			return;
++		}
++
++		exit->type = KVM_CARETAKER_EXIT_ARCH;
++		exit->raw_reason = esr;
++		return;
++	}
++
++	exit->type = KVM_CARETAKER_EXIT_ARCH;
++}
++
++static __caretaker_text void
++arm64_caretaker_op_advance_rip(void *data, u64 next_rip)
++{
++	struct caretaker_arm64_page *cap = data;
++
++	cap->ctx.ctxt.regs.pc = next_rip;
++}
++
++static __caretaker_text bool
++arm64_caretaker_op_handle_exit(void *data, struct kvm_caretaker_exit *exit)
++{
++	struct caretaker_arm64_page *cap = data;
++
++	if (exit->type == KVM_CARETAKER_EXIT_CROSS_VCPU) {
++		caretaker_arm64_handle_sgi(cap, exit->sgi.target_mask);
++		exit->rip += exit->insn_len;
++		return true;
++	}
++
++	/*
++	 * KVM_CARETAKER_EXIT_ARCH is the fallback type assigned by
++	 * arm64_caretaker_op_decode_exit() to every trap it did not decode,
++	 * including system register accesses.  Skipping the instruction here
++	 * would leave the destination register holding whatever it held
++	 * before the trap and bypass KVM's ID register sanitisation, with the
++	 * guest none the wiser.
++	 *
++	 * Leave PC pointing at the trapping instruction and report the exit
++	 * as unhandled so the vCPU parks until the incoming kernel reclaims
++	 * it and full KVM handles the trap.
++	 */
++	return false;
++}
++
++static __caretaker_text inline u64 arm64_sysreg_to_uapi_id(u32 reg)
++{
++	if (reg == SYS_CNTV_CVAL_EL0)
++		return KVM_REG_ARM_TIMER_CVAL;
++	return (KVM_REG_ARM64 | KVM_REG_SIZE_U64 |
++		KVM_REG_ARM64_SYSREG |
++		((u64)sys_reg_Op0(reg) << KVM_REG_ARM64_SYSREG_OP0_SHIFT) |
++		((u64)sys_reg_Op1(reg) << KVM_REG_ARM64_SYSREG_OP1_SHIFT) |
++		((u64)sys_reg_CRn(reg) << KVM_REG_ARM64_SYSREG_CRN_SHIFT) |
++		((u64)sys_reg_CRm(reg) << KVM_REG_ARM64_SYSREG_CRM_SHIFT) |
++		((u64)sys_reg_Op2(reg) << KVM_REG_ARM64_SYSREG_OP2_SHIFT));
++}
++
++static __caretaker_text void
++arm64_caretaker_update_sysreg(struct kvm_vcpu_arch_ser *state,
++			      u32 reg, u64 val)
++{
++	u64 id = arm64_sysreg_to_uapi_id(reg);
++	u32 i;
++
++	for (i = 0; i < state->num_sysregs; i++) {
++		if (state->sysregs[i].id == id) {
++			state->sysregs[i].addr = val;
++			return;
++		}
++	}
++}
++
++static __caretaker_text void
++arm64_caretaker_detach_serialize(struct caretaker_arm64_page *cap)
++{
 +	cap->abi.vgic_initialized = cap->ctx.vgic_initialized ? 1 : 0;
 +	cap->abi.cntvoff_el2 = cap->ctx.cntvoff_el2;
 +	cap->abi.hcr_el2 = cap->ctx.hcr_el2;
@@ -462,271 +512,117 @@ index 000000000000..65c11fe8c2fa
 +			cap->abi.vgic_lr[i] = cap->ctx.vgic_v3.vgic_lr[i];
 +	}
 +
-+	if (ser->arch_state.phys) {
-+		struct kvm_vcpu_arch_ser *state =
-+			phys_to_virt(ser->arch_state.phys);
-+		size_t sz = struct_size(state, sysregs, state->num_sysregs);
++	if (cap->arch_state) {
++		struct kvm_vcpu_arch_ser *state = cap->arch_state;
 +
-+		cap->arch_state = state;
-+		oncore_session_map_buffer(sess, state, sz);
++		cpu_preserved_memcpy(&state->regs.regs, &cap->ctx.ctxt.regs,
++				     sizeof(state->regs.regs));
++		state->regs.sp_el1 = ctxt_sys_reg(&cap->ctx.ctxt, SP_EL1);
++		state->regs.elr_el1 = ctxt_sys_reg(&cap->ctx.ctxt, ELR_EL1);
++		state->regs.spsr[KVM_SPSR_EL1] = ctxt_sys_reg(&cap->ctx.ctxt, SPSR_EL1);
++		state->regs.spsr[KVM_SPSR_ABT] = cap->ctx.ctxt.spsr_abt;
++		state->regs.spsr[KVM_SPSR_UND] = cap->ctx.ctxt.spsr_und;
++		state->regs.spsr[KVM_SPSR_IRQ] = cap->ctx.ctxt.spsr_irq;
++		state->regs.spsr[KVM_SPSR_FIQ] = cap->ctx.ctxt.spsr_fiq;
++		cpu_preserved_memcpy(&state->regs.fp_regs, &cap->ctx.ctxt.fp_regs,
++				     sizeof(state->regs.fp_regs));
++
++		arm64_caretaker_update_sysreg(state, SYS_SCTLR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, SCTLR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_CPACR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, CPACR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_TTBR0_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TTBR0_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_TTBR1_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TTBR1_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_TCR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TCR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_ESR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, ESR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_AFSR0_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, AFSR0_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_AFSR1_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, AFSR1_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_FAR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, FAR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_MAIR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, MAIR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_VBAR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, VBAR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_CONTEXTIDR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, CONTEXTIDR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_AMAIR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, AMAIR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_CNTKCTL_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, CNTKCTL_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_PAR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, PAR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_TPIDR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TPIDR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_TPIDR_EL0,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TPIDR_EL0));
++		arm64_caretaker_update_sysreg(state, SYS_TPIDRRO_EL0,
++					      ctxt_sys_reg(&cap->ctx.ctxt, TPIDRRO_EL0));
++		arm64_caretaker_update_sysreg(state, SYS_SP_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, SP_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_ELR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, ELR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_SPSR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, SPSR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_MDSCR_EL1,
++					      ctxt_sys_reg(&cap->ctx.ctxt, MDSCR_EL1));
++		arm64_caretaker_update_sysreg(state, SYS_CNTV_CVAL_EL0,
++					      cap->ctx.cntv_cval_el0);
++		arm64_caretaker_update_sysreg(state, SYS_CNTV_CTL_EL0,
++					      cap->ctx.cntv_ctl_el0);
++		cpu_preserved_clean_sz(state,
++				       struct_size(state, sysregs, state->num_sysregs));
 +	}
 +
-+	ser->cb.phys = virt_to_phys(cap);
-+
-+	cpu_preserved_clean(cap);
-+
-+	return 0;
++	cpu_preserved_clean(&cap->abi);
 +}
 +
-+static __always_inline void arm64_caretaker_save_ptrauth(struct arm64_caretaker_ptrauth_keys *k)
++static void arm64_caretaker_sync_vcpu(struct kvm_vcpu *vcpu,
++				      void *data)
 +{
-+	if (!arm64_caretaker_has_ptrauth)
-+		return;
++	struct arch_timer_context *vtimer = vcpu_vtimer(vcpu);
++	struct kvm_caretaker_arch_ser *abi = data;
++	u64 cval, ctl;
++	int t;
 +
-+	k->apia_lo = read_sysreg_s(SYS_APIAKEYLO_EL1);
-+	k->apia_hi = read_sysreg_s(SYS_APIAKEYHI_EL1);
-+	k->apib_lo = read_sysreg_s(SYS_APIBKEYLO_EL1);
-+	k->apib_hi = read_sysreg_s(SYS_APIBKEYHI_EL1);
-+	k->apda_lo = read_sysreg_s(SYS_APDAKEYLO_EL1);
-+	k->apda_hi = read_sysreg_s(SYS_APDAKEYHI_EL1);
-+	k->apdb_lo = read_sysreg_s(SYS_APDBKEYLO_EL1);
-+	k->apdb_hi = read_sysreg_s(SYS_APDBKEYHI_EL1);
-+	k->apga_lo = read_sysreg_s(SYS_APGAKEYLO_EL1);
-+	k->apga_hi = read_sysreg_s(SYS_APGAKEYHI_EL1);
-+}
++	/* Sync handover ABI prefix back into incoming vcpu */
++	vcpu->arch.hcr_el2 = abi->hcr_el2;
++	vcpu->arch.mdcr_el2 = abi->mdcr_el2;
++	vcpu->arch.cflags = abi->cflags;
 +
-+static __always_inline void
-+arm64_caretaker_restore_ptrauth(const struct arm64_caretaker_ptrauth_keys *k)
-+{
-+	if (!arm64_caretaker_has_ptrauth)
-+		return;
++	if (abi->vgic_initialized) {
++		int i;
 +
-+	write_sysreg_s(k->apia_lo, SYS_APIAKEYLO_EL1);
-+	write_sysreg_s(k->apia_hi, SYS_APIAKEYHI_EL1);
-+	write_sysreg_s(k->apib_lo, SYS_APIBKEYLO_EL1);
-+	write_sysreg_s(k->apib_hi, SYS_APIBKEYHI_EL1);
-+	write_sysreg_s(k->apda_lo, SYS_APDAKEYLO_EL1);
-+	write_sysreg_s(k->apda_hi, SYS_APDAKEYHI_EL1);
-+	write_sysreg_s(k->apdb_lo, SYS_APDBKEYLO_EL1);
-+	write_sysreg_s(k->apdb_hi, SYS_APDBKEYHI_EL1);
-+	write_sysreg_s(k->apga_lo, SYS_APGAKEYLO_EL1);
-+	write_sysreg_s(k->apga_hi, SYS_APGAKEYHI_EL1);
-+	isb();
-+}
-+
-+#define __caretaker_apr_save(_v, _reg)		((_v) = read_sysreg_s(_reg))
-+#define __caretaker_apr_restore(_v, _reg)	write_sysreg_s((_v), _reg)
-+
-+/*
-+ * ICH_AP0R<n>_EL2 and ICH_AP1R<n>_EL2 encode <n> in the instruction, so the
-+ * accesses cannot be put in a loop.  Generate the ladder for either group and
-+ * either direction from one pattern instead of writing it out four times.
-+ *
-+ * @_dir: save or restore
-+ * @_grp: 0 or 1, selecting ICH_AP0R<n>_EL2 or ICH_AP1R<n>_EL2
-+ */
-+#define caretaker_vgic_v3_apr(_dir, _grp, _regs, _nr_pre_bits)			\
-+do {										\
-+	switch (_nr_pre_bits) {							\
-+	case 7:									\
-+		__caretaker_apr_##_dir((_regs)[3], SYS_ICH_AP##_grp##R3_EL2);	\
-+		__caretaker_apr_##_dir((_regs)[2], SYS_ICH_AP##_grp##R2_EL2);	\
-+		fallthrough;							\
-+	case 6:									\
-+		__caretaker_apr_##_dir((_regs)[1], SYS_ICH_AP##_grp##R1_EL2);	\
-+		fallthrough;							\
-+	default:								\
-+		__caretaker_apr_##_dir((_regs)[0], SYS_ICH_AP##_grp##R0_EL2);	\
-+	}									\
-+} while (0)
-+
-+/*
-+ * Acknowledge and retire whichever Group 1 interrupt is pending on this CPU.
-+ * EOImode is 1 (priority drop and deactivation are separate), so a real INTID
-+ * needs both an EOIR1 and a DIR write.  The special INTIDs (1020-1023) mean
-+ * "nothing pending" and must not be written back.
-+ */
-+__caretaker_text static void caretaker_gic_drain_iar(void)
-+{
-+	u32 iar = read_sysreg_s(SYS_ICC_IAR1_EL1);
-+
-+	if (iar < GIC_SPECIAL_INTID_START) {
-+		write_sysreg_s(iar, SYS_ICC_EOIR1_EL1);
-+		write_sysreg_s(iar, SYS_ICC_DIR_EL1);
-+	}
-+}
-+
-+/*
-+ * Put EL2 back into host (VHE) configuration.  Both vector bases are pointed
-+ * at the caretaker's own hyp vectors: while a preserved core is running a
-+ * guest the caretaker owns EL2, and the kernel that installed kvm_hyp_vector
-+ * may no longer exist.
-+ */
-+__caretaker_text static void caretaker_restore_host_el2(void)
-+{
-+	write_sysreg_hcr(HCR_HOST_VHE_FLAGS);
-+	write_sysreg((unsigned long)caretaker_hyp_vector, vbar_el1);
-+	write_sysreg_s((unsigned long)caretaker_hyp_vector, SYS_VBAR_EL2);
-+	dsb(sy);
-+	isb();
-+}
-+
-+__caretaker_text static u64 caretaker_gic_v3_get_lr(unsigned int lr)
-+{
-+	switch (lr & 0xf) {
-+	case 0:
-+		return read_gicreg(ICH_LR0_EL2);
-+	case 1:
-+		return read_gicreg(ICH_LR1_EL2);
-+	case 2:
-+		return read_gicreg(ICH_LR2_EL2);
-+	case 3:
-+		return read_gicreg(ICH_LR3_EL2);
-+	case 4:
-+		return read_gicreg(ICH_LR4_EL2);
-+	case 5:
-+		return read_gicreg(ICH_LR5_EL2);
-+	case 6:
-+		return read_gicreg(ICH_LR6_EL2);
-+	case 7:
-+		return read_gicreg(ICH_LR7_EL2);
-+	case 8:
-+		return read_gicreg(ICH_LR8_EL2);
-+	case 9:
-+		return read_gicreg(ICH_LR9_EL2);
-+	case 10:
-+		return read_gicreg(ICH_LR10_EL2);
-+	case 11:
-+		return read_gicreg(ICH_LR11_EL2);
-+	case 12:
-+		return read_gicreg(ICH_LR12_EL2);
-+	case 13:
-+		return read_gicreg(ICH_LR13_EL2);
-+	case 14:
-+		return read_gicreg(ICH_LR14_EL2);
-+	default:
-+		return read_gicreg(ICH_LR15_EL2);
-+	}
-+}
-+
-+__caretaker_text static void caretaker_gic_v3_set_lr(u64 val, unsigned int lr)
-+{
-+	switch (lr & 0xf) {
-+	case 0:
-+		write_gicreg(val, ICH_LR0_EL2);
-+		break;
-+	case 1:
-+		write_gicreg(val, ICH_LR1_EL2);
-+		break;
-+	case 2:
-+		write_gicreg(val, ICH_LR2_EL2);
-+		break;
-+	case 3:
-+		write_gicreg(val, ICH_LR3_EL2);
-+		break;
-+	case 4:
-+		write_gicreg(val, ICH_LR4_EL2);
-+		break;
-+	case 5:
-+		write_gicreg(val, ICH_LR5_EL2);
-+		break;
-+	case 6:
-+		write_gicreg(val, ICH_LR6_EL2);
-+		break;
-+	case 7:
-+		write_gicreg(val, ICH_LR7_EL2);
-+		break;
-+	case 8:
-+		write_gicreg(val, ICH_LR8_EL2);
-+		break;
-+	case 9:
-+		write_gicreg(val, ICH_LR9_EL2);
-+		break;
-+	case 10:
-+		write_gicreg(val, ICH_LR10_EL2);
-+		break;
-+	case 11:
-+		write_gicreg(val, ICH_LR11_EL2);
-+		break;
-+	case 12:
-+		write_gicreg(val, ICH_LR12_EL2);
-+		break;
-+	case 13:
-+		write_gicreg(val, ICH_LR13_EL2);
-+		break;
-+	case 14:
-+		write_gicreg(val, ICH_LR14_EL2);
-+		break;
-+	default:
-+		write_gicreg(val, ICH_LR15_EL2);
-+		break;
-+	}
-+}
-+
-+__caretaker_text static void caretaker_vgic_v3_restore(struct caretaker_arm64_page *cap)
-+{
-+	struct vgic_v3_cpu_if *cpu_if = &cap->ctx.vgic_v3;
-+	unsigned int used_lrs = cpu_if->used_lrs;
-+	u64 vtr = read_sysreg_s(SYS_ICH_VTR_EL2);
-+	unsigned int max_lrs = FIELD_GET(ICH_VTR_EL2_ListRegs, vtr) + 1;
-+	u32 nr_pre_bits = FIELD_GET(ICH_VTR_EL2_PREbits, vtr) + 1;
-+	unsigned int i;
-+
-+	/* Drain any pending software-generated SGIs into empty LRs */
-+	if (cap->ctx.pending_sgis) {
-+		for (i = 0; i < max_lrs && cap->ctx.pending_sgis; i++) {
-+			if (i >= used_lrs || (cpu_if->vgic_lr[i] & ICH_LR_STATE) == 0) {
-+				int sgi = __ffs(cap->ctx.pending_sgis);
-+
-+				cap->ctx.pending_sgis &= ~BIT(sgi);
-+				cpu_if->vgic_lr[i] = ((u64)sgi & 0xf) |
-+						     ICH_LR_PENDING_BIT |
-+						     ICH_LR_GROUP |
-+						     ((u64)GIC_DEFAULT_SGI_PRIO <<
-+						      ICH_LR_PRIORITY_SHIFT);
-+				if (i >= used_lrs)
-+					used_lrs = i + 1;
-+			}
++		vcpu->arch.vgic_cpu.vgic_v3.used_lrs = abi->used_lrs;
++		vcpu->arch.vgic_cpu.vgic_v3.vgic_hcr = abi->vgic_hcr;
++		vcpu->arch.vgic_cpu.vgic_v3.vgic_vmcr = abi->vgic_vmcr;
++		for (i = 0; i < 4; i++) {
++			vcpu->arch.vgic_cpu.vgic_v3.vgic_ap0r[i] = abi->vgic_ap0r[i];
++			vcpu->arch.vgic_cpu.vgic_v3.vgic_ap1r[i] = abi->vgic_ap1r[i];
 +		}
-+		cpu_if->used_lrs = used_lrs;
++		for (i = 0; i < 16; i++)
++			vcpu->arch.vgic_cpu.vgic_v3.vgic_lr[i] = abi->vgic_lr[i];
 +	}
 +
-+	write_sysreg_s(cpu_if->vgic_vmcr, SYS_ICH_VMCR_EL2);
-+
-+	caretaker_vgic_v3_apr(restore, 0, cpu_if->vgic_ap0r, nr_pre_bits);
-+	caretaker_vgic_v3_apr(restore, 1, cpu_if->vgic_ap1r, nr_pre_bits);
-+
-+	write_sysreg_s(cpu_if->vgic_hcr | ICH_HCR_EL2_En, SYS_ICH_HCR_EL2);
-+
-+	used_lrs = min3(used_lrs, max_lrs, (unsigned int)VGIC_V3_MAX_LRS);
-+
-+	for (i = 0; i < used_lrs; i++)
-+		caretaker_gic_v3_set_lr(cpu_if->vgic_lr[i], i);
++	cval = __vcpu_sys_reg(vcpu, CNTV_CVAL_EL0);
++	ctl = __vcpu_sys_reg(vcpu, CNTV_CTL_EL0);
++	timer_set_offset(vtimer, abi->cntvoff_el2);
++	write_sysreg(abi->cntvoff_el2, cntvoff_el2);
++	write_sysreg_el0(cval, SYS_CNTV_CVAL);
++	write_sysreg_el0(ctl, SYS_CNTV_CTL);
 +	isb();
-+}
 +
-+__caretaker_text static void caretaker_vgic_v3_save(struct vgic_v3_cpu_if *cpu_if)
-+{
-+	u64 vtr = read_sysreg_s(SYS_ICH_VTR_EL2);
-+	unsigned int max_lrs = FIELD_GET(ICH_VTR_EL2_ListRegs, vtr) + 1;
-+	u32 nr_pre_bits = FIELD_GET(ICH_VTR_EL2_PREbits, vtr) + 1;
-+	unsigned int used_lrs = cpu_if->used_lrs;
-+	unsigned int i;
++	vcpu_set_flag(vcpu, VCPU_INITIALIZED);
 +
-+	used_lrs = min3(used_lrs, max_lrs, (unsigned int)VGIC_V3_MAX_LRS);
++	for (t = 0; t < NR_KVM_TIMERS; t++)
++		vcpu->arch.timer_cpu.timers[t].loaded = false;
 +
-+	for (i = 0; i < used_lrs; i++) {
-+		cpu_if->vgic_lr[i] = __gic_v3_get_lr(i);
-+		__gic_v3_set_lr(0, i);
-+	}
-+
-+	cpu_if->vgic_vmcr = read_sysreg_s(SYS_ICH_VMCR_EL2);
-+
-+	caretaker_vgic_v3_apr(save, 0, cpu_if->vgic_ap0r, nr_pre_bits);
-+	caretaker_vgic_v3_apr(save, 1, cpu_if->vgic_ap1r, nr_pre_bits);
-+
-+	write_sysreg_s(0, SYS_ICH_HCR_EL2);
-+	isb();
++	kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
 +}
 +
 -- 
