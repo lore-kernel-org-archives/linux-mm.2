@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B393BC982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:46:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8460C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:46:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A4966B00A1; Mon, 21 Sep 2026 09:45:46 -0400 (EDT)
+	id 06D0F6B00E5; Mon, 21 Sep 2026 09:45:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17C976B00A4; Mon, 21 Sep 2026 09:45:46 -0400 (EDT)
+	id 045826B00E6; Mon, 21 Sep 2026 09:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 043F16B00E7; Mon, 21 Sep 2026 09:45:45 -0400 (EDT)
+	id E280D6B00E7; Mon, 21 Sep 2026 09:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA4CA6B00E5
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:45 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 33E61A4182
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:45 +0000 (UTC)
-X-FDA: 85237892250.23.DF74945
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 75B631C0002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjTZJINT;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789998343;
-	b=7F7RdLM2wiS8OVgHPq5cAiOCmYwHWkAKygrNyJkMcNW0Uqaec0RUE+dws/LqcMV8hPJg7h
-	0pnNTsOkJd+WpUO/7iqVwhxKc6Gy3Mebfyk6h6lzcp1v7roWWl5Ls1BOsEoQq8rmvOZOxV
-	QP6loT6ukTxY2PYqiyBUc2+6X0PifuQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjTZJINT;
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B08DD6B00E5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:45:49 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C47C91201B1
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:48 +0000 (UTC)
+X-FDA: 85237892376.21.78C22AB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id ECFC88000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:45:46 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPLFbMp5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789998343;
+	s=arc-20220608; t=1789998347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ifn8NbvGUZMkm87ijwC59e2fPDE4y1g0YRcYcAJljyY=;
-	b=T0c4JH1bZX+LSZm9mXWkQ0iAh0M0rWVFbs/lqeFUb/23OMVSZBnVyb/RW/JQ5p5yy8OaC7
-	iLfpvf8KGiF61YYuLLiKa1NnPcPwdV2gPSg51V2qBiPagkN8wxhcCMgSRWLKzGsyWakZf5
-	wsBWBFjdDLbm9LM5Wo6RVoJwYuLD6R4=
+	bh=C1pfPreOO6HKMgZ9q+Nqw+m6d7jYr0ACpShFH4V9mcU=;
+	b=YIubb4+mQAqSYhq1Vl0+w37IkHNNGf83fNMfaYRVgWQ1MIM3gy7ax2gkx+l2lZHOUmvVai
+	62/g/I1zGgzN43H5tBjyqZSy/XDVDo70XF2MailHhhAUV+HZAIpXTkxJKkyKJPBTdSdHtv
+	w5NIdIoIn/CUaLI5BFWST5QhVRiirpE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789998347;
+	b=7J+Z70+CHBHMuDL+o4YkKvH6OsrjEWp/PzkNvriLgxlaAQLI+Vazlv+BjgI9RnZQpEyFiD
+	MKEzWxvHHihPyLcAVNDmQu5+a2e43iC9JgKezk1mKuPIh7zKz/eOlgvSi++wa/rT5BGAx/
+	6uTx2YNvQcbylRQ66EyE4R7qaMZAhis=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OPLFbMp5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0905C601F0;
+	by sea.source.kernel.org (Postfix) with ESMTP id 41841437AF;
+	Mon, 21 Sep 2026 13:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459E01F00893;
 	Mon, 21 Sep 2026 13:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8D81F0089C;
-	Mon, 21 Sep 2026 13:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789998342;
-	bh=Ifn8NbvGUZMkm87ijwC59e2fPDE4y1g0YRcYcAJljyY=;
+	s=k20260515; t=1789998346;
+	bh=C1pfPreOO6HKMgZ9q+Nqw+m6d7jYr0ACpShFH4V9mcU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=mjTZJINTvfIrccswx+Vb4wZBTHHhss3fSC8NIiQk+uHGrE+eRTiiE+pNiX8WpGBBf
-	 BPfAmJNAgZT4+w0U2Q5LD03wutcTywpG6DlyjMcMafVCSgWoONAPJtcFKD/IZUBI4J
-	 qy9Vpd4/9w+gEXpn8p0qe4A6xNQ/uz16yhQxqHic6ccVtyfQvt6qVnosWx4hfeYfGp
-	 nrCf9fkSGU2itLv4mJ7hriz0TTxPWCi7Hz1jMKTc8viWuN679hg5MRMHMLGahe0Ca0
-	 UO3ToI357TucVmaymH7KUfxwDOlbPUC04nj5CLUrVJg0JF1NO9DfUF7+9ryIlfrR5+
-	 R2aQDRAgkq6gQ==
+	b=OPLFbMp5APpFtxsxTti4fNjZl+zGL2kKVPIF4twuXm8Vv5JzNj5Uk/61J1WYuyd+b
+	 VFYkPbMFJlf7ujPd7iI071pGkNVX7bZEy59Ivs8GxWcWoOlaPEoxJu/82IdiMZEYMz
+	 4LwQiANgIin1sxxhYMkYsdSSXn2aPB6uFzzLcLa0PtWvpLoGSB/8uN6t8Q9720TVUC
+	 6ForjC4p0vkAEquj9i2NaYfeqGD8wSdrsHzFL7ZAdjoRmdQ3xID2q3ZGosVx8ld7kU
+	 KoOskmGT8Q+wDg+Kdp8I54ZiaoLJaO2T1jEuZKrClfx/pFJteTsHk2TgpgFlvfAPze
+	 gIQzq7HkgSGiw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 21 Sep 2026 15:44:59 +0200
-Subject: [PATCH v3 10/17] selftests/coredump: test a user worker as the
- coredumping thread
+Date: Mon, 21 Sep 2026 15:45:00 +0200
+Subject: [PATCH v3 11/17] selftests/coredump: expect PTRACE_SETSIGMASK to
+ be refused on a user worker
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-work-coredump-fixes-v3-10-8e4adb1619e6@kernel.org>
+Message-Id: <20260921-work-coredump-fixes-v3-11-8e4adb1619e6@kernel.org>
 References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 In-Reply-To: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
 To: Oleg Nesterov <oleg@redhat.com>, Chris Mason <mason@kernel.org>, 
@@ -82,22 +82,22 @@ Cc: Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>,
  linux-mm@kvack.org, io-uring@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=14230; i=brauner@kernel.org;
- h=from:subject:message-id; bh=AK8dwx+NdHIKi8Muh2oRCTY0hxajPnpohYEVs7RoaNA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLmz03eNfEVR34MPtkpsr1atZpy8Wb7l4KVlx8z/T
- UyNd03S7ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjILXuGv/K8c4oOBWbsP+7X
- wOrzefGqkJ8rfkn2vz6fdMqPUXNyXjrD/6LmFanae++++qF7OqO1u3nGfJ692zqYlReJPuC49Nj
- CiwsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3510; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=y1jOkzZuO9VHLKMd/1GcHI3KZB/M7wgZM5eLLCIt5GE=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRtNLmzN7HmW9fVol0em69sXzTtfdueq2u8xY4ErL76Y
+ PkH7qXzVnaUsjCIcTHIiimyOLSbhMst56nYbJSpATOHlQlkCAMXpwBMJOYvwy+m5xZfq4M2P9IR
+ vVVvNX++2z6uvxmnZz0S0hUVWhr53G06wx8e3qv7RBeVTH9swcyg8tkvdNVfP1nhoDeh0q9LX2b
+ LnuIHAA==
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 75B631C0002
 X-Rspam-User: 
-X-Stat-Signature: bx5bkbf5s768mf61o8eznn491xrqyu3p
-X-HE-Tag: 1789998343-355812
-X-HE-Meta: U2FsdGVkX1+Z+1OKFPCIQuMsyo7vTDvKdqyQX71oXyhH+YsjMgYjynNQ7CW5QfHQC8Z57+4fJyMVLYDq6uwEmM4q8Z0s0nqFMxrmP7i45q1sAN+uPlhhuDxI9JVFbNaM5HT/Y30nCTlNuGBv2KTn+XxUEFa9CUQ3Ll4VSPc3kC5BqjWy/qYPZcSUgPWhP8J6pC95PGbAAnfHHx97+uB84grvM6Q2O74dgHuW9Bq2rq2h8FNYpxqOdE37cLggrbrMnOEg79N8lOb5lWA1o31kO0cQtsfbSKsm/wOmXbWIyta2y/6BZyN3vflCpql854ehxWMephwqeglYpawBTuxp8YRKK2R+zzYH6Bc9uMfpEiCWjtuCRDHpPWQTvE4dCYcpUvCwYgG8bgCc5ixFAbG0fPsqhIecfR9XklqxpEzbFKoBIzOooWU57JCgiBWiJ9J5HDzu9E+Dc1MnvPi/4MYNjQsda/g75cCsJymPTJFpPHacMFC3Dai2fL2aFogiaeb/EPiGmL5vqgl6A5qO9ZPSUKB026gbfrxne801VamH3KQBZPMFlB+z+D7s8r+j9/A7Rx8jJrt53LLzgL7FSiZeNGE5bjcFrxlIxvQKJ2U9zCpYq8+kbVo/ZEi8fQO2bC28gSftwHNdltYTTcFmtT1pUTW9duDv4OEcCqMS8KiJDcpBEFbIU94ZlaGqnw/XH0/JnmC8EgKy3Kfe2qI6m8GKdu+l1qTrvEQX3dgYM63mKPiSEGTCzf+RP35f1NUHpr2I+CBlcDJ3btCI1P8hBvP4kujCvvBLsBRGWyovrzRLhs8apeA2a7ZoSYeC0JrFM5TO49SsZTGkTHT7DCO4lWpK2FN/eYN8La8CvjL24CXpo66y2dzJDuN72LoV2Ic/j8OtQk1HirPRANJ7T7KuDN4KIK4WC5Noa7zT6MKmQ5X1pdluVQg0YXoCiampKK9Hilx88ZHfUmOj5mqe4rfEOt8
- BWMNL+0J
- KsO5BRnG6oFLXOv4N24wG4/V5NRQGEPuWPp975PMgf+FNpbF5/L7738kwMvPt6ytHCVk+mXjtDQ8C+UjnE7flm8Q+oc7APaEXhAspMFQ4DsHrThGN7xwH/RQp0JmTFbCf1ARhwRFHfNYVitc1Meu0Kx7FyPt1udhuEF+XMTStKSskR4SAmtxIcXlMyz+53hJVHla7XQ/mhYlmhKFYI1ZjjIiTP8f//X5miaVFARgYu1BEeTixkE2Fh+J21A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: ECFC88000B
+X-Stat-Signature: 969y4see7sk1bwwxyow4an1mui3nqozp
+X-HE-Tag: 1789998346-892680
+X-HE-Meta: U2FsdGVkX19cc39nRpeKRkYxMLVr5LPFz3RQ+Tz4zLnVI6cw2okKrf9ba2mqjJkvxN0p1sCS1mUEtpfgYlOicnvZz3m5BApotAMnRX1HIAoZtQLdMx8UbBfc89cNL8mHmnc0MKJS1pmXXcEq1Zu+CFANT217iF6XPx3RHoPNdgprkio3vTHNmPz9vwI0ad4nVlAp7xHE8hBgZmfRsVlzYpcPvdIczrVciUbWeyn1DqeEQElwjoenhWxJRUVP1uIR8H0ogWt0UQJWfncbrwDfXwbH8pV7N9+ADUR4x6iVaQRnV6TGdiJXLMiRe1Pi62N8KIKxhVXMbFFI5orO9AVGBiOM7Zm0CaGWylFbBbuQCnM7xEbfm5rehLVLkbfeTUQNrFJjLjPwrkAjq53m8ocR9Wlq95SAJ0jNEabeJoUBWBdAaBAdUURbOBYwhpJwX/iufSS1zI1SsrLzRKyQElgNJ+Hr3KwIjDB6DjNCqL6Dvfyi3JIAdFKXEVgMXxkSXD8JNIIiVWASNjLXr+fdlBAU3/AfgZcaac8wP/UrCYxXaHEHHThSFnOcj2ht7nZfdNUMw+Z1lpo18jEvmOsHYkYpb2Jj094Nt1Nkbspxf5tpTxfeDPtdTFnTusPlR7eeRCXjHskWLrM/ZxM8HTBKehqtOYtB+7BAvJYiSMYCsGZN9aFWFUXl921UJkNr7B6Sy39kCEFBtgnXLrsIf1qPMsaYGpcrulPaGQgxEnlz14OoICHxrRFXA3Qlj2WW1XVMfIpQyoNOGm38TlRfIkUoLvtaCXDyed5fuxTBfJsK3B8gzgS61H8BkUJv24ZVByu0bnsL3QUK5bt4glIiQI69sgFrp85YtxHvKx93ap6l3iTnFe+C5SYVPwKUK0kG7Fl8TVPwBCEVCTKpK5s9SRinKYLlZU18sGet4GOUk6foWbOziCxeCNPwEAIDCO4QVLU4s/Cz/I4aSXn+xHfmDu60/E+
+ zwk3g666
+ LapwGcaIGlySMuD1VGwZoN8DlioisiIs3hfd2hsyycv/hehT/O61qVT4kodCQRqFF4NECU2aLiZ4aaSC2Gf6pizSBoFJgBkJ+UXBlBjSiKIEn5TS3c4uMcecDQATF27cuhYtqCneKWwOJVcTNlfrzs65brPEq/9i/UZBYDqjBEF1txuPMXtzAYO+yRlbVISS73wTHBMN89k7CyMMwHUGxKT7aMsaqAQsvPkbXwu/C7Rf+V1PWDBu3+Vo0EeNkqcJx8PUj6Rz6IYPUe3kjAYKfEbh9aqUpoEtUBBpM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,491 +105,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A tracer can clear the signal mask of an io-wq worker or an SQPOLL
-thread with PTRACE_SETSIGMASK and inject a coredump signal. The worker
-then runs vfs_coredump() itself. Cover that:
+PTRACE_SETSIGMASK returns -EPERM for a user worker now.
 
-- a child keeps a ring, an idle io-wq worker and with SQPOLL the SQPOLL
-  thread alive
+- inject_coredump_signal() reports whether the mask could be changed
+- a refused mask means the injected SIGSEGV stays pending on the worker
+- the worker cases check that the group is alive and kill it
 
-- seize the chosen thread, stop it with SIGSTOP, clear its mask and
-  detach with SIGSEGV
-
-- require the thread group to be gone in bounded time, by the dump or
-  by SIGKILL
-
-The io-wq worker of an SQPOLL ring fails: the SQPOLL thread waits for
-its workers to exit before it parks, the dumping worker waits for the
-SQPOLL thread to park and the group is stuck in D state.
+The main thread case still dumps.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/coredump/.gitignore        |   1 +
- tools/testing/selftests/coredump/Makefile          |   4 +-
- .../selftests/coredump/coredump_worker_test.c      | 427 +++++++++++++++++++++
- 3 files changed, 431 insertions(+), 1 deletion(-)
+ .../selftests/coredump/coredump_worker_test.c      | 44 ++++++++++++++++------
+ 1 file changed, 32 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/coredump/.gitignore b/tools/testing/selftests/coredump/.gitignore
-index c198f2ca5872..e32f6e9006f6 100644
---- a/tools/testing/selftests/coredump/.gitignore
-+++ b/tools/testing/selftests/coredump/.gitignore
-@@ -3,3 +3,4 @@ stackdump_test
- coredump_socket_test
- coredump_socket_protocol_test
- coredump_signal_test
-+coredump_worker_test
-diff --git a/tools/testing/selftests/coredump/Makefile b/tools/testing/selftests/coredump/Makefile
-index d6cd9a7e9ac0..57ec331f03a7 100644
---- a/tools/testing/selftests/coredump/Makefile
-+++ b/tools/testing/selftests/coredump/Makefile
-@@ -4,7 +4,8 @@ CFLAGS += -Wall -O0 -g $(KHDR_INCLUDES) $(TOOLS_INCLUDES)
- TEST_GEN_PROGS := stackdump_test \
- 		  coredump_socket_test \
- 		  coredump_socket_protocol_test \
--		  coredump_signal_test
-+		  coredump_signal_test \
-+		  coredump_worker_test
- TEST_FILES := stackdump
- 
- include ../lib.mk
-@@ -13,3 +14,4 @@ $(OUTPUT)/stackdump_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_socket_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_socket_protocol_test: coredump_test_helpers.c
- $(OUTPUT)/coredump_signal_test: coredump_test_helpers.c
-+$(OUTPUT)/coredump_worker_test: coredump_test_helpers.c
 diff --git a/tools/testing/selftests/coredump/coredump_worker_test.c b/tools/testing/selftests/coredump/coredump_worker_test.c
-new file mode 100644
-index 000000000000..81cadde0e752
---- /dev/null
+index 81cadde0e752..9a4270b65a6e 100644
+--- a/tools/testing/selftests/coredump/coredump_worker_test.c
 +++ b/tools/testing/selftests/coredump/coredump_worker_test.c
-@@ -0,0 +1,427 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * A user worker as the coredumping thread.
-+ *
-+ * io-wq workers and SQPOLL threads are threads of the process that never
-+ * return to userspace. They block every signal but SIGKILL and SIGSTOP,
-+ * but a tracer can replace that mask with PTRACE_SETSIGMASK and inject a
-+ * coredump signal. get_signal() then runs vfs_coredump() in the worker.
-+ * The worker's own exit bookkeeping runs only after the dump, so a
-+ * zapped sibling that waits for it in its exit path deadlocks with the
-+ * dumper and the whole thread group is stuck in D state.
-+ *
-+ * Inject SIGSEGV into a chosen thread and require that the thread group
-+ * is gone in bounded time, either because the dump completed or because
-+ * SIGKILL still works. A failure leaves the stuck process behind.
-+ */
-+#include <ctype.h>
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <sys/mman.h>
-+#include <sys/ptrace.h>
-+#include <sys/resource.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+#include <linux/io_uring.h>
-+
-+#include "coredump_test.h"
-+
-+#ifndef PTRACE_SETSIGMASK
-+#define PTRACE_SETSIGMASK 0x420b
-+#endif
-+
-+/* The dump of the tiny child takes well under a second. */
-+#define EXIT_TIMEOUT_MS 5000
-+
-+FIXTURE_SETUP(coredump)
-+{
-+	FILE *file;
-+	int ret;
-+
-+	self->pid_coredump_server = -ESRCH;
-+	self->fd_tmpfs_detached = -1;
-+	file = fopen("/proc/sys/kernel/core_pattern", "r");
-+	ASSERT_NE(NULL, file);
-+
-+	ret = fread(self->original_core_pattern, 1, sizeof(self->original_core_pattern), file);
-+	ASSERT_TRUE(ret || feof(file));
-+	ASSERT_LT(ret, sizeof(self->original_core_pattern));
-+
-+	self->original_core_pattern[ret] = '\0';
-+
-+	ret = fclose(file);
-+	ASSERT_EQ(0, ret);
-+}
-+
-+FIXTURE_TEARDOWN(coredump)
-+{
-+	const char *reason;
-+	FILE *file;
-+	int ret;
-+
-+	file = fopen("/proc/sys/kernel/core_pattern", "w");
-+	if (!file) {
-+		reason = "Unable to open core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fprintf(file, "%s", self->original_core_pattern);
-+	if (ret < 0) {
-+		reason = "Unable to write to core_pattern";
-+		goto fail;
-+	}
-+
-+	ret = fclose(file);
-+	if (ret) {
-+		reason = "Unable to close core_pattern";
-+		goto fail;
-+	}
-+
-+	return;
-+fail:
-+	/* This should never happen */
-+	fprintf(stderr, "Failed to cleanup coredump test: %s\n", reason);
-+}
-+
-+/* A raw ring, no liburing. */
-+struct uring {
-+	int fd;
-+	struct io_uring_params params;
-+	void *sq;
-+	size_t sq_len;
-+	struct io_uring_sqe *sqes;
-+	size_t sqes_len;
-+	unsigned int *sq_tail, *sq_mask, *sq_array;
-+	unsigned int *cq_head, *cq_tail, *cq_mask;
-+	struct io_uring_cqe *cqes;
-+};
-+
-+static int uring_setup(struct uring *r, unsigned int flags)
-+{
-+	size_t cq_len;
-+
-+	memset(r, 0, sizeof(*r));
-+	r->params.flags = flags;
-+	if (flags & IORING_SETUP_SQPOLL)
-+		r->params.sq_thread_idle = 2000;
-+	r->fd = syscall(__NR_io_uring_setup, 8, &r->params);
-+	if (r->fd < 0)
+@@ -16,6 +16,7 @@
+  * SIGKILL still works. A failure leaves the stuck process behind.
+  */
+ #include <ctype.h>
++#include <errno.h>
+ #include <dirent.h>
+ #include <fcntl.h>
+ #include <sys/mman.h>
+@@ -255,24 +256,31 @@ static pid_t find_thread(pid_t pid, const char *prefix)
+ 
+ /*
+  * Attach, stop the thread with SIGSTOP, drop the signal mask that
+- * copy_process() gave it and resume it with SIGSEGV instead.
++ * copy_process() gave it and resume it with SIGSEGV. Returns 1 when the
++ * mask was changed, 0 when PTRACE_SETSIGMASK was refused (a user worker
++ * keeps its mask and the SIGSEGV stays pending), -1 on any other failure.
+  */
+-static bool inject_coredump_signal(pid_t pid, pid_t tid)
++static int inject_coredump_signal(pid_t pid, pid_t tid)
+ {
+ 	__u64 mask = 0;
+-	int status;
++	int status, ret = 1;
+ 
+ 	if (ptrace(PTRACE_SEIZE, tid, NULL, NULL))
+-		return false;
 +		return -1;
-+	if (!(r->params.features & IORING_FEAT_SINGLE_MMAP))
+ 	if (syscall(SYS_tgkill, pid, tid, SIGSTOP))
+-		return false;
 +		return -1;
-+
-+	r->sq_len = r->params.sq_off.array + r->params.sq_entries * sizeof(unsigned int);
-+	cq_len = r->params.cq_off.cqes + r->params.cq_entries * sizeof(struct io_uring_cqe);
-+	if (cq_len > r->sq_len)
-+		r->sq_len = cq_len;
-+	r->sq = mmap(NULL, r->sq_len, PROT_READ | PROT_WRITE,
-+		     MAP_SHARED | MAP_POPULATE, r->fd, IORING_OFF_SQ_RING);
-+	if (r->sq == MAP_FAILED)
+ 	if (waitpid(tid, &status, __WALL) != tid)
+-		return false;
 +		return -1;
-+	r->sqes_len = r->params.sq_entries * sizeof(struct io_uring_sqe);
-+	r->sqes = mmap(NULL, r->sqes_len, PROT_READ | PROT_WRITE,
-+		       MAP_SHARED | MAP_POPULATE, r->fd, IORING_OFF_SQES);
-+	if (r->sqes == MAP_FAILED)
+ 	if (!WIFSTOPPED(status) || WSTOPSIG(status) != SIGSTOP)
+-		return false;
+-	if (ptrace(PTRACE_SETSIGMASK, tid, sizeof(mask), &mask))
+-		return false;
+-	return !ptrace(PTRACE_DETACH, tid, NULL, (void *)(long)SIGSEGV);
 +		return -1;
-+
-+	r->sq_tail = r->sq + r->params.sq_off.tail;
-+	r->sq_mask = r->sq + r->params.sq_off.ring_mask;
-+	r->sq_array = r->sq + r->params.sq_off.array;
-+	r->cq_head = r->sq + r->params.cq_off.head;
-+	r->cq_tail = r->sq + r->params.cq_off.tail;
-+	r->cq_mask = r->sq + r->params.cq_off.ring_mask;
-+	r->cqes = r->sq + r->params.cq_off.cqes;
-+	return 0;
-+}
-+
-+/* Submit one sqe, wait for its completion and return the result. */
-+static int uring_submit_wait(struct uring *r, const struct io_uring_sqe *sqe)
-+{
-+	unsigned int tail = *r->sq_tail, idx = tail & *r->sq_mask;
-+	unsigned int flags = IORING_ENTER_GETEVENTS;
-+	int i;
-+
-+	r->sqes[idx] = *sqe;
-+	r->sq_array[idx] = idx;
-+	__atomic_store_n(r->sq_tail, tail + 1, __ATOMIC_RELEASE);
-+
-+	if (r->params.flags & IORING_SETUP_SQPOLL)
-+		flags |= IORING_ENTER_SQ_WAKEUP;
-+
-+	for (i = 0; i < 100; i++) {
-+		if (syscall(__NR_io_uring_enter, r->fd, 1, 1, flags, NULL, 0) < 0 &&
-+		    errno != EINTR)
++	if (ptrace(PTRACE_SETSIGMASK, tid, sizeof(mask), &mask)) {
++		if (errno != EPERM)
 +			return -1;
-+		if (__atomic_load_n(r->cq_tail, __ATOMIC_ACQUIRE) != *r->cq_head) {
-+			unsigned int head = *r->cq_head;
-+			int res = r->cqes[head & *r->cq_mask].res;
-+
-+			__atomic_store_n(r->cq_head, head + 1, __ATOMIC_RELEASE);
-+			return res;
-+		}
-+		flags &= ~IORING_ENTER_SQ_WAKEUP;
-+		usleep(10 * 1000);
++		ret = 0;
 +	}
-+	return -1;
-+}
-+
-+static bool uring_available(unsigned int flags)
-+{
-+	struct io_uring_params params = { .flags = flags };
-+	int fd;
-+
-+	fd = syscall(__NR_io_uring_setup, 2, &params);
-+	if (fd < 0)
-+		return false;
-+	close(fd);
-+	return true;
-+}
-+
-+/*
-+ * Keep a ring, an idle io-wq worker and with SQPOLL an SQPOLL thread
-+ * alive. The last worker of a ring never exits on its idle timeout.
-+ */
-+static void worker_child(bool sqpoll, int fd_ipc)
-+{
-+	struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
-+	struct io_uring_sqe sqe = {};
-+	static char buf[64];
-+	struct uring ring;
-+	int memfd;
-+
-+	if (setrlimit(RLIMIT_CORE, &rl))
-+		_exit(EXIT_FAILURE);
-+
-+	memfd = memfd_create("coredump_worker", 0);
-+	if (memfd < 0 || write(memfd, "hello", 5) != 5)
-+		_exit(EXIT_FAILURE);
-+
-+	if (uring_setup(&ring, sqpoll ? IORING_SETUP_SQPOLL : 0))
-+		_exit(EXIT_FAILURE);
-+
-+	/* IOSQE_ASYNC forces the read through io-wq so a worker appears. */
-+	sqe.opcode = IORING_OP_READ;
-+	sqe.fd = memfd;
-+	sqe.addr = (__u64)(uintptr_t)buf;
-+	sqe.len = sizeof(buf);
-+	sqe.flags = IOSQE_ASYNC;
-+	if (uring_submit_wait(&ring, &sqe) != 5)
-+		_exit(EXIT_FAILURE);
-+
-+	if (write_nointr(fd_ipc, "1", 1) != 1)
-+		_exit(EXIT_FAILURE);
-+	close(fd_ipc);
-+
-+	for (;;)
-+		pause();
-+}
-+
-+/* Find the thread of @pid whose comm starts with @prefix. */
-+static pid_t find_thread(pid_t pid, const char *prefix)
-+{
-+	char path[64], comm[64];
-+	pid_t tid = -1;
-+	struct dirent *de;
-+	ssize_t bytes;
-+	DIR *dir;
-+	int fd;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/task", pid);
-+	dir = opendir(path);
-+	if (!dir)
++	if (ptrace(PTRACE_DETACH, tid, NULL, (void *)(long)SIGSEGV))
 +		return -1;
-+
-+	while (tid < 0 && (de = readdir(dir))) {
-+		if (!isdigit(de->d_name[0]))
-+			continue;
-+		snprintf(path, sizeof(path), "/proc/%d/task/%s/comm", pid, de->d_name);
-+		fd = open(path, O_RDONLY | O_CLOEXEC);
-+		if (fd < 0)
-+			continue;
-+		bytes = read(fd, comm, sizeof(comm) - 1);
-+		close(fd);
-+		if (bytes <= 0)
-+			continue;
-+		comm[bytes] = '\0';
-+		if (!strncmp(comm, prefix, strlen(prefix)))
-+			tid = atoi(de->d_name);
-+	}
-+	closedir(dir);
-+	return tid;
-+}
-+
-+/*
-+ * Attach, stop the thread with SIGSTOP, drop the signal mask that
-+ * copy_process() gave it and resume it with SIGSEGV instead.
-+ */
-+static bool inject_coredump_signal(pid_t pid, pid_t tid)
-+{
-+	__u64 mask = 0;
-+	int status;
-+
-+	if (ptrace(PTRACE_SEIZE, tid, NULL, NULL))
-+		return false;
-+	if (syscall(SYS_tgkill, pid, tid, SIGSTOP))
-+		return false;
-+	if (waitpid(tid, &status, __WALL) != tid)
-+		return false;
-+	if (!WIFSTOPPED(status) || WSTOPSIG(status) != SIGSTOP)
-+		return false;
-+	if (ptrace(PTRACE_SETSIGMASK, tid, sizeof(mask), &mask))
-+		return false;
-+	return !ptrace(PTRACE_DETACH, tid, NULL, (void *)(long)SIGSEGV);
-+}
-+
-+/* Reap @pid within @timeout_ms, -1 when it is still there. */
-+static int wait_exit(pid_t pid, int *status, int timeout_ms)
-+{
-+	int i;
-+
-+	for (i = 0; i < timeout_ms / 10; i++) {
-+		pid_t ret = waitpid(pid, status, WNOHANG);
-+
-+		if (ret == pid)
-+			return 0;
-+		if (ret < 0)
-+			return -1;
-+		usleep(10 * 1000);
-+	}
-+	return -1;
-+}
-+
-+static void log_threads(struct __test_metadata *const _metadata, pid_t pid)
-+{
-+	char path[64], line[256], comm[64] = {};
-+	struct dirent *de;
-+	DIR *dir;
-+	FILE *f;
-+
-+	snprintf(path, sizeof(path), "/proc/%d/task", pid);
-+	dir = opendir(path);
-+	if (!dir)
-+		return;
-+	while ((de = readdir(dir))) {
-+		if (!isdigit(de->d_name[0]))
-+			continue;
-+		snprintf(path, sizeof(path), "/proc/%d/task/%s/status", pid, de->d_name);
-+		f = fopen(path, "r");
-+		if (!f)
-+			continue;
-+		while (fgets(line, sizeof(line), f)) {
-+			line[strcspn(line, "\n")] = '\0';
-+			if (!strncmp(line, "Name:", 5))
-+				snprintf(comm, sizeof(comm), "%s", line + 6);
-+			else if (!strncmp(line, "State:", 6))
-+				TH_LOG("tid %s (%s) %s", de->d_name, comm, line + 7);
-+		}
-+		fclose(f);
-+	}
-+	closedir(dir);
-+}
-+
-+enum dumper {
-+	DUMPER_MAIN,
-+	DUMPER_WORKER,
-+	DUMPER_SQPOLL,
-+};
-+
-+static void run_dumper(struct __test_metadata *const _metadata, bool sqpoll,
-+		       enum dumper dumper)
-+{
-+	bool killed = false;
-+	char path[64], c;
-+	int ipc[2], status, fd;
-+	pid_t pid, tid;
-+
-+	ASSERT_TRUE(set_core_pattern("/tmp/coredump.file.%p"));
-+	ASSERT_EQ(pipe2(ipc, O_CLOEXEC), 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+	if (pid == 0) {
-+		close(ipc[0]);
-+		worker_child(sqpoll, ipc[1]);
-+	}
-+	close(ipc[1]);
-+	ASSERT_EQ(read_nointr(ipc[0], &c, 1), 1);
-+	close(ipc[0]);
-+
-+	switch (dumper) {
-+	case DUMPER_MAIN:
-+		tid = pid;
-+		break;
-+	case DUMPER_WORKER:
-+		tid = find_thread(pid, "iou-wrk-");
-+		break;
-+	case DUMPER_SQPOLL:
-+		tid = find_thread(pid, "iou-sqp-");
-+		break;
-+	}
-+	ASSERT_GT(tid, 0);
-+	ASSERT_TRUE(inject_coredump_signal(pid, tid));
-+
-+	if (wait_exit(pid, &status, EXIT_TIMEOUT_MS)) {
-+		/* No dump. Whatever happened, SIGKILL must still work. */
-+		log_threads(_metadata, pid);
++	return ret;
+ }
+ 
+ /* Reap @pid within @timeout_ms, -1 when it is still there. */
+@@ -333,7 +341,7 @@ static void run_dumper(struct __test_metadata *const _metadata, bool sqpoll,
+ {
+ 	bool killed = false;
+ 	char path[64], c;
+-	int ipc[2], status, fd;
++	int ipc[2], status, fd, ret;
+ 	pid_t pid, tid;
+ 
+ 	ASSERT_TRUE(set_core_pattern("/tmp/coredump.file.%p"));
+@@ -361,7 +369,19 @@ static void run_dumper(struct __test_metadata *const _metadata, bool sqpoll,
+ 		break;
+ 	}
+ 	ASSERT_GT(tid, 0);
+-	ASSERT_TRUE(inject_coredump_signal(pid, tid));
++	ret = inject_coredump_signal(pid, tid);
++	ASSERT_GE(ret, 0);
++	if (!ret) {
++		/* The signal sits on the worker, the group must be untouched. */
++		ASSERT_NE(dumper, DUMPER_MAIN);
++		TH_LOG("PTRACE_SETSIGMASK refused for tid %d, the SIGSEGV stays pending", tid);
++		ASSERT_EQ(wait_exit(pid, &status, 1000), -1);
 +		kill(pid, SIGKILL);
-+		killed = true;
-+		ASSERT_EQ(wait_exit(pid, &status, EXIT_TIMEOUT_MS), 0) {
-+			TH_LOG("thread group %d is stuck after SIGSEGV to tid %d",
-+			       pid, tid);
-+		}
-+	}
-+
-+	ASSERT_TRUE(WIFSIGNALED(status));
-+	if (killed) {
-+		TH_LOG("tid %d did not dump, the group was killed instead", tid);
++		ASSERT_EQ(wait_exit(pid, &status, EXIT_TIMEOUT_MS), 0);
++		ASSERT_TRUE(WIFSIGNALED(status));
 +		ASSERT_EQ(WTERMSIG(status), SIGKILL);
 +		return;
 +	}
-+	ASSERT_EQ(WTERMSIG(status), SIGSEGV);
-+	ASSERT_TRUE(WCOREDUMP(status));
-+
-+	snprintf(path, sizeof(path), "/tmp/coredump.file.%d", pid);
-+	fd = open(path, O_RDONLY | O_CLOEXEC);
-+	unlink(path);
-+	ASSERT_GE(fd, 0);
-+	ASSERT_TRUE(check_coredump_extent(fd));
-+	close(fd);
-+}
-+
-+/* The mechanics: an injected SIGSEGV into a normal thread dumps core. */
-+TEST_F(coredump, main_thread_dumper)
-+{
-+	if (!uring_available(0))
-+		SKIP(return, "io_uring is not available");
-+	run_dumper(_metadata, false, DUMPER_MAIN);
-+}
-+
-+TEST_F(coredump, plain_worker_dumper)
-+{
-+	if (!uring_available(0))
-+		SKIP(return, "io_uring is not available");
-+	run_dumper(_metadata, false, DUMPER_WORKER);
-+}
-+
-+TEST_F(coredump, sqpoll_thread_dumper)
-+{
-+	if (!uring_available(IORING_SETUP_SQPOLL))
-+		SKIP(return, "io_uring SQPOLL is not available");
-+	run_dumper(_metadata, true, DUMPER_SQPOLL);
-+}
-+
-+/*
-+ * The SQPOLL thread leaves its loop on the zap and waits for its io-wq
-+ * workers to exit before it parks. The dumping worker never does.
-+ */
-+TEST_F(coredump, sqpoll_worker_dumper)
-+{
-+	if (!uring_available(IORING_SETUP_SQPOLL))
-+		SKIP(return, "io_uring SQPOLL is not available");
-+	run_dumper(_metadata, true, DUMPER_WORKER);
-+}
-+
-+TEST_HARNESS_MAIN
+ 
+ 	if (wait_exit(pid, &status, EXIT_TIMEOUT_MS)) {
+ 		/* No dump. Whatever happened, SIGKILL must still work. */
 
 -- 
 2.53.0
