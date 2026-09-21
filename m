@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0452C982E1
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:58:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D018CC982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 10:58:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 047B66B00FA; Mon, 21 Sep 2026 06:58:18 -0400 (EDT)
+	id EEE526B00D7; Mon, 21 Sep 2026 06:58:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AE86B00FB; Mon, 21 Sep 2026 06:58:17 -0400 (EDT)
+	id EC5A06B00FB; Mon, 21 Sep 2026 06:58:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E023D6B00FC; Mon, 21 Sep 2026 06:58:17 -0400 (EDT)
+	id DDBF06B00FC; Mon, 21 Sep 2026 06:58:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE4426B00FA
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:58:17 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5F52980139
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:58:17 +0000 (UTC)
-X-FDA: 85237470234.25.21CDE92
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB8906B00D7
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 06:58:25 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 167D8C0122
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:58:25 +0000 (UTC)
+X-FDA: 85237470570.13.57B0997
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 92FFD180007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:58:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="MorCeI/0";
-	spf=pass (imf06.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 35B5114000E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:58:23 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YL9DNg9T;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789988295;
+	s=arc-20220608; t=1789988303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eb9H+uxRvArRVVJKhsUr+93SDYJ1x6sKU3xCIma4RUU=;
-	b=dSW+t6nAy5ChAqKatxlGNqdLaflwMUD96ZkMIbwxhUmn2G/40LTP44ZoxeZq8w9dQ7gqaI
-	Kvtzga6Nam4uNUYeYtyxPfbgJojgdHG1fiTlKZiU8lhcUKrmH1kevftDxOdJF+LQEsYrny
-	Bc44BVmK7h05DkgGxVyhbIZLXLyQrgk=
+	bh=6UI0DyYFBDaK0P9q8waY/uJmo2LsXGZ4CaPLuB4Y4DQ=;
+	b=o8FCn+nq2G1lanpXdLhk72CU4JTtQmB/UMWi6T75GenEVzL5/netc1LcA/f4F1ZKqtqP3k
+	9PZLqNwHp6XM1DD984mz+ZYcgaH8AKENHm0q6rjKjs/DBZ0yYOmsfWGJpezy73aEPoi4qY
+	zjH6EVZzR2eMGcMvkSH0ZSLcL/OrNQk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="MorCeI/0";
-	spf=pass (imf06.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=YL9DNg9T;
+	spf=pass (imf26.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789988295;
-	b=OJb03mcjtVEHMxrPwspbAhW3bB+eX7Tz3ijLM3T+QBdAdyzT3VkM4ApqaQmNbPHPmb3KN1
-	wwRP+6m99yTNuMcDWD/XZB58W9B2EqGfBqYVgS0j6/UALYtPHL0OTkvzMb0Jv1wou/XWfM
-	4Fj893yLgS5iaKDZTn0fxEOxZ98toJs=
+	t=1789988303;
+	b=ZnooKVDbX6eGU140PG6B+Yd7HVyecboMQQPDN6mBR9MWeNOmenHw4SR6RUMQaajBXQbzZy
+	XrdNxQCWd1reymjkvX7qDRND5xlWBHtHy7BiQBc4CX/l5du2RW4POzcVBEMXFbLyEMUxpd
+	nOd44bN8sfuC9lWG+Z/SqtTEYIv6sNc=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 40BDB1570;
-	Mon, 21 Sep 2026 03:58:11 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E11331CE0;
+	Mon, 21 Sep 2026 03:58:18 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 825133F86C;
-	Mon, 21 Sep 2026 03:58:07 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1D95E3F86C;
+	Mon, 21 Sep 2026 03:58:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1789988294; bh=zghhBXP63HUkMVsnVTW1BBI8m5GQHzJyarBmwmrVkLw=;
+	t=1789988302; bh=utmINuOW9x2oHy5QTeHH6EJ3UzwqSRAUlGRF/Q9Zr9w=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MorCeI/0C/ThGp2D4ZEh7K7qiGRxxQCGAsOHcPHI8GDUa1xn7PAojRccrrdxW6og8
-	 7gC8n59mRHcXPujdGPAn1COCNTSdHIzjz22YYHLWyrX2pcSMdp+njUrasxT+e7EdHJ
-	 XyalCkCDo/UbMgMots6tY7qOdO97VEdNuudBqO4c=
+	b=YL9DNg9TygaMLA+6ABmNi8Caz/etNmqKeQ4S1Php9cUgauo5VZuZq2oyMxzC1UnA3
+	 sQjA6XjNfxb5Sfavvr4J5cPJV1ub4QtNsoXtsN7AYSIp8NmW+u+JOVu2sMIYjwVp23
+	 5qp/anN+IE4UyqZMUn8TfJLXHPK8y+iHCUjHuDqo=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 21 Sep 2026 11:55:36 +0100
-Subject: [PATCH 14/21] x86: mm: use pgtable_level enum in
- effective_prot_pXd()
+Date: Mon, 21 Sep 2026 11:55:37 +0100
+Subject: [PATCH 15/21] x86: mm: carve out the generic compile-time folded
+ pgtable case in effective_prot()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260921-dummy_ptxp3-v1-14-cd40cf68242e@arm.com>
+Message-Id: <20260921-dummy_ptxp3-v1-15-cd40cf68242e@arm.com>
 References: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
 In-Reply-To: <20260921-dummy_ptxp3-v1-0-cd40cf68242e@arm.com>
 To: Russell King <linux@armlinux.org.uk>, 
@@ -101,27 +101,27 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
  linux-openrisc@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2497; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=zghhBXP63HUkMVsnVTW1BBI8m5GQHzJyarBmwmrVkLw=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQ1RutA9R6RYKg0XGt206R+FZYSBvFY5A7m64
- WCknKwpoKOJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarENUQAKCRBt1cPRWsUx
- M1QqC/48OSPJozKEnLVOpX6otIW9FV5BhnqTBmb/jwyRutaZTgzJxzVOUro/bD5JHER9PhjqHfC
- eNHCzQ1aUnfnS7hLDorqqVWwzassmuk8DAzqYuKYx91zEvDYa7JHkMxtVu+yZwGD4suG0HUTQf+
- dBbV/wqn4/Ti6iKvRok/awM2egxq3wOCeRisJK0d/rzhD4FGVvxR1DillMtTLyoQbZfBChN9JQP
- NS9xULrwDo4o0EjfcCUWv39K5oJhzQyWbtp9oqdCn/su/PFFe/MqZkv7neLUboJQqVqggUuY8T9
- 0m+0FAwi7HeXPlZGKY54LikTFhGv8+Q1tjO3XDJqbLRmZjXxuoSNMR53I02cOkTtEfur207dk5u
- PqU8kFQ9uSI+wNPOym96FPcqi5SPQomkOAkxT1DTaDPdy9LP/KsdH6btJ2oVPH4ATfgpa/1ZL5h
- FjqEaVjHTPbvc7Tq5zEvipHN2jBSw3foGfVlRqGbIDxVSrv3u88KbKb0TC3yEmyALLVEY=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4850; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=utmINuOW9x2oHy5QTeHH6EJ3UzwqSRAUlGRF/Q9Zr9w=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqsQ1S1hUmFwKYutGjknVs3EfJa02hkOz1+sVrz
+ Nt7e2HHFbCJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarENUgAKCRBt1cPRWsUx
+ M4ztDACstHhQGkp2lzf026PXElKRVH5pN2UHEBDoHpCfhCT0PGU9NnuZhZ4adtSi0gmb5yJECZ+
+ GJwBPGy8ePxuxh87ECWLBX0FJ3HavCpZueK6xmBzdPeUtKfsJ+49BCX8+mZUijeksVmy9e4lDGX
+ xYw9+oFa7r13sh5Ve1eySb5C1oLRmI0rxEWdGkluXK8YtAgV6KVVpodhZxZ4Y3LV10HExieovQA
+ F1WyaWAf37wnCFSeOSYHSbdY5kQZdJbO7ODSG2U50AzNysgh7GBxfnFg+bEp5gzwDHxgQvvi49Q
+ hNNx9zmXTq8lHsglrmKuYgeGrc27jkQ8iUowCFifM36aAC2VHLbJSa47WoQYELvVOGSpPuprEWM
+ K+dyIkb+rkTaK7e38jUgeDVeyWxsz/Lj47nH49SY+no5kMkhgzP6Xg0V91KzOtE9E6SjkOBKrQR
+ UJkaJf7EfpBVXQb//klJUcVH3CXodhSHG82mUtLSBs2nPuDnzGtHIUFOZDCkY2Al/QA/4=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 92FFD180007
-X-Stat-Signature: 1x4yyr5f46wp8gwtkn918ookhoe8hf9i
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 35B5114000E
+X-Stat-Signature: kqggfmuxqjt4inxancdwa4yzs4w1it6z
 X-Rspam-User: 
-X-HE-Tag: 1789988295-928645
-X-HE-Meta: U2FsdGVkX1/dxqVxNRDKYs00CEfYhnjfRCKDBut/erB0Q7LphH0SiYjg3vV36bDdvGs/BkJrIX8AATNI+/OHAikoYthYF+5TEPqZMxJvxKUPznaG9Ozl0NT4LckbTpxHAcOLyPt+LMPa5CWwscS9LvJgRUntOSZeK5Vs+aAGjG6V24slG9VCUd6DuHWCdimeZ6Zj1Op1tJZ3DPy2NR6BKOqM/dfmcsr4AaFkZbVB+Ho82AWWCB1yLGWIdNeur5BQ3Vnd732TvUL0vG2yRZrTqFAkjvwAGbRao4wOcTEYOd+LQvy3eAYnxhP39v2gNngLAfg/wQB8AfUH0bDtCdI3gAinDmlqtzDYXjVy0mCyUgPJ3wWpGQcySqq9WYq6tNwK1H4W6zSA+quCBxoxLGC4ls2jweHsVa72ZLfFSHKN1NJhWxR7GdgiL/wie75vuW+lyJFYjnM1J41MJEPDBkdijCUAtRqeEP7pX/zBypImomRiuBoOJlxtOiV4d1mjL48rB0lGgh0OGF+U6EJ0Zvz78Qd9Uj2H/KV6XTcfgMZV60SMahavgh7t01xQWE0ce00gi2y+yo+oIPTXnAZ8w7O1c8xcUdqtKsjYkyqpxQH90HmeroDlbEiWvKD03REjXSEkIZx7a0cTATnpdZKjm4nsdYa+ddNtD9iyA+kF0VCl/xdJOiSD/1ze8m7cHYPyT3KMmjfLTOUHZ3d1bXoiGN6ogQ1SSx8PVu0NPKu62xmcOTBoZLE2RRdx0rnyBc0HYDpwBRT9wc2IqseCy7siKWQYs8Yx4yQZR+I8eHVSWR68lf/dR/EESri7IUdQ49w8JF6Ckqm2dDGAAEepbNN6WeoRDskkKH9NcQ21hvZmnvvp6jS5Xm728zSRr9E+vU8+lIQAzHBSRk61XzqWzYz1dXfErmYSfNdz6ICPLBvvDgWB57xHJkEVz5keTuXFjQb0faFE/cgRCXNAtR7AAaHr+Ui
- kmeyBB8h
- XJmqQofVMOTbHxK90VbBVCMTi9E+kzeKzXDA7clXEtOT98agRgRzK7oVNn92TCJrbAD6zNnCtlasfmG8TLDNeeAg4DQ4Wq+NT1dd9hIukn5x4MfLwk0vBjMBnSLpzL+UqRrh+5JAoXgAvRJlhkWZc5D+PQ9Xo6RkpajvPBDCXt8P4tF3fwQQeKs6H1xtfVuHQcBD8fduJbddTTIN8cd7FHTOsvXmTjhgdKrWBKAHSVTD1p3fszs9FEqCFUJsSvCW4tvd5glRkigwolA217sAUqMeY6xg2DyYUBM9JlCPVAnV9r438g2ctVzjy2l0g8qfSmjlSwUPxPTtarKHh6b9BdjVqxPQprk88tq3i
+X-HE-Tag: 1789988303-312834
+X-HE-Meta: U2FsdGVkX1+i4tevXxVUqTV8Rfo++VhUDlmQnWw8VcSIwMEUT3FxCR+k+oBqjHB7O7+rFUbCTcUPfC7YUWqVWIULMC2VIHRCLrzCFff4PyFv3ETN171Y1bLGRPBDaqjPITuoOx+wUNHS0kZebsbtKJG5vP3/Bd5FauQMRb6BpE4IVX9lvXrBBe/HhfNfHi5VL866VLbaRwpyizCBb2OvWDH/5kKeHWlHOd6HFWSnbGDnp6q5wWRii0kv1jRmAZf+ss3PiUN0/D2xkvMizjaCmDhZDLmu6SaUfAFDvoK4xg0JmtyVuG6i/1iBrFTmUEUCYgYIZIYzELZSsUf7p8RaLHYWlt+c4UviJWl3BKcWtcvtKWruxL6kZ7Fdoc9xslF8ARXTWJccEVkC38LoK5Om/1NHsvcT0elaHkgLpAxV0RT24ADJ7Pr+gVXzouOq0CNec6beImIOnUbSVEc0tdO36dgqrYGrzOyG962HaqKFOJk6ld8MYPRFsfm0f80VR7EubGe33TMwX60TeJ66ovvf1ezzKA7VEBk5bWJxFLY+W9OcJddaUZqNjomnp8QMASxcgVwkJdl4yQM7Ryt4E/ARP3qouP+K/AU7ccB5hGwrnc8dvjTo89RQklb9GS58C10QmF8YRA61amUjFcbwNLm75oSg1TEaD6FTyskZrak2ZGSx1sbBvnajEBjiJ/pITrT+/6pA/LNjpcqNLnioCiylzTtJtwxgi071wxanFx3i5nMoghleBA/GhpBI7oBzmUXlHVGrh6hrCWpADbf151F08IpzLbsA6OHVBUr0n2u/KoGhFXNjtEGZICVXUKb9JI7LxyqsuFWljDRtPf0Z09Fv6+s6TyOK6fo1BPLm8/qzuW0lZo8oWsVu49ju6kCb6SOXFILNt8kcSRBSu3BU0tK0ahzoK6fGcS5ByK/lQcpnR0zI7GEZiVd+5NvvHFTss+sV3khWWnHMjms07yS30Fw
+ eoVzg71U
+ unldOrZ0lmRdS7N/d99e5i3vI9uUIBEJJuJELT23/KH0sJzX64eR0CQTsnftg3HH77ZsnLDds2H/j1I/uZfaAP9jMbwDSHzWCP+MrdPTp5GVxdGAvodlTvyQE0ZgFtRUYHjaRt5/QGYuKwWg0lwzwEDEWQtDtTlsRGfDDMZZgohG4EzRDGiEbI5VPjVw/myLNRgyBslPQhlGkstcNGSDgfMpRYJXEYB4Q83ma3+Cch8hPTXZITBhSXrm6kG4rFP2mGzxGdlAGZI3fd6PtAti4yMPFfCjPF9o2haWyU5BC9pqS1bUuTlEUAQHfLjrIj11sZvnGSCYoz04fP+ldYnRA2crPRULhekUjLDWl
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,13 +129,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of using hard-coded integers in effective_prot_pXd(), use the
-page-table level enum so that architecture code does not need to know
-the numeric value of each page-table level, while also providing type
-safety.
+The behaviour of pXdp_get() will change with generic compile-time folded
+page tables. To prepare for that, rework effective_prot() to ignore any
+folded page tables entries, as it will unconditionally get called by
+ptdump core with pXd_val(pXdp_get()), and the value for folded entries
+really should be ignored.
 
-This also prepares for using generic MM helpers, mm_first_pgtable_level()
-which use symbolic names for page-table levels rather than integers.
+For this, introduce mm_first_pgtable_level() to identify the first real
+page-table level, move mm_pXd_folded() in !__ASSEMBLER__ and
+update effective_prot with higher_prot only when the current entry is not
+folded nor the first level.
 
 There should be no functional change.
 
@@ -143,62 +146,127 @@ Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- arch/x86/mm/dump_pagetables.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/x86/mm/dump_pagetables.c |  6 +++--
+ include/linux/pgtable.h       | 61 ++++++++++++++++++++++++++++++++-----------
+ 2 files changed, 50 insertions(+), 17 deletions(-)
 
 diff --git a/arch/x86/mm/dump_pagetables.c b/arch/x86/mm/dump_pagetables.c
-index 2afa7a23340e9..a18a61e732c3d 100644
+index a18a61e732c3d..2acbe41eb58f2 100644
 --- a/arch/x86/mm/dump_pagetables.c
 +++ b/arch/x86/mm/dump_pagetables.c
-@@ -248,13 +248,13 @@ static void note_wx(struct pg_state *st, unsigned long addr)
- 		  (void *)st->start_address);
- }
+@@ -38,6 +38,7 @@ struct pg_state {
+ 	bool check_wx;
+ 	unsigned long wx_pages;
+ 	struct seq_file *seq;
++	struct mm_struct *mm;
+ };
  
--static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
-+static void effective_prot(struct ptdump_state *pt_st, enum pgtable_level level, u64 val)
- {
- 	struct pg_state *st = container_of(pt_st, struct pg_state, ptdump);
+ struct addr_marker {
+@@ -254,7 +255,7 @@ static void effective_prot(struct ptdump_state *pt_st, enum pgtable_level level,
  	pgprotval_t prot = val & PTE_FLAGS_MASK;
  	pgprotval_t effective;
  
--	if (level > 0) {
-+	if (level > PGTABLE_LEVEL_PGD) {
+-	if (level > PGTABLE_LEVEL_PGD) {
++	if (level > mm_first_pgtable_level(st->mm)) {
  		pgprotval_t higher_prot = st->prot_levels[level - 1];
  
  		effective = (higher_prot & prot & (_PAGE_USER | _PAGE_RW)) |
-@@ -268,27 +268,27 @@ static void effective_prot(struct ptdump_state *pt_st, int level, u64 val)
+@@ -452,7 +453,8 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+ 		.level = -1,
+ 		.to_dmesg	= dmesg,
+ 		.check_wx	= checkwx,
+-		.seq		= m
++		.seq		= m,
++		.mm		= mm,
+ 	};
  
- static void effective_prot_pte(struct ptdump_state *st, pte_t pte)
- {
--	effective_prot(st, 4, pte_val(pte));
-+	effective_prot(st, PGTABLE_LEVEL_PTE, pte_val(pte));
+ 	ptdump_walk_pgd(&st.ptdump, mm, pgd);
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 3186096a6e130..ed7101a13ce9c 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -392,6 +392,22 @@ static inline void lazy_mmu_mode_pause(void) {}
+ static inline void lazy_mmu_mode_resume(void) {}
+ #endif
+ 
++/*
++ * On some architectures it depends on the mm if the p4d/pud or pmd
++ * layer of the page table hierarchy is folded or not.
++ */
++#ifndef mm_p4d_folded
++#define mm_p4d_folded(mm)	__is_defined(__PAGETABLE_P4D_FOLDED)
++#endif
++
++#ifndef mm_pud_folded
++#define mm_pud_folded(mm)	__is_defined(__PAGETABLE_PUD_FOLDED)
++#endif
++
++#ifndef mm_pmd_folded
++#define mm_pmd_folded(mm)	__is_defined(__PAGETABLE_PMD_FOLDED)
++#endif
++
+ #ifndef pte_batch_hint
+ /**
+  * pte_batch_hint - Number of pages that can be added to batch without scanning.
+@@ -2313,6 +2329,36 @@ static inline const char *pgtable_level_to_str(enum pgtable_level level)
+ 	}
  }
  
- static void effective_prot_pmd(struct ptdump_state *st, pmd_t pmd)
- {
--	effective_prot(st, 3, pmd_val(pmd));
-+	effective_prot(st, PGTABLE_LEVEL_PMD, pmd_val(pmd));
- }
++#ifdef CONFIG_MMU
++/**
++ * mm_first_pgtable_level - return the first non-folded page-table level
++ * @mm: The mm structure.
++ *
++ * With runtime- or compile-time folded page tables, page-table walkers
++ * effectively skip the folded top-level page tables, treating them as
++ * always-present entries pointing to the next lower-level page table.
++ *
++ * Return the first page-table level in @mm that is not folded.
++ *
++ * Return: the first non-folded page-table level.
++ */
++static inline enum pgtable_level mm_first_pgtable_level(struct mm_struct *mm)
++{
++	/*
++	 * "PMD folded" actually means "PMD is folded into PUD", and
++	 * pud_present() etc. are hard-coded to look like present page table
++	 * levels, whereby pmd_present() etc. contain real logic.
++	 */
++	if (mm_pmd_folded(mm))
++		return PGTABLE_LEVEL_PMD;
++	if (mm_pud_folded(mm))
++		return PGTABLE_LEVEL_PUD;
++	if (mm_p4d_folded(mm))
++		return PGTABLE_LEVEL_P4D;
++	return PGTABLE_LEVEL_PGD;
++}
++#endif /* CONFIG_MMU */
++
+ void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_t entry_size);
  
- static void effective_prot_pud(struct ptdump_state *st, pud_t pud)
- {
--	effective_prot(st, 2, pud_val(pud));
-+	effective_prot(st, PGTABLE_LEVEL_PUD, pud_val(pud));
- }
+ #define ptval_to_str(buf, val)								\
+@@ -2349,21 +2395,6 @@ void ptval_bytes_to_hex_str(char *buf, size_t buf_size, const void *entry, size_
+ #ifndef has_transparent_pud_hugepage
+ #define has_transparent_pud_hugepage() IS_BUILTIN(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+ #endif
+-/*
+- * On some architectures it depends on the mm if the p4d/pud or pmd
+- * layer of the page table hierarchy is folded or not.
+- */
+-#ifndef mm_p4d_folded
+-#define mm_p4d_folded(mm)	__is_defined(__PAGETABLE_P4D_FOLDED)
+-#endif
+-
+-#ifndef mm_pud_folded
+-#define mm_pud_folded(mm)	__is_defined(__PAGETABLE_PUD_FOLDED)
+-#endif
+-
+-#ifndef mm_pmd_folded
+-#define mm_pmd_folded(mm)	__is_defined(__PAGETABLE_PMD_FOLDED)
+-#endif
  
- static void effective_prot_p4d(struct ptdump_state *st, p4d_t p4d)
- {
--	effective_prot(st, 1, p4d_val(p4d));
-+	effective_prot(st, PGTABLE_LEVEL_P4D, p4d_val(p4d));
- }
- 
- static void effective_prot_pgd(struct ptdump_state *st, pgd_t pgd)
- {
--	effective_prot(st, 0, pgd_val(pgd));
-+	effective_prot(st, PGTABLE_LEVEL_PGD, pgd_val(pgd));
- }
- 
- 
+ #ifndef p4d_offset_lockless
+ #define p4d_offset_lockless(pgdp, pgd, address) p4d_offset(&(pgd), address)
 
 -- 
 2.43.0
