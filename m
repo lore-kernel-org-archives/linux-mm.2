@@ -4,136 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7513C982DE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:27:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79C5C982E1
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 09:28:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AF726B00D3; Mon, 21 Sep 2026 05:27:22 -0400 (EDT)
+	id C6B516B00D5; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 712046B00EE; Mon, 21 Sep 2026 05:27:22 -0400 (EDT)
+	id C1B316B00D7; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6016F6B00F5; Mon, 21 Sep 2026 05:27:22 -0400 (EDT)
+	id A957F6B00DD; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FD7B6B00D3
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:27:22 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 513A64059D
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:27:21 +0000 (UTC)
-X-FDA: 85237241082.20.88150A9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 884DA20002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:27:19 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaceTT7R;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7910D6B00D5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 05:28:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D35ADC056E
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:28:00 +0000 (UTC)
+X-FDA: 85237242720.09.6CABB45
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 61969180002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:27:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=LbpNXzuF;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf16.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789982839;
+	s=arc-20220608; t=1789982878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AQUCskKpKTBWKi4kkPNprWNPfV/anObyTDr0xY2sgRE=;
-	b=xvPESaeSbVOH4wMrPRuyuSTR5aXkFjszfZhCSMTZdiZy216OrsTydqN9RXSuYd/Ep6msWi
-	A7lWZxLqFzDRIilDh0igOn5tMIaEKWdwz1lfRWOgh7HNyfmcBFIgx7BMI23nSN2FOAePxB
-	wAgRmokAXWN07MvqzuTH5qACXJiejpA=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaceTT7R;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=G1939MElcb2kM01/7HPbHzZLx6pN/KmlSSE/eI9FBUg=;
+	b=ve4+7zd1O+bSztDop0IBQMk3ttY9/zTUmH6rmN/PTyyhDubuQ7Pfu4288IWheMhBSqstyq
+	wMPkNad70kcTPsgyahWA8uK1RR8cz9o8cVk0Tial7ZZusEv3NwkOb7VaVEQKTXWNy+1JeS
+	dBftdk/sK5aKCfI539uXoR5KHOQRL1Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789982839;
-	b=2BjhAYrHtk4FLdBbutImhNpnmTXS1jRP4GK1hQvlEkTm5KjPUc8T0zsfhLqHRY4+9LycNc
-	BghHUUzL20NCtgVrzv2DwtWuYnfc0nAG8sW8h+ehHUbQGiREjdI8K/Cu3O7WB2RhwblXzA
-	lImk2rlUyvsxI0eUr5hdY+6vAxFen6Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BE454418A5;
-	Mon, 21 Sep 2026 09:27:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D554F1F000FF;
-	Mon, 21 Sep 2026 09:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789982838;
-	bh=AQUCskKpKTBWKi4kkPNprWNPfV/anObyTDr0xY2sgRE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aaceTT7R/zCfIk4fbYgpMXkYmI9gOhWSMIWraMlPw5GPsrzfaEyo3Ss9KxkK/HJTo
-	 nDsCfzHppkwwwd1MvTKPiNn1VJ7NDmlXu7VY1DfrfrXTOtVJgsniyx+aYcR0Q7lPd3
-	 4nX6b+Bc3M1Zrd4AVhtPYHjN/X18d4Oim7mqH2zKOTV2jjAjc7WpRk9z4AKiBevqAQ
-	 +28g9U+H0rbaV7HI5HnbsqBRaKq9WK5I2ndCMoBS8SqBk8dNvXJBIn7wvhE1FvKe1U
-	 hXVswDIEPcxYnytq9GXmo4UEr1IhF3COC+erLSGuXlD9aG+PdWxvE0hSTJ09IjOEUm
-	 RMc5mtcLK4gwg==
-Message-ID: <6aaa02a7-29fd-4cff-aa4d-d8e63476ff92@kernel.org>
-Date: Mon, 21 Sep 2026 11:27:11 +0200
+	t=1789982878;
+	b=vxRlg8uzjJzSxvaUftw7hL3eECX8DIY3AT2gOLYAQoT4Yc6tPGYw01iwbC85aOdF7QS73v
+	7dryZSY159yk96Od27+zPBNa+rdjt6No7z3xSJnViMwadJyksxbj8YpUSMXwKCYP2U7ho0
+	+1XF2kY+sYvIgMPZjb6E4sf78aAm8jM=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=LbpNXzuF;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf16.hostedemail.com: domain of nilay@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=nilay@linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7ZbnX672354;
+	Mon, 21 Sep 2026 09:27:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=G1939M
+	Elcb2kM01/7HPbHzZLx6pN/KmlSSE/eI9FBUg=; b=LbpNXzuFadRu4xefU1BRaQ
+	h06fCzfQKzfgJVO+GdlysRBuw3CYS0h9INHzdvY3mycdGE8B4aCXmajbflhXM83m
+	ptcP7kCNPw7U5yE7EQVhYZbolmvC65PE01R+sPRX1TAwDsp3zu59hoqOFt/AvSFu
+	5pqA8S4gXwqDoq7dFjtx3V6977yRg6lME+gwPDU4gqT+I3OVD5aSSVh7R8w6dn0T
+	kiKHMCbbohscsdNiKn1Zx2pPlBr3PIYgVRxD/D5LlFRG64591dn0jOnilV2QvhBv
+	bToDpdeuPAeQZrnWFVRBLnCUhYPuTDfHfi8SVj+Rm2GBZJhlYSmRWoRw9xze2Cvw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske17ksg-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 09:27:30 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68L7HTui924403;
+	Mon, 21 Sep 2026 09:27:29 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gt4qq4sv7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Sep 2026 09:27:29 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68L9RTIS62783920
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 21 Sep 2026 09:27:29 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAD7558063;
+	Mon, 21 Sep 2026 09:27:28 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2F3D55804B;
+	Mon, 21 Sep 2026 09:27:14 +0000 (GMT)
+Received: from [9.61.138.180] (unknown [9.61.138.180])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 21 Sep 2026 09:27:13 +0000 (GMT)
+Message-ID: <37de70f6-67f8-466f-a267-03584973dd3a@linux.ibm.com>
+Date: Mon, 21 Sep 2026 14:57:12 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] mm: disallow raw PFN mappings of huge/shared
- zeropage
-To: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org
-Cc: ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org,
- nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
- baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, ljs@kernel.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260921054225.28537-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v4 2/3] blk-cgroup: store blkcg in bio instead of blkg
+To: Yu Kuai <yukuai@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>, Tejun Heo <tj@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Randy Dunlap
+ <rdunlap@infradead.org>, Coly Li <colyli@fygo.io>,
+        Kent Overstreet <kent.overstreet@linux.dev>,
+        Alasdair Kergon
+ <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Benjamin Marzinski <bmarzins@redhat.com>, Song Liu <song@kernel.org>,
+        Li Nan <magiclinan@didiglobal.com>, Xiao Ni <xiao@kernel.org>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Bill Wendling
+ <morbo@google.com>,
+        Justin Stitt <justinstitt@google.com>
+Cc: Yu Kuai <yukuai@fygo.io>, Christoph Hellwig <hch@lst.de>,
+        Tao Cui <cuitao@kylinos.cn>, linux-block@vger.kernel.org,
+        cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-bcache@vger.kernel.org,
+        dm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
+        gfs2@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, llvm@lists.linux.dev
+References: <20260920092351.2434283-1-yukuai@kernel.org>
+ <20260920092351.2434283-3-yukuai@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260921054225.28537-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+From: Nilay Shroff <nilay@linux.ibm.com>
+In-Reply-To: <20260920092351.2434283-3-yukuai@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: -Xd8a0RVEhrxDFm6gn4h3GOonDYckOi9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfXyA4xNH3cYzqc
+ l3LhAHGkDdB9wr6wJVvzkOiW0PLTrY+6N2xnfwVvAXBEgUZUUlnqQoZ9S/t2ec53rKELusYcvWT
+ di0gP2G3AgYQrqIZGwv4XAk6ZTbicrvfmdi3M2UDvbThVuKLxf2bVg5EnsFXBr4KXrs6etQpgoD
+ euKLu2Q+XaIsRVuhlHm+asbpr7zvK5ks3HxoZmC3tfKIKTo9gLj/L+nXXm8Qa6LpaYS6fCQWKwA
+ rPtKbOsDw0UQzNsyd8H9bnPf3SqR3/y1I/PXuxjss5kLLxairvDG61ZUizIHrj9aHnJa9muRUGp
+ 7oMtV5GSfddGruww+e3uDCJcaCC0OqzGH5jLo19DzokCNvtkRFr5gRuQY3TQAjpzacqfLjYt61q
+ p4U3ri+iYIaoZm7NV0kKr27cQE0po2JDzt0VLOolD+KbjSIIi30aCQOJhnnHY4hngd24Su44C9I
+ iTTkkhvJogiX4hApA1A==
+X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab0f883 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=yt32EUx3BFOMUVNgjeUA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEzMCBTYWx0ZWRfX5rV0t/6BeebN
+ XqLIK4QGbSN4xT9UKi23paOxlW7Ykt3xnAjLGUCmr0jYvC/s6nTF8lOI7DuZlUqbCJZ4FsSaWjL
+ tAtASM6ortzkp/bMC84v/5e+hKTSbak=
+X-Proofpoint-GUID: STTiMO6o3fOhik_S7E0XjsEtuaK9UoBW
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-21_03,2026-09-16_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609210130
 X-Rspam-User: 
-X-Stat-Signature: feuk7643zifxc9b8wg4wkaf86h5ykg4o
-X-Rspamd-Queue-Id: 884DA20002
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789982839-375959
-X-HE-Meta: U2FsdGVkX1+KzsvxXo2F31QOfJrhWxf3zwG9q083SoxR3SdCbogunuukA61C/zsSQBMjAgL0fY648zBI4sBVRMJs3bLrGKmJOmAIuuB2fh5+xEYrIR95HOWzsI2MlaMARzgXoE/fQyPM9uujrq7I+NHWuy6D16tGqAZgMX5QyEeppXp9p8BrKfzUR8DmfAqtBgioQkMQcn3H9mz+rR5ptaG73mBUuQ/4L+627uq/QcqergGGIXTiCsjNzhCUlnjGcm3stvYHdw6ZYlio4Ezt4zjkYvdN9s79nYr9csBB61NXv/wbN5Jn5nPZ/Z6l7XFS2PL4EMTYCLknAiNPByhzNR/IQ/W6DjTVcAIiM5d9ynt42vmqAsmLx3+82ZnaioNqPGbohYzCvmrlWM2Hfz4/HQ6AyQsi3J9cm5gigpT6nb5DP+KNCmO8ZWMVOIyPmwY2N501biG4fo2yl9yRuu+TkUKcdA7uuEqGEmwRzkz5s9QrB0z1/JHjbo9HIF5ROTYb+I3sWxReAEA649wmp+e033tRkfnmbBrr68CAvA2eQvGtbG/xb2XeEVpoScoD8YbSiNXzMJiuuKv8c+sXXe3UWa2hzkbfQCfl9n6QGymSwZcX71sDZh5saFNengKNYwAArpl6EwIbHzbqf+vUNqIcZTP0H24sOEjpfGnkZeYvjkWytj9lmFrBNNInd9kW/VRAjB2D90B9S2BwRhIuF55wK5f/WQDl1PzPDy8ZJma07xV7asmCLOAU1rNfhq9Ktz7X6paNIatYZMYfuRjRQKVpwfQTJQ7RYqYV6wCC2DrRUHDGD2goAa0t9mZlDftAOcmGti2mu1I/Mbb2MbRkD3577gKQvrDBeE6RvR0fixd4NxODaOPJAIKaxLELBul2qvvF2NsaeVfi5W4f0wy0xx78ZBtt1+BiXCqafdzEDdzfCXQdV8546xZphONOfqjfRN+iTqC5OE69oiBUz7goxvX
- Uv8Q6WpE
- 3slcbH+J+/Q0Jh8vrRmQGs3Y3muvIedsQw5VK//7UosmbhjohmEfuE0DNFfz/aMksSl+tKd+Mv4P+y+HPhPKiN7c271tFoHmJOxpzBe5dY8lQ5ZFj7kSPb8HcOkkguB+gN/s2zvliBXAY6VChocqYEK8jiGh9N7LhvAKeEnWOgPtMDPVCevLWsmIVKv66gMa35fqOLx1CELxue6UIO7N5iGTEMEJkOAKS7tpmEMwAxtp3gi/sEwo7buIYQN1JhB/c2NkuECmhqTgZsKjGh3sEZhWcSQ7bVgqx8TVM4hqJ6fBCE44K3aqij37Gr2UMmyMwXBSC
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 61969180002
+X-Stat-Signature: 37ucem8gciman7hkiuyo7tq6k4rme6fu
+X-HE-Tag: 1789982878-629510
+X-HE-Meta: U2FsdGVkX1/m39BG2dgN/1B212cSRCiUA0BRc//cS1b9MZ78HoYzFjlKp7AYi3efdWPatkV2tS6I/2d9FaqltUS3E0KZEU/yt+SUX4GI3twBdSNSq6E+YUz9HhWp297HYlFWPpxrAiavA3iB2hN1U0mLLcBFf4lR02bpxMZ+RkWpz6Qh2cpPX9Q1OO4jxAe9t86DnydSId2zHe5k2evMmkAQzrRc6epJYacWwtB5ZzNJdxV42LxbwP3KJ+ugeOedvjXhacfWU9xjAVitADb2EqRN1fbQsLYsE5SDA8xpGehFVgg3FzyGm5hS/62eaHHWt3l/MpPP51xRJJlb873V+q4GWab9Kqb4hA8C2sxwW0Rn0+ycWupKUrY2SGPoBcIMluUX/5jzRpAe8Zfca10FqfeL/PED9VKy8bA0y7kV9DH1PNkqBTf7kq1M0qtAO1A3V/dM2ACkWEV2Hrqyf5j1R3XiugNay6iizwYhpVcc0BE+o9SXfGXILjsDeYlk3kLyCrgfTtl5gUeiTMel+kEOX5A0BuL5WLTQtnRgNCJDdvL3mSURyiMVnOZWjny7g2u7jWZBDVZIL5b0GsVAIs3QT27nzFX1IvRkHzL2bVDJuwQLjMfS/f/yNInlwvHfi0CwDpNo79theq5xG96nP7/4By2dgjHNf/HVdvDcbmi18X0nGgbzgyMmsVOFFtqk4q4OXJN5mPb4dCg3P/z3D0kIQlQzfeNbGypW8Rz8/QgzMoaowrjTXVHRsoXXN8KnqBOR0R6rQqAEF1dkbTwjyyPN6sWLnDWqNGXpcwRV7RqyccA2pOLq/RUVuAy1uNH0N9/7Eh7BOiqVozdOtivJATYH+ebhhh2eugVxOPVkEM0i4ZEvmxP8AUOZzq+cm+2R8t6hbxj9ox5vVwwfbdpeDPVh04q552B3b/K0cq+orMytTfeqerJ2qDu6PayRf3TqMB60xCP2vc+Q7USdI1xRBZ+
+ GkEUz6SP
+ lL+1oEFSkgvfuLy5K6woZ3Z4V7wbT8Hl3uGdOA9qb3Wt81DuDPpeZeHkEBuoalbhRTqLf7//YJ0q0XIIy6r96FAvFA6W/zTIjEQT8lUs9B1sPNcFYGq4ww7uB/UwyciKpzm/XxC23MQ+dj1GBhC27NWXr8mvywb39o00gHfg361zYl6GAn1Wbp/iR4RxxNhZFFIQpIyMragZiMK80o0YVr4oWAboCBfoyYJ52q5tQHl7mXYcQ8i2ETm1mV5Nrpqoo4Z/OpkXxpAO+l+eYTL6gwSPZptaJJIu/EpOCvPP9ffs6rtf6E6vYvqqTXFLBgD//OaSPA59Hz3nFtyZRtCCYXc188Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,27 +175,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/21/26 07:42, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
+On 9/20/26 2:53 PM, Yu Kuai wrote:
+> From: Yu Kuai<yukuai@fygo.io>
 > 
-> Handling the huge/shared zeropage correctly in vmf_insert_pfn_pmd() and
-> vmf_insert_pfn_prot() is more involved. We would need to check whether the
-> VMA allows it and keep the mapping read-only, similar to the checks in
-> vm_mixed_ok().
+> A bio currently stores and pins a queue-local blkg. This forces bio
+> association and remap paths to look up or create a blkg even when no
+> blkcg policy will use the bio, and ties the stored state to the current
+> block device.
 > 
-> No in-tree user needs that support, so reject these mappings with
-> VM_FAULT_SIGBUS rather than complicate the code for now.
+> Store and reference the queue-independent blkcg in the bio instead. Add
+> helpers that lazily look up or create the queue-local blkg when a policy
+> needs it, and pin the result until the bio changes devices or releases
+> its cgroup state. Look up and pin existing blkgs under RCU, taking the
+> queue lock only when a blkg may need to be created.
 > 
-> Link: https://lore.kernel.org/all/20260917121010.60966-1-lance.yang@linux.dev/
-> Suggested-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> ---
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Keep completion and accounting users lookup-only when they do not create
+> a blkg themselves. In particular, blk_cgroup_bio_start() only accounts a
+> bio when an online blkg already exists. This avoids creating a blkg
+> from the unconditional accounting hook when no policy is enabled.
+> 
+> Protect every rhashtable lookup with an RCU read-side critical section.
+> Annotate the lookup helpers and recursive wrappers with
+> __must_hold_shared(RCU) so Clang can verify that contract.
+> 
+> Before entering a bio-based driver's ->submit_bio(), drop the pinned blkg
+> after blk_cgroup_bio_start() has completed bio accounting. blk-throttle is
+> the only policy supported by bio-based queues, so no queue-local blkg
+> state needs to enter stacking drivers. The queue-independent blkcg
+> association remains attached to the bio.
+> 
+> If blkg creation fails while walking down the hierarchy, use the closest
+> available ancestor and update the bio's blkcg association before
+> recording the blkg reference. This keeps later CSS ID hash lookups
+> matched with the pinned blkg.
+> 
+> Signed-off-by: Yu Kuai<yukuai@fygo.io>
 
--- 
-Cheers,
+Looks good to me.
 
-David
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+
+
 
