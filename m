@@ -4,157 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96DC5C982ED
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 18:56:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34391C982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 18:57:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B81686B00B2; Mon, 21 Sep 2026 14:56:06 -0400 (EDT)
+	id 013076B00C5; Mon, 21 Sep 2026 14:57:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B58F96B00B3; Mon, 21 Sep 2026 14:56:06 -0400 (EDT)
+	id F05E56B00C9; Mon, 21 Sep 2026 14:57:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6ED16B00C8; Mon, 21 Sep 2026 14:56:06 -0400 (EDT)
+	id DF54E6B00CB; Mon, 21 Sep 2026 14:57:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 769D66B00B2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:56:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D26B94029A
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:56:05 +0000 (UTC)
-X-FDA: 85238674290.05.F1CC5E5
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E70E5140007
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:56:03 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YPcJJuLW;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790016963;
-	b=NvCGFyHLQj85VjlGV45u44/qXwjRqx/RRkwNa7UEVgu04rqNk+NOkxwFwGRnbaf2RI0eEF
-	sqa4pma1h31XmIgp+aN2zhjt8c1ZepOggxOCH/2HKlLrZhYfTqEE4pMUVu4uYinBRlGGvO
-	37DK+rVmuBG+j6qG4elbQZ0598P9p1w=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YPcJJuLW;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790016963;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ACCAC6B00C5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:57:33 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B8272140286
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:57:32 +0000 (UTC)
+X-FDA: 85238677944.25.5E52705
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3BD40100002
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:57:30 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=i07QEUr7;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790017051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BfFXpLin8UbdB73DGs4mouTnFh5xNjHoAQbr3ky7Ets=;
-	b=K6mCgxioqMNRTx7Y4w1qHHEUjn2gbpEU6ovsRJCV+dCMF/vtiQZOLkyjEgT/LZgg2WpU4M
-	ZipKy1YBqLTlSdfdB1PPDAoy+RfdJHvkDJUUIJwgGix7ro3+ssXkxkW7cRF17j+yzWg/Ei
-	4BR+iDcHwDhcRqv8E1LroUe1y3QD/Ek=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b2522so2289345f8f.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 11:56:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790016962; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qRfkFcEUtTApw7YCwhvBWUfHqIvKG1uNMUYKG0YAJGLPuqCxqp0+eHcdp7pdKx2oJu
-         4qje7TQMlmR1l9o2zI9tvZQCbcj1z7lfMFEqYJuDzp7up7c10eaYbjTbXsymM8lIkB1C
-         xhTtZedEzb5uI6lRtVbXhgneqKKWcwUsdUgcIS8YoztfNjI26qFIga+JJGLp80rzH9CY
-         2yjfn2/3bbNn00T00CgqqwHAAW4Lay8BdwLYpENbNooVpnryPGqlq5oovMLL1I2POACT
-         EU8lPSHK1d6lqH3VRIdgLoKWKkYwVAnSfDHvMvGcJ3JNwd8rzcTSsRmemEmbMYkN+YhV
-         7sPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BfFXpLin8UbdB73DGs4mouTnFh5xNjHoAQbr3ky7Ets=;
-        fh=tUzGzXf6AZWbHJ15oDUvYGf8go+bLB9n2Xo3DTYqfRM=;
-        b=O1kDyp59fLrzt4zv5D+gEzeDUDQxL17BgMWl7J20zEJ7cWjHYVX3iBfEmLFDnoIeGC
-         j5IuMeSKyfBrVMheZDv5ZH5bHNE/zmRloj5jtfSRZqfu9McfIkyCN41LU3jyFAdnmwDq
-         2XxQjzWJrbr4mC1foTK0IXATphYcLPP4H/x5wzDUOUEtkF3b3t1Vtn/PsB4lhB/7Azj6
-         wQuJzbbk4xxZ6qlGD51LhgbAbYLOqEdQA6vnCmJm2PhwfBW5mGbFRS/+s2d+SgncA21+
-         yyD/8vj4LkxsSk3Q8mwlTuN3OTj+K4PHzBwwTT2ViEBnVOppdte/730dHLGsIFdjcB4y
-         63ug==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790016962; x=1790621762; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BfFXpLin8UbdB73DGs4mouTnFh5xNjHoAQbr3ky7Ets=;
-        b=YPcJJuLWq5JugXtzwzYject4GvKKuvBspY/vbbyJIcIPGY0uqJXFYZeZSpp3yole1F
-         zY1c/ExAcOf9iQMoBUjlKM22anmH4YkIY8j+/xjps2uXskIc/4WtejWp0gxzgw+P9bEv
-         aNBE9DC3I0Khbdh88SS7+VwTuOrZxo8eSeA9oF60DJVutHl4USGMFffW0bczqMv0aheO
-         72sxbPD7Lx2KdaJCxvGrwuxv2YxB/r2mJkUp+JO/+ueFNDfSndsm2okD502v9Y2ONa0K
-         QbibOICFojeay2/9lGBw6Qe1QsQNVG2mtbvPFKtGxckqCjX613CxJ6LUbBInQIXWfywm
-         PCHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790016962; x=1790621762;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BfFXpLin8UbdB73DGs4mouTnFh5xNjHoAQbr3ky7Ets=;
-        b=H4MIGAm7z70AbpTJ7mIZgMsFRKAIFV0dtlFq2nuakM11u+/wBONXQAsQ2OuGgk5pQP
-         fHKQXVZw/pWHSLMBngZa0tTV4/YtiViRIFRFnefx0IeSzxZnMEbXpfJSj4i1TXapEcc5
-         CiOR3jgbJ6+cvzuW7xK1RRShA6aLHE5GZEaFxihL8qADk5+s1jjRvVlHljd9vXB/CELG
-         TbpF4LnvA3AR7jEWKpfu3uhmQU2orzs74DpZ/D99GckeHhaYgbLFT8IM+HpyT+BYpZAX
-         MsMAbVuGRb1IE0l4YgTzvBw3jvFTsVJgAga2UzzHz1N/nF+FRqimbqgvJQg4+LSzb4y6
-         7VfA==
-X-Forwarded-Encrypted: i=1; AKwUvBxsiDwsdKCI0Fk5V2NXQ3tVnULuvPjWomaVso5yWqAVi+G3rT2QQ5RRdYqAWMMbf80hc1wUIES9kA==@kvack.org
-X-Gm-Message-State: AFuF++l4E+AOcYxjVYXqkhqRC9BYJriPhgqOEpEgiti3xLZKwnNAEx09
-	Kc3RUKR/qfqumJm832JtpcWJB6fQm6B8xKDkzNOkdQEfYI/x8Ko3nNgiWv/7q6gYU9kSV5qDgjw
-	uiInjManoDWHzdb7ISF+5Iy9Tng8iHfU=
-X-Gm-Gg: AYBFou07M262xPqOaMLpUJyIbV0DVsLsIt9y8OGnixpLde7KY0G4potunRhyEulLrqv
-	54OYqYyvoctuR2n2/BHTBMFRlpA7enKeTJAd87cX6NMnNzEQYtmLnOlCR6yJM59p6c9h5YJLFdS
-	OroxCnKe5hlzWlyWqRWemWKgJ5pndlRKUiDgXknv4G+FoynZrJofOxGVMSTdtELg91+/brTofZ3
-	emF5OMlyZSKC6VPGr8+Abt+JOmhYN5DB5ezDeNtRYaONpitcNY3y5xtA5WcjXFMBslpzJOaBG6H
-	fxzRagUzFeGOZQc/ATOd2wsahgs3KOCeHQIA/QUvqp94ZZnGWP0xhGfn50zgomr4cQyJf5PhuAN
-	TTfxjmjo2OPQ=
-X-Received: by 2002:a05:6000:26c6:b0:487:fa6:d7e5 with SMTP id
- ffacd0b85a97d-4871e386ffdmr22164283f8f.25.1790016962241; Mon, 21 Sep 2026
- 11:56:02 -0700 (PDT)
+	bh=9czfARorSYkXhn7wtuTfT0BpH91+/rvPllJAwe14Ukg=;
+	b=Z6hc6ZrUHMQZ7IdSAXoC5hbJBy0N18M9wTigOWId7UTH85gitwFu3eV7hkNzajQ4YcA1Uh
+	5GIWQMr1J6nflamM3ZRUMkkHCE9IOG8aU9ryfCKKeE+t79swNtoLBd33bPzI249D1k4AVV
+	vxm71uREhi2aym58icYLzWD9jVYk6+E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=i07QEUr7;
+	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790017051;
+	b=lP90wfB7E0rhIFBr2iiJJDKlFGykvPomiAOXz72JUVOnLakqAl0rXDurzc7QF3mUmMmcis
+	FNAh96S7MXg4jT1JSocW3QNLCISA38Jm0LCvSs5NJFvNes+tE45B/CMzEDDzMW4+PNSoMv
+	rUmUAsifZ+2pkd84UO9drEDjDvv5lA4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9czfARorSYkXhn7wtuTfT0BpH91+/rvPllJAwe14Ukg=; b=i07QEUr7FLrPNOasfEwFBQXlUm
+	R1FAx/bprujw+QWlcEP1wKK2utSRNCm6Mg8mI1/NCcBmOt+MIfycEGWY2mOLy3WjtOt9bAO6jeil5
+	ddfvZ4bYMZ+vykKvCJVEkNA1Ashmbg/kQxveGBb1l8ejcILd77zkYO70Lk1IsIo8OOvu+SR1lNSgi
+	wSm3i7/AVKsyc8U9vsa8i10CgDa/W+91OL6ReG9VjqtconeMcEWRBUIos9N2Iug5cAu6uPQrciUZC
+	P0JHDC3c+7azzmazJKmBqnrj9lYDDuScU6QAYzE/ubDDgwDXKcd1B6TvhcvGIi+8Jthe8rrPfPtFQ
+	unARWs7g==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x8jCd-000000054KL-1SFt;
+	Mon, 21 Sep 2026 18:57:23 +0000
+Date: Mon, 21 Sep 2026 19:57:23 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, baohua@kernel.org,
+	surenb@google.com, david@kernel.org, liam@infradead.org,
+	mhocko@suse.com, rppt@kernel.org, shakeel.butt@linux.dev,
+	vbabka@kernel.org, zhaonanzhe@xiaomi.com, linux@armlinux.org.uk,
+	catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
+	linux-arm-kernel@lists.infradead.org, chenhuacai@kernel.org,
+	kernel@xen0n.name, loongarch@lists.linux.dev, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com,
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
+	borntraeger@linux.ibm.com, svens@linux.ibm.com,
+	linux-s390@vger.kernel.org, dave.hansen@linux.intel.com,
+	luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
+	mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
+	Hongru Zhang <zhanghongru@xiaomi.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+Message-ID: <arF-E3Nsw9ZliH0t@casper.infradead.org>
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+ <arFYRAa-i7CIwmHL@gremlin>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
-In-Reply-To: <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 21 Sep 2026 11:55:50 -0700
-X-Gm-Features: AcwNN1X9C9t6jZ1elLcVhCMK8X-LC57IMfgOb3DvTZPE3O0yZGqwzYORodlnY9A
-Message-ID: <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arFYRAa-i7CIwmHL@gremlin>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3BD40100002
+X-Stat-Signature: byh1c5r4fn7tfhrobwztmdx8qjhub1nn
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E70E5140007
-X-Stat-Signature: fj59yn15aegjz7ffyob45huwqmbwjj8b
-X-HE-Tag: 1790016963-324905
-X-HE-Meta: U2FsdGVkX1/JB6sJFT5u4Zs6mZyufAZMGXFns8ie2lRZdGQCtWM2xW5luKPjxw7shDuQdYW7K4RbNhvoAoRNIc3I6Cs3edh7z7kMiZ/cR2i0C1gly7eoSudXvJEoKI8CAk6elAA94paEBuVQfceIsI7MAVcKpenrBlLDtRHFcEpdaTfG0Y2SOsvZaxuLWvxl77Fx/IpjA08LnvL0KBG6lRtSfdsdn0+6NnAud1ySM7Ko8nSv8imCUrUXvCYiQdak9iXcapjraFucWjUNDD3oMICWgT2ZcQ+5LgIbGx+75Q8g18XxbO5IB7SFePCTd/lDfaL5ID9Ie4PVNm4gAj28QzJ0CXvTI3xpKAR9qHePLQJSTP3nTA/zoMaYg9OomeT5MIAIxStSCYjdwZp76LQjoHtE842gF+2HacQvqzI6BpXuknKzWy2DTesBwpQ0Gk3OA0S+ZJJveESsLqqskL86HrO1HYdU9ObPVADMpFS40Va8SO1HuyezTrCA38Y0OTiovIG5za/tIQUR6Kh2TOQKv3IcJKU4gEau2DK/iL3qdjVcRKVxH9w0KkqOTUhfMewsmUdL9vB5kv/xlWdffkOkmXqy4Tyk/meCJ4Uf1q//0smJkC+YgyqxBOmtuzVMCbXMn8REZ6dBYz3/eYFszmGMPnBqb+TSZAyzy25H2YtxBCDS+c322e7iNALkEoDRYhv8VkWCvnDTHD6+ePixmijqsFwJgVoUgC/zcEoZSWqTTiKJpBmY7Vzx4ffqrE6GN4CdifGYDm2mBWPI+47pxWATyrj6CBwXvmor9XsLndmGhkYikWV4XRf9z7SpafhDuT3yMWrfip6orM9gZpSwg8MAVffby+OhHd2bHK6AG8m/Q3E1ONUqNMta/n1/hKu4/2aKeBIAS1F7SzTzfposDJZoOqD4vUUD2Ydt7FRARmxjVMhtw8B5zQo2t+jiCDW237e29XZRsgX4JG4cTilk3bH
- OcUF6fgO
- BtY6n6/N6QCfFfy6cgTA7/Hx9V5i+/pPReL6QcaxC5C/iQj/sVb4bxFIs89nGV5EUgusj0AUSlc6SAnZGgAPK7UWRMm1abSBbROLQUOqt48kSMKIqf4KaDHdqS6DnDxWvXp0cSjA7D2IfjaAxP2zXh2jr3Il6RtT3+8Mn9DCpsJyMKWyANIu+cn8ZEP6QUniSMQn7ePNSAq3zPJO+TkAWRNYxqg618KLi6NgSbpvOFTkwg5wYE8vhzJcI+MIjOACI1xndwGNJ4k+Zg4NL44h5ND59+hlt8w1tt3YZviYDczdDbXM3qzIHXO4sXnKlw4xExzmTkUPw8eyY4OPJJkCthboEEramixFt0PKD47JZP9ghmDHiTualb3k+E6H2QCUHzux2H0hM8ES5zGA5z7tnwS9+frPtbQzIxCyOcAV8WPwC7GYpCfjn0fkMnaXIAZGj/9HnE99ZM5Qv+f0oFwKR4dD0Y/rQMxlHFw60SIgcsUz+qSIEFq/VEhNSd/kpuPnRKQgnfI8pxWigEjxmND7KWgOArXQeEpdGnzGC
+X-HE-Tag: 1790017050-527463
+X-HE-Meta: U2FsdGVkX19we36NkIuzVTgEEes/Fjp1uhnA7dcWvg0sB/EVHGJ3JoUCn/zEzqNVKYFXnYLm3Xbos0g+yT2JC20Yq8Vfsmdpa6dVMW5BylZvthregIzF/crD6iMuwq5fiN2m47LJ04XBLja+Tf/rRjAzY+1cC4TjFACJl9L+bDI3UTO6c5d3MnPy+V28ljAK2pXLZpulOJByY/8pNjFcdiFEzj8nX7s8e7t/W0lJfwYUrXDbZ0/SycLwxLZ1DYziCXi00QU743AzcEb/ojlXuCfaHOQB3KN6UToSsKlELzU7cGPiUBfGFsR4EIOJFaIzbxlWMKzhkjUbiWKwqRPTbwvuppKE6dr5Ct71kQKtpGkw2iwinXGdjJOpguYzytVaNIt3Sxv1etHED3h3xgxCKFBTRfnFBOoOIkBQf5qUQVwVrt1y3ZvWiXoF6Z5bXyMZw2gzIdO8Yd5Q31ZA7dXdPOkuGkiy8KGmxXMFKjbzdi1c3ncJDPiVTEs7p9Z8ctAQdPkD4v3YsV9EhtJsNb4kOhC/L2ioc/83z4BivI4keGy2ZH33Ig4MCluWCARey3kIfGDAF6DlJixvSnQq+Ee9/7g+lm/5zJgl4poRB8yzxuuUMFzYP55VPTlF6tgWDlS4txDrL9XS6IfLD46Jmb1qvMT3gG8NNXJHDsmuAog0aZ4MhtctT8C4BPHHnsVA+fRwmx19y6ZH6xudRERjRQd07Dm21JOmzZ3T52TSz9/YGoqtM2BY2fq3o4c4rV3ibiiE6wB+9u4ka8LQ9CWkKPBbRPb7mMmM/VeB/B75cw5fCpLZeS0WaXGBCs9bUcYZ4etuvuTWw112hZZRUO+sRsC3C4NNQUupX9jtHe49uELdMTxYveF1k0xiKZTXgTeXoPKnCj/+0Aou6eidEmuqXkd9JvRjSxd5Oo2+PCMiFj3GOBrFiDOEz4Vt1XPp/1J71xdWo20jwLrzaV9uI7PlEvZ
+ q/DiDKvq
+ j8fi4t/ASdsro9A13hhI3rFJzsByS9+/iDQkPbicAT6BnAKb1xbm1TgjWu093ANQCdfPnXuRChTcY53A2JpPvIHHLgLsaTIxvmlGrU9ImKnRJvZBuPhIAFH+jkQGUayto9IQNGm7YfpM1Rn1twkeDEaqAPg2webL1osMbJ677wQlPM+Wolo4Euj566TWqzTFk9EcjjJgHerM8aRjaQdo90ZtxKCLgzdl4i5Z7ji475VUliiiaczB9lLbEpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,33 +105,199 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 11:50=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> On Mon, Sep 14, 2026 at 10:00=E2=80=AFAM Baoquan He <baoquan.he@linux.dev=
-> wrote:
-> >
-> > >
-> > > Is 9AM PDT fixed, or can it be adjusted? 9AM PDT is midnight for the
-> > > UTC+8 folks.
-> > >
-> > > The time is still fine for me, though, I tend to stay up quite late
-> > > anyway ;) so that time works fine on my end if the slot is fixed.
-> > >
-> > > Is there a calendar invite or something, please send me one, I'm happ=
-y
-> > > to do a swap sync discussion there.
-> >
-> > Thanks for opening this up for discussion. While the time slot is a
-> > little late for me, I am not very sure if I can attend, will see.
->
-> No that time slot is too late for Asia developers. I don't think we
-> should use that time slot for swap alignment.
->
-> We should find a time slot more friendly to Asia.
+On Mon, Sep 21, 2026 at 06:54:25PM +0100, Lorenzo Stoakes (ARM) wrote:
+> OK I finally got to this...
 
-Any time slot would have that kind of problem. We're spread out across
-the globe.
+Brave ;-)
 
-Let's just use a standardized time slot we have for MM alignment sessions.
+> I fear we're going to go round in circles on this/have endless revisions of
+> the same thing.
+> 
+> So 2 things the patch needs to answer, more or less right away:
+> 
+> 1. What are you actually optimising for?
+> 
+> 2. Where does the hurt happen?
+> 
+> Your patch does neither, then goes on to arm wave away all the complexity
+> and presents a 'simple' solution that I feel brushes a lot under the rug.
+> 
+> Answer to 1 is 'cold app startup time for a specific set of apps'
+> 2 is filemap_fault() AFAICT.
+> 
+> You should definitely be stating this upfront.
+> 
+> And I also seem to remember that zygote + multi-threaded apps = fork
+> blocking is part of the problem here, which is why there was push-back on
+> just holding the VMA lock over I/O.
+> 
+> Looking through filemap_fault() makes me want to cry and looking through
+> the other retry logic in the fault code makes me want to live on an island
+> with parakeets and coconuts forgetting any of this even exists...
+
+I think that's the right response.  It's why all the feedback from people
+who haven't even tried to follow the fault path (eg the session at LSFMM)
+is completely useless.  The fault path is WAY TOO COMPLEX.  I'll have
+more to say on this in two weeks at Plumbers.
+
+> VM_FAULT_RETRY can mean a million different things:
+> 
+> 1. I dropped the lock and waited for the folio to be unlocked.
+> 
+> do_swap_page(), remove_device_exclusive_entry() -> folio_lock_or_retry()
+> 
+> 2. I dropped the lock to start I/O it may or may not be ready when you come
+>    back.
+> 
+> filemap_fault() after do_sync_mmap_readahead() or page not uptodate
+> synchronous read with lock dropped <- what you are optimising for, or
+> shmem_falloc_wait() waiting for a hole punch.
+> 
+> The maybe_unlock_mmap_for_io() stuff.
+
+I think these two are the same case?  At least by my reading, case 2
+also waits for the folio to be unlocked (ie the read completed).
+do_sync_mmap_readahead() doesn't do that, but we then call
+__filemap_get_folio() which shuld return the appropriate folio,
+then we call __folio_lock_killable() or __folio_lock().
+
+> 3. I dropped the lock and nothing was waited for, OOM me on retry!
+> 
+> filemap_fault() allocation failure, gotta retry because we dropped the
+> lock!
+
+Oh, yeah, that's icky.  Hadn't even crawled onto my list of problems
+with this function.
+
+> 4. I can't do this under the VMA lock, use an mmap lock
+> 
+> vmf_can_call_fault(), any vm_ops without ->map_pages, __vmf_anon_prepare()
+> when mmap_read_trylock() lost, also hugetlb_fault() horror shows.
+> 
+> Also device-private swap entries.
+
+This one really is my fault / Suren's fault / your fault ;-)
+
+We should not have overloaded VM_FAULT_RETRY for this case.  We should
+have had a distinct VM_FAULT_NEEDS_MMAP_LOCK code.  But I am *scared*
+to try to separate the two at this point.  It was hard to make sure we
+got all the cases as we pushed it down, and now it's going to be worse.
+
+But I don't think that hugetlb_fault() deserves any stick here:
+         * We must check to release the per-VMA lock. __vmf_anon_prepare() in
+         * hugetlb_wp() is the only way ret can be set to VM_FAULT_RETRY.
+is the comment on the only two mentions of VM_FAULT_RETRY in hugetlb.
+
+I do have a plan to get rid of those two mentions actually ...
+but let's talk about in in Prague.
+
+> 5. Userfaultfd! Because of course!
+> 
+> Userspace has to do something.
+> 
+> handle_userfault() after sleeping for uffd handler, retry should succeed.
+> 
+> ctx->released -> yield to releasing thread.
+
+I find it really hard to reason about uffd.
+
+> 6. Fatal signal
+> 
+> Arch handlers rely on this, so retry also means 'check signals'. Fun.
+> 
+> 7. Some driver insanity
+> 
+> It means all things to all people. Used for waiting on stuff like
+> 
+> LLM says:
+> 
+> - TTM at drivers/gpu/drm/ttm/ttm_bo_vm.c:62 and 144, dma_resv contention
+>   and GPU idle wait. Consumers in amdgpu, i915, nouveau, radeon and vmwgfx
+>   re-derive "was the reservation unlocked" from ret == VM_FAULT_RETRY &&
+>   !NOWAIT.
+> 
+> - xe_bo_cpu_fault_fastpath() at drivers/gpu/drm/xe/xe_bo.c:2021, where
+>   RETRY is the default return value, including for "runtime PM not active".
+> 
+> - panthor at drivers/gpu/drm/panthor/panthor_gem.c:831 onwards, where
+>   dma_resv_trylock() failure is RETRY and the same error is NOPAGE, SIGBUS
+>   or RETRY depending on mmap_lock_held.
+> 
+> - sgx_vepc_fault() at arch/x86/kernel/cpu/sgx/virt.c:91, EBUSY from
+>   __sgx_vepc_fault().  All of these call mmap_read_unlock() directly rather
+>   than release_fault_lock(). They are only safe because none has
+>   ->map_pages, so vmf_can_call_fault() bounces them before ->fault
+>   runs. The VMA-lock design rests on that proxy.
+> 
+> So yeah. All that. Wow.
+> 
+> 8. Nothing!
+> 
+> LLM says:
+> 
+>   - page_mkwrite() returns in fs/exfat/file.c:951 (inode_trylock lost),
+
+That's just wrong.  It turns the pagefault path into a spin on
+the inode lock!
+
+>     fs/nfs/file.c:699, fs/netfs/buffered_write.c:576 and
+>     fs/orangefs/inode.c:635 onwards, including the combination
+>     VM_FAULT_LOCKED | VM_FAULT_RETRY.
+
+I think your AI is confused.  I don't see how nfs_vm_page_mkwrite()
+can return VM_FAULT_LOCKED | VM_FAULT_RETRY.  Nor netfs.  Orangefs
+is wrong and needs to be fixed ... once I figure out what it actually
+wants.
+
+>     do_page_mkwrite() at mm/memory.c only
+>     passes through ERROR and NOPAGE, and do_shared_fault() and
+>     wp_page_shared() then ignore the returned value entirely. The write
+>     fault completes as if page_mkwrite had succeeded.
+
+That's probably OK.  I think?
+
+> And maybe I'm missing some stuff too.
+
+There's also the VM_FAULT_COMPLETED insanity ...
+
+> But I worry a LOT more that it's just a HACK (and I know Barry was nice
+> about the idea and I appreciate it but I have to be honest).
+> 
+> Instead of dealing with any of the above, we just leave the mess in place +
+> just retry the operation under VMA because we happen to know, for this ONE
+> workload, it works out better.
+> 
+> And PROBABLY it doesn't add too much overhead to anything else.
+> 
+> SO.
+> 
+> I've written too much again, let's sum it up.
+> 
+> 1. WE HAVE TO DECIDE whether we want to accept the hack because it
+>    helps in a known case and probably doesn't harm any other cases.
+> 
+> 2. WE HAVE TO FIX THIS DAMN MESS. Even if we take something like this WE
+>    HAVE TO FIX IT.
+> 
+> I'm inclined to rip out the whole retry thing altogether one way or another
+> but I leave that to Matthew to figure out :)
+
+I think there's a bathtub with a baby in it over there ...
+
+There's considerable scope for simplification here.
+lock_folio_maybe_drop_mmap() makes my eyeballs bleed every time I look
+at it.  But we do need smoe kind of restart-the-fault mechanism.
+
+> If we decide we DO want the hack, then DEAR LORD can we not have this
+> horrible duplication across arches? I seem to remember you agreed to take
+> that out ([0]), and maybe it's pending what Matthew wants to do, but is
+> there not a way to avoid that?
+
+We desperately need to move more of the fault handling path out of the
+architectures.
+
+> I REALLY want to hear from Matthew on all this, I don't think we can move
+> ahead without his clear feedback.
+
+Thanks for dragging me back into this ;-)
 
