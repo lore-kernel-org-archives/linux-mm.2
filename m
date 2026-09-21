@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA2CC982EE
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C5AAC982EE
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 13:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AB676B00A4; Mon, 21 Sep 2026 09:09:46 -0400 (EDT)
+	id 196CC6B00BD; Mon, 21 Sep 2026 09:17:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CC66B00A6; Mon, 21 Sep 2026 09:09:46 -0400 (EDT)
+	id 147E46B00BF; Mon, 21 Sep 2026 09:17:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 299636B00B3; Mon, 21 Sep 2026 09:09:46 -0400 (EDT)
+	id 05DC46B00CF; Mon, 21 Sep 2026 09:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 084CF6B00A4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:09:46 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 90CB3A4499
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:09:45 +0000 (UTC)
-X-FDA: 85237801530.07.8027895
+	by kanga.kvack.org (Postfix) with ESMTP id D84E86B00BD
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 09:17:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 71B8314017B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:26 +0000 (UTC)
+X-FDA: 85237820892.23.6AB65D7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 01B8F4000F
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:09:43 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e13sQNVB;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id CF2451A0009
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 13:17:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YOp7P/Hh";
+	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1789996644;
+	b=mlvtYUAMKvX/Ls0Q+wI5VBwJr+lhngOFeRMEUspZB3kT25tzcbfLQabqSxVaYY4OK6YXAI
+	pA9zVBSw3NucVYy2OMXPa8g2be/KJJGM82obXBIr6mmwobtvM+vIbic5qnD2VFUNFIERmQ
+	ffhzBHVuJpShWNlCacos6Y59wHZPNxk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YOp7P/Hh";
+	spf=pass (imf19.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1789996184;
+	s=arc-20220608; t=1789996644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7BEi9bnupk2tGkEwUZeOZfddlvvx1uRhC2R2hXlT/kw=;
-	b=sHbZS3jnZDqjw4i1H4eTq5212WurYvT072OwXq7nXAVi5uUQxVdmuW2+5WsN6ANAFzZ7Ij
-	OaRxeXKTcPxuwBQ8POOGUIL8I6ehOC3oZzAtw2NNSseUHqqOMl8JYGexBV/xZCxUwyle8O
-	3ru7jXymCsP3jiBP2r0BGUMYPY4VmbA=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e13sQNVB;
-	spf=pass (imf01.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1789996184;
-	b=FjuHjvbuK6cDKGpafqSbXFSIjdUdNEMwYWdesNbgaWr2tcltcJ37CPawxm/+/PUbhVlBID
-	NcZ2gr/5AyWICwSpyHbgwlYxquZGxKTwLIRZMtPVnyReU3mS6dEY4OvUmRHN60Qd1deW6B
-	xQmqRHLam8GOQWGicAWXwdQVl3TETCY=
+	bh=mdO/1qNOWoyatEwYn7xF77VAMMYfSFesr52raVoM2g0=;
+	b=d6BvVdWb6awegXxuPsMlf/jPgq5msV2D0GJRVk51VOWDQ4xZueDbauVtZidbpaRocgPJHe
+	U2axuXxZhWhq2RO1dLbivz6hpbVNORMf4hsTudeH7nIGMZFkqUo+6+94DYy6BRbZyh1u+V
+	q/hd2WDpMVs8wDTLBN1G7dvjwX2ev7o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6AEF2600D1;
-	Mon, 21 Sep 2026 13:09:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B921F0089A;
-	Mon, 21 Sep 2026 13:09:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 53992600D1;
+	Mon, 21 Sep 2026 13:17:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 889C81F000FF;
+	Mon, 21 Sep 2026 13:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789996183;
-	bh=7BEi9bnupk2tGkEwUZeOZfddlvvx1uRhC2R2hXlT/kw=;
+	s=k20260515; t=1789996644;
+	bh=mdO/1qNOWoyatEwYn7xF77VAMMYfSFesr52raVoM2g0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=e13sQNVBQ80LOFKn6Ix6ZyO14nn7uPNK5BQjitRo7n3ax1ueKz8MjZiX0bZgbrBvP
-	 fG4Xp5Ni9rypjZmCg7K7CGkosry3KmKqDILW1r97oHAD49pakCTY7H8Gwr3ekRb8pj
-	 rT9KFIaqi44ROkVlFjypQNYXkpe9f/liIPbG/ks3gnOGLQ5oMSp+jkNNOGaAPJTRXH
-	 M+HRGr9xRrl47i3MBwIGAwc9nhhyNvfwQkWGujxMsJIOiBSasO862KfnqxhXQUCjUe
-	 exKEzyygUfkJLu/WDJms7Lh7z4TZHd5PsREH4VkR81sfgud3+g1MKCrZH5udQlUbko
-	 jcju+hpfy8+iw==
-Date: Mon, 21 Sep 2026 15:09:35 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Dan Williams <djbw@kernel.org>,
-	David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
-	nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-	Ira Weiny <iweiny@kernel.org>, Jan Kara <jack@suse.cz>,
-	Matthew Wilcox <willy@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Qi Zheng <qi.zheng@linux.dev>, muchun.song@linux.dev
-Subject: Re: [PATCH 3/4] mm: add shared read-only vmemmap support for FS-DAX
-Message-ID: <arEsjy0QwLekLVbf@localhost.localdomain>
-References: <20260903122128.12264-1-songmuchun@bytedance.com>
- <20260903122128.12264-4-songmuchun@bytedance.com>
+	b=YOp7P/HhFoWCbFNP1Kg1DcohDthKn7Vk8/kd4iFNUPUy2kIIUrBYBD7eYpRgqKvCT
+	 T9k3EmIJRky8Jd7bmpBG1s37nMaSnfpPKlG3YBEZsMl2HCHoPxF67Yphnmx5TH8B6G
+	 W1rTkNZRz9hm13HD5c7e+gaE9NaU8LAx+3+O7eldHrtHwiHs+XNQtNT+GgEA9HYUrH
+	 GSXFSUXZgyWi1re8DchivL48dUbbNI8TZcoZ5AFSzRNxQljbuEQC/Ck1tcdD0ZCfx/
+	 Q/DBQnOAfixhhnr69hLosb8a+mw14SYsKX+fDgNxfdv3pDPH2iYH/FJpSsQp0UHQCW
+	 Jp6twnn4+BWFA==
+Date: Mon, 21 Sep 2026 14:17:21 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 2/7] mm/slab: Give bucket caches the alignment of the
+ caches they mirror
+Message-ID: <arEdcaJz4i5HP26a@thinkstation>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-2-kees@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260903122128.12264-4-songmuchun@bytedance.com>
+In-Reply-To: <20260921075820.1718334-2-kees@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CF2451A0009
+X-Stat-Signature: p8hjtx1qib4zwdohi39actjekxiy6pb5
 X-Rspam-User: 
-X-Stat-Signature: ka38s8aem7w7kjjaau4jbbeg6xtd6xih
-X-Rspamd-Queue-Id: 01B8F4000F
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1789996183-170369
-X-HE-Meta: U2FsdGVkX19F74ullnKQzqdZtTJW6ahkJqumbJXFcsq8aA/XOLunRdVlbaF+mTQNDD2M257Td/oiMc4y8OwI2iRsNkt8IB3NQCqhm5Cce4kspkD16o+KCfMdGAihfIxYIXEZImboKhnTtVqSVhYDEmgQl6VclksKfiFSMu5R5NgPEBzLBxnQZdwCRsvh3n3ATxvxAb7YAE7ZbGQaKvS5IaRrmVc2m8xG26iWBtIyy645MUleL06FUNhQgsLJTbug0IK4k7NWWEVMbVfAx/WZ6vwDzEqolEyTP7kJ1ugdTn6tZfc8QpsTm9x0bajmMiN4NABCThmgmQ0cMGmfRNhy8O9eiLPWskWE7s/dO3VmT2Leyvej6hIWPzW1iK6KKqANo3rdeNX8ToToI6AN/6fS6vfQXjFhayIegPg3U8L18z0mxN9KfwTW4NEkuEm8MkjYEMuw3RzgungIIOW+SzSOsppmSAw5SMXK/cZ3AjvEbulgSZ2o+8jAH7WxgrV3DAhMYlEa/4IlXAu67wKoWx+/1Dir09N1Y/jP+dBKfdyEwimT88p6e2Yngok0OXxa8Gqv6WCDL22MhY3+Ac8Cpv2ZqibWjS+gi+87CV91+Sb2hwMV35vRmT1sjAEPAx7kuxCbFoCLwcu+yI6UxcP0bLzwdZFO5Lg1gnsMQ0ZsUkzPv1Dv6dJBHUxsbbJMYGBvQKG1/ElXTxRDTc4bwfJEAfhHIeXFPXzUMOe2az3dGUB9kshFW8aMDAOYV4Jtpse/3TbLAaPuCg1Lb2WdlUrXuXywfb21DGlJ37sHaqz8g94o8VDPdcDZ3HSOYdLi6o63xCrxZsu19yNiw93WMIfbg7MlU1jvejmV6iza0F27iRMiFrm1T1tDwe+z1449wftrgdiQqEenxipXVzqloxZk/3AAfMCK5BAmUsz4Je+ApUQe4mqrjudfiRpRkINuoOls5BFBt/b6h88l0kxaLY1XRvK
- 7oInoBtZ
- 1I/pPiEr8BvMKT3LHiVk/bngULxZxePCqbzXy8QtmmmSnNUwLtFn/ChX3K56xZLKO7qAvqlVOh+ziZNOKiwyaTNnLrDa0Ab5Lq2Zq0c2WCHoiXV5IzhNnuKs3ItwxP/9mfnS144MF52gJOx6qyMsiAya45JErtpjiGi8aNox+j9c6AQgmUdOM0buUecaZsi5ZZVYbQyuBumBPVtY3X5vPAE7hwg==
+X-HE-Tag: 1789996644-9766
+X-HE-Meta: U2FsdGVkX18wxWjgIx0Pnov+6im+jhqH97Ke8CBlow/stNebz5yrnLgTq0NL5zio/6d8fvaFnKPBE9KoKqPSAfR3RlreuwN80pOeAGWcjLurDNyAomSDqETKm8qGd8nNEdqjbHmHxLJgeBgbxJicNhDIQRx8h3ePe9GDuDnIKCjBz7hHI1B2b7N9VjMmTsowHD1+ZO20G0Y9pGevvwDrAf0xGYjkjK1qoEuIcWecHDwYITG4pcDhwZZgjUGgXdsx+y+ap/Dz450J3FnSte1LFwYNo1ql+auxzvuSCwGRR3XiDbWScKeJv8Uwf8T32B83/TFiPZwAYuMzDHB5O9pOBJJ/2KWXX9fp+0QVOo7VF5E48LnKGwTeoqJYl88pxf+yLlQVhpxyE4kOKoiRpdzywUm/0zVhVHOutYhxugR6iTWUqpTY87eT2hSfViSuPJ8ETb7QG+U0T3Q8+RnwL4GtwOA6/DD3Z4MoiXUNx6VjSkv8Ehk4r0UNBA6z7HaHfMrXfOuMjjxIco1SILv0ScLmqPGVgSV8tAfGTFERhIhNT6Feopg6rHjv2mmoE9lRI2ciERRLMt1CAyMsCaZo5XCuK8mxfcGlsHiNinNAPqo/hdi576Z1qgd3u3rIK5HbdBYafEVFMoS7iNfnibsSh7b6RoZJlGAHVwXVXUWs90WiQcewqtn9T2A3Ch3zMLhS5dtUnY7RGxPD69AlP4JY+I1gDlXMJNW/p1wbouXqXcgDjPFkOnJHI3tgMACwrLnOXzQ13GRL5gpf/0/31rnlnQ6aN4jZlcp5Yul0K1IDmA35RwInmmThWhI+lxDt2N0gx8NCFx1UJkqUbsZ8/4l/ygUBvfYJ0vVHosw5HaXG3WBXo1yjpYODBBtkxuQygxqKmRH4J4uG8igTRI4xFxQkFRtlqrSQwqT95QnOCkdYqwpTPpnFt8bSH2DPRXxo19/KB48vkWbcSA8AuyABZLHeOeC
+ gCQv+LT1
+ 4vPAvWRREogwhNDsC8z7ZBUhWVrsPtyJ255Vc3bj2MIMa6TVw01jcWrrvTbT9RDJEY5J1K/dSAnWYK2TJp9fkXY6Sg2dAbogsNeJbKsJH+hWUzhgMuhFt66MA2nsGGzJCZH38BRuqvC/diQ/UOaZeTFMM2SWt0HPQtD9vDPBpsWvY3wQ8nN1VcLsjhNYkRlwOwTLm8o8refdXgQ9Ku1H2pBv3Xg5GYSXrq2jJY036iGJHXeDIFdfsezD6JxMl3gZO8STxnR2+jDK2ehOhuUceuFW70+HrgxFlbOF4E03Cpa3IfWWB9TGE2K/V9q0cpvOk9Byq9axqQim9eWD5cyPlZ5l9DekJdH9e7uSZQ6JJJ9Jv8ASaUAxfP6iCx0vbDpl/pQKft2MXteerpFuDvhR7JLqtpk/LZmSYkVAVLe5HQzWrV9FZmFyBliB4qjVr14jk6RMtXtUnc7Lx53IRaYJQdRW1ou3PQj2RNXdB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,60 +100,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 08:21:26PM +0800, Muchun Song wrote:
-> FS-DAX registers persistent-memory ranges as ZONE_DEVICE memory, and the
-> kernel normally allocates and initializes vmemmap storage for every
-> advertised PFN up front. Sparse pmem images and workloads that only use the
-> DAX direct-access path may never need writable per-PFN state for most of
-> that range, but still pay the memory and initialization cost.
+On Mon, Sep 21, 2026 at 12:58:13AM -0700, Kees Cook wrote:
+> A bucket set is created with kmem_cache_create_usercopy(..., align = 0),
+> so calculate_alignment() falls back to arch_slab_minalign(), typically 8
+> bytes. The general kmalloc caches it stands in for are created through
+> create_boot_cache(), which starts from ARCH_KMALLOC_MINALIGN and raises
+> it to the largest power-of-two divisor of the size:
 > 
-> Add an opt-in dev_pagemap mode that populates FS-DAX vmemmap PTEs from a
-> shared read-only metadata page. The shared page is initialized with the
-> common ZONE_DEVICE and dev_pagemap state, so every PFN still has a valid
-> struct page representation while private metadata allocation is deferred.
+> 	if (flags & SLAB_KMALLOC)
+> 		align = max(align, 1U << (ffs(size) - 1));
 > 
-> This relies on sizeof(struct page) being a power of two, so each vmemmap
-> page contains a naturally aligned and repeatable set of struct page slots.
-> It also requires architecture support for runtime vmemmap remapping,
-> because shared mappings must be replaced with private writable pages before
-> a PFN can enter userspace mappings.
-> 
-> The initial implementation is deliberately limited to a single
-> memory-block-aligned range. That is not a fundamental requirement, but keeps
-> the registration and teardown paths simple; support for multiple ranges or
-> less strict alignment can be added later.
-> 
-> Provide vmemmap_materialize_page() to replace shared mappings in the
-> requested metadata range with private writable copies. A later patch will
-> call it from the FS-DAX fault path.
-> 
-> No caller enables the mode yet.
-...  
-> +static int pgmap_vmemmap_shared_page_alloc(struct dev_pagemap *pgmap, int nid)
-> +{
-> +	const struct range *range = &pgmap->range;
-> +
-> +	if (!is_power_of_2(sizeof(struct page)) ||
-> +	    !IS_ENABLED(CONFIG_ARCH_SUPPORTS_VMEMMAP_REMAP) ||
-> +	    !(pgmap->flags & PGMAP_VMEMMAP_OPTIMIZATION))
-> +		return 0;
-> +
-> +	if (pgmap->nr_range != 1 ||
-> +	    !IS_ALIGNED(range->start | range_len(range), MIN_MEMORY_BLOCK_SIZE))
-> +		return 0;
-> +
-> +	pgmap->vmemmap_shared_page = alloc_pages_node(nid, GFP_KERNEL, 0);
-> +
-> +	return pgmap->vmemmap_shared_page ? 0 : -ENOMEM;
+> This is only a problem when slab metadata is enabled with
+> CONFIG_KASAN=y, CONFIG_SLUB_DEBUG_ON=y, or "slab_debug=...", because
+> metadata changes the stride size off a power of two, for example:
+>
+> 	size 128:  bucket align=8 size=224  | kmalloc align=128  size=384
+> 	size 512:  bucket align=8 size=608  | kmalloc align=512  size=1536
+> 	size 2048: bucket align=8 size=2144 | kmalloc align=2048 size=6144
 
-I yet have to look into this with more detail, but this caught my eye.
-Should not this be a best-efford mode optimization? So, if we were
-unable to allocate the page, could not we treat this as a normal "cannot
-be optimized, follow by-default procedure" ?
+Hmm... I think what adds confusion here is that in new_kmalloc_cache()
+we adjust the size based on alignment, but in create_boot_cache() we
+don't do that. Perhaps let's make it consistent and move it to
+new_kmalloc_cache()?
 
+> So bucket allocations will fail the IS_ALIGNED(p, ARCH_DMA_MINALIGN)
+> check, potentially creating problems for non-coherent DMA situation.
 
+I was wondering "Why should they respect kmalloc alignment..." but yeah,
+It makes sense if the users were using kmalloc and depended on its
+alignment.
+
+Well, but that's already done in new_kmalloc_cache() and
+kmem_buckets_create() should already honor ARCH_KMALLOC_MINALIGN? 
+
+The largest-power-of-two-divisor-alignment guarantee was introduced by
+commit ad59baa31695 ("slab, rust: extend kmalloc() alignment guarantees
+to remove Rust padding")
+
+...which makes me wonder what you're trying to fix here?
+
+> Take the alignment from the cache being mirrored, which is where the
+> size and the name suffix already come from. Nothing changes where the
+> alignment was already implied by the size.
+>
+> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
+> Cc: Vlastimil Babka <vbabka@kernel.org>
+> Cc: Harry Yoo <harry@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Hao Li <hao.li@linux.dev>
+> Cc: Christoph Lameter <cl@gentwo.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Cc: <linux-mm@kvack.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> Cc: <linux-hardening@vger.kernel.org>
+> ---
+>  mm/slab_common.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 270408ce5a9d..cc58f192f349 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -487,7 +487,8 @@ kmem_buckets *kmem_buckets_create(const char *name, slab_flags_t flags,
+>  			if (WARN_ON(!cache_name))
+>  				goto fail;
+>  			(*b)[aligned_idx] = kmem_cache_create_usercopy(cache_name, size,
+> -					0, flags, cache_useroffset,
+> +					kmalloc_caches[KMALLOC_NORMAL][idx]->align,
+> +					flags, cache_useroffset,
+>  					cache_usersize, ctor);
+>  			kfree(cache_name);
+>  			if (WARN_ON(!(*b)[aligned_idx]))
+> -- 
+> 2.34.1
 
 -- 
-Oscar Salvador
-SUSE Labs
+Cheers,
+Harry / Hyeonggon
 
