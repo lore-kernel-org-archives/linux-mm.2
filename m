@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68650C982E6
-	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E44BC982ED
+	for <linux-mm@archiver.kernel.org>; Mon, 21 Sep 2026 14:38:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 539E46B00CD; Mon, 21 Sep 2026 10:37:34 -0400 (EDT)
+	id 514C66B00A9; Mon, 21 Sep 2026 10:38:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 511BD6B00CF; Mon, 21 Sep 2026 10:37:34 -0400 (EDT)
+	id 4EC826B00B7; Mon, 21 Sep 2026 10:38:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4276C6B00D1; Mon, 21 Sep 2026 10:37:34 -0400 (EDT)
+	id 401EA6B00D1; Mon, 21 Sep 2026 10:38:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A5116B00CD
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:37:34 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93F311C1B6B
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:37:33 +0000 (UTC)
-X-FDA: 85238022786.16.5630E35
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 603231A0002
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:37:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="Nec/Y5qu";
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790001451;
-	b=NO07ds11jVi951GyjXcei9djPzT/ro2BNSwnCEmTT3lzO6CAH+8zFTjcuI47TI4m1vACqr
-	grkJRrSonutxZSYxZql5XjcSn4rsBtZjSZ4KC9uBlj5BBQnMwC2BtB4UlmVSEeafJis4lL
-	NkFaz2FHZM+355lWLsNwyCurs9pDYVI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="Nec/Y5qu";
-	spf=pass (imf19.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 12EC86B00A9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 10:38:23 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 99F461C19D4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:38:22 +0000 (UTC)
+X-FDA: 85238024844.05.034E45F
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7DE9F1C000B
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 14:38:20 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ugiW0wCK;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790001451;
+	s=arc-20220608; t=1790001500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2vUrOHpknLsQODHI2VwdgOODmPETkIBd14WWg0Q6gUI=;
-	b=jZcv8CbN1pE/6VaSAOAKHCVOuzoZW7khf1ckZNFneIbSTWyGYj/q/a20bpzQwLc0dlLbK4
-	Re/EpqF4CFLmtzNeBUsvg24if2h0Aa1bR2UuFUPZOOrZPShCs+VI3ZbdQddvi4OElAOZm8
-	gaahePBxkM56qYh79UQ8LafPbMKlLyM=
-Received: by mail-qk2-f13.google.com with SMTP id d75a77b69052e-530e2f50d01so38269841cf.0
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:37:31 -0700 (PDT)
+	bh=1QYjUrUl2qml9sF2K+z/e51JYen5+cjRMt5pW8NsvQc=;
+	b=Jyh/wKK5WlKE3zGB4g4drfwTJpvcI9YmEGeK7C5SElgwzwEAzmr/1XOLeNohw9R574x2nU
+	PYb7/KV2dYtSCJgtFg+VcsGiSNw8YGs/9eEuQ4OVeNii58EUC2TAG3RMZwwwu1WwNEPjWQ
+	fV41x40ZhOD0u0srPnqif+j7K3kn7tE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790001500;
+	b=YR+YKfd+RXFUs/01xK/yIWEqBsLaKmzXTabujmNv+xTdxUguWXBg/ORmE03JG9itxYoMkd
+	XnWEoyG442CqMRKuvS7Vu+WtmtRz0FwAFeQidaMPTzvLOMW7SW7SsuIjnz48so2AGRRUpE
+	gCtzwc0Iplf7ZM0jNGYVfAj81i1qxsY=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=ugiW0wCK;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk2-f12.google.com with SMTP id d75a77b69052e-530301ff353so40574611cf.2
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 07:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1790001450; x=1790606250; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1790001500; x=1790606300; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=2vUrOHpknLsQODHI2VwdgOODmPETkIBd14WWg0Q6gUI=;
-        b=Nec/Y5quBu+mGkT83eF+8W1oBK86yAIy1Np7QAxa6i0m+rTDEkXeUlwTD+wnP8leny
-         0otxtvHYWbZfmftuefN5AaNpFzrPvaXzCUPtOrW4jJMVErO7GbLJq65dh6h/swIYjXdQ
-         gKC3sJqApL+fgb/xo1URLAHYyJbU/1ixC00B01kxH8Das+Fzv4yDUYZzqbYFI9+TfYOJ
-         EAWklQwSkFGsilcEySDJiJQho/V0inPiWgZPIfQLRyfIwzO+IVLZ5sgQerYTZlOp6AQP
-         EopJsQaqb/GTHa+Vxy3eVg2An5RlZ78a1zUR4o1N8d46zRco+m/7I2SJZ7GYR0kIYlLX
-         sQPw==
+        bh=1QYjUrUl2qml9sF2K+z/e51JYen5+cjRMt5pW8NsvQc=;
+        b=ugiW0wCKKIpDfuFXIzqz2MP07tavzgCyOsjB6NezHE9tPdk0zKjDhuHwU5HCPJFjKp
+         QAvftcemHvcjQSvK0AwXrdYPR+jBcgD3QHSHOtKgLdfWgQqcmq+sBpYIDan0Rav28Ezp
+         Qhu5f8JNb7C5r/o4f8qH0kSTL4P9W7hIYH5jWMOoQbAFecmw3jJWONdfyOzaOWVFAypQ
+         ThGGCCt6hbnxuQTYEy2nZF40XhxCYvGHPoZI57k7g2t9Vpe0n2sUel6aknuN2yif3GIO
+         EbY4glwdFpVBvhjDAxa5a3v4yMHu7Sn2km2j369MKKeOK/qdYHrWf/x3uGtNQo3oX5VO
+         lu4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790001450; x=1790606250;
+        d=1e100.net; s=20260707; t=1790001500; x=1790606300;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=2vUrOHpknLsQODHI2VwdgOODmPETkIBd14WWg0Q6gUI=;
-        b=INozaXrO47kF4qDDA0JxNAlkhDT4xbyN9W5tkaekPbw22AbpLPTlYAVUfIbbxqySYp
-         iX4bp/UujPg4qEoOyZzkBat9KXkvHg/9F/tzgg+PNTpJ6yfVWW0Gad7yfPstGtyK8w1V
-         yWlutliVIGWW3lBJlMb5WOfi3pz9QNxwsMeMUCByCn6HiXPmQqp6i0JZVaN+XZhvkCAA
-         TXhpLjoD0aPnUytvqEsiWRFK96vPz1/hi9M1he4Hy9j6UbNlwgPAUXywUT1GEqIuK5k2
-         ka2tPoOIdQNwOBQyQAIjSmHWcMebP9NDlyKad3COM4u7tYy4HKK+9RZSSaV3BYosmjke
-         h1zA==
-X-Forwarded-Encrypted: i=1; AKwUvByIJO7Zcbwyo2n43LDGIgDKkInp507yvRc3jD4y78orCrbdm97QYJ0WmLbbE8M7YMf0tPiZObIKpg==@kvack.org
-X-Gm-Message-State: AFuF++mGnhubu7tTF+dSaIjAzApNfk0lIHdetqY9QyJyWdbvON0wDxtD
-	c3IU8xEsAOk/KeTPy+mnLI2zmmLJ3kr75QDehzl1k4x5NxNhsWx8iSSGg5sYZ+E8IJc=
-X-Gm-Gg: AYBFou2jKUz4yWWSC3Qzr8F46EgvboD8e/CFjDQwUWOwWcAktbPqLQsfq8m7oA1chXw
-	//ApiGrVkRe0R2HFLZ+137GaUAUgsRZ+1wezXNs/4BAkczxBGuN88SpcB24QRBdQJ1/0emyUEP1
-	eDpP6vTMnrbSHBYWTNM6ACb77eHE/1X56dOsKgECMftv1pm4VgSYIDf6kIdOwEDHhDRF4LyCOLh
-	lTPXFDm7VvDtoALR2YUY+I+SposgzjKgE465FzX7SL/4Z5b1jLGKytEAtdjohSJkOuYCDIxMJqz
-	90LgR9nVKt46kd591QEfn7KT7Q3eUGqTzi0dwujtgbOSel1Ry4SrdyltQ1c6uIVjE/S0IlNJWtc
-	kcOEebR4Gckr15twqJu5RzUEpOBPpvKWmswnrfWB6xzSLD+ZOYOJC40+wC2OJjBWUZbz81+8lkH
-	E7OUoAlG25PSsSu0MA9FkWiSFTSEki/mge25L2MF8FbvQzY1VexCKlIpIz3W+VJSZGsu58
-X-Received: by 2002:ac8:5e4f:0:b0:532:ca19:afc1 with SMTP id d75a77b69052e-532d8d8a849mr9913591cf.29.1790001450247;
-        Mon, 21 Sep 2026 07:37:30 -0700 (PDT)
+        bh=1QYjUrUl2qml9sF2K+z/e51JYen5+cjRMt5pW8NsvQc=;
+        b=MpI81PD+fJRuQnxIbSnAs/xxUHBB6TcqnjR4bdUDjtlcH8ELZ7Ol6IHEMh5OFg22x1
+         ywanPVKOZUJA2dgz24YLl4VQrnhGa899tWOYZ115GDKuS8Iu9clbU3SH2YU4bBFp1bm6
+         yIP7XGPre7z1KpctGpB40Q9Dfi3UR3oavd2GY1PWsh2QTBhANPaEftTZWjMQYAfcZA8e
+         6ylxMjwGIrtl6Zy/o4sACnvzQiXdWlEwk3ywZReVrEhnX2XEKMyDxYswBOCDRzYNgNJJ
+         1ATx4agykbcQ9XkHUfHXGWzqLimfvwWCIsmYF3jO3a2VkJwcdGfe1tkfyq1SJaubioXg
+         tVnA==
+X-Forwarded-Encrypted: i=1; AKwUvBzN6PXkHCSOOlFOV6MuW5k+dpKaeyT0WEZmEEKAiNu4fmRZvClHqSy711HaBFA5HB2gd3Xl0Iog9A==@kvack.org
+X-Gm-Message-State: AFuF++ly0k1zejZ9KD/LMHj5wegYktucvzShcOdeBypmf5lvwmjOJ2Ez
+	L0nJxewLKp9+mXSEmRJnLlPzpCDUyBLWsyMOBWtl3c383lRbSTv3k+a5JS4phDSbZww=
+X-Gm-Gg: AYBFou3FOfzYMGrU0PmZxxRguboJMbhNnwQIL2Atbxwdqd2lwJxIUpC2qnAUuDxKtpr
+	dcwiK8B8DcCSXNnftS31RN13dMSgF0iSGHXCbsSPamNZHI/9viMa7Wmzj80uPu54prxpOHCv2nO
+	IYqRURnmaYrvPGM9lONvEl8+MTKlLLtZ6faRFQL5+CynVrRgi2zWNXPO1FUgJCybwRKxGMZ3KD9
+	/750NbFNPKaOvQ4rlfJjvu70pCSdBZ+XzW1GIQLH2AeJgv68mS0EgWU2Kckpqw6hqZRYQn84Gwg
+	W44MvCyeToXkqCpVJDTxyDwNxTQMKadHyqesZqtoRob1uItGyIshOu8+gmYskmpH/zkkaXFB9Kc
+	D1eMTbtK+BJbbTS0nFsq+ex+hv1DV2tROBf0f/BDv6kWYM1FU6aH+joMmukCY6JJQPNC/HE/t5c
+	fJz5Qm2Js6K7r8PORwjSUmQxAAAq8fxS8GxkS9Gpb8UYN5eMB7DLF40zyJ754Ez08ieXR9KQ==
+X-Received: by 2002:a05:6214:f25:b0:910:3c08:fc6c with SMTP id 6a1803df08f44-913fc8c6d74mr9199966d6.22.1790001499563;
+        Mon, 21 Sep 2026 07:38:19 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532ae511210sm65434551cf.2.2026.09.21.07.37.28
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91260a85c7bsm68848416d6.32.2026.09.21.07.38.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 07:37:29 -0700 (PDT)
-Date: Mon, 21 Sep 2026 10:37:25 -0400
+        Mon, 21 Sep 2026 07:38:18 -0700 (PDT)
+Date: Mon, 21 Sep 2026 10:38:18 -0400
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Cc: Matt Fleming <matt@readmodwrite.com>,
@@ -104,27 +104,28 @@ Cc: Matt Fleming <matt@readmodwrite.com>,
 	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
 	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
 	willy@infradead.org, ziy@nvidia.com
-Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly
- __GFP_NORETRY allocations
-Message-ID: <arFBJdYaRx_iJNDA@cmpxchg.org>
+Subject: [PATCH 1/2] mm: page_alloc: do not give all non-blocking requests
+ reserve access
+Message-ID: <arFBWvzXPYrKuIYi@cmpxchg.org>
 References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
  <20260910114602.926944-1-dipiets@amazon.it>
  <aqQlUr-1h07G8JWM@cmpxchg.org>
  <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
  <aqq8pWI0u1IZNWHT@cmpxchg.org>
  <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
+ <arFBJdYaRx_iJNDA@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 603231A0002
+In-Reply-To: <arFBJdYaRx_iJNDA@cmpxchg.org>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: tzbxx3egyah99uc1f1wnbahig3yfbh5z
-X-HE-Tag: 1790001451-450004
-X-HE-Meta: U2FsdGVkX1+N5ESfz2di71WKUvNXdMPr297i5XgkOTfsPXMma9jIB9z0nxcFHSvDVY4vNInOyWE+UP4G73zaibhrI2vp2WBEhN9rqqNBb9yAjrcAuLoHWt42yn7SgtQIzMFYqV4874B/Gupuh/BFvDczEMqad2Gm2cR747pPZ5QSOZPA+5skr8+HtVAY+qu/gORyjgiI9p0dsd04IetJX/82B3KdJJNTxP7F1UX2NEM4YBWB+7GU1qb4AwOPzopVAF4OBRVUyjbBc7z8Lyj9V9U3/ubtY935HwFp1oHshVhfxEGkZQdJH/3NnTQCuJQZYJz8DAYnV1K1P8h2zf1oW4QcPuMFFd1MVKhTEqpP8HxV/0XqCdY3CieXqoCbNZSDSL0vjxwLRlbq61niFufB4WsoJApH/cT+mpIxk1PGCZM4mCi1sbpz+WTg6JJutzjzqyZ5PrvIQ8ILOao66N4jV4JBxCWiCjCQhCON9yFQHQsU9esLtcAJHZq5F+cDDR0rspxVnd92LNlW55cRj3Pziq/SuOos6RuyWE347smYcU9UVx4HQiB02CsxcQY5pHvqgaguR/Sjz2K06Ti3i/IrKpaJIxczXiryUhX+weCiQeUfaaanlhi4yMydb4BolZ/XQiAdXD56FmKLvpV3y8yt34SYYhuPLpUz2QmJXSH0vzwBnTg0cQja/rIHZL0Q7XSmAES5V6umB9xvxnjBKVVtLnOpeur+9HFP4WXIbRhD5xkmNzVb05LBUIATIgBs1VLCOhEnOfT8peYvELM5Ok8BqfzOez72DUJMlw9Lh7XahvvgsKKB+5K3Cu5rxQjn0cv+nfzXteigyEIKIjJ9g+0lclAgZqmtXnaNxZAxaPvPvsJ4E/IRKJVauqKZjBEoZ5Uec9IoOD6nfKzEX43c+tUdL6Qjj4tOOGZ+Ea4QcAKVeYeIURU7W4a92tgj0gIE2UDuO4BXgNvNCfO5NAOW2jq
- XzOY+nCQ
- pvWNfdTLJw3+UK9Mb5qNflJvZVvvvrEDZvr1dcavzB3kSxspDNF3/GZuu7uMbDmyNWIcagbiBwU5sx17WfAMghsCDgFXr3jTDHuDoSu8PK1Zz//47q8lsn9OfI53BTEmHUoXf2P+g26lEMSzw9zUUyHKL33KHxwhqDxdsk6FU5dETjRHqK1TRRazMHei+gppPHztJwrXtl2h4yCqFPfEGWV4uB8BlCfHnsVIMb9FNPBkdONqBIuUAd3bPDYvSXJL5tzEvxLrdz4pmlQahekbnTPgn0VRVpWkr0MhAa/C/1hHPUxZTpns//QFjTrvdwZisxuwl9vCJqPIdRHBpx6qjxTq0COqTdqJT8cTzoe3dUuIBlOpo9u2IWPZCtW292aHSXNq365eBV6nRqpbG3H21l2zE704N1WOua3VzwezKOt4/PlrwRBB1Z/uArzBb/CIn9LNdTxIZfKcVZM3/VDugR11IgoSmCGb9x60UTi/SYSVmxKnuQNKX+pPnrAnYpgRcHMiranE/FxN6jQJ2W/eKUamqMQ==
+X-Stat-Signature: o1umtc3spp1t1bihiu3ncasj57sny8un
+X-Rspamd-Queue-Id: 7DE9F1C000B
+X-HE-Tag: 1790001500-336960
+X-HE-Meta: U2FsdGVkX1+9u0U3hm752Jnaz3K5jCG1PqItLtk80tRwEuc7Cn+qzWdkqBODnudFZSdC3orYNgbAD4D6NRS1xy4yT3w0cMmd7SUcafr7d0aK+Vgdc4E4TogTrfP7V6ng19UMV2O31YisbjW/v8IRX6ZqZfH20252T90or6/ABcymMRdpfW3v7WKGgx0kys1GojlrzozeJVe7FkcnsiyuwMHk2oqgwBrx7Z5rCVAlI/0e2I1UnQsp79W6fljbBCpmiRxcBrWrFkNaI/HUGMYw7yXKuEiybBanoiYudjhvzn7Z4n/nzXCzD3TpdhknFpwwfFNtL/7KRSyTb4kgBmzKnfoxYe+Zt2M3ojocBoQ9sJblHDtuk2DzC57EfV/4vJCtWtyrxb7mFX0zXjW1WOXI4ZliNiHKGycZCjCY1OxJe6cVs/ECeKlTYrgesoLdHZmtwI+hYCFNVTBfN8htc6duXBIGY97PPg7GD/AJhHe26k1FuBOO7zUBHTL0uzHSw85DcR4LEjp3LGWW7MYdoVa5vP//8kXxxOmmtMgWaVNpI80CmTXuyWGxi/ubw8l+ZVaC2AX50F3n0yu1m7SySvvvvsOLt2YX5R/tZSvr6tyjgMb+Tv9B41OKPupBLAIaj79JNHXLkQTrnqQVgWLkI4OLTk8gRM1Qyt1OaoPaMtiY00eFlrvvQOWyS+Y1VUjFLzWr7egGlxnXaWr4RFGjFB0Hw2mXOpHw2rHigkI0JetwKm0Jy1fvjQ9JSV81mS9wgVhRbL696B8MvK+miCxk38PIGfNa6aO0emc83EulYdBjLy3wEx+RbBr30kjuYb2REbEyfl1NMMthkf75tN3Lc1VSdEbRe9mCXiJrKzfUc3bDKey4sG6pSnoAG+uBKfdFQzEZ+G6L+QjcdL/igo/ZHLILJd3JmQiHzrt4vILcU1ygERf6DgePoBlfyxP2xMfth+4atgcEJBvrvIyZwQhiQUK
+ 2Vf+ZCOc
+ lv1PBM+2gVvboYQvCCPTBMNlfisNk66MZYh7DtiSiMYORg9YVucFY9DH0V8bAK8M77avdKahs/P5NSwJUvLqMEy30aMmJTaHC9aFMFIEnQhkpznBxK5YVghWL27xv5zS3h70Q9J+3aDRhvGLqtOGE2Evfbj6FF8gR5aqsvX423asWuGZS4iZzEzAfcT5B2amfLyOZFOf1y079YnJ4KLzGYzAOeXx2VzYZSdzoXIpdNUKDVmXvTF40MgLyHGlZYf4XnRyIaaL4BXEOPgowKEPip3FgX0jZBgIr7MhD/hXl2rPZ922kWyBI9t2SQX6K5DSALFCCgwnHxu+CldTRJB3WzDpO1Xj3kHOClcaC8KB63kDeNeu+2kerjB+fljMpckEB01roiKNZWS8ECLUFtew5lsjddJS8EIVzB20CHh9dVm8OgDKymQa75VUXIfBBJcvzUFudqEE2ep8cndMFrkkGboRa0aO7IZj2ZG1zGoMjHW/C9OPVkRm495HxzLN18dx2J5xljCh+D9MPwiY3q1Is2k+tkCjXSiQOdAqHl0iLa9PhbHIe1H5xlSWJx3HQ0v20+KGg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,58 +133,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 09:05:40AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/16/26 17:58, Johannes Weiner wrote:
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 12fac9084c48..c79cc7aa4dff 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -3246,7 +3246,8 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
-> >  			 * reserves as failing now is worse than failing a
-> >  			 * high-order atomic allocation in the future.
-> >  			 */
-> > -			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
-> > +			if (!page && ((alloc_flags & ALLOC_OOM) ||
-> > +				      ((alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC)))
-> >  				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
-> >  
-> >  			if (!page) {
-> > diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> > index b9259deddb59..11714ddca254 100644
-> > --- a/mm/page_alloc.h
-> > +++ b/mm/page_alloc.h
-> > @@ -60,6 +60,9 @@
-> >  /* Flags that allow allocations below the min watermark. */
-> >  #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
-> >  
-> > +/* Flag combination from GFP_ATOMIC */
-> > +#define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
-> > +
-> >  /*
-> >   * Structure for holding the mostly immutable allocation parameters passed
-> >   * between functions involved in allocations, including the alloc_pages*
-> 
-> Should work.
-> 
-> > 
-> >> Unless I'm mistaken about that MIGRATE_HIGHATOMIC part, it seems all sashiko
-> >> concerns can be dismissed and then indeed v4 is the better version.
-> > 
-> > It looks like a real issue to me, but one that already exists
-> > independent of Salvatore's change.
-> 
-> But Salvatore's change (v4, not v5 IIUC) will make it worse because
-> __GFP_DIRECT_RECLAIM + __GFP_NORETRY costly order opportunistic attempts
-> with fallback will start eating the highatomic reserves too?
->
-> In that case the fix for this should probably be part of the same PR to
-> Linus and be also stable with Fixes: 281dd25c1a01
+281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access
+highatomic reserves") accidentally gave all non-blocking allocation
+requests access to highatomic reserves, which includes GFP_NOWAIT and
+other sites clearing __GFP_DIRECT_RECLAIM.
 
-Yes, agreed on both.
+While this improved atomic request success rate, it's unintentionally
+broad and can actually worsen highatomic requests by squandering the
+reserves on requests that don't need it.
 
-Sorry for the delay - while poking around I found another oddity in
-how the reserves are accessed.
+There are concurrent efforts to clear __GFP_DIRECT_RECLAIM altogether
+for costly order __GFP_NORETRY requests, which would have then also
+fall into this exemption and deplete reserves even faster.
 
-I'll reply with two patches that I think we want to go in as fixes,
-whether Salvatore's patch goes ahead or not.
+What GFP_ATOMIC has over the others is __GFP_HIGH, which
+alloc_flags_slowpath() translates to ALLOC_MIN_RESERVE.
+
+Narrow the exemption to contexts that have both ALLOC_NON_BLOCK |
+ALLOC_MIN_RESERVE.
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Fixes: 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC order-0 allocs access highatomic reserves")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/page_alloc.c | 4 +++-
+ mm/page_alloc.h | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..7b46d0ac3a56 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3246,7 +3246,9 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 			 * reserves as failing now is worse than failing a
+ 			 * high-order atomic allocation in the future.
+ 			 */
+-			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
++			if (!page &&
++			    ((alloc_flags & ALLOC_OOM) ||
++			     (alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC))
+ 				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+ 
+ 			if (!page) {
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index b9259deddb59..ad89f83d1dab 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -60,6 +60,9 @@
+ /* Flags that allow allocations below the min watermark. */
+ #define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
+ 
++/* Flags that mean GFP_ATOMIC */
++#define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
++
+ /*
+  * Structure for holding the mostly immutable allocation parameters passed
+  * between functions involved in allocations, including the alloc_pages*
+-- 
+2.55.0
+
 
