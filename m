@@ -4,139 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6987DC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:12:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02455C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:15:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF5616B00A0; Tue, 22 Sep 2026 09:12:32 -0400 (EDT)
+	id DCF106B0098; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCCD56B00A1; Tue, 22 Sep 2026 09:12:32 -0400 (EDT)
+	id D593C6B009F; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE31B6B00A2; Tue, 22 Sep 2026 09:12:32 -0400 (EDT)
+	id C48B06B00A1; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 89C236B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:12:32 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 207471404BD
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:12:32 +0000 (UTC)
-X-FDA: 85241437344.08.5ECC187
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B6989C0003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:12:29 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=D7W8Bc8U;
-	spf=pass (imf10.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B12D6B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1843FA033D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:15:28 +0000 (UTC)
+X-FDA: 85241444736.14.36027A2
+Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8394880006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:15:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cgHcJQMG;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790082749;
+	s=arc-20220608; t=1790082924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LulcYv9Jp0Lu1nB+vR85V1wbxQeb9j7OBR+DItzxWpo=;
-	b=J3Sw6EurJAZafnF2u2fd0PIogHGusKi+KoV1tPJI2AVCnaLE5FoAD79Es5J4fIVHwYLcCZ
-	VpxKuunFZyLsaEtS6f+B7DomzCZMK7fgQrep8qJc6PYMpFdmCIjVM/SgtJh8rGNI18qFD1
-	4rYv9ms2Qg9Ghq5i0YwkyEvrWaoKKKQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WvvW/8z657vxZ3+JPxbiZpr7EOqCAd86pevTN7qJgH0=;
+	b=qUYIWhGaJmInx7AP/q4nr1qkqWjxMncOvwfgqWP4QGtA3iBLUpP5FG330urdIMvNwZEwRK
+	TSq59dc9LmDChPVxbkvL+rh8wRDr6iUZsjhl2/22d71rpWN+n1gplVt23P8fArOc4jP5cr
+	3A8DypbeaeADXNYag2SpzvHB1I78zvo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=D7W8Bc8U;
-	spf=pass (imf10.hostedemail.com: domain of sourabhjain@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sourabhjain@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cgHcJQMG;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790082749;
-	b=WmAFHc30+gKqhzUCnBrIVuxOkYaE69g+nfHBh6HbMvgiy0pe1w150GH8Qy5+xsxKA+L1KX
-	eHjvKDSXfDuyCory+n5pO7VdMazcL5VMfHVFovKFGssM0SSDQ32Q89IkuxgnUjxdRTVejO
-	BYyccJE3UFzs3UNvubKkehMYdH/zq10=
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBZMZ9311640;
-	Tue, 22 Sep 2026 13:12:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=LulcYv9Jp0Lu1nB+vR85V1wbxQeb9j7OBR+DItzxW
-	po=; b=D7W8Bc8UXzmUxRCDvJ8iB3rXA/zVyMs58y0Vd4kNdNlTOwWT/yG79e4YC
-	WLgFInT3tF7ULlLDTi8WwOq1Kx6iFg+FO39vST5MnlbZYqZlkQmUPSl7SJEKg498
-	7ohf29pwb0Yy7fwp19xujk3iefXiH3kMvlZNTlpv33tCjD/NBF+xvYnR/8taLghv
-	EZUTRLhallvTkYuHB6y3k6jKk7uvgFipVpCO7SBONaMtzn5u7waomboPHrHTaGDC
-	YuujVEOrZDk7SOsojUm4e/rKN+4PfAupZKPx/imm/m7zD0E936Wa3UecZzHKE8v9
-	2bdKUYJuMZnre6C2JBwxz5RVieoLQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgs5un7-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 13:12:25 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68MBWbsn2751978;
-	Tue, 22 Sep 2026 13:12:24 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gt5qjswek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Sep 2026 13:12:24 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68MDCMfr39190998
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Sep 2026 13:12:22 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E917620043;
-	Tue, 22 Sep 2026 13:12:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 72D6D20040;
-	Tue, 22 Sep 2026 13:12:19 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.bl1-in.ibm.com (unknown [9.123.14.142])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 22 Sep 2026 13:12:19 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: kexec@lists.infradead.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, Alexander Graf <graf@amazon.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        George Guo <guodongtai@kylinos.cn>, Mike Rapoport <rppt@kernel.org>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH] kho: fix global scratch size calculation
-Date: Tue, 22 Sep 2026 18:42:16 +0530
-Message-ID: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.55.0
+	t=1790082924;
+	b=O66ndd9Y6r6GOW1IQL19c/9qD+B2+FIB/ynr8RBPi4QdzTnL4whE3sjXM+3/Zu0vX4lkK6
+	h9KV5YqOgdcIZEHBxcyqKG4IMQN1WY0HUoV0nTCcdJWRn8YkodKCk3XjR+j3zo+1X1wrTf
+	+E7hyWz4jriBKII/ouI/DueYM268Uts=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=pOBqVVuIHVvqeyU6wrQ4dgNXmfPDjIBGUxzWzaeok4Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790082921; v=1; x=1790687721;
+ b=cgHcJQMG2Yii1JBRXOHyKTaRHPnr561X5sQWfKG7QTarfZEqMSltVpTknBjNqsId+Q9DOBOS
+ wo3oaCVuMjkdIAz8Ih4Ca/vPRI3YIOq5Gt7DhPMmJC8BMBJU7xMXNR3jRyvh8ZIE+J+Pca2zmmp
+ qFBkwnBi1HWhXGJElbi8ZInk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 957524858cb9f755;
+	Tue, 22 Sep 2026 13:15:16 +0000
+X-Mizu-Trace-ID: 957524858cb9f755
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a1cc2eaa-5a36-491d-8ec7-0bcf4132a535@linux.dev>
+Date: Tue, 22 Sep 2026 14:15:13 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=V/XoQuni c=1 sm=1 tr=0 ts=6ab27eb9 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=U7nrCbtTmkRpXpFmAIza:22 a=vggBfdFIAAAA:8 a=Z4Rwk6OoAAAA:8 a=VwQbUJbxAAAA:8
- a=7ipKWUHlAAAA:8 a=pGLkceISAAAA:8 a=37rDS-QxAAAA:8 a=VnNF1IyMAAAA:8
- a=6T--hvP_5G-zAOdN4VIA:9 a=HkZW87K1Qel5hWWM3VKY:22 a=gpc5p9EgBqZVLdJeV_V1:22
- a=k1Nq6YrhK2t884LQW06G:22
-X-Proofpoint-ORIG-GUID: gqttuO_BfG_NChiGaJ8ifRqvHypgo3Ou
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIyMDE5MCBTYWx0ZWRfXyn70vEhCBxwE
- l7yZOlpOLP0E6LbdHjqdeqS+F8Plw1yC5kBIyA0FhshOwKyDCD/0PRIc/Qj9rX6/6A862TdI/SP
- iV5CN0K3k8UW7QHeqihLoLSGRIW3p84G3LLizcHhO0v4ztWQPRhVXKRh8wldplg3m7s3SVxCfUJ
- 55iilRGkKBU6Y/Zs5ugZTbbwb1QCDtDL/k4uEO6napGkCnEDTp9fHBksgyEMA1l9Lq8mJD29dP6
- xFT+/ToiraFfeVJXEKFxlpJDmoH0OtiH7Q3XeEdsvHqB4CJJs8RsAKF3sCCP+3g9egQWe5Z9Q4M
- aiHlsz6+8maTXIfEPXZ9Bm2bN0cSLF2j11FsO5EJlrXUzBZR5DEO6jQ+zzosQYupNcp+Kx9wwXi
- Us87dEyRSMj0W2l9vtP/Jx3CfQl8R8rdzdMmI7ZZ2Cr9TMfbrBMx11GW6UWstFnIrEtHxdwo30U
- sFkN1dbND6Y6mP5y6kw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIyMDE5MCBTYWx0ZWRfX1DEAxZwtydKR
- 0AQ+w1UCSB7MBp3kxXEV6sMQlxz+uakelr+B05Z8ArxDRKeQklkoRZ/tOz/WWWN7DJqaAvIpCvb
- x7rT5zecPpiPl14akTJXeIG9x+LlLSI=
-X-Proofpoint-GUID: NHADODa1pqiCXbj9VYHMXNSgyid34FeO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-22_01,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 malwarescore=0 clxscore=1015 phishscore=0
- bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609220190
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-11-usama.arif@linux.dev>
+ <35f36d8b-d215-439c-8e77-3a70deed7609@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <35f36d8b-d215-439c-8e77-3a70deed7609@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8394880006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B6989C0003
-X-Stat-Signature: 7c8bsuubdmcy79ibstnpwaq5g6gmipr6
-X-HE-Tag: 1790082749-931330
-X-HE-Meta: U2FsdGVkX1+CSV0HnDF4HPZrnBcSxNHDlHwXDbHOnFIq3KiuJe6SE57fXCHzBxfVnwG162WCwSvu39srnuJTdW0L7TSe6Wuul64QtSnEgfNXI96bB9h+1f2Kf75uBCC1UnyKxYs33bl+GWz03TvC5HITKs/Xsq2DSA2R3HUgas1qjY6hsYzb0MVJCOqbuJmROca/QujXfnyYJoMZO/n+W+MRGVKFuP/ezIDUGhQ0gGz9Oob11mSoN2YDYdeCtkE296d4eo34VN90Q7iEyt43PGVOyUwHx9KVxBspZKIyZpf2GPr01vNGtsnUTXJpubFG8Ck9pQ7DYVWxiyJDTs4gISTdLu4HiFOARLDd1jcpUReqr4276kulVuba1soL7edSxDfj4ea1KPqWtsBsDBYEiwC/r7sPtQF5HZC40EVUiMQU5RdHY0DZVGYJQOfyMjeODrLzUNXyFX5aMtLuTuhU2jfdSpRx48S5O847ATYP5l/t+aWeCvXhItGzTJhxNkGgFxYjwrtKKbaAYxMWRTu2mcpUvsZgaas18oBq/+IN6U5njq1ZGAnSQEPPVOk4LSPR1mFCHlV2D4aprcbKp9NSxGa6R7KtqNYVgwDnoNcgmt7jY8Bg5GqtWuAdGN8iN/GMw//vjkhMhkytB0WWoB3YlYMMiEpGIVubi2SnVtJQKpN6N5XS+4WNCfQvvtlYX2AdMQUP9V501E/RbGnQH0QHtKMOQaDLE2hKqhlN7YnAqgprCZ+48A9MtxCCArDqAhqesreaSkggPUrCNyhnq6xpn4MOLZMV9NmQ8IVZjg9lAsGKib4FWYPEcmBS9CUv6EuurzyILOMLlWMCQWtA/d/VAVSw2HwPqZMsdyOvVwU+zlcqACfLN0SATQbZFHdm/EeXNADNf5KbfrHaQLAD2NhIXczfDkhWKrS4EjXyr02y+tW/cWNhF8kUY+d0wWx2vj2vyj1YE2mEPPsi+B6R8w8
- 9DeOYI7q
- RTXjZGenFT1B2wFfq6KzbOwd5rBn40uUtoBuk31k4vAPe763irllANEPA32UnpdjobPXASqBQfupRN0OOJmXJIh1yOqQmutLmn/kJVdcjV6ro5QYFAXwtUbidvwyxlA5A32VY1/gsACcLgt+WKzKOpH/Bs2qwoHWgHhQARt/nbovRuT6lRsk0lGHEUIEU8D0jIT61sWf/hGzwF+OqHcQlQmqN8qttXpL8XTgzgXVW7OAMDO7JGBDRNVlnwHp7fr0c+t3ZHpXmSpE2dIFxU78SsrbY4G4rXAvvDPlzwh1Jau5KKO+1Oz/w4DU/faNn6t9cULf8eNaZQAmQSJ9DR8UagkKWBWnSTPsgCRRwszxRPvzYKH9CvHJNjcSnfi61g2PUrrQYVZmI1T7bBeCmrDA9TOFjMKbnEUrXG464tvyxCSqGw8BjO+1F0Yv0+MzDxSiu/LVrBR4zMYq9wH9aQaYjuS7J5Qu1XQsIltQJeDuWiJ2HRfLccaYYMRrjB2+l/XQXI6cMOJCIMg/QLu32dvjQwSs/BA==
+X-Stat-Signature: uyj7s75ko65hgy61gtqjnd1dkf6g3ksj
+X-HE-Tag: 1790082924-647553
+X-HE-Meta: U2FsdGVkX19NWmLbP3f7Siix2u3+huRpz1rUdkBQGhnrWOVe9QUduE6GAxYQgNFRWXPqMGACwcRb6gLHANuJGnZX9KKOcZAUDt2zCOe5bOxggzakQCGMifKYHbDPxSuNE6hBADglcP1IBHJQr/nnO4tDK/CvJ2CEMyW40Q6XvQ6DAdPIqIg2SAx3QZZeQje0PwMFTwnkNDGqy+KLGP68n2bWG/poFLb+eaElA7REvGYszPnMnSuDTk1JSWMar01y7YNdEeFs21TM9iZ9PSa4RlQR6kTjVwCrPsm2IbQnGBbjerQg+7LMMfFyJYkOg/eT/ceS80bHhYxrWX7XdGGrBa5nte60qG18t0J4XXepeoeLTXMcxKlY0pBtW2jTF3m9u9TSI1kxZOgxIbi4KKoS8/TzKe56sqzxt8I2AlNY1D0qAU5r6cIBnb1iOD5I7alMVSiBGJx0BJ93Z/1J0gYwypzz/ZxkRgwXDlnrfvM0WO/RDVn5T2zXa4+LaDy5w21u09XqfbFgd1f4tzI7kearfOd1NW15lqlvNl4d8WF0xVufvi+1XFZMroFrQouR3Vhi48rpel+t9ELWBGUR0Ce5ksWipHcE0JRe4z6Tq6DZiw61q76PpA8yhbMMw3yPUWQZs70mZTy+MPT+LkOzUUCfE8oL/l3uYk8fEi/VXRHALCf7kubuQcNMhsuLzPP4Y08cGpB+CPE8Dr9fgQZxnvMaPMi6zBKMdw5rXyFfNKWkjT26KS9CsMD14HOvqos1L4oY3X7591PTpaqw+UzjXaSCLCotv0Sfz1CLosuCLlPR0my8CJe2o46Jxo4Wvh8rm2kllFVbc5Eg297GQI24hqxYNDO0Ffa68c6HUcV7rp2K50qBHxnvQA/jxyVeULqMI0C6L5EHUadeviiaiHvgn3rDFnzr726r0TqxbIt2ljMODam/7XzNHaBgCsua9WI1iWEhOgtLTMY85HFiwoXfkVP
+ TuRj7cVd
+ pxO9dMT9UoBdc18NNV8w0e6+HGiwIpOKchJ6cHm6PTwOvS/+4+m3vtGhlnhcAqEFSDf+doJ6koHH+iy3H5kmD52Shzzsc8v7+71pbOqfUgsIDU84RAz/QL/hgfdF2mHNiKnDOsOlQ68l5R42OeuSfc2LXyGrh0IEldl+Vzv0HPjCT7CNLYEQFrKK+XIgerpFH9BuC1R9ZBxCgJ/4g2GAUFQSAn6qMKAeFHzTO2MX4z/Hx8JVoAylACfwa01bfuhLA/hQZmhayMHUJB5Z4t59XFFtyiGwNWyck5T+0ffK20EGIKdU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,207 +102,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KHO calculates the global scratch size based on memblock-reserved kernel
-memory. It passes NUMA_NO_NODE to memblock_reserved_kern_size() for
-this calculation.
 
-When memblock_reserved_kern_size() is called with NUMA_NO_NODE, it
-counts both:
 
-- memory reserved for a specific NUMA node
-- memory reserved with NUMA_NO_NODE
+On 18/09/2026 23:10, David Hildenbrand (Arm) wrote:
+> On 9/14/26 14:28, Usama Arif wrote:
+>> __split_huge_pmd() and friends take a "freeze" boolean that every caller
+>> has to pass and almost every caller passes as false. The name says nothing
+>> about what it selects, and the one thing it does select - PTE migration
+>> entries instead of PTE mappings - is only ever wanted by the rmap migration
+>> path.
+>>
+>> Rename it to use_migration_entries, keep it private to mm/huge_memory.c,
+>> and add split_pmd_to_migration_entries() for try_to_migrate_one(), the only
+>> caller that wants it.
+>>
+>> migrate_vma_split_unmapped_folio() also passed freeze=true, but only ever
+>> runs on a PMD that is already a migration entry, which the generic helper
+>> expands into PTE migration entries either way. Its folio_get() only existed
+>> to balance the put_page() that freeze=true performs, so both go.
+>>
+>> No functional change intended.
+>>
+>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> 
+> [...]
+> 
+>> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
+>> +				    unsigned long address, pmd_t *pmd);
+> 
+> Two tele tabbies please.
 
-KHO needs to distinguish between these two types of reservations.
-When calculating the size of global scratch memory, KHO only needs to
-account for reservations made with NUMA_NO_NODE. Reservations made for
-a specific NUMA node must not be included in the global scratch size.
 
-Add memblock_reserved_size_nid() to calculate reserved memory for a
-given reservation type and NUMA node. When NUMA_NO_NODE is passed, it
-counts only memory reserved with NUMA_NO_NODE.
+Ack, in next revision.
 
-Use the new API for lowmem, global, and per-node KHO scratch size
-calculations. For lowmem and global scratch, count only memory
-reservations that were made with NUMA_NO_NODE. For per-node scratch,
-count only memory reservations that were made with the corresponding
-NUMA node ID.
+> 
+>>  bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
+>>  			   pmd_t *pmdp, struct folio *folio);
+>>  void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
+>> @@ -690,12 +690,14 @@ static inline void deferred_split_folio(struct folio *folio, bool partially_mapp
+>>  	do { } while (0)
+>>  
+>>  static inline void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
+>> -		unsigned long address, bool freeze) {}
+>> +		unsigned long address) {}
+>>  static inline void split_huge_pmd_address(struct vm_area_struct *vma,
+>> -		unsigned long address, bool freeze) {}
+>> +		unsigned long address) {}
+>>  static inline void split_huge_pmd_locked(struct vm_area_struct *vma,
+>> -					 unsigned long address, pmd_t *pmd,
+>> -					 bool freeze) {}
+>> +					 unsigned long address, pmd_t *pmd) {}
+>> +static inline void
+>> +split_pmd_to_migration_entries(struct vm_area_struct *vma,
+>> +			       unsigned long address, pmd_t *pmd) {}
+> 
+> Dito.
+> 
 
-Remove memblock_reserved_hugetlb_size() since it has the same
-implementation as the new API and differs only in the memblock
-reservation flag being checked. The new API handles both kernel and
-HugeTLB reservations through its reservation type argument.
+Ack, in next revision.
 
-Define the new helper as a static function in the KHO implementation,
-since it is only used by KHO and has no users outside
-kernel/liveupdate/kexec_handover.c.
+>>  
+>>  static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
+>>  					 unsigned long addr, pmd_t *pmdp,
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index ee8d46827ffdc..873887aed0bc2 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -2033,7 +2033,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
+>>  		pte_free(dst_mm, pgtable);
+>>  		spin_unlock(src_ptl);
+>>  		spin_unlock(dst_ptl);
+>> -		__split_huge_pmd(src_vma, src_pmd, addr, false);
+>> +		__split_huge_pmd(src_vma, src_pmd, addr);
+>>  		return -EAGAIN;
+>>  	}
+>>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
+>> @@ -2257,7 +2257,7 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
+>>  	folio_unlock(folio);
+>>  	spin_unlock(vmf->ptl);
+>>  fallback:
+>> -	__split_huge_pmd(vma, vmf->pmd, vmf->address, false);
+>> +	__split_huge_pmd(vma, vmf->pmd, vmf->address);
+>>  	return VM_FAULT_FALLBACK;
+>>  }
+>>  
+>> @@ -3190,7 +3190,7 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
+>>  }
+>>  
+>>  static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>> -		unsigned long haddr, bool freeze)
+>> +		unsigned long haddr, bool use_migration_entries)
+> 
+> 
+> Just curious: s/use_migration_entries/to_migration_entries/
+> 
 
-On powerpc, the difference can be seen in the scratch_len values
-reported by:
+Done for next revision.>>  {
+>>  	struct mm_struct *mm = vma->vm_mm;
+>>  	struct folio *folio;
+>> @@ -3291,10 +3291,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  		 * folios w.r.t anon exclusive handling. See the comments for
+>>  		 * folio handling and anon_exclusive below.
+>>  		 */
+>> -		if (freeze && anon_exclusive &&
+>> +		if (use_migration_entries && anon_exclusive &&
+>>  		    folio_try_share_anon_rmap_pmd(folio, page))
+>> -			freeze = false;
+>> -		if (!freeze) {
+>> +			use_migration_entries = false;
+>> +		if (!use_migration_entries) {
+>>  			rmap_t rmap_flags = RMAP_NONE;
+>>  
+>>  			folio_ref_add(folio, HPAGE_PMD_NR - 1);
+>> @@ -3344,11 +3344,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  		VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
+>>  
+>>  		/*
+>> -		 * Without "freeze", we'll simply split the PMD, propagating the
+>> -		 * PageAnonExclusive() flag for each PTE by setting it for
+>> +		 * Without migration entries, we'll simply split the PMD and
+> 
+> "When not splitting to migration entries .."
+> 
 
-cat /sys/kernel/debug/kho/out/scratch_len
+Ack, in next revision.
 
-Before this change, the global scratch allocation was 0x12000000
-(288 MB):
+>> +		 * propagate the PageAnonExclusive() flag for each PTE by setting it for
+>>  		 * each subpage -- no need to (temporarily) clear.
+> 
+> While at it: s/subpage/page/
 
-0x1000000   (16 MB)
-0x12000000  (288 MB)  <- global allocation
-0x5000000   (80 MB)
 
-After this change, the global scratch allocation is 0xd000000
-(208 MB):
+Ack, in next revision.
 
-0x1000000   (16 MB)
-0xd000000   (208 MB)  <- global allocation
-0x5000000   (80 MB)
+> 
+>>  		 *
+>> -		 * With "freeze" we want to replace mapped pages by
+>> +		 * With migration entries we want to replace mapped pages by
+> 
+> "When splitting to migration entries ..."
 
-The 80 MB difference is the per-node reservation that was previously
-being included in the global allocation.
+Ack, in next revision.
 
-The same issue also affects lowmem scratch memory, but its impact is
-limited because the lowmem scratch memory calculation is restricted to
-the first 4G of memory. The changes also cover the lowmem scratch
-memory case.
+> 
+>>  		 * migration entries right away. This is only possible if we
+>>  		 * managed to clear PageAnonExclusive() -- see
+>>  		 * set_pmd_migration_entry().
+>> @@ -3359,10 +3359,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  		 * See folio_try_share_anon_rmap_pmd(): invalidate PMD first.
+>>  		 */
+>>  		anon_exclusive = PageAnonExclusive(page);
+>> -		if (freeze && anon_exclusive &&
+>> +		if (use_migration_entries && anon_exclusive &&
+>>  		    folio_try_share_anon_rmap_pmd(folio, page))
+>> -			freeze = false;
+>> -		if (!freeze) {
+>> +			use_migration_entries = false;
+>> +		if (!use_migration_entries) {
+>>  			rmap_t rmap_flags = RMAP_NONE;
+>>  
+> 
+> [...]
+> 
+>>  
+>>  	smp_wmb(); /* make pte visible before pmd */
+>> @@ -3477,15 +3477,28 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  }
+>>  
+>>  void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+>> -			   pmd_t *pmd, bool freeze)
+>> +			   pmd_t *pmd)
+> 
+> While at it ...
+> 
+>>  {
+>>  	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+>>  	if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
+>> -		__split_huge_pmd_locked(vma, pmd, address, freeze);
+>> +		__split_huge_pmd_locked(vma, pmd, address, false);
+>> +}
+>> +
+>> +/*
+>> + * Split a present PMD into PTE migration entries, for the rmap migration
+>> + * walker.  Like split_huge_pmd_locked(), the caller must hold the PMD lock and
+>> + * must already be inside an mmu_notifier invalidate range.
+>> + */
+> 
+> I'd prefer kerneldoc but I'll let you decide.
 
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: George Guo <guodongtai@kylinos.cn>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- include/linux/memblock.h           |  1 -
- kernel/liveupdate/kexec_handover.c | 49 ++++++++++++++++++++++--------
- mm/memblock.c                      | 22 --------------
- 3 files changed, 37 insertions(+), 35 deletions(-)
+Switched to kerneldoc.
 
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index d62db9e776cf..678fe466529a 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -487,7 +487,6 @@ static inline __init_memblock bool memblock_bottom_up(void)
- phys_addr_t memblock_phys_mem_size(void);
- phys_addr_t memblock_reserved_size(void);
- phys_addr_t memblock_reserved_kern_size(phys_addr_t limit, int nid);
--phys_addr_t memblock_reserved_hugetlb_size(phys_addr_t limit, int nid);
- unsigned long memblock_estimated_nr_free_pages(void);
- phys_addr_t memblock_start_of_DRAM(void);
- phys_addr_t memblock_end_of_DRAM(void);
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index 7c4d86daf86d..dc809e1e768c 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -752,6 +752,31 @@ static int __init kho_parse_scratch_size(char *p)
- }
- early_param("kho_scratch", kho_parse_scratch_size);
- 
-+static phys_addr_t __init_memblock memblock_reserved_size_nid(phys_addr_t limit, int nid,
-+							      enum memblock_flags region_type)
-+{
-+	struct memblock_region *r;
-+	phys_addr_t total = 0;
-+
-+	for_each_reserved_mem_region(r) {
-+		phys_addr_t size = r->size;
-+
-+		if (r->base > limit)
-+			break;
-+
-+		if (r->base + r->size > limit)
-+			size = limit - r->base;
-+
-+#ifdef CONFIG_NUMA
-+		if (nid == memblock_get_region_node(r))
-+#endif
-+			if (r->flags & region_type)
-+				total += size;
-+	}
-+
-+	return total;
-+}
-+
- static void __init scratch_size_update(void)
- {
- 	/*
-@@ -762,17 +787,17 @@ static void __init scratch_size_update(void)
- 	if (scratch_scale) {
- 		phys_addr_t size;
- 
--		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
--						   NUMA_NO_NODE);
--		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
--						       NUMA_NO_NODE);
-+		size = memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE,
-+						  MEMBLOCK_RSRV_KERN);
-+		size -= memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE,
-+						   MEMBLOCK_RSRV_HUGETLB);
- 		size = size * scratch_scale / 100;
- 		scratch_size_lowmem = size;
- 
--		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
--						   NUMA_NO_NODE);
--		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
--						       NUMA_NO_NODE);
-+		size = memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE,
-+						  MEMBLOCK_RSRV_KERN);
-+		size -= memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE,
-+						   MEMBLOCK_RSRV_HUGETLB);
- 		size = size * scratch_scale / 100 - scratch_size_lowmem;
- 		scratch_size_global = size;
- 	}
-@@ -790,11 +815,11 @@ static phys_addr_t __init scratch_size_node(int nid)
- 	phys_addr_t size;
- 
- 	if (scratch_scale) {
--		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
--						   nid);
-+		size = memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
-+						  MEMBLOCK_RSRV_KERN);
- 		/* Do not count HugeTLB pages. */
--		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
--						       nid);
-+		size -= memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
-+						   MEMBLOCK_RSRV_HUGETLB);
- 		size = size * scratch_scale / 100;
- 	} else {
- 		size = scratch_size_pernode;
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 021db49eb7fc..9da748e774ea 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1900,28 +1900,6 @@ phys_addr_t __init_memblock memblock_reserved_size(void)
- 	return memblock.reserved.total_size;
- }
- 
--phys_addr_t __init_memblock memblock_reserved_hugetlb_size(phys_addr_t limit, int nid)
--{
--	struct memblock_region *r;
--	phys_addr_t total = 0;
--
--	for_each_reserved_mem_region(r) {
--		phys_addr_t size = r->size;
--
--		if (r->base > limit)
--			break;
--
--		if (r->base + r->size > limit)
--			size = limit - r->base;
--
--		if (nid == memblock_get_region_node(r) || !numa_valid_node(nid))
--			if (r->flags & MEMBLOCK_RSRV_HUGETLB)
--				total += size;
--	}
--
--	return total;
--}
--
- phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int nid)
- {
- 	struct memblock_region *r;
--- 
-2.55.0
+> 
+>> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
+>> +				    unsigned long address, pmd_t *pmd)
+> 
+> two tabs ...
+> 
+> [...]
+> 
+>> --- a/mm/migrate_device.c
+>> +++ b/mm/migrate_device.c
+>> @@ -918,12 +918,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
+>>  	unsigned long flags;
+>>  	int ret = 0;
+>>  
+>> -	/*
+>> -	 * take a reference, since split_huge_pmd_address() with freeze = true
+>> -	 * drops a reference at the end.
+>> -	 */
+>> -	folio_get(folio);
+>> -	split_huge_pmd_address(migrate->vma, addr, true);
+>> +	split_huge_pmd_address(migrate->vma, addr);
+> 
+> 
+> Everything up to this point was trivial :)
+> 
+> You say that it already is unmapped (which makes sense looking at the
+> function name).
+> 
+> In VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio) we verify.
+> 
+> Did you run the hmm selftests with DEBUG_VM enabled, just to be sure? I remember
+> they exercise at least some of the THP logic in here.
+> 
 
+I have now, with CONFIG_DEBUG_VM=y, CONFIG_DEBUG_VM_PGTABLE=y and
+panic_on_warn=1, on this series and on the base commit. The result is
+identical either way:
+
+  # Totals: pass:35 fail:3 xfail:0 xpass:0 skip:40 error:0
+
+The three failures are file_read, file_write and migrate_file_private,
+all of which fail at
+
+  hmm-tests.c:828:file_read:Expected fd (-1) >= 0 (0)
+
+i.e. hmm_create_file()'s open("/tmp", O_TMPFILE), which the VM I am using
+with 9p /tmp does not support. they fail the same way on the unpatched
+kernel.  The 40 skips are the DEVICE_COHERENT half.
+
+The 40 skips are the DEVICE_COHERENT half.
+
+
+> 
+>>  	ret = folio_split_unmapped(folio, 0);
+>>  	if (ret)
+>>  		return ret;
+>> diff --git a/mm/mprotect.c b/mm/mprotect.c
+>> index 2888ee638d872..ee33bbb421008 100644
+>> --- a/mm/mprotect.c
+>> +++ b/mm/mprotect.c
+>> @@ -530,7 +530,7 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
+>>  		if (pmd_is_huge(_pmd)) {
+>>  			if ((next - addr != HPAGE_PMD_SIZE) ||
+>>  			    pgtable_split_needed(vma, cp_flags)) {
+>> -				__split_huge_pmd(vma, pmd, addr, false);
+>> +				__split_huge_pmd(vma, pmd, addr);
+>>  				/*
+>>  				 * For file-backed, the pmd could have been
+>>  				 * cleared; make sure pmd populated if
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index 5332c52909be1..feb751e29b992 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2290,7 +2290,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>  				 * restart so we can process the PTE-mapped THP.
+>>  				 */
+>>  				split_huge_pmd_locked(vma, pvmw.address,
+>> -						      pvmw.pmd, false);
+>> +						      pvmw.pmd);
+> 
+> You can feel brave and squeeze it into a single line now :)
+> 
+
+Ack lol> 
+> Overall LGTM.
+> 
+
+
+Thanks for the reviews!!
 
