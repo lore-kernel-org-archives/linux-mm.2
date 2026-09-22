@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F47C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F56C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:48:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CA726B0098; Tue, 22 Sep 2026 08:47:03 -0400 (EDT)
+	id 9A5586B009E; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A34E6B009E; Tue, 22 Sep 2026 08:47:03 -0400 (EDT)
+	id 97D536B00A2; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F21306B00A0; Tue, 22 Sep 2026 08:47:02 -0400 (EDT)
+	id 8B9BF6B00A4; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CA35D6B0098
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:47:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E53BA65CB
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:47:02 +0000 (UTC)
-X-FDA: 85241373084.09.8E2166C
+	by kanga.kvack.org (Postfix) with ESMTP id 65A0E6B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF07614049A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:48:10 +0000 (UTC)
+X-FDA: 85241375940.25.2E4B069
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A1ED6A000C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:47:00 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h1eg+t/j";
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2E870C0005
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:48:09 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxRcrfCK;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790081220;
+	s=arc-20220608; t=1790081289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kx1cDLNT/v31qKJcafvn3WkzdrqDUmMJSTVkfFeWiQ4=;
-	b=Mm4TM26DtEOezEu4vIOmHfgcCYHiV4cnBI3FhwVODqGAZRFAPpsy5T1W+5dfwZxc9r1sc6
-	1fP2OaYuIvKNiprRD1OS6TylQO4zOnkZ3NgQgZg/1R3RnY1bggYwLTPLLiE5itwKx2teev
-	GrpS0s3pc1NO8P9yPToKT00q8l6XnFw=
+	bh=r4eH9hr+yvfFnvbbCrIYejYZnIdTOc3jXJLWRBe+BYc=;
+	b=NAgGtLqBnJq0nFRc9LhJo20wIVjpobbISqsFZlK33M6YTla9nHeBHLFjH0ykvmJeJJ9gmu
+	cicQnUta8oXwvIeX2SkPQqv19ujmbEPb/b2ecQxIG/u+D4kNDdkCH3d9bsRnuGsuEX1lMM
+	2wub0LXxlrYx7b+xcod7qaYdmwUefSE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790081220;
-	b=EjN/1xx6dF5WMEEOj6U10j3B8Te/jZADOIpwTdDJP2GB6c5RqkR3q+JlPZFg+vaXZTcAn8
-	1LfrtyY8g+Mn23LG3k0pEZDl3ABKO7V8JtWQ+1XLuRe3CnrqO7ZKgr/4TN1P0XCLpPM/eE
-	amEqHYPor/yb71aZo2lEtUn25ozN0Dg=
+	t=1790081289;
+	b=g0MFsi6GCNdd/RZzzAzkfxx0dz1dmAdGOJSAm64dcB+6Ki1I2R0xPXVjj838aACeHJ+PoE
+	XdQX1XShdTssWHsHj18MiczwUzFKQVT9Z2pRf9YzEdQG67uMSEVjJomemu6RcC3s2Jrxgi
+	u+OfHBCMhmceiyH+tuSWZsJj9GYV29E=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h1eg+t/j";
-	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxRcrfCK;
+	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D75D9416C3;
-	Tue, 22 Sep 2026 12:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427A51F00893;
-	Tue, 22 Sep 2026 12:46:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4DC23411B5;
+	Tue, 22 Sep 2026 12:48:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CC61F000FF;
+	Tue, 22 Sep 2026 12:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790081219;
-	bh=Kx1cDLNT/v31qKJcafvn3WkzdrqDUmMJSTVkfFeWiQ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=h1eg+t/jUhQbuzHrElz3Hf5taYbBwYU0NBlcmQx4+KVtL24Vm0a4MfbxrbPT7+XZu
-	 NUzXJB4MtOPLFb0knT7Bkdynn7oV43dCho4gZ9oD7E23+Xf2Owzykm8ZNAO0sGLnnO
-	 7FTqSY3HwIBougjUPxzSyzBBIyNjCi1RBcUgzY7XFQU/tkhgM/XoG/sim8vvfAn+++
-	 beJtOJj2/ZtvFEVokoQ+cIIPOPIaSQ/dEXfJTrHK+5mmtRhdMb3NTf9jiVrHE/J+HH
-	 W76w5Z5owffNApwmpqj/LiwAW/WR30WAic8mUFYf/rMlbOAzYKzu9ocPIcrWi+aSzs
-	 y1fyDqDdi/QHQ==
-Date: Tue, 22 Sep 2026 13:46:57 +0100
-From: Harry Yoo <harry@kernel.org>
-To: Hao Li <hao.li@linux.dev>
-Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/slub: refill prefilled sheaves from the barn
-Message-ID: <arJwnw_kxbj2RFUe@thinkstation>
-References: <20260921094521.141665-1-hao.li@linux.dev>
+	s=k20260515; t=1790081288;
+	bh=r4eH9hr+yvfFnvbbCrIYejYZnIdTOc3jXJLWRBe+BYc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=AxRcrfCKj4TeX6ZLNGmys0EohkLSWdZA4WpCoVu2s2m54mvKPCy6liQKcGrQ8XbgI
+	 SQupz29e6y7f+7JP+FdhlC3s1z2X8i7JkPdbM3Y976b8njRgJrKLRElYxFR9JEM0BM
+	 8TCcoyrcCXV565sfkLcc6LcmZjQmjecePjY6QHJrrJkVK8K8VbGFL91PeILG+FoFl9
+	 1THEXtqQfFgXse9S65S+IyHqHuKjKQQgT8FUJXtwclVIR9dTtE3pMYo8uBe0eAvsYc
+	 VeRU/FuqXgJPqY0qchNGgBdyeHHurNFz2kQGrv3nsl9hWhSY6PVrVOyB3nSxSAKtfk
+	 9k3gXyOmIuBAg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: George Guo <dongtai.guo@linux.dev>
+Cc: rppt@kernel.org,  pasha.tatashin@soleen.com,  pratyush@kernel.org,
+  chenhuacai@kernel.org,  ardb@kernel.org,  shuah@kernel.org,
+  ilias.apalodimas@linaro.org,  akpm@linux-foundation.org,
+  baoquan.he@linux.dev,  ruirui.yang@linux.dev,  guodongtai@kylinos.cn,
+  kernel@xen0n.name,  graf@amazon.com,  liukexin@kylinos.cn,
+  loongarch@lists.linux.dev,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kselftest@vger.kernel.org,  linux-efi@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] liveupdate: synchronize EFI KHO channel at
+ execution
+In-Reply-To: <20260904100852.26006-3-dongtai.guo@linux.dev> (George Guo's
+	message of "Fri, 4 Sep 2026 18:08:49 +0800")
+References: <20260904100852.26006-1-dongtai.guo@linux.dev>
+	<20260904100852.26006-3-dongtai.guo@linux.dev>
+Date: Tue, 22 Sep 2026 14:48:03 +0200
+Message-ID: <2vxz1pal5u64.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921094521.141665-1-hao.li@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A1ED6A000C
-X-Stat-Signature: irpi3g1t17wpgrn5gtk3tbha4qwzwxo7
+Content-Type: text/plain
 X-Rspam-User: 
-X-HE-Tag: 1790081220-710528
-X-HE-Meta: U2FsdGVkX1/DbiA3QHkaWi6i9gRljsH8pYg36d4vQDYCp4agIy0RBnI7ptSjBSwqXCvojTC3YeD0cTKncnJDHmh+JJPd2er00uzYpT2vScwk0gh5s9SeeDXjxWeTpqln1YWHI0//Pfj14IqEE9m43uPPQUsudKPOQMribj6RTCmOxT3JOq1f8yMPZbXvM9kvrpKwEulVO/KUbYcRO4Wv8Kt1v1OmZ+8IDpeVSCqDyVRcxCwcwG0gD+y0yOpv/afci8XixWz0wnMiBqCoH/HYozSE6ahU6Bb39sdqfqlsv8S35gJwSjzmgENc12XKqpdyVx+/H4Hurat2S7XVUOrk2Gc7fINArOg7Y8UxnQHZiwn2vFGV+VZr5WNnWYfJBL5tXn1B38pcH6kCe2KdCaIxRbP4VTf8QqD7kmsB12foKTapBlCr+pL38cNSOR1LHgWpR00q64K6rRDHxJN3yuU49YvmaQFskz0Ll4LdAJENPyhCzcsnGSFU/n2KMijB7bJbPn+W0bW8vma2MUGMf0DuqEkZcJLfWbHFWYnA2sZFvWv6OpJB8griAV8sLyEOrPMuchCbQG/52Pmez/FX4+PCWhzCrqXDiZ3e2UPXj9dk8pxUJMAfNvQ728QpmY+K4uY+dw9RboEx1Ay7o4Fomfz3tPpwCqx5/Rh9owVoYEeWd0cfxWV8AFfPPPFff102NLftfWo/6j2CMtSWRtnwnQhTZZ1XtLR6kNh06mvnTLkDRHZQADkrO0FMBljlsj2HqVMuA9dx72YZj+OhZAtHPjonsuXuELeJXxiqmUZbCFUImNiP18o4G0/+q3sQ0an+VgzMqx8XfqUmXAkL9gLjEZlVIHr+LpR0xDpKM3WPUTEVBpiT8gxF9ieg7asUwXxwVWWAtxullwRw3cjaXQNMd1f+p7wkLryGFaIg/0O729wNzR0sleDs3GZUr0kM2S90xwGHCZZHwl+fFV7meHCGBx0
- XFUXR835
- JRAFX0+0nhn3rKgc+PLaR9I1GXQ9ooqiySLo1o6vRAemG/Fq0GDMDC5gJBQC7OkPG+oM55Mk6lrzGR25mUv6e2OfEv60eEVmLabU8pWwNlXOVblwaQ1CO+KB7ZpcvPH6CWLJwIEVDHgYJsp02M1qYSzWbgkOUOd/EkzGvYku5ysGSdWbe+7jIOrWvDc6WYBHx7ba3qzdUiI0PqkXSKHvHiJnh4Nqo8G/Q2mrm7RHD6pQQqoEvRwQCOf9co4Uhnuy3JLII0Km9hn9prf0r0fHINovWeg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2E870C0005
+X-Stat-Signature: gqacan57e3ztw3q67rm1fcmc67tioh3t
+X-HE-Tag: 1790081289-13571
+X-HE-Meta: U2FsdGVkX1/rZdnHShwgtygnNvRLsGgz4OJiATw0D1hHD9LCR+/UzIGC4CNdqSFTO46IgcznKN9VZVtBS/J0TNdUidXj5rOoqhpEL+UWprc/moWvYJxRalfyyzXFoyCRrfdTyak4p9zl0SqWeQTgby2oXJE1wvVZ+0wsf1NLNB6mppyVjXkFmZdb6tvKBJBQpPiCCrripv1XBLJDCXJCQ19t1gRD9BUZDevHlgFTjaImP0I18B5HUUOlG3payxrujyi/UR4uVniStcahHBOWgrQRA1SaKsULaCq5AK2YjNSExyqy+RpFWLzYDRASi/nne93lAYnLduPRCzi7ZK4CprAOTxGHG5N7A3Hn9VR6brJ8mg/i7Iyo/F+8VbDczxF2Yks/y+8+cP4gjVWyEwj5gaE/69SUWMVJxsPo8eLLRJeEfEoWQBILlswWdart2zahSoNE+nsGodSfG3p9nu5y8g6xN0MR8gVYAJjbSXznESGZU/T7xqaNOu8zO7qB8XV+qlr4SYWocNKuxfLyIA6iWhkcubk4q3+Z11ArQHEa5XdRlduyLtSkZ+Vuq4inBTUY9EGS5Lea63+sa8iRn8mw8hXaEMx+WlZzOAw/YrECo4N2reb1n7B0olFbJB/WfEInZnjXQ9J5xHZIU38r4QWhqLIQqgGsRRPEdldhA/Wkz9RQz2t0gfBzVcF7x1hBp8v9k+PuH6fxg9SdzAmQ97eoheb9+AEWf+l69OhiyM8t89mEqpbfTVilisloatdwXoFiAoKbnNdzw/8KJprkqwMwb8PuAGGARmzx7FLDxGmgnvRScSX1fZzq9CJQ+t4SBZ00M0wOMetagyT2Bn2GJE0scOew4eLmhkacJUetb2GwQqacJuaEwOh8Kccqf/i8HtkrN9evPZABhakjlQX0jJJrCNLMC5z01SaPF5Gw5+FN7hYXEi58z5uT09nuHjRSC1ggJGQZOtyAuaCP+pwQq/q
+ ipaaWfdr
+ 8jn6IlsaCrwjJqcNVs+zb1v97GLzih6hgW6gBzK7Pu/OjekujkjmFToEbq3cFGRb3PsIVVRNdIxWHzw4Z9ExvX16BFU7VCsQ6AqUkXl4BIXCyzL1rgCKtPnuNewDQGEdUXMJ563hsfamZMk4EzDLtMIxzTtLwhZ7VJkB1+QxsrqihV8WnJTxVU+tmbHkwE4M/11hAKTuDjQD1En2yeVPaLJCWXqfRP7G/2AjN3oAt/VR0rr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,115 +99,155 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 05:41:13PM +0800, Hao Li wrote:
-> Currently, when the prefill API refills a non-full sheaf, it takes the
-> objects from partial slabs and never from the full sheaves in the barn,
-> so once the barn's full list becomes saturated, it stays saturated.
-> 
-> For objects freed via kfree_rcu(), every RCU sheaf then has to be
-> flushed to slabs because the barn's full list has no room.
-> 
-> To fix this, let the sheaf refill from the barn first, and introduce a
-> partial sheaf in the barn, which holds the leftover objects [1].
-> 
-> Only the prefill path needs the partial sheaf. The generic allocation
-> path (__pcs_replace_empty_main()) exchanges an empty sheaf for a full
-> one from the barn, so nothing is left over. The prefill path refills a
-> sheaf that is not necessarily empty, so taking objects from the barn
-> usually leaves leftovers, and the partial sheaf is where they are
-> kept. refill_sheaf() only takes objects from partial slabs and never
-> involves the partial sheaf.
-> 
-> The sheaf is refilled by copying objects from the partial sheaf, and
-> then from a full sheaf taken from the barn if it is still not full. A
-> sheaf that objects were copied from stays in the barn as the partial
-> sheaf if it still holds objects, or goes on the empty list if it is
-> empty. The sheaf being refilled is never replaced.
-> 
-> The gain comes from two sides: every full sheaf taken out makes room on
-> the barn's full list for a future RCU sheaf, and refilling from the
-> barn is cheaper than refilling from partial slabs under list_lock.
-> 
-> Note that putting the sheaf with the leftover objects on the full list
-> instead would not work: it would occupy room on the full list, so the
-> list would stay saturated and rcu_free_sheaf() would still keep
-> flushing.
-> 
-> An earlier version of this patch swapped sheaves instead, to minimize
-> the memcpy overhead. As Harry Yoo pointed out [2], replacing the
-> caller's sheaf loses cache affinity, filling it directly is more
-> straightforward, and testing showed no measurable difference between
-> the two approaches, so the approach he suggested is used.
-> 
-> Tested with will-it-scale mmap1 (192 processes, one-minute runs) on the
-> maple_node cache.
-> 
-> throughput: 27778727 -> 34500556 (+24.2%)
-> 
-> metric                       baseline           patched        change
-> =====================================================================
-> alloc_fastpath                 54,124            56,696        +4.75%
-> alloc_slab                  7,100,651           159,739       -97.75%
-> barn_get                          849       194,460,392    +22904539.81%
-> barn_get_fail                       2               217    +10750.00%
-> barn_put                          851       182,306,701    +21422544.07%
-> barn_put_fail             260,400,484       145,522,675       -44.12%
-> cmpxchg_double_fail         1,029,204           334,228       -67.53%
-> free_add_partial          326,694,687       181,935,790       -44.31%
-> free_fastpath                  13,297            15,611       +17.40%
-> free_rcu_sheaf          8,332,839,104    10,490,535,227       +25.89%
-> free_remove_partial         7,099,788           158,297       -97.77%
-> free_slab                   7,099,788           158,297       -97.77%
-> free_slowpath              10,969,156           782,851       -92.86%
-> objects                        15,295            14,849        -2.92%
-> objects_partial                15,295            14,849        -2.92%
-> partial                         1,604             2,336       +45.64%
-> sheaf_alloc               137,757,895       141,208,076        +2.50%
-> sheaf_flush             8,332,823,922     4,656,725,764       -44.12%
-> sheaf_free                137,757,883       141,208,072        +2.50%
-> sheaf_prefill_fast      3,337,502,163     4,196,506,116       +25.74%
-> sheaf_prefill_slow                685               400       -41.61%
-> sheaf_refill            8,343,794,364     4,657,509,724       -44.18%
-> sheaf_return_fast       3,337,502,411     4,196,506,382       +25.74%
-> sheaf_return_slow                 437               134       -69.34%
-> slabs                           1,604             2,336       +45.64%
-> total_objects                 102,656           149,504       +45.64%
-> 
-> Here is what the important metric changes mean.
-> 
-> barn_get and barn_put: refills now take full sheaves out of the barn,
-> and RCU sheaves are put into the barn again. Before, the barn's full
-> list was saturated once and hardly ever consumed.
-> 
-> barn_put_fail: more than half of the RCU sheaves are now put into the
-> barn instead of being flushed. The rest are still flushed because they
-> arrive while the barn's full list is at its limit.
-> 
-> sheaf_refill and free_add_partial: fewer objects are taken from partial
-> slabs to refill sheaves, and fewer slabs are added to the partial list,
-> by the same percentage.
-> 
-> alloc_slab and free_slab: the partial list is almost never empty when a
-> refill looks at it, so slabs are almost never allocated and freed again
-> only to serve refills.
-> 
-> After the test, the maple_node cache holds 1604 slabs without the patch
-> and 2336 with it. After a manual shrink
-> (echo 1 > /sys/kernel/slab/maple_node/shrink), it holds 485 without
-> the patch and 563 with it. So most of the extra slabs are held only by
-> objects sitting in sheaves and are returned by a shrink, and what
-> remains is a small difference, because objects handed out from the barn
-> come from many more slabs than a refill from partial slabs would use.
-> 
-> Link: https://lore.kernel.org/linux-mm/aqPlMzUIw-4g2iOX@fedora/ [1]
-> Link: https://lore.kernel.org/linux-mm/aq0ylDidEHa2kg4X@thinkstation/ [2]
-> Signed-off-by: Hao Li <hao.li@linux.dev>
-> ---
+On Fri, Sep 04 2026, George Guo wrote:
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> From: George Guo <guodongtai@kylinos.cn>
+>
+> The EFI KHO configuration table is a global channel. Updating it while
+> a candidate kexec image is still being loaded can leave the channel
+> pointing at the failed candidate even though the previous image remains
+> installed. Synchronize it instead from the image selected for execution.
+
+Huh? Sorry, I don't understand this is supposed to mean at all. What
+failed candidate?
+
+>
+> Use the actual scratch payload size rather than its page-aligned segment
+> size, and propagate update failures before live-update serialization.
+> Keep clearing the channel for cold and crash images best-effort.
+
+Huh? This is word soup and I don't understand what any of this is
+supposed to mean.
+
+If you are using a LLM to generate this, please _read_ what the output
+is and see if it even is readable to someone else.
+
+And if you are writing this by hand, then take a step back, and consider
+if patch reviews can even understand what you are saying.
+
+>
+> Signed-off-by: George Guo <guodongtai@kylinos.cn>
+> ---
+>  kernel/crash_core.c                |  7 +++++++
+>  kernel/kexec_core.c                |  5 +++++
+>  kernel/kexec_internal.h            |  3 +++
+>  kernel/liveupdate/kexec_handover.c | 33 ++++++++++++++++++++++++++++++
+>  4 files changed, 48 insertions(+)
+>
+> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+> index 2b36aa9fade0..6166ce4203d3 100644
+> --- a/kernel/crash_core.c
+> +++ b/kernel/crash_core.c
+> @@ -138,6 +138,13 @@ void __noclone __crash_kexec(struct pt_regs *regs)
+>  		if (kexec_crash_image) {
+>  			struct pt_regs fixed_regs;
+>  
+> +			/*
+> +			 * A crash image carries no KHO state: clear the
+> +			 * transport so the crash kernel boots cold instead
+> +			 * of reviving from stale state.
+> +			 */
+> +			(void)kho_sync_channel(kexec_crash_image);
+> +
+>  			crash_setup_regs(&fixed_regs, regs);
+>  			crash_save_vmcoreinfo();
+>  			machine_crash_shutdown(&fixed_regs);
+> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
+> index dc770b9a6d05..147f5b5b23d4 100644
+> --- a/kernel/kexec_core.c
+> +++ b/kernel/kexec_core.c
+> @@ -1146,6 +1146,11 @@ int kernel_kexec(void)
+>  		goto Unlock;
+>  	}
+>  
+> +	/* Synchronize the handover transport with the image being executed. */
+> +	error = kho_sync_channel(kexec_image);
+> +	if (error)
+> +		goto Unlock;
+> +
+
+Why are you setting this at kexec time? Why not set it at load time like
+every other architecture?
+
+Also what's this "sync channel"? Use simpler words that _actually
+describe_ what they do.
+
+>  	if (!kexec_image->preserve_context) {
+>  		error = liveupdate_reboot();
+>  		if (error)
+> diff --git a/kernel/kexec_internal.h b/kernel/kexec_internal.h
+> index 228bb88c018b..4d4c2290e85c 100644
+> --- a/kernel/kexec_internal.h
+> +++ b/kernel/kexec_internal.h
+> @@ -46,6 +46,7 @@ struct kexec_buf;
+>  int kho_locate_mem_hole(struct kexec_buf *kbuf,
+>  			int (*func)(struct resource *, void *));
+>  int kho_fill_kimage(struct kimage *image);
+> +int kho_sync_channel(struct kimage *image);
+>  #else
+>  static inline int kho_locate_mem_hole(struct kexec_buf *kbuf,
+>  				      int (*func)(struct resource *, void *))
+> @@ -54,5 +55,7 @@ static inline int kho_locate_mem_hole(struct kexec_buf *kbuf,
+>  }
+>  
+>  static inline int kho_fill_kimage(struct kimage *image) { return 0; }
+> +
+> +static inline int kho_sync_channel(struct kimage *image) { return 0; }
+>  #endif /* CONFIG_KEXEC_HANDOVER */
+>  #endif /* LINUX_KEXEC_INTERNAL_H */
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 39f489a258d9..3aa5c66dfc6d 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/cma.h>
+>  #include <linux/kmemleak.h>
+>  #include <linux/count_zeros.h>
+> +#include <linux/efi.h>
+>  #include <linux/kasan.h>
+>  #include <linux/kexec.h>
+>  #include <linux/kexec_handover.h>
+> @@ -2074,6 +2075,38 @@ int kho_fill_kimage(struct kimage *image)
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Synchronize the handover transport with the image that is about to be
+> + * executed.  The EFI config table channel is global, while kexec keeps
+> + * separate images for a normal reboot and for crash.  Write the state of the
+> + * selected image immediately before it is executed, rather than while a
+> + * candidate image is being loaded, so a failed replacement cannot leave the
+> + * channel pointing at that failed image.
+> + *
+> + * An image loaded through the legacy kexec_load() syscall, a crash image, or
+> + * an image loaded while KHO is disabled carries no handover state.  Clear the
+> + * channel for those images so the next kernel boots cold instead of reviving
+> + * from stale state.  Clearing is best-effort because an absent channel cannot
+> + * affect a cold boot.
+> + */
+> +int kho_sync_channel(struct kimage *image)
+> +{
+> +	int err;
+> +
+> +	if (!image->kho.fdt || !image->kho.scratch) {
+> +		efi_kho_update(0, 0, 0, 0);
+> +		return 0;
+> +	}
+> +
+> +	err = efi_kho_update(image->kho.fdt, PAGE_SIZE,
+> +			     image->kho.scratch->mem,
+> +			     image->kho.scratch->bufsz);
+> +	if (err)
+> +		pr_warn("failed to update EFI config table: %d\n", err);
+> +
+> +	return err;
+> +}
+> +
+>  static int kho_walk_scratch(struct kexec_buf *kbuf,
+>  			    int (*func)(struct resource *, void *))
+>  {
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Regards,
+Pratyush Yadav
 
