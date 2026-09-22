@@ -4,90 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41794C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:56:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66EB1C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 256336B0095; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
+	id 7124F6B0098; Tue, 22 Sep 2026 10:57:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 22DCD6B0096; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
+	id 6EA656B009B; Tue, 22 Sep 2026 10:57:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 143C96B0098; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
+	id 627F66B009D; Tue, 22 Sep 2026 10:57:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EAE836B0095
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:56:08 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A4871C2E57
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:56:08 +0000 (UTC)
-X-FDA: 85241698416.02.90F2335
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E3A151C0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:56:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NC3hIEgS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 44C846B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:57:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D2BEE1A04D0
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:57:04 +0000 (UTC)
+X-FDA: 85241700768.01.208F9F4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id CED921C0004
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:57:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ3petdS;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790088966;
+	s=arc-20220608; t=1790089022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0yx1KVYmcOfYVjEzVIyo9QwiUPN5oXN2wUlmjKnOCc0=;
-	b=Lqk92+Pde8fdMXx5lv+DyBY8QXTZCEr2GGopg1N7cfmkv2wQchy8LKjQkLhTo21b5wE72W
-	2f1YoeQtCASOJZHaVOqY484wfF4Abc0e5ngaxcszX0qCAqDR3A7dlT1E3MM1fzSQmv1Kda
-	Gb5tCXOTQWlxPXWcIeDkmyWp7hvieb4=
+	bh=QPkW4aVoe/0NbA4NwEjKqNu/gW6+hIbN3gcfVZFJ3bA=;
+	b=wy/meAxWMs2hUN5q3zpp5w4MqLLKJNem3t67lAVnLmWNwC5Szv+JCuJFP172cYrFNl9tUt
+	HXZ/s8VlrkuEw0g7DgjuzboSoF/sHUIbAtq6u36vOaLUG520gbv0xnlO0TQVFSA5meM8BJ
+	IuWQUNFUDbL4tGHyBml1l1kZKx6inRk=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NC3hIEgS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OZ3petdS;
+	spf=pass (imf20.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790088966;
-	b=eav3WvDmsXE8sO4cYcxxCoU8erflHjTDKOkz27uUyS75nbxivf9kVevh61GE4qrgyNCquF
-	pLYCgo1dGGvxjnQGiFEYR4S8b1CQcx0vA7dteO5cVqfcROyWH7IrDkS3w0sVXcnVtmPuNR
-	hojriIOS2s01lCz03C04qBe7pFjnGr4=
+	t=1790089022;
+	b=V27qGLImwhZmWiEiPRkrtvdZ1EG1Va5HjrcNMVifHSVwJlfgGuKerhTnKUNK4cUuKHqdF4
+	JCXFQNsNh5Fo9mBNS2xxvL7u+IakgWlhQIM2bJ/D51eUufC2mIS6dlsm6QJIsz/nf1qfJi
+	XAe1u4qrn67the1PlDMJKD87f4AfuBA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B00760052;
-	Tue, 22 Sep 2026 14:56:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8973B1F00893;
-	Tue, 22 Sep 2026 14:56:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EF07443E36
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E741F008AB
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790088965;
-	bh=0yx1KVYmcOfYVjEzVIyo9QwiUPN5oXN2wUlmjKnOCc0=;
-	h=Date:From:To:Subject:References:In-Reply-To;
-	b=NC3hIEgSJs/USe6Ql93fEv9ZrzabtkxNqEUZB4aQ2SanG3FKZCPBc+TZiQPr4OO1+
-	 O/6s4bE+yPy8fmQm4C0uovI54n6HOD5kXMGyFVDFMz0p4JyjLJeDN3FsiwdR8cE49m
-	 pRL3TJMlnfzuq3j8KgbL028p7w0xufIWVgMhb9Nvb5EkJpPUqXOWSkwk2N/5ocvPwV
-	 0WeurwzhpDPAgSniGFO3HvgOjhUCfPTFDJ+Tx5GVONm/+U/AHgqsjkCy0ci6hyTZia
-	 6Ofp14oLq8Roe4awmztMutLjIBhCFpEenyJ3ICn2F/EiI/xkjMGnnGw3FQWXK0ozQ/
-	 JPe2j74jLLNgw==
-Date: Tue, 22 Sep 2026 15:55:59 +0100
-From: Will Deacon <will@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com,
-	rppt@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org,
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <arKW_91EeKA-w96m@willie-the-truck>
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
+	s=k20260515; t=1790089021;
+	bh=QPkW4aVoe/0NbA4NwEjKqNu/gW6+hIbN3gcfVZFJ3bA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OZ3petdS1ATge4HT06+k2y7RJHAjBFMjVP7z3R/p0Uo+tSKVuUZvsbO3n7LtIlIzu
+	 89u4qNvPmfBAKcTOj1SnaeBkm0gOaxU4b4Ut7MzKFb7E+VSoaSBDr5nQR4UlhwxQ++
+	 V1P7C69acDsfmnfEmkeAgPQ/XD5zJ7ZTG9IsTMygQ6MrUs/a/JSyDWF+TBSBxR03cn
+	 6uq0ogZvfkTgrikMkOePeoSvwP/9Dj7ERNm6fUxGeainRq/aiuoAbBkH3cYTPhEW0a
+	 69VVDiWNMqAhSjksvRm4UZxBF+NOCuW8tZpDYE82xkXjO/no7AUZ55K1EW9hYXD9gH
+	 T57gXXDljA2eg==
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-672c2880f58so1192522d50.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:57:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzDFUIpC/xsLDxFyIfomPwg//Vc9KAcQEO+q5FcVrdJxqghzrhx+M2S8V+ucGwv4a0ujnVnF/bdog==@kvack.org
+X-Gm-Message-State: AFuF++mwbXzOKIyGK+CzuvqB4P4PKGmLd+KcA/Etiu+z6uVhmyZiKhRX
+	E2HlTcz7sLYEc2X6VJM8oMSwexu99nKqGmscupblKxSamz7/dFWJL5is9LrhYpgiQ1rxYD64Dyu
+	rz/MF0XK2xgxPZp4U5+lm5ni1K0OBh1nnizEMYa3VQw==
+X-Received: by 2002:a05:690e:454e:20b0:66f:c1be:a65c with SMTP id
+ 956f58d0204a3-6717fdcfd37mr3462183d50.78.1790089020967; Tue, 22 Sep 2026
+ 07:57:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arIYtjmSKCs14SqO@sumit-xelite>
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com> <arKRdaNEaKvFOtMg@linux.dev>
+In-Reply-To: <arKRdaNEaKvFOtMg@linux.dev>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 22 Sep 2026 04:56:48 -1000
+X-Gmail-Original-Message-ID: <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
+X-Gm-Features: AcwNN1WXZFPYF0mNrLqLpQPBa1zvff82T2VNW1CuKAu09epCVErwfyw7KrXxM2s
+Message-ID: <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Kairui Song <ryncsn@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ep9c7sizrdyhf8heph38wojrh435whgj
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E3A151C0002
-X-HE-Tag: 1790088966-310264
-X-HE-Meta: U2FsdGVkX1+f86E+woOxquy0RaCSuHrZnJsxBvVdAMDXC6VVyuCuBHaPk9PUZMys5VMfc2WRPnnC41ArhkIjH1U0Oui39oSF7628l5cabOEB4m7UoMrIC93BqXcS/r0gwKLoZuVuLYRXcN83CKLhptBmhSleyz4MpZ5md9kKJt/seVbBIP/jblVlbviJVUqknyynRDVtb4nTlSgqAysRFr0/5VkuQBnnwTAqEkEGgQIKWGWCgZT5QFe5TWPHHT3J/pnm8T2IYBw/fiBJeOYYOA5qlWbHv05p5jaIDd0eCbWFMaT/2AJw5eRPfB0rr6Ghi0sU8B2gZmGk5OcEej14UGmDmo3r63e7cjSrfUoT3cENdoxQTbTLHPJCnF7We8EMBzKJx/+96AVe04SR+JY9uWA/xffWc5oEHI3IUB0Pn803O0liLLdai97E95DYVFK7YfcgDa8Mc2ybpgjnJe57O62/EiAFTVO15q/BTvdeU0XCW70IAgR10bZQcJ3l+IXYgCVT+39C4+9IQUF+sBz/sEMmpMH27hjyppEQCXepAudGHYAlGtHy48PQgpKB7QUUOC+gHcvEEJmbjsZr2//vy2F08S2EFpK9G4a3N2VWpgv+xd+gqhjKYjyCVIkwdJlU2Uh8CDf2CqUg0WEH0BdeO2upHDW3iySo3UBja2mCafMetKQBtBUqsv+hm3nZ0vOhU1vmdfxNX8izuHMzE2vCWx2BrcBTP+XSEygedOvLMkeNbih/CxDUke6gkIHlTfLFddzmWTdhu7sRVkte/kAnGorUIjN8pyjZeJ2mBepmWswFPWuRMpk8bfGtjd2IlZ78mDcI89rfS3LnbT2dw5RtZsT/PvGNGIIsvl8Mp3KNxoDyy6zprl5gxZM6bHAdemRAa8XfeXgS29VjHndcI5aan4en0kZ4jtNB303dEvzj92iXskeKqq1H105LaqLBT5pqc0tJpg4H0EE+gVxQiPW
- EN9HAzQo
- XvrZY6untYwN724vNWJuOCZH8zS29SP1TVWCwFCwHsTzD9Jb06KSdaNXeOjbBCmfkXNjygPeDB2bmyxvJL2MmvoFnqWRSdxgNQRojmZZgP0cKDZl8GNE8yCglTeUuywv3LBkAPSNuH+joEmIq/WgIivuw0neH/3uvBv4nVpWYM912jjDW95q2XNQqbLhZeWzguN3JrJGoIIoU2yWmVlzohsSDQwDw+QUy40PAEetJCQU3Oq3+WikKT4O++oa9auIwH5s7cOh6X2Qlcks4ZujJwQnEfoJ57OMkCfS4BGQej3AxQoI=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CED921C0004
+X-Stat-Signature: ptjanrbhkbpt5xzc8fiwaj1npyr4m9dx
+X-HE-Tag: 1790089022-733495
+X-HE-Meta: U2FsdGVkX18znbO5sRpZsTFir1+13WPG+D1rsosKotCqXm8simYrBBkHT7QRArHZi/SOIjLru7m+49ruPm7Jy5cssYRMSgCl620BRM2aZSs00JZYCYvzQMT64NMRG5DkvMKCrc337Yv0vn9EtMm1mf++i8na3w0ebGl3Jlo9tYjH+C985UD+whe0I+hQRZuxafPrhfw/UmibgVvjUZW82QvCmiiu36pGamLrKVlfpI+kmt+S0S3le1TzVi0ZvYkw4mL0IW3Y3CW6F3IGbcZ4nPF+4TMNu2n+n9yr+vMMnYV8E+8x1wkh+R2RqlRlHKURb5Aa6w3ev70B5nt0J9iRzdJqjVQMWELfwd//aZRHWBlrGkDId2GEH1grP4LWil2kWnw8s98pf/CzjU2eh+RLap1KuoPSDROq8kbUEvf7jkaaW1W3OJo/NCqE751FYC6bztLEkSM/BGAL7cqxvAspOtISZomUCO5jNIiu07KM8xUxgPnashKEluLn1YxuUeIJSSTuofTNR+IJAqjQk+keHuIRYriT9U/v3dTTnJGzqD7AQjNtGdVV8de8E9y92KkqQWyRoQI7soYejBD7+pIHfniyeE9U/HLnv+Aa0CEA1nzEhje/HifuKF6MIPN71x17t1Lia7RLFguBmy5oLvCp0wYGHRWoFemW9jomuZowuC52FqDxrhtVsd7N9dYntANydATsEHKRpYLVzD0RGiVhK0kpW/ASKGAE6ECEXk0wf2ZNId4ZQ7jAZY8AL9s0nFv2XKRTAUR51GNzzTJtQInE3dd3KoliiB8sj5wm9XoHdKLTin0ffPdius4DT6tdRycRr/K3KFkBu5lKjR+spR94dNexD3znVunIPJxD9Puj0krG3dVOgSPeqwZd4iRgo0pI5V2hCstZOZ48NeAp5Lyl5dVBw7C4BIT3I3rfA6ACqQUAYgoeUUOIA1jJkwzZoIlSaMN6v9y4/irsSUhtm1b
+ vaGSWYFP
+ AHsq96GnKlU09/OxNpQONeRDf86XaG2CVoI9nUSIvuw6s0R0/mNDN2/EJpOA806Rqn6okt80njTuRaDVrX4/xiz+p09A+dQQKXw3XGstY+7MCAuBNAGwmHdrd/dtlxffZikV73kmUTnbAGWtojkAyq06FL8b2u9IY8d3juv+3n84zsgkPqg52EZUSgGrd2y7uJd9kT2F5th4zfAZQAQc5yt9z9DkiJM+udRpX7AqifIrSB3guXd4lFpBzTQZFqMBe+YUKwkrwMnH19aoeUt95tYL5hDXbvewjyy4wv81/X0IVEPKPz5Kc6BQVDTbnr5TfiQ0Sld5z8enx8S4pnNbhX096fIgm+GwRQ4w+sMz3CVX6qyEYyQ5bv218M2NZ77+fNB4Azrta+atbqeMhfa69qyDaWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,78 +126,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 11:27:10AM +0530, Sumit Garg wrote:
-> On Mon, 21 Sep 2026 at 12:00:42 +0100, Vincent Donnefort wrote:
-> > This series is a follow-up to the discussion that has started here [1].
-> > 
-> > When memory is lent to the Secure world via FF-A, CPU speculative
-> > accesses from NS to the lent pages can still occur as long as it retains
-> > a cacheable mapping to it.
-> > 
-> > Ideally, lent memory would be "no-map" but that would mean giving up
-> > MiBs of useful memory, so let's try to do better with the help of a CMA
-> > pool.
-> > 
-> > On arm64, modifying the direct map at runtime is generally restricted
-> > because the linear map defaults to block mapping and splitting blocks at
-> > runtime may trigger fatal page fault, unless the CPU implements BBML3
-> > or the entire direct map was mapped at page granularity from boot.
-> > Forcing last-level mappings system-wide incurs a severe penalty we want
-> > to avoid. Instead, this series introduces targeted last-level mappings
-> > for designated memory regions, along with the "arm,ffa-lend-pool" CMA
-> > driver to manage unmapping and remapping on lend/reclaim transitions:
-> > 
-> > 1. memblock:
-> >   - Introduce MEMBLOCK_PTEMAP to force PTE mappings only for a specific region.
-> > 
-> > 2. set_memory infrastructure:
-> >   - Introduce can_set_direct_map_range() to check if a specific address
-> >     range is mapped with last-level entries and can be modified safely.
-> >   - Introduce __set_direct_map_*() variants that bypass redundant checks
-> >     when the caller has already validated the range.
-> > 
-> > 3. "arm,ffa-lend-pool" driver
-> >   - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
-> >     unmaps pages prior to lending (ffa_prepare_lend()) and restores them
-> >     when reclaimed (ffa_lend_reclaimed()).
-> > 
-> > 4. Optee support
-> >   - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" for
-> >     both SMC (via DT memory-region phandle) and FF-A (via
-> >     ffa_lend_pool_attach()) transports.
-> 
-> 
-> Thanks for your proposal in trying to solve this hard problem of
-> unmapping pages from kernel linear map. I remember discussing this
-> problem last year at LPC too.
-> 
-> Have you had a chance to look at a more generic MM proposal around this
-> issue here [1]?
-> 
-> One of the major concern for me with your proposal is tying the
-> protected memory allocation to fixed sized platform specific pool size
-> based on DT. Then the cost of granular mappings/unmapping if the
-> platforms choose to enlarge these pools.
-> 
-> As you maybe aware one of the major use-cases here for protected DMAbufs
-> is the secure media pipeline use-case which is memory intensive
-> workload. IMO, the solution proposed at [1] seems to address it although
-> people have flagged rough edges there but should be addressable.
-> 
-> Can you try a port of [1] for arm64 since the author did all the work
-> with x86 as reference?
-> 
-> [1] https://lore.kernel.org/all/20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com/
+On Tue, Sep 22, 2026 at 4:43=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
+v> wrote:
+>
+> People can speak for themselves and suggest other time slots. You do not =
+speak
+> for anyone but yourself here. At this point this is derailing the convers=
+ation.
+>
 
-I spoke to Brendan at LPC (?) last year but this doesn't really work
-for arm64 because it relies on being able to unmap arbitrary parts of
-the linear map, which isn't generally possible unless you force pte-level
-mappings for everything, which is prohibitive for perf/power.
+I am expressing my opinion, freedom of speech. As you can see in the
+previous discussion, Baoquan wasn't able to join that time slot. He is
+a major shareholder in XSwap. I worry that alignment vswap vs xswap
+without Baoquan is ineffective. That is my opinion.
 
-Vincent's series tackles that by using a pool so that only that part of
-memory requires the pte-level mappings in the linear map. That's the
-whole point of it, so I don't think it makes sense to drop it in favour
-of Brendan's approach (which doesn't work).
-
-Will
+Chris
 
