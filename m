@@ -4,141 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4AB3C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FEBC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:01:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1B386B0092; Tue, 22 Sep 2026 10:59:01 -0400 (EDT)
+	id 260646B009F; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF2F56B0093; Tue, 22 Sep 2026 10:59:01 -0400 (EDT)
+	id 20F936B00A0; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBACE6B009B; Tue, 22 Sep 2026 10:59:01 -0400 (EDT)
+	id 0D7AC6B00A1; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A3B456B0092
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:59:01 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2908C80518
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:59:01 +0000 (UTC)
-X-FDA: 85241705682.02.E394FE3
-Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 479F41A0004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:58:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fldmqn//";
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of groeck7@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=groeck7@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790089139;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GBsYZYC2tty9xsMubEGxI75zG2Y/0N6IAo5rsTEyC18=;
-	b=OMtzF2BJucK/El7vNKuZf3FRnFDldOV6I4y+fngxFgPKdwfpqlHyII1d27G9avzHnUjBvI
-	m7QHl/ZtB3FG/FjO92Q1X0kl7rJlKVP2XWagk2mRAMbix4p2lnQiV5H7vYwbP7jWYYDMGO
-	ajDNjVZG6vKMw28fBhi0Xk+U4FYWtlA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fldmqn//";
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of groeck7@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=groeck7@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D5AEC6B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:01:04 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5893AC0504
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:01:04 +0000 (UTC)
+X-FDA: 85241710848.23.C9F7419
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 0DBB38001A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:01:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="YQoRql A";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790089139;
-	b=qSFnfJWAPb+MKTwdH2993k9CXvyP+alKnr+5CiWcOK0KwlVGtG0yEJUCivUHn9tfffWkJO
-	6DQURaQC3DUCANvM/hcfUmbuwbTDw1+KgHZzGT/cUdw4TaHQ0+6LQ/qWfusz5/P57Erz+L
-	TyAdVPy7kv89QdwfxYIn5nO4jba0Nf8=
-Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85a4329731cso3399186b3a.3
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:58:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790089138; x=1790693938; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GBsYZYC2tty9xsMubEGxI75zG2Y/0N6IAo5rsTEyC18=;
-        b=fldmqn//NkTCGa3OuunkKk7ZsNDFIjbDegzJ+Hqk/dlkxlJ+w3LF+YvEjW0svPZ6Va
-         EWd2FuDvQBU6WF59ngUtrIomF2uBUN8g4eVwlrTGDW/mzlCZzMAaeLBVw/wWXj75n6MH
-         rkOJ7qH7qRjaYC3GB17Xij6Th0cEFulZhgMlzVjPlPsU5l/1Nzkjtb58tlVIyehHK1UY
-         n/yoK6ChRrvFXxMdniBuwNoRymvsLs1si0gj78aljNDI+V/AcM/03A7RUmhnJEAEzYqR
-         e2m+GZkpprYm1EO9xcJczrNCUC++T3IM0IBkeFgvO8R3Wtweo/vTCB7p3wQHz6yuQVv4
-         Z5NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790089138; x=1790693938;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GBsYZYC2tty9xsMubEGxI75zG2Y/0N6IAo5rsTEyC18=;
-        b=1NyF44LNFUZbKD/ei/lcwn9zvWv7Wz8syfucCkbKZJ7E+/3V64fcWtdFFCemlzT6XD
-         OPHdqWoGQ/IdSez5GDUvxrxaDt+n5y/xvpbrvyv5e8v4y4YmkwY51rj77Ew9dQwIlPIy
-         eakZ94aZ0fpNoLeeP6A7O6Bc0aASyoBoJ+N8zZOUXTezO4M/w4+f8uh9U9B93MT9zxQS
-         I+Zp3JPWlRBTiRNx22T5U44Rw55RXBlvn4IAevFK4Ui6lZKJumIPRyfs4w+VTFYGOmf6
-         0TEwnKZnUIaIXAh71nW137JoYD/BnHhgYGt9mtSepD63q5qMDnkAZzH47yGLl7PPqQb/
-         I+FA==
-X-Forwarded-Encrypted: i=1; AKwUvBw+Zg3d3KN1zKRouyVMMjC5FXTbASZPZ7BJEOJqHzAlbzjJa7VER2hhwd35diQcARpAEK3ErfBoyQ==@kvack.org
-X-Gm-Message-State: AFuF++mUd6JG3WiNNpChQzGrmXBC3buBdJGBg3zbBp1bb9H4XGdgkeu5
-	lJnTkUNbLRdZWxJxgc41d8DvsrYQTAWPzKv3nZUypShTTrbNktjD5lPZ
-X-Gm-Gg: AYBFou3eKAQBLtn+YiFEl9/cmnyW9MZCDwKXdSgkqfTc3x9B9Rh/bSw6xNK1rJZ3lj8
-	sdDrm1xYvb4j29ID8ZI4nhv4F4dR+1t1LXmXi6J6GmsO7znTIz7FmEv9Ur7nX+C+fr4G9X/iie0
-	/jMoJ52JAmPZZVHaERPCILJfMuMUfdPl9Q7qA/qZR6YTPk/Z7EpilMShlEx/u9l058bW6go4Ru4
-	9RbVo/66j87qv8WTArgzkRz/xRKaihaUGKRyi+xOkNYtDVt7npRyO45wUJt/+DhdgyivUIbevcr
-	GjYQpLkpxfPbCjE4Cbc3XUGssAAAa3V2puP2y58ZdQncPZRvDMmNUryveY5mpcBEfrgzTFZy+Cm
-	+qFvnyOjcViUctc2TIEH8D88P7W2QFKU1+cURCdyX6XsgNjb3FZOGQZda/DZb/j09u/2J0IfOpL
-	Ci8ZXgqbjoph3sNILxfrAOQPjXQq4v691ZLYCQJIs3FEMz2F+FNd1bSnfq7OppehDnMWSAvn+Ep
-	iSb2LEG822V
-X-Received: by 2002:a05:6a00:8085:b0:874:708d:b620 with SMTP id d2e1a72fcca58-87c8403d93amr1485976b3a.30.1790089137920;
-        Tue, 22 Sep 2026 07:58:57 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87c31ee8fb4sm1046216b3a.12.2026.09.22.07.58.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:58:57 -0700 (PDT)
-Date: Tue, 22 Sep 2026 07:58:56 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kasan-dev@googlegroups.com, llvm@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org
-Subject: csky ICe (was: Re: [PATCH v4 2/3] slab: improve
- KMALLOC_PARTITION_RANDOM randomness)
-Message-ID: <6106aefa-47c7-4bda-a51f-8a2fba3bf715@roeck-us.net>
-References: <20260511200136.3201646-1-elver@google.com>
- <20260511200136.3201646-2-elver@google.com>
+	t=1790089262;
+	b=m0uCe3BUibGUmHETZLFwGRg4VsxF6uAgE1zUoVOAj2dHmXpRTy0mS69+YU/JUivbhMcz5u
+	eVaY/LMbcvpy8vj7fM4ltRKE5GpDRCK1ZLgSTUfKmNDg9S4duqH36zClboJbISkn5QD7rq
+	f/DXo1uYdIkXdMmv82Lx78o3xg82hKs=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="YQoRql A";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790089262;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=o9S72RBMdjKlGss9mb9QgY9VhBDc0Yamlp03VJXCTdA=;
+	b=7pQq3eDTEiIHlwP8GDsjQa9iaQP0zfK+FoHW6DSd3dSLrkKlkzMmiJQswXLIdvka+G7JxH
+	JMU/CnMpHioi/lsd4nZYZlvsmQ+xuBnKgNKzqj7bvbJh5Bn2+/GBfifpeQrj47tZXJPhb6
+	kvv6SxSkQIFgMVUUozu0wKOWzn/V8o0=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=o9S72RBMdjKlGss9mb9QgY9VhBDc0Yamlp03VJXCTdA=; b=YQoRql
+	ATNRjzSo4tfzLdp8oYsJ0SvBo1KTkLRqt607qaRNIvZ2g5JQZuzVCCEgFUjtMz2VquD3wY+AMg03s
+	/pm4eJ6ErM513UHsfCnseVUbDT86OYiWIRa8h0P6NXg3+LAhEo6ylCVcwWFhzpbyIMTNRhFPWyeq0
+	hWBWdEjCNUkOW5W5/W59QZP7jZzWOwgOWWY5wAzg9ZF9054eS9BwWjP5HzWwQPqZH86424rLqk1kC
+	X7S97UVBAZ3mBmrQdELqnPf8Lx8zaldeifHz6Phqmos5P/hL8+biEoETKDmEMS9xUvaoV0FpR52yM
+	AmqO85Udz53r5fw7ZGrY40pSaY+w==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x91xb-00000001f8a-2YPQ;
+	Tue, 22 Sep 2026 14:59:07 +0000
+Message-ID: <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
+Subject: Re: Path forward for Virtualized Swap?
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>,
+  Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui
+ Song <kasong@tencent.com>,  Michal Hocko <mhocko@kernel.org>, Roman
+ Gushchin <roman.gushchin@linux.dev>, Shakeel Butt	
+ <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David Hildenbrand
+	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, Kemeng Shi	
+ <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, YoungJun Park	
+ <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen	
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
+ <weixugc@google.com>, Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet
+	 <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, Baolin Wang	
+ <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, Michal
+ =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>, Meta
+ kernel team <kernel-team@meta.com>, Linux Memory Management List	
+ <linux-mm@kvack.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
+ list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
+Date: Tue, 22 Sep 2026 10:59:05 -0400
+In-Reply-To: <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+References: 
+	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+	 <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
+	 <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+	 <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
+	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+	 <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+	 <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+	 <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+	 <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+	 <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+	 <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511200136.3201646-2-elver@google.com>
-X-Stat-Signature: k3dwke68698g1wiaf18ny98we5whhkwn
+X-Rspamd-Server: rspam06
+X-Stat-Signature: w51o8hat8ztssr9xxhnw6tn5z37xuxw1
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 479F41A0004
-X-HE-Tag: 1790089139-854158
-X-HE-Meta: U2FsdGVkX1+7emIz7lQJrVK4/PmuKV2bDU4KayWam9gEXRcFoUZ+32TAFpmh3lGrB+7+dSyOzCeCqWQ57QTJAugOgVEnDN8jiB7P4nRqEznW8fRWuGgdwklD+jyqty4qr9lw+m7b6vCJKxOKtmoh0T+IFaF7LL/qVyzEW+1QObrIt4WBaa2wTHq/z8wCGnX0NYb7Fv24QASn9Tdbeq6i1aljkgKKU22gafgcdWeEVi7n1yYF/XiS7qHDVHNGmrN/2TyGQK8pIzsF7W5/33B6T0qBAyVRIm5YYkS5s7dgMwhe0C30Y/W2KhJv5MVNjaWilAvM4RNCHsh/byHJjABVof/wEKlsaWchGfG4EN5jt8cQi/98rqRbI5gR0q5lWccn1Z25dklY62t7FAjczBXGRuzdVjoEQmeFdhzJIzmSn0QKsFWjTkd2tXKIOvCIMNyzz1bPbR5mYn/DqaszhafPl8dyb4z5H59BtTAEgUE4F9PsEMGMjqOKRztvdP7qqqyyf4FFL1VgWYuHvo8EGJqenmnvuadCQZh69TrL7nXe4zK04M8arAnqHVJ8yoDD5GwY1miNVHqj/QDeWwNquffArVY4bEuOOwVn86wAG+D0aHIaCRedNoUMayTUt3ATc8JKAquURWAFSoz4YCXzSKWcAtIq7ydLJL/v0ld1IB3EPZZEMNFixkNprC/7yPgwUX+eCrfk1ex7CRfurYkFynpK562mAsIUr1ibB7d/UGDSA2wdW5rs/N5VYRb1c8ef3dllUXhaFezU1FblnifVo3MGJJpq8H+EZ81820MJ+8N0RHFeW6Y172NkXFosrAbgf5X92WdsGq/YoboC34KoichFIiOkul5NfwCTxPP5QrH4fuH9V92oPxqHch+cldMXkvNzSL3WL8QqGBVvHH2VDPPveiB5scS2RbIuHtyiAd7d+NwSFcdv7DQmF96P3DgqaR1lISkpObfDXPZDzQUsAGv
- 0IBJ3nZM
- greewrjbMZ4biRJPj+z9Ju32XPGwTxocdgNCWDoKY7q6tOBValv/ws+ih/ee1A9hD+7XpoMZbC7fI2ghkWAHZEszqn2e2HCW+Z9OpHELma+lXnh1mzDRHJ2LqfOb0rGRaHSJxFycd0hSKkt3wWXXaf8eFq7duIeSulySf5YLOv9iPPXUfCShSq+RSE3Bp2WqFUd4p3/Pr0cWmqHnDFGcIiv3AfGywlGbQo0cz2UKBlR5Iyrwc7nzKVOR+DhsUQCapXwJ6buS+4ZRvHLJQlcG2A6UzQ4TaaqZ02SZzUrurC+c3UqB44JWTmYPNYscA2SMSuWOTWqq4JH6GtVUVh5NhfTrYrRhe4NFDuFO9+XEFBnEO4ubFLuq7zLAqtDktgFs+DP9qTQyf3VXmEiG5w2YPYogJCs0PR7+zSLYqicEY7Skr6huTFOgWj+plcl0D7Oy0+RjfyTh7egeEj33JKkCA3Jy5CmUleevKeQ9iVjsREiOT//Sa/s5YFKJS9kvbWH0jNmlcdtscQvHUtGRkof393mO1xgPOA8vG2ckTwoY/jb87c3nLNoWnXVKONx1bQeR00ZgF2kmWGaH5z+l8wzpwyu9HB6rL7WOViYEM+EvhyCY/7qfD5WqaFuJpcLNZYWDNRfXdxLIhrs0yph1Wvwg6FgmE6DvLrKRHfKvOHlh1S26BGAl/YbExmibN8/pqqQNYjrQWMTXLmMWal6QQeK50L71UnzfMQW0Uxaq5uCN6wQfVNKxau43ianqEKMd8rDl+I+H0q472B6Uuf8vgLeTs+m+u00zGp5gRpg3/
+X-Rspamd-Queue-Id: 0DBB38001A
+X-HE-Tag: 1790089260-944056
+X-HE-Meta: U2FsdGVkX1/6P+s/Mp5ZaVu/9Qw3o1odMuE7Kq8Jbw/80pI9T5YBvz0s9MObXrA8j6xBMZw8hfBy6cw15DeR71Px/YWgPXZmw5MTjXF6C+9nNGyl733lvldrzZjTsvBkpFjiRDm46b0zMHgQfP240rXHogUF/nDkxbQuS7BLOoXZzcLjE0lX+iVtjrknKydJQ5QsM84RqTjgEo1h4JQxJyaZF7SeB3MeKZZjMFNl9x+JJjqoGOGyVBgBdceDKVDShJX4oZSu4VjUdRhxcE4oo9g8C2+D92lezF3vSvTHTdRn4beDD5Z06mRoDpVsalvl+2jU90+vg2CbM3QE9++bRmo2MTIrE/r2byVumYdauUJk18ifekG/hUph6chp9BpCQJTmC37i/JqpVObEjXAyR+MXbROCSU96wBBXAmeauGpMz1I4yhKt1z7nFTCugH1kw2jl+SvrXQZev1DrNTQ/5GPmBuCLFh67rFhurWtuCceLC1pd+aUPD2+vZVgSmu46DfeaGjgqUq0Ec90YBQuElmmRkGHkU9dGqJiXxouTxsdPzSLwtbK0IMrc5KNRiq4cvAdk5fq5sZO9deNCJfk1+zSHk91zOr+ZVeGVpdHQuUMowHiljO22NyLAkDS9R2EhSClaT3KCr2hCDoqghdS55sgL/NUUtZ5YsjksouoRtH+HkVkccmo57LnuAGtZbGnNcCNtaZRk/WpXVo1qO26G6WTOJlEspIRniBs/HJLSd3OysDazOIMSfQiZ4O0VpdTiULsQds0W2/ln09qCoLo48GXaftEHa/6hAzfhNixqW/A7UtpRTv6geoDYKDkbv9g4+uFS4FWORrwOaTQd6zOlfMZw//uSqIjDMQfS9t/ov+ktZLiD+BUS0JG6lQKT2xly1WoDFk2aL46d8/j6+6Uwad60EAqmGroc/shAPiKdizhpKe9COHPfEekVwCqVDQZW0He+giffhdd07xkLlTd
+ Vimo7keR
+ v1XLKK6FZzv2cbNtodlSsffGq8N5XWVLh5W9wb5Z2EmIVCO8FSC+BFFAZfeTo9PWyVO7lTZjlVpIZfqLus2+hluBTEpgsXAnSBddi+k/dQ0SJV1GVGgPM7iX1/Z0KMcPZDRnP11Y/VSnuimoYKBRPHgJB17aRZSKVPkOGacrp5vHYO9p3FZthxeCbBrmo5IwUU1Z08q6W8jYyGxmvzYFqSPfUnAXafzi4AATSva2zqE1F5/VBbOmDYJ3EI4D7BzTdplvcO31GtutLDgUVHCnr0LBFgUFcqiKYmRTZH7wXxmxZ6pbEKum1HRqLPH/zLZH1EG7lC23VyWRBWvSpbdIH/Q47tZG3vOq4IdXuH5HQtuDrxrF95YhZl16VGZo4Co6XPPYuiVUrhcWjdxugZ5J/0lEcPIczHLaUk+nhvR9GENDaeTjKlPBT1AM7OzFguTXSG+TMzQBceMpHOgep5EgnSlz0a2x5eUlZW1l0dIDkLvqhx+eiFEKEi19gWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,107 +152,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, 2026-09-22 at 03:32 -1000, Chris Li wrote:
+> On Mon, Sep 21, 2026 at 8:53=E2=80=AFAM Rik van Riel <riel@surriel.com>
+> wrote:
+> >=20
+> > On Mon, 2026-09-21 at 08:10 -1000, Chris Li wrote:
+> > > On Mon, Sep 21, 2026 at 6:40=E2=80=AFAM Rik van Riel <riel@surriel.co=
+m>
+> > > wrote:
+> > > >=20
+> > > > On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
+> > > > >=20
+> > > > > Give me some real-world examples of people hitting this kind
+> > > > > of
+> > > > > limit.
+> > > > > e.g. MAX(%)=C2=A0 > 100% and still have a usesable system. I
+> > > > > suspect
+> > > > > that
+> > > > > with 100% zswap usage, the system becomes unusable. Please
+> > > > > show
+> > > > > me a
+> > > > > real world case that proves me wrong.
+> > > > >=20
+> > > >=20
+> > > > Here's my desktop system right now. The amount
+> > > > of Zswapped is more than twice AnonPages, and
+> > > > the system stays perfectly usable.
+> > > >=20
+> > > > $ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo
+> > > > SwapCached:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 252340 kB
+> > > > SwapTotal:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 41523604 kB
+> > > > SwapFree:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9802088 kB
+> > > > Zswap:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+8812236 kB
+> > > > Zswapped:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 24927876 kB
+> > > > AnonPages:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 11615760 kB
+> > > > AnonHugePages:=C2=A0=C2=A0 1402880 kB
+> > > > GPUActive:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 13112428 kB
+> > > > GPUReclaim:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 95980 kB
+> > > >=20
+> > > > This is also an example where I cannot really
+> > > > predict how much zswap space I need, because
+> > > > that depends on what AI model is loaded,
+> > > > which drives the GPUActive number, as well
+> > > > as the number of browser tabs.
+> > > >=20
+> > > > The system is perfectly responsive.
+> > >=20
+> > > Great, that is getting somewhere. We are talking about actual
+> > > usage.
+> > > I
+> > > really appreciate that.
+> > >=20
+> > > May I ask what the total amount of memory (RAM) in your system
+> > > is?
+> > >=20
+> > > I am not asking zswap compare to ANA memory. I want to get the %
+> > > of
+> > > the total RAM.
+> > > I assume your desktop has more than 8G of RAM, right?
+> >=20
+> > Right now it has 64GB of memory.
+>=20
+> That is exactly my point. You are running 1/8 =3D 12.5% system ram.
+>=20
 
-On Mon, May 11, 2026 at 10:00:49PM +0200, Marco Elver wrote:
-> When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
-> to identify the allocation site. _RET_IP_, however, evaluates to the
-> caller's parent's instruction pointer rather than the actual allocation
-> site; this would lead to collisions where a function performs multiple
-> allocations.
-> 
-> With the generalization to kmalloc_token_t, we now generate the token at
-> the outermost macro, and using _THIS_IP_ would fix this for all cases.
-> 
-> Unfortunately, the generic implementation of _THIS_IP_ relies on taking
-> the address of a local label, which is considered broken by both GCC [1]
-> and Clang [2] because label addresses are only expected to be used with
-> computed gotos. While the generic version more or less works today, it
-> is known to be brittle. For example, Clang -O2 always returns 1 when
-> this function is inlined:
-> 
->         static inline unsigned long get_ip(void)
->         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-> 
-> To provide a reliable unique identifier without breaking architectures
-> relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
-> to _THIS_IP_ where architectures provide a safe implementation, and
-> falls back to a zero-cost static marker where _THIS_IP_ is broken.
-> 
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-> Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-> Signed-off-by: Marco Elver <elver@google.com>
+> My point is that, I haven't seen a case where the application is
+> still
+> usable with a reasonable SLO when 100% of RAM is zswapped out.
 
-With this patch in the tree, I get ICE erors when trying to build
-csky:allmodconfig.
+In my numbers above, the applications have 11.6GB
+AnonPages, and 25GB Zswap.
 
-Example:
+That is about 68% of anon memory stored in zswap. Not 8%.
 
-Error log:
-sound/core/oss/mixer_oss.c: In function 'snd_mixer_oss_proc_write':
-sound/core/oss/mixer_oss.c:1202:1: error: could not split insn
- 1202 | }
-      | ^
-(insn 183 400 184 (set (reg:SI 0 a0 [orig:307 _55 ] [307])
-        (xor:SI (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
-            (const:SI (plus:SI (symbol_ref:SI ("*.LANCHOR0") [flags 0x182])
-                    (const_int 132 [0x84]))))) "include/linux/slab.h":759:52 288 {cskyv2_xorsi3}
-     (expr_list:REG_DEAD (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
-        (nil)))
-during RTL pass: final
-sound/core/oss/mixer_oss.c:1202:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-0x779b51e2a1c9 __libc_start_call_main
-	../sysdeps/nptl/libc_start_call_main.h:58
-0x779b51e2a28a __libc_start_main_impl
-	../csu/libc-start.c:360
+Out of (anon + zswap), zswap takes up 43%
 
-This happens with lots of files, not just this one. It is seen with all
-versions of gcc starting with at least v13.x. Reverting this patch fixes
-the problem. Bisect log is attached for reference.
+Can we at least agree on the observed numbers?
+> >=20
 
-Any idea what I could do to avoid the problem other than stopping to build
-csky:allmodconfig ?
+> > hen the amount needed to fit a workload
+> > does not have a positive correlation with
+> > the amount of system memory?
+>=20
+> It absolutely has a positive correlation with % of the system memory
+> based on my experience. The % of memory swap out has a very positive
+> correlation with the thrashing on the application.
 
-Thanks,
-Guenter
+The applications thrash much harder once zswap flows
+over onto disk! Out of all the swap options available,
+zswap is the fastest, lowest latency one.
 
----
-# bad: [93f51579e7df248780214094418f205253383cc5] Linux 7.3-rc4
-# good: [7d0a66e4bb9081d75c82ec4957c50034cb0ea449] Linux 6.18
-git bisect start 'HEAD' 'v6.18'
-# good: [df8f6181ab57d65a99e61fcfc5be22a42df58642] Merge tag 'perf-tools-for-v7.1-2026-04-17' of git://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools
-git bisect good df8f6181ab57d65a99e61fcfc5be22a42df58642
-# bad: [093239070573637ad2b4cb56abc9c4c7ee109294] Merge tag 'v7.2-rc2' into togreg
-git bisect bad 093239070573637ad2b4cb56abc9c4c7ee109294
-# bad: [b85966adbf5de0668a815c6e3527f87e0c387fb4] Merge tag 'net-next-7.2' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next
-git bisect bad b85966adbf5de0668a815c6e3527f87e0c387fb4
-# good: [25447851777a53bd4b501e7f2cb418332ad584cc] Merge tag 'char-misc-7.1-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc
-git bisect good 25447851777a53bd4b501e7f2cb418332ad584cc
-# good: [bd77e50c9a70f844d6073499f3d1a6fd193eae73] Merge tag 'fbdev-for-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/deller/linux-fbdev
-git bisect good bd77e50c9a70f844d6073499f3d1a6fd193eae73
-# good: [972c4dd19cb92e03d75b66c426cfade07582a1ba] Merge tag 'wireless-next-2026-06-10' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
-git bisect good 972c4dd19cb92e03d75b66c426cfade07582a1ba
-# bad: [9b40ba14edcdf70240af8114092a76f75f070774] Merge tag 'for-7.2/io_uring-20260615' of git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux
-git bisect bad 9b40ba14edcdf70240af8114092a76f75f070774
-# bad: [0d8c1134936f1fb6678156ab4248ac740d274525] Merge tag 'v7.2-p1' of git://git.kernel.org/pub/scm/linux/kernel/git/herbert/crypto-2.6
-git bisect bad 0d8c1134936f1fb6678156ab4248ac740d274525
-# good: [42a58f08b70a7a320c168a1ce15e3fcfc8568708] crypto: atmel-sha204a - Use named initializers for struct i2c_device_id
-git bisect good 42a58f08b70a7a320c168a1ce15e3fcfc8568708
-# good: [2c1ccd9a1d786503086e83fe83e5c3b3c953b70e] docs: changes.rst: restore pahole 1.26 minimum (regressed by sort)
-git bisect good 2c1ccd9a1d786503086e83fe83e5c3b3c953b70e
-# bad: [f8115f0e8a0585ef1c03d07a68b989023097d16c] Merge tag 'slab-for-7.2' of git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab
-git bisect bad f8115f0e8a0585ef1c03d07a68b989023097d16c
-# bad: [dfdfd58cce1c3f5df8733b64595448996c08e424] Merge branch 'slab/for-7.2/alloc_token' into slab/for-next
-git bisect bad dfdfd58cce1c3f5df8733b64595448996c08e424
-# good: [648927ceb84021a25a0fbd5673740956f318d534] mm/slab: do not limit zeroing to orig_size when only red zoning is enabled
-git bisect good 648927ceb84021a25a0fbd5673740956f318d534
-# good: [d196ea36a2f2118833ca648af53654553a4a1e7b] Merge branch 'slab/for-7.2/tools' into slab/for-next
-git bisect good d196ea36a2f2118833ca648af53654553a4a1e7b
-# bad: [e0f54249a491c62ef8196b9f13bd7d95dba47c6f] slab: fix kernel-docs for mm-api
-git bisect bad e0f54249a491c62ef8196b9f13bd7d95dba47c6f
-# bad: [0fc1bd38a19c108395d8338fb034f90c2d3fbe55] slab: improve KMALLOC_PARTITION_RANDOM randomness
-git bisect bad 0fc1bd38a19c108395d8338fb034f90c2d3fbe55
-# good: [feb662d9168b63e1d4c02671ec96005410c6f3ce] slab: support for compiler-assisted type-based slab cache partitioning
-git bisect good feb662d9168b63e1d4c02671ec96005410c6f3ce
-# first bad commit: [0fc1bd38a19c108395d8338fb034f90c2d3fbe55] slab: improve KMALLOC_PARTITION_RANDOM randomness
+Forcing things out to disk "because too much zswap
+is slow" could just slow things down further.
+
+Now, there is probably some upper bound where
+the zswap pool itself starts to hurt performance
+because it's crowding the applications out of
+memory, but that could be quite large.
+
+--=20
+All Rights Reversed.
 
