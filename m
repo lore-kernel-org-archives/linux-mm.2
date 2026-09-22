@@ -4,123 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70DDCC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE86AC982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:53:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 762816B00AF; Tue, 22 Sep 2026 08:51:50 -0400 (EDT)
+	id A72856B0098; Tue, 22 Sep 2026 08:52:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 739E36B00B0; Tue, 22 Sep 2026 08:51:50 -0400 (EDT)
+	id A228B6B00B1; Tue, 22 Sep 2026 08:52:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 676E66B00B1; Tue, 22 Sep 2026 08:51:50 -0400 (EDT)
+	id 911D66B00B2; Tue, 22 Sep 2026 08:52:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 451C66B00AF
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:51:50 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CC0EE4034B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:51:49 +0000 (UTC)
-X-FDA: 85241385138.03.7E30CD6
-Received: from mail-ed2-f35.google.com (mail-ed2-f35.google.com [74.125.228.99])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E57B7140004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:51:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jznpxOnR;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 74.125.228.99 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC7E6B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:52:56 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ECD5514048F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:52:55 +0000 (UTC)
+X-FDA: 85241387910.20.92242CE
+Received: from mta0.migadu.com (out-237.mta0.migadu.com [91.218.175.237])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 97705140003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:52:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nxPbQTi7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790081507;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1790081574;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G0pT1Bz/Ukk2yKj9z6fcgefhEfOADcNNQjef2vknbn4=;
-	b=OI5dwT/oV9JhojkdCryXPe3q0zD7S2WDSBMuJxxynm2n58PpW1yPoFnr5007JXyXZxyIAJ
-	YRuMaPs0rXG8dLXQe302+F0Tv3rYzv4ED5bNPAfYJxjZe0zSoyty/4U55Vl5dI6s7tuxeP
-	HvChTAF+MlYs883hOEYizXzMvsA26sg=
+	bh=HWEkGnkJbTXDIRIKBzMedQjTco/m0rFaJmBUYfZQCpU=;
+	b=SanVu6Mho+7q2/VUwskj5BvnCxH+r6ncoPByXkbZdAZi+oJVQ5gqTve2EfFaNpZIXb2dZ4
+	DWaXC4q/qzGjZF1+I4pMaWgWpz7NkJGLyAwOcUq+ZP5X1CCSfNll0iFhEcO1eewgqkgVaQ
+	hsBMzXtrxKZZt0Wx4Ph1coi/TN4Jcns=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jznpxOnR;
-	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 74.125.228.99 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nxPbQTi7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.237 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790081507;
-	b=TrgfcDf1GihWjmKS5ZOxdC6klSlnePLQmnlyyPLhXitamUYKfeaxBSRklkix47u5ZdXZiU
-	DOZqJh6jN2uMFfo306RJNaHFdzBurt44Gvp25jkMP9cuH7cKj6mYsjO17O/SqdQOdQkcEN
-	+WgGhROPk85L3BstjDJzuw+pukZ0VH0=
-Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6aa1d00daaaso7104846a12.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:51:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790081506; x=1790686306; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=G0pT1Bz/Ukk2yKj9z6fcgefhEfOADcNNQjef2vknbn4=;
-        b=jznpxOnRqtX1zP4w916A93xuXJuGa1LnKXRnhNp9GeC3E6IHmhVkPCREiQ3NACVb8V
-         hrCShUwQigKpeVhaNP1iJBcSc8sM+IzWklvknwWc9B/kqBafwx3W+NP35Vg3wC8CMy9J
-         eSEX9hF0Laka1bzRAebikfH9FrTyrzyMHSOJYYxbJzqSLjFWTSxWA9HS7AjqhvmfI4Vh
-         NBLIfGXUeT6t+4Q220vN1zBQ/elMmM2ctsLalhYmiiAfUjWS+5w91mkwsFJ1XpoAd/Ru
-         eBWW6ZxoORBvcsbJiVRZTd8NJjK+yIScnuXHoTJ/LWfSkgMqrlzk5zp0RpPPp7mlhRPf
-         kqXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790081506; x=1790686306;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=G0pT1Bz/Ukk2yKj9z6fcgefhEfOADcNNQjef2vknbn4=;
-        b=gIMtKK0wp/wXYOMoCZGK6ItWAjOfAMy0CegANEeAPZBGDeLhDGbBLnMlEQAwul6AqP
-         xOgJQCEIR43Xpl+EOVhBm0UDZRfnejrzTiMD6XJLaVdfO37JbmnV/J2l/8j8JkXGxOl4
-         WiB64qCPu/GRufu1xRXHd58a8nFZXKKcKtsx/EnG8ArG7+igoL6uIhb18GFDQwN1MnR9
-         7rB5jYbrCjJh7/AmVltKXDhI/9Ybf+wm8U20i0JmaUrwdHUkCFIFpEwMbhz23oXVsd/I
-         k+VKVFFLZmd50XiU2+ELRZYhJZbpC71dZ2RbFm+qbdZVxgGl/GaQzKKOtyazGd7hk71M
-         q2mQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzNwez7ISY0gmkQ8JNTQjUcFpdaE0nRYTmg8nOijlUrFY9YRgRPDtq49Rdn/PXj0wTFM8uplEo1DQ==@kvack.org
-X-Gm-Message-State: AFuF++kGBWnXOCvmaDGYC+pIWhf+0t+RiZMw3c3zhCtp+mfOmS8Y8sf8
-	w2euq84LaLhSSjONCfsAIhNCfguOw5WSNxB/lqqvSn0PmDrWcyyNYMvD
-X-Gm-Gg: AYBFou1zP94qq7iW4H/1ubG6410LqGl2RfOst3WyaFO2hC4m9DnnT7ROnarTWdlOOYa
-	MTAfdLus6cw0DFFLz/Z8m5nsvTamvUWKGbE6V/hlEtqOIpy+bQ+6NHGzSRgKyNfI2hO5OOhsndB
-	AdO5ih9SgrmtOxV3AwfIO5m6Q2rFL9cibtFwUpJX2NdyfAKP+lOIlsy0vGye1O9BnEr0A1ZA6sC
-	LavcGaqeyqsZe6yNty2qt1Lez8AHMvraK9mn7OykiQEtbLRJPRBQSaFhkY0SSr95GgIy4zzh6pU
-	Sn/ijGhV6MJFkkcnmpg2NMvQJM3MlvBs6tOaugOA31VsYYf+saAZyWqR8XeywHbKtbKTDAawgRT
-	F3SyWUUXqbsLs4QSLRhcvQ7K0+zgTjnHkRy+tBwLSnHjPbXUSdeUu3kOOeRhAAK4g1CxVFLjknI
-	Yw545kxZrQt2yclbumWSRW7ubgOz/WCge8pSP2Nc5PHJgz6UbnoNgjMePH/dPluMR+J5Og
-X-Received: by 2002:a05:6402:1d4f:b0:6aa:9823:218a with SMTP id 4fb4d7f45d1cf-6aa982324cfmr3582241a12.31.1790081506095;
-        Tue, 22 Sep 2026 05:51:46 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aaa4537b5dsm1073668a12.30.2026.09.22.05.51.45
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 22 Sep 2026 05:51:45 -0700 (PDT)
-Date: Tue, 22 Sep 2026 12:51:45 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	Jason Zeng <jason.zeng@intel.com>, Chen Yu <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 2/2] mm/memory_hotplug: optimize zone contiguous
- check when changing pfn range
-Message-ID: <20260922125145.3fygpy7gxoztsa3n@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260920084946.3266279-1-yuan1.liu@intel.com>
- <20260920084946.3266279-3-yuan1.liu@intel.com>
+	t=1790081574;
+	b=mzs415BgQfAeNA3L9kRf97R24sm9ITIs7oSV739+Elh5IjnOv+trEI4GQLoG1W4a7o70xY
+	Q4I9nENSzwYvY3eD8aQtWonMLK/r7W6jTI+0qPwtnMMKC33TRRSUrMAWIqh1Ij630b1hon
+	gdYSpodbsqXz5lkxAN30nxfhamTqPRE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Jae59hpYchWjFu5lmM2YnvXbv7hvGTzJEokKNdRbnnA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790081572; v=1; x=1790686372;
+ b=nxPbQTi79vF9CUl8eezgYLh9Qdy4s+5kv/DBz2cICTmalmIeDKUvG2BEryNN6gi977Rncrqu
+ nEljd/+ZzxjWRbYuUAbB96sHJ5aihuI9vrv8a/Ez0OUqO3HmKHeShOmA3tTINyauiwqBO7MeSU6
+ 77xt9COVa8rCdWe+OlJtl5s0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id d19d6af701ceeb03;
+	Tue, 22 Sep 2026 12:52:52 +0000
+X-Mizu-Trace-ID: d19d6af701ceeb03
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fcadabef-4859-45f6-9612-a819599c0fdc@linux.dev>
+Date: Tue, 22 Sep 2026 13:52:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920084946.3266279-3-yuan1.liu@intel.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E57B7140004
-X-Stat-Signature: 5jtmdi6bcrt6a17biwknxx5frwwyguok
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 07/29] x86: mm: add PMD swap-exclusive helpers
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com,
+ linux-mm@kvack.org, ying.huang@linux.alibaba.com,
+ Baoquan He <baoquan.he@linux.dev>, willy@infradead.org,
+ youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>,
+ "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com,
+ Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, nphamcs@gmail.com, shikemeng@huaweicloud.com,
+ yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com,
+ kernel-team@meta.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-8-usama.arif@linux.dev>
+ <aqqmClGl0lt5Qzee@thinkstation>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <aqqmClGl0lt5Qzee@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: twkyuokjmre4cbyp7roicpiubdtmi4em
 X-Rspam-User: 
-X-HE-Tag: 1790081507-987937
-X-HE-Meta: U2FsdGVkX19cOucVTKtQQkGswFW3EX5RWF6IJmAiFL5bQzqexZGvhwmwUBYFmNs+7sQpBiC8v6Wa48OgjZqITt7Ab0e7WeN1mGm8FixUm5XnUr+3a5tS9AoF9HfIZp1jPkQJj5KWulLEI3yGiE43+31GPDYaIdEkmC+O+ecPCVVOKKkzIpud7ThgKrsVV7dqqajLSC9J7lxaeH7U0+1TDJxNqnhMk7k9SdUuSWghaeSpSDniqHY1hQTRjrvPje5GERRDpJl8vvm481dtgjU6yR0wOuF9RY9vuU44AazYFJkpZH+TB5YyMVnjQONQzobZgkuzoORK6lY0mRmcQxa+dpy6+b1XM4+652v7b85puiXscs3vkHFISNbU+GdMuH92vwe7ZdTUIe0JmLnuOEaxLGItBJEgLBdgQpQtWdoGuQE2888UZo0CdVWIIHtrhBcxNHUlhdx3vntQsdVOGUty1hd9Zo3NqvywQygsoPIb4wNmuk6KAKZHjuRcy2WCdFZBOB0D5DawAo5b8voFIymWihaLtXMPqOVGkJQ3dGn4L2dUSc6e00Q194p40SAZ+8Jey4Uvi0mNlD3QJ5bMTVeq6lSmnGIr887YXJScN+kbEGPkJp8U+6IwXpFbTgszDzSe2tkVJHEqZNrdC4IFOxJFCywzx0OxQnGV+tjswSLdoJW1Tb2Ul/up7b+EN0SytW6NsZBZSvaJIPEiFH+7TxrvfUu+Sni5Kjh0a3AsuOK+RKr7v/wcBntW2QtvmEGanyHcXcpafRBSil0P4JgyUsClmSb+nNZ+VPeihCZJM8MBaLNJGSjZx/6fb+wmtMKIl5Q2UaVbLdEDa1Cosa2G6Xb4rMoEGiLbphYo3TW4hSXbc93DJGLjb2kgjFFmglmR3siZkvwtt4haJ2hHAbT14BUImwdfoeUp8CxDI9s6ORB5JmFlWCg4/JmJNiKxQPWGZa9CrlG+zq1z2Q9VE6Bu3aE
- jOZmdJLt
- 5CSDkWXoLu6scrxUciXd6TZBh/bJXGtU736YOJGsal8CTCHxRIh+SgBJC++zENkJs93rtk0D52CdVCCNB09UPcVqluYnsl32VmonNJObTDP603GbzlWkyKF9oteDcsaKYLaicnSMoB4Y75FW/voubSsgjG9TcBjoTN/xHR4JTmqV7WasERzdEthgGx5BrFZ4MrZt05BD99fCfvm3PSRvQVDXeiMSvw1kWlPnAuK568/4bWu/WElhPmtj3kkZgZJzjEko1I+X/ts0aS6c2QTNev7G4WTcWfl/1hyRJB/V/hneIeJgmzFb31TSj1b5RuDLjKee2PSlDBGI7JWBBSdMWopnLkx3Esa28YTycsXXeFwxf0KiGedHkR6j5qUvJ9WcptOHBG++37R9jrkqb4p/joFFpLcyYW4NgEOFs9VGnpYhdat353y72krVIMxfDaWaZ/Tk9Eor7J/zD9aub/xC7oETySjAgmyGqqvzLaRJWRxA0HVUyc/YBj53mbZmXUHCGB1K1bCQScs/hxZQz1XgTx7HJieV6Pc9Gf9GVI/R++dywatEZIGB8DrNFsB2h0qxB1pLUkOxa8mLieBigxd8h9T4kGDNkrd836huwycICJA2F5cRL7v8CncnsXRZSy0bmqYtnWw9JHZwPMOX4jcsMoM//sZFJ+v8Aq6qcVOstkmxmD3HaIo2MyPNRzxqo3xVWXbhK4z0dL0W9NDNEgJ2iKpTDR88lAO12dorWtT7Wcg1nKLkvYmNdQNckZDrMACpXGRVSj2XjqFAYX6X2tHrrCBChQs4GC1245C4fw6Ubb5p9a2oxKI0Tk1OzhABOYIryAuEb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 97705140003
+X-HE-Tag: 1790081573-67487
+X-HE-Meta: U2FsdGVkX180unDJq/+Nhpclz+8gr4U52hNca4GMXBPkgGg22v3Hk0BuQ2XxWbur8NN/IUPORgym/R9+SJb7jniFHtBDrVy+Bxp7jBZOVWcJ2FxKC+61IgodOn/peTh7MIUrNVqefdHmTzrNScLmtQepNp2NiEEFamWBV4d8K40fIBbSPTDCt9PTwX9sH8twuAeJqSZxUY1EZABK50q/JwwWh70XvF7cxrM6i/qIFPxoljoehZBqIFFYTd0K2dpzVd7upuLFhmkLxyEIYRscb1EJeUy3TQz7sPxl/0+zZtEyEBaEl6H8+KN75ywnTYVjexVZ+msNmd2sUgAZ0yzXCc+o2FrXqOgw7pSgIrOtB7wU4AMwdLTim4uF9JVYh8WNnrX5Uk0NSoKdGrqqPZ6qIQKYtG+EdA/F1vuBS0KE4abP2p4w43xP1lD4yMtliWVPCqBspdpzO7lNXOBOr/Nd+Rmg0FmuxE8811R/Ij877jKJj0lxstLyTr9dKoIy1BqDhD88hiQRrG369QCzIOG9wRLR4PKccbAWmIzsIixc2d3XDlc2H/vRUcShEQLtQIusy6nkSvDjlvuju14wgh5QTtYnMRkUQAOU37LeMke5i17rNeOmSLGEL37Blg+DP4D3kI7eGrkkzgJvfGvtgYSDHzfBBlsVJzNdu6ysBxFEIw/mvApHPj+/F7u54JQIGdWPoC2faXCN48B9O74nlwVCOl3VwXRvmLLOscXOT2wiRvA4K3L6sMlJbLfP+AkbH7PTdvvUuEGsFACpS0eOxaFn3UA98NMgqIM3NGxw89NF/pOIsbBPhjExruikukfs4PCrYkiJmhG0wf49TKTeH9JSxi358ZkmQrcDQDBN0OdJ0BrEDRChXOXWnzw/TPCYJThaKVYFDendzaxoTG03NwrreO23WfbAtot0xn8GyqD/6e8ybkwdqslsPYPRoe7UfF8GatOCfwRJXoP/E6w5ZYq
+ aTuBS9Cy
+ PVBYqK0E8ZQcXw3P+zNfGVBThi1mHhLiGZKq6g029FvHXCJGOTMAqlYmilKN+pqVaVVh1Bcs/NLbtCeQcAuNWQ/Mu3qon1oy/gMUa7UmZqT0jSo7ZysDphND07YVGUOVyhLH6hnKx+Id0gniRU3wtTNqTHzEipwLnan8ayWr4P246YmBpc0Inge2egfvhjmSNmf8NUnPX9BvIdzjaDx2+hgShqM15rfpR+oMih4AyzMhv989Xx5qWAHKLietnt8psVaIx/3bLSg0ilI9yKCLHtam0gRQ131IS7U4fIVF3zssz+wl+50sLjHP4Ls9QSxGdmEM5k5wqWtNnu9kyp4CtKlASjEEyCzJyU5/A
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,128 +105,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 04:49:46AM -0400, Yuan Liu wrote:
->When move_pfn_range_to_zone() or remove_pfn_range_from_zone() updates a
->zone, set_zone_contiguous() rescans the entire zone pageblock-by-pageblock
->to rebuild zone->contiguous. For large zones this is a significant cost
->during memory hotplug and hot-unplug.
->
->Add a new zone member, pages_with_online_memmap, that tracks the
->number of pages within the zone span that have an online memory map,
->including present pages and memory holes whose memory map has been
->initialized and for which pfn_to_online_page() succeeds.
->
->For early boot memory, pages_with_online_memmap is calculated in
->memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
->included in pages_with_online_memmap, and hole PFNs for which
->pfn_to_online_page() succeeds are also counted in
->init_unavailable_range(). For hotplugged memory,
->pages_with_online_memmap is updated through adjust_present_page_count(),
->which is called during memory online and offline operations. When
->spanned_pages == pages_with_online_memmap, every PFN in the zone span
->has a valid memmap entry, so pfn_to_page() can be called for any PFN
->within the zone span without an additional pfn_valid() check.
->
->Note: this counter may temporarily undercount when pages with an
->online memory map exist outside the current zone span. Such pages
->are only created during boot, when initializing the memory map of
->pages that do not fall into any zone span. The undercount itself
->can only happen after boot, during memory hotplug, when growing
->the zone to cover such pages and later shrinking it back, which
->may result in a "too small" value. This is safe: it merely
->prevents detecting a contiguous zone.
->
->Here is an example (page numbers are just for illustration purposes):
->  after boot:
->      [  zone span  ]
->      [   zone pages   ]
->      spanned=10, initialized=15, online=10
->      online == spanned  ->  contiguous
->
->  growing after hotplug (hotplug 5):
->      [  zone span                          ]
->      [   zone pages   ]   [   zone pages   ]
->      spanned=30, initialized=20, online=15
->      online != spanned  ->  not contiguous
->
->  shrinking after hotunplug (hotunplug 5 again):
->      [  zone span     ]
->      [   zone pages   ]
->      spanned=15, initialized=15, online=10
->      online != spanned  ->  not contiguous although contiguous
->
->The contiguity check using pages_with_online_memmap is stricter than
->the old pageblock-by-pageblock scan. The old set_zone_contiguous()
->iterated at pageblock granularity via pageblock_pfn_to_page(), so a
->zone could be marked contiguous even if a subsection-sized hole
->existed within a pageblock. The new check requires
->spanned_pages == pages_with_online_memmap, meaning every PFN in the
->zone span must satisfy pfn_to_online_page().
->
->The following test cases of memory hotplug for a VM [1], tested in the
->environment [2], show that this optimization can significantly reduce the
->memory hotplug time [3].
->
->+----------------+------+---------------+--------------+----------------+
->|                | Size | Time (before) | Time (after) | Time Reduction |
->|                +------+---------------+--------------+----------------+
->| Plug Memory    | 256G |      10s      |      3s      |       70%      |
->|                +------+---------------+--------------+----------------+
->|                | 512G |      36s      |      7s      |       81%      |
->+----------------+------+---------------+--------------+----------------+
->
->+----------------+------+---------------+--------------+----------------+
->|                | Size | Time (before) | Time (after) | Time Reduction |
->|                +------+---------------+--------------+----------------+
->| Unplug Memory  | 256G |      11s      |      4s      |       64%      |
->|                +------+---------------+--------------+----------------+
->|                | 512G |      36s      |      9s      |       75%      |
->+----------------+------+---------------+--------------+----------------+
->
->[1] Qemu commands to hotplug 256G/512G memory for a VM:
->    object_add memory-backend-ram,id=hotmem0,size=256G/512G,share=on
->    device_add virtio-mem-pci,id=vmem1,memdev=hotmem0,bus=port1
->    qom-set vmem1 requested-size 256G/512G (Plug Memory)
->    qom-set vmem1 requested-size 0G (Unplug Memory)
->
->[2] Hardware     : Intel Icelake server
->    Guest Kernel : v7.3-rc3
->    Qemu         : v9.0.0
->
->    Launch VM    :
->    qemu-system-x86_64 -accel kvm -cpu host \
->    -drive file=./Centos10_cloud.qcow2,format=qcow2,if=virtio \
->    -drive file=./seed.img,format=raw,if=virtio \
->    -smp 3,cores=3,threads=1,sockets=1,maxcpus=3 \
->    -m 2G,slots=10,maxmem=2052472M \
->    -device pcie-root-port,id=port1,bus=pcie.0,slot=1,multifunction=on \
->    -device pcie-root-port,id=port2,bus=pcie.0,slot=2 \
->    -nographic -machine q35 \
->    -nic user,hostfwd=tcp::3000-:22
->
->    Guest kernel auto-onlines newly added memory blocks:
->    echo online > /sys/devices/system/memory/auto_online_blocks
->
->[3] The time from typing the QEMU commands in [1] to when the output of
->    'grep MemTotal /proc/meminfo' on Guest reflects that all hotplugged
->    memory is recognized.
->
->Reported-by: Nanhai Zou <nanhai.zou@intel.com>
->Reported-by: Chen Zhang <zhangchen.kidd@jd.com>
->Tested-by: Yuan Liu <yuan1.liu@intel.com>
->Reviewed-by: Jason Zeng <jason.zeng@intel.com>
->Reviewed-by: Chen Yu <yu.c.chen@intel.com>
->Reviewed-by: Pan Deng <pan.deng@intel.com>
->Co-developed-by: Tianyou Li <tianyou.li@intel.com>
->Signed-off-by: Tianyou Li <tianyou.li@intel.com>
->Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-LGTM, thanks for the effort.
 
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+On 16/09/2026 15:31, Kiryl Shutsemau wrote:
+> On Mon, Sep 14, 2026 at 05:27:57AM -0700, Usama Arif wrote:
+>> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
+>> swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
+>> not just in a swap PTE.
+>>
+>> x86-64 encodes a swap PMD exactly like a swap PTE, so the new helpers reuse
+>> _PAGE_SWP_EXCLUSIVE, bit 3, which the swap-entry layout already reserves
+>> for PG_anon_exclusive. 32-bit x86 aliases that bit to _PAGE_PSE and does
+>> not select ARCH_HAS_PMD_SOFTLEAVES.
+>>
+>> Cc: Thomas Gleixner <tglx@kernel.org>
+>> Cc: Ingo Molnar <mingo@redhat.com>
+>> Cc: Borislav Petkov <bp@alien8.de>
+>> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+>> Cc: x86@kernel.org
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  arch/x86/include/asm/pgtable.h | 17 +++++++++++++++++
+>>  1 file changed, 17 insertions(+)
+>>
+>> diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+>> index d551120a7c889..a2d1cd03cba23 100644
+>> --- a/arch/x86/include/asm/pgtable.h
+>> +++ b/arch/x86/include/asm/pgtable.h
+>> @@ -1525,6 +1525,23 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>>  	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
+>>  }
+>>  
+>> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>> +static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
+>> +{
+>> +	return pmd_set_flags(pmd, _PAGE_SWP_EXCLUSIVE);
+>> +}
+>> +
+>> +static inline bool pmd_swp_exclusive(pmd_t pmd)
+>> +{
+>> +	return pmd_flags(pmd) & _PAGE_SWP_EXCLUSIVE;
+>> +}
+>> +
+>> +static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
+>> +{
+>> +	return pmd_clear_flags(pmd, _PAGE_SWP_EXCLUSIVE);
+>> +}
+>> +#endif
+>> +
+> 
+> I was about to comment that it is broken on 32-bit as
+> _PAGE_SWP_EXCLUSIVE there is _PAGE_PSE which would make exclusive swap
+> entries pmd_present(). But CONFIG_ARCH_HAS_PMD_SOFTLEAVES is only
+> selected for X86_64.
+> 
+> Do we want some BUILD_BUG_ON() to catch if anyone would try to enable
+> it for 32-bit machines?
 
--- 
-Wei Yang
-Help you, Help me
+I added static_assert(_PAGE_SWP_EXCLUSIVE != _PAGE_PSE);
+
+Thanks for the review!
+
+> 
+> Otherwise:
+> 
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> 
+>>  #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+>>  static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
+>>  {
+>> -- 
+>> 2.53.0-Meta
+>>
+> 
+
 
