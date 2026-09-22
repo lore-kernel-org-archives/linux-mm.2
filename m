@@ -4,89 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41A2DC982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 05:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02ADFC982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 05:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FFB46B00A4; Tue, 22 Sep 2026 01:58:42 -0400 (EDT)
+	id DF9AE6B00A6; Tue, 22 Sep 2026 01:59:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D89F6B00A5; Tue, 22 Sep 2026 01:58:42 -0400 (EDT)
+	id DD12D6B00A7; Tue, 22 Sep 2026 01:59:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0159F6B00A6; Tue, 22 Sep 2026 01:58:41 -0400 (EDT)
+	id CC0496B00A9; Tue, 22 Sep 2026 01:59:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D08596B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:58:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5AE291603D2
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:58:41 +0000 (UTC)
-X-FDA: 85240344042.07.B3F0DA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BF3BC20008
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:58:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ShZNu/nC";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 98E7F6B00A6
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:59:10 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 22E0DC038A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:59:10 +0000 (UTC)
+X-FDA: 85240345260.09.385BA8F
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E56A420005
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:59:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of clx814727823@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=clx814727823@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=black-desk.cn (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790056719;
-	b=wVeDBLNcZY7Lry+UqTXyxW/Zup/1cdQji6qYdDnbwzc4OlxTBbycjatFOPUAkNWQJFAzRe
-	WPLLIov1TUJyxdkuOmNBl2oG1e7gNnm3Iwj6j9DMXzK5upJ4UIlQY/KTKRz3RtAlDAs93N
-	trzqHABwGY1zIk4x1ofRGWYWoeNFhe4=
+	t=1790056748;
+	b=i0ukMZ34cb4KTsg1XG7CuKXYAnHam8YWbDwinJTYBEG7Eh2UeRWHUd2eYimMQQCHZD5mXW
+	KIB542POn7Kis9AmLStFNakHtWRjAtTsGd4oUHkjsdJa/cVgFoAd3nIdnJfbh0J1jgC2m7
+	03u1Bgs2T3eADiKFtLPAbQy8ga1WBNE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ShZNu/nC";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf31.hostedemail.com;
+	dkim=none;
+	spf=pass (imf31.hostedemail.com: domain of clx814727823@gmail.com designates 209.85.167.45 as permitted sender) smtp.mailfrom=clx814727823@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=black-desk.cn (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790056719;
+	s=arc-20220608; t=1790056748;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ThtsqR5Wl7QxxCKokbSVj/6isgE9KJQAZrTvGvTnCjA=;
-	b=7d7J8+4zh7bwq+aiD0PKnPy8C4/bVVfcseHcmXaCYe60uBPJ8kqHJeR5MuhZgByXSrbSN/
-	1u/r8c60wVPOir+ze3buh21wZTfI4N76vhGadc7ZqHlFsAj921h7T3PFmjo0nENLaXiJQp
-	4s58++EqwqaK2jznDox76AlNBmvz2VY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E3FE7406FE;
-	Tue, 22 Sep 2026 05:58:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E85D1F000FF;
-	Tue, 22 Sep 2026 05:58:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790056718;
-	bh=ThtsqR5Wl7QxxCKokbSVj/6isgE9KJQAZrTvGvTnCjA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ShZNu/nCoM9nE2bePF8ETpeKqLEOYSjbX5HcPFir1HgJe+CTqcFYCCijCZX1pdqIf
-	 ZTXKxQ5PLfuLaX1yPDaNtKHGGEtuQ7nzfL/h20baRp69Gzyp4AsTlhiLm+oWE1N6WY
-	 BQCWqkOGY9oRAhQ0rtE6IsWnHNoun4eKbixPrftWpFZW4rHNXJjZyCve6r706EePoC
-	 4B7i9pixgtuZA8dBZd416L+o9WN6at1mCjJP4kMHJyLn2r1VR3+qYQUtBddqWjGmM+
-	 n83SKl7RYeZho1oK0IIAFlzJLY7B+ewQN0OvYXiIDHGP9D3JYjgBILDGzQHPt+xZKa
-	 hzCdtg71aG+aQ==
-Date: Tue, 22 Sep 2026 08:58:32 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, surenb@google.com,
-	aarcange@redhat.com, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
-	shuah@kernel.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 0/2] userfaultfd: clear the inherited uffd bit in
- move_swap_pte()
-Message-ID: <arIZCIiecnNWPtx3@kernel.org>
-References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Zxmsk/EJ4w4QHvprrsLgwa7ofL6yH0BsSIWlOL221Nk=;
+	b=yIXJR/rBd5BEdMp4Lg9apuayjwP4/lIYsqM8lAaO2Il/eDd5W99cdw9701wktve7IutJ6K
+	/v5UwRBbr9/FTT4tEEr77dbD1m7ZhWcjrayQQiJmsmEWd8OsQ6Xi3Xct8WXza/sSA8uhvi
+	ZybsyEjTx5Jxjoqv/wqIk1dHkktVFJE=
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b8997bc6e6so401137e87.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:59:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790056746; x=1790661546;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Zxmsk/EJ4w4QHvprrsLgwa7ofL6yH0BsSIWlOL221Nk=;
+        b=N80wNB0Hi+O3HXA3u017F/utP/UqmWO9LCKVULo+bdF98GyzeIg8Z5ocNmN2PSUjVo
+         XQF39cQrydEbcJ99bvNLiAG3RoCpX3zSj6EU6fGMzMmP2ghOTApnzoIZZ+cEpY8Z5r/h
+         J/ZgpJSSBM65CGdONTKpx2j8tQY9WZaFKIvGErr+ehAhuUhkLWa3ig/TlzBlstT9H7mI
+         vAeSOAj5wcq5Rj/J9qkktztnVg5xalQW0iC8WJDrCbsVZqibljzR2dLpjzMbXgZIiov/
+         fupntJ+njurc52VyOvS3qlbivGrCDd++fIsf4D5zcVPAruKCETGnP2HE9bPsrYVNS1Ca
+         y7dg==
+X-Forwarded-Encrypted: i=1; AKwUvBwum4YLD1Cl7vGGwxw0Rg2+IgAtf0BDSaSkE2uS/8g1swk46ivcwPJB7Qd6FbTwKzvZjMlJdthSFQ==@kvack.org
+X-Gm-Message-State: AFuF++kVk4EsY0cH3t+Fh4bkH/OKjnsBUVBqg+uZvx6nXEeRXOZte6EJ
+	ffsYH/ra1NcephR9u+gyZB5JEc7kHF5wQMKK5FLb2tcVDOCYN+94sSzvp3HIeRzui4Yt0Q==
+X-Gm-Gg: AYBFou0zleM10ZSc1unH3o9j0q0lYLXSSn1xnRK8SR/SiEodBJJPkpsKWRXBM7m7ZaU
+	X8MSOMFztcLRQeIN0GTeKVYNUzNglyQ3gRBuBfJz9JYZD6V0McfHwDjL5KUrG4pBlStDW+liqm/
+	sZiI3QRlpYAonIcwNL0J+ZVZJbZypOpo/PdpiuNtDYsp1Y9E2+8Vkc//6Pe4sEKtiJ/Skb+G1OY
+	YWFsXsv19gi/d4m5Wt21iKF8Y2jK8vKxMFFGBLuA9oz5XMom+t555hhHLk22Kn0UZezIm2NNisT
+	pxfSqcOFDT1LvMg3ND8xo9ZRxAwBizPppbbBZaC6G8I0ZKYOdsqoa4/+Rb3vvB9DCGByWV+c9H3
+	A8Daz6Jn4MKChwgQUeTXSTb2OnZop3oLpMupGCLtv+/qwQsA+eYa1QGVEAJt8rF501BU8lYf30k
+	h+15p8OdUMBcu8JIj4guGtb2AOliZK117C6V7MGEKVa/LTtA4qSuM6w2bewqPN8lTtixNBKyDe0
+	fPFM+vmt5gVoq16Guz8ge4sP7WCWq0pO8vJKffaxnbAECLaugnivCQt0yy7lA7D
+X-Received: by 2002:a05:6512:4059:b0:5b1:5e19:c496 with SMTP id 2adb3069b0e04-5b8d28f856fmr432816e87.14.1790056745967;
+        Mon, 21 Sep 2026 22:59:05 -0700 (PDT)
+Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com. [74.125.229.205])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d46ed2bfsm208816e87.76.2026.09.21.22.59.05
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 22:59:05 -0700 (PDT)
+Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b5e4f1e428so1282996e87.1
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:59:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwZcFb7r+0ebfexZftzGS8X85oEfJg3vIBRnwb1hokMcUEFiWCiEXj0QKeWa2wUhr1hglxegGlQEg==@kvack.org
+X-Received: by 2002:a05:6512:220f:b0:5aa:62df:cd0f with SMTP id
+ 2adb3069b0e04-5b8d28f3a47mr500408e87.2.1790056745194; Mon, 21 Sep 2026
+ 22:59:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
+References: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
+ <20260831-pidfd-get-paths-v2-1-c59ea6a21b72@black-desk.cn> <CAG48ez3vJrbt+qYh5b-PYxmr2txcg3DAKDRwmBwVzNhRB+8Ueg@mail.gmail.com>
+In-Reply-To: <CAG48ez3vJrbt+qYh5b-PYxmr2txcg3DAKDRwmBwVzNhRB+8Ueg@mail.gmail.com>
+From: Chen Linxuan <me@black-desk.cn>
+Date: Tue, 22 Sep 2026 13:58:53 +0800
+X-Gmail-Original-Message-ID: <CAC1kPDMUT6pUarj-ohTGB9=5u=7osk+8bvyyAAjStsJN6Z3sEw@mail.gmail.com>
+X-Gm-Features: AclHuK-ZUoiNUpNllD9s0TdWDgkEMFXuDsvm8kdoP44o6gMCMaHAEIjZzTqw_NM
+Message-ID: <CAC1kPDMUT6pUarj-ohTGB9=5u=7osk+8bvyyAAjStsJN6Z3sEw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] fs: Introduce task path helpers
+To: Jann Horn <jannh@google.com>
+Cc: me@black-desk.cn, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BF3BC20008
-X-Stat-Signature: bz8tjhi4bbzqnqa9m7mcikdu94zcthok
-X-HE-Tag: 1790056719-700420
-X-HE-Meta: U2FsdGVkX184w/xbDJ2GcE3AGrv8S4KQjXp2H6Ka5nzjkxTr7wdgQVjCx1DLewjHynR1p/qB7Pnjc8ybGFvxtED2yXfrhwR8unriwR0hagTZ3uS7OEeA052F9sTNDkv6/0FpEUWX60PjcUT5JS5+kb+7G72lvmCvJjsXkeiRF9FyyJGK4O50cBgVeL4oM/EZ4QY3ysqVK/T7OBqsAloOxHT0KBIbDoYuygRe/D5TcUizbL5c2/NlaObx8Oa9vc6gH0Ad2hYxWm4SikRJAvekNMBm90WBeJwDOmJsi2NDXOjKmm6v75oup7pHZkq7NmUS/Lm1AtZzxEh8cswzAQAXEe8Bigs7+x+P5qVIlxoZaLxnhHUL1Vvwax8Wlvgb+cg4ZIJadYxWtXTbPzS091OUha3z6lqRH4dz4B4oxz80AYeDtn+BdPKt6IIDuNL2xKOFYbVgxAF3hlWcFjRoVnbUMKupepy0Jy3XMK689LcqeK860FlSIsMNg1JLjuQPqPa2Hy7UkkeRQKoF6SY6ziR4aT2l6+OPrg5yx7oISLcWOcDTXiUkEuhiYc7+9nOrlNiqjeqEKHSt8W4sPmzVrie2UnmLaqnyt5OpKB3ySInAdnL1onFQiajjdThF+b0FtlW5TQNmKx6lR2qEziUzw5QAwoSL7N4tOpFApJOoPN5whPnDfI2OnvrAL55BdOWJpud3F0GBJZelK5GcI0/l6cMvSQt97BNd4JzFzYSxXpq4bQJ6xHXNmLSaPlvEn4FPq2kIij+EmmT7VY0MOsrQr8YWnMAIfRoHB8iI/xuBix/r6heFbT3I9zpAUn/TuG66/KF5sNxlnpEaBEpBaUSIGJa+zIVa2KEx0NfTD5dCmoOuavRi/CdEMW8PYoi5UajxhCXkWthvJpSNmlLRlnI1N3dVKQ1NH0qeP/dVIXhmSinvWJgv/OVbzCvwItokse9vtgVe/2Hcu+a0fMeJ1vCbPOb
- 1di8tsl0
- 2mxpWNeVNkAe43P/47AY4uN4mMdf7IH2m0s7bYsjcVTu9RJKuwyh33LXvPKtLpa1AS1UHeJniPINu+6gLy1Pf2ECCR+WmXeImrBAgw704A1+Q7dvZJdGje8g+OWBcOFrUcog4aSjdzHiGrYgoJ7M5MpSJJ1wpXj+GpAXPLKrmHl94Kj8l/U5iRMm+qOk5S28GeGRsCt3AsmaFpdQiEXFEHFrvLjupgPd/G3d1UcgK7oPGCHtvapK91o6FVazuCjjApsQ2F5srfGn6uqeTqn6aYHZjDEdfecw3Wbsi5lGStBYWOte9TDq6UU9AChBFh158NymtOUC6lP1b+5y0ywH8R3peDcU7v9UVim7eJDW6J3W+hUbTX2J2IIt90behWxyXozTuBIGRjzUztmnq7Y6pUZz4qt/A65DssoJwnWsD3A69kS4=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E56A420005
+X-Stat-Signature: ch55dr8m3skx1x7h9gcw4urht5poejep
+X-HE-Tag: 1790056747-337922
+X-HE-Meta: U2FsdGVkX1+GKZfgm7IAEn9a4n1/2l+ztN8mTGzoYXi1kfnnKUrY5Zo5tgudWX8UxCzL8WYxKSIKlHLRtHokO3Vo6JZ0h22HqONra/hGpIqu4phWslumDSmI2n6XkPYau6XWOk7u7hoe6CSM68biChFbUaV6NrarbuB/1S+vpfxOg+qx23PkgcC3qjSoDJohhs8h92WPu3oZJGutcigIguL+yyRzMxu65Ubczqirt6pwv+suICYEMIS9uz3756YO1nI9Arkt9OVXQPR7/poNVlyY+ek5saqM1koZqL4TPxmw9tZ/HeyMorYVxFTKgmqrpW9f07GjSP1uh54n+yT7LGvw8G/Mjem/1p+Q+GXCfNyRra+eUYwR18EvER+Vg9KWtrrjZNm0iKxTcJbWCvZF1n3HvvRmFOX7juu1ZpZAUrZLXKGeoyknFLN3JPoUEv7VNkf2yxwIFf6Zaro3DBM5yr6h/GVQCnJ+H5+7lM2R1nfEOlwZMDXMWCtfQcl5smMXPLLHR7KAIRRp8ks6PcG19/yFlJgIa+LJoqAgOcMiEST3JGEAbUwsa0Rwbf+UogxfZwz9GDaD0MlxICfWAn2RePe1Vb0HPS24yoQUQmVsTln/w7uQLyrBlytI79IVPMreB6UKerhFK8ZAGynkouq2t2rGxrDXSy92x5szcBeUKq2kd5IjWpgJPQjYbK1D/1MyzWupL0UpqEeT5Kpum+YOdwqBlMHMuZMLLneriUEJ87ghDlQKhWzaygET7cVrzDKM196cBgpDJnMXHGC7LVU8jYl9HE3VoaPgcKIUdTQNB3NxHxFjhaRBgPFO4DukbDdafVOJGi58KVHuZq8809CVJ2ntSuBppV733ttzpNxQYqL6SuJFo+WvbTIogL+nCkoILQiUsICakdDEnJ0lJVKL87wwBXA3SnoqClW6JDXMv8JDM6qwAJ7G2j8LysSLsIWbpC+4GsGQCT4JWKCu2QO
+ Qy1KXW+5
+ odd4UHSlC2ULJWrg8UW6z7awrkUJfUP0ccMB8JNigCBQtH4ZQjljONOQOl8i5rY8K58bmHSSp5kgzhtYClRI5hh4y8Qsf2IRJs8h+1UIz6ORXR+0dkz5Mi9bvrWXPSHGoAspwa6nuN5sDbKcLKa/3xdiaUucrTmRcH1xwl7wY4mknd8Qx3MwrlTx6pYB1kcB6eI45EBKKraaep++S5eIQGpVHof9S0NRl06lbPDbr7DOfmxGe3PF7sofA4RRXVXA9IBVt1fsy9Sd6jZ7ClOfDD/VGVAAuadXM5f2rAoV8IbXOpTz30MLaEx8I7UAWQJhixOgdFK8ssaA9vF2byREKYjrgKxAxOYPtxkb6wT7Ya0hR+sFzRbYbNefnTTu2R1uxALBWgoxr/++soostgo58ALnMB6WOvbG5D/2N83k+7SIkCsvTszvJr3MUVoTKJkJhFE7wR0swcluNqR7PAlpPBwc1mJA1l5xSBhwB85Jq7s/ghes=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +131,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Tue, Sep 22, 2026 at 3:21=E2=80=AFAM Jann Horn <jannh@google.com> wrote:
+>
+> On Mon, Aug 31, 2026 at 4:59=E2=80=AFAM Chen Linxuan via B4 Relay
+> <devnull+me.black-desk.cn@kernel.org> wrote:
+> > Introduce helpers that acquire a referenced struct path for a task's
+> > executable, root, and working directory. Reuse them for procfs task
+> > links and AppArmor executable-path handling instead of duplicating file
+> > and path reference handling at each call site.
+> [...]
+> > +/**
+> > + * get_task_exe_path - acquire a reference to the task's executable pa=
+th
+> > + * @task: The task.
+> > + * @exe_path: The task's executable path.
+> > + *
+> > + * Returns 0 if the task has an executable path, or -ENOENT if it does=
+ not.
+> > + * The caller must release the path through path_put() on success.
+> > + */
+> > +int get_task_exe_path(struct task_struct *task, struct path *exe_path)
+> > +{
+> > +       struct file *exe_file =3D get_task_exe_file(task);
+> > +
+> > +       if (!exe_file)
+> > +               return -ENOENT;
+> > +
+> > +       *exe_path =3D exe_file->f_path;
+> > +       path_get(exe_path);
+> > +       fput(exe_file);
+> > +       return 0;
+> > +}
+> [...]
+> >  static const char *get_current_exe_path(char *buffer, int buffer_size)
+> >  {
+> > -       struct file *exe_file;
+> > -       struct path p;
+> > +       struct path p __free(path_put) =3D {};
+> >         const char *path_str;
+> >
+> > -       exe_file =3D get_task_exe_file(current);
+> > -       if (!exe_file)
+> > +       if (get_task_exe_path(current, &p))
+> >                 return ERR_PTR(-ENOENT);
+>
+> This assumes that when get_task_exe_path() fails, it doesn't set
+> members of the path argument to non-NULL values. That should be noted
+> in a comment above get_task_exe_path().
 
-On Sat, Sep 19, 2026 at 09:46:28AM +0900, Donggeun Yoo wrote:
-> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
-> destination unchanged, so a uffd bit set on the source lands in a
-> destination VMA that was never registered for write protection, and
-> nothing clears it afterwards.  Patch 1 clears the bit unless the
-> destination is RWP-registered, which is what the present-page and
-> zeropage move paths already do.  Patch 2 adds the test that catches it.
+Will be updated in V3.
 
-This and changelogs read like an LLM generated text.
-Please add attribution as per
-
-https://docs.kernel.org/process/coding-assistants.html#attribution 
-
-> x86_64 defconfig plus USERFAULTFD, TRANSPARENT_HUGEPAGE, GUP_TEST and a
-> swap device, under QEMU, base 17e7b8eacf4c:
-> 
->   uffd-unit-tests                    before   after
->   move-swap-wp on anon               not ok   ok
->   the other 114 unit tests           ok       ok
->   uffd-wp-mremap, 38 tests           ok       ok
-> 
->   pagemap bit 57 at the destination  before   after
->   swapped page, dst not armed        set      clear
->   swapped page, dst WP-armed         set      clear
->   swapped page, dst RWP-armed        set      set
->   resident page, dst WP-armed        clear    clear
-> 
->   MADV_COLLAPSE over 2 MB at dst     EINVAL   0
-> 
-> Donggeun Yoo (2):
->   userfaultfd: clear the inherited uffd bit in move_swap_pte()
->   selftests/mm: add a test for UFFDIO_MOVE of a write-protected swap
->     entry
-> 
->  mm/userfaultfd.c                             |  2 +
->  tools/testing/selftests/mm/uffd-unit-tests.c | 61 ++++++++++++++++++++
->  2 files changed, 63 insertions(+)
-> 
-> 
-> base-commit: 17e7b8eacf4cac800a4fc89a28729df72a2dabda
-> -- 
-> 2.53.0
-> 
-
--- 
-Sincerely yours,
-Mike.
+>
 
