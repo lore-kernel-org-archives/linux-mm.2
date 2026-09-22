@@ -4,120 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C94B1C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:38:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B47C98304
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:45:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9195B6B009B; Tue, 22 Sep 2026 09:38:54 -0400 (EDT)
+	id CF40E6B0095; Tue, 22 Sep 2026 09:45:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A1E46B009D; Tue, 22 Sep 2026 09:38:54 -0400 (EDT)
+	id CA52A6B009E; Tue, 22 Sep 2026 09:45:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A886B009E; Tue, 22 Sep 2026 09:38:54 -0400 (EDT)
+	id BBB166B009F; Tue, 22 Sep 2026 09:45:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E9026B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:38:54 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D33CF120476
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:38:53 +0000 (UTC)
-X-FDA: 85241503746.26.5ADC1CA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DE4A32000D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:38:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LgHLZOsa;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9DA9D6B0095
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:45:17 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27E1E1204AA
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:45:17 +0000 (UTC)
+X-FDA: 85241519874.05.7CB08B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8656010000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:45:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXn4KJ5Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790084332;
+	s=arc-20220608; t=1790084715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/a/f7Jh/MiC/swvVwqUhEXfqYE86b5oqe+3Ff4G++VE=;
-	b=ZQLZr1uHDcQ+yGMtXuwUBa3o9SiaziwDGp744kibLjpMBtjGp1Epvt2+a3f8nJceBTZyZs
-	RN18f+Ipg/X+se9+wvgEoLfep+D/cgmpFIBNLAyQGgIT0ThSvgYHwarrF880oYbPu5Tfka
-	woAWxLKDtBUyYe5JPAP4EflDY9uVXV4=
+	bh=vQogC0AaDJB13p395CjVa0K8IHFuyempieXINkDBjmI=;
+	b=2ZkKmCMU/CwdLWpde6+7u0Er+1ljOArIJBKOQRutiQd0G+soMQm8pq8qaJ6j5i5+iluXs1
+	EFSSYRP7fLTV3gDCYOZuwf/2ve6uiM1GCLUs/sYfEtNPaE+v1KUM9zTtIhMY/CZespkses
+	F7pPH22Tou0kZi/eOrnsTRZW/HecGZ4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LgHLZOsa;
-	spf=pass (imf31.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXn4KJ5Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790084332;
-	b=7jkldu+v6cb4eH08mhiHOKqdAYCYR3HC/OtAMNIXUJI0R11RPCcTwHhaKxJKtIVUTgH0vU
-	abxbf1TIZ4wlVNKABaKhGPVU8yXFVzXU7f/nf0KXsfeZGAWZBcENcCg+MAUqpVQa8SLDOf
-	DZCPyFzZdXjxyTbKxmtJgWmh3sm/L9A=
+	t=1790084715;
+	b=5PS1VfIYT+I4Qvah6RPGtSvD4Yy0nKKwP+aGSkTVYjWBKo4cYGedpRuhzw5uPtPRCy+2SP
+	SRZp5J2xsk/SH3UB8MPqhOX85kbrefRDcrjQMciNkI8mK73xW4Le5Y08qhAl6AS6L+V6Hz
+	AI78CPmJPGVGIe8cJbTv/d9VHO5f3cs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 280F944E4B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:38:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9621F00921
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:38:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A82EC6024D;
+	Tue, 22 Sep 2026 13:45:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96561F00893;
+	Tue, 22 Sep 2026 13:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790084331;
-	bh=/a/f7Jh/MiC/swvVwqUhEXfqYE86b5oqe+3Ff4G++VE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LgHLZOsaiLR6vEnfNUlQTY6oZ9lvgEVB+v1NKXB/7X4n71pwqtLIrApTSiD7ySt7S
-	 HyLboP0B3gSKrpbNLp/+DPYLQXPZgIU6Ll1vfcQAusS8E8NtWyerjL6tgSbQgSItT/
-	 zOqiJYMTe8O/M9LtX5D3mTo+SOV917k7m6JLtiJck4QLNWTOpao7KN2sUUmA03IqGr
-	 a+l8rch10YaCJPB2e0Zzk8f5oorNcgMbz47E0UM68z5IWhrkPjPm4VkhNceNXsDuWw
-	 jRcKi6pdnWQteSxiKx3FG7TdgBsDcrhFvBqVKTSnIfBDeWT3iJ6o140rLWVMCCwfju
-	 6PSOxO9vrgInA==
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4aa8d881so4311988d50.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:38:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwF6VRU+7i8xAOC01n4P+wqu0lUUvenjFoKBoXOyUPPg9ixM21Kot1tZJRJVa0XwN//y8NfnA+Qlw==@kvack.org
-X-Gm-Message-State: AFuF++lVpfRo1J3Amwh4LUhXfMh3tNYEY6bRG7UwuQKjvK/VTeX6VObi
-	ARtwgfQMSYe4fXjwWConb0pXHTRv1WdW3VGCQYWJArMcQwCU061DCiSZPJfqi09Snc1Dc6DJjr2
-	O3KiwVRmFpM37kxU9reV2GpeEQ7UHTh65TdpHmErC+w==
-X-Received: by 2002:a05:690e:a4e:b0:66e:542c:cb48 with SMTP id
- 956f58d0204a3-6717fd907d8mr5090744d50.48.1790084330182; Tue, 22 Sep 2026
- 06:38:50 -0700 (PDT)
+	s=k20260515; t=1790084713;
+	bh=vQogC0AaDJB13p395CjVa0K8IHFuyempieXINkDBjmI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=nXn4KJ5YCt7msZuBG7rmlIi53n8XfETgu6aRe4PZFQxj1jg1WctsRsI2laIFPKxcq
+	 KFMjOH9RfXFKsqQOGPuzUbM1RgW0kn9wvT8gHMwy6Ph6yX9efU/mBk0nhmEGM1d23+
+	 1u7KQ5pwBezqsOs+QxAjhex7Kad0ZPmmkOhxooTgsWA5epfHfE5rHF+9hp9ODHG9eG
+	 wGF9mgKd9HvUwnBMxAUyfAtAv8S4k4QW7tED3m8IwIQnoh+QcXgam+BAV5yJSeZNCv
+	 mXg9ZdNE+JflO8CbRUQCBwti/hKJlm1tIbegXIgF56GBM8wz088RoehPQhlg9uCrFf
+	 35pYat0LXjbHQ==
+Date: Tue, 22 Sep 2026 14:45:11 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, hannes@cmpxchg.or, 
+	shakeel.butt@linux.dev, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, linux-cxl@vger.kernel.org, 
+	driver-core@lists.linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
+ frames into the block
+Message-ID: <arKCBl7Ee7fSyKoR@thinkstation>
+References: <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
+ <aqpczrtIwSG948iv@gmail.com>
+ <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
+ <aqvHHHuWJ-y4WRJZ@gmail.com>
+ <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
+ <aq1RaH0eE0hZfNpr@gmail.com>
+ <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
+ <arE3UjqPsxctWckg@gmail.com>
+ <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
+ <arJ5I9QHHBvuGH_F@thinkstation>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <5fdb3777-95a2-48f9-bb38-aa4ba3c96a81@kernel.org> <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
-In-Reply-To: <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 22 Sep 2026 03:38:38 -1000
-X-Gmail-Original-Message-ID: <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
-X-Gm-Features: AcwNN1WgbakYkTh0yR3GKDNbi3ffYcCIIuJkVAws7zFs7ymxySYDN4SZgg1CLuk
-Message-ID: <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arJ5I9QHHBvuGH_F@thinkstation>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DE4A32000D
-X-Stat-Signature: xrofcmxrhpszt4xho3io4dcnz1dmk98y
-X-HE-Tag: 1790084331-332087
-X-HE-Meta: U2FsdGVkX1/hdeIbONaOcE28Wmo3eNeSJW2YH5g/x5xuxkwwtTIjZg2mtMhyga1Ma8xug3qYBkqz+uDTxmrRHR3SOyiLcJr9SkSXAFqP6myC/KVDfCFCPFH+BqHQLRzBZZYgNT/mXJsBK+qfZ5Bn3E/uptv+uY0XLYhREoKodRjI2EYmTMhP19+z2jgV4PE54KxL36BWpJUACnLVej+TSgHDom8jEi/UKAC0lvrPw3peecsZmh3aJmGCZxKsnlC1Bq9zCzr+i5dtX+kUESUeUr/abJJUHfMmrIO1d5REHdQskSvNH2UJvd74vweQ1rmkx5q7tTj+VLCM8JVzpWtiRwH2um5zBG2peGKT5c0XuTz4UmU4fjJqzmj1P7sMk32tXNpFCU1nMdhuf0RedLef/qZy27tZg2qbsnuXiIEh8C31O5DVumv4DEL3byNRAME7LPzZZ+RPMigfewl1Jj1qya0kGa+dhVB5Lzorc2jbZQ/49VydtPZyDamAXEo9fEAr86wVBc/QU9DmR6NvBuwvMUSR/T9Y86OwYUfvfAx+iowVGMjF/y6puOQrhjj0kgqAOnAemTqi++5s5CwyMCmVlYdvz+m9OOXwZGRW/I4e2aO3GNkMbffGd6wU8vzWBKpemQU5DDtRn/aKtYbJLcJQ9N73eQgKNTCZsRphvaqHrPNUKBTsfC0kx9b/iMeNDzgKWahs8o6ILfwKYocMndX5JcokHf7tBGZQ+kyq+PwwXEt2IhVqLk5WyEuGumHD8vjpRQlWkgssb53LBBm4wiptYAbhIUff3mBSMNfLttLE08OJjNdf+G4XcrEA542KAmbo5lxoHQ6ViCEVYqnjGHTF50Wqx+CDaJh1U26HRhaSvF7VQK178VSOmkdGBupory/yHSZ4y6U17EDtJwy+ONUfChLVfs7lGIBFYR/Aqz1qRR6qYyYRbSxW+t84eylyYdtAgptEi7s+h1HVzY8p+1k
- W8d93QBc
- mJvWDFNLKWg6zKZa4nr7wegu+ZZWnzziZA0aluHPB8DaH5a0vZAXp7nt4blLWuLEkxU1xDMdCCkLbNpp4tzi8qCCytTLa4uyztMCxNBJQ7sz4EvvOpuBqgCC4/GRoj2sP3Lk6ePN2SjLSURkrYLsqnQROCpsgQ7E49AnXU8xGBShZn7wt/YyNt54fPHtZoqJCnWiSjbnFI5B2YXjL99TcGvqsFPUcj2VuHVOJXOCgCBQFIg7VY6Cp/df6oUyz5pyHJvDxh6dyIy1dd8ohly93LKmJa+lS9LMEGfE10DoRIiAN8B9ZtWWNH03UWg/MQK1A747KdxNaCEUiWgZRpQfguKj0u2VjkJvp46tALgU9IjJ6XLROuNAcjGI6dtlJzOfT/uOf0JI4SNf5wSfgVZ42AGEk0ZKykYSvxcgs+rQ3tgUjKE57Ee9Awl3GeGcpHKtL3yW3
+X-Stat-Signature: pmeske5mc5jbwfrnz6rk3wscajtqzpgu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8656010000B
+X-HE-Tag: 1790084715-101706
+X-HE-Meta: U2FsdGVkX1/sevBrWtQDuV6r5owNa4wCbFspPgfL2lwSZOEI6pFBWu+7+iihBtdRTnaeHTHTJiKyF3/3pOIvPYt9IW/63m5bZyzIRYt+bbJOgnfhFtME9Uq+zIwtscjKhVDKXZYabazHcJHBqwVeEATMSDcfr2s3syXARoEIQFCiFu3cm98SYox0Rd0d4VbgQxzHFR8rgpwAB+dmk2hK1R6cUiZvL1o7LunyjCSqAuY/YyxEYDD9PdfaEyGA8HmJFp395pXmOV2hjNQ2ghndl4yMcvZnWg3p+FXO/KjiVcgPzQ9eG2CbdvEBEk9U2v1BeBUIdbf7DaQdZ2eP/NU45TXqD8aOzP2LlXE+W5wZp0MAJ60KR03jsYLmuwDI9W2gU3zddebNkRgd4XTwU03TxuRkmjFOCq3qfMKFIt3WFNzGZTcbuDj9dJb9xrWx1bk3fIxM2PF6BDwNmd4xfJLQsvVg6PRBO5wBkpS3TJ4Sbl0lsxbKS2CU9xvvfLYqneVL0toqdaHbiBU1JY1pQSaL3CZecSwuFEZXoRXW3PmwbVFEOEkUesIKFXvbKpQRX8TOw6qTjlCdNdkDiK83wDLfECYxVpvN7Leuim7lo7msyFnBUmtbe5UWqNg0kipkJzyn7V/gkrYLHmNhIq2gLsnPfIdywM5nfxZu/P+U8Sy51peUnX/x05Mc+UI04qGuvY/dzH7iz2ZSSq71eGE7nACHnC5rQoY4vY4i40qPjjU81QO/kXKh3spD+qtvm9xMA5q50rDLTpoFkyyeOza5/DIRgNiBDKSeHMd2sox+zHe3QWicRvXftRNoeAq1Dyio2DKGnE1IYByZowzeO3+V9JfFbJg4yU255qMZoNZ/2XHgHvTOWrYdq8TpBFKGbmM5yDRCwYZnHhVIB5HvnjjUX1oJHD43nrPZ3FlfwWv+iExDyZbnqzpjfSnrqmeUHLxoNXq596QEWsZkPDTlnVe2G2h
+ ANgUQtBy
+ gRHkZY8Ew641rrDY/6R5zTMHijE+swb2kHG18gACkNL9SsqylUmK6hnGz/fDLvrSFahXTLAl4Lx25M5tDayBNxumSHwzybCP/FED5olMjRNKwkCXSlRpUglL/qEqPhsOErhVycA6e4Pjb3PCZN7sausDQfX9p95ei18KObZY5o5umGfW5zGLBRfEU28o6TmeZ9R6ai78RBz0LmUfhjvnIMiG90I+/rddSictcuofMeeMscJOACuxmhXVo4uhtDl4D46y+tA0jyEQ8wyZOANAGYlhdCIbTbHFGmtX4f1kqXw3XcMRq16RGOZlKqBH2IvU7jBzOPHWZDtAfcE1dDMzeAQ8du2muF0xz+QqU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,30 +114,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 8:56=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
->
-> On Fri, Sep 18, 2026 at 11:50=E2=80=AFPM Chris Li <chrisl@kernel.org> wro=
-te:
-> > No that time slot is too late for Asia developers. I don't think we
-> > should use that time slot for swap alignment.
-> >
-> > We should find a time slot more friendly to Asia.
->
-> Any time slot would have that kind of problem. We're spread out across
-> the globe.
->
-> Let's just use a standardized time slot we have for MM alignment sessions=
-.
+On Tue, Sep 22, 2026 at 01:51:08PM +0100, Kiryl Shutsemau wrote:
+> On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
+> > On 9/21/26 16:31, Breno Leitao wrote:
+> > > On Fri, Sep 18, 2026 at 10:16:25PM +0200, David Hildenbrand (Arm) wrote:
+> > >> On 9/18/26 17:22, Breno Leitao wrote:
+> > >>>
+> > >>> Right, we have two source for poisoned page information, today.
+> > >>>
+> > >>> 1) LINUX_EFI_POISONED_MEMORY: Used to track memory block that got
+> > >>>    poisioned, and will be passed around during kexec.
+> > >>> 2) PG_hwpoison on struct page: Used by the memory subsystem to avoid
+> > >>>    touching it.
+> > >>
+> > >> How are both kept in sync? See below.
+> > > 
+> > > The EFI table is only written when there is a memory failure. That is
+> > > the only thing that writes to it:
+> > > 
+> > > 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
+> > > 
+> > > You can see it on patch "mm/memory-failure: efi: record
+> > > hardware-poisoned frames into the poisoned-memory table"
+> > > 
+> > > Then, when the kernel kexecs into a second kernel, the EFI config table
+> > > is queried and the pages are poisoned from it at boot, as they are
+> > > getting into the buddy allocator, in __free_pages_core().
+> > 
+> > I am not sure that is really the right place. That means we only poison free
+> > memory. Shouldn't we poison as soon as we initialize the memmap, and check
+> > whether any memblock allocations ended up on that poisoned memory and bail out?
+> 
+> __free_pages_core() is how we hand over pages from memblock to page allocator
+> initially -- from memblock_free_pages(), deferred_free_pages() and
+> hotplug. It is the right place to never allow them on free lists.
 
-There are more swap maintainers in Asia than in the US + Europe, at
-least based on the maintainer file. Please be more inclusive. If the
-alignment is done without key stakeholders, it miss the point.
+One limitation with that is that (as David mentioned)
 
-Sigh, we can't even align on a time slot.
+by poisoning memory when freeing memory from memblock to the buddy,
+the kernel might end up allocating the bad memory from memblock
+during the early boot process. I don't think we have a functionality
+to poison memory in memblock.
 
-In that case, let's keep discussing on the mailing list. At least it
-is accessible to every one.
+Hmm, will it be a problem if we just reserve area memblock....?
+Well, that was the case in v2!
+https://lore.kernel.org/all/aohldTtzE2GJ76md@thinkstation
 
-Chris
+IIUC the problem there was: when the architecture does not keep memblock
+metadata, nothing prevents kexec from allocating memory from the
+reserved space.
+
+So, what should we do know? Reserve the poisoned areas in memblock AND
+free those reserved spaces to the buddy to pass poison information? ;-)
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
