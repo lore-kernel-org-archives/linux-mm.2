@@ -4,108 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7359FC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 20:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8650C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 21:03:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 011586B0088; Tue, 22 Sep 2026 16:55:56 -0400 (EDT)
+	id 48D5B6B0088; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05306B008A; Tue, 22 Sep 2026 16:55:55 -0400 (EDT)
+	id 464C56B008A; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF3E06B008C; Tue, 22 Sep 2026 16:55:55 -0400 (EDT)
+	id 355366B008C; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B6E446B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:55:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1092F1205DC
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 20:55:55 +0000 (UTC)
-X-FDA: 85242605070.27.A577BBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0772580006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 20:55:52 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLiwYckP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790110553;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0259F6B0088
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:03:24 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84903160652
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:03:24 +0000 (UTC)
+X-FDA: 85242623928.26.2DE5948
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 928021A0003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:03:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V7lCQ2Xu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790111002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p6x3aoighk00gg5seqMKSj2yW50gaB1L65MJicSOd8A=;
-	b=l3ZdyYxDSlsYcgprh/2ps8hG+mhc5lCPr5chp+Qzujyl2/DF1gyReSnT+sM4Att9fYmuW+
-	OpTZZUxPrv/pNrmx1/mtGHeqC5lGYBoEdGeJqpVsli+YOx/l/ZEmrGsOc2MtLJd4JRZrlZ
-	lIXMZZhNX9RncPb1d2O4l8AL5sQUAb4=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLiwYckP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790110553;
-	b=bJ3dHG6oQgHAaY0dp4j4msZmWxSbF+bEoIUYo/EUhrNFxgSSM809ajLHb+4D83G2bOqWVt
-	T4cxacZJvt+Ywg0xCxgbQaX29erDl8zZDWxDzL+PqVSuY+eBq07AaHCTo90SYn7TYi8+VB
-	zPJdDI4vKEt8ioBiX0Yhzh62uFX5/J0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0844744512
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 20:55:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35A91F000FF
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 20:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790110551;
-	bh=p6x3aoighk00gg5seqMKSj2yW50gaB1L65MJicSOd8A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NLiwYckPmHCO/uy5zqf5lUKdmRoC0FecvuYfjX0XTmcncIecz8LFB7bxxq34up+6L
-	 Dg7SxVV+rrstPe6rGclYkMEmeo8FIM4EXnMsoiObCbvHLDZvFYf/ZW+CkEVJIG9ypY
-	 zXO0d93fFfR2pPuXAQZfR6MfekTRU8y9grvpoHv21evU/XPfYEXZnSWiCEcJ9OvjkW
-	 dExF0cQqb05KXJ1oCasvasjyNGS/1TLu7dHJTIwEseesrldMwQkB6fh8ZhnDZPkqTg
-	 /foHCR7mIbRN/2plKJrx2lBD6kyxOWpXAX8xPvyy7kqCPWy7q3S7GPp1AT+F+4DwvC
-	 i1HXbC88SjTaA==
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93a2dea320fso29989685a.2
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:55:51 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxDS9iOqV5K4XmOanuo4fFIvx4G6YFtJAD7wbHFNv4pgTB2NcxIN7ycLTFxeQcd8y/UbVlmJ0Au5Q==@kvack.org
-X-Gm-Message-State: AFuF++kIPsn+yNBhM7c99HR4zAuIQO3mhFPHZPsoXSnLAzucUipIlayf
-	uOx4kD5THpPCWzV9YPhv06bxBdEQHY5UvNNiEFF034bB/cwaG71hhg8t/kXJvFMyj0U6XR05fUZ
-	yC2hMHX4eiGA3+O4qqbRn+8bsaq8P7Ng=
-X-Received: by 2002:a05:620a:3197:b0:93b:d79b:9a5c with SMTP id
- af79cd13be357-93c2523ced1mr99421785a.61.1790110550897; Tue, 22 Sep 2026
- 13:55:50 -0700 (PDT)
+	bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
+	b=Mdw3mg3FKE0e8pVq7N9Xghk09pOBVPrMMLGfqGx/OFVcRmDuWSV0zNZLh1sRpP2facTsYo
+	H3zv7Xc6bPqGRfNiDLLdbCNJPR9vUQyUrI0aVGMONdb5AiF6vOm4ICsKNLY0fJ+31cpOem
+	jNMUHiMxXF8qcgVguZO9Nw3eBlbRGKg=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V7lCQ2Xu;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf19.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790111002;
+	b=6N163rCZhy0TJ3qsa4MdLjp6yHhGTE0jjnrYnzhWR6Nd0OuDVDYZUYLh+oPaM6iJuZqGyK
+	i3Q5TpvbALtQYrMuE4mduyjOMY2xfVJ7dOs0l/XadYNitV8wTq13lLyJ4yA8dsxhp3VfcW
+	+r21LiwO43yYq4ayZN8vbXgiayRuXR8=
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4be07e7c54dso240650b6e.1
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:03:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790111001; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LT6k+LbD9WMCMNMPWs6gCTjUi0FNcfFuf3yRrrBVkcb8ejrQP1PNQ1JK3zB1eZBiMe
+         YgUqXsa/EOjcvi57qGy4964DjlWQXDT7ogxeWIziYGPhvz6raLsOQQmECjthvYy8myyA
+         RD+QEVLudY2/3A88JoWSNDZZDtBQk32QpJuyV5PFFHjxqZe+/ecow44pvuCc0qUdzxhP
+         cC7ZxC4slcG2Zh3SpcKbub9IUPAtzc377cT6LeovB1QrB1dyPzelXQVDHsdJz3lSHae0
+         2RI9ZZtkk3ZLv5l6XktYWeyNUXwTtdOYaHN7ZiEWQKTRYceI/SSbOs0xdz34MAW+qTvA
+         MZdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
+        fh=LZHv3PCjh/w9DcpezvxQpz/Sj4CEZgMyPG+tToCrtng=;
+        b=kh/+kqnHj8YVE6xXh1oRgxwovdXhXmr6kt3XZRl3LVEt6GJo6t8prTatWUg4SYRXtc
+         NOrRwrsLjAXuYKYE9qKW/3jZ2KjxiabKIQE97m2YqttOpexLX46j8Kqy+hID4i5Y7sVy
+         Visv8yaSMv4UEBpuKVFJjEwHQxX6QwWanV/PQNuiWmtmunPe6dQwMYsa6R6c43ikgKsM
+         gTSe3j065YpT4skDUUDziACfcKWmMvq0aHFhSZZxepylMafMFpF9BY0ek+Hx8Rw/lT3w
+         bypHpHG8gj66XWuVd0fN9nDoT0rCCaZAeAcwLeBmWUeopu8f4iEyuACzmhMESogiFcTQ
+         mVew==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790111001; x=1790715801; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
+        b=V7lCQ2XufIkzB+XyCP6gVjo9pFIbRGiGUV7EezKuMGhQgBz5wqA4GluGY9dh000rDi
+         GXvC+0F+xQJBDiYALP9Bsu/gwlOBjBbNZnq4NyIlwdHDE0LyLAaj8jVyYuNHr3cw2IaF
+         VjTRqPnOPA9JXpcLnxJRSpdlgpOg6uJfoYGSduJKtyThZYlZF8Y4RXPCZ5a9J9eYG3AD
+         PJ2g7AeF2n1WI47vHKsBf94gGg62wBRBIAiLT5GQsPkJFkGAAglXvALr3utZsPBfa6zf
+         hP8J8trMG6JIDftCLCCg+wjfBXQ5AzToFBVHhcqthXA+3EwSNk3S2wy0o0J650Fo82uz
+         ZXaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790111001; x=1790715801;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
+        b=S0Bj2ZGpTERSpFGfWQgEZC/hH6NgrYzvQdadUUPzIpksxYD5mS9K2ofo6wOo930shH
+         NPLCvFDrN9ScJUyJV9FLNqh2JpGMZslMvTgrPkQQe16QtBBklHTlcRtUK4XezIVAdswa
+         b087osDBWWZC1cuxzFMdP7S0NH26vw7A1yM1lXdGS7lkPU8ikeMDlZyHsN0ftGtZYHo3
+         48xtKKqobcgqtsw+lwY8Y803xD/sPGiQ2OaUUwyFtMUnooRmdm0uuZk0y5v9oBpA+nGj
+         q62dW5GGmSc4EoqE8nTPXOkAiAeUJeeDhAu1xYJ2AsqEhZE2ceY8HrmTkq+GZAeyz0DT
+         wjnA==
+X-Gm-Message-State: AFuF++k3fDva7DAK6myAYGPbEXMh6FB4eeJ/dOr3u9ndRlhp8b0YZu6+
+	1Ge2kp8Cpy7MF/GikOrjqYGMEp/e0hXP4ls0twYPA9BCt9MFIZGsVq8QhG41nnSROTsjRs+fODr
+	han8sE1s6MBAZrHg/HRsK9Sy+HThE244=
+X-Gm-Gg: AYBFou27dYos4uzFiLQOiQF/487YVX5xCMpRCsThCl2tKHR/5STKw//vAPI78u2uHvJ
+	1Dq3oQPmSIxgy3eZZpUm2bw2HH/JyAELMg7QFWtwDO9DIAB9mHPE58xLryhCPiUqyN3052gTe1s
+	IWPJbecdG+jB4jk/ReFEOyyl7rfntg+4MyHCK1afyMyypufhngkkMUg4tB7qpvGzgvHTFTpsMpV
+	qjfLC1u7XPBo/HOSO5+tj7q909/CvqrLgPtP2As2dIlT6rrHWFiDMnwl2rBOSa/Xg1W72JTUiZd
+	U+Jaix1U6U2p9eWyDD1AjXHH/HrlqBubf/2PkBVR1JgU9dbWnSQL8Nvq4icscJiPDFguPvwMxng
+	GIxsJ9j7TgA==
+X-Received: by 2002:a05:6808:c106:b0:4ca:9850:4dd8 with SMTP id
+ 5614622812f47-4d436d8e804mr3181835b6e.10.1790111001332; Tue, 22 Sep 2026
+ 14:03:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260921152449.629486-1-alex@ghiti.fr> <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
- <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
- <108487b7-0529-4282-b5f4-355804b4c0cf@kernel.org> <CAGsJ_4zGmGh70QtRBpnhueev3qt_bgB4ZiE9fkW-hgNjAVhv+w@mail.gmail.com>
- <2e695c8a-4212-42b5-bb51-fbe1aa162e1d@kernel.org>
-In-Reply-To: <2e695c8a-4212-42b5-bb51-fbe1aa162e1d@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 23 Sep 2026 04:55:38 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4z2nakqBCKd_uAn4bfub99r3NJt2spOUx-K0M7bHW3_-w@mail.gmail.com>
-X-Gm-Features: AcwNN1U2jjkVaezVAxwcNpi00SANdjvUN0D07XxKUusJlvcnrdo8G4HZCjz1Os0
-Message-ID: <CAGsJ_4z2nakqBCKd_uAn4bfub99r3NJt2spOUx-K0M7bHW3_-w@mail.gmail.com>
-Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback completion
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, willy@infradead.org, 
-	jack@suse.cz, liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, chrisl@kernel.org, kasong@tencent.com, 
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
-	youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org, 
-	chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu, 
-	hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260920155002.1030454-1-devnexen@gmail.com> <fe49c311-582b-4ee2-8d17-42a758351570@linux.alibaba.com>
+In-Reply-To: <fe49c311-582b-4ee2-8d17-42a758351570@linux.alibaba.com>
+From: David CARLIER <devnexen@gmail.com>
+Date: Tue, 22 Sep 2026 22:03:10 +0100
+X-Gm-Features: AcwNN1XIGHxWY5dID-_5rqbKWq1Z-2duakHAem6OMx1JH4ihQ024QoNlPXf6f4w
+Message-ID: <CA+XhMqy_0UPL5HfPYhPHeJ-ZngG4DRzme_a32sLSYd2VGSjo3g@mail.gmail.com>
+Subject: Re: [PATCH] mm/shmem: don't release a swapin-error marker as a swap entry
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
+	kasong@tencent.com, bhe@redhat.com, chrisl@kernel.org, baohua@kernel.org, 
+	nphamcs@gmail.com, shikemeng@huaweicloud.com, hughd@google.com, 
+	syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0772580006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: i7pujodxr9hr3ti7dsjg3oci7rcwnsmk
-X-HE-Tag: 1790110552-465100
-X-HE-Meta: U2FsdGVkX18Fft1ssGD7DE6crxDGg7U2BwDHB0lCQGlao28CAKh67/IdNvu78EwIR9DFGxrRl1Py6aNx5s3mR5a9yZsOHiT4WKRLgzcv2pzuuY2hoI/oA6k+A3dkrntV7Tkg+nGdDZT+oSVzx/+UuYtV5Ag1k9tH7+PtNYtY7w4kHM29y1NeK2bamYwWRbU8MH4MbZxf/T5+PGOF/p5MWLP503pC9hHStdI8I3RXda/CL8JntwpCFdLYROWSJtDEtzb/9iIh2aSFwJ6vYVOjSTzl3NG6MK/6xJlXotC4gaZ7/iJ3A+mqkNSI/p5ZYLfAV5CnxWGgIoBx+bISFK7EC2krpdXjzVd8L8Un3YsTzjpiqhyDRDQPlNo379WWgG42x0cuGu/Nq+LNSOw5FcVHD7eQzdfJ3hn87v+cbVlkAh5RJ+M0HpPD7LDATi8B71jhJHAj5k83CHG35OEG3PI/AvyM5bl0QB66OO69YtKDbT/W9IZqpupIBl15PxoCgRagETHg3U75C8DuaZrsGaq3IpQzSteghRGjuQ/BqulxhliPxwTw/46TF3teZ9CU9DyXKo22aEewJvj9tITQ9dGsuaD9alHRNE8/noqZpceSAIT4wZrfxh+v0gEu2atqMRxXwFHgJwIrEWXFCmRU0zCx93Uo5v3/wcZqWZ+AsZVfE7gDxAz2yyJTd+XBnDc6TjpedCvNNQO9rPV+fmOMuTfNAvRA/97dVSaTnKPiIQbci9mRJKbGkWGFNi/jAZabng9qnbP3nOWjYRDsPgsJNw9121QUEdz7xLMWldhXCPqiRCtSzb/ahBXAXtsV9XHiwxl/5uu6Wpl+Vkeybk89JHzANW0l+XPOiIfwVvgGWKKFwIJeN8bjNh8vUmTDiJPK34Ql7OXJMVxFuke7T8/Gf3L6pJcfmqPz4ia5blzLtK9sSy+lsp6l0CXST1Fil7Mz8WbxUf/keAxi+kZzC4kS7eb
- Uz7obuOF
- cFpdsWpNIR0y2ydaNZ7sWQz95tGmTccedRA6MLtgswQOBku7RxJOQzwIOqUOUHODpAqxIO4iDZO/VEG0Bmx0dsej5XZ+7OtwTJ6Y8VBIJBRTow+HHbL0OTmv9d58lFWWnSMbB/d3LVdUWUlqy3M7iU4GtpJ0k2F3fhQi6yEeysdbIV0tMS+DYK7E4nDljueTb15+0C2dX/0qT1o5PwXKkidCDKeomv/mV4ELEQBfXaPVvdphYBfiI3uCnicrOcWczVrKZtM6H/EKu60D5RY40wfCcJII4RyA0CUxQANv04dwEM6ZGw744B/8TbkAgbZc3vomA9615Gii+LZTuuQFB2OUJEjXc4AvfxVyk5IIzU9gsOeGtZpZm/W2lkRzNkCCDU+WMq+tNTs14I8icBlc3rUk/anOyP6/Rauu50qBC6bcVPX+JlFUpScYHGw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 928021A0003
+X-Stat-Signature: idsq9nkfxw4fawp95rjeaa6rd83qrw3a
+X-HE-Tag: 1790111002-490367
+X-HE-Meta: U2FsdGVkX1+prjk/8hAo+tlqjtbvHiVxji9W3zxAskMiEZoTx4mCV4/D2WjawLaw0TTArBo9IBsfix3M+EXKFW+MlOM/XpB3G1XNqO7w8IN6bWo2Le//3mvDui6ifxQNp1/CuJJ3D5TjIHyudGTe6z9TTu844ji9Sq7kMF3ht56pvTg16OTlA+eB7d7mFIcmlxJ787OVdMhmHjd7juRP3XxhTGuTiuvnndArFAsxxnuGk6tJAAgUGOTQOQuad/++jHVAog7fwedZ3ojY32TzGqEyHf8dRp0upUzDeSz4rduldh1mAyrwF0hMDF0dBHpbaMN48IlKU9LzOjPGVKykpTNV4ocIzXnxGYjwWGnOQOT2wmLyqgueKXpc9JiLM/h7JyxP1kn0Mpi2IECkCbecAtAUeWcbWyJNXfP3vQ9gYBR/Ja03Q9DraYKB/jmkLlxUjWgkKhzmzHSDUaQ4nM2r3uz36ycPuqxS/lrzOAK+aGUTsylH5UAd/Zh8hCLf5NaAEJLFuPXYvk5dSlIlY43jD9H99q/oEsiGNwkPHzWQbR/Odcx9Fvz2iHoT9vRN/LPTtK4xi0w2S/rhCn4+7BzZjDoLMwRs5JBkPCBOQd2QH22dxfvmxV2Wc5+a1fA6c8HAygvO6fMErKDv3PB1Fmbex39vevmLVTPWwgzqvnKgnRCU2lKvNRsVdHswze3xL0noQaLIPBBcNW+ZJ2MG0vz/SqdLbK/Ivs95pPEH3OOYZiKYz2nEtiLK0E6QDy3LT4YVO7oscKcOOQ/a3C4Dl6WUF56Np6uwhgzdcprrgaB1RIBzP6pHv8XdvgM06+9PJ8fyTjS+cYwHweOI15VYD+J3/ZWsPmGqled4gNnOZnUrTX3nphOcJVoJzYUjqsCtP7azY+HhvTX4jDHUUhoV3nNsJ6nYuOlDd+Fr8xpB3uChaPCKxMe7tJ8VQkBu9MvgWUy1J3nkuyGJVI4oh0+YuBS
+ 6JqK6Dy5
+ b20OuLxqj4jpgRo909/UEzhm6eCSPFiZipT/NzhnMyTe3HITntujhK9Y8DVuLMKd/GEva4e5nztEm++El0fGRyrEFopvjgQtLnutUwb109VWIowiR4GTz26JGY1R5sxXX7Bl65VoeLpR7i3sbyhvht6PSveIhyUHdLuW28e0jtMKKdx05znChH35cZmdKe9y41zvHO5UEU6Ye1r8f30wjwmdZh9oZLFhDj15aNifYk07AwZ/vAcVrBKc9i2ma5HH2fgWGXW4JxaQLb1Ocm6/5NI7zYsFKcL1g7CwD8jwr1yNArgRK7n6GXzE/cNDazC/K6n5ZKh4W/kRF+AtzvTeeuycBoqpbolHsupQmHOHg2gcDQgYKz9vG8w00j7Bx/YW/DEZnYgS2XhjcI1QzMRx0qW74JfeTl76YyFJFVAUuv62ObBQzD1+Keie3INQtdg/IB1GH7zXG6+DgYkb/TtGsVXsbXrFGS6VSU8/dgpA9My6I9SKferhS3A/DMMGevGdlsaNc6hwotxZcHnCFm6XcuR4qXb3KXJljdca5ZJFkE6e9WwXtCwmoqVqCi9LGHxCL/OaHwhM8L8w2tYb/qDQNSSWwe0gEsy1dhBgGyp87rmC3K3E9rWZ2BWrdskhZri4iNEbi7vqwmnMI1qAWDcpt7wkLL3Ny1YvS2etH9XJ/rmboZUWADg7CpvWNKmtK6R7Odhnw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,95 +139,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 7:26=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
+On Mon, 21 Sept 2026 at 03:45, Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
 >
-> On 9/22/26 12:37, Barry Song wrote:
-> > On Tue, Sep 22, 2026 at 6:20=E2=80=AFPM David Hildenbrand (Arm)
-> > <david@kernel.org> wrote:
-> >>
-> >> On 9/21/26 23:56, Barry Song wrote:
-> >>> On Mon, Sep 21, 2026 at 11:37=E2=80=AFPM David Hildenbrand (Arm)
-> >>> <david@kernel.org> wrote:
-> >>>
-> >>> For synchronous I/O, such as zswap and zram, the memory is released
-> >>> immediately after sync I/O is done.
-> >>>
-> >>> For asynchronous I/O, such as NVMe, the swapcache is currently
-> >>> expected to be rotated back to the tail of the LRU and wait for
-> >>> another scan. Alexandre once mentioned that when he tried handling
-> >>> async I/O the same way as sync I/O=E2=80=94releasing the memory once =
-the I/O
-> >>> completed=E2=80=94he saw some regression. So, delaying the release un=
-til a
-> >>> later scan may allow swapcache hits before the folios are eventually
-> >>> reclaimed.
-> >>
-> >> "may", do we have any evidence that this actually is relevant in pract=
-ice?
-> >>
-> >> We asked to reclaim memory. We wrote the memory out to disk. We unmapp=
-ed it from
-> >> the page tables. We made the workload the could, access the page immed=
-iately
-> >> again suffer already.
-> >>
-> >> We should just evict them as soon as possible to free up memory.
+>
+>
+> On 9/20/26 11:50 PM, David Carlier wrote:
+> > A failed shmem swapin frees the swap slot and leaves a PTE_MARKER_POISONED
+> > entry in the page cache. On truncate or eviction shmem_free_swap() passes
+> > that marker to swap_put_entries_direct(), which warns because it is not a
+> > swap entry. There is nothing left to release either way.
 > >
-> > I suggested this to Alexandre, and he found that it could regress some
-> > workloads [1]. That is why Alexandre is only making the folios
-> > immediately reclaimable for `MADV_PAGEOUT`.
->
-> I really hate to add special sauce for MADV_PAGEOUT. Also, I don't quite =
-like
-> that we do something fundamentally different for sync vs. async.
->
-> I assume, though, that async writeback that is very fast might just find =
-the
-> !folio_test_writeback() scenario just like the sync case. ... or if we
-> reschedule after pageout()?
->
-> I am wondering: if we can show that letting async swapped out pages stay =
-in
-> memory a bit longer improves performance, aren't we swapping out the wron=
-g pages
-> in the first place, and not swapping them out would help the sync case as=
- well?
-
-I guess that's because the LRU is not always accurate. There are cases
-where our prediction of future access patterns may be wrong, resulting
-in refaults?
-
-Even on Android, which uses zram with very fast synchronous swap-out,
-I can still hit the swapcache from time to time. So perhaps with a
-slower device, such as an HDD, keeping the swapcache around for longer
-could allow applications to hit it more often?
-
->
+> > Skip the release for non-swap entries, as every other caller already does.
 > >
-> > See Alexandre's description:
+> > Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
+> > Fixes: ac2d3268284b ("mm/swapfile.c: remove the unneeded checking")
+> > Signed-off-by: David Carlier <devnexen@gmail.com>
+> > ---
+> >   mm/shmem.c | 6 ++++--
+> >   1 file changed, 4 insertions(+), 2 deletions(-)
 > >
-> > "Future work
-> > -----------
-> > Barry suggested extending this to MADV_PAGEOUT and general reclaim. I
-> > prototyped dropbehind for all reclaimed swap folios and it regressed
-> > sysbench OLTP throughput by ~15% on NVMe swap: dropping the swap cache
-> > immediately turns cheap in-cache refaults into disk reads and collapses
-> > swap readahead clustering.
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index b572c60f2af8..94f2c59c8cfc 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -1184,6 +1184,7 @@ static long shmem_free_swap(struct address_space *mapping,
+> >                           pgoff_t index, pgoff_t end, void *radswap)
+> >   {
+> >       XA_STATE(xas, &mapping->i_pages, index);
+> > +     const softleaf_t swp = radix_to_swp_entry(radswap);
+> >       unsigned int nr_pages = 0;
+> >       pgoff_t base;
+> >       void *entry;
+> > @@ -1200,8 +1201,9 @@ static long shmem_free_swap(struct address_space *mapping,
+> >       }
+> >       xas_unlock_irq(&xas);
+> >
+> > -     if (nr_pages)
+> > -             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+> > +     /* A swapin-error marker holds no swap slot, so just drop it. */
+> > +     if (nr_pages && softleaf_is_swap(swp))
+> > +             swap_put_entries_direct(swp, nr_pages);
+> >
+> >       return nr_pages;
+> >   }
 >
-> Thanks, does this represent a workload pattern we care about?
+> Makes sense to me.
+>
+> But another issue caught my eye. Since we already call
+> shmem_recalc_inode() to decrement 'info->swapped' when handling poisoned
+> entries in shmem_set_folio_swapin_error(), shmem_free_swap() still
+> returning 'nr_pages' for poisoned entries would cause a second call to
+> shmem_recalc_inode(inode, 0, -nr_swaps_freed), thus triggerring
+> WARN_ON(i_blocks) in shmem_evict_inode().
+>
+> I'm not sure if you've observed this warning. IIUC, shmem_free_swap()
+> should return 0 for poisoned entries.
 
-I don't know. Maybe Alexandre can share more details about this
-benchmark. I'm also a little surprised by the 15% regression in
-Sysbench OLTP. My initial feeling was the same as yours: we should
-release the memory immediately after writeback completes, for both
-synchronous and asynchronous I/O.
+Hi Baolin,
 
-Kairui also mentioned to me that he once tried releasing memory
-immediately after folios were written back to HDD, and saw some
-serious performance regressions as well. Maybe Kairui can also share
-some thoughts on this.
+Thanks for the review.
 
-Best Regards
-Barry
+I think returning nr_pages is needed. shmem_set_folio_swapin_error()
+decrements both alloced and swapped, so shmem_recalc_inode() sees
+nothing freed and the block stays accounted. The second decrement in
+shmem_undo_range() is what finally releases it. Returning 0 there
+would leave i_blocks non-zero at evict time.
+
+Cheers
 
