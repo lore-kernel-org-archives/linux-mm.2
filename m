@@ -4,110 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92BA2C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:35:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97B35C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6808A6B009B; Tue, 22 Sep 2026 08:35:01 -0400 (EDT)
+	id 6A9456B00A1; Tue, 22 Sep 2026 08:35:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60AB86B00A0; Tue, 22 Sep 2026 08:35:01 -0400 (EDT)
+	id 631FF6B00A2; Tue, 22 Sep 2026 08:35:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FA986B00A1; Tue, 22 Sep 2026 08:35:01 -0400 (EDT)
+	id 521106B00A4; Tue, 22 Sep 2026 08:35:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2904A6B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:35:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B26891604AF
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:35:00 +0000 (UTC)
-X-FDA: 85241342760.06.3A17E04
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0044620009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:34:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ApDtHShH;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E94F96B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:35:11 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9088DA4AD6
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:35:11 +0000 (UTC)
+X-FDA: 85241343222.03.24345EE
+Received: from mta1.migadu.com (out-223.mta1.migadu.com [95.215.58.223])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6088A40006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:35:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cwU8b8G2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790080499;
+	s=arc-20220608; t=1790080509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/b2H83sBKLfZiu8TvApIXihDp5UwTxcEl76P0l59dTc=;
-	b=NiSc9RJyxdGEo6zbH/h3zfSdVDOdx1hXGfohIi94VeEFi0EQE4nsx4dj6y8D7WpVKyqjR9
-	XOamxJpMaUorMVhMqCnvU7V4Q+jWHNDQPe8+2xd+Wx9NhhFPn0rrF/uRIsz9UE1q98iUYq
-	cBtjjELb2Q+9+Xs6SWx3xhGlVgMpgiU=
+	bh=UooEYY3XSUXc5Zv1HmaYpLhPrMN8hkGySW7d8Ioqs6A=;
+	b=ChQaa5rBwaTmSpdpIp9+DxCBPRmkHiPA0GahcHI3E9aPkNCaWjMjTncfbAvIK5TmXLgIsb
+	6E/qd1ZwOzY8wQqr1TKxj3WlQ6aEsnV0vu3VWyz03WBB68ewDCcRtZ6YtKJyR4o8xj7pRG
+	sdYa2pXBrnSp7qZIzCwHQt998Ki4lho=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=ApDtHShH;
-	dmarc=pass (policy=none) header.from=debian.org;
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cwU8b8G2;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.223 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790080499;
-	b=4ymYL36LiJQQDhO4zmPhVHC90ZxqI0ZroGQ1Bzc2BjNziwts+SlZa/9BMQig3TeW+y5aKW
-	2n0kGBN3kWK04dp/NOE9DoJoCUYc+R1Kuoi4fk5ZvQAA9eYOYIMEssIXsuOyBwR4V+qw6a
-	Vsqf3ZviE3CwJbAgoptFr7LpWXHOSz8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/b2H83sBKLfZiu8TvApIXihDp5UwTxcEl76P0l59dTc=; b=ApDtHShHX9N6Hse7lBfOPq8nb+
-	TgSY0Dz571CzSHnonuArzlVIuV7weX7CI3axguEuQWcj0BzXmXuLDDqrzOazmizDLYycePe+wsP6J
-	SXQEt3zut1yHJ+rcqSJTH7kKPtZxQrXcDcuP5MtN6UzaKC+czp1RebfbbNH2/YmUuYt4NGYNItEl8
-	vWOYEyEWHdXMSNzv8P3B4eTZ7c6pdJ4pnYmV/+Y6jCBUOAoTz5qF4FPI1NuSEecEh2ShBZ3T/aKEz
-	wg1V5O840zlQLXVW+DXm18LCxo4pi4E48gE8KqJJ5derJP9tKG2ucy8SJjybNSKzyS0BsuPtFRwIP
-	HWocWaJA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x8zhO-002yym-2k;
-	Tue, 22 Sep 2026 12:34:15 +0000
-Date: Tue, 22 Sep 2026 05:34:06 -0700
-From: Breno Leitao <leitao@debian.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, 
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, kas@kernel.org, 
-	kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Oscar Salvador <osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, hannes@cmpxchg.or, 
-	shakeel.butt@linux.dev, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org, 
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, kernel-team@meta.com
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-Message-ID: <arJqVWN-prvI_0NP@gmail.com>
-References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
- <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
- <aqvHHHuWJ-y4WRJZ@gmail.com>
- <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
- <aq1RaH0eE0hZfNpr@gmail.com>
- <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
- <arE3UjqPsxctWckg@gmail.com>
- <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
+	t=1790080509;
+	b=jKvj+tbml7tAvu6+7EoRNZWsC64KBUaibUl2Ym0lQ6fW4ylKy4eBdgm3/qr9I03Qq/GQsw
+	N6ZQoo0GLXmGkbMmnSLfIlw2HQ9gnK5WFAFDIWG5qpjWvdNxHO2unc3Q6yiX52/dc4TGmw
+	hjupPM+ElpUjCWYV2oOjPDk1ymEqnW8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Xwtckas4LnrLCXkCKb5n3gLZW22/ubZm4385L/A1/Us=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790080507; v=1; x=1790685307;
+ b=cwU8b8G2j89LJqxIjxBtNYWYqjPo1PayZjH83zRHeqVgP6VfEri3Wf9IKp0tt6KmP4wI0xZN
+ hb2CW7siSn7YnPGfiVFzdDT/X60o4CFcNtpju2LGGRLnAkd098QFrtxO0eGrlRmbeMoydTw+Vki
+ T50i5J46t+verlulVm31rdoU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 887b51e9a353e5f0;
+	Tue, 22 Sep 2026 12:35:06 +0000
+X-Mizu-Trace-ID: 887b51e9a353e5f0
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <93e71e27-86d7-4853-bbd2-756ac137a925@linux.dev>
+Date: Tue, 22 Sep 2026 13:34:59 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 0044620009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 02/29] arm64: mm: add PMD swap-exclusive helpers
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-3-usama.arif@linux.dev>
+ <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nyoq6jppndpcabtfdh987yhftx7w4c65
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 37uf8rmsj5qurrsjqk3ibgqm1ipshe69
-X-HE-Tag: 1790080498-724166
-X-HE-Meta: U2FsdGVkX1/X+7Lb5Hme7HRXAxTc2MKJg14hyu0gv25KyU++wyXS+aH6kADTKEyMdKBBQhbMia6gP97cA2eMu7F1z0rNl+bSsoCPb/Fw3p8trFdf2lsrhJkHBiJZMpF7UJMljeFGt5a+rgpJrLMnIfQ/56EiZ9V0WFiv68f3TtK3DQAuWlxxRhXJzelzhcg4jhrDqR9hLuVUlBUMEj8BJykndgjVpeDaQwut5Ve/CXGzd/mJmzDgcZGgIwj7vmf3qljmF9O4Nyk6UnE+HAE7O1tWGoLoFXKzLURUB4iQUoBt/g6qG9zIK/Ezu2WPV9jiY5IC+ctRAzk1lMCPgKAGqLQkQ0LiTAl+/A9MI7AlesYF8kaqeExmBHwoQq4pVFnTzqfGAaOjedqUVOe1yZa606Sk6iig7JBQ0OJ9ABhrQRFQW0kXpqQ93MgaBVYCY+iPtS7gvoiMBZa67NLihU/lAZ97+Z8q4zw4DwTIofLblC7eUPT9NE3fzr3rY9d5PIoOAQCqOMhtNpZ/0N0/Dyzhd7IZ8cq92P76OK9bhaHToYEMCEzb2P4q6yWkwQ0iqtOwKyYpDX8RQ/HI94QCReaJ9Q83o5HXkqxZSkKlAijaJ1qaMH3kgDB6xCF6PyBKlV0cH6cFu6VGJSQuUSDrD8JgCx972sxSxm5e69II7bpv2LfQ0KG0hnFsOBhcvCAUbHl2Q8Iwdy/6FvYAXSAyR1UJb1sZOyEjdAmNpYIX610pN4eCfuiLUtHQYZZNRJY6GcYHzquwM2J+kpzJU6ZpAphDeTy8RrDgektVPmQFepHy3jbZuYoFar7j0qDyIMwjNPMpR2VGKy9ED0dyGcVFu1Lbddn/pv7Fe6TgE1RJHPc0nQYj0tTCDaAq7jvx1Y2JUjd6ziWQZo+0EmP5AnFtYKBJM3R09BitK6SBPxP0ibXMla/KsWMmetmlk8wpdGipQn/QVXZHfN9o04Xz5URc2wC
- gRE/ay3m
- 5+0zCp3usjK2byd1F1+ZddhaylFYx/rl9aqgjKUWISdyqnrN/dyYTa0j3IC3MlpLrqU8kcvBfsuSA/EElu334+P6KeMhzx5Y618Bs6OLB4cr7hJJw92J11X8Ugf0uOaPAO6zixTCA37zoj7k4AY4PGuUtJg6RM+9OCf5RClrm5rZsrymOK5/AWFm+L9CSuQdZgsT/jz86kDG/v0DH4cdSCV4C2/MijqjUscF5fnlncv+lw2IJgd7C8kUh5xTzu/KzN/C3kMRiTpRpb2zYWwYv/TuxCleH9T0MOru9GcoqljF8y+eaPcjVSSYIaGWD8Dro6/Hbzh3r0Z4Y9szH58PPchnJN3PRvvgv3JktpdT+vt+LvuLqpDPBMk8JWlFeIySFxOWH
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6088A40006
+X-HE-Tag: 1790080509-902549
+X-HE-Meta: U2FsdGVkX1+ruKsif58f8RtbRR/xMd9P9MmVWO3YwiP/MwlfQWQ+V8rDPzaqjwR2pM1EoFZAYfWHrHHjN5EARLvxIaLdYjdb2bLxcp2xy0NuoYcGZXDhGVzkX2sb2YUcYGRPQmCK5PThGt8YMqqDA02vACjAcNkF6Mt5EnEfekOuNRWpMnTAS1qRgtPXjoQl28zQgP1cTgASkYAIhJ3BtG8fBnmUqwUToevJF+DSmHm8arlZHC0s3s5/iAK7/4mgCyuahb+OwEYivlrcVdvCerIn2mWJmQSKnAe+dI0Lrv+m6+MkoZQ2ct/x1hkJ+oBuwQhhZdMSxzjUS5uUttS9z5cX8sLQz6mKTWVXPa5+izgrKsSaU7kDdYQZOV2anaK0VQLaokeYODR0sy7EIxYhHlQhs4KxtgEfNYVR95QcvCjJvUdvGIqBnfOF+9qqB5IbpNK6lruUWI3C1M+47hs0b3HncX+Ys5INybMYxjkE5dDwQ0cmW+GHKI8xx3vDFaVhgFG6Ec45963KC98TOAMmyUpYG2DRVkPVUJX8C34ndXcBWQNjChMViA4OyoSqTKyFK7wSBFEQiN9RWvaXv6h1C14fAoZa1Cgv3p7oJsQzJ8pSKAPACWiJu9e/kzjdVoh0ww6l/pkyY48cfIJcb325H5l9NAAKmA7E7Zb+IRxpZdr636KUrd84+zDmMSYst4lSxNsg5yVNQsKkp0xHvy96b/RWEObBRWGOws1tVg0YEkJZrFsAoWqrRBStQ/Q0SfHeCL14vo5Q5bmtbq0iaa/OJsMLXBEvZ8uLayTRIkJYGvhqPXZym/by7GYNTDs6ui496R7kypHF2+Ih2KlQ7yyiHy7AlJIiZ+il/xVWmDqQFYFFzOUYmg5fVIbd1m4j3ZFjkl2lqkMY1WbwXGYzXqohx693r1iYWm2kpA8ESlOj7Dcn23oNWbPrZjX9+AEqR6DG40+i2Olf87aYq1tIgRF
+ 6+GFZ3pi
+ RQac8kR7F4rhPxjNC3ktzcB1e8SjDCy925Axu8XN9/o6fgLGCmK/ZD/s818YUjUIwLyzJF0v8Bs3TQ4HrHMST6oCvErV9ddG1ndz7ndgietLGZRmTyx8Fbfzm2uIS0ZrQforc5GvR2xj9LftxYBqZ2soeRESHD+Wznb1CNkITuhBSIZLQICehjmWh2LvNksetR64UlXmCfQxUzXpYcRMya09P2Hc08c/lziaOwWrrWd4Gp2ZK1RN8Sj1cby9jh4LEnv/paOKgJGhrutZSLGRCG3X3yOvrn4Pe6q9HXhDueA3Uzn0VG2EI3dzs06m/txQ6T+RMcWlN+NqrQGKKzpIMCgnS6tOVCT1A1HdQDXYgA4pWldA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,162 +103,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello David,
 
-On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/21/26 16:31, Breno Leitao wrote:
-> > On Fri, Sep 18, 2026 at 10:16:25PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 9/18/26 17:22, Breno Leitao wrote:
-> >>>
-> >>> Right, we have two source for poisoned page information, today.
-> >>>
-> >>> 1) LINUX_EFI_POISONED_MEMORY: Used to track memory block that got
-> >>>    poisioned, and will be passed around during kexec.
-> >>> 2) PG_hwpoison on struct page: Used by the memory subsystem to avoid
-> >>>    touching it.
-> >>
-> >> How are both kept in sync? See below.
-> > 
-> > The EFI table is only written when there is a memory failure. That is
-> > the only thing that writes to it:
-> > 
-> > 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
-> > 
-> > You can see it on patch "mm/memory-failure: efi: record
-> > hardware-poisoned frames into the poisoned-memory table"
-> > 
-> > Then, when the kernel kexecs into a second kernel, the EFI config table
-> > is queried and the pages are poisoned from it at boot, as they are
-> > getting into the buddy allocator, in __free_pages_core().
+
+On 18/09/2026 22:11, David Hildenbrand (Arm) wrote:
+> On 9/14/26 14:27, Usama Arif wrote:
+>> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
+>> swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
+>> not just in a swap PTE.
+>>
+>> arm64 encodes a swap PMD exactly like a swap PTE, so the new helpers wrap
+>> the PTE ones and reuse PTE_SWP_EXCLUSIVE.
+>>
+>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>> Cc: Will Deacon <will@kernel.org>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  arch/arm64/include/asm/pgtable.h | 6 ++++++
+>>  1 file changed, 6 insertions(+)
+>>
+>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>> index e89ec5f4787b4..d3f53a601aed3 100644
+>> --- a/arch/arm64/include/asm/pgtable.h
+>> +++ b/arch/arm64/include/asm/pgtable.h
+>> @@ -599,6 +599,12 @@ static inline int pmd_protnone(pmd_t pmd)
+>>  #define pmd_swp_clear_uffd(pmd) \
+>>  				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
+>>  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+>> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>> +#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
+>> +#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
+>> +#define pmd_swp_clear_exclusive(pmd) \
+>> +				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
+>> +#endif
 > 
-> I am not sure that is really the right place. That means we only poison free
-> memory.
-
-Right, and that is a real gap. A frame only reaches __free_pages_core()
-if it is handed to the buddy allocator, so anything this kernel already
-took from memblock -- the memmap itself, early page tables, percpu --
-can be sitting on a recorded frame with nobody noticing.
-
-> Shouldn't we poison as soon as we initialize the memmap, and check
-> whether any memblock allocations ended up on that poisoned memory and bail out?
-
-
-That is close to what I had until v2, where the bitmap was walked at EFI
-parse time and every set unit was memblock_reserve()d:
-
-	for (off = 0; off < bitmap_size; off += PAGE_SIZE) {
-		...
-		for_each_set_bit(bit, map, nbits) {
-			u64 unit = off * BITS_PER_BYTE + bit;
-
-			memblock_reserve(phys_base + unit * unit_size, unit_size);
-			nr_units++;
-		}
-		...
-	}
-
-Set the full v2 patch at
-https://lore.kernel.org/all/20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org/
-
-Kiryl raised some concerns, such as x86 does not keep memblock past
-boot, and kexec picks placement from iomem_resource via
-walk_system_ram_res(), which memblock_reserve() does not touch. So the
-frames stay out of buddy, but the next image can still be placed on
-them, and since nothing sets PG_hwpoison none of the existing hwpoison
-users see them either.
-
-Most of the discussion happened here:
-https://lore.kernel.org/all/aog_uH5fTsJzXjjx@thinkstation/
-
-v3 then poisoned the frames from mm_core_init(), right after
-memblock_free_all(), taking them back off buddy. That breaks with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT, where the struct pages above
-first_deferred_pfn do not exist yet at that point, and Kiryl's other
-point was that the shape was wrong regardless: flag the frame on its
-first add to buddy, not after buddy is up.
-
-See the discussion at:
-https://lore.kernel.org/all/apGbDOnPm5VXP5ez@thinkstation/
-
-Which is how it ended up in __free_pages_core().
-
-> >> The inconsistency is what worries me.
-> >>
-> >> And that we have pages we are told are hwpoisoned but we seem to ignore that and
-> >> carry on with our kernel letting it boot?
-> > 
-> > The walk exists precisely because of that inconsistency: the counter has
-> > to match the frames that actually carry the flag, and the bitmap says
-> > more than that.
-> > 
-> > If we drop the page walk, then there is change for inconsistency, but,
-> > as-is, there is no inconsistency.
-> > 
-> > So, I am planning to keep the page walk above, when there is a poisoned
-> > page in the memory block, avoiding any inconsitency.
->
-> How about we keep it very simple and don't mix information from two different
-> sources? That is, remove that bitmap scan here entirely. We should process the
-> bitmap exactly once when initializing the memmap.
+> Why do we #ifdef that here, but not the uffd-wp swp PMD helper?
 > 
-> From that point on, the memmap should be our reliable source of information.
 
-Sure, is this approach better?
+uffd-wp is gated on CONFIG_HAVE_ARCH_USERFAULTFD_WP.
 
-  - the bitmap is read as the struct pages are initialised, and the only
-    thing it does there is SetPageHWPoison();
+If I removed the CONFIG_ARCH_HAS_PMD_SOFTLEAVES guards above, when THP=n, arm64
+will use the generic macro which is wrong.
 
-  - __free_pages_core() keeps the hook but tests PageHWPoison() instead
-    of the table, so a recorded frame is still held back before it can
-    enter buddy;
+I tried building uffd-wp swp with just ARCH_HAS_PMD_SOFTLEAVES guard and I got
+the build error 
 
-  - nothing else queries the table.
+  mm/page_table_check.c:232:20: error: implicit declaration of
+  function 'pmd_swp_uffd'
 
-One caveat on "exactly once": if that means one pass at one point in
-boot, it is what v3[1] did -- hwpoison_init_boot() from mm_core_init(),
-right after memblock_free_all() -- and it does not work. With
-CONFIG_DEFERRED_STRUCT_PAGE_INIT the struct pages above
-first_deferred_pfn are not there yet at that point.
+we will probably need a separate patch like:
 
-Link: https://lore.kernel.org/all/20260826-hwpoison-kho-v3-5-6f79c4b605bc@debian.org/
+  #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+  static inline bool pmd_softleaf_uffd(pmd_t pmd)
+  {
+          return pmd_swp_uffd(pmd);
+  }
+  #else
+  static inline bool pmd_softleaf_uffd(pmd_t pmd)
+  {
+          return false;
+  }
+  #endif
 
-So I _think_ we want to do it once per frame, as that frame's struct
-page comes up. __init_single_page() is the single function they all pass
-through. Is __init_single_page() the right place to query the bitmap and
-mark is as poisoned?
 
-> For this code here, just remember globally whether we hwpoisoned any page. If
-> so, just walk the memmap. If not (the 99.9999% of all systems, no need to scan
-> anything).
-
-Yes, and the counter already exists: num_poisoned_pages and we can query
-it. I am also planning to add something similar in the EFI table, like
-an ->empty field, which will be cleared when a bit is set, avoiding
-doing bitmap walk on the happy path (not a single poisoned page).
-
-Anyway, range_hwpoison() short-circuits on it today,
-
-      if (!size || !atomic_long_read(&num_poisoned_pages))
-              return poison;
-
-so memblk_nr_poison_init() can gate on the same thing and walk the
-memmap, with no EFI call left in drivers/base/memory.c at all. That
-disposes of the misleading name there too, which was where this
-started.
-
-Now, the half I am less sure about is checking whether a memblock
-allocation landed on a recorded frame. Poisoning at memmap init cannot
-prevent that -- the memmap is itself a memblock allocation, so the
-struct pages do not exist while the early allocations are being made --
-it can only detect it afterwards, as a pass over memblock.reserved
-before memblock_free_all().
-
-The alternative is to bring v2's memblock_reserve() back purely to keep
-the early allocator off those frames, and still poison at memmap init
-so the flag is there for everyone else. That gets both properties, at
-the cost of frames that are Reserved and HWPoison and never in buddy,
-which I have not thought through for unpoison.
-
-Thanks for the suggestions!
---breno
+to avoid the above build error.
 
