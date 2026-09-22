@@ -4,144 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A703DC98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 282D4C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A64FA6B009D; Tue, 22 Sep 2026 11:53:59 -0400 (EDT)
+	id 44DCE6B0093; Tue, 22 Sep 2026 11:55:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3CD26B009E; Tue, 22 Sep 2026 11:53:59 -0400 (EDT)
+	id 4257F6B0098; Tue, 22 Sep 2026 11:55:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 952A16B00A1; Tue, 22 Sep 2026 11:53:59 -0400 (EDT)
+	id 314456B009B; Tue, 22 Sep 2026 11:55:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 699366B009D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:53:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D35EF14053A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:53:58 +0000 (UTC)
-X-FDA: 85241844156.13.AD92D47
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3F33220008
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:53:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="PBuaBZ L";
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790092437;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 03AD66B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:55:22 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83D0B1A052B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:55:22 +0000 (UTC)
+X-FDA: 85241847684.03.2115A54
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 980481A0004
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:55:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DjnjMtgT;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790092520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gxq5RbPZaBaThrnfCbXwlLeSspEvvoh3Fk+LKjVlj8M=;
-	b=SHSS0iwa+dejbwdySOY5qHrF8BpVCjFZL83gQojsnEVYOov8ua2n+coZrR0QgEBLw9Drwu
-	p7OmvBPMtyzQxcPHhNGmDbDMv8CCaPsr0lkNs0gyJwPsRH16WrGX3ptJRf3CxGzQBdj6C7
-	QqSm5tEO7Raj5SaxpfDLcOVC3uGZ428=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790092437;
-	b=a02z+SKm6UH7Q/sTs1+0dzSOjW63sn4s7OIRKwfwvxo8I//0VhU0Zc/jxzi6rpZiy9pEkq
-	FpT7L9ZkfPElSRvTkrZtoKotLOoZ23NtdG+TpazjhMx5Y5o6n+HNK6chTFm6wO4G916Ekd
-	jPoyU+tfSfE7AkUdtFOWzdOfCOKNJXc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="PBuaBZ L";
-	spf=pass (imf13.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=Gxq5RbPZaBaThrnfCbXwlLeSspEvvoh3Fk+LKjVlj8M=; b=PBuaBZ
-	LFtXvTTKu8ThDiaJWjea3KKn0i0u9LPgCfI6+TTUCEGLj8AlMSRP0gbyCAaDkq5lsmUORVTuBAkCx
-	6Ik9Abux7GDtk3GKH1m8QZKE/rxAJSKEhlk7eW2hbYVkesYUwK2Ncb1MNy/9EyK+iN53bP6iGMkob
-	xhonKo+LZnkT18EmkqYGLrgRELQ0Ub9SYS/S93KVNM/A0QsXkbftlwiDzDvw94CbzlWNF86DLs7wx
-	bN6cyRrNI8HpTyCydoNrhTHahYRMsc5YJBRQmEEPYiaplAE/HpLGjZgld79w2uuCTf8lf0zgQurY8
-	aPPV4sR1h+cF6UHG0fkmPmUOhMdQ==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x92nZ-00000001pCW-3Y9V;
-	Tue, 22 Sep 2026 15:52:49 +0000
-Message-ID: <5a7ad159b2fabf377b7e1fc4248c433287ac11fb.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>, Gregory Price <gourry@gourry.net>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>,
-  Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, Michal
- Hocko <mhocko@kernel.org>,  Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
- David Hildenbrand	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Kemeng Shi	 <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>,
- YoungJun Park	 <youngjun.park@lge.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	 <surenb@google.com>, Qi Zheng
- <qi.zheng@linux.dev>, Axel Rasmussen	 <axelrasmussen@google.com>, Yuanchu
- Xie <yuanchu@google.com>, Wei Xu	 <weixugc@google.com>, Wenchao Hao
- <haowenchao22@gmail.com>, Jonathan Corbet	 <corbet@lwn.net>, Hugh Dickins
- <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Tejun Heo
- <tj@kernel.org>, Michal =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>,
- Meta kernel team <kernel-team@meta.com>, Linux Memory Management List	
- <linux-mm@kvack.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Tue, 22 Sep 2026 11:52:49 -0400
-In-Reply-To: <CACePvbWW4avTV2WB6iRU+LN5zqkMTg3UhBrq41R0iw91-7Ni0g@mail.gmail.com>
-References: <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
-	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
-	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
-	 <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
-	 <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
-	 <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
-	 <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
-	 <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
-	 <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
-	 <arKbXe1Qe-FDCTMM@gourry-fedora-PF4VCD3F>
-	 <CACePvbWW4avTV2WB6iRU+LN5zqkMTg3UhBrq41R0iw91-7Ni0g@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+	bh=3CnAMf3rYfISbFoQbxUQPDoCBSAVsRITBKeQGlh3KBk=;
+	b=dIdXEK4zH/aGf9920GXGhMse++kdcPBYPiy1UQwiTysh4MgJhCYgXif987wr/847aXih82
+	zNTuDZwXgGdHqkrbHutJ4BNzsqA1qD68A71oa0ghFRlWNNkSuLuIa7m1Fn7wII7de912i/
+	Mg/6uLE7fycRSrOvDI2fGTu9uYA28ow=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=DjnjMtgT;
+	spf=pass (imf19.hostedemail.com: domain of jannh@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790092520;
+	b=mwX6vbZ0cqZZJCC6277Xm6r6U4lZQFE+RVaTM9+r6tAH44wdH2SSq8SqhB5yLoXzdWmbaX
+	3FioNkjSyVx+hqsTAvGObv2txYBSWheCDC6cCCDN8+qJEzesRZXZf3d4u8cXJVNCk2VM0B
+	1HLqhxTj9jGifKGSY2sGHk6DqP2fmlY=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2db33db4de9so134885ad.0
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:55:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790092519; cv=none;
+        d=google.com; s=arc-20260327;
+        b=EI4g5mehG8OBW2cO8X+VQyYezjfj2LDTDeexAqBZL35pmGJCG52Osv8DYqkJ7YLa5Y
+         on8pBKfY9CcK2oao+SsS5caiegN23Caa+z0UjfvNADPKOUEzOM3R9Z2uV/oY9qDEdoS8
+         3kqw6FCToT+iCDnOjtRXY3ax3u9HkbdhNNjXGVlZJ82ZSNae+yFb6U8KfpOujCtJD8QJ
+         63Ig2nC3Zr6nt8ypL7sJ0RcHfTTnxEVasXvc9zAerAoNvHXOkUeGt3a20osR+q6xrsdF
+         ZUk2b4ehFlJ/k6k9f2eZI1coGq8c3QC+IGRYUp4v5RdHiYCfARiFQtNshYXyrFIsKcge
+         99SA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=3CnAMf3rYfISbFoQbxUQPDoCBSAVsRITBKeQGlh3KBk=;
+        fh=J2fyv+yOc52IK7nI2QCtnK11K3JyOJbHnLZ1u3i9Yj8=;
+        b=IPK3t8SYW66RUz771N9e7uFQJroEUG9Rm8G/f3SXDqbGa18ICtQb5O3Qkd6K2+QpD+
+         pGzB8J1zOE9NUGsev4tcgiKcfruMhOH6pZCbTAc0msvew2IwWJfBxOrMIYtYjKetAo0b
+         oDP+LNXUH+sKCZm2xHgzYMYisCBciKaRMR0FfBCo6rKRws3Qr/9m3ox6Pp1NFA9Ktsgw
+         RRoO9VKjbmOCSuYXNa7Nvxj77aHKXFiLL1k9R3D7pH4uFSKkU9YWYv46bTydfnEjPUAp
+         AXb6XDuQZLnAZkgIqQG2ymRvfZ5iVjEiPzjnqc/D3GB8PVmyAl8ldgzSdHV9/ZkG6cOq
+         mAnw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790092519; x=1790697319; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=3CnAMf3rYfISbFoQbxUQPDoCBSAVsRITBKeQGlh3KBk=;
+        b=DjnjMtgT/B5zNkjAu0clxwixHPh7bMyvvy9MeM0dTdqbJN3g5++naKM7QB3gEQ1odH
+         Cz9SNS31x2NQl1cVfhDDLCGwUwDKNovfR61yy4mYQn8CPYQX7qPtwbHEYuRJv4WowwVs
+         bBDamS8fdUyYazSxhuVK6Qlg/xR+hDOFHqk/VM/LDZl1i8MBrBCFQmkFlmL4cKyab8ca
+         HkHgJNfTR0rdiDXCCDhlJ5UrdFMAZ1c+d/Q+XOhVCTfsxolPTvJXUvB8ek/5gxBP5DC7
+         cbbkyE7LrWTVlhvf4AS4raaD4z9mxluah/CMrMYhbFk0DHmeulferfdG1LI9jFtx40lB
+         mH2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790092519; x=1790697319;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3CnAMf3rYfISbFoQbxUQPDoCBSAVsRITBKeQGlh3KBk=;
+        b=n/qg5RESUFIV7kCyq8T5HPDdU8BTysTVTZ78a191I4u0QlBHZhhgID1xv9TiSJYdat
+         KksFaO6gXOqwWR+fyPUr8InINN5iUcS+OlWqwHvCyW4dk6r8i7KPnlo4TbN+HfPoCv7b
+         iOPD0urRDJVh7AOlxtKoW2HfS1F7LGLvb0T9x7bjn3SlgNOaoF8XKABF0CXYqMLWbeAI
+         co1hnE6tTNyyxunG+mF4St6v2VsTi0CG3xA/tZg28l7ue9JAGdb3h1jv5sGhWcrjfRne
+         BICkojIx9bFFOYdVpfaOTXoimnRSAcCxwFe6BM3OjYbGJ4UY3AhP/pS7soeU/T7zbwTL
+         qjSw==
+X-Forwarded-Encrypted: i=1; AKwUvBzWpjE/l7/gcCZYzWMJAiakIfU6HoAv0BYEgJjkY8YzpSLffxnVSDl/YQbauDOSjXmJf0KzA9NQSw==@kvack.org
+X-Gm-Message-State: AFuF++nD6nMbv4urcMq7DAXUekngHXpU/7yy/stdvSGwKz27v09WW5oi
+	CiPZSlGXrKsB5R6jZxmOeziSzAtdUAvi84C/C7KVO8KZX59pf7wt3ho7qAbwJX5ZubRBtDeZeUb
+	50cqxJ7qjWSsq/QG5tskzeKigJhNdzI+4pPMVkaZN
+X-Gm-Gg: AYBFou12T+XyQwmE2J67nx0fcyeAcyryx3tAixWsBvTZhvdQrlcFflTC00cvWsyx9Z1
+	SZF7K8bfwY50pEbe2/XW4Ifqr8UpRmGIjZmwKF22uhqUprm7uh6cmwOfWO7HRGDB0FYEbLTqcxo
+	HY2MIuaMHcGemRNEHtClHFG+SKvg8nexzK9LYKQOdNorRjftyr/c2UCsDe7yU06E/vXEmDCwtGf
+	BKSfVVt0RACHENm+5zkEwxivTmJjoY8CP9N9S3EFP1YzvQMxQnnmPr8CQlbVVKJZ/zaRosEilbX
+	4yaLql/rIBNhGbptaJ1L1ry/iLCM+nKPRAUEnFHNiRsttee7fvwDJV5J7k4iwpQxGVtmb4UA96o
+	UKD44LhBDFyZSrDE9RRMXCD3IaQ4HzYeR4nWyHyBUdg==
+X-Received: by 2002:a17:902:fda3:b0:2dd:b837:48b8 with SMTP id
+ d9443c01a7336-2df6649017bmr1392335ad.14.1790092518734; Tue, 22 Sep 2026
+ 08:55:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260831-pidfd-get-paths-v2-0-c59ea6a21b72@black-desk.cn>
+ <20260831-tauwetter-werkbank-dramen-b37eb4025283@brauner> <CAC1kPDMK_D4nhyRmBHg6KC7SmmCkH73Xtc5DhXeJbSvf3LcqcQ@mail.gmail.com>
+ <CAG48ez1T5-tUHVK_iHsgUtWa-inVdrZxA3E-ZCW0iENJvasKfg@mail.gmail.com> <CAC1kPDNamG4BpfsX0mn9E-Y+ujGTLe-oU63kJFOjxW6bDmSLnQ@mail.gmail.com>
+In-Reply-To: <CAC1kPDNamG4BpfsX0mn9E-Y+ujGTLe-oU63kJFOjxW6bDmSLnQ@mail.gmail.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 22 Sep 2026 17:54:41 +0200
+X-Gm-Features: AcwNN1Uevf7qvaoQ92TUBe1sUrMlhIbUuw3ph8s-vQAhL_GIcCXy5aT7MdRHJGg
+Message-ID: <CAG48ez0+kYEdLm305xY7HsXgfXxeqFGYQB3N4UY7ppoyQ4t=9w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] pidfd: add task path ioctls
+To: Chen Linxuan <me@black-desk.cn>
+Cc: Christian Brauner <brauner@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
+	Kees Cook <kees@kernel.org>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3F33220008
-X-Stat-Signature: 7z6khewuczruiifwsjct6sum1ppzdhap
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 980481A0004
 X-Rspam-User: 
-X-HE-Tag: 1790092437-242310
-X-HE-Meta: U2FsdGVkX1+XE1DuGkGDiKzw2tfZPBBw78/6m9t17SdTIqpDRLWRm0o1g1cxjEyp2E5yEJ2/WW3vbbVTdCGljb+ZJCKFwYBtpV+JDQASc+6yqlTpOsGUS8Phm5G+0nHGab1n50oy+4jWv2VfMBhNUitnVnYSQd5tL9jR731fWfYz2uWRKWZDIoKJEYFdjWaDYPBlH+f/eKZJMXjA9qlmPYrhRxBDovJLPSlvxm2Mb0yGIE+YO0Mw/MatiZMeQMnY+h5QVXOFlwPpAHIjZu21haiGz6xameKYuRj8HvLiu4rOxIp2Jy5PRPnxcnqaWtBxyRLQvnQIfMRRGG8Avc/fFBTyUEJYwItF2Iaq/FL5lR/Ni2RwNA5WZQEWAsZsYiikJ0XtSvBoKVeDlcPriUCiZdyYC/8+VYz4JoiBs+bhyNS9ZCieJ6FtI4BjD0QIZVqLZnXGdI6Z0mLHNWC9QEmbCm6FkHdrMMQ3Nz4I1H8mRYJsE3dfV0KQOWAmRByCb2ieGfeJFKpbUx+O3D3WhkaAM+oMpXzkPJJ98t3vKsrMHqRKpXglYXI+tbIl+A/OUkyIMwdeU2t3kqYYVdlb+SYJr1nAajDSLxK5clVXCKQGQitxxGos4mc4Shtp1efy3RCupE1IiP+OrNroJrlv+KTS3dNejkue5B0ZcZWYsbO5+WkYVI918gZfn0OzsHukuBLkOxj7Hce9Gi2EqjsWRExt9JiURqG+u7vv1+BcuNCA0nUOWwdeNnqFC6MppYE4meigeX6wjdvNM92xUpoN2rQgC0hc8Z8QCb/lD+S+hRB1hu8Ee/nX5b2/1v7R/4dp3xLBZQ5QRKXVgeBbJ2H7YpqUGPTAe5ZXZrlJCI0YENWhFRHl1jKbAHmJ+hZSllYBhYhNTjV+CUtCCIEM1GcE0AVel0LsCILrRs7n9JGKjlZbDZ5Uwd9XSobzhUuCo6fW6ei9zYKb4hpmaGg7z7rnMZO
- wU4QrzjL
- zccnPd5UL3NQIn/uNsscOQDHjX8/C+873viJC9GwuMvR4ru0vti/SeJM4TjYgGhg+1ZkRFyW6iOjNc5bbMD5i5mnhoejZY8WkDcEQM7z8X0BCJfyQXBts6WvHY9/4c5UF9QsF/H4Uwj9bpnSJRxIx/vrrXP3BcNN5qacPtxa3dLrLZZrlx02J3pA0OLZmw7RVjCecy7hDuSvF5vv48tvyQMEUHDu33SOQgnHyd2RriqNPJpeWxhrQ3m68Y1smjxHaR4PRzrwyLBg2wMNZLhaI3L0lLHjypk8M1INvkFeKo6RtgFrAgJMMbYLRxQu21CEdVLXuGBjyGOoEa4E9MdDdQsiIUR3oY0qH7JZOKx/D8+K2hrcv6ZCbE0mXI087Ql6VpeDPkIWUsoIdnsaViHMB1ZmwI1UIJhzqqiGVJwna5x5cW3nbIDApeuYAhJqGXFyjLkeP4E4f5fJ14KY=
+X-Stat-Signature: kf8wrc6ba1iaxqbqdf95nscfsc96muz8
+X-HE-Tag: 1790092520-108897
+X-HE-Meta: U2FsdGVkX1/w9Z0JUYbphUKgPTFmYAGO66IHab2nPAqQXR5lKK5/2raYACmoszUc2+MOdkUHQNZHuK2nM+TNH4eojQkW20sMSN8JKgMkE7RC/9CfbEYLoLT/SqTSiy/dMwhNoy74dt1ll7WyWj+8/VBxSjAH3Z+FGD/SvcfxVjocWXcTtyS+M7Mm30ZiTGAiRuLi+RXdZFRIru4nxBHVUWFZKB1a/pl5C30CdcOReCpLeDi8kx+aixEffIiaOj3jH/koaoZbkkT6ogeNE2+AH3QlDu7Ey3bF43Q+nR8bJ57Fn8XiCtLHJRXH35vUZ3yzI3Lkvngdo4F6Ry3l5MaZCtJZrO8kp4xRJft9exz2YNtEUa7E7xzmPgXZYgtSMFzH2jNisLanjpVWsbuBRtpPlOZlAWfA48nIlYuyKBDqZkOD7lwb3idvBvAzoLpU+jyg4a00Wro1bATQOctKgvdUMflNiOJx1k3rON4vlHcH6TD/QjWwiSCXltTKTWF8KBrvJ4co1b6LGKuRfp/uMiJqbTNe8zRFa6G3QwxmvFBtxq6m7R6XZ7Nh/Muzyi6n2X8X3v/wXwAExVHE08aevq2JLWm8KdrPrLaerNtDCKsXE9ARylEjYdSCvAvnGE8k5ZDPBEFpelOVmaGln3udopLPjjdRii7+/rGJTPGd8bfZXgLe1odO6csR2agxL5ZwXXeI09iUwBjvsuzuiT9k+ydCp+xhLFPs+IRCkRgWcYCgDcjkUxIg47K7U2pQN42+aS5KHttx2OTgfx10Zz6ej7a+y6oD3CyfSxudAuP2kwP2BuooNCZ0pu/bnndJv2DDDdgNN4PXurrdRJT8tm3Q7bGGS3Jxbb9aL9GGaUcIgeLkesQyL2ARaWPg1a4vjpaAnE4ef9SJPLryA1Z6d+jnJgBzc8s9cjpyOHKwysEuZ3fTULd8AfYXhSqoRYAvBfEWg+QYba6Hy5JHT6FkfuYOleJ
+ I/bBKyFO
+ KIqiRBjcOpfCaypPZA0lIn5aTv14cv/FjwIPkdOzDg7X1IFKVV65Za1b3MPB/Ae0Y4AV0mQfommeNrsZ4ZFn4tgN6mZtSS69bmVeiMj2K7XgebOh8/Z/JYoER0AZ+Mpy775SfEGtqOt/cgKcS3O9emnlfiAlB3SEU5eC5xhyYWU51Gxa61R38DKzPbVlVzTB1ShQrj6p4pfBA2OjEiOVqN+atlETPflCvWphnJKoUs76qhQUN8Isrb4+TUUUHQlRlPiNP/MyJCb7Ys9ysKNluZ257HG1hhUUOCleU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,42 +154,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-09-22 at 05:43 -1000, Chris Li wrote:
-> On Tue, Sep 22, 2026 at 5:20=E2=80=AFAM Gregory Price <gourry@gourry.net>
-> wrote:
-> >=20
-> > On Tue, Sep 22, 2026 at 03:32:44AM -1000, Chris Li wrote:
-> > > > Right now it has 64GB of memory.
-> > >=20
-> > > That is exactly my point. You are running 1/8 =3D 12.5% system ram.
-> > >=20
-> >=20
-> > Chris you are missing the point
-> >=20
-> > Zswap:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 8812=
-236 kB
-> > Zswapped:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 24927876 kB
->=20
-> I am well aware of the point. The 7%-10% data I provided is before
-> compression. After compression, the real saving is about 1.5% - 2%.
->=20
-Here I'm at 28% without any issues, with room for
-more.
+On Tue, Sep 22, 2026 at 8:08=E2=80=AFAM Chen Linxuan <me@black-desk.cn> wro=
+te:
+> On Tue, Sep 22, 2026 at 4:22=E2=80=AFAM Jann Horn <jannh@google.com> wrot=
+e:
+> > On Wed, Sep 2, 2026 at 8:47=E2=80=AFAM Chen Linxuan <me@black-desk.cn> =
+wrote:
+> > > On Mon, Aug 31, 2026 at 4:49=E2=80=AFPM Christian Brauner <brauner@ke=
+rnel.org> wrote:
+> > > > On 2026-08-31 10:59 +0800, Chen Linxuan wrote:
+> > > > > Obtaining a target task's executable, working directory, or root
+> > > > > currently requires walking procfs symlinks such as /proc/<pid>/ex=
+e,
+> > > > > /proc/<pid>/cwd, and /proc/<pid>/root.  That makes the operation =
+depend
+> > > > > on procfs being mounted and visible to the caller, even when it a=
+lready
+> > > > > holds a pidfd for the target.
+> > > > >
+> > > > > This series adds PIDFD_GET_EXE, PIDFD_GET_CWD, and PIDFD_GET_ROOT=
+. Each
+> > > > > ioctl takes no argument and returns a close-on-exec O_PATH file
+> > > > > descriptor referencing the corresponding task path.  The new ioct=
+ls use
+> > > > > the same ptrace permission check and nonzero-argument rejection a=
+s the
+> > > > > existing pidfd namespace ioctls.
+> > > > >
+> > > > > The target task is sampled while holding its exec_update_lock. Th=
+is
+> > > > > keeps the access decision and the task-state read in the same exe=
+c
+> > > > > critical section, preventing a concurrent execve() from changing =
+the
+> > > > > credentials or target state between the check and the use.
+> > > > >
+> > > > > The first patch factors out helpers for acquiring referenced task=
+ paths
+> > > > > and reuses them in procfs and AppArmor.  The second patch introdu=
+ces
+> > > > > scoped cleanup for privileged pidfd task access and separates nam=
+espace
+> > > > > lookup from namespace fd creation.  The final patch uses these pi=
+eces to
+> > > > > implement the three new ioctls.
+> > > > >
+> > > > > Signed-off-by: Chen Linxuan <me@black-desk.cn>
+> > > > > ---
+> > > >
+> > > > I really have difficulties forming an opinion on this. So this soun=
+ds
+> > > > very useful but it has implications.
+> > > >
+> > > > Right now, pidfd ioctls are available even in situations where the =
+task
+> > > > in question would not be accessible via procfs, e.g., when procfs i=
+s
+> > > > mounted with "hidepid" options or similar. So this would expand the
+> > >
+> > > One point regarding hidepid: for callers that can pass
+> > > PTRACE_MODE_READ_FSCREDS, hidepid does not provide an additional
+> > > restriction. With hidepid=3D1 or hidepid=3D2, has_pid_permissions() f=
+alls
+> > > back to ptrace_may_access(..., PTRACE_MODE_READ_FSCREDS), and
+> > > hidepid=3Dptraceable uses that check directly. In addition, the
+> > > /proc/<pid>/{exe,cwd,root} links independently perform the same
+> > > PTRACE_MODE_READ_FSCREDS check in call_proc_get_link(), regardless of
+> > > the hidepid mode.
+> > >
+> > > So for these specific path lookups, hidepid does not block a caller w=
+ho
+> > > would already pass the check used by the proposed pidfd ioctls.
+> >
+> > Agreed, I think with regards to hidepid there should be no issue here.
+> >
+> > If I try to come up with scenarios in which this could introduce
+> > additional danger, the main one I can think of would be: A task T1 is
+> > running inside a pid namespace and has a unix domain socket connection
+> > to a task T2 outside the namespace, with both running as the same
+> > EUID; T1 sets SO_PASSPIDFD on its socket to obtain a pidfd pointing to
+>
+> Does SO_PEERPIDFD matter too?
 
-> You are not listening. The boundary was set due to feedback from the
-> application SLO. Those are real deployments not imaginary usage.
-> Please respect the user.
->=20
-Different users need different things.
-
-The kernel needs to be able to accommodate all of them.
-
-The kernel default should accommodate the people who
-are least capable of configuring their systems.
-
-Hyperscalers can set their own defaults across their
-fleets. They know how to adjust settings.
-
---=20
-All Rights Reversed.
+Yeah, I think that would have equivalent impact.
 
