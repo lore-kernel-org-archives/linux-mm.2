@@ -4,97 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92239C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:19:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A54FC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EA626B00B3; Tue, 22 Sep 2026 00:19:58 -0400 (EDT)
+	id F3AA46B00B5; Tue, 22 Sep 2026 00:21:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59B4C6B00B5; Tue, 22 Sep 2026 00:19:58 -0400 (EDT)
+	id F11CD6B00B6; Tue, 22 Sep 2026 00:21:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D86F6B00B6; Tue, 22 Sep 2026 00:19:58 -0400 (EDT)
+	id E2B0E6B00B7; Tue, 22 Sep 2026 00:21:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FD896B00B3
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:19:58 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F184A03A3
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:57 +0000 (UTC)
-X-FDA: 85240095234.09.0299195
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CFADD20008
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccTXWVkH;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790050795;
-	b=FQj1AgEZO1RAP7/K3owJFKqjrxrdzz5GyUQspVJimqpwabW1rwJ4+ZzWladphMCkndZYc4
-	ROwnlery70Tf4tLjwKOACf3Nl3qPqPWsvr0ARm1YsltToNc9EtM38R5A4sk0FGWB7uFokJ
-	Ejv0Tn9EuTGbRJdwYkiT6knj1gpNzZw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ccTXWVkH;
-	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B3CE26B00B5
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:21:00 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7666AA03A3
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:20:59 +0000 (UTC)
+X-FDA: 85240097838.08.D467A60
+Received: from mail-oo2-f39.google.com (mail-oo2-f39.google.com [74.125.231.167])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 96AB1140006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:20:57 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eyvsbbxn;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.167 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790050795;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1790050857;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H8Sw7e86frpTB8DGnAC8KcCkQBMEmIhrJF2hdj56sGo=;
-	b=4HUKfbCE47QXfisxkYd2ZKdRMx5xHrjtfmjWjS+Hj/6Zjxv9AeC4bwzoKO33qay4FmJXsV
-	sFbhLvT8tfKP3cbTLmvsPIuwiNtFQUvsZK/it7wljtpKqQmasR+BG2720GOJpT149LSCHG
-	8FhLRUj43udlT6svyghGRuyW/+fRBdM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 21EEB40314;
-	Tue, 22 Sep 2026 04:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA701F000FF;
-	Tue, 22 Sep 2026 04:19:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790050795;
-	bh=H8Sw7e86frpTB8DGnAC8KcCkQBMEmIhrJF2hdj56sGo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ccTXWVkHEb+h1bpy7+9f6lh1K4PvvzccB9NYyOXwkAV54BzWnMLSXLt4k5p/oKlvM
-	 nTF0unkDISFj1iCut6TIrk4f84DKJKCn2dyC3glr7l2m1BUmNMeVS8AsFnKzYf+gRO
-	 5yBagAwduhM+38NYbYaYIvJKeRIi11XG4+zJnDJjdAuPxMp2ek8hWZMaUKpiQARG4q
-	 Cu4KMlT96Z8NvbnmzGUw1KfNaqXAnAeEDhdRMVx68BzpfKjjUffMAC8nLP6d4mOM/r
-	 0ylvEv9zRb37RPaO4/kNHR99RovesLc0nvE6pT/c0O6a6AGV2zgivh0tpF3StirQYc
-	 AU0ee+eJmj2NA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 4/4] kho: rename kho_scratch= commandline parameter
- to kho_bootmem=
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "H. Peter Anvin" <hpa@zytor.com>, "Arnd Bergmann" <arnd@arndb.de>, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Baoquan He" <baoquan.he@linux.dev>, "Dave
- Hansen" <dave.hansen@linux.intel.com>, "Lorenzo Stoakes" <ljs@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Alexander
- Graf" <graf@amazon.com>, "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Rob Herring" <robh@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>, "Saravana
- Kannan" <saravanak@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Ilias
- Apalodimas" <ilias.apalodimas@linaro.org>, "Jonathan Corbet" <corbet@lwn.net>, "Mike
- Rapoport" <rppt@kernel.org>
-Cc: linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, conor+dt@kernel.org, robh@kernel.org, x86@kernel.org, devicetree@vger.kernel.org, kexec@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20260922041321.233986-5-pratyush@kernel.org>
-References: <20260922041321.233986-1-pratyush@kernel.org>
- <20260922041321.233986-5-pratyush@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 04:19:53 +0000
-Message-Id: <20260922041953.CFA701F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CFADD20008
+	bh=vw7F89gHzb0bwYi7GFQ9WYKMfHucMYNinHqo/LXrYrc=;
+	b=mwbXkAZoRJrCvUbro0Wx/NFbaLVw+W7jy/sRMAbrOawVoxEqAQI/BMxhVVxb7uAh9C8DYB
+	kxd0BhjvMYkehQ40naY8ZOKApwT3se48tXb40A/6DD5G0wxyA+2zFAnYUOGk40HcJTScry
+	1cV48jr+l4QA3XUaiABr1IYSRZnD3Oc=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=eyvsbbxn;
+	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.167 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790050857;
+	b=Sjob3ElG2UJG+65UVIUyTTEoWg7g9hdHJc7UTxKLdBUwjHnWvdoRocu1jhKhc2+ccs3X0V
+	wbs06ttTGdLthwSuq6EeF+jWRcBin6mXMLM5FVqRRoSgF40MBjEBVoqJoIIs5zT9LP/AXE
+	+7gUxcOYdK1e7uABjEwgT/ato9ETbmc=
+Received: by mail-oo2-f39.google.com with SMTP id 006d021491bc7-6beed321ad9so1988964eaf.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:20:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790050856; x=1790655656; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=vw7F89gHzb0bwYi7GFQ9WYKMfHucMYNinHqo/LXrYrc=;
+        b=eyvsbbxnes/3KhfO1K5mleq6uPbwReKesdfjAGY34LObAVc79Pchb2+YJgie21fa2m
+         DMKCMaMENoFaxP4kIabVK5JOIyDNY9brNMWl/lZrhqcOf8/6UsnElKHbUMoq/Vrm+Tsg
+         mpXPxXYOY/TozkZnbv4Is/0x5a55/BSYTrn6Fk94pGIdIgb9Fq8dUF8Z5fXSIeX2NBfx
+         PfMHJB9VmCfSp1kBhLlyMb4V1L/M584aNXOzYBtPg8xx+d9C7TpkfWDkniJX4GRVJGRK
+         a3dKkkjLdC5DlBQmQRr3H8ETeaTspGI32hZ0ZdAJpgWvgrN5PkRmzhrAFBulkjSn4AbC
+         DLow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790050856; x=1790655656;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=vw7F89gHzb0bwYi7GFQ9WYKMfHucMYNinHqo/LXrYrc=;
+        b=G6PImIjdWGSuW3R3JWXzLj5EktiNuE3z5XzM8QE4bHimqzxBf9BbW38CdAeuow87yC
+         /KV3kUXX7LqNf8KIkNVQ4Lx+ipRk5m1GiTCjnIVby027kwE4e1tcp+nhRFTWUmcquK2i
+         Aa2YiP1mVtQd4OV98v/x0ZZvVpsS0FnkMBrZwG/dQW/zkAJ8vD30t7zA3uJH9aOjm6mW
+         z7VuYnU8//dMc962cvv1BfSpXYiCWyxOsD9oGa6md1rf3+oyoUEPFnzRTC+U/hcI4jf9
+         gQHkHz2lZCJZ7RumgsUlVvKeg16hjSFtI9AvAEBPGOOfNVQWTTXvtpi4EaTZeDEAGbgF
+         Bw2w==
+X-Forwarded-Encrypted: i=1; AKwUvBxqx2f3WKFYQ9viDOEMRS5TOXD2JW20L0YznkOZdUdmWa3f2XesAM8u+ucu1hfUeakhJPaew3mbWw==@kvack.org
+X-Gm-Message-State: AFuF++m8oBDb9KKbP50Wq4UmWwKQmo24hOM49Ap2SdSazS2Mz12qX0p8
+	0jKDUJ3P/RABycyGBqBITDSjEkpsVcSvLm58kM7H56FIDQSqmDJJgSwp
+X-Gm-Gg: AYBFou0Ldj2z2Nh8qLb1vfwBBMX7j04X495Cz20f3Ih2JJNem6GYgCbki4ane+FEFeV
+	HGWdUkvrZCKFYPDgzJoR0x46e152xerbSForWTu8jFLMrAW3G+mkeeQiwdjRolYJyP34clWPKjj
+	Zl4RGx8b0cvtd80botCRCD0AZR9QgwBIxAef1r38VBIwFPV0MGCvsg5/N2sb0yDgh4tk2CoCxeW
+	3+W069+JqfdWGRTgqntq+tXReHpk2zICLGJSy0XWXqU7IDzQgmWjEZ/Ey/l7CQqWtl9b/OJdLVm
+	/Ynd3HdVzJj66e43nVEcjcu0LWz2RUnHQy5IqPUU+n3P2DtfHeKlpmkr+ieRZqmkgMThSwiBzC5
+	ZXzDyMPziTmqHla8wG+KrMZdeLwpjuzpd7ZwQPrFcAEnzldO799DArpy66KzcZFfNaVJ2NBb3Zd
+	wVvR8L1kYAznbhc7y9u+YlyYGhrx4s1Jn1HOkTcMS3AJ9b1bSCI6q/kMynW+wpJuLCjy32RnpLx
+	KoiF+NGyc1XJSGZGXb0PeZl6i3K4Q==
+X-Received: by 2002:a05:6820:4b8e:b0:6bd:bf80:9796 with SMTP id 006d021491bc7-6ca9be50072mr13917974eaf.41.1790050856466;
+        Mon, 21 Sep 2026 21:20:56 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:8::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-814e394ac61sm881122a34.1.2026.09.21.21.20.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 21:20:55 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Cc: Hongfu Li <hongfu.li@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chris Down <chris@chrisdown.name>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat together with hugetlb folio
+Date: Mon, 21 Sep 2026 21:20:53 -0700
+Message-ID: <20260922042054.3264663-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <arIAyyjYcCKHFmyD@localhost.localdomain>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 96AB1140006
+X-Stat-Signature: yowf7rxb5zz6o4s4rst675ee9p61z4fh
 X-Rspam-User: 
-X-Stat-Signature: m94twhk7pkk6bym14pt8i3551afi6rc1
-X-HE-Tag: 1790050795-754463
-X-HE-Meta: U2FsdGVkX18FX6xneufeSaktk6KztD6WzTRiUFbsuoZmkgp+9u0iT0Cn8xNutAIG+eIwiojf8Ex8c5NJ/Zmh2I9GZc73In10VbleNWkAC7YeaxXY4/68xQigLuPHv4qAHLEefzpBzj2wrqEUYD51mZW+6iGUH9lu8BbWqUyfkrIkXGNVjhbK+Ccmk/vGEDEuwonFITVi2PIyR8z9yFV5RB7CrgPhpcRlDtTu9ABvmJwZLArAudR3mSQ9ajdV7NRFa9fo1YpclWWH9cJqz0JFMgLzt8NxLQiOCPn6VRoROSsch32ad8yWOl9tCnbceUD5rxlZJrPFr14NQqeElU+GPiaLfUMpQ51Up+emH1IG4goASzj1lPgr7IlPPWKuGtsTZgzK9xgsNuTKyFqEOkQBvzppj76B1LJWS+ViMaM+EzEGJROd5etHeoptRHpQyom6S1wXmmYulgctRjh8Fey8oEqImqkoPWcSPSqdp/bfGF12qk7dNPaoYWlxZVaPtcEVKs4Ps7g5n7ay5AfjApHzXulGwgZPhrx7TR6IcPnU8of5xOIaCZXPf1ENjS7LGlEsyxX5uKirLagKbdCS9CHSZvJO+mCK/oUgM/O3TPXivIlu1XFON/0tVzdBovQmvvxdgNFK4xTx7DBrOUTAVPgfdL2yT13b4BKFFcdauXHpnfRKaMwoX0kKdgbVAizkydOww87HiByxuqL5OjE3A4/H4kNfAlWhX0mPRcxaaBYP0k3RVmjimr3x9LlwU8MmrTJ0jIrydS9YLCdBL2M5yqIgLX1+PwsH0IZa9YYYVEJR3hbXtQ7GPh01JMw/SH3syVgKKa7wOBJRoh6Cqm2Y+rYfQS02aH1Pj0d1KYckGdCM/ixlrgoY3tD6O7ePSV8U6hXiyimKMJtd0u5yPiuBQLegmjnwpt5Qorysj6LL3S8eV869iUalNkeVqaHl0cC1LFskRPCNhj9TubwZw3Ue79l
- YdsnHW83
- das3JVJtwSoOrNCOl96z2I+hfrzmvBWajZ9nJ7etOP7Dj35lda0h5um04bSNyusxowGlFEF0unk/t6RcySKASHMZf64us5WiyejqNXc2ugvUESVLcsltOMiHUe3smkSWyUkcpuIpgaytVVRqmV4o4KdpCR0Vd0otiyXJis2nzh5tMZmLplGLP8S20ev7uVdskO5gRJsHB2yzSiSZW/xpFOMbManSLl2T+6YJfMp9ZwHtgVtd25nZJAwzAua0/goGnABDntEKhzW2Bb19f/6xhKAeTWSo6w+FDfLqrKtv3Tz8WcZQvSZirtkV6fv+fQ8MCx51SFBOAXt9g9h2Y/Ek9HzN3M3JuQ+jl1RNpX8k3VL45uMcccHypseh4kgpeI9opkfBNGmGtyfRKlcAdki1n7Xi/SNn6M8/ojuIjkoeCv0nAVFFY1LIYnMfvgi9ZN5i2coA235jX3LSm0G7ZvDWRYZAyoG2RtJElsjC1E9ERbsi31kbA2M0LB27oJFw6IsVCnURLE6LjlkgMPjy91fXJE/Zz9eLE2cNpTP3HpBKq0RBXvpjY707DNrnK/2RSKCQjoAwR396G3DD+sAQNPHOafX3mYAb3VQz2P5c4xzG2MLHIivfW3+9Dfb37y71TU6mWAybkwNSJBgHR/HAO3T/ObjbWES4mKrlBXG2A5Tfg8EBKylUrFCbc+6VAW87nzrOltyNjlA5VXKdOWzqXqPuKI97D+IGvjZFR9idjzNuyZfaU9mjX7JY+l3J7Nw==
+X-HE-Tag: 1790050857-446703
+X-HE-Meta: U2FsdGVkX1/pALb4AAO41yOSBQCwwpyOlYQycZGchuBE4QD97E2ag6sOG8ID3MqU/IWLEv3Its+J6lWDLIjavGQ5+kI6sCY9XrIB9CrBWkzVEcAlzwzamFTBnB5vsaCRws8Ewb0npmFy/foRTrOzzH24pRLkrdwbqUPEcjZKpg6Wh4noRJeTtlc0jBdVy9T1Kr2xtIQl9sBEUDsEPH+M4WmhSnaCqEiAWxNLxoVeSreMJK72Tf1I/sosOwv72APXhTWjnsQdpVSGCdHxLbwuwvEVLZlpNvYGo58acPsD8NGfnCPWoua2IPsIxwvL+InBOsakUEchZ32Sf4p6nSOFHQTIqS4cuhX1iuWrxcmDJHqSpcrraJhI/Cq1CnSxpiEG/ZgPmQ+Jf0Xu6UWhiw1CNQDb/L9V94f5wvwo3Jd/IC1ziITAwOHI4/lsskTayrdq/YPENSNjDLYM56sao0fIGMZeVPbQRMr9fi0oF8ZH6/SwM2G2trFWUZGgp3odDPIQ5pO0p/7UN2LG55LD5Ra43hiQuTMj4aBHsSwjmqs80NlcKQxJcxXmcqwFK9jtjz/c8A1Ydul87XhIS4RhY+EFuMfnFFT6/wWPxauOTBimCph44iI809cad/gOz0tgvlg/EJeQS4Y87wa1Onk6TW98u9NZfCb4OOBFz1IXjlHDoHPeFGcVzMiGxszoXIoqA06IWtFuRqRw6mGa8H9Jn3zcXD6mxAA75mg7Pv/tjCVxLd5HatL/y9ekpB43CQ4E9WbfdrfWMxFnzbltAWeWXKiYcEQkyLw0fuec/7o+3ZNNUbbSI9o6v/wYVZzqdz1U9UsFJDJeWoiSAHw9+N4hiJM666nZu0gZcT0e74t6vcY1itooRJxaGuDDHNTHUTwRAcDTmoAZp7xFAyda7xHXyTlnBxyZmyLLzf1vTlLr7s0x8A/wvb63DQncVylDoOnyep2KZpVYGlueqjsiQAKMwUL
+ DzKLiup6
+ nBU77ctJAPc/U73l8gUXrawS++WZELsVd7bJBrKBfC6+pjpOI/fUv901+lajULYmwwSLLIqs8Z4iwrdgpkTtu5YRJYFsF9tJNTon0ZCBHIyv57EiK57QGVZd8OD4MqB1A8obEdnA55V5WXkomobekfxGmGrfi+TTlj27EzRdMi0ukxtRiw/eAgRAJb7nw1YumePjbFwFTCsl/8XlaQaFKgPBRhIoarnMe3bA/hv4c/wclwtXF6W8jleA+I9WzJLCNPW5w7ZMTwsZBl75jNPH0NJulZhbW2fShWQoLbCffzaCqrq/rTRbsPL4jI+afb7XP6Wx7o9ApoLp5wL5a+cDf2WsCm5u2TAk/47J/+J4VfjwIt7vNLbkFeQTvhNLwqkgTltxLHFngt/w8vGNM7w6vX1auoG6F1FKGu99Lx8/HIX6fyJHCBudzWYpnhrDTkwGj5NQA9fEm4fTmuqULM7w+t8LbSC6b2tSwzlTvX4fNsr25ry9Apn0Ymde9UT7+xMEOS2jBeNjIEBGKguMKWmiGgpF1rYxZ2SGxiZTj0qg/NaRLzRKtDXIs1jnO8atKAWFWBNR6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,19 +133,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
->=20
-> KHO now no longer uses "scratch" to describe the memory areas passed by
-> previous kernel. Instead, it calls them boot memory, or bootmem in
-> short. Rename the kho_scratch=3D commandline parameter to reflect this
-> terminology change.
->=20
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On Tue, 22 Sep 2026 06:15:07 +0200 "Oscar Salvador (SUSE)" <osalvador@kernel.org> wrote:
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+> On Mon, Sep 21, 2026 at 05:12:35PM +0800, Hongfu Li wrote:
+> > From: Hongfu Li <lihongfu@kylinos.cn>
+> > 
+> > memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+> > stats. These stats are accounted against folio_nid(): incremented on
+> > the folio's node when handed to a user, decremented when the folio is
+> > returned to the pool.
+> > 
+> > During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+> > to the new folio and drops the memcg data of the old one, so the free
+> > of the old folio right after the migration skips the memcg per-node
+> > lruvec decrement. The hugetlb count stays attributed to the old node
+> > for the rest of the life of the charge, while the target folio gets no
+> > increment on the new node; its later free decrements a counter that
+> > was never incremented.
+> > 
+> > Migrate the per-node lruvec accounting alongside migration. Global
+> > memcg totals remain balanced because they track resource consumption,
+> > not node placement.
+> > 
+> > Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> 
+> For the fix itself:
+> 
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> 
+> question below:
+> 
+> > ---
+> >  mm/memcontrol.c | 31 +++++++++++++++++++++++++++++++
+> >  1 file changed, 31 insertions(+)
+> > 
+> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > index 1460cba53588..9c96ebd5436f 100644
+> > --- a/mm/memcontrol.c
+> > +++ b/mm/memcontrol.c
+> > @@ -5598,6 +5598,34 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+> >  	rcu_read_unlock();
+> >  }
+> >  
+> > +#ifdef CONFIG_HUGETLB_PAGE
+> > +static void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
+> > +				     struct folio *old, struct folio *new)
+> > +{
+> > +	long nr_pages = folio_nr_pages(old);
+> > +	struct mem_cgroup *memcg;
+> > +	int old_nid = folio_nid(old);
+> > +	int new_nid = folio_nid(new);
+> > +
+> > +	if (old_nid == new_nid)
+> > +		return;
+> > +
+> > +	rcu_read_lock();
+> > +	memcg = obj_cgroup_memcg(objcg);
+> > +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
+> > +			       NR_HUGETLB, -nr_pages);
+> > +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
+> > +			       NR_HUGETLB, nr_pages);
+> > +	rcu_read_unlock();
+> 
+> Why do we need the whole thing to be embraced by rcu?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922041321.2339=
-86-1-pratyush@kernel.org?part=3D4
+Hi Oscar,
 
+I believe it's because now getting the memcg from the objcg requires
+an RCU lock to make sure it doesn't get removed while we work on the
+memcg. I think this is since Qi Zheng's "Eliminate Dying Memory
+Cgroup" series.
+
+Joshua
 
