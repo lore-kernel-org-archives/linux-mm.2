@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A13C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71030C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:33:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 94A376B00AB; Tue, 22 Sep 2026 13:33:12 -0400 (EDT)
+	id F16A96B00AC; Tue, 22 Sep 2026 13:33:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AAAE6B00AD; Tue, 22 Sep 2026 13:33:12 -0400 (EDT)
+	id EEF026B00AD; Tue, 22 Sep 2026 13:33:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77A7E6B00AB; Tue, 22 Sep 2026 13:33:12 -0400 (EDT)
+	id DDDCD6B00AE; Tue, 22 Sep 2026 13:33:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 529E06B00AB
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:33:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C5E5DA044D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:11 +0000 (UTC)
-X-FDA: 85242094182.01.F154C3A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BDE556B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:33:15 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C6611A04EE
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:15 +0000 (UTC)
+X-FDA: 85242094350.23.9DEF2D5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0AAD310000C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mNoQ9q5B;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9DB4016000E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=d3xeuRYT;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790098390;
-	b=n47j9eAvLkKEGa+OgNTg+xNUyumbC/juRazYz1LZDeGWUhUBzINpG6ulCOuWfLpQ70viDd
-	Ei+CkJW/gv96CvnwCTmb3SkNmZDrO5f3mCdinLQex3zuhjMOqXnMZVr+w7tl4SifBgNc80
-	ShhrX9F8tFqQeKr2bK/Auj/QghCN/2I=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mNoQ9q5B;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790098390;
+	s=arc-20220608; t=1790098393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YV43xe2l6HV1crSikFZkZsSOAepK1RGDdx6y7YuuxyE=;
-	b=Hs+EqE7Nop2pf3vnShjNi9OgnNEXZqFhk6gbZBs66rZnbW5Mh84WBTXjDP6aKQdlvY6TeX
-	jgjBWV6zzVxC7ZEqeh9rpONpprQJwv7+Dji7VsuspCtyYrDQyNF8IB+VpV1HWPXpnXCw8P
-	vtZYd+NcAZjqCtyx1fUSiiZF3V9l0IA=
+	bh=trFjpGYQm/7aTKy/U9BT2hK3u+qGHDDjAWvAmM0cDcw=;
+	b=OGjmzyJ24UPVNSWEbIz8uFPYrUPHfthOvVSCYGvJTbWvEFR+X2AV+UiGaUBbYbCw53qfJf
+	lLhgrD7ZBSV+ejc6Ht3PYcGjl1XC6j2wwqS91SU9Jn9uBAuDjxlzl0/+WKjf3NHwMaQJ5k
+	JIdEyatBJ4HELg8SyEOoGrooUIFTvCg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=d3xeuRYT;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790098393;
+	b=8UnfXLOkF3OXpDUvizD7/CAJ1rI0IkbZ7D5bHnUHTKOytmIKLg0Yv1TookulfviJ3mO1SY
+	r2t9RmKNk10AxKDDJ+7mrHgqcKqLHcj2dsFqkMVTiBTiasAvOFcQyetift6P0tZx/B2fmC
+	XCboFxZacZsYDP342q3aF/0x4ounr4M=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85DBA1576;
-	Tue, 22 Sep 2026 10:33:05 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 49DA01AED;
+	Tue, 22 Sep 2026 10:33:09 -0700 (PDT)
 Received: from [127.0.1.1] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9EBCD3F86C;
-	Tue, 22 Sep 2026 10:33:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 616B73F86C;
+	Tue, 22 Sep 2026 10:33:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790098389; bh=lGoyQT/IUQtR3cNCOID4as8wOLQ/VDmkytsu/6BddYQ=;
+	t=1790098392; bh=PeJQ7fYXLGcw4P0kvfY82twCI/k6VJB344U1K7tkEMM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=mNoQ9q5BtvoMd+Rw12q0kZB49nZuw7UiCE1KeciQ3TnFAZnWIjbD+UV3pSFN6VIrW
-	 HiDynCz+zSRp1JmOxEnCoMWiBzqNZqS42/vU0/wJuCDlZ01zEtC5LxR2cFN0m6O57w
-	 DIbzipLnMXJ/EX/qZe4oH777ESIeNsTvQu0X9Inw=
+	b=d3xeuRYT+klOzNDSyNdM3rcbkRZj3fdN5cBa1D1YwCIZyxd+7f7Sy8BgbNUmU5al1
+	 3s/0EsafMWeY/ZZrmT+pw9w6TaZJeLQe8kr+7niH1ZmkhigzCVK9Oe/kkhM5HFTKdQ
+	 LdRNH7rjihzI3dDQ1qhnr2R8GM6p9/Ohat1pmPv0=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Date: Tue, 22 Sep 2026 18:32:00 +0100
-Subject: [PATCH v2 5/6] arm64: use HW PTE accessors in early map_range()
+Date: Tue, 22 Sep 2026 18:32:01 +0100
+Subject: [PATCH v2 6/6] arm64: enable a distinct type for HW PTEs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-pte0_arm-v2-5-a3f1ddff0a8a@arm.com>
+Message-Id: <20260922-pte0_arm-v2-6-a3f1ddff0a8a@arm.com>
 References: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
 In-Reply-To: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
@@ -87,14 +87,14 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
  Muhammad Usama Anjum <usama.anjum@arm.com>
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 1ojxzwkz7mhmnan3sca8n1xz7tz95ioc
+X-Rspamd-Queue-Id: 9DB4016000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0AAD310000C
-X-HE-Tag: 1790098389-926379
-X-HE-Meta: U2FsdGVkX1+kkRQsaBP9ZoU6uKwIrPMOO7dTi360bWRTY2s/25PlV3oF9LeECpWMpdaVrZLYC8abW7+L41EtFu7G36/zQqA7aQEqsPbtOXbvE3c75vpxzr8tFSnwXibNaPOYfGac3tIDjtM3mXmeoIwX7rh3f8WHwrZ2pjEI18Y5TXW9ovT3STzRpby+vVZr7kmuDyKaKXkRTTfjtYJeBNsD9e5tS9zz54YbXKZXy8Rmcniuo2dhRHIkELiOEHOYszXJYPnkZf2AjA4RLxNL4cMnHGFTN7ZKFhQJg/84BVpeBp/3adUDyhh0C3H5OKh8wxssX5P4TGM2OV9TTIym5VgwXlZhxCNLG02T7xgok9hweYUvRttEQd/RkXtsMe3R7HrV44HdtssIuZQlPao1of5zLp2Xq5dtLpV9iDLQVTIskOVVy6Noi/L71mTT3Bcw4zBMVDNQ95tDzuoluLi91VnnG88mQ9CbyUdk89Yziv95t07QSR4Frp9DaYTbn9Is/uJn6KyN4A98eZyHGFtomrewYpTSapECvVWK/xCs0Gsg4WTYLnCRxSGlvVddp9XrH0zJIm1m50C5dtAuLYvYUzIUKpWh3qeCmtuHwO4vJIPYWSXXZ2lPy+mzWTrm7Asr163VX9KMf8qC5nlIt/HVcGpv+AA50HGs2R2vCExdrLX3NDRZQaQ878KATPlpugCwJHCKL5baS4qZgVnYl7rqpgmpgVkB99TvnOQkLiYNa7K7fXBEDUuWuvhASJ5CvREBt4O1bLFqYdZVj3qkbZO4lTYl9TYqAAW8KaAyBzFIlT370p+JQc+DlcW49/RcN3B9B87ETniq+muYkcw1JTqt8O6wTXUelNSFrubbtP+TU23a07Ia05U77ddirHjG4B/z4U3WSMpZcQfZ8goVNJoUY/gGD4ueLGUxj9Rw5GhKl30IkqY25lsC9kon2Cl51liAIFmiwXRuqj+tThlucfr
- G3hyES/W
- amc4kjI9l+7Ez+3RCxC3VEUpmAtK20IQCfAlY5ECnyBONhSAlafQCvxzA3KQhkqRXCNkVRYVO+0P3GqHzrQ/KNJ5lBIX4zSWM4veg5976XMTdUKgW7V2F+s9NUFdazqMxs4stsc4/pz4u5N8wQExZt44r+xhrItKwWtaulxs61vKHFQ/nIjAB+NiqQKjpamu5PGHbDS0TWyqSyFgb1UQFvbioY6pFjrZDvTpgJ3W4a6OZIJQqucsXcQaS49YyXDX/8y/Lex1Zy4ntPprKXYwKGHIvPCNKKtYp9Tm69EzY9lJ/nsKSRSOC4AkryETDOq4FAqD+dis2iGAtvTATMaz+4zNkW/gEE1a9y2IQWzBJ6RupVFyMz65AebTkjg==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3bkjxiq1c6abr9jwx95gcca5w4fs8aay
+X-HE-Tag: 1790098393-77920
+X-HE-Meta: U2FsdGVkX1+BQNUy2/FtZy5wGhSkFVffCAKA/eTgPpaZcJsJ1/5MQbTAWs1wJHjOPk2PmbDErW2/63lG6z2+R8WWJIn2+BQdqz1bkr00YgGtdO4noHtSslVNlU/7YQGnnn+45vhji8cXMXTFoQbInzWWGJxynmmIcY+mgFwZuj+aI6wjxswujkAwxi9rVqii8Fs1jiKqp7it8erOpUhGImlyuZwoW8X+TmJJmHJAmbqkt6r+o8LF5SQwq6HFUbCVq378uCxsHta8Jk2zmzeHEck3jaGLvJgcB0XTCk33/1X40HvmgBiV1hYfqh8NswqD8IpuKlqYjHnkQ/8b9BcYV8Y5va3EOY6vHb7VNIH4qRj/aNzQbIZ9lttnWdO0S6dPlMQi9V4GqpIA64jG2NnHQqg4YbTEESbusZR1LFFLlry8USjANjo6V+05tzKgc2tIJZsvYUFC4brLydZEEkfxUXGIjdKqvW9Me9xs/CXSWGBoGHbJ7WfcMRPxPk5ottrbUmev6QqFf/Ms7iEcV1pciaSL7lfsQuUXkeAyDGVTf5r4o1DErz83rt1F7S7RZDDdzaQAPONO+8uiNZEslcflRTnyxvbZCXYRgs4wxd01653s58SC3fxwXNdl7XFuLlV6PsX+Cu962N9SUpZRFnt6g1s5yWJW5zoWPS9MXEka+E6pYdnvqy0wuEe49EN2fNwZEhA87ZDAO5oGFSrJWnEBAyVWD2iT4jeNsMO4nnhQHa55QrIBRH03cUzRBhrlriGXytpUAWGVshqgnmwA+asZLDo6oYunQbuTr2oK3AFyaJ8GQFvrx2GSjUqIocyVsCuolvb/vqgCxoWbQDR5nQQU+2IcKvG3Z9DG6cnLaxMVUXdYy/wafMeLMZCvqBE68bzm05l3Fwon4Q3TmrSpoHawcbgShbKQlSPeyR8+3wh5lz5XEl3bmMdVEDyZxfdNBuqB8Ho3f77e4TXShgtMlUC
+ UyPnSyob
+ 8fhPmRfRgPCY33yDULr9SBa6ISo+nGEgkR6mKnm/I4WJ+kBq6GVZdf9mUEsiO28y9lC/DSLIfh3mjJHLJx1UJPRXMC8MXCyC06r9o+N91+M/0obfSGefQiBND5Zw60uZJrpRZK/gTfAWkWHrAZiXxLBsg5nh9QDFLRzR8slvcApF7Hc0/KwFQB05ZghzWpl6kNYFiq6hJLbD/GzLD/IQVVOY1DF/eyazQLhUl4l73y7e7/7Eipw+CubFuv5mW37NAdoRxTKHaGVx3paBI0k0NxuCVTTCZTopcvIbPJmCiHlzaof6I3b8Psj/IH/O2FUI+wOC+m+Uat39FKrM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,62 +102,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-map_range() uses HW PTE pointers to build early translation tables at
-each level. Directly testing, decoding, or assigning *tbl treats an
-HW PTE as a SW PTE value, which requires explicit conversion once
-hw_pte_t becomes distinct.
+With HW PTE pointers and direct HW PTE accesses converted, arm64 can use
+the generic hw_pte_t wrapper instead of the pte_t alias.
 
-Use __ptep_get() to load a SW PTE value for the empty-entry check and
-child-table address, and __set_pte_nosync() to convert SW PTE values to
-HW PTEs on stores. The no-sync helper performs WRITE_ONCE() without
-adding the completion barriers used by __set_pte().
+Select ARCH_HAS_HW_PTE_T to give HW PTEs and SW PTE values distinct C
+types.
 
 Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
- arch/arm64/kernel/pi/map_range.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm64/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/kernel/pi/map_range.c b/arch/arm64/kernel/pi/map_range.c
-index 94f06da76e333..9c4c8060c5df4 100644
---- a/arch/arm64/kernel/pi/map_range.c
-+++ b/arch/arm64/kernel/pi/map_range.c
-@@ -51,19 +51,21 @@ void __init map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
- 
- 	while (start < end) {
- 		u64 next = min((start | lmask) + 1, PAGE_ALIGN(end));
-+		pte_t entry = __ptep_get(tbl);
- 
- 		if (level < 2 || (level == 2 && (start | next | pa) & lmask)) {
- 			/*
- 			 * This chunk needs a finer grained mapping. Create a
- 			 * table mapping if necessary and recurse.
- 			 */
--			if (pte_none(*tbl)) {
--				*tbl = __pte(__phys_to_pte_val(*pte) |
-+			if (pte_none(entry)) {
-+				entry = __pte(__phys_to_pte_val(*pte) |
- 					     PMD_TYPE_TABLE | PMD_TABLE_UXN);
--				*pte += PTRS_PER_PTE * sizeof(pte_t);
-+				__set_pte_nosync(tbl, entry);
-+				*pte += PTRS_PER_PTE * sizeof(hw_pte_t);
- 			}
- 			map_range(pte, start, next, pa, prot, level + 1,
--				  (hw_pte_t *)(__pte_to_phys(*tbl) + va_offset),
-+				  (hw_pte_t *)(__pte_to_phys(entry) + va_offset),
- 				  may_use_cont, va_offset);
- 		} else {
- 			/*
-@@ -81,7 +83,8 @@ void __init map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
- 				protval &= ~PTE_CONT;
- 
- 			/* Put down a block or page mapping */
--			*tbl = __pte(__phys_to_pte_val(pa) | protval);
-+			entry = __pte(__phys_to_pte_val(pa) | protval);
-+			__set_pte_nosync(tbl, entry);
- 		}
- 		pa += next - start;
- 		start = next;
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 2bbeded33da0d..42841d5e2ed26 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -31,6 +31,7 @@ config ARM64
+ 	select ARCH_HAS_FORTIFY_SOURCE
+ 	select ARCH_HAS_GCOV_PROFILE_ALL
+ 	select ARCH_HAS_GIGANTIC_PAGE
++	select ARCH_HAS_HW_PTE_T
+ 	select ARCH_HAS_KCOV
+ 	select ARCH_HAS_KERNEL_FPU_SUPPORT if KERNEL_MODE_NEON
+ 	select ARCH_HAS_KEEPINITRD
 
 -- 
 2.47.3
