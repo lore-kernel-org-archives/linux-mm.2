@@ -4,134 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8650C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 21:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAACFC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 21:07:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48D5B6B0088; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
+	id 7540C6B008C; Tue, 22 Sep 2026 17:07:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 464C56B008A; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
+	id 7051A6B0092; Tue, 22 Sep 2026 17:07:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 355366B008C; Tue, 22 Sep 2026 17:03:25 -0400 (EDT)
+	id 61A676B0093; Tue, 22 Sep 2026 17:07:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0259F6B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:03:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84903160652
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:03:24 +0000 (UTC)
-X-FDA: 85242623928.26.2DE5948
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 928021A0003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:03:22 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V7lCQ2Xu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790111002;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 411086B008C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:07:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C72171205F9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:07:26 +0000 (UTC)
+X-FDA: 85242634092.16.8990E91
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D85B94000A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:07:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTofcVmI;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790111245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
-	b=Mdw3mg3FKE0e8pVq7N9Xghk09pOBVPrMMLGfqGx/OFVcRmDuWSV0zNZLh1sRpP2facTsYo
-	H3zv7Xc6bPqGRfNiDLLdbCNJPR9vUQyUrI0aVGMONdb5AiF6vOm4ICsKNLY0fJ+31cpOem
-	jNMUHiMxXF8qcgVguZO9Nw3eBlbRGKg=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V7lCQ2Xu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf19.hostedemail.com: domain of devnexen@gmail.com designates 209.85.167.173 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790111002;
-	b=6N163rCZhy0TJ3qsa4MdLjp6yHhGTE0jjnrYnzhWR6Nd0OuDVDYZUYLh+oPaM6iJuZqGyK
-	i3Q5TpvbALtQYrMuE4mduyjOMY2xfVJ7dOs0l/XadYNitV8wTq13lLyJ4yA8dsxhp3VfcW
-	+r21LiwO43yYq4ayZN8vbXgiayRuXR8=
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-4be07e7c54dso240650b6e.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:03:22 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790111001; cv=none;
-        d=google.com; s=arc-20260327;
-        b=LT6k+LbD9WMCMNMPWs6gCTjUi0FNcfFuf3yRrrBVkcb8ejrQP1PNQ1JK3zB1eZBiMe
-         YgUqXsa/EOjcvi57qGy4964DjlWQXDT7ogxeWIziYGPhvz6raLsOQQmECjthvYy8myyA
-         RD+QEVLudY2/3A88JoWSNDZZDtBQk32QpJuyV5PFFHjxqZe+/ecow44pvuCc0qUdzxhP
-         cC7ZxC4slcG2Zh3SpcKbub9IUPAtzc377cT6LeovB1QrB1dyPzelXQVDHsdJz3lSHae0
-         2RI9ZZtkk3ZLv5l6XktYWeyNUXwTtdOYaHN7ZiEWQKTRYceI/SSbOs0xdz34MAW+qTvA
-         MZdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
-        fh=LZHv3PCjh/w9DcpezvxQpz/Sj4CEZgMyPG+tToCrtng=;
-        b=kh/+kqnHj8YVE6xXh1oRgxwovdXhXmr6kt3XZRl3LVEt6GJo6t8prTatWUg4SYRXtc
-         NOrRwrsLjAXuYKYE9qKW/3jZ2KjxiabKIQE97m2YqttOpexLX46j8Kqy+hID4i5Y7sVy
-         Visv8yaSMv4UEBpuKVFJjEwHQxX6QwWanV/PQNuiWmtmunPe6dQwMYsa6R6c43ikgKsM
-         gTSe3j065YpT4skDUUDziACfcKWmMvq0aHFhSZZxepylMafMFpF9BY0ek+Hx8Rw/lT3w
-         bypHpHG8gj66XWuVd0fN9nDoT0rCCaZAeAcwLeBmWUeopu8f4iEyuACzmhMESogiFcTQ
-         mVew==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790111001; x=1790715801; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
-        b=V7lCQ2XufIkzB+XyCP6gVjo9pFIbRGiGUV7EezKuMGhQgBz5wqA4GluGY9dh000rDi
-         GXvC+0F+xQJBDiYALP9Bsu/gwlOBjBbNZnq4NyIlwdHDE0LyLAaj8jVyYuNHr3cw2IaF
-         VjTRqPnOPA9JXpcLnxJRSpdlgpOg6uJfoYGSduJKtyThZYlZF8Y4RXPCZ5a9J9eYG3AD
-         PJ2g7AeF2n1WI47vHKsBf94gGg62wBRBIAiLT5GQsPkJFkGAAglXvALr3utZsPBfa6zf
-         hP8J8trMG6JIDftCLCCg+wjfBXQ5AzToFBVHhcqthXA+3EwSNk3S2wy0o0J650Fo82uz
-         ZXaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790111001; x=1790715801;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=LcKMyE1/7kAEM6RrLqfWaO/Qpmd5bxvlGWaVkcDKx5Q=;
-        b=S0Bj2ZGpTERSpFGfWQgEZC/hH6NgrYzvQdadUUPzIpksxYD5mS9K2ofo6wOo930shH
-         NPLCvFDrN9ScJUyJV9FLNqh2JpGMZslMvTgrPkQQe16QtBBklHTlcRtUK4XezIVAdswa
-         b087osDBWWZC1cuxzFMdP7S0NH26vw7A1yM1lXdGS7lkPU8ikeMDlZyHsN0ftGtZYHo3
-         48xtKKqobcgqtsw+lwY8Y803xD/sPGiQ2OaUUwyFtMUnooRmdm0uuZk0y5v9oBpA+nGj
-         q62dW5GGmSc4EoqE8nTPXOkAiAeUJeeDhAu1xYJ2AsqEhZE2ceY8HrmTkq+GZAeyz0DT
-         wjnA==
-X-Gm-Message-State: AFuF++k3fDva7DAK6myAYGPbEXMh6FB4eeJ/dOr3u9ndRlhp8b0YZu6+
-	1Ge2kp8Cpy7MF/GikOrjqYGMEp/e0hXP4ls0twYPA9BCt9MFIZGsVq8QhG41nnSROTsjRs+fODr
-	han8sE1s6MBAZrHg/HRsK9Sy+HThE244=
-X-Gm-Gg: AYBFou27dYos4uzFiLQOiQF/487YVX5xCMpRCsThCl2tKHR/5STKw//vAPI78u2uHvJ
-	1Dq3oQPmSIxgy3eZZpUm2bw2HH/JyAELMg7QFWtwDO9DIAB9mHPE58xLryhCPiUqyN3052gTe1s
-	IWPJbecdG+jB4jk/ReFEOyyl7rfntg+4MyHCK1afyMyypufhngkkMUg4tB7qpvGzgvHTFTpsMpV
-	qjfLC1u7XPBo/HOSO5+tj7q909/CvqrLgPtP2As2dIlT6rrHWFiDMnwl2rBOSa/Xg1W72JTUiZd
-	U+Jaix1U6U2p9eWyDD1AjXHH/HrlqBubf/2PkBVR1JgU9dbWnSQL8Nvq4icscJiPDFguPvwMxng
-	GIxsJ9j7TgA==
-X-Received: by 2002:a05:6808:c106:b0:4ca:9850:4dd8 with SMTP id
- 5614622812f47-4d436d8e804mr3181835b6e.10.1790111001332; Tue, 22 Sep 2026
- 14:03:21 -0700 (PDT)
+	bh=tbyqPgrizLALVjg78yaFfJn0dQLz3gPA6d0TtceKcJg=;
+	b=D+JiOkFhju9NWhCiYhdn+z6L4OYCpJdOoHC43bYVUUhtIAYiVRrtOKO8esW86hryRMUtcP
+	ZsNwOBokrHg1QSTkiYG4l9Gs7Bw3jVmZJXLz7djR8S9cOR/+viiSaconkn4ad8GxsYQctB
+	iVJYosX6tQY2opt4sO0D/oKjhsQdTF0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790111245;
+	b=rk9vHACugNZJRhQWrhk0QGzhX4gbXVfZp92rgngEEODzqNXoJ/+8ioLMkC4/GStZtwgXnE
+	wmYJIWMylV4VuHO6svRWjLNZM0UHPpRZWi1EHFh3l1oQH62oYxZy1ELhXW9/XPe0G5gEgF
+	5FJMUNsN7Q60/A+Ap74nbSnjHhru6zw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jTofcVmI;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 01D5B44514
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:07:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD35A1F00893
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:07:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790111243;
+	bh=tbyqPgrizLALVjg78yaFfJn0dQLz3gPA6d0TtceKcJg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jTofcVmISdXyCtYuw8zNFILbYNlT/3I/N33Wt0Df/YUBcucu6snDlL6RByPk0zwnp
+	 ZpI005lJ82bt9YValXE9bNZ2d/TBjxRXMdAHNWODZuVhOdg2m2OjJTchO81FkodLIW
+	 X7S5eEHyvykG/IoEJvD9TVltdQcCZseEoYPAYSKtqMJcV6uDbuRleDURazXE1n4kYl
+	 tMrnA2zh+UxKZExguYZ3fJJaAFjY3tueAYKRnVEhXG3miiagZha2kpwbbuH+xX4RkY
+	 ekxx2IvqklUpKeb5235MiWN8Qz5IT9hiPMWEhAWG3ZfPqmk3rzebzNAbek96vLh0r0
+	 9tl0Gf/9qbr5w==
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-939109fafd7so25975685a.2
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:07:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxC4wZzZgSItQg5sLZ4he4/jHfLJOwTnJapW4xi3lKKKoA/TT6EBQuPfQJIask9xZ7Yh+C/Kk/VYA==@kvack.org
+X-Gm-Message-State: AFuF++lO52aLG9BdSM5zmMoL7HN/TQh7olZNXplC7fe0kbva+kzumNZ9
+	RmxiFy+ShCYj62uO38x5TVUX8xl1ypu57anxEEtfBTCgDaQqAlTxOSdbNhNySPEpe3eVPKngBth
+	/eotk9YMpPjiegH0lGKNu0hhTGdIVo0M=
+X-Received: by 2002:a05:620a:4890:b0:93b:d79e:18f5 with SMTP id
+ af79cd13be357-93c2521b15cmr97007185a.56.1790111243168; Tue, 22 Sep 2026
+ 14:07:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260920155002.1030454-1-devnexen@gmail.com> <fe49c311-582b-4ee2-8d17-42a758351570@linux.alibaba.com>
-In-Reply-To: <fe49c311-582b-4ee2-8d17-42a758351570@linux.alibaba.com>
-From: David CARLIER <devnexen@gmail.com>
-Date: Tue, 22 Sep 2026 22:03:10 +0100
-X-Gm-Features: AcwNN1XIGHxWY5dID-_5rqbKWq1Z-2duakHAem6OMx1JH4ihQ024QoNlPXf6f4w
-Message-ID: <CA+XhMqy_0UPL5HfPYhPHeJ-ZngG4DRzme_a32sLSYd2VGSjo3g@mail.gmail.com>
-Subject: Re: [PATCH] mm/shmem: don't release a swapin-error marker as a swap entry
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, 
-	linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com, 
-	kasong@tencent.com, bhe@redhat.com, chrisl@kernel.org, baohua@kernel.org, 
-	nphamcs@gmail.com, shikemeng@huaweicloud.com, hughd@google.com, 
-	syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
+References: <aq1SrcniIRU-8f2W@gremlin> <20260922041522.1824249-1-zhangbo56@xiaomi.com>
+In-Reply-To: <20260922041522.1824249-1-zhangbo56@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 23 Sep 2026 05:07:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zXQyN5VGpSmw+WG7bTV=1U3vJLBy09RExgno7N0_uGNg@mail.gmail.com>
+X-Gm-Features: AcwNN1VMMORmWIts8ug-qgXzRG3bcKARIjn5Ah3mZqgxIFlxKviS2mK6Lz2-vvk
+Message-ID: <CAGsJ_4zXQyN5VGpSmw+WG7bTV=1U3vJLBy09RExgno7N0_uGNg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/4] mm: compaction: mTHP-friendly memory compaction
+To: Bo Zhang <zhangbo0325@gmail.com>
+Cc: ljs@kernel.org, akpm@linux-foundation.org, vbabka@kernel.org, 
+	david@kernel.org, surenb@google.com, mhocko@suse.com, 
+	brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com, 
+	liam@infradead.org, rppt@kernel.org, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, kasong@tencent.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, zhaonanzhe@xiaomi.com, 
+	lipengfei28@xiaomi.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 928021A0003
-X-Stat-Signature: idsq9nkfxw4fawp95rjeaa6rd83qrw3a
-X-HE-Tag: 1790111002-490367
-X-HE-Meta: U2FsdGVkX1+prjk/8hAo+tlqjtbvHiVxji9W3zxAskMiEZoTx4mCV4/D2WjawLaw0TTArBo9IBsfix3M+EXKFW+MlOM/XpB3G1XNqO7w8IN6bWo2Le//3mvDui6ifxQNp1/CuJJ3D5TjIHyudGTe6z9TTu844ji9Sq7kMF3ht56pvTg16OTlA+eB7d7mFIcmlxJ787OVdMhmHjd7juRP3XxhTGuTiuvnndArFAsxxnuGk6tJAAgUGOTQOQuad/++jHVAog7fwedZ3ojY32TzGqEyHf8dRp0upUzDeSz4rduldh1mAyrwF0hMDF0dBHpbaMN48IlKU9LzOjPGVKykpTNV4ocIzXnxGYjwWGnOQOT2wmLyqgueKXpc9JiLM/h7JyxP1kn0Mpi2IECkCbecAtAUeWcbWyJNXfP3vQ9gYBR/Ja03Q9DraYKB/jmkLlxUjWgkKhzmzHSDUaQ4nM2r3uz36ycPuqxS/lrzOAK+aGUTsylH5UAd/Zh8hCLf5NaAEJLFuPXYvk5dSlIlY43jD9H99q/oEsiGNwkPHzWQbR/Odcx9Fvz2iHoT9vRN/LPTtK4xi0w2S/rhCn4+7BzZjDoLMwRs5JBkPCBOQd2QH22dxfvmxV2Wc5+a1fA6c8HAygvO6fMErKDv3PB1Fmbex39vevmLVTPWwgzqvnKgnRCU2lKvNRsVdHswze3xL0noQaLIPBBcNW+ZJ2MG0vz/SqdLbK/Ivs95pPEH3OOYZiKYz2nEtiLK0E6QDy3LT4YVO7oscKcOOQ/a3C4Dl6WUF56Np6uwhgzdcprrgaB1RIBzP6pHv8XdvgM06+9PJ8fyTjS+cYwHweOI15VYD+J3/ZWsPmGqled4gNnOZnUrTX3nphOcJVoJzYUjqsCtP7azY+HhvTX4jDHUUhoV3nNsJ6nYuOlDd+Fr8xpB3uChaPCKxMe7tJ8VQkBu9MvgWUy1J3nkuyGJVI4oh0+YuBS
- 6JqK6Dy5
- b20OuLxqj4jpgRo909/UEzhm6eCSPFiZipT/NzhnMyTe3HITntujhK9Y8DVuLMKd/GEva4e5nztEm++El0fGRyrEFopvjgQtLnutUwb109VWIowiR4GTz26JGY1R5sxXX7Bl65VoeLpR7i3sbyhvht6PSveIhyUHdLuW28e0jtMKKdx05znChH35cZmdKe9y41zvHO5UEU6Ye1r8f30wjwmdZh9oZLFhDj15aNifYk07AwZ/vAcVrBKc9i2ma5HH2fgWGXW4JxaQLb1Ocm6/5NI7zYsFKcL1g7CwD8jwr1yNArgRK7n6GXzE/cNDazC/K6n5ZKh4W/kRF+AtzvTeeuycBoqpbolHsupQmHOHg2gcDQgYKz9vG8w00j7Bx/YW/DEZnYgS2XhjcI1QzMRx0qW74JfeTl76YyFJFVAUuv62ObBQzD1+Keie3INQtdg/IB1GH7zXG6+DgYkb/TtGsVXsbXrFGS6VSU8/dgpA9My6I9SKferhS3A/DMMGevGdlsaNc6hwotxZcHnCFm6XcuR4qXb3KXJljdca5ZJFkE6e9WwXtCwmoqVqCi9LGHxCL/OaHwhM8L8w2tYb/qDQNSSWwe0gEsy1dhBgGyp87rmC3K3E9rWZ2BWrdskhZri4iNEbi7vqwmnMI1qAWDcpt7wkLL3Ny1YvS2etH9XJ/rmboZUWADg7CpvWNKmtK6R7Odhnw
+X-Stat-Signature: uniqn4t8dank3dj8kxw34rqqadm9y7dz
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D85B94000A
+X-HE-Tag: 1790111244-146500
+X-HE-Meta: U2FsdGVkX19NO/K3ZPrEzonYVYt+rUiv4DFioIlFWa9eR5WcdE4Y/YA03CxOCPhoWPkB9HdeRkK0xKhKsVPsKl5nEWPeNQmWVeknC9KHUrO83cBc775tjUYtY/H4BdLSpPry0WCQIhiWjunXtjdnxiAEzoVGUtV5KX0rSpWYiZJcLRqHTPhm7VbucrhzLN5HjTwIxZqH5VW+ay8/2vdTUokAYLNA7XWmSjn18E/rt1Z3R+sFjLZmz9ZE0p2b/MNWJTbA8bkP/a89rYKm5u0S9Oe42G/0W1F9ZqRTXrrpjPmYZ/HjN4wF3NPKjnKl1i+kf9Bp0N6zy5NAWNXDAlBAwQRaNGt6abJlQwqsmE1OyJhJ9Q6rKOKh+CdU3bZxcAcJI49V7KCfLElE6AF5uA4azzFPS24o20t6Iz1yqPHELl+uqWvp71d5vKitMvCGiPu+awYQ8azQNqzJ92spSq4dgCE0YCuXVvTnKTQ7zgD+obwgcOmWS6o6il0dVnP01hq76v2S7zN+0ZUKNSpmit89RXeBWiY/m0pd2rPKaYkURg/F7/frLTIFJgC69s0t6w13ml1gl21NDuK0VjLyimbUz9pZHCPQh2cH4GPvj3v8oGx3XtU4ugEgX8LU3OZ8kN8PYJVcGAmvSeSnEUdmJpodjzCKwObz2lLyS0a+lW2GKya5RquITkT92SbXShvrY4AiWMreN59FCTv3psXHHmtb3Xnb30UPPqeBKVQ2AQlVp3sRuZvc4uxtc9ZW++qoI276iumtJbvNW8JnKsDgljopH/K418bUChlibTxzmxKDkm0exlLrnZGfQxKcCNjTTeyUIGJRv7j8GXR4tBZO/cHQsLklMGa5XId4C9hQXiaLkBZ2d552f0vpdM7l3DREmabGCqfVVH7J31g9rr+X552Oh1TVr6bNbZwXA6gTS0ussEt3fJ+svyoYWiAcEsSVK1ddDCX+sMTOcgdpY9dVKbV
+ tNjJxc1j
+ FprxnKYe90IZxhizwGc+BNVGaKU5vEPp3fmbmMCupAYao2A/JvWZmM+8HOsAg6hXkrj4aQEjiRZFp0TFxOYxhWfGrlrSYjQJtSULiw+998H9+PFOOn1IZbrfUJnZV8qTt6SPsyujJw6YqY6lMDhLeyH5LbL9yURix7DqUW+qejJ7T4ultVNsWZN1MVuB8MqPpOyu4vfNKpQykCb2n459u0frm4voBIFzzoygMHL2F6zRyP+OUxsiYGKw0uFhB6t4RqFkgU+u5Er+gOPKW0NxXxIOkQKpT1kWYinT1+ar1JH+qOuIpbd9bEwiTPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,73 +107,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 21 Sept 2026 at 03:45, Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
+On Tue, Sep 22, 2026 at 12:15=E2=80=AFPM Bo Zhang <zhangbo0325@gmail.com> w=
+rote:
 >
+> Hi Lorenzo,
 >
+> Thanks for the note. Let me clarify the background of this series, both
+> regarding the AI-assistance question and regarding the scope of the chang=
+e.
 >
-> On 9/20/26 11:50 PM, David Carlier wrote:
-> > A failed shmem swapin frees the swap slot and leaves a PTE_MARKER_POISONED
-> > entry in the page cache. On truncate or eviction shmem_free_swap() passes
-> > that marker to swap_put_entries_direct(), which warns because it is not a
-> > swap entry. There is nothing left to release either way.
-> >
-> > Skip the release for non-swap entries, as every other caller already does.
-> >
-> > Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
-> > Fixes: ac2d3268284b ("mm/swapfile.c: remove the unneeded checking")
-> > Signed-off-by: David Carlier <devnexen@gmail.com>
-> > ---
-> >   mm/shmem.c | 6 ++++--
-> >   1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index b572c60f2af8..94f2c59c8cfc 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -1184,6 +1184,7 @@ static long shmem_free_swap(struct address_space *mapping,
-> >                           pgoff_t index, pgoff_t end, void *radswap)
-> >   {
-> >       XA_STATE(xas, &mapping->i_pages, index);
-> > +     const softleaf_t swp = radix_to_swp_entry(radswap);
-> >       unsigned int nr_pages = 0;
-> >       pgoff_t base;
-> >       void *entry;
-> > @@ -1200,8 +1201,9 @@ static long shmem_free_swap(struct address_space *mapping,
-> >       }
-> >       xas_unlock_irq(&xas);
-> >
-> > -     if (nr_pages)
-> > -             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
-> > +     /* A swapin-error marker holds no swap slot, so just drop it. */
-> > +     if (nr_pages && softleaf_is_swap(swp))
-> > +             swap_put_entries_direct(swp, nr_pages);
-> >
-> >       return nr_pages;
-> >   }
+> This work started as part of our exploration of 16KB mTHP for the Android
+> scenario. The overall direction of making compaction lighter-weight and
+> mTHP-aware came from offline discussions with David, who suggested this
+> lightweight-compaction angle for small mTHP orders. So the size and scope
+> of the series is not me diving in unguided as a newcomer: it follows his
+> directional guidance. Barry then provided reviews and change suggestions
+> throughout the iterations.
 >
-> Makes sense to me.
+> On the AI-assistance side:
 >
-> But another issue caught my eye. Since we already call
-> shmem_recalc_inode() to decrement 'info->swapped' when handling poisoned
-> entries in shmem_set_folio_swapin_error(), shmem_free_swap() still
-> returning 'nr_pages' for poisoned entries would cause a second call to
-> shmem_recalc_inode(inode, 0, -nr_swaps_freed), thus triggerring
-> WARN_ON(i_blocks) in shmem_evict_inode().
+> - All the code was written by me, by hand. I understand each change and
+>   take full responsibility for the patches.
 >
-> I'm not sure if you've observed this warning. IIUC, shmem_free_swap()
-> should return 0 for poisoned entries.
+> - The cover letter and some commit messages were polished with an LLM
+>   after I wrote the initial drafts (to smooth the English). The technical
+>   content, the design (jointly with Barry), and the analysis are mine.
 
-Hi Baolin,
+Maybe Lorenzo can adjust the bot a little so that it doesn't trigger
+an AI warning just because the changelog or commit message looks
+AI-polished? Perhaps the AI detector could focus more on the code
+changes instead?
 
-Thanks for the review.
+Please have a little mercy on us non-native English speakers. :-)
 
-I think returning nr_pages is needed. shmem_set_folio_swapin_error()
-decrements both alloced and swapped, so shmem_recalc_inode() sees
-nothing freed and the block stays accounted. The second decrement in
-shmem_undo_range() is what finally releases it. Returning 0 there
-would leave i_blocks non-zero at evict time.
-
-Cheers
+Thanks
+Barry
 
