@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 682BCC98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:40:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB96EC982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:40:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A296B00A0; Tue, 22 Sep 2026 11:40:20 -0400 (EDT)
+	id 9FD2F6B00AE; Tue, 22 Sep 2026 11:40:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 651BF6B00AD; Tue, 22 Sep 2026 11:40:20 -0400 (EDT)
+	id 9D5126B00AF; Tue, 22 Sep 2026 11:40:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 568CB6B00AE; Tue, 22 Sep 2026 11:40:20 -0400 (EDT)
+	id 8C4D66B00B0; Tue, 22 Sep 2026 11:40:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 330366B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:40:20 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B75431A0420
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:40:19 +0000 (UTC)
-X-FDA: 85241809758.04.CD1B95D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E3CFDC0009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:40:17 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oBlXszrp;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 695136B00AE
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:40:42 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0A1FB1A0463
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:40:42 +0000 (UTC)
+X-FDA: 85241810724.16.5124B5D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3B0501A000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:40:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZHcHi4a;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790091618;
+	s=arc-20220608; t=1790091640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUi0jBX2gNbeikyLH6NBFgw3bykuPr333IPe1Mu8mWc=;
-	b=txbHXl30zjgP+Y5hUD9Slv3JZejoArQucfRoS71YQS0zIHD2eNT+FD8v7pFS3YQ63ZykP5
-	Pj3GcbmN0JTRp/e+o69xsiVQk1TtFkiX4j4eobgh4fDt3buXrsOxYMsKuK/uOA6qwB/Oq+
-	/3A+vNTEM9I/n2dl+qS+kuYaCWHr/rk=
+	bh=DP0C33MD1sJk9gftfUN3DqNmrRTthZUOvUUdUm9+5vQ=;
+	b=6ZG7dtheCZ82cPO3JSEyatd53Nk9YzCSUYax6kFEUsD1OJ3zrqKRcRsUQiV0ESiIadNz3E
+	vP6wr0aK8Bbl/7hmlBag4XS1d171xl3ENzXYCNXpovP0j6wfSHvoKaFykO/+E6XINTzKeA
+	Ro32JH2eMBksuq5kdW/R83akwB012SQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oBlXszrp;
-	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WZHcHi4a;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790091618;
-	b=1TM0fsuNqLKSJ5CI2TrlP5da3TFKetOog6DA1kXzqJJHSMv1f+ovFgMkIIPU4LzsVGbwJA
-	hJQ0or5j0O4/71tiD7RRd9H6nOJEVBgsG4YBCYKSq3vcLeMNL3We3r6cXXAKsIsULFg5bt
-	A8t5vKdjQmW/rK716XsJXDNv4aDYRK8=
+	t=1790091640;
+	b=4nyVnwsLq0MJzp7LlZ40UenaY3JmBqF9mR1HcG13cLFN71pHHWj1vZWFlkiW28EV5oIF1G
+	e3OLFPtwRmjlSHtO25B7Ows0X2wqg5ixRu2k9WXoqaaCxZ9F3pfCIQGlENDSy6v3Rn95Ld
+	b9ALOF+u2zlHgpsLkleb0/zHPLC+imk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1895142E45;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FA8360A82;
+	Tue, 22 Sep 2026 15:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7997D1F000FF;
 	Tue, 22 Sep 2026 15:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C5A1F00893;
-	Tue, 22 Sep 2026 15:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790091617;
-	bh=fUi0jBX2gNbeikyLH6NBFgw3bykuPr333IPe1Mu8mWc=;
+	s=k20260515; t=1790091639;
+	bh=DP0C33MD1sJk9gftfUN3DqNmrRTthZUOvUUdUm9+5vQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oBlXszrpHmbC1L39oiYrfsLXYt0tWyovlepfyoh4M57W/m40ZxhvpFELjycOKusJ4
-	 bChO11gXU/dIjDyVMo88rIR1xoXPcO2zvCnkQxXQ5l2aq4aID+jqSITDVffNy79clb
-	 jwen+K5f3UhSbVb9JA0ogEP/8RItWsa3m8snnl8vX3K1+riLCsZyK1/mTuTyXiT0YI
-	 DKHuECZMKJXuHkPPLPn0V4Vwk88BpouwpTu15w0WZHsGD8J009Tv8cac4fjE8Xua9F
-	 uNH6MrfvV8o1Ptjxi+VdVn9aE1xv316X/SEkbtaEN1dckNkXn3XmDaYdaTguzhgJDd
-	 ZMm2pJ0BS9JyQ==
+	b=WZHcHi4aiZSJ/M5W5aVd3nsf68Y2qn1YytH1o3kF+QwTpnnUSKUMdkRkaSqWb95I8
+	 pVA/RUXbudTN0j1vay7KKoaS/Y4r7gKaYf3SU69gSZO5GR2/phftjMPVoPE+ZljVeD
+	 Y2tFmPnTEWsWdvikTKT1eZvexav5cB8etQPBOoIMu9D0ur29/eeKbsD0psm+UDxjdw
+	 +av3SZ7/zMwznmHmrOcBJgimUeaMeJcK7voccyd3s2shSVJQe8+nCk75sE+Vcd4itz
+	 Xvr3FBre3YY7eVzznahb9RZESKfgNCEsn2O+Kdu6szVC4aB0L1LSOptQtqD3wUUY80
+	 nKww3boW8E5xw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 22 Sep 2026 16:35:41 +0100
-Subject: [PATCH v4 10/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc32
+Date: Tue, 22 Sep 2026 16:35:42 +0100
+Subject: [PATCH v4 11/12] mm: make userland page table freeing RCU-safe
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-rcu-pagetable-freeing-v4-10-fe1ad1f1e303@kernel.org>
+Message-Id: <20260922-rcu-pagetable-freeing-v4-11-fe1ad1f1e303@kernel.org>
 References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
 In-Reply-To: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -136,22 +136,22 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Qi Zheng <qi.zheng@linux.dev>, linux-doc@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7457; i=ljs@kernel.org;
- h=from:subject:message-id; bh=6W0g4Ck4JPsftf63O4MoWWYbRZcMaFdvRzcMK3bJO74=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI2LcjRYH1nV3JO7voClUs/hHkzJk/9ZfviaHzM7YhK2
- /t/NUMTOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjCRqVcZGfYsnXzv/5NQnYM+
- H3WE66L/WH4QrNv/RrNgyzGDWnH2U7GMDNcbMyzTfn5Tt3+s6ah8975gn/q+HZE6X+w2zT3myd8
- qyA4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=20537; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=BT0JleXFpz569SGOSbz6OPKRm+jGpeOzNmZQorlaS2g=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI2Lcj51H7BvPYGf1VPoXqQtZ7o5Fmxsrls3YYTOjIcE
+ 6ffube0o5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABNZ0czwP7D0f0mU2rv7d+o9
+ txyXn28R+qFUskvhuPz81+/cxXmfeDP84ZTJeBHh8XANV1v36RW7917QO7zz0iHnK66y5W/uz/7
+ 6kQ8A
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E3CFDC0009
-X-Stat-Signature: zth33o4uucbutai448jgi6ku3neytepr
+X-Stat-Signature: 7ij3a1x3tjtz6jiouemjwgqttqdesi7c
+X-Rspamd-Queue-Id: 3B0501A000B
 X-Rspam-User: 
-X-HE-Tag: 1790091617-700328
-X-HE-Meta: U2FsdGVkX19NyRk+fuI6sy4RckRT+rVRKVU1wRKQfF5I1og6Izt6iHUrpdxyfars3xq0zcDD83xBWuKKi9QvShiNVLAgPKKCk9IAk8zhHsCveWPjbKupoRLqpVGixFrpj+QxWCkSHxfqieVvQS4WGKgeqBSWBD1bs0w+AI8AubF132gDWFfJo5SVOTrAYAd8VVS0gE+kkhWiEylNbSQhBeSNcFeNRt352Tzq8pGZnUu5MbnaQlX7R8R3yg/RESrHF3uvvPn2/mlVpwirAZNvpWsOG6aHRkrL1zYr8WpXGKGtUaYe1Aas7FZ7hLN0d3u5CSXslP1/ZwvOJcZOB6dZZ2/SVuX8upORKMlDcf7Wf0/4A9hBt+Aq9XVW59YzDQWoeea1igGmbRPr10xJ/KRCTkXF2LaYFuI1xIhTZgIc7q4rkbi+Sxrb8w4YfLk1Nv820X/aXSjPUY5SyjsJnSDl7eSOw9Pdbzp9UwnwEiBEyaeYt72OJF8T14G7qLqkxU9fBOTKjMdOa+XrmI+opns2QWYJ+kMfHaGfQbxpWewMGXOh3Y/9m0N/zYilN5ieKFbUVz42k3FtA6EDeJNioG5+XoVzmV/u6KD3cvrgQ+QdNkwEwarHyFqDbvgDYA+DQGSbONYX/VrYG/y1qYrOv3Yb/quYUXM8H66KumiRoDMCZ8X3X1W+fvjfTjeDKPLBTkzxz6OSlapQu0KI5KFCXeRKAztcJIwC+Fv3GqCQ+lS2iVz97CsbgbLraCZVwDIPgyUchrdu8efuXk3OLyrRMlHA9R19U4ZuqmPTCvSfPDEvD3vwIt0UaRkfgHDOiPEG7J7DcspoJT1YSlUwqf7SsLrXRctl4gFFVYnMjyst66yvcZRReoan8OhdzJ1JCjGHSG/i68mZhH7pS6eV7199E9/iNtqTWmdj/jQgj2fOHiutz4w3IQX0VQGLuVJ9c3mmyN8xfIW0jogP3zzUpktqK+B
- UJl83b0H
- 8aH1DS3A1XnP+vtGTTKqMcJXRgnB1h4nDZaQWgzheJtftPNVZTvX0s1wiW4H+DfLPNvwXMji/ARsQnTpi7WATYnQpHfJmObFdIEnJMkB2cca0FE1q8v+dXFXdj8FCIJ2nHTHCTIS8Ia6DhFC8FQTf7LTYYYe8zJmKWU2+OxMHP89s+IjwD8DhinKn3qL/RUj5qQoPC3n3URYOx6uNMvKjuwGTst4f4m3Fwa+SoZbhwixqIceMNXTpaZ2Usxt6cfAcrMzANLhze9lZikBCUyMuCteub7jU1ns88IwviqVlPBM9nd1n528yU7R+eJAnALkZVPVs0uYlqsIXLie8VEyARPYtlJe5A0jMwzNqkyE4QAVzAy2QYQoCm4cGBDTmJLs6a7V7rqB95fb7j+iiltl4q3kULpYlZe5sV7xvdcA0XDw1Br/dGIP9V4lKOT7RUCxj4DNjz8gB2xet89he3rLZuZP/qVeutj2Vp7c4cYfUP8MOKXJlB2dkFG82eoY1CMC1hwre61QnicwDHys=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790091640-347145
+X-HE-Meta: U2FsdGVkX185PQrBWi/oQwEoWSZwVltIHyzHta1xkQ1Q6xZ3WR3aKCjIpM1bBt8Lga2vQ5t+XcmYbJmJXbxz9TD6IFPTZo5e2/8+pH5mt5UMG17oqUnxS2ZarP3a8xshsGk2RFIr1GDsgDlyVi7Zo7RCHqJniVFXB/h+Jmuxkj2zerCthXToQJjIXwdG7+xWS3/WnNRS3nnoqqSs9Gs/TS4L5O32cBqbTXPNWvZJUNVoq4nfWDvB03G7XEXlRk4RM7DdRW9vj/4xRd7F05nawtArvTVDMPSh8WudpHIUiScT0pT9nmkaD86AWmptFpPn1T8/jDM5h2RW8BKJIE5tEVNizGX04qnMtAjcqF/6vafg/j6a/8Gr0RWwEwvKaRrMUGl2vo3Sz+vcuTnxhaZwP6BZs9XHaYbTvhgRsznaHE1L9aYnRaBpafPCU8MEo2UlD33lINaqNuh6q0KUsI7Oqq9Pn0qp5opdiB8KVibLToMkzWXzeLnQCS3Xp1i7mFzW3Wy+FJ4yi+ybpVaqMPuF3xe1sZyNTGgSufKhoIR2gOBKUQjThPgeMOl1MPXV7+o+mmZLYfpTBtIUs9TOLwM5MGCwD17pgj5M8G44kpaQHFYC/plWOLGYGweKXZkyc0YEatpHsicb1hjBkwtcXewNeQFluvrMIUIX0GRsBRRe6fuQpRD2tvNXE4RTQi09kf+rJcMU/TzriIQqnyLV3YqzHjqkp39VXnRYZoEU11Z0afZttbwNrVuKAPC3wfRcilwGi62uzWvl8Td+vD/xEC5158iFJBXdHrWpE61OXGDKj1IWfpuFGmlgu2DzvvsNryXzSephZedfwRAO8ykxKRDsCiL2NXal0ItleY1XqLYMxc8Qjj0ugmd0wGX1z9+MUMUPiQCQG56qjzw8gqiCxoUbmxRO3Pk7HWwuZCx2RxdOb5QrBITJLLD08X6z6kdqJJXjS2y4sJw8hVgcXVNtBFS
+ 7SzD9p5e
+ aiCpmi/HgZjxB/n7jSTFoSmBB5FriLosfGa3dftEBVxVrU2CV9jLSb4VF+m3j3WkhC4bchdsqPuA4RMUxXXTzSKUbh0q00wCv+mrIM26qzbSq96H/oGtMDEBOR7bxreOg/H3JUeK2lt0fCmy7q8F+DCIPhDvXYTQTm9hJ3BdlTy0atp3VbFdkcoYXvSP23nrhms9JNzWuNPMnB7/Sip00InYFodU1KevZ822ygiDRGrzR9wVZ/8GJ2AVpTU+lFGhhsj91Mjj9scpUJxeK5Cc3nR8FYVO5v7DvfkKgn6Kz+F/RUXUmx9j/WcgXJlTihc3hAdKINDw7u0L9hj6byXi1C8nWX4RiVvZxmDpY8yEaJN/oCoYRFKN0xLxkZ5W0xxoODpKfNTvxPczPvfnsnLlZFH/7HlmQbVIfH2ZFOS0uaM+qj6VBFw1GaxntgkYv0T22dLv46jT5dxAV73XbKh28Jolw5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,223 +159,593 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Careful handling is required for sparc32 which implements page tables as
-part of a shared backing page.
+Now every architecture has been converted to support
+CONFIG_MMU_GATHER_RCU_TABLE_FREE, this configuration option no longer makes
+any sense to keep around.
 
-To support this, a custom __tlb_remove_table() function is required, as
-specified by CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE.
+Therefore remove it, and remove all the dead code that existed for
+!CONFIG_MMU_GATHER_RCU_TABLE_FREE architectures previously.
 
-This allows __pte_free_tlb() and __pmd_free_tlb() to specify which page
-table level is being freed, which is transmitted to __tlb_remove_table()
-through setting the lowest bit of the page table to 1 for a PMD and 0 for a
-PTE (the page tables are 256-byte aligned so this is safe to do).
+Additionally, CONFIG_MMU_GATHER_TABLE_FREE is no longer necessary, as all
+architectures instead use CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE when a custom
+__tlb_remove_table() is required, so remove this too.
 
-Next, since the page table freeing is done via RCU callback, and thus might
-be executed in softirq context, update the spin locks to IRQ save/restore.
+A number of architectures only enabled CONFIG_MMU_GATHER_RCU_TABLE_FREE if
+CONFIG_MMU was set, however the mmu_gather logic only actually does
+something meaningful if CONFIG_MMU is set (mmu_gather.c is only compiled in
+this case, for instance).
 
-Then, in __tlb_remove_table(), figure out whether to free a PMD page table
-via free_pmd_fast() or a PTE via the newly introduced __pte_free()
-function, using the lower bit encoded in __pte_free_tlb() or
-__pmd_free_tlb() to determine which to call.
+As a result, there's no need to gate any of this logic on CONFIG_MMU
+explicitly.
 
-As part of this change use this spin lock rather than mm->page_table_lock
-for all shared page table exclusion, as RCU freeing means that page tables
-can be freed from soft IRQ context so both don't have an mm and also
-mm->page_table_lock is not IRQ-safe.
+CONFIG_PT_RECLAIM however does have a strict dependency on CONFIG_MMU, so
+make this dependency explicit.
 
-Note that the specification of CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE disables
-CONFIG_PT_RECLAIM for sparc32, which mirrors sparc64.
+Additionally, correct comments to remove references to non-RCU page table
+gathering and make it clear that this is not 'semi-RCU', nor has it been
+since commit 1fb3d8c20bfa ("mm/mmu_gather: replace IPI with
+synchronize_rcu() when batch allocation fails").
 
-This forms part of an overall effort to switch every architecture to this
-mode, and with it complete, means every architecture now supports
-CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+With this change in place the kernel policy is now that userspace page
+tables are freed after an RCU grace period, and thus it is now safe to
+unconditionally perform page table walks under RCU, safe in the knowledge
+that page tables will not be freed underneath the walker.
+
+This is all that is guaranteed, however, so naturally it is still incumbent
+upon page table walkers to ensure that the page table entries are as
+expected.
 
 Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- arch/sparc/Kconfig                  |  2 ++
- arch/sparc/include/asm/pgalloc_32.h |  7 +++++--
- arch/sparc/lib/bitext.c             | 14 +++++++-------
- arch/sparc/mm/srmmu.c               | 32 +++++++++++++++++++++++++++-----
- 4 files changed, 41 insertions(+), 14 deletions(-)
+ arch/Kconfig                    |  8 -----
+ arch/alpha/Kconfig              |  1 -
+ arch/arc/Kconfig                |  1 -
+ arch/arm/Kconfig                |  1 -
+ arch/arm64/Kconfig              |  1 -
+ arch/csky/Kconfig               |  1 -
+ arch/hexagon/Kconfig            |  1 -
+ arch/loongarch/Kconfig          |  1 -
+ arch/m68k/Kconfig               |  1 -
+ arch/microblaze/Kconfig         |  1 -
+ arch/mips/Kconfig               |  1 -
+ arch/nios2/Kconfig              |  1 -
+ arch/openrisc/Kconfig           |  1 -
+ arch/parisc/Kconfig             |  1 -
+ arch/powerpc/Kconfig            |  1 -
+ arch/riscv/Kconfig              |  1 -
+ arch/s390/Kconfig               |  1 -
+ arch/sh/Kconfig                 |  1 -
+ arch/sparc/Kconfig              |  2 --
+ arch/sparc/include/asm/tlb_64.h |  2 --
+ arch/um/Kconfig                 |  1 -
+ arch/x86/Kconfig                |  1 -
+ arch/xtensa/Kconfig             |  1 -
+ include/asm-generic/tlb.h       | 66 ++++++-----------------------------------
+ mm/Kconfig                      |  2 +-
+ mm/gup.c                        |  5 ++--
+ mm/mmu_gather.c                 | 30 ++++---------------
+ 27 files changed, 18 insertions(+), 117 deletions(-)
 
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 45c657772362..6f7516916797 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -526,13 +526,6 @@ config HAVE_ARCH_JUMP_LABEL
+ config HAVE_ARCH_JUMP_LABEL_RELATIVE
+ 	bool
+ 
+-config MMU_GATHER_TABLE_FREE
+-	bool
+-
+-config MMU_GATHER_RCU_TABLE_FREE
+-	bool
+-	select MMU_GATHER_TABLE_FREE
+-
+ config MMU_GATHER_PAGE_SIZE
+ 	bool
+ 
+@@ -548,7 +541,6 @@ config MMU_GATHER_MERGE_VMAS
+ 
+ config MMU_GATHER_NO_GATHER
+ 	bool
+-	depends on MMU_GATHER_TABLE_FREE
+ 
+ config ARCH_WANT_IRQS_OFF_ACTIVATE_MM
+ 	bool
+diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
+index e53ef2d88463..9063c7bda4e4 100644
+--- a/arch/alpha/Kconfig
++++ b/arch/alpha/Kconfig
+@@ -42,7 +42,6 @@ config ALPHA
+ 	select ARCH_STACKWALK
+ 	select CPU_NO_EFFICIENT_FFS if !ALPHA_EV67
+ 	select MMU_GATHER_NO_RANGE
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select SPARSEMEM_EXTREME if SPARSEMEM
+ 	select ZONE_DMA
+ 	select TRACE_IRQFLAGS_SUPPORT
+diff --git a/arch/arc/Kconfig b/arch/arc/Kconfig
+index 7a7542b61823..2ed7186c81c5 100644
+--- a/arch/arc/Kconfig
++++ b/arch/arc/Kconfig
+@@ -47,7 +47,6 @@ config ARC
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select IRQ_DOMAIN
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select OF
+ 	select OF_EARLY_FLATTREE
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 72b9afc6ae10..0cc289a7184a 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -134,7 +134,6 @@ config ARM
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+ 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RSEQ
+ 	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7 && !KASAN
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 2bbeded33da0..b6c2dd8b2612 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -221,7 +221,6 @@ config ARM64
+ 	select HAVE_RELIABLE_STACKTRACE
+ 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
+ 	select HAVE_FUNCTION_ARG_ACCESS_API
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_RSEQ
+ 	select HAVE_RUST if RUSTC_SUPPORTS_ARM64
+ 	select HAVE_STACKPROTECTOR
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 80f89ef1d962..4331313a42ff 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -96,7 +96,6 @@ config CSKY
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MAY_HAVE_SPARSE_IRQ
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select OF
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index d9b3fb86556b..b48491140013 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -23,7 +23,6 @@ config HEXAGON
+ 	# select HAVE_CLK
+ 	select GENERIC_ATOMIC64
+ 	select HAVE_PERF_EVENTS
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	# GENERIC_ALLOCATOR is used by dma_alloc_coherent()
+ 	select GENERIC_ALLOCATOR
+ 	select GENERIC_IRQ_PROBE
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index 9c5def706222..d1b23da40737 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -188,7 +188,6 @@ config LOONGARCH
+ 	select IRQ_LOONGARCH_CPU
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_MERGE_VMAS if MMU
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+ 	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index fa5d39549da9..eb84c3af92c0 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -37,7 +37,6 @@ config M68K
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_UID16
+ 	select MMU_GATHER_NO_RANGE if MMU
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select MODULES_USE_ELF_REL
+ 	select MODULES_USE_ELF_RELA
+ 	select NO_DMA if !MMU && !COLDFIRE
+diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
+index af7e821e96c1..484ebb3baedf 100644
+--- a/arch/microblaze/Kconfig
++++ b/arch/microblaze/Kconfig
+@@ -41,7 +41,6 @@ config MICROBLAZE
+ 	select PCI_SYSCALL if PCI
+ 	select CPU_NO_EFFICIENT_FFS
+ 	select MMU_GATHER_NO_RANGE
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select SPARSE_IRQ
+ 	select ZONE_DMA
+ 	select TRACE_IRQFLAGS_SUPPORT
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index e2eb9627bd14..f0c43d118ca0 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -97,7 +97,6 @@ config MIPS
+ 	select IRQ_FORCED_THREADING
+ 	select ISA if EISA
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_REL if MODULES
+ 	select MODULES_USE_ELF_RELA if MODULES && 64BIT
+ 	select PERF_USE_VMALLOC
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index b0ccfc3b7a7e..9c0e6eaeb005 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -19,7 +19,6 @@ config NIOS2
+ 	select HAVE_PAGE_SIZE_4KB
+ 	select IRQ_DOMAIN
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select OF
+ 	select OF_EARLY_FLATTREE
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index d90b24dd3bce..5eb995c13074 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -35,7 +35,6 @@ config OPENRISC
+ 	select GENERIC_ATOMIC64
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
+ 	select GENERIC_SMP_IDLE_THREAD
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select HAVE_DEBUG_STACKOVERFLOW
+ 	select OR1K_PIC
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index d3afac2f0d9b..77f67028ad89 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -80,7 +80,6 @@ config PARISC
+ 	select GENERIC_CLOCKEVENTS
+ 	select CPU_NO_EFFICIENT_FFS
+ 	select THREAD_INFO_IN_TASK
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select NEED_DMA_MAP_STATE
+ 	select NEED_SG_DMA_LENGTH
+ 	select HAVE_ARCH_KGDB
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2580e27e4328..0767cfcbaa42 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -307,7 +307,6 @@ config PPC
+ 	select KASAN_VMALLOC			if KASAN && EXECMEM
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_PAGE_SIZE
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_ARCH_TLB_REMOVE_TABLE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_LAZY_TLB_SHOOTDOWN		if PPC_BOOK3S_64
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 3529ed1861ce..7741a4287498 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -208,7 +208,6 @@ config RISCV
+ 	select IRQ_FORCED_THREADING
+ 	select KASAN_VMALLOC if KASAN
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select OF
+ 	select OF_EARLY_FLATTREE
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index b88b85042136..a34376c05f6e 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -267,7 +267,6 @@ config S390
+ 	select LOCK_MM_AND_FIND_VMA
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_GATHER_NO_GATHER
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_DMA_MAP_STATE	if PCI
+ 	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 75236bef6f16..fe859def918c 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -62,7 +62,6 @@ config SUPERH
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select IRQ_FORCED_THREADING
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_SG_DMA_LENGTH
+ 	select NO_DMA if !MMU && !DMA_COHERENT
 diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index 8d42ebc6d302..79c09d6ee466 100644
+index 79c09d6ee466..742ffff8c37f 100644
 --- a/arch/sparc/Kconfig
 +++ b/arch/sparc/Kconfig
-@@ -64,6 +64,8 @@ config SPARC32
+@@ -64,7 +64,6 @@ config SPARC32
  	select HAVE_UID16
  	select HAVE_PAGE_SIZE_4KB
  	select LOCK_MM_AND_FIND_VMA
-+	select MMU_GATHER_RCU_TABLE_FREE
-+	select HAVE_ARCH_TLB_REMOVE_TABLE
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_ARCH_TLB_REMOVE_TABLE
  	select OLD_SIGACTION
  	select ZONE_DMA
- 
-diff --git a/arch/sparc/include/asm/pgalloc_32.h b/arch/sparc/include/asm/pgalloc_32.h
-index 4f73e87b22a3..36010852ba0c 100644
---- a/arch/sparc/include/asm/pgalloc_32.h
-+++ b/arch/sparc/include/asm/pgalloc_32.h
-@@ -48,7 +48,9 @@ static inline void free_pmd_fast(pmd_t * pmd)
- }
- 
- #define pmd_free(mm, pmd)		free_pmd_fast(pmd)
--#define __pmd_free_tlb(tlb, pmd, addr)	pmd_free((tlb)->mm, pmd)
-+
-+#define __pmd_free_tlb(tlb, pmd, addr)					\
-+	tlb_remove_table((tlb), (void *)((unsigned long)(pmd) | 1UL))
- 
- #define pmd_populate(mm, pmd, pte)	pmd_set(pmd, pte)
- 
-@@ -72,6 +74,7 @@ static inline void free_pte_fast(pte_t *pte)
- #define pte_free_kernel(mm, pte)	free_pte_fast(pte)
- 
- void pte_free(struct mm_struct * mm, pgtable_t pte);
--#define __pte_free_tlb(tlb, pte, addr)	pte_free((tlb)->mm, pte)
-+void __tlb_remove_table(void *table);
-+#define __pte_free_tlb(tlb, pte, addr)	tlb_remove_table((tlb), (void *)(pte))
- 
- #endif /* _SPARC_PGALLOC_H */
-diff --git a/arch/sparc/lib/bitext.c b/arch/sparc/lib/bitext.c
-index 32a5c1d9459c..c309e27973ce 100644
---- a/arch/sparc/lib/bitext.c
-+++ b/arch/sparc/lib/bitext.c
-@@ -22,8 +22,6 @@
-  * @align: requested alignment
-  *
-  * Returns offset in the map or -1 if out of space.
-- *
-- * Not safe to call from an interrupt (uses spin_lock).
+@@ -77,7 +76,6 @@ config SPARC64
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_KRETPROBES
+ 	select HAVE_KPROBES
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_ARCH_TLB_REMOVE_TABLE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select MMU_GATHER_NO_FLUSH_CACHE
+diff --git a/arch/sparc/include/asm/tlb_64.h b/arch/sparc/include/asm/tlb_64.h
+index 3037187482db..f5f9631685d5 100644
+--- a/arch/sparc/include/asm/tlb_64.h
++++ b/arch/sparc/include/asm/tlb_64.h
+@@ -29,9 +29,7 @@ void flush_tlb_pending(void);
+  * and therefore we don't need a TLBI when freeing page-table pages.
   */
- int bit_map_string_get(struct bit_map *t, int len, int align)
- {
-@@ -31,6 +29,7 @@ int bit_map_string_get(struct bit_map *t, int len, int align)
- 	int off_new;
- 	int align1;
- 	int i, color;
-+	unsigned long flags;
  
- 	if (t->num_colors) {
- 		/* align is overloaded to be the page color */
-@@ -50,7 +49,7 @@ int bit_map_string_get(struct bit_map *t, int len, int align)
- 		BUG();
- 	color &= align1;
+-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+ #define tlb_needs_table_invalidate()	(false)
+-#endif
  
--	spin_lock(&t->lock);
-+	spin_lock_irqsave(&t->lock, flags);
- 	if (len < t->last_size)
- 		offset = t->first_free;
- 	else
-@@ -64,7 +63,7 @@ int bit_map_string_get(struct bit_map *t, int len, int align)
- 		if (offset >= t->size)
- 			offset = 0;
- 		if (count + len > t->size) {
--			spin_unlock(&t->lock);
-+			spin_unlock_irqrestore(&t->lock, flags);
- /* P3 */ printk(KERN_ERR
-   "bitmap out: size %d used %d off %d len %d align %d count %d\n",
-   t->size, t->used, offset, len, align, count);
-@@ -90,7 +89,7 @@ int bit_map_string_get(struct bit_map *t, int len, int align)
- 					t->last_off = 0;
- 				t->used += len;
- 				t->last_size = len;
--				spin_unlock(&t->lock);
-+				spin_unlock_irqrestore(&t->lock, flags);
- 				return offset;
- 			}
- 		}
-@@ -103,10 +102,11 @@ int bit_map_string_get(struct bit_map *t, int len, int align)
- void bit_map_clear(struct bit_map *t, int offset, int len)
+ #include <asm-generic/tlb.h>
+ 
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index d9541d13d9eb..94b8ff70f578 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -44,7 +44,6 @@ config UML
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select THREAD_INFO_IN_TASK
+ 	select SPARSE_IRQ
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 
+ config MMU
+ 	bool
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index a8c3b3d31a27..6e5e462ec059 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -283,7 +283,6 @@ config X86
+ 	select HAVE_PERF_REGS
+ 	select HAVE_PERF_USER_STACK_DUMP
+ 	select ASYNC_KERNEL_PGTABLE_FREE	if IOMMU_SVA
+-	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MMU_GATHER_MERGE_VMAS
+ 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+diff --git a/arch/xtensa/Kconfig b/arch/xtensa/Kconfig
+index 33c4caee30e2..f2f9cd9cde50 100644
+--- a/arch/xtensa/Kconfig
++++ b/arch/xtensa/Kconfig
+@@ -55,7 +55,6 @@ config XTENSA
+ 	select HAVE_VIRT_CPU_ACCOUNTING_GEN
+ 	select IRQ_DOMAIN
+ 	select LOCK_MM_AND_FIND_VMA
+-	select MMU_GATHER_RCU_TABLE_FREE if MMU
+ 	select MODULES_USE_ELF_RELA
+ 	select PERF_USE_VMALLOC
+ 	select TRACE_IRQFLAGS_SUPPORT
+diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+index bdcc2778ac64..9d827076db19 100644
+--- a/include/asm-generic/tlb.h
++++ b/include/asm-generic/tlb.h
+@@ -67,11 +67,8 @@
+  *  - tlb_remove_table()
+  *
+  *    tlb_remove_table() is the basic primitive to free page-table directories
+- *    (__p*_free_tlb()).  In it's most primitive form it is an alias for
+- *    tlb_remove_page() below, for when page directories are pages and have no
+- *    additional constraints.
+- *
+- *    See also MMU_GATHER_TABLE_FREE and MMU_GATHER_RCU_TABLE_FREE.
++ *    (__p*_free_tlb()).  Page directories are freed after an RCU grace
++ *    period - see the comment in mm/mmu_gather.c.
+  *
+  *  - tlb_remove_page() / tlb_remove_page_size()
+  *  - __tlb_remove_folio_pages() / __tlb_remove_page_size()
+@@ -151,24 +148,15 @@
+  *  This might be useful if your architecture has size specific TLB
+  *  invalidation instructions.
+  *
+- *  MMU_GATHER_TABLE_FREE
+- *
+- *  This provides tlb_remove_table(), to be used instead of tlb_remove_page()
+- *  for page directores (__p*_free_tlb()).
+- *
+- *  Useful if your architecture has non-page page directories.
++ *  Page directories (__p*_free_tlb()) are always freed via tlb_remove_table(),
++ *  after an RCU grace period (see mm/mmu_gather.c).
+  *
+- *  When used, an architecture is expected to provide __tlb_remove_table() or
+- *  use the generic __tlb_remove_table(), which does the actual freeing of these
+- *  pages.
++ *  This serialises against software page-table walkers, including architectures
++ *  which do not use IPIs for remote TLB invalidates.
+  *
+- *  MMU_GATHER_RCU_TABLE_FREE
+- *
+- *  Like MMU_GATHER_TABLE_FREE, and adds semi-RCU semantics to the free (see
+- *  comment below).
+- *
+- *  Useful if your architecture doesn't use IPIs for remote TLB invalidates
+- *  and therefore doesn't naturally serialize with software page-table walkers.
++ *  An architecture is expected to provide __tlb_remove_table() (see
++ *  HAVE_ARCH_TLB_REMOVE_TABLE) or use the generic __tlb_remove_table(), which
++ *  does the actual freeing of these pages.
+  *
+  *  MMU_GATHER_NO_FLUSH_CACHE
+  *
+@@ -200,12 +188,8 @@
+  *  various ptep_get_and_clear() functions.
+  */
+ 
+-#ifdef CONFIG_MMU_GATHER_TABLE_FREE
+-
+ struct mmu_table_batch {
+-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+ 	struct rcu_head		rcu;
+-#endif
+ 	unsigned int		nr;
+ 	void			*tables[];
+ };
+@@ -224,23 +208,6 @@ static inline void __tlb_remove_table(void *table)
+ 
+ extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+ 
+-#else /* !CONFIG_MMU_GATHER_TABLE_FREE */
+-
+-static inline void tlb_remove_page(struct mmu_gather *tlb, struct page *page);
+-/*
+- * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have page based
+- * page directories and we can use the normal page batching to free them.
+- */
+-static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+-{
+-	struct ptdesc *ptdesc = (struct ptdesc *)table;
+-
+-	pagetable_dtor(ptdesc);
+-	tlb_remove_page(tlb, ptdesc_page(ptdesc));
+-}
+-#endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+-
+-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+ /*
+  * This allows an architecture that does not use the linux page-tables for
+  * hardware to skip the TLBI when freeing page tables.
+@@ -253,19 +220,6 @@ void tlb_remove_table_sync_one(void);
+ 
+ void tlb_remove_table_sync_rcu(void);
+ 
+-#else
+-
+-#ifdef tlb_needs_table_invalidate
+-#error tlb_needs_table_invalidate() requires MMU_GATHER_RCU_TABLE_FREE
+-#endif
+-
+-static inline void tlb_remove_table_sync_one(void) { }
+-
+-static inline void tlb_remove_table_sync_rcu(void) { }
+-
+-#endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+-
+-
+ #ifndef CONFIG_MMU_GATHER_NO_GATHER
+ /*
+  * If we can't allocate a page to make a big batch of page pointers
+@@ -325,9 +279,7 @@ static inline void tlb_flush_rmaps(struct mmu_gather *tlb, struct vm_area_struct
+ struct mmu_gather {
+ 	struct mm_struct	*mm;
+ 
+-#ifdef CONFIG_MMU_GATHER_TABLE_FREE
+ 	struct mmu_table_batch	*batch;
+-#endif
+ 
+ 	unsigned long		start;
+ 	unsigned long		end;
+diff --git a/mm/Kconfig b/mm/Kconfig
+index c1ddf59c0d71..bc7befafb47b 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1465,7 +1465,7 @@ config HAVE_ARCH_TLB_REMOVE_TABLE
+ 
+ config PT_RECLAIM
+ 	def_bool y
+-	depends on MMU_GATHER_RCU_TABLE_FREE && !HAVE_ARCH_TLB_REMOVE_TABLE
++	depends on MMU && !HAVE_ARCH_TLB_REMOVE_TABLE
+ 	help
+ 	  Try to reclaim empty user page table pages in paths other than munmap
+ 	  and exit_mmap path.
+diff --git a/mm/gup.c b/mm/gup.c
+index eb898ea1ee22..63b435ec605c 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2700,8 +2700,9 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
+  * Before activating this code, please be aware that the following assumptions
+  * are currently made:
+  *
+- *  *) Either MMU_GATHER_RCU_TABLE_FREE is enabled, and tlb_remove_table() is used to
+- *  free pages containing page tables or TLB flushing requires IPI broadcast.
++ *  *) tlb_remove_table() is used to free pages containing page tables, with
++ *  the free deferred until an RCU grace period has elapsed (see
++ *  mm/mmu_gather.c).
+  *
+  *  *) ptes can be read atomically by the architecture.
+  *
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 3985d856de7f..2a72a9686773 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -218,8 +218,6 @@ bool __tlb_remove_page_size(struct mmu_gather *tlb, struct page *page, int page_
+ 
+ #endif /* MMU_GATHER_NO_GATHER */
+ 
+-#ifdef CONFIG_MMU_GATHER_TABLE_FREE
+-
+ static void __tlb_remove_table_free(struct mmu_table_batch *batch)
  {
  	int i;
-+	unsigned long flags;
- 
- 	if (t->used < len)
- 		BUG();		/* Much too late to do any good, but alas... */
--	spin_lock(&t->lock);
-+	spin_lock_irqsave(&t->lock, flags);
- 	for (i = 0; i < len; i++) {
- 		if (test_bit(offset + i, t->map) == 0)
- 			BUG();
-@@ -115,7 +115,7 @@ void bit_map_clear(struct bit_map *t, int offset, int len)
- 	if (offset < t->first_free)
- 		t->first_free = offset;
- 	t->used -= len;
--	spin_unlock(&t->lock);
-+	spin_unlock_irqrestore(&t->lock, flags);
+@@ -230,10 +228,8 @@ static void __tlb_remove_table_free(struct mmu_table_batch *batch)
+ 	free_page((unsigned long)batch);
  }
  
- void bit_map_init(struct bit_map *t, unsigned long *map, int size)
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index 9a74902ad181..1c277ab3cdb8 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -340,38 +340,60 @@ pgd_t *get_pgd_fast(void)
-  * Alignments up to the page size are the same for physical and virtual
-  * addresses of the nocache area.
+-#ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+-
+ /*
+- * Semi RCU freeing of the page directories.
++ * RCU freeing of the page directories.
+  *
+  * This is needed by some architectures to implement software pagetable walkers.
+  *
+@@ -259,13 +255,13 @@ static void __tlb_remove_table_free(struct mmu_table_batch *batch)
+  * means.
+  *
+  * What we do is batch the freed directory pages (tables) and RCU free them.
+- * We use the sched RCU variant, as that guarantees that IRQ/preempt disabling
+- * holds off grace periods.
++ * Disabling IRQs or preemption holds off RCU grace periods, so this protects
++ * both rcu_read_lock() and IRQ-disabling walkers.
+  *
+  * However, in order to batch these pages we need to allocate storage, this
+  * allocation is deep inside the MM code and can thus easily fail on memory
+- * pressure. To guarantee progress we fall back to single table freeing, see
+- * the implementation of tlb_remove_table_one().
++ * pressure. To guarantee progress we fall back to single table freeing, which
++ * is also RCU-deferred - see the implementation of tlb_remove_table_one().
+  *
   */
-+
-+static DEFINE_SPINLOCK(pte_page_lock);
-+
- pgtable_t pte_alloc_one(struct mm_struct *mm)
- {
-+	unsigned long flags;
- 	pte_t *ptep;
- 	struct page *page;
  
- 	if (!(ptep = pte_alloc_one_kernel(mm)))
- 		return NULL;
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
--	spin_lock(&mm->page_table_lock);
-+	spin_lock_irqsave(&pte_page_lock, flags);
- 	if (page_ref_inc_return(page) == 2 &&
- 			!pagetable_pte_ctor(mm, page_ptdesc(page))) {
- 		page_ref_dec(page);
- 		ptep = NULL;
- 	}
--	spin_unlock(&mm->page_table_lock);
-+	spin_unlock_irqrestore(&pte_page_lock, flags);
- 
- 	return ptep;
+@@ -315,15 +311,6 @@ void tlb_remove_table_sync_rcu(void)
+ 	synchronize_rcu();
  }
  
--void pte_free(struct mm_struct *mm, pgtable_t ptep)
-+static void __pte_free(pgtable_t ptep)
- {
- 	struct page *page;
-+	unsigned long flags;
- 
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
--	spin_lock(&mm->page_table_lock);
-+	spin_lock_irqsave(&pte_page_lock, flags);
- 	if (page_ref_dec_return(page) == 1)
- 		pagetable_dtor(page_ptdesc(page));
--	spin_unlock(&mm->page_table_lock);
-+	spin_unlock_irqrestore(&pte_page_lock, flags);
- 
- 	srmmu_free_nocache(ptep, SRMMU_PTE_TABLE_SIZE);
+-#else /* !CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+-
+-static void tlb_remove_table_free(struct mmu_table_batch *batch)
+-{
+-	__tlb_remove_table_free(batch);
+-}
+-
+-#endif /* CONFIG_MMU_GATHER_RCU_TABLE_FREE */
+-
+ /*
+  * If we want tlb_remove_table() to imply TLB invalidates.
+  */
+@@ -403,13 +390,6 @@ static inline void tlb_table_init(struct mmu_gather *tlb)
+ 	tlb->batch = NULL;
  }
  
-+void pte_free(struct mm_struct *mm, pgtable_t ptep)
-+{
-+	__pte_free(ptep);
-+}
-+
-+void __tlb_remove_table(void *table)
-+{
-+	const unsigned long encoded = (unsigned long)table;
-+	const unsigned long addr = encoded & ~1UL;
-+	const bool is_pmd = encoded & 1;
-+
-+	if (is_pmd)
-+		free_pmd_fast((pmd_t *)addr);
-+	else
-+		__pte_free((pgtable_t)addr);
-+}
-+
- /* context handling - a dynamically sized pool is used */
- #define NO_CONTEXT	-1
- 
+-#else /* !CONFIG_MMU_GATHER_TABLE_FREE */
+-
+-static inline void tlb_table_flush(struct mmu_gather *tlb) { }
+-static inline void tlb_table_init(struct mmu_gather *tlb) { }
+-
+-#endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+-
+ static void tlb_flush_mmu_free(struct mmu_gather *tlb)
+ {
+ 	tlb_table_flush(tlb);
 
 -- 
 2.55.0
