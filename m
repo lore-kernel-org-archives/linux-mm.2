@@ -4,107 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB63CC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 521D9C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:53:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFA696B009B; Tue, 22 Sep 2026 09:48:18 -0400 (EDT)
+	id 38E596B009F; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD1926B009D; Tue, 22 Sep 2026 09:48:18 -0400 (EDT)
+	id 365A96B00A0; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C127D6B009F; Tue, 22 Sep 2026 09:48:18 -0400 (EDT)
+	id 27BF36B00A1; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9861F6B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:48:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C7D41404E3
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:48:18 +0000 (UTC)
-X-FDA: 85241527476.10.39431F6
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2522340013
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:48:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iqMOITd1;
-	spf=pass (imf04.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F24C26B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:53:49 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A756A04E3
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:53:49 +0000 (UTC)
+X-FDA: 85241541378.05.EAC46F8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C412820005
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:53:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O52dv8lN;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790084896;
+	s=arc-20220608; t=1790085227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6IrbNKYXaxBgTnuatiYDHte9IqTtxWZJRiUhRvSTwak=;
-	b=BO2XFOOO/dsKiW/4xJPeSKqv5SbBOatuEyeduVn6kLOlIuCsJbIoT95tlhMw70FMz35gu5
-	0Z4hqLUrBQhqNBduXIK+YtJVBHzcRTumDhkUAhY7cy3uj7VewxaQWAmvq0+6+Ux2hG4JqW
-	q3rBfPvQx7ZJQF693MYTq+VjJMpzOHY=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iqMOITd1;
-	spf=pass (imf04.hostedemail.com: domain of bfoster@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=VxeDKpLb30tS9iUp7//tyWkfTRpjfWGBd6HAgB/7yaQ=;
+	b=OG03LK+4cVVix0OebQaE5vg+drcgGEr4WPeGInAxyytdkozbnTRMWbiAllDI4+Ez1XqTKI
+	atM/MGA5qV2qNebAUjvhtq8af3HQ7VNnmLFQvVrYq87HiSi4eWhd41of+tkBj63dlqEpv+
+	I3pyMI5L1tyEDS3NkHXwUuOZt0FQs6w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790084896;
-	b=NX+acOPEl7liiDN+IRd3o+DrtXX7oPudOi6ecuq/JBrHcueMHU6W+K4lA2Apo+CtRHtSjV
-	Gknb1P7mLqM8QLRDuIvBwylCVmDRUxdUVphif39pkp6MkHiOZBYDNKl0/QoLqC8XlzdBXl
-	zqiLZgnF1vfEXvJhs5zB1hOZ0AoBqNc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790084895;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6IrbNKYXaxBgTnuatiYDHte9IqTtxWZJRiUhRvSTwak=;
-	b=iqMOITd13xmvy/DSRXNUxqAiQOVd+tftAh5Y3r7hWqjrmQpW3jDjj/9oG0EJkRbLbCbZoZ
-	C9gW3Mo1g61XVInuxlKF0vj8MHAcnvlvCtnEaOUdqpn7W4D5x3MI5bF6QqSZd7NaWuXd1c
-	opiQpHnwdcnk7dMMmdnKXFOyt1AuV8w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-299--PafZw6uO163-ZRW7g_LJA-1; Tue,
- 22 Sep 2026 09:48:11 -0400
-X-MC-Unique: -PafZw6uO163-ZRW7g_LJA-1
-X-Mimecast-MFC-AGG-ID: -PafZw6uO163-ZRW7g_LJA_1790084888
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6E1E8183090D;
-	Tue, 22 Sep 2026 13:48:06 +0000 (UTC)
-Received: from bfoster (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6486930001B9;
-	Tue, 22 Sep 2026 13:48:00 +0000 (UTC)
-Date: Tue, 22 Sep 2026 09:47:58 -0400
-From: Brian Foster <bfoster@redhat.com>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, hughd@google.com,
-	baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
-	ziy@nvidia.com, joannelkoong@gmail.com, djwong@kernel.org,
-	yi.zhang@huawei.com, yizhang089@gmail.com, yangerkun@huawei.com,
-	chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
-	yukuai@fnnas.com
-Subject: Re: [PATCH v4 0/4] mm/truncate: fix data loss when truncating
- straddling large folios
-Message-ID: <arKHDqdDkQajvAk6@bfoster>
-References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
+	t=1790085227;
+	b=HrHMlnT7UZmZlK/yAsOmUUSDVTIPpLpiRfp4eoR8RvfFmi7zbd6ub2mNDLbAHThKA9e99d
+	fGQNgJrgpyuNNCdKd1lp8BfEeNzzCGCxWvgZViqBT8GybVzBZX8+QFNH0U6gssi50wDzs6
+	V5eP0QJxdydBZbUOZTQe0Gz89KMrJTw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O52dv8lN;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B2BF6020F;
+	Tue, 22 Sep 2026 13:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9134E1F000FF;
+	Tue, 22 Sep 2026 13:53:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790085227;
+	bh=VxeDKpLb30tS9iUp7//tyWkfTRpjfWGBd6HAgB/7yaQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=O52dv8lNK2jzOlcw6CykHwk7L7wkHDeVC7o0IltlfQxB3D0+mzyVDqnT9Hxr2yuOF
+	 RFmM8SugGTS+VcGIA6LkIn7LxhU+jaitW4TbAUSdz+jaOvwQVAszl/VXCW0pHgD6v/
+	 0HdGraAqS5pFAhbhPwnH/QFeJBr8Z9HIXuMx7ZJmF4fHHvANyENoGkVeaxGTImeldB
+	 W2cKrkqE7uxyRBTA1s5xaDiBUV93v2Lz485yS6wFR5DpCZvxBCk3P6igzQyJn3o80k
+	 H4huLj8gRm9Uf9R+BJyddzelXYFmNGu2Lb0TUwf3JkC5yhhBk3m77HWqjo3jjzBRHh
+	 8hrzmQy1r0pkA==
+Message-ID: <adef166c-ba85-4e24-806b-b725911c4d6f@kernel.org>
+Date: Tue, 22 Sep 2026 15:53:31 +0200
 MIME-Version: 1.0
-In-Reply-To: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: JnpoQaYqlk9rQqeUGc8JClMlZrxrm6M23EtYSDeakHI_1790084888
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
+ frames into the block
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+ kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
+ riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, kernel-team@meta.com
+References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
+ <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
+ <aqpczrtIwSG948iv@gmail.com>
+ <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
+ <aqvHHHuWJ-y4WRJZ@gmail.com>
+ <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
+ <aq1RaH0eE0hZfNpr@gmail.com>
+ <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
+ <arE3UjqPsxctWckg@gmail.com>
+ <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
+ <arJ5I9QHHBvuGH_F@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <arJ5I9QHHBvuGH_F@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2522340013
-X-Stat-Signature: 6u83cbp1pmy87a1c77xaukgzkkg6zigp
-X-HE-Tag: 1790084896-173760
-X-HE-Meta: U2FsdGVkX1/dsJ7YOvmTZTrtUh7c+LnCg7pHY0kDY60Wmh9SS08ZalFgCpSpQX6c8T/V1pc2dGXl3S6kgdkyEXadDEptlQm2Cv5FSGJvNWVzF3dpwpP3245hFb5uqmG7DYH9z6Q+HLB3fDnlRiGyK11vpt1KGF8rAW4cow4ukKeb/ZjFWe49NO9fknPxOH2hJPBiwN29LykgrFMV6bhY8/iwrEg8n7rytKQnmsojIUpRqilXnb5ii3stefRwApStp+vBpcRAC+/mLb1bZH9uUY4QoqUqpLC4oHcSUxmwXrXn8wpvEGWpwi313gRy7f2B+WXrwzOgECpkiwZo2JFo73bQu83sWH6BrfD35WoFVYaSgN5BG8tuJpAQDVrIy5q185ZNhzZ582CdcpfXKOv2eLphiovkum4V7ffFHcyDVSDKAfsB9MkpTIbNbKnlZj87PrTGLJc2qL3g0pTYURrN7DkH7WN9q5yVJ3tAMXFYu+I343sRUc6zc2pSDdHyceC+ZhDaL73IklN/b25PT+8ym9IrsAsNXBjgnjYV7eoyhIFIOQ0nG3xoPVu9UQhpyG4PLzvgRkuI9mQqkA8N/OryH5H99Sx8n7phn4jzHrl40EJ01jxS8rCqUEr3bqmdU5aTWoQn+T3parseHuon+u7ISNu2rSnVbCQQFC7DtCR63GDxahDcTf+XF73boFXhDv9KugMHfUA8KS6pjEUuhdNZHwfCufd9KQabdnkvK6lcEgMVOmIloBROaLnKgiUqPAcEZ8gLsA8CRs/i7ICpcncOvRI2tB0gg+bA2c4L3g2rEMIrJmtE9jC9ssIp6CemgfwBtG5MGz7sOppVLdrp+kAJqNPOvRNJWq35+RiwwSBgcrHaRAmndquk13pGlSG3T4vw+KAkd0yrkSw1wDOy51ZLqFNlvGB/LS5lWT1TgCINRbbTXSG2pmDqKKh2TmIXeXEAIAJaeQwe9vvxk+R1Uof
- 7KtK2zQk
- 8xYCrlTS2l5+SjaaSMdJTeaj0lfTYmUsByzJd3k+SIbjRR8BvQ0NUKgiK9ebRrEXD00TxikisWHA2Y1fSDOka7oI71kv8m40T+ThbtVBPZed6q4KQX2SqgWj5evIH6eWyqaAhRgTga2gToBBcIxMshBXiajkc9/3rSQtEsG9RwEqrOvL1Q0bPc7TzxvjI141CaZ47+Cr+g8/9ohNfqlvOev45WJMZ3ZXqPmfb+T2eLUR6mqWtOujR8ABvipC10/jFoCVGHcMrthberX9Om03FSTF39U0zV1aqhNZE/Ml7XCGW5TKfNQ/5AfTExed6L41qiQLwSW9P4mXot1meAY7i6o0AeIdaNXk5LPbgosApT6OO/IZKYv8bDeUsNICrsOsR9wso8jXJDlvRTrsKCy2O07vB1cjKSK3jUVPpioiR9vk+cB6pUdneRMVOvjfSigCwWa3IsY9ACTjoGZbPnKCGnfEzBg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C412820005
+X-Stat-Signature: jrhkxr4iwg336584j4ut6ocnw5qeficj
+X-HE-Tag: 1790085227-714013
+X-HE-Meta: U2FsdGVkX18xqhaQqMTe//oBMayLSgtdTrWysvSBOvHLpo2nKl9Le7XVuW+VFq/iHh2QDbaWe43/X4F9jRfrj3+9slxh1hlxGunvxJ3C43S194ywwDSQnbg0xYrVoqShjsEb+4ibliC3b8b9bIce89pDDhe3XMVIXL5Y8Va0mGfQTX0SGtKm18UQNeHkC05d+Ku4rSQ4AGXWus9l/x8hZByMu68V37TkkQg5RrMYSl+5LCyHBvoMLKnwF/b9QcMpXmeYQLblutmEk03zrQUf2epVl4Jh0o5sOQ7BcdaD/jYJRkTMnCAeO5PxTczz6rnjd+mHNHJIXPqiNnRXBfrwPyihQVhK1N62U2FnJUU5cn56ovFTqvQGtYorRwCOx26DX/XmFfUxC8L9Knu/8LMb4g9CrnqiXyG8Tar9OlKqC8irCHvZ0j+W4Qzlrtvck3fyYsRHzzsuCBHw6VYbxhkEqh6XYxMWj8MFdbj/8Qmbu54wacF30dkyDxMiYUXblkgIvM+8I0a1GpxnKQfY/tMCSck1LUYwgF09YwP5xnevYzwLdCYb0dvKOS+eFpeVRjlozrwfWO2u9OSKYtIO7Lvgi8glK153kAEBlTs4sRdQIrRX9g2I2PTD6xw0YbIzXvXCtoj9ecoxfp2qJh71BykYJPismJPIsGqeF4KMj4DfpBMOmUpYbqXVdoEZA4ymKDRiag1GVFqIeYeHST/ddbxbvwEEVV4BV36ReQlZsBSmmnXtMkVlQTnUvfN3xewvy/z+KQAY78+K+xtxGWrTxugNrZ3es240nvB7Q4ooSwRx07yrkjPM9ypabp4R9OMH7Q4sm7dalJkSpjWvLHsag49zd+GGMQgoR1IUBA3SUeZnbw7pqk05VZfcjZ+4a8rlISBdHcG9LcP69KPXOypB3kXE1WzhAX3NYJ6ddoasW74qugG/F8nJtIuHWxVj//OK7RHzSweMhXRvMg6YR3mimSw
+ 0Fh42eYy
+ uqtiEbM+PjpOEC/z9TWwdMWnI8fYBwW2ABFk/g/Vl5fFr14J4/DmmouMvO/Gn8KtB257fdVw2RUkxbIRnYb/4cfYyGxHqr6sMMz39juhwDcs0nkq6MgBvvAdynmG3BHPHM85UC7aCcv8mVh5ElG4xBowXrVx7/BG+dl4R5rIPIIJlGPSCq9tDBe1i2eF+PxGEDPgR45xAlMWSSf+XZtrsfq4WT3TOUlS+xWH0VoCpZ04o5nyeh1oVXpf+qrdLous+cmK3/r0lRnw5a3jjZ1SrwyNpklnazARTYB9QQBz6HxRG13yCF7AkOrGcuGEE7cmeoSqH+rbugco3sdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,115 +165,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 07:06:59PM +0800, Zhang Yi wrote:
-> From: Zhang Yi <yi.zhang@huawei.com>
+On 9/22/26 14:51, Kiryl Shutsemau wrote:
+> On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/21/26 16:31, Breno Leitao wrote:
+>>>
+>>> The EFI table is only written when there is a memory failure. That is
+>>> the only thing that writes to it:
+>>>
+>>> 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
+>>>
+>>> You can see it on patch "mm/memory-failure: efi: record
+>>> hardware-poisoned frames into the poisoned-memory table"
+>>>
+>>> Then, when the kernel kexecs into a second kernel, the EFI config table
+>>> is queried and the pages are poisoned from it at boot, as they are
+>>> getting into the buddy allocator, in __free_pages_core().
+>>
+>> I am not sure that is really the right place. That means we only poison free
+>> memory. Shouldn't we poison as soon as we initialize the memmap, and check
+>> whether any memblock allocations ended up on that poisoned memory and bail out?
 > 
-> Hello,
-> 
-> This is the fourth version fixing data loss when truncating straddling
-> large folios caught on the upcomming ext4 + iomap buffered I/O
-> conversion.
-> 
-> When truncate_inode_pages_range() punches a hole or truncates a file,
-> truncate_inode_partial_folio() splits a large folio so that the caller
-> can drop the in-range sub-folios while keeping the out-of-range tail
-> intact.  This series fixes three distinct problems in that path that
-> can each lose the valid out-of-range tail of a straddling folio, plus a
-> follow-up that clarifies the return value semantics.
-> 
-> Patch 01 aligns the truncation boundaries inwards to the mapping minimum
-> folio order in truncate_inode_pages_range().  With a non-zero min_order,
-> folio_split() stops at min_order instead of order 0, so a boundary
-> computed at page granularity can land inside a min-order-aligned
-> sub-folio and the truncate loop drops that whole chunk, valid tail
-> included, causing data loss.
-> 
-> Patch 02 looks the end-edge straddler up by its page index through
-> __filemap_get_folio() in truncate_inode_partial_folio().  After the
-> first split the straddler is unlocked and only transiently ref'd in the
-> page cache, so the page pointer derived from the original folio can be
-> freed and reallocated as a different folio in the same mapping, and the
-> mapping check cannot catch it, which may cause incorrect splitting and
-> potential data loss.
-> 
-> Patch 03 reworks the contract between truncate_inode_partial_folio() and
-> its callers.  If the second split of the straddler fails, the function
-> reported success unconditionally, and the leftover incorrect end
-> position could cause the truncate loop to drop that valid tail.  After
-> rework, it tells the caller the exact page range safe to discard via new
-> pstart/pend out-parameters, so the truncate loop never touches a
-> straddling folio that still holds valid out-of-range data.
-> 
-> Patch 04 clarifies the return value semantics to "at least one split
-> succeeded", which is all the shmem caller needs to decide whether to
-> reset its scan loop.
-> 
-> 
-> The second patch fixes a pre-existing race issue that is reachable
-> today, so it is Cc'd to stable.  Patches 01 and 03 require a dirty large
-> folio that carries no filesystem private data, so they are not reachable
-> on current filesystems.  They were found while developing the upcoming
-> ext4 iomap buffered I/O path[1].
-> 
-> Thanks,
-> Yi.
-> 
+> __free_pages_core() is how we hand over pages from memblock to page allocator
+> initially -- from memblock_free_pages(), deferred_free_pages() and
+> hotplug. It is the right place to never allow them on free lists.
 
-Hi Yi,
+Only free pages. We initialize the memmap earlier. And there, we should consult
+the bitmap once for the entire bitmap and mask *anything* poisoned, not just
+free pages.
 
-Modulo Jan's comment on patch 4, this series looks good to me. FWIW:
+-- 
+Cheers,
 
-Reviewed-by: Brian Foster <bfoster@redhat.com>
-
-Brian
-
-> [1] https://lore.kernel.org/linux-fsdevel/a638a8fb-c184-4069-ae33-379ec12cd514@huaweicloud.com/
-> 
-> 
-> v3->v4:
->  - Move the patch that fixes data loss when min_order is non-zero to the
->    first patch position, aligning start and end in
->    truncate_inode_pages_range(). (Zi Yan)
->  - Add patch 2, fixing the invalid folio2 issue under concurrency when
->    truncate_inode_partial_folio() splits at the end position. Use
->    __filemap_get_folio() to obtain a reliable folio2. (Jan Kara)
-> 
-> v2->v3:
->  - Rework the folio2 validity check logic to fix the invalid
->    folio->index issue. (sashiko)
->  - Clarify the pstart and pend setting logic and the corresponding
->    comments to make it more readable. (Brian, Joanne)
->  - Split the patch into 3 small patches. (Zi Yan)
-> 
-> v1->v2:
->  - Export pstart as a new parameter so that the generic and shmem
->    truncate paths don't need to recompute the start value from the
->    return value. (Brian)
->  - When min_order is non-zero, align [pstart, pend] to the inner
->    boundaries of the folio to ensure they do not point into the middle
->    of a large folio, which could otherwise cause valid data within the
->    folio to be incorrectly cleared. (Joanne)
-> 
-> v3: https://lore.kernel.org/linux-mm/20260916092450.654408-1-yi.zhang@huaweicloud.com/
-> v2: https://lore.kernel.org/linux-mm/20260909062339.473816-1-yi.zhang@huaweicloud.com/
-> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
-> 
-> 
-> Zhang Yi (4):
->   mm/truncate: align truncation boundaries to mapping minimum folio
->     order
->   mm/truncate: look up the end-edge straddler by index
->   mm/truncate: fix data loss when splitting straddling large folios
->     fails
->   mm/truncate: clarify return value of truncate_inode_partial_folio()
-> 
->  mm/internal.h |   4 +-
->  mm/shmem.c    |  13 ++---
->  mm/truncate.c | 128 +++++++++++++++++++++++++++++++++-----------------
->  3 files changed, 91 insertions(+), 54 deletions(-)
-> 
-> --
-> 2.54.0
-> 
-
+David
 
