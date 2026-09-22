@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E332EC982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3DC8C982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:31:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D97786B00A6; Tue, 22 Sep 2026 02:28:55 -0400 (EDT)
+	id A40496B00A4; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6EF76B00B1; Tue, 22 Sep 2026 02:28:55 -0400 (EDT)
+	id A17F36B00A5; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAD3E6B00B2; Tue, 22 Sep 2026 02:28:55 -0400 (EDT)
+	id 954E36B00AF; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A91036B00A6
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:28:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CF79F1C2763
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:28:54 +0000 (UTC)
-X-FDA: 85240420188.04.D9CD939
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3F61220002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:28:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjggewUa;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 771A16B00A4
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFD58403CD
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:31:37 +0000 (UTC)
+X-FDA: 85240427034.29.E67405D
+Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4BACF40002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:31:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oAYNnPDU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790058696;
+	b=slGni+ZbgFVwrIvd1M+uBRXEHvDNwxZaFxYPVWCIM+ybDiI0XYYLJSrIReLjChWLqjKNCa
+	rXxkVGZ7VAcDp5UBaxG1dcOnFKcuxirhFiUBchYAhnlkKVfgoRRlT1LbJsgBdY6LHtnwJL
+	ojLZFYVV4jsM4Yyos0c87ePg6igJgi8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oAYNnPDU;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790058533;
+	s=arc-20220608; t=1790058696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KjA0mTADx3qPlEwSKVVtyou7JKb+m4+dYOfU+1IXyeQ=;
-	b=EaaqUdj2veAlCs2MGAMg87YDNDInulQHn4ubl2BWPGb1MX1UNpF+d59LLqsZt53m+esPLO
-	9dfaFuN3KF6X9uWdQEJoAfWjX8loox0Lq18gjTK1RUDYVCM+Duagg8QWtBoLtJYKfH7aHU
-	hK00Y0ytCnQ7xFflPNiwD8bvGt3r9tY=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjggewUa;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790058533;
-	b=hYSHwkovmk/Da6cUJrqic0PjT9441dDZoXJvvokZk5b475cwZdO9LTB7qg4SfbVXZnGRvx
-	JoE6s9bAxh7YiKrmMOwBqeK9LbLwgKPYCAUAgH681zzK7EIa9g2PrSkqFoxmQg+hm6QWAY
-	2n0d0l66akhf2GcDA17Lcn10DnpxHjo=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BF88406AD;
-	Tue, 22 Sep 2026 06:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0C71F000FF;
-	Tue, 22 Sep 2026 06:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790058532;
-	bh=KjA0mTADx3qPlEwSKVVtyou7JKb+m4+dYOfU+1IXyeQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NjggewUa2OW/a72buV+ty3YEX1MFFXvoolgOwh9ZjB4lLNQ6G4BvvqISxjw6HvDsD
-	 tDRRE06ta1+TL+CPaAxBAO8ftW2LhJgfgevibZnFrVZGWtjY4O8lOpSNDtMPtREPb+
-	 tP86oUglV47fuyh6r1jOjCjygHP9Xc0HgMguKMmGs6yInel/r5uvZjbHTOfAjG3TBr
-	 yHcS1TsYuYWW6qyfOmUHnz+kgtsq3L8jlXwzHwB2/6m8W3MrNUcpRHyRf0hjHerVeW
-	 atTXG0I0yxMLlDPd4cT3NNHGxx1ZeSm+D6GSUek+kossuNakz8X403hEIf6aDpBuxH
-	 NsBnE5cDkauag==
-From: SJ Park <sj@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lian Wang <lianux.mm@gmail.com>,
-	Kunwu Chan <kunwu.chan@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] mm/damon: preserve temporal quota state for unmeasured PSI goals
-Date: Mon, 21 Sep 2026 23:28:47 -0700
-Message-ID: <20260922062847.42316-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <arF2epnyKAdkwSG-@gmail.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3F61220002
-X-Stat-Signature: cncq5oc6z7pigiojcsidr5871m76gya5
+	bh=WT7L+yjgB0IaOTyJkUQuzdzCWldIgXpJyxmwqVKairA=;
+	b=ZlIO7TiUZUwszZCQ8zkuwf3qEQxRAEfY4R9NhEvt9BDjqHVGLq+t7Qitvl8CN89b9d85AI
+	E8Y2TjRQprXB3KMStLKOezD4cZiY2SdX6EzcTAkjU35Y123cglf6Nl+xa/aN5lwPbuKUGS
+	QJK5R5F7zlhIzpEJa7X+2oHG/uUsJwY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=WT7L+yjgB0IaOTyJkUQuzdzCWldIgXpJyxmwqVKairA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790058691; v=1; x=1790663491;
+ b=oAYNnPDU7g0bbd9sOTRK7kokZ2fvrpFZqzEdH3h5e7FRO/fpmVq5lUutgC0S8Yp40F13w1Pa
+ x6WaMn7qZFo3YIXySL9Tvw4umgM7wc7qYeOGHhUwQ7vb32qbdVCmu/335unQTcQ63D34f28E8no
+ eMHM7CG+OFz4076/tOpFUv+o=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 3d5eaa6d3b009fbe;
+	Tue, 22 Sep 2026 06:31:31 +0000
+X-Mizu-Trace-ID: 3d5eaa6d3b009fbe
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <arIEfJXYpspgX4-G@localhost.localdomain>
+Date: Tue, 22 Sep 2026 14:31:14 +0800
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Hongfu Li <hongfu.li@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Michal Hocko <mhocko@suse.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Nhat Pham <nphamcs@gmail.com>,
+ Chris Down <chris@chrisdown.name>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D086B92E-13A8-48A7-97B6-CD671EE22033@linux.dev>
+References: <arIAyyjYcCKHFmyD@localhost.localdomain>
+ <20260922042054.3264663-1-joshua.hahnjy@gmail.com>
+ <arIEfJXYpspgX4-G@localhost.localdomain>
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
 X-Rspam-User: 
-X-HE-Tag: 1790058533-944785
-X-HE-Meta: U2FsdGVkX18GklFxaQpUoKsSywJ61l+OK2hUF/J5cQw9a70iKT38cTX3SLdNTT9Gr4TbT8kxjKYsMJtOc7y6jY+hlbc6nfS/0njJweVG8Kn/XknZFJCAUhK6vnSPheLdxInnNQlmmv9Wog/SYK+BsJyP04XFwbor/eIXV+cvM69NYypvLdliOwAW2ayvrpN0SuTVx147BFffeYHoOzJcJUWkhcto5KPsSPzncJh8B3Hai+wjHH0IGcwBhuG9vFUOKp2Jkm7pUxeVxfLSm1fi05aMz76HoMc6Y70IYrPTzM98AQOeNBHLUFdAsaaMOmhPJ/FnMpeZsmmTQ1BCFmFGfM5XKm2b5xgN0RoGaqj5V/BCpXoYmmAB9KM7VYCMxHXuU7tyWc14LPAmRD93yLweM5KoOmrR/nO24zaqzt+dIyyBBgW4JqpQp9OJ89HT6BITpB7BwBFFLtumRhUWg+C6JwyjkZQJHep9tdnMKZfISXDujGMtGZUsStzgTFlqRNunT9cwAcet/3iJplEP+7bHjpz1k0W+Kt+9XYkgt/0Ji7P1TOLWwS1vmbVpmLk03IepE/0aGY4EBPyjyFcabdyPVyesJlR8sJeUhM51thwgir6slvq9SF0nSa3Yz3QJ/tJms/DPFIqxw5i5X4KB6uA9jwZqKCV67OmWnT0nDWhPZVZ1tteavQs00QMdG426k+ca7JKxInp14wMNI71Z+mPQ9NLFi+GwIqzcQBgUSxSAToM0lQP7bVtxWzftl16mh2vRSZBJVWx0sUCjJT6yX4TQYwyUVXwRbto/PCPoB+QMwmUPUMpt/D+DBZtqxgNu147wic9Eo9FKs8vApkZ/f/6/VwIhZLSxplUZhCeIBtHv4rC/qIK9AV4kFvCSRq25Z/ZZq8DGhivZVN0+cnWxen49ANr2qNEuU+gIQqsvQ8kM6ljTmBRL3IxbL/wFD9WP7NY2Vi+rzGOT/3gXyH595ua
- rf4lHmMG
- fI/8XdybJmscBzicFB19I8zAx7AwB+6OuWTc2JeWSKB5XI7uP2x15W7dz23+U+L3XJQVqkLNpOdxTPvWAZs+e9AQq55KKjtdFqL2XsXwQpzUZ5ZROJdpIUHd2kNm3gzdklffqmCqlYqzYu4bldywswtM8w5tXjo9aDwlUX6FmzyjOp+pAca3fWDRxVVQ8LJkdUHBkg1+49PDzFSWiJs94o74aR6Pxothk+66HBfSn4NAJ7ovNy3IENf5vrkmu/W+qPxVcM6Kf3Eeashzt7+kL5x+Z0P0rNHJlWgxPVnwJO++FaP+sKl9Nt5n7vQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4BACF40002
+X-Stat-Signature: zruwy9scsh9f3qpko9u3tf5yrjf3o5ag
+X-HE-Tag: 1790058694-159905
+X-HE-Meta: U2FsdGVkX1/z7pDIglYNqv+AEpCQ6RtDq4k/UIW06O9hGwQYY/V3HPiOmyIlVtg38lZ30woV4BDi8LcpstGnI0ImhEZPSTn0xgvMhe4W3hFh6p+zFqG1IBn7RhbvPn3SRXsVUDXSI2Xvy0XFPjN4xYPlJOAT9N2A2+HT+efz316tIl6xpW8pFlMOhLz1n0vVDHtynIuoCcFQ/iexZPGV6T7jPh5JBJ6i724UlTd11jgOQGVEngQDcOlOxLLhTXtmTHd3csOblNKSGsaGHJ7dadW9dwI0ONrnFhUaDcupXst0T0Wg3ZwkQFY+WQ5oxbOQWMBLfLGZgZ1T89ixkVn1pYhclFuPpi2V4LkvChqmCLw+E9y1gpNB2X3YXE4hNRhQNxrh/rfEbTTFJJJ2CfSt4ioUpTQZvgevToWo8FcSusSjJXOxoHNbmiHqYhqpzcty5PLygn7BLXdfAxFYT5xRqN4yT0eP/Zj6C55XUYDvjgWUPGZpx9O6gnLAJC7cz94UOzbW2NS56fs2t9VomM2cDHeli9+/23k38s+gQOZHTC0XXyNM9ZqJtvYqnA0wAFIdQpvhM/5QbmPIX4zOptcymFVI+qg1IHwY89b9RRY4pAfXrkrKtm6vaGr/OvFxC6IGl8CJg0UYPfkOjSIWnPjOFHG3JfHvDjZfuiwE76VIHMGu8+1Hqcu8adolp8GHJbxU2hilIApnxYovbIjq5HC7/SsbzTSqURGwj9HssqDumsACsZuTrZm0zeC86vsRdHVdyDTBhkOUvdZqRvT22heS2+rE+LKtAfdeIFVMIbab4pMpymhQsZ0hAhiYRcjwpzM74Jw732IMzf2bTNjKewgNb63PjZAMpIBSJAnxrxmJViTsCA4gwzM9Sa0iL6zHysEsU7Lh6+1szrZ5XRouB0D0i7APNCiF/OaycieETNhxZMKVNvphl//KoHR5LjdbqNPZpsFDhhxO7M/E0k5KK9P
+ BAA5OIu9
+ QzyYeRa/TRI6x/Vjo6Cm1JeUiRMltEjqBy5wFc83wnV6W5L5QXYsdHMVpQ/rB8og/GuJq3mc4duitjwTMb5HOrZf1sz+kq46pWoCGZO57uN3tNFJaTbqUgHJMC+sVpuP5T1K/SjOhr9un0OchfueGKAxqCOXYI99bcE6k+wZV1twgrvyFBZ8eUYNG6f+xvB8UmAfP1FCUfdiVSw8erlK/BkE4hqCr2DlqgnxmS+Jl+f7NKw2IoCrhI3Fg2zq/C7Xt5L8+V2U8pUPXlj8mUGqE0Ds4N6G5/BdXU9xgXVcFMd0GMsQtskjuSrEnUqyYoxmFy5kTHoEAAMd1UlIRpiqDxngD9ilu92udde8h0/xAifDGkow=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,61 +109,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 21 Sep 2026 20:39:27 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-> On Mon, Sep 21, 2026 at 09:47:48AM +0100, SJ Park wrote:
-> > The patch 1 has wrong Fixes: tag, as I replied to it with two options to path
-> > forward.  Speculatively assuming your preferrence is option 2 (adding this
-> > series with fixed 'Fixes:' tag), I applied this series to damon/next [1] tree
-> > with the suggested Fixes: tag modification.  Let me know if you want the
-> > options 1 (squash it into the incomplete fix [2] before it is merged into the
-> > mainline).
-> > 
-> > Unless you want option 1, and if this series is not added to mm.git in short
-> > term (~1 week?) with option 1 update, I will ask mm.git maintainer (Andrew
-> > Morton) to pick this.  So, no action from your side is needed for now unless
-> > you want option 1.  If it seems I forgot doing that or you cannot wait for my
-> > action, please feel free to ping me or Andrew.
-> > 
-> 
-> Hello SJ,
-> 
-> Thanks for reviewing both patches!
-> 
-> I used b73198a47ffe in Fixes because that commit introduced the problem
-> with the temporal tuner.
-> 
-> I thought a Fixes tag could also point to a commit that is still in a
-> maintainer tree. The tip handbook describes that for tip [1], though mm
-> may handle it differently.
 
-You could do use a commit hash that is still in a maintainer tree.  I also
-sometimes do so.  But in the case it is better to explicitly mention it is for
-squashing on mm-unstable.  And if it was the intention, in this patch series,
-you were better to split the kunit patch.
+> On Sep 22, 2026, at 12:30, Oscar Salvador (SUSE) =
+<osalvador@kernel.org> wrote:
+>=20
+> On Mon, Sep 21, 2026 at 09:20:53PM -0700, Joshua Hahn wrote:
+>> On Tue, 22 Sep 2026 06:15:07 +0200 "Oscar Salvador (SUSE)" =
+<osalvador@kernel.org> wrote:
+>=20
+>>> Why do we need the whole thing to be embraced by rcu?
+>>=20
+>> Hi Oscar,
+>=20
+> Hi Joshua,
+>=20
+>>=20
+>> I believe it's because now getting the memcg from the objcg requires
+>> an RCU lock to make sure it doesn't get removed while we work on the
+>> memcg. I think this is since Qi Zheng's "Eliminate Dying Memory
+>> Cgroup" series.
+>=20
+> Yes, I understood that obj_cgroup_memcg might need the rcu-dance, but =
+I was
+> unsure about the mod_memcg_lruvec_state() calls.
 
-> 
-> The hash can still change in mm-unstable, so the tag may need updating.
-> 
-> I also found this reply from Andrew [2]. He says he tracks these fixes
-> by filename and folds them into the original patch before moving it to
-> non-rebasing git.
-> 
-> Maybe squashing is indeed simpler here, also for backports.
-> 
-> So either option is fine with me. I'll leave that to you and Andrew.
-
-Thank you for clarifying, Karl.  I was initially tempted to keep what I did
-(option 2), but maybe that's only because I am too lazy.  Let's do squash.
-Unless others raise other opinion, I will repost patch 1 with updated commit
-message tomorrow.
-
-I will keep patch 2 in damon/next and repost for mm.git merge as I explained in
-the earlier reply.
-
+The caller needs to make sure the liveness of lruvec, in which case,
+lruvec is from memcg, so rcu lock is needed here.
 
 Thanks,
-SJ
+Muchun
 
-[...]
+>=20
+>=20
+> --=20
+> Oscar Salvador
+> SUSE Labs
+
 
