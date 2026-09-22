@@ -4,154 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90BAC98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 16:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC060C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 16:45:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C993E6B0096; Tue, 22 Sep 2026 12:43:02 -0400 (EDT)
+	id B3E406B0095; Tue, 22 Sep 2026 12:45:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C497E6B0098; Tue, 22 Sep 2026 12:43:02 -0400 (EDT)
+	id AC77F6B009B; Tue, 22 Sep 2026 12:45:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5F476B009B; Tue, 22 Sep 2026 12:43:02 -0400 (EDT)
+	id 9B5D86B009D; Tue, 22 Sep 2026 12:45:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DF016B0096
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:43:02 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42CB4A059D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:43:02 +0000 (UTC)
-X-FDA: 85241967804.11.B0C1B8A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1D73F180007
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:42:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="DXSA/Gcd";
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 75C9F6B0095
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:45:13 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F37FB1C3088
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:45:12 +0000 (UTC)
+X-FDA: 85241973264.30.F76958D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5EFA540012
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:45:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKDhZi0e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790095380;
+	s=arc-20220608; t=1790095511;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=acmbGOYX6e5b9nsGkh+Evf65NkqvOdBjs0iMPuA3tME=;
-	b=bjBUw+wPYON2DbV8WNOknDXvR2XbzntRzfRJYubBdDt6TWRgNlGcd18OhKBtocX69bJknQ
-	37YBC7BqvmeYRMxYfwfTjbgx9XF9nyIiZt1ojyutlEqI0zI43lqB2MVOXBkg+JL7QKqFhD
-	1McZQxBuPM1Jw4YFmRdmAM7VKLrOv6U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790095380;
-	b=ZZOYLKoki+aS/kJjGc9WdrDQjpo90AnE+Yjmb5POqkQg7hUkLGhaOHVmt8woZuUhuaMZpY
-	QWU5+TpJc5++UfC2rL6u15CGu5XeEPzYP2PsxwqXmhtkG24t9OWvdk0el/CryySvSGgMib
-	4McmwwdX52C1TyrG5Om78pNHC/HRxz8=
+	bh=kMdG76MeQldYLnCdGPtfwF3zaPMlZJI65YPqsh9aHeQ=;
+	b=27k+gB8GKKDGyYh7uqzEl/JkP9TFEUSnP7PGni2Zi2F3TxSJLnTztsZj7K0csUQhJArDXu
+	BefNdAJrpdjMkfvCRInSc7VURKj20CePexMajt5D47TeK+WJN/GPmIxNRD2rGCZWl3yT7b
+	qfDyl77N97hzzA566uzerX6UTwlF2Kg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="DXSA/Gcd";
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=acmbGOYX6e5b9nsGkh+Evf65NkqvOdBjs0iMPuA3tME=; b=DXSA/GcdR6HXs2iM/AY4Vz+edJ
-	kA/NioItpmK4uLBa+N+yBYGy/TG5czyqFC4qExUiAy7txhD2ZetX+uytMySoVkb7vf95MpnQHobXs
-	5nj+vhS0PUVYU2/JaoirFCdNajGdEWvlQ4wdWlfiL1oP8Yf0G8zCFuk5lYCptlXSEaQ0KOZm+zJN+
-	NG7W2GGIrdOancjdcnpkIbZqCN7FFw8zwNf+GSbFUdO+K8gp+sYxBhPsjldvrqJGrSpLKHYWgpKte
-	3kxOzApBvbjROOxG3nl5IbBdc+LakvvRp2Rg1UGqSPeIiJ9mKJOUkUI2TQFNOzS2neJmoa4FFivIy
-	UMSxC1qg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x93ZL-00000009bF8-0eHw;
-	Tue, 22 Sep 2026 16:42:11 +0000
-Date: Tue, 22 Sep 2026 17:42:10 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	Russell King <linux@armlinux.org.uk>,
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
-	Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 00/12] mm: make userland page table freeing RCU-safe
-Message-ID: <arKv4qbF04KB2WxQ@casper.infradead.org>
-References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jKDhZi0e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790095511;
+	b=qTtBGh7ck7RF3FFOCJa37Prp3QvpKi/RBAjOUxQZBviSj4So+z2OsW+A0VkeTS5kC1TsMW
+	Wzo4UTjbLPWqwlxYtkkeF7x1F0/owllB4x2lIxO0ZmDy2AhxA5ACRc1acg04GJDGg4E+iZ
+	vdzFvTa/vz11ysni02WbhkJK2NLQOiY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7F0796022F;
+	Tue, 22 Sep 2026 16:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125AF1F000FF;
+	Tue, 22 Sep 2026 16:45:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790095509;
+	bh=kMdG76MeQldYLnCdGPtfwF3zaPMlZJI65YPqsh9aHeQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jKDhZi0e73h+nMW4g8pA7A9NUbYmjT02T7buH0UC9uXaYZrNO8Zr0PPC/SZI602aX
+	 XwxgYZEOKWDRu83nzrVKc/exGZR4LZdIPb/RkR0oOsdzxezkAfu5fSLqH0DoipprD5
+	 LTJbHmlmHh615fAE3i3BJAZDNodtmagudfF3gkkZ8b8RthU/SuIRAE+84Z4dU3isyX
+	 y0ylSUjpU1c9tVmoTmrVAOhlTxpKPVcD8JsPmJR3/F5S0uuxxxL7GoKgXCqDUkHQU8
+	 8gVFLt/wLDCGy6Cv+0PHMRmkkW6Go0Lby5jDKJ7o2i9Yse4qbE87NPZB+s9tgU5ItD
+	 +5C0mo8nWChVw==
+Date: Tue, 22 Sep 2026 19:45:01 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>
+Cc: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
+	peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+Message-ID: <arKwjZ67hJFBunSd@kernel.org>
+References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
+ <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
+ <49208ed6-6c20-49a9-9c0d-0e1cffe1898f@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
+In-Reply-To: <49208ed6-6c20-49a9-9c0d-0e1cffe1898f@kernel.org>
+X-Stat-Signature: fp8g5pxiee67hg17u7eiyfdatkpdyy31
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1D73F180007
-X-Stat-Signature: iwcg8f7f8r3ha8wsi3ea6e6bu38p614j
-X-HE-Tag: 1790095378-58717
-X-HE-Meta: U2FsdGVkX1+WtWGh/WxXfKpPUX3YRv+hyeiKE3OVn281I6nrwhK+pzMvYpnb5YC/SXf+RMTtoPGkxdRSvUUDUZEBFOBLUsPfSsc9bXfQLCF9yJDkIvGBgvCvYeDZcb2EECCOxmzzmIqVpCyv6KgtRt1JKV55n8kEQlelKYXas5NyR5+mycv/M6vvn7Izekb6I6ThCVlMaoxnSBk2C0oh/8ByhiFibpR0RO+zUi+vQHR5JyAMlt+elv8zBWRi/Jyv7Yqu40W7UCQexwPiO73kA2hf+eSO6WKizTHt25HbSvmEAdLG/rMN1NBZMlCRnglkc9+EA1rc5Ql9+QYzE94zLD6jEXfVTUXkQs95D3H/T2vsJ0m0AHFPaWFx3r+QmPEzE0VCos5xfpyr2q3PSP/tApfkqUfBSByEWIwe0BXks0oqp2LrZkQ7IpKQQyOVf2sFbay49ACZWJr0YEmMg3qwFJT3ZuJ9XX68vaB/8w8PuhjWmI3M6c794dWZtwp0Y4OUEreo1jy+paWrox9llrZZtkEU9bCYQsoC/O+xhmVsxu2xGBFU0slH+oJ+zvwcAnsm1AEI90Umrj8wa4X6bgqTeso4CANxSPtojdnn3aOXX6E5V7yx64RmKe8+d5lvrAG4XpnFBlc7y0alGN0C106LBpksof/JzHu+7hgvaV/AijuEkVtvpo+RAWjaBpC3g9CTiTVGfSVxybXfeyU1g9zPxbdG6yNALFcnFs8qBGJ+yQnyW77NZk/8OM1SM67pTrWOJJoCXaizT8R7ibeXd4IaXb7Xm4e5klOpNl1PxzXo73gjIuRezUtoOG6s9Mt8RvnDSicwcbe+5KUE8Ny556OwHLtJUFp/f3CH5VwO15sEkir9gpmtgZdeIvpsnrKi11+m/EVJrraJK3bhZjFlWxSwOocTb9Qhr0EFvXjpXJTL+wmZinSe5DtszJY2BhV3JaPJ/gpbBvk2S6e88KpVXdR
- MhVFQQ7o
- 6dYrbMsTnCYBzqBBkT32JNi81/gW+Q/SRmHkqjee2Na0Xr++6wnzZnEzBprmt0vZ65qZ6dZecTsx16fhNrkq56kip/XuyFy5w9iT9qpHD/05QyVCJJMRvq+vqxZBEXnzS0VyWUso93vHM00DBTiC3cgHwM+fjqvBXI7HeJWZr9XrTDaSyi07/fxaZPoNwClqg3z0swl9gjcCtjsmLGSv/TljdWOxPtqVfsOrOp5UmmSuYQrzLYfgs3yoAxHz19EiFdacrDu5c/h4uJx2YM+k8Jp3mCy/e82SieMeLMoqtAi9EAO1cCZG6gCGGZv9UQvqYKQtvVJlbG7TPZRZEInptFxyVydiOL4bP+HrW
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5EFA540012
+X-HE-Tag: 1790095511-689610
+X-HE-Meta: U2FsdGVkX193lUtHc+/hS3xfiw4m4kfCzxQvyVL0dQwqmyCf8yJ82BCFoOwvtl8lHkds+LZgwf/QTmVGZXoeAZHsvFkEISZfUN8rVtVHI7UY/88WvK+MVSyIWI1YQJFhRrhj7GLdUqNziC/Uhwzoqdjc+5YniF4PNtOLpHhX1Iej9QdHgwff/x9M30T60Us8ayDSWqsWDiHePtEXAH9U06vYFUTJAl8LJb/oNMhNMb/4KRvE1gAkZLWTeUQEg2wiMiVL+Wmqbpv+MyQKZAPoO86kkoyYT5p6f4Z9v4wtaDUlQAp7p9UWKSAEQALWulD3G9vXMcVB16izDqwsEUEM8FOdIpEIHfFGm8hel669wfw0Iu7iRdtFMXOPAx4MMUh3q9prtvCSmEQo0BI4X1anbkUMaYnD68RNzLJ/NkhGO2WDEIjXqIvtfPVOnz2Z9Orunm8NT2t9maaOJzhurbuRk5Z9uz9iUboNJYr9vPbmznPaplPgSFCxQJclX2O6adWI0WU7/WcCochIGWRuYeFblGOIajzGFL6FmYonRSkPIjh0LK94kLqU35Mx4ZCbrzFyhICJf/tB8nGDJ7sj6OYfgacsmCVws7dkxSDLDzW6ygeGvH5DaFD+veG24iftcG2U5V7TJoHW/i+IVui+eVcWtO9IcoCC/UEw9PCAOoKwaHEw6je30CrkshEhUKWbjmcXkEzgj7Z8xvysFWyfA0mnrT5PpXuPusIpMdfp4134p5uXBPdN9JaSoqwTr1ErKGsycCdP9S3gI4SPKIRdIus87eFPgqAoYYqpAnKX9SZtveS32Ba+a12Q2xxROLb//mbOoXjqxOzRC7KpARnmm60eStFBy2oBk/MI2MaG6VUpV9rt2YeVOjeo70Ch5zN4am4Y/4Yix/NMMEiHhpb9L/5BcU6pkLxBr/Gn00yXxpZf3lCdit+A/8L/9WbSY3mkrp637JdzQSA4V/saxFwiERU
+ 4T2FrfRp
+ c9USUSU5UljPnqJZSKiwdbMZzNGBW6aT88h8YJlp6FL1cWEkvL2jThsLc7GvDm24QN1iiZmEroOjY8ftiZJmUsgGhoA4WYD56JedRWYHCeZkUJjvmgW+86lOZ1jE36OO7Mgz0YgLoxRrzmZPPWWPJVbnDZUCi1UaDWm3PpbIZGUdIvnbg9UVXRCSUD9OUcIKN1DhaMT3HzoRzO9x+uIF+5aggNSStQPgdPUI0FMLJkU6JJxZNzap4SHlTNRoq7/WzY5iIbtA2lF3PgZbK8NjvYnU4bmRBbcd/TBFirZqnyvMZUlZ4ITt9SR8bhRNkJli+j18xAWPdHBtAj+0k2eQupWvwE/7eIRM8RGewa8Z6nEVrUuJjLzy/04OWxF+HLW8FVp5E0LzU8dNdfkiuDLbY9+MiHQqZNy32SS0G0lQlVApmTnQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,18 +98,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 04:35:31PM +0100, Lorenzo Stoakes (ARM) wrote:
-> m68k-motorola required the biggest change - since RCU page table freeing
-> uses call_rcu(), this means page table freeing can arise from softirq
-> context.
+(cc Kiryl)
+
+On Tue, Sep 22, 2026 at 01:40:51PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/19/26 02:46, Donggeun Yoo wrote:
+> > UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+> > destination unchanged, so a uffd bit set on the source lands in a
+> > destination VMA that was never registered for write protection.  It is
+> > then permanent: the bit is dropped only by change_protection() under
+> > MM_CP_UFFD_{WP,RWP}_RESOLVE, which uffd_wp_range(), mrwprotect_range()
+> > and userfaultfd_clear_vma() issue only for a VMA registered in that
+> > mode.  pagemap reports the page as uffd-tracked, and MADV_COLLAPSE
+> > refuses the range while the bit is set, because collapse_scan_pmd() is
+> > strict about uffd on swap entries.
+> > 
+> > move_present_ptes() and move_zeropage_pte() build the destination PTE
+> > from dst_vma->vm_page_prot and arm RWP only when dst_vma asks for it, so
+> > the destination's own registration decides the result.  move_swap_pte()
+> > copies the source PTE instead and only ever sets the bit, never clears
+> > it, so one UFFDIO_MOVE behaves differently depending on whether the page
+> > happened to be resident.
+> > 
+> > Clear the uffd bit on the moved swap entry unless the destination is
+> > RWP-registered, as copy_nonpresent_pte() does where it installs a PTE
+> > into a destination that may not be armed.  A WP-registered destination
+> > stops inheriting the bit as well, which is already what it gets when the
+> > moved page is resident.
+> > 
+> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> > ---
+> >  mm/userfaultfd.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> > index 74f04c323c50..6495666c596b 100644
+> > --- a/mm/userfaultfd.c
+> > +++ b/mm/userfaultfd.c
+> > @@ -1452,6 +1452,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+> >  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+> >  	if (userfaultfd_rwp(dst_vma))
+> >  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
+> > +	else
+> > +		orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+> >  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+> >  	double_pt_unlock(dst_ptl, src_ptl);
+> >  
 > 
-> This was fixed with an IRQ-safe spin lock used in both get_pointer_table()
-> and free_pointer_table().
+> In move_present_ptes() we don't run into that issue as we create a new PTE from
+> scratch
+> 
+> 	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+> 
+> 
+> Staring at the
+> 
+> 	if (userfaultfd_rwp(dst_vma))
+> 
+> I do wonder why we don't have to take similar care about wp ... I'm sure the is
+> a good reason.
+> 
+> Code change itself LGTM.
+> 
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-You don't need to use an irq-safe spinlock for softirqs.  It does work,
-but it's overkill since it disables hardirqs.  If you use spin_lock_bh(),
-only softirqs are prevented from running (and it's safe to call
-spin_lock_bh() when in softirq context, just like it's safe to call
-spin_lock_irqsave() in hardirq or softirq context).
-
+-- 
+Sincerely yours,
+Mike.
 
