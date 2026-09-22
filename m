@@ -4,98 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22EB0C98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:19:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C523AC98304
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:19:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B85A6B00B1; Tue, 22 Sep 2026 00:19:19 -0400 (EDT)
+	id B3FFD6B00B2; Tue, 22 Sep 2026 00:19:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 069D66B00B2; Tue, 22 Sep 2026 00:19:19 -0400 (EDT)
+	id AEFAF6B00B3; Tue, 22 Sep 2026 00:19:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE92C6B00B3; Tue, 22 Sep 2026 00:19:18 -0400 (EDT)
+	id 9DFF66B00B5; Tue, 22 Sep 2026 00:19:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD3F86B00B1
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:19:18 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5D4D11C2652
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:18 +0000 (UTC)
-X-FDA: 85240093596.13.AC6C9A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D634C40006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmENK7hI;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 70E5A6B00B2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:19:21 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F128140381
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:20 +0000 (UTC)
+X-FDA: 85240093680.24.5B407E8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5FBEE20002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:19:19 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A9TK1a5Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790050756;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1790050759;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3B9ThvTz5RGopdNhG1qzUIIExt5TxIgr3PrinYt/7I=;
-	b=XsUHnU9kO50l+DwhF2bDHWWzosgYfeZNzSBwHq75i3TKaTdO2xp2mXETVnPtyAlDtA+J4n
-	NXd9xA+2gj+jhFA8rFnhvmT53Z/Yk3R4gy0ZZCt9qXq7+kdCSpN9RjAzjr46OVk7fJnbhn
-	scCsJhwI0e7LvUbLoOBOobqqKNxtu3M=
+	bh=CFUjfWW/pDRAB45ZPOTLMOkYRqsV9MvW8Ya0iftlsh4=;
+	b=ZAkssSb2SukcORAbyoWAnW8hv0IGM3IsLdeAZwXziyRbPjDJXKy1VyT9vdT2JMEOHWmou8
+	UyBvPrfuiySyWfAl6c1bgV0d2MfYnSue/U/asHao9cwYTGbJYTsj94lX5iJJXmErwPzzBE
+	GISAqVesUMhurjaNsjQYuWejQyromdY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790050756;
-	b=njiwxwIy+uQDiueDIGqPrDw2sCZZlG/UvNSDIPiTmxA6trRC1Xf1SyOmwfFkVRuGX9jH59
-	3KEmRA2RwMbVeXGW9MrYr4IPxEQqIMDkz7UFhl/ynEbivvZWYheVn5C8bkaFEw1U6n1Via
-	ET4p9YdLkySjeDlJYTFa2eROzAfpa2Q=
+	t=1790050759;
+	b=jcVcwUFzVrfqkaua6KjFBE9qCtfltVGLvUNjGuQ/xorqnTMpa5Tw8jjGSz58A9fD+AHS0F
+	7I+tBkcwQcQNAJ2sS75SOAoCEYlH1WZBLhm9/1TZruEquY9pCs4XWtE3gV0ukBSdm7tI8n
+	Xqu5bDm4wp0tNsohBLSVTJTHnpNvBFg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmENK7hI;
-	spf=pass (imf27.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A9TK1a5Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3ED0B600CB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7769742D66;
+	Tue, 22 Sep 2026 04:19:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84161F00893;
 	Tue, 22 Sep 2026 04:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E0E1F000FF;
-	Tue, 22 Sep 2026 04:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790050755;
-	bh=k3B9ThvTz5RGopdNhG1qzUIIExt5TxIgr3PrinYt/7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hmENK7hIfI4nkqA98Oh/niUu0cIYksY6wSgej1XD5+GYL6UXYorVaivtQlNyJiSpX
-	 nivALJV8ZrE7rhhAByx7cYv653GwJshpUX47k6uUQFnx5+BhDo2hnkqJvqBaKu8Kcw
-	 5kMLFDuvGBAw1GqmMdPK2hMzY6yraEn+9mzKbOYvqVjynlIICrYbanO4a00LJ1hKGf
-	 gt8roYO5nUtNDUk5yGSvSZ1FAZ0JvgPEoiMFQBfEzxCb3Y4jtyqy5ZbqMnBE30e7v+
-	 Vt6XOWIKes5R7kUjN3pLm25oTTAPCGJ+vkJy+7XIE9X0KXiGe2DEjJC1NPnNwKtQDv
-	 uQYg1gExUb+SA==
-Date: Tue, 22 Sep 2026 06:19:08 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Kaitao Cheng <chengkaitao@kylinos.cn>
-Subject: Re: [PATCH 2/2] nvdimm/pmem: Remove test_and_clear_pmem_poison()
-Message-ID: <arIBvO3cFQ53ivG3@localhost.localdomain>
-References: <20260903053535.17611-1-kaitao.cheng@linux.dev>
- <20260903053535.17611-3-kaitao.cheng@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903053535.17611-3-kaitao.cheng@linux.dev>
-X-Stat-Signature: hthseifki9ohzdy1ycei8oon8s8nqti5
+	s=k20260515; t=1790050758;
+	bh=CFUjfWW/pDRAB45ZPOTLMOkYRqsV9MvW8Ya0iftlsh4=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=A9TK1a5YzUWGYSTQvvf9KGUghwtbj8wOjMaM5Bl+fLvfFzQ4EFM6CaBOIX6Rg0RY4
+	 66qmp6KLIm5DZQMTJPO21zraA7UaHca1Akg1SaA6LE+1BK44hKzNTHQtZZUghCC9gP
+	 FwBsVMznVAAlfYMkK5IFKOa6DqP7/01hmIQGLORaOfrpaL45aKC/cN1IFNnE4uwR+r
+	 cuFRlPBNfZzVNCpdrFpLMFOBBkWiLwq67Q3BSP5xnp96qcGbZCAspgdUWFququqvnF
+	 uC5Aj8sb5cT1L05VCKITCqYzkx1e3NfbY72JS8j0tNO0GNBeB600clVwoJXtIprtxc
+	 a5n4vjOQintkw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/4] memblock: rename KHO_SCRATCH to KHO_NOPRSRV
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Jonathan Corbet" <corbet@lwn.net>, "Rob Herring" <robh@kernel.org>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Michal
+ Hocko" <mhocko@suse.com>, "Ard Biesheuvel" <ardb@kernel.org>, "Borislav
+ Petkov" <bp@alien8.de>, "Suren Baghdasaryan" <surenb@google.com>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Saravana Kannan" <saravanak@kernel.org>, "Alexander
+ Graf" <graf@amazon.com>, "David Hildenbrand" <david@kernel.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Dave Hansen" <dave.hansen@linux.intel.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "H. Peter Anvin" <hpa@zytor.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>
+Cc: robh@kernel.org, kexec@lists.infradead.org, linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, x86@kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260922041321.233986-3-pratyush@kernel.org>
+References: <20260922041321.233986-1-pratyush@kernel.org>
+ <20260922041321.233986-3-pratyush@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 04:19:16 +0000
+Message-Id: <20260922041916.A84161F00893@smtp.kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D634C40006
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1790050756-235401
-X-HE-Meta: U2FsdGVkX1/4BY1YTfdCoVnrQMFE2IqY2bkHHiBs5hILmtlAt1Vo9Ziqelvs5vkJAKQzQmNDixbaQVbjjrGquR/CHMlKmw6FU/wOU0GaSQornOxWh9bt49esfulLAeKBQ8yfPooT2px27pANQFl5egpO0ay/VDkq7qOnLGyfdTDkMx0Y4zygTUw00KWK4OOu9C0dPbx3Rb/aiZGtp7+ys0Pk+kOLgyTAyjLMgCcCvptpbeR/X4R4LmtJJB2PLtV1fFitthYgXKkxRgBBN/gXVMTjL56xTy5OMUf2F40ASxj3z3pE7toXNdbPvDkF6lxnjtuGqu03ktGBgsY6g7WUZlxd8OUFNRMRtJUkP61oFkVh+HxkFNr99CG1bnGPGWYB4puBwOq3ySMF2D2gq9kBy7uTGKEKuNXQqoCD4Sj3rnw097YrDYxy7nveGchYsg2oOna8hnC59430hPYN58odZFWWB1Kb+HrLh1Z2lRS7X9yIJqtl8hxlu9QdI2PgYZqEKHHfIdY6YIBRjedBLfkeQ44ZGj5iO9WZUNQzcKw5mAidZZvQyxY/RRI/AhMC6d6gXEtHdPpt39TAL8V4Eh5/aIUCt2AFP0KimETp4UPWqhddamf4uEP7jP7DJdo8bu/PDeOGMOFk6lP8lqULMIyeWSa819xD8nr+A8jDsi3y3CiIApxWkizfQye3XuzcC5X4nFRmcsP69Fuo18oe30z7wW4dVBEMyZHPoW7lvPZ0WJHC1xM9vRJFnqq2KBrNWjdJVomM69hgVTA2x/SYT+qYxKaBqB+qwWVkqcL9DVBL5uNIA2Vm8WBa9okHH0Zx3yD1Y2lWDqbgDOYSJTOymbduBLufGss8CUsmp/vEX2CDxQ034uLoQ+02KeMnQCRnHwEfIKFoP3XHLK6Pi3IqfHQZ23SSVGjzRMwF7r8eTP/oA88f02deSEe9mOcXBGXQO3Q4YBSSnsZUwosdw3s0zNx
- 6jBRP2k8
- 34JjRmWEHDBXYQrRPbXOSBS2E8DTuL210/jK5Y0rKP9ZE4pXuKQ5pI9kvfwmPA8foMSgzIkgDqHzRbfNCxNtSsjsgpD6wx83O4anX7WmsPuiYi2pqa6tf/1sMOELTfW44lr/uerIgupCWC7MG9SdsSoy1/Rvmnlaw6+g00Na2dRoA1fBtTTFX0ja4RZGH12cby83SY80z43hQiEjZRafOskv2ifDSKE7RjYhNShOXQheGJlIlpI6uNsIpiVEZ+sxPsKIOA2zbcGH0UEs=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5FBEE20002
+X-Stat-Signature: 86ofzgi1hu6cgpe7ac767tgxxfungmnp
+X-HE-Tag: 1790050759-408987
+X-HE-Meta: U2FsdGVkX19fBAUsCDmzisy8eBAx85TFk/Fk/X4NVkiVoMWZVtQn586LxjYWYwAjbLKt0IoFeYu7Em6pY4ny3AbW1hfWIk6e8kZyymrP1gkkDo7L8SnKacVExWR6KtyNCAc1sutC2hT+OL5lpj75u/5Upfr/tSuooI5/W+nTfK9/wahyso8zVZNMuOaVhuMUWOmKLkoNYZtXKhILt7wcpxMI2t3tLp0YII/jDPwwlfXVnfFbVtWii0OfMBXXe0PqDmFArOeSeleJmj1XO7zbcMOjo8E2suHrOSRo3rI2K1e/ODhY9DY45q8Qac/MKC7WJwWSUUOn/cuW3mIftj386WnEUtLrX6ZXFTdJdbcmbdc0iVaRHaFVlL2B5ppQBx7iSmgnKbRwXH/5sklHYtKikHY81EHkTu6qbeKpJ/ZKKZECvyTjbpqnEFvupVTztQ1+mrLf4u+Ro01/Yll9169TsbOQNGCrfGDZ7NYXm68P3dFEEAv2efC+AjTCHQZDNfdCss+bJpp+YuqNfcl6yGDGa0q80IAoAnL0RIdLhWMbUJRP/zXq55l2sH+nFhYpkEWzG8M0L8+gGLmAdhURoewVdwyXT6IapGYTe/3i4a32DBgocsja5ahkgNt+vyZ1GpIcqILC98YrlWV+B5wS5uhLlqI6QsYKp1W0NK8NKYnqCO/pI3a42yf+y5ffbBKoOr36MvjK8FAra+V+bvEZ7/DwDSuiHWFVKorNWJ4SCCrDMewTLWnHd9g4Qt6UqOxMCws5GjH7AbQXVBAmk6XypHmMhPWX4wfaVBOyjlKMmGhVcUUC1XlHvwcAAzp23jKQUtWar81mv4cyFB2agdmiv2PGy4ataMUn3f4E4Al7oQpkOpdeS1J12iNJ/CGHZuetSCJGTaRlZ0UcqGbWLjanStUpJfBstTr756dZkaw9gvmZ7NWK7FtbaqLsfzr1LERB2+hfUb5rp/G7Fw5YGpetNQD
+ UryjpFeg
+ 8pzqMSi5ZLK79Im9vH4V5bUtIUKvDvYrrUJLKz0hP8mkY7cJGDmDVlqwr+F0MU8DuwuaWbgiEuZB2JSTjj93tFVXIRoQlnBjW/PKSHp4oVOIe7T3uRfkri7IlpIpSIg1e2NMmZf9ZbPefwr/GVglzbCfU37ZIWt6JrkDj0BIIvnkjhs0Wf7WnqTsVqxhNq2tARtmhxiopgW6sJL+Wd/xQGP6PuEQye41uq4GEINa64Z9EsDzmF6Yws1PKUPs1rVcj94xFb8J/sx2TNOiUbSmh0Ja0msDy3EnmPkeaJUNhrgm+/DjwcDOYyzzDLZuttxl6oZGVDQRECaD0y9yEdQcDzi6WW1hJlIBwC3QDYpvxgz0xIW3WcdK5aJTm/FKd1Nr/SAzRCd/bEQI2HC0QtOL/X9CklC+BBDvsDvMCc62wCSnnPNwFH6yCYFlIpz2ysjD1WjWxIcMh0guH4l2+KMhrPbNVts8g4PoJ/Nh4b05Y5jBmrEkvxhJHl+qskN/xVx/EQ4Vv4zY3rsGygR8M1sOqjORd6GHPbxLIQplcooYDTmRO3/1ELdt2Vq8v+b7flTI7rb0xI7fmxGRJxdujMSmHAN1wNZ7HNPGeVNrGoHxnQq6OrmTOoCbYMCCbo27qtMs31U3h7BeoOd7djYkY8A9wosIZRVUPVirciLMkTzqzlDFl0TWTRBhPxkIcvCdWM+6RjvWHeo35Awj/1QpCPaSnECOY6S1KyVV5+jSbtFAXSUKbmtW7oX1TrGRDGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,30 +101,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 01:35:35PM +0800, Kaitao Cheng wrote:
-> From: Kaitao Cheng <chengkaitao@kylinos.cn>
-> 
-> TestClearPageHWPoison() is now defined regardless of whether
-> CONFIG_MEMORY_FAILURE is enabled, returning false when memory failure
-> handling is unavailable.
-> 
-> The test_and_clear_pmem_poison() wrapper duplicates this configuration
-> handling and has no other pmem-specific behavior.
-> 
-> Call TestClearPageHWPoison() directly and remove the redundant wrapper.
-> This also removes the need to include page-flags.h from pmem.h.
-> 
-> No functional change is intended.
-> 
-> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>=20
+> The term "KHO scratch" is vague. It does not accurately describe what
+> the memory is for. Generally, scratch is for things that don't contain
+> anything useful. This is not true.
+>=20
+> For memblock, KHO_SCRATCH is the _only_ useful memory during a KHO boot.
+> It is memory passed by the previous kernel that is guaranteed to have no
+> preserved pages, and so is the only thing safe to allocate from early in
+> boot.
+>=20
+> In addition, KHO now has the ability to discover other "scratch" areas.
+> These aren't directly passed by the previous kernel. Instead, they are
+> found by searching the KHO preserved memory map.
+>=20
+> Memblock does not care about the difference between the two. From
+> memblock's perspective, both are memory areas with no preservations and
+> so they are safe to allocate from before KHO fully initializes.
+>=20
+> Rename MEMBLOCK_KHO_SCRATCH to MEMBLOCK_KHO_NOPRSRV. This name clearly
+> shows what the memory is for from memblock's perspective. Update
+> memblock functions and comments that refer to scratch to use noprsrv.
+>=20
+> There are no functional changes apart from the flag name change in
+> debugfs.
+>=20
+> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Nice cleanup, but as David noted, please squash patch#1 into this one.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922041321.2339=
+86-1-pratyush@kernel.org?part=3D2
 
- 
-
--- 
-Oscar Salvador
-SUSE Labs
 
