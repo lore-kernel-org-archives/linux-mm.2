@@ -4,103 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 521D9C98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25DFEC982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:55:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38E596B009F; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
+	id 120EF6B00A0; Tue, 22 Sep 2026 09:55:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 365A96B00A0; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
+	id 0F8BF6B00A1; Tue, 22 Sep 2026 09:55:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27BF36B00A1; Tue, 22 Sep 2026 09:53:50 -0400 (EDT)
+	id F29CD6B00A2; Tue, 22 Sep 2026 09:55:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F24C26B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:53:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7A756A04E3
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:53:49 +0000 (UTC)
-X-FDA: 85241541378.05.EAC46F8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C51236B00A0
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:55:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48C6E40499
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:55:24 +0000 (UTC)
+X-FDA: 85241545368.01.E6DEABE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C412820005
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:53:47 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O52dv8lN;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8769C40007
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:55:22 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlD8MKaU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790085227;
+	s=arc-20220608; t=1790085322;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VxeDKpLb30tS9iUp7//tyWkfTRpjfWGBd6HAgB/7yaQ=;
-	b=OG03LK+4cVVix0OebQaE5vg+drcgGEr4WPeGInAxyytdkozbnTRMWbiAllDI4+Ez1XqTKI
-	atM/MGA5qV2qNebAUjvhtq8af3HQ7VNnmLFQvVrYq87HiSi4eWhd41of+tkBj63dlqEpv+
-	I3pyMI5L1tyEDS3NkHXwUuOZt0FQs6w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790085227;
-	b=HrHMlnT7UZmZlK/yAsOmUUSDVTIPpLpiRfp4eoR8RvfFmi7zbd6ub2mNDLbAHThKA9e99d
-	fGQNgJrgpyuNNCdKd1lp8BfEeNzzCGCxWvgZViqBT8GybVzBZX8+QFNH0U6gssi50wDzs6
-	V5eP0QJxdydBZbUOZTQe0Gz89KMrJTw=
+	bh=vAErR5nUF5jYNRVD6fb923LvqrMdmDoaO1mDvYNJTgo=;
+	b=ERgQxaf2R3vlbcDct74NJmtEuu6PCg2FFVo4TUyES5/AwKYJkSp820I5EwHH6z75G8d2iS
+	qLge420KRC+qQCWuonUSSBhIoO4mGDcCh2k9OcddIJxqECQG/G0irbwPRmcL2hG42BG356
+	+Q+jRPdRDJITHLqYp2kQXA0RE9mTDUw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O52dv8lN;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlD8MKaU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790085322;
+	b=dLLYYVZj6EmgH6Kmm7G31/nSMpCwMOSQrL4Yhb7SsNjkdWFdVlhxfCTE9ipKo5E8qNxnFy
+	IfKGvGEYoenbpmvB/Dm1GhgFuBreOsZcgiCP/Xp8THt/QMdfICjUEOrjirT4RSaAveJ4z9
+	sMfKBcH/eRNv/EnPptKdoViM1VDxOaI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4B2BF6020F;
-	Tue, 22 Sep 2026 13:53:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9134E1F000FF;
-	Tue, 22 Sep 2026 13:53:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 03AFE6020F;
+	Tue, 22 Sep 2026 13:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B041F000FF;
+	Tue, 22 Sep 2026 13:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790085227;
-	bh=VxeDKpLb30tS9iUp7//tyWkfTRpjfWGBd6HAgB/7yaQ=;
+	s=k20260515; t=1790085321;
+	bh=vAErR5nUF5jYNRVD6fb923LvqrMdmDoaO1mDvYNJTgo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=O52dv8lNK2jzOlcw6CykHwk7L7wkHDeVC7o0IltlfQxB3D0+mzyVDqnT9Hxr2yuOF
-	 RFmM8SugGTS+VcGIA6LkIn7LxhU+jaitW4TbAUSdz+jaOvwQVAszl/VXCW0pHgD6v/
-	 0HdGraAqS5pFAhbhPwnH/QFeJBr8Z9HIXuMx7ZJmF4fHHvANyENoGkVeaxGTImeldB
-	 W2cKrkqE7uxyRBTA1s5xaDiBUV93v2Lz485yS6wFR5DpCZvxBCk3P6igzQyJn3o80k
-	 H4huLj8gRm9Uf9R+BJyddzelXYFmNGu2Lb0TUwf3JkC5yhhBk3m77HWqjo3jjzBRHh
-	 8hrzmQy1r0pkA==
-Message-ID: <adef166c-ba85-4e24-806b-b725911c4d6f@kernel.org>
-Date: Tue, 22 Sep 2026 15:53:31 +0200
+	b=WlD8MKaUgx0yamc8h91fzZpUq+67Jj9i2OaP2jc0DoDFTbLwN9NDh1giPE8DcEJAz
+	 8QWzyr2rLUvwsXjaUtU6g7x2xqFukPXEX5DFPVrrWpAp8KVHpLmXAfibyQaYG0DoHu
+	 X2n7EiLG27ZV6U4BpIQotcFuxlULVn6OWfchYpZncZeDU2n2fXWOiiDF+NvyfxOdLu
+	 ZMxE6Bl8h5EHVZd78B1q8CztRTwFAtCeqaT28dtbKsRpowV0rEIATOCZYAw14xPuo8
+	 3Q0h0CLxLrJbKw1Fi34UpGfNSNU02cwvUYxH+xXZJUoUr4mYQ+0YEVE3GZkw5TFyzW
+	 lwkbI4TJnWnjg==
+Message-ID: <462b217c-a422-4818-bac1-7f204f32fa29@kernel.org>
+Date: Tue, 22 Sep 2026 15:55:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
- riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
- <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
- <aqvHHHuWJ-y4WRJZ@gmail.com>
- <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
- <aq1RaH0eE0hZfNpr@gmail.com>
- <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
- <arE3UjqPsxctWckg@gmail.com>
- <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
- <arJ5I9QHHBvuGH_F@thinkstation>
+Subject: Re: [PATCH v10 0/2] mm/memory_hotplug: optimize zone contiguous check
+ when changing pfn range
+To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
+ Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
+References: <20260920084946.3266279-1-yuan1.liu@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arJ5I9QHHBvuGH_F@thinkstation>
+In-Reply-To: <20260920084946.3266279-1-yuan1.liu@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: zgd4zke84uucqneq77cfp8qj9u5tjyby
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C412820005
-X-Stat-Signature: jrhkxr4iwg336584j4ut6ocnw5qeficj
-X-HE-Tag: 1790085227-714013
-X-HE-Meta: U2FsdGVkX18xqhaQqMTe//oBMayLSgtdTrWysvSBOvHLpo2nKl9Le7XVuW+VFq/iHh2QDbaWe43/X4F9jRfrj3+9slxh1hlxGunvxJ3C43S194ywwDSQnbg0xYrVoqShjsEb+4ibliC3b8b9bIce89pDDhe3XMVIXL5Y8Va0mGfQTX0SGtKm18UQNeHkC05d+Ku4rSQ4AGXWus9l/x8hZByMu68V37TkkQg5RrMYSl+5LCyHBvoMLKnwF/b9QcMpXmeYQLblutmEk03zrQUf2epVl4Jh0o5sOQ7BcdaD/jYJRkTMnCAeO5PxTczz6rnjd+mHNHJIXPqiNnRXBfrwPyihQVhK1N62U2FnJUU5cn56ovFTqvQGtYorRwCOx26DX/XmFfUxC8L9Knu/8LMb4g9CrnqiXyG8Tar9OlKqC8irCHvZ0j+W4Qzlrtvck3fyYsRHzzsuCBHw6VYbxhkEqh6XYxMWj8MFdbj/8Qmbu54wacF30dkyDxMiYUXblkgIvM+8I0a1GpxnKQfY/tMCSck1LUYwgF09YwP5xnevYzwLdCYb0dvKOS+eFpeVRjlozrwfWO2u9OSKYtIO7Lvgi8glK153kAEBlTs4sRdQIrRX9g2I2PTD6xw0YbIzXvXCtoj9ecoxfp2qJh71BykYJPismJPIsGqeF4KMj4DfpBMOmUpYbqXVdoEZA4ymKDRiag1GVFqIeYeHST/ddbxbvwEEVV4BV36ReQlZsBSmmnXtMkVlQTnUvfN3xewvy/z+KQAY78+K+xtxGWrTxugNrZ3es240nvB7Q4ooSwRx07yrkjPM9ypabp4R9OMH7Q4sm7dalJkSpjWvLHsag49zd+GGMQgoR1IUBA3SUeZnbw7pqk05VZfcjZ+4a8rlISBdHcG9LcP69KPXOypB3kXE1WzhAX3NYJ6ddoasW74qugG/F8nJtIuHWxVj//OK7RHzSweMhXRvMg6YR3mimSw
- 0Fh42eYy
- uqtiEbM+PjpOEC/z9TWwdMWnI8fYBwW2ABFk/g/Vl5fFr14J4/DmmouMvO/Gn8KtB257fdVw2RUkxbIRnYb/4cfYyGxHqr6sMMz39juhwDcs0nkq6MgBvvAdynmG3BHPHM85UC7aCcv8mVh5ElG4xBowXrVx7/BG+dl4R5rIPIIJlGPSCq9tDBe1i2eF+PxGEDPgR45xAlMWSSf+XZtrsfq4WT3TOUlS+xWH0VoCpZ04o5nyeh1oVXpf+qrdLous+cmK3/r0lRnw5a3jjZ1SrwyNpklnazARTYB9QQBz6HxRG13yCF7AkOrGcuGEE7cmeoSqH+rbugco3sdI=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8769C40007
+X-HE-Tag: 1790085322-748949
+X-HE-Meta: U2FsdGVkX1+yGg6UdWcKTuZ5r+6uWtXxc+VtHAlSp33GuJaw6AME5SKbwSh5P4YOIVzArVNP+gQsIsrOP4H1qPTMvFmkqwwCOfvdBakz7voOxPqdy6KoBWtl7/xawLCqtc/0QwpItluiVWfcc/WbTr6BQpVy5rP1Rpe1LsqJaYD5lv7M/dCr9PfYm6yN4s2Ox/j0a4Uk6D9MM8RldDW81v5gEmpcnmFHLS2OgOaQsBJ28zWBvxURCaqPhIMPwjRJtfheGJ3+q3NAMzntskxVzj0mhCnLNSrj6vkM/WbgSv7J+OevQCP3Jmjv/ZwM3aroRuv/q+3vhZxc69MNtZ1I2nJw/05+D2aUaNP7STS+oyvrwlLjNeFQHQ2KQg76PkwqDmn9BynCWkFc6/cmG9VxtPnLejZOlLue1eE7CGuHHsT7WDsSdTpyTxSMmqdSQuUVBS8W4+luK+9ufUS8802ilc+K+W8xZmj9ebs9tkagxoV5P+B6uUXBLP9NvuWNSBK6gis7sxdDvB9c6LnuG/g3WXk4yPpGdOqiFKh1HX4ju1HVCRXhh+XO/fgjk6gQSuHZB/5GdpnBvcybFg6FKaDNI6Utx+X0h5MkYbbsvIXpbFrYHBXmCMXYv45ptF6Bu/QwvS4VyWicvHhxV9G2tSENiDHuN2YfpeFiZh3yMtPTgEe0lrH1uTusiqWOlQgmxbTObfzkaafTmtAGsKX7xhqFLMbz/2z8qzub7n4fAW6AAYsOYmX+BN5S4b+xcjS2JKOKn3yhXh0+XO+O7s7P4laUMt4ZrbuaJXxTIB75zP6pWifRy8lrYcY7caWu8wOnF4tG0W59hRdmDy4ouoBQRVYYDWk05MAJq/VcGdslQSpryDSDIYajABq+iUZq4StKbpET/Z2JIsJEuxAJSLEVwkQUHBIKe0xTG/kTjAKJvS3hSFj7MedHr3ni4N8UpD863RBcIUs83onh+8TKSIF7dUF
+ YDcW986V
+ lonPaKUutop1jEf/v0c+9g44++DK6NfjZvXR22XHw82PkNKMsbPcivixLVoZKAu7dX9x7TtJ+7h574+MNmYWsO3otvpz0aoWvB998gizGZDfm5vaUzqDx+gmRGkrhs5WsfJq63VpFbFy+O8CeMNsBKywAJGvevHLdTK2PxE9Zg7v6oZKElTHyhUw9tyQqQHTwQF5lcuAOZSSRrOzW8r1NpYUbHIztvvvsteZnVF4GwVRwB6fZjW8FRix1JZ6RRUlMVyxp4Y72jyFigjDD3rAZ7EfdPPtdPlpBTRRS6VsVb1XBK32zWvJHXAsOYI4xEYDMMUuMktlh5WhjadJCeWmJ/ICi+sOJiopfIghhOIzUPkGHACadPntPORSb+AiCq62c+qRw80bwu4yAlTSqasvTF1VWXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,33 +141,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 14:51, Kiryl Shutsemau wrote:
-> On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/21/26 16:31, Breno Leitao wrote:
->>>
->>> The EFI table is only written when there is a memory failure. That is
->>> the only thing that writes to it:
->>>
->>> 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
->>>
->>> You can see it on patch "mm/memory-failure: efi: record
->>> hardware-poisoned frames into the poisoned-memory table"
->>>
->>> Then, when the kernel kexecs into a second kernel, the EFI config table
->>> is queried and the pages are poisoned from it at boot, as they are
->>> getting into the buddy allocator, in __free_pages_core().
->>
->> I am not sure that is really the right place. That means we only poison free
->> memory. Shouldn't we poison as soon as we initialize the memmap, and check
->> whether any memblock allocations ended up on that poisoned memory and bail out?
+On 9/20/26 10:49, Yuan Liu wrote:
+> This series introduces a pages_with_online_memmap member into struct
+> zone to avoid pageblock-by-pageblock scans across the entire zone and
+> improve memory hotplug performance.
 > 
-> __free_pages_core() is how we hand over pages from memblock to page allocator
-> initially -- from memblock_free_pages(), deferred_free_pages() and
-> hotplug. It is the right place to never allow them on free lists.
+> Approach
+> ========
+> Add a new zone member, pages_with_online_memmap, that tracks the
+> number of pages within the zone span that have an online memory map,
+> including present pages and memory holes whose memory map has been
+> initialized and for which pfn_to_online_page() succeeds.
+> 
+> For early boot memory, pages_with_online_memmap is calculated in
+> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
+> included in pages_with_online_memmap, and hole PFNs for which
+> pfn_to_online_page() succeeds are also counted in
+> init_unavailable_range(). For hotplugged memory,
+> pages_with_online_memmap is updated through adjust_present_page_count(),
+> which is called during memory online and offline operations. When
+> spanned_pages == pages_with_online_memmap, every PFN in the zone span
+> has a valid memmap entry, so pfn_to_page() can be called for any PFN
+> within the zone span without an additional pfn_valid() check.
+> 
+> Note: this counter may temporarily undercount when pages with an
+> online memory map exist outside the current zone span. Such pages
+> are only created during boot, when initializing the memory map of
+> pages that do not fall into any zone span. The undercount itself
+> can only happen after boot, during memory hotplug, when growing
+> the zone to cover such pages and later shrinking it back, which
+> may result in a "too small" value. This is safe: it merely
+> prevents detecting a contiguous zone.
+> 
+> The contiguity check using pages_with_online_memmap is stricter than
+> the old pageblock-by-pageblock scan. The old set_zone_contiguous()
+> iterated at pageblock granularity via pageblock_pfn_to_page(), so a
+> zone could be marked contiguous even if a subsection-sized hole
+> existed within a pageblock. The new check requires
+> spanned_pages == pages_with_online_memmap, meaning every PFN in the
+> zone span must satisfy pfn_to_online_page().
+> 
+> Performance
+> ===========
+> 1. For VM hotplug performance data, please refer to Patch 2.
+> 2. This series also benefits CXL hotplug. Performance results are
+>    as follows
+>    https://lore.kernel.org/all/20260409023552.GA2807@AE/
+> 
+> Tested cases
+> ============
+> 1. Hotplug/unplug correctness with both online_movable and online
+>    policies, including partial unplug, middle-block offline gaps, and
+>    edge-block span shrink.
+> 2. Large scale (256G/512G) plug/unplug performance.
+> 3. Boot-time subsection holes (aligned/unaligned, in-zone and
+>    cross-zone) with correct pages_with_online_memmap accounting.
+> 4. kernelcore=mirror: verified no overcounting.
+> 
+> Patch overview
+> ==============
+> Patch 1 makes shrink_zone_span() more robust when memory/hole boundary
+> falls within a subsection. It checks the full subsection range to avoid
+> incorrectly shrinking the zone span during memory unplug.
+> 
+> Patch 2 introduces pages_with_online_memmap to replace
+> pageblock-by-pageblock scans across the entire zone for zone contiguity
+> checks.
+> 
+> v10 changes:
+>     1. Rebased onto v7.3-rc3.
+>     2. Added Acked-by: Mike Rapoport (Microsoft) on patch 2 and reworded
+>        the init_unavailable_range() comment as suggested.
 
-Only free pages. We initialize the memmap earlier. And there, we should consult
-the bitmap once for the entire bitmap and mask *anything* poisoned, not just
-free pages.
+Thanks, I'm planning on queuing this tomorrow.
 
 -- 
 Cheers,
