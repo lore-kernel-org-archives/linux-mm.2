@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156FFC982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:52:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1627AC982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:52:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E78E26B00A0; Tue, 22 Sep 2026 05:52:09 -0400 (EDT)
+	id C2FC56B00A5; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E292D6B00A4; Tue, 22 Sep 2026 05:52:09 -0400 (EDT)
+	id C0D016B00A6; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D18936B00A5; Tue, 22 Sep 2026 05:52:09 -0400 (EDT)
+	id B44B46B00A7; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5CC96B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:52:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2CB541C2816
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:09 +0000 (UTC)
-X-FDA: 85240932378.02.2D5ED48
-Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 7E6F6100004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:06 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=P3glEJkQ;
-	spf=pass (imf14.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E1EF6B00A5
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5E09C03F7
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:31 +0000 (UTC)
+X-FDA: 85240933302.23.6793B87
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C08D3180003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Zw2JRtKc;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790070727;
+	s=arc-20220608; t=1790070750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b8gnsOu8dUZ3aA1jMaDEM+zSBKGqHWilm/tfYcR3Kt8=;
-	b=mHXeF4yEB5bs/OSFGtzQkdhFtlbCIvGsowA4mA1pMcpo7vNNew7KqJU2weyplGun7fuWCW
-	5wfpo4FSVuViyiMXAdIYjgHoKvqPMEYHEgEz+zdGd/7iQBOTdroMY//WJgkSNUp1wfpeBx
-	6ORzHgizGs4iPM+f38rAJEjKI14ZeX0=
+	bh=uLXPio8neK/XWQ24/aYWgPbiu1ZOhj0GPf/ayqaAKLs=;
+	b=LTYTTiaPMGLrG00VjkvJ2MJq6DDd8QE0GGr/EVtijYc9/oqWKuH6AzST+ctOX0qyFec/19
+	mZ8C3DX63tviicOO+N39hT3yVJYK4AkTiS777gdK6DhbP5hcbn/fiC//zgQAopyRX5PxS6
+	xr82qAIYX2wrR5ZD8i14uJHMROG7bEo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=P3glEJkQ;
-	spf=pass (imf14.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Zw2JRtKc;
+	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790070727;
-	b=VdZ6wsSkXoZ4ZLs04AMrheHME4LyQu3i1VWDMfdhtY524J+/70r0UQq11LcxDuox4yk5cv
-	KzHmc905Rg/5uMXQdvBYUzYx9mECuJhG6DHTrihPw2ehOmho/tRomIe2xksMPYQFUfWnsk
-	dbieSWCOxl6dBkkFn3TCRIwRYBUf2ZM=
-Received: by mail-pj2-f43.google.com with SMTP id 98e67ed59e1d1-396ccd5cf03so3821975a91.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1790070725; x=1790675525; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=b8gnsOu8dUZ3aA1jMaDEM+zSBKGqHWilm/tfYcR3Kt8=;
-        b=P3glEJkQxemU31ASn7gUoo6alqqRn6wGxX+v1rCnjQh1ieS5cvqGLRnu9Zw5ykedw/
-         BVEg6A8dH7wCTmbZ/UKGKnVhpLuG/GHifJQbDflWxkz89enqlNv5vTNPCKe9KPaBcoO5
-         Hlhcb8Wx8PSU5g+6tgkJJVHLRru03JUky/0r3hk5Kiq9aZvWenjMl4EF4EGk3f6XVtDe
-         44UD1ld47aOW6vWYO3EzBsWtvD+HBX95og9juIo+Py/sbdYMl1VVvfeSBkS28HukS5Jm
-         Ic+EFaRr/kGAxQPlVN+Q9N5V7hDvk1+G+c+xTlcpi31ZROMcgwkokuDN6J9DPmU0lxJz
-         nqig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790070725; x=1790675525;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b8gnsOu8dUZ3aA1jMaDEM+zSBKGqHWilm/tfYcR3Kt8=;
-        b=DrxKDUnDqFCWbf4OIXR55xRKbe43ycjoB2zGEDJwoXZFF2JKq7EnfXN77MAjmeyNXt
-         TSepjbtxCirFyrY08PL32rzoEw4xxL5Gpf+RkMdp0Ig3mrIXQwxJHz9m1YXW6ExXawQr
-         mqlOoF5Cgo3y2YsEGL9XNeL/HWToGcZ0C4duIgT+UHVev3XDq/dE+ZMrxowC1dVn3vQH
-         qV4ME/RO+Jnxp3UPef2yAkQAIZxozBbWxjhOogAj9u9bVD7wdlO0Icxll+zQXExo8QXX
-         DoZGZoPZ4/K+5Fp9ndDe2C64JRVbKI3elZcOTrypy/eeViv22glq1ZWiqAHploo4s5gL
-         xA8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwCgjlpfxcwSLfrfE22iVj7zkLW+IkMIPLNMYFoJ1C+zzwLXB7xn0VdA1q5SmccxbSlO3p3Y8jm8w==@kvack.org
-X-Gm-Message-State: AFuF++nsFqQLLo5whPayQj5UhakNApDk1qxPSY28nEsRbycxnfXiTgoN
-	zfV37UGfofZoieQ6TnQcvNRgyVRgBAdgEj6td/8dczn232y2PoaFNZDRD4LeBm6F27Y=
-X-Gm-Gg: AYBFou0LhpiDZ0cM4d4Sqh/LVw0N6lQu+IIyAD4iA8IvA7q30UgZ2rzc+KuJAFsIOI0
-	MR4qmPRd1aicJqqRRaqSod00532FmIEc8M8z5YRyAN04m+Lw+qY/BBS7WUOq4DiNUredXEbXUzZ
-	ZHDkBzgOwzfc4PUZA7Ff9o/Eq2GomueW0Jm7ZTws8VmV8+APwpNCjkgpOyX+ETU52rfg3pLioUt
-	Ivr/WZx7FOdoKaF9HaDzHOX6d9i+QYeBvkNdpwGOW1/fX7eaC1GZvwRQGGodSDbUd49QnSHPdGq
-	ZW90gMBwSYlBXHX14zUctzJvTALVgT0P8UVn4vmjEiXnKv43/4+vG6XvIGjEaklypjLvNWkLydX
-	U2AjB/NWJ2OhZ5TSa7vyEtbgXOLDYAt9GutN52WbufPzMYMTrz+KTIpQxHmO+BRpqyzkwlfzgxG
-	VYN1w3okK/2/4rAdeUodtnT4yvtYbNEe3/gWLYVkfK2Uas59hiPcxZTpcB/FPsTnvhR6c83D6+1
-	2nGGq5+TsrGAyHiseTer+ppJXDRvHwx4Jtd8L/DWXDhr1hMawFU
-X-Received: by 2002:a17:90b:2fce:b0:39e:14db:4371 with SMTP id 98e67ed59e1d1-3a0730a1432mr716576a91.1.1790070724728;
-        Tue, 22 Sep 2026 02:52:04 -0700 (PDT)
-Received: from [100.81.13.24] ([61.213.176.55])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a067409854sm3905971a91.7.2026.09.22.02.52.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Sep 2026 02:52:04 -0700 (PDT)
-Message-ID: <e9d4b9c8-1b0e-45fe-95b8-f999055357a9@bytedance.com>
-Date: Tue, 22 Sep 2026 17:52:00 +0800
+	t=1790070750;
+	b=rXeAiUW+MD50E6CdURNvcDYKVOzD3FCLH9CIdtw7rG45YdSXuGBedwSH3M1iAhY9BBgMva
+	Gf9UrbvghNgwAdRB0Tse/NNfXI9jYEWtFrVi0ODwAaaFydMQyz5br5ZWma3bqgDC3wWRPH
+	wZdFvJXGgD3S1OHUAn5yrJ6PuJ+2yWA=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1790070746; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=uLXPio8neK/XWQ24/aYWgPbiu1ZOhj0GPf/ayqaAKLs=;
+	b=Zw2JRtKcF2dO5xYO9nlE5Sm0UvcVuflk/uSSou3gukI4XsuDIMNdJQlgbSJu/iGaD8QZ9sfBN38joaLq29N7XXE9zNxgEyglAYzUAXEa/Pq9CzXoX10/yhb2Pmmf5Qi7K0GYaGM+O6pQ8olECrgtjpYGNL4IfAJ6HgVHa0DXBOo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R381e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XBTMM3c_1790070738;
+Received: from 30.178.68.4(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XBTMM3c_1790070738 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 22 Sep 2026 17:52:22 +0800
+Message-ID: <db317551-0b1e-40f8-b265-d00d65653089@linux.alibaba.com>
+Date: Tue, 22 Sep 2026 17:52:17 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/3] memcg,writeback: flush foreign bdev mappings
- separately from owner wbs
-To: Tejun Heo <tj@kernel.org>
-Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, willy@infradead.org, jack@suse.cz,
- akpm@linux-foundation.org
-References: <20260921120658.1627992-1-sunjunchao@bytedance.com>
- <20260921120658.1627992-3-sunjunchao@bytedance.com>
- <b15c63490f9164bf46d68ff3ec5dfc02@kernel.org>
-From: Julian Sun <sunjunchao@bytedance.com>
-In-Reply-To: <b15c63490f9164bf46d68ff3ec5dfc02@kernel.org>
+Subject: Re: [PATCH v3 0/4] mm: restore per-memcg reclaim for NONSLAB
+ shrinkers under nokmem
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
+ <20260910153418.e818710d3c35aa075f1156ab@linux-foundation.org>
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+In-Reply-To: <20260910153418.e818710d3c35aa075f1156ab@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C08D3180003
+X-Stat-Signature: po34479s59zqwpn7bzcc9i65gxobfanz
 X-Rspam-User: 
-X-Stat-Signature: by4bikmuh8tdd8g4kaundcyjbgztf1ak
-X-Rspamd-Queue-Id: 7E6F6100004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790070726-670423
-X-HE-Meta: U2FsdGVkX18zrxUpDbsudlQYf99Vkq7B9Y0VMj8Q0Am4tI0r/qvvM3cZVCvRktUCok7+X5WJ/p7bYe3yFK9AOwFFNse7f2OgO5QWpeEMFGqqmM1mSSJ27eyA3JemVO1jn//UNewsrgP2miVhkqu8P5MLMI84+ZlRWodd/k0yHUdm79fjiOFDbNlUmDi/f7NJG5vZlGVRVPV18iLYUgo0XZ/gQ3wPT9I5YeaL91DmlJNbK/wI2k/jOdMxNQGffhAsoumIGzLkLC3Tqm+lNB8dg68s/IcVeFFig1TeErKPpJpENGvsG8PrbLYVYjjR47K8iqACB68Lfl74HDqNc3BNFLH4qu/J8BpCOfJTjRqsUtoFDLJNjjdXvgniZjiqMfQie0NIKW+VittSLe3MSy89rzCCSFNvjGH3K7Y9LlYyGzRD0cJhT4zjbz+CLUVJqxiSeqrHL0UzsooTVq8y2PKefZmla8kTKg1iMgWiXp9fkpslnqozz6Xb1kUTQE6wzVBlRuPUZLJnv6BKnnfSVJZicZcfU+0vCvQqZZdLkk2bn1aFOnWtrt/3bSxGLEr5F8DfF2/rF8AUImAWQlvTlIm1trJ2uCaUasewS/BcJYUaJkmUasEPNUcwOmHsgO1IPg5VpG+EYSyDbuEvpaA6SVtU/yh+P80XvtKjKHC1rmkVNakxh/AMCTB9CH10kJWlM88D4D2Rvfc2s9pKhFBMEhcSFbIXqWN3ECOa+JvpFKvhuy09FPfoPilG7WzhALCo/5d0nRz/XhdlXcao9MdDg6uSKChRXxGy9ewIz74McyccY4cUmOLHYAx2zRieyhxnpGhEqVYf3E0XXWXlz54uOTQiCDVMrKe4tEeIyi80G10mmZ7Ecic4OZEWoWog7y172GTJNjIskzpJDgBOc0MBOrNrLX3FyOZVeEqC/T5nPpUEmWctzeuXijBPA4ARF2iLtRJuRDtihiLaZeGFsAxWnzL
- jsfnCuBP
- dNcFJkj1Xs2DEmr09rfTmasGytgrBw8kFEwAfkE2NJ1mRq7exs88wLbLeWTwHnW104OQu5JI30FUaA+wzrTZg1VjWLTiR9VnJdYBOleVmo9aMbDuauEsH8aBILQyi83S0ud+EVahmci7+ymbxPfyEe1kF6gG9pZCqwjTAhyxL8rVy76YosRAlaFkVj7kxyKFbmKUBvQpzdJdyV4RK9hs0cxi/3r8A6XuZParE2thtwacvqYN6N8bSGk0JpwI92jk7OqLKPkkSOQXxBnlxRF1ptRRneGHt47c/x48SDkpSmsQaiFRjnE1qP5LzrSg9fxRHe58A5LLfPF5QmjJMeheW2Ozl6NistMa/Rp/LEFJm5P3qicA=
+X-HE-Tag: 1790070748-879614
+X-HE-Meta: U2FsdGVkX1/EkDA0VmVwSVClN+yJBL0Anr8b+BIaoubmupCFObD6fvwpJ4soTKlh1bF8MR32B0RhLOBt6WKXVq5COqNPIfJ3aBWNdW062pvL7f6DSlqq1BHOb2owMeQ4tiicemnRX8MgrNVGV0yQXV+MOa+6xCAVRBlxVELWKLdHzGVthXZwouMmPTZDVm9gmcdMEwUsaMm8ftsi37cJkkjNMHyjxZu5En7X7WPHcKznDrfSuxU/W6Ah8eNER+u24Lm1fv5/lXnCl06NVt0tHBNOqYENbYLYM13rW6b7mpD1ze0kQMIbD4aZVUwYIBpct2zMq+WBQ7IB8TFLrgiI6zQ7VqAxuytu2R6REcOsAuOKbxj4rWq+t0caNgByUx31qtqkApKBh3b6620ttSGCGkDJb43wHTu5ob3uupKJyL+OS11zL6tZ/7s+DxwUGfqDTDElalzew/mKpN+0BulaWDwpnDEo+hUq6vWm9FzubqcuuIXZNdWXeNidaq7S52uh2Li/790CGEbvIFaujnyvJmllcPfBcS59GPr1/gDjhQMJ5xeCIvHOMyrKRcjih8FCfWEkdAwzjfnhqmC7/pdwPELM+E6st5CNuJCGk5SEF5H0EHP2eh2mTWmmxoiKasmCyFfXXJx8eF9f+OQts2JprX/F6m9cbcGwzYISTEYTgrQwX5S6yLsQ9j53vNsqDpfIsa/hzggFA6JOSy4iEdoBXmMBXpSx4e8nBpcJKhqu3iTEbGJYDFTteuGxdZcOmJZG4WomSSNSF2ZsC8WrsFwR39EKEwgvlSfHUzREpWjiEBmkkTEz2Qn7Xe+z5GdzUjvLtB8SNGEUc8KTRi5Gex6JdRJuODSJZgOCMWsc+q9/iy8TWCTD5E5gEw40nLZr5YcPqHFQrKobfylYK5pR/wlNVo36I40ikq4VRsE/OEeTqYIJCa+yySSUqqclTMVaF83Dg5Ncvf834a1Tt1hKJ4A
+ KB6G89xM
+ 1dDAovNju6ENhLo3Oevlnp2+RDcN7D5xeEzbgMavIObPb8ye+xtr7ivo7mKXYynPGkroMZ19ojS3+y/txmOBIyLY90jgZWvC6V5qS1IdcdECHxstHGHRXhgTodszvFMEIRzyqs8RZwR6BZqVr46y6kh4r4HRSzh/MzC3QHv3vdfMB0tRVOMeecCeOdikZbxPjp5GrRduYuQbIN1ryC7WbUYZHnR24BYP1yV3BM0q52VrDAB97Y0aHzw0+lEpmyElWWpADEKcVpgvYO98vBbKF/x1cFvpcNcXQvkAbR+g+PU4osyc8/JYBaX4O+mNr2UtNLehmRKIJ7/PQ+GwGUtX/KrwY2vi6TKBYclee0dvqpw2uo6U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,68 +97,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 1:55 AM, Tejun Heo wrote:
 
-Hi, Tejun.
 
-Thanks for your review.
-
+On 9/11/26 6:34 AM, Andrew Morton wrote:
+> On Thu, 10 Sep 2026 16:07:18 +0800 Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
 > 
->> +static void bdev_frn_flush_work(struct work_struct *work)
->> +{
->> +	struct bdev_frn_flush_ctx *ctx =
->> +		container_of(work, struct bdev_frn_flush_ctx, work);
->> +
->> +	bdev_flush_by_dev(ctx->dev);
->> +
->> +	atomic_set(&ctx->inflight, 0);
->> +}
-> 
-> The in-flight window is now just the submission of the bdev mapping, and
-> mem_cgroup_flush_foreign() runs on every throttle-loop iteration, so a
-> memcg that keeps dirtying and throttling requeues the flush back to back.
-> A folio the flush redirties, e.g. a buffer locked by a jbd2 checkpoint
-> write, re-stamps the slot on its own. The old record stayed in flight for
-> the whole owner-wb work. With a journal the write cadence of hot metadata
-> is still bounded by the commit interval, but for nojournal ext4 and other
-> buffer_head users it's bounded only by the throttle pause, for every
-> tenant of the filesystem while any tenant throttles. Not measured. The
-> description covers the target size but not the cadence.
-
-The description, comment and tracepoint suggestions make sense;
-I'll address those.
-
-Dirtying or redirtying the same device during a flush can refresh its
-recorded timestamp. This is expected. Another flush for the same
-slot cannot be queued until bdev_flush_by_dev() returns and inflight
-is cleared. A subsequent call to mem_cgroup_flush_foreign() can queue
-the work again if the record is still valid and inflight has been cleared.> 
-> Each pass also goes through wbc_attach_fdatawrite_inode() and
-> wbc_detach_inode(), so it votes in the bdev inode's wb-switch detection
-> like the owner-wb flush did, at the higher pass rate. Whether the bdev
-> inode ends up switching wbs more often is an open question.
-> 
->> +		if (memcg_bdev_frn_wq && time_after64(ctx->at, now - intv) &&
->> +		    atomic_cmpxchg(&ctx->inflight, 0, 1) == 0) {
-> 
-> Records are only created when the workqueue exists and @at stays 0
-> otherwise, so the wq test can't be false with a live record. Fine as
-> documentation, but the cover lists it as a fix.
-> 
->> +		INIT_WORK(&ctx->work, bdev_frn_flush_work);
->> +		atomic_set(&ctx->inflight, 0);
-> 
-> memcg is zero-allocated, so the atomic_set() isn't needed.
-> 
-> On patch 1, the kerneldoc's "does not wait for all I/O to complete"
-> understates it, the flush waits for nothing.
+>> With cgroup.memory=nokmem, the THP deferred split shrinker and the
+>> zswap shrinker are degraded in two ways.
+>>
+>> First, both shrinkers are missing the SHRINKER_NONSLAB flag, so
+>> shrinker_memcg_alloc() demotes them to non-memcg-aware shrinkers:
+>> limit-induced reclaim of a cgroup neither splits its partially
+>> unmapped THPs nor writes back its zswapped pages.  v1 of this series
+>> [1] restored the flag to fix that.
+>>
+>> However, as Sashiko's review of v1 pointed out [2], the flag alone
+>> is not enough.  __list_lru_init() also collapses every list_lru into
+>> per-node lists under nokmem, so even with the flag restored, the
+>> objects of all cgroups share one list per node: the per-memcg
+>> shrinker bit is only set for whichever memcg happens to repopulate
+>> the empty list, so pressure in other cgroups may not even trigger
+>> the scan, and when it does, the scan walks everyone's objects.
+>>
+>> Before commit fafaeceb89a5 ("mm: switch deferred split shrinker to
+>> list_lru"), THP had fully per-memcg deferred split queues embedded
+>> in struct mem_cgroup, working independently of kmem accounting.
+>> nokmem only opts out of kernel slab accounting; THPs and zswapped
+>> pages are user memory and remain charged to their cgroups, so
+>> per-memcg reclaim is still what these shrinkers want.
+>>
+>> This series keeps list_lrus backed by SHRINKER_NONSLAB shrinkers
+>> memcg aware under nokmem:
 > 
 > Thanks.
 > 
-> --
-> tejun
+> It seems that Sashiko still doesn't understand that memory allocations
+> in __init code are considered "can't fail".
+> 
+> 	https://sashiko.dev/#/patchset/20260910080722.3961351-1-qinyuntan@linux.alibaba.com
+> 
+> otoh, failures in the functiond which hugepage_init() calls might be
+> caused by things other than ENOMEM so I guess we shouldn't zap all that
+> cleanup code.
+> 
+> Anyway, that's unrelated to your changes.
+> 
+> I'll save this patchset away for later and shall await reviewer input. 
+> Please poke me in a week or so if there hasn't been any, Things are
+> crazy lately.
+
+Hi Andrew,
+ 
+Thanks for your time looking into this series. A gentle ping, as you
+suggested. Please let me know if anything else is needed from my side.
 
 Thanks,
--- 
-Julian Sun <sunjunchao@bytedance.com>
+Qinyun Tan
 
