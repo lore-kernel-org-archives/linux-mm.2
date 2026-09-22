@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15BC0C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB6BC982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:11:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D74586B009B; Tue, 22 Sep 2026 09:08:21 -0400 (EDT)
+	id 8E4D36B0095; Tue, 22 Sep 2026 09:11:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4BA66B009D; Tue, 22 Sep 2026 09:08:21 -0400 (EDT)
+	id 895B36B009E; Tue, 22 Sep 2026 09:11:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8AFA6B009E; Tue, 22 Sep 2026 09:08:21 -0400 (EDT)
+	id 7D25F6B00A0; Tue, 22 Sep 2026 09:11:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D8076B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:08:21 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 268F41604D8
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:08:21 +0000 (UTC)
-X-FDA: 85241426802.26.C053F38
-Received: from mta0.migadu.com (out-251.mta0.migadu.com [91.218.175.251])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D723220009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:08:18 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tU7blQr8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 61D736B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:11:09 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C7EC804AB
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:11:08 +0000 (UTC)
+X-FDA: 85241433816.02.2F11395
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 889B4180008
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:11:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3GjIaQK;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790082499;
+	s=arc-20220608; t=1790082666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vXH3psh98x4YI1o9dk0PnDbc2pw5/tnY8Y5fPRriv94=;
-	b=NgNjbaBJHc4lVFoRg4tAoknqOdob5q7rbJSTpBdw2gzt8YouTQP0qRvXMq50PTtH0g6nxo
-	BK+GTM+kpfF6R2quVFTXearN7engiEFW72Myzyhi5ts3XYDumu6GKID0vKbaY8lOhjUU4g
-	78om1M8hh1s4KEibJBo/LyzQYtyH3L8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tU7blQr8;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.251 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+	bh=YvmyyGPjbrWrJwbf5Whbrcgx8nNLvLw2m7m3Hwl69o0=;
+	b=R4JJKDtNBVR6M1g9ERkmeGGN86gkTbM2t4o5OeMWGovlhEWuy0e7u63lw8y9wQGHPYv+/K
+	C54cKQuYDHfAIZ1hDMTugXir+Uy9vpTZD4zswGUrKOZUkPI+ZlHvHCsggGLf4jBo97FBvS
+	n3EowI3YTE9OAZh38mumAPP4l1TUvG8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790082499;
-	b=TlH+Vhh+s5WyxDuya+IVxq0+HR1RQsHFt7FrcwyYQcUOW6OtcqF19ciTFoh+SSgGhi+txV
-	q8TM5tE194Z5g5xCns9tyCd1hmpdMTCNMqbiq3bF4HYww+fD8XyFmybXBO+aYCkjjkpd8I
-	MOybCef4HvsWjoNqsMOfOdgXLbxVWrI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=0Alsyxotn/BT24NUFO3uaJEACOJcA+aK/asZoGhrk7Q=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790082497; v=1; x=1790687297;
- b=tU7blQr8PWGgizHfk+JBKJU6XnHKl5+NXnM6gluYoGnW781aK07nXwarMf7TfEERxPO1qOID
- wGPrrp2oVRl3FlSu1gmZSXnag3z7sbw3qESgHgNeAVEf+nBDuoKTemgaHj6SgmYaQ0B3zS5WbyK
- eDk0ylRQ4Tfb+sEj67TvM6GI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 659ba7dc6cd41b5b;
-	Tue, 22 Sep 2026 13:08:17 +0000
-X-Mizu-Trace-ID: 659ba7dc6cd41b5b
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <47ff450a-c2df-4520-8589-63dbb1746f80@linux.dev>
-Date: Tue, 22 Sep 2026 14:08:13 +0100
+	t=1790082666;
+	b=rcE/kGWkYS7ZZV5cx7Y+PEl7R2LguqdrYJJMAhR9SlADWNGvYAtYZpuy6wlbIZKWoCkXxz
+	JFhufD2V7yITe2OwhtZcWKa/0ll4r/VzZxB8iK7c6Wsrt0UIfVWkOmiVVVno4qdt0KdJOy
+	2k1mlwlCfscNxgpV0O7cq9azo/N38qo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n3GjIaQK;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BAA2E40094;
+	Tue, 22 Sep 2026 13:11:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07C31F000FF;
+	Tue, 22 Sep 2026 13:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790082665;
+	bh=YvmyyGPjbrWrJwbf5Whbrcgx8nNLvLw2m7m3Hwl69o0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=n3GjIaQKp6vHSZAnCZSWn75z++PWW18Ss4iexzoJsz+yYJPFpyvP9IxXn2JoZkTn4
+	 pL11QZKrxM+oHrkwISjQLgLJWWxuv5QWcaI2n+3EC8A3avsZBexKWdyFOUKxWg6lwX
+	 YClfcL/bYao8CyX0taL+ZJ/7GHVJQJTZlQJ9a5AsjQhW+OlWN546KxnixXnG7ZsVr8
+	 PlSrmda9yRFht2SciQxbe1TOjUJSSys6mJIztaG2eM+9Ee8a+Dp6OAShHdA1tz0k0n
+	 RsR/saYkpk5kyp0jMjzDBicAgvkGmWUjIMeUXwmUz2FOE5xhLnuhpqNVbE+z9IRQDg
+	 StSsoFseRQziA==
+From: "Harry Yoo (Meta)" <harry@kernel.org>
+To: vbabka@kernel.org,
+	akpm@linux-foundation.org,
+	Hao Li <hao.li@linux.dev>
+Cc: cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/slub: refill prefilled sheaves from the barn
+Date: Tue, 22 Sep 2026 14:11:01 +0100
+Message-ID: <179008262139.1310571.12383090243043565426.b4-ty@b4>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260921094521.141665-1-hao.li@linux.dev>
+References: <20260921094521.141665-1-hao.li@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 08/29] mm: recognize PMD swap entries in the softleaf
- layer
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-9-usama.arif@linux.dev>
- <bb4f8cf3-afb4-4497-adc8-6d8fa8982090@kernel.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <bb4f8cf3-afb4-4497-adc8-6d8fa8982090@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: gk86fg514kh9byhap56hgdkmckmzf4af
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D723220009
-X-HE-Tag: 1790082498-970608
-X-HE-Meta: U2FsdGVkX18icnCZJv3yC1sU+whrRtl4EsnGpdhjsrzZ9L7X6jbBhVCJhoDcP51Ps+MmkoBRzC2ZLZk10C/dLk8SP0HkAvcY1alrflT7ou+Z6CEG1xtz3hPJTAGMtGTqflcp7Nfn65clPf7x58CxM9r2yy/OC3YQen7l4N1MFdFr/nPqfsiPOvLJ4gQrZIBquyt3KFvRTXWIGXm24YepsTA/7K8MNM3uUfdRN0IdtUygG3CgbRM35a/Aj9akgW6M6JeOZ1YNYwn6tPKFiyQOr2SJBYYqv0uqwSLNaaXjizp6b60hQnhrUrH52pYAGiaSsnmgtIGntRaWG8Vo67SE9nCUYHpLmZ5Hr/u1+ObnfhD81CngRzBE05wvwEO1FfPCkb9GSs4hvYu5FUu1lASgY7qT6b0Sxnm5NXlGm97yaVRDh9jmugVxF+KldE32VtQJCblfC46nCPky2dK9pEyWH74AFA96DlMr4U93CSebGlCMIzl5GM6/FuIT83zZe0V049249wbZcz3Te/l/UpM9ZQDUZyyQ8+U1bWBFPUtD+1yZPg84Vk2eldmC7VZPEcVLW6pjwP2IjYV56mCkkI4JDR6NU1PK6ykVf8GO3ADz8JtbKR2W6QpxVeKGBqlostPzywfbcb36SuR8vAOOimAhEpwMNKIpBGC1hqqggaLCgISEYNxbUVs2VGO/6cKdHpjeGQqRINGD4Ipirh9KiU9sZMb6aWWDc2Gf+M3OrLMSGkiCyDE3ghm/siWfXCvXg3OBSLt7WmFRCtB97CoYYASdYRMCv8Rn9j3iJZIuJTFSjMUMVMLH1dpxfhd4PbgomhE0v8Hj3ad4rhotge+0+fmmluv70trHK2xF9hCaDoBjMFc/Z4UCD8D17rMPp4NKfI4/M+54mfVweZN48KP+MoDF2UEs8yNSK2/vahKpl2EcFOnQVKnosWOjd0nrm14IFHXH3+cHHuY4Tw8DoYo3daq
- /fkdJs4B
- nhSLSGRJF6UBJTRstarqGuTcCVG8rbV8ECkWbwvFZPbrjImJjLTKv+A+xwViW1JMoUEZV1Q00407j8fracYVQtL0v1nIAVDShc/Go84UHMM0JG3bWuadcWFogqR6jDFlHARZ1FHGZbdlGG3ctKfWwy4rk4XHFABpir1hCKP1V7k3iKYvlb4ykUN5qAowTFNIsVNmXf6uUGctVzNF655v7Ctz3fyTPSCS1Diz24o78cNscxjGofvWzIndgudClx1G0M0kAk5z/g8bS0KZt/SCaeptvzWkcoHH0X5YOF5WkMWhAruJzlaZGgjSE/ahrgIU5MguV5Iy/RezWxSLFZVyBmIoUkg==
+X-Stat-Signature: qw3qebe4i3ak31q6c7dh5346i849aat9
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 889B4180008
+X-HE-Tag: 1790082666-618347
+X-HE-Meta: U2FsdGVkX19fI+GJMTl05uJAJxqnMurFbOI16HEkD0ozmEHOhDxEHbGNhp9z4Ey5nYd33jVjYbsc3hwqyo2dpfZyiFvWXbuwlEoy6mCZjYiOLDZEP1bmqcLam8WMllIhD+g6zGK4q06bCelGyhjEqTCmBxxZlhTBgt/Sn+D1e/Fb5fWXOx5obtxB3AJ5xMJl8urZB5fOLEr2YVp4hQAAaURG5PC+lkzQSV4xyatPRs5da5TVdpzK2oyUe0dz6ueHLxK98286+VAA0TetYs+0UP6fkH0xfRFeGZxXGB3dkcD5UyL9dfFfYzPkLy3Y8jDNvMGPDMY3VG1yw7qhHlYhTsrGWDEOGwKWlBgZJoPOjuccrYYtGRq5flex7TMJd98V1jIic00C3jQ1VEY/2uuD1/hNwhwANCw0i3Pf5w4ODo1EXvFD23+R5azT2PJCg39h9BFXTUD4JYyRqv5nNXlwnhImnbyIOr6qnUotJPsDuAL4QofYSUIwo524vr2XAxpmKWu6CEhDPnz5eQC95IQ5GkMkZTcknJrWPhY3I3zwT4u/iEQ0opJ7yKgJkw1tPFKc7zIWcTXSWtNPVhoHKANTQAltG1AU/8amB1Iwj3gPuMF3nWvZH3sv7tu26+wqhHs6iRq2r6VYsC0yBigQMZ806p6Sirh2sOB4SpPDcjIwY6EpJ0KfJp+IOw0S0JFkXoEDb1n1+HbTHitw/guWqSFbScx9p3FZmvYBceJW32zuqEO6tTbPnXJPZIpQK8Qpr0pugeRrkEOJjP0c9fG0gTRnwMQ8Zgn2+K+/7BZwhcWWHCRUrmw/SIGjnQvR5cJWGjVnXAEqqhEX245rL6pTarFAMVbvpHX769bG8sD7bFoXOPlHhjbG4wAWOno823A8DKU1429jT8LslSWyVV2c2O1eAyIiMGS85t9+WPxvg2HF70pA3ZtuKdpYSWib3wXk7IoAtYvQ3C9810oQ0drxF7L
+ 8I8aFun5
+ P6TDkc6xa+e2x6HsO/KGsImb5KqjCmPXvdap26DYUd9Oq/ST2tJS8cLzOi3xx275FSCyqSmkMmLTrQ42eAiccs25sY1z8hpYm/4sgTIaMfZlAzFgXrCcVZozgqRKLmIeT/hLZ689eXYmuz6hcwNAltttOZzZ/hLQsYnxArDoEMOVwD73A16r4B2PjCfidLXuc+C+1wFevAWdek5v1f3IB/kX6DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,111 +97,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 18/09/2026 22:56, David Hildenbrand (Arm) wrote:
-> On 9/14/26 14:27, Usama Arif wrote:
->> Reclaim splits a PMD-mapped anonymous THP into PTE-level swap entries
->> before unmapping it, so an ordinary swap entry has never had to appear in a
->> PMD. Later patches install one there instead, and the softleaf layer is
+On Mon, 21 Sep 2026 17:41:13 +0800, Hao Li wrote:
+> Currently, when the prefill API refills a non-full sheaf, it takes the
+> objects from partial slabs and never from the full sheaves in the barn,
+> so once the barn's full list becomes saturated, it stays saturated.
 > 
-> "Prepare for ..."
-> 
->> where every consumer decodes non-present PMDs.
->>
->> Accept swap entries as valid PMD softleaves and add pmd_is_swap_entry().
->> A swap entry carries no PFN, so make pmd_softleaf_to_folio() warn and
->> return NULL rather than interpret a swap offset as a page frame number.
->>
->> Unlike migration and device-private entries, a PMD swap entry can also
->> carry the swap-exclusive marker, which softleaf_from_pmd() has to strip
->> before decoding. Strip all three overlays unconditionally while we are
->> here: each clear is a plain bit clear, so testing first only buys a branch.
->>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
-> 
+> For objects freed via kfree_rcu(), every RCU sheaf then has to be
+> flushed to slabs because the barn's full list has no room.
 > 
 > [...]
-> 
->> +/**
->> + * pmd_is_swap_entry() - Does this PMD entry encode an actual swap entry?
->> + * @pmd: PMD entry.
->> + *
->> + * Returns: true if the PMD encodes a swap entry, otherwise false.
->> + */
->> +static inline bool pmd_is_swap_entry(pmd_t pmd)
->> +{
->> +	return softleaf_is_swap(softleaf_from_pmd(pmd));
->>  }
-> 
-> We don't have a pte_is_swap_entry(), I guess because we always want to handle
-> different softleaf types through softleaf_from_pte() first.
-> 
->>  
->>  /**
->>   * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
->>   * @pmd: PMD entry.
->>   *
->> - * PMD leaf entries are valid only if they are device private or migration
->> - * entries. This function asserts that a PMD leaf entry is valid in this
->> - * respect.
->> + * PMD leaf entries are valid only if they are device private, migration,
->> + * or swap entries. This function asserts that a PMD leaf entry is valid
->> + * in this respect.
->>   *
->>   * Returns: true if the PMD entry is a valid leaf entry, otherwise false.
->>   */
->> @@ -660,10 +670,12 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
->>   * pmd_softleaf_to_folio() - Convert the PMD softleaf entry to a folio.
->>   * @pmd: PMD entry.
->>   *
->> - * The PMD entry is expected to be a valid PMD softleaf entry.
->> + * The PMD entry is expected to be a valid PMD softleaf entry that references a
->> + * PFN, that is a migration or device private entry. A PMD swap entry is a valid
->> + * softleaf entry but encodes swap slots rather than a PFN, so it has no folio.
->>   *
->> - * Returns: the folio the softleaf entry references if this is a valid softleaf
->> - * entry, otherwise NULL.
->> + * Returns: the folio the softleaf entry references, or NULL if the entry is not
->> + * a valid PMD softleaf entry or does not reference a PFN.
->>   */
->>  static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
->>  {
->> @@ -673,6 +685,10 @@ static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
->>  		VM_WARN_ON_ONCE(true);
->>  		return NULL;
->>  	}
->> +	if (!softleaf_has_pfn(entry)) {
->> +		VM_WARN_ON_ONCE(true);
->> +		return NULL;
-> softleaf_to_folio() does a
-> 
-> 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-> 
-> Just curious: why is that not sufficient? Which could would we expect to call
-> into this fuction with nonesense? (same applies to the existing runtime check)
-> 
 
-Because softleaf_to_folio() warns after the damage:
+Applied to mm/slab.git slab/for-next, thanks!
 
-  static inline struct folio *softleaf_to_folio(softleaf_t entry)
-  {
-          struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
+[1/1] mm/slub: refill prefilled sheaves from the barn
+      commit: d7b92c1ee684978c5fed7b3496939d13c8a66b6d
 
-          VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
-
-pfn_folio() is page_folio(pfn_to_page(pfn)), and page_folio() is
-_compound_head(), i.e. READ_ONCE(page->compound_info).  So a swap
-offset interpreted as a PFN is already dereferenced by the time the
-warning runs.
-
-As for who would call it with nonsense: nobody today. zap_huge_pmd()
-is the only path that reaches it with a non-present PMD and it takes
-the pmd_is_swap_entry() branch first.
-
-
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
+-- 
+Cheers,
+Harry / Hyeonggon
 
 
