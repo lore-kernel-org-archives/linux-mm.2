@@ -4,130 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9DFC982F0
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 00:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 091F8C982ED
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 01:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 522BB6B00AC; Mon, 21 Sep 2026 20:32:24 -0400 (EDT)
+	id E368E6B00A4; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D34F6B00AD; Mon, 21 Sep 2026 20:32:24 -0400 (EDT)
+	id DE74D6B00A5; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E9BA6B00AE; Mon, 21 Sep 2026 20:32:24 -0400 (EDT)
+	id CD6806B00A6; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F0216B00AC
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:32:24 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8E3DA80329
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:32:23 +0000 (UTC)
-X-FDA: 85239521766.19.BD8F61A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 54D89A0005
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:32:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EGKm6Nal;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790037141;
-	b=WhDxx1nPpoVPwY8VUPGNB4nI+hwJR++AZ6xtTae1JbZW+Bz0RoBBc6C6AYkt3IyoK7KADI
-	+C/5ICIFHFoZgICPoocGFPWWTHUD4fowZ4HyHQ+Azvs7vp6AHUPF9IfIiIoIckSH6EMv/j
-	UQLeh5b+b0Bi8m1VcfbPDrAnTUnHxwY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=EGKm6Nal;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf15.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC51B6B00A4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21DB41202FE
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:02:05 +0000 (UTC)
+X-FDA: 85239596610.22.214EB56
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 606DEC0002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:02:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=HI1EKSj3;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790037141;
+	s=arc-20220608; t=1790038923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IZTiQJDWW02u1O16C9YANI41LWoC5NCq89PPHTz/pRM=;
-	b=wc3iRz/ShfXf2KUSlGbXSit4m9MCQapWmUM9vcrVeW4Lo9pv9km9NQQq+55i/5DjufCx6V
-	VbsLAO3N+sJPKtXjSBbSH12VDhyopqi50bVIg4Lefk+vKP6vokWYLfqOY8gOJ/YKfY4Abq
-	+CiO/QHY5PtEoZVQSDsR7smEC/27Ni8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790037142; x=1821573142;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eXYuTenHkmviiP89DV79U/M3G01VwUN3IcB9EPfEUW4=;
-  b=EGKm6NalJCRHqBcPA98a6/qPbU43QjFR0BODpJGBjzevdleqiMu9PjjS
-   VV/MlwE8KtcRhBhy3L37sOd8XIdBMDckJlpFY+VXjaXQgCRuQMgM5+Lqa
-   SLvD6XXwxvxVLIXCB855tz2evZPmU70nHq/Z6lCyOzOmc00+IQp25wJrb
-   fjAqQJFTuIqg0FC/dbbpwJZ5PVZpRTn7dS1dU7dOdNC501r1Qb5fg8h3Y
-   gsxK5VxUCCJv1uzKrEfWvnYKFR3kIYDH9rwM68i9A+e5gNFv6KLJmBLQF
-   hJ4jWqEcdogg4weWNbykXldeg0Yz2k8VXrV9LC2sX6UMla6s17BkDMwLX
-   A==;
-X-CSE-ConnectionGUID: SDlvSREjTpWJKB89qLaHcA==
-X-CSE-MsgGUID: ItdknYkDSa6GhMRJN1ZAWw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90716745"
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="90716745"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 17:32:20 -0700
-X-CSE-ConnectionGUID: gRU2xwr9RXGJBzfMN92iYw==
-X-CSE-MsgGUID: NTHk847jRTG3cUQ0MrdRsw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="277671922"
-Received: from b04f130c83f2.jf.intel.com ([10.165.154.98])
-  by fmviesa004.fm.intel.com with ESMTP; 21 Sep 2026 17:32:19 -0700
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>
-Cc: Davi Chaves Azevedo <davichazbh@gmail.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Kees Cook <kees@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Qais Yousef <qyousef@layalina.io>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
-	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
-	Chen Yu <yu.c.chen@intel.com>,
-	Lu Wang <wanglu.priv@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Zhan Xusheng <zhanxusheng@xiaomi.com>,
-	Zhan Xusheng <zhanxusheng1024@gmail.com>,
-	Yi Lai <yi1.lai@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Zenghui Yu <zenghui.yu@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH v2 6/6] sched/cache: Refresh LLC capacity across CPU hotplug
-Date: Mon, 21 Sep 2026 17:37:27 -0700
-Message-Id: <6751d93e15889e624796c74db0bfe66603d60b1b.1790035273.git.tim.c.chen@linux.intel.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <cover.1790035273.git.tim.c.chen@linux.intel.com>
-References: <cover.1790035273.git.tim.c.chen@linux.intel.com>
+	bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
+	b=RJBQ9xg0siaIEE9DTInmC94IWfDmwKpGmR6sL+CITSTowob40Qf7Djopf2pMJH54CcGt1o
+	M6LM20aY0RTVdXgs68GQgem4rOxx93Z/FsOYYo6yzfaVbB4Rf4AP3HUAANaD1RdnJo4Tqh
+	7+kowJD22efXtZKZlC2uG0yQvgySd3Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790038923;
+	b=pRdGfj+6JRWEJFTMAkP9u/F/T/ny2xDxcJt0fbR21waORlA1GN6jL7cFPuVr3uU9POazrZ
+	N66qRLCHahC92GREN7LAjNcvel48nuc07h27IUJkDsDv4BqCOxu9PujtjYBe/2fAuAynHz
+	U8DFWGzHOhu5OiO9eqdDgcIfifL75y8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=HI1EKSj3;
+	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910c9ff1cso285624485a.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:02:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790038922; x=1790643722; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
+        b=HI1EKSj3V9oGYHbGEQct/sWhsOVV2Qbqdi8dZhPdtj03WOS/KLdHsnIfyz/Ns+mIA+
+         86+2G4FJfdR6wn4EpyxDYGGOVs3fXu0+0XJB6FcshEFsTKYCBf+v6qEciERwGvj8IP6+
+         BmXggHuhJhBNyC7ZPiDBB5LAHzgioDnc4xwSYxsUbtzXl8B+vErqoCtyvJ9bkKXbvvBS
+         YN/RAYJFKBhkw8YVkXBScZuj32734msxxShWSrmj/UA63Co1jT7Wo+yN+4jWKbBPJk4T
+         mrOtdc3itcgZi2h73mSrdqjF6HL/ph6z339Sw1Xd9zj7iEh2AIGFJ5TP7fAfysUtwF/E
+         DdOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790038922; x=1790643722;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
+        b=WkVD8wCMJvr+WGFB3PdBOW25J+HcTSCZKh8FmwAjP28hZFiykNz1aO/sGw6WgGxiW9
+         PkCJbyeiDtjILyFvMQe8vsNbz8dcbA7GMR9XcFnOGivlug9IzngI02T633l/Wos7UxYY
+         S8OIuGCakAFMPJ1WPfhz3WeuUTEvYGsnTPXNnBKFE+HsqlZw/5sE+5M/Au5ySoAHIzi+
+         pDLv/MQhoF4xqkpIPjt9Iqefcl+jvuFUlBXSQrV7MP8nrfGaNeFY3Lx3tgiSEbKe+xoM
+         qqEbMN+n3KB2uIT6mAgESp7jeD8FwYO+YXnR6tjxfhCXQlDiTh8kvr+ndJRsoKbClkWP
+         u8Rg==
+X-Gm-Message-State: AFuF++mVKz+wwYLlTDSyrGgXxWay2vblFwAaWsXZ7kj56bYdRFo/Tcsl
+	gYah4bcpqe3/m3ISgRYgU+wtpIQ5k6HMqcWc2by3DHVpins0yGp4O7deWxtIcnwTpd0=
+X-Gm-Gg: AYBFou2Jasr6HTFIhh+rzG7KeWOyIsSffQl32wRaw839oGdahglYTvtRXDZCnhsLvjH
+	CE2RW5IA+BXb27Sw3sbweaRnWEZX9EGn08AENe9G+oL7jh9rri8PQ3C/uOlV3Fr16aVKsCbKJcN
+	qq5yBQiXSiahxcq7PoCsqJBiD2jdXEahvBGyJhhUmTG3QwBTlWgxPwOEgww21/GUbb1WNxNvxb1
+	FpFB8wbUSZvj364cgfPjuwFW9TTDO1yy27qGmlMBnn2PcCX9KI/K622wN/BwrYxPeseIRf+7dvH
+	D8lfWaiLAtV+IgbUUUCLDJmDzZSrvfvBGW6cEEUpoNdRbHZSCap36uML5SPTdvYi8stGZFZxZ1H
+	cYUtX1+U15Wh6DQJjl3QQ14WL7/+HwGcl9VCQQXsqa0bJJXD6KPAuR052FCwo/jzqrG1K7YU9lb
+	txhElbi6vXi6ieSpoi6cJp84ZxFLFE/URODASS5U2pnsanKTzzJjZ/ptCroV1vcFzs2gXAdZaSh
+	PjdrZTkV3g7n+/XnRWt0I17RkdmuGxdz4kTWzkpVvs4zFbTnUcZVDU=
+X-Received: by 2002:a05:620a:4803:b0:939:f5c4:ae5c with SMTP id af79cd13be357-93c15e5c4camr314965785a.43.1790038922471;
+        Mon, 21 Sep 2026 18:02:02 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1d17afcfsm6766585a.20.2026.09.21.18.02.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 18:02:02 -0700 (PDT)
+Date: Mon, 21 Sep 2026 21:02:00 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	brendan.jackman@linux.dev, hannes@cmpxchg.org
+Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
+ of build_zonelists()
+Message-ID: <arHS2anjIvS7v8w2@gourry-fedora-PF4VCD3F>
+References: <20260912030424.2889731-1-gourry@gourry.net>
+ <20260912030424.2889731-3-gourry@gourry.net>
+ <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
+ <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
+ <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
+ <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
+ <72A76ED6-51F5-4A0B-B34F-C8F5416F640C@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <72A76ED6-51F5-4A0B-B34F-C8F5416F640C@nvidia.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 606DEC0002
+X-Stat-Signature: 5kbq6nsuuyj71keowscqxpebokonqqwx
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 54D89A0005
-X-Stat-Signature: x54k99hzduo98a6h5t3rqnot9eprumeb
-X-HE-Tag: 1790037141-396406
-X-HE-Meta: U2FsdGVkX19Isik+SPj5VH/g12HykwxGpCuibiM41AqFEjnQbMbpil770YZ8M5dwmxHNkeg6pyu0eE5HICpHe9NXZEYyDggiODoKzoF4HBMwmI+sDrtA/DbOuelZCgAIixhvrwZpHi7k/8SLBk/tv9LX9COg5pyGLbXx3WNba3IwZd7l0a/jPrKm6JIAJqElxDZofyx4XpMugp7ru1K2hA+d3fKFQJF1hlSeJPAAlqjHhXOEES5xf0eaO65FVCODyv1Dd/wmvr06+3kuRJCdvmqPD2a2HuuF32FtL2w3uFApk31K3rFhXjbJlYVOot2FxGvIMMOMB/iC6noJrLfWN1GcfBEHDFhpLJLpfauhIrNJRT6mvLhjHXib1yyCDqI6FIYso/2pRS/cYVwgI4IHTwrBqQsaE4Fmq8RlC6R587d940zKyzFsJJq7tfzwh0Rsq22X05K/yBh3mx9tUZSj//Z7xKZUknvlxye4AordTWa3vYmUGiMuDAQcq71vmLOKPnnlhbQ7OCdEy0UDkM5yb7bA3LUo2vT+Hl/30xDialg97d4JKYuEeKnGyZcfpT/dC8iL2XhCm0gpBmbMNRzHNC72ZXPQaNwMv3yfdzGYDDtFJiORPFdW0Sim0pH9DHBp3f4CBChbYArwKL2uz6qXChHBzoKr5xl+k1obTdm3a0fuSYpm4rLi5lk31YNkV8qGdC8I2gzYZAEfqCXLj6HqyM9W1giybZYTIltJH2o5p+btJptuT3ll+AE3iUbm/PR9F4/V+m5+DXELaDV+gCTa+aei9mfOBbuwDsN38ORnETl6IXvE8C2uAN6ArFtgtENnl4bfE6ncYh5z4IZ7YrbeWhEUecvCggFcD2AiEn5gyiQJkAeOXCPCkgyBd2tsrBlGLWps/nReETHCSDbJe2TUaiY3knsHd5B3DTP1x0HkCOnrQYDCXvM8pibJiq0dAXphQSslRnDbG1dr4B0EF7D
- 8cyvZMxF
- uLvEGAnAE650hc2uEyG4YbGQ9QwJF8A0JbnxgF0/k/23fcXUxx6/jI9l9kIEo2PI4LixuX9PsrijWEikEdiB43hvcc0oOfmiMafVa3KewYvpExIbOoaXtptzDWavIYBJaYBbBMJEmagvXC6FwivpD9bP4G9V11aZhBPqerQLBn1DLeYGKHx3hBbi1VblUnnxzIIcka880QJg5Vngw1adMGfyJ8kaW2/wHi0DHAWMyEc7psHPI8L5PVdZV8ApqDrJkrvgXGiqLCmNNVLJN4ynEP15sgvzz62q8XKnsWBDk91Jc71/5HBmPc1BjtKpBFWBguEoRGVU60QSdp+s=
+X-HE-Tag: 1790038923-249800
+X-HE-Meta: U2FsdGVkX19vRHqrz1dgqvRw+HcTr4ifcT/TP2XlSZFpFukB5eUbatQSgziGu8rOWcqMqDtH5GqOnbAlum5cruiRbut0IdWa/ej6kVnUqKAHuSSIrJbYlGYqbKBZEN9inyU6xVvYqJ5Pf/A2AnoQGGypphwbvHmgJBH+qqAb94Ze8WLWd5Cvz4m44JwhGIkEq6qIR/Ahkvtl2JGqa65O4eTi3lpuh24+7gro4SCsHqYmE7rSOSjzz0tFW/oGueP+VM0WZ1+gDjO/sO6kTFZdpQnEpkjnfuIUnS18eBoqC19NWmrTD2/88+mWRh0Wl5dPse8uZun2z7KOzpfqc16hhr5vRdW1jInsfFxev7Rc5l4OINrR5L/wIVNvo1rgLCPqJAYwRYA2GIN4ZeQlYw9721qBIiJN6kvsCBrrSqYYRMB0CexwoThT/CzdPlk9VydRF0YcHUmMWYH5CW40E3Hu/pGL1mgn5l3+9w4A3pIyu2gACvAQHslsD4k5rWcHMaUKmc+B8l+ZpfZu1fcuvJ5cCb6MOgGWJcDQ1X+Ww58FQTm21W+PqlT3AoEmhnr+EoMbCd+R+SwkrnfsQHmw3zyPNxbLG+VQvwiJOQSmI06VMOZzdTt45rw9PzVrDd9/FQTXr48EWn5sx38ofvfjbeqwb5h/zOO9wGrEQ+bjg4vlNfTIzgOuoK9WxDvjfG+mbV7Vy+U7Bsiwp7QMfhIgCBGXbhCMB+ok9ViADJjKlBscwCeImcT37YiMPq9ejnkb3tzWN75mtDSYRvutIeKXaXZJgSqfSsb6WtRLYPijA3ikEHNUzgg2bwFJ4UMhVL+SxqmJWWptSZ602WDLCQA//6DSzXKyokTFpPIvVu/YtCk8lDeuZkOrxO8ivWGtNP3x34IlrhK9P8+LQvgp3xGLZXuJ3b5wFY687KpFhGbCXz4kg43BpwtlcokxakSWUUdzJG8g5tmV91kdU+PqqXsfIUr
+ FOogSSL3
+ pHax6jo3h1xkdS1dgoqWrdmYFqHoTEHpAMw8cz9HQTb7aEljjsbscdwSze/1lbKUjDeLf1e0p7/Ke0Af9VwCKVFULf9lCdNAZ4rNw5WGAKrM461D1kizqN7t4YPW5rOZ1cnxLmWrL2+uUDdczrLHkp78s3gA7lLsQC1UQJWaq23Uxw4TgHrB4y5Cmir/G7bQpByVdBYeH9KoFvUYXq+wAvYyaK002Llnd7JGMza0rI4wdM7VrhVGgb7bSBsY6mT3WpXPXkBPV7n369QJi4Nd52BLaq3QOJDiHhCxK0A78rvxMNlDGuevw/0rErGuMX7sJVNsSIQFcWss1RCLj64DVXmMNJ81S9Ts1CwRZmtIqYuGmKBP0L9Zg2Vc73g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,161 +127,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Davi Chaves Azevedo <davichazbh@gmail.com>
+On Mon, Sep 21, 2026 at 07:58:38PM -0400, Zi Yan wrote:
+> On 21 Sep 2026, at 12:38, Gregory Price wrote:
+> 
+> One more question. What prevents one adding
+> build_node_zonelists(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK)?
+> Based on your above mapping, each of ZONELIST_* has its own candidate.
+> 
 
-The scheduler scales LLC capacity by the fraction of cache-sharing CPUs
-covered by a domain:
+Other than build_zonelist and build_node_zonelist being static functions
+only reachable by page_alloc.c?
 
-  llc_bytes = cache_size * span_weight / shared_weight
+Nothing presently.  It could possibly be asserted.
 
-During CPU teardown, sched_cpu_deactivate() rebuilds scheduler domains
-before cacheinfo_cpu_pre_down() removes the CPU from shared_cpu_map. The
-new domains therefore use the old sharing weight. The later call to
-sched_update_llc_bytes() looks up the departing CPU's sd_llc, which has
-already been detached, and returns without correcting the surviving CPUs.
-
-On a Ryzen 5 7535U with twelve logical CPUs sharing a 16 MiB LLC,
-offlining one SMT sibling left the remaining CPUs with:
-
-  llc_bytes = floor(16777216 * 11 / 12) = 15379114 bytes
-
-The correct capacity is still 16777216 bytes. On systems with active
-cache-aware scheduling, an underestimated capacity can cause
-exceed_llc_capacity() to reject aggregation for a process whose footprint
-would fit. Unchanged cpuset partitions sharing the physical cache can
-also retain stale capacity when a CPU comes online in another partition.
-
-Pass the cache-sharing mask already retained by cacheinfo to the
-scheduler update. Refresh every surviving CPU using its own LLC domain
-so that each partition receives the correct share. This also preserves
-the correction needed as cache-sharing maps grow during boot.
-
-Keep the existing CPU-hotplug and scheduler-domain synchronization. The
-update remains on the hotplug path; no steady-state scheduling operation
-or persistent allocation is added.
-
-Fixes: 7030513a0877 ("sched/cache: Calculate the LLC size and store it in sched_domain")
-Signed-off-by: Davi Chaves Azevedo <davichazbh@gmail.com>
-Reviewed-by: Chen Yu <yu.c.chen@intel.com>
-Tested-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: stable@kernel.org #7.2.x
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
----
- drivers/base/cacheinfo.c       | 11 ++++++-----
- include/linux/sched/topology.h |  4 ++--
- kernel/sched/topology.c        | 22 +++++++++++++---------
- 3 files changed, 21 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index 9f9c72727a05..7a47a392568a 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -1040,9 +1040,10 @@ static int cacheinfo_cpu_online(unsigned int cpu)
- 	rc = cache_add_dev(cpu);
- 	if (rc)
- 		goto err;
--	if (cpu_map_shared_cache(true, cpu, &cpu_map))
-+	if (cpu_map_shared_cache(true, cpu, &cpu_map)) {
- 		update_per_cpu_data_slice_size(true, cpu, cpu_map);
--	sched_update_llc_bytes(cpu);
-+		sched_update_llc_bytes(cpu_map);
-+	}
- 	return 0;
- err:
- 	free_cache_attributes(cpu);
-@@ -1059,10 +1060,10 @@ static int cacheinfo_cpu_pre_down(unsigned int cpu)
- 		cpu_cache_sysfs_exit(cpu);
- 
- 	free_cache_attributes(cpu);
--	if (nr_shared > 1)
-+	if (nr_shared > 1) {
- 		update_per_cpu_data_slice_size(false, cpu, cpu_map);
--
--	sched_update_llc_bytes(cpu);
-+		sched_update_llc_bytes(cpu_map);
-+	}
- 
- 	return 0;
- }
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index b5d9d7c2b8ad..f96812d71c51 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -281,9 +281,9 @@ static inline int task_node(const struct task_struct *p)
- }
- 
- #ifdef CONFIG_SCHED_CACHE
--extern void sched_update_llc_bytes(unsigned int cpu);
-+extern void sched_update_llc_bytes(const struct cpumask *cpus);
- #else
--static inline void sched_update_llc_bytes(unsigned int cpu) { }
-+static inline void sched_update_llc_bytes(const struct cpumask *cpus) { }
- #endif
- 
- #endif /* _LINUX_SCHED_TOPOLOGY_H */
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 0248227d983a..3dab0253976f 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -985,8 +985,8 @@ void sched_cache_active_set(void)
- }
- 
- /*
-- * Update the bottom sched_domain's llc_bytes for @cpu and all its
-- * LLC siblings. Called from cacheinfo_cpu_online() or
-+ * Update the bottom sched_domain's llc_bytes for @cpus sharing a physical
-+ * LLC. Called from cacheinfo_cpu_online() or
-  * cacheinfo_cpu_pre_down() with cpu hotplug lock held.
-  *
-  * Note: get_effective_llc_bytes() returns 0 on PowerPC.
-@@ -996,17 +996,13 @@ void sched_cache_active_set(void)
-  * and does not populates the per-CPU struct cpu_cacheinfo array
-  * that get_cpu_cacheinfo_llc() reads.
-  */
--void sched_update_llc_bytes(unsigned int cpu)
-+void sched_update_llc_bytes(const struct cpumask *cpus)
- {
- 	struct sched_domain *sd, *sdp;
- 	unsigned int i;
- 
- 	sched_domains_mutex_lock();
- 
--	sdp = rcu_dereference_sched_domain(per_cpu(sd_llc, cpu));
--	if (!sdp)
--		goto unlock;
--
- 	/*
- 	 * ci->shared_cpu_map is built incrementally as CPUs come
- 	 * online, so the first CPU in an LLC initially sees
-@@ -1014,14 +1010,22 @@ void sched_update_llc_bytes(unsigned int cpu)
- 	 * get_effective_llc_bytes().  Re-evaluating every LLC
- 	 * sibling on each online event corrects this once the full
- 	 * shared_cpu_map is known.
-+	 *
-+	 * The departing CPU's domains have already been detached when
-+	 * cacheinfo removes it. Use the surviving cache siblings instead.
-+	 * They may belong to different cpuset partitions, so use each CPU's
-+	 * own LLC domain to scale its share of the physical cache.
- 	 */
--	for_each_cpu(i, sched_domain_span(sdp)) {
-+	for_each_cpu(i, cpus) {
-+		sdp = rcu_dereference_sched_domain(per_cpu(sd_llc, i));
-+		if (!sdp)
-+			continue;
-+
- 		sd = rcu_dereference_sched_domain(cpu_rq(i)->sd);
- 		if (sd)
- 			sd->llc_bytes = get_effective_llc_bytes(i, sdp);
- 	}
- 
--unlock:
- 	sched_domains_mutex_unlock();
- }
- 
--- 
-2.32.0
-
+~Gregory
 
