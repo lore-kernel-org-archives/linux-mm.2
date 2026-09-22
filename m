@@ -4,122 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 091F8C982ED
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 01:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87CB1C982E6
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 01:11:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E368E6B00A4; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
+	id 1C5A46B00A4; Mon, 21 Sep 2026 21:11:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE74D6B00A5; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
+	id 1785F6B00A5; Mon, 21 Sep 2026 21:11:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD6806B00A6; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
+	id 066DA6B00A6; Mon, 21 Sep 2026 21:11:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AC51B6B00A4
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:02:05 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21DB41202FE
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:02:05 +0000 (UTC)
-X-FDA: 85239596610.22.214EB56
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 606DEC0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:02:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D20436B00A4
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:11:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4950DA0352
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:11:35 +0000 (UTC)
+X-FDA: 85239620550.11.5D806F5
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AF146C0002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 01:11:30 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HI1EKSj3;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	spf=pass (imf28.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790038923;
+	s=arc-20220608; t=1790039493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
-	b=RJBQ9xg0siaIEE9DTInmC94IWfDmwKpGmR6sL+CITSTowob40Qf7Djopf2pMJH54CcGt1o
-	M6LM20aY0RTVdXgs68GQgem4rOxx93Z/FsOYYo6yzfaVbB4Rf4AP3HUAANaD1RdnJo4Tqh
-	7+kowJD22efXtZKZlC2uG0yQvgySd3Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tZ5Dx3qCcwG5S8UgkLxk2GtDAj3mWixeb854F4qtc2o=;
+	b=sz9XOCEDt81DXQu8qp2uHohjLBIuq80Yxu9PP0rVbJ3U3H0V6DQZBq19ISunozWNwqYzrE
+	TtYdMQfEZ/BmNWfWFj9MQor+/JoSI+twFr2GZ9cHqNm/SZdOfLS5HVZGDKNx7n/zg3Acy7
+	Nax3/A60T5fzwPtvMLqIW0IX+F7ehSA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790038923;
-	b=pRdGfj+6JRWEJFTMAkP9u/F/T/ny2xDxcJt0fbR21waORlA1GN6jL7cFPuVr3uU9POazrZ
-	N66qRLCHahC92GREN7LAjNcvel48nuc07h27IUJkDsDv4BqCOxu9PujtjYBe/2fAuAynHz
-	U8DFWGzHOhu5OiO9eqdDgcIfifL75y8=
+	t=1790039493;
+	b=JTZS9C9SXonuvRYiJ6yK3GGoqHdISqpyH+ycCSGaRcE9TSoB7eEEdd/uCDEk6QvxbjZYEb
+	sgyogU3rHL6P0tdc1wL3W0bywpYbviAZPTHZhtyGB34NXAW/wko6He++hjaEoikDN6SgO+
+	deBf9U7O+j6w0Gk5AtQTmsg5t358zVQ=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=HI1EKSj3;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
 	dmarc=none
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93910c9ff1cso285624485a.3
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 18:02:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790038922; x=1790643722; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
-        b=HI1EKSj3V9oGYHbGEQct/sWhsOVV2Qbqdi8dZhPdtj03WOS/KLdHsnIfyz/Ns+mIA+
-         86+2G4FJfdR6wn4EpyxDYGGOVs3fXu0+0XJB6FcshEFsTKYCBf+v6qEciERwGvj8IP6+
-         BmXggHuhJhBNyC7ZPiDBB5LAHzgioDnc4xwSYxsUbtzXl8B+vErqoCtyvJ9bkKXbvvBS
-         YN/RAYJFKBhkw8YVkXBScZuj32734msxxShWSrmj/UA63Co1jT7Wo+yN+4jWKbBPJk4T
-         mrOtdc3itcgZi2h73mSrdqjF6HL/ph6z339Sw1Xd9zj7iEh2AIGFJ5TP7fAfysUtwF/E
-         DdOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790038922; x=1790643722;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=88TeD9vXDrKYbs/Tr89klO5h2tOaiUe/TfsMlOHrFjA=;
-        b=WkVD8wCMJvr+WGFB3PdBOW25J+HcTSCZKh8FmwAjP28hZFiykNz1aO/sGw6WgGxiW9
-         PkCJbyeiDtjILyFvMQe8vsNbz8dcbA7GMR9XcFnOGivlug9IzngI02T633l/Wos7UxYY
-         S8OIuGCakAFMPJ1WPfhz3WeuUTEvYGsnTPXNnBKFE+HsqlZw/5sE+5M/Au5ySoAHIzi+
-         pDLv/MQhoF4xqkpIPjt9Iqefcl+jvuFUlBXSQrV7MP8nrfGaNeFY3Lx3tgiSEbKe+xoM
-         qqEbMN+n3KB2uIT6mAgESp7jeD8FwYO+YXnR6tjxfhCXQlDiTh8kvr+ndJRsoKbClkWP
-         u8Rg==
-X-Gm-Message-State: AFuF++mVKz+wwYLlTDSyrGgXxWay2vblFwAaWsXZ7kj56bYdRFo/Tcsl
-	gYah4bcpqe3/m3ISgRYgU+wtpIQ5k6HMqcWc2by3DHVpins0yGp4O7deWxtIcnwTpd0=
-X-Gm-Gg: AYBFou2Jasr6HTFIhh+rzG7KeWOyIsSffQl32wRaw839oGdahglYTvtRXDZCnhsLvjH
-	CE2RW5IA+BXb27Sw3sbweaRnWEZX9EGn08AENe9G+oL7jh9rri8PQ3C/uOlV3Fr16aVKsCbKJcN
-	qq5yBQiXSiahxcq7PoCsqJBiD2jdXEahvBGyJhhUmTG3QwBTlWgxPwOEgww21/GUbb1WNxNvxb1
-	FpFB8wbUSZvj364cgfPjuwFW9TTDO1yy27qGmlMBnn2PcCX9KI/K622wN/BwrYxPeseIRf+7dvH
-	D8lfWaiLAtV+IgbUUUCLDJmDzZSrvfvBGW6cEEUpoNdRbHZSCap36uML5SPTdvYi8stGZFZxZ1H
-	cYUtX1+U15Wh6DQJjl3QQ14WL7/+HwGcl9VCQQXsqa0bJJXD6KPAuR052FCwo/jzqrG1K7YU9lb
-	txhElbi6vXi6ieSpoi6cJp84ZxFLFE/URODASS5U2pnsanKTzzJjZ/ptCroV1vcFzs2gXAdZaSh
-	PjdrZTkV3g7n+/XnRWt0I17RkdmuGxdz4kTWzkpVvs4zFbTnUcZVDU=
-X-Received: by 2002:a05:620a:4803:b0:939:f5c4:ae5c with SMTP id af79cd13be357-93c15e5c4camr314965785a.43.1790038922471;
-        Mon, 21 Sep 2026 18:02:02 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1d17afcfsm6766585a.20.2026.09.21.18.02.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 18:02:02 -0700 (PDT)
-Date: Mon, 21 Sep 2026 21:02:00 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	brendan.jackman@linux.dev, hannes@cmpxchg.org
-Subject: Re: [PATCH v2 2/2] mm/page_alloc: refactor build_node_zonelist() out
- of build_zonelists()
-Message-ID: <arHS2anjIvS7v8w2@gourry-fedora-PF4VCD3F>
-References: <20260912030424.2889731-1-gourry@gourry.net>
- <20260912030424.2889731-3-gourry@gourry.net>
- <DLKNHNP6LH59.3MEEBCAJGFEVK@nvidia.com>
- <arCeH_aD5PUM1tNE@gourry-fedora-PF4VCD3F>
- <C7A2977A-CDD8-4EEF-9448-A130411878B6@nvidia.com>
- <arFaiV9iVgxIsZ1g@gourry-fedora-PF4VCD3F>
- <72A76ED6-51F5-4A0B-B34F-C8F5416F640C@nvidia.com>
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hphqz3y42zYQvC2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:11:11 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E8A8D405FA
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:11:25 +0800 (CST)
+Received: from [10.174.178.176] (unknown [10.174.178.176])
+	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgB3Ryqx1bFqtPrQBA--.27304S3;
+	Tue, 22 Sep 2026 09:11:25 +0800 (CST)
+Message-ID: <a563fc94-1143-46f5-a505-49a1a74a9e88@huaweicloud.com>
+Date: Tue, 22 Sep 2026 09:11:13 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <72A76ED6-51F5-4A0B-B34F-C8F5416F640C@nvidia.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 606DEC0002
-X-Stat-Signature: 5kbq6nsuuyj71keowscqxpebokonqqwx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] mm/truncate: fix data loss when splitting
+ straddling large folios fails
+To: Jan Kara <jack@suse.cz>
+Cc: Zhang Yi <yizhang089@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
+ willy@infradead.org, bfoster@redhat.com, joannelkoong@gmail.com,
+ djwong@kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com,
+ chengzhihao1@huawei.com, wangkefeng.wang@huawei.com, yukuai@fnnas.com
+References: <20260916092450.654408-1-yi.zhang@huaweicloud.com>
+ <20260916092450.654408-2-yi.zhang@huaweicloud.com>
+ <xl2rtnntlxoxoozkddgrlkcsgukcngvvcwazm7gb7q5g32yxir@ef5ltcwueboh>
+ <DLGXT0ERY79Z.3C5DYVJVX6S9Z@nvidia.com>
+ <9d931f5e-cb34-4721-9def-7aeeda48700c@gmail.com>
+ <453d0054-4f53-452a-9737-cd37d30a7d44@huaweicloud.com>
+ <35me4qswsu2dd3howvfdglh4ge4t5vihkizoutxt2jhiyul6xj@i6kqsnqpvbra>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <35me4qswsu2dd3howvfdglh4ge4t5vihkizoutxt2jhiyul6xj@i6kqsnqpvbra>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgB3Ryqx1bFqtPrQBA--.27304S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxur17Zw1rCFy3JFy3Zw4UCFg_yoW5CrW3pF
+	ZYgrWqgFWxJr1jkrnrZ3WjqFyay345WF1UAFWfGF17C3ZxXrn3KryYg3WDu3yfGwnrZ348
+	XFyUtF9ruF1jyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6x
+	kF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAq
+	x4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6x
+	CaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0E
+	n4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I
+	0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8
+	ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcV
+	CY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAF
+	wI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa
+	7IU04xRDUUUUU==
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Stat-Signature: exzr8atf8d4irikzbms4g9wxdpdnrty6
 X-Rspam-User: 
-X-HE-Tag: 1790038923-249800
-X-HE-Meta: U2FsdGVkX19vRHqrz1dgqvRw+HcTr4ifcT/TP2XlSZFpFukB5eUbatQSgziGu8rOWcqMqDtH5GqOnbAlum5cruiRbut0IdWa/ej6kVnUqKAHuSSIrJbYlGYqbKBZEN9inyU6xVvYqJ5Pf/A2AnoQGGypphwbvHmgJBH+qqAb94Ze8WLWd5Cvz4m44JwhGIkEq6qIR/Ahkvtl2JGqa65O4eTi3lpuh24+7gro4SCsHqYmE7rSOSjzz0tFW/oGueP+VM0WZ1+gDjO/sO6kTFZdpQnEpkjnfuIUnS18eBoqC19NWmrTD2/88+mWRh0Wl5dPse8uZun2z7KOzpfqc16hhr5vRdW1jInsfFxev7Rc5l4OINrR5L/wIVNvo1rgLCPqJAYwRYA2GIN4ZeQlYw9721qBIiJN6kvsCBrrSqYYRMB0CexwoThT/CzdPlk9VydRF0YcHUmMWYH5CW40E3Hu/pGL1mgn5l3+9w4A3pIyu2gACvAQHslsD4k5rWcHMaUKmc+B8l+ZpfZu1fcuvJ5cCb6MOgGWJcDQ1X+Ww58FQTm21W+PqlT3AoEmhnr+EoMbCd+R+SwkrnfsQHmw3zyPNxbLG+VQvwiJOQSmI06VMOZzdTt45rw9PzVrDd9/FQTXr48EWn5sx38ofvfjbeqwb5h/zOO9wGrEQ+bjg4vlNfTIzgOuoK9WxDvjfG+mbV7Vy+U7Bsiwp7QMfhIgCBGXbhCMB+ok9ViADJjKlBscwCeImcT37YiMPq9ejnkb3tzWN75mtDSYRvutIeKXaXZJgSqfSsb6WtRLYPijA3ikEHNUzgg2bwFJ4UMhVL+SxqmJWWptSZ602WDLCQA//6DSzXKyokTFpPIvVu/YtCk8lDeuZkOrxO8ivWGtNP3x34IlrhK9P8+LQvgp3xGLZXuJ3b5wFY687KpFhGbCXz4kg43BpwtlcokxakSWUUdzJG8g5tmV91kdU+PqqXsfIUr
- FOogSSL3
- pHax6jo3h1xkdS1dgoqWrdmYFqHoTEHpAMw8cz9HQTb7aEljjsbscdwSze/1lbKUjDeLf1e0p7/Ke0Af9VwCKVFULf9lCdNAZ4rNw5WGAKrM461D1kizqN7t4YPW5rOZ1cnxLmWrL2+uUDdczrLHkp78s3gA7lLsQC1UQJWaq23Uxw4TgHrB4y5Cmir/G7bQpByVdBYeH9KoFvUYXq+wAvYyaK002Llnd7JGMza0rI4wdM7VrhVGgb7bSBsY6mT3WpXPXkBPV7n369QJi4Nd52BLaq3QOJDiHhCxK0A78rvxMNlDGuevw/0rErGuMX7sJVNsSIQFcWss1RCLj64DVXmMNJ81S9Ts1CwRZmtIqYuGmKBP0L9Zg2Vc73g==
+X-Rspamd-Queue-Id: AF146C0002
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1790039490-601585
+X-HE-Meta: U2FsdGVkX1+iCn96QTrAIDmlJGuqg/rxm1LMD5hmcFKhLTP6HNWmd9qKf5EYsQnzwCjJ59wgFRaASjZHpFWkzJAh5xoEUr69vVrLurQ6gpkc3J5EmTfRfwv5uV8XVSv+ElWmtyrhOElVwRNmltZRRIKgGQS6LQIgnDPQGvNqYUEaZg3a31tT0ej25wEATIlSNI8Pz1x4Wtji1NmTRR79lP0jWaRMTWJ1uBwTfbd304SlSkJSbXTC6geEv9ZRj703He37HCqqtaesit+XuBogOADsbbw/nnsc7lH6ZzZh+L8yZ34qhIt9IMwOrF743/zbloBP8EtVK/pZEsenTmpiSpA4fqJhkEdiOiz0sRpjE/Afaker2qnGuOz54C+gosuqztCEpa/ZRS+EzoHB4muSI5juO3BuXWurrOCBttYi41pQoFT6qo96fLCtuAkGX6Tvk4LJG7/dSNNKyyGcWCLxjs0Q7G5pBrOJRXZV89kyp/peWWb0n85LA9i8odpXc+aEjYvI/yPI7noQ+ZgHi1qJ8rrQ08+z/xZloYnzfczW2wgSK2V0h96hzpwHvp0R1p3XbaNoFBILzjnNiL9R3jYktiiVbGficgRkzTippaBYeIToDZA4JcU9VQU4mk/ogpiL7LJQAh8zmhisHKff/vd9IH1pdWWGam1BbA9LYAX7FxowePDG6288fdXoSa2abPeTtRz7BzjZ74IfZvLQ0UbmXcVTHaByR0Aw4sZuGoBaUJVSiXADbWsCcykroDcn3P67urLg4HS5IMjZvqU7L3516oMwZozUzbop1iTUOyAAczKh4UOFJTzA1oqwzBa24C9fBN2EjR5WM2G7D9qV+Da0C/c5GqOIthcHpXD/XP5EeQfyYHxg5NG5UkVwLVLQ4u8Cv//BC9u8OhdZ7OCZ46rcHHtaMOWAoPFjgwYMXZAMvhCPsbYEBdrBwJXMSDVzevqw+Jr+SC3lvda3AgjyRVW
+ yvCzMo3e
+ 1irWXPbZLKJjx2nFhJCxsd8Kg6Hn4Np5dYR7fcfSii58Q39REJlQnRuj8BwHgqBWoENShfJRZxXS6WdV1eScpY/IQD4Dwdv7Ud1zclnWwJ0ZGrQm/Km4BSr6ltQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,18 +117,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 07:58:38PM -0400, Zi Yan wrote:
-> On 21 Sep 2026, at 12:38, Gregory Price wrote:
+On 9/21/2026 5:05 PM, Jan Kara wrote:
+> On Thu 17-09-26 20:03:57, Zhang Yi wrote:
+>> Sorry, the previous diff format was incorrect, reposting it.
+>>
+>> diff --git a/mm/truncate.c b/mm/truncate.c
+>> index 23c90f00b530..b5e5bdf5f9ef 100644
+>> --- a/mm/truncate.c
+>> +++ b/mm/truncate.c
+>> @@ -279,51 +279,46 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+>>  			*pstart = round_up(pos + offset,
+>>  					   min_nrbytes) >> PAGE_SHIFT;
+>>
+>> -		if (offset + length == size) {
+>> -			end = aligned_end;
+>> +		end = aligned_end;
+>> +		if (offset + length == size)
+>>  			goto out;
+>> -		}
+>> -
+>> -		split_at2 = folio_page(folio,
+>> -				PAGE_ALIGN_DOWN(offset + length) / PAGE_SIZE);
+>> -		folio2 = page_folio(split_at2);
+>>
+>>  		/*
+>> -		 * folio2 may become stale due to a concurrent split or
+>> -		 * freeing, so validate it before and after taking its lock.
+>> -		 * If it fails, we can't get an accurate end position and fall
+>> -		 * back to folio->index, which may leave sub-folios split off
+>> -		 * at the offset edge in the page cache this round.
+>> +		 * After the first split at the start edge, the folio at the
+>> +		 * end edge may be freed and reused concurrently.
+>> +		 * __filemap_get_folio() looks up the straddler at
+>> +		 * aligned_end and returns it locked and ref'd with the
+>> +		 * mapping validated.
+>>  		 */
+>> -		end = folio->index;
+>> -		if (!folio_try_get(folio2))
+>> +		folio2 = __filemap_get_folio(folio->mapping, aligned_end,
+>> +					     FGP_LOCK | FGP_NOWAIT, 0);
+>> +		if (IS_ERR(folio2)) {
+>> +			/*
+>> +			 * No sub-folio straddles the boundary when aligned_end
+>> +			 * is empty so discarding up to it is safe.  Otherwise
+>> +			 * the straddler is locked by someone else and we
+>> +			 * cannot obtain a reliable end position, so we fall
+>> +			 * back to folio->index.  This is safe but may leave
+>> +			 * pages split off at the offset edge lingering in the
+>> +			 * page cache this round.
+>> +			 */
+>> +			if (PTR_ERR(folio2) != -ENOENT)
+>> +				end = folio->index;
+>>  			goto out;
+>> -
+>> -		if (folio2->mapping != folio->mapping ||
+>> -		    !folio_test_large(folio2))
+>> -			goto out_put;
+>> -
+>> -		if (!folio_trylock(folio2))
+>> -			goto out_put;
+>> -
+>> -		if (page_folio(split_at2) != folio2) {
+>> -			folio_unlock(folio2);
+>> -			goto out_put;
+>> -		}
+>> -		if (!folio_test_large(folio2)) {
+>> -			end = aligned_end;
+>> -			folio_unlock(folio2);
+>> -			goto out_put;
+>>  		}
+>>
+>> -		/* Split failed: back off to the head of the straddler */
+>> +		/* Already at the minimum order, nothing to split */
+>> +		if (folio_order(folio2) == min_order)
+>> +			goto out_put;
+>> +
+>> +		split_at2 = folio_page(folio2, (aligned_end - folio2->index));
+>> +
+>> +		/* Split failed, keep the straddler intact */
+>>  		if (folio_split_or_unmap(folio2, split_at2, min_order))
+>>  			end = folio2->index;
+>> -		else
+>> -			end = aligned_end;
+>>
+>> -		folio_unlock(folio2);
+>>  out_put:
+>> +		folio_unlock(folio2);
+>>  		folio_put(folio2);
+>>  out:
+>>  		if (pend)
 > 
-> One more question. What prevents one adding
-> build_node_zonelists(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK)?
-> Based on your above mapping, each of ZONELIST_* has its own candidate.
+> FWIW this looks much more understandable to me. And since this is a
+> preexisting issue I agree this should be a separate patch.
 > 
+> 								Honza
 
-Other than build_zonelist and build_node_zonelist being static functions
-only reachable by page_alloc.c?
+Thank you for confirming. I will send out the next iteration after
+testing.
 
-Nothing presently.  It could possibly be asserted.
+Thanks,
+Yi.
 
-~Gregory
 
