@@ -4,102 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FFEDC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 21:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96989C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 22:00:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7E736B0088; Tue, 22 Sep 2026 17:47:43 -0400 (EDT)
+	id 47E3D6B0088; Tue, 22 Sep 2026 18:00:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2F876B008A; Tue, 22 Sep 2026 17:47:43 -0400 (EDT)
+	id 455FA6B008A; Tue, 22 Sep 2026 18:00:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B1D766B008C; Tue, 22 Sep 2026 17:47:43 -0400 (EDT)
+	id 36B5F6B008C; Tue, 22 Sep 2026 18:00:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 85FE56B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:47:43 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B4D11C31BC
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:47:43 +0000 (UTC)
-X-FDA: 85242735606.04.A8DE503
-Received: from mta1.migadu.com (out-106.mta1.migadu.com [95.215.58.106])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DD7761C0004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:47:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mvujhRK3;
-	spf=pass (imf20.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D6876B0088
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 18:00:04 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87B13A0658
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:00:03 +0000 (UTC)
+X-FDA: 85242766686.07.B73E3B5
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 100751C000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:00:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YKF9oE+N;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790113661;
+	s=arc-20220608; t=1790114401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZseRs3VM5qy6NfSEI25R9aNsCqbQNgrWnR+mKGskJD4=;
-	b=fHmQ5qItGuu7Vh0kjIrVuMAWu8QcL7EKnHR9UJ9tVPAWU8s5oBrn2iDQnD++Mu99zXy+sd
-	cSKJM4tUvGhdh/jbgc9cqzo2jXF+hqOJGz43zSNW08w8D8fBvRZ09Pgk+2VIV7mlDcihUG
-	a8fkfKCNpjpjG7cuRr1m14hwRZsDNwg=
+	bh=mM0cgRvC/5kn7Lvpmed1628Qv8jGLnHSmTJkgn9H91Q=;
+	b=iM24aUcpLqrM6idDpkN9nm4TCUv8GIfvoEVlzxBgu+ZH7b7P6M5HgbXu2jp4QXkbaXffVY
+	EL33PcyHxAgZlv/jRik4oXnwVjfpBxiw1r+U9rzbrRgcfaKINIYkhUA7adw4sEYRavhgwS
+	Oj7k4a0onTzhPyHuSkrmNx6mQ5m3C8Q=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mvujhRK3;
-	spf=pass (imf20.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.106 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YKF9oE+N;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790113661;
-	b=klOb4aehvi4rKHRPki9wwQlG5xl2TetFBfZe9YzTUChoi8i0UO/FYV0A1hmCGQBX5jOUKt
-	ceM3rpcGFHVkSjh9KHexs12eV6xip8E+nhbWmBru1OwdqrtAX59peyL9pTbJjsURmJ8OYf
-	ADxkhh0PbO2cXmYX/0c08KkO1yH/Oy4=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=j978S3kujL0t2IzwtfW4gW4OFjeQsDQ4dfVPJMp9cw0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790113658; v=1; x=1790718458;
- b=mvujhRK3HPNWh5jZ1O6mWbwgc5ofxed21gj77WTukikBzLL5PMkjFm9ZNtoKhhu+ze6BQWY9
- S62VL/gheKaPl6qzTKvUmIpaGRvnG4+/Yk5aA9180TL2mN1+7ZAiTJkXbJDW9pMpJjimd9oazka
- 4AbRgZbCIhZWTlIX8GqCS3dA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id dcd07712fee43c99;
-	Tue, 22 Sep 2026 21:47:38 +0000
-X-Mizu-Trace-ID: dcd07712fee43c99
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <4e893390-ac53-4c50-b2b4-50d415ff3d1f@linux.dev>
-Date: Tue, 22 Sep 2026 14:47:31 -0700
+	t=1790114401;
+	b=VVePzwOIRUdijnjQscnKSxMy7ECyp56au+2ue8ZgYHFFMKxm3XCuWyYCDHqX9DwfBQ5uzk
+	LjkIbw7amb787FxgQ6pPDAcmYE42y1xPLHMDho0uWODcGqdHs7BEx3dHNxFs/7HWVcJTDe
+	3gGbU6UYhf79+T55dTdrmNWXqdTSGxA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790114400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mM0cgRvC/5kn7Lvpmed1628Qv8jGLnHSmTJkgn9H91Q=;
+	b=YKF9oE+NNo6ecaaBAmYbAjEQp3GSOj8dnSarYpuwavx+gSBlsJFatWAfOe/kmPTpeT4kSL
+	8Nf0adB8rWACDxqurknAFKpvBUV/av1b/JE0madoigBIbgKTuRdi+317Uersiluy/pj0jz
+	4DIar7rCG1gJmfbzVwARL+HZKDrdIhs=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-652-L_mS7JZ6OPq1HXVvABbIhA-1; Tue, 22 Sep 2026 17:59:59 -0400
+X-MC-Unique: L_mS7JZ6OPq1HXVvABbIhA-1
+X-Mimecast-MFC-AGG-ID: L_mS7JZ6OPq1HXVvABbIhA_1790114397
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-3a3395e2d7cso1016301fa.2
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:59:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790114397; x=1790719197;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mM0cgRvC/5kn7Lvpmed1628Qv8jGLnHSmTJkgn9H91Q=;
+        b=V43hXTw6vsgfgEEm5uTIvJLAHF4IGfSY2Ch3yQjOBf4xG4wEz4gb6CxMzvZyt15AYv
+         7bxftzKQxDB6fwXnkXjNSlmFQsu7QjPPOYFwsv0XXo/FbU12Wh+AZwvYMxNP6scyW1ce
+         oi390JMFYn7ziFHezStxre4xNeRclDXo4UwgtVTh1bsc3dNjT/Sby9MIyC54VBI93aqV
+         YPfeyzAg53cHcNFedwryl8+Bt/znZHtngzOMrZ9ZmfhHqmSNaauzyCnBxm7irDYAohYk
+         GwYwL1JPnBOkfJ/HVavA80LrY/0lIBPfC1mb04exgW4Mskmfe3G33M+OFHPgBOw+B5Mc
+         6bzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwRZ/m/lbcMeZIRrtBdknnb09HJrVFS88r/0o9WtFCWZecDw59MaB7ZJ8y/CDZ8s7zB/FBwtkg4Jg==@kvack.org
+X-Gm-Message-State: AFuF++mC6o2dTyDZ0oXhNTO8RXm06XVzXum0mMiuo2QJDcadeVutGgYP
+	ST6yPWSjJ3rMBx4SHYxyvkG4QVYukuOIl8yTVAE1Qhg/ZT2htfxu5ZT859GrA0qdTBneUlrXcQl
+	G75hMIMwcYv2k2eMNIQAObWN4y6WlSUjT/PFibme2820TRNQc+4AGMZ6f3Rz1XguLxzPijjhu+c
+	aUVhWAfyAzi0Qmc9Z+BjuaA/YsXHQ=
+X-Gm-Gg: AYBFou0qZDym7gDT924QfvpVRkXrnxh02+Pgg3T2wQz9h+r+7xsF3mLkLV3vumPQE54
+	XPDJ1iDat/eQwOrIhkx+TTuwEBhcBlXdEIVV4NI/iSLKt9ULaQq9tayfLCoP5OCfLD385/PJeoh
+	iz78MEMf4asNmQZgK/yQhsGgJQACVlpF0Gsd1Xk1aZe7AnNszbVu3PWIFmNZsO+orVz/dp0No=
+X-Received: by 2002:a05:651c:a345:b0:3a5:afec:9cf9 with SMTP id 38308e7fff4ca-3a630636639mr1373771fa.7.1790114397209;
+        Tue, 22 Sep 2026 14:59:57 -0700 (PDT)
+X-Received: by 2002:a05:651c:a345:b0:3a5:afec:9cf9 with SMTP id
+ 38308e7fff4ca-3a630636639mr1373541fa.7.1790114396764; Tue, 22 Sep 2026
+ 14:59:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
- Update
-To: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <079e343d-c6a6-4430-b900-25918197bfad@linux.dev>
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <079e343d-c6a6-4430-b900-25918197bfad@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <18102ABA-0D8E-4DA0-AC30-544E34E445D5@nvidia.com>
+ <20260609172719.803537-1-usama.arif@linux.dev> <CAA1CXcA84BtQZxOpE0sWgb2ed6y3m0NLKkWD+5MfWS9eF5dqTQ@mail.gmail.com>
+ <a464c20c-8b41-4264-b560-497ed91cbaaa@kernel.org> <CAA1CXcCsqkV2PrLicY5BnOMp+iJWJxsPn60g_3WXugWQqOFYpg@mail.gmail.com>
+ <0b268070-95d2-45bd-aea3-56cefe01dc8c@kernel.org> <CAA1CXcCp0z0kw9pQtj55qNGOBJOpfDsrf1GJ+EhGZCfA+dhbKQ@mail.gmail.com>
+ <004bdc87-8c8e-44f8-93c3-1ae0a47051a9@kernel.org> <CAA1CXcA50Lfeo+JkhhRc5b8TNzBETj8+z6iMVuqwUSJhyo2G8w@mail.gmail.com>
+ <1da189ad-a7f6-42fa-a1ff-a26cc5e5c563@kernel.org> <16f9ea47-99c0-4483-a12f-190047c1411f@kernel.org>
+In-Reply-To: <16f9ea47-99c0-4483-a12f-190047c1411f@kernel.org>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 22 Sep 2026 15:59:30 -0600
+X-Gm-Features: AclHuK9WwgmixPJvrEj0pD6SO3OEeVNSFswDyCTO-YEmp1_v-PaHn2OEu8s3wfg
+Message-ID: <CAA1CXcA1iREtxkZzwc8ib5h96DQzX627W3-gnRiafdjRG7BKrw@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 2/3] mm/migrate.c: Prevent folio splitting
+ from interacting with KSM
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, Zi Yan <ziy@nvidia.com>, ljs@kernel.org, 
+	xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	usamaarif642@gmail.com, yuzhao@google.com, aarcange@redhat.com, 
+	akpm@linux-foundation.org, chengming.zhou@linux.dev, 
+	baolin.wang@linux.alibaba.com, liam@infradead.org, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, "Nico Pache (Red Hat)" <nico.pache@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Ubc7tMqoM1S9ZK9tteVWXSW6l8yn4y_Q4CXFsFfFK44_1790114397
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DD7761C0004
+X-Rspamd-Queue-Id: 100751C000B
 X-Rspam-User: 
-X-Stat-Signature: b78rbha1qzcgu1r3wwykpxzx6i7ygpy9
-X-HE-Tag: 1790113660-963231
-X-HE-Meta: U2FsdGVkX1/7SS0tbak/91gueko61+/lCfFDIkZto14lcYqmTyfCyOSk4M4Z93f1jNOStKG2TBT8bxqJpazwO6RfJhHjvB8e4D92zuC6H7vW2zP6ygopHxPbZrm/AgfkJ97uvwCJG77+9sTs5yBx64hWP1M3C2o26YDQnY1IjVyZu0tzh21CIYTbizcG0FydXV+eszow/WaAbaUkfsQVm7nT9ZsszQjzQ2aDE9l59cSl4lSW177B4XagHvpxo10aciAHNzqQAx3B33BAo+AXnuGRP5/9Lxq1qb9zZMlkcXcN5EUzOkumw7wwgA/CQeRu+I379z6YWKinzlQIlc8kdKmxSkbNCAA+yN7KJeSJcLLLMYvLVFESNIpeH3Y7vO6Np8KlcLERpFOTjEoHsLSgNv02QA+DqNJODenrl86EdplIS7T+QOprywk6E6yPSxajhjDPs1nX4kP3F6LiGvkcgqZskauAawS8TTH93JIBClZ3TkKbIVEDJFSG/3VcoW66MVvFKHBRNJuDITUibWfax2UsF+nnHdqFEG/nZmP6YkudV4yluIwW45UwKbY8j27/Ingl844hb+CMplevoCW06k5BL1n5nKSH0x7T09hwS4BR4bwGOOoeTEx2+kwUGgkTKxerKSQUyvbpla3qH+aejVn1aMNFqxGWFV7lixkI5adKXvtMc3OxoO8fczq7D5mbFQA2PnbDupNc9bN3bAE/J+eGvABH3Zqgh/qW3M7xT7muqfj+PyPdxSa6AxOvVLVIpD8QQF53JD7hCQS56lhmf9f7+JY8CJPeBkHNJqnFk+78CzQbrCUWXmu997aIy0gNTaV1m/b6Qf3mDn02x/nJ2yX/8QWQudzE+lZdWYi9aFhYuo1iKYfoR7qZTfXJi+DEXMEVSMX0suN5ihLfR8VMKUmSx5A6955nybYa3aO47OUV/65kvLASH+z0BDp9N3mQV0blktB5c9SSGbivrOr
- +IzcOaP7
- uwsJmA7/33ipjcZ2sAJXS/F17qJSsc2Phkh0pW9lPGmg4cvxeMMI+YUbbNBsvfuYKW83UQB4aTl2KKfY2AmvU9NhkTwh9PRuM00EATyTMwEUgmEwYfCN7vXnaVZeYpWoTzHb2EoxVJDighedz4SyyWjB62K2n5Row7TtuxZj1URwx9qWTlJAHaVXUT11opZpa2fvaRBE7ft36wAvH6EAyriPSikApH6laSOTW59fV/G5/iBx6AqffQckEHqlbulBV0otTUPev16tRWUBtF96xCldk8mtAfFTvXcVn2dgMLtPulTMLa+pEmLXJIJZPLcwuBIAUd3hPxwCMGL5TPXhJYGrZ/8rSJqNg/m94s28iQKz2pXPE2qg8WqhBASITDyZ7GwrmzX56OcDLu+WRXMBHeaqGygCFaV9x9tv0
+X-Stat-Signature: 5zdgthsui5s9tkiqzjc7aiorb8un445g
+X-HE-Tag: 1790114400-698151
+X-HE-Meta: U2FsdGVkX1/PoCSpqgBjDcYaPq4APzUiCZfUVtAeDLhwHzl1jnm6c2bWCu7VTKswAZ1imXLBk49sBNB6p3SVCJ1cnu8Kk+axizbxuR3oKcuPdCZOIm5fjrnQKTD5mGu4u82dejiHIQzCv8zvfoS7uFaNdVWE6J+wWULykyOd4iSSa9SKVNMvTjnk1Z7owNKHNo/vdG++KwI2cECDdih35O6VsAO35morOgcUG+F1JCKN8JUW4ZDMqb5VE3ODeG4JKt4Fa3Ayzx8o5eJht0lFQfWtvoGFin4jXPKQi95K4LcT1qL50HkpN3GvqCvIS6NG9HFPzOnqvZIe3bvBa/Ob+s+TC+8s5UiD2Xx+zgu5fv/jFo++NWK8/PEBwdfixPFjT8bvQIGKSRor3+G7HJ97bk7r8s5OQLgKSUK6E4cJfrCiLY6vyMBHNJpdljgnxcdqhE8gcr/v4fGu22hjMkN5IyGNX0ci2kMuoSfeWjBD8lZQ7aG8UoB78FwMe3hbXyeCUd3nQtaPIJySfccDBCYD/cGIihjc9PGqOOH/EHH+twr7R5i2o+LbXk7asint+VpCLX8Ou6oYA6zDyoKLG6L1uUIM5KFqEUFUk2mXIf/VKNn4Obb9AepfTn+RuBWz4iHM4wGbQGtwKZwrQ1ARkWNSkZvYXvJGQhB5U7IN/5u28k0xabIVqSmpgRLqijSAgOipGwnhhjZ1UsHn6cfdjT7GwV/B8ly/WN/gO1Gi4NeiLPB/syHjmQSqZ8e21+ewVlL/gZ7W1sY9/SGyOYyoq14o6Q31S5d9St0KavkYCyPKMBRxmqYJVoIBmFYOBQDUDDzXUv5GiKlDLO+lbmZE5+ztQslu3pWrK1y37EZAmobYvxmtEnKfYo1wsLatktFsU0gn9Mhuv6GSV8jyJLm2KTsQcItL2SZ4UIESupYFHPbtxQB31QAu6PrS7FCMJAW6V+MwjDB4qAXezNvFiDBLrw/
+ tdqP3l7k
+ AX5Hb5kyKfa1m5kvCBU6Fa4oK01sbd442Alslvkl0Fgz/EXAYrdH1BA9KsgBAa1bqT1UC+LYtu6O+33E2e8PX0PuZUnarEWihN2b5iCJ5HhwMoKFpTp4kvBFHIG6OkNk44W8BBEy9+B54Y87VgPKkvLlLFQehZXZSBYdH75sdhQSvC4rk1iqj2UsxUAwyYQdrRx9PUlPIwFMLqKNOuKfRWsFGgr5igPJoDgboiFpVjlAuyx8LWJJUc9gIlZeagnhhHG3A/M9UtjKDa2heGsUam5i6BbGlAwTQ+XnBsQw8Raoq6K0qjORY/tlTqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,248 +137,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2026/9/22 11:54, Zhu Yanjun 写道:
-> 在 2026/9/18 13:06, David Matlack 写道:
->> This series can be found on GitHub:
->>
->>    https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v9
->>
->> This series introduces support in the PCI core for Live Update, enabling
->> drivers to preserve PCI devices across a kexec-based kernel update
->> without interrupting the device. This functionality is critical for
->> minimizing downtime in environments where PCI devices (e.g., those
->> assigned to VMs via VFIO) must continue operating or maintain state
->> across a host kernel upgrade.
->>
->> Specifically, this series allows preserved PCI devices to perform
->> uninterrupted memory transactions (DMA) targeting system memory
->> (specifically, preserved memfds) across a Live Update. These devices can
->> be behind a bridge but must not be VFs. Support for P2P and VF
->> preservation will be addressed in future series.
->>
->> Series Overview
->> ---------------
->>
->> This series implements the following to support PCI device preservation
->> across Live Update:
->>
->>    1. Set up a File-Lifecycle-Bound (FLB) handler to track and preserve
->>       PCI-specific state (struct pci_ser) across Live Update using Kexec
->>       Handover (KHO).
->>
->>    2. Add APIs for drivers to register devices for preservation
->>       (outgoing) and for the PCI core to identify preserved devices
->>       during enumeration (incoming)
->>
->>    3. Automatically preserve all upstream bridges for any preserved
->>       endpoint. Use reference counting to ensure bridges remain 
->> preserved
->>       as long as any downstream device is preserved.
->>
->>    4. Guarantee that preserved devices retain the same RequesterID (bus,
->>       device, function) for the duration of their preservation by
->>       inheriting secondary bus numbers, subordinate bus numbers, and ARI
->>       Forwarding Enable on preserved bridges.
->>
->>    5. Guarantee that memory transactions to/from preserved devices are
->>       routed consistently by inheriting Access Control Services (ACS)
->>       flags across a Live Update, from the endpoint up to the root port.
->>
->>    6. Modify the PCI shutdown path to avoid disabling bus mastering on
->>       preserved devices, thereby allowing preserved devices to perform
->>       uninterrupted during kexec for Live Update.
->>
->>    7. Provide comprehensive documentation for the FLB API, device
->>       tracking mechanisms, and the division of responsibilities between
->>       the PCI core, drivers, and userspace.
->>
->> Merge Plan
->> ----------
->>
->> This series will be merged through liveupdate.git, matching the
->> agreed-upon tree in the MAINTAINERS entry for PCI LIVE UPDATE.
->>
->> Testing
->> -------
->>
->> This series was tested in conjunction with v5 of the VFIO PCI driver
->> series:
->>
->> https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
->>
->> The full set of patches used for testing can be found on GitHub.
->>
->> https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v9-with-vfio
->>
->> Testing was performed using the new VFIO selftests:
->>
->>    - vfio_pci_liveupdate_uapi_test
->>    - vfio_pci_liveupdate_kexec_test
+On Tue, Sep 15, 2026 at 1:52=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> With this vfio_pci_liveupdate_kexec_test based on this patchset v9, I 
-> have made tests in my local kvm. It worked as expected.
+> On 8/25/26 19:34, David Hildenbrand (Arm) wrote:
+> > On 8/5/26 18:27, Nico Pache wrote:
+> >> On Thu, Jul 30, 2026 at 2:34=E2=80=AFAM David Hildenbrand (Arm)
+> >> <david@kernel.org> wrote:
+> >>>
+> >>>
+> >>> Because KSM takes care of it?
+> >>
+> >> KSM only takes care of it in the case of 'use_zero_pages' being set.
+> >> If we stop KSM splits from reclaiming, we regain the intended sysctl
+> >> behavior; otherwise, KSM splits and reclaims indiscriminately. The
+> >> secondary effect is that if we don't have this toggle set, the split
+> >> would still reclaim these pages. KSM then has to process those pages
+> >> (despite them already being freed), wasting cycles.
+> >>
+> >> Your proposed solution works too, I just think its a more aggressive
+> >> approach (stop all VM_MERGEABLEs from split-reclaiming, not just those
+> >> that are currently being operated on by KSM).
+> >
+> > I think we should really just stop two mechanisms to compete entirely: =
+if A is
+> > active for a region, B is disabled.
+> >
+> > Not trying to follow "who split what" and operate based on that.
+> >
 >
-> Yanjun Zhu
+> I took another look and there is just no perfect solution.
+>
+>
+> Option A: don't let mechanisms interfere - if KSM is enabled, don't remap=
+ to the
+>           shared zeropage
+>
+> Positive: same KSM behavior even if some other mechanism decides to split=
+.
+> Negative: reclaim cannot free up these pages immediately (waits for KSM),=
+ and
+>           having the deferred shrinker split to then not reclaim any actu=
+al
+>           memory is stupid.
+>
+> Given that the second KSM run would already deduplicate these pages, I am=
+ not
+> sure how much reclaim actually matters.
+>
+> But taming the deferred shrinker is a bit complicated (no VMA available).=
+ In
+> configurations where the deferred shrinker will never trigger a split tha=
+t's not
+> a problem, but with lower max_ptes_none it would be possible to trigger.
+>
+>
+> Option B: don't let KSM splits remap to the shared zeropage
+>
+> Positive: Fix isolated to the actual problematic part we observed.
+> Negative: Different KSM behavior depending on who split a THP first.
+>
+>
+> Assume KSM scanned the range first, and then the deferred shrinker split =
+many
+> THP in that area and creates shared zeropage. On the next KSM run, we'd h=
+ave a
+> very similar behavior. If KSM runs first, you either get zeropages or
+> deduplication to a zero-filled page.
+>
+>
+> I would not go down a path where we would let KSM skip THPs entirely.
+>
+> Maybe one could teach KSM about "the deferred shrinker is active, don't s=
+plit a
+> THP if we are to deduplciate the shared zeropage"? But then, whether the
+> deferred shrinker will actually split depends on the max_ptes_non toggle.
+>
+>
+> Gahhh so complicated.
 
-The test result with vfio_pci_liveupdate_kexec_test is as below.
+haha very much so!
+
+This might be the correct solution below, similar to your logic above....
+
+static void cmp_and_merge_page(struct page *page, struct ksm_rmap_item
+*rmap_item)
+{
+...
+checksum =3D calc_checksum(
+              if (rmap_item->oldchecksum !=3D checksum)
+                  rmap_item->oldchecksum =3D checksum;
+                  return;
+              }
++               if (folio_test_large(folio) && split_underused_thp &&
++                   checksum =3D=3D zero_checksum &&
++                   pages_identical(page, ZERO_PAGE(0)))
++                       return;
++
+
+Don't let KSM split a THP if it's a zero page (unless the underused
+shrinker is inactive)
+
+We also do patch 3 of this series, which disables zero-page remapping
+if the underused shrinker is disabled.
+
+With this I believe all edge cases and feature interactions are now exclusi=
+ve.
+
+I will retest. Let me know what you think, and if you agree, I can post it.
+
+Thanks for taking the time to look back at this :) Sorry I've been a
+bit MIA too, I've been focused on some downstream issues. I've been
+meaning to review/reply to the high volume of khugepaged patches
+recently.
+
+-- Nico
 
 
-1.
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/iommu/iommufd/iommufd.ko
-insmod /lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/vfio.ko
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/vfio_iommu_type1.ko
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/pci/vfio-pci-core.ko
-insmod /lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/pci/vfio-pci.ko
-+ echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
-+ echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
-Preserving device in session
-Preserving memfd of size 0x40100000 in session
-# [STAGE 1] Forking persistent child to hold sessions...
-# [STAGE 1] Child PID: 1214. Resources are pinned.
-# [STAGE 1] You may now perform kexec reboot.
-
-2. kexec reboot
-
-3.
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/iommu/iommufd/iommufd.ko
-insmod /lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/vfio.ko
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/vfio_iommu_type1.ko
-insmod 
-/lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/pci/vfio-pci-core.ko
-insmod /lib/modules/7.3.0-rc1-dmabuf+/kernel/drivers/vfio/pci/vfio-pci.ko
-+ echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
-+ echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
-Retrieving memfd from LUO
-Finishing the session before retrieving the device (should fail)
-Retrieving the device FD from LUO
-Finishing the session before binding to iommufd (should fail)
-Binding the device to an iommufd and setting it up
-Finishing the session
-
-Yanjun Zhu
 
 >
->>
->> Both tests were run in a QEMU-based VM environment (using a single
->> virtio-net PCIe device connected to a root port to exercise bridge
->> support) and on bare metal using an Intel EMR server with 8x Intel DSA
->> PCIe devices and 1x NVMe device.
->>
->> Future Work
->> -----------
->>
->> Following this series, we expect to make further improvements to the PCI
->> core support for Live Update:
->>
->>    - Allow P2P across Live Update by avoiding resizing or moving
->>      preserved device BARs and preserving all upstream bridge windows.
->>
->>    - Support preserving Virtual Functions by preserving SR-IOV
->>      configuration on PFs and enumerating VFs after Live Update.
->>
->> Changelog
->> ---------
->>
->> v9:
->>   - Simplify pci_liveupdate_preserve_bus_numbers() to always return true
->>     if a device was preserved and drop pci_liveupdate_scan_bridge_end()
->>     (Bjorn)
->>   - Add pci_liveupdate_refuse_bus_numbers() to determine when it is safe
->>     for the PCI core to assign bus numbers to unconfigured bridges. This
->>     required moving "Auto-preserve upstream bridges across Live Update"
->>     before "Preserve bus numbers during Live Update" (Bjorn)
->>   - Add "PCI: Save and restore the ACS Control register" so that the ACS
->>     Control register is handled by the normal save/restore path (Bjorn)
->>   - Rename struct pci_liveupdate::was_preserved to was_incoming, to
->>     disambiguate incoming from outgoing preservation (me)
->>   - Log unfinished preserved devices from the incoming FLB rather than
->>     by walking struct pci_dev (Sashiko)
->>   - Document that state handed over by the previous kernel is trusted,
->>     and panic in pci_flb_retrieve() where failures are detected rather
->>     than unwinding into a caller that panics anyway (Sashiko)
->>   - Fall back to programming ACS from scratch when a preserved device 
->> has
->>     no ACS save buffer, since there is nowhere to record the adopted
->>     controls and they would be lost by the first reset (Sashiko)
->>   - Drop Reviewed-by tags from "Preserve bus numbers during Live Update"
->>     and "Adopt ACS controls in incoming preserved devices", both of 
->> which
->>     changed materially since v8
->>   - Extend commit messages and kernel-doc comments to make the FLB code
->>     flow more clear (Bjorn)
->>   - Address various spelling, formatting, and stylistic issues (Bjorn)
->>
->> v8: 
->> https://lore.kernel.org/linux-pci/20260728221007.2098560-1-dmatlack@google.com/
->> v7: 
->> https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
->> v6: 
->> https://lore.kernel.org/linux-pci/20260522202410.3104264-1-dmatlack@google.com/
->> v5: 
->> https://lore.kernel.org/linux-pci/20260512184846.119396-1-dmatlack@google.com/
->> v4: 
->> https://lore.kernel.org/linux-pci/20260423212316.3431746-1-dmatlack@google.com/
->> v3: 
->> https://lore.kernel.org/kvm/20260323235817.1960573-1-dmatlack@google.com/
->> v2: 
->> https://lore.kernel.org/kvm/20260129212510.967611-1-dmatlack@google.com/
->> v1: 
->> https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
->> rfc: 
->> https://lore.kernel.org/kvm/20251018000713.677779-1-vipinsh@google.com/
->>
->>
->> David Matlack (13):
->>    PCI: liveupdate: Set up FLB handler for the PCI core
->>    PCI: liveupdate: Track outgoing preserved PCI devices
->>    PCI: liveupdate: Track incoming preserved PCI devices
->>    PCI: liveupdate: Document driver binding responsibilities
->>    PCI: liveupdate: Auto-preserve upstream bridges across Live Update
->>    PCI: liveupdate: Preserve bus numbers during Live Update
->>    PCI: Refactor matching logic for pci_dev_acs_ops
->>    PCI: Save and restore the ACS Control register
->>    PCI: liveupdate: Adopt ACS controls in incoming preserved devices
->>    PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
->>    PCI: liveupdate: Freeze preservation status during shutdown
->>    PCI: liveupdate: Do not disable bus mastering on preserved devices
->>      during kexec
->>    Documentation: PCI: Add documentation for Live Update
->>
->>   Documentation/PCI/index.rst                   |    1 +
->>   Documentation/PCI/liveupdate.rst              |   35 +
->>   .../admin-guide/kernel-parameters.txt         |    7 +-
->>   Documentation/core-api/liveupdate.rst         |    5 +
->>   MAINTAINERS                                   |   15 +
->>   drivers/pci/Kconfig                           |   15 +
->>   drivers/pci/Makefile                          |    1 +
->>   drivers/pci/liveupdate.c                      | 1015 +++++++++++++++++
->>   drivers/pci/liveupdate.h                      |   62 +
->>   drivers/pci/pci-driver.c                      |    9 +-
->>   drivers/pci/pci.c                             |   79 +-
->>   drivers/pci/pci.h                             |    5 +
->>   drivers/pci/probe.c                           |   16 +-
->>   drivers/pci/quirks.c                          |   58 +-
->>   include/linux/kho/abi/pci.h                   |   66 ++
->>   include/linux/pci.h                           |    7 +
->>   include/linux/pci_liveupdate.h                |   72 ++
->>   17 files changed, 1429 insertions(+), 39 deletions(-)
->>   create mode 100644 Documentation/PCI/liveupdate.rst
->>   create mode 100644 drivers/pci/liveupdate.c
->>   create mode 100644 drivers/pci/liveupdate.h
->>   create mode 100644 include/linux/kho/abi/pci.h
->>   create mode 100644 include/linux/pci_liveupdate.h
->>
->>
->> base-commit: 945d61765894dda2f0344de50cb1ade2e51b66fd
+> --
+> Cheers,
 >
--- 
-Best Regards,
-Yanjun.Zhu
+> David
+>
 
 
