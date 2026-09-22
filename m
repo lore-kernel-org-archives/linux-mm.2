@@ -4,90 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D886C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CCEAC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:04:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA49F6B0098; Tue, 22 Sep 2026 07:59:12 -0400 (EDT)
+	id 5AD4C6B009E; Tue, 22 Sep 2026 08:04:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7B826B009F; Tue, 22 Sep 2026 07:59:12 -0400 (EDT)
+	id 585396B00A0; Tue, 22 Sep 2026 08:04:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB86F6B00A0; Tue, 22 Sep 2026 07:59:12 -0400 (EDT)
+	id 49BFB6B00A1; Tue, 22 Sep 2026 08:04:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BCEE76B0098
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:59:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59A08A5F8F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:59:12 +0000 (UTC)
-X-FDA: 85241252544.29.FA8D93F
+	by kanga.kvack.org (Postfix) with ESMTP id 2E23F6B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:04:54 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BA891140448
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:04:53 +0000 (UTC)
+X-FDA: 85241266866.24.17910A4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C9BC120004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:59:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XsS7whYV;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1E386140002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:04:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rdc88kZB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790078692;
+	b=PmzdgMD+jrIXSdVPICCxXUJmwdzCoR2XAkbIhkwi1hJ3oUlgYZITJ4scqOWQ8486UFO2eV
+	e7wsJB1fxpWP8Arhc5IpqEZSNWTvaXiVMzPYRsF77B+6IXRF+P9OpeTGXHIr/rLqjH+bcv
+	5N0ZYQOCao7hx1uXLp8FLc9/pbAvv00=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rdc88kZB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790078350;
+	s=arc-20220608; t=1790078692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HWV8VPdptiBeMeQOpQB0KZQcSjJ+YKNTLPJopvTQN40=;
-	b=yC2fozFIbIbq/hr1f+gzKeRTAmydBV3uwCf2hXZKIGBnuEabCZUJrhM//wAg2Y00sC8uQC
-	lKzaz0wFqiQ6MAUK1Y9/I/mWBQFXcIra6Y7ChjmlsBTR6xnJqAhpGSPz9CXfid36MzmACj
-	kYnnVegGF4SROjRWdjFMfkI8l/bvPoo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790078350;
-	b=Q0+kDS4GopwElAfxELEMYfWVJodYC+Kp0r0GI3jeO+sMyVwCnd3xHpZh6/s4GS4pWrxFh1
-	AZw3Gshb9H4YmMEpE18M8VKaRZhfNrffQo/l68+8BHT3Ru9PnUenTRHwQfILRQ34PJzHh+
-	OA/mB6X0yrCxCNuOFBYsBqss4ODY/FY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XsS7whYV;
-	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BPElUD1AN4csYiU8Npcvuz0fDrD5UVMx4TQaxZOIV1U=;
+	b=444zZOMPwKa9U6k54o1fFM3UcGIGPutRYjo6uoc78hYtCQFiFUEu14KJ/SFpy1DD04Wo9F
+	zQHJQhaVC0zIe0HUCcJli73AnbK/mbqP8wHphE/HKfmsMr5DDnyhFVL6vnM4jTP6gZi27e
+	nJbCdskUnwl5nyx/sqUo/GSNjL1OnbE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B5EF601F7;
-	Tue, 22 Sep 2026 11:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 113A61F000FF;
-	Tue, 22 Sep 2026 11:59:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 977CC60E16;
+	Tue, 22 Sep 2026 12:04:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4611F000FF;
+	Tue, 22 Sep 2026 12:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790078350;
-	bh=HWV8VPdptiBeMeQOpQB0KZQcSjJ+YKNTLPJopvTQN40=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=XsS7whYVEozZ3YLFpFFcGaoNfReDX1brkr/7JIBgcT0QIQ8ij5zLiLdifdCqZWgx9
-	 +fRa5XDq62q/SW15wAwOBYAjGhvbHfwQywREwed5Sx+kvac45jdB2kxHFIR7JxfzXT
-	 tOa9/Y/Nw4WNsnLHtfUUyu4pWxuosDRINvT50+v+EqY6h4R1x5iSxvhJ0khYZYnzSU
-	 fLrkjRkXjLQrWAhCjcgzP2Xmv/NGzCLbCPLwPACHv1zadE8qCjp6ZbkT6HUOGe25JX
-	 b6PPS1W3jk3LcbB/DzpTTQCjW60A8LKchRQoqL0NaHEf92rwUVU+3ciJu8lwYibVn/
-	 VxqFN7FHjwnfQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  Baoquan He
- <baoquan.he@linux.dev>,  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,  Dave
- Young <ruirui.yang@linux.dev>,  linux-mm@kvack.org,
-  linux-s390@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] vmcore: convert mmap_vmcore_fault() to use folios
-In-Reply-To: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu> (Tal
-	Zussman's message of "Tue, 15 Sep 2026 19:42:15 -0400")
-References: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
-Date: Tue, 22 Sep 2026 13:59:06 +0200
-Message-ID: <2vxzh5jh5wfp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1790078691;
+	bh=BPElUD1AN4csYiU8Npcvuz0fDrD5UVMx4TQaxZOIV1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Rdc88kZBDZlRiQhLJ8qJiemv599zvVzqdZ2VhpASPGaRkdknRUOSkv6mz6E61Ks4O
+	 KxsEAHjZZGhhtVnhXCVwGDpjMyTxzH24yq+3GOAEPNcKyxfyRdmSmZivfu3Ep1eA+G
+	 IzeqXLqIuXzUz5jiZPoPJOCuq2Z3sS9/In2em/s9nqEvIZ1AMnxUtg4YYDFU2C9B4F
+	 DXVupjUSLyTLJ5TeVr4Oh0sF2HGBVlhyYSGhN6QDBj+8Kd4AzAoXqrEOu2NOF10Xtr
+	 Uv4nY9OtDmyMIzLqNm3QMaw1qEqIbm0BMdn4aufc98759e7FYgW8Jt+tcdZBZbMnSZ
+	 92YRGV1NSCIEQ==
+Date: Tue, 22 Sep 2026 13:04:48 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH slab/for-next-fixes] mm/slab: do not wake up kswapd in
+ __kfree_rcu_sheaf()
+Message-ID: <arJuhiFk-XOg4Bew@thinkstation>
+References: <20260922-kfree-rcu-dont-wakeup-kswapd-v1-1-42d7e2636f9e@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922-kfree-rcu-dont-wakeup-kswapd-v1-1-42d7e2636f9e@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: itaj6rnkhr5d736h9c4ysgpnbkqbynz5
 X-Rspam-User: 
-X-Stat-Signature: j1srncpz63jwt1onawtixdyar1n7t5za
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C9BC120004
-X-HE-Tag: 1790078350-70343
-X-HE-Meta: U2FsdGVkX18U8iyHJkdF4Sv3kW+UGPjNx28yNmbhlsF2r0eD7//F2s09AgTetq2UzMcqx95G3mfkoun0JyY2Rd3e1DuBvefhAOyxqrq0uoIE2CQn6csDms0UDxnDlPp7/SySdSls6gChDSVMjFaOnE1GtuHIFSN5ncp+86GZN+UmC/V7wYaeMTFIpDC3baQEnzCNmmbB07vskvuznA7680gHqkXFLi9kyL2GBKp32FUOhZtjXafy8yM//hEdIRUukF0fyygUKeY8Q3iUqh71MFdlbWuJYjgbxx20pUSudllEnto1LmX4oRZFIcpyfDux9q3+gnNr7y4cmoJgzSwdVgFcpogmaUttCXDEiPVVDfamQmScSMzRxGM9OI2I0qDpUfkD5ekZMy1zIg1uMvgFcJ5E152g/G5TU6v5RbcqFkLy7GYSd51hTaawlv3N3HmV7YUVMKxZfpiZZUIBA55gKPoyfX96qhm40Jd+R8djUFnm7UQcCb6wAHzSG2MXuqFgPs86IawWsLI8DktOlmF3glxrUnxrUXsk2T9cPXxnepe7gDa7MRWjBY8KJ5tPAFV+z2CFBEu457woneGuam2dwrPslr9HM0SCx8GV3yeYoViJMIOaNjrFAuiVuN+s9SCrBAc8cR0u0ZShbY8OkyRr6313MAxhGz9jQTEjTMRWN3RUfdj8Y9wq7wk1NhjLz3IRpUa5jHM79tt/F0hwOifVMdlrWvCs3UqigyX1arRGM2kSgos6Arf3obsrGfP2ZihgQ4uYWXEKfTaYdlDCpiPT7+L8/zkt9F52n6XPG1GRwyyG7RkbzWTUjKy5/vFzu/422UeIlMXbFv2CLqw67zg522BoaJ7gJ36cu7K5zORKpSd/9VgEt80XlCWmXeA2qq77UdODs88LKTfL6JyC12UN3wEEAZsCZFDR1t7XxM9ztA5PxsDF/yYhKNP3C1dLqu+ATAYqTYjg2TnKEg1kCBa
- iTrbQRs/
- XTFRdEwhBhPveb5TtKqAZ7w1ZBBX4GJsjyfXqY5xURV/gZr58i+/VF3dCqYtBkJeznyeka83JcIHIeu73vwvWkdWGNRPuqy0aIdd4K0k0SflHHN38DjTlA2XGo4Ci1aNp584KfrVfR55BfrVmPKKtE7lMMw/VzMfugD4MU6mNGClGr4lCJhjNAHkPu3Qd/kcoLDKZtu0NUrEIptFfGBr7vlq0fR/K28j8OUYUP95QPsbAnYZrLyhhbzn8CSMNPp5KCuqcprh9W5+D3a+WCNXML3q9lGNSMkJQfDJa
+X-Rspamd-Queue-Id: 1E386140002
+X-HE-Tag: 1790078691-224329
+X-HE-Meta: U2FsdGVkX1+K+Wh4Y9eZYIBBpeuQwZxYRn7S2uVIDI4zcoeAnSHPrGXzBS0n9BAQLOiNnM0vnIHOEpOHtvtMuU8hgGTfw34m6gdYw2D3c8BSvYjk66bTRiukafWz7bfhQEtCsWnSVOx4EsSvzgOtobejcptv4+JJUuPfC0NLJNUbr0IeR7oVltmTrWbSjWam9iWYbLUEEzZdPRVvNzk3ploGWAbIR5Yi8PrbiJsZet4bmNqNsP/4rxahR3XzWBCHhSTN9M0jKi9WkAkjmFKZb9ii83FEePpJhC3MC/nZWR5WUiXaWiohFyed3HtsoYyJgb/Toj+02SFM/bglcLjepMrW9Ck9BhYMB/WbPODoZrnFjrfRR9z/zvdFHW5kLK6jYg/V6EjscLpMwr+Co11PZqVokh0mUuvtfbr7Z4NNa0L7l/LjAvioKqNSyZl55EbKzLqNTBrawOAuBIzGD0zVg9SiDyUxG2+Ua9MmitJP+x/kONSo21HNN1x5CWGyIfYID5RMJSyUMmReJgq+FshO5P+WK9vDD8Inr3lbg1TzMwDciT0X1dV/MfhvnbGTkSM62q5LLPjVwkVin4Uy95W3fw+DUnLktxCP1VSRfhULAges2CZN8/XigVF2GqHPIvxekYC7rJrkbfzdH9PVHh8zBdflGXflfAmqiuHDv2pPGxdlwX1kRKhl3CYcH/HQaNPaYnHJZwHNEwq6IOEJ90h8x5p1FU0HJp59tlbBJ6VulW/r7ZR9r7+AbjuYJGA/ZzCZGxBie5f0iXv64j/Sqn/VdHbXbfsXUEuuIuSZNtXaF7Ys6HeO9c64lmzmmNIyr1Ipcy6WyUneJM6wdhlDwbM5sen75avHyhL0FPqZ6cRRMcwzvp9L51Hc6tiFrudLu5SxROrYma9JtTvTU0O2nnc3NWC0my3OSjNbHotFXbHYuLGAm+X3NYM0utsX27SRqYm0kJBak6GUctPcd9Cvkpt
+ nmyqXHnp
+ T5JUR782keoKm6XWpzA6Q4xCuvHrhMZ8Fl3qBglKyTVH8C23tMzlzV5iEbDw9G9MLZt1ciO5EbTPTY5LMxPAzc8uU69j/eLndrCFxUd8G3Hy5sem0JitWHKjnPkyrsyHBH3OtdwGZnSQ+FXTaFLn9PANLxI0U6ZKPP6bTLECApBUl76XhC+Y0txwSDrtWsWb9XKSf1aYE5SqpD25+Lxya+Q33A3kf/efsrzpLu98iwN2zkFsgC/LGCloo7ORX1+3fH9PouCppnX0Y8dCNpoA0I2CJtg51KA2eqyPdeLDJnUkUMhxf/qIAqMKQqnHOJlkohcRv9T4jZnUdmzkCsD7N6yVA7ynpFWTboQX4dUgCosYq6iTPqA7Ugh8KfibMC+FgCqUa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,23 +94,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 15 2026, Tal Zussman wrote:
+On Tue, Sep 22, 2026 at 12:56:43PM +0100, Harry Yoo (Meta) wrote:
+[ ... ] 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://sashiko.dev/#/message/20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b%40kernel.org
 
-> Use a folio for the page cache page the s390 fault handler reads the
-> old kernel's memory into. This removes four compound_head() calls and
-> one of the last callers of find_or_create_page().
->
-> The vmcore mapping only has order-0 folios, so the logic is unchanged.
->
-> Compile tested for s390.
->
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
+Oh, the link to the message does not have inline sashiko review.
+Incorrect Closes: link.
 
-Acked-by: Pratyush Yadav <pratyush@kernel.org>
-
-[...]
+it should be
+Closes: https://sashiko.dev/#/patchset/20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b%40kernel.org
 
 -- 
-Regards,
-Pratyush Yadav
+Cheers,
+Harry / Hyeonggon
 
