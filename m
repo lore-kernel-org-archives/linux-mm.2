@@ -4,124 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DC3BC982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:23:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4247AC982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:29:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E70D16B009F; Tue, 22 Sep 2026 11:23:47 -0400 (EDT)
+	id 48F686B0095; Tue, 22 Sep 2026 11:29:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E21766B00A0; Tue, 22 Sep 2026 11:23:47 -0400 (EDT)
+	id 4673D6B009E; Tue, 22 Sep 2026 11:29:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D106B6B00A1; Tue, 22 Sep 2026 11:23:47 -0400 (EDT)
+	id 355BE6B00A0; Tue, 22 Sep 2026 11:29:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ABFF86B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:23:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DDE7A0557
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:23:47 +0000 (UTC)
-X-FDA: 85241768094.04.D548D0C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4336E180009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:23:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0KIDibg;
-	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 153F26B0095
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:29:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A80E71A0509
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:28:59 +0000 (UTC)
+X-FDA: 85241781198.16.636E823
+Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D6B9A4000C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:28:55 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S1vE3SWo;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790090625;
+	s=arc-20220608; t=1790090937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HSxYC9PBu6O3qFc8TB9GBt3gfPrtp72o3ge0jqAtRpI=;
-	b=s42+S/zI5mqrlW/ddWlg9CN8czFHMbnD19XKXqPaEqK/m65URpvzchvggiwTVoPKeyLhEY
-	BsR1rsF//K+ZqvT8kZ/x6lZ5QtpY8RSv7csHHe48m186lndgnDIbykbBT3P58bhZtp4pmX
-	lSNL1fhtYbAl9CZm+H24HJXPBYaT+xE=
+	bh=LYgOVFKFeoXu95gZThsTIlBrSd/v03U5JPUwbWE60eY=;
+	b=39nUsakGAYXGbnesmwAZE7yvzltGDysjNbmkulUMY8sCdcaYzP1IAjr5mYlItm13jq4U/Z
+	o4rgR8KprBhTjgNfDz+H0MCSA5I2hPRq8DgjI5WWx4ljNI7gZ6+jMfrvVgVJa1+1R+1qVa
+	jpkVcRJq7qh534+YUpihF5qfxDdmWVw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f0KIDibg;
-	spf=pass (imf24.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S1vE3SWo;
+	spf=pass (imf17.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.117 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790090625;
-	b=vF6dIXnfqie3cRJs4vnCygft6F8V7owLzmIySmfGMzNEq5CILJFE1daeTx6cEthE8GKvSu
-	PahunECsovZ5+BjNB6upZnnQSj1QibOyM0qmbLNqTS8hv0397ZMBzMjVM5k+fQdEqblQNT
-	RNOHsrZ59d4MCcCN/Lq0My3G0HPJx84=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EC6E4140C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:23:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A501F00899
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:23:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790090624;
-	bh=HSxYC9PBu6O3qFc8TB9GBt3gfPrtp72o3ge0jqAtRpI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=f0KIDibghpuCfT//z5YJBWxvFz2V4tCU0i0WBKMDTdWD3n5JHLjhSrXi7M+Bd6uwu
-	 SBIuxdzV+3PvsWQEaBXEy8KygyslWiTn8kWjWDXqKj+RXo9C2Y1LRLL1Satgc5EbFW
-	 db1vY9ShYPHMRn0Vj93U0YTgPQNAUGft8b+7dIiqSQmuzVu6zN1veFE6dDKOaenJ1A
-	 6EBYqwuvfhDpg9jM/74fZQO3Igiz3EIBGcOksIoBtD0qgD9zlt75DYlQK5XlWhH52q
-	 1+Y4YgLmeDGFvrzmwe9SUnziWvrJnNXc4M7qrT8oqlCbOyG3eTF/R9PeQpQB+R55A0
-	 ymDtoW6bFe+/w==
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-671563fb8beso4123783d50.3
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:23:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzIhQvVU6n2KT2Fhp4qqmZMSY4I1N3Q9iqW3UjqLfCeb+qnX04r/Wjqme/HxthFqLhx/tRhiG5otA==@kvack.org
-X-Gm-Message-State: AFuF++l73woxoXTdMNPN51An9sLyDi8Yadzko4+tyYF8K5tRd6CL4Ix7
-	gZ8TkScxdeEJplyzlGKxxUvpE34sQd+NrIU3LssHy+uvOotSsRvkirckLwtHyf2zYSc5RLamrgJ
-	b2kwJSJZTPpZ8oNhGkYTmBE26alxTgvdPPNbRPjcy2g==
-X-Received: by 2002:a05:690e:488d:10b0:671:2bb8:ceb0 with SMTP id
- 956f58d0204a3-672c54637fdmr881282d50.65.1790090623628; Tue, 22 Sep 2026
- 08:23:43 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
- <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
- <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
- <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
- <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
- <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
- <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
- <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
- <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com> <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
-In-Reply-To: <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 22 Sep 2026 05:23:31 -1000
-X-Gmail-Original-Message-ID: <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
-X-Gm-Features: AcwNN1UFfFWGyxcUua8pbkXO0R-XB3znLXKYfEROGrlAbT6An5bo9JO7s142iI4
-Message-ID: <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
+	t=1790090937;
+	b=VnIUWQwSEZRlMuIhCk905k1GQNezdgTZb2oPtPDMAhOIm20U8ITl4l1cCmxG7dHGz4uMIF
+	BPhYUPrTv4s4GepX74MOw8MM1HlRcwUVrL9Hvt5iiGBPsVU+l7NI68szTq0xf9huSE/o7v
+	26ZsCtpUjQOH4PAcbM/Eh+bpZwQ/1CE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yy9tOrtBWQOwfMGkz7znpOTF7ArUWzbkvnV86SHmbek=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790090932; v=1; x=1790695732;
+ b=S1vE3SWoaAoNMoHV1A2b0ZMVEpHw5mJcZXDPUnpFkWYTbXOWkw5ajVXr3cbf0Tf/6TaAQ6OC
+ s2GV7HIvXlLEYN87kDTlncbe1lm5swthJDBaMe12ayGCLEqS8IOD3AjGHAA2bOty63VUW+QdY0j
+ tCDH1VmhghHLUD8Nri7YS9A0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 6d3d1a28fd5fcdf1;
+	Tue, 22 Sep 2026 15:28:52 +0000
+X-Mizu-Trace-ID: 6d3d1a28fd5fcdf1
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 22 Sep 2026 23:28:45 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Chris Li <chrisl@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Barry Song <baohua@kernel.org>,
+	YoungJun Park <youngjun.park@lge.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
+	Wenchao Hao <haowenchao22@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Tejun Heo <tj@kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Kunwu Chan <kunwu.chan@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-doc@vger.kernel.org,
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>
 Subject: Re: Path forward for Virtualized Swap?
-To: Rik van Riel <riel@surriel.com>
-Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
-	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <arKerXANxjILrKNs@MiWiFi-R3L-srv>
+References: <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
+ <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
+ <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
+ <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
+ <aqgMCIOFi0dKx_6L@fedora>
+ <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
+ <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
+ <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
+ <arKRdaNEaKvFOtMg@linux.dev>
+ <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
+X-Stat-Signature: uq8hhd4g5g5t6wzikmpzzgjdcogxrnkz
+X-Rspamd-Queue-Id: D6B9A4000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4336E180009
-X-Stat-Signature: wuzm3j7ygukaamxg9dh54wtk7e3kdjrx
-X-HE-Tag: 1790090625-606704
-X-HE-Meta: U2FsdGVkX18E2X1rFVttMlzGMYJVHCZfAXEXRReI33oNBhYGqLYbli/N++I+74RWIj1zNscdLAenTU5gBOiFyQdR8bb8NbWwQhBKq1xMBehHRWpVL9Hgp4tR4/aZHF2rc/ktxsRPQtbz6kJ350vIuunvzZSen8wQ5Nu3QadYuwWsIRJGhXoMv9zBTb7Wk9LH46Bc23L/MIj/UGUbg80FMMIbELe1qq4IddKLBsdnpKHxM3ZfZIcdkQB2do7LimysdulcJYMoNYX0Hgcc3DaNkNq32HLKnD70tEfmaeSVUiedHM8y+35jYGnIvGNLfI4pKwKy2AZDojYT6y5NucfGiyPM242Pyq8/TcLfEr3hbnGm6RjVzEPkGkE/wAPEaWKvVoN8qnx5qxcJqIFQ0WFGVWNwMaQDG8M+ai4A/oXGTPcwLm8AV2KDZfYMtxZXjV4kfgA4iPyf5vezK0oUlfXjklgcmCskPzSX0BGGVxH++wCDrJcSbk+Q8+KXDgKSSW5jcqKf/u1qiLSv1ArYg2SKu+uenLcYKBN/fhOx2vMaOtuE3u3ED0vbCa1gYdSGHef5XrOq+p0kyIEX2lZBhcrxz3FegTOpSqittxJ1uGYqByGWKUYVSqlfA1SNB82CE4r5pjpV7/bH4rIbEr8NhSjuU11+erwM33M7UNhcIFknXDtY7CQlz9ar6hijUqlXqrMBOhnzvRv2sJ0kvugIioSrwS3X2QJDpYEmKybEcf4zF/BwO9NiG7y+o3L2WldrfO04oDw8z5y06vgdSSYA27Rc2sLr9rs3tE2UR5f2rs5S01C2fPN5PBZwIMdTQFBPpoc5xsKacTMFUVILy94eyI/9iIdwp1OnpdsqfKah0UoUX0KGDIdPBdUrzygt8Nzab4Lp/1IBkZPKfkP2djGDIjvugXap23nqYLl2if3xUiBOId4l0URpZVvzeNgkArQk6Q0+GB6wcZMXUxopD7pJNJ3
- IaBjFu6P
- FHPICF+D/nh2C1rCgem/1gDe3RjdTw5lMk4YkaLGposkMErKvyc9Xjxq9I2vsPYEVzcopkFv+UNSOh8mu7nnujqHN+F4VUyK5mghRVg6Wv6UWdjcHV/Yfwj6TEqr8Oen1+VWgwfzZKLwcA6va1H7Tth8ou0Q5cJCny1h6q3LF1XK5NLEmVlqHjiCvXDa9wUk55pCS4QK0fxqEx52cidNrxqgNVVEw+z1MD5utjyfireEcHoMppoaeq25lZrkXNrlFtvCxjVDylmNlsYu9xEHF1z20Pu1LnR8KMab9/DHdyLz+r2QrPPkF1FgnCBlDeZseNrw9fyvAZMeaZdIzUt1nhp3ZgIvwAAEsS1Ev1ckFsQSWI84SoZvqfaFqWZu39Yp1e7zV7Kjd0CujfWSXZYEOLJ8tPKFMl+T9e4CVQ4T9PAa5bSMU3cZRZgVAVYV7vDPj2Brd+n6GNOY5+6EKCCjIa7mmCg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790090935-932256
+X-HE-Meta: U2FsdGVkX19zKyraoWbzMUQ8CRf+LEfTfyxvT6/otRTWA3edr4qZyJG0c2R9esU+HSrYwo7E08ED7hmpNSNjdpWF7DhwahIGq9XAsTVq+ZvBpXh1z7HTRebhQcjZWiLZNezvRH5EUKBnuIsWoR+glrTHBc+KQnpVqZQyVnoja7rXkWHz+YcaT+YL4e8XL9Ilk49bdyTmgjYEQsmWWJfP36jXJ4DHDGJN7/rfXsJnt+iVouCcZXPJ5zTMzWchlL5tJzcldyIz/x4bcvbYt/K2xlSGRytCyWbqfm7Ig560D8EY/ovwDuFJRvlb7DN8nSNt7ep7d5jrVbeLjTU3RH2vn31poUdP0iCamfQ/zehn0Fr7vZDNoPIEzjC8Vv4V5xNvTqAnvP0Fg4iLIKI8lLnQ9nWjCDLuii9pvfA01jlkKkD4zbv4dwuHMwYN7RYmwKz5DBnZavC+PLnNhxYh4kqjg9jB3XML+8aOOrl2psVUect+NHCtUc1MZ7Dv3PEkvZToOTFtLIz+OziKDr3Or9FsdNiRUlGu6UZ9SGVaVAzy6MP3eCIR/CTO/uNgkd5ZoMSGZmFmcB86Mo7AXLVMJF603KuA2bLJ620CkqvF0i807MYsXb1qrg09/jj7dFv429U5WYt+kP6P2ckHU0CPsj/kFPWkVFsDihaBVJ1zEw1K7WQxJoQwDTxqcpEMsmROZbJP9h7J8B9gFJOX0O01eF9UHV03xyTaaB46AAFroldzudtESPJVuKJV7bJ/a9NDqQbCuX+L68lt9m2YXltfe5m7XiglHoEyU7YhOddGk9o18nRxXbBofY/8HH+ORcmjl0acXFaLfKFzsulQorep81o/8/G2Z4wn/v9ZnfyVXiaI2aBH2GXiWj686+cpZC+1gN8yPaWeJmsLHgcDzvolGG8mwE5ttR0kzuEQMQhMVsUIpIlcs7/vwRJqgnbvIQRcmWZZnB/k98QrS5AcLg7nuvU
+ cPqASloV
+ QLv6gvD2To/7E+3A5mYxwyekIvAZUjKTiYaVdN/AzSwNGVcfPs39CiXLBA5lf1IxBcTYiwZbfXPHPY9azkCfFGT6EvkMoKLTB2Lj4euClgoh6wCwqiAksVNjMRgd1kN2AT9INBnCNpCYOQVZArPHDZzH7exwm69m+8/qr5S4RAF2kIcajj1nBgCDHlRpfsMa/YA2fbBnq3JqBwHt4p/QX1aBNOsibiugRDl4ZLnZjrBO3c1Cq3FGUx0Mo0V+5k5TqbhHI7uxRLYqRX48KcO/5gtX40ylfdrHZaQEvvOhbXxOd5sH8MFzeG0pupA3M7Ty0QVLlpCRPBGWEC7d9h9fzjoH3hKFTwhQEy5FgLVPr1qfrsh+XaU8WAimDphAvMWdtTmj/3EJdMos4iLqrTTWnIS0EBkyJBYng54Pg0hRHfSjUxutTFYgD8XRrf1QdsLXCp4nrPD3wxjoJoPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,139 +131,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 4:59=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
-te:
->
-> On Tue, 2026-09-22 at 03:32 -1000, Chris Li wrote:
-> > On Mon, Sep 21, 2026 at 8:53=E2=80=AFAM Rik van Riel <riel@surriel.com>
-> > wrote:
-> > >
-> > > On Mon, 2026-09-21 at 08:10 -1000, Chris Li wrote:
-> > > > On Mon, Sep 21, 2026 at 6:40=E2=80=AFAM Rik van Riel <riel@surriel.=
-com>
-> > > > wrote:
-> > > > >
-> > > > > On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
-> > > > > >
-> > > > > > Give me some real-world examples of people hitting this kind
-> > > > > > of
-> > > > > > limit.
-> > > > > > e.g. MAX(%)  > 100% and still have a usesable system. I
-> > > > > > suspect
-> > > > > > that
-> > > > > > with 100% zswap usage, the system becomes unusable. Please
-> > > > > > show
-> > > > > > me a
-> > > > > > real world case that proves me wrong.
-> > > > > >
-> > > > >
-> > > > > Here's my desktop system right now. The amount
-> > > > > of Zswapped is more than twice AnonPages, and
-> > > > > the system stays perfectly usable.
-> > > > >
-> > > > > $ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo
-> > > > > SwapCached:       252340 kB
-> > > > > SwapTotal:      41523604 kB
-> > > > > SwapFree:        9802088 kB
-> > > > > Zswap:           8812236 kB
-> > > > > Zswapped:       24927876 kB
-> > > > > AnonPages:      11615760 kB
-> > > > > AnonHugePages:   1402880 kB
-> > > > > GPUActive:      13112428 kB
-> > > > > GPUReclaim:        95980 kB
-> > > > >
-> > > > > This is also an example where I cannot really
-> > > > > predict how much zswap space I need, because
-> > > > > that depends on what AI model is loaded,
-> > > > > which drives the GPUActive number, as well
-> > > > > as the number of browser tabs.
-> > > > >
-> > > > > The system is perfectly responsive.
-> > > >
-> > > > Great, that is getting somewhere. We are talking about actual
-> > > > usage.
-> > > > I
-> > > > really appreciate that.
-> > > >
-> > > > May I ask what the total amount of memory (RAM) in your system
-> > > > is?
-> > > >
-> > > > I am not asking zswap compare to ANA memory. I want to get the %
-> > > > of
-> > > > the total RAM.
-> > > > I assume your desktop has more than 8G of RAM, right?
-> > >
-> > > Right now it has 64GB of memory.
+On 09/22/26 at 04:56am, Chris Li wrote:
+> On Tue, Sep 22, 2026 at 4:43 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
 > >
-> > That is exactly my point. You are running 1/8 =3D 12.5% system ram.
+> > People can speak for themselves and suggest other time slots. You do not speak
+> > for anyone but yourself here. At this point this is derailing the conversation.
 > >
->
-> > My point is that, I haven't seen a case where the application is
-> > still
-> > usable with a reasonable SLO when 100% of RAM is zswapped out.
->
-> In my numbers above, the applications have 11.6GB
-> AnonPages, and 25GB Zswap.
->
-> That is about 68% of anon memory stored in zswap. Not 8%.
->
-> Out of (anon + zswap), zswap takes up 43%
->
-> Can we at least agree on the observed numbers?
+> 
+> I am expressing my opinion, freedom of speech. As you can see in the
+> previous discussion, Baoquan wasn't able to join that time slot. He is
+> a major shareholder in XSwap. I worry that alignment vswap vs xswap
+> without Baoquan is ineffective. That is my opinion.
 
-Yes, I can agree on what you observed. You are using anon + zswap on
-that app alone. That is not what I originally asked.
+Thanks Chris. I know you are trying to involve more people to join and
+talk, and I appreciate it.
 
-My original request was for the whole system: what percentage of the
-total system RAM size has been swapped out to zswap.
+About the meeting time. I am in UTC+8. If the meeting is before 23:00
+my time, I can join. If it is later than that, it is too late for me,                                 
+and I can only discuss in the mailing list.                                                           
+                                                                                                      
+But I am fine if other people meet without me. Please do not block the                                
+meeting because of me.                                                                                
+                                                                                                      
+For the discussion itself, I know it is a little hot these days. But I                                
+still think it is useful. The disagreements are becoming more and more                                
+clear, not vague like before. I can feel the consensus is getting                                     
+closer. So I hope we can continue in the meeting or in the mailing list. 
 
-Because when you have 100% of zswap out, it will likely trigger
-different kernel code path on allocating memory. You might suffer
-global memory pressure you did not observe in the single app memory
-pressure case.
-
-
-> > >
->
-> > > hen the amount needed to fit a workload
-> > > does not have a positive correlation with
-> > > the amount of system memory?
-> >
-> > It absolutely has a positive correlation with % of the system memory
-> > based on my experience. The % of memory swap out has a very positive
-> > correlation with the thrashing on the application.
->
-> The applications thrash much harder once zswap flows
-> over onto disk! Out of all the swap options available,
-> zswap is the fastest, lowest latency one.
-
-I agree zswap is the fastest one, no question about it. In our
-deployment, we have only used zswap for a very long time. Things might
-change now. My observation is that, even with zswap, when 100% of
-system RAM is swapped out, the application suffers greatly. There is a
-reason why we only have 7-10% system RAM swapped out. There were many
-OMG in the past that established this boundary for us. We did not make
-up that number; it came from the real data feedback from the fleet.
-
-So again I question the real data point for the 100% RAM swap out
-case. Do we even know what the system looks like at that point?
-
->
-> Forcing things out to disk "because too much zswap
-> is slow" could just slow things down further.
-
-I did not think zswap was slow. I assumed the swap was only zswap, and
-that even 100% usage was too much.
-
-> Now, there is probably some upper bound where
-> the zswap pool itself starts to hurt performance
-> because it's crowding the applications out of
-> memory, but that could be quite large.
-
-In my experiment, 100% is already way above that bound, which is why
-I'm curious about your data point. How do you run and test your system
-at 100%? Please correct me if I am wrong, but it looks like you
-haven't.
-
-Chris
+Thanks
+Baoquan
 
