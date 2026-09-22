@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D8E3C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:45:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 576B8C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:48:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E28666B00B4; Tue, 22 Sep 2026 04:45:44 -0400 (EDT)
+	id 5A32D6B00A1; Tue, 22 Sep 2026 04:48:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8F76B00B5; Tue, 22 Sep 2026 04:45:44 -0400 (EDT)
+	id 5538D6B00B5; Tue, 22 Sep 2026 04:48:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEF406B00B6; Tue, 22 Sep 2026 04:45:44 -0400 (EDT)
+	id 469576B00B6; Tue, 22 Sep 2026 04:48:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A74886B00B4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:45:44 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 22A928040E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:45:44 +0000 (UTC)
-X-FDA: 85240765008.11.B7BCDE8
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2616B40008
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:45:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=codewreck.org header.s=2 header.b=PoYMuCbD;
-	spf=pass (imf17.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
-	dmarc=pass (policy=none) header.from=codewreck.org
+	by kanga.kvack.org (Postfix) with ESMTP id 269CA6B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:48:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A185780406
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:48:49 +0000 (UTC)
+X-FDA: 85240772778.19.E985D7D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E2A72140002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:48:47 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dP6cTy4A;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790066742;
+	s=arc-20220608; t=1790066928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hMkqWegiB0G0RPwXQW4iIweHXM+gp+p17tn0BymDpW4=;
-	b=NcDgyXMemkNSc1o+oqJBl3h23Z1NtRbxUO73M+kF+eD9QR3DfYODJl92cSijt4gLJuZQ5/
-	ttxtQzJVlURAee5zYtI3KAsXOp7yViykijDF7DUWwApyNCGLaiMkMQqo+ARd2jVpTMd+jL
-	paT6gyvwv5cSX3jojYnU13qi7kDsOmU=
+	bh=mh0mGm1ld8tg6c7EhdkM1d4eVMd5E3LVT8DC3vIY5K4=;
+	b=2WpHcZKvuqN+WjLjRKY3Tey3Jjg8gJ8W4EpEsMquHDzCQgj4F12fJQtJQ8Yw5TAYsx7RGz
+	b2DiNJPBPR9Sjr2b3/tOeFx+St9hPyZggnN61U6Hy0JLu0AuTClC/MKWY/uvrNEEguNfOK
+	s+y6gVQF02GLxisFwjHFb0CpABE74ZI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790066742;
-	b=7Q9xd5SE3udsVGwN59bsngowXrGbX//AsZzfg8kICeaB/HaIVU88kC+2l1+K8MgZFZSSO5
-	3r6MFafRQ60GqAlSoAyhvQq1uaqJ2H8CgjkETnPmfGvpiNLuOU0rSCQKyJXgSrj2rkzlsA
-	LAG/qdLTfs/LBa2OGn39Ck4dYzc5GAk=
+	t=1790066928;
+	b=59l+29XgQNEnwBlSlGjaQMIz7I3CzuJVU8VyB6dLYxuokoxX8uiC7k0Y+yv/JU/OF84ObB
+	O3idIZXKh/FiaNNugykiut40LEWAN7MiixSzUMrz0BPUG6Gl3C5NGv3T6ALfp6hDteao2X
+	TM463Onhyp4vGdswJ90od4gxGt4TQSQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=codewreck.org header.s=2 header.b=PoYMuCbD;
-	spf=pass (imf17.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
-	dmarc=pass (policy=none) header.from=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id 8158014C2D6;
-	Tue, 22 Sep 2026 10:45:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1790066736;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hMkqWegiB0G0RPwXQW4iIweHXM+gp+p17tn0BymDpW4=;
-	b=PoYMuCbD9oC73v8MabIRDQ3JYH4XeiHnm5aaAnrfKac+pcFVw4u0zG7Q5mO/e9wxlyeOe1
-	wPCpRD4zwp1eT+md7c3/W0aYzOGHlnT6XAd34OlyX3hv644M2SrlvG9My5h0E0JjR/haAm
-	ybqfvaacyuI66Ycljs6YAwFwuRtx0CHUVbs9OxdIiRyxGfXNdfcsrWzVw19u+VGcM8FNWY
-	Im0iNN6j6OH7JGsKriu7qK96ggrORz8IKbl/de/VP6+UJsZ1LQ5eAIWIK96cIou9vZpJ7X
-	62BWFHiHBNxIWrUKhHUP5AY/PpCAmhqqKAFZ0q7bndsF8kef3Gww0bAYOPxKFQ==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 02e7d134;
-	Tue, 22 Sep 2026 08:45:29 +0000 (UTC)
-Date: Tue, 22 Sep 2026 17:45:14 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: syzbot <syzbot+de6fd6789748a8aa64a0@syzkaller.appspotmail.com>,
-	apopple@nvidia.com, byungchul@sk.com, david@kernel.org,
-	gourry@gourry.net, joshua.hahnjy@gmail.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	matthew.brost@intel.com, rakie.kim@sk.com,
-	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com,
-	ziy@nvidia.com, Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	v9fs@lists.linux.dev,
-	Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Subject: Re: [syzbot] [mm?] WARNING in v9fs_fid_get_acl (2)
-Message-ID: <arJAGlhkDJbcy2sw@codewreck.org>
-References: <6aae188b.71f81b7d.15fa6d.0004.GAE@google.com>
- <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dP6cTy4A;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2175C41B29;
+	Tue, 22 Sep 2026 08:48:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEDF1F000FF;
+	Tue, 22 Sep 2026 08:48:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790066927;
+	bh=mh0mGm1ld8tg6c7EhdkM1d4eVMd5E3LVT8DC3vIY5K4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dP6cTy4A0UXusAiIQuf7XHNmCf0oksDZeYiXkIeS4XXg4xTKSCusJ+1EB8onw5qko
+	 0SqSET7QFRY6zchqE3+lUMrykDB4zkFnSGVGn4rKXU4CoETSgIB9dWMp7VxXlihbOZ
+	 nqGQimkWf8DFDOBYHw7uhOjD4sB/STapR4N+cRzTtoxkPfUPADU3jGqhwBdkSpxta8
+	 SJ8bobM0qgqFd3Upoo9rp8QIn3hgrUxWrhrHHdhduBmJ7HytD0aTZujUSKTUogFBfY
+	 xzeXlmNQMsTaHDfep4OGfN2vD4Hy00fVfzkuoYcKTVH3TY23ue7cLBnmlEIhWDywRy
+	 boHs5zSa1dgBg==
+Date: Tue, 22 Sep 2026 11:48:41 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Wandun Chen <chenwandun1@gmail.com>
+Cc: robh@kernel.org, saravanak@kernel.org, m.szyprowski@samsung.com,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v3 0/5] of: reserved_mem: several fixes about reserved
+ memory
+Message-ID: <arJA6fOMetzoBhDH@kernel.org>
+References: <20260920092852.614973-1-chenwandun1@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260919031451.3f47a8da8405e88fa1ab5398@linux-foundation.org>
-X-Stat-Signature: rxp7kmhj8djogr4fjyx6muqp4ryow7g4
+In-Reply-To: <20260920092852.614973-1-chenwandun1@gmail.com>
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2616B40008
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1790066739-252832
-X-HE-Meta: U2FsdGVkX19AIKQgK/EXE7pAK6umEJEVkfg8pabTVfjqXvIzuvYpiACENufH7tjfDAXxsKwnYyxi2gPaIXcla7xVjzJdOpKR2Nn6bGArUB6tYGDRH5xp/I4VCsQRv9/kE4VNzF4zosfhutB9+m8rKp+I8OKVSLzBDouZiWJAKTCqRnPkh+G/XjndX4RLPeUZRsYayOB/i7VIBNZ7KMSGXHnhpddkARdzbp/21Q8jhpqhDkVPHq1/tGOxIFXQjfBiHJzz14Lua4sYRgyDXhdkqAP0rLfzA6ACqwaz1F5JKAsDIU4DLwV2pkhB9T78gv+6maf5JDhyrB/n7bjNx3jLVIlZ47Y1xMLYTfEYdrULD1hYelFlZP+hHdmRlQJuSV0EaU4ErVRAXO89Okwx9btYGfDlMy3NBsIhTGksDHJCErQD63XyvW0zVi4h9qhWkku1hpcZ0tn567Kk5/xV+F+3KVP3ppHtgFReAVR3K4+oH2SF+8zf0F7h8WRLimiH5SU0NWRf5dZJLsN+M18XUYjjp9trpuKkzZeeznlO4uW5FEijoSaQwmHLnPLBHsevvifLJEU1IBuotDReGKOlCeYiLF1rudEpNRIszHS5nTE6QIMh2rtXltKVUnV6d1FyzqJX61KX9fjjRlnjKdwX1ezWUnX0CP7TgVLTmj7mb+YEp7HKey6AHmmUrBd9V82o2Lj5sCyurwvnPb0IGic/TwCO2Gf3KSVne9e8oPs2x1TP5/7gqWYRY6GCcrAg1iQaHDnuQU5anTCXFyMJ40lbYaBCkA11m9AcHAN838myJmwcPhYFbIIPS1uyrOfBNEAf+yq4V8XdWe9SxPECjn4Z1fyiCoQdJnRm20yxe65kuNRmns20RLHWhQd+mVKtikaBf8wB8uL8RbxAFNDxBg2r4r/fsd+ocKr37iBH2rrMByG4OObiuBNYSQdpYrmLJCxmN5RUtF8BxQ99ITzZeDJiP6y
- 7+pmpkTy
- GNCCRzKLiEfUphtoXnyZp3I+Pb2CkhaNHK3mT6kO8hpHAECwt9exB7m8oB4eMnZ5NWfGFUhKggZukYFZjhPS+MyfzgknGLiAYR/bX4COAihFXBfDUc+i7ZbTXuIFMVmZmrTFidMw3WnJobifFpzQi4UOLw8wWzt7wVEgTClQOq7kOAaLuAoXBPz6t1aF2TJ0J7YgfvDAGO0qAiR966kihMJ3nBE7zYlIce0OhtfMjHJ8jHACfNus78pa8E+YwV/ZlrQJVQy2ujHkEZ6hgdnsas0jSCDgY1/MbmpBjpGuhKGdpmZyJ/Xj6w0BUOZXjC+RQnU2vYvssh/0rrKS2SyvGbZYh894qQVCn8aeLYZx8z6pw9awuZUzBgs/pngmaixgjkf5XmFTfmZbW4SLvkB4mWLc3tYROUCDdfptWgh+puQY5XIl5yJv/kgu1496AgonkQcQAAaMHBoh1Vcn9Z2QLETVhIYpdxG9c2ZjL5hxiTJeVwQ8/LVC7ghRL+6QEY99gbPR2keQJaV0hUR2G1+WuREiLDGKD+77lDne/qt0ELWGLG23Sqqw15wW59EV718EtblM79e7qbfsZ1CjWemFXG44HBnxBJZCKFTaqnPIg3nHXkr5cBeCkZihrlCid/VGtynTTuJIsS/P8jQxZpWiuK02l1nAjQd7/T6PZew2sWbrveCln3+wvSeTljOOavLWVLRrn
+X-Stat-Signature: yraktg3ce6nb9o5wbasn9am5nb46diaq
+X-Rspamd-Queue-Id: E2A72140002
+X-HE-Tag: 1790066927-43307
+X-HE-Meta: U2FsdGVkX1+J9WNyNuqkrPCvYlA7Zi0/3JGozIGAO82fyrWplJDGoTOEOEjKMloMQ/CRJxjXVunHJr3i76cOYXMml/tF3DfbZncORu8tMiIJBbkht46lQM85GbJe50McLNYjjt0SEgtwdlqvam4Qolb406BHlpdoOPkpTVex5uluvxQPV8Ufc5/63NVWf27ANFZ7mm8FhOjKYgoUEOYqZ2U58quOfl88k8kfjk22VWdaxSX31HAHUrNytNvwFEPLKGxanmnW4jE0RRbWsWCpCZDD8BUOTTtchfrH2Ti0mhkmfvI2D0Qq/Hbp0lnTa3H9Cr8rIEf+kMZx4x8f+XV15QFp5ThibemXckjsxsxgHkLor+Tj+zJoVvwWG9nHgbVjOydhJmccaxsc1ws9Do3Msup+rFkLMjF2d2rq3NBvIsoHBz46sLF+SttprYFVscdtOcqwGFvt6WLdaJF4cpt4ZebHy1itjOGLH7yXuig0JLvAx8+nowCVONRIvvfPj33zyl89sdUmIWHCQWG3icD6K5/4Z7bmsPel82yNGngZGfnl1dI/ARO1T4xn+1GKDEz2ZQPFcA7gMiTUKjWkDRDorvhcDcy8REJcJ+N45mBratZzFf3TXyaT5D6gXbDJGylBMPOqhOGyAv1N6fLluaxQevALJEse/hwtV8BNHDpJGJR6aNyu2IcnkkdIVQnDx+R2gXTJwxR4gR/jgFMB5+oi4/x0NDePA9jcZJQi7sfpksEctaWiJv27uRh8e0iMugAiLFzoOuZ2nATMal4P6++ySCqfyWBkTa56fEeCjQ4fUGx9QKnIvlRX5T0sjIu+ABWyXKlrS3iinVT5k19Xl4pca0+RcsYezD3AOlVGG3kvZYnzvDwgUoW5fgkQQpc9YoPP5/0y8bHsiSQcEfHR5MS5HkWI+klF5ZYoXtLiU+C9DgfVBfs+X/p0/HzDT+ZmXxTjU+K6SLFOw7CSiEZs9kb
+ TJEsXGu3
+ 6p6AkOcsqjDC+LKPn9Eq2a9UAhJKSu6o2VSI2j3rwEJc2t1MALcEjNR4v1pbfPfbgINt6+B6j4Fqk9KMICj/7ODZeW/Thu7U/y1jpiDdCO5HyF8Ea5lGLrD/RKq3RrtTluieSlmBM62p+gSa5mRAg1D7ZtgEt19bL+riRKJq3MuKUdnK4e7LOYWaBL8Jl/S3tYBwy3rO9ukHA1+WTccM3rdcmuicHTPnC8HQPYuWaSbpApevdIi1fBlt3RMj+1sFBDIHQgI/naT3O+OiNAQoMrH/uRWyR+ZJAgcjKfcCfCdlm+CPKNi9zcytDobg9SIncyktigb6bZlP24At7iNNTVCanphw/Dl5cCCdJC2eSJYtyu44kJFaRQEY/r/plxhcwBAiIe7re1UuCXT6CzOSufUsyw/NaHsGqYE5yrMR3pNCpZjCkKrh3DeDSRishJiev9qWc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,29 +92,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(+Nguyen in Cc as he tried resending sloppy patches after this)
-
-Andrew Morton wrote on Sat, Sep 19, 2026 at 03:14:51AM -0700:
-> > WARNING: mm/page_alloc.c:5340 at alloc_order_allowed mm/page_alloc.c:5340 [inline], CPU#0: syz.1.357/7872
-> > WARNING: mm/page_alloc.c:5340 at __alloc_frozen_pages_noprof+0x2137/0x3300 mm/page_alloc.c:5397, CPU#0: syz.1.357/7872
+On Sun, Sep 20, 2026 at 05:28:47PM +0800, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
 > 
-> Thanks.  Caused by an old v9fs bug.  A fix was proposed but never merged:
-> https://lists.openwall.net/linux-kernel/2024/02/02/806?utm_source=chatgpt.com
+> This series fixes several error-handling issues in the reserved-memory
+> initialization paths.
+> 
+> The first two patches fix cleanup of no-map regions after driver
+> initialization failure.
+> 
+> Static reserved-memory nodes are reserved during the early DT scan but
+> initialized later. The third patch tags regions whose early reservation
+> succeeded, so the late scan can skip the nodes whose early reservation
+> failed.
+> 
+> The last two patches reject overlapping static regions. Without
+> these checks, overlapping nodes can be initialized over the same
+> physical memory, result in data corrupt.
+> 
+> Sashiko reported these issues in [1] [2] [3].
+> 
+> [1] https://sashiko.dev/#/message/20260814090305.4C8741F00A3D%40smtp.kernel.org
+> [2] https://sashiko.dev/#/message/20260814084718.29C341F000E9%40smtp.kernel.org
+> [3] https://sashiko.dev/#/message/20260806100605.2C2C01F000E9%40smtp.kernel.org
+> 
+> v2 --> v3:
+> 1. Rework the mechanism that checks in the late scan whether the early
+>    reservation succeeded (patches 3-5, suggested by Marek, thanks).
+> 
+>    Patch 3 adds a new memblock flag MEMBLOCK_RSRV_RMEM, which is set when
+>    the early reservation of a static region succeeds and checked in the
+>    late scan.
 
-Right, we've been going in circle with this since forever, and nobody
-answered Christian Schoenebeck's question[1] about what the limit should
-be, and while I don't care much ultimately I sort of agree with him
-(e.g. limit should be XATTR_SIZE_MAX for anything that the VFS layer
-touches, but acl are converted within the 9p subsystem and could be
-arbitrarily large so status quo of a KMALLOC_MAX_SIZE limit because they
-could come from something else)
-
-Andrew, if you have an opinion on whether we should cap the acl sizes
-anyway, please say...
-
-[1] https://lore.kernel.org/all/Z1n-Ue19Pa_AWVu0@codewreck.org/T/#md7c1e009696501b3b87940cb613150bdebd1db28
-
+Can we keep this local to of_reserved_mem please?
+ 
+>    Patches 4 and 5 are reworked to reject regions that overlap or are
+>    contained by an existing reservation. The code makes a little different
+>    from what was acked in v2, so the Acked-by tags for these patches are not
+>    carried over.
+> 
+> 2. Reorder the patches: the two cleanup fixes in v2 now come first.
+>    In v3, the first patch now introduces the 'dynamic' distinction in
+>    fdt_init_reserved_mem_node(), which the following patche 3 build on,
+>    so the series reads more fluently.
+> 
+> v1 --> v2:
+> 1. Rework failed-node tracking in patch 1: do not track zero-sized nodes,
+>    and keep a reserved_mem slot when tracking overflows.
+> 2. Reject static reserved regions overlapping existing no-map regions.
+> 3. Keep MEMBLOCK_NOMAP flag for static no-map regions when init failure.
+> 
+> 
+> Wandun Chen (5):
+>   of: reserved_mem: release dynamically allocated no-map region on init
+>     failure
+>   of: reserved_mem: retain static no-map memory on init failure
+>   of: reserved_mem: skip init for regions whose early reservation failed
+>   of: reserved_mem: reject static regions overlapping no-map memory
+>   of: reserved_mem: reject static mapped regions overlapping existing
+>     reservations
+> 
+>  drivers/of/of_reserved_mem.c | 86 +++++++++++++++++++++++++-------
+>  include/linux/memblock.h     |  7 +++
+>  mm/memblock.c                | 95 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 170 insertions(+), 18 deletions(-)
+> 
+> -- 
+> 2.43.0
+> 
 
 -- 
-Dominique Martinet | Asmadeus
+Sincerely yours,
+Mike.
 
