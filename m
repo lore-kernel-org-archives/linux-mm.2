@@ -4,133 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AD54C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBCF7C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 10:00:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70B596B009F; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
+	id A69ED6B00A1; Tue, 22 Sep 2026 06:00:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BC8D6B00A1; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
+	id A40B86B00A2; Tue, 22 Sep 2026 06:00:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D44D6B00A2; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
+	id 930136B00A5; Tue, 22 Sep 2026 06:00:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B58E6B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF27B1A03FD
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:58:45 +0000 (UTC)
-X-FDA: 85240949010.15.1CCE38B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A6DE420002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:58:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LiZEolQL;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YTCIb160;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dse2xfk9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5ej2gdRk;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 690BA6B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:00:11 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E655C403D9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:00:10 +0000 (UTC)
+X-FDA: 85240952580.01.FEDC175
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 29BF41C0003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:00:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oEKF8mZA;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf21.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790071208;
+	b=38vq7oZxcESDp+qo1lmaJz6iVkp1qFI2+XddE/nSK889wT+2BcKXYBFOuMcO9AyN91jqCI
+	RdG59O639QOFfuil7Vp8ysD/FunUohmQnVhbnGNQvvl86B9oRT5HelOZz2BHG+hvH06aK4
+	16p+StFctX8eX6HueTxdcj8FNSFDJYA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=oEKF8mZA;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf21.hostedemail.com: domain of arun.george@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=arun.george@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790071123;
+	s=arc-20220608; t=1790071208;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
-	b=4FJtfKxwdiGAPWeV67Zpn/GEw5cJIgIzsOOf7ZI6nHVO2ldcvFn7ZfTjLMw1h43zgMZmSs
-	HYpsCS9h2IL/rMrXPtj+o15RA88RSuEwcxU0n7rNcCLBUfFJmHb8rZ9yP+nwJLIkXk7xpR
-	Uuu1rPWmWkSNgxjUSml81ymW0j3opF8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790071123;
-	b=AaOdlURmT+M3vuzjkMKD3jRgGm50nZJknWXcxY1pXF4jY+B5QBykJzirWR6lEfHJ66EmxW
-	khUbuEm/etAozc3UcLv4UALtts6NE0/BpRkoRYZ87dr986/wVLAd+W1fF8oQ3QWJ8ttbbC
-	4+tSYXyt72ELVpo/oGOY2VEeGaNgG38=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LiZEolQL;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YTCIb160;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dse2xfk9;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5ej2gdRk;
-	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E23F41F8B9;
-	Tue, 22 Sep 2026 09:58:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790071118; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
-	b=LiZEolQLtrOcnCpKNhtTGFVrWufQc0pBzKwAnq8xgsyHtt7FOTAXPaGMzM2B/JNZSCQTkP
-	5qfTeqjvY5gtkYNBndsHUXbuVY2JO236TnFlQWs55eJ8IEw1eYvcqTq1xjKJBCZ4UX+YTA
-	sJuczxH3Rovjnb6cpJGa0ZwWvfJOJxU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790071118;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
-	b=YTCIb160AgoMyuaZDpwuiYTv1e3GB6uMNI3lb6iPSY56aTD87HB360Q467sPor9jhfSTSP
-	XAq/xJqeWkRW0WAw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790071113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
-	b=Dse2xfk9rYhsNzWipCoS1JcIReryX19OOYSEO/y6U6h2/Th6M27X1kd3BZhUtd0bGx7baP
-	UP9EmCy/KL78BGJ5wf2ePGumoYg4w5Paa0AiWxasn1OWy8L39PUyEjwIptrg2VB5Vlwdh/
-	xL4WP2Fe5+ktc2rbQdg+CmKsKBELHGo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790071113;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
-	b=5ej2gdRkyDcZftLUT6SaJNLl6a+lu/u772HFMDHv4wdhUy35JgSfKA/2YzV4rMORb7JPRE
-	NuaXw1RHmy24dMCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0640E136D9;
-	Tue, 22 Sep 2026 09:58:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id knt0I0dRsmrVBwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 22 Sep 2026 09:58:31 +0000
-Date: Tue, 22 Sep 2026 10:58:25 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Kees Cook <kees@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
-	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v4 1/7] mm/slab: Mark the kmem_buckets_create() context
- as a Context: section
-Message-ID: <arJRHFs-r8hkTLhx@pedro-suse.tail5790ac.ts.net>
-References: <20260921075811.too.775-kees@kernel.org>
- <20260921075820.1718334-1-kees@kernel.org>
+	bh=TfqgPVHMvKI+JVX/r7p1frHija+Q4mdlQxJzwLXyf0o=;
+	b=jDnRpLo9Zu9aGMmhh29UaKVSHCJb/rVetRrs+XUEye4vLxQnjZwwGi+RMnkEUyj+a0kVQr
+	OGYMn9naG6ALAWz8+zrBDWw9D7iEeBlbOiCl73lwYugWtKc3RU3MfBD8FmMCy9DWd1BSRA
+	jl/jTPfEqGSO7gzzzWv/70FhLeQo4a8=
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260922100003epoutp0447de542da89fdb6e9f1b824595af0596~XnEZoUiMH0073500735epoutp04M;
+	Tue, 22 Sep 2026 10:00:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260922100003epoutp0447de542da89fdb6e9f1b824595af0596~XnEZoUiMH0073500735epoutp04M
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1790071203;
+	bh=TfqgPVHMvKI+JVX/r7p1frHija+Q4mdlQxJzwLXyf0o=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=oEKF8mZA+AiptLsn5+41xNejcT6W/6iLif022a6DAcOdvs8m3mcR2u+VQgiKZJq0l
+	 2nvEyFnPIqGitGsPSrElnJcyZLTJKcXrTPrM07AdcB4wOruKIxybXgDRb0ONQsD5x5
+	 W8/9+7fdE42DYQf0W4REBBWPCidxcHQ1QbXabjH8=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260922100002epcas5p19cd8fb60b09ebfb214577f67397d4208~XnEZPV6ad3117031170epcas5p19;
+	Tue, 22 Sep 2026 10:00:02 +0000 (GMT)
+Received: from epcpadp1new (unknown [182.195.40.141]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4hpwZB4YQlz6B9m9; Tue, 22 Sep
+	2026 10:00:02 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20260922095756epcas5p30808d249139dabc3c8a4b04f4cfedc57~XnCjkdyUG1358313583epcas5p3q;
+	Tue, 22 Sep 2026 09:57:56 +0000 (GMT)
+Received: from [107.122.10.65] (unknown [107.122.10.65]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260922095745epsmtip2daf29206bb39d723744c942a481f75a7~XnCZgn2QF2365323653epsmtip23;
+	Tue, 22 Sep 2026 09:57:45 +0000 (GMT)
+Message-ID: <360067785.01790071202608.JavaMail.epsvc@epcpadp1new>
+Date: Tue, 22 Sep 2026 15:27:44 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921075820.1718334-1-kees@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A6DE420002
-X-Stat-Signature: ghbrfpkjqtzdyqxq79uwk6rsmuxpcpe1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/36] Private Memory NUMA Nodes
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, Zhigang.Luo@amd.com, balbirs@nvidia.com,
+	brendan.jackman@linux.dev, yuzenghui@huawei.com, apopple@nvidia.com,
+	alucerop@amd.com, matthew.brost@intel.com, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+	skhan@linuxfoundation.org, gregkh@linuxfoundation.org, rafael@kernel.org,
+	dakr@kernel.org, djbw@kernel.org, vishal.l.verma@intel.com,
+	dave.jiang@intel.com, alison.schofield@intel.com, osandov@osandov.com,
+	jannh@google.com, pfalcato@suse.de, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, pbonzini@redhat.com, osalvador@suse.de,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, kasong@tencent.com, qi.zheng@linux.dev,
+	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
+	linux@rasmusvillemoes.dk, longman@redhat.com, ridong.chen@linux.dev,
+	tj@kernel.org, mkoutny@suse.com, sj@kernel.org, jgg@ziepe.ca,
+	jhubbard@nvidia.com, peterx@redhat.com, baolin.wang@linux.alibaba.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	lance.yang@linux.dev, usama.arif@linux.dev, xu.xin16@zte.com.cn,
+	chengming.zhou@linux.dev, roman.gushchin@linux.dev, muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	driver-core@lists.linux.dev, nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org, linux-debuggers@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, kvm@vger.kernel.org, cgroups@vger.kernel.org,
+	damon@lists.linux.dev, linux-kselftest@vger.kernel.org,
+	kernel-team@meta.com, hokyoon.lee@samsung.com, wj28.lee@samsung.com,
+	gost.dev@samsung.com, vikash.k5@samsung.com, d.bueso@samsung.com
+Content-Language: en-US
+From: Arun George/Arun George <arun.george@samsung.com>
+In-Reply-To: <amJGUuBZ2857QjDB@gourry-fedora-PF4VCD3F>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260922095756epcas5p30808d249139dabc3c8a4b04f4cfedc57
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+X-CPGSPASS: Y
+X-Hop-Count: 3
+X-CMS-RootMailID: 20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f
+References: <CGME20260720193443epcas5p167fa7d8490edfb4d8c0aa6a259db058f@epcas5p1.samsung.com>
+	<20260720193431.3841992-1-gourry@gourry.net>
+	<963815509.21784796303385.JavaMail.epsvc@epcpadp1new>
+	<amJGUuBZ2857QjDB@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-HE-Tag: 1790071123-780592
-X-HE-Meta: U2FsdGVkX1+tTx7Llxl26O/yGHs5XlN1yD9Orhg3UuzMimM1xHQ2XsmiIYZlSFEUCQr4TF7/hZkSBZfXvdLxyvAo9HSWsIuZYa/sLdtbBOHVvZUbJ//xiOny1IETBrkd71MRTcb+2ZH8FafmhjdtM6wW0cHzqHDsvLzdEN8MrswwEuZCgqmUXGQZLHiPQcUnZtkHL1uyK66TBpajU3oCATeX4pZRONyLdl4dO6Yc6mblTed0mNSxQeGtcrDIEfJIWgz0rA6fsZowx4pYgXTtn8jSgCmdYA8V2k0B8O4+0ajqHkOfaf/GwuS7fkEA/NI6tnschu8PBSkzatIUTQBbV+fZ2g4qxyeUQxVRGE8eCkWclfzsEueyRxPIMuEHBNGdYH14049kGG98oWnygz48Q+jGDyMkXPJChlWh2jaqx+hQEpCO2yWD7e7rPUg1rJk0maZKvBSQWxCk6fDskSw2IB9gI0X0WA6sqakQxXpekMRQTFMQE1DIoRm9z3u4u+djxe052ClT5P00Rlhv7mlY/kb6M44F4kHZmYMNmu0E1YpIy+GH8ZXS1dQi5qLEX0NbN8lNVoiEiPd+kRUHKAZoFAAIJpyX+ss4U7ZZMjazupVTNaDEpaZb7q9AVy1LWdb12Fz5m/IFmSH+S+i18mH429Y0fgz2zWoNr8iYiVRVRl0rGmybUUzlqRdQgN1gEvrtFIH0pc8W52fA2bIUP9J+yFZlY5FLD6LFLK26OEg5syVwcZFwtVsp/Dim/O0DrEF9K1muPhRenKzILGCof1fI+AEqI9OeEzO3ztzjHu1PzXbyXBOcOkfXrHUBJTZhuBVp1V+xuXxzgP583af4HlJAfPO27QpUzr4RkdxA+OBJ0exXQT6n1SFGbivIzzOdXyu97NzDtVZv2WQygdI6tX1S1Deuy9AqoeXqsRGtsEP0fayYa65o3zu+nFD0Dv/uZ06K0F+5Qipv4e0yU6ISnpd
- SDX78Zbr
- yMzQ1nDPXT9xx8rM4qr0+lojtdKEYtyc7SOcvFTfoUCzbX0oVHpNcs7mIsOpZDqi/+sERQuSbyCT9r8GuTW2AMKAueOpLIZwLPbRYMnq+KuSTYc3x7o4OJa9OuH5ey7hkoXeRFCEmisAMRJuP4lbMOtfrcYQQykpNM+O6ApjQXKxjMng1Pt326tCavIDX89WfpQ8idRK+f3g7v2QpkMZagxz8LsFLR32YP9aOtIJt8jQCsAm8CiOYsHCb1NI4oZNU9zg7pW3Gbp8dD+G7/CWOD8jQjeh4CQkaXxMf/mFnrtBQhSFRJhnt2q27yXnaIUDtZ8880qPsK1jmoL0=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 29BF41C0003
+X-Stat-Signature: 5t6wn751ufdu1xcsujrqopfskymdnuhb
+X-HE-Tag: 1790071208-811175
+X-HE-Meta: U2FsdGVkX1+ualHIhvPsAk2NuMCGGqcxZsCt1mxR6nZvFWXDHtvFuCsAV4oCo/68wRBfCZWW3bEDS3/qG3N7WXTLbvqidCFVPqCnbTLBG+njsMxPJjOKqkleOrJuw9mCkh+pDjKwxAPti/iFvobUTyPRqWdVnJUFp2oNefN8/TVYqbbZmdvtD2iayez76wGsAqLBNL0ghlKdgN9+vGe91eo9KKhqecnzMgnmvDoR0gr+INlWjp44LQLgif3f6CnlZI7GhplsbIX9MbTxqQNlA+kQ/wcvxAXkzkq1Ea4dGETM6I51OA2U9IKpm2TqD06ToOEwiTyNqUfZ2mzwEHJSefQctFWIAiuFZ44bCpxgT4wVDSLaF9Ow1GFwojwNnwf/XaSkJMdriESYFIM+SCXPaZaaWdaQ4TBcYy1R9ShO/3CMwVGqUAS9RojHXttxRXHUpapEwMCtMn16dIGd9/MkPve2RtVGxjhzPfJSNJc3+1BzeKFslYDE+Uokn40ILFvd/z4RtVG6MqD46SoFhLT/sNEEHD+E2JAH1kBLkPQyVSCUQxu+o0znr92KPtv30KOOVUx2m1IY9YBbF0BFIXVZLa5xWyfNDXjpnCBpcASu/NefKDKKBVTFRExtlL6gLHxeWbWbJg4xpU7MeN058tJvweRnhaKBxcvs5EMjSFgFhmAoSU+oSOpcY8/412JJpLCDIvvQ/xgDaXiDgja3DSymIY7QcV6DbIIJQtJtQo6HAixR5qJ14+Xty3ve/PltywU6sdHah/pmt2gnDEhTwtMyT1Vw6KGUwWD/h5/5Ka4wSb4My7ZtYKUXMWdCm9eSVisNcLGa3uL/qhJ086SfKCDfiA3qV32Sr3BO7jmd+WxvGd9zb1fPAoXE46c8QjbESD5dDsfXnHlQMUdY50J3qO1jHNdNMbebCtGecYb8af/8jO9xaWYz54yPjpDVTlmhDvLKwgzFMWiyjirSa6hkj01
+ bgvchWir
+ vtIzddIUaxSj9+zSZBX1KfbXpbARLfgE4eO5ldoydl+A44SUMrAu1YxTsubtJsOI9oosN5OVDU7+d6TJpoVL+U5nwexa5F2+lEeeXyx8u3klj2yB+mhEV6zHeF9MPzdHc528gcSgrMb3Acs+UCU+c5CTHhoIOdrsZ+J/ylI9fVyGkpzD8YSFqX6KkvUtw1T8iXxJI8ImVI0tJnKU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,20 +138,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 12:58:12AM -0700, Kees Cook wrote:
-> kmem_buckets_create() had the same sentence about calling context as
-> kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
-> rendered in the body instead of as a "context" section.
-> 
-> Give it the missing prefix. Additionally fix the "a interrupt" typo
-> __kmem_cache_create_args() had.
-> 
-> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
-> Assisted-by: LLM
-> Signed-off-by: Kees Cook <kees@kernel.org>
+Hi Gregory,
 
-Acked-by: Pedro Falcato <pfalcato@suse.de> 
+Thanks for sharing the working branch.
 
--- 
-Pedro
+Some of us at Samsung are testing the series (both v4 & v5) on a 
+compression capable CXL expander and are observing encouraging results.
+
+Good things first! We feel that the isolation using private nodes and 
+the capability selection using NODE_PRIVATE_CAP_* work functionally well 
+for the compressed memory use cases.
+
+On improvement points, we observed much higher 'page_faults', 
+'allocation_stalls' etc. which contributed to the higher tail latencies 
+in some tests. I hope these are already part of the optimization plans. 
+The higher latencies might have resulted from the write_protection 
+applied to the private node, I believe.
+
+On the tools side, we used MLC and Taobench for the tests.
+
+Note that our intention for this phase of experiments was to test only 
+the 'private node' layer based isolation, and not the cram and below 
+layers for the compressed memory. Therefore we did not enable/utilize 
+the compression capability in the hardware for these set of experiments 
+(enabling compression would require the cram level ballooning/memory 
+shrinking and cxl level interfacing driver to the compression device). 
+That would be different set of experiments where we would be testing the 
+cram balloon shrinkers and our alternate algorithms (upstream targeted). 
+So cram and below layers were used only for enumeration of private node 
+regions for these tests and not for the run-time memory shrinkers.
+
+======= Test Methodology ==============
+
+We explored these 3 cases:
+
+    1) (Baseline – existing CXL infra):  DRAM 16GB + CXL 32GB. Here we 
+used the existing CXL driver infra to enable the device. No private node 
+is involved. And compression is disabled on device.
+
+    2) (private node in default write protected path): DRAM 16GB + CXL 
+Private Node 32GB. Here private node infra is used to enable the device. 
+And compression is disabled on device.
+
+    3) (private node with no write protection): DRAM 16GB + CXL Private 
+Node 32GB. Here private node infra is used to enable the device without 
+the write protection/fencing enabled. Compression is disabled on device. 
+We could not complete these runs as they resulted in kernel panics. 
+Guess the code path is not stable yet for this (We had hoped that case 1 
+and case 3 results would be similar). We also observed some unmovable 
+page warnings logs in 'dmesg' before crash (might be related to the 
+panic). Adding the log snippets at the end.
+
+========= Results summary ===================
+
+- TaoBench: ‘private node’ showed much higher latencies. We believe this 
+could be due to the migration back into the DRAM for overwrites (due to 
+write-protection) based on the kernel VM stats.
+
+- MLC:  For lower inject delay, the private node shows better latency; 
+but when inject delay goes high, the baseline is better.
+
+Overall kernel VM stats suggested much higher ‘page faults, ‘allocation 
+stalls’ etc. in ‘private node’ case which is corroborated with the results.
+
+========== Setup ======================
+
+CPU: 144 Cores (single socket), DRAM: 16GB, CXL: 32GB,
+Kernel: 7.2.0-rc2+ (Private Node), 6.18.32 (Baseline)
+
+Private node opt CAPs:
+#define CRAM_NP_CAPS    (NODE_PRIVATE_CAP_RECLAIM |
+                         NODE_PRIVATE_CAP_HOTUNPLUG | \
+                         NODE_PRIVATE_CAP_DEMOTION |
+                         NODE_PRIVATE_CAP_USER_NUMA | \
+                         NODE_PRIVATE_CAP_NUMA_BALANCING |
+                         NODE_PRIVATE_POLICY_WRITE_FENCE)
+
+Enabled 'numa balancing' and 'demotion'.
+   $ echo 1 > /proc/sys/kernel/numa_balancing
+   $ echo true > /sys/kernel/mm/numa/demotion_enabled
+
+========== TaoBench Experiments ====================
+
+CMD:
+$ python3 benchpress_cli.py run tao_bench_standalone -i '{"bind_mem": 0, 
+"bind_cpu": 0, "memsize": 32, "test_time": 300, "warmup_time": 0, 
+"clients_per_thread": 100, "set_get_ratio": "1:9"}'
+
+1. (baseline) DRAM 16GB + CXL 32GB   ==>
+
+$ grep -A8 "^ALL STATS" benchmark_metrics_27cfff0e/client_0.log
+
+===================================================
+Type  Avg. Latency    p50        p95        p99
+----------------------------------------------------
+Sets   2.75215     2.73500      4.57500     5.79100
+Gets   2.84236     2.81500      4.76700     5.95100
+
+  2. (private node in default write protected path)
+      DRAM 16GB + CXL Private Node(uncompressed) 32GB   ===>
+
+$ grep -A8 "^ALL STATS" benchmark_metrics_5181fda5/client_0.log
+
+===================================================
+Type  Avg. Latency    p50        p95        p99
+----------------------------------------------------
+Sets   5.58395     4.73500      12.35100     21.75900
+Gets   4.83344     4.19100      10.43100     17.91900
+
+Vmstat metrics comparison of both cases for Taobench
+($cat /proc/vmstat):
+
+-------------------------------------------------------------------
+Metric           |  Baseline    |   CXL Private Node |   Ratio
+-------------------------------------------------------------------
+pgfault            37,121,808       171,512,616          4.6x
+pgactivate          5,360,928       161,947,594         30.2x
+pgreuse             4,346,396           407,397         10.7x less
+pgrefill           88,775,854       436,486,518          4.9x
+pgdemote_kswapd     5,933,439       129,586,750         21.8x
+pgdemote_direct        24,837        35,505,114       1429x
+allocstall_normal         469           153,600        327x
+kswapd_low_wmark_hit_quickly 671         27,821         41.5x
+pageoutrun              1,333            29,217         21.9x
+numa_pte_updates   24,508,077                 0          na
+numa_hint_faults   21,152,264                 0          na
+numa_pages_migrated 3,330,897                 0          na
+numa_hit           46,667,202       353,812,703          7.6x
+
+---------- Takeaways -----
+
+Private (CRAM) node performance is lower compared to a normal CXL memory 
+allocation path. VM stats shows more page_faults and allocation_stalls 
+on the private node case. Could it be the allocator waits for migration 
+path to demote pages to private node? Or the actual hot pages in dram 
+got demoted to private node to make space during overwrites? We will try 
+further analysis on this.
+
+========== MLC Experiments ====================
+
+CMD:
+   $./mlc --loaded_latency -j0 -c0 -b1g -k1-15 -W5 -r
+
+Experiment Results:
+
+1. (Baseline) DRAM 16GB + CXL 32GB
+
+Inject  Latency Bandwidth
+Delay   (ns)    MB/sec
+================
+  00000  686.18   40137.5
+  00002  686.69   40124.0
+  00008  709.74   40362.7
+  00015  711.75   40350.0
+  00050  710.72   40357.4
+  00100  712.22   40316.0
+  00200  695.29   40026.5
+  00300  602.91   38845.3
+  00400  482.28   36240.4
+  00500  410.03   33606.6
+  00700  275.13   26352.5
+  01000  241.82   18851.7
+  01300  230.91   14695.8
+  01700  215.27   11403.2
+  02500  217.76    7900.9
+  03500  194.42    5787.0
+  05000  192.17    4166.4
+  09000  190.36    2475.0
+  20000  188.09    1312.1
+
+2. (private node in default write protected path)
+     DRAM 16GB + CXL Private Node(Uncompressed) 32GB
+
+Inject  Latency Bandwidth
+Delay   (ns)    MB/sec
+================
+  00000  320.09   12186.2
+  00002  543.42   22726.1
+  00008  482.11   28385.2
+  00015  488.26   26304.6
+  00050  485.19   26898.4
+  00100  477.65   24668.9
+  00200  483.68   21273.8
+  00300  486.44   17655.9
+  00400  480.41   16470.0
+  00500  481.30   13589.9
+  00700  493.84    9960.8
+  01000  488.66    8267.7
+  01300  491.31    6433.6
+  01700  476.97    6211.2
+  02500  472.97    5037.0
+  03500  466.05    3533.8
+  05000  446.44    2783.1
+  09000  417.03    1877.5
+  20000  387.22    1035.3
+
+Vmstat metrics comparison of both cases for MLC
+($cat /proc/vmstat):
+
+-------------------------------------------------------------------
+Metric           |  Baseline    |   CXL Private Node |   Ratio
+-------------------------------------------------------------------
+pgfault           10,287,329         46540,782           4.6x
+pgactivate           1141468        65,098,272          57x
+pgrefill             260,699        47,592,751         182.5x
+pgdemote_kswapd    1,085,783        26,063,754          24x
+pgdemote_direct    4,562,539        15,809,485           3.5x
+pgmigrate_fail        41,929         2,763,725          65.9x
+allocstall_normal        161               425           2.6x
+kswapd_low_wmark_hit_quickly  47           763          16.2x
+pageoutrun                55               936          17x
+
+Takeaway: Our MLC tests show a trade-off between the two configurations. 
+During low inject delay, the private Node is faster. But when inject 
+delay goes high, the baseline shows better latency. Could it be the TLB 
+cache effects?
+
+--------------------------------------------------------------------
+Case 3 dmesg log snippet:
+
+[   82.525741] page: refcount:1 mapcount:0 mapping:0000000000000000 
+index:0x0 pfn:0x5f5800
+[   82.525753] flags: 
+0x17ffffc0002000(reserved|node=0|zone=2|lastcpupid=0x1fffff)
+[   82.525762] raw: 0017ffffc0002000 ffefc85717d60008 ffefc85717d60008 
+0000000000000000
+[   82.525764] raw: 0000000000000000 0000000000000000 00000001ffffffff 
+0000000000000000
+[   82.525766] page dumped because: unmovable page
+..............
+
+We will update on the compression enabled experiments further.
+
+~ Arun
+
+On 23-07-2026 10:23 pm, Gregory Price wrote:
+> On Thu, Jul 23, 2026 at 02:08:31PM +0530, Arun George/Arun George wrote:
+>> On 21-07-2026 01:03 am, Gregory Price wrote:
+>> We intend to test this series on a compression capable CXL expander
+>> hardware. Since compressed ram example (cram) is not part of this
+>> series, how do you suggest to do that? Do you have a version of cram
+>> module compatible with this series?
+>>
+>> ~Arun
+> 
+> Hi Arun,
+> > I plan to RFC the new setup for compressed ram this a bit later, but I
+> will share my working branch with you for testing.
+> 
+> ~Gregory
+
+
 
