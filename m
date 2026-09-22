@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC6EC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E10C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:44:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50C216B00A5; Tue, 22 Sep 2026 07:41:02 -0400 (EDT)
+	id D00586B009F; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BD5F6B00A6; Tue, 22 Sep 2026 07:41:02 -0400 (EDT)
+	id CD8356B00A1; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3AB156B00A7; Tue, 22 Sep 2026 07:41:02 -0400 (EDT)
+	id BF06A6B00A2; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 134546B00A5
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:41:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 925C7C0432
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:41:01 +0000 (UTC)
-X-FDA: 85241206722.06.7F4A647
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BC1E1180002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:40:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdR85bzh;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A09F26B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23AF6C0446
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:08 +0000 (UTC)
+X-FDA: 85241214576.07.7F55378
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 69B0B1C0009
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oE4XcNzC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790077259;
+	s=arc-20220608; t=1790077446;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+/XiWey5CLZx+RgVIraKLoSGfEXc6kJ7NpnMFbxg/g=;
-	b=sNdZuxdzi/uB6wFVG3itqjaTn5q116fJ15y5n+iSMc0dMHFhVodqwy6DLoiRdfVucU8ynb
-	BKGp40yanXq5480613oAQk8OtPj6ZCfsqPomh9tsiLZij5IIVOCaATvgOWFOyIzhZJOXVN
-	eoT7ZqE/PkxVLtTdGq4QZcQTcprIksU=
+	bh=L5RLJmkn3UUvLlQqkDra9TAVkTvT0dlAwtedfHtKnSg=;
+	b=oMW2HJSGwSFl9RSzgWq/wTXHMkJnYkCVr/w7zClSxuIk3OAJ/w6XnZ+Yh+byEhMwX0Cjii
+	LlWSEm/cOyBipWxTOMwYbzhT0ARaITXSzLmmwyMbzAkfA3FxJ0vLxDYD7DD4qCfSyUjjQt
+	W540+GK4OPUB44aQav9PftsTQJfZc+0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MdR85bzh;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oE4XcNzC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790077259;
-	b=Y11FNkZvYmNyUe/qYFOHvP/597B83R8ui7T0qEbgOA5s55V0stz3V6ptMeZq3T/Khaz/Zb
-	uyrxy7b53pfIubzhBgT9WRLagI1rC4yLK3YMlm50/c8qwkSp7E/Qy86XxRHYXyblSLWtLp
-	mSdYfTsayBsoXt9GvQMFpfXUAQib5M0=
+	t=1790077446;
+	b=f2GYuImY5OTN6+9M4Cq+oLVrrv/GuOExYbfICvrcFV+3FvWSxM2KZathNxXsfXIriFllFH
+	2zrZaZ3WUXwB60NMZBKjPJPuYizJBdw3bDTfP7BJVMagkt12YjP+DB79sAnRUe5LmLR09E
+	nMiLp5ucUJWqWmUG/ksF9E6MEcd+6wE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0E65F414D0;
-	Tue, 22 Sep 2026 11:40:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757891F00898;
-	Tue, 22 Sep 2026 11:40:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E82B360DE9;
+	Tue, 22 Sep 2026 11:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6A31F000FF;
+	Tue, 22 Sep 2026 11:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790077258;
-	bh=F+/XiWey5CLZx+RgVIraKLoSGfEXc6kJ7NpnMFbxg/g=;
+	s=k20260515; t=1790077445;
+	bh=L5RLJmkn3UUvLlQqkDra9TAVkTvT0dlAwtedfHtKnSg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MdR85bzh1RoqepA7zsF3/V8Pl3ctZkZaPAwXAkpWebSOYwMiIbBg3nw2cdV5909Er
-	 Uedjv/1PNvNeBmzZVpxsppAHst/XgeDExrGvWwvfJAnxrHh4tAkKsOPgQm6wtCkQfF
-	 6iiKaW9kUgyR0zBRpZOv3kT37aMB6ZltRGaudFj4ZeHkg0ZrOYTxubjYHGxFjhAUDR
-	 ZNZPm7Pp828QoHwc6rw+JMG5FdJKk7qkk51QeZdkB8WLdt7TyuAuCd1jWyFrppvasK
-	 ctEmDZ+yTGQRmAQOCEs7HRUudU4TKL1rsVIklBs9ms2+yTi5bCf+8tCq8DpcgD6HH8
-	 RnGkReCInrnWg==
-Message-ID: <49208ed6-6c20-49a9-9c0d-0e1cffe1898f@kernel.org>
-Date: Tue, 22 Sep 2026 13:40:51 +0200
+	b=oE4XcNzCMl2sJfDqV9RFSJEjYfMfdqq/nMwYZ1MWsXGUmE7SwiOLl6k/Aj+lTQjTV
+	 j+b4WrodzYdyDKW6yVZzQ3pYgJ7zb43b9PXkuyoLiVGw7WEnVM1BzgY2e3lVfnhlql
+	 CUPCbVUTH45BQT4Kc8U98iy49kLjdc9g75pgfthUJ7jlvljBiOvT/MyWz89wKfVy1Y
+	 z5Ux/PPjRKas0tuKelx6PCc3xwwuoWmb899JEIKHDyg9Byw8rZkwyMDSa92oWr+IK6
+	 fIvHpaVtLFfzDQHY2vpvMajsVMNKg+gwQ/7SKds1DkZa1isoHneT8o8KMd0k0bHpzi
+	 sR21x5WiIJm5Q==
+Message-ID: <625348f9-97c6-4996-8ddd-2e41867e07a0@kernel.org>
+Date: Tue, 22 Sep 2026 13:43:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in
- move_swap_pte()
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
- rppt@kernel.org
-Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
- shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
- <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
+Subject: Re: [PATCH] mm: fix typos in various comments
+To: Zhijian Han <hanzhijian1991@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ SJ Park <sj@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Alexander Potapenko <glider@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260922031843.2857104-1-hanzhijian1991@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
+In-Reply-To: <20260922031843.2857104-1-hanzhijian1991@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC1E1180002
-X-Stat-Signature: 8zjaugj8owf8ne418rp9atu8gscbkzaf
+X-Stat-Signature: t7r1h83e11ghmsuas7qhukyxy3robd3n
 X-Rspam-User: 
-X-HE-Tag: 1790077259-926689
-X-HE-Meta: U2FsdGVkX1874KPWnCU3PCpDoY9E4J43AbV9PsKUdWSaiBlouTX8nUKn8T4jU8JgVqtpVv83wYComKA2BcOpJ8jQx0k57zvIoVtzQ6CMIklTnopi0EAq3U4/mqbFCwImBv6sXbndi5eu3hMHIpBhryzXB7tokxS6Kvsu3/zAaYhkMI6lyPICxe0lHViCEDMAzPntMoZa33cNLYYSFHKfwFZCp2WSKhC1oE/9vNpidfzlodegMIlpbag66ByOeul9iTzip8NCHnt946/Zq+Wa2qNHMpeDKOV8DGuzwZJwtOGV4OEDqgJ5zEq7SMb++1H5g3IImsZp9NwgzPk1haeaIDNoLXnQyxg3vn7UQQRpGGOO9tixYHk9pxC/WDkVxVKOYAPGK/GXuZQpbQDFlHfhYMXvDikdvzikFJRAzyhpryhuHc2/xVY36qUo4k9uRYMZ1nrNfBpXCf9C6szPOIADXGzbakasTXnz6XpIm5fObVxuMIro4L5J/rfwLM03Pm+s1ojxcuGUtKyoa/c+at/EvX8h22LMQ5PqJs/P9PoYp5jJeyFY8Rl/4YVjAi9oWa3qdp+GDyN/6MZOk99oJ5kglq/+YeN+6MeQdLyi+XVFQSS4xQG4AIWtoPJxqLocTvLceBicE3M7iStPWW54/c+8ym4MYmUkUJuj+feuCtAh90QMK52dwJdVxJoI6trj+PUOSwSd2Wcazd+wz+Wxy2miUWQ5Yi/vC5e51JhbGJHrAHcrayFT9UZ7Ft0fqF38adsueIDjbd+ICzPbeQM2owixG8eIdu44yYCWxJHdu0cPIfmiLqezgEDcQ9aJyIT+RS85D4q1cfKc+SL0vuOZ/BlAyunKk08wXkGakwUv3QdY8kz5v2Sjn3FBoxrN37FBApJ+qPng+SBUts9LzpFGRgfg8Y4LSwpeFm68RKcjhUz/CPHtXzrXMnS67KPr3/BbYimqQUkZaLLmwB9jAwPceUV
- Mt8xVmL1
- ksX008KHYjoJPxecbFQcW6KWKKGnfOFqfd2YOSAOyRedSlF2f/nN0JPWU2BLxvG/ZuxCck6XOk9lHrsqzBfyCun1k5ohgfOAnxHyg8+bh0QaJMJJ9XL4h5kNkuLyAv80rqPqX+uSzYdWE8yJ7GlCcVRy1DGadE689ITXVZgrONliFVRE8WBZq2LLM5WEhPr0gS2IVEfNBZsNuNLVU6bIlh66NP5KFz80EdKSttw65nVi2KBTA3AAPcMkschb2gUHL2IVUxGjle5TidCU0thf8nZ3KQY+XW6zrCDXZXVfZ/Gv7rkXwHm/h1/16U69khzcXf3ujeY5BX58f5RU5ji4UwHrW9wh8sJBD8wOK7H35csXybcaOex8+Vj7Nk+OCUjSO05SZMK5n6YZqWBlRQjUD1jXWeh0AiPUvkkG+D/Im9VdVB3Y=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 69B0B1C0009
+X-HE-Tag: 1790077446-932278
+X-HE-Meta: U2FsdGVkX1/pRemCopYA/3qZEyZjnvgrA0Jlk+k+aCYpZAPvoMxrq+bWR0pj7WB0+leTfGiOwcRbbrRtkIf1Enp5UyQBHWGtRaNBy0StZJkPX8zcgErAgSZRMUtFNXcg95JPZrHJHvql5a+bCEH/z9WiDVzM9cDofsnqDoK2qQ69PyiOlF+5ItOi59r6xIck5LZa9/38Va4Cr56I+E9BPBu4QWb2hxzsDRtVaDCw/uupuzexU4GUImhpXiQsE6Re8mKcYoxLEyq852h0eFr9P2ivq7ukJvN2zp+4gn5890A4xkqwRrjckBGQ7sUxLeQl8Q6youO1JFOQYsSQwSs790K149mQ/ISc53Tqfp4O1Pf8zVP9GM717Tnkjc6y7YWBdSO7CNwYtR1s4UdeieMV1qSJTi2ClzrEM/Zp1tPCzhcc8iW4dYnJPALpf7QFOpfsfb87iaE5O9mnaSQ5iBETXnwe083zzoc4fGvGNKmfS9R5iKT/8aaDgGHSzebTuV5Pwahd5ts2ZARftrGSs677Om2QdADsSCXkPqnbaR/v/6gQ9rGRQHeeVpF4ghE6L7NjlUjWvf7MIx+Pkleo+VOOHbYIoHmXUzffr3WyV6Y+Mh/ImeeC7XHhFr9cbyY8X51ncpW8CANZUbwTwsEEphxNZlz19yLUv+7G++UV7mZYxq6Jqp9zNVrmLzk4XJWBxbXgz25VSznGJzq5e+l3I88Zfj9I3zvt1KHY9rfTXyuRcGki78k5xJNIwnik2pCC9PMeO/DZ59A0wk6bP6fkvXuPSP77DXKERCMratOAzj1Ubumb/KOZaEHvukZuVwo6IQKh2q4tSbZoDv5dqzVew9PXKBkaXSWVQxGSn7WINE0rtfBk5jRcE7q1OyItvwHFOdLv243IABcEounZ+Uiyh5DuQZQ4bkbOoAntjJjnzhS96v4B9vyfxTztmLWzi3hJJsSqQhO93oVfRMf8UojV0TP
+ YqZm5JN0
+ r5rfWrpGQKWWTF64Pyg1HHf1IriDyqUoAGS8oi1Z5EbzJyC7nMQ8OtIedEq7hTdaRnVuuL3rFb3aU/2iS8FlgNrV2PFeu0c86O+pAXZTWE2NeN0NUR4e/zS9c1ELiCroLI2VWzpKuFmwk0QMG6wmou3WKqZnjD1QZTMp9PZINKj5V/c0ZVdxZrnrnhG96+Lr5w1Ab4ZjFapOr2P0OeUraSWbdFYOo5kiaU0QeV6xod3rJ0XEVNu4l9hlV2oJNpAbirPrSn6ivYX0vs74CIZcrBEwsXrhPBSqkIe4OaPzk3d2MrKTv3x9sULVD6AQS0vUvDKv2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,66 +142,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/19/26 02:46, Donggeun Yoo wrote:
-> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
-> destination unchanged, so a uffd bit set on the source lands in a
-> destination VMA that was never registered for write protection.  It is
-> then permanent: the bit is dropped only by change_protection() under
-> MM_CP_UFFD_{WP,RWP}_RESOLVE, which uffd_wp_range(), mrwprotect_range()
-> and userfaultfd_clear_vma() issue only for a VMA registered in that
-> mode.  pagemap reports the page as uffd-tracked, and MADV_COLLAPSE
-> refuses the range while the bit is set, because collapse_scan_pmd() is
-> strict about uffd on swap entries.
+On 9/22/26 05:18, Zhijian Han wrote:
+> Fix spelling errors found by codespell in several mm source files:
 > 
-> move_present_ptes() and move_zeropage_pte() build the destination PTE
-> from dst_vma->vm_page_prot and arm RWP only when dst_vma asks for it, so
-> the destination's own registration decides the result.  move_swap_pte()
-> copies the source PTE instead and only ever sets the bit, never clears
-> it, so one UFFDIO_MOVE behaves differently depending on whether the page
-> happened to be resident.
+> - "aray" -> "array" in include/linux/mm.h
+> - "indiciate" -> "indicate" in include/linux/mm_types.h
+> - "aggresive" -> "aggressive" in include/linux/mm_types.h
+> - "progated" -> "propagated" in mm/huge_memory.c
+> - "Pressumably" -> "Presumably" in mm/hugetlb.c
+> - "fime" -> "time" in mm/hugetlb.c
+> - "farest" -> "farthest" in mm/list_lru.c
+> - "trivally" -> "trivially" in mm/madvise.c
+> - "atmost" -> "at most" in mm/memcontrol.c
+> - "splited" -> "split" in mm/memory-failure.c
+> - "appliable" -> "applicable" in mm/memory.c
+> - "incase" -> "in case" in mm/page_io.c
+> - "contigous" -> "contiguous" in mm/vmalloc.c
+> - "probablity" -> "probability" in mm/kfence/core.c
+> - "widnow" -> "window" in mm/damon/core.c
+> - "makrs" -> "marks" in mm/damon/core.c
+> - "possesss" -> "possesses" in mm/util.c
 > 
-> Clear the uffd bit on the moved swap entry unless the destination is
-> RWP-registered, as copy_nonpresent_pte() does where it installs a PTE
-> into a destination that may not be armed.  A WP-registered destination
-> stops inheriting the bit as well, which is already what it gets when the
-> moved page is resident.
+> No functional changes.
 > 
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> Signed-off-by: Zhijian Han <hanzhijian1991@gmail.com>
 > ---
->  mm/userfaultfd.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  include/linux/mm.h       | 2 +-
+>  include/linux/mm_types.h | 4 ++--
+>  mm/damon/core.c          | 4 ++--
+>  mm/huge_memory.c         | 2 +-
+>  mm/hugetlb.c             | 4 ++--
+>  mm/kfence/core.c         | 2 +-
+>  mm/list_lru.c            | 2 +-
+>  mm/madvise.c             | 2 +-
+>  mm/memcontrol.c          | 2 +-
+>  mm/memory-failure.c      | 2 +-
+>  mm/memory.c              | 2 +-
+>  mm/page_io.c             | 2 +-
+>  mm/util.c                | 2 +-
+>  mm/vmalloc.c             | 2 +-
+>  14 files changed, 17 insertions(+), 17 deletions(-)
 > 
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 74f04c323c50..6495666c596b 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -1452,6 +1452,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
->  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
->  	if (userfaultfd_rwp(dst_vma))
->  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
-> +	else
-> +		orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
->  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
->  	double_pt_unlock(dst_ptl, src_ptl);
->  
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 87feaa5a2..5b2215e24 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4501,7 +4501,7 @@ static inline void mmap_action_simple_ioremap(struct vm_area_desc *desc,
+>   * @desc: The VMA descriptor for the VMA requiring kernel pags to be mapped.
+>   * @start: The virtual address from which to map them.
+>   * @pages: An array of struct page pointers describing the memory to map.
+> - * @nr_pages: The number of entries in the @pages aray.
+> + * @nr_pages: The number of entries in the @pages array.
+>   */
+>  static inline void mmap_action_map_kernel_pages(struct vm_area_desc *desc,
+>  		unsigned long start, struct page **pages,
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 939b5ea8c..6c21bab3b 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -759,7 +759,7 @@ static inline struct anon_vma_name *anon_vma_name_alloc(const char *name)
+>  /*
+>   * While __vma_enter_locked() is working to ensure are no read-locks held on a
+>   * VMA (either while acquiring a VMA write lock or marking a VMA detached) we
+> - * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indiciate to
+> + * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indicate to
+>   * vma_start_read() that the reference count should be left alone.
+>   *
+>   * See the comment describing vm_refcnt in vm_area_struct for details as to
+> @@ -1968,7 +1968,7 @@ enum {
+>  /*
+>   * MMF_HAS_PINNED: Whether this mm has pinned any pages.  This can be either
+>   * replaced in the future by mm.pinned_vm when it becomes stable, or grow into
+> - * a counter on its own. We're aggresive on this bit for now: even if the
+> + * a counter on its own. We're aggressive on this bit for now: even if the
+>   * pinned pages were unpinned later on, we'll still keep this bit set for the
+>   * lifecycle of this mm, just for simplicity.
+>   */
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 644daf5a1..c01b7e2a1 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2328,7 +2328,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+>   * This function checks if a given region should be skipped or not for the
+>   * reason.  If only the starting part of the region has previously charged,
+>   * this function splits the region into two so that the second one covers the
+> - * area that not charged in the previous charge widnow, and return true.  The
+> + * area that not charged in the previous charge window, and return true.  The
 
-In move_present_ptes() we don't run into that issue as we create a new PTE from
-scratch
+"that not" sound weird. Fix that while at it.
 
-	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
-
-
-Staring at the
-
-	if (userfaultfd_rwp(dst_vma))
-
-I do wonder why we don't have to take similar care about wp ... I'm sure the is
-a good reason.
-
-Code change itself LGTM.
-
+Apart from that LGTM.
 
 -- 
 Cheers,
