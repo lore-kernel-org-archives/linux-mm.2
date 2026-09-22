@@ -4,136 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25DFEC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:55:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3920DC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:56:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 120EF6B00A0; Tue, 22 Sep 2026 09:55:25 -0400 (EDT)
+	id 47D8E6B00A2; Tue, 22 Sep 2026 09:56:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F8BF6B00A1; Tue, 22 Sep 2026 09:55:25 -0400 (EDT)
+	id 407066B00A4; Tue, 22 Sep 2026 09:56:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29CD6B00A2; Tue, 22 Sep 2026 09:55:24 -0400 (EDT)
+	id 2CF8E6B00A5; Tue, 22 Sep 2026 09:56:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C51236B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:55:24 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48C6E40499
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:55:24 +0000 (UTC)
-X-FDA: 85241545368.01.E6DEABE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8769C40007
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:55:22 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlD8MKaU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0792F6B00A2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:56:20 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98A061C2C55
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:56:19 +0000 (UTC)
+X-FDA: 85241547678.19.16E40C4
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 7151240006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:56:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=M1OpeUGO;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790085322;
+	s=arc-20220608; t=1790085377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vAErR5nUF5jYNRVD6fb923LvqrMdmDoaO1mDvYNJTgo=;
-	b=ERgQxaf2R3vlbcDct74NJmtEuu6PCg2FFVo4TUyES5/AwKYJkSp820I5EwHH6z75G8d2iS
-	qLge420KRC+qQCWuonUSSBhIoO4mGDcCh2k9OcddIJxqECQG/G0irbwPRmcL2hG42BG356
-	+Q+jRPdRDJITHLqYp2kQXA0RE9mTDUw=
+	bh=hGu1NCAbAsmG5udT7RRBzA29qW1Tatxi7P64YgMVTYo=;
+	b=0VCLRTaCLeqndvmsvyv785kYEB4jfZTBcD+546apD3FC+H0oXoOoPZ7WgEyO2eqlwguRom
+	FE/varDCXgwRHCynGUQFqPv7RFABWBX/XJm4obv0j2aYtBdZWOpUZAFLrkZQbzl3ZtfNmg
+	vE3esM0wwuIz6xT3il6s3VMiT1pDN5A=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WlD8MKaU;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=M1OpeUGO;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.169 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790085322;
-	b=dLLYYVZj6EmgH6Kmm7G31/nSMpCwMOSQrL4Yhb7SsNjkdWFdVlhxfCTE9ipKo5E8qNxnFy
-	IfKGvGEYoenbpmvB/Dm1GhgFuBreOsZcgiCP/Xp8THt/QMdfICjUEOrjirT4RSaAveJ4z9
-	sMfKBcH/eRNv/EnPptKdoViM1VDxOaI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03AFE6020F;
-	Tue, 22 Sep 2026 13:55:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B041F000FF;
-	Tue, 22 Sep 2026 13:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790085321;
-	bh=vAErR5nUF5jYNRVD6fb923LvqrMdmDoaO1mDvYNJTgo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WlD8MKaUgx0yamc8h91fzZpUq+67Jj9i2OaP2jc0DoDFTbLwN9NDh1giPE8DcEJAz
-	 8QWzyr2rLUvwsXjaUtU6g7x2xqFukPXEX5DFPVrrWpAp8KVHpLmXAfibyQaYG0DoHu
-	 X2n7EiLG27ZV6U4BpIQotcFuxlULVn6OWfchYpZncZeDU2n2fXWOiiDF+NvyfxOdLu
-	 ZMxE6Bl8h5EHVZd78B1q8CztRTwFAtCeqaT28dtbKsRpowV0rEIATOCZYAw14xPuo8
-	 3Q0h0CLxLrJbKw1Fi34UpGfNSNU02cwvUYxH+xXZJUoUr4mYQ+0YEVE3GZkw5TFyzW
-	 lwkbI4TJnWnjg==
-Message-ID: <462b217c-a422-4818-bac1-7f204f32fa29@kernel.org>
-Date: Tue, 22 Sep 2026 15:55:13 +0200
+	t=1790085377;
+	b=2tMmCZCbJVrMV0caDAWM++1VuB/UZObFk95NXmk5h5WUQjQ+SmorzgOhhuRdLhCxtkX+q4
+	kco7NyXntP5owLwJUGoT72dAnCuulxX64aZ0xNtWt73IqiLl3J0ObvdOP63UElr6a3WFN1
+	Zzr8nXJCmodLd+ZG5bTXDgY5q4ZKkjU=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93a40a9a01aso86767485a.0
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:56:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1790085376; x=1790690176; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hGu1NCAbAsmG5udT7RRBzA29qW1Tatxi7P64YgMVTYo=;
+        b=M1OpeUGO+FTtZnRaDUErxoNfdUdvd4yXtdSMeiY8Womlqs2fcDztnZIdUQ+9uCdqAt
+         1IIBm98jUkN0maPlxpqw93Ystf0ajJ70QSeDtxkcPSwSOiIk15E8jp59riUeh/Y5QwDI
+         j8Gbb6GaDEqzEwMD/T7Fwp1C3fQTpbCPVBRMUC1oa9gCBz/WPYyFL5Gk6diTZisMLlPq
+         ZJpv0ioEkYTpw8Y2oZKYrreskfeJCcdTSyK6uuB24nxTqEJSDyEgilVnf3BZeY3rWCFF
+         CE4K+xhcgHkVoyAyD4ttMunkrrAcRUG9yybJzsiYN2jcw1oWbi+xd4DUQfj4UU0Z7rFR
+         qmfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790085376; x=1790690176;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hGu1NCAbAsmG5udT7RRBzA29qW1Tatxi7P64YgMVTYo=;
+        b=B+ItWfRL4GQFlbf1lub1KAeCSNq9fuVHN7j4RKVntHe9OK4rWc5RkVPFCvTWZeL3br
+         fxbLZ0MniTzQI7YRPhYoynogvpl3BUgiN7F+bKxLOmNpUU4Yae2zEvOkzv4Tvfuv6Tuq
+         mIZH7dBQfGcfOEMuwb78AOzJ6iQwDNNUduS+xiyWJIfZEqi4BbDlLSD9Kfr4GAQKPlF2
+         4wFfw4Ew1Mc7U8RCBLn+9LCvEZWC9U21Sr0GzfVmhIT/sbDaWQS84hCoeIaf7hAT1asa
+         kGS/F1BCV2M1KOGNsit4FTmySc720Ka6liJ4IxiuiPgw9DzrLoFX6DafRTdbrr1GuFMS
+         LllA==
+X-Forwarded-Encrypted: i=1; AKwUvBx4LLCEk80UfbcCJOMm8Ij/Y/jKNT3Yk9RZYnbZHVXJO1DjYYZPqirYPkHMNy+gsKEURFcRuCxqCQ==@kvack.org
+X-Gm-Message-State: AFuF++mPMwgPQTKzeagp2+0DRq/e8OpNXcIw21Pp3BC1m0lOWc/VkgUM
+	HWhs21syrzNQDL0dgM1e8eiElLGSGzvW5iXPVFVQ1lv0vCBnc59FxAMh09ke8oIhDLE=
+X-Gm-Gg: AYBFou0DQjeLhUWZbLDpM2weyOIPQoNTtuAwFcbe39R3evnEcl25A4j7E8eMwDgHWns
+	5QFvtLjNYQg+JcpUG/NHA44FgY4eGOSMMz0O6Twq4gFV3X5SFN41Rz5N22BLNnItFMdrhcXYA3X
+	UAvb7o8c9qSZvKdgUiIzR6WVUGCfBlRPhuFhqCWkn0NkCpdg/BtPfwdlvKQwcu6/JsNXgpYURVX
+	ZuTM+TbaZcx91jFweTAbJhC/k1jaLCsbGYADEN5HAc6OZm7xz+QaB+GDor+IfsBeaeWD9RBoF+I
+	bloAmzhCOA7q0VTiFNx7B6u2IlJL0xRghYBV3cjN7UPV1zZijUFhoquwfvqAPEHZI9V+BaTZj6I
+	0IoSSlDREWokqpQ1PeCrWuZxid+tHToujhtZLerFkNMv9onKd6OzL8wrgheesHZmkWqSZoUzm+3
+	e2IbR2XrD5Z6LIs1yCUbssH1ZcPblbvoFe+dAxi3VeaSFzyxspPXQ17pwJUvY7FpA/du3y
+X-Received: by 2002:a05:620a:444a:b0:939:c7dc:8712 with SMTP id af79cd13be357-93c17e489a1mr426789785a.15.1790085376405;
+        Tue, 22 Sep 2026 06:56:16 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1d17afcfsm151272285a.20.2026.09.22.06.56.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 06:56:15 -0700 (PDT)
+Date: Tue, 22 Sep 2026 09:56:12 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Matt Fleming <matt@readmodwrite.com>,
+	Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org,
+	abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
+	brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
+	dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
+	hch@infradead.org, hch@lst.de, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, mhocko@suse.com, ritesh.list@gmail.com,
+	rvvandan@amazon.com, stable@vger.kernel.org, surenb@google.com,
+	ziy@nvidia.com
+Subject: Re: [PATCH 1/2] mm: page_alloc: do not give all non-blocking
+ requests reserve access
+Message-ID: <arKI_AwXQxicc_iH@cmpxchg.org>
+References: <20260910114602.926944-1-dipiets@amazon.it>
+ <aqQlUr-1h07G8JWM@cmpxchg.org>
+ <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
+ <aqq8pWI0u1IZNWHT@cmpxchg.org>
+ <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
+ <arFBJdYaRx_iJNDA@cmpxchg.org>
+ <arFBWvzXPYrKuIYi@cmpxchg.org>
+ <arFFKGrpPwtTkoCi@casper.infradead.org>
+ <arFUPOi6gadAvD3E@cmpxchg.org>
+ <c4a6d3db-8b57-400d-a377-a7acbf45d3ba@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/2] mm/memory_hotplug: optimize zone contiguous check
- when changing pfn range
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-References: <20260920084946.3266279-1-yuan1.liu@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260920084946.3266279-1-yuan1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zgd4zke84uucqneq77cfp8qj9u5tjyby
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c4a6d3db-8b57-400d-a377-a7acbf45d3ba@kernel.org>
+X-Stat-Signature: 1rfgkmber7zuatgogo6fy9kfaho74x1x
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8769C40007
-X-HE-Tag: 1790085322-748949
-X-HE-Meta: U2FsdGVkX1+yGg6UdWcKTuZ5r+6uWtXxc+VtHAlSp33GuJaw6AME5SKbwSh5P4YOIVzArVNP+gQsIsrOP4H1qPTMvFmkqwwCOfvdBakz7voOxPqdy6KoBWtl7/xawLCqtc/0QwpItluiVWfcc/WbTr6BQpVy5rP1Rpe1LsqJaYD5lv7M/dCr9PfYm6yN4s2Ox/j0a4Uk6D9MM8RldDW81v5gEmpcnmFHLS2OgOaQsBJ28zWBvxURCaqPhIMPwjRJtfheGJ3+q3NAMzntskxVzj0mhCnLNSrj6vkM/WbgSv7J+OevQCP3Jmjv/ZwM3aroRuv/q+3vhZxc69MNtZ1I2nJw/05+D2aUaNP7STS+oyvrwlLjNeFQHQ2KQg76PkwqDmn9BynCWkFc6/cmG9VxtPnLejZOlLue1eE7CGuHHsT7WDsSdTpyTxSMmqdSQuUVBS8W4+luK+9ufUS8802ilc+K+W8xZmj9ebs9tkagxoV5P+B6uUXBLP9NvuWNSBK6gis7sxdDvB9c6LnuG/g3WXk4yPpGdOqiFKh1HX4ju1HVCRXhh+XO/fgjk6gQSuHZB/5GdpnBvcybFg6FKaDNI6Utx+X0h5MkYbbsvIXpbFrYHBXmCMXYv45ptF6Bu/QwvS4VyWicvHhxV9G2tSENiDHuN2YfpeFiZh3yMtPTgEe0lrH1uTusiqWOlQgmxbTObfzkaafTmtAGsKX7xhqFLMbz/2z8qzub7n4fAW6AAYsOYmX+BN5S4b+xcjS2JKOKn3yhXh0+XO+O7s7P4laUMt4ZrbuaJXxTIB75zP6pWifRy8lrYcY7caWu8wOnF4tG0W59hRdmDy4ouoBQRVYYDWk05MAJq/VcGdslQSpryDSDIYajABq+iUZq4StKbpET/Z2JIsJEuxAJSLEVwkQUHBIKe0xTG/kTjAKJvS3hSFj7MedHr3ni4N8UpD863RBcIUs83onh+8TKSIF7dUF
- YDcW986V
- lonPaKUutop1jEf/v0c+9g44++DK6NfjZvXR22XHw82PkNKMsbPcivixLVoZKAu7dX9x7TtJ+7h574+MNmYWsO3otvpz0aoWvB998gizGZDfm5vaUzqDx+gmRGkrhs5WsfJq63VpFbFy+O8CeMNsBKywAJGvevHLdTK2PxE9Zg7v6oZKElTHyhUw9tyQqQHTwQF5lcuAOZSSRrOzW8r1NpYUbHIztvvvsteZnVF4GwVRwB6fZjW8FRix1JZ6RRUlMVyxp4Y72jyFigjDD3rAZ7EfdPPtdPlpBTRRS6VsVb1XBK32zWvJHXAsOYI4xEYDMMUuMktlh5WhjadJCeWmJ/ICi+sOJiopfIghhOIzUPkGHACadPntPORSb+AiCq62c+qRw80bwu4yAlTSqasvTF1VWXA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7151240006
+X-HE-Tag: 1790085377-51
+X-HE-Meta: U2FsdGVkX1/gC8bAhupHoiwJIZUTLc2vRaIq4g5CRSBXPD8iNoXcOkympgY3VCCP2k7mMc8EVIw0+cvD3qEI6tuY+pZlOP4K2Qhj0TYrl3uLgU35vf39ElUISHatVWbzCi0tKi7kIvlGTxBXQmCPygb1EwGldZx+UKDTdZwsoo6TpF7UiYZUzQ4yhoyA75Swdnb1Y+3xzMZLr6ubq8j6/oh8/9ghN0ZGAA2rfNS/XLzESKAopzkW/Ur3hlhMO0pSDi1y3CB7KGZfDHib2i4LPbJfCyksf7IpXOSZwI+Wph8QaPeuGjr2MiXk9yqZghEiTG/VuDF+ar1htcHhngPADy0gjLKq+bWHD4LO8dWXcMfU5gfsphpxKTxqIJVk2ZckLXCvlXyLqeQuOd40pE5XRPL0nfJhqCcdVJM8J8GIpY5eGH/d+SpPQUli/MGr3GkMCUv0CBlhDhvxryZnwHsz13ICheGgOmb+6IPC4Uq8b5IzY5slWK69/5jW7+qXz98OaAHMPsy62VacOrrmwPEEvcY1GOEScKMO1294Wi1hU1JIyz0DcbgTf9tVR7p+xyILXI4saA4aiIscqqPeyS12Vp5uaJDRdOwOx2icWGQTxevuHTGVn0LKQPHeReWZ7/O8FKRcG9RgjDUR7BEYYE1QjXtcywMxKWuE9TwNQp+adaoIUTCE1cDvKNY5uBga8nUz73WCJYx9m0lEfxSQbd/Alfgq+m0UoVGROv9ryOH6i8NuS0FJfzbHOEN4qXPD+5zCgAsWYvCfAcn5W+hBnzUrfbBKkAnl3HULImJwrYgy8KtEEf1DMucP24lkAhqKP4e1UGeYlCkltxiq5j10OPUsUnjsWM+I/Kk+HdWAbZ5IR/o/R61Ek+Z73NmFEa8THQxLT0+3V4tKZeb9U9ADBtUdGdVeePihkMXsMDCZeE3IQpgIvtgE4tRmOguh2Th1cG0gfBwZZJEtXHKSV1UvvUO
+ qgmzEXfY
+ 4RjY/p15iZvPGylcV68/rESQnWdeNilXnlTbkSK0W+0QRU43klux9qWvEDdrgxbWhK1yKyRl/zBQfI8UaOe1e3rBv0koIPVkF1iRntRAhYrZ34VQDTyb/1OD8leOrDg3oTg0CzYKSQNQWml63CxsuRIRFeEXNFTzqQkcO6GK2CRYNE19feZO3mD33c8GL2lNBGtB9UTJMpZ4cfHEg72V+5txCeNljJ35eE7rGYwIXs2MBasRD/lRlGDoWvasiRueGqJiJ2vpEZr50vD6vBQwGc6WBXwLBKl3UJ+eXCeCdGsm3KlV2tWhJjMd6OkwijL+h4NUzR1Aa5D2uia4EfkK+MILFSaB18Y01NI6U9fNiarxF4SQuvQeL4PspICMNQQQSoY4lP+o7+f4nJxrxnhMi7nYmhnVGzqy5lShwXXVpLKaHAwejTOBu3Goxs60GcJTixfyrvSRjo3SJuhyF8+jw34f6S2FHE5N7XFGAtQo7SL7E4ZQyi08dfvCsLGQAV1I5/JeDD78iH74yiytAf9hTO3gkrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,82 +137,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/20/26 10:49, Yuan Liu wrote:
-> This series introduces a pages_with_online_memmap member into struct
-> zone to avoid pageblock-by-pageblock scans across the entire zone and
-> improve memory hotplug performance.
+On Tue, Sep 22, 2026 at 01:52:41PM +0200, Vlastimil Babka (SUSE) wrote:
 > 
-> Approach
-> ========
-> Add a new zone member, pages_with_online_memmap, that tracks the
-> number of pages within the zone span that have an online memory map,
-> including present pages and memory holes whose memory map has been
-> initialized and for which pfn_to_online_page() succeeds.
 > 
-> For early boot memory, pages_with_online_memmap is calculated in
-> memmap_init_zone_range(). PFNs initialized by memmap_init_range() are
-> included in pages_with_online_memmap, and hole PFNs for which
-> pfn_to_online_page() succeeds are also counted in
-> init_unavailable_range(). For hotplugged memory,
-> pages_with_online_memmap is updated through adjust_present_page_count(),
-> which is called during memory online and offline operations. When
-> spanned_pages == pages_with_online_memmap, every PFN in the zone span
-> has a valid memmap entry, so pfn_to_page() can be called for any PFN
-> within the zone span without an additional pfn_valid() check.
+> On 9/21/26 5:58 PM, Johannes Weiner wrote:
+> > On Mon, Sep 21, 2026 at 03:54:32PM +0100, Matthew Wilcox wrote:
+> >> On Mon, Sep 21, 2026 at 10:38:18AM -0400, Johannes Weiner wrote:
+> >>> +++ b/mm/page_alloc.c
+> >>> @@ -3246,7 +3246,9 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+> >>>  			 * reserves as failing now is worse than failing a
+> >>>  			 * high-order atomic allocation in the future.
+> >>>  			 */
+> >>> -			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
+> >>> +			if (!page &&
+> >>> +			    ((alloc_flags & ALLOC_OOM) ||
+> >>> +			     (alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC))
+> >>>  				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+> >>
+> >> Would this be slightly neater?
+> >>
+> >> static inline bool may_access_reserves(unsigned int alloc_flags)
+> >> {
+> >> 	if (alloc_flags & ALLOC_OOM)
+> >> 		return true;
+> >> 	if (alloc_flags & (ALLOC_NON_BLOCK | ALLOC_MIN_RESERVE)) ==
+> >> 	    (ALLOC_NON_BLOCK | ALLOC_MIN_RESERVE)
+> >> 		return true;
+> >> 	return false;
+> >> }
 > 
-> Note: this counter may temporarily undercount when pages with an
-> online memory map exist outside the current zone span. Such pages
-> are only created during boot, when initializing the memory map of
-> pages that do not fall into any zone span. The undercount itself
-> can only happen after boot, during memory hotplug, when growing
-> the zone to cover such pages and later shrinking it back, which
-> may result in a "too small" value. This is safe: it merely
-> prevents detecting a contiguous zone.
-> 
-> The contiguity check using pages_with_online_memmap is stricter than
-> the old pageblock-by-pageblock scan. The old set_zone_contiguous()
-> iterated at pageblock granularity via pageblock_pfn_to_page(), so a
-> zone could be marked contiguous even if a subsection-sized hole
-> existed within a pageblock. The new check requires
-> spanned_pages == pages_with_online_memmap, meaning every PFN in the
-> zone span must satisfy pfn_to_online_page().
-> 
-> Performance
-> ===========
-> 1. For VM hotplug performance data, please refer to Patch 2.
-> 2. This series also benefits CXL hotplug. Performance results are
->    as follows
->    https://lore.kernel.org/all/20260409023552.GA2807@AE/
-> 
-> Tested cases
-> ============
-> 1. Hotplug/unplug correctness with both online_movable and online
->    policies, including partial unplug, middle-block offline gaps, and
->    edge-block span shrink.
-> 2. Large scale (256G/512G) plug/unplug performance.
-> 3. Boot-time subsection holes (aligned/unaligned, in-zone and
->    cross-zone) with correct pages_with_online_memmap accounting.
-> 4. kernelcore=mirror: verified no overcounting.
-> 
-> Patch overview
-> ==============
-> Patch 1 makes shrink_zone_span() more robust when memory/hole boundary
-> falls within a subsection. It checks the full subsection range to avoid
-> incorrectly shrinking the zone span during memory unplug.
-> 
-> Patch 2 introduces pages_with_online_memmap to replace
-> pageblock-by-pageblock scans across the entire zone for zone contiguity
-> checks.
-> 
-> v10 changes:
->     1. Rebased onto v7.3-rc3.
->     2. Added Acked-by: Mike Rapoport (Microsoft) on patch 2 and reworded
->        the init_unavailable_range() comment as suggested.
+> I think it should be named e.g. may_access_highatomic_reserves() as
+> may_access_reserves() is rather generic and would seem to imply an
+> ALLOC_RESERVES match (see 2/2).
 
-Thanks, I'm planning on queuing this tomorrow.
+Note that it doesn't actually check ALLOC_HIGHATOMIC itself. It's just
+the hail-mary AFTER trying the primary migratetype. So the name still
+doesn't look right, and rmqueue_buddy() reads kind of awkardly:
 
--- 
-Cheers,
+if (alloc_flags & ALLOC_HIGHATOMIC)
+	page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+if (!page) {
+	page = __rmqueue(..., migratetype, ...);
 
-David
+	/* Allow OOM and order-0 atomic */
+	if (!page && may_access_highatomic_reserve())
+		page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+}
+
+It would have to be may_access_highatomic_reserve_as_last_resort() or
+something?
+
+Hm, this is a mess. Looking closer, I think there is more breakage,
+name aside.
+
+You suggest in 2/2 to use the same helper in unusable_free. But I
+think that's broken. My 2/2 does not look like the full fix either:
+
+The fundamental problem is including the highatomics reserves in the
+watermark check for any allocations that first prefer a different
+migratetype - "regular memory". Any time we do this, we allow those
+allocations to draw down regular memory to 0 based on the presence of
+the highatomic reserves. And when reclaim, swap etc. come along there
+is nothing left for them. ALLOC_NO_WATERMARKS e.g. permits ignoring
+the wmarks but doesn't grant access to highatomic *freelists*.
+
+So I think there are two choices:
+
+(1) Let *everything* with some sort of reserve access fall back to
+highatomic, or
+
+(2) Only allow ALLOC_HIGHATOMIC to include highatomic reserves in
+their watermarks check. With limited opportunistic fallback to the
+highatomics *freelists*, like the order-0 atomics above.
+
+My intuition is that (1) might weaken the highatomic reserves to the
+point of uselessness, and we should probably go with (2):
+
+watermarks:
+if (alloc_flags & ALLOC_HIGHATOMIC)
+	unusable_free += zone->nr_free_highatomic
+
+freelists:
+if (alloc_flags & ALLOC_HIGHATOMIC)
+	page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+if (!page) {
+	page = __rmqueue(..., migratetype, ...);
+	/* Opportunistic fallback for order-0 atomics */
+	if (!page && opportunistic_highatomic_fallback())
+		page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+}
+
+> > I tend to be hesitant with single-use abstractions, but no objection
+> > if people think this is better.
+> 
+> True but single-use ALLOC_MASK_ATOMIC is also not that great, and the
+> usage makes the code hard to decipher. And see my reply to 2/2.
+
+There is one small upside, which is that it pairs with the
+ALLOC_HIGHATOMIC check that precedes it. The comment says "order-0
+atomics" get a hail mary, but there is no order check. That order-0
+comes out of the sequence of events here: we first check highatomic,
+which is order > 0 && atomic. If that, and the native type, fail, we
+do the hail mary for atomic, which must be by definition order-0.
+
+If you abstract that privilege into a generic "can access highatomic
+reserves" without an order check, it tempts refactors that cause bugs
+like the above.
 
