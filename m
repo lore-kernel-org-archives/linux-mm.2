@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45FBC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B8E8C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:48:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9210D6B0095; Tue, 22 Sep 2026 10:46:09 -0400 (EDT)
+	id 7A2176B0093; Tue, 22 Sep 2026 10:48:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F9A76B009B; Tue, 22 Sep 2026 10:46:09 -0400 (EDT)
+	id 779A16B009D; Tue, 22 Sep 2026 10:48:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80F976B009D; Tue, 22 Sep 2026 10:46:09 -0400 (EDT)
+	id 68ED96B009E; Tue, 22 Sep 2026 10:48:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B3A16B0095
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:46:09 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D2A33A0521
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:46:08 +0000 (UTC)
-X-FDA: 85241673216.13.C978831
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1036340016
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:46:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R4cgEaXF;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 466966B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:48:52 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C2FB0404C9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:48:51 +0000 (UTC)
+X-FDA: 85241680062.08.02EE2F9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E59451C0002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:48:49 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KlCNBB/p";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790088367;
+	s=arc-20220608; t=1790088530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s/VLxv9NKbJXTt3b3nNSK4io2b3mM5NUoxiDUVgGmts=;
-	b=fhB/w8T/s3eB3C8fabFw1h6zbrWs/INgwqOR3/geb5Ni/E3yU87yRllshvyubPzlpxpKWj
-	jIcQDIJS5LZqmXyLbmI/2ziMh1k/t/XT2NhaKLC5QNIfLpnDk0or0frHqNNJHzivCF36c9
-	NO1vYTyu7OOKULD8BIwxdxtyYSPSRcY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790088367;
-	b=A7aVhonIS24yUWerE8dGNCCLwPeSgE2KsKncvHDZ8gJqdT3gTDD5JVaPwAwOhN0FEUFdyx
-	px77RBsV7xCOXIPPlB7CmJ3cMEIE9yRiFxqvHFIsV8pdDddE5lFcwYgRHd0T54i6Dn34cH
-	a3B+rgYwUTtdj6UN3v1lnG+tliIClLA=
+	bh=2nC+4Iujr6aKs/X6DmrJUSeJqe7aXLMr7UtX3jEw9Y8=;
+	b=DaauHgqN6WhV684+vGbg5kQstofEE3+NyaMVSKSXZHR3fuEZptFjk/gxmFA6PK8BQe1XyH
+	nY5Xzu44PazN8PPhPgZYdFkUvNJjKgFjmSdEP8QNgDcaut5pfJsDAocSzgqQTLLWsmGrz8
+	Q4PXSIYfbUciQSTEO4liBfVPfyZ8ONw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R4cgEaXF;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KlCNBB/p";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790088530;
+	b=E7844/kyWhdCJD1v2aSSN2dmbsqb4Run8008EeJ0votLsrcv5Eo/EWkS3Mx4uPL3aJmUv1
+	KXmbRi9rxGLRlDsGJYwxOSos2+Ujql85CaW2RqyZwe9fB6SgXtfOR2gdjrManNTITMH2G8
+	VDILzJnGvY7Wdp2UusLWzwI113DOrj0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43CF16020F;
-	Tue, 22 Sep 2026 14:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F87F1F000FF;
-	Tue, 22 Sep 2026 14:45:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1BE6C41F9F;
+	Tue, 22 Sep 2026 14:48:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEA11F000FF;
+	Tue, 22 Sep 2026 14:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790088366;
-	bh=s/VLxv9NKbJXTt3b3nNSK4io2b3mM5NUoxiDUVgGmts=;
+	s=k20260515; t=1790088529;
+	bh=2nC+4Iujr6aKs/X6DmrJUSeJqe7aXLMr7UtX3jEw9Y8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R4cgEaXFbD6AS4kaCKua7Vb3e7Vza69BPqCaKFneNWSJQ+ddLeyxTDXFiVRcb4t6Z
-	 CN6YHPE6pQ6CRwNgjNVz02pOs4ie6lCoOSfSTFnCPfOGDjtMZS0I5TdmFw1MfBYoVU
-	 T+tYkWMTQsWIbQyxL5qMsti+vHneTm2Ym1e0aTgNENwoMXBLWkVjqoSIjJcubodobW
-	 PEPxANCUHf+m7MPFg6/8jLVqz/JMeR3FWoQDNOxwm1Pm8k1Fd0BNTEcmpx41+ZvO9W
-	 DUhHRMShYQKEeA5BQSiPEDB90RPaiRRqGKtweokjXF7L1a0vyvpQ9NM99FMlupChK/
-	 pGheBDxLJbFTg==
-Message-ID: <64b10ef4-428c-47dc-a97c-59ba178a9044@kernel.org>
-Date: Tue, 22 Sep 2026 16:45:52 +0200
+	b=KlCNBB/pRmBcWRkN5rgO1CAIPNCqGtKjNZQDWlNRIpflyWihuVVSoB1WuY85jHBg2
+	 i254OvM/DNaWmjsj294C5s6McXHOL9dxgMgQE69ZbesKz3zHghquFjmsm10I3dy/+N
+	 7vKwjWbUCFw3R9s9cjoIs4y0qbACZUKITuIXJJAoLimblf7Ss16+tLRkP+GHhix5EW
+	 YjwKbEhfOIPrS8ipScASQxJ6qcNXHz7ocvy2CIVE7E3I93XSMtoSJ/unpOtRx2nMs3
+	 KT41buPpA6i8lEwxzora/x71CKTIGHAUT8Le8f5TbuxfcNs9441IqxMFKA5JWsETXo
+	 pxd8tftqpLGVA==
+Message-ID: <f4d4c4d6-cebb-43d7-b5de-c4a94662f081@kernel.org>
+Date: Tue, 22 Sep 2026 16:48:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 02/29] arm64: mm: add PMD swap-exclusive helpers
+Subject: Re: [RESEND v7 08/29] mm: recognize PMD swap entries in the softleaf
+ layer
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
  kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
@@ -80,12 +81,11 @@ Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+ luizcap@redhat.com, kernel-team@meta.com
 References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-3-usama.arif@linux.dev>
- <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
- <93e71e27-86d7-4853-bbd2-756ac137a925@linux.dev>
+ <20260914122950.3283997-9-usama.arif@linux.dev>
+ <bb4f8cf3-afb4-4497-adc8-6d8fa8982090@kernel.org>
+ <47ff450a-c2df-4520-8589-63dbb1746f80@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <93e71e27-86d7-4853-bbd2-756ac137a925@linux.dev>
+In-Reply-To: <47ff450a-c2df-4520-8589-63dbb1746f80@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1036340016
-X-Stat-Signature: byhxrt4qoa1ymec66emrmg7endzu4dcs
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E59451C0002
+X-Stat-Signature: bw7x5mqtsdkj8tq633u7oonqi9ntrxbd
 X-Rspam-User: 
-X-HE-Tag: 1790088366-976342
-X-HE-Meta: U2FsdGVkX1+9+gDQd2+tLvkrpwS9HvzBp+46MA/5p7D0htOKsyUSnrTLsO3Zg6vt9gRg4Ha0feOKttcTBgfiZ1GAgp1d5D9tmeDZrbkaZAV6VIUvywQ/DoIU4g5HPpIQphaX4K+5ZLSTKWsP4N+t6nlwqvXId/j8htIVmnaFaG8hqF2sRRrWROfWDKfpJq5xagSpfSERjR2q0ubyJbt7sU8Y85mwQnDk/zVrruBNDh2svyzWwhcOVirs1i/ZLWdtlXmr6iOFTaTmGvlJWXp6zgvDzZIrV/uYAmT9XXqAi3wV86L2g1f8fxNc7eFI+hf9Kc68lm/Jeu9Xz3EVwvhQ7ht8sN4smWFlcgXdwe0ar6tcDZouK2TBQwPLG3VKIqIEqzR9x9+CYSjK9qL6Rb1lCL3R4Zgik81pdBfmYgiAGcSwGpolPbsUpq6SnTYiVXTFOneD+uLtqvRckx+pfPv9TkjbF0nMDUdGmPJPN/ux7aZ7tu0zRSTzajq0OaMY0OBOoG4+zcruvNEmr+Lx5A+LbQifXNsFJmU3tLWB0UH1BTd53hGnPB5TTh60N6d63Au/Mdc/PtWwGnuDxsPRTxDHI1U2zYgP0mpyv107HNDy6Tg4v4LJ/He0k28HfMn3e4gdYRVxnZwfvKB05vmckI8ofQ4Eu5ru0MVJc5V+2KrC+5xFqROxl3lzhXst9jbfMVXhXL+IlvjcuSMtsyc3lfnSqrBXtm1Zyd9Zh1qBNdPwY4E5lMZ8/tFIWsD/LO0TD48oGrnH7lL0gOEYvW3xgQvQeDdTtIfJZNX9B0rI/tLvrtVaSCfk06rrM3aKkON0skdD3sejuI/7pfQGG88eNaEbjHMxwT+4X3oEeBGeJfGWbWkfbGAe3J5GOymIK/01+4NO/78ZwptFr/Ncs8/Mg4kxnAJI/Xo31nGmK+DKS9Pa2y4F3QMMSyg4n5nqUXozCcqcPgFFs1YK/at4PUdCBlS
- aM/fOPxR
- p+GQFK5dXu4eKRU16IHNX6e50M0XlbemVQFR/P2M+/5HV8a6Aur29AUKTSTQKvPbn9thz54bUTqz8MLvV1ybf+cad0MqA5zYKjs7sWvyi5IGOM6FtQiveqj7nUIHR83mqpcpIHe6SY+OrCsnj40puWQIG8AD/iWNDrfmqKGuuGzYQoVqCLvX7Ej7NZmyxwS5gNF9Si990L+LTvBLmj3Xj66/lWNZeONsjXy2WkDm11tR6HNmWBDRR4emgGm5leWFGvDMnSGpC1QmcxuWQKgbJ+47RqX7KbuRj6tqWXbZaiqWly5XpUdokD5Kbmk2SrLTeKkppST8khOr+Wf6psEAoHqRIZQ==
+X-HE-Tag: 1790088529-30845
+X-HE-Meta: U2FsdGVkX1/6m7aHKzwRYisyI4R9tJ3SsJqNLeRnfBvHClmnb9691vSy5s2RPmEi7iTLP9oiq2LLOlwlzMLarbSdOVVGiTRwJ4KhidbMx4iFasbkMT+pfBRZB+o1zSN8SopY4jsUMxMe3Qz9epuR2PvYgBSM4u6+2V+QPCkUh8sh/pgWLGIsGEplTuMrnnRf2i7rAscQQS4Fb1vwsbeWZ7uSmtoe5EhMceBxnKfVJiS9nDRM2JUJYcJUcrMeIh2yUGtG88zSUCemibyt8lsdJ1nni92oPlhvmzR4atDYnWUYsmnTKUISQdgvbL2ka+8meFE6PJjVVJxHQrVYtZ9N80s9V5q9oxSalJZ46hPBq1m0P0jEeMKpn5+wsSLwIG3jQ4KhVW5PVhVb/hEtR/kRv2Wrn18XAtSZcpSXPGV73RCb+CXt+iiSZB2aMUJKn5xu2JiAl9SzAlE/qN+dnidC2dpK5o5yEYjbyDLkqsNRwnx9y0p8M/mY4kWnLKCwhgNOqyY4jloF65wMcos3FQj801/WCPxaxu/Au0gwoMegEORz/OMVLcZsvai2v3crUhQNpgyahn5mZ5/2+KyKkZElS0ZEHUJbK3JOEQh5Q3s5gSsEhn0Z4pYY2lU7Th61WAIDfuvqskIN2uZCT8f9NS7Cpce+tDzoZPsK0XajbnXymtWHiDtlAdonX/mWj32MdAUZ3kBPwaKVcH5nVP7fTs3NfnF0GUpNhutfROHnLA44a1EzOQpfVz6Wgkyp3IPO/QFh8mu6F364ECcTuahEzSo+hUrHnkY1npaIe+sFQDPiykTPsbbsjqJYthz4dbH6VUG+UEYib2fbK1Pl+qb5oWZ9ZP3AENdTsTeIBbslbbkSGoy3wEWik3dtXopmMjwpecZjmxP1wvFXEmCRDG12HL8Jk+OKAhw7YnZ9r5qfmY16XYrSFOmE3NrOlFOTdJWTOwS/4G6RIjqBglTJxVJoH//
+ Gu1gdSoE
+ HmlcTT5i6dfhVWhJH2VtCEQF87DAKX5aCSiq0pqtcbus91pQjp5RH/vnnzRm7wcnDMdqCRgAfFo7cdCwMT10pBk8gG8e03qsfLShUZ0opjEJF43FOTXXJB4cl3SmX3d5S2SVm/jkOlhAt3pgZveD0bqeXorf4l89x+MMaDGQepWZvuE3FgeipC7jdIbWD1kgnrR1Sn6fnKs4+gucF7gMP+Kgoq2rm1wbF03QEuHBbqKFje7wc/hxWkcKO56pZ7ytnHwWd5+Aybgh+kRg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,75 +150,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 14:34, Usama Arif wrote:
+On 9/22/26 15:08, Usama Arif wrote:
 > 
 > 
-> On 18/09/2026 22:11, David Hildenbrand (Arm) wrote:
+> On 18/09/2026 22:56, David Hildenbrand (Arm) wrote:
 >> On 9/14/26 14:27, Usama Arif wrote:
->>> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
->>> swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
->>> not just in a swap PTE.
+>>> Reclaim splits a PMD-mapped anonymous THP into PTE-level swap entries
+>>> before unmapping it, so an ordinary swap entry has never had to appear in a
+>>> PMD. Later patches install one there instead, and the softleaf layer is
+>>
+>> "Prepare for ..."
+>>
+>>> where every consumer decodes non-present PMDs.
 >>>
->>> arm64 encodes a swap PMD exactly like a swap PTE, so the new helpers wrap
->>> the PTE ones and reuse PTE_SWP_EXCLUSIVE.
+>>> Accept swap entries as valid PMD softleaves and add pmd_is_swap_entry().
+>>> A swap entry carries no PFN, so make pmd_softleaf_to_folio() warn and
+>>> return NULL rather than interpret a swap offset as a page frame number.
 >>>
->>> Cc: Catalin Marinas <catalin.marinas@arm.com>
->>> Cc: Will Deacon <will@kernel.org>
+>>> Unlike migration and device-private entries, a PMD swap entry can also
+>>> carry the swap-exclusive marker, which softleaf_from_pmd() has to strip
+>>> before decoding. Strip all three overlays unconditionally while we are
+>>> here: each clear is a plain bit clear, so testing first only buys a branch.
+>>>
 >>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 >>> ---
->>>  arch/arm64/include/asm/pgtable.h | 6 ++++++
->>>  1 file changed, 6 insertions(+)
->>>
->>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
->>> index e89ec5f4787b4..d3f53a601aed3 100644
->>> --- a/arch/arm64/include/asm/pgtable.h
->>> +++ b/arch/arm64/include/asm/pgtable.h
->>> @@ -599,6 +599,12 @@ static inline int pmd_protnone(pmd_t pmd)
->>>  #define pmd_swp_clear_uffd(pmd) \
->>>  				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
->>>  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
->>> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
->>> +#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
->>> +#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
->>> +#define pmd_swp_clear_exclusive(pmd) \
->>> +				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
->>> +#endif
 >>
->> Why do we #ifdef that here, but not the uffd-wp swp PMD helper?
+>>
+>> [...]
+>>
+>>> +/**
+>>> + * pmd_is_swap_entry() - Does this PMD entry encode an actual swap entry?
+>>> + * @pmd: PMD entry.
+>>> + *
+>>> + * Returns: true if the PMD encodes a swap entry, otherwise false.
+>>> + */
+>>> +static inline bool pmd_is_swap_entry(pmd_t pmd)
+>>> +{
+>>> +	return softleaf_is_swap(softleaf_from_pmd(pmd));
+>>>  }
+>>
+>> We don't have a pte_is_swap_entry(), I guess because we always want to handle
+>> different softleaf types through softleaf_from_pte() first.
+>>
+>>>  
+>>>  /**
+>>>   * pmd_is_valid_softleaf() - Is this PMD entry a valid softleaf entry?
+>>>   * @pmd: PMD entry.
+>>>   *
+>>> - * PMD leaf entries are valid only if they are device private or migration
+>>> - * entries. This function asserts that a PMD leaf entry is valid in this
+>>> - * respect.
+>>> + * PMD leaf entries are valid only if they are device private, migration,
+>>> + * or swap entries. This function asserts that a PMD leaf entry is valid
+>>> + * in this respect.
+>>>   *
+>>>   * Returns: true if the PMD entry is a valid leaf entry, otherwise false.
+>>>   */
+>>> @@ -660,10 +670,12 @@ static inline bool pmd_is_valid_softleaf(pmd_t pmd)
+>>>   * pmd_softleaf_to_folio() - Convert the PMD softleaf entry to a folio.
+>>>   * @pmd: PMD entry.
+>>>   *
+>>> - * The PMD entry is expected to be a valid PMD softleaf entry.
+>>> + * The PMD entry is expected to be a valid PMD softleaf entry that references a
+>>> + * PFN, that is a migration or device private entry. A PMD swap entry is a valid
+>>> + * softleaf entry but encodes swap slots rather than a PFN, so it has no folio.
+>>>   *
+>>> - * Returns: the folio the softleaf entry references if this is a valid softleaf
+>>> - * entry, otherwise NULL.
+>>> + * Returns: the folio the softleaf entry references, or NULL if the entry is not
+>>> + * a valid PMD softleaf entry or does not reference a PFN.
+>>>   */
+>>>  static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
+>>>  {
+>>> @@ -673,6 +685,10 @@ static inline struct folio *pmd_softleaf_to_folio(pmd_t pmd)
+>>>  		VM_WARN_ON_ONCE(true);
+>>>  		return NULL;
+>>>  	}
+>>> +	if (!softleaf_has_pfn(entry)) {
+>>> +		VM_WARN_ON_ONCE(true);
+>>> +		return NULL;
+>> softleaf_to_folio() does a
+>>
+>> 	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+>>
+>> Just curious: why is that not sufficient? Which could would we expect to call
+>> into this fuction with nonesense? (same applies to the existing runtime check)
 >>
 > 
-> uffd-wp is gated on CONFIG_HAVE_ARCH_USERFAULTFD_WP.
+> Because softleaf_to_folio() warns after the damage:
 > 
-> If I removed the CONFIG_ARCH_HAS_PMD_SOFTLEAVES guards above, when THP=n, arm64
-> will use the generic macro which is wrong.
-> 
-> I tried building uffd-wp swp with just ARCH_HAS_PMD_SOFTLEAVES guard and I got
-> the build error 
-> 
->   mm/page_table_check.c:232:20: error: implicit declaration of
->   function 'pmd_swp_uffd'
-> 
-> we will probably need a separate patch like:
-> 
->   #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
->   static inline bool pmd_softleaf_uffd(pmd_t pmd)
+>   static inline struct folio *softleaf_to_folio(softleaf_t entry)
 >   {
->           return pmd_swp_uffd(pmd);
->   }
->   #else
->   static inline bool pmd_softleaf_uffd(pmd_t pmd)
->   {
->           return false;
->   }
->   #endif
+>           struct folio *folio = pfn_folio(softleaf_to_pfn(entry));
 > 
+>           VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
 > 
-> to avoid the above build error.
+> pfn_folio() is page_folio(pfn_to_page(pfn)), and page_folio() is
+> _compound_head(), i.e. READ_ONCE(page->compound_info).  So a swap
+> offset interpreted as a PFN is already dereferenced by the time the
+> warning runs.
 
-Just to explain where I am coming from: for all these patches I took a look how
-the other pmd_swp_* functions where handled (and separated from the pte_swp_*
-variants). Nothing earth shattering, was mostly looking for keeping things
-consistent within these architecture codes.
+
+Heh, and in softleaf_to_pfn() we have another
+
+	VM_WARN_ON_ONCE(!softleaf_has_pfn(entry));
+
+So the one in softleaf_to_page() is rather useless already? :)
 
 -- 
 Cheers,
