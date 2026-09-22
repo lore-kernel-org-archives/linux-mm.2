@@ -4,120 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E65AFC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:13:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A576C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA696B009E; Tue, 22 Sep 2026 08:13:53 -0400 (EDT)
+	id EE86F6B009F; Tue, 22 Sep 2026 08:15:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9ABE6B009F; Tue, 22 Sep 2026 08:13:53 -0400 (EDT)
+	id E99296B00A0; Tue, 22 Sep 2026 08:15:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89DA6B00A0; Tue, 22 Sep 2026 08:13:53 -0400 (EDT)
+	id D88EF6B00A2; Tue, 22 Sep 2026 08:15:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B16B6B009E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:13:53 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18AA41A0433
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:13:53 +0000 (UTC)
-X-FDA: 85241289546.29.FE25FDB
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 3C4D4C000A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:13:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FDMOk4rW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE3786B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:15:19 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 416E01C299C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:15:19 +0000 (UTC)
+X-FDA: 85241293158.04.167BB79
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6E7088000A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:15:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h3gqLkdx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790079231;
+	s=arc-20220608; t=1790079317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjbpV8gXw6DnzPOP9Yav5BVijNjxxO/HGQyrKRqAqnI=;
-	b=GSb1ny43SlJi5RHQEmrsWt1EVs22sGCVY40zoGq2uqj6xraFfTV+6pmEFTweYZjCXzNvxN
-	7Oux6Fhm0NovG0pzWzaSOvY2oku8nV5Oai6U6grg9nYClW9b8cN3WHKQd1BMIh2D6n60JT
-	Izv2IzGleWezLBiKQafx84NbiPQqQ0c=
+	bh=gItcWC83jyqQewAzlLEIrIdpVAhf+FBobtBOU1cWYdE=;
+	b=OhSJg+Vd+3W51acas56ZPIeUt8NW7Sa5YUI5X1RqIkqPn+FD+lIa8Q2mFe0taKxtMvJ0+M
+	38E0Mj++z3hJiuLdNocyddLrV50Zrvor0vk3xKRz/ilDYueT9fprr5+PIGGZaSNbQH0jED
+	KRklF+zCTn37m1uTTauJffp0PHjCx70=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=FDMOk4rW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.76 as permitted sender) smtp.mailfrom=urezki@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h3gqLkdx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790079231;
-	b=chv4S/DzGd9jU+aliBzMS07XW9hy6Q3iT582EBy4iEeE7LzNrALO+wPCFMhHd7HVH9qOcq
-	9HSItBJzwg2YRrbTa9rEm07Fm68t6FzbA0+yhOspYB3skPhsHxrjt3RDdOZGu1y0C93M26
-	Wwb8qOgfvaEYp7SHYpenTHOc9ZE4oe4=
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a60591ae52so6440934a12.0
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:13:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790079229; x=1790684029; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OjbpV8gXw6DnzPOP9Yav5BVijNjxxO/HGQyrKRqAqnI=;
-        b=FDMOk4rWLgM9VtmJYxdOsHGpmwH7ww3LIRqENBlSuA4ULelUvv3IR3iVPFzjW1SPAD
-         kNVQOs+StuGFHwgdqDnRKlBiu4V4xSuUW17+eicBbNg8MpiiyEhfW//5y+LRX4SX7QWb
-         tMZbB93S+b41VuMPL2DkxBF8V9+im42AFBho+i5/SrG8Czjy1zcIrjCPGqMuo9eiFYMp
-         jXjtCmk7Sbcp5wrbdZtxivKKzwh7tqlmY0qCZWTylVW6nir9kP9cljOGSFauKy4lr4eT
-         kXxrwn5G5lZ/B8WXPyWy0iQmqtB9LwVaWpSvhbOebu6cWd7HTMQCefBF0fz01ST5vmg+
-         OWJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790079229; x=1790684029;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OjbpV8gXw6DnzPOP9Yav5BVijNjxxO/HGQyrKRqAqnI=;
-        b=kNugkY4yy2+RasLdlD6YVRG2pQV8L++rAdzFZZX0pkILYhw7Uw1/LfXmIQC1nQad4q
-         B+EeyQyiXji4WLoLm56xjkGsMrK97I1kPkvhXsJmJLZ9bidzquEg716qQO8kWHO+y98F
-         v+MTJfWEDl4IS+fh4ep3Buq1U2E3faiJQhmsW2ysEZKfv7YEWNjHP8TamUOczEFQp10d
-         cOcyzO/Rz6ZYtNQP38WnMu4qFmyKHY5Sf0/R8UJ08yO3DH+Ky67/PoIe/vjtbNkkcmBS
-         g65wjxRT3qVKBhrPyn/RHcWhWHkVgQoLuS5v5bHmOojOI7q/YD3ronVxOLOHln2M8P1q
-         HsEg==
-X-Forwarded-Encrypted: i=1; AKwUvBwfe13s3w+dOxip6xOmzpB9yf8RQvoIndxw7SI/ab5LJ1SS2xO8Bu8F+YdZTn310b6LDUAAd/CHVA==@kvack.org
-X-Gm-Message-State: AFuF++nvh9kRU9MX4gD9kR0rUFdDzvBQRZfzeC+hmaK9A2a0d57145dp
-	b2LrI2vg+UqyExgC9QKpPcA3Xs+OJrfW5F8fJIrX8i7BnP1U/yDrvbA9
-X-Gm-Gg: AYBFou0WSOYywA7a9L//ukNqX5+roscHyfRPuE8I2TFLgynn+P85d004tLhJzpvVAHO
-	Zh+D1g1ztE3V5im/qeFwz6Xe43MSiPUckbxeKS8zVTGxHotC/y138laY7IfY2PDil1UAh2syNoj
-	BqJNrB9acOzqcHd56HGtFTvnqTomaA/bKvW3ZXT0w4ZGE16dL336lp69N+RaRmSlLGXm4vCf2ib
-	2Wfc7PmIjvL8p7paN2laYYr1xpoZR4Qezva7MYq8Hwx/h2iw6FuYuLtjI6ZnNOonlUJnmYvbwk1
-	uI8NVsBtXCs/BpkOKxIMTmWugNnW8RjFDAG59hrmK/qOx3MzG3dnTn1S1J6BBWxx+h5T0qZa89t
-	7m7PO4XFsbbM21+McnBbnJWowmZRoIW8k7hiQ+x4yd/jk8r0/Dwjiix2PJ2c/dAlvi3uzdFX60p
-	xpl1f/sMhuqG+yJeibkyeyretZ+5CDJ3bxePX7
-X-Received: by 2002:a05:6402:249a:b0:6aa:734a:a08f with SMTP id 4fb4d7f45d1cf-6aa734aa2b2mr8449809a12.38.1790079228363;
-        Tue, 22 Sep 2026 05:13:48 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6aaa44e6abdsm917994a12.13.2026.09.22.05.13.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 05:13:47 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 22 Sep 2026 14:13:45 +0200
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-Subject: Re: [PATCH v2 3/3] mm/vmalloc: skip vmalloc_dump_obj for non-vmalloc
- addresses
-Message-ID: <arJw-VKQNxWA0RSc@milan>
-References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
- <20260921-vmalloc_dump_obj-v2-3-73fceb3ed1c8@linux.dev>
+	t=1790079317;
+	b=O7rdDIyYSiUjpmmW94jAe/4qQJ/6OI44jbevpESuD0aAYuWDeHo5ysRpAnPXJLMbl5HmU+
+	JOYNTMkQLYiZBE5mRr5DN2P9XOT/6lFT0AnIIbFTOpsvyjxqAcayh+mrNNRKYlE9lQRrkc
+	XX+1efJSRkC9GgDwlwvwq7MEbS9cMPk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 95A18419CD;
+	Tue, 22 Sep 2026 12:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117D71F000FF;
+	Tue, 22 Sep 2026 12:14:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790079316;
+	bh=gItcWC83jyqQewAzlLEIrIdpVAhf+FBobtBOU1cWYdE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=h3gqLkdxuBoehEGT/VKAAx5lOOZyw0R9ECju20pTUpkGq3CY4/SfkP5Oo8Atj/17P
+	 LheKowjELtZHtWEwX8eBKfgrKHJcRi0+O+d1XJm5SNFJeLnSFaLisjCbEBlxeLxjOn
+	 7b+NpgO+ZPXTsbOJUosoddrg+40PBvbsgsGmbY2VSvCJX0WLnI37yVWEjSxgbtaT89
+	 F/0sTPdrQN1xs1nAXdWed32VZcInT1tJCp8N+5WqvK/lF5EAI6+8MCsas5iRPln/rt
+	 CkKwC8hH7tDlCqpUlqLBsfISPWksuIen1RI49kVL18Y30A/o4HPBKzvey0Im1JOlMy
+	 V88LVj2NYFEMg==
+Date: Tue, 22 Sep 2026 13:14:52 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
+	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+	Stafford Horne <shorne@gmail.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+	Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>
+Subject: Re: [PATCH v3 01/12] mm/huge_memory: zap deposited page tables after
+ an RCU grace period
+Message-ID: <arJrv6FdUUgAbVp1@gremlin>
+References: <20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org>
+ <20260911-rcu-pagetable-freeing-v3-1-7b8c86103821@kernel.org>
+ <467b6599-b73a-4f58-a29a-b6c6d1ffc3a5@kernel.org>
+ <aqrAflIQbwcNKlQL@gremlin>
+ <bc2805a7-361e-4082-bf71-efc125b93c84@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921-vmalloc_dump_obj-v2-3-73fceb3ed1c8@linux.dev>
+In-Reply-To: <bc2805a7-361e-4082-bf71-efc125b93c84@kernel.org>
+X-Stat-Signature: a66fi88di1q17ftbcarc5bwnm7mqxuqw
 X-Rspam-User: 
-X-Stat-Signature: 6hjjmn6tofz1dw7hk7gsp1abtyh9pmi6
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3C4D4C000A
-X-HE-Tag: 1790079231-978491
-X-HE-Meta: U2FsdGVkX19ZENIiK4dmNhhQEv5hwrKEwvXhEZXUwmiYnmL0GgczY1CX27msaUMa6qz7YU01XzIaFW/iQ5PVn5gfUtmNrSsxnr0YswVNcHg2mwe6njZOG09l10mrfwRBNp+klhobB13nh/cVztI/7XgNk5JnOV86HEYpvjRp4DsJXje6XKX8tDMOprE3ljRtAebzWyGwC5XBkdlM4GxMv3J0RpLZr0Wvi/SVougEZhUMUkqi6v0zLH+nyiPHK6hZLqr2xKGPvKEfGOvADMIJokCZuMb54Zv/wf0DCZr+rK0aw5AzD2ZUYqdIipirG4GBK4BzPyWBZmu+lm2QwSeheK/kbvqhyruLFUpHUwb2lnb3NGnefpVVERxL/21I2W+Vdvm80tGgMxBcMWBoB2kiJtD8+f6Dovjx2BMRy9AOeFIvDw4GGSAFpBLN17s0hBiDSp8Zu9ZNoZfRuScfTdiKcVjgB2dC2oUc+JASDiNmXKkl5Fg4PPuCH85eC5gNzgioyzPpZyBmrBArjHp0xQ3GnUP8Im4Q/yQM2KCxZD7TtsfIvTthGkqVpGbVmYau3V7X0HMDRfq20ikR8vlWrAaNykVc4+JwZPYbH6aKnAOeqdKb3/zY/BzwB5QIM/wkUpYK4Dx9tffdQEYwpS1f99qjxBamJ0Qc0yXORAZgm7M+k0YS4MWScD5iiTrNIPdMHfvDOuQWBeBJjZCEXuVU9XZUPPPqGt3BpLVC/5cXsrPA8MvCy+yGGzKjsY3TCmeRAYcfVW4zv4YvGKUUvnEe66oF8G/6Yq7b24a2fC2Su2LLXwBUyyG/9rQE36q5sWTB2EpKm/JjlotRm15T3/zkmYnUcITz+Yie3HTHXhQIloJRU0LIBYE0nMTW6+ZQb2iF3bDfQq16NT88ZuNiP428/borVCvQk4X2EvX/wk2+DdUgbtXG06dr8gTpvRPizvdRxu7W/gF65jziOPYoIlGCl1+
- l8vJOY/3
- glEpJ2wAIfmggguhPSZDW90WWH2k9iAqqp1+1UegOgqoQY9k4Ub1m7h/qPKr2OmJMcX3jZAIzFGLo1Uusx0LKjGbjEFeQDRaGONmgPPaop04g92rrVi8sbAoK3NYTG/O0VmJjj0jigUmHheek6s9+zGOhq3GrQVLTJjAFByHUc5OQyIZtCtnRJesW2tzlccqrmbzlH200N9DrW22V3CV3eQu+F1m+AsJqcUwS+MF+DMFpquQbT50RuHjHLUfdFu7+i5RL9nbtCFhQJMmNgeXqH/ba94SvDdf8iEi6j9Vy185bwuuMdgU69fgbFrwHx6tDl69xyy/K//AgtJnlD5H/tQ7tuW4ESOhjJCKEa0Wzac+X8HcJHjGYEW28ecGowwkQN5xx+8SndfAKbM/F/JpTA3MJBOkMEjyc84lV2XPE9Snky4BHixiEcDdwILwKt5P0MHjYuUnxqNjrZmw6RbNSsxn7tcgdeVT70b/8yVNE42V316RFv0FYtVINh9hNOj8IX8rPZdwJC2DsfTs=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6E7088000A
+X-HE-Tag: 1790079317-714265
+X-HE-Meta: U2FsdGVkX18mn11kqwKMw+LbWCyBoGZ/ndgFi4tDfGAyc47XqVqNkbjcJ0kJcH6iqcGAudBQMsro5tVeL1CFcWNydy4q2AqkBVBXM9dPDhM5uY3x9zOV7NQpjGgO4DNIcNL01Om0gLYs/07P1wY+hW/EaNVcP/X1Xqiertb9CJz2BWtVKBMVwZ1iDSCn48d9W1nrU5QdyAzsTG+J+pupeOMbZcbVSJmlJNsmMbnJfayms8xMaaoAw/RbWIvOJSLgqgT00NYlFV50cUU11FpHjELO5CYOwNcCcf0HHBQk3W8KQwxyvPHn/AlwlFBrmksi/0rBoePEQpzAkvP2hINnyLXHK2DZtl11dUYKITAcOurnO2OZCkdL1GT8TzCtV+GSHaualTV/soJeYKiGzJgTxpRP05JEU6VOpj6bv4lWDGG3xoLYFxyIui38vq529cn5xV4J9FD3K9s7bt/clIE4zqdgsP18IdWXDWlnrnYj5tiXVkBjimO/ZMsksKt9IjOHp8MzVZeF/dr3r1jFidqPUodElIn5e8YruNJ/H9Gy8sad6VZgEIG1uSw85yX8FpZ6azAgo/Wv9fEH7MRJpxS9hAJbxWes5WEwqT/7pKhuYs1gt4XYQrypfjGlVFxN6klPVf4a7fnJDBD+1is1uvmSiU3b3w5Qwak4evQhUMrkN7bi0pGIuhmZj3yiTz/ZW+uZUrlFknbtNwgNMMLFJeKkZjYGqu1Vm8ru8gbnHCO1DCGkzlMDdHh7GUGozFaHwtVOn8BgmG5b3AbS9Yl/ypx1fAFCCnPfKT40pbkPvljh7LYuOLeLqu5w39Vqx8wh3nQZWuYLNFciVVx+98vCFoZTA/QO+RhEwCje2pWaL4yajB+YiQMqCV+pGqFVwNa8idMkW+5kVWof6fZLbop6NPIXws/7jqauMncdqV6uf7DIPWWwEbgSmjH+aypDENGRc27WVVVlgsCFllANY1YPjsl
+ lFI7yGwQ
+ sjGTlV/8If4+fZox0IkaALKZPotg0C3A69sAotPwhLLyYVq16waM5k8cyIl3ggkc/MGRCNCsamGEoMzuNaRkoG1/lKwspzt+RhEhkQ8XFZBBMH332ZemscCKdYU6AD4FnY84H6BJTecoaAZnqJVm0+lRkbvd+D8CVKXGW+hEHHFObKCvbIpW4BKwmxHE1TSrqDrIKSijxkpmbXSeZFsI6hIGpAAAbDbGYXt+10WTGjK+fDe9rBAFrX+esYR780nBnKeOVqDbfEQ9s8WnUsyGcKS2u6Sc3Vu4jCDT3ChfmsOg9qed80Mgyyh4mWJM9lOHEGrl1BWotLI/fwGKkNN+n0Q7QNnstXdLmNKJ4FDwqy1OZ3tvInwIUw+euRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,75 +134,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 09:17:23PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
-> 
-> vmalloc_dump_obj() unconditionally searches all vmap nodes even when
-> called with a non-vmalloc address (e.g. a slab or stack pointer from
-> mem_dump_obj()).  Add an is_vmalloc_or_module_addr() check at the
-> entry to avoid the unnecessary per-node trylock and rb-tree traversal.
-> 
-> Use is_vmalloc_or_module_addr() rather than is_vmalloc_addr() because
-> module, BPF, and execmem allocations reside in MODULES_VADDR..MODULES_END
-> on x86_64, arm64, and riscv -- outside VMALLOC_START..VMALLOC_END -- but
-> are still tracked in the same vmap_nodes rb-tree.
-> 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
-> ---
->  mm/vmalloc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 30c610f678dc..d8095b558365 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5277,6 +5277,9 @@ bool vmalloc_dump_obj(void *object)
->  	unsigned long addr;
->  	unsigned long nr_pages;
->  
-> +	if (!is_vmalloc_or_module_addr(object))
-> +		return false;
-> +
->  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
->  
->  	/*
-> 
-> -- 
-> 2.25.1
+On Mon, Sep 21, 2026 at 07:13:16PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/16/26 18:59, Lorenzo Stoakes (ARM) wrote:
+> > On Wed, Sep 16, 2026 at 04:42:04PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/11/26 21:36, Lorenzo Stoakes (ARM) wrote:
+> >>> When an anonymous mapping is collapsed for THP, a PTE page table is
+> >>> 'deposited' with the installed PMD entry.
+> >>
+> >> Right. Or when we allocate an anon THP.
+> >
+> > That case doesn't interact with page walking though, as they're
+> > just-allocated right?
 >
-Do we need this check? If it is not the vmalloc address, we just return
-noting. Another question is why do you want is_vmalloc_or_module_addr()?
+> I was surprised to read that page tables deposited during collapse should behave
+> differently than page tables deposited during allocation :)
 
-vmalloc_dump_obj() is about VMALLOC_START..VMALLOC_END, IMO.
+You'll be super surprised by how VMAs behave when detached vs. attached then ;)
 
-There are only two users of it and both rely on the VMALLOC_START..VMALLOC_END
-range:
+>
+> That's the semantic change you are adding (and that I didn't quite understand
+> from reading your description): a deposited page table could now get reused and
+> modified for another page table due to a PMD split, while there might still be
+> an RCU page table walker walking it. And PMD comparisons (+ proper memory
+> ordering) have to make sure that we didn't just walk  something that doesn't
+> belong to us.
+>
+> [...]
+>
+> >>
+> >> Wait, but wouldn't it be really problematic to punch a page table that is still
+> >
+> > Punch? You mean deposit?
+>
+> Yes!
 
-<snip>
-*** mm/kasan/report.c:
-print_address_description[403] if (!vmalloc_dump_obj(addr))
+Ack.
 
-*** mm/util.c:
-mem_dump_obj[1096]             if (vmalloc_dump_obj(object))
-<snip>
+>
+> >
+> >> being walked into the deposited list where it can just be allocated from another
+> >> PMD->PTE split?
+> >
+> > In general, RCU-only page table walkers are _only_ guaranteed that the page
+> > tables are not freed from underneath them, as per the cover letter:
+> >
+> > 	"As a result, page table walks can now be performed safely under RCU without
+> > 	 any risk of page tables being freed underneath a walker.
+> >
+> > 	However, this is the only guarantee that this work provides - page table
+> > 	walkers must still ensure that page table entries are as expected
+> > 	throughout."
+>
+> So far page table walkers never walk deposited page tables. Just like they never
+> walk freed page tables.
+>
+> For *current* lockless page table walkers (IRQs disabled),
+> tlb_remove_table_sync_one() takes care of that. So there is no such thing as
+> "walking a page table that was reused in different context (as a page table) in
+> the meantime".
 
-	if (is_vmalloc_addr(addr)) {
-		pr_err("The buggy address belongs to a");
-		if (!vmalloc_dump_obj(addr))
-			pr_cont(" vmalloc virtual mapping\n");
-		page = vmalloc_to_page(addr);
-	}
+Yup I know. That describes what happens for RCU page table walkers _after_ the
+changes of course.
 
-and
+>
+> >
+> > So this series doesn't actually have to answer that :)
+> >
+> > But a PTE PTL -> pmd_same() check will flag anything like that,
+> > a.k.a. pte_offset_map_lock().
+> >
+> > The RCU lock replaces stablisation on stuff other than VMA/mmap or rmap
+> > lock.
+> >
+> > If the walker needs to be sure the PTE is actually valid and belongs to the
+> > expected walk then further is required.
+> >
+> > Alternatively (like GUP-fast) if you wanted to avoid locking at all, IRQs
+> > off would be required paired with the tlb_remove_table_sync_one() in
+> > collapse_huge_page().
+>
+> Doing an RCU sync in tlb_remove_table_sync_one() would be the big hammer (I
+> thought that was discussed with Lance recently). There is also this option: just
+> allocate a new page table and deposit it, and free the existing page table
+> through RCU.
 
-<snip>
-	if (vmalloc_dump_obj(object))
-		return;
+Hmm yeah big old lump hammer :) I mean I don't see how that could really
+possibly fly as an option, we have tlb_remove_table_sync_rcu() for
+!CONFIG_PT_RECLAIM arches (i.e. err... the more 'specialist' ones :) but for
+those in actual use that sounds a wee bit nuclear.
 
-	if (is_vmalloc_addr(object))
-		type = "vmalloc memory";
-<snip>
+>
+> Long story short: allowing empty page tables to be freed by RCU is simple.
+> Allowing empty page tables to be reused while they are still getting walked is
+> obviously more complicated conceptually. Likely it can be made working, but I'd
+> hope that we can keep it simpler.
+
+I'm not sure it can really safely be guaranteed or it'd involve more lock
+dependencies or something horrible anyway.
+
+But... we don't need to care about any of that....
+
+>
+> >
+> > Another strategy could be used I guess with looped checks but it gets a bit
+> > sketchy with timing etc.
+> >
+> > But actually maybe we can avoid all that...
+> >
+> >>
+> >> Note that pgtable_trans_huge_withdraw() just dequeues *some* PTE page table in
+> >> the list attached to the PMD table.
+> >>
+> >> Something is odd here.
+> >
+> > ...Since this code path already allocates (the huge folio), so allocation
+> > here isn't an issue (as long as done outside of lcosk), why not have it
+> > also allocate a new PTE to deposit and RCU-free the existing PTE instead?
+> >
+> > That eliminates the one place in the kernel (afaik) where a
+> > page-table-walker-visible table can just get yoinked over somewhere else.
+> >
+> > Then a lockless PMD check works.
+> >
+> > E.g. something like the below?
+>
+> Hah! Great minds think alike.
+
+...Because great minds indeed <3
+
+Will respin with that then, thanks! :)
+
+>
+> --
+> Cheers,
+>
+> David
 
 --
-Uladzislau Rezki
+Cheers, Lorenzo
 
