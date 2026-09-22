@@ -4,96 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4851EC982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:08:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEB4C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:23:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 271616B009D; Tue, 22 Sep 2026 10:08:47 -0400 (EDT)
+	id 7E4656B0098; Tue, 22 Sep 2026 10:23:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2497C6B009E; Tue, 22 Sep 2026 10:08:47 -0400 (EDT)
+	id 7BB726B009B; Tue, 22 Sep 2026 10:23:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 186316B009F; Tue, 22 Sep 2026 10:08:47 -0400 (EDT)
+	id 6AB5C6B009D; Tue, 22 Sep 2026 10:23:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E713D6B009D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:08:46 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8029D140501
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:08:46 +0000 (UTC)
-X-FDA: 85241579052.02.BCB81F3
-Received: from mail-oa2-f9.google.com (mail-oa2-f9.google.com [74.125.231.73])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C899614000E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:08:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 364uyagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.73 as permitted sender) smtp.mailfrom=364uyagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 493CA6B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:23:09 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 98450404D7
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:23:08 +0000 (UTC)
+X-FDA: 85241615256.19.2BC61D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B4F2180008
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:23:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7OJM7k/";
+	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790086124;
+	s=arc-20220608; t=1790086986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=FPxij3GIKryjcXEbmMsQS/qbe8XwIFxlkyNJU0nRpOY=;
-	b=KKc1t36b+Ttr50Em/EZgnLKfo+ne/D6FGIiLuHU9m/PlCHzAcmBljCiDMkXStWHJWamC55
-	gS+4J9zekiXttmbwwaWINrZ7dFpYZ0VHtQpndsePRm8NE9dyN5XWq/EaopePy9u8XPaE2B
-	23+/31kpztlJkeMP7ojC9lWNzJkpD6A=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eV4gj96rb3QXMPP74tweZYUu6t3BeYnNxVdGnInbQoY=;
+	b=PORV7d0qHr2qSD4HmgVTKUNZ/s0qE1SvaAjvbIQd61cOQurxKhG1xo/9KAWlI0lcTlfBdM
+	gq2E70vCW0/Z4E6qNlt4XsSevdetD2s64bDr7tFRqHX3D6Na1QDmZbsH0ixhb7JDbK+6Aw
+	e1y3j+jGf6iFoo27VZTp454C2Q+5h4w=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 364uyagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 74.125.231.73 as permitted sender) smtp.mailfrom=364uyagkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="G7OJM7k/";
+	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790086124;
-	b=g/TYDfr1FyDUpkoEF4g5K5QoCKwDDCNd0oie2STCJgk8eSNOKugYfqdZSF07U9F5WJZZV7
-	9f7YwHo4cxEXkBDpzXynjFAgHQchYN3u9kY8zwgwYIcbTFty9lH/SIRrJdPHaVUrRWtSS5
-	QNgCMH67nU20ZCRIK8hXrR6c8MwzHbo=
-Received: by mail-oa2-f9.google.com with SMTP id 586e51a60fabf-48e45c35a8bso342677fac.0
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:08:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790086124; x=1790690924;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=FPxij3GIKryjcXEbmMsQS/qbe8XwIFxlkyNJU0nRpOY=;
-        b=0yOixswkS/BMaeRELz5oxJY1+Rqj+sqFiHRXHQ3bzu9SKhlcLlbwNhqmc4vrDyRkPz
-         INpPmDm6q2Elgq6pyYTyii2VjnxNb1e2xjpK5oYrF0mhHcGEhGawX98tJUl0GQqiEcAk
-         0Wo78YIegSyKIEC3+OIcge4GYppcte9+Xr4BHkhDcl2pDcqnNdlWbjF7S1ZscXDgqU+B
-         tZJgDjqPWIp74xO5/UvrQCpd7zqEpRr322rflbAQWpuhGXe2tEjwoU7AfLP0MxEYqH7q
-         P5+/vKfHu6Wcwuy7Y0JreQ4zL7MmgRyWpFTFADvqOs3Kyijd8SFH1mgmVesasq9hHZPz
-         YOqw==
-X-Forwarded-Encrypted: i=1; AKwUvBzl8+haOs6gQmejGVwtbKys/2HViIm7WFlA2OTvm/NS1zpWI/qvJhK+DkiOnbMervNmTodbLpst0Q==@kvack.org
-X-Gm-Message-State: AFuF++m1eyTZer7ZEPGYekwT1XNK/xUl04Ldc9k/WVn31FJ19nScGhxN
-	2mGyBmFJ3XDmxZiEPUykgwyH1/zDs6K8JrJFJmBNeCtCjt3nV4iAk0HpeaIy8qQSi6cXmcQOMsj
-	YjX5a95RyaKYVG6uF+CbU0FB4lYkAY0uTEocJEAaQF9nR94FD6RezsOgN1cc=
+	t=1790086986;
+	b=ZS4bQZQoubx561KSk1I/2azVfZZ13Po/k3GlbAgvXaJxo+zjUrrAkg7ryeyK2Go0xeArOY
+	pUg7RS36Tc48vrDOJNurTzUCSr8EbsxeF2Mi2wJU7btpkBtosOZzkFKBbDqreonaVk4O1V
+	NzTNf6XKL3lNaUBzNLCcG7NmBdkCKOQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2A82D60E19
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:23:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C211F0089A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:23:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790086985;
+	bh=eV4gj96rb3QXMPP74tweZYUu6t3BeYnNxVdGnInbQoY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=G7OJM7k/sdi8vpnwhnmfUZdJoXepgK4sYAcFv0UYq6RreMrqA0OoMff3OE+raI1OX
+	 t5Yi2hUV4ymjcbVZTdsovaeOWIBBrexx4ehHD6O6ZSKtzLla6elpH8kooUGs+c7rIw
+	 iaGBR3lZVgsotSBA8+EtliaP+gcXcExLVar/nA99mAX0ULpOSzTspvowoY5twa00r6
+	 VwQmDus48c1+37fNAonmwWohO/P7YALvJlI2OBAZAHXu8V+K0VpfUG1HSjLvJ913Lk
+	 kck2nEtXC/ceKW1nbo6hLWJ5qxV+rZ0oZPsZzRiF3G0+tNYMbi4kj+89PTYfhY+yZN
+	 hY02oKYlE1AKQ==
+Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-671563fb8beso4011068d50.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:23:05 -0700 (PDT)
+X-Gm-Message-State: AFuF++l2r0rnneiU/BL4jgMMegUYryuMJWntLJDG/4uuFUNwE21yDaJd
+	gS3t9b0JFOB88PJ/Z7fm8dtYGSW8xfvmfsQ9dqapHQpEbjTcybAz4VqQwv1lyGTkIsyP4bHEC/5
+	q6LxKN41VTHmLwqYM+VV+3IdbBHPL3tKAXI0E39NGnQ==
+X-Received: by 2002:a05:690e:43da:b0:672:d3e5:fef4 with SMTP id
+ 956f58d0204a3-672d3e60668mr20158d50.26.1790086985084; Tue, 22 Sep 2026
+ 07:23:05 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:178e:b0:6b7:46e9:96ff with SMTP id
- 006d021491bc7-6ca9c84d60dmr11904743eaf.47.1790086123743; Tue, 22 Sep 2026
- 07:08:43 -0700 (PDT)
-Date: Tue, 22 Sep 2026 07:08:43 -0700
-In-Reply-To: <6a8cdbd6.dbb3a75c.7844.0013.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab28beb.a6af0033.177e91.0020.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in setup_conf
-From: syzbot <syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@kernel.org, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-raid@vger.kernel.org, 
-	magiclinan@didiglobal.com, matthew.brost@intel.com, rakie.kim@sk.com, 
-	song@kernel.org, syzkaller-bugs@googlegroups.com, xiao@kernel.org, 
-	ying.huang@linux.alibaba.com, yukuai@fygo.io, ziy@nvidia.com
+References: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+In-Reply-To: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 22 Sep 2026 04:22:51 -1000
+X-Gmail-Original-Message-ID: <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+X-Gm-Features: AcwNN1VblK2RUVo05ZZyNcYoYE_io2nZIcWMzMRgWH1EzEZU1XZ55z8OIDXHSuk
+Message-ID: <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org, 
+	youngjun.park@lge.com, david@kernel.org, kunwu.chan@gmail.com, 
+	baoquan.he@linux.dev, gourry@gourry.net, riel@surriel.com, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: ywy9ob5eumchq9tq9dg5nrsjfmedat17
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C899614000E
-X-HE-Tag: 1790086124-447844
-X-HE-Meta: U2FsdGVkX1/GnZZADYjcqSX0n47a4Zmk07jUV4KCfeb5utOtyut8cFcGDdy+QqqfO72Zi1Md1mAO8cUVqTrQjlygM42ETb6Go/VRZLJLz9hCjbLlkRjjTY+p5tclIUkuQ6+Wr69dwd/i8JBRsQVZF5UjtCVwdmc/XTbxU/ZCIt1XU8AXOoFbOj0PekP0dNwZ2s7B1Df6mQGmdByBPbiCU1pA1/2zKkGogOQ2bY9ohngbP0O6xtFxzj6Wn74zbC4alioDd9FzMZqGMbHoV4hqv8h5yxywUFPyhuckc1igD2V1vq4s/DmK3rbwqDCy8yY/58HUs1ZvLiDmETzDnn+iPPXOjtRstJOJ/b7gnpfQBIhZyQwXmxAf03fgqyEjq1I5XJWdRXHOHS8AaL+1fQsqPLz4GSMkZoCoZSzY5Dq+NiyZLwQvrCo807ggEyo/UoQ7T0FwHvAEEskLFCa/TBCoV5KZqX7+7jb3vpYC411JZy3ExBsAx77hnoeVFLLq6hBqPw2UZ3kchyBwvWCGBMMqMRZpBde3TMxK1ew3ce4L1JxBIiXpeS5gPZr8lGFMqfo24cbUV47tNs3GDnGRqlOM7nNJ2ovfCH4K3GC8WWepjTErWq5ATq8ZA/TBp5w8xFEMx6hNm8YEkQQaQJZZRu+D0dWzYB5zcW2ID6raBnWt4hBByQXgEraS8ANB6kQ3zPQ+YHnGq5m36+NTljpV9MIBH9wWyXtEU2PcinnVjpKIaI1zQ2FgNhZu3DoPW4LlNhhfNqOF6IuwTgmB9iN5sfWTrBoFgwjYjJkBCV7sObDOfMTUEs0JJYibu9N7jfvGWZReiKQRtzt5zz3CTgRXH5CgtaLvG4nGm1ClSzcNq1vdWsgb48eqrB5H2zAprSfifO5p1lzrzkVlSKQmzRMV5MLPUP22P7NFbUMAyugwVhEa9y4wWGUnzMjDki89cFx7tvAxycpzqa3q7X6wFeoTXZ1
- x2q3EtEb
- H37ZOhaB6ee4zcLbe+7I/2lR2GJ+dNSoRuZD8dO4kjbEwRwZXhudrANzUfgf6oixhSMBSoGe/HFNhV6XCAsFz8rgPvqE4LuvLZSpGG8U0ypTVOfr85PCp2yq/cFfS/rEAOtY6wQ/xSSPobLnU3uyCZnNJLFL7r7Ml793ev7bv0JEsMxE8DSofhSD2v5kZkUZh9tCd5NnDT18zFy8f93u9l73EaalBzZKe3JIJYPYoTTQQxF1IebWzlw1BxM8ffsyq1xu8o7zsny5YPyyhCk77nno8pwsha+oRH0FWjiE4Y/Mbi0heG10ZcGm5StkRmhLMmNHHz3EUhzIVLFCNYwhEOsLFUbnJfE93ZT5EHHXPxO/onnqUDVmyrR2gnOjnzYd4hSBvXBXLajJZUHzIRvtjAqqXcj5P6w9czlYqIIbvgy9xsEtQSWK//eKgrl+jYSJ1kWLcgTWdf28g6Z1PG4UGE4VhqMEybVSwr6Ap8D2cTZcTLQWCgGvy4SwndJbF8XimIl1ufesFXIzzAZ7uqEmfq2pn8ecEnCFql1tMl25uji/9/8Y8wwNWIb+l1xlzesQfXw2D14PrU7wcl/h5FRCexwuu6VrK4IOPEZ3AKUcOdu+CKk7/Gf9s46x8s0KiNhQFgFPk8Ca7aFWWwglvcOnKkCtIvY0WKxZa981N7OTkIxa9tOcaCXOG7L+tswXxGvlWgynTmqwOTA53onIxKKjR2O9fgqax2kvSoz9DN/F3FlEUennaS4H90qehTogHIfdmwPeZGezEO5tJNC29cweFDthUD/YGBfi9eZ9ZeKNm6wbRFh1c/q3LM8C+RjulNlL2gzcxu9qwpDY4SBkCEsWE6pqeBzM0usKF60RlNAggLFBMZ273n3P3VLAvO8WWVFSknJMUZ4rmyoYgJJ43GHe4+9NIbQ74yf3tnK2MzT4NzOAAi58KXwvuFXbcEgeVNT4UTCTvNMimJPNRimWVWdfEVAy7h7cO
- Go8k2W0B
- CMx4z70cB1sfkU7ObHQCHCI3RFSWq6FEVJMrFHtGkQjqlIx7/ZHoD8ueqX3c4kiz9iI06U5iblPWgI7f+LTk8WPcpQ/TjKzS8rYiYS3DJCrG2Z964wju624ZaD/JaCdiEDuONAlMJJ+PpBscP/81QLC8xBD79i2hd9DwyLhpU1ZCvtxyiWVghDFaLLJWbiKJ2K7oFq21/c0IjBYdgjQY8SLBXp7Mg4AwRLkJtR7CiEnbzTfY7WqxbtMOpP0vl6MIBYII/hO6flyNC0NcCeX1sfoYRSxjE9JqiZa0whgi2Wn2I5fR1QhsuHtbxyoR1XN97r0AllgIwSmKEraZdWc3PycbChV/02iz5H1OinASbDI2ZPLC/hl3PTGHegzqH5OW
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B4F2180008
+X-Stat-Signature: 1177ecre3p6drfe45ro3krr93kdbsn95
+X-HE-Tag: 1790086986-158631
+X-HE-Meta: U2FsdGVkX19YJbBx8anckm1qDBbo7+ulro9Z+uWxSsH/+O/i9JXJqzzfCTtY0slJRX/+5vnK8TYw+IiBybdiundW7sW8UZxI6sxC4taKjYc35+8rDo7gHwmDFQA+IJLUTU9gwOPKuKeeC9Lgw9XFNF1CaniBIc3uEWTglC6oMIoq25KecbrDOwAIlSi0K86kmLSzhay3zX/ADcYCNBHnCfcwl57tLfKNqpjpfDIPunUrT6Mv4UzXvciWBOsQM8PYy7G+UqocS8jp16DaPuItq3G8rJPSjCfEWylkabtR59764S7uJfulIZukDeJdV2drb1WMTDcd5kgBQf8aiYviIS+9MfXqAetoKEY1YZ8nEozI36bn8XAxz1yK3n4Kr13+bUDkepNq6SuLPh+vhPE911urpUUAso9WMFyWUQ1B196NWn7uCwtT0cZpHWTVX8tE/rkcApWxXJWgVrtc4JzysJtX+41pbrQazcfwZNBsPpMebBPdNnFNPxoBLb5mxmciL9KCc9DrYyMfqLv/0ouoAYw1rsXBRNQl4eJml4ID1FwfJX/ddGNU/4Ad2sUQkPhvV/iYNyhr7hNItjYzz5J3oQQyj5ADwkPrGgigVDUtIFGwLBxf7FK7n1+9Pt9d8XPdyjMA84fiUnUfyP71SC4CWfv2QH4qGPoctUQT0y+UgzReU9YVHk+1qzN2Q2mkSFapyi6g+8a/oNXswp1qDcFBkz4aRYRZ1+s06Ja3PoE16xLiZKEEJjfoCpNKKwKPxtv3e8BM8nxp/nBubKkjG45B33z5cz5BYwOjKiKwpKLrGqkGVdHSrFv0vfA0n8Yt/kilZRI29Z7aqMLBK/98mftocPfX0ay9O6BOA51kdjd/t3lSgwdyU1iJLFNltvmCdbde2pkutQz9/H/g2B6XkwC4im7jNNjj6KLQswFgrWlI77/pxLI6m4j0JBWwnafrMGZdgzeqNvDQBuWtk9JAPOH
+ 4fZmEjcQ
+ lZw4Up+vqqgfJVywmlp8L3UUrjxr2VIrFidVS1sSqZTKIhO3cFLQEruCM8Z/GjP+espJhBt4LmN1L8GmMYuKtGtnel7Z5axBYQvJWnAN1gCUb4GWVNEl+DxdIecLwUoUHpEMr1NU/1t2aq6f+pQ7ROdQ9o2bCFwQ7Q/J0p2FSLyS3JOyh1UwaSW+B29jNmq1MMZTkp+iVm7H8pKReQ7ggN2UH4vd4U9nuBXzSd0GXt127ccPg3o5PtyHSkXt5b7mc3bJyUPCrXsbQx/3YJuNhuL9L5XGInyDZWGjpgjXrrJi03kDHXBWjAgwh+F4KmpGpp8wqhfyQ+WVhyR641sVSc5gKuJyYWVmRENQ9Mungt8Fbpx9X8AsVGVaSdDCzlLy4UQ1n
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,80 +104,273 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+Hi Baoquan,
 
-HEAD commit:    f0100363d8c3 Merge tag 'xfs-fixes-7.3-rc5' of gitolite.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17971805580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=2b924f079099ba6e
-dashboard link: https://syzkaller.appspot.com/bug?extid=75f49ec552cc74d9d69b
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17b20c5e580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10720c5e580000
+First of all, thank you so much for the great work. That closes a huge
+gap in the xswap stack. It is a huge step forward.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-f0100363.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/18fb2734cddb/vmlinux-f0100363.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/5737b586e7bc/bzImage-f0100363.xz
+On Sat, Sep 19, 2026 at 9:20=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn> w=
+rote:
+>
+> This is the writeback layer for xswap, on top of the base series. Post it
+> as RFC for discussion.
+>
+> The base series keeps every swapped-out page in zswap. So the pool must
+> refuse new pages once it's full. This series gives an xswap slot a
+> backend to go, and charge it only when it really goes to real disk
+> space.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+75f49ec552cc74d9d69b@syzkaller.appspotmail.com
+We should also preserve the charge to the swap counter when swapping
+out to xswap. I don't mind having an additional counter track
+compression memory vs. disk usage, etc. The swap counter charge should
+preserve the current behavior.
 
-md: async del_gendisk mode will be removed in future, please upgrade to mdadm-4.5+
-syz.0.17 uses obsolete (PF_INET,SOCK_PACKET)
-------------[ cut here ]------------
-1
-WARNING: mm/page_alloc.c:5340 at alloc_order_allowed mm/page_alloc.c:5340 [inline], CPU#0: syz.0.17/5462
-WARNING: mm/page_alloc.c:5340 at __alloc_frozen_pages_noprof+0x425/0x5a0 mm/page_alloc.c:5397, CPU#0: syz.0.17/5462
-Modules linked in:
-CPU: 0 UID: 0 PID: 5462 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:alloc_order_allowed mm/page_alloc.c:5340 [inline]
-RIP: 0010:__alloc_frozen_pages_noprof+0x425/0x5a0 mm/page_alloc.c:5397
-Code: 90 e9 76 fe ff ff 41 81 e6 3f ff ff ff 44 89 f1 41 83 e6 f7 a9 00 00 00 10 44 0f 44 f1 e9 45 fd ff ff c6 05 2c 98 38 0e 01 90 <0f> 0b 90 e9 8b fe ff ff 48 8d 3d ac 09 54 0e 67 48 0f b9 3a e9 68
-RSP: 0018:ffffc90003b87520 EFLAGS: 00010246
-RAX: ffffc90003b87500 RBX: 1ffff92000770ea8 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 000000000000000e RDI: ffffc90003b87588
-RBP: ffffc90003b87618 R08: ffffc90003b87587 R09: 0000000000000000
-R10: ffffc90003b87560 R11: fffff52000770eb1 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000040dc0 R15: 0000000000000000
-FS:  00005555836a7500(0000) GS:ffff88808c2c0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f4a2c07ae9c CR3: 000000003bff7000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x21e/0x390 mm/mempolicy.c:2486
- ___kmalloc_large_node+0x4f/0x120 mm/slub.c:5353
- __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:5385
- __do_kmalloc_node mm/slub.c:5402 [inline]
- __kmalloc_noprof+0x3fb/0x720 mm/slub.c:5439
- _kmalloc_noprof include/linux/slab.h:995 [inline]
- _kzalloc_noprof include/linux/slab.h:1312 [inline]
- setup_conf+0x28b/0xd30 drivers/md/raid10.c:3855
- raid10_run+0x1d2/0x16c0 drivers/md/raid10.c:3955
- md_run+0xc3d/0x1cd0 drivers/md/md.c:6779
- do_md_run+0x35/0x720 drivers/md/md.c:6880
- md_ioctl+0x1e2b/0x2610 drivers/md/md.c:8515
- blkdev_ioctl+0x5e3/0x740 block/ioctl.c:798
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7efcb939e159
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd8c37e488 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007efcb9625fa0 RCX: 00007efcb939e159
-RDX: 0000000000000000 RSI: 00000000400c0930 RDI: 0000000000000004
-RBP: 00007efcb943506b R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007efcb9625fac R14: 00007efcb9625fa0 R15: 00007efcb9625fa0
- </TASK>
+> Design
+> ------
+> - Backend: when zswap refuses a page, take a slot on the real swap
+>   device with the highest priority and write the page there. One IO per
+>   slot.
 
+More than that, it should also happen when zswap needs to do the
+writeback. Zswap has some write back hooks when the system is under
+pressure. Those hooks should be introduced into the core swap stack so
+other swap types can benefit from them as well.
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+I would like to point out that the allocation strategy should be
+different when allocating for the swap backend. We might want to
+introduce an allocation flag for that. The backend doesn't care about
+fragmentation as much. Fragmentation is a performance optimization
+here. The backend can tolerate fragmentation. In the upper layer, swap
+entries are 2^N aligned and sized. It is a hard requirement.
+
+> - Ownership: that slot has no swap cache folio, so record its owner in
+
+Clarify: by "that slot," you mean the backend swap entry has no swap
+cache folio.
+
+>   the swap table entry. 0b100 in the low bits marks a backend slot, and
+>   the xswap type/offset go above. The physical side then does not treat
+>   it as free, and readahead skips it.
+
+I don't want to get ahead of ourselves. You have only considered
+writeback from xswap to disk so far. A stretch goal for you is to
+consider how we can mark the swap table so that it can work with other
+swap types as well. e.g. e.g., writing data from SSD to HDD. We don't
+have to do it in this series. But it is good to start considering this
+kind of thing so that we don't lock ourself out when we want more
+generic writeback between swap tiers.
+
+Stretch 2 is considering how to deal with data moving from xswap to
+SSD, then SSD to HDD. The front swap only needs to point to the HDD
+and skip the SSD completely. It shouldn't require a forward chain.
+
+> - Per-slot record: ci->xs_table[], one unsigned long per slot, allocated
+>   the first time a cluster takes a backend. Zero means no backend.
+
+There might be some micro optimization we can do if the whole cluster
+does not point to any back ends, we might be able to design the array
+access so that we don't need to allocate the back end pointer array
+for it.
+
+> - Read: a written-out slot has no zswap copy, so swap_read_folio()
+>   follows the pointer and reads from the backend.
+
+We need to pay attention to the race condition here when moving data
+from xswap to the backend. I am not saying you have a bug here, I
+haven't read the code yet. I imagine there will be some very tricky
+swap cache interaction going on here.
+
+> - Release: verify the slot still points back to the xswap entry first;
+>   the record can go stale.
+
+What do you mean the record can go stale here?
+
+> - swapoff: try_to_unuse() used to skip these slots. It now reads them
+>   back, marks the folio dirty so reclaim re-stores it in zswap, then
+>   drops the backend.
+
+It seems data can remain in zswap past swapoff? That seems wrong to
+me. In my mind, it should just read into the swap cache or promote to
+the upper swap tier.
+
+> - Reclaim: an xswap entry's count can reach 0 while its folio is still
+>   in the swap cache; the physical scanner reclaims the redundant slot
+>   through __try_to_reclaim_swap().
+
+Clarify: I assume you mean swap cache reclaim not the memory reclaim.
+
+> - Large folios: a read starts at the first physical slot, so the run is
+>   reserved whole and must be backed contiguously; otherwise the fault
+>   retries at a smaller order. xswap is SWP_SYNCHRONOUS_IO, which also
+>   skips readahead.
+
+I imagine the front swap needs to be contiguous, but the back swap doesn't?
+
+> - Charging: Record the owner at allocation but do not charge. Take the
+>   charge when the entry gets a physical backend slot, and give it back
+>   with that slot.memory.swap.current then counts only real on-disk swap
+>   usage, and a cgroup with memory.swap.max at 0 can still swap out throug=
+h
+>   zswap.
+
+I want the old swap charging behavior back. Please don't change that
+behavior. That behavior change should be a separate discussion and
+split out from this series. BTW, I am against that change.
+
+Great work.
+
+Chris
+
+>
+> Note
+> ----
+> The base series is sereis of xswap foundation. This one depends on it.
+
+Do you have a git repo I can fetch from? I will try applying your
+patches as well. I assume mm-unstable should be the base?
+
+> So if anyone wants to apply this patchset, the order is base-commit
+> as below, then xswap foundation, finally this patchset.
+>
+> [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+> https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos.cn/=
+T/#u
+>
+> base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+>
+> This partially refers to Nhat's vswap-v4 series. E.g patch 1 is
+> consistent with his patch 3, patch 12/13/14/15 are from his patch 8.
+>
+> And the last 2 patches are fixing bugs when charging patches are added.
+> Since the charging of xswap is still under discussion, I dind't merge
+> them into commits. Will squash them or take them off once decision is
+> made.
+>
+> Testing
+> -------
+> qemu KVM guest, 8G RAM.
+>
+> A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
+> turned off so that every page has to reach a backend slot. Note that it
+> need create xswap device firstly then disable zswap, so every page has
+> to reach backend slot.
+>
+> The workload is memhog, as in the base series. Every page is filled with
+> a fixed pattern, so the data can be checked after a readback.
+>
+>   # echo 1 > /sys/module/zswap/parameters/enabled
+>   # echo 100 > /sys/kernel/mm/xswap/create
+>   # mkswap /dev/vdb && swapon -p 0 /dev/vdb
+>   # echo 0 > /sys/module/zswap/parameters/enabled
+>   # mkdir -p /sys/fs/cgroup/xswap_limit
+>   # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
+>   # MEMHOG_FILL=3Dpattern numactl --cpunodebind=3D0 --membind=3D0 ./memho=
+g
+>
+> 1. Swapout to the backend
+>
+>    Run the workload with 5G of memory in a cgroup capped at 4G:
+>
+>    # awk 'NR =3D=3D 1 || $1 ~ /xswap|vdb/' /proc/swaps
+>    Filename                Type        Size      Used      Priority
+>    xswap0                  xswap       8155132   2392176   100
+>    /dev/vdb                partition   4194300   2392176   0
+>
+>    The two Used values are equal, so the pages reached the backend and
+>    the xswap side accounted for them.
+>
+> 2. Pages are read back from the device
+>
+>    Lifting memory.max and touching the pages again reads them back. The
+>    pages-swapped-in counter went up by 265642, so the read did reach the
+>    device. 1010 of the folios read back were 1M, each read with one IO:
+>
+>    # echo max > /sys/fs/cgroup/xswap_limit/memory.max
+>    # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swpin
+>    1010
+>
+>    hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
+>    capped below the PMD order.
+>
+> 3. verifies data correctness
+>
+>    After the readback the data is compared byte for byte against the
+>    pattern, one time with zswap on and one time with zswap off, so the
+>    pages come from zswap in one time and from the backend in the other
+>    time.  All bytes matched.
+>
+> 4. Destroying a device returns its backend slots
+>
+>    The device was filled, then destroyed with no readback first:
+>
+>    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
+>    3157220
+>    # echo 0 > /sys/kernel/mm/xswap/destroy
+>    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
+>    0
+>
+> 5. verifies the charge is correct
+>
+>    An xswap entry is charged only when it holds a backend slot, so the
+>    two counters have to show the same number of pages:
+>
+>    # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 409=
+6 ))
+>    526852
+>    # awk '$1 =3D=3D "/dev/vdb" { print $4 / 4 }' /proc/swaps
+>    526852
+>
+>    Nothing is charged while the pages stay in zswap: with the pool holdin=
+g
+>    them and the backend untouched, memory.swap.current stays 0.
+>
+> 6. A cgroup with no swap room can still reclaim its anon memory
+>
+>    With memory.swap.max at 0 and no xswap device, the cgroup ran out of
+>    room and the workload was killed. With an xswap device and zswap on,
+>    it swapped out through zswap, was charged nothing, and was not killed.
+>
+>    E.g if memory.swap.max is set at 100M, the cgroup will be killed when
+>    the cap was reached.
+>
+> Baoquan He (12):
+>   mm, swap: tag a swap table entry with its owning xswap entry
+>   mm, swap: prepare the folio-less allocation path for xswap
+>   mm, swap: add a physical backend for xswap slots
+>   mm, swap: use the xswap physical backend
+>   mm, swap: fall back to disk when zswap refuses an xswap page
+>   mm, swap: support swapoff of an xswap physical backend
+>   mm, swap: reclaim physical slots backing cache-only xswap entries
+>   mm, swap: back a large xswap folio with a contiguous physical run
+>   mm, swap: enable THP swapin for xswap entries
+>   mm, swap: drop swap_folio_sector()
+>   mm, swap: do not retake the cluster lock when uncharging an xswap slot
+>   mm, swap: drop a refused xswap backend run directly
+>
+> Nhat Pham (5):
+>   mm, swap: prepare the swap IO path for xswap backends
+>   mm, swap: split the swap memcg charge helpers
+>   mm, swap: do not charge zswap-backed xswap entries
+>   mm, swap: charge an xswap entry when it gets physical backing
+>   mm, swap: don't gate xswap on the physical swap free count
+>
+>  .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
+>  include/linux/memcontrol.h                    |   6 +
+>  include/linux/swap.h                          |  69 +-
+>  include/linux/swap_ops.h                      |   9 +-
+>  mm/memcontrol-v1.c                            |  10 +-
+>  mm/memcontrol.c                               | 147 ++--
+>  mm/memory.c                                   |   7 +-
+>  mm/page_io.c                                  |  95 ++-
+>  mm/swap.h                                     |  35 +-
+>  mm/swap_state.c                               |  12 +-
+>  mm/swap_table.h                               |  53 ++
+>  mm/swapfile.c                                 | 742 ++++++++++++++++--
+>  mm/zswap.c                                    |  20 +-
+>  13 files changed, 1026 insertions(+), 181 deletions(-)
+>
+> --
+> 2.54.0
+>
+>
 
