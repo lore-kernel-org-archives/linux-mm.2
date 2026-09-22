@@ -4,99 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5995FC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F5D7C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:55:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B9ED6B009B; Tue, 22 Sep 2026 08:55:00 -0400 (EDT)
+	id 4AD386B00B0; Tue, 22 Sep 2026 08:55:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 56B6A6B009D; Tue, 22 Sep 2026 08:55:00 -0400 (EDT)
+	id 437B86B00B2; Tue, 22 Sep 2026 08:55:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 459C06B00B2; Tue, 22 Sep 2026 08:55:00 -0400 (EDT)
+	id 2D6D06B00B3; Tue, 22 Sep 2026 08:55:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 257886B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:55:00 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1DB61A04B5
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:54:59 +0000 (UTC)
-X-FDA: 85241393118.30.ED91C57
-Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 15C2A2000D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:54:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X4Z4+Hko;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E84296B00B0
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:55:56 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 86EFAA65E4
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:55:56 +0000 (UTC)
+X-FDA: 85241395512.04.9EB9F0E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3A75C180004
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:55:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dNojPstL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790081754;
+	b=8flUSIPqhMvpQSwPQflGf9PvHd9EesBm1KOFBu12R/JBZwEX+jd1IAUUcZ5l/Y0ONMqvJX
+	OlgcndQ3bS2oa9s6FPAxD74hJK1JzlRwMLEg3+hOcyY1NjNhYjPUS4oAX7Em/Qny2UT2s7
+	qPbpztKtBhHH0NgsmH3TgNzsDW4n2o0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dNojPstL;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790081697;
+	s=arc-20220608; t=1790081754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qkgH+ro7+wbDdoQrg8BtY3ruF9+iovRZJlYnC4aEjPE=;
-	b=rJhar7dxcx5YX4lhwmpi8nz3Fa40Azu2TwSgfp1CGp1uAHgeRXY52eN8BB1mU3Ss0Gtvrt
-	z/mKbyh/TQ0gobnvqX4GafI+gXUGm9IfQRSEJ5v2h808cqsQolOQVXyi4yQuv75DIY0xbu
-	nIC9h+z3r/Fn6savS4xLy3iNHWISIA4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790081697;
-	b=kk887CVJ950sNen9Q1i7X4nMU2GHD0PltvrIh4+87o+gsHuPS3c+wO6vD9KpIoCMwPuzrA
-	uehBHMlVYP992dVB7jEiqPQv7VjGLP20JoqPHdULnhldzVir/+whhqxCug11gEIVBSjAjW
-	ytr+f8/+HSSKo8I8PzXQ7PeH05YiPyE=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X4Z4+Hko;
-	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=FFxHiQYcjgILl+Zqr38rhbNvEsrzzjIqXE46oCelFqg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790081695; v=1; x=1790686495;
- b=X4Z4+HkoL/GUjapbPGa6pyqQyIgNql7/xCdBdGDhzNdJ2YVOJ297ziJJCzb29YUrCo9C5q2k
- QJCCpTkZo92VxAEG/8vEwggGsn/yVMAIXJ8Bsnp5QJx5xCAuFyKEBqYcteBJBM2/axzq6kbjlix
- yqPK1R5natYWXCjhgwPDCV7Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 84d8d0402c82fe38;
-	Tue, 22 Sep 2026 12:54:55 +0000
-X-Mizu-Trace-ID: 84d8d0402c82fe38
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <4659ea28-19fc-45ee-804e-1cc7091f4bbd@linux.dev>
-Date: Tue, 22 Sep 2026 13:54:50 +0100
+	bh=q+Q202Ulk36gGraSq8aGSjuKZeytZD98yewc/uwH6yE=;
+	b=dyzBnSkEH71bmUJynd9oMt9oUpQ7GUDEZvGOS17jYrzVC1lls9/DUWPEDRwLyfHr1Dg0DP
+	WFT3ApOrbMg0UTcJtXbvWtaqrTiL6tMe6tEmD0RGD+icbxnxW5CdFZc88I0hlBS9HeXevC
+	N80JtHHYRyf6DDeCuyWkPzM30f3TIJY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790081753;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=q+Q202Ulk36gGraSq8aGSjuKZeytZD98yewc/uwH6yE=;
+	b=dNojPstLO2j0ctNTsv6SO+9aqgJ5u2DOFZk+fl1ruI8NZW4ZrNUOjyNRFKX/b5PoZzUVUo
+	XELytVRiqxosA0BpRvNWlFEnb3J1ri++UoKsKGYPT7/TumSnhkbN3/WJbwQSriXgurMIYR
+	uXTSTyjE+ssZ7HW/l4+O+QF3g4cVNWo=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-Cetgdzf5PD-aejzMw1bNew-1; Tue,
+ 22 Sep 2026 08:55:50 -0400
+X-MC-Unique: Cetgdzf5PD-aejzMw1bNew-1
+X-Mimecast-MFC-AGG-ID: Cetgdzf5PD-aejzMw1bNew_1790081748
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0AC7D1802171;
+	Tue, 22 Sep 2026 12:55:47 +0000 (UTC)
+Received: from fedora (headnet05.pony-001.prod.iad2.dc.redhat.com [10.2.32.117])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 545E21956042;
+	Tue, 22 Sep 2026 12:55:43 +0000 (UTC)
+Received: by fedora (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 22 Sep 2026 14:55:46 +0200 (CEST)
+Date: Tue, 22 Sep 2026 14:55:41 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Chris Mason <mason@kernel.org>, linux-fsdevel@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org,
+	io-uring@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 02/17] signal: only SIGKILL and the freezers interrupt
+ a coredumping task
+Message-ID: <arJ6zZuI59BJnXpl@redhat.com>
+References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
+ <20260921-work-coredump-fixes-v3-2-8e4adb1619e6@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 07/29] x86: mm: add PMD swap-exclusive helpers
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-8-usama.arif@linux.dev>
- <0df7e349-9d11-461f-8b8b-68bbddbe1f3d@kernel.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <0df7e349-9d11-461f-8b8b-68bbddbe1f3d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260921-work-coredump-fixes-v3-2-8e4adb1619e6@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: XNDFyLPnHOkCy4_gSxeKlI-GCHEZpqabr43NH0V6LEk_1790081748
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam06
+X-Stat-Signature: r7wciyp5do4pzsi8fp878da7nyqwrwbq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 15C2A2000D
-X-Stat-Signature: 83bakta1g9z6sb8mpu6i4uk8djkzsqy9
-X-HE-Tag: 1790081696-483683
-X-HE-Meta: U2FsdGVkX199AclQiHLBmth22IEufinxyKR8sjFKGGo/dXH1shMOxWaz4TROn3ALuC+rPzt/eURWZy0RLe/RtTZIPTg59z8jy2ImxNSDEcc+D40xeB9oSt1JZHwkH4IpGDDZZHdzfnSc2e0BfsQLqL5x8UlypFtn4GG4N7GT2J5L4FhYsgvz0Lgc+weDhB5JJi6bpETVYn0+RG88WFyvBuwsZ20vk3VKWTOkzp/buR1ohS42i/JpWJKoQ4Hj8uF/JvRKHy9XSvcDLqSw+B99ewQjE86UUcMirtvfkBoMU4iUZE+Dg8REdnSIDQuPRsAbiahSeGLAcENjledtry9RV4o3p3XGnkWWiWXGccVZ0JmSu+BR31zn1jx9AJAzcJhhj89UxYSFaoZel9SW7lOunEog+M4fJ+rOm9Wbe96nMTqq9+JhviSCLkqdmJ9ymPu336inZAe7wP9gx6Ru2OKYvF54hDO5LCNUwskzp+5hUxVvCvRVGo4x+Zjwy0/i5oAETRv9NziS+srZSqOUpZmBkynP1jOHGRb1BnoX0FL6ttUFWwpk8B1evDUthzmaUkVAHzC/TVWugWL0Em2bLSze8CHaD4tPSf8152CQ4H503CyXHaMpUgDvnCwJfQt2Wp5VkFWCfsf3MUwp/5UvIb8qHrl5DaFu1XNz8a6ZbaAu2dzLGpdYQQHGffDT7n0Cpfo6hBvHevuMlVIHU1K/jea5DI+WKa7aE9+PShY5hZ9fyLf4mjmNAur3sGiPcFCNxF8vT3QHSimpX2lZKUNp+xadM4JMgYxG1KhB7W63L4Um61cRcW7AXNAfSmFGkPJwKNcwUAE+7kdRRcFJTw+6tUCAMJ7WftBSKDNoHcFo+z0qv/WkroBTFe5Ph5drm2FeftsbDHovxS0ZVwRJS7RD62hcE5joHti4rztwJQkHZHN06o/OvJ3EqYnU9c9thrrndPJMZ1ViV/JhtcmDIfaPLNj
- gpKTOXaH
- ygSvNAE7ZhOPtW4HKGWKitueJ+qSWr4+aZUWqESoPmclI1wf+x27NxXGBcu3UJOdRHWI6BCrvmOjbZLQW853sW6xdn/QHGDIZf64HKLNn58O4sjgMoCU9r4gkEO+LzJVhB9BSVuXEMy0UEKvXkAHtF8nG+X8MB8CxWy77ah8AVakqPihe/QpWxUzXR+X7FJ3bu88NrBBmuTkGRc+K+NTUYWVh6eqroO4K3P7f6bNrycuEdIf40/e8MfRGYF4ijyEPhR6CNVil9o14O1Xlq5dl/W9XMg==
+X-Rspamd-Queue-Id: 3A75C180004
+X-HE-Tag: 1790081754-817915
+X-HE-Meta: U2FsdGVkX1+81mzie+toeZUjhniHigMMptZ3w5Qrs0TUI8yrnBvVo50mZMipRBpUk+OpyMrwBHGvx1f/KbS4ZUERFbbmvUPIDAU16pb6UOGLmSxywOneyutioAvtG2IC63UVml+Sphp/Wdb4wLsIwutnQxrqTJUJNl8kYgq5+n/VmNF7tNKv7bvDCiKw+n14jnhAlZs+cTLHB788tFcCzKlUt6GYsj6Gl9UpPGxneLJCoDccRq9oaZsYY34gFgaKZHC5KbNG6ncj8ABi3wJF7iV4EJmlDTmZGzFQxxEvQEIJq0FPNDBLC0zX204afX1g1+G7LsvDsLn6cqKOHOJjE11ReDxZSC6mxEaWKkGCAq+Ety0mjBBjSh5YYpbdFfpEDaLKZDSwpjnT85boRYHfxRWOfNeBCVV177kzhYtGarCNmGpPnYgp8Y9ALt3OoMEyaraiurTWGxSeMAzKe8uduRIb0auE2S2xom4dVCmy8dKjSVffwfXb6YZYwuLgXSzlYrmU1lmJsyrupMjtkrtdgnpYIjKNxEKOl+l+saiIR/dh5gjSiN+PCAcuozmq6m9z2j9eFv/jmmUdbn8cnoOFRxae+dwESJoFfX32zXqARljlpzk22hpfxnym0HcwJdVcICQfFFUhO4UupOO3BXu/gnslTLS+t9tj2F4zJw9UgpwC2+Y1pAwXAIkUa/1RSUAoj81Dos4dEaypM2YJTwPLbBfpFsJ6c2Q73Cp2+xYmnSex6aD8hOAYwQRnmAHc0DlNugocxdD1RSQJU1gculTFS6WaQmkBNASwHxZlZLoIm1JA4rc6NvQycZKuYyMVjMt++krp6Purzr2fr5ZZYD+DlcQQNLledmKNHR+AXedewrw5M13IsOs9B7N6MA+vgudNsQyp1HpKYU2IbMVgGtGPrUQIrpSU7riI5U7dLo+qQV6eWA65AR+NqMG+AmUL1li3mVgZh38Ra/0WiIUp0D6
+ JhaXPcg8
+ MDsjz/L+HOHr7oC16YcaF1D2VwEzrCbJ/xrkVps/63B+QeqArJ7suNJu8X1MapTIttm5VW4ACfV+mmgZ8T2J8xGBzHAjsbt6mLMTRsF185dtaXK5j5AF4CIvSDwAbcTpWdxEhqBC7gsDLLLQ4xHdd921HFdOLwao93DwFybVH1zEswelz6sPCPeJOX37BMk5PFTfcmqDspZtlY2g6xUemFbVrxoe9GJU3HxHxebqiBGasbQfTAHLCFg9Qeh6RU3w8M5eEKrafMjeiUq9fZWyN4ZZ/r/UEmA+xgtfvW5Pr353BVi7Pf9vsCmg5LBglkyrL+1we4Ak9t5bomHpKe4CinqDu93338cphQC89
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,15 +111,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 09/21, Christian Brauner wrote:
+>
+> For quite a while now coredump has allowed either SIGKILL or freezing to
+> interrupt an ongoing coredump. Since we seem to like it complicated
+> "freezing" can mean a lot of things:
+>
+> (1) Power Management induced freezing
+> (2) cgroup v1 freezer controller induced freezing
+> (3) cgroup v2 freezer controller induced freezing
 
+All of them do signal_wake_up() which sets TIF_SIGPENDING
+However, zap_threads() clears this flag.
 
-On 18/09/2026 22:43, David Hildenbrand (Arm) wrote:
-> On 9/14/26 14:27, Usama Arif wrote:
->> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
-> 
-> As a general note, we try not to talk about "this patch" or "later patches".
-> 
-> Instead, just say "Prepare for X by doing Y.".
-Ack, I have started all these patches with "Prepare for keeping a PMD-mapped
-anonymous THP mapped by a PMD across the swap round-trip..."
+With the recent changes including your PF_NO_NOTIFY_SIGNAL and
+05/17 "signal: don't retarget shared signals in a dying thread group",
+what else can make signal_pending() true? Apart from SIGKILL.
+
+So perhaps we can simply do _something_ like
+
+	--- x/fs/coredump.c
+	+++ x/fs/coredump.c
+	@@ -508,7 +508,8 @@ static int zap_threads(struct task_struc
+		int nr = -EAGAIN;
+	 
+		spin_lock_irq(&tsk->sighand->siglock);
+	-	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task) {
+	+	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task
+	+	    && !freezing(tsk) && !(tsk->jobctl & JOBCTL_TRAP_FREEZE)) {
+			/* Allow SIGKILL, see prepare_signal() */
+			signal->core_state = core_state;
+			nr = zap_process(signal, exit_code);
+	@@ -583,7 +584,7 @@ static bool dump_interrupted(void)
+		 * but then we need to teach dump_write() to restart and clear
+		 * TIF_SIGPENDING.
+		 */
+	-	return fatal_signal_pending(current) || freezing(current);
+	+	return signal_pending(current);
+	 }
+	 
+	 static void wait_for_dump_helpers(struct file *file)
+
+?
+
+At first glance the change in dump_interrupted() makes sense anyway.
+For example, dumping to pipe can't tolerate signal_pendin() == true.
+
+What do you think?
+
+> Fixes: 403bad72b67d ("coredump: only SIGKILL should interrupt the coredumping task")
+
+Well, I think we should blame 76f969e8948d ("cgroup: cgroup v2 freezer")
+
+Oleg.
+
 
