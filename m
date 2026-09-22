@@ -4,95 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73A5C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EADCC982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:43:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1BF16B00A1; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
+	id 78B5B6B00A4; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CB6D6B00A2; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
+	id 73AEB6B00A5; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 908366B00A4; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
+	id 62A3A6B00A6; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AA576B00A1
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D7C7B403D9
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:39:03 +0000 (UTC)
-X-FDA: 85240899366.16.9674BA7
-Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 888DF2000A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:39:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cASNak4y;
-	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 3DB7A6B00A4
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D25901A03F7
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:43:06 +0000 (UTC)
+X-FDA: 85240909572.19.F621AD4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 4A5D31C0006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:43:05 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEDT5Pjb;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790070185;
+	b=EMnMMQED1KLwxOPst0SQiQuk/C23TY1o41uLEInu7Q0opBWWS8tnhOjymslmuMR/ZIoZ50
+	qyknmDQ37esg3p38hzJ77bRRbeNiGuSJ3FFWS+HGwSZ7PlEYMp3m3Gue1/j64pJvNzTvRJ
+	omdE/qMf49IoGHGrExklEEf684DmcnM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEDT5Pjb;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790069942;
+	s=arc-20220608; t=1790070185;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2qtlFeXSOZ9GGEZMi6z1/hHIAqyyLNkdSaIaqPPEsXQ=;
-	b=I6Ek/u1tfm/iaMNg49VgyPexZt7Uew63uuaZNCy0+Qh5S7hU72P/M1ggH5VxvCaTKsKEmM
-	p3QUMOqJh3/CsQS4VK/u4lPuDTc04HpCaP28HJz2c4e8+Ful+rrAU6mzaF+h/OxQJvwDou
-	MzoIPCKersBq4jHAQgPUXT6AH4/cwMM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790069942;
-	b=2LhSQvA9KKU3P8KK31QgUJwnLtynt4fvciiceI//1HaJH7jKvfXT7xSd0sC0xspFcNex8/
-	/fqTDos9cX+W5IEZriB2YNeF4dB1aWSVVl+XwhVSj04b69KH/Lh80YQHvOTio2tLz6CHOP
-	yXNX2bomE8edbUe2m0DoekmwCJYNs0Y=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cASNak4y;
-	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=hi1vDGEifONMUPQI29D6K7Rz4VLkNWGHmR08F4W6XWs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790069939; v=1; x=1790674739;
- b=cASNak4ysuWjNi33n5bSDcBdcWis2zVS9qvdGrVjHVup11L/H4Fy2JLJIERrGeYANXz8CszW
- oLautxEeyd2Gjpi4VrSY37vqwZe2ZMcT5H+QQ91vdpC6IbVWed6Etmxj5X9apohdoXYrE+Gj8TE
- q0+yoU3mYLQ4aBgDeLCnyNpw=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9d2428c7de0bd619;
-	Tue, 22 Sep 2026 09:38:59 +0000
-X-Mizu-Trace-ID: 9d2428c7de0bd619
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <d9c97d83-f29b-440c-9385-47d13afc38f3@linux.dev>
-Date: Tue, 22 Sep 2026 17:38:51 +0800
+	bh=V+eCBMsdRHZZ8+99AV4x2YGu7/eXm49oGH7gIIrlNWI=;
+	b=bqQTFHsPGW7j75pFCArPw4QYFpJ/Ol8Mo2R6tPjceQulV+spkXW0cwGQ6l/DS8Dl9IbBa0
+	ZGPdloeef6sZg88DiGT1p3Q14syzMAMdmIu9Qv3qABbeTlwV7ls+VkvWN2G4RntHze5JEA
+	HuO7/bv3xRc9xeV2lODrFn+Q4XEbOVw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6319860DE1;
+	Tue, 22 Sep 2026 09:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9988D1F00893;
+	Tue, 22 Sep 2026 09:42:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790070184;
+	bh=V+eCBMsdRHZZ8+99AV4x2YGu7/eXm49oGH7gIIrlNWI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HEDT5PjbUbEQaAwBztSRssxASmJHaBqVwPwKnbEQzsJZHM+j+y5CasBQn12wmlSJn
+	 CuHqNQhabvHNIE5dxrC6QQ3nX2kIuww0JvVP2OXFnTkjcYV2qnP/mRlpxd612CoRVl
+	 MH+PLj+Bg+NihW+ZUZmiXEO9xnC/xz51ZS0tCCAxu/FIyVQJvDIn94lfBrZZ9/h3d4
+	 LPbb4NTCgzcZzrmK3Y0xPjiBDCuUMpAv7GbvkYoaxBVrDHqpolf8pst6EaxjvSDPB6
+	 m7OzrlzeotaCljEpaYVl448V2ES93RVHyOaaA5G/RAHfF1BBOI+NYgUORG28y/Ik/h
+	 13rAqbmckKezQ==
+Date: Tue, 22 Sep 2026 12:42:55 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v2] docs/mm: describe set_memory() and set_direct_map()
+ APIs
+Message-ID: <arJNn2QD_pY6e14R@kernel.org>
+References: <20260919-set-memory-docs-v2-1-a2a4b3657690@kernel.org>
+ <433d32a4-f59a-4d6c-915d-2c1b4c22b840@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: hongfu.li@linux.dev, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
- Chris Down <chris@chrisdown.name>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
- together with hugetlb folio
-To: Muchun Song <muchun.song@linux.dev>
-References: <20260921-for-hugetlb_state-v1-0-8a6eec92661f@kylinos.cn>
- <20260921-for-hugetlb_state-v1-2-8a6eec92661f@kylinos.cn>
- <B710AD66-B826-4138-B1D4-2DB3E00FDC1D@linux.dev>
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <B710AD66-B826-4138-B1D4-2DB3E00FDC1D@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <433d32a4-f59a-4d6c-915d-2c1b4c22b840@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: zdj5kfdsjuuy4ycyy8b1gftwchqdmcxy
-X-Rspamd-Queue-Id: 888DF2000A
-X-HE-Tag: 1790069941-480709
-X-HE-Meta: U2FsdGVkX1/tGMjt4f5FVQeor93guZ1eZmR2lLf9Dli8n2e+B/Zl09uu1qYVGNKIBDGW/OcbCA6HteGJwY6ylKC1sa6huSgrkb4tlElPEDOl5iylrzGJYT+u53ELtffG0Efzj2tpVlSZ5njEmrUzzGLVLVfBixeRwrGQ2v5JFpXdZEKcFuPuJLpCT3BATj2aJoxRomHKEGSL4gltRiEmXAh32/UvzJGmmK6mOTAmklWvTVY2fUlEMv+r8nLEIHpnPxCHab1Z8ZDzeB5EnMuaQp4H3GAP4ipUnwCGW0VWsaKIunry6TCX8bfIvfQj9T1QtzWIxoxgK46iePkZJ9d0RhkK4IdukFcPgDCTR38dsMLYF19sPbmZ7cggQ7aehYMG3NQVUGe5iFXVhuWx9mQac3SDg/RIDTB8BxI0Vt8QlBrK3e6egjG1iuIbLEOnG+GcwZpMy/66b6xoxpPZB0z66OxRhR6razPUIAvyVwEO8nNO25/IPNacFA+hWYBuyAKP4i8MZ28mpUvXf/2cD9K+W7/4wLqmsS6agYVGQ4x/qXx/4i80GB/NN3UYfkxU23nQqTs1PM468OW8BmdCr8ZZrodB7ZrTWPyOwPQfT2Eg0ReW9BBN0mZZ/snvrvmdPqiuIDKYx+VWOh6pjQTUvUEdGlS+81JhYSMYgeKCvH/CJQB4lVoBlvZ4TVEWZVTXvCeSud4zocPm8Ha/x8Fi/Fe4rot8vIDAesqPMH+duak4WhwJiNpBSlCbFutMYkWF2Hl9nMGhdYClC4veF7m2fgRHh/G0uBjKsJKf21UgrfpD/qHB4sDh0IpakpT9AcBgS0nQ/OjaAlaA7XDybQD7IvZvqFdKEFTGzgeyk5xHg6XlbhtDtkrNVGJm4hGFaNL0/Yj0eDaxrANUtlR1Og8xItGuhCg+IHLm/5GfZ6CyRH8d74n7Cx4HNU50Pud0fjGc6QtFjmK7PdIwlWKyd/HySxy
- P2GCf4eA
- ys9rnoo8W8P8v4KvCR2Y+nwEWu9JencYq/MTvdYfcilyKf1/O8nWGhqq2HivyUEabz9W81SVvg8Z6zoWdqH3eAplq91Lxd2iE2d9hUTSNj6/YDzDR5b+MCmGf+C9ZOFddathwOlQNrRd9m3CUdXiGfswyr7nGaFstaq9x4hRMUFTh2iNmrfmjVpE7CHakjUZn8uVwyvdzcM+tmt/A0F87PpK+bnmJsjV7gV9O5urpY9URgYsDN2rjMUh7v2Ur1+M6UoLlWRqX9aznhJzv4rjJwfzQzWBdbmuHb6HMoeYJmbP9VlzF6WNE1iZk/9vwMQS1iSdl4aw7a6R/3WRPBNi4NAUb1W/m+Xc0UfzFiptftR47sdCQPnGZcKq8KQoaFX/fm8hHIA4MQexv0uE1NVuD34Avug==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A5D31C0006
+X-Stat-Signature: pqo5zkm5jecofs3ryjxrnzkn4n17zx4f
+X-HE-Tag: 1790070185-88911
+X-HE-Meta: U2FsdGVkX19tdBL0WwSorIcToPBy30xKYlWYA/12mRF+hGjhyHl+qqtD9kahFAtuG1z5pNlSDS8EdA/7QxAtLa4K6aVgW6kUH8RLnAFWsa8cwnKH/oiAq4CVtxQclBEur4iocac6QGplb4OlVnnYVq+CW9rc6+l2IaP9BI0fGRdAapnkRTfCVFxH/JMY21iqBYpEzVjpKgpBX66CBshhjj2cCxmD+Gpl7L6vYJTe0Ktv7tjX4zdnvmJm1l4JvZPfZ98WxLAnCR+q0CFTT/6U1+AV+nocWDQEsEJRIcnMZsaneOKFo4vyk3cr3vtE6lvKRGaXywxSLZJ4bZn5x2XIhADalU0mo30QrOvEWeJVxMGWGL0wSghMjrlD4HnprKZERuxEOK6o4N7hlqhLWbhBR9KoKiK5X/Dks1RQfeYZXIopelhIGZxdRAq+KgTQMLgBkEPvZhIyQIxqlDgNjXkMlSrYR3RUzqqCx3OWIS1neQ21brh/9fREUiQqcdErr/VPiRJKpFDN7e65j0FAVKcdKbxbOfigh9wJrJX7rl2xG8UGiDtEYFXJopUMub1Y8WSR00uSHEsc75yH8IfVCyblZgfpypvzGciiGqsCFUQIbgPtvqmSuKanKH0LlYw5HuLPlb4zBRjM+ydwdvug3BkWANHF7nPtQEzuRO50pwnfoO1/B8U+M82AoAb+rnkDj/iXjpPdeyJBBRdUk7hCk9XvpwLRc2fuzA+hRnwrgcpc+hpIAJn9OKrEP0zt/KhOVlcxG+L40mmmC0m91kOlWEkICjQNJulPLTsv3zYPx06qnKmJHcdXuLnhcSRbDRTJbpq7zuJzqroQeQ8fcB2YwrBcUvfnOYeaqCZnD+oPGNh2g0d+wzHzzSptZspV/Bnbml2rB8VfCiNIwvKQ3ZSna6oRxWwMZC7oAizp2OeqGyrjmRYZrfrsrcSB7YKSHRiY+DpoxTQzvGgbWYFUrX3o80Y
+ x5opLyEO
+ kKz8hC7z3gH0/hoJ5SBRHSC3fyo5gm3Q5HIxaZbshDio/h7fKXQs9qN71eQT4TcKQhpn6Sr3pHn5CuIStFWvRTT8BWkChibDWvxhpBYkoDwBA71Daqy7KM0e9Xx+zNAp4cUM7BVIqGm81/2imAq16bON0Mm5tIjabp5TIApCo/kUQQKKs4DKW2ddxrVUkax9SeSjt820km9IDA0+ilM0c8r63KaJGIampj8A2c6PiqkmnB4zhV2xCi3cOeEMCp5YlnU09F5+8OqQt67/stBcdxiIa/F4e/8FdInJ6+4pctjUFdX2hvF/Bkble3ifrukQOPNatcZfa/hvF9bzROrvKbv4LLc6nCwx7JWEXT8Kujuk2S4c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,103 +101,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 21, 2026 at 03:03:32PM +0200, Kevin Brodsky wrote:
+> On 19/09/2026 12:43, Mike Rapoport (Microsoft) wrote:
+> > [...]
+> >
+> > +Modifying the kernel page tables
+> > +================================
+> > +
+> > +Except for the vmalloc area, the kernel page tables are mostly static. Still,
+> > +there are cases when the permissions of existing kernel mappings have to be
+> > +updated, for instance when a module is loaded and its text becomes read-only
+> > +and executable, or when a page is temporarily removed from the direct map to
+> > +reduce its exposure.
+> > +
+> > +There are two families of functions for this, both declared in
+> > +`include/linux/set_memory.h`:
+> > +
+> > +* `set_memory_*()` change permissions of an arbitrary kernel mapping. They
+> > +  take a kernel virtual address and the number of pages.
+> > +
+> > +* `set_direct_map_*()` change permissions of the direct mapping of the page
+> > +  frame represented by a `struct page`. They take a `struct page` pointer and
+> 
+> The new phrasing is a mouthful but at least should be accurate :) It
+> should probably say "range of page frames" or something like that though.
 
-On 9/22/26 2:18 PM, Muchun Song wrote:
->
->> On Sep 21, 2026, at 17:12, Hongfu Li <hongfu.li@linux.dev> wrote:
->>
->> From: Hongfu Li <lihongfu@kylinos.cn>
->>
->> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
->> stats. These stats are accounted against folio_nid(): incremented on
->> the folio's node when handed to a user, decremented when the folio is
->> returned to the pool.
->>
->> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
->> to the new folio and drops the memcg data of the old one, so the free
->> of the old folio right after the migration skips the memcg per-node
->> lruvec decrement. The hugetlb count stays attributed to the old node
->> for the rest of the life of the charge, while the target folio gets no
->> increment on the new node; its later free decrements a counter that
->> was never incremented.
->>
->> Migrate the per-node lruvec accounting alongside migration. Global
->> memcg totals remain balanced because they track resource consumption,
->> not node placement.
->>
->> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> ---
->> mm/memcontrol.c | 31 +++++++++++++++++++++++++++++++
->> 1 file changed, 31 insertions(+)
->>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 1460cba53588..9c96ebd5436f 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -5598,6 +5598,34 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
->> rcu_read_unlock();
->> }
->>
->> +#ifdef CONFIG_HUGETLB_PAGE
->> +static void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
-> Actually, we don't need this objcg parameter since we could get it from folio.
-> And I'd like to move this function to hugetlb.c.
->
->> +     				struct folio *old, struct folio *new)
->> +{
->> + 	long nr_pages = folio_nr_pages(old);
->> + 	struct mem_cgroup *memcg;
->> + 	int old_nid = folio_nid(old);
->> + 	int new_nid = folio_nid(new);
->> +
->> + 	if (old_nid == new_nid)
->> + 		return;
->> +
->> + 	rcu_read_lock();
-> Please use guard(rcu)() to simplify the code a little.
+It gets even more mouthful, but you are right, "range" should be there.
 
-Hi Muchun,
+Andrew, can you please fold this in:
 
-Thanks a lot for your suggestions. I will drop the objcg parameter of
-move_hugetlb_lruvec_stat(), move the function to mm/hugetlb.c, and use
-guard(rcu)() in it.  I will post a v2 for review shortly.
+diff --git a/Documentation/mm/kernel-page-tables.rst b/Documentation/mm/kernel-page-tables.rst
+index b3148df07fc8b..c16de34b4f79d 100644
+--- a/Documentation/mm/kernel-page-tables.rst
++++ b/Documentation/mm/kernel-page-tables.rst
+@@ -103,9 +103,9 @@ There are two families of functions for this, both declared in
+ * `set_memory_*()` change permissions of an arbitrary kernel mapping. They
+   take a kernel virtual address and the number of pages.
+ 
+-* `set_direct_map_*()` change permissions of the direct mapping of the page
+-  frame represented by a `struct page`. They take a `struct page` pointer and
+-  the number of pages.
++* `set_direct_map_*()` change permissions of the direct mapping for the range
++  of page frames starting at the page represented by a `struct page`. They take
++  a `struct page` pointer and the number of pages.
+ 
+ Architectures that implement `set_memory()` select `CONFIG_ARCH_HAS_SET_MEMORY`
+ 
+> Looks good otherwise!
+> 
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> 
 
->> + 	memcg = obj_cgroup_memcg(objcg);
->> + 	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
->> +       		NR_HUGETLB, -nr_pages);
->> + 	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
->> +       		NR_HUGETLB, nr_pages);
->> + 	rcu_read_unlock();
->> +}
->> +#else /* CONFIG_HUGETLB_PAGE */
->> +static inline void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
->> +    					struct folio *old,
->> +    					struct folio *new)
->> +{
->> +}
->> +#endif /* CONFIG_HUGETLB_PAGE */
->> +
->> /**
->>   * mem_cgroup_migrate - Transfer the memcg data from the old to the new folio.
->>   * @old: Currently circulating folio.
->> @@ -5635,6 +5663,9 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
->>
->> 	new_objcg = get_migration_objcg(old, new);
->>
->> + 	if (folio_test_hugetlb(old))
->> + 		move_hugetlb_lruvec_stat(new_objcg, old, new);
->> +
->> /*
->> * @old was charged through a non-root objcg, so its charge is in the
->> * page counters. If the re-derivation walked up to the root objcg -
->>
->> -- 
->> 2.54.0
->>
 -- 
-Best regards,
-Hongfu
-
+Sincerely yours,
+Mike.
 
