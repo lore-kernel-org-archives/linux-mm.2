@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A202DC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F47C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CA846B009B; Tue, 22 Sep 2026 08:44:50 -0400 (EDT)
+	id 0CA726B0098; Tue, 22 Sep 2026 08:47:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77B9A6B009D; Tue, 22 Sep 2026 08:44:50 -0400 (EDT)
+	id 0A34E6B009E; Tue, 22 Sep 2026 08:47:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 669FA6B009E; Tue, 22 Sep 2026 08:44:50 -0400 (EDT)
+	id F21306B00A0; Tue, 22 Sep 2026 08:47:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 432816B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:44:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD19EA63E8
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:44:49 +0000 (UTC)
-X-FDA: 85241367498.12.38EE90B
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 01407100002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:44:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R4SCx8JF;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id CA35D6B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:47:02 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E53BA65CB
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:47:02 +0000 (UTC)
+X-FDA: 85241373084.09.8E2166C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A1ED6A000C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:47:00 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h1eg+t/j";
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790081088;
+	s=arc-20220608; t=1790081220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p2/mloYlrcJ4io0NzgMvmL7ZcyTYG1Hsn6kSPBsACzk=;
-	b=M4zqFaYCKoTiLOVhP5J26uPRlqMfvyeMmqgJMNriW0sIpyG0Phe9hzmpOV8z6hKhu52zfo
-	IewQV7aqt2uILhFuEExCB9Ox1pin8Uv3qzmFuZHynxOG5Fp2YBfPjPQ4pDAzMSGwQ/O9OK
-	v4PQRxf6oqRz051EtIQdi+NpE0r3QrQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=R4SCx8JF;
-	spf=pass (imf14.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.140 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=Kx1cDLNT/v31qKJcafvn3WkzdrqDUmMJSTVkfFeWiQ4=;
+	b=Mm4TM26DtEOezEu4vIOmHfgcCYHiV4cnBI3FhwVODqGAZRFAPpsy5T1W+5dfwZxc9r1sc6
+	1fP2OaYuIvKNiprRD1OS6TylQO4zOnkZ3NgQgZg/1R3RnY1bggYwLTPLLiE5itwKx2teev
+	GrpS0s3pc1NO8P9yPToKT00q8l6XnFw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790081088;
-	b=1Jo0Qur8NScYdfDJ208d1nTQAc45rOmyl4IqRZ0xkgvlxJfk1c4DEwGXo50e9KBYKT/e0P
-	AmMCg/qfyylddMzEKpboIxo8MzEmS5p3qoFvHh9if6qydR2crV/k8DDSYxEhkMS29I09lU
-	d8RGoI2bj3WOBSD1kjehWiIgRHHW3gA=
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c264788fd58so620903066b.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:44:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790081086; x=1790685886; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=p2/mloYlrcJ4io0NzgMvmL7ZcyTYG1Hsn6kSPBsACzk=;
-        b=R4SCx8JFRQhw0hZssLIrtBXMGgNftJXW6MH2OjSPNXRT0W0/jB9zhtE80MvQ8eP/AV
-         7xtcT9G4o9wVikGLLg6pCJ3xEKH+X52/geljKwfs5MYmfTtJvK2H1pHUjipXmxemMQfG
-         mTJrhggs0dlqdpQGA8xqh6qxr1+UFjls47VDOqPArxpLP9eP5yoeIyS4N0MeHT8tUfKs
-         ePdg6TwZoGHJt/EoYCZRUgiEBNpTAmWqmRg3j8two5sexM9w1z18dOFMGclucteN5qmA
-         FTe3S9eg/D7koheBXFXitN903SEn6miJddpNsRxK6wgKhTSN2L7glR4YdQZTC7piHprE
-         Bbig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790081086; x=1790685886;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=p2/mloYlrcJ4io0NzgMvmL7ZcyTYG1Hsn6kSPBsACzk=;
-        b=BXqjSFv+1HAks+njmFpjrvyYAHmPZplBz5WZqB3snevNQti3Q9t9x/aE70AkzsRBTN
-         dUl9qnkS5yGsjDGe9vxndy/Soj8ApgV5kiWtkfASVtLG+qE1ZnOzOaqzOPJHczxcZAfq
-         CFqoYK+v0+vsQHIMlGj7NghAs5yly5XoJgszMXK0B5jiB56ZxFacGGbaq+n6hr2GNUVT
-         xBfX6rCnOvbYyS2hBnLKIiZTzHtScdePEsGGKxbC8qyH3LTmpXZCm31Mx/31UdqHDhEo
-         N4cX+cK2ily8TIM5Xz7jI9jYRFGzbzL25FGpslu91+MiJGZE/tP+Ec61Kfmc9LoxFmvq
-         7Jwg==
-X-Forwarded-Encrypted: i=1; AKwUvBz0uVQP4JnGl8ZAeHQeg6qH+nzQvViG+8Cq1cFMUil4AaoK0ZZH0+h0H+47a64nGrt/bNNjECKaRA==@kvack.org
-X-Gm-Message-State: AFuF++n+imLY/miVQec1wZ2chtfhnxopxPs8X4PuVz0F4KYP3Vow4CIC
-	fUGN/JoSF3U3JrtoAXdx75i/xtAuoSDSVf7y3xa/uuaC7g7ti0FLzJIN
-X-Gm-Gg: AYBFou0aygb8xAGmYQvLdkaYfBwFQEr7jXE2RwtiQePE+osfJyHycEmCPERKmFyUmgq
-	Pxb0k91GHeUWpbZ5W2L0OFhkN0TQ85MwHKjeO0mK/jxbBRIJjbRcu51RqtjWrR6mT2F3MXyWNpm
-	uIT/nIKULFcc7TTsUj02CXuMUgJFro/ZgNUQCDVoqMh/8/Gu5CmQZcm5RI6RuvokfNjt7Y4LfM/
-	sn8nbqLkAgl7TQKgmsJiDl4vxNW5s5WdnCx4WDd/7xIalgaw8xpN9UljignrkppjRDeCEpEvuQX
-	TNN6MFmZcKDj+NEh4AIoMHskzqoip+ovcjC+hLWwam/qZdDy4Zqw6+xpjDx5tbGRfIOVQa0DGWB
-	oNwyMDSUwGLVFsbcckLORYzAkx3FeD9DCGXEOuWHyXbY8/CNm6hZ73y2aDzTniIdvAfHmPyIYAJ
-	k6EYuOeS1xj3dbdByYhvAuD0eTO2zrl7D6znk=
-X-Received: by 2002:a17:907:3f24:b0:c29:439b:d5c1 with SMTP id a640c23a62f3a-c2a1585a618mr1167923466b.16.1790081086414;
-        Tue, 22 Sep 2026 05:44:46 -0700 (PDT)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2a9c580d2fsm74868466b.26.2026.09.22.05.44.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 05:44:46 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Tue, 22 Sep 2026 14:44:44 +0200
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-Subject: Re: [PATCH v2 2/3] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
-Message-ID: <arJ4PLGlF7uhNWOs@milan>
-References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
- <20260921-vmalloc_dump_obj-v2-2-73fceb3ed1c8@linux.dev>
+	t=1790081220;
+	b=EjN/1xx6dF5WMEEOj6U10j3B8Te/jZADOIpwTdDJP2GB6c5RqkR3q+JlPZFg+vaXZTcAn8
+	1LfrtyY8g+Mn23LG3k0pEZDl3ABKO7V8JtWQ+1XLuRe3CnrqO7ZKgr/4TN1P0XCLpPM/eE
+	amEqHYPor/yb71aZo2lEtUn25ozN0Dg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h1eg+t/j";
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D75D9416C3;
+	Tue, 22 Sep 2026 12:46:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427A51F00893;
+	Tue, 22 Sep 2026 12:46:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790081219;
+	bh=Kx1cDLNT/v31qKJcafvn3WkzdrqDUmMJSTVkfFeWiQ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=h1eg+t/jUhQbuzHrElz3Hf5taYbBwYU0NBlcmQx4+KVtL24Vm0a4MfbxrbPT7+XZu
+	 NUzXJB4MtOPLFb0knT7Bkdynn7oV43dCho4gZ9oD7E23+Xf2Owzykm8ZNAO0sGLnnO
+	 7FTqSY3HwIBougjUPxzSyzBBIyNjCi1RBcUgzY7XFQU/tkhgM/XoG/sim8vvfAn+++
+	 beJtOJj2/ZtvFEVokoQ+cIIPOPIaSQ/dEXfJTrHK+5mmtRhdMb3NTf9jiVrHE/J+HH
+	 W76w5Z5owffNApwmpqj/LiwAW/WR30WAic8mUFYf/rMlbOAzYKzu9ocPIcrWi+aSzs
+	 y1fyDqDdi/QHQ==
+Date: Tue, 22 Sep 2026 13:46:57 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: vbabka@kernel.org, akpm@linux-foundation.org, cl@gentwo.org, 
+	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/slub: refill prefilled sheaves from the barn
+Message-ID: <arJwnw_kxbj2RFUe@thinkstation>
+References: <20260921094521.141665-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921-vmalloc_dump_obj-v2-2-73fceb3ed1c8@linux.dev>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 01407100002
+In-Reply-To: <20260921094521.141665-1-hao.li@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A1ED6A000C
+X-Stat-Signature: irpi3g1t17wpgrn5gtk3tbha4qwzwxo7
 X-Rspam-User: 
-X-Stat-Signature: 6c3y1cj1zxh3mwycusodtuqdd8mwwxhd
-X-HE-Tag: 1790081087-762186
-X-HE-Meta: U2FsdGVkX1/YuISdk6yZBneMuxzyCVAcXxkrEZWOKlYHg0yKrqwd1KSSAKnddLv9HTqrEZYVlh2C4p77djKWK57FXiE/TBrh/VM3PRAqJlWYRRrhUZAs7Fe374KuuT2mLFjwFIVdk96bll6179qoPRb6TQoRWFrCnDsQDk6W+plGiRWt61eSVegs3Vuk0/OxLufsasgVMTOxVyzIKcTYhpXT+rFxGAoA44Ni9n6riXw+M/jYCqK50oStwStF/nLcpVqDr4y21NDD8AZfomg31jZEz31K5inD3YDr8/oCqiEvHjJbjpZ7A5vwDLCJWrUGiHC2l0ATYzTwxR5u7OQkFWD5U9TQUOpS8Ydxx/1UDEaaZFlBaRgaVWv2wvFeDWbSWr4/292g9EmC6e5qhADNNN3IkFBPLmw8E2oXRoIi+i+s7R/E6OqsZGe45F/3zklWNjEeVsv1ysSPsL6Ner9h+24g5JzDC2v+EeCCt2/YeVD6ilgBCb3RrLF9z60PQGmwL+24jWBaRQZ9HSySYvMSrTNJu/6Bl8kaoBP3vUQ9Lw7Lp1m1VCsKoLV1oOxvw89twgEp2EX8KlrL5VualNWhtY7VOM7y9qG1aVUHagMS5WtVWr7kcTd76Q+iiIPkMjQb3uowX90uksCRm9KrdwGvqiYLWjS421jSv7HPk/qWR2JzEVNGahGsPArekug3AhV3BLJk4/oT8UY8hu1OUt1HxLwJ+rmqDl94daAj6PJ5aaitI02kW267Mam3daOsotOqdw0KEPMrccfhn+2b/e32R8MEuIwyBha6u0RuKyOwtRa8tiApfULTzaHxodbFIuqH3l4g7vAbf6aXaisbYnClckt3mEe6UKn8m+J4DJ64gNsiLZ/bhONNBhdZOAN784sn4/cDd9AfDaV0j67JeBr1Axoluw7XyeM2gk/dVjhYoPRiS3vRa4FpxgwEDERwLKBLq5fnEjsFsUwcJxMQRqV
- qhcG0viV
- xBDM7XL889e90odIWy8iVXmXIByFYWWqdQHTckBPsbQI3kjhzKBH8i9DiLiZu/IS+xrmQ2U4Mszu21uX87WUdMUbsYx0bZE9rBvQtzBpDA42Crpi9TvrFeCYb+Y2GQTzvCX6xXcHINs1/Vvd5nq7hYi837QiPJ8OlgXVpyQpOsH9HTILVQjs0ANLqqbEjnBL0BKQkG4RKk+9bGLnNqFVmWoG27s01AJmSFlTDiy34AOWpg1cIFVVzOuwssibiRWXk1w3YyD7gVNbyPPl4iBj+CqYS8TCX2rCju/TdBsKNY9LF/QOS/geQ2lMtXpBphTVzJhBkLy6wB4nEnAhO5ijVs1MYd1CAe29z5OKq2U9luoIteg65bPl3ZjIm/13pnGJNguT9d5v85xs8gNEDPZaswp9JZgkZRtVIMnOMRdGqDHsp3cWOYuWcPu0vaSfvf9uZzTI5cuir44Z6czBp2TBXQv7nyceXwB+eTU2HIm0P7MtKWUMhg6QCq+y1oyn6KRd0aqMrfHm+5AHagu8=
+X-HE-Tag: 1790081220-710528
+X-HE-Meta: U2FsdGVkX1/DbiA3QHkaWi6i9gRljsH8pYg36d4vQDYCp4agIy0RBnI7ptSjBSwqXCvojTC3YeD0cTKncnJDHmh+JJPd2er00uzYpT2vScwk0gh5s9SeeDXjxWeTpqln1YWHI0//Pfj14IqEE9m43uPPQUsudKPOQMribj6RTCmOxT3JOq1f8yMPZbXvM9kvrpKwEulVO/KUbYcRO4Wv8Kt1v1OmZ+8IDpeVSCqDyVRcxCwcwG0gD+y0yOpv/afci8XixWz0wnMiBqCoH/HYozSE6ahU6Bb39sdqfqlsv8S35gJwSjzmgENc12XKqpdyVx+/H4Hurat2S7XVUOrk2Gc7fINArOg7Y8UxnQHZiwn2vFGV+VZr5WNnWYfJBL5tXn1B38pcH6kCe2KdCaIxRbP4VTf8QqD7kmsB12foKTapBlCr+pL38cNSOR1LHgWpR00q64K6rRDHxJN3yuU49YvmaQFskz0Ll4LdAJENPyhCzcsnGSFU/n2KMijB7bJbPn+W0bW8vma2MUGMf0DuqEkZcJLfWbHFWYnA2sZFvWv6OpJB8griAV8sLyEOrPMuchCbQG/52Pmez/FX4+PCWhzCrqXDiZ3e2UPXj9dk8pxUJMAfNvQ728QpmY+K4uY+dw9RboEx1Ay7o4Fomfz3tPpwCqx5/Rh9owVoYEeWd0cfxWV8AFfPPPFff102NLftfWo/6j2CMtSWRtnwnQhTZZ1XtLR6kNh06mvnTLkDRHZQADkrO0FMBljlsj2HqVMuA9dx72YZj+OhZAtHPjonsuXuELeJXxiqmUZbCFUImNiP18o4G0/+q3sQ0an+VgzMqx8XfqUmXAkL9gLjEZlVIHr+LpR0xDpKM3WPUTEVBpiT8gxF9ieg7asUwXxwVWWAtxullwRw3cjaXQNMd1f+p7wkLryGFaIg/0O729wNzR0sleDs3GZUr0kM2S90xwGHCZZHwl+fFV7meHCGBx0
+ XFUXR835
+ JRAFX0+0nhn3rKgc+PLaR9I1GXQ9ooqiySLo1o6vRAemG/Fq0GDMDC5gJBQC7OkPG+oM55Mk6lrzGR25mUv6e2OfEv60eEVmLabU8pWwNlXOVblwaQ1CO+KB7ZpcvPH6CWLJwIEVDHgYJsp02M1qYSzWbgkOUOd/EkzGvYku5ysGSdWbe+7jIOrWvDc6WYBHx7ba3qzdUiI0PqkXSKHvHiJnh4Nqo8G/Q2mrm7RHD6pQQqoEvRwQCOf9co4Uhnuy3JLII0Km9hn9prf0r0fHINovWeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,147 +91,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 09:17:22PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Mon, Sep 21, 2026 at 05:41:13PM +0800, Hao Li wrote:
+> Currently, when the prefill API refills a non-full sheaf, it takes the
+> objects from partial slabs and never from the full sheaves in the barn,
+> so once the barn's full list becomes saturated, it stays saturated.
 > 
-> vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
-> but a vmalloc allocation may span multiple vmap zones.  The VA is
-> stored in only one node's rb-tree (addr_to_node(va_start)), so an
-> object pointer in a different zone than va_start maps to a different
-> node and the search misses.  This affects any allocation larger than
-> vmap_zone_size (64 KiB) on multi-CPU systems.
+> For objects freed via kfree_rcu(), every RCU sheaf then has to be
+> flushed to slabs because the barn's full list has no room.
 > 
-> Iterate all vmap nodes using for_each_vmap_node, like find_vmap_area()
-> does, but with spin_trylock instead of spin_lock as this function can
-> be called from atomic dump contexts (OOM, KASAN, RCU).
+> To fix this, let the sheaf refill from the barn first, and introduce a
+> partial sheaf in the barn, which holds the leftover objects [1].
 > 
-> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> Only the prefill path needs the partial sheaf. The generic allocation
+> path (__pcs_replace_empty_main()) exchanges an empty sheaf for a full
+> one from the barn, so nothing is left over. The prefill path refills a
+> sheaf that is not necessarily empty, so taking objects from the barn
+> usually leaves leftovers, and the partial sheaf is where they are
+> kept. refill_sheaf() only takes objects from partial slabs and never
+> involves the partial sheaf.
+> 
+> The sheaf is refilled by copying objects from the partial sheaf, and
+> then from a full sheaf taken from the barn if it is still not full. A
+> sheaf that objects were copied from stays in the barn as the partial
+> sheaf if it still holds objects, or goes on the empty list if it is
+> empty. The sheaf being refilled is never replaced.
+> 
+> The gain comes from two sides: every full sheaf taken out makes room on
+> the barn's full list for a future RCU sheaf, and refilling from the
+> barn is cheaper than refilling from partial slabs under list_lock.
+> 
+> Note that putting the sheaf with the leftover objects on the full list
+> instead would not work: it would occupy room on the full list, so the
+> list would stay saturated and rcu_free_sheaf() would still keep
+> flushing.
+> 
+> An earlier version of this patch swapped sheaves instead, to minimize
+> the memcpy overhead. As Harry Yoo pointed out [2], replacing the
+> caller's sheaf loses cache affinity, filling it directly is more
+> straightforward, and testing showed no measurable difference between
+> the two approaches, so the approach he suggested is used.
+> 
+> Tested with will-it-scale mmap1 (192 processes, one-minute runs) on the
+> maple_node cache.
+> 
+> throughput: 27778727 -> 34500556 (+24.2%)
+> 
+> metric                       baseline           patched        change
+> =====================================================================
+> alloc_fastpath                 54,124            56,696        +4.75%
+> alloc_slab                  7,100,651           159,739       -97.75%
+> barn_get                          849       194,460,392    +22904539.81%
+> barn_get_fail                       2               217    +10750.00%
+> barn_put                          851       182,306,701    +21422544.07%
+> barn_put_fail             260,400,484       145,522,675       -44.12%
+> cmpxchg_double_fail         1,029,204           334,228       -67.53%
+> free_add_partial          326,694,687       181,935,790       -44.31%
+> free_fastpath                  13,297            15,611       +17.40%
+> free_rcu_sheaf          8,332,839,104    10,490,535,227       +25.89%
+> free_remove_partial         7,099,788           158,297       -97.77%
+> free_slab                   7,099,788           158,297       -97.77%
+> free_slowpath              10,969,156           782,851       -92.86%
+> objects                        15,295            14,849        -2.92%
+> objects_partial                15,295            14,849        -2.92%
+> partial                         1,604             2,336       +45.64%
+> sheaf_alloc               137,757,895       141,208,076        +2.50%
+> sheaf_flush             8,332,823,922     4,656,725,764       -44.12%
+> sheaf_free                137,757,883       141,208,072        +2.50%
+> sheaf_prefill_fast      3,337,502,163     4,196,506,116       +25.74%
+> sheaf_prefill_slow                685               400       -41.61%
+> sheaf_refill            8,343,794,364     4,657,509,724       -44.18%
+> sheaf_return_fast       3,337,502,411     4,196,506,382       +25.74%
+> sheaf_return_slow                 437               134       -69.34%
+> slabs                           1,604             2,336       +45.64%
+> total_objects                 102,656           149,504       +45.64%
+> 
+> Here is what the important metric changes mean.
+> 
+> barn_get and barn_put: refills now take full sheaves out of the barn,
+> and RCU sheaves are put into the barn again. Before, the barn's full
+> list was saturated once and hardly ever consumed.
+> 
+> barn_put_fail: more than half of the RCU sheaves are now put into the
+> barn instead of being flushed. The rest are still flushed because they
+> arrive while the barn's full list is at its limit.
+> 
+> sheaf_refill and free_add_partial: fewer objects are taken from partial
+> slabs to refill sheaves, and fewer slabs are added to the partial list,
+> by the same percentage.
+> 
+> alloc_slab and free_slab: the partial list is almost never empty when a
+> refill looks at it, so slabs are almost never allocated and freed again
+> only to serve refills.
+> 
+> After the test, the maple_node cache holds 1604 slabs without the patch
+> and 2336 with it. After a manual shrink
+> (echo 1 > /sys/kernel/slab/maple_node/shrink), it holds 485 without
+> the patch and 563 with it. So most of the extra slabs are held only by
+> objects sitting in sheaves and are returned by a shrink, and what
+> remains is a small difference, because objects handed out from the barn
+> come from many more slabs than a refill from partial slabs would use.
+> 
+> Link: https://lore.kernel.org/linux-mm/aqPlMzUIw-4g2iOX@fedora/ [1]
+> Link: https://lore.kernel.org/linux-mm/aq0ylDidEHa2kg4X@thinkstation/ [2]
+> Signed-off-by: Hao Li <hao.li@linux.dev>
 > ---
->  mm/vmalloc.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index df42d8a6f058..30c610f678dc 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5278,17 +5278,29 @@ bool vmalloc_dump_obj(void *object)
->  	unsigned long nr_pages;
->  
->  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
-> -	vn = addr_to_node(addr);
->  
-> -	if (!spin_trylock(&vn->busy.lock))
-> -		return false;
-> +	/*
-> +	 * A vmalloc allocation may span multiple vmap zones, so the
-> +	 * node whose rb-tree holds the VA may differ from the node
-> +	 * the address maps to.  Search all nodes.  Use trylock as
-> +	 * this function can be called from atomic dump contexts.
-> +	 */
-> +	va = NULL;
-> +	for_each_vmap_node(vn) {
-> +		if (!spin_trylock(&vn->busy.lock))
-> +			continue;
-> +
-> +		va = __find_vmap_area(addr, &vn->busy.root);
-> +		if (va && va->vm)
-> +			break;
->  
-> -	va = __find_vmap_area(addr, &vn->busy.root);
-> -	if (!va || !va->vm) {
->  		spin_unlock(&vn->busy.lock);
-> -		return false;
-> +		va = NULL;
->  	}
->  
-> +	if (!va)
-> +		return false;
-> +
->  	vm = va->vm;
->  	addr = (unsigned long) vm->addr;
->  	caller = vm->caller;
-> 
-> -- 
-> 2.25.1
-> 
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 89c327a6ce7d..3719dc02dcaf 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2511,7 +2511,22 @@ static void free_unmap_vmap_area(struct vmap_area *va)
- 	free_vmap_area_noflush(va);
- }
- 
--struct vmap_area *find_vmap_area(unsigned long addr)
-+static inline int next_vmap_node_id(int i)
-+{
-+	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
-+}
-+
-+enum vmap_lock_mode {
-+	VMAP_LOCK,
-+	VMAP_TRYLOCK,
-+};
-+
-+/*
-+ * Add a comment here.
-+ */
-+static struct vmap_area *
-+find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
-+		enum vmap_lock_mode mode)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
-@@ -2534,16 +2549,40 @@ struct vmap_area *find_vmap_area(unsigned long addr)
- 	 * addr is within 2 or 0 nodes we should do extra work.
- 	 */
- 	i = j = addr_to_node_id(addr);
-+
- 	do {
- 		vn = &vmap_nodes[i];
- 
--		spin_lock(&vn->busy.lock);
-+		if (mode == VMAP_LOCK) {
-+			spin_lock(&vn->busy.lock);
-+		} else {
-+			if (!spin_trylock(&vn->busy.lock))
-+				continue;
-+		}
-+
- 		va = __find_vmap_area(addr, &vn->busy.root);
-+		if (va) {
-+			*locked_vn = vn;
-+			return va;
-+		}
-+
- 		spin_unlock(&vn->busy.lock);
-+	} while ((i = next_vmap_node_id(i)) != j);
- 
--		if (va)
--			return va;
--	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-+	*locked_vn = NULL;
-+	return NULL;
-+}
-+
-+struct vmap_area *find_vmap_area(unsigned long addr)
-+{
-+	struct vmap_node *vn;
-+	struct vmap_area *va;
-+
-+	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-+	if (va) {
-+		spin_unlock(&vn->busy.lock);
-+		return va;
-+	}
- 
- 	return NULL;
- }
+Looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
 
-
-and we use the helper in the vmalloc_dump_obj()?
-
---
-Uladzislau Rezki
+-- 
+Cheers,
+Harry / Hyeonggon
 
