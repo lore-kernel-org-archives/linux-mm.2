@@ -4,122 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63F59C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC762C982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:31:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61B206B00A1; Tue, 22 Sep 2026 11:31:06 -0400 (EDT)
+	id B72886B009F; Tue, 22 Sep 2026 11:31:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F20A6B00A2; Tue, 22 Sep 2026 11:31:06 -0400 (EDT)
+	id B498E6B00A2; Tue, 22 Sep 2026 11:31:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 507E86B00A4; Tue, 22 Sep 2026 11:31:06 -0400 (EDT)
+	id A5FDD6B00A4; Tue, 22 Sep 2026 11:31:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 284286B00A1
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:31:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2C18A0532
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:05 +0000 (UTC)
-X-FDA: 85241786490.15.022B200
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B4806B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:31:33 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 083761C2F31
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:33 +0000 (UTC)
+X-FDA: 85241787666.06.253923C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 91317A0013
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:03 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cxoYO/hf";
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3EF8880012
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:31 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oxgbajWA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790091063;
+	s=arc-20220608; t=1790091091;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WjK1rso8gurasV2KREJhuQVyxlazrxmPZ7mJelduaeY=;
-	b=VFlfPaBTKHMFvWPULldcJ0TqSr5nPQE794BzTpAgQOz5c4dwmhgHs/7Z/AKVtf5SWf4u4o
-	ufU8iLOdKwgjgqVvffyU1PKEMrbIo2h0d3sMm8XouqOast8k+OrFuLeLmmhKIQPTP5wcjc
-	UDGPMPepPXil2F/NUzWRuQ+QyxsnN10=
+	bh=VFYj6sjedfWGEBuGl++9heS9zoD83sYWZIxoZFH52Mw=;
+	b=rKlTXVbaSXER4LSy43mCMLYTS34nf0VUCsU33CEmbaM8H0h9Hr2BjtsXe+vUHDzTYFIChZ
+	J3vog2AN71TuUgMzm5FOaXlxJrLjxTx6LBZcjQJQws7b2luu1zBGg07wJd4Xfp15pGm6k9
+	J93puntu2pBVKC8XHI+xmcRIMIfwGVg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="cxoYO/hf";
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oxgbajWA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of jaegeuk@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jaegeuk@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790091063;
-	b=KJGC7Atnq/mtaI0EPH3eOpDaWjdB8eh0X+QyUwkL9R10g0mXKodPB+wmdyVLaf5hpgO8az
-	S+43CzHXGhi1VJ7gRAECuN8wXJUm5fvlEicH1judEsyZ+foFL8xqNrMBAI9skJhIQ6Ssu0
-	2Zm5DCnTI+IBIh2DV8TnaPDDA1MVkNA=
+	t=1790091091;
+	b=Joeumb6X70sn1+Yl2Ivc1Hp2vT3n8LcjqBR+E0dMRhCeHHR4AEieIHYDvWXKytfRMmvMmd
+	JqWWoFOBR2iMqPbYz56FwebhHOLEJTY8vyP0C4hpXWoeiQVccUnTuS7mqnKxBhM9iFEEDe
+	KPIu20bB1X+pA9/zM9Oj+XurM95H99U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BA2E244948
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11FA1F0089B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:31:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 81B3D40DC1;
+	Tue, 22 Sep 2026 15:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971F71F00893;
+	Tue, 22 Sep 2026 15:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790091062;
-	bh=WjK1rso8gurasV2KREJhuQVyxlazrxmPZ7mJelduaeY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=cxoYO/hfDuXSHTQ5Dxnl6SmOSX9U+dJ8slNR5avEpnawT5V6HZgPy75HhzBKpPA3y
-	 sEnpDu9LA3p1Y5Fo70ao5AblIJ3yeM0YOpwYLJfabK2kx3pyyE3yWKywSroUWJAxKO
-	 pcv+htWoFQfi3RRwddJtUZzvx0Z5hBps2kELz5DJxflcrmDkffWZbe0SkJGAY8Z3Vv
-	 RUvt0WHXx2juTBnv70nRp375ScuCb8+zFLghqhZkQ09fYjfG5I9pIbrVKFwXH3hjxJ
-	 zs0YIGJt3oA7eaBNknm1vmxsJX6mdqU/LNIbNPfN7jsmvY0vdh9G7RNqIowWJgGEwc
-	 QOKGOa9WUsTlQ==
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-670fee39d73so4537433d50.3
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:31:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBxeQNk76P5B0EO3J1o2q2mwVsAn6VZxLLygCqwMghoog4GseUqpv19kjCd1HdiwF0MhUjAdtAim1g==@kvack.org
-X-Gm-Message-State: AFuF++l/dhfxG1990mmgdLQ9EOGCrSjw602PyBsOEktX/kJh2EnTyI6x
-	JIbIHj4YDb7Ez5X0f2zAMOy2Khb9rsU8Lg2LmjqqQAolnz5si25iPiREPvZPeyWv7jMNh1isB/4
-	UarDcFuSC2hASjsOJIuvKgN8c8RcQLippNlKJwaUxIA==
-X-Received: by 2002:a05:690e:191b:b0:66f:c1bc:4036 with SMTP id
- 956f58d0204a3-6717fe635efmr5296462d50.99.1790091061887; Tue, 22 Sep 2026
- 08:31:01 -0700 (PDT)
+	s=k20260515; t=1790091090;
+	bh=VFYj6sjedfWGEBuGl++9heS9zoD83sYWZIxoZFH52Mw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oxgbajWAx+ewgz3EYGgJPYtZfNNrVy2jiDvlrL0XB6QieOmgNe9oJ8tWYTAmWkd4E
+	 40O1bShYyuGwabzOZg2yryGvTCOWVoLErNmP15TezU6CcK1+IP50a2puK4iDmaw6R3
+	 PCwUfPw/jYwdSq8HtaOBJAU/3KQvk7VOfDVSLU+W6MZTQuGVG14os2s8QuaTXuRpZy
+	 c1E7BQMp5Oh5V6N9yXEOXRU2Ns8Xz5BjaAREZfd68p1jzII0svn4YeEB6D4D+XgUXP
+	 mn6RKCk0xuOhAtFCkmd48wAcJ6k5w8jrTIJhK2olCjTjtXsHqi1z/Ac++TcJ8CKg7E
+	 LVSLUkJaZCs2w==
+Date: Tue, 22 Sep 2026 15:31:25 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Nanzhe Zhao <nzzhao.sigma@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>, Qi Zheng <qi.zheng@linux.dev>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Alistair Popple <apopple@nvidia.com>, ceph-devel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>, xen-devel@lists.xenproject.org,
+	Gregory Price <gourry@gourry.net>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	linux-fscrypt@vger.kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	linux-kernel@vger.kernel.org, Nico Pache <nico.pache@linux.dev>,
+	linux-perf-users@vger.kernel.org,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>, linux-fsdevel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-doc@vger.kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Hongbo Li <hongbohbli@tencent.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Byungchul Park <byungchul@sk.com>,
+	linux-trace-kernel@vger.kernel.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Barry Song <baohua@kernel.org>, Kairui Song <kasong@tencent.com>,
+	"Theodore Y. Ts'o" <tytso@mit.edu>,
+	Muchun Song <muchun.song@linux.dev>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	Minchan Kim <minchan@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Thomas Gleixner <tglx@kernel.org>, Anna Schumaker <anna@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	linux-mtd@lists.infradead.org, Chunhai Guo <guochunhai@vivo.com>,
+	Jonathan Corbet <corbet@lwn.net>, Dev Jain <dev.jain@arm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Gao Xiang <xiang@kernel.org>, Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	James Clark <james.clark@linaro.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Tal Zussman <tz2294@columbia.edu>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>, linux-nfs@vger.kernel.org,
+	linux-mm@kvack.org, linux-erofs@lists.ozlabs.org,
+	Mike Rapoport <rppt@kernel.org>, Ian Rogers <irogers@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jan Kara <jack@suse.cz>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Yuanchu Xie <yuanchu@google.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Yue Hu <zbestahu@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>, Richard Weinberger <richard@nod.at>,
+	x86@kernel.org, Ingo Molnar <mingo@redhat.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Usama Arif <usama.arif@linux.dev>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Namhyung Kim <namhyung@kernel.org>, Juergen Gross <jgross@suse.com>,
+	kexec@lists.infradead.org, Adrian Hunter <adrian.hunter@intel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: Re: [f2fs-dev] [PATCH v5 00/17] Remove PG_private by using
+ page/folio->private checks instead
+Message-ID: <arKfTXizFeTeKYDx@google.com>
+References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+ <20260922041600.1240429-1-zhaonanzhe@xiaomi.com>
 MIME-Version: 1.0
-References: <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org> <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora> <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <arKRdaNEaKvFOtMg@linux.dev> <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
- <arKZpJDpsavixjPx@cmpxchg.org>
-In-Reply-To: <arKZpJDpsavixjPx@cmpxchg.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 22 Sep 2026 05:30:44 -1000
-X-Gmail-Original-Message-ID: <CACePvbUmVLVk=w1sJinBfKVYoXcO57A163RrXv7C_QLzM4yQZQ@mail.gmail.com>
-X-Gm-Features: AcwNN1UR9s99Z2X-MSlUitUJloq4Rfa7jHbZFSt53b5lYV5PDEZumwr42GjBDY0
-Message-ID: <CACePvbUmVLVk=w1sJinBfKVYoXcO57A163RrXv7C_QLzM4yQZQ@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 91317A0013
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922041600.1240429-1-zhaonanzhe@xiaomi.com>
 X-Rspam-User: 
-X-Stat-Signature: 3crxuzzsa56x3tpfid1d71ex6mktpbq9
-X-HE-Tag: 1790091063-96419
-X-HE-Meta: U2FsdGVkX18AWaP3CB6nqzr5BEUtIqMrGUPimoRz6/njN78BQPfxWfqMksuTWjKQL0ha0BF6i7zH13CUFJFoBJ8ukFhSyE8hfQx6jIyuURa462mVAtASJ+9Jlcn5ygTE8xuoRrxeJ0A/rej89ZsEzqH388z1JMijf4bJx3kkrACds+MIfeYWeO8oqfrdDAv0HOPjlHiWabbgdF7o1BEM2mVZ4iGSeAwWYVRmIdpMyI4Gg8a/HcMR3hzYQcRXuecwj7UtBSjutL3zem162O618PaeumslUoBKezk2fdb4xGsWIhVS6segfbhx+KqFrduF7Gh8Di4XBo9/38uRzqMxGZRWFY7W0/SVVFRb6qe/bmDe+GqMKqNQj5IPp5lZnUMG0Y2vdkhCHpvOQ2ueHGgCrJhKvn2Jh10S8G1woTJqMUAm1SKfg0a9Cgk9JHu7d3OaYCNhqXDpKj4kP+A84lNMhRm4gqb1cFFQPzSmodvRGsQZllGiSR3mjHTHCX2zT8OvAGLshRyqd0R9NjOcDLLWGfce0tRS5p6FaSHBjw1SsfKRpuWe/cZ5aVJEFrtNwzL0//puVo3Ss2JkvJd4UM7+jDPMmy1dMZkXxd18pNBhUl7ae1GvNqAweymyIfQ3TecUSYMwaYpDIiB+SDSPlwECWcDB67KyS3GhlQrHqVzvY8wNwnY8oQFxGD3eFob96l9cRAlhaKaEWELGnHYPU0d3FGwt5SgzkOeEKilEKAuxX+BBFRYstcjZWFdyrFKVbD37SVGqgwA+HDOYQOrQDhlC4rvHDq/plCdTI0cxHbc44qE0kBewDGYLW/eAfYhoQ/K1bfn7+v0+4ykEfuSkU25ZJO0tMHV68NaGUclG8qybbujQ4iYg0oTPhqwfRn9ATxcPytBYaoeYC+NrBh/X+lf76Rl4WX5FddLFith3WQRlKChWcsjVJZF8ABH1hgSEVI3TEyo4oTFkybpIFMvmqpC
- bfxuzQLM
- bjFfpc0tx1UEjIjUeImKfPNp9lHhSwQC+BxWaen+fk2hiJJQ4TxDnNZT+/Zw2fF+thrQH4jeE1YlR9i5MyghJrjyGDovb2/AwY3ZkGlVO2nVHmXnA4mPOScoHxjuz3kDkJFjrX1M78PVlj4jT8fYmFBqtyDweRKw4UV71d7TJMg6ce6yE43FgfMhwBW2kCop93M56t/FtoMPI+3HC7FQbpAzFeNRAzUxAb5gVZ4YZf7AweEdc+KXFOJsmfbrG5y74u5eVNoyiWqwD+bX0+WQZ8UMchBWTIKfIbbm1oOeBgqrwhOuA/PpVcdQOnFv3v4SdjAGV2UxPqS+vXrr1YYWAN6s3JptqOVFSfumlS5dgDHeqK+7ZAAff8+TMdAGlvv123bSe4uxugtA5XsfTn8t2rnQtiKZvZFBjr3hmiPjVaGk1Iim+syEvMZFVW5DIUWGDP+FBucLaWXy9BoL6zqvo6SUq2Q==
+X-Stat-Signature: 5dijnrsqiqc1qy6ecy7char664jehe35
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3EF8880012
+X-HE-Tag: 1790091091-317029
+X-HE-Meta: U2FsdGVkX1+4GR8MLGDMTJ/6s61wKt1E2J6Wl0vRPRW6PonUT1Hz2y9LYsJLCUlwNEMi/VHHfVdk2F7LSjZRoRZ4HZMFSVynLFiaH2uvpfuPekKMoMsaSdbcg7qTvXsJuG6txmp92+qWTvkOjrmaMIfZWBBbGSRM8zoZIKPi/6MHkB89qGanHK5nXgEKWcNBRmnHW5FGyhtHcx6r70c9B6NLilSAd4Yzje3DWg1aX2G9ekerSYmd6osCmtkKiFzkndX0+wAqVjVKbgPWigmJeg936mjdqGR2zSL6mL4hdxXmntH9fqmVe4AM3VJYQmiSmSHClsKxK89hs+/ZFbre0CE1SGphoAx0oWrhx6o6a8sJ6rZpfMl6mFo75IWcYy6PjRCPGDR2p1lfDTU+DvooQSaSru9mylEfu2nQ2aN3fF2bsBnlKc079V6DzyMJnrIJ5PxH4CNG6E/dZJ+1L5nWHtBQ57XCD/dEeucDBwibOdgwwGEyG4nrzaPpVipcPvJnKmB4sdstf0gAvBORwxXbqYe9dP/hq6cGlv9dLS1GpyQes8/HKWxXaloj0RpCXoAI6ss9ue18MCiZy5tUvuSFjc0oOh8XyeD8hv9oM8C2QG0ik03eT+8+CCogCCAU582dfwkfEG1ewZXode+PDHj1wUHbBu7VmsXG4o3lArWpCSKyhpeBalMIR4zs/sKQpSvTSHv5m82VyhDEajenglY7B0cFeBsBQ59v9smwe7R34XM0N7fubAU1vQOzyI3WrX9uNNROnGJJW8kdauTjk/C9h98cUoWA86+mBiJR5KS+OTlapZdGNoVAQhk8Nw9LhyZIiXscJlpmWazuzIDaPQwEVkIn7zIc+L1WmDQRBdFYFDMEqbahFml5gFWXkv0kViQgLFQ7czfj9vkIBpdWbD+PobPxT4clSmY3GO69n8KdacYSOvU2d/C4k6xkmINPUJ6OxTN2DFZ9LFrwL41iv13
+ 1ND4mfW+
+ RBeFfzGrnvL4Q3Vj4ZmXXlcsFObuyp5q1ZEvZRaSpWtOTjwSreZ3V/1MR43nIeriFOP+g7iZWI+JDLDPJezzkUSd0lMSNTlMSQt8kNcfhUictNBUttQvEs2KZEfCEe6bY5oWdJTWwsgznk1fWjzETogLIopPqt6Yx6C2Z6JD5KBmfEtw5Y9i4ayfSj+dmZTWsmaCLuu/aM+sbJ48leQobJokG64eE8ZwEckMUmIuY4RrEy2FTHZpE5mL9LLA93oaMp5+FxqRyd59IPSHZoc6DtIwR9EvLrlZCPlGZK8xZG3pXlPtmBlwnGeXRcrrami+RV45BkG0DqxrF1XK7moUVNTsZVm3YgzI59ug+3TBhF6dcptx53rqtUl6r/fDNob4ONPwjMaH/hLB+pMHwzEolUYwLvujKMWPuw3QOjagTpWvhgQIdDlhvTddq2OEzU5dNtxOr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,42 +160,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 5:07=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
->
-> On Tue, Sep 22, 2026 at 04:56:48AM -1000, Chris Li wrote:
-> > On Tue, Sep 22, 2026 at 4:43=E2=80=AFAM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
-> > >
-> > > People can speak for themselves and suggest other time slots. You do =
-not speak
-> > > for anyone but yourself here. At this point this is derailing the con=
-versation.
-> > >
-> >
-> > I am expressing my opinion, freedom of speech. As you can see in the
-> > previous discussion, Baoquan wasn't able to join that time slot. He is
-> > a major shareholder in XSwap. I worry that alignment vswap vs xswap
-> > without Baoquan is ineffective. That is my opinion.
->
-> Actually, he said he is not sure if he can make it, and before Nhat
-> could respond to that soft push you drew a hard line without actually
-> proposing a workable alternative that made Nhat give up instead.
+On 09/22, Nanzhe Zhao wrote:
+> Hi Zi Yan,
+> 
+> Thanks for the series. The cleanup is a nice help for the f2fs
+> large-folio work -- it removes the page-based private-flag plumbing that
+> my series would otherwise have to carry itself.
+> 
+> My large-folio series v2 [1] can be rebased on top of this series. The
+> only overlap is the PAGE_PRIVATE_* flag helpers, which I can re-express
+> on top of the F2FS_FOLIO_PRIVATE_* names while keeping the
+> f2fs_folio_state indirection.
+> 
+> Jaegeuk, do you have a preference on the ordering here? My personal
+> suggestion would be to review and merge this series first, and I'll
+> rebase on top of it.
 
-Please consider that it is 1AM in Beijing if I remember correctly. I
-don't consider that is a workable and reasonable ask.
+Let's keep working on the f2fs tree, since we should not merge this in my tree.
+Later, we'd need to prepare how to address the merge conflict.
 
-> So my free speech opinion is the same as Shakeel's: you're speaking
-> for others and thereby derailing efforts to align on something.
-
-I sympathize with asking Baoquan to join a meeting at midnight.
-
->
-> We all want Baoquan in the room.
-
-In Chinese we have this saying: don't apply things to others that you
-wouldn't want applied to yourself. Do you want to participate in a
-technical meeting at 1 AM?
-
-Chris
+> 
+> [1] https://lore.kernel.org/linux-f2fs-devel/20260915041909.2903887-1-zhaonanzhe@xiaomi.com/
+> 
+> Thanks,
+> Nanzhe
+> 
+> 
+> _______________________________________________
+> Linux-f2fs-devel mailing list
+> Linux-f2fs-devel@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
 
