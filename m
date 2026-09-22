@@ -4,92 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1627AC982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:52:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AD54C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2FC56B00A5; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
+	id 70B596B009F; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0D016B00A6; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
+	id 6BC8D6B00A1; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44B46B00A7; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
+	id 5D44D6B00A2; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E1EF6B00A5
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:52:32 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5E09C03F7
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:31 +0000 (UTC)
-X-FDA: 85240933302.23.6793B87
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C08D3180003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:52:28 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Zw2JRtKc;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B58E6B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:58:46 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF27B1A03FD
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:58:45 +0000 (UTC)
+X-FDA: 85240949010.15.1CCE38B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A6DE420002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:58:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LiZEolQL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YTCIb160;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dse2xfk9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5ej2gdRk;
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790070750;
+	s=arc-20220608; t=1790071123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uLXPio8neK/XWQ24/aYWgPbiu1ZOhj0GPf/ayqaAKLs=;
-	b=LTYTTiaPMGLrG00VjkvJ2MJq6DDd8QE0GGr/EVtijYc9/oqWKuH6AzST+ctOX0qyFec/19
-	mZ8C3DX63tviicOO+N39hT3yVJYK4AkTiS777gdK6DhbP5hcbn/fiC//zgQAopyRX5PxS6
-	xr82qAIYX2wrR5ZD8i14uJHMROG7bEo=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Zw2JRtKc;
-	spf=pass (imf16.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=4FJtfKxwdiGAPWeV67Zpn/GEw5cJIgIzsOOf7ZI6nHVO2ldcvFn7ZfTjLMw1h43zgMZmSs
+	HYpsCS9h2IL/rMrXPtj+o15RA88RSuEwcxU0n7rNcCLBUfFJmHb8rZ9yP+nwJLIkXk7xpR
+	Uuu1rPWmWkSNgxjUSml81ymW0j3opF8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790070750;
-	b=rXeAiUW+MD50E6CdURNvcDYKVOzD3FCLH9CIdtw7rG45YdSXuGBedwSH3M1iAhY9BBgMva
-	Gf9UrbvghNgwAdRB0Tse/NNfXI9jYEWtFrVi0ODwAaaFydMQyz5br5ZWma3bqgDC3wWRPH
-	wZdFvJXGgD3S1OHUAn5yrJ6PuJ+2yWA=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1790070746; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=uLXPio8neK/XWQ24/aYWgPbiu1ZOhj0GPf/ayqaAKLs=;
-	b=Zw2JRtKcF2dO5xYO9nlE5Sm0UvcVuflk/uSSou3gukI4XsuDIMNdJQlgbSJu/iGaD8QZ9sfBN38joaLq29N7XXE9zNxgEyglAYzUAXEa/Pq9CzXoX10/yhb2Pmmf5Qi7K0GYaGM+O6pQ8olECrgtjpYGNL4IfAJ6HgVHa0DXBOo=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R381e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0XBTMM3c_1790070738;
-Received: from 30.178.68.4(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XBTMM3c_1790070738 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 22 Sep 2026 17:52:22 +0800
-Message-ID: <db317551-0b1e-40f8-b265-d00d65653089@linux.alibaba.com>
-Date: Tue, 22 Sep 2026 17:52:17 +0800
+	t=1790071123;
+	b=AaOdlURmT+M3vuzjkMKD3jRgGm50nZJknWXcxY1pXF4jY+B5QBykJzirWR6lEfHJ66EmxW
+	khUbuEm/etAozc3UcLv4UALtts6NE0/BpRkoRYZ87dr986/wVLAd+W1fF8oQ3QWJ8ttbbC
+	4+tSYXyt72ELVpo/oGOY2VEeGaNgG38=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LiZEolQL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YTCIb160;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Dse2xfk9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5ej2gdRk;
+	spf=pass (imf03.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E23F41F8B9;
+	Tue, 22 Sep 2026 09:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790071118; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=LiZEolQLtrOcnCpKNhtTGFVrWufQc0pBzKwAnq8xgsyHtt7FOTAXPaGMzM2B/JNZSCQTkP
+	5qfTeqjvY5gtkYNBndsHUXbuVY2JO236TnFlQWs55eJ8IEw1eYvcqTq1xjKJBCZ4UX+YTA
+	sJuczxH3Rovjnb6cpJGa0ZwWvfJOJxU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790071118;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=YTCIb160AgoMyuaZDpwuiYTv1e3GB6uMNI3lb6iPSY56aTD87HB360Q467sPor9jhfSTSP
+	XAq/xJqeWkRW0WAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790071113; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=Dse2xfk9rYhsNzWipCoS1JcIReryX19OOYSEO/y6U6h2/Th6M27X1kd3BZhUtd0bGx7baP
+	UP9EmCy/KL78BGJ5wf2ePGumoYg4w5Paa0AiWxasn1OWy8L39PUyEjwIptrg2VB5Vlwdh/
+	xL4WP2Fe5+ktc2rbQdg+CmKsKBELHGo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790071113;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4URFwrM0sI0j5Ml44Xiz56jlMa8XLSjTXuYmxFnBgOw=;
+	b=5ej2gdRkyDcZftLUT6SaJNLl6a+lu/u772HFMDHv4wdhUy35JgSfKA/2YzV4rMORb7JPRE
+	NuaXw1RHmy24dMCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0640E136D9;
+	Tue, 22 Sep 2026 09:58:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id knt0I0dRsmrVBwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 22 Sep 2026 09:58:31 +0000
+Date: Tue, 22 Sep 2026 10:58:25 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-hardening@vger.kernel.org, 
+	Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] mm/slab: Mark the kmem_buckets_create() context
+ as a Context: section
+Message-ID: <arJRHFs-r8hkTLhx@pedro-suse.tail5790ac.ts.net>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-1-kees@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] mm: restore per-memcg reclaim for NONSLAB
- shrinkers under nokmem
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Usama Arif <usama.arif@linux.dev>, Dave Chinner <david@fromorbit.com>,
- Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
- Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- Xunlei Pang <xlpang@linux.alibaba.com>, cgroups@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
- <20260910153418.e818710d3c35aa075f1156ab@linux-foundation.org>
-From: Qinyun Tan <qinyuntan@linux.alibaba.com>
-In-Reply-To: <20260910153418.e818710d3c35aa075f1156ab@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C08D3180003
-X-Stat-Signature: po34479s59zqwpn7bzcc9i65gxobfanz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921075820.1718334-1-kees@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A6DE420002
+X-Stat-Signature: ghbrfpkjqtzdyqxq79uwk6rsmuxpcpe1
 X-Rspam-User: 
-X-HE-Tag: 1790070748-879614
-X-HE-Meta: U2FsdGVkX1/EkDA0VmVwSVClN+yJBL0Anr8b+BIaoubmupCFObD6fvwpJ4soTKlh1bF8MR32B0RhLOBt6WKXVq5COqNPIfJ3aBWNdW062pvL7f6DSlqq1BHOb2owMeQ4tiicemnRX8MgrNVGV0yQXV+MOa+6xCAVRBlxVELWKLdHzGVthXZwouMmPTZDVm9gmcdMEwUsaMm8ftsi37cJkkjNMHyjxZu5En7X7WPHcKznDrfSuxU/W6Ah8eNER+u24Lm1fv5/lXnCl06NVt0tHBNOqYENbYLYM13rW6b7mpD1ze0kQMIbD4aZVUwYIBpct2zMq+WBQ7IB8TFLrgiI6zQ7VqAxuytu2R6REcOsAuOKbxj4rWq+t0caNgByUx31qtqkApKBh3b6620ttSGCGkDJb43wHTu5ob3uupKJyL+OS11zL6tZ/7s+DxwUGfqDTDElalzew/mKpN+0BulaWDwpnDEo+hUq6vWm9FzubqcuuIXZNdWXeNidaq7S52uh2Li/790CGEbvIFaujnyvJmllcPfBcS59GPr1/gDjhQMJ5xeCIvHOMyrKRcjih8FCfWEkdAwzjfnhqmC7/pdwPELM+E6st5CNuJCGk5SEF5H0EHP2eh2mTWmmxoiKasmCyFfXXJx8eF9f+OQts2JprX/F6m9cbcGwzYISTEYTgrQwX5S6yLsQ9j53vNsqDpfIsa/hzggFA6JOSy4iEdoBXmMBXpSx4e8nBpcJKhqu3iTEbGJYDFTteuGxdZcOmJZG4WomSSNSF2ZsC8WrsFwR39EKEwgvlSfHUzREpWjiEBmkkTEz2Qn7Xe+z5GdzUjvLtB8SNGEUc8KTRi5Gex6JdRJuODSJZgOCMWsc+q9/iy8TWCTD5E5gEw40nLZr5YcPqHFQrKobfylYK5pR/wlNVo36I40ikq4VRsE/OEeTqYIJCa+yySSUqqclTMVaF83Dg5Ncvf834a1Tt1hKJ4A
- KB6G89xM
- 1dDAovNju6ENhLo3Oevlnp2+RDcN7D5xeEzbgMavIObPb8ye+xtr7ivo7mKXYynPGkroMZ19ojS3+y/txmOBIyLY90jgZWvC6V5qS1IdcdECHxstHGHRXhgTodszvFMEIRzyqs8RZwR6BZqVr46y6kh4r4HRSzh/MzC3QHv3vdfMB0tRVOMeecCeOdikZbxPjp5GrRduYuQbIN1ryC7WbUYZHnR24BYP1yV3BM0q52VrDAB97Y0aHzw0+lEpmyElWWpADEKcVpgvYO98vBbKF/x1cFvpcNcXQvkAbR+g+PU4osyc8/JYBaX4O+mNr2UtNLehmRKIJ7/PQ+GwGUtX/KrwY2vi6TKBYclee0dvqpw2uo6U=
+X-HE-Tag: 1790071123-780592
+X-HE-Meta: U2FsdGVkX1+tTx7Llxl26O/yGHs5XlN1yD9Orhg3UuzMimM1xHQ2XsmiIYZlSFEUCQr4TF7/hZkSBZfXvdLxyvAo9HSWsIuZYa/sLdtbBOHVvZUbJ//xiOny1IETBrkd71MRTcb+2ZH8FafmhjdtM6wW0cHzqHDsvLzdEN8MrswwEuZCgqmUXGQZLHiPQcUnZtkHL1uyK66TBpajU3oCATeX4pZRONyLdl4dO6Yc6mblTed0mNSxQeGtcrDIEfJIWgz0rA6fsZowx4pYgXTtn8jSgCmdYA8V2k0B8O4+0ajqHkOfaf/GwuS7fkEA/NI6tnschu8PBSkzatIUTQBbV+fZ2g4qxyeUQxVRGE8eCkWclfzsEueyRxPIMuEHBNGdYH14049kGG98oWnygz48Q+jGDyMkXPJChlWh2jaqx+hQEpCO2yWD7e7rPUg1rJk0maZKvBSQWxCk6fDskSw2IB9gI0X0WA6sqakQxXpekMRQTFMQE1DIoRm9z3u4u+djxe052ClT5P00Rlhv7mlY/kb6M44F4kHZmYMNmu0E1YpIy+GH8ZXS1dQi5qLEX0NbN8lNVoiEiPd+kRUHKAZoFAAIJpyX+ss4U7ZZMjazupVTNaDEpaZb7q9AVy1LWdb12Fz5m/IFmSH+S+i18mH429Y0fgz2zWoNr8iYiVRVRl0rGmybUUzlqRdQgN1gEvrtFIH0pc8W52fA2bIUP9J+yFZlY5FLD6LFLK26OEg5syVwcZFwtVsp/Dim/O0DrEF9K1muPhRenKzILGCof1fI+AEqI9OeEzO3ztzjHu1PzXbyXBOcOkfXrHUBJTZhuBVp1V+xuXxzgP583af4HlJAfPO27QpUzr4RkdxA+OBJ0exXQT6n1SFGbivIzzOdXyu97NzDtVZv2WQygdI6tX1S1Deuy9AqoeXqsRGtsEP0fayYa65o3zu+nFD0Dv/uZ06K0F+5Qipv4e0yU6ISnpd
+ SDX78Zbr
+ yMzQ1nDPXT9xx8rM4qr0+lojtdKEYtyc7SOcvFTfoUCzbX0oVHpNcs7mIsOpZDqi/+sERQuSbyCT9r8GuTW2AMKAueOpLIZwLPbRYMnq+KuSTYc3x7o4OJa9OuH5ey7hkoXeRFCEmisAMRJuP4lbMOtfrcYQQykpNM+O6ApjQXKxjMng1Pt326tCavIDX89WfpQ8idRK+f3g7v2QpkMZagxz8LsFLR32YP9aOtIJt8jQCsAm8CiOYsHCb1NI4oZNU9zg7pW3Gbp8dD+G7/CWOD8jQjeh4CQkaXxMf/mFnrtBQhSFRJhnt2q27yXnaIUDtZ8880qPsK1jmoL0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,60 +138,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Sep 21, 2026 at 12:58:12AM -0700, Kees Cook wrote:
+> kmem_buckets_create() had the same sentence about calling context as
+> kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+> rendered in the body instead of as a "context" section.
+> 
+> Give it the missing prefix. Additionally fix the "a interrupt" typo
+> __kmem_cache_create_args() had.
+> 
+> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
 
+Acked-by: Pedro Falcato <pfalcato@suse.de> 
 
-On 9/11/26 6:34 AM, Andrew Morton wrote:
-> On Thu, 10 Sep 2026 16:07:18 +0800 Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
-> 
->> With cgroup.memory=nokmem, the THP deferred split shrinker and the
->> zswap shrinker are degraded in two ways.
->>
->> First, both shrinkers are missing the SHRINKER_NONSLAB flag, so
->> shrinker_memcg_alloc() demotes them to non-memcg-aware shrinkers:
->> limit-induced reclaim of a cgroup neither splits its partially
->> unmapped THPs nor writes back its zswapped pages.  v1 of this series
->> [1] restored the flag to fix that.
->>
->> However, as Sashiko's review of v1 pointed out [2], the flag alone
->> is not enough.  __list_lru_init() also collapses every list_lru into
->> per-node lists under nokmem, so even with the flag restored, the
->> objects of all cgroups share one list per node: the per-memcg
->> shrinker bit is only set for whichever memcg happens to repopulate
->> the empty list, so pressure in other cgroups may not even trigger
->> the scan, and when it does, the scan walks everyone's objects.
->>
->> Before commit fafaeceb89a5 ("mm: switch deferred split shrinker to
->> list_lru"), THP had fully per-memcg deferred split queues embedded
->> in struct mem_cgroup, working independently of kmem accounting.
->> nokmem only opts out of kernel slab accounting; THPs and zswapped
->> pages are user memory and remain charged to their cgroups, so
->> per-memcg reclaim is still what these shrinkers want.
->>
->> This series keeps list_lrus backed by SHRINKER_NONSLAB shrinkers
->> memcg aware under nokmem:
-> 
-> Thanks.
-> 
-> It seems that Sashiko still doesn't understand that memory allocations
-> in __init code are considered "can't fail".
-> 
-> 	https://sashiko.dev/#/patchset/20260910080722.3961351-1-qinyuntan@linux.alibaba.com
-> 
-> otoh, failures in the functiond which hugepage_init() calls might be
-> caused by things other than ENOMEM so I guess we shouldn't zap all that
-> cleanup code.
-> 
-> Anyway, that's unrelated to your changes.
-> 
-> I'll save this patchset away for later and shall await reviewer input. 
-> Please poke me in a week or so if there hasn't been any, Things are
-> crazy lately.
-
-Hi Andrew,
- 
-Thanks for your time looking into this series. A gentle ping, as you
-suggested. Please let me know if anything else is needed from my side.
-
-Thanks,
-Qinyun Tan
+-- 
+Pedro
 
