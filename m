@@ -4,113 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18A4AC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B73A5C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:39:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046806B00A0; Tue, 22 Sep 2026 05:29:29 -0400 (EDT)
+	id A1BF16B00A1; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01DBB6B00A1; Tue, 22 Sep 2026 05:29:28 -0400 (EDT)
+	id 9CB6D6B00A2; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E75A56B00A4; Tue, 22 Sep 2026 05:29:28 -0400 (EDT)
+	id 908366B00A4; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C76236B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:29:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AA576B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:39:04 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56FF9C03F7
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:29:28 +0000 (UTC)
-X-FDA: 85240875216.16.DF551B1
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 045D1C0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:29:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=stpcFFVU;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790069366;
-	b=5uTb55nIxkECCzhJtq2fFUPTk3fHf43p6Mym0Tb86BPqrh0losnEcIP1DbYOf+4pJFrutI
-	bz9XQOkl2H2QOuj4HhWLG4tGjJaaJrrtZThCBwTmGWIXn72aO+atxFaCeQmznyKt4de6of
-	9YG8xNA91tTZpwz1xzXOemiSp906fnc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=stpcFFVU;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D7C7B403D9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:39:03 +0000 (UTC)
+X-FDA: 85240899366.16.9674BA7
+Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 888DF2000A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:39:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cASNak4y;
+	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790069366;
+	s=arc-20220608; t=1790069942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HGkT9Ui8IWBvThLwNwtH5JiFUDnabT7ULMWL9InJHFU=;
-	b=DDdh0qDWP4XdA0Fi6190o+em+A03VQY1EplpRPpNQgg8hP1nT7vb14KDwxs+JQBucZ+K/F
-	5fNOSyEhHCNjdCnrz/guTB5DvS76aZuNdbpmWYE5CI+Tysckd7Vcc/y5f6oPmSbjNFXXkd
-	etsHgs8rmOW+izTIay/tsvHdQRYfZec=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=HGkT9Ui8IWBvThLwNwtH5JiFUDnabT7ULMWL9InJHFU=;
-	b=stpcFFVUA5sWEn3kkPHrfPiLr8qBRiZbNZDh7aVd9XnAuytPymZceOrcl8vSrbJBulCPVDCTw
-	olYFpOv609kH+6MaWDjwTkqVpeODVsVsPvdBngDQ3tJ8srYzmm23k97FGyQxixbsn8Vuj4RMKxU
-	zUe4jbOpnHoBTAbKsk4aHxI=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hpvd5362fz1T4JM;
-	Tue, 22 Sep 2026 17:17:29 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 69CFE202E6;
-	Tue, 22 Sep 2026 17:29:19 +0800 (CST)
-Received: from [10.173.124.160] (10.173.124.160) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 22 Sep 2026 17:29:15 +0800
-Subject: Re: [PATCH v5 0/9] mm/memory-failure: keep hardware-poisoned pages
- out of the next kexec
-To: Breno Leitao <leitao@debian.org>
-CC: <linux-efi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <rmikey@meta.com>, <riel@surriel.com>,
-	<harry@kernel.org>, <linux-cxl@vger.kernel.org>,
-	<driver-core@lists.linux.dev>, <kernel-team@meta.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, Naoya
- Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <kas@kernel.org>, <kexec@lists.infradead.org>,
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam
- R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
-	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Brendan Jackman <brendan.jackman@linux.dev>, Johannes Weiner
-	<hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Oscar Salvador
-	<osalvador@suse.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
-	<hannes@cmpxchg.or>, <shakeel.butt@linux.dev>
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <d6e35901-f74d-bf81-75d3-bac4b26d9d72@huawei.com>
- <arJBkNOgbR8NrgFP@gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <16baab50-692c-308b-d60d-1b0a328df1e3@huawei.com>
-Date: Tue, 22 Sep 2026 17:29:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=2qtlFeXSOZ9GGEZMi6z1/hHIAqyyLNkdSaIaqPPEsXQ=;
+	b=I6Ek/u1tfm/iaMNg49VgyPexZt7Uew63uuaZNCy0+Qh5S7hU72P/M1ggH5VxvCaTKsKEmM
+	p3QUMOqJh3/CsQS4VK/u4lPuDTc04HpCaP28HJz2c4e8+Ful+rrAU6mzaF+h/OxQJvwDou
+	MzoIPCKersBq4jHAQgPUXT6AH4/cwMM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790069942;
+	b=2LhSQvA9KKU3P8KK31QgUJwnLtynt4fvciiceI//1HaJH7jKvfXT7xSd0sC0xspFcNex8/
+	/fqTDos9cX+W5IEZriB2YNeF4dB1aWSVVl+XwhVSj04b69KH/Lh80YQHvOTio2tLz6CHOP
+	yXNX2bomE8edbUe2m0DoekmwCJYNs0Y=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cASNak4y;
+	spf=pass (imf13.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=hi1vDGEifONMUPQI29D6K7Rz4VLkNWGHmR08F4W6XWs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790069939; v=1; x=1790674739;
+ b=cASNak4ysuWjNi33n5bSDcBdcWis2zVS9qvdGrVjHVup11L/H4Fy2JLJIERrGeYANXz8CszW
+ oLautxEeyd2Gjpi4VrSY37vqwZe2ZMcT5H+QQ91vdpC6IbVWed6Etmxj5X9apohdoXYrE+Gj8TE
+ q0+yoU3mYLQ4aBgDeLCnyNpw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9d2428c7de0bd619;
+	Tue, 22 Sep 2026 09:38:59 +0000
+X-Mizu-Trace-ID: 9d2428c7de0bd619
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <d9c97d83-f29b-440c-9385-47d13afc38f3@linux.dev>
+Date: Tue, 22 Sep 2026 17:38:51 +0800
 MIME-Version: 1.0
-In-Reply-To: <arJBkNOgbR8NrgFP@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 045D1C0002
+User-Agent: Mozilla Thunderbird
+Cc: hongfu.li@linux.dev, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
+ Chris Down <chris@chrisdown.name>, Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+To: Muchun Song <muchun.song@linux.dev>
+References: <20260921-for-hugetlb_state-v1-0-8a6eec92661f@kylinos.cn>
+ <20260921-for-hugetlb_state-v1-2-8a6eec92661f@kylinos.cn>
+ <B710AD66-B826-4138-B1D4-2DB3E00FDC1D@linux.dev>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <B710AD66-B826-4138-B1D4-2DB3E00FDC1D@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
 X-Rspam-User: 
-X-Stat-Signature: uc35sdj57yherjxeje47okbg4kpicspx
-X-HE-Tag: 1790069364-356119
-X-HE-Meta: U2FsdGVkX18E7Ib80O/xkcw6hAT/EuEDFfW3p2b1GHkRgc8zRUBTJODDHgQ+hI+ldNLBcY30kWrqAX+UIPERZulIAN87J6AdjKgi/oW8gnBawvqMXND8PLfx2E8Yj+QwCAwxnYbUV5UVaNa3Ykd3Z+LVuJtVNBvYVwqcICPrDRAZx67pDHO7D6rkXM4Q7KgD/xy5QGbB6ITbwvlbLhFEqcPioTLJbvGQG4mS7iV5s9WodZ2WoJW4Ox0BNfV3Y/PQDPen492jeE6MfN7Wq0n8hdsxknr1LgCqAD7Y+07MpTWnTipe0cIuYXy6RLMluMLdhg5nkIkxKOr+rk8MCEU+QJrlUggzEfSgMkspd9n6qxwwOF+Zw3Mbs6BZrfbeH+E+MV6YER09mHKMXX7/paJ8UwlU2+NrPxy2PA5FshLcMWd83Cexe8XZizpXOtuE+OszKnBCsNiHaMtFkVBMGw3gaXdMFEOb+TVz8xH2RLl0+15n2su3KTuo5Fq7MH5Ea5M8aZ087LOoWA/M7QYp/XOfRzeGFvvRwNxhzEp/7cxFGM6IxJol2PeODpuG1ghIgwKW1KUKdEGDsPBFBjmj3MLJzoEI8WimWZehp+7UodtrIfYNByNRMTwlHyBUTzxls43e/ULnmFeIG9YFfFFqMg5fTDzrsobhnFjPjGRuITs5A3ntLPKPCHWUDPj4h4JI2QhIA9QyliHsroR1vjEzcv0lvM281nGLIB55VHR38YQkxT0mKR/GpR7AZ3EI6fp/MYM+XP7ZDpvBhFJ7MAsb9vP2pS+HWYRCi6upwOYNBSlb2S+14kYVN2mihqD2CIPAVoQXsML467y5P/jFxrVti+O/upqCUq0qp03HSbHLPpok6I+6sv6gJpNxmf/9OqXb0Lh2SSJio41XvVvtejjHlR0vsNbFo4Elfrp4MRgpGT99jGKeQM9H3CXcgCLZ4uS5yHWzEShfraX51gI3y4zpnFu
- m4rFCqah
- +RaNnEJTxi/Un4js63B/U5+oR0V3jevkQNXKlWkg5IHNgpSSuxXU2gOwHdk8z+xF8enAdSTi17kL0jdQKKZLzwBMntxgKTWB0cqGonkn0wXjLHzhyr20tE8he4thu4kKfTsL490KxfJdjNYF9St71qAGHOeOtt4JftrncaPm5LUdMvLJWZjacX80ER8A2lp7+blqyPi9EIkRnURR1uZk7zKbkUfhQEXzBLxQmGh4E90veQJE3K6tiYJw4J+7zcx6m+Y1ga3LjwESknHybtImdcfqWikLGe/OONPvg8vmwcfYCCabx4Otv2SVz801liQs5BloRnTeHKRFlBLXRYMkZ7hnRXto0x4yQ6VV1
+X-Stat-Signature: zdj5kfdsjuuy4ycyy8b1gftwchqdmcxy
+X-Rspamd-Queue-Id: 888DF2000A
+X-HE-Tag: 1790069941-480709
+X-HE-Meta: U2FsdGVkX1/tGMjt4f5FVQeor93guZ1eZmR2lLf9Dli8n2e+B/Zl09uu1qYVGNKIBDGW/OcbCA6HteGJwY6ylKC1sa6huSgrkb4tlElPEDOl5iylrzGJYT+u53ELtffG0Efzj2tpVlSZ5njEmrUzzGLVLVfBixeRwrGQ2v5JFpXdZEKcFuPuJLpCT3BATj2aJoxRomHKEGSL4gltRiEmXAh32/UvzJGmmK6mOTAmklWvTVY2fUlEMv+r8nLEIHpnPxCHab1Z8ZDzeB5EnMuaQp4H3GAP4ipUnwCGW0VWsaKIunry6TCX8bfIvfQj9T1QtzWIxoxgK46iePkZJ9d0RhkK4IdukFcPgDCTR38dsMLYF19sPbmZ7cggQ7aehYMG3NQVUGe5iFXVhuWx9mQac3SDg/RIDTB8BxI0Vt8QlBrK3e6egjG1iuIbLEOnG+GcwZpMy/66b6xoxpPZB0z66OxRhR6razPUIAvyVwEO8nNO25/IPNacFA+hWYBuyAKP4i8MZ28mpUvXf/2cD9K+W7/4wLqmsS6agYVGQ4x/qXx/4i80GB/NN3UYfkxU23nQqTs1PM468OW8BmdCr8ZZrodB7ZrTWPyOwPQfT2Eg0ReW9BBN0mZZ/snvrvmdPqiuIDKYx+VWOh6pjQTUvUEdGlS+81JhYSMYgeKCvH/CJQB4lVoBlvZ4TVEWZVTXvCeSud4zocPm8Ha/x8Fi/Fe4rot8vIDAesqPMH+duak4WhwJiNpBSlCbFutMYkWF2Hl9nMGhdYClC4veF7m2fgRHh/G0uBjKsJKf21UgrfpD/qHB4sDh0IpakpT9AcBgS0nQ/OjaAlaA7XDybQD7IvZvqFdKEFTGzgeyk5xHg6XlbhtDtkrNVGJm4hGFaNL0/Yj0eDaxrANUtlR1Og8xItGuhCg+IHLm/5GfZ6CyRH8d74n7Cx4HNU50Pud0fjGc6QtFjmK7PdIwlWKyd/HySxy
+ P2GCf4eA
+ ys9rnoo8W8P8v4KvCR2Y+nwEWu9JencYq/MTvdYfcilyKf1/O8nWGhqq2HivyUEabz9W81SVvg8Z6zoWdqH3eAplq91Lxd2iE2d9hUTSNj6/YDzDR5b+MCmGf+C9ZOFddathwOlQNrRd9m3CUdXiGfswyr7nGaFstaq9x4hRMUFTh2iNmrfmjVpE7CHakjUZn8uVwyvdzcM+tmt/A0F87PpK+bnmJsjV7gV9O5urpY9URgYsDN2rjMUh7v2Ur1+M6UoLlWRqX9aznhJzv4rjJwfzQzWBdbmuHb6HMoeYJmbP9VlzF6WNE1iZk/9vwMQS1iSdl4aw7a6R/3WRPBNi4NAUb1W/m+Xc0UfzFiptftR47sdCQPnGZcKq8KQoaFX/fm8hHIA4MQexv0uE1NVuD34Avug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,43 +100,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/9/22 17:14, Breno Leitao wrote:
-> Hello Miaohe,
-> 
-> On Tue, Sep 22, 2026 at 02:27:59PM +0800, Miaohe Lin wrote:
->>> A bit is never cleared, which is a known limitation: it stands for a
->>> whole unit, so an unpoison of one frame cannot tell whether the unit as a
->>> whole is good again.
+
+On 9/22/26 2:18 PM, Muchun Song wrote:
+>
+>> On Sep 21, 2026, at 17:12, Hongfu Li <hongfu.li@linux.dev> wrote:
 >>
->> Thanks for your patches. I have a question about unpoison: If a bit is never
->> cleared, after we do some memory-failure+unpoison tests, kexec will lose the
->> tested memory without reboot?
-> 
-> Correct, A bit stands for a 2M unit, so every tested page that falls in
-> a distinct unit costs 2M in each kernel after the kexec.
-> 
-> Worth being precise about the state today: the unpoison itself works.
-> The frame goes back to the allocator and num_poisoned_pages drops. Only
-> the bit stays, so the next kernel poisons the frame again. Test loop
-> in, memory out, and nothing gives it back.
-> 
-> Important to say that nothing block us from unpoison the bitmap, and in
-> fact my initial patchset had it. I also _think_ we should unpoison the
-> bitmap once we unpoison the page. 
-> 
-> I have just kept it out of this patch in order to simplify the patchset and
-> get the basis correct, and then evolve on top of it.
-> 
+>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>
+>> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+>> stats. These stats are accounted against folio_nid(): incremented on
+>> the folio's node when handed to a user, decremented when the folio is
+>> returned to the pool.
+>>
+>> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+>> to the new folio and drops the memcg data of the old one, so the free
+>> of the old folio right after the migration skips the memcg per-node
+>> lruvec decrement. The hugetlb count stays attributed to the old node
+>> for the rest of the life of the charge, while the target folio gets no
+>> increment on the new node; its later free decrements a counter that
+>> was never incremented.
+>>
+>> Migrate the per-node lruvec accounting alongside migration. Global
+>> memcg totals remain balanced because they track resource consumption,
+>> not node placement.
+>>
+>> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>> ---
+>> mm/memcontrol.c | 31 +++++++++++++++++++++++++++++++
+>> 1 file changed, 31 insertions(+)
+>>
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 1460cba53588..9c96ebd5436f 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -5598,6 +5598,34 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
+>> rcu_read_unlock();
+>> }
+>>
+>> +#ifdef CONFIG_HUGETLB_PAGE
+>> +static void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
+> Actually, we don't need this objcg parameter since we could get it from folio.
+> And I'd like to move this function to hugetlb.c.
+>
+>> +     				struct folio *old, struct folio *new)
+>> +{
+>> + 	long nr_pages = folio_nr_pages(old);
+>> + 	struct mem_cgroup *memcg;
+>> + 	int old_nid = folio_nid(old);
+>> + 	int new_nid = folio_nid(new);
+>> +
+>> + 	if (old_nid == new_nid)
+>> + 		return;
+>> +
+>> + 	rcu_read_lock();
+> Please use guard(rcu)() to simplify the code a little.
 
-Makes sense to me. Thanks for your work.
+Hi Muchun,
 
-> That said, If you think this is a must have in first patchset, I am more
-> than happy to do it now, but just keep it in mind that it will grow the
-> patchset by about 2 extra functions.
-> 
-> Thanks the review,
-> --breno
-> .
-> 
+Thanks a lot for your suggestions. I will drop the objcg parameter of
+move_hugetlb_lruvec_stat(), move the function to mm/hugetlb.c, and use
+guard(rcu)() in it.  I will post a v2 for review shortly.
+
+>> + 	memcg = obj_cgroup_memcg(objcg);
+>> + 	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
+>> +       		NR_HUGETLB, -nr_pages);
+>> + 	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
+>> +       		NR_HUGETLB, nr_pages);
+>> + 	rcu_read_unlock();
+>> +}
+>> +#else /* CONFIG_HUGETLB_PAGE */
+>> +static inline void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
+>> +    					struct folio *old,
+>> +    					struct folio *new)
+>> +{
+>> +}
+>> +#endif /* CONFIG_HUGETLB_PAGE */
+>> +
+>> /**
+>>   * mem_cgroup_migrate - Transfer the memcg data from the old to the new folio.
+>>   * @old: Currently circulating folio.
+>> @@ -5635,6 +5663,9 @@ void mem_cgroup_migrate(struct folio *old, struct folio *new)
+>>
+>> 	new_objcg = get_migration_objcg(old, new);
+>>
+>> + 	if (folio_test_hugetlb(old))
+>> + 		move_hugetlb_lruvec_stat(new_objcg, old, new);
+>> +
+>> /*
+>> * @old was charged through a non-root objcg, so its charge is in the
+>> * page counters. If the re-derivation walked up to the root objcg -
+>>
+>> -- 
+>> 2.54.0
+>>
+-- 
+Best regards,
+Hongfu
 
 
