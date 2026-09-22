@@ -4,94 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3DAC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:30:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 604E4C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:32:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 086A76B009D; Tue, 22 Sep 2026 08:30:51 -0400 (EDT)
+	id 7184F6B0098; Tue, 22 Sep 2026 08:31:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05EF16B009E; Tue, 22 Sep 2026 08:30:51 -0400 (EDT)
+	id 6C9876B009F; Tue, 22 Sep 2026 08:31:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EDD276B009F; Tue, 22 Sep 2026 08:30:50 -0400 (EDT)
+	id 5B8616B00A0; Tue, 22 Sep 2026 08:31:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBF0B6B009D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:30:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5E735A047D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:30:50 +0000 (UTC)
-X-FDA: 85241332260.30.9F3AB99
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B5C5840015
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:30:48 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4TcHUGv;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E3126B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:31:59 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39DA91C29CA
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:31:58 +0000 (UTC)
+X-FDA: 85241335116.19.5E1091C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A44D0140004
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:31:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fY5Arxmc;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790080248;
+	s=arc-20220608; t=1790080316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ic/h6nB8JUlBM8zaXvVjgvTf0SPmAf0fMbuRRf6h1OU=;
-	b=x7gFD7JL3wT4X8zQMQC1KGHLUhL4L6hDFuR/SToklxbgjEeRH+sI1bsxyutPkrfpYKdEwX
-	g7o5x+bWxTLGAPs54ILA7Z+r+ugtRYf6mFPc8H8lE3SqPeMko0THh2dV+R6K/MlP+ZYMsR
-	oNVSYI8LnaQ7Fnomt6Py9PS9M2cqskk=
+	bh=wgfbzJ9oPP9ly+/ZofI347OAniIHtGHDp63c7r9RtT4=;
+	b=sFQJxzW6PSQjI4ugzqkTvAmxviXqislREGqJt1+2fiP0EFSWkAkFEB2CW07K/Qu98zWjnx
+	YRm38ZH2SDlQOKRDZNkMtbIQc/zPH2Hi9w+sV/wuDd/Czd+O8qOTHpDLdou+NMydNBxAbl
+	2LqOn6auQ9dpt2OoJZvwq8/8BIIunas=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790080248;
-	b=pC656Jd/pMRK737H1ftLe2BWWqHhfzCrsFuTeJJmM5+6tlWP3aZfFZHgeSiVfxh+yVXvrZ
-	ZWTBuVYzr1IfVzojLoqLQ7d98bKKMaSs/mhcz+3VK+1udUMRWz0hNLIcOzNOZ5dk90mF2V
-	U5GeiWJpbxRnpEAUVseJ7OOB62aZ44Q=
+	t=1790080316;
+	b=Yi2ND0jjMOlWuf8uQAk6AIUBmYd5eVDguK6i0qaVp1fia7LVr+RTP+39OJkEWM8Vg9Gkh9
+	s+nOWPVYq+XxCthqSnfR87KWyhjuQZY2PdM2/g2Q0sWp3FK4/PtcKvTosC204jDTtKNin7
+	qQB8jJPnseMilEoipZv/nQPIRcR+okQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O4TcHUGv;
-	spf=pass (imf17.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fY5Arxmc;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AAF2B43E20;
-	Tue, 22 Sep 2026 12:30:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E541F000FF;
-	Tue, 22 Sep 2026 12:30:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 25BB76021C;
+	Tue, 22 Sep 2026 12:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CF41F000FF;
+	Tue, 22 Sep 2026 12:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790080247;
-	bh=Ic/h6nB8JUlBM8zaXvVjgvTf0SPmAf0fMbuRRf6h1OU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=O4TcHUGvDUaiZAcbWB6yDzYBqy/coJnW/7scfWIrPA9JZxubQUqIJf+7nKN83DAvz
-	 U3rD2gr4++NFyoHbWT7OGBHQAnistbtAfT9opp3pPyes8L3+xOT//5ld67ttl0foKz
-	 nXPLSXKR+pImSUOXClFkHmJBrLLIrFeQMPqtNcb9BryKjXCfhBjEnN9oi8UW7pkOYA
-	 Hq+AfNeeC/W59e3rt+G6pf9lVI8MhGhbKvOoZk761TLTZJ9xR5xBsZNMSg2dNWGc8+
-	 FIGiRNf6VjsnCN/LNVHx/rSj4nVE7vE+zwGwcigogdyg+GL6/GP2A9eRl5QX8kga0z
-	 ZSCN83j72ugfQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: rppt@kernel.org,  pasha.tatashin@soleen.com,  pratyush@kernel.org,
-  chenhuacai@kernel.org,  ardb@kernel.org,  shuah@kernel.org,
-  ilias.apalodimas@linaro.org,  akpm@linux-foundation.org,
-  baoquan.he@linux.dev,  ruirui.yang@linux.dev,  guodongtai@kylinos.cn,
-  kernel@xen0n.name,  graf@amazon.com,  liukexin@kylinos.cn,
-  loongarch@lists.linux.dev,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kselftest@vger.kernel.org,  linux-efi@vger.kernel.org
-Subject: Re: [PATCH v5 3/5] liveupdate: kho_block: include linux/mm.h for
- virt/phys translation
-In-Reply-To: <20260904100852.26006-4-dongtai.guo@linux.dev> (George Guo's
-	message of "Fri, 4 Sep 2026 18:08:50 +0800")
-References: <20260904100852.26006-1-dongtai.guo@linux.dev>
-	<20260904100852.26006-4-dongtai.guo@linux.dev>
-Date: Tue, 22 Sep 2026 14:30:43 +0200
-Message-ID: <2vxz5wzx5uz0.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1790080315;
+	bh=wgfbzJ9oPP9ly+/ZofI347OAniIHtGHDp63c7r9RtT4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fY5ArxmcNAiTphDnL8XETO7h7c7so5WH/19YBz/+V/PjJVShyMVeAUSsML9ehwWb4
+	 PyYOkN0udxEuDF7kj8k0wNJ+deK8I65tG+zisKoRb6PNH5vT8iq7SvQP6GVDcf8F+D
+	 iDYHJpIxz0nqcVpZW5pSICkYuBHeUkFUGVWyCx206oW4OXhsVSyIY9TnGJ1i2t92wW
+	 1dI/c3n3/QFD1q4zaBmJgZNGtzyyw9koY0FKXAb3yf07LR8iJ8j7oDkdfCQO8IAuJU
+	 bZYGEYHqi9iAOYBKI9lgJq2Fa8U5StBWZXawA81BG7U/bJ6qQk0VQmqmIKqrPvG3oJ
+	 NfxBE5kbHsPKg==
+From: SJ Park <sj@kernel.org>
+To: Zhijian Han <hanzhijian1991@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Alexander Potapenko <glider@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: fix typos in various comments
+Date: Tue, 22 Sep 2026 05:31:49 -0700
+Message-ID: <20260922123150.2763-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260922031843.2857104-1-hanzhijian1991@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A44D0140004
+X-Stat-Signature: chhjuxr1wnk9snq4ac9y7fk48uympqxk
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B5C5840015
-X-Stat-Signature: dpkwx5izf7y5picj79jq1kiapmfohbfi
-X-HE-Tag: 1790080248-73541
-X-HE-Meta: U2FsdGVkX19b3PIdAK1hL6VaBQek408MhYNNWHC4HXeyte9XgKIb1UHYLRMIUpOAsC36t48RKtHmI8eRsPa1UoGYtncoirvXjcWtdHwYYirUTyua4Eal86bou1+jciR6BT9BBjFP5AJ/v2G6yr6aQ6+GTrF8ja43yvJLN/FsdyRzzofBWzLtr9aE8yyqG1pkeee3b0Enc1TCG0ely9m+QpQ8fzOfrftpxNXobMI8oJ30jTBdFQYT2svZPeHW+SIVDV+yItRRhS3sUzgNLS0LAjgQxG6ZHbtQYyOkh8ZWPEKuSutCfKDDXnJA6CdkNezM66Um/JQQQxmXnwcDIA/EzSg48fU9FcecN5h+4dam9T4y1KIP5mbRXgEEFf/7cGtGmj6J78CO2P+SG/e2skXzvxoPmkxPQI5FbahUALN3FFOzjCGC/ItYhv26ZIZdqe7NHDB6eSDmIlMDXm3sdfMTTjQaVBzF/tD4dRfs5ej5t13qXTHCHheLZw4YUIzs6LSRC2l6Kt0Vrk1fXw0MFBtPAa0VetZkQTdAsFU9P9gW+UeqtOzH7C7tFZqXtmmu/Ufu54AZfZriV8KKKa0trZpABW5+Isg8I49XZ0MXOh5i3rrqOB30osw3iihHeIC0FyNWRWIi/KYkwuuQFYkPIjC8IEBGzwZ8rH9lzOqJC1T/EJptG9q2hZfXcSMr31zrxdIqCzT3Je3r6xPVKx9VMNC3JuVccja3sT57qLd/9xDSTh6zZTMpRrgpgagWLUloUuRohJdm7/Yzqp29yp8/189g2epxp3fC8iUOSK05Bzlmpr+l4ef2jl/mhEqWMOUG4zq2gtWkFN1n9vzzye5J3fuA5nj11Vj7CzFSfMSDRTv/hCus9N1aAqBDTcJywAWP9z4fgVrNrAdVXWTZhLA7M89jdBqr2kBXfNuZ0vZb1P7C4NliuylXJ+4CiFGOfEE+L6R7ruaz/5NdfCqt51+djOX
- jnLWyxfa
- yW6MMqAdeY2rF2Qjaw8e6TL6wW8vp0sLOqBrbSRCgR/2pgbl/yxRMZgM0Gs5u4FSFJcK7BpCAYPtDFNFNUu68PA4cGPjIlSdTHiDXkc6WkhnSJCqAsxJUF1zVvt/UWywmQKO7lSIa7HAwZG9lKsjEUkERd67uLu+KzrxdIqyx43YXBZm6oFSeutnusSBDxWb1xjitZH4WPeNCnmjg1kImNXP3NgKK3zpl0cy0uOFTaUtucDTUZdr2xBuISihDSXOrOeRfMmukMKJ+LS7Smej83u0dGf4pJLnHmUHeX85+qeEMTmEEPAFETkO/kB3DSCWc21GI
+X-HE-Tag: 1790080316-258786
+X-HE-Meta: U2FsdGVkX1/t0ONz205zG64NaT+ANSmTPoh/4qDZ2qII+PaXp/kJ3VqjShSKqz5wwfh7XleMxcf79G6t8Jxc9MFJM9aG39u0XXwubvvugqMM9XSV9xTJQTKTLs2elpULL1MdVmBGe73p2sL7jjVV7t68Kc0Si0OCnQ1O47sFodrVovh5DmVhKG4A/Atm79rGGAmsW65mYsnzwlKQe+ONdlypn52dIurzK3aFk0bnC4o/T2xS7yJhPlfMPyjt30bcE7cew9bF24/foD6eSI+6wX994BpN5pzL4Ho9uu8oXdvUKDN80QW+rK472NZRfJbriDKuvHrMT41jqPR7L0U9QCMCeko9XL74o+/GMN8BaOUy5CN7nx26/RpnduDfxrXUz64xDKMS19tsVPYoqBFZY0d7UgLYOEO9NmJLuHJNBh2xkkbpDU5gcWac6SEFtOCRmHN/pUe6izNQJeQGdFOZNtHxqiamACwBOKFN/B/bAZBYwOSx5Mjh2dkZ8U7RxfiQ2nDQ/xPYfD6Dzpe7988NpDHNVCKnozfwX+K8N5LHapuPDyR4eK8IuiPebahfWXYwIB93sY2KT2W8ojOz+cwfZMck4PRU8y8LDntS6Ah3uAHn+NEeeoZLYCubT/n6211k48jtYWXxCbQxkEWkVcmTwJfhB+2DEyYcQyx8KSKvb0KgKwTLeG0IW1gu57joEdQRe6VoEb07xZ6oDAvl74wiSdyUAW+erYUJkedskG6qjUwQ+oj6mu5cZrwQJzGtkGr8uG/jYx/bzztn3UvFAx7XbOUUT5lhHz0jjb2rldF31jfg5+hl7gCCFrjqitFK3W+8hx1ayXXTEI9H1vtdQt8gtCes2ymLReWA1ELEY6jpYuUUQlVrhbHkmvpQufX5/ESfIYNa3Ljkg8041Jsj/uq1obFue1++9K9g0Hwi+5CoUgw+Ni93MZn/TzQV4DvduKoyNGyuP8B8pHq1u2orsAt
+ aNyXbBpZ
+ 3dojo2As73CubOQIbZnKa1oDDh/KAS3Lq4mnEfeDpdNxk6PXgzfJ/bKrUGtDOk5mSs1uJwoMRzReDf79aR1RZQW+9KGJ9hfYJM5s+W/XvhQDhfEisQm3ZPdbEBYu7hi2cdtQtCJY7u9usKi4D3c93t6NaedyhpCZa8nOdV+SCNUinBhbfyMzpq3GFUFvfRPGoA6EPx1wXp33fNw7R1aee339PvOKD5cNo/h+EKVduW/gLcEJmPE4Jnm0ZnsJnzlJOsDDG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,55 +102,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04 2026, George Guo wrote:
+On Tue, 22 Sep 2026 11:18:43 +0800 Zhijian Han <hanzhijian1991@gmail.com> wrote:
 
-> From: George Guo <guodongtai@kylinos.cn>
->
-> kho_block.c calls virt_to_phys() and phys_to_virt(). On LoongArch with
-> CONFIG_KFENCE=y, these macros (in arch/loongarch/include/asm/io.h) expand
-> to offset_in_page() and page_address(), both declared in <linux/mm.h>.
->
-> Since kho_block.c does not include <linux/mm.h>, the translation unit
-> fails to build with CONFIG_KFENCE=y:
->
->   asm/io.h: error: implicit declaration of function 'offset_in_page'
->   asm/io.h: error: implicit declaration of function 'page_address'
->
-> Add the missing include to fix these build errors.
->
-> This is the same root cause as the luo_session.c build fix previously
-> acked by Mike Rapoport [1]; the virt_to_phys()/phys_to_virt() calls have
-> since been refactored from luo_session.c into kho_block.c, so the fix
-> moves with it.
->
-> [1] https://lore.kernel.org/r/ai5nYlbERQBXRHSp@kernel.org/
+> Fix spelling errors found by codespell in several mm source files:
+[...]
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -2328,7 +2328,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+>   * This function checks if a given region should be skipped or not for the
+>   * reason.  If only the starting part of the region has previously charged,
+>   * this function splits the region into two so that the second one covers the
+> - * area that not charged in the previous charge widnow, and return true.  The
+> + * area that not charged in the previous charge window, and return true.  The
+>   * caller can see the second one on the next iteration of the region walk.
+>   * Note that this means the caller should use damon_for_each_region() instead
+>   * of damon_for_each_region_safe().  If damon_for_each_region_safe() is used,
+> @@ -2486,7 +2486,7 @@ static void damos_walk_call_walk(struct damon_ctx *ctx, struct damon_target *t,
+>   * This function is called when kdamond finished applying the action of a DAMOS
+>   * scheme to all regions that eligible for the given &damos->apply_interval_us.
+>   * If every scheme of @ctx including @s now finished walking for at least one
+> - * &damos->apply_interval_us, this function makrs the handling of the given
+> + * &damos->apply_interval_us, this function marks the handling of the given
+>   * DAMOS walk request is done, so that damos_walk() can wake up and return.
+>   */
+>  static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
 
-Drop this paragraph please. History of previous patch postings doesn't
-belong in the commit message. You should write this kind of things below
-the "---".
+As I replied [1] to your another patch, the above DAMON side change cannot be
+accepted since the same fix is already suggested and accepted.
 
->
-> Co-developed-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: Kexin Liu <liukexin@kylinos.cn>
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  kernel/liveupdate/kho_block.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/kernel/liveupdate/kho_block.c b/kernel/liveupdate/kho_block.c
-> index 0d2a342ef422..0d56891b2f4c 100644
-> --- a/kernel/liveupdate/kho_block.c
-> +++ b/kernel/liveupdate/kho_block.c
-> @@ -25,6 +25,7 @@
->  #include <linux/kho/abi/block.h>
->  #include <linux/kho_block.h>
->  #include <linux/slab.h>
-> +#include <linux/mm.h>
->  
->  /*
->   * Safeguard limit for the number of serialization blocks. This is used to
+[1] https://lore.kernel.org/20260922064216.43053-1-sj@kernel.org
 
--- 
-Regards,
-Pratyush Yadav
+
+Thanks,
+SJ
+
+[...]
 
