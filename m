@@ -4,124 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1BBEC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:50:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 132F7C98307
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:51:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB4A6B00A9; Tue, 22 Sep 2026 08:50:37 -0400 (EDT)
+	id 4A1ED6B00AC; Tue, 22 Sep 2026 08:51:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6C336B00AA; Tue, 22 Sep 2026 08:50:37 -0400 (EDT)
+	id 42CDC6B00AE; Tue, 22 Sep 2026 08:51:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95B016B00AB; Tue, 22 Sep 2026 08:50:37 -0400 (EDT)
+	id 33FE36B00AC; Tue, 22 Sep 2026 08:51:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 657C06B00A9
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:50:37 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6462A1A0465
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:50:36 +0000 (UTC)
-X-FDA: 85241382072.02.04CFF8E
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 953C0180006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:50:34 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=PU7oMtNO;
-	spf=pass (imf16.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.41 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C90A6B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:51:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B0F41C2A0D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:51:24 +0000 (UTC)
+X-FDA: 85241384088.10.AC57DF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id AECC2C0002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:51:22 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDpmoKnk;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790081434;
+	s=arc-20220608; t=1790081482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=juILZvA/W9TMtNBQ/eIZx9CWcsdMz7oCJkpEETYimaY=;
-	b=0YOUgTZVXSxnpzyta+8vn4dzSK+/arbvlOq+LQDeQd3F0P8o8SncXthSTEPOQsXiMqBL7B
-	HnTiWgCOjYYkl0v9fZKblx2avLBNpEZwZP77Unwghy9Gx/7avM2evUnfukYUYgErIIMzZj
-	qpkyUso4B6Fz/mzpE9fQuAPm0Qqk4Ng=
+	bh=bjn6H9bAPusg9K8m56V4G1qk8427IsHI5UeWzmUJBww=;
+	b=mvbjwtqIkBo+AG6llRoYfyPccrPaP9TGIuPZzwo+3qXNyB2eN/SzTYpIBKoV3/jFrd3EWn
+	AA8WfdBlLe1Luu98dtKKSvIDmNETgwDNG0VOifBpL3F3nXaMuhXtN1YHCzu4xB8rFxDfLJ
+	kZMxzg73g4HTu/tdhyLFbW/5v8uViN0=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=PU7oMtNO;
-	spf=pass (imf16.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.41 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDpmoKnk;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790081434;
-	b=TRQyEYJ44C51kVgwTdBzw03LnwS+1S/FYvuo1gDrtRW1Dsd6Zq6uEZ2YQ2LGBApYEBBIMs
-	EunUs9RiKzNRky4vk4KLxM6xCzNATqW7mmw3dcsennbqo4bTvJ1vS9UOy9TU1MI/9QGHHU
-	KiplwJ5CZYW2D7PEJXIZVn5xThiaiOg=
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8686f46e4adso3474821b3a.0
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:50:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1790081433; x=1790686233; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=juILZvA/W9TMtNBQ/eIZx9CWcsdMz7oCJkpEETYimaY=;
-        b=PU7oMtNO/bVUIZzwnnOWhpM7xK+Qu4fgFdZJOcI6ofulxJNtk9SI/RvlMxYRhvn3Oi
-         AWqtjcsaP5KvQtUWvZ/mP/zYlB4XdGIgKJzhsd5+49HaLRlK/VNwxd4RYdaT1KxmTK98
-         37mUzYgm8JHQPIncQVJ5wsFBubn5v+7T1R1G3r+DWh/afv6YdqrQJWVsoqA7iSRsghDk
-         9Fpt+QCZ+7yylTt1NBHad8Cus9unaDKG/FxH19QyPWgXZfdoSzANjtKmYJ9Gk54i9lRN
-         EnT8Shuddav05RSkFxFiHvRccMHY4Z0SDce5JNXv8stEFPjSeAAcDaXFH87zxhvodw9r
-         EIBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790081433; x=1790686233;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=juILZvA/W9TMtNBQ/eIZx9CWcsdMz7oCJkpEETYimaY=;
-        b=0rNl3FotmTt2SDOD4nekmC0tGYxAUuxPYku1ieBHrdGYZDFPg5bSMGssprVTwvi6Mc
-         CKlm+GZ3U1I4TfXaV96Q6m512bb7GTWRgUOikvITjdcRFPygmQD/vYcRQFiLQpDwVJOv
-         sn52wmuNjzkoZR7f+NKEstBUybFi2irK0TNc0FhvrrlGQKrZ7LTOfe/5hGlxxMauXqzO
-         HWnF/pQt05CS7/rtbhD6uDe4PfuSAoqW43UbbOatMbcE3A3v0asJpN+sl+8kA7tmYKxe
-         ib43q/0wOn+U4k6f3qtk7np29+L0nXu/O4N+VB87GP5Y3K3F/417rXl38UPALhzA4aB5
-         iEig==
-X-Forwarded-Encrypted: i=1; AKwUvBypIj7w2F6Qe2YfQWLHG7V72HmCrlSUuIoYN4k/MQX11hfc40N8vOwpF44UJpvYDoAEvDIEo/0gVA==@kvack.org
-X-Gm-Message-State: AFuF++kWgwImkuSiG9aNY6ZoMGEffwg+KUAw9wXX18HAFuARrh/ZEHqg
-	0vynpNNnpUH1rSmlNSYQSsQbv9vpjvn3kyzVWzDc8NBmqjBVbxU6ygeFVzTeRLZyff4=
-X-Gm-Gg: AYBFou3N8YFuPW0drg00E9E8e0qvqKW10HOCe0svAWZgjYJWwryxVN/FDgpj6Nbrur+
-	Z+U0WV+kRvBZaCasmGRI4bzxl+Lqed9t9qKIOH2obA718bxO7WuUKjalTyeZs1yLyQ2iWxQtdql
-	gCSl1SZ4SFaSUiOpvgd8ysqby25JkMCD4eP9aRP4eXGTASpg8pXbi/zF3c8CE1b7zkorEXTAJ2h
-	JUdbZBhBvr5EmRltzf+QocoEwlyeTcd0/UxFX0AQ/vK+cmpc3rrtndSCgMIs5l5PizxA3/qLjec
-	XH9En16X3FSDeO2R7kZIta+s/JAPIqsClh8Ic8kfNn+cv4zbAqi/EmY5qY+CpQd2uoMC2dgQyJk
-	354sOym4ofrMvbl4cKAN52Pd56qIWhrqgRUwNLDwtfhUauS1SkOxBJNbRyFcOz/INK5LToAIMrc
-	y3OM1NT/h6Bv9EZLNeUTWxt7HLFDoz1PawtDXRPhITb2cD9mafPl89J17c/oHnxtTT8C1HeWMlg
-	LA=
-X-Received: by 2002:a05:6a00:3c95:b0:879:531d:199 with SMTP id d2e1a72fcca58-87c84043665mr1114410b3a.39.1790081433323;
-        Tue, 22 Sep 2026 05:50:33 -0700 (PDT)
-Received: from localhost ([106.38.226.138])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87c331b0629sm774868b3a.51.2026.09.22.05.50.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 05:50:33 -0700 (PDT)
-From: Julian Sun <sunjunchao@bytedance.com>
-To: linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Cc: axboe@kernel.dk,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	willy@infradead.org,
-	jack@suse.cz,
-	tj@kernel.org,
-	akpm@linux-foundation.org
-Subject: [PATCH v8 3/3] writeback: record bdev targets in foreign writeback tracepoints
-Date: Tue, 22 Sep 2026 20:50:15 +0800
-Message-Id: <20260922125015.3435215-4-sunjunchao@bytedance.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260922125015.3435215-1-sunjunchao@bytedance.com>
-References: <20260922125015.3435215-1-sunjunchao@bytedance.com>
+	t=1790081482;
+	b=bSNPvrEPjkDJbl9YPaIUW98a7o4YMjfcXvHmnYWt6XrtcGGV7LFG2048LJ1aWESYpXlmOT
+	g5X9hUo1qFW4CsA3JHlvD3aOD4dBmHn+JM1JQh38xe7D+aB+YzUnuLe1/IQeQ9emIpfXX4
+	SUmJGGjFB2daPmcsAatrjkoMAhryv00=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0014B60E01;
+	Tue, 22 Sep 2026 12:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6EB1F00898;
+	Tue, 22 Sep 2026 12:51:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790081481;
+	bh=bjn6H9bAPusg9K8m56V4G1qk8427IsHI5UeWzmUJBww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZDpmoKnkXHYvgzWDcXnkPtfTAO4v0F1RscKB2fTnyZdqTfqeB8e97fRQ+cvLiJzvi
+	 fgtbgN39wAvaTedzLC7nH363xblfKf51JwbGpFsDV5ceVV1tKBHyppmMluDntmarUM
+	 U/YPxsFIdvCFV/yM//9wBfgvhnkZE5MCbaPTe4KVxCbC4jDaVy4mmA8r8Z8VLUfYYO
+	 GEtV4JdUTWiHgcGUAYxi3Oytv9PRiyzGo78QyLDtIl0wdvqW8jwcRMt4o3CsPNvRBD
+	 /GUn4U2YIQnOzBci4AoYgn1zojzErZuH9TO4AcrJsNrQUfE9oJWBMaYoqNPS6u45uQ
+	 j4BLCYvl0v8/g==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 9D4B41980052;
+	Tue, 22 Sep 2026 08:51:11 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 22 Sep 2026 08:51:17 -0400
+X-ME-Sender: <xms:v3myaqO1dJPBBp2pNjko1t5k8FQl_hc03Kdfb9AYFnNOuyG4iLR2jA>
+    <xme:v3myanvKy0YCF5GpjVA1evG7y3p8XhUh-KR1TqJq1uq7pKQ0IGJf1uU6CQrAhySyT
+    K19JLBuqm3DMdxinXVb2J7xaGy17Zil4GTrpqJJnoQw-9z-HCxljWU>
+X-ME-Received: <xmr:v3myajdxZgA5ab59yvkNNapjP2aGmt6aEtXJu7dPZxiT_mpeRjIJGn400Wg>
+X-ME-Proxy-Cause: dmFkZTGJsDyAcE8QiCZz6dfbgOk9P/ImhfvjdTgEGi1dyPDTortTmKMOuYz4ch97JTuIJY
+    fCTeb/jUDs7RR8+EO82LYzphUG3CyOtSymtz/L464Wc9DfgUawrMcTy2lA/clKyJoAksX0
+    ZH839lnzNd/xvI9x9FHSP0kzB6tqsirVPUdHuDCIJ/wWCTBeNdhCrHmzdo6sUbJdKR/2O/
+    sWo9+A4BnuafPVatN035tZ09J6Fj99W4S+sDDcIwrbw5dyhaeZ44nnTKKearwgnnRyhT8p
+    2DheY2M4Nvuau7iuiAq3/CO0Qk8O5FLAWWU3996mTM//yGu/EY0oyjBeIKfGh7ymLgF2dO
+    XupXwF/czUZ2NpcRi/n/HbJd73UF6MopxxDLQXZZTZVEIq8jwxTtntgz1Fudldxc+duznM
+    zyN0Jj4dGAXH3J5iS2JrkGwjaln77bkaPrm/ycPIVoKlFDoDCRdxpscdTHnPCICqfqS73s
+    hy2SSZD3R9IdvfMM3cVc0eArLzOPt7zot16Rvzjau0S0mryVCZR9cKZJPrITNaxC2WJwRz
+    fnTwgIn7q07MgFSsf9rXprcLoqngdr9uLOAXpUXXoVfYM4O+/VQT2vrRpXrrKl6q73ti/q
+    doU1LkDyfW1eee9VOUfwBk/tMFKY1IzwPGNO8VK00HRjFLNHKhCBI+4vXJKw
+X-ME-Proxy: <xmx:v3myavMzzUcCooHWAjag_NsuwtOzP4qcAfrSEqhzqAEebaztzsxEWA>
+    <xmx:v3myamsaWir7lZYy4jpF5EYv1OuaZf2fvO0h0ncnscgZm28WUYCh8g>
+    <xmx:v3myao3hUXsCT3LxEmOAAr2Uf60p7xl8XEP1QkfNUvC2ST3uj26bFw>
+    <xmx:v3myam9xe1K-RT_7T98Kg09Zq9aohOe4xyGMtGQQZuaj89gdtRJ_2Q>
+    <xmx:v3myaukgoi2czh2NEkzuD_dpAYttVrftyzu5kkVWaZA2uWmvyAeQA0st>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 22 Sep 2026 08:51:09 -0400 (EDT)
+Date: Tue, 22 Sep 2026 13:51:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>,
+ 	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ 	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, 	kexec@lists.infradead.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ 	"Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, 	Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, 	Michal Hocko <mhocko@suse.com>,
+ Thomas Gleixner <tglx@kernel.org>, 	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ 	Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ 	Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ 	"Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, hannes@cmpxchg.or,
+ 	shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, 	linux-mm@kvack.org, rmikey@meta.com,
+ riel@surriel.com, harry@kernel.org, 	linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, kernel-team@meta.com
+Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
+ frames into the block
+Message-ID: <arJ5I9QHHBvuGH_F@thinkstation>
+References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
+ <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
+ <aqpczrtIwSG948iv@gmail.com>
+ <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
+ <aqvHHHuWJ-y4WRJZ@gmail.com>
+ <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
+ <aq1RaH0eE0hZfNpr@gmail.com>
+ <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
+ <arE3UjqPsxctWckg@gmail.com>
+ <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 953C0180006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
+X-Stat-Signature: cwq6ou5y5gmbzbr1iqt6nbgxe5bozc1u
+X-Rspamd-Queue-Id: AECC2C0002
 X-Rspam-User: 
-X-Stat-Signature: mg4fkkmjw1h9tbmbwim5a331k9qyrt96
-X-HE-Tag: 1790081434-905113
-X-HE-Meta: U2FsdGVkX19ntTg7RF/KtZt7YWtIxdPxV3mWJFVBWYd51LXqjLmvFg9wE6tyCNyVxOlmYNOIUSiy+Wc7fzeMasvOMHDt/aGef3UgkQiSeFKhHRObFWvxv1K1vtCwF7gKUwO8LYuhDh1l6p27rk6kjOkZJyOdBQV6xZr7wtGW2WrEV2YfNGPTsSK8yCtvUe2X9JIOMruwZC5neJ4T2RI1Ns7A3L2c5I6VFRP6YzOaz9Emi/wYf56QnRHWAscydGJbxIt16+3hY0sJ8qbASMNRCjG0uDeXYm3KcQ+t61Na5hOM2LJ2tMLS5OtaXHj+Ix7uZcmSiFfhq9v9BOdFKaSUeBfslWUUagwLxkWXhiB9e4xJzcNMyzxfViE0ggYcSU0e6riqX9vPVNd8pJGRmEs3WQQ7l2w8eDR8ZMUUBNUOD2sIsoiYoSkTbCbUt3kqJ83elZMoQ9xwaY13CMNENrtlTACbPM9+r8BbFo6aym1T+hKa2P67E56v6V3Srzd+Ndq8G3dBkxCD+THGS/M3ZM5fZk19BhXrgtqDcepvmuILZEO/dezvOueMghUe5FzWncdLh5ylBWf/B3nicIm2MB+2QeUlDyEVvBnvhml78+gYylHk81dBOLXF3C2zyNHpxq24kRra8KOHjTICXV4+5gg/t7pn17xdTrUhFXhxHHEPUe8vRqIYBZeDhMxm57yklh5Z1CR7gh3iP5U1pFbAuzAXJom59t3PyEUdQ5r0IA9jmW7M+5xGdL9nIaMWc+QlppaY4ivUiXN11YWhiaTkKiUi5qluPrDZDQTv88ko6jggLyvmWagCX49TMHT3gDCBvzEM/b8Wjx66MTAOwG68SQATk9uFZskKzqmVa075YbQDvyiexAAFkuwWFbsIULNqiYjG5L4BUNgzIC8cRRlRfU9oYww1v23quEUrb9z9f6+EUDKB6V6pDNJh70HrtpsmMPhbjXA3TybheYfFG2X+vjj
- 2wlFhPmW
- 3e+cMCvi8W2H31cPDcjVo0EhepgccL9g/wJlpvGixT0JK9lLXe7hep7G72jX/WN+b01BtVpu8MWJLaFABZf3tvFdMxiGSNLy2E8I8BwrWm/b16t/MAWFxZY+cdmx0iB0rc0YWrhPrsVymHY7YGCrPPOZRDH44ikiNxX5XUJsAaFUUvcyTujqeuwjO3tRAqhVt+HYb3TK/4UUUMqtgCocG0ykqozoznRSKIJ2LzcoqxYtcmUXXM80th3ej5eb27/EBtZ9uumxsJR4K1uJ1TyTdV69/vmpd44i7KbUaIf5LxSWb0aL7Pl0RECOkOm+kFWZBdUgBYQJ0anzwdQDuadj2ZUU0CAvO2E1BsMZ14voafBp196c=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790081482-86153
+X-HE-Meta: U2FsdGVkX181NhFh/t7Iy4LxK++ZbiRcpcMYVd0raETYEP8rdiX1gbdO5w/peP+1fk1p6HQzXSdzVhEDzyUIwjzQyR2oH3fUM//+JMeo96ZEiHkSTNmPUMKrWr2PidNKN6Gyu+gApuisTMPNpm7tC7uVPFk47UdLPgPQTuZQIe0yB7s+2IT//1AN1vgXjTGp68/XLK4kWypdIdSpBoQxbrUD7/Kfpem3Qzxv/FIpUNZTyR9gPY7s/XimMd4DG5FSpt+tIXXPzHntq2lJkSBp+CzygSjtMy9vZp9GQaOc4YyIPh6PBTnx5CFWfmc6tslvCfHxzC/QbllJa8KM9D7wlr+BuGHxZIgBEv7d1PhLVXN1cNpNzDUp3IG78lJh/3JSV94ymg8elDHkNolQFus7/r0bDja/AlsjMmbW5c7zniIjzqx8PmAQHnwnfuZY08rAgzAabhGyaTS+FeVO6pie+LY3Dr7ly31PPhQSJhq/ySEagpkA6xKVQtfaI00ktZrob+g/xmTseo1gyNEfbRdsmsn6HruOa4brvA3GxoPLBdXMufpnEeKO6K4Mkfo1TlR39FTDs3J4u+FzvcHk7eh8XbbfYwrxIsl7CxL9TURZQsBKzaXsMKzbap2m/PN7yseykulyWc1voS8ztpdGDTOtJ1X5UWQ3onGRxnKONVbRG5c5wVM9NO/12kxW9ErTn3qWyG5wShA89W+dKDu8u6Nr/JLurF2zxh/85NiOAxMaWQgwCwhNzdYJk006ERgvYw4LMlqQNQB6e3fOA7IP6DVaD0L2WaQJICULCe7ro9+yJd1CwfPtpvLruLKwVzY7VuxGZmcoHPSLfoD61NWNmJGmLs7S3csijLikI8XWnGzQEn+tzE4ll0X404Gp4r8ssBtTsp3N9fTcJwJaCubn5Rc1LUD40XPxLyY62OPS0WSk3L2KAIdgdjrgqZ80k4Uba52fej6T5d8/OK8NNztDPNW
+ N3GNJJZX
+ iROYODsaHEHO/a0E5r/23pWnCdXe8KZ5Sxjt9ztRZurHu/QxJM5nY6UcN0bsDxLRNCpz6nBp9YDrTHUHpDQ/gu8+NF6HysKzkqvl8L5GnpQbS1bcFtyq68vqjC4vIz2RNPxUh0aPywMaTKft+RyINR2CgCvUQDAn0nHOFdyDYjACpqEjX+h/JcLCT9y7KZDR8mJ+RuikHDg5viLJiqaU+qqRGpchJ3D1S24iMXgOmPA0yODQP1hsNzkVo4PWFrMPB1NG6WPVwVEAVhwFmP+NAW0P5RSL9gOaCLFKS9XQgtxZMsAicEz6Ztcd+MCoN0hY/DEgQgGPwaQFjzvD1MfiWPeTJ8I6QYa63W/sS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,139 +148,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add dev to track_foreign_dirty and flush_foreign so traces can
-distinguish foreign-wb tracking from the bdev-only path. Append the
-field to each event and print it as major:minor; zero denotes the
-normal foreign-wb path.
+On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/21/26 16:31, Breno Leitao wrote:
+> > On Fri, Sep 18, 2026 at 10:16:25PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/18/26 17:22, Breno Leitao wrote:
+> >>>
+> >>> Right, we have two source for poisoned page information, today.
+> >>>
+> >>> 1) LINUX_EFI_POISONED_MEMORY: Used to track memory block that got
+> >>>    poisioned, and will be passed around during kexec.
+> >>> 2) PG_hwpoison on struct page: Used by the memory subsystem to avoid
+> >>>    touching it.
+> >>
+> >> How are both kept in sync? See below.
+> > 
+> > The EFI table is only written when there is a memory failure. That is
+> > the only thing that writes to it:
+> > 
+> > 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
+> > 
+> > You can see it on patch "mm/memory-failure: efi: record
+> > hardware-poisoned frames into the poisoned-memory table"
+> > 
+> > Then, when the kernel kexecs into a second kernel, the EFI config table
+> > is queried and the pages are poisoned from it at boot, as they are
+> > getting into the buddy allocator, in __free_pages_core().
+> 
+> I am not sure that is really the right place. That means we only poison free
+> memory. Shouldn't we poison as soon as we initialize the memmap, and check
+> whether any memblock allocations ended up on that poisoned memory and bail out?
 
-Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
----
- include/trace/events/writeback.h | 22 ++++++++++++++--------
- mm/memcontrol.c                  |  8 +++++---
- 2 files changed, 19 insertions(+), 11 deletions(-)
+__free_pages_core() is how we hand over pages from memblock to page allocator
+initially -- from memblock_free_pages(), deferred_free_pages() and
+hotplug. It is the right place to never allow them on free lists.
 
-diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
-index 13ee076ccd16..ffd1b8df4231 100644
---- a/include/trace/events/writeback.h
-+++ b/include/trace/events/writeback.h
-@@ -273,9 +273,9 @@ TRACE_EVENT(inode_switch_wbs,
- 
- TRACE_EVENT(track_foreign_dirty,
- 
--	TP_PROTO(struct folio *folio, struct bdi_writeback *wb),
-+	TP_PROTO(struct folio *folio, struct bdi_writeback *wb, dev_t dev),
- 
--	TP_ARGS(folio, wb),
-+	TP_ARGS(folio, wb, dev),
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
-@@ -284,6 +284,7 @@ TRACE_EVENT(track_foreign_dirty,
- 		__field(u64,		cgroup_ino)
- 		__field(u64,		page_cgroup_ino)
- 		__field(unsigned int,	memcg_id)
-+		__field(dev_t,		dev)
- 	),
- 
- 	TP_fast_assign(
-@@ -295,34 +296,37 @@ TRACE_EVENT(track_foreign_dirty,
- 		__entry->ino		= inode ? inode->i_ino : 0;
- 		__entry->memcg_id	= wb->memcg_css->id;
- 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
-+		__entry->dev		= dev;
- 
- 		rcu_read_lock();
- 		__entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
- 		rcu_read_unlock();
- 	),
- 
--	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu",
-+	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu dev=%u:%u",
- 		__entry->name,
- 		__entry->bdi_id,
- 		__entry->ino,
- 		__entry->memcg_id,
- 		__entry->cgroup_ino,
--		__entry->page_cgroup_ino
-+		__entry->page_cgroup_ino,
-+		MAJOR(__entry->dev), MINOR(__entry->dev)
- 	)
- );
- 
- TRACE_EVENT(flush_foreign,
- 
- 	TP_PROTO(struct bdi_writeback *wb, unsigned int frn_bdi_id,
--		 unsigned int frn_memcg_id),
-+		 unsigned int frn_memcg_id, dev_t dev),
- 
--	TP_ARGS(wb, frn_bdi_id, frn_memcg_id),
-+	TP_ARGS(wb, frn_bdi_id, frn_memcg_id, dev),
- 
- 	TP_STRUCT__entry(
- 		__array(char,		name, 32)
- 		__field(u64,		cgroup_ino)
- 		__field(unsigned int,	frn_bdi_id)
- 		__field(unsigned int,	frn_memcg_id)
-+		__field(dev_t,		dev)
- 	),
- 
- 	TP_fast_assign(
-@@ -330,13 +334,15 @@ TRACE_EVENT(flush_foreign,
- 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
- 		__entry->frn_bdi_id	= frn_bdi_id;
- 		__entry->frn_memcg_id	= frn_memcg_id;
-+		__entry->dev		= dev;
- 	),
- 
--	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u",
-+	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u dev=%u:%u",
- 		__entry->name,
- 		__entry->cgroup_ino,
- 		__entry->frn_bdi_id,
--		__entry->frn_memcg_id
-+		__entry->frn_memcg_id,
-+		MAJOR(__entry->dev), MINOR(__entry->dev)
- 	)
- );
- #endif
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 6042c694d56c..534b0d537a09 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3956,12 +3956,12 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
- 	struct inode *inode = mapping->host;
- 
- 	if (memcg_bdev_frn_wq && sb_is_blkdev_sb(inode->i_sb)) {
--		trace_track_foreign_dirty(folio, wb);
-+		trace_track_foreign_dirty(folio, wb, inode->i_rdev);
- 		mem_cgroup_track_foreign_bdev(memcg, inode->i_rdev);
- 		return;
- 	}
- 
--	trace_track_foreign_dirty(folio, wb);
-+	trace_track_foreign_dirty(folio, wb, 0);
- 
- 	/*
- 	 * Pick the slot to use.  If there is already a slot for @wb, keep
-@@ -4032,6 +4032,7 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
- 			 * the timestamp for a later flush.
- 			 */
- 			frn->at = 0;
-+			trace_flush_foreign(wb, 0, 0, frn->dev);
- 			queue_work(memcg_bdev_frn_wq, &frn->work);
- 		}
- 	}
-@@ -4048,7 +4049,8 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
- 		if (time_after64(frn->at, now - intv) &&
- 		    atomic_read(&frn->done.cnt) == 1) {
- 			frn->at = 0;
--			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id);
-+			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id,
-+					    0);
- 			cgroup_writeback_by_id(frn->bdi_id, frn->memcg_id,
- 					       WB_REASON_FOREIGN_FLUSH,
- 					       &frn->done);
 -- 
-2.39.5
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
