@@ -4,137 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E10C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0A5C982FF
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00586B009F; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
+	id C8CAB6B00A2; Tue, 22 Sep 2026 07:44:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD8356B00A1; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
+	id C65226B00A5; Tue, 22 Sep 2026 07:44:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF06A6B00A2; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
+	id B7D826B00A6; Tue, 22 Sep 2026 07:44:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A09F26B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:44:08 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23AF6C0446
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:08 +0000 (UTC)
-X-FDA: 85241214576.07.7F55378
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 69B0B1C0009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:06 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oE4XcNzC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8B9C66B00A2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:44:44 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 13F44C045B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:44 +0000 (UTC)
+X-FDA: 85241216088.26.87CE10B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8395420005
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:44:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="0KvwR/zJ";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rse08GEl;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+6wpHNp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wvSD5AkE;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790077446;
+	s=arc-20220608; t=1790077482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L5RLJmkn3UUvLlQqkDra9TAVkTvT0dlAwtedfHtKnSg=;
-	b=oMW2HJSGwSFl9RSzgWq/wTXHMkJnYkCVr/w7zClSxuIk3OAJ/w6XnZ+Yh+byEhMwX0Cjii
-	LlWSEm/cOyBipWxTOMwYbzhT0ARaITXSzLmmwyMbzAkfA3FxJ0vLxDYD7DD4qCfSyUjjQt
-	W540+GK4OPUB44aQav9PftsTQJfZc+0=
+	bh=K0R7PnUXEmLCmdT6soybArzdlBxzCLCA04LCMbneRVU=;
+	b=jvTLB7SwjbGqVfRYZ0azvgtvjhsOBv3zD0hjut49alEGpoCgQGEpRLkDwHL1p1S68ew+Hd
+	r22qq6IEdv268uwofX2UNZiCKUiRd+rGcvAzZrhdZR02ZkGhbW9wxah03Ip5R+KYICKQO6
+	lM08k0bgZS6t3qQMWgP5YyZ8gH0r4OE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oE4XcNzC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="0KvwR/zJ";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rse08GEl;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+6wpHNp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wvSD5AkE;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790077446;
-	b=f2GYuImY5OTN6+9M4Cq+oLVrrv/GuOExYbfICvrcFV+3FvWSxM2KZathNxXsfXIriFllFH
-	2zrZaZ3WUXwB60NMZBKjPJPuYizJBdw3bDTfP7BJVMagkt12YjP+DB79sAnRUe5LmLR09E
-	nMiLp5ucUJWqWmUG/ksF9E6MEcd+6wE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E82B360DE9;
-	Tue, 22 Sep 2026 11:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6A31F000FF;
-	Tue, 22 Sep 2026 11:44:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790077445;
-	bh=L5RLJmkn3UUvLlQqkDra9TAVkTvT0dlAwtedfHtKnSg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oE4XcNzCMl2sJfDqV9RFSJEjYfMfdqq/nMwYZ1MWsXGUmE7SwiOLl6k/Aj+lTQjTV
-	 j+b4WrodzYdyDKW6yVZzQ3pYgJ7zb43b9PXkuyoLiVGw7WEnVM1BzgY2e3lVfnhlql
-	 CUPCbVUTH45BQT4Kc8U98iy49kLjdc9g75pgfthUJ7jlvljBiOvT/MyWz89wKfVy1Y
-	 z5Ux/PPjRKas0tuKelx6PCc3xwwuoWmb899JEIKHDyg9Byw8rZkwyMDSa92oWr+IK6
-	 fIvHpaVtLFfzDQHY2vpvMajsVMNKg+gwQ/7SKds1DkZa1isoHneT8o8KMd0k0bHpzi
-	 sR21x5WiIJm5Q==
-Message-ID: <625348f9-97c6-4996-8ddd-2e41867e07a0@kernel.org>
-Date: Tue, 22 Sep 2026 13:43:57 +0200
+	t=1790077482;
+	b=sTLOpxtzwFhk1KfiDqHt9NJC+yafdNRBTgs3nE7WJIB2BK/Vk1tnxFKCQysg3384r9xDEJ
+	8Es4ZnoNtq8/juYiqauYTG19Vbjxdl2Wosu0NjnKgxNpO/Dn0MbzODeTLwzIUDEUq+MEJr
+	IH7sx1U6tqZA7L/+MY+BhhXYew16/5M=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8360A1FA79;
+	Tue, 22 Sep 2026 11:44:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790077475; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0R7PnUXEmLCmdT6soybArzdlBxzCLCA04LCMbneRVU=;
+	b=0KvwR/zJAkVY2wLuya/6CuBx44T0B02iD/0E00u+UZydyHqb2erv2xZpTb1Oitzx+bp5Zz
+	9b8WQSdsdlsCmG+ev0u/UX14wM7f5ZUqEpZdST/EAMhAG06yYshBfHM3yg14MmH+G8fLni
+	5g8uqdi7IXEUmM5ubzHq2yyOMWXaeXI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790077475;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0R7PnUXEmLCmdT6soybArzdlBxzCLCA04LCMbneRVU=;
+	b=rse08GElL5BaXVAIowIfuwddQ9yBSqFutHNPr5skps+4fzxdPIBEo1oaFbjk180vjzpz0E
+	KftmCweL/KYzXjBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790077471; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0R7PnUXEmLCmdT6soybArzdlBxzCLCA04LCMbneRVU=;
+	b=N+6wpHNpOZvsAgExlPvxgZtE1wMCNZutPvCH09HF72pHcbb6oRWQith4MFS1QPEEQNp4LC
+	zqYQNzAyGB7OYN48N/wnVCGqYpfqwwmHGf4uolB7eulQk1tbrF2778ISgjFzKMcau0puUY
+	x3WQI0Lq8gdmLPf/UR4oIZ32dXNKt08=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790077471;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K0R7PnUXEmLCmdT6soybArzdlBxzCLCA04LCMbneRVU=;
+	b=wvSD5AkEmeuwXIc4MZPGvw7WjS6xMginNNGOZSbWfv88TUqA478zxVZceaZ8k3ODKAjD78
+	aI+Txp2kIDnZqBAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 58BA3132D3;
+	Tue, 22 Sep 2026 11:44:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id U9e+CR9qsmobfwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 22 Sep 2026 11:44:31 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id C5E28A13D4; Tue, 22 Sep 2026 13:44:30 +0200 (CEST)
+Date: Tue, 22 Sep 2026 13:44:30 +0200
+From: Jan Kara <jack@suse.cz>
+To: Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, akpm@linux-foundation.org, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hughd@google.com, 
+	baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz, ziy@nvidia.com, 
+	bfoster@redhat.com, joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com, 
+	yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
+	wangkefeng.wang@huawei.com, yukuai@fnnas.com
+Subject: Re: [PATCH v4 3/4] mm/truncate: fix data loss when splitting
+ straddling large folios fails
+Message-ID: <drxn6o73fsd63tgfdisdgcshc4bixwycfqiztfkhfb3yuu5imx@7mqkn7opeyxc>
+References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
+ <20260922110703.468389-4-yi.zhang@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: fix typos in various comments
-To: Zhijian Han <hanzhijian1991@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- SJ Park <sj@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Alexander Potapenko <glider@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260922031843.2857104-1-hanzhijian1991@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260922031843.2857104-1-hanzhijian1991@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: t7r1h83e11ghmsuas7qhukyxy3robd3n
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922110703.468389-4-yi.zhang@huaweicloud.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8395420005
+X-Stat-Signature: wucxeq353bsp9mo8163ttk4if3xa4niy
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 69B0B1C0009
-X-HE-Tag: 1790077446-932278
-X-HE-Meta: U2FsdGVkX1/pRemCopYA/3qZEyZjnvgrA0Jlk+k+aCYpZAPvoMxrq+bWR0pj7WB0+leTfGiOwcRbbrRtkIf1Enp5UyQBHWGtRaNBy0StZJkPX8zcgErAgSZRMUtFNXcg95JPZrHJHvql5a+bCEH/z9WiDVzM9cDofsnqDoK2qQ69PyiOlF+5ItOi59r6xIck5LZa9/38Va4Cr56I+E9BPBu4QWb2hxzsDRtVaDCw/uupuzexU4GUImhpXiQsE6Re8mKcYoxLEyq852h0eFr9P2ivq7ukJvN2zp+4gn5890A4xkqwRrjckBGQ7sUxLeQl8Q6youO1JFOQYsSQwSs790K149mQ/ISc53Tqfp4O1Pf8zVP9GM717Tnkjc6y7YWBdSO7CNwYtR1s4UdeieMV1qSJTi2ClzrEM/Zp1tPCzhcc8iW4dYnJPALpf7QFOpfsfb87iaE5O9mnaSQ5iBETXnwe083zzoc4fGvGNKmfS9R5iKT/8aaDgGHSzebTuV5Pwahd5ts2ZARftrGSs677Om2QdADsSCXkPqnbaR/v/6gQ9rGRQHeeVpF4ghE6L7NjlUjWvf7MIx+Pkleo+VOOHbYIoHmXUzffr3WyV6Y+Mh/ImeeC7XHhFr9cbyY8X51ncpW8CANZUbwTwsEEphxNZlz19yLUv+7G++UV7mZYxq6Jqp9zNVrmLzk4XJWBxbXgz25VSznGJzq5e+l3I88Zfj9I3zvt1KHY9rfTXyuRcGki78k5xJNIwnik2pCC9PMeO/DZ59A0wk6bP6fkvXuPSP77DXKERCMratOAzj1Ubumb/KOZaEHvukZuVwo6IQKh2q4tSbZoDv5dqzVew9PXKBkaXSWVQxGSn7WINE0rtfBk5jRcE7q1OyItvwHFOdLv243IABcEounZ+Uiyh5DuQZQ4bkbOoAntjJjnzhS96v4B9vyfxTztmLWzi3hJJsSqQhO93oVfRMf8UojV0TP
- YqZm5JN0
- r5rfWrpGQKWWTF64Pyg1HHf1IriDyqUoAGS8oi1Z5EbzJyC7nMQ8OtIedEq7hTdaRnVuuL3rFb3aU/2iS8FlgNrV2PFeu0c86O+pAXZTWE2NeN0NUR4e/zS9c1ELiCroLI2VWzpKuFmwk0QMG6wmou3WKqZnjD1QZTMp9PZINKj5V/c0ZVdxZrnrnhG96+Lr5w1Ab4ZjFapOr2P0OeUraSWbdFYOo5kiaU0QeV6xod3rJ0XEVNu4l9hlV2oJNpAbirPrSn6ivYX0vs74CIZcrBEwsXrhPBSqkIe4OaPzk3d2MrKTv3x9sULVD6AQS0vUvDKv2
+X-HE-Tag: 1790077481-507470
+X-HE-Meta: U2FsdGVkX1+YimjftBAneOaf9s+Zuqu5ohe4o1sjacCFRA51K7tZIgVdrWUenZ6Q39tPkXrMZ6xXg95qrhVLvHM+93L6tkYATGXEiGLVjxKfeJQk10RTt8liTqMvUocXvxD+2yCwsqmfOVqTTmQg11nBmksBpNO3u+COU+nyJ5o+RXDrTVO6WM0cie+8aH9PSP01CpCBU+1vV379LWPgQ+8+jp73efOc7ZeGn3lbCJJOT6oJ8ospfYPotI0NwL9S75W3Gu3tOH4hXV5Tuui7XDLfa/K3FE7qWsY4nD7EurnhskwLqiR51j/He6RXLyf6OBoHwPJ4UVsU7wwfFI0xiz036h96HHRPPm7GGUtcDvScCPx0TGC4Q9YdL+Y3VnYJSWDhV7lqVVALLMfKQJaH7u62FbKladnUJA6fY6sS7VW+n4K33i3zPg7DvOKw2qDbAcJ6R9ha3fzWVFIXWUXzy3Qk572ioWoc1tq3ZgH4FhCzqoTdGYky2s7nfwa2lxIGr3huNfMhoNeD3XYeBzvXSagd3CV1rcYHcOfAgEg3rVlRKzTovAfn52FkcCnTqin7/dynMT19oy9yPtoJQtGnVBGyUif0USUujw7k72EtrymLoDbP99S53TMX1TFDrAkHTEInUiiCzD09N8yVX01hPqMFBQQxZrdG6fL2Z4Vh43xNKSwlqOwA5EpwkXdFqhknF9dRd5pk3EolGuNHo9SB7KaszGHkTyvYifQfF2xM0NQl5Hf3eYWzRBYcgs2ESHGiiAiDpTE/wtWRMRybN3YLf1eTib2X5kQxIvdI+o9cRHE+Y0SAYeOYaO+MHD10Ls6krO3MYmA1Shf3f70ReXtKD/7zIdn09+gMHIuIxuzS7yH422uUMFV2+0spDls55ZhV4b2Gq7mmfSYlzASODf1aoEJQmmT54eOFi7EP7+HQnz0I4p2mtfpbTIdHKH5b8PsIkusL6oIVrfx6i14ygS6
+ Xa7SXpIR
+ aSIqO2tK3sHFkO74dNEKsuwHD+aUHwBIiD4RSKfueLF2f2WLF8MYGr7M/Xzw5nR5HJejM0RdztGeGst+oJHIuyX1DSgjH7sjupuBjUtEnmy1nt1YZ5cpZsX1qgskRzGLd+vR4atRp2rw1UAAp4glnAd025XyGgKmB1JNE4Yp30jW/MNDonwegOLCAeuPlTNLr8pvaSsX2DYMz9GbyzvLJf5AERtOyDs3AloKs1WpKFLnSKqH7/4FrB3+oyaIPj+Z56mCURElftuv5rpPqSLsa3rz83h/61sw/ZaLRYh1c+rQMYhkVFNbD2oBmosOlXDLWlMAI7sVMMsVItcwKIl7klOciUcfk67SmGj+uA6tsSP7UIvyWB8dprlZ88GDF+1iYaCJiB0LgPltmM3Vy3sqbyMxpMAFCR/ntpVLa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,99 +139,307 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 05:18, Zhijian Han wrote:
-> Fix spelling errors found by codespell in several mm source files:
+On Tue 22-09-26 19:07:02, Zhang Yi wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
 > 
-> - "aray" -> "array" in include/linux/mm.h
-> - "indiciate" -> "indicate" in include/linux/mm_types.h
-> - "aggresive" -> "aggressive" in include/linux/mm_types.h
-> - "progated" -> "propagated" in mm/huge_memory.c
-> - "Pressumably" -> "Presumably" in mm/hugetlb.c
-> - "fime" -> "time" in mm/hugetlb.c
-> - "farest" -> "farthest" in mm/list_lru.c
-> - "trivally" -> "trivially" in mm/madvise.c
-> - "atmost" -> "at most" in mm/memcontrol.c
-> - "splited" -> "split" in mm/memory-failure.c
-> - "appliable" -> "applicable" in mm/memory.c
-> - "incase" -> "in case" in mm/page_io.c
-> - "contigous" -> "contiguous" in mm/vmalloc.c
-> - "probablity" -> "probability" in mm/kfence/core.c
-> - "widnow" -> "window" in mm/damon/core.c
-> - "makrs" -> "marks" in mm/damon/core.c
-> - "possesss" -> "possesses" in mm/util.c
+> truncate_inode_partial_folio() splits a large folio so that the caller's
+> truncate loop can drop the in-range sub-folios while keeping the
+> out-of-range tail. The first split at the punch start edge is
+> non-uniform, which leaves the sub-folio at the truncation end edge as
+> large as possible, this means it may still straddle the range, holding
+> both zeroed in-range and valid out-of-range data. The function then
+> attempts a second split at offset + length to isolate that tail.
 > 
-> No functional changes.
+> If the second split fails the straddling sub-folio stays merged. The
+> function returned true unconditionally on all exit paths of the success
+> block, telling the caller it was fully handled. The caller kept its
+> default end and the truncate loop truncated every sub-folio below it,
+> including the merged straddler, discarding the valid out-of-range tail.
 > 
-> Signed-off-by: Zhijian Han <hanzhijian1991@gmail.com>
+> For example, a 4-page order-2 folio punched from offset 0 to the middle
+> of the last page:
+> 
+>   truncate_inode_pages_range()
+>     truncate_inode_partial_folio()      # same_folio == true
+>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>       2nd split of folio2 fails / cannot lock
+>       return true                       # BUG: caller keeps default end
+>     end = 3
+>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
+> 
+> This became reachable after commit 7460b470a131 ("mm/truncate: use
+> folio_split() in truncate operation") replaced the atomic split_folio()
+> with folio_split(), whose non-uniform split can partially split a folio
+> and leave the end edge merged.
+> 
+> It has gone unnoticed because a dirty large folio normally carries the
+> filesystem's private data, for example buffer_head, so
+> filemap_release_folio() fails on a dirty folio and folio_split() aborts
+> with -EBUSY before any split, leaving the straddler safely unsplit. The
+> bug is only reachable on paths that produce dirty large folios without
+> filesystem private data, and it was caught on the upcoming ext4 iomap
+> buffered I/O path when no ifs is attached.
+> 
+> Rework the contract so the caller is told the folio range to discard:
+> 
+>   - Add pgoff_t *pstart and *pend out-parameters that receive the folio
+>     range fully covered by [lstart, lend] after any split (or none),
+>     aligned inwards to min_order, i.e. the folios wholly within the
+>     range and safe to discard.
+> 
+>   - Report a reliable end position to the caller. The straddler is
+>     looked up at an index aligned inwards to the mapping minimum folio
+>     order, and *pend is set to that boundary on success. If nothing
+>     covers the boundary, discarding up to it stays safe. If the
+>     straddler is locked by someone else, fall back to folio->index.
+>     This best-effort fallback may leave the in-range sub-folios to a
+>     later pass but never discards the out-of-range tail. If the
+>     straddler cannot be split, fall back to folio2->index so the caller
+>     keeps the out-of-range tail.
+> 
+>   - Rename the byte-range parameters start/end to lstart/lend to better
+>     express their semantics.
+> 
+> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+> &pstart for the folio at the start edge and &pend for the folio at the
+> end edge, so the truncate loop drops exactly the fully covered pages and
+> never touches a straddling folio that still holds valid out-of-range
+> data.
+> 
+> Suggested-by: Brian Foster <bfoster@redhat.com>
+> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+
+Looks good to me. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
 > ---
->  include/linux/mm.h       | 2 +-
->  include/linux/mm_types.h | 4 ++--
->  mm/damon/core.c          | 4 ++--
->  mm/huge_memory.c         | 2 +-
->  mm/hugetlb.c             | 4 ++--
->  mm/kfence/core.c         | 2 +-
->  mm/list_lru.c            | 2 +-
->  mm/madvise.c             | 2 +-
->  mm/memcontrol.c          | 2 +-
->  mm/memory-failure.c      | 2 +-
->  mm/memory.c              | 2 +-
->  mm/page_io.c             | 2 +-
->  mm/util.c                | 2 +-
->  mm/vmalloc.c             | 2 +-
->  14 files changed, 17 insertions(+), 17 deletions(-)
+>  mm/internal.h |  4 +--
+>  mm/shmem.c    | 13 +++-----
+>  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
+>  3 files changed, 68 insertions(+), 37 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 87feaa5a2..5b2215e24 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4501,7 +4501,7 @@ static inline void mmap_action_simple_ioremap(struct vm_area_desc *desc,
->   * @desc: The VMA descriptor for the VMA requiring kernel pags to be mapped.
->   * @start: The virtual address from which to map them.
->   * @pages: An array of struct page pointers describing the memory to map.
-> - * @nr_pages: The number of entries in the @pages aray.
-> + * @nr_pages: The number of entries in the @pages array.
->   */
->  static inline void mmap_action_map_kernel_pages(struct vm_area_desc *desc,
->  		unsigned long start, struct page **pages,
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index 939b5ea8c..6c21bab3b 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -759,7 +759,7 @@ static inline struct anon_vma_name *anon_vma_name_alloc(const char *name)
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 38b1165212c9..3278a5e360e3 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -624,8 +624,8 @@ unsigned find_lock_entries(struct address_space *mapping, pgoff_t *start,
+>  unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
+>  		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+>  int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
+> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
+> -		loff_t end);
+> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+> +		loff_t lend, pgoff_t *pstart, pgoff_t *pend);
+>  long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
+>  unsigned long mapping_try_invalidate(struct address_space *mapping,
+>  		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 897fa2b61346..30e7df7d7309 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1176,11 +1176,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  	if (folio) {
+>  		same_folio = lend < folio_next_pos(folio);
+>  		folio_mark_dirty(folio);
+> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+> -			start = folio_next_index(folio);
+> -			if (same_folio)
+> -				end = folio->index;
+> -		}
+> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
+> +					     same_folio ? &end : NULL);
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+>  		folio = NULL;
+> @@ -1190,8 +1187,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  		folio = shmem_get_partial_folio(inode, lend >> PAGE_SHIFT);
+>  	if (folio) {
+>  		folio_mark_dirty(folio);
+> -		if (!truncate_inode_partial_folio(folio, lstart, lend))
+> -			end = folio->index;
+> +		truncate_inode_partial_folio(folio, lstart, lend, NULL, &end);
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+>  	}
+> @@ -1259,7 +1255,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+>  
+>  				if (!folio_test_large(folio)) {
+>  					truncate_inode_folio(mapping, folio);
+> -				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
+> +				} else if (truncate_inode_partial_folio(folio,
+> +						lstart, lend, NULL, NULL)) {
+>  					/*
+>  					 * If we split a page, reset the loop so
+>  					 * that we pick up the new sub pages.
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index a8a179b38252..81fb4de6226b 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -206,30 +206,43 @@ static int folio_split_or_unmap(struct folio *folio, struct page *split_at,
 >  /*
->   * While __vma_enter_locked() is working to ensure are no read-locks held on a
->   * VMA (either while acquiring a VMA write lock or marking a VMA detached) we
-> - * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indiciate to
-> + * set the VM_REFCNT_EXCLUDE_READERS_FLAG in vma->vm_refcnt to indicate to
->   * vma_start_read() that the reference count should be left alone.
+>   * Handle partial folios.  The folio may be entirely within the
+>   * range if a split has raced with us.  If not, we zero the part of the
+> - * folio that's within the [start, end] range, and then split the folio if
+> + * folio that's within the [lstart, lend] range, and then split the folio if
+>   * it's large.  split_page_range() will discard pages which now lie beyond
+>   * i_size, and we rely on the caller to discard pages which lie within a
+>   * newly created hole.
 >   *
->   * See the comment describing vm_refcnt in vm_area_struct for details as to
-> @@ -1968,7 +1968,7 @@ enum {
->  /*
->   * MMF_HAS_PINNED: Whether this mm has pinned any pages.  This can be either
->   * replaced in the future by mm.pinned_vm when it becomes stable, or grow into
-> - * a counter on its own. We're aggresive on this bit for now: even if the
-> + * a counter on its own. We're aggressive on this bit for now: even if the
->   * pinned pages were unpinned later on, we'll still keep this bit set for the
->   * lifecycle of this mm, just for simplicity.
+> + * When @pstart and/or @pend are non-NULL they receive the indexes of the
+> + * folio range fully covered by [lstart, lend] after any split (or none),
+> + * aligned inwards to min_order, i.e. the range of folios wholly within
+> + * [lstart, lend] and so safe to discard.
+> + *
+>   * Returns false if splitting failed so the caller can avoid
+>   * discarding the entire folio which is stubbornly unsplit.
 >   */
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 644daf5a1..c01b7e2a1 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -2328,7 +2328,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
->   * This function checks if a given region should be skipped or not for the
->   * reason.  If only the starting part of the region has previously charged,
->   * this function splits the region into two so that the second one covers the
-> - * area that not charged in the previous charge widnow, and return true.  The
-> + * area that not charged in the previous charge window, and return true.  The
-
-"that not" sound weird. Fix that while at it.
-
-Apart from that LGTM.
-
+> -bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+> +bool truncate_inode_partial_folio(struct folio *folio, loff_t lstart,
+> +				  loff_t lend, pgoff_t *pstart, pgoff_t *pend)
+>  {
+>  	loff_t pos = folio_pos(folio);
+>  	size_t size = folio_size(folio);
+>  	unsigned int offset, length;
+>  	struct page *split_at, *split_at2;
+> +	unsigned long min_nrbytes;
+>  	unsigned int min_order;
+>  
+> -	if (pos < start)
+> -		offset = start - pos;
+> +	if (pos < lstart)
+> +		offset = lstart - pos;
+>  	else
+>  		offset = 0;
+> -	if (pos + size <= (u64)end)
+> +	if (pos + size <= (u64)lend)
+>  		length = size - offset;
+>  	else
+> -		length = end + 1 - pos - offset;
+> +		length = lend + 1 - pos - offset;
+> +
+> +	if (pstart)
+> +		*pstart = offset ? folio_next_index(folio) : folio->index;
+> +	if (pend)
+> +		*pend = (pos + size > (u64)lend) ? folio->index :
+> +						   folio_next_index(folio);
+>  
+>  	folio_wait_writeback(folio);
+>  	if (length == size) {
+> @@ -251,6 +264,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>  		return true;
+>  
+>  	min_order = mapping_min_folio_order(folio->mapping);
+> +	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
+>  	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+>  	if (!folio_split_or_unmap(folio, split_at, min_order)) {
+>  		/*
+> @@ -259,34 +273,57 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>  		 * for shmem truncate
+>  		 */
+>  		struct folio *folio2;
+> -		pgoff_t end_idx;
+> +		pgoff_t end, aligned_end = round_down(pos + offset + length,
+> +						min_nrbytes) >> PAGE_SHIFT;
+>  
+> +		if (pstart)
+> +			*pstart = round_up(pos + offset,
+> +					   min_nrbytes) >> PAGE_SHIFT;
+> +
+> +		end = aligned_end;
+>  		if (offset + length == size)
+> -			goto no_split;
+> +			goto out;
+>  
+>  		/*
+>  		 * After the first split at the start edge, the folio at the
+>  		 * end edge may be freed and reused concurrently.
+> -		 * __filemap_get_folio() looks up the straddler at end_idx
+> +		 * __filemap_get_folio() looks up the straddler at aligned_end
+>  		 * and returns it locked and ref'd with the mapping
+>  		 * validated.
+>  		 */
+> -		end_idx = (pos + offset + length) >> PAGE_SHIFT;
+> -		folio2 = __filemap_get_folio(folio->mapping, end_idx,
+> +		folio2 = __filemap_get_folio(folio->mapping, aligned_end,
+>  					     FGP_LOCK | FGP_NOWAIT, 0);
+> -		if (IS_ERR(folio2))
+> -			goto no_split;
+> -
+> -		/* make sure folio2 is large */
+> -		if (!folio_test_large(folio2))
+> +		if (IS_ERR(folio2)) {
+> +			/*
+> +			 * No sub-folio straddles the boundary when
+> +			 * aligned_end is empty, so discarding up to it is
+> +			 * safe.  Otherwise the straddler is locked by
+> +			 * someone else and we cannot obtain a reliable end
+> +			 * position, so we fall back to folio->index, which
+> +			 * is safe but leaves the sub-folios split off at
+> +			 * the offset edge in the page cache.
+> +			 */
+> +			if (PTR_ERR(folio2) != -ENOENT)
+> +				end = folio->index;
+>  			goto out;
+> +		}
+>  
+> -		split_at2 = folio_page(folio2, (end_idx - folio2->index));
+> -		folio_split_or_unmap(folio2, split_at2, min_order);
+> -out:
+> +		/* Already at the minimum order, nothing to split */
+> +		if (folio_order(folio2) == min_order)
+> +			goto out_put;
+> +
+> +		split_at2 = folio_page(folio2, (aligned_end - folio2->index));
+> +
+> +		/* Split failed, keep the straddler intact */
+> +		if (folio_split_or_unmap(folio2, split_at2, min_order))
+> +			end = folio2->index;
+> +
+> +out_put:
+>  		folio_unlock(folio2);
+>  		folio_put(folio2);
+> -no_split:
+> +out:
+> +		if (pend)
+> +			*pend = end;
+>  		return true;
+>  	}
+>  	if (folio_test_dirty(folio))
+> @@ -421,11 +458,8 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>  	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
+>  	if (!IS_ERR(folio)) {
+>  		same_folio = lend < folio_next_pos(folio);
+> -		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+> -			start = folio_next_index(folio);
+> -			if (same_folio)
+> -				end = folio->index;
+> -		}
+> +		truncate_inode_partial_folio(folio, lstart, lend, &start,
+> +					     same_folio ? &end : NULL);
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+>  		folio = NULL;
+> @@ -435,8 +469,8 @@ void truncate_inode_pages_range(struct address_space *mapping,
+>  		folio = __filemap_get_folio(mapping, lend >> PAGE_SHIFT,
+>  						FGP_LOCK, 0);
+>  		if (!IS_ERR(folio)) {
+> -			if (!truncate_inode_partial_folio(folio, lstart, lend))
+> -				end = folio->index;
+> +			truncate_inode_partial_folio(folio, lstart, lend,
+> +						     NULL, &end);
+>  			folio_unlock(folio);
+>  			folio_put(folio);
+>  		}
+> -- 
+> 2.52.0
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
