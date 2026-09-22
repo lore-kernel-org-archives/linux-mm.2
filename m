@@ -4,123 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57866C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:49:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0142C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:53:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50CDB6B0092; Tue, 22 Sep 2026 02:49:49 -0400 (EDT)
+	id 90CAB6B00A7; Tue, 22 Sep 2026 02:53:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E48F6B00A4; Tue, 22 Sep 2026 02:49:49 -0400 (EDT)
+	id 8BCDB6B00A9; Tue, 22 Sep 2026 02:53:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 421AC6B00A6; Tue, 22 Sep 2026 02:49:49 -0400 (EDT)
+	id 7ABCA6B00AA; Tue, 22 Sep 2026 02:53:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B9906B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:49:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8C06380396
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:49:48 +0000 (UTC)
-X-FDA: 85240472856.25.F19CFDE
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9C65DA0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:49:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=WtDu5JPB;
-	spf=pass (imf15.hostedemail.com: domain of hsj0512@snu.ac.kr designates 74.125.227.170 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr;
-	dmarc=pass (policy=none) header.from=snu.ac.kr
+	by kanga.kvack.org (Postfix) with ESMTP id 58D546B00A7
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:53:51 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE1958039B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:53:50 +0000 (UTC)
+X-FDA: 85240483020.02.E35805F
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EDFDE40006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:53:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b="nQRrP/i9";
+	spf=pass (imf27.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.227.140 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790060029;
+	b=uIyVMZX59bNYHlYQPwyc1WFFef4+WbGlIKOceYKOcPnX3eOwHtCKZPd/YWztm6bUS2Utx6
+	YGc6F/GU8LZ84t13WNyXQW950oHDp3gucFFJVz+9v7h42jvEJx8XuLBAUR62vsy/ajgHOs
+	d7Ygjb9jUaYOrWN+gk1Z0UeNWY096eM=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b="nQRrP/i9";
+	spf=pass (imf27.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.227.140 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790059786;
+	s=arc-20220608; t=1790060029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dt+xEJCMHk3Wb3Te/EW5gGwA4SLsGhrrMq07tSq9fOs=;
-	b=KQfY7YIZSd2A6AxqhRFObBF2OKOAX1OPo+j+nvgC5vdqXg0vRZl4F4L030vNJClIjQF8++
-	Sw85N5s7/89kugsuBk+l9XAD//chvGDxZ1xym4jPZnQRuB8ZqYrh2CXNgsX7tajpzVecEt
-	g9cFxOjn2xkC5XKBPikyeEBS/gjjJU0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=snu.ac.kr header.s=google header.b=WtDu5JPB;
-	spf=pass (imf15.hostedemail.com: domain of hsj0512@snu.ac.kr designates 74.125.227.170 as permitted sender) smtp.mailfrom=hsj0512@snu.ac.kr;
-	dmarc=pass (policy=none) header.from=snu.ac.kr
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790059786;
-	b=u45X5jSaWkcU9Xd3C0ffes5LiD3yRQUBQHwfKzFLdqzyT5d2gVXSjg8xnCxJgRK6mUYCzG
-	DaCDnvq2TgHmvW4lOTk6Iq0s/9VUDxl0FmTsLay0dQzNiFm+PdzYGv//+hRyH2YOQNQ3vy
-	eITrYkz/vePoiJmbN8P5Gf4PXziHBDE=
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-39b5b07ec78so2615162a91.3
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:49:45 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=I5hkDZLfpwpTgVNGBTeOG5mY/TLY3Zz2ZIUT6PQoExQ=;
+	b=gQMXpux1UqlpG0KhakgKcVMeliH6oBFqVtVF9flOp1loSyFTVXwxCvXzkMXmZ26LfZPLNX
+	oG8KRBdq7FVIHsddYw7V8DgsnEFuwyHF7tUY3lKFCnKlHlFidVc+oidQNJ3ot/gnzUD1r4
+	NHuUZK/ijmcNzNegzrYWqkbbpDVJsww=
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2db22383fe8so24677015ad.2
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:53:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1790059784; x=1790664584; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dt+xEJCMHk3Wb3Te/EW5gGwA4SLsGhrrMq07tSq9fOs=;
-        b=WtDu5JPBLEYGw22j8qoOjUZWGguX8qWFBNh3Dp5wA3cCBGHk8kcoJWtk6slObsC8KB
-         qPEtrWO3PknuXm7xyOXHFRGWbisKrNwTkHrQ52BIFQTf9P/Mcyql5SICne9jzRSYidwa
-         6bbCwrbYNWObJ9OusIgpZWq8KdQcLx3/k2jT0=
+        d=dgu-ac-kr.20251104.gappssmtp.com; s=20251104; t=1790060022; x=1790664822; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=I5hkDZLfpwpTgVNGBTeOG5mY/TLY3Zz2ZIUT6PQoExQ=;
+        b=nQRrP/i9gPLphaldBMW/NOeiAAhRFxHC1DroqGbC+kuZNOHJTJE0+n0bP6dLidgj/3
+         QCjI9pGKJ1YUE3gk5kU/D8QKrHcrGcjCt5gSVawnmOmp5iJdKPSDpg82y3DhxsGaf99g
+         oD7gM67ksKFHqxsp860ieHqQMyei97EaJ5txHbQPnUTI++nQZHjvyqOh7HYDao3yCtV8
+         ih2cdmVUPUROALIjTeA/TveqOwbuZY2QsKJivn/SONBY16l1SMPajuwT93vrWJiCQFxj
+         zbHF18p8UvmShYr9UxTINItFPlA15Q9/MMLDzzqrAO2kaGT0Gif6l0bOse1PtTF2dIa2
+         Wc6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790059784; x=1790664584;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dt+xEJCMHk3Wb3Te/EW5gGwA4SLsGhrrMq07tSq9fOs=;
-        b=Pqe5mWfL7xf31KnHvSyZWYbDPVVhBQFIzkBT9H7Cnfn1hgPRQceK+GvSr4dec8H8LC
-         CtDyqcycqULcv2yAGy9nS/f1AxvJVX06L6/pvKGWrTHWtuqYd71cgaDxy3zONcaP25hC
-         qhPeJAzP0q4htqMq/OKUbYnu2ZccUxMUSKYH7rdM2jPp9bOVJuv1qJJ1mGxb4nnN7aIp
-         2/XZM7iLMlvt5nY0hsvhTD41GLDVyax2bChAl9A34qmA5Ndoqm13OnuQLm24NOuoXh99
-         vs55+QNcduQHtwJh59IQtNKKH2BDQrZozQ+pdv/5DXlKl8sELvAoEcQqgtTfPaiAO2jB
-         XuzA==
-X-Forwarded-Encrypted: i=1; AKwUvBxboijhKmwmB15lFm7tYrC5pkvZ2RKx6HdAPat9DGDQRw+dv7bCiIR+/htfPpZ8tzdOKOx/DAS+Mg==@kvack.org
-X-Gm-Message-State: AFuF++kdswlll0vL79QwVMbJ3gmZg9JMC/Sp0yDMxmGM0zXj3hxvzqqS
-	Rg0RQy+hUA9zhbJ/Nfx2Ue0/TcP/MDWLnf5g876OVhh2uRxrk0ujH5WzC7ImjoZZ4D4=
-X-Gm-Gg: AYBFou0FM8bno2BK3SvXx+NL2y7n63Z6IbY/7Oe1eY3zJz2sjJef7Q1ld/yt0Fz62nB
-	TqkKMBqZE1id4HHNX6Al7f2SquYgS5j58Kcgg4vtFvJ7jxvMtUQrUJEbiZtGZJw/+dsvryuXjXZ
-	/yQgfcaX3ha2uAFZZqwSyMzFIxLrc6+7KWrGoOSFYQ1OgkkReYX1g9sHlWTApTYbysk1mscXyiW
-	+AmtypJCcFuKMYP+R7SR0NINhMeYdUfG7XpZTkj5PNYZO+XQvDXc2P4iN2qizGXNRa4zJSNctth
-	+Z+Dz8zzF0qCmoPqZsPRTVoDbvEnUkahm3072Eo9FEt9WgZEMxq5JHKUXqyrzl7xXJbady0Y7pE
-	NOEE9E13b8Th9N6UbFjue96OIQkES0TJxi5d7ffQfm7Egj24B/X/E6eIN60uDyd/whGIByuYUyT
-	R9znaGVn/udUqN8K+O2dmeTaLf0z4GGQfGkCcS9mvv7WMYW/oZwVZymqzop/YeF3EF
-X-Received: by 2002:a17:90b:574e:b0:39e:4c81:6c61 with SMTP id 98e67ed59e1d1-3a073119e14mr213705a91.28.1790059784299;
-        Mon, 21 Sep 2026 23:49:44 -0700 (PDT)
-Received: from 1c1aead48890 ([49.142.45.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a067409854sm2985765a91.7.2026.09.21.23.49.38
+        d=1e100.net; s=20260707; t=1790060022; x=1790664822;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I5hkDZLfpwpTgVNGBTeOG5mY/TLY3Zz2ZIUT6PQoExQ=;
+        b=AgW7FWmKJXrZX+ni4KYaRDS/CbkcTG37pnE0chGdee/TpakIQuNDfEFUuwEbxSV38m
+         jCuTNKF0B/Q3fKS+broF6YEH1wRWWxjbuHcrobN71gi7HjETG0KLM8SPT1jIwbCZ0x3V
+         kjvj8+t2WgHc83J2gNvOrNIUoJKnYsqq2qCpikTGQy99hRgIsXtstCdVCm5ahJueeDk5
+         NFiVF716zS7I4IGquaVOzzKHXvkrSpOn89gEMcckCsT9Qyqq3P6au5c3CfnXqlFiXDnM
+         ZfSu91ZBpp3x8efCvpOgJblUzuBpCa8ET5mFlBqiiJsYYrXvx9ECBOS5p9hSecqZG9M1
+         FItw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJwf+LeMW7b1HfKN99aFQhaPBU3duJLA/Ay4X36htbL5QkneJjyKck428Dk1sCodlFXfaZ5xksAg==@kvack.org
+X-Gm-Message-State: AFuF++lBUUsNSHP69tEdp+RM3QtoxEiPJOK3qPrOMdU3MUbvsRpDsb77
+	lFt7o1l3Kz+JNND46ap2sWRNSkRvN3NdUEq4Uon3hL5paVswCKvWyLtICYcoaLSvhlk=
+X-Gm-Gg: AYBFou30j1Y33fj9qhzQbNe2S6mTYtcqlUnt/8OZkvFTzrDDDTGIeTFlnC5Lbj3jcX9
+	FTl5m6QBFY0QZFRnF3gvUxKGqX73S2/tnjr4XKPAG/gYY4jtOIDOgRXIc3i4lsWclL6N8+VCRCl
+	QbOl8x5TndC1Wo6wDHITDGT10gCcNv3WunjgnbpeIgP4+ts4WxMzbU13r67u8YFj8XD6qS7wL2n
+	3/l3HTru9zflYZ8BLvp9UbcX8RaeNy/UjMqLOYtS9+NTqSRFJVzVtfFybN5vaFwDanUfvz9d4Hc
+	kyGDS+/QdgUw47Wv9aHzx/U83KWQ/nr4muTbzgWWUGDq+LW2aOS6Y2war4jSEHWOYsz0TCz953J
+	afUrFCU2JWSXxy/QEGK9YaMWiUjH4QYlHeWcECxPiKSg9esIN7CxguALhpdozRsZh7ooog/T9ct
+	4c6GdijyGPoZXzM6QwI9Z8ULEm/84W+V1MikT9GopXszEID82d8I3y+z2F4MhWSUWM/KOClKxHo
+	+8OzQ==
+X-Received: by 2002:a17:903:3c48:b0:2d5:2f49:b3f4 with SMTP id d9443c01a7336-2df609ad79dmr2778935ad.2.1790060021931;
+        Mon, 21 Sep 2026 23:53:41 -0700 (PDT)
+Received: from localhost.localdomain ([175.193.106.181])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df5d0581f0sm4534855ad.74.2026.09.21.23.53.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Sep 2026 23:49:43 -0700 (PDT)
-Date: Tue, 22 Sep 2026 06:49:36 +0000
-From: Seongjun Hong <hsj0512@snu.ac.kr>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Jan Kiszka <jan.kiszka@siemens.com>, 
-	Kieran Bingham <kbingham@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v2 09/13] scripts/gdb: mm.py: remove fallbacks for
- SECTION_HAS_MEM_MAP and SECTION_IS_EARLY
-Message-ID: <54itd5fvuuqpwzc7nr4cvygcpfqh5tfizrt3oudnwjth7nwbs7@lk7pjhgoxmwc>
-References: <20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org>
- <20260921-b4-sparsemem_cleanups-v2-9-54d81d65e125@kernel.org>
+        Mon, 21 Sep 2026 23:53:41 -0700 (PDT)
+From: Park Tae-sun <ts930@dgu.ac.kr>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Park Tae-sun <ts930@dgu.ac.kr>
+Subject: [PATCH] selftests/mm: mremap_test: handle ENOSYS for userfaultfd and add missing newlines
+Date: Tue, 22 Sep 2026 15:51:43 +0900
+Message-ID: <20260922065143.118702-1-ts930@dgu.ac.kr>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921-b4-sparsemem_cleanups-v2-9-54d81d65e125@kernel.org>
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9C65DA0002
-X-Stat-Signature: spnt1o1d47heefs6nzrqhc4hcadzfmfs
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EDFDE40006
+X-Stat-Signature: 9geojcdbyd139uo6s9cm4mqhm6h4bma6
 X-Rspam-User: 
-X-HE-Tag: 1790059785-613938
-X-HE-Meta: U2FsdGVkX18BE/KW3N+OKALoV8WEKX4Lwfo1ejX0GNFExOvyIAFd5VZDy2xr3meXE/UKX9JVVRopwLcjtWCOONNrWIwi04Tch84AJON1NWuHD3GedenvfQ+cX8Cti6+tIio6lCmiIqxXXbDCtL0+Qmf3BDCvOWLx9YK6HaPGl2e4z1592ETQYdG/YoubJjOYd1bosdqXhQbrj1U/nkUhTezBA7j2Uf4a5XwWm9ISQQI/M7pRKHdlmuVPTX1n6qYnBtMrrlU2Jz3jWFR7Ms7sOrFfMWMpi4luuehdTpV6Zu2O8M2axQxnqCcJgrpSn5XPOCswMqik4oIPuwKM9NK7JvFMFTt3Tpx8Nr7yNp1QH11JkC5MhDzi5HzSmVKuAZ/ONVQ+ZNR9brGQXMCmCOlGPt0QAz9vS6nlk2/RXWjm2VLRFJINWMqfPb8mCQFGqH94m0qZc8HLCPYe6kHMhmE+XT1h8yxBlGWHagxSHq3dtzyFqLl35h/ZLkuZb8MOh3U/uYtXhvIS6vvUyOehm3rmRoeFTGnJ2JvdFRUy4kMs2MUSLzaQaq6Yul8D2iXvMNqnzPRElyApfPlOlx0CiztD0PnVK9c9HXqeSLUWB2dgpxQYC9pqsFETGT5T8q836Gmf1iJC+ybWsEfTsPyBbfynFrsb5n0hpEqNR155ORwtRnxGrJIkFaRDaal+A4MH6XhHkKfyPqhzkqpB0TSmM6YvafHXXI4/+/Ka2LruUtaXndkAchYVBwBUE8XPkWRe+Iuif2XOhYx7fMu5UinHKPHRpyz/m/4VsyS9U35mdGRSXtpHmw5aLcYpT8sUV7i5DLTs1+F/lfuN92qned2p3zcNELhxEA+pm9G+x4doQ6Aov6EJub5FuVMLIu4Hb2tNVAXiafdc+wBldraa/51QzvxZH0cp85AaG54xiq2udnbo8t2yNsmoWyOOjfvuBVBlTbPzP8wyEjiFCYCX4+3Egtl
- OctdeRPn
- E48a8q3QHV9lKzpo/WPI7VWddhf5tf6e8J8zlr0zR4doVje0aMONs7P1FFYNneINXgfxRF5i9lk7HzKcKPyY/6q8ng5MSo81HcajFpTEb2yxsnEvm76B63jzOrWn/JqNQaCp22zeAJ4pUVsuZHmlhg3zCNIIy9dmX3l8kcOFv3E8a2imDYOMJbTI2TA5q8rGE0W0W+O8lK0YRgtEb7yVqEB9V1v7nSz64lNPoG6447qWYjwfdz8CIqe21TqXRAzD2ViX6iyv6PS4Ztz3xnZwd3+e/BP+eZPVeU+tNUSt8sS9I8kl78pRifENqK1ld4uguidRIe1jjgIiWEzpy9iVueIF75Nkm3C+UTF4TCdRqV4vwbCf0DPYd/q4t3xpw0UYuq6VYl0UN8QmjDD5Fi1WjM/tTMl71xI0H1KdleTvmaR9OicQ=
+X-HE-Tag: 1790060024-771503
+X-HE-Meta: U2FsdGVkX18gVWnaj69rlkB8TVIqxYZ/fdkx7//jlTxtw6jYPYyBlTao+Ag0h+gD74GL4rPAgVWqerd4A0kDaaOCTCew3lBm1eMFqsSo0nfaKJDnJ6CAgPU1d6GdqZmUzD+oUuNyFbcBjy64AtLK/TqyYxzJk7qr9TvenHQFudtiW9OpUX7gvRkmovGCdhlbNwZ9Nk5mKtE6i7cOXtNO7nsvpiiwaIUjyndHX+POE7TVhnd6ZYz1tHSP3deqO3BFBK0ilVEKcZuC/90xQ65e/j3jEEf9pNhDsIg6HKJEnUpzlSH/cLDEGOlMhsHfYh8M6nJgLGvDgHXH4VwDsgnECBPhhkQaDLrHj+jqF/TukZqURIm04+7UmI1zbXWnKhOnpq6zzq3gvU2qaCxgp6G5Q+CZSowrvRr85LEInj2JffgQUAf/87wzlSXlrOcGv8MZsgGErHk8IAZBLfnbvqxfKV76KWIcrGUQ3+/AVLecr1DTlFUURhAUh0wE1bH4tqI+439s3B28HYaV/CaHrvyXdQMKnW0aibEUQaSHEnMFxXflhQO+zrexJFz4Tr/MVfjH1enDp7ALPfI8P9SiOgfW1+mQIhsHA02vH2kJgS05VKSadj5ilWFAuu1tbT6nvxNGkjAwfq1JJR+T3Ihgpo5BSJWWUPaNIW4zXaDe3HJ4gsksGzulMWsjWuHOkGZXTg1RPTuryWWrFoCkrqsxVveUTEgAAGxAfylWC0dkoCdWg/pa1G0mVRXv40vW+xNB8Sw8hYtUNiRKDb+pXM16TF/BgjhbSwQN6jP6Ex3Kn+9i0Jw/inLSIoI7euA07KF+WFo7OoMc3RsaL7+gS7rzJcyJ1Z3XO3nMYzN13fE4rqTEpr+BkVECYwqpIwx2Qz3QUL9oJeUqMEuwoaAp0AdXiUjMxO7UVhich9ZyV0BVQqqtmdodr9iFz/IqxsIk2fYANTK9qzwgJxTLYYG8/RoW9cF
+ aZbFQfcA
+ CrqxvO3xSbwfy/LhL4hLiNeGHb2PtMwLVd+jwnek5hUYomkTgGvG3QzFYyLamEHRBfIuphSCl3s470Abg3AAnM4QFDVgs5Ktcw8zXrsoJmPm4N28OkG04xAUrwNEFl/dc3qYtf0sF5N1l2AAJ4gCAPMUjkK/uV1Xrs2dtRsn3bnhJZjq8ChWXbEM2H4ztIMtejrCgPi5tf3kGvE28+4o1SnQ/nhF1283ZrGmorTVd3fLPGAmmL6yCqV1IWdMkb6+tnhIOd1se1/AqzNfYrKmfiZcl49YuIoi7LHhBQGz4M7RFC3ZDOsv8aeNHYmXFnKbGvOL/6BGNDBCdY6U+bYJt/bPs3rS0DdEbjxi2UjkIJpX+jwZ+n11zcM4Bkhrs/vAIEJlIqt/DY3GVvCsztLR63Z1K/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,44 +119,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 09:59:01PM +0200, David Hildenbrand (Arm) wrote:
-> There is no reason to handle the absence of the corresponding BIT
-> values. So let's remove the fallbacks.
-> 
-> Link: https://lore.kernel.org/r/vpz5zqg5nwbpolxbkip45vxxdt3lni7j2haal7q42skc3b57tu@uh4cec4x32dq
-> Cc: Seongjun Hong <hsj0512@snu.ac.kr>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  scripts/gdb/linux/mm.py | 8 ++------
->  1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/scripts/gdb/linux/mm.py b/scripts/gdb/linux/mm.py
-> index 193a88d763abf..7398105ff3f67 100644
-> --- a/scripts/gdb/linux/mm.py
-> +++ b/scripts/gdb/linux/mm.py
-> @@ -71,12 +71,8 @@ class x86_page_ops():
->  
->          self.NR_SECTION_ROOTS = DIV_ROUND_UP(self.NR_MEM_SECTIONS, self.SECTIONS_PER_ROOT)
->  
-> -        try:
-> -            self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
-> -            self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
-> -        except:
-> -            self.SECTION_HAS_MEM_MAP = 1 << 0
-> -            self.SECTION_IS_EARLY = 1 << 3
-> +        self.SECTION_HAS_MEM_MAP = 1 << int(gdb.parse_and_eval('SECTION_HAS_MEM_MAP_BIT'))
-> +        self.SECTION_IS_EARLY = 1 << int(gdb.parse_and_eval('SECTION_IS_EARLY_BIT'))
->  
->          self.SUBSECTION_SHIFT = 21
->          self.PAGES_PER_SUBSECTION = 1 << (self.SUBSECTION_SHIFT - self.PAGE_SHIFT)
-> 
-> -- 
-> 2.43.0
+When running mremap_test on a kernel built without CONFIG_USERFAULTFD,
+test 26 fails:
 
-It looks nice.
-Thanks! :)
+    userfaultfd: Function not implemented
+    not ok 26 mremap move multiple invalid vmas
 
+This happens because mremap_move_multi_invalid_vmas() only checks for
+EPERM, so ENOSYS is treated as an unexpected failure instead of being
+skipped.
+
+In addition, ksft_test_result_skip() in both
+mremap_move_multi_invalid_vmas() and its fallback stub is missing a
+trailing newline, which causes the subsequent TAP summary count to get
+stuck on the same line:
+
+    ok 26 # SKIP ... - missing uffd# 1 skipped test(s) detected...
+
+Fix this following the switch pattern in guard-regions.c (lines 1498-1506):
+check for EPERM (advising running as root) and ENOSYS (missing uffd), move
+perror() to default so expected skips don't print noise to stderr, and add
+the missing '\n' to both skip strings.
+
+Tested:
+- On a minimal kernel without CONFIG_USERFAULTFD in QEMU:
+    ok 26 # SKIP mremap move multiple invalid vmas - missing uffd
+    # Totals: pass:22 fail:0 xfail:3 xpass:0 skip:1 error:0
+
+- As an unprivileged user on host (vm.unprivileged_userfaultfd=0):
+    ok 26 # SKIP mremap move multiple invalid vmas -
+          no uffd permissions, try running as root
+    # 1 skipped test(s) detected.
+
+- On a kernel with CONFIG_USERFAULTFD=y in QEMU:
+    ok 26 mremap move multiple invalid vmas
+    # Totals: pass:23 fail:0 xfail:3 xpass:0 skip:0 error:0
+
+Signed-off-by: Park Tae-sun <ts930@dgu.ac.kr>
+---
+ tools/testing/selftests/mm/mremap_test.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+index 131d9d6db867..1fa2f6aa1a19 100644
+--- a/tools/testing/selftests/mm/mremap_test.c
++++ b/tools/testing/selftests/mm/mremap_test.c
+@@ -743,14 +743,19 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
+ 
+ 	uffd = syscall(__NR_userfaultfd, O_NONBLOCK);
+ 	if (uffd == -1) {
+-		err = errno;
+-		perror("userfaultfd");
+-		if (err == EPERM) {
+-			ksft_test_result_skip("%s - missing uffd", test_name);
++		switch (errno) {
++		case EPERM:
++			ksft_test_result_skip("%s - no uffd permissions, try running as root\n",
++					      test_name);
+ 			return;
++		case ENOSYS:
++			ksft_test_result_skip("%s - missing uffd\n", test_name);
++			return;
++		default:
++			perror("userfaultfd");
++			success = false;
++			goto out;
+ 		}
+-		success = false;
+-		goto out;
+ 	}
+ 	if (ioctl(uffd, UFFDIO_API, &api)) {
+ 		perror("ioctl UFFDIO_API");
+@@ -965,7 +970,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp, unsigned long page_siz
+ {
+ 	char *test_name = "mremap move multiple invalid vmas";
+ 
+-	ksft_test_result_skip("%s - missing uffd", test_name);
++	ksft_test_result_skip("%s - missing uffd\n", test_name);
+ }
+ #endif /* __NR_userfaultfd */
+ 
 -- 
-Best regards,
-Seongjun Hong
+2.43.0
+
 
