@@ -4,156 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D052C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692D1C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:20:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 362AF6B008C; Tue, 22 Sep 2026 11:14:02 -0400 (EDT)
+	id 5B96A6B0096; Tue, 22 Sep 2026 11:20:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3394D6B009B; Tue, 22 Sep 2026 11:14:02 -0400 (EDT)
+	id 56A666B0098; Tue, 22 Sep 2026 11:20:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 228496B009D; Tue, 22 Sep 2026 11:14:02 -0400 (EDT)
+	id 458366B009D; Tue, 22 Sep 2026 11:20:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB1806B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:14:01 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7FCFF1C2DED
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:14:01 +0000 (UTC)
-X-FDA: 85241743482.06.5BE2D40
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 528EA40002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:13:59 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Evq3fvVO;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.231.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 157266B0096
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:20:54 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9CA30140536
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:20:53 +0000 (UTC)
+X-FDA: 85241760786.19.ED352BB
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf10.hostedemail.com (Postfix) with ESMTP id B244EC000F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:20:51 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RJQmClJj;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790090039;
+	s=arc-20220608; t=1790090451;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TzjZBDA5iUg3ko8RNpB6y9UNWK4AO1BnhWiKj7vnaJU=;
-	b=AMNxfFMv85W1whlsXsWQB6yrZepapK3rkPyY0dR0cbFec+fEgR2gj1Zq6ezvk3/Qm+c6SX
-	yF+XjubK87TJeJkOnDB2g8Lq80xx9rFo6ydsjpAkpGb8DzGDTpGJwVw+1TIIuNQ/SlNQ+T
-	gpg2sAP4oLSyDOy/DStsy1SXJ1GpWL4=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Evq3fvVO;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.231.205 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	bh=1GRx/g24FB4lP9hKxncW6XGKAeFROn+FyWjD+Llh4VI=;
+	b=PcHghcW2OrGEf1QWOTTLBDZiR2d+hCSb0eA8lCqsuYoJ3ZXV9uYHwbQhkg65hSfo1psGSU
+	8NzP0Ol+KvvGWwL/hLPrB3dS1UXhUoTKRVD8iZixZZ3DMTRUcNj4zCRZ/l21/PQ2Hi/L5A
+	AefbjS62ZdCApVLPLY3Xu2/3VSEwQzs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790090039;
-	b=OEcfUrlbl3H2xNDDXHVNTiKE2SVLsDuw6oPCrTaW23/ApFNAatn7J6+oFeB3+XoJe7IXEJ
-	2wkUbA2l/c3OVo/7gJCkcszGR1uEU2+mZmSDN7C17vAT6YKuGpoy4yY1u4ImvcjwjtliDI
-	SNBIOjfZeAF331q8XuEXo0HHN+hs7iM=
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c0776592e3so3525b6e.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:13:59 -0700 (PDT)
+	t=1790090451;
+	b=ANfvr+d4NuW9oJZwm2+nBZwFd/FUjmHjgceDwUCZwmYOkXPyJCLCrGDahGzy/U/ssYRKBP
+	Hebn+NQx8fwOsQj4GIAoFMcN1xyA/ZKR9l7lIdLcTvyDc74H06reThgvA2BpSmU2eWc13N
+	0vmsis6v6B4TftN8Wlabr3Sxrgmg8Ic=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RJQmClJj;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-939109fafd6so3191585a.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:20:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1790090038; x=1790694838; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=TzjZBDA5iUg3ko8RNpB6y9UNWK4AO1BnhWiKj7vnaJU=;
-        b=Evq3fvVOMvLQSQ8iwEXnMHMJEwDLwRmGQA/AobdYMRLBTeBLj44d+pQhR1dbTepx/m
-         zfCXpVxh/0zUJ6pnddA+V/oPfKkcTAeq8vj1EtuUAHhAXnophj+p4aNqnfyd2WPIFKqp
-         fRB0c8uXpBqQXuhvKwCQF/HiE/C7Kvyx6a3tktbdoqDD29oYxvq2hLeRk7tZHVc74DhY
-         OF7mfyIxqLoEsYOZEdmd1m/MikeROq64AyeqwUltNY7vW/1PPQdApsEKoqKh5ucRm3tV
-         WdIx9kjnlRW+IJahFtvBOc66Yzh4GZtrbR9EYr2dotPL00Q/qvuSSpK3BgITahq3GntO
-         Ulww==
+        d=gourry.net; s=google; t=1790090451; x=1790695251; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1GRx/g24FB4lP9hKxncW6XGKAeFROn+FyWjD+Llh4VI=;
+        b=RJQmClJjqXBzrTi5LoAxmQAMjV6C2pRTblMznK2q9G4nbyQwR+e9CwezW5OTT/XUL6
+         4eWafaY+dv12fkkPR2UEqcLupSdTdbOvkxPqnMQEZ+czdY/3c87kspfCpkwgxuHoUaLp
+         0Qrh1bTXXhVxWvmp5wyR8QljiwTfvPavo1Hc8x6O/xDFC1GnFPdeaU92kI6f7q8eux4X
+         r/csXLmRIeQXY71F0eyzTq2CscZ+kjX6Rky41F54YwKorjjYdZbfPnUUh97m5xuykuyu
+         fdoSu8PKZ9brphRt4qmNeKsK+Zq8gxR84H5TlTTEVBZIvXWaDA2OATKFhsvkKMT7vzgD
+         OlWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790090038; x=1790694838;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=TzjZBDA5iUg3ko8RNpB6y9UNWK4AO1BnhWiKj7vnaJU=;
-        b=GJ1TXXoUJsJyRyFapxhjWRlXK1pkLJO7EwJTZmPCg7Awe3U3g+Osmw6RBRp4X7PbPN
-         Ai6V/qvi+nfL5t4RtmZf8B07loicDBMXc8qyClmiTri+CmcVEUh8tlpf6ENEBkD6uKaw
-         TNUpb5Uoe5UM1h6cSA9Xl/WvcNIOTwmJhfvS7Zk1Qrymuuz86fzVk72Qm7dlHjLec3Bj
-         zN8HXwAmtISOdZp4xv67WOYSGmVeWSE7brqB4mOPdOyQKVRotzSGzch8d++m8gPwUUFq
-         xabNzRVmDtFr/FdtecJDGjZT3VCf7K6hfmLDFAdJh58/5U30rDZzObTLjC6OXYzqdDA3
-         X1xQ==
-X-Forwarded-Encrypted: i=1; AKwUvByBblLTJJCjVvbXMRuymqNGO7/2+Kf1JTihRZ/234R5t4ACEEgOl9Cnk3Ui2iDFWd1Vy/vB79uGnQ==@kvack.org
-X-Gm-Message-State: AFuF++k9yAlyWIUfu0UnVbgaMX/N2LzMD9Xds7xjv5gzkcwxlEKrM3Ec
-	2QJaNLPHV7zXua0hi74+56qsToyspfAphvB7Mcf+ameDXUzVJEzCJpb+DE1L16AhXuN/QFI7EEG
-	glzE1
-X-Gm-Gg: AYBFou1qT/9zUoAYssdjY/8J1Pcn5e48qsN54Xd378kFEwbDAZTM2EQ7b7lZWZmFl1F
-	sJndzmsyH3lYRIiAUKgNjePXZOHSZm8vQc5u4j3ZdGxPfguxWuvLJBVJtl/K9p4kjYFHS/KM9ET
-	4/DNsTQ6wWve4mJIIUje37cwOE1hiJkFeAF/pkKEkc3vfwjxrVALSgKqNtuLcE9gi6hjVObKvuF
-	1+weKzanL/T+1kmshiXvJIMDBLgg4+Br93GpTTNkP4DA2ghUXUmfn7seFZoXlE1sz5djQzQRPDx
-	hyA3+wpXO7p8u1l6kDASYRdWNd3eVWQNvBrrWtYmT31ESfeXfYNXv3zdkUvBquWHj6rXIgKCFUt
-	4i781zb6mfr1B6Q4FpouNAob+qL2kmAFsqauc3C4QGy6qSe4Bqfm3W56HDw6+kKE2ZVgo7W7D2g
-	W6Pcze3rHk0rlwj1oi8T71tw6JQnXEJzdBwk0aunQhsQhfDqSTyRoaHcoA+oUgP3d9K6QU
-X-Received: by 2002:a05:620a:2608:b0:939:35e5:94ba with SMTP id af79cd13be357-93c15d59204mr577391485a.6.1790089638560;
-        Tue, 22 Sep 2026 08:07:18 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1cf10929sm167536485a.6.2026.09.22.08.07.17
+        d=1e100.net; s=20260707; t=1790090451; x=1790695251;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1GRx/g24FB4lP9hKxncW6XGKAeFROn+FyWjD+Llh4VI=;
+        b=Woo9YV3XEJbpo6Sdv2vbs+qbJ4USQl6MuYu4cZ+o+f5RkP4V6avOypyvgTSwOQ0dce
+         rKuqB7ME1VxNNcXr7WpgJj4gq6EvZf8qwdsEDgeoo0imCq5yiPrSp45cLIUZi475oj+i
+         FsPCxRsrlPlANGBT2PNA1ZCBbs+vJq/vFqSq8w/5BzOC+2H1k3UKu5bWtDjJyJwgfmJR
+         1tVPu1x3XW86HupNbDI9le81oA+h1LRBnWyNl43TCeJrFDdjUYgx5atJjpM/pXycP0uX
+         Z2UHAXrUjkt/wtr9bxbX+JhiPG22uW7Y8v/9acVUKMioxNrNYMlchxcD+8VPnbNlARLa
+         0NKA==
+X-Forwarded-Encrypted: i=1; AKwUvByFd9etbHGf/Fb6sida2QUbw21aQ59kUksvZBfqyfrBmOtnvoLL4gyzr6vc24dc5VIbaMUEY1hjdQ==@kvack.org
+X-Gm-Message-State: AFuF++lk05DsZLqKTEArfG9vTZdFD2vyUQgM/6PNeqmIks5Xit9S1qny
+	S8jS5S34Vdw06ShOO7I916hfb5LFCKZPad0ZXPZbww0ylCf/BfNaoE3fgkwq7nB5JP4=
+X-Gm-Gg: AYBFou3brnQdUEIt1DQDVKdiPAH54WfjptSmYmg6N8Z2Z184Ys158q6Pupta4Hj0K9O
+	HDsK8dq6/DDRznxqpIO9b3qQOpuKqV6yi06VQlP6rJA4/VR9sNf/7BGOUlttTJi3qhxYVU+ui6K
+	rrFJiTqlvsAFeHKlICBnbaNdENfzyQXq9YdXvFLGqXXfzyHeOA2qBZOEVb5HXHcP9pZV7qCvFjw
+	4V9cE+kPMfvCM9kaTjeOM+QamVJ4ZONp+TJQgRpdDXk6krHA+G3Z0WQ7CUyzmKFDe0JqVdEQ51p
+	euKqeeREdvgZpHrHPC89PHRgpk9nZ+/nzXMUuzA2YdI4vpt3Wjt6pAXooZ2GUzcSQPWhxG4g74M
+	ppdEBOouaiiHDoGmQS6GVkGDCXbCQ9wIhva719dQ4l8sG96pD5S6hsjd5sJKbbjxbiAbsAOYIKi
+	bKdi6ZzXLSJrmje5/K/QjIO3A3HZfnwvF55eK0xvfvebkxg7J90UCTtAjhx01M5Q7oFnoy5wN96
+	rlrI+IpFUTcsqh5N0ooUIYXR2u5QvLBX9R0cG8YjwYrEQTdbTBSUe0=
+X-Received: by 2002:a05:620a:280f:b0:93b:e9d2:5ece with SMTP id af79cd13be357-93c15e412a9mr594708785a.39.1790090450524;
+        Tue, 22 Sep 2026 08:20:50 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c1cf0dcd9sm181244085a.4.2026.09.22.08.20.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 08:07:17 -0700 (PDT)
-Date: Tue, 22 Sep 2026 11:07:16 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
+        Tue, 22 Sep 2026 08:20:49 -0700 (PDT)
+Date: Tue, 22 Sep 2026 11:20:47 -0400
+From: Gregory Price <gourry@gourry.net>
 To: Chris Li <chrisl@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Rik van Riel <riel@surriel.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui Song <kasong@tencent.com>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
 Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <arKZpJDpsavixjPx@cmpxchg.org>
-References: <CAKEwX=MuW6q354nB3tyFTM8d3ox7LRaqcSfUxeATR=Sop5mZPw@mail.gmail.com>
- <5ca344de-bc34-4a9b-ab85-f553811a1d9c@kernel.org>
- <CAKEwX=N05iOC4hmiyTt5OxjAsOfU7_V8xGfmK_RgUyrKtuyUTA@mail.gmail.com>
- <CAMgjq7DJwGCHCAchcfi2Kcu+XHx2YnKXDj53e0t2kpG_GSejkQ@mail.gmail.com>
- <aqgMCIOFi0dKx_6L@fedora>
- <CACePvbVMFA9N0nQers=sOnSXGbNhtNE0ewq47AJEH5Cr8imQXA@mail.gmail.com>
- <CAKEwX=OMYhUs3tt7jUzEzxsOW3yA2JmzpwwxVBP2eZuHOFu=vw@mail.gmail.com>
- <CACePvbUMjRgK=dQzLjECgBXaUtQSPdAnBXL1Y4=Kh5d15swYvQ@mail.gmail.com>
- <arKRdaNEaKvFOtMg@linux.dev>
- <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
+Message-ID: <arKbXe1Qe-FDCTMM@gourry-fedora-PF4VCD3F>
+References: <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+ <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
+ <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+ <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+ <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+ <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+ <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbX7aM45SE9H0hg1_uXBt1i4W7Pgk+d33Z2sG5bj8cHudA@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 528EA40002
-X-Stat-Signature: bc87t4ipzbc9z9u7gnqi1s39do1fboq5
+In-Reply-To: <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1790090039-386609
-X-HE-Meta: U2FsdGVkX1+u/+UN7D5+hlVI+oCJVfl/G6T7KmYQ2Rxzpy6DAYSL17yNMj067f+2U+OG2CFPbbzUh2/xVjCTtjlov9Zvirv6m4tvLzYaskMB+ytaawPcH6ItnNoSdlzukxp0htJVZoKGowdtTJsYLpFvbPGNrrhmVsvthwrLyot7Foqw1Kmi0LejYda+Ycd+PHh8Y6MAau8iA9KJ6i7e5Zca7PTR9dQa+77S+/iYtRyhp3vw+HGKOb4a/rqcYaDjHC+O68FXrf+F13KNxta+EQAfeMEVKuPpP0cySazVZFCIyAsNreGiNIIMr0wnUfOe9clrF4yvN0gofmYls3CKP+/vafFhfqYOQ08DLKKRV6uE4SRVWfzCs+ABALHclFIKalzCzK4sT7LpA3Wkp16JTKqVg6WOdEnyNK5q1MhVXzPJ0jRXXK1ZncGdf6wMNa1UuW9O1b7ZMMglmQ3AHA8VRkimXK9R1FlkbLq+2uESsqJzoruh2bAS+hAYR4oxp5alXlapIk0km8U6HCOc/muno8cbtdd6xzQ02mmxMoT74g349uBpxzkdo5uZ8Z6GEfN3bWTgvboqZbyQwICPgeiKykD+0IjMkbIQ6S9nswDRxEYKLcuHYWC1EG+6Nx9q1H8ziNHFqAANbJsc5H5YGOy1ZI3/Sp/DGVBU0jjbDNCLP44zyVzmc4iyJzU2zAPD3BUPaWXTpNccgbqy/th5hPuUhztZ+2qYRmGWWjtKEjtUmhKFqCPvGUI4nvEDEvNmZF+OaKJnWwlIjvkw+jaXkJWaqcjxkHmnDkAAQJ2QEP6NySjBW4Qz22kaebaGH9t7ReKpeSNeZtRVnKMClLv3fRFvTf16WON0T0aVgqcS3/6a3lI2ZidH8Mw/YVTdMlFUuglMkPRa+qHZAwLeLhWg/fGk+pM0k3MtBHP5UbNSLkWwpLhc4mztXmvlpndHWk6gIClWlVS/tiOjuLz1ateLd++
- UbQInOEY
- ErMz8Vrcb6qZ90EfvJCrvXZvhbdAZAqRJj8AhXU5HRA8CeV7pnsb3WoO1Hmnl+omjcXKDwyteflz6lHlDOc3aAhtqFnAlIL7sSsovGHOpLI0GvGn3jb8iecO8QtwbaF8Xr/y6M8gcnPqOaMI6mZVhtcbx7iAXTzgotpDVkCx8F65hN4xuMTheorxyeApEcaoeUMKicUGR0PMEyiH88BajZD7V6jpDemCY4GowjhHay8Tydf9j3VCPvbmKXNwKOuv2Wb8YZV9g+NPUdtIMp2piUNDJnpiL1Jqcq2J21fDESV5h6ErT3iJmD+ZYdCzSkh/OALCpf8ekyuwYmJ7pUk4jfVTIcf73V/ZzW5QzcEgoFAVvGfEVLVUUl7GDcw7P4B4MovBjq4yGToufHR3+P/DcE6Y9WR+AVYI57nYvP86ACzUdLVsjTQHYrMnIoKs1CdcFYaYZzNujVMUCvp5nO5kUR0mluUUMZFvM3RLzs1Ktzouq0ypEWib386cA4bf6OZZqzEWoSBR54cegt597ONMb3csAWF6a8pQ9xXwM7wL4iWk3Jpc=
+X-Stat-Signature: ncr93udothbuwqxkpo8wkonwmuuyqmsb
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B244EC000F
+X-HE-Tag: 1790090451-39247
+X-HE-Meta: U2FsdGVkX19LlWzSROhCTLxaJQSpktAHlq7Lxa/QvNP4D1kyn77dU0Y21zeomAp1+F/WTJKGKRGjt3AV8JUpsc+7N6OTrgyUodbtFBJ59G0CshRORMgD6+xI/bmdHtUW/VvjVUNV4XcMZeqQ+3G1pdpdhyd6QBv0JngOwtdFSxGmdkUO5qjZLmsR7lWn9pqZG9LkTaQrhTzSpQcsTaJhRof5aa400l2tInONWZgsKNWBbzy+ANDjLW2o8DBI/24HvUj1daFRU9aMj4rbiDX05U9HMSFChRDKY7wv49MtdQVSjOskTKhXx3Zz+yBZTq2qJDPKA8S1Xi76tKx6qFjXuWq+VRbZSKfygf6/YhV7ws0x8FgsKYhbSdLFG6eygkVYzHFj6J7bofrzRCaMGmTQn8Ed5L1ue3TGvBH5ZuxcWHLX2NudDE0hKhzALu+LAFa+C9EUBtiGkP5z7vZoqMPLZzGl9OStmmm7VdiUuqk/C5hmE/RHvdYaO3S4ba/NgnAVNb5BpmC/hxQbfFrlaBvUX8MT3kvSiu+J/ES4exU1nWnWgEah0YpPsfTfNtM3Pn73XBvcPTa8405pauR2Gq2B/yI9G6L6qOnPdu+hgHElChJLlo3oZNnZAxI890YkyBDAzNxNJCero7dTz3g5/WCMjPaOKawpAgdz3b1koTUOf2xSy8c4KnCxt4Hzl+YNJLX1PMDWN0tQZT5q6L9/zTksEW587PmZ+JuWDsAfVUL+Z7YWzoPraKHwGM/VI7PXx0Hv4WP1Fh3DLxbyXcm5smm14QouA+8OM2xdNAjALXA6C4rGdUQ9dJau6JR5KcNz2puMsI5eZSBJsX3rAI29eTYQsLQpX30FDVeIkR5RdRWDJQqPKJ7u/WMftmUfXgree7TddgwghOMM5AwOgoJDsu/+Oh63ZToJWC/0hRjjC4876SF3TJxfTjb7hpdI1iOnQtKFfWI6hfEBDG8yJxAPPER
+ PMlefy3s
+ b4xbzIkrjT0IuVbYzXgseSfKxOXfFp3xWNVptnC4aQj7ostEm0iJYX7wcHRSvh3MbvO3QB7RbGOJlj5R65Ik1MgJS3P2FW0P3bdNkq6B8c2ZXZiOF0terdtYEp6GPz36Ln1P/1ATeJy69YcJRGcWsAN0P2BobI9O6NukogJuztUXj8mAzwEiHoyy0OxrLNupXxUikV8kYscSevdtGe66c1US3A0HA2eDbphvd7+atUuWrfLGHo9bvEoEFu+Z6SncnOAuder2hC9z690+L/0GSByeeowbpVB1fgq+cs/e+hGJlbv+XyddHcypLjpDEvP49gFKuoq1jo48jT088Fwl6FuTqF7G31zzwdFHJjuMBGFYs/DO8yoXkZQ+vi1OGvTLoq+WvXS6l7Xrmy9xEjE05fFPyMZlDVMA61MYOdzmX90q5PoRkrRI/0G6GVyLmv7BL0yI7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,24 +145,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 04:56:48AM -1000, Chris Li wrote:
-> On Tue, Sep 22, 2026 at 4:43 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-> > People can speak for themselves and suggest other time slots. You do not speak
-> > for anyone but yourself here. At this point this is derailing the conversation.
-> >
+On Tue, Sep 22, 2026 at 03:32:44AM -1000, Chris Li wrote:
+> > Right now it has 64GB of memory.
 > 
-> I am expressing my opinion, freedom of speech. As you can see in the
-> previous discussion, Baoquan wasn't able to join that time slot. He is
-> a major shareholder in XSwap. I worry that alignment vswap vs xswap
-> without Baoquan is ineffective. That is my opinion.
+> That is exactly my point. You are running 1/8 = 12.5% system ram.
+> 
 
-Actually, he said he is not sure if he can make it, and before Nhat
-could respond to that soft push you drew a hard line without actually
-proposing a workable alternative that made Nhat give up instead.
+Chris you are missing the point
 
-So my free speech opinion is the same as Shakeel's: you're speaking
-for others and thereby derailing efforts to align on something.
+Zswap:           8812236 kB
+Zswapped:       24927876 kB
 
-We all want Baoquan in the room.
+To support this, you'd need to know you were going to get a 3:1
+compression ratio and allocate 24GB of storage (24GB of swap slots).
+
+An hour from now he might run a workload that's 4:1 compressible and
+there would be 32GB zswapped - but if he'd only allocated 24GB of swap
+he'd be limited to 24GB arbitrarily.
+
+On a 1.5 TB server, that number is oppressive.  It's 192GB of
+potentially dead storage space.  At 1 million servers that up to 183
+Petabytes of pointless provisioned flash if you know that most of the
+memory is zswappable.
+
+You're focused on the wrong problem.
+
+~Gregory
 
