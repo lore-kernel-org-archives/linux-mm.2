@@ -4,173 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22835C982FD
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 02:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2627C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 02:11:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B1016B0092; Mon, 21 Sep 2026 22:08:34 -0400 (EDT)
+	id DD5B16B00A9; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086A66B009E; Mon, 21 Sep 2026 22:08:34 -0400 (EDT)
+	id DAC0D6B00AA; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB9B36B00A6; Mon, 21 Sep 2026 22:08:33 -0400 (EDT)
+	id CC2466B00AB; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B56A96B0092
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:08:33 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 27FD8C034D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:08:33 +0000 (UTC)
-X-FDA: 85239764106.27.B0E6C44
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012044.outbound.protection.outlook.com [52.101.43.44])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 56D5420002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:08:30 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EcqzZq+m;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=EcqzZq+m;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 52.101.43.44 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790042910;
-	b=2HHjETd3WNg40oNjLQK3VRRS8SyhQWRKjgesCjfQH2yw0Wdf9mDtFEMfVK0duxSBYbcWEX
-	Uu9/xCCy6KRV/zuAIwey4X59b+RZPXgdG67bcAvTybWuUw9rS3ShD/UVWrhpOglgQeDFPx
-	Nu1A2F8ffzMV5p6W2lf+W2KCdMQzmjE=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790042910;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A770E6B00A9
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D5811A026E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:11:51 +0000 (UTC)
+X-FDA: 85239772422.04.FCDF735
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 92874180003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:11:48 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KYKN49lN;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KYKN49lN;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790043108;
+	b=BOpBFjh0oqmk/d1Bq51Sk6YL9zpBoeMv5f76euU1qYIIn6ZA1Ifs0AYGVeUw0ujfXytlN9
+	XnMNiJTFC74WE8i1I9IDqPGjy/IKILdJiFgu6TMn45ubHmEFGXHQxp5dbacILa0RDP3JKf
+	B2xbSsTi6543cJkWgL0lUPxpDizoyGc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790043108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SZdoIX5Xw+MuxKSEGwIFyg9402wGHsxqV9vsE0ZZIlE=;
-	b=PmqfX6eG51CSCySRbmpanYOxRFDUHlmdG5waI6zAVAi9tcDN+YFVmD1RDMFA5/LcVMlE1/
-	gGn8ODZny61lrTOQzqS1zpSTzXKyUVIIpkli7xxjrwFYEq+7obT3uYpAQJAan66EmN5yPb
-	ZbN8H2sf1c8ZoUzJOBjQTiW+wnbxN+8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=y9wgs2Ss1mT0b6DP1xAEIbSqNduc18QHkg62f8ApvWk6oqh+9aFESvgS0wzgjOjHv7UZn3EAhi3/yEk/mgI64ua/P5ruRpk/yTNICllivW1X3MF1UKpXkgndZcdWXQileZtJNeIaJj3cwsNtxPqn2U9PGRJ5CD6EcBW++y9820Z3hz3MpN8B2yxs8MgL+r26e33lB4wuRUUFlhFFGPoTBGqZ+MgWBjmQaQ/5CJ9Kwf/YqKUucgp1+nqirB5Z5gnvRiofjx63me8tsViOI0xqpShe1tDH3vsIhf0Tvhx6uYbGT3jjb95YYK3RSaSWHt5TxiYb8RzlqECXEIuhEiORIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SZdoIX5Xw+MuxKSEGwIFyg9402wGHsxqV9vsE0ZZIlE=;
- b=NMxs6EfH0WBnAOEZtbtrzle5tRZywmRO2QnAV8QpNfmbgAcCHquzbvhDDMk1YpD/we3zfjiVEoROAlVtNRM4adAfTbJ62SVEyu5zhozvtzkTtjMXHq1BCxEBh2vo5RkLpGG2QDdkU1iT4FXTg+4CsNbrjQMEJ8+0DSQ+/c2FzaRsBxuqjAPdIkrVqoclXCDm1/4hJgGt6eMtz4CduYav0xSDNmyhXsBxJFhXcYTD4f13eVmRUJEM1Hzwn0wbdS2yPkz7KbGTJf7PUyRN9c9vHblznsVw7jPw25aYo27SmaXazvGFswI9Cr8PIXTwQ3U/F3lsmGg6oyae4RUXuj2sSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SZdoIX5Xw+MuxKSEGwIFyg9402wGHsxqV9vsE0ZZIlE=;
- b=EcqzZq+mUl8Vd96GIDAeDS5fvWKxfNBuCGNuMGH1fEsx3iVkHzOlxyMKkPjvGAgNn8paRbX16nmJ3TsZuOYAeWv9mH+uoa4NoXZAwpwgSBvn46ASjoJzBAn+tgfrnb1r0GEindkKhrS37yTOIedixSsl7DNN6WyTNuWogOH+hRF96xevHaskoYXZZ8H28jueii2u6rkPT9qXX6DaksYr7kPFlEyu4BqjvRvCHLUb+tFbLvAwDuz4DdzgWAvSK3ENACbVEjR17NOh0UbLgf0blvLDOL9hXQOaDloXaeknbFfUjqFkME4pf4rDzUb+ehW+PFu6eafMVZNenvIOBqnpfg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS4PR12MB9588.namprd12.prod.outlook.com (2603:10b6:8:282::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
- 2026 02:08:20 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
- 02:08:20 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 21 Sep 2026 22:08:19 -0400
-Message-Id: <DLLH8ZJAPAID.O0C2M6JKWOW2@nvidia.com>
-To: "Luiz Capitulino" <luizcap@redhat.com>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <david@kernel.org>, <baolin.wang@linux.alibaba.com>,
- <lance.yang@linux.dev>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v8 04/14] drivers: dax: use pgtable_has_pmd_leaves()
-Cc: <corbet@lwn.net>, <tsbogend@alpha.franken.de>, <maddy@linux.ibm.com>,
- <mpe@ellerman.id.au>, <agordeev@linux.ibm.com>,
- <gerald.schaefer@linux.ibm.com>, <hca@linux.ibm.com>, <gor@linux.ibm.com>,
- <x86@kernel.org>, <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
- <hughd@google.com>, <dave.hansen@linux.intel.com>, <djbw@kernel.org>,
- <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
- <akpm@linux-foundation.org>, <yintirui@huawei.com>, <dev.jain@arm.com>,
- <usama.arif@linux.dev>
-X-Mailer: aerc 0.22.0
-References: <cover.1789695931.git.luizcap@redhat.com>
- <700b622814a2b294083f9066631f655cf61c3070.1789695931.git.luizcap@redhat.com>
-In-Reply-To: <700b622814a2b294083f9066631f655cf61c3070.1789695931.git.luizcap@redhat.com>
-X-ClientProxiedBy: BLAP220CA0015.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::20) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
+	b=gf1EDFiQ0ZgIu1u76AlKPNGNmhHNaE2/193bpi2skMYGd+Hq2q1XXf1nhpMtleWmC8vBX+
+	9PVKMLLAfhGbhAyVS5cDLopMhkBz9RWSIEq7hqT9BJqmEV6AbdUxAqAyGz5/pDP60PJvV9
+	2RSUErFNRcxJPwUMa60HymS2LEPN4bY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790043108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
+	b=KYKN49lN6hl6jRcC7ZzpfVqFNN5UQgQa8bao4fwPnn/R1vgfiZSkuCDXI0YoiMx6ZnUKb+
+	abDL2q69ySxcn7Qm3OvagGKVBrN00KCZyoGSuHHsl5aOwIZ/2uCH78YcZDPoGBsIlvMzx8
+	gWefxS17i7tE25bxemwUq9EEiUV46Zg=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-463-e83UIR-aOFmFpnqvRnw2KQ-1; Mon, 21 Sep 2026 22:11:46 -0400
+X-MC-Unique: e83UIR-aOFmFpnqvRnw2KQ-1
+X-Mimecast-MFC-AGG-ID: e83UIR-aOFmFpnqvRnw2KQ_1790043106
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a0c7126e7so640902985a.2
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:11:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790043106; x=1790647906;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
+        b=fVBrbkDaI8Mf3WPOs9ALgw2+WyG+Pk4wYHDPikR4O906GqAGkYAPaAo6NWwns4X2jV
+         JR9e2TZCrLj8czh6BzP+hizasnYot5O7muaGYbbz1zC42Vq2Tb3W5YqeWW8dl+C9nrMg
+         Ftgu5QYOAtsHESdE5QpwWvbig7pJKgsR3GJxN7Cc8OEvqMsVP63dm8TTljpU0xZL+Qdr
+         wDdyuzJ6Vi7RpyAJDs2AhNpkMddodnbB+u/Z1vVl3r4HD29MYTjo/JoLJSbliDBp6iI+
+         GVVEREOolx8u/SfBEBS9NZ/12SCNKEds3wBiEDwH8eowPB9sRhO2pYtR0SrWpWIvcVf7
+         D2Pg==
+X-Forwarded-Encrypted: i=1; AKwUvBwIQACOjt9Nu69+mIM63TQiNVRh8Za6JLvp5LnVBojO8dyFvPfxI4c6RzPrV2x6Q/05nhG+7xtaEQ==@kvack.org
+X-Gm-Message-State: AFuF++l10K957xHRXXFH7uWhReVLak08dLD8YsuEJIHUubWRXLpTDugo
+	I2ZMseab9Wla85gzUNrPe00XxabAXkEGYYRngNCjcI+zcBWFIGFUaSwf7HakD/9hmCzBy6153MK
+	lOZig76r4jd5qzXLfnqcrTKU6FRICnDiIR0vuOEGOjgV/Y5fqo19XgCPMNLqunPz6ag==
+X-Gm-Gg: AYBFou0U2LVijnVQVO/8S6yMjc4RF0KbElygze6I9CrIWMwg6L7CdnBXzz801W1pVuf
+	cfzXIModJLtGALu3Nonv6o3dZ7hXVrykQ9S42rTTVLgVfYT1pNw2qFmC9EZ76w/MoRAr5vZdzhQ
+	DKhNcaIiQR4bRf7PZpbQsficQLyQBdF4DwBCP4AgwDzJUieoAqWacOTHVx7WmzylEiVT9B+LwQG
+	KymnJGaSGLwI5/SNMrVB8Jd9pAN4HKpDpI4k2AiecTVnJvtmfEtK3+ruq3/d/OiqtY0+8blm7kB
+	UiUjD3jy1twl+DtVT0tQjNb+/kHsrXwE7XRCmpj+onNxh6bc1j4B6p47mydQvzWr0Ej0US8d64N
+	u/3g=
+X-Received: by 2002:a05:620a:bd3:b0:93a:82a:71e5 with SMTP id af79cd13be357-93c15d86b94mr360801685a.19.1790043106240;
+        Mon, 21 Sep 2026 19:11:46 -0700 (PDT)
+X-Received: by 2002:a05:620a:bd3:b0:93a:82a:71e5 with SMTP id af79cd13be357-93c15d86b94mr360797685a.19.1790043105768;
+        Mon, 21 Sep 2026 19:11:45 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9140249fcedsm4229616d6.12.2026.09.21.19.11.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 21 Sep 2026 19:11:45 -0700 (PDT)
+Message-ID: <2e6802a6-9815-4fcd-ad72-136efb599d1d@redhat.com>
+Date: Mon, 21 Sep 2026 22:11:44 -0400
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS4PR12MB9588:EE_
-X-MS-Office365-Filtering-Correlation-Id: 270e60ac-d7e1-4a8c-953f-08df184e5fb8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	DUP6TBONU0kErFbuYr/mbhBXVjwYvIAhXCFXuIQGLYLYCBrxD8z940jJvwlaOxVrMHk4ogN29P6KIqmzRzjaf6AVx2yYYQ/tU2YXMS4ZCSROPhpDCbj/9jE+7gkoncqSMXq1fWTlfoiIhnjUnVAkCQYjer0qai+vmFKbzsNKkl58GdU+3+QovWNMg2dYOt18sTjIuyzESxYpVMx4nowVhJk/KwMD2eCM7i8ySRYEO53B6fNNEH22BV31VUUzifF4ywoHJIjhfVlRxdtrkSPa75on9xqKtOkNpRYPrtHrgLbVb02pnsQHDcakaWLEBOQQ8IzLJaNNphEKCt82iSA1fG/Rl6jyUEaapXANl9cf+7X/9ddCd3Zw00wr7TgWF1OzqCH2QRmxY8TxHR2TYJTxHof9lhfqv1QTIBTQ/NwRd+CUA67KtCd9ayPr5hY+xiI5aPQTQw5aHfOmuj3eIf41HawF81F22C2eFD2In/E5U1cGD97+fls3LKkjzinTEBYtcScqPeY51PQ5WlSv/hMxGiNZXApuplzkYI6VFzRTNZcGSDmjjYMEzJ8uvM2w0glb0jY3orJqCXGvtUlLaPUdpGBeVetQCdNpiY4BZyJMQaewIjK3spesvQ2gcgMy9VJ/Ck6L9atE0ivMl7fzFpZZvV8zL959iEh1rk6ynls+9tk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YzlkdGR0TW9HblhtYWZPeVVsNjJzQzZxV3lRTktyenRxdG5MOFZEMUg1VlZj?=
- =?utf-8?B?NTFBVktEaVkvSEtSR1ZsZWVXci9tYUt1VDM4TkdCUnd1MHlJTE10aVRCdUh3?=
- =?utf-8?B?VU1nVnBwbFBCWE1XbEFzUHh2T0gzRHA5c0tPNVJoRVlYSlVOeTcwNGJVOXNu?=
- =?utf-8?B?TC9HMW90TWFLY05WbTU4RUtObjFKRWtlUUFVazUxcFpycEEvamVDczZuNVpG?=
- =?utf-8?B?T3BjY2dRWldBWmpONUlsci9LRkx4SmtJa25LQVpSVzY5K1pVRTRlcTRNR05Z?=
- =?utf-8?B?b1gxaE9VaGJPUmg2QmJRaXZVNFBNYWhVTytqeXZuSmJtZ1RBYlN0cHNIazkx?=
- =?utf-8?B?ZHBMN0NsN1psRVh0UWs4c1YrMUkwbTJvS1phTFVYQkp1aVV6Qm1SeGRRZHJr?=
- =?utf-8?B?UDRENFpMcFNtdGhmaFdONE9USWJDV3hPRmcrbi9FYncyNTYwMGgwc2FWMFgw?=
- =?utf-8?B?YUYyQVprd1RHbFE0bGxyVUdNYTZFeVEyRDdSOXlaTkNQejdhNFc5eFNodlBR?=
- =?utf-8?B?SDM0dEVqWDhWdEp3Mm1GWkpJVzRhZEJQM3c4M25YVEN3ckFMOVRxODJmY0d0?=
- =?utf-8?B?c0pqOTB2ZHdGUXRqcVpMaXhYYjdrNlJZUjF2dWJRTGw2d1RxTkdFaXA3NU1Q?=
- =?utf-8?B?TFJ1alFoM1phZHh3WkhLeUlNbUFxMWQvM3B4MTJzRWJCU0RZY0hrMkw5VGhu?=
- =?utf-8?B?VDAvdjE4aDRmcC90SnQweTBvbVowbmJ4WU1jTUw0YW9xbGRiOE1ya0Q4WGpi?=
- =?utf-8?B?dHZFTUd0eFdkdEQybEdkaTQ5N1hXcVVVQTd5WE9ISGp6TnVBWE9HTW5acFlz?=
- =?utf-8?B?NVdYTEtNSUZOUEhIUzZaaXpqYWV2VHVDZGlUQnFRMUQ5bDM0VVYwQWU2M28r?=
- =?utf-8?B?UzZnZDVxYlBvL1BOMmxzTCtQYzIvV1M2UnVrbW5rNm1qdTN0cXlxaDJ5bHdH?=
- =?utf-8?B?TWw3bzgvNDhydzJQTDV4dXFHaXVCaFBkajVaaXVqODBXUm5lNUFXb3Q1STVM?=
- =?utf-8?B?UkFhRW56TWF4WTkrVElwWDg2S090dTFhZHdWazl3MnRkR3pXdzZNWnhua2hj?=
- =?utf-8?B?RWl3MDE4ZU9sNlFwWCtrQVBla3UzSVpoeWdRalowR1FXYmdCeU8xVlJaeXg1?=
- =?utf-8?B?SXZCZHRpWDBldEVlbEpPdklyNWRVdXIwR25TMXhNbG5aWlhrUXNWZDlwRTdR?=
- =?utf-8?B?TGM4bjIyWnZ2YStHT0UwWXdMcUdCRzFVbU5EV0U1QnFzWE91MzR5cE80NEdh?=
- =?utf-8?B?QTVXUkRseFJucmQ3cUlSUndjdTlOOGtheFM3dDBXWDEva254MzJhWXJrY2xp?=
- =?utf-8?B?UnU5azVhL3FPUUNSdDNlUFlNU1VVSTVOcHJ5ams1Ymw2d3RXd3ZVbXVHcFBL?=
- =?utf-8?B?T3pFcGUyMnBpSHJJVUN4U3Mvdm8xaTlXUUlOU3pLbklUQ3BoWkhLQ3o1UndN?=
- =?utf-8?B?Wk5qWWtiZGZxdDIwVW10eGhxTDkxNmt1dEs5aW03TTNZUXd4MVFiR2N4bk1s?=
- =?utf-8?B?cTRqdyt3SVM3bE9Ia2VzUjMwRUt1T09DNCtNKzVBUmNYdUZmbnJYRTRLa2tD?=
- =?utf-8?B?VXY4cGhyQXVFR0p2blY4Zm5EVVJ6dUpxRVkxU211Q3pQM1loc0prdVVua1Rk?=
- =?utf-8?B?VTErRmpYd2E2MGtMUkZLeDU0ems5REExU1JvUXpVUTR6T1FsdHVDNlF5a1pL?=
- =?utf-8?B?bGZjdzFpL2sxK1YrRHRzV1N0YWJWdjVhN2FPcXFLd3VNT0QyeEZYbVh6aURT?=
- =?utf-8?B?dHJEVGtKNnBGZCtiSnNrbmswMnhWOFFhVUtNTDlUVEgyRzM4Rk41YmdwWkgz?=
- =?utf-8?B?dmNXOWhSQ082RDR2ZkFvY0hRb2kwUkliUitSQ0UzM2xNK05pQlh0VzRnYlR2?=
- =?utf-8?B?TkM5Z3lqMktOcXZ3YVI2a3FEUzhjYitiT2laeHY4dWllZGYwYWNuYWlQcjdO?=
- =?utf-8?B?V3ViUkc2RG9wTHFtVURZZTdJYXJxSEQ3bnFtZnA1bGREcUZHWmw2YVByOUsx?=
- =?utf-8?B?MU1qdEhjVFZCT0JoOWI4N1dFREJVRWlUS0hUeFV0bWQ2b0ltd3RQVm9CSzRB?=
- =?utf-8?B?Vm5GYmE2ZnNERC9sWXNtMG9WV3VFY0RlTzd4Z0pGM3RWejl6bnhOSEhTVzRx?=
- =?utf-8?B?UXlrZ21SUDBOVmF1NnBFZGZRWVc4bnRZZktRR1pRSW1HdkZPU3JxeDBaY002?=
- =?utf-8?B?bkt5SlRBZllwb2RleUZaTVZGbmUyckpQMTNpTHRmUldEVi93aWIvMkhZOUVL?=
- =?utf-8?B?VWFXcFlpSy9TTlJtdTB5K0VCNFQvNllMaDBiN1ZVa05CcUV5VGxiNDNOUHlC?=
- =?utf-8?Q?j6R3VKjD70EOPvHT2g?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 270e60ac-d7e1-4a8c-953f-08df184e5fb8
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 02:08:20.3550
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bb9hFdTtmOYbaT7fa/2qOg4h1n+SEn/EOM7bjiNDiJEHPaPxKfMIAPR7lfr6e/D4
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9588
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 00/14] mm: thp: always enable mTHP support
+To: Usama Arif <usama.arif@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev,
+ corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+ hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, hughd@google.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
+ dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
+ dev.jain@arm.com
+References: <20260921103620.3431087-1-usama.arif@linux.dev>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20260921103620.3431087-1-usama.arif@linux.dev>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LxLeXhnuTMZE72GrdH6oSE3nUKfRul-aeUaaA_xW8zY_1790043106
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 56D5420002
-X-Stat-Signature: hu794enfd7jkfsbb7mmiwbjgk6pp1p6h
+X-Rspamd-Queue-Id: 92874180003
+X-Stat-Signature: phspcy1gjwurypu97yemingt6m7g7h6n
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790042910-903841
-X-HE-Meta: U2FsdGVkX1+ZJQxbpj+ucJWrDmOUMzwadsICRdOOcCARbWcFbQu8z6F/HI73RrJ6FxNfYL8YN57tTM9Yg944ENfqAOHpQ4VVmSl2h4koJoXouH5Rl162WvbyP0DCWvoBsGT4qharghKqa2zT3hRJQGnsaUJeWpxk7SKRPifISMb7fsHtmu2GVWJKspPRwkDtOK/kKY0+rMf3FKM2/3KAX8YvfcTxbSY0nPzd1O0/KJu3N8YlHPcokulXs+5NaGB2l7Tnx2erDww0t6cgTEocUlI+dKKnbneU28PANQCUOSuYHBcwrP8Dp3EOPoZ72iworAcz2FB+BB0K8DLfm4QipeHiOJZ+vBXvt4I4zgZb+pWCQkwQ9zDuttKIC2NPPx9WbIKPcMf6scOIfu0Q24Pr+UXxDl9Y5kRT7Aoi2pvCaKVDYMKLmO0KvuZcDr5IQMl7EmDvG1NB/zZyvw8zQvUFwAHfiVS3wz/kysOqMoriV3fxTZuyhywxyNSvL5c+40lo+RS6lyo1rJ8ny09DE0p1mIU0KNjUj12AkPgRJuLW9nmgrMTto8Jte073U43lEX2l+MdhV37ti98s2TaEVbePwzcrwVZT0FINQKkHk/XrNpXpZ3GlLzxK6xCfPxtXGIAHM7rrCiUIA9iZqQmTcwgjUd9PuigMV2J6SxrZ5O0RCaZMC6t0xFMmnzseJi+3pOPXtCkx+QoYMM6C6LAB/gGXmkIO7kPJoMn7PNpKWi9VgZCul3W3N8L62UFfQs+UoAibQJcM7xSaUCQl/8gcT3Ib6znV+NbjYlZIqHSIG0XDHDE4XSeyLMQzFdI2HORYWqLtTqumWzGWAiDaVTyB1SCQ3wGmLY/tTQVfJ411Xkt5JczHCwKGiDd6iVpKIRMRhVp5o3ty4NEpVlQ1fUOgOTxAn/J3Om736TRD3w9shBIQV/CLFOoWGqZG7NltK1U/dr+xipP4xx1cdo7LOq+mb20
- M6+CkgiG
- KxFOUCIJFoV8gpgRhjniYabCT6k1ExhlYIFl7Pbb2OuJidu0bcpBteH6tBS4tjj7m3liMfBqnHF6kQjBBaj8zcXZgdnZi6tc6XG+Lo2CnYbNOt8r8RyR1lzbZ6YGuMKyQj/SjZ1n9NZSraRbsCjjJ2N+ioumUsVTM/ZasCAF+/r9U4ggyrtr+UrWAB785xgOB5XqAWWsdCAv9O7ARttUmcIludydvefYANP+yuC3m3Kz9w2LocSybq1HrXrcxqatXOLLanPudBb4dBS/vrd2z+/TR4JNORkqFVp3mweHtl7fPF7pjz2gdwhV2egjjE+Q/3iIoZ8TVegsp9rKtBjLioXy35fG7oG7XePWd6yckOe3H0201m7LeFeCZQUvcNH+IYfQnPlHp6AnJSsO8RJ8W0col09HZUKoMxo0YI6sGRC7kMeITcebtq4oMXfAnXfA6qyHuOYbrbTs7aKlHZ05uNc3t4CE94R2IBjWJGVe1beHHu60=
+X-HE-Tag: 1790043108-381405
+X-HE-Meta: U2FsdGVkX1+W7n4ZE5+wd9oLPwJaS622G8S6uOPnvtTTLEh1Qb4750TiPmsHpwLtxvYFmbLPrGI/cbmk6k3cZDiPF3uwhxrUyH7p8fwl92/EvdlV9qPfhmoreKbL3RoajkvPEy0IOirPV+1pFT04j2270M+NDxPHtLE8xqApfBlxXZdNCQ295rbpp5LTY2WsHKR/kpwVN+gWdzXiKsRZqLStWaCwNqZ12M97h/f6mHm7XpKewMW+qUXfy47UkjwlAOGccpNzac26LT6/lPUni9925iXAlfMRcMsXkZ09PTsmJMFOkVW6i98oyONODHVcD4e2eMYvjt54YayLP0oOEnCTRL8paUkS2eNiJiQEbdGy/m72nK1l7447BTxmIp8KhQd+gswhVOiEw56ybi5brx1+kJI2Fqi8EZChRobXQKZq2q7MitJwMvzIKVuQ2+TY1PMO3ePKESeLGIVwkq36o12wq2EalXDxp4qDOIXNmXhc69ADqFTgy86tNxAxzlH4UqK5m3h3Mcy8vccxN2KX+xWKV4kW1la6hacd/z/WmDzBWxCqvh8UGGzBspgg0TNEhRUsOeHCH50Y2JwC8uK6ntQI9v/QzWsEyVVfGHWR5j9v9q68Hw6UTWqx2A6qxVF4UqusyWrjMStsFmnvMjUgdCnwNn2zWj/ibvn0NGfCqw62Sy/kZmdBnAB8awkeIg+V3vEI+yDHcAYjuwQzbvNJwW321WTBJPcpYJLCVjZ4wz04w+ch1f9wAWMzF0CR/y1an5lc2lH8dJuCCKKPI3U6jSsW9JehVVsS+M6I2gP5h1QS1XHmlTVU6DywgiO58Pyi8tTEE9sWnelDnDtS5x3Hrr1LhwRTjQo+82yaOy+b5uVtY8b9vtD8ebl3R4St7LnlBLUd9O9qpxt80eRCB/n3a/FZx4yOJWBN1zASJYcgRu388XNZy2/UoZG0gYxTvHwCCuXB3lP60hOxgDwTkiU
+ maPU2RwF
+ zARnP6/YUYXwcsLr3H5oySiAG/xw4OEjq+Adw2GYNx+maRCAxXDNnSpG4b1z3seTyJfSGwEjXY/rbiMiVJAMe63vE4fmSSOs3eBYhtlpgNSxmHBOLArIkTRQTar4EbMf8qWT0S2L1Pg1/h60vy4ZFiImB1NvQ3Kl+WqQgHVAcUnpa0bgb3oT+UQGXqs7Ts+xJSLjB4ThkHxY+ceYrd4v7cns/Xa8GF4AdiSHJqlXLdLISLgVwS14LIYosGf5rgbdlvcVVFLj1jra9XEcMTpNZRD8VMCIWdDp9+uE0y5vB3284Jbw/8RN3uB+TVpPMXb2bodb+5DHFaq6cxqq5Y1TSkIcxLgFbfmSel+FB6L3TaQIXppQB6+PENP2Ucb2zHt22QoTYEvDCAbyWk6M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,25 +137,247 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 17, 2026 at 9:45 PM EDT, Luiz Capitulino wrote:
-> dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
-> pages are supported, use pgtable_has_pmd_leaves() instead.
->
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->  drivers/dax/dax-private.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-
-LGTM.
-
-Acked-by: Zi Yan <ziy@nvidia.com>
 
 
+On 9/21/26 6:36 AM, Usama Arif wrote:
+> On Fri, 18 Sep 2026 10:01:35 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
+> 
+>>
+>>
+>> On 9/18/26 6:37 AM, Usama Arif wrote:
+>>>
+>>>
+>>> On 18/09/2026 02:45, Luiz Capitulino wrote:
+>>>> Introduction
+>>>> ============
+>>>>
+>>>> Today, if an architecture implements has_transparent_hugepage() and the CPU
+>>>> lacks support for PMD-sized pages, the THP code disables all THP, including
+>>>> mTHP.
+>>>
+>>>
+>>> Hi Luiz,
+>>>
+>>> Sorry for asking this so late in the series, but which CPUs lack support for
+>>> PMD sized pages?
+>>>
+>>> Is this series mainly for PowerPC?
+>>
+>> No :)
+>>
+>> The architectures that have conditional PMD page support (ie. discovered
+>> at run-time via has_transparent_hugepage()) are x86, s390, powerpc and
+>> mips.
+>>
+>> For x86 for example, even on 64-bit there are cases where the PSE bit
+>> may not be present (eg. some errata and by hypervisor CPUID masking).
+>>
+>> That being said, the main goal of the series is that
+>> has_transparent_hugepage() is overloaded: it has different semantics on
+>> those architectures and is used to gate all THP support (which is not
+>> the right thing to do for mTHP).
+> 
+> Thanks for clearing that and the patches.
+> 
+> They all look good to me, apart from the the comment in the last patch.
+> 
+> Feel free to add
+> 
+> Acked-by: Usama Arif <usama.arif@linux.dev>
+> 
+> to all of them apart from last.
+> 
+> One nit: I would put the above goal of clean up at the start of the
+> coverletter, instead of starting with adding mTHP support for CPUs
+> that lack PMD.
 
---=20
-Best Regards,
-Yan, Zi
+Thanks Usama, I appreciate the review. I'll do this if I need to send a
+new version.
+
+> 
+> Thanks,
+> Usama
+> 
+>>
+>>>
+>>> Thanks,
+>>> Usama
+>>>
+>>>>
+>>>> This happens because the has_transparent_hugepage() helper is overloaded:
+>>>> its name implies it checks whether THP is enabled, but on some architectures
+>>>> it actually checks whether the CPU supports PMD-sized pages. In addition,
+>>>> the THP and shmem code have a big switch on has_transparent_hugepage().
+>>>>
+>>>> This series solves this by decoupling THP availability checking from
+>>>> querying CPU support for PMD-sized pages. THP availability can be checked
+>>>> with IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE). For querying PMD-sized page
+>>>> support, this series introduces a new helper called pgtable_has_pmd_leaves(),
+>>>> which is independent of THP, has well defined semantics and can be used
+>>>> in fast paths.
+>>>>
+>>>> Core THP code and shmem can use pgtable_has_pmd_leaves() to determine
+>>>> PMD-sized THP support at page fault time (or folio allocation time for
+>>>> shmem), leaving THP and shmem always enabled for other THP sizes. For
+>>>> architectures and CPUs that do support PMD-sized pages there's no
+>>>> intended change in behavior.
+>>>>
+>>>> We also convert each user of has_transparent_hugepage(), and the related
+>>>> helper thp_disabled_by_hw(), to IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
+>>>> and/or pgtable_has_pmd_leaves() according to the call site's check semantics.
+>>>> On s390, powerpc, mips and x86 the arch has_transparent_hugepage()
+>>>> implementation is moved out of the CONFIG_TRANSPARENT_HUGEPAGE guard and
+>>>> renamed to arch_has_pmd_leaves().
+>>>>
+>>>> Thanks to David Hildenbrand for suggesting this improvement and for
+>>>> providing initial guidance (all bugs and misconceptions are mine).
+>>>>
+>>>> This applies to mm-new 93f615a22169 ("mm/swap, PM: hibernate: atomically
+>>>> replace hibernation pin").
+>>>>
+>>>> Reporting availability of PMD-sized pages to user-space
+>>>> =======================================================
+>>>>
+>>>> Before this series, not having PMD pages available would shut down THP support
+>>>> meaning that /sys/kernel/mm/transparent_hugepage would not be available.
+>>>> After this series, /sys/kernel/mm/transparent_hugepage and hpage_pmd_size are
+>>>> always available but hugepages-<PMD-size>kB is only available if PMD-sized
+>>>> pages are supported.
+>>>>
+>>>> To me this seems logical, as hugepages-<size>kB is only available if <size>
+>>>> is supported. If this is correct, then MM kselftests that depend on PMD-sized
+>>>> pages will need to be updated to check for it as they fail with this series
+>>>> applied when PMD-sized pages are not available.
+>>>>
+>>>> The alternative is changing hpage_pmd_size: either don't create the file
+>>>> when PMD-sized pages are not available or set hpage_pmd_size=0. My concern
+>>>> is that this could be considered an ABI breakage as this file was never
+>>>> reported to be optional or report a zero value.
+>>>>
+>>>> Testing
+>>>> =======
+>>>>
+>>>> - Ran MM kselftests on x86_64 and s390
+>>>> - Tested all mTHP sizes allocation on x86_64 (with and without PMD-sized
+>>>>     pages available)
+>>>> - Tested shmem with within_size w/ mTHP on x86_64 (with and without
+>>>>     PMD-sized pages available)
+>>>> - Performed defconfig build on x86_64, s390, arm64, powerpc, and mips
+>>>>
+>>>> NOTES:
+>>>>     * I'm forcing arch_has_pmd_leaves() off on x86 to simulate not having
+>>>>       PMD-sized pages available
+>>>>
+>>>>     * Running the MM kselftests when PMD pages are not available causes some
+>>>>       tests that depend on PMD-sized THP pages to fail as noted earlier
+>>>>
+>>>> Changelog
+>>>> =========
+>>>>
+>>>> v8
+>>>> --
+>>>> - Fixed build breakage on MIPS (Lance)
+>>>> - Rebased on top of mm-new (fixed conflicts in include/linux/pgtable.h and
+>>>>     mm/shmem.c - dropped a Reviewed-by as a result)
+>>>>
+>>>> v7
+>>>> --
+>>>> - Applied on top of latest mm-new
+>>>> - Improved various changelogs including cover-letter
+>>>> - Changed arch_has_pmd_leaves() default implementation to use IS_ENABLED()
+>>>>     instead of IS_BUILTIN()
+>>>>
+>>>> v6
+>>>> --
+>>>> - Rebased on top of mm-unstable (required a minor conflict resolution)
+>>>> - Added more Reviewed-by and Acked-by tags
+>>>>
+>>>> v5
+>>>> --
+>>>> - Moved init_arch_has_pmd_leaves() to mm_core_init() (David)
+>>>> - Renamed init_arch_has_pmd_leaves() to pgtable_leaf_support_init() (Lance)
+>>>> - Added new patch changing shmem_getattr() to set blksize according to
+>>>>     highest supported THP order (Baolin)
+>>>> - Added new patches to move has_transparent_hugepage() out of
+>>>>     CONFIG_TRANSPARENT_HUGEPAGE guards
+>>>> - shmem_allowable_huge_orders(): rename variable and only disable
+>>>>     PMD_ORDER (David)
+>>>> - Added <linux/jmp_label.h> to include/linux/pgtable.h
+>>>> - Added new tags and removed Reviewed-by from changed patches
+>>>>
+>>>> v4
+>>>> --
+>>>> - Used static key for pgtable_has_pmd_leaves() API (Lance)
+>>>> - Moved shmem pgtable_has_pmd_leaves() check to
+>>>>     shmem_allowable_huge_orders() (Baolin)
+>>>> - Default pgtable_has_pmd_leaves() implementation to
+>>>>     IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
+>>>> - Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
+>>>>
+>>>> v3
+>>>> --
+>>>> - Rebased on top of latest Linus tree
+>>>> - Removed i915 patch as driver dropped has_transparent_hugepage() usage
+>>>> - Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
+>>>>     with early_param handlers clearing CPU feature flags
+>>>> - Fixed build error with CONFIG_MMU=n (kernel test robot)
+>>>> - Fixed huge_anon_orders_inherit default setting when !pgtable_has_pmd_leaves() (Baolin)
+>>>> - Small commit changelog improvements
+>>>>
+>>>> v2
+>>>> --
+>>>> - Added support for always enabling mTHPs for shmem (Baolin)
+>>>> - Improved commits changelog & added reviewed-by
+>>>>
+>>>> v1
+>>>> --
+>>>> - Call init_arch_has_pmd_leaves() from start_kernel()
+>>>> - Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
+>>>> - Clear PUD_ORDER when clearing PMD_ORDER (David)
+>>>> - Small changelog improvements (David)
+>>>> - Rebased on top of latest mm-new
+>>>>
+>>>> Luiz Capitulino (14):
+>>>>     docs: tmpfs: remove implementation detail reference
+>>>>     mm: shmem: shmem_getattr(): set blksize to highest supported THP order
+>>>>     mm: introduce pgtable_has_pmd_leaves()
+>>>>     drivers: dax: use pgtable_has_pmd_leaves()
+>>>>     drivers: nvdimm: use pgtable_has_pmd_leaves()
+>>>>     mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
+>>>>     mm: shmem: allow THP support determination at folio allocation time
+>>>>     s390: move has_transparent_hugepage() out of THP guard
+>>>>     powerpc: move has_transparent_hugepage() out of THP guard
+>>>>     mips: move has_transparent_hugepage() out of THP guard
+>>>>     x86: move has_transparent_hugepage() out of THP guard
+>>>>     treewide: introduce arch_has_pmd_leaves()
+>>>>     mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
+>>>>     mm: thp: always enable mTHP support
+>>>>
+>>>>    Documentation/filesystems/tmpfs.rst           |  5 ++--
+>>>>    arch/mips/include/asm/pgtable.h               |  6 ++--
+>>>>    arch/mips/mm/pgtable.c                        | 25 ++++++++++++++++
+>>>>    arch/mips/mm/tlb-r4k.c                        | 22 --------------
+>>>>    arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
+>>>>    arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
+>>>>    arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 ++++++------
+>>>>    arch/powerpc/include/asm/book3s/64/radix.h    | 14 ++++-----
+>>>>    arch/powerpc/mm/book3s64/hash_pgtable.c       |  8 ++---
+>>>>    arch/s390/include/asm/pgtable.h               |  6 ++--
+>>>>    arch/x86/include/asm/pgtable.h                | 12 ++++----
+>>>>    drivers/dax/dax-private.h                     |  2 +-
+>>>>    drivers/nvdimm/pfn_devs.c                     |  6 ++--
+>>>>    include/linux/huge_mm.h                       |  7 -----
+>>>>    include/linux/pgtable.h                       | 21 ++++++++++++--
+>>>>    mm/debug_vm_pgtable.c                         | 20 ++++++-------
+>>>>    mm/huge_memory.c                              | 27 ++++++++++++-----
+>>>>    mm/memory.c                                   | 11 ++++++-
+>>>>    mm/mm_init.c                                  |  1 +
+>>>>    mm/shmem.c                                    | 29 ++++++++++++-------
+>>>>    20 files changed, 144 insertions(+), 100 deletions(-)
+>>>>
+>>>
+>>
+>>
+> 
 
 
