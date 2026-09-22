@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE25C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31017C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:14:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B0F66B009B; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
+	id 193756B00AC; Tue, 22 Sep 2026 04:14:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 561656B00AC; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
+	id 143956B00AD; Tue, 22 Sep 2026 04:14:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49EBD6B00AD; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
+	id 0808D6B00AE; Tue, 22 Sep 2026 04:14:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 26A176B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92D5EA528C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:22 +0000 (UTC)
-X-FDA: 85240665804.12.4CC6F43
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 015EB40004
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boAuJJId;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id DC2FD6B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:14:36 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4CB331403F4
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:14:36 +0000 (UTC)
+X-FDA: 85240686552.04.9CD6E48
+Received: from mta1.migadu.com (out-167.mta1.migadu.com [95.215.58.167])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3C847140010
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:14:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BdpNALhd;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790064381;
+	s=arc-20220608; t=1790064874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Zqym6D41lbWl1qqdDfB+XAdzgeIh7z3k+GpUxiR+8U=;
-	b=JsSMxGPYDkj+b4sZ1jIgJb0RUJfeo43Okt/E7nTyi2Tz/RFsR67ogX5jBhZ3y6B7ab9Rcs
-	1+tun3isI4R0yocCnVJNgG3isEbBBkvASEPonN4OIaokhUAmXV+/VVx/Ywj7Tm/0Zdw8z1
-	2QKhslEwF47ahc62jiD+jztV4h35lZg=
+	bh=05lGqeR+0ZF0CP4Fq9knoYUiG/+6t0CLA1xk1HKeOK4=;
+	b=lkrxGRRqqQt8WuE/2Np8VhTi3CRCFssCdJgfu2Y8y/mS8tTpbAoNb7Ow4bU0jzU7kQmQhv
+	Htw346RCAr58JZZUenxUZHe4+l3Q7QIXEssyT+6uJC47ea0c8swLDpj5mNlbuUSByjSwa0
+	a529EgykV7XknGJeEsMafSGh70DzL54=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boAuJJId;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BdpNALhd;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.167 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790064381;
-	b=uEgT80oUM6jclFBqlfTovlyO1iU04l+dFcMvkeFsPopOIULQ4M0/qXM+tRKLvCV58hMDz/
-	iqaJd6c9Ar15R0yZhxVRh9Q7P6cS+3//Co8E+r3+TDmCSigga9A2bx0dmVNmT8YMkfTqRF
-	mqC8eWEBDVANZvm4Uz3TEKmrztNUVt4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 676F943C12;
-	Tue, 22 Sep 2026 08:06:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268441F000FF;
-	Tue, 22 Sep 2026 08:06:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790064379;
-	bh=6Zqym6D41lbWl1qqdDfB+XAdzgeIh7z3k+GpUxiR+8U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=boAuJJIdMAD71oRg7WZDTWVjhYholDntby3vKk/sx5VujBDV5U33SMA+V+QJ+C/bd
-	 O04r5iqqH5hp4mir/9Jza6f/yC03jXf90hmAWRlW5Cs1Jv9qQXO2o7k95+J2KrQ7Ok
-	 vhvPF+6d+UvKA8eBcUWUa8hrAO+xkf1ZhAJfWVEXaTSpKqR7Vn3tqKLz4bnp11TlMo
-	 dV4aNrLLLbZcoTrqXkOpTGezNtyqtErFD/hBNoxFJ2z7huNSbBivcKv1PD3fI70fX/
-	 Fb+B1OlWB9bUz/xPLgbMTG1s1X3YNZgACspNdfNMDsZQXM7FaY+1IWSuHEvBZRbBPG
-	 A4M2rJqKOew4Q==
-Date: Tue, 22 Sep 2026 09:06:14 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Park Tae-sun <ts930@dgu.ac.kr>
-Cc: Sarthak Sharma <sarthak.sharma@arm.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: mremap_test: handle ENOSYS for userfaultfd
- and add missing newlines
-Message-ID: <arI2yv7TgtJLjMMr@gremlin>
-References: <20260922065143.118702-1-ts930@dgu.ac.kr>
- <2e0a8157-a529-4355-bd7e-11ef0234b825@arm.com>
- <179006158019.123863.10328178989374348836@dgu.ac.kr>
+	t=1790064874;
+	b=wcRYCXIA0QVQhUpnSaGdIwvNgPdGf/6jddYVNBt8SBLakQ3k5U+Mv8cCb2SF8HThPi2LWA
+	tJ2dluC8eeD9pwtnrSTgDMDiwafL5EdGg6Tmn8WsinBAtb+LKOZvD11URmM4rilcnPl/Q/
+	Ow4bAiT91iTLDTO2cu1bP/EJ+DGv/mo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=J2i5GvjJ+wUOBpbMeil8dkAVf6eHV4FfangEdsKlF5o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790064873; v=1; x=1790669673;
+ b=BdpNALhd4Xq72H0U13xGDLE2o4tCZFTlNFxRZ0RV+Y3w6reTkOcOxBJcuW8xV5K/M7OfmtDj
+ 359+6dseT0n9OgrcsJtw3C7MUkz2TmJCJFIcWBdFPwSkadiw/q8BirBltj+HGJWDS3/usPc9RvN
+ d+jh8sl+IQiz9S/FbFA0o+ow=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id ac6469190cc15d1a;
+	Tue, 22 Sep 2026 08:14:32 +0000
+X-Mizu-Trace-ID: ac6469190cc15d1a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4f419e8d-de07-48be-a69c-7b7b9d4a1cb7@linux.dev>
+Date: Tue, 22 Sep 2026 16:14:23 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <179006158019.123863.10328178989374348836@dgu.ac.kr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/6] powerpc/mm: make vmemmap_populate_compound_pages()
+ static
+To: Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev
+References: <20260913083734.86802-1-songmuchun@bytedance.com>
+ <20260913083734.86802-6-songmuchun@bytedance.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <20260913083734.86802-6-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3C847140010
+X-Stat-Signature: ojq1g3kazooccprte418gpt4fxfcnh5a
 X-Rspam-User: 
-X-Stat-Signature: upcmrub468r56xdpgj4itkxz7b7zzse8
-X-Rspamd-Queue-Id: 015EB40004
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790064380-642120
-X-HE-Meta: U2FsdGVkX1/6WRQPFlTudabjbsndSgRH+N5+vyrQ9QBAOjc34Bm/GjPZV+RPd+GpfP3WEFCu/H86ynudfVofFCewJtdXHE/kOIL2SoCkyFWLHb1DUCyCmk/sy/gZC/ynRZQU97KwSZnWGeQqdCm//G3asS9eGiZZBwggrNvz9YqRdlRZycixWhvotMmEaPMFLFzJdgHZCQjUYU9LIquaXdmSUFmc0VCbZo4UPyOqxAjtRu9fMXNWMvwsosy794atuzdUd2XKSRSIZPJsUeH2RtMWnk6y/i/qqs1+nOG2xphGgGfIHU5ZBgahPSLEfrd+V0ypFAH19PW+wcjgOKfOs30dty9S5DXJIytXx8qyEvZZpC8jK/AyipNSeF2YlxY+Dzp+zMSEC83kSERf90MQd5i3dqdc+2bdFHQx4SRODZkh1OAQrY++Ajg5hUeHxXVxWOsXYKBpXeNiqkffnk/3YxpiktVNbHh7Fj+hPwxYZaLLV3wl4F5/lguQao1brkP/hGMdjaNHu3fdQvVvPd8wPnmzdsXfNxZrx3mH9eC29T+6Tgg9nFIUgWZSTIMdvNFMLn/Nsp1FrOep/C48IFcijAbb3GLacnVWGbysHwN/NFLwI95ksHyenP270oXpQFNWgKX0nPOgFnZCLXqXTcKY9bVo7sSSmHu5vRXzCm6PyVwDFeb9IanQqeEthukOzl+iJaC8LIbQN0F4LkRGmwDhMLq/gHa79/mR0rY++bz+gb39cJF1mm2vYoErVV6Y23b3FpZSPgjWNswLfRMBNYb6VSGDcMnZ0nttTS1FjUTdXj7fZxrAx5J69ijH6WE/+4U22XfcNfkEgxRRPZUXYY1+IJq2hMoNUsztrN3ATiYpwEcyYejoaOqNXQPS5Ukq921+YChrRs3Vxq9a04jsId2354N8ZEn94hBbFL6kP34YDwdmhjFSC8y5LKRuAbibsfjBbfIqkNAjJRYo2jo/+d6
- PuamKUkd
- O1o3F5Hv0DQ5ew2kkr62qf5jDNX7JIi3uQ18jxLEnpA8e1a2HJyWQn4n8fK/zQIbrn1C1RmDqoGlgyz121Z/o8U50FeTVwLxSDR28QwhAc1UNfJ9WGmIKPudYi+KvwdSq3S+VrN/Y1KdZMQK6S+uDJQw1TfiewVjaaEXnccleHkWsGYYfzWnjM5aW3Dk1DdlXybkztuaZH8yT+pE3NNCkOhfJ+LBRNoB7K9F5tVaIHijk1VXjdziduUrYkwpLoO6nTYWXZXXF8aKAArZLm1x2wu5sicCGejdsXE5ojOvYOWekvKZBqtPlxiwhI+uEfG7iy06omPDeg7gChOg1/6xWHoh9ko44n6LVXLyZQzfwlI9wHkg4v5vNNpAXPl2EnJkEy9JfM3oWKqGpdfqUw8FLx0kKYfUAqTjEKAkcQxWPpzVELRsM0pbk09hRvlgvs8V06ey4vlNXIG9y19gbdjoaVgmLQxpmsGdKvT8k9ypLFhOYGaE=
+X-HE-Tag: 1790064874-939024
+X-HE-Meta: U2FsdGVkX1+nlmYTS7wICQfGCKHKTs1j6sDazxUnkPTKUk2AcXqibWvTXQFHOnNzhTjmV3KqDJbmQcuyiV734A1OFgAh1rrSMqmq3SNEyECwZc6dt4ebb/E/0d54zAdAKDkXNzCP4DKqDVxkz4FxNN4likmiZy51O/Ed9fFZxKK0O22Wym+SqP9tAxHZm9beVEbatJ3UBs3TtxUb6Ra/wPBAjiDJVGe8380b3FslfQSV7ATGqX/3ic62j0tbfcech6LKBmCVkh73p9vEMilqxPXXzPtaFuZdNf27/E8vvOx7PWgwQZEIyw21qSMx5NpTxqVKa+MdxQnGDOE6VnlaRm/iQxxjG29mznBC+G7P9yPgYips03e7TWgOxel2JrT2Hm/tnrnGhHnb4Py2g+38KNngDjdDzyhVidTR0mw+Q8kx6F/yOhLBM4H0GRAYZSuk0kHo0WKFstDVXLOIp1GIgxk6Oka1HtJX23FHB++1UkXwRsvmZbzOYdKPFWz2j/OjSzoZtkC04nX6oRFx0AcRJFx2ciTx2gffpkzwHZ8PtAR9Pm6puUG7ceHUa2tuGV2oi7wdoRTJzRicEduNQ/EOCTZc9+0ekzTx1WwBHwF8GfFagNrTjzUfeGf5TP5nWQy9nHdej8Hu/NFATPIs17TMFL1mK0z3xhQdy/2eXG52s5PTGy25gM0xAMvxPZY9m7OWimtGyYTang+JP66IDGarkCXAzSLUZzsH7JpmukaIJCMstTbSAYCJ1sqoOrB7lOp5ms8FRIQAGy0TEc6H30Qg+QAnCM4CbPwPpDAIWLD5kb6kpPHuzzWIQtboVAWgpc5gywO9wSsHy7p2bm+ss09cUFZuoA0bFJLpbEiFXkQhH2Z7hYB6U1TU5dC0Ty83uJoDArS6Vg2l15BD00ISdQQ0CJpNlBEjIgDWxuTAw7PR+Vvf2IyCnkMxq1uIXlYiZpNbErpCgFy5HjbJGJXztll
+ dgVAJYp4
+ kS/oUKGTuNNCAdjqZSwRJCwuztLfZ6a7tfrhbe9Po7179xhaB15tjXcfP6WyEznMM5r22lO2Kf+typRsoCbUubFtbUa9I5BvUtwa8oj79TpZxp4zjIYXzvJFSaL+1wTRv83YbilX535O+1JHgITnsmZpm7B+o41vPMU9E6SJR4fmmh+AM+YKtoAg13ywU2Jxy/mWN9R/K+d0QDROTTeEL5ff/MXSUmdqBz/NCwxtzlDkMC9hkU2XtmJiUCubIAZLwrGANAMAOkJCJTOk2BNdW/Z8fWcukLl2hFRpKhtKN0Xhk5GVULkTafZ5tAnHTD+Sb2pP1y2d5Beabi4nX6EbSAjRVmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,45 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 04:19:40PM +0900, Park Tae-sun wrote:
-> Hi Sarthak,
->
-> Thanks for letting me know!
->
-> That sounds completely fine with me. I independently ran into the same
-> issue while testing mremap_test in QEMU on a minimal kernel without
-> CONFIG_USERFAULTFD, so I'm glad to see it addressed as part of your
-> larger series.
->
-> Feel free to add my:
-> Tested-by: Park Tae-sun <ts930@dgu.ac.kr>
 
-Additionally, for future reference - you were missing cc's.
 
-Fixing this is easy with b4 [0] (the recommended way of sending patches to
-mm):
+On 9/13/26 4:37 PM, Muchun Song wrote:
+> vmemmap_populate_compound_pages() is no longer used outside
+> radix_pgtable.c.
+> 
+> Make it static and drop the unused dev_pagemap argument from
+> its only remaining caller to simplify the code.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> ---
+>   arch/powerpc/include/asm/book3s/64/radix.h |  6 ------
+>   arch/powerpc/mm/book3s64/radix_pgtable.c   | 13 +++++++------
+>   2 files changed, 7 insertions(+), 12 deletions(-)
 
-$ b4 prep --auto-to-cc
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
-Alternatively, you can use scripts/get_maintainer.pl:
+Thanks,
+Qi
 
-$ scripts/get_maintainer.pl --nogit-fallback <files-or-patches>
-
-[0]: https://b4.docs.kernel.org/en/latest/contributor/send.html
-
-Specifically, the following appear to be missing:
-
-  david@kernel.org
-  liam@infradead.org
-  mhocko@suse.com
-  rppt@kernel.org
-  surenb@google.com
-  vbabka@kernel.org
-
->
-> Thanks,
-> Park Tae-sun
-
---
-Cheers, Lorenzo
 
