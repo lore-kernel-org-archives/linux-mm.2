@@ -4,152 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 137B9C98307
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 18:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70876C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 18:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00746B00A5; Tue, 22 Sep 2026 14:29:48 -0400 (EDT)
+	id 63CD46B00A1; Tue, 22 Sep 2026 14:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D80B6B00A6; Tue, 22 Sep 2026 14:29:48 -0400 (EDT)
+	id 5EDF06B00AB; Tue, 22 Sep 2026 14:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89FB66B00A7; Tue, 22 Sep 2026 14:29:48 -0400 (EDT)
+	id 5033A6B00AC; Tue, 22 Sep 2026 14:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 68B206B00A5
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:29:48 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E04780579
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 18:29:47 +0000 (UTC)
-X-FDA: 85242236814.16.FEBF4B2
-Received: from mail-qk2-f13.google.com (mail-qk2-f13.google.com [74.125.230.205])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A8BBF1C000A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 18:29:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=X+qdUwRS;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 28F376B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:36:36 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C7EB120560
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 18:36:35 +0000 (UTC)
+X-FDA: 85242253950.19.97AC9EC
+Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AC278A000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 18:36:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IzkiYu3q;
+	spf=pass (imf25.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790101785;
+	s=arc-20220608; t=1790102193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IEBH2G+jGtGbGG4yhB6a6/Qs6IdlZYnf6Lv/AMN6/lM=;
-	b=Dn0AB/iCfpTANClP5x8BftZrznPrcS7sOSZq8h0EVwTxN6FhHoTBkLo7kUmbH4uta8/EX4
-	cAK7jXEzokgUePiTVMHiD2ssphJrhQblQeRcaMxuGVFOqdEPGCHXCmHeLrgfHw99R3qBVZ
-	BsQ5ZG+4eOGNN7LJM6tSJAbT2dBB14c=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=X+qdUwRS;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.205 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	bh=nghDcAWPVDPl5zImMfn4YxpSAIcjo6vu2fMf5BQL85w=;
+	b=s4QVFSERpXwraETtFMNn0M0Y95wdq3emOCjjf9iU7abQk3JXGh1kjmadykzZ8rpRDYqeuA
+	N4SJntegD8e44nPF5kowuL7T/sKitiVi1UZug15kIrQD8hnnVm/tSsX4FLCeI2Uiubj/Fj
+	n5tYdMquHnNzyybjJrqGDxMi6e6496U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790101785;
-	b=dk0sQKMGTHNS3VVw3YbQX3wfi1jRxw+NbocVRTr/IOgzJLkHdfeNv72171FibxJdbTjdPf
-	VuGfxA2xJAJfCQacoOygmvEXGbRpJJWFNK56WAS0x2c1AGMlSf1vO0t5xmGR6A7vzeu9kv
-	abUDNSt53utGvN6VMDjShZP04ysFRmo=
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910cadeb0so14592785a.3
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:29:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790101785; x=1790706585; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IEBH2G+jGtGbGG4yhB6a6/Qs6IdlZYnf6Lv/AMN6/lM=;
-        b=X+qdUwRSXyJ6x9pvzAK5USCzBdxAUiKXexyUrKXC75ufppYyJ2cXjw7WyjkRsFamYa
-         cMh966maeZx3LgBh6cC9wBCsgpTGT7tC0+E6RCEK5DDVPYO1z2PYoVmL7O0PBz0C8526
-         mYtNo2OnngnUiret2R03bBzRxD/yjN5Es8utNaBUj4KXBwreuQ80spYc/htWSVEEmiV8
-         KYm+wibTIDfEuwrfmtyR+tnRdrD6ba1MsdWt6FBYlkj4YFYJZdeZUYUmUXL2dfVTi5MZ
-         YsBKg3D9RoasgMH518+mfNEkTiOGTz27CqVKtMM+l0ku7gdqcsm/PH/27mnqDNIoxps5
-         AnJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790101785; x=1790706585;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IEBH2G+jGtGbGG4yhB6a6/Qs6IdlZYnf6Lv/AMN6/lM=;
-        b=MquQDZETgru6lUAaYx6HUaQ3wEbWJkgTZEY3iWeYUZu4+piTMref96EF1zwZXwDHDD
-         eE8p7eRvULA4YcfNxZZzFViUWbn8rHVB0IInNhvJfIq14lJUQjonLHoeOnoe2anMKVNm
-         E0DG+XXxk0N+PzUB1yhccEamyUZDra6yvzp8uw500yw5x6E/oxQSBig/G/i/ydJ31oS+
-         AWqUBnG1NojRIb/G0v8Lz91gOoPFhHVE2GHOiKS790S1kzCdSagXWqyTg7Nd/CsfYlp8
-         eI+IuC/fKmmoDtXGayTykOgFoaYcI30bSf/LE+hIGGxkYUWvmJfmVzyCJ3YkWjeZif7A
-         rwyA==
-X-Gm-Message-State: AFuF++nGh8yrB2hWq9owHEVpdmkunG1DCuDzAdoqC5lNkyu62etiNSX+
-	ynjQKDMv3c8uGd+1JbQw9luqZ19kNpmZT74CvSG1dkehnXDWq5Jh+Y4FRHtlMNfts4HGU7KR4wR
-	rW396P/A=
-X-Gm-Gg: AYBFou1gntvhkNDCl9yxOp6gTaUiOQ5QSdvhSNo9M+XjEANBhwGEY2PFRfyq8OoQa1u
-	D0RS5AdyqDILX/rnVwmmmDPb/1CjA7f8N9cW0dWeGFaXsuf1/DpNbeREXmyjQfJRdDcx9Ow00ba
-	K/3fl9jzwbQRTyEozzRWZ+J4WTzmjcbS/AUtiFkdX0OUEcvS9IvAPNtFtKXm8Mp10Lheiz8juQt
-	5FMrQVU4tl717tJ8LFmOIfGAdrXkVnCo7MiCxRCFg5o0eyvNTuyLbX/DlHWLOl3shNYtLDt3ICk
-	PsvXP3Dl4HLP9yFwUt1VlhTi7+J9ynFQDIIqabjEJzbdcKDDCaxW+P7jHOmebUQ4xvjZ1QsQnYN
-	2hB8PDchOpyFTOjGzQrbJg9y44UsE6KWdMuXfJ4heQgTBHDnAcbtbRJqwfJZu6Ywd5kMQpO7fwp
-	0mU1Z0GURBMN4FmBkctRyUgJtjKGat11yJE/KtqTgvAiFDOutslW8QFhXz3YqSRpUMh7UEMCIXC
-	4L2s3e8GcMts/okp7G9IKZtl3D/bKDZe+iZYs6QjgfM6FAJDjcgxy3pERth
-X-Received: by 2002:a05:620a:29c8:b0:939:2c5c:7977 with SMTP id af79cd13be357-93c250a3567mr41425285a.20.1790101784800;
-        Tue, 22 Sep 2026 11:29:44 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c24889ac9sm37130085a.27.2026.09.22.11.29.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 11:29:44 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	kprateek.nayak@amd.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	jannh@google.com,
-	pfalcato@suse.de,
-	hannes@cmpxchg.org,
-	shy828301@gmail.com,
-	raghavendra.kt@amd.com
-Subject: [PATCH v3 7/7] mm: use VMA flag helpers in NUMA balancing
-Date: Tue, 22 Sep 2026 14:29:28 -0400
-Message-ID: <20260922182928.2199090-8-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260922182928.2199090-1-gourry@gourry.net>
-References: <20260922182928.2199090-1-gourry@gourry.net>
+	t=1790102193;
+	b=vY9zXmR+OPsOsYHV8PLlO0qqI+/TwtUx6KpSZyhmTCIpcndrG+/Db+6tOdBnTZBl56HBKz
+	Ac2up/JwEW92xJOwaeQBm5qs+12xuJnDNoqaQziYAPGgj/Q09aLrV7WLUc2CdFkIvB0Elt
+	VS1UxQ3Fa1vNMpBw4t2IfGRMEpbXcBk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IzkiYu3q;
+	spf=pass (imf25.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=/+76OAMwYnGkbf/lDqubqIo1lwcC6f4Jt7YNkLvU34s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790102191; v=1; x=1790706991;
+ b=IzkiYu3qwBFU5LKonFkKgqt4GuAKl+Ws32FEFpXq107bwJsBm+A+kShxuT0CQBi0753q1K7+
+ vl59sdPSmBxo5Znevs/I0slgsAVF9ysgZQ5hC3GNmSntqCJS3G8UhuUg5f1yPcuHk6u5Iq3eqag
+ A3VoKBbqOSXwRdI02wK7o8fw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 4506db173dfa046a;
+	Tue, 22 Sep 2026 18:36:30 +0000
+X-Mizu-Trace-ID: 4506db173dfa046a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
+Date: Tue, 22 Sep 2026 11:36:24 -0700
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
+ Update
+To: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org
+Cc: Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+References: <20260918200640.887030-1-dmatlack@google.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20260918200640.887030-1-dmatlack@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: izagatr3j96sphuae6aczihu9ftq4mk4
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A8BBF1C000A
-X-HE-Tag: 1790101785-841167
-X-HE-Meta: U2FsdGVkX18i+d8SdujCbe3j3fp3TF2fIep9FbmJdBpMTn8/yffOV42H+3Z+Y6kljUoj7i1FEEp2/n2JOgNSNGrjOlO4nsdWYWM7smaLVFSv7tE4B4GDEqColr3X4cbhHGd5NTnzLqp8uOedIvXFaAjMsbmGjXE+hjvepPDfy84HHrWORh6YNNS6IgVtsB6kuoFb/ZGMpo/fLX3PjYavofij5bhJrcZW/bAXV2kIxPnrlihVOulU5zBEf/uUxTdlS8UV1JUhAK5B1oEfQBhXRxPiS8LdWAo/z9Lpljw8Co9IktVTigZoEVvMMgXKslZpgexJT7PkKHXcxTcu7lO6cllbEl3J2Du62E7lTTVdjphB73j6SY9sNyVoWrC+R4DRvfXJPah4vZ89ljNRC8XNOi50lOWW1EBK+H2+ngHGqUw+eia8IugJ+iscgIMZ8qh3BFqDz0mGiRBl6qW6CD6azssL7TqOFvoF12qUzDFBfPXVHNmLiBeokUZoz1B4R+S04sqdcvVhqeZbsHFifBTSLC6FnQFwEgjpjEZKYIpm3RR6y+vQmWQCXJiJ9JqFpZsgc0wpWQXUEDeQaGnhraamyvyCLquV0ONeMt3XU4d6zpNA3afMORvUNMKoGe4i7dZ8z/tMiBaLAdhnKFIX4aTmLZSx52bI4p3ucIKVbQQiOqxj9eiowpZyU8uP/eXdhhvTFqMnhXBDDBvdu6wTy+/RudsLAnW+PDoCGOE5+1HD+PnJ1jaXjI6W9bntyGPm7L3b6HEttJdhklpYTcfX9c/+AI/P+OwOt/m5MenGyWUziPtX0pOBu4G9msQvE+bMh/CdeULMK98cakZ6ymDz8IKd2M7xz3XmN2y+DNWE1sWu7Hzuv4zcwZGXwsbDO4ZH7yMvBuegrggM+4km3gEG1Tymvpc+19j9CdoK5XBQzv4RAhG2gkhTLtLEwFOs8AqKWSglDal/ivczFZ/iC+itAun
- YXUrvKxv
- HPEIwTzUl4lH/tOyIWzXVKdsfXPU0sdJ6G2KZtWBkx7B+FOMt0hhAYlA6HnnbkjMXQ9KDTS3OgbjU661GbCA1SyvHjZl2LR4yxPOO5+NecYT1vf2/+VXLtjtc2AVyBkqNLOEIcdSJX8Fx0a7cVR2Eb7JgaXON7dQe/bRafuZebBDztmq66Fu8Gyk93Rlqb2uFCz5vBytGykZ9WuN2yDYdHRFYxkl9QanZkg4qtxAXre5DBlU2ALFasWc4BJR7oXyDrJhgj8WamEq+zBAggQoKOF4nbi/fT8CgwzwQ0f+HUcUOPWEzJM9Sk3raVSDhPff9+hzvGuWvige30L4BjOmwLnrsKnJO6NV8mA3+hiiBFlYRSyHGo7BjS5KkJBD1mmHr8J8LbKYvnN+yWHHR93TXJYEHUw==
+X-Stat-Signature: a8peccfixm9quxr1bcacemo7k5cm3q7w
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AC278A000B
+X-HE-Tag: 1790102192-688838
+X-HE-Meta: U2FsdGVkX1/rKr3xbGYWlf1SBEYXffQTAPuMoT9YIpphyfgCM4x6ZCFUJ9YrzDew1wEi2TBg2Yoi/fEMiGxb1JEVEt02gNMbcRkcM+y4WXydjv8CHqPyY9aU9kOWUdKqRXGUXiIb2uCo3HvhGbyjtN+l5bvptjN7Kc3A9du8pfHhGH/sBUR65i/+N2/h7K+aIXC19NuvQPcsPwsM2nvL3pvCa9sAagnwBtndQdPCIocUOvRKWFltnFflk5dsnV0EWsNGFGpNQg61YSo/UyxFekxiZNjP70kUSVdIHMdds8oiMxBVa3cn61M6nbKFFCCM0FsMbovkZyvLQFmzfbbV7pFw4eWxjANyZmznvUhbt1xqnWToL08K5EQ1F+i0FxT8yPUuupcsQGLYNNnTX5ajOvac1QwZ6AAqnZY9fiYG+RczCIOfBV9cW8JXM9rQr7JWrY/TILDMf2YU+Ubh1lfNKZZxOLX+oG7mw/4hCu1sqLKNLdV0wq4ZkbyHEic/062D7i863p5KjeZVjVl9ZnpUvVYbdkyHiC+hrfI7DyiOaF31XOUi2DgxALUGUcM8nN08bHEJW/AAirqGfxW5Ib5eNFh/jmBxA5riaEr7uIuDVvH4EyVLSAPhJeC504aL2bWed9L5eVo04j2puceP6xsHNwKdsPKoIboDKdyv9iffGknuRq0uPTdZPCNkT2KFT3dxCbL5ocoRdv8cwWWRVZxT3BxMyOiGWNBooZ6nS2kRx4YgSuIySUesqrS6s9Vk6iKW9sWJX+Wh7Wvk3y7JkFLWJOVP4fDPGrf2+FbvA7RzwKFSgsp6RB2EHUb4TnuBdPrkJIlfPpkmzWohcG9xPD2QPSHeC9BNzrFLckZ2nxuA+TFWrxI3QQWU2eFeK2fKxNzyu2R7mfkF/t3pfC/67Fcz39ZD3xAwXdWyeWeZZnZ5ZpK2v6S9ng8FJ673+Z03hN1oD9owumdcb2KRHfx25eh
+ gTXqCVKf
+ c0o2S/yg2anprdirmBJqhoNygbx+HI66jkZKS+bN/ISdyghTbS9N8kvf+TrkGFaLzT8waZQgRU0EsSqf1GYfLkfAdfhuAEVBJsw0jjvo3h+i2LTqUNxpvF5arkTB9lw+ZD7pv6DPv+bCkyvO58bEvRMhVr17sY5QvQ2EQM78XwWFq3sx2CIUXN2/Bs1jNe+8C2rYinotJw3RviyXZt8UpZw3Xc7kmXT4L1Ih8s9M0lDzczAuNi0RUxmN+UeSvdSTLAoqflonBkjJidEMlbdxR73hXbObQ4EStgj+Wta1vbBzUu5sH2i6vHQS7dmOVBAE6Pv+hpA1yRP2+cjWQGaSgQ0vOHCSa2Iji/Lab0Q8Voh7yuW1fCyDMk8PevMkXeFad3tEvmBqK3KE1HAKtAJBKOcoGMgPm4uq2x3Wm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,65 +106,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Gregory Price (Meta)" <gourry@gourry.net>
+在 2026/9/18 13:06, David Matlack 写道:
+> This series can be found on GitHub:
+> 
+>    https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v9
+> 
+> This series introduces support in the PCI core for Live Update, enabling
+> drivers to preserve PCI devices across a kexec-based kernel update
+> without interrupting the device. This functionality is critical for
+> minimizing downtime in environments where PCI devices (e.g., those
+> assigned to VMs via VFIO) must continue operating or maintain state
+> across a host kernel upgrade.
+> 
+> Specifically, this series allows preserved PCI devices to perform
+> uninterrupted memory transactions (DMA) targeting system memory
+> (specifically, preserved memfds) across a Live Update. These devices can
+> be behind a bridge but must not be VFs. Support for P2P and VF
+> preservation will be addressed in future series.
+> 
+> Series Overview
+> ---------------
+> 
+> This series implements the following to support PCI device preservation
+> across Live Update:
+> 
+>    1. Set up a File-Lifecycle-Bound (FLB) handler to track and preserve
+>       PCI-specific state (struct pci_ser) across Live Update using Kexec
+>       Handover (KHO).
+> 
+>    2. Add APIs for drivers to register devices for preservation
+>       (outgoing) and for the PCI core to identify preserved devices
+>       during enumeration (incoming)
+> 
+>    3. Automatically preserve all upstream bridges for any preserved
+>       endpoint. Use reference counting to ensure bridges remain preserved
+>       as long as any downstream device is preserved.
+> 
+>    4. Guarantee that preserved devices retain the same RequesterID (bus,
+>       device, function) for the duration of their preservation by
+>       inheriting secondary bus numbers, subordinate bus numbers, and ARI
+>       Forwarding Enable on preserved bridges.
+> 
+>    5. Guarantee that memory transactions to/from preserved devices are
+>       routed consistently by inheriting Access Control Services (ACS)
+>       flags across a Live Update, from the endpoint up to the root port.
+> 
+>    6. Modify the PCI shutdown path to avoid disabling bus mastering on
+>       preserved devices, thereby allowing preserved devices to perform
+>       uninterrupted during kexec for Live Update.
+> 
+>    7. Provide comprehensive documentation for the FLB API, device
+>       tracking mechanisms, and the division of responsibilities between
+>       the PCI core, drivers, and userspace.
+> 
+> Merge Plan
+> ----------
+> 
+> This series will be merged through liveupdate.git, matching the
+> agreed-upon tree in the MAINTAINERS entry for PCI LIVE UPDATE.
+> 
+> Testing
+> -------
+> 
+> This series was tested in conjunction with v5 of the VFIO PCI driver
+> series:
+> 
+>    https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
+> 
+> The full set of patches used for testing can be found on GitHub.
+> 
+>    https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v9-with-vfio
+> 
+> Testing was performed using the new VFIO selftests:
+> 
+>    - vfio_pci_liveupdate_uapi_test
+>    - vfio_pci_liveupdate_kexec_test
+> 
+> Both tests were run in a QEMU-based VM environment (using a single
+> virtio-net PCIe device connected to a root port to exercise bridge
+> support) and on bare metal using an Intel EMR server with 8x Intel DSA
+> PCIe devices and 1x NVMe device.
+> 
+> Future Work
+> -----------
+> 
+> Following this series, we expect to make further improvements to the PCI
+> core support for Live Update:
+> 
+>    - Allow P2P across Live Update by avoiding resizing or moving
+>      preserved device BARs and preserving all upstream bridge windows.
+> 
+>    - Support preserving Virtual Functions by preserving SR-IOV
+>      configuration on PFs and enumerating VFs after Live Update.
 
-Use vma_test() instead of accessing vm_flags directly in the NUMA
-balancing code touched by the preceding fixes. Keep the existing flag
-predicates unchanged.
+Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across 
+kexec is a foundational step for minimizing downtime.
 
-No functional change intended.
+As we look toward complete end-to-end support for DMA preservation 
+across Live Update—especially for VFIO device passthrough and dma-buf 
+sharing scenarios—IOMMU table/domain preservation becomes crucial to 
+prevent IOMMU page faults when devices continue performing DMA during kexec.
 
-Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-Link: https://lore.kernel.org/r/aq1FDhy00epXXtgd@gremlin
-Assisted-by: LLM
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- kernel/sched/fair.c | 3 ++-
- mm/internal.h       | 2 +-
- mm/migrate.c        | 2 +-
- 3 files changed, 4 insertions(+), 3 deletions(-)
+I would like to ask about the current status and roadmap regarding IOMMU
+Live Update / KHO (Kexec Handover) support:
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 412c72084a63d..0d48d595740bf 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4224,7 +4224,8 @@ static void task_numa_work(struct callback_head *work)
- 		 * under cache pressure can drive considerable bandwidth.
- 		 */
- 		placement_scan = !(vma->vm_file &&
--			(vma->vm_flags & (VM_READ | VM_WRITE)) == VM_READ);
-+		    vma_test(vma, VMA_READ_BIT) &&
-+		    !vma_test(vma, VMA_WRITE_BIT));
- 
- 		if (!vma->vm_mm || (!placement_scan && !tiering)) {
- 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_SHARED_RO);
-diff --git a/mm/internal.h b/mm/internal.h
-index cbeaf1fc38cfc..560406c36a757 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1240,7 +1240,7 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
- 
- static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
- {
--	if (vma->vm_flags & VM_SHARED)
-+	if (vma_test(vma, VMA_SHARED_BIT))
- 		return false;
- 
- 	return atomic_read(&vma->vm_mm->mm_users) == 1;
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 6a08690cfe219..8e1e5ff1cb580 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2705,7 +2705,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
- 		 * See folio_maybe_mapped_shared() on possible imprecision
- 		 * when we cannot easily detect if a folio is shared.
- 		 */
--		if ((vma->vm_flags & VM_EXEC) &&
-+		if (vma_test(vma, VMA_EXEC_BIT) &&
- 		    folio_maybe_mapped_shared(folio) &&
- 		    (!folio_in_lowtier(folio) || !node_is_toptier(node)))
- 			return -EACCES;
--- 
-2.53.0-Meta
+Is there an ongoing effort or RFC series for IOMMU handover / page-table
+preservation currently in development or under discussion?
+
+How is the coordination between the PCI core Live Update mechanisms and
+the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
+restoring domains or handing over root tables)?
+
+Any pointers to active discussion threads, RFCs, or future plans 
+regarding IOMMU participation in Live Update would be greatly appreciated.
+
+Thanks,
+
+Yanjun Zhu
+
+> 
+> Changelog
+> ---------
+> 
+> v9:
+>   - Simplify pci_liveupdate_preserve_bus_numbers() to always return true
+>     if a device was preserved and drop pci_liveupdate_scan_bridge_end()
+>     (Bjorn)
+>   - Add pci_liveupdate_refuse_bus_numbers() to determine when it is safe
+>     for the PCI core to assign bus numbers to unconfigured bridges. This
+>     required moving "Auto-preserve upstream bridges across Live Update"
+>     before "Preserve bus numbers during Live Update" (Bjorn)
+>   - Add "PCI: Save and restore the ACS Control register" so that the ACS
+>     Control register is handled by the normal save/restore path (Bjorn)
+>   - Rename struct pci_liveupdate::was_preserved to was_incoming, to
+>     disambiguate incoming from outgoing preservation (me)
+>   - Log unfinished preserved devices from the incoming FLB rather than
+>     by walking struct pci_dev (Sashiko)
+>   - Document that state handed over by the previous kernel is trusted,
+>     and panic in pci_flb_retrieve() where failures are detected rather
+>     than unwinding into a caller that panics anyway (Sashiko)
+>   - Fall back to programming ACS from scratch when a preserved device has
+>     no ACS save buffer, since there is nowhere to record the adopted
+>     controls and they would be lost by the first reset (Sashiko)
+>   - Drop Reviewed-by tags from "Preserve bus numbers during Live Update"
+>     and "Adopt ACS controls in incoming preserved devices", both of which
+>     changed materially since v8
+>   - Extend commit messages and kernel-doc comments to make the FLB code
+>     flow more clear (Bjorn)
+>   - Address various spelling, formatting, and stylistic issues (Bjorn)
+> 
+> v8: https://lore.kernel.org/linux-pci/20260728221007.2098560-1-dmatlack@google.com/
+> v7: https://lore.kernel.org/linux-pci/20260710212616.1351130-1-dmatlack@google.com/
+> v6: https://lore.kernel.org/linux-pci/20260522202410.3104264-1-dmatlack@google.com/
+> v5: https://lore.kernel.org/linux-pci/20260512184846.119396-1-dmatlack@google.com/
+> v4: https://lore.kernel.org/linux-pci/20260423212316.3431746-1-dmatlack@google.com/
+> v3: https://lore.kernel.org/kvm/20260323235817.1960573-1-dmatlack@google.com/
+> v2: https://lore.kernel.org/kvm/20260129212510.967611-1-dmatlack@google.com/
+> v1: https://lore.kernel.org/kvm/20251126193608.2678510-1-dmatlack@google.com/
+> rfc: https://lore.kernel.org/kvm/20251018000713.677779-1-vipinsh@google.com/
+> 
+> 
+> David Matlack (13):
+>    PCI: liveupdate: Set up FLB handler for the PCI core
+>    PCI: liveupdate: Track outgoing preserved PCI devices
+>    PCI: liveupdate: Track incoming preserved PCI devices
+>    PCI: liveupdate: Document driver binding responsibilities
+>    PCI: liveupdate: Auto-preserve upstream bridges across Live Update
+>    PCI: liveupdate: Preserve bus numbers during Live Update
+>    PCI: Refactor matching logic for pci_dev_acs_ops
+>    PCI: Save and restore the ACS Control register
+>    PCI: liveupdate: Adopt ACS controls in incoming preserved devices
+>    PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
+>    PCI: liveupdate: Freeze preservation status during shutdown
+>    PCI: liveupdate: Do not disable bus mastering on preserved devices
+>      during kexec
+>    Documentation: PCI: Add documentation for Live Update
+> 
+>   Documentation/PCI/index.rst                   |    1 +
+>   Documentation/PCI/liveupdate.rst              |   35 +
+>   .../admin-guide/kernel-parameters.txt         |    7 +-
+>   Documentation/core-api/liveupdate.rst         |    5 +
+>   MAINTAINERS                                   |   15 +
+>   drivers/pci/Kconfig                           |   15 +
+>   drivers/pci/Makefile                          |    1 +
+>   drivers/pci/liveupdate.c                      | 1015 +++++++++++++++++
+>   drivers/pci/liveupdate.h                      |   62 +
+>   drivers/pci/pci-driver.c                      |    9 +-
+>   drivers/pci/pci.c                             |   79 +-
+>   drivers/pci/pci.h                             |    5 +
+>   drivers/pci/probe.c                           |   16 +-
+>   drivers/pci/quirks.c                          |   58 +-
+>   include/linux/kho/abi/pci.h                   |   66 ++
+>   include/linux/pci.h                           |    7 +
+>   include/linux/pci_liveupdate.h                |   72 ++
+>   17 files changed, 1429 insertions(+), 39 deletions(-)
+>   create mode 100644 Documentation/PCI/liveupdate.rst
+>   create mode 100644 drivers/pci/liveupdate.c
+>   create mode 100644 drivers/pci/liveupdate.h
+>   create mode 100644 include/linux/kho/abi/pci.h
+>   create mode 100644 include/linux/pci_liveupdate.h
+> 
+> 
+> base-commit: 945d61765894dda2f0344de50cb1ade2e51b66fd
 
 
