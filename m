@@ -4,97 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E27C98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:15:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B31F6C98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:15:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00DC6B00AB; Tue, 22 Sep 2026 00:15:17 -0400 (EDT)
+	id A00256B00AD; Tue, 22 Sep 2026 00:15:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1516B00AC; Tue, 22 Sep 2026 00:15:17 -0400 (EDT)
+	id 9B0E26B00AE; Tue, 22 Sep 2026 00:15:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EDE26B00AD; Tue, 22 Sep 2026 00:15:17 -0400 (EDT)
+	id 89FDE6B00AF; Tue, 22 Sep 2026 00:15:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C6D36B00AB
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:15:17 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B184037D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:15:16 +0000 (UTC)
-X-FDA: 85240083432.09.35323DE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id F0A2120002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:15:14 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8eoeLIG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 665A46B00AD
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:15:33 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2FC78039E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:15:32 +0000 (UTC)
+X-FDA: 85240084104.23.134A72C
+Received: from mail-pz2-f27.google.com (mail-pz2-f27.google.com [74.125.228.27])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0A0D34000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:15:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RzoBei4D;
+	spf=pass (imf27.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.228.27 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790050515;
-	b=3IYHr/zcceggDw5QmRvmMXnAgJ2Bhe+T6zXW+O1dV6h2hYeplONkandgTb0h2l7gZ8fsPr
-	5+exLiLk81qKdALM/0oQvxCSKMABFHbcMrxECS2ZrG7wT/gd6ZiFVwfzI13YAyzNfBKazT
-	iN9cDRsvyw6fhaQy5BsJvPeyyX4+m0I=
+	t=1790050531;
+	b=IjN8+rw0rcH8l/+KW4Y6dtvXDm6r775QMiNwvSCEVgKoFylV4Rfky4sRgpycbfbl2fdilM
+	unv4NHuS7Ls94zpk63dgNqzSRlUUo0fXI6fc0sXOqDRrmpUU2Nfl+fMVyaZpLhCCS6ag90
+	5f5jOA8z0pMgLd5ldAV2OUPMnPpLzM8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i8eoeLIG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RzoBei4D;
+	spf=pass (imf27.hostedemail.com: domain of zhangbo0325@gmail.com designates 74.125.228.27 as permitted sender) smtp.mailfrom=zhangbo0325@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790050515;
+	s=arc-20220608; t=1790050531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boh3TVrKyNvSdhPdrQfdvLGE6AQK3mRxCRvL6MrRYaw=;
-	b=mgWpkJQOUYq4REbg4OF2G1x04/mP7Hik/tlg53dVT6BBIw0MtLTpOotu0mPHjQ4OJ2E+/y
-	VkYTPmptTgpezba+GPoN8Fdlt1DmMZfkE+yFzaMQbGC7Q+sJQtD39KgxpxSWDvKMdHkx1B
-	W4n3rKWX8YCUqRxPkxZhMFZLs0/JtMY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A1DB41FBF;
-	Tue, 22 Sep 2026 04:15:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F9E1F000FF;
-	Tue, 22 Sep 2026 04:15:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790050514;
-	bh=boh3TVrKyNvSdhPdrQfdvLGE6AQK3mRxCRvL6MrRYaw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i8eoeLIGAfbZtTuppPHSK/pR3V8fYKPII9qU9LQ73EHTxe+bJ3wsJiC7+pD826Fv7
-	 KoXLXq2C2d9edwocjsW3Ao7IDHyA5M+hnYcP316WYhXo4J6k7lSiaUwoB+8w66GiJO
-	 TgAW/JX+OS7V+t6z7XPbLPwMGMl4Zn1L6UO7+CNfK+hbliGUy0MvHLXHkZaTCi0jcy
-	 JOlsXR7utH6TZySSNW6rlqdw5UYUJaww8GuVqHoYtK8rO5fnT4OItM4wnMOMvtZHU6
-	 iEWyX+e0fDeadgCStA+8+yiHanUOn2ttxg1u/DpKp9VmtoqJ5IsQUNQc501Ow1EoEx
-	 M1xQr6mz0ENig==
-Date: Tue, 22 Sep 2026 06:15:07 +0200
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Hongfu Li <hongfu.li@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>, Chris Down <chris@chrisdown.name>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
- together with hugetlb folio
-Message-ID: <arIAyyjYcCKHFmyD@localhost.localdomain>
-References: <20260921-for-hugetlb_state-v1-0-8a6eec92661f@kylinos.cn>
- <20260921-for-hugetlb_state-v1-2-8a6eec92661f@kylinos.cn>
+	bh=eqDv7pHlkC+KFYmyHHCyZJU3taMvXTuZA5VzDL+HOrw=;
+	b=FL4Qvbts1k47WFxup4/nuekCmHWXJxVnPfZAK2vUDhhfWsFYjI74093tLPTZedEwT1+qoz
+	aytkr8y61VRlH1/VmooL++7k6fR2QZU8v36WKDOzEVKRI4lEoVMxtQC8QgOR6wXYDq6REb
+	6+adICwshE/v0f2mdrQawZbq9frgmTY=
+Received: by mail-pz2-f27.google.com with SMTP id 41be03b00d2f7-cc1cea50dc3so2659502a12.3
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 21:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790050530; x=1790655330; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eqDv7pHlkC+KFYmyHHCyZJU3taMvXTuZA5VzDL+HOrw=;
+        b=RzoBei4DoUYmeY0UTSZ4JEdX54lQ8yrGxzP5zqfJi8cDm5X4fAFepuFQnzVNngLA5e
+         ms4/55Yaep5cdvAmSivyqdLvQ52sOdcw4BYbqrbsPetE8Ac1JvCyfxUnv9pmiSY27IQv
+         KNzCVyf0j3NknCW1Z9hvXDFe07V6URqADtaeBb3zjtyk8vr6KZDbcAQfuOiStSHQNMrw
+         ZnMi3ptLS3AXlfzQBF2DP5huBLcYFxLvXpf8hqI2LJ3DNnY7JNN31OQ3NDXc7wOSOwaL
+         4b/iSA8SElTivY0CY5gHtV2n2zfi+oiet3n9EX2LP6p5moKVZOaz57nH+Sabntd0t+e3
+         y+1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790050530; x=1790655330;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eqDv7pHlkC+KFYmyHHCyZJU3taMvXTuZA5VzDL+HOrw=;
+        b=pQihrrhW7aU4nqz8B6jVZyO3Pg6xbCD3kMKHN2HZAPLZFQCNNq08PoZtiLln+98AUi
+         HbqSTcFWefGo3bYF0kQ2Sk7XGkRhp3Tq4DRljIygGYK8XR/Kv4k1F5Y/fbE0n460xOdg
+         hF6MsFpoFzSkUbkrsDfVRXsCrvV9NWlzSWMKObe5ChkwsYPm2j7E6Q9clW6drzwdKBV3
+         OV7Ha9/xQ3aj46RCsqXDHhehTy6L4sXue694fCL0DhQ27HoL8+8G+F7HpT3A2rt3lSzQ
+         +7lx/jVI/sckC8LPEy6HylIa9wHTWQzBKeMlwRgwpSZQiqDMUI1r4rEcFTSwhNEEsL/N
+         H2EA==
+X-Forwarded-Encrypted: i=1; AKwUvBzgw/LtQTntSmIJ5rqxJneXhRQzmv8OWfINjhtzKnpnJrh17FApweK7SWsPJ8ioJrRUiM4sMj5FmQ==@kvack.org
+X-Gm-Message-State: AFuF++mSXtfxBiOgS59e3KlziuvvJmeCoyY0WpMKPcMSN+iiLlSb4O8U
+	T8yJ/Yi8mDMCIyUvDnVfja3MyEUrveqPDT4LtlHnm24xgSuM7mzCVcGM
+X-Gm-Gg: AYBFou3d/m9ej56HUM3BdD3/eYakBQ3jBPFAxc04b5NPv8ZU3p/orjF467B11HP8Wby
+	/Z6v+uE+H4KWT9WYYZVXzNhMN2HbgR6H75v5Vqq0/nFIDHBXbwGA6N5sYDLnVZnl9nU5HBsGPuq
+	g2lRtuZUGyzcWl2zXjr/PxUJ9DH1UctbjyeqdAHdfaeADhTfOQFCFb5T4M3ontPGu+H8k/JN/9r
+	BSfl0P5uRm41sY7P+F4pbs2zJ3L0i3HPyz2GjC0SiHh1EbfTu0zCVlEoVKQdvL+u11zLYeO7xXy
+	4aJ/Yywu2/pns6ztsv+X5rm7JdUbTvHM+EAAg7xk2wXbFhLQAgp5gTw+IWc1l2MzvoLZw1el+Kv
+	sZ/9gT9/ZGjEiZGl+/jVe2K1dxLE1WVHry8dY4lYRnHr2mNwlFckeYPkwbsNFxpdl8jB4a3z2Ei
+	Y1YWPGhxfimNtIhN6RNk1ZyWlh92BNEYlBhTkjB53PAO5Ys2sC/2aluNqfg1z2KPosNwpQ9rp7h
+	OC+8ZSYUGHFnrMG
+X-Received: by 2002:a17:90b:384d:b0:39e:6c6a:4b67 with SMTP id 98e67ed59e1d1-39e6c6a5448mr11353516a91.49.1790050529698;
+        Mon, 21 Sep 2026 21:15:29 -0700 (PDT)
+Received: from zhangbo56-PC.mioffice.cn ([43.224.245.235])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06e26e6a2sm887240a91.2.2026.09.21.21.15.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 21:15:29 -0700 (PDT)
+From: Bo Zhang <zhangbo0325@gmail.com>
+X-Google-Original-From: Bo Zhang <zhangbo56@xiaomi.com>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	david@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	liam@infradead.org,
+	rppt@kernel.org,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	zhaonanzhe@xiaomi.com,
+	lipengfei28@xiaomi.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] mm: compaction: mTHP-friendly memory compaction
+Date: Tue, 22 Sep 2026 12:15:22 +0800
+Message-Id: <20260922041522.1824249-1-zhangbo56@xiaomi.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <aq1SrcniIRU-8f2W@gremlin>
+References: <aq1SrcniIRU-8f2W@gremlin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260921-for-hugetlb_state-v1-2-8a6eec92661f@kylinos.cn>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F0A2120002
-X-Stat-Signature: p31uumaakah6cbp16339q61zre5qkcbn
-X-HE-Tag: 1790050514-690158
-X-HE-Meta: U2FsdGVkX18ym6XQFQ/+CJZi6aEKSczcrPtqh/U1sCeKfQYzVvoONZeydZ320tRlrp29ACZM/Iu3RIPs5NiOuTkX/eeJbwheU8672XEgo5uKaz6hImi5139ty01ARVp0udBc3gVt7Rpy7IfSSm+jTWnNTtkmTDOGCA8t2Dn1KOpz1wgcQBApjUcJYkloSqoPCtInE+y28/i5y2SDnabLxPgxfLBlFsr/SNw5XVvAna0eMkYbwrJdiNgGll/IvGLeoXEtWOaFjHZgKCNo99vd3AaYDwL4mL5HdrnIhpy8YRphubmRj+OrDp1llssIowAjyhJ6/Dr5/sMnwLyL6Lw10N/teJXEz42GgPfYbemd6O6cqO2m93VGeLtPM2pQFyW6wNdwvEidZgPvGqZ/wZTzyVx69rxruLxSKo+YkgmpuO32rDrYMEgWITYsHp0J81m+fxFm+Nj4Erpd1+Al+18S7x3Jb6/0k36i+0GUi3GTxmic7BbdJphAhZsjJwiXfoI3vs0BT5IYpwEEwHi0FqrkARSqU1x99ZH/lTRjdbgLvLtEpqgqvWj74vLm32HOegGkuy/yHS9yDpWUtDXBb8q2yCEZJTFZld3IcQF9//CKhPwGdstbhMXEZwm/jE5YzGx5GocSvVZzx54DUBaTA/wg++u65G7MZPnP3o4+QTqWrMIo2FobDJgLo8KeB/skaj+9xIGqyH8CuVINhIcnAJ/EWouDsXUj2t+MOlhx2CtvXSyvUBnNa92PfvvRExfvp29+dmNwTWC97MEF/bJSTQ5BM6Lz8BfzqfyM+BxpSNcMXKGA1ywds9wUptIjApx0UcE4lSbEje3sP0u17XBtMeSY3yWb7VJgFGekU2UtE3z6GtHUYcbUXL/nrWmIcLpXNUp/qwQflJ4xVcx1ycT3ehjc5VjOJpfoVRDI46z0t6duDm5VB0bhru7Q5HkATHUTHLAIsk8C4fQf+E+MVPF7X8A
- oNfschKC
- QH8z4dZn3gHNT0UAVX5mQmU7OeN9kKhxO9Mxd6n+Yvg05FW2VGCAVB/jA1clG57Xp5PmOeKc9vUFGFvTavJLig6BdhsB89v9InQY+e3TA6y8ZYLli26nMp07QiEW/LIUXu+PFwVLmRVK1iqWjScEfE13mK7H6ZonOfx0FD02d7wbQY8pqR94RCa/J4NCY6qUbeXbUn1SrfViV2b9tbQGZEAKpIzHjR3IvrEKLdUW4cvMSsg6oeZWeho+9b/xT0C7Mw9y7DlRIWLTcML2mYmCR7veJEYXuW18DwOwYHSg+Vq/gutlCiP6c4r2ysg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0A0D34000B
+X-Stat-Signature: wrbjt1xh1s6m8gtwto8mk5hc5xzhqojh
+X-HE-Tag: 1790050530-93018
+X-HE-Meta: U2FsdGVkX19zwCPGOIQV9lwR0a+dW7RwyW+sWEwywgT9Fq55SNHhFLoWE2xYYXWVCwFivWdCDNn8q/yaPvQERME1CwFIJos/y82EBssb/wwRyRSoS02cQ6Pfdki8KzPXG2SmqtbsFRWHF9tXr9mBzICrjpcOlyHkm+6LjTYAs6cuGabOc+E7MgEsj2t1h+0Y/8XQHYer66EqhjVnYhxHrpaGJKB602uN8gukJlXHMZOT3T+S1+pML7ZVuhJDOJ/3zR2MrKd24lw0/Ux6+nuB9R7KSusvGddzE9dZ+2x+1SwSUqHlObNKEZ/UtcejbnbPjW4KvVs7TDdeoCDIaoyqeYSZJSJVY5Sw2Jb0DpL0YWq2u12MEkOgVKzPbmPkRF4EoeLacfsVsitg+o8cjD/J7WhelcVL/9zcRI0w0KHkhzHMktPMf+d7zRhcaTlHho6DDixIKCMmZf6Ob4BhsqOQvESieB1hDaWS38QIJs648ye6tYNEpq0LrU/jp3wsGRHpE2DgMuH1fmB8l8U26hV1DRbJxLBbWTg+EaG6wyT06PlpIRuxbMTYx8DqIJmk1jbs3j359q7YDAjtm1CrAIb12EzQS4TWi1MjhBqyQv1lxdjFzMecZgAH36i3QVItxl6EJNxkMKXB1Sd3K61pNhrt7V8SeKko3CVv2OVVz8Ikea4ZzxuereRdVhgdv3bnXUdVY8j6PGPl/VDHX3mwk0Mcf35tRAKDGjH2z60e7uan7jLBDwJU4htnSDu34yNKWv9PSHxomDC11Scf3W8KIlUaXMLlBnKqNKJsF4cwCAkXB5CBmADFyI0mHNKU0R0TMHsPzfKC6RAXt+87pTkhQpuyvhHWsO61zr8gyZWRXC5iCcudXWaJnodnBGXGVuiHQMQ8LdTf/dasAAKu4brhTwNwM0nhq33OjxHMKf+JI+dgBNQFUCmZIB5W/SPayymR17e24M2PK8tewhWEMCQ10DP
+ fXSoZgwo
+ Bai2OB+Y1mFAAQpIp9qtIuls4pWGtv38720JRx4y6CscKeXode0kj++X4Lnt7wDTYITDeo5bLNGDesXB4+SUH9JANeMkUCzeXQqZDyVUM84PAO2YZi9wOYJf7ZDeWEvM1sYcwwOgY2b+tcKE/bRTrYHt6Bmwy82AEVy0vpSKg0HAxK52ke/b7VHw7yHlQNUbpWtULxy+omvt9TWs2hNzWuonRxbbM7KKylYGkyJs3SrK6SDSEMIkav/Bju7rxc+x8oibEXGYmM5b7eai6F5BrJnVVCRrVHxVad+ct44xuMNNKMnOsOZDioaN3H8SB5oLrGa9c1u2FYdn7vcGEG89mTD4r7lYJS9FfBxXN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,73 +138,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 05:12:35PM +0800, Hongfu Li wrote:
-> From: Hongfu Li <lihongfu@kylinos.cn>
-> 
-> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
-> stats. These stats are accounted against folio_nid(): incremented on
-> the folio's node when handed to a user, decremented when the folio is
-> returned to the pool.
-> 
-> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
-> to the new folio and drops the memcg data of the old one, so the free
-> of the old folio right after the migration skips the memcg per-node
-> lruvec decrement. The hugetlb count stays attributed to the old node
-> for the rest of the life of the charge, while the target folio gets no
-> increment on the new node; its later free decrements a counter that
-> was never incremented.
-> 
-> Migrate the per-node lruvec accounting alongside migration. Global
-> memcg totals remain balanced because they track resource consumption,
-> not node placement.
-> 
-> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Hi Lorenzo,
 
-For the fix itself:
+Thanks for the note. Let me clarify the background of this series, both
+regarding the AI-assistance question and regarding the scope of the change.
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+This work started as part of our exploration of 16KB mTHP for the Android
+scenario. The overall direction of making compaction lighter-weight and
+mTHP-aware came from offline discussions with David, who suggested this
+lightweight-compaction angle for small mTHP orders. So the size and scope
+of the series is not me diving in unguided as a newcomer: it follows his
+directional guidance. Barry then provided reviews and change suggestions
+throughout the iterations.
 
-question below:
+On the AI-assistance side:
 
-> ---
->  mm/memcontrol.c | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 1460cba53588..9c96ebd5436f 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -5598,6 +5598,34 @@ void mem_cgroup_replace_folio(struct folio *old, struct folio *new)
->  	rcu_read_unlock();
->  }
->  
-> +#ifdef CONFIG_HUGETLB_PAGE
-> +static void move_hugetlb_lruvec_stat(struct obj_cgroup *objcg,
-> +				     struct folio *old, struct folio *new)
-> +{
-> +	long nr_pages = folio_nr_pages(old);
-> +	struct mem_cgroup *memcg;
-> +	int old_nid = folio_nid(old);
-> +	int new_nid = folio_nid(new);
-> +
-> +	if (old_nid == new_nid)
-> +		return;
-> +
-> +	rcu_read_lock();
-> +	memcg = obj_cgroup_memcg(objcg);
-> +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
-> +			       NR_HUGETLB, -nr_pages);
-> +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
-> +			       NR_HUGETLB, nr_pages);
-> +	rcu_read_unlock();
+- All the code was written by me, by hand. I understand each change and
+  take full responsibility for the patches.
 
-Why do we need the whole thing to be embraced by rcu?
+- The cover letter and some commit messages were polished with an LLM
+  after I wrote the initial drafts (to smooth the English). The technical
+  content, the design (jointly with Barry), and the analysis are mine.
 
- 
+Please let me know whether an Assisted-by: LLM tag is expected for the
+cover / commit-message polishing; I'm happy to add it in v2 if that's the
+convention.
 
--- 
-Oscar Salvador
-SUSE Labs
+Bo
 
