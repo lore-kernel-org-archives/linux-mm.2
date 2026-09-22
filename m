@@ -4,102 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61F64C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:06:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DABC8C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:08:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D7A96B009B; Tue, 22 Sep 2026 08:06:47 -0400 (EDT)
+	id BCFA96B009D; Tue, 22 Sep 2026 08:08:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AF5B6B009D; Tue, 22 Sep 2026 08:06:47 -0400 (EDT)
+	id BA7626B00A1; Tue, 22 Sep 2026 08:08:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C6896B00A1; Tue, 22 Sep 2026 08:06:47 -0400 (EDT)
+	id AE49A6B00A2; Tue, 22 Sep 2026 08:08:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F2436B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1709A120469
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:06:46 +0000 (UTC)
-X-FDA: 85241271612.19.D208E4C
+	by kanga.kvack.org (Postfix) with ESMTP id 910896B009D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:08:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1CDA212044B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:08:52 +0000 (UTC)
+X-FDA: 85241276904.18.D1E5D25
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F38314000B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:06:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGGg4AAA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8D1D640005
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:08:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBmK4h4l;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790078804;
+	s=arc-20220608; t=1790078930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MxlDmX+e0b6KB3MhtozDXlgLx/F3M53sleUSkCPy1qI=;
-	b=BDoUGS+dgCKuL1gFWafY/k/pVOPmf7rWnSrStBwEf5e48Zs9BCEnQDfgxqrogYFSpbpX29
-	C3Bv22NfsQpTtK/3EQXZBr3MGr0wq16qPkjj7arLYypf+J50l/Vu36WFeJX/bxZ0rRJqxZ
-	YQhRDunlYL8NdFmgUmhFRhlUwZ4ATD4=
+	bh=lq/wHdaSQa/z2s8nS/PetepYnkUErjugT93n4BkcV9A=;
+	b=XkasB8FyRP7A2iXSPX/z5t3DXI1Skuj3gFLZ33bUCFcbz2Hh9Xf6OCF0tQ/VG6WKO9Bxx+
+	+OLfA7YgayifeMgxgUG4hX7pTD1zL0sSeW26xf6ipq2eqt9E+AGNVJk1dczJZTfPBIbYcx
+	OHoChPRkvu+cAAg5yWlDNKOxU4PTJj8=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LGGg4AAA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aBmK4h4l;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790078804;
-	b=d0uTcJtmZHetgdAZXi92f8PI/iFyrmVS/bzo5OBijIunmorTcxmhQmD3PDnVblMBo+KaV3
-	FqO524xNJ2C5bX7YJIC7z7G16VjNzY4ae+JRwyrSzwnFNfOKW9jNb4IztUcaPh7tNGVQEF
-	KwOt6/CYinUvO+NCqj7nVsfG9e+MxkE=
+	t=1790078930;
+	b=Y2DX5b/eId++AvPhOcTgZilEiubw0xfoPtChVRB44174tshmQ/WvVxdlsgsv6l34GrTgOM
+	QJItXD6jwOmLNk8ACvOZMLH4o1QsMBS9s4n4K/ZLHQ/R4TduGBoESeomnAFQ2SATnVzCdt
+	GP9gAHE+mFkKw0+agOQoVskT4iEZiG8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DF22F601F7;
-	Tue, 22 Sep 2026 12:06:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2674A1F000FF;
-	Tue, 22 Sep 2026 12:06:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2105A601F7;
+	Tue, 22 Sep 2026 12:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE741F000FF;
+	Tue, 22 Sep 2026 12:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790078803;
-	bh=MxlDmX+e0b6KB3MhtozDXlgLx/F3M53sleUSkCPy1qI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LGGg4AAAsAjFT7XGGUb3i++YdPBigXKt+aF0zsZUSNXyCIoK3TGwC+O2xBL7RaF7n
-	 kokh7RjEair7AA8ebNERqQJ9dbHbj4SIedSt9G1+ITtzEBWns+AGXAdh85zjhpblZ2
-	 MYrylunDpGT9u0f8adSMMDEP9taQjsGslJ/4mxEWkqDSkYfYysREuPf0ly+iqsD05N
-	 gVjM/HLTV4gWrPvxkF5jBzrFxj+6cCUdVRK21Wbsx1vP6WESj9I7lVu6/nd0c3fyE2
-	 HYbqTlUe1iSizJYw3fmSPg3Bnt+80bNK8gxmBUH8A8JNJprG5MChZ7GRaOsOza8YPQ
-	 TOmOyO4+jIaEQ==
-Message-ID: <72674485-6ec2-4cb4-a854-b937333cbf97@kernel.org>
-Date: Tue, 22 Sep 2026 14:06:34 +0200
+	s=k20260515; t=1790078929;
+	bh=lq/wHdaSQa/z2s8nS/PetepYnkUErjugT93n4BkcV9A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=aBmK4h4lv074Tbs7davGM/gGOn1tHm/rDVnAuFCAPjfC+IsjX1ePCgSAo2QpdvvVV
+	 4ISfCrc27gfBne3DCyk/AHODwXJBHIURepOZyTluOEhE2SWagb1WeFEb8lgZgNVjEZ
+	 uYpTIEQ/4iiumdSl5gbjRqmbaBmhLkwkebDklTJB/f72STau2droEilZlsp3/JE/4z
+	 5GEDGnE0Tm2SVNE8m/ersTxjC7Zxq+jh5YNDwmoEUj9tcdRIsz7+1CZXAvaN4Ju6vv
+	 7JbwvmeHLnQvyMXT+QSAKTA35T0aMySRYhOUdOszJ5Xg784AIBEKT8PWtwXL93//ut
+	 9+wZRV22Uni8g==
+From: SJ Park <sj@kernel.org>
+To: SJ Park <sj@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in damon_new_scheme()
+Date: Tue, 22 Sep 2026 05:08:44 -0700
+Message-ID: <20260922120845.44460-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260921171155.3359-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: page_alloc: remove ALLOC_NON_BLOCK from
- ALLOC_RESERVES
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matt Fleming <matt@readmodwrite.com>,
- Salvatore Dipietro <dipiets@amazon.it>, akpm@linux-foundation.org,
- abuehaze@amazon.com, alisaidi@amazon.com, blakgeof@amazon.com,
- brauner@kernel.org, brendan.jackman@linux.dev, david@redhat.com,
- dgc@kernel.org, dipietro.salvatore@gmail.com, djwong@kernel.org,
- hch@infradead.org, hch@lst.de, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-xfs@vger.kernel.org,
- mhocko@suse.com, ritesh.list@gmail.com, rvvandan@amazon.com,
- stable@vger.kernel.org, surenb@google.com, willy@infradead.org,
- ziy@nvidia.com
-References: <20260905174239.99e31515fabe220aa7d8e6fa@linux-foundation.org>
- <20260910114602.926944-1-dipiets@amazon.it> <aqQlUr-1h07G8JWM@cmpxchg.org>
- <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
- <aqq8pWI0u1IZNWHT@cmpxchg.org>
- <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
- <arFBJdYaRx_iJNDA@cmpxchg.org> <arFBr22V60BMmVpl@cmpxchg.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-In-Reply-To: <arFBr22V60BMmVpl@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: rqhjszzyadfqdumy1we8xw9npbobibwm
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5F38314000B
-X-HE-Tag: 1790078804-262628
-X-HE-Meta: U2FsdGVkX1/WmNe+V35iM6ZQ9bRdDZPVGt+0xwVdJNcoJh/lOwmhGyksfUYosOAoKoqw1I/o64trR6DqwpnMpAtIov/6DmXcEBgmy2+8TtuwsAmpRAeYU4VywBqsU4UV4JjvlenXC9fJzZC4JTISxRbR5Zi78t+UPOEseNPOP3VbsJ6WdtuEkuID4yzNFc4BW6C1na6ADHknB8mpq/Wq4mSjHe6n7CfAM4e0/RRRTEBjibBJzKV3VbzYcfNO/TDoS9DktUtny7UNQtO9FgAdDZJowE94tuuSdSbJPTqVmQfDXeRszpMG+UAT9c8YMvIE0CGOvG20H/1tqNV6I9rjYzaE46ZD8Y1XFGX6RgmgpZaZRWWHmQAcEZScKCgPQ2Y204uRuch6S3zD6J3k/A/bGnZyAs/Bt8T3QBYVrjDli+NktpEEPch2r12BV3CiaA7qfv7SR6apydBTNFkmYK2bVtKyMdVoNBFk1yRohoaz1hHWL8hQeo6dINbzUprOVN9F3tPWWVBUqJPs74xT+Rpke3HzCxWkwmosiuaqbtLbVRCpWnvESahcRRQP+qw14H7y8UK4G2s0AWJaIWECJqeYaYoL7nWErdePgmN1qwvj1SpcXoFGAT/aMiqrCdAW9Bcc7efoyFDXRH6L+PBF2YrJVrJysYTBk8O9Kdx2bLQ25X+pKzM0WnJGplSmg4dFZu6n+haSOi0gHKgVX4RPj10mcPFpGjs5WmKWEhG5T3HTuSKsWTeFT8eLtIzaj5Vr4aRW0/SZt/F467ai1Qk2JNUlKx6TUTPxB7fu1va8zyxBPY5y7p+WWTt20l/UAAAMuCzodGfTnZ9RcRiMCTxgns0wjHViT+B7IAArJ9J4YAYQelB9Ao7UIaklpMqnYif0DQRcgd+cD7iV9mY6o0O/mznt4yNCebFGiL3ScfgTmAMcM3+E0rMRzYWmZ1cOlRFKqTl3lazc9Sdm08DFEm0Ihga
- fyONoWop
- wSzXT7AWgJpypnCbrmigI+PTGlqzJmbTim5/FcoxMk8uzELZ+vZKmfVzU1OZeKZWSrfcWh/s4lb2a4IpmV/D4vGLdDDsymMhCrZWbwakkvPT0SE/fMdrGVsDBp+B3CuRvyMv5KIfI1pg17cL6uRWyGZogI0jm/B6DtNAOoF0N7JPQ6ua9sBfK6sZ8WlzYKuV164P3FssSGeUlsSrlvUqc7cWr/J7485NsHCj5XhEtTgMYER2QMNBJy8Odi01v26Wg65rB0VR63Ud+d/o7tFWj8Zq2GyrV047o09xxzfxxkAuD5VPuoTZror7GDvomp1DKZv28g+hcBgCv/5BYqYvfBn1icYWzNoxB8fvHQUohm8tUrxKEXtuTFZ2Rv1mxdp/xTfaoqCFAYYNyZx6xrXXwpJOv5WJo/wIsOjwrCiWYZ9oelB7013SQj2dPjS+w5aNRER7WIKWWSnMt1UJ2UqcwfYyOEA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8D1D640005
+X-Stat-Signature: owpjrgxmh6br1iudhcu4q8wyfat1dqn5
+X-HE-Tag: 1790078930-980104
+X-HE-Meta: U2FsdGVkX19DjV4IQAJRiya3VsQNisqQp6z9F2IKBZLW1cTL4COOjMFCjQU6my8NDeVVnuhc2LBxqZc0Uj5OSowpc2IC0snkWNtH1cnb4nYYH6Mdq7FBXMqIa1gimMxG9IT/XpFNyXsraNpenATbxEOfdOyxusNKYUG6fseAP5cVS6XqNzxftilcBOdK65ab+ceBSxft22L7rkJ0IUxqxtakcllKHiYwqPhEyQtw+2/FZKpJH8OeiBu9YbekZJAD7yGo2/gyUan3hQrWMZ1xG61UHBhcfYIS1es2LEnF2qphqQV425tPXUj+MnolYoJT3kSdBqTbP3fJx/hUm7OLflt/5ECZEElvFxgJBRg6JJRpLAwWI4pefdMJ51lcg/bDEQCh4/GSItLyeaZE2d3ubaJ20KNpJrnBDpTqHJz7xTlnML7kf8rYNPvuxYED4ZexAnRSqOtmvIoZZnymUs0yQZTbUnuyPtUjyZO+gpXsAk6BIppicSQV2HJOJE0qozpgiZKRnwnbawC4w2tH6dQy1gKPVK1nMPPfw+31epZOnU3p73EUht57EZEvfib+NtZ+rhPKcgOWnIq8K8DCECH0g8jEJXp0nQLru/9U4RQEy3lTsarkTYVDwR2mYFQnvhReEbJm+4TNspOXOjk22VjniIyW3qJfkeBm1NyMwzoBGNXciQU2Qts0/147yPHI6SOgLxycpK07TJ0Rt8mgJx1vQvUE0/B4TmWRThaoEs46S3FNGXl46dIPZc4N3VSlrWpAC/FOoV1i7nXw4tsMWX2bWrku8Ug5g9AjX5Uy0pMtzVQemdblZitjOm2QvpGqFkmpZCZYHwKy9tPKsbmFx5xrkgphefDu14BiUjabOvnZ8A0yGCZL+fbXpNnQ87PvQdM2krROYmZ+xc2vBtIraGIIj0rp3nYubia9KjHTJck/XRcjBwyIKTm1WPf8qMWwOy/SyGNIzFT58RuULBvkFEk
+ snx3sczd
+ IYkPrGMpXF6j98ReSwZlrhbJQh6FVFsniFrezZgC9N96rEjr6Bi/Mk8syPvtxdX+4Bho+RWk0BhgrBu3Cfl2tGPBdy78E08W8z+BEJ/dhYj5C6q8culDBRko0Elkga7vjd/aS5pZTMIU//TFcSOsqyIk82CWipvUQmfNYQmvzdh5cOwT0GVbv0diEs2xKYE1i+0rVd07blqXcVIF5Io0JklOgTcf6h5j+6amgse32jukTZ9WfGYH+y30sSFREjM8yRdER8sExWsfsn1IEcz0u11LPHzOrDB1RRsE7d6IOJftO0w5wwKwWcwKe6ovEazgYX6b4KMemEXHlN8A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,94 +93,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/21/26 4:39 PM, Johannes Weiner wrote:
-> 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH
-> non-blocking allocations accesses reserves") stopped handing out
-> reserve access for ALLOC_NON_BLOCK on its own: the extra 25% below the
-> min watermark is now only granted on top of ALLOC_MIN_RESERVE. But the
-> flag was left in ALLOC_RESERVES, which produces something odd:
-> 
-> With the ALLOC_RESERVES match, __zone_watermark_unusable_free() doesn't
-> subtract the free highatomic pages for them. So in the slowpath, they
-> get to consume regular blocks below the min watermark by the number of
-> free highatomic pages. The highatomic reserve is capped at 1% of the
-> zone, which on any decently sized machine is a multiple of the min
-> watermark: GFP_NOWAIT can drain regular memory to zero.
-> 
-> The user-visible result is brutal hiccups during bursts of GFP_NOWAIT
-> allocations under memory pressure. On a 32G box with an anonymous
-> working set, swap, and a filled 290M highatomic reserve, a GFP_NOWAIT
-> burst drove regular free memory in the 28G Normal zone (min=60M) to
-> 28M, 0.8M and 0.6M in three runs. Swapout failed to allocate its swap
-> table, reclaim scanned 13M pages to reclaim 200k, page faults stalled
-> for tens to hundreds of milliseconds. The machine survives it, but not
-> by design: direct reclaimers eventually fail and start unreserving
-> highatomic blocks, until the allocation succeeds or the reserve is
-> gone and the OOM killer runs. That reserve exists for high-order
-> atomic allocations; here it is destroyed to bail out a GFP_NOWAIT
-> consumer that was never entitled to the memory.
+On Mon, 21 Sep 2026 10:11:54 -0700 SJ Park <sj@kernel.org> wrote:
 
-This suggests to me that a LLM review of 1/2 spotted this issue and also
-(or you) constructed a test doing the GFP_NOWAIT bursts to confirm the
-impact, but it has not been observed in production? But if it was, can
-we make it clear?
-
-> Remove ALLOC_NON_BLOCK from ALLOC_RESERVES. With that, the GFP_NOWAIT
-> burst is stopped short at the min watermark. No direct reclaim, no
-> stalls, no failed allocations, and the highatomic reserve stays intact
-> for the requests it exists for.
+> On Mon, 21 Sep 2026 02:30:46 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 > 
-> __zone_watermark_ok() is unaffected, since everything it keys on
-> ALLOC_NON_BLOCK is already nested under ALLOC_MIN_RESERVE. Update the
-> flag comments accordingly: ALLOC_NON_BLOCK just means the caller can't
-> block; the reserve math belongs with ALLOC_MIN_RESERVE.
+> > damon_new_scheme() calls damos_quota_init() on the caller's quota before
+> > copying it to the new scheme. This clears the caller's effective quota,
+> > feedback input and charging state as a side effect.
 > 
-> Fixes: 1ebbb21811b7 ("mm/page_alloc: explicitly define how __GFP_HIGH non-blocking allocations accesses reserves")
-> Cc: stable@vger.kernel.org
-> Assisted-by: LLM
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> Apparently the above paragraph assumes it is called under damon_commit_ctx().
+> Lack of the context makes this quite confusing.  Could you please rewrite?
 
-The change itself is fine and we don't need ALLOC_NON_BLOCK in
-ALLOC_RESERVES. But I wonder if we should also make the
-__zone_watermark_unusable_free() check more precise, by using
-may_access_highatomic_reserves() there instead of ALLOC_RESERVES?
-Which would mean that the function should however also evaluate
-ALLOC_HIGHATOMIC, and restrict the other checks to order=0, to be usable
-from both callers.
+To calrify my opinion more, "caller's quota" feels unclear to me.  I hope it to
+be more clear that it means "the quota that is passed as a parameter to the
+function".
 
-> ---
->  mm/page_alloc.h | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
 > 
-> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> index ad89f83d1dab..c8af79decbd0 100644
-> --- a/mm/page_alloc.h
-> +++ b/mm/page_alloc.h
-> @@ -32,12 +32,11 @@
->  #define ALLOC_OOM		ALLOC_NO_WATERMARKS
->  #endif
->  
-> -#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. Allow access
-> -				       * to 25% of the min watermark or
-> -				       * 62.5% if __GFP_HIGH is set.
-> -				       */
-> +#define ALLOC_NON_BLOCK		 0x10 /* Caller cannot block. */
->  #define ALLOC_MIN_RESERVE	 0x20 /* __GFP_HIGH set. Allow access to 50%
-> -				       * of the min watermark.
-> +				       * of the min watermark, or 62.5% if
-> +				       * the caller cannot block either
-> +				       * (ALLOC_NON_BLOCK).
->  				       */
->  #define ALLOC_CPUSET		 0x40 /* check for correct cpuset */
->  #define ALLOC_CMA		 0x80 /* allow allocations from CMA areas */
-> @@ -58,7 +57,7 @@
->  #define ALLOC_NO_CODETAG       0x1000
->  
->  /* Flags that allow allocations below the min watermark. */
-> -#define ALLOC_RESERVES (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
-> +#define ALLOC_RESERVES (ALLOC_MIN_RESERVE|ALLOC_HIGHATOMIC|ALLOC_OOM)
->  
->  /* Flags that mean GFP_ATOMIC */
->  #define ALLOC_MASK_ATOMIC (ALLOC_NON_BLOCK|ALLOC_MIN_RESERVE)
+> > 
+> > damon_commit_ctx() first copies the running context into a temporary
+> > context for validating the proposed parameters.
 
+I'd prefer using the term, 'commit' instead of 'copies' for clarity.
+
+> > When
+> > damon_commit_schemes() creates the temporary schemes, it passes the quota
+> > of each running scheme to damon_new_scheme(). The quota pointer therefore
+> > refers to the running scheme, and damos_quota_init() clears that scheme's
+> > state before it is copied to the temporary scheme. Even an update
+> > rejected with -EINVAL loses the running quota state.
+> > 
+> > For a size quota, this discards the bytes already charged and allows the
+> > scheme to use a fresh quota before the reset interval has elapsed. For a
+> > goal-driven quota, the consist tuner loses its accumulated input and
+> > restarts from its minimum input. A time quota loses its throughput
+> > estimate and falls back to the initial estimate.
+> > 
+> > The constructor side effect was introduced by commit 70e0c1d1bf94
+> > ("mm/damon/core: factor out 'damos_quota' private fileds initialization").
+> > Commit 60bd24f272d0 ("mm/damon/sysfs: test commit input against realistic
+> > destination"), merged in v6.19, exposed it when
+> > validating sysfs updates against a copy of the running context. Commit
+> > b90408ef1163 ("mm/damon/core: safely validate src on damon_commit_ctx()")
+> > later moved that validation into the core API.
+
+I overlooked this part in the previous reply, sorry.  And thank you for adding
+this detailed context.
+
+> > 
+> > Sashiko reported the same side effect [1] on the RFC of the core API
+> > change.
+
+Nice catch, I misunderstood Sashiko's point.  Thank you for catching this,
+Karl.
+
+> > 
+> > Copy the quota to the new scheme first, then initialize that copy. Make
+> > damos_quota_init() return void, since its return value is no longer needed.
+> > 
+> > Fixes: 70e0c1d1bf94 ("mm/damon/core: factor out 'damos_quota' private fileds initialization")
+> > Cc: <stable@vger.kernel.org> # 6.19.x
+> 
+> The Fixes commit was introduced in 6.1.  So the comment on Cc: stable@ line
+> should be fixed.  Also, at the time of the commit, validation purpose running
+> ctx committing didn't exist.  So, the issue you are explaining cannot happen on
+> the commit.  Or, am I missing something?  If I'm not incorrect, could you
+> please find the proper Fixes: commit and fix it?
+> 
+> Also, are you using LLM for Fixes...?  If so, the LLM seems not good at that.
+> Your previous patch also made a similar mistake.  Please manually work on
+> Fixes: tag or double check LLM's output.
+
+Now I understand you added the comment for commit 60bd24f272d0.  I think Fixes:
+should also be 60bd24f272d0.
+
+
+Thanks,
+SJ
+
+[...]
 
