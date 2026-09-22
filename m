@@ -4,70 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A5A6C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A72C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:13:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 364036B00A9; Tue, 22 Sep 2026 04:12:52 -0400 (EDT)
+	id 8E2C26B00AB; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33BEE6B00AA; Tue, 22 Sep 2026 04:12:52 -0400 (EDT)
+	id 8BA506B00AC; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 251A16B00AB; Tue, 22 Sep 2026 04:12:52 -0400 (EDT)
+	id 7F80B6B00AD; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A5916B00A9
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:12:52 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DBB71C2794
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:48 +0000 (UTC)
-X-FDA: 85240666896.12.DFF6964
-Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 4A03E1C0003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pZWTZU4L;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6136C6B00AB
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66EC71203B9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:13:02 +0000 (UTC)
+X-FDA: 85240682604.30.8575CC5
+Received: from mta0.migadu.com (out-31.mta0.migadu.com [91.218.175.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 293271A0009
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:12:59 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dHviHVJ9;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790064780;
+	b=tbr510z/4etVJxmiix9rh9dIbjnnP7XjLRsLxXT9NJu8jhyMabZ77aIMX+p91s3tiu3JEC
+	buYNP7sYb+X7kD4YS8FGWa82vb+DVXmRU3cCO2yuyOZOAq8loFNVJM0mDi61n6N6A0u6o+
+	8wOOBl895+OkMy7MAVtYlUs9tYqXThg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dHviHVJ9;
+	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790064406;
+	s=arc-20220608; t=1790064780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CDUhekT+dHHEfwUJMas3OBH9JBfvOhivPPlgcZw/Efw=;
-	b=Jyihor2U06sblUNqWxaqRKcGV/XXfp12QCBcHt/lglYpTUvDNlzRfSTvASUg6X1EkTQayv
-	chwP4l+aCMvQKq6p7fe43BWVokeYPj5fiQ/njPYnOeWv/IMhZ4cnZ5i95Tx4Tgnou4heO8
-	nmEjz0d7HIiAsLrhTp6y29+1jdnNmqA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790064406;
-	b=bquPpdhE/QbiaFG+YbzTpMINpc5+shT85DmIuLqbk6c5IjgEt2p3QVdooGNgcWsk3qPTt6
-	6V/oxvw677lWf4efOLhamOTZL9A5n1RynD7XWgPj/Uh3x1ju9EnKLeGgsYpoFAKo7I1buZ
-	18NqIZ+sTnVD6FCWjdTygSaRUgU/WJc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pZWTZU4L;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=zgNa3/libDCvbtZBwjfAcECc9roNZSpEdeb3sDJmKkY=;
+	b=tqhYF08Ow3Mvns35vG2otdlV36D/FBYcNLW/dVqTy4jlK1eFRrti2aAT/EzRv3dFFUA0mM
+	kCaMI9ANYVJD7Sx8Y38AifMaTVaOubHdBuDJtm6TSJRAKRiGXII9XJF1WjAil2MWo+5Nm6
+	HLStCwvdQYHBdLxyitghNCCzemfa2lE=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=L3E1ABTsvQD+v6c+2rBUEff5SSrYDo8CA8Cr1zQwot4=;
+DKIM-Signature: a=rsa-sha256; bh=u0QxjtjmQE5VvsgjRmYJRV+MOX2c7kGivVyl2p9yp0g=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790064404; v=1; x=1790669204;
- b=pZWTZU4LUhgakPVLGPX5D3FFmTpz3l4NLv1Dxd8Hh3GY6WQ89/zEBlXWSy5IxOqeZKiwBf+I
- szl3QUQlqfANKxTdOHbhlH8HoCr7f/+XDZoOK/y8NyoC+YxoDfPuHfOsRIX8BFlcR76U/bkOlLw
- w+UG/W3InrzU8AMWSb8ChDwA=
+ t=1790064778; v=1; x=1790669578;
+ b=dHviHVJ9ydbDTEnVN2wn+D+mLbnXtT6cg67RjAAyW/cXorCbCPX2xacHpXRwdJzckoSsdp8s
+ 2pfi+msGR70nlVMIGcHPhNG/1oTXS0SoW8U6gB4OEO/WeZMwcbqcCHCTJNrJYW0s8igSIbSZMi2
+ fOG1V3Tq5n0QvejcsGVivV/U=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 69a7d16cab5036eb;
-	Tue, 22 Sep 2026 08:06:44 +0000
-X-Mizu-Trace-ID: 69a7d16cab5036eb
+Received: by smtp.migadu.com with ESMTPS id 048c39df30f9f240;
+	Tue, 22 Sep 2026 08:12:58 +0000
+X-Mizu-Trace-ID: 048c39df30f9f240
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <8a135fee-1f75-4260-afa0-10f8b522809f@linux.dev>
-Date: Tue, 22 Sep 2026 16:06:38 +0800
+Message-ID: <96981a8b-0a93-4ed1-8d71-f01db02035d1@linux.dev>
+Date: Tue, 22 Sep 2026 16:12:48 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/6] mm/sparse-vmemmap: drop Device DAX-specific
- population path
+Subject: Re: [PATCH 4/6] mm/sparse-vmemmap: remove the unused ptpfn argument
 To: Muchun Song <songmuchun@bytedance.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -79,19 +78,19 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
  Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev
 References: <20260913083734.86802-1-songmuchun@bytedance.com>
- <20260913083734.86802-4-songmuchun@bytedance.com>
+ <20260913083734.86802-5-songmuchun@bytedance.com>
 From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260913083734.86802-4-songmuchun@bytedance.com>
+In-Reply-To: <20260913083734.86802-5-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 293271A0009
 X-Rspam-User: 
-X-Stat-Signature: ndz148e6uo56hsddn7ct8dk1pp8pdrwq
-X-Rspamd-Queue-Id: 4A03E1C0003
-X-HE-Tag: 1790064406-254527
-X-HE-Meta: U2FsdGVkX18b/c6qOn8TPjWUeIvkMxKgaJXXK8SgeDz0xjxoDvbP4rsV+ZUjCvnWHwSKmKblzsGfv40OwNhyfCN4T2tITeQssr7qO1KRZ5x+lcFzW1AqKdg1WXgJVeGQ9MEBj9h/q5LsEDK9QLSYVN+w/IGtepo8TQp4ZT03ASPUEd0qMAcoAUQUXtrRAx8OKRdV2SnWw35Appw7m04+oasGx3gWmojSKLNOVAN4n7VzIU9iy/anhut2N+Ofv6mhI577HrDiWl3evP81Ja54IhP6XPtTfcWP3UQft0PYTP2NC7mzssDte7l/OPk44ZcqYlz3DQc/ALk5P8jupf06itE4Y1O3HunOtQRtrepL2uWWsRtKqA5/NbH9kv0kIJRCNDCcm8NWHtBX48UpR4GkZZ5xd3xburmVmig+G3v9JTdbFYnVnBtfgapmiFy8ox6UxPshmz1iUpVLcoV4ml2Mg+uFuN6qnzyxw/BF+flZ2eZi1DSLEUaFctobFuRW761Fr4Glr+ijb5sQJ0epvsLOWF2HsVHT83cHPCbJlQjSbQXEIbQzSfUw46MTVV5kJOuFQabIoEQkcQA+eOAjpLSVy2J0eOD4Yn5NWlBUpgMmshJU0r2wsmwWNtCtEE3SLspDoSiXYU5AYmgHBA+v1C85v7RTM6cqdV+oHPFYhhdDERpC9iJGHo8+hAN3HsIfnDeqgFLIaaUSY861qeHoZo0Xjy1kdQCoTAWs1R7q4+7QTt47QOwqFWeDbzrw+O2EUoV1EZ+QHIgO4PPFcak4kaC94SahkfU+PpJyopK6we8MrKM285vJE3oKL/wEnnvZ5FUVVl5gcYP40Viwcn5Gjn7O8KDvoFg269D5GbBoJP+D2M5Unz5r5HNot22eKE4VVmF33rXlnIVlZ2GPo3BinmWYyRcOggnzn+Ls3C/+pf8eR4EBNvG9q/cffZuRmPR9b9HoChIFewMzxS22sg+uwmw
- FmAus8yq
- eGiAYPeHU9oD8+2kpCxsd/xZ2FPVakv+DYCDjoen323YDQMLtqGOIh5zszbgz7fhNa9QeC7Q9bXGxiTtE4Ru3k85j3yASsGYoeT1gFGY4gR8sN1XUUJ/slFuorDtUMUdmNq89OYFfsSP4J/q0yHqU1oE/COKT6MaecvXCk2OGtUPqelJsD0NLMNYawr32JD2o/ttxeMZSaS/HJbGuenGRaCLTfNx8brAPcnrBdTqB+EtoEyv/6en6N+rU1Jp9T6v6H/zXiSgHTkg5DosQwLvVe9wVp6dB4x2hCOuU4tGsSuAoKi8=
+X-Stat-Signature: bgw5gioe7g3jeh4oekpgj96rnobz1oto
+X-HE-Tag: 1790064779-57583
+X-HE-Meta: U2FsdGVkX19ZgMSs7GFQs6XMT/mdzskUf++UZOtAt1NALGdUIHBrUGvQ14pJkSoYZCTYed8KbARNSkjmkn8CLWQIqutqy9FfHIpxn5Dy7QbsoBATVNfNbPQogNmZXLAEtnaUo7LE5F+yGKJyIP+bxV8HSNV1yG5QhfIfu304qZ+O7XaclyY/CRVpQ66s13u3oCdYU7iAsQHeYGvvWEZnwcLdCMF7C6p7SDdJopNu0djdOvo8ZGgzaBWBDEREPDbLeM94J4gof/f9zSS/bQW/aV5e11SyvWL7AExsHir85Ejd6ISmOqIsnHzhsRfluLQvwonlzOY7FEfW/MTOlsznR1vDurKfRP2j85/QsPaZtDedV5thCL5z/dYfH+dEYjc98W0vn4uZX0K5YZhAxkVR5PVhzSoubBQ9P3CJHBLfMtxRsLaJhKJYqHDHFTfGOGJ7PDWajSndCqKABZSnbQoJsHbipdy05Qm2f/OwzUYxeYmWIHgK87g6Sx6/oW7ig/L2r8XfvlurhJBpdKj6INOa6Fd6XEd+WPjGvAlYENOS9MoQ73m5TfzsnGQiY3tRX6MDQKk2Zi8ohkk5VMgZjKxYrUIMadyjYhbBRCBe47JEs3xXAKiiDw7Sv8HHN9Hf0zIKP7F3xYDDQMu/eJYJkCwmCNhZ0RH6zhmokiNoWTZoAEfHHR7HlIB8WqfDqVDTdHyyaFCag/58VrvRHM6P1tNzJ0GzFnYkdNpVNJATKZDPps9VotPZ3kzyyYDWbEh/9bvGoBh9R2ZFfce295dxDdiEuEJXS0TCDnLP0+/0F+vTTfn0m+l4X/IHLQLERuijR+HJJP2xb0WyJfe7e7x7/w4KgrO8uvdTzTw9LxS6DdaH8VeSHk0xVGAw4nxCVrePNs44zyKsFGG/iSdS+XmM23tmSeyOVOQH7IVjLNb+vQk6KouJ0UDX0rlllEDIL1YJDpL6wdVAmjJrwkBDOsizGF7
+ tghYt+KY
+ jM7D1CiL1Uf0eXoowWvk9MnoJ5FRnVoJykj3Y4cM2AKbtwRns6NF0YeZGYpWJSow3w+gvF7wOIwNcN2ItUGb6R+wqcPifkIvi3pssjWHJpUM6MH5VceJ8qKyLQpxR7QuvXEbAcS81nFh0KnxgRrK7Ng9B2Q1enkPj2dLxOuv7D9nmqH41u234tEI7xnvVv6aSMvTdArTvfFCO0w/bazftKoUsNODuwttsaTkJ0HzXYbS9kh3t0Fzd8IGG53GtLQk7qxyaiYRTSmP61ElbVnSeV7SQbbh7bCEoqqSBoACrYCHFvy4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,25 +101,18 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 9/13/26 4:37 PM, Muchun Song wrote:
-> The common vmemmap path selects the shared page for optimized mappings
-> itself, so Device DAX no longer needs vmemmap_populate_compound_pages()
-> to find a shared tail page and pass its backing PFN through the generic
-> population helpers.
-> 
-> Remove the Device DAX-specific population path and let section memmap
-> population always use vmemmap_populate(). The powerpc retains an
-> architecture-specific compound-page implementation, so select it directly
-> from radix__vmemmap_populate() for optimizable sections.
+> vmemmap_pte_populate() no longer uses ptpfn as an input. Drop the
+> argument to simplify the code.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > ---
->   arch/powerpc/mm/book3s64/radix_pgtable.c |  3 +
->   mm/mm_init.c                             |  2 +-
->   mm/sparse-vmemmap.c                      | 71 +-----------------------
->   3 files changed, 5 insertions(+), 71 deletions(-)
+>   mm/sparse-vmemmap.c | 15 ++++++---------
+>   1 file changed, 6 insertions(+), 9 deletions(-)
+> 
 
 Acked-by: Qi Zheng <qi.zheng@linux.dev>
 
 Thanks,
 Qi
+
 
