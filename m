@@ -4,93 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A72C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE25C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 08:14:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E2C26B00AB; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
+	id 5B0F66B009B; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BA506B00AC; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
+	id 561656B00AC; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F80B6B00AD; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
+	id 49EBD6B00AD; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6136C6B00AB
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:13:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 66EC71203B9
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:13:02 +0000 (UTC)
-X-FDA: 85240682604.30.8575CC5
-Received: from mta0.migadu.com (out-31.mta0.migadu.com [91.218.175.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 293271A0009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:12:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dHviHVJ9;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790064780;
-	b=tbr510z/4etVJxmiix9rh9dIbjnnP7XjLRsLxXT9NJu8jhyMabZ77aIMX+p91s3tiu3JEC
-	buYNP7sYb+X7kD4YS8FGWa82vb+DVXmRU3cCO2yuyOZOAq8loFNVJM0mDi61n6N6A0u6o+
-	8wOOBl895+OkMy7MAVtYlUs9tYqXThg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dHviHVJ9;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.31 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 26A176B009B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:14:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92D5EA528C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:22 +0000 (UTC)
+X-FDA: 85240665804.12.4CC6F43
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 015EB40004
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:06:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boAuJJId;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790064780;
+	s=arc-20220608; t=1790064381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zgNa3/libDCvbtZBwjfAcECc9roNZSpEdeb3sDJmKkY=;
-	b=tqhYF08Ow3Mvns35vG2otdlV36D/FBYcNLW/dVqTy4jlK1eFRrti2aAT/EzRv3dFFUA0mM
-	kCaMI9ANYVJD7Sx8Y38AifMaTVaOubHdBuDJtm6TSJRAKRiGXII9XJF1WjAil2MWo+5Nm6
-	HLStCwvdQYHBdLxyitghNCCzemfa2lE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=u0QxjtjmQE5VvsgjRmYJRV+MOX2c7kGivVyl2p9yp0g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790064778; v=1; x=1790669578;
- b=dHviHVJ9ydbDTEnVN2wn+D+mLbnXtT6cg67RjAAyW/cXorCbCPX2xacHpXRwdJzckoSsdp8s
- 2pfi+msGR70nlVMIGcHPhNG/1oTXS0SoW8U6gB4OEO/WeZMwcbqcCHCTJNrJYW0s8igSIbSZMi2
- fOG1V3Tq5n0QvejcsGVivV/U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 048c39df30f9f240;
-	Tue, 22 Sep 2026 08:12:58 +0000
-X-Mizu-Trace-ID: 048c39df30f9f240
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <96981a8b-0a93-4ed1-8d71-f01db02035d1@linux.dev>
-Date: Tue, 22 Sep 2026 16:12:48 +0800
+	bh=6Zqym6D41lbWl1qqdDfB+XAdzgeIh7z3k+GpUxiR+8U=;
+	b=JsSMxGPYDkj+b4sZ1jIgJb0RUJfeo43Okt/E7nTyi2Tz/RFsR67ogX5jBhZ3y6B7ab9Rcs
+	1+tun3isI4R0yocCnVJNgG3isEbBBkvASEPonN4OIaokhUAmXV+/VVx/Ywj7Tm/0Zdw8z1
+	2QKhslEwF47ahc62jiD+jztV4h35lZg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=boAuJJId;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790064381;
+	b=uEgT80oUM6jclFBqlfTovlyO1iU04l+dFcMvkeFsPopOIULQ4M0/qXM+tRKLvCV58hMDz/
+	iqaJd6c9Ar15R0yZhxVRh9Q7P6cS+3//Co8E+r3+TDmCSigga9A2bx0dmVNmT8YMkfTqRF
+	mqC8eWEBDVANZvm4Uz3TEKmrztNUVt4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 676F943C12;
+	Tue, 22 Sep 2026 08:06:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268441F000FF;
+	Tue, 22 Sep 2026 08:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790064379;
+	bh=6Zqym6D41lbWl1qqdDfB+XAdzgeIh7z3k+GpUxiR+8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=boAuJJIdMAD71oRg7WZDTWVjhYholDntby3vKk/sx5VujBDV5U33SMA+V+QJ+C/bd
+	 O04r5iqqH5hp4mir/9Jza6f/yC03jXf90hmAWRlW5Cs1Jv9qQXO2o7k95+J2KrQ7Ok
+	 vhvPF+6d+UvKA8eBcUWUa8hrAO+xkf1ZhAJfWVEXaTSpKqR7Vn3tqKLz4bnp11TlMo
+	 dV4aNrLLLbZcoTrqXkOpTGezNtyqtErFD/hBNoxFJ2z7huNSbBivcKv1PD3fI70fX/
+	 Fb+B1OlWB9bUz/xPLgbMTG1s1X3YNZgACspNdfNMDsZQXM7FaY+1IWSuHEvBZRbBPG
+	 A4M2rJqKOew4Q==
+Date: Tue, 22 Sep 2026 09:06:14 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Park Tae-sun <ts930@dgu.ac.kr>
+Cc: Sarthak Sharma <sarthak.sharma@arm.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: mremap_test: handle ENOSYS for userfaultfd
+ and add missing newlines
+Message-ID: <arI2yv7TgtJLjMMr@gremlin>
+References: <20260922065143.118702-1-ts930@dgu.ac.kr>
+ <2e0a8157-a529-4355-bd7e-11ef0234b825@arm.com>
+ <179006158019.123863.10328178989374348836@dgu.ac.kr>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/6] mm/sparse-vmemmap: remove the unused ptpfn argument
-To: Muchun Song <songmuchun@bytedance.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
- <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev
-References: <20260913083734.86802-1-songmuchun@bytedance.com>
- <20260913083734.86802-5-songmuchun@bytedance.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260913083734.86802-5-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 293271A0009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179006158019.123863.10328178989374348836@dgu.ac.kr>
 X-Rspam-User: 
-X-Stat-Signature: bgw5gioe7g3jeh4oekpgj96rnobz1oto
-X-HE-Tag: 1790064779-57583
-X-HE-Meta: U2FsdGVkX19ZgMSs7GFQs6XMT/mdzskUf++UZOtAt1NALGdUIHBrUGvQ14pJkSoYZCTYed8KbARNSkjmkn8CLWQIqutqy9FfHIpxn5Dy7QbsoBATVNfNbPQogNmZXLAEtnaUo7LE5F+yGKJyIP+bxV8HSNV1yG5QhfIfu304qZ+O7XaclyY/CRVpQ66s13u3oCdYU7iAsQHeYGvvWEZnwcLdCMF7C6p7SDdJopNu0djdOvo8ZGgzaBWBDEREPDbLeM94J4gof/f9zSS/bQW/aV5e11SyvWL7AExsHir85Ejd6ISmOqIsnHzhsRfluLQvwonlzOY7FEfW/MTOlsznR1vDurKfRP2j85/QsPaZtDedV5thCL5z/dYfH+dEYjc98W0vn4uZX0K5YZhAxkVR5PVhzSoubBQ9P3CJHBLfMtxRsLaJhKJYqHDHFTfGOGJ7PDWajSndCqKABZSnbQoJsHbipdy05Qm2f/OwzUYxeYmWIHgK87g6Sx6/oW7ig/L2r8XfvlurhJBpdKj6INOa6Fd6XEd+WPjGvAlYENOS9MoQ73m5TfzsnGQiY3tRX6MDQKk2Zi8ohkk5VMgZjKxYrUIMadyjYhbBRCBe47JEs3xXAKiiDw7Sv8HHN9Hf0zIKP7F3xYDDQMu/eJYJkCwmCNhZ0RH6zhmokiNoWTZoAEfHHR7HlIB8WqfDqVDTdHyyaFCag/58VrvRHM6P1tNzJ0GzFnYkdNpVNJATKZDPps9VotPZ3kzyyYDWbEh/9bvGoBh9R2ZFfce295dxDdiEuEJXS0TCDnLP0+/0F+vTTfn0m+l4X/IHLQLERuijR+HJJP2xb0WyJfe7e7x7/w4KgrO8uvdTzTw9LxS6DdaH8VeSHk0xVGAw4nxCVrePNs44zyKsFGG/iSdS+XmM23tmSeyOVOQH7IVjLNb+vQk6KouJ0UDX0rlllEDIL1YJDpL6wdVAmjJrwkBDOsizGF7
- tghYt+KY
- jM7D1CiL1Uf0eXoowWvk9MnoJ5FRnVoJykj3Y4cM2AKbtwRns6NF0YeZGYpWJSow3w+gvF7wOIwNcN2ItUGb6R+wqcPifkIvi3pssjWHJpUM6MH5VceJ8qKyLQpxR7QuvXEbAcS81nFh0KnxgRrK7Ng9B2Q1enkPj2dLxOuv7D9nmqH41u234tEI7xnvVv6aSMvTdArTvfFCO0w/bazftKoUsNODuwttsaTkJ0HzXYbS9kh3t0Fzd8IGG53GtLQk7qxyaiYRTSmP61ElbVnSeV7SQbbh7bCEoqqSBoACrYCHFvy4=
+X-Stat-Signature: upcmrub468r56xdpgj4itkxz7b7zzse8
+X-Rspamd-Queue-Id: 015EB40004
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790064380-642120
+X-HE-Meta: U2FsdGVkX1/6WRQPFlTudabjbsndSgRH+N5+vyrQ9QBAOjc34Bm/GjPZV+RPd+GpfP3WEFCu/H86ynudfVofFCewJtdXHE/kOIL2SoCkyFWLHb1DUCyCmk/sy/gZC/ynRZQU97KwSZnWGeQqdCm//G3asS9eGiZZBwggrNvz9YqRdlRZycixWhvotMmEaPMFLFzJdgHZCQjUYU9LIquaXdmSUFmc0VCbZo4UPyOqxAjtRu9fMXNWMvwsosy794atuzdUd2XKSRSIZPJsUeH2RtMWnk6y/i/qqs1+nOG2xphGgGfIHU5ZBgahPSLEfrd+V0ypFAH19PW+wcjgOKfOs30dty9S5DXJIytXx8qyEvZZpC8jK/AyipNSeF2YlxY+Dzp+zMSEC83kSERf90MQd5i3dqdc+2bdFHQx4SRODZkh1OAQrY++Ajg5hUeHxXVxWOsXYKBpXeNiqkffnk/3YxpiktVNbHh7Fj+hPwxYZaLLV3wl4F5/lguQao1brkP/hGMdjaNHu3fdQvVvPd8wPnmzdsXfNxZrx3mH9eC29T+6Tgg9nFIUgWZSTIMdvNFMLn/Nsp1FrOep/C48IFcijAbb3GLacnVWGbysHwN/NFLwI95ksHyenP270oXpQFNWgKX0nPOgFnZCLXqXTcKY9bVo7sSSmHu5vRXzCm6PyVwDFeb9IanQqeEthukOzl+iJaC8LIbQN0F4LkRGmwDhMLq/gHa79/mR0rY++bz+gb39cJF1mm2vYoErVV6Y23b3FpZSPgjWNswLfRMBNYb6VSGDcMnZ0nttTS1FjUTdXj7fZxrAx5J69ijH6WE/+4U22XfcNfkEgxRRPZUXYY1+IJq2hMoNUsztrN3ATiYpwEcyYejoaOqNXQPS5Ukq921+YChrRs3Vxq9a04jsId2354N8ZEn94hBbFL6kP34YDwdmhjFSC8y5LKRuAbibsfjBbfIqkNAjJRYo2jo/+d6
+ PuamKUkd
+ O1o3F5Hv0DQ5ew2kkr62qf5jDNX7JIi3uQ18jxLEnpA8e1a2HJyWQn4n8fK/zQIbrn1C1RmDqoGlgyz121Z/o8U50FeTVwLxSDR28QwhAc1UNfJ9WGmIKPudYi+KvwdSq3S+VrN/Y1KdZMQK6S+uDJQw1TfiewVjaaEXnccleHkWsGYYfzWnjM5aW3Dk1DdlXybkztuaZH8yT+pE3NNCkOhfJ+LBRNoB7K9F5tVaIHijk1VXjdziduUrYkwpLoO6nTYWXZXXF8aKAArZLm1x2wu5sicCGejdsXE5ojOvYOWekvKZBqtPlxiwhI+uEfG7iy06omPDeg7gChOg1/6xWHoh9ko44n6LVXLyZQzfwlI9wHkg4v5vNNpAXPl2EnJkEy9JfM3oWKqGpdfqUw8FLx0kKYfUAqTjEKAkcQxWPpzVELRsM0pbk09hRvlgvs8V06ey4vlNXIG9y19gbdjoaVgmLQxpmsGdKvT8k9ypLFhOYGaE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,21 +94,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 22, 2026 at 04:19:40PM +0900, Park Tae-sun wrote:
+> Hi Sarthak,
+>
+> Thanks for letting me know!
+>
+> That sounds completely fine with me. I independently ran into the same
+> issue while testing mremap_test in QEMU on a minimal kernel without
+> CONFIG_USERFAULTFD, so I'm glad to see it addressed as part of your
+> larger series.
+>
+> Feel free to add my:
+> Tested-by: Park Tae-sun <ts930@dgu.ac.kr>
 
+Additionally, for future reference - you were missing cc's.
 
-On 9/13/26 4:37 PM, Muchun Song wrote:
-> vmemmap_pte_populate() no longer uses ptpfn as an input. Drop the
-> argument to simplify the code.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
->   mm/sparse-vmemmap.c | 15 ++++++---------
->   1 file changed, 6 insertions(+), 9 deletions(-)
-> 
+Fixing this is easy with b4 [0] (the recommended way of sending patches to
+mm):
 
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
+$ b4 prep --auto-to-cc
 
-Thanks,
-Qi
+Alternatively, you can use scripts/get_maintainer.pl:
 
+$ scripts/get_maintainer.pl --nogit-fallback <files-or-patches>
+
+[0]: https://b4.docs.kernel.org/en/latest/contributor/send.html
+
+Specifically, the following appear to be missing:
+
+  david@kernel.org
+  liam@infradead.org
+  mhocko@suse.com
+  rppt@kernel.org
+  surenb@google.com
+  vbabka@kernel.org
+
+>
+> Thanks,
+> Park Tae-sun
+
+--
+Cheers, Lorenzo
 
