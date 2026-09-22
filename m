@@ -4,96 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EADCC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:43:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A479AC982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:47:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 78B5B6B00A4; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
+	id 76C316B00A1; Tue, 22 Sep 2026 05:47:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73AEB6B00A5; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
+	id 71F646B00A2; Tue, 22 Sep 2026 05:47:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62A3A6B00A6; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
+	id 635E66B00A5; Tue, 22 Sep 2026 05:47:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DB7A6B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:43:07 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D25901A03F7
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:43:06 +0000 (UTC)
-X-FDA: 85240909572.19.F621AD4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4A5D31C0006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:43:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEDT5Pjb;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790070185;
-	b=EMnMMQED1KLwxOPst0SQiQuk/C23TY1o41uLEInu7Q0opBWWS8tnhOjymslmuMR/ZIoZ50
-	qyknmDQ37esg3p38hzJ77bRRbeNiGuSJ3FFWS+HGwSZ7PlEYMp3m3Gue1/j64pJvNzTvRJ
-	omdE/qMf49IoGHGrExklEEf684DmcnM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HEDT5Pjb;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3F0CA6B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:47:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B95D21A03FC
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:47:56 +0000 (UTC)
+X-FDA: 85240921752.08.5E00539
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 87CD9180008
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:47:54 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=IKLmrhNR;
+	spf=pass (imf24.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790070185;
+	s=arc-20220608; t=1790070475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+eCBMsdRHZZ8+99AV4x2YGu7/eXm49oGH7gIIrlNWI=;
-	b=bqQTFHsPGW7j75pFCArPw4QYFpJ/Ol8Mo2R6tPjceQulV+spkXW0cwGQ6l/DS8Dl9IbBa0
-	ZGPdloeef6sZg88DiGT1p3Q14syzMAMdmIu9Qv3qABbeTlwV7ls+VkvWN2G4RntHze5JEA
-	HuO7/bv3xRc9xeV2lODrFn+Q4XEbOVw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6319860DE1;
-	Tue, 22 Sep 2026 09:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9988D1F00893;
-	Tue, 22 Sep 2026 09:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790070184;
-	bh=V+eCBMsdRHZZ8+99AV4x2YGu7/eXm49oGH7gIIrlNWI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=HEDT5PjbUbEQaAwBztSRssxASmJHaBqVwPwKnbEQzsJZHM+j+y5CasBQn12wmlSJn
-	 CuHqNQhabvHNIE5dxrC6QQ3nX2kIuww0JvVP2OXFnTkjcYV2qnP/mRlpxd612CoRVl
-	 MH+PLj+Bg+NihW+ZUZmiXEO9xnC/xz51ZS0tCCAxu/FIyVQJvDIn94lfBrZZ9/h3d4
-	 LPbb4NTCgzcZzrmK3Y0xPjiBDCuUMpAv7GbvkYoaxBVrDHqpolf8pst6EaxjvSDPB6
-	 m7OzrlzeotaCljEpaYVl448V2ES93RVHyOaaA5G/RAHfF1BBOI+NYgUORG28y/Ik/h
-	 13rAqbmckKezQ==
-Date: Tue, 22 Sep 2026 12:42:55 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-arch@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2] docs/mm: describe set_memory() and set_direct_map()
- APIs
-Message-ID: <arJNn2QD_pY6e14R@kernel.org>
-References: <20260919-set-memory-docs-v2-1-a2a4b3657690@kernel.org>
- <433d32a4-f59a-4d6c-915d-2c1b4c22b840@arm.com>
+	bh=ESfq9ev2vYHZ87uhtFqo52tyGA1fGwFni0ed+CtCQgQ=;
+	b=yBvzXTyhau76G1aelHKEdsyyJX3Mr3WjeuFTGzguV/yLr28rKya1yV/oSR8HdU9ZMDi3sY
+	G+JokdRTr0dDygLOCMQNDdAdCAZmp3b135MLR1Gm8KJHBivwkBWfOrExV4TTqMEFwz1Zuu
+	tkbWKOPFzoxxB5XW3y1KipQHbGNDi6w=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790070475;
+	b=3nB57lwI7rF7F5MsEDzlhffWqYq+e8bOXRdTYst3jUPQ3LojoYHjXbl3RDcSllN2erOiup
+	Pjf1yYjQnyUXV+bR/zn/v8haBw2u+nQLxb+xwEieNu7vBu4PgDcNCJLVyCNns0o3r0T4dU
+	e0GuomjOOkrABAzXxDSroVAmcpCkIMU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=IKLmrhNR;
+	spf=pass (imf24.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAC131576;
+	Tue, 22 Sep 2026 02:47:49 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5C0ED3F528;
+	Tue, 22 Sep 2026 02:47:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790070473; bh=rrBXrUQcOcOTfzP6wbCiHxJahN45dpxh528Z+9Tu99c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IKLmrhNRyFpezR6tHva6Ees7rZuSKc0N0nyLKOJD3tv0og7n2NYCkDAc0s1hn5cD2
+	 qppUXEm6W+5Nc7RkxNuv1tnVLIMYEsrk8j90cZCgRmn8OEkfDYQseFUgMBuNOxn2VE
+	 mP8chhFgjdlCaW8uO01M1rQ2v+nvFzyZ5UVm1cM8=
+Date: Tue, 22 Sep 2026 10:47:49 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm: kmemleak: move the struct page scan into a helper
+Message-ID: <arJOxbz_phnaqWD-@arm.com>
+References: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+ <20260921-b4-kmemleak-page-scan-v1-1-fb97d4801b3a@debian.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <433d32a4-f59a-4d6c-915d-2c1b4c22b840@arm.com>
+In-Reply-To: <20260921-b4-kmemleak-page-scan-v1-1-fb97d4801b3a@debian.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 87CD9180008
+X-Stat-Signature: iw7bzr5pcmnhdx8111b5zpianmrzckpe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4A5D31C0006
-X-Stat-Signature: pqo5zkm5jecofs3ryjxrnzkn4n17zx4f
-X-HE-Tag: 1790070185-88911
-X-HE-Meta: U2FsdGVkX19tdBL0WwSorIcToPBy30xKYlWYA/12mRF+hGjhyHl+qqtD9kahFAtuG1z5pNlSDS8EdA/7QxAtLa4K6aVgW6kUH8RLnAFWsa8cwnKH/oiAq4CVtxQclBEur4iocac6QGplb4OlVnnYVq+CW9rc6+l2IaP9BI0fGRdAapnkRTfCVFxH/JMY21iqBYpEzVjpKgpBX66CBshhjj2cCxmD+Gpl7L6vYJTe0Ktv7tjX4zdnvmJm1l4JvZPfZ98WxLAnCR+q0CFTT/6U1+AV+nocWDQEsEJRIcnMZsaneOKFo4vyk3cr3vtE6lvKRGaXywxSLZJ4bZn5x2XIhADalU0mo30QrOvEWeJVxMGWGL0wSghMjrlD4HnprKZERuxEOK6o4N7hlqhLWbhBR9KoKiK5X/Dks1RQfeYZXIopelhIGZxdRAq+KgTQMLgBkEPvZhIyQIxqlDgNjXkMlSrYR3RUzqqCx3OWIS1neQ21brh/9fREUiQqcdErr/VPiRJKpFDN7e65j0FAVKcdKbxbOfigh9wJrJX7rl2xG8UGiDtEYFXJopUMub1Y8WSR00uSHEsc75yH8IfVCyblZgfpypvzGciiGqsCFUQIbgPtvqmSuKanKH0LlYw5HuLPlb4zBRjM+ydwdvug3BkWANHF7nPtQEzuRO50pwnfoO1/B8U+M82AoAb+rnkDj/iXjpPdeyJBBRdUk7hCk9XvpwLRc2fuzA+hRnwrgcpc+hpIAJn9OKrEP0zt/KhOVlcxG+L40mmmC0m91kOlWEkICjQNJulPLTsv3zYPx06qnKmJHcdXuLnhcSRbDRTJbpq7zuJzqroQeQ8fcB2YwrBcUvfnOYeaqCZnD+oPGNh2g0d+wzHzzSptZspV/Bnbml2rB8VfCiNIwvKQ3ZSna6oRxWwMZC7oAizp2OeqGyrjmRYZrfrsrcSB7YKSHRiY+DpoxTQzvGgbWYFUrX3o80Y
- x5opLyEO
- kKz8hC7z3gH0/hoJ5SBRHSC3fyo5gm3Q5HIxaZbshDio/h7fKXQs9qN71eQT4TcKQhpn6Sr3pHn5CuIStFWvRTT8BWkChibDWvxhpBYkoDwBA71Daqy7KM0e9Xx+zNAp4cUM7BVIqGm81/2imAq16bON0Mm5tIjabp5TIApCo/kUQQKKs4DKW2ddxrVUkax9SeSjt820km9IDA0+ilM0c8r63KaJGIampj8A2c6PiqkmnB4zhV2xCi3cOeEMCp5YlnU09F5+8OqQt67/stBcdxiIa/F4e/8FdInJ6+4pctjUFdX2hvF/Bkble3ifrukQOPNatcZfa/hvF9bzROrvKbv4LLc6nCwx7JWEXT8Kujuk2S4c=
+X-HE-Tag: 1790070474-434473
+X-HE-Meta: U2FsdGVkX1/yfVtdY0uFA8XGMZkdHRX/kNAeyJ9sbwcsIPpEoMZCklMtg0UdaPbmuJfFQUTJLVAuCxYZlaYSIA8SSN0ncVe9zrG2JpIJXknbneDhqPbQtvQ7sTj0eH87VwiWBgXmCjDb1sUH6qA6VTBMcgKpKaR+NQ77YW33ZtdhBOc6R7daQtrJ6+R/1k9h1rVK4h3XfbCCHHkKgqpOcD8PjsAqgw8aedQ+fA9Ga93TZqr6b9NGRcU5ASKke4NUdZdQwmJlOSvpbPlWbbrZFmxp55ZPFdrB1DH5Q5U9WfJovsyeWbshmPN7EFzo41qKGIxx2gaNHnTDAGT6BIz+9o+7YJ+gszcxU7R+2I+TcUsSInYcr3+pS7pLybsy9E1hRIKx4+chXJYmdSaSj3PFtDUrTkbLsS3thKJ0BOYG+dDIHdiYC1T9siM6CVnc/d8yXz0JBWj56RSwwEUM4zhAqvjZBleFbcR6MAg1Y9pT7+bSf7pD+SqHj4Lg5xd6s57dKAP2Tc3Oux+5tmeuDGapzKuz3hDt0eQjmeh/GfcDgmD5HS2H3F9UQbUalKl2T7aRD0CU2/M4F7L0VDdnEqR7LYhXFTeeT/8MnkCmJ5u/Fy3F930fNaTVLJuH5C2sMCTPCXz/GYX8mxKf4hC3WoDDI24BTi1hy/l4BdyeQuUUjK2mE9SJNPkoi7fgLI6ZajOi1ic0eHYaEPaY1L4fTFswfviVsu73CQjkIvyQOO8fiTRXiRcaqFN3BKrXTHlxrw7ads3mx3ewEncI0aEmUpcLKb9+OO+6+m0Oe5zKAJjfsgxll3kj4wECnTGZl+uAqUETEoUblYGtOMrjrEuySsK5YGvcIMzRGd2KqzdcIXD1Hf2eyX+4dyxJWHN+lBdJ/bM+EYh3rqSZxSgAVYHMZrTdwZVMYM1rhe6XjL6KNN2d2cFUyg5vbymXo8QoV06fKsggYiVm8asBeErPq2lI6W3
+ TM9QWQzj
+ 7QOT1cTDpQu/hrops/A+ll62o3IIam5X/5a+ioYCaljXErBiy/7bxckKNcBeiyncG+l+zFrcBTIDveUqLVFvHXpeCsdlQv2SzP7MJShyZRVmIMocu/JR0eOMUtggBlhUuHhBPqONp1NJPtA/Bwz7rIXofnKzQHn3jDB06Y+1t87zjWa7dYiVF5lFTfjl7ftYIQDyW8hX1+UPsXkrgcr4w2JkHGSdDduP3Sbdy0n5UAc5IA7z5d3bbfE8bI3f2mKOVh/5FyNeocWimHzSC7zJcb5+HfSOg+7eMOVJSdH2hNxMSvo5DAUqvT6mRfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,58 +88,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 03:03:32PM +0200, Kevin Brodsky wrote:
-> On 19/09/2026 12:43, Mike Rapoport (Microsoft) wrote:
-> > [...]
-> >
-> > +Modifying the kernel page tables
-> > +================================
-> > +
-> > +Except for the vmalloc area, the kernel page tables are mostly static. Still,
-> > +there are cases when the permissions of existing kernel mappings have to be
-> > +updated, for instance when a module is loaded and its text becomes read-only
-> > +and executable, or when a page is temporarily removed from the direct map to
-> > +reduce its exposure.
-> > +
-> > +There are two families of functions for this, both declared in
-> > +`include/linux/set_memory.h`:
-> > +
-> > +* `set_memory_*()` change permissions of an arbitrary kernel mapping. They
-> > +  take a kernel virtual address and the number of pages.
-> > +
-> > +* `set_direct_map_*()` change permissions of the direct mapping of the page
-> > +  frame represented by a `struct page`. They take a `struct page` pointer and
+On Mon, Sep 21, 2026 at 05:30:26AM -0700, Breno Leitao wrote:
+> The struct page scanning loop sits inline in __kmemleak_scan(), nested
+> three levels deep and sharing the caller's "stop" variable with the
+> zone walk around it. Move it into scan_zone_pages(), which scans one
+> zone and returns 1 if scanning should stop.
 > 
-> The new phrasing is a mouthful but at least should be accurate :) It
-> should probably say "range of page frames" or something like that though.
-
-It gets even more mouthful, but you are right, "range" should be there.
-
-Andrew, can you please fold this in:
-
-diff --git a/Documentation/mm/kernel-page-tables.rst b/Documentation/mm/kernel-page-tables.rst
-index b3148df07fc8b..c16de34b4f79d 100644
---- a/Documentation/mm/kernel-page-tables.rst
-+++ b/Documentation/mm/kernel-page-tables.rst
-@@ -103,9 +103,9 @@ There are two families of functions for this, both declared in
- * `set_memory_*()` change permissions of an arbitrary kernel mapping. They
-   take a kernel virtual address and the number of pages.
- 
--* `set_direct_map_*()` change permissions of the direct mapping of the page
--  frame represented by a `struct page`. They take a `struct page` pointer and
--  the number of pages.
-+* `set_direct_map_*()` change permissions of the direct mapping for the range
-+  of page frames starting at the page represented by a `struct page`. They take
-+  a `struct page` pointer and the number of pages.
- 
- Architectures that implement `set_memory()` select `CONFIG_ARCH_HAS_SET_MEMORY`
- 
-> Looks good otherwise!
+> No functional change; this only makes room for changing how the pages
+> are handed to scan_block().
 > 
-> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
--- 
-Sincerely yours,
-Mike.
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 
