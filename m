@@ -4,76 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E260C982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3321EC982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 663256B0093; Tue, 22 Sep 2026 13:32:54 -0400 (EDT)
+	id 37D4A6B00A1; Tue, 22 Sep 2026 13:32:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63AB76B0095; Tue, 22 Sep 2026 13:32:54 -0400 (EDT)
+	id 3545C6B00A2; Tue, 22 Sep 2026 13:32:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 551C96B009F; Tue, 22 Sep 2026 13:32:54 -0400 (EDT)
+	id 243706B00A4; Tue, 22 Sep 2026 13:32:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DA3B6B0093
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:32:54 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AED6B12058A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:32:53 +0000 (UTC)
-X-FDA: 85242093426.16.50160F6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E82656B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:32:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C5721405A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:32:57 +0000 (UTC)
+X-FDA: 85242093594.23.350CFE5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78A5F18000F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:32:51 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CLvRHaG0;
-	spf=pass (imf06.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 29BEA12000D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:32:55 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=e0Ddf46c;
+	spf=pass (imf29.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790098372;
+	s=arc-20220608; t=1790098375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Q7mc5rE1gQW0RRDNm86nGn4GcNeBbnQk6KAZPcwbRqI=;
-	b=FVZKgPHEwztWkPh79C+abFgHcM4mLv5oExlyBPXyHq1ZHAzQlpxPj7rdx1zV/Io+R3gTba
-	0myjb/k4LftlGXvdIcNBkVOKuX4IdGQ2dSl9nCE8q0EdcAIIyAXbPi+OVUS3zKehUwSgu7
-	ISUlawCCL0Fz7P8PEKl4iJRQsgPfaX8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HgA3ASCR0XQkq0V3btUa7kPjjToaastuAaXgSZQ7eOA=;
+	b=T2nOEU4D+waq4a/tfYlv6FNz9c3bJ/ZeflDYMPsQYZBq01hU8tLYc9XhH5lu18sbq2OqJw
+	NEQ782bWuu3vAgwLPR4xbgY2dBdyxQf9GkIKldmZH2TA5/F+3T2kurJM54DIm7A/zljaMp
+	gZad0RB+ZaXGG7OTIQA4s8EfOw6McsU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CLvRHaG0;
-	spf=pass (imf06.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=e0Ddf46c;
+	spf=pass (imf29.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790098372;
-	b=aoHh8GC5BbXDmZZA7DZpEVk2KseYrSUYcMXJCzWGf9H+2o/kfwTSNlQ/Kd4Xnd+mH3Nn2r
-	Gb59jMJWv6pZ9Odh/lh4HvrHeZzFvDueHRmWp6StB3GIyrMVX65fGbydi57h7uyLEeH+DJ
-	/WLVki95TIN1GMCvnrENbYyn7syzSmY=
+	t=1790098375;
+	b=0S5rnsKkemW7nThi5nU4liETXvweZ/A/XnARN5UGcMcmlxTPH9zrxw/q2rqf7TgbRcUSEK
+	QouKt7kz1UeOHUK4VOjNa9FcLMWvpklfP/tO5RDmxLQ3PwOKP4tw/uHgPkbSDDKvqrtFqY
+	RXGs0D/xW4iBQ6ii8dmrn1JnbxaFCuA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 882C71576;
-	Tue, 22 Sep 2026 10:32:46 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 87D8F1595;
+	Tue, 22 Sep 2026 10:32:50 -0700 (PDT)
 Received: from [127.0.1.1] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9C8B23F86C;
-	Tue, 22 Sep 2026 10:32:46 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 604A43F86C;
+	Tue, 22 Sep 2026 10:32:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790098370; bh=+Su2l1Ft0WBIXjZQ/cFjqH8CISUnq3bv3Vk6lON45EY=;
-	h=From:Subject:Date:To:Cc:From;
-	b=CLvRHaG0VyM0revKNsxvp8O1elOZLQpJ6DZ/UqshepIIeiFSTz9Cvbo1Bi1RsOx1U
-	 8EaiMzAhvfYdAUN/o0PB9bBvwOXciKqWtNyWKjdw8/ifa495+DcTdpxoDTKvE9pwHx
-	 DnO9RWv/nE2LTlquxhGKLaA4/gNOjwqqlKJzSX7Q=
+	t=1790098374; bh=hIZ/hiH2SCX47+Q9tkaaUal44tf7eoSyrdUhb3hE0eI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=e0Ddf46cdbBKTsIXQoDqYQ1biN6PpHlZlKsAObtO3Ox9C8LMNj6L6vFxBiwd39DrM
+	 hNakk2zXKnMhkbdptEJkCN6cwdIM0GvBKgAMxVwwMn8ZrmrN/QVOL/fp+BmtsV4gEt
+	 jSQS1AXE2J1l/vkWJ2tR3RFEXXRE1rrTaMnmmRrQ=
 From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Subject: [PATCH v2 0/6] arm64: distinguish HW PTE pointers from SW PTE
- value pointers
-Date: Tue, 22 Sep 2026 18:31:55 +0100
-Message-Id: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
+Date: Tue, 22 Sep 2026 18:31:56 +0100
+Subject: [PATCH v2 1/6] arm64: use hw_pte_t for HW PTE pointers
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIy7smoC/0WP0W7DIAxFfyXieUwGFgx92n9M1QSOWXlI00IWb
- ary76N02t58Lesc35uoXDJXcRhuovCWa17OLeinQdApnD9Y5qlloUFb8ErJy8rwHsosk4o4JSS
- IoxLt/FI45a+Oejs+cuHrZyOuj6WYudbQiU3QeVp3ntyMBDlahOgoehj9azM80zLfwTFUlm2e8
- 3oYOEwIQAERyGllMSSjrdaUXLSOfHJIhpDE/YVTrutSvnu5TfUffnu8/PfYVHPHOJporWHj7Z/
- 7uO/7D/xl6R8hAQAA
-X-Change-ID: 20260911-pte0_arm-f1b7df7c0b51
+Message-Id: <20260922-pte0_arm-v2-1-a3f1ddff0a8a@arm.com>
+References: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
+In-Reply-To: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, 
  Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
  Ryan Roberts <ryan.roberts@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
@@ -92,13 +88,13 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
  Muhammad Usama Anjum <usama.anjum@arm.com>
 X-Mailer: b4 0.16.0
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78A5F18000F
-X-Stat-Signature: exi9et4t714tzaqfajxy83t6mdeoq6dy
+X-Rspamd-Queue-Id: 29BEA12000D
+X-Stat-Signature: gugfkszizk6o7dtpcc5xz6gjurpu334b
 X-Rspam-User: 
-X-HE-Tag: 1790098371-225639
-X-HE-Meta: U2FsdGVkX1/bOpKaXTeSYb0JqjWrZPx64edw6xV1YxPOekagI1kui4OEhZKMDdQ+cLZNzNAqhXnyAHTlkhtlEIkhlpl+Kef3z8o8Yf/wS1Y2Y0q2SwAlhB99u4C9dKgQ/pjd+dBfl6BV9cqBxApjPZsZ9ogqObDWiXN8RcnaxXCFfgkL2nV/aHOdXhxxkOGsxCTvdFzVpUCP21wQRKUcaVIjB0fBNdk3dZiGh7mSLcRZXPp5LBdIYft+qxWOJlZqYv8C46i+bb2JiBJgVXAOD3SzJT+n5KU+H432zZoTjcqLDmD+m02WQGMwYlHcZcwzo4hM7OyVdHywD1CKo/ty5dUkGwqGlc4cMl4Zp8NErWVn0XCNBUXyAWPpHxwQqTAAlBQcn6JdQTbJNrhVIw3PrbZ/AA54we4kwOt5cVVAfkoKcGjTmk4CmS/98gS4iiQNCm0EMZTkBiBVufC8yaGl4DYawGYfZp8uqxvFqwC+1SGT0ALr5KTvBSSfYR/6RZuL0m6k5x+ARqPuOGkV7D1hpTRpQsc7EDvfOXgV/5Hpf9TJopm4KeNsdk2EcT54tFDUH7iphUosNRQ3aHXaj2yDytEUkhMyJmaAxB5pktqSHzSYnOlGcnjHsE2he6wQ37G2005kZG/aP8jjy8Bfnj8LqDYtZkjmuum0C94GMgKTI4WDA9vYl5rI4jjeEIM49qAZ9t6hiOVLJug746vX7lW2/rv5/hJRbzaRjUaqMEVoizVlfopnopZl9qmSCnZYnhoVz/y3Llb1P6CVtNrAPOcYEX4eIqCcuEEoJYrNy9nEbHeW6vRA5VMbpzV+mLVU0CXR7ASorzeGCHIp8TwtygmgXy42IB3JUhT/6GYDTvwph7tsFioy7nSrHztgSIKO2sN065xHRquHyLV5x2O9rNDdDOnS2haSdeFOYjC9LK1I75hjikAUet5/VZM90IjinsiwnwJ9dKWpYr9JYEyUVnv
- 8xXKp2jh
- flu4UUQoSJT8cF1n8beNwMz13arDB1dgMo3aTVzyRTT9o9QmhC4EJp/Ud3PFuNN3IKun4ic1gqy7dKyxuRXdblcMlpl4KUOfsx5SA5E4w/eBPWFqWsRgV79rVcSqnf9lR8UobHp2Z0Wk7TLWmSewefa/cyKi1dbxwkLzb1kpyzPwD7EUCsjHkk/DTgyXue55ekLKsk3u7ZJeomXVoUR+DCyaG5wYbzVBBeUGcQitnH4m+8H7AQYONyke7VOyjohAPSclJBVvMOuwBEhw222YNq7N3o0GfUPWU7ezIaIKEOJqndwuh3FAcNsFVrR3QNgdDbgi9Ab9KAmmPkrwYD+uZpfYKkCY00xdUGIZUrOs9zOMVVikbVK6KfMCSxI3BXWWuGOEHFM9YHLizOZU9Eg+tYqkziOBIl/T12vRInJ80CPY3jnVNh0PokoIbDqM59taSzSBGeqYHaBvdUOdSWWhvw6B8s/lz0E7NCiqQwUTLvzLIjxym24+u076YwZQ1HOs3e5u/Pz9dSsj+H2e15J+WZXNyMIbi6GeXlw8ktzJcn9d1kwYCEZww8m/tfy0tTlJcruwNA3gJS3UNfCZ5uQ7UH+tVYONsKffts/nA1tihc+Fl09lqEII44Wg0iJPIZaRiERpfAUj7e1Dku206tcfNSYaryqRStcKLBM9C
+X-HE-Tag: 1790098375-365493
+X-HE-Meta: U2FsdGVkX1+DpRXlQtWVRFaFGpZWAc6Ox6jt9J0OyePngGeyCiRQZda/QbhWmhzaNdM+Y7WELo6uHQvQk/LO9LJy7o6pLUbM9udrbDExB/DsEv1p4EaJCidTYDRb+1UxihaxsymSf6wD/0PE/5nu9UBPsOIqvb1ms4uofvnGdaYH4phUqMOINpbPBjaMWF1mbCrebEL87q+3eV9TL4L6FBPPwnLWxVMQSf+OeQpAcN6ddjjU9Tv1HoCGiU5D0Ss8zKSJONlRoTjwm5hIPMwAzmLyNwMGZGeMikAXvt1Y3J1Fryq0mspLhI1PJH0vf2eIu6N+cFWWqL5IJK4UXhSCuHbFxmwPYlAkPDrTWLjPo/hlNM3yzjzwzfFZh9dI4vXi/RoFxNrv664lWPDePgQQWkdsDRaUKRKZh2hW7OsV/Wr8gER+N2VqCSEmteffafZltFDWn00Dtt8pXrjLg7pt2372mIiOReyHwxx3NvDgvuYygV1sAz+UY0V4mgALnSzY+XpGEfJFst6aFJp07gDkhuh4oyOeueSAVMYyLasgA+cZ5MWWHSIjE2ypy+YGrSRsZeHsPUhjg+lloMz0G8BXjfQhs7ljeZe/A/wf4Mvkbl1E3jcMf+0FyF+joC8oVTq5I3KAodfWFtCdOH9SzeiRMf0q3R3miEGo9jhmbkEBl7+JxOETr45DHPjEWEroLlmUjz/+UFBLoMk1ocD5vUgcI5/6TzUM62QCsKQCMKvEHB0+8sDFeu4bYL2X1G4s+JmI88htzIDeGohGAepEkrANQDv+EZ058hAgcNguuTS5pg08M8TBako4TMo+JiPGeHajcw2DpeNSmdpVgd0WiUggS1gmC9K+N+6C7r+i7wXSA6N9U3S4SOyIyZ/QA1m1G287uAP6iHTesA30474xNUto1/ZkfLJLXQnQEg2tgMBzK9lCuGdo64TDOo3PjFt82JYYSEOkl+2y8LtK9DqFaLC
+ L/Q/54L+
+ uoyoNBvJsylwrXC8+vl+5+MnHSuA0E5eRti0rxgqD2QNOXhgp/ogOCRXNkyXycpvk//uGSI/wABldA/D4+NDdoE5irFGMvGVkJjG8uKffxtEsaIm4PR8b/+mPqc44G5b7IU2CTD2wWFlhYv5KiRveYvitLDgaYsnl6UKUKg6e0E8glrdDo4mimHYyFLuhyq33eLpCFHgDWd2ZrMFlayFNCDCJW5cn6VX21Fx9fWoZZpKUPkZZukx6ldsLAlCSrXD+hjmhctP1a95GFrwUhOyZjA4Kr5R12aetR95Wm9mbec+4mIEwiof48YcqiT01RxI55/qb257IhnNrir1JrhtMKyW294nNb+0s4x6DG6SQ9+v8OwkDOPvOaKxklzBbQK6Z2yu8RaOFqrQmUe/y3/Bv7bK7zw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,98 +102,1400 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+With pte_t * used for HW PTE pointers, the compiler cannot distinguish
+them from SW PTE value pointers. The generic HW PTE interfaces already
+use hw_pte_t *, so arm64 HW PTE pointers must use that type before
+ARCH_HAS_HW_PTE_T can make it distinct.
 
-The generic series introduces hw_pte_t for HW PTEs, while SW PTE values
-use pte_t. This series enables the distinct type on arm64 so the
-compiler can distinguish HW PTE pointers (hw_pte_t *) from SW PTE value
-pointers (pte_t *).
+Convert HW PTE pointers to hw_pte_t *, retaining pte_t for SW PTE
+values. Helpers shared with PMD and PUD operations keep explicit casts
+because this series does not introduce distinct entry types for those
+levels.
 
-The conversion updates HW PTE pointers and accessors, including atomic
-updates, fixmap, and early page-table construction, before selecting
-ARCH_HAS_HW_PTE_T. Higher-level entry types remain out of scope, and
-shared helpers retain explicit casts.
+arm64 still uses the hw_pte_t alias in this patch. The new pointer
+spelling therefore denotes the same type until the final opt-in.
 
-The linked generic series is a prerequisite. Its cover contains the
-Coccinelle script used for most pointer conversions; the remaining sites
-were converted by hand.
+Include linux/pgtable_types.h in pi.h to make hw_pte_t visible.
 
-Testing:
-Testing was performed with and without the series on both x86_64 and
-arm64. KUnit and the MM kselftests produced matching before-and-after
-results problems or regressions. Fastpath performance testing was also
-completed on arm64. No regression was found.
-
-Link: https://lore.kernel.org/all/20260922-pte0-v3-0-5670b8cb9059@arm.com  
 Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 ---
-Changes in v2:
-- Move hw_pte_val() to the generic series and drop an unrelated comment
-  change from the atomic-access patch.
-- Use raw PTE values instead of generic HW/SW conversion helpers.
-- Drop a comment and add testing resutls in the cover letter
-- Add Reviewed-by tags.
-- Link to v1: https://patch.msgid.link/20260914-pte0_arm-v1-0-bb53b663e396@arm.com
-
-To: Catalin Marinas <catalin.marinas@arm.com>
-To: Will Deacon <will@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-To: Ard Biesheuvel <ardb@kernel.org>
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-To: Alexander Potapenko <glider@google.com>
-To: Andrey Konovalov <andreyknvl@gmail.com>
-To: Dmitry Vyukov <dvyukov@google.com>
-To: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: usama.anjum@arm.com
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-efi@vger.kernel.org
-Cc: kasan-dev@googlegroups.com
-
----
-Muhammad Usama Anjum (6):
-      arm64: use hw_pte_t for HW PTE pointers
-      arm64: use hw_pte_val for HW PTE atomics
-      arm64: use hw_pte_val for HW PTE loads and stores
-      arm64: use hw_pte_t for fixmap HW PTEs
-      arm64: use HW PTE accessors in early map_range()
-      arm64: enable a distinct type for HW PTEs
-
- arch/arm64/Kconfig                |   1 +
- arch/arm64/include/asm/hugetlb.h  |  19 ++++----
+ arch/arm64/include/asm/hugetlb.h  |  19 +++++----
  arch/arm64/include/asm/pgalloc.h  |   2 +-
- arch/arm64/include/asm/pgtable.h  | 157 ++++++++++++++++++++++++++++++++++------------------------------
+ arch/arm64/include/asm/pgtable.h  | 143 ++++++++++++++++++++++++++++++++++------------------------------
  arch/arm64/include/asm/vmalloc.h  |   2 +-
  arch/arm64/kernel/efi.c           |   3 +-
  arch/arm64/kernel/pi/map_kernel.c |   4 +-
- arch/arm64/kernel/pi/map_range.c  |  20 +++++----
+ arch/arm64/kernel/pi/map_range.c  |   9 ++--
  arch/arm64/kernel/pi/pi.h         |   3 +-
- arch/arm64/mm/contpte.c           |  49 ++++++++++----------
- arch/arm64/mm/fault.c             |   7 +--
- arch/arm64/mm/fixmap.c            |   8 ++--
- arch/arm64/mm/hugetlbpage.c       |  48 ++++++++++----------
+ arch/arm64/mm/contpte.c           |  49 +++++++++++-----------
+ arch/arm64/mm/fault.c             |   5 ++-
+ arch/arm64/mm/fixmap.c            |   6 +--
+ arch/arm64/mm/hugetlbpage.c       |  48 +++++++++++-----------
  arch/arm64/mm/kasan_init.c        |   4 +-
- arch/arm64/mm/mmu.c               |  46 +++++++++++--------
+ arch/arm64/mm/mmu.c               |  46 ++++++++++++---------
  arch/arm64/mm/pageattr.c          |   4 +-
  arch/arm64/mm/trans_pgd.c         |   4 +-
- 17 files changed, 207 insertions(+), 174 deletions(-)
----
-base-commit: ead700ca770c82167af32622cf8b68c9f87c3c7c
-change-id: 20260911-pte0_arm-f1b7df7c0b51
-prerequisite-message-id: 20260922-pte0-v3-0-5670b8cb9059@arm.com
-prerequisite-patch-id: 0114fcc6ab0dbb739b5bb6fc0fe6b1c8f1fa37a1
-prerequisite-patch-id: 09fcf65970074620dd3a9cce6850b901beb01db8
-prerequisite-patch-id: 9b2fdab97c99effabb85526fa7f141c933b3aa23
-prerequisite-patch-id: 1aa309a26d98a1e93a54742705a03567ee93be71
-prerequisite-patch-id: ebe32f52c95ad0542982f0b37798d209595e25e1
-prerequisite-patch-id: 22950028c3d2060de8acd3fe4a73d755b18215e3
-prerequisite-patch-id: a60d249f52d092524176851b2570d7245bb24434
-prerequisite-patch-id: 81ebd1378e25d40a1771b53973abcc4defa87535
-prerequisite-patch-id: d982f2b00c5eddb2459f69008a73e4f4ae4d8299
+ 16 files changed, 190 insertions(+), 161 deletions(-)
 
-Best regards,
---  
-Usama
+diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+index d038ff14d16ca..15b3cf53aa2ca 100644
+--- a/arch/arm64/include/asm/hugetlb.h
++++ b/arch/arm64/include/asm/hugetlb.h
+@@ -36,33 +36,34 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags);
+ #define arch_make_huge_pte arch_make_huge_pte
+ #define __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT
+ extern void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-			    pte_t *ptep, pte_t pte, unsigned long sz);
++			    hw_pte_t *ptep, pte_t pte, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_ACCESS_FLAGS
+ extern int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+-				      unsigned long addr, pte_t *ptep,
++				      unsigned long addr, hw_pte_t *ptep,
+ 				      pte_t pte, int dirty);
+ #define __HAVE_ARCH_HUGE_PTEP_GET_AND_CLEAR
+ extern pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-				     pte_t *ptep, unsigned long sz);
++				     hw_pte_t *ptep, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_SET_WRPROTECT
+ extern void huge_ptep_set_wrprotect(struct mm_struct *mm,
+-				    unsigned long addr, pte_t *ptep);
++				    unsigned long addr, hw_pte_t *ptep);
+ #define __HAVE_ARCH_HUGE_PTEP_CLEAR_FLUSH
+ extern pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+-				   unsigned long addr, pte_t *ptep);
++				   unsigned long addr, hw_pte_t *ptep);
+ #define __HAVE_ARCH_HUGE_PTE_CLEAR
+ extern void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+-			   pte_t *ptep, unsigned long sz);
++			   hw_pte_t *ptep, unsigned long sz);
+ #define __HAVE_ARCH_HUGE_PTEP_GET
+-extern pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
++extern pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
++			   hw_pte_t *ptep);
+ 
+ #define huge_ptep_modify_prot_start huge_ptep_modify_prot_start
+ extern pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma,
+-					 unsigned long addr, pte_t *ptep);
++					 unsigned long addr, hw_pte_t *ptep);
+ 
+ #define huge_ptep_modify_prot_commit huge_ptep_modify_prot_commit
+ extern void huge_ptep_modify_prot_commit(struct vm_area_struct *vma,
+-					 unsigned long addr, pte_t *ptep,
++					 unsigned long addr, hw_pte_t *ptep,
+ 					 pte_t old_pte, pte_t new_pte);
+ 
+ #include <asm-generic/hugetlb.h>
+diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
+index 1b4509d3382c6..80063dd4d2722 100644
+--- a/arch/arm64/include/asm/pgalloc.h
++++ b/arch/arm64/include/asm/pgalloc.h
+@@ -106,7 +106,7 @@ static inline void __pmd_populate(pmd_t *pmdp, phys_addr_t ptep,
+  * of the mm address space.
+  */
+ static inline void
+-pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, pte_t *ptep)
++pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmdp, hw_pte_t *ptep)
+ {
+ 	VM_BUG_ON(mm && mm != &init_mm);
+ 	__pmd_populate(pmdp, __pa(ptep),
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index e89ec5f4787b4..652ce413be389 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -358,7 +358,7 @@ static inline pte_t pte_clear_uffd(pte_t pte)
+ }
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+ 
+-static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
++static inline void __set_pte_nosync(hw_pte_t *ptep, pte_t pte)
+ {
+ 	WRITE_ONCE(*ptep, pte);
+ }
+@@ -373,13 +373,13 @@ static inline void __set_pte_complete(pte_t pte)
+ 		queue_pte_barriers();
+ }
+ 
+-static inline void __set_pte(pte_t *ptep, pte_t pte)
++static inline void __set_pte(hw_pte_t *ptep, pte_t pte)
+ {
+ 	__set_pte_nosync(ptep, pte);
+ 	__set_pte_complete(pte);
+ }
+ 
+-static inline pte_t __ptep_get(pte_t *ptep)
++static inline pte_t __ptep_get(hw_pte_t *ptep)
+ {
+ 	return READ_ONCE(*ptep);
+ }
+@@ -403,7 +403,8 @@ bool pgattr_change_is_safe(pteval_t old, pteval_t new);
+  *   PTE_DIRTY || (PTE_WRITE && !PTE_RDONLY)
+  */
+ 
+-static inline void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep,
++static inline void __check_safe_pte_update(struct mm_struct *mm,
++					   hw_pte_t *ptep,
+ 					   pte_t pte)
+ {
+ 	pte_t old_pte;
+@@ -669,7 +670,8 @@ static inline pgprot_t pud_pgprot(pud_t pud)
+ }
+ 
+ static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long addr,
+-				    pte_t *ptep, pte_t pte, unsigned int nr,
++				    hw_pte_t *ptep, pte_t pte,
++				    unsigned int nr,
+ 				    unsigned long pgsize)
+ {
+ 	unsigned long stride = pgsize >> PAGE_SHIFT;
+@@ -707,7 +709,7 @@ static inline void __set_ptes_anysz(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep, pte_t pte, unsigned int nr)
++			      hw_pte_t *ptep, pte_t pte, unsigned int nr)
+ {
+ 	__set_ptes_anysz(mm, addr, ptep, pte, nr, PAGE_SIZE);
+ }
+@@ -715,14 +717,16 @@ static inline void __set_ptes(struct mm_struct *mm, unsigned long addr,
+ static inline void __set_pmds(struct mm_struct *mm, unsigned long addr,
+ 			      pmd_t *pmdp, pmd_t pmd, unsigned int nr)
+ {
+-	__set_ptes_anysz(mm, addr, (pte_t *)pmdp, pmd_pte(pmd), nr, PMD_SIZE);
++	__set_ptes_anysz(mm, addr, (hw_pte_t *)pmdp, pmd_pte(pmd), nr,
++			 PMD_SIZE);
+ }
+ #define set_pmd_at(mm, addr, pmdp, pmd) __set_pmds(mm, addr, pmdp, pmd, 1)
+ 
+ static inline void __set_puds(struct mm_struct *mm, unsigned long addr,
+ 			      pud_t *pudp, pud_t pud, unsigned int nr)
+ {
+-	__set_ptes_anysz(mm, addr, (pte_t *)pudp, pud_pte(pud), nr, PUD_SIZE);
++	__set_ptes_anysz(mm, addr, (hw_pte_t *)pudp, pud_pte(pud), nr,
++			 PUD_SIZE);
+ }
+ #define set_pud_at(mm, addr, pudp, pud) __set_puds(mm, addr, pudp, pud, 1)
+ 
+@@ -850,16 +854,16 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+ }
+ 
+ /* Find an entry in the third-level page table. */
+-#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
++#define pte_offset_phys(dir, addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(hw_pte_t))
+ 
+-#define pte_set_fixmap(addr)		((pte_t *)set_fixmap_offset(FIX_PTE, addr))
++#define pte_set_fixmap(addr)		((hw_pte_t *)set_fixmap_offset(FIX_PTE, addr))
+ #define pte_set_fixmap_offset(pmd, addr)	pte_set_fixmap(pte_offset_phys(pmd, addr))
+ #define pte_clear_fixmap()		clear_fixmap(FIX_PTE)
+ 
+ #define pmd_page(pmd)			phys_to_page(__pmd_to_phys(pmd))
+ 
+ /* use ONLY for statically allocated translation tables */
+-#define pte_offset_kimg(dir,addr)	((pte_t *)__phys_to_kimg(pte_offset_phys((dir), (addr))))
++#define pte_offset_kimg(dir, addr)	((hw_pte_t *)__phys_to_kimg(pte_offset_phys((dir), (addr))))
+ 
+ #if CONFIG_PGTABLE_LEVELS > 2
+ 
+@@ -1238,12 +1242,14 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
+ }
+ 
+ extern int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
+-					 unsigned long address, pte_t *ptep,
++					 unsigned long address,
++					 hw_pte_t *ptep,
+ 					 pte_t entry, int dirty,
+ 					 unsigned long pgsize);
+ 
+ static inline int __ptep_set_access_flags(struct vm_area_struct *vma,
+-					  unsigned long address, pte_t *ptep,
++					  unsigned long address,
++					  hw_pte_t *ptep,
+ 					  pte_t entry, int dirty)
+ {
+ 	return __ptep_set_access_flags_anysz(vma, address, ptep, entry, dirty,
+@@ -1256,7 +1262,7 @@ static inline int pmdp_set_access_flags(struct vm_area_struct *vma,
+ 					unsigned long address, pmd_t *pmdp,
+ 					pmd_t entry, int dirty)
+ {
+-	return __ptep_set_access_flags_anysz(vma, address, (pte_t *)pmdp,
++	return __ptep_set_access_flags_anysz(vma, address, (hw_pte_t *)pmdp,
+ 					     pmd_pte(entry), dirty, PMD_SIZE);
+ }
+ #endif
+@@ -1283,13 +1289,13 @@ static inline bool pud_user_accessible_page(struct mm_struct *mm, unsigned long
+  */
+ 
+ static inline void __pte_clear(struct mm_struct *mm,
+-			       unsigned long addr, pte_t *ptep)
++			       unsigned long addr, hw_pte_t *ptep)
+ {
+ 	__set_pte(ptep, __pte(0));
+ }
+ 
+ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+-		unsigned long address, pte_t *ptep)
++		unsigned long address, hw_pte_t *ptep)
+ {
+ 	pte_t old_pte, pte;
+ 
+@@ -1305,7 +1311,7 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
+ }
+ 
+ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
+-		unsigned long address, pte_t *ptep)
++		unsigned long address, hw_pte_t *ptep)
+ {
+ 	bool young = __ptep_test_and_clear_young(vma, address, ptep);
+ 
+@@ -1331,13 +1337,13 @@ static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
+ {
+ 	/* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
+ 	VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
+-	return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
++	return __ptep_test_and_clear_young(vma, address, (hw_pte_t *)pmdp);
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+ 
+ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+ 					       unsigned long address,
+-					       pte_t *ptep,
++					       hw_pte_t *ptep,
+ 					       unsigned long pgsize)
+ {
+ 	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
+@@ -1362,13 +1368,13 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+ }
+ 
+ static inline pte_t __ptep_get_and_clear(struct mm_struct *mm,
+-				       unsigned long address, pte_t *ptep)
++				       unsigned long address, hw_pte_t *ptep)
+ {
+ 	return __ptep_get_and_clear_anysz(mm, address, ptep, PAGE_SIZE);
+ }
+ 
+ static inline void __clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, unsigned int nr, int full)
++				hw_pte_t *ptep, unsigned int nr, int full)
+ {
+ 	for (;;) {
+ 		__ptep_get_and_clear(mm, addr, ptep);
+@@ -1380,7 +1386,7 @@ static inline void __clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ static inline pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				unsigned int nr, int full)
+ {
+ 	pte_t pte, tmp_pte;
+@@ -1403,12 +1409,12 @@ static inline pte_t __get_and_clear_full_ptes(struct mm_struct *mm,
+ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 					    unsigned long address, pmd_t *pmdp)
+ {
+-	return pte_pmd(__ptep_get_and_clear_anysz(mm, address, (pte_t *)pmdp, PMD_SIZE));
++	return pte_pmd(__ptep_get_and_clear_anysz(mm, address, (hw_pte_t *)pmdp, PMD_SIZE));
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+-					unsigned long address, pte_t *ptep,
++					unsigned long address, hw_pte_t *ptep,
+ 					pte_t pte)
+ {
+ 	pte_t old_pte;
+@@ -1426,13 +1432,13 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
+  * dirty status (PTE_DBM && !PTE_RDONLY) to the software PTE_DIRTY bit.
+  */
+ static inline void __ptep_set_wrprotect(struct mm_struct *mm,
+-					unsigned long address, pte_t *ptep)
++					unsigned long address, hw_pte_t *ptep)
+ {
+ 	___ptep_set_wrprotect(mm, address, ptep, __ptep_get(ptep));
+ }
+ 
+ static inline void __wrprotect_ptes(struct mm_struct *mm, unsigned long address,
+-				pte_t *ptep, unsigned int nr)
++				hw_pte_t *ptep, unsigned int nr)
+ {
+ 	unsigned int i;
+ 
+@@ -1441,7 +1447,7 @@ static inline void __wrprotect_ptes(struct mm_struct *mm, unsigned long address,
+ }
+ 
+ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+-					   unsigned long addr, pte_t *ptep,
++					   unsigned long addr, hw_pte_t *ptep,
+ 					   pte_t pte, cydp_t flags)
+ {
+ 	pte_t old_pte;
+@@ -1460,7 +1466,8 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
+ }
+ 
+ static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
+-					    unsigned long addr, pte_t *ptep,
++					    unsigned long addr,
++					    hw_pte_t *ptep,
+ 					    unsigned int nr, cydp_t flags)
+ {
+ 	pte_t pte;
+@@ -1485,7 +1492,7 @@ static inline void __clear_young_dirty_ptes(struct vm_area_struct *vma,
+ static inline void pmdp_set_wrprotect(struct mm_struct *mm,
+ 				      unsigned long address, pmd_t *pmdp)
+ {
+-	__ptep_set_wrprotect(mm, address, (pte_t *)pmdp);
++	__ptep_set_wrprotect(mm, address, (hw_pte_t *)pmdp);
+ }
+ 
+ #define pmdp_establish pmdp_establish
+@@ -1558,7 +1565,8 @@ extern void arch_swap_restore(swp_entry_t entry, struct folio *folio);
+  * On AArch64, the cache coherency is handled via the __set_ptes() function.
+  */
+ static inline void update_mmu_cache_range(struct vm_fault *vmf,
+-		struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++		struct vm_area_struct *vma, unsigned long addr,
++		hw_pte_t *ptep,
+ 		unsigned int nr)
+ {
+ 	/*
+@@ -1613,21 +1621,21 @@ static inline bool pud_sect_supported(void)
+ #define __HAVE_ARCH_PTEP_MODIFY_PROT_TRANSACTION
+ #define ptep_modify_prot_start ptep_modify_prot_start
+ extern pte_t ptep_modify_prot_start(struct vm_area_struct *vma,
+-				    unsigned long addr, pte_t *ptep);
++				    unsigned long addr, hw_pte_t *ptep);
+ 
+ #define ptep_modify_prot_commit ptep_modify_prot_commit
+ extern void ptep_modify_prot_commit(struct vm_area_struct *vma,
+-				    unsigned long addr, pte_t *ptep,
++				    unsigned long addr, hw_pte_t *ptep,
+ 				    pte_t old_pte, pte_t new_pte);
+ 
+ #define modify_prot_start_ptes modify_prot_start_ptes
+ extern pte_t modify_prot_start_ptes(struct vm_area_struct *vma,
+-				    unsigned long addr, pte_t *ptep,
++				    unsigned long addr, hw_pte_t *ptep,
+ 				    unsigned int nr);
+ 
+ #define modify_prot_commit_ptes modify_prot_commit_ptes
+ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long addr,
+-				    pte_t *ptep, pte_t old_pte, pte_t pte,
++				    hw_pte_t *ptep, pte_t old_pte, pte_t pte,
+ 				    unsigned int nr);
+ 
+ #ifdef CONFIG_ARM64_CONTPTE
+@@ -1638,33 +1646,35 @@ extern void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long ad
+  * a private implementation detail of the public ptep API (see below).
+  */
+ extern void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, pte_t pte);
++				hw_pte_t *ptep, pte_t pte);
+ extern void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, pte_t pte);
+-extern pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte);
+-extern pte_t contpte_ptep_get_lockless(pte_t *orig_ptep);
++				hw_pte_t *ptep, pte_t pte);
++extern pte_t contpte_ptep_get(hw_pte_t *ptep, pte_t orig_pte);
++extern pte_t contpte_ptep_get_lockless(hw_pte_t *orig_ptep);
+ extern void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, pte_t pte, unsigned int nr);
++				hw_pte_t *ptep, pte_t pte, unsigned int nr);
+ extern void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, unsigned int nr, int full);
++				hw_pte_t *ptep, unsigned int nr, int full);
+ extern pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				unsigned int nr, int full);
+ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep, unsigned int nr);
++				unsigned long addr, hw_pte_t *ptep,
++				unsigned int nr);
+ bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep, unsigned int nr);
++				unsigned long addr, hw_pte_t *ptep,
++				unsigned int nr);
+ extern void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, unsigned int nr);
++				hw_pte_t *ptep, unsigned int nr);
+ extern int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				pte_t entry, int dirty);
+ extern void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				unsigned int nr, cydp_t flags);
+ 
+ static __always_inline void contpte_try_fold(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep, pte_t pte)
++				unsigned long addr, hw_pte_t *ptep, pte_t pte)
+ {
+ 	/*
+ 	 * Only bother trying if both the virtual and physical addresses are
+@@ -1687,14 +1697,14 @@ static __always_inline void contpte_try_fold(struct mm_struct *mm,
+ }
+ 
+ static __always_inline void contpte_try_unfold(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep, pte_t pte)
++				unsigned long addr, hw_pte_t *ptep, pte_t pte)
+ {
+ 	if (unlikely(pte_valid_cont(pte)))
+ 		__contpte_try_unfold(mm, addr, ptep, pte);
+ }
+ 
+ #define pte_batch_hint pte_batch_hint
+-static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
++static inline unsigned int pte_batch_hint(hw_pte_t *ptep, pte_t pte)
+ {
+ 	if (!pte_valid_cont(pte))
+ 		return 1;
+@@ -1721,7 +1731,7 @@ static inline unsigned int pte_batch_hint(pte_t *ptep, pte_t pte)
+  */
+ 
+ #define ptep_get ptep_get
+-static inline pte_t ptep_get(pte_t *ptep)
++static inline pte_t ptep_get(hw_pte_t *ptep)
+ {
+ 	pte_t pte = __ptep_get(ptep);
+ 
+@@ -1732,7 +1742,7 @@ static inline pte_t ptep_get(pte_t *ptep)
+ }
+ 
+ #define ptep_get_lockless ptep_get_lockless
+-static inline pte_t ptep_get_lockless(pte_t *ptep)
++static inline pte_t ptep_get_lockless(hw_pte_t *ptep)
+ {
+ 	pte_t pte = __ptep_get(ptep);
+ 
+@@ -1742,7 +1752,7 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
+ 	return contpte_ptep_get_lockless(ptep);
+ }
+ 
+-static inline void set_pte(pte_t *ptep, pte_t pte)
++static inline void set_pte(hw_pte_t *ptep, pte_t pte)
+ {
+ 	/*
+ 	 * We don't have the mm or vaddr so cannot unfold contig entries (since
+@@ -1759,7 +1769,7 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+ 
+ #define set_ptes set_ptes
+ static __always_inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, pte_t pte, unsigned int nr)
++				hw_pte_t *ptep, pte_t pte, unsigned int nr)
+ {
+ 	pte = pte_mknoncont(pte);
+ 
+@@ -1773,7 +1783,7 @@ static __always_inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ static inline void pte_clear(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep)
++				unsigned long addr, hw_pte_t *ptep)
+ {
+ 	contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+ 	__pte_clear(mm, addr, ptep);
+@@ -1781,7 +1791,7 @@ static inline void pte_clear(struct mm_struct *mm,
+ 
+ #define clear_full_ptes clear_full_ptes
+ static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, unsigned int nr, int full)
++				hw_pte_t *ptep, unsigned int nr, int full)
+ {
+ 	if (likely(nr == 1)) {
+ 		contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+@@ -1793,7 +1803,7 @@ static inline void clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+ 
+ #define get_and_clear_full_ptes get_and_clear_full_ptes
+ static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				unsigned int nr, int full)
+ {
+ 	pte_t pte;
+@@ -1810,13 +1820,13 @@ static inline pte_t get_and_clear_full_ptes(struct mm_struct *mm,
+ 
+ #define __HAVE_ARCH_PTEP_GET_AND_CLEAR
+ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep)
++				unsigned long addr, hw_pte_t *ptep)
+ {
+ 	contpte_try_unfold(mm, addr, ptep, __ptep_get(ptep));
+ 	return __ptep_get_and_clear(mm, addr, ptep);
+ }
+ 
+-static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
++static inline bool ptep_try_set(hw_pte_t *ptep, pte_t new_pte)
+ {
+ 	pteval_t old = 0;
+ 
+@@ -1846,7 +1856,7 @@ static inline void flush_tlb_before_set(unsigned long addr)
+ 
+ #define test_and_clear_young_ptes test_and_clear_young_ptes
+ static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, unsigned int nr)
++		unsigned long addr, hw_pte_t *ptep, unsigned int nr)
+ {
+ 	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
+ 		return __ptep_test_and_clear_young(vma, addr, ptep);
+@@ -1856,14 +1866,14 @@ static inline bool test_and_clear_young_ptes(struct vm_area_struct *vma,
+ 
+ #define __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+ static inline bool ptep_test_and_clear_young(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep)
++		unsigned long addr, hw_pte_t *ptep)
+ {
+ 	return test_and_clear_young_ptes(vma, addr, ptep, 1);
+ }
+ 
+ #define __HAVE_ARCH_PTEP_CLEAR_YOUNG_FLUSH
+ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep)
++		unsigned long addr, hw_pte_t *ptep)
+ {
+ 	pte_t orig_pte = __ptep_get(ptep);
+ 
+@@ -1875,7 +1885,7 @@ static inline bool ptep_clear_flush_young(struct vm_area_struct *vma,
+ 
+ #define clear_flush_young_ptes clear_flush_young_ptes
+ static inline bool clear_flush_young_ptes(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, unsigned int nr)
++		unsigned long addr, hw_pte_t *ptep, unsigned int nr)
+ {
+ 	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
+ 		return __ptep_clear_flush_young(vma, addr, ptep);
+@@ -1885,7 +1895,8 @@ static inline bool clear_flush_young_ptes(struct vm_area_struct *vma,
+ 
+ #define wrprotect_ptes wrprotect_ptes
+ static __always_inline void wrprotect_ptes(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep, unsigned int nr)
++				unsigned long addr, hw_pte_t *ptep,
++				unsigned int nr)
+ {
+ 	if (likely(nr == 1)) {
+ 		/*
+@@ -1909,14 +1920,14 @@ static __always_inline void wrprotect_ptes(struct mm_struct *mm,
+ 
+ #define __HAVE_ARCH_PTEP_SET_WRPROTECT
+ static inline void ptep_set_wrprotect(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep)
++				unsigned long addr, hw_pte_t *ptep)
+ {
+ 	wrprotect_ptes(mm, addr, ptep, 1);
+ }
+ 
+ #define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
+ static inline int ptep_set_access_flags(struct vm_area_struct *vma,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				pte_t entry, int dirty)
+ {
+ 	pte_t orig_pte = __ptep_get(ptep);
+@@ -1931,7 +1942,7 @@ static inline int ptep_set_access_flags(struct vm_area_struct *vma,
+ 
+ #define clear_young_dirty_ptes clear_young_dirty_ptes
+ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
+-					  unsigned long addr, pte_t *ptep,
++					  unsigned long addr, hw_pte_t *ptep,
+ 					  unsigned int nr, cydp_t flags)
+ {
+ 	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
+diff --git a/arch/arm64/include/asm/vmalloc.h b/arch/arm64/include/asm/vmalloc.h
+index 4ec1acd3c1b34..28d3e89f90e43 100644
+--- a/arch/arm64/include/asm/vmalloc.h
++++ b/arch/arm64/include/asm/vmalloc.h
+@@ -45,7 +45,7 @@ static inline unsigned long arch_vmap_pte_range_map_size(unsigned long addr,
+ 
+ #define arch_vmap_pte_range_unmap_size arch_vmap_pte_range_unmap_size
+ static inline unsigned long arch_vmap_pte_range_unmap_size(unsigned long addr,
+-							   pte_t *ptep)
++							   hw_pte_t *ptep)
+ {
+ 	/*
+ 	 * The caller handles alignment so it's sufficient just to check
+diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
+index 0ec90fd1754ed..68ff21310604d 100644
+--- a/arch/arm64/kernel/efi.c
++++ b/arch/arm64/kernel/efi.c
+@@ -111,7 +111,8 @@ struct set_perm_data {
+ 	bool			has_bti;
+ };
+ 
+-static int __init set_permissions(pte_t *ptep, unsigned long addr, void *data)
++static int __init set_permissions(hw_pte_t *ptep, unsigned long addr,
++				  void *data)
+ {
+ 	struct set_perm_data *spd = data;
+ 	const efi_memory_desc_t *md = spd->md;
+diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
+index fb44cbdd2f292..2b7e7be5fd6f3 100644
+--- a/arch/arm64/kernel/pi/map_kernel.c
++++ b/arch/arm64/kernel/pi/map_kernel.c
+@@ -26,7 +26,7 @@ static void __init map_segment(pgd_t *pg_dir, phys_addr_t *pgd, u64 va_offset,
+ {
+ 	map_range(pgd, ((u64)start + va_offset) & ~PAGE_OFFSET,
+ 		  ((u64)end + va_offset) & ~PAGE_OFFSET, (u64)start,
+-		  prot, root_level, (pte_t *)pg_dir, may_use_cont, 0);
++		  prot, root_level, (hw_pte_t *)pg_dir, may_use_cont, 0);
+ }
+ 
+ static void __init unmap_segment(pgd_t *pg_dir, u64 va_offset, void *start,
+@@ -209,7 +209,7 @@ static void *__init map_fdt(phys_addr_t fdt)
+ 	 */
+ 	map_range(&ptep, fdt, (u64)_text > fdt ? min((u64)_text, efdt) : efdt,
+ 		  fdt, PAGE_KERNEL, IDMAP_ROOT_LEVEL,
+-		  (pte_t *)init_idmap_pg_dir, false, 0);
++		  (hw_pte_t *)init_idmap_pg_dir, false, 0);
+ 	dsb(ishst);
+ 
+ 	return (void *)fdt;
+diff --git a/arch/arm64/kernel/pi/map_range.c b/arch/arm64/kernel/pi/map_range.c
+index 761b14893f748..94f06da76e333 100644
+--- a/arch/arm64/kernel/pi/map_range.c
++++ b/arch/arm64/kernel/pi/map_range.c
+@@ -27,7 +27,8 @@
+  * 			in the VA space
+  */
+ void __init map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
+-		      pgprot_t prot, int level, pte_t *tbl, bool may_use_cont,
++		      pgprot_t prot, int level, hw_pte_t *tbl,
++		      bool may_use_cont,
+ 		      u64 va_offset)
+ {
+ 	u64 cmask = (level == 3) ? CONT_PTE_SIZE - 1 : U64_MAX;
+@@ -62,7 +63,7 @@ void __init map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
+ 				*pte += PTRS_PER_PTE * sizeof(pte_t);
+ 			}
+ 			map_range(pte, start, next, pa, prot, level + 1,
+-				  (pte_t *)(__pte_to_phys(*tbl) + va_offset),
++				  (hw_pte_t *)(__pte_to_phys(*tbl) + va_offset),
+ 				  may_use_cont, va_offset);
+ 		} else {
+ 			/*
+@@ -100,10 +101,10 @@ asmlinkage phys_addr_t __init create_init_idmap(pgd_t *pg_dir, ptval_t clrmask)
+ 	/* MMU is off; pointer casts to phys_addr_t are safe */
+ 	map_range(&ptep, (u64)_stext, (u64)__initdata_begin,
+ 		  (phys_addr_t)_stext, text_prot, IDMAP_ROOT_LEVEL,
+-		  (pte_t *)pg_dir, false, 0);
++		  (hw_pte_t *)pg_dir, false, 0);
+ 	map_range(&ptep, (u64)__initdata_begin, (u64)_end,
+ 		  (phys_addr_t)__initdata_begin, data_prot, IDMAP_ROOT_LEVEL,
+-		  (pte_t *)pg_dir, false, 0);
++		  (hw_pte_t *)pg_dir, false, 0);
+ 
+ 	return ptep;
+ }
+diff --git a/arch/arm64/kernel/pi/pi.h b/arch/arm64/kernel/pi/pi.h
+index 5dfd8484d2005..a7d09a2fa8f9f 100644
+--- a/arch/arm64/kernel/pi/pi.h
++++ b/arch/arm64/kernel/pi/pi.h
+@@ -2,6 +2,7 @@
+ // Copyright 2023 Google LLC
+ // Author: Ard Biesheuvel <ardb@google.com>
+ 
++#include <linux/pgtable_types.h>
+ #include <linux/types.h>
+ 
+ #define __prel64_initconst	__section(".init.rodata.prel64")
+@@ -30,7 +31,7 @@ void relocate_kernel(u64 offset);
+ int scs_patch(const u8 eh_frame[], int size, bool skip_dry_run);
+ 
+ void map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
+-	       pgprot_t prot, int level, pte_t *tbl, bool may_use_cont,
++	       pgprot_t prot, int level, hw_pte_t *tbl, bool may_use_cont,
+ 	       u64 va_offset);
+ 
+ asmlinkage void early_map_kernel(u64 boot_status, phys_addr_t fdt);
+diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+index 0acab179fc1a5..753267c0b41e5 100644
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -21,13 +21,14 @@ static inline bool mm_is_user(struct mm_struct *mm)
+ 	return mm != &init_mm;
+ }
+ 
+-static inline pte_t *contpte_align_down(pte_t *ptep)
++static inline hw_pte_t *contpte_align_down(hw_pte_t *ptep)
+ {
+ 	return PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * CONT_PTES);
+ }
+ 
+-static inline pte_t *contpte_align_addr_ptep(unsigned long *start,
+-					     unsigned long *end, pte_t *ptep,
++static inline hw_pte_t *contpte_align_addr_ptep(unsigned long *start,
++					     unsigned long *end,
++					     hw_pte_t *ptep,
+ 					     unsigned int nr)
+ {
+ 	/*
+@@ -47,7 +48,7 @@ static inline pte_t *contpte_align_addr_ptep(unsigned long *start,
+ }
+ 
+ static void contpte_try_unfold_partial(struct mm_struct *mm, unsigned long addr,
+-					pte_t *ptep, unsigned int nr)
++					hw_pte_t *ptep, unsigned int nr)
+ {
+ 	/*
+ 	 * Unfold any partially covered contpte block at the beginning and end
+@@ -59,7 +60,7 @@ static void contpte_try_unfold_partial(struct mm_struct *mm, unsigned long addr,
+ 
+ 	if (ptep + nr != contpte_align_down(ptep + nr)) {
+ 		unsigned long last_addr = addr + PAGE_SIZE * (nr - 1);
+-		pte_t *last_ptep = ptep + nr - 1;
++		hw_pte_t *last_ptep = ptep + nr - 1;
+ 
+ 		contpte_try_unfold(mm, last_addr, last_ptep,
+ 				   __ptep_get(last_ptep));
+@@ -67,11 +68,11 @@ static void contpte_try_unfold_partial(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ static void contpte_convert(struct mm_struct *mm, unsigned long addr,
+-			    pte_t *ptep, pte_t pte)
++			    hw_pte_t *ptep, pte_t pte)
+ {
+ 	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
+ 	unsigned long start_addr;
+-	pte_t *start_ptep;
++	hw_pte_t *start_ptep;
+ 	int i;
+ 
+ 	start_ptep = ptep = contpte_align_down(ptep);
+@@ -227,7 +228,7 @@ static void contpte_convert(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+-			pte_t *ptep, pte_t pte)
++			hw_pte_t *ptep, pte_t pte)
+ {
+ 	/*
+ 	 * We have already checked that the virtual and pysical addresses are
+@@ -253,7 +254,7 @@ void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+ 	struct folio *folio;
+ 	struct page *page;
+ 	unsigned long pfn;
+-	pte_t *orig_ptep;
++	hw_pte_t *orig_ptep;
+ 	pgprot_t prot;
+ 
+ 	int i;
+@@ -291,7 +292,7 @@ void __contpte_try_fold(struct mm_struct *mm, unsigned long addr,
+ EXPORT_SYMBOL_GPL(__contpte_try_fold);
+ 
+ void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+-			pte_t *ptep, pte_t pte)
++			hw_pte_t *ptep, pte_t pte)
+ {
+ 	/*
+ 	 * We have already checked that the ptes are contiguous in
+@@ -305,7 +306,7 @@ void __contpte_try_unfold(struct mm_struct *mm, unsigned long addr,
+ }
+ EXPORT_SYMBOL_GPL(__contpte_try_unfold);
+ 
+-pte_t contpte_ptep_get(pte_t *ptep, pte_t orig_pte)
++pte_t contpte_ptep_get(hw_pte_t *ptep, pte_t orig_pte)
+ {
+ 	/*
+ 	 * Gather access/dirty bits, which may be populated in any of the ptes
+@@ -362,7 +363,7 @@ static inline bool contpte_is_consistent(pte_t pte, unsigned long pfn,
+ 			pgprot_val(prot) == pgprot_val(orig_prot);
+ }
+ 
+-pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
++pte_t contpte_ptep_get_lockless(hw_pte_t *orig_ptep)
+ {
+ 	/*
+ 	 * The ptep_get_lockless() API requires us to read and return *orig_ptep
+@@ -384,7 +385,7 @@ pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
+ 	pgprot_t orig_prot;
+ 	unsigned long pfn;
+ 	pte_t orig_pte;
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 	pte_t pte;
+ 	int i;
+ 
+@@ -445,7 +446,8 @@ pte_t contpte_ptep_get_lockless(pte_t *orig_ptep)
+ EXPORT_SYMBOL_GPL(contpte_ptep_get_lockless);
+ 
+ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+-					pte_t *ptep, pte_t pte, unsigned int nr)
++					hw_pte_t *ptep, pte_t pte,
++					unsigned int nr)
+ {
+ 	unsigned long next;
+ 	unsigned long end;
+@@ -488,7 +490,7 @@ void contpte_set_ptes(struct mm_struct *mm, unsigned long addr,
+ EXPORT_SYMBOL_GPL(contpte_set_ptes);
+ 
+ void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+-				pte_t *ptep, unsigned int nr, int full)
++				hw_pte_t *ptep, unsigned int nr, int full)
+ {
+ 	contpte_try_unfold_partial(mm, addr, ptep, nr);
+ 	__clear_full_ptes(mm, addr, ptep, nr, full);
+@@ -496,7 +498,7 @@ void contpte_clear_full_ptes(struct mm_struct *mm, unsigned long addr,
+ EXPORT_SYMBOL_GPL(contpte_clear_full_ptes);
+ 
+ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+-				unsigned long addr, pte_t *ptep,
++				unsigned long addr, hw_pte_t *ptep,
+ 				unsigned int nr, int full)
+ {
+ 	contpte_try_unfold_partial(mm, addr, ptep, nr);
+@@ -505,7 +507,7 @@ pte_t contpte_get_and_clear_full_ptes(struct mm_struct *mm,
+ EXPORT_SYMBOL_GPL(contpte_get_and_clear_full_ptes);
+ 
+ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, unsigned int nr)
++		unsigned long addr, hw_pte_t *ptep, unsigned int nr)
+ {
+ 	/*
+ 	 * ptep_clear_flush_young() technically requires us to clear the access
+@@ -531,7 +533,7 @@ bool contpte_test_and_clear_young_ptes(struct vm_area_struct *vma,
+ EXPORT_SYMBOL_GPL(contpte_test_and_clear_young_ptes);
+ 
+ bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, unsigned int nr)
++		unsigned long addr, hw_pte_t *ptep, unsigned int nr)
+ {
+ 	bool young;
+ 
+@@ -554,7 +556,7 @@ bool contpte_clear_flush_young_ptes(struct vm_area_struct *vma,
+ EXPORT_SYMBOL_GPL(contpte_clear_flush_young_ptes);
+ 
+ void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+-					pte_t *ptep, unsigned int nr)
++					hw_pte_t *ptep, unsigned int nr)
+ {
+ 	/*
+ 	 * If wrprotecting an entire contig range, we can avoid unfolding. Just
+@@ -572,7 +574,7 @@ void contpte_wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
+ EXPORT_SYMBOL_GPL(contpte_wrprotect_ptes);
+ 
+ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+-				    unsigned long addr, pte_t *ptep,
++				    unsigned long addr, hw_pte_t *ptep,
+ 				    unsigned int nr, cydp_t flags)
+ {
+ 	/*
+@@ -593,9 +595,10 @@ void contpte_clear_young_dirty_ptes(struct vm_area_struct *vma,
+ }
+ EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+ 
+-static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
++static bool contpte_all_subptes_match_access_flags(hw_pte_t *ptep,
++						   pte_t entry)
+ {
+-	pte_t *cont_ptep = contpte_align_down(ptep);
++	hw_pte_t *cont_ptep = contpte_align_down(ptep);
+ 	/*
+ 	 * PFNs differ per sub-PTE. Match only bits consumed by
+ 	 * __ptep_set_access_flags(): AF, DIRTY and write permission.
+@@ -615,7 +618,7 @@ static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
+ }
+ 
+ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+-					unsigned long addr, pte_t *ptep,
++					unsigned long addr, hw_pte_t *ptep,
+ 					pte_t entry, int dirty)
+ {
+ 	unsigned long start_addr;
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0b52557652be6..b77f4be88e3ea 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -162,7 +162,8 @@ static void show_pte(unsigned long addr)
+ 		p4d_t *p4dp, p4d;
+ 		pud_t *pudp, pud;
+ 		pmd_t *pmdp, pmd;
+-		pte_t *ptep, pte;
++		hw_pte_t *ptep;
++		pte_t pte;
+ 
+ 		if (pgd_none(pgd) || pgd_bad(pgd))
+ 			break;
+@@ -208,7 +209,7 @@ static void show_pte(unsigned long addr)
+  * Returns whether or not the PTE actually changed.
+  */
+ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
+-				  unsigned long address, pte_t *ptep,
++				  unsigned long address, hw_pte_t *ptep,
+ 				  pte_t entry, int dirty, unsigned long pgsize)
+ {
+ 	pteval_t old_pteval, pteval;
+diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+index f66a0016dd02d..237a9136bc73b 100644
+--- a/arch/arm64/mm/fixmap.c
++++ b/arch/arm64/mm/fixmap.c
+@@ -35,7 +35,7 @@ static pte_t bm_pte[NR_BM_PTE_TABLES][PTRS_PER_PTE] __bss_pgtbl;
+ static pmd_t bm_pmd[PTRS_PER_PMD] __bss_pgtbl __maybe_unused;
+ static pud_t bm_pud[PTRS_PER_PUD] __bss_pgtbl __maybe_unused;
+ 
+-static inline pte_t *fixmap_pte(unsigned long addr)
++static inline hw_pte_t *fixmap_pte(unsigned long addr)
+ {
+ 	return &bm_pte[BM_PTE_TABLE_IDX(addr)][pte_index(addr)];
+ }
+@@ -43,7 +43,7 @@ static inline pte_t *fixmap_pte(unsigned long addr)
+ static void __init early_fixmap_init_pte(pmd_t *pmdp, unsigned long addr)
+ {
+ 	pmd_t pmd = READ_ONCE(*pmdp);
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 
+ 	if (pmd_none(pmd)) {
+ 		ptep = bm_pte[BM_PTE_TABLE_IDX(addr)];
+@@ -120,7 +120,7 @@ void __set_fixmap(enum fixed_addresses idx,
+ 			       phys_addr_t phys, pgprot_t flags)
+ {
+ 	unsigned long addr = __fix_to_virt(idx);
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 
+ 	BUG_ON(idx <= FIX_HOLE || idx >= __end_of_fixed_addresses);
+ 
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 8e799c1fe0aa6..560c0f16cd8e4 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -76,7 +76,7 @@ bool arch_hugetlb_migration_supported(struct hstate *h)
+ #endif
+ 
+ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+-			   pte_t *ptep, size_t *pgsize)
++			   hw_pte_t *ptep, size_t *pgsize)
+ {
+ 	pgd_t *pgdp = pgd_offset(mm, addr);
+ 	p4d_t *p4dp;
+@@ -87,7 +87,7 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+ 	p4dp = p4d_offset(pgdp, addr);
+ 	pudp = pud_offset(p4dp, addr);
+ 	pmdp = pmd_offset(pudp, addr);
+-	if ((pte_t *)PTR_ALIGN_DOWN(pmdp, sizeof(*pmdp) * CONT_PMDS) == ptep) {
++	if ((hw_pte_t *)PTR_ALIGN_DOWN(pmdp, sizeof(*pmdp) * CONT_PMDS) == ptep) {
+ 		*pgsize = PMD_SIZE;
+ 		return CONT_PMDS;
+ 	}
+@@ -116,7 +116,7 @@ static inline int num_contig_ptes(unsigned long size, size_t *pgsize)
+ 	return contig_ptes;
+ }
+ 
+-pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
++pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, hw_pte_t *ptep)
+ {
+ 	int ncontig, i;
+ 	size_t pgsize;
+@@ -148,7 +148,7 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+  */
+ static pte_t get_clear_contig(struct mm_struct *mm,
+ 			     unsigned long addr,
+-			     pte_t *ptep,
++			     hw_pte_t *ptep,
+ 			     unsigned long pgsize,
+ 			     unsigned long ncontig)
+ {
+@@ -173,7 +173,7 @@ static pte_t get_clear_contig(struct mm_struct *mm,
+ 
+ static pte_t get_clear_contig_flush(struct mm_struct *mm,
+ 				    unsigned long addr,
+-				    pte_t *ptep,
++				    hw_pte_t *ptep,
+ 				    unsigned long pgsize,
+ 				    unsigned long ncontig)
+ {
+@@ -196,7 +196,7 @@ static pte_t get_clear_contig_flush(struct mm_struct *mm,
+  */
+ static void clear_flush(struct mm_struct *mm,
+ 			     unsigned long addr,
+-			     pte_t *ptep,
++			     hw_pte_t *ptep,
+ 			     unsigned long pgsize,
+ 			     unsigned long ncontig)
+ {
+@@ -213,7 +213,7 @@ static void clear_flush(struct mm_struct *mm,
+ }
+ 
+ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+-			    pte_t *ptep, pte_t pte, unsigned long sz)
++			    hw_pte_t *ptep, pte_t pte, unsigned long sz)
+ {
+ 	size_t pgsize;
+ 	int i;
+@@ -234,14 +234,14 @@ void set_huge_pte_at(struct mm_struct *mm, unsigned long addr,
+ 	__set_ptes_anysz(mm, addr, ptep, pte, ncontig, pgsize);
+ }
+ 
+-pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
++hw_pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		      unsigned long addr, unsigned long sz)
+ {
+ 	pgd_t *pgdp;
+ 	p4d_t *p4dp;
+ 	pud_t *pudp;
+ 	pmd_t *pmdp;
+-	pte_t *ptep = NULL;
++	hw_pte_t *ptep = NULL;
+ 
+ 	pgdp = pgd_offset(mm, addr);
+ 	p4dp = p4d_alloc(mm, pgdp, addr);
+@@ -253,7 +253,7 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		return NULL;
+ 
+ 	if (sz == PUD_SIZE) {
+-		ptep = (pte_t *)pudp;
++		ptep = (hw_pte_t *)pudp;
+ 	} else if (sz == (CONT_PTE_SIZE)) {
+ 		pmdp = pmd_alloc(mm, pudp, addr);
+ 		if (!pmdp)
+@@ -265,17 +265,17 @@ pte_t *huge_pte_alloc(struct mm_struct *mm, struct vm_area_struct *vma,
+ 		if (want_pmd_share(vma, addr) && pud_none(READ_ONCE(*pudp)))
+ 			ptep = huge_pmd_share(mm, vma, addr, pudp);
+ 		else
+-			ptep = (pte_t *)pmd_alloc(mm, pudp, addr);
++			ptep = (hw_pte_t *)pmd_alloc(mm, pudp, addr);
+ 	} else if (sz == (CONT_PMD_SIZE)) {
+ 		pmdp = pmd_alloc(mm, pudp, addr);
+ 		WARN_ON(addr & (sz - 1));
+-		return (pte_t *)pmdp;
++		return (hw_pte_t *)pmdp;
+ 	}
+ 
+ 	return ptep;
+ }
+ 
+-pte_t *huge_pte_offset(struct mm_struct *mm,
++hw_pte_t *huge_pte_offset(struct mm_struct *mm,
+ 		       unsigned long addr, unsigned long sz)
+ {
+ 	pgd_t *pgdp;
+@@ -297,7 +297,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 		return NULL;
+ 	/* hugepage or swap? */
+ 	if (pud_leaf(pud) || !pud_present(pud))
+-		return (pte_t *)pudp;
++		return (hw_pte_t *)pudp;
+ 	/* table; check the next level */
+ 
+ 	if (sz == CONT_PMD_SIZE)
+@@ -309,7 +309,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+ 	    pmd_none(pmd))
+ 		return NULL;
+ 	if (pmd_leaf(pmd) || !pmd_present(pmd))
+-		return (pte_t *)pmdp;
++		return (hw_pte_t *)pmdp;
+ 
+ 	if (sz == CONT_PTE_SIZE)
+ 		return pte_offset_huge(pmdp, (addr & CONT_PTE_MASK));
+@@ -367,7 +367,7 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+ }
+ 
+ void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+-		    pte_t *ptep, unsigned long sz)
++		    hw_pte_t *ptep, unsigned long sz)
+ {
+ 	int i, ncontig;
+ 	size_t pgsize;
+@@ -379,7 +379,7 @@ void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+ }
+ 
+ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+-			      pte_t *ptep, unsigned long sz)
++			      hw_pte_t *ptep, unsigned long sz)
+ {
+ 	int ncontig;
+ 	size_t pgsize;
+@@ -397,7 +397,7 @@ pte_t huge_ptep_get_and_clear(struct mm_struct *mm, unsigned long addr,
+  * all the contiguous ptes we need to check whether or not there is a
+  * discrepancy between dirty or young.
+  */
+-static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
++static int __cont_access_flags_changed(hw_pte_t *ptep, pte_t pte, int ncontig)
+ {
+ 	int i;
+ 
+@@ -418,7 +418,7 @@ static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
+ }
+ 
+ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+-			       unsigned long addr, pte_t *ptep,
++			       unsigned long addr, hw_pte_t *ptep,
+ 			       pte_t pte, int dirty)
+ {
+ 	int ncontig;
+@@ -451,7 +451,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
+ }
+ 
+ void huge_ptep_set_wrprotect(struct mm_struct *mm,
+-			     unsigned long addr, pte_t *ptep)
++			     unsigned long addr, hw_pte_t *ptep)
+ {
+ 	int ncontig;
+ 	size_t pgsize;
+@@ -474,7 +474,7 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
+ }
+ 
+ pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+-			    unsigned long addr, pte_t *ptep)
++			    unsigned long addr, hw_pte_t *ptep)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	size_t pgsize;
+@@ -514,7 +514,8 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
+ 	return __hugetlb_valid_size(size);
+ }
+ 
+-pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
++pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr,
++				  hw_pte_t *ptep)
+ {
+ 	unsigned long psize = huge_page_size(hstate_vma(vma));
+ 
+@@ -530,7 +531,8 @@ pte_t huge_ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr
+ 	return huge_ptep_get_and_clear(vma->vm_mm, addr, ptep, psize);
+ }
+ 
+-void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++void huge_ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
++				  hw_pte_t *ptep,
+ 				  pte_t old_pte, pte_t pte)
+ {
+ 	unsigned long psize = huge_page_size(hstate_vma(vma));
+diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+index 45fbdce684c89..dccb736b32e9b 100644
+--- a/arch/arm64/mm/kasan_init.c
++++ b/arch/arm64/mm/kasan_init.c
+@@ -59,7 +59,7 @@ static phys_addr_t __init kasan_alloc_raw_page(int node)
+ 	return __pa(p);
+ }
+ 
+-static pte_t *__init kasan_pte_offset(pmd_t *pmdp, unsigned long addr, int node,
++static hw_pte_t *__init kasan_pte_offset(pmd_t *pmdp, unsigned long addr, int node,
+ 				      bool early)
+ {
+ 	if (pmd_none(READ_ONCE(*pmdp))) {
+@@ -116,7 +116,7 @@ static void __init kasan_pte_populate(pmd_t *pmdp, unsigned long addr,
+ 				      unsigned long end, int node, bool early)
+ {
+ 	unsigned long next;
+-	pte_t *ptep = kasan_pte_offset(pmdp, addr, node, early);
++	hw_pte_t *ptep = kasan_pte_offset(pmdp, addr, node, early);
+ 
+ 	do {
+ 		phys_addr_t page_phys = early ?
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 79d90226fd5dc..f02b974ad64df 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -159,7 +159,7 @@ static void init_clear_pgtable(void *table)
+ 	dsb(ishst);
+ }
+ 
+-static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
++static void init_pte(hw_pte_t *ptep, unsigned long addr, unsigned long end,
+ 		     phys_addr_t phys, pgprot_t prot)
+ {
+ 	do {
+@@ -182,7 +182,7 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+ }
+ 
+-static bool pte_range_has_valid_noncont(pte_t *ptep)
++static bool pte_range_has_valid_noncont(hw_pte_t *ptep)
+ {
+ 	for (int i = 0; i < CONT_PTES; i++) {
+ 		pte_t pte = __ptep_get(&ptep[i]);
+@@ -201,7 +201,7 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ {
+ 	unsigned long next;
+ 	pmd_t pmd = READ_ONCE(*pmdp);
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 
+ 	BUG_ON(pmd_leaf(pmd));
+ 	if (pmd_none(pmd)) {
+@@ -592,7 +592,7 @@ pgd_pgtable_alloc_special_mm(enum pgtable_level pgtable_level)
+ 	return  __pgd_pgtable_alloc(NULL, GFP_PGTABLE_KERNEL, pgtable_level);
+ }
+ 
+-static void split_contpte(pte_t *ptep)
++static void split_contpte(hw_pte_t *ptep)
+ {
+ 	int i;
+ 
+@@ -607,13 +607,13 @@ static int split_pmd(pmd_t *pmdp, pmd_t pmd, gfp_t gfp, bool to_cont)
+ 	unsigned long pfn = pmd_pfn(pmd);
+ 	pgprot_t prot = pmd_pgprot(pmd);
+ 	phys_addr_t pte_phys;
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 	int i;
+ 
+ 	pte_phys = pgd_pgtable_alloc_init_mm_gfp(PGTABLE_LEVEL_PTE, gfp);
+ 	if (pte_phys == INVALID_PHYS_ADDR)
+ 		return -ENOMEM;
+-	ptep = (pte_t *)phys_to_virt(pte_phys);
++	ptep = (hw_pte_t *)phys_to_virt(pte_phys);
+ 
+ 	if (pgprot_val(prot) & PMD_SECT_PXN)
+ 		tableprot |= PMD_TABLE_PXN;
+@@ -691,7 +691,8 @@ static int split_kernel_leaf_mapping_locked(unsigned long addr)
+ 	p4d_t *p4dp, p4d;
+ 	pud_t *pudp, pud;
+ 	pmd_t *pmdp, pmd;
+-	pte_t *ptep, pte;
++	hw_pte_t *ptep;
++	pte_t pte;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -904,7 +905,7 @@ static int split_to_ptes_pmd_entry(pmd_t *pmdp, unsigned long addr,
+ 	return ret;
+ }
+ 
+-static int split_to_ptes_pte_entry(pte_t *ptep, unsigned long addr,
++static int split_to_ptes_pte_entry(hw_pte_t *ptep, unsigned long addr,
+ 				   unsigned long next, struct mm_walk *walk)
+ {
+ 	pte_t pte = __ptep_get(ptep);
+@@ -1438,7 +1439,8 @@ static void __init declare_kernel_vmas(void)
+ }
+ 
+ void __pi_map_range(phys_addr_t *pte, u64 start, u64 end, phys_addr_t pa,
+-		    pgprot_t prot, int level, pte_t *tbl, bool may_use_cont,
++		    pgprot_t prot, int level, hw_pte_t *tbl,
++		    bool may_use_cont,
+ 		    u64 va_offset);
+ 
+ static u8 idmap_ptes[IDMAP_LEVELS - 1][PAGE_SIZE] __aligned(PAGE_SIZE) __ro_after_init,
+@@ -1451,7 +1453,7 @@ static void __init create_idmap(void)
+ 	phys_addr_t ptep  = __pa_symbol(idmap_ptes);
+ 
+ 	__pi_map_range(&ptep, start, end, start, PAGE_KERNEL_ROX,
+-		       IDMAP_ROOT_LEVEL, (pte_t *)idmap_pg_dir, false,
++		       IDMAP_ROOT_LEVEL, (hw_pte_t *)idmap_pg_dir, false,
+ 		       __phys_to_virt(ptep) - ptep);
+ 
+ 	if (linear_map_requires_bbml3 ||
+@@ -1466,7 +1468,8 @@ static void __init create_idmap(void)
+ 		 */
+ 		ptep = __pa_symbol(kpti_bbml3_ptes);
+ 		__pi_map_range(&ptep, pa, pa + sizeof(u32), pa, PAGE_KERNEL,
+-			       IDMAP_ROOT_LEVEL, (pte_t *)idmap_pg_dir, false,
++			       IDMAP_ROOT_LEVEL, (hw_pte_t *)idmap_pg_dir,
++			       false,
+ 			       __phys_to_virt(ptep) - ptep);
+ 	}
+ }
+@@ -1522,7 +1525,8 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
+ 				    unsigned long end, bool free_mapped,
+ 				    struct vmem_altmap *altmap)
+ {
+-	pte_t *ptep, pte;
++	hw_pte_t *ptep;
++	pte_t pte;
+ 
+ 	do {
+ 		ptep = pte_offset_kernel(pmdp, addr);
+@@ -1665,7 +1669,8 @@ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
+ 				 unsigned long end, unsigned long floor,
+ 				 unsigned long ceiling)
+ {
+-	pte_t *ptep, pte;
++	hw_pte_t *ptep;
++	pte_t pte;
+ 	unsigned long i, start = addr;
+ 
+ 	do {
+@@ -1914,7 +1919,7 @@ int pmd_clear_huge(pmd_t *pmdp)
+ 
+ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+ {
+-	pte_t *table;
++	hw_pte_t *table;
+ 	pmd_t pmd;
+ 
+ 	pmd = READ_ONCE(*pmdp);
+@@ -2056,7 +2061,8 @@ static bool addr_splits_kernel_leaf(unsigned long addr)
+ 	p4d_t *p4dp, p4d;
+ 	pud_t *pudp, pud;
+ 	pmd_t *pmdp, pmd;
+-	pte_t *ptep, pte;
++	hw_pte_t *ptep;
++	pte_t pte;
+ 
+ 	/*
+ 	 * If the given address points at a the start address of
+@@ -2284,7 +2290,7 @@ early_initcall(prevent_memory_remove_init);
+ #endif
+ 
+ pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
+-			     pte_t *ptep, unsigned int nr)
++			     hw_pte_t *ptep, unsigned int nr)
+ {
+ 	pte_t pte = get_and_clear_ptes(vma->vm_mm, addr, ptep, nr);
+ 
+@@ -2302,19 +2308,21 @@ pte_t modify_prot_start_ptes(struct vm_area_struct *vma, unsigned long addr,
+ 	return pte;
+ }
+ 
+-pte_t ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep)
++pte_t ptep_modify_prot_start(struct vm_area_struct *vma, unsigned long addr,
++			     hw_pte_t *ptep)
+ {
+ 	return modify_prot_start_ptes(vma, addr, ptep, 1);
+ }
+ 
+ void modify_prot_commit_ptes(struct vm_area_struct *vma, unsigned long addr,
+-			     pte_t *ptep, pte_t old_pte, pte_t pte,
++			     hw_pte_t *ptep, pte_t old_pte, pte_t pte,
+ 			     unsigned int nr)
+ {
+ 	set_ptes(vma->vm_mm, addr, ptep, pte, nr);
+ }
+ 
+-void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr, pte_t *ptep,
++void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
++			     hw_pte_t *ptep,
+ 			     pte_t old_pte, pte_t pte)
+ {
+ 	modify_prot_commit_ptes(vma, addr, ptep, old_pte, pte, 1);
+diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+index 132938b32eb16..895014212a81c 100644
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -68,7 +68,7 @@ static int pageattr_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	return 0;
+ }
+ 
+-static int pageattr_pte_entry(pte_t *pte, unsigned long addr,
++static int pageattr_pte_entry(hw_pte_t *pte, unsigned long addr,
+ 			      unsigned long next, struct mm_walk *walk)
+ {
+ 	pte_t val = __ptep_get(pte);
+@@ -379,7 +379,7 @@ bool kernel_page_present(struct page *page)
+ 	p4d_t *p4dp;
+ 	pud_t *pudp, pud;
+ 	pmd_t *pmdp, pmd;
+-	pte_t *ptep;
++	hw_pte_t *ptep;
+ 	unsigned long addr = (unsigned long)page_address(page);
+ 
+ 	pgdp = pgd_offset_k(addr);
+diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+index cca9706a875c3..845417792ad48 100644
+--- a/arch/arm64/mm/trans_pgd.c
++++ b/arch/arm64/mm/trans_pgd.c
+@@ -34,8 +34,8 @@ static void *trans_alloc(struct trans_pgd_info *info)
+ static int copy_pte(struct trans_pgd_info *info, pmd_t *dst_pmdp,
+ 		    pmd_t *src_pmdp, unsigned long start, unsigned long end)
+ {
+-	pte_t *src_ptep;
+-	pte_t *dst_ptep;
++	hw_pte_t *src_ptep;
++	hw_pte_t *dst_ptep;
+ 	unsigned long addr = start;
+ 
+ 	dst_ptep = trans_alloc(info);
+
+-- 
+2.47.3
 
 
