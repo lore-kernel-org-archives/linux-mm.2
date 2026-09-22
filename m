@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DCACC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD03AC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:27:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 921716B009B; Tue, 22 Sep 2026 09:22:48 -0400 (EDT)
+	id 979136B009E; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8FBA46B009D; Tue, 22 Sep 2026 09:22:48 -0400 (EDT)
+	id 92A566B009F; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80F756B00A2; Tue, 22 Sep 2026 09:22:48 -0400 (EDT)
+	id 866506B00A0; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BB7E6B009B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:22:48 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E4CBE4042F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:22:47 +0000 (UTC)
-X-FDA: 85241463174.24.FB73E27
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A076D1C000E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:22:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FD1B6B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECC68A6638
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:27:41 +0000 (UTC)
+X-FDA: 85241475522.05.90DC6E0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4C4B98000B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:27:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScK32LSy;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790083366;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1790083660;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SAo+6m60TUwBtaV43HMaUA2roGxabJIqlFNH5+Wecf0=;
-	b=ZlSF7naoxutnJIJMd4PIeHxmkOHibPktVHdfxM4198Ltlm2OouJsXddXH3vYEyM6LYqWKY
-	kAmsQ9OwmSNTF+WUUjiVbwHw59gyuy2at8JJ4W5j5yf5LSMZ+/S3IBfyZbuO5YV9diexzR
-	Wb8nP58wjhqMlAeqmUgbunBJ/UyWw0Q=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.193 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hOgpW4IgnM+iWttR9xGzJPKFkLCxSHMpX5I4y07+yQM=;
+	b=EbQ0DxbFtXdRLtbwUvSdIohje+4VynRM1MtZb/JRsFNZSjzUTrUuPpZnHVl0IaeBwQShCK
+	wLr/Om9MXB7p+uUXG0BJjtvL7zzSUaiz3avNp/VdDO779lTN0pzJiyQyJozVSyykiNhsLg
+	UH3XSHhvTJ1d5SXV6CXJzYQfHncm+H0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790083366;
-	b=OtTk0OFyp7bo0dtM+ATJBNHcpeMfd8qYrDynS/GC0W+bZAMaFgiTH8YNV8aXsKsFvJ9m3b
-	KqLzDS0V2IyZFch+/qwHcXKeVK6Nv9/X+pFnlYkyA45sra7CBGqhrFHEML7MkI1ch20WjL
-	Ayq7Yi6vUbgre1dWgYDXIE8V9ZnixjM=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 688CD3E97F;
-	Tue, 22 Sep 2026 13:22:35 +0000 (UTC)
-Message-ID: <6f377965-c743-4d9f-81a7-3aa3294d61d3@ghiti.fr>
-Date: Tue, 22 Sep 2026 15:22:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback
- completion
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz,
- liam@infradead.org, david@kernel.org, vbabka@kernel.org, jannh@google.com,
- chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org,
- youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org,
- chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu,
- hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260921152449.629486-1-alex@ghiti.fr> <arJYmwKnEu-djZlK@gremlin>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <arJYmwKnEu-djZlK@gremlin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTF/8uKKPssWFWWUf2U9HYiLJp5w+tXmVv+YDcS50c92DN1fQwYMZw1OuAUFlMAUzydZ4lXRRy6z7Brsk1rMOWSDgAXu2353p2ew8iHihpx2mRh5MZnvnXouWJxc60fJs6S7hvviAdPurSzfBVWd8mosx9G2KkRsOYox/bM3YbLfwA0jA+DT3WldNx5VY0Jw33Qfh9MvmRLsqwaQgUJFthpc8Pk9S7RlBCLZNe7P0rvwHW1S88CjPepTSS/ejhOtF40J4dIzcwN3W3ULvldJtBYhvzLc2p+CY7GTYR7O8AKecnKvTUVzeiXR4yg2Aalo68fBlf3hRylxr6oUVGV6RgnuR92bC4P5hIC+zFhEYfhVxTpIxW4EQByzng8e7n0Wp3Mf9SWj7MDYuZjqdnQSNKIoX1lVar0PxeDT6UEppvXgClrGTJNiG1HW3cq+eP4h7hFHjV400HCqHxSlfXsgtRIaPJTfEzHmXekmvJiR1jceQUGwyB/cJJpsyyqUp1n0zBD2PdPCUtO5ZedRCY0z8CDcO4JyyvRYHZ9VkLt92wIUWMwW+UjMbQOXUR6kdTolQsKXo7rNygnRjt5L+8VluOfUAy+SgfpBW+4iTT5u8I49L62jFrhWz2n0TAbH4VtPcImIAr1CrjY4sSTahPrEwdJkuiVwlMbayGO/Jxeb+/VDZA
-X-Rspamd-Queue-Id: A076D1C000E
+	t=1790083660;
+	b=ZCOJ/Z1rnfRty7VANFXpKMvnA7oD9ZqmCIl62mi1SXDXwwJUMU6mBa9DlUqUav5NrKqzNX
+	Dxr4ouMqXARcMm3/o9QpneTi5eVb4jXBm2RccwpfpdVqupctNL+tk/DONtj5uPNbDwazIE
+	FW+qsKHjs0bmcstXjGCuvs4E/HhtQpE=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScK32LSy;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9439B60DFF;
+	Tue, 22 Sep 2026 13:27:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15EB1F000FF;
+	Tue, 22 Sep 2026 13:27:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790083659;
+	bh=hOgpW4IgnM+iWttR9xGzJPKFkLCxSHMpX5I4y07+yQM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ScK32LSyDrY7d5+C8okcVeEUzggCwaZYw48LGkNFs79g2d6FsaGQjUnycanFRtVn/
+	 hVgC5C16xSQSsH2ZWl7i3uAL/tMCQoA+/QwbuNe64iWM6kBd3o1Eb3mmpc7HjHD8Yx
+	 kFY95VDNDpXS71ZTlFVcgX8Nqc/33yM7UhzutJO2t1MBcf/W7Rjhot17y1bDFDaJ3U
+	 ljz6jq4Tl7ABUOVZvYSOLHqjIbCdkQ6img71hVkM5E+Bx1hisyF41hkCYvstoSB3tP
+	 bGoAXpXw1TTnkBf9sdeMUMjmG8UJIdgk4LYOkKO09YGtGblsPQySTBTwIpEtSDfjqk
+	 5B4IZ4Ors4mVQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] kho: fix global scratch size calculation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Sourabh Jain" <sourabhjain@linux.ibm.com>
+Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, linux-mm@kvack.org, "Mike
+ Rapoport" <rppt@kernel.org>, kexec@lists.infradead.org, =?utf-8?b?Uml0?=
+ =?utf-8?b?ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>, "George Guo" <guodongtai@kylinos.cn>, "Pratyush
+ Yadav" <pratyush@kernel.org>, linux-kernel@vger.kernel.org, "Andrew Morton" <akpm@linux-foundation.org>, "Alexander
+ Graf" <graf@amazon.com>
+In-Reply-To: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
+References: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 22 Sep 2026 13:27:38 +0000
+Message-Id: <20260922132738.B15EB1F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4C4B98000B
+X-Stat-Signature: 6yzkzfe5j8sz68mybnmpwngbsz38ku1r
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: afqd391yezw6ws18fr6pdrrgghkegjaf
-X-HE-Tag: 1790083365-41054
-X-HE-Meta: U2FsdGVkX187Q1Lidnikp5APXOX57cdkkJBcsULqrxY2WbKdPMY18xh9c5cm1OzOkWBLl9lnwQtKPAzPxsH3ysGT9fS69VyTDEdjAEa0aWf/s1ioni+Xz/wPHWFquxKsrlcdZn6/QZumj3165W/TxtpzmpxiDgpG8Wp2gNZ81gFU7yxlLSYh/qcwMTlShE2xdcbV5wzOrbb2YBwmTwXFCeEStF3FIsbqyXZrshU0nkcYeczlgXGnlgbxrgY5HS6BwWGin0cttZCKQkUGrNVo7c9fFLdwjaEbr5r3PtcYvEGA1t5lUOoUId3sZCiVcCpUMkPzAzizIsaf9QBFmGj1ohZye3esRHdsh6CC1shKcG5DEScxUGWwL2JInZd+ulq8Uhlr+j3A7tPWyVaGAJV+CAuLyz+gmj8WZ0svk7gJKSswLwTqsY/8NUcqak+x6E8FAYox+jSE2uDZC/GiBC5B63mIS3Y4zujNabetDjGD7ytCi/HMt73gBf1eGjx9ev1CcDSjkOGEqqU9mttAWkMhoVcJaRQp2EfyobCfttMlaLa43fhDfaylYyqyoX5kW57Zi9O/5fpXuSIOQg0a0/4F+Rrn5v8pyUrWw4eFF07jVWUtE8wolVBaDtdihTmRPbErjcxYz2ebGunEdAunbtuEcGCHBrmlOc8A0W2TLIdUV/64nmBSSFcjnbI6m3y8KnVa4b7nklmYjJ/9WgY7EujnSoe2zsGLA/3omUXEoRaHKHO8g5kgX5BRojkxCAy7W6Y2E/L85Y7IrwNhAi8rSdvJ6T8pDPv1zc0i+XZY+WaAH21yeQgehkWr2+cfAG6Qsc2SsAiMq6VcjN1aUK6rRWC/i/O74jjOeLe9vWm+c4klQpZB9sjz+cvYQQCmHXGf6yX3+bBS4DbdpkFY2OGebxMI7fSUUs5hOpEWCyB95ZwcoNz2lu0T3/ve4bUOCVMsdEYrLZVMIL9KeZijgv1vLMk
- pDslks3c
- NyXkL9MRMVqmOokOPAPuFpUPe7YCbAn6k+Gd9CTfXN0qAV5cBi54CavxtDJgS/bj3C/Cq6BJc/nKQi1CGHVAkN2CkGq+VVJQdtK3KuvYwN2sH21XlkatUQnDtBAvLJIcjbzHMOsuEhC1Nm2WEV9QUiSGXff0LW7VdO0Le7aZIf68vGEiTCi+QL5n/Rt+TScxmzosx0LqcSNAzOKMlCUU9AkRIZVkkQr4MavBEQNPOcXAq2IY=
+X-HE-Tag: 1790083660-915615
+X-HE-Meta: U2FsdGVkX1+qiD51VZ+jqWOQ8emSPDISj0FioHMjzSX0zXVtldrDLNP1WH8OUqq5z44+kZDcu0quM1/VERA2BtXbRPeqfxpbVvr2Vd7Mfy5SPQVOLFchLdxuRqsyk4u5SIdpb14ojN9qNXM+ws6T8Jkfna7fhC6o3n30AAvgRbYQu4Xir0LF5mhKB6W7c5e8BGkrdsIXatsCNfsdW0tEwJRAcg61dTQRVuK6ohffitJTdyZt5Ybj/Xiqp1hU3yDbKqkvdkhiGeCn7e5bgpK8BB9ZLCNn1YOQNtjfyITXHH/jNGWWgAxJpLP+YUbB3X43XKRSmqvOR+vbkxy6e0zLj6c0u9ZP8W+FuTEMMybDoe47vUduswkFMjSUaO1Sc2YCzY5Z4pMBbWdRK24pk36j/iOhi0j2/YWPrYu1wZVxLb0jsbCTjvon84vJxHp+n7cYRqoOsIamRfHOJxVfLYA8dfyqX27MnchPdmVFIEyJMNdO/+0j/5FHqQjQnZKTA/cXu28VR03tbgicbmTV8C9DJtu5DcUjR3ptIu6gHMus9Q+Q5F3axxWgUTh77m8viIZwuppgRpiFRhBp3Eoy1K8UL+WHUUjRiLOUN7A8ZGSo21Kwm0Nf9x4oW0m39E+0COOsHua8NA7xrChwRa0FqkuAaLulH77wDD6zwp8jAlpYwmviyrZpa8JETBafIJ2xFR3DEenDIz6pq9zHATEqgjwGeSp+OcWfmp+D+YLuRs5QMtmBE6/49Zaf3QMM7v1STkxMyepuYJZ/rxkVksCTirA2GAy2OHs4yOPlSw5o8kYzwmsX+qqk7DNkEhDlPn5iUJgBnHWxPjxsgS7vbxIPGNYqkKdZ+u5jgyLjD65XUL88leOD6OfvQgyKD07fF2ckHTMGs78c/9J2Ts2q4oKIRE6wdLKzQN5XFqfuH1Ov2GU4MIR9btlvamz55Yy2ewSGLwhIogQB1lTgPd3jZ2jPYDd
+ ld4Tuhmr
+ 6XU+7K8h85brrPtIU2ZjHHl2hJpJLKo+gW+ObFxd8nYV/6nHc8N4nlkiPs7Cb0e27dLrlTxMm0zYqRuSFWhD8hu9a9TVVKHaI3GJFCpUnPxr1A7rMdaXSIkNgFJlGng03zUyGdEIys5VQmutlIQ4pMdiGnpIQIflhfM5YLMsZTfQUFyIODUhl2fDJwnYbo+8tfGwGqHe8uoHOTgZe0WToCUEWvjsayWvz9gv8Z/VvwowOlU3L9ifS7zIr/LdaJy8rOP9MIyHxuTqRFPAyeNgNYOAYl4XOS0p47kTdxnfLm6NpGm9OLdmF8qS4CXlsYsqKtiSUVhbz0BR7QCvoaDq9VouuonVjCPVvkUUmlFgMogS13VJzYedMbCigvkil5rWJP5KcTCgvoPOxI0jsuI0dx/phlnsopUuQ8ZXj1J44PSP54S2BPfK9VjKAN5KQcR+/cpWjgpIczB8ecaY5tXwxn3K86fEmg0Lu8KLUkCRuU+O2PgWCIJU/7FTqFoKuvxYvBmVG5chzaznmk7Hcm5vwrGYC00A7/p+v9nCHOVoIofpm1DMHUiUIKjOr7tW9aydR0jS54onIIIOY1W1ekmQayxjlHszfvUQ9Kmf3I9ZPhdHCYrkmyBVjwzNipicZRP4UXOsbF5tYHwtGvVtVRWhakNaq3O6gqifez8GJnOKd9rAgG90Q8UJ5B8AfTmW4BajsPsfXHrTPTvPp0OM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,481 +93,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
-
-On 9/22/26 12:44, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Sep 21, 2026 at 05:24:33PM +0200, Alexandre Ghiti wrote:
->> On an asynchronous swap device MADV_PAGEOUT only marks the folio
->> PG_reclaim and rotates it to the tail of the inactive list once its
->> writeback completes, so the memory is not actually freed until a later
->> reclaim scan removes the by then clean swap cache folio. Mark those
->> folios dropbehind at isolation time instead and let folio_end_writeback()
->> drop them from the swap cache as each write lands.
-> Please split out very large paragraphs like this. It's hard to read this.
->
-> You aren't giving any justification here you're saying 'X happens so don't do X
-> any more'.
->
-> Why? That should come FIRST.
-
-
-You are right. I believe leaving those folios in memory creates useless 
-memory pressure and then should be freed as soon as possible.
-
-
->
->> A dropbehind folio is dropped by whoever completes its writeback, so the
-> Ugh I really don't love 'dropbehind'. But I guess it's a thing then?
->
-> Can you explain what that is? This commit message isn't really teling me much.
-
-
-I'll do in the next revision. And indeed I have been playing with 
-dropbehind quite a bit lately and I believe (and benchmarked) it 
-prevents useless reclaim (see the zswap writeback dropbehind patchset).
-
-
->
->> reference the submitter holds has to be released before the write is
->> submitted. As reclaim does before freeing a folio, flush the pending TLB
->> batch first.
-> Why do you do that? I don't care if something does something, _why_?
-
-
-To prevent stale TLB entries to persist while the folio has been freed 
-by the callback. I'll add that in the next revision, thanks.
-
-
->
->> Note that for dropbehind folios nr_reclaimed is now credited when the
->> write is submitted rather than when the folio is actually freed, since the
->> reclaimer never sees the folio again.
-> That sounds iffy...
->
-> If this is a change that you are actively doing don't say 'note that' as if it's
-> a fact that can't be avoided.
->
-> You are _choosing_ to make a change, justify it then say you did it.
-
-
-Yes, this is questionable indeed, hence the note so that I can have 
-feedback. Even if it is too early to state the folios were reclaimed, I 
-believe it must be done somehow, I'll add that in the next version.
-
-
->
->> Suggested-by: Barry Song <baohua@kernel.org>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->> This applies on top of "[PATCH v6 0/3] mm: zswap: free cold writeback folios
->> promptly":
->>
->> https://lore.kernel.org/linux-mm/20260921151306.625134-1-alex@ghiti.fr/
-> Hmm, but you're targeting mm-unstable no?
-
-
-Yes, I was not sure how to proceed here: should I RFC instead? Or is it ok?
-
-
->
->>   mm/filemap.c |  7 +++++++
->>   mm/madvise.c | 23 ++++++++++++++++++----
->>   mm/page_io.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++++++--
->>   mm/swap.h    |  2 ++
->>   mm/vmscan.c  | 10 ++++++++++
->>   mm/zswap.c   |  9 ++++-----
-> Why is this a core mm change which also changes madvise but you're changing
-> zswap too? This feels like it needs to be broken out into commits.
-
-
-Because I make modifications in the core mm that is then not needed 
-anymore in zswap (the release of the reference). But I can split that 
-into another patch, I'll do. Thanks
-
-
->
->>   6 files changed, 95 insertions(+), 11 deletions(-)
->>
->> diff --git a/mm/filemap.c b/mm/filemap.c
->> index e1f1bbe943ce..14fa96fca8b8 100644
->> --- a/mm/filemap.c
->> +++ b/mm/filemap.c
->> @@ -1630,6 +1630,13 @@ void folio_end_dropbehind(struct folio *folio)
->>   	if (!folio_test_dropbehind(folio))
->>   		return;
->>
->> +	/*
->> +	 * PG_dropbehind could be set on an anonymous folio after
->> +	 * folio_end_writeback() samples it (for example MADV_PAGEOUT).
->> +	 */
-> I don't really feel this comment explains why you're exiting here? It's like you
-> randomly state a fact as a comment.
->
-> Something like 'do not end dropbehind for anon because < reason >' no?
-
-
-We need to test anon here because PG_dropbehind could be set in parallel 
-by MADV_PAGEOUT and that would make the anon folio reach 
-filemap_end_dropbehind(), which is wrong. I'll improve the comment. Thanks
-
-
->
->> +	if (folio_test_anon(folio))
->> +		return;
->> +
->>   	/*
->>   	 * Hitting !in_task() should not happen off RWF_DONTCACHE writeback,
->>   	 * but can happen if normal writeback just happens to find dirty folios
->> diff --git a/mm/madvise.c b/mm/madvise.c
->> index eeee82cf2b3f..63164f95720b 100644
->> --- a/mm/madvise.c
->> +++ b/mm/madvise.c
->> @@ -359,6 +359,17 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
->>   				     FPB_MERGE_YOUNG_DIRTY);
->>   }
->>
->> +static void madvise_mark_dropbehind(struct folio *folio)
->> +{
->> +	/*
->> +	 * A folio already under writeback is skipped: that writeback is not
->> +	 * ours to hand over, so reclaim will put the folio back on the LRU
->> +	 * while its completion could be dropping it at the same time.
->> +	 */
->> +	if (folio_test_anon(folio) && !folio_test_writeback(folio))
->> +		folio_set_dropbehind(folio);
->> +}
->> +
->>   static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->>   				unsigned long addr, unsigned long end,
->>   				struct mm_walk *walk)
->> @@ -439,10 +450,12 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->>   			folio_set_workingset(folio);
->>   		if (pageout) {
->>   			if (folio_isolate_lru(folio)) {
->> -				if (folio_test_unevictable(folio))
->> +				if (folio_test_unevictable(folio)) {
->>   					folio_putback_lru(folio);
->> -				else
->> +				} else {
->> +					madvise_mark_dropbehind(folio);
->>   					list_add(&folio->lru, &folio_list);
->> +				}
->>   			}
->>   		} else
->>   			folio_deactivate(folio);
->> @@ -554,10 +567,12 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
->>   			folio_set_workingset(folio);
->>   		if (pageout) {
->>   			if (folio_isolate_lru(folio)) {
->> -				if (folio_test_unevictable(folio))
->> +				if (folio_test_unevictable(folio)) {
->>   					folio_putback_lru(folio);
->> -				else
->> +				} else {
->> +					madvise_mark_dropbehind(folio);
->>   					list_add(&folio->lru, &folio_list);
->> +				}
->>   			}
-> This existing code is utterly horrible can we maybe do some refactoring before
-> adding yet more functionality here?
-
-
-I can't speak for him but I think Gregory Price has prepared a patchset 
-that indeed refactors this code, I'll check with him.
-
-
->
-> I feel like the 'pay down technical debt first' take I had in THP is pretty
-> valid here also.
->
-> But also, yeah you DEFINITELY need to separate out patches here.
-
-
-Ok, I'll improve that in v2.
-
-
->
->
->>   		} else
->>   			folio_deactivate(folio);
->> diff --git a/mm/page_io.c b/mm/page_io.c
->> index 52eae99de6e3..bf8238768cc9 100644
->> --- a/mm/page_io.c
->> +++ b/mm/page_io.c
->> @@ -26,9 +26,12 @@
->>   #include <linux/delayacct.h>
->>   #include <linux/zswap.h>
->>   #include <linux/swap_ops.h>
->> +#include "internal.h"
->>   #include "swap.h"
->>   #include "swap_table.h"
->>
->> +#include <trace/events/vmscan.h>
->> +
->>   int generic_swapfile_activate(struct swap_info_struct *sis,
->>   				struct file *swap_file,
->>   				sector_t *span)
->> @@ -248,8 +251,19 @@ int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
->>   	}
->>   	rcu_read_unlock();
->>
->> +	if (folio_test_dropbehind(folio)) {
->> +		/*
->> +		 * pageout() traces and accounts at its tail, which we can't do
->> +		 * because dropbehind folios may already be freed by then.
->> +		 */
-> I'm really confused by this comment.
->
-> You're in swap_writeout() but you're talking about pageout() and what they 'may'
-> be freed by then so you're tracing/accounting in more than one place which
-> sounds wrong?
->
-> This  at least needs to be clarified.
-
-
-I see, it's not obvious: trace_mm_vmscan_write_folio(folio) is usually called in pageout() after calling swap_writeout(). But with dropbehind, the folio could be freed when swap_writeout() returns and then we can't use the folio anymore. I'll be more explicit in v2, thanks.
-
-
->
->> +		trace_mm_vmscan_write_folio(folio);
->> +		lruvec_stat_mod_folio(folio, NR_VMSCAN_WRITE,
->> +				      folio_nr_pages(folio));
->> +		ret = SWAP_WRITE_DROPBEHIND;
-> Not sure the comment explains why you're chaging the ret here?
-
-
-The folio could be freed and must not be touched after the IO was 
-submitted. I'll make it more explicit.
-
-
->
->> +	}
->> +
->>   	__swap_writepage(ctx, folio);
->> -	return 0;
->> +	return ret;
->>   out_unlock:
->>   	folio_unlock(folio);
->>   	return ret;
->> @@ -692,8 +706,45 @@ EXPORT_SYMBOL_GPL(swap_fs_activate);
->>
->>   void swap_write_submit(struct swap_io_ctx *ctx)
->>   {
->> -	if (!ctx->sio)
->> +	struct swap_iocb *sio = ctx->sio;
->> +	bool dropbehind = false;
->> +	int p;
->> +
->> +	if (!sio)
->>   		return;
->> +
->> +	for (p = 0; p < sio->nr_bvecs; p++) {
->> +		if (folio_test_dropbehind(bvec_folio(&sio->bvecs[p]))) {
->> +			dropbehind = true;
->> +			break;
->> +		}
->> +	}
->> +
->> +	if (dropbehind) {
->> +		/*
->> +		 * A dropbehind folio is freed by the completion, not by the
->> +		 * reclaimer, and freeing needs every deferred unmap flushed,
->> +		 * not just the writable ones try_to_unmap_flush_dirty() covers
->> +		 * before the IO.  The reclaimer flushes before it frees, but
->> +		 * that is too late for a batch swap_add_folio() already
->> +		 * submitted mid-loop.  A no-op once that flush has happened.
->> +		 */
-> please use newlines to separate paragraphs :))
->
-> This is really hard to read, it's an LLM-like wall of text.
->
-> There's so much going on here.
->
-> - A dropbehind folio is freed by completion not by reclaimer
->
-> - Freeing needs every deferred unmap to be flushed (not only blah blah)
->
-> - Reclaimer flushes before it frees but then it's too late for blah blah
->
-> - This is somehow a no-op once a flush has happened.
->
-> Reading all that really makes me think that this solution isn't the right one,
-> instinctively? If you're having to juggle many many delicate things all at once
-> to justify some code that generally implies your design is wrong or at a wrong
-> granularity.
-
-
-I don't think it's that delicate, the comment may be too complicated 
-though: we simply need to make sure to flush tlb entries here before the 
-folio is freed to avoid stale entries. I tried to explain why 
-try_to_unmap_flush_dirty() in shrink_folio_list() is not enough...etc. 
-I'll keep it short and I think it should be enough (?).
-
-
->
->> +		try_to_unmap_flush();
->> +
->> +		/*
->> +		 * Now that the TLB is clean, drop the submitter's reference:
->> +		 * the swap cache then holds the only ones left, which is what
->> +		 * __remove_mapping() expects when the completion drops the
->> +		 * folio.  This has to happen before the write is submitted.
->> +		 */
->> +		for (p = 0; p < sio->nr_bvecs; p++) {
->> +			struct folio *folio = bvec_folio(&sio->bvecs[p]);
->> +
->> +			if (folio_test_dropbehind(folio))
->> +				folio_put(folio);
->> +		}
-> Is it ok to iterate through a bvec folio and start fiddling with refrences like
-> this? What if your put frees the folio, is the bv->bv_page not now a dangling
-> pointer?
-
-
-Here, at least the swap cache holds references on the folio, to me it 
-cannot be freed, I'll check again though.
-
-
->
-> Also the comment for bvec_folio() makes me worry:
->
->   * A bvec can contain non-folio memory, so this should only be called by
->   * the creator of the bvec; drivers have no business looking at the owner
->   * of the memory.  It may not even be the right interface for the caller
->   * to use as a bvec can span multiple folios.  You may be better off using
->   * something like bio_for_each_folio_all() which iterates over all folios.
->
-> Can each bvec span multiple folios? Why is bio_for_each_folio_all() not right
-> here?
-
-
-I don't have answers for that now, I'll check. Thanks
-
-
->
->> +	}
->> +
->>   	count_vm_events(NRSWPOUT, 1);
->>   	ctx->sis->ops->submit_write(ctx);
->>   	ctx->sio = NULL;
->> diff --git a/mm/swap.h b/mm/swap.h
->> index 8679cb61268e..81114ad9e44a 100644
->> --- a/mm/swap.h
->> +++ b/mm/swap.h
->> @@ -92,6 +92,8 @@ static inline int mem_cgroup_swappiness(struct mem_cgroup *memcg)
->>   	return READ_ONCE(vm_swappiness);
->>   }
->>
->> +#define SWAP_WRITE_DROPBEHIND	1
->> +
->>   #ifdef CONFIG_SWAP
->>   #include <linux/swapops.h> /* for swp_offset */
->>   #include <linux/blk_types.h> /* for bio_end_io_t */
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index a02f942418d3..5435fa5111b3 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -613,6 +613,8 @@ typedef enum {
->>   	PAGE_SUCCESS,
->>   	/* folio is clean and locked */
->>   	PAGE_CLEAN,
->> +	/* folio will be freed after writeback, do not touch */
->> +	PAGE_DROPBEHIND,
-> Oh god, really? Do we have to add a whole new outcome possibility for CORE
-> reclaim logic just for this?
->
-> Ugh man.
-
-
-Dirty as hell, I agree! But this is the only way I found so that the 
-folio, which may have been freed in the meantime, is not touched anymore.
-
-
->
->>   } pageout_t;
->>
->>   /*
->> @@ -659,6 +661,9 @@ static pageout_t pageout(struct swap_io_ctx *ctx, struct address_space *mapping,
->>   	else
->>   		res = swap_writeout(ctx, folio);
->>
->> +	if (res == SWAP_WRITE_DROPBEHIND)
->> +		return PAGE_DROPBEHIND;
->> +
->>   	if (res < 0)
->>   		handle_write_error(mapping, folio, res);
->>   	if (res == AOP_WRITEPAGE_ACTIVATE) {
->> @@ -1437,6 +1442,9 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->>   					nr_pages = 1;
->>   				}
->>   				goto activate_locked;
->> +			case PAGE_DROPBEHIND:
->> +				nr_reclaimed += nr_pages;
->> +				continue;
->>   			case PAGE_SUCCESS:
->>   				if (nr_pages > 1 && !folio_test_large(folio)) {
->>   					sc->nr_scanned -= (nr_pages - 1);
->> @@ -2198,6 +2206,8 @@ static unsigned int reclaim_folio_list(struct list_head *folio_list,
->>   	while (!list_empty(folio_list)) {
->>   		folio = lru_to_folio(folio_list);
->>   		list_del(&folio->lru);
->> +		if (folio_test_anon(folio))
->> +			folio_clear_dropbehind(folio);
->>   		folio_putback_lru(folio);
->>   	}
->>   	trace_mm_vmscan_reclaim_pages(pgdat->node_id, sc.nr_scanned, nr_reclaimed, &stat);
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index dc8425d6b21e..640936fe7464 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -1051,17 +1051,16 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->>   	folio_set_dropbehind(folio);
->>
->>   	/*
->> -	 * Drop our reference before starting writeback so the swap cache holds
->> -	 * the only one: the drop in folio_end_writeback() needs that for
->> -	 * remove_mapping_set_shadow() to succeed, otherwise the folio is
->> -	 * handed back to reclaim instead.
->> +	 * Our reference is donated to swap_write_submit(), which drops it just
->> +	 * before submitting so the swap cache holds the only one left: the drop
->> +	 * in folio_end_writeback() needs that for remove_mapping_set_shadow()
->> +	 * to succeed, otherwise the folio is handed back to reclaim instead.
-> This feels really conplicated.
->
-> My instinct with this change overall, though I'm not familiar with the
-> dropbehind code, is that thi
-
-
-I'm sure this works as explained, but I can't argue with you it's not 
-complicated, if you have any idea to make that clearer, I'm happy to try.
-
-
->
->>   	 *
->>   	 * Nothing can free the folio in the meantime: we hold the folio lock
->>   	 * until writeback starts, PG_writeback then blocks swap cache removal,
->>   	 * and folio_end_writeback() takes its own reference before clearing
->>   	 * PG_writeback and donates it to the drop.
->>   	 */
-> This comment is now a comment on...? Nothing?
-
-
-I still think it is an important comment so I'll "attach" it to 
-__swap_writepage() below. Thanks
-
-Thanks for the thorough review!
-
-Alex
-
-
->
->> -	folio_put(folio);
->>
->>   	/* start writeback */
->>   	__swap_writepage(&ctx, folio);
->> --
->> 2.53.0-Meta
->>
-> --
-> Cheers, Lorenzo
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] kho: lowmem scratch exhaustion due to missing node-specific lowmem=
+ reservations
+--
+
+commit 45b67db1813edaa6fb1bdfe7033f0598a814cd63
+Author: Sourabh Jain <sourabhjain@linux.ibm.com>
+
+kho: fix global scratch size calculation
+
+This commit updates the scratch size calculations to correctly distinguish
+between memory reserved for a specific NUMA node and memory reserved with
+NUMA_NO_NODE. It introduces memblock_reserved_size_nid() to calculate
+reserved memory based on reservation type and NUMA node, fixing an issue
+where per-node reservations were incorrectly included in the global scratch
+allocation.
+
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
+_handover.c
+> index 7c4d86daf86d5..dc809e1e768c0 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+[ ... ]
+> @@ -787,17 +787,17 @@ static void __init scratch_size_update(void)
+>  	if (scratch_scale) {
+>  		phys_addr_t size;
+> =20
+> -		size =3D memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
+> -						   NUMA_NO_NODE);
+> -		size -=3D memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
+> -						       NUMA_NO_NODE);
+> +		size =3D memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NO=
+DE,
+> +						  MEMBLOCK_RSRV_KERN);
+
+[Severity: High]
+Does checking NUMA_NO_NODE here exclude node-specific lowmem reservations
+(like node-bound DMA pools) from the lowmem scratch size calculation?
+
+If the successor kernel requires lowmem for these node-specific reservations
+during early boot, could shrinking the global lowmem scratch memory lead to
+memblock allocation failures and a panic?
+
+> +		size -=3D memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_N=
+ODE,
+> +						   MEMBLOCK_RSRV_HUGETLB);
+>  		size =3D size * scratch_scale / 100;
+>  		scratch_size_lowmem =3D size;
+[ ... ]
+> @@ -815,11 +815,11 @@ static phys_addr_t __init scratch_size_node(int nid)
+>  	phys_addr_t size;
+> =20
+>  	if (scratch_scale) {
+> -		size =3D memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						   nid);
+> +		size =3D memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
+> +						  MEMBLOCK_RSRV_KERN);
+
+[Severity: High]
+Are the node-specific lowmem reservations that were excluded from
+scratch_size_lowmem now being counted here instead? Since this counts
+with MEMBLOCK_ALLOC_ANYWHERE, will these reservations potentially be satisf=
+ied
+using scratch memory in highmem?
+
+If the successor kernel restricts its memblock allocations to
+MEMBLOCK_KHO_SCRATCH regions, won't it be unable to recreate its
+node-specific lowmem reservations if the per-node scratch memory was placed
+in highmem?
+
+>  		/* Do not count HugeTLB pages. */
+> -		size -=3D memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
+> -						       nid);
+> +		size -=3D memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
+> +						   MEMBLOCK_RSRV_HUGETLB);
+>  		size =3D size * scratch_scale / 100;
+>  	} else {
+>  		size =3D scratch_size_pernode;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922131217.6988=
+09-1-sourabhjain@linux.ibm.com?part=3D1
 
