@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D3F5C98305
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 216ACC98302
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:03:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 609836B00A0; Tue, 22 Sep 2026 05:02:58 -0400 (EDT)
+	id 128096B00AC; Tue, 22 Sep 2026 05:03:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B9BE6B00AA; Tue, 22 Sep 2026 05:02:58 -0400 (EDT)
+	id 0D8426B00AD; Tue, 22 Sep 2026 05:03:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D01A6B00AB; Tue, 22 Sep 2026 05:02:58 -0400 (EDT)
+	id F09806B00B1; Tue, 22 Sep 2026 05:03:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D7176B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:02:58 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A90D51A03D3
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:02:57 +0000 (UTC)
-X-FDA: 85240808394.27.CA61D82
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CBAF76B00AC
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:03:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 655E4A625E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:03:10 +0000 (UTC)
+X-FDA: 85240808940.22.97812B2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E8D5C1C0003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:02:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e17ouVhx;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id C1E1D40009
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:03:08 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+JOE4ry;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790067788;
+	b=27y2yNBzTMCD5S6HxDWgzGH1atikb2x7ZX9h1G+do4o7ikxjfOZvscBRePyBZ5FfuJ079J
+	8Hkwk3RMuGd30veqcXexGPhEMsqh2C3Jm/BvpmV0cfrD59j+WGFuy/i/0GgN+PCRRXUPme
+	zwSka4u0mETN0GaFMYJy89aKjddKmoU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+JOE4ry;
+	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790067776;
+	s=arc-20220608; t=1790067788;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JnhzTAx413FwpdKahXPNOcr3FwWYv2J2Y6dhd+67auQ=;
-	b=F6ACPV7t62+xTujc63xuh+6GggOjWh1H4mE4g9wLdSCqqI8Mj0AeshVaWvCMyjma1JYZ8a
-	qd0B4t9boA6xmxZDfqVhwOTjw6LUtPppCP41TVFbqvpIlCNPJ7Zz3j1BV669gHAYb++8f2
-	ysR8ruY0rOsCnkEFSZGUzA0kLhcf45A=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e17ouVhx;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790067776;
-	b=afyd32GrhZbFnwqJ9bxOJTI8heepizWKrkJRgjONO/i9EyZyNl/+0lbtJkvy4a0YsfekQG
-	232zvemskiO+bn+PFIls+SJ1xesMFJmkR9I35dpVLLlBuDV1YFe2dWVjC8qS2oo+qpZUlg
-	GzyQAC0X6Xo/RXHSlb8AjuAQ0vcQRhU=
+	bh=pHgvoHnJIwe3nC5S4OY8z28uWVR9gAOlu7YWol56jKc=;
+	b=v4SuG8uNBhO4lIWogg5x6O8iP+M4IvxU+tuOllDl1TqfJRPGlGogr8ArPwMB4wdnD8qY89
+	7FGbIdD3UOtTUPeG3ZrD5TgnifK4lBHtxvxyEVV2KIrXBGcNtULn9kyGr/YgZzi7Zqrwn7
+	VPkrVoQfW6qyVa8Szfg6BiSa9WWZBvw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1FB6740C4A;
-	Tue, 22 Sep 2026 09:02:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01541F000FF;
-	Tue, 22 Sep 2026 09:02:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 16E0440C4A;
+	Tue, 22 Sep 2026 09:03:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542831F000FF;
+	Tue, 22 Sep 2026 09:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790067775;
-	bh=JnhzTAx413FwpdKahXPNOcr3FwWYv2J2Y6dhd+67auQ=;
+	s=k20260515; t=1790067788;
+	bh=pHgvoHnJIwe3nC5S4OY8z28uWVR9gAOlu7YWol56jKc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e17ouVhx7pCa4EJXvSkinhLyV94jWOdGlljXb86UFt04mTtWxN7lu6AysEmUU3QLo
-	 AY/5/KTGz63a1+nHe+QBAv7i9L3bkjvPynyjRfU1ZKNv39Ud+MifCRynvPn4HfDheh
-	 /qodv7Z+OrXbHXZqlzP36IohhsehpVwOMtTCPMRaUWthRowSEohGKneZhUzEIWf48B
-	 +RQ0gOP/EPvltRkXJ/AL9wU/EPgrO8maZ0xKOAvkdpqMfAX5JcoShYoS+IQIzmWQkZ
-	 cfWweH9aPTBakCZQdL3x6Uw1Z/VAMetOe1jYzWpZLI1Hjn9BkaGnmlNtDWAUYaCfP/
-	 WkRJ8YEnGI6hw==
+	b=l+JOE4ryLKIP3w9q5Wm7pSG1JLgmDJMTih9bWxagWnLP0XhQLvugLdVxdO/i7BZ1b
+	 uvX39GjRiLtbNCtIwl6kbzM07pHvNRM7sLWrfKdwu5cRDBDhhUW14JQEPxQgJCJcpo
+	 zteqI1bXRF1+ErMo/W206HGKtuTl5xYGFoYzr8R+VyzOeETVbKARobUvCKiqV/1H5G
+	 ZG2bS7BFom8VmX+m2cO+RlPZM8u/HRlPHtdDSKYxDCuUCo7GUN/ZasJtPMbhOvS5BW
+	 mJMwC/BAeODqKEf4NJtp6Oe/JkjP/uh/PV3O0rpjhB5shaJzPxmBPBVxFXQ+Q6GbJt
+	 r1KqQABQ7lA/w==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 5/9] memblock: introduce MEMBLOCK_NODUMP flag
+Subject: Re: [PATCH v7 3/9] crash_core: serialize crash header preparation
+ against hotplug
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Wandun Chen" <chenwandun1@gmail.com>, robh@kernel.org, rppt@kernel.org, baoquan.he@linux.dev, m.szyprowski@samsung.com
-Cc: aou@eecs.berkeley.edu, palmer@dabbelt.com, akpm@linux-foundation.org, conor+dt@kernel.org, bp@alien8.de, pasha.tatashin@soleen.com, ruirui.yang@linux.dev, mingo@redhat.com, hpa@zytor.com, saravanak@kernel.org, x86@kernel.org, robin.murphy@arm.com, catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com, alex@ghiti.fr, pratyush@kernel.org, kernel@xen0n.name, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, iommu@lists.linux.dev, dave.hansen@linux.intel.com, kexec@lists.infradead.org, linux-riscv@lists.infradead.org, pjw@kernel.org, loongarch@lists.linux.dev, tglx@kernel.org, linux-mm@kvack.org, chenhuacai@kernel.org
-In-Reply-To: <20260922084256.1515554-6-chenwandun1@gmail.com>
+To: m.szyprowski@samsung.com, "Wandun Chen" <chenwandun1@gmail.com>, baoquan.he@linux.dev, robh@kernel.org, rppt@kernel.org
+Cc: devicetree@vger.kernel.org, ruirui.yang@linux.dev, linux-arm-kernel@lists.infradead.org, alex@ghiti.fr, pjw@kernel.org, tglx@kernel.org, aou@eecs.berkeley.edu, bp@alien8.de, hpa@zytor.com, akpm@linux-foundation.org, mingo@redhat.com, linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com, saravanak@kernel.org, x86@kernel.org, will@kernel.org, kexec@lists.infradead.org, linux-riscv@lists.infradead.org, linux-mm@kvack.org, chenhuacai@kernel.org, iommu@lists.linux.dev, mark.rutland@arm.com, loongarch@lists.linux.dev, robin.murphy@arm.com, kernel@xen0n.name, pratyush@kernel.org, catalin.marinas@arm.com, palmer@dabbelt.com, conor+dt@kernel.org, pasha.tatashin@soleen.com
+In-Reply-To: <20260922084256.1515554-4-chenwandun1@gmail.com>
 References: <20260922084256.1515554-1-chenwandun1@gmail.com>
- <20260922084256.1515554-6-chenwandun1@gmail.com>
+ <20260922084256.1515554-4-chenwandun1@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 09:02:52 +0000
-Message-Id: <20260922090252.B01541F000FF@smtp.kernel.org>
+Date: Tue, 22 Sep 2026 09:03:05 +0000
+Message-Id: <20260922090306.542831F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C1E1D40009
+X-Stat-Signature: 49t78x8abfpy6b1dn119kscbrx8d3jeo
 X-Rspam-User: 
-X-Stat-Signature: t8umenq7tn143opazdgj6cp93nitd1pe
-X-Rspamd-Queue-Id: E8D5C1C0003
-X-Rspamd-Server: rspam07
-X-HE-Tag: 1790067775-92999
-X-HE-Meta: U2FsdGVkX19DnufAI8lW7nXlX2uzVj7QZJETTcXhU9fJELEk2RuP1s2v2hSsAURanJT2gG3Xfc9WQ4+E2uyVqlXQ/DnqCHJdreuXN9BDwwzVWP98bLPXP1T0LKi8zkq/9M00vem0VwcgYv406V8EDrMCMhIWGMAdUC5K+krIo/1vxRHcb5qE/bClVqtTwvpSL/YnM68NU9jNSGqVN8S7AORapmsNzCp3FSG4YeEY5Rw6Q9bsO/gm9WrcImKXMzvaoCwUQ3j6J4euU/zSq0syRcK8Fq/l8mqqdsYQsb26iW0rBGimoRC0CDKLPdkGkvPEc7I8gR+OlcOn+KWasOds6qjtEcwXXGse0Lfc3FN4W4ZHDsUFlcpK2YPNnAkkYhWJGLKnEb7hg15wc8ffOX43pJsU1K2Ctneo3kGlhqrmISxHtnG9Bt3LeRfQv1MWBohLl3PVv8eWQdmTE4u6pJd+AfW0jPjKfno3A5QQPkUNPEx3/3glbQWbRYgyk7fA3fvxs2Es3XmDa6aq7CPCi/5CxhkF6QY7WPJm2xYK1iLcTFBOrXc9RWdMVvW1vyNO8vRYiHppfbf35OMA5RcQPy7qxrN2OIHf3Vc5UtWxCdF0C9AwNCJqsGJpryctTZ5zRMu48HLJTe7YjfbFgjiSL3pN3ktWWuwZaH99LXlHxrpp3FW5J/p45tBBrK0PV38JLIkdBxEI1ZaH0h1Y9kNia28em58WP0LSzIJCvU6KHGMZHUzjqqBRg5kPlPNOqnMy5Sdn/ZDlmkre+ravzq5veOflRL5xXas3AfWeh7XN3EhaxfKW8AupmiKI3VS939f1cid84dZpNDvnyqSNMmpIwVuUuVih/0k7iehq+SiK8i4irS/e6cfPKGfdsVrKZnO3P4EBU8800oM0EMITE8B6DrJuxFaJtf2TSoPQ48lCn7vh/TzjulZZ7lyON0D8r7OvRfZJaSEAEdrZ4HoM/quLzu7
- 4bWAASaW
- cDcMS7HXqGw8aZM2JQgBtdDaiFYbnedAHkPYXEcyRfiF9vQvl3fEh2FAJF2MEa5iVnmJ/2rcwMEItxdHOSpuuqdPKffVMfepNiEuPniMCwvalPzSm1rDNqz3USEX2/EoC2PJHeeTXmS1EnI12/L/v5V3tRVa3Em0eKuUSDxpxOUIas+wYALaOczV/tsegKklOYn/y9XQhfuonZWU+NMyxAv7ZLRoDf344OFOtMxQKvXJNipyp7yK9MXZemm0f8qhJ/eWBNflRs3XsyLfVwsiLoLxr1ATdpCdt91CWDfKHKEEXp+xTedVvNZ6PwtirwSuABi3jlKlHp6Mdi4IaCiz0/XS7ld77cRDqkG3gtn+JXmCEjFqWeflr0QX3MMJrrIfLSos+be1/dpArCs+ukJ87DtKCsKnLLZXrxB6RL/tpbipW520fVHFggNAwO7UPEMsML6XMaHH9K3enN8+gU35H++erX1Jm/iomeyvp5cDN1XQEDFp52OGvp/7X+Otr4ksDeNBIaEWGLmh+14Fs3XpSBX6WAJ0Tr0wZgPwdagTwjOfd3T/oL3B5h+cN+LLKmxZkr5PvIloh3n4zi3cOJLQ+4G3bngk8vDWXhr79rBzsqfpFm/i9T4GIcwwVp3x8LzXl3VDb9nJ6zElvqW86FP3ISL4h+PVhqWevlaXis3meYyYv8KtLMkzm8+pR7vVZQNgVGXV0VnJrLkuvGeDSaDyYyvORAdDsOHVcY2qD8n0uA+Dpz3fmOMZr7VdRmxT4aOnC2gxcx9JrjRDFIPQtcLILX/7Bb4pv5tl4e5zZ6nUQRo83s9oBovccDwWljA==
+X-HE-Tag: 1790067788-648935
+X-HE-Meta: U2FsdGVkX1+F6NulZJ58hO7c3T4v4D3qxLwbc4S2QeaHvx7E3kuDgQwKAEGfAqOlu2BCSFknwP6dmrAdkCLvzcwxZEKly6L8tJopQtMMEB9shssBHCBTzY7iTz+hdIo8KiPzdD2RP2cHP6ZrwhPBKEgb4hc6pxakodDy6qtnrzC1nxpZY8O8470oiE2tL6yEG0WtxD/yDQoN+XghjwVHA5lOtgEtDTTZRSMjdNh+OKyOlLMm9N27PVXuwysrhFoWprPVKAdBA03sgH+t9C68AIQklozNpHi0V+rggpW1GGBdGKRKzeYVQqTykQN2XIbDo3Bfva4V1CZ5Wyg7xXZGrCI/5U5mgp0NgSX90vrf7duP/pMKkRzxvQ8ml75kIT0YnX8btNuQdNqYTT60DDC6IoOW+/YAk+J5ki53ChNXy/aYMv2L09Iqb0X+69GdznXfLaiSlDx/BtVOAvCgd1HMFEc5Oc78/43MgI/K+Kt1QZTuIH7CRHfWwuYeVN/siabyuyjS9+tZkvKNmZCRZXghsdr3RCzwlOoz2MvIEueOZsraHBMvTjbjhhLnACykgE9lfZIr9sRLdybJiwSv5klVxNkuHpMcJSxZnk2rSGvXYUHUz/sDgQ/2NADeGB0UHkhnmpdoTKTJ5f/jwnpyX9XIt+Y+H4LudpX6xK+USPbJZ39mRbVLn1Dki9Y24tOBVLaHOelgFBbcQlJ1klpLpl7ga476XzgfVTnsAfYrVVKVjGaNhTVFAXuAq8EwVtMAcnIBy0w1QXl+l83eCIhbzCnwrII3TRU1qh3ZRJtwTlK8z5SzpZFsljpntHUmHjZ/R99mXKZcq98UhFUkDIc3A4PvLXqFOId92aOeqZTjkgo4WpAj2osOu7O5ctlkE+zrV29ACpanxWF2DqI5YudZ/HeaLBy9vKuUBy/9otFVXWQvkojBIK+Yzj9l2vk9p6Jfd0Fbbb5OIX1LHAAnbzSau2d
+ R0Yuf0Qv
+ Uz1iJfU5Hui7wyyrAHWwGwkfw+U6Dt1b2Pzl6hjfEtDf/z04DMZ5MvTv1qXAYw4S43XNDmWGPDBKx7DoTinDUKEc49lLkv2pjnogEQRAN4TrAQ49kVH3wNbZAuyI+Vdu4Uzlig8uGYPdK1LvIUUJr5V65GvrzYx2dbY2aIBUnceEqkALR3KoOoiM84IDrApOXETsrbumHJqE1SQklMLjHAnOi6nntYp9VjPBW/xJ8npWIFPfPe2purcqp2emkW6XAAIWCiWdB+ziCq302RRaTCta6jjPl0LWUwMuCHVtBKqCexcg058pXpz1W/cxIbC1O8celH2iIAAIDL49WUaD+mhUZFCrLrg3NL7TWcXJwxPjtjDEKVTu+MIRSM0kJdxkM6TGYNa63mXfYcP0SEUZ9tNrnAtYJOHpK4ME56GYzNXeQfboA4fGGJEv0E9czTJ5Rvskix9rs+D+cW/HGwQVOaTmihpRZE4v4EfktTrEoN+RVyyQyxDJOXTLWaC8M2+0Kb5Y1fcg79EBJNHoo+f9qMbK+txCav+BN7jpZw6eR7phxBWF718mNsBO9Ex+m6CI51qM4QfCPYgybKvr+wowRXDsucBIZGGEh6X7d3e31HHf0iBa93pXXWZD+a4V5qTGKfwSYXfonqd8dDxutXpxlXwMObXKhb0OU4F10GnPpjPWkpeUj0oC9X54vZYBcPifiRY73QbemINL1PVNQHJhaXDph+E5D7sgK2+1LBMFjM198Bz6Gqg6p0JKkVvw1LUTOoM81FV+YGcuQEsQIt1nWD9FGd1GfEOl2qFZDZxR1nOYKjZkY3/0QaQEK4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,83 +91,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm: lockless mutation of memblock.memory causes UAF in concurrent =
-readers
---
+> From: Wandun Chen <chenwandun@lixiang.com>
+>=20
+> crash_prepare_headers() counts memory ranges before populating the
+> allocated crash_mem array. The weak implementation used by ARM64,
+> RISC-V and LoongArch walks memblock.memory, while x86 performs the same
+> two-pass operation over system RAM resources. Concurrent memory hotplug
+> can change range source between the two walks and make the populate
+> pass overflow cmem->ranges.
+>=20
+> Take device_hotplug_lock when preparing crash headers during
+> kexec_file_load(). The x86 memory hotplug path already takes
+> device_hotplug_lock, so call __crash_prepare_headers() directly
+> to avoid recursive locking.
+>=20
+> Sashiko reported this issue in [1].
+>=20
+> Fixes: 3751e728cef2 ("arm64: kexec_file: add crash dump support")
+> Fixes: 1bcca8620a91 ("LoongArch: Add crash dump support for kexec_file")
+> Fixes: 8acea455fafa ("RISC-V: Support for kexec_file on panic")
+> Fixes: dd5f726076cc ("kexec: support for kexec on panic using new system =
+call")
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 
-commit 3e0d4f57949330268c708beeb66dc1c0fb65db32
-Author: Wandun Chen <chenwandun@lixiang.com>
-Subject: memblock: introduce MEMBLOCK_NODUMP flag
-
-This patch introduces the MEMBLOCK_NODUMP flag to mark memory regions that
-should be excluded from kdump vmcores. It also adds logic to clear this flag
-when reserved memory, such as the initrd, is freed so the memory can be
-properly reused.
-
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index ea0de4b5f3568..48cabfe5cdf16 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-[ ... ]
-> @@ -949,9 +951,13 @@ unsigned long free_reserved_area(void *start, void *=
-end, int poison, const char
->  	}
-> =20
->  	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
-> -		if (start_pa < end_pa)
-> +		if (start_pa < end_pa) {
->  			memblock_remove_range(&memblock.reserved,
->  					      start_pa, end_pa - start_pa);
-> +
-> +			if (IS_ENABLED(CONFIG_CRASH_DUMP))
-> +				memblock_clear_nodump(start_pa, end_pa - start_pa);
-> +		}
->  	}
-
-[Severity: High]
-Could this lockless mutation of memblock.memory race with concurrent reader=
-s?
-
-This code path is triggered during asynchronous initrd freeing
-(e.g., via do_populate_rootfs using async_schedule_domain).
-
-Calling memblock_clear_nodump() modifies the memblock.memory array lockless=
-ly
-via memblock_setclr_flag() and memblock_isolate_range().
-memblock_isolate_range() can split ranges using memmove(), which disrupts
-array ordering, and can even call memblock_double_array() which kfree()s
-the old array.
-
-Concurrently, subsystems rely on memblock.memory being immutable after early
-boot. For example, on ARM64, ioremap() calls pfn_is_map_memory(), which
-performs a lockless binary search (memblock_search()) directly on
-memblock.memory.regions.
-
-If memblock_clear_nodump() splits or reallocates the array while ioremap()
-is executing during driver probes, could this result in a use-after-free
-on the freed array or an out-of-bounds access from broken binary search
-invariants?
-
-[ ... ]
-> @@ -995,8 +1001,11 @@ int __init_memblock memblock_phys_free(phys_addr_t =
-base, phys_addr_t size)
-> =20
->  	kmemleak_free_part_phys(base, size);
-> =20
-> -	if (!slab_is_available() || IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
-> +	if (!slab_is_available() || IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
->  		ret =3D memblock_remove_range(&memblock.reserved, base, size);
-> +		if (IS_ENABLED(CONFIG_CRASH_DUMP))
-> +			memblock_clear_nodump(base, size);
-> +	}
-
-[Severity: High]
-Similar to the above, does this introduce the same lockless mutation risk
-when called during runtime module unloads or CMA frees?
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922084256.1515=
-554-1-chenwandun1@gmail.com?part=3D5
+554-1-chenwandun1@gmail.com?part=3D3
+
 
