@@ -4,121 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B62C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC99AC982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B9BB66B009D; Tue, 22 Sep 2026 10:30:24 -0400 (EDT)
+	id 9F4206B009E; Tue, 22 Sep 2026 10:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4C566B009E; Tue, 22 Sep 2026 10:30:24 -0400 (EDT)
+	id 9A5316B009F; Tue, 22 Sep 2026 10:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3AD46B009F; Tue, 22 Sep 2026 10:30:24 -0400 (EDT)
+	id 8BA726B00A0; Tue, 22 Sep 2026 10:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 85D336B009D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:30:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 021D3C01CA
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:30:23 +0000 (UTC)
-X-FDA: 85241633568.04.E1A5AAA
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C8EE940012
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:30:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=H6bICUac;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 61CAD6B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:33:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9BF8160514
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:33:42 +0000 (UTC)
+X-FDA: 85241641884.29.095E16D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 28553A000A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:33:41 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BX9biEl1;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790087422;
+	s=arc-20220608; t=1790087621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2iBGnLzdAMS3zz28wNn4T4QYEjtnJw6MpoH+sl86c/8=;
-	b=jr6tiObG01Wg1fMiq74VnssSHTSFuUSiAQ06z/KXz2K8IDelrfOolqRqLgfLfcJuMqlQDm
-	v5hlc45zBKWmPUUH7EpqhAzl/PArrlSRq11zoJBLhKo9bV7G/umrERKtSGTehuLtgAWMWH
-	wFdkRGRu4zTYFSCXE74hbuAk+kNlWmY=
+	bh=SX+z6NYoCWxNBGYU99ktnwwcCSe7GjbZgEJXo4djVCo=;
+	b=iBweqjIS4dk61vA7KA7Y/3zj5xo8lcjFQ9vA6QHbUuOMQZtXf1ZR+JrDIJOLxCCYY4u400
+	DuWSDtFFef93kanDM626vkgEHmWJtWqNqei7ij3szZdT9GpP6Jl5kCHOUhjEEKVnSk+dxL
+	bYRvYuLm0h5hIJoTwctweTy3n3/weNI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=H6bICUac;
-	spf=pass (imf11.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.230.204 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BX9biEl1;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790087422;
-	b=3DHB7kj8W/rVH5rcfAtK1n2/Q3Mb9Y7Ts4/VjtULQsWvrqVMbCdXT3JmuoORatlJXulPtw
-	xF0u4mehm9+Lr7k+KKRwx4M2Qcc3gtF/c9axA/wB9Dw36ZMa4IRKXCyZEKNL0vyFkeue/x
-	vaZvTFYu5RJRekU1zNm2C03JtSETFdw=
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910c3d02aso173861185a.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:30:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1790087421; x=1790692221; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2iBGnLzdAMS3zz28wNn4T4QYEjtnJw6MpoH+sl86c/8=;
-        b=H6bICUac3ooqvDRSiPyixS31Trt6wP1IK8M0Rf52cOAcJI4RKmJhD3m4h40wRtmWmb
-         YrJfCsQZb3FOgDBy3yriXMOH5cmXKNagmuP/x7q9w7O067rpTUzBnmqw5Yn0rI4Rt9/9
-         LjUQmok2OD4scxBjyQnMqSScwa/6TZoA+D2LezkST9H+42q0qJ5/SbNrzeow1JwNUFQx
-         n8AYgbJkvbAj/H5nqO9CUhYBSsAo0YwE1V8M0Aywg671ATtM++NQQzuxv5iffjtRsbCY
-         kqguHQGT5RVW8oBFn+yT0/XQXZAHNOLSbm/QVXIo4pC8hPGAKv2E3OVAFrN2mFAO82Us
-         nSRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790087421; x=1790692221;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=2iBGnLzdAMS3zz28wNn4T4QYEjtnJw6MpoH+sl86c/8=;
-        b=k4qZbcUMx5+X/wTEt2hcgjdhyZMXhztZ3C9D2R64ORlXw5wWjNYuMXAK+iQHWUW2GS
-         sBj16ptVsuuWkD8n28juXu0ktcJp5jr/dJnuQp3fsjGFy4jRsKa3bJRaUK1MvOmL7hw1
-         xN4OndJt1QL/TBmWfLelaw8iNtFFtV293kKROguJP/Ow8kfVG+X/2bBr8F2vagwhMZki
-         wlpMuZieR43hndjf+cN9AeCT1iOkqiVZFdVkBuVsYiAsPhl8a7HWBpiq3avUPRJMnTAP
-         n5B8f4Lzbu5RCESa6SSdz9xnZDyRC5IlsVuNIfTSuAQwK3Sl4kqvhEMAQqQb0IAXET+j
-         k9cg==
-X-Forwarded-Encrypted: i=1; AKwUvBxE+Nft0qbNtqQfdptg1qpsPAOcd1rPxOmT7I46k9hp7YRkNBOeqV4GQVDgLl/YGnGoWHN8Mcf55A==@kvack.org
-X-Gm-Message-State: AFuF++lwpWlfvXSvKZWSDD2cWq+L/JG4xNf7OdvKXT8BYPdGMJ/ccAt5
-	h+8y4s5l6GqcutQQWY5NRrwGMvbRPPnPrijDzfBucFNxUPzEQjlPD99jQiUzCtgoipw=
-X-Gm-Gg: AYBFou3Ic0eYhhlOKTF0GW88d0Ju03Jb400KTvBhWxurpHCj197Z9EhYMXFbz4WZIj+
-	5Q8SvSmR4hG966+WYSICZ4oZQokMxi6JKuFtVuSR7aliVazhuBoLnJfg7j1uo+jd1zB8raS75M8
-	FZOWnsc14dL+CxN6cJJk9omFSH52t3cKfaJECffVuVYdVnuIHW6ryN6Iy8O6MIjf6WOx3rLM+W+
-	Ez9oFLG1YKmARC9A3iZwQfgzXNnDVskAGVTi+E8GcYUixRe2Wlnm0UZUeYUdqX89NDNKwzorbR5
-	JFpqLAqzrq1MWP0Dc7rJsfQl7exUHeMKbprqz1zBPjI6RnBQ5fW00+MsqauR0vVRNW9NMd78hD5
-	yof8w56ehnP/Bau7XD6tokmoh1zz7RdPEy1cEzbmmX0iXcm7EorZhaUlAd0XqsKMqzo2UagC4GB
-	modqTQRstVbmE19m+51Uh/w3kzqeUZWcIbI3r8noCHDH0GRDtl9GYXF9f82SssO1YvJEyc5zY/G
-	njiIS0=
-X-Received: by 2002:a05:620a:8014:b0:939:4baf:5b99 with SMTP id af79cd13be357-93c17e7d4bamr491449885a.18.1790087420769;
-        Tue, 22 Sep 2026 07:30:20 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c22922e6esm34144885a.26.2026.09.22.07.30.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 07:30:20 -0700 (PDT)
-Date: Tue, 22 Sep 2026 10:30:19 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, kasong@tencent.com, nphamcs@gmail.com,
-	baohua@kernel.org, youngjun.park@lge.com, david@kernel.org,
-	kunwu.chan@gmail.com, baoquan.he@linux.dev, gourry@gourry.net,
-	riel@surriel.com, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev
-Subject: Re: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
-Message-ID: <arKQ-2fXDOyQzbZC@cmpxchg.org>
-References: <20260920072043.430390-1-hebaoquan@kylinos.cn>
- <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+	t=1790087621;
+	b=6Jg0GA/AjJ0oRSjUzLGvKa3p3vkIcsCHDfFbzjon/blFYo5FjDznbW/GfDXDtt47ZnJ4vn
+	ku6IQNniUvgN+ZgV29kq4qowxJjPKjsbcMgJ8iN6TPwwFV4PNv+H2q3QlRvIxF/2/RBpUu
+	3un+6ZEmQM9ad6uxioCmgZzZst9kCuw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EC805400A3;
+	Tue, 22 Sep 2026 14:33:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21801F000FF;
+	Tue, 22 Sep 2026 14:33:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790087619;
+	bh=SX+z6NYoCWxNBGYU99ktnwwcCSe7GjbZgEJXo4djVCo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BX9biEl1MsiHmxiw5g0mwtlxHsMXdJJs7EENd2SKzhScStDGRDti4g9OlEPHw93Ix
+	 WrdBXYIVZUqDh6y4UhXrfQJaSXbUEpfMnPklbBRUI1kUaQ1OdGdIlQYaP2uiE+3K/Q
+	 nKulIl1srUyP7Zg6uugHpCEHgsh/dd2RDn7SpBdeuYDN1LcvJOUErXq/QdFuLo1U0u
+	 gl8yNWwEUhgFlk0Zulfl6iAqDpS/Fq7n2j0bDp/NkyUJlS51yQmFLsyFl9jefnguHS
+	 EmvE0IyhrPe6y8vqHqStNyadWtZ5Im7mY8iygqft8AHxZD+n/7cmuJT8b+lXXeuztX
+	 A6umjl156o2jA==
+Date: Tue, 22 Sep 2026 16:33:34 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Chris Mason <mason@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	Jens Axboe <axboe@kernel.dk>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, NeilBrown <neil@brown.name>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, linux-mm@kvack.org, io-uring@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 02/17] signal: only SIGKILL and the freezers interrupt
+ a coredumping task
+Message-ID: <20260922-bibliothek-fakten-vielzahl-78613362e349@brauner>
+References: <20260921-work-coredump-fixes-v3-0-8e4adb1619e6@kernel.org>
+ <20260921-work-coredump-fixes-v3-2-8e4adb1619e6@kernel.org>
+ <arJ6zZuI59BJnXpl@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+In-Reply-To: <arJ6zZuI59BJnXpl@redhat.com>
+X-Stat-Signature: s1x9t3pyrao8daefaiphwi44z5j9duu4
+X-Rspamd-Queue-Id: 28553A000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C8EE940012
-X-Stat-Signature: kkf3ugrgx4o47ociaxjdk3nmmbed4kbt
-X-HE-Tag: 1790087421-191118
-X-HE-Meta: U2FsdGVkX1+eM5cysyDxLDS2fizsK1Jw7h+oP3VBWmhNnPVZlaNXx84at5k2z8dIKJHe/ngOkUbjkOwjreluSU0lHWj23rw8U2Imx0DYBAENss8H4SdvrCtbW28XDIg6DcDjgNPh+RotnznPPDPhs1gVuAAeELzOCe8DClENDOjs/A7G3w5o//KwT1qN6NKRXXOeghHI8jsv0+IFpXVQXhyKyAq56S31dRp9NesD8xBwnVu7iB6WpkoD2WL+jXPsikLCkrF5HwT9nNbGwBUEhLtqMQlAuJfWZKP6t7Y/doLWSrfRIK7vgloPwsf2tRuPCczDADSm0MTzYLljbKKIPf7688iSh/yHIHYwmq8Ai/pu/kIUv0TSHMOY6P0fo5sumcTw1ulTqfdieSO/SoJDjuR59gdCO5ovm/VCi3ggPnu5EjL9o2YwsDMYMWgvkAycLsV1UK39oJXEhV8kfB2WiuK5mooMMGCmZhmtpqG99F0kgux44LFv4d3w56kWv7GGCMrRjKqhep7I/BTTd/xOGb8wnJLwvJxxDjn23cRHBBdguGr3zaCO9Kb72PcS8rcinTGalHVQ/+2hawirHQciutGqLMx9QdPPB0w8zbIEQUDDYj3tI3Om5G8ovGdnDsJIR+Hg60iOrFZkMbPkCgx3cH0TAEWhOMzUXiQWTEP3S1IdVUCHaBNQaSblTVh88fOR92lVutTP9t6A8gMxW1HspTWCKTtKflR1gSJ26DTiJf7UAzvLrMjwNe3yYwobopISxG+NSzHJcApBF4rSA4kqW/gIVc0jlHZv3aN6np/BDpfmQsys0nw8sYwZLOVpb3QhNfQZ3fxjuF7lXrid07uX0hZduyF3haRp8ZMFwtohnQ8+hjugc5SZPDQr3AJAMXnei05rbeKd9zAQ8zZ0JfUSYx3I1Ox5OMhqLZshmNLja8XBoRwrgkkkpodmz/aY10nTFhaeZHcuC4EkVBcKkva
- SqEqElSd
- DIRTdJWQUQYn4GwhZzLQ18Itl7/gzBbTBdLQTabcV14gnfr7jfQJhmY5KHEjVJwkxWn51yM90DMCRRaFcj0qr0Dmij3CJFe4BDCMudBBGukz7eQuxQq4A2AM5BD/lpeOZMxFHqnvxoCW15nA8VKQV/m4s55U8ruTd6jnP/FDsf+gP+zeZs7MMBKpqac37ntOEZO7oa1LWHlq+nGwBhDxsmCLdKXOXfrblIy70Gccs8NqoYTTiBnLUaiFnjUXCD2hbpHHcvwlPv89RjyXvCj1rZ10EZOf5gfHy+mlqiggDMue9bWD/XW/WhRCJbXSg5mC9UfYeYnpIdlbVVWJ7crBz2oQqERHBEE+TMqrOu+uSpxUZjZQ8fsyKjU/Bp6Kef+R0ryQPAGyLqoQkBCfu4y8O6hmia3knm0bz7busW8V19gZX3AnbuTv/bLPy6lxhVruqO7QwcTxOiqxXeRpY/DwpnAc1l96/fDhHAt7dCgc0KAozqCS7JVgA6agNNbf0OoykIqdF
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790087621-321177
+X-HE-Meta: U2FsdGVkX1/hQ0GNSdS+3wY3NPqNR7yHcog+MOdD0OoAIazeXbhm0EcZJatC33L6SbP+goyqwIvq+CUpDg9+E5lneXHW3hvnkx4M1EdXS/t3stM83UeQMIERXeXPn7Eb2GJKnd4MfjLE489k5XNgcZ/CzgOvQ9LZe0ifjui+zdPjGX6ELxmSd+z7BlgdKWKH0vIBjf1T7qpB4pFCSzjNtVQ0cSSfRYZY5TzFiXy1Kn1xsSMp9p1LV9ulgPGsCfyJtmPZ9vJv6kZ1NFKqWtgvfrCE9+u8vJLhR6ehjAzmSRIWFov82XA0lY3Grv7Fez+ty7yrjMehjDscaCH1+s+K2cSXvsS/v441RssFeyH4vSvw3jJ11Pvgr/xZ86Gabpf8Kw5nulo8ttx81ExfNMJk6LA48QwwrDa0GAZVv7XiSybnXK06nqWcUv/sJqggrM040Vh7j5wA6UFckMPtFe6BLMbdXQdPFLvXxEoq7/ANjFk/nStjYFHIA05fo0X2TY8GW6XeXatWk4Vntx//bxxKGdZwNLfyGEFPFpzmQyBVlXIQwO/xbHWRDoHXfHEDb+goskF08RXdjRcWkDyKxZHEhOmCbqqX9XMbycJtUPBOpylQbMTmVl6VHGW5EDDHdcCnO004qNOyVOPhXJrycGskNgc7HZ2MiYKKoPjiZ3HtlhNiPo9KcxQO+7SezK1Z6lTW3SJvWDFIzNsDVtjyl+STTQLQGb0Vc6AfwcA59rLOQQQbO7jOfZdyeuidjOpoI7EWsbRwWPjMZuNOYQ/aByw7g2TFExFEugTL2xL5dBMxkeGSOXDPHvBl9LfS/yfk+Whj2IATFAIIJvJ5SDEOTuYf88m8hvwvVh4kvycmvvhXm+/CEPjxBjWiSFyCDk3KDGcTIajfm2Hjg76wzee6uG6TNFiEoUh91eaoAhZ30+RtHqpvYy4WpwilAs1Dcxt0+J+sHgPl0cKra1S6Lf/fgyJ
+ X0bPOR24
+ 5PjWMsYoI6s3tAbVLU2MStWcDV8adkL0IZRvaN7nhRFCZlR1iLUOsHT6OR089YyxgHz3Z94IA+uPIm9IBqCb6QaSnSSACW0P3vUlpDW0L0nvaVpbyBD34jEXDYfjiKv2vLHJcYvG9s31Yx5RGNfsG2DjOw5BK13SwKH6tiiBVdiq3lSk8g4EmgRiVPmaEPYoAQmrbEgv8LcQtLyzQlMqQOVtfKUn8T2GzTYMicWx+4QdlpurnSJ9ZExhYEdHtcuNguvGU1naG6m9CLVmYWdxkRUTzkUOjf+T2KH7GlcGNkqBFfVQsWA0D8KoOxU5qIbG3wlG6hVshXvethOP8Rv0H2VPkXSXAvMoJKXeddoO1996B32WN4EKZsffKqydgBad7DHPOuOjtgDUciKPNqrYirjmw1K5HVVA3SDKSrsMAsUsHRo61vx3TX/YLUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,21 +96,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 04:22:51AM -1000, Chris Li wrote:
-> On Sat, Sep 19, 2026 at 9:20 PM Baoquan He <hebaoquan@kylinos.cn> wrote:
-> > - Charging: Record the owner at allocation but do not charge. Take the
-> >   charge when the entry gets a physical backend slot, and give it back
-> >   with that slot.memory.swap.current then counts only real on-disk swap
-> >   usage, and a cgroup with memory.swap.max at 0 can still swap out through
-> >   zswap.
+On Tue, Sep 22, 2026 at 02:55:41PM +0200, Oleg Nesterov wrote:
+> On 09/21, Christian Brauner wrote:
+> >
+> > For quite a while now coredump has allowed either SIGKILL or freezing to
+> > interrupt an ongoing coredump. Since we seem to like it complicated
+> > "freezing" can mean a lot of things:
+> >
+> > (1) Power Management induced freezing
+> > (2) cgroup v1 freezer controller induced freezing
+> > (3) cgroup v2 freezer controller induced freezing
 > 
-> I want the old swap charging behavior back. Please don't change that
-> behavior. That behavior change should be a separate discussion and
-> split out from this series. BTW, I am against that change.
+> All of them do signal_wake_up() which sets TIF_SIGPENDING
+> However, zap_threads() clears this flag.
+> 
+> With the recent changes including your PF_NO_NOTIFY_SIGNAL and
+> 05/17 "signal: don't retarget shared signals in a dying thread group",
+> what else can make signal_pending() true? Apart from SIGKILL.
+> 
+> So perhaps we can simply do _something_ like
+> 
+> 	--- x/fs/coredump.c
+> 	+++ x/fs/coredump.c
+> 	@@ -508,7 +508,8 @@ static int zap_threads(struct task_struc
+> 		int nr = -EAGAIN;
+> 	 
+> 		spin_lock_irq(&tsk->sighand->siglock);
+> 	-	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task) {
+> 	+	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task
+> 	+	    && !freezing(tsk) && !(tsk->jobctl & JOBCTL_TRAP_FREEZE)) {
+> 			/* Allow SIGKILL, see prepare_signal() */
+> 			signal->core_state = core_state;
+> 			nr = zap_process(signal, exit_code);
+> 	@@ -583,7 +584,7 @@ static bool dump_interrupted(void)
+> 		 * but then we need to teach dump_write() to restart and clear
+> 		 * TIF_SIGPENDING.
+> 		 */
+> 	-	return fatal_signal_pending(current) || freezing(current);
+> 	+	return signal_pending(current);
+> 	 }
+> 	 
+> 	 static void wait_for_dump_helpers(struct file *file)
+> 
+> ?
+> 
+> At first glance the change in dump_interrupted() makes sense anyway.
+> For example, dumping to pipe can't tolerate signal_pendin() == true.
+> 
+> What do you think?
 
-Charging the swap counter is a hard NAK from the cgroup side.
+Yes. Here's what I have in the tree.
 
-The reasons have been spelled out over and over. Feel free to engage
-with those. But what you're doing here is not productive or in good
-faith.
+Subject: [PATCH v4 02/17] signal: only SIGKILL and the freezers interrupt a
+ coredumping task
+
+For quite a while now coredump has allowed either SIGKILL or freezing to
+interrupt an ongoing coredump. Since we seem to like it complicated
+"freezing" can mean a lot of things:
+
+(1) Power Management induced freezing
+(2) cgroup v1 freezer controller induced freezing
+(3) cgroup v2 freezer controller induced freezing
+
+So (1) and (2) are handled by checking freezing() but (3) isn't.
+(3) uses cgroup_freeze_task() which sets JOBCTL_TRAP_FREEZE and calls
+signal_wake_up() on every task in the cgroup. The trap isn't handled by
+the coredump code.
+
+Fixes: 76f969e8948d ("cgroup: cgroup v2 freezer")
+Cc: stable@vger.kernel.org
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/arJ6zZuI59BJnXpl@redhat.com
+Link: https://patch.msgid.link/20260921-work-coredump-fixes-v3-2-8e4adb1619e6@kernel.org
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+Changes in v4:
+- Gate the dump in zap_threads() on freezing() and JOBCTL_TRAP_FREEZE and
+  let dump_interrupted() test the flag, as suggested by Oleg.
+- Drop the signal_pending() hook and coredump_signal_pending().
+- Blame the cgroup v2 freezer commit as well.
+- Link to v3: https://patch.msgid.link/20260921-work-coredump-fixes-v3-2-8e4adb1619e6@kernel.org
+
+ fs/coredump.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/fs/coredump.c b/fs/coredump.c
+index d88a65e37ee1..af09a4660341 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -508,7 +508,9 @@ static int zap_threads(struct task_struct *tsk,
+ 	int nr = -EAGAIN;
+ 
+ 	spin_lock_irq(&tsk->sighand->siglock);
+-	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task) {
++	/* A freeze requested before the dump would be lost with TIF_SIGPENDING. */
++	if (!(signal->flags & SIGNAL_GROUP_EXIT) && !signal->group_exec_task &&
++	    !freezing(tsk) && !(tsk->jobctl & JOBCTL_TRAP_FREEZE)) {
+ 		/* Allow SIGKILL, see prepare_signal() */
+ 		signal->core_state = core_state;
+ 		nr = zap_process(signal, exit_code);
+@@ -580,13 +582,8 @@ static void coredump_finish(bool core_dumped)
+ 
+ static bool dump_interrupted(void)
+ {
+-	/*
+-	 * SIGKILL or freezing() interrupt the coredumping. Perhaps we
+-	 * can do try_to_freeze() and check __fatal_signal_pending(),
+-	 * but then we need to teach dump_write() to restart and clear
+-	 * TIF_SIGPENDING.
+-	 */
+-	return fatal_signal_pending(current) || freezing(current);
++	/* Only SIGKILL and the freezers set it after zap_threads(). */
++	return task_sigpending(current);
+ }
+ 
+ static void wait_for_dump_helpers(struct file *file)
+-- 
+2.53.0
+
 
