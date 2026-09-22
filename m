@@ -4,88 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD03AC98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:27:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22818C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:33:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 979136B009E; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
+	id E8B8A6B0095; Tue, 22 Sep 2026 09:33:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92A566B009F; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
+	id E63086B00A0; Tue, 22 Sep 2026 09:33:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 866506B00A0; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
+	id D9F936B00A1; Tue, 22 Sep 2026 09:33:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FD1B6B009E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:27:42 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ECC68A6638
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:27:41 +0000 (UTC)
-X-FDA: 85241475522.05.90DC6E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4C4B98000B
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:27:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScK32LSy;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id B9C686B0095
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:33:01 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 592A6A6647
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:33:01 +0000 (UTC)
+X-FDA: 85241488962.02.0E631AB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 52034A000C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:32:59 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WzAFrZBX;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790083660;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1790083979;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hOgpW4IgnM+iWttR9xGzJPKFkLCxSHMpX5I4y07+yQM=;
-	b=EbQ0DxbFtXdRLtbwUvSdIohje+4VynRM1MtZb/JRsFNZSjzUTrUuPpZnHVl0IaeBwQShCK
-	wLr/Om9MXB7p+uUXG0BJjtvL7zzSUaiz3avNp/VdDO779lTN0pzJiyQyJozVSyykiNhsLg
-	UH3XSHhvTJ1d5SXV6CXJzYQfHncm+H0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790083660;
-	b=ZCOJ/Z1rnfRty7VANFXpKMvnA7oD9ZqmCIl62mi1SXDXwwJUMU6mBa9DlUqUav5NrKqzNX
-	Dxr4ouMqXARcMm3/o9QpneTi5eVb4jXBm2RccwpfpdVqupctNL+tk/DONtj5uPNbDwazIE
-	FW+qsKHjs0bmcstXjGCuvs4E/HhtQpE=
+	bh=dkPNz2P0GmPt8JTDqC/+9M8S8tUg25zEaPhZ23h9wAU=;
+	b=tzqeXf9NdPY135sGjx3ymU06bv4kDnaKH8yN33bNSki21gHkxk1wQ/Jwh4/a4NO3qR5ehW
+	7Fdmk5yfnkPNSKYlph4IFoN+VuqomxRtkZKpNlIjoKM3W4vSiDApr0IbsYhDGIOdzrhGb3
+	7CwU5VJL1sZS5hCqeWEXI3MQ3ITyUNk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ScK32LSy;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WzAFrZBX;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790083979;
+	b=kZVoH5Jkgoq61xA+O0TGSzAIfgxbnZolEwQKmd+rEIwVIosF++NrQyUzSDOZ4kmPfGscYO
+	b0jyPhBuVGI3/jhFSIp3VWDCXaBWmSTMzFmmIenqJsfCTezRO5/hBHRVrEeplqdJKYqrrF
+	4mNbo4TEPmm+ylNvRbm1kEWBa31vUW4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9439B60DFF;
-	Tue, 22 Sep 2026 13:27:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15EB1F000FF;
-	Tue, 22 Sep 2026 13:27:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 46A06449D8
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:32:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFC51F00893
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790083659;
-	bh=hOgpW4IgnM+iWttR9xGzJPKFkLCxSHMpX5I4y07+yQM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ScK32LSyDrY7d5+C8okcVeEUzggCwaZYw48LGkNFs79g2d6FsaGQjUnycanFRtVn/
-	 hVgC5C16xSQSsH2ZWl7i3uAL/tMCQoA+/QwbuNe64iWM6kBd3o1Eb3mmpc7HjHD8Yx
-	 kFY95VDNDpXS71ZTlFVcgX8Nqc/33yM7UhzutJO2t1MBcf/W7Rjhot17y1bDFDaJ3U
-	 ljz6jq4Tl7ABUOVZvYSOLHqjIbCdkQ6img71hVkM5E+Bx1hisyF41hkCYvstoSB3tP
-	 bGoAXpXw1TTnkBf9sdeMUMjmG8UJIdgk4LYOkKO09YGtGblsPQySTBTwIpEtSDfjqk
-	 5B4IZ4Ors4mVQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] kho: fix global scratch size calculation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sourabh Jain" <sourabhjain@linux.ibm.com>
-Cc: "Pasha Tatashin" <pasha.tatashin@soleen.com>, linux-mm@kvack.org, "Mike
- Rapoport" <rppt@kernel.org>, kexec@lists.infradead.org, =?utf-8?b?Uml0?=
- =?utf-8?b?ZXNoIEhhcmphbmkgKElCTSk=?= <ritesh.list@gmail.com>, "George Guo" <guodongtai@kylinos.cn>, "Pratyush
- Yadav" <pratyush@kernel.org>, linux-kernel@vger.kernel.org, "Andrew Morton" <akpm@linux-foundation.org>, "Alexander
- Graf" <graf@amazon.com>
-In-Reply-To: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
-References: <20260922131217.698809-1-sourabhjain@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
+	s=k20260515; t=1790083978;
+	bh=dkPNz2P0GmPt8JTDqC/+9M8S8tUg25zEaPhZ23h9wAU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WzAFrZBXg83teHsHs49VwKuyRYYM22InVF4ndW5H/uH3yZfkji79H37lp2CBbu2H6
+	 ZyaQArGps5zl0xcN2du4FK4hD7cKVcBhrY1nWSBgYOxuGFi2boQSOC5bBlu6z8PLdf
+	 rrxcVnjK6KUwkoELKhi+Nnzco/ByAlOGVkeI8hEH4CKKNaEkRSCNOGm8FFl2LmVgI5
+	 zRX5PhIgraeAoTyLtts+emGKF9S5H/gBVB5Znu21iawQ8ZZPWQ9oRoMOWR4Z8625gV
+	 tTK1AGdbbXhHWb8RsghwUFkthf2GJPHoJOaJfsMQqkjUM/myJm4fGkfAhJlzzuXNdl
+	 ygPITm3kzH5/w==
+Received: by mail-yx2-f14.google.com with SMTP id 956f58d0204a3-66e4ab19127so4572191d50.1
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:32:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx4Rp/Ua2f9DNVb3ENyHI3bcFhsBVccwFHimXKzD9Qw/Xb4+/OAa3tgHPifibsskRQVN3YosggWzQ==@kvack.org
+X-Gm-Message-State: AFuF++lBqf43IRuWxQdMgVvTjj6lrg+aAlwkLKPhQIXeMi8hUotQVlen
+	pOcjh/sw6tqssM9B5AJwv+F7ohR59Fww8cGd4HOA5xCM9dhLI4+2jNnawwm9CrMD92m4mZcUKcz
+	COROrGjETuiq5/oiWWDNmnCNT1khk2HPopKzyfFkFYg==
+X-Received: by 2002:a05:690e:1286:b0:672:9d86:1f74 with SMTP id
+ 956f58d0204a3-6729d862a68mr4177975d50.86.1790083977249; Tue, 22 Sep 2026
+ 06:32:57 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+ <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+ <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com> <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+In-Reply-To: <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 22 Sep 2026 03:32:44 -1000
+X-Gmail-Original-Message-ID: <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+X-Gm-Features: AcwNN1WGUeHiJik3SyidgEFV10ZwS6Bq5wQ8ITt0Pl7xiFx154xhR_QV0CV8YP0
+Message-ID: <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 13:27:38 +0000
-Message-Id: <20260922132738.B15EB1F000FF@smtp.kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4C4B98000B
-X-Stat-Signature: 6yzkzfe5j8sz68mybnmpwngbsz38ku1r
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 52034A000C
 X-Rspam-User: 
-X-HE-Tag: 1790083660-915615
-X-HE-Meta: U2FsdGVkX1+qiD51VZ+jqWOQ8emSPDISj0FioHMjzSX0zXVtldrDLNP1WH8OUqq5z44+kZDcu0quM1/VERA2BtXbRPeqfxpbVvr2Vd7Mfy5SPQVOLFchLdxuRqsyk4u5SIdpb14ojN9qNXM+ws6T8Jkfna7fhC6o3n30AAvgRbYQu4Xir0LF5mhKB6W7c5e8BGkrdsIXatsCNfsdW0tEwJRAcg61dTQRVuK6ohffitJTdyZt5Ybj/Xiqp1hU3yDbKqkvdkhiGeCn7e5bgpK8BB9ZLCNn1YOQNtjfyITXHH/jNGWWgAxJpLP+YUbB3X43XKRSmqvOR+vbkxy6e0zLj6c0u9ZP8W+FuTEMMybDoe47vUduswkFMjSUaO1Sc2YCzY5Z4pMBbWdRK24pk36j/iOhi0j2/YWPrYu1wZVxLb0jsbCTjvon84vJxHp+n7cYRqoOsIamRfHOJxVfLYA8dfyqX27MnchPdmVFIEyJMNdO/+0j/5FHqQjQnZKTA/cXu28VR03tbgicbmTV8C9DJtu5DcUjR3ptIu6gHMus9Q+Q5F3axxWgUTh77m8viIZwuppgRpiFRhBp3Eoy1K8UL+WHUUjRiLOUN7A8ZGSo21Kwm0Nf9x4oW0m39E+0COOsHua8NA7xrChwRa0FqkuAaLulH77wDD6zwp8jAlpYwmviyrZpa8JETBafIJ2xFR3DEenDIz6pq9zHATEqgjwGeSp+OcWfmp+D+YLuRs5QMtmBE6/49Zaf3QMM7v1STkxMyepuYJZ/rxkVksCTirA2GAy2OHs4yOPlSw5o8kYzwmsX+qqk7DNkEhDlPn5iUJgBnHWxPjxsgS7vbxIPGNYqkKdZ+u5jgyLjD65XUL88leOD6OfvQgyKD07fF2ckHTMGs78c/9J2Ts2q4oKIRE6wdLKzQN5XFqfuH1Ov2GU4MIR9btlvamz55Yy2ewSGLwhIogQB1lTgPd3jZ2jPYDd
- ld4Tuhmr
- 6XU+7K8h85brrPtIU2ZjHHl2hJpJLKo+gW+ObFxd8nYV/6nHc8N4nlkiPs7Cb0e27dLrlTxMm0zYqRuSFWhD8hu9a9TVVKHaI3GJFCpUnPxr1A7rMdaXSIkNgFJlGng03zUyGdEIys5VQmutlIQ4pMdiGnpIQIflhfM5YLMsZTfQUFyIODUhl2fDJwnYbo+8tfGwGqHe8uoHOTgZe0WToCUEWvjsayWvz9gv8Z/VvwowOlU3L9ifS7zIr/LdaJy8rOP9MIyHxuTqRFPAyeNgNYOAYl4XOS0p47kTdxnfLm6NpGm9OLdmF8qS4CXlsYsqKtiSUVhbz0BR7QCvoaDq9VouuonVjCPVvkUUmlFgMogS13VJzYedMbCigvkil5rWJP5KcTCgvoPOxI0jsuI0dx/phlnsopUuQ8ZXj1J44PSP54S2BPfK9VjKAN5KQcR+/cpWjgpIczB8ecaY5tXwxn3K86fEmg0Lu8KLUkCRuU+O2PgWCIJU/7FTqFoKuvxYvBmVG5chzaznmk7Hcm5vwrGYC00A7/p+v9nCHOVoIofpm1DMHUiUIKjOr7tW9aydR0jS54onIIIOY1W1ekmQayxjlHszfvUQ9Kmf3I9ZPhdHCYrkmyBVjwzNipicZRP4UXOsbF5tYHwtGvVtVRWhakNaq3O6gqifez8GJnOKd9rAgG90Q8UJ5B8AfTmW4BajsPsfXHrTPTvPp0OM=
+X-Stat-Signature: gxxsgrdfrrz8mkb41hmgrtr3wp46s95t
+X-HE-Tag: 1790083979-551440
+X-HE-Meta: U2FsdGVkX1913hSqybEsieKpGvCCpxwl/HDuAf1wMYdAYxlnaQFfV4ySq30qmmt+TFggZ7wS9eYpb+bIL/q/p4kU7dyLcXWrX6iWOSboIWw0VW4hFkTlay80jcr3AQ2pwv44w/N5Lray+ND6Pc226IxOynji5Ha1oDEiiOFwHvQZKG3+Ik1wcuA5nJ3m+Ea3w4RM3DOBQvfkoDNEWnRi/RIIy3jyJ4E3t0HfXIxIQV0Kk08axHxl3VYUvXadJNDLs//zpdT3m/5XcO7hUScN4smIW0WRpfc2+yEgt6o4SpjGX/l3EI7uSYmNMmSli2hRJTLhMsV6NUKUO0fZSwzypaegrStAGBOWWNkPabGnOSwNpndMFvyLhM08ljPIurL2wV9coBbwLa7/mMIDmAJsP8+0h1Ynh5woKdwAd/b9v4flkyIrKAmfE9FbF3Kt8y0xlOkBNWoWm55Qqzt1AEgYJO9n4lgUGHKi4CxkYKyI1zxlS4nxnb1t+RcWPRgJYr+itxV+YLIYDyq7ieqDNvXxcXOyhaolr/dJ/F5U6LaUMVYfOvESq+Eq5apcyZZ0zTZUx5x++rS1qbMhWgZm1LzRhdvRRRTGcWWx2SDHe7lnY2k3T4gQ9/hQhO6y4YugqqmJpUy+3pmVE3gQ2GBIZ4OK8vVh6jhg+jAz5x0Ma8JLp9LmS4qYrg9uCy+ceOwbYMPZPjQnyn1HGiCA8gFx+ex8TJ9aZAgw2/UW7KwqijcQGTT8C3sSINGebSOh/BXMr4kPL5TjbWeNYAMkZQEgq4W+PGXoRB71WHri39ay3HEKhyy14DEnxh9yNJ78C7HBVszHnuSNo/5HV94Kon5FTiMOyg8li9K581YPoVDfa3/KuY4hb+iWVWOjFT9wR8SEVEo7GAojUJh/b69BuuAZ1bnnNf15zpVgDu4AV6I2RYOdcyCckMDq9czDHHOvRXZVoBtZPSJNKZ7nOsubEzUSsOk
+ dNbm1ynx
+ uudd8Z2EMcfwdyvbVzfczbSFkNp1JIh6e6j7w9LoStjmmmhct7JKaiELQXYeiGnnV4quUbeX6NH4Cdgt4CUCtbUAJq6GnK0z514apc7w4vxHLQFE3OtNNY4pXFGfosdI82KZYpauX1nLmwihTNuNBh1q71VNKA9/ftkWPE8ZZSXlc3CQzZyrgCzh3hebufichIM/eXqNJMEqV0saUBN37IbZlhuGS1WSRwjcCQSbNyRS8BoKmH7dRLCwp0ezq/JgxNfgHonsAoOLa6d6vImiXbxZxDJkr69IX3sOWIvzyZukf0w/C+EJk26qndLZL+cjhtauaqvGbxXBZBZGfZrMvd5SjOF0vWk69YgQIlwdxFDW0U5GBDoGaStQ1uy0D7Dx/EE/QBjkOphr9ffaeJCV0xRQeskurudQbN0pquP0vbL+3rLn/ReNYPZybtHrPL5Ajum3GNeURf4PZDwCr07QmEB41PA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,87 +127,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] kho: lowmem scratch exhaustion due to missing node-specific lowmem=
- reservations
---
+On Mon, Sep 21, 2026 at 8:53=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> On Mon, 2026-09-21 at 08:10 -1000, Chris Li wrote:
+> > On Mon, Sep 21, 2026 at 6:40=E2=80=AFAM Rik van Riel <riel@surriel.com>
+> > wrote:
+> > >
+> > > On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
+> > > >
+> > > > Give me some real-world examples of people hitting this kind of
+> > > > limit.
+> > > > e.g. MAX(%)  > 100% and still have a usesable system. I suspect
+> > > > that
+> > > > with 100% zswap usage, the system becomes unusable. Please show
+> > > > me a
+> > > > real world case that proves me wrong.
+> > > >
+> > >
+> > > Here's my desktop system right now. The amount
+> > > of Zswapped is more than twice AnonPages, and
+> > > the system stays perfectly usable.
+> > >
+> > > $ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo
+> > > SwapCached:       252340 kB
+> > > SwapTotal:      41523604 kB
+> > > SwapFree:        9802088 kB
+> > > Zswap:           8812236 kB
+> > > Zswapped:       24927876 kB
+> > > AnonPages:      11615760 kB
+> > > AnonHugePages:   1402880 kB
+> > > GPUActive:      13112428 kB
+> > > GPUReclaim:        95980 kB
+> > >
+> > > This is also an example where I cannot really
+> > > predict how much zswap space I need, because
+> > > that depends on what AI model is loaded,
+> > > which drives the GPUActive number, as well
+> > > as the number of browser tabs.
+> > >
+> > > The system is perfectly responsive.
+> >
+> > Great, that is getting somewhere. We are talking about actual usage.
+> > I
+> > really appreciate that.
+> >
+> > May I ask what the total amount of memory (RAM) in your system is?
+> >
+> > I am not asking zswap compare to ANA memory. I want to get the % of
+> > the total RAM.
+> > I assume your desktop has more than 8G of RAM, right?
+>
+> Right now it has 64GB of memory.
 
-commit 45b67db1813edaa6fb1bdfe7033f0598a814cd63
-Author: Sourabh Jain <sourabhjain@linux.ibm.com>
+That is exactly my point. You are running 1/8 =3D 12.5% system ram.
 
-kho: fix global scratch size calculation
+> However, if I were running with 48GB, I would
+> need MORE zswap space, while if I were running
+> with 96GB, I would need less zswap space.
 
-This commit updates the scratch size calculations to correctly distinguish
-between memory reserved for a specific NUMA node and memory reserved with
-NUMA_NO_NODE. It introduces memblock_reserved_size_nid() to calculate
-reserved memory based on reservation type and NUMA node, fixing an issue
-where per-node reservations were incorrectly included in the global scratch
-allocation.
+My claim is that, if you run 64GB zswap out, with 64GB RAM, your
+application will have >=3D50% swap out. It is unusable. The swapped-out
+application will likely slow to snail or crash way before that.
 
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-> index 7c4d86daf86d5..dc809e1e768c0 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-[ ... ]
-> @@ -787,17 +787,17 @@ static void __init scratch_size_update(void)
->  	if (scratch_scale) {
->  		phys_addr_t size;
-> =20
-> -		size =3D memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						   NUMA_NO_NODE);
-> -		size -=3D memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						       NUMA_NO_NODE);
-> +		size =3D memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NO=
-DE,
-> +						  MEMBLOCK_RSRV_KERN);
+>
+> How can people be expected to figure out how
+> much zswap space their system will need,
 
-[Severity: High]
-Does checking NUMA_NO_NODE here exclude node-specific lowmem reservations
-(like node-bound DMA pools) from the lowmem scratch size calculation?
+My point is that, I haven't seen a case where the application is still
+usable with a reasonable SLO when 100% of RAM is zswapped out. The
+example you just provided also correlates with my observation. In a
+real workload, nobody in their right mind would want to zswap 100% of
+RAM out and expect a reasonable SLO. You are running at 12%.
 
-If the successor kernel requires lowmem for these node-specific reservations
-during early boot, could shrinking the global lowmem scratch memory lead to
-memblock allocation failures and a panic?
+> when the amount needed to fit a workload
+> does not have a positive correlation with
+> the amount of system memory?
 
-> +		size -=3D memblock_reserved_size_nid(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_N=
-ODE,
-> +						   MEMBLOCK_RSRV_HUGETLB);
->  		size =3D size * scratch_scale / 100;
->  		scratch_size_lowmem =3D size;
-[ ... ]
-> @@ -815,11 +815,11 @@ static phys_addr_t __init scratch_size_node(int nid)
->  	phys_addr_t size;
-> =20
->  	if (scratch_scale) {
-> -		size =3D memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   nid);
-> +		size =3D memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
-> +						  MEMBLOCK_RSRV_KERN);
+It absolutely has a positive correlation with % of the system memory
+based on my experience. The % of memory swap out has a very positive
+correlation with the thrashing on the application. You have not shown
+any data point for a system with 100% RAM swap out. I am not aware of
+anybody using 100% zswap out. So please educate me with the real data
+points. I am curious how the system and application behave at that
+point. I have done many swap stress tests in the past while develping
+the swap stack. At 100% you will run into all kinds of OOM thrashing
+issues.
 
-[Severity: High]
-Are the node-specific lowmem reservations that were excluded from
-scratch_size_lowmem now being counted here instead? Since this counts
-with MEMBLOCK_ALLOC_ANYWHERE, will these reservations potentially be satisf=
-ied
-using scratch memory in highmem?
-
-If the successor kernel restricts its memblock allocations to
-MEMBLOCK_KHO_SCRATCH regions, won't it be unable to recreate its
-node-specific lowmem reservations if the per-node scratch memory was placed
-in highmem?
-
->  		/* Do not count HugeTLB pages. */
-> -		size -=3D memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       nid);
-> +		size -=3D memblock_reserved_size_nid(MEMBLOCK_ALLOC_ANYWHERE, nid,
-> +						   MEMBLOCK_RSRV_HUGETLB);
->  		size =3D size * scratch_scale / 100;
->  	} else {
->  		size =3D scratch_size_pernode;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922131217.6988=
-09-1-sourabhjain@linux.ibm.com?part=3D1
+Chris
 
