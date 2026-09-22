@@ -4,127 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59ED3C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:50:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41794C982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 14:56:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5594F6B009E; Tue, 22 Sep 2026 10:50:48 -0400 (EDT)
+	id 256336B0095; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 530CD6B009F; Tue, 22 Sep 2026 10:50:48 -0400 (EDT)
+	id 22DCD6B0096; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4463A6B00A0; Tue, 22 Sep 2026 10:50:48 -0400 (EDT)
+	id 143C96B0098; Tue, 22 Sep 2026 10:56:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 19BD46B009E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:50:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC14C160519
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:50:47 +0000 (UTC)
-X-FDA: 85241684934.25.BD9AD79
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B6538A0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:50:45 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FSaftz0z;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EAE836B0095
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:56:08 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A4871C2E57
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:56:08 +0000 (UTC)
+X-FDA: 85241698416.02.90F2335
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E3A151C0002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 14:56:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NC3hIEgS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790088645;
+	s=arc-20220608; t=1790088966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k4B4e9pkP/2OIfhwM8t+V/pamQCMxifJ3uHPJlCoXKI=;
-	b=lK2qjjmeD2GWyJNmCRMWdSABnP6xuq+i+H9PjajcnC1WgcAq1rOcVRJajVFssU9k+My30C
-	pUCKLvkrsAHtUwsRUHuRKgdMxj5dBgqpNORjcoGECl/pP5JC3XwtTRYbqIa9z5CK0ZP5UF
-	4c6/ydXDd0jx8zPu911m2SVLuwoIvJQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790088645;
-	b=p8N4Gl0jxH05qflZPor/WhYu3fQ7gO/uLQ0IJ8qgGrNj/tjBYPMdIPvMbm6L32RfQBb0Tr
-	3Qef2ObIECFprssKcGXi0mAQ3H7L/lbjYC8G0ZZFuFhYUQN25vrQjijT2AXj6nlG3ti0mM
-	TF1tfj2xfhcFBTdxb/FwBlcTJiEKkqw=
+	bh=0yx1KVYmcOfYVjEzVIyo9QwiUPN5oXN2wUlmjKnOCc0=;
+	b=Lqk92+Pde8fdMXx5lv+DyBY8QXTZCEr2GGopg1N7cfmkv2wQchy8LKjQkLhTo21b5wE72W
+	2f1YoeQtCASOJZHaVOqY484wfF4Abc0e5ngaxcszX0qCAqDR3A7dlT1E3MM1fzSQmv1Kda
+	Gb5tCXOTQWlxPXWcIeDkmyWp7hvieb4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FSaftz0z;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NC3hIEgS;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790088966;
+	b=eav3WvDmsXE8sO4cYcxxCoU8erflHjTDKOkz27uUyS75nbxivf9kVevh61GE4qrgyNCquF
+	pLYCgo1dGGvxjnQGiFEYR4S8b1CQcx0vA7dteO5cVqfcROyWH7IrDkS3w0sVXcnVtmPuNR
+	hojriIOS2s01lCz03C04qBe7pFjnGr4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E425E429F3;
-	Tue, 22 Sep 2026 14:50:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C881F000FF;
-	Tue, 22 Sep 2026 14:50:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B00760052;
+	Tue, 22 Sep 2026 14:56:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8973B1F00893;
+	Tue, 22 Sep 2026 14:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790088644;
-	bh=k4B4e9pkP/2OIfhwM8t+V/pamQCMxifJ3uHPJlCoXKI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=FSaftz0z7Ca2JC85GN+pnNtC7365d9jO4ySUnHAUIIiFI3LhoBvvOa6xXiShc8kF/
-	 3zGM061MNtCZEI3BsRH1uzBGy79j2SQbrBhWJ1wcknkPz86Ew1sRslSvvJY/naVhe5
-	 QUwNjtxmrj1GOWgevjKLi0o+FnjlJxfDF4/RFATcvHJt5dGRw0DZFPIVg6KCDyG2IU
-	 lyATMVzXfPxHXQBviVWrF0e2SQiD+xM2+a04f5FSRhXy3/WkFBj4cVueDhPj8HsslB
-	 i9/glDSSwWT6mSGDkWk+wNMXJ9vXU+vt0GpC9ldhReTuc4HOyqnl79QJ4hkGYSripI
-	 fUsoMBKVXBnRw==
-Message-ID: <2b064cfd-25af-4934-ab85-1018140b76e6@kernel.org>
-Date: Tue, 22 Sep 2026 16:50:41 +0200
+	s=k20260515; t=1790088965;
+	bh=0yx1KVYmcOfYVjEzVIyo9QwiUPN5oXN2wUlmjKnOCc0=;
+	h=Date:From:To:Subject:References:In-Reply-To;
+	b=NC3hIEgSJs/USe6Ql93fEv9ZrzabtkxNqEUZB4aQ2SanG3FKZCPBc+TZiQPr4OO1+
+	 O/6s4bE+yPy8fmQm4C0uovI54n6HOD5kXMGyFVDFMz0p4JyjLJeDN3FsiwdR8cE49m
+	 pRL3TJMlnfzuq3j8KgbL028p7w0xufIWVgMhb9Nvb5EkJpPUqXOWSkwk2N/5ocvPwV
+	 0WeurwzhpDPAgSniGFO3HvgOjhUCfPTFDJ+Tx5GVONm/+U/AHgqsjkCy0ci6hyTZia
+	 6Ofp14oLq8Roe4awmztMutLjIBhCFpEenyJ3ICn2F/EiI/xkjMGnnGw3FQWXK0ozQ/
+	 JPe2j74jLLNgw==
+Date: Tue, 22 Sep 2026 15:55:59 +0100
+From: Will Deacon <will@kernel.org>
+To: Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com,
+	rppt@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org,
+	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
+	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
+	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
+	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
+Message-ID: <arKW_91EeKA-w96m@willie-the-truck>
+References: <20260921110050.3977591-1-vdonnefort@google.com>
+ <arIYtjmSKCs14SqO@sumit-xelite>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/slub: refill prefilled sheaves from the barn
-To: Hao Li <hao.li@linux.dev>, harry@kernel.org, akpm@linux-foundation.org
-Cc: cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260921094521.141665-1-hao.li@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260921094521.141665-1-hao.li@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arIYtjmSKCs14SqO@sumit-xelite>
 X-Rspam-User: 
-X-Stat-Signature: 77aaegqs1536o9bw8nhga5mrbos4nz61
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B6538A0002
-X-HE-Tag: 1790088645-936893
-X-HE-Meta: U2FsdGVkX194+TFQ/EADT3HWypRq93XHV/YcfsWpVZ1LzHz67o6AKIXJ+R/wzHsY/k9WrvvUzIrATVv/cOT3qPvWUtlQVV9SpyeRLrE3aV48gyOrLFce2+ebyovq6W/0Oit+EeNX2MBxXF468fO9eXPxiFLGuT0u5ALjHBP1ZhfITjdb/G0/oJUxgvABDm+odl+ZZQZtTTScFMyDdNPN7DnNZh4IB7SFZakWHDzbsMHQWfNVWfL7FsLsRtFpY16cRG39mOR9C9ORfZbCmnErTTHtI3roKG27xzIGT58wPUpXBZqIv/w1WwrCegzyzx5bMbsqnx062dQSL4AOtTy8oWNWEbg7ke0kjzbrsRPr6chdmqsCYwsroCY++oLeWVSE4quMC4PdplnnNxgvzTm6j91aqLu+0rKhLpn/1uxK+NWqcT520/8RP3dQLjgm/dOl4dthfTJWzdUy0lfw7CtPcFFiEwB5Y7W0eqPpLrjkESthDsmBjwd3t490hxzNiQjeA2hk0KycGPeYXc5rGvgKRUb35Vjm15PCFxC0FZbjvjlH4tNDl4pYjlllyg9KAngTJ/nj5Qqe/KDM443W/SZCUrBaN9nEAxy9Py7/4K+Bdjo3utFurZCaRKbclMRHPpzdJJCRe53DilR4Svj7kZn30xT1rbsrpWgTBglNxqxUpOPCuFiQnLeyVRsrgfnVV4LUuig2mVQ7PL7HtzrelL8A0R9Z/NBZHhIMaS9cQZOKzk7QBUeeN1g5lFgYEBDhuykpwfXJ6Ek7mlGonTgoMsSI3pfQqwjpPtjDr4QVpqySgI3dXrEupYnfSclA8SQaTZWzMGIzmf341o1VtHpCMCweJeL7G/CmtDDuhl+Eooer5Yp9FIeFoRP3qjl1AjMUFMC00r7mYpylnu39pioX1wtf1MmnyBPnqaIJqm5VVVfcQguehg8t91MEqUSdRc77+JrDUIRaX7A6i0OURXEX9K2
- Ve5WBJzD
- l3Z27Wn8m3/JTKqwArQ/LhsyFmIbgEHP9PC5gWIrAjsEi1/A7VX4JfCjPW4Yw8YJmgPOZ4iX4TKDx+VifZLLig2yOpWH4/luLH1NX2XpZFhfEC7P8ZwNEvBuJD0c3MnBHCiMVvEz4+cXm28ssCHGiXd2JT9QGy6g2kAcLQQQYMktqqNPMcYB+SLoBdESe5GR2q/nrAXFH122+jTEvxqKLm2kaGnRwH8TN16Aoxb/+N6rHGXUhprpQnaoksAFlJ5D1zzse4tt+4bKrMTRLycsC5VqdoA==
+X-Stat-Signature: ep9c7sizrdyhf8heph38wojrh435whgj
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E3A151C0002
+X-HE-Tag: 1790088966-310264
+X-HE-Meta: U2FsdGVkX1+f86E+woOxquy0RaCSuHrZnJsxBvVdAMDXC6VVyuCuBHaPk9PUZMys5VMfc2WRPnnC41ArhkIjH1U0Oui39oSF7628l5cabOEB4m7UoMrIC93BqXcS/r0gwKLoZuVuLYRXcN83CKLhptBmhSleyz4MpZ5md9kKJt/seVbBIP/jblVlbviJVUqknyynRDVtb4nTlSgqAysRFr0/5VkuQBnnwTAqEkEGgQIKWGWCgZT5QFe5TWPHHT3J/pnm8T2IYBw/fiBJeOYYOA5qlWbHv05p5jaIDd0eCbWFMaT/2AJw5eRPfB0rr6Ghi0sU8B2gZmGk5OcEej14UGmDmo3r63e7cjSrfUoT3cENdoxQTbTLHPJCnF7We8EMBzKJx/+96AVe04SR+JY9uWA/xffWc5oEHI3IUB0Pn803O0liLLdai97E95DYVFK7YfcgDa8Mc2ybpgjnJe57O62/EiAFTVO15q/BTvdeU0XCW70IAgR10bZQcJ3l+IXYgCVT+39C4+9IQUF+sBz/sEMmpMH27hjyppEQCXepAudGHYAlGtHy48PQgpKB7QUUOC+gHcvEEJmbjsZr2//vy2F08S2EFpK9G4a3N2VWpgv+xd+gqhjKYjyCVIkwdJlU2Uh8CDf2CqUg0WEH0BdeO2upHDW3iySo3UBja2mCafMetKQBtBUqsv+hm3nZ0vOhU1vmdfxNX8izuHMzE2vCWx2BrcBTP+XSEygedOvLMkeNbih/CxDUke6gkIHlTfLFddzmWTdhu7sRVkte/kAnGorUIjN8pyjZeJ2mBepmWswFPWuRMpk8bfGtjd2IlZ78mDcI89rfS3LnbT2dw5RtZsT/PvGNGIIsvl8Mp3KNxoDyy6zprl5gxZM6bHAdemRAa8XfeXgS29VjHndcI5aan4en0kZ4jtNB303dEvzj92iXskeKqq1H105LaqLBT5pqc0tJpg4H0EE+gVxQiPW
+ EN9HAzQo
+ XvrZY6untYwN724vNWJuOCZH8zS29SP1TVWCwFCwHsTzD9Jb06KSdaNXeOjbBCmfkXNjygPeDB2bmyxvJL2MmvoFnqWRSdxgNQRojmZZgP0cKDZl8GNE8yCglTeUuywv3LBkAPSNuH+joEmIq/WgIivuw0neH/3uvBv4nVpWYM912jjDW95q2XNQqbLhZeWzguN3JrJGoIIoU2yWmVlzohsSDQwDw+QUy40PAEetJCQU3Oq3+WikKT4O++oa9auIwH5s7cOh6X2Qlcks4ZujJwQnEfoJ57OMkCfS4BGQej3AxQoI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,114 +95,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/21/26 11:41, Hao Li wrote:
-> Currently, when the prefill API refills a non-full sheaf, it takes the
-> objects from partial slabs and never from the full sheaves in the barn,
-> so once the barn's full list becomes saturated, it stays saturated.
+On Tue, Sep 22, 2026 at 11:27:10AM +0530, Sumit Garg wrote:
+> On Mon, 21 Sep 2026 at 12:00:42 +0100, Vincent Donnefort wrote:
+> > This series is a follow-up to the discussion that has started here [1].
+> > 
+> > When memory is lent to the Secure world via FF-A, CPU speculative
+> > accesses from NS to the lent pages can still occur as long as it retains
+> > a cacheable mapping to it.
+> > 
+> > Ideally, lent memory would be "no-map" but that would mean giving up
+> > MiBs of useful memory, so let's try to do better with the help of a CMA
+> > pool.
+> > 
+> > On arm64, modifying the direct map at runtime is generally restricted
+> > because the linear map defaults to block mapping and splitting blocks at
+> > runtime may trigger fatal page fault, unless the CPU implements BBML3
+> > or the entire direct map was mapped at page granularity from boot.
+> > Forcing last-level mappings system-wide incurs a severe penalty we want
+> > to avoid. Instead, this series introduces targeted last-level mappings
+> > for designated memory regions, along with the "arm,ffa-lend-pool" CMA
+> > driver to manage unmapping and remapping on lend/reclaim transitions:
+> > 
+> > 1. memblock:
+> >   - Introduce MEMBLOCK_PTEMAP to force PTE mappings only for a specific region.
+> > 
+> > 2. set_memory infrastructure:
+> >   - Introduce can_set_direct_map_range() to check if a specific address
+> >     range is mapped with last-level entries and can be modified safely.
+> >   - Introduce __set_direct_map_*() variants that bypass redundant checks
+> >     when the caller has already validated the range.
+> > 
+> > 3. "arm,ffa-lend-pool" driver
+> >   - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
+> >     unmaps pages prior to lending (ffa_prepare_lend()) and restores them
+> >     when reclaimed (ffa_lend_reclaimed()).
+> > 
+> > 4. Optee support
+> >   - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" for
+> >     both SMC (via DT memory-region phandle) and FF-A (via
+> >     ffa_lend_pool_attach()) transports.
 > 
-> For objects freed via kfree_rcu(), every RCU sheaf then has to be
-> flushed to slabs because the barn's full list has no room.
 > 
-> To fix this, let the sheaf refill from the barn first, and introduce a
-> partial sheaf in the barn, which holds the leftover objects [1].
+> Thanks for your proposal in trying to solve this hard problem of
+> unmapping pages from kernel linear map. I remember discussing this
+> problem last year at LPC too.
 > 
-> Only the prefill path needs the partial sheaf. The generic allocation
-> path (__pcs_replace_empty_main()) exchanges an empty sheaf for a full
-> one from the barn, so nothing is left over. The prefill path refills a
-> sheaf that is not necessarily empty, so taking objects from the barn
-> usually leaves leftovers, and the partial sheaf is where they are
-> kept. refill_sheaf() only takes objects from partial slabs and never
-> involves the partial sheaf.
+> Have you had a chance to look at a more generic MM proposal around this
+> issue here [1]?
 > 
-> The sheaf is refilled by copying objects from the partial sheaf, and
-> then from a full sheaf taken from the barn if it is still not full. A
-> sheaf that objects were copied from stays in the barn as the partial
-> sheaf if it still holds objects, or goes on the empty list if it is
-> empty. The sheaf being refilled is never replaced.
+> One of the major concern for me with your proposal is tying the
+> protected memory allocation to fixed sized platform specific pool size
+> based on DT. Then the cost of granular mappings/unmapping if the
+> platforms choose to enlarge these pools.
 > 
-> The gain comes from two sides: every full sheaf taken out makes room on
-> the barn's full list for a future RCU sheaf, and refilling from the
-> barn is cheaper than refilling from partial slabs under list_lock.
+> As you maybe aware one of the major use-cases here for protected DMAbufs
+> is the secure media pipeline use-case which is memory intensive
+> workload. IMO, the solution proposed at [1] seems to address it although
+> people have flagged rough edges there but should be addressable.
 > 
-> Note that putting the sheaf with the leftover objects on the full list
-> instead would not work: it would occupy room on the full list, so the
-> list would stay saturated and rcu_free_sheaf() would still keep
-> flushing.
+> Can you try a port of [1] for arm64 since the author did all the work
+> with x86 as reference?
 > 
-> An earlier version of this patch swapped sheaves instead, to minimize
-> the memcpy overhead. As Harry Yoo pointed out [2], replacing the
-> caller's sheaf loses cache affinity, filling it directly is more
-> straightforward, and testing showed no measurable difference between
-> the two approaches, so the approach he suggested is used.
+> [1] https://lore.kernel.org/all/20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com/
 
-Yep, a memcpy of a small array isn't a big deal.
+I spoke to Brendan at LPC (?) last year but this doesn't really work
+for arm64 because it relies on being able to unmap arbitrary parts of
+the linear map, which isn't generally possible unless you force pte-level
+mappings for everything, which is prohibitive for perf/power.
 
-> Tested with will-it-scale mmap1 (192 processes, one-minute runs) on the
-> maple_node cache.
-> 
-> throughput: 27778727 -> 34500556 (+24.2%)
-> 
-> metric                       baseline           patched        change
-> =====================================================================
-> alloc_fastpath                 54,124            56,696        +4.75%
-> alloc_slab                  7,100,651           159,739       -97.75%
-> barn_get                          849       194,460,392    +22904539.81%
-> barn_get_fail                       2               217    +10750.00%
-> barn_put                          851       182,306,701    +21422544.07%
-> barn_put_fail             260,400,484       145,522,675       -44.12%
-> cmpxchg_double_fail         1,029,204           334,228       -67.53%
-> free_add_partial          326,694,687       181,935,790       -44.31%
-> free_fastpath                  13,297            15,611       +17.40%
-> free_rcu_sheaf          8,332,839,104    10,490,535,227       +25.89%
-> free_remove_partial         7,099,788           158,297       -97.77%
-> free_slab                   7,099,788           158,297       -97.77%
-> free_slowpath              10,969,156           782,851       -92.86%
-> objects                        15,295            14,849        -2.92%
-> objects_partial                15,295            14,849        -2.92%
-> partial                         1,604             2,336       +45.64%
-> sheaf_alloc               137,757,895       141,208,076        +2.50%
-> sheaf_flush             8,332,823,922     4,656,725,764       -44.12%
-> sheaf_free                137,757,883       141,208,072        +2.50%
-> sheaf_prefill_fast      3,337,502,163     4,196,506,116       +25.74%
-> sheaf_prefill_slow                685               400       -41.61%
-> sheaf_refill            8,343,794,364     4,657,509,724       -44.18%
-> sheaf_return_fast       3,337,502,411     4,196,506,382       +25.74%
-> sheaf_return_slow                 437               134       -69.34%
-> slabs                           1,604             2,336       +45.64%
-> total_objects                 102,656           149,504       +45.64%
-> 
-> Here is what the important metric changes mean.
-> 
-> barn_get and barn_put: refills now take full sheaves out of the barn,
-> and RCU sheaves are put into the barn again. Before, the barn's full
-> list was saturated once and hardly ever consumed.
-> 
-> barn_put_fail: more than half of the RCU sheaves are now put into the
-> barn instead of being flushed. The rest are still flushed because they
-> arrive while the barn's full list is at its limit.
-> 
-> sheaf_refill and free_add_partial: fewer objects are taken from partial
-> slabs to refill sheaves, and fewer slabs are added to the partial list,
-> by the same percentage.
-> 
-> alloc_slab and free_slab: the partial list is almost never empty when a
-> refill looks at it, so slabs are almost never allocated and freed again
-> only to serve refills.
-> 
-> After the test, the maple_node cache holds 1604 slabs without the patch
-> and 2336 with it. After a manual shrink
-> (echo 1 > /sys/kernel/slab/maple_node/shrink), it holds 485 without
-> the patch and 563 with it. So most of the extra slabs are held only by
-> objects sitting in sheaves and are returned by a shrink, and what
-> remains is a small difference, because objects handed out from the barn
-> come from many more slabs than a refill from partial slabs would use.
-> 
-> Link: https://lore.kernel.org/linux-mm/aqPlMzUIw-4g2iOX@fedora/ [1]
-> Link: https://lore.kernel.org/linux-mm/aq0ylDidEHa2kg4X@thinkstation/ [2]
-> Signed-off-by: Hao Li <hao.li@linux.dev>
+Vincent's series tackles that by using a pool so that only that part of
+memory requires the pte-level mappings in the linear map. That's the
+whole point of it, so I don't think it makes sense to drop it in favour
+of Brendan's approach (which doesn't work).
 
-Very cool!
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
+Will
 
