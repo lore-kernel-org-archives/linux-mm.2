@@ -4,118 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C33CC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 07:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48A24C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 07:22:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D9166B00A4; Tue, 22 Sep 2026 03:19:47 -0400 (EDT)
+	id 3EAC26B00A0; Tue, 22 Sep 2026 03:22:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 089D46B00A5; Tue, 22 Sep 2026 03:19:47 -0400 (EDT)
+	id 3C2266B00A6; Tue, 22 Sep 2026 03:22:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBD576B00A6; Tue, 22 Sep 2026 03:19:46 -0400 (EDT)
+	id 2D8EF6B00A7; Tue, 22 Sep 2026 03:22:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C07366B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:19:46 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 483EE1C271E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:19:46 +0000 (UTC)
-X-FDA: 85240548372.17.5C221ED
-Received: from mail-pz2-f41.google.com (mail-pz2-f41.google.com [74.125.228.41])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2BDA5100005
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:19:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b="Cx5/Q/di";
-	spf=pass (imf14.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.228.41 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 053096B00A0
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:22:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 83EC0A03E1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:22:23 +0000 (UTC)
+X-FDA: 85240554966.04.5F26D72
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 35917C0003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:22:21 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=DWGtr7PF;
+	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790061584;
-	b=LbGUuyvsfoQItlU3NewWi4o8YkZNP5c+PQoDS0NyzlZuygiGPxQ69C1VsPomxkjpNqLHXs
-	08Oxjdos7tUCAjVlbTxc008NSJsBP4Hxt3mz7EIVdG9qmm0fitAzut4auXX/PYP5aIpxCb
-	Sk4o7F5TIP0Wb9bbYHUTGAXljJlH0N4=
+	t=1790061741;
+	b=CkIeyAjQ75sUIQDJf5qfh3o0ZMubXXa/KqSlSmHfKPETBDsFNzKJJ88cvSbj1U4m8eO2Ti
+	onmyD/KPdhHFcacKFqdXkCyJrn59FcC9xW9pihP/7nu3kyKQI51SUzjJq8f2WVXx9bsMag
+	8qArznNutlVEs5r0S3W9iT+vGCE7Cn4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b="Cx5/Q/di";
-	spf=pass (imf14.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.228.41 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
-	dmarc=none
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=DWGtr7PF;
+	spf=pass (imf22.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790061584;
+	s=arc-20220608; t=1790061741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mBX4z2VJhRPZnv9f6eQyJQ/gucy6LJHIvxxPIGWeDPw=;
-	b=ZhT5fpxLgZfC8xrWGV84PWqLMJpqu7ix3ssL/3AJD5OSzVAQ+/Iarby4a0sS2Qlw3zHeLo
-	M/rxoNaH3sixRG0QdNeqaRgmWMJ7UpTUNlh9RRprfqOT6AJv9rR0hfSRj1Ad+KtSylAcRv
-	golFChc1T2a7L67Fsb5+J7YGdqCD2vw=
-Received: by mail-pz2-f41.google.com with SMTP id d2e1a72fcca58-8625b35df89so319564b3a.0
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:19:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dgu-ac-kr.20251104.gappssmtp.com; s=20251104; t=1790061583; x=1790666383; darn=kvack.org;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:cc:to:from:subject:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=mBX4z2VJhRPZnv9f6eQyJQ/gucy6LJHIvxxPIGWeDPw=;
-        b=Cx5/Q/di6PhHXchs+zoTIdroeyveo8nHfhrQBld5oaMP9f4+Wr8uQIt7LzDHei21Ja
-         yoo0aAKKX6Hv64qp3Gb1r0aaSwR0MP5xN1xdK/Sz4NuPz/pHnUMyQuCjBc7LrX/4gyvm
-         wV0HlAgt3+b6t3b2O3Tpi4W1dGWfpeCfwhRsiC1twW1Rs51s6z2zSoHfrxOjIF3qdKVK
-         SaDtdo2u2InFNPQ2vqlAvXtBjk6lFFKLr8tApv5P80BOl2Qc6bwxgvJtZqGTfF0ZoGHN
-         jOoKQJP8qtCE0VYi/HFHP04UGLLQfEe4XfUIw8kXhX8lWKM8WzDVOBzxUYhbU215cujo
-         CH5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790061583; x=1790666383;
-        h=mime-version:content-transfer-encoding:content-type:references
-         :in-reply-to:message-id:date:cc:to:from:subject:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mBX4z2VJhRPZnv9f6eQyJQ/gucy6LJHIvxxPIGWeDPw=;
-        b=vms8lMxmpfOiCBZZue+ROoRQzbGovqEt5+JBXjSKT+ulbHofQw6JqiW2rlksUIsM1Q
-         i2oRBDbyXeYEOeuqpuO4bD2PDLyVh362/43TGsrI4clylWSmHrpGH6EqHDBnsOGr9esL
-         P/0DDHM3OJ7fLNVyLnBpdyT5In1+KEo7GJsIQMUHkp0n8GlcyXIiWFGfwxJKzqE0cB9n
-         zdZ+URuV+4ps6gR/+BeSr1IEY+wzXW+mAQGF+YGwOp2cJakgpL3fDgyG0WrWZ/KzwnLt
-         is6cd4ew4enjC+Aj+Jg8L090i0BJNFawT1uwcBf7l2u86rVA2CP3+zste2RYGB0TOcCh
-         VBmQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxe9lvdi089iC8s1LcRXFl4vZ4o8WozmNmfRO20yeZbJyhi72/hpIdwlbuNnKfMc1fee/nwgSCVzg==@kvack.org
-X-Gm-Message-State: AFuF++mam/AtunuXcPT39Ja8b65/iB7Rsp3ssdc0oH/GzU6eynITTT2w
-	91dsX2az2kY0p1bXEdDFJ87NOQSEwTywPdt1w2iyANjrZEOMaHE46a0U/rb2pnEbxuc=
-X-Gm-Gg: AYBFou1ipg33YS2BDD/S7ry2dOuWumJdmJw7urIDGqeKFRnPWCdsHelL2x57xV0zHHr
-	XFhdN4XSppkK62gbp+YJUqblihN/c90YcAUwpLLC9+qVw1qph7fQfnwk/ToA9WE5PxeJm5N9Ap3
-	urU2lxpveyBf9eW+K3JRpAsszSGdbQZk0f1u+IaQ3tR8S/rwpgejapyf1W8cU8JlH7ucLUZQpPM
-	4mrsN+XLjUVseNmVy19SwWYuGO+SKdhLZiX0CXsZ+0fUoAxsnohlkYkZyH2LTEbxc+buqWj0NBF
-	Ygjsk0tyYbPBtLNgxejEXj0WBmX4UmNJybuHpsYK3NxKUijSxQsyCjnoUC5fm68E7y9d3lgnG6f
-	/KpXlqsqODx5e6q6RajD+PqlpCIFcEn2rcnoPfNvVB18WfuERiNAkqn8SITuLG9INm/sAj9GxFm
-	7CFbDWNl3Gj48BqJ/TAug8PNohliAsIqoArMfvdsxemu8RgpKLj0fk935aRF1Ez0V3SA==
-X-Received: by 2002:aa7:914b:0:b0:878:3704:e0f6 with SMTP id d2e1a72fcca58-87c8cbd2624mr162498b3a.28.1790061582980;
-        Tue, 22 Sep 2026 00:19:42 -0700 (PDT)
-Received: from PC2. ([175.193.106.181])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87c324cf14fsm397422b3a.22.2026.09.22.00.19.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 00:19:42 -0700 (PDT)
-Subject: Re: [PATCH] selftests/mm: mremap_test: handle ENOSYS for userfaultfd
- and add missing newlines
-From: Park Tae-sun <ts930@dgu.ac.kr>
-To: Sarthak Sharma <sarthak.sharma@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Park Tae-sun <ts930@dgu.ac.kr>
-Date: Tue, 22 Sep 2026 16:19:40 +0900
-Message-ID: <179006158019.123863.10328178989374348836@dgu.ac.kr>
-In-Reply-To: <2e0a8157-a529-4355-bd7e-11ef0234b825@arm.com>
-References: <20260922065143.118702-1-ts930@dgu.ac.kr>
- <2e0a8157-a529-4355-bd7e-11ef0234b825@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	bh=D4O/+js0VFa0QVJKCFXfhOl2hsauxjVReI0OW+GgIjU=;
+	b=X4I0gvx4iUsgo+VmzdCR6589SGcQOOv0asYMhWzdD2W87M902cDQYs/nJisljF9QDN9yRb
+	Es23aUi94cRnB/TO/cmgHbLTRR91UB1XGfV7vtdYCDTBAJt5QNapt8XeUy7lzqurRWCPPF
+	AyW/IEhXn6/bYrOPjWH2zPDusGmBCQk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=D4O/+js0VFa0QVJKCFXfhOl2hsauxjVReI0OW+GgIjU=; b=DWGtr7PFOztE1CkDEDs7zTSwkq
+	/Qwknsw2rToEPRw1LFp/aj6mTWalhDgWM8oqYu1+loY2jiJdxnzzZ2lHi9KTGLAI9QcgAVWIDCdKj
+	YaNtkIKBiRHInmbuDTdSywj+ZpAg55uzCAz0F0wLqxowzAFm4e+UejlyvM4WqEFrMTXv+QBLXoR57
+	NSsziakePeYg57e/LG+9JXAOO2A1Z9/ARr+0DRPM8i8sTHGfFRxq/Z+ZasE1712hFrgBE+NHcDsMI
+	JGj6zLPa3lPeyh5fkaNTj07BuUdB2v1eL15lpxkNjUN8y/xzijku4RKY3QpoWNfumqOyx9NDBHd+R
+	Fc+HBt/g==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x8upL-0000000DCmh-1yMj;
+	Tue, 22 Sep 2026 07:22:07 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B074F300708; Tue, 22 Sep 2026 09:22:05 +0200 (CEST)
+Date: Tue, 22 Sep 2026 09:22:05 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aaron Lu <ziqianlu@bytedance.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Vineeth Remanan Pillai <vineethr@linux.ibm.com>,
+	Ricardo Neri-Calderon <ricardo.neri-calderon@linux.intel.com>,
+	Chen Yu <yu.c.chen@intel.com>, Lu Wang <wanglu.priv@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Zhan Xusheng <zhanxusheng@xiaomi.com>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Zenghui Yu <zenghui.yu@linux.dev>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	Kayra Cizmeci <kayracizmeci@gmail.com>, stable@kernel.org
+Subject: Re: [PATCH v2 1/6] sched/cache: Keep nr_pref_llc_running in the
+ runnable domain
+Message-ID: <20260922072205.GV4121339@noisy.programming.kicks-ass.net>
+References: <cover.1790035273.git.tim.c.chen@linux.intel.com>
+ <06af61afedac32e6477f57feb4d658f6c411c3af.1790035273.git.tim.c.chen@linux.intel.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2BDA5100005
-X-Stat-Signature: i3i5nnjhhqr16p5ghcm1nt9f87ca6ffu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <06af61afedac32e6477f57feb4d658f6c411c3af.1790035273.git.tim.c.chen@linux.intel.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 35917C0003
 X-Rspam-User: 
-X-HE-Tag: 1790061584-62225
-X-HE-Meta: U2FsdGVkX1/0/MFgTkgV5l+t4UZ6h8SeGx7tkKsc5xnLeN27ujdHmWV5uCryz21zaTVqOGjb1TriCdEVUY0MULuXWSP59X+n80gfeIh7rBjMr9yEk35kMXB+/mjxvpy1AYFg1QY8dq6prj695VmbGYNjAglzU2s/yrwiI+CVy/3MhRI+eVfWsHGf0sdkXuUsjc6WKIMf1e3lBB2rnx7TaFv+lFay6cIO2gVqm3orxuXqDIhqnt9d2b79f4HNncM/pv5ldg6UfIJV3B0Zgko6dvFXpBy/nnow2jYDL/ILHaTbZRM9fjyBYb1fZX16zLN41rqL/IyNTfH6OX5+1OVE9/JpdprI19zlMmdiSaTXHksYkYroDaqa3KLcGgLglQxuG7OnWqGZ1HhtPLh7QySpECHa17pSodYeUK1DLGBAJGdCm5BAR7UG+l++UX3zNCXEaiDu0Th+tg2IapVlGZ64KCCivpD04ELjz3aa/DEHQQd0oem2VllAdsV4PqHUTh4o9zCG7uwYU+zSwcx/BXEtqNDp/6U4L7nmAEWLT8SN55EHjTdZJHnK6gztY9clzBzW8tR2RWse5h5H/fNBD21L+Leaqme4wzpkZR5XSfnXYsxdHNGclG7DrvelitC6ohOYuNCANM/t3BxwrSaxQJJhwXZ01C8yb1wPudhqxbzWWlCSLaC3gEcSBpi+U5IoYjuACTFQZTpTDMxrpwSxPkqzKeZeYzdYpFdkkf0B5GAh/zHdTC3NjjHRPF9Q7juAt8eehSGR+owYj0guoYqbOrimU9xliDwgZ6CtWdazhx5VVq18uQlcp7MNRC+989CHZQCkKRN+OLktzyzKtDI8u95wuF5gJ44KzXYudZ3GZ4L9nQWdCNt1+EwSWkK7TknYn2QRnZcsvS5jo8hjd9yiFsjzqgouKxPAVCZkY16q4l7kVjHE91y7OAfS2I3YkLwpM7wQXkWuAIvjku27DD6DoIu
- Vdxg6mKO
- oaXjHYywn+BVScBRrF92BMzjcbC5fjvgnijczstDhdSR/3MU/ILfoeW1KQybmE28JCLyLPbBoBKeguVwENtcABjXg10grd90kmd+ydkV1cmJFrr+foqltOYNfbVeNoNPqp3naPg+RRYEIwyLBQkao+2SnjTtqMI7/RF0sOuho7lhmKXMjZ0VsbxzobNLvzn8LKYKpc+LQ7r+BFp3oNbnYf72AZLwWYURNWsWRIDC7xBzCxMSZ6TegX6DXk3CEka+nG4+W0Pqtwud9I6j6hON7Ot2b+Fqd7jM5ttIbmDD044sRMhAG/0qYAT/EkY+gawhCRFmfMzGujgA9fv/h6fzQ6O0RTAjfRjYO6H3/hdyBmACda4FSgnp4KNR8Yj58Y+xaVzwnmwJsKRddf014egBRyYpGfMRAHGDzZ5wrl2FaSmNpF2i9L/MlVBepys2inBxf8On7PF6dQDkal7w+cdATwqQGE99AUHRXA/62oX0vy5cpVhE=
+X-Stat-Signature: 9r8opoaay3nnzz5oeqwdoeinefy8omnh
+X-HE-Tag: 1790061741-495942
+X-HE-Meta: U2FsdGVkX1++pPZEBPiVQRsaGqMummSpQq0jfYIjrQDmC8NFBCUoMVwWHKPSZb1LgX/2xDp6QYYIegEn/0CcrEQPjZezxbg64b46l11/w9l7hwpWSY5g7Xq4JC7kdHQaiGRU/O//rGuVxMMzM0qYmqXHenjMbOZaBe19kPinICOC+Pvq/FJ09xf6RwoYRhpN9AulL6wbsLalT2iFrleQF3XygGVOYi/vDof8QETJZU2uHZd1TfFIuLZARg5v8mJLQ2xXGvgyIBcUtd7Wb0lzRSXpZMGOZCJNejVzpa/xvuk3Um8PslLb5BIUzF+B3X3CVH7Eq/7YlfskR7QKCuz7eq+5EzYm7Pz3mRuborK1dc4zD4mW3Tmpj7ugTKkMjN6qYiBul7yCmG36labyBsUo4jV6Nh7Pd+caNCXaTnmxEyBigCbeaMcTdVPpVTwHkuNMYjhb3H0sz0iXxToTI6jgtjNm8rSwDBax+t/eSfjI2sM/jJa5xiaERCLrTNRos1TdWa4ToeeQ+Quf881rAX8LY/Tg/oByb8GwSWco6uAVfPFEqxq9+w140kdKWIIoKgSTuRJ25ikeMNyJNXH071K1AR6aa6Vq9dO8dBaisOqGHvcgPv66ByjLGTVFq0PTuIrOAWISjd6m9G2IRQKgBSZgLQbhfFxO+pIFmUbgcqJZf0p3zXGcZuHOR60FWLSRRoyTIF4Gvkvrr3VtdbpiEoWPJxsbv3ygabfDGkwcf/MXCZ7H5ueoRL5RWXMYyG1a8MIshrxnFk6qTJM1cpJO5TSBw9mc0wHnFyhdxDzwK3OVNrKNj2+JmXPxXdT0OcWP0vaCP873rIJEPFM53zFCgIMvAgWFmUmrBBCTNuuG3oI5BstCZAccD+TzOWZNDOJmRIlXx82/oZIKfw05aVXiGKQwHKebL3IiK3AsLWUb94kG0ZDq0twx6k7Em1BeE49samPOJ8X6EsspPEsxWvhu91h
+ E6Sp1iHB
+ o9oDMrIRcGKia1NAa7GmJytyKbBOzammkrsI/Hnz4rcV2tFrUbi77A30l1x0BoH3Ukr+wZqedBh+Lrnrxh8RElPmxtJ8ON1rQjHi2xJt1QQ6D9yAFvLE3LnK8763nxDtvRXRO1rULeLZxRSsdyUa8jTmNzTyewJIOorZwVYhdEYdQ7XqEVVVGYzRdCBLw1JWqdtj6Wo6kc+paSFjc7jzjIIl+fTdTr5BUP5y/pDnc68WuEDpD3AOvm1+36wRyk4HZds/74CqRa+no3rscyA9TcyaYzXYnvLH8pcy0nzEpmOqwy/esOx5JHG6hCxndw3DeDGIM0uel2H8ZqpX2eLhjgveJbPp8dgcoqUXezn4IpeWNv3s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,18 +117,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sarthak,
+On Mon, Sep 21, 2026 at 05:37:22PM -0700, Tim Chen wrote:
+> @@ -6395,15 +6429,27 @@ static __always_inline void return_cfs_rq_runtime(struct cfs_rq *cfs_rq);
+>  
+>  static void set_delayed(struct sched_entity *se)
+>  {
+> -	se->sched_delayed = 1;
+> -
+>  	/*
+>  	 * Delayed se of cfs_rq have no tasks queued on them.
+>  	 * Do not adjust h_nr_runnable since __dequeue_task()
+>  	 * will account it for blocked tasks.
+> +	 *
+> +	 * This check can be removed because when flat pick
+> +	 * patches get merged as only task can get delayed,
+> +	 * same for clear_delayed().
+>  	 */
+> -	if (!entity_is_task(se))
+> +	if (!entity_is_task(se)) {
+> +		se->sched_delayed = 1;
+>  		return;
+> +	}
 
-Thanks for letting me know!
+This is dead code. In Linus' tree, where this will be applied, this can
+never happen. A possible backport of this fix however will need to take
+care.
 
-That sounds completely fine with me. I independently ran into the same
-issue while testing mremap_test in QEMU on a minimal kernel without
-CONFIG_USERFAULTFD, so I'm glad to see it addressed as part of your
-larger series.
-
-Feel free to add my:
-Tested-by: Park Tae-sun <ts930@dgu.ac.kr>
-
-Thanks,
-Park Tae-sun
+> +
+> +	/*
+> +	 * Drop a task leaving the runnable set.
+> +	 * Needs to be called before sched_delayed is set.
+> +	 * clear_delayed() mirrors this after clearing the flag.
+> +	 */
+> +	pref_llc_running_dec(rq_of(cfs_rq_of(se)), task_of(se));
+> +	se->sched_delayed = 1;
+>  
+>  	for_each_sched_entity(se) {
+>  		struct cfs_rq *cfs_rq = cfs_rq_of(se);
 
