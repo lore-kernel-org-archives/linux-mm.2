@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30769C98307
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:37:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 290D0C982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:37:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22DCF6B009F; Tue, 22 Sep 2026 11:37:02 -0400 (EDT)
+	id 319436B00A2; Tue, 22 Sep 2026 11:37:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 206036B00A2; Tue, 22 Sep 2026 11:37:02 -0400 (EDT)
+	id 2A2926B00A4; Tue, 22 Sep 2026 11:37:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11B916B00A4; Tue, 22 Sep 2026 11:37:02 -0400 (EDT)
+	id 1B9AC6B00A5; Tue, 22 Sep 2026 11:37:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E2CE76B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:37:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7ACE8A053F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:37:01 +0000 (UTC)
-X-FDA: 85241801442.12.F5F1639
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A7D2A140006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:36:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5OnRqsH;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ECA456B00A2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:37:23 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C07712050D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:37:23 +0000 (UTC)
+X-FDA: 85241802366.24.E7C91C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id BD87E4000E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:37:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8I7oZL7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790091419;
+	s=arc-20220608; t=1790091441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J1kULK2uo5iIlycPGFV3SVU1kRYTeuiXaUNtJjPTvlY=;
-	b=0uC6GcNg7ucouRXEtjjWpC7oR6HHDgVIciADbkTG93cKrfOeCAX/fsjryAJWSleTdR5N4+
-	/NpElm5Uw1REgn6JupV9ECFSSdibDyxQG7TUouRGElfGk3M40I+Nt0YDZ6t1hNvPXoeHJl
-	C5rJriDWRy4UMWX5ji/2HOKamPUFWx8=
+	bh=EytwztXVP9+HAqnBzZ3KHLRHej5X7gcr6/abe7XoyR8=;
+	b=UHX4WjbuCzyEV1MH1AnEnkJ/Lvz1xomNjjynbyhND9OtTnOtPvOpbIStNqm1zQDegMQMAf
+	LbP9JBoxU1PXd+goUpUrHKzbHiyAl2Y7+BWEr6b3qOEvCV8zH1/5k5erSnlDcWLSpgpxrk
+	otclCwmgJRhnS+fqy/bpVIcvZ/V9yfw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O5OnRqsH;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A8I7oZL7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790091419;
-	b=3rXZ1EfR5n1fjpvw3Q6Y+QFA8e+6It57YHlTlKeJMqsrf4kt6R36blgS0gsM4CYv6TiYMF
-	kF7haA/zMiMOyNOK0Cq2EX8t5/BGazIICtTzrlzwkSno03wz8aYpxJW3jbnL8Fy6Ftp7Hm
-	4Cc4cqj6Z5DFhVsdECpaHQ3jz59drqs=
+	t=1790091441;
+	b=M30loxRuW4m927VAL0IiCvuf3TKUQUAF7adKGxcVLdH/gPYsmZuij6OdkYMbyazvsdu5wF
+	vO8Cgd3wvFiskHm/UrsIGcdyEsZ8+AFi9W9IMiE1j3J6ur0BocOFpsmVe+b9NJiU1yCai9
+	uK3LZ2MTtl7h8N3Dp5C/XKzFAS/qPrY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E44F640DC1;
-	Tue, 22 Sep 2026 15:36:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324F91F00893;
-	Tue, 22 Sep 2026 15:36:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3891A60A82;
+	Tue, 22 Sep 2026 15:37:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4FC1F00899;
+	Tue, 22 Sep 2026 15:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790091418;
-	bh=J1kULK2uo5iIlycPGFV3SVU1kRYTeuiXaUNtJjPTvlY=;
+	s=k20260515; t=1790091440;
+	bh=EytwztXVP9+HAqnBzZ3KHLRHej5X7gcr6/abe7XoyR8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=O5OnRqsHWVSboGiycATXii3kxCgUoPSM2nTvyWAlnmjffTTXW+gJ0VBID4vvQUgI/
-	 O9lywv7inXl6KjGb7/0VlcptxGCYMi4pmk8E1K0Key0xXSKimb8qT2xAQNzcqn3bgc
-	 NZ8SfEmhiX7Y6teqyn3WgbVZVXuwQ21QpRixohrxv/tDwY33XXtc8Vonec6u9sD/gt
-	 UBZbxXOIRgMuJj27Gvy7eryEkVKiqbSFWzONLl9IV9J/OcuxzDqnw+q8cSlW/JFZYS
-	 AGVcvEeYheEIUqWRkuYddTr13SdWfC/C4XoFemKzJCBJh9/mvAoKeri9l3zT04ZF4l
-	 EG7/hz9SzpOrg==
+	b=A8I7oZL76bgc/K4OnZ0JyOMCleMrv8FdbRx4ZImWL6TzUOPy27OJNysbdg4leGGta
+	 Lx4vSFm7V5JKYxrVGD86zIiIioAiFtHv9yN3wsYYID68QpWVVMN3tQku4l98Qy4zgw
+	 qF27kTj7WZm0/RooazviLjtxmwgEqpzuJcU5c7iIeBV8ngO+1ipt0+uSiSCb1hYR9b
+	 FeqTZuRHz8OvBlBx/kNDAhn+A5qaMG/FK1Kz/HdRa6QnK91S6WhAahUdZR52ic+UQ6
+	 m4kfJDCDMoP3ZT2i41bOmIUPh/ZPP4TnOLJOrrC+n/gp89K3MgMVpMT2NZUEDoQZj+
+	 OSQ/pfkvGm+LQ==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 22 Sep 2026 16:35:32 +0100
-Subject: [PATCH v4 01/12] mm/khugepaged: deposit a newly allocated page
- table on collapse
+Date: Tue, 22 Sep 2026 16:35:33 +0100
+Subject: [PATCH v4 02/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for most
+ 2-level architectures
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-rcu-pagetable-freeing-v4-1-fe1ad1f1e303@kernel.org>
+Message-Id: <20260922-rcu-pagetable-freeing-v4-2-fe1ad1f1e303@kernel.org>
 References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
 In-Reply-To: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -137,22 +137,22 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Qi Zheng <qi.zheng@linux.dev>, linux-doc@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4993; i=ljs@kernel.org;
- h=from:subject:message-id; bh=henzipa1JQvP3ZJSUdVpc3i3Gyb5R1tpkdjoqO30NaM=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI2LciKU2R7ePSEh5juaqtbvSfO7/tsdvP2okrVGpW4O
- S1pJfNPdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiVy8z/E9ov/RlY+ua9MdM
- 6+s1Yp/Jfrky6d3F/7/bC1/kWQaf9Y5hZLj38RDHHLVN1kKTwqNu25zf+0q/e6HuefG01W+Lpf+
- b9LAAAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3613; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=bwuaeHFGwuLQFcHN0hOhjdTFxvn+j0g8fIWNrCdz0hk=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI2Lch++epj9MNnHpEe9yYlHD30J+h8XF7vnb1CF/a1l
+ 1Vpn6xe2FHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJNO1n+J9tETupvXJjzarT
+ rwX+hry6vcpP5urt1Q9MTtum66QcKIlk+B9bHRHH1mdsW7N44armiqcpC9oZ5195ZXdRTZPRdKv
+ ybXYA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: 1wor8csu9d54bhgemazj3g41rry4j64a
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: A7D2A140006
-X-Stat-Signature: zd8ay1cd98woxz8rsyiqsgokzfzuqq4p
-X-HE-Tag: 1790091419-595576
-X-HE-Meta: U2FsdGVkX19wi0eYjO1HIipbUNML+yFsqk2eR4UYvrvic2DkaTBckSWOB8NRCEtt8iCaqO5P/2pgM1++9KNAoOyNicJvM6dbiACsKOpxpp5z/GF09fQO6kln3DW7eY8uC4uEKzQo6WmA+FLy3LAGaIEhcxNSl6K9ISnQezgtCv6hFHtklpUvBbb0RcVUunEdWJvCEljYvqQHjN7FbGJNMZPW7E7hfVj4qX+t3pk7YJOajeteHCZFpsxllsilA9ADQ0ls3cR2JcH1hGE8wWJ4qPmLt0Vqb0jpp90lFld+1Ln5RFeppzDApwG5ks22qxohChtsOKxGU2nbxExhoevG9tmQN4R6iqL9gJxxRP50BNG4gVhDVM2coJ4yEuYQvXgbiaVjPmhL/Lv+KtXmdaf5Z5AJE9rX1UQpr0cWdh3Dav69QULLUkIpXOD6HDaiBDjo9xdX4snwbvleLb1qfe/G9qLMKTeSpu4cg3P4OTWejDHqMBNoEuc/hbHOZbEYYbkM39c+3dikTsylIoVt/CcbA4YOvq1Fry9DmaQjGKBa+q9D1rY6DRJFs5thJMAI8f0FAFlMP+zpPzwC4by8u6xdb6qzCZB/hN62qV+cUBCZf/iQLESBBzSdoETP+cAXta0ZpGxky56dIKgaQoFZ8l9z8K2ut+4vZVcC04NbcLxB455hofE0J8FajS7AqG5JLa6VCSsTmO/D3N00znBKi3gHHgZXNe7QCCdCU9egLbXped53Vwx0QsviBTudG/aua1cnLJSh9YP3H3kGj0haf5ejy69Skk+7SvBFyC7t7TJ0+xlu5DGI8EXdWpygTZDeTWihQb8EfrCAFsXZbuxDWhEEzI30iZj9YU33AaA2TIYmZNgv5SnzFEOtqBpONr9me/W8ObcLFcuqZFsDxD/Hj3nQlQoGHeRiIm8tkCohYZ6oh5Q0olSN0OW+hRwCGnltNpAKUzgQ1ElMBzLY1vuv8cy
- tSij82uw
- uMdi7A0WiI4AaFL+syCtmBoErRHf8nIKKqHI09iaY+ziklSxesvKXkAuUqCfBKOjmd4qmHJTiCDQAVf19Z6qcUH4QlqCkyKFbSS3aD4P6ucyuHIa5VSDnhRy9SVZgfaqpHCmiIZaClgBVg12K/XCguyZ1e6FnJdDvelUYiAaqj87aoq+CYGNwei1F4FkR3TJEUXIosYta+sYspxrL3BRdj+zIk0kZupBqKrYTtBs60GdMra6qkQQZy0nKXBbPZSCZ+pATsZDcBveG5Hu8un1tCdTSwzozSvtG6HOJzsa5D+iZsQBpyrOvpN20tXyoEOUgdClH
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BD87E4000E
+X-HE-Tag: 1790091441-701504
+X-HE-Meta: U2FsdGVkX18efHKniSCjphtffsxeQROeScFp/Jm91zYL+rYiR/st3lz5QZTv0Bmz+uQ57AXPgXbRqB9emI9rFXWo6UrbKA8Qg4384MJsMkEk4e9VS5CSZZiFpdPLhEGV5ag9DjpkyfvNVoecnvyoAzNySfIzC00EZlpxc/xt8NWIgG+QBKwAXw05gJ5AD2dQxmwE4yMnRs4EW3s0kf/ggB9PHcVx6/Nz0WLdfqWWEf6PZtm34pncKc3bKVTa746XorW8HdblLo5hOLHr7/JEnjXXmJtFgIZ8/ONwLAwW17a/VZLMHQDbWC5oFsyWnW1pfx5dqbGt01n6GLrFxuX23H1s0Kdg5uFm1yeGNWlZ9Vm53WmK+TXIM566GQpIbIA/U9pQT/yqiAF2yI3pNUf2MX6uNWn/09fE9tTfTs9qmFoWlYV70ijYKGLD8huMwqbDKOyuwwqOef2PAtKRSfBhUPsWUn9BQf1vxLxx6ogmyja/8cNojzgikee78fCkKluO+bhal+2OruRGCH1XXIt3ZJYsyXPwrIde1MSoIHpgMuYb2bPc9WpJ/hNDuZP89d6HLSs4FeiwJK5sP33kYnKCc/jnR5ENa2cQAOd0cokilH0vURyh+SsRFpzmVEl00gsl+JDkMPv9WdCL6wxFnXgOAHTTQwirtU8XBlthLCmIOlZT5Z03Jl8VWoyhXuuzz5pNKz9a/4QZe6dVDmBVmTYSeSN+5az/olI+cFL0gxp8jNg5opUowRGiA8f/IPyLzydMbHM/Zs2P9zgg2Xbx92to4AYjx0u2iKJBhlPpwFtCrT+KlUddv/WIqITRnFl1XX5yqvznxUmEfC0NOdV8J3c87ov+CIv9tdXiduNXJY9slhoTs9YIUu+mOveUPEx8zpTZ5t0dwg478CdDWxvKak6UNH46kMgJjvdZ3CLlhXWlpWJNG8eCpO17J4Q4xZQN3lS0l9pbduwWztt2WLEe/vP
+ E27cdOK+
+ M6Vowq/wEVrqut4DkcyMb6bZW7ZRNQzBbCvwL0JmzYnNogDfM7V4/q3ZUMwgBMqRkLPxDvh+aGNq5Q8prdCRNq3xXTAnohMAUfgSdJqokH9+PRcxEGJyn5mzq2oqLMcwbO2NP++lW+AQcLdFx+MTNpNqbaWVkJvoh7uB2X0is4kseWwLXenBRRrU35cnuBWFsdFL5JXxLSqfEDFK3nL9KaMvvxwaYhxHb/23YYjiJL0aD7msZJOQ6qcOJQ/qYEAMMZEyT1gGkviRsedRcQV1SzNl5IbxEzJJWv9tJrZdDo7Y47y156nQl1Q5Ea87pPCx5d14Z9Mn5rNndSkBQ87ZdsuGmjhQ1vUwMIk+ScGhExSPCbnoB4iDydWsqgP398I+flTL77oOmo1THCkLHYDW/i7daNNtCpTJfuu5yVMZUe9BUIAjJhMnpevtAxjllIFo5dDLDBCdsp4B6exniBN7O0R7XT7WPDhGnQIcysXQDAxFHP1odCZlVLlY9C2N64JzIenkz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,138 +160,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-collapse_huge_page() deposits a PTE page table on PMD collapse in order
-that it can be utilised for subsequent split operations, meaning that those
-operations do not need to perform an allocation (as they are in a context
-where it might be unwise).
+Commit e3ecf7c7d082 ("mm: pgtable: convert some architectures to use
+tlb_remove_ptdesc()") updated a number of architectures from using
+pagetable_dtor() + tlb_remove_page_ptdesc() to using tlb_remove_ptdesc() in
+__pte_free_tlb().
 
-However the PTE page table which is deposited is the one which is currently
-mapped by the PMD entry that is in the process of being collapsed.
+This is meaningful as tlb_remove_ptdesc() allows for RCU page table
+freeing if CONFIG_MMU_GATHER_RCU_TABLE_FREE is specified.
 
-Once deposited, the PTE page table may be used in a split of any other
-unrelated PMD entry.
+The csky, hexagon, nios2, openrisc, sh (except X2) and m68k-sun3
+architectures all have 2 levels of page tables, so the only page tables
+ever freed by mmu_gather are PTEs, so this update suffices to ensure that
+every page table freed by the mmu_gather mechanism is freed under RCU.
 
-This is currently not an issue as this operation is performed with VMA/mmap
-write lock + anon rmap locks held, so ordinary page table walkers will
-never accidentally end up walking the wrong thing, and GUP-fast is
-protected by an IPI via tlb_remove_table_sync_one().
+Therefore, update all of these architectures to select
+CONFIG_MMU_GATHER_RCU_TABLE_FREE.
 
-However, the series to which this commit belongs implements RCU-safe page
-table traversal, at which point this becomes problematic.
+This forms part of an overall effort to switch every architecture to this
+mode.
 
-This can be resolved by using pte_offset_map_lock() which gates on a PTE
-PTL and a pmd_same() check, but lockless walks are unsafe as things stand.
-
-Resolve this by simply allocating a new, zeroed, PTE page table to deposit
-at the point of collapse.
-
-This path is already costly and an allocation has already been performed
-for the huge folio, so this allocation is statistical noise in terms of
-performance and memory usage at this point.
-
-With this PTE page table deposited, RCU-free the existing PTE page table
-so it is safe for page table walkers to traverse within a grace period.
-
-This also brings this deposit case in line with all other page table
-deposit logic which deposit a fresh page table.
-
-Additionally, this was the only place in the kernel that displaced a page
-table like this, so eliminating it also helps consistency.
-
-An edge case for deposit exists for powerpc and its hash-based MMU - it
-stores hash slot data in deposited page tables and zeroes them on withdraw,
-so a zeroed deposited page table works correctly for it.
-
-Since khugepaged runs as a kernel thread, do a little dance in
-alloc_deposit_pte() to correctly charge the allocation.
-
-This is already done for the folio allocation via alloc_charge_folio() but
-no such wrapper exists for a page table allocation.
-
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/khugepaged.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ arch/csky/Kconfig     | 1 +
+ arch/hexagon/Kconfig  | 1 +
+ arch/m68k/Kconfig     | 1 +
+ arch/nios2/Kconfig    | 1 +
+ arch/openrisc/Kconfig | 1 +
+ arch/sh/Kconfig       | 1 +
+ 6 files changed, 6 insertions(+)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index f49a6710933b..dab421f8233e 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1278,6 +1278,23 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
- 	return SCAN_SUCCEED;
- }
- 
-+static pgtable_t alloc_deposit_pte(struct mm_struct *mm)
-+{
-+	/*
-+	 * khugepaged is run from a kernel thread, so need to manually set the
-+	 * correct memcg so the allocation gets charged correctly.
-+	 */
-+	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
-+	struct mem_cgroup *old_memcg = set_active_memcg(memcg);
-+	pgtable_t pgtable;
-+
-+	pgtable = pte_alloc_one(mm);
-+
-+	set_active_memcg(old_memcg);
-+	mem_cgroup_put(memcg);
-+	return pgtable;
-+}
-+
- /*
-  * collapse_huge_page() expects the mmap_lock to be unlocked before entering and
-  * will always return with the lock unlocked, to avoid holding the mmap_lock
-@@ -1293,7 +1310,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	LIST_HEAD(compound_pagelist);
- 	pmd_t *pmd, _pmd;
- 	pte_t *pte = NULL;
--	pgtable_t pgtable;
-+	pgtable_t pgtable = NULL;
- 	struct folio *folio;
- 	spinlock_t *pmd_ptl, *pte_ptl;
- 	enum scan_result result = SCAN_FAIL;
-@@ -1310,6 +1327,12 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 		goto out_nolock;
- 	}
- 
-+	if (is_pmd_order(order)) {
-+		pgtable = alloc_deposit_pte(mm);
-+		if (!pgtable)
-+			goto out_nolock;
-+	}
-+
- 	mmap_read_lock(mm);
- 	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
- 					 &vma, cc, order);
-@@ -1433,8 +1456,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	spin_lock(pmd_ptl);
- 	VM_WARN_ON_ONCE(!pmd_none(*pmd));
- 	if (is_pmd_order(order)) {
--		pgtable = pmd_pgtable(_pmd);
- 		pgtable_trans_huge_deposit(mm, pmd, pgtable);
-+		pgtable = NULL;
- 		map_anon_folio_pmd_nopf(folio, pmd, vma, pmd_addr);
- 	} else {
- 		/*
-@@ -1453,6 +1476,9 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 	}
- 	spin_unlock(pmd_ptl);
- 
-+	if (is_pmd_order(order))
-+		pte_free_defer(mm, pmd_pgtable(_pmd));
-+
- 	folio = NULL;
- 
- 	result = SCAN_SUCCEED;
-@@ -1463,6 +1489,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
- 		anon_vma_unlock_write(vma->anon_vma);
- 	mmap_write_unlock(mm);
- out_nolock:
-+	if (pgtable)
-+		pte_free(mm, pgtable);
- 	if (folio)
- 		folio_put(folio);
- 	trace_mm_collapse_huge_page(mm, result == SCAN_SUCCEED, result, order);
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 4331313a42ff..80f89ef1d962 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -96,6 +96,7 @@ config CSKY
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HOTPLUG_CORE_SYNC_DEAD if HOTPLUG_CPU
+ 	select LOCK_MM_AND_FIND_VMA
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MAY_HAVE_SPARSE_IRQ
+ 	select MODULES_USE_ELF_RELA if MODULES
+ 	select OF
+diff --git a/arch/hexagon/Kconfig b/arch/hexagon/Kconfig
+index b48491140013..d9b3fb86556b 100644
+--- a/arch/hexagon/Kconfig
++++ b/arch/hexagon/Kconfig
+@@ -23,6 +23,7 @@ config HEXAGON
+ 	# select HAVE_CLK
+ 	select GENERIC_ATOMIC64
+ 	select HAVE_PERF_EVENTS
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	# GENERIC_ALLOCATOR is used by dma_alloc_coherent()
+ 	select GENERIC_ALLOCATOR
+ 	select GENERIC_IRQ_PROBE
+diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+index 11835eb59d94..e29610fd1240 100644
+--- a/arch/m68k/Kconfig
++++ b/arch/m68k/Kconfig
+@@ -36,6 +36,7 @@ config M68K
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAVE_UID16
+ 	select MMU_GATHER_NO_RANGE if MMU
++	select MMU_GATHER_RCU_TABLE_FREE if MMU && SUN3
+ 	select MODULES_USE_ELF_REL
+ 	select MODULES_USE_ELF_RELA
+ 	select NO_DMA if !MMU && !COLDFIRE
+diff --git a/arch/nios2/Kconfig b/arch/nios2/Kconfig
+index 9c0e6eaeb005..b0ccfc3b7a7e 100644
+--- a/arch/nios2/Kconfig
++++ b/arch/nios2/Kconfig
+@@ -19,6 +19,7 @@ config NIOS2
+ 	select HAVE_PAGE_SIZE_4KB
+ 	select IRQ_DOMAIN
+ 	select LOCK_MM_AND_FIND_VMA
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select OF
+ 	select OF_EARLY_FLATTREE
+diff --git a/arch/openrisc/Kconfig b/arch/openrisc/Kconfig
+index 5eb995c13074..d90b24dd3bce 100644
+--- a/arch/openrisc/Kconfig
++++ b/arch/openrisc/Kconfig
+@@ -35,6 +35,7 @@ config OPENRISC
+ 	select GENERIC_ATOMIC64
+ 	select GENERIC_CLOCKEVENTS_BROADCAST
+ 	select GENERIC_SMP_IDLE_THREAD
++	select MMU_GATHER_RCU_TABLE_FREE
+ 	select MODULES_USE_ELF_RELA
+ 	select HAVE_DEBUG_STACKOVERFLOW
+ 	select OR1K_PIC
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index d60f1d5a94c0..204f64912f0e 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -61,6 +61,7 @@ config SUPERH
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select IRQ_FORCED_THREADING
+ 	select LOCK_MM_AND_FIND_VMA
++	select MMU_GATHER_RCU_TABLE_FREE if MMU && !X2TLB
+ 	select MODULES_USE_ELF_RELA
+ 	select NEED_SG_DMA_LENGTH
+ 	select NO_DMA if !MMU && !DMA_COHERENT
 
 -- 
 2.55.0
