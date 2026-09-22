@@ -4,132 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2627C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 02:11:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E148CC982FD
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 02:20:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD5B16B00A9; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
+	id EA7B96B00A6; Mon, 21 Sep 2026 22:20:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DAC0D6B00AA; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
+	id E31A96B00A7; Mon, 21 Sep 2026 22:20:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2466B00AB; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
+	id CFC136B00AB; Mon, 21 Sep 2026 22:20:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A770E6B00A9
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:11:51 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D5811A026E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:11:51 +0000 (UTC)
-X-FDA: 85239772422.04.FCDF735
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 92874180003
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:11:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KYKN49lN;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KYKN49lN;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790043108;
-	b=BOpBFjh0oqmk/d1Bq51Sk6YL9zpBoeMv5f76euU1qYIIn6ZA1Ifs0AYGVeUw0ujfXytlN9
-	XnMNiJTFC74WE8i1I9IDqPGjy/IKILdJiFgu6TMn45ubHmEFGXHQxp5dbacILa0RDP3JKf
-	B2xbSsTi6543cJkWgL0lUPxpDizoyGc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790043108;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A27FB6B00A6
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 22:20:45 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E0B7A0362
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:20:45 +0000 (UTC)
+X-FDA: 85239794850.15.C1600EB
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010070.outbound.protection.outlook.com [52.101.193.70])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 56C44120006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:20:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nkiJ8AHs;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790043642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
-	b=gf1EDFiQ0ZgIu1u76AlKPNGNmhHNaE2/193bpi2skMYGd+Hq2q1XXf1nhpMtleWmC8vBX+
-	9PVKMLLAfhGbhAyVS5cDLopMhkBz9RWSIEq7hqT9BJqmEV6AbdUxAqAyGz5/pDP60PJvV9
-	2RSUErFNRcxJPwUMa60HymS2LEPN4bY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790043108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
-	b=KYKN49lN6hl6jRcC7ZzpfVqFNN5UQgQa8bao4fwPnn/R1vgfiZSkuCDXI0YoiMx6ZnUKb+
-	abDL2q69ySxcn7Qm3OvagGKVBrN00KCZyoGSuHHsl5aOwIZ/2uCH78YcZDPoGBsIlvMzx8
-	gWefxS17i7tE25bxemwUq9EEiUV46Zg=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-463-e83UIR-aOFmFpnqvRnw2KQ-1; Mon, 21 Sep 2026 22:11:46 -0400
-X-MC-Unique: e83UIR-aOFmFpnqvRnw2KQ-1
-X-Mimecast-MFC-AGG-ID: e83UIR-aOFmFpnqvRnw2KQ_1790043106
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93a0c7126e7so640902985a.2
-        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 19:11:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790043106; x=1790647906;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Z4aHnmTK0A1G18pdWv4Fj/LMRrVly9Y3MfKQf61geNE=;
-        b=fVBrbkDaI8Mf3WPOs9ALgw2+WyG+Pk4wYHDPikR4O906GqAGkYAPaAo6NWwns4X2jV
-         JR9e2TZCrLj8czh6BzP+hizasnYot5O7muaGYbbz1zC42Vq2Tb3W5YqeWW8dl+C9nrMg
-         Ftgu5QYOAtsHESdE5QpwWvbig7pJKgsR3GJxN7Cc8OEvqMsVP63dm8TTljpU0xZL+Qdr
-         wDdyuzJ6Vi7RpyAJDs2AhNpkMddodnbB+u/Z1vVl3r4HD29MYTjo/JoLJSbliDBp6iI+
-         GVVEREOolx8u/SfBEBS9NZ/12SCNKEds3wBiEDwH8eowPB9sRhO2pYtR0SrWpWIvcVf7
-         D2Pg==
-X-Forwarded-Encrypted: i=1; AKwUvBwIQACOjt9Nu69+mIM63TQiNVRh8Za6JLvp5LnVBojO8dyFvPfxI4c6RzPrV2x6Q/05nhG+7xtaEQ==@kvack.org
-X-Gm-Message-State: AFuF++l10K957xHRXXFH7uWhReVLak08dLD8YsuEJIHUubWRXLpTDugo
-	I2ZMseab9Wla85gzUNrPe00XxabAXkEGYYRngNCjcI+zcBWFIGFUaSwf7HakD/9hmCzBy6153MK
-	lOZig76r4jd5qzXLfnqcrTKU6FRICnDiIR0vuOEGOjgV/Y5fqo19XgCPMNLqunPz6ag==
-X-Gm-Gg: AYBFou0U2LVijnVQVO/8S6yMjc4RF0KbElygze6I9CrIWMwg6L7CdnBXzz801W1pVuf
-	cfzXIModJLtGALu3Nonv6o3dZ7hXVrykQ9S42rTTVLgVfYT1pNw2qFmC9EZ76w/MoRAr5vZdzhQ
-	DKhNcaIiQR4bRf7PZpbQsficQLyQBdF4DwBCP4AgwDzJUieoAqWacOTHVx7WmzylEiVT9B+LwQG
-	KymnJGaSGLwI5/SNMrVB8Jd9pAN4HKpDpI4k2AiecTVnJvtmfEtK3+ruq3/d/OiqtY0+8blm7kB
-	UiUjD3jy1twl+DtVT0tQjNb+/kHsrXwE7XRCmpj+onNxh6bc1j4B6p47mydQvzWr0Ej0US8d64N
-	u/3g=
-X-Received: by 2002:a05:620a:bd3:b0:93a:82a:71e5 with SMTP id af79cd13be357-93c15d86b94mr360801685a.19.1790043106240;
-        Mon, 21 Sep 2026 19:11:46 -0700 (PDT)
-X-Received: by 2002:a05:620a:bd3:b0:93a:82a:71e5 with SMTP id af79cd13be357-93c15d86b94mr360797685a.19.1790043105768;
-        Mon, 21 Sep 2026 19:11:45 -0700 (PDT)
-Received: from [192.168.2.110] ([142.172.30.162])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9140249fcedsm4229616d6.12.2026.09.21.19.11.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 21 Sep 2026 19:11:45 -0700 (PDT)
-Message-ID: <2e6802a6-9815-4fcd-ad72-136efb599d1d@redhat.com>
-Date: Mon, 21 Sep 2026 22:11:44 -0400
+	bh=yy5uJGqPs1g6+iUEWH7opy1xuyDFDoxM2krbqjQB1yU=;
+	b=qC2JqawO+7XUK1xdie4QQq7R6c9wcTEU7O2IIpI3FVN/8iRwoagdtmWXbDevkCbcVssTc7
+	YdET0amvlFAt/US5KDaKqjqihZlD6rmP6u/e1zKq3YG3FL2qS/u4eO4dP+MIofsINvbmHP
+	Lm6MRyMNCFiPoausz8i5pSkdpk9KC3k=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nkiJ8AHs;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790043642;
+	b=gflSelRK9FPZp9DqhuBFhDjH4hKsuo5m4EEf8UJSP0aEjTF3gSLx5R1pwtxUGhYFG95Rnl
+	1MxXi2pxIfKfjCIw2Ag+vdTo62ayO9xePYgGZ9sEL0kUR5VfF/eMg8FASEnI497/QK1XNs
+	aoGIv02330K1wlv5r8OPes44YN53uXY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wHnNgsmKb3zFbvfTdpPHteaS9y5/f9DJf2WMMSyW3I6nr4SE2ptLFFb24rErGcmx2QGjsHZ5MSo5l3eDBFiLOi9zAKcqjv5zZiZ6VIJ0TtTv/0anlUPCkgBDTkFzTn3D1jTFpaesl28hOlp2M3Qcis6MLFvHhUU/G2JRixvOVD9ZD2UYXjOTqy1WdOWRDpxqAFhYvm+NrmtCOydz+0qsKb1s33MlO/7dHTPwDaX7n/e1Z3YkIVnJ1iOf6jfGCCA3gTKmll/XQOYc0ALYH+1VMobquSzdYb1OAYALzADJ4HE2qhHZN0xglRIs3FjLUgJ4jiIaNX63jCOuhbLaFb7j1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yy5uJGqPs1g6+iUEWH7opy1xuyDFDoxM2krbqjQB1yU=;
+ b=M+onhfgB7VUhVsRC8VmH+/3AHUlAT3FIGiD7z9i3JCEpJRArVP9/gzzAKvih0Fe4Gc8EBrHtE/dPoFPksMME8Eqjv6OGFz3rGL2UIi6EMNz2wHvGylMw5/J1uvz1pJOUFykJxPXGo3hjavzARhX8NWy0WfdjZD8POyxZ6DYEoZwOLELsabmJy7YGJifJuMC91bRUwM9AzVKZmOhQmVAtN+J1Ayrroji3jKTyowX5Zczk+IfwJ6XKLuThXZla7uyL9Ky2RDfNA9k1GikBOQptc/85mc9IzBxKudzKy51ASB7vW+N/jE9aR2mbwH6clVWf0myR1L7ei3YF84N30XXVnQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yy5uJGqPs1g6+iUEWH7opy1xuyDFDoxM2krbqjQB1yU=;
+ b=nkiJ8AHsV9gir3tRqaoSLTp43h5uhA8VbDbwgbaOiryGtykjcZtKdTnwL/eEMVWH210pkcMJ6cRzsLpO1OqfTaMIv9XQLNlPzzCJa/iuRzszRUpXTO/kF9pAudSCheES54f5MxBJkOyM35rpc4lAB6ydavufAhtisf9ck9WLrdsjVDxl9eFpwiDjdSikmlSBT3oIRZAhbf+X3vszetJTMAJ9WUv/RfLlQ3HieUFt8eKb4VoHY/SDpyuY3DkvRA1/GCj6yIlGgBpVgVrdcPgi4aePozGYYGKQ9Xb6DANrIkSZbSpBRu/TozDNVC9Wn4rojKlPigE9yqw3dJ2fncn8gQ==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CY8PR12MB7413.namprd12.prod.outlook.com (2603:10b6:930:5f::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Tue, 22 Sep
+ 2026 02:20:37 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0428.015; Tue, 22 Sep 2026
+ 02:20:37 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 21 Sep 2026 22:20:36 -0400
+Message-Id: <DLLHIE1QXVF2.38IQWBL11QXIQ@nvidia.com>
+Subject: Re: [PATCH v8 07/14] mm: shmem: allow THP support determination at
+ folio allocation time
+Cc: <corbet@lwn.net>, <tsbogend@alpha.franken.de>, <maddy@linux.ibm.com>,
+ <mpe@ellerman.id.au>, <agordeev@linux.ibm.com>,
+ <gerald.schaefer@linux.ibm.com>, <hca@linux.ibm.com>, <gor@linux.ibm.com>,
+ <x86@kernel.org>, <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
+ <hughd@google.com>, <dave.hansen@linux.intel.com>, <djbw@kernel.org>,
+ <vishal.l.verma@intel.com>, <dave.jiang@intel.com>,
+ <akpm@linux-foundation.org>, <yintirui@huawei.com>, <dev.jain@arm.com>,
+ <usama.arif@linux.dev>
+To: "Luiz Capitulino" <luizcap@redhat.com>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <david@kernel.org>, <baolin.wang@linux.alibaba.com>,
+ <lance.yang@linux.dev>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <cover.1789695931.git.luizcap@redhat.com>
+ <f74ada750d1910f8ea7e55955eb0c330747b93d4.1789695931.git.luizcap@redhat.com>
+In-Reply-To: <f74ada750d1910f8ea7e55955eb0c330747b93d4.1789695931.git.luizcap@redhat.com>
+X-ClientProxiedBy: BL1P223CA0033.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:208:5b6::8) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/14] mm: thp: always enable mTHP support
-To: Usama Arif <usama.arif@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org,
- baolin.wang@linux.alibaba.com, ziy@nvidia.com, lance.yang@linux.dev,
- corbet@lwn.net, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, agordeev@linux.ibm.com, gerald.schaefer@linux.ibm.com,
- hca@linux.ibm.com, gor@linux.ibm.com, x86@kernel.org, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, hughd@google.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, vishal.l.verma@intel.com,
- dave.jiang@intel.com, akpm@linux-foundation.org, yintirui@huawei.com,
- dev.jain@arm.com
-References: <20260921103620.3431087-1-usama.arif@linux.dev>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20260921103620.3431087-1-usama.arif@linux.dev>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: LxLeXhnuTMZE72GrdH6oSE3nUKfRul-aeUaaA_xW8zY_1790043106
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB7413:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c450369-290a-4a05-4fd8-08df185016e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|23010399003|366016|6133799003|22082099003|18002099003|11063799006|56012099006|4143699003|10067099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	PmswGfl3+cVF1JNaDD0IHE28THODnWbCqd7dunA+SH3Qgwilo3eJ5C4iaKpttfDSLYxxKBUI3eQI96fnnTX74rw/7mwb37AWOhPSoAg1Qgnrb8P2+l6GgPe6H5/E0ZUIM0FcCwZ7n5GuXjtj5q0WGKyIrZQQSwXaHT7kAUSf+xZ/jpk9uQxhn3CNsDc+9PD8MXLm0zmC1cQ/olL4G1p/B0sm4HUUtxJqYuRXNGcyqvIQY6JhAdcPR3ie83nLXh3ezxGycJKxTgVQ/AGjkd1jdtsvuRxCInzAPgPKBKhhomjOdAbDolKWJTBiUh/VGVkVyU5q+YmjcLiwNn4CwiyuYMD5r4zNHbUP32NAQ2LHqXjbbXLTOAzWqO5+7b1v22BJW63rMrc9fJtbugFgvvDW062AppjCkfyWvcxKyLQAulisA4/wQVRmGryIlASYgBbbwBEY2hzI6OiQ8VQPUMDOsd7OiY0EBdLCFt1oFhNmL2RTscw0UfmduMNzWoT10sKZp2ZKhgJYboLLrvwoj3q2SXeWsbhbrVM/pW1zxzetdBsrQdCppXzQwmEnL0R+f45pS2M0+XlE4R8a/I5onpvx0JgKFk602h/n5Am1bl8gFGtvzePiO4UNRLwCkRtXTSgR4W7+cihUqjIg8ARiOnd5SN6mc56cATMe+UfZeUFjQk8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(23010399003)(366016)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003)(10067099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qkd1SzRPTncxNGF0QnJ0OU4yT2QrdUFoMTlwOEZhOGhQVXNaSkpCTVpyYjNx?=
+ =?utf-8?B?Uk9qZDdvWWhhbXZvNk5LNlZKeTVPWFVVMkR2MTVrekhWYVBnSkxVZ0RQMTFm?=
+ =?utf-8?B?MS81QzgrNWkyeS9jZVdhRjV0ZkhHOEVTelZmZjh3N2h5QnFkbXJ4VUpuYlpF?=
+ =?utf-8?B?RHFIbkUwcmd6K1dObU13QWVaV1JNL3lmSXIxNHpMaEhBRDJUTE9YeDlKYTZv?=
+ =?utf-8?B?WjY5MTMvZm5BK0c4QklDRmU4VTgzakNEZm5hMURtcnJnK0Z3TVYxOHJnSkl5?=
+ =?utf-8?B?c0lubG85S201UFdDRVNFOEZnZnRxTHdZTFJzbm9CeVpZRExTT1pvKy9UM2J2?=
+ =?utf-8?B?Wnk3WVRWa3V2R2xjb2I5ZWQzUzFZeDNHVnBzRGd3eTBQZWZ4cTFndVFEMW1X?=
+ =?utf-8?B?OCtMZEhhZG1vTTV0K0FmbVBrcFZGdE14cFRueWt2YTdOZFZmOHNsdXNwQzAw?=
+ =?utf-8?B?am4wTzR3YndyT1V6eGpWTDBoOWJyczRJcXZVZStTSnpEbFZ1UmU5MFltd2dj?=
+ =?utf-8?B?V3VBUlFOSG1HaEFIaFd0RU9KSnVWeEg2eTllY1ZzMTh4eGZIMnd0T1ZIL2lN?=
+ =?utf-8?B?ZXNMY0pzS0k5azRKbG9JU3ZmbE91Q3A3RUljNllJVDZOTit4b08xbnY1c0w5?=
+ =?utf-8?B?K29Vcm10MW1tTE84UmpsclY1cUt5MVBpRlp0SUJHZnFKa083WUhTS1NGY1BL?=
+ =?utf-8?B?Z0hKNHMwdWNGNjYzQ0hWSHlBYWREVzdEeGtBVHBvd0R1ZUNONDl4Y1ZuWlJ5?=
+ =?utf-8?B?VVJsblFuWC8xYXg0MW52M0JLRGduTUxVV3lPMWdKa3IvcDRvY3czRUZpdVAv?=
+ =?utf-8?B?eWorYXgwV2d3MTlkVGFRTXlHYXJPWEJBeFdMbEtYempXL2VNZ2ZuV1dBeUlv?=
+ =?utf-8?B?eUtyL05uZUJvRjZlK25tR3BoN3pMVUZZQjJQTlJnY21LamFmK3JNWUZSUkRr?=
+ =?utf-8?B?V2ZKSFZnODYyY2hsV1laZXV2a3hvYkRmTTlRazNpSVBzTUJIMkdIMDhXZUVs?=
+ =?utf-8?B?eUh0UTNSNUUwQUJKMG9RWGREcHRFSTM2Z2hlbWh3VWhZMmQxcWdCdFFMdGdl?=
+ =?utf-8?B?ZWJaVXhzTXZpZkhIR2lJdFZaWDdQVVJyWnNybzBhK1BpQzh4WG00S2JGM1lu?=
+ =?utf-8?B?RUIvN2RqMGFDSlV5Sm13Y09PVnZQcWxiK2FOMGc0Y2NLWnpZcFlJZVR3cnVJ?=
+ =?utf-8?B?STV0Si9FcnZZYkhPL04reFp4RFoyeUFsUk16REFQTWVzUW5wOWVoQitTNjZS?=
+ =?utf-8?B?Z2Q0Q0lIeGhySGVhNDVzN0o5RXpSZFI3NzVoQ3l1Ti9IUm15c1U2USsrbGhi?=
+ =?utf-8?B?ZWpLa0NURmNpWC90bUVlUE9Rb0ExOThHdkpxaitNdm5EdU5VWHlldXd4dDN6?=
+ =?utf-8?B?bnFEVTRqbDE2MEM4NjhZWTZlTXhUZDU5LzJ0WnJpMzRNMHl2SDIra3VmYWpG?=
+ =?utf-8?B?VTNKZU00RkkyMjkvZ3FTSVhSVnNKT1JuTEFRcDZUWTFZUDkrQzVwOFVWRW1S?=
+ =?utf-8?B?RTkvVWl4MnIzYmdTZm0vbEp1NVBNSEpxQk5McUNaelQ0Z3hpcmdudWVTenhY?=
+ =?utf-8?B?T2d6RVBKb1VudDF4NWQ1OU81Rzdid2tralBGcE5ZZ3BPS3pOMUpZSHRGTjdq?=
+ =?utf-8?B?UDJteDdnSUhLcC9MVXdwSnAxQkszSzN5dER2eE9MMDVPVWdqKzZBOUZkcXJS?=
+ =?utf-8?B?LzN0bXN0TllSRGxmTFZIaU1TMVZTWG9HS1FoL2Z0dlJNVnZWMzkzM1VVc1ZB?=
+ =?utf-8?B?TVZ1c3B3Nm9hbHpIcGs1UkUxU1ZQbDROejd2elJ4NC8yQWd2QkNoaXQycnVH?=
+ =?utf-8?B?SlBENlZRNUw1cUhUN2NNVGR2K1N3UGZxYi9hS21NTWRWd0xxNWVlblQvOTli?=
+ =?utf-8?B?dk1MeHpGSUhDa0c0VHZ3cFpqL21jakNXa0JsSTVJMnJRUnJCMUI2a1VZai8v?=
+ =?utf-8?B?elh2L3BxUGZxQ1hTOGhGazMyYnZ6N3NaWGtYcG1DbEQ4SnNtOUtpcWRwS2Nj?=
+ =?utf-8?B?QjVTaVdPbzYzSmR2bDZQS0lCZ2xkVFR5QlZOcHNUVlIvZUx2djVjS0xacDY4?=
+ =?utf-8?B?TnZmSnVXeHJpZVVDYmplZWpiZFBnRTFMZ0pwZVczQUJEWjV0L3VWcnBHYzRa?=
+ =?utf-8?B?ZU1ON1Y4bmc1WWppbVFISDRVWU9nQmJQVXhvSkNOcjZTWVlkdFJhNlJYQXNi?=
+ =?utf-8?B?eC9mbTZ6Y1hFZWdtZEYzTWJhdlNHeXhDZ0QvcFEzdHp2WkZLSkxieUNPQnAy?=
+ =?utf-8?B?ZEIzTC92WTY1UVFMM2h3TGZMZmdSU1Z0OEV1VkljN0MzMGtuYUNuckNiek55?=
+ =?utf-8?Q?uwGGysCFnFyzqpPgcD?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c450369-290a-4a05-4fd8-08df185016e3
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2026 02:20:37.1392
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NMIInO2GQ08Gwa9e1Pvh7MjznWIq5qXUmghrEtIALZqIDkfU46i7xjWvumO2fVzl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7413
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 92874180003
-X-Stat-Signature: phspcy1gjwurypu97yemingt6m7g7h6n
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790043108-381405
-X-HE-Meta: U2FsdGVkX1+W7n4ZE5+wd9oLPwJaS622G8S6uOPnvtTTLEh1Qb4750TiPmsHpwLtxvYFmbLPrGI/cbmk6k3cZDiPF3uwhxrUyH7p8fwl92/EvdlV9qPfhmoreKbL3RoajkvPEy0IOirPV+1pFT04j2270M+NDxPHtLE8xqApfBlxXZdNCQ295rbpp5LTY2WsHKR/kpwVN+gWdzXiKsRZqLStWaCwNqZ12M97h/f6mHm7XpKewMW+qUXfy47UkjwlAOGccpNzac26LT6/lPUni9925iXAlfMRcMsXkZ09PTsmJMFOkVW6i98oyONODHVcD4e2eMYvjt54YayLP0oOEnCTRL8paUkS2eNiJiQEbdGy/m72nK1l7447BTxmIp8KhQd+gswhVOiEw56ybi5brx1+kJI2Fqi8EZChRobXQKZq2q7MitJwMvzIKVuQ2+TY1PMO3ePKESeLGIVwkq36o12wq2EalXDxp4qDOIXNmXhc69ADqFTgy86tNxAxzlH4UqK5m3h3Mcy8vccxN2KX+xWKV4kW1la6hacd/z/WmDzBWxCqvh8UGGzBspgg0TNEhRUsOeHCH50Y2JwC8uK6ntQI9v/QzWsEyVVfGHWR5j9v9q68Hw6UTWqx2A6qxVF4UqusyWrjMStsFmnvMjUgdCnwNn2zWj/ibvn0NGfCqw62Sy/kZmdBnAB8awkeIg+V3vEI+yDHcAYjuwQzbvNJwW321WTBJPcpYJLCVjZ4wz04w+ch1f9wAWMzF0CR/y1an5lc2lH8dJuCCKKPI3U6jSsW9JehVVsS+M6I2gP5h1QS1XHmlTVU6DywgiO58Pyi8tTEE9sWnelDnDtS5x3Hrr1LhwRTjQo+82yaOy+b5uVtY8b9vtD8ebl3R4St7LnlBLUd9O9qpxt80eRCB/n3a/FZx4yOJWBN1zASJYcgRu388XNZy2/UoZG0gYxTvHwCCuXB3lP60hOxgDwTkiU
- maPU2RwF
- zARnP6/YUYXwcsLr3H5oySiAG/xw4OEjq+Adw2GYNx+maRCAxXDNnSpG4b1z3seTyJfSGwEjXY/rbiMiVJAMe63vE4fmSSOs3eBYhtlpgNSxmHBOLArIkTRQTar4EbMf8qWT0S2L1Pg1/h60vy4ZFiImB1NvQ3Kl+WqQgHVAcUnpa0bgb3oT+UQGXqs7Ts+xJSLjB4ThkHxY+ceYrd4v7cns/Xa8GF4AdiSHJqlXLdLISLgVwS14LIYosGf5rgbdlvcVVFLj1jra9XEcMTpNZRD8VMCIWdDp9+uE0y5vB3284Jbw/8RN3uB+TVpPMXb2bodb+5DHFaq6cxqq5Y1TSkIcxLgFbfmSel+FB6L3TaQIXppQB6+PENP2Ucb2zHt22QoTYEvDCAbyWk6M=
+X-Stat-Signature: ssjncto3qigd1nrkm1bkwap4mgjw47z1
+X-Rspamd-Queue-Id: 56C44120006
+X-Rspamd-Server: rspam07
+X-HE-Tag: 1790043642-732542
+X-HE-Meta: U2FsdGVkX1/+MI8j9ItAo0KQdkZGkeECUKZ2H1EX887yTSl2G4w614ao2rP3ZX/14OtXa3P+ciYYpfFyDhaq1QIYj0RWd//24KNaK4mJGl/Hrful0ctjGpLmWOJYlW8alwxt+pn/gVBzgvERrmX6h1BDdd4/AQ1AjMfBise0EEf+D8hJ1XoPgNrBElNz1sfvJoeQnPAZHG+AHRnuP1TcOyzzrYqWQZwVkWUFpg9AxYwbfTQOJAR9gdKVNFCs607rKv9bpjB4mmF02jJ45x6AjyyN0KRz/PkD6hZAbsOZJ00HrM+OViLhzHdTI1693I2AWd2okeo21LcdGtDql3DDQ2jxWMCWlZB4NDTxzMoVfeS/gBFMI928SWYqQPr9FKpDx0ZXJxuwH+dl/pLGjmpz3VNYFfbEy1DV2bDZrGfEbZa0R/kjmrywIwPfPPFjewQQ7kzChsPeQHwqBL+pftnoU+rO6hYtKsuFhbEavffR4ScUDngBx/wsNq4tlBYehjIe/EOdxCv1vIrd2frc4qjdY1y0nJLUj+wIqQRvltEwucw7A4HxBCMyglz9ArwLRoA0VrUajzqZEnNaTsPiHBty94TLQvnXm4seEheOiEdnvShhhmtV/LPYLXwJXGOoWOJNn/kS7iMh3nBW/FQ1nL0R4CHXNuWH29MOokFsoaYp2CIsiLyomMpkSLQdJRD8gsX6m9nwVEQ4PX7Ws9FkPQxy6JkS/oFxYVT4hhArrXNApOXFLRPSMZdzbE+UK5gxPOOTOysbF8IFwKYHf5Qk+BOCoJG6Krinbni3f7C16aeIxc4bICGXv0Eo5SfQanNoSEpfTB6rTHvnNTIFzwt4GLwb701Xm8AuUNI/k7whnGPhyu/K5fKF6Jy8sp/GUzXKD0G1U7U2Syn+Y2P7NlS/9+ooxWxEO80esoc9Dms6aTuHcdAVGm4jw1lvMe4FWjA8PgF06PIvbB9xH47kbFBonk0
+ dg6qeoXo
+ CnaMevKsgvbi7Td2+CjEUURKzSPFIgg6Mjjvw6FC/Vu+XEsz/ht5qJdP2iQhr3OuXrNoa/yE9fH4hlgvtTwBkq2sR3OkWGN1pVGMe+L3qYD3momA80bvDKk0ZjNP2Z9uo0LTIJoSsPpufAiPBZt1cR/ZJu5+64AhRbpXuPQ+1p9o28v6kZw1MTAoUkcOiQESFiwrR0SmMs4SR32CNGe+jmPCMqh5pj+uqsE1vztavfr2jQwHG4JLfn5oDcB3Th9YyxOTC2BDvwJeIxdEG4MrTyH8Er7opuJa007r93pLhpXv+aS4uylyYJ1Z+dn7j2E0tV5Tx0kIcGkrK0mv+GcUJK0VLWi1WoBQX41XgVll/TL0MInof+VemcYWM50RjXA+5T3LF5s7WJHDt81bGsZX+ODLIUNK8sU+m3s45ogrFTbF4UA6Pq/LR8H7Hoa5xMV0Rkhaz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,247 +179,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu Sep 17, 2026 at 9:45 PM EDT, Luiz Capitulino wrote:
+> In order to enable THP support in shmem today, besides the user
+> configuration required, the CPU must support PMD-sized pages. This
+> is the case because of the following has_transparent_hugepage()
+> usage:
+>
+> - shmem_parse_one() and shmem_parse_huge(): Check if THP is built-in and
+>   if the CPU supports PMD-sized pages
+>
+> - shmem_init(): Since the CONFIG_TRANSPARENT_HUGEPAGE guard is outside
+>   the code block calling has_transparent_hugepage(), the
+>   has_transparent_hugepage() call is exclusively checking if the CPU
+>   supports PMD-sized pages
+>
+> While it's necessary to check if CONFIG_TRANSPARENT_HUGEPAGE is enabled
+> in all cases, shmem can determine THP size support at folio allocation
+> time. Therefore, drop the has_transparent_hugepage() usage listed above
+> while keeping the CONFIG_TRANSPARENT_HUGEPAGE checks.
+>
+> Additionally, we need to check if PMD size order is supported in
+> shmem_getattr(). Use pgtable_has_pmd_leaves() for that.
+>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> ---
+>  mm/shmem.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index 776dff8a848e..930657d05375 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -690,7 +690,7 @@ static int shmem_parse_huge(const char *str)
+>  	else
+>  		return -EINVAL;
+> =20
+> -	if (!has_transparent_hugepage() &&
+> +	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+>  	    huge !=3D SHMEM_HUGE_NEVER && huge !=3D SHMEM_HUGE_DENY)
+>  		return -EINVAL;
+
+This can be deleted, since shmem_parse_huge() is guarded by
+CONFIG_TRANSPARENT_HUGEPAGE and after the change the if is always false
+under that guard.
+
+Otherwise, LGTM. With the above code deleted, feel free to add
+
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 
-On 9/21/26 6:36 AM, Usama Arif wrote:
-> On Fri, 18 Sep 2026 10:01:35 -0400 Luiz Capitulino <luizcap@redhat.com> wrote:
-> 
->>
->>
->> On 9/18/26 6:37 AM, Usama Arif wrote:
->>>
->>>
->>> On 18/09/2026 02:45, Luiz Capitulino wrote:
->>>> Introduction
->>>> ============
->>>>
->>>> Today, if an architecture implements has_transparent_hugepage() and the CPU
->>>> lacks support for PMD-sized pages, the THP code disables all THP, including
->>>> mTHP.
->>>
->>>
->>> Hi Luiz,
->>>
->>> Sorry for asking this so late in the series, but which CPUs lack support for
->>> PMD sized pages?
->>>
->>> Is this series mainly for PowerPC?
->>
->> No :)
->>
->> The architectures that have conditional PMD page support (ie. discovered
->> at run-time via has_transparent_hugepage()) are x86, s390, powerpc and
->> mips.
->>
->> For x86 for example, even on 64-bit there are cases where the PSE bit
->> may not be present (eg. some errata and by hypervisor CPUID masking).
->>
->> That being said, the main goal of the series is that
->> has_transparent_hugepage() is overloaded: it has different semantics on
->> those architectures and is used to gate all THP support (which is not
->> the right thing to do for mTHP).
-> 
-> Thanks for clearing that and the patches.
-> 
-> They all look good to me, apart from the the comment in the last patch.
-> 
-> Feel free to add
-> 
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> 
-> to all of them apart from last.
-> 
-> One nit: I would put the above goal of clean up at the start of the
-> coverletter, instead of starting with adding mTHP support for CPUs
-> that lack PMD.
 
-Thanks Usama, I appreciate the review. I'll do this if I need to send a
-new version.
-
-> 
-> Thanks,
-> Usama
-> 
->>
->>>
->>> Thanks,
->>> Usama
->>>
->>>>
->>>> This happens because the has_transparent_hugepage() helper is overloaded:
->>>> its name implies it checks whether THP is enabled, but on some architectures
->>>> it actually checks whether the CPU supports PMD-sized pages. In addition,
->>>> the THP and shmem code have a big switch on has_transparent_hugepage().
->>>>
->>>> This series solves this by decoupling THP availability checking from
->>>> querying CPU support for PMD-sized pages. THP availability can be checked
->>>> with IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE). For querying PMD-sized page
->>>> support, this series introduces a new helper called pgtable_has_pmd_leaves(),
->>>> which is independent of THP, has well defined semantics and can be used
->>>> in fast paths.
->>>>
->>>> Core THP code and shmem can use pgtable_has_pmd_leaves() to determine
->>>> PMD-sized THP support at page fault time (or folio allocation time for
->>>> shmem), leaving THP and shmem always enabled for other THP sizes. For
->>>> architectures and CPUs that do support PMD-sized pages there's no
->>>> intended change in behavior.
->>>>
->>>> We also convert each user of has_transparent_hugepage(), and the related
->>>> helper thp_disabled_by_hw(), to IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)
->>>> and/or pgtable_has_pmd_leaves() according to the call site's check semantics.
->>>> On s390, powerpc, mips and x86 the arch has_transparent_hugepage()
->>>> implementation is moved out of the CONFIG_TRANSPARENT_HUGEPAGE guard and
->>>> renamed to arch_has_pmd_leaves().
->>>>
->>>> Thanks to David Hildenbrand for suggesting this improvement and for
->>>> providing initial guidance (all bugs and misconceptions are mine).
->>>>
->>>> This applies to mm-new 93f615a22169 ("mm/swap, PM: hibernate: atomically
->>>> replace hibernation pin").
->>>>
->>>> Reporting availability of PMD-sized pages to user-space
->>>> =======================================================
->>>>
->>>> Before this series, not having PMD pages available would shut down THP support
->>>> meaning that /sys/kernel/mm/transparent_hugepage would not be available.
->>>> After this series, /sys/kernel/mm/transparent_hugepage and hpage_pmd_size are
->>>> always available but hugepages-<PMD-size>kB is only available if PMD-sized
->>>> pages are supported.
->>>>
->>>> To me this seems logical, as hugepages-<size>kB is only available if <size>
->>>> is supported. If this is correct, then MM kselftests that depend on PMD-sized
->>>> pages will need to be updated to check for it as they fail with this series
->>>> applied when PMD-sized pages are not available.
->>>>
->>>> The alternative is changing hpage_pmd_size: either don't create the file
->>>> when PMD-sized pages are not available or set hpage_pmd_size=0. My concern
->>>> is that this could be considered an ABI breakage as this file was never
->>>> reported to be optional or report a zero value.
->>>>
->>>> Testing
->>>> =======
->>>>
->>>> - Ran MM kselftests on x86_64 and s390
->>>> - Tested all mTHP sizes allocation on x86_64 (with and without PMD-sized
->>>>     pages available)
->>>> - Tested shmem with within_size w/ mTHP on x86_64 (with and without
->>>>     PMD-sized pages available)
->>>> - Performed defconfig build on x86_64, s390, arm64, powerpc, and mips
->>>>
->>>> NOTES:
->>>>     * I'm forcing arch_has_pmd_leaves() off on x86 to simulate not having
->>>>       PMD-sized pages available
->>>>
->>>>     * Running the MM kselftests when PMD pages are not available causes some
->>>>       tests that depend on PMD-sized THP pages to fail as noted earlier
->>>>
->>>> Changelog
->>>> =========
->>>>
->>>> v8
->>>> --
->>>> - Fixed build breakage on MIPS (Lance)
->>>> - Rebased on top of mm-new (fixed conflicts in include/linux/pgtable.h and
->>>>     mm/shmem.c - dropped a Reviewed-by as a result)
->>>>
->>>> v7
->>>> --
->>>> - Applied on top of latest mm-new
->>>> - Improved various changelogs including cover-letter
->>>> - Changed arch_has_pmd_leaves() default implementation to use IS_ENABLED()
->>>>     instead of IS_BUILTIN()
->>>>
->>>> v6
->>>> --
->>>> - Rebased on top of mm-unstable (required a minor conflict resolution)
->>>> - Added more Reviewed-by and Acked-by tags
->>>>
->>>> v5
->>>> --
->>>> - Moved init_arch_has_pmd_leaves() to mm_core_init() (David)
->>>> - Renamed init_arch_has_pmd_leaves() to pgtable_leaf_support_init() (Lance)
->>>> - Added new patch changing shmem_getattr() to set blksize according to
->>>>     highest supported THP order (Baolin)
->>>> - Added new patches to move has_transparent_hugepage() out of
->>>>     CONFIG_TRANSPARENT_HUGEPAGE guards
->>>> - shmem_allowable_huge_orders(): rename variable and only disable
->>>>     PMD_ORDER (David)
->>>> - Added <linux/jmp_label.h> to include/linux/pgtable.h
->>>> - Added new tags and removed Reviewed-by from changed patches
->>>>
->>>> v4
->>>> --
->>>> - Used static key for pgtable_has_pmd_leaves() API (Lance)
->>>> - Moved shmem pgtable_has_pmd_leaves() check to
->>>>     shmem_allowable_huge_orders() (Baolin)
->>>> - Default pgtable_has_pmd_leaves() implementation to
->>>>     IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE) (Zi)
->>>> - Dropped patch “mm: thp: x86: cleanup PSE feature bit usage” (Dave)
->>>>
->>>> v3
->>>> --
->>>> - Rebased on top of latest Linus tree
->>>> - Removed i915 patch as driver dropped has_transparent_hugepage() usage
->>>> - Moved init_arch_has_pmd_leaves() call in start_kernel() to avoid conflict
->>>>     with early_param handlers clearing CPU feature flags
->>>> - Fixed build error with CONFIG_MMU=n (kernel test robot)
->>>> - Fixed huge_anon_orders_inherit default setting when !pgtable_has_pmd_leaves() (Baolin)
->>>> - Small commit changelog improvements
->>>>
->>>> v2
->>>> --
->>>> - Added support for always enabling mTHPs for shmem (Baolin)
->>>> - Improved commits changelog & added reviewed-by
->>>>
->>>> v1
->>>> --
->>>> - Call init_arch_has_pmd_leaves() from start_kernel()
->>>> - Keep pgtable_has_pmd_leaves() calls tied to CONFIG_TRANSPARENT_HUGEPAGE (David)
->>>> - Clear PUD_ORDER when clearing PMD_ORDER (David)
->>>> - Small changelog improvements (David)
->>>> - Rebased on top of latest mm-new
->>>>
->>>> Luiz Capitulino (14):
->>>>     docs: tmpfs: remove implementation detail reference
->>>>     mm: shmem: shmem_getattr(): set blksize to highest supported THP order
->>>>     mm: introduce pgtable_has_pmd_leaves()
->>>>     drivers: dax: use pgtable_has_pmd_leaves()
->>>>     drivers: nvdimm: use pgtable_has_pmd_leaves()
->>>>     mm: debug_vm_pgtable: use pgtable_has_pmd_leaves()
->>>>     mm: shmem: allow THP support determination at folio allocation time
->>>>     s390: move has_transparent_hugepage() out of THP guard
->>>>     powerpc: move has_transparent_hugepage() out of THP guard
->>>>     mips: move has_transparent_hugepage() out of THP guard
->>>>     x86: move has_transparent_hugepage() out of THP guard
->>>>     treewide: introduce arch_has_pmd_leaves()
->>>>     mm: replace thp_disabled_by_hw() with pgtable_has_pmd_leaves()
->>>>     mm: thp: always enable mTHP support
->>>>
->>>>    Documentation/filesystems/tmpfs.rst           |  5 ++--
->>>>    arch/mips/include/asm/pgtable.h               |  6 ++--
->>>>    arch/mips/mm/pgtable.c                        | 25 ++++++++++++++++
->>>>    arch/mips/mm/tlb-r4k.c                        | 22 --------------
->>>>    arch/powerpc/include/asm/book3s/64/hash-4k.h  |  2 +-
->>>>    arch/powerpc/include/asm/book3s/64/hash-64k.h |  2 +-
->>>>    arch/powerpc/include/asm/book3s/64/pgtable.h  | 18 ++++++------
->>>>    arch/powerpc/include/asm/book3s/64/radix.h    | 14 ++++-----
->>>>    arch/powerpc/mm/book3s64/hash_pgtable.c       |  8 ++---
->>>>    arch/s390/include/asm/pgtable.h               |  6 ++--
->>>>    arch/x86/include/asm/pgtable.h                | 12 ++++----
->>>>    drivers/dax/dax-private.h                     |  2 +-
->>>>    drivers/nvdimm/pfn_devs.c                     |  6 ++--
->>>>    include/linux/huge_mm.h                       |  7 -----
->>>>    include/linux/pgtable.h                       | 21 ++++++++++++--
->>>>    mm/debug_vm_pgtable.c                         | 20 ++++++-------
->>>>    mm/huge_memory.c                              | 27 ++++++++++++-----
->>>>    mm/memory.c                                   | 11 ++++++-
->>>>    mm/mm_init.c                                  |  1 +
->>>>    mm/shmem.c                                    | 29 ++++++++++++-------
->>>>    20 files changed, 144 insertions(+), 100 deletions(-)
->>>>
->>>
->>
->>
-> 
+--=20
+Best Regards,
+Yan, Zi
 
 
