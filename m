@@ -4,104 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3DC8C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5D5C982FE
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 06:42:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A40496B00A4; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
+	id 59A8E6B00A5; Tue, 22 Sep 2026 02:42:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A17F36B00A5; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
+	id 54B3B6B00A7; Tue, 22 Sep 2026 02:42:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 954E36B00AF; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
+	id 487C96B00A9; Tue, 22 Sep 2026 02:42:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 771A16B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:31:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFD58403CD
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:31:37 +0000 (UTC)
-X-FDA: 85240427034.29.E67405D
-Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4BACF40002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:31:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oAYNnPDU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790058696;
-	b=slGni+ZbgFVwrIvd1M+uBRXEHvDNwxZaFxYPVWCIM+ybDiI0XYYLJSrIReLjChWLqjKNCa
-	rXxkVGZ7VAcDp5UBaxG1dcOnFKcuxirhFiUBchYAhnlkKVfgoRRlT1LbJsgBdY6LHtnwJL
-	ojLZFYVV4jsM4Yyos0c87ePg6igJgi8=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2835F6B00A5
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 02:42:25 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 23D491C2733
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:42:23 +0000 (UTC)
+X-FDA: 85240454166.03.CABFAFB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8A47040008
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:42:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqYXHhid;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=oAYNnPDU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HqYXHhid;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790059341;
+	b=jtEFPj6Bw5SUTtSyHSmAFct0rVA2qRI9BXX9pV+V3kSoHHgU0kwUPjRFfIZAMrnsmUXyEH
+	JwfX21tfL8J/90xE9UZuuKC/LZVNAGcnNmfdMGZzMfANRYHMAGoBtC5erz1IB8bLX3PgXr
+	7B983O6mtF71hI5BUwC2nRoA2F8x+18=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790058696;
+	s=arc-20220608; t=1790059341;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WT7L+yjgB0IaOTyJkUQuzdzCWldIgXpJyxmwqVKairA=;
-	b=ZlIO7TiUZUwszZCQ8zkuwf3qEQxRAEfY4R9NhEvt9BDjqHVGLq+t7Qitvl8CN89b9d85AI
-	E8Y2TjRQprXB3KMStLKOezD4cZiY2SdX6EzcTAkjU35Y123cglf6Nl+xa/aN5lwPbuKUGS
-	QJK5R5F7zlhIzpEJa7X+2oHG/uUsJwY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WT7L+yjgB0IaOTyJkUQuzdzCWldIgXpJyxmwqVKairA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790058691; v=1; x=1790663491;
- b=oAYNnPDU7g0bbd9sOTRK7kokZ2fvrpFZqzEdH3h5e7FRO/fpmVq5lUutgC0S8Yp40F13w1Pa
- x6WaMn7qZFo3YIXySL9Tvw4umgM7wc7qYeOGHhUwQ7vb32qbdVCmu/335unQTcQ63D34f28E8no
- eMHM7CG+OFz4076/tOpFUv+o=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 3d5eaa6d3b009fbe;
-	Tue, 22 Sep 2026 06:31:31 +0000
-X-Mizu-Trace-ID: 3d5eaa6d3b009fbe
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
- together with hugetlb folio
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <arIEfJXYpspgX4-G@localhost.localdomain>
-Date: Tue, 22 Sep 2026 14:31:14 +0800
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
- Hongfu Li <hongfu.li@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Michal Hocko <mhocko@suse.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>,
- Chris Down <chris@chrisdown.name>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D086B92E-13A8-48A7-97B6-CD671EE22033@linux.dev>
-References: <arIAyyjYcCKHFmyD@localhost.localdomain>
- <20260922042054.3264663-1-joshua.hahnjy@gmail.com>
- <arIEfJXYpspgX4-G@localhost.localdomain>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
+	bh=72H2Bkb5mUqaSJjeGrEpofY5BjystviOexJPm4F/szs=;
+	b=MoDVlorc0rqTRJXrEljmBnZfocroMoEjcTHHAPxmTPLs3sPyAcf04ALtMm2+9OI2jf5jct
+	pcDI4Owjb58QS0WcQiJVjhecJS5SO2fT98CvnCtQpZEV9+S5EYO9Sf4KrVyicihJOm+sX7
+	h8g0FZnLIebdXfh14VQoBX2YLWVaD7w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BEB7843C1E;
+	Tue, 22 Sep 2026 06:42:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA8B1F000FF;
+	Tue, 22 Sep 2026 06:42:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790059340;
+	bh=72H2Bkb5mUqaSJjeGrEpofY5BjystviOexJPm4F/szs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=HqYXHhidXFx7y5MntdUqFH+xU4Aw4aZkMmgOQpBuiNXHaSLERGIsW2weQZ7UyZUfS
+	 wrgtp2bqYW/8XpUQbrbbk9O91DCc4Id5BvhPLTm7CHlYdMgA8RPHusNn13bsLoO+e1
+	 bJdLiSCWrJR4zdWLQ04iU0VwjtxsXNhtP46JxdbJXhZfxJZdBnclU/CE9naOQAiS1n
+	 lOFTd2/9FWxa3cY84wowbnJrfsDs4Kvhr3aN1SLkupjHDyrxNKZJWKqUaBqcadfEY8
+	 IUGrog+BGh6Mxh/VjtXchvGOhyroYR9MxQM0f5FFTrowfc38MItVe4S5PJWQ7tMUAC
+	 +413mYZWdHErg==
+From: SJ Park <sj@kernel.org>
+To: Zhijian Han <hanzhijian1991@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj38.park@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/damon: fix typos in comments
+Date: Mon, 21 Sep 2026 23:42:15 -0700
+Message-ID: <20260922064216.43053-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260922033618.2862687-1-hanzhijian1991@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4BACF40002
-X-Stat-Signature: zruwy9scsh9f3qpko9u3tf5yrjf3o5ag
-X-HE-Tag: 1790058694-159905
-X-HE-Meta: U2FsdGVkX1/z7pDIglYNqv+AEpCQ6RtDq4k/UIW06O9hGwQYY/V3HPiOmyIlVtg38lZ30woV4BDi8LcpstGnI0ImhEZPSTn0xgvMhe4W3hFh6p+zFqG1IBn7RhbvPn3SRXsVUDXSI2Xvy0XFPjN4xYPlJOAT9N2A2+HT+efz316tIl6xpW8pFlMOhLz1n0vVDHtynIuoCcFQ/iexZPGV6T7jPh5JBJ6i724UlTd11jgOQGVEngQDcOlOxLLhTXtmTHd3csOblNKSGsaGHJ7dadW9dwI0ONrnFhUaDcupXst0T0Wg3ZwkQFY+WQ5oxbOQWMBLfLGZgZ1T89ixkVn1pYhclFuPpi2V4LkvChqmCLw+E9y1gpNB2X3YXE4hNRhQNxrh/rfEbTTFJJJ2CfSt4ioUpTQZvgevToWo8FcSusSjJXOxoHNbmiHqYhqpzcty5PLygn7BLXdfAxFYT5xRqN4yT0eP/Zj6C55XUYDvjgWUPGZpx9O6gnLAJC7cz94UOzbW2NS56fs2t9VomM2cDHeli9+/23k38s+gQOZHTC0XXyNM9ZqJtvYqnA0wAFIdQpvhM/5QbmPIX4zOptcymFVI+qg1IHwY89b9RRY4pAfXrkrKtm6vaGr/OvFxC6IGl8CJg0UYPfkOjSIWnPjOFHG3JfHvDjZfuiwE76VIHMGu8+1Hqcu8adolp8GHJbxU2hilIApnxYovbIjq5HC7/SsbzTSqURGwj9HssqDumsACsZuTrZm0zeC86vsRdHVdyDTBhkOUvdZqRvT22heS2+rE+LKtAfdeIFVMIbab4pMpymhQsZ0hAhiYRcjwpzM74Jw732IMzf2bTNjKewgNb63PjZAMpIBSJAnxrxmJViTsCA4gwzM9Sa0iL6zHysEsU7Lh6+1szrZ5XRouB0D0i7APNCiF/OaycieETNhxZMKVNvphl//KoHR5LjdbqNPZpsFDhhxO7M/E0k5KK9P
- BAA5OIu9
- QzyYeRa/TRI6x/Vjo6Cm1JeUiRMltEjqBy5wFc83wnV6W5L5QXYsdHMVpQ/rB8og/GuJq3mc4duitjwTMb5HOrZf1sz+kq46pWoCGZO57uN3tNFJaTbqUgHJMC+sVpuP5T1K/SjOhr9un0OchfueGKAxqCOXYI99bcE6k+wZV1twgrvyFBZ8eUYNG6f+xvB8UmAfP1FCUfdiVSw8erlK/BkE4hqCr2DlqgnxmS+Jl+f7NKw2IoCrhI3Fg2zq/C7Xt5L8+V2U8pUPXlj8mUGqE0Ds4N6G5/BdXU9xgXVcFMd0GMsQtskjuSrEnUqyYoxmFy5kTHoEAAMd1UlIRpiqDxngD9ilu92udde8h0/xAifDGkow=
+X-Rspamd-Queue-Id: 8A47040008
+X-Stat-Signature: we1zcx5ui9dwcyn1wbm67xdq1qfw1rpj
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790059341-408197
+X-HE-Meta: U2FsdGVkX1/GglHtS6hxcp+VDRaN40hkKvQGMf4wwXgfh3kHV7xUQ1nsK7Ht1q28queSfBfgMiN0oyrEhR2YuMRDImi0uubcZtv2ZQKz8wrluiQCj6jF/CQGBeCgIDgCiuvIuvG9NoatoyAwKW+wrqzDh1b/HwfkuvBLnT7hEVXUdtBLLRv+P0O2vPG23nEW2WuXp2d+ziAMlP1IVUtqE061Da0NID4eBodsRlbjGo26vp1CDfhpndbVcEpgpNJZieA7XqZ9rQEIeTPwOGcvCEb737Zv1Ef0wRDJLDH7AKsXHbMtexpFnBzPRwePCDJYckpX9Q4kcZd0prczE4PlPz5qWeX1zeUG2vKjglm+taqIu89wr2ZxjXjv5ivvzCbnNhmCTGxTtV/lNs9bnD8cnMiRn89AuoGuKHoLO/GQwiPARl02dgIU5tGS88ha4Xb7Oj8FFaobQtBKdsLJ9MSZTJblnOmpdhphvEA5OoEDJXHg0g+76JNXZ9SX0M+q+q3T8cL9KpCgltCfrG4WH1Kvb8PIY/m8HFSG1IXota6SD9mAdW4z4CK0+JcwJg1Kiti/GBffZmULR26fQGouJWxKagWRDTPfCsQhd6YVQO4zjDEB0wPUuK/JvWhobkllcncKkAoJi+/EVbObURcit9e4RhbhmGFf17ZMZRpp35mYuMSc8o7SX5GwBOmeGsAKDNlYHCxzhRq1nqBvMyoJftyoBaScgUAXXsj4XfHoLsazdKbyFDo+jLeTKCV1Y/clcQKAGL3HSSxo4o2cJ9YySX5QWEOpM+Hr16MHjz/JehyPa3JnEJzJFU43qW7ZCLdZsfA53/4D6eKjfIy/yrKLc30qA7I+fa/xqEAMhLPhuMT1PYjbrG3LQvIkI5qsu3UiPdZFia+csaDh71iZEsUsScncvEkYFuEuJcBhss32vdUShJ/iWPkF6y+jx/p09yJmgeOIu0ea6VNsMxQpzHGg2im
+ xFyhluam
+ FL3wy/AyQZ/R0E5vb+ZeoHdqY2vEq/1zraKTWlz7vBhhSon3Sh3kHM+i6FpQo3p2bi4VAfpx84PTeH34DrVOygFBtivv86rwSKaEi8HqzJbz4o7sckiIn+07dqcbaQIFzKp5W3T5nkKXJlfDmUvowzwaitpTGyBjnJZTjKoP7ECzxB2G9lndp5DL9xjl34PqKXUGao7mEEVsMTIaVh294gWei4r2strPZDiCwKm26RbwO2dh3LF4zTkl5vmDI9nwRXVGljPwOberH//8hyuBL2A9wBYeMVvB7c7JveAfFViJnPm0NGZRlYtrmBhfLP2q16yJ+pHegvJCIysTpqkQ8QoO3sTWz+Q0xuT+6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,41 +94,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Zhijian,
 
+On Tue, 22 Sep 2026 11:36:18 +0800 Zhijian Han <hanzhijian1991@gmail.com> wrote:
 
-> On Sep 22, 2026, at 12:30, Oscar Salvador (SUSE) =
-<osalvador@kernel.org> wrote:
->=20
-> On Mon, Sep 21, 2026 at 09:20:53PM -0700, Joshua Hahn wrote:
->> On Tue, 22 Sep 2026 06:15:07 +0200 "Oscar Salvador (SUSE)" =
-<osalvador@kernel.org> wrote:
->=20
->>> Why do we need the whole thing to be embraced by rcu?
->>=20
->> Hi Oscar,
->=20
-> Hi Joshua,
->=20
->>=20
->> I believe it's because now getting the memcg from the objcg requires
->> an RCU lock to make sure it doesn't get removed while we work on the
->> memcg. I think this is since Qi Zheng's "Eliminate Dying Memory
->> Cgroup" series.
->=20
-> Yes, I understood that obj_cgroup_memcg might need the rcu-dance, but =
-I was
-> unsure about the mod_memcg_lruvec_state() calls.
+> Fix spelling errors found by codespell in mm/damon/core.c:
+> 
+> - "widnow" -> "window"
+> - "makrs" -> "marks"
+> 
+> No functional changes.
 
-The caller needs to make sure the liveness of lruvec, in which case,
-lruvec is from memcg, so rcu lock is needed here.
+Thank you for sharing this patch.  However, same fix is already posted by
+Adrian already [1] and accepted.  So unfortunately we cannot accept this patch.
+Please set the baseline of your work with recommended ones [2] from the next
+time.
+
+I also found that you posted another bigger typos fix patch [3] that contains
+this patch's change.  That's confusing.  Please post only the bigger one or a
+series of smaller ones from the next time.
+
+[1] https://lore.kernel.org/20260921151547.78472-4-sj@kernel.org
+[2] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+[2] https://lore.kernel.org/20260922031843.2857104-1-hanzhijian1991@gmail.com
+
 
 Thanks,
-Muchun
+SJ
 
->=20
->=20
-> --=20
-> Oscar Salvador
-> SUSE Labs
-
+[...]
 
