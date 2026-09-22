@@ -4,147 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FEBC98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:01:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61308C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 15:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 260646B009F; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
+	id 6AAA66B009D; Tue, 22 Sep 2026 11:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20F936B00A0; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
+	id 65BDE6B009E; Tue, 22 Sep 2026 11:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D7AC6B00A1; Tue, 22 Sep 2026 11:01:05 -0400 (EDT)
+	id 549DD6B00A1; Tue, 22 Sep 2026 11:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D5AEC6B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:01:04 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5893AC0504
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:01:04 +0000 (UTC)
-X-FDA: 85241710848.23.C9F7419
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0DBB38001A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:01:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="YQoRql A";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790089262;
-	b=m0uCe3BUibGUmHETZLFwGRg4VsxF6uAgE1zUoVOAj2dHmXpRTy0mS69+YU/JUivbhMcz5u
-	eVaY/LMbcvpy8vj7fM4ltRKE5GpDRCK1ZLgSTUfKmNDg9S4duqH36zClboJbISkn5QD7rq
-	f/DXo1uYdIkXdMmv82Lx78o3xg82hKs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="YQoRql A";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 324F06B009D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:04:07 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BFF59A670F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:04:06 +0000 (UTC)
+X-FDA: 85241718492.15.AA279FB
+Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7859C1C0003
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 15:04:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Teu4L1D6;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.39 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790089262;
+	s=arc-20220608; t=1790089444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o9S72RBMdjKlGss9mb9QgY9VhBDc0Yamlp03VJXCTdA=;
-	b=7pQq3eDTEiIHlwP8GDsjQa9iaQP0zfK+FoHW6DSd3dSLrkKlkzMmiJQswXLIdvka+G7JxH
-	JMU/CnMpHioi/lsd4nZYZlvsmQ+xuBnKgNKzqj7bvbJh5Bn2+/GBfifpeQrj47tZXJPhb6
-	kvv6SxSkQIFgMVUUozu0wKOWzn/V8o0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=o9S72RBMdjKlGss9mb9QgY9VhBDc0Yamlp03VJXCTdA=; b=YQoRql
-	ATNRjzSo4tfzLdp8oYsJ0SvBo1KTkLRqt607qaRNIvZ2g5JQZuzVCCEgFUjtMz2VquD3wY+AMg03s
-	/pm4eJ6ErM513UHsfCnseVUbDT86OYiWIRa8h0P6NXg3+LAhEo6ylCVcwWFhzpbyIMTNRhFPWyeq0
-	hWBWdEjCNUkOW5W5/W59QZP7jZzWOwgOWWY5wAzg9ZF9054eS9BwWjP5HzWwQPqZH86424rLqk1kC
-	X7S97UVBAZ3mBmrQdELqnPf8Lx8zaldeifHz6Phqmos5P/hL8+biEoETKDmEMS9xUvaoV0FpR52yM
-	AmqO85Udz53r5fw7ZGrY40pSaY+w==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x91xb-00000001f8a-2YPQ;
-	Tue, 22 Sep 2026 14:59:07 +0000
-Message-ID: <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>,
-  Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui
- Song <kasong@tencent.com>,  Michal Hocko <mhocko@kernel.org>, Roman
- Gushchin <roman.gushchin@linux.dev>, Shakeel Butt	
- <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David Hildenbrand
-	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, Kemeng Shi	
- <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, YoungJun Park	
- <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen	
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
- <weixugc@google.com>, Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet
-	 <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, Baolin Wang	
- <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, Michal
- =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>, Meta
- kernel team <kernel-team@meta.com>, Linux Memory Management List	
- <linux-mm@kvack.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Tue, 22 Sep 2026 10:59:05 -0400
-In-Reply-To: <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
-References: 
-	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
-	 <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
-	 <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
-	 <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
-	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
-	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
-	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
-	 <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
-	 <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
-	 <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
-	 <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
-	 <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
-	 <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	bh=un5kxF2Be0qSZZ2fJVvIy7S7fFkrTBjmPHWE9HhI63U=;
+	b=kaZ/BRczLIWy9FNgxELpVn8ymhd9Yl9hWpZ1QhaP5Eiv49KIOwbwX/HgWTGawmJkMdQ5Vu
+	9eqhM+DoyYNrevzJqbk5HhsW0y6s4RnKqmkpEV1muV96VyYPs1z/8F4c/R1tQ3V+fizOrV
+	g4TyLX0hwiPbCnscSlXnimUrMpv2iIg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790089444;
+	b=Ox1hs96RRJ37WzbvcxGsCLVgwJs5KwGcvZ/Emga72gev6czDvFYgVOOxNDkFb2684wzDt2
+	Fdd4niJ8Yw61j9fiKpWfEhO/B+ejOQsaKWW+rMcTo86raYAuYrv3gkMihWIXlM8dLRTVY5
+	nrzx1Fo3D6JMsKhuzLDNP4M0qKy55z0=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Teu4L1D6;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.39 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=y+LCUdEE09122n2Tb/Z0cY6K/0y14n1YrOrFxuwwzs4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790089443; v=1; x=1790694243;
+ b=Teu4L1D6KPXdg4JlVg4TkEg0rMIvLZ70JP/YisX9QG+hn42tg+BkITgA3qqgnagTlPDoOyDg
+ qf4ssTHcPGcEsbHWjrx74snP44XIbcjlm57sQhytZiAh3vkjZudYZ+os2D2zP7JrXo/rPKKvSiz
+ WvKPGIvAOrdHPprQe6AJqvl8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 56074787bb66b1d3;
+	Tue, 22 Sep 2026 15:04:02 +0000
+X-Mizu-Trace-ID: 56074787bb66b1d3
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <1fe0f6d0-1d99-45f6-bc3b-7e78dc6047f8@linux.dev>
+Date: Tue, 22 Sep 2026 16:03:55 +0100
 MIME-Version: 1.0
-X-Rspamd-Server: rspam06
-X-Stat-Signature: w51o8hat8ztssr9xxhnw6tn5z37xuxw1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 02/29] arm64: mm: add PMD swap-exclusive helpers
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-3-usama.arif@linux.dev>
+ <35e42ccc-df8f-4703-b10d-f7c96b263e98@kernel.org>
+ <93e71e27-86d7-4853-bbd2-756ac137a925@linux.dev>
+ <64b10ef4-428c-47dc-a97c-59ba178a9044@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <64b10ef4-428c-47dc-a97c-59ba178a9044@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0DBB38001A
-X-HE-Tag: 1790089260-944056
-X-HE-Meta: U2FsdGVkX1/6P+s/Mp5ZaVu/9Qw3o1odMuE7Kq8Jbw/80pI9T5YBvz0s9MObXrA8j6xBMZw8hfBy6cw15DeR71Px/YWgPXZmw5MTjXF6C+9nNGyl733lvldrzZjTsvBkpFjiRDm46b0zMHgQfP240rXHogUF/nDkxbQuS7BLOoXZzcLjE0lX+iVtjrknKydJQ5QsM84RqTjgEo1h4JQxJyaZF7SeB3MeKZZjMFNl9x+JJjqoGOGyVBgBdceDKVDShJX4oZSu4VjUdRhxcE4oo9g8C2+D92lezF3vSvTHTdRn4beDD5Z06mRoDpVsalvl+2jU90+vg2CbM3QE9++bRmo2MTIrE/r2byVumYdauUJk18ifekG/hUph6chp9BpCQJTmC37i/JqpVObEjXAyR+MXbROCSU96wBBXAmeauGpMz1I4yhKt1z7nFTCugH1kw2jl+SvrXQZev1DrNTQ/5GPmBuCLFh67rFhurWtuCceLC1pd+aUPD2+vZVgSmu46DfeaGjgqUq0Ec90YBQuElmmRkGHkU9dGqJiXxouTxsdPzSLwtbK0IMrc5KNRiq4cvAdk5fq5sZO9deNCJfk1+zSHk91zOr+ZVeGVpdHQuUMowHiljO22NyLAkDS9R2EhSClaT3KCr2hCDoqghdS55sgL/NUUtZ5YsjksouoRtH+HkVkccmo57LnuAGtZbGnNcCNtaZRk/WpXVo1qO26G6WTOJlEspIRniBs/HJLSd3OysDazOIMSfQiZ4O0VpdTiULsQds0W2/ln09qCoLo48GXaftEHa/6hAzfhNixqW/A7UtpRTv6geoDYKDkbv9g4+uFS4FWORrwOaTQd6zOlfMZw//uSqIjDMQfS9t/ov+ktZLiD+BUS0JG6lQKT2xly1WoDFk2aL46d8/j6+6Uwad60EAqmGroc/shAPiKdizhpKe9COHPfEekVwCqVDQZW0He+giffhdd07xkLlTd
- Vimo7keR
- v1XLKK6FZzv2cbNtodlSsffGq8N5XWVLh5W9wb5Z2EmIVCO8FSC+BFFAZfeTo9PWyVO7lTZjlVpIZfqLus2+hluBTEpgsXAnSBddi+k/dQ0SJV1GVGgPM7iX1/Z0KMcPZDRnP11Y/VSnuimoYKBRPHgJB17aRZSKVPkOGacrp5vHYO9p3FZthxeCbBrmo5IwUU1Z08q6W8jYyGxmvzYFqSPfUnAXafzi4AATSva2zqE1F5/VBbOmDYJ3EI4D7BzTdplvcO31GtutLDgUVHCnr0LBFgUFcqiKYmRTZH7wXxmxZ6pbEKum1HRqLPH/zLZH1EG7lC23VyWRBWvSpbdIH/Q47tZG3vOq4IdXuH5HQtuDrxrF95YhZl16VGZo4Co6XPPYuiVUrhcWjdxugZ5J/0lEcPIczHLaUk+nhvR9GENDaeTjKlPBT1AM7OzFguTXSG+TMzQBceMpHOgep5EgnSlz0a2x5eUlZW1l0dIDkLvqhx+eiFEKEi19gWg==
+X-Stat-Signature: ojx3jxi4hh9zftn3pn7h6e95ezdwrgdn
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7859C1C0003
+X-HE-Tag: 1790089444-302430
+X-HE-Meta: U2FsdGVkX1+ViM0FbEVDAZeuilYCPvqF13EHPZygPenykT1gN0t0BhTI5LZ8RFBmY4BDvGWJvFqJ5e5k4cesRrR37NtggPf3wh1CKNh7u2uaSe7Y8wLPjp1vmSWHfEMPv8mHo6AL65M2ODlQ6/QyAM7ftL0MLaipgj6CoYnXTeZ/s792WP/8hr7Up8asV5NhepUkRcTH05pX2KS/iXAu+1B7Oc5ns7Li19cOixifQzvWoPCvsKwS2gjriHfz780wNeP+XI7oJQKmJ2tgfCHbIskITZ1wV8X8Gc/RGCQDP+jGKjlLt1IzhGBEF3/NSVbUkhiZzv9AH6uHV88rQ11oTz4R8OJPORLzu3ZMTbL0WKVuLpJwgUijQ32v+suSLeZI0h8CAMKgQXhvtBcTw0rLZbTNCep3R0gNAyI2aT6vUlTma5bwhCr3ov5nsvzQ+KMUbrfV6tWw+Sow63rV9yipDPGUUl09R+gvCKE6WHHT5yHj0VOeY0/tuZCwnbFQiGfgfWGjtDzyyXeloJJ4Lv/6akQ+lQdi41R41HO9lOLEmy0QxGLfvg+XVkrz9OeDn0jE1l9bnD2wC7WNaEJzr9rjK/DRHNsNW7mYN88rd2fbBZmsQC4Qs/Vij2pEh0Fgr7ON7cE67cUn3iqrMo2M6abzxo9AxMPec0Ul2KMVh7gTHbUkvVu2LuhWHFpblXrHNbCOyzAvRTogwsDuYSyj/GtS0skctWWHpvg666SwCckCsSZUI1eVGNz7oQNZYhwX3hpYlTnjFQW/ryIgOG3kiy6BP8S4EiMyOq86lg/+Ckp//HvZfwllHAnloaoTXxwnKw+PR5Bag+pkLTb2bAh5VOmADPG7rgF+1MKNi4fo3v+/QEv2NFrC7S2xG/HScxTTwp7knYeZ1cHAwCE2Sq4FJII3Nx2dcM+uFeuAZ1gGD9aPMjCBgQNoWcaSyxV28wO1qxnAXrAj5ihEDCbd5noozPQ
+ 3jvPk1w0
+ 60PHL6ttSoQrEnZu5q2Lcm/ImGPUJd4L2VKayI4czxt6214IirWsm3rJtZmsehAJuug92h3AqBBh1Vop4ic3fnbCtgTW4JWpSw5haoJyS0TqkITsG9GKeuxk2j2H2yyudyjIBdMNGCrN39ZpEzJTnpcge9SBc9kX92GaovHFyqaEVwWy+Vw9RyNPK6z6vZTM5t+cwDJqQIOh1YeFA3You+6GNZ7NKANkjOePiNQLCokoU/B9GNV3hq5a6mx8oyesHqPE17fwbd0pnYMP+fm4raJN0cT+TNvBsfrrGAbb6aa4AqgLFY8TB97UWhsQ/T1gzoPjdDje7lw8A9PAK0Gy6D4Xk9tuu64e9xR0KLT2OJNjGc8Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,105 +105,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2026-09-22 at 03:32 -1000, Chris Li wrote:
-> On Mon, Sep 21, 2026 at 8:53=E2=80=AFAM Rik van Riel <riel@surriel.com>
-> wrote:
-> >=20
-> > On Mon, 2026-09-21 at 08:10 -1000, Chris Li wrote:
-> > > On Mon, Sep 21, 2026 at 6:40=E2=80=AFAM Rik van Riel <riel@surriel.co=
-m>
-> > > wrote:
-> > > >=20
-> > > > On Mon, 2026-09-21 at 06:31 -1000, Chris Li wrote:
-> > > > >=20
-> > > > > Give me some real-world examples of people hitting this kind
-> > > > > of
-> > > > > limit.
-> > > > > e.g. MAX(%)=C2=A0 > 100% and still have a usesable system. I
-> > > > > suspect
-> > > > > that
-> > > > > with 100% zswap usage, the system becomes unusable. Please
-> > > > > show
-> > > > > me a
-> > > > > real world case that proves me wrong.
-> > > > >=20
-> > > >=20
-> > > > Here's my desktop system right now. The amount
-> > > > of Zswapped is more than twice AnonPages, and
-> > > > the system stays perfectly usable.
-> > > >=20
-> > > > $ grep -E '(Anon|Zswap|GPU|Swap)' /proc/meminfo
-> > > > SwapCached:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 252340 kB
-> > > > SwapTotal:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 41523604 kB
-> > > > SwapFree:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 9802088 kB
-> > > > Zswap:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
-8812236 kB
-> > > > Zswapped:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 24927876 kB
-> > > > AnonPages:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 11615760 kB
-> > > > AnonHugePages:=C2=A0=C2=A0 1402880 kB
-> > > > GPUActive:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 13112428 kB
-> > > > GPUReclaim:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 95980 kB
-> > > >=20
-> > > > This is also an example where I cannot really
-> > > > predict how much zswap space I need, because
-> > > > that depends on what AI model is loaded,
-> > > > which drives the GPUActive number, as well
-> > > > as the number of browser tabs.
-> > > >=20
-> > > > The system is perfectly responsive.
-> > >=20
-> > > Great, that is getting somewhere. We are talking about actual
-> > > usage.
-> > > I
-> > > really appreciate that.
-> > >=20
-> > > May I ask what the total amount of memory (RAM) in your system
-> > > is?
-> > >=20
-> > > I am not asking zswap compare to ANA memory. I want to get the %
-> > > of
-> > > the total RAM.
-> > > I assume your desktop has more than 8G of RAM, right?
-> >=20
-> > Right now it has 64GB of memory.
->=20
-> That is exactly my point. You are running 1/8 =3D 12.5% system ram.
->=20
 
-> My point is that, I haven't seen a case where the application is
-> still
-> usable with a reasonable SLO when 100% of RAM is zswapped out.
 
-In my numbers above, the applications have 11.6GB
-AnonPages, and 25GB Zswap.
+On 22/09/2026 15:45, David Hildenbrand (Arm) wrote:
+> On 9/22/26 14:34, Usama Arif wrote:
+>>
+>>
+>> On 18/09/2026 22:11, David Hildenbrand (Arm) wrote:
+>>> On 9/14/26 14:27, Usama Arif wrote:
+>>>> A later patch keeps a PMD-mapped anonymous THP mapped by a PMD across the
+>>>> swap round-trip, so PG_anon_exclusive now has to survive in a swap PMD and
+>>>> not just in a swap PTE.
+>>>>
+>>>> arm64 encodes a swap PMD exactly like a swap PTE, so the new helpers wrap
+>>>> the PTE ones and reuse PTE_SWP_EXCLUSIVE.
+>>>>
+>>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>>> Cc: Will Deacon <will@kernel.org>
+>>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>>> ---
+>>>>  arch/arm64/include/asm/pgtable.h | 6 ++++++
+>>>>  1 file changed, 6 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>>> index e89ec5f4787b4..d3f53a601aed3 100644
+>>>> --- a/arch/arm64/include/asm/pgtable.h
+>>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>>> @@ -599,6 +599,12 @@ static inline int pmd_protnone(pmd_t pmd)
+>>>>  #define pmd_swp_clear_uffd(pmd) \
+>>>>  				pte_pmd(pte_swp_clear_uffd(pmd_pte(pmd)))
+>>>>  #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+>>>> +#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>>>> +#define pmd_swp_exclusive(pmd)	pte_swp_exclusive(pmd_pte(pmd))
+>>>> +#define pmd_swp_mkexclusive(pmd)	pte_pmd(pte_swp_mkexclusive(pmd_pte(pmd)))
+>>>> +#define pmd_swp_clear_exclusive(pmd) \
+>>>> +				pte_pmd(pte_swp_clear_exclusive(pmd_pte(pmd)))
+>>>> +#endif
+>>>
+>>> Why do we #ifdef that here, but not the uffd-wp swp PMD helper?
+>>>
+>>
+>> uffd-wp is gated on CONFIG_HAVE_ARCH_USERFAULTFD_WP.
+>>
+>> If I removed the CONFIG_ARCH_HAS_PMD_SOFTLEAVES guards above, when THP=n, arm64
+>> will use the generic macro which is wrong.
+>>
+>> I tried building uffd-wp swp with just ARCH_HAS_PMD_SOFTLEAVES guard and I got
+>> the build error 
+>>
+>>   mm/page_table_check.c:232:20: error: implicit declaration of
+>>   function 'pmd_swp_uffd'
+>>
+>> we will probably need a separate patch like:
+>>
+>>   #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
+>>   static inline bool pmd_softleaf_uffd(pmd_t pmd)
+>>   {
+>>           return pmd_swp_uffd(pmd);
+>>   }
+>>   #else
+>>   static inline bool pmd_softleaf_uffd(pmd_t pmd)
+>>   {
+>>           return false;
+>>   }
+>>   #endif
+>>
+>>
+>> to avoid the above build error.
+> 
+> Just to explain where I am coming from: for all these patches I took a look how
+> the other pmd_swp_* functions where handled (and separated from the pte_swp_*
+> variants). Nothing earth shattering, was mostly looking for keeping things
+> consistent within these architecture codes.
+> 
 
-That is about 68% of anon memory stored in zswap. Not 8%.
+Makes sense, this is how I wrote the functions as well, just looking at the
+existing functions.
 
-Out of (anon + zswap), zswap takes up 43%
-
-Can we at least agree on the observed numbers?
-> >=20
-
-> > hen the amount needed to fit a workload
-> > does not have a positive correlation with
-> > the amount of system memory?
->=20
-> It absolutely has a positive correlation with % of the system memory
-> based on my experience. The % of memory swap out has a very positive
-> correlation with the thrashing on the application.
-
-The applications thrash much harder once zswap flows
-over onto disk! Out of all the swap options available,
-zswap is the fastest, lowest latency one.
-
-Forcing things out to disk "because too much zswap
-is slow" could just slow things down further.
-
-Now, there is probably some upper bound where
-the zswap pool itself starts to hurt performance
-because it's crowding the applications out of
-memory, but that could be quite large.
-
---=20
-All Rights Reversed.
 
