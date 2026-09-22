@@ -4,90 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D07E3C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 10:57:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C12C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:10:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA86F6B009D; Tue, 22 Sep 2026 06:57:14 -0400 (EDT)
+	id 9B4CE6B0098; Tue, 22 Sep 2026 07:10:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A35776B009E; Tue, 22 Sep 2026 06:57:14 -0400 (EDT)
+	id 964BF6B009B; Tue, 22 Sep 2026 07:10:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 972EC6B009F; Tue, 22 Sep 2026 06:57:14 -0400 (EDT)
+	id 856906B009D; Tue, 22 Sep 2026 07:10:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71B826B009D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 06:57:14 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F2DAC8042A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:57:13 +0000 (UTC)
-X-FDA: 85241096346.15.736349F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B6F56B0098
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:10:49 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E10B91203FD
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:10:48 +0000 (UTC)
+X-FDA: 85241130576.28.DED41F1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5758B4000C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:57:12 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rq2lHonw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 13AF4C0008
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:10:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cw/Zr3ZL";
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790074632;
+	s=arc-20220608; t=1790075447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UB96pS2lXgKbRferXQ6MVjY4lTebWD1sRvTJ4mcNWqk=;
-	b=2+cU87nK/HK5nhF8MwI7wtwuRuEig2PFSovEwffxiLPICEG2UVSKnQ8UL8fQsXhEquGjRq
-	oaxV8/Vd7eAh2j7dY3YC4p+FShSRQrsw2lP+vB07cy2qcD/d+66zvEVvqVFnZGXfRZyHU5
-	q4SEt1x680rX4X8NpgfHT636wYEz//s=
+	bh=FWjWwozCfG09p014wbFDCqQeW+3NpBoNoOf7ed+0xEM=;
+	b=mOIL80AX7Dm7kGnDvsLJ5Jlk/IIE6WXkzgL/XRcJ4ohKXSvToiW15hhn9jIqEXTI44sT0w
+	cmrPobHvaYN4V0zWegXxZ3BiENlDHGxVvHyTRazdnSqzOeq1gSh8kh8SF2uWVtk5MWiQ+4
+	wb4D2LzYm6YXv8s+8jomi5e7VvLSomE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rq2lHonw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Cw/Zr3ZL";
+	spf=pass (imf22.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790074632;
-	b=Z0VcGWgRUt2NJ6wMaHYoCMxpcYtKd4kdAWV6eL7nvzX3xi2zudF54jnXFjIxnWiyqASobB
-	CxXsHqSdHAVevS7y5eKfzYhIDlg7y5Koqt9MKWViD+UeHKZyeEthUe3aaxhQzMUMk+JtYp
-	l9mWLGOKf2cu0DIF3i2nIzzXBQyWi1I=
+	t=1790075447;
+	b=gvCR+fTwMQ1NEaTNwgbHjb/FH0IubZO9q8f8lobfaxGCOjH13flaSjnLtT202ms0Ey7wMz
+	ie/4EtqZTw+MQYMYvGYtQ7eGuAuBY4LEDouYR2bsGWeYustTAbJAbD7Kf1FljyFBPXOXO8
+	NZhDfGVytJQuf0q6C6UdtY1xf+oxDcs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2AC4B601F7;
-	Tue, 22 Sep 2026 10:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502211F000FF;
-	Tue, 22 Sep 2026 10:57:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3726560E13
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:10:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16421F00899
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790074630;
-	bh=UB96pS2lXgKbRferXQ6MVjY4lTebWD1sRvTJ4mcNWqk=;
-	h=Date:From:To:Subject:References:In-Reply-To;
-	b=Rq2lHonwYPyCf0LLYZb2zrrKIpjLsvWXDigwiH5+Vfw1oOnTbWsoaDFGlnn8yAkKl
-	 YBtUcTcqQ6S8bDc3xrwMdxRk7g9MqnsSrnTti5Dv9matZxJl+3v37KxReqYELKuHDT
-	 A1MxyhZaHxRuSiSDIeTSL1yOggks0CmlBEhGuKS4phKSLfzIhy3hGLXx6xuX+3To7F
-	 T9x32aqA7aV1zpniyrAHl0cauBnGJ/2lkq80honi2zzl31bFmeIdOGlZPLa6tk45uH
-	 Jpok/CVRDPvfYy5nB+eP3YDsKHSCeV01tKRv2gnUbIm2pKCzR/BdcVSsa6x9ymPLQd
-	 cuJMpvaYGHv/g==
-Date: Tue, 22 Sep 2026 12:57:08 +0200
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com, 
-	will@kernel.org, rppt@kernel.org, akpm@linux-foundation.org, 
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com, 
-	ardb@kernel.org, david@kernel.org, danielmentz@google.com, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, op-tee@lists.trustedfirmware.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <arJcN60nagFKXj2Q@orome>
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
+	s=k20260515; t=1790075445;
+	bh=FWjWwozCfG09p014wbFDCqQeW+3NpBoNoOf7ed+0xEM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=Cw/Zr3ZL8HZC88La1lOAIil2qn+N0Wq/11RMxuhFvv4Pra0o7BYINUytDkgJy3cvR
+	 AcDR6onlpqTgNzpGen+1dmUMA6eHvteT2O6Wt2tnkkxPxOB+TXVaj02L/r+bIGaxqV
+	 5xlPUoGD5duVFr+uIvqJiFkyQWUs2mQMnU2fAlgLHqwN98mgiBtK9X+3rpXK/+jSW0
+	 Ev0I7iGWVcAAnsuoQvanmTc5/742tVAL8V5Kyh29sslKu9MUyGE1gQNfuu6RQcu9kD
+	 TooBDUL6qTxWaFkT6eLm1NcHjI4k772uSTKdQVxvnu+p7Xt9x1kqxKZBKtOQtSlPDc
+	 047DT+b2taTrg==
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93910ad2273so476993885a.0
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:10:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxJPjls/iWpt3vPwIQLGJRBtn0Ma4baMtIiDq7XgBbZYbi0zQqUH5LgVj1zzzRIBQPl2kZFVNpQjg==@kvack.org
+X-Gm-Message-State: AFuF++k2oDQr3+qox8CN4zOIlAQG2com10bxFjn1jYoUH6ke4LUcD1HD
+	Booh50QO3qQ6NeZVM5O9w9MvwZLQuqrui25ZGMVssn1Y3/jx1G2oUjDAXticCXWXI9ZzEG6l86O
+	MIwTBviwCScIw6/M/goBL4gdxMBLMshw=
+X-Received: by 2002:a05:620a:6cc9:b0:939:6de8:43dc with SMTP id
+ af79cd13be357-93c15e78cefmr509373185a.48.1790075445161; Tue, 22 Sep 2026
+ 04:10:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="d2bniudpfuafwp74"
-Content-Disposition: inline
-In-Reply-To: <arIYtjmSKCs14SqO@sumit-xelite>
-X-Stat-Signature: 6x59jcrdiwxq6k8jthwfrxh5c9383f6n
+References: <20260921152449.629486-1-alex@ghiti.fr> <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
+ <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
+ <108487b7-0529-4282-b5f4-355804b4c0cf@kernel.org> <CAGsJ_4zGmGh70QtRBpnhueev3qt_bgB4ZiE9fkW-hgNjAVhv+w@mail.gmail.com>
+ <arJcPIaqJOzLpkel@gremlin>
+In-Reply-To: <arJcPIaqJOzLpkel@gremlin>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 22 Sep 2026 19:10:34 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zLY6eZWUufuVqLgEVf93G1JoKtk9ObftkoTwbAimG8Yw@mail.gmail.com>
+X-Gm-Features: AcwNN1WGDooBKfoE6NAcLPXoe3osiB8r5tT_HlJWIcwGy2CzV98OLFsDfzwfKSw
+Message-ID: <CAGsJ_4zLY6eZWUufuVqLgEVf93G1JoKtk9ObftkoTwbAimG8Yw@mail.gmail.com>
+Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback completion
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, 
+	willy@infradead.org, jack@suse.cz, liam@infradead.org, vbabka@kernel.org, 
+	jannh@google.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org, 
+	chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu, 
+	hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5758B4000C
-X-HE-Tag: 1790074632-129325
-X-HE-Meta: U2FsdGVkX1+1ViFXpbQodqNBKWFAbCHCAKfFG4FmPOMUlHusKLzQk4yZd0Lp9QgdayKNWJ2rnFEgh2VvFZ5/3G254mToeTU5GQ/QtBiz8lneJKg4jWqfk0BkgbOkZlMsPBvMQyDxz94URpaBvpwkK19XDfEf6jEB8Zbdo1pjsEWPYsm8d1mC/pCQvMMMu77nhK9lSymmd+bBZOC16lJMPMqefTlQhZ3F6tGXxIoGP/ga1hGg0B+6UeOOxIPwbE0A544HBLk3WLK2h1vpoj21FCGKdml+fbgf4ADP9KtjN4Nqib8v+33LPqKpFHINE1U1QLBgsWv6ctT1C+zxAJyf6eLRQKU8nXdSC/z28dqwFgK/5yTS4VNkmfwnxcKDNBLZ5VFkGBMjymx4q5vZFOPPrVLFeLPl1iE0/F8gQoMUqhIn7p8wz1epnEvx5DGZnAE0wG4SFPgoWsjSvIjIYFGJcsc8yHjcm0i2qE1qGc8RgL+78TBGOpbtYkAuV6gNPit4Y0l/ki1UA3sUcJyGgXP7ihPx4M/0KZvbZAT3iUV+ijYmU9Ojvlh/FlvXV8ddN2zUs4yh7BBkXyBid5VOx3A07Icy4uE2J9AIOQP4ei1W0jzl8o4uAVL1OSNXTkWKOdG9nKd49zyhN6FSQR/PWbWkJBaZAUU6vJ8Jzx9hJyTvUN2AKJk7ltArThUQxMWWnE1K69my7gRcnosXqbOcvvXlENLLKslcJyMAj64E6nXRi6+YMXYGfyMyuD/5AOkKJVQ17hLja0Dh5xwdZrYEzMIeo3uidP3DpkSdvEGFRdtQ83XN4lejHrXTGN3rIYoIAN3T8VQ/di/DFuYluwJTppl3C54ah2luy/VNJD32KMV7WwNQtHDbXHHCALpTzHGGfJclwEGAUGWGuSKfEULlu3O2Z8Hs/Y02mGwsIQ4hFJk/rVoRkErbnON4qsHE6neGuGkJ2nlHQYSBsGVuC2aIEu3
- AKFy15YW
- mtYd2+jCN3vGG+GpwaKl41oeeq7sTTe2xzMy3zJXwpMryskX30G4Y7/jb905Ia9YbeeZL24cseWzd3mwlO7OjUSePksbWzjc9KB+h9D4019CsjYAo0JF1ZBOCPLhXsOVPW5JXZLCm0ODNthoar/ZWrpXzmuQekl17bGvxNZKo8SkV9+QfN+k7PmqENU3hiIV+QvcKbkHJSsv5wRYrSk8K5FyVFmVEZCUyDEDCJ0CYL+FiGG3/u8zc7mvJ9PHbuGZEPnF6E9IJ0i+x8Oc3EDeugwwfoc2zmEqKDYi9FAYG00X1/v/X8z7NVFco0lT3d/seRdn51csK1Gdy40m4PgqwqOHwrL5ovbJTe+dxcVxeiTk23bov/073aSb6p3oRyF+EPNT4WNQVgTMh+8n7wCSrOud9UA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 13AF4C0008
+X-Stat-Signature: qif5ohwwy1ay36af1sscw8zc6kri995s
+X-HE-Tag: 1790075446-564701
+X-HE-Meta: U2FsdGVkX1+DIyJeqIkwocQjoOikrh8pptf4dvDttLt5Jf9dCj5QHUe2MqirLc2ruaUbrr2AMIOK1ZbD039JblMP+9DiogGpJfI0lX4sySTwIK6eeXTyvIHCIQ2Kllqujgpabneu08rbh4FtuEzxdz3g1r5jJxbJd3XaGP7yNslQWrqVu5YEZPOQ94dKEIywM6pEcAF4Y/NbfTtAidroLzcKE6b+FAzac8iED/+POgtnUTcd78P90DVXHS/k/nw7CP8E1I9D5X4LyEFlYreZyPb1uJd2zoGjV4N2hgV9oxJ08VHSj3EhuZQCljS0q13Wrb8dKUS+CDcbVD5r2vxV8sB2gtctLS1xSyFfBxCXROHy49ztFQNShhIOuJCkMh3aOOQBrbftMdUj0iczBT1zgoy6BnWnAtB0UmKz0yhx310uxJvaW3+9Av7PQxh5rEdTOGMsnOwNHZkGy8RtsvwEF7E/nJhmNRL1tVrgy+GUvPTTVcGzSp8lO05aULcaRPoZBaDf88HEs3FrHs06ZINRMe4Lb8iJSGe2q8ONfRqdIRXAOy3HmH98br2PzMGYw8EFgyr/LPlvb2gilaoU2UPYcAHksbd9hBo6i1smjqVnj6RpKzNf8nstupmG55hlT87p7dVbMMOpFozN2NoRpuYfTgn0t27Rr5hwjBS81lM6mNXGn9HEpjWRplodo/J2b8OdgQ1J7qEADuA2oA+P3hKsPzURlqbyfL4IObC+c7he9O7sRGhdtwODLWoekjcrBrqFXpRR4RyeN5Oiyuwwd1YsxX3eOe629LoxaWZQxhJj8FUflXtdQ8aqCAkzK9zX5JIrSsppWFWrcBp/QMOeF6l6g+6XnkCj+u0A3BZAUJZyI3j71c89xjv3dVeybM1KqVLO+7wHFDqhAAxg6f4E+GBKlNgTm9Bt0edF7Wi8dBBdxb6MMH45xfi4JpFTyvosb/TONScRf4NjXs//inh5Bn8
+ F6uaLrzw
+ +YxVouhtFxXOuV/6anLJPVddMeNmpeV1/RyUGT4wmUP6orAIUAtuM0FUf9GzHiUWD3bjqaV5QF88vVO9xwaqHvWEWGlURc+9+FHhp+b7y5QoxInZJ+eS8ckzsYp+OsDU+Nm310s1O6T/bXjzAaRciCQwJLISC2liR/g26IGNBSgr4RNELv88bU3HIBmrMTDiK8T5oBnb6ve74vtyOYOsWL9Onmg+UKcZLT/gYvtKf/xPXA5VayYmjxR2F77rfiBfuD4U5I/rM52LbvbnfR4CuUPueVl2gAFJLQabB1gRGzHuK/dhU8xO0wiX223fv0wCsSQ2X05DquiOWhVZgZzpK2qQ+ABpGioym2y9hxFxIDNBUxoXi7G4jNgjMQUlITn3PsD9u2ekYgnqiv63wRqb8bGe+nljh8iRXhWF05TgTdFu444a166+lia1viw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,115 +113,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 22, 2026 at 6:47=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.o=
+rg> wrote:
+>
+> On Tue, Sep 22, 2026 at 06:37:38PM +0800, Barry Song wrote:
+> > On Tue, Sep 22, 2026 at 6:20=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> > >
+> > > On 9/21/26 23:56, Barry Song wrote:
+> > > > On Mon, Sep 21, 2026 at 11:37=E2=80=AFPM David Hildenbrand (Arm)
+> > > > <david@kernel.org> wrote:
+> > > >>
+> > > >> On 9/21/26 17:24, Alexandre Ghiti wrote:
+> > > >>> On an asynchronous swap device MADV_PAGEOUT only marks the folio
+> > > >>> PG_reclaim and rotates it to the tail of the inactive list once i=
+ts
+> > > >>> writeback completes, so the memory is not actually freed until a =
+later
+> > > >>> reclaim scan removes the by then clean swap cache folio.
+> > > >> But we have the same behavior when just reclaiming memory ordinari=
+ly? It's added
+> > > >> to the swapcache and only the next scan actually frees up the memo=
+ry.
+> > > >>
+> > > >> Wouldn't we memory we reclaim ... just gone, like in the sync case=
+?
+> > > >
+> > > > For synchronous I/O, such as zswap and zram, the memory is released
+> > > > immediately after sync I/O is done.
+> > > >
+> > > > For asynchronous I/O, such as NVMe, the swapcache is currently
+> > > > expected to be rotated back to the tail of the LRU and wait for
+> > > > another scan. Alexandre once mentioned that when he tried handling
+> > > > async I/O the same way as sync I/O=E2=80=94releasing the memory onc=
+e the I/O
+> > > > completed=E2=80=94he saw some regression. So, delaying the release =
+until a
+> > > > later scan may allow swapcache hits before the folios are eventuall=
+y
+> > > > reclaimed.
+> > >
+> > > "may", do we have any evidence that this actually is relevant in prac=
+tice?
+> > >
+> > > We asked to reclaim memory. We wrote the memory out to disk. We unmap=
+ped it from
+> > > the page tables. We made the workload the could, access the page imme=
+diately
+> > > again suffer already.
+> > >
+> > > We should just evict them as soon as possible to free up memory.
+> >
+> > I suggested this to Alexandre, and he found that it could regress some
+> > workloads [1]. That is why Alexandre is only making the folios
+> > immediately reclaimable for `MADV_PAGEOUT`.
+> >
+> > See Alexandre's description:
+> >
+> > "Future work
+> > -----------
+> > Barry suggested extending this to MADV_PAGEOUT and general reclaim. I
+> > prototyped dropbehind for all reclaimed swap folios and it regressed
+> > sysbench OLTP throughput by ~15% on NVMe swap: dropping the swap cache
+> > immediately turns cheap in-cache refaults into disk reads and collapses
+> > swap readahead clustering. Neither blk-wbt, mq-deadline nor a PG_workin=
+gset
+> > gate recovered it. MADV_PAGEOUT alone may still be worth it, since ther=
+e
+> > userspace has explicitly declared the range cold, but I have not measur=
+ed
+> > that case in isolation yet."
+> >
+> > [1] https://lore.kernel.org/linux-mm/20260921151306.625134-1-alex@ghiti=
+.fr/
+> >
+> > Best Regards
+> > Barry
+>
+> This patch as-is is just way way way WAY too complicated and fragile IMO.
+>
+> Whatever cases you have found, they need to be fixed somewhere
+> fundamental. All of this feels like a hack.
+>
+> If you're having to write a comment like:
+>
+> /*
+>  * If X is Y, but not if B, and if Z is J but not if the moon's bright at
+>  * night, then maybe we will foo the bar, but only if the baz is blarghed=
+,
+>  * ...
+>  */
+>
+> That usually means you're doing something horribly wrong.
+>
+> And this patch has multiple comments like that.
 
---d2bniudpfuafwp74
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-MIME-Version: 1.0
+I'm not quite sure if you've read the context carefully :-) or why
+you're angry with me.
 
-On Tue, Sep 22, 2026 at 11:27:10AM +0530, Sumit Garg wrote:
-> Hi Vincent,
->=20
-> On Mon, 21 Sep 2026 at 12:00:42 +0100, Vincent Donnefort wrote:
-> > This series is a follow-up to the discussion that has started here [1].
-> >=20
-> > When memory is lent to the Secure world via FF-A, CPU speculative
-> > accesses from NS to the lent pages can still occur as long as it retains
-> > a cacheable mapping to it.
-> >=20
-> > Ideally, lent memory would be "no-map" but that would mean giving up
-> > MiBs of useful memory, so let's try to do better with the help of a CMA
-> > pool.
-> >=20
-> > On arm64, modifying the direct map at runtime is generally restricted
-> > because the linear map defaults to block mapping and splitting blocks at
-> > runtime may trigger fatal page fault, unless the CPU implements BBML3
-> > or the entire direct map was mapped at page granularity from boot.
-> > Forcing last-level mappings system-wide incurs a severe penalty we want
-> > to avoid. Instead, this series introduces targeted last-level mappings
-> > for designated memory regions, along with the "arm,ffa-lend-pool" CMA
-> > driver to manage unmapping and remapping on lend/reclaim transitions:
-> >=20
-> > 1. memblock:
-> >   - Introduce MEMBLOCK_PTEMAP to force PTE mappings only for a specific=
- region.
-> >=20
-> > 2. set_memory infrastructure:
-> >   - Introduce can_set_direct_map_range() to check if a specific address
-> >     range is mapped with last-level entries and can be modified safely.
-> >   - Introduce __set_direct_map_*() variants that bypass redundant checks
-> >     when the caller has already validated the range.
-> >=20
-> > 3. "arm,ffa-lend-pool" driver
-> >   - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
-> >     unmaps pages prior to lending (ffa_prepare_lend()) and restores them
-> >     when reclaimed (ffa_lend_reclaimed()).
-> >=20
-> > 4. Optee support
-> >   - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" f=
-or
-> >     both SMC (via DT memory-region phandle) and FF-A (via
-> >     ffa_lend_pool_attach()) transports.
->=20
->=20
-> Thanks for your proposal in trying to solve this hard problem of
-> unmapping pages from kernel linear map. I remember discussing this
-> problem last year at LPC too.
->=20
-> Have you had a chance to look at a more generic MM proposal around this
-> issue here [1]?
->=20
-> One of the major concern for me with your proposal is tying the
-> protected memory allocation to fixed sized platform specific pool size
-> based on DT. Then the cost of granular mappings/unmapping if the
-> platforms choose to enlarge these pools.
->=20
-> As you maybe aware one of the major use-cases here for protected DMAbufs
-> is the secure media pipeline use-case which is memory intensive
-> workload. IMO, the solution proposed at [1] seems to address it although
-> people have flagged rough edges there but should be addressable.
->=20
-> Can you try a port of [1] for arm64 since the author did all the work
-> with x86 as reference?
->=20
-> [1] https://lore.kernel.org/all/20260726-page_alloc-unmapped-v3-0-6f5729a=
-a9832@google.com/
+I did suggest that we should reclaim memory immediately after
+writeback completes, both for general memory reclaim and for
+`MADV_PAGEOUT`, while Alexandre was working on zswap dropbehind.
 
-There's a lot to unpack and I'm not sure I fully understand all of it,
-but from reading through that series it seems like the primary use-case
-is to allow things like alloc_pages() to unmap pages from the kernel's
-linear map. However what Vincent is trying to solve (and there's some
-overlap with the VPR work on Tegra) is how to remove pages from the
-linear map that are part of a fixed carveout region.
+Alexandre then found that this might not be a good idea for generic
+reclaim, but thought it might still be worth trying for `MADV_PAGEOUT`.
+That's why this patch came about.
 
-I suspect there's some overlap, and we might be able to reuse things
-like the folio_{zap,restore}_direct_map(), but given that we already
-have a set of struct page objects, the two approaches seem to be fairly
-orthogonal at a higher level.
+The discussion between David and me is whether we should do this for
+`MADV_PAGEOUT` only, or also apply the same approach to generic
+reclaim. So far, we haven't even gotten into the code details.
 
-Thierry
+And this is also the first day I've seen the code. I agree that I can
+work with Alexandre to improve the code through review, but please
+keep in mind that this is literally my first day looking at it,
+my respected Lorenzo. :-)
 
---d2bniudpfuafwp74
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmqyXwEACgkQ3SOs138+
-s6Fsgw//dlQUJrbDWiXuqxe3GRzKuh4gFS8vuMFfMkbYyeXhcsFi2RHH2NVZ4O/0
-7E51l7U9VQKmCvcjTzd4+9m47q3h2TskmNQsMA1vWWQDFKOWrbDw2yL11vSqZ90D
-hcquJSGds+Gu8eaJFKONeIxfUmuGawtaqTl1JtehYNaN6wur68zTbhS/dkDD4OrZ
-9MCyUlhaLPSfadqpBQSLucmYM5GhSQikGcqIJMIYkP7kd3HgWfr0XlqW1+tN3PjO
-MzP9sBX/LMW6HrsGa1CJNMRSaEhldJ9JFoNaIFyIBiN0+L7UBUyFlByNoFuatUqn
-NAQsB90d2EuSmo5zz5zmeuoNGhc4k0jO6i8YS3zVmeL/eIWg1ZbifIm7FTaNB8iX
-DMs9aq3ovYnbfGOpOOni1Z5BWz6LD4+2WG7bnOVXhKIWE6wOLG8cW/nTEt6hZ/xA
-6wY+TFrZMoIRCOREqxTbz+TImFkTuF8OS4ZIo812FNBgUcGQu9nfbTzrebUs9pGY
-bjieIqRLmuyXIXHDayd1NcnmuIxN1OgwzIJO5CQvG6yCJ1sk6DVrgODmKed2Nxoh
-vRm9IRG6yWGxpf3DeQmUvHd4ZRogSpRfQ3713PrxjnIj9WUO7fs8yGq6F5xHrmMb
-FlXPgJng4yDFZ0eb9bKte5N6yvKoTI8e4jsUD1NL7y/YNh6lWy4=
-=42dx
------END PGP SIGNATURE-----
-
---d2bniudpfuafwp74--
+Best Regards
+Barry
 
