@@ -4,94 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F56C98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35316C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 12:48:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A5586B009E; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
+	id E87026B00A0; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97D536B00A2; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
+	id E37A96B00A2; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B9BF6B00A4; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
+	id D74146B00A4; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 65A0E6B009E
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C2876B00A0
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 08:48:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF07614049A
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0131AC0484
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:48:10 +0000 (UTC)
-X-FDA: 85241375940.25.2E4B069
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2E870C0005
+X-FDA: 85241375982.05.68376FD
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 277291C0007
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 12:48:09 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxRcrfCK;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ple4IN5w;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790081289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4eH9hr+yvfFnvbbCrIYejYZnIdTOc3jXJLWRBe+BYc=;
-	b=NAgGtLqBnJq0nFRc9LhJo20wIVjpobbISqsFZlK33M6YTla9nHeBHLFjH0ykvmJeJJ9gmu
-	cicQnUta8oXwvIeX2SkPQqv19ujmbEPb/b2ecQxIG/u+D4kNDdkCH3d9bsRnuGsuEX1lMM
-	2wub0LXxlrYx7b+xcod7qaYdmwUefSE=
+	bh=QVFwYIiKUZVL+YjJoBnUJAKPe/wKV4GXCUpDX8JPQGA=;
+	b=7uB4AxKOUP1zGrXQNw17Xrk4NHKCP9jpvHt3eON8GFsPrrEBltq/z1i8h8V9rWyPAO3V6F
+	eVVsTMkke3Flj6JpWmduuYzYlXQ0f+0l7XX6LyMd7EpxiAUZFWxjtHKFhplxYjGsHYzZLu
+	w4KXtd6ie2YjOrv0BQD+JgpB7VvOIdM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ple4IN5w;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790081289;
-	b=g0MFsi6GCNdd/RZzzAzkfxx0dz1dmAdGOJSAm64dcB+6Ki1I2R0xPXVjj838aACeHJ+PoE
-	XdQX1XShdTssWHsHj18MiczwUzFKQVT9Z2pRf9YzEdQG67uMSEVjJomemu6RcC3s2Jrxgi
-	u+OfHBCMhmceiyH+tuSWZsJj9GYV29E=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AxRcrfCK;
-	spf=pass (imf10.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DC23411B5;
-	Tue, 22 Sep 2026 12:48:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CC61F000FF;
-	Tue, 22 Sep 2026 12:48:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790081288;
-	bh=r4eH9hr+yvfFnvbbCrIYejYZnIdTOc3jXJLWRBe+BYc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=AxRcrfCKj4TeX6ZLNGmys0EohkLSWdZA4WpCoVu2s2m54mvKPCy6liQKcGrQ8XbgI
-	 SQupz29e6y7f+7JP+FdhlC3s1z2X8i7JkPdbM3Y976b8njRgJrKLRElYxFR9JEM0BM
-	 8TCcoyrcCXV565sfkLcc6LcmZjQmjecePjY6QHJrrJkVK8K8VbGFL91PeILG+FoFl9
-	 1THEXtqQfFgXse9S65S+IyHqHuKjKQQgT8FUJXtwclVIR9dTtE3pMYo8uBe0eAvsYc
-	 VeRU/FuqXgJPqY0qchNGgBdyeHHurNFz2kQGrv3nsl9hWhSY6PVrVOyB3nSxSAKtfk
-	 9k3gXyOmIuBAg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: rppt@kernel.org,  pasha.tatashin@soleen.com,  pratyush@kernel.org,
-  chenhuacai@kernel.org,  ardb@kernel.org,  shuah@kernel.org,
-  ilias.apalodimas@linaro.org,  akpm@linux-foundation.org,
-  baoquan.he@linux.dev,  ruirui.yang@linux.dev,  guodongtai@kylinos.cn,
-  kernel@xen0n.name,  graf@amazon.com,  liukexin@kylinos.cn,
-  loongarch@lists.linux.dev,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kselftest@vger.kernel.org,  linux-efi@vger.kernel.org
-Subject: Re: [PATCH v5 2/5] liveupdate: synchronize EFI KHO channel at
- execution
-In-Reply-To: <20260904100852.26006-3-dongtai.guo@linux.dev> (George Guo's
-	message of "Fri, 4 Sep 2026 18:08:49 +0800")
-References: <20260904100852.26006-1-dongtai.guo@linux.dev>
-	<20260904100852.26006-3-dongtai.guo@linux.dev>
-Date: Tue, 22 Sep 2026 14:48:03 +0200
-Message-ID: <2vxz1pal5u64.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=lp3afRizeQKA1ZkHJdXCN8ckJbou8N/AX8aI9V0Vxoq5qsiumcqc9SBXS+VoqthCYz8r6/
+	Asrth/p+BbxNp7E72UBLH8cDRBawkZqtLfEsbHszjqIK0/fkpPchF0S5yt7kqL0A4nM6Z3
+	Yu2fWbsm3MD3x3a+GEH0NYfbiELf/Q8=
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccda24afso2935519a91.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:48:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790081288; x=1790686088; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=QVFwYIiKUZVL+YjJoBnUJAKPe/wKV4GXCUpDX8JPQGA=;
+        b=Ple4IN5wCrmU1WZXkzlWxjEEQ6PMcFkpvJIlkagUmluM+PkLki9tUd1BQNLJbyU0qF
+         Fql6CGNOQLGUqSK3vlEzt5mRBAmilhEO0PY7nD3/4jDiSK4yMwtngmv7+tleM+p41nob
+         ASAs1jGkvn5JAflBi1FUq2++lp7Cabq7Sz0OOxvuAapnK/1z6ycNtfyoqJlPmViVgW9A
+         SU/VKfmE3okoV08NnqMJ29xeTnUgwR+YLLY8MfPFbehsMFXm9TjQbpjXipgreiVJywOC
+         EZQ1mvS/gVnIyYBLCk4pasXlWfE+086A5c4FvnXNuGVh2blkjjJ2Ape/2SmCPsmH4+Me
+         BZFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790081288; x=1790686088;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=QVFwYIiKUZVL+YjJoBnUJAKPe/wKV4GXCUpDX8JPQGA=;
+        b=rsdWmm535PTPyFQF4WMB+Wz3vPXj0gd8UkpSB9M7MXJkzh/YkVWD4JYuQN2xkUuNqV
+         aFunoYDXiZvfn/qGEWfLxskT2AcoHbPAD6rQ/AEdsGgV/GQks+uqyYwEnDzKM5dcTu3M
+         2AXZCmqp/5VlE7bageBI0IMnUd10giNKgQ0xKX5HNBrC63mevxYKy3nhwJOpn4RCLY1F
+         4Hb20BWUxs/Sq+eNLeCc09TjPGixSZuqVNIuiYf3LlCgGyc+bDjm0gWr1BU8Rgtye6ZC
+         10jNOymLfxv5obRksi5dsWMdk1CUp0CBedN0GeCa15GY/G3/hOU+H+QqBYYthrzFMfcX
+         netQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxJMfrY+2lST1F3VleaokhyhmR6ZiWQpflGCQnTB9ZlxHM/K7nxIXDMlIkpkQT2CZXnhzR7KzTguw==@kvack.org
+X-Gm-Message-State: AFuF++mqxXre6cHTDIHDEReGHOaa3TCAMwS3nnsQBgoti6StWufjAct3
+	CjS3ok/pYrZJXraHoCo8z396NF0SvneNOtmOL8O/52z/XRlEZJqmeuE=
+X-Gm-Gg: AYBFou354jsvaJDHlWwBEHM5zpXtCoR0Fu3wJe/i5UkhbG+m3tmnfqefwm3PrxX1WKh
+	Ugt7qhUf6QqIxE7qjnQZCMHDEgOMS8hgTCfSnh87fxVvL7GN7HwqxAuP2ZbjI6GYOuxRkGL7gFG
+	/uB1nT1jGUnVp+7NNJo/XE+5WmZBVCG40tdvGC1tKKdhGutLoIV8J6yb8tdOxofB7zE/vyzEr5S
+	8QKs+mZLIjqBJQfTuhC8hbIuLjzb71t2cd+C45I+AWukuNGW1m01AIygstVO5L3m/xXiiewy3Az
+	qWGS4jyghhSOAvhfUbjAsqzwQH1lFJTex16jGaRM8nlZGqgh4eAjcdbDFHPOciOy8Lp0IaTTmZA
+	+2lilw4PrxCUF2P3zgfBYzDHY2pTnhasPNMElbg/WKTTX0xfVj/3f0EDMg59tLyrU2x16bLV7Pw
+	Qds+d1f9wEnl3SFu412hV4s4vRcHu8+ppIdyRIIwpK0jL/SkzlYclhbbgysENW/6eKzpj5YLJqm
+	e16GL3ZrOjKZiikqzm4S+YwYLRr
+X-Received: by 2002:a17:90b:582e:b0:38e:bbf1:de3f with SMTP id 98e67ed59e1d1-3a0730d0610mr995564a91.12.1790081287829;
+        Tue, 22 Sep 2026 05:48:07 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7f00:8c85:2466:805a:e198:cde8])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a06e574c49sm3442051a91.8.2026.09.22.05.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 05:48:07 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: rppt@kernel.org
+Cc: akpm@linux-foundation.org,
+	peterx@redhat.com,
+	surenb@google.com,
+	aarcange@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	mhocko@suse.com,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in move_swap_pte()
+Date: Tue, 22 Sep 2026 21:47:59 +0900
+Message-ID: <20260922124759.1676901-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <arIj-DZ3BtxMEzLB@kernel.org>
+References: <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com> <arIj-DZ3BtxMEzLB@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qedb8iw49xmedkhjmwiw68g6jf38h43p
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2E870C0005
-X-Stat-Signature: gqacan57e3ztw3q67rm1fcmc67tioh3t
-X-HE-Tag: 1790081289-13571
-X-HE-Meta: U2FsdGVkX1/rZdnHShwgtygnNvRLsGgz4OJiATw0D1hHD9LCR+/UzIGC4CNdqSFTO46IgcznKN9VZVtBS/J0TNdUidXj5rOoqhpEL+UWprc/moWvYJxRalfyyzXFoyCRrfdTyak4p9zl0SqWeQTgby2oXJE1wvVZ+0wsf1NLNB6mppyVjXkFmZdb6tvKBJBQpPiCCrripv1XBLJDCXJCQ19t1gRD9BUZDevHlgFTjaImP0I18B5HUUOlG3payxrujyi/UR4uVniStcahHBOWgrQRA1SaKsULaCq5AK2YjNSExyqy+RpFWLzYDRASi/nne93lAYnLduPRCzi7ZK4CprAOTxGHG5N7A3Hn9VR6brJ8mg/i7Iyo/F+8VbDczxF2Yks/y+8+cP4gjVWyEwj5gaE/69SUWMVJxsPo8eLLRJeEfEoWQBILlswWdart2zahSoNE+nsGodSfG3p9nu5y8g6xN0MR8gVYAJjbSXznESGZU/T7xqaNOu8zO7qB8XV+qlr4SYWocNKuxfLyIA6iWhkcubk4q3+Z11ArQHEa5XdRlduyLtSkZ+Vuq4inBTUY9EGS5Lea63+sa8iRn8mw8hXaEMx+WlZzOAw/YrECo4N2reb1n7B0olFbJB/WfEInZnjXQ9J5xHZIU38r4QWhqLIQqgGsRRPEdldhA/Wkz9RQz2t0gfBzVcF7x1hBp8v9k+PuH6fxg9SdzAmQ97eoheb9+AEWf+l69OhiyM8t89mEqpbfTVilisloatdwXoFiAoKbnNdzw/8KJprkqwMwb8PuAGGARmzx7FLDxGmgnvRScSX1fZzq9CJQ+t4SBZ00M0wOMetagyT2Bn2GJE0scOew4eLmhkacJUetb2GwQqacJuaEwOh8Kccqf/i8HtkrN9evPZABhakjlQX0jJJrCNLMC5z01SaPF5Gw5+FN7hYXEi58z5uT09nuHjRSC1ggJGQZOtyAuaCP+pwQq/q
- ipaaWfdr
- 8jn6IlsaCrwjJqcNVs+zb1v97GLzih6hgW6gBzK7Pu/OjekujkjmFToEbq3cFGRb3PsIVVRNdIxWHzw4Z9ExvX16BFU7VCsQ6AqUkXl4BIXCyzL1rgCKtPnuNewDQGEdUXMJ563hsfamZMk4EzDLtMIxzTtLwhZ7VJkB1+QxsrqihV8WnJTxVU+tmbHkwE4M/11hAKTuDjQD1En2yeVPaLJCWXqfRP7G/2AjN3oAt/VR0rr8=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 277291C0007
+X-HE-Tag: 1790081289-956876
+X-HE-Meta: U2FsdGVkX194do7d+HkQH97R0hdAVNQmLQau4jiny36+Od2HKmMjgyUT3mJjdTY79kc+Ct1JhfCWyXDUPg7byRldQykeNnHhtrAJ7mdnWURG7Ye9xWVKIO838MeP1lqiNxH+mE9sRl+da+UvGXPYPLpCG5Kjs1jb8XmLkjdRh37oaLQtW24GsC/gsF+gYKglTy2gpNEzHnsVg/jAEXjED2RFuHsyStVvJos0gx6LYori6cHWfiS+TIORD5HCmA0L5bsttu+UGcRvlVo9Ff/TobEtEua+984/Z4BLoqJQ4JEVOPHHRbTwgtTWWYFy8Yft2KrAta/EqWp9kTAB9Mos038KKAGKo7pcqbMPivCB4eyvN/o0VPPcjYpdNBxqvV8FnXgRM11+1iX6kPSFkxqighLEGv0g+lfHzVDV+jCgKxNr/QY4Z6qeVyQ0NZ4QNY3TudAk7vM86ZStUPIHfVyLcXiF2/9k5j3Te+wF/Tjtfj3uQuMg0ycsbnF5/FTBG+8zdc2jSNQuIJOSH5/Y+SY+HvBbkcC3+JoHZKdDjGHQH1bbSZWPbbq28GrOXXRHYBvInNAxLs/mWs8v7a0SPgr9j1LJBPTPjR0MRPzB6l0VmAAO9Uq4Mvf8REcfgjtNeI2O/g5aI/7uZwLd+HNLgziipe5fiLZRGjXUpW2EOup36ch8teFBTRg+phxJ9ICz5xWZXP4UprjXDR+DtJ8cFLmteHWUfEROJCyy7LWqj2RVOOmzhTAuGvCq7Kbi+0ogTK5EpilLP/F150sO7+5tw48Xxa+A966IYq82A3zGICq1m43tAJMYZIgXFx+62hZF0BwFb6lSYSqEg2497HF/GmQVEGPBmUjQrX7/CB0RclnoKoNeDdc6a0lKp0CcyzilgYdi+PqVIm+1/U33ULoTmDR34ExDba6YJmgk2Xorclm1ZZxa3/QXqixRvAuT8ZcriuM0tj362Yn3PTem00RhQ9e
+ WwbC8Yx9
+ JQGeLNeRTpeUen/Gi1hVvdpg7Oez4FGfQnctmL1uobfllBtAlb5JjMBprsauYtmeY1ceu4roZRQHaGIAbvODfWVfja3R6etoZwXMD51oWh1gcqrCJaem7FJK1VUZx5F77W/hkxuA50USs6TknkFLfwngxkvNn9/xBOmUUmJ19wr2r5ofLP2WcIdgXDlOFdal1dLRvkFjrVmpdaghNL3ffwWAs5g5TQNN/PG/gORytj9Zhp5Feddqnn56H1aqnKltfmZ1NaYcetRmE2VElzoNi25zb83vBqZoUOvaxITNv7qsxkPHUUKKqFwEg3s5iS8y7157fx0LyB3I6FHJlOLeVFP66WyxPRUswyo4EDX3Mu5ppu4DDmXMPIAlGstj4SBVCRxAG1J8H4sQH02ui6Yccaiby1eGi4w3mY73kDLR4yem+xsnhAutOqqquwQWvTe4mhYtRHzDhzZRUTNxrPCCZVQkDGRLgW2NQJ/rdaajt0OXG5SyqldWWct+0aEmdaemgpDTRs86i1t2GZtInv+SVUsX9xFngCFnUrqDrGqM4iGb0/a4OFD7g5grMxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,155 +131,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 04 2026, George Guo wrote:
+Thank you for the review.
 
-> From: George Guo <guodongtai@kylinos.cn>
->
-> The EFI KHO configuration table is a global channel. Updating it while
-> a candidate kexec image is still being loaded can leave the channel
-> pointing at the failed candidate even though the previous image remains
-> installed. Synchronize it instead from the image selected for execution.
-
-Huh? Sorry, I don't understand this is supposed to mean at all. What
-failed candidate?
-
->
-> Use the actual scratch payload size rather than its page-aligned segment
-> size, and propagate update failures before live-update serialization.
-> Keep clearing the channel for cold and crash images best-effort.
-
-Huh? This is word soup and I don't understand what any of this is
-supposed to mean.
-
-If you are using a LLM to generate this, please _read_ what the output
-is and see if it even is readable to someone else.
-
-And if you are writing this by hand, then take a step back, and consider
-if patch reviews can even understand what you are saying.
-
->
-> Signed-off-by: George Guo <guodongtai@kylinos.cn>
-> ---
->  kernel/crash_core.c                |  7 +++++++
->  kernel/kexec_core.c                |  5 +++++
->  kernel/kexec_internal.h            |  3 +++
->  kernel/liveupdate/kexec_handover.c | 33 ++++++++++++++++++++++++++++++
->  4 files changed, 48 insertions(+)
->
-> diff --git a/kernel/crash_core.c b/kernel/crash_core.c
-> index 2b36aa9fade0..6166ce4203d3 100644
-> --- a/kernel/crash_core.c
-> +++ b/kernel/crash_core.c
-> @@ -138,6 +138,13 @@ void __noclone __crash_kexec(struct pt_regs *regs)
->  		if (kexec_crash_image) {
->  			struct pt_regs fixed_regs;
->  
-> +			/*
-> +			 * A crash image carries no KHO state: clear the
-> +			 * transport so the crash kernel boots cold instead
-> +			 * of reviving from stale state.
-> +			 */
-> +			(void)kho_sync_channel(kexec_crash_image);
-> +
->  			crash_setup_regs(&fixed_regs, regs);
->  			crash_save_vmcoreinfo();
->  			machine_crash_shutdown(&fixed_regs);
-> diff --git a/kernel/kexec_core.c b/kernel/kexec_core.c
-> index dc770b9a6d05..147f5b5b23d4 100644
-> --- a/kernel/kexec_core.c
-> +++ b/kernel/kexec_core.c
-> @@ -1146,6 +1146,11 @@ int kernel_kexec(void)
->  		goto Unlock;
->  	}
->  
-> +	/* Synchronize the handover transport with the image being executed. */
-> +	error = kho_sync_channel(kexec_image);
-> +	if (error)
-> +		goto Unlock;
-> +
-
-Why are you setting this at kexec time? Why not set it at load time like
-every other architecture?
-
-Also what's this "sync channel"? Use simpler words that _actually
-describe_ what they do.
-
->  	if (!kexec_image->preserve_context) {
->  		error = liveupdate_reboot();
->  		if (error)
-> diff --git a/kernel/kexec_internal.h b/kernel/kexec_internal.h
-> index 228bb88c018b..4d4c2290e85c 100644
-> --- a/kernel/kexec_internal.h
-> +++ b/kernel/kexec_internal.h
-> @@ -46,6 +46,7 @@ struct kexec_buf;
->  int kho_locate_mem_hole(struct kexec_buf *kbuf,
->  			int (*func)(struct resource *, void *));
->  int kho_fill_kimage(struct kimage *image);
-> +int kho_sync_channel(struct kimage *image);
->  #else
->  static inline int kho_locate_mem_hole(struct kexec_buf *kbuf,
->  				      int (*func)(struct resource *, void *))
-> @@ -54,5 +55,7 @@ static inline int kho_locate_mem_hole(struct kexec_buf *kbuf,
->  }
->  
->  static inline int kho_fill_kimage(struct kimage *image) { return 0; }
-> +
-> +static inline int kho_sync_channel(struct kimage *image) { return 0; }
->  #endif /* CONFIG_KEXEC_HANDOVER */
->  #endif /* LINUX_KEXEC_INTERNAL_H */
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 39f489a258d9..3aa5c66dfc6d 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -14,6 +14,7 @@
->  #include <linux/cma.h>
->  #include <linux/kmemleak.h>
->  #include <linux/count_zeros.h>
-> +#include <linux/efi.h>
->  #include <linux/kasan.h>
->  #include <linux/kexec.h>
->  #include <linux/kexec_handover.h>
-> @@ -2074,6 +2075,38 @@ int kho_fill_kimage(struct kimage *image)
->  	return 0;
->  }
->  
-> +/*
-> + * Synchronize the handover transport with the image that is about to be
-> + * executed.  The EFI config table channel is global, while kexec keeps
-> + * separate images for a normal reboot and for crash.  Write the state of the
-> + * selected image immediately before it is executed, rather than while a
-> + * candidate image is being loaded, so a failed replacement cannot leave the
-> + * channel pointing at that failed image.
-> + *
-> + * An image loaded through the legacy kexec_load() syscall, a crash image, or
-> + * an image loaded while KHO is disabled carries no handover state.  Clear the
-> + * channel for those images so the next kernel boots cold instead of reviving
-> + * from stale state.  Clearing is best-effort because an absent channel cannot
-> + * affect a cold boot.
-> + */
-> +int kho_sync_channel(struct kimage *image)
-> +{
-> +	int err;
-> +
-> +	if (!image->kho.fdt || !image->kho.scratch) {
-> +		efi_kho_update(0, 0, 0, 0);
-> +		return 0;
-> +	}
-> +
-> +	err = efi_kho_update(image->kho.fdt, PAGE_SIZE,
-> +			     image->kho.scratch->mem,
-> +			     image->kho.scratch->bufsz);
-> +	if (err)
-> +		pr_warn("failed to update EFI config table: %d\n", err);
-> +
-> +	return err;
-> +}
-> +
->  static int kho_walk_scratch(struct kexec_buf *kbuf,
->  			    int (*func)(struct resource *, void *))
->  {
-
--- 
-Regards,
-Pratyush Yadav
+I'll rewrite the changelog for readability and add the Assisted-by tag
+in v2.
 
