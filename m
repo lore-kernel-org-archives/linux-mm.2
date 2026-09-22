@@ -4,97 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02455C982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:15:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18235C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 13:18:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCF106B0098; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
+	id AA1106B009E; Tue, 22 Sep 2026 09:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D593C6B009F; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
+	id A53B46B00A0; Tue, 22 Sep 2026 09:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C48B06B00A1; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
+	id 942F76B00A1; Tue, 22 Sep 2026 09:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B12D6B0098
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:15:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1843FA033D
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:15:28 +0000 (UTC)
-X-FDA: 85241444736.14.36027A2
-Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8394880006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:15:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cgHcJQMG;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 663E96B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:18:47 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 001681A046D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:18:46 +0000 (UTC)
+X-FDA: 85241453094.17.FA56838
+Received: from mta1.migadu.com (out-63.mta1.migadu.com [95.215.58.63])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BAF8CA000D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:18:44 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=blm2aYEg;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.63 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790082924;
+	s=arc-20220608; t=1790083125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WvvW/8z657vxZ3+JPxbiZpr7EOqCAd86pevTN7qJgH0=;
-	b=qUYIWhGaJmInx7AP/q4nr1qkqWjxMncOvwfgqWP4QGtA3iBLUpP5FG330urdIMvNwZEwRK
-	TSq59dc9LmDChPVxbkvL+rh8wRDr6iUZsjhl2/22d71rpWN+n1gplVt23P8fArOc4jP5cr
-	3A8DypbeaeADXNYag2SpzvHB1I78zvo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cgHcJQMG;
-	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=S5gTFdP1jPsU2Elav7GHTxAdITz3iQ0LqafijB0zVD0=;
+	b=wuREtGlhH7HG6sbl+1Qw/YH6DvbPPpzpgIgl7XcDqfArhkSSd+rzNNnNmy9wS0idXCeSXc
+	5N2B55D5EIW4mDET3A/f8jiQx9lA0G+hp9MMtZpIdpTrqEqU+5JHreIm/Cu1qPiWJhNqZH
+	IjzWL7+Vq+FU1YWxErd2MDP86a91uS0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790082924;
-	b=O66ndd9Y6r6GOW1IQL19c/9qD+B2+FIB/ynr8RBPi4QdzTnL4whE3sjXM+3/Zu0vX4lkK6
-	h9KV5YqOgdcIZEHBxcyqKG4IMQN1WY0HUoV0nTCcdJWRn8YkodKCk3XjR+j3zo+1X1wrTf
-	+E7hyWz4jriBKII/ouI/DueYM268Uts=
+	t=1790083125;
+	b=eDGw6Ih69Nt+MsuILpfvC0Etd4nYn0y4xvo7Jc8QKkaNJBDn1h/7Y/zIeopfQB3lZ2wxkA
+	L2Hr1ofF8PU2WX5LWLJbaJ7xke2OOZPzaWGpbijdqUiepx1q5GRB0M6LrHZ6Wi6U5dp141
+	ub483A6OlswOlkyewgn5yi2Vx/+xrpg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=blm2aYEg;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.63 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=pOBqVVuIHVvqeyU6wrQ4dgNXmfPDjIBGUxzWzaeok4Y=;
+DKIM-Signature: a=rsa-sha256; bh=KnQFWOHI/uWFbK2yV+XgO5ozKy20KZ6FFsL/eg8FxkY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790082921; v=1; x=1790687721;
- b=cgHcJQMG2Yii1JBRXOHyKTaRHPnr561X5sQWfKG7QTarfZEqMSltVpTknBjNqsId+Q9DOBOS
- wo3oaCVuMjkdIAz8Ih4Ca/vPRI3YIOq5Gt7DhPMmJC8BMBJU7xMXNR3jRyvh8ZIE+J+Pca2zmmp
- qFBkwnBi1HWhXGJElbi8ZInk=
+ t=1790083123; v=1; x=1790687923;
+ b=blm2aYEgSSnRIIRmIgSJEqGAZggbaZPSy/vPCO5VeEIyNmgezy68bnnUfYrNHkX7eKAmJofp
+ cLdJPyQ2S56Yc6ryQwqkebxqVem1Z2W6kwQ09UiVjooPS8Zl4AffRlRbBdR7BPTV48UdMjOIJBd
+ 32+4N2fBcrFySyLv4u0QRXBg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 957524858cb9f755;
-	Tue, 22 Sep 2026 13:15:16 +0000
-X-Mizu-Trace-ID: 957524858cb9f755
+Received: by smtp.migadu.com with ESMTPS id 855e594509f545e4;
+	Tue, 22 Sep 2026 13:18:43 +0000
+X-Mizu-Trace-ID: 855e594509f545e4
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <a1cc2eaa-5a36-491d-8ec7-0bcf4132a535@linux.dev>
-Date: Tue, 22 Sep 2026 14:15:13 +0100
+Message-ID: <17c88cf7-61d0-48f6-bc94-773b3662122c@linux.dev>
+Date: Tue, 22 Sep 2026 14:18:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
+Subject: Re: [RESEND v7 11/29] mm: split PMD swap entries into PTE swap
+ entries
 To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org,
+ ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, baohua@kernel.org,
+ dev.jain@arm.com, baolin.wang@linux.alibaba.com,
  Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
  ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
  lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
  shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
  luizcap@redhat.com, kernel-team@meta.com
 References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-11-usama.arif@linux.dev>
- <35f36d8b-d215-439c-8e77-3a70deed7609@kernel.org>
+ <20260914122950.3283997-12-usama.arif@linux.dev>
+ <aqqwFOoPxqFnxclE@thinkstation>
+ <4101d661-7b16-401c-aaef-b87e81fdaee3@kernel.org>
 Content-Language: en-US
 From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <35f36d8b-d215-439c-8e77-3a70deed7609@kernel.org>
+In-Reply-To: <4101d661-7b16-401c-aaef-b87e81fdaee3@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8394880006
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BAF8CA000D
+X-Stat-Signature: xpteh6xi4g1am3qm81rx3dgeo8hcgfky
 X-Rspam-User: 
-X-Stat-Signature: uyj7s75ko65hgy61gtqjnd1dkf6g3ksj
-X-HE-Tag: 1790082924-647553
-X-HE-Meta: U2FsdGVkX19NWmLbP3f7Siix2u3+huRpz1rUdkBQGhnrWOVe9QUduE6GAxYQgNFRWXPqMGACwcRb6gLHANuJGnZX9KKOcZAUDt2zCOe5bOxggzakQCGMifKYHbDPxSuNE6hBADglcP1IBHJQr/nnO4tDK/CvJ2CEMyW40Q6XvQ6DAdPIqIg2SAx3QZZeQje0PwMFTwnkNDGqy+KLGP68n2bWG/poFLb+eaElA7REvGYszPnMnSuDTk1JSWMar01y7YNdEeFs21TM9iZ9PSa4RlQR6kTjVwCrPsm2IbQnGBbjerQg+7LMMfFyJYkOg/eT/ceS80bHhYxrWX7XdGGrBa5nte60qG18t0J4XXepeoeLTXMcxKlY0pBtW2jTF3m9u9TSI1kxZOgxIbi4KKoS8/TzKe56sqzxt8I2AlNY1D0qAU5r6cIBnb1iOD5I7alMVSiBGJx0BJ93Z/1J0gYwypzz/ZxkRgwXDlnrfvM0WO/RDVn5T2zXa4+LaDy5w21u09XqfbFgd1f4tzI7kearfOd1NW15lqlvNl4d8WF0xVufvi+1XFZMroFrQouR3Vhi48rpel+t9ELWBGUR0Ce5ksWipHcE0JRe4z6Tq6DZiw61q76PpA8yhbMMw3yPUWQZs70mZTy+MPT+LkOzUUCfE8oL/l3uYk8fEi/VXRHALCf7kubuQcNMhsuLzPP4Y08cGpB+CPE8Dr9fgQZxnvMaPMi6zBKMdw5rXyFfNKWkjT26KS9CsMD14HOvqos1L4oY3X7591PTpaqw+UzjXaSCLCotv0Sfz1CLosuCLlPR0my8CJe2o46Jxo4Wvh8rm2kllFVbc5Eg297GQI24hqxYNDO0Ffa68c6HUcV7rp2K50qBHxnvQA/jxyVeULqMI0C6L5EHUadeviiaiHvgn3rDFnzr726r0TqxbIt2ljMODam/7XzNHaBgCsua9WI1iWEhOgtLTMY85HFiwoXfkVP
- TuRj7cVd
- pxO9dMT9UoBdc18NNV8w0e6+HGiwIpOKchJ6cHm6PTwOvS/+4+m3vtGhlnhcAqEFSDf+doJ6koHH+iy3H5kmD52Shzzsc8v7+71pbOqfUgsIDU84RAz/QL/hgfdF2mHNiKnDOsOlQ68l5R42OeuSfc2LXyGrh0IEldl+Vzv0HPjCT7CNLYEQFrKK+XIgerpFH9BuC1R9ZBxCgJ/4g2GAUFQSAn6qMKAeFHzTO2MX4z/Hx8JVoAylACfwa01bfuhLA/hQZmhayMHUJB5Z4t59XFFtyiGwNWyck5T+0ffK20EGIKdU=
+X-HE-Tag: 1790083124-609795
+X-HE-Meta: U2FsdGVkX1/TgNgT/kCgxsHisPY7dX0+Mjr6s+LS0HVxZR5gu6cn08iCESI4ryurI7PbMaCV3HipUZPay+ziQNj8jx0VkLeI5wZjTahmh3aMrawV/F4CZbgK5Nr1TV3L1kfqg6sDYNkZ4FNDOe7M0XPXoaX56P5SNfTblNpmAX2OMLKlgQvZjxLAEKeMAY3PBgT2CC2C2mkwg8yvfAvLMGBL+a9w6wIKKW2Ow+6rhYQ49JvbPHxIgwoV+vn/bGjWswteGqnWR2zWdiSDa2xNLqPwboukmmMSPx15hCXbEYmlNb6eK40j/CxPV0cEnCQGTjvpqU5zR56pFnukmu+v/4n6+yyANiOMScZieUp6g0IB856GSZch8jxjLDAkXRX2e7EX15ZQh/1kazJt+7BFbiH5ofGuJYjQRtCE0K32LH7MR7wGvh01HboPzn6+dnDjpx2qk8WNRCx7RbXwTwN+wkzlxZQnooNeKsiJQFMUQ+KTysfRfSnpJu+0B4MbJrdSzr6oOGXzt2gxlkPR4hZDP85fArUkppvUiejKlHhqriaztSkr6QvtoKVoFGF7JVm1LIX47f1lU4Byy9FueXk+UVKLkJcoqzLg5hhhcSGnpELzJM6LuZIlVEB0q0pZOswq5tYJEznCi+DFTpPrOP7eOAn7O5tt4P5GtYglul2pIYnEcRkUiRoM6MA5ggpS6ZFOAsUNRnLPxGJ+qeyEjHpxiKyPI3wGCpxczBbRqUC+T8rhDuk/aE5tAMRmKn6XIPgL6TvR6XkARdni4W9vsw80JGQ/dItBvM/K5aoAncz5Ab3oibDEdUOnYBvGD2o/E5VSkav7Iowtrdyts3Xnsb+bo/A/c9+ttm2mOMPYH6xptgt17WKiKfIwLy+nigO6Wh0d/WU4X8Hsyr2XLT8FWLigf7C71vcZV7X3q93fw96u888IBtWR6NxT3jnMVxYDC31qZ4oC8gFWcrtETNnNnGU
+ W/b5h6+j
+ 1Jjk3sxV5an/0OhB8jrEj8WJdxSpc47PD07yahty/cOypB4/Ua/7EQXepXGPYixrZjGZiU1mpmmnfdr/XpyDL3hmYedvpSwt6yBmJH9FITJHyA+v9TcQH6OkNB5RpHUwDqoNv5cWtr+1hbDambwCcJJ2eeI+LtAUEloCyM444fz2CSDSngHOdiEB+fMQGtM3HwtTKt4rCq5L+TcbMkK1xWWOgK8iw9aFvrwawzYngLhe5EpVOq0Sxe99MXrvc+7v1U5yruR68/wRZbsn0yqrR56jT9PxAkn6EkhV7ECKtqn11ENCDK2EyQQaiM5DIlDcREZOq61jjPsfHC6g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,282 +107,78 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 18/09/2026 23:10, David Hildenbrand (Arm) wrote:
-> On 9/14/26 14:28, Usama Arif wrote:
->> __split_huge_pmd() and friends take a "freeze" boolean that every caller
->> has to pass and almost every caller passes as false. The name says nothing
->> about what it selects, and the one thing it does select - PTE migration
->> entries instead of PTE mappings - is only ever wanted by the rmap migration
->> path.
+On 22/09/2026 12:46, David Hildenbrand (Arm) wrote:
+> On 9/16/26 17:08, Kiryl Shutsemau wrote:
+>> On Mon, Sep 14, 2026 at 05:28:01AM -0700, Usama Arif wrote:
+>>> Once a PMD can hold a swap entry, everything that splits a PMD - mprotect()
+>>> or munmap() over part of the range, MADV_FREE, a pagewalk with no PMD
+>>> handler - has to be able to split that entry too, or the callers that rely
+>>> on split_huge_pmd() to hand them a PTE table would find the PMD unchanged.
+>>>
+>>> No reference counting is needed: a swap entry pins no folio, and swap_map
+>>> is already one per slot, so the PTEs simply take over what the PMD held.
+>>>
+>>> The migration-only entry point cannot reach the new branch, because
+>>> page_vma_mapped_walk() never hands back a swap PMD for the folio being
+>>> migrated. Warn if that ever changes, and force the regular split anyway,
+>>> since the branch leaves folio and page uninitialised.
+>>>
+>>> Test the pre-split old_pmd rather than re-reading *pmd in the trailing
+>>> folio_remove_rmap_pmd() gate, so every entry-type test in the function
+>>> interrogates the same snapshot. That part is cosmetic: pmdp_invalidate()
+>>> leaves the PMD present as far as software is concerned.
+>>>
+>>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>>> ---
+>>>  mm/huge_memory.c | 36 +++++++++++++++++++++++++++++++++++-
+>>>  1 file changed, 35 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 873887aed0bc2..0e347a545588c 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3304,6 +3304,21 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>>  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+>>>  						 vma, haddr, rmap_flags);
+>>>  		}
+>>> +	} else if (pmd_is_swap_entry(*pmd)) {
+>>> +		/*
+>>> +		 * A PMD swap entry has no page, so it cannot be turned into
+>>> +		 * PTE migration entries.  page_vma_mapped_walk() never hands
+>>> +		 * one back for the folio being migrated, so this should not
+>>> +		 * happen; warn, but also force the regular split so that a
+>>> +		 * broken invariant cannot make the code below dereference the
+>>> +		 * uninitialised folio and page.
+>>> +		 */
 >>
->> Rename it to use_migration_entries, keep it private to mm/huge_memory.c,
->> and add split_pmd_to_migration_entries() for try_to_migrate_one(), the only
->> caller that wants it.
+>> The comment can be shorter.
 >>
->> migrate_vma_split_unmapped_folio() also passed freeze=true, but only ever
->> runs on a PMD that is already a migration entry, which the generic helper
->> expands into PTE migration entries either way. Its folio_get() only existed
->> to balance the put_page() that freeze=true performs, so both go.
+>>> +		VM_WARN_ON_ONCE(use_migration_entries);
+>>> +		use_migration_entries = false;
+>>> +		old_pmd = *pmd;
+>>> +		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+>>> +		uffd_wp = pmd_swp_uffd(old_pmd);
+>>> +		anon_exclusive = pmd_swp_exclusive(old_pmd);
 >>
->> No functional change intended.
+>> The logic looks right to me, but __split_huge_pmd_locked() is getting
+>> awkward. It is close to 300 lines with two if-else chains that have to
+>> be kept in sync.
 >>
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> Can we have a preparatory patch that moves the PTE-install loops into
+>> per-type helpers?
+>>
+>> split_pmd_into_migration_ptes(), split_pmd_into_device_private_ptes(),
+>> split_pmd_into_present_ptes().
 > 
-> [...]
+> There were recently patches about related cleanups:
 > 
->> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
->> +				    unsigned long address, pmd_t *pmd);
+> https://lore.kernel.org/r/cover.1787941780.git.yintirui@gmail.com
 > 
-> Two tele tabbies please.
-
-
-Ack, in next revision.
-
-> 
->>  bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->>  			   pmd_t *pmdp, struct folio *folio);
->>  void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
->> @@ -690,12 +690,14 @@ static inline void deferred_split_folio(struct folio *folio, bool partially_mapp
->>  	do { } while (0)
->>  
->>  static inline void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->> -		unsigned long address, bool freeze) {}
->> +		unsigned long address) {}
->>  static inline void split_huge_pmd_address(struct vm_area_struct *vma,
->> -		unsigned long address, bool freeze) {}
->> +		unsigned long address) {}
->>  static inline void split_huge_pmd_locked(struct vm_area_struct *vma,
->> -					 unsigned long address, pmd_t *pmd,
->> -					 bool freeze) {}
->> +					 unsigned long address, pmd_t *pmd) {}
->> +static inline void
->> +split_pmd_to_migration_entries(struct vm_area_struct *vma,
->> +			       unsigned long address, pmd_t *pmd) {}
-> 
-> Dito.
+> I'm fine with cleaning this up later (I hope we can land this series in 7.4).
 > 
 
-Ack, in next revision.
+Will follow Davids advice and cleanup later if no one has done it.
 
->>  
->>  static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
->>  					 unsigned long addr, pmd_t *pmdp,
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index ee8d46827ffdc..873887aed0bc2 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -2033,7 +2033,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  		pte_free(dst_mm, pgtable);
->>  		spin_unlock(src_ptl);
->>  		spin_unlock(dst_ptl);
->> -		__split_huge_pmd(src_vma, src_pmd, addr, false);
->> +		__split_huge_pmd(src_vma, src_pmd, addr);
->>  		return -EAGAIN;
->>  	}
->>  	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->> @@ -2257,7 +2257,7 @@ vm_fault_t do_huge_pmd_wp_page(struct vm_fault *vmf)
->>  	folio_unlock(folio);
->>  	spin_unlock(vmf->ptl);
->>  fallback:
->> -	__split_huge_pmd(vma, vmf->pmd, vmf->address, false);
->> +	__split_huge_pmd(vma, vmf->pmd, vmf->address);
->>  	return VM_FAULT_FALLBACK;
->>  }
->>  
->> @@ -3190,7 +3190,7 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
->>  }
->>  
->>  static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->> -		unsigned long haddr, bool freeze)
->> +		unsigned long haddr, bool use_migration_entries)
-> 
-> 
-> Just curious: s/use_migration_entries/to_migration_entries/
-> 
+Too much cleanup already :)
 
-Done for next revision.>>  {
->>  	struct mm_struct *mm = vma->vm_mm;
->>  	struct folio *folio;
->> @@ -3291,10 +3291,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  		 * folios w.r.t anon exclusive handling. See the comments for
->>  		 * folio handling and anon_exclusive below.
->>  		 */
->> -		if (freeze && anon_exclusive &&
->> +		if (use_migration_entries && anon_exclusive &&
->>  		    folio_try_share_anon_rmap_pmd(folio, page))
->> -			freeze = false;
->> -		if (!freeze) {
->> +			use_migration_entries = false;
->> +		if (!use_migration_entries) {
->>  			rmap_t rmap_flags = RMAP_NONE;
->>  
->>  			folio_ref_add(folio, HPAGE_PMD_NR - 1);
->> @@ -3344,11 +3344,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  		VM_WARN_ON_FOLIO(!folio_test_anon(folio), folio);
->>  
->>  		/*
->> -		 * Without "freeze", we'll simply split the PMD, propagating the
->> -		 * PageAnonExclusive() flag for each PTE by setting it for
->> +		 * Without migration entries, we'll simply split the PMD and
-> 
-> "When not splitting to migration entries .."
-> 
-
-Ack, in next revision.
-
->> +		 * propagate the PageAnonExclusive() flag for each PTE by setting it for
->>  		 * each subpage -- no need to (temporarily) clear.
-> 
-> While at it: s/subpage/page/
-
-
-Ack, in next revision.
-
-> 
->>  		 *
->> -		 * With "freeze" we want to replace mapped pages by
->> +		 * With migration entries we want to replace mapped pages by
-> 
-> "When splitting to migration entries ..."
-
-Ack, in next revision.
-
-> 
->>  		 * migration entries right away. This is only possible if we
->>  		 * managed to clear PageAnonExclusive() -- see
->>  		 * set_pmd_migration_entry().
->> @@ -3359,10 +3359,10 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  		 * See folio_try_share_anon_rmap_pmd(): invalidate PMD first.
->>  		 */
->>  		anon_exclusive = PageAnonExclusive(page);
->> -		if (freeze && anon_exclusive &&
->> +		if (use_migration_entries && anon_exclusive &&
->>  		    folio_try_share_anon_rmap_pmd(folio, page))
->> -			freeze = false;
->> -		if (!freeze) {
->> +			use_migration_entries = false;
->> +		if (!use_migration_entries) {
->>  			rmap_t rmap_flags = RMAP_NONE;
->>  
-> 
-> [...]
-> 
->>  
->>  	smp_wmb(); /* make pte visible before pmd */
->> @@ -3477,15 +3477,28 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>  }
->>  
->>  void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->> -			   pmd_t *pmd, bool freeze)
->> +			   pmd_t *pmd)
-> 
-> While at it ...
-> 
->>  {
->>  	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
->>  	if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
->> -		__split_huge_pmd_locked(vma, pmd, address, freeze);
->> +		__split_huge_pmd_locked(vma, pmd, address, false);
->> +}
->> +
->> +/*
->> + * Split a present PMD into PTE migration entries, for the rmap migration
->> + * walker.  Like split_huge_pmd_locked(), the caller must hold the PMD lock and
->> + * must already be inside an mmu_notifier invalidate range.
->> + */
-> 
-> I'd prefer kerneldoc but I'll let you decide.
-
-Switched to kerneldoc.
-
-> 
->> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
->> +				    unsigned long address, pmd_t *pmd)
-> 
-> two tabs ...
-> 
-> [...]
-> 
->> --- a/mm/migrate_device.c
->> +++ b/mm/migrate_device.c
->> @@ -918,12 +918,7 @@ static int migrate_vma_split_unmapped_folio(struct migrate_vma *migrate,
->>  	unsigned long flags;
->>  	int ret = 0;
->>  
->> -	/*
->> -	 * take a reference, since split_huge_pmd_address() with freeze = true
->> -	 * drops a reference at the end.
->> -	 */
->> -	folio_get(folio);
->> -	split_huge_pmd_address(migrate->vma, addr, true);
->> +	split_huge_pmd_address(migrate->vma, addr);
-> 
-> 
-> Everything up to this point was trivial :)
-> 
-> You say that it already is unmapped (which makes sense looking at the
-> function name).
-> 
-> In VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio) we verify.
-> 
-> Did you run the hmm selftests with DEBUG_VM enabled, just to be sure? I remember
-> they exercise at least some of the THP logic in here.
-> 
-
-I have now, with CONFIG_DEBUG_VM=y, CONFIG_DEBUG_VM_PGTABLE=y and
-panic_on_warn=1, on this series and on the base commit. The result is
-identical either way:
-
-  # Totals: pass:35 fail:3 xfail:0 xpass:0 skip:40 error:0
-
-The three failures are file_read, file_write and migrate_file_private,
-all of which fail at
-
-  hmm-tests.c:828:file_read:Expected fd (-1) >= 0 (0)
-
-i.e. hmm_create_file()'s open("/tmp", O_TMPFILE), which the VM I am using
-with 9p /tmp does not support. they fail the same way on the unpatched
-kernel.  The 40 skips are the DEVICE_COHERENT half.
-
-The 40 skips are the DEVICE_COHERENT half.
-
-
-> 
->>  	ret = folio_split_unmapped(folio, 0);
->>  	if (ret)
->>  		return ret;
->> diff --git a/mm/mprotect.c b/mm/mprotect.c
->> index 2888ee638d872..ee33bbb421008 100644
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -530,7 +530,7 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
->>  		if (pmd_is_huge(_pmd)) {
->>  			if ((next - addr != HPAGE_PMD_SIZE) ||
->>  			    pgtable_split_needed(vma, cp_flags)) {
->> -				__split_huge_pmd(vma, pmd, addr, false);
->> +				__split_huge_pmd(vma, pmd, addr);
->>  				/*
->>  				 * For file-backed, the pmd could have been
->>  				 * cleared; make sure pmd populated if
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 5332c52909be1..feb751e29b992 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2290,7 +2290,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>  				 * restart so we can process the PTE-mapped THP.
->>  				 */
->>  				split_huge_pmd_locked(vma, pvmw.address,
->> -						      pvmw.pmd, false);
->> +						      pvmw.pmd);
-> 
-> You can feel brave and squeeze it into a single line now :)
-> 
-
-Ack lol> 
-> Overall LGTM.
-> 
-
-
-Thanks for the reviews!!
 
