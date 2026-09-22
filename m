@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0205C982FE
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 23:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDFACC982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 23:58:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02BC36B008C; Tue, 22 Sep 2026 19:58:41 -0400 (EDT)
+	id 116126B0093; Tue, 22 Sep 2026 19:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1E7D6B0092; Tue, 22 Sep 2026 19:58:40 -0400 (EDT)
+	id 07A046B0095; Tue, 22 Sep 2026 19:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E34106B0093; Tue, 22 Sep 2026 19:58:40 -0400 (EDT)
+	id E824A6B0096; Tue, 22 Sep 2026 19:58:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C35E36B008C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:58:40 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 48F8C1C302D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B47876B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:58:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09D35405BA
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:42 +0000 (UTC)
+X-FDA: 85243065684.08.20E4C3E
+Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4434C20009
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:40 +0000 (UTC)
-X-FDA: 85243065600.20.711DA7C
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 89F76C0002
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:38 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=XBhJep9n;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XObeHBbG;
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.233 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790121518;
+	s=arc-20220608; t=1790121520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cv67mS8beABpbmQAZ394RKqHc9TebilH66SXRMDKuYM=;
-	b=jl262DcsBnNFLlAB4Q99qfSClD6KPfDqCEKAYfkWWu8wFYvITgLrsEb6hwwM+i0biRV2iu
-	K2m6nBvDgkFvX9zFihlxpAaU/ChAY6WgGVLD7kpEYnYVxcw6saGRe81bFsV3mRwWLl0GZe
-	B4cHBhbLIpWZ11alFlyV1sRLLWmGBZs=
+	bh=/oNw9RPMr3V+/qUjJEYCXBc3lvf+tyCPjegYTQeEM3I=;
+	b=y6SbnFYtt4NQCoN0jY1SDg9L7+K6KpVMR+d8p6iAPjPTneye0Hrcg2X2r954XWabqXEJWn
+	XRbruQ8TP5qzuJiWJ9CKiiHFnmxAD3WDvNHTvY5W5mnlwQMFw6u8c/yapFC4rCt/LtFo78
+	F0xIncY35KJBtGWu0Vi/o0itbQ6X5Ts=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=XBhJep9n;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XObeHBbG;
 	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.233 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790121518;
-	b=BvgPxvWQaXGqjXy1ZZ54TliUB6OZKAadOoQUmPzp7V/GTjdeOKHy2xM1Ql7ctv7+w5gMN4
-	r18lPufpGFiFN3dydDzgAZNSzkagTZEiXZa0XofQJwoQzG1Lgz5vNkpi1ZWzGDQspMnAuF
-	pm1ztfDJZ7M4x6XmNsm0AWOpTg80/5k=
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-52fb76ec395so4199231cf.2
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:58:38 -0700 (PDT)
+	t=1790121520;
+	b=wX9W+QgEOouT6qYEGck4G9Tri9BOx86YyjOSibeGbiSgt8BhpGp7pR5QgPdKzP5ohLAbcp
+	PdklnsoesH+F36jTaa6+TZvK9TXVVKknTzkaY3gkNCbAqtp0OLLHoqPNUgc/VXIXY94Nsz
+	vPBlFIRNAQQlazZwiIcShUmj0AfCuVU=
+Received: by mail-qk2-f41.google.com with SMTP id d75a77b69052e-532d63f434fso5503461cf.2
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:58:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790121518; x=1790726318; darn=kvack.org;
+        d=gourry.net; s=google; t=1790121519; x=1790726319; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Cv67mS8beABpbmQAZ394RKqHc9TebilH66SXRMDKuYM=;
-        b=XBhJep9nkCfxe2go4xC0e+mChnY4ELOPZypHhZeF470tUCi0MBppLRjZenHvpZH2XT
-         tubnimogNu0GWvcMhjYsCfkuoDuaRIsvwvdxO50T5NfdeJuMdQ2+jNGhNsosdSenCsao
-         WTkTJ9mhduGkOBS2B3/qbSLzExSgXMUlRCu6J80OZ8Gqua8mlYHtE3joFmSwOT+N+GJm
-         v66TaucpIe9oRFUrF0U7MSoLmKNg1283LocSB4VlyKU6B7NhR4LnF0YCz7RYXOsUKbPy
-         peKdqS1nG46QsMaGnEX0/K8ZRKPCViuWVLQq5AtCUYus/UuZwSXTJF/ZnrWcydLCGbH9
-         YSBw==
+        bh=/oNw9RPMr3V+/qUjJEYCXBc3lvf+tyCPjegYTQeEM3I=;
+        b=XObeHBbGHYDzE7yE8yLkOCvdOfJgX5XAWcohW0SffcSLv8IO4lheGFg6pNa/LYpT4m
+         j4JiuRbH+/ao5j9Hm0NnzcNvNX/UbGqie1vEyqzAYt7T3kAPevmNET605wB/7QAkD6HM
+         uOjCT/4rWdLnWQSVks69mUqLr5oXKfYrQ5Rhp8PmiZ+b7Zl5BEQI3ogoPyAt8qV1vgYS
+         GOMJU7yZ6IpwKkmK84e1bjeeWqnHOUDKWKbGu7Hb3n02X3GTon+UDqrcxr/MEsUDzmKq
+         W8nc2XXISLPX0ALze04gyy5SpfYgyqLoTWH3LbI0nTvBjSTKjlgmiToeaERKQkdiLDiW
+         Cz0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790121518; x=1790726318;
+        d=1e100.net; s=20260707; t=1790121519; x=1790726319;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cv67mS8beABpbmQAZ394RKqHc9TebilH66SXRMDKuYM=;
-        b=QtEncynATFI8eNR4GYVVjUPfRXqrFdeUoV0B9pS89HVIrAfNeT9ucBAatsN3CzD2IO
-         2ViWdp2BQ8RBVUnnepSVdGVQQPqlNX0UoozDJboNmdGy+Q0STpsFOd3/bvV36Sh6Aq38
-         aUPddFl7DSpkpnJcPyoKnLZlkrDltrHXWojkgvIkGeg3AOTUUPQqVsGbVxGYAdp0vQtz
-         zXg76EALJyraEXyarrYzyQiDLPZq8oSNcnsbMnO3c15unRUpVbY7BPL5/TgsBoywnBUm
-         VSxl/GigApgWdyxCuz1ZNALNLm/Bm8541LAuWIrrPzTa94r8Ap4mWTHmDXyO8Ttv+CfF
-         rV/A==
-X-Gm-Message-State: AFuF++nJ9mIkwwmXYOsGPwDaWGTtVFaduryCrMRicxXwueChDNgz10L2
-	wpY+wmNMrOIEX7kqoMm4Pe00Q5tVabL7Nk3rCZpjHNahp8RA3rg5NXNythZR4RHXLele5kIQlpI
-	jCvAfPlA=
-X-Gm-Gg: AYBFou2vEnP+ezDpdrmnEoL+U16or1dNJPnL9HOEJ6YkUNtC+HJRzahTLMF5R9QDMyK
-	LELkSwrdfWthdfOD8BPRrnLopI1UnpeRtGQjpu4u0mqwnZdMr/ufdX4kYc6h4qhFgFPhaGpsRR3
-	NBL8gNvMllaxrkeNjtIVsC7mscoU3veTMh/s3pv+Tu3PAgz5F0XExhdJWkYa8NNWruFGYHSHrD5
-	OvW6dkVBZfCVc0jzh3Cm28cNUInMY0sJ9n/11cv0O4fh+sWRsZ6UTsZ3qpKPMbOd6KX2chDwVaI
-	cLv27IL9UK1zuoIUj2grEwnoE7WCB0Y7/vucf6QBLMZPE8wM8TnG/CsAXuDsNBJ3Gd4937XL8kI
-	M9o5DnVtNCWMqKZ5TjBYZiAqxvt1chhWCXH1U1NE2GGnhNGv22VLbLPyVG2NZHlsA0ExlDey7LW
-	zi5KChroNBmDlxy5vUDb+xch9Xd9igFBrS+psae03D72ZO7iuv58QofH4h/7uhpysYT17K/SIjR
-	/0A73PxHAXPSzUPL9dk+6lMFet4BKI1iGDrpwPxmF5J1dcbVbpqPKQcaTij
-X-Received: by 2002:a05:622a:6101:b0:532:b08b:45cd with SMTP id d75a77b69052e-532eacd610fmr16957421cf.31.1790121517717;
-        Tue, 22 Sep 2026 16:58:37 -0700 (PDT)
+        bh=/oNw9RPMr3V+/qUjJEYCXBc3lvf+tyCPjegYTQeEM3I=;
+        b=cKWHG/4jpHcXdMRUcjiBrVNC6a0EklGBHRFCNt5/UP4RDf+qP2dQVyZBY5tuRC714r
+         GP4DKBWDMYySW+gLt4Te3/La8sG3Yx39uKy0Gxx5+Fs8N1dhFlC8s6CQ3/eWcwG7TY+c
+         SXu8eGRsWUwfabCKzlRGOExkm+17boGn7JSrVQmD/jdJvSy1G1DFRr2IBiX83l+ZvzgG
+         tI/I0HWo+A6ILJ4iIFjW+/rPbQuftYUFPi+1UGxS1CQCFrA3/c37I3tY16DaMdaluEqt
+         XYXKOeZZTDJjGAjv9ShcXyiRNClblSPD7G0K+kGHFq1viQA79TNu4yH5Ssw5KgpjQkaz
+         Gsqw==
+X-Gm-Message-State: AFuF++lFjDUaK9O0JDh4mTyoDi74cBFqK24cmfC6AYk0o2eITrTP77y6
+	Wmx3+mZzc3rZa9nV/c203N6NZjvbKxC5SBp/XbIFnCYz6sjUEpGbZ32J0ROH1KUu+24a1+jnZIf
+	gnyH3nIY=
+X-Gm-Gg: AYBFou3YOXHSV+l9yulfAJQAheuKIqJx12Gdk72yFK5YaDkrx2bdmGaWQaNR5z6/KTN
+	dmaKM/2DzbT/CbUghtUZLZfiEGvoVu7G6T0NAAmYv0s8X3Omp3XEyZGrJw6gJw0jzDRvMw0Idb/
+	sOjpPxZsgpxbePboyWy3H05lA+i0qBv6sE+g481//K+1yegZF3bto7XN4Ag97UIhwU+mnzSr9r/
+	UBlIV9WlJAY9c2ZTsc1+j3PQ5Oo/YAver286lzPzohMZ5aKtCQN+zOSPTRigNZnhYt5bB4iXRWG
+	FIqcpTE6r6N8h64e6oO3iV5Cyj+a6vi5z18YOU7aKJhXRG3s5md1xIj4x+61AN/AJAW+LfZN+GP
+	lIoeZOC2etpcKWSdlU/7h8r5U7XOoXUmvwzUzvcUsfoBj3H/Du37TejC/lqCQvP977FgdR3g1iZ
+	rYZ5jaCk20KcQ5K3mMVrVbO2/zWJwnxTdB04PhCU7hm6H4N/7yGBrZ9wSaCN54W5lQbfqE+ij2R
+	8aHrZM05EUq6mQbE0W+pxs6l8eTqknL3+cFY5uF/QrTYOGVPolA/LKD3KyrAEWbFiuA7ns=
+X-Received: by 2002:a05:622a:305:b0:530:f77a:89aa with SMTP id d75a77b69052e-532eacb0064mr19428811cf.30.1790121519361;
+        Tue, 22 Sep 2026 16:58:39 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3c6715sm8323261cf.30.2026.09.22.16.58.35
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3c6715sm8323261cf.30.2026.09.22.16.58.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 16:58:36 -0700 (PDT)
+        Tue, 22 Sep 2026 16:58:39 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -107,22 +107,22 @@ Cc: linux-kernel@vger.kernel.org,
 	mhocko@suse.com,
 	shuah@kernel.org,
 	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: [PATCH 02/10] mm/madvise: name the shared LRU PMD callback
-Date: Tue, 22 Sep 2026 19:58:22 -0400
-Message-ID: <20260922235830.2350770-3-gourry@gourry.net>
+Subject: [PATCH 03/10] mm/madvise: factor shared LRU folio handling
+Date: Tue, 22 Sep 2026 19:58:23 -0400
+Message-ID: <20260922235830.2350770-4-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260922235830.2350770-1-gourry@gourry.net>
 References: <20260922235830.2350770-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mtphfz5jtr9rd9f17ftb8r76czaxiqyy
 X-Rspam-User: 
-X-Stat-Signature: 4h9cwf8mowknke6wqt4fpmy7pe4765kk
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 89F76C0002
-X-HE-Tag: 1790121518-116266
-X-HE-Meta: U2FsdGVkX185gpfk1sW449YhnflUTChiWqV1ZpfevYvkmgLndkdoZXUCTCzqesKNTIRWdUTeyhhL3OqAKpKfn3Er900RKYKuolnW2Va8qjmhnG8AlMTypIjrlbmW2y8cofjFIX0Q3Mhq3kmYTjuLRHLuU8qbY9nyAU1r39+fvWlqu2RcWMqzoubTuCp9leVOsQo1TzuIaBhK4Kdh6wlx3QQwptc+hO8eDZLK26fSL8DAB6KTqMsbst1qtISDiO5NMzhx5VUMWdpqjOdumk8BGMpXw27ccVgzlKmyJ33h2fforapTN47LkmxDV+fTlbS04cI0Tg5S0uNd2luh2bk4W/P3pIPcl7Lw5EJ8CLSoco2Pon/D9vLBgG4gqCCrNElGXf2+ij/Fz0PFpKYA7U/+9vaJmJ+KB4BsSIVwTdjVwXuYcy6q5u9zPm3evG0tcoUmvr54fJFHd+YtS+hUp8xnDmJ6f9CpVewJb84+jgd7qei8Cl4ximGH9xGPLmNQey0WijM6/6g9qbBno7BNrHTFVvmD2+X/iMV+X1IqVKVTcHWKF9hEtkATcAx1koijwQpiwUEN+t+a4Jj1a8r1Uzac37PrB8kiAmWfb8chrY5RROpZa2mYEAnTNJ5Mv5hDW/nr2OhREV6emJ6uU0Bo0FpMVbZ2pEHY3NBGg3BecJ4OCuupnlG77k+mM15TmWO8rjVEpSQvsM/YNzs4WLPFxgwJ0vJuddxDVxtRw288qw5d87ZpGN11ZyFuTHoWfMeihL68kis8wnWzM8qb+VMgl++joWeb5JjZcCSYCl5U/zPHUMiOE6o8LqZKy5M4cbHhYveGpinhXFIM3kJFXq8BUvKJzDDC2vYie8UOn0XWshzqPbyIoZ1hoJyl3Chjjzo6ph/JeAVY+VCNJk9QHiO8fFMM8n5aFW2bgXq1dnd17o9zHHIwEwoJ9k2GffPZKdCuiVFYcqUY8ETxo2KmF8TgXqz
- 9UdvLvyj
- dczw8rqg8m+OfkmQAJsXHlr0FtUVlAwCpSNoG5eM0RjzNkVnCtWIJ2TM404Mtn2pH+pDnvGMgvQlnZ7i5z9t8xtmHMmWc0A5JglA+G6H80AEcvFrUoSTXj7nER9okzRpf2G3kK0zEGahLD8ySAdi+puiIne3+vLQIhGahFcySwUXrbcbNQzyRxmskN+GjP7MBeq9b6o1vP7FuFpg2o1uKSB9fOdQK66FCfsWqk1ArSKf2xJGNFDLLe2D2gEYm+YfUa0fcvwcw6cnnmVVyTEyMSOenIj2VM3tz7mIHVWLnFjps0lE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4434C20009
+X-HE-Tag: 1790121520-666895
+X-HE-Meta: U2FsdGVkX1/TgnIi/hI9XWgG2lRQ3iTfpoCW/dqVPxY1F8veKGsR/Uv1Rcj+QTifwp4q2lIU0RSngk/iXSqCoG3g2BiSTZkDta9RKEftPOzTcDkQVmgcy69mDdTprW18xfNDiCHZc1z6juUkPPlNhfiktB90aasMkYGI/15eR30ueWH4+hZCOm9/woVK/5jxBPBOYeSJ+p80Ck8iS2hIsEpDA1IYcBX3tHWkXOq4Z7krPd6HVSuMWBfLxOplP2cS6CyK2bLq4PN7CC/xmnHXjXiXwaDFFpH9IPafPaWA6Qk1YKHeeTM5YdCXnl//bUl2LxB9++PQ40vVrQL/WlKTgt5qzU6+HJtIdTXgE6m0cyCpFBuV0P3+fGkdEbYpTUWQGDdpXV6m8YT/vhZX0bMCSSAzHWOouOghnT2Knkd41w8ah5dBRXfyH71WwPrLLzCFVRtXeXWb52KIaolw28tdUQT6T06bnSRDdRqQCUZvKs88t1pfgRCgJyoDZQw7DoFMUOreRrfDk+gDqGyFQ5yHIO2YMXSqtBTa6jfns4ERK1CwIf5SO31mi/pA260gBmxACp+h9OigZkVmXx82NKFxqhPemDwWC+GkdPNI0hTWzso1aIHWkb1VsyUb3LmoQK6TXZfVXZQPwubdTTfJfSo3so77sRkMNUAGhLYnAyvxzmxjQC2zOu90Sc/r0WdxlBfQggiGKxIYtGpUL7RnsUaTkbRhbLlLuEgpvoNoyxgJg69YGVAMlk9Kp0kwTXj00Hm9DouVmqGOG5D/Vt3HhyH7qH48u8LqzD+ucEYemMfCDyK0six0VVrMRwnoRr57wsQvwysgzLRpjsDOXr5ElNlOOrQ4dm91fOh3d0EvelNgvOI3jIzJ9I6oE9F6ptPTt/AChm6fAgFqLYsgY29+yVa6MZogGen38jcGMuooysh5nRKFCmtV/LyWIaQZLwEh8W8hXSQmZ3cQmYV8YRN0/e1
+ GbF9fcMu
+ /J4VGSQKVRYGbrMPGFp/Vp1NVBEHSULYYHh5UcoHBO0Mm/1Vo89HFSxtubKUmQ+lHm6s/rKoIsLAN0qRo5tbreX5a84X4sJ415E8o8mQYAwehE2Sd5aj9i1QocEbLwa7MaldvllMjx3nQhVLFqinBJ6OYHyVmVXELdg7J3nnAGkWIwY2YQbfCx/REA4piAOqElpvbaRUnW/ROOKfKaj2ueoiEVraajUG53IWI0LD4SZ8vNFEThrwEzr/EOYla9TDfBiXCcooXFSKPGhPZSxZBoHfLKlkC1WR35JyNUoJEmwd1SSE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,46 +130,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The MADV_COLD and MADV_PAGEOUT page-walk callback is named after its PTE
-implementation even though it is registered as a PMD callback and serves
-both LRU operations.
+The huge-PMD and PTE paths duplicate folio filtering, reference clearing,
+deactivation and pageout isolation. Keeping both copies synchronized
+obscures the page-table-specific control flow.
 
-Rename it to madvise_lru_pmd_entry() before separating the PMD and PTE
-paths.
+Factor the common filtering and LRU operation into helpers. Keep the
+lock-before-reference sequence visible at each split site because an early
+reference can prevent split_folio() from succeeding.
 
 No functional change intended.
 
 Assisted-by: LLM
 Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 ---
- mm/madvise.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ mm/madvise.c | 90 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 43 insertions(+), 47 deletions(-)
 
 diff --git a/mm/madvise.c b/mm/madvise.c
-index 00b1be655a8b5..83d54ab385da8 100644
+index 83d54ab385da8..c345fef23f15d 100644
 --- a/mm/madvise.c
 +++ b/mm/madvise.c
-@@ -361,9 +361,8 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
+@@ -361,6 +361,39 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
  				     FPB_MERGE_YOUNG_DIRTY);
  }
  
--static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
--				unsigned long addr, unsigned long end,
--				struct mm_walk *walk)
-+static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
-+		unsigned long end, struct mm_walk *walk)
++static inline void
++madvise_lru_folio(struct folio *folio, bool pageout,
++		struct list_head *folio_list)
++{
++	/*
++	 * Clear references before deactivating or reclaiming the folio. This can
++	 * make idle-page tracking miss recent accesses.
++	 */
++	folio_clear_referenced(folio);
++	folio_test_clear_young(folio);
++	if (folio_test_active(folio))
++		folio_set_workingset(folio);
++
++	if (!pageout) {
++		folio_deactivate(folio);
++		return;
++	}
++
++	if (!folio_isolate_lru(folio))
++		return;
++	if (folio_test_unevictable(folio))
++		folio_putback_lru(folio);
++	else
++		list_add(&folio->lru, folio_list);
++}
++
++static bool madvise_lru_folio_is_filtered(struct folio *folio,
++		bool pageout_anon_only)
++{
++	return folio_maybe_mapped_shared(folio) ||
++	       (pageout_anon_only && !folio_test_anon(folio));
++}
++
+ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		unsigned long end, struct mm_walk *walk)
  {
- 	struct madvise_walk_private *private = walk->private;
- 	struct mmu_gather *tlb = private->tlb;
-@@ -581,7 +580,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- }
+@@ -373,15 +406,14 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 	spinlock_t *ptl;
+ 	struct folio *folio = NULL;
+ 	LIST_HEAD(folio_list);
+-	bool pageout_anon_only_filter;
+ 	unsigned int batch_count = 0;
++	bool pageout_anon_only;
+ 	int nr;
  
- static const struct mm_walk_ops cold_walk_ops = {
--	.pmd_entry = madvise_cold_or_pageout_pte_range,
-+	.pmd_entry = madvise_lru_pmd_entry,
- 	.walk_lock = PGWALK_RDLOCK,
- };
+ 	if (fatal_signal_pending(current))
+ 		return -EINTR;
+-
+-	pageout_anon_only_filter = pageout && !vma_is_anonymous(vma) &&
+-					!can_do_file_pageout(vma);
++	pageout_anon_only = pageout && !vma_is_anonymous(vma) &&
++				       !can_do_file_pageout(vma);
  
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (pmd_trans_huge(*pmd)) {
+@@ -407,11 +439,7 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		if (folio_is_zone_device(folio))
+ 			goto huge_unlock;
+ 
+-		/* Do not interfere with other mappings of this folio */
+-		if (folio_maybe_mapped_shared(folio))
+-			goto huge_unlock;
+-
+-		if (pageout_anon_only_filter && !folio_test_anon(folio))
++		if (madvise_lru_folio_is_filtered(folio, pageout_anon_only))
+ 			goto huge_unlock;
+ 
+ 		if (next - addr != HPAGE_PMD_SIZE) {
+@@ -437,19 +465,7 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 			tlb_remove_pmd_tlb_entry(tlb, pmd, addr);
+ 		}
+ 
+-		folio_clear_referenced(folio);
+-		folio_test_clear_young(folio);
+-		if (folio_test_active(folio))
+-			folio_set_workingset(folio);
+-		if (pageout) {
+-			if (folio_isolate_lru(folio)) {
+-				if (folio_test_unevictable(folio))
+-					folio_putback_lru(folio);
+-				else
+-					list_add(&folio->lru, &folio_list);
+-			}
+-		} else
+-			folio_deactivate(folio);
++		madvise_lru_folio(folio, pageout, &folio_list);
+ huge_unlock:
+ 		spin_unlock(ptl);
+ 		if (pageout)
+@@ -502,9 +518,7 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 			if (nr < folio_nr_pages(folio)) {
+ 				int err;
+ 
+-				if (folio_maybe_mapped_shared(folio))
+-					continue;
+-				if (pageout_anon_only_filter && !folio_test_anon(folio))
++				if (madvise_lru_folio_is_filtered(folio, pageout_anon_only))
+ 					continue;
+ 				if (!folio_trylock(folio))
+ 					continue;
+@@ -537,7 +551,7 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 		    folio_mapcount(folio) != folio_nr_pages(folio))
+ 			continue;
+ 
+-		if (pageout_anon_only_filter && !folio_test_anon(folio))
++		if (pageout_anon_only && !folio_test_anon(folio))
+ 			continue;
+ 
+ 		if (!pageout && pte_young(ptent)) {
+@@ -546,25 +560,7 @@ static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+ 			tlb_remove_tlb_entries(tlb, pte, nr, addr);
+ 		}
+ 
+-		/*
+-		 * We are deactivating a folio for accelerating reclaiming.
+-		 * VM couldn't reclaim the folio unless we clear PG_young.
+-		 * As a side effect, it makes confuse idle-page tracking
+-		 * because they will miss recent referenced history.
+-		 */
+-		folio_clear_referenced(folio);
+-		folio_test_clear_young(folio);
+-		if (folio_test_active(folio))
+-			folio_set_workingset(folio);
+-		if (pageout) {
+-			if (folio_isolate_lru(folio)) {
+-				if (folio_test_unevictable(folio))
+-					folio_putback_lru(folio);
+-				else
+-					list_add(&folio->lru, &folio_list);
+-			}
+-		} else
+-			folio_deactivate(folio);
++		madvise_lru_folio(folio, pageout, &folio_list);
+ 	}
+ 
+ out:
+@@ -651,8 +647,8 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
+ 	 * owner nor write capable of the file. We allow private file mappings
+ 	 * further to pageout dirty anon pages.
+ 	 */
+-	if (!vma_is_anonymous(vma) && (!can_do_file_pageout(vma) &&
+-				(vma->vm_flags & VM_MAYSHARE)))
++	if (!vma_is_anonymous(vma) && !can_do_file_pageout(vma) &&
++	    (vma->vm_flags & VM_MAYSHARE))
+ 		return 0;
+ 
+ 	lru_add_drain();
 -- 
 2.53.0-Meta
 
