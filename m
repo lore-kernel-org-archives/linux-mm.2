@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FCBC982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 03:34:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0154C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 03:36:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 853E56B00A2; Mon, 21 Sep 2026 23:34:29 -0400 (EDT)
+	id C00AE6B00A5; Mon, 21 Sep 2026 23:36:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82ABF6B00A4; Mon, 21 Sep 2026 23:34:29 -0400 (EDT)
+	id BB1196B00A6; Mon, 21 Sep 2026 23:36:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743D66B00A5; Mon, 21 Sep 2026 23:34:29 -0400 (EDT)
+	id AC6986B00A7; Mon, 21 Sep 2026 23:36:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FEDD6B00A2
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:34:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B71A9160391
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:34:28 +0000 (UTC)
-X-FDA: 85239980616.07.A571503
-Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A1BAA160007
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:34:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MfoHUeli;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790048067;
-	b=vcHh6DtjYIWz4j7Db+OT6aAgmj0aBhkTmZkC9PrFScnFx4H8w6Tbru0tk1d5IohNiyG2l/
-	ZppvfIuRrtEPAPe0XO//ClM/mf8yfbGNaaakBgNhQmU17FmTdhL/EZf081PVe84FrZuPDl
-	HzrL3C8wn821NyrKeDGbGePIg71ZVws=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MfoHUeli;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 884EB6B00A5
+	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:36:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0041F80376
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:36:35 +0000 (UTC)
+X-FDA: 85239985992.23.4D74107
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4939F20002
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:36:34 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KaNICKbH;
+	spf=pass (imf13.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790048067;
+	s=arc-20220608; t=1790048194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=79sGlaOtlw0358gyZvavwywbeWh6j86mj3ggjA+geW8=;
-	b=4dp+JHdwqXNy6uAyDwyZ7h9ZCqDhH+gXKZpRAyn4FIaph2GvSR+0MOb0LMN4IsWdlw0M+l
-	PdarNWZzpMyGKFjFt1MMrUyJmJDexj2GdBUqwxP6JDLSpmCNi/E+PjlhPxdOZChHbdkVII
-	IzBMOXTkYRk9E7huy6EjfsOXFADvUPY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CjIp01xrNtfOBxRn61B9UTZFA1lm/a/pyrDp80PRKmc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790048064; v=1; x=1790652864;
- b=MfoHUelik4u6D6Wo2HiRbVtk/8AH0OSVn5inWpfUPNnLkZZALD96JKRcNngp52DWgZco/1gH
- NLFS14P++YmNAnXz/2NbabIVzsxQLCUlZnDJGVJ7HGOQPj0SX32bURLTEAvbRRflWnvSvu8Grq7
- NK0Ee0xrfReA8nKLtT5XvQrg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id cd004a5251b8e779;
-	Tue, 22 Sep 2026 03:34:24 +0000
-X-Mizu-Trace-ID: cd004a5251b8e779
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH 1/2] mm/hugetlb: account migration target folio in
- per-node NR_HUGETLB vmstat
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260921223544.2401052-1-joshua.hahnjy@gmail.com>
-Date: Tue, 22 Sep 2026 11:34:06 +0800
-Cc: Hongfu Li <hongfu.li@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Michal Hocko <mhocko@suse.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Nhat Pham <nphamcs@gmail.com>,
- Chris Down <chris@chrisdown.name>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org,
- Hongfu Li <lihongfu@kylinos.cn>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <5FE0FD2F-4F8D-4EF9-BD78-2AB97E10B687@linux.dev>
-References: <20260921223544.2401052-1-joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A1BAA160007
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xjaz0tU8TY0TcueO7EZLXNwxMWHUXDu0d5R0jWTxtYk=;
+	b=smUeARKS0Yh+nzbLuzLc6IvoIxG1A9dD1Od900N8FIufzj6uhdzrANf0A+tlHy9wkgrFye
+	5Ue9tnX5O3BylENDyyyJ2Htl+TXqA//Ms1B2Xnd85S8CRxvJSK3GiVIfy+UqvZ6LRoGvMc
+	n1h0MB/DCy9bPH38TOvS04rDhmf0lMs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KaNICKbH;
+	spf=pass (imf13.hostedemail.com: domain of hanzhijian1991@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=hanzhijian1991@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790048194;
+	b=nQrj8UN3nbcl4ghEWorU7EqEZSEs0OOwHMVrijlUdUQ8Uq3YP+BsoSNmp59J0SAx8U/jLn
+	PNS83RaGtUST19R5w3m90XwKQfHQL/FeiEyWpuxIebY94Bi15xxeIgv6FCzeCaOwtgt0ht
+	tEEkuZUbJ7x8tAGOoLKyfGKoioXFg1o=
+Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469f204f6so2548263b3a.2
+        for <linux-mm@kvack.org>; Mon, 21 Sep 2026 20:36:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790048193; x=1790652993; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Xjaz0tU8TY0TcueO7EZLXNwxMWHUXDu0d5R0jWTxtYk=;
+        b=KaNICKbHWf6B47eQKY6IoD36jO/dy/1ZSYTDZT1W2RjD6JooI+ocCRXJwapFAZrr7z
+         qwHU3KgU7WwhyXOXJJSyRnvwthDK2WafWVeMZCh4inl1cPbWzgyZ4Jk3fDkp4thGcNy8
+         NAmLCvf7PHspqdu81y8kric764AmY8hJyv3aXuMJ1fJLALFbJN4ViGbZYiuP/TQ/YbdK
+         alrcWv2m5NwyQj59vz4WwJYMJg9EhEXolWKx9mV5b7a+PkOeLwxSCEukw5xSDlTmy2Im
+         rRCNvM21JKvcHRlI1Z8yF4DJjvyJNcuf2MVpiFW7fJdkX7BbTsQK9tkhxw4qKSfIqHEv
+         F8MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790048193; x=1790652993;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Xjaz0tU8TY0TcueO7EZLXNwxMWHUXDu0d5R0jWTxtYk=;
+        b=oMNkvfKaNvSutrgMKOnhJzwiZEcYLfxii+jlNSHNT7sCzS3q3sLwz2f6mAdfTuyrLW
+         1lwA0aXD4ejxQhi6u7UWvn4aMSDoz/fT0IE4eQhRPGnpcAXi+2eq4uTbwLpOIOIdRrrB
+         8+88BvEYVkN5Hp8WTu2Kev5MRc+QcZvrlyYe6iCOcAwjKnmQAcrZpzB5nNhMbq/Rx3z9
+         b6I8XozHlx5ZoXm1dCT/3Wnze9AdL1Q8tgNJsUQeqeoj+qEaUNIAoh71n9pXbx4Uw3e7
+         v7Yu/AH3w1ZLLF0TzY9VLT7wIAuuZ+qfOMqcU+2L41iS6JY3o5RyfkDDG1jTWr4XILyK
+         Gv6Q==
+X-Forwarded-Encrypted: i=1; AKwUvBx/wDGIW4vzmggetRffIc7Ly3TY6znOdrOuIkWwNq5WHyVQfEHbMnAxuml8srEeUmUM4OODNUMQEg==@kvack.org
+X-Gm-Message-State: AFuF++nXiohAS/244sGsKRmz1Pwdlkvi4jt4mFu3p9GFrcODATqYoG/H
+	rGHC59ileBsmmvvWLk9J6zxFNEUpHViGaYuO7GziXAHA1nD9gKI6fQVL
+X-Gm-Gg: AYBFou3POhO7gXYRUlDk7rGbhWrQcxKSxFL+NXBhImxOt7XZm1oQFso4wpNBWySYrjr
+	5KXEv7ik4n7VaHZwiTbUqU93BMls13h8MouensfhZCcLBJvy/nEAf/PKCttld/0XNyC7gNMnhvA
+	ZjM3qSJKgJhpoltQVyznmfh3fCPnk0zhlitUQgmW8atCi2KMsRyvyk6wXzNFfE2KxZzPm9kmFCb
+	OyGo7Baj73FAJSKbo42b8SsbkYKpN0F8/oM1L1zHc2rN87j9uD7S6lUd0D16sHpM/TQbnyK5WvV
+	91XO+x4zwdvrmintlaD6XwqTLzwFayf+lb/MC4/Z/Q1K3NOXNkQ/zZCcVHsigegT4e3J5IuGNLZ
+	vjRcDMVnrDCfwb15FCT3AkNObLqfCD2A73UVnbUB/4V4v4NGHYAW6pgDGeIFh9gWRLOT+bDX3FV
+	6A+6d68PZOLw7qG8UWTTy9lr1LJ0Dh3YXZ7K6kCLJGQRmYDkKKWhAMsYZU8QSvTua464ENm+iPM
+	94qa2RD4RtkHmvkxPV6ZswZWe4Bb/g19GUyzBYpzpVBUb2B10fpqj/+gSrkJvY=
+X-Received: by 2002:a05:6300:68c9:20b0:3dd:a197:7371 with SMTP id adf61e73a8af0-3dda19774d5mr7923602637.74.1790048192813;
+        Mon, 21 Sep 2026 20:36:32 -0700 (PDT)
+Received: from hanzj-mi.. (ec2-99-79-140-187.ca-central-1.compute.amazonaws.com. [99.79.140.187])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-144f2a28cddsm1235667c88.10.2026.09.21.20.36.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Sep 2026 20:36:32 -0700 (PDT)
+From: Zhijian Han <hanzhijian1991@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	SeongJae Park <sj38.park@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon: fix typos in comments
+Date: Tue, 22 Sep 2026 11:36:18 +0800
+Message-ID: <20260922033618.2862687-1-hanzhijian1991@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4939F20002
+X-Stat-Signature: x5h1s5ckexcqajt6str7g4goawyh1o7d
 X-Rspam-User: 
-X-Stat-Signature: skejzb5w4i8r8t547p9jx8ahz57j38h4
-X-HE-Tag: 1790048066-947171
-X-HE-Meta: U2FsdGVkX1917ajEXvqZ0bB6AIUBplWaq0opyE+XGWqLfsI61Dyr8S0wj6/oFKcl6I2X/7M3tg1H08mZ7Nzt7VbRFYH1Rga0knL8S9VWZ5HB76SgWePfGFzwvOzNvlQX9vbEN2pS/8Fe168SEeGHc5J+3NEJvNfzLzgGk6rjveLWSJKYn4LZasrhqdDzy5sWwLbVb2kdsTuz6xDiiis/2bGnyZdijbCKjVnQgqEpfIqGsN2Vu8s9a46XuLMLHYBWoDciBUTug4fjV+cD0uftpcavq2WLnFrVniOnwTNBnNB8YMBF0RhpcnThUyMKZBK1F/NTggG4UQNcLxFKq+U71YOc3QegDgaMn7WbPnk3qXpq3POc0JoG9ePfsNlUaz+qX2g2xZhdFuqf3yLUbwSLbfUnYNMVxP53nzCHkte/FHIvH6NyVrADa+taNcxXS+89SYo/TSV0ZlFfxHBtLuFSG4PL5oyWyO7+NtxzNufkUB+OrerWqYiYmVi0P0H6oeGvRBtDWcg5a1fWL35DNs55DAZgphnR89/vUFnujcQW7Cazwxc49NZnxemAwBfMw26Slidch3ip3N1nM6mM7LFbkSrO/zwp1P21EBPcH+fW77w7lp7YNpt/eHYCqNYj80ZzVQsZWRNpjwfrSOH/to5M8MMC9f9x8QnyXBdGDxVeKmD4aW6QaY2v8AZ3ewp0cKixEV0i5+M6XyOdGqxlK7RwdkhwFM2Ndfipdb5eN2xRAWSzP0oqwFLF03mTGku8Chtcqrwa7/0Azxg1Ghmpll462It1ZX7DR+G9WVVAPCzIdVjp4v11sp3WbUuGQnrM0hFNoGlpYVTG+GWXnCic2vmPRoPWeC0qaAcZDJqoy+OSmsCSliO4wCudiqTo6X4uK1FLNeCS7RE29GfIjN02oJfSO22sWpaOYM380MB2g4JfE3rmc56Vf1MDxxAhhGpLGIO5yZI1N+azXAzxQsfzywq
- tckqK5Z0
- fLoAXXMpXGo3jMlDv9n68Jw3wrCc1Ywd68iaGosAhcIZYX1Pyo6Ig0Y3jGZdDawSsPODPEVkE2EgoPfzweNa7GUDnJ4pbt51PwU+yoYKwbyX43b66F1YtrY3ARjSv7OgLjqihZ1JY6f6h6Dz0eMzp+lN7j9bp72H3IwNi6dBp7vOOJwn+hPche+zSChZHsdNoh2HJuKjve25MOhpqO7PGHwtP2wiozqw3VqQ9QbU0339iBaxb1L4ihvsAicTzfOYFb4QkgyLyzRvXEZjawRtkHO3QiRMnFBV3+w9GjDmTyCTcxKYXayLltN7GjdXGZAikx8DrlzbZNRlGXlKXJCdDlojbwxzNseUDWyKWUpq6UrsVGCwOzH+LOi6ygzAbbpvXKgdmZnpOnsal+uVU2YLgyZK3YN7pdjSQIJhYGqIDDnfkUi0XnEw0zS1PZw==
+X-HE-Tag: 1790048194-234712
+X-HE-Meta: U2FsdGVkX1/V11S7IqUPQJkGXev+qKrOCmIoJjs6l+jWk4qDn3QeSWxz5tQ6CiFIE1Usdk8OiWR7Je0eBC8Dnks7taNm2I+tz+ocvgo8ChBPHnYl+3ov2n3xbKcq7vMI1fx2ZLxV863cA70q7f/gGPY10rm8eQiWg0KfEH3u9SIukiYqBkExKc0hP028lqbLyFRDQDlxglgf7TSi4CGdOHYuBtD+iv2rUvMtC2QXcU/uqoDxyRtYSYmEONOahgHJAGdgeJlZ1obr4vnoPrhJN7W6b3hIdVq/vzChDtq3QADdlzI3iGjK1MLnBjJHNoTxlL9+Vif1yRhp7OoyEXJTeA9LcWzHFx+04FbbayiSdyfr4brzYTkNaFktHQZyREIb8o9hzPjoh46x3UUMG1bICKKzaPMgN5cpB1ye/hMB+bGf5Wab/QwCLg8AvBeAeOTEFiDvddrlkuRBxmVlbr/eD8s4wicdpEKdyXzyN/ZpNuSTASfmy/rTI7AGX/U2nj/tjLlh3mgbDOQB/6g9I1iyZ0zkO5Usg4EfmzX3yMMmp/xxKefCN1xzoucucq4P/T6WzA4Oitogt8KYLIZyJUE1VhSo1DG3IjpeM9ylyOV3rGoMputR++6PXdy69z1hWCvrowzH4NC7g+15NuW6UCSI93cpDC5AtAuxdUyU4jn6fHX55NA8pErJ6rM0SXSInJohI1gZ4EIplRz1i0ENSaVhgGUPrWb84dna/A+tfE9TsSdAtixac0xrk36+QQVOcUqailrpHwB3O+EGmMbvL/vw3mbf8Pf8XKHhbp4oZDie1NXUerZXVB6vsQoyx/1qVwTx1ERvBeqIl0EZv8PMHdr0qDA3VKOndriix6kLVW66dx8rredpED1wvGoJzkXSxOXX0Fb/qgDitKi7z+xDKI/aVId/9ynrE50/3fp63kp0C4oH6DEhhVWGTXd7dC6T3GJcM2WMpqZsCmxag3x4ILU
+ 2WKzgL7Z
+ adEp/Vbs8l060I9ZXQ+qj6dUEnPX2BbL6iWAxZgPZqgNlRBHZb+4v+79orhQk02qH5i6XRTRSe3VCyxbakYrnmLvOWKCepmkG8+WvjYIrdJDlTrRHGHR66E2965+9fOZwruGSWSDguNnZHH9y7IYnb1tPngCT4Vydq8zgItUrxZym32k7al8n6tlmY7N9BJqjlBauutmmurK7KM1+mPoGT3IL1mqDy7XKD97xhd8SQ+ngs5RddjcE84MV6LxgggDkkMhZxxNfMoCDFAczNhmwSa95kAO+STbME70lCcWuNbpBv9M/6sMHNJ5jGKvby5zfwo4KDXb1Aisi0o2PQ8+k1MlxMr9lBu/lfBC+IxAAxJMAXyb9ZB1P59PagprgP1+n3R6gGvvOZTWO+rf9ykt+1r9H2/9JT0ID4pt4LVR+r6GStTrSHx04gk0OXNUXMEmNFQyyV9yP99U6p+xDd2cBiU1K7w55n6xpk1Uu+2WBu2fqzGh0ig4Br6iQ8ceGECH+1OrnSPwzMuoJevFw6ZlTo0+tWdLh/flRVgpSSQ507A80qwi/WCEnyRwzmXmg4TnPXVkI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,68 +118,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Fix spelling errors found by codespell in mm/damon/core.c:
 
+- "widnow" -> "window"
+- "makrs" -> "marks"
 
-> On Sep 22, 2026, at 06:35, Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> 
-> On Mon, 21 Sep 2026 17:12:34 +0800 Hongfu Li <hongfu.li@linux.dev> wrote:
-> 
-> Hi Hongfu,
-> 
-> Thanks for this fix. From the cover letter I was frowning because I was
-> thinking to myself "surely there's no way hugetlb accounting is this
-> broken..." but it seems like indeed it is. 
-> 
->> From: Hongfu Li <lihongfu@kylinos.cn>
->> 
->> The NR_HUGETLB vmstat counter is maintained per folio's node: incremented
->> when a huge page is handed to a user via hugetlb_alloc_folio() and
->> decremented when it is returned to the pool via free_huge_folio().
->> 
->> A folio obtained by alloc_hugetlb_folio_nodemask() never goes through
->> hugetlb_alloc_folio(), so it is never accounted, while its free always
->> is.
-> 
-> That's pretty scary! Glad that you caught it here.
-> 
->> For a migration target this means the target node gets no matching
->> increment for the decrement on the old node, so the global nr_hugetlb in
->> /proc/vmstat drops by nr_pages for each migration. The same asymmetry
->> affects the failed migration path, which frees the target again right
->> away, and the temporary folio hugetlb_mfill_atomic_pte() takes from the
->> same helper.
->> 
->> alloc_hugetlb_folio_reserve(), used to preallocate the memfd page cache
->> folios, has the same asymmetry: the folio is handed to a user without
->> being accounted, while its free is accounted through free_huge_folio().
->> 
->> Account the folio where it is obtained, in alloc_hugetlb_folio_nodemask()
->> and alloc_hugetlb_folio_reserve(), so that the increment pairs with the
->> decrement in free_huge_folio(): a successful migration hands the folio
->> to a user, a failed one frees it again.
-> 
-> The changes look good to me, and I was able to reproduce the issue on
-> my host and confirm that after this change, the missing charge is
-> fully accounted for.
-> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> 
-> Again, I'm super surprised that a problem this big has gone unnoticed
-> for so long. Thanks again for working on this fix!
+No functional changes.
 
-I think a migration for HugeTLB is very rare. That's probably why it
-took us so long to find this issue.
+Signed-off-by: Zhijian Han <hanzhijian1991@gmail.com>
+---
+ mm/damon/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks.
-
-> 
-> I hope you have a great day : -)
-> Joshua
-> 
->> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->> ---
-
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 644daf5a1..c01b7e2a1 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2328,7 +2328,7 @@ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+  * This function checks if a given region should be skipped or not for the
+  * reason.  If only the starting part of the region has previously charged,
+  * this function splits the region into two so that the second one covers the
+- * area that not charged in the previous charge widnow, and return true.  The
++ * area that not charged in the previous charge window, and return true.  The
+  * caller can see the second one on the next iteration of the region walk.
+  * Note that this means the caller should use damon_for_each_region() instead
+  * of damon_for_each_region_safe().  If damon_for_each_region_safe() is used,
+@@ -2486,7 +2486,7 @@ static void damos_walk_call_walk(struct damon_ctx *ctx, struct damon_target *t,
+  * This function is called when kdamond finished applying the action of a DAMOS
+  * scheme to all regions that eligible for the given &damos->apply_interval_us.
+  * If every scheme of @ctx including @s now finished walking for at least one
+- * &damos->apply_interval_us, this function makrs the handling of the given
++ * &damos->apply_interval_us, this function marks the handling of the given
+  * DAMOS walk request is done, so that damos_walk() can wake up and return.
+  */
+ static void damos_walk_complete(struct damon_ctx *ctx, struct damos *s)
+-- 
+2.43.0
 
 
