@@ -4,97 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B3E6C98307
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:33:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC3B0C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 17:33:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48E776B00A4; Tue, 22 Sep 2026 13:33:01 -0400 (EDT)
+	id A82B86B00A6; Tue, 22 Sep 2026 13:33:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 465D26B00A5; Tue, 22 Sep 2026 13:33:01 -0400 (EDT)
+	id 9BB2E6B00A7; Tue, 22 Sep 2026 13:33:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 308746B00A6; Tue, 22 Sep 2026 13:33:01 -0400 (EDT)
+	id 8107D6B00A9; Tue, 22 Sep 2026 13:33:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EEF296B00A4
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:33:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81623120583
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 54DA46B00A6
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 13:33:03 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B99671405A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:02 +0000 (UTC)
+X-FDA: 85242093804.16.C80099D
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BE2A220003
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:33:00 +0000 (UTC)
-X-FDA: 85242093720.22.1D9516D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D40CB160012
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:32:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Rr/9WR4u";
-	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790098378;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BCnnR1ca;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790098380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JbY1k2+sdM/x8N0JZzx9NYdW9GEqUwxxbqwApeCQ1KM=;
-	b=0jeNu1bmWtnQQ5EsKVNTHxYPFeVvwI0zWtYdUs7tE1hZq0kbsZtiO8fOSJpsebUANM6u0X
-	zwaIYCghaxJuGq7N8XuYT2c1H+O40pPAtXwCb7MEysD1aeuduT+0sJ2b5yW10CtpJcSCvP
-	uU/sM9Z0qw7lDukY3YEpxLpU3HJsErQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="Rr/9WR4u";
-	spf=pass (imf08.hostedemail.com: domain of usama.anjum@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=usama.anjum@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790098378;
-	b=f47P9IMjaPuT13xVdutRz+Rt67U9vv/alLOtj7Zn5NhIknjW69HD5Ulv4RK4PS1AyYpS2g
-	ymrdRs58Obnx9pcyWnIAkMRnPBEGwbV3t0R9bA5r9I3RHL9Hea6EExfJy19eFrQ0o/vp2L
-	1injPB98FRdGEmO0YabQworfF2bGm3Q=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4CC811576;
-	Tue, 22 Sep 2026 10:32:54 -0700 (PDT)
-Received: from [127.0.1.1] (e142334-100.cambridge.arm.com [10.2.198.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 633063F86C;
-	Tue, 22 Sep 2026 10:32:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790098377; bh=xTJL2byDqGx0AB4Z6L+IiKln34gIro0/pV4Ued2u1UM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Rr/9WR4uGteoys9nZHG7+FeU3UTiy8Locu6YSlv8Os75MOwYw1jqPExvnMg9LRzUJ
-	 2y6T0AwNdB9W5yWJSKEUKDK4zrqxaAO4cewAugA1YMhbN8da8UqEMmzaUGtYMbZYGI
-	 8EZouveWU4RVVr0bxL6+D614EYrFlIzanIIkQzLg=
-From: Muhammad Usama Anjum <usama.anjum@arm.com>
-Date: Tue, 22 Sep 2026 18:31:57 +0100
-Subject: [PATCH v2 2/6] arm64: use hw_pte_val for HW PTE atomics
+	bh=6wfVY0cj3I+ZyoFfhOD2M0rQu+6sC7TkY/5LoCxxQ7g=;
+	b=efNJWjAANY+iPAfkzE6W3AugxEvasjoUdlOhNnN9MR/LIY6piOmQ9lvXzMjmVidiiIBRgy
+	88oypMAMT6uRk/seWklYjw/JUG/RCmAqgz6zD+a0f5oeBRXS7w4W4icPSq9QPJ308lJkYk
+	GDpdpXz38o5smoMKf5bWO8Ei/q3ardg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790098380;
+	b=NIMegXyoVZEDiYo+rNJlWgPkp0jTMVsPs7EPmjEL3i6qw9k54jNDvlh9Cik+deY86kNPrx
+	k175TlnbtK4JXDEKyL/d7qfv0lRMjCiUiOcS3U3obYUqhgT4Oc1eXLYAG0+5WOQXpmlT3z
+	p0PmJ6hP+MWFQP/MC5h/s6lOq3GvJso=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BCnnR1ca;
+	spf=pass (imf03.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f633ecdeso156639f8f.2
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 10:33:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790098379; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M1ZKFWjWOzR5q0H/6v9BkWQrih4+2GUuMYyYT3hdPfysONPikgmRvkMiZORdbs0l9M
+         F2NtjbpGck09amUIUtzfREdf1uW/YBpwGUfWGe5cCpXu1VRdeV8OBeBO7nqPRFBYH6Mb
+         rkzmUMiSar9iW0INUp7sb9q01aWFfTWS1P/zWT8volPaQLeRyLwlK0C9AbSgKr6T+lHc
+         AGqidZXp/l1h9da9Yc1X/ikW6SPd6H+JKATrrHjWNK8kXjhxbP8PWq7Ql0PZI2rAEBzD
+         aDLWdAW8t99vpLmVPMdwYkE1MtlLB8LpKZCaoDI2u3c00ayS4m/bGxlukQ6OAwV1p0h5
+         NAbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6wfVY0cj3I+ZyoFfhOD2M0rQu+6sC7TkY/5LoCxxQ7g=;
+        fh=ZePrRYe6Ofn9HM1p6wwkbRVLHxdnoKuOkj8a41h3shA=;
+        b=bokr6djJa8CsKYn87ARGBwg2Wn0Bba2o13mpr/k+facKT0uYiU/u1NA5R5wLxZX92C
+         ny1EfD+xBFynwqY8rq7xhp9PEvHaB9fpUmX5n21bG70/dl8shc878wKflKUE2v574bWS
+         AuOZxE8kxyucqL6UuMmxEDXoRvD87JI1Esg4p5FSXTVkFVQUWJm1UzWKbDCa96G3FCgo
+         YCHDPkn06Mv5QV+B4ePEC9NnINf2DiZyjSqUc1EFpuK+tBDnGHUuHWtn0Il7o2T2YVUU
+         6YlTzeWUHc0ZPvNZLzz69W0lYRuTDkmiaiFpNvhJKGKeSjXIVSbFRrSSOUYwkWav0Ggp
+         /Zxg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790098379; x=1790703179; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=6wfVY0cj3I+ZyoFfhOD2M0rQu+6sC7TkY/5LoCxxQ7g=;
+        b=BCnnR1caG1NatbxbmnkiVubObdgDkKSLyZG6y6zqSRoQ8qrwc2wfz81NYVSXM1nYUR
+         gvj/cEmxOj/pCiVUy7c1SiSsBYVsIUgkc35uL8oGYRX0smAFCQYmXP2eGpxNK47ZTs1o
+         IYKNCIf6cZ4naeiDLYx36s4nGKzlpGYiKclXhNJlmpOqEauiuHtnHY8BWHjFhh1rUEBs
+         MB+QqpfCT+zG+lUyNex4ikC/ogJlSXINilC2vr2C5ZNct7dP56s4ifQuJHYJEAeK1jsJ
+         kkskeyZ9peXZKGL9soATJrsC7RU+HGVqcjjZdyOhVRSfwAbAeSEOc9U7RgM4+2eGnB9j
+         /ObA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790098379; x=1790703179;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=6wfVY0cj3I+ZyoFfhOD2M0rQu+6sC7TkY/5LoCxxQ7g=;
+        b=qbbGw0ziPTz6ciyd/862wY9P0kcjXpSDduh6Ynmv7pK/i6KRtMNNEhGYSDZa8Bai5N
+         XjOk5hDO/INlF25c9J9y6j7RY27ZTDacHOp2e5Sjs7GuEEcCqi1JPKvvEUEB1vuSh8B5
+         d+xnoLU5wTL1nm4Rq6K8R5jKiOpTOywEL6HBzQpyHKwrnLA49juG+1WETZ16m52EO7ft
+         5E/2lMFBbFx71TOeMLaOUGj/hXjZYyC1Za8EBWmkjCSkuB4iyKIlL/DtuJ+pVBF2HB4l
+         l5AcoRuknH7x6gEzgZTMgCDhfAhcHYt21ea3Ga7ilH18zr2dtA0Zf/QCAUNLUlsZKwAv
+         uQvA==
+X-Forwarded-Encrypted: i=1; AKwUvBwXaGklx7JkPlaqSw4WvDGRhYdoEMUKEvzvUNagTCbH1U1i0N8NKncndV7/lglLgug4zqg4lb+8dA==@kvack.org
+X-Gm-Message-State: AFuF++nRif/vajndMyQYvzuydHwMzgdKHBCHFkmnqJJ1WEKou1GOiXqA
+	BiL+u4b9BIp4LhWAdjJEprAaHFYtvxrhV0NEJlquQh43kqpOhXehJfUvI1vBs+q3dfjMIBW/QUd
+	UhgBm3pf2kWjIkg5yE6sHHt9AwGGgimw=
+X-Gm-Gg: AYBFou2KghQJ8DeEwVzlke2GgmQyq3PWvwNXyOmJzMFdp7+COnK9BVF+ZvJIguqaAZe
+	uFdA7jT6tKAbr5bsoiqps5m05fG+4kKCsSWk1y/GNsLy9HoHAVjEPInun8uIlATrj54Co4ZM7qv
+	WT52poig+bEBoNHVELRUbcMaAWEpyV02z7tHQVdZ+It/C1MgNBm+cPg+lWNQutZqb3kOQCSmidI
+	aWlpNTJT/W0fvwgQA03Jj7xdO2dLEKS8GcKbZ1Kqr1DAOYlKgQCaalnkgPdd/YG/oia2WR9TGAg
+	6QdS2P7x5/M7+BxtqjIjedFaqNkqSaHCn1RFFVJLPiuvppSlaZx2fLC76030GXEwP8m9p31LUQd
+	e6KGOtJq6vdk=
+X-Received: by 2002:a5d:5d08:0:b0:485:ac35:5c5d with SMTP id
+ ffacd0b85a97d-4886705d7f2mr561509f8f.15.1790098379271; Tue, 22 Sep 2026
+ 10:32:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260922-pte0_arm-v2-2-a3f1ddff0a8a@arm.com>
-References: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
-In-Reply-To: <20260922-pte0_arm-v2-0-a3f1ddff0a8a@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
- Alexander Potapenko <glider@google.com>, 
- Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-efi@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
- Muhammad Usama Anjum <usama.anjum@arm.com>
-X-Mailer: b4 0.16.0
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+ <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+ <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+ <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+ <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+ <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com> <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
+In-Reply-To: <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 22 Sep 2026 10:32:46 -0700
+X-Gm-Features: AclHuK853Cv8o08iYHDa9EpXynqoJX_zkfnKle6O-lWkCRkEdpUZ-YCtbcciUuw
+Message-ID: <CAKEwX=NrN7-u7gnGvWX3qfHaBQcN6FKsFP-4-k76F=sxM1LJqg@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Chris Li <chrisl@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BE2A220003
+X-Stat-Signature: ao17db88kozokcds81x8pe3fm1t46bzh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D40CB160012
-X-Stat-Signature: iyf974n1e85cwxup1x5b1cjem99w1e5x
-X-HE-Tag: 1790098378-63231
-X-HE-Meta: U2FsdGVkX1+KV4wACUCJb9XTQE1gQk90A78zGww8VYmaJLJ5x44qwZ1HJCRHcxtzCxPEnMnZZyfMv/hG0tRcQdVnfYLCdADD51oiaKIl7kWUFco9Z30yZxWFdG+cTJRPKj3YegEGhew4HczLikpewuBIzEoVpZXgqcFlBAXmonStsufOmt86nCxUI7AH++XMnBuUhlo5Sqlj9FZS1Ttt+jQ4yVz0Wt4CVpVW7HH6alybaHi4h00a8gChWYmaKDhIxBgMfePYb9wUQGpjXhxjtVyejxfbxrmoeJtkU1Y7i2MmgWh0AZ2zgoW/ACGvJYELhYm2M4DoYAUF1Ohz3qQk+gJ4T7Rg/yDcSV9hqMsml5Q7rRV7l9BXpB+EctSnWFM+1BF4Z6Z/gNdGI0yLRBsK3DgUpga3UavIFPdanjGfbP5Zzt8BtXrzd4Ugc2mp6GpQBpb+asvAJegn5PFeK6kCNaYieHGg/ycqHr0s85Re9/zVJq2hUK+szZ9/ZmPtIOWalbwPvOJ5238Tr7RuDY1X6HOQQb7XCiJAzkQPI5jcwqsAM5f6JmB7I9O5mnJ79gjR2cYDV/mfo2a3tYao49v1pX/tslRUZ4sl5WjvNIoqcE3N1n45M/684PKaO1gmhVfZSFpDN3wAHDfhliQRun+nUJTaEcpdlvyT7gZFZ5X1vDrh4xL9s6ZSx4phu6Tj5+FSRrXD7bS566MHlIUGOy22Bf9/p4Z+j4sWlq69y6mVS6bU4/VpHnZnBa1Cq6+j6GM3gbJPx8rJJZRnVkTyEQQLslYy48zD+YYwU26VSpIE1r9zwSIHSj76CmTfytCA9YCqemnsFy5qLihGEY4yVDt0qAgUdKgTmyP4OIHlxqMIrZYTMnJ/7l1k4mwpXLQldYgDSSA959zv1FiRGUEZhVNw85uUaQ8lOGkfF1z3JYAk8TB6J6aN0klTwuk6tTlVWf6/y9BPpnUL/yn22iIkcis
- +Mx+Runi
- 2km2Ty2WC2W6r4S9a2NLQQbWGKBYH/CSTniT13Cny90hdhyR6aQqN2zn5wekj7utIzIVDsaW3wgWdneTU7IA29ipSiUMtNmVNFCc5UtpP9963ngj1EcZbSGHO64fbzR3/MafkXxQOQrge1RQo/R0wg4ENLF2rvSIkcl+sCZolRD8DDFbYx3bTlmUhtchqtpSjOqpVpVo8pa6Iq7B26CsMNr/sjy3XHcSqZdZhdtMWuKkro1skBNf3RLIu67vhHq367johxG2TgCtjGNf6RstbwOvXiPd56y7tMBu3Ict4mJP90hO+iejgDa4YFnZnF5GnWcSFFAYU7japc9lJ0UC9jNKo9yR0GjxH2gbzS5f6knQdGqER7lr1mqKuXQ==
+X-HE-Tag: 1790098380-3180
+X-HE-Meta: U2FsdGVkX1/FrsrS9Pq6BLg+B4GAovF6Vcz8xYW87hNRO9aP8n4+hrkG3ndzw46CPCAP1uy7UxsbGDP0iKy+Ytqkm2megqZ0QVfuUDrDTyndj+sKEY2r9oVqoydwAnpzDH83fl2pY0eylABnbBpKkY7HL3YMj0FLRKqUOgf/jynRYzBoEnOv51j4BDxhj6HXzVNXnv2dFXtkBjc+UgeCB3+ovIQr0YNeHUhuitMEM2YqVfy/nRj8p9MrBrLeT2h7Xklfq8hCbo3CAUAVjwwQkgHjdD0hRbH1S/Lr+AG67t24FDX9YomgvDxuRex5nvr4JXQbas0ug1I56f5F9e4CwhXEnwwwluNvOzu9DNgovtMud+inTGAPDwnnCQ0Ycj0AsQH5GFNVqLCisMXgffhPx+46t9ScgJ7Ut5RCbytLyv7UIkyva52cFAaafSEoE2WTiGwdG4bKBwtl5Ppx+5lAZ3VvUqCn/K+n1VORn/c4dcOm9vJT+VcY+Qu1JOzrSl7j6mBpB/YNdInvmH5oODsxLn02zuL96m0Sd13JZPhVIQEsrrvKw7OdiGucfuhegeVd6uvzuNluLtM2v7Gl68JV8A61yS2TunlWu2GjbMzCmd5rRiQO4G5JIiKS9r78uXppoTQWZtZj/Oz2aYC+hYN8yZFnfZUfAMwSdPOlnUkuK6lUTRgUM9YWNbDwMG4y2y0T+OSsCKVD+3c9YtcoyhPtg6mRCtfz9xQoeP5AujUVI0QfxNHqb3k1hNH/X9h+8UZ84942Ss0Kf1N7eegV/IBlhXmhslt63Rp8NnrUgC8vlKvhXhfYkR046NFviSA7aHf4dOUP/bfDDORmeUUAIyMjsmwpkojdIBue8bWl+dE98lkfGoq8LX3eUXAgtZtoEVaGiGZuojt1ESTCdDmbOpfve4Bah4sut6xQuJwriBLlsyjjk6boKmwnQUjTe88qlhs4W6ujEPbbjFvB9oLOG0X
+ CjAP5YkF
+ 4ql94bZ2ttE9Hc3UBCO9JVZ5qy84xn0W6k6xrfiazuLJlVhlx3CzkgAQBEa975VoP9544KNpdI0feR+8cv2Fo9JL2vyRKCRkZyAZnT9oLQ18f1M6dz9OTxVUaoARwkjPjQ18J7lbsN/XGG+9q2GVQ/FCFIM9SQpYP1m63i/DbDZXvSr+0bmRUtkxXbelZ2DGeXm/pmzWrNH3e3dgssD4zot+/P2x7C5LTAtq3/nBgWjifXGNqRKc7BTS29s5KnmFr6UQ/i6tDdXvriqtrJytNp6bSm95Xb/lG3J4yq1C03YGBL4jdlteJdVrNHZJ+pDxXbWRsZtFF9pcSi5nMhBQt7h6PMpHPTHwSPAFPl9N553MGDqcGE0XQ1ktC8dlq1/eUyY5PrPAj4S3tjvz3awYp2kx5GYuDzpm5WeCNbbYrAk+Vb/ktNJUJ7Luo1ITbgh9ju2//6UIRElTkYJuUlvSIAT3yhq7F2SNXDHazvVnmaQZu1v7UbSPseDdbTEl5Ei182zJZ96rW6aRymTVY1Pk5xRceHTq2DP2aq5oJIiuKvx2kK7Zj8p0g880UPSrzweqYDZ+DRHQtQP9+/pgZJcvBNOQKqKgaEmmVVYnY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,88 +168,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The low-level atomic PTE update paths take the address of
-pte_val(*ptep). That assumes HW PTE storage can be passed directly to
-the SW PTE value accessor and no longer type-checks when hw_pte_t is
-distinct.
+On Tue, Sep 22, 2026 at 8:23=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+>
+> On Tue, Sep 22, 2026 at 4:59=E2=80=AFAM Rik van Riel <riel@surriel.com> w=
+rote:
+>
+> Yes, I can agree on what you observed. You are using anon + zswap on
+> that app alone. That is not what I originally asked.
+>
+> My original request was for the whole system: what percentage of the
+> total system RAM size has been swapped out to zswap.
+>
+> Because when you have 100% of zswap out, it will likely trigger
+> different kernel code path on allocating memory. You might suffer
+> global memory pressure you did not observe in the single app memory
+> pressure case.
 
-Use hw_pte_val() for the lvalues passed to compare-exchange and exchange
-operations. The atomic operations and their ordering are unchanged.
+What does this 100% figure refer to? Pre- or post- compression size? I
+legitimately cannot tell.
 
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
----
-Chagnes in v2:
-- Remove comment change
-- Move hw_pte_val() to generic series
----
- arch/arm64/include/asm/pgtable.h | 10 +++++-----
- arch/arm64/mm/fault.c            |  2 +-
- 2 files changed, 6 insertions(+), 6 deletions(-)
+"Trigger different kernel code path on allocating memory" what do you
+mean by this? This reads like you're referring to post-compression
+size, where one cgroup eats up the RAM of the host, affecting other
+tenants in that host. But putting a limit on the virtual device
+capacity limits the PRE-compression footprint. It is a very
+unpredictable way to prevent the effect you're referring to above,
+because compression ratio is unpredictable ahead of time.
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 652ce413be389..4768ec59de555 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1303,7 +1303,7 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- 	do {
- 		old_pte = pte;
- 		pte = pte_mkold(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- 
-@@ -1346,7 +1346,7 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
- 					       hw_pte_t *ptep,
- 					       unsigned long pgsize)
- {
--	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
-+	pte_t pte = __pte(xchg_relaxed(&hw_pte_val(*ptep), 0));
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
-@@ -1422,7 +1422,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
- 	do {
- 		old_pte = pte;
- 		pte = pte_wrprotect(pte);
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- }
-@@ -1460,7 +1460,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
- 		if (flags & CYDP_CLEAR_DIRTY)
- 			pte = pte_mkclean(pte);
- 
--		pte_val(pte) = cmpxchg_relaxed(&pte_val(*ptep),
-+		pte_val(pte) = cmpxchg_relaxed(&hw_pte_val(*ptep),
- 					       pte_val(old_pte), pte_val(pte));
- 	} while (pte_val(pte) != pte_val(old_pte));
- }
-@@ -1830,7 +1830,7 @@ static inline bool ptep_try_set(hw_pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
- 
--	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
-+	if (!try_cmpxchg(&hw_pte_val(*ptep), &old, pte_val(new_pte)))
- 		return false;
- 
- 	/*
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index b77f4be88e3ea..3322f4e7174dc 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -235,7 +235,7 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 		pteval ^= PTE_RDONLY;
- 		pteval |= pte_val(entry);
- 		pteval ^= PTE_RDONLY;
--		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
-+		pteval = cmpxchg_relaxed(&hw_pte_val(*ptep), old_pteval, pteval);
- 	} while (pteval != old_pteval);
- 
- 	/*
-
--- 
-2.47.3
-
+For post-compression size, I can make arguments on why we should not
+also gate it, but regardless we already have zswap.max and the global
+zswap pool limit.
 
