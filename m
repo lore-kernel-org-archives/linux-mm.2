@@ -4,159 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A694DC982FF
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86A35C982FA
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 11:34:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A08146B00A0; Tue, 22 Sep 2026 07:34:10 -0400 (EDT)
+	id 3ED976B00A2; Tue, 22 Sep 2026 07:34:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B97A6B00A1; Tue, 22 Sep 2026 07:34:10 -0400 (EDT)
+	id 3C5DB6B00A4; Tue, 22 Sep 2026 07:34:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85A216B00A2; Tue, 22 Sep 2026 07:34:10 -0400 (EDT)
+	id 2DCB26B00A5; Tue, 22 Sep 2026 07:34:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F8DA6B00A0
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:34:10 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E1378120408
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:34:09 +0000 (UTC)
-X-FDA: 85241189418.02.D3A1BA5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2EE3A1C0009
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:34:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="No/mihmV";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EBF836B00A2
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 07:34:43 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CC50DA0471
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:34:41 +0000 (UTC)
+X-FDA: 85241190762.17.F2D1023
+Received: from mta0.migadu.com (out-32.mta0.migadu.com [91.218.175.32])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2D45880009
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 11:34:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iszbwzU8;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790076848;
+	s=arc-20220608; t=1790076880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K0n7/b29134nS+A3GTeL665iC4ky8Dr2fCKiIHfp5lU=;
-	b=15fw/qcO+SmJettqPXSMw8MH6qJhieFmIsAcOZqKTG5PrAG8qujnX3TOzFXj1JC10qZJLR
-	ti6NoB7YGMy+gfZxykDJUGipkluVP6BEnmERS0276CbfMEsWip/SPGlLnYM3zEUvQvzmZo
-	H7t2RMj8kJlJsCHSdfNgvkvN7VvSGoY=
+	bh=m+DYFUAECSNtX1wNQ7IinAiwAu6YjDlxAqYAsmi/u54=;
+	b=NdLT3lpTtzJhT/6qCMojN76BWTQ4RwF7GkmfZfpkfPYtetypf7Jop9QvfbKrajbGwHT1Hv
+	5imZ6g3CMCLbIc2TYz+yWRg+ecj/7S6hjCo87Pc7QOS8jOgyb/wC4B/lOHMRfhg5cOjkWx
+	JP27liRQ9cCedFARoJzKMpS0/KRk+mg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="No/mihmV";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=iszbwzU8;
+	spf=pass (imf02.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.32 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790076848;
-	b=RYVWE3gss/ruAVsBS4cGQN89ZIe21Hpzxe9XHaOgiI9cYRVi8S2GXpNDdnIYPVjWJNegS7
-	jojFtIUdg6vtFl4OinaTMlof7yUk2Ih+PFolAwQC99TEdsEw9ppQMlEKKUOnLO4Xc5HQYz
-	O1tRiAomOfl+BWOZp5Qzv+yWQA9KnOY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A65F7601F7;
-	Tue, 22 Sep 2026 11:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D61F000FF;
-	Tue, 22 Sep 2026 11:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790076847;
-	bh=K0n7/b29134nS+A3GTeL665iC4ky8Dr2fCKiIHfp5lU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=No/mihmVNqVRgSiORpP9GZrDVA8StBXiN3ICK+I68z9IfS5uPNpmcyrkzIQoHi7Eb
-	 W2iHfOjGJwMnPTk579caztzDNPQ/jGV4CuahjjY5463D/f9fhKEqcQbMCN+MzjKIgP
-	 rgQh2QlpecS019H0w4achEtS/nZafcDoy5gI/c7rMkaolkLEN5zOfSqpAZJMAK94r9
-	 HpMSYxAV9aowyRlAPS+S3uM4c9GxpLj/2HST9uuGP4M+0GOjNGpr1WNuzN/HJzPu61
-	 2TldujEpeVrMQtmEH1LZ0FA3bu3HfzIZaN/JhcXBJKXDiZm+tmnrxTXjqZ4mqhLHwJ
-	 hacM3FJVAiYkA==
-Message-ID: <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
-Date: Tue, 22 Sep 2026 13:33:51 +0200
+	t=1790076880;
+	b=jTuXVZY/aFRZ4PLnQPHqUEX/D5OgT3nj/VYnvn96e0rEBcPnMRDsI4cbUD0KuOUB2wxLVb
+	FxA5jhtXOJKqOMkbcmkhnRk/4vay7pYayYhb6EDloovVIcz56Op+iQxMFKkhOEqCqKKppN
+	f5CmRSGouGPtRDzfM148HCM6i8ytdJE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=NN747W62S3d/5Yjf441AnlRml7ayVS4UCAQNtupGVWY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790076874; v=1; x=1790681674;
+ b=iszbwzU8dZcsypAXPI3zPdjeKIPiMr10POceGbHGsf/NitbJtDrA4jvc15WwpjpVFzBU30xy
+ DzaucNqCt5UsnmWLhkLZN6zcUaaZCrf4J3JqUXnGs9so0cOhbtSbK9o494u7NxAsNRj8m65frT5
+ BJti3IGuPu6c89KmF+fMlolc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 29b45f507b2da17a;
+	Tue, 22 Sep 2026 11:34:24 +0000
+X-Mizu-Trace-ID: 29b45f507b2da17a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <9ac5cba5-0044-4f57-9ec0-d5631b7b178c@linux.dev>
+Date: Tue, 22 Sep 2026 19:34:18 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
- riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org>
- <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
- <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
- <aqvHHHuWJ-y4WRJZ@gmail.com>
- <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
- <aq1RaH0eE0hZfNpr@gmail.com>
- <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
- <arE3UjqPsxctWckg@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 2/6] mm/sparse-vmemmap: support device DAX in common
+ vmemmap path
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Muchun Song <songmuchun@bytedance.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>
+References: <20260913083734.86802-1-songmuchun@bytedance.com>
+ <20260913083734.86802-3-songmuchun@bytedance.com>
+ <dad55fc6-56ff-4375-893b-938404238ca8@linux.dev>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <arE3UjqPsxctWckg@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1sawy8ceaefc8r5fbiitiby1pseark4o
-X-Rspamd-Queue-Id: 2EE3A1C0009
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <dad55fc6-56ff-4375-893b-938404238ca8@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2D45880009
+X-Stat-Signature: zrcdr8tm76ttd47gf1z5grtaqxk6576x
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790076848-268183
-X-HE-Meta: U2FsdGVkX1/pk2wTGxRcgu+y9MweU+idGIAPJz1CH8oHMwbRObx6KZXRlN+B+Pvej9vFwdnLicyLZPxpP6PW/X1QfvjF/7TgNnfgL464W6gz3vx8K/snehUNnISrIxMBqkhcsp06m2btK4zmn65G+9HY/8d5qS7DVxBNOYHlpqEjhj3tDMOHu9RonnQzEVgqI86lQPqM2bVmWWe55BE4oM8aAO2oEZZBN8HBonm+DR51zdSPWn6X4T0U/HxFPfy7ZMHq/KYOLWPTmytGGWrD2TZk0rSAPyGp5qZzcYqL7jVxLuUxyoY2qZANroVY20FhsgrCMGPBSPtnmcCI/Ocpgz8c/WZCWSSman8m3scz0A/T7/1RPipQkFlV6bW8U4zMcCX9K4fj2z9y/FFYWDNrWOxJokQUrkgU5m11zJK1qqa70JVtdjYtfPU3vqE9vl8SsnN+jOns1Zw3kqDsalFvndzHgQ7Z0uWeanFg23jOAHQq8+OZWsAyTC9uOgcmQbKK7lZjHhY7iA1llGmfLHYvte3duqu9Fub/5i7gTMdAFoZWBkdA0secDJq6/jQPNIdZlLvY8uTDrTGFfN3uOMLf2hp5mCFxTVtzIRNApwit+ioW3iLLqn1nZo51ojIPEFgg4IUTJxJ+sOrQiEqjQ6TGFl2lmCGo1gmTpvomwhsUziN030i768GyOKvkMv1Pae8wGe4YJuFyFV0LB1Bc6JZZgIZEmqNrRyKPKRm+dGwITKhHB10TCsXEqNO4sBr7frBx86yfT9pqkfNLKBdIGySddoo3ZF05rgIKED8R5ACGZoR4cbVt1cmDK1qvFe9r9uQiaUfZtBevl51b06I30ME5Zb5c1dZqCBvMfzUFn0vXFnyR0ObjeRljQTblqtVCEi6HwGD0sQ+0pG/lNzvHjuZpwLsLJ5GzAq/tL+EWHB5rZ2c40ao2EJM4lGKJamCPdzFitW48PMrq/0RWHlNuU2Z
- QinnpxuF
- GV0EUKHTEYbSQDPLqKLNiyMhmzxmLFseVqOy2mvk18B+ooqHGixGZNu8AE2s0SijWmoShGR/RywmLOvKJB6xwavXWXlxqXP8TE3kJ1RXmshmfY+mHYub5EDRaMY5J48Yfo4fc1WDBdlnccSWVbtADrhxJlGcPZIDOI+QKKpNvixqBWPZceaKajnR51/Sfv1kR3jkMEtDSoircQSHjHtF5TrX82N4UpqfVWtRFhHpAknHPEjORFvrX3DtXx8nBJo2y3SGbETjcwnyAaDC05ywejgRsRfaXGmrolpiwn9Mv7eTyBMwb5PbVzvwaOL579kunzEFXlW3pxvizDEAyKTRaHj3UcglDEURstVKvQ+44n9PIRKyXeosxXQkxENiYKGvqGJ++
+X-HE-Tag: 1790076876-226690
+X-HE-Meta: U2FsdGVkX1/Irol6LtcbbabQVQX1eLV6GX3QQRUYGV9maNpICI2t+uzVj0/OLACjStm34xVU531693/RAeWJPFCQbRG2oDIE4hLzY2NM+BRvdbgGj87j8iB6JlQJsev79gBoP9qYQuI8iCi2Fd6EuAEXRSXduaOav6m8pwIqZ7AAAeS4a7BMcC+vbMDliVqO1h1Qp7anXirD8yFnSgreURj63HV+d+r/BDxNa/Y/O8VL0Csjw/IjnwSvZa2rBeD9JRSxzRgSJwlfZ3G9jNzJp1L03FU+1OItRyMd7QSetQLuYA0zMr1vhQVAWLRHg5qszqP9wvkr8VWN1oENHKJaUqKEj4tM9RVaWC1utBBm0s4VJSvNGIl/lG5JfrEY3buJhkLxvg+BNXZwoaqzZHcGX73rvkU4dAwSzcCUM7jTpWn9HInTyfxT6HitsLG1/Q7k1rJ+3+X44PHiM1kb5o3i5EMM6YkzxHVPw+ZWuW492DNookwEh5UJ8BjevLvCsruomSyg85DdDpuvvN7sgHBpvnRgioagBsr212UIiap2bOtWv4wf6RnzXLKugTD3eRAxfdUB1FznbHYTqFp6ii/f9rRZUqPlegsETYlzcxZdzj+Hf/Nq321XzXc1YWZLV5VaWTeg79U6yRKIiq3Se+jqr9ge82EXVe+8dNPVUJl3O0ZHJggyPDxoHjobt3Gm1FA/UMomgWCcYwRm37SGW6x9A3TGKsfcvPzwRPrd2/wP+vo5UThn15ILDkycm+C0Q9qjDmzwD4HWeajpZSvZ/2Qf/DLQoTZmO+puIo+/uxGL/q+SufreVQgMA813hoOK6w550d6J12/chb7tngfhg1C1wca7lm1/FN7In+x1d3EhMgp9/Bs4WWfUojuzjEJbC1rvs671ZX0YRM+uoJPKv2uqgSqZkdODwu+FcbE0OsA7OqwX7u4SBtkmFi94VE07R0LABk62FMAK3xKg6TSNgHf
+ F4IGCRhm
+ ioJq8yICO3fgMR5mYbmghC8K90D9dBBUf2unuqZvtFAE+49wVJ/nfP+NFXOXwtlFICzg3VOfo9o22Hk4aA1C2w2yRMUWyoQSJ7ekCfW0P2Sm/2b4b46ckyRLDc+Y3uw7ArFpwTeAppqNgVi8qZL4F4OkP1/YzaVuzgEymFmJMZfLUDqERt4UHqg8HWPZDv6kl0xJuRc3CJmgKCK3it27e0OQu7GFk8DU6ktA2tWBwf8VsmMHtZi5snG4/ephbz3Z9cdTayJXKzjamTWgDXIY3zZ5ztjOIvAcL6FoK+goN4tZiBZF2JExnBsS4hA1uzog8Mu0DI2z/1e2HS2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,102 +102,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/21/26 16:31, Breno Leitao wrote:
-> On Fri, Sep 18, 2026 at 10:16:25PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/18/26 17:22, Breno Leitao wrote:
->>>
->>> Right, we have two source for poisoned page information, today.
->>>
->>> 1) LINUX_EFI_POISONED_MEMORY: Used to track memory block that got
->>>    poisioned, and will be passed around during kexec.
->>> 2) PG_hwpoison on struct page: Used by the memory subsystem to avoid
->>>    touching it.
+
+
+On 2026/9/22 16:02, Qi Zheng wrote:
+>
+>
+> On 9/13/26 4:37 PM, Muchun Song wrote:
+>> The common vmemmap population path cannot yet handle optimized Device 
+>> DAX
+>> mappings on its own. It uses pfn_to_zone() to find the shared tail page,
+>> but Device DAX populates its vmemmap at runtime before the 
+>> ZONE_DEVICE span
+>> is initialized.
 >>
->> How are both kept in sync? See below.
-> 
-> The EFI table is only written when there is a memory failure. That is
-> the only thing that writes to it:
-> 
-> 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
-> 
-> You can see it on patch "mm/memory-failure: efi: record
-> hardware-poisoned frames into the poisoned-memory table"
-> 
-> Then, when the kernel kexecs into a second kernel, the EFI config table
-> is queried and the pages are poisoned from it at boot, as they are
-> getting into the buddy allocator, in __free_pages_core().
-
-I am not sure that is really the right place. That means we only poison free
-memory. Shouldn't we poison as soon as we initialize the memmap, and check
-whether any memblock allocations ended up on that poisoned memory and bail out?
-
-[...]
-
-
-> 
->>> You might ask why I do not just count the bits set in the bitmape and
->>> multiply by the frames a unit covers.
->>>
->>> That was my first try. It over-counts: a bit stands for a whole 2M unit,
->>> but only the frames that reach __free_pages_core() get flagged -- CMA
->>> comes back through __free_pages(), the initrd and __init memory through
->>> free_reserved_pages(), and KHO-preserved frames never get an initialised
->>> struct page at all.
+>> Teach the common path to use device_zone() for runtime optimized vmemmap
+>> population while retaining pfn_to_zone() for early boot. This allows the
+>> same path to support both early boot mappings and Device DAX.
 >>
->> Why are other hwpoisoned pages not flagged? If initrd or anything else is
->> hwpoisoned, we should not be running this kernel?
-> 
-> For the initrd and the image, the previous kernel's record cannot stop
-> this kernel's loader from placing them on a bad frame. If that happens
-> we consumed the poison in the relocation memcpy, long before any of this
-> code runs. That is the kexec segment placement problem, which Kiryl
-> raised on the RFC and which I split into its own series, which is landed
-> in some mm tree already.
-> 
-> https://lore.kernel.org/all/20260812-kexec_posioned-v6-0-e477887086f0@debian.org/
-> 
-> 
->>>
->>> And the over-count cannot be undone later.
+>> The backing PFN supplied by the Device DAX-specific population path 
+>> is no
+>> longer used, allowing the redundant lookup and population code to be
+>> removed later.
 >>
->> The inconsistency is worrisome.
->> I wouldn't say that I hate it but it certainly has "great, more hwpoison hacks"
->> smell to it.
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> ---
+>>   mm/sparse-vmemmap.c | 44 +++++++++++++++++++-------------------------
+>>   1 file changed, 19 insertions(+), 25 deletions(-)
 >>
->> We have enough semi-broken hwpoison ... stuff ... in our code base already. So
->> I'm hoping we're not adding more to it?
->>
->>> If the walk itself is what bothers you, the way out is not the bitmap
->>> but counting as we flag: hwpoison_boot_page() already knows the pfn, so
->>> it can bump a per-block-id counter in a small memblock array that
->>> memblk_nr_poison_init() then just reads.
->>
->> The inconsistency is what worries me.
->>
->> And that we have pages we are told are hwpoisoned but we seem to ignore that and
->> carry on with our kernel letting it boot?
-> 
-> The walk exists precisely because of that inconsistency: the counter has
-> to match the frames that actually carry the flag, and the bitmap says
-> more than that.
-> 
-> If we drop the page walk, then there is change for inconsistency, but,
-> as-is, there is no inconsistency.
-> 
-> So, I am planning to keep the page walk above, when there is a poisoned
-> page in the memory block, avoiding any inconsitency.
-How about we keep it very simple and don't mix information from two different
-sources? That is, remove that bitmap scan here entirely. We should process the
-bitmap exactly once when initializing the memmap.
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 878d29a4e862..e83821768c12 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -208,18 +208,27 @@ static __meminit void 
+>> *vmemmap_alloc_pte(unsigned long pfn, int node,
+>>       struct page *page;
+>>       const unsigned int order = pfn_to_section_compound_order(pfn);
+>>   -    /*
+>> -     * Device DAX still relies on vmemmap_populate_compound_pages() for
+>> -     * head/first-tail allocation and tail-page reuse.
+>> -     */
+>>       if (!vmemmap_optimizable_pfn(pfn))
+>>           return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+>>   -    zone = pfn_to_zone(pfn, node);
+>> +    /*
+>> +     * At runtime (slab available), only ZONE_DEVICE pages trigger 
+>> vmemmap
+>> +     * optimization, so device_zone() suffices. Note that pfn_to_zone()
+>> +     * cannot be used at runtime because the zone span is not set up 
+>> now.
+>> +     */
+>> +    zone = slab_is_available() ? device_zone(node) : 
+>> pfn_to_zone(pfn, node);
+>>       page = vmemmap_shared_tail_page(order, zone);
+>>       if (!page)
+>>           return NULL;
+>>   +    /*
+>> +     * When a PTE entry is freed, a free_pages() call occurs. This 
+>> get_page()
+>> +     * pairs with put_page_testzero() on the freeing path. This can 
+>> only occur
+>> +     * when slab is available.
+>> +     */
+>> +    if (slab_is_available())
+>
+> Would it make sense to introduce a helper function that wraps
+> slab_is_available() for better readability? Also, it might be worth
+> adding a comment to the helper function as well.
 
-From that point on, the memmap should be our reliable source of information.
+Thanks for the suggestion. I considered introducing a helper, but the
+two uses of slab_is_available() depend on different properties of the
+same initialization boundary. One determines how the zone is obtained,
+while the other determines whether the shared vmemmap backing page can
+participate in page refcounting. Any helper name would therefore be
+either too generic or specific to only one of these properties.
 
-For this code here, just remember globally whether we hwpoisoned any page. If
-so, just walk the memmap. If not (the 99.9999% of all systems, no need to scan
-anything).
+I would prefer to keep slab_is_available() explicit and expand the
+comments at both call sites. The first comment explains why early
+system RAM can use pfn_to_zone(), whereas ZONE_DEVICE population after
+slab becomes available must use device_zone(). The second explains why
+early shared backing pages, which are allocated from memblock, cannot
+yet be refcounted. Once slab becomes available, shared backing pages
+are allocated from the buddy allocator and can hold one reference for
+each shared PTE mapping.
 
--- 
-Cheers,
+I will adopt the following revisions. Does this make sense to you?
 
-David
+diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+index 5e0e30c77431..406d6f7918f7 100644
+--- a/mm/sparse-vmemmap.c
++++ b/mm/sparse-vmemmap.c
+@@ -212,9 +212,13 @@ static __meminit void *vmemmap_alloc_pte(unsigned 
+long pfn, int node,
+                 return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
+
+         /*
+-        * At runtime (slab available), only ZONE_DEVICE pages trigger 
+vmemmap
+-        * optimization, so device_zone() suffices. Note that pfn_to_zone()
+-        * cannot be used at runtime because the zone span is not set up 
+now.
++        * Before slab is available, vmemmap optimization is used for early
++        * system RAM, whose zone can be determined from the PFN.
++        *
++        * Once slab is available, only ZONE_DEVICE memory reaches this
++        * optimized population path. Its zone span has not been initialized
++        * while its vmemmap is being populated, so pfn_to_zone() cannot be
++        * used. Obtain ZONE_DEVICE directly from the node instead.
+          */
+         zone = slab_is_available() ? device_zone(node) : 
+pfn_to_zone(pfn, node);
+         page = vmemmap_shared_tail_page(order, zone);
+@@ -222,9 +226,17 @@ static __meminit void *vmemmap_alloc_pte(unsigned 
+long pfn, int node,
+                 return NULL;
+
+         /*
+-        * When a PTE entry is freed, a free_pages() call occurs. This 
+get_page()
+-        * pairs with put_page_testzero() on the freeing path. This can 
+only occur
+-        * when slab is available.
++        * During early vmemmap population, the shared tail vmemmap backing
++        * page is allocated from memblock before its struct page can safely
++        * participate in page refcounting. Therefore, no reference can be
++        * held for each shared PTE mapping, and the mappings must be 
+unshared
++        * before the vmemmap is depopulated.
++        *
++        * Once slab is available, the shared backing page is allocated from
++        * the buddy allocator and can be refcounted. Hold one reference for
++        * each shared PTE mapping. The architecture vmemmap teardown drops
++        * the reference through __free_pages() when removing the mapping,
++        * preventing the backing page from being freed while it is shared.
+          */
+         if (slab_is_available())
+                 get_page(page);
+
+>
+> At least for me, encountering this always causes a moment of confusion.
+>
+>> +        get_page(page);
+>> +
+>>       return page_address(page);
+>>   }
+>>   @@ -231,27 +240,12 @@ static pte_t * __meminit 
+>> vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>>         if (pte_none(ptep_get(pte))) {
+>>           pte_t entry;
+>> +        void *p = vmemmap_alloc_pte(pfn, node, altmap);
+>>   -        if (ptpfn == (unsigned long)-1) {
+>> -            void *p = vmemmap_alloc_pte(pfn, node, altmap);
+>> -
+>> -            if (!p)
+>> -                return NULL;
+>> -            ptpfn = PHYS_PFN(__pa(p));
+>> -        } else {
+>> -            /*
+>> -             * When a PTE/PMD entry is freed from the init_mm
+>> -             * there's a free_pages() call to this page allocated
+>> -             * above. Thus this get_page() is paired with the
+>> -             * put_page_testzero() on the freeing path.
+>> -             * This can only called by certain ZONE_DEVICE path,
+>> -             * and through vmemmap_populate_compound_pages() when
+>> -             * slab is available.
+>> -             */
+>> -            if (slab_is_available())
+>> -                get_page(pfn_to_page(ptpfn));
+>> -        }
+>> -        entry = pfn_pte(ptpfn, PAGE_KERNEL);
+>> +        if (!p)
+>> +            return NULL;
+>> +
+>> +        entry = pfn_pte(PHYS_PFN(__pa(p)), PAGE_KERNEL);
+>>           set_pte_at(&init_mm, addr, pte, entry);
+>>       } else if (WARN_ON_ONCE(vmemmap_optimizable_pfn(pfn)))
+>>           return NULL;
+>
+
 
