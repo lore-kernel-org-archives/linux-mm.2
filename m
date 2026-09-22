@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94882C98302
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD38C982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 09:02:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B5606B00A6; Tue, 22 Sep 2026 05:01:33 -0400 (EDT)
+	id C97E16B00A7; Tue, 22 Sep 2026 05:02:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 766096B00A7; Tue, 22 Sep 2026 05:01:33 -0400 (EDT)
+	id C21A06B00A9; Tue, 22 Sep 2026 05:02:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 654BC6B00A9; Tue, 22 Sep 2026 05:01:33 -0400 (EDT)
+	id B37AB6B00AA; Tue, 22 Sep 2026 05:02:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 370506B00A6
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:01:33 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3E68316041A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:01:32 +0000 (UTC)
-X-FDA: 85240804824.24.671558C
+	by kanga.kvack.org (Postfix) with ESMTP id 902E66B00A7
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 05:02:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EC951C283E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:02:14 +0000 (UTC)
+X-FDA: 85240806588.01.578D81D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9D48940006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:01:30 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RKTk+bn3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8826416000C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 09:02:12 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ho1NxTfY;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790067690;
-	b=ZvsIk+jAgv/gwsET7xJpqlJN/5iP1w7lV+nqeIRCoIBW5crJISbZP8j34UCDPbNdwGujXt
-	8rzrn0mK3JHEmM2FgfqVPWdwafgjcrVG/SCdZaBk5EEBwq+PLbr1hFBl97nrM76uRdkpu6
-	gAemN+NFv0FHWaYxgAf6BaOti3E0jXY=
+	t=1790067732;
+	b=N+w+MsSWXUfjHBtxIPUyiR6Ooq7qyf1j7SGY4Fin8EBBeXOhD65KX+4PiIMChIsdGJ1FF7
+	tUTNzFniMpFaFC9AorAkyCnEUbwtpb5E06lFgI0PQKd8beFV5t3tM5n3STGoyAFC3WGxHO
+	ChP8ECMxWc6CbBRII0QAzJpQ8jDegrM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RKTk+bn3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ho1NxTfY;
+	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790067690;
+	s=arc-20220608; t=1790067732;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mjGPVOew5ysCF3WUc2TZ8QW0kJr9lTS0DgEOW24GPw4=;
-	b=Wwn6v9c92FoM3shtpo3q71huJDW1KPFP9FyzUaPaAuefpHReU+IL+Mxsl0h2b/oLdUnhZU
-	g7itGj1moaglyXg115t/7LlfCiRjzjoZC9iUo0pcSykb6I8J0Hx0nUucRNYopFMzBKKi02
-	Uc/IP1jbsTo5G2ea+ltIIDE5FQVeBEY=
+	bh=+hsnJ4j4rBIXKKH9ChIwWElTHO5VrNa39QD6tMI8Gqk=;
+	b=KvGGuce8PF5GkpRNvDUOcGC59YFbjt4rwZ+AWdzXXDG17KyjvYD00E+BJeo4bbIl+VgEjH
+	J98qz/CX2Lxp6IdrxiwMwxEM8ZUfKh5mqBUswxIiTlF9EtF+Ej8xB7t6UiXTniT64moqkE
+	scvIL2DYpbEMIynMNdurcRK2PDxkvAg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E75260DDA;
-	Tue, 22 Sep 2026 09:01:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DD21F000FF;
-	Tue, 22 Sep 2026 09:01:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C7A660200;
+	Tue, 22 Sep 2026 09:02:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E505F1F000FF;
+	Tue, 22 Sep 2026 09:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790067689;
-	bh=mjGPVOew5ysCF3WUc2TZ8QW0kJr9lTS0DgEOW24GPw4=;
+	s=k20260515; t=1790067731;
+	bh=+hsnJ4j4rBIXKKH9ChIwWElTHO5VrNa39QD6tMI8Gqk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RKTk+bn3+WrRh+uEPi4QsKpCQMBXdiVXaebzTyFMU52JIHYsRCsBMfXvtU7rub77Q
-	 c2fEr37xSa/FgKfpQbOmr0c9p9pK/zq6q4W/drmX1lPcv3vRb3icWMD4gg0qNqTTVp
-	 uy4jqLPrcnvvlNYaJ71axxVw70rxXcvMAz1o7bQwK2I4DFT70VIVpDD/fsuuwVCvnA
-	 gq5CeO6ZT33+PfALex/ZbfH0KlRpf3mb8fEQaBSo3yx6fPOHe5xxnwc1aQjElG4KjB
-	 rL3CjuBhz5Xe/jnj1pnhwqK3B7MWS+9TGPt1ZlARHlpTuVgUjv3joyNdav1qEFlRuN
-	 0jXrGWn1YgZuw==
+	b=Ho1NxTfYbdGdeqfpz5XyJWNcpb+7YT6deUPOb7e/Es4jmHjJWSyriPfAAGuVspsae
+	 6LKxXVdN1I2udTK271j3pFm2GMHS0XZV8KVHkUGVtsYFv5r2COfiRTH2Y6ht/kxwzI
+	 5S7K5mqn5YCKOuNg/yGFFk0fqstHlUc6g6O3EF7XYzAKKBM6Nc/Wql66LhlQ47+4db
+	 cKexdcycBQ4ogjwH9iqe0dPw02bHXTGuz5lPnWXYIFrVHZPotADEAFLZn7OCXa8iEW
+	 al36CmxULEHPX1q79eXSdQseKONK2FXJbwliGmrP2a2xZ+pxm9/S+EEg+twlKbQ1yZ
+	 0wPGdhtnaVu7A==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 7/9] of: reserved_mem: mark /reserved-memory entries
- with MEMBLOCK_NODUMP
+Subject: Re: [PATCH v7 9/9] crash_core: skip MEMBLOCK_NODUMP regions when
+ building vmcore ELF header
 Reply-To: sashiko-reviews@lists.linux.dev
-To: robh@kernel.org, "Wandun Chen" <chenwandun1@gmail.com>, m.szyprowski@samsung.com, baoquan.he@linux.dev, rppt@kernel.org
-Cc: aou@eecs.berkeley.edu, akpm@linux-foundation.org, pjw@kernel.org, chenhuacai@kernel.org, mingo@redhat.com, kexec@lists.infradead.org, palmer@dabbelt.com, pasha.tatashin@soleen.com, hpa@zytor.com, ruirui.yang@linux.dev, iommu@lists.linux.dev, pratyush@kernel.org, kernel@xen0n.name, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, robin.murphy@arm.com, devicetree@vger.kernel.org, catalin.marinas@arm.com, alex@ghiti.fr, linux-kernel@vger.kernel.org, x86@kernel.org, will@kernel.org, loongarch@lists.linux.dev, saravanak@kernel.org, linux-riscv@lists.infradead.org, conor+dt@kernel.org, tglx@kernel.org, mark.rutland@arm.com, bp@alien8.de, dave.hansen@linux.intel.com
-In-Reply-To: <20260922084256.1515554-8-chenwandun1@gmail.com>
+To: baoquan.he@linux.dev, m.szyprowski@samsung.com, "Wandun Chen" <chenwandun1@gmail.com>, rppt@kernel.org, robh@kernel.org
+Cc: devicetree@vger.kernel.org, linux-mm@kvack.org, chenhuacai@kernel.org, palmer@dabbelt.com, linux-kernel@vger.kernel.org, aou@eecs.berkeley.edu, conor+dt@kernel.org, kernel@xen0n.name, linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, will@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org, iommu@lists.linux.dev, tglx@kernel.org, pasha.tatashin@soleen.com, dave.hansen@linux.intel.com, x86@kernel.org, pjw@kernel.org, bp@alien8.de, mark.rutland@arm.com, ruirui.yang@linux.dev, catalin.marinas@arm.com, hpa@zytor.com, alex@ghiti.fr, pratyush@kernel.org, robin.murphy@arm.com, mingo@redhat.com, kexec@lists.infradead.org, linux-riscv@lists.infradead.org
+In-Reply-To: <20260922084256.1515554-10-chenwandun1@gmail.com>
 References: <20260922084256.1515554-1-chenwandun1@gmail.com>
- <20260922084256.1515554-8-chenwandun1@gmail.com>
+ <20260922084256.1515554-10-chenwandun1@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 22 Sep 2026 09:01:25 +0000
-Message-Id: <20260922090126.03DD21F000FF@smtp.kernel.org>
+Date: Tue, 22 Sep 2026 09:02:09 +0000
+Message-Id: <20260922090209.E505F1F000FF@smtp.kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9D48940006
-X-Stat-Signature: ac38oxs8uyaj8gumkxhfod3nnu4q3oa7
-X-HE-Tag: 1790067690-820795
-X-HE-Meta: U2FsdGVkX1841bcikHzoknIxuPArJZAhsUb767NPC5o70q+PID0icWdbixqLtVD30owoRInAxPY8Z7URty9hy2CGoj05jDnf7xCbSdFLjRQOZ2ErUhs4odGGyQh+rlwmMexsVo3l0ARA4PIqvUVOInl0Jp3Cu0C2atcGXNow0Z9oloBF8OkbtJwo3FeimyO+D2ag3BB/NVTF4VQR4fsJb185dacC05tyXA1G+HH64LjCXoE+Ttv2mvPDUG9pTkSdWzfb/2eUBa9Rnza3vqFLaE2oe5UUi8R7aR3EKv7x6GAODqI6D0fYRxSASfoUg+Ui7oj7amIpOfBr2RZyFapJ2RZfTTLm4P1sGsnmyttnTJW0I2a2xaG6etGyDHePs7GvUUldrLRfjtxl+he2NWWdLCb3yKTUODk6pLZ9qzuRUEFpj5EI74QAN4S+1dO/uIamkwHm28gjjaVIbcN+E9l9RKJKy2HemhiuZz3oem6h2BYzpfMnTC6Po6HWzr2PT1HZTpCCWygEqp+5cJino8Q8zlQ6HaBo8e6KkFLovH2589DVv10Li7t6Z8gTfYjjnc/3VI5X5+nsbpJDmtUqhRiMKR/gYzY7okOpscqb7wPkdo92sbJ0cW/l+6TJjg0pbyFbERS1Sehevnd2XDHo30h6sOnDsT/a/n4WrO/f0T3Yo3VQOMBxOhDzL4ClMrJ7HZoID3cpY9nwBvJl6hwdAwOS+7ZU6NsCjpufFmls6DlPjk1RAuqJw3YNe1qpLoeDuCzGus2aRxBZCwMLlUyUhtsNRw1J2kozimd0gFLA8qhyDrfSpFoJPWSax9CHilFTd3++bMuy0Xd5APtqdl5u8XwK/wFp+kc3PC+ztLgBi6qc3gpbLtbaOe4mvsMYJAzxHRANZPIgnO/oiBikbXqgD9UIJVy6vf6g1UKOiUk4itKW6LFeSbNlOHGO5LDUVHSBpot4TkM0kRN8AfiGZyGS9gl
- UqboYqvh
- d3IyeQPcSUb++vrWtaM8OJwAfKEvFw1k23P2ZCkzlEFAM5MpO5m/od3CqdI0ZCsHwZFv/n6HRSFiAwhkdlxnyajVoOjFtAOlE5PmpWgcLXTx+TWEYeWtfebC2gjLI7O6UlRckjxw7v0+KIblXxd+rsZoXBqS7oDFnI6B+uSrtRHSCVlsLdXJDFCUQXDOz8AMGrn+OCLbdVEcq0Ykza4CfL4uNc8YEgISWfOYqMvaII0TsW/EnvIvi2yDdHMOJBfHzhw1WbZ6Ili0Wef/40sxJ5b44wPS19JL8OI22lxwb28kXKUMEiTCtdYLO+ArCk+z4xUZh3G7AyzIdqbl4HinR+PDIz7PioL784iw5umyFk3Y1kIVDF6kUssTw8ZR5zdN2bOqhBBLtt/oYhr2Ix1WhdfUhV+eb0Yw7nJVxfgAwsoC8dYyotqF+W5jQmoEaEP29ZC2QjNnFg6/cbpT8lBXl5DJRCWg+mYGGThjT4Z2hhHErx+twkEs+44waMBgvyX8I9Vgx4sGwqbs+wY3s59bQsNUKNdt9k5ElKf8HniXQ9jzIVd9tX3SBh6Pnek49quNFLNwpV0qwn+yNZkjYJJTpFerdcya6Qrd4R0gqv8Js2hR49NeHDLAC5LDKHCgHypBbcdLLQMXkw1lmtYBeUUE8IcNyBDiVTG7gfEIDuOuBtlDZQ0CjjXtEU5DBu5+V974YEwwc6yzOo7AWhhr+Eqc+kK88iQNVomSdC488pzt97Ylyqwt2NIM767OU3qwxh+FzCd15umtBQKWBcbirVfqSglJgs/mmG8wYo/a1AZ28SkG1AMNVJ41eK+9x6Q==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8826416000C
+X-Stat-Signature: xz9krztun8j6za8r3e5eybdyw1q5rbsq
+X-HE-Tag: 1790067732-607455
+X-HE-Meta: U2FsdGVkX1+TBkLvuFGsMPPeG7zsuGHQBaJIMfWADYAEg97T3M4FColboNWhgjv8D5NuxJe1oVKN0B65Ymm4hLldaxXDPDS1QO5MR4Db50uLazxPd4AcDywz3fHdvN3J1/tVEa2tr+M8PYou4r9k7rGMpBV9TdRrrfcLrPq58okDCwKtjew2jghBpInyxY5cpxi/fBoEfF+8uZD41KcMC5alqeh+3GDnQktgzgGK04lJrKXfY4gK+6Sz3SOV6Ks64VCzsP7lmCN+98xIr18wImGn6oY2ii1j3kaQ6BtEn7h6SYpdzAwBriaoXCsFXprTZP21LXA+0izk7pXf33ozn9R1NiLad62R7Z9MngQA8fj6plXdgVMsttscqkKAsdHHc+Yk7BDGJyLDXwNecnQgP0ovS8icuZMspkROtnQnSREEXRf/iIplRlqRj1UwdmJSaFGfn3pc9KqW/dt1zIlYicy0jj0Z2faYzXzM4YIVQBgpUr5EDrE8aPsDECnE6w2XlIWK1AqQPLHbdLA5UTcTqUXNEIGMG6N/iUfP91iXHkqj+50ASERAjkjb8tIpIs63tgVnJkRY9X4cTHrkxen8Lm6481tRP9e0YCeI1dVURbmBc+U9XfiYSmbRL5l++NCfTsp/OtAcD4egQLGqXugUVD1LYOnOME+jdQZTVcMtNgse1XY8SGhjPP4tuqRkWXnc/3xXuOlDtKd7A4op2Eji7Bp1hVSS2MUcUCQ7636AzMOeEYNVJsq6cIhv46h95DfYKG7ZvGM6pGFeTmSxU23GdUNFs5aYtrkOOUqRL2TSYYsoyfKLugQQXy+thrARenWBoJQs247MaeJr9vOcOZbKX1z6JtnhrBrG2vMv1fDx4CQKVwF5WlcJVr1iiOhwhqdmGxo5dNX531pordCGPTEtoFv1vzzfTDyqo+ynspDkLC20N/kTAZCGo0F+l1U0NS9BzadkQQJlxa8qfVg+Jxo
+ 9y6rUtxQ
+ QFZxmX8q5GYYU+oSPhVoSLAZpHW/q+2De+0nn+I5ZhO5iiO6twbIV/z3SO4mN1z8oQWd2tBmpA5CFVMmsN6I7EcCe/Y1S9Tc/j/bm6nNR7xs8FEGRjGfL7UgbhHqMxfOTz5IVNCd95dSn7oEJZgaNx6qtLLLRczVQhvdp+s8l0doamLknpkiNvHpoijrdcp+Mqnb2V1kumiI7em9ghe4rSDecC2OPknXpgKDfQoRnZnSNXcoioT9CRz7wPUUF60PD06uvaXELhje1oMJQxVB83OZDJIVzmPTeSkWkJ3PYn1X81bKIfOQPdjiky9NAB5NjS6DXi1YSdHwF6r2kH5cSCXi5+mPdY6qFtifKqkg0ftPPPNJ7EMAvtln3sz2HFTW9JnBCTF7vHWsjUKFuEAEV2+EOkXiEvEvq5dVBjY1fNnKB8cNLm4wxivblG//Q9Mih7tE0uKpwVNoL1DWzwDMpfO7RUYyxmqfQSMfppQ+Nkg/efRjXD/6CPHhx+c3dPOCATpkBkDmXERuYvI/t4c4upsJSmycWintddOKnbpOFCkq+ukwv8ZEuQt5KFNROi8uIQ9BJlx5uPbcB+w4MnBbv17ZH7MWXEUmFX1LuolW7QzOINNNZqvTrbe9nrziajgd8T2bQ9yCI+9SkSoGL0hGw/qvnPMmixppf5xqgd7pG6DGtbOUtsOJ79CgC+XT0pnFg0+b7YdBpNMK9jemi2iVva8vRxzNgkbxyQfduE1SzMerCKYk75L8pjil72sVLwQj9AUvK7YIHhdylPEJxrhJmCxpJATx+8l3D16vBcaj3hzj8xzmZc1T/MDYrvQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,65 +91,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] of: reserved_mem: unconditional MEMBLOCK_NODUMP breaks firmware de=
-bugging
---
+> From: Wandun Chen <chenwandun@lixiang.com>
+>=20
+> Reserve regions (for GPU, DSP, ...) carry no data useful for crash
+> analysis. Exclude MEMBLOCK_NODUMP regions from the vmcore ELF header to
+> reduce vmcore size and capture time. crash_should_skip_region() now also
+> returns true for MEMBLOCK_NODUMP.
+>=20
+> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
 
-commit 70f4cbca539766519d8967f7e857d2db27db4c13
-Author: Wandun Chen <chenwandun@lixiang.com>
-
-of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
-
-This commit marks non-dumpable reserved-memory regions with MEMBLOCK_NODUMP
-so kdump can omit them from the vmcore. The marking is guarded by
-CONFIG_CRASH_DUMP to avoid splitting memblock.memory entries unnecessarily
-on non-kdump kernels.
-
-> diff --git a/drivers/of/of_reserved_mem.c b/drivers/of/of_reserved_mem.c
-> --- a/drivers/of/of_reserved_mem.c
-> +++ b/drivers/of/of_reserved_mem.c
-
-[ ... ]
-
-> @@ -677,6 +677,21 @@ static void __init fdt_init_reserved_mem_node(...)
->  	reserved_mem_count++;
->  }
-> =20
-> +void __init fdt_mark_reserve_mem_nodump(void)
-> +{
-> +	struct reserved_mem *rmem;
-> +	int i;
-> +
-> +	if (!IS_ENABLED(CONFIG_CRASH_DUMP))
-> +		return;
-> +
-> +	for (i =3D 0; i < reserved_mem_count; i++) {
-> +		rmem =3D &reserved_mem[i];
-> +		if (rmem->size && !rmem->dumpable)
-> +			memblock_mark_nodump(rmem->base, rmem->size);
-
-[Severity: High]
-Does this unconditional masking prevent debugging of coprocessor memory and
-firmware state in vmcores?
-
-Since only the CMA driver sets dumpable to true, it appears all other
-generic /reserved-memory regions (such as DSP logs or ramoops) default
-to false.
-
-Because fdt_mark_reserve_mem_nodump() unconditionally applies
-MEMBLOCK_NODUMP to these regions, and there is no Device Tree property
-provided to opt them back in, is there a risk that system administrators
-will lose the ability to inspect these regions after a crash?
-
-> +	}
-> +}
-> +
->  struct rmem_assigned_device {
->  	struct device *dev;
+Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260922084256.1515=
-554-1-chenwandun1@gmail.com?part=3D7
+554-1-chenwandun1@gmail.com?part=3D9
+
 
