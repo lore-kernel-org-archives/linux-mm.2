@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B20C982F1
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 03:46:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FDACC982F1
+	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 04:04:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4718F6B00A1; Mon, 21 Sep 2026 23:46:26 -0400 (EDT)
+	id EA6F46B00A1; Tue, 22 Sep 2026 00:04:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FAF86B00A4; Mon, 21 Sep 2026 23:46:26 -0400 (EDT)
+	id E7E446B00A2; Tue, 22 Sep 2026 00:04:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C57E6B00A7; Mon, 21 Sep 2026 23:46:26 -0400 (EDT)
+	id D94176B00A4; Tue, 22 Sep 2026 00:04:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C0476B00A1
-	for <linux-mm@kvack.org>; Mon, 21 Sep 2026 23:46:26 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 197F28037A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:46:25 +0000 (UTC)
-X-FDA: 85240010730.24.9C5E86B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 56D19160007
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 03:46:23 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QKsfj2J6;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BF3436B00A1
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 00:04:32 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53D611C253B
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:04:32 +0000 (UTC)
+X-FDA: 85240056384.22.39F2510
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 97334180006
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 04:04:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoD1eWxA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790048783;
+	s=arc-20220608; t=1790049870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZv0n6s8W4RcQuBAt0aC0jgduTzFU5fp+QZdqfQumEI=;
-	b=PuiKVnHXAZtlsWKxFlbdnSBnltBFi262DUFRp5zOh9LU5gHZUxD6a+TpNzqqcQpbFdN9T4
-	baAhtqQcp2hmpKRci82Z8xpwuqQ+GFSH6ISVRoeknF9NQl6EzvjDkNLBiUiPjxl2NzVUJu
-	nifqGkdEK6/2z6eqweAGPYkl8a7mFMA=
+	bh=XdK9NOa+Csh4+tgbck/fIPFaNIpTXpsiJF2arJyHaDU=;
+	b=L7/hWB1U1GGAyk9gOATEgxHJvpUxTpjdHEZ2L1ilgsLdDvWM2Vnv+Z8SqsQqXg+lniLycM
+	FFtzv4dfas/1eaTDzIeUpsCwVEaC1vWyhTOCE2h+N4NL9F+0WVt76VENs0CK8taclLsRfr
+	JQRfv5wwMK+KwG7YTXwXsVXxrtNodDI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790048783;
-	b=2ZpwogtdyUbk2gzke8q5SBl/FP+kyfTr4obk0/YIcR6xekljtzJcq/7kTYssr5gHc5kJT+
-	ktA9zCOF8Qel/PMA3otQF+e4UjpUAgvDJG1YR/y5prgdGXilcySbu94cDX4pilSnmawPVO
-	keFHx4uHyCxpH4OXTlCFcOJLrK/kkNY=
+	t=1790049870;
+	b=LzBT2Kw532SbESWPan+WI5xx7Ntzu+At7LXfewHeQKBA0BTPLxb4064d3BtTLY3Y24uzbK
+	MF5o/xYLy1IOUFaqtdlL+g4qhP3vnm2DEvHKo9eiWUSJ4tr7xn8mFm7vpC/OJ7YuY6eHbF
+	1zNxNVUosPzv0myYvvQH4LKd9AV9uyg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=QKsfj2J6;
-	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OoD1eWxA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 56977600CB;
-	Tue, 22 Sep 2026 03:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC041F000FF;
-	Tue, 22 Sep 2026 03:46:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790048782;
-	bh=zZv0n6s8W4RcQuBAt0aC0jgduTzFU5fp+QZdqfQumEI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=QKsfj2J6ILwU9ERjb2WSsLzQ+4ZA89gphCmxkl3jxiHXMBm7NuoMVUVgYKnsN2ywU
-	 Gkgh91/LRroaj3w2+ok/XBcq5qcYhcCA3il0AhkkdSPV/f3rEiy+6pIrGuEE+K68xX
-	 MZbl0T5T9gWqm9j4MwityESBQo0HAlVb7H4P1PIk=
-Date: Mon, 21 Sep 2026 20:46:21 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Kent Overstreet <kent.overstreet@linux.dev>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/2] alloc_tag: fix a leak and a deadlock around
- shutdown_mem_profiling()
-Message-Id: <20260921204621.6724aba72798c03e19c235fb@linux-foundation.org>
-In-Reply-To: <CAJuCfpEUYztqobQDHt9GwJZOcn5JrOs49a+8AVpu_ySUG_KkyQ@mail.gmail.com>
-References: <20260817062726.106511-1-hao.ge@linux.dev>
-	<20260826203914.347c42aa00081ee9e0eb858a@linux-foundation.org>
-	<afa606df-3d5b-47c2-9972-f3e0c2e13c12@linux.dev>
-	<af33dfe1-04ef-4bfd-8c79-0593b24c6bdb@linux.dev>
-	<CAJuCfpEUYztqobQDHt9GwJZOcn5JrOs49a+8AVpu_ySUG_KkyQ@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 56D19160007
-X-Stat-Signature: z315t5ab8u8ghh144jmytmf1mspj8z3u
+	by sea.source.kernel.org (Postfix) with ESMTP id 86B63403AF;
+	Tue, 22 Sep 2026 04:04:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC5B1F00898;
+	Tue, 22 Sep 2026 04:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790049869;
+	bh=XdK9NOa+Csh4+tgbck/fIPFaNIpTXpsiJF2arJyHaDU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=OoD1eWxAao/IPqexC/yqGBE9mUdZr2l/XResY7bPKAKx9KitlrY6x0g+fe1ZtvHwG
+	 YMBsag/OpacfmYFOv103gYiuk6qQULuSnCAMTTVlnZklJxrkBMLlRYb3f9ep60MvU9
+	 fJrfqiroyQymRgjDPHQalZYFDqO7sHYLTA9N5+gA/vmmz/UyFPcCzylqV1Ah8jU/Tr
+	 jk5L+LDTJV831j50vA4Gpra2zXXC4Zf8LuLviP8Mi+6fYArU9p1ozN1+qArX/6etD9
+	 tfwIGktNXcyelkdo2awMWs4g5XVGrPq5L6spppc+O0ft0ar+afICAztfndaedg7QTz
+	 nDfUSljFG2VVQ==
+Date: Tue, 22 Sep 2026 06:04:22 +0200
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Hongfu Li <hongfu.li@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>, Chris Down <chris@chrisdown.name>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/hugetlb: account migration target folio in
+ per-node NR_HUGETLB vmstat
+Message-ID: <arH-Rntaf5SKFTga@localhost.localdomain>
+References: <20260921-for-hugetlb_state-v1-0-8a6eec92661f@kylinos.cn>
+ <20260921-for-hugetlb_state-v1-1-8a6eec92661f@kylinos.cn>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260921-for-hugetlb_state-v1-1-8a6eec92661f@kylinos.cn>
 X-Rspam-User: 
-X-HE-Tag: 1790048783-417223
-X-HE-Meta: U2FsdGVkX1+FYPA0G2A5D/nUF0/uSJ+FyhsWWfIyLuDLPqzxbXuq0AqWJuU9RfNQB22dtMJFddlbenwDEY8AnMOVRigU0v92VqMr4oIrbNSxuFH4yxMREgix90GIE9FmiUmOmaAoLjzTqEcJWjHJgsnclDTqM9rnlT1QwQQdJlm+u8m1KGFXDxGxMQUPfD4BBqfAUWD+Mec1M5vbUNdZISArmh6liRIAd9brqkjCmwFZ1Ei5awoZEkulGHxmK3An2bNTo5QY81b9VujCiYVHd1fcki6ygBxWjyUqcY/HbWka62AblBUxRy5TmSMyJpbO3/hpjKhXXyKL/p4IRg2oGGoWhN3uiNVHZIZmK1AblJoiIqyLba1rTCGLzDxtWuprnexRTjN0aOWT4bEPOpbREzJSCYO7JgV22TExDDU3tfsJbGu8WyvGiDP58r3YoUU7qpXEo6xGGRLjGmi4B2u5fYociMoJACLJY2KNQvivO2lhhjfcv1sdoFb25aSY+gxllRMcX0EJNmQPybl0fqCN7vhjxH+vX2galHXpS/bcwQvzRqTuppCQkVY65zRUSB24PTYr9I16mO0De8YDg5COSd1JRfnVnrKTh1CozlZ5fje/ppOIjbVmILSPMiMLZ8gn5hCkcbfR7lLHveXw6W+/2O/yUPlz1to9YRborH9yTobFLEkmrA2y7qCxB6enwysOfk3+CJNawi0SsT5fW5PVWcElwjBsjE3lpFomSlP646/B6G0gEG0Ofn/Ut6SfP37nmIpuR8qg3x/RgN3oNWUhFLcCm1cOQg46lpafnj4a9QGAlmKWi+29pAsHJiHv3NYK6EQjPVCC8y9IbP10KQtLrprIcK8t6EXWzxiz69SnLjeAh6ZHBKStw/d/UfqT5e7jwXWbf7ZLvqyCG5Dv9T0gk53LU7lYeUSpOofvwIgeNoBjtTCj4jrKXa8PfvnoqPwctvhISqccXr8vrNfvPXR
- 5x5irziW
- oy4jXhZyckKs6cm9fYqWZ0IcHxCwOSLbsIufl0ORzY4xq0uxGZrCxFqguwp81ubrPTY3NtKn4ihsbRPVCwu7mbXGBV3bTQjXcZWrqhrwVbExggxoGUmXgxbo9qoInZ3XJhhP8B4NCO9ZF8wyUg6WpLAs2xkrMVCjRy7Y9ZTHak3Qm7MajsT2+as60uTecjRm6GSrtXan8BAGTdQyKSgFKCOBB92OkGYRDu9GHsYCRrDpBhsM1JbqaM6wpPMYSpWkTmok+Aff8scuBOkf3pCZJbS53X82Af7RqnsiLfb5hLaj4mQmHXkjilruC3z6sk1zApmpcC+3R0cKg+I3uTMoM0V8ZQw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 97334180006
+X-Stat-Signature: pirermzuox3yygb6jtu6eg9g3c8d7kkh
+X-HE-Tag: 1790049870-200026
+X-HE-Meta: U2FsdGVkX1+hClBO6Ct3jQTc4uNbfI41iMt//cDLEAgM7OSrM4R7mM37SH/rE8dl8kQwYpbbP0fTzLT11pbE9dL5xfh7y64nCUEx6eqxZz363ArKp3Sa+Vcxtm0QPQWEnjoRV5kMMFqXqYxmPq8c/YxJtGaVYhkPAyusgDnGTLCvilFXg4M0ZAP8Gu3gK0KtcId6RhYrL9ziPmAf/5MYYvVlbxd2iY9/JHauAJweHVRSvhMQwWHSXmNBHcz6MwFkpTgNuRl0MGPM5OWlMhKmMw6VA6tHfCL7R8NtLQw0dEuA+BEw15k9u4D3aWZQCQgxEaxyxbW4Vr1Q32D3E4qrn5L8Ze+WB3oeuA3h5sgCs7J+kFtWscz8o0cnWvGeAtodZHBl01dCmcMLjFszTVDm9VEUfvtRK9S945kl8SVC38Bel9RmTVX23sPG16QN9EUSfVAM9hjd+GGKPM4J6Dw3lsj3xvtwDusSMxFM7sCDr1Vx2Nu9HrQw7c84RZP/Y2oMaDOfS42V1DIzIdr0fH2UJtp0zmHKVDUHpOcXQUKxVYD693Mpbo6pN4dO4RSLGwm4QPqVDljG01E2Hge5n064GWdnUTyp6GFh3TtYNLwbQ4MVJmdD7YyAfDcoIVr7iSn0VsN1/cc3NwkVPoeApJ48GQdEsZdcQFrgagGhZNy0/9hS4Mh7KhITq1kZbdC1m7RNXal9ZdCODhXwyCKLkKuFqam9e9xI8M+SapPeMiXIf6cFH2qHDXTdpYfvIS9o5Hmir+yHQWEpgdNVh8PUdVB1w5qcriInplkIwrkBgAiQzHQTwdbeThdbRQi8XxocN6foIAYBOg+cXXI8gcd9Vv5IHjUynM3WP0l6mEcWwD4afiM4TbE17XQjwRTq7xuAZp4fuU2ryR+8caDPdhnMsrgbjmiEzN4BuXeB9zyEruDoZP5MPMqp8NyUSv9oVdM7pqtop9FlnP/GPpEY8lBOWcY
+ R3rqYywu
+ u/4tq/webpzoTeveFfHChFyB9zv7l65fNlvlpRvlKUpEvG1NOo9d2Vh6oHzY+VLawgNpYahpT01uGTLNBX00/d4L+bZCFObyFtQsuf83HBEhPqiI8CECe2i0cUIF/XxzLAy1pwapfy5Q6RBjNkH8jvHVo/JfLZT4wxJ9goEg9Cl/o+yj/UpVQo3Q8hgWNx3H9J7dzt9949ad338V7Ojb/LGW6YzDvtfL+kyiZGB/fMYNEI3QZ/DroL9OmR1ypDoiGi2zbH8a2hNM7l+iDAkiHc8l+vY964Ij26x9Ww5U7r6iquJJhDbqPzx1moRpy5MvR0FDg8padr+7tD91DFbpxQPUokBjEWa6SMzS4gQqQEfSNDUg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,29 +102,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 15 Sep 2026 07:36:27 -0700 Suren Baghdasaryan <surenb@google.com> wrote:
-
-> On Mon, Sep 14, 2026 at 7:49 PM Hao Ge <hao.ge@linux.dev> wrote:
-> >
-> > Hi Suren and Andrew
-> >
-> >
-> > Update the status of this issue surfaced by Sashiko.
-> >
-> >
-> > round of review.
-> >
-> > Please kindly help review the folded V10 version.
+On Mon, Sep 21, 2026 at 05:12:34PM +0800, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
 > 
-> Hi Hao,
-> Sorry for not reviewing earlier version of your patchset and thank you
-> for pursuing this. I saw your v10 submission and will start reviewing
-> it. Due to time limitations, completing the review might take me a
-> couple of days.
+> The NR_HUGETLB vmstat counter is maintained per folio's node: incremented
+> when a huge page is handed to a user via hugetlb_alloc_folio() and
+> decremented when it is returned to the pool via free_huge_folio().
+> 
+> A folio obtained by alloc_hugetlb_folio_nodemask() never goes through
+> hugetlb_alloc_folio(), so it is never accounted, while its free always
+> is. For a migration target this means the target node gets no matching
+> increment for the decrement on the old node, so the global nr_hugetlb in
+> /proc/vmstat drops by nr_pages for each migration. The same asymmetry
+> affects the failed migration path, which frees the target again right
+> away, and the temporary folio hugetlb_mfill_atomic_pte() takes from the
+> same helper.
+> 
+> alloc_hugetlb_folio_reserve(), used to preallocate the memfd page cache
+> folios, has the same asymmetry: the folio is handed to a user without
+> being accounted, while its free is accounted through free_huge_folio().
+> 
+> Account the folio where it is obtained, in alloc_hugetlb_folio_nodemask()
+> and alloc_hugetlb_folio_reserve(), so that the increment pairs with the
+> decrement in free_huge_folio(): a successful migration hands the folio
+> to a user, a failed one frees it again.
+> 
+> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
 
-As I understand it, this 2-patch series "alloc_tag: fix a leak and a
-deadlock around shutdown_mem_profiling()" will be replaced by the
-series "alloc_tag and module codetag section fixes" when that's ready.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-So I'll drop this series from mm.git.
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
