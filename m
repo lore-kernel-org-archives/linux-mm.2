@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C375C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8C88C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 380DE6B008C; Wed, 23 Sep 2026 04:27:00 -0400 (EDT)
+	id A166A6B0088; Wed, 23 Sep 2026 04:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30A856B0092; Wed, 23 Sep 2026 04:27:00 -0400 (EDT)
+	id 9F3976B008A; Wed, 23 Sep 2026 04:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 223726B0093; Wed, 23 Sep 2026 04:27:00 -0400 (EDT)
+	id 903356B0093; Wed, 23 Sep 2026 04:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EAB916B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:26:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 206A5120725
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:26:59 +0000 (UTC)
-X-FDA: 85244346558.28.E764DC3
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1130C40005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:26:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0896B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:29:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9270C06EB
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:29:57 +0000 (UTC)
+X-FDA: 85244354034.14.53FCD42
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf11.hostedemail.com (Postfix) with ESMTP id B393A40004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:29:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790152017;
+	s=arc-20220608; t=1790152195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gk3dWSjh3bMZwynRB1J6oHqsHzXkZaGvpuatS9+W8D4=;
-	b=EEEW1a3biSz3ApgoJiUla6mBVQQNldRoHkCp7mkLSyc73U0u5cShq8wckOujIDGsPZE3U3
-	1Jf+041wwEPbMCJLTtTA6Xj0U0RjvTZ8fJdV4Y3hBIKsITBg3x9a3jFQbAEq6V3S/ODavw
-	NTOu+gEVns1cJgiwASLkOnJQs+D84n8=
+	bh=B7szOR9tvPUDWdEcB/ZmlCg+E5HZmrpmb+uqpab5Dvk=;
+	b=EejA8G1rSstsxoj3K97JQttEaee2h7QSIQik2c9BWtu7AevyOSs2cjUud83Fl1ExcIOlLI
+	W2Xfc8OcaFFhijni7kVBsfE4BgiX3jCvbh3XSZ4acKrO513eVQ8kaQjEvbxfqsjatLrP+/
+	nGW3n4i7Mt+IiiE07DislX2eGcBUqcA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf11.hostedemail.com;
 	dkim=none;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	spf=pass (imf11.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790152017;
-	b=k+47INQ0pxhJxk+84HfAQAXzE430597LzmOQXEnhIr4CMr/t6t0A633Uiy73iKyyRQ1sc6
-	lxv4MoEb6TvPG9DFkGU8YtohADufJ3nqpFLX2wS580Tzjm3BEWGSP1vRtlJvf3IhLFyK8d
-	GYhn6PQSu06LoOpINcADYgchFLv94yM=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hqVRt1QZHzYQtyg
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:26:34 +0800 (CST)
+	t=1790152195;
+	b=aKKJHQjP2XQ6JJgKXqsyZkvPVo1WLPPBxGOSYWA92ffXCTLYKG/JyX4vgL18KN4tsC8a+H
+	S8MsOAAnr7rTXFAIDqp40LUMsNCaqburADwSF0SXdRyWog3OeuGthNuIHd/Xulpupl0sud
+	LpNZqHTf7z/tTRqauD64ORE+sB/irm0=
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hqVW40dKyzKHMfh
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:29:20 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id CFE4840561
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:26:50 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id A080640798
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:29:45 +0800 (CST)
 Received: from [10.174.178.176] (unknown [10.174.178.176])
-	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgD3xik9jbNqnU90BQ--.63352S3;
-	Wed, 23 Sep 2026 16:26:50 +0800 (CST)
-Message-ID: <96190266-10ac-41be-8d6c-972cb00d3c44@huaweicloud.com>
-Date: Wed, 23 Sep 2026 16:26:36 +0800
+	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgBHFyr4jbNqMJV0BQ--.62376S3;
+	Wed, 23 Sep 2026 16:29:45 +0800 (CST)
+Message-ID: <ea87901a-b1ec-4066-b81e-a1e5864b3872@huaweicloud.com>
+Date: Wed, 23 Sep 2026 16:29:43 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] mm/truncate: align truncation boundaries to
- mapping minimum folio order
+Subject: Re: [PATCH v4 3/4] mm/truncate: fix data loss when splitting
+ straddling large folios fails
 To: Zi Yan <ziy@nvidia.com>
 Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
@@ -73,39 +73,39 @@ Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
  yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com,
  wangkefeng.wang@huawei.com, yukuai@fnnas.com
 References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
- <20260922110703.468389-2-yi.zhang@huaweicloud.com>
- <DLLYA97QG5ES.P4FF23PGA3MQ@nvidia.com>
+ <20260922110703.468389-4-yi.zhang@huaweicloud.com>
+ <DLM0SRQ1LAMU.3Q4REHFJ7TETZ@nvidia.com>
 Content-Language: en-US
 From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <DLLYA97QG5ES.P4FF23PGA3MQ@nvidia.com>
+In-Reply-To: <DLM0SRQ1LAMU.3Q4REHFJ7TETZ@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgD3xik9jbNqnU90BQ--.63352S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxXF1DAFWkZFW3AF4UJrWUJwb_yoWrJw4fpF
-	ZrGa13AFWkGFWxCr4kuan8ZryFqaykXa17CFyxtasakFnaqF1UKry2g3W09a1DGr1xJw1F
-	qF4jya1kW3WqyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+X-CM-TRANSID:gCh0CgBHFyr4jbNqMJV0BQ--.62376S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3XrW3tFykWw17CrWrKrW8Crg_yoW7Xw18pr
+	Wjga9IyrWkGws2krnrZa1jqF1Yq34fXrWUJFyxG3WSkan0vr12kF1UK3W8uFWUK3s7Gw10
+	qF1UZ3ZrWF1DAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
 	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
 	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUIF
-	4iUUUUU
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
+	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	jzE__UUUUU=
 X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: rco3646aqbu6q1hn8qrdi4qq3ckoanjy
-X-Rspamd-Queue-Id: 1130C40005
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B393A40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790152014-114056
-X-HE-Meta: U2FsdGVkX19qi3MEPYHMsF5lJnM6kHMcNgFLwWab7H1OGiAKo54lTAwItK3sIzjVuddwQ/LhnTDMaES/U5b5q2+LNyejAwZ59UBjtOY1+YZ9wEv8Zhh1YyyuzP3K1Ghu7mQpCRdjmC/yDbRmYC/UXSVrTjzlyD47qQASI2JvzZMJ5u+UXXBKrMRakCTaTqdjcDUHma3RNnkMtszDOcNLoTXoNz41qny1vZbPyTfZnjp4w3953OFiMF/smWQL1X2zRxIIwTpQW1e51ynbC2ONfx/WVxTWXlRaROX9pqL2pMPcVQPyvIHWbzNQENgK1AXZdGtgUp93ZohnpFEsywmiqCrWR8SZYKbYf1PLNv+CuLAwlSGYMdUd4Ocs8OK3vCTW1yZFhNou5JZlaHWT590sugeTKWaCgx3bYalZrvvarznJcNn6vQubBkZdX3aj/zHzBl+ha2mJ/2p0efdQtKHglLldFpGn7OxM2wPOi7viN1ThccWXP6c/9LqcnaB2u0YRPMoH7OpZ9OXZ2D2qnCbr1wipG5gome7SbuGOJCrVLuK6SnoKWzbSARf5wIaeDNNpipQ6MpF15XbkYqsVQpYdTf3eWu6szX5DL+UYpQlkBLDULgrLOL5Ve6D/2OZ/YrNQmxYpnWJPAtYjXdUFJoHAz0L2zdfgz+ZCXRLcsBWWzPWtkJWVkKXVdBz/PW/IyfqxxQtUVLSyrWTkJs60X/bG3xJIv1uDvFtodZURiUd4ZEp4eISK/qoVRN8DfF5xUWoYOensqJQweElE4DqtHOGF3tXjx+xCqBqKpZ/TT1q8rkRYb/CnZvPgeN87RTjfkHO4JB67Y7TnFFdxcWOwZ5kO9Hl0JQpT3/jKN97mGwAAcZIQe/Z+WaYKkRmCKBAOVc5bxYX4Gmwy3c71dr3H5ddJhvfB2XH9QN5sRhTyrAzgaNmBPgnpgmFDIwMjIK6SpFfbOm/8ckQAcxnCOJxJGBN
- Xj19tOVn
- b1qRw9xciFdAelbam8NNpNxPY9bNjNhfJBUDKekNs5odHlfOmBXHJdh0XVMx675z/SBEBGD+FU697lI8weZTbf8bjRh4TaCJYyjMvV4qc02xYkJJh9GbBlVgEbuHrTFyKeT0nsg3k5spBo2D67cF1T00E6tnHZJfdyArudhQRmicc8rndzorwCkw4g29XEIYB0GV3k5dykin+nHMQGsHj2xmMtw==
+X-Stat-Signature: br4zhoqua65xgf8tykpxe4scrh5iw33o
+X-HE-Tag: 1790152193-913208
+X-HE-Meta: U2FsdGVkX1/pweNU83OJnEMKNsUxWvr56GVf7t/bEuXEYj2BCVsC0KSOO+FdfGcZHLSKotzcuE5e2cFzB1izBqEWE87f47ZOAbHEdoYwJesptyA8H7JYjSDUECDdvoeK0eAtTxcmt6aDV60mQR5KWScF/3UI9IjoOfrWgR4nKGiadxpSrVIsTcYznv7G5/D4cV6Ej6crkGNnUzeOU1EyYpRb+HOBayhDI38oJCC/LU90rr7AouUAhgLc1HizmJmhtrOlxxme/POdJEG9iLwm2Dg56JnvVS85VXupwqWm2MRCxkd+C4CajCOK8GMCgNYfQA/O2BcmcV4b1klSHJiIhSm/wcQ2d0HfckDxVTWTRp6EC+xd+VXwr6WC2mVzqIoYDP/RouYyu2YjDejCaxD7WyOGM9QNDx8gbZiYi87+VphVv/+vdujIPb8gBcM3VRvzVaZtfEgyq6eL5urXuwWtu3CQomDWeHtlBHpd5UplVCiSzglUKqV13Y8ODcg6Sr8ngRG62HLjID6Vxr1lgPDZjikGOXdi+cr7fSp229OwwGaIGRfN7BaTf3PGJu1JBgiMApRFmInE19tVJk1fycjMP+RkYJMIxOLJiu/XX5X07LR5sIHVnGJ82zAQYST3wtb4DA5GUTdE56IDvGDVkF4SRqhDq9Ufgg2dPcer4MkQVT8imq6q9kKFAMvTcyaW7aKUevF+8Od1LN0pbm81fRuc0hBXcU0cZ9Vtfnj4Xk6XwKi8jUzyM5KyXg1la2v2mqdYKi4pyM7RTaZi6AGtqld7/gIU3NIkN2jHmVF1Dq6jjXxp5FqR4fpL7zG8J9WwzGGb+6Y8vy+5orwC/VDNRkDNvmQDhBpjojtSj0xY0eb59Tubqk3sCgBtB7oHt+qyFuP1DQtSNQ2SUie/83KgIvqP2yIUtHfqnQS6swcgI7/py+fc6JhkGT4tdHWnHci2c5p/jTijDP9T4FDc0pWihGD
+ WGf/AF3P
+ G5wVAc00nmXVorMwpPAP0Bu/5Ej++GooaSO1/nsYt/6qGIxykcFMPMWhFlNtN/8FOTT4n7PNqavSL4SMQucLv1ku/KDdv/Eko1Covf2Y0ThVjV3x6pa79VXH20shN1FSCAyhsm+KemWauQePywnZ2n3rPCWZUcdFPLYy+dWNUMgBEGUMoBg19ljARhfQH04EpVOnD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,89 +113,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/2026 11:29 PM, Zi Yan wrote:
+On 9/23/2026 1:27 AM, Zi Yan wrote:
 > On Tue Sep 22, 2026 at 7:07 AM EDT, Zhang Yi wrote:
 >> From: Zhang Yi <yi.zhang@huawei.com>
 >>
->> When the mapping has a non-zero minimum folio order (min_order),
->> folio_split() in truncate_inode_partial_folio() stops at min_order
->> instead of order 0, so the sub-folio containing a split point stays
->> aligned to 1 << min_order rather than to a single page. The original
->> boundaries in truncate_inode_pages_range() were based on page
->> granularity, so either boundary could land inside the min_order chunk at
->> its edge, and the truncation loop would drop that whole chunk, valid
->> out-of-range tail included.
+>> truncate_inode_partial_folio() splits a large folio so that the caller's
+>> truncate loop can drop the in-range sub-folios while keeping the
+>> out-of-range tail. The first split at the punch start edge is
+>> non-uniform, which leaves the sub-folio at the truncation end edge as
+>> large as possible, this means it may still straddle the range, holding
+>> both zeroed in-range and valid out-of-range data. The function then
+>> attempts a second split at offset + length to isolate that tail.
 >>
->> For example, a 64K (order-4) folio with min_order = 2 (16K) punched from
->> offset 0 to 36K:
+>> If the second split fails the straddling sub-folio stays merged. The
+>> function returned true unconditionally on all exit paths of the success
+>> block, telling the caller it was fully handled. The caller kept its
+>> default end and the truncate loop truncated every sub-folio below it,
+>> including the merged straddler, discarding the valid out-of-range tail.
 >>
->>   split @p0 -> [p0-p3, p4-p7, p8-p15]         # non-uniform, min_order
->>   folio2 = p8-p15           # straddles: p8 in range, p9-p15 tail valid
->>   2nd split of folio2 -> [p8-p11, p12-p15]    # success
->>   end(old) = p9                               # BUG: p9 inside [p8-p11]
->>   loop truncates ... p8-p11               # p9-p11's valid tail is lost
+>> For example, a 4-page order-2 folio punched from offset 0 to the middle
+>> of the last page:
 >>
->> It has gone unnoticed so far for two reasons. A non-zero min_order is
->> only used by filesystems with a block or sector size larger than the
->> page size, and those either always write back the affected range before
->> punching a hole or truncating, or they carry filesystem private data on
->> dirty folios (e.g. buffer_head), which makes filemap_release_folio()
->> fail and folio_split() abort with -EBUSY, so the folio is never split
->> and the old start/end boundaries remain valid. The bug only becomes
->> reachable on paths that truncate dirty large folios without prior
->> writeback and without filesystem private data, such as the upcoming ext4
->> iomap buffered I/O path.
+>>   truncate_inode_pages_range()
+>>     truncate_inode_partial_folio()      # same_folio == true
+>>       1st split at page0 -> [p0, p1, p2-3]   # non-uniform, success
+>>       folio2 = p2-3 # straddles: p2 zeroed, p3 tail valid
+>>       2nd split of folio2 fails / cannot lock
+>>       return true                       # BUG: caller keeps default end
+>>     end = 3
+>>     loop truncates p0, p1, p2-3        # p3's valid tail is lost
 >>
->> Align both start (rounded up) and end (rounded down) to the mapping
->> minimum folio order so they always fall on a folio boundary.
+>> This became reachable after commit 7460b470a131 ("mm/truncate: use
+>> folio_split() in truncate operation") replaced the atomic split_folio()
+>> with folio_split(), whose non-uniform split can partially split a folio
+>> and leave the end edge merged.
 >>
->> Reported-by: Joanne Koong <joannelkoong@gmail.com>
->> Link: https://lore.kernel.org/linux-mm/CAJnrk1bQYUe6+1ryyJur5EEnZYrC+_5AYsy=OWzVRgD4202y1g@mail.gmail.com/
->> Fixes: e220917fa5077 ("mm: split a folio in minimum folio order chunks")
->> Suggested-by: Zi Yan <ziy@nvidia.com>
+>> It has gone unnoticed because a dirty large folio normally carries the
+>> filesystem's private data, for example buffer_head, so
+>> filemap_release_folio() fails on a dirty folio and folio_split() aborts
+>> with -EBUSY before any split, leaving the straddler safely unsplit. The
+>> bug is only reachable on paths that produce dirty large folios without
+>> filesystem private data, and it was caught on the upcoming ext4 iomap
+>> buffered I/O path when no ifs is attached.
+>>
+>> Rework the contract so the caller is told the folio range to discard:
+>>
+>>   - Add pgoff_t *pstart and *pend out-parameters that receive the folio
+>>     range fully covered by [lstart, lend] after any split (or none),
+>>     aligned inwards to min_order, i.e. the folios wholly within the
+>>     range and safe to discard.
+>>
+>>   - Report a reliable end position to the caller. The straddler is
+>>     looked up at an index aligned inwards to the mapping minimum folio
+>>     order, and *pend is set to that boundary on success. If nothing
+>>     covers the boundary, discarding up to it stays safe. If the
+>>     straddler is locked by someone else, fall back to folio->index.
+>>     This best-effort fallback may leave the in-range sub-folios to a
+>>     later pass but never discards the out-of-range tail. If the
+>>     straddler cannot be split, fall back to folio2->index so the caller
+>>     keeps the out-of-range tail.
+>>
+>>   - Rename the byte-range parameters start/end to lstart/lend to better
+>>     express their semantics.
+>>
+>> Callers in truncate_inode_pages_range() and shmem_undo_range() pass
+>> &pstart for the folio at the start edge and &pend for the folio at the
+>> end edge, so the truncate loop drops exactly the fully covered pages and
+>> never touches a straddling folio that still holds valid out-of-range
+>> data.
+>>
+>> Suggested-by: Brian Foster <bfoster@redhat.com>
+>> Link: https://lore.kernel.org/linux-fsdevel/anH-WKA1coW6wtfG@bfoster/
+>> Fixes: 7460b470a131 ("mm/truncate: use folio_split() in truncate operation")
 >> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 >> ---
->>  mm/truncate.c | 18 ++++++++++++------
->>  1 file changed, 12 insertions(+), 6 deletions(-)
+>>  mm/internal.h |  4 +--
+>>  mm/shmem.c    | 13 +++-----
+>>  mm/truncate.c | 88 +++++++++++++++++++++++++++++++++++----------------
+>>  3 files changed, 68 insertions(+), 37 deletions(-)
 > 
-> LGTM. Just a nit below.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> <snip>
 >>
->> diff --git a/mm/truncate.c b/mm/truncate.c
->> index b58ba940be47..f9625bb4916f 100644
->> --- a/mm/truncate.c
->> +++ b/mm/truncate.c
->> @@ -345,9 +345,11 @@ long mapping_evict_folio(struct address_space *mapping, struct folio *folio)
->>   * @lstart: offset from which to truncate
->>   * @lend: offset to which to truncate (inclusive)
->>   *
->> - * Truncate the page cache, removing the pages that are between
->> - * specified offsets (and zeroing out partial pages
->> - * if lstart or lend + 1 is not page aligned).
->> + * Truncate the page cache, removing the folios that are between specified
->> + * offsets (and zeroing out partial folios if lstart or lend + 1 is not
->> + * folio aligned).  For mappings with a non-zero minimum folio order, the
->> + * boundaries are aligned inwards to 1 << min_order so the edge sub-folio
->> + * straddling the range is kept.
->>   *
->>   * Truncate takes two passes - the first pass is nonblocking.  It will not
->>   * block on page locks and it will not block on writeback.  The second pass
->> @@ -374,14 +376,14 @@ void truncate_inode_pages_range(struct address_space *mapping,
->>  	int		i;
->>  	struct folio	*folio;
->>  	bool		same_folio;
->> +	pgoff_t		min_nrpages = mapping_min_folio_nrpages(mapping);
+>> @@ -251,6 +264,7 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+> 
+> Add more context:
+> 
+> 	if (!folio_test_large(folio))
+>>  		return true;
 >>  
+>>  	min_order = mapping_min_folio_order(folio->mapping);
+>> +	min_nrbytes = mapping_min_folio_nrbytes(folio->mapping);
+>>  	split_at = folio_page(folio, PAGE_ALIGN_DOWN(offset) / PAGE_SIZE);
+>>  	if (!folio_split_or_unmap(folio, split_at, min_order)) {
+>>  		/*
+>> @@ -259,34 +273,57 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start, loff_t end)
+>>  		 * for shmem truncate
+>>  		 */
+>>  		struct folio *folio2;
+>> -		pgoff_t end_idx;
+>> +		pgoff_t end, aligned_end = round_down(pos + offset + length,
+>> +						min_nrbytes) >> PAGE_SHIFT;
 > 
-> It is better to put it at the top (reverse christmas tree).
+> <snip>
 > 
+>> +		/* Already at the minimum order, nothing to split */
+>> +		if (folio_order(folio2) == min_order)
+>> +			goto out_put;
+> 
+> In the above, folio_test_large() is used to determine whether folio
+> needs to be split or not, but here folio_order() == min_order is used.
+> Should the above "if (!folio_test_large(folio))" be changed to use
+> min_order check to match the check here?
 > 
 
-Sure, will move it, thanks for the review.
+Yeah, this makes sense to me.
 
+Thanks,
 Yi.
-
 
 
 
