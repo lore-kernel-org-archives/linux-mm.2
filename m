@@ -4,96 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50450C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156CEC982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:58:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FF456B0095; Wed, 23 Sep 2026 02:55:50 -0400 (EDT)
+	id 046256B0088; Wed, 23 Sep 2026 02:58:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B0856B0096; Wed, 23 Sep 2026 02:55:50 -0400 (EDT)
+	id 01E0A6B008A; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A3386B0098; Wed, 23 Sep 2026 02:55:50 -0400 (EDT)
+	id E4F926B0098; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E87F46B0095
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:55:49 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7DE771C33CD
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:55:49 +0000 (UTC)
-X-FDA: 85244116818.05.A2C4B4F
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3717B4000A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:55:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xb6HfC2S;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B72B26B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92BFBA6AA8
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:58:41 +0000 (UTC)
+X-FDA: 85244124042.11.E90DDFC
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D0FBB1C0003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:58:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmqNmuUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790146546;
+	s=arc-20220608; t=1790146719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MSHfleQDJgNVV/fzOPiv6iN0a6sYi73P6TvrUGvr60g=;
-	b=nvT+HaYUgcW+4Ive78p6aav7rU7hL8OMVvvWiy2Q93mF1hIdPgAG/C5I2kolNBwNJqw4HA
-	zFiOES/gomMrapNEthwimHTIkEoA5gjdvgZi8n+0FMGTdiDnSI4hiebZAa7yErZ1DyYDB4
-	AtNYRImAieZ5hfbe4kB/v+JStfRnU3w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790146546;
-	b=YqY/kM0I0j8JqQKPCgeZreUzuYfWa3Z1JFlpOSgg2Ub5kJkalMLIB/3Nh0YKcd6CwbyJYK
-	NDyfBjUaDmkwm5oeeY413QB9iAzKPeAWqeDPZQnzRcUyKkDWKiCfIP5PZeVxc6tz68I40B
-	wUNBxVjsvfRaDuWsyn3HuQ9DVNV/yik=
+	bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
+	b=wgWf8gehYLB6iVkTM985ckwM1onFhkMyP7xs6FmDcE5bLrs3EZmCmvEf3ECBJWc2E9JvS9
+	enMsKMSpDi5XDCi0k2GzjyPzdvZ4HN+F2Jz0PFpaViZ6nuI0f0c+sXiH7sUSJ4n3i+oKxP
+	7c7nNSzxZQPdHtXarghsnJAT8GcMJL4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Xb6HfC2S;
-	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1790146541; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=MSHfleQDJgNVV/fzOPiv6iN0a6sYi73P6TvrUGvr60g=;
-	b=Xb6HfC2S0vQIPGUSR0vVrA1rsszu9tYXxDvLfsxZ8leb+2Fy2xG8nsQwNot0mknCSIrzm7Fn2aH5Tcw5/2JZ2Ui+JTRpnrgOZsN0YpDFsSvJm+F+Ez1m4GmXWtu6FnZun60AnYUdhiXkwQFg9iXfZ03PvT2o3d8m3cu8YDwpP9E=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=27;SR=0;TI=SMTPD_---0XBWAyqu_1790146539;
-Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBWAyqu_1790146539 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 23 Sep 2026 14:55:40 +0800
-Message-ID: <ea81ccb2-d316-47fe-93ae-ef32af2a7330@linux.alibaba.com>
-Date: Wed, 23 Sep 2026 14:55:39 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmqNmuUt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790146719;
+	b=f4yiyD1FwyND2fiEOR+5VGVc7tn5RQlI9HLU4wx6JWbVymlcNak++Tn5LZ7zF2AIOD9CGS
+	JPgBDtWbBVHnDLpW+tR459WVj2iejXM+ITJQZT6D0RvD6Xh9JmTZNo3tXHjnbke7rdAi5Z
+	ZhnltjuG+OGaxS5xyTize+IB4eIovm4=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso3520765e9.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790146718; x=1790751518; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
+        b=NmqNmuUtXDPLq80Nppopm5GJ/eN68/AKu5TpxbLtT0uQ/kFB0z8oCjwjZhjdAhstnf
+         GXekxxNl0HTgas1pFagSe4qMd6+b5GrCiulYaFaJGtYYL5ISNoL2vzmrsYR8s+j+0qJD
+         uk1HNu8TkHo9rr6hfR/ifjyz9XtfzcY/+w1/SfwfHojQFo4bTGXG+UPQSvRvNGAUyVdV
+         5DU37jZ7DThJ2kR/oNFlkVy8wSqhQr70eQ1/NB1iTPO7FYb8Q/msNiM8fNHrKbMOVtNa
+         hhXbkGSWXx5s71JKW3gAhhxXhVlkIm/i65i8dUrEYYXITBuYkhJ36Re6V+iWLfvlFTX0
+         SyUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790146718; x=1790751518;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
+        b=pWj7+fk3MRAzSuQwv56gA3CTsqCVpgyPXT0q2FfqTvIblLCjNVAxwmbCNNGOornO6D
+         nQUEXvO/xYqc6v2KaVK8imq8c8aD5c2/5g1a/aQtoZT2tLLFml6qoSWCqzLoAwwauzsA
+         eiQCIagYYMfxR3sy6uBWu1fWwarWPEg5mheYIXrmppxGK9Es9E87Xxm9T308/+mrfzDQ
+         wLaS+9oE/rzPi+6Xv6fEzMtNEtgntnx73m+qqryF9Uq7Lj+d/33gz2X/YII0RRiWxZM0
+         kfi2WxNFtUPxsdTsNMmk/Ez1CELA5TXKsJuzdwQDrF4wR4jFuCt+iJJQqH6iSoIQw7xj
+         hfQw==
+X-Forwarded-Encrypted: i=1; AKwUvBzDNTyaHr28buuLc/PKfZrKpudmSo8R95S7Nw8relKl9Z3FCEDVEs5/dm9CnJUE1JVPRvitjFX8OQ==@kvack.org
+X-Gm-Message-State: AFuF++n543PxvTAvGm45ss8nLfEF7vTCQoDKOq9UM5FE0ebxEbHGVjQ5
+	CHpEboJjohmr4oWK5Xt2NCzXgLNKB91mRbCAgwKY5ew9a09oPN/x2pHR
+X-Gm-Gg: AYBFou0owR4olmemIfGCXdf50Ja1mbCk3jvRYPtu+8tBMoC0NbPMMHldz1N+FHc/Ezz
+	eI3CqKhuaQ9b4168F1yBMMRmX/YD3frKe6bVC9JDFjHNsd93BRvxfQ+cB+NPY5HDhT81pehhZ4C
+	xxMdq2uvZSWXx0/w5nM5zsNzQA1utDKDn/qoAGvejpuRDGfrbDlA9z2Uuo/fhg0Vh0qaAhzeZ66
+	dqyQOpZDDHgrwmCt/Eh02kugDciw3QWqnfM6AdHLxmK20+6X+Y6Nf8T+P0lvIRaM1sWdT0Ra9Zj
+	Q7Xd5/5eOxqXYgusj4mJk+0/A1zHrSYnvIyoxojYL3pzeQFHVxtJROcqBXnIBw1CsJUbkA9bnu5
+	RrOSZen0TmLq4rqdsTyT6+UbWuXHnmGkgXh910Y0BvNaH9GWBKeNrRgb4ohy9WJo5Zua72APvHG
+	jEiSaChzPq2gLzjdXYPj93DROOxp3LeJnqre8aqBw9ia1xFuH/rCvGRauqBRa3nq3s/496KMd4R
+	b/Uzo9s1y3+h71Heaik6NTtW3UdVCtsUPmfQ8rKB0mxo+CvwWET8LdCG8tAjDSEKn9S+7Q3yo/f
+	iTJZE56BmOx1s+fqwEFJcz+zHTrzFOcZh1hwDA==
+X-Received: by 2002:a05:600c:c176:b0:49f:c451:b4ab with SMTP id 5b1f17b1804b1-49fdf152561mr17989925e9.29.1790146718132;
+        Tue, 22 Sep 2026 23:58:38 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-095-114-182-160.95.114.pool.telefonica.de. [95.114.182.160])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe23d4288sm22524325e9.12.2026.09.22.23.58.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 22 Sep 2026 23:58:37 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Zhao Li <enderaoelyther@gmail.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Ma Wupeng <mawupeng1@huawei.com>,
+	Jinmeng Zhou <zhoujinmeng@bytedance.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm/hugetlb: fix max-only subpool accounting on alloc_hugetlb_folio failure
+Date: Wed, 23 Sep 2026 08:57:14 +0200
+Message-Id: <20260923065714.20781-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20260428113037.88766-2-enderaoelyther@gmail.com>
+References: <20260427145247.84157-2-enderaoelyther@gmail.com> <20260428030712.66256-2-enderaoelyther@gmail.com> <20260428113037.88766-2-enderaoelyther@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/19] selftests/mm: parameterize the mixed-source
- collapse case by source order
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- Muhammad Usama Anjum <usama.anjum@arm.com>, Usama Arif
- <usama.arif@linux.dev>, "Nico Pache (Red Hat)" <nico.pache@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Barry Song <baohua@kernel.org>,
- Dev Jain <dev.jain@arm.com>, Hugh Dickins <hughd@google.com>,
- Lance Yang <lance.yang@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- Michal Hocko <mhocko@suse.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, kernel-team@meta.com
-References: <20260919002451.496763-1-kirill@shutemov.name>
- <20260919002451.496763-13-kirill@shutemov.name>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260919002451.496763-13-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7wx4bm87qfrkrfex7c3fwnm4mmeprk5w
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3717B4000A
-X-Stat-Signature: knrrf6seai3ibg7oo8jjht5nq98edik8
-X-HE-Tag: 1790146544-606951
-X-HE-Meta: U2FsdGVkX19KtE8yksXLWfn1PMgES5e4MwTeQK93r0gzULQ2qAUUnPLJICnVOZfue8En2NPZ1QvN7pseXMJsR8t33/DdY8ai6/tcb1vNaKAoDuI4mkLzLr7PNBslkvEd7fDiBEuGMvqoxpdP55pPJwgdfejTfTHLwn5S/Z1p86uaA7G6WkilJwMLx4sy1QL+s+fDWpF22y3uR1R0tSoNrGOlh1uSxMvHeknKH05y9RVSv4lC+ijdLCulUB4AGdQ8OXXXpoNxZhZH6Q1cBtIIUNhEJWYpTw40uA25+EyhNAos3ommWq4O6N552Sncp7TJx+xY2yKFP2wz7d1iM1+cDXSgq0SVOdYomQQ9MTc14IZUxAbJXF7+I63OHr5x5utLxEqD6XBVo2uu9n+54wKoSYt/6teY+C5YJ6K9YZf1qoozc+38XH/F2c+nKGWlhng/8YV7Au3EsS94SdtHhwebktQzbqCisMr67NpbmsEn+tRdb385y8IRJUOQCF0dogQarbrcQpTLhqm+l1p4uliYpaKiPWSD/0Qb0vXIbdkEbYvd549ZoiB3E/cYmqEuqD4bBa1FSeIjLFd7E4QhCgxudVlMtid57nWnrDPm/eRoe/ysDmWJl2rpIifuxZnG3clqg/DJ6Q1WUjel7Jp0sNikxbFNlxR3kFscez8fnODu8AvXk/uM790NJgWMIkSEcy25LzNKCOL2Wo7j0AgcEZ4rdS4frR6Db4KSH9Q2BThuLdadqd5t8ykCtcPsVVpuzH5BwleLGy1f/2NM2tvAZrQFI632Xi7bFdt8eIT1USB8J/VxxN1jT+y8LBNyC0FeMalCZFC3NBF/emmZhi0yYdoxeZ6Jn65QCfj5mjdSNePOEde7X3azgpBvjfhS1In9VchGnb/pRH6bQV9I6Mq5d2ciqsdbDHXgHopDeXd0USTdPlqCM+B8U4chuxoqdl0drKpi1UOdPWtU9jleQV/uV46
- Kn35Rbwz
- vIDOmaM2LMmmjUWc95hZ+94XDwb8lHUHs0wYeM5Y8LrerNmf0blrVQT1eX+0E+0UzIsKhHq0D25kabAVjD/84JSh++Icc7Igtpal+mMqFoiaMADi8lHf64lWK3QtTft98Lwh9sj8cb2yZoi7bbp9So33f16i4mdNK50j+WVJS+7RoeEH+V0v0in8dnG21qTMs4Vp2hmPsfRiFc9YOw1ATwEUlowaRsd9Z86E+3xornRttIvWOsZ2xMZBK0ZlSlBVGcnCkQ0INiVvsuKE6xZtpHscZelpfqTn4hQyNVjmSH0RtEsrAOQql6xWKPNiMUU5ZX+7LemKm3gFpSlQTttSe3n96HY3fWMTSPpFJb1WYpKc9tuD/E3ljGYMbkq6OQ9aSp3a3
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D0FBB1C0003
+X-HE-Tag: 1790146719-509938
+X-HE-Meta: U2FsdGVkX19mlgCyTmscr91AyZJrbTMScYReq99tSlYuY9Y+YJkqBAPKkRs1RGG7rbLvXLAWFLCSfCqsrd4vzXJzgSYHnnPfTyKFGhQspRPia3CWE0tN03U2NbHKEtkm/XqGUcep8mZhj2bVPpCI8EAwgPzyz95neYKmZAIvE6mUi0xzp0uJHOduZ1DLCp9D/pxVgvYBnRgb5If9UHU+7P5VBvNqRVESvwRi/qjvfpAx92g2V+YeLdrWHMMUvLwSRxM3knJWbJyGrhIJ3aIASubltu6hnVj3zpEBXPnUjELukmj0FWyz/FQqtK7mC1uWgZPddiAklGWkuOJzVoYmNOlQZCHzHdRixmO2TsCrZ0obIlZ5194ZRv2fbCq3s9cPHp7FD0g48jM4/jH54+xdkSyoZ2MXvNIhIpQAaAdd6LsVxKf9jzpU25YP5QzYnskk22Sd4oRT6vJ8fYU2AlidR2qSCaw8Jwm9Zz/Mf08fAaCAMzr8vxROFSF5qBI/2GnA22NEY2F81/tB7CCfyiFVOjmmSXsYJd7rWIT+6IZ0pjTdeZQvP5aIZ7KCGR5g4GeQp2IPwvfcZ4CLPN59gx2586KwnHXI0C2pM7O29SCyqOf3BP50gBmHOlU62L709eAPIy2GE9wmGnBxHKnrHgfyf6vf0haZMkJY9gMkrWgCBSq/H1EtyoQZBGLhtiRv3Xjnn/hB3RiqoAIgKPcoYTKgbjw6o8TZq7F+sye/Envgn8VHxBA6YE/Z50ohxKAcogOnhNC/xiYpd7M/hNTYuxC2lnMwzv/gO69iJA0BJjxhQjKPOhrHGdXjYcwKexz4wnQ7iF65kzdmaLml59jmM5XredmEin3lP9hT+Dh8G3DBjscGp9S39YeR+6R6kI906xgs2G6KazE3M0+sLZwAKLshMz/lqV4OruDZZDuqn0+MgWy/+2yfc+eK8KJL16wycM2VWtUPPxz73OhpqNvwlzF
+ 994z6TMA
+ dYdYbgSidfY/XcZvN2Bs4okIS1F6ezDr5vTZ12NCht0IKwX5nF3qeZr8/OMXfQNwuPUx8tT47QzfEMZntY4URKdTF0whHVFdTcvK+BfWiJ73VWseXyglyogZBo+Acw6kd+i3gn5/TjhGqE5h0hkO5OvpjmxzxBmHItgTK3Zf1mCfihwn3gn+sGL3u58Bml7cLtqFfoj3rIiHzpKwWuOoHofNwicwAclB7qsbX1J4FfRyWFx6nO+ws6viCiZw7Eo/JmZg0n42srTh2fG64vMz9eDBm9e0sGrJryM1VDIqrt4dy4kIPr6iKMlHOfyY32oQUkI/YyEnycsm3y1KwbyCoYFyG2V6NvlBAihsF49UdZn0KI7lDCaD8659XfClO9RlauoqUvbmkou93kOY+jX98Vx9UtOXu2sXtabYYGur13/WNhIqe8vz7x8Xjpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,35 +126,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Apr 28, 2026, Zhao Li wrote:
+> Mounts with min_hpages != -1 are left unchanged for now.
 
+In case it helps with that follow-up, here is a small reproducer for the
+min_size case. It needs no hugetlb cgroup.
 
-On 9/19/26 8:24 AM, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> collapse_order_mixed_sources() faults its region as order-2 folios and
-> collapses them to the -c target.  Order 2 is below the contpte size on
-> every arm64 page size, so nothing in this suite collapses a contpte-mapped
-> source on purpose.
-> 
-> Let -s name the source order alongside -c.  The case then faults at that
-> order, keeping order 2 when -s is absent, and the source order has to be a
-> supported mTHP order below the target.  The other mTHP cases are
-> unaffected: mthp_push_target_order() enables only the target order.
-> 
-> A -c at or below -s is refused before any case runs: the sources would
-> already be the size being asked for.  Without the check the generic cases
-> fail on that one by one instead of saying why.
-> 
-> "-s 5 -c 7" on arm64/64K then collapses contpte-mapped sources into a
-> larger mTHP.
-> 
-> Assisted-by: LLM
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
+The pool has two huge pages and no overcommit, and the mount is
+size=8M,min_size=4M. A test maps a 4-page file MAP_SHARED | MAP_NORESERVE,
+touches the first N pages, then unmaps and removes the file. Five rounds
+on one mount:
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+  N   faults ok / SIGBUS   statfs free / blocks   HugePages_Rsvd
+  -                                               2 (after mount)
+  2   2 / 0                4 / 4                  2
+  2   2 / 0                4 / 4                  2
+  4   2 / 2                2 / 4                  0
+  2   2 / 0                2 / 4                  0
+  2   2 / 0                2 / 4                  0
+
+The two SIGBUS faults keep their used_hpages charge. Half of the quota
+stays gone with no file on the mount. used_hpages then no longer drops
+below min_hpages, so hugepage_subpool_put_pages() never restores
+rsv_hpages, and the mount has lost its minimum reservation for good.
+
+The out_subpool_put: path skips this case on purpose, as the commit
+message says.
+
+Same result on v7.3-rc4 (f0100363d8c3), on v7.3-rc4 with this patch, and
+on next-20260922. That tree also has 6f8b22e85eac ("mm/hugetlb: fix subpool
+minimum reservation rollback"), which fixes the hugetlb_reserve_pages()
+error path. This is the fault path. Tested under QEMU x86_64, one CPU.
+
+Thanks,
+Karl
+
+#include <fcntl.h>
+#include <setjmp.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <sys/statfs.h>
+#include <unistd.h>
+
+#define HPAGE (2UL << 20)
+
+static sigjmp_buf env;
+
+static void on_sigbus(int sig)
+{
+	siglongjmp(env, 1);
+}
+
+/* usage: t <hugetlbfs dir> <pages to touch, at most 4> */
+int main(int argc, char **argv)
+{
+	int n = atoi(argv[2]), fd, i;
+	volatile int ok = 0, bus = 0;
+	struct statfs st;
+	char path[256];
+	char *p;
+
+	signal(SIGBUS, on_sigbus);
+	snprintf(path, sizeof(path), "%s/f", argv[1]);
+	fd = open(path, O_CREAT | O_RDWR, 0600);
+	if (fd < 0 || ftruncate(fd, 4 * HPAGE))
+		return 1;
+	p = mmap(NULL, 4 * HPAGE, PROT_READ | PROT_WRITE,
+		 MAP_SHARED | MAP_NORESERVE, fd, 0);
+	if (p == MAP_FAILED)
+		return 1;
+	for (i = 0; i < n; i++) {
+		if (!sigsetjmp(env, 1)) {
+			p[i * HPAGE] = 1;
+			ok++;
+		} else {
+			bus++;
+		}
+	}
+	munmap(p, 4 * HPAGE);
+	close(fd);
+	unlink(path);
+	statfs(argv[1], &st);
+	printf("ok=%d sigbus=%d free=%ld/%ld\n", ok, bus,
+	       (long)st.f_bfree, (long)st.f_blocks);
+	return 0;
+}
+
+  echo 0 > /proc/sys/vm/nr_overcommit_hugepages
+  echo 2 > /proc/sys/vm/nr_hugepages
+  mount -t hugetlbfs -o size=8M,min_size=4M none /mnt/h
+  for n in 2 2 4 2 2; do ./t /mnt/h $n; grep HugePages_Rsvd /proc/meminfo; done
 
