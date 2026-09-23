@@ -4,125 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 975FBC982FA
-	for <linux-mm@archiver.kernel.org>; Tue, 22 Sep 2026 23:59:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F3D8C982FE
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 00:26:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B01C26B009F; Tue, 22 Sep 2026 19:58:55 -0400 (EDT)
+	id 31C0D6B0088; Tue, 22 Sep 2026 20:26:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2736B00A0; Tue, 22 Sep 2026 19:58:55 -0400 (EDT)
+	id 2CD0A6B008A; Tue, 22 Sep 2026 20:26:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A0B16B00A1; Tue, 22 Sep 2026 19:58:55 -0400 (EDT)
+	id 1BC586B008C; Tue, 22 Sep 2026 20:26:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D01C6B009F
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:58:55 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id E0F1E6B0088
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 20:26:08 -0400 (EDT)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D08A64062E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:54 +0000 (UTC)
-X-FDA: 85243066188.14.F8B27C7
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 215CF160006
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uuKvSGID;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 551344063C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:26:08 +0000 (UTC)
+X-FDA: 85243134816.14.2ECCEC1
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 9FFC1180004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:26:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OO9g25k3;
+	spf=pass (imf16.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790121533;
+	s=arc-20220608; t=1790123166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ndNxVkCk5WMhyvlnx4WQtybJ1XuSLrgG5RrCZvpyS/4=;
-	b=eHgu5uwO9MCDiofnLWssmCEegT1lhXu/7hhdHl2l9rTa0mohMUE9RZj6phnlC9813YhkUr
-	I20QhYx7f3WRPT5GK8qE6RS1JEwGxfC8jEkDXOabZcGBLGgzwKPPhnpH3sITK+K3mT27lz
-	8Pd3mH1NGo0rgK1kuvIG8fsvTmixe8g=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=uuKvSGID;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	 in-reply-to:references:dkim-signature;
+	bh=yLteDfPUx3uF6M02dhFfxPuSSO1R7kydwzqevjI1MZM=;
+	b=a1lss14BvvAlM7nAe1ZYOs+MlJOH1M1fHgDRhuEH+fTDyoOeX0+/qiGe0j+Yb9GchsL+OI
+	7/iws6fh70q6iG6UH5vzdcEesKeNTJz292L6QS2DW6aFs1/5UPGuEuJ7V0aKk/b6qIAjnl
+	rYzYDN+ek6mTvOoim1Q90OzNnR2TFeg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790121533;
-	b=Q63dgs+MBFVMGMZUDU6xi5MAsNSexcieLFQka8ZmSyDLGPZt13cruqaxnwe084d3PDw/m/
-	5+lOPjMdDG1gaHtcC2ct/vBRv5JwYnkHPWt4o6dEwfL+Pzt5RasEI6rFshASgpSpHyiljW
-	IWkvQBFqjTMYw/PcogVdD+hW2zbHjEs=
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-5329fc7e0bcso4702211cf.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 16:58:52 -0700 (PDT)
+	t=1790123166;
+	b=i7f68oKjsxXZA/+7JcpBsIzLF1IYexZ5JbnL2NDnenkrRWe95mUAbKeIK5WBW8FCCiFoN4
+	phi3r7Nz7YE/EeWtne1ozvRXu9gQJnhrX/RQ45gOkNe6NXeiR6YXL5AhAs/JiRCJc8f8Xh
+	j2tLbcXHQNr4T06lwAtyG91WkeEqQVY=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OO9g25k3;
+	spf=pass (imf16.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2d747ed1368so2484055ad.1
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 17:26:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790121532; x=1790726332; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ndNxVkCk5WMhyvlnx4WQtybJ1XuSLrgG5RrCZvpyS/4=;
-        b=uuKvSGIDokxqngsIrCLNSzlGAstqHw/3UromwJC6X7QOQ7zZZEb8KkfAoowMWV9rJf
-         Iw5cLX1FN9SYpG41ObpH8IGGVVrQ3PlSysnAmHFid7252Mccl31F7QWDn2Fa30IpNF+U
-         ektDg40XjeJA45iRuTVfHr1nB6S0TyE47p7Jzdwr7JCGc78TB9H5+UJdasqsjnV5iGap
-         L36dXeyryx4v1cQin37u1akppiHabhXOGGT9wIMSC5eMd+bj+DgbMRoSQpF9/HI691Vj
-         wZJMaIn6OV1PSJ6uh2VMp1/HaFea8Q1fdzZQXu6WsOhvrPlMnyPdbfFIWVEJMIVJBwN8
-         RknA==
+        d=gmail.com; s=20251104; t=1790123165; x=1790727965; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=yLteDfPUx3uF6M02dhFfxPuSSO1R7kydwzqevjI1MZM=;
+        b=OO9g25k3OmvUv4nFwPdz+PJFwjCErCUqgGk+9t1mEmg5kHXoP2DUq+sQHRP4QcmI0h
+         bmKdfzXjCrPUEG3mxbxoNPYu6DnhT4Eh50ZLnPMyJs1S9Yh3YDycWlmgAqgD8/eizUxh
+         pLgD4CwyMnrR/eDmnYMUhBJJFvl6l7zTf4g+jyLudxATwXaK4Uc8xz2LPpzn67MtyZbm
+         oI+SmE4DauOOUZnidFMycEudIt+dfWo986o0dXTbwjqbd2MGqujfCksJC6KLSQLTmBdK
+         17HPfPCGJ8HTHOoC+fgEa8PobJDn3tAbG9xRqS++wnxmOH6IqBUNSYliuL5VIJZHmipJ
+         EIbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790121532; x=1790726332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ndNxVkCk5WMhyvlnx4WQtybJ1XuSLrgG5RrCZvpyS/4=;
-        b=fi2qrIlEahsHAE4lvtn9aIISK1TK+pknOhQWkvzSWbTHEMfTZ5Wk043gZyakm0xU0G
-         bmsRkdtJ5rPqtx0Ii+/QxZGNnZpW6AQwu+f9OBaHI653ZqnYkZ62SVCnfQuhC64jrTLV
-         xDpWqPvSMbDgkiiiHktLWa1mbzgqUvo4uChBHlROYnBVBmkvlucW31gfvn4Ll1T+QVYv
-         xAH1LadqyRx5lHJGNs4Fyr0eAsjQJtnBjlXcTWLrOO4vn9+uVp27viF5zMFmRhL2ULkV
-         W/XMqvKRt/Iu/kSWPfDUvxkfR+lv8CZwDyqDq8kGizWBUGQ11YF16Z+iF7HEr13Rczrx
-         ak/Q==
-X-Gm-Message-State: AFuF++nLFWzifxqO/rpqWaVs+d1mpoNafK1bIVh8vpLL1zC1HwXpoaPm
-	4XNt7QElun/kBQ8MNmv6nLvzdHF1PUoSQzlrbPW7yXlN95Bd1Bl16fx7mTdLCpTO+4GuLMWHd5t
-	z6p+pf5o=
-X-Gm-Gg: AYBFou3Y2IEfJCUUAqgmrr8KYD+ChPYwAWcnpKZGQg8pT37LLtch1/18RoJOpoCIA+D
-	z0jhTO4IXbV0LZIax5O041CdSoRaW6SMok0lvC01QUN5uF1FrmWF2G4WTivotBY7IBoyqRCG2ua
-	VYFCygI4CJtOXbN2XPg4SC5F4qSoIH9K0SGPnDFUOPLZ3UcOClqIoUUd9ZzPzLBKftb2lFzTodR
-	e8+RshbVH5QgPjIM9rDhYvT+dm3YhMdiIU43ZnC02aoFYgv6Dd6h0tnbpgCuUwvrLihucjEN4Pm
-	7emkqW55j1RZ4LV4h5HgR+AD7qAhjuRSOcUz+6Fe2/o5otNnyj9ZvIi+n+kJDc97w3z6A5K5Hj+
-	t4k62aPzwsLC8g/oavJ9mORR+2TDe6iTM+xiDL3UGL0tLvT86hGAeD2KnxB3vhLgJ4QBny7/X3G
-	Bnf3NOXFwuOPR287HMlWn5KYoPakzJCC2wGyoVE//Qc4WwjwOfDrbwKAxuP2UVxilJCQ4o0VzWl
-	QvlRd6qJoYJTmJCchMMzVLifqu9EzmEAfMsr56OxOAb2H8Acb7aeoZ48RVs
-X-Received: by 2002:a05:622a:1e06:b0:532:9ade:b6ef with SMTP id d75a77b69052e-532eadc3523mr18790541cf.69.1790121532255;
-        Tue, 22 Sep 2026 16:58:52 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3c6715sm8323261cf.30.2026.09.22.16.58.51
+        d=1e100.net; s=20260707; t=1790123165; x=1790727965;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=yLteDfPUx3uF6M02dhFfxPuSSO1R7kydwzqevjI1MZM=;
+        b=Ksjn6Sx+EM9RVeOV5cVzDJfsjh1iv5iTvL7Bmync1SZLtLXoRNhQDiov6bEacS/0tk
+         KK+TdKXoq/OLulkpwwsfAAF2AZsGzAm/pY5nmv8ouKQ9zAbBqLhKXh8NMPm0MUc2wUPe
+         gvXk9f+l30V4uyymTJGdUr5FX5wRfreaUPxBe3oww9PUfCgccehYkCy5QcZW+7pMIPxj
+         /yhzjtY7GrWhiy1rHW8AkBS2DIcvTeZGwNf6snZf2UQkgGJWgZIBHzm7p7AqDhWFpKAv
+         70eZHQrPOmf2g36BUSRKkjvQGu1NjyppflpVzoJT8WQ55tK9Lf2+j3PaCjESEvckAus9
+         j4oA==
+X-Forwarded-Encrypted: i=1; AKwUvBxf9bjRLEZt7uI/XvdalStdHvggsshWL5a9hCwR0DoOM3DET90vtYaxGmSsxTZy8hXQnu4eLnbvTg==@kvack.org
+X-Gm-Message-State: AFuF++lqrCZvkWRxfxa+Gl+oQq1/kTxlRiK5DSxrZqZJrzxDPihGKNQr
+	mu5uJehkoVJF8XkTF4e5l1Ilr2mCjbRTjntzDPjEA+bsctUnkbtZ/G50i7a0sUD35g==
+X-Gm-Gg: AYBFou1SiwnVdkHHt1i6PE+Aoy+V2Gl9wRgQvLk2HtZcK2S9DFk14ekGDb3IlHGklje
+	OEmG4QIZrWPXjXE9qGhXnaRtrQIPQDHME0Kq4fVQ7zRvu5jdxkgOhvleeYRtvbt6SJdzHV60e4f
+	8R3ko+vH+HpkeSc3cVXfYACyC6yR7ngUKquvqKAKqGBAvZ8QY5Wd5aH+XUGjhwGoCLcCV37XdXw
+	ktNybYw017eTKtnzC4oxY3VPYA2Fz7bg41MNHxO4p51ZdtFfUBrR2bXNMeDZDXhiyhIq0cJaszE
+	L/FZPAQn9aVNc9MLGaJcN6sTo41lsXxxvwx3/MjvVa1yNT851Zt36RKNp1dXkKAviyHqj96om1f
+	dU3HFpM+mobvkudP/fhufAUtQICpZmvI3m2P0XPM/04kXjp/DciwolSdzcx+hsvtQb2ILCoPwqS
+	mBaatqjoRwgSIN2uY/lw3MtiMHl8Un99YuZd9v5cbEC/vfuWOp0iSJyryWSap86vwf2U/t3BTj1
+	WJssIyMWeenEeVNYToujK9h2ldo64/d/3Kpeg==
+X-Received: by 2002:a17:902:e552:b0:2d9:3850:2741 with SMTP id d9443c01a7336-2df69be125cmr8314255ad.0.1790123165341;
+        Tue, 22 Sep 2026 17:26:05 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:7f00:8c85:2466:805a:e198:cde8])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a5a7b76sm2176595ad.20.2026.09.22.17.26.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 16:58:51 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	david@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: [PATCH 10/10] mm/madvise: share cold and pageout walk setup
-Date: Tue, 22 Sep 2026 19:58:30 -0400
-Message-ID: <20260922235830.2350770-11-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260922235830.2350770-1-gourry@gourry.net>
-References: <20260922235830.2350770-1-gourry@gourry.net>
+        Tue, 22 Sep 2026 17:26:04 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: sj@kernel.org,
+	akpm@linux-foundation.org
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: [PATCH v4 0/2] mm/damon: fix the temporal goal tuner's size quota conversion
+Date: Wed, 23 Sep 2026 09:25:57 +0900
+Message-ID: <20260923002600.1825448-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: sosb51fsnhib5cjsectgfzyo3wkexp5s
-X-Rspamd-Queue-Id: 215CF160006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790121532-406420
-X-HE-Meta: U2FsdGVkX1+VFa+Jh59+crn0lHgSfsEIxEMi8z84/izLDpluFwnE6JC7NZ/Y9UUhi21JkAXLpGDCjBLd2B7CeBYScCLBkmJy+uIDXwCT6ZAq56/11c0FE+nsj7KOz1QF62kNJtkphbTW4HKmV/sV1ea4sEkfl4HU2shP3vZsmuB3kQERj0ZQV8QFB4VesZ5pFdCmU263Ms54aG+aAxoPLG+mCb+jD2kTd9Xf13jdQXt3ddRpvIkDRGPiPInlUY/vBKfTi3hZOOTWGSK3RqGpXTXrZ6zfua6ZyE1WQ3g3i/w3Kg11IoKsZJHxPPqNL6MZnBsAtOCn3rfnoIOABpWoAqG+KnpYZvG6rTa6xKdM0Me72L+DIj5oL7eqqQ/+Ae4P6Dc1JSRtnfJ5DrV7NAmn6FpplH+USz3lTG1F6LKF1/oiYNrt7zuGVbHZOsvA488AYsDnSG1IO7FirLAS+J46TqqabfeB9axAu6HogZelqApcjKTugmqm2kK0d2axxpYgpW2XZleWIn1BzLoIDc4gHY2zVwLl0qgxnxWcG3dTIY/F1yB5nfHgKnNPB6YRDOs6lcwndR3n/IZhnV2qQxmmtFkp+6uC07dfvHR2C7WfwX5C0JGXKuR2G7e+9TmDEdecKqr4sgeBByzEIesAf6m9SpoJbv6goml0B6WYfJgcxcMVpz4ZVfsLrgOhsTtnKRn3DZ/5wDfOfBnHCWP7r81Ox97mJwLp5APQB9fKBOVneeREYiTIi4EA5WhXD+dJq766tA/HifEqZToP3ysujRDgNbti66zIQai/R8Icl0J6YwHctMOYV4M3Qp/5PUI8mlVA0/Xu8oYwIsv6jNti667nTGlS1+eMqbhWtp6rs/hF/P5RSDBDbea+9F4Qjihm9RLVVzjmBay6wlZunx8VV5xMEbiNgUgSwe4QmfAzbrrWdohHg+D3EFzlftzzM+0qoAHRY/eyND0coufpJVFYDTr
- Uf3BzOA1
- OILbcE6kIYLrh6l97TPw5vx2EGCPk24V4tOO/s1ToMOjAgMufHgfW7KvYX/Livppq1zKvOO92IWVO5/H+2KFcBnFFcoIDrsJ/H/4X1AMqcZ7FvAvRr/SM3HaTOXKodq5k1QxUsN26QCgWC9ApCexJEixbbaWdsyJ1SBR/1kmluWtpXDLmtMKKinptWoqysOZQA7cybUdXLLG6KCaUFHlcSQWtyc+2zjiq5hH4JDWe4scwPm9DFsCMNSRXVtBVfOxtWvNn2CvtTcEfH2U8ySj0WJwhjOKXW7BeK9qUz/09xYm0+gc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9FFC1180004
+X-Stat-Signature: az5fm1heez65gbbtsfshcktbdbysed5x
+X-HE-Tag: 1790123166-655008
+X-HE-Meta: U2FsdGVkX1+ILaAiPblYmNbt58vP9TDacvM3WiWHz2Ew+arlj6/gwN6V+9MtAKKpk+qP5W0YTzobMXJ7CHu4dvWoQf83yQK83YWmYAgy4DfTPVqjVyzxi4/t1IFNO6i9+kB93QSG21WrpvQWjv2DMEIWZeU4OLXZikT/sU0Vj87yEQyacfaWaSJA92V2sZmBzfJub6vGA0guuBM2wF1vFbN8+F6FMmmpDL9bl5SYZXnde0edNnrCrzC5kuFPGXdlAckf8Zq3ECIbcogPHSr9kXmdXJffh3Umzdax9WmR3SJCXNjBN/zIEKTdHiEKUa5eBCpnKgmjL53hokAVo7uJGKmouFlIs9RybvIH8/o//LmK3MCQrabng/LW9la709EUCJAXnOAwvIU+ffh06nm/SGqT3CXkJafz8iuwget4X6FCONKXFWGtIcXyvFxarhJjPyuh+8egFHi6BtZHBpSYqRrVmzJEhatFy0zZNmZ5DIeUObkhlj8A5KmYaWplzxxlCni1xNDPp1UWBhC5/M/Kdlrn8i8aMwfPO1dhEBqKcMLI9CANtxrUA6DDYU87gqUEKPDplXwkVaumYovLDkxQ6UihK5gOARkEGmLv2Go5hxlveFIDrd/F4CfSnLsHl7jtMa8EdIYSd0xKjBGHy4CS8qonjqcfEAGC6k9KRh1daFw4TV1YdnUQnOzciY1LOrFYRYeviOlHMgUurXhVQwVZpmgUj4lJpRasNFYOzFoWpykXWaF1clvtspnkvOA5doqTulhdyuVXQP6TVjz5WjElNZHu2EoV8MV41dtZi7DNEssv9Bdor39Ul0R/RaP9iLGYoVGfDS0im4g8epZX6xe5UZOoYl+zMKkQ4VIsopmrUSNPGxEHcDN4r4MRuUtuDNv2HhYZXNxSe4MLDkNkpjOUat/d4HScmYF7aKJxE1LQIUbnLh9mFkR5il1CvTq+uKL9NxgdotqqqTcUM7vTlqz
+ mAs9rXUO
+ D7KiP8F5sX6+41dldjIDiPQ6/t3L/PlhTONma8IxgYyfd+h70J84dCEf5ErRdPyBKLyBAvNP+H/xiGHRATzZe3i78QxW9//td0Ia+lJbTOdNuBXMxM1k7OAZdUZ899deynUGvecNrvb19E8eMn60jlYTwOPfBdoiIQmwdmOgvF2Y3IVVT+WkuKvVXrc6QLvQBRctO9lgT3XGwlijAHAMsb/53QXQMkiuqf9OwmqxeVqMjmkrOX6+2q/QEvxj83QrhGe/KnDL8HE8/NJoMWjqkwgDShHgN2kIF52Z/mfGkBuz/rh7LwqhAiu4GYmpJkKFtcVrcUPfzrlXowUX+d062MPpPN0X1l0FRGAea9vNGn29I71d+0wWPmt5MKaiqdbZb4o3jEwi2iJycmAdkvIJyo480ywaHDzlyOCKDUKHa+UmZdw/JzrUHeemmmgUgi+9Dd8JcHiDWbJmSAEsVtH0RBmDOrrzVMN5uzKp8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,114 +118,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The MADV_COLD and MADV_PAGEOUT entry points duplicate the TLB and page-walk
-setup while initializing equivalent private state.
+damos_goal_tune_esz_bp_temporal() hands the size quota to
+damos_set_effective_quota() through quota->esz_bp in basis points, and
+the multiply that gets it there is unchecked.  On 32-bit it wraps above
+429496 bytes, and a wrapped product below 10000 divides to a zero
+effective quota.  damos_quota_is_full() is then true on the first test
+of every charge window, so the scheme makes no progress for as long as
+the goal is unachieved.
 
-Use one madvise_lru_vma_range() helper for the shared TLB lifecycle. Keep
-operation-specific validation and policy in the two entry points.
+Patch 1 bounds the conversion.  Patch 2 pins the boundary in the core
+kunit suite, where the new test would fail without patch 1 on any word
+size.
 
-No functional change intended.
+v2: https://lore.kernel.org/damon/20260920023111.2466265-1-donggeunyoo.kernel@gmail.com/
+v3: https://lore.kernel.org/damon/20260920122411.610213-1-donggeunyoo.kernel@gmail.com/
 
-Assisted-by: LLM
-Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
----
- mm/madvise.c | 49 +++++++++++++++++--------------------------------
- 1 file changed, 17 insertions(+), 32 deletions(-)
+v3 was posted before the discussion on v2 had finished.  My mistake;
+this version was held until the thread settled.
 
-diff --git a/mm/madvise.c b/mm/madvise.c
-index 88a4a03dee04c..37e3d3a205a76 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -622,21 +622,19 @@ static const struct mm_walk_ops cold_walk_ops = {
- 	.walk_lock = PGWALK_RDLOCK,
- };
- 
--static void madvise_cold_page_range(struct mmu_gather *tlb,
--		struct madvise_behavior *madv_behavior)
--
-+static void
-+madvise_lru_vma_range(struct madvise_behavior *madv_behavior,
-+		struct madvise_walk_private *walk_private)
- {
- 	struct vm_area_struct *vma = madv_behavior->vma;
- 	struct madvise_behavior_range *range = &madv_behavior->range;
--	struct madvise_walk_private walk_private = {
--		.pageout = false,
--		.tlb = tlb,
--	};
- 
--	tlb_start_vma(tlb, vma);
-+	tlb_gather_mmu(walk_private->tlb, madv_behavior->mm);
-+	tlb_start_vma(walk_private->tlb, vma);
- 	walk_page_range_vma(vma, range->start, range->end, &cold_walk_ops,
--			&walk_private);
--	tlb_end_vma(tlb, vma);
-+			    walk_private);
-+	tlb_end_vma(walk_private->tlb, vma);
-+	tlb_finish_mmu(walk_private->tlb);
- }
- 
- static inline bool can_madv_lru_vma(struct vm_area_struct *vma)
-@@ -647,39 +645,28 @@ static inline bool can_madv_lru_vma(struct vm_area_struct *vma)
- static long madvise_cold(struct madvise_behavior *madv_behavior)
- {
- 	struct vm_area_struct *vma = madv_behavior->vma;
--	struct mmu_gather tlb;
-+	struct madvise_walk_private walk_private = {
-+		.tlb = madv_behavior->tlb,
-+		.pageout = false,
-+	};
- 
- 	if (!can_madv_lru_vma(vma))
- 		return -EINVAL;
- 
- 	lru_add_drain();
--	tlb_gather_mmu(&tlb, madv_behavior->mm);
--	madvise_cold_page_range(&tlb, madv_behavior);
--	tlb_finish_mmu(&tlb);
-+	madvise_lru_vma_range(madv_behavior, &walk_private);
- 
- 	return 0;
- }
- 
--static void madvise_pageout_page_range(struct mmu_gather *tlb,
--		struct vm_area_struct *vma,
--		struct madvise_behavior_range *range)
-+static long madvise_pageout(struct madvise_behavior *madv_behavior)
- {
-+	struct vm_area_struct *vma = madv_behavior->vma;
- 	struct madvise_walk_private walk_private = {
-+		.tlb = madv_behavior->tlb,
- 		.pageout = true,
--		.tlb = tlb,
- 	};
- 
--	tlb_start_vma(tlb, vma);
--	walk_page_range_vma(vma, range->start, range->end, &cold_walk_ops,
--			    &walk_private);
--	tlb_end_vma(tlb, vma);
--}
--
--static long madvise_pageout(struct madvise_behavior *madv_behavior)
--{
--	struct mmu_gather tlb;
--	struct vm_area_struct *vma = madv_behavior->vma;
--
- 	if (!can_madv_lru_vma(vma))
- 		return -EINVAL;
- 
-@@ -694,9 +681,7 @@ static long madvise_pageout(struct madvise_behavior *madv_behavior)
- 		return 0;
- 
- 	lru_add_drain();
--	tlb_gather_mmu(&tlb, madv_behavior->mm);
--	madvise_pageout_page_range(&tlb, vma, &madv_behavior->range);
--	tlb_finish_mmu(&tlb);
-+	madvise_lru_vma_range(madv_behavior, &walk_private);
- 
- 	return 0;
- }
+Changes in v4, from SJ Park's review of v2; the code is unchanged:
+- patch 1: drop the 256 MiB mention
+- patch 1: say what the user sees before saying the setup is unlikely
+- patch 1: cut the closing paragraph to "Bound the multiply."
+- patch 2: unchanged, and carries the Reviewed-by
+
+Rebased onto mm-new 8d29b5365d52.
+
+DAMON kunit on x86_64: 39 tests, all passing with both patches; 38
+passing and damos_test_esz_goal_temporal failing with patch 2 alone.
+
+Donggeun Yoo (2):
+  mm/damon/core: prevent size quota overflow in the temporal goal tuner
+  mm/damon/tests/core-kunit: test the temporal tuner's size quota
+    conversion
+
+ mm/damon/core.c             |  2 +-
+ mm/damon/tests/core-kunit.h | 48 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 1 deletion(-)
+
 -- 
-2.53.0-Meta
+2.53.0
 
 
