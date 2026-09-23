@@ -4,129 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 531C7C98308
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:01:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B13AC98307
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:04:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D4836B0088; Wed, 23 Sep 2026 05:01:20 -0400 (EDT)
+	id 2B3346B008A; Wed, 23 Sep 2026 05:04:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25EA26B008C; Wed, 23 Sep 2026 05:01:20 -0400 (EDT)
+	id 2648C6B008C; Wed, 23 Sep 2026 05:04:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 126B76B0092; Wed, 23 Sep 2026 05:01:20 -0400 (EDT)
+	id 12C216B0092; Wed, 23 Sep 2026 05:04:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE776B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:01:19 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A178140704
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:01:19 +0000 (UTC)
-X-FDA: 85244433078.05.CFF5940
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DF8A96B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:04:51 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6624A160755
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:04:51 +0000 (UTC)
+X-FDA: 85244441982.20.07FA5D5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id CFE2420002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:01:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l8tsN/kb";
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id B29E84000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:04:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kh1UONb7;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790154077;
+	s=arc-20220608; t=1790154289;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=08CQYKP/CbnBznr138YYtpOglRFSY/4nWR9BP/pvTJE=;
-	b=nMpaxX/rOCbD4Q01GHyvGlxGlAAghlAAQdf/a8V2FICS3py/PVvjdKcR5ppqpoyFPlZPbs
-	rIPRHg8ENCgnTK27kv6zCiBuwbD74RL+WOd6xHYvFCVAJ2PJyh3i/tvXXbEvoODrGAo1O1
-	9zh/A8MSZ1bpvpS5vkEYymiRL5fXPlM=
+	bh=nLHxCy9N9i62IPUkO2MSj7TD6JUKjGO86GHnnJbc2pQ=;
+	b=q6d2R+qbOW5n++jV0y3597lGH07kV8PZoR1ERrBZhBoVgpXfkKOxW0LbekudSWfThzJZC/
+	/LDk2A1U3rMBTzgOsSAE67bVtjFDIL7DOiOgq8t40xkcazTvSVljAZUEPDMbWCiDW3TbyI
+	sFN6uI14yHv1bckS9+z890ZeCQTcDkQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l8tsN/kb";
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kh1UONb7;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790154077;
-	b=EpbllU1bsszWThQ2EOVmlag2txUadOkarZpWKF7sIjBXdKhRo4K00k8PUz/M9Limcs0XcS
-	+KSw02sLqrOHXPeOWDpJeZLZRESWB9L4t7SEUroxIWZPllzqule4Ca3/T8VzNOyuQqEWdI
-	MrUOt1yOGq7HCNTP7ZzWU9H4LXseDY0=
+	t=1790154289;
+	b=t1BOIxnYdfM2Z40m0QxSzDv68tXZ+ODH/ICcKP+aR6U1oXvEcIcPv3Bkxk7/YPoIWPgbXo
+	AGHr3QBn74Pj0Ehh8ccsMEh49pPdnF5tWyOR3trnuR5xZDaOeV0CfwLjLvtrU0hMQaEcR0
+	nzn0hhyyFCbaBLeQb0qtgXjpVAdhIkA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 20FFC600AA;
-	Wed, 23 Sep 2026 09:01:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E1B1F00898;
-	Wed, 23 Sep 2026 09:00:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 37F8E60211;
+	Wed, 23 Sep 2026 09:04:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6821F000FF;
+	Wed, 23 Sep 2026 09:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790154076;
-	bh=08CQYKP/CbnBznr138YYtpOglRFSY/4nWR9BP/pvTJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=l8tsN/kbVIAp0zwO7NJ8UKHEbsmr8kRgy965DCDazZrwPMWb1HVR3BuMd0/yw0Q2T
-	 fxE/bnE5HNOoDu+FbSjEOgtVRrstUJmFtSgXFOJmcSrLoUvYDYQhLMstrxi7qUBn5T
-	 jW/J6ZlAxSf+hRCvSl+ViV/fBd9XtyVJbWqkZtHQuxuRtovUqrgnEQZdaQcmsQffJc
-	 Aqb76CVo/wBl0PF4wKShO0+ulUmjXKjnymVE8Nrgszj1RpA2CAI+TkOXXWUHXdNh64
-	 QpaeRSwcbBD0XGT81/hFdlfZSOkmVdFacBJilbp5yToNPy6KySZKmOJuF0+hD6f4yN
-	 QOZ8zpWWYPQ7g==
-Date: Wed, 23 Sep 2026 10:00:54 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-	Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, 
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 01/12] mm/khugepaged: deposit a newly allocated page
- table on collapse
-Message-ID: <arOU9k1jEMHHPEtj@gremlin>
-References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
- <20260922-rcu-pagetable-freeing-v4-1-fe1ad1f1e303@kernel.org>
- <76b2f611-b74c-4d6d-b166-491e1cfcb9a5@kernel.org>
+	s=k20260515; t=1790154288;
+	bh=nLHxCy9N9i62IPUkO2MSj7TD6JUKjGO86GHnnJbc2pQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kh1UONb749avQ2GxPrEt2KoDCYqbkJnuEA3WJQAQ8JrfHuUaTqmRRSt+oFpaQ7lG1
+	 ILnPGbWd/UazinfGWFBjRdNkvn/tu+pWKz4Lq2pV4pOq8TzUuzRHULxonAZBgbJk7H
+	 6CtvWjimQdjfbvI2Qy0fLwPnggwdlj0TkjEbxzEvV7wBXSai+0OqQFH5kgVoCZ0KpY
+	 U6KeqOnEa1DpFksg3Q9CpkhGA/BUNk2ePpUHAvUu+CsQpwJHlIjrHYn8a7BMPOZT39
+	 ftQVWCDrBTlTq6hiuY4SXKY/CE93NMwJj2wtTo1UUe0tma4NBXjXH8U25SuKms+7GR
+	 ct8e/Zv52t1KA==
+Message-ID: <72d1548a-a4ee-4832-b2ab-4bc82f1933f8@kernel.org>
+Date: Wed, 23 Sep 2026 11:04:17 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <76b2f611-b74c-4d6d-b166-491e1cfcb9a5@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CFE2420002
-X-Stat-Signature: ifrwxr3a6nq46cepn7j3g6yk9xftpkqq
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/12] mm: make userland page table freeing RCU-safe
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen
+ <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
+ linux-arch@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>,
+ Qi Zheng <qi.zheng@linux.dev>, linux-doc@vger.kernel.org
+References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
+ <20260922-rcu-pagetable-freeing-v4-11-fe1ad1f1e303@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260922-rcu-pagetable-freeing-v4-11-fe1ad1f1e303@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790154077-281222
-X-HE-Meta: U2FsdGVkX19avftOoG2TLV7Bzoqmmiv0VD3lxM644JmuNdf55eoNFetCtkMAuLmybSv3Qw5N7ZDrIHSMfGcpMJYIG9KWZWB48JoY+Ejn9VsRIKAmGqoCQ1jCf6SwGfsg6Yxyfd7uuoedsmnpWYtwRDzBGv07udX19k6rG75fbJrH5MXH2PRIWoOM9c+Ln8JdgK8nIN31nEqudKRinGjF/30FJTZOITQdf/BeMbQOvArcpvaOpsZ96TIwYFetF/bQl2XWNfYr0bJllFiG0LStMPUNXkvlAAaIIjdGBNqmeAeFb79On7qk5Dy3rsSG4LcGWLTUWH4YWADvGX50LHeD4qHsXmbpVzXGlVgaZk8v+w3WW08kkCg+be6st4jPco4vUswPwCEzJg+1gI89WfrCGYbzUxuk3bj0XMN845/sn+wjvTZ4Fak6U/fOMhYme+bJ1sZxrxGMr/IaqKKPiX4B+DkyJzH/LHCJc2tnFk70LUX7yvaITdqkyyA6gJd/EimqZ78SBHb3CA+CROGcvobFC/lS/9jJPxUHdxqNG3yYu2JwTDF3KHo5dAS9C+jQmGck/RJWFeHyLa5OYIEJeM2N9bZsOFZh45ly2pBeSbMUZfu8xNwYLuVldYyAERce0LLLHVcqiHHUMG2VS7XD8Sy+O/6NJ4HUCbOTU4Xbh4uR0xTg6mMCKww7q7TmNsrcGjiH1lSLkgj8tLb3WMLFmgIfp+jFpMD9euamzLQQIFwz3MJx7D8Ein90Qru49TCBTYIO3JOm9nfSEMk+/95PzVrI/0lklc377zp6kSbe37+Xo3YXkhGOD7NPHXoShegVIzYRwPhKCPQnFpcWJ0WFyr7rVmFY44GSsaEptR/JcbEPkjXsTfFA5HxU9Rni/6h1scqLbJTybOaL5K/FECiFrW3rWTMMiZ8HH0eUKlkUPwYDkcklb0cLC24OBsQugywsgvTUwiedvYPV9HNBjBn1Xxp
- p9hV8CFd
- Wm22HaZPCVtdj+2X+TIWY6eYVfRvV3qfqxThjdFJKgqliKpFTHUdBrMSm/pdLozXTFpF7ElldQahABXWJ/1LC5eu4slfrTvT9DFsCdFia8jhjx5vhH9P1exp1mKQFHYzOyFZCC2Wr+qJ9QsRtgHi5yJxlb0Mw1a/3sjhrZERilAdU8RMYJNg0A+IDQUzaT4Jg3xatZvmgW3Sw80JVSbJuMJUX9oQBhPVYgGIh0ixz9YTopskTreuct2ChmJvbKMxXLZtbxYsKjPd2TXcQZxUIRf77hIZG9pnwXGHaOqW0D2UbuEKFVYSEf+uuJbERN3bpE2X7GFUoK0I80qhYPAlx6VZHr5pJBigMIpd6
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B29E84000A
+X-Stat-Signature: bq4cd5hkjupugjgpkifu3zqi4yq3oqwi
+X-HE-Tag: 1790154289-201260
+X-HE-Meta: U2FsdGVkX19stO+JCGS5Zl2i2nFlLp9zY/kYu2NgoUSr/0eyggutgdEKoI/YtfJW6kGZZVO/9XNzzCTY0V2hXXMTXb2HOqZvNzdMUTXLaYWvDh0mTW/BvuWQHBYkW5VapEtJkn3tJjqEtD2VY3iP7FRns8RK/myRyhxnXErynrJ/Z0VskXHaOoTmjAYzKmuV7lizPwR4f/Sw79La0CGrJT2UHT6/4jUt0AKPsJ0LXemvRRaLcLEcuzGsV5vvxgHiNIgLbBDgWa1HeBvVnD/cWRaI9+u8Qlt7EMKZ2pJaSrBedHfWVOz8Zd+muxQ456eET6wpvHogdp8HAuEl+99kma+DFaHoY/vF2JOexOSdLjWGBzCoQqfV7K4XISSOlobE5ZBxAKo2bQRDpURf4+MAFnP3eA7rqMV1R1a+6ouDsuR0hyObg3iPYl9QgET2OjPgEPF0hKlhGxVxqMxnInys+UL0yHMBoeYaeB5LcC34N+ZN9FNvcVXrK3sSosCudag4Y7cckq1ilihKwzg4CUBzMBiBbMqvdgdxj3z1aLgN8z1vqC45LiBDLkjSCcnFhKHAM85V05rRvI+CA5KygHJJgUDH5OfAxBF7PHFOw0h4NviFrdrCaSTV+CAlPIR0aStbXwC7xFp4MzlewecIWewmYnW0ZFWEimNASYrrsE0DxfxQ/FqRqrmHLeC4Gio8kc44P2k22GBKWZDza4L0o6c4BrOxnOQVkzSoXEsc7+l5cM+t3QzXB5NVk8FT78yxuuq7sJhaRwbCLopALFMvpwgLs1zrldjkaFSfmUZIu70Y+2+FmLE8I8QFjrArHamvfPve2emrFyeAQ6TjZ6E7d96nGmLFBndNQGQX1J9eAm8w3O2KGkRxFxj1yBEfPsWDyBXUER45Ikx8jqrKrQPrOM70oiyIr3ujKDCD4S3BjiYpDlILbGfpwBUJJXNfAani8VC9dCRj73vJJhW4FDHK+wV
+ 93RqXiJx
+ N3Ym+ibMUqYSrNQxJT2hv1Hn4QVfQbLRKV/v/eR+XK/Tl91z22Kxcu7gDuNh3LARKOo0FZw5a4qfXzTShm29Bjb4daxvt2DmGU01+ziVVKFv1+avSx2ixeXVEZO+xjdOZPwekcPpzjoSuNj8CFooR9TuT8DgfG4+4HNq77U+aE4jr+riYBuqj3bcCTtJf6dOjCFip0CVrnJJBvQy5O8JolLzySRvIjkF4J+V3iGxsawbK+5uyY9ECUvdVHLpsD+AwnqF5RiJ/3rr8CdFsh+xQtrIcAlseFPdOKM/2XfbOm3CfciP3zHNPCcu1/OZSe7TlEoDtogbeuluWg0LhgrmGKwXhL5GG+a9vro+V
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,128 +195,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 10:54:07AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/22/26 17:35, Lorenzo Stoakes (ARM) wrote:
-> > collapse_huge_page() deposits a PTE page table on PMD collapse in order
-> > that it can be utilised for subsequent split operations, meaning that those
-> > operations do not need to perform an allocation (as they are in a context
-> > where it might be unwise).
-> >
-> > However the PTE page table which is deposited is the one which is currently
-> > mapped by the PMD entry that is in the process of being collapsed.
-> >
-> > Once deposited, the PTE page table may be used in a split of any other
-> > unrelated PMD entry.
-> >
-> > This is currently not an issue as this operation is performed with VMA/mmap
-> > write lock + anon rmap locks held, so ordinary page table walkers will
-> > never accidentally end up walking the wrong thing, and GUP-fast is
-> > protected by an IPI via tlb_remove_table_sync_one().
-> >
-> > However, the series to which this commit belongs implements RCU-safe page
-> > table traversal, at which point this becomes problematic.
-> >
-> > This can be resolved by using pte_offset_map_lock() which gates on a PTE
-> > PTL and a pmd_same() check, but lockless walks are unsafe as things stand.
-> >
-> > Resolve this by simply allocating a new, zeroed, PTE page table to deposit
-> > at the point of collapse.
-> >
-> > This path is already costly and an allocation has already been performed
-> > for the huge folio, so this allocation is statistical noise in terms of
-> > performance and memory usage at this point.
-> >
-> > With this PTE page table deposited, RCU-free the existing PTE page table
-> > so it is safe for page table walkers to traverse within a grace period.
-> >
-> > This also brings this deposit case in line with all other page table
-> > deposit logic which deposit a fresh page table.
-> >
-> > Additionally, this was the only place in the kernel that displaced a page
-> > table like this, so eliminating it also helps consistency.
->
-> ack
->
-> >
-> > An edge case for deposit exists for powerpc and its hash-based MMU - it
-> > stores hash slot data in deposited page tables and zeroes them on withdraw,
-> > so a zeroed deposited page table works correctly for it.
->
-> I think we would have zeroed out all page table entries either way already right
-> now before depositing. See clear_ptes() in
-> __collapse_huge_page_copy_succeeded(). So this paragraph might just be dropped.
+On 9/22/26 17:35, Lorenzo Stoakes (ARM) wrote:
 
-Yup I know, but it was there just in case people wondered about it.
+The patch subject confused me at first: that's not what the patch is doing, no?
+Previous patches did that, and now you're just removing the leftovers?
 
-But sure will drop.
+Maybe I'm missing something that this patch does along the lines of teaching the
+code to be RCU-safe.
 
->
-> >
-> > Since khugepaged runs as a kernel thread, do a little dance in
-> > alloc_deposit_pte() to correctly charge the allocation.
-> >
-> > This is already done for the folio allocation via alloc_charge_folio() but
-> > no such wrapper exists for a page table allocation.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/khugepaged.c | 32 ++++++++++++++++++++++++++++++--
-> >  1 file changed, 30 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index f49a6710933b..dab421f8233e 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -1278,6 +1278,23 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
-> >  	return SCAN_SUCCEED;
-> >  }
-> >
-> > +static pgtable_t alloc_deposit_pte(struct mm_struct *mm)
->
-> alloc_deposit_pte_table or alloc_deposit_pgtable
->
-> should be clearer.
+> Now every architecture has been converted to support
+> CONFIG_MMU_GATHER_RCU_TABLE_FREE, this configuration option no longer makes
+> any sense to keep around.
+> 
+> Therefore remove it, and remove all the dead code that existed for
+> !CONFIG_MMU_GATHER_RCU_TABLE_FREE architectures previously.
+> 
+> Additionally, CONFIG_MMU_GATHER_TABLE_FREE is no longer necessary, as all
+> architectures instead use CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE when a custom
+> __tlb_remove_table() is required, so remove this too.
+> 
+> A number of architectures only enabled CONFIG_MMU_GATHER_RCU_TABLE_FREE if
+> CONFIG_MMU was set, however the mmu_gather logic only actually does
+> something meaningful if CONFIG_MMU is set (mmu_gather.c is only compiled in
+> this case, for instance).
+> 
+> As a result, there's no need to gate any of this logic on CONFIG_MMU
+> explicitly.
+> 
+> CONFIG_PT_RECLAIM however does have a strict dependency on CONFIG_MMU, so
+> make this dependency explicit.
+> 
+> Additionally, correct comments to remove references to non-RCU page table
+> gathering and make it clear that this is not 'semi-RCU', nor has it been
+> since commit 1fb3d8c20bfa ("mm/mmu_gather: replace IPI with
+> synchronize_rcu() when batch allocation fails").
+> 
+> With this change in place the kernel policy is now that userspace page
+> tables are freed after an RCU grace period, and thus it is now safe to
+> unconditionally perform page table walks under RCU, safe in the knowledge
+> that page tables will not be freed underneath the walker.
+> 
+> This is all that is guaranteed, however, so naturally it is still incumbent
+> upon page table walkers to ensure that the page table entries are as
+> expected.
+> 
+> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-The inevitable naming nit :)
 
-Yup agreed, I have tried to be consistent in saying 'pte page table' in commit
-msg etc. to differentiate an entry so that's fair, will fix up.
+[...]
 
->
-> > +{
-> > +	/*
-> > +	 * khugepaged is run from a kernel thread, so need to manually set the
-> > +	 * correct memcg so the allocation gets charged correctly.
-> > +	 */
-> > +	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
-> > +	struct mem_cgroup *old_memcg = set_active_memcg(memcg);
-> > +	pgtable_t pgtable;
-> > +
-> > +	pgtable = pte_alloc_one(mm);
-> > +> +	set_active_memcg(old_memcg);
->
-> I'm no memcg expert but that looks good to me.
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1465,7 +1465,7 @@ config HAVE_ARCH_TLB_REMOVE_TABLE
+>  
+>  config PT_RECLAIM
+>  	def_bool y
+> -	depends on MMU_GATHER_RCU_TABLE_FREE && !HAVE_ARCH_TLB_REMOVE_TABLE
+> +	depends on MMU && !HAVE_ARCH_TLB_REMOVE_TABLE
+>  	help
+>  	  Try to reclaim empty user page table pages in paths other than munmap
+>  	  and exit_mmap path.
 
-Yeah, it mirrors the pattern elsewhere.
+$ git grep PT_RECLAIM
+mm/Kconfig:config PT_RECLAIM
+mm/memory.c:    if (!IS_ENABLED(CONFIG_PT_RECLAIM))
+mm/mmu_gather.c:#ifdef CONFIG_PT_RECLAIM
+mm/mmu_gather.c:#endif /* CONFIG_PT_RECLAIM */
 
->
-> > +	mem_cgroup_put(memcg);
-> > +	return pgtable;
-> > +}
-> > +
->
-> With the fixup
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+whereby all files are MMU-only.
 
-Thanks!
+Makes sense.
 
->
-> --
-> Cheers,
->
-> David
 
---
-Cheers, Lorenzo
+Very nice
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
