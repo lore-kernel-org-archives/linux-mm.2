@@ -4,85 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51B42C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:37:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DBA7C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:38:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102A86B008C; Wed, 23 Sep 2026 03:37:36 -0400 (EDT)
+	id 1A0DD6B0092; Wed, 23 Sep 2026 03:38:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B4206B0092; Wed, 23 Sep 2026 03:37:36 -0400 (EDT)
+	id 178626B0093; Wed, 23 Sep 2026 03:38:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0B1F6B0093; Wed, 23 Sep 2026 03:37:35 -0400 (EDT)
+	id 066696B0095; Wed, 23 Sep 2026 03:38:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE82A6B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:37:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AB938070E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:37:35 +0000 (UTC)
-X-FDA: 85244222070.13.B5A9A4F
-Received: from va-1-114.ptr.blmpb.com (va-1-114.ptr.blmpb.com [209.127.230.114])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8452320007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:37:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=m2w7lrCm;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D054E6B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:38:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40E01120705
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:38:04 +0000 (UTC)
+X-FDA: 85244223288.30.9361001
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 745ED40006
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:38:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQoQ2QbP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790149053;
+	s=arc-20220608; t=1790149082;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YBlfW8eP60PhYp73autqoOChF6Ibeh/Qn5gQHJ0sRlw=;
-	b=zWdx6Z0++Ineq1MZ4G6FW6pBS5LQ415OlFWEM85f+bTusHZiUjNrKZmhxzKncl9YXYG3ia
-	fciX0B/BhUU4W6AeK4IVSA9L3ROYlbADjCzvjOs3uFhAEqpXMi7LlWbJfhpmL7X1yL6Kom
-	4jaLoOQftIR7gPWAPkuzWASH1H7Vy04=
+	bh=t+JD/7Tcgy/5lybTqPMDYJ6GPVVkUaRj+hbtOcdXe80=;
+	b=rzRShZ759RD9auPpIs8d/+oXYSfri6O9ZNSDg28jIQiPJ4SkNOABXFseoELWAVOfX0PrTP
+	9R49uD0t5MCnpwkGBCgvdLuF1mQYN+MjsjrnEUhfCozIdavAk+BK+gsrHVDxr6J46Ea7MQ
+	1kUez1N5k1ex7iCFbc/pSdectPCfitQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=m2w7lrCm;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf13.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.114 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQoQ2QbP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790149053;
-	b=i3H4VWu+ouYRwb/QMYsuj5Ut6BOPs/Pb5uD9pU2wcSuFBE9lx5BSEmdbupNjCmiFtWA8hD
-	/khVyjeyZqlSYp+b1UfuQW04/8yObdUQKZSrRZz355L58PodNrjyfuEhBUPqXCi/05gGGe
-	sMn8rHFxtBICETfRCUrLwRXTBGr85rI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1790149039; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=YBlfW8eP60PhYp73autqoOChF6Ibeh/Qn5gQHJ0sRlw=;
- b=m2w7lrCmtUG3Ip6qeNEha/+6K69JOrljbzSx5mLUaqgEqUuvKQ9ehKE+qwNLcF/6/g1REx
- 2xKloJmIAOc5Kr1IbkNT34tIn8pDz8ZEhO3SarOOs7vENQUZjJGVlDMTQUAYirYDe188Qq
- k++CnXNs5ustxGgsCvMMcRvUkfM7XlG14PhU4JyrLYv8TKRKPrS3zeTHVaYt45XOn6Z0u5
- nQuXYpcN8zI41RmcWxI46TaNfzih9irs1uyEPKwHF+lTvjWPcbSbGOA1K8OTyamqnls4s/
- 0um/TfyapCjBnaCuH5cPzDxEbCuSQBLfoPsMV1XKVXPwL/x8DL1j7PPamS6V6A==
-To: "Andrew Morton" <akpm@linux-foundation.org>
-Cc: <david@kernel.org>, <muchun.song@linux.dev>, <osalvador@suse.de>, 
-	<aiqi.i7@bytedance.com>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>
-Date: Wed, 23 Sep 2026 15:36:13 +0800
-Message-Id: <0c6688d4-7978-43d7-9421-43cfa6230c94@bytedance.com>
-Mime-Version: 1.0
+	t=1790149082;
+	b=BYBL84ap2VAakiY4u1cnvwDZfRENZSWa7YecaSRGNOiL0lFUsLPNYKublRXlVRHyZYgybN
+	NJwT9cFW9HrINyAfSLcj59Gx535/+iX2G4rUnkGkhM6ZcK4wTfYGkkmAJts3v0OE0mifM6
+	VxbS0VqkSWN/bAuaYkLifGLIOY0UUlk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BE1066020F
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DB51F008A7
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790149081;
+	bh=t+JD/7Tcgy/5lybTqPMDYJ6GPVVkUaRj+hbtOcdXe80=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WQoQ2QbPoqGGLb0jX9Z7J1mDTu8MsvOh/Ibh7LcqJkke//dYJpmH6tdDcgX/eFknC
+	 T00oeG+czRPKBl97PDh4H8ZHcAtFbyS9yImIzOh5KLiBVQy3uapLFhxwpP5ixQGDda
+	 QsqckjOhvusczlD2A6sFr+EPdkSRFVikbaw3XmcPa+JOvsrpcsUIStYIlZcsqioa77
+	 V1SEXPDfsnUq1jRfkYV1GaMrc0Ncqh540aCMK+l3SP7Oi4eQWrTqXq03rnUDD02r8G
+	 3VnbxAw22uDzFQ+enwXaCU3ShJJ2D8ZUu54gCQeOFQSoaCqzIVhRgzGeVx0zI0eLwh
+	 f0GnC82BIPHaA==
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d43f9b120so8967847b3.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:38:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw5QHmpx96wTm6QL0Sj3L3fNy0A37SM5GpAZs2ZdHwtat5ywcnXJ9D5fGzRr7PboW9wihB2NfFuXA==@kvack.org
+X-Gm-Message-State: AFuF++mvaJvtrRE2ElqILDrsc4a3Coi/c98Ua+LVm2WAf5IRyRoDpzoj
+	oOntlc3VLPdQIX/ouEVgYaJIFTDb75oZGnfGJWP9AZND/+ZruS/Zth9/Vjxydfk8pNnmurNzevw
+	H5ae6XDVOUL+LHWQy3mFCR6HFgGD0ppujouKXt5QXsw==
+X-Received: by 2002:a53:ee08:0:b0:672:bbc4:2b97 with SMTP id
+ 956f58d0204a3-672d57e7a7emr628072d50.11.1790149080540; Wed, 23 Sep 2026
+ 00:38:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+ <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+ <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+ <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+ <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+ <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
+ <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com> <CAKEwX=NrN7-u7gnGvWX3qfHaBQcN6FKsFP-4-k76F=sxM1LJqg@mail.gmail.com>
+In-Reply-To: <CAKEwX=NrN7-u7gnGvWX3qfHaBQcN6FKsFP-4-k76F=sxM1LJqg@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 22 Sep 2026 21:37:48 -1000
+X-Gmail-Original-Message-ID: <CACePvbVuFULQVvi4UOrvKaJ-5kdWWU5iJH20gH-9nZ-6ZbEqMQ@mail.gmail.com>
+X-Gm-Features: AcwNN1V1Nf19r8H9CLvnn_CymxrAvElR4yk3NvHm23MKZiCoXBt2sr9xUuj-IWI
+Message-ID: <CACePvbVuFULQVvi4UOrvKaJ-5kdWWU5iJH20gH-9nZ-6ZbEqMQ@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Mozilla Thunderbird
-From: "Li Zhe" <lizhe.67@bytedance.com>
-In-Reply-To: <20260922190041.d5d983ba6fb1475e40568eea@linux-foundation.org>
-References: <20260922090749.24905-1-lizhe.67@bytedance.com> <20260922190041.d5d983ba6fb1475e40568eea@linux-foundation.org>
-Subject: Re: [PATCH v2] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26ab381ad+4ea906+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-X-Stat-Signature: tdt19r73khxz63kqcxg1ynofoyf8iia6
+X-Stat-Signature: uzqqwkh1dmb685yehqryrke9gr8x1gjp
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8452320007
-X-HE-Tag: 1790149052-775118
-X-HE-Meta: U2FsdGVkX19TCnPI7vncj1Pp0pX4+TXwqRiGcWhMWdbJ5HMIHJntW5UxD5nu5fo0rZT0SQtJ73Gd8+HYZY855lacmLuF+OqsoECg5Uk6iLlNQdjQ3FDxcNoXrY+nEPuTwpelh0ATopTj8lAByGJxS+L7SYN8ZUhDNZBuj8FvM/J8s+s8T76FvRtnrRw4Xmk5QDYVr/az5AMpcHjf+GHkb9cTcwnsWAG4zSZyMzv7/EtJekNxdEun9BuPu9rt5B2Pzvz9mqWcx2GN3VZ8kXdUrBr9fNFluLJaHo0SaHdU0KtTKR+vIxMjcCaCHo1sYFv6/osn3WTlAGndH1fGebpLW6YIkmmOWBGQh5sB6Mq+jNXLeUgKaJNFGk7zntWZ+aR6IIXoLZ9A8dx0M0A0SE3XIg35oIriwkH9ee1kkv+rcWqitxBhEFl5rMyOq0KgztaxIauPmA3NXZvQcMHSXdYwPPKAMy/pZwdej4GAms4jQlw7zRS8q6bVmxahzaLoRMYsk9pUStlBaDipaY9K5Tw4aqUNunDaVefzj+x1nrK2+T7m7qWC6ulXjMHmMXBJi0QJLKhLU/rO3RKRW3S2gS0eHi6MR2I+G9ApF56690S5Y+6bVFG9/GYw248KCzLmX8L5qpNevXVnCjNaA3IXn7R/Vv6GzEm3bZyaYbXkXYMiAL2HKrOjLNaZqF0SB0SQ2KVctgil5w/c7s11yKOX5WTYq7lyRzja58t1z63GDjpoPZDHGaan2GPlIZ5EoO3b5nKz0cfghmtvO+an21K1z5gKGn5RD3oDAjA1jI0h30SWYGNoYrv5gaLrcd1qurevK61Ayr8R+jdNa3P5nxzSa+JepNy/axcwKK335JPy9os/hefgVY4Yu9kE7fMhQ+jgUimMiK0NXeyFH2N7K9tsfQewGs9qWSl+4hxkNDAGd+We6TrXOEpxrazIu6/Lau3eM2HhoVeRcrpIxxNGRKuDjqR
- tdtlJWmF
- 18y1k+9qxu5b2Rmg+bbRJRHI4sACwpJSV6IsjTg9JvsYCxJHm5aRf0mRSVomwuWRB0sR11pBHZvDekc9Djvk4dGxOT/XG92jiQRUJiC0kVxazWBxeYd32f3QaUSKb+u4PN7/0Qechx1SEionqyXaCPC1g8PUSZ4id+U7zjV/N/qxpR8V9DnysW4RQZiY20mv4K9Hs5ZgXkKNCs32QHJmFNcnEb4fssfagxdeQxlwyWXc3vQwMGVO2VRMXcvpBMWfM0ZG1Jdzxiuy4gvaWNXbaoav09ShiB3mvyIV/qqBbtlvxsn4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 745ED40006
+X-HE-Tag: 1790149082-549713
+X-HE-Meta: U2FsdGVkX1+HG41O3NxPmw7jfuw9eSyPB7xR7ZvBlHxtHQLH7kDTASAII3lJGIi3+6ggXRUDH15FKTWFA2QLLvk0/G3xsZwsSXV8pTxFCx3t8kas8pEUgY6R1DoinJATZ7ClOl7BuBetfdLz/GAfQW8LC45ya3RkdPcS9b4se6dx+R3PuVo4X3ucXRcKfuCuXxyJhQHsnjExH6pIDnPLZNxWlS2dZuToG2zuMHwWabZ3ywvWVXAOuRtW/ej0+bfNY/2X9sBugAf1dZOMMfTZgcVDl6TkZZK9B43bUFvZq+wYuyWdnfF4kEfrfVypeyHdShlRQ/FUhhIc85lmoFhzwX5+9h19JkHeO+Lz+lKz8SeZLEcaIdVQ0Mvfi/FdVZddNbLitS4pwAjAptqMsy+ghFCBboam3exMst7en1raudMSrz4/5x/nDYHSNX7RpGte6JSZo2NzamWzFORS+r/SGRBUCfE8UQyPPFIR1i4iOc0083yBwVjye4Oq3j2bRnhOD6js7zE4kjoAugcomuBV7n+YOIcaXn/XchAS5zynMBheYC1H/JD4tkS07MtGF/HAvRiv5lHzo6EYFrZkvgdZA1m0Lw7RD2nC5ocxiQw2LKaPB5WHxIfOrSon6eea7mdNFgFHqZSzbHb3xLGP9BA9LWRWjNgmx50FLwLDSfdYPgypNwO6XfLEFC9ACEIRtU581zohrySZMeJxokJQDTasgohhzYup2k2yy0HYxLUp679o66bD2FNL6yOw1VT5+wtA/i9+bKOrDBqYWqn2pJNUkda86fL06XV3c1G1TGAYlhr/yOa0zMBPjDgS/tLEdUpc/smW2ulQlHFECM9lDi4EvuEPN4Qs6TGRC5JsI+IXanJTxnktigvfQok12tpB7COlNYyl62GedEnxSy2ZzonkXuvPnzqp5eMsGNdr/U67h31sVmw6zUCXTHG7Utlw+jAnpOORPJbVkEeBT3t9Vwb
+ 6f9UlDM5
+ 84QgN0Czq+RTgnlXT/PsSkCMxAJki7a+9VkNGMnl2F58nf8n7KEdGj9Tlcv9bantWd6KcsMlOw8oLQX7xbknYLc69CyoRLVexeYApB8EISS32IaYWmCox8CJhl0Lu8Zmt35FkzW3+4nK6/CjwK1BWQ+PSdd6VWkeMtmev2NQCMQI0DdTeYQgiXwBRvkKdX0nQHIJQ1/N0JDbTX1QRJAIjP4+2TMdIPHeqVWGIhX1/WLEiQUJo7p3/PtEDVAJyVWkyrVF7bCPecCNkYg+DMZE/CtStPuH6xWvqUTJE5hOX8Z6FA9ljPLWN07MH3NMNTbMWXR2QePYdxBWV9SBitMxx1J2B3AfwfGGl53PCChLI6YfIr0ttrCNFiFKoxa8/jXe+bY1SI/mV7P5zzYUouWwc7ywre8Wt3slL3uXo6zPrQyBIEQBmhrMOqBzTfTLVTnq244L4hSFkjnyCGfd8tBLq1+3WERbGzyN4OfU2dmepoza/AtD4ZwDXyUj4bQY24HRhf+fF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,106 +131,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 10:00 AM, Andrew Morton wrote:
-> On Tue, 22 Sep 2026 17:07:49 +0800 "Li Zhe" <lizhe.67@bytedance.com> wrot=
+On Tue, Sep 22, 2026 at 7:33=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Tue, Sep 22, 2026 at 8:23=E2=80=AFAM Chris Li <chrisl@kernel.org> wrot=
 e:
+> >
+> > On Tue, Sep 22, 2026 at 4:59=E2=80=AFAM Rik van Riel <riel@surriel.com>=
+ wrote:
+> >
+> > Yes, I can agree on what you observed. You are using anon + zswap on
+> > that app alone. That is not what I originally asked.
+> >
+> > My original request was for the whole system: what percentage of the
+> > total system RAM size has been swapped out to zswap.
+> >
+> > Because when you have 100% of zswap out, it will likely trigger
+> > different kernel code path on allocating memory. You might suffer
+> > global memory pressure you did not observe in the single app memory
+> > pressure case.
 >
->> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
->> PMD sharing is possible. That is only needed when huge_pmd_unshare()
->> actually detaches a shared PMD page table, because clearing the PUD
->> invalidates the whole PUD-sized virtual address range.
->>
->> For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
->> a shared mapping can pass the "PMD sharing is possible" range test in
->> adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file has
->> never actually had any shared PMD page tables. KVM then receives a 1G
->> invalidation for a 2M operation and zaps unrelated secondary mappings,
->> so the guest has to fault them back in.
->>
->> Avoid this by remembering, per hugetlbfs inode, whether PMD sharing was
->> ever established for the file. Set the flag when huge_pmd_share()
->> successfully populates a shared PMD table. For the hugetlb unmap paths,
->> skip the conservative PUD-sized notifier expansion while the file has
->> never seen PMD sharing.
->>
->> The state is intentionally sticky and file-wide. Once PMD sharing has
->> ever happened for the file, the unmap paths keep the existing
->> conservative expansion. This avoids the no-sharing case without adding a
->> page-table walk to every unmap.
-> Oh.  It's not feasible to figure out when PMD sharing has ended and go
-> back to never-seen-sharing state?
+> What does this 100% figure refer to? Pre- or post- compression size? I
+> legitimately cannot tell.
 
-
-Yes, it is feasible.
-
-
-I did consider a refcount-based approach before sending v2, but my
-initial version looked more complicated than I was comfortable with.=C2=A0 =
-So
-I used the sticky state in v2 to keep the change simple and avoid adding
-page-table walks to the unmap path.
-
-After looking at this again, I think the refcounting can be kept
-reasonably small.=C2=A0 The updated version uses a per-hugetlbfs-inode
-counter for active PMD-sharing attachments.=C2=A0 The counter is incremente=
-d
-only after huge_pmd_share() successfully installs a shared PMD table, and
-is decremented when __huge_pmd_unshare() actually detaches one.
-
-The share side can run concurrently under i_mmap_lock_read(), so the
-counter uses atomic operations.=C2=A0 A zero count is used to skip the
-PUD-sized notifier expansion only after excluding concurrent PMD sharing
-with the mapping write lock.
-
-Sorry for the churn; I will send v3 with this refcounting approach.
-
->> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
->> improves P99 QPS stability while punching pages, reducing the QPS
->> degradation ratio from 7.09% to 1.45%.
-> How realistic is this test?  IOW, how much benefit can people expect to
-> see in real-world usage?
-
-
-This was measured on a KVM workload using hugetlbfs-backed guest memory.
-
-The workload performs policy-driven 2M hugetlbfs unmaps while the guest
-keeps running.=C2=A0 The important part is not the policy itself, but that =
-a
-2M hugetlbfs unmap can currently be reported to KVM as a 1G invalidation
-when PMD sharing is only possible, but not actually active.
-
-So the benefit is expected for workloads with secondary MMU users, such
-as KVM, that see sub-PUD hugetlbfs unmaps on files without active PMD
-sharing.=C2=A0 In that case, avoiding the unnecessary PUD-sized notifier
-prevents KVM from zapping unrelated secondary mappings in the same PUD
-range.
-
-For workloads without secondary MMU mappings, without sub-PUD hugetlbfs
-unmaps, or with active PMD sharing, the patch should mostly preserve the
-existing behavior.
+The 100% I mentioned above refers to the pre-compression size. See my
+previous email in this thread for details. I have been asking for a
+max(%) number in your fleet for more than six emails now. My point is
+that 100% is not a usable metric. I suspect your deployment doesn't
+have machine zswap even close to that amount. Glad to be proven wrong
+with some real data points.
 
 >
->> --- a/fs/hugetlbfs/inode.c
->> +++ b/fs/hugetlbfs/inode.c
->> @@ -921,6 +921,9 @@ static struct inode *hugetlbfs_get_inode(struct supe=
-r_block *sb,
->>   		simple_inode_init_ts(inode);
->>   		info->resv_map =3D resv_map;
->>   		info->seals =3D F_SEAL_SEAL;
->> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
->> +		info->pmd_sharing_seen =3D false;
->> +#endif
-> This could use a slightly modified hugetlbfs_set_pmd_sharing_seen() and
-> remove the ifdefs.
->
-> 	hugetlbfs_set_pmd_sharing_seen(inode, false);
+> "Trigger different kernel code path on allocating memory" what do you
+> mean by this? This reads like you're referring to post-compression
+> size, where one cgroup eats up the RAM of the host, affecting other
+> tenants in that host. But putting a limit on the virtual device
+> capacity limits the PRE-compression footprint. It is a very
+> unpredictable way to prevent the effect you're referring to above,
+> because compression ratio is unpredictable ahead of time.
 
+I mean triggering the direct reclaim path because zswap itself can't
+allocate memory for the swap cache to serve the page fault.
 
-Thanks for pointing this out.=C2=A0 I will fix it in v3.
+Chris
 
-Thanks,
-Zhe
-
->
-> Not very important.
+> For post-compression size, I can make arguments on why we should not
+> also gate it, but regardless we already have zswap.max and the global
+> zswap pool limit.
 
