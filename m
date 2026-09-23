@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2A25C9830E
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:45:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E60CC9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:45:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1AA56B00A2; Wed, 23 Sep 2026 11:45:39 -0400 (EDT)
+	id CEFE36B00A5; Wed, 23 Sep 2026 11:45:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACC2B6B00A4; Wed, 23 Sep 2026 11:45:39 -0400 (EDT)
+	id CC9216B00A6; Wed, 23 Sep 2026 11:45:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BA486B00A5; Wed, 23 Sep 2026 11:45:39 -0400 (EDT)
+	id BDD836B00A7; Wed, 23 Sep 2026 11:45:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 74C796B00A2
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:45:39 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F34D9C03F5
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:45:38 +0000 (UTC)
-X-FDA: 85245451956.23.8E41308
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 99B9C6B00A5
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:45:44 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61705140811
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:45:41 +0000 (UTC)
+X-FDA: 85245452082.01.BE07941
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3E7CF10000E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:45:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWrqf1sz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id AA2E71C0005
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:45:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c5lR8OKn;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790178337;
+	s=arc-20220608; t=1790178339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZH/DiEqRWfRpDNmn9lxvEBbuNmwbYZYpFCH81u3DETY=;
-	b=lhJl8VeQTGaWSqQaZKArHLcGYmGMomoAu4DzKWcExc77EHqCAmYMYKo8q5L4ToN6i0KiX7
-	BwNsp2GAxqo9ZVbZ9Nu0AoYNRhs3t3sCbia7BAl1cQR3CjXldkTVBms1P4o0vQz7+wjA0J
-	gVAZTqdvVliFCaU4GrvFVN+Eh8qM9NA=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MWrqf1sz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=ndf5eV8Fv81ukOHNfSKozUzjOHGtJEUSne1n2V5ZgcI=;
+	b=XizrlFlGma/pScmA7UhcjvZgHsrIdPsSMre0PliRY1WIdDB++nmNdB0Df/uQKGq2kWqilW
+	RuNIVCNTbVo8l9RXnSri6kNo/n5PP+eIJHewRKwTUvWxn9I8Mvb7SM/s9kdMQLgCfvmyv2
+	bb6R21LoOrc17bgibps8STPCXL1ufi4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790178337;
-	b=Id7I0EC7loqqBTFPt9rY8ZmlFEqUXysAnDL7/8axSEqn2FgYOOpbO85+xdqO4Tf75ekE0s
-	bsVhSvtg9OISlC9fV1k7jKmhC0vIat3bR99DJUic2ZSiCaoVf28RKqQ6a2i4JpyKXBCX3C
-	4jgUjzjsbc15m/cWzzv1CJjUOV4958o=
+	t=1790178339;
+	b=Qo766Rqu2hxdHcJn68AZbnJl/Btbpgnq+TDInqDAikW8FCl8T+yhlCWDICl3qjuHrY5d7R
+	E6+T0+3BUFes+hErElkaLVT4v+/lEeMp0VaUUgZSPPqTbbyo0z0DQym9eKpsSJzn6A9iUZ
+	ZwgqxchfMgXApaaREP5OEUGKYjZDPxM=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c5lR8OKn;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 753B843AA1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B86A43B15;
+	Wed, 23 Sep 2026 15:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D4C1F0089E;
 	Wed, 23 Sep 2026 15:45:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB611F00893;
-	Wed, 23 Sep 2026 15:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790178336;
-	bh=ZH/DiEqRWfRpDNmn9lxvEBbuNmwbYZYpFCH81u3DETY=;
+	s=k20260515; t=1790178338;
+	bh=ndf5eV8Fv81ukOHNfSKozUzjOHGtJEUSne1n2V5ZgcI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MWrqf1szrP2VTEzbeFhP8yt/m4eHDnd56LMUoI0iQ8NSaD7hoNlznfPH6hGXRwTyC
-	 Gmt1XvqQYWyzVpG1evAdvVrx74St4RGjVdHaMRIl35J+oQyRPqc98znaEzqIZJwyBV
-	 fJ2K9jJE4R2QxfScBPgnl/Te0Kl484+s2rn48mU/z1A+is6OLmzZARx4Zh6gjT3j3r
-	 C3H0Ime1n+jNMwiJy4UNkpVYZxiPPlOZymqaE6MLiro58CLw0OOabHARBQs19ehr5H
-	 ydQqa04m1yr9FkphxYMbl68OXnWw78uDT3St/AUf68njsX6IGriQBp4H9AhPjpWfSQ
-	 lipCntGlXeAMg==
+	b=c5lR8OKnJT4jmtwR73IkOvXqTMfO1KzNkUM0tHa0jX4ycvfPBwCUgK9uiWPRQcIlR
+	 fP/+/vp9BrmECh988I7fFDMTg2DNRJ9zhLyhplQR2sP38LLBE6fdGkwz3CXrmFNRTl
+	 EtNHSLdvAEd3dbt4Ztv4Wo7BgGilRRiKZyxaELSoCe5r+PLoU8qcc7H2Y5maZ2mIV3
+	 EyJD0jN7vMAdbMr0UoAmv0GOOnk3ZyJKIzsrv0G8btzYPPBy2FeHkItFUqD1uCQr+8
+	 DtGS5HCypt6vSzLr4abeVSTy2eGQYnPQMi/qDqNi5ameOhv6UxDDR4OW3YoedW1ueT
+	 Lguuzn69uHV3Q==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Wed, 23 Sep 2026 17:45:12 +0200
-Subject: [PATCH RFC 7/8] mm, slab: add slab_tiny boot param
+Date: Wed, 23 Sep 2026 17:45:13 +0200
+Subject: [PATCH RFC 8/8] mm, slab: deprecate CONFIG_SLUB_TINY and reduce
+ its Kconfig effects
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-slub_tiny_rework-v1-7-a0e66d536eb5@kernel.org>
+Message-Id: <20260923-slub_tiny_rework-v1-8-a0e66d536eb5@kernel.org>
 References: <20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org>
 In-Reply-To: <20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org>
 To: Harry Yoo <harry@kernel.org>
@@ -81,14 +82,14 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  Damien Le Moal <damien.lemoal@opensource.wdc.com>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
-X-Stat-Signature: iwibq1c8ebitq1cm4cqp7nce119fz7n5
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3E7CF10000E
-X-HE-Tag: 1790178337-273013
-X-HE-Meta: U2FsdGVkX18/C56AnZhPZAcvzpqoI6npxEGCzfu8ECy5MqueV9vN6r52WFHQTnhdNpziM4D6LVpfPaQTgASKSG79rVQ/d6M+HdkAFRt9ZJO8j3vwSQ/j6nJ4ha5xjtu8Zls3vVP5/e9ygD9dHFpLcL6pBUtdARUMpDLHx+lnzTwgN6POy/wslQMD1SUmoaaWwlUtXIFkoxmjA89AXAM4AaAVhme08Arp8/NunOcFM9lhBhsAIQJSqf5sC4s5fQjf5PVdbr9BvHpAV6YSEyIIREq6vWomETMw3y9kyiEPb0KSeXQIPTYV1JAoA9AuBeVaeI7MlKzmyB43JgIV2hKOuM27JdHEKojc4r+q2sIAhvyrKJe1tg1ZQH2qnbuBOSxqhBF/xPmTAevjQ9mfLvOVOwbitXFqZzAbhsVz8SCbLQQjNKI6Ea0P7+VfrsUe0epM5yMDLIH7rZ4V0OIh3lC3mCL/aA1r7Ztm0vJAaeV/8GAmMXsJum/5QFKhJ2ymb5ZK7O9mZvMDKPUGBizcXZms2qg+/haic7clbl1QFF5axa6LKionrPkT2DP1UZDKe2IlzyKwTnnjY3bUPzpeEWfnn6bWVgEA7xStHx0CAbWnn7/uDpOd2s5PvVhywkujt3yJfgcVno40HDERydAEPNQJ8LiPXTnk1KGLPhVNfAanwm5nmImg5NNo4luItZNwoQvYa+VJ/UHsBR52teJmw1Y+3a+aU3+KCkS82PWL5VYUHy6dcDfGyakxZKNtnmoAZ8fzoNCl/HPvqCsY2fp/AEDh8jLCmdhWBvgS64ANPERn7P8uEOBrb0BbkXrVcLcv9aNhqPKydSd3/rZZ8x/OJgtS6ZwgYOfDfhBGaUFDcDPWoZPiJKSqUWONk2HhovtcrB4X2zHQ3hfldnKgBaetqONhUE6HFx1i0kR9+/MvVzPsd3zylVdLKhUzYZXVjOtH32XC6j+Gr/eadpPIaueuIzl
- KI+ogiwd
- aMQt8EHo1Yt5AKRHIXIARsAMFawyMa96L2kryRwkj/IDYfLBGCLomZTzDWujF1L0wuJIaf1XD7l9nduWYw4suRTU2VTR9WgDDdbVq45BPo6fKVKql1YCZJY1RbgsuAUi6s0r37XwgXDxuI77AuMD/2fJoamw1WPWHHJMukKXUEd3QqNlNKGOQoDQB5fyap45Q3gd5jFtWbe4DVS1OxFBRw+3I0H43JlMvw2w26xSVhikMyb/0RwCsftGfwJsHpWsq/Skw6c4RtuLXfAPxIWA7zcp2ZaLWFEiaqwB1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AA2E71C0005
+X-Stat-Signature: qeagezff7yorknty6kfrgmrfqkkioqo3
+X-HE-Tag: 1790178339-848831
+X-HE-Meta: U2FsdGVkX1+gIPNPChBUR2wZyCUK93z5U0GR8tgdb+ms3oa8H8HvxGosKlUplNLqZNdV4fxEJZGjmP9LKRyvRlI55KMocLjIx16Rkth3zEOAU7qxDcaihHOjfWxyp17SiY4vIiRuflu67dAQcdhmRudFHn3JgHmVfFk37oW+78EG6Kegdbl6hGzSSzaPq3+FYiCRAr3b5YtUvZCSFngnTq9vHERLiKT3S+tw9I79xGLLVgvWzE2tI/DV4Gd3GChvRaOAyfLp1rbsvHQa2YDmJ3DTJFhO3Dd/f20xqqyVXG7fx4SBIVmtuTGTczoMKKkWbEaF5wTs52gxSHTug6E350Wvpm0y6lfvOSTe4V+yoKB8f9nIvRwv/hI7RO8RnVjVaD3rws9SASqF92I2dHit4HQKHSE1HKapmbu/MR8/PXf+HwAxQ5AzzO80egDh9bMwQ6NM1Hf//sNLfXYe/WYDCt8Gw4VhksrxzSYqsw04uTmJXCtO5nEslmZYPXMzWc5yx7YJg6iuEBmvomBsFmICPRmkmlPKEEQlkkSrEuB2cY9rSMUvUo+qyu88CSilWPx1/e9He9FCdYKXsNJ0MWP4oWXQKQTGhWd9+wFt/WX4xnMNZFqNeaeA1LDmhIsZvfcUCW+llTeSkRcqzdqRNvesGIg6dMn1ZtooGAitBej/wy23eOFKarsSLAu8wHJd1e11Z+eXos2/ZznnLAy0b5/BNEhMrYfkkqJA9kPEHKyrgVK54DI+HrpAIKVb7sV0+TUcOygV49x0j/iIw7vZmm/Zn77jpvnJ9HeluPXNQ/v5fmML3fXU+/DfdnTXjnowbinMqMPobzeeX1H+nta9Sa0VZ5jIZwRk/2pAf32+UZooA0+JitWE3t1APA28u9fNdx94rBeBXVr4v4kGPryIkSTZHCEaD3luoA9p8hHMYBmvULGCqVixsK7S0za0ZCViVxaNlwSUzuJTitT5od46o0u
+ iJbuSsPt
+ wvVL1HSjIfGb07Rmg5E1SpSzcp1lbGTex6hq52p1zGF8ENlHSjHsnfADLjALwSL61XwvD5QLotGHeKmKigmGynjh/WQ3ZC+kZlnNjFe4IzZ0xL9UNyJAQp90VmnTy2fp1jrBfx4Q47aA/58hXsBDo5vVD20fDTTUOmPRA3Ic7ZS6cwQgXMriO7ffB6lKcYLieI29H6bSuFqrTB3LTXNZSE1FjtqQzdljp3ytxJrY05l8f1sODhqOrnQhDYIq2UUR2q89Z+5B4FUhrYrZoxYB4i0shrXiUCsxpS2J8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,68 +97,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to deprecate the CONFIG_SLUB_TINY option, introduce an early
-boot param slab_tiny to control the value of slab_tiny_enabled.
+At this point CONFIG_SLUB_TINY only affects the default value of
+slab_tiny_enabled which has a boot-time parameter. Thus deprecate it in
+the Kconfig description.
 
-As long as CONFIG_SLUB_TINY is still around and enabled, this boot param
-can also override it to be disabled.
+Also remove its interactions with other Kconfig option, as they are not
+necessary:
+
+- KASAN, SLUB_DEBUG or SLUB_STATS support does not need !SLUB_TINY
+
+- KVFREE_RCU_BATCHED can simply depend on !TINY_RCU
+
+- various hardening options do not need to be excluded, although it's
+  unlikely that somebody would enable those with extra memory overhead
+  together with slab_tiny
+
+- SLAB_MERGE_DEFAULT does not need to be selected, although it's likely
+  to be used together
+
+Keep the "depends on EXPERT && !COMPILE_TEST" as there's no point making
+the deprecated option more visible.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 4 ++++
- Documentation/admin-guide/mm/slab.rst           | 5 +++++
- mm/slub.c                                       | 7 +++++++
- 3 files changed, 16 insertions(+)
+ lib/Kconfig.kasan |  2 +-
+ mm/Kconfig        | 16 +++++++---------
+ mm/Kconfig.debug  |  2 +-
+ 3 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 33cd30996e47..0100ab00388a 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7031,6 +7031,10 @@ Kernel parameters
- 			NUMA kernel object placement which helps with slow
- 			interconnects in NUMA systems.
+diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
+index a4bb610a7a6f..f20b574f6653 100644
+--- a/lib/Kconfig.kasan
++++ b/lib/Kconfig.kasan
+@@ -49,7 +49,7 @@ menuconfig KASAN
+ 		     (HAVE_ARCH_KASAN_SW_TAGS && CC_HAS_KASAN_SW_TAGS)) && \
+ 		    CC_HAS_WORKING_NOSANITIZE_ADDRESS) || \
+ 		   HAVE_ARCH_KASAN_HW_TAGS
+-	depends on SYSFS && !SLUB_TINY
++	depends on SYSFS
+ 	select STACKDEPOT_ALWAYS_INIT
+ 	help
+ 	  Enables KASAN (Kernel Address Sanitizer) - a dynamic memory safety
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 604c58199acb..a1b1ff7db59f 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -167,16 +167,18 @@ config SLUB
  
-+	slab_tiny=	[MM, EARLY]
-+			Minimize the slab allocator memory footprint at the
-+			expense of SMP scalability.
-+
- 	slram=		[HW,MTD]
+ config KVFREE_RCU_BATCHED
+ 	def_bool y
+-	depends on !SLUB_TINY && !TINY_RCU
++	depends on !TINY_RCU
+ 	depends on !RCU_STRICT_GRACE_PERIOD
  
- 	smart2=		[HW]
-diff --git a/Documentation/admin-guide/mm/slab.rst b/Documentation/admin-guide/mm/slab.rst
-index 0beeae71d472..6c005d3de0b2 100644
---- a/Documentation/admin-guide/mm/slab.rst
-+++ b/Documentation/admin-guide/mm/slab.rst
-@@ -94,6 +94,11 @@ kdump kernels where scalability is not a concern, but memory has to be
+ config SLUB_TINY
+-	bool "Configure for minimal memory footprint"
++	bool "Enable slab_tiny by default"
+ 	depends on EXPERT && !COMPILE_TEST
+-	select SLAB_MERGE_DEFAULT
+ 	help
++	   Deprecated option that enables the slab_tiny boot parameter by
++	   default, and can be overridden by booting with slab_tiny=0.
++
+ 	   Configures the slab allocator in a way to achieve minimal memory
+-	   footprint, sacrificing scalability, debugging and other features.
++	   footprint, sacrificing scalability.
+ 	   This is intended only for the smallest system that had used the
+ 	   SLOB allocator and is not recommended for systems with more than
+ 	   16MB RAM.
+@@ -199,7 +201,6 @@ config SLAB_MERGE_DEFAULT
  
- 	slab_debug=N
+ config SLAB_FREELIST_RANDOM
+ 	bool "Randomize slab freelist"
+-	depends on !SLUB_TINY
+ 	help
+ 	  Randomizes the freelist order used on creating new pages. This
+ 	  security feature reduces the predictability of the kernel slab
+@@ -207,7 +208,6 @@ config SLAB_FREELIST_RANDOM
  
-+Note that for this purpose you can instead use an option that can achieve
-+slightly better memory savings (by not creating separate kmalloc-rcl caches)::
-+
-+        slab_tiny=1
-+
- You can apply different options to different list of slab names, using blocks
- of options. This will enable red zoning for dentry and user tracking for
- kmalloc. All other slabs will not get any debugging enabled::
-diff --git a/mm/slub.c b/mm/slub.c
-index 4814f025fde5..d672809fa2f6 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -8726,6 +8726,13 @@ void __init kmem_cache_init_late(void)
- #endif
- }
+ config SLAB_FREELIST_HARDENED
+ 	bool "Harden slab freelist metadata"
+-	depends on !SLUB_TINY
+ 	help
+ 	  Many kernel heap attacks try to target slab cache metadata and
+ 	  other infrastructure. This options makes minor performance
+@@ -216,7 +216,6 @@ config SLAB_FREELIST_HARDENED
  
-+static int __init early_slab_tiny(char *buf)
-+{
-+	return kstrtobool(buf, &slub_tiny_enabled);
-+}
-+
-+early_param("slab_tiny", early_slab_tiny);
-+
- int do_kmem_cache_create(struct kmem_cache *s, const char *name,
- 			 unsigned int size, struct kmem_cache_args *args,
- 			 slab_flags_t flags)
+ config SLAB_BUCKETS
+ 	bool "Support allocation from separate kmalloc buckets"
+-	depends on !SLUB_TINY
+ 	default SLAB_FREELIST_HARDENED
+ 	help
+ 	  Kernel heap attacks frequently depend on being able to create
+@@ -234,7 +233,7 @@ config SLAB_BUCKETS
+ config SLUB_STATS
+ 	default n
+ 	bool "Enable performance statistics"
+-	depends on SYSFS && !SLUB_TINY
++	depends on SYSFS
+ 	help
+ 	  The statistics are useful to debug slab allocation behavior in
+ 	  order find ways to optimize the allocator. This should never be
+@@ -245,7 +244,6 @@ config SLUB_STATS
+ 	  Try running: slabinfo -DA
+ 
+ config KMALLOC_PARTITION_CACHES
+-	depends on !SLUB_TINY
+ 	bool "Partitioned slab caches for normal kmalloc"
+ 	default RANDOM_KMALLOC_CACHES
+ 	help
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 15dca19dd07d..7fa01e48c9f0 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -48,7 +48,7 @@ config DEBUG_PAGEALLOC_ENABLE_DEFAULT
+ config SLUB_DEBUG
+ 	default y
+ 	bool "Enable SLUB debugging support" if EXPERT
+-	depends on SYSFS && !SLUB_TINY
++	depends on SYSFS
+ 	select STACKDEPOT if STACKTRACE_SUPPORT
+ 	help
+ 	  SLUB has extensive debug support features. Disabling these can
 
 -- 
 2.55.0
