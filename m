@@ -4,142 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F15C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6CCC982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:18:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B4946B0088; Wed, 23 Sep 2026 07:04:58 -0400 (EDT)
+	id 0C5126B0088; Wed, 23 Sep 2026 07:18:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 565276B008A; Wed, 23 Sep 2026 07:04:58 -0400 (EDT)
+	id 0760E6B008A; Wed, 23 Sep 2026 07:18:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 458036B0096; Wed, 23 Sep 2026 07:04:58 -0400 (EDT)
+	id ECE2C6B008C; Wed, 23 Sep 2026 07:18:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2304B6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:04:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B060CA6AC1
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:04:57 +0000 (UTC)
-X-FDA: 85244744634.10.E031D3F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F06B2180005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:04:55 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TR3oEfS9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C52E26B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:18:36 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4458912074D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:18:36 +0000 (UTC)
+X-FDA: 85244779032.04.8AD4CEE
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3DE73C0009
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:18:34 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="u QqOQiu";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Sbuif8TS;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790161496;
+	s=arc-20220608; t=1790162314;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=helr+O6vj4uHdJawiVK9XgxpDag7YnvZAp3sVVm+0Ns=;
-	b=aVbzrBjRxBiacxib0LkKkFjDK/HfZuqDe4pBklNuF0qlA+p9pWGLQmJNnSa5o5wUA5KlRb
-	wHpxpeL+X+txkgOaNYHxIDMZb42fLb6vEqvKKOsznHEAT5QEPbmOoZuAXHf6JhpsnlqecD
-	T6T+/3DzTzbRqTsFbRwZqrAsDf9YGb4=
+	bh=2TVk13RFsYk7kVKBgSgsEJ+IW3CwoBAD5ZEy8mb48co=;
+	b=Zz7aE6HwQ7+4SEfVjhJOH1RCVnU2h4fhAFTB9Ou9KvaV7emfQ8uejB8NBfixBrHqt2BYfF
+	qXvAIrDhDa60JHd/WKWINompVj/kerSS6F9ggujbyRDkKXfKJ9Frb8CI4f8dBIu63NbrhE
+	1afZQJCLzN9Tpg3rf7L+NSuW7+WN9bM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TR3oEfS9;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="u QqOQiu";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Sbuif8TS;
+	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790161496;
-	b=cgq+n8AvQ0avKq9sjNF6/r5ck0Gn++Z8S5EJDtGMaQDt/Zfa92ePmdEkbrTEi0vXBpHyv3
-	8qhrtQfIi7hhRZZpAXPg2R4BoNUJn9oheiPEtnOWq5Fo94Ta9e2DBRnJ7fqjbn8+BESYaQ
-	5OJyT9R+YanDhAAa1oQ4QISAJHhLHf0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B84CA601F0;
-	Wed, 23 Sep 2026 11:04:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD331F000FF;
-	Wed, 23 Sep 2026 11:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790161494;
-	bh=helr+O6vj4uHdJawiVK9XgxpDag7YnvZAp3sVVm+0Ns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TR3oEfS9O05VDv2LSug17Ftpf1zaQpEkiqvbfONYYy3cc86zMScg4JgR6ZKJUXg5X
-	 yAwmHwD8pSwn8qVqHanGcjpe9HATtVfjo6D53zYLVH89zXfTpIidRv6eMzUqOdgGxz
-	 3C5+3FuC2ejgequCmeRUuFXxODwi9ylJwaNjtzv54eBGRDyIE6KwMcgX14+4Hz0/aG
-	 25DTuqBul2WL8ASGYSf8e6EzFbQs5i+H2VQnh7m09/C+ajIP4p3G2bAPwUOumzecDC
-	 CenwqHJzbUlhjhxUbSCXn6OjbuDQJEnOYLqy3PnN1nMD75pTS2yNXuzV4AjsuJOeJk
-	 S1Fg8/kS7JpIA==
-Message-ID: <a8ff997a-2d09-44f4-85c3-322927f75d1d@kernel.org>
-Date: Wed, 23 Sep 2026 13:04:44 +0200
+	t=1790162314;
+	b=oCF8EtpMvXtIojqPcmEBwa8Cs8LrV7TiIhLh2VdaFopFHDxugS/oZB2q4qXL2z2H82FIIn
+	R4CoasvnelIVOqsQI7U+tW20m03ZTvyVbE7iS2aJkapBWLCORu0mi5E7g4LM6sxP4plKrH
+	HW91WjLoyGVr04PR6SHahLU4GZWsCHQ=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id 9E111130005B;
+	Wed, 23 Sep 2026 07:18:32 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Wed, 23 Sep 2026 07:18:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1790162312; x=
+	1790169512; bh=2TVk13RFsYk7kVKBgSgsEJ+IW3CwoBAD5ZEy8mb48co=; b=u
+	QqOQiuan6X14oG0K9bAZNIJK1JX0JPnMYFIgsLyPvkQcKKqjsak+u5xm+wcs343M
+	wZH0lEYUZeS5RQ3MMp2LKg7KuIvwRHjaKgwe97TooBuux5HHoWlYf25LZJi8QFpE
+	PGStslxjBOMLgy4xE6u9rSIAU2pF4iYDeqwiHNwrFIbiVoGKmSimm8HYqT6jRq92
+	Fm1qzjOMr+3pLU5FSgVBAWI++pawxncO7+Uih1ywpd+mzLDlc8EsHf/d9ytY3Jw3
+	vvVURpMg/+n28VjTrqZErNGAJlifrzBNXGf+KARFzITaFFtufkurwQ1cPHh2rW4E
+	oahOuD9hCkqWZKLQN77ow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790162312; x=1790169512; bh=2TVk13RFsYk7kVKBgSgsEJ+IW3CwoBAD5ZE
+	y8mb48co=; b=Sbuif8TSacYvzoBXbPPaXxvsaY5e7rMu8WyIUJnA7lS7WkvwBFI
+	SbnkKDyg6Kaj0PRYDXW+Ei0VU89jZwB/xMTkAm+md3U8dnaSfS2iWl4uip1fYOwZ
+	uDVS8yL5RKAFSM9ByzsIt9pGIkFvKuN7D6h+cbJXtMl2EiFzB328y6+t3RDNE4pJ
+	dVCSwJ3SeuYH2w/n/BYdXGa5mejL6/BlZr/uWFfKdWvh6WLXRKsNcH0pp/hO8OZg
+	N3WfvLwHysofOcl6M+sV1GMjJuL1EzdWxeL8JE8m18I5c4jvGoN+kfNx6UYSUwXY
+	DdyOge4i4NhnavHjgVYdj4Gn4MlJNGpLR4g==
+X-ME-Sender: <xms:h7Wzakb_3o55Xn6lyLTlrPU0-CbWt9-JZbtsnsRXoqcToveN92-f_g>
+    <xme:h7Wzahs5zdPB0w7Dl7SpASRA7R3nOie9cTKqNLLEhHIydVVtJRj5yWOjKT8xqd1EK
+    86SOF_qPDGX8kXnT7FqbXFtj1XkEjb0W5c-NFFI1sGdkORLiJewG9MK>
+X-ME-Received: <xmr:h7WzatrvZrt4u6F9JigArINPx7w0e214T9M69-POGsKy7JJrH2iU6eG6oag>
+X-ME-Proxy-Cause: dmFkZTGrlYvgvymMlhdgBOFd/qZDFaK+/zbJqw+thyqpFtRPCbxylKFqB+guDx9uBmH3h3
+    wOFmUeaBKxJI8nk9s/jGIA8pkgEjRXt/k3BcLcHTM8DNitwJ3QM2Y0eZ6Y0cwa1QDp1A+x
+    Kny294COC+wa6Nc+18V7TJFMBbUiwUU8u2I5NAG44/gt32UISWJHPvzsRDN8BN4k38Ht1l
+    f/9q8O1OnEZ4T90ecAJXcK27u1T/OCMeX0wxDR0+4S0wo6iGuCpDW9Z9a7z2S8OtYC47O3
+    e02aO1UwjyY2Fmt1RtlDcPHs2OEgn6+Enrsus7l2oxbMzyBRhOEy3Lw/58kUmQWOGU8jHg
+    PSPajb7ED1lwrG1x+59K2CpzJxf/qBCMvvBl71+ffmggf+5bfwEyi/JQFyUk5rXiQ7HV6F
+    dZqRFW0k5qhV+DTApCpcL+Pnz2S9gKTp66LPdTGFphsLtXPvDGXKsaxUA6d77j1ZIJ36VB
+    cSYS7hb9fNBI1GhN8qsoNT1kDNXOFM2vPcMpN27gQctQsZFWy2DICI8igEyshuclxYimvP
+    mFGfuRfSHEGaEuJHUVhpeNdENvjK7APRZ2t0M40yq6dODlLLWC2FfwF3ShEeNYsqTLlxoc
+    ceTQe3J7T9zfDzoeXHMwP9Rh6hoHsVZpnFA5D0Sca5vvQGbxpXux0VUAXESw
+X-ME-Proxy: <xmx:iLWzarkRd-jq5gxep_jLfaXf6Er340-rzDTSClOVSY6zGqAPZlG1Aw>
+    <xmx:iLWzatTeu1aHB3pDOeGlxmQyYpdcsZQCUUsjvDR7B_1JF7tiaNAPSg>
+    <xmx:iLWzakQIcCuP-qSVN0LXT4ByOyxw7rgDk0fC10DKfdjyphqzRxyMoA>
+    <xmx:iLWzau6yRcdrz7st2pfnBAA0owYrkSrBa4qZg_mkKDcLyNxwimp-Sg>
+    <xmx:iLWzajyeB-aqABIfAf82B7ZHRmTsSrLrxK6frniZ1yu18WCzF4YlR7Qk>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 23 Sep 2026 07:18:31 -0400 (EDT)
+Date: Wed, 23 Sep 2026 12:18:30 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	surenb@google.com, aarcange@redhat.com, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+Message-ID: <arO0a3CU_idyVsqQ@thinkstation>
+References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
+ <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-11-usama.arif@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260914122950.3283997-11-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F06B2180005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
+X-Stat-Signature: 9ygsqzr6p6jb9ay4hrpyp89gbaqcfgbi
+X-Rspamd-Queue-Id: 3DE73C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3ekdaz47car5dsi9aq6z4zz5qrshhun7
-X-HE-Tag: 1790161495-47688
-X-HE-Meta: U2FsdGVkX1+G6BbiAYOvbHizQqQuk2qGFZyApRIUPfdf/Eu7o772ujobosb56xILa/p4+dfAGLpwbp2mCRzXcbCjMwFpluMraBry+kCw2r9GZhRNTOMYY5adXF8cKlNSDivN9LxWpvcIaOO7/Bf6e6v63ln8zMEzSfLbL1a43E7q9x+zfnsckSg/5kxDXQIA9uHFnTPs3SZci2gL7up1JxFNGqrMQBLnbzkG+eswRxtlrYsLY1zepBkbCe42f896/Vja3GI1S866SN+HH2ej4l6ypap3trQxTORTb3zSIrwbqKC7tgLchji+W/AchzhxJINGRba1uC+Y4PaWve1dB5+15zpZi5hWtX3oyx4B6WOAPVrHxT3JEy/6JW60NCihCkiNYcngdCqhFaApZV304RsM9KK4Dl+FOk8q4s7sSxe84ycawq+vKclDlg3iYgwBiNk9+K6QvzgGX5SD+zQ/igHiMGIst7yl/NcSAI0EfuS0K+GhT2Nl1kl0HrZrph2qmbGtm5jOtlAfmd1ORy8c5oyFVj/sum5rLI/ZFd6HxjZAwDPnKpWgdT3Osfr4YtRjjA0fYStu/9cWfxVjNxcj3Va/0U+4OCyoCdDkjzgUPk8Kpq+5dD4pywFM7CrMggq9By8RyF7/dSuKpwh3Al8mh8qrSa+i7x/Hm93TqlKKw+/XuU1ixUazi5craPDkckXfSsmWk40++TYsVoE3uNBaeBc8DvwmacU8V79CkJpoasbyc/0EdHEUfy6vSZBSW20+yNT7FdL2DWZV0U8AsB0l1oTlaYgwXvDzQrJ0cyaaN0P8cKP2sAaV2t3rw9RGrLA6h07raQ6LL85qaXGD90IE+9E6ePsOfNdVBUGMwRd10syC1NeZ2K4iXEOLu2lVRhAY/VdRW7ihy4ZrDWd6Nbe4QGGICoFk05fUVJPObAkap8rL+3PnRwqv1KzYERFQ+yVrlwpekJdIETHMM7jzaKi
- E5imv8AX
- 1qv6Em+6/RcVy3OSqBfF+qQrPbnCdXw2oQzTqzrgKtW5UlJxj5WRcI9fe+khwerxc/BntCjnyxhUvTZTGdqQGjiMCstIWYQASr3LgT1s5UO24noXHghwQOd+GWgN9006mpsY69gSDKlLAb/syNRwi7/rGV+nA9speFXPxxi6mMkZxZcxgpjEDVsSc4GNyBpwvVSaytiP2rwX3m3S4yHC/6cq8S9brZjsWXUaxzf5iYsaYP+idpgy9HsuLluJL5IAPpNn9
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790162314-520470
+X-HE-Meta: U2FsdGVkX1/fqnKmQQqXFE+KQ+Pkz0mXJg/3cG1r4jB/Ni44rShs62xk/bZMH3Wb84Wpp54ejCOOiWvO0iecP/WGRAu/vffV7oQSWHSfAJzWCBNGZH6+es49+g9Di7JZQelFIJZ5PCmKoCWfo448mJG/whFsPfRseKOE0nO1Br9WPtKRPX11kCIZRKd5EeadM8kF8iQVTnrG/Iyh5DeA/k7OvSuNDalY8Kv3tR5N7XGhaiV9ggB/2TzaFvzW06suxchUaF7Bu152Oi2Q3xqLo55Zs+9BJP6fQDr15pC4hLYzs7mtmDkCn6OYOtI+pKm4T5T35au7hrrIGPiWtCn0t399BiWhVkFRu8hz0Zb8FQh1bbY6EMjn89DYa01zvbRRWmS+/oFcjYTDmgAt8nSYNvg4BTR8JB/M9ZL3N4hEyD7c1PDnZsUNzT45oIbmg5xugY64bJ7NwKq3i1QOrud2f+8knmNoficUmEmEBEJG8QZHz/Fae+x86LIqKufCqTAARXb1ckS49/7uX5uX/wHbuzoLf9/+VuVxqbkGZAjSWywiIaZwfyBzp78zToQdhuRVsEf548hdU4bhFJrbKoH6BvGUctomgK2/Fe9lrlqfDiBCQhpldrltwaLFGdmY/siR5SuAUOqwBlLyf3/cgzY6ouIWW58z+jqI+xfdDahN/9tunOuF6njcA7xGHcxc/trX/lorGq3edjhE9sijvZWU4Iycxqhwmt9yIQ+tpvbq5CTWzqs+7WT59X392zIGWXBszFa/kgbn9+isUZStpnRnNJlVGc056gudnKcLs5Iq+Fm5xopvwbN18aY9MGPIcSuAkMWtDc6fUOWt2Q8/Bvww23Hxk+p+xRsVB0JGzIBk228lHBMcizscM8beuT8qd43CmbvHIxOAI/P3ysz48RVvufguyz+Jy4R7G2hO6VxGpBC0uuatyHUCR9qZMnjVI2Q3ib43w/pdeVypJjGaOMC
+ mBm4l50p
+ K8EFuPneXGQljm+trK47SmkB4PKy9EN+MvcwSMhq9zQF6HCswK+KoKVKYWC/NJyANYlQ+TjrUeBmO3OBN7UwlKNnZ8a/PXLdTL3j5ixrAO+sgz3CiQHAYsQ1AExIsGkJpzkUdvYjMukhI/K/vGlPDorBdsdAV3qjXYKwkp3iXafKByQ0s+F5aFziJUvLx4d9JWG1Yrc7NuMCpWhCiaUflj74wFg0ZHWSJ0MHhkvkCBeR6YClFeEX7Pme9HGwF863JnwALMTT6InH5mN9pvEOYz0HHUPf0/cJYNwOC3cXOpTNjwC7FTZuPnHMJCS+GcYLTMcFpj7/Ck9UgSaJcJVyoHUQzHKbmEwQ1t6uTakrEOvbK87QSaUjSOz0Z6Dijrxwy3h+STlDECybwt9oMB1SU8s83yt6invHBuPB0hTvwi2LlNRYDAb64Zj0lxwJdgtinvnInQqvnRA9kaEGhwCi8H+3bwt5S7z/lyTgYs0d4wnBY6vcvpAqPDuMSrw6zmqNQ3nC7iPPeNip24nTRRrKQxrzFTo+JZp3c9dw9fFLeqkwwL+VBZqRpVcngu8WXV4EMMKLXpiC0gdeeYrg7R84mh3xSU3yonGLdxhK3Th4KsJ68x3s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,46 +132,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Having another look ...
+On Sat, Sep 19, 2026 at 09:46:29AM +0900, Donggeun Yoo wrote:
+> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+> destination unchanged, so a uffd bit set on the source lands in a
+> destination VMA that was never registered for write protection.  It is
+> then permanent: the bit is dropped only by change_protection() under
+> MM_CP_UFFD_{WP,RWP}_RESOLVE, which uffd_wp_range(), mrwprotect_range()
+> and userfaultfd_clear_vma() issue only for a VMA registered in that
+> mode.  pagemap reports the page as uffd-tracked, and MADV_COLLAPSE
+> refuses the range while the bit is set, because collapse_scan_pmd() is
+> strict about uffd on swap entries.
+> 
+> move_present_ptes() and move_zeropage_pte() build the destination PTE
+> from dst_vma->vm_page_prot and arm RWP only when dst_vma asks for it, so
+> the destination's own registration decides the result.  move_swap_pte()
+> copies the source PTE instead and only ever sets the bit, never clears
+> it, so one UFFDIO_MOVE behaves differently depending on whether the page
+> happened to be resident.
+> 
+> Clear the uffd bit on the moved swap entry unless the destination is
+> RWP-registered, as copy_nonpresent_pte() does where it installs a PTE
+> into a destination that may not be armed.  A WP-registered destination
+> stops inheriting the bit as well, which is already what it gets when the
+> moved page is resident.
+> 
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+> ---
+>  mm/userfaultfd.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 74f04c323c50..6495666c596b 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1452,6 +1452,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+>  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+>  	if (userfaultfd_rwp(dst_vma))
+>  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
+> +	else
+> +		orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
 
+Putting it in the 'else' is wrong. Clear uffd on the source
+unconditionally and re-arm based on the target VMA:
 
-> +
-> +/*
-> + * Split a present PMD into PTE migration entries, for the rmap migration
-> + * walker.  
+	orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+	if (userfaultfd_rwp(dst_vma))
+		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
 
-I assume pmd_is_device_private_entry() is also allowed?
+That is what move_pages_huge_pmd() does with clear_uffd_wp_pmd() before
+its own re-arm, and it is the logically correct way to do this: the
+source's state is gone, the destination decides.
 
-"present or device-private PMDs"
-
-
-> Like split_huge_pmd_locked(), the caller must hold the PMD lock and
-> + * must already be inside an mmu_notifier invalidate range.
-> + */
-> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
-> +				    unsigned long address, pmd_t *pmd)
-> +{
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
-> +	if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
-
-pmd_is_valid_softleaf() would include migration entries and swap entries?
-
-I'd assume that try_to_migrate_one() will never call us with something that is
-not a present or device-private PMD?
-
-Shouldn't we instead just
-
-
-VM_WARN_ON_ONCE(!pmd_present(*pmd) && !pmd_is_device_private_entry(*pmd));
-__split_huge_pmd_locked(vma, pmd, address, true);
-
-And not offer some weird fallback where we silently don't split?
-
-> +		__split_huge_pmd_locked(vma, pmd, address, true);
->  }
+>  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+>  	double_pt_unlock(dst_ptl, src_ptl);
+>  
+> -- 
+> 2.53.0
+> 
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
