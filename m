@@ -4,179 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A25C98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:19:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D28EC98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:22:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB3AE6B0088; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
+	id 291FC6B008C; Wed, 23 Sep 2026 10:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B64996B008A; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
+	id 2424C6B0092; Wed, 23 Sep 2026 10:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2C966B008C; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
+	id 1309B6B0093; Wed, 23 Sep 2026 10:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 792686B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06B75807D6
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:19:40 +0000 (UTC)
-X-FDA: 85245235320.19.781FDA4
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9A85210000C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:19:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ayo5EVps;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DC4AD6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:22:28 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BDD51607E7
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:22:28 +0000 (UTC)
+X-FDA: 85245242376.15.9267A1A
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A3A7F80008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:22:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Um3FXi 8";
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790173177;
+	s=arc-20220608; t=1790173345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2QrGt4Pc68eDNguGqvx9OXhAmFpd9eQ/n73e2TGYr7Y=;
-	b=r3v5Mdr7KLUlCaykjMAiO9jR00426ehzUcQISJpfGWTA5SzMdIR+0jtpGb0pWBsE1mTnxu
-	Hs3MMuPOINkSRaWX6UoIXj+NSaAcsaTI3/Uu+BiEyQJRJhHOB8N586q61rM01UHqOxVqeH
-	EakL6uWClS0nX9jdoIrfPKiL9QaDsbQ=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ayo5EVps;
-	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	bh=W89cXpAHB1FMGHDJbriYSGL15CQFOTzD4nfyYDTgBjA=;
+	b=roa0uWyPTUB5wviCEwcRw1ndOipucbLoBeVTTIfV0oGfwZ2pPB3osqktHsDC5RANbhl1m1
+	dVyLsGNM9Smc4XphI9IiHUyUjJLHUGzXE+iVgI6TSSe6D0KT65a5jSXTpe00myGVU43Quu
+	ocuLKz9NSta5nI8ilEEMFkHXyZ21L28=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790173177;
-	b=ICHX4ie6U3FZKM99S/FO/+ndz9y3uuGek+ShrGJC2zwmI41MX7l8vGdmVtOrL/U+1K/RZe
-	n9bSlZY0ZiJ/SIfTDjQFiuKQniquQDQxcI8ByWHOy5fe1+eNIIycBYQ0JVoVW2J+4yp7Nj
-	LJY7irkBvgVZYz9p1AuyrvFQUCNSTTE=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8Zw1U1031879;
-	Wed, 23 Sep 2026 14:19:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=2QrGt4Pc68eDNguGqvx9OXhAmFpd9e
-	Q/n73e2TGYr7Y=; b=Ayo5EVpsou0Bg5ugqBjm1S51XWE2MeL2ndK2c3GelXo1lK
-	5hqPlah33xvQY5TiqA2OfPyJI1ZfTumV1sglYPdZ7J+lNyzWArp/be+tEWybqdm3
-	7Ve5yTDM8a3+Wg9738uiD6xhWxhhylckW5ZqezRi8Cc9Q5AEunEWV7aQhM7NO27B
-	Okbrx6sv1HOopcrolJiHRaZ338lgyLIYvzb9FxdGj5pvFeSaKMzAE4F41qbtjSQq
-	AV2hzyIV7EIC4N8FA7xw5n0/wfnzR+ZzBswzL4IaeXJmPTTJzIuRCesqj3zRD8qt
-	+Z1j6e4HHxla/ubKARuqvWe/47TX0HQ0l8xHnmJQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1useb-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 14:19:11 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68NCp1Qt007936;
-	Wed, 23 Sep 2026 14:19:10 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt2s7yt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 14:19:10 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NEJ8X148628044
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Sep 2026 14:19:08 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1776520040;
-	Wed, 23 Sep 2026 14:19:08 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5C68F20043;
-	Wed, 23 Sep 2026 14:19:07 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 23 Sep 2026 14:19:07 +0000 (GMT)
-Date: Wed, 23 Sep 2026 16:19:06 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        David Hildenbrand <david@kernel.org>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
-        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v2 0/8] mm: distinguish PTE table storage from PTE values
-Message-ID: <5a0c73a1-6875-49fc-8f85-28808cd6be19-agordeev@linux.ibm.com>
-References: <20260903103002.1091859-1-usama.anjum@arm.com>
- <1401e907-04ff-4ee5-ad03-00d88531a091-agordeev@linux.ibm.com>
- <e4bf62ca-886e-429b-a268-3c0ef7903bc8@arm.com>
+	t=1790173345;
+	b=UtRGNaBjt7xpuXObNj3kUyR+q2xh5XlY4W9DC+HVLTa9/VmC4x4R0m30enmWHbBtYaqiP0
+	i+2K1hqq3p9sYZUGkg+8c5IUa8u5fkWhiVGdGvUKMyPtobJNlfNZAGvQ7GPFP5xNuFhfDL
+	ForLQu1J4WluBq3RCi+DmR9oK8FCB1U=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="Um3FXi 8";
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=pass (policy=quarantine) header.from=surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=W89cXpAHB1FMGHDJbriYSGL15CQFOTzD4nfyYDTgBjA=; b=Um3FXi
+	8KUrGFrmUZp/b8RXs+vnR7SswoKSQrK47ivQYukgP3XMcRTyYr4DQhXBrLW5nKV9HfguhjILmFVyr
+	/aUV0VDgTbYImCBSzqOf5hFCdkzn2jemMn9+NL/YKgVjeZxQdidHi6qtIf9LbeCTqjbfLRV4P80O1
+	gxxn1uhuRfrHSCqGvH4qQuDUzElVdiajpR/Ue9Ay4nUL1LX87FeE+kRihRl/ntoZ9h9/X+xSZXGll
+	JxydMp000KAp4JaG2hX8ja20Dlcp+VmkgInSAQjtINg797z+I8E/W/MG6zUmvF59ZkmM46TdixHAM
+	nvZp+DOjLKT4AVvyCtpdcaLSM/Wg==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x9NqS-00000002OE6-2Sw2;
+	Wed, 23 Sep 2026 14:21:12 +0000
+Message-ID: <013e65703413af4ce94cdd2b110763cc3efc460b.camel@surriel.com>
+Subject: Re: Path forward for Virtualized Swap?
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>,
+  Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, Kairui
+ Song <kasong@tencent.com>,  Michal Hocko <mhocko@kernel.org>, Roman
+ Gushchin <roman.gushchin@linux.dev>, Shakeel Butt	
+ <shakeel.butt@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David Hildenbrand
+	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, Kemeng Shi	
+ <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, YoungJun Park	
+ <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	
+ <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen	
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
+ <weixugc@google.com>, Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet
+	 <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, Baolin Wang	
+ <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, Michal
+ =?ISO-8859-1?Q?Koutn=FD?=	 <mkoutny@suse.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Kunwu Chan	 <kunwu.chan@linux.dev>, Meta
+ kernel team <kernel-team@meta.com>, Linux Memory Management List	
+ <linux-mm@kvack.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, 	linux-doc@vger.kernel.org, "open
+ list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
+ <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Kairui Song <ryncsn@gmail.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>
+Date: Wed, 23 Sep 2026 10:21:10 -0400
+In-Reply-To: <CACePvbUHoJ7bBn_iKrMyducFzKkHpfe8htZZYW=b8v+EGRF2jQ@mail.gmail.com>
+References: 
+	<CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+	 <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org>
+	 <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+	 <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
+	 <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+	 <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F>
+	 <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+	 <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+	 <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+	 <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+	 <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+	 <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+	 <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+	 <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
+	 <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
+	 <02616d611c9e862afc6c8c3118b6be096756b3bb.camel@surriel.com>
+	 <CACePvbUHoJ7bBn_iKrMyducFzKkHpfe8htZZYW=b8v+EGRF2jQ@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4bf62ca-886e-429b-a268-3c0ef7903bc8@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jvicsneNpoTmGgGlWjYDZudGR7T2so9J
-X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab3dfdf cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=m85HiHUexkU1pPaUjCgA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1NiBTYWx0ZWRfX9B/05+SWggVO
- 7agvUqd8dhoypg0FPuJExRBm8O+PxCJzpiY8LotmGeU/DhT6/xu2/Uj3hl/SR7hiQoNSed7OI9+
- TYVYgcC+u3rRF7SNRXDHxINKwsUMnTo=
-X-Proofpoint-GUID: jvicsneNpoTmGgGlWjYDZudGR7T2so9J
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1NiBTYWx0ZWRfX4HZcFdO5tIXY
- snGn2A3Db+S3OG1OjdgVbfGZEGUTHcIaKBobABDkMlLHsfwV9fFr8s4ZCTnpAdQPz9gYCpcRvNL
- meevVhPsIY2xb+UjLfiuVZTJR5I9Zgb+lOAD2ZqjDqXobpTi1VgByCxa+Ljb1FmoZoT62x64nIQ
- fdbmdyOp5uOBulJ9CpL0SOdFeWBnq23WXXdkmA4qDJBSelEfQbx6eUpb5+qNjYHhR6WCsLgthO5
- OBtuzT2aI8D749f3QJiK8fKsdS96je+rKxtHth8BGDr1UF7hBJcUQiLfUmB5WMY7DowN0JvY/Jx
- 4rIY70z4mFoa/Tic/6RAu9AhrTMaPpFzTTPwaqBT8FJxQwKV98aap20VP54g4vtUBeIGWlNiLHY
- vnukgu+KUPBn3PwkU+WliZg6ZldU5ChvdsqyiDG96cfqv7YaCvZMLzqxSd3YW2i1WLbfmVoGiqY
- oe0K7aX7lcrg4NwlsCQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015 spamscore=0
- adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230056
-X-Stat-Signature: 3qnry3bwfsfeqew9ynjhbt6xbmjricgr
-X-Rspamd-Queue-Id: 9A85210000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790173177-264605
-X-HE-Meta: U2FsdGVkX1+MoscNcDO6EGi70/eX6TvNVan1NScyEhcrdhldjMsOm/UETKq5uCulMEQ7FxMNyL2oIwwiZNNc523gLdqmhapF8ueIKUIVnFBIforgFhkTs+kE2Godpa4b1Z6lRMjq1YBoSgn1ph0i/27tMyBtkhR9M6uVJ8y9zbd2CCh/PjrSpaIGgUtBMZsFL49+pU0jRqH7E4pfzB8KITpwFc68AyNCZSbGfTUwgwNvX7ZPOi0OQ8nwcodw2cBXBwh7oyyV9BvQYSHoKzZCi4H3JHGG86sjyKIA7YOTv5OcCEsZF9eRWrxatknfMiZlcRau99mgU8Ktm84wIfUEUNSHBa+GtpQRx0a0nJQz6U+UQOPDCuynr9hDv1tJ7qy+aPvywo8m5dcm+yaDrN16sUQGSFgj/NnTSGeEKQrKmoDQnbv90fUYAusVIhURefm4JGmHh2MuOrBMK6QzzjMEy1xWfnSj0DP2B8j7OKW/lObnZtxQgLIWhKttYg+mTeY2cD3tdeeT61G4pRF5lKqtiw1zeRbBU3aiLaAiZb1JXwi0DPV4vH7OX6A73YfmdET1aj32sOjejWyNeZUq3cI0wTB0YXACWIeKA+7dtBimB7l73f6Tb0YtR96dVEqy7OtoAFAAjyJRQUD1VI+KJ0bte/CTXrE1i/lVzJ5fQ5nkhd4iEno9Ed+FzHjHdjX/97x25y3KcMtDB+MI/pxKmyfeyl80P/u0IVYvy2BmeIkWedN1LTP6UDQUzUuh80/WwQVLKqvxcL896kcFlC/Q9H/LW/9UXIWkZhz/AhX/9IX8HIr4BJCesSVMMQC+DXIhSGD2mz2Th9Ijd/AAszOA93eJKRoKJxRIPKLWtMpouksIF8kZKdsquStjpfBloinAS0lgmPQ0shhxg7KDegOmlznEAUAM98xXUjTotMSenxBujvhZV16doQz1bVTDZNGFPgRPMcdJBMtKBme2YUQxP4w
- NAr7OXCw
- VKjW0q9yYvFZ/8R9FtwO/a4ylJuN10v3Wtdr+A/X3zihfLRghjSE4IHlkcQ2kWVxhaVnpcDTM3bvBbBujoJpBTb4Y8dP5xXQpXsji2qY+IRLTVwsXhwLVHFtz74rK4YUU28BzBkYz+DrPztbH6JbXk+NSheYJ+lhwEIP0GNI5LXYUxgWg67ocIlOvNSgWIQZ/zjlVQ2k+dTCGtWncADLJvX0v9CqcdrzIe2wA9BhppN9xRcgvUcn8b0rxYrFW5cJ/rH4wLr8DvILQ887UizcKNlkq8QxJYFE6NvT4hzrw3N+GFSo=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A3A7F80008
+X-Stat-Signature: tf1xuuof6uifa4htxqmp8uwup3n4wjju
+X-HE-Tag: 1790173345-307189
+X-HE-Meta: U2FsdGVkX19VPfRgMLQyxxfHiroMLjM0V/nZv/RViRwa1+clbrWqDDidNXE4TSe04rTQz4V7yFEuBtoliU5+Vcsjtvrs22S7hk5XSNx4ZPixmVVXyP9dbfLeNNFBG78natn3ErSR0QLO2qOSiDxwIntUWBC1YAqkgMiEmqSVJmH6ipkEpvEGZDyAp/WcumkFy1XZB0Jio0F33OoI8tfkVuomNygSBtlkdS6w7k6SuUx+NRNkPzhj8gon/GsSoyBL9U2+OhpOhZrIZdpI4vE37lZKq3fzMMWzgnC/HFNxNrjrZ5clkuKb4hHWRzUHqHi+XN/381rsxuPeKMGpZOjZHJfa6H0tEspiYFKokrrI3Xz27zGDpvOgX/xvVoErueM+/sbBmD+wQXIzq6RuqS1g7Q1EL2AzIZvXwisrkxVIahA1X75w3xkwt8Bi06B1yrnKERXLlayxiJHJF+T+zytNaP26rnq+2GObm8kDtqN2G99hOJoNvkTi6Ba1px/aTmgrB4Ndfe+qrEipzzaNlPawG1RL+rf49dMvtrvUPNcJ4qwy7oz24yWnHsSoCeCZqct1fG9DpLfIqANkvQslCY++r5ev0Z9PmaModmNpehWuxDtNa6qv2CDp1VFlDKwNkHSsLbUnJLOFHALeAeUJ6l17QBSwG+jdNZ7E4HJsKdmRiL8nfTe0ZmJ8wqD6XRWD32QHWEI6IxK3k/zdf2Jhe8aKhVRX+T6sQsHGITi5fx+uKV4B5MCdqFgbSF6/cZ/CE4KZHrK6AlDrmni9meIULFeLMCkhDdoZgJ7Q2OuyXNjkcIo2mAiV4sO7UthU81c9vz9pJ3VaWbQSiPPlBmSJMb+rWcmImXerZ1tfDrpR1nOncROTXxT14w3yqWeh90menYio/U87U07dt+ZAm27KwNOPiPmfLg0Xoq8hshZwkOrht8PBzXyhZabEWPa+3AuueJLPwU8zl5C85WNJqU1Ohef
+ LHkbJFve
+ V0ExxeFkSInKjMcAjEqF4qK3fgxgizu5pHjhBVg3mZoO46xjayTCjcNha+1rwNVgENDIraIvF5yMsU7Fa43nLKsUW33q7YFjRJCRjaJhoo8CBquwXlTptekj2z8/Ax+Da+CiV08oUmqHybbyWIDfAkfUstt7tOBzGE0K1EK66kofox4jtkpGaDv2AsmH5of5NRIzv4EKiei1JpP7kdlZm8L7hsB5uO/jVFlT/fx9jOJjzb5vct/H24C0bkPmCKgzgpmWJ33MN4TR+JtaOVsiK01Feoc/QiPn6Pj83fDil3dRjDdZdv1Zlst50AjkBCsKj88EDNZZyIpAK2jaJ5hdA2ytWKLPnMyrqKkKlPm/6xQMpP5SHjRjidYu/aMqDnDcz5tyCWOclPr8dLq+Pb7q14yUO+MnBEjg3Vgpv03RbPFROhX9MWY8qCrAx4KhqVWMCcXjIVyow0RCdk80=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -184,19 +156,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 02:47:08PM +0100, Muhammad Usama Anjum wrote:
-> > However, is there a particular reason this series is against mm-new?
-> > Should it be against the master, it would be easier for me to try it in our CI.
-> 
-> I think, mm-new is the branch in which this series would be picked up. This is
-> why its based on that. Are you referring to mm/master?
+On Tue, 2026-09-22 at 21:00 -1000, Chris Li wrote:
+> On Tue, Sep 22, 2026 at 5:49=E2=80=AFAM Rik van Riel <riel@surriel.com>
+> wrote:
+>=20
+> >=20
+> > However, your configuration values are not a good
+> > default for my setup.
+> >=20
+> > I believe we need to set the default to something
+> > that accommodates a diverse range of desktop and
+> > mobile users.
+>=20
+> Act. That is why I am asking for the maximum percentage that
+> represents the upper bound for an actual usage case.
+>=20
+I think the workload that can use the most zswap
+is probably a build system that places its temporary
+files in tmpfs, in order to cut down on SSD wear.
 
-No, to the Linus master.
-I will try to backport it and give it a try.
+Those files are just sitting there most of the time,
+and are not part of the working set.
 
-> -- 
-> Thanks,
-> Usama
+I suspect for such a workload we could get away
+with maybe 30-40% of memory taken by the zswap
+pool, which with a 4:1 compression ratio would
+correspond to 120-160% of memory zswapped.
 
-Thanks!
+At a more pessimistic 3:1 compression ratio,
+which seems to be fairly typical, it would
+be 90-120%.
+
+> >=20
+> > Most of those users do not know what they will need,
+> > but they will know to close a few browser tabs when
+> > things get slow.
+>=20
+> They don't need to know. Such a bound exists naturally. We just want
+> a
+> safe margin. You say such a boundary doesn't exist. I say that
+> boundary exists; that is the main contention.
+>=20
+The current default in Linux is to allow the
+zswap pool to take up to 20% of memory.
+
+That results in 60-80% of memory swapped out
+to zswap at most, at typical compression ratios=C2=A0
+of between 3:1 to 4:1.
+
+I suspect a few workloads would benefit from
+having a larger zswap pool.
+
+> I agree; I wouldn't want to configure each machine differently all
+> the
+> time. In my mind, swapping out that much system RAM to zswap already
+> results in a very unusable system. If you haven't try that, I suggest
+> you try it before suggesting a number > 100%. At 100%, it is not a
+> usable system, so we don't need to make a default for that.
+> Defaulting
+> to 8PB or 8TB is way too much.
+
+But we don't have a default size.
+
+Zswap starts at size 0. The memory is only allocated
+when it is needed.
+
+The vswap data structures are the same. They get
+allocated when they are needed, and freed when
+they are no longer needed.
+
+It isn't like we need to pre-allocate anything.
+
+--=20
+All Rights Reversed.
 
