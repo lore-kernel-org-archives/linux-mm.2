@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F084C9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 22:32:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0829EC98311
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 22:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 848196B0088; Wed, 23 Sep 2026 18:32:08 -0400 (EDT)
+	id 3D2446B008A; Wed, 23 Sep 2026 18:44:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81F926B008C; Wed, 23 Sep 2026 18:32:08 -0400 (EDT)
+	id 306716B008C; Wed, 23 Sep 2026 18:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75DD76B0092; Wed, 23 Sep 2026 18:32:08 -0400 (EDT)
+	id 1F56F6B0092; Wed, 23 Sep 2026 18:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E0736B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:32:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C58D4C0169
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:32:07 +0000 (UTC)
-X-FDA: 85246476294.21.FA05CDA
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id EB2A56B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:44:25 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BD7EA0170
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:44:25 +0000 (UTC)
+X-FDA: 85246507290.08.7FD2EAF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 07F4C100007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:32:05 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X2mNFTAy;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2724A0006
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:44:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TLDWEyiH;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790202726;
+	s=arc-20220608; t=1790203463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bxf0qfMfsaxisq5UZ3SzuyCSxoFCjpdy7dNmDjiJt2E=;
-	b=aWT8Dpv8TkcMXqRHcikerhJpg7eYd9bBUZlKMac5i5rhfQ3V4qAs8fojHeQ+SsuQ7/AWW2
-	t7eaEK9cNeY+8jRQyIHEMDd48iyTAqynRLnFVl0enBP7r5PrQxVwGmcR7YNXSkrp1TqOfH
-	F6s8NlhRYbBSzL52qeROJxZh1vS0QHM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790202726;
-	b=JDJ70mzvonIft8DmX6+ETz6zXjKyzR5va5w6io7r0SQWrJ4Rgq4YwJFg9Ssr7wjTGfNLKM
-	BN+0Phfr0ys6nKavHKvhkzrB1wmJamB4vDIjxuxPzuKUYFgOGEz28n5sLom8FRGt9tAqLT
-	QBh3CaHICKqSvva89rcXycx9wqrh5Mw=
+	bh=XCYcL1R5NicLL/NhwgzYeBgYTteRbyS24vJmmzlRDaw=;
+	b=z8o5lSNqEk68TjZAJGPzta8CWxQVZXcDdU3s5S/v5Mpw7jf6g2sgE01nfLc/FFg9/41B6i
+	g1yuhgMySdEe4O2WTJWH3Wr/6cENqFbldruefm6aKLYdkHyB5UpZMgO76cl69EoK+0SXQJ
+	3H5azks6v4dwYfOjCaEJPxaZknARlWY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=X2mNFTAy;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TLDWEyiH;
+	spf=pass (imf15.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790203463;
+	b=W/aIRaYFsRCF7WQMeqNdwndDkJv0HRFdxPihMMBh7JkK0j3cIXaZSVLzRW9M39EEZh5nFT
+	ncBqfwy2H9Y+/ZKF8ZYyQvere0IH0i4M8yyq9a71Cn4v0SqZpq2RiKGtaQN+uroADtGmFK
+	i7okStglCfy1yN6kmiV7+2BPYikKhp4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7E3CB60008;
-	Wed, 23 Sep 2026 22:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664CA1F00893;
-	Wed, 23 Sep 2026 22:32:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790202725;
-	bh=Bxf0qfMfsaxisq5UZ3SzuyCSxoFCjpdy7dNmDjiJt2E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=X2mNFTAynqJKc99C9i0zaKuzSO/xxQaKys32ItvkJWs1xUAMPG9UNc9soM7xXdidl
-	 kiF+VEWg84idMei3OgrybKgm3bRYkchCMj1TFALO/5Z/Fp9E+ueLdy+Kh7DA4BRpxG
-	 hEGlP2s/v99pG2eoDmhdkxdaixuUHbsPyFjEGZFo=
-Date: Wed, 23 Sep 2026 15:32:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kasong@tencent.com
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, David Hildenbrand
- <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan
- <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Lance
- Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Vlastimil
- Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li
- <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
- <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, Yeoreum Yun
- <yeoreum.yun@arm.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, Shivam
- Kalra <shivamkalra98@zohomail.in>, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH v6 00/17] mm/huge_memory: clean up and decouple the anon
- and file split helpers
-Message-Id: <20260923153204.4fbc4a07679561feb4b665be@linux-foundation.org>
-In-Reply-To: <20260923-swap-thp-cleanup-v6-0-ba1b4ba72c6f@tencent.com>
-References: <20260923-swap-thp-cleanup-v6-0-ba1b4ba72c6f@tencent.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id A22B360209;
+	Wed, 23 Sep 2026 22:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117221F00893;
+	Wed, 23 Sep 2026 22:44:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790203462;
+	bh=XCYcL1R5NicLL/NhwgzYeBgYTteRbyS24vJmmzlRDaw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=TLDWEyiH4tsSHQ5jJ4W2INbg6NtCw24Nd55zZ1YffQlaEZPAogYwjP2a/jc2DrkPj
+	 fXfbbY0AbOWflZJduor+NXDIF6D+FNeJF7fl8dSS/E5uP0Qr0d96bjebpX+f4ESMn/
+	 iPGrG7bYGtfPO3T4UR+BK/3sz9bYHuMUdh/5T7cjpw4U7scGJJsTDgxf2jodSDjEoI
+	 sKzZnyHAKe6jGpPk8E3MGJqmqx+C5rJILC4+9pbw+A1ID0OAaQjT1kgvaS4YzT/Y1G
+	 pojgEXXMxey8NvFAyaDGkdrYwSbl0qyYLPQj7yrknb+ildxh1CLxjM3OlCEiyPkYsh
+	 qIjtHZqFGtM2Q==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Matlack <dmatlack@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 1/6] liveupdate: luo_file: look up outgoing tokens by id
+Date: Thu, 24 Sep 2026 00:44:00 +0200
+Message-ID: <20260923224408.3745689-2-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.0.rc1.310.g51773c2048-goog
+In-Reply-To: <20260923224408.3745689-1-pratyush@kernel.org>
+References: <20260923224408.3745689-1-pratyush@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E2724A0006
 X-Rspam-User: 
-X-Stat-Signature: mzgqgkpbcqth6cn3mqn8oqwusp8itndy
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 07F4C100007
-X-HE-Tag: 1790202725-407295
-X-HE-Meta: U2FsdGVkX18lSbH4oLOWXx+AUXtpGdjnDepuTczZnozKakwgqiAC8xSxsabn7dUCPtstRqcBh+d2QvUJk2QF5ZQ1ebYKzy2P42Z2jpjIcZVdayH85fe7tiu2D6Z44ZpmeKi/jaJpTIdvzygAfti/jgce8KSKv1gfkz9j9bZx6PbK2B9j3yZSYr2jI8irHeNAbddnONIO2VtE6hGZXXT/itPjU7tXFwzST6Rf5Xsen0AgWTxWwtE3u00hSOLpXxu8+Ef+aYByfQmEJITdIiY2Z5+wY/lE1q4D1XO1/VduDfgXSdfEKOf0uQb9GzUbaTbWkA5nu8oTNpGDLWF3EtKFEZvl8etEahhtHFx4IqPeZX9sZWB+f65V+EeqQd7SkUuPOa+oQA0lgXZpkVLpZ6t1Fs8KIlcgu1lk1FOntUhbBpqpxtD7qjnbvUQMfCQsfqZ67hLEcv0JzvKIIyMRFskn/v0q2GdP7YKv/Zf5YeaNstm4NgPP91oBlj9utrvRSzJ9f0RydWClBgspuW/Z6EhBFR1HRc02GIlyHxISTF08OWNiCKUZZsFfES3qMRhZuwPENxWeW+PJmv1lzH71OVT7SS0QQqFG8fAkH0sJFOcjEDrXZ//DBE/a7mF2EquRsqxFd1+Rx3p2cHublYU/za3NQtCoBFCUIRSmmcgWLYLUhTu3LwkCVYAkE+AvG3JTFfD6rhi3DYIgN16n9m0fKCLstLMg8YQzGx5qGNKx8cZ6kXVIGlvLKy0FZX1mgFEbqzvmVxQlnE7kBbQB/a4hozf7dd9hQJe/hwibK6waEbgmHFP7zUqsj4+CI3VQbeCtlVv2t2RNBA7GNytBnwQk4KueFbFkkOEjxQXqVwbsSKLgmf8oIfcj63lv0DePD3hHcQjAP47N8Gbfn3n4i1z49OR5V/eD1ET09zxP2hOoaWIyiLqvlcxNwmwRhh28Xa+ya7/SiMMhWPbsWtPL2dYC3sy
- nvbrBTDb
- dSEKUsBSQJnLflLU+O1unilQ4X0NeIBzeL52q7WuxtO/w5mUrWE0GMjioitk6Tap+8+Nn1uZaKFx8zpm8ekcq/l3teVQFwhEnRCxL69wIJhBnjPLCmF/sRXbW/4mkp0zeK4AhCcAg/M/SZBVIBSv/Uj8V4aoSDgGBnJL1LV+uTHODC657v2YE4ynpybk073XlK7zR9u9bH3eJpT4S1qQuKAVYWSHw63BDDf7qFGRmF9D8Q7d9gY5Hc+87fy4K0qIDi7WMdBwVDPhjBxd7/8n0XeRbpfpw9sAFfPxPFaQF1DHYA/ZP6aQGU4iJ0G+vi1Pgk5eWRxHcedGB6+elFvUommfQellML2XbvxKP6D64p5WXX67NTJxqeWJtLQ6M8y2yivqe11hlofhX9ZsKzYfISsJFg9FSkJQH7vnrLIZwRY7+Xer9r0ZMpzkAS2mGnH9R9ovkz08uahoSSkTwpbdb9TiTeCTYGVUIymKTHCJtfS6ZubLgejIULSBHKrTwYhe2lEiNbc9Tur2lZ75q9WXUgRgF06B1cRLYRt3+WQk6sFRe0qMeidNpUeSDMA==
+X-Stat-Signature: zsma1qz5gdth16f4d9f4q36do45bc6rr
+X-HE-Tag: 1790203463-888651
+X-HE-Meta: U2FsdGVkX19S34gVNdZWSaQi2l1SbeH/3LcRXUEM8MO1OeN3couUJI4WWkVS1DaVLMiJdXmjeCzuoVM/FEwPDHLDO/arQxoYoBxubLWVWchLoFIz9yK0yKEMdlkT0/T9Lkh9ZVIT4fK3/stA0QSeNtr6QqlhN7hnX6Mvgd7tZhKHr5JQtLEJOg49wRGeOH/c6jzJoE8uyyK3yVdeCaguDrYDOypdz6MBeQZ5vwrZ69bMWrXhdokHtNjWRlk3g8k3nQXrg6DpanE9E1rvhb3WsHfZYr4ZKBp8JOSEivPA5ZN1Gs6JdIXE2e5DNQGD9z4drH6BqC6KYE5Ef1TIG72uJ4yN+WwOKTH/VnTHxQAy+peCqCVtSZ5QTsCmWgaPWJGUBWTCXO98XvnbdELIQ59wOArohhqBTr+Naj/M3cZlCTW1Uz0mNj38eq4tBDimFe5cujcHdFtF4y/7pa1A9Ht3Fotdz7q2MGCkDlUc/Mptd40Ib9Mhl+yJB5kjeC8Kg1xAL88/5YnmlzHeTPaVw/txcaW9CGMLHCxO7URdoaC3lw0kmMi5KiTsluwD7HSkU8t4xh4Zf0sbNk3p3Ob9YF9KY1fZt12Qo7LL7g5XeNZwwHYZrDbbXBim1udyM6uVyxNPDJl+V2s9JTHtWRGcmEij7AIzRm90PeDs0QGSg38r5higcpHyQ0bIo7+B8xGAIYoyoT+t/DP5Yso8vmnKWkJytoKxUEr1BxE1CekO1hZ4sWqNHpYtg3GwV6cBHaOmvtOkEesoYd/CHd/R/fNzD2Z6MKj80FZXNitd9Z7x312XJ2hPz+hw5iu17QaWox5MEAMdZVCocvUhxoY6+J0m2VI1RnpZo/Ll6dVf1XKUEnN4nfrFiD823dKtgqC8J6sdUcyZfd1+s7PTnGNN2f7aOjhHlLOjMX4CWhLfXz3wq11xMHKymyJdopLd36rNrUuFsXChE6o4OgwLIdMakj25R29
+ Rk2dwvux
+ bTXwSg3rQdAgtidgxrWog5WlgHbm8uF/pbG6MvMS3B3OxLcotHEnmmmJfwygzLpFPAbuSFdRystFtRZX0Qgue46cERblmNuCKctJGV/IGX7NFwv4TqvBTHIVYhRitWhlKqYuF7X1yXBbvfy+pCd/VawqtheZNBa6d2CEo+x19qjc6A8dwXfjm300OV+memAwra+oYNMVvSXONvyRiDSaJzi/XQ/rZGp5Lpr3GDpxPXigrOIOP1fFKUvwCw2f+JHjVxWdTLwTLT5gK8WGkfERGTh9p+fuAis5cveSx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,108 +101,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 23 Sep 2026 23:32:31 +0200 Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> wrote:
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-> The folio split path handles anon, page cache and swap cache folios in
-> one routine.  That mixing is what makes the swap cache split
-> restrictions hard to lift and to review. We now support uniform split to
-> order-0 only, and no mappingless swap cache folios. And it has left a fair
-> number of dead or redundant checks behind.
-> 
-> This series prepares for lifting those restrictions by cleaning up the
-> code first: split the routine into an anon and a file helper, and keep
-> all swap cache handling in the anon helper.  The file helper never sees
-> a swap cache folio, folio_check_splittable() rejects them up front.
-> 
-> Apart from two bug fixes (patch 1 and 2) and a slight adjustment of anon
-> splitting (patch 12), this is a pure cleanup.
+liveupdate_get_token_outgoing() is used to look up tokens of
+dependencies. It does the search based on struct file. LUO preserves
+resources; the files are only handles to those resources.
 
-Thanks, I've updated mm.git's mm-unstable branch to this version.
+LUO provides file handlers a ->get_id() callback that can return the
+unique identifier of a resource. LUO uses it to ensure the same resource
+can't be preserved twice if it can be referred to by multiple files. The
+default ID is the struct file, but file handlers can implement the
+callback and return something else. For example, memfd returns the inode
+of the file, not the struct file itself.
 
-> Changes in v6:
-> - Comments updated and make a few variables const as suggested by
->   [David Hildenbrand]
-> - Link to v5: https://patch.msgid.link/20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com
+Use ID to look up dependencies in liveupdate_get_token_outgoing()
+instead of struct file. This allows the lookup to work with handlers
+that use things other than the struct file.
 
-Here's how v6 altered mm.git:
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+ include/linux/liveupdate.h   |  6 +++---
+ kernel/liveupdate/luo_file.c | 21 ++++++++++++---------
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-
- mm/huge_memory.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
-
---- a/mm/huge_memory.c~b
-+++ a/mm/huge_memory.c
-@@ -3538,6 +3538,11 @@ void vma_adjust_trans_huge(struct vm_are
- 		split_huge_pmd_if_needed(next, end);
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 6051abc0612c..1cddbab50b98 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -253,9 +253,9 @@ void liveupdate_flb_put_outgoing(struct liveupdate_flb *flb);
+ int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
+ 				 struct file **filep);
+ 
+-/* Get a token for an outgoing file, or -ENOENT if file is not preserved */
++/* Get a token for a preserved object, or -ENOENT if it is not preserved */
+ int liveupdate_get_token_outgoing(struct liveupdate_session *s,
+-				  struct file *file, u64 *tokenp);
++				  unsigned long id, u64 *tokenp);
+ 
+ #else /* CONFIG_LIVEUPDATE */
+ 
+@@ -316,7 +316,7 @@ static inline int liveupdate_get_file_incoming(struct liveupdate_session *s,
  }
  
-+/*
-+ * A return value of 0 does not mean that unmapping succeeded. It might
-+ * still have failed, but remap_anon_folio() must be called afterwards,
-+ * for anon folios.
-+ */
- static int unmap_folio(struct folio *folio)
+ static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
+-						struct file *file, u64 *tokenp)
++						unsigned long id, u64 *tokenp)
  {
- 	enum ttu_flags ttu_flags = TTU_RMAP_LOCKED | TTU_SYNC |
-@@ -3555,7 +3560,6 @@ static int unmap_folio(struct folio *fol
- 	/*
- 	 * Anon pages need migration entries to preserve them, but file
- 	 * pages can simply be left unmapped, then faulted back on demand.
--	 * If that is ever changed (perhaps for mlock), update remap_anon_folio().
- 	 */
- 	if (folio_test_anon(folio))
- 		try_to_migrate(folio, ttu_flags);
-@@ -4025,7 +4029,7 @@ static int __folio_freeze_split_anon(str
- {
- 	struct folio *end_folio = folio_next(folio);
- 	struct swap_cluster_info *ci = NULL;
--	int old_order = folio_order(folio);
-+	const int old_order = folio_order(folio);
- 	struct folio *new_folio, *next;
- 	struct anon_vma *anon_vma = NULL;
- 	enum ttu_flags ttu_flags = 0;
-@@ -4048,8 +4052,7 @@ static int __folio_freeze_split_anon(str
- 	 * the reference nor the lock. Anything else needs a reference
- 	 * first and folio_ref_freeze() below catches it.
- 	 *
--	 * Note a swapped-out THP counts as unmapped here as swap PTEs do
--	 * not contribute mapcount, and they are splittable.
-+	 * Note that entirely swapped-out THPs are unmapped but can be split.
- 	 */
- 	if (folio_mapped(folio)) {
- 		anon_vma = folio_get_anon_vma(folio);
-@@ -4133,10 +4136,10 @@ static int __folio_freeze_split_file(str
- 		unsigned int new_order, struct page *split_at,
- 		struct list_head *list, enum split_type split_type)
- {
-+	const long old_nr_pages = folio_nr_pages(folio);
- 	struct address_space *mapping = folio->mapping;
- 	XA_STATE(xas, &mapping->i_pages, folio->index);
- 	struct folio *end_folio = folio_next(folio);
--	long old_nr_pages = folio_nr_pages(folio);
- 	struct mem_cgroup *memcg, *old_memcg;
- 	struct folio *new_folio, *next;
- 	int nr_shmem_dropped = 0;
-@@ -4166,7 +4169,7 @@ static int __folio_freeze_split_file(str
- 	mapping_set_update(&xas, mapping);
+ 	return -EOPNOTSUPP;
+ }
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index a39992da504f..51817d202ce2 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -950,29 +950,32 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ }
  
- 	if (split_type == SPLIT_TYPE_UNIFORM) {
--		int old_order = folio_order(folio);
-+		const int old_order = folio_order(folio);
+ /**
+- * liveupdate_get_token_outgoing - Get the token for a preserved file.
++ * liveupdate_get_token_outgoing - Get the token for a preserved object.
+  * @s:      The outgoing liveupdate session.
+- * @file:   The file object to search for.
++ * @id:     The identifier of the preserved object to search for, as returned
++ *          by the owning handler's ->get_id().
+  * @tokenp: Output parameter for the found token.
+  *
+- * Searches the list of preserved files in an outgoing session for a matching
+- * file object. If found, the corresponding user-provided token is returned.
++ * Searches the list of preserved files in an outgoing session for an object
++ * with a matching identifier. If found, the corresponding user-provided token
++ * is returned.
+  *
+- * This function is intended for in-kernel callers that need to correlate a
+- * file with its liveupdate token.
++ * For handlers that do not implement ->get_id() use the 'struct file' pointer
++ * as their identifier.
+  *
+  * Context: It must be called with session mutex acquired.
+- * Return: 0 on success, -ENOENT if the file is not preserved in this session.
++ * Return: 0 on success, -ENOENT if no such object is preserved in this
++ *         session.
+  */
+ int liveupdate_get_token_outgoing(struct liveupdate_session *s,
+-				  struct file *file, u64 *tokenp)
++				  unsigned long id, u64 *tokenp)
+ {
+ 	struct luo_file_set *file_set = luo_file_set_from_session_locked(s);
+ 	struct luo_file *luo_file;
+ 	int err = -ENOENT;
  
- 		xas_set_order(&xas, folio->index, new_order);
- 		xas_split_alloc(&xas, folio, old_order, gfp);
-@@ -4269,10 +4272,6 @@ static int __folio_freeze_split_file(str
- 	folio_ref_unfreeze(folio, folio_nr_pages(folio) + 1);
- 	lruvec_unlock(lruvec);
- fail:
--	/*
--	 * If we want to use try_to_migrate() on file in unmap_folio,
--	 * remember to add remap_anon_folio() and adapt it.
--	 */
- 	xas_unlock_irq(&xas);
- fail_mmap_unlock:
- 	if (nr_shmem_dropped)
-_
+ 	list_for_each_entry(luo_file, &file_set->files_list, list) {
+-		if (luo_file->file == file) {
++		if (luo_get_id(luo_file->fh, luo_file->file) == id) {
+ 			if (tokenp)
+ 				*tokenp = luo_file->token;
+ 			err = 0;
+-- 
+2.56.0.rc1.310.g51773c2048-goog
 
 
