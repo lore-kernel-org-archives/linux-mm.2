@@ -4,100 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9A4C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBEDC982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:31:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EF2D6B0099; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
+	id AC8236B009E; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7606B009B; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
+	id A78F46B009F; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DCC26B009D; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
+	id 98EE36B00A0; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 57B796B0099
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDE3B140682
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:13 +0000 (UTC)
-X-FDA: 85243444986.06.5684C36
-Received: from out203-205-221-245.mail.qq.com (out203-205-221-245.mail.qq.com [203.205.221.245])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4FB0C40006
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=vz2vN8vm;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf07.hostedemail.com: domain of zhenghui.hao@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 799DC6B009E
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0607F40672
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:31:44 +0000 (UTC)
+X-FDA: 85243451328.13.6D3E229
+Received: from out-2z4y-a153.jellyfish.systems (out-2z4y-a153.jellyfish.systems [198.54.127.153])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 31157C0004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:31:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DQ1m2Cq3;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf22.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.153 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130552;
+	s=arc-20220608; t=1790130702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=c2/UpacLji4hUGx/IMN7tFqHhex9cxgusaR9P8+O/3I=;
-	b=C0bUj/4j9CFja/vaxEaeQRliPDCCMJ6uY3H1XEAZdqpjQcCmOFpyGmEklYE7y0h2eMfBEI
-	13G8qXU1l7M3X4QP7txRoXuIMBT4JK68F2RztPOw1llx2Tk6tGjgndQe0lcEYyIrSKMEam
-	632j2CEW8PnXr1OJvWK2jC4hz76kuFg=
+	bh=atpMB5sAObGBHnnZwrOzoT8hf1VnqLifryohDjX8lnw=;
+	b=W5ywuP2DYEHHk+dx1sF/ZhAG1njTF2jHU/YScxve6aIej2H8Q9BNqQF8uQc/P4msxfzszH
+	7k15t1OuEqRx2O3rQm+Lh62cvgQ0Y7V3S7ZL+ytGsRb/ZToC73M1Dg8GrE3cnh08CCMTiL
+	yB+PKvQeLP4O6jLNB2ag05VoB/mIPuU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=vz2vN8vm;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf07.hostedemail.com: domain of zhenghui.hao@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DQ1m2Cq3;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf22.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.153 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130552;
-	b=W17ez2ENvxpYH/yEGZh+eBfMr2KfKBYy9SKrmK7n1yYVuxjOCFPomCNuAkfnZo+unGV5Ww
-	S8zre/+2Yzo/awJ44aLo2cZnPmZz0yCsy8ncEmY5UrVDCezdFa/abqyG8+P2L7xnr+Mxmf
-	/by8JYsngzjknX/mYHkvFTm8NUl8pt0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1790130546; bh=c2/UpacLji4hUGx/IMN7tFqHhex9cxgusaR9P8+O/3I=;
-	h=From:To:Cc:Subject:Date;
-	b=vz2vN8vm0Tw+loz/KZ5PjYSA6gRneWt5g0MKzmoPCv1OX6p9zR0YWVbza4TQA5BdY
-	 zuj1AxxMIIlHnYji3+oHL3l12Ur7ysf3QfLrFXCpkbmjkpaVx/2rKlw5P+xYXtP0aF
-	 bRk2b4S+XdD4frJWQtDWUV2dj4O6sgpXpdGhhUi8=
-Received: from XJSH01426.meizu.com ([61.169.203.203])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 7441BCFD; Wed, 23 Sep 2026 10:29:04 +0800
-X-QQ-mid: xmsmtpt1790130544t34ssj30y
-Message-ID: <tencent_AA61551D1F50E61F46C8542F5C8874512C05@qq.com>
-X-QQ-XMAILINFO: OUHdjnmRxhl6BrhFTxZKSInajEwOTmtmJoO2V5moqyaxr8nL4Mf/Oyq1lHw+eA
-	 pr/MHUc9WZpFzxT7r3vdWoVGksgTLf1bfd8dvUbeyY+veYXedXRGHFYlEVrw0zM6QSTjL3k2Ghmz
-	 kYEXoRVQV68W+Cq8fandcWFZnlJLev53nKFcTavqQY/tsd707MmdcAxkd5IepEwI8LHJ0RXP5vyY
-	 HXl/7wEoK6v+sit6crTStbXGUFpt8ZhhdNJNVYksgkrRVqArhiBLZNhRWQRgbyZhMYMmUFmI/Jp7
-	 7E6OqmajEcLawJM2DOlLr/7QQOldvPVBGAimcBmnOMjLwTYAP+I8L+pEDrsyh39u4lMNaKgNaf1b
-	 VlEoWLAgenHMFLfaG9r5a9XlE6Q5ibWUULVPbvdRtXcUInuY/+1NfEEBkPqFbsrgT0LqzUS+9bcM
-	 3sKCNpVBtswt5AAooBSIs+fXNOZpWN0EA2LqBiOp9xdhZ5sXZmX77uUVw2gCPDdEWhRhGy4sOAMG
-	 CZOd5SjAadGkoIglI6ECanXGkDIWd0HMUzRFTutgaOCrELwWMhNMe96ZCIsIL8TuJT2PsdcgdAFf
-	 GzrrLwkcLeHQeu1YKTc5V94hPQ17sJb+tXPkjfhvU3ILc+LIiZaZ/hW/mgVdlNVs9YtUJpS0LvRm
-	 cXwHD7s2J7vb7Rt9+vYPX3UGtxN5domOhBGJ+jYuTzMqhJAQ/hH3eg0IeSKIs9TGQTcrpPkfgbgy
-	 hM/0epZ0du/0sEdy/6Isgvr9sI70+PFqtQjGISYaned20O69r4HlVDQlh1VEwOotWFivlAGqDwLn
-	 w+afkpMDNuHC5qMXl3IEFrN2HTi737Ufq5LDuK7CK8+VRb7toEmcqGeDxIoNGUB7uNIUdFaNnBVf
-	 nWYMprVUmZcZFK2vPcp16hI27SAMt963w2sX2yIaOG6YekEsOzhY/FRaQHRUxJc1Fe8LX68vfkue
-	 UU9vigAVk9Wsz/O9mp/rgL5rGmCtpAhD3mJlmQvVvWtgyT9mc8OIC35TAD3K/VpEvOaJyDIbc42A
-	 rcygEDXJZB5SIH7pJFtc9D+6aPKc7YThLTOirIiD11Id8y4qYiXtYCzQWJePVQSv64Xe5iOTCfJE
-	 XBptFeu6ZJLlFo/vogTY7jntjk88RNGg6D3/h7I2q7oem0F50JZ68dVHgG7Q==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: Zhenghui Hao <zhenghui.hao@qq.com>
-To: linux-mm@kvack.org
-Cc: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	Zhenghui Hao <zhenghui.hao@qq.com>
-Subject: [PATCH] hugetlbfs: fix stale comment in hugetlbfs_file_mmap()
-Date: Wed, 23 Sep 2026 10:28:58 +0800
-X-OQ-MSGID: <20260923022858.263689-1-zhenghui.hao@qq.com>
-X-Mailer: git-send-email 2.53.0
+	t=1790130702;
+	b=fnRF5ke1t7Tz95nqYatXjvA7GWiwuJUH7nIwlvjm7Zay3RM0TV+nF2BcjYvmN3rbHzdoRc
+	UROc1tQCmOyExtcI+AzR3oFpssUs/htllVRQMQbtESzEeQt3XBvVJsUw70bRrga1zpOKWE
+	U2Sk0gExdikj4xtUZrcHqD2hUwX2VRo=
+Received: from fedora (unknown [120.199.7.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZJ3fkcz8sYH;
+	Wed, 23 Sep 2026 02:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
+	s=spacemail; t=1790130697;
+	bh=atpMB5sAObGBHnnZwrOzoT8hf1VnqLifryohDjX8lnw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DQ1m2Cq3mutHCmf62FSW3M/unrd1lwHkBQARS34Crz9uY49SCD15QOhS9fI975POz
+	 kFUV8asMjEoSR8PU6pJIcBAuXRpW6+B96JcoFVSmZPS2TbwSSK6eZgrTNVFjVnpGMn
+	 15YWHFNgN5s5y5N+xRr55hL75j/kKUrMkGvBYhrnu9WdEM89ixC31s8KmbCsG3tEXQ
+	 U3yW6+nNQEsP5WAOqp8VU+7Wzc3/kkG5EUxiiMB74y75dnbtJySeOAoA9/YaglZstS
+	 wZ6q/Y+dIKQJE3PsrXY7IBAO5/QOiW7jugWLwpkHD233D6C978J81S4H31EIQLyULy
+	 s/jqhLWjiwYtQ==
+From: Tianyi Chen <hi@tychen.cc>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] memblock tests: fix BUILD=32 address conversions and warnings
+Date: Wed, 23 Sep 2026 11:31:22 +0900
+Message-ID: <20260923023126.1910311-1-hi@tychen.cc>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4FB0C40006
+X-Envelope-From: hi@tychen.cc
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 75yh1imn6pwhc7zkr61ihfoqb4y5hox9
-X-HE-Tag: 1790130550-835649
-X-HE-Meta: U2FsdGVkX18g37XlEqbD8XXFl/P1doR1wR7bGcaYkkXhzzBTEd2C9E21HCcHDHHeh5mkroXtFQH9j8tRrk0fYrGHwk4ngcHkGuRPDR6wRDAbRo4QajynkNp4K/7ttmQJPREB304OsXbNfzk7KEXd9I2VYFSDAt6ZeMxQqQcsXydgEKK11VhVU8N7+0RZVVJqVcwRXmOyNZGUIwIf3syK1UGVhyU1XOZrVSZ3/hrbaE+bVTa0vnWv8mIU1HXq8V6hnO4X00B4ZtlTfYanAOoeXecizzKLlG+e2vT7i5/W1r3+TaiQU8bFktB87YD6fdbcysK1PenI7UMD8oGyRdgd9waEabiJsHAtjhyHYJZ2hVzJSRIP0o9pmjecNpRltWHam7s7euYwK1dspm0DH9yg4cwFtLECaWY/uHz+2c5uzRCoPlIw43RTj/3vaOfkXij7TKwrjeyUNE0H4mOtmn6tUFAsAzpS1FC3Z7vFQi/3rcLFZ0DX1gymx0sMplrueW5q8IhaTodwleHQeOUiP4+1RY+n738AqIfSOHpsqYzykcOsvb7Sw/PRBT/N3okpAAIJgtodXRukSVoWMHSgm+1i2afxTeyZh6FMwhPiFbIoGMFnftAjfw9LDB8EUEYQvvRmAPs8+Qzyrg+dvpSELbSAxvDjkatgmJYLro4DF6WORXclYatFjsk/LKwA8kNizKu65j5tToHBAGaRMtf+/EJjMvkpYjIOO4NzytHrwNQ94tT4X1UmJK9Zqo5Rvisq82gni3kaQncD3J4+mBdAqcbPjxeuY4rg6MHqD2S92vwZ6wrVwNAsw+vz8wQD0DLgd3StMe6KMx2Pn8IUJaMaALo4LCNNH3fWotkbCaXqIYh5XNcAyXfx9XtNktIR4sV2NK9/WbWlfNFkF6bNk13+0lxr0Yux5xxF7G+C0Ts4ZLxiIdsQM+L6fETvI6/XXI92h3SMdnDy2e449fBXb+LFNm8
- 2StyKoKV
- q0/8xtv+0MnIxAPNIMKmoSZ4btqjfW9/vRzAtXUA/gd7irUVqrkfePJDeslt1ph77Rnh31uO1FJMG+2Od81EoIh3y5XbYFz5UDXYeLJKeDpZ9SU0+DKHQixDlOUo8okNPSHZ9UvdVAtNqc4Gbd+xU/jZswZ1XaCh/az5jlDKQFQS685Ms+zChRdqkxC0to+TqYR6ti1gxix3D35gzi5nH6qUmKzhPqCwqtsjEM8rdPokA+Lh/U7WcMs0Wykv3ksHFd4CCTFId7mUXxsDwQsYxhj7gX55+wWE0y9+0cjOcE0Xy0nq7hAXthwOcTw==
+X-Stat-Signature: po9d8u8qqwtmkzd1rifmxrcuwh7rbtpk
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 31157C0004
+X-HE-Tag: 1790130702-96851
+X-HE-Meta: U2FsdGVkX1870M1vPaRPL2bR3LsQa4bGYLKW8rdNV3jwuA3NXBodvpQNZaKrwCWhXe07rFh/6UlY/R4AALpZE2+lW5APmBwb77hcbM3viF072R2/HcL7AUQwKddK42kM9+GXT2A8sw3Y4IYEaswN/+kWsYamNjHOjB+zNbrXHDzaM6PvOjFMENbgM4x8MbyWCBp9faokSRmcA40xLeLWi4+6rUaTki+aj8ofClFzDGT764DfI5XcGFNq85S/KuWZVOHQsL4A4oK/myZS0bsbubMAUktYZPqzoXMekLJu4Ef2Gy2SpIAfAbv7xzmxyljPuLUtMA+EskrPPd2Byba+WZhA9JY6vC3dfOegmLD3dIFuwgbjKt8INHeBodtfy+QJWIm3M7TluCx1+4Zc4ThmE5pjNLbQ0VRE7JN8StZh/r5dJBBxiocDjZOcMVJuScUBQExgVEYoahuBgj0I5+x7ytBj7u36FcGj1kMhXcaKlkIjvfmeNrZmO9CHiaH5sURD+Qh7R5rlWEx2Ejmeuc9njdvZoRKimANxLVJth7y5UgxPlWhe7Qgh4u6swpzV0LY8y8tsT2WhmNWiS4EDTJEUcrGXHy3ACFOmQ722wpyHg7dL60W7Iq/WA7vSk/6MkL4k8Lq9Zb5BXLMEy055C6sTNhY3OyW7BHsPJlOD+vxco6JQCgtODaagsB2e8PkZKAcApKXowcCW06Dqbi3mSe27XvM5FTtqYkhgt37Dt9rl8j4okPHMGvD6yMUwwOP2krFP6UVveJhJsqD9EtCv+CQLo5rjzDvbMN346VibvBmqz3SLGWWU3WRqVz6sBWEcrKKYyj4LcJx4GDiwebEKwN0B07EPo3c8PuSTM/+2Mfm7hRm177v2a8LbvFdjwx16snMYHnz3W4UszqCJn3mG9BF0Zqq83x0gSMevlphQ1hWTCSpDHWfNh50nhIuU/oD2gcV/YdgHB1efu5hktGGpxZI
+ 2v9kc9Xj
+ dj21JJVLI8Ny2mDtl2j0cGXZ6+Cykn2oCU0mT87Xzws/+2hci+VxTCm8pKaeY7xrINZJWx6grOZGoYFH5vPBidhYLvvqkxYFyijGX5O1e9l35BOoFGSwVTTmegP0/aK/RvKHUasfwErAoPqvmDF/1DzZE0+ZRfbqrfnZlQbJ3DeoXct6+wbOuCDiqAqG4jrTV0lbGHKhPD+9IrKCJ5+m+3mrR04K9GZezMth+MpdRLV6XJad6QAPpCIUC2BAAlladKz6jflz30VRAJHVlUYm85ANlksuJvoVHm2Ha3nkQejigTkBrpSyt1nfBsN1wb2W2XJfRIJhsWOQ8Xv/sFH+UJIeCaMFLFhMVliiU6lr4RJ5ydnNu0zPRIQKjT4waDBJkomGc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,49 +90,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The comment above the VMA flag setup in hugetlbfs_file_mmap() says the VMA
-address alignment has already been checked by prepare_hugepage_range().
-That function no longer exists: it was removed by commit eff41389d824
-("mm/hugetlb: remove prepare_hugepage_range()"), and the check now lives in
-hugetlb_get_unmapped_area().
+Fix the BUILD=32 physical-address truncation and sign-extension failures,
+and address the remaining GCC warnings reported during review.
 
-The comment also mentions ia64, which was removed from the tree by commit
-cf8e8658100d ("arch: Remove Itanium (IA-64) architecture").
+Changes in v2:
+- Use memblock_phys_free() for all synthetic physical ranges in the basic
+  API tests, not only the maximum-address check.
+- Keep the dummy-memory address conversion fix unchanged.
+- Use __pa() in tools virt_to_phys() to avoid a pointer-size warning and
+  sign extension of 32-bit pointers with their top bit set.
+- Initialize end_rgn to avoid GCC's maybe-uninitialized warning.
 
-Point the comment at the current function and drop the ia64 reference.  The
-rest of the comment, which tells future edits to add any error return only
-after VM_HUGETLB has been set, is still accurate and is left untouched.
+Clang BUILD=32 without NUMA also passes on v1 (189 checks). The earlier
+cover letter only mentioned the NUMA-enabled configuration tested then.
 
-No functional change.
+Validated v2 with GCC 13.3.0 and Clang 18.1.3, retaining the default ASan
+and UBSan flags and adding -Werror. Both compilers build without warnings
+and pass ./main -v and ./main -m -v in each configuration:
+- Default and NUMA=1.
+- BUILD=32, with and without NUMA=1.
+- 32BIT_PHYS_ADDR_T=1, with and without NUMA=1.
+- BUILD=32 NUMA=1 MEMBLOCK_DEBUG=1.
 
-Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
----
- fs/hugetlbfs/inode.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Each run passes 189 checks without NUMA or 272 with NUMA, including both
+allocation directions. A separate virt_to_phys() boundary check passes
+with both compilers in 32- and 64-bit builds; GCC BUILD=32 failed it on
+v1 for 0x80000000 due to sign extension.
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 7611a8470ea2..e2aaf1b56e7f 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -106,11 +106,10 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
- 
- 	/*
- 	 * vma address alignment (but not the pgoff alignment) has
--	 * already been checked by prepare_hugepage_range.  If you add
--	 * any error returns here, do so after setting VM_HUGETLB, so
--	 * is_vm_hugetlb_page tests below unmap_region go the right
--	 * way when do_mmap unwinds (may be important on powerpc
--	 * and ia64).
-+	 * already been checked by hugetlb_get_unmapped_area().  If you
-+	 * add any error returns here, do so after setting VM_HUGETLB,
-+	 * so is_vm_hugetlb_page tests below unmap_region go the right
-+	 * way when do_mmap unwinds (may be important on powerpc).
- 	 */
- 	vma_set_flags(vma, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
- 	vma->vm_ops = &hugetlb_vm_ops;
+v1: https://lore.kernel.org/r/20260916161105.2548281-1-hi@tychen.cc
 
-base-commit: 93f51579e7df248780214094418f205253383cc5
+Tianyi Chen (4):
+  memblock tests: use physical addresses for region removal
+  memblock tests: zero-extend simulated memory addresses
+  tools: use __pa() in virt_to_phys()
+  memblock: initialize the region merge end index
+
+ mm/memblock.c                            |  2 +-
+ tools/include/linux/mm.h                 |  2 +-
+ tools/testing/memblock/tests/basic_api.c | 20 ++++++++++----------
+ tools/testing/memblock/tests/common.c    |  6 +++---
+ 4 files changed, 15 insertions(+), 15 deletions(-)
+
+
+base-commit: 5728d3523f12826a2b180c1c5738f74e33197e14
 -- 
-2.53.0
+2.55.0
 
 
