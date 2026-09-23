@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADA2C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D473C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:32:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CD956B00A5; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 6FA866B00A9; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87E696B00A6; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 6D22A6B00AA; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 793526B00A7; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 5E8B96B00AB; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D1756B00A5
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC63380672
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:03 +0000 (UTC)
-X-FDA: 85243452126.08.5B10F1B
-Received: from out-zbxj-a71.jellyfish.systems (out-zbxj-a71.jellyfish.systems [198.54.127.71])
-	by imf04.hostedemail.com (Postfix) with ESMTP id E310740007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=G5wmWHGF;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf04.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 456F36B00A9
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD2321A0675
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:57 +0000 (UTC)
+X-FDA: 85243454394.14.A68C2E3
+Received: from out-utut-a220.jellyfish.systems (out-utut-a220.jellyfish.systems [198.177.127.220])
+	by imf30.hostedemail.com (Postfix) with ESMTP id F01D380002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=i1hlCY5N;
+	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.220 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130722;
+	s=arc-20220608; t=1790130776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yOXnInNUODU5Lzwbj44QgpGQDJ5UdG0pb1N+gcZ3ygM=;
-	b=dyQhj+MpD5RaLRV1dcI4rwjafwTWU71By/qLbOqZYCxKUUBpqKoSq2GgZPUmH3YaoGcvda
-	05jfnoAc/LCJbG8zMnd1Fl0UPm7H8adEDLMReCGM68H+DbM6we658r2XyBCE8nvXkSB+2M
-	FAb47pVYc5g/YhxH2PQx4ufIWnaSwY0=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=G5wmWHGF;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf04.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
+	bh=QhQdABlylOEbaAhIq2fvadeIDgLzvHLyAFVEKqUhlP4=;
+	b=0Ln5JvjUxgfTibq+yyK1x1zcmaFNkDRaac/egyLvHxRRk8Q1wfthIbToyP4y+dfkcgI82V
+	gfkzhzF2Y6U87X6XXTpnfLTNeQBokPyYZKO6f4/y9PFE9vnDtK6NAo5WiSVNajVadukXmt
+	R2pKsPXaHXkdb8MS38i24zSMziO899s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130722;
-	b=Q+wupb+P6TOXovYE4vVzN7Ob1SvotM4QnsBF0RmvLR/qBbLtvn3sbxk6Yt0Er/oLwt8Eti
-	ZpR+q6Z6j25OyRo4LJMdwqPSszdbtZlH8uuD1CCxUSFebcIGnj4FQ3ugwpN4BUSp7GAloL
-	T+xUyN9I3DDXY8XGWbAu5BQtJl/EYUI=
-Received: from fedora (unknown [120.199.7.38])
+	t=1790130776;
+	b=Xy7URnQ45E9qVMZjMnwwFPdBjtxXD3redRP/iOudJUCvhs+B2RmrycCAxeyhartci7+JCP
+	P7kxRfuuzAjZx4q5L4TLIOsPXMNnD/s5JCf/zYymW7xsKzFRxca/zlz5OMniM0MGGYhUNN
+	N+ndZf57+bmFYPULMTuputJZF/r6WHk=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=i1hlCY5N;
+	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.220 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
+Received: from [10.18.116.108] (unknown [120.199.7.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZP2xcYz8sYH;
-	Wed, 23 Sep 2026 02:31:41 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLbn1Thyz8sZ1;
+	Wed, 23 Sep 2026 02:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1790130703;
-	bh=yOXnInNUODU5Lzwbj44QgpGQDJ5UdG0pb1N+gcZ3ygM=;
+	s=spacemail; t=1790130774;
+	bh=QhQdABlylOEbaAhIq2fvadeIDgLzvHLyAFVEKqUhlP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5wmWHGF8x5Fjt8JXLIilAfxBLUl9aQ34u42tdylL7dNFnoM1NAqY0nWyDDx+J9yx
-	 fljLl8gdfcAKGAoO9WyBRPyJoNOCD5+BqPI+iyloAdpemuOe4MzU0THBcoz/JBisi4
-	 TI8CsTXrHcTHpshU1yOCiiPwYTKWdYSbmza6yeOY5oiEZkb+eoiSajTeC2dkPnAVxo
-	 s/k5vnjcacO9S8zSilBs9zOwA7Ar2A+9aRXWn3aagBwiOmWna9bHrvEOEKQUIQ0B3r
-	 RlLNzSWPlBYcUGGMBFkZn6CpRIsCU9qQLPkk5IA8lPgRlj965ZI6YmktGqWBm73Fvs
-	 z89vhmX/xvmuQ==
+	b=i1hlCY5NgNFlNCgoXdHhCpD75lDhkozAfMmrWrvw3kEdi4U88oip1XEEBNuEXwrSr
+	 pPmuVn4RA7Bt3TNUIH0BiZCabZZ0z/2sFgchhdYojlUiFxNd/jmVAgwoIDW/MOH8oc
+	 Am0afPogrBPMxizTPbYAuH7B0j9ovWTMvtm1fLsaBIXSVSk/kc+0zN5UvyrxJoay/x
+	 tXmtIVlXZK2ZKSgKWPpuQhMYI6wsNHXeKR6oOfDWUGMEdhbfIeIOnUP6Z/mBBz4d9J
+	 tmEbAFoSEHujRV6w7NsBfX8YOR5NDVEdJTrCQ+8ZdHkyg5L6v0dvaZdpD3E6myC2SU
+	 PkXmPHPkSkAGA==
 From: Tianyi Chen <hi@tychen.cc>
 To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/4] memblock tests: zero-extend simulated memory addresses
-Date: Wed, 23 Sep 2026 11:31:24 +0900
-Message-ID: <20260923023126.1910311-3-hi@tychen.cc>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260923023126.1910311-1-hi@tychen.cc>
-References: <20260923023126.1910311-1-hi@tychen.cc>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] memblock tests: fix BUILD=32 address conversions
+Date: Wed, 23 Sep 2026 11:32:49 +0900
+Message-ID: <179013076994.1911052.6395482478037915192@tychen.cc>
+In-Reply-To: <179007180279.508753.4595268983388589280.b4-review@b4>
+References: <20260916161105.2548281-1-hi@tychen.cc>
+ <179007180279.508753.4595268983388589280.b4-review@b4>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
-X-Stat-Signature: 1nw75ic9nkai6ukpm1gpbmgw5dahxgxk
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E310740007
-X-HE-Tag: 1790130721-685026
-X-HE-Meta: U2FsdGVkX1/9eiNhvLfz0ltqlj/5dpFmwPDMG7lswVpm1JvKn2qyH+LgsSyJzfXAvPtVXASseBSeYP5iEhj9bDaBXtIxGkBkacRLHrpPjTpAW40jLjB7sMjVmxg3EcrR3HmkKtL8E60Dmi5EgBUw0S0d0LkPzdedpudF1sKt5Uarf6OflqfxHUq9nlBWEk5kR16X/t2jQULcqf3XWaOdTxw5+5tmmEft1B1S5phex7ZL2RVPOW76SyMjgX1GCPUv62ZfDaK0VhiDBR1RdK8g09tUY3l7HyNfv6rXDN1NorKZHEFXB3BeRBZ87RRYSEHl1ASc+YhlkWVYntK7dCG+XN90V41V0Q8tC1w/1jG59gqIYhH6Ca0r1vHDeSqqYZJOJebKT/pT6UDBDIE6ZMYwQiKPVlrpv28zL74r0jHoZW6AfFn9EDU6kP404rlJP3y9+aMabYLaDS4DHIgzFfRD78OPr9K4lz6C5+fq9eWFWu4XnrBviW9rcnDUWOwzJeDA0OiyEn1QMAUsjymuTItrkLn04rNtF80yE9C2HVg8Im1LQ6wVe1W/Dsf+3fnVs+BaaFOxRk7f2s3EOWGEqqGvWNP/TIjnLWbZPE27v6MUVuM2bQbJkazqxM+v8aFEtflGHRU65Bz/K0avkFJcXFZNzsB47tfibcxJikHu8VzBZRwZVLhoKIddoInYVatv2CSCzpqBbPe7umg2JHMPEpVYFD430gYHMccEqvw9RTWRw4wMJ7HfkSPG9gXth2zRc+G+nYW57UAV0+1QK6r8pc4YhYbGFT+jOyiAFrKp2YxjCl9A9lwn44dsERjla5jtz5eJYlngNTqPORfwp1AE+WTWzK8ViCB2h3lAdYUbgMEIqS/S3z5ehsI9HehqP6lrSsZ74IC9PRy8xJumnVFPRUcI6po+s/uZTMhxHVR3hLms4xmlP3qea92qt7oey4snp4nF7Y4UU79P9MZqaI3CP8g
- xQEbtYlE
- GP8o8WzGcV662a4Np7Fm8dep6Cgn12ah+tWk2LsxzkH4bItQCTRbAN1dubEX5TdpAPBR+kwhhcnCMNHOhtt8/1HSI9xG6qWOYDulVL9L8XmfXmn46nR6SCzTDGrYYlDWJ8LSLFItLhOvU9L2TXy1MmGdy6OiB+zuS/MABZSFdD2fmOOotqzUPYCR5VOGPFXL0Dhm1ElS16e6csKXA32Jqe+UOL/b2NvzeKnpJtih4xyjndismg+3aoLlB5kJ9UN1zAKpW8lzsLHGoKaarSFOlRRqYipy+e2eb2lLT6YbgDCZSA+uQ1FXjMc4WheCm2vgV2oMPYHJoBAVJUWCicZj9RTdTp8n+crnMjra8
+X-Stat-Signature: urhpmu6eqw756aryj5os9p4ufjdp1fg4
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F01D380002
+X-HE-Tag: 1790130775-676758
+X-HE-Meta: U2FsdGVkX1/mbE5qnrBu8eHtj08jBYU0BfnMFfz3Z88hAXKXoHJvOIPmooRjnt8458lSTEXUN8A/NsXEQpFHpS2spx9OnoECokTcL15pSv4mtUqLhBANx+N2tvieKWwJZ1r2V5ucDy4dKfzikyzzwSrmElj+YN964b7Ch/rqZNw6kGElOoQPNhFJLL3spPt9GMm6S4UN6IIP9e8ijRlTOgOiFFOPFdU2Ly7mof29vJgJfs75WvIQ3qzOhgXK3dXnf4H8FcvKvTBdH9UCT6W7C1NDSPo1q9Yz82SXoCz2+w32NaSEhvKFG5H4ND9TsIiFL4oGrJc3eTdtlEaqFUSkEqKdOlXcg9t3kdcEIaMBJ1IUzhbd59DyC44MBqGVwP0DpZ/7+tCs5vAdPQzp0QKPbIRC9EX0qqdW1XEYXJCxI6p/d43NKFjaYnLlzeOamUW7ihGHp/8CpEbuRcVWd8Mi8ZXV+0anb2AQdigswy1Dv4RxIYC+51l8oUuCn99P3j4Bvok7LaCwTbuXB9OHhjp5y0TVJJ0h3+xMN5SZp3ps/birdUp2Amt6OLo2qifyRP3rG8fyhOlCA/0eQTFoKmuSl6pV+iJAUrOMJUWyXs31pamxzIJpgA7lVoIrz9kIr2lqpdJAPcNfymVs1S/9xs5PxxeJT0JyDbDECdQuKAAypYKQZNkMCuc+N3YkB+Bm8AEXHm83eRJ0ngmatyXg6W/MHL1F2uizCTCNRK6s9aCvWHPe2J5bJg0I7w+H5CXxThxUij9JOKyqoJqhuD2kCG0ozW50VdGW5rYxScFy5PmBbfvMrsdQAqPffySlEsqEC6nF+TyW6bHzFQvj593OIQlIY5We9KMZetzR/R9jOhzM9ZB4vuzK8irjfywZrKeudSu5GuJQXg3O56l9PMjofg9arHxxNUsXXZxHtXOOyy15myk+fBWhOHmklTLSgks8f7Le64guEqmuy0zjTyvPnr1
+ A8EzBq16
+ fhZBTfF3J5fjZ73zQMapV3OfAP11J0R/Y5bUnZzUlOPHGKggpqrcaaius0A+LEyLx8NvIv/OnlP0L42WY5VtK/wbkuRdGxbrI7oXSUso1c4kWZ1uPX7TmJqO2HFkGPRzHsNVH3/vvfKjISjWAkgNrwTgtkvZOeEcFhKRMfL5oTEFa64nlrwOUqDJzB4YVe8/J/LcwCUsQVtn5+JjvKgb/t6DIMFY0VdvpPO1lbUd+tOPMRgPRQO79AwIgMCrH7zBTp53kfA0AwEG5fqjXhn1025adFsXMKQfV4/egvaOhuWeK0tY+lQpNxEtCAgXKu+t6tRTYikBvIWDSaiwyF5omsnpSBZwr4FJOgq1rajEB13JujUGq9t284PEzk5pM62pQnAaXgbZBA2RzlCtLFMlzuujZSWYalzMz6Hj9m6t0ZQXLlCY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,55 +93,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Converting a 32-bit pointer directly to the 64-bit phys_addr_t can
-sign-extend it when BUILD=32 is used. A dummy allocation above 2 GiB
-then gets registered at an address different from its unsigned pointer
-value. The low-address tests compare that value against the registered
-range and fail once the earlier maximum-address free test is fixed.
+Hi Mike,
 
-Convert through uintptr_t when registering and reporting dummy memory.
-This preserves the pointer bits and agrees with the simulator __pa()
-conversion and the allocation tests.
+> Does it mean BUILD=32 without NUMA does not pass with clang?
 
-Fixes: 284d950dd6b0 ("memblock tests: Add simulation of physical memory")
-Assisted-by: LLM
-Signed-off-by: Tianyi Chen <hi@tychen.cc>
----
- tools/testing/memblock/tests/common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+No. I reran v1 with Clang 18.1.3 and BUILD=32 without NUMA: all 189
+checks pass. The previous cover letter only mentioned the NUMA-enabled
+configuration tested then. Sorry for the ambiguity.
 
-diff --git a/tools/testing/memblock/tests/common.c b/tools/testing/memblock/tests/common.c
-index ac032610a56e..2a248973eb4c 100644
---- a/tools/testing/memblock/tests/common.c
-+++ b/tools/testing/memblock/tests/common.c
-@@ -67,7 +67,7 @@ static inline void fill_memblock(void)
- void setup_memblock(void)
- {
- 	reset_memblock_regions();
--	memblock_add((phys_addr_t)memory_block.base, MEM_SIZE);
-+	memblock_add((phys_addr_t)(uintptr_t)memory_block.base, MEM_SIZE);
- 	fill_memblock();
- }
- 
-@@ -88,7 +88,7 @@ void setup_numa_memblock(const unsigned int node_fracs[])
- 	int flags;
- 
- 	reset_memblock_regions();
--	base = (phys_addr_t)memory_block.base;
-+	base = (phys_addr_t)(uintptr_t)memory_block.base;
- 	flags = (movable_node_is_enabled()) ? MEMBLOCK_NONE : MEMBLOCK_HOTPLUG;
- 
- 	for (int i = 0; i < NUMA_NODES; i++) {
-@@ -115,7 +115,7 @@ void dummy_physical_memory_cleanup(void)
- 
- phys_addr_t dummy_physical_memory_base(void)
- {
--	return (phys_addr_t)memory_block.base;
-+	return (phys_addr_t)(uintptr_t)memory_block.base;
- }
- 
- phys_addr_t dummy_physical_memory_low_limit(void)
--- 
-2.55.0
+> I see a lot of warnings with gcc and BUILD=32. Do you mind fixing them
+> as well?
 
+Done in v2. I reproduced them with GCC 13.3.0 and removed the remaining
+physical-address-to-pointer casts, used __pa() in tools virt_to_phys(),
+and initialized end_rgn to address the maybe-uninitialized warning.
+The latter is a false positive; each insertion already sets the index.
+
+The virt_to_phys() cast also sign-extended 0x80000000 to
+0xffffffff80000000 with GCC BUILD=32. A separate boundary check now
+passes with both compilers in 32- and 64-bit builds.
+
+GCC and Clang each pass seven configurations with -Werror and the default
+ASan/UBSan flags, including BUILD=32 with and without NUMA. Details are
+in the v2 cover letter, sent as a new thread:
+https://lore.kernel.org/r/20260923023126.1910311-1-hi@tychen.cc
+
+Thanks,
+Tianyi
 
