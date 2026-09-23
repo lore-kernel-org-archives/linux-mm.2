@@ -4,90 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B674C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:44:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A30AC982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F98E6B008A; Wed, 23 Sep 2026 04:44:57 -0400 (EDT)
+	id E2C0D6B0088; Wed, 23 Sep 2026 04:46:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D1636B0092; Wed, 23 Sep 2026 04:44:57 -0400 (EDT)
+	id DDD136B0092; Wed, 23 Sep 2026 04:46:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E7C46B0095; Wed, 23 Sep 2026 04:44:57 -0400 (EDT)
+	id CCC116B0095; Wed, 23 Sep 2026 04:46:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 478B66B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:44:57 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8854D406DB
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:44:56 +0000 (UTC)
-X-FDA: 85244391792.01.7EC28CC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D094140007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:44:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PsDbq499;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ADD6C6B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:46:09 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C17081C3436
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:46:08 +0000 (UTC)
+X-FDA: 85244394816.09.C701B72
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F3D6A160004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:46:06 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iMlX/Y/J";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790153094;
-	b=of1HYKMJ0egz4TCQYPlwtY1ztTNQTJvp/1Lbe5LGaRT6xwZL6SsbYOMQMbx80HxLKiEifU
-	om+oW8QiaRlR+K9KEGD6gEKxkTec6fFPhdmr4XD/9NvBCMag3YgwPRgm6YX8G/9FTtWPkh
-	0axonUTLn13A5KRXksgG3EfNBXvu0Fw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PsDbq499;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790153094;
+	s=arc-20220608; t=1790153167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dY70oSqWd3wnF9uaYoNddYkhSPpCt+PYpUwK3owu2yk=;
-	b=O43xHqdQTAlgjvphpiLIcoyS9JAnMgJ8KjkHWAuuZiOMoel39AgPfImaWU+vuJ42V8NyUl
-	7J3ojra3PnlM4sZ8Pe4shrDTJAKjRQvs1L4dyOXexV+cbBG6CoGcyKnHzWBIT3VH+X8R2u
-	RHk7jvVNZXlxX4tkmmDMLi3wC9ntIu0=
+	bh=PwZF3pqAeMznwbepH5UUc0GjovbxR4bX9vcY1/GYfgw=;
+	b=kx/nJn1DepE4qhtNy4TuetflSBS9ID0gTQJurZ7Jrm9I7Tn1tUMbs2O6mO9JDsPLICdfoF
+	+mZ8BElMoNqRqXpg8shYzIHc6iXkmQSsgQZlGR56jYIJC37QsGDPXSx/pJuOewdDqrnJ6s
+	5V7om0+IwVGXKkfW6ERvFpu8cDqZ0Vk=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="iMlX/Y/J";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790153167;
+	b=3gsmds4RXelcp5S/zrTycRqgLsXzZjiF2AeiOTdE03D40fCwiso7T3oaHk52+z2ToCnOq9
+	9CjOZuA80eilsvL5VRp43/xYb31ei7O8OAxp5zrsLfaQcYI16qPjukk+TR+pfK7KlQm4Ga
+	4/WWUIImmxU5ycZ+0Im9CBr7QVlvOYs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 679176020A;
-	Wed, 23 Sep 2026 08:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA611F000FF;
-	Wed, 23 Sep 2026 08:44:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F91541147;
+	Wed, 23 Sep 2026 08:46:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68911F00893;
+	Wed, 23 Sep 2026 08:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790153092;
-	bh=dY70oSqWd3wnF9uaYoNddYkhSPpCt+PYpUwK3owu2yk=;
+	s=k20260515; t=1790153166;
+	bh=PwZF3pqAeMznwbepH5UUc0GjovbxR4bX9vcY1/GYfgw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PsDbq499xXwI7h+xbBrfr8RDigs6n45INpRpjLXHhwjVVCVAZc7kW1YcfYUx/PhE2
-	 fjri4U1aP9Y22xgAwgdg2fh3N2162ZyeGfV3J+x4l19s/SCcDU0W5SoRQot7F2NTyU
-	 ufj9byPIii6EmaACI4mzR1lZXMUI/b9iGqZWrDZQCwX3vOn+AH8uH2qNJm2uXvpXMB
-	 y7uVL4tgUslMzJOdrW4Svd2fTpX+L2preZqCCrLohyDKQJIhAQ5lkoQQZZcqH6JqGX
-	 VtPF+5v+O8pmekMtv+EHpHAAKRIddhjG5TluWAqMIEhOr+k/e4nrYBXk2Vj0pfiZYx
-	 GQsaYnTFyujnw==
-Message-ID: <4c7c6ea0-84a7-45f6-989c-d1502b90694c@kernel.org>
-Date: Wed, 23 Sep 2026 10:44:39 +0200
+	b=iMlX/Y/JtwSu4cblQ6iLw2qW0e3IKyVInfxKJfA7BRoK/pTyJ4S+EDCwf3WlO2yI6
+	 ZMbKchOUQs6OzPlv6jnOnAFLMx2aX2yyJ4WIdCXkYXviXnt3S8QE2R7tMcyqyjh8rc
+	 D4YgQrB3UhOYtmXzHvKNBpqHyocQXqJnPewl5zg0aGtqvU/ZGIQ9ZTXHbd8dp3LwaO
+	 i/iIM+R+GD+O4G+3sJKba/ZRRZEkamytqnHX7jbxqcAlQeXOwGsRNUVKWYsrpYzEGc
+	 xDRsh1rc5dJlzI+7Op1ib6nlgpPzfyKS4T3MLSAsHl0DQtb7fEC+vWuK50S+36E0Ph
+	 m1Efg+L3WOhow==
+Message-ID: <9dcde7e4-dadb-4644-9dff-7fd8a26e29a6@kernel.org>
+Date: Wed, 23 Sep 2026 10:45:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback
- completion
-To: Barry Song <baohua@kernel.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
- willy@infradead.org, jack@suse.cz, liam@infradead.org, ljs@kernel.org,
- vbabka@kernel.org, jannh@google.com, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org,
- chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu,
- hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260921152449.629486-1-alex@ghiti.fr>
- <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
- <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
- <108487b7-0529-4282-b5f4-355804b4c0cf@kernel.org>
- <CAGsJ_4zGmGh70QtRBpnhueev3qt_bgB4ZiE9fkW-hgNjAVhv+w@mail.gmail.com>
- <2e695c8a-4212-42b5-bb51-fbe1aa162e1d@kernel.org>
- <CAGsJ_4z2nakqBCKd_uAn4bfub99r3NJt2spOUx-K0M7bHW3_-w@mail.gmail.com>
+Subject: Re: [PATCH v4 00/12] mm: make userland page table freeing RCU-safe
+To: Andrew Morton <akpm@linux-foundation.org>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen
+ <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-doc@vger.kernel.org
+References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
+ <20260922160021.a2fc65d05d9b867a141e5457@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -134,17 +177,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4z2nakqBCKd_uAn4bfub99r3NJt2spOUx-K0M7bHW3_-w@mail.gmail.com>
+In-Reply-To: <20260922160021.a2fc65d05d9b867a141e5457@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7c13gszmzxwbyzo9gbnyxdm7csog5xgd
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D094140007
-X-HE-Tag: 1790153094-877509
-X-HE-Meta: U2FsdGVkX19uGXTgVOEk3F/rnCJ6pPL3T2GOXaaHZOx9KpRd9Yq4UAFFyuejT29s30DO8A9Wxgg6AD8mno8ikw/pqW0/f2ePeoCMEF1Njav3LbAIsa8kiHpypbNJVz5PbiG1Ekv8zwxhkIO/CEdGHNUi7e3EItXqD0uOwGfb4aAZZQee3WmIzsd7VqJSCxvkW0O/UvoX4qgjF1JBvVbHPYbOWVX7/HEjCGPdXF0oe2IXutv7YaUzCZf8olJQx5K1cpWDPaLMFsKm5o3ocCxHGvqPH7/boU+Zp2/QSGE5GZGp8gZbeM3KUD+NOhFl5t0CtAmdMx88116Fqq/D97UTVbZqBE5OTjRoQ7RW6dtOV6/1oEe6aldBmAe+oWwyknLcD8F68XZ5G0QtlAJVJX0KMTj9BFdUTQZ4I4/QJd+TtK00S4tXNOAsQWxVVxP75uL6LJuZFZIG6HNpVyypcmIlHYVaz4xo8JHfyLoZeoW8mqJTmfjNnaET2zkrhK+YNcHunlXB9iEJKUTCbpZ9D2E7EHqM9e6nARDxvnssHdPlvijXRYqfMMuv6gXAObg1XTuy5cuLsysxgoFAduK7vEezlQTZF74GkHRlGFMZW4SN35n1YPSl7mWZ9FBDHcLd17gvjJHzTeSuGAceXQo7dDMvGckWVAGyoAPugwHVMowyc2Nmts2MUoT+PWeqkm/QErYgcjB88fTKdYyh3vtwJmxIVJkSkHVWajpNBI6bm8aSjsVXEMM7QVXWlVdSjxwNskrBX/4xojFGaesMODdcX8xWCtx6YvIQdBnEzYQAwyHJESWu43zpwhertq5tE37AqdPe7+zedBBL1JfAU3uLd9mlU9qVbmBnDRXbW5M4O1DrObbwM/naqQkfqqWh5v6idGki2JnRzhtxTRbXeZyceAPwgYHA70oSxjKFN8wsZxk0TQWVQZ6t3iR/oIKx4ndXeu/j0VT4Fm/iiPiKNqVDf34
- Mm3CBr7e
- 6+etYRGRL7/ky+XLUjFEDOHQXSj6shVD2SUfgltLmmMLW01fyaD/r9dT+W6n87YZQa/FKASEYNJ9xvjhC17sa8pJrP5romkqU6hM03Nat2+6CeW9Kl4GZIUDOhWkoQ9C+L9fk6uw+peMarWv3dCb3iY+Zvk5qgV+xWDhx8r2Fs9NxbBmPCzMpua/wdYzryjCnO7jAIxNGpaKAV5ZOJRNaIAWqhYdxGGzrI5ejsaqXTJq0BoRevbvrGiOjddx1b1mpAr1MAld9trhPRml386yUu22KqvF/+CCwIUFGsakKVCAZINc08jxePMXeHD3YwkKZsc2S8CaKI3uluAkDFFoqLKJ0X5ZABwXxhwj5/7C+7DQcQ67NYc2TIorERfFCRMWNeYN/MyoQi003fyMqAmckkIt0zyCehtx3q81VUoHcqKarNGw=
+X-Stat-Signature: gyy8w116ijk1rt1d5t5pnixkob3ak7by
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3D6A160004
+X-HE-Tag: 1790153166-379100
+X-HE-Meta: U2FsdGVkX1/d9WRLuzUJ0j+b/NFHOXd7Hvv2UeY3sMlgeTlTTYTBGfwJGrNnR4bVFE/0Niaj1YEDqCIFjnBzFmtQj+GKJN4apQqF4NuN/8yMsNwpdAOHvY1ZcpAhsjXvwUplpu7ZXpvQpvZK+bAqcexo8PwDIv8939Ot6rKNnKPjL9VzYs6jm6PP9WjUTtpM2dNsRfelV8Wd8fiueUAOFJDkz6VURgm5/ovANW62k/4kQSaRJB/ehX8j16X3ZU/0l5+A4QNAAO4zFqb7v3R29HWjx0BxouKPwoJiKCEksmWm9S/RjFfDZLlgN7zRPZClAZ8Ec+WoXgSMj2XoxkWn8HAAB1seRm+RPaYN40y0ZX+HRNfi0L/fZO5R/VT2DyzjWUpwF7M9FFVML77XqhNJegWrX4GYyshHjUndKkTrvTRYLbkqMas858NsoZmGclNK9kpEgLfbcIst2tTg86sTZupuhK9X4rxUryI9o24RTE4rjx3QtmPeDbif1rjMg9hTt2qWjqrjoQzI8K99p4E0FSIKlMiy5cmnWR4F8VeNraNlVOoG+NXYJfN+jRSgYXgxEeIh1/TZlQfcCenVQCR75HBd1UU0c48olx4l9N5AXIvPuw5g+yFsjzTLC1AfaTj3JVpDq4QluuU3ToD1/RiVwuBQQSLH9TqtYMS5uA20e1VEOwdczV55FeVgWV2jE1VlGyxExM4ggMPCyB4EcnFQqO16hYZpSMpB5T8B3MCPWiyS7lzGBMFzvkqp1d6/hUfbbGlF5ycizH/kemTsh/an8ur6Eur3wEJbU/65pvxBiRkDoHHk6veBoWOqaYGs66xxGvtNXNSIbFnHXzqX9taQJWSWlkDT+ep1jDub8THOm/8Wr7+bWX73pwC8oeVKbNnCmZEy0BSe++wmVsgZY1CdzY42CfIh5pq1xd11YKRzfkANk4wsBlEo6gbcSf4sPOP559al657UDNVJpVwnjWY
+ E0FNIVUI
+ lQ26+rkfy9GM/ssRebSe3mhH5Y+UkTHHL/LYnJEgZW7483VbB60GFEDXydydXl+yUzlOLOf3wpqyt+8m4qTMqp9xrYaEDbpodBCildBB8U0i59XLOE/GqLVyNSvMwiS51kfa2GxYofHOzcqZ5spAvmseE50CYroHetqQdLFq6/yz/hmqA72dSKsN+2aBKG8kDj4AtBXKmp9GRB/3+Qw1lvKg3xDYmhSx7chN7jCmsbxKX0fOFUujdnIlbY6HUIrFBCFRyFF0idh+8J14jKv7IYbMEK2MqUnBSEZdgt3GdjCgwuhG06DeDkVk/XraaPNQPfIzmVBUW4/MhBBWfV6lm1okwzbggQEOyQRVdSHz9m4FuLA0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,81 +195,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 22:55, Barry Song wrote:
-> On Tue, Sep 22, 2026 at 7:26 PM David Hildenbrand (Arm)
-> <david@kernel.org> wrote:
->>
->> On 9/22/26 12:37, Barry Song wrote:
->>> On Tue, Sep 22, 2026 at 6:20 PM David Hildenbrand (Arm)
->>> <david@kernel.org> wrote:
->>>
->>> I suggested this to Alexandre, and he found that it could regress some
->>> workloads [1]. That is why Alexandre is only making the folios
->>> immediately reclaimable for `MADV_PAGEOUT`.
->>
->> I really hate to add special sauce for MADV_PAGEOUT. Also, I don't quite like
->> that we do something fundamentally different for sync vs. async.
->>
->> I assume, though, that async writeback that is very fast might just find the
->> !folio_test_writeback() scenario just like the sync case. ... or if we
->> reschedule after pageout()?
->>
->> I am wondering: if we can show that letting async swapped out pages stay in
->> memory a bit longer improves performance, aren't we swapping out the wrong pages
->> in the first place, and not swapping them out would help the sync case as well?
+On 9/23/26 01:00, Andrew Morton wrote:
+> On Tue, 22 Sep 2026 16:35:31 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 > 
-> I guess that's because the LRU is not always accurate. There are cases
-> where our prediction of future access patterns may be wrong, resulting
-> in refaults?
-
-Right. But these would happen in both the SYNC and the ASYNC case. Which seems
-to indicate that making the SYNC case behave like the ASYNC case (keep in
-swapcache before evicting) could actually improve performance?
-
-Or is the SYNC case in general so fast that it is not a problem and the
-swapcache is just not a good use?
-
-> 
-> Even on Android, which uses zram with very fast synchronous swap-out,
-> I can still hit the swapcache from time to time. So perhaps with a
-> slower device, such as an HDD, keeping the swapcache around for longer
-> could allow applications to hit it more often?
-
-Why is that specific for HDD? It's the exact same app behavior independent of
-the underlying swap technology.
-
-> 
+>> The majority of architectures in the kernel defer page table freeing until
+>> an RCU grace period has elapsed, this series converts all remaining
+>> architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
+>> altogether.
 >>
->>>
->>> See Alexandre's description:
->>>
->>> "Future work
->>> -----------
->>> Barry suggested extending this to MADV_PAGEOUT and general reclaim. I
->>> prototyped dropbehind for all reclaimed swap folios and it regressed
->>> sysbench OLTP throughput by ~15% on NVMe swap: dropping the swap cache
->>> immediately turns cheap in-cache refaults into disk reads and collapses
->>> swap readahead clustering.
->>
->> Thanks, does this represent a workload pattern we care about?
+>> This is important because it enables safe lockless page table walking under
+>> RCU alone.
 > 
-> I don't know. Maybe Alexandre can share more details about this
-> benchmark. I'm also a little surprised by the 15% regression in
-> Sysbench OLTP. My initial feeling was the same as yours: we should
-> release the memory immediately after writeback completes, for both
-> synchronous and asynchronous I/O.
-
-Right. And see if we can identify why we are swapping out the wrong things :)
-
+> Do we have reason to believe that anyone is seeing any effects from
+> their arch's failure to rcu-free the page tables?
 > 
-> Kairui also mentioned to me that he once tried releasing memory
-> immediately after folios were written back to HDD, and saw some
-> serious performance regressions as well. Maybe Kairui can also share
-> some thoughts on this.
-
-Would be good to find the root cause for this: why are we swapping out these
-pages that are immediately needed again such that it affects performance that
-drastically.
+> This sounds like a rather long-standing wart, yes?
+> 
+> The patchset is thinly reviewed and mm.git is bursting at the seams
+> again.  I'll play wait-and-see on this series.
+Do we want to nudge arch maintainers to review?
 
 -- 
 Cheers,
