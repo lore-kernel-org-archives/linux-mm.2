@@ -4,118 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9880DC9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:22:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C6BC9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:23:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6635F6B0095; Wed, 23 Sep 2026 17:22:47 -0400 (EDT)
+	id A0DDA6B009B; Wed, 23 Sep 2026 17:23:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 614E56B0096; Wed, 23 Sep 2026 17:22:47 -0400 (EDT)
+	id 9BF246B009D; Wed, 23 Sep 2026 17:23:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52A706B009B; Wed, 23 Sep 2026 17:22:47 -0400 (EDT)
+	id 8ADE76B009E; Wed, 23 Sep 2026 17:23:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 23EC76B0095
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:22:47 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AFFD9140136
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:22:41 +0000 (UTC)
-X-FDA: 85246301322.05.7C36AC7
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C6B4A40005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:22:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 695096B009B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:23:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFDB8C0134
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:23:35 +0000 (UTC)
+X-FDA: 85246303590.21.996DD97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1533840006
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:23:33 +0000 (UTC)
 Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mYToTtxQ;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2NXnhWk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790198559;
+	s=arc-20220608; t=1790198614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6JszVb+RTu6ALEMMDucuPIFOfd98yGFKjSHhbkgHgjU=;
-	b=5EVjnCaGbl8YrEi/drmzRDUlkc+GDhV10oQaLm9m4SpRqjN3kRzHsiLvNKFFEOLLgh1INK
-	HK6uaDC/qKxX1wSh8qO67Uzng+c5C5LyGtdcWmThJkZ1dBMYo0qU1eH8MrOvFUBxVMBBK9
-	5ZB4q24Tu4eyZpWQ37Tr+gVpOkMTDXE=
+	bh=pFOUdSvHwil/K0FhFzOket4pw49ZzFhiG+QLBkwjfts=;
+	b=v6/yLVJM0cKAixBDsGKOURz4YY0g/stClWVeYTgrfRGNTK36N3TlimiC8/jpOBdci5i3C8
+	BTuJSZJ+bXsKqcPzZXiB95azeNZaszR5ON8WRoTQWUQle6hz0WJDGZveG5/cBkHLD2tnt8
+	spSGFpkbhrBj3WE5HapCUsPEV06WhlM=
 ARC-Authentication-Results: i=1;
 	imf27.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mYToTtxQ;
-	spf=pass (imf27.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l2NXnhWk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790198559;
-	b=yxk4nZJZvzbSDv7oAZ82mgHyT5DmcHEzyu3XTqYphWKOrORNQwzZ3DlcJIHUMICz2L0WJh
-	OoWNrvuQ1PUVZtmGlNYaZgP+7KtXLSPmwYA9ZU0lUFTR3q2ybVbKJr//u2MEgcLcCfbPpD
-	AH2BVW7wxVah9rfzZnTVEDCDXMhj9Mo=
-Received: by mail-qk2-f43.google.com with SMTP id af79cd13be357-93a2dea320fso125441985a.2
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790198559; x=1790803359; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6JszVb+RTu6ALEMMDucuPIFOfd98yGFKjSHhbkgHgjU=;
-        b=mYToTtxQWyPchV4Tv4fB44mReCl7+0wK/CzKpk2YY5bMjsfdhOOk7y+YPyorMr7SZ8
-         C30dR6U1EMvTZW6VeIDAS+900RbiIkt3REvRCF/tN2x6wuEem1u1NXKFHcwhGUfLH2RH
-         ajmykGSoHYh0L8g1WdbvCrNletAZkDG/8jajsmWKz4kIM8ce6/owXRQY7XPjyP+xqhkb
-         6N6e56MNYtW/QtOAt8UFy4Eu4wiuxiVzjtQMXSZVun4eD1PBJW1ftJTElHrNscODCUNP
-         2oHiF3NNq+mNw6ykEVvb1RBNu1aP761j6DDkmWX2kWJbUT6SOuI8kbkyIpL9GC29stg7
-         PF+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790198559; x=1790803359;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6JszVb+RTu6ALEMMDucuPIFOfd98yGFKjSHhbkgHgjU=;
-        b=uTdecPXlkeRxn2Gi37Njbd1YbCVllYnRBHd7lY8BsST/oTqpGtqWkOts6R5QcJpLHV
-         Wut4BMgW4e5/h7veKjuOuYHv8QY7N+pMCkDN/NGuMgY7EzP7gqONG5kmlekE0lu3hq+Y
-         NEI/Re4lBlJN/v3E4GnxCKRWbDZzP4tDKPd3AbLsXWFqUyQ93IpBnosgHLnmhOjPv8N5
-         J0qrXAvBg1ZU5+a1Dk0zNH4ni+G7lCr8xeeWjWblBnSdeZBCczvW/C0Jk2AtJvL3+H1r
-         kwLUmlDg5yBH8hcGCWREjer7u4F+kDCMxW000y2CAq5HhunTZIubWIdL7ZxZ4Q4Fe7Me
-         bjAQ==
-X-Forwarded-Encrypted: i=1; AKwUvByodcJ31tvN2o9rUazGuYeZAMQVt9INdxqklAaYLLVi6kdsRaJey4dStg4LfHudyy6vRP+7p9dx0Q==@kvack.org
-X-Gm-Message-State: AFuF++nVdCYR2rfzjF4QSFItfdOEv+gmGmLsjRaycp17iu8A9S1PXQqp
-	ChiIsCTaoU81f+Na6j2QO9HyZtqu2wta7cT5nTGyfvOtgBMeSd5cUUWnZDYY88I//7o=
-X-Gm-Gg: AYBFou0F+emNrJCKSMDT+jLKkuMoFnb/gvGBlTj/L1F3DQr3HZKj0EP55PQgAbgx1ZJ
-	R4j0UN8Fs89b6oiGqYdNK+9rh75OF9oY8g8CFJZF1O2LFZkqugw18+FchIJHv0eAVZT44mgvP+9
-	/73Ohsx9sEf0991/hH+/VcJxT9TAc7JCDLDngT/cNWRHh19wofYRTCogOw3fAxYBsm9Pi9rDzoe
-	PigKM4INYMt+teelo7/ynDpxph5TJW1qjjK2/RAdRZscJtMx6NJavskm4tVFU/AMm60G/6OtWbx
-	6WQAgMNlG/p1ROS6uJGUdpDLryJ3nG5orjFyaO7SOVxxA6HMS45n0ajTg79o4jSb6oYmcN13d4T
-	ySVM1OWVFSYYhn6rFABmR6sbdW+npaCQ0WvBIoSY+vWa6015N0YBpl6VYzuC6P6m/JZCH3adPRj
-	GYcOWuV8Sn1QUmcHocdbmcL5SqwyOOtu9MFUAxMjn3pvHh9iMN9fJIK728TnGFHjcAwrIKariVx
-	RCTqAx9BJQ6Tei0wQGEGqrwGY9RuMteK6Cuja1QHWAzJGM3RsMk1rjUyS8gth+tIA==
-X-Received: by 2002:a05:620a:225b:10b0:93c:b10:7243 with SMTP id af79cd13be357-93c346c2cabmr50513785a.5.1790198558842;
-        Wed, 23 Sep 2026 14:22:38 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c248cf620sm315660985a.43.2026.09.23.14.22.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 14:22:38 -0700 (PDT)
-Date: Wed, 23 Sep 2026 17:22:36 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vma: predicate setting mmap_prepare VMA fields on new
- vma alloc
-Message-ID: <arRC6lU7yJCrosDp@gourry-fedora-PF4VCD3F>
-References: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
+	t=1790198614;
+	b=Pi9YR7D9woq3ph1Ww/NJBwD6zgldRLRYqV64F5Nzw94NwZPRHPVs3O8nWljJ2xq8Ako28S
+	qC/aHO24GRSFXSRumkbj3BpKt4kgZXjiuqZBG9vRfi+mTCT+NHrD5sRjJw5MMDVvOTVf5u
+	bgItuKeY2WX3hQQiZNAliweIYm2q6z0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4E48143E5B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:23:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361FA1F0089A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:23:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790198613;
+	bh=pFOUdSvHwil/K0FhFzOket4pw49ZzFhiG+QLBkwjfts=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=l2NXnhWk5v24WehMq4tSpmYi+d5xm5L5yI8aFPMPz4HayjF3RJ4ct2hxFlSr6eGvJ
+	 0Dtw3flW+pOGjBESMhPfV/DI6fLstSCno88OFAUOcih9X39nhGNIm+VpXZpUCynB5X
+	 +D7okYDBr1ytqcLJCoruXi0yL6W3PylDaJ4luGmUZJF5UlIpJep2khrcvpacTDYim7
+	 IT05Utcze2c06jhGz6rpyFOWDLNJd1LCpKETbFh+ZE4BggMJqtOZYAweaXhTF8C/pj
+	 MBU8+1dE75n0Jan3UlAQY4zyyjUWmsOME/jxXvmE57pTuE7aDqGqKM9u4ELTtwB8wP
+	 qgVVtkJxP0phQ==
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfd70b08cso134375885a.2
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:23:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwbyIOFV9OtKo3i8MvKvmdTeIpBKzo+9Qb1v9UkC04JGSr5M6zc5Bg7ChdyWGuCYNKtuXcYmymeiQ==@kvack.org
+X-Gm-Message-State: AFuF++kZ3RbVhHGaSsVXHP3I3sPNqw3xhvcSYQkwGYjpOxmS6OgYcz55
+	iarhFS75ZXV2RqimKfNot1uqdIA549S/pcq0r9b9JAXK8+nQ114buquka+H5Xkpl4gghHTbRisM
+	dgLd94ghhYfC5pFJLOYxc0hAFkhOXJxc=
+X-Received: by 2002:a05:620a:2a04:b0:93b:d7a1:ba0d with SMTP id
+ af79cd13be357-93c346ca45amr66989285a.56.1790198612443; Wed, 23 Sep 2026
+ 14:23:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
-X-Stat-Signature: 3jdt19j1ec1ufjibp73uyf9syfnoraz3
-X-Rspamd-Queue-Id: C6B4A40005
+References: <20260923062832.479455-1-jiangwen6@xiaomi.com> <20260923062832.479455-5-jiangwen6@xiaomi.com>
+In-Reply-To: <20260923062832.479455-5-jiangwen6@xiaomi.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 24 Sep 2026 05:23:20 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xiLScr2PrPu7Eem73GvPCtsuYd3J05kW3SC4QSs5Q4aQ@mail.gmail.com>
+X-Gm-Features: AcwNN1U6u4upYBVse70ygcbBam77nB0znlsjMQqKiWEExUFJn-qljmWnP0sSc0Y
+Message-ID: <CAGsJ_4xiLScr2PrPu7Eem73GvPCtsuYd3J05kW3SC4QSs5Q4aQ@mail.gmail.com>
+Subject: Re: [PATCH v9 04/10] arm64/hugetlb: drop the init_mm special case in clear_flush()
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, chleroy@kernel.org, 
+	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
+	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 93ynomszcud163f6643hdgh1s4oiajjc
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790198559-562144
-X-HE-Meta: U2FsdGVkX186vD26v21Ce+9SnbvcJBBByRwT22h2mg8X/VCwaZGmfKIsW0IEuwTDhDr6U233pjXT4X3zDGDVLu+GwjLDvm9AjtCyo7UTrAKAOR4Rlnqj6/EjGwaigL6SoEc20MlbUfyfGbVobABtT+l4hOBXQmdE2EjVrfzSM9YJF2Beu59p8PaNCtNzpn3z7NHTsJnwlU9/y1v+TTccgXrImAQ+GBdIC5gtlJnr51yqoB3lGBlY+vze0JJsCqEemquZjDdafXmHRdBnaFDQ0C0V+FAL4f2si42yfXHjl2/q6Iz8hBsYJAvpfyRtE8jCf9KGJXDnURyuKkveBXiRQVEDy0LecliybV6IVhcXpBaHhXXSqc/rTmdXpxazGc8+lUiosLlziU6w4MiQePaQzCriJeVs+4uyyOQGrEs0A95xmJqfazICDcU0Gbc5mucwnxCKGmnOgQC87HGYCAhBcFiCEzGjPJ/si6Xq0N7Ypf0M8K5SigJnCVADkI24vBa3qSVFE7YKRdC/xI/JVqGbHCzwJ5T5BTvxOKDNuc4ZGhZNnGNp7nn8n9yakVdUBr30GgdTqeigPgqLaNa/j2N5GnL+luI4Z0dYEkY2oNy1X7TQiEQglYwHQoHsMz7Pqb/OZTxMoQq3DA0OZrdBqdNs0LPXHY8R2t0+EReyuhlA7aZXkjRdGKhF1mDoLEjKa36n9MaODNGfmmW7UJIpwCnU3I7ADIGaOgqRi1aKWed6HotqJv+xhIVBTGA4fTQGSHjBBu2GBE+nfP4DPA2PYstvSQFc2by6dEnmfP1WGyh1o2fPlfPMZ7iflbNwo8XzSK6/0pHbeLpQxbzOvUhFCl+EhAaFpimk8vQDkZmPFpncWzghHidijvYfM8kFNzPg3X1dYZESq4KWLq42AgTwZyXWJvz5CBsdeKtpS8wwAF2pbtEL37+U17Vnr8Iuxhzv7Ye+ff6XVDC726lkgGmeWbY
- /1T92niy
- U0keieR2pEkFIv+ULWhxje42qETxlUv5Dkg+mTpF/4s3dT/wn3DLi/b2GkCdwDUptzPgcDVEPh96nU8Ba7etm1uVzwDPYvYi1WWBBGbggyWsormbsPkLSaT8zMj3AuIRho90iosjHM88GLwf5xSZl+7lIs0y8pdxxCm11KED/UsXIAY1MEhIxf9c71WhJfDH5TKWx8m2Q2DREa33i85MJSQpaqsfLHZGKueHSCY85PAnN83ibo+PSD9rT8Sf7TNF7n6NN7zEil7ymdeqy7iNeR38c/+oyS5ynDnTxxVo4IXFP3OOu3mwkz2BPs+kUC7NyVXARDE2UMqfp1fMotmCa3cEBiZw7+SK2sBQzFbRNV+RNE1Qq6nJWZmWfhjuIC2Lp/luk5Docl1+BwHL6fin9m8BFXXM2Jfbjb+7zMOMVF0u4jkaEGp/tcreU7nBUFqxsMzMUGVy3ynYV/pk=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1533840006
+X-HE-Tag: 1790198613-594140
+X-HE-Meta: U2FsdGVkX19sON/ML+MTadvRK6LCENIEyZX/ElBZ9ZZdAxEMvqOnpGuzprO9NVvR6nPd8gAuGGs9DxB5ftlprkEWN1zbwNW2YleTgUgx2SrTSh2RQ3BMGgBhB8gUABhgrU8zi/oHReyznjaAzdEuK1wyeHgBPuAMyLLZw8tMhmhMbHipQfZzUuUyIO7ojCHO4JvXXnkS9mpCzqVIVmGJxXQOjeCdSZH6plPF0aPq3XyX6Onfko1TKTU6QH4P9w1DNoQfemqRfzemulVToljFCQ1BI1yUXFNWBv6z7yfOdCLyDpY236BufXA5qQg82vVT9lSdBbyJ/D6r6owdVV+qJ5PZ0kRTMERTwoFhpUyE6S/qaDPDVO4zeOoQAJxHXmMK3OKyJXGoHLhCVU/WGgOJstOLMGuwzLDT6MRjAzOH5SwZnlKEkCWemwoSaZcpU4PLIcT8l8Gn7FFsD0/EH0b3cUh1hy5/jZVlQJFRiPh9pxRb/16HeCQbUs1ttzlN2D6ZtAIVSLpV29jAISxk17IAXw6fRhUVrOx8t7Xo9GMCvsRp6Ml+GzSVzDPpewSnr3StNf1Rd6lDQvf/Xrs4D9qRdgeMa0sBQlzYH6qGZBeBs1UL/XO+UAooW4cVMn/MEmJsR6jwQzxoPXr+U/ZY/hlaAqoguAoQ6SIycJLgQ+oq+NT802NH/DXrUyhaFc/2FgREMv0Zs91U2yxY5Zbqe8epy7rMEGL+mIve6Biyxv+NL3XcE45rPujO59ywXgBizg/4nR/1S93AkmDbaJ5SDoXs8S+jjzh2quD/c14Ses2SvwjNkNPcO5epDq+GFM3P6e7acmG7QNZjx6qFDHeDqvlvyjrPSTyW7Em7rXWv5810BnJbi8ORLO/6kugGXu3AhdzES4IjgJ+cVl0qbSsSqYY46Nk06UMykJxUnIg9ZVnSTCtGSRzRkJrcA4QIYvP8fD/A+d0lyK7NbgAJn03Le54
+ EIDbN0C7
+ 3S8cBgVEOTu8aAaLkYmKC/wBiboDAbr6zEfBkDFvtomZfs8EtTHIl/BShRVkvG/fVO7R/n2iNcQnUDmZCeMA4zakCeNId8vVDNO49fsGaC2xxV2CT9v/NBLlvM/I3qKNr4qB4Pgihnj4SsYToW6xkUUaxY9tAONJShskHJuLtbns8fBzuj3Q5/OxZY5a+ZaOgVX2Ly1eGo24N3kygVIBHkdHpqaNOmceIrulmAzT8QyiRfrj+enaBCy8T7aJNOgjncDYgKrfVEmKpIR87c+GjdRfNZVn1WZJD6//WrIAValvdh/eFpKLCfcjWXON2XJ7GnGjFwul0iwuiiSJSI3jBSDccINV8VHOstCCRazcv/qx+VRgLo1SxPkX8bMunDIns/FVtCMtIM0GrEP4TSrxCdN/Rq/Z6YQ9g7+aZNHbUxV0bNIvp9yy6gr/U0yKsvJlIOKT5lg1aFQWCvG/Bvw3Vx7Jq+KWIoQw/Mlu+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,35 +107,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 06:45:41PM +0100, Lorenzo Stoakes (ARM) wrote:
-> It only makes sense to manipulate VMA fields if a new VMA was allocated,
-> rather than merged.
-> 
-> VMA merging does not compare vm_ops or vm_private_data, so a merged VMA
-> keeps its own, which is also what the legacy f_op->mmap path does since it
-> never touches an existing VMA.
-> 
-> Currently, these fields will get overwritten by whatever state is
-> established in the mmap_prepare hook, and if the VMA was merged,
-> vm_ops->mapped will not have been called, so this could destructively clear
-> existing state without replacing it with anything valid.
-> 
-> There is an implicit requirement that vm_private_data and vm_ops are
-> fungible across VMAs which means that losing the 'new' state is
-> fine.
-> 
-> However in this case the 'old' state is being overwritten by potentially
-> invalid 'new' state, so this must be rectified.
-> 
-> Additionally constify have_mmap_prepare while here.
-> 
-> All existing in-tree users either derive state for the tree or are
-> unmergeable due to VMA flags, so this has no direct impact.
-> 
-> Fixes: c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file callback")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Wed, Sep 23, 2026 at 2:29=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.com=
+> wrote:
+>
+> clear_flush() calls flush_tlb_kernel_range() when mm is &init_mm. This
+> was added by commit 06fc959fcff7 ("arm64/mm: Support huge pte-mapped
+> pages in vmap") because vmap called set_huge_pte_at(&init_mm, ...).
+>
+> Now that vmap uses pte_set_huge()/pte_clear_huge(), mm/vmalloc.c is no
+> longer a caller of set_huge_pte_at() on arm64. The only remaining
+> callers passing &init_mm are in arch/powerpc, which uses its own
+> implementation. Remove the dead branch.
+>
+> No functional change.
+>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+LGTM. Please see the comments below.
 
+Reviewed-by: Barry Song <baohua@kernel.org>
+
+> ---
+>  arch/arm64/mm/hugetlbpage.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+>
+> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> index 8e799c1fe0aa6..ce247b06fe03d 100644
+> --- a/arch/arm64/mm/hugetlbpage.c
+> +++ b/arch/arm64/mm/hugetlbpage.c
+> @@ -206,10 +206,7 @@ static void clear_flush(struct mm_struct *mm,
+>         for (i =3D 0; i < ncontig; i++, addr +=3D pgsize, ptep++)
+>                 __ptep_get_and_clear_anysz(mm, addr, ptep, pgsize);
+>
+> -       if (mm =3D=3D &init_mm)
+> -               flush_tlb_kernel_range(saddr, addr);
+> -       else
+> -               __flush_hugetlb_tlb_range(&vma, saddr, addr, pgsize, TLBF=
+_NOWALKCACHE);
+> +       __flush_hugetlb_tlb_range(&vma, saddr, addr, pgsize, TLBF_NOWALKC=
+ACHE);
+
+
+For the vmap case, we are not mapping over a valid mapping, so there is no
+case where `pte_present()` can be true. But I guess we can strengthen the
+check in patch 1 by adding a `VM_WARN_ON()` for `pte_valid()` and some
+comments.
+
+/* For vmap, there is no valid -> valid transition */
+VM_WARN_ON (pte_valid(__ptep_get(ptep)));
+
+Best Regards
+Barry
 
