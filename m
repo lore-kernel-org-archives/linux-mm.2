@@ -4,181 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE748C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:24:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4355EC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:27:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D296B0088; Tue, 22 Sep 2026 22:24:57 -0400 (EDT)
+	id 0126C6B008C; Tue, 22 Sep 2026 22:27:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D050C6B008A; Tue, 22 Sep 2026 22:24:57 -0400 (EDT)
+	id F05A46B0092; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCD3C6B008C; Tue, 22 Sep 2026 22:24:57 -0400 (EDT)
+	id E1D106B0093; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 944DD6B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:24:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8CECA40679
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:24:48 +0000 (UTC)
-X-FDA: 85243433856.16.8A02E70
-Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7BEA4140003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:24:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sDgJie3T;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF88D6B008C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F29C80672
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:27:30 +0000 (UTC)
+X-FDA: 85243440660.12.F73E140
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6B47D1C0007
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:27:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dqYl3tM1;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130286;
+	s=arc-20220608; t=1790130448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89+U8KAEwLqIX9mpcp+eoIG3lsJI+yoRSssy/pmscRA=;
-	b=U7tsiJICjo/woZcAkdvLXrjai0MHNWy2durxYfZmjVnkTIf5+AeV4nTvVGbgA2Gc+WcNdo
-	EKZquiUbfY9KrmalmdAff0Dph7IkcJ2Qqhg6uptZ1mZT1YAVMNsi/Q34mGZ2gyn/voWNbv
-	iJ+fWRLFZdB8z+3X+59CIdPwv7JbK3A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130286;
-	b=BpSq/99tr8AKUWRrkuUYLZHX4sYArpLbDIdMmTtNKoqBCWqoHDKxMFhrGA3sHFsAcL+SsY
-	lQ6AWX3wnIZ6uPTU546gu8pN5s0mH8lAwP4bSESh+xKCWSZXvMtxQik74Nkp/LGZAW2mF3
-	vqVEzeYXLaDCYAwdI30nQOXR+FlFUa4=
+	bh=9n316uGecMdSl/OJIOHSGu5fcSAJzdq/4iqnK+s/yDU=;
+	b=CZYm55F1gBsjKCXc3JW+yLxvlpULjQzPEEs6csXUhkh5uAbKMH81ZooZqlXMpebu0g33Ye
+	coZUdvluFmHBM3WdF0nOOUl1Ymq2SxNrlYEWIT9PqiYJxPXXMcvVLb/GJMSOC/Iw2IR1DJ
+	i99pwTZ+TFR8J2RTYzO9vjtdWdnhiJw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sDgJie3T;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=d3FVAdMqEDWFoCMHxuxCTxk+fOdRBfvFdCrMB1cIOo0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790130285; v=1; x=1790735085;
- b=sDgJie3TWH+fdw4bP6AFL2R01tqn+weltrhVYfbvKl/ZicGlcDHYgmQQA1cpzDCeEmLO6ipb
- iqxgjthgdfUmW4p8oo/f9rSxjGHmq7xg/niFAEbe0seoUnYPui5S0vth/9PAMtGIEyB/QXMx88W
- Z6r0R3UbMASmsfgCjk3a01GM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b86f8e4163d69484;
-	Wed, 23 Sep 2026 02:24:43 +0000
-X-Mizu-Trace-ID: b86f8e4163d69484
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	guoren@kernel.org,
-	bcain@kernel.org,
-	geert@linux-m68k.org,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	shorne@gmail.com,
-	dalias@libc.org,
-	glaubitz@physik.fu-berlin.de,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	linux@armlinux.org.uk,
-	vgupta@kernel.org,
-	monstr@monstr.eu,
-	chris@zankel.net,
-	jcmvbkbc@gmail.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	davem@davemloft.net,
-	andreas@gaisler.com,
-	richard.henderson@linaro.org,
-	mattst88@gmail.com,
-	linmag7@gmail.com,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	deller@gmx.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	chleroy@kernel.org,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com,
-	svens@linux.ibm.com,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	ysato@users.sourceforge.jp,
-	shakeel.butt@linux.dev,
-	corbet@lwn.net,
-	rdunlap@infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arch@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	hughd@google.com,
-	qi.zheng@linux.dev,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 01/12] mm/khugepaged: deposit a newly allocated page table on collapse
-Date: Wed, 23 Sep 2026 10:24:36 +0800
-Message-ID: <20260923022436.61930-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260922-rcu-pagetable-freeing-v4-1-fe1ad1f1e303@kernel.org>
-References: <20260922-rcu-pagetable-freeing-v4-1-fe1ad1f1e303@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7BEA4140003
-X-Stat-Signature: 6xdkr7oyyu68ys3r7bid83wsqauf9rff
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dqYl3tM1;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790130448;
+	b=FsuMHelEVAqZRbJ3ov4Tuc/IXSjOGoUJRFyBLKdMLIP3xX95OC2FdiPw/VgwCRBhfVZ1QC
+	5QsUyJvdXJp3uW64TTP9RW4wCwjEVvUHsEv3R+D2CsBpBAzk2VOSY87m7uaSV5WUsXDMhB
+	vYeq8dnCIloeDXqNMAmpw/jtz47qUPA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 94421400DA;
+	Wed, 23 Sep 2026 02:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D312D1F000FF;
+	Wed, 23 Sep 2026 02:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790130447;
+	bh=9n316uGecMdSl/OJIOHSGu5fcSAJzdq/4iqnK+s/yDU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dqYl3tM1PxcISjSSdtgTTqJjrirf3epW9pDLwiuQdqVC4Zqsi/WBXp3y/B9nFxTMQ
+	 vzUFv4T5o2ZTZy9ls1cEVG7Mokxmt21cH9zUM+7Gsow7VY3b9bkrjTcsNvugC3Ktnj
+	 LsXDZADWi5gTTWcK36SOI4Mso2AcMelK6H+Op9u4=
+Date: Tue, 22 Sep 2026 19:27:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: mpenttil@redhat.com
+Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org, David
+ Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Leon
+ Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 00/12] [PATCH v14 00/12] migrate on fault for device
+ pages
+Message-Id: <20260922192726.90dec3c4c77b8c9063dbf218@linux-foundation.org>
+In-Reply-To: <20260922053421.4092027-1-mpenttil@redhat.com>
+References: <20260922053421.4092027-1-mpenttil@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1790130286-501720
-X-HE-Meta: U2FsdGVkX183cFeSkT8dg/Bc0Zj1R5E0mzLPHtx1PG5/AZ50QLCrOacWxmH/fUiK5r68ZGvU1y1INGRTW/SEXbiXRpdDsmRcsovK+oNjytNnwREJEXLWCSHaMAoW8VwBFPqkvLNpDOdRmv9Zdj3/HXmI5NF24mK4846PDNYttz/yn+lgKl8s80XiquNllL55Ie9LbmNCAgIDE2Koq51tGUgIpueyKFi2r9+05pBbKSZik41UFSN2zARvY+t/2Eli+zryRycaOEHzKHOoF7YJJb0vlpnFBxyGkv1EchvQTpvztd6nK69hOHLTzvzdZ9UlhQhEY1WLBzMWzyfNlBU3KPOZJnUR0fz9YNYCcu0yJjUKKG7rKxKDiYvKODH7kAbnAgeLfPsbWDqUIev2u2kXuq3WRNYVxjFl0t5g+ZoznE231h44hso9/UbKH8asda78ICgrG0T0WgXlrGZriJ/tkRp5YhMP1LDeRv0QzvRu3ZVc9rlrj8dMbeMzn68pfwpwtE8l0Wim0XcjC1gt0p3dm7DVYFr2QmR1PB61nBsnwKePUJz1lkmA5mTHPk1jiRKd+nGtnkupKmKpeX4V00YKWvcv65+Hjvsa1OSfDH3z/dz8z3l94kXCFfE+itNr1hCkYl3RxDgbPtGSNp6au/MI+kPIbe5GmvnWQ0f833qkv9de2IY8KTuZP128mZyrWESkmXK/wVzvDscr+FYs92bEGzy8j5GIMYOhfFeRNuKHGIf9I+R9P7jcyULhBGcqS1ZN0ylgeOiB4uvrF5pn20NKcEIw6Fbw2Ocv5ma5iV9Ouz50/MwYHeBCx0ImGQdHY7lSEp738QKSnU7W3wV/tunjI+LpXiNAEqDh6rhxLWyMuk86xpEhT80LpYA/VW5JyWVF5MlDRGO9uuX5Gx2Zo3kX4ZVSCWyaNqA3V7OeGd/ZI7d9aCd7Y3lCsLo0aNTn8Rn4PCnvi3YpX+lRjQUdziu
- fXUAODGb
- MD42EDPnQ3FtHSetwiiCBfjSmW+VYBM8EsOnPnAbCwLVIoGOl1LJtiKbugBHZsr+df/iHgGuZOiNloMBsk/eHQpQpbtDSbuk5wwD1FBCWi3B9zY/9U50H0YjzgPcYu/CZfwI6fb1N/aPbutL0ilWPy0kPbaijBas7nm+w/4oAM9+mJeJLoYfnKUsC7nDqVqWIFNw3Y4K33iQwj7RCkeetrYD4kavU/nPHA8iWt7//aKsAMV+IXZmlo95LNdlRG6MydtSNHbXG7DtbTBDsjeb00BqqO9/+Cv+EbPQtfb1JEgYKl1qFu2poTo6qugPbO9oJJFdoVA4MSgz65cE=
+X-Stat-Signature: 584o7b6ghf4xczcfnk8xtpfwga8x6hwu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6B47D1C0007
+X-HE-Tag: 1790130448-145803
+X-HE-Meta: U2FsdGVkX1+1OggRzT4zMGBvfbCdSsTllBndfEnRuyhVuiqse/G/F21zChjD3ufVWre8Ou1vz8617wy6hHOm/nYcm60B6AjJxDR5si57rsISQUqpTV0BiASUl5DSltTmNgigkY4yWaaq9g6WyCuMDL4wo6L6MG3/HjwespANWh1X4cNBPLHGKJMwq/1bAkqRVERg8KXhh3dbPc1rae9oYKw0BW/KtDueLeXsMFog937Vf5ptBchf82KOroBn0bUVqPipHaYEdSq0JVfcMKQVxknUKx0k9d+pnD2VoEkHfG87LmwSibXQd7q/nWtAeHRFxhDc0khiccZMoYJ8VqA9A/ScES/7m54nSlouOEPeTUlT8qHmUd0S546cr6GlD/02TzOy40QhCbD5z61e/7WJX+aF2IbHMsG4MZGAawSLt1ZybBt/aZ2lue9RUy43VomSB+p1adEhyRMMsGZ6x9+D9o0cY5cp5fktcKX83kzqjKtM8WAHcdD3lZ+tZIUvwyWb9wuO2dJqpKUwPvVaJJN1WhoMd2xodZN/KuUTS9PVXhew8cSRNfULjo49gl/qt6wyDDX5Oa2rV9QegtOuVDNmzRUNCWPxJS7I946ppncQrRtLjlZDERlzThSbGsYjCXTX+5VgXAroFYKSmKTl2PwZkkxcdINMCLvvxoJfJFtotfzRjskFHx2ntKn7BTtJlmAN9TyIkgyLZacYezV214wHPh6XeFbedw2sHesD8dhuj37MlrUbiyO5za/SZ4YNkS6a3k5K+TWGhft5dtImd7REOEEppfEW6UhaNpHAJ3E4hsh0PJWRF6WxtmvbYJNyWA6cSlXDtNEkWdGdBDIsGaE2BPTMrT5EjcsXVG+SeiONjqiDjfcZ7xkoCYwx/DclFQEMY79o1+cJSwVLX9YH9juabeLHea220kLx/x3hHkaJNFe+Hghjz38aM97GPihLpxCHbQ47hObEgFh0hLImmeE
+ qI9RGAM8
+ Kh2SUCwpHtPc96FGJtWDQuD2GtyCqyCJxjbcQqxBc4KI7e1LY4mT0a+qo4EtsoWAmA4t8LQeUwsgr9vSf1Dtl9IKKAJPBwQrQhheUne+vZwLYqam4h9xpK3KsIPTTiFduk99l8U9Ih7VU629psqzXqnBGti9xzg8uwcrNS29gBEcKm+qvJIjtw8ojql+Tp4RuyBgIYcvc8o1cb8pIr8aH5Ij6g2X9UPmdcFObHcmI/aDUFOS+tlQ1szttR5+wSECF7GXMPuHaCzWYl82hStAM5Ljuh5/D1sRcEkDmfSOAtmOw3hb8nAC/FTNq3GBG9JV78ipIRcxPC602TyNvn6Z3OlC1QVuS1jIX3lRf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,128 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, 22 Sep 2026 08:34:09 +0300 mpenttil@redhat.com wrote:
 
-On Tue, Sep 22, 2026 at 04:35:32PM +0100, Lorenzo Stoakes (ARM) wrote:
->collapse_huge_page() deposits a PTE page table on PMD collapse in order
->that it can be utilised for subsequent split operations, meaning that those
->operations do not need to perform an allocation (as they are in a context
->where it might be unwise).
->
->However the PTE page table which is deposited is the one which is currently
->mapped by the PMD entry that is in the process of being collapsed.
->
->Once deposited, the PTE page table may be used in a split of any other
->unrelated PMD entry.
->
->This is currently not an issue as this operation is performed with VMA/mmap
->write lock + anon rmap locks held, so ordinary page table walkers will
->never accidentally end up walking the wrong thing, and GUP-fast is
->protected by an IPI via tlb_remove_table_sync_one().
->
->However, the series to which this commit belongs implements RCU-safe page
->table traversal, at which point this becomes problematic.
->
->This can be resolved by using pte_offset_map_lock() which gates on a PTE
->PTL and a pmd_same() check, but lockless walks are unsafe as things stand.
->
->Resolve this by simply allocating a new, zeroed, PTE page table to deposit
->at the point of collapse.
->
->This path is already costly and an allocation has already been performed
->for the huge folio, so this allocation is statistical noise in terms of
->performance and memory usage at this point.
->
->With this PTE page table deposited, RCU-free the existing PTE page table
->so it is safe for page table walkers to traverse within a grace period.
->
->This also brings this deposit case in line with all other page table
->deposit logic which deposit a fresh page table.
->
->Additionally, this was the only place in the kernel that displaced a page
->table like this, so eliminating it also helps consistency.
->
->An edge case for deposit exists for powerpc and its hash-based MMU - it
->stores hash slot data in deposited page tables and zeroes them on withdraw,
->so a zeroed deposited page table works correctly for it.
->
->Since khugepaged runs as a kernel thread, do a little dance in
->alloc_deposit_pte() to correctly charge the allocation.
->
->This is already done for the folio allocation via alloc_charge_folio() but
->no such wrapper exists for a page table allocation.
->
->Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->---
-> mm/khugepaged.c | 32 ++++++++++++++++++++++++++++++--
-> 1 file changed, 30 insertions(+), 2 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index f49a6710933b..dab421f8233e 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -1278,6 +1278,23 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
-> 	return SCAN_SUCCEED;
-> }
-> 
->+static pgtable_t alloc_deposit_pte(struct mm_struct *mm)
->+{
->+	/*
->+	 * khugepaged is run from a kernel thread, so need to manually set the
->+	 * correct memcg so the allocation gets charged correctly.
->+	 */
->+	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
->+	struct mem_cgroup *old_memcg = set_active_memcg(memcg);
->+	pgtable_t pgtable;
->+
->+	pgtable = pte_alloc_one(mm);
->+
->+	set_active_memcg(old_memcg);
->+	mem_cgroup_put(memcg);
->+	return pgtable;
->+}
->+
-> /*
->  * collapse_huge_page() expects the mmap_lock to be unlocked before entering and
->  * will always return with the lock unlocked, to avoid holding the mmap_lock
->@@ -1293,7 +1310,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
-> 	LIST_HEAD(compound_pagelist);
-> 	pmd_t *pmd, _pmd;
-> 	pte_t *pte = NULL;
->-	pgtable_t pgtable;
->+	pgtable_t pgtable = NULL;
-> 	struct folio *folio;
-> 	spinlock_t *pmd_ptl, *pte_ptl;
-> 	enum scan_result result = SCAN_FAIL;
->@@ -1310,6 +1327,12 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
-> 		goto out_nolock;
-> 	}
-> 
->+	if (is_pmd_order(order)) {
->+		pgtable = alloc_deposit_pte(mm);
->+		if (!pgtable)
->+			goto out_nolock;
+> From: Mika Penttil=E4 <mpenttil@redhat.com>
+>=20
+> Currently, the way device page faulting and migration works
+> is not optimal, if you want to do both fault handling and
+> migration at once.
+>=20
+> Being able to migrate not present pages (or pages mapped with incorrect
+> permissions, eg. COW) to the GPU requires doing either of the
+> following sequences:
+>=20
+> 1. hmm_range_fault() - fault in non-present pages with correct permission=
+s, etc.
+> 2. migrate_vma_*() - migrate the pages
+>=20
+> Or:
+>=20
+> 1. migrate_vma_*() - migrate present pages
+> 2. If non-present pages detected by migrate_vma_*():
+>    a) call hmm_range_fault() to fault pages in
+>    b) call migrate_vma_*() again to migrate now present pages
+>=20
+> The problem with the first sequence is that you always have to do two
+> page walks even when most of the time the pages are present or zero page
+> mappings so the common case takes a performance hit.
+>=20
+> The second sequence is better for the common case, but far worse if
+> pages aren't present because now you have to walk the page tables three
+> times (once to find the page is not present, once so hmm_range_fault()
+> can find a non-present page to fault in and once again to setup the
+> migration). It is also tricky to code correctly. One page table walk
+> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
+>=20
+> We should be able to walk the page table once, faulting
+> pages in as required and replacing them with migration entries if
+> requested.
 
-One small thing: result is still SCAN_SUCCEED after alloc_charge_folio(),
+Sounds sensible.
 
-	result = alloc_charge_folio(&folio, mm, cc, order);
-	if (result != SCAN_SUCCEED)
-		goto out_nolock;
+> Tested in X86-64 VM with HMM test device, passing the selftests.
+> For performance, the migrate throughput tests from the selftests
+> show similar numbers (within error margin) as unmodified kernel.
 
-	if (folio_memcg_alloc_deferred(folio)) {
-		result = SCAN_ALLOC_HUGE_PAGE_FAIL;
-		goto out_nolock;
-	}
+But no performance benefits are demonstrated?
 
-	if (is_pmd_order(order)) {
-		pgtable = alloc_deposit_pte(mm);
-		if (!pgtable)
-			goto out_nolock;
-	}
 
-so if alloc_deposit_pte() fails, collapse_huge_page() returns success
-without installing a PMD.
-
-I see sashiko pointed that out too :)
-
-Cheers, Lance
 
