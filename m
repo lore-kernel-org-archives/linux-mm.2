@@ -4,90 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60A6C98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:01:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6717C9830D
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:04:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9A646B0088; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
+	id A0A3C6B008C; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4B606B008A; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
+	id 9BAA86B0092; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60886B008C; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
+	id 8AA4A6B0093; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B42D36B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42B1416019D
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:01:56 +0000 (UTC)
-X-FDA: 85246551432.12.0224C23
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id ACDDD40014
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:01:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLUEIV05;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E4CB6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9607140191
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:03:58 +0000 (UTC)
+X-FDA: 85246556556.22.A804B3D
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F223E140004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:03:56 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BuH0Onw6;
+	spf=pass (imf09.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790204514;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1790204637;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mAVq8riAYpkFQqE3vtYLztepdMXLNV8rYLOj0yWRQXo=;
-	b=UFZ1KfsNKisKEqM1PSsvu+H8UIbGv0BocoMOYnXoVxfij1tUQjezz+z+dVXD7bslAMkMlF
-	Fs49k7q9bSpmxB6OHZK7wJD+jPUM6mFMXUUFaK/ib3cdzsikN25U1nRqa+zEdsLt9o83vL
-	0ocugReuYF2S+Xb6MjRezeLDtpzvrv0=
+	bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
+	b=3DaJ/u2mYr2kQMA+jm3twOfeyXd2Gi6+B6cTW0Vwj+jnR2g9FoJ3E1MKDXMt+9Vbo81qEk
+	WwzCZAuTV9tukaoKL1/7/iK4sBfsCxFarUQXQuI3yz50u4ASEUK0kSLXkIH+t4ZDlTH7V3
+	TdOvp3GjjtKJvjg/yh1qL7zjKST0ht8=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLUEIV05;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BuH0Onw6;
+	spf=pass (imf09.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790204514;
-	b=cmVP2HPLqjpTPsqcihaZkQaeaOOo8XjUhuCUcc45MJIGSVRhyaZEuFdNM8gcCgjNTYFOVp
-	ZcnmcfXlkjCI15afU/zzZssCOPlmzLN2K+toJjUx2xoVkPBBsL1gMt7qA4sdjyVkLM9UI3
-	AP1c71dD7fbPL8xXQHLjBzsM5ozJB1E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8672060008;
-	Wed, 23 Sep 2026 23:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8160E1F000FF;
-	Wed, 23 Sep 2026 23:01:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790204513;
-	bh=mAVq8riAYpkFQqE3vtYLztepdMXLNV8rYLOj0yWRQXo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=NLUEIV05TiKc0C/byycgiDauYslTGWVbc+nJ1MUD9VUnqU25rGdqejVNIqBf3pKFJ
-	 5vpamPJuuFs302pY7sKIbWnzJH32VnHKvul5fJk3jKvVr7Tc+RFWXj9/iGc6IbDVjl
-	 jCkFhVX+S5jF61sHSBBZOd0TuT3bqST8wCP0BMs9ud2VQgDsc4+ALG3BZb2tvRbwc8
-	 rD9T9C5cZmKTsNXBA80mNGwvnvY3UmL55JJqvuEJmNzO1rvzvBkuoryvD8WVHSieJo
-	 2LInadbEVFU7SMGahlhm0imyS859rWt1Y/OvYWDYXJH3pd+0RiHs+LPs5X/QFonpeZ
-	 Ws1Um62uUwtBg==
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 3/6] fs/namespace: Add vfs_open_detached_mount()
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Andrew Morton" <akpm@linux-foundation.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Alexander
- Graf" <graf@amazon.com>, "Mike Rapoport" <rppt@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Pasha
- Tatashin" <pasha.tatashin@soleen.com>, "Hugh Dickins" <hughd@google.com>, "David
- Matlack" <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260923224408.3745689-4-pratyush@kernel.org>
-References: <20260923224408.3745689-1-pratyush@kernel.org>
- <20260923224408.3745689-4-pratyush@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 23:01:52 +0000
-Message-Id: <20260923230152.8160E1F000FF@smtp.kernel.org>
-X-Rspamd-Queue-Id: ACDDD40014
+	t=1790204637;
+	b=GCbtLlHWPzWVvNl+75c+ZSP5kVfljyVzxpnyPuJJN3zw21sepw6Pbz9jOK4GbIMe1rGJqE
+	hmc60lW9AlJ3fswQZjqPIXMn+mw4L1412T2x5cuVTQ5IHuDcJZtywhYiq9ms8u4/szRz3e
+	ogv8eMERHxUjb07oIfty7PwcsmGTIMA=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f89so1045492f8f.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790204635; x=1790809435; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
+        b=BuH0Onw65fpscjjL4T6c4JVg/o9TLcXF98wDWIroUnRIBoKXCWxGsFR8F3p/Ey29qF
+         Ms59tL5Uwyvk9Uq5DfTv6exEK22ZK1bfRYUAVLZYtNm+FADtbX5buGnFNTn4izC1wned
+         se8Ypdb2SmNAz0NvDabf1ufb6ZQ3WfO5vuYcT5zTI2/gS5agmBYa8ttLydJ0WkNgefHE
+         +NEeVjxvTnoMgSBdghv76d/drBu8Ek2T1YK3U+x+4cqySseFLLr9EjtqoEBEkQjR7YdX
+         q2yDrysSQqKqNnVL3Kk+64PS+fw3275/+Lkf7GTJwbt+9lDsOVe2gYQxmvPXKk30BcEr
+         It4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790204635; x=1790809435;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
+        b=HRzjVGjmsehuricZn+H4AigGUsBJ1TgzJjHVXx1rkmhBn67U3MA+wQZUCnMyh9DEsM
+         yeOM1upRN4rP3Ovba6BzJWr9Dr31sV6fbJZRMyIJYTFO/HOVi/5zG9AyFhEHWhlJRD7e
+         /Mi0Xh91rHEBxdKmDg7Gg5qaO5P2kLCSJZ2qL3Pu/5fcm5SnU8rnOT3k7rrhXHB0x6YN
+         kOW5OT0rxLWuqewKUatunMwDg2jRjWQJ2oTGtSVjYvpVtJ6YSSrIKmEDR2pWAJNA4ltN
+         zuoNIssaO+TGGhZHyUwSXlGOK3GrLaSMJFtvQBpR1JapC9cmSwZxwgAX+DIhJoK5MlCq
+         G4+A==
+X-Forwarded-Encrypted: i=1; AKwUvBztkkOteeZe1U4k+xS0IyjIcW3tO4BZIM0HchcSlx0mNON7I6JIXNepyibuLYXC7rTbg0t50Drg5g==@kvack.org
+X-Gm-Message-State: AFuF++kKfiFq45hYgJWyNoa418atP3o946CpLAZyCvJ7YRYUg/8ElSW0
+	f/S6P0xhD5uz54UFMLb+39R/5uLbtUOWhsdGFdGVmAxic1PLM0strJzU
+X-Gm-Gg: AYBFou3Dmne4Ap8QoYHz9DuiCz3zzYIcnTWPqy3v+esWjjOWYCRhrK7gQRQQ3WSgQ0G
+	sQPemovPgELMPXmPe6XDcMjpOzSi5NuuqCvd9NBT7pwppsOEpquzHnQhsAZfq+QawUld3svOO41
+	GDqI99y6fLvjJfkc4kP6VXzUxqdnn5Ztj9xkoZMDQymgoSQGO8jlqa3/E3t3juLYA1RJ50V93Po
+	PdvJTjObjwvE5YJwrbwrKahHtYgmnX4e4l1fQmk1DZpZ9tsg+qX5F2FqP0QTtoJ0hJ+3JMo4V3w
+	m2e34R1xwy+cqyrBXcA+MSZkUNSCHjutc/vLd3wG6uyJb9Hu7IE4at1Zd5+k1M3EymrBsVamitn
+	uzo+2f1tScDaF3sbNFGZIzoiInWT5Fq5/plzfCDe+WO4koJL0GEiU4FLKBIOS0Y+5ODw5/u9z5F
+	8oxYIG6kplir529lyOljRTtfKQ74niJ37a4JaFi68/iAXStlRldCo0bPzfNZVVwNsfjfts1Ups/
+	qlnHhaQCDryuQMu7J5fSo7nx3m6cKz3LM2w3S5QuOiZodmS4vFqtYdroRIyeRz7JgCwG5bO
+X-Received: by 2002:a05:600c:530e:b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fe66fbeb9mr10115395e9.25.1790204635318;
+        Wed, 23 Sep 2026 16:03:55 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5dfa6a7sm31259815e9.12.2026.09.23.16.03.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 16:03:54 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>,
+	Pedro Falcato <pfalcato@suse.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Toshi Kani <toshi.kani@hpe.com>,
+	linux-mm@kvack.org,
+	regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/mm: avoid a reclaiming allocation in pud_free_pmd_page()
+Date: Thu, 24 Sep 2026 04:03:50 +0500
+Message-ID: <20260923230350.365304-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <e11449f0-d9ad-4d1b-ab21-2be7d71fe335@intel.com>
+References: <e11449f0-d9ad-4d1b-ab21-2be7d71fe335@intel.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: F223E140004
+X-Stat-Signature: 1t5myb1amu7grcas67dckcu4r8xxarif
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: s9831u7ujoy8murcjx4arhj1qonixkd5
-X-HE-Tag: 1790204514-853424
-X-HE-Meta: U2FsdGVkX1/kQTxoG4VQrsPR/kRI2lYiOC9shkmNImzA3n3G2tp5lLlNsZYJpyk/PYkrgMv3VeyLRTE50UaNZ9UlIsK/O8P+TH+jU08OrI/qaSVWIRA/tD4LmdwdJRqIVdeKy3VqZ+ZE9RWsTZ5mzD5tu/8GMAZWQ5y/WD97vyNZiK5sQuVm3K79wBVuPwxlXHmWsZrjj8bW8PgA07ax+kp1cLD+vi8Kx1KHa8h1jgRv4P8LOxP3Q2190p77Qp1s8pBo+HjalvI1hPZ1Q/VaAZmk8mqx4K43NxiahU+Lczj6UV7tFqBdl/SnWfGPxozSGaOeFqDXO7nB1UvrspPYUqYxMmhCSVSs6WrlsKy7DROq6eFrBXJI3LJZJy+hngXjqwQPnufYDY+pe+WeozrZXKXDXm/2tkjqyUgCuGrspcqQfkT/KUMEhLI53w5yoVfKe1bAE1fml+DNC8ix8h2XL9DaqouWBQ1FtVY6e+xXbFQO7ixXJYzccrE/ZGGOHM9C+E6Ti9oez2arwsrE6FGBQ2GTjW5yFY1rVCyxavZDgRFee/YPes0Q+ic8LrzARvlTDsiRSKS0BAwoBBvwdKYJkyN5tU7pHWJSVppPnQLodvQ4oZkePf2oVbm4Lx5iOBg9NQce6icbZl5rFRetDaXu1TDKgT50n0YdqwYxDSE7Ffp3ZTKINULldfEV4qHiVDF5qkl4l+G2NM0qAWaRjvKp4TR7pG6+GGzq6SEIhHgN5Z+tvVWlKiHpSVu0FUd0JJCMKvv3WtKSYzzis4z6h/UQXRycGguEo3RsIa4mimuOlWa0I2cV3P4AK3m8AH/vCWvcZAEHKkr0QPKtyd5LxWpyV01vBYa+VFBG5dluaFV/Em+Q4Ns8Go/sP0oj1COzjZgfZhfcv+XBIEMzXkLmIqSly97A/qsXyg1u+iw9G/MGi15aTxnF2BHLYWYzHMjM4/b6+KVVdBgLTqRIlXAtE6E
- iULF0vz0
- nSqAkF8ns1NEalFNv27YRcitvoIYLFgDryq0Vmuo6+QsbD0XF3FNZk7H78QuRY6nUAmWV/tnCjBzaU/1jBM74ZvKk2h0GPP2yWErwIPZY5n+MkReFrR0Rjax6WZuQMSJyd2qvJNeJL1l4+8ms3wX8/aWXtVIhnOlMeRs+wKpqBgT5eu2qPZJiAV+SsEH6fDJktO+MLUEwWdRbeGRD5JDG/zbRTj/fbMzL0XfSZAyvOCM/jJZTwftA1FZTZiC4mwmfXBl4dihGf3Xb85zCB7D3cwoXzaAuMi3w5lgq6OowIMzs71clb3rP4omNmlbWefRkXnvnFGSzC3KuGaGRHJW3NN/xpjaFNCgqV2BydCJXAMhroHT/uEO37HuH/iMsQ2quwaCNkkrlacultJd2TmUQLuwHcv45OqkxLAOrYcRBQPxVEr9DMKe1vOiWE0M6fj4duCC1kt4H5J0AFXDpuj77cKM3pNtZJg7Cka0tDAh5SsafGrVuHxJxdxDj0sjDHByucUM/+bkNYAWjRu7IchQXVFWJHBTgFepmug1hZiBYR5md5xU7ETiQlsyX2pickRpr8ZDb39hY10gQEJ6AQMSQ97qVKDEoES0MV22onCwfkRHgQm3xh2qzc7ung1UrViKASmo24r2XGHU6keM=
+X-HE-Tag: 1790204636-191636
+X-HE-Meta: U2FsdGVkX18Dxi1VXsr/9s7sPS1Qcyji4CIdua8TsJMoeB8p9qOea30qimRFPF7OAAEhaZLTCiic5smDIyAlUwTBBSeM0fNTL+lJJKX0krtW4/ILSctgbJgf0fzMkdhC1fZjYZ7tW8oO6Bg58mfSrUabLYspbBYIiNeYxem1Na+BQAYcRCVXTFGOEYyENInL32LS5PRFKU9AIH33Lfx0Cpv6k/LYkr5ANkNtuBVDL2qYyuiScr1LrpAlNaKJ9LJPWlpTKPKzbr7PgqyxXo7sCAG0FykJxcZ21N2uhcCEBR5BMepr1w4lKhuOIsg5R7OyQn3moxKtfJIlIIia7OiOGNp+wv4wsLRcLsYQR+mVuQqPnVmjT22X3oo/9KmnMpWAgW8OzBBqGh/yV0Why56bB1e8kSHaRgkpZOylCOoA6UVqCuFsSnT8ChmDBCsBvso68L5g4rZ8o5mlie8ex+YmOuIF5r644aMFmSnFI0TyvPeV6ZQzBiXxm1foHlS3WoSOE1uC1A60qmQG29dLnEnhJpUO8edNtYrIAQ45/qr+x7NHwdE2HfmypuNZYrfV2gJIPk6/sq7co1LShNY+HSj+oXFRiPpYQVUafRpEt1I6jRkmuXR0WuGGDk+PZgNVmMtDruWv1aq1Qvcg/wac/mFW8PQXjEa/IVhz2x/nMU3kYX+6ylnsw8CGcaogdwN7d3eCR1UfAS/GP2LInYLQHb49j5c8Qwhrst6QIEkbF6SbDDxLJPdaQXdE4fJ4L2RbAdQemPSQEvk593EOCG0X0b58nvl3NfdEbFH38NNJuka85GuLVGnXwXWobqzKn1DKdmFrGe2K+rKrEsW8obsgAh8kjmtaWCcAHrRGXquqKxL/XeZtVMWrojebvJV0YnYkrSCkodDY7XjK8a6rjh2sav1c9gY3B9uMj48wwrS6KV2i9ZEp7z9szyvwmqNJPAlJouG/lJmnIOsnGRbZacz1qqT
+ nN2QFiLJ
+ yezv8NVBlsl1HwHYD38R4acUTjIbubocLXErXt73miNwYemMQJyLlGqVpruXYsiWOXL6qJixt9+knn8fOxP5cFRhI9/nELYlUM7WxCdcIl1HVK/N88NgWtyDREN6X8ZYUQzTsRitDVb5BIPWWK8olxoT9D/rILl03Cfeee34ZHeLXCzfXaQNMmYz2KINHr4kFgGyI4iSwRVc41lPwyiakaDN2totVjsvKxPaKhnEoJgM6QmYZ6M+4qGaMsKVT2Am5oVNkndqOnQJs2WFgJbkJw1Cjvmjh9Gk8LeoO0Dd5epM8u2fewQHMznGYJY+mo0gtUCsGSYT6HbGNgs4qaxUfHW37eZQvLR26ejb477iH/Qykh7RLH9rkL7rKCPfl5AAytwh2SXKd5sJVBqQV1DxpmmZI7PIK21iM8CWR4h1t9GgWDnd8gvMIpxQm8nKEBXZRcFwfYFhF1SACwVaitfqpqjLMiSlzudQtbf29kcHa7hF5EKXd6LehWr0hdEZJV2xXgP3JabihU2fXaoXfcMVTszYPCVPlh1eV82EP2dRjafEDB41RJvk0fzTNkVD/NP5oXNgRE9mNAwUinsEE4JRWaH68PC1DZfokQV2wKqmoifHdUdjQ9wuN7NXwgeRk+5OSXDFSZb/VuivrKF/KtuIuLnven49mv8zZXPcE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,67 +131,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] fs: mount reference leak in vfs_open_detached_mount() error path
---
+On 9/23/26 15:53, Dave Hansen wrote:
+> I think that means we can do something like the completely untested
+> attached patch.
+>
+> Looks like Mikhail came to basically the same conclusion.
 
-commit 7bbd41a97d183f30490f0856f394037fd1846a6f
-Author: Pratyush Yadav (Google) <pratyush@kernel.org>
+Yes - v2 does the same thing, and also drops the now-stale NOTE about
+the page allocation.  It went out about 20 minutes before your mail:
 
-fs/namespace: Add vfs_open_detached_mount()
+  https://lore.kernel.org/all/20260923223116.20090-1-mikhail.v.gavrilov@gmail.com/
 
-This commit factors out the creation of an anonymous mount namespace and an
-O_PATH file for a detached mount into a new helper, vfs_open_detached_mount.
-This allows in-kernel mount creators to hand a detached mount file to
-userspace, similar to what fsmount does.
+It was tested on a box that reaches this path at boot without any
+instrumentation (from amdgpu_ttm_init()), plus the TTM shrinker
+reproducer; the details are below the scissors there.
 
-> diff --git a/fs/namespace.c b/fs/namespace.c
-> index 1ecd96c918b33..5e7ba2b61dd9a 100644
-> --- a/fs/namespace.c
-> +++ b/fs/namespace.c
-[ ... ]
-> +/**
-> + * vfs_open_detached_mount - Publish a new mount as a detached mount fil=
-e.
-> + * @mnt: The mount to publish. Must not be attached to a mount namespace=
-. The
-> + *       caller's reference is consumed on success.
-[ ... ]
-> + * Return: the new file, or an ERR_PTR. On failure the caller's referenc=
-e to
-> + *         @mnt is dropped, as the mount cannot be published.
-> + */
-> +struct file *vfs_open_detached_mount(struct vfsmount *mnt)
-> +{
-> +	struct path path __free(path_put) =3D {};
-> +	struct mnt_namespace *ns;
-> +	struct file *file;
-> +
-> +	if (WARN_ON_ONCE(real_mount(mnt)->mnt_ns))
-> +		return ERR_PTR(-EINVAL);
+Two things in the attached sketch, in case it gets picked up as is:
 
-[Severity: Medium]
-Does this error path leak the vfsmount reference?
+ - The first hunk prepends the patch name to the SPDX line
+   ("pud_free_pmd_page-simplify// SPDX-License-Identifier: ..."),
+   which will not build.
 
-The function documentation explicitly guarantees that on failure, the
-caller's reference to mnt is dropped. If a caller inadvertently passes a
-mount already attached to a mount namespace, this WARN_ON_ONCE condition
-evaluates to true and the function returns an error without dropping the
-reference.
+ - Making it return void conflicts with the prototype in
+   include/linux/pgtable.h, and vmap_try_huge_pud() still does
+   "if (!pud_free_pmd_page(pud, addr))".  The arm64, riscv and powerpc
+   versions also always return 1, so dropping the return value looks
+   like a reasonable follow-up across architectures, but I kept v2
+   x86-only and returning int so that it stays small for stable.
 
-For comparison, the error path immediately below for alloc_mnt_ns
-failure correctly calls mntput(mnt) before returning.
-
-> +
-> +	ns =3D alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
-> +	if (IS_ERR(ns)) {
-> +		mntput(mnt);
-> +		return ERR_CAST(ns);
-> +	}
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923224408.3745=
-689-1-pratyush@kernel.org?part=3D3
+Your comment above the flush explains it better than the "INVLPG to
+clear all paging-structure caches" one-liner.  If you prefer it, I can
+send a v3 with it, or feel free to fold it in when applying.
 
