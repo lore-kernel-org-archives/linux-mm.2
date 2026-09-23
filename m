@@ -4,117 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84447C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:44:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FD66C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BE886B0093; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
+	id 355B76B0098; Wed, 23 Sep 2026 10:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96F1F6B0096; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
+	id 306C26B0099; Wed, 23 Sep 2026 10:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85EF86B0098; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
+	id 21CC96B009B; Wed, 23 Sep 2026 10:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D9A86B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0FC380839
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:22 +0000 (UTC)
-X-FDA: 85245297564.18.9E31262
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 1C8801A000A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tyqL4yQj;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F1E656B0098
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:44:27 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76C3EA0878
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:27 +0000 (UTC)
+X-FDA: 85245297774.20.D181468
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D9D57A0009
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jbBUI4ka;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790174661;
+	s=arc-20220608; t=1790174665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
-	b=mKpjgSdVRVbnH7ObqitChZTQbSJBCEp7d1Q1xdItOgc7HHxjLv4uzaqjnmQVna0DPf/MRZ
-	QRo3kv7Yn4rK8X1G+8YKc/1ozhCK3p9dr+7C6tI2cXGcb1jVAJLVabzoIGtaPjJeaXcmHz
-	utOC/9/Ee4ahwzHgPWvzRFe1pl6EEp4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790174661;
-	b=H+9CwJYCVWKdcv+ojbqsDAzUxsJl18UKO7oyUwdwRy9red91Bn1DI4V88RQOQO6oqwpQso
-	oenNR60wzZTjGHMTlfHWd3OqHoFj9q2efheh7eMm90TRypQ7JwSJy8RH3TXzUh4aUjMdMn
-	y1LwzGL87rb7DzvdjaBZ2HsbPZwM2UQ=
+	bh=k3Gj1KoHBPW+MMBGRDviu/+7CrZBzX4/UWALlX64Nu0=;
+	b=le4iyuvm0Hwyw3XvmpQvgUXb0127S081thJ7AU6Ni4wotVXr3W7OzIrs0ayqQdw9PknWO2
+	CYi9YThVpFL0TDBSnMyh1oEz2qW6p6/mBhrBV9IaeBot9hvU4Tt2Z0iE0PpySptPy6X4fz
+	xk11GovcsZPkKEpkGgNmC0mwrtqcjAM=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=tyqL4yQj;
-	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-52ff0eea420so7597821cf.0
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:44:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790174660; x=1790779460; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
-        b=tyqL4yQjuiReOTWVc7IxoKs4X1s5t5pA0EI8EvK6Qr/GlkcrqvjlpxvwMlK7gUIJSe
-         0S2R9OjRKUBhIJ/BT/vin1wlHpGnm5MhreWNq0ykxilU7HlzQyEEkE1qHteFOxDGWZeh
-         HKU2YaYlCHTkw9cGMIBq3k/4dslR86ZvQAl0AJDqCE9k1A4War0HDOekrTHjXpepcONg
-         M8cdvH2BmOYQXVcz2ff1FftlMxE7NL9U+MqgiZIxjWe4eI9CH8IlqER+W10Z12KWFh/k
-         DMhW1WrbLzeQTecq4CUaP2bY/5TRUPT2ZLhz/HwUK+n/l2RSrhYVFdAQHREkJ44DGbnA
-         siEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790174660; x=1790779460;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
-        b=nqDx0m5y6dNc8fg61Fh7TXafuc0KRBET8SOdWpTjEy/eL/ADc2VDL3y+KpRTpdrYzE
-         Ma9ANma3GOMew1qR9S4G5gmbxug18NNnC0aZIW/5KY1znplQ+F9fWliZcr8h1qcMhnNY
-         A9ViliiBH0QMXGBTJvvgDOIba3OPIapz1dU7eh3YU0EnZb0CEr3p0ya8hpaGXXDw8VHM
-         FcgvT9aiNnRfBJbHY0ezq/JPnVij/8f7P9lmMWIHzdBCNwGn4DNVkLxcmxti7oIJIo7g
-         K0jJC7urHAbIHuleYcQqPxJdxyr7beu8Gxemr654HnA8EsdMtn0fTkYCoL3SJuajas28
-         TI6Q==
-X-Gm-Message-State: AFuF++mVsqcl8ztSrm+KTbeU8SjzWTJdRWpfj90H8K+79x+uwfNuyDEy
-	OxWsOkO+O4gidI9fLQyTxoSygdtO8XfJvfWaEOXkzCiq3cr0wKGjlyz5mzf30BNB5dA=
-X-Gm-Gg: AYBFou0x1abFfBT79DfzCH1vki77ZZq0aUkFj/KyWOQjQ3UTBGYtlpkutxr7446IQrT
-	9vXj5zma67FfN6I+7UFhLdjzkKppHYJktmSqMpLbf91KxkUCvIbCn9F0TZ0wl4hgJ2KTIlQ21IC
-	4PxGwJNlmVdpZGBWzQJ0Qpqf+zGex19W28gl25BU1Mx1WenBLI88DoRTh7w4Ll7KGVog/w9xibD
-	2p8pYFJz5Ey6p/lmZL3re/0oZPXnjO1ipgxz3FPQYWgFnR8XDhHEwwQoQFjIu5MYesg2+wAUTEY
-	vF1kX7gZCJ00701JPJSzaB72OK8/Zy6ObzLC9EM6ZJ/gaAx3UktsXZuds6DFiolftPguMEHSnmg
-	pn5sQR+cXaydy4jeP11ccSVdfsE6VKQOSBBFVZfnpv7v/1NZo15PFiKxaSpVrBPdgzF61VmE3+d
-	cf8BgXvij4629t7ePIjKYTZ1r39QFc0+rr0RjX0qqzr/WvC1U2FQLxoY/zRJv2Z2VuzP9bokhk7
-	N70WWuZ74N2fvyWflQUweqdIzzNNNYXsjt1dcyAPMWOCpQtrRFyEYlG
-X-Received: by 2002:a05:622a:86:b0:531:2eb:be76 with SMTP id d75a77b69052e-532db85279cmr96539711cf.22.1790174660094;
-        Wed, 23 Sep 2026 07:44:20 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eaec185esm21362971cf.3.2026.09.23.07.44.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 07:44:19 -0700 (PDT)
-Date: Wed, 23 Sep 2026 10:44:17 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jbBUI4ka;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790174665;
+	b=aYDJOoyE4443culblRgODp08akSAIM08TyxulCN7IP/vUmJZ164liHFQVl3sYzZGEC+mUh
+	+zf61Fza4LAIfN+7XdEtJaxmYXbpd0gkKX5TqkJQGAKnoHhrBYGfaI0B9nifKh2NP7gPz9
+	ck64+Z1HevoPNUGOJOsOzIaZ3oWLO4U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E3E743FBE;
+	Wed, 23 Sep 2026 14:44:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 399D31F00893;
+	Wed, 23 Sep 2026 14:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790174664;
+	bh=k3Gj1KoHBPW+MMBGRDviu/+7CrZBzX4/UWALlX64Nu0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=jbBUI4kagBJZFjXRhOfX2EXFsjw6WlIu8M3clwVpeBlyETtojNU73lDbB/VV878zs
+	 2g/G9k/FSrL9yY0Mn3B7sK/Ll6LmbePnofTrehDk0gh2YzTH0vle0QA0Br2s5EG9OR
+	 x+PWdZ4yVVX6ZYG66Tb5Z9OOt90KtC1mcf9kgi1GXDNzN+1RN0d9VqqQRObW5ACWx4
+	 yfpjcFj3EoC4DcmwK7/xQxmtoe7VLZ7gDxNqcZ+9p0b7wjoA2l5ZcVnRTQgn6w2Mki
+	 vmHxeI+MPs72HMzARGJGlcC6mVY6BXTjVjPw70A8Ug6rqrwMylmOhesyAg49/+1ftH
+	 bbLOpVODsaErw==
+Date: Wed, 23 Sep 2026 15:44:18 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
 	liam@infradead.org, david@kernel.org, vbabka@kernel.org, jannh@google.com, 
 	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
-Subject: Re: [PATCH 01/10] selftests/mm: exercise MADV_COLD and MADV_PAGEOUT
-Message-ID: <arPjwPwVxdvdR5S0@gourry-fedora-PF4VCD3F>
+Subject: Re: [PATCH 02/10] mm/madvise: name the shared LRU PMD callback
+Message-ID: <arPhlePckOPx1r6c@gremlin>
 References: <20260922235830.2350770-1-gourry@gourry.net>
- <20260922235830.2350770-2-gourry@gourry.net>
- <arPgwegm8XgbEUrO@gremlin>
+ <20260922235830.2350770-3-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arPgwegm8XgbEUrO@gremlin>
+In-Reply-To: <20260922235830.2350770-3-gourry@gourry.net>
+X-Stat-Signature: jazsp1wsjxe8eunhf9fsjr3rm6mpy6an
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1C8801A000A
-X-Stat-Signature: r5fbhezdbstzq9yg1t7mew6ncrqurr65
-X-HE-Tag: 1790174660-92418
-X-HE-Meta: U2FsdGVkX19r7ZJPvYNoroIlmmU8wjXI34jFFi7mpy6QeBDa4AmFxU46jzFaVJHCjm4FFoEQ57UR/ieMxP7dzGuk5c1V8MIuZthvmgR8Xbe4WlzREOMA1IkNe9fy5mJCitd+RI0FTrBA64YJiLSfam2j6tVhj/uFi9tpsX9SNzoTguV3YdeWO0j2K8Ggl+Z41tLBcSoH2+lc//LnbYDOTD2pC4t7mTQJ1xOM6pST9CTQtEff4ols2Jv6lyCr30/BRGQjgxZnufo++JsD//8wo9HskzgBShnNWa2/zObfT4dLyMz7FApsBtojlJ6lbPrl61gqcnvJRhl1nIqNI3TY2MArX21zxUDvqTN25/50/osy9MPatfTPXd9j+v5Icesw6MxtkBe1a3BpD3BVvnVTOKVZgCsr6I946LJ6WM6X/AN3goap0Qfonos2iZDML7sa9y+PUERYc+5sAWH3STrsbLMdetA1pXpHLeJu4eryQH1ypcP5SK8EChbiLV1/q9qxWWKWls4pv9lnOTKyFU06mSocBwTggT1j9r3EKQZ4axoIJ8ulRMjONCCw+N0E5ipXrS7huuj6iQZyuZi+VOb1fhN+rOyq/NfJ47qBdY5gfwYn1dUz8m8rYpnSMfwO+I2Yl7m3O33kSFQqplt96nFI8pdplbNc2PlctzjLVnO2ilxtELmIOf5VpwouJg+xWFhkR3FqD+2eVj3BMwUCTTg4Fbq2q7s/l4/xbqGlDrwm7oGvElmL8fSNAqN7zqB8U3MGeLwVEQwmFjVEqd7Z9aKRwR8Tj9XvAtIviy6BimbQkf1i1ap9NaOx1K+8KWzJO1oDIshaIwCXvQr+El8vamaus3BJRIwnyo+qynfnj9YDvfR6VMiF7IMni2e/GxF1vj3s4fl/I6iQ+87t+kpyx++jKLGE2RTIV4ThTDszAthcCPMhlnM0tn/9I3OTtdkNKmcZt484PK0yYHVatFveV1/
- g6zNmUr6
- VpcnjjTIK85aSNFwIYWuBZegSUS61e1nl5EcMaEgo193zrX9AUbmrBCdTYD40Ehqv4YdQpv0xGz8IEcuEwZSDEl1A11f9MBPJVa5lfXM3NdlwSoqeAusYfscv5qYRVgDBLlABes55LwSi76AHiEoZKeXU3NUssHt1wOw+/VquK55xwuRWuZVqTBue9QaOA30yHFb/A2JhPSWnKRE5dIDiWC3R6p0QXygIX2tfln+TEJ6s9J7YzkQmCqvOk+PsrPpVQS3OlszC+1JdxwscCtNaSXaPlCSrfzbwjnJydNY+4XbaubNozdbN54bA828F2CmCe1rpTTkEeHyDfwlfBrYkKMXQoVYPlPA7VWdmC8XUtCvAyEQqCw1cA/ORU/qSpWDBazsJJwm765sLyfdErEonHT5L3/TgpDMaBb7fsdp7GMDlOdqt7Wwe894iOg==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D9D57A0009
+X-HE-Tag: 1790174665-782305
+X-HE-Meta: U2FsdGVkX19SaM7H3767uwo/EhHnxEeMsihnH0o0oyWqDmGramR+nxy+alVcQiOpOLQ/9zTNqSrwRuNYEwQ7MhmzzUkpxrh8EW/uwC8SX2nH2T5jJ/PtYQQ34oOcV9GzQgn+Kes2yU19QJAaEUL8dGG+Yen8GTrzRg90TL/DikqETeDaOfXOQfwlu9mEWRyd3q13CzhvQ8AxuLYaIMxh6GS5Ds7ER6CsmLPuCQ/WKHBxJii74UudeHoGqf970sE4Om6T4DAG4L9NuG3DD9qKprekV2Zg2IYtgU/qyjXEZn+4lbrp1yjwY/KNCaHMp1+LfPXDeQHREuC/x7oSrvqOBubdkFloPA3C6R/OYvghHAQLuxWcwKZDy/pvK5qDX2zxNgafidfENlOJesxOiKt856pDwVBLIgMov0wiQzyZUB9Loz4UfsI0MXcaKr9UpH1wXQMeNXr4j6AqoJJ63l5mgfSNgTC09oR+T/jPzJk41RPF49yEBWNMjyRqKuo7NxFGWWz9tK1XZOxHxtyp+125PrXJrr4/TZGzTdcatJlc9mjvecr5T6fScMudb0eAGl8jqO7+x9zVLU0Q3mEtXgG2/oLBumX1iyTw0PZrmLeor03mEwxn2NUxuMH28CTLxfvlUvhl4C+lBP1RDGKuyjCPbDZU2T3ZHrfncoJC/A8vIsf2BnRnzi3pVvUA6Rbh58nIDeqSv59tz2+uw/PuXnKwMVZVeHyTWRBV99c4gDWpEPTwVIiCRzCMuWZeUhQOGNK3EEHmiqf/N8GL822PnS1poHmKr1FOn2DUuyj9TUt8hMQAAfoCXFwr9pC8+41PXwjPfXtorPaJZ+yZykgjRTVYkHLuwoITlpLCUpxFjEqnU1Rhhn+avC32a2n6ieRaQuJDdzYXsjmsEUJ0WHBdi/Vs3lOwR+M7zNE+fsGnIjGXrqJf0T5upQoNCxT/NbmVD/uSJRPlCeVuH2G2gF93jsd
+ p1dVqaSB
+ Rm7PXZvujz2EakyvCaAUcJBtGukUMb7S40ai0htAnxyJLEpHdZig/RABM9+LNJI5x03AWlAUDWAsr/sytDlj/VXTZeekVn8aXPj//WWOye8h23qldxndNYCoAQEdyJTwdVuJevf9bJTBbUuo89kcHbDmlZUfjlV0B46macECkHyo7OAUxI/J/NgHE5HTyuxX8e15ZkrnC9f22fGKNiaHVCuhUAm1XSOeo4kUMeENmwlC6JLy0uZUX0Xtrjn7XjFqjjz5qDMW9NPIGyU/vOU08GDKfTIAB+ZeNic3Qg7q4+VFw6UVPw/NHRAQmYnJ/las1VgP9+GotlcIOEbWQ/eF88aF5xA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,50 +93,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 03:26:05PM +0100, Lorenzo Stoakes (ARM) wrote:
-> 
-> I think in general we want to avoid putting stress tests as part of the
-> selftests in general? Or at least if they might take a long time to run or
-> excessive memory usage, etc.
-> 
-> Though that might be benchmarks, as we have the THP stress tests so maybe it's
-> OK?
-> 
-> >
-> > Assisted-by: LLM
-> > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-> 
-> In any case I really do think this should be split out into smaller parts, this
-> is a _gigantic_ change :)
+On Tue, Sep 22, 2026 at 07:58:22PM -0400, Gregory Price wrote:
+> The MADV_COLD and MADV_PAGEOUT page-walk callback is named after its PTE
+> implementation even though it is registered as a PMD callback and serves
+> both LRU operations.
+>
+> Rename it to madvise_lru_pmd_entry() before separating the PMD and PTE
+> paths.
+>
+> No functional change intended.
+>
+> Assisted-by: LLM
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+
+Oh yeah wow I was thinking 'reasonable in that it is the PTE range which the PMD
+entry spans' but err, no, it does handle THP PMDs too so :)
+
+And LRU is a resonable name, it does seem to me that these are the only madvise
+operations that qualify so all makes sense.
+
+So:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  mm/madvise.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+>
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 00b1be655a8b5..83d54ab385da8 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -361,9 +361,8 @@ static inline int madvise_folio_pte_batch(unsigned long addr, unsigned long end,
+>  				     FPB_MERGE_YOUNG_DIRTY);
+>  }
+>
+> -static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+> -				unsigned long addr, unsigned long end,
+> -				struct mm_walk *walk)
+> +static int madvise_lru_pmd_entry(pmd_t *pmd, unsigned long addr,
+> +		unsigned long end, struct mm_walk *walk)
+>  {
+>  	struct madvise_walk_private *private = walk->private;
+>  	struct mmu_gather *tlb = private->tlb;
+> @@ -581,7 +580,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+>  }
+>
+>  static const struct mm_walk_ops cold_walk_ops = {
+> -	.pmd_entry = madvise_cold_or_pageout_pte_range,
+> +	.pmd_entry = madvise_lru_pmd_entry,
+>  	.walk_lock = PGWALK_RDLOCK,
+>  };
+>
+> --
+> 2.53.0-Meta
 >
 
-Absolutely, but alas my poor email hosting throttles me if i send too
-many emails - and sending a 38-part series where the important part is
-the endpoint of the refactor moreso than the individual tests...
-instant 24-hour timeout.
-
-I'm working on a solution.  Need better hosting.
-
-> Since you list a whole bunch of different test areas and you're exercising
-> different things you should be able to split this out logically across those I
-> think?
-
-As mentioned, this was originally ~28 patches split out, but i think
-ultimately only the contractual tests should be shipped.
-
-Maybe there's an argument for keeping some of the implementation
-details - they're fairly easy to find in the code below for individual
-inspection.
-
-Examples
-
-contractual: These tests won't change behavior based on implementation
- - authorized file PAGEOUT evicts a clean file page;
- - unauthorized shared-file PAGEOUT leaves the page resident; and
- - private-file PAGEOUT reclaims a COW page but preserves a file page.
-
-implementation detail: behavior can change without breaking a contract
- - full and partial MADV_COLD on a PTE-mapped THP
-
-~Gregory
+--
+Cheers, Lorenzo
 
