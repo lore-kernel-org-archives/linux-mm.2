@@ -4,126 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D27FDC98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 22:26:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8725AC9830D
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 22:31:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B98CD6B0088; Wed, 23 Sep 2026 18:26:51 -0400 (EDT)
+	id 475656B008A; Wed, 23 Sep 2026 18:31:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B49C66B008A; Wed, 23 Sep 2026 18:26:51 -0400 (EDT)
+	id 4269D6B008C; Wed, 23 Sep 2026 18:31:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A14826B008C; Wed, 23 Sep 2026 18:26:51 -0400 (EDT)
+	id 315C36B0092; Wed, 23 Sep 2026 18:31:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 760716B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:26:51 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3F351A0152
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:26:50 +0000 (UTC)
-X-FDA: 85246462980.30.1B73303
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2785E40004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:26:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nRSYytqt;
-	spf=pass (imf04.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 07E346B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:31:26 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 000CA4015C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:31:23 +0000 (UTC)
+X-FDA: 85246474446.24.2BB2F72
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3EE8914000E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:31:22 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HUXmlT3T;
+	spf=pass (imf26.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790202409;
+	s=arc-20220608; t=1790202682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z5bBPD/fgdc2g+Epb2XIUlms+kxdY9UZmRZAc6Exgfw=;
-	b=24rPn7IYyzXNBecbvDGazkneCp111rTpmHC9egjLP57QcRVhlfvjTWkdzjKTvTGlwTv9iI
-	hvgZfjo8qa1owKfhcXX5DSOGkXwbsZR9WL+Ut+xCGIMWKYj8PPFj/wUViYnSpCVRXtqhul
-	tbqi84Fa6ShXDAAFYhuuSbDbYUGb0jI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790202409;
-	b=OlrTAwIPRBfb6lbMEf9hWxlEAkk3bqYLPjpwvHoSdzemMmCMw8ae36ftgjizB3kL0O9Xy1
-	xiw0xCIdOsWCVv90f/ifyz+qLtS+oLpGt1VeGf0tdbQMIngxjFV/6+8b+n5edML9wFfqHU
-	/bGYdVLmPyB0ZEh956ku46+QTZgo/DI=
+	 in-reply-to:references:dkim-signature;
+	bh=hA4prx5+Mh90St+jFwZr6K2H8VkXOm57pDkWzDzmfUA=;
+	b=1kPloJqhlvTHTtOQ5dvmoPHfSjMykbq8B6JC3dIxnjPxWVUIYCLCmVWA92dVimkwMrypKD
+	33z7YEw9fP+5cgXhQtdct4UaxE9/hdD92wIuTKCE0G+O/LLfCGkNCA2s2Gut6NgOo0kdnU
+	sz4n1Wajb7hgSpX2AW5E45MscurHSY4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nRSYytqt;
-	spf=pass (imf04.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HUXmlT3T;
+	spf=pass (imf26.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso10404065e9.3
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:26:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790202682;
+	b=RjAbtCqXj18yXwhlexz5dQNYrb0rABZarTGmBuQHkuQk/NCBUmeJkZGp3B/8XfJml2JIkD
+	2xlasc/58Ea6AcsFIdoTejA2BtB0NgLZ50s2nqrfdyqZpAJaHDraS6EeuRJK/qQQcr6EsM
+	Zd3Pm7aXz4cPfmc+a1Hjq1rEkdETUiE=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485ac898fa4so1348739f8f.0
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:31:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790202408; x=1790807208; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Z5bBPD/fgdc2g+Epb2XIUlms+kxdY9UZmRZAc6Exgfw=;
-        b=nRSYytqtQ3uFvEwRci8qiQuPTkWmwCIE3BokLryq/3YLAfgyvUALdKQge5YnRsQ1OR
-         Q/6g/b+1cC6EOjYpmt3esq/ebOXTwn3djFVyPu5ufoLae9f8sQpEOk/u2a2mQg/yZUur
-         iN3UkbR38Lj1k1baav5O16s/D2zng0tOGl6cw7QTMWilLZzsjh1IKgElwgf0qRut9m9V
-         2hqfjz0+PXA3MuFL3bywfXT32r+ExkAZ6fQs8De8PeSRPpBRTEUlIB9E8bOJMYlBsxjF
-         kE9R2UcCL79Jy6AuTsMWCCotekBpYS0qeuiXI8VsMzj29yh68RvvlzKLlmwjOLlelEbL
-         ZDCA==
+        d=gmail.com; s=20251104; t=1790202681; x=1790807481; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=hA4prx5+Mh90St+jFwZr6K2H8VkXOm57pDkWzDzmfUA=;
+        b=HUXmlT3THJx3MpMPBA1c7GUmPLFjuZZLKIhKj7MFat4YS9YKeQ6ROsy4Cig/1Ev6Ak
+         NduUcF6pyYjmb0IVBqrkdP/R+L2HabboDl5pqHoZGnQGlX9GvFtGGtsLOiFBz6ZGUMCX
+         F2kJ1VZ2T2F7e5Nav/dyK7RYyaitnkJtqbho9DGHRAaX8EiRMeAMTi/VYWapwXLk5TdS
+         gAi58eoGaRxBb/B5suuhy0DHcoLTkEqBzgX1GuhqaZY/IFDbHE5SEwT+W+dmBvnlLQZg
+         ELzWJbl3rh69U8TZxcCqaUA7rfpvhMwEtsP6agJOmLNfngDi73sSoIVwQNi/1QFodoCk
+         x/1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790202408; x=1790807208;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z5bBPD/fgdc2g+Epb2XIUlms+kxdY9UZmRZAc6Exgfw=;
-        b=UTzdaWVTLY4DRPoUhZrbS33pOjLDM/RHNYT35HPTkU9acL7K3QMGGiTGTxbI6XR7rl
-         N198IU1gPDehWFvjBp5bFnQZI+hUOHpHNfcdMUsHWxnrgYBLEE8PHHbhjACOV4GxlyHh
-         1NBr+LKcIW6voYrpbwsMFJTrOfsT+O6Z1KWiASAXbsCQYItK/r2ejz1eDAwLNyEmTx2R
-         f41QmIrqTItKdkNOpLhpkoavglR7TtDI9t9DkJWF7Mq+qSi+B+thbnqgPC9bChyvUT/T
-         +05WDS8L15wV1FxbR0ltd+d0H3BrF3bQ2EoBhiRc7RlUvchkxKJWEN1QxqvG1CYUWzir
-         q5VQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwxEgZ77YS8T3gbmkGmyWAxs9Y5gKwdMSy2mnwzmJSCMpZxe2K8jTCsbumScoRUuwxjclrXRaBGtg==@kvack.org
-X-Gm-Message-State: AFuF++mroY3Dghtx4BL2j/xJI2ALtcGEhmRNPc4kWnDfyWTX343emVna
-	r09Guj2tmrAn6xupsFa9FUBZygDLYCLQO+HyBRqpJCURGM0THuDA/fBf7IcnyWs2VhYTpJmg
-X-Gm-Gg: AYBFou35xyQF7OzSBYHeL5TqPEVksqTvxi8/yq1rnRQXTpbXLXilaTyXqxi1Ho4JmTK
-	ihHFyN4l1uk9d+ekiBDXvgz5q838rk4lV3dhtB7anSVvwZuK2/2pbCyz7lsLuztU/OQtnVBOP4z
-	+879dxyirSV8zr2vljfu2FR9fi2nJCwTXQrG5j74tZOJnDaK4R+z+kUUie832PkfjdI4zz6gepQ
-	kcv/xVodlrZCUM9bR5870JvV+VOm9PNtjpL4CVc+QFitaZEXuwS9KGqqcNTt3nYejiiBYKxRcaR
-	aEgnp0H9Ww0/fX6QtUkt62j+oXAnWBrJa1EA3/3P+GUoP97IIdsDWfT4THLLhVdbHewrQ6FTsgM
-	4w/m3knLXTH8f4FulqDlgKp5FrKRhgjsrGdwjxukZIuSVDBhxkOnoFe8WuWziM6XlGiJI1MOTM8
-	i+JDs0VTmxeBIWErMGMX5bzaIyATfvwz9aAFiYmK9EWKWdfRfuPoHOKOdIiz6C5CJDQ7MzMccRn
-	RY/8j6BlbgVORzDJ+kIie848/f5uSbQazIJNzDJ+JDesaZ3HDPJpcnxBX4LuHoYIo9vDhyrkNXq
-	LWx0yg==
-X-Received: by 2002:a05:600c:8b8b:b0:49c:f512:2361 with SMTP id 5b1f17b1804b1-49fe66d470emr9604715e9.14.1790202407439;
-        Wed, 23 Sep 2026 15:26:47 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790202681; x=1790807481;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=hA4prx5+Mh90St+jFwZr6K2H8VkXOm57pDkWzDzmfUA=;
+        b=oqsJLvPZJIu3+84yaw6W+O63AGN09yxy6AlxhJPv2t6BMjMHfy5hbp04HK2konUOdA
+         IXhN3V/cLdUVXskem5t5naylzJvGKOS1s/0b7uSq3Q6661GOXANtq1WB1EiKRhvIs7pu
+         bzVBtdufgpCpGk4JRD4JZvXN9siIrl6TKKxZhEjx9aURPC0bU37wo3jn2pKljV7Bv+6M
+         fjQdDIc4FeHFHMY0u7BE9+UoosToDiPuz3q4wpBbnLh4ri0vMJgea6l8WlmOpVN1ill9
+         zBtGNE1V89D/LPmLwDQmKfhjzkHj2EMu+Pdott/f6ZnMFA6dJERSovlxH9TijvUef5jT
+         jR3w==
+X-Forwarded-Encrypted: i=1; AKwUvBx3+dL/T6VoCCHF7pDmQR14lZPKzCjqS4T+sxscQVpDOh9jlwNkana0kmM+yHEf/4lEf4k+E682kA==@kvack.org
+X-Gm-Message-State: AFuF++k0on423sPo217nXPYwGLuVL+uYQT5BTw76tPtjZw/YVTR8sKM+
+	a+vOb2C/VepsiwbJfjoSdyFhuoOFrFqH+3BU41K3QQmtNN4EGhldYfo/
+X-Gm-Gg: AYBFou0bLNIMN08ELTrh+KnDTeEEfXjksDKzHZSRUggfbhLfaveLBvGRIyOyaRMX8Ca
+	7HgSh1pynyWoHyW/2cB2QHWUgVS5eJVmonuxBsHAVyB4N03fOF9Pla74QLNZ1VVhw0nzGskBQvy
+	4GR6KwOetSgTzQxHu0uKlbe3SHeTHve1hlO/SCZMteYQYFe8iDxAGmlKnh8/sjjvE6NBxWvNyQC
+	3HZokullnJFYzpbHVoqmTn8DoXs5cGM3Z9oNLzDVECi/Kb/H0UX7QqDpq+c+blIxiiga4eUPfC+
+	IZIYThfdBrdTW6xZif8dyspnDPC/LdM4Xzmkv5KYpf6dDJ7qH5KN5gHCVE/6cjyK7xwVVeFsaf1
+	YbMbfpbDBiFxoqUkopKo7xIxkJAvOLvS4wy0zacJCP4MZrrs4s2O+kNDtoRfh/81Cr/48ugKjrq
+	sm0r1R74A7RLfGPNSNG+JqR3/f5W1BatiQd+TV0IME3mdSlcWHLAhD7ZQskivQn0CXixSS3wbW3
+	7AXvc02mXP2OenJrQvojyCcAF/iHeCGnqZWwr8H4xwNkEhE7DBaQ24xlCHuaq4UaPl4ovg=
+X-Received: by 2002:a05:6000:1a8c:b0:487:b32:9d6f with SMTP id ffacd0b85a97d-488717328e9mr817751f8f.22.1790202680711;
+        Wed, 23 Sep 2026 15:31:20 -0700 (PDT)
 Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5ba0444sm18212535e9.2.2026.09.23.15.26.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886877a2a5sm10613192f8f.26.2026.09.23.15.31.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 15:26:46 -0700 (PDT)
+        Wed, 23 Sep 2026 15:31:19 -0700 (PDT)
 From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+To: Dave Hansen <dave.hansen@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
 	Toshi Kani <toshi.kani@hpe.com>,
 	linux-mm@kvack.org,
 	regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/mm: avoid a reclaiming allocation in pud_free_pmd_page()
-Date: Thu, 24 Sep 2026 03:26:43 +0500
-Message-ID: <20260923222643.19010-1-mikhail.v.gavrilov@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH v2] x86/mm: Drop the page allocation from pud_free_pmd_page()
+Date: Thu, 24 Sep 2026 03:31:16 +0500
+Message-ID: <20260923223116.20090-1-mikhail.v.gavrilov@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <arQbFrGiilXn7ABD@pedro-suse.lan>
-References: <arQbFrGiilXn7ABD@pedro-suse.lan>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2785E40004
-X-Stat-Signature: 6ey9ez7k77nwkw1w3f8jjysthc9mo8ef
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3EE8914000E
 X-Rspam-User: 
-X-HE-Tag: 1790202408-620753
-X-HE-Meta: U2FsdGVkX18oMzLUIUDYD8H4X2T9tLMFkXMVRdUQ8ly+NbVJZKx6+Qoh0AzRvxycEx7x59YyNz4CFB37e3YT6UXq4tq00BgHn03VfEYgs/Pb6PRL3CHMIUM+ltwUvqEt7BRTLON/k7PoOHtbXSb1S1OffyjE7t4XeI6jRmHWFSRm3hF/gCybUIjfylXup3QGAbyDpleq1Z1PvKldwPsbNAyuHdA3Q0OIbjJJFAWqdvD/OhJJ7f17NxTq7COEIo7oy0GVTbD0LZQW1AEf7KGCQ6iOFvM9oUn394MQ55qOt+5PpNCT427+BOM9D8k8MTMiA/4D5vjOZNrvK3+uix80xPIWp4mHVMCAAb3BYCxKpB/CiVbOTzUfakqVqyMk4UtHij/YIU8bjuavajYIDHYz0jnqgXlfsOOY5BgCLFgQkkoW2ueI3eJAXw4S2KIN6/Fi3vwlJBzrbddEvPIo/I7oJ94Ym2zNTluN9BLxdbg2eXIsimgLwS/aWA/hxF1hpPI+6Qrg/wQbjqBbqISnitz9xFTREBxc3S74TyaVLl9sh6LUwRYFz3y5XLBRlzL7fdwOkvTDqfrr3yW4p4VHhu08jXnlRQ8QH9+QtVd97WHB+b76KKyl5iXDXdJBmdkiK1W7uC7MEsr5MfhdRZAHJ2IuCSxcrI2I3xDpY0OABpL5F0j7jTof52tQEoDh5Egb5H/aUuAZ6p1XPKW/r5yJyaRbIqBsCQh/721gcul16MIq/ZOGhU72PDsqItrF+MqZmb5ExvIZzYKdxr5pd6AH4X/Xq7SCvFwYAOlkN2j2a4+bsq2PDkLpzkpqpLfVCh0svFk5QqawtX7LKNgWk3adepErj5Ku9hjvCCLk333UiVQWBSzMyab+SPsE1sptMDrc5hRR6evrzJQCYu3OpS06haJxK5+2uohv54gDMG7Am+KX3kztxBc0T72yO4mbW19m97qEFzlLIotsL961YP0Yy8A
- FCLnOHVa
- 2YQYzO8xOrZXLD6irTsaSk5tfwH9UTQLcjsw/ynGavIr4xG6Xn1h5zN1uA34v9Fsk1g84ztyPD7ff83xNzQV7P0BrSfVyeU4od7msr4PFl8O/QWYTHPPgu4ijzHzQEnY+bYEOl1SAGaKex9zuEzYmLByNX869MhpLMvV6NgV1iR8kqYdo5Sic+aANtYQnqsiWpAmcwcmdD0JxFF6HXbYFpbhxYdIfW9NszQeS7h2moTuI6qwsZIOIeKnzgsJLcXrR45/RIzqYuGRYF0iLETfxCAUKv/lw3/u1s8YV8zDEsJBjsgj4k0IA2DehB45xobplHY/OSmYwFZUZkig15syFUf1MeY2QNrPzdYVwcmZCHhNhqMnLiSoDyVDfGa/3jGD+ykOcUUd79lz/NUTCZwKWDkRydjFN0wClUMwhSHw8dVK7aOWF7XOa15yLcS9hr1U+DjlfYQPUk9i+8DgTD4zXM6VwuwwBRGmLUPX3JrbjIOSDLdmOMqV072O9/hHWlNoMt4ZKegDRjW+6j8qp/lR6gZbVXsVnfmXUPkvEpA8e06ekqM+aplyUtegBgKA7YXbF5fE0TFHgfwLuVoxel1fd+pz80+BInHBqHUBd4bt+KVDuUAZy2QUWqKyTipeKpXjTu7Z4vBc5xpPqoYNRIYap7qvWxidCkYOaLkXxjVUa0DnFfH35gJtZ8WNWairQGo607KvV
+X-Stat-Signature: eqqs1nbuh1dxm9ebgs3at1p6ssp1gmn8
+X-HE-Tag: 1790202682-135730
+X-HE-Meta: U2FsdGVkX19aWS31F/7U/i5yMJ5PjyP+BjCQqvALrjF1kkbNmuic8qg1dz8ZWeQinXVJMGMZmrswcVA+3BaAuspXFqXnJRV+MLDmMJnOWDK6xDn9lBrpeto0JZI3T0lQGmf/MPe70ZZI+8S+SXtZwYhbfRB/0XK6w3yrE2PsAgIiWTz+M8TMZ0ek1VvkDOqZ1XaalasouyxEogNjVgnXXL8pERNHiSIwlHAOyVysTnDtdVQLcvW9/7XtGJvvRwBnKOxDkj0q8BJyqemOtdCQc/zxKrCgF/0UeXiIfyzoz/+Nenp36fGLHAsZ9dc+DxjSmKXCVGIkzS9Cb+z26mmpftEesx5M7Jf6Y43j/LrsbfuLnE1aopBuHF8UgVvP3gV/vUVEOMi4idbzt5zPPjMVtyjGjduk7GdSTH9StF7uo937qrIvtymKn8oDoIhAg5rqxngqXiutdgGsxpxNyEPibueKo3+/oYe3NImFgl81uIWXhURFCg+U/GJ3O6Ova+eQVcLl8GBrr9/2pK7VcMt7E3RGwL1rax6EwRIDDUMMq7kfD9ijohriQUQSootDUAo4naQ2bjDJ4fLJBP2OuNy4deFhDXfqmoKj+e3y2yK0SP66m8UkOpKwvIePQPOEnaM4KPKLApGkyBjRR08bNdzFkzEuJ5Y1dpGiOAfHaMp1AJiquKU+tp/omIyfaiLHDQspkxG5F8Ots9fUxm9R2ScUgqcEow2tiM5LbbK1TeN/Qj6GjVY3Hz6KFyDLrTZx3H1TzcVLqQdY7+EMZnoiuwrcFd1qFEzjMvi8MQKiZAVSTqJb07go2GaYFfUjWUqySNEdXXyPmemtvrNuM2sYd4D9gmAQDck2SSNZFI8XC7y346IOszlwFaRYcPZn4wrKABf2fBDkXCO8X47ITpocP8mA+gz5/q+EOnrQxZ0ea0XDZut3rz8bdvl+/xLouiAMeHtBya/s3y22v4uqWNqIZHB
+ rEQLUnz2
+ I3B2QYpIpKJj1YAdmcZyTY8PwBex1H1V5F+UUNm8kpXYf1iOMpfwotoelOq9/bPijWwAIVClapoagLP+frhX40XtJ81wWdYD/mQbtZczLKYGIc0opqaQy5Gni3LAdPcbAKVwFzCniIKjT23UkOAW1Wj4fRDAmOoK1g8hMjpCWiI3k0A28jR5f8seSxAKWkG0m7ECaCr2M/TrZcV3P6cLXMrCfte8ww7q5hw/ypobep/lxVfYm4g1Fy9zLTCnlXN0wCebUB82PQ5CWdP1JTLHIkg+LoaFEw5JUcqqotRV6GWnoavvQtTITbPN8y1xIvasumznVzZTDqqzBtHEB8wE4dl9hx79hIoCLueagoX2Vxv3ePrRP1g/3o/I+mOynygOqDg2QZKvOohRrHoo4udnnrHl5ctj6qNTWxU88XLfH8GF86Yf/nknJ3tXj1olyGmLbi8YVq1O9n6pS62f/SlN5Ddl6ZOyaZmoZL8jQVb7+STytX7LEqPa2wsEwZvNX/uO7LbYvjDErmYJQO4ZQUx8mwhrIAVFC2zsUzVOlQjQH8TqiXhU2jbyYcLPjqjV9QlorNBCmvcvz8Xs+6alchD3GwOwMZcUdq1T2k5FW+HgLdsuzwO7rWNQbFVuv5p95LWNjyR+sOPff7LYz04FSmOqeRpbanbfIhcen7cE1JB5UtzQjNHN91/NQBGe/vi0Ufz5RD/mjxO7qMw/eXHe/3409bKGNHLSv89U+CqUlvoZYt/Y4tPcr1qpTWE5tsw0uRFpRmai0nTpcVhZm35XX/IsAd5tpWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,41 +128,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 07:38:55PM +0100, Pedro Falcato wrote:
-> So, the question is: why the heck do we need a copy? PMD is still allocated
-> by the time we flush the TLB. Why doesn't a simple pud_clear() + flush_tlb +
-> free over the pmd Just Work? Am I missing something? The git log isn't
-> clueing me in.
+On a box with a discrete GPU, lockdep reports a possible deadlock as soon
+as kswapd shrinks the TTM page pool:
 
-I don't see anything you are missing.  The copy came with 5e0fb5df2ee8
-("x86/mm: Add TLB purge to free pmd/pte page interfaces").  Its changelog
-explains the flush but not the copy, and the only discussion of the copy
-in that thread was Joerg objecting to the allocation and suggesting a
-list_head on the stack instead:
+  WARNING: possible circular locking dependency detected
+  7.3.0-rc3-f6e7b42bf05b+ #183 Tainted: G     U
+  ------------------------------------------------------
+  kswapd0/269 is trying to acquire lock:
+  ((init_mm).mmap_lock){++++}-{4:4}, at: change_page_attr_set_clr+0x29a/0x4a0
+  but task is already holding lock:
+  (pool_shrink_rwsem){.+.+}-{4:4}, at: ttm_pool_shrink+0xb2/0x330 [ttm]
+  Chain exists of:
+    (init_mm).mmap_lock --> fs_reclaim --> pool_shrink_rwsem
 
-  https://lore.kernel.org/all/20180529144438.GM18595@8bytes.org/
+The cycle is built from three edges:
 
-The existing code already frees the PMD table itself after pud_clear()
-and that flush, so it already relies on the table being out of reach of
-the page walker at that point.  If it is safe to free it then, it is
-safe to read it then; clearing the PMD entries up front buys nothing,
-because nothing is freed before the flush.  Nobody else writes to the
-table either: vmap_try_huge_pud() only gets here for a range covering
-the whole PUD, and ptdump is kept out by the init_mm lock the caller
-holds.
+  1) pool_shrink_rwsem -> (init_mm).mmap_lock
 
-> All-in-all, I would much prefer not having a copy of the PMD at all. Perhaps,
-> if this isn't workable, then a linked list of PTEs would work. But I would rather
-> not have tricky logic at all.
+     The TTM shrinker restores the caching attribute of every page it
+     frees, while holding pool_shrink_rwsem:
 
-Agreed.  It also removes the allocation instead of weakening it, so no
-fallback path is left behind.  I'll send a v2 that does pud_clear(), the
-flush, and then frees the PTE tables straight from the detached PMD
-table - the same order pmd_free_pte_page() already uses one level down.
+       ttm_pool_shrink()
+       -> ttm_pool_dispose_list()
+       -> ttm_pool_free_page()
+       -> set_pages_wb()
+       -> change_page_attr_set_clr()   [ init_mm mmap read lock ]
 
-Thanks for looking at it.
+  2) fs_reclaim -> pool_shrink_rwsem
 
+     The same shrinker, called from reclaim.
+
+  3) (init_mm).mmap_lock -> fs_reclaim
+
+     ioremap() installing a huge PUD mapping over an existing PMD table:
+
+       ioremap_page_range()
+       -> vmap_range_noflush()
+       -> vmap_try_huge_pud()          [ init_mm mmap read lock ]
+       -> pud_free_pmd_page()
+       -> __get_free_page(GFP_KERNEL)  [ enters reclaim ]
+
+Edge 3 is the one that should not exist.  Now that the attribute-change
+path takes the init_mm mmap lock, reclaim can acquire it, so the lock
+must not be held over an allocation which can enter reclaim.  CPA itself
+follows this rule: split_large_page() drops the lock around
+pagetable_alloc().  The huge vmap path, which has held the same lock
+since commit 26444eb71465
+("mm/vmalloc: acquire init_mm lock on huge vmap to avoid ptdump UAF"),
+does not: pud_free_pmd_page() allocates a scratch page underneath it.
+
+That page does not need to exist.  It only holds a copy of the PMD
+entries, so that they can be cleared before the PUD is.  But the PMD
+table itself is freed after pud_clear() and the flush, so the code
+already relies on the table being out of reach of the page walker at
+that point - and if it is safe to free it then, it is safe to read it
+then.  Nobody else writes to it either: vmap_try_huge_pud() only gets
+here for a range covering the whole PUD, and ptdump is kept out by the
+init_mm lock the caller holds.
+
+So clear the PUD, flush, and free the PTE tables straight from the
+detached PMD table - the same order pmd_free_pte_page() uses one level
+down.  With no allocation left the cycle is gone, and so is the only way
+this function could fail.
+
+The copy came with commit 5e0fb5df2ee8
+("x86/mm: Add TLB purge to free pmd/pte page interfaces"), whose
+changelog explains the flush but not the copy; the allocation itself was
+already questioned in review back then [1].  The same lock cycle was
+also reported from the i915 shrinker, with &vm->mutex in place of
+pool_shrink_rwsem [2].
+
+Fixes: d5d8b8662e6e ("x86/mm/pat: Acquire init_mm read lock on attribute changes to avoid UAF")
+Suggested-by: Pedro Falcato <pfalcato@suse.de>
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20180529144438.GM18595@8bytes.org # [1]
+Link: https://lore.kernel.org/80993b70-352f-4069-84c7-39a04c061e98@intel.com # [2]
+Link: https://lore.kernel.org/20260916062222.27347-1-mikhail.v.gavrilov@gmail.com
+---
+
+v2:
+ - Drop the scratch page instead of allocating it with GFP_NOWAIT: the
+   PMD table can be read after pud_clear() and the flush (Pedro Falcato)
+ - Capitalise the subject per tip conventions
+v1: https://lore.kernel.org/20260916062222.27347-1-mikhail.v.gavrilov@gmail.com
+
+Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX (Navi 31), lockdep
+and KASAN enabled.  Reproducer, on a lockdep kernel with a TTM driver
+bound and non-zero wc/uc rows in /sys/kernel/debug/ttm/page_pool:
+
+  # cat /sys/kernel/debug/ttm/page_pool_shrink
+
+This runs the TTM shrinker with fs_reclaim held.  Unpatched
+(7.3-rc3, f6e7b42bf05b) it produces the report above on demand.
+
+With this patch (7.3-rc4, fe2ec83746e5): a boot-time kprobe on
+pud_free_pmd_page() recorded one call from a udev worker during boot -
+in the unpatched kernel's lockdep reports the same function is entered
+from amdgpu_ttm_init() -> ioremap_page_range(), so this box reaches the
+changed path without instrumentation.  In that same boot the reproducer
+freed 354 write-combined pages through set_pages_wb(), with no report
+and debug_locks still 1 afterwards.
+
+ arch/x86/mm/pgtable.c | 23 +++++++----------------
+ 1 file changed, 7 insertions(+), 16 deletions(-)
+
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index cb03f5a2b243..6a338d6e80e9 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -712,40 +712,31 @@ int pmd_clear_huge(pmd_t *pmd)
+  *
+  * Context: The PUD range has been unmapped and TLB purged.
+  * Return: 1 if clearing the entry succeeded. 0 otherwise.
+- *
+- * NOTE: Callers must allow a single page allocation.
+  */
+ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
+ {
+-	pmd_t *pmd, *pmd_sv;
++	pmd_t *pmd;
+ 	struct ptdesc *pt;
+ 	int i;
+ 
+ 	pmd = pud_pgtable(*pud);
+-	pmd_sv = (pmd_t *)__get_free_page(GFP_KERNEL);
+-	if (!pmd_sv)
+-		return 0;
+-
+-	for (i = 0; i < PTRS_PER_PMD; i++) {
+-		pmd_sv[i] = pmd[i];
+-		if (!pmd_none(pmd[i]))
+-			pmd_clear(&pmd[i]);
+-	}
+ 
+ 	pud_clear(pud);
+ 
+ 	/* INVLPG to clear all paging-structure caches */
+ 	flush_tlb_kernel_range(addr, addr + PAGE_SIZE-1);
+ 
++	/*
++	 * The PMD table can no longer be walked, but it is still allocated:
++	 * free the PTE tables straight from it, then the table itself.
++	 */
+ 	for (i = 0; i < PTRS_PER_PMD; i++) {
+-		if (!pmd_none(pmd_sv[i])) {
+-			pt = page_ptdesc(pmd_page(pmd_sv[i]));
++		if (!pmd_none(pmd[i])) {
++			pt = page_ptdesc(pmd_page(pmd[i]));
+ 			pagetable_dtor_free(pt);
+ 		}
+ 	}
+ 
+-	free_page((unsigned long)pmd_sv);
+-
+ 	pmd_free(&init_mm, pmd);
+ 
+ 	return 1;
 -- 
-Thanks,
-Mikhail
+2.55.0
+
 
