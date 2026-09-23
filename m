@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF5B6C9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92CA0C98309
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:15:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADA756B008C; Wed, 23 Sep 2026 05:14:05 -0400 (EDT)
+	id 781F26B0092; Wed, 23 Sep 2026 05:15:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB2A06B0093; Wed, 23 Sep 2026 05:14:05 -0400 (EDT)
+	id 7596C6B0093; Wed, 23 Sep 2026 05:15:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A0CC6B0095; Wed, 23 Sep 2026 05:14:05 -0400 (EDT)
+	id 66F4A6B0095; Wed, 23 Sep 2026 05:15:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 662FB6B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:14:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A7DF5C06FA
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:14:04 +0000 (UTC)
-X-FDA: 85244465208.17.8FC23B2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 375BD6B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:15:55 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 94C5D1C3413
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:15:54 +0000 (UTC)
+X-FDA: 85244469828.20.CD1E78F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E4F4140008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:14:02 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWMCgiXL;
+	by imf03.hostedemail.com (Postfix) with ESMTP id D820320003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:15:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMhlc0Vg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790154842;
+	s=arc-20220608; t=1790154952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z+j1lHJE5F3iMb8nSY99OQtjlVOCv/aNXLt1f/fnIwI=;
-	b=HVEmMpzMJ/lg34txrsG/KYcO0gg3znYsRoYo4XVoE9NARbxs4MfVGDy2nebZNxuiz9rbsz
-	MfQiPMe2nBk9NJ1ZomB3krG5hDE/CG/jWYxa/3UQb/yI9zMCuy3hIrXFAzfBrPaEN9i1CT
-	NGPX0UiedvPrk2iytVdOJTvSb2GjZ18=
+	bh=O74zCChabJPGX/5FXG7XmXwrySBRD///uZE1gOiATno=;
+	b=y/DEqf3eU8MtDNMTEu/rGGVhlNrrkklibM7MiLoyiFdZZvLnQxrdIvBJq98gxeK4YXCggA
+	U3EdlTea/1tqlSidavapgoTL7PuxILAu+rwtpiuPklPpc2HmdrkBMS1diBY5ojWq/bfHtp
+	STL5Z300OxsA9kHwkHHTXmuhLVdchGU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kWMCgiXL;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SMhlc0Vg;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790154842;
-	b=X4tEmfsBJQLRp93UY9yQk7O/cEkckxrT3GTmM+As9urkWnXvEqUymCiRFV2izqv95LHF7h
-	/2EmtXq/8Pl9iMdcbw7sgFfMDbd91Kjs7FyZlhrI4RkloontrvE0Rw3BjseYQrFhkRbaEy
-	rqJ5+ZPG7nPdtHMbnsZnQoG5jpyTyGQ=
+	t=1790154952;
+	b=vauIXOwZIMtf2yHEoudekG99KOPWFJUKzAQUBUu19VDYC0fvsn9RVCVA4dK2yxGJCHkVF1
+	USTFClnFkoNpDcrbmJw1Ae0jLem0o6td1nEjaxWU6K/Hx8g989BeIdB8a05diuarIVuw7Y
+	WXXBTbIegV5gK4hCnhpnvuKC4qvv4II=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 51138601F0;
-	Wed, 23 Sep 2026 09:14:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DD41F000FF;
-	Wed, 23 Sep 2026 09:13:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 23562601FB;
+	Wed, 23 Sep 2026 09:15:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3B61F00899;
+	Wed, 23 Sep 2026 09:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790154842;
-	bh=Z+j1lHJE5F3iMb8nSY99OQtjlVOCv/aNXLt1f/fnIwI=;
+	s=k20260515; t=1790154951;
+	bh=O74zCChabJPGX/5FXG7XmXwrySBRD///uZE1gOiATno=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kWMCgiXLIQ6wuVlwnnRx3lJKHDLxKLCH12IowjOX7efeQzZGOJawCaHUfqRK5YQRX
-	 eyw5xVCFRsKuaXNkT2f1HZDd8aaiBjUul7jvkwjO6j1afG61xfht5mCCPSKKp4Dhe9
-	 rzhiHvxgoP5JCx5uMMA6TbPPpBXNI0TvsBqy8ptvMlhuhl3LjdN19l8FOcusuHqGd6
-	 W/Lu00eio/hX6O8BOK5kdqlsJZJnYqJ8DQtyzzxsImYdJDJx13pZ4NSi9WHt1anikw
-	 dlxfFEX5t8FcpmSHMomNE+o4ZWePsDJ5WRA6GO3q2+DvMeaV13VT0Jhtfi25HVJqjf
-	 K7utRZ1UWwiog==
-Message-ID: <802d3999-95fe-4a09-89b4-d01b60f8e963@kernel.org>
-Date: Wed, 23 Sep 2026 11:13:36 +0200
+	b=SMhlc0VgRdQKdx0qwl14ANA68wVrXDsrycIDNbwUOrPzQGed7psejweuHvn9y0Upj
+	 oK9pF6NnduwDsnqfpjtJ/98OkmFP3+3GiOq1Gh9n/PtyI2qphy+ikJaaV9pWvwu/jb
+	 lgkfeUAJH/6wrnbIuYjLND8YDK30CL0Xmk3ZEGU/0LCGarFAZx7fHYPYSxTuBD/9Po
+	 M10D3egALYwoCwT9UTdFNWLlH9Bts/yO0DSd9ByK7feU9BZexVgvkgnX3iMjolsZ4N
+	 yD6SaWbdPJpvZOUAW1bcswar5pOH0YXD/VsfYA6P7+enqEtASX+lnYGFo0DZ63X3o1
+	 OTxrzvc6LwB5g==
+Message-ID: <77db2f8f-dfc2-49c6-82f6-8e6c4f7c1fd0@kernel.org>
+Date: Wed, 23 Sep 2026 11:15:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/12] mm: make userland page table freeing RCU-safe
+Subject: Re: [PATCH v4 00/12] mm: make userland page table freeing RCU-safe
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
@@ -130,8 +130,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>,
  linux-doc@vger.kernel.org
 References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
- <20260922-rcu-pagetable-freeing-v4-11-fe1ad1f1e303@kernel.org>
- <72d1548a-a4ee-4832-b2ab-4bc82f1933f8@kernel.org> <arOWZCeV8FrkAvhK@gremlin>
+ <20260922160021.a2fc65d05d9b867a141e5457@linux-foundation.org>
+ <9dcde7e4-dadb-4644-9dff-7fd8a26e29a6@kernel.org> <arOVbT5B1FOMe1wb@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -178,17 +178,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arOWZCeV8FrkAvhK@gremlin>
+In-Reply-To: <arOVbT5B1FOMe1wb@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: e3rdmznaopocr4nsmg617gyf1hxb11fz
+X-Rspamd-Queue-Id: D820320003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4F4140008
-X-HE-Tag: 1790154842-439394
-X-HE-Meta: U2FsdGVkX1/vS+BD55CabXXIkPP/b/CvVkJxYsN1Z5bYeCivUZ/9YvE2fwyiNcTa8xLnNJxQii2WAEguWUPTWEbZ2rx2t7Lz9Cn1I5zRoyj1p+8OBjRdRvxFb++shBxDE0BgnZfGPCb9CTgvik17TiYUaQx6Ko6wpUnD8lHSJylay2JGE1VN+RejfhVZOkAFEWIENZgJMWJ9J6nYuirfJGfAlAzAU//5yx8/4VCXuDk8F+V5zY4V3T5jfPPG24CUVyql2iuUF2CvCdsSAlvlg5oE9Ajny8owML55wDt1EJAb/mi7y5HAXXbcV8NCFWEIIlVxSXVUzQ+EsYsdG5akB1tyJQ5TZMGk1HHxg2ZzPos5i+tr9HogBqW+EsSPILFnNwU3PaZ4SNrXFPfNKQypj1IauMkKrUXMomovNRSGkuSIvssvpH/F4WMvrRlCK+suO1r3V+gVOthjkc4cQ1y9jGJpgn2WaVrVn/9Tc3SWM5bbmC7L2xRD4Fw2Yf/USnsKWVeJMBIncMuBmipfh2EwdhPk0YbXFGZUbL36oye9sgFR+mzcvyO2Wn0SeoPJKM44u/34r6qL9bftsKTs5SEgAhX7tpIICnThJ07d+0Y6gkS/i4YVf4yBXl1O+SVzKbsRuoRjE2JSWoiyefAJHmt7kiYAVzOdJ09FvvoWO8rdpuCUUF5eIEr7F4DdYPe6BaPhVwdvBL0dn3XsBngVfCer+i6eUVpYMfZeD9sku9Jo292p8nLIt4baDWmxhoP3CnKalosSK+N4w6SnfXMDivwOhtfQQwYmvRffhPJ3+IC0CTbkEDYQHpbibALoMZfrHVvpO5UPD6h06fWHO8rDRTqCchs34gAHg/WooWrv0D5ZeFepzVoEgx8bq4Cu2ZZ92+Il4gbtQt9vn9P3CipcYyKO5i5xktYX8CAY5szw10sTUAJ435OAP3t0ZVhBzlBXULvCwuHda8yUcT6qrHlEr/a
- Yj7F9KDz
- Lmvwybk0H/xMap6INhJRp7W07JnZOCoR6M3pI4VjkLjF4A/5uWU0fnEr7d6RVzlJ/A9VH7/1U3uzcdFRFEzcyN4t4h7IHpyMnF9+sti8nxnNcLOWOtIGrGWGQGNhdhI5gPZh2g18biaddyHhCGM/za1w0iwYE5HGA/u3srreoH4CDlH0gUVty17mn25D56rslLSEgaINfIHGrtcBLyV4uFddCLN412M9Y/7kK0ldXGprCaVLbnCd1GrHpMZEgBT2bFuLCYk9Hwt0FfC7afqrgZNqxNDPY3mkuHWEHo880Wq+ecR5ri72NC1cXxAzlgd8Z2meYA006KBmuJEQ=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dfapmfcuzzsaw9e43hhyug5fsf8gu4ef
+X-HE-Tag: 1790154952-337997
+X-HE-Meta: U2FsdGVkX1+nJasGJQz5tSsV2SLVpnJvz362d6YtXKyV2N9+iu3/4lDUNJ6ywi3YCQ0Jd/tsPFZGMpplEPHeFPALatuHcizWvYmHq0YA3xu/MeRovs5TVwFEAiUuCby3+Pz16fmdTEDTN9lIA7yf0/r+WYfd6Nq2cF/3slh7wq0L0LmYifA4KhNV04jaZS8uxG1am3XY3SiQQopGIwsQwBNn0E2V550myWn+X+OUJ0okpi++GfR8/g2Cn9mn9/umGeoJucJZrvF/SSc1qoWO+0D1nOiXzR8mKtXXm1Hne0ly1k0tvoPJWtTL5Pr5driSCRWb8liPPQALBvk4vHBUJZGRi84XjCypyLZc8yEOmZfhgyGzRqaUhbf3xjR1WDTzMFc8PFtQWBKIHZd7llWYoqaooOu2tHlSGEyjeq8v53NXLgzzgR9mDfVl0NyVq3nPVU2C1AsPzc0cjWgr5Op/UvHig2Ee/KLhPE5ZogK8GVmB4i1oFx1Vh3hJFTmy5HF3gq6hLdEfIcAGTxVvkM4SSXZCRbL/7Q9Fy0vKg/WaliVDsfpzhsqmnmhgzGMsLi+85t8V+n7kjXMjQYP2SMDFnk/Hd6fBQDlzeqC0uzjz6tFWncEwj2LBoOSD31LSVmTcB5MELiVhpAqAbIGqwmisdRWHCzAIXA7yQxY2RaBrZ7RC1nWtnlg6ucgwA30V5Otq23LSE04AY6TldSTw09j4/jLBFhUxxJjf4vZnbSUeWVeb/CWe9hyTTMzlvZm5Fw9xSTxHlUf86cCeFVBkawT1KnVNJvLg1rSjM6Ju1LN1wWpq0NMo5QojIgIWE4enN5akYL9fSCjaE09gQYep/LB87RXYiionvQrzmp5F6NEho+zKZnr3oVABlHDDv20YipdqwVgiVQAhHtL0dWB3wUIfgY6Up/jAr6q6vw0OPPU9In34s2dVEsH5TiL8PDk3EFjl8SXOMynjdsBl0NLmq5r
+ iHdCsNr+
+ QKXR9LFcYSU/bNXWw6W9dQuodfryBdCyVIyI59YFrYRBwAsneVJP/Gz+9S6/og2mzBd1JvAWgQ0d5H1Gjg/XAf0TR4kYYg8o7tkfY7yPE/yaB4O0ZQAYl0N7iVAj1xZMpF8Y7y2u8da719L1X56zy8Ns06uAHEWPz/g+iON4rUyagQHfaOLIXzr7Wiu0SSsV9+IV95VJUyxywQnVzFRVJ3/FbyRHjjkFtHw2EZ/xCyZf9/sGgQ5ObEAgFf0UgChsD+BWidOGbx9z2G2eo2W7WdT0jR7AtllDI81RDskHrG11NZwrbVmhxBWLCOC4dz1Pz1ZKKVnshfph8h2o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -196,26 +196,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 11:06, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 23, 2026 at 11:04:17AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/22/26 17:35, Lorenzo Stoakes (ARM) wrote:
->>
->> The patch subject confused me at first: that's not what the patch is doing, no?
->> Previous patches did that, and now you're just removing the leftovers?
->>
->> Maybe I'm missing something that this patch does along the lines of teaching the
->> code to be RCU-safe.
+On 9/23/26 11:04, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 23, 2026 at 10:45:33AM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/23/26 01:00, Andrew Morton wrote:
+>>>
+>>>
+>>> Do we have reason to believe that anyone is seeing any effects from
+>>> their arch's failure to rcu-free the page tables?
+>>>
+>>> This sounds like a rather long-standing wart, yes?
+>>>
+>>> The patchset is thinly reviewed and mm.git is bursting at the seams
+>>> again.  I'll play wait-and-see on this series.
+>> Do we want to nudge arch maintainers to review?
 > 
-> It is the final piece that makes that the case, so I think it's OK to allow
-> oneself a nice subject line? No? :)
+> (Just to note that I replied separately, 'thinly reviewed' is incorrect, it's
+> been in -next for weeks and the whole thing was reviewed by Kiryl.)
 
-Just took me longer to figure out if I am missing something important.
+Ack.
 
-E.g.,
+> 
+> The only places where that would be useful is m68k motorola, sparc32.
+> 
+> But in any case it has been heavily tested including on every single arch
+> listed with stress testing performed (I think I cover that in the cover
+> letter).
+> 
+> The changes are not controversial so I don't think that's a blocker, but
+> it'd be nice?
 
-	"mm: remove unused RCU-unsafe user page table freeing"
+I doubt we'll ever get sparc32 reviews :)
 
-would have been clearer to me. Anyhow, just stumbled over it, I don't care too much.
+I'd definitely appreciate some review on the arch bits from arch maintainers,
+but if they don't reply within the next weeks I wouldn't wait on that.
 
 -- 
 Cheers,
