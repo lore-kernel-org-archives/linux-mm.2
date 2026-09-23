@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BCFC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 04:32:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B95C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 04:32:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12A386B0088; Wed, 23 Sep 2026 00:32:39 -0400 (EDT)
+	id 39B856B008A; Wed, 23 Sep 2026 00:32:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DB296B008A; Wed, 23 Sep 2026 00:32:39 -0400 (EDT)
+	id 3733A6B008C; Wed, 23 Sep 2026 00:32:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F33AA6B008C; Wed, 23 Sep 2026 00:32:38 -0400 (EDT)
+	id 289936B0092; Wed, 23 Sep 2026 00:32:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D46746B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:32:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5EF971C3392
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:38 +0000 (UTC)
-X-FDA: 85243755996.02.4B66961
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04CF56B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:32:43 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E91DFA6A6D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:41 +0000 (UTC)
+X-FDA: 85243756122.03.D32F8A2
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7B4D320002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AVafkVcc;
-	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf10.hostedemail.com (Postfix) with ESMTP id 203B5C0003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ndI1uH6e;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790137960;
+	b=g/h7Pr93qGjv8QukTQrBXbJKhLNliSicT4YDBamBavwmbUkpjtp5LgUJibovR8v+JpDqAA
+	CYXpNllBJsRlD6nx1Mmo0OfYK1yx1/o9kdBXSG49RAyAy4qu7FQgs7SLGWGYE1KZudN6Cz
+	ubBw/MluyM7i3iW7R5NT9B0+ZK+qZ/U=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ndI1uH6e;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790137956;
+	s=arc-20220608; t=1790137960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=6lrOFXGtRWnMkmmCqLGn+zoEvYV7WtEEV3tb/dg1dzg=;
-	b=fQCsiYPi/JfcoPDycF7GJ47Q69ZZ7DITtMJoW1kifs8qp3wLRRktAbN0tNZneEdy3KWHAd
-	0kHYO0ZKDN0Q8+3J1y01ajXJrfsJ+G3cBxJKjz0pP5MS3Hpzjuralw93Ji0fzpZ16I5wBb
-	StuF7JEEvJ+XdqkUC+9Y/faUDAohtiY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790137956;
-	b=cW90IY/ir2wQSuxsT1WWP6LnmnM/zO1sz3cxAmCD5zhyaNpz+8CZdFSwaeNVDvm+8jdxZR
-	7GKp3YSTjbyFjroZoWTmI2BrvRyNwqeNoxCAPJhB/zJXSRmON06XtvqrKwQxP3XIU7mHMJ
-	U9at1TVgCEvUl3BkW4tZwhyZQ2jT7no=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AVafkVcc;
-	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WVtBSpG0AuE1TlmMVdK0+NYcIZhfhSY3hC2WGzRV44w=;
+	b=mlyiPYP+OJ6jT6j+Yjtf3tLIdptYr2h4VbhCvAI+inx1eoVui0ZRsRBJ69SYzBGneDip9x
+	nQeGGs9Y1EELWzmXS6dsd7+L7rJx9iwmJ9F2EqZbmeCwgYHJNO28lL8tDAhUa8fFhjnH1o
+	/rJuVCOORQv22jlfsXU+9yTZhOA16RI=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF1CA1655;
-	Tue, 22 Sep 2026 21:32:31 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 966901A25;
+	Tue, 22 Sep 2026 21:32:35 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EE8E3F86C;
-	Tue, 22 Sep 2026 21:32:34 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 533DA3F86C;
+	Tue, 22 Sep 2026 21:32:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790137955; bh=cfGeDdBc/7PspEKVwTNh0HU7/ywQqRYyVO7lq8n9E4E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AVafkVccv/oqCtPz4ef1y7Zons53fH6/HRvELt70+6WCLSFaR9up2j4bG6c7A0GJ+
-	 LxWsp+Q/t6PNelQi/3s6xzDv4f6RT1NKsy5ZhdHluy7xZH3WpEH82mgt0R82VDco+1
-	 Drocy/z2/CjoNEq3X5dSTtdh336qHOYKNA7aE91o=
+	t=1790137959; bh=kwgxuuHKPugXD4uaHhdRyKDvpmpMLLZwxJxp7qromY4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ndI1uH6ezC/RE24KftyOi+TwxAWCteFIfAIE2ap3B/odxTDXRFbfnm27Hcp16vhSK
+	 zm8CRYHRLsE/0Mex87/JrGOwfOSvKmiGKWGnGANtSggUbLXGnL3eVayi0moOi+YPSl
+	 TI0n9+OMf+k5CQjCNZx8mHjCTCn7JeDMOcEHID/Q=
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: linux-mm@kvack.org
 Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
@@ -74,21 +74,22 @@ Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
 	linux-s390@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/3] arch/mm: Drop similar platform overrides for pxdp_get()
-Date: Wed, 23 Sep 2026 10:02:19 +0530
-Message-ID: <20260923043226.331880-1-anshuman.khandual@arm.com>
+Subject: [PATCH 1/3] s390/mm: Drop all pxdp_get()
+Date: Wed, 23 Sep 2026 10:02:20 +0530
+Message-ID: <20260923043226.331880-2-anshuman.khandual@arm.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260923043226.331880-1-anshuman.khandual@arm.com>
+References: <20260923043226.331880-1-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tm8ffywcqmf3fhqhm8y3gtcgd1oa8gww
 X-Rspam-User: 
-X-Stat-Signature: 91zdib49tdcau1eos4nz4eg6jzfoch9q
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7B4D320002
-X-HE-Tag: 1790137956-450227
-X-HE-Meta: U2FsdGVkX18NVdpLt2c5E2CFFt8kcWpHY9/mz8pqA/cpE41v3VZF/J+4SnuMbhZkDbFJbKtKaL0m7jO3phiift9MpC+cbNSKMych6FXeur7j87Yc75A2RrFb4OrpVzZQf31b2+2VlXMU5InwiiOY2bxXifRpMW73CHdZcGreLX7WRssTnEftuiJELctUqUqt3V8gN9xGTlafh+uZ+zTI9jjScwULN9E38KB8qbVSmFAEBPpkkEzvdG1VkxSyVrGCK+MqqCcbY2yQr8bneiZ3JFYuo8R9XWHO1yYUFQ/somxEJZLReisxZclGWanAAF2LH6GF/mzgubmOQIHQb+urljSgh17zn3PZfdGGK8W6ea2UtlNfm3cWzItj4+SCgBsUSBJAzXmehuvvZn78rfAICN/YuZaNDhZf1GwjuI19jcDrL312a9fzHhx9NZNgKjAGPp+0P52u1teQWRcJCb45ZE/w3p//v90iRylvZ0ty+o+hjA8E2Wr32qKc8v3psjZwmhyeuM9F+M5kKy2oTuvxGu4EvrRiwDYoPQ0doqZGVKZ3JbcHdMBiYz/1FzUo/J1nqacy402/pHwCCJt38y50j7VutGcUx+Z+exQFA/Z6B1BTkq/j1dobid9dvnTJ33PONeYkTXZlYM1tt3Pnv0oaFyUfcpqXqYr/p6iKH2VprvsPTRwlqa556bm2iVOL6xJtUmOEu8SHdUBGFHMsRc/Z29br2K3fhv18ruwRdN2R5F7amgt/9en0ptR96nHhFTT26c/Y2Ty0Fgb2T17Kw5cFs46lzVybQ4uVCcFTPQ5dG5E3hPPJQ2tI8pvchluokbBUH+Yt37NOYvQaEZ01uLv183L44D00pWEduLtZM5f+Gpx6ceKbvActc3Aij4loGCR0e7JtjTGRLt+tI1hnwPmQ5YYujDPHck6wdcdYSZsonEU4w1H3KEhWoFB9UaaMxM1ko+3k7Ikw0I3G9iPGSX/
- yTPlewZq
- Htf+v72047cD5bodQK5sK5r8CqmQKPk/8dJv9pxhh0hqrmK+Xq0jAMloRhrQ8MGrs/qQWpB2riual4aYqgFnRnsyVZXwac41omfB+zRYreYpwisdSbc7Y2lkqlbv4GfHZ4TK4IUkyQW3HAz+RMl6tO9sZRcFszvCLtMMOoNSrxqoXQ7Lv1bjwS1hbIjTC58qGy4ikQHCm+ZyQiI0qZQT+7cM/4lucd+7hlfWI7v3IQsJNxVLkaf038xFyBoahjSwL41SiNoH+JFcNuACK9f6Va4PVzpOU87NuPmo53F5V33U4P+PIU6K5ca9My3lXXa2+h2rDzjS2hDAUQWWMIIkhgslgkCtkFkUkEYp2O3buz5Xu0M6Q241C7PNtfVARd1HrQBxBbSJG/JPH/vS24fXPkd0bajq1/8SL3BFuKKgEvNzFebzGRUUUwCK4rOdHHMoAJbO4MeN2LGW/3Ga1pFrGjMo0lHl45XRxdItISZRatdjFxRLfE2ppyE2g8B8AzDr9rKTGbexjngwrHUqbTZ8FPLce+BLf1tW3qfSTDBR7z1qK7rv+n5DaK46Oev7hn8/gKcE0LzWm9hxFTNDTT7de3xynxA==
+X-Rspamd-Queue-Id: 203B5C0003
+X-HE-Tag: 1790137959-277144
+X-HE-Meta: U2FsdGVkX1+5hFvdtJUVAuOD/x4cdlRQi/f6HP8ORqqI+ddJS/Fi+SIit4f8zTN+U6rMv5FH9Q0KFh17n1gg111lblnHgEAoCpo9Us4wnfvFC/nFUWGjqslSD++G9DsI8QR126zERI0hr3GfMz8/xgGoGNmF9ljTscSIuLT8BvSyxOh9bIGpfBOrmO56d/P2ztDVUSx/Z7RJs3+xd6+TspyrEMVErpv4YPkCSsOuAp/AOUNRtnHb8wo9M3UzFrtA1KRZXNj1843pdVytS3kwO9HnyFH8Gi60yjqVQHVEBoADNR0Ml+tNyMAM+z2qaNuPQjciRBKGjyy1+X4JSDMIn3fW3+URs3vHyOJ9Uli5Psl4oPxP8o/TmTd6A4wSmZBrZZ1uyq4qgp+CvQ3etlYjqyxeztVvFmDogL2ds/qagesEULffYN0vp21dw7ySONj287fdWgGVSKD3oMeZLVE1eaRSWtPpw/oairjE+2A7YizNTIivtXNfByiu5XEQ2FlOzWD8wMN3iomo42Doe1uNRqK08VuNQEj7Xsw1d4wARMiC9zyZGYuC/AU9ZhokAld65PubS+Qn+cIJ7P09vsz9OICCZV0XYPOL6dgNecy0322S1EHe7vYXDFozblaI0Lb+w1THhlVlBjI+70u9Oumr9XLa8PXWZG0pPhSbqHq0Ds/Opn932ViJ1TjHpHfq8gwi9WWndkkGCZDqNHJ6dfrERVcccixONVEilWHGLg8bX4CBPrznIEryTl1hBVrFEaAz72JvToxRsYZQUH0CYgV+Bx2efN3lwM8nVOEITZcBwheYtTe7M/2W56pt03JfZB8VTZC117X2+yOWrKWO7LasD3EVlvpFe0wTqQZqBe5oqVpcINMqG/RFA0bCHuzjidRxKjVWBEAiakzafD8Gt2Fmwux98Wj3h2VlV2CuQdwpdvrRd811fe5xBv0YpEQuL1Eeub28UsUP3mePqWIAs48
+ faP59b+k
+ pHH3XO9Jj1XfyTbkI1rshseO6FdI2Jaid2r8B3ozCHsGBiHR8y8BA7pQ3yKaQtibCYQSNZRickljovfq8bsAIWophz5oROLiQI+9qTd5Ry5gbiiXqGA2g4QPJFPy6xujZ6Itl/V75ftydhIvL7mn/OrzT8Xx11kKMc2+S/l0iaYL8neAtNi76LKP6VvDFdcz0YSec0iC6f1sL8f8J3HRmLgZqv3fCIloOS290FZOTikNPSTLdcxggG+1iugtWGsnuxeZNWolxDmf6gDNSks6EPNxfODxEsO1rJmZLTWelxX/os36Geq3wgMgVVzsZX2qReNX5EiLphjzx9M5BIpp0SRKzk7LPIADIoctZ2V/7acy8WTClBgIPd4kit4O3OySmLhzctwC3NeUCVsc7F2mMXJv0b6yLNNWVGJHItcHBOAJZQGlMGjuzztXuO7EuNLzUVpo9HtD12UioFaKEsZGiP805BG0D382xL34AZmNbrGz7m2/0fsy1SOPKZjCNeM4z4mCo8TD4XYNizWg3ncEinecBV9BhuxCEaM6eutJoRMaBDMCJORcq0LUe4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,42 +97,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are many platforms with similar pxpd_get() overrides like the generic
-memory default helpers which use READ_ONCE() for reading page table entries
-These overrides could be dropped safely letting their platforms fallback on
-the defaults instead. Although it requires some code movement from platform
-headers to avoid build failures.
+Current platform specific pxdp_get() helpers are exact same as the default
+ones defined in the generic MM header (include/linux/pgtable.h) thus making
+them redundant. Just add required forward declarations.
 
-This series based on v7.3-rc4 although after the following patch.
-
-https://lore.kernel.org/linux-mm/20260918064928.793742-1-anshuman.khandual@arm.com/
-
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>
 Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
-Cc: “James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Helge Deller <deller@gmx.de>
-Cc: linux-mm@kvack.org
-Cc: loongarch@lists.linux.dev
 Cc: linux-s390@vger.kernel.org
-Cc: linux-parisc@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ arch/s390/include/asm/pgtable.h | 35 +++++----------------------------
+ 1 file changed, 5 insertions(+), 30 deletions(-)
 
-Anshuman Khandual (3):
-  s390/mm: Drop all pxdp_get()
-  loongarch/mm: Drop all pxdp_get()
-  parisc/mm: Drop all pxdp_get()
-
- arch/loongarch/include/asm/pgtable.h | 20 ++--------------
- arch/loongarch/mm/init.c             | 19 +++++++++++++++
- arch/parisc/include/asm/pgtable.h    | 20 +---------------
- arch/parisc/mm/init.c                | 13 +++++++++++
- arch/s390/include/asm/pgtable.h      | 35 ++++------------------------
- 5 files changed, 40 insertions(+), 67 deletions(-)
-
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index e882663a58e77..0a0b0ec42b624 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -25,6 +25,11 @@
+ #include <asm/page.h>
+ #include <asm/uv.h>
+ 
++static inline pte_t ptep_get(const pte_t *ptep);
++static inline pud_t pudp_get(const pud_t *pudp);
++static inline p4d_t p4dp_get(const p4d_t *p4dp);
++static inline pgd_t pgdp_get(const pgd_t *pgdp);
++
+ extern pgd_t swapper_pg_dir[];
+ extern pgd_t invalid_pg_dir[];
+ extern void paging_init(void);
+@@ -985,36 +990,6 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
+ 	WRITE_ONCE(*ptep, pte);
+ }
+ 
+-#define ptep_get ptep_get
+-static inline pte_t ptep_get(pte_t *ptep)
+-{
+-	return READ_ONCE(*ptep);
+-}
+-
+-#define pmdp_get pmdp_get
+-static inline pmd_t pmdp_get(pmd_t *pmdp)
+-{
+-	return READ_ONCE(*pmdp);
+-}
+-
+-#define pudp_get pudp_get
+-static inline pud_t pudp_get(pud_t *pudp)
+-{
+-	return READ_ONCE(*pudp);
+-}
+-
+-#define p4dp_get p4dp_get
+-static inline p4d_t p4dp_get(p4d_t *p4dp)
+-{
+-	return READ_ONCE(*p4dp);
+-}
+-
+-#define pgdp_get pgdp_get
+-static inline pgd_t pgdp_get(pgd_t *pgdp)
+-{
+-	return READ_ONCE(*pgdp);
+-}
+-
+ static inline void pte_clear(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+ {
+ 	set_pte(ptep, __pte(_PAGE_INVALID));
 -- 
 2.43.0
 
