@@ -4,87 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E289C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3454C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:21:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 916636B008C; Wed, 23 Sep 2026 08:12:07 -0400 (EDT)
+	id 8D9F96B0088; Wed, 23 Sep 2026 08:21:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7336B0093; Wed, 23 Sep 2026 08:12:07 -0400 (EDT)
+	id 8B17E6B008A; Wed, 23 Sep 2026 08:21:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80AF06B008C; Wed, 23 Sep 2026 08:12:07 -0400 (EDT)
+	id 7C7E06B0093; Wed, 23 Sep 2026 08:21:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5876B6B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:12:07 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CB244C0768
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:12:06 +0000 (UTC)
-X-FDA: 85244913852.23.0ED12A4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id EBE6BC0005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:12:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WfbrlIJc;
-	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 598296B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:21:18 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DA35BA6739
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:21:17 +0000 (UTC)
+X-FDA: 85244936994.29.8B4B6C9
+Received: from mail-wr2-f39.google.com (mail-wr2-f39.google.com [74.125.225.103])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 18262C0002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:21:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntgJMIgf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.225.103 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790165525;
+	s=arc-20220608; t=1790166076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6lp3GpBA3Y7sFKEN6GNg6Oh9HFoOvWd8VUghdJIukW0=;
-	b=nHOS8i7Ey0jP46e12wDFdAGXvmrss7fFi7YzmHsSfyuLEYlYoCYpLvq14pi0Ogydy0whvr
-	Fuq6z3Rh78V8ru9nkvH+jC7/no8v2Y59a6jqwROQ/yJEbfxfgbnOMcI851XmVotw4t6+ib
-	OmN+1xlSp0c0Dt/0H/JLVBzxrUPJfcw=
+	bh=/TL+zy+izjVx2cYsJok0G732OpLexLuuUAzyKfEF0o8=;
+	b=DtWnzbZcByeGByof2cSPOKAg4bQYSluTr7HWPf03LNOg7a4W/Q43p7w1/nUe19j5Knp8SF
+	cOAbJ56wgMOSQ+5J/8sU1C62DG9AwFa0xc1LedlnKziE9dRt8qFhO7kXIDlyEl907LgN3m
+	X0pqfQwq30+QkxNNpsZd+tMu60FtrBY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=WfbrlIJc;
-	spf=pass (imf10.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ntgJMIgf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.225.103 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790165525;
-	b=QiBn5XHEgCK7I5drNx7Ni1PlATFyBXM2KssLBa+r29qvP1tmCpBPSS+Dbey41X9afc2tCI
-	NB2SYvEZ5r5cg4WF2UHBrKfkgxg/dHI6dRKTnipkeSI9bVepuA++z8H/hWijf/ZS4rv1Ur
-	owcnu48ri70goGqCjMRV3hFJkIvsDOc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 782041570;
-	Wed, 23 Sep 2026 05:12:00 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 44B4E3F86C;
-	Wed, 23 Sep 2026 05:12:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790165524; bh=xi8NIofPhpB3H7iilBZyGWD0DeG69Ptc46KK7MjGIYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WfbrlIJc6PIRO3QJdGN02l6yILN8LZNb5gXKSL0optlm3pfpEn+tM3q/hDkuH2wlp
-	 b7m0xt9GrefxYQL48XX0paq0rO+hkAkx9VGwwoGQs06sTvHhKkn6+2nLuuHUhWCUuO
-	 poloeD0oI3YcPeBHHqLRi6Bgs2yqbLb4hXKdEUic=
-Date: Wed, 23 Sep 2026 17:42:00 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: linux-mm@kvack.org, David Hildenbrand <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Helge Deller <deller@gmx.de>, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] s390/mm: Drop all pxdp_get()
-Message-ID: <echvqvjj435meeh6gcrqewysdqbtkrsgayvsyfcr3q6h3bh7fn@hsa7xh22l4rj>
-References: <20260923043226.331880-1-anshuman.khandual@arm.com>
- <20260923043226.331880-2-anshuman.khandual@arm.com>
- <20260923091629.9636A36-hca@linux.ibm.com>
+	t=1790166076;
+	b=o295Doo2wWRXu4kA5rSfi9NpuAvBBGhQ0ZHuZDhSXZNclnn5GQfXP9nhviQLj1yquAcZEk
+	SKpVhXfEiDbdsPDi2MeGEt30xUP07UkIMemL6RISPQ7Y7aHhtDeh/E6qkgafTSxxjED7uE
+	3lTaBwTCcriHkwaSzFD6rrB+r7hgBhc=
+Received: by mail-wr2-f39.google.com with SMTP id ffacd0b85a97d-482f633ece3so719146f8f.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790166074; x=1790770874; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=/TL+zy+izjVx2cYsJok0G732OpLexLuuUAzyKfEF0o8=;
+        b=ntgJMIgfMlTWRL6b4LPjkNXWd2uw8+8JVT2BnSQv9pdVEgBb3thx1fAwTqLd+IimyE
+         6BI3Bai8gr2dnv0hiqeaVIt1t/tMlprJh31uE8q0RsL/YjHVEvRziSjfc8SZUGtL/yuS
+         8PAzceERONM2tVv9yeccSIoESWWLPyV49zib756afJph4TFC5ryCVaDrpIqif7IVSNBM
+         /mctlXZL8qP3kiPdo5VTSlKSYgcvloPJW9i9HBe1v1NhfsuURkm4CoRjF8sAKvpsPfBG
+         qsfI9qjz7Mr6Pg4ODIvJ3qSa1Du1/MC6NiuDHKV2aaRnGUQlNkUUM+HV53aLg4rHPCct
+         ZFHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790166075; x=1790770875;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=/TL+zy+izjVx2cYsJok0G732OpLexLuuUAzyKfEF0o8=;
+        b=jUNlb1w3cNDe6pzqZiQCn/cHv75su4oBVb0CdjalYAGU4ZFeTAmqQSOJc52qkP8F8P
+         XFfem06BjX/cWCzUZ0q23KWCdcC4HszIwrH5chV3kiR14Fdci6KhN3GUvMsiihoyCnLe
+         NzeT0bUT66puxJxgN0ZIDpYSMZ/n4f3d2THyg0n2ZSMsUZ/87D1V3vhOd0RccBl79lKn
+         HstVo9cEcX6EvmWhRXNu0jBaxrHx1vG6BOkpiUG+mq6PFt5lCy7Gjkgue58lYvBqPDxH
+         KCM9ETwwtn7j3VfJH2+ltKefjBzHv8Y0WNaQG4012T2hVH1P0iKt9P3zhwyN+OU5X1jL
+         925w==
+X-Forwarded-Encrypted: i=1; AKwUvBy/sh8meBEfBnlsiY5x84NrKckCXCe+8xb1qZjaxAA2XFdPVSXY2Y2E8kldFHmufvfEj4Ccdwmbzw==@kvack.org
+X-Gm-Message-State: AFuF++kMorPpetZN4XdmIa536JhO5iVyUnchkb6py42XMP/kJAbteOZc
+	JUKKQ3/RwE3ddmdtQ4S5WCWTDmH2u7y4UcYwFC+KxLJoLi7/qg1jUpW1OzRPiFwR
+X-Gm-Gg: AYBFou2aKQXq+gHEsPg5uDlfE3ZgDin7DeEr1L/9XLE0IzMolasA1fdpoy9NXvzKbXl
+	WAzRowZ/1m54vHVg3Wvm/FTnXDlvfRKkv3DnpuPBrivU47/79+kfuzdGi3zjS3eemBlVZxIivsC
+	wdl6qT/aUH1x34kN/78E/v6WE3OPpCWm32T7S9stNhzU4q2k2TDyBvkNHjdcYFCI1AAq5VbKq1B
+	28ecd+0zZZXUPx2M1vmQ62BMbDN8bns+nALr6T1RQbIq8NIk2gvouHeNoSeiGVpaCIfAmaot3ix
+	kSVBf+6a9GX4uEjIFtjXEUSnHqH6PQz0xp/RU/vJLNHLxxerwgXKiuuEaqPpptzYp1JN4jMGoWn
+	uLnkF+qZB3ndpJH5Pg1QyQn7Mb7uL0ZbBIhpJ/q7VO+eIqtRxvckW5q/mHP20KOQZ+fJPRKkld5
+	sG12qY7wnzYOuXDhZECUqxUxbN7sC6V7b4G5hrTmx27mDcdCEV5diAarb0FNAUEcK6IsHJ2+4fu
+	hJsjv7YPFG0iDLgTBgB0zGMZEsTAKsq/lNWnL+LC27ubWgQl9wbDuM/auOZkWPMxE1eEA==
+X-Received: by 2002:adf:e18c:0:b0:487:aff:c060 with SMTP id ffacd0b85a97d-4886709d0f8mr3962430f8f.48.1790166074377;
+        Wed, 23 Sep 2026 05:21:14 -0700 (PDT)
+Received: from KASONG-MC4 (11.pool90-167-203.static.orange.es. [90.167.203.11])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4886848636asm6261900f8f.6.2026.09.23.05.21.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 05:21:12 -0700 (PDT)
+Date: Wed, 23 Sep 2026 14:21:08 +0200
+From: Kairui Song <ryncsn@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: kasong@tencent.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Chris Li <chrisl@kernel.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, 
+	Yeoreum Yun <yeoreum.yun@arm.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Shivam Kalra <shivamkalra98@zohomail.in>
+Subject: Re: [PATCH v5 09/17] mm/huge_memory: rename remap_page() to
+ remap_anon_folio()
+Message-ID: <arPD3ztCpw0r0mBu@KASONG-MC4>
+References: <20260915-swap-thp-cleanup-v5-0-39878b37dfb0@tencent.com>
+ <20260915-swap-thp-cleanup-v5-9-39878b37dfb0@tencent.com>
+ <6e542162-fe6c-47da-b0c4-a36251242950@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260923091629.9636A36-hca@linux.ibm.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EBE6BC0005
-X-Stat-Signature: bmm3ujmtkj4y3e1685cn31qw9tw6rt7b
+In-Reply-To: <6e542162-fe6c-47da-b0c4-a36251242950@kernel.org>
+X-Rspamd-Queue-Id: 18262C0002
 X-Rspam-User: 
-X-HE-Tag: 1790165524-855846
-X-HE-Meta: U2FsdGVkX19EKl9h+maas9cSHutfzWShit5asJpZsG8708hKbkY4+rd0ZC++9JCEuj79N3dI3jZRyfYveUKRcP7qY8oaIR90ltcfPkYTYd/H3/Bq5lZfdCg0aHXNM7wUr8jge4q6tScBypb/niV74EG5mt3V/eyeFlqH0MmxaSWit1YWZkplH+lXLHvzwxcP/gVF9Uax2UKL6FXVsx/MBMxvMunul2pkvr7MNX1ByH/AwclwmogUGRAVIDuDXaySNHXckHYy3e3W0/XXW/NSY+4fOOIKH9dmm4qMHgdFLnWUQ/0uX4PWOSkYWpNaTlnQEAUH7VgmWV/IyLVCaGqbvS7r1qntFf0MyFYHhPcOJK1dH0px0fhd04voUS+1gDJlWU7I8+m0SiFjqxOzGg2vI5OYcvWV7H9HcsaTcVHuycDwd9TQAhdM7vXS1D7gniw+FFngcjfpgjFpGp9PIbaIP9AyBl/45ZLphjjiUq792O+9U1JSpNjE0Z+iqb/y58ri3taZvIWeBAgItUa/MU2HltdXsZg7YP+p/4OiLQQNi0HRoT84n/V2epiZ7aBWqFSw3/+c2PAyvVc5tkLvITgOd0dSSwbTjYgc9THmC3plPylJIsKYnpeUiyNLXVZbaI1IYFE3EMZXtSp0OyYaN/a+Y1z/Xs//68PlLNSuo4X2N4YhVMI6JXi7JpsHOm/td17ppMSGyeHCi/a5yaw3yxW+qJHVOxQ8eZAaYSl/ZQYBcoYClcOYfyE5ls8r96FCb9lP+MeGZt64FdTTANFDiGwzR/ZcWpcL3CfY07PDQjslzDN6L4qBDsYcX7VfDygQbha/mAw7U3pVMvsm93audPYl/5MD4bsULctm/Gpf0HhmplRGu/RDYZ1iTGkp4C5RFej7pRkxweZVN9y2Mbd8MbZR7y/ULIZrJijuzcPPD2cNIGOnVvcVRd+DzLA6nE1qQFcj/H3Xb7Ti/8a6xVq1qiF
- U3LA/opN
- +Dv6I7kkuSjtzBMiHBiZfKjjGiTjJurSezE1THQAQO5sus86mVFv3eBMVVt9Jryc3lRI5/X/MNEOwxTjATApBquqvqPRD5AjAkwmnsOaH2YiKD6GFHgZ/MzQbPm0En5HlyBoD+ipFZ5AKGdirNR6VLmprmieY4AYLctmT5BDNga03HniU2ao6nOe4G6bLlqxb7U6kCLf8vl1jSYgqcK/ZD/N4BxN53jJZf9myVNpzuuMC/JqGcZQ8I5/9505wUloq2so/vnwbyaD8lX0dnPe6Fap27djOxA4KtUb6AcQOSGM9xmdVcZbhSdT8xfqBi8KGomMneq8uGCRQB+awNbJ4wQf+HvXtX6DVSJXWk++BATxVN2wkNIOr+SPo+laNpygCfIC+B/Q8vhiCwECmK3wsWazL6+rjAiv4nlARAA/3uP3+VJc0DyqiuTLcsmS7u/7zMw3Lv7vcBk6/MS4nTRzhQapFjUfokBNk0IpxvN1pGSAaUog=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: q73mnd43rn8hsdmi955kkhu4pp3mqr1b
+X-HE-Tag: 1790166075-592912
+X-HE-Meta: U2FsdGVkX1+MiOWNrCUMapibJgV+EctX71B9SWY+rEcNZhAuuat3u3bu0/+F0+5QpiE6IjqL8xS6dSL4WtTM8NQSK+Q6Q9RNuFWUwC616gKoJcxHdzQAOzFQ4wecI0YQ4uTQ5nmYXWmU4vU0dtQskQzklXSGSEILYyVtXJSC+FLEvokqUcki371FbkS6ZjpAWqVw5WLju2nqg2yZuaBG1ST8n0yv9sG9HyLeB7Myz6pf/s1gfs8FVJWfOfqqIMVzUSeGHBAIBamoElPzA6M08oPDjlbiykQBwBr3KJej/JX4686GmO+BN/B505kXxYm7N96hABeyQZ5V2aB3AYzBayosBsZmhm2oYbPcXZyeQS0ahruP2Z2QzyOPWcYlVpvgGHF05o3PLefnkYI4i8GM3O3XMErgyYaKgR2GghFrKi+c9S27AZG6ezoF935eTN9FRchgOWW9htvmOjlnmxzTsPTNcEsBj5/tWnwTKq4zXhTSnVcD0XlkV4rgW/RFe+IvRvpU0DCsikB85jSE1KIXhBQmdUQIo+yGWLgIZE8bsIMSvnCM9XXtot8daWTD1Z/t2SVOcK7vXjYn03NnHu8OyYfFjiTJRmTGIfY4QWRVH51reyKAs36Jr3+jiO7icH64hl8G5Wx9yggnENJ2imEfyJMwjPxvOQ37O/SOgK/SVmOTNkuFEXu8ytmEOLqShhjV87Z8dItoCcBk7Rc4CCBem1DnaKTZAnQ0U1ngUgLlKUvAAyCSGI6GttQuq1lxLimbm2QOFdnVbVIEYy1fckGfnBp1wYh9jSoy2kqZ9906MXpglUna7Y+rVT7asF5glJ5pOu0IYEWqnFMnArgsyhuO55HcPoJ+t8MZ1a8hzqUFo3w/dWUvYzejFHPX6/Xnwr5mffCkEqvnfd5JarQ5I9SsSa128+k/0Nx+M9J+HTnBUVfEjolbn87GOSSWTBnMGo5YrSUGkVr+lQS1tVRldSw
+ 3m/N3N4J
+ oqHuHMui4CCqOHpU/MzfQMu44g0+dC5/dztbc5wCwMpJnF+lBV7IgU0aYiYGGg2Rt58iabPZ+3w9903XbSOUltuaEPoVx/XENJLvuRllw75SnGyp6YQRcHRuTayFgaXuY3tvbvOhU4ih/EfT74DubaVN6FZ0Rc/vgJtKdkVQP/BSPZJQ0Mw/k4pnbAsetz495+Lf8rMV2RtazH23/L2vbm+zCG0t26THC40Ux4NeqSRqBLnOuK7NZGKiXSwumwqw5ADrmY0VREjpI3Gt5TsrbDmqTnSZQZ8hz++3H18SpwA6+IvZQZI4CKVIlMBDhUMemRUQIQUF7IsZiBsW2wDYqSdL1FHYJB6V66RepygJvUhshMM0X8rg5jlB+u7gWdg4I7o8k5BXILGSqHzP9U/WFVdLxvUVOszLNfcD1MTKpsivyqXGbLlGIVhXDLz+8W+I9wqDZM3KnFKlDBfkZgRj8aUHCOUAMDwoOxyPYFOy+Dt7cZH8u4AksNl6jBU+NtOGsvuRIxIVYOwKaK+wGdaFZvXBe3YQcSkmRaLGvQ/eE/oVJM1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,59 +131,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 11:16:29AM +0200, Heiko Carstens wrote:
-> On Wed, Sep 23, 2026 at 10:02:20AM +0530, Anshuman Khandual wrote:
-> > Current platform specific pxdp_get() helpers are exact same as the default
-> > ones defined in the generic MM header (include/linux/pgtable.h) thus making
-> > them redundant. Just add required forward declarations.
+On Fri, Sep 18, 2026 at 10:46:55PM +0100, David Hildenbrand (Arm) wrote:
+> On 9/14/26 19:14, Kairui Song via B4 Relay wrote:
+> > From: Kairui Song <kasong@tencent.com>
 > > 
-> > Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> > Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> > Cc: linux-s390@vger.kernel.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > remap_page() now only has one caller, __folio_freeze_split_anon(),
+> > and is only ever called for anon folios: unmap_folio() currently
+> > leaves file folios unmapped after the split, so they need no
+> > remapping.
+> > 
+> > Rename it to remap_anon_folio() to make that explicit, and add a
+> > VM_WARN_ON_FOLIO() documenting it.
+> > 
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
 > > ---
-> >  arch/s390/include/asm/pgtable.h | 35 +++++----------------------------
-> >  1 file changed, 5 insertions(+), 30 deletions(-)
+> >  mm/huge_memory.c | 17 ++++++++++++-----
+> >  1 file changed, 12 insertions(+), 5 deletions(-)
 > > 
-> > diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-> > index e882663a58e77..0a0b0ec42b624 100644
-> > --- a/arch/s390/include/asm/pgtable.h
-> > +++ b/arch/s390/include/asm/pgtable.h
-> > @@ -25,6 +25,11 @@
-> >  #include <asm/page.h>
-> >  #include <asm/uv.h>
-> >  
-> > +static inline pte_t ptep_get(const pte_t *ptep);
-> > +static inline pud_t pudp_get(const pud_t *pudp);
-> > +static inline p4d_t p4dp_get(const p4d_t *p4dp);
-> > +static inline pgd_t pgdp_get(const pgd_t *pgdp);
-> > +
-> >  extern pgd_t swapper_pg_dir[];
-> >  extern pgd_t invalid_pg_dir[];
-> >  extern void paging_init(void);
-> > @@ -985,36 +990,6 @@ static inline void set_pte(pte_t *ptep, pte_t pte)
-> >  	WRITE_ONCE(*ptep, pte);
-> >  }
-> >  
-> > -#define ptep_get ptep_get
-> > -static inline pte_t ptep_get(pte_t *ptep)
-> > -{
-> > -	return READ_ONCE(*ptep);
-> > -}
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index 1749905ade6a..77bf68c9b9af 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -3552,7 +3552,7 @@ static void unmap_folio(struct folio *folio)
+> >  	/*
+> >  	 * Anon pages need migration entries to preserve them, but file
+> >  	 * pages can simply be left unmapped, then faulted back on demand.
+> > -	 * If that is ever changed (perhaps for mlock), update remap_page().
+> > +	 * If that is ever changed (perhaps for mlock), update remap_anon_folio().
 > 
-> As reported by Sashiko, this results in a compile error due to conflicting
-> types; but I don't see too much value with this patch if a forward declaration
-> of the common code implementation needs to be added instead. Looks like s390
-> would be the only architecture which would have that.
+> See my comment below, delete that comment about "what if X" entirely. Also, we
+> wouldn't want to update remap_anon_folio().
 
-We could move pxdp_get() caller functions from this header inside C files
-like other platform changes proposed here. Would that be better instead ?
+Sure, it was added due to some previous reviews, but things are cleaner
+now with the renaming so just remove it is indeed better.
+
+...
 
 > 
-> Besides that the s390 implementation of ptep_get() will be filled with
-> more content "soon", when Alexander's lazy mmu work will be merged.
+> Add remap_anon_folio for file folios? Just delete this entire code comment.
+> Whoever wants to implement that can look into the pieces that are actually needed.
+> 
+> 
+> With the comments sorted
 
-Hmm, okay. I don't have strong opinion either way.
+Thanks!
 
