@@ -4,121 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E612CC982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:18:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1900C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:20:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D159F6B0093; Wed, 23 Sep 2026 03:18:43 -0400 (EDT)
+	id E503E6B008A; Wed, 23 Sep 2026 03:20:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCC646B0096; Wed, 23 Sep 2026 03:18:43 -0400 (EDT)
+	id E27826B0099; Wed, 23 Sep 2026 03:20:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB4DD6B009D; Wed, 23 Sep 2026 03:18:43 -0400 (EDT)
+	id D3EA96B009D; Wed, 23 Sep 2026 03:20:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 967336B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:18:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2A466A0732
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:18:43 +0000 (UTC)
-X-FDA: 85244174526.07.26B486C
-Received: from mta0.migadu.com (out-39.mta0.migadu.com [91.218.175.39])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 094ED40002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:18:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FHSXsCJQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.39 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B42FF6B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:20:01 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3C1991203E4
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:01 +0000 (UTC)
+X-FDA: 85244177802.27.2F9CC07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9C1C98000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:19:59 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pjp16mZs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790147921;
+	s=arc-20220608; t=1790147999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=56ekNPuyPueKv57BH4XNBicCWTvtMrrrTQ9jojGni+U=;
-	b=qEjSPLC1ZScuEtTt7FPiQRGog1qre1rVk7GICU5fZ1C0a3I6ZqdGoQfKTIPLMUj+rWAyGD
-	c4cbU17NgOVfqCgZOshDI8/yGqIZ5NBkgy3ay9xY8zPWCDTBb4nkvXEOxN9xwql1O07JaD
-	gX73nKRwefIaZHZwgOBjevx6tnDTwpU=
+	bh=gziUiBPvy7xlnA9Psh/XnuMh7PkIHbeXiu+KpjWd6go=;
+	b=j21GR1CHG4SHegkypxqHx7ZjFm64oAIr8rY+LIKARYUQpdWw45MXdSDbaNZL0GhtKkFUOH
+	YM7NDfFBzzds62/QTj7LTGLsrMLiuoo20RekexEQ0K87I0IunxQ4bqjkSoo6DqtiG/93nc
+	3Ii0anAqPejTQ9mmP5VqI2FYHBLq8pU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FHSXsCJQ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.39 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pjp16mZs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790147921;
-	b=G/U0gjIIdJMwABBngbEHRGWF7L67BmBipynnYUFxDtQeJaY+Tu4A8IU/dib1lDO31omotV
-	jbVbvqYmYyWc0hnCWp4G9OiH6RJR6K3FatxoxN79Ve6wj0p2YGqBWfbscGSZlGsNDPnfMw
-	Y4oN6q57cYpbQZ8Y54uPqYNcvrcnZZA=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ftIfSiBGVQtCnPrtNG2sYlwb3kX4tGScpi67ufltGms=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790147919; v=1; x=1790752719;
- b=FHSXsCJQcp2gatF8FVoRNlCOC3RUxKusFciABMnOKMktthHKbq2b2ZOwx6kOrSPpjx7os3yI
- /95+roTwVxLT2tjaAarjwQKWhn3YLdPJjaciTqRQgVH3GfSdXApZMeQ2B5NE3PfXb01CQo8kzCM
- iInnn1P+PNiR0Pz5fazcaZ9g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a804e1edd13ff3f4;
-	Wed, 23 Sep 2026 07:18:38 +0000
-X-Mizu-Trace-ID: a804e1edd13ff3f4
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <8769d7a8-9442-4dbb-9828-01447e4320d1@linux.dev>
-Date: Wed, 23 Sep 2026 15:17:56 +0800
+	t=1790147999;
+	b=TI564GeV+uKmHo9acX3bPHg/2lHz9uxN5GZrnHeBch+24MGerluiMZskwvsgrjwpb3Y6DX
+	pv/gNpMoY7nh3CE6GwcauYE/ooQGrfiKppWOC1KCe6srXwplLDY4l93R3wCjRmRKXs/3WN
+	kbU0KFijtxrnvGqb91IWlr0sJW7+hL4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D64E241B6D;
+	Wed, 23 Sep 2026 07:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F2F1F000FF;
+	Wed, 23 Sep 2026 07:19:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790147998;
+	bh=gziUiBPvy7xlnA9Psh/XnuMh7PkIHbeXiu+KpjWd6go=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Pjp16mZsVP5+uIktXkAWb55DfP3vzDdpoxGQASzoYolcqBMemw9oonzL8IBUYGRnk
+	 ekxdXaZVkK34HQAlc6hY2aqFH+PmdtWeo1hBB0QnDq5yilA8uUqhKxaOGoq/PJZQQp
+	 cnyVDJpmic/PRv6PaC7FkDs2PnWGVeT6AM7PvYm7BfCxZ9athTVXREu2RIp7CB8pU0
+	 n8Z0c7LBPlb2eJmswE3Jm+jlRG71Ls2cTJwtJKVQvdzgNKpsGxmsntfxjD85mfm557
+	 vfXzAJODkO0Qp3BJdTUAVR8W4knmv4REgN/mFN0+0h88Atr4I8A+aoFICQpSo4pRBo
+	 pXCeKZw1kkSCg==
+Date: Wed, 23 Sep 2026 08:19:51 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: kernel test robot <yi1.lai@intel.com>, oe-lkp@lists.linux.dev, 
+	lkp@intel.com, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Daehyeon Ko <4ncienth@gmail.com>, 
+	Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Hagen Paul Pfeifer <hagen@jauu.net>, Jakub Kacinski <kuba@kernel.org>, 
+	James Bottomley <james.bottomley@hansenpartnership.com>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michal Hocko <mhocko@suse.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [linus:master] [mm/secretmem] 97d34aa65c:
+ stress-ng.secretmem.ops_per_sec 99.5% regression
+Message-ID: <arN9UtxVQpWqTZ8C@gremlin>
+References: <202609230824.7a9189aa-lkp@intel.com>
+ <7ea6e90a-e2fb-4793-b6ea-e292388bdfdf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU
- riscv
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- usama.arif@linux.dev, kas@kernel.org, guoren@kernel.org, bcain@kernel.org,
- geert@linux-m68k.org, dinguyen@kernel.org,
- schuster.simon@siemens-energy.com, jonas@southpole.se,
- stefan.kristiansson@saunalahti.fi, shorne@gmail.com, dalias@libc.org,
- glaubitz@physik.fu-berlin.de, pjw@kernel.org, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, alex@ghiti.fr, linux@armlinux.org.uk,
- vgupta@kernel.org, monstr@monstr.eu, chris@zankel.net, jcmvbkbc@gmail.com,
- will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- peterz@infradead.org, davem@davemloft.net, andreas@gaisler.com,
- richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
- catalin.marinas@arm.com, mark.rutland@arm.com, chenhuacai@kernel.org,
- kernel@xen0n.name, tsbogend@alpha.franken.de,
- James.Bottomley@hansenpartnership.com, deller@gmx.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, chleroy@kernel.org, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, richard@nod.at, anton.ivanov@cambridgegreys.com,
- johannes@sipsolutions.net, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, arnd@arndb.de,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com,
- ysato@users.sourceforge.jp, shakeel.butt@linux.dev, corbet@lwn.net,
- rdunlap@infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org,
- linux-arch@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- linux-um@lists.infradead.org, hughd@google.com, qi.zheng@linux.dev,
- linux-doc@vger.kernel.org
-References: <20260922-rcu-pagetable-freeing-v4-3-fe1ad1f1e303@kernel.org>
- <20260923061551.84398-1-lance.yang@linux.dev> <arN6JBJixHUjX2CJ@gremlin>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <arN6JBJixHUjX2CJ@gremlin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 094ED40002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ea6e90a-e2fb-4793-b6ea-e292388bdfdf@kernel.org>
+X-Stat-Signature: j37g4dcifqzgf4obm5emyq8s3m6drsnz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: fiuwd48r7bwhh847wnwkosow5fwerdph
-X-HE-Tag: 1790147920-167493
-X-HE-Meta: U2FsdGVkX1/AOFJRSxZnpk7AQzNVP9ppuAPzIvO0as5kFKIaQ9NarPASfe/xkbLwdAcb5mZzhpwybZvoeyh8vuBN0FFr7N9dCNWu6KBXvGkq5ST6QTlLf8YcQKvGioN/9GVn/ObDvNZYVW2A13rO0UbchHGDqzRvM33sTWEk6XhbsGEZdLi5WCh/iMaR6NVAF1VWa+2HPJRHcegkE4CvQY5aVdDXNaijIk6JZkfAdNkCJ0J2xiFrS/sBRADVYsacZrH3yyJ9NHKF/8nUnn0Fj9hDqRBheFaYl3waOEEcv2R/OhDeQBBKwMfl2xmB0AVkUt7OvvoE1V72FKbjnZHdSdpAACqn/KLz7h8NjtqqQVnXfmamTgv9GRMb+LEUY+NGJtZgga/AUPkhrNCSzP50ylUGcLeXJSK6Hz7ioqURH7QkTdjobrkenI6dL8Ouaqvasi9hpTq9FelQtJXgMNiyXj9FCbPU52FwgHud77s6rYAo5sA9FNDN1c5znu5ouJ8wLJl/lKSgUWSrG3WiN5KiXPVfTUeS7LqRrspW8FLXUXTagV8vwPBfZPgQobvaSEu0aSRAk+jBwDCP/NqUYPDQH8wQUCEFMVDPHWN1Vfkd/YEXrtwta0tpNuHAUnVAaqyiYzCjS841pSP95zkZwlcZnNiPs4JsKEA6Yl/rofwd/Ah1NQF1jvW7JHMKU2LbzkzHjBwUU4j/qv+vTxUKxyPFZCQdHhv2Pl5jGC9aEDWXlS5ctt2qqXJ3AQjqGQS9XGzSzt4dDhXuPF4REawnAvOqO2pPqc9YyyIl52ukXOaga3Wr6uwJknZLzOmuC555ybmwSqPr7sabwK5SnieJbVwzEyKq3AqwkBNHUh/2hq50XetUDxONpzzSkh5n8wMnIFll1grBHn9J7KpMbSQqMFqJg88WRyM/p0t5GA9buc7wIz37aRm4RTsYPEOL8Zb+tfMUWBKXnkoThsWKAKJ1dhx
- ZVe45EHW
- XdGBewdsdvXMco0zc+26OQBbVdrNlQbrKropOSLLLZTC3RtkYWxp7kxOHpABJXGx8qR4D3xmk/ByhVV3JCvNhoYbTh9Z3t82qAtRXhlaPULhmoHxBHAqh9RunRCP8htTkiz0co57hM1RuA/RGv2ltv28K40rnfmoAPAh/ne/ZEfEx2fnL9IyyljW+WHQgJPQjkGIKrdTsG+0PksfgbcxIBrllb8k+uvN0x2BIYXEWtH5Uv4WafAk/WpLyDF3MzGdtp4431kDjGrwCRxJnh2E/5dVIdcMynOBm5Km77ohxbrjJsnyTqsWo7zg0ATGAcsftM8pOTsM6bWHBsntdwRSpzx1P9EZZ7ZqxDN6fUGcN283G7lK5EvwdrqbxSCP7nncCSvxqfy0weGiAjPv2pUFMaUSixbUq7rxRUXYicv78wXpmBN9ecbEMkRx2GRN34B+qSRvrziZ/R4xrgMA=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C1C98000A
+X-HE-Tag: 1790147999-882922
+X-HE-Meta: U2FsdGVkX1+ve1BPTJKm/YPlkJL5FVyQEN98esiPL2PZdaojHUlTNy3ZTmBWkvevzV/u98wf8vZyNyX2ZyWOCtnQ6Hpt/L1svWAMA6V0Odu6dRSHezwTOllEXwGa46NkZayenXkwWX7XiG+jeF9qeHIcTix4rhlFHbms6T7edCzfLBixtlJG+DaMvd3sMHxR7f91pFGqoOcquyEUnfq2XMisU1ANDTwgoxvUQO/X41MKqsVajEmncn0+Gk0tuaJYWi9M15ADez8IfcS/B9hy5lgOqCWt1tZuW7T/aAvbBbRG0fGYD0mo3g4gqu5XDv1fu3wCs6sykUnJD7TkwsY1heuQnmL1ccU4J50Y3FkyfPswjb5N59YMbYxr+GQFRxaYhktnidf9FdmFegScrop7xtyO/m5jS1V29Uyf/Fa/pF/xKcH/RTLccpD99bE+qcsaC6DUnbZjXNRJfg61wWshNvDMQEpowjnVKVa47eRDcrL9bquyNivkBC4tMkGUbSEjtQyzWcn4V4TimUPN7G8Lu4JeLgSB86TM21NnLPJtKLe1sReq6zkrw/knzkwDc0GCcr5jcbJ8PZXGACycqfcacIYkJQxPL+FMdsqpgAV38/l1HY/4quQdwJ22gW1EZh19nsvj4anJKdskMjRN3KYatT9/55Mus40w+lhUmMEDeSG3iofA+ns4OnAuk6QkJ++Bb6+y1m9EiBV/IHTdcMHVTxxMrzBvj1t343bRvtxxaQRzYduNrHZvIs8XGyw4i5aYJZrIqUqBtyShozYgb9okGM6C2HgvjGnx9en+DtQ5BBn0MK7/ub+EBeY8bMpXPUlHnamtT1ueq2pprSLMbOmtM9e9mWjfPG9HXEgUkWlT/foMWNVnguruT7AEuV68JRkNzvDLfJ5ROPGgDvcyORGa0wD7CNY5Vzal6fqfcK5sBldGz0dsoM03Y0jcBYehF2bxj3OykJVu3sKY+a8ED3u
+ BxbxFOar
+ mSO7yXPJgxqTBDm7HAkh6+NQ1KyXZzw984AGST2yH6aiMWrgIvjKRueEhcSaUzL6/zN2PFsB9XXXBWFiE6D2/HLPfhyDH8/dfUiKrtci3kXROefo1o43+PA4977f4kJ9FJbab1CnMBsULFgk70FDF72B7oMMTAjmOI0fPP+HrQlh7kxgfZCVjSX79PWnS80pagUE/IFZn2U+z6+hGmnVcoiQJCLLVukbbreVYX7Olq1mmPwiForBhUFMZntNco3do3AE+l8lCCYG5hftwJ5nFmMtgDfAFNnwYcEiUriYk7W8g8HW6+ceJ0w80996AaL3B1AsLHpiDftEx4jVLMkhjhlgjIRCS0GYpNYTe+6BwW2cTr184JksUF5JWlrC0AVVanF50KsqLJl44iOVu77oRozgbmmZZPbwzTlf76sLaVKNBpnFvF5hP20v1uo/wcUvRy0hg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,52 +100,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Sep 23, 2026 at 08:35:47AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/23/26 03:00, kernel test robot wrote:
+> >
+> >
+> > Hello,
+> >
+> > kernel test robot noticed a 99.5% regression of stress-ng.secretmem.ops_per_sec on:
+> >
+> > commit: 97d34aa65c29cca85e3e9050f4c936389b38a054 ("mm/secretmem: properly account locked pages") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+>
+> Well maybe there is some inefficiency that can be fixed (haven't checked)
+> but if it's the cost for proper accounting then so be it? I doubt creating
+> secretmem pages is something userspace would have to do intensively enough
+> to matter.
 
+Yeah, exactly.
 
-On 2026/9/23 15:05, Lorenzo Stoakes (ARM) wrote:
-> On Wed, Sep 23, 2026 at 02:15:51PM +0800, Lance Yang wrote:
->>
->> On Tue, Sep 22, 2026 at 04:35:34PM +0100, Lorenzo Stoakes (ARM) wrote:
->>> Currently riscv gates MMU_GATHER_RCU_TABLE_FREE on CONFIG_SMP and
->>> CONFIG_MMU.
->>>
->>> Commit 69be3fb111e7 ("riscv: enable MMU_GATHER_RCU_TABLE_FREE for SMP &&
->>> MMU") enabled CONFIG_MMU_GATHER_RCU_TABLE_FREE for CONFIG_SMP, CONFIG_MMU
->>> riscv builds.
->>>
->>> This is expressly for the safety of GUP-fast walkers (CONFIG_HAVE_GUP_FAST
->>> is enabled if CONFIG_MMU is enabled).
->>>
->>> Naturally a single core system does not encounter issues with software page
->>> table walkers being correctly synchronised across cores, as there is only a
->>> single core.
->>>
->>> However, CONFIG_PREEMPT_RCU is still available on a riscv UP system, so for
->>> a future RCU-only page table walker, this guarantee is required to prevent
->>> concurrent page table teardown.
->>>
->>> All page table freeing is already done via tlb_remove_ptdesc() so the
->>> conditions of CONFIG_MMU_GATHER_RCU_TABLE_FREE are already met.
->>>
->>> This forms part of an overall effort to switch every architecture to this
->>> mode.
->>>
->>> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->>> ---
->>
->> Yeah, for RISC-V, page-table freeing already goes through
->> tlb_remove_ptdesc() :) Tested on QEMU, no issues seen :)
->>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
-> 
-> Thanks! :)
+This isn't something that should be benchmarked, this is possibly the most
+ludicrious benchmark I've ever seen :)
 
-Cheers!
+If establishing a secretmem region is on your hot path you have engineered your
+software wrong.
 
-> A cheeky A-b tag possible too? :P
+This is effectively a security flaw so I'm afraid must remain.
 
-Sure thing! Here it is :D
-
-Acked-by: Lance Yang <lance.yang@linux.dev>
+--
+Cheers, Lorenzo
 
