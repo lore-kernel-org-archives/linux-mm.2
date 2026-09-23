@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B198C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:11:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A506CC98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:11:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 934CC6B0095; Wed, 23 Sep 2026 17:10:55 -0400 (EDT)
+	id A44006B0096; Wed, 23 Sep 2026 17:10:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8955F6B0098; Wed, 23 Sep 2026 17:10:55 -0400 (EDT)
+	id 9F4E56B0098; Wed, 23 Sep 2026 17:10:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 782546B0096; Wed, 23 Sep 2026 17:10:55 -0400 (EDT)
+	id 8BD196B0099; Wed, 23 Sep 2026 17:10:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 435136B0096
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:10:55 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C96B5140118
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6944A6B0096
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:10:57 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E2715C0114
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:10:56 +0000 (UTC)
+X-FDA: 85246271712.06.7ACB1D4
+Received: from mail-qk2-f36.google.com (mail-qk2-f36.google.com [74.125.230.228])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 876754000D
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:10:54 +0000 (UTC)
-X-FDA: 85246271628.28.D20BF40
-Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E4F6880005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:10:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mtboJWlm;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UvbzqdfT;
 	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.228 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790197854;
+	b=x6vAlhM5A2Am/LgOdjePEk3464+7soHPFa+38cDbFsYTnPNCgleWRFoMXIxlc8lHgvMxLt
+	WDkQ90+pkC8kc4chkN+3Lpje7qRcsN96lC76LfhFxttCFz9V7t5SA+Il9JBo4SAqVG6NuM
+	cLK+o3k4r1w+9rVscT67Vob69sl2axM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=UvbzqdfT;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.228 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790197852;
+	s=arc-20220608; t=1790197854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ri8dUqYh2ciqE73sjjK4gAgS5aPTyFxGGtfGAJFHdJc=;
-	b=tZEBu6oai5r/Upf5xK6mYVE5dDHT4Tvbv+r45JAaNyV4Nc4E9YcO75I0b63C/fAuBI0kEG
-	zYYPl/rDQwj1K+5iHwFh9B/lXqTECLNHtz2MHIV17gL8VIZWFRK153Q/StG8EkSOew3sdB
-	50c/XIipUdOQEXUCqh6t7p3HJ+Vl9Hk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mtboJWlm;
-	dmarc=none;
-	spf=pass (imf02.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.235 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790197852;
-	b=isXXUUSUrTEEr0k0aekDcsg8SpDcuTyDROmQHh2xON1Vbp7KbPywxuMA8J/zoSmoswZXAq
-	mEMiGIaqj5ZPRSofxyfkIX93UfxSKo0xhDMa/pgQTkuxnKmoJ/JjLNEwXoqc9m6tX8OlFd
-	KMWbhuPgcDDn8BmIhdVaDRT8ck//29o=
-Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-52fb76ef19aso13688811cf.2
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:10:52 -0700 (PDT)
+	bh=z68SIWaMimWKPBbcPzrXpDhBMBPzNt9VtEr/ioTExD4=;
+	b=DP6cbqWKcYdcVpJ9YCl4eanZ8Xj65BCfX71HKaSZLKqqV5oSIDBIS7lyP0uebZ7VH5lhXH
+	MKdtNma7qp1poRrv3HQMcdMEV66Byjp/dMsgHIqbyRs5u7HcQoknz5EG2XTzOcbk1VTrBa
+	oSg4tNmzg5ghbscgW10KHrj4eZ4KDjU=
+Received: by mail-qk2-f36.google.com with SMTP id af79cd13be357-93910cadeb7so131341685a.0
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790197852; x=1790802652; darn=kvack.org;
+        d=gourry.net; s=google; t=1790197854; x=1790802654; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Ri8dUqYh2ciqE73sjjK4gAgS5aPTyFxGGtfGAJFHdJc=;
-        b=mtboJWlmyFFdlZCHrx/7ptiC9NyxEoJqJaTtGNFbEx+7mrugWpfbnUvDkpzy7As6Q5
-         4vdjYAzY37fZ0k4yLPnTf8D42+LHr6qSeCp6KjwD6GuSZjLIwAGxdqy2tmhacZsjRNTb
-         phpl3kUvXGyF9yDI1xCkEVrtrOLfU/inA8AFNhBdfm1iW8l475w/dzt7O0dt11xnFkON
-         nRD+HlWw/H51LhOypTGpvczv5IvutJSgpf8qiUUXreWX/0yCH03OlLZkmqTrwJT3pqmZ
-         owfhtBLoqMPZ809LLwrWWbfTQ4uZchexX2uRASzbdCnpf2DCdPSAEIDdSeb36U2YhUb2
-         Vljg==
+        bh=z68SIWaMimWKPBbcPzrXpDhBMBPzNt9VtEr/ioTExD4=;
+        b=UvbzqdfTZboapOOn9xXHwrkRR9P3UeaXwQ5tS6Nt8s4TTAOEBmpiVijtETeyKy1e6b
+         Bi0lNjvztCbapIIFPRh+yOYE9S01m27FZc6IC3V8xVt7TesUK+uo+lFrIKlrQdrXYNj4
+         gjENME/eijjNYm/IJCtHCN6D1rpw3j17ONnVfy3VZPsbk1FTg9X0WZClF3dCO2eDAIvb
+         dvxQCwHfo6Tma2MB3GR1Nsud50Upj3I6LwoZLfblqSAfeXYqtb/tW8rjwHL/95ksmWPU
+         9HaeFHzWdsWZ0A2MPzubf6cZxJby8j7EEZiT/xnJk8Pqbdcn2FvVfoHlzlxtT9jTSaVu
+         LBHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790197852; x=1790802652;
+        d=1e100.net; s=20260707; t=1790197854; x=1790802654;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Ri8dUqYh2ciqE73sjjK4gAgS5aPTyFxGGtfGAJFHdJc=;
-        b=qDVW+F97r5qglY0ci1h8f2kwu2i96l7zejEccVV4CAS3NWxfky5BZjTITAbtyIqA+8
-         BXKkLgtqKejGD0FeTbhlWJP/9hcpUFXxBqmBVxXsikrerRwtOYyY5lS6cvdbsdkIJ+Q3
-         CLXfJaim+OeZ1eoIHOExSyEHJIbnxny2yhWX3BlzQ6vxDVjH/pvB+0X/CDcdVgP0u9EB
-         JY29BY8Aq0NrNpKTxobhlOVhEpo/Zh/B80Mtjo9iexo8bpsByFQaazAXhNQs1t3/XLfC
-         OlzyQSMgi2pLp2IvkRKP4iuqjCAhxNaJsoVE2M/6hkd+wy+4EOiaVIrJV979ac4mrFvv
-         r54A==
-X-Gm-Message-State: AFuF++mc/IUi6kqyYv14MEheL6Mpj/khv8Wf7QqR9WfujXXs0wKkOq0t
-	lPLsC8KLFQERHejVuMsTibQSoMiQ721qGPD12+QGhAutOwACZYLXMs77tjOP455NmE3bQ2CHJEI
-	wcCISI+M=
-X-Gm-Gg: AYBFou1ihBGd4KEILvcQlpg2aRhSLsL+HBG//jW9UJUkvcqsBZV0+Wa74hlrw0k+U3q
-	PZ8QaDEW06UXx/CGmc7cS5T5TLlJvF5EpO7SyIatXn1Df95eUWGghxQ57LpttQcyCcgygy0BE0Q
-	EyRsGfVVysErhAxxxQTHLEaM2GrsGBPsJIyrv9fQEjafRH5QzlYNxc8Ei+U0bZotmtGhdXWQxQT
-	sYcg/PIctijy3UghgCzDBTiGeSWOX13agFuEwCTrOAhduFtk8K3a6dlY1hhGvJgVt4oYgqLcOYW
-	xV8UGtd/a2HWK1GWW6I6TbWEDPM4EJvbdFV0DPSB0ymYbKQmkk/MpOAuifxTYINGASdJwnAXdH3
-	E1t0s/KYSx/U33hUxpbxhtT5ns+bW+LjZdCqFVOSb2x8nmXMF+NvsdDXlg3pCrtuaKGuxrvzfAE
-	1VBFsRLpmcVi33EqQz25dxdvOYlM9OAVPcvwPQVaKXtuVM6NJR0mWnya3VW1fgXGOWYVGmI15Ry
-	0al6hA1dQnjrQRMg90rJNRZBF4CRs6icvMUtnMd2jow5Y7xvO8z/mgUnRrHDLxF5lhb+lg=
-X-Received: by 2002:a05:620a:31a4:b0:93b:d79e:18f3 with SMTP id af79cd13be357-93c34540d1bmr71767185a.54.1790197852086;
-        Wed, 23 Sep 2026 14:10:52 -0700 (PDT)
+        bh=z68SIWaMimWKPBbcPzrXpDhBMBPzNt9VtEr/ioTExD4=;
+        b=DOg8Ed2dVyN1eI5zCYpsjSpMQtl8O4I2R7IR03FvVhjIfCZ72I4oYN2UhXHH90GJf7
+         6rclPa1gzz7CshRB7urL4RIgHIZPSQpNHDN6fUSixSG7OBui5NM+9F9xaGry9SNK+LxR
+         Wk1GPvN3cWZ76BHXpg5o8U2pYYgRPhTSqIQmtKnyGCtSWW8gwusZdFRr72oxZD5rlhEy
+         pjKiCFlYYrjrtsWXl5vzo562p6g3OS8IqJPxYazk1WoNGCjlOZijotmEwYU9eF+IXlw/
+         JTJ3Lu94irzDwnCm0tJH+NhSKsabhm9uQ/Ab9lOXaXjZgoJLmCzm8cHvWRe+T8ZXixpS
+         r8BA==
+X-Gm-Message-State: AFuF++nq2y8bVXBQaJiTAAmPYOblyPIPcFD4nguz7IjDmfiZETzfTtzq
+	jsyGP0JSKOzzj5ZnBayLuxJtuGM9Zi5TJGADsk27QVYsSX9L/qB4AOg8wvKn/4chT9+BldPmLPa
+	9OXj5eWw=
+X-Gm-Gg: AYBFou2HPc4evqVlia3A0UkFVK/nOzI2++qSbJYAdEl/QYC1WV70L3LKdCnHg20NhMY
+	Xir4MBjrdV3HQQ7CuHzj8TASjICOCwDoEh66MG8Rtp5ne1mIfuvfXpMJcAKEvVacvBihKf1NwHW
+	XVGF4xOlHEPuVq76h0+9zXk/Wf8nUGCYph0ey4Andj6OuOIL4hX6GluZGnzMgnHLw+g/3IwJKfS
+	1+C7SAGcaWizo9/UGq1V/wSVrbjKfoZGJC0rw1A7pu5lObzkPiFrT78tq6MhQyIH/f2bUj7ed+i
+	umHKA06WNHmCFfE9gFd29aLewDpSacD/yszidy2WCuoalF0zviyhaaPiIDFyl6olsLapk7Ot6H/
+	u3geTjL+GQevoL6iRZOp6E/r66D9ebVXbf7nq/inOwJJqoRZ5LP/2I4QSudZb0+wPjKAeI3dUhp
+	9tfEDjsR9AHI6VEYLXSmEl3ilPStzzAUv+cLH6Rvcvjtit4OQcru4vYSa+2CdHFrGR4XVa6Z5zn
+	CPctUe5GK/xnmXTpTsFlnRhi4lFwOWpdJrxLnxwNQDClcF8PLas2eGCvP3n
+X-Received: by 2002:a05:620a:25ce:b0:93b:d79a:c464 with SMTP id af79cd13be357-93c3480c8famr61505485a.60.1790197853636;
+        Wed, 23 Sep 2026 14:10:53 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2485926esm305893085a.19.2026.09.23.14.10.50
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2485926esm305893085a.19.2026.09.23.14.10.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 14:10:51 -0700 (PDT)
+        Wed, 23 Sep 2026 14:10:53 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -109,24 +109,23 @@ Cc: linux-kernel@vger.kernel.org,
 	surenb@google.com,
 	mhocko@suse.com,
 	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	Brendan Jackman <jackmanb@google.com>
-Subject: [RFC PATCH 5/6] mm/filemap: plumb alloc_flags through folio allocation
-Date: Wed, 23 Sep 2026 17:10:39 -0400
-Message-ID: <20260923211041.3127588-6-gourry@gourry.net>
+	hannes@cmpxchg.org
+Subject: [RFC PATCH 6/6] mm/page_alloc: let the bulk allocator carry alloc_flags
+Date: Wed, 23 Sep 2026 17:10:40 -0400
+Message-ID: <20260923211041.3127588-7-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260923211041.3127588-1-gourry@gourry.net>
 References: <20260923211041.3127588-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6qbtxf97otcz77t8xy1qadbhr3xtna9k
+X-Rspamd-Server: rspam06
+X-Stat-Signature: m466ptjzaoxzp4j4jemt6nxbouxof9q4
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E4F6880005
-X-HE-Tag: 1790197852-154151
-X-HE-Meta: U2FsdGVkX1/u7oEfl3gppOOiAMzudy8LPRSd1uzrPJmhLoysY25lrGYRsiz/NXhtaY4qpekVOc/vhEVMhIj6Mdzfza+euxaOTT4JKw3xro7sjWmGcBQ4dtDGFXIvUXZZ0EBJGXEO5JIdmHZktuzTO3yYIAkdfSAQYeqk9GDN66er9NQP9tnUSwM5k8JZzHgu8Ltu+QUmMHeIPxpTexbZ9qk+SXlp6qc5YCetdzwmD9ymhLVeEF43ZE5rl/7US6BnJ97Fa0z+1Ax7pIoC5E9DZ7BMyk19cXuIcFpPSleuo/DeFtjwSCscssmtLwoCzYL2CddYBFOHvM5QTcikNStP8/4WkqgwbAlHnyCdspdVEpeIPUUTl/gWFjtzup/nOnMj3TttcWUpyJg6O3pBkOm14mgextpH0+nuStBj5uCATYeBnybyszRvmdaMDrVLPeLMCGRs3rbnIA6Th3UDhJSjLwfqvWigvCWU+wkHKWLLdD9LMk8+bMNJm/CqpYZsOQxwyBpOj3JpaUV+mFWXDKP3nIYZ/LyAJlTnB+Zt8B+/kxCCLxZ8kl/eAFDaSY6IarhGcYRsB90XxeRxpfL5CS1SHjRQkolzeEtqg2kjC+iYt3cJPc1bWbDqDD3yVqyC5hHKSNtyD96h+/ogcCP+yDPvE7/2wj4JxTTB/CwIVuMNXQEW9azp1xUPoiAfKcGBLTmYQrdQ/2lD/M1AwHcPWR+4K+oyYGIrUpw5lwLy1ozF6cBTqnj0CygjNwkDyudhgBD7cD7ptFRZgcENS+AXbt+Z9oGze1J2/6HlEBafHN4FtdQ7QQwtkQ2ZEBnGk2hv4Nfv9zU0t4qZ3IKK9FRdNidHY4s5ikxEpaIwCRu0K03YaJ4hgEnBMTOoV14yQBmOUJt7GbUxcGgGe/ZsZsPKD6HNMLY04y9PnoSGzVCumGhvlqNLCsPppKwOxeAnEkKCUOwdvPOyZSwkw+PNHOPFeUh
- 7B8L29Xk
- K1fAPX9MWkFC42ku8z/1t7hzi6Bkj/rH3ktkeMhMvgn5alhJPthi2FSLz6Wdc2odrLDhB3q3aH+SMN+uZ0QIqJfdoAJUkwjlJ/O7hixYlhWmlQI2u1ZB7WJh3DPkXKKprXlIzY4xPgoCgRtCqcGuKkmr7kBEx9tyYNdqTMNypdgsWNFL8dUCJlYToUVh0sMNt2pVUPqGkWEbsO7nMotCccQ19IalfuqFKN0NDt4NL6ViZ4tf9Ma/crTKmCMHLZtm9WB5EOBNkztaPaYkRW7CzV8chcqsBbHHcPI2Kmz0kVt32Q4SekMW9bk+iqdlEWbLl+lrWo4POUwgjUKlV+gLhuaIkrqQpqQTa1ZWmvNbaIX9DWiRbGKAFsNKWXLIIwCnRSssTwgQp2aqOorUeMQnsbzQ35pxAGYeCBO9R5bjR06IG72UsPtmrh+obEZxwg2Q1frYDd6+pkWni8VxfBVPCbLXyHg==
+X-Rspamd-Queue-Id: 876754000D
+X-HE-Tag: 1790197854-398806
+X-HE-Meta: U2FsdGVkX19emkWzw+E9QDI4JUeBF6zxbPb6Vk/XhqEuxYA/WkVYUKH18fWKJCUXYdDPWojkm+lfijV73uegX6Bl4JRkUZ8+z4YjJJXfWpL1sia+6/2vnmgTB3Y4kDkeBMwSy/qFoUiZO6MzxSNEh/NJGk4vTiSYcMdR4vjcLCSISUjmjS9pYBz9mCT7ZTe+k2lK5AOWPmphDnOIeQJo9znF9NA/O6AaT/RGGoyD8qJaNbUMWzGTBpONKYLnB4cm6VAj8jjpHaKx6hAE/X/COQ2FPkI8pH+e4TEcHv9txcisoTR1Wf7RhnKdG9fHapBwc9BvDOZr9tAp1svSq/cd7HHabsaRMiIEkgzA4k3va8yGe+mvqghn8yGANB1JgLhW+VQsr7KSWoFX8g+gAfOMR/jWP8rjZICG5Agrk+TjXzz+ovCZQocLJSSXGn62tAGn0VA+DzK/JPWOhLyH6TRvdk+jukrovGWOinMPJu6qy9Ei8FUcEx9F69FVka80Yolp+Lkrh0Rq4AanPtXc/b7PVmFrmUS7PpV9SFs33tVeifwCO5pkmH0wH9i6laxl/y4QTAJRzylqWGh4gxAuw/Q9mTqiDIkesi11LP2jDsh6Bj44cpd3xYClNJpLJ93B79KHKqZNw+Yr53PRfTa+ex8mdILXEM2HWIks2oXJIeBfBmFcwoiMlk2NeeentXmAhSquRdKp5bA1+9rhRp4NkPXfaIeYQbTIcI/WLxN6eAeB/tZ7VPmMQjZev4v99oyRZ6PZytgp/bEVD9WEVdWEzL2WQsaRwm4PtE9tgCRJuO266BvMDgfIl7mrZvW6TEhFTlZNrdD9jOXCHjBuXZbJVnuSBB3+jztGlYPZkLwDJL+WZp2OLvqKntELocZibJVjUXssOzAuwDmb/2C5HVeLDXwCB5VzH/Y2BKhSRuu9fXfxYor4c8kMhIyVIvnU5xmaP3isPvs1E0XNcvTUxk5BCN+
+ T+JB62ji
+ mVKoi/lmORfBMawblcgJDAt/6A0V5R0SNI2dh00lwcpEFp6YJyygPP4gPJ2ipo6411I14hofzQ4miLFIf/mEth3ksBWHty3UfWEjXxi2ONHf8bBS+tkulDXkRGD6h8iQT8yfan2hL+Rajm17O7YSBlTwJH1OmbMdbYO0/C+A1Jo7tQQgIA8ROG6Bhjya3fY+UqGoQ7a9ybXNbCuApcha4NQXzHEjGVE9aNpGguepuSsey2hH+otWnLW8YVJwqMm8qNSJoztefQpiTEKnsTMlkWaIE99uo5SfszU+mxKrd3p80/+p6OljOA4x8ecPMuQmKGEpz2WSceDzcXXCC85Zni6/O6DPZ2hUva2sWcfZn6VCqR3O+gEkwXva7M1YUk17ysuuwM5Gw953OIPG1LK6JCBCbhEKZrYXYNnhaxcEI5VT+joQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,110 +133,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Brendan Jackman <jackmanb@google.com>
+__alloc_pages_noprof() accepts explicit allocator behavior flags, but the
+bulk allocator does not. Internal callers therefore cannot select those
+behaviors through the bulk interface.
 
-The filemap folio allocator applies NUMA policy and node selection before
-reaching the low-level folio allocator. It currently provides no way for
-an MM-internal caller to preserve explicit allocator behavior flags across
-that selection.
+Add __alloc_pages_bulk_noprof() for flag-carrying MM callers. Keep
+alloc_pages_bulk_noprof() as a flag-free wrapper passing ALLOC_DEFAULT, so
+existing callers and the exported interface remain unchanged.
 
-Add an internal filemap folio allocator that accepts alloc_flags and carries
-them through every allocation path.
+Preserve the original GFP mask for the single-page fallback so it repeats
+flag preparation from the caller inputs, and pass the prepared fast-path
+flags to prep_new_page().
 
-Keep filemap_alloc_folio_noprof() as an ALLOC_DEFAULT wrapper so existing
-callers and the exported interface remain unchanged.
-
-No functional change intended.
-
-Link: https://lore.kernel.org/r/20260726-page_alloc-unmapped-v3-26-6f5729aa9832@google.com
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/filemap.c | 45 +++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 39 insertions(+), 6 deletions(-)
+ mm/page_alloc.c | 28 +++++++++++++++++++---------
+ mm/page_alloc.h |  4 ++++
+ 2 files changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index b74bc1e5015c..3b33cc873b73 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -52,6 +52,8 @@
- 
- #include <asm/tlbflush.h>
- #include "internal.h"
-+#include "mempolicy.h"
-+#include "page_alloc.h"
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/filemap.h>
-@@ -995,31 +997,62 @@ int filemap_add_folio(struct address_space *mapping, struct folio *folio,
- EXPORT_SYMBOL_GPL(filemap_add_folio);
- 
- #ifdef CONFIG_NUMA
--struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
--		struct mempolicy *policy)
-+static inline struct folio *__filemap_alloc_folio_noprof(gfp_t gfp,
-+		unsigned int order, struct mempolicy *policy,
-+		unsigned int alloc_flags)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index feb9c64efd84..8fa2522ef418 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5219,6 +5219,7 @@ static __always_inline bool prepare_alloc_flags(gfp_t *gfp, unsigned int order,
+ /*
+  * __alloc_pages_bulk - Allocate a number of order-0 pages to an array
+  * @gfp: GFP flags for the allocation
++ * @alloc_flags: Allocation behavior flags
+  * @preferred_nid: The preferred NUMA node ID to allocate from
+  * @nodemask: Set of nodes to allocate from, may be NULL
+  * @nr_pages: The number of pages desired in the array
+@@ -5237,15 +5238,16 @@ static __always_inline bool prepare_alloc_flags(gfp_t *gfp, unsigned int order,
+  * @page_array were set to %NULL on entry, the slots from 0 to the return value
+  * - 1 will be filled.
+  */
+-unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+-			nodemask_t *nodemask, int nr_pages,
+-			struct page **page_array)
++unsigned long __alloc_pages_bulk_noprof(gfp_t gfp, unsigned int alloc_flags,
++		int preferred_nid, nodemask_t *nodemask, int nr_pages,
++		struct page **page_array)
  {
- 	int n;
- 	struct folio *folio;
- 
-+	/* Task policy and cpuset spreading are not safe in all IRQ contexts. */
-+	if (unlikely((alloc_flags & ALLOC_NOLOCK) && !in_task()))
-+		return __folio_alloc_flags_noprof(gfp, order, numa_node_id(),
-+						 NULL, alloc_flags);
-+
- 	if (policy)
--		return folio_alloc_mpol_noprof(gfp, order, policy,
--				NO_INTERLEAVE_INDEX, numa_node_id());
-+		return __folio_alloc_mpol_noprof(gfp, order, policy,
-+				NO_INTERLEAVE_INDEX, numa_node_id(), alloc_flags);
- 
- 	if (cpuset_do_page_mem_spread()) {
- 		unsigned int cpuset_mems_cookie;
-+
- 		do {
- 			cpuset_mems_cookie = read_mems_allowed_begin();
- 			n = cpuset_mem_spread_node();
--			folio = __folio_alloc_node_noprof(gfp, order, n);
-+			folio = __folio_alloc_flags_noprof(gfp, order, n, NULL,
-+							   alloc_flags);
- 		} while (!folio && read_mems_allowed_retry(cpuset_mems_cookie));
- 
- 		return folio;
- 	}
--	return folio_alloc_noprof(gfp, order);
-+
-+	if (in_interrupt() || (gfp & __GFP_THISNODE))
-+		return __folio_alloc_flags_noprof(gfp, order, numa_node_id(),
-+						 NULL, alloc_flags);
-+
-+	return __folio_alloc_mpol_noprof(gfp, order, get_task_policy(current),
-+			NO_INTERLEAVE_INDEX, numa_node_id(), alloc_flags);
-+}
-+
-+struct folio *filemap_alloc_folio_noprof(gfp_t gfp, unsigned int order,
-+		struct mempolicy *policy)
-+{
-+	return __filemap_alloc_folio_noprof(gfp, order, policy, ALLOC_DEFAULT);
- }
- EXPORT_SYMBOL(filemap_alloc_folio_noprof);
-+#else
-+static inline struct folio *__filemap_alloc_folio_noprof(gfp_t gfp,
-+		unsigned int order, struct mempolicy *policy,
-+		unsigned int alloc_flags)
-+{
-+	return __folio_alloc_flags_noprof(gfp, order, numa_node_id(), NULL,
-+					 alloc_flags);
-+}
+ 	struct page *page;
+ 	struct zone *zone;
+ 	struct zoneref *z;
+ 	struct per_cpu_pages *pcp;
+ 	struct list_head *pcp_list;
++	gfp_t orig_gfp = gfp;
+ 	struct alloc_context ac;
+ 	unsigned int fastpath_alloc_flags;
+ 	int nr_populated = 0, nr_account = 0;
+@@ -5285,7 +5287,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		goto failed;
  #endif
  
-+#define __filemap_alloc_folio(...) \
-+	alloc_hooks(__filemap_alloc_folio_noprof(__VA_ARGS__))
+-	if (!prepare_alloc_flags(&gfp, 0, ALLOC_DEFAULT, &ac.alloc_flags,
++	if (!prepare_alloc_flags(&gfp, 0, alloc_flags, &ac.alloc_flags,
+ 				 &fastpath_alloc_flags))
+ 		goto out;
+ 
+@@ -5296,7 +5298,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 				 &fastpath_alloc_flags))
+ 		goto out;
+ 
+-	/* Find an allowed local zone that meets the low watermark. */
++	/* Find an allowed local zone that meets the required watermark. */
+ 	z = ac.preferred_zoneref;
+ 	for_next_zone_zonelist_nodemask(zone, z, ac.highest_zoneidx, ac.nodemask) {
+ 		unsigned long mark;
+@@ -5332,8 +5334,8 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	}
+ 
+ 	/*
+-	 * If there are no allowed local zones that meets the watermarks then
+-	 * try to allocate a single page and reclaim if necessary.
++	 * If there are no allowed local zones that meet the watermarks, try the
++	 * single-page allocator.
+ 	 */
+ 	if (unlikely(!zone))
+ 		goto failed;
+@@ -5366,7 +5368,7 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 		}
+ 		nr_account++;
+ 
+-		prep_new_page(page, 0, gfp, ALLOC_DEFAULT);
++		prep_new_page(page, 0, gfp, fastpath_alloc_flags);
+ 		trace_mm_page_alloc(page, 0, gfp, ac.migratetype);
+ 		kmsan_alloc_page(page, 0, gfp & ~__GFP_RECLAIM);
+ 		set_page_refcounted(page);
+@@ -5382,11 +5384,19 @@ unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
+ 	return nr_populated;
+ 
+ failed:
+-	page = __alloc_pages_noprof(gfp, 0, preferred_nid, nodemask, ALLOC_DEFAULT);
++	page = __alloc_pages_noprof(orig_gfp, 0, preferred_nid, nodemask,
++				    alloc_flags);
+ 	if (page)
+ 		page_array[nr_populated++] = page;
+ 	goto out;
+ }
 +
++unsigned long alloc_pages_bulk_noprof(gfp_t gfp, int preferred_nid,
++		nodemask_t *nodemask, int nr_pages, struct page **page_array)
++{
++	return __alloc_pages_bulk_noprof(gfp, ALLOC_DEFAULT, preferred_nid,
++					 nodemask, nr_pages, page_array);
++}
+ EXPORT_SYMBOL_GPL(alloc_pages_bulk_noprof);
+ 
  /*
-  * filemap_invalidate_lock_two - lock invalidate_lock for two mappings
-  *
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index 986e733b586e..a09bfd201c3b 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -264,6 +264,10 @@ struct folio *__folio_alloc_flags_noprof(gfp_t gfp, unsigned int order,
+ #define __folio_alloc_flags(...) \
+ 	alloc_hooks(__folio_alloc_flags_noprof(__VA_ARGS__))
+ 
++unsigned long __alloc_pages_bulk_noprof(gfp_t gfp, unsigned int alloc_flags,
++		int preferred_nid, nodemask_t *nodemask, int nr_pages,
++		struct page **page_array);
++
+ extern void zone_pcp_reset(struct zone *zone);
+ extern void zone_pcp_disable(struct zone *zone);
+ extern void zone_pcp_enable(struct zone *zone);
 -- 
 2.55.0
 
