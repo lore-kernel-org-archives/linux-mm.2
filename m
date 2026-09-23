@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 224E9C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:28:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C6D6C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F303A6B008A; Tue, 22 Sep 2026 23:28:44 -0400 (EDT)
+	id 1A78D6B0088; Tue, 22 Sep 2026 23:34:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F080E6B008C; Tue, 22 Sep 2026 23:28:44 -0400 (EDT)
+	id 158376B0092; Tue, 22 Sep 2026 23:34:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E469D6B0092; Tue, 22 Sep 2026 23:28:44 -0400 (EDT)
+	id 047006B0093; Tue, 22 Sep 2026 23:34:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C33936B008A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:28:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 589241C3030
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:28:44 +0000 (UTC)
-X-FDA: 85243594968.12.E77113D
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A34D740004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:28:40 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SigBbLPd;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D813E6B0088
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:34:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 20A4740687
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:34:18 +0000 (UTC)
+X-FDA: 85243608996.18.B0E480D
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3EB26100002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:34:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hGj3Y43v;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790134122;
+	s=arc-20220608; t=1790134456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aXVS+0rNgEPdURT9ROUCnYG2LJzTKNU03S9NURdhya8=;
-	b=dZHF+tqeoz0NuWqOnt5MGNxxI2+SlOv3s7wIjr5tl8pT9MnA/6DTpfbwECtcDv8NZzFTZy
-	T2oREOJJFheuzvAhacc/82bcD+6obSvc6X3P70L2HNPi/bFPPm6GfjuSNZMOk9qODbyOwb
-	U7YVjlpeFZl1psF+amTvgXTOIhJPLQI=
+	bh=GhjGwmzaNfLYRhZvbNLwLfIrdRdgncHpniFjcnEOIBk=;
+	b=Th83DZpJfVk3fpNpxruvRSV42ZD8U5y9Hewv7QE/+ufT09nK1PBJLkAK6CjAnavNUWjtkj
+	H7sIXgM2vcGLPMTdjBi3GyCI5wNR3uiwUER+r6cOJ/quAxHTS1kW0hI5nN/9mmWbNhmDyR
+	4+5Z1gJ7IIAwf3HeUWC1AciLBNrPbEY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=SigBbLPd;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=hGj3Y43v;
+	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790134122;
-	b=SvVlkNZHSUhMYEU4izKWrOU6gUh5AAQYqn0iR1ED3pyQhzvqCIJmzKzwADj1vUfWrIbHIh
-	2a+ildTonm03BafmB4r4VGPyPDgF8YXH22ATbutOB52pZfs60UBA5oYA+G6Gz67d9+WLag
-	APhVDMPQofkjvVkQ33HOyrVccN+JLbo=
+	t=1790134456;
+	b=71DuM2G4sVSosCB1mMbOTE7izCay7pyFJbc4S+pZWF2wyNDSN9Fz1dFaug7fRo7PNnyxmX
+	0FdLY97TF5V+HwzusvXOcQWr+A0K9PGItMwGzfJhZkgGOQ3qu4+lnbbUWBGTXgzJ73/GRJ
+	VYi9sPJa2qGWT9RGuKZhGa2YgCgOtwQ=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1790134117; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=aXVS+0rNgEPdURT9ROUCnYG2LJzTKNU03S9NURdhya8=;
-	b=SigBbLPdQpizEtig/XwEw+XWryByrw8mEHD+Q36r3RhbVJgPUU36VpeF9lO+hlR3sqluPDYeNDu9BFvmmvgeXuJvbdsLO1wwVOYZsviQ6eHrEtprDQveyaHvOgKGmU5YPxX9bYYDGv4vXw6ktc0X7qkZmFThN1EBdd95eHCuV70=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XBVZ80G_1790134114;
-Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBVZ80G_1790134114 cluster:ay36)
+	t=1790134452; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=GhjGwmzaNfLYRhZvbNLwLfIrdRdgncHpniFjcnEOIBk=;
+	b=hGj3Y43vQQu1WuVS6UUybplW4ZTFjso5vSlQAUbU4GsEQin68gG6G5lz4BprkM/sI6tsaM96r4IfpYrX9rNlquInKenYLwvncD5QtRT7TYQfD4B0endMnp2a2nq61YnZf+jU0RKeVxL0Bn79Do+DDFCCKNZ6dqrrmU8umBh9sUg=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XBVe.Yc_1790134450;
+Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBVe.Yc_1790134450 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 23 Sep 2026 11:28:35 +0800
-Message-ID: <6cc12fe6-4f2f-47b6-b821-8a507eb80b46@linux.alibaba.com>
-Date: Wed, 23 Sep 2026 11:28:33 +0800
+          Wed, 23 Sep 2026 11:34:10 +0800
+Message-ID: <50603720-a8af-45dc-9219-3d942a8682c3@linux.alibaba.com>
+Date: Wed, 23 Sep 2026 11:34:09 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] kselftest: mm: fix intermittent failure khugepaged
- test
+Subject: Re: [PATCH v2 1/2] kselftest: mm: return fail when child test result
+ is fail in khugepaged
 To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
  Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
@@ -76,19 +76,19 @@ To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
 References: <20260921-fix_khugepagd_fail-v2-0-3c2877beef61@arm.com>
- <20260921-fix_khugepagd_fail-v2-2-3c2877beef61@arm.com>
+ <20260921-fix_khugepagd_fail-v2-1-3c2877beef61@arm.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260921-fix_khugepagd_fail-v2-2-3c2877beef61@arm.com>
+In-Reply-To: <20260921-fix_khugepagd_fail-v2-1-3c2877beef61@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8wsnmnk4nnafwwqwicp6u1px7map68wn
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A34D740004
-X-HE-Tag: 1790134120-740114
-X-HE-Meta: U2FsdGVkX18ka3kO23qEfM101LQt8XSLKt9eXJ1P5SeXy5IurWP+j2B1kZXwtILi3mgUUJWaT2TIhbPV2D/xbxVH0AvOFGvxXkwM7y8bOBxZYroS6uWZodbbMYYWXWZHGhH79c7+mnTNhGAHjrs4N/hnd/UFA4ItRun8ALBkr6jZSxGvJ7dYJSVArV36XWjqJ90yd7yN0VKTMXqBn5woF3ugQv9OoSwxt9RKZ5t84MkoBrhN//1Ib/y6RBI/CLzwrnjalnUjKtIf919UtQHoEpB/Qp93I/6Kt1/0jCVYSHB3tjXF/RzHXaoj+SRfqpWvlcw6if/Pt7OqIkkKWBi+x74O6tHndE10kS4y7iLABKazoEeBcTWRRo2QATajRLY6NSBDf/Tu22Ty3bIKae6Zhm9LaYw38BYEUHyoOMezjjgKNGZR2sP56oUKYETnTGOvKCQ8uYFRdELiNQLWddOa1h+XywA18BIO2UGxST2tS+xeEhTc9CVan/ZGDf5wTNs9qapewZiHcbhmPHOjpieUGKXsXXmcKpD9Ni5kvzgOnUfjwPWQFRBj/BuBH3m9qxpUsF42MmECWSQTKkuVs0EEvaJ9wpbrvCyuvrLk0hQfJGnh1CzhFzKCwgEHMI0HeOKuaaGZbfBlsXbHNvgd9HB/SI6J8E12++y2ZCvBPjlACESCxLkjV3ZiRIXDl+T4iEM2RzkYOLtBFgRh4gh0l2Mg/ygrCqQ47xXwAaXaupKLqRepmMak1Q0MXldTv7O2DIMsr12JXFLkjVTOwuZKZl6UnQx38BLq17B9syZ7T34D4hfu2oUCb+3ZzWq49JHbQfJbjuCutnKLDPP+CRL+1ZG0pRVEhmusLTCBr1WBlRugCcmsMiw0TerSkujGkRD3xcyLs4XGO3sDic3x9Vb7S/jK+vUAEjUpoyhjZdaeCCc0GquSyEF4jw2fEezOJvixU/16UAYEkuIgEJjBs588sXT
- V3++RUJQ
- Ft4bUuSCz7HQZR7KDFoms5gCHq26hb+53prqELx+7rhYWan4jRkL3S1qGIchCgvxct7PJIffPnThRGLnrq4L/LQdHocogBhqt5GHFoz7+IfcZ10TAdfUZgBRQ4Ly5YoQn7DxKS78ebcVSyGZyNZpyMcHn++DSkntrTJeRYl5bAISi+DuxFUNUEBs1LvD5RLwvYQGBHr7sxU59eT287m7j7lY8KnpzlYDec8IXPnoCMK58VyKgUKb7zIYsWpsDm+HLlIf0QF8CQhUZwqFfO10nK/9j5kDb1drKhCT3aTkhFqAVNPC+UUcTjq7ycpasyyupZd8XMqW7b6fjFGA+jQUp55u8I6jAOMFvkcuZBwPng71llho=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3EB26100002
+X-Stat-Signature: 9n8gen7s8p9gaauifb4gxine6o9pgx8x
+X-HE-Tag: 1790134454-415496
+X-HE-Meta: U2FsdGVkX1+5ZHxcc+U3wR9a4UigMASYNbs+uexX4MpwKc7STcpEAtUfuTqvxc6J1kJt8pl5/fjJ2QQIa+uGNMH0qHseJieQoOWWQkipjDqJThP1ItDHzLUfROkM2czcbwFuDmBHSgcGY3/O6myllJ0DznTh0yNbXiPfQwfRwL88Ka1Uw8L18y6raFJwGp4XivmfhEDINHE3FpsOXQwHIwu85APZwyCzox10UFNBgF3oVWFnomuPFB0wiN/2Y04uHPxYIGYzEIhA83HTc/vmEmYtvkifNsygBbRXXXmV5aTWvgjT3O27SvNU8H8RvNkNi1LZ8pOG16vOqMlzAl1v8aMIuOZuTpm8pXc4xAzUloGp08zZaUnIBFCtPn8UCWU61e7aKXMjdUDkf9LE2qJvhmVz8rmZQtFmxJdUsx8mtWRxyvvQbcFRwqdQhfRNr9jP06KrepNPhBh/NLY44hzuBrOgVtM+EEXejDDSaHjTEYVdj2WkxOn5RSU1/PQkfjjjR1ShyUL6In+KWCbTlGKlVzxNr9gPFBExY2g7AWUxT62GokJhwlGehGKQp2SB/19CRuTK/Au/1UyI8eWO7Q7ab6IzOKsOOdMyNqwKq7GIYeFQA8qSRDal+sljg58UDErRHZfOkz2oJQuf9tuJfG9m/793oUn1k/jD/QiqMFhFEVEoERiHq24PXy1fbwK7BopsdsFLOnXfN/Ruy2JsmzNGP4oaHT/PoSrzwLNI1M49wT2WnoThQ8+CmZhjrb0thNFHiQ2nCB+FoRTTluoDV4RE17/Q+QuNRdlNlPc/AZZUMtdBNHBQObySNhXHhFTLoSOrCkcA+JsvYkAnim7pgEfQRgFhTubl7CNAgNJKHxaFCOe/thaesej1e/vCssBpP10QQcQ4qlH5Vflpo7O7dYVdd9stPO9YfFqaMyWS0v9CZFImnN8e3n8Rr09gZmEAS0t2wDrfSSrfcVz+5XsrDvy
+ nGgMuNCm
+ g+Pc8xOQK9LvBDDXH26l8Tq+oNDSjJ/tZU5JJVQ7/UgmHo75xVnuxtOUSCflCmeYNFK+9sEaBuSSakwmkwsxO0y5Ky/KZ66guZCEwL8Ve/dBQlHfAW0o123Uac/od76yMPq/tOYFBNnstR/CJQqptVleog0TMrELRpxCzV+hDtV7nQXzHaPvrYZNLpzJrMOwNhO87Vl2FrfbfNvVI4L5LJU9XMOuN63GcaCT97cyvHppVVsVskgFneWBGdyiyV7AwZnWk0ndJ4qPJovkYqKMoZoySoYMoQ19kcLaSSiGcxSZ8cgzvOdk5btbNCvkV6LG2FpM+X1+I/wlUNk0klFjN1jAoktM1f2qvnuu5y83W2dtaI9qcHXeKp2nO7Ba1jTdr6bkD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,11 +99,14 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 9/21/26 6:35 PM, Yeoreum Yun wrote:
-> There are intermittent failures in collapse_max_ptes_swap() and
-> collapse_max_ptes_shared() when using the khugepaged_context:
+> Although the child process in collapse_fork*() or collapse_max_ptes_shared()
+> reports `KSFT_FAIL`, the result is ignored because the test only checks
+> whether the parent’s page was collapsed into a huge page.
 > 
->    // while running ./khugepaged -s 2
+> As a result, the test is considered successful whenever the parent’s page
+> is a huge page, even if the child test fails, as shown below:
 > 
+>    #
 >    # Run test: collapse_max_ptes_shared (khugepaged:anon)
 >    # Allocate huge page... OK
 >    # Share huge page over fork()... OK
@@ -112,56 +115,18 @@ On 9/21/26 6:35 PM, Yeoreum Yun wrote:
 >    # Trigger CoW on page 1024 of 2048... Fail
 >    Bail out! Unexpected huge page
 >    # Planned tests != run tests (26 != 23)
->    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+>    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
+>    # Check if parent still has huge page... OK              // parent hpage success
+>    ok 24 collapse_max_ptes_shared                           // considered as success
+>    ...
+>    # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
 > 
->    # Run test: collapse_max_ptes_swap (khugepaged:anon)
->    # Swapout 257 of 2048 pages... OK
->    # Maybe collapse with max_ptes_swap exceeded.... OK
->    # Swapout 256 of 2048 pages... OK
->    Bail out! Unexpected huge page
->    # Planned tests != run tests (26 != 17)
->    # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> This happens because khugepaged may collapse the pages before wait_for_scan()
-> is called, causing a sanity check that expects uncollapsed pages to fail.
-> 
-> For example, in collapse_max_ptes_swap(), after faulting the pages back in
-> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-> before c->collapse() is called.
-> 
-> To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
-> collapsed by wait_for_scan() for anon. This prevents khugepaged from
-> collapsing it again before c->collapse() is called.
-> 
-> This failure was observed on NVIDIA Spark with 16KB page.
+> To address this, propagate the child’s failure and skip the subsequent
+> check in the parent.
 > 
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
->   tools/testing/selftests/mm/khugepaged.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index c32244b565658..1aad4bb427ece 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -578,6 +578,9 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
->   		usleep(TICK);
->   	}
->   
-> +	if (!strncmp(ops->name, "anon", 4))
 
-We usually use the 'if (ops == &__anon_ops)' check in this file to 
-identify anonymous test cases.
-
-With that, LGTM.
+Make sense to me.
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-
-> +		madvise(p, len, MADV_NOHUGEPAGE);
-> +
->   	return timeout == -1;
->   }
->   
-> 
-
 
