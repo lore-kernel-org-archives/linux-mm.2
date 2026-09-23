@@ -4,130 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 386FBC982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 125D2C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50A976B0093; Wed, 23 Sep 2026 07:40:03 -0400 (EDT)
+	id 2C5116B008C; Wed, 23 Sep 2026 07:40:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BAE46B0098; Wed, 23 Sep 2026 07:40:03 -0400 (EDT)
+	id 2994C6B0092; Wed, 23 Sep 2026 07:40:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A9FF6B0099; Wed, 23 Sep 2026 07:40:03 -0400 (EDT)
+	id 188266B0099; Wed, 23 Sep 2026 07:40:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 160916B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:40:03 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 89B47A07C0
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:40:02 +0000 (UTC)
-X-FDA: 85244833044.03.FB2AE68
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BED8140004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:40:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVRkS6gt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790163600;
-	b=O/T4hESXMVKLwHewHZKqwUsAHUgUu/LY5TQo+Q/ROkA4iFj0x0GwZfY/4OvtS6kY7m7nL4
-	2Wwu0HJZuI08Pi4HQk2TjbpRLLXC4hox7lc5en3eYqUGhipDGcbS+hV81F5ewF4lVuk2uK
-	egP3D1gkYWEgbXXgZo731kIFom/EisY=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVRkS6gt;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E7E686B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:40:33 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6C231C073A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:40:33 +0000 (UTC)
+X-FDA: 85244834346.07.D415A17
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B430516000D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:40:31 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ekCZ/Dpx";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790163600;
+	s=arc-20220608; t=1790163631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eLrpgKuhQkoqnu0vp0p8SbJmXaLTmBHhu9O+CiN2Vjw=;
-	b=HVqfANyXV39QxzZnPAHeYBjT31j95HGSN9EQSHsAossYmKRHrakUd55FmsaA6RnrouCflq
-	iwo7p2+WJGyyQG9sV42sieN2rWd8CvcGKrbsds/ihWeTTUCpuWo4qCzZqpsBgS5r63WLTV
-	mOudj6Lu3aYWFThDT8PXOtVl9b7glpQ=
+	bh=ELwqlQOQpFWXNbqYfRTf6Nxzmx4A5X4UMjcGUF8ui/o=;
+	b=DmeKNaci+gCterloqRSXwRp1uAjIU6D3eeyvncHdkNvTTXPpEIszEfOib6TZBXPuvlirAC
+	lEbAkxj/JZrOZ9qqCEDxHJ4RiyldSbZlbBafVa9MrtuY8Vwoa5guIoQ3YjWOq4N+aZlzub
+	H34Cb/Rw5fuDTNE8jc0LCfXfy0eZ5zY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ekCZ/Dpx";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790163631;
+	b=4dPBav//MvNTdlguuRCIxugCRJ29NqOlJLhnmqOkxiRsQHknXIzaDzCrqGGK3nkjmT9uKW
+	vq3nbFI+Ua4tvfiDZ2geQFJkPVahq7as7yRNTxLgADZoRAd43QCvUKjEPQWIo/oivT23jh
+	wL+K6d01OTgf4x1E5kS+5BbxkulFGHk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6993540DB0;
-	Wed, 23 Sep 2026 11:39:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8711F000FF;
-	Wed, 23 Sep 2026 11:39:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3A671601F0;
+	Wed, 23 Sep 2026 11:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D8C1F000FF;
+	Wed, 23 Sep 2026 11:40:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790163599;
-	bh=eLrpgKuhQkoqnu0vp0p8SbJmXaLTmBHhu9O+CiN2Vjw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=BVRkS6gt4XoYQOeCEfHPhRO7ByeHkhEEqQphfsSe4SuC1tCT0cXzY7rwECIeYfmTQ
-	 3re4dkJjl7SIZd81ZkMc56LvPd1cysERrJMNbmXFLXhsqS3rtneWLoeLPSSv6Uv8w9
-	 NqkNMMg1o3qPDa9QeTRxreqsGE9tRJkygczoThYC6QrTl2ldDxoW9x8DTR+mvQh2uK
-	 s2F7yV0/wbhQRtUjiExmkJXBbJDhmPYa+/Zos6QWnaG7zkq3Gk8Aeud5bark6jRmzS
-	 Xv0T5RU8A1tfwnKhxw4IPFOwigl65eC/Zok10skwSamz+CrUYHC1z0FbIRAVJRQIwx
-	 NnBagpGL/fxrQ==
-Date: Wed, 23 Sep 2026 12:39:41 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>, 
-	Jonas Bonn <jonas@southpole.se>, Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-	Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>, 
-	Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
-	Peter Zijlstra <peterz@infradead.org>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 00/12] mm: make userland page table freeing RCU-safe
-Message-ID: <arO6UpHLChZqAjBm@gremlin>
-References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
- <20260922160021.a2fc65d05d9b867a141e5457@linux-foundation.org>
- <9dcde7e4-dadb-4644-9dff-7fd8a26e29a6@kernel.org>
- <arOVbT5B1FOMe1wb@gremlin>
- <77db2f8f-dfc2-49c6-82f6-8e6c4f7c1fd0@kernel.org>
- <300f92ef-1526-44d9-a01f-e9b8f3fc0cd1@kernel.org>
+	s=k20260515; t=1790163630;
+	bh=ELwqlQOQpFWXNbqYfRTf6Nxzmx4A5X4UMjcGUF8ui/o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ekCZ/Dpxd4UXfjUpPJgFSz+5Qae1qUCR1vSSZ8gxKyDdMCl1jyddCKLqopYldDgj1
+	 USDujZCPTeZhGiUDptREnXMGr1shGrif+fIvQoFMpJPidLd5R0DqS1zOJ8nfFMTYG+
+	 dq0GuoMp4dgKLR79+EmQaRwvZYATQHJErH887908uZwyhKnvAuQCgqkGUxWfWj0IBZ
+	 8b/cXJGID70KBufVBtlnM+b92J7fia77hD7wYjjK7NnliafUE2G9fUSvta2wgzDtCy
+	 rtF9JdpAYG3E3YmJgIBrGXTkEcL+BGrBC4VVjbPfe+XYn72fBHsz+zzKdL9i0VrM3R
+	 mRT19O4etE54A==
+Message-ID: <7a23511f-365f-436f-b934-6a520510409c@kernel.org>
+Date: Wed, 23 Sep 2026 13:40:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <300f92ef-1526-44d9-a01f-e9b8f3fc0cd1@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pmyndasx1y3qs8e1spns95n3wgny49cx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Jane Chu
+ <jane.chu@oracle.com>, linux-mm@kvack.org,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+ linux-fsdevel@vger.kernel.org, Christian Brauner <christian@brauner.io>,
+ Jiaqi Yan <jiaqiyan@google.com>, "Gregory Price (Meta)" <gourry@gourry.net>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+ <an3uN4TAAZ2miXhe@casper.infradead.org>
+ <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+ <arGidwZQrrWVPAoj@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <arGidwZQrrWVPAoj@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BED8140004
-X-HE-Tag: 1790163600-238172
-X-HE-Meta: U2FsdGVkX1/ty/qfLkbpN93x47uvzP38LvnH6GrMXZ0HX7iqF3Q2A/G6F9FlvaVQTaVfFdVbQNgq9EaTT4E9PnIBCKBIiK1eLu/BtFHmRXGDvvj/7RciVSGmKzRfuAxi94DRWnCHoWDdLLRRMZz9bSTjgyeqBBbDG82og0bfBi2Z2ddJVcNWwlOonDdcWfYikYxLhUuUtYSkoonyqUAalwlISmyxrq+H/sL+D2nHOVD7I+7y8b2GFlpolTCKuzrygUgS8kkFMgZeeGBQOK5iJ8W3BGZVOHxFiyKNIkIwYxVRRXe1AxaGD6etcvJGmfFSGe2ex5axAmZ99y5wLxMuA8c+IGB/M3pOFFu3IUrD18kHfQKoxyxtQ0Hcx+LIFwPMLJIC0cEKqJci1/Bf8p7uewP2QrfvyUPjIjqWGyprd7RIdd9Q8q6+W+Ayw4tb/08hfP8i9i87PZPzwV5Sh9wRJsL79s0zIJOChVQzuKAqChURDgrk0D5TC/FJH4lgpgs1rBk85TeK13WenBzfjS4Js/GKQ8D2JoQJRCcdMdCNpBkf71+Zcr7LmbIyoeLbKSwTos0IeQWoCKB8sDbawbDUJ5+iWfJdcJyx9b2N6LzIrDwygV6gS3FFv5sJKGki9/cpB74UI+sC8McmDcl3WPB9ByljUhEXTOOOcsc3I4p9VJaw1/yQxmX7RNSy6/wefrbfNWDOjGv+zFeLYGwfMuMSMxww0I4oBvhwxCchKixlhlYxfA+1Q2a+I04X7+R1+kXFtjlEkwGzdsiocS78PoXsrwJAfWQQ/0xVJiHww95eH0hCJppQWNx5SidQ+1t55eQPN6r3Qfdl2BDrYP0vd20r6HJLVl5pzr67ncBI07++dfIlR1QjnpXl5CrRyBmOePrdK1XgPVZfyDlEGTbw2hlQZnoRTTRQUATWIomPqGu5MFTNgss+niCYbYaMEVzlFbSaxGAcepgHFSjxSTWQffz
- k+WiZO2/
- 9xmASOkOfRUmU+UlbIoYjgA2d6jV8EoJusUwEel/BP0f44hnTwr5JzChe1TAoTxUrMqgAepdKwCAzF408jZ+BZiEWp3DHTAFbegzKeR5bqjjSReWJ1Jm7vGzqN5P2s4SeErlEdnIlR5+ZoZipfr/HkFcYy79UgYDDw8dCoLy8HQ+wp3UWuTAktoe2egK8n/KKlsuq6kwmOJvWBxiMcl5pxEDgdY9vHA9MfcXAq5xBi43uhHuEGF28lC075eIU0fS/s9YS2GjsZMB4J2DkP8SlDt6RFKqRPtbWxXXlKVU2SbNZo572XLvDWKmVkaYvo6OTv9uViX3XMHisq6I=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B430516000D
+X-Stat-Signature: tc18oug35fdd3fwnstkq9117nqjgjsrt
+X-HE-Tag: 1790163631-869376
+X-HE-Meta: U2FsdGVkX19n2pzd7auFOkBuAPTwLmRbxreICr03weY+KG6wo5WC1USctTYvm6ZqkILAyeSOdywtu/yAg5H/fhr8mL/yyn/sydBCuKwS45/XEGQNeEuBUWpgu52M/Ot6xiGYI/+DKojdn+wpBLH5Y09gekx1Ej3Q2tC2KFBOh88PqB/c/iUF04qExDkKLIXzExjplb4W202ZpxWXwzhy1EUFqUIAVOFu6Hlr6fITDJah89cKR1g7PxglyBIYqFPKxZ8RqbYBd6Pa+gE4FK31zJcXuZbiqM/KUtSMSLwzgjNFmfndBgbTXMELQ1DgX6Ou+HnccVV2KqCiWrXNfSnctgu45OhrBgcV7Xhk6n30qevV4HzrAY/rmXYYFUZ4TS1c6D14eFWV7rItFfpn3zqRRKqZlEm8wOIKG2bDI7G+CtQECYQQO5JVeGY/3xFmRgMIgBRtsi2aS7DbweL8lL+ZCh8B90pI1Q27f9ziRBjMDUL/31JUElmtQblR0ivdv5DFWqlDJ34aMmf5THe2RvI9sOfkVeRtuamkRHFPI0N77XBefFLTgszbl4ykcT0uNnyMAxbqPCE0TJmVAl4Lx3yU5JvXW/fCxXHhAk31UMrpg2GYzDcrImsGUg68GWg9HvjolBHxE/KC/ZQ7MU83R01sBM1PlofkJlhUVcyJAAiCDTbGWhjwLnJU4unfBpznOncfCBkrgQ74DcrPftZzg2Jsn2jeS8fR1iTDCOA5Mjc1v3S5BHCveqvbeL2N8EJppAesgl9UApfB6KBZECRRqXk9gIZvopH4LqYadgaE2WqmnT3o+oZ4F/iflVjB33uH2fk0cUdncwdTtDviEwDXI5vjE73tWoR1C5jPAb06vmNzXOzK7AEQLB2rLwOA6maZw9HlMfKcgG5A1k8RDURFNqdaFZZYyFlyvoBWqUsnBeeSyZYZ4LkZtB1ezYr54F3G1L4pRJf7re9sSRgqbZHhemp
+ iBpPBznA
+ WyVwnhDAESAPEWOxCJ29gmZdq4QGZv3BD5Rzndgcx9q2QUaFlTwGqMvj4feVzBKDKx5D7zdHR1/8vVGh7YTivwVF/22uX0LYO4iTF1ol4fBuxjX57R1/AhXln9Qzu3YbOx4HfdN+w/p9jUdgHaX7nAMVeo8Dgt34xCV2KXhFqXtf+Gt63kTQ0+w9mM+/oGF3Ioi/ciq1nOChvr5DXkrT8NfxkiR5/YvYKS7hs3/PPKlS6oNnU8SqqKiRPPNQszV/OHaOEVtSsbs70D5XE/ulXcDfiP+RQd9KdPuMtSzd+f3ltMwbWambMIzHN3pgoOqeBEOVWY2znP0xr0+l6C6USBnLSHZhX6+vbRa6oHHWJIe0mL0FH+eLEZYQVcE0Qr7gcGN1B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,50 +147,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 11:39:27AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/23/26 11:15, David Hildenbrand (Arm) wrote:
-> > On 9/23/26 11:04, Lorenzo Stoakes (ARM) wrote:
-> >> On Wed, Sep 23, 2026 at 10:45:33AM +0200, David Hildenbrand (Arm) wrote:
-> >>> On 9/23/26 01:00, Andrew Morton wrote:
-> >>>>
-> >>>>
-> >>>> Do we have reason to believe that anyone is seeing any effects from
-> >>>> their arch's failure to rcu-free the page tables?
-> >>>>
-> >>>> This sounds like a rather long-standing wart, yes?
-> >>>>
-> >>>> The patchset is thinly reviewed and mm.git is bursting at the seams
-> >>>> again.  I'll play wait-and-see on this series.
-> >>> Do we want to nudge arch maintainers to review?
-> >>
-> >> (Just to note that I replied separately, 'thinly reviewed' is incorrect, it's
-> >> been in -next for weeks and the whole thing was reviewed by Kiryl.)
-> >
-> > Ack.
-> >
-> >>
-> >> The only places where that would be useful is m68k motorola, sparc32.
-> >>
-> >> But in any case it has been heavily tested including on every single arch
-> >> listed with stress testing performed (I think I cover that in the cover
-> >> letter).
-> >>
-> >> The changes are not controversial so I don't think that's a blocker, but
-> >> it'd be nice?
-> >
-> > I doubt we'll ever get sparc32 reviews :)
-> >
-> > I'd definitely appreciate some review on the arch bits from arch maintainers,
-> > but if they don't reply within the next weeks I wouldn't wait on that.
->
-> Indeed, for minor arches like this the lack of review (it would be a whole
-> cycle by the merge window) shouldn't be a blocker for important tree-wide
-> progress.
+On 9/21/26 23:32, Matthew Wilcox wrote:
+> On Fri, Sep 18, 2026 at 03:44:12PM +0200, David Hildenbrand (Arm) wrote:
+>> I'm a terrible person and it took me way too long to get back to this :(
+>>
+>>>
+>>> You make it sound so easy ;-)
+>>
+>> Heh, as long as you hold a folio reference it really is :)
+>>
+>>>
+>>> If we don't hold a reference on the folio, then the folio (whether it's
+>>> hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
+>>> the assertion that it's now a tail page.
+>>
+>> Right. I am/was missing the connection to "generic_file_read_iter() in hugetlbfs".
+> 
+> We might be able to split this into two series at this point.  
 
-Thanks appreciated!
+That would be good, because I suspect the "generic_file_read_iter() in
+hugetlbfs" part is less controversial than the hugetlb cleanup and we can just
+merge that easily without touching too much other code.
 
-Greg from m68k has had a look so seems we have movement there anyway! :)
+[...]
 
---
-Cheers, Lorenzo
+>>> If we could get rid of HVO, we could do it entirely on struct page.
+>>
+>> That's what I hope we will achieve at some point.
+> 
+> I'm not sure that's a realistic hope in the next few years. 
+
+:(
+
+> Even if
+> we get struct page down to 8 bytes, that's 2MB of memory per 1GiB allocation
+> (assuming 4KiB pages).  Always a tempting target for someone looking for
+> memory savings.
+
+Ack
+
+> 
+> I would prefer an out-of-line tree that doesn't rely on a bit in struct
+> page.  Maybe a bit in struct folio wuld be fine (which tells you whether
+> it's OK to skip the tree search).
+
+Yes, that would likely be better. A single bit would likely just remove any
+overhead of checking in the common case (no hwpoison).
+
+Not sure what to do with non-folio things.
+
+> 
+>>> Or, as above, entirely rearchitecture hwpoison handling to not be based
+>>> around pages or folios any more.
+>>>
+>>>
+>>> Blame Sashiko!  I'm going to ignore it in future, but it's really good
+>>> at nerd-sniping "hey all of this is already broken and you could fix it
+>>> as part of this series".
+>>
+>> Right, and this is only the tip of the iceberg, because the entire hwpoison
+>> infrastructure is a complete hacked-on racy piece of ... engineering excellence.
+>>
+>> To summarize my question: is it possible to separate for this series the
+>> pagecache part (Use generic_file_read_iter() in hugetlbfs) from all the hugetlb
+>> hwpoison rework?
+>>
+>> OTOH, if it's really not avoidable, please let me know.
+> 
+> I think Sashiko will whine and complain incessantly if we drop the
+> race elimination patches off the front.  I can try it, but is it worth
+> doing?  
+
+Note that Sashiko will apparently no longer complain about preexisting stuff.
+I've been told that these reports are now collected elsewhere.
+
+So I wouldn't worry about Sashiko crying about hwpoison stuff that was broken
+for ever. I'd rather have fixes for that handled separately (after we properly
+discuss a better long-term solution to handle most these races and where to
+store hwpoison information long-term).
+
+
+-- 
+Cheers,
+
+David
 
