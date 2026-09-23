@@ -4,86 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BD1C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A86EC98307
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34A216B0088; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
+	id 776496B0088; Wed, 23 Sep 2026 06:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FAFB6B0092; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
+	id 7278B6B008A; Wed, 23 Sep 2026 06:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2119A6B0093; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
+	id 63CC66B008C; Wed, 23 Sep 2026 06:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 002B36B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:47:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AD5B406F1
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:47:14 +0000 (UTC)
-X-FDA: 85244699988.28.1899703
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 455016B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:55:00 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B320914073D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:54:59 +0000 (UTC)
+X-FDA: 85244719518.13.379FD68
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 84789140007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:47:12 +0000 (UTC)
+	by imf23.hostedemail.com (Postfix) with ESMTP id F1F5E140003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:54:57 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oltc4gXy;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	dkim=pass header.d=arm.com header.s=foss header.b=rs5p7XvF;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790160432;
+	s=arc-20220608; t=1790160898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fDDF6SKtt0mSiUPfmFFg2n4tvXakbgPe2tlV1YMzcgU=;
-	b=Zh7T5Yx/WK2hxIi3GnhOaAWpAtZGGV6Q+uZ8aN9E5HgxMSypEctSGz4RfJxuaWKclLq29/
-	Pcvsk7fqnGaqrFvgNZ4hEeYDVlB/dQG+OSS96POmlZ+XK4Q+4PLwGutRpZM63Q6+tm3RrO
-	apda4ZrpXpa18I33erC8lb776sOZ/kM=
+	bh=3HsAx4SnQNnifpqt+gsKp8m+X/PyTqK51tRJcr1wuFo=;
+	b=VOUCd7ROYeyneGrDXbsGnJ4Xta0O6/40Wkjc/b80F4DDmOx6Wp0HGVKSBQGrOJMamYFsjz
+	QynNgswyoxETypRAVxc3g6ashW0VaEWEiIuD3u//7G4cquy81qgC85kM0jNWAddtK/LmV+
+	UCN2DesP60mvMzawK0MZIuUeDzaN+cY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790160898;
+	b=GbLwQ0hKn2x2kScyh+OOA4JLEeTSO8cY1Aom9as+KaGCbUA9l8RLNS/LyMeWynEJnObDtZ
+	IhaIrN6b3JHZi/ZWjaN9jN9HQdGPhL2Smx8okjHGowqscCd402kalLP7i60AAsqjzS3PuY
+	bKLMzzeTTo4894amneqVFPYLDp9WjQA=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=oltc4gXy;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790160432;
-	b=gwG0D9azqpDgaTn5u4RMg1PnGgyZXbBCSqtBnzHrNL6/7S9KuHF8XlIeVjAHqIfDDcegC2
-	hKaIKHjnsxaRNLzn0FMvW9Gkf7RAovJNSNa6C0yvcvxDXhslRyEvEgzsQdujrq3oKYDukD
-	j38JSqI3pD5OSTc9l3n3ImsHpv9F1Y4=
+	dkim=pass header.d=arm.com header.s=foss header.b=rs5p7XvF;
+	spf=pass (imf23.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27861143D;
-	Wed, 23 Sep 2026 03:47:08 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C63FC3F86C;
-	Wed, 23 Sep 2026 03:47:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9F41D143D;
+	Wed, 23 Sep 2026 03:54:53 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 81FC73F86C;
+	Wed, 23 Sep 2026 03:54:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790160431; bh=jBpobpGD6Ea5rJoVfzQTN7ysJ2G/gw8VNJRkAAGh20k=;
+	t=1790160897; bh=BpeVTxo8pLgcSW2YiS7/ckITm/ybEWASP4RjJ0ASVmc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oltc4gXy8tuCEPLl8q04CzNR/M2uenYDnBnMu3UBGTi3Torjd7pC1U7F1T5SRjm/s
-	 GrTdEKfdLYGY7NiOGO8bqTXh4rBHevv/UctDKm6ABR5WXJmD4pDTY5K/wSUsXaFHCc
-	 SKzG87M596tYPnIzCnJR5XLCEGs7yh3k4BQ1yPDY=
-Date: Wed, 23 Sep 2026 11:47:08 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Breno Leitao <leitao@debian.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/2] mm: kmemleak: scan the struct page array in
- MAX_SCAN_SIZE batches
-Message-ID: <arOuLEZfEqmce4iO@arm.com>
-References: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
- <20260921-b4-kmemleak-page-scan-v1-2-fb97d4801b3a@debian.org>
- <arJPsqUSHGiitXQR@arm.com>
- <20260922183921.b30bc1c3ba9443e021910851@linux-foundation.org>
+	b=rs5p7XvF0Ft9Yi/Fzm0XXqA8PO/mRcv3yu9ouhDSO04aqTZP1c24oOzVwgTG084jT
+	 W1TCTnDKzI8Sfnm8WWWg2tqspjmLG+ZY/T26c8B7xF/1xISdWOmkvC8nX46uLjhB8C
+	 vZIKo6RWhnv/8GyzOFnVvMpThvouKE48FnMRJpLo=
+Date: Wed, 23 Sep 2026 11:54:52 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v2 2/2] kselftest: mm: fix intermittent failure
+ khugepaged test
+Message-ID: <arOv_EFOPg0HwBk5@e129823.arm.com>
+References: <20260921-fix_khugepagd_fail-v2-0-3c2877beef61@arm.com>
+ <20260921-fix_khugepagd_fail-v2-2-3c2877beef61@arm.com>
+ <6cc12fe6-4f2f-47b6-b821-8a507eb80b46@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260922183921.b30bc1c3ba9443e021910851@linux-foundation.org>
-X-Stat-Signature: jhrg6h7z53r6wwjwgop5regnnx65g74z
+In-Reply-To: <6cc12fe6-4f2f-47b6-b821-8a507eb80b46@linux.alibaba.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 84789140007
-X-HE-Tag: 1790160432-893827
-X-HE-Meta: U2FsdGVkX19dAmoRxqO3CYjDroSGAKE/NgxHYRHmXP0SSwFlfg/aWQSE69jSAu7Ue4Hl8JVmT5YoofSgYBsfho5FcEoipwRU0o0LuktwWnC/rLm2anFKBhLXry8I2cpBC3FC4P66FBCoVUo3fxVRjs5xQkR1slESGuuS657ZAC685DOV8hK1a58QgN6CE78X5PL1ndcQdw8A3ZmJF5m+4Jd10cMhUdklkcQ6iIyY0yrvyPgQMB61fY3xOE5zss2GPNZufnj3/+Jh6TIydsLownvOsObEI42gg0t65CKUk/HlpGhbjOQnCBPU0UBgiLlL/f+sCJvoa36uNv3vwLSzY8k3b4TeCABstuG031HprBf5O9epNmtbWMQu98C4N622L08lEpajzuDoCvXIqZblz1L41LNry2NIbetZfzKXmiNW36ACTYdBLzdZwTPEKIQ69Mv7UHyxTXR5g6YuQ/LcnOPfDvL/BFhRR5Ofp8MZu9FhsVthIBPBVnuuFDkJEcaforqr4WDt5A8x4OQ3O6MWMKYGES7LSTENJ2u6L8SJD4l8ihvo2lXRge8klPABxwCoYaE0zJInSYfomSrLwQgUQrEasHtmlFifsqG+o6m2a8B809Cma08lo3oVYfR44FgS2udZhTqW8mJVSz6YpvFqRCBUCfoeX40MVyGHdV1I+sVLzBZMOk+mKYvAMHhzULuRWYzChsm4/zqsXmCBRRWqotczvf8g4tyHiHmw3acSvNmvOHQ2nTOB1VgxtXbIsp+x80hJeHfqnrEC3rlkTkQsP739U0KAEQL2oW59g1iSoq2BlQr4qZelHyBchzKzLImzcTGZcNXGbxGERsQKnSo+hr+f/YYSQjO6imrctyPpspBMTHiRlYb1/vW9WOP1TmGYR5NUriu2wL6PsFG7LtOGn4+QDMVSxFU7/DrFgkunuzlMrPNkZRVtSORRI1onPOBKGkejdbYHTgVbvhf/yuP
- LEl62Jn0
- Kvu+zsaOEehVYzS27Kric3glSzSJcYJTZAATGAJkUBsNHRWqh3XuGSqBTtq3+FuROoRp0oCFGaEYreRm6wOBDrnj5BW2JNpkZIPtjqB+oLR4RwZo9pGVmYSL/pydnMHwRszvjPwNnsTWRcNuwuwTwkkRX4bDu2gPn3GbNmc8p8XFHhqqTbTGtKjlYtBWtMT4r9KlxoyoKDYOxbSCCPsvEwomrPmXyi21mdrF1TYmsaN6XpekJeGQjYA5n4qlkgdI4AcevmqhTXPeXGNJ/Tn53nhn1OxTtUNkafsQO4fZjGBBd/A52E5ETDmxVLJmTh7GsJy8NHD4w65REuGI=
+X-Stat-Signature: xsgeit9ogmk3gxib5piq1yb6hwko4kfj
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F1F5E140003
+X-HE-Tag: 1790160897-301577
+X-HE-Meta: U2FsdGVkX1/OKfUEj71XVoUvfPRBkWJXzu3Pn3b5WVDkuo2XdV5+U+7g5JPeZ5jnH72TgpUoMEtpPeuto6BD74CjmyFGNaQH/LYnlflSLpK2PYtG0kAo3ghBvxlJEuA7Rj9Z9jWCeTvg5h7yV4yod5nX/IYB4gFq9ANQrbV5TXjejHZ0Nvr3g/LquV6LqKVRdSKnlYoR+Pu2O3OtmpRlvJW/0SyB+8G3aTu3heuA4n3xoFus0Ur6zn9ge9hd7Ywy9s/326ZZ9EiwSZ3NZQlDnTpsdOSTew14heGXcNQC3ybEK5mS8qQEemvR6ZP0PXAKcpq0VMzXGsA3Mv6/m5VzbVZMPQ01hcHsACgOoEVs7tbACRkBP5ySmaaaojtnPiar+jmmWmG+yA8cVjQovaSq0GOKEvS+yTH2GxfYw2VQCrzEzAT/Sw0ssc65i0YWY94CMHDZGUPVRGcQjR1A+1Kt1El6wY7cLdYl7M3LPUu+R0hc70NceZuu71iiFN70BEt20gXnaXPO1+Q9eLA1fH2xBSXOOEBFnynRiKiSgkaykkP+C9jpZyYS3ZAPceG4EAanIPkmltX/FZ3mvpSBOCHuDSfYQAByecoIVhjKlOtEnQbscPdZhDtrRYwtB817Zxbm5Fm6Zg5LiAKLl42HrRe8gL5WdH8uNnz42rKrOB7i6Ra2OdOn/v1/aTcQV4DFGGSnfwfYenKgF7s5VVtr4rB+Cy1I62LBj8OTHtrVrWwJKEjs+NF/vNtBPpLWhHuvqyyT8d0ap5wvafMDY0VJkjdGJZ2REnRjdnf1PxG+FioEL/iWbYFt0i9f4lTDbxQJTPDJK/HbvMUvogfwaMuXZuJr7sofrACwM8hjMPDwYS4OVZGR5orxvJa0kSYVnCnzLUcwwQUZerOgVywIF7c8lAaE3lJX/fzg+mwRUk5Ej+kZ3zexpefTGzjDqLR4lj6vh25nwldnc0iZMgmsX0pkAc+
+ EwTKGFVS
+ CQCEFLAyLK3crfmwYYrbJlIUrW2C/8+xvdl1qmDMEpibhJrEzuJdyhOxSalLW8CRdu11w74SLCrUYLOfcrQWVTBkZ1ko62+5f+5M4O94JgAeLnLn/PwBmGC+HGnsRNtQGWnNepctiqh+XnbcYPih9YEwFf5IzQFhiOPvCoZui0IWIVZt3Pf9OlACJ1+99o6alavBpfBO1btW2GdsVg7na1zuRqbt45VsQdYaySvFffmYBTK6ufbHS9eVYpVMI2RwlkDEsgeRqleLfXikO90Di5SZQCeYicg3B5nBS0pCK6Kw+ZnkESqUdNZeJ9yQqNX8cSbrj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,42 +102,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 06:39:21PM -0700, Andrew Morton wrote:
-> On Tue, 22 Sep 2026 10:51:46 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
 > 
-> > On Mon, Sep 21, 2026 at 05:30:27AM -0700, Breno Leitao wrote:
-> > > scan_zone_pages() scans the struct page array one page per scan_block()
-> > > call:
-> > > 
-> > > 	if (scan_block(page, page + 1, NULL))
-> > > 
-> > > scan_block() takes kmemleak_lock with interrupts disabled for the
-> > > duration of the call, so this acquires the lock once per online PFN to
-> > > scan a single struct page.
-> > > 
-> > > Gather runs of adjacent eligible struct pages and pass each run to
-> > > scan_block() in one call, capped at MAX_SCAN_SIZE.
-> > > 
-> > > The longest kmemleak_lock is now held is MAX_SCAN_SIZE worth of words,
+> 
+> On 9/21/26 6:35 PM, Yeoreum Yun wrote:
+> > There are intermittent failures in collapse_max_ptes_swap() and
+> > collapse_max_ptes_shared() when using the khugepaged_context:
 > > 
-> > Remove an 'is'.
+> >    // while running ./khugepaged -s 2
+> > 
+> >    # Run test: collapse_max_ptes_shared (khugepaged:anon)
+> >    # Allocate huge page... OK
+> >    # Share huge page over fork()... OK
+> >    # Trigger CoW on page 1023 of 2048... OK
+> >    # Maybe collapse with max_ptes_shared exceeded.... OK
+> >    # Trigger CoW on page 1024 of 2048... Fail
+> >    Bail out! Unexpected huge page
+> >    # Planned tests != run tests (26 != 23)
+> >    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > 
+> >    # Run test: collapse_max_ptes_swap (khugepaged:anon)
+> >    # Swapout 257 of 2048 pages... OK
+> >    # Maybe collapse with max_ptes_swap exceeded.... OK
+> >    # Swapout 256 of 2048 pages... OK
+> >    Bail out! Unexpected huge page
+> >    # Planned tests != run tests (26 != 17)
+> >    # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
+> > 
+> > This happens because khugepaged may collapse the pages before wait_for_scan()
+> > is called, causing a sanity check that expects uncollapsed pages to fail.
+> > 
+> > For example, in collapse_max_ptes_swap(), after faulting the pages back in
+> > and paging out up to max_ptes_swap pages, khugepaged may collapse them again
+> > before c->collapse() is called.
+> > 
+> > To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
+> > collapsed by wait_for_scan() for anon. This prevents khugepaged from
+> > collapsing it again before c->collapse() is called.
+> > 
+> > This failure was observed on NVIDIA Spark with 16KB page.
+> > 
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> >   tools/testing/selftests/mm/khugepaged.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> > index c32244b565658..1aad4bb427ece 100644
+> > --- a/tools/testing/selftests/mm/khugepaged.c
+> > +++ b/tools/testing/selftests/mm/khugepaged.c
+> > @@ -578,6 +578,9 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+> >   		usleep(TICK);
+> >   	}
+> > +	if (!strncmp(ops->name, "anon", 4))
 > 
-> That was actually correct, but it doesn't read well.
+> We usually use the 'if (ops == &__anon_ops)' check in this file to identify
+> anonymous test cases.
+> 
+> With that, LGTM.
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-Ah, yes, you can read it in a correct way as well ;).
+I think this is merged at mm/mm-unstable already So, I'll send
+another patch to change it with is_anon().
 
-> > Also, MAX_SCAN_SIZE worth of bytes rather than words.
-> 
-> edited, thanks.
-> 
-> How's this?
-> 
-> : The longest kmemleak_lock hold duration is now MAX_SCAN_SIZE worth of
-> : bytes.  The same bound scan_large_block() already applies to the data
-> : sections and the per-CPU areas.
-
-Looks good. Thanks!
+Thanks!
 
 -- 
-Catalin
+Sincerely,
+Yeoreum Yun
 
