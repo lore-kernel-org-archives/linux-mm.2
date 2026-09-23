@@ -4,178 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06DD7C98307
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96635C98307
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:54:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 105E56B0098; Wed, 23 Sep 2026 07:53:53 -0400 (EDT)
+	id B18AE6B0099; Wed, 23 Sep 2026 07:54:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DDF26B0099; Wed, 23 Sep 2026 07:53:53 -0400 (EDT)
+	id AF08C6B009B; Wed, 23 Sep 2026 07:54:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE7DD6B009B; Wed, 23 Sep 2026 07:53:52 -0400 (EDT)
+	id 9DF986B009D; Wed, 23 Sep 2026 07:54:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA4846B0098
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:53:52 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 552C41C33B2
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:52 +0000 (UTC)
-X-FDA: 85244867904.02.31CAF51
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 09AF840003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Ip/9PsmL";
-	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8011B6B0099
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:54:35 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14A2314077A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:54:35 +0000 (UTC)
+X-FDA: 85244869710.08.FF98058
+Received: from mta0.migadu.com (out-35.mta0.migadu.com [91.218.175.35])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8BBDE40009
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:54:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yoyk1T5Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790164430;
+	s=arc-20220608; t=1790164473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DZPR253R3+bl6LyBiXW5gQAtjY6DOY80tr7PJYJoSn0=;
-	b=6nciwDwgHwfEy2kHawDXfY8ewr7d4gRprgsABlqSSKw308hB39x24qeRA7MYwjvB2dnAYa
-	Td1GipLFD9KJ4T76BE+ubcWVpuLzZdfPOc8EwwfmZqEXTrM0L1aKBG0cbBHmzAmCTkz6GQ
-	6TY4tHCB3SKQt3J8itlNglOuqcCqzII=
+	bh=FyI8OIcx4NePB4wjfBisQg331Da0UMxOk3af3KkO/oU=;
+	b=fiyrgUdD2sWKM0upa1pzcuZNW2ryY+aH6K7A3rxDMdiqh6Y8MBEZ0aIL0ouUC2Ka+CJNXW
+	9qHy3IaZsO0o7/+X1UqyzNLHhUDV6dfsc+rZLFiNWLOqH8gz8G5FMYIzMWNol1XuQR13bX
+	cqpEhUcwQirZ9qG84khBPXshOQC4tfE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Ip/9PsmL";
-	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Yoyk1T5Y;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790164430;
-	b=fjWKeo/gMY02yWYswkiowMm3KsnEPT5NuWI4G3x/jJ/koMFNnyghCsMJV52c9887iTGG1M
-	KH0/9t276fdQlyyHGGhULoHZJe99znngxuNLyEcuCLF/GE5nrlh6oXvREdWdvbFZ3ySMAc
-	6HKlsDH33tAbFYoNVqoih9AdgYNr6Ns=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ZaCq2742039;
-	Wed, 23 Sep 2026 11:52:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=DZPR253R3+bl6LyBiXW5gQAtjY6DOY
-	80tr7PJYJoSn0=; b=Ip/9PsmLLpYTUEIiqqN7PEUCjt/tbos3gbllDcLV+dKinE
-	DxM4vzFM1FgDLuHauy7zkOFHkE+8QgTu4v3UOwe3wRUssGJANSTjHJOqGP138G+T
-	Nhqd4UMt93hU/7hAzMP4DnDStV7v3lAJgOZvyhZ0P+hcH1+UYg4pIU0KHQpm5t+5
-	XYQiGLs519bydF3F3Ly2mUsQkpmeIheUS2Amsu7SuvxdJgo6dsqyP4V/N6M8uPwo
-	Yuml8Vro5Oj2/R/nPk2G/xRZFMnqki/FTHYZUvTsblhV4A+Kj49Gi5gWyBTzSy/p
-	hvCA8ghvjVyo99no8eYyGLGNv+3L5xoksFaAmS9Q==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1jk3y-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 11:52:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ILmd2892101;
-	Wed, 23 Sep 2026 11:52:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gu5bkgqma-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 11:52:48 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NBqkcL49086914
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Sep 2026 11:52:46 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C3D920043;
-	Wed, 23 Sep 2026 11:52:46 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F30620040;
-	Wed, 23 Sep 2026 11:52:45 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 23 Sep 2026 11:52:45 +0000 (GMT)
-Date: Wed, 23 Sep 2026 13:52:44 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Muhammad Usama Anjum <usama.anjum@arm.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Liam R. Howlett" <liam@infradead.org>,
-        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        David Hildenbrand <david@kernel.org>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Eduard Zingerman <eddyz87@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
-        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v2 1/8] mm: introduce hw_pte_t for PTE table storage
-Message-ID: <4fb9f42e-73c3-46db-ac10-351a90901b7c-agordeev@linux.ibm.com>
-References: <20260903103002.1091859-1-usama.anjum@arm.com>
- <20260903103002.1091859-2-usama.anjum@arm.com>
+	t=1790164473;
+	b=ICc1cmyAI2Fd4rkp+bM0/vQ85SgVAoRXYRpT1aF8Bllql27L2EtoVKX7P1jfH89myUmapg
+	RUrAPZ7QYpF+tKu9KXQDK6h4C9sKKyvJikcIzISaH3lEXj0BgUFL41JWylwszM6u6PwHoP
+	NzR5ZhOqWXb/pIhcmTNxeoe4fdWFJfw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=FyI8OIcx4NePB4wjfBisQg331Da0UMxOk3af3KkO/oU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790164468; v=1; x=1790769268;
+ b=Yoyk1T5YZJaSwe52vnDqH1yWOQttHqPJR+z2Eyk1iuyMzMp/jYS2XdN/eycZbUEgr2rJLff+
+ Qj29huo1/Tw9A1rSTPTdWEf6dLDv1I4okHpQj8oJyTHfNhO0w2srxfmg9vgGpnbAosQnTpnpv96
+ SW51nI2y5IoGzusEzwmuZDEs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b457f4ea14dabe32;
+	Wed, 23 Sep 2026 11:54:26 +0000
+X-Mizu-Trace-ID: b457f4ea14dabe32
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	guoren@kernel.org,
+	bcain@kernel.org,
+	geert@linux-m68k.org,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	shorne@gmail.com,
+	dalias@libc.org,
+	glaubitz@physik.fu-berlin.de,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	linux@armlinux.org.uk,
+	vgupta@kernel.org,
+	monstr@monstr.eu,
+	chris@zankel.net,
+	jcmvbkbc@gmail.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	richard.henderson@linaro.org,
+	mattst88@gmail.com,
+	linmag7@gmail.com,
+	catalin.marinas@arm.com,
+	mark.rutland@arm.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	chleroy@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	ysato@users.sourceforge.jp,
+	shakeel.butt@linux.dev,
+	corbet@lwn.net,
+	rdunlap@infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	hughd@google.com,
+	qi.zheng@linux.dev,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 08/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sh-X2
+Date: Wed, 23 Sep 2026 19:54:17 +0800
+Message-ID: <20260923115417.34112-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260922-rcu-pagetable-freeing-v4-8-fe1ad1f1e303@kernel.org>
+References: <20260922-rcu-pagetable-freeing-v4-8-fe1ad1f1e303@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903103002.1091859-2-usama.anjum@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zkg8Yjm8buhyt1eRNhnorvj4h8bfMg31
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA0NiBTYWx0ZWRfX6bMVOEi2qN4e
- SEAEWElqPuFcMqb6XxMSAKgTBU7nj/dCzT7pboAwFXABTdsicPgdnhSpodFJ6O+u2hg509qHfDk
- z9HbX8YO6UJxXAtAPBr1SXV/yRHUshBZqtP38jfDABopi2Q8TlICK2s09kBGBV4exDZexYbukEp
- Oxg7zWWj4bwJEOGzokpvAGkgwx6mOV9Hci2samlSyJVgEXMEqtoph/gVCurHxiAAqf0TauaVInd
- IvHSuwss6TAgfLNFvMkfvgEfm/lWIxq4QqGWZb1wZGJTR0i8Aqwb5xGBOLcMv/lOTIYdxzI8o3R
- oPxWzTJkmoTyuCze3ranpvgoRtO0j9Fwo13juJtO4WWD8YTP1C0PjcAbhZUntKNvoYTNnIcU/mO
- iX0G+Pezy0wbnkBvSeLA9ii/P51EkQzABCycAD2yGmiU5zm9dKM8qjIMLGZaPS8vA+24yUC1vPk
- rGMSqvFG6FK+7tXalcw==
-X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab3bd91 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=7CQSdrXTAAAA:8
- a=WBsaCDucxrlOMaPtzzAA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA0NiBTYWx0ZWRfX/Y5nhDG4vyXY
- k03GeTaIqKwMRq4AUpoHFMiSiGlDWAE+orQ24P6M5Bz7btA5rwd/KAwZVyCP0QeAkoFRkdQm8Rw
- gOzyts+JEL8Z8Grz2VhIOfiIo2KdxD0=
-X-Proofpoint-GUID: zkg8Yjm8buhyt1eRNhnorvj4h8bfMg31
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
- bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230046
-X-Stat-Signature: ng6r1bg51uaqbmsp4318denfpxnncxbm
-X-Rspamd-Queue-Id: 09AF840003
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: tyr1csx6u9rnkdfwkmfhxcgi9cbxykzf
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790164429-999612
-X-HE-Meta: U2FsdGVkX1/QsC1oEMw5YSGY8mtpS3gbL+WlCV6TQhJze6XHdAt1pYhHc8V1hCLqY8yAxeIoVMYRi9oKWDMbKg5i0CgCkGOgjHtLNybUJpiTrdRWiSzu8RGDM8a5vmE90gUEsMTzyDpsiyjv4dP7VIPliG96nabgUum72s3DGNFehPHJV4/Qvb28IqhzleYI454dv9nF33hvO2akY+t2ed8UgtFpti0vuTmJ9DEMIi62Xix1SfDcNth4/VXn+jKK6OpFBRE0LZiO6Ux3JEqlR4jFz+BLWGrGgFY/lswAhcK/VWS34ZspJ/I3EFgVECZAVx/8FXkGtoUanXDFp8nEAlnTnrFOYKMl61p2pqfeJiD/sNB8AHn2hAhp4NwAx/2RV+/BiPU4mChSB+2GMH35ytKduiX4uALNUnP8aFhwX57bAmeoyY4IIKoHlXSBHGMjThyYLwEhZRHJ4Hjs741umxFOs4K8WZprj9zlwjC0/VrNQC+aOcUvyOuYuPk4XIOMoq/pmGe5MSgUlPEXoGEOMNjCYcSrn0rhy0ebrCuGEuI3suMs8SLBif+KM5C8nTrs35gSW5XU9vPbkJruTSWhc3oXFpn6g28TOBpcIq5FSwzZ9a2AxJ65Uj+ll2y7z5tH2Sw+S5/jS2qIb/zq1LWKh20jakKi0woaCPDxhCLQkuwJGnWJRlk11nUicuDe2Ve8OWn6Ivvl+/fcGU6ZhVZafH3HIi5gCGqevbqOdF9dY/ZIvz9XUQtznFc0wNhuP3XljipIWZptpEePGkm/mezzZUFW0P1VyJdIJQC+laV8lYfHn9itkbi2MN874MOYBcV9SwveHdp3K5Kj6RayyXw7vq/qDfkGqNvpmIhYySrXU0K0z//SEYwqtysX03jYobAWkO3OdiD2WYjZMykQm/ng7ftsnbn4c9DJjVfAtUJXvRcH7C7/oxaPY9qS46lZtlzvw8D9Kqozmayb1NwAVac
- mhKVTG5w
- wuHWyRtXDEJPq4p0d5FQcNZJVeEZwjJ9uXShCMwr91VBlx33Bn1LBtp79TiGythRlsM0Joj6psdK31//zAMZdDsFu35XrPGSwaxdKVozaGDcM4FYom5vl1i1KaYS/KNdpW7LDpbGzhAczWiaCG7XbyrI6lj27wFQHiU4jANWohnosOx7QQJ+mFZSRQR58s45w7RCkS6B+QyFQgSI6NQfc6freGiWzgoLvwf4k3qxJmtoGvNEw9q+4UPJRvbAAWBsY+NTUka17Wqd3tI9u38vIpqIG2r1rTvexrA3Mso+nvvcgFaJoMwlETy2uphx2zF/FjYw2rQWL4FeBZBiejtnqkJLbUqO2zg/GvCztP+qUhvCuHfS6cY3a9dRY3ILxBxfwrlyyqbvQour/q7fcSxKX0cIdSNNN0gM8oSiIMKJFmg9ggTYx5nK3vHTGvkikHLcJFHTHnyquFRo7qO1DttLOntYHbRSEiotrugADepmUo2KmpvcP7ycXC0l35g==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8BBDE40009
+X-HE-Tag: 1790164471-34056
+X-HE-Meta: U2FsdGVkX19lOKWkUP9mSNx/Aij8sAFp+ekFfwm8v1tljJzIkeZariJQoM3/kprko4mADM6ccmigmiDEQjkeyDpRTzrUabdmkvh3kgVXGNqXAzrBQWxQFEFPgiunBV4CLpVyAu/ZAyUXjxsLpyAnw7GRLqJR8Qw9GwbFDbigLe9ZGPPUfBZg7Vv8fmeV4YgJcFmaFsfluY6Z5xa3kcNqUoCNAEskPJhvzFoncDdKBv/1ZUcgw1eGvOwejO1rNx9rb4HC3b9rippVlQddZfzKuboCPMwyc/PI6XwoX/ML5Cq+oOCeH7NI+MEQVzk0D9u/DIMIz21OROwind3VxJxexnYqyKssPD9ZElFEgw8uSF52C/2gLeF89ulGC5/QKR5rwexehz8gSskW/3R/1kLulR75CAiiQaj9kVjyQemQVTPAUSb6DEx84pQ+MBK8ZwNh7ASJnHM1l7E5WcoDMIAG/TPOpcZAX/MSizP9dF/6R2hBlf4rw82Gr1mjiJopr2hMpDLN/sVlM+ukETy/ayglCQe0ClcsdggHZg5AEFWcy8Q6a27Fp7gbCf+wWak5wpj/vbEciN4efaYDyvZRdOg9A7jlknTOPUkQ1vijUkVzZtvLln5FbRhBNlKBKJ7XzaAYg+jj42dYVlZew5fboMtZxMWrEFMI+QbQ7H4ZrN00iZPONHUDNVGAPEtPZLyMv7lc6OhaVipX2ar5Q9pnzzwheKgdMLxGaVd8CkXHsEPBIaIzAOP4z9C7hJoh3NgEVjQv3b1FUaHl4vjitjeYURU3zyG5vQ/TBfTNH3M9AfVzHQF/YeX9F4Q2elW5XVlQQtKd6770ES7B5Z/KatiPwuTl3MAFSGwETNo3MtTD19CtcdbBbSpkSKw4F6dnUCHY6cSpgDuPU3jhiDpwl6xKzvtf1QBs2qnVhWFAsEvB8mFlH6FlTzyD0LdA0cHa63ovvx7gR3i+Q6sgk9Aw7y2vVl7
+ LDPYefXA
+ +QxT9rO3edW5QyVSM8YcV/5sqTCR7RC8nf2nMd1Em0jxFWE4a3CXVyzFQOkC+SVcyQVgz84fkoz4HsTs+2tR6Acj1vkHBTtIFs9ag/KX6lj09nsSDndgdUH6cKpT+ZR2GuYysyKgVMDYAxRytR299L46voxxatH7hy1sxgr2GCLNGWxu4Pz6C+t8ApRZs9RJDNIXvorozYxaQZ/ACvxekcEWzfPFSb9Uj+ojtcA8Xrzkj8DzPBzQGhicjgHOivJ3KRaAr2cjvCd6kA+Mguo0Xq9m0JgzXoBWHuecuy4dwGFtooioDkJsTlmABPBS6rYU0cR4oszs3c1K3uZXVG6PrrEh1rf2zlNJqk5lS90reyPtlqEXOAEegCzwp7nAbFBa2EYfC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,98 +186,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 03, 2026 at 11:29:53AM +0100, Muhammad Usama Anjum wrote:
-> pte_t is used both for software PTE values and for entries stored in a PTE
-> table, so pte_t * does not distinguish a pointer to a software PTE
-> value from a pointer to table storage.
-> 
-> Introduce hw_pte_t as the generic name for a PTE table element. Define it
-> as a macro alias of pte_t by default. When an architecture selects
-> ARCH_HAS_HW_PTE_T, define it as a structure containing a pte_t instead.
-> This preserves the representation while allowing converted architectures
-> to enforce the distinction at compile time.
-> 
-> Name the generic wrapper structure __hw_pte_t so architectures can
-> forward-declare it when pgtable_t must be defined before the generic
-> hw_pte_t typedef is visible. This avoids header-order dependencies.
-> 
-> Keep the C type definitions behind an __ASSEMBLY__ check because
-> architecture assembly sources can include this header indirectly. Include
-> asm/page.h so consumers such as linux/vmalloc.h retain the page definitions
-> they previously obtained from that header.
-> 
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-> ---
-> Changes since v1:
-> - Name the generic wrapper structure __hw_pte_t so architectures can
->   forward-declare it, and explain why this is required.
-> - Use software PTE value terminology.
-> 
-> Changes since RFC v1:
-> - Add the ARCH_HAS_HW_PTE_T opt-in and generic wrapper definition.
-> - Exclude the C type definitions from assembly sources.
-> - Update the description for the new opt-in model.
-> ---
->  MAINTAINERS                   |  1 +
->  include/linux/pgtable_types.h | 17 +++++++++++++++++
->  mm/Kconfig                    |  3 +++
->  3 files changed, 21 insertions(+)
->  create mode 100644 include/linux/pgtable_types.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2133aec4a2004..da60a8bdcddb5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17140,6 +17140,7 @@ F:	include/linux/mmu_notifier.h
->  F:	include/linux/pagewalk.h
->  F:	include/linux/pgalloc.h
->  F:	include/linux/pgtable.h
-> +F:	include/linux/pgtable_types.h
->  F:	include/linux/ptdump.h
->  F:	include/linux/vmpressure.h
->  F:	include/linux/vmstat.h
-> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-> new file mode 100644
-> index 0000000000000..07da05d375c2c
-> --- /dev/null
-> +++ b/include/linux/pgtable_types.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PGTABLE_TYPES_H
-> +#define _LINUX_PGTABLE_TYPES_H
-> +
-> +#include <asm/page.h>
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +#ifdef CONFIG_ARCH_HAS_HW_PTE_T
-> +typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
-> +#else
-> +#define hw_pte_t pte_t
-> +#endif
 
-I would suggest to provide __hw_pte() in this series - it is needed
-by architectures along with __pte_from_hw() right away (as opposed
-to when lands in arm64).
+On Tue, Sep 22, 2026 at 04:35:39PM +0100, Lorenzo Stoakes (ARM) wrote:
+>Currently, non-x2 sh specifies CONFIG_MMU_GATHER_RCU_TABLE_FREE allowing
+>RCU page table freeing.
+>
+>sh-X2 is problematic because it utilises slab-allocated PMD page tables,
+>and thus tlb_remove_ptdesc() cannot be used in these cases.
+>
+>All other sh variants are fine as commit e3ecf7c7d082 ("mm: pgtable:
+>convert some architectures to use tlb_remove_ptdesc()") already converted
+>page table freeing to use tlb_remove_ptdesc(), which does so after an RCU
+>grace period when CONFIG_MMU_GATHER_RCU_TABLE_FREE is specified.
+>
+>Resolve this issue by firstly specifying CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
+>for sh-X2, so the arch can provide its own __tlb_remove_table()
+>implementation (called after the RCU grace period).
+>
+>Then, convert __pmd_free_tlb() to tag the pointer to the PMD, and have
+>__tlb_remove_table() check this tag to determine whether to free via the
+>slab or to use pagetable_dtor_free().
 
-> +#endif /* !__ASSEMBLY__ */
-> +
-> +#endif /* _LINUX_PGTABLE_TYPES_H */
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index c1ddf59c0d71a..5f462ec6fa5e5 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1312,6 +1312,9 @@ comment "GUP_TEST needs to have DEBUG_FS enabled"
->  config GUP_GET_PXX_LOW_HIGH
->  	bool
->  
-> +config ARCH_HAS_HW_PTE_T
-> +	bool
-> +
->  config DMAPOOL_TEST
->  	tristate "Enable a module to run time tests on dma_pool"
->  	depends on HAS_DMA
-> -- 
-> 2.47.3
-> 
+Makes sense to me, so RCU callback won't mistake a slab PMD for a PTE
+page :)
+
+>This follows the pattern used by sparc64 as implemented in commit
+>4a0100f7546f ("sparc64: use RCU page table freeing").
+>
+>Previously __pmd_free_tlb() freed PMD page tables immediately, before any
+>TLB flush IPI. This seems to be a pre-existing bug, which this change also
+>resolves.
+>
+>CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE is only specified for sh-X2, as setting
+>it disables CONFIG_PT_RECLAIM and causes __tlb_remove_table_one() to call
+>tlb_remove_table_sync_rcu() and synchronize_rcu() in turn, and this is not
+>necessary for other sh variants.
+>
+>This forms part of an overall effort to switch every architecture to this
+>mode.
+>
+>Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>---
+
+LGTM, feel free to add:
+
+Acked-by: Lance Yang <lance.yang@linux.dev>
 
