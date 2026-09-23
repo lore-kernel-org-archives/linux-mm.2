@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E35C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:58:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A7E8C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:12:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BB696B0088; Tue, 22 Sep 2026 22:58:23 -0400 (EDT)
+	id 327CB6B008C; Tue, 22 Sep 2026 23:12:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C4F6B008A; Tue, 22 Sep 2026 22:58:23 -0400 (EDT)
+	id 2D9406B0092; Tue, 22 Sep 2026 23:12:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35DD36B008C; Tue, 22 Sep 2026 22:58:23 -0400 (EDT)
+	id 1C8AD6B0093; Tue, 22 Sep 2026 23:12:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 066AA6B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:58:22 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED8224064E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:58:21 +0000 (UTC)
-X-FDA: 85243518402.15.5301121
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B4E0F140003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:58:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GC52+vuf;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F31506B008C
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:12:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D42681606DA
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:12:05 +0000 (UTC)
+X-FDA: 85243553010.21.EBBA5DF
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E3D28160007
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:12:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fM6+ok9X;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790132298;
+	s=arc-20220608; t=1790133124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MpMJiNla5q0wcx6Bz2QNntowy7sWY2tZqARzYeGdoq0=;
-	b=rBEg7h1yLvcsXd4dAv8WHKecBJcGnJYa4Jw5m4HTKpiWtKlT8b/orluhI00HuI8E6d6m3v
-	rMvs2on8YIOrYLyYcZgt0cpNpCzV28taNnpLDmb+f06Vqz51OGDQmokbBlyaGPCRCkZHym
-	yvupwquml/f+CRN4JPj6wdRhAJ9xuLY=
+	bh=GXqRRRTZoDrLgtSIIIeujmLVFncqWjfihFp3XOxyNoc=;
+	b=UVsTxE/v2tZ5dj5TzjQq4AliiaI64u4z/huim8JZcu98BFgSpvoIWvf8Gv/U4A7e1hyWQo
+	neJScw1fWeelr0HLUd2/xpMVxq/5eYkBCG2S4A0FTAdbYkOEIWhsQRdlHYUN9Q5dR1NElD
+	OuUn8qoavRZJQU0JyUh8frpHnBaeASw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GC52+vuf;
-	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=fM6+ok9X;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf08.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790132298;
-	b=5oIbP7TEHa1fynBfCGlRsKaEnhG99M7uFZU7OG+Xe7wKiksWtO/H0e6xkQMCBDuay1nub0
-	1MeFCYc5iYfRHhS8VEAgRT7d858nDP99XpeTlzIKq424yOf6FQJb7wOqTdtzCnpKPdKoYv
-	hopb+SER0wzStIK/rjpwGSR6+1m4xRs=
+	t=1790133124;
+	b=M/UQGQlIiY2bG7XbAHeqDG46bY4zvOJ4DdTE+5RbmOfyu7yAp5tO/ecOyzxHBD6XaNzMw1
+	aJh7pUFJODiN9aL+JVoQb/Jw/vEitWJKiiHWbfiKTieDMMc7xLo0s/p5u6OMrT9fifBAq8
+	M4PvQU+pwiViPcM+W7GHVBDzBOf2d3w=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1790132292; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=MpMJiNla5q0wcx6Bz2QNntowy7sWY2tZqARzYeGdoq0=;
-	b=GC52+vuf+oHB6bZ6d5QWnpsB6qstrragnzoV53qNEPHPKqd/ySMfWdLlInZJPpnQG7ESKqhirMqImuf+hNSzBars7TI4/Miu0C7G/uS/At9gHGss1muadquUCOy7RVDq8r20CxIvtqm00o5aB/J9YltVuGH32R1V8g+5cq1/M4k=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R601e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XBVYz1B_1790132287;
-Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBVYz1B_1790132287 cluster:ay36)
+	t=1790133119; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=GXqRRRTZoDrLgtSIIIeujmLVFncqWjfihFp3XOxyNoc=;
+	b=fM6+ok9XqnzP751xZiXV3fbENazwmZRpgysMf4lM3pLyVlUVuxC8+bBvW+iCeHgIjImhW43S5nc6k0TipeAgFjkTBEUMze6bCaCzV4K200hIMqfVGPOdpAkmaPYFlg58I9cYnc5XahmxHX2jWUy/iO1EiuZo8WmsXT4WS2jbU8s=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R681e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XBVZ2Ep_1790133116;
+Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBVZ2Ep_1790133116 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 23 Sep 2026 10:58:08 +0800
-Message-ID: <167f0a33-315a-4782-bbfa-edab3fa22ace@linux.alibaba.com>
-Date: Wed, 23 Sep 2026 10:58:06 +0800
+          Wed, 23 Sep 2026 11:11:57 +0800
+Message-ID: <37f7fca9-76c3-4731-b1c0-2687a03eefe2@linux.alibaba.com>
+Date: Wed, 23 Sep 2026 11:11:55 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v2] mm: vmscan: put rotation-missed folios at the
- LRU tail
-To: Ridong Chen <ridong.chen@linux.dev>,
+Subject: Re: [PATCH v7 3/3] kselftest: mm: remove check_huge_shmem()
+To: Yeoreum Yun <yeoreum.yun@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Lorenzo Stoakes <ljs@kernel.org>, Kairui Song <kasong@tencent.com>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20260920132519.3369946-1-ridong.chen@linux.dev>
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260921-fix_split-v7-0-d25ec991159f@arm.com>
+ <20260921-fix_split-v7-3-d25ec991159f@arm.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260920132519.3369946-1-ridong.chen@linux.dev>
+In-Reply-To: <20260921-fix_split-v7-3-d25ec991159f@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1c5f86wo7q68kks3k969awybgu878rcg
-X-Rspamd-Queue-Id: B4E0F140003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790132296-388773
-X-HE-Meta: U2FsdGVkX1+ECRjNRSL13WuC73PhD/BT0RalnVnghzUGEohfUD5K61xkD/PvOZowLrfrq9VQc6D91xrVCWpiqHDVXj7iFhMrw/OPkjxe8JgER+QAOxuIPWg3S7qAEeB1JXyG9OaFVIzj4YXkr612KKx9N1bJDaXYF1N8d8adt8NyA6c2AN/BLdq7Ioxc0olgcDkNvjXcWWgQT1cvNj+2y2teJNUs2LcntbaTB/khW7kwEOmeksAiyywOzwhGZG3t5RfFO+C89eFqrLRCBzSZt1Rr53v5c2dJCfGqO5IO3bS6lS6kro8RQoLEYf2tM2WDR8nyr/Kg/ShIZOA/EYWYoJX2lug/FfdlgRUIM2D7OYbXTWAImldrUb4SzSC5oef/pYw6sG6w0HxOro9269gwVXyEH7BkKW6shDBp2tzr6E3BE7JUwIToLyeZC1e4aYH0e76wJAuJTM0O4E69xvfdIIKc4L0wRS5vRsMIRV5IQsC5+7NUJ0cx3eHSTJF9Q2wvf0V9xG8H2NHQZovqUplPkTv31w7yEOkBVGnjeYqTPTdjUBd8wjQz1hj4sJS8im2+RlN+nAJtevAJpUgA7F8gHwyyGDD+z7m2fGSZ207TNDC/NbewQHlQp4pFCcqlY2DwAPCNQUrFU0TU70xURBOBoIwtw97CxzTVlnLCBDHL6hFSuLMlanV2X6Ogi7OYMFtnD6ReB/Kx+r/y+kxsouWC5Mwc6veGLxMr8XbIjM3y2zt3m35Ri/2xDWQHq1Ezt6+Ab4g5a8aQ5jFOOqTqo3TZvnXI3LKIvNHOVyIpW6dmtlZurwfuqHgqDkKiS8c8FEQUtPJLzRyakOmN4SeoUDiRLDcwp9I2S3Q4cgFNIfumpmCEmii8U/lEgK58aGnf2JBiizJjWPQe0MDp4RBRoUILctLIh/XRHIg5YD2HgH5HlAEdQ2D77Zoig0NEstnv4DGmsvuAhmHZyyWFMNySfw0
- ZHQxaiHd
- ziTKD9iWsfjfRtiUqGQHHM8C2i/WfsdwizYim3Bf0tancMwp/TigJZhkeK7fOuCJjWLhoD2Y3uHyw3aIuSakG4w8v8Q44FzNg59qVpSwom8BRR+JqoDAOmlWmR+KLdE8G85r+Q19bdBolCG7+TF1efmszHFgswZdRjUcB1e9cNgAY6RPIMFAqdI4l4Q8nj7rjhyjcwjoWbcreKLt85EM47X84y4Ty9PNVFahJoswKt/zGkz8NY3WJTRqm7EUwPeEgj/1Au/0AunNk9aZTrwBm9vXnnj5wxgYSi/C2YKV8PTEyFvbJzsxJbZa0szkwxOcsW5aL8RlHTUlDR/4ohM50kVPBnEs6jnOKia1OYq9yrchUr3NTrep8tQLZaoj1Y2kUmPENwV5qnJaKMTo=
+X-Stat-Signature: fath8jozoce14pbqdz6z5eg4zc83toy5
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E3D28160007
+X-HE-Tag: 1790133122-456665
+X-HE-Meta: U2FsdGVkX1+Zriy+S+BOQLrpCVNsE2KNJjpV1lQ6+aLsRcrmECmHKtYWlDwOkgIFxxHIy04aUUKlnvxJZLkvtbaEdatLTAonTyvp5w2+6+p/RUaHCh542yWri659qHU5GoucGop8+Iw4l4Yen9MdjdxZlaA5zvl3AUSX6kTatxDCk8T5kApZd81nJCBRU2eDoZZRvyZLEDZG2OtOTECMralVXdRcu26uclfpstReNATMbwwT5zcZvNIX7RAt82C9tNbLWd/aT0s7kUyB1I4YdcAmmnKDqRUY4APBk+5T21ixoi85RHu0yetyj3ky7052N1xeYMNA6dLPP5UgxYLGpfDrr5mwcLjQbMclfyI220l4PX43JJS6Ty+sVP5CSn//wG9UTmFM81Nt73kb64OfS4HIjUwL2PyWy8ZUGz1WqmO9dieTWS187nB7/shjHwEGR19wAddstL0a8+UZohTEsqrav7G6xDcTr2sAbejjrjNX+QTpOti3GxaoSQHRCUFccR8QxnQ7ikNY3QiX07Ut1EhsU1UXuKHFzge/+mX8GsXjYX5B68/PRuEYXRnazDp0iG/MJe+vwEB85cBIKAoS5nankJE2rkays/C8Q8In9GRrl6xka1BXf5odc7RT1M5+QXu+y2lDEN3cP0e00k8G7NIqRm2Lk7AUMJpWQ97rYSGBOFg+vL4am76kzpl5WRLSFE0OYGrtZWBjD7tw+JsIhVUcmewJhVbiqAbskUBipc+CwYFSzFQEEa3sh4heC55RRKZcfTXjcKsRUF4dPOVl5Sj8ZUUi2FMYcQ4jDruRYpxsVzIuRRZNZIcpLCSmo/kpF6KEXGamv5QSlsYiktVqviHm+v6JVpGM4vi84B43DLHDpUa0fGX+hqQGMgFFCtNItQPJo0DMZdydjPY4WShD3Q1hTwLRGA34uxOH3k6jQfVhMw6w+Qla5Xomzqt+guXVK/02uAF0SXII5G9Pjta
+ 5YaOUsim
+ bDlciaywPDhnFU+bi4vH6q0Y6PFPiM/Ur+Pcjn5ZRiH5Iak6v71SC/w2xBcAyilKz9XyVx8u1xVksmDEWolMLUnx8DJYRqPlbPCK65Wy+G+1x3yt4mtaByL2siE1VM0lGXpWMRjURvD6UurVhyNa6RMYreyZ6PiEf1zhhjD6olKlMVmT3oIT3jM4/h6g98wMrn8tSeLrQpHejFHkY0t7KxvfyxG7GbFU3rqw4plsRasCIjgRd8GvhQx9fQ29Q0j/OuXkF8ekL4cQedOvpzY0b6ymkHB+YuMdbKtQ9Tf6Utz05GPL2EUBAXDsc9cYnfLEP87ZKhwu1eDu5Z7i7eWkn5aEYUPcBurvgB1pERuCl3k4dHwMlK1B1DeA+yJTnml4nSeN688AJ+Oe8nZPAqSec3wViWfOs62pth8/q7LB58bqth2U11FNiLDvY5YURvEzcHX0xb1ngZeJRD84=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,84 +98,23 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 9/20/26 9:25 PM, Ridong Chen wrote:
-> From: Ridong Chen <chenridong@xiaomi.com>
+On 9/21/26 6:40 PM, Yeoreum Yun wrote:
+> check_huge_shmem() was required to distinguish shmem huge pages because
+> /proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
+> as opposed to “FilePmdMapped” for file-backed huge pages.
 > 
-> The page reclaim isolates a batch of folios from the tail of an LRU list
-> and works on them one by one.  For a suitable swap-backed folio on an
-> async swap device, it queues the folio for writeback and, after finishing
-> the batch, puts the folio back to the head of the original LRU list.
+> Now that /proc/self/smaps is no longer used to detect huge pages and
+> /proc/kpageflags is used instead, it is sufficient to distinguish
+> between file-backed and anonymous pages since the ShmemPmdMapped is also
+> kind of file-backed.
 > 
-> Meanwhile the page writeback flushes the queued folios in its own,
-> independent batches.  For each folio it writes back it calls
-> folio_rotate_reclaimable(), which tries to rotate the folio to the LRU
-> tail.  But folio_rotate_reclaimable() only takes effect once the folio has
-> been put back by reclaim.  If the async swap device is fast enough, the
-> writeback can complete a folio while reclaim is still working on the rest
-> of the batch that contains it.  In that case the folio stays near the head
-> and reclaim will not revisit it before wrapping around, causing a cold/hot
-> inversion: a clean, written-back folio that should be a prime reclaim
-> candidate is kept ahead of hotter folios.
+> Therefore, remove check_huge_shmem() and use check_huge_file() instead
+> and cleanup khugepaged's check_huge operation in mem_ops.
 > 
-> commit 359a5e1416ca ("mm: multi-gen LRU: retry folios written back while
-> isolated") addressed this for MGLRU only.  The traditional active/inactive
-> LRU has the same problem, reported at [1].  A reproducer is available at
-> [2].
-> 
-> Rather than re-reclaiming those folios (which would drop the swap cache
-> that may still be useful for a future hit [4]), restore the rotation that
-> was missed: when move_folios_to_lru() puts a folio back, add it to the LRU
-> tail if it looks like it missed folio_rotate_reclaimable() (inactive, not
-> mapped, not dirty and not under writeback).  A referenced folio is left at
-> the head so it still gets a second chance, and a folio with an unexpected
-> reference (e.g. a GUP or speculative pin) is left at the head because it
-> cannot be reclaimed yet anyway.  A new do_rotate parameter gates this so
-> it only applies on the reclaim put-back path (shrink_inactive_list()), not
-> on shrink_active_list() where the list order is already deliberate.  This
-> approach was suggested by Barry Song [3].
-> 
-> Only the traditional LRU is handled here.  MGLRU already retries such
-> folios via its own clean-list retry pass in evict_folios(), so it is left
-> unchanged.  The same do_rotate scheme could later replace that retry pass
-> to unify both LRUs, which is left for a follow-up.
-> 
-> Test result with [2]:
-> 
->    Without patch:
->      cat memory.usage_in_bytes
->      1073700864
->      cat memory.memsw.usage_in_bytes
->      1413124096
-> 
->      free -h
->                    total        used        free
->      Mem:           1.6Gi       1.2Gi       299Mi
->      Swap:          1.0Gi       678Mi       346Mi
-> 
->    With patch:
->      cat memory.usage_in_bytes
->      1071140864
->      cat memory.memsw.usage_in_bytes
->      1413423104
-> 
->      free -h
->                    total        used        free
->      Mem:           1.6Gi       1.2Gi       322Mi
->      Swap:          1.0Gi       328Mi       695Mi
-> 
-> After applying the patch, the difference between
-> memory.memsw.usage_in_bytes and memory.usage_in_bytes is close to the swap
-> "used" value reported by 'free -h'.
-> 
-> [1] https://lore.kernel.org/linux-kernel/20241010081802.290893-1-chenridong@huaweicloud.com/
-> [2] https://lore.kernel.org/lkml/46037a37-4cf6-448e-a94b-30a4d16e8814@linux.dev/
-> [3] https://lore.kernel.org/lkml/CAGsJ_4zwP3_+EYY5Ug9EJ+yD1UdxsBSGr25u8s1K3u_i7LH3Zg@mail.gmail.com/
-> [4] https://lore.kernel.org/linux-mm/20260911121341.178028-1-alex@ghiti.fr/
-> 
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
 
-Make sense to me.
+LGTM.
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
