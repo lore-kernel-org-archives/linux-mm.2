@@ -4,97 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D72C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:53:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB87C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:53:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 968C66B008C; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
+	id 91A836B0093; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93FAB6B0092; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
+	id 8F36E6B0095; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87D196B0093; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
+	id 808546B0096; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 620B36B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E39781406ED
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:33 +0000 (UTC)
-X-FDA: 85243959906.14.474E10E
-Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D586980008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xcVDaIA6;
-	spf=pass (imf02.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C7746B0093
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 311EF403B2
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:41 +0000 (UTC)
+X-FDA: 85243960242.01.BC49114
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9F51F180002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:39 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfiMSTdw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790142812;
+	s=arc-20220608; t=1790142819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=cDpl+8fAMWXWk3vxBqwwjNppy0bAFDqdJm2qys9c6UY=;
-	b=UmdUrECZn0XZRH3LTF0dHO3nrxqYT6mxSRfICwvpKo5T5Q43gAjcdQg1TA0zgq7IOD9kht
-	2QHyAYLiTq2Nnn6haJhw07h0tB+PsMQY7gxbcckU4hMUpLnz813OADvwjoRhv9+jcRe6dv
-	2oMAg6IxxIYC7pSxnMfi8L494EGF86o=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790142812;
-	b=sm8ZKwl/EY+1PMpNcV0Oj923WDwRTbdQbygPX/fFO1U3USCnSz1JmHB44/oKtwjiHKACLJ
-	CJwp+FAptAz1mvGxh4l204I4A9LGksAQaX1Sgk/R2viUw9DwytkA51x+0G5fTSRZ7YkzOc
-	yqLiRN/05zbEdbxgjj8jxzYFaoV6TE0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NLg7eC5tmmPMhZrdk3Y2A4+KtVVGLpx4Z4IOl6QmxuU=;
+	b=PrhAgk6wX+s0jPZ/OXe/iRez/JwAWaVBa1joXXIVCJM+Qi00tDKH9g3JowbzQEmHsstEkB
+	KmWkTh0xZx69EncxO2MQpHpo6Rq6e2Sk9k3twC3biZC7BvSI96sJ+HsnViDMrMyizb7LuS
+	oZXqCPpA49rJFRT9/TXf1SelsWK7dCo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xcVDaIA6;
-	spf=pass (imf02.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GtzyIimaRhdHKGvlttK2axmNG4AJfexvcRRfGpY2ECk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790142810; v=1; x=1790747610;
- b=xcVDaIA6AxJGFyl59gR9e+k4n6ll3IV+Ux5WtvjeEy7Uqvr9qSjbHiEbS4u701fHPsgb4MF3
- 3WqOxoxDpUxacdcTKFiA3B63AJSLpbG3pM5hg1XYuBZPCNBId9XqzuCuQ9/OGIUbZEOkcqWxbRE
- 3rWw06t2Zb0ebyMbx6R0GkPU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 4e0d178c503526e4;
-	Wed, 23 Sep 2026 05:53:30 +0000
-X-Mizu-Trace-ID: 4e0d178c503526e4
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <iweiny@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>,
-	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH v2] nvdimm/pmem: remove test_and_clear_pmem_poison()
-Date: Wed, 23 Sep 2026 13:53:18 +0800
-Message-ID: <20260923055318.57485-1-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfiMSTdw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790142819;
+	b=PzDnRtFrkLM7liYlQ91ZuA2zyceKi2Gfijwk26XEF5znpHxADzoMDtQB9EbiXt9N8JQqoL
+	Xdd3DfRSim9vb/I4wZDbNFDgGiuhwxuXVL6eEgua9vdkVpHSvEG1lGFHCzPaCe2aPLX2KA
+	h2WQBBYZ/8rnadEHa4W+6ii4m1geIKw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D71D46020A;
+	Wed, 23 Sep 2026 05:53:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B328E1F000FF;
+	Wed, 23 Sep 2026 05:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790142817;
+	bh=NLg7eC5tmmPMhZrdk3Y2A4+KtVVGLpx4Z4IOl6QmxuU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=dfiMSTdwFtu0GCkhWemNFDgm+eZPZTNwX9NfJANQl2p7VUL12gPuLOT5GFrp9s1/W
+	 gYHsfaLK7hikvujYiuXBUn8tMKa90RN/oaYf2S0NAbKARN3nHId0g1n9dBJrUeJeqm
+	 1Q44Iafx85llSabeXDEcOdxXWocXCUP5y+CfG+SLeH3LQKK2DCfDxkDMtcFBDaOqJv
+	 3HMHpRbUUmlsMii5otr4W/LYqrG4eJChKhKMXRP42VluhoUFMzhKQPjXcnsbxGFGAB
+	 eSZq2hnozQ8Ha+TQTKHYQZsH+7U8XaqMquyRiYdYscnEhoNd02LZ7qoYGMlm0AwCPg
+	 wXpHkFmSzOfPQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+In-Reply-To: <arKsFofudnTYpXj1@arm.com>
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org>
+ <arKsFofudnTYpXj1@arm.com>
+Date: Wed, 23 Sep 2026 11:23:27 +0530
+Message-ID: <yq5aik3w344o.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D586980008
-X-Stat-Signature: 4wsqbsbn35wpuu7nioqdtd1fcu9drm68
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 9F51F180002
 X-Rspam-User: 
-X-HE-Tag: 1790142811-606771
-X-HE-Meta: U2FsdGVkX19agD1i0cAHa7jPg1xaTmVVh5T7fleQkO7zEbZy9/AUOkYmd78vWrt+aQ79VrOl31ilrFI5UnUKiKcmn4YwnHf3HoXkgKcsQHJlL6nNNdRYKYif94pq+ae6hfOv3Cc1XSw2Gdp2RzHxs2q6JZfCH6p9cnJisxyh9deFaXcWyLt3wRowF55hs2efceonGAS5jiclViZKU+QCcqQZbaJr+etp+gO+WK63FTEI3FGdlNasJKGofzMeEVnkt+cQrQNwVXhn2PfViyxx+qGkQebbK6eLG5h579qmEyNu8zigS9VKxzM7DtYZ+DsKSchtgeVZ5MVqAYajIRhSsZgIcejkyRkdCMUJyPvap0us2s0imT5F9aC2lApnef+w1ey0aBBUMHO7cPZRiVHgOBixBbiLjg+twcBsLWKJrnBkyPa0eOuT/V7qjXiOH60WRluUbErOZJF3Uz5CI57yFkbROxrtcjxVy7+/6pMG6UxIqqI/jXogNg79t/ZP+44foRx/yQ2ZmCXGm1lreYOTqXNN3ywRi0k1KyhUcSfGe9ds1M4vO0WvxY0O820aNfVB14MwbeERMkrwlk7PqxFXBZR501ieVCmLE+ukwgyXaw+tAAubl8WILCmVuanSM5BmgodOaKy/1EZDKMkj0hI/lhmjdVfyd4FWP+7oQNk3+5cs7qMuRiUDEafbAgV1bs4ZvBizA66/TzbGStnKiuVjFvc8oPpne7G1heUMctfLvv/OGYlvT+kvfcbg9Ck8UhRaJLxVpXzTnwM8kToPM5WCt13GAQWLClIp4hu9tWGrkkbNtaBPH5ebvfNfoBgjHgB0pbqoD+BMpL5KrxgRwmuC/A7zDvjekS3yrz5+8uToOlP9K8C70t0KI0dYabn5ObM1e0gYeUpfOAmytkymmwOlt5xkkwcnUZuXjqPc/qpQ2IhktWUzTnkl9WZTzFHRHimpxQWDR8Y69FfrVp9vz0C
- MPw8t2yr
- av4Z6CK8bWRlprBTEibW3FX9+2Fohy09gRY2U9y67SxKxlTNMNA9wzd6aBKDtW3r2aphS0k0SlWepOxhnqbpacyFv+NTmnUCpE5xqAgquVUKL+neUXKHMUJ92VCBiTxYJuy842SrSJoxk1SipHkN7FpyGZhva1VyopPHFQ1FIAb20xEeky86eXCUXFhQ6qylgMvFz6htvql9zuJsEBFut0ZFRa5UXiUZNDr6o4HKLDUCeOElFVWphvyfyYphas38h6C+ow9qsZfoKrDR1MfFdJlTjatdOxTS3uQDwuEfSxUCzGpI=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bpcux5rk6efypeqyzs4ew48hh7jaf9kn
+X-HE-Tag: 1790142819-914408
+X-HE-Meta: U2FsdGVkX19UfnxaKKX/HNPXj1OVu3nkghLYcUjAvMT5LXJdLO2YEJ2IH2lcZceuguALVsoAJ5nicMZJX8V7nk7sgOkl2VZuEYZnJk0focxa2BzWFKd/Icg84msL5gY+AgM/8no1uknrSSsCH48GBUh5CcczE007mtBQAc79yGBicL/wD+MoKurhkLCKMECIiSSqhQe1djgUsjRFuadheq2yyisiVHxD1CS8dF2B36ReUV1/UEU9JU3Fcce4hMSMzS+KuIUmjeAWK4CG997yXzcyAN1thgu3DtaUPD+Res4ggUk228/QsQbFlo+1uXrtzx5mzzF1GCNrJRV8Gaq1Z/WF5Rv0bQN8GgnNUACq21/E9kSbMWD/M2Tp164LHG/AMJGv730bz3jfRjofcH4W0PX8rkMaZ8pO23vGdriiPIhx9kOmuBvR/oBBu+Ll2DcH6FZJa8RHAoyavT6GwamFy1Yybo01BEnkM8HIyvMQ7nYyklWQg3jkZZE9QbvpaDB8tP2uXaSACffQcf4m+f3cfwLC7jiMpzH0UrB0hwFFVe6I+KNErcb+ZUk/6TWRSEjxHLI5/EuW+0+2PSG7zQ4M6KlWV8/HoQz9vzy4a+YN9wRWIIJuMDDMiZOBSfDjv6lV7kz86TjynshnBl1Jc2Q0N1yuFI9ADSz99ScsZlVFhpcx2Vs0vsUyx/CRsfZp9u1RLa94HGgwaTgKlMTp90B0PlxREWfgpz+PcN0rGVSxfsXvgXPl4/Dt3r1OWvGqzydNuUXNSa2CKyuuNIeejVjHLg3J/IsjFyDX0p1XN9IABu86DjPcJMu7KXdoK8QVjCV+n+Femv9kK/Zx0LjTtNQwR8iVmxPGuIW1Xy8HYtU6a0A/RFalJf5jVfckRTZ2G6CFiAstm0Jksssaqvp0rp4ZS7Phx+0M7LK0VbbCB7skbuZKBy/P/7/1NQwKOc0fFXoXzQefW6px98uN3rKiWCw
+ JtfojP85
+ U4jabJWvStoW1G4w5dEECG88AKH3EuiWL8/ETrzES2sLh2PkMCVRzZ0EKVNJIx07k7PSRyu6c6TSoLPrrmyhrtdYDRGLvnwtWuRwZEQivTMhcnOSD/fV3SwceIeIw10GQZF6r+Pn+1X8kGw8se+8CpWywvcZubrYADhWd6TBJF8cVyB/iwuXXoApAg7XFDNUo6CHkRHJ76wWUOV6iGCJ1ZUnKgpy2o1CBTvPT5ugGlZmYWrSH339veXRLegvY1vyjNEsEcy1oIaqWLFE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,86 +106,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+Catalin Marinas <catalin.marinas@arm.com> writes:
 
-The pmem driver provides test_and_clear_pmem_poison() only to handle
-the CONFIG_MEMORY_FAILURE dependency of TestClearPageHWPoison().
-The wrapper has no other pmem-specific behavior.
+> On Mon, Sep 21, 2026 at 08:18:36PM +0530, Aneesh Kumar K.V (Arm) wrote:
+>> +int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+>> +		size_t requested, struct cc_shared_pages *mem)
+>> +{
+>> +	struct cc_shared_layout layout;
+>> +	struct page *page;
+>> +	unsigned int order;
+>> +	bool zero = gfp & __GFP_ZERO;
+>> +	int ret;
+>> +
+>> +	if (!mem)
+>> +		return -EINVAL;
+>> +
+>> +	ret = cc_shared_calc_layout(requested, &layout);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	order = get_order(layout.shared_size);
+>> +	if (order > MAX_PAGE_ORDER)
+>> +		return -EINVAL;
+>> +
+>> +	/*
+>> +	 * State transitions require a linear-map address and may modify memory.
+>> +	 * Allocate from low memory and defer requested zeroing until afterwards.
+>> +	 */
+>> +	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
+>> +	if (nid == NUMA_NO_NODE)
+>> +		page = alloc_pages(gfp, order);
+>> +	else
+>> +		page = alloc_pages_node(nid, gfp, order);
+>> +	if (!page)
+>> +		return -ENOMEM;
+>> +
+>> +	ret = cc_make_shared(page_address(page), layout.shared_size);
+>> +	if (ret) {
+>> +		if (!cc_make_private(page_address(page), layout.shared_size))
+>> +			__free_pages(page, order);
+>> +		else
+>> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
+>> +					    layout.shared_size);
+>> +		return ret;
+>> +	}
+>> +
+>> +	if (zero)
+>> +		memset(page_address(page), 0, layout.shared_size);
+>
+> Does the memset() post sharing logic work for pKVM as well? If nothing
+> clears it, we have a small window where guest data is leaked to the
+> host.
+>
+> Is there a case where we *do not* need the memory cleared? If not, maybe
+> we can move the logic in the arch set_memory_decrypted().
+>
 
-Define the HWPoison test-and-change helpers to return false when
-CONFIG_MEMORY_FAILURE is disabled.  This allows pmem to call
-TestClearPageHWPoison() directly in all configurations.
+I don't think every architecture or platform can unconditionally zero
+memory in set_memory_decrypted(). Some callers may need to share valid
+contents with the host.
 
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
----
-Changes in v2 (David Hildenbrand, Oscar Salvador):
-- squash patch#1 into patch#2.
+Also, if zeroing is added only to the CCA implementation, the allocator
+must retain __GFP_ZERO for platforms such as pKVM. This would cause the
+memory to be zeroed twice on CCA.
 
-Link to v1:
-https://lore.kernel.org/all/20260903053535.17611-1-kaitao.cheng@linux.dev/
----
- drivers/nvdimm/pmem.c      |  2 +-
- drivers/nvdimm/pmem.h      | 12 ------------
- include/linux/page-flags.h |  1 +
- 3 files changed, 2 insertions(+), 13 deletions(-)
+How about extending cc_make_shared() with a flag indicating that the
+memory must be zeroed, and passing that requirement down to the
+architecture-specific implementation? The implementation could then zero
+the memory at the appropriate point: before sharing for pKVM and after
+the destructive transition for CCA.
 
-diff --git a/drivers/nvdimm/pmem.c b/drivers/nvdimm/pmem.c
-index 30a51c365ce8..5fb86595e8bd 100644
---- a/drivers/nvdimm/pmem.c
-+++ b/drivers/nvdimm/pmem.c
-@@ -80,7 +80,7 @@ static void pmem_mkpage_present(struct pmem_device *pmem, phys_addr_t offset,
- 		 * here since we're in the driver I/O path and
- 		 * outstanding I/O requests pin the dev_pagemap.
- 		 */
--		if (test_and_clear_pmem_poison(page))
-+		if (TestClearPageHWPoison(page))
- 			clear_mce_nospec(pfn);
- 	}
- }
-diff --git a/drivers/nvdimm/pmem.h b/drivers/nvdimm/pmem.h
-index a48509f90196..76870505dd79 100644
---- a/drivers/nvdimm/pmem.h
-+++ b/drivers/nvdimm/pmem.h
-@@ -1,7 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- #ifndef __NVDIMM_PMEM_H__
- #define __NVDIMM_PMEM_H__
--#include <linux/page-flags.h>
- #include <linux/badblocks.h>
- #include <linux/memremap.h>
- #include <linux/types.h>
-@@ -31,15 +30,4 @@ long __pmem_direct_access(struct pmem_device *pmem, pgoff_t pgoff,
- 		long nr_pages, enum dax_access_mode mode, void **kaddr,
- 		unsigned long *pfn);
- 
--#ifdef CONFIG_MEMORY_FAILURE
--static inline bool test_and_clear_pmem_poison(struct page *page)
--{
--	return TestClearPageHWPoison(page);
--}
--#else
--static inline bool test_and_clear_pmem_poison(struct page *page)
--{
--	return false;
--}
--#endif
- #endif /* __NVDIMM_PMEM_H__ */
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index ae2ebaed6d4d..3dc79c0c5adf 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -655,6 +655,7 @@ TESTSCFLAG(HWPoison, hwpoison, PF_ANY)
- #define __PG_HWPOISON (1UL << PG_hwpoison)
- #else
- PAGEFLAG_FALSE(HWPoison, hwpoison)
-+TESTSCFLAG_FALSE(HWPoison, hwpoison)
- #define __PG_HWPOISON 0
- #endif
- 
--- 
-2.54.0 (Apple Git-157)
+The allocator could derive this flag from __GFP_ZERO, remove __GFP_ZERO
+before calling alloc_pages(), and let the sharing operation perform the
+requested zeroing with the correct ordering.
 
+-aneesh
 
