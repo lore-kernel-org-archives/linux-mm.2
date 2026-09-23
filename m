@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67C28C98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 19:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 848B5C98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 19:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4243D6B0088; Wed, 23 Sep 2026 14:59:59 -0400 (EDT)
+	id 8CAE46B0088; Wed, 23 Sep 2026 15:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D4FD6B008A; Wed, 23 Sep 2026 14:59:59 -0400 (EDT)
+	id 87C406B008A; Wed, 23 Sep 2026 15:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EA866B008C; Wed, 23 Sep 2026 14:59:59 -0400 (EDT)
+	id 76AB56B008C; Wed, 23 Sep 2026 15:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AB7A6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:59:59 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB1DD1408B9
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:59:56 +0000 (UTC)
-X-FDA: 85245941592.13.06C5942
+	by kanga.kvack.org (Postfix) with ESMTP id 5528D6B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:11:02 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 60E401408BF
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:11:01 +0000 (UTC)
+X-FDA: 85245969522.02.C1FB4A2
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BE468180004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:59:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FMo0I0mj;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 1AB1440004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:10:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hz+vBi8v;
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790189994;
+	s=arc-20220608; t=1790190659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AxAHc90wfm9SnYwgDzQ3lzFeh2jo+c35yDwusOijFh0=;
-	b=ZuFrrC8g8FplbPkSjQny/AUSaxmfVV+aw05YpU0XkuI6qN+HLHdfMm/3J53LcZCQNulS4z
-	B5b+M5NhwkRwlpneDsVpXbNDgcjHlkUWbvPkocEhXSCsD5DJ91Krv74pnWT6hVpHc/jhgK
-	OpvZF9MZ6t2IBxh4Ru+Ea10SeVJ+ERw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=FMo0I0mj;
-	spf=pass (imf24.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=IdbvxD7XvosJv9AaBZwu35ekz1HVTVwCDc31aTv9+jk=;
+	b=YRg1IzBLixU0hoNfCzkUzawNiywJOTYBBr+41YM5yfgRlbk8wvHFfBRINiz6z2eZqeMuJJ
+	C+Va18A4bLvG1T6gfsh/cjmK+aPNZmktOfvWDDcr0x8fPGHvJVFt/qouHuYU5dDU2I1j+q
+	OHbNnpY5Jh279FSLj5AY/B+OfHVTBTE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790189994;
-	b=arZJGoMHPUeej1UOfwTy7k/cyp9ZGGZ9nulxaWxWAGUtfqBnLnSCUPHYcG/DjQEZo0CrvX
-	Q68caI+WoS3Ey5i8wUtb9jS4TsJxl6EmOHlr407rrzGMkdznR3tcTlmK9yxkeMSZea8zeu
-	/V9rL9XqdRmvK5V2ba5Y9wk6VxDveXA=
+	t=1790190659;
+	b=3qdiLMLdS8f62CYaOen9MgJGnHi0HsDz410tHbiezu8Pq0gTKw+9zbva6tKuWanPA7tTdO
+	oa1TEArU3I075bKL7o0G1bXAO9Egacmbw4o9BnVYLzCoQ+GSU/rG+CZdlZdBH7ittWYZN1
+	09jW8kyPP4Z9oy90f4oGloUy2Jw5cUs=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Hz+vBi8v;
+	spf=pass (imf27.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AxAHc90wfm9SnYwgDzQ3lzFeh2jo+c35yDwusOijFh0=; b=FMo0I0mjZm80/tjeOHoyWLWDzl
-	+JuS0LUThspgxfePa2m6QvZFrVS2IkL+fMSRLNOGnm9aK2VsDTg7WzZFfIFia3px4gILuUpp2t8UQ
-	tR6TQDgjn1eveDqqZ5pPLymPIHQuWVryk1YIFw66DQ5XHmCNAgFfQB62LewPtiZ2y52cIfLOXK0zz
-	BsKjJl2nJ858Zb6VNfGOLDZwwvq/DYzSN1trSEYTOv4Gzmpq67PSxlxjLdCiEAwWsBrULYuhmlWem
-	Dduf0jWFkxom2bLboq32Mh3D2rdqxFOHzyxgfq8ak/0OCMAnfz7iwwWX/RpUFmovH/InQrYrhF6ra
-	BGNX3Tqw==;
+	bh=IdbvxD7XvosJv9AaBZwu35ekz1HVTVwCDc31aTv9+jk=; b=Hz+vBi8vLWbTXjXGcIU8xWLl2K
+	TSfQU8Xcj1UQuDAB35cjiUwhEN10TXGaylwmqGeVjRSM/fQfyYZfLBtIDnXYVw4qh16APiCezp/RC
+	BBZNVGgjX4MHaf/+oyDfJU5E+Y9cAZB+SFme7xvFHvoAgX4ij+Z2WmzNH8pDgI5nxCBbvH0NoMP0t
+	/i+8K93VymoNJ7EVsVqL0MoDGIpGxK91ej5S63t1N3VmRo2Qntg0LVsY2F/wUddRmUAvrNEnE31+J
+	Xf8FLVUCgYr6xerl1fGjRqPY780p5dRNiMxWmYpFsitQdNUHzUeEKtMMbp6Id5+29nHV2ZT95Uu71
+	goELFdyg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9SC6-0000000EAf9-0aJx;
-	Wed, 23 Sep 2026 18:59:50 +0000
-Date: Wed, 23 Sep 2026 19:59:49 +0100
+	id 1x9SMp-0000000ECUY-2y5n;
+	Wed, 23 Sep 2026 19:10:56 +0000
+Date: Wed, 23 Sep 2026 20:10:55 +0100
 From: Matthew Wilcox <willy@infradead.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -74,25 +74,27 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Christian Brauner <christian@brauner.io>,
 	Jiaqi Yan <jiaqiyan@google.com>,
 	"Gregory Price (Meta)" <gourry@gourry.net>
-Subject: Re: [PATCH v9 06/15] kpageflags: Use is_page_hwpoison() to set
- KPF_HWPOISON
-Message-ID: <arQhpW5tKmu1Vqrh@casper.infradead.org>
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <arQkP2uEzog8ChN0@casper.infradead.org>
 References: <20260805210557.1118966-1-willy@infradead.org>
- <20260805210557.1118966-7-willy@infradead.org>
- <3e609c64-a393-4667-be74-6cb2bbdcb717@kernel.org>
- <e68018a5-a8d0-4ca6-b3f7-7a151d17be31@kernel.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+ <an3uN4TAAZ2miXhe@casper.infradead.org>
+ <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+ <arGidwZQrrWVPAoj@casper.infradead.org>
+ <7a23511f-365f-436f-b934-6a520510409c@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e68018a5-a8d0-4ca6-b3f7-7a151d17be31@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BE468180004
-X-Stat-Signature: dzsq8f5o3so1e3eaqsf65skfnwakiur6
+In-Reply-To: <7a23511f-365f-436f-b934-6a520510409c@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1790189993-763979
-X-HE-Meta: U2FsdGVkX1/P03IsKhiBgOO8MvE3wx580YvQo4SfvK1Uktj0RPIPJqdlhIiDJsMhL1KLrdJxuZaElVeXNyo66VomrpgsTuKvrr+YHvTs3IKp199w0wSocb9z5PpIHpHyAYUxH7rbktJzBGkZCFxOx6DKb+cVwAkf67MevSeWqFgBwUlSPYiWSX8fMrCPht8zfkhFkO2LbWJZgd6Cc/xP0MMJHttRUA2MW3NLDBsiSaJCltqbfF86+dJtRDIGPtO5Ol+0yNGw/8mEXyT/LE8iH+goDjjrNocH014t66Sq26ayM0JqO1rlwAebpmjsnJFHSSHy3xhNwOAy0KdajZORT0KUMHGsjOcUMpsogGpv7SYNZit66ztbm1+mYPCw3Cfm5yiXOU4c4PBq+bx5GUZN1BBliduuol7VAqyPUTNwRn42WW8+LHCAJwhD5/M5jAxfRJfKJEiwb2BpjKt6joTzLwYoMuleEOslR8zdMRc/Vrlk1NkppoQrK5zVQe/ThBiKK+gvRBSpEguyWxlKqrLa9tBPNnKW9wvuOvRkmL/5XPdWmxtoHvwrGhgReuAPW+BTSOfcXMVJ/CLOPgdsWCqzGlEVBMHZ7mkyr8b77rAqBf9pu3zVtMDADanukTIrCgPhdHwBth8BdpZEECyh55wii+Nr/AgSqVm+GrDNil3iBtSArjuvZ7Z0JSpTLCDmeYlRRMzevEhTthcLsKtyDD7Zr37R88F20oSUtmneWx+TplHIOHExdlL4rHCuLs2Lp9Zqq7vc5A6vw7gCm6bPKaMtet4PkKTxGhm+gsAiYKvEmw8qhuVkNWjzz6WNGDuMKDACaVhKdT/lvjCBgLyARjXxe3uTr8Z3czatyTWgGqIeHeofBgDUuW9SmRDbu+TyTOo0CTBwoYxOaeat3daL4mAqbnUwpVP9zP/270rrYpmgNA5fHJvsSUd414v7yQHFYTz/hNQTdoWl6rCb8D3OXV/
- yV0HEy4d
- dsteYmemdpwoHM20wqN6uVGB7SXEUDjDUmaEgQVEydYtCA5x6oNUIkr4ORlbLVrPaA5CcH7qwtTnfZ3h+QAXbNK/muJXyDqWchhJKuOe5oa/Sp44zMys98hMCBXRwyu0G5puaUHvrPMFvtzozjCFiwRJKePkGeK6Lhwk4ilaHFBfHV7OPvIp3CePRhbsMwrHxa6MLRnxKJ0eklzHxrq9CfIYJM3keCS+5Wit01USgO6p/pFH383ZpBjy173IR5ovzdo49DGLOoQWcQIQyFAEiGqiortyAoUssNwecyol8p3fzpN3MH0cZgEtpf27lJ8XC8riG9P5ixRzk9R2+LAndf9bQyCS8xFqqPxg0rK2uqDTgcmjlizmnTXiduQBBojRe+sIdty8J414PwnA=
+X-Stat-Signature: 797m1bwcy1dw6qa633fipj1pkhmeisi7
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1AB1440004
+X-HE-Tag: 1790190658-317977
+X-HE-Meta: U2FsdGVkX1/o/HhF/MRAnULg8I7+jcBzAVb6+r5HGUZTehCqsq7eadXdgkDCPyHNlohe09fCUDdsBs1fQT2dygvYSGLISNh0oV1101/T6X/dPpHJGjpArdnZ2srXkURbimIxqsI4lKH69UdJWQr23qqgIX2DDr3L2lsS2K0rm/9OXha4NGYx4lGCpMuAJbWiJS1p7BHt6QoSqK/rLqchdJlp2wiW4A7jqVf0dc4Diu4O+EmcV4vZOjZejODmbsjTe9ZRhESaku9Jv474cUHGsYkP3Dm/9eAMYt/M3cMB3QkkF7qEX0vNcM/0vfLgbXQG7NxIsZNiBCwbLlJsVRu7V2ZvFfMLqzYtQPqv89lcR7swqEevu7pWwRScRTllrSB1s+xRLmpj6fEG8zPJG6G/YhmcnHOMc3QRU5+VO0X7N+gZqF9aLYFh0SzhHJIHJSoqezdAuhMCq4DA330WxHctcRGx5xREG7oEBdpAJrlWw+MMm6dYEU2izlqwBoZPO5cSQ2Ml/eCTChAhw+F4xxjuG1j1nwPh2Y6Go6JzdM3ZeH1tKpZCVrbBpvXPLPiEsOks+S0eZJBbJCC+/EQuacZbbBaYb5tYN+HjGy/xI9LZtXmzthcn38HSL2md47y9nzxCBC+I0Y7M0I0eRXfxfANdPe9vrVfuQL51IjdL6ortQmHfTaayqqLWxHHtZQ5BpGDdi0O+Ps7kJCXef+hQRcyX1FN+z/LYbYI6M2/xSqw4IUboJQT8LIVvudI0kad/ubxDUQqTn8NdgKAMB6Yp5vSkwEZSnZB0jf1g/jE+mdlrNKbBisB5Vii2IBGCi3db8krxUyHqskq+C7QEknw9QbbvW1eN6F3PU7yxtirWkWFnuiId/i0vFvcfrN8kDJQDRNFowfm7QjMPqTVJ5xSd2R9dYegsiNkDdM+euQUuhYje32OnYbeOrQNhm2l/FfR6Da8iqTmQ96GzOv2F/J0mTkW
+ oscqE/Bk
+ U98KNL0+V3DUoZdKx2JDMWKbhbdfmpJSNQBqhckvi6ChY7/2kne21isBts7V5v/E1O+uLJQSAsW3ArA5dtM9s528u/+DQkehUCiIctL9bBZZBWS5MlJ3lqLZEbs4dukcJPDOD3ddcUBk7EEoR/FcOv8xA5R09D/6kydlfVSU4b58+wAtuYaVatHASEevWhaHPnyYRM2adSUUgMd4cF0PCWS5I0Mo9SLfS3aBLzfzCG+ug1a+1wjn8257FJhnKW8t3YdOG785S0IYUyR+zDw0fTgvkPDF7XeogSyv7Nm13Bkm8MQYZh4t7uljM2iJUqrEqI4JRHcONONg07dVEYjijPDTynON1Lyvvibi4IIKTLiu/VIsoedxYZHL0EhUSFBpoCC0hBRIoMlE6w6I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,19 +102,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Aug 13, 2026 at 11:01:02AM +0200, David Hildenbrand (Arm) wrote:
-> >> +	if (is_page_hwpoison(page))
-> >> +		u |= 1 << KPF_HWPOISON;
-> 
-> I also just realized, that other users in this function now use BIT_ULL.
-> 
+On Wed, Sep 23, 2026 at 01:40:24PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/21/26 23:32, Matthew Wilcox wrote:
+> > On Fri, Sep 18, 2026 at 03:44:12PM +0200, David Hildenbrand (Arm) wrote:
+> >> I'm a terrible person and it took me way too long to get back to this :(
+> >>
+> >>>
+> >>> You make it sound so easy ;-)
+> >>
+> >> Heh, as long as you hold a folio reference it really is :)
+> >>
+> >>>
+> >>> If we don't hold a reference on the folio, then the folio (whether it's
+> >>> hugetlb or not) can be split.  And then folio_test_hwpoison() can hit
+> >>> the assertion that it's now a tail page.
+> >>
+> >> Right. I am/was missing the connection to "generic_file_read_iter() in hugetlbfs".
 > > 
-> > snapshot_page() takes a snapshot of the folio and the page. If you look at
-> > "page", you start going to the live version again.
+> > We might be able to split this into two series at this point.  
+> 
+> That would be good, because I suspect the "generic_file_read_iter() in
+> hugetlbfs" part is less controversial than the hugetlb cleanup and we can just
+> merge that easily without touching too much other code.
 
-This is now:
+Oh, no, it's awful and complicated.  We could strip out the two bugfixes
+which are at the start of the series, but why would we want to do that?
 
-+       if (is_page_hwpoison(&ps.page_snapshot))
-+               u |= BIT_ULL(KPF_HWPOISON);
+It has to do with hugetlb not using the has_hwpoisoned() flag today,
+and to do that we need to do all the other cleanup first.  You don't
+need to read + understand those earlier patches; they have enough 
+review from people familiar with this area.  And sashiko ...
 
 
