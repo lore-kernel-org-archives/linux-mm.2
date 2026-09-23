@@ -4,97 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12B39C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:49:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0F5C9830C
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:49:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BC636B0095; Wed, 23 Sep 2026 09:49:16 -0400 (EDT)
+	id 401956B0099; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1664C6B0096; Wed, 23 Sep 2026 09:49:16 -0400 (EDT)
+	id 3B1536B009B; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A4306B0099; Wed, 23 Sep 2026 09:49:16 -0400 (EDT)
+	id 2C9706B009D; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E2FB46B0095
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:49:15 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA05C6B0099
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:49:38 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7851E1207A3
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:15 +0000 (UTC)
-X-FDA: 85245158670.27.FE8B0AD
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A45C3160005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="mQ/W8ZyC";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790171353;
-	b=fBj3XphX5G5OwfMyBu8YiCEHng6XT+/pMpW8rvfsCFqwUH70YgiHmhX7sw/QY0HTxu2rah
-	YSklyvt67bDYxZAf6RkPP4p1fpiqAT1vmOd5QLWjAPvCwycnbr1BEcjl6F3pvtDqZz4NjY
-	Dar1kcrY2E9BiJOJxKi5JRmPTqEouTU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="mQ/W8ZyC";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 852F016082C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:38 +0000 (UTC)
+X-FDA: 85245159636.27.58060D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B379EC000C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbQYG4T+;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790171353;
+	s=arc-20220608; t=1790171376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KLfb2r43LhpOq5XaDQidvHA9iO5v22wjpIkEIg1fwG4=;
-	b=g2mlISLm8r5zFJSchR6hGAWzrUqaIy3LzDzwE9eW8vL1kWJZhYw1P1sjndlqCZ3Z4hKAb6
-	JCJ1ZiyrNxG4vJQnN/jQaF40n9G/Fg0/WQVYhADDuiclMGd2NAleSw3YH6kHnPQ2PxyyTC
-	1r+ff8sImOBuNsBzuJV/9iGdMZYkHGk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F5BE1516;
-	Wed, 23 Sep 2026 06:49:09 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 115DE3F86F;
-	Wed, 23 Sep 2026 06:49:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790171352; bh=XZjpz87fWuq0xeTRn18TokdKjnI48O4gDE75aIXRo/8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mQ/W8ZyCxdppzKi6TjFPjx+SnN6nJs1Q0ck64jZseOqja959/n3ZX/3vuBXryqiVy
-	 OL6BsCU2pOXRu8nZ7Rw2k3kSXnD9/Eum+CdiLMgaM+zfOhJSn9F4DHjrcdbTXpAfoQ
-	 tqz7RvO89PTGnZD7MrNYoOLeOeYFrJCzF3uTP37o=
-Date: Wed, 23 Sep 2026 14:49:07 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 06/13] dma-contiguous: Accept an explicit minimum
- alignment
-Message-ID: <arPY05E2xYflek07@arm.com>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-7-aneesh.kumar@kernel.org>
- <arOrgRfi1k12clT7@arm.com>
- <yq5a33v02nmn.fsf@kernel.org>
+	bh=GMEn8rMByxkBYSiMmrnZBaoksE1XA7duT9/L5oZzD14=;
+	b=5nIGG0sXp6NbpNWSuev2m+C5Lsn+87Q/koqPHl0V/TuUWBMTGP7WcgRl9tEI5vTW7s+qLE
+	wHsnsEnmPRhg9I/AXabIq7Op+HR4tZwg5cNuAXst2qPnBtdzJaCm7ZYuzH10yeltimT1i8
+	QxWKiB/TEj9olYdNZIJ5hQ2jdwMNPCA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790171376;
+	b=x4OFQ7RwumlqNsCuYCgQnHBQGPlaf5oYGywzpMREUihUJWYQbQowZaSJL9euqCjkLlMcDq
+	JrFDEaYCxox9Qr86VISStuIEI96NHMmMos3KziSFKdGoaMOWeXCgMi92BSKrxR3vNsU18G
+	Lw41m1zwYy5gJiG10un+3mtet0POZEo=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbQYG4T+;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E447C40AB8;
+	Wed, 23 Sep 2026 13:49:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4771F000FF;
+	Wed, 23 Sep 2026 13:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790171375;
+	bh=GMEn8rMByxkBYSiMmrnZBaoksE1XA7duT9/L5oZzD14=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MbQYG4T+HrUcgGCJB8Mr03WSESTKYUFJ+qZJSTPAvzfVoBtgEeSK+dmKLTgClqmu3
+	 Br9W2bQAi2zTh5qhSrSzPZ/4/LthoT+d2d0HCfgeGBe8fCLqVuhUsF+T40JocKxYBA
+	 qq4U7Ch/Dng+qFOv7tZUfMZalopkfx2AzXal8G1hyqz7m5WHU4Zf6voNZWLLmFSiTr
+	 e11LREhFwp7RHVy01ngL6IiRJ55rj89LCM6NmoVpAg2g12j/v5JnGFMjHN64n0frFA
+	 CzXv0dX+0NwVq9yUbT5cdkIew2c1xUy8lJF9pKHn6ThLoEJf1PJ/A7iItNkTaSGiXe
+	 O/cD+MI1FqhYA==
+Message-ID: <60634ab5-3fcc-42fb-8722-4ba6771acfda@kernel.org>
+Date: Wed, 23 Sep 2026 15:49:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq5a33v02nmn.fsf@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tuciugom3mri9zwfbxou449ee8wmfjnj
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/migrate_device: consolidate compound folio handling
+To: Hui Su <sh_def@163.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Balbir Singh <balbirs@nvidia.com>, Matthew Brost
+ <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260923112041.2103427-1-sh_def@163.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260923112041.2103427-1-sh_def@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B379EC000C
+X-Stat-Signature: 6w43nq9agxpq9s4dz6gpq3hxn7gcwnh6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A45C3160005
-X-HE-Tag: 1790171353-241785
-X-HE-Meta: U2FsdGVkX1+3iCbDbZ+TRKij5SnGBVnOlOiB4XZLdAY9UfgI1/vO3zkSohGXMgVCaiKEOKKSje9fc49oDUjwtozp96y4j22QYrjNJkRnRhlAZTtlKiEjTZOvMUeVpQINMfI1S58eKyBy7+sv3vt8iajXld7UaaulYzGu/CG7wiMA5GkA9uv4TqvfcsJoMMpVeZ/9AKmy2+Z7AJNYpiKrN2om+HartwMJkfrCc1qvMQSL/sjqHMeQzHZG92nmW7S6Kzoix2GkrJO+ucq68rvgjQTI88/bAiXnXy2BqLvetyo5G/E9qg89vMB3VhHG44sygpl08fAIuWjdWltMDs0OGlWcWJmnCtKUIZet5wG5U4KpqT1VxxyU1AULY6amzQTocKXU/a2FtX5Hjg90kqj6MIzy32Ta9Iz8QkeXkCdnCVDFNPIH0CUgMaFU1yp1TRi9tUNztW6L1tSkH+KqVPCuCoK249jXT+uYQYepIOnMqMn+3UNyPY8gYBF4Q0a/V+fgWY+pTDBuBXrtHBcOmyTp8nCdeajL2SgwZUs1rNxpdTQaajefsc1fGsoE/ZywOS+u60xpcm0BjWl0NrFLqqkkgLVYH00g6I8YgVzVsa9q86LNDT+nt9kkt6SPG0BoKIfURET/tVKvpBgMk+iRQIYCj2R5s+bDsIXoyOJmtH+2p+clSDAuJ7XG7RxT3bf3qqE7FBWYaEUEEiULILnzEvLF2YETP34Ho/hX2SezMK7B7y+sVaIcHLeksYimW1TMGYKE7aEXc21M9e54HNcGh5cHj3Ec6xyo5iyIhmfoubWq+ISMFa55M8cIs8o9DO+nLUfl+R3M4lPJsOWFm9JH49f4dHlSMYU1vP7MhhZP7dcLy0AieUktb6f5v0LzTXu4tXLKy2RbebiDqk6925Uo9gLWRC4o5wZYdWvhDl14/O14ma+mH/y+hQ6ZuWxXPEBiTEHk2Aqhj9ec+wWVdfcAIt9
- P/QieE5N
- VZMIaJtjOsrX5UcOi4/lCAXB0Ixc6Fz8gLamZARmyG0RDToCP9mW8tHUHhzE9oc7pZ7ksoCOZXVwnyYy1+JuzRKVdMKRzDADFfXewGydXkkDPnYKhl7ZJUxdLvxhR/d1BXts1lPeiYcBuM27w2+UWR2vLbuZ3BZspnciUWLKbiOS0lCAPfkj3br+j90tKGUVXMKRcCRj6No84IiP4mrdxQi6FOytpcSWhjpo3+YdwOpalCT4c4l1o+ftQ/yVRWMzI3A9hhkf8QtQ0AW4Rei5Fme0T+vxeagS737JD
+X-HE-Tag: 1790171376-349613
+X-HE-Meta: U2FsdGVkX185lUVPzOeo8fSt2RyFktFizSMh8XYo2iV1yWuJTkBY4G0rx2TJpNu+ngPysf9VajY/Pzon3Gz+zU1dIUPEykA8g9qF3PUDqBNTWQwGCSZHKIOaos20b7SaKMFdNlHqfaErzbMeS3PFJfSKoGd+CozGym5h9YAcEIO1sdZB6sH3mE8nGj2Oll9Ad3W2QBzUY52gCI+xo3UPJJdlKrOkP/8eX6lDz0JzZVgzithV5RUoyB7Kr7QosobJ+Pd69qGq4bebRFJkab6FulhrfKE0At36coOWZnznwtotvWTBAw8W2lZlbYdZGKt+S4XKPJL9Xn3PIkaCv/rbwzXwD2fr6gE0HKuIX8kQuyFOW8CA0mvWc70rfpMdrejhue52mPQlHj3Tzez5cHD1GvHSOcBtR3hh15xWrtTpoGY+bvPo5erG6uYsXnerNdJX238Y5sdZ1jqZy+OebG8vgpDdiWs/DULP/hYXkjA5VYcR5y3VpZO1XcVFxBTIOG4i11XQpXEHGoEifWBvir6VzYVl/Jn66i21hiWIoK1D+xCBrkN4gQzpFPtR2WdZgYzP/jgrGhuK1OdE3h5a5czr7AReDfQZBcObCelgTiJvEcbL5RYOCACGOtjZ9JSavDpRMannhwgFVIwXQSEPkFG/zuTddIO1xclObg+6wWCG3EaKqW4rvY4+Pg64h098np/txT+GbYuUORhK5k00voHOH8aqVJ1qXRk1lteyTxMB24OEBlE2kxTFaFI4h2F9ZzJCVAC8zDM/S0WLbNE3CUib0X2o+Nr9Npf4bo1tJprLYIF8gdhmbaWajs8Z804C064MECSjfLcyt5a0+i83MFzqO2K3nm18Mw/S4zTXPeswqVohxi6po5XNk4eyfukjWtahlBqAVj9USLXb+6mOSP1/7vO/ckrfIT6Kqc5suZAbhLUfkf6DLa5q8Fg7PEcavZjA08XU8Fwduo5bPvhAHnj
+ 0P4hwMn3
+ NTxriskQ5LZKCBFpLBMLLoy8N9edERUW6U2ms6qg+6NIi1SbAQuG8x9X3x0PlNdhrT8osGoBUK9cG8yZxCq+qqOZexqUvZvFXpEymrS7TRN0qa8S9apopFqDPrhgUG1ecdLBwY4ya41X0JkojmHP7XkT4YrF7uBZKEXA9fUdXr7He9ss/eWnvzkHVpsgfsewRAign0QF2b3Cw1DiOZ91sCbofSq4U5bSmu9J5gcxLWEC8o/Bczutx6/wzSE7dMiDMMDeKvG5APwB9rnLkbXj9WaHhjazQu4XVqpcFCarCKEWPRNSYlY1SmJjbJHt92GMVXYq1Mg2ek+OOwR22mC8MxONwQbPGKpbdWSbqnFeKGbffhhfEzfWzJdJyrvGcnLkqwrNnkOPkhOMH+ZuOisNpK9QfhqcGdQXpyJeGB+1/NnvGw2JMYcOKOfwPz3GzueAWcKkQwmuj3gcE89c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,66 +142,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 05:19:52PM +0530, Aneesh Kumar K.V wrote:
-> Catalin Marinas <catalin.marinas@arm.com> writes:
-> > On Mon, Sep 21, 2026 at 08:18:40PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> @@ -125,7 +126,8 @@ static inline int dma_contiguous_reserve_area(phys_addr_t size,
-> >>  	return -ENOSYS;
-> >>  }
-> >>  static inline struct page *dma_alloc_from_contiguous(struct device *dev,
-> >> -		size_t count, unsigned int order, bool no_warn)
-> >> +		size_t count, unsigned int order, unsigned int required_order,
-> >> +		bool no_warn)
-> >>  {
-> >>  	return NULL;
-> >>  }
-> >> @@ -136,7 +138,7 @@ static inline bool dma_release_from_contiguous(struct device *dev,
-> >>  }
-> >>  /* Use fallback alloc() and free() when CONFIG_DMA_CMA=n */
-> >>  static inline struct page *dma_alloc_contiguous(struct device *dev, size_t size,
-> >> -		gfp_t gfp)
-> >> +		gfp_t gfp, unsigned int align_order)
-> >
-> > Can we not just bake the alignment further down in these functions
-> > rather than getting the callers to pass the {required,align}_order?
-> >
+On 9/23/26 13:20, Hui Su wrote:
+> Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
+> compound folios") added handling for compound folios that do not fit in
+> the remaining PFN array.
 > 
-> But, we need this to be conditional on CoCo shared allocations. We could
-> derive that from attrs and pass attrs instead of align_order, i.e.
-> something like:
+> migrate_device_range() and migrate_device_pfns() duplicate the logic for
+> locking device PFNs, encoding compound folios, and handling this boundary
+> condition.
 > 
+> A compound folio cannot be represented partially for migration. Use
+> VM_WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
+> retaining the existing defensive handling: release any lock and reference
+> acquired for the current folio, clear the remaining entries, and stop
+> collecting.
 > 
->  struct page *dma_alloc_from_contiguous(struct device *dev, size_t count,
-> -		unsigned int align, unsigned int required_align, bool no_warn)
-> +		unsigned int align, unsigned long attrs, bool no_warn)
->  {
-> -	if (required_align > CONFIG_CMA_ALIGNMENT)
-> +	if (!dma_contiguous_resolve_alignment(attrs, &align))
->  		return NULL;
-> -	align = min(max(align, required_align), CONFIG_CMA_ALIGNMENT);
->  
->  	return cma_alloc(dev_get_cma_area(dev), count, align, no_warn);
+> Move the shared collection and encoding logic into a helper so both
+> interfaces handle compound folios consistently. Also use memset() for the
+> compound-folio tail entries instead of open-coding the clearing loop.
+> 
+> If locking a folio fails, leave its source entry zero while still consuming
+> and clearing the slots belonging to the whole folio. This prevents a tail
+> page from being treated as a new source PFN by the caller's next iteration.
+> 
+> Document that an encountered compound folio must fit entirely in the
+> remaining range or PFN array.
+> 
+> Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> Signed-off-by: Hui Su <sh_def@163.com>
+> ---
+> 
+> Changes in v3:
+> - Keep the source entry zero when migrate_device_pfn_lock() fails instead
+>   of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
+>   slots belonging to the compound folio.
+> - Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
+>   keeping the defensive clear-and-stop path independent of CONFIG_DEBUG_VM,
+>   as suggested by Balbir Singh.
+> 
+> Changes in v2:
+> - Fix the helper parameter indentation and keep the declaration to two
+>   lines, as suggested by David Hildenbrand.
+> 
+>  mm/migrate_device.c | 91 +++++++++++++++++++++++++--------------------
+>  1 file changed, 50 insertions(+), 41 deletions(-)
+> 
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 009bfa8b212d..68b787bdc8be 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -1392,6 +1392,40 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+>  	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
 >  }
-> 
-> 
-> with
-> 
-> +static bool dma_contiguous_resolve_alignment(unsigned long attrs,
-> +					     unsigned int *align)
+>  
+> +/*
+> + * Collect a device folio into the page-granular PFN array.
+> + *
+> + * Return the number of entries consumed, or 0 if the folio does not fit in
+> + * the remaining array.
+> + */
+> +static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
+> +		unsigned long pfn, unsigned long remaining)
 > +{
-> +	unsigned int required_align = 0;
+> +	struct folio *folio = page_folio(pfn_to_page(pfn));
+> +	unsigned int nr;
 > +
-> +	if (attrs & __DMA_ATTR_ALLOC_CC_SHARED)
-> +		required_align = get_order(cc_shared_granule_size());
-> +	if (required_align > CONFIG_CMA_ALIGNMENT)
-> +		return false;
+> +	*src_pfn = migrate_device_pfn_lock(pfn);
+
+Let's rant about migrate_device_pfn_lock().
+
+It looks up a folio (which we do as well !?) to then get+lock that folio, but
+doesn't tell us about the folio, but we're supposed to magically unlock and put
+that folio on the backout path?.
+
+And if it fails (e.g., folio_get_nontail_page() failed) we simply go ahead and
+work on that folio (folio_nr_pages() etc)?
+
+What?!
+
+Now that we have a single caller of migrate_device_pfn_lock(), can we please get
+rid of this abomination and figure out what to do when migrate_device_pfn_lock()
+would have returned 0?
+
+
+> +	nr = folio_nr_pages(folio);
 > +
-> +	*align = min(max(*align, required_align), CONFIG_CMA_ALIGNMENT);
-> +	return true;
+> +	VM_WARN_ON_ONCE(nr > remaining);
+> +	if (nr > remaining) {
+
+It's odd to add recovery paths for something that is mostly an internal
+assertion. The pattern is odd.
+
+I'd either
+
+if (WARN_ON_ONCE(nr > remaining)) {
+	...
+}
+
+Or only do the VM_WARN_ON_ONCE() and drop recovery, expecting this to be found
+early during testing.
+
+
+> +		if (*src_pfn & MIGRATE_PFN_MIGRATE) {
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +		}
+> +		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
+> +		return 0;
+> +	}
+> +
+> +	if (nr > 1) {
+> +		if (*src_pfn)
+> +			*src_pfn |= MIGRATE_PFN_COMPOUND;
+> +		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
+> +	}
+> +
+> +	return nr;
 > +}
 
-Yes, I think this would work.
-
 -- 
-Catalin
+Cheers,
+
+David
 
