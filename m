@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C3CC98311
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:47:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0FAC9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1F7D6B00AC; Wed, 23 Sep 2026 11:47:18 -0400 (EDT)
+	id 52E726B0092; Wed, 23 Sep 2026 11:49:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACC376B00AD; Wed, 23 Sep 2026 11:47:18 -0400 (EDT)
+	id 4DF186B00AE; Wed, 23 Sep 2026 11:49:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 996E76B00AE; Wed, 23 Sep 2026 11:47:18 -0400 (EDT)
+	id 3F56F6B00AF; Wed, 23 Sep 2026 11:49:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CB136B00AC
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:47:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F22DA1A044F
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:47:17 +0000 (UTC)
-X-FDA: 85245456114.28.92E0DAA
-Received: from mta1.migadu.com (out-27.mta1.migadu.com [95.215.58.27])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BC7194000B
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:47:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QVRAKpPw;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.27 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DAB76B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:49:24 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9224C140400
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:49:23 +0000 (UTC)
+X-FDA: 85245461406.13.B2CA8D5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C577C40012
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:49:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF9rOOuQ;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790178436;
+	s=arc-20220608; t=1790178561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKiW8rwP60FsF4fzVgU0x+yXAX8l7xFBn4J5o6FPZ7I=;
-	b=JQ5Qx5Z3to+S0WHI8mpjS/VUXiaMC1m4HZAI3FtOm9TbtWp4huYnJiNLRL6iAQfFxvIhh4
-	3anWcyYBoKvuSmwcamZoOBIYmhsqe3YaeJbUOlQpMEj0t53rDt6vqzeHPEej6buie9x+CH
-	mCic0vNQT5EE88Cau95TwCwj6eSHXfU=
+	bh=kdYD+vj0PQM7f3DCwjSFaWjl/2i785x3uECVm9fqvX4=;
+	b=tYy11TYgShHbJBcnGvmcfwXwL0PGPeilzBO4dmEFpv54KJP4cQrJRc+bQB5PwjSijyQeJB
+	dq5rRN5NRq1AAiihKtWPcoyMg0QxgY44BzdNQAKxvm5NlZTmklHmO8ECZJmRKI7nyVnD9C
+	D7YyzSUuNgaNJ/wlxWHJRCDXkwaDZZk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QVRAKpPw;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.27 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NF9rOOuQ;
+	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790178436;
-	b=t/YC1T6GKUmgDFVLxANl4xOqXzvzNu5gzHAN843qNZ5N/lIEVLyzQMdtW0JLSJEeXzhHAm
-	CBKeIqyYlsysM6E+5rN+mum9USWRVP6W0Blhk7Z4QMkkh1kcrvekLxZ8MWisAVHLyQmt1m
-	W0Mg/sUBGdqMUkJV50asZw81/+zBUs0=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=HNkEwA1ANe2Cy1ef5VkR+k5aNsAR9SDnOLDe/iDUfoE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790178429; v=1; x=1790783229;
- b=QVRAKpPw9pB0VhEAsCwtrOwBZGF/JCoRGpiqsVVzoZ9QhWK5hxGAfABKcxhmvptQ/1Cs5WpG
- nI9r8I+aFU9x8Xd/aSJiFQdkp9dEUuCuBiL+5rxGXqFvr7q4vnyGhfbVPDK2ItoRnwM1oqIX8Bh
- kWAZfFcfgjma5hXGG0Q1mLkY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d5fec120cfd73ec7;
-	Wed, 23 Sep 2026 15:47:08 +0000
-X-Mizu-Trace-ID: d5fec120cfd73ec7
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 23 Sep 2026 08:47:07 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
-	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
-	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
- struct_ops
-Message-ID: <arPyspcEFNkqfNyr@linux.dev>
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
- <CALOAHbA4EgGw_uWfbXD0Q87exP7ek=z9ENuU_ARgb+DgBgy1kQ@mail.gmail.com>
+	t=1790178561;
+	b=qpXvJh/IMinDd3CRzSjrao0NPuLvi+5ZPZu5/RlzOI7uvuIaqekUtORGgUmZqyWBulTKMt
+	UQ4acKzDUwVqq6sIC9u3S5v8Bl1CiAI2GvQN+zY7qiGvQntW407+lNWvSqo/JyFk1BDPr5
+	6S1uF6n7LqD6C27G4kdp0ZlHxGeg2lw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B6F643BF0;
+	Wed, 23 Sep 2026 15:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1710F1F000FF;
+	Wed, 23 Sep 2026 15:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790178560;
+	bh=kdYD+vj0PQM7f3DCwjSFaWjl/2i785x3uECVm9fqvX4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=NF9rOOuQbMImBXu9fSoDsF2ga1YCwZqktAjLh65TNe4SO+7mG2BXJ73Xz9JHVD3NV
+	 3RnSWThnfxr49VoX2PLuT1VqbMqMlKAbBkQt73/vtbJEBWQESg2T5w8SSjEYYLJPNp
+	 9cMlOCcjeL2yJHBGQZXaG6vbwuDEufoP5w54pV+RMrOID+6Ti4KV6biI5sUK899cI6
+	 RMf7CaBYCMD/2gTBlDyeGG7657XzzcMgpeZKHChe2VjTjpaCBZpLQPyxOy2hk8EYsV
+	 CbTsOooIx0z6dlxaHTlfJh9M2CuHFG+s3WKxYhSUecotOXu8iUMcFWHml/Sj+AeeaB
+	 BlEduBODYdeOg==
+Date: Wed, 23 Sep 2026 18:49:14 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
+ pages
+Message-ID: <arP0-maAEi5yeNnl@kernel.org>
+References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
+ <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
+ <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALOAHbA4EgGw_uWfbXD0Q87exP7ek=z9ENuU_ARgb+DgBgy1kQ@mail.gmail.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BC7194000B
-X-Stat-Signature: 7q93xqyg3q4i8ha88nt5r6kf95oatqfe
+In-Reply-To: <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
+X-Stat-Signature: cuzyydme8dzyem7fbwoutstehus3b96u
+X-Rspamd-Queue-Id: C577C40012
 X-Rspam-User: 
-X-HE-Tag: 1790178435-952250
-X-HE-Meta: U2FsdGVkX19yOY3pNbA6JX9sOV6KmZTVdpy+RSb24RgCwO+SkAtQuIipsw8LGUYD6IeA1j5Ob/E3XDduM08lipKBX57F3YlgDHUjIo8ES9dD3LSWyhUTBQxhmCOvcbzjv0v7qtj66On+E/A7in4VZUo1qd1dUkxJXjimPqlYmWlK+ewlSbRZRUqt7AMNggktFzQQgIvn/LyYjCwfozSvcRXTfg/lr6awEyJAmCRVniSFp2Pf3+wYnk/hBOEaMCcz+S7Ce5y1qdBgHST022lG+ZvRRFXGWMEqZTCz8EZBPvUIUtRJj9vdg7i+InilUpcv2slpGGotS7XmqEpzFrNWfeVFouMhT/OCzjqRIPNLhrCEt3KAFdxBe1nBQHMMVPx6CZynN0DXzRWRpE0S3DJ/RAqaL9QLRb+lW+sflDvXR9vWDhLp6GriY59w2rnETsmuEcnw+Hwh5fwdDH792Bmo9Km4bUlcNBZTdbgmnX0UE/lgKnjetIE7Pwa7ImRTjBDLoYc+tzhjZaSCasMNT6oSQtNUCZlx4h1SUjqUlC4Ptu7vJFuBLdvlnateu/WTvhsJhyCHNOt9GVGMsKKIJKErfeOEx+Br1mbuBm5ZAq46Ci2O0yWiAJeWBMvARDUPPq4ZPZBpTamxKZiEnobI8NYBa7Or90iXIkVR40KgTUmxsoknbPhQqXYSrVbUS1PB+jfoNn2DCxWIOvsJZc3dUASgyr8a3EVKrYmE7pRflht9pcKwp6UmW012xLmwTfw3doSsPNE1dskUDnpdp+iT5aScNe7SSUz8B5wt0Kps2QK+bocWVN+z3J9TgJe394bLz73YwOjQnCAM3DUVXzGLHcd2Lyg45fM/8EC4++H79vZKQsd6eDRnZY8Z1GVHccu0rdPgXiD97dLmHCcXD3CXfWnNHwXBkyDv7IJNaaHbfEby7EQQ0CYGSaXrm/SnqKe/Cu+IF6ujhiZK6e7CZmnhxeB
- 2+Lc+JSH
- 8TPi4YymoM83KMxPzo881PRNhE2M7cdMkTdm1JF7zEj6XtbdRpitbsnIyyqOxg1CLyaQ7Lcc6lIJCnPUL6FJQtSB1ZfSj17yxj3iC6+IxCxJXelQd4mUOfeGcqkjWMfjTpEAlEIdR4YMZv7JJbSbUf7QJx2UpfK8OVi0Vb3U+5h2kQgC+immE9joTCRHLo0H06AgvwwARRT6aBGT4zAjUqXQkXn8De8xxWKlJzifB6nEu8dWCaQi5IKoMeqtESEUmahrv0/P9t6a1yUk/QQc5Ht8T4JqB21JZbo+wOiufP60eLmqULtHGQQRPiwHWgIaZCZTzq9ULmSKDywc1/1FhT3pRJKAaluirvm4RkxaBGQmN0b/B91UNyVc5vrDIyBfcmUtipuPHdDmhByK2bHFk/yR3EwxnfPy6ykI1eerv4nvSmS8=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790178561-239543
+X-HE-Meta: U2FsdGVkX1/GjJnawKDNSwKY5xrZcOBiAwUUSVybkLUY6fqIEcprXIOiQ7+9Aa1l/1wV48UM91cgH/UfTbVYB6z4lWOGSmyguPqNDotgZ+cNsPLcSagdLwUwA7g0ASdY5T1Jsd1tKScKGhm13Ndrf9lHjEeox2WRRJCXry2IQdTcm8ED9GLYeG7SyYfOgBQbT9vGpxx+/DoDHswiEsMFz6tSgR6KufAlnaI5o5+YvJgpUuYEHjCAW0tJAvrjuywQqJtlu1UsuT+eorejRJt9fSsCS+YT408NKYgLtWz7NupRciJztcdJaVj1QKy+6RpwsUjA8M113ofbAoHrKVFCqEX59B8TE6HhCjWRreGOebGBQzAo7zIcdjJ71VPL+G3DCM407Ms1fEIubAEVQ1RYrwuQ+tMPaso5h0dQ776pKdeUZxv1Z9I/vAPCqpl5TscdQNOIrJOKV6hNVxvGD2YrUHBgn8uSYdp0TtBTEEMFH5CgtSIxfkxBYQ1MkbdKIvxBVHrbXbmtrfbVUBIFrMBMUB2iCeDuiGpwME3AoKtaINxP0uWwINEORr05u+0YVVUy+iKj/oKRuuWrQ7JVMc4z4NaAoCUB6dGZ9XgcXKdTjNkBQnPCdXidSyiP+Jr0fKxv//RYCNldHQw1xcvCoHnOp1qVSdalCkd0osjtUyghMrlQXku052PQhck187CdE+lcqwfFS7A72Pg1pmjRxXc04OVQWMdmj7pZ88qoixPJ5NKZyzIHvr8dea5YuQVEvx6+TAuPfF97V5KAg5NjcoD5Tkb5WOI4u5vOSAb2Qulx7yXwk6jKQL91xW1tNtOrNzcuf8+e41zh+f8tEaZv57PedRFREwNyk7XTxdYRIPu3rOL1l5iMwHI+eZxwtKpJ/s3zh4WPW/FyHx4kdmW8evEog+6KY6q5OPS6u4drmesmw8FcZfpKWHzqjlqYgxn5hd1Jw+o+Nz9znrXky3ovxCp
+ 2gqaX1fA
+ 1tiuucShErBhvIjXHP3vyZ0EKYJlB8dpiwpzFP2t2GxTN7zsOFciM92pCyMDgUH1B5xDaheH3Oqy9JcktAF/GuqHad9UTCxHA59buyYiyL1oPFo8RvvM98rMbdVf3l85ptmVMruSQsbtLaiixofJDe11vV43tGdxm2ANf7mS1tRk4Pu8AFtcdyFjx1w2dFBMlt9C18J6i0ytK4V0y3FqFTKXkmVzg7tsGEH9J0ys5wcfJ7+yO0Xuq25mEapviil7d195EVsTune30pC1z/cvZH/0P8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,53 +99,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yafang,
-
-On Wed, Sep 23, 2026 at 09:07:40PM +0800, Yafang Shao wrote:
-> On Tue, Sep 22, 2026 at 3:30 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
-> >
-[...]
-> >
-> > Known open questions
-> > ====================
-> >
-> > The semantics of memory.high for remote chargers or kernel threads is a
-> > grey area and this series does not aim to resolve that.
-> >
-> > Another open question is whether a bound on debt deferral is needed. At
-> > the moment, we think that rather than putting a limit on deferral for
-> > memory.high, it will be better to handle that through an async worker like
-> > memcg->high_work.  We aim to introduce that later, along with the right CPU
-> > accounting for that async work.
+On Wed, Sep 23, 2026 at 12:31:26PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/17/26 08:07, Mike Rapoport (Microsoft) wrote:
+> > The pages protected by KFENCE are removed from the direct map.
+> > 
+> > safe_copy_page() temporarily maps and unmaps them using set_direct_map
+> > APIs, or, when the stars align, even using debug_pagealloc_map_pages().
+> > 
+> > Neither of these APIs cares whether it is a KFENCE page and both blindly
+> > perform the update of the kernel page table for any non-present page.
 > 
-> Hello Shakeel,
+> Agreed, we should route this through the actual mechanism that modified the
+> directmap in the first place.
 > 
-> On the open question of how deferred debt eventually gets paid: would
-> it make sense for the policy to also notify userspace (e.g. via
-> ringbuf) when it defers,
-
-I think the notification through bpf programs is already possible and a bpf
-program deciding to bypass memory.high can already do notification via ringbuf.
-
-> and have a userspace reclaimer do the reclaim
-> through memory.reclaim?
+> > 
+> > Ability to use debug_pagealloc_map_pages() to remap KFENCE pages when both
+> > KFENCE and debug_pagealloc are enabled is an amusing coincidence.
+> > 
+> > But with increasing appetite for using set_direct_map for hardening
+> > purposes, it becomes too big of a hammer to enable saving any non-present
+> > page in the hibernation image.
+> > 
+> > Another gotcha is that loongarch that does not have a direct map at all
+> > advertises ARCH_HAS_SET_DIRECT_MAP to allow coexistence of KFENCE and
+> > hibernation.
+> > 
+> > Extend KFENCE with a bitmap that tracks which pages are protected and
+> > provide kfence_force_mapping() and kfence_restore_mapping() APIs that allow
+> > forced mapping and unmapping of KFENCE pages.
+> > 
+> > Use these APIs in hibernate_{map,unmap}_pages() for KFENCE pages.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  include/linux/kfence.h  | 29 +++++++++++++++++++++++++++
+> >  kernel/power/snapshot.c |  7 +++++++
+> >  mm/kfence/core.c        | 52 +++++++++++++++++++++++++++++++++++++++++++++++--
+> >  3 files changed, 86 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/include/linux/kfence.h b/include/linux/kfence.h
+> > index e5822f6e7f279..33a126cb6d1b7 100644
+> > --- a/include/linux/kfence.h
+> > +++ b/include/linux/kfence.h
+> > @@ -222,6 +222,32 @@ struct kmem_obj_info;
+> >  bool __kfence_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab);
+> >  #endif
+> >  
+> > +/**
+> > + * kfence_force_mapping() - make sure a KFENCE page is mapped
+> > + * @page: page to map
+> > + *
+> > + * Check whether @page is protected and map it if needed.
+> > + *
+> > + * Requires: is_kfence_address(page_address(page))
+> > + *
+> > + * Return:
+> > + * * false - failed to map @page
+> > + * * true - @page is mapped
+> > + */
+> > +bool kfence_force_mapping(struct page *page);
+> > +
+> > +/**
+> > + * kfence_restore_mapping() - restore mapping of a KFENCE page
 > 
-> I understand one of the concerns for the async worker is CPU
-> accounting. If the concern is that the kworker's CPU usage is not
-> charged to the target cgroup, the userspace reclaimer could instead be
-> spawned with clone3(CLONE_INTO_CGROUP) so it runs inside the target
-> cgroup, and both its CPU and memory usage get charged there.
 > 
-> One caveat: intermediate cgroups with the no-internal-process
-> constraint cannot take processes, so this would only work for leaf
-> cgroups.
+> The name is misleading. You are actually restoring that the page is
+> unmapped/protected?
 > 
-> What do you think?
+> 	kfence_force_mapping vs. kfence_restore_mapping
+> 
+> is confusing.
+> 
+> Can we find a better pair of function names that describe what is actually
+> happening?
+> 
+> Maybe something along the lines of
+> 
+> 	kfence_prepare_copy_page
+> 
+> 	kfence_finish_copy_page
+> 
+> That rather expresses what the caller intends to do.
 
-I think all of this is possible without additional code and with this series.
-With AI, should be very easy to prototype it. Please take a stab and I will look
-into it as well (time permitting).
+Naming is hard :-D
 
-Thanks for taking a look and also please let me know what other ways you think
-memcg can be customized through BPF in a beneficial way.
+I feel that _copy_page() is to vague and adding hibernation there is to
+mouthful :(
+
+And these could be used outside of safe_copy_page() someday.
+
+How about 
+
+kfence_set_page_present()
+kfence_set_page_default()
+ 
+> -- 
+> Cheers,
+> 
+> David
+
+-- 
+Sincerely yours,
+Mike.
 
