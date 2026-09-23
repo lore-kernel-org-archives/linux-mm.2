@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5253CC982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:11:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2CF2C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 249E96B0098; Wed, 23 Sep 2026 06:11:03 -0400 (EDT)
+	id A35706B008A; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 218BA6B0099; Wed, 23 Sep 2026 06:11:03 -0400 (EDT)
+	id A0D0E6B008C; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F4A6B009B; Wed, 23 Sep 2026 06:11:03 -0400 (EDT)
+	id 8FC366B009B; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DAE096B0098
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:11:02 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64535A6B41
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:11:02 +0000 (UTC)
-X-FDA: 85244608764.09.3669DC0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9CA7012000D
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:11:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtDYZfly;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 7515A6B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5C7F140755
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:13:49 +0000 (UTC)
+X-FDA: 85244615778.08.D826A00
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0EA5A14000E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:13:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPhKOaCv;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790158260;
+	s=arc-20220608; t=1790158428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y/Lsy3aQo8ST6yfvqxJfwQZYt7hLNGAoRopvtUmrCXo=;
-	b=Z2Z5Q/VTakOxDzEtm0oyome3jH/i7jokZyTJ5pPdPGZCrY51eSQwJuKkArL4YINNms3dV0
-	5II5+79qkA7xooOJVb5GFts8RSiE4QeC0JcvrwYItkRED0QvJTRPrcQJtoEsGVj8WvWfGU
-	kda2E5DE2EgwV8Wff3zK+EqRiVxbHHA=
+	bh=PREKX6Wfx3ocgL0Q8g3oQ27X39xtDWzJRCtGGTbSjy4=;
+	b=hl+OzpiPe1GqL6tO75iAzfqPIxes8fXY3egm3Oo05sAG9x+qi9P+W+cpPpiyJ4AIhsEklN
+	TLikKAZP54FCr+zE6yP1SC50C8WVavtOFIN0SC/IGHPVbEdKq7r2PfNjW4usRHCaEmPIMi
+	e3h3Fr+cCMC+FwUm9Sw+CJqj+Lvfdho=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XtDYZfly;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPhKOaCv;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790158260;
-	b=Rl2SIBAld4JvpwtODV3SQaSwvLoSNjFtfBoiHcwFC+zujL0i5hXj+nrgvbw5L/Rh6RMeTe
-	/ZLepLI/gSNewkt9ktiNCxD7r7mUBFEStZueIl3xLU5SOjWykzYI29QSfpYQSngXg1pWWA
-	kYW3NrXOA4gEynB5+YpiZGclPT7p4g8=
+	t=1790158428;
+	b=1c65d3UTa9nspUPbc1d3ZGJ0McqpOm9+by+ILEvxsEd6lHIjWcb0gTK1uJIisgtCJJ2gsl
+	nGiK29chT42ZwEthE/5m3aNLk2uCFll053HInom9Br38NyZgn7cDhtBFobSKmyy/7II8YK
+	x9EjJtg3QUu2DzRd7pO79n48HLBtjfo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4ECCB60200;
-	Wed, 23 Sep 2026 10:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186EF1F000FF;
-	Wed, 23 Sep 2026 10:10:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F07B41B29;
+	Wed, 23 Sep 2026 10:13:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382301F00893;
+	Wed, 23 Sep 2026 10:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790158259;
-	bh=y/Lsy3aQo8ST6yfvqxJfwQZYt7hLNGAoRopvtUmrCXo=;
+	s=k20260515; t=1790158427;
+	bh=PREKX6Wfx3ocgL0Q8g3oQ27X39xtDWzJRCtGGTbSjy4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XtDYZflyMBVa12YMJtw+/y4wcdfl/F1RLqNVmHCV706DNSXHaNvuUBrLzLnuV/3jt
-	 m2cTdNutk2RdWWzmE4kuWiE8YHva8EYheJW4jz/1Jl14HMyGhOyX3x8GYGdOg9NUtW
-	 zw9rOEKnEOU9L8uFRFB//uutMz7tbFHY0cJ2+//giUe6HcgC1RnNgQHS1f8hPG7f5X
-	 ehxFqkgeeKbzdhCNKUzWa1mH1UBPTLjUpjkW6me1Zrm5ivSDuF7+5K9ffb0sYo6qu+
-	 fluqlpZnXO/zxgUnl0BMKqbnq951cAXvsGRmIMgpD8d3+Uyf0qOg7HOyQKRDCTmeZm
-	 FHu9jVuJvE/0A==
-Message-ID: <4ed926ae-9e9b-45d7-9ba3-a24431522bb2@kernel.org>
-Date: Wed, 23 Sep 2026 12:10:52 +0200
+	b=HPhKOaCvWCzYSlAAHvGPirT13fNYuHIJ2LWzRria8HssijiCd0iFrRZLIukuZ3FU1
+	 EGZe1X5rXLmLUkikEjc4K5RoUaBZoClgb2pTgfTI4HJ7jt7TaQzMKZ0gNMpD5x6xtx
+	 ZEfxcZsObvhR1V4IjHTAbT4cwCLbgsl9rQi6pqQW9kbO6lwtyacD7aVdFbNcpHH0JA
+	 df0thB5tKOtukXu8mCV2+Ivf+pVKMQf63PYEMuBByA8zBHaG7/xL49PfU+OhTZsU7d
+	 cT1ObMow7SOsSVrurB0qxnQ+lPfHkTK8LIhgWSx115Hb9ZGAmbrHzzHcEOrKmN0FC6
+	 J9QiqSXszvWXA==
+Message-ID: <5271866c-a334-453b-a95c-8bfbede1232b@kernel.org>
+Date: Wed, 23 Sep 2026 12:13:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] hibernation: ensure secretmem pages don't reach a
- snapshot
+Subject: Re: [PATCH 3/5] hibernate: handle potential errors in
+ hibernate_{map,unmap}_page()
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
@@ -78,7 +78,7 @@ Cc: Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
  Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org
 References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-2-7f7dfae3dbe0@kernel.org>
+ <20260917-hibernation-v1-3-7f7dfae3dbe0@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260917-hibernation-v1-2-7f7dfae3dbe0@kernel.org>
+In-Reply-To: <20260917-hibernation-v1-3-7f7dfae3dbe0@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xajs8bons1hxcsa1dsocr5zhi5ue6kup
-X-Rspamd-Queue-Id: 9CA7012000D
+X-Stat-Signature: hb833ckd8ts1q5nnznn49mgudxu5gpds
+X-Rspamd-Queue-Id: 0EA5A14000E
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790158260-207556
-X-HE-Meta: U2FsdGVkX1+30oRcZf70nQ5oSBzKhDmxttr5JkxsONBk49I4iVz5eNMAntsCzC1Iup7yPmTmmrkOTPHt+gw61jXVRco+cwlrmvfFEG19daLfDHH3zfQqSG8hFIGMqJzvMFbNPK/AqvYs5XUklueIfK9i5OeaUaknfw6i+BX3HwMWhP629Znk2w6ymQBP3yxcAOaqTpRVjwEA8kJtBSLddnImrTNWfi+hd0nEFKnE7Uttvzh+90P9iryErhbAqzK+sv4ufcE20XDLuPj4RPtf98+nh2BAKSHBKztdbl9QOzqa/t5QuSxKwD8Kfb046bdfowz0MnZuSEmdyrS4MOoEA+wWY3pwKR2+iAo0PCHANtr+Ja5AihiBBf7OMG2cMei1N4msyWEXIq3oviHJ/XrOysGRAROUgVq36f2cYB2mstKi1tQ3EvAQX4sKWmi+nz4NtcBhF4GKrd5q/aEU22jt2NWb41HLFnaMxUF+HzYTIvqNYC7mzPDv1jaEztoQMyrsS4expy77Tf8McwFngYwNsb9snLE6S7as0Z1kqa3uc3t4bbypSG4OltOoQ69dLsiHRJYLUG3L1KnttcDlTaEr1o/+M8GhqUTvIIXxrrGnmKrZEZl4mSsXxnIsLNE7vNUWEB+6nC6RSz5oYApA/G9/BYnuV5ZSqdrItNkNBgFfdhxQlZn68P3kiyqx6uKtMj9+8Aa5qFDCatEjYLQJ4Khju4OgfUw1IHCmEj5jn+uYhfqyBZtKh/LDa1U2kwm97EXy/6XA5j528/9IVwJ2FyeEWWTxv2RE1yE9Q0xOIfihoCSfD0YudKimjPdXzfBTJm4sI4x7o+tt+EXo4QSmLlqELgM8KeWgJ0klCv/d6hsPy0aDxN7Xp/pbSFVAZ22unrOvMjDoHkNUDbSmkHUqUxEyWO+oc57yraUTRxzp3FDCPiKsnwE681FNOWbl0IO+FXKKz4iivwBk+zU3dEsBz0m
- bCF7WQIT
- KAfAqQVa/qN/Vep8V9Wnbs8iw0giXxuGOuOc36VtqzTyssTG9jIHgW45v1oqqwUdnqctxHAVuPjH1XS4pVHmpZGO7IrJNfJYrXv2hAzgbBYSIBBr/10gJZVG/CAkiDlDHr+RZ4OIEeXf8i9b556GPJT0FnOFSGOgqavhGiiSvazjdVWQ0mJV2cWHxqm8Y+ihDJv1Nnr4BpPEUOqU5gTv2oJSgZrZmIXSfvHSNCvVNeK1d3SCcxYSSf92MdGQ9ta42j+COLnjad+ULidFqCGGNS6Im1w==
+X-HE-Tag: 1790158427-598476
+X-HE-Meta: U2FsdGVkX1+lXX97EdB7N7R0PaFw9HFQP9ZfQao4EVjNuFxoU4xl5FeZ9pam9LqMnb7xAfclmlUoyQzJg/xlJSCROrxIfVnFl7NO10E7gL7bcz5bucpsVjWlopeX3/XjCJhbX4McOSGd2bP7vfTZBpdNiclOYylC42Sjz+8di2GZZcYK3eL0tBO0LJzcwI0CVq9gmXQhlZiJ5DrPXmdWoTrxcV5wkEc2dFM37NNcUewoK5ND39bOXhy1khM1y4qSbzn7t8vU4YR+PcBZx74NB/bgV6KzypB6OduP16fNT1ZnWo0KwVMPwdI79i93Lxnd5XAOqdZ27gplTQiBD4DdNLW7JY8q4iNAjW18bWbYX9JRDlKWxNKXU2SEq26Dg8FieCEnLmXYDrtHvs4iEYUvH3SPF9KjzvgsG7Ks8PpYXxm3wO4N2H7RJ9/2hXRQxy5RkcXjL++jaDVTaD7VrUMchVIXaav6vAyE8X4tC0y0GhHOL5UDG8h7VTygpV9icL64vVEedn/Cjtp0EbW3HwFFsHHBj64st3h6kuuDaPHc09efR2IjCM6bcdAhSP+XxVJxpDWlJiGFjBW4svZGdSZYq14fil2aTWOKzYbzfTTIdhBf4oo9KCxWGNAdDF15KpA/A5wMKCpaKaAjp0Ibx7OK/UIcHybegEG+ZZDyIdmuW9Rrza3AsBuEiJXNJKmZbihhUnwrdiqII/ezSxbAOCGnZtNq6Y/+jBrFpTgO+CYXxQGpue8sLIrPQehvN6lzks3vA8QDbnh8kiZ0iyv2q3J0wyPHCFm/i61RDEQ8RmVHel5nG5QhbO6ua8WGjeUcAtfo6NvAAb+UI1O/NKWmq6/mHOTgIZQS+MShLulBFsmb5INUUvVHqiN0vCE7MwjjvqE4Bz8IxSM8hfvKtCO6U4A+qCFKzg3dsJKiKtEq6h7N+WDVFomYylpU5YsMzFiynWbqXkM1AjKR27CONmlsZqD
+ WYv4BcoQ
+ F5N3OKjTYYr0Txt2Xfld43VklnM7gsu5BisfGEcuiV6vpmpdHs1sJrAZz/YMHGWloEUNWOdVUXO3JD8muEhynm0gU1POyhk37958slZpd1hUh027yFMsYN6nyklxWI2LBWwOCuAyVMIHeMp+W6kEsJwGN5IsGosEDE2Jp4QyPZj0Qvm++ikNo83m6Ad6cenkLf0z/3ABzxtwLxvFIzLEldtyhrtskfQz/pLDVVnqWxwHMnwpugkr8KpPfWx9ebSrcdazYKMMMD0iCzCkVCyuZUlCvWKW3h7eQo3mbuBFcX/9wMbpi/pNno7K3qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,34 +144,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/17/26 08:07, Mike Rapoport (Microsoft) wrote:
-> hibernation_available() checks for active secretmem users, but a secretmem
-> file can be created after this check and its pages may get into the
-> hibernation snapshot although they should not.
+> When safe_copy_page() had to map/unmap pages only because of
+> debug_pagealloc() there could be no errors in the kernel page table
+> updates.
 > 
-> Recheck secretmem state after userspace is frozen and abort hibernation if
-> secretmem is active.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  kernel/power/hibernate.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-> index d2479c69d71a4..281ad49411481 100644
-> --- a/kernel/power/hibernate.c
-> +++ b/kernel/power/hibernate.c
-> @@ -412,6 +412,11 @@ int hibernation_snapshot(int platform_mode)
->  	if (error)
->  		goto Close;
->  
-> +	if (secretmem_active()) {
-> +		error = -EBUSY;
-> +		goto Thaw;
-> +	}
-> +
+> However, with the increasing desire to remove pages from the direct map
+> this assumption becomes a real stretch.
 
-Should we instead recheck hibernation_available() like we do at the beginning of
-hibernate() before freezing?
+What's our general direction in that regard?
+
+I'd assume we'd not want to modify the directmap from hibernation code and
+simply fail instead if we encounter that scenario.
 
 -- 
 Cheers,
