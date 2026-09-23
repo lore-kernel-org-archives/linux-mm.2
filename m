@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6427DC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:54:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D41AC9830C
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:55:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B7566B0088; Wed, 23 Sep 2026 09:54:48 -0400 (EDT)
+	id 237336B008C; Wed, 23 Sep 2026 09:55:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568866B008C; Wed, 23 Sep 2026 09:54:48 -0400 (EDT)
+	id 20EB86B0093; Wed, 23 Sep 2026 09:55:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457D76B0093; Wed, 23 Sep 2026 09:54:48 -0400 (EDT)
+	id 0FCB46B0098; Wed, 23 Sep 2026 09:55:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A9486B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:54:48 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B35B1C337D
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:54:47 +0000 (UTC)
-X-FDA: 85245172614.30.6B9CEF0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id BC71E180005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:54:45 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYvHCK00;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D878B6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:55:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7410B1407E0
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:55:01 +0000 (UTC)
+X-FDA: 85245173202.11.AB50AAB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id BC7CB140003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:54:59 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FM5j2lqH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790171685;
-	b=L7BCz3WL1urLoP+BlG7o6atlvPe3U5E1SRJLvH6zNpalsNY4ui8/o9KdF0B7ere/30yXQU
-	zeGHfuj1Wqpap3viCw5+by6jQ41M8CvTgrQHELtAondUstqpSOKWTdkFeGEo9q1DtpM3Vo
-	ckd656dCIk8IA6vV/a1CGUQnGglSLds=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nYvHCK00;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790171685;
+	s=arc-20220608; t=1790171699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lV+u7ZikXuhz6S/aX/agfwlx8ZCGacyG0jw47bgroto=;
-	b=YFCA9RmKkMgEl47L3ut3T2UDGvqMXHftZuG1MTVGhnq6Ee+le/1UHAFjaRJJzqDAPVgUfX
-	pIv6zrkCOV8A8GjKObJ/VFE8N/12lfMnjqG8fBMD0xkdQC84JHM5bVwftHjPy0lp9lboTY
-	hV9F2QKO4Pwiw6syI3fYviEj3ewOxyw=
+	bh=3pRdOBL+cijWfZO9/7sYlQGKCgeKIlKJlS6CU60AIms=;
+	b=lIWpzREr2Rw7fjQTged0f/3frfMGrNqF4FzA1nebfWfsxT2GdnaE7p8/G6PveT8hWQewib
+	Zsl2UcMXPtGbSGBwvai40OxnXeYk7qsaRNfCoAINFfHSmeEHc8V9u2eXsQJqdIfgc0Gdrs
+	AroIgHKfIJDK6/csllI92px8shiM63k=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FM5j2lqH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790171699;
+	b=0T0ZkPcQEbsq9R049puFHGF8Q4iarLm8h3kKMhR+CjV6zqstf28wck45ZLlefrx57s+IQh
+	VC7InFNY52Zvs30I5D7ejAV3g9hXJgRnAQn/aacqso6vw70xQmVaHMER0srwUXwCCrQLgx
+	ErW6uD9+7ydTnahMgOFA/P8+tNc4JF0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E77C4403A4;
-	Wed, 23 Sep 2026 13:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5D41F000FF;
-	Wed, 23 Sep 2026 13:54:38 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3D46B600AA;
+	Wed, 23 Sep 2026 13:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DF01F000FF;
+	Wed, 23 Sep 2026 13:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790171684;
-	bh=lV+u7ZikXuhz6S/aX/agfwlx8ZCGacyG0jw47bgroto=;
+	s=k20260515; t=1790171699;
+	bh=3pRdOBL+cijWfZO9/7sYlQGKCgeKIlKJlS6CU60AIms=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=nYvHCK00gse9lc8Gx/Mov2CNFiG+zwZQHvXDTyOyRVnDEZ7e/j+dBt4VaW492ZGkp
-	 hpxR+G1QWZhj0OCGcyUJe3NS+dPfIOz58dyG8LtXFDK+CVfY1Ab9PrVbLAfE0A3Si9
-	 muH/fQOeqkwXuhVgU+lv4cmT03OdPxLxwo8H6Cqb+/WGhsMFI3fPbi5/wG5OjrK/np
-	 Gy5y45GHFTQJneDnyD3kQM9yg8Dez91ESmEcAYXsc92m5ei+9Y79Q6cQfeItsn3lud
-	 18hXNzMMc068k6FgYejJd6kei3cViLgDhMmavBGFCShROmYqJ8Ih/IOgqRUkaahO+d
-	 1NG6zA4/bxbqw==
-Message-ID: <cf3aede5-62d4-4f93-b415-7498f84a20c2@kernel.org>
-Date: Wed, 23 Sep 2026 15:54:34 +0200
+	b=FM5j2lqHF5oBA4kkvgz0PCwgEZsqnHHisgMdkAAnmRuvvwHVyhV2luZJK6Y4xkemL
+	 qAPC3fd7iEJsbd4xQDTAQ7q11ZqPOPy+xvE8OlQX9ae0LVkWeQlJEePNYwymIgC31g
+	 I9T+XAYUIU07RhGDOcqX7yEpg+RocTvGQgi62YrIsf5DnIuzwxvAiPX55mz+k2pO4M
+	 4Deia8UBXt97VtZtydrpwjRzcDk+ZM3EmHeK+hJImCzrcdHCdIs2GTD/OP6eqCm/1C
+	 SG+CNlFlvz1KiGyOFaPQFsi+mA5+jTYIZln8Cdpcxvx61fAaAp1iIP0xnhZnSSI3ki
+	 J9iQD2s3T/VGw==
+Message-ID: <0241581e-3823-43ec-9c6d-2346433f8f87@kernel.org>
+Date: Wed, 23 Sep 2026 15:54:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] kselftest: mm: fix intermittent failure khugepaged
- test
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Shuah Khan <shuah@kernel.org>
-References: <20260921-fix_khugepagd_fail-v2-0-3c2877beef61@arm.com>
- <20260921-fix_khugepagd_fail-v2-2-3c2877beef61@arm.com>
- <6cc12fe6-4f2f-47b6-b821-8a507eb80b46@linux.alibaba.com>
- <arOv_EFOPg0HwBk5@e129823.arm.com>
+Subject: Re: [PATCH] kselftest: mm: use helper to identify anon_ops in
+ khugepaged test
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
+ usama.arif@linux.dev, kas@kernel.org, ljs@kernel.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+References: <20260923110133.429745-1-yeoreum.yun@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arOv_EFOPg0HwBk5@e129823.arm.com>
+In-Reply-To: <20260923110133.429745-1-yeoreum.yun@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3t56f3dj3htyp6nx58814ph9xyeisheg
+X-Stat-Signature: 5kaortiw7uso1o5zaokqik619poj5p79
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC71E180005
-X-HE-Tag: 1790171685-910091
-X-HE-Meta: U2FsdGVkX19ybDfi5NkqyZmKBFS4cvo4IR8wCKEISFAX8zdazRwddszodb1Ryoypi8GubdnRskDZKh7AgIW22ckOCTc/CN9MYP635b2cyurlwUGAf8R97DpW1cKKuHyQhuBytme3I8IBsACgbUHZnMBS7do3DyvspqcVLs4RQFmde8qVClueC4Kvo0IFZIf9F9Ha5VQ39w5HVOQ+MUhIq6V+bWQlaVof5XAgd9mrb2pVm+nRJKG4PMuRr/U223Ipi1ATLkJe1jKUAz2anpKOlg5NuqJwbCgKCWl2mXHFadqjX6KYg3fcPtgmJSh33DK2vzxaHUTPkQHfvhiZ9iz1KEiQ3HPrz9QvI8QjCFYRoC+sWdryD02Cy6mUndU4jjINszqI7Q9d1w7jiedIat2EnNw3yW7UcXVQcqcNM7sdgQ6AnHe5RBa1iLlmAgtKBv8Cgy3b0raCcHlwxwGRA+jhZfM5IiH3c/hrvvd4tPlEy1/RfOeE6kj9u+lSrGYbSsNMgu2Fmxn4Z0hyFBNig3OZwyw2M/+DVAt0OngiNASm+5LhppnVyiawJL2Y3kacqMfRgOtkV0Ef2kcSPu6YDn4+bFV+88/KyYVyRcaLeq+jqOTt7FjMuQ99egZO1JTcsACCoT3Q5kpime3h50PYf8ytvwwlvd3695zphcWJT/lnrlGVXq1EC0/8VPQqYVdYNqlTbblhVGvwWQgjPCrkk6M0QoE2fd7rItyHWdoWl3jT9LJPoIlz0lHA2EePuAiIEExpX2MW2z5/BEvib/va+VYjg782Pbhh0AKnvaSuCyLtMiVOG3mj1ZBIss2QHXzZ4iGQ4VehYce5JGgH8O/BP7nj/bsEeu54y7fPVvLzrMF9BfXQxs+jmovtU7oz7qBfu5kgmuHHe9A29Wq6DbxgSuprrQHjT493+jw9PGjFtUeiJ5GlBxp9OUXhrNjKq0qbBbccvS0baYQE/DCrjKUybrA
- 7iaJWI6b
- qnCkRTcKzeae2zrCQpAS+w+hLcYrBjl3jFYNn7iFkcGodZmzZ+ANEdp+rQ77NTXNhqHcAC3g4++kbYqRimAUm2s0z3bIDdzQg9n7ph06GgSPmv4gxW1RcaHRUEmwo9PlIvtjkVtEMG1nyyG3seHk2YwTmzTPZVAfVqlY/spSfROB0r79CdTPa8tU+pz1CmN9+eivls7us+DelzN6RRYZrRHf303IB019KT1sTkxJmjUnhHawjNceovN+vt8HT/Q/XM8GLxLL7bmCdQqHCqgOynahO0e1HeW3wK0CLA0l7tPhf4jULwCLKiZTql/YMUZ9+BLVRmaH2OpiCJHPxbKvF36CCyw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BC7CB140003
+X-HE-Tag: 1790171699-319310
+X-HE-Meta: U2FsdGVkX1+7H/4c8Q07IjI/LTtGQA6imfSGVs0i9gvfk4a7nNMy1SpaZwYnoaswLxVMLsyATT8Css8XFV76yieg/9BYFv8atRAbXIsAEK36GQMdCUdkSk8gU46PWnSCphfk7ESty+zFvH6zUqGKyJ+sfRy3w//O8gjd0ncPhPq8axmtOcrE6DJbPCITAdh2+lmQAmdgx+ZkuOWSV1wyfqrYqtMi5qZOrJjVO4xeZQARTC7iVBkY+MPAWIKuJiezhiJ+C3rHUpQ05MLdsVpBVR4kZcLybNEzFoxDx2Qf4tbBsiyDYSWosY40eoHV3vxRx7uz3AXvqnWbGJDA8TXMlLIkvAhqSys8wXrLMFf/npefTXg+Qa5sRuulD0nRVJsC6PYsLDxIAkaswuj07AwRR2EVIkX5HVQ0BPYgGvg9fq2iAmnIJc9gufsybwBUHx2MeJhHI3ps6//C19V9Xt+osRhVO8OlPqqKK0ANNEf0oJAl4O03uER1zfYwNIr6zijrO46361/AFvdCeNwElJZ+C6fLCWTJdWiXS1amLbDzISLV0UNms9ytuOqj5iEFrks2HMvTcSUHiZ+J9O4jvHQZVHapUYNrixEWWUjLch2T7A1FXrkjzaTducS9cTfXJTuMJwUWjkWszl5wnrALWd8NROuOo9e+o2QxJ/U793Ik8iSU0eYMdhiZsmi3/XHvzGlLrs4s67U52FHS9fkONtkxzLseH+G4SWaFr8q6RBGMk6Up202bjrODj5bDLT8DTJLwtJuHJmHiDwdxCl1QBTggYHAkize7uG740X/4k0rlKKiG0g3z2RpETPfH5EAC08vYV9PIzSYEHjJ0WHdIvhF6t2qvt92xsuLhtgslRmZUCe9ousoJ815AT3HQXQbYJh3Aog/zWBKEOzV/AIFnrKkq08KEvoC9zDS2xDT+TFbZ5zVDn/B+eSZtp/G/4XsCQT+p8gSAR/4J4jHcWJUK6jG
+ nTPcX5QN
+ 2guaGWwdn79eWrTSbJsmeiJz02R+U3S7HdaoVLjTcI3y6IP0/qycvSrHjvACibX7DKbx/HifmGu8xOkm14r765C408wrIwKdxSWUAtP8as9VAvrHh3ADDomoNCveY+NGLbET0eks0DgRGk8ANi7PK5O9XPFdg1k1DJ95Z4Q9zrtr6KA8KvH7eLL/huBWRvEfl77qZAGnPl1fkRZCPb1zb/gLY4z4GuNsNSaiXG2DUZHMvpkQnxJxr4Aqtk1z47Mgbxd7vX+/9E+otNsFFuC3gBT/C5XR9lK+Szdf8O3Z3Mioos7vI0WaYmVSWIodaaXIL5xKP5WSDumcaOEbztjDjOWFBWVDrTf8q/SIT+GfoG4EFXSvtQZEX7uN+ae1QG30dZip5aq6mTHdTjGw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,72 +142,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 12:54, Yeoreum Yun wrote:
->>
->>
->> On 9/21/26 6:35 PM, Yeoreum Yun wrote:
->>> There are intermittent failures in collapse_max_ptes_swap() and
->>> collapse_max_ptes_shared() when using the khugepaged_context:
->>>
->>>    // while running ./khugepaged -s 2
->>>
->>>    # Run test: collapse_max_ptes_shared (khugepaged:anon)
->>>    # Allocate huge page... OK
->>>    # Share huge page over fork()... OK
->>>    # Trigger CoW on page 1023 of 2048... OK
->>>    # Maybe collapse with max_ptes_shared exceeded.... OK
->>>    # Trigger CoW on page 1024 of 2048... Fail
->>>    Bail out! Unexpected huge page
->>>    # Planned tests != run tests (26 != 23)
->>>    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
->>>
->>>    # Run test: collapse_max_ptes_swap (khugepaged:anon)
->>>    # Swapout 257 of 2048 pages... OK
->>>    # Maybe collapse with max_ptes_swap exceeded.... OK
->>>    # Swapout 256 of 2048 pages... OK
->>>    Bail out! Unexpected huge page
->>>    # Planned tests != run tests (26 != 17)
->>>    # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
->>>
->>> This happens because khugepaged may collapse the pages before wait_for_scan()
->>> is called, causing a sanity check that expects uncollapsed pages to fail.
->>>
->>> For example, in collapse_max_ptes_swap(), after faulting the pages back in
->>> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
->>> before c->collapse() is called.
->>>
->>> To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
->>> collapsed by wait_for_scan() for anon. This prevents khugepaged from
->>> collapsing it again before c->collapse() is called.
->>>
->>> This failure was observed on NVIDIA Spark with 16KB page.
->>>
->>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->>> ---
->>>   tools/testing/selftests/mm/khugepaged.c | 3 +++
->>>   1 file changed, 3 insertions(+)
->>>
->>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
->>> index c32244b565658..1aad4bb427ece 100644
->>> --- a/tools/testing/selftests/mm/khugepaged.c
->>> +++ b/tools/testing/selftests/mm/khugepaged.c
->>> @@ -578,6 +578,9 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
->>>   		usleep(TICK);
->>>   	}
->>> +	if (!strncmp(ops->name, "anon", 4))
->>
->> We usually use the 'if (ops == &__anon_ops)' check in this file to identify
->> anonymous test cases.
->>
->> With that, LGTM.
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+On 9/23/26 13:01, Yeoreum Yun wrote:
+> Instead of comparing mem_ops->name to determine whether mem_ops is
+> anon_ops, use the is_anon() helper.
 > 
-> I think this is merged at mm/mm-unstable already So, I'll send
-> another patch to change it with is_anon().
+> Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+> NOTE:
+>   This patch is based on mm/mm-unstable.
+> ---
+>  tools/testing/selftests/mm/khugepaged.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index bdc0c7c117d9..b0cb02bf1a73 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -618,7 +618,7 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+>  		usleep(TICK);
+>  	}
+>  
+> -	if (!strncmp(ops->name, "anon", 4))
+> +	if (is_anon(ops))
+>  		madvise(p, len, MADV_NOHUGEPAGE);
+>  
+>  	return timeout == -1;
 
-Unless it is in mm-stable we can reasonably squash stuff or resend. This
-shouldn't be an independent patch.
+This should be squashed in the other patch under review.
 
 -- 
 Cheers,
