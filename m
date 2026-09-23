@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B58C98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 19:19:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ABA3C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 19:33:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 186E06B0088; Wed, 23 Sep 2026 15:19:11 -0400 (EDT)
+	id 1C85D6B0088; Wed, 23 Sep 2026 15:33:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 138AC6B008A; Wed, 23 Sep 2026 15:19:11 -0400 (EDT)
+	id 179046B008A; Wed, 23 Sep 2026 15:33:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0264B6B008C; Wed, 23 Sep 2026 15:19:10 -0400 (EDT)
+	id 043DD6B008C; Wed, 23 Sep 2026 15:33:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D662E6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:19:10 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FF621408D3
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:19:10 +0000 (UTC)
-X-FDA: 85245990060.14.96DC772
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 49F6140003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:19:08 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ASCxU8WP;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790191148;
-	b=hPjLptsQzzBj71ESYUdFMqQZJTbCbW4wyocvu6wZmSRdjqYxo8WHNumOCPVqxCEOIQ0fjg
-	7JOwBR8wKRtCHMnwR6vXav/11NuKY5aUXb51iVfZ0NWDWYEQsa2vr/Nmk4SxRq84ZxFvrf
-	VDgKn/o9R6DJ/b6XhxnG83YQSrWCDN8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ASCxU8WP;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.234 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	by kanga.kvack.org (Postfix) with ESMTP id D03876B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:33:50 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32F88808EC
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:33:50 +0000 (UTC)
+X-FDA: 85246027020.21.F4F2F21
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2CD40C0005
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:33:48 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QT1PAU98;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790191148;
+	s=arc-20220608; t=1790192028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UCgcJNY4tK9emEiCWTTdHOrgzyz8u4VHunmn5NQXF5Y=;
-	b=pBatCahXYEbn9QQmh0c6sUVNPzkByj2V/6yBfkLaCvaOJpntTSouShOamKAnZHpvCrC0Hg
-	kEd79FUOK802Tmtrt1WulXaYFyyO2yPxqhOKS+KGx3jgJaDKMVYxRZyrnl32iWkZ0zfo+j
-	00hzywbcsoQ7vkmD3v2/4um39lMMkJM=
-Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93bd580489dso120919385a.1
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:19:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790191147; x=1790795947; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UCgcJNY4tK9emEiCWTTdHOrgzyz8u4VHunmn5NQXF5Y=;
-        b=ASCxU8WPgmXFUvb9ssetdH1FyhM6xZTrOoy0PSHObdKg4r2PaLsOLtBCWeM2NnWeQz
-         FbZifi+7cFSnqSk7TocUAIutjPMcadKw5tSz3kRitVF15RjLFUTHDemvtTkhb8rLHMV5
-         ruPTQm8nu9jJ+kwPPoNSXMMEazEFmxsdAgT6hNp2GSiUCX4hcuetFrEAMqdsZs0PMtP5
-         hwV60oShOM7DQXD+0793rRn649rletlSboWLnFKUs6luZNhiLTgGdB8Dwe3gMO1DT72C
-         qgfb07s9ONVGcCQfubhiR7VTJa1DAp7pDj1D+NvZhPyUM1Cryu5u3pc7Hq80DepPZCel
-         obEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790191147; x=1790795947;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UCgcJNY4tK9emEiCWTTdHOrgzyz8u4VHunmn5NQXF5Y=;
-        b=ycEzUBebIUMuT73JHonppd/rniOwq79/VJHSGowuz5JeHiN6NQ8IxU9VwCDd/3yYq7
-         YkefNRsQE3OEBv7ITc88ClRi5BTol5zRf9ZNnZ31YWNW1lTXltA1KZ1BQDuHs62V0Lzr
-         SnypOAx1zlahRzTyFFXVXUawOoI89n2H69sUypn4p9EqSdCWCHaFD88vOjkVnpFMq/dF
-         0bvDH9cx8sSsNH/VvgX1zzWppYq6e6Qvqxfl7FVyRKiKw+PdOEMQZvYsv2ec2B/y5CdN
-         giRyrdSXHsi3Nvk/zrCbh1f2HLnTG2ionqJxkhbr5KIw4EnbYvEaQdfCOA39/pkk8Aq2
-         erew==
-X-Forwarded-Encrypted: i=1; AKwUvBzdSY6ezN3NgrNvMD99aj6KaFzcQ7yF13IdMLoC/rpi41ao+NAeQOJx1tMlTFBA/MYbbRT79A03pg==@kvack.org
-X-Gm-Message-State: AFuF++kQKa+b2WcAgBJZtehl5UzIfIPbWtuJ5h/292eSqmRxwHA6iDQS
-	J4l1r2U6CpIHIT1PsL8gMrwQ5cAEt1LAbWp8CWDI2cREQJSclDf6Y8ti0ESW/Fctv8Y=
-X-Gm-Gg: AYBFou0q3h/iOQ5yp2fV0EafYpstU8bfRmkHlBYTpMzCMUK3Io03p9NAgaWcad904oU
-	c5aHY3ZHf3DasbpkoATNdx32eZtKBW2poJFd6HKbYkctfyz/MG3eu68VJnIc6dYl/9DOIj9GOf2
-	hyTNIu4n9Re4FuimG7jDp16CdR4cDaix5ofXs20a5p3j239sakuzhvvKb6CFQtCIuCoeKRaWOaR
-	mqq2ZgCRIkDxdaaPJLvaeF1OQtyjomL8THcl3G4osNOJ17DeBKzC69w/AnoH7z5xrYGzdKFmefD
-	xKuhlYeC9IRb9eGSTOooJVvL+rwBLiVAfpyyAK3tifL0Ds5rGJ/Q36MbIJ3wWEw3sUHysuT3HNA
-	ux3nmB5IcsxmygOKb25j4ncvFs+etqvo/9dvb20gUpcVbP38RlALYckykucF6QBpmFIxWqIMZJQ
-	wdE6CjQ5RBt0SZsaNgT/UX2QXm6rC8WcCwf8Gf0onDAfJ0S5/nQpo0rDN7r0Ia1Mg/hpb435MEh
-	QQ1ajw/m9KoyGJQp5oY9pkt9k75unEmd7cAUEyBlMtWRPRmlAyOvfjm8NVhfyui1Q==
-X-Received: by 2002:a05:620a:6605:b0:939:1483:55c with SMTP id af79cd13be357-93c346d3600mr19039085a.19.1790191146453;
-        Wed, 23 Sep 2026 12:19:06 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c267e80e6sm254479085a.21.2026.09.23.12.19.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 12:19:06 -0700 (PDT)
-Date: Wed, 23 Sep 2026 15:19:04 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH] slab: Remove slab_folio()
-Message-ID: <arQl6rYMkBXZ4beo@gourry-fedora-PF4VCD3F>
-References: <20260923183655.3364885-1-willy@infradead.org>
+	bh=zlF2IHBpGoMsAW+PGueMhFZSAFiwVwxev332r0gbKW8=;
+	b=rD0Q8dqnesCO60B4UT9rWH9OufjOKKyldrj9pkpVnpN9ov3zsUo0YRXi7LS6iZZrHDJ0ZJ
+	NZ5BhSd78EAbs3jRAhJMJUtHzfvMgIVF8nYoZV8Ah3phFtfHePk5r0NTLaXdcDqjiZ8OUB
+	XkzymH5CKWcuukhxS1Ar197XjxeuR4c=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QT1PAU98;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790192028;
+	b=w/73WTFXifPCBbcSZpEUjIGyEa4Gfees9gKR839OLYRVsuiRa/sA8oF2blgKvJ/yXeJGgu
+	+j5NxlrAOXLFDaMJGcBFlT24PHXF9O0oq7MkfVQTfJhu4uUN89X5lf5EwJvyHfMhYxO545
+	i0ErsCDUfzrXysun7QctRHSFuu3smJ4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zlF2IHBpGoMsAW+PGueMhFZSAFiwVwxev332r0gbKW8=; b=QT1PAU98ZJkp/BlL5ftLjhFNug
+	BvKHevpJ/YlLkvNj7hHwEBJFcr1zf3E35h+m+BOgBYCSWdEnJw1X9ZQrO/SRYn9gAZuif4BJGCDhT
+	ayLU+GyxTD4uxXdG5K3P+XCMwxpWgm/2OVTBg6GKHuVhlQyQabwuyDVi6gw+vtf5roZTHa9V+klxR
+	4admyx1UoGsAwtPMvenoa7xuolkH8RXP7HL2Zt3uVomKQWKWzrSvkl/iZfdF2aCir6Oey3NJNpBfD
+	IKfg5fvDK77dRtl+YtR95MQ0T647+VaUOIRu3PqwLSef1QUsyBpYYrvQmt6zjlS+7iUQ00RdsMlZT
+	v9QZ5UcA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x9Sii-0000000EFUQ-2XSG;
+	Wed, 23 Sep 2026 19:33:33 +0000
+Date: Wed, 23 Sep 2026 20:33:32 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Gregory Price (Meta)" <gourry@gourry.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <arQpjJlN9CGee5Xj@casper.infradead.org>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <d30db03b-ffb4-52ce-c922-415ad75661ea@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260923183655.3364885-1-willy@infradead.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 49e8crzswweujcrnurhqccn7h34983oy
+In-Reply-To: <d30db03b-ffb4-52ce-c922-415ad75661ea@huawei.com>
+X-Stat-Signature: nh6pto6m641zxrfds8q3dq6cbacwmawf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 49F6140003
-X-HE-Tag: 1790191148-290869
-X-HE-Meta: U2FsdGVkX1+OkO2oF9adeGXWPB5aw9eO+/7OZuI/7hWFBN1L5mJuCB0IayQZAnUSkhA1Tl/o563tfUx/PcdUa32Ti7RU0DElHnK6TGbLczQFl8Zw5PVC+X0Phlmr8Y9uKpHHSpZSytNhLV5Nb12i2fxCI6RR6zErRXcoF6YKoVrPE3QI3nAfRFxCle1NRiMZL8ijjV2ks6xVErWn9iD9bNcz8Vq5A6b88up4Mo40Raszky2nvXwShhDBXG7TxzIVLI1dspjjuQur7arxvLPLLFrOA4mxZQzfaM6R8L0Ov26h/yC5V4EKfMKgHJLfMyElScHAAqSRx6z52dcJKTKUqWEytgj3+Mm77j5JkhdiCoRL4tw2fMQoA+A+vRGxe32mrrUMj02m82nZa8D4e9S3o3z4kQWKwHqe64wlkmsuoqfCANeLeGRAuXy7RPk+nQOP2xQ3UgDygX5z11+cwcedHOJKBKGNTYEHN4+TiAlptvOGkYr5Vbs9Kaq+MOhzjSHj3oyLbcD8LpkXuHTHBlVl6NLQX/zl+bFLC3u3BgPbHD5pdd9LJMZSTIFzapuT8y56yaYiAXtPjKLHS/qNbhwuGuUJ8EQbQ1WHW4Pu3glS5fDrg2s24s3cwcegCHn06I7+lVJ7K4M1H4jmt2PThSmRBaw/dAPXsYvsOv602mB2UWrk+mNFAiBMhOj2aQrE5aXipHnQ0h1AIp4DFYkgZn/pmMuZc7sCQxmOSuSogMZfwgPZ8qp1Sg5RGv9RaJkspqcUbn5mECzVrhkzjuW8RZ2678sekrFLKcFJl6smmoPm7J7JymqmzQDCCvgLpJ3NHwqF4K9lPLMs19ahgV7Y+FWiWsoEqwVECKXkW98uZF61tVYvL+kfoz25PLTWZ5Vz6ORWVSDsKoaKUaNUpd500YoJ8WB4GXBHUyJmdvfMWLXIDAx5lqYqGAaAN7MqdRi2s8re/JV5uRHX3Aa0dsOh1aI
- Ucimx1lM
- RA3uaXE1h6e5injK09OLwZPl5ucL1TetlPsapkUm+qI/mjJpRCXKDbq9CuFyWefl2OpoKeZt3+W3e/zei8igB56q9dZrnhnDrZCnLRxpJgkE3uKb/5/cdCzdth+nGNtw/IQE55GrPVIv7qVA5ZDRg/Jn/r2FzgTviGbelyUwps7yA5jUoJr9y/5KsGZRcXvLItYNfLPkuTcUHmL9QA0mOF/Xoprq1WPntEx2aPY2iNMeH8EX+u7sPotwbXxfQcfV3qegwOVY4fnPc99VkmknqJfzfwyVh3j3+nISO7PFrukhi6nzBjYjhntpWx/a7NvIC3wbjPdh+wjam8+GJM2H+D/0Hxc2IUTHVWyC4Mc0sc38kmnlTt4zqxRIHWupY9a13ez3qHTTIzuFBr46sQfwDABhYGj36XC34TeLTTlluMFAEJTaoPlF9Qv19x3oLZ9bnwO+trdWujr5IjhGbTqUJwhL4DpJ0Q6qEwPZb9JQuzOAJxC0=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2CD40C0005
+X-HE-Tag: 1790192028-423433
+X-HE-Meta: U2FsdGVkX18mvtmTCVDdmeF4P9iOPo8/E9vycEu2iC5Go5x/YdAV14afItpGB9IZajpAkphwEc+BqnB5SpnELgm3sWklNQVQcokV6Xe0badd0KZXuCdvVD/WFF+EV+lBciJ3R3z/9nx2WRjbLEeagFP7dSCPjWqpCPuDGcVpYDopQCk/R6xWCC6fupAelbdBtacGzVf5a26BopIATvYaJge7F9wu41DuBdx8jzE/6AQzX7XD/2uwzJGJYzzgBzb7b2So97qCLDarXAmFHC3uqo8QCPIBSDbiWHcTr7emp0ie92ExGts1kl233oc5UPTzvCTQ1pjG7ET/iw0kkKGrrVeMBly5kcnUjutQFb+Hk9+d+5ZPmoHQhvQ0jVAVPc/bx4vtRuzYTkygiggyalTuCJ6CCuLfzI9NetZbZboXLMiSJUeqm9bEvB+RCKZAGcyJs3N66acRM2ctq6Z7uJOQuMsJuYcxBkGG5aYWn0p8GXn04oFdWfUcOk349k8cTepNiy/e8iZWjoj+mCakotL6JDd9JbCh9ZgpqSimkY2DEoey0lqno9+wFbvhi+UkRpzecLsssOUDGMgHodOTs9dVZs1ukdNDM6E+OTQIf7jHEfO6oXt/Bc78pS+7vZtn74t/2mRYabzqh49OtvTyDv3Rf/KkuxSpW3hwxPd/6GYf2z8obnY9ncDHElRuOArbMQl1HUfsvzrtywCGK986jfndvrbKTQbhtT7q7ECikH2XwYmJnpnFit3NkdTJMIpxU3nhHMRoGj3XbYUOqcx9QoB92zrbB/0soFNywg7g8E3vyi8tbBTdtopZTWQTQ+gVG3hqw4kGJU41A5ErW2kqQAFNOkEKp4uEpyd5BhJQhWXBDyFcRoZRb86d2QbOyjMASq20o4TRQttolah8L0Yxji/7dFv7aQXjVARkI8K8M//WTL7ZBRh4VF4B2d1zxHQBHlDBUQQttd8HPbbv2t6bblh
+ zYWizZaw
+ fso8vAktnnS9r/cPWSN/AfgLS3AUbqV2dCDYhiD5ty5e0VtdN7+t5dw8a9scz4Md7d8k7mboSV/mc9r1gHUhhkH3Ft1rW9Lrs+WXzAJxZJoZB7jEok/6lpV3xZtPkeI/7lPvltMYij/10/ZRmtcMRbPhrXVOObtkB/K58TEahkASf44mzQ+sHa+NnV05K76cLBVR9WY1X2JbLAapO1dP8q4YSBQvS2bL2+up3XK3IqRlOadXwg9Bwt/DtVHf8pMvUx8cbj97dC+0QA/3eY/2aDqIB8eGdd8v+VNKH0CYtyf2pKP2pYjOIliSd/rd96jYbulIT97a0YZLlgbYpk2WPWFtFdBF6JpMy0j7lvYAVAnlzd25UZws8Dk4gdgi1iQLit1sgWA5BWOQTfYk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,13 +97,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 07:36:51PM +0100, Matthew Wilcox (Oracle) wrote:
-> This is the final step of divorcing struct slab from struct folio.
-> It's still tied to struct page, but there are no more mentions of folios
-> in the slab code.
+On Fri, Sep 04, 2026 at 11:46:07AM +0800, Miaohe Lin wrote:
+> > @@ -1950,8 +1968,8 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+> >  		return;
+> >  	if (folio_test_hugetlb_vmemmap_optimized(folio))
+> >  		return;
+> > -	folio_clear_hwpoison(folio);
+> >  	folio_free_raw_hwp(folio, true);
+> > +	folio_clear_has_hwpoisoned(folio);
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Should hugetlb_clear_poison be used here to clear huge_poison flag now that hwpoison flag
+> is transferred to the raw error pages?
 
-Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+I think that should be safe.  is_page_hwpoison() looks robust against
+that to me.
 
+> Apart from this, this patch looks good to me.
+> 
+> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+
+Thanks!
 
