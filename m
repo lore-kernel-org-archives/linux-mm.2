@@ -4,106 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7837C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:31:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E99C98307
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:31:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8BD16B008A; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
+	id 2B1266B008C; Wed, 23 Sep 2026 07:31:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3CF06B008C; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
+	id 262896B0092; Wed, 23 Sep 2026 07:31:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2B686B0092; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
+	id 178136B0095; Wed, 23 Sep 2026 07:31:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CE506B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E84A812076E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:46 +0000 (UTC)
-X-FDA: 85244812212.13.64F5197
-Received: from mta0.migadu.com (out-165.mta0.migadu.com [91.218.175.165])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ABA1FA0005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:44 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kkL8JV72;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D41386B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:31:50 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 561CF1607AC
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:50 +0000 (UTC)
+X-FDA: 85244812380.12.CCC27AA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5003214000C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AR3cDxi9;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790163105;
+	s=arc-20220608; t=1790163108;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2/WRRTJsGTNGqbwUBw0lhJz6QCUq2eoUdRWvG4bg+nw=;
-	b=5Cz0jqUnmjDG4jPjXfQJ696o2lWzyoOkIHUGQ0J5ut11IJ/P6S6MmimIZNPndWXLJ9auGv
-	ww/KVWz3R8137nTDTRKi+4Gl5kXiMPuSNA1Ago8++iNQL7dfL82AOdEsTC7iqvTWjsUp1O
-	+zegVAaShDbY4KxrfErvw84TVLssVy4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790163105;
-	b=TKYvgvnpsHIbnjHzx8pFiRY0kT53BGkGlVJj4A5Kffc1t0qdU5vwkskgSi4pnqghlUGrql
-	wwzxSANGwTz0dMGPH3nboXGdf9IW0I0aklHGuHqDP1fhW2XvA7/Q0FzMrzLhu1Nk0uk47R
-	1J4qmDZHzKOOiqRd8SgrC2RtygHq3h8=
+	bh=uVpelPQu0kHBYTe/lBpyNAjQyPAvCHTrYh2IRw2PzEo=;
+	b=rEP5/43dAZxAW+qcXeXfX6B/P+CiPbicOUDXHbn+HTYgtlmeeOmhw3zDhuuUYfvJhtgNkI
+	R5i1mxMZ2xVeXGdDbQYeNeasak+t4TGpxuHyxCR1Kv0ezLfOhav7sCkQhQeKKhdItQzZua
+	BMBU95OvEvHy5iwj4WlMG7752qAu5QI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kkL8JV72;
-	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=dRRV4UmPvG3+M432ExTQaUHSvuzp5ixmXuLNEW7Fyxw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790163102; v=1; x=1790767902;
- b=kkL8JV72Q4lertG1VBG+4HVYJlSVqnVkAiSEdfcT2eIsXvrRfB4hh8aE7qde6owRYDEzd9yt
- fYEJYuB0ZAsmE6aJ0p3u0W2TQJSwZ5Z6PPLmg/DIr7JrsMHbccDOEU7axBX4BOR9Ufoal/Ft/1S
- 4ed2nA2FAIcdSE2RoQWxPM/0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 5edda2cd734faa91;
-	Wed, 23 Sep 2026 11:31:32 +0000
-X-Mizu-Trace-ID: 5edda2cd734faa91
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: [PATCH v2 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
- together with hugetlb folio
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <2f01bd33-6b51-4978-a19b-cd1fd0bd013c@linux.dev>
-Date: Wed, 23 Sep 2026 19:31:12 +0800
-Cc: Hongfu Li <lihongfu@kylinos.cn>,
- Chris Down <chris@chrisdown.name>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org,
- stable@vger.kernel.org,
- Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>,
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AR3cDxi9;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf09.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790163108;
+	b=4SSOYIMaNiKekw95hLg22VsxORRA0jmZBKTVkS/isza3HxpCIcQdDDI3dHL7om3tyE3GB1
+	8F/hLbaxCHB5RFFHDud9mikZ1Licga/hfdLwhtUSwyHPIDLbuT/7e0w7nmy+OGyAM1L0Yu
+	I0WdB5H+WLoI0jc+sWlargYFhxyL44Q=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C3BD3152B;
+	Wed, 23 Sep 2026 04:31:43 -0700 (PDT)
+Received: from [10.0.138.135] (XHFQ2J9959-5.cambridge.arm.com [10.0.138.135])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B3E053F86F;
+	Wed, 23 Sep 2026 04:31:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790163107; bh=84cNSNsZOe2ZUMhr4KA+M+5D9qaRj52wt8bKz1KgUhU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AR3cDxi9CqyejEzK5yReljLrrtRhQfGl5UotrR3Bhg8Q5bGd2LkK2RZj80cgDgMUI
+	 uR8CTF3NsWoXgMD/8Uc81g6W25a9t3DlFJS2W6+aTpCmdh/cew0+jGA/c3SpTyjdfk
+	 ncR2EZRZIIgUEf2XNhW4Yzrd69tGkC01feV5JmO4=
+Message-ID: <bce043cc-0f69-4297-8f31-92dcfbc0061d@arm.com>
+Date: Wed, 23 Sep 2026 12:31:42 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/4] arm64/mm: Use pmdp_get() for PMD accesses
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Joshua Hahn <joshua.hahnjy@gmail.com>,
- Nhat Pham <nphamcs@gmail.com>,
- Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BD68F59A-FA10-4308-904C-EF82EF59C101@linux.dev>
-References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
- <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
- <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
- <1835413c-e2de-41b0-8225-161afa50676a@linux.dev>
- <10149B0C-4108-4DB6-84B7-A301E8158CA4@linux.dev>
- <2f01bd33-6b51-4978-a19b-cd1fd0bd013c@linux.dev>
-To: Hongfu Li <hongfu.li@linux.dev>
-X-Mailer: Apple Mail (2.3864.700.51.1.1)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: ABA1FA0005
-X-Stat-Signature: tu5z13xo87gof6bi5y5tsw4yqkx8t7k3
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Linu Cherian <linu.cherian@arm.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mark Rtland <mark.rtland@arm.com>,
+ linx-arm-kernel@lists.infradead.org, linx-kernel@vger.kernel.org,
+ kasan-dev@googlegrops.com
+References: <20260922061638.3967467-1-anshuman.khandual@arm.com>
+ <20260922061638.3967467-2-anshuman.khandual@arm.com>
+ <212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com>
+ <m72rpspdg5cv7xptent4tglgd25zehx462nfmcx5uyjwi2ag7p@bc6hvhosgtfb>
+From: Ryan Roberts <ryan.roberts@arm.com>
+Content-Language: en-GB
+In-Reply-To: <m72rpspdg5cv7xptent4tglgd25zehx462nfmcx5uyjwi2ag7p@bc6hvhosgtfb>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790163104-17217
-X-HE-Meta: U2FsdGVkX1+QgH7YtxL+pfLncQvfYI+/m50JuJo86twRpzaTh3ZBiAmd3kgduHCJPNWYQHGw3YvqNvnHUVJ0rbBxuaGOH60XhvsN7O3Pnq2yht06+1kRKgQKKLAeR8zkfc3Q2M5YN3h5SvvU10R1p8ed69AR6kbG0wAxHgapzjWpYSdK7Gn+QCE2pUp1JYXYheC6U9TAHPhRrl3T5kn9Dj4tD3zGWxQI6pKQnwrz6wLVBLlobygmN55vzVraxJjLxq8dMKnWrLsnRBFPb5GLJHeWzIoQfDeSOxTZq0tiTtS6JaDsDz7j/jOFtVHadTOccN8tWMo+6F/mJ1IaraT49VVKJKSPKc8K3axIDHIUWPVt1wPApVPb5OB17pSUDsN1uBc/NkLZx4R3ZdcTxHrjk1jmGwhWx7a0UdiXKSFiwW6t7DHuEJYsBUrJIJPYLkLoTgg2JK9KIrz9R3Yuhe2bgS7qEPFaINNZYh7oW3dq/OgQlSoypgsOLg77nyJ4yGKScdQZwav16PZLac4U5vb1c1PP/Lp9eG3Nl6Obxuw+xOQC17NP0H8TkT4Q3RoKVScUmdNUg73g2KHS8dGIXf1Kw/pDs2ZBlS1kAUrxxIk5mZayF/+R5MOTPL3Qljmwvj8pFg+/73PCXq5WxppLlbawB5KumfR+WdKwWbkO/6VVHG7XNpQxRWv/G6mhnRzOlNLIOiDtuvVK1PjYbdd2WktTp98f6ERt20uawJvQKjAU5Y1Z+XrrDAXeAk29bTQDucjpztj/Mw02x7sIyOKGRfAjqe7vMiVCkiBY+/Q8IlRLqmIfRp8Q+E0djOR9rrffmq7dH5x71XOOSfuPMcQANYq2oC0GcPr1PUoWzC9itMxeUc1xiYbSdHQM49j6cakNo+i5ZYVIp5yfWjV6YzYcNy/JrVBTbj2vJV7ysJrDuJ+lWVsTiwyJfjaFOZjNwJJV9eSjBHCGq6bgIfvkwQrcb/R
- dbjiQ3xe
- QsLRDyRTGIa7gxj7m10bpqTNsZHgZBmXFFAEn/NDPZLPTqdYlVehM5tTBH2VbeaXIDhHFGJpbgVpQzOZqoXS9SVXhDlqYXLerHtcglobnyAbQ2wFFe5VtNPIiPtsCdWjuH8EF8vjQBZ0e/F4GtrQNfw08STZ9bI6eG883WV4T5JeubHRgJnQhVeSxuUyMw4jqYtreivOSFPCDqyuE8WZbCCrwpT5dDwISHrwqaEm6ZJ/UEMOoi/H1rCUhQ2JzjPEt77a2iSuzlBqPiBjYF0Gj5xQ/Ho0KhbDxvZhSR6cL/opHUuqWv7ubBFy3q6oYRnE7ZC1r4aV/WfuEoqqnLZUpw9fkJtmDkoqIo0ei9LsyIs/pNsvD6Ss2Q7W7qFqovsIoFvwewBPAfw/14UQ=
+X-Stat-Signature: sm76xizo3eckcmbfe9x733hpfd71nhjq
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5003214000C
+X-HE-Tag: 1790163108-87303
+X-HE-Meta: U2FsdGVkX1+WLlJIm3ufLHobgfY9FPfqoSGSU8F0DAfFWGedXbxKntxkaPb/T4wmwmcpMVrHD7viAQrXsaK/fcBOyfzZ/3MV74XgbT7+c0rhDY3DEWF7Rl+oKtEq8h5cbyFLFAkE73xUgUHlvsEKLmGDFzRFaabTnRp6lHBCJxSUUNai4aijUCk4Ycv0pZeFDvnCV2Q35a4uWX1vRmlxQq4toQZ2CO5P2EqUfSu4yvwBc0GJZDpE7AjNjNr0Y6YHodJyhoOjGF+wwG1iwUrJIDTXm8pxZaNyEm9cyCyAbIlN4qT9rHMlxxITQLU3kVge+sVt4o+FEs1Jj9AKcjn8HsRqlzMp0FXsPeNB9uUvE7MSG7tt49lm/prsaMxtpRRpofp0ahskBrTQaM0t5BXy4wXD9Dhix+2ddJ/5IIQJTnAk0LTKlLIZwfaL277Pki7jZmqdF/dou5RSUBeb8X7e9sfGH8cbVD80fRgoix/rzHuwvI0vK5NEqTbHDdBwH8J7xD/H0kLvRATLFmnT2xjfQ8D5hw3nI/oc6SVsTTP9FAhKWr18kNh2+uRyGNAEOYMMlHSls3USZae2rDLt0lIljvDSfVD1JYdgJ+mEJ9gBclaMwf8bCsuoOE9uXozQnmptkWnQx/OGzEXprPUjzSUL6m1I/Q7BTDii9kkWt7+6yp9yfU7iYN+jvc0Xq2BTYpWIgT5xAWQxOaVNjnVQJye27VxKlktaZsbmk0ZzO1sjX/ERkz8F2UMgNHZSeJ6Z6es4WVYxAyxHK/gihVUlzScQxVUMuywsKDNq4RvHrSJ7zqD/wjgYgEWgF1EnysXHBmLVlpFpukAEk7C8u0touG/iHpdfbe2rcLqaCylcR6hPSKglLOOL3877HGLMx1tXt+pJawJRwxGFeaK62PLRiBilW/obq3eVXpAG+xOB91Dx+x1Aghqr4lR9X3mG3n6v0SwfADiuuFHkVEhcxZ+xTXy
+ JEjmRd2g
+ 71cVAqz9RcBHQ0sEAC0r6QU/5TNwxQZ2o14/PSc+mMHiDEPe1//hn37EGzS3VzMdc3gPqgp+X4dCKsEaHujycu/uSaIz2BVZuo95YOa7JdZuSMqh+HA2d/37LNBFwJuh8KYxhAgFf7DgsB+p8p3r+I5AXbzMn1Mz9jixL2VQRU0MC2Z+YGD9ykcWk31uREsvbWBhgX3vO/+Qt0G/jeyGdEB9xqmRaLpPJVpq2upnFhAksyzIw4gPHiPueCEIuW7RF6yI/kHeWbtKffydL4YDZgIGQAGojCsdpZaWUb5ZFmuOlFaXzLKY3FDtaRaDuX8iHhIfQobniJT/BxFaZzCZvU6z/9JrMoHkt6oaVHic70u+CRl1W1VyuNkbeOvz9fIp/SISaae8APx9eTRI8jfyZdiFeAIPiwikQbTuY383jdK+u/tOwNat/AoHFSGH/h1MbcQGnSsoWvIy6VweTfzWtnF6u1TvpvrDdYgx9i374Xn80Te0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,278 +100,324 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 23/09/2026 12:01, Anshuman Khandual wrote:
+> On Wed, Sep 23, 2026 at 09:32:17AM +0100, Ryan Roberts wrote:
+>> On 22/09/2026 07:16, Anshuman Khandual wrote:
+>>> Replace READ_ONCE() with pmdp_get() for PMD accesses in preparation for
+>>> supporting both D64 and D128 translation table formats.
+>>>
+>>> READ_ONCE() cannot currently be used for 128-bit page table entries on
+>>> arm64 because it does not provide the required 128-bit single-copy
+>>> atomicity, causing builds to fail for accesses wider than 64 bits.
+>>>
+>>> Although LDP/STP provide the required atomicity when FEAT_LSE is
+>>> available (as required by FEAT_D128), extending READ_ONCE() to support
+>>> 128-bit accesses is undesirable. READ_ONCE() is a general-purpose API,
+>>> so doing so could encourage other 128-bit users that would either fail
+>>> to build in configurations without D128 support or, if D128 becomes a
+>>> runtime option, silently permit tearing on systems without the required
+>>> hardware support.
+>>>
+>>> Instead, standardize PMD accesses on the existing page-table helpers.
+>>> These can be overridden on arm64 to provide 128-bit single-copy
+>>> atomicity when required. No functional change intended.
+>>
+>> I notice you have an unconverted READ_ONCE(*pmdp) in
+>> pmdp_test_and_clear_young(). Is that intentional?
+> 
+> Converting the above READ_ONCE() instances as pmdp_get() cuases a build
+> failure as pmpd_get() which is defined in generic pgtable header is not
+> visible inside platform specific pgtable header, even with a forward
+> declaration.
+> 
+> In D128 V2 series these conversions were performed later in the series,
+> when platform specific pxdp_get() overrides were added via ptval_get(). 
+> 
+> But to avoid this, we could just move pmdp_test_and_clear_young() inside
+> arch/arm64/mm/mmu.c file instead. Folding in the following change builds.
 
+I'm not sure if/how this might affect performance? Probably not significant
+since they are for higher levels, so not called as frequently as pte helpers.
 
-> On Sep 23, 2026, at 17:55, Hongfu Li <hongfu.li@linux.dev> wrote:
->=20
->=20
-> On 9/23/26 3:56 PM, Muchun Song wrote:
->>=20
->>> On Sep 23, 2026, at 11:40, Hongfu Li <hongfu.li@linux.dev> wrote:
->>>=20
->>>=20
->>> On 9/23/26 10:40 AM, Muchun Song wrote:
->>>>=20
->>>> On 2026/9/23 10:05, Hongfu Li wrote:
->>>>> From: Hongfu Li <lihongfu@kylinos.cn>
->>>>>=20
->>>>> memory.numa_stat exposes per-node hugetlb counters from per-node =
-lruvec
->>>>> stats. These stats are accounted against folio_nid(): incremented =
-on
->>>>> the folio's node when handed to a user, decremented when the folio =
-is
->>>>> returned to the pool.
->>>>>=20
->>>>> During hugetlb folio migration, mem_cgroup_migrate() moves the =
-charge
->>>>> to the new folio and drops the memcg data of the old one, so the =
-free
->>>>> of the old folio right after the migration skips the memcg =
-per-node
->>>>> lruvec decrement. The hugetlb count stays attributed to the old =
-node
->>>>> for the rest of the life of the charge, while the target folio =
-gets no
->>>>> increment on the new node; its later free decrements a counter =
-that
->>>>> was never incremented.
->>>>>=20
->>>>> Migrate the per-node lruvec accounting alongside migration. Global
->>>>> memcg totals remain balanced because they track resource =
-consumption,
->>>>> not node placement.
->>>>>=20
->>>>> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to =
-memcg")
->>>>> Cc: stable@vger.kernel.org
->>>>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
->>>>> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->>>>> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
->>>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
->>>>> ---
->>>>>   include/linux/memcontrol.h |  8 ++++++++
->>>>>   mm/hugetlb.c               | 25 +++++++++++++++++++++++++
->>>>>   mm/memcontrol.c            |  5 ++---
->>>>>   3 files changed, 35 insertions(+), 3 deletions(-)
->>>>>=20
->>>>> diff --git a/include/linux/memcontrol.h =
-b/include/linux/memcontrol.h
->>>>> index a8358f297b65..74110a324f9e 100644
->>>>> --- a/include/linux/memcontrol.h
->>>>> +++ b/include/linux/memcontrol.h
->>>>> @@ -984,6 +984,9 @@ unsigned long =
-lruvec_page_state_monotonic(const struct lruvec *lruvec,
->>>>>   unsigned long lruvec_page_state_local(const struct lruvec =
-*lruvec,
->>>>>                         enum node_stat_item idx);
->>>>>   +void mod_memcg_lruvec_state(struct lruvec *lruvec,
->>>>> +                enum node_stat_item idx, int val);
->>>>> +
->>>>>   void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
->>>>>   void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup =
-*memcg);
->>>>>   @@ -1452,6 +1455,11 @@ static inline unsigned long =
-lruvec_page_state_local(const struct lruvec *lruvec,
->>>>>       return node_page_state(lruvec_pgdat(lruvec), idx);
->>>>>   }
->>>>>   +static inline void mod_memcg_lruvec_state(struct lruvec =
-*lruvec,
->>>>> +                      enum node_stat_item idx, int val)
->>>>> +{
->>>>> +}
->>>>> +
->>>>>   static inline void mem_cgroup_flush_stats(struct mem_cgroup =
-*memcg)
->>>>>   {
->>>>>   }
->>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>> index 519c30b338a8..76d019594b39 100644
->>>>> --- a/mm/hugetlb.c
->>>>> +++ b/mm/hugetlb.c
->>>>> @@ -23,6 +23,7 @@
->>>>>   #include <linux/mmdebug.h>
->>>>>   #include <linux/sched/signal.h>
->>>>>   #include <linux/rmap.h>
->>>>> +#include <linux/rcupdate.h>
->>>>>   #include <linux/string_choices.h>
->>>>>   #include <linux/string_helpers.h>
->>>>>   #include <linux/swap.h>
->>>>> @@ -7378,12 +7379,36 @@ void folio_putback_hugetlb(struct folio =
-*folio)
->>>>>       folio_put(folio);
->>>>>   }
->>>>>   +static void move_hugetlb_lruvec_stat(struct folio *old_folio,
->>>>> +                     struct folio *new_folio)
->>>>> +{
->>>>> +    struct mem_cgroup *memcg;
->>>>> +    long nr_pages =3D folio_nr_pages(old_folio);
->>>>> +    int old_nid =3D folio_nid(old_folio);
->>>>> +    int new_nid =3D folio_nid(new_folio);
->>>>> +
->>>>> +    if (old_nid =3D=3D new_nid)
->>>>> +        return;
->>>>> +
->>>>> +    guard(rcu)();
->>>>> +
->>>>> +    memcg =3D folio_memcg(new_folio);
->>>>> +    if (!memcg)
->>>>> +        return;
->>>>> +
->>>>> +    mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, =
-NODE_DATA(old_nid)),
->>>>> +                   NR_HUGETLB, -nr_pages);
->>>> Why not use mod_lruvec_state? mod_memcg_lruvec_state is an internal
->>>> API for memcg, I don't want it to be exported.
->>> Thank you for the review.
->>>=20
->>> mod_lruvec_state() would update the node counter a second time.  It =
-calls
->>> mod_node_page_state() as well, and the target's node counter is =
-already
->>> updated in alloc_hugetlb_folio_nodemask() (patch 1/2):
->>>=20
->>>     lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
->>>=20
->>> For an uncharged folio lruvec_stat_mod_folio() only updates the node
->>> counter.  The target folio is not charged to any memcg at that =
-point; its
->>> charge only appears later in mem_cgroup_migrate().  So the node side =
-is
->>> already covered and only the per-memcg attribution has to follow the
->>> charge here.
->> Looking at the first patch again, I do not think the
->> overall accounting is incorrect. My concern is where NR_HUGETLB
->> accounting is performed.
->>=20
->> The low-level allocation helpers only take a folio from the
->> hugetlb pool. They do not have enough context to decide how
->> the folio should be accounted. That decision should be left
->> to their callers, once the folio enters the relevant usage
->> lifecycle.
->>=20
->> hugetlb_alloc_folio() is a good example. It first obtains a
->> folio, then calls mem_cgroup_charge_hugetlb(), and only
->> afterwards calls lruvec_stat_mod_folio(). At that point,
->> the folio has the correct memcg and lruvec, so all relevant
->> counters can be updated together.
->>=20
->> After this series, alloc_hugetlb_folio_reserve() and
->> alloc_hugetlb_folio_nodemask() account NR_HUGETLB before
->> returning the folio. This makes them unsuitable for callers
->> that need to charge the folio afterwards. Before the charge,
->> lruvec_stat_mod_folio() can update only the node counter.
->> The later charge does not associate that earlier update with
->> the new memcg.
->>=20
->> If a caller accounts again after charging, the node counter is
->> updated twice. If it does not, the memcg and per-node lruvec
->> counters remain missing. The caller then needs a memcg-only
->> correction, creating a special accounting protocol between
->> the helper and its callers.
->>=20
->> Migration exposes the same issue. The target gets node
->> accounting before it inherits the source memcg. The second patch
->> must update the lruvec state and then cancel its node changes,
->> because the target allocation already updated the node counter.
->> This works, but makes the accounting lifecycle harder to follow.
->>=20
->> Would it be cleaner to keep these helpers focused on allocation
->> and let each caller account at the correct lifecycle point?
->> Normal allocation can account after a successful memcg charge.
->> Migration can move the complete lruvec state after it succeeds.
->=20
-> Hi Muchun,
+Another option would be to implement arm64-specific pxdp_get() helpers in
+asm/pgtable.h to override the generic versions?
 
-Hi,
+Thanks,
+Ryan
 
->=20
-> Thanks a lot for the detailed explanation.
->=20
-> One thing keeps the target accounting in =
-alloc_hugetlb_folio_nodemask(): the
-> node counter is paired with the folio's free, and a failed migration =
-frees its
-> target right away (put_new_folio()/folio_put() -> free_huge_folio(), =
-which
-> always decrements the node counter). If the target were accounted only =
-after a
-> successful migration, every failed migration would decrement a node =
-counter
-> that was never incremented.
-
-You're right, and HugeTLB is really tricky. I think HugeTLB might need =
-some cleanup
-in the future to better handle the accounting here. As a bug fix, the =
-current
-changes look good to me.
-
-Acked-by: Muchun Song <muchun.song@linux.dev>
-
-A future cleanup, might be to have all the underlying HugeTLB allocation =
-functions
-update only the global node statistics (use mod_node_page_state instead	=
-of
-lruvec_stat_mod_folio). Its caller, if it needs to charge memory
-cgroup, can then call mod_memcg_lruvec_state that updates only the =
-memory cgroup
-statistics.
-
-Thanks.
-
->=20
-> Unless there is a way to let free_huge_folio() tell that the folio =
-comes
-> from a failed migration, and skip the decrement for it.
->=20
->> An uncharged path can explicitly update only the node counter
->> if global accounting is still required.
->>=20
->> This would keep policy out of the low-level allocator and make
->> the accounting lifecycle easier to follow.
->>=20
->> Thanks.
->>=20
->>>> Thanks.
->>>>=20
->>>>> + mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, =
-NODE_DATA(new_nid)),
->>>>> +                   NR_HUGETLB, nr_pages);
->>>>> +}
->>>>> +
->>>>>   void move_hugetlb_state(struct folio *old_folio, struct folio =
-*new_folio,
->>>>>               enum migrate_reason reason)
->>>>>   {
->>>>>       struct hstate *h =3D folio_hstate(old_folio);
->>>>>         hugetlb_cgroup_migrate(old_folio, new_folio);
->>>>> +    move_hugetlb_lruvec_stat(old_folio, new_folio);
->>>>>       folio_set_owner_migrate_reason(new_folio, reason);
->>>>>         /*
->>>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>>>> index 88824f783571..a5335da5d425 100644
->>>>> --- a/mm/memcontrol.c
->>>>> +++ b/mm/memcontrol.c
->>>>> @@ -1015,9 +1015,8 @@ static void __mod_memcg_lruvec_state(struct =
-mem_cgroup_per_node *pn,
->>>>>       put_cpu();
->>>>>   }
->>>>>   -static void mod_memcg_lruvec_state(struct lruvec *lruvec,
->>>>> -                     enum node_stat_item idx,
->>>>> -                     int val)
->>>>> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
->>>>> +                enum node_stat_item idx, int val)
->>>>>   {
->>>>>       struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
->>>>>       struct mem_cgroup_per_node *pn;
->>>>>=20
->>> --=20
->>> Best regards,
->>> Hongfu
->=20
-> --=20
-> Best regards,
-> Hongfu
-
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index ae41946c54f26..13ca85ec89f6a 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -1289,14 +1289,8 @@ static inline bool __ptep_clear_flush_young(struct vm_area_struct *vma,
+> 
+>  #if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
+>  #define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+> -static inline bool pmdp_test_and_clear_young(struct vm_area_struct *vma,
+> -               unsigned long address, pmd_t *pmdp)
+> -{
+> -       /* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
+> -       VM_WARN_ON(pmd_table(READ_ONCE(*pmdp)) && !system_supports_haft());
+> -       return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
+> -}
+> -#endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+> +bool pmdp_test_and_clear_young(struct vm_area_struct *vma, unsigned long address, pmd_t *pmdp);
+> +#endif
+> 
+>  static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
+>                                                unsigned long address,
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 76d8d320aeedf..b3fd06a623db5 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -2440,4 +2440,15 @@ void __check_safe_pte_update(struct mm_struct *mm, pte_t *ptep, pte_t pte)
+>                      __func__, pte_str_old, pte_str);
+>  }
+>  #endif /* CONFIG_DEBUG_VM */
+> +
+> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG)
+> +#define __HAVE_ARCH_PMDP_TEST_AND_CLEAR_YOUNG
+> +bool pmdp_test_and_clear_young(struct vm_area_struct *vma, unsigned long address, pmd_t *pmdp)
+> +{
+> +       /* Operation applies to PMD table entry only if FEAT_HAFT is enabled */
+> +       VM_WARN_ON(pmd_table(pmdp_get(pmdp)) && !system_supports_haft());
+> +       return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
+> +}
+> +#endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOUNG */
+> +
+>  #endif
+> 
+>>
+>> Thanks,
+>> Ryan
+>>
+>>
+>>>
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: Will Deacon <will@kernel.org>
+>>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>>> Cc: Mark Rtland <mark.rtland@arm.com>
+>>> Cc: linx-arm-kernel@lists.infradead.org
+>>> Cc: linx-kernel@vger.kernel.org
+>>> Cc: kasan-dev@googlegrops.com
+>>> Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> ---
+>>>  arch/arm64/include/asm/pgtable.h |  3 ++-
+>>>  arch/arm64/mm/fault.c            |  2 +-
+>>>  arch/arm64/mm/fixmap.c           |  2 +-
+>>>  arch/arm64/mm/hugetlbpage.c      |  2 +-
+>>>  arch/arm64/mm/kasan_init.c       |  4 ++--
+>>>  arch/arm64/mm/mmu.c              | 22 +++++++++++-----------
+>>>  arch/arm64/mm/pageattr.c         |  2 +-
+>>>  arch/arm64/mm/trans_pgd.c        |  2 +-
+>>>  8 files changed, 20 insertions(+), 19 deletions(-)
+>>>
+>>> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+>>> index 763c5a411d64..b953ea0ba3ed 100644
+>>> --- a/arch/arm64/include/asm/pgtable.h
+>>> +++ b/arch/arm64/include/asm/pgtable.h
+>>> @@ -811,7 +811,8 @@ static inline unsigned long pmd_page_vaddr(pmd_t pmd)
+>>>  }
+>>>  
+>>>  /* Find an entry in the third-level page table. */
+>>> -#define pte_offset_phys(dir,addr)	(pmd_page_paddr(READ_ONCE(*(dir))) + pte_index(addr) * sizeof(pte_t))
+>>> +#define pte_offset_phys(dir, addr)	(pmd_page_paddr(pmdp_get(dir)) + \
+>>> +					 pte_index(addr) * sizeof(pte_t))
+>>>  
+>>>  #define pte_set_fixmap(addr)		((pte_t *)set_fixmap_offset(FIX_PTE, addr))
+>>>  #define pte_set_fixmap_offset(pmd, addr)	pte_set_fixmap(pte_offset_phys(pmd, addr))
+>>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>>> index 2cecf6ba6df7..2757ee0c4300 100644
+>>> --- a/arch/arm64/mm/fault.c
+>>> +++ b/arch/arm64/mm/fault.c
+>>> @@ -188,7 +188,7 @@ static void show_pte(unsigned long addr)
+>>>  			break;
+>>>  
+>>>  		pmdp = pmd_offset_lockless(pudp, pud, addr);
+>>> -		pmd = READ_ONCE(*pmdp);
+>>> +		pmd = pmdp_get(pmdp);
+>>>  		ptval_to_str(pxd_str, pmd_val(pmd));
+>>>  		pr_cont(", pmd=%s", pxd_str);
+>>>  		if (pmd_none(pmd) || pmd_bad(pmd))
+>>> diff --git a/arch/arm64/mm/fixmap.c b/arch/arm64/mm/fixmap.c
+>>> index f66a0016dd02..3cdac8021d4f 100644
+>>> --- a/arch/arm64/mm/fixmap.c
+>>> +++ b/arch/arm64/mm/fixmap.c
+>>> @@ -42,7 +42,7 @@ static inline pte_t *fixmap_pte(unsigned long addr)
+>>>  
+>>>  static void __init early_fixmap_init_pte(pmd_t *pmdp, unsigned long addr)
+>>>  {
+>>> -	pmd_t pmd = READ_ONCE(*pmdp);
+>>> +	pmd_t pmd = pmdp_get(pmdp);
+>>>  	pte_t *ptep;
+>>>  
+>>>  	if (pmd_none(pmd)) {
+>>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+>>> index 8e799c1fe0aa..cdaa4500faf9 100644
+>>> --- a/arch/arm64/mm/hugetlbpage.c
+>>> +++ b/arch/arm64/mm/hugetlbpage.c
+>>> @@ -304,7 +304,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+>>>  		addr &= CONT_PMD_MASK;
+>>>  
+>>>  	pmdp = pmd_offset(pudp, addr);
+>>> -	pmd = READ_ONCE(*pmdp);
+>>> +	pmd = pmdp_get(pmdp);
+>>>  	if (!(sz == PMD_SIZE || sz == CONT_PMD_SIZE) &&
+>>>  	    pmd_none(pmd))
+>>>  		return NULL;
+>>> diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+>>> index 45fbdce684c8..7ca833c5de5e 100644
+>>> --- a/arch/arm64/mm/kasan_init.c
+>>> +++ b/arch/arm64/mm/kasan_init.c
+>>> @@ -62,7 +62,7 @@ static phys_addr_t __init kasan_alloc_raw_page(int node)
+>>>  static pte_t *__init kasan_pte_offset(pmd_t *pmdp, unsigned long addr, int node,
+>>>  				      bool early)
+>>>  {
+>>> -	if (pmd_none(READ_ONCE(*pmdp))) {
+>>> +	if (pmd_none(pmdp_get(pmdp))) {
+>>>  		phys_addr_t pte_phys = early ?
+>>>  				__pa_symbol(kasan_early_shadow_pte)
+>>>  					: kasan_alloc_zeroed_page(node);
+>>> @@ -138,7 +138,7 @@ static void __init kasan_pmd_populate(pud_t *pudp, unsigned long addr,
+>>>  	do {
+>>>  		next = pmd_addr_end(addr, end);
+>>>  		kasan_pte_populate(pmdp, addr, next, node, early);
+>>> -	} while (pmdp++, addr = next, addr != end && pmd_none(READ_ONCE(*pmdp)));
+>>> +	} while (pmdp++, addr = next, addr != end && pmd_none(pmdp_get(pmdp)));
+>>>  }
+>>>  
+>>>  static void __init kasan_pud_populate(p4d_t *p4dp, unsigned long addr,
+>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>> index e589fb00d1e3..95621913679e 100644
+>>> --- a/arch/arm64/mm/mmu.c
+>>> +++ b/arch/arm64/mm/mmu.c
+>>> @@ -200,7 +200,7 @@ static int alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+>>>  			       int flags)
+>>>  {
+>>>  	unsigned long next;
+>>> -	pmd_t pmd = READ_ONCE(*pmdp);
+>>> +	pmd_t pmd = pmdp_get(pmdp);
+>>>  	pte_t *ptep;
+>>>  
+>>>  	BUG_ON(pmd_leaf(pmd));
+>>> @@ -257,7 +257,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>>>  	unsigned long next;
+>>>  
+>>>  	do {
+>>> -		pmd_t old_pmd = READ_ONCE(*pmdp);
+>>> +		pmd_t old_pmd = pmdp_get(pmdp);
+>>>  
+>>>  		next = pmd_addr_end(addr, end);
+>>>  
+>>> @@ -272,7 +272,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>>>  			 * only allow updates to the permission attributes.
+>>>  			 */
+>>>  			BUG_ON(!pgattr_change_is_safe(pmd_val(old_pmd),
+>>> -						      READ_ONCE(pmd_val(*pmdp))));
+>>> +						      pmd_val(pmdp_get(pmdp))));
+>>>  		} else {
+>>>  			int ret;
+>>>  
+>>> @@ -282,7 +282,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>>>  				return ret;
+>>>  
+>>>  			VM_WARN_ON_ONCE(pmd_val(old_pmd) != 0 &&
+>>> -					pmd_val(old_pmd) != READ_ONCE(pmd_val(*pmdp)));
+>>> +					pmd_val(old_pmd) != pmd_val(pmdp_get(pmdp)));
+>>>  		}
+>>>  		phys += next - addr;
+>>>  	} while (pmdp++, addr = next, addr != end);
+>>> @@ -293,7 +293,7 @@ static int init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>>>  static bool pmd_range_has_valid_noncont(pmd_t *pmdp)
+>>>  {
+>>>  	for (int i = 0; i < CONT_PMDS; i++) {
+>>> -		pte_t pte = pmd_pte(READ_ONCE(pmdp[i]));
+>>> +		pte_t pte = pmd_pte(pmdp_get(pmdp + i));
+>>>  
+>>>  		if (pte_valid(pte) && !pte_cont(pte))
+>>>  			return true;
+>>> @@ -1553,7 +1553,7 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+>>>  	do {
+>>>  		next = pmd_addr_end(addr, end);
+>>>  		pmdp = pmd_offset(pudp, addr);
+>>> -		pmd = READ_ONCE(*pmdp);
+>>> +		pmd = pmdp_get(pmdp);
+>>>  		if (pmd_none(pmd))
+>>>  			continue;
+>>>  
+>>> @@ -1708,7 +1708,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
+>>>  	do {
+>>>  		next = pmd_addr_end(addr, end);
+>>>  		pmdp = pmd_offset(pudp, addr);
+>>> -		pmd = READ_ONCE(*pmdp);
+>>> +		pmd = pmdp_get(pmdp);
+>>>  		if (pmd_none(pmd))
+>>>  			continue;
+>>>  
+>>> @@ -1729,7 +1729,7 @@ static void free_empty_pmd_table(pud_t *pudp, unsigned long addr,
+>>>  	 */
+>>>  	pmdp = pmd_offset(pudp, 0UL);
+>>>  	for (i = 0; i < PTRS_PER_PMD; i++) {
+>>> -		if (!pmd_none(READ_ONCE(pmdp[i])))
+>>> +		if (!pmd_none(pmdp_get(pmdp + i)))
+>>>  			return;
+>>>  	}
+>>>  
+>>> @@ -1881,7 +1881,7 @@ int pmd_set_huge(pmd_t *pmdp, phys_addr_t phys, pgprot_t prot)
+>>>  	pmd_t new_pmd = pfn_pmd(__phys_to_pfn(phys), mk_pmd_sect_prot(prot));
+>>>  
+>>>  	/* Only allow permission changes for now */
+>>> -	if (!pgattr_change_is_safe(READ_ONCE(pmd_val(*pmdp)),
+>>> +	if (!pgattr_change_is_safe(pmd_val(pmdp_get(pmdp)),
+>>>  				   pmd_val(new_pmd)))
+>>>  		return 0;
+>>>  
+>>> @@ -1906,7 +1906,7 @@ int pud_clear_huge(pud_t *pudp)
+>>>  
+>>>  int pmd_clear_huge(pmd_t *pmdp)
+>>>  {
+>>> -	if (!pmd_leaf(READ_ONCE(*pmdp)))
+>>> +	if (!pmd_leaf(pmdp_get(pmdp)))
+>>>  		return 0;
+>>>  	pmd_clear(pmdp);
+>>>  	return 1;
+>>> @@ -1917,7 +1917,7 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+>>>  	pte_t *table;
+>>>  	pmd_t pmd;
+>>>  
+>>> -	pmd = READ_ONCE(*pmdp);
+>>> +	pmd = pmdp_get(pmdp);
+>>>  
+>>>  	if (!pmd_table(pmd)) {
+>>>  		VM_WARN_ON(1);
+>>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>>> index bbe98ac9ad8c..0ca07bd5ded9 100644
+>>> --- a/arch/arm64/mm/pageattr.c
+>>> +++ b/arch/arm64/mm/pageattr.c
+>>> @@ -414,7 +414,7 @@ bool kernel_page_present(struct page *page)
+>>>  		return pud_valid(pud);
+>>>  
+>>>  	pmdp = pmd_offset(pudp, addr);
+>>> -	pmd = READ_ONCE(*pmdp);
+>>> +	pmd = pmdp_get(pmdp);
+>>>  	if (pmd_none(pmd))
+>>>  		return false;
+>>>  	if (pmd_leaf(pmd))
+>>> diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+>>> index cca9706a875c..b27b2d2c20c3 100644
+>>> --- a/arch/arm64/mm/trans_pgd.c
+>>> +++ b/arch/arm64/mm/trans_pgd.c
+>>> @@ -74,7 +74,7 @@ static int copy_pmd(struct trans_pgd_info *info, pud_t *dst_pudp,
+>>>  
+>>>  	src_pmdp = pmd_offset(src_pudp, start);
+>>>  	do {
+>>> -		pmd_t pmd = READ_ONCE(*src_pmdp);
+>>> +		pmd_t pmd = pmdp_get(src_pmdp);
+>>>  
+>>>  		next = pmd_addr_end(addr, end);
+>>>  		if (pmd_none(pmd))
+>>
 
 
