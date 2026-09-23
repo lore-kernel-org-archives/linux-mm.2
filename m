@@ -4,96 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C1BEC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:37:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1317FC9830E
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:39:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D86EF6B008C; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
+	id 218FC6B0098; Wed, 23 Sep 2026 09:39:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D382F6B0092; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
+	id 1CA816B0099; Wed, 23 Sep 2026 09:39:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C02B76B0098; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
+	id 095936B009B; Wed, 23 Sep 2026 09:39:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 87D7F6B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C25D160808
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:37:32 +0000 (UTC)
-X-FDA: 85245129144.17.6C73E5C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2FE84A000A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:37:30 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYKKX16e;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CB1046B0098
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:39:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 682AEA082B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:39:22 +0000 (UTC)
+X-FDA: 85245133764.20.E5D4C82
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AE21C10000B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:39:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7dQ0i1E;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790170650;
+	s=arc-20220608; t=1790170760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LoOuDRGVtcin4lz+35JXooeq4HMJZWCeB4CFS2sN82w=;
-	b=mbkUA/DoHP7aXMr0sqWgFmXOPXWy5Tjr5nBontp+nVIROTbpg6h7Olc/F/trReSdiXkhn5
-	w9FOFJi+JniPvbSeGDMfZgqgJ0Kr9YY4ozy4X1nZ8DUvwn5ncAR0NHuj0zdXzf/qt4JbXt
-	LSx2Z0pfAexBhIfAgMpAh2ZYN6rf6Kc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790170650;
-	b=rGkUFu+/yxkXMLzEcUn7y52QmDNS5pq7iwogcxAo5Z9kAf1L5TUQo9F9J0ZKcpPJDEi3vl
-	Z2OoIqO1YwhZ6Uq0JVE6vTEKUT9+6PEFxfeq+8U8fgnFz36UTXRoWVVs/6eRUsxGTVmaw5
-	k0M+RCmIRaIQU2DHxATSNY7veB8RHVU=
+	bh=Hytsnm3T/AULz6jwdvEQiSXuDHieLIGsyjjgPx+qkmI=;
+	b=XDshGUHr+Yrnqk9xHKFRfnSc8hmz4WWCuLY+M2d137gtU3uUiCMZh0+Fgk5in+ImieG8d2
+	MCUJZkwC8DKZH4yyywliZL+4QKNWlwOXcuAcy1KR0kpqwXMqWjmLHVVtvIghz9y3cPGLeL
+	SpijRqUGJIAGdRWOhOpmcpqymQD6rJU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYKKX16e;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y7dQ0i1E;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790170760;
+	b=43czQSaCA3XTUw1RQl1BIpcIoDFdanDmGRCR+lqKbpe/iJ4V8Ri7Q570MpaWETNuPX1OFV
+	SEAOIxsBtYrColvMfyJ1GkHSpcIsEAQMjygKhu09MSrti48OIApu6GMoRzfVWlxdJiT5c0
+	TcUwjfgIaWdmchdEZijv62OLj2zwGrY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 605914351E;
-	Wed, 23 Sep 2026 13:37:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB681F000FF;
-	Wed, 23 Sep 2026 13:37:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD402601FB;
+	Wed, 23 Sep 2026 13:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E822D1F000FF;
+	Wed, 23 Sep 2026 13:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790170649;
-	bh=LoOuDRGVtcin4lz+35JXooeq4HMJZWCeB4CFS2sN82w=;
+	s=k20260515; t=1790170759;
+	bh=Hytsnm3T/AULz6jwdvEQiSXuDHieLIGsyjjgPx+qkmI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OYKKX16eY3t1xaXCZTv38418gdMGxdTo9ZtAW/Kg+f8pRevCHjHtOK0VhJEG+UxZQ
-	 Hamy6AOqoQ+Z3e2DsJQxZIDhWk+P1jD9YzhnWqSA9cAJ6NfhPRcZGHNPRToTu3sjng
-	 OLvyRdio/Y/CAGYTOKdFBJ2DXeyNhCj+D4MZeiSkTMRhhZTJafYAnEAQycArREQ210
-	 9O+YfM3bLFzb76jEYgXNesAWBUEk905Xv6Gi8UkCX5Ezsv7omCIQbJrfUnDoyN6vlY
-	 JsXEIFcFdOMizU3Yjnr+gWdG6KtzcR6I3NZTwxNLjddDjeZhW06cev2TYhsSeNLtLE
-	 STLNckEd3pR5w==
-Message-ID: <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
-Date: Wed, 23 Sep 2026 15:37:14 +0200
+	b=Y7dQ0i1EU1gOr2j6oh8a/xUi2rEXF5S3qQfIklY3kTYR3pCe5PUL5EMuqY4Mu9UQ2
+	 F7NWPAVmADVhUEyuzsQMEAA/PRZKHfVkzvplyzNELB/qmdX/pXsDZ3TSY6rUDz4PG4
+	 sWJw0HL1ouvMSKX1DwlwQHuNIeGXBk0bek7VTqTPX+ew8nHxGzgrGuBL975LdFStGf
+	 KhBI8xmiIoOGrg9/JFvdE5HdJJkuUg1syYnXQiqBV4sJdGdbXIpcbH4wVbe04ZdIzK
+	 cyVjETRbw7ye/iWCQrFjSEK/OhI9h2NPNEcH5eHxNA4rz6KnfSwgy8l+HU9SUFSArX
+	 64OX8LKUVAHwA==
+Message-ID: <c62bbd96-d949-4c57-a3c9-ebec14744f35@kernel.org>
+Date: Wed, 23 Sep 2026 15:38:53 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
-To: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>
-Cc: Amit Shah <amit@infradead.org>, Andrew Morton
- <akpm@linux-foundation.org>, Aneesh Kumar
- <AneeshKumar.KizhakeVeetil@arm.com>, Christoph Lameter
- <christoph@gentwo.org>, Dave Hansen <dave.hansen@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>, Hugh Dickins <hughd@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
- Kirill Shutemov <k.shutemov@gmail.com>, Matthew Wilcox
- <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>,
- Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>,
- Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>,
- "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>,
- Sterling Alexander <stalexan@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Yang Shi <shy828301@gmail.com>,
- Zi Yan <ziy@nvidia.com>, William Roche <william.roche@oracle.com>,
- linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
- nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
- jane.chu@oracle.com, muchun.song@linux.dev, liam@infradead.org,
- shuah@kernel.org, boudewijn@delta-utec.com, linux-mm@kvack.org,
- Breno Leitao <leitao@debian.org>
-References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
- <arPElEV0zDhXrteb@thinkstation>
+Subject: Re: [PATCH v4 11/12] mm: make userland page table freeing RCU-safe
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Dinh Nguyen
+ <dinguyen@kernel.org>, Simon Schuster <schuster.simon@siemens-energy.com>,
+ Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+ Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>,
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>,
+ Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>,
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+ Johannes Berg <johannes@sipsolutions.net>, Thomas Gleixner
+ <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>,
+ Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org,
+ Hugh Dickins <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-doc@vger.kernel.org
+References: <20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org>
+ <20260922-rcu-pagetable-freeing-v4-11-fe1ad1f1e303@kernel.org>
+ <72d1548a-a4ee-4832-b2ab-4bc82f1933f8@kernel.org> <arOWZCeV8FrkAvhK@gremlin>
+ <802d3999-95fe-4a09-89b4-d01b60f8e963@kernel.org> <arO7lSy71meks_sW@gremlin>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +179,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arPElEV0zDhXrteb@thinkstation>
+In-Reply-To: <arO7lSy71meks_sW@gremlin>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2FE84A000A
-X-Stat-Signature: 7xropfeywd1j3e4iy1hcp86djent3smo
-X-HE-Tag: 1790170650-444533
-X-HE-Meta: U2FsdGVkX18G+lAiVLp20KnZtEaALYvg6vX6XKE57nJrDFwDRFMZ+xkCu4vRZrXR6SXs4/hv9nM1GCTGZ1fW1lypadD8UkXgkA5uNwy8vCmjwewewgFqkirnamr+Up0J50+fU9NirojX6lnqrk6XuS1tt2yhtGAA+KOwq2WrhOY1DWnKXUrUcBJAlcxf3QnzVoXGIon0qGPq1o+n4vr4sYc47xedu1MEz66/TR6qWKKCbFhZ7aaSeDLW/IAGfiUYuEJLS9EuNEeRwYdxVNS5sNUtjrj0l9tlXtvEC8twNYcXl5dBa5cw2cZNMLbIUmFw+tcfX/HhpUBPm0c1K45+tgAOtvfrQ1VqkiLpTvKGlgD0TfyDYGf5OXL4Kwk+awu+paiRO2YbgW+GtNJiAmwrzYdCSCA74yq35gEb/sQBUrcYWAv2Pi7OkaXXrLUX3suPPSxy8uLA5xfmpVWtz07FhHQkHdeVHnNNsYFwwvvqiPzVNZmJDRVky9zGhjvP8mkOYyKja3aFxz+EOkmNcgsnneeZRnFUrpmkm1l58Qd3Sbc1jtLH05eZgGkk0kIowSwr7/R95BuGTsKHzFN0Ns/6v3GgIqn27idxXGbQtATgVah5xpYOMYiosB9d7KX3mvAgxCIB53pfoQvClyjNi/u0H0qhjf7RKtXuW9cxXf29t7AXO9CpsrthH9nXOpB4DOagukfy1i26Uy7JOIcW5FrE//mJhDxCYqm3X/OSTzI0Km90kRdLiPBusqDl9fsOKpeezrS3j3bLpAvhJvzZgoIlXVDuItx3f2XvnhlyQ0OrK9CTqC6Nz6f4XknTs4KbXvbp566mCfRA43BdB3SEgJzjUiFI0FBDRObupijCUmGLVycyrwBebCBEmaFlcRpmXFgpparcrF0zc46YS6eOqxuJQ4vQ+uc2QzVx/oaVAWzKxOBxtlJt/GhaFTtdmmE1/7EeUuWtVHvmLduQ5bb/mNr
- 4OAkq2xT
- U6LjtUlX1tVA33fnzhDz6iCEqRIM1JYn6K66m7Kerj1sAIvZAcyWChdKSc0lbV56sJvVOCGV4rGEUMayp1BkCn1f1NdbCIVapf7jJqzgQxnW1j7QSQJkznNHgeVuqz/fHUr1iNCfvMdhcOOEyZO0Syb/xRc+aHMTO4KRwJKTAHLjHl/orzrlvcPLVq/wPrWyBMttQapmPV9lh7JqlRDJFMd4gv5Mzs52JCcKZFEk9rKYkoHIZSjsFIY3Pd/r6VROBcUqMpxykh9wAylLEF4RW3uJogQTyr/dx4EyeJcVFXDs6bMp2j5znoJM72ds5YYguSHV4J6ypzQOPBJCP4p3sbTRoYm2dHhFCYjm9YHB0m7EIxdsAVPsTqeeJ28yYmWO6TXSI3TsAWZLo6jKSHfpEbN385Qt5QZluWpr8M4I1KG71RrZ5gmyhwF8BYc29VOgT8FiPS61Qyo0oUomAib1ZL/on9DkoGoNV7NPV48mU4g1qArN6ZGTrBItRlq5QGWkRX/Vaz7C0nsmDJ/0akTRds/EEyaLZNwIZDWHs5gxk7Wnih3tS07wbm2RloyHTz7Qvnq76
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AE21C10000B
+X-Stat-Signature: 7y93p9cxxhkkxhxpq8qnjnfkjqrc8i43
+X-HE-Tag: 1790170760-944287
+X-HE-Meta: U2FsdGVkX1/AvEa/tgf7WIWnfodKGz/VXETdLLqpj29BAj9byXKAy+j6iVPzdPQUJQ898wuVjZ82Xk18igp43iAQkM/BlILkp+Nq2LqUcRyIIX/ngruROFYGpLkRHLuAAYd4N37nH0N1KC12Le7++J07K5GAkeII8qb1vDNWCw8pZrQVS4q/awffyDRUorlTaHDovytj8QuDWb+X0jnXZVhTgrSaPaLcN/n6c0JXpRsrQBZoV1V5b2ug/5mdE7ZCh9OcMC/yvvxfQQKkk0NQH6UJPsafTkBTxM+lMNGOFXePefCRoNCJknvzFPcsCmNWCVt9N/uwWj7aBqPuaxDlYV21y1WbS63Skx3edH+eaI5Ozm5qEiY9QM0mzuBC2BX6zypLRPPbBeAgsVxuAlxTukRQkCOwViLCT1/PX0PAuTiu0FWxhVfQKUVjzcErDxbLmouZe1n3ztP2tvsh+4fM2uFtesu0AvASLwat78B0Sj7dWYZaw6e/tJqto5BE7dR5NlPq1nF9b5xtl1tL/r3M8h4MvG3qozr8XjUNg1sYkRg2z8j9EbwrNo8L9hGr7ZCrJ+XRPxRQEquUsWX1qbtnMIMpFqc18yTLfERb2Hcxmo5fpP2tXOd5Dclcas63gYAboCKsMfTZQrJB/GTA3ogJKaAp2WMQZKMLmJ6+YRJgJwr+s9c8rUicHlQ6aAYxwVM35izPRpS1bWVHvZb5HKmvzaoDPzcrQNg9jHa80FMf/kU1mysxBokJjMQQf9EW9N8d6LjVbrAb3Bx3h26yf8PuEe9d6FvFqakfyjbZmfo29zAmqga94iqEUBXeTM2zVo+WnV8b7XOYqGPmuti9NrGuTLL1ClErXVSVVqSAfBuYb9rFRDLdE95U/O98BZl9oEoZdpes+HG9tQSzThPrng8YedX0kORnsksXLy33EDaDsKrewWjEYOeH69nJmxJF/3E8zh8BQj6+VGaMUE1lz6x
+ 2kHU5MuZ
+ JRWyp/eAKsWHi8VuVrBp5zLGdqLz/lTG2M2B6xaAB9bBv02qvYHlYFKz3yo7+0Lks+XTYHUTvOy2xnwmcedl0z+1UNeYHbIZxkP2E6cogwcUVdY+RAgtlRgT0DEb2+qn3JP2fYfiVRiIBbIx3f2EwERIRfFwl/bT1eUcnv6oU1c7KRqmraT7C51bYwrSt+kbxXNbIsgs+xi+FukjRgJMMcn8GeqL6cojU9hHqPmvHcwnCoklvGwPAVoSZXI4gk4nSAX4aR56In1jONbc5OfEFyG5ODpvBVcudk6TiT3L+0fuZsogPL2ayG7GlW4xPE34uY4N8e1pw9kv7xPE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,72 +197,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 14:57, Harry Yoo wrote:
-> On Mon, Sep 21, 2026 at 09:26:22AM -0700, David Rientjes wrote:
->> Hi everybody,
+On 9/23/26 13:48, Lorenzo Stoakes (ARM) wrote:
+> On Wed, Sep 23, 2026 at 11:13:36AM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/23/26 11:06, Lorenzo Stoakes (ARM) wrote:
+>>>
+>>> It is the final piece that makes that the case, so I think it's OK to allow
+>>> oneself a nice subject line? No? :)
 >>
->> We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
->> We'd like to invite MM developers to attend and will announce the topic
->> for the next instance on the Monday prior to the next meeting.
+>> Just took me longer to figure out if I am missing something important.
 >>
->> Our next Linux MM Alignment Session is scheduled for Wednesday.  The
->> details:
+>> E.g.,
 >>
->> Wednesday, September 23 * 9:00 - 10:00am PDT (UTC-7)
->> https://meet.google.com/csb-wcds-xya
->> backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
->> doc:
->> https://docs.google.com/document/d/1QQfZFPHa-pGEGf4A06cSqS0jdJwuZ8ro9JU5H0YSUQ0/view
+>> 	"mm: remove unused RCU-unsafe user page table freeing"
 >>
->> This week's topic will be Hwpoison, see the discussion in 
->> https://marc.info/?l=linux-kernel&m=178796007385067&w=2
->>
->> No specific agenda other than to gather core MM developers with hwpoison
->> developers and discuss:
->>  - where validation should live, esp with regard to the page allocator, or
->>    strict invariants in the page allocator
->>    + implications for the fastpath
->>  - handling for folios of arbitary orders
->>  - handling partial folio poisoning and split failures
->>  - race conditions between memory_failure() and concurrent
->>    alloc/free/compaction
->>  - soft offline for pages in the pcp lists
+>> would have been clearer to me. Anyhow, just stumbled over it, I don't care too much.
 > 
-> [+Cc Breno]
+> Compromise on:
 > 
-> This might be worth some attention:
+> mm: now userland pgtable freeing is safe, remove unused bits
 > 
->   [PATCH v5 0/9] mm/memory-failure: keep hardware-poisoned pages out of the next kexec
->   https://lore.kernel.org/linux-mm/20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org/
-> 
->   - The question: How best can we pass information about poisoned pages
->     across kexec when the kernel accesses a poisoned page, panics and
->     calls kexec, so that the next kernel avoids hitting the poisoned
->     pages again?
-> 
->     One challenge here is introducing another source (a new EFI bitmap
->     that represents poisoned memory, in addition to existing
->     PG_hwpoison) of poisoned pages adds complexity and confusion.
-> 
->     David Hildenbrand suggested that we should simplify this as much
->     as possible in a way that we don't have two sources of information
->     w/ inconsistency between them and using memmap as the only source.
-> 
->     e.g.) By consuming the EFI bitmap only once when initializing
->     memmap (to propagate poison information to not just free pages
->     through __free_pages_core(), but to the all pages on memmap).
-> 
->     Another challenge here is that we don't have functionality
->     to poison pages early in the boot process before memmap and buddy
->     are ready. So any allocation before initializing them might still
->     allocate poisoned pages.
+> ?
 
-I've been thinking some more (and will reply in detail to the series), but I do
-wonder whether memblock should actually be thought about poisoned ranges and
-refuse to hand them out (reserved/allocated).
+Maybe something along those lines, yes
 
-So we'd use the bitmap only to feed memblock, but not for anything else later
-(if possible).
+	mm: userland pgtable freeing is RCU-safe now, remove leftover bits
 
 -- 
 Cheers,
