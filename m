@@ -4,127 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7971EC982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A80C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:42:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FB2A6B008A; Wed, 23 Sep 2026 05:39:56 -0400 (EDT)
+	id B5BF06B0092; Wed, 23 Sep 2026 05:42:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75CD56B008C; Wed, 23 Sep 2026 05:39:56 -0400 (EDT)
+	id B0C656B0093; Wed, 23 Sep 2026 05:42:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FDE06B0093; Wed, 23 Sep 2026 05:39:56 -0400 (EDT)
+	id 9D7B86B0095; Wed, 23 Sep 2026 05:42:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 27AED6B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:39:56 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADE51A076D
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:39:55 +0000 (UTC)
-X-FDA: 85244530350.05.7DF7A68
-Received: from mta1.migadu.com (out-168.mta1.migadu.com [95.215.58.168])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7D22D40005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:39:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OcD3OH9r;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.168 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 33E106B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:42:49 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF4CA140731
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:42:48 +0000 (UTC)
+X-FDA: 85244537616.08.D51C7CD
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id BE11E140008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:42:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EqrxHpMU;
+	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790156393;
+	s=arc-20220608; t=1790156567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GTvNjfqp3vWgW6mBeOYWH0dCuJI95lHGIMwcJ+GgyDk=;
-	b=69gAPtmLvxez+XJTB4cJ6apKeQ1yntWgi2FUUC+3Zbh0HbRUw1R1292Dyh9PdC8EfabrZ7
-	EQGiFMEix3sM89drj29s2I0aqzgTYxrBABl/awisGikr5jKV11m/XDpHMWYVJ1OeZFJ049
-	6or2wyTofdrMC3TSPhPbQZEp6Boi2YA=
+	bh=EQU5pR+SfoNYpqsu1yMb6Y4AvkPOKGuTiJW7N1CVBjQ=;
+	b=wkYrGtWzEc3kxFJUDtSyxdsUF2w8Yn1szyT43m4hA0uy2sEbkvRilWDH09YxzfFvuZt9O2
+	5oqFIt8IGzlzZeaH0iRP9GE+J4277ca34doKXnyAXCywZbtm+vcXVR0xf8yHCcVOr/E2z3
+	psbKy1F8q1hXtWKnLXrBMRGB+s3sYo4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790156393;
-	b=cy7bHJJluKEXpkJAi1yA57mxnE0upGahY9AVOv2O6LtHmI+IHfFBrExa5MSodmBBKL76Ep
-	FbQ4ap+N9eoUvxv4Z4Y4yjS9+6gMXMuYHUH8rYAmoAuBnOr4jRQSelXVbiXpaODNUHAtBw
-	sYu7PCkt5NqL6N1F/ZlFwpEGCjPdDfg=
+	t=1790156567;
+	b=xWwAZ7bzGVXgsVPFUzKQnRSvvacf6L5n0xHCKM1MeXVYwE15006O0fVIrywLipkw7fGRtn
+	qbfO+CaPkEZgLDmKGtLTFhTLbAu6lT73QPJ2aM3VAIUshxwSrmiKZOnpf07xsIkcIpcsnu
+	byU3pJiUhcge31fYA2cyEEACBWvhXYE=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OcD3OH9r;
-	spf=pass (imf01.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.168 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MzOAhLKmbJiSI4FocgslvkepFbs+VNzpkEibZW2q3/8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790156392; v=1; x=1790761192;
- b=OcD3OH9r5GDLa1RAtiQXePDtbn32B679l5paNIzso95xSS7zE5uSQ49AcjrQCyAadzN7S+NY
- 5+ZPJKTWZyRM2K1EV1GqeNtE6PTFzZG9NDvmsDPrGpVLhuL2mb2qoHmXNHGpMnc5FAzJ4Nk5aRG
- SqaDdHpDF56hmsHUtnCUyLlQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 637d28ad337e819f;
-	Wed, 23 Sep 2026 09:39:51 +0000
-X-Mizu-Trace-ID: 637d28ad337e819f
-X-Migadu-Flow: FLOW_OUT
-Date: Wed, 23 Sep 2026 17:39:44 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: Gregory Price <gourry@gourry.net>
-Cc: Chris Li <chrisl@kernel.org>, Kairui Song <ryncsn@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Rik van Riel <riel@surriel.com>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <arOeYHEf9aO7AU5X@MiWiFi-R3L-srv>
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora>
- <aqLi6cIjD2wJwk0B@cmpxchg.org>
- <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
- <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F>
- <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
- <CAMgjq7CJBHkoZmg9oKNgGA8czL0djyBTCAkPz8ETm-tX=Qci4g@mail.gmail.com>
- <arEotFqE7ZZoxMHd@gourry-fedora-PF4VCD3F>
- <CACePvbXb1WLz=OAAzVawf3oc3+dE3Z7qfPdagQ2dYuf3OALc2g@mail.gmail.com>
- <arFe215hUcjLhvmS@gourry-fedora-PF4VCD3F>
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=EqrxHpMU;
+	spf=pass (imf09.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17E0A1516;
+	Wed, 23 Sep 2026 02:42:42 -0700 (PDT)
+Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 890353F86F;
+	Wed, 23 Sep 2026 02:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790156565; bh=ovmViFUKy6MLk0NrlYXc5n5zxje+qUS5YdjUVeCmo3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EqrxHpMU3y3q09p7ZwC3F7pnYhUAukhhWF6HkPPmq/150OiZcTwdjrlGOeBN8pNBQ
+	 ViYlHj7XxBiCoU3LYoeEyZ1FOUfVcJxbQ/TAUCtCU/Xb1Gv0B6KDlzCogBgLoCrn9N
+	 2KeYP3En8k33E1CffATf2xeYK+Rk4KTPNkAHQoT0=
+Date: Wed, 23 Sep 2026 10:42:39 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+Message-ID: <arOfD6syXOgQhZYA@arm.com>
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org>
+ <arKsFofudnTYpXj1@arm.com>
+ <yq5aik3w344o.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <arFe215hUcjLhvmS@gourry-fedora-PF4VCD3F>
+In-Reply-To: <yq5aik3w344o.fsf@kernel.org>
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7D22D40005
-X-Stat-Signature: tbcmgwj5ukj4o5o5exrymst9ncr79qb6
+X-Rspamd-Queue-Id: BE11E140008
+X-Stat-Signature: 191cfdfx38z9d99xk6rd3rb6rt95yx5n
 X-Rspam-User: 
-X-HE-Tag: 1790156393-467897
-X-HE-Meta: U2FsdGVkX19ZNeflzumA2MiXAzBxtclUHZKHHkEJ6xa4PTgqGAg9eak3/3o1gHzdFAY8dKjgGe3frhpVonfKKBL9ts+q3BaPM2d385p5bi1zvK9RrFcH7AI+bA59VmT+VqZUsnCsSm/TjUFDCfDC1trWww97wNQVH5/ZW9Wk7cmZI6Uyt1dMalqIRcqtV0/hpEnHWePqfYQg/G0etG4hNsVF6ND9kFUV3oSd/PkYQ25hYjDW8mu9SWLSmFfh/XdxDY/c6FURO/xfm+JIEX2viak+8YvFs6iUjmwz9QeflQI4bQ0mzwSMO6LerFav2f1tGqn9ekulQ/XuPdZCG9WpVse0+ncxwXAvSsiJjCaZQhCn6NRmuwO3ZwxGjqjb+oPKJiM+plC0sYJRZns4Z+PMdOHJ4RpvDy9Tlq+EHmKov5bhIm6/tI0ClXbi5nk2BHRZMRsL2FXysGKwo/synhM6L1WEzFqoH1tyI/nBeOFlO9NUnR2uABqXZxxoTTeWHKOBPwVi5aqn1o5qmhF1SgQIkWJOGVsHz9l4zQXATVCyT6LCdk9GC46znF51TrbhRv6Jtvs7zyRewrxh5AkN7Y5J7HoCdj9mtUgu/7+J4cHhmZAM3I2UY3kH5LqqQBXMLbQlGyVJDM65Rt/6CcgHHPrUDAPBB/y0T5w6mMwDKXroWvi3X82guXWU5RRIvmOK8VVoaRP59hrQ1eHUSvuCCI1l12sfGBEd1EeqFs16cO16Z6BHyibLNiUec0Hz23e2Gi5vTyABgRo/Sumdemcjas5W+nuLffBTZ2yXljW0U1NDyEZVygqvUgISHZqD0Eb/bia+NqrnGma4OmeNawnqKATsNIWarLmUxEcg+Bs3RhCLSIDedSk7hf7a19mU4TBEnQi0lGyimHSB3rY2yUuMCEdorxuxlnWkN6Sb+sLIeTPEEmwSm2RheY9GN1JonibTe+Eh74lXnFMD/4FX26wFj2s
- /t/MFO/S
- ITys/gN4KxDuSvI+b/WQkzoBLmwr+Bl0oAkDidJ6av6ys/Lao6lnnxKsd1tOIk0LD8Lp/BVGqcNsAb2PB85lqlik/yUAL8KjPjHODLWIMLkD6i5lmEPM4j4YUuSgvXTBVXpyJ/PSM6PGvGL2xd2M42jYdiIGBAaqjgoku15mx1jCkUBeeY9u2BTJrmZ0fRX/9Aai8j7+WiRmrT/fTXMQgVGbljBT+Ovy0jAkqt2bYnLShjDpoJKBAkX4+0CjQQkj8Uti/Xa6XeTt1RTngmU5qVJl+jtYiObzfAe+mcrG78Pnz2fUJwee3WWI74Adwi7VbFTB4XIAeJ/q8E67y8i+V73bqR4ZHJdDuvTa7W+Um/dMEcPlP2c0qpFC485F51wbw/kKbjd7WgEl8QdQB+fS3pW7w5O6r/wnl8jyasEA6ERfSTBb/QcpAzsLW0eqGqtin75DrT2PKeezO6WFHao5g4w2JkF/JyiUjBgFhJ/gP4bY1QXntyzsGbGIJfFDxqMED8V0VNsb490E1LGQ=
+X-HE-Tag: 1790156566-591361
+X-HE-Meta: U2FsdGVkX1+g7l5ADqNhEPdMEGXGd2MqMfvoalV+ZMf8FtE4TuWwJTS97HCw/KeQmtDoCTCVX0cCPk9G/uPI4WTgc1q9djO0o/7xA6+4KX/rkzSST1P40ovaoZd/LWZXQ8g2NI5TXQDXg/WLlysT0A4yEkKyTsYhcSlpuyzP0lZDGtf1X+vEwO9gdVlr+K+D0SoT5atOkRQKrquJqyMw/X1SNV/NZQw1v4q0pvMic8lZ2cZVzInPAcWcBZE7sadulApc2Hc8nxEiEHmjFzRl787t2RuPkea1eLPuJSt1p1FXAfGm9TrH7ssvI5YbL3QhDqz6xwWDND/hjgZgUIaVuopmamfvSsP7Z7MeNvffiHyfY031qL+dVCYglWM+5b0p6DAkRPyCdQU2+XSh69E0pkTqtf/6TkUXKgfb38+9Q5x70GFPwJ1liNC64nc1tIIkB4DbRlkbtmNwB5yyT4SzSH6FG3ctDM6dV3bAGRNV4iZIxWR+uWNgK7kGDyqACJaOXGiHlRAqEDKaQBfsG4O3ctpQzBmMXz9SPrKUzRMMk3ic3FGWvDXpKIuAxRfdrUaUM4/I4eLxULTE3lPW4jbO5FEo2Kjp+ewdlCxitz6c4MDaIz/DX3oq41agQx0FozW9xuH1Fr1ZH9mOPOjjyuNrGRhRcZZ3L4PQT7khO5tjb7LveyEty48pPwHX/prOSolijMjS/XMr97/M8giQCdvFPmHqffWABwiSD4ZqfLPh9HS8x87qerQ5c3JB7wWevLnHJBp0bwaDdrTHjdTtbu0AQwwvnToRLLT+wqVmvoQApDOgd7H0Hwow/hHIx2MAGV+gigBNfaoubftUDB3EHTlpocuYzJJk4duCdW1+MZLQTua8GFmfwPzGl8XJmAqHscuKjy+z08o8IbweNYNaEn5aFLoE5qV09RMw0mD9o2PLg8NU7mFgEbPvvvF1mt2d4JcZMsEu9B4flZLtJ5WGZts
+ ghX09I1j
+ d/X2IPwEAr1lgl3aWxX68aNiXKX9UZ9kmFxJG9JggKtBPWr9P5Xgmb3gSESS1hGnccIptAO26vRkE4Tj5bzOYoIJOfV5KGegwlkKJSKCQkcKXCwV76UwD6pmURFrtC/NS2fijzi58yDkOZj2FD46hmBgxEOgz8VKtbMUz342qODngchBtKT9yj6kZ2qTPzhDZzBhli/nA3rAWqFpTseSCIkmpkDpJAcDOlu1IVWqA3Pw9RIGjEMjyaVMwcmjEFhJs6nXi7wQEcVH9GStF+H/1Ur07AIAnM9WkDvz/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,93 +101,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 09/21/26 at 01:02pm, Gregory Price wrote:
-> On Mon, Sep 21, 2026 at 06:32:56AM -1000, Chris Li wrote:
-> > On Mon, Sep 21, 2026 at 3:27 AM Gregory Price <gourry@gourry.net> wrote:
-> > >
-> > > This would preserve the existing memory.swap semantics while allowing
-> > > both backing resources to be constrained independently.
-> > 
-> > It sounds like you want memory.tiers have limit enforced.
-> > 
-> > I suppose it is possible. Again I want to see how people would
-> > actually use this feature.
-> > 
+On Wed, Sep 23, 2026 at 11:23:27AM +0530, Aneesh Kumar K.V wrote:
+> Catalin Marinas <catalin.marinas@arm.com> writes:
+> > On Mon, Sep 21, 2026 at 08:18:36PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> +int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+> >> +		size_t requested, struct cc_shared_pages *mem)
+> >> +{
+> >> +	struct cc_shared_layout layout;
+> >> +	struct page *page;
+> >> +	unsigned int order;
+> >> +	bool zero = gfp & __GFP_ZERO;
+> >> +	int ret;
+> >> +
+> >> +	if (!mem)
+> >> +		return -EINVAL;
+> >> +
+> >> +	ret = cc_shared_calc_layout(requested, &layout);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	order = get_order(layout.shared_size);
+> >> +	if (order > MAX_PAGE_ORDER)
+> >> +		return -EINVAL;
+> >> +
+> >> +	/*
+> >> +	 * State transitions require a linear-map address and may modify memory.
+> >> +	 * Allocate from low memory and defer requested zeroing until afterwards.
+> >> +	 */
+> >> +	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
+> >> +	if (nid == NUMA_NO_NODE)
+> >> +		page = alloc_pages(gfp, order);
+> >> +	else
+> >> +		page = alloc_pages_node(nid, gfp, order);
+> >> +	if (!page)
+> >> +		return -ENOMEM;
+> >> +
+> >> +	ret = cc_make_shared(page_address(page), layout.shared_size);
+> >> +	if (ret) {
+> >> +		if (!cc_make_private(page_address(page), layout.shared_size))
+> >> +			__free_pages(page, order);
+> >> +		else
+> >> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
+> >> +					    layout.shared_size);
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	if (zero)
+> >> +		memset(page_address(page), 0, layout.shared_size);
+> >
+> > Does the memset() post sharing logic work for pKVM as well? If nothing
+> > clears it, we have a small window where guest data is leaked to the
+> > host.
+> >
+> > Is there a case where we *do not* need the memory cleared? If not, maybe
+> > we can move the logic in the arch set_memory_decrypted().
+> >
 > 
-> Possible, but arguably not needed. the swap and zswap counters already
-> work for this existing interaction.
-> 
-> As I pointed to in my response to Rik, in every reasonable use of
-> pswap+zswap the global swap counter is pointless.
-> 
-> So then pswap=swap and we're left with zswap and swap.
-> 
-> And I'm not convinced your reading of the swap counter as a limit on the
-> *logical* memory allowed to be swapped out is actually accurate.
-> 
->   memory.swap.current
->         The total amount of swap currently being used by the cgroup
->         and its descendants.
-> 
->   memory.swap.max
->         Swap usage hard limit.  If a cgroup's swap usage reaches this
->         limit, anonymous memory of the cgroup will not be swapped out.
-> 
-> There is no documentation I can find that has ever documented these
-> counters as "the amount of memory requiring a fault".  If you put a
-> compression system in front of physical swap - the counters as-described
-> would still be accurate, while your reading would be broken.
-> 
-> "swap" here is highly implied to mean "storage" as opposed to memory,
-> which is why "zswap" defines its limits in terms of memory.
-> 
->   memory.zswap.current
->         The total amount of memory consumed by the zswap compression
->         backend.
-> 
->   memory.zswap.max
->         Zswap usage hard limit. If a cgroup's zswap pool reaches this
->         limit, it will refuse to take any more stores before existing
->         entries fault back in or are written out to disk.
-> 
-> If you're presently using swap.max to mean the "logical amount of memory
-> allowed to be swapped" - then your usage does not meet the definition of
-> the knob.  You need to justify that your use case cannot be expressed
-> via memory.min/low controls:
-> 
->   memory.min
->         Hard memory protection.  If the memory usage of a cgroup
->         is within its effective min boundary, the cgroup's memory
->         won't be reclaimed under any conditions. If there is no
->         unprotected reclaimable memory available, OOM killer
->         is invoked. Above the effective min boundary (or
->         effective low boundary if it is higher), pages are reclaimed
->         proportionally to the overage, reducing reclaim pressure for
->         smaller overages.
-> 
-> That's an SLO interface.  memory.swap is a provisioning interface.
-> 
-> As it stands, I'm left viewing zswap's counter inclusion in swap as more
-> of a bug than a feature - they account for different things (memory vs
-> storage usage).
+> I don't think every architecture or platform can unconditionally zero
+> memory in set_memory_decrypted(). Some callers may need to share valid
+> contents with the host.
 
-It's hard to say. When 37e84351198b ("mm: memcontrol: charge swap to
-cgroup2") introduced memory.swap.*, it was clearly defined as charging
-"the actual number of swap entries used by a cgroup". Please see the
-commit log. With that, zswap still reserved a swap slot even when the
-data never reached disk. And not to mention zram, it's backend is RAM,
-but not physical disk.                                          
-                                                                                                      
-Now some deployments do use memory.swap.* as an SLO signal, and that is                             
-real use cases as Chris and Kairui told. So I don't think this is about
-who is right and who is wrong.
-                                                                                                      
-To keep the existing deployment working and at the same time give the
-physical slot its own knob, I think the solution is to add a memory.pswap.*
-counter as you suggested. And that is not something we think of from a
-brain storm, it comes from real deployments which already depend on the
-current memory.swap.* behavior.
+Is there any? That would be a bad assumptions in the caller. Most
+set_memory_* backends don't preserve the content as they change the
+encryption key. So properly written code shouldn't rely on this unless
+it knows specifically it's only running on pKVM for example. The only
+use-case I see to avoid explicit zeroing is when the caller doesn't care
+about the page initialisation and wants to save some cycles. The
+encryption key change would take care of the security aspect.
 
-Thanks
-Baoquan
+> Also, if zeroing is added only to the CCA implementation, the allocator
+> must retain __GFP_ZERO for platforms such as pKVM. This would cause the
+> memory to be zeroed twice on CCA.
+
+What I meant is that we change the set_memory_decrypted() contract to
+always zero, assuming that all callers need to zero the pages anyway. If
+we do have cases where zeroing is not needed, we could make it explicit
+via a flag.
+
+> How about extending cc_make_shared() with a flag indicating that the
+> memory must be zeroed, and passing that requirement down to the
+> architecture-specific implementation? The implementation could then zero
+> the memory at the appropriate point: before sharing for pKVM and after
+> the destructive transition for CCA.
+
+On pKVM, we want set_memory_decrypted() to zero the buffer
+before the host can access it (I guess currently relying on __GFP_ZERO
+allocations). Since no cryptographic encryption takes place, there's not
+much point in memset'ing again after the operation as the content was
+already zeroed.
+
+I don't think cc_make_shared() has the right information on how to
+safely and efficiently do the zeroing. That's only known to the
+set_memory_* backend. So you'd have to propagate the flag down.
+
+-- 
+Catalin
 
