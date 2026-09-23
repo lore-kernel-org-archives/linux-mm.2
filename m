@@ -4,95 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B8B5C98308
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87231C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:29:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FF8C6B00A5; Wed, 23 Sep 2026 02:29:36 -0400 (EDT)
+	id 6ED816B00A6; Wed, 23 Sep 2026 02:29:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 788C16B00A6; Wed, 23 Sep 2026 02:29:36 -0400 (EDT)
+	id 6770C6B00A7; Wed, 23 Sep 2026 02:29:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 677686B00A7; Wed, 23 Sep 2026 02:29:36 -0400 (EDT)
+	id 51A886B00A9; Wed, 23 Sep 2026 02:29:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3979F6B00A5
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37CA21406B8
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:29:35 +0000 (UTC)
-X-FDA: 85244050710.27.C14EDCA
-Received: from mail-pj2-f33.google.com (mail-pj2-f33.google.com [74.125.227.161])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 685B21C0005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:29:33 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VXuSkm5e;
-	spf=pass (imf21.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.161 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2932F6B00A6
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AF584A0716
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:29:40 +0000 (UTC)
+X-FDA: 85244050920.20.A679DFB
+Received: from mail-pj2-f43.google.com (mail-pj2-f43.google.com [74.125.227.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D37571C0004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:29:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BZgTvx0e;
+	spf=pass (imf18.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790144973;
+	s=arc-20220608; t=1790144978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dEaCg+SoOuqpLOGmqy1zgShmdKDFtyrROF+HoSyjUpM=;
-	b=4oyYdZtFPli+fIHJ/igzu/35gYbAaPc799t21WnQOW4FMGhQV1FZDvWx6X3L+fo/bZ1rer
-	sXet4wvukIG8OAcM177wRyBh5owQR6ICt8TgevRx3YrVOpv6LoWR5Ye51dQmh18RFEluEg
-	ZjsoHKsP/mtdkUEdnSkgmVkm122+Ty8=
+	bh=Qz31YaIUZL0HkPkLOInD8YA56WfSRIuJpUh6x60MqwE=;
+	b=g7jd2uffquGnvq7OAgWz2MIJpRoPbo8zUAwZ52VKTfz8BMTAEt2LQX+G5Ie9kvK/hkY0fx
+	8p5FWp+BkOcPwMkbERyfwZEnJ/uXCLoQqF2hhFLmULp+fPoPb1lVRP+2aEqtI53yQhrpdd
+	qwr+33vguhbfC3hKTQf5RobsGVtkLFI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VXuSkm5e;
-	spf=pass (imf21.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.161 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=BZgTvx0e;
+	spf=pass (imf18.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.171 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790144973;
-	b=Caw21SPYOGShKFsgPx2Rr6jMP0AII1GjRf5fwgpBuVFc7lmNt2DiOwAc6TwQXv0p6HwLev
-	Jm1g60rWZfQY/q1C7uAedSMP4RU5vHIgM4Lg+s2ubtqAaOWJwqRwQmjmR85ypI9qA2bplb
-	uM5Q4utcDWK/4rdSJBCCyyX17loI/zo=
-Received: by mail-pj2-f33.google.com with SMTP id d9443c01a7336-2d747ed1368so3508705ad.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:29:33 -0700 (PDT)
+	t=1790144978;
+	b=uquuUHVDl7x/bwjRj58CTCMh39+OBo+SXIRRffH2TXKHM+CCQmEhyieVNFiBIUI+L3Zcbk
+	X7fdcRXXKtEn9+122CxgSiX9i9tufWA42jsdjrsfPxOK54nW+JzFfhC++FXdA4s8z2qqan
+	jGx1CxS9pYIhn6/GvsXHPTKyN54/+8I=
+Received: by mail-pj2-f43.google.com with SMTP id d9443c01a7336-2db1ca069c8so2800605ad.3
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:29:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790144972; x=1790749772; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dEaCg+SoOuqpLOGmqy1zgShmdKDFtyrROF+HoSyjUpM=;
-        b=VXuSkm5e0yJiqUS1ttNfGz9OBkSc/TAIEedokZsER/uQhCFDEiItsIziWzZYqTU5HS
-         F7cinNML50fNOFwv6OjMsIOFbBpTfizjnz+47Zae4URmdQejwTNr8l6Jb91aztr1eR6x
-         HTivurhFkcHxsOJ3707KZ2TTHpO+Hu563f1vTy+bdKcLh3b3Es+mNe2IK5xQPjP3Nlnv
-         N9gKzanh8b3umYRSV/Sywc6zE4YYUz3GTJxZL3ficVJUNNmjt5skMqWgX+inMcMwC4Tf
-         GtXkWyW0qzv0U+mmHznF/OnJ+iq6IV0kPTlfxYrc9usEWYz2qPD9CtAnP0+Sp1XZGrOC
-         57Ow==
+        d=gmail.com; s=20251104; t=1790144978; x=1790749778; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Qz31YaIUZL0HkPkLOInD8YA56WfSRIuJpUh6x60MqwE=;
+        b=BZgTvx0e+4dacMloD9Ydva2DYtd2lPx2ozr5smv6UsjFkLvVa1NCm7NFG3xNhK1Lc8
+         +HZBubkn0PbDj6KCrPLALjVSUG5AdBChplo/Kk5srtTlQZemQpiebGR9sI3VV9IlPZ4j
+         Dx//x9AbuLTzP7+UeXrHkSSSvQ8A7A4kyg5N9Dz7LKU2JVuiRUpTcNkvk9Yjt6NDzv0p
+         NwJeVez29Is66AQH3HQwtxkPef79n+DIldazhOp7BgLmf4r2my2djRgz68nxGSot4OTx
+         hPECDFsTz1JFm5OrP1fNDfYL77/DLkwWJQwYSJpGElcbhmpgFMNrK7taySDHt6NYEvlN
+         itMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790144972; x=1790749772;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dEaCg+SoOuqpLOGmqy1zgShmdKDFtyrROF+HoSyjUpM=;
-        b=Af7/QZNge1Kl2ZaeqJDxDdR2Z8nXoAX1DRqCT10E1zZdHlBINJD/rSXQ5+pmMpU82u
-         5F/SWcKp4dlDbYmHukq7P0nVDFy0lg8HG01APakYY7f2GWmD3NZFt0qd5XPzG7pl2JyR
-         3Q2EtoxmTDRMe0zyisB3rht9bBjD3JaIID4sbmKsUB5hZSUT2Y3OwFw50jueWIiZqtko
-         XnLuIakB6CMlV3WpiMAyLqNrLJhxz5X2Tl0WhV6nM3YsbP9Z6qKgd83l2Ws4Av5mJlc3
-         sH3oI9o/k/7SP8PhVpbC3lem4dhyv/hQYMBZrrE7gxEm3Og2anfd2qSarfI/2FUH/ztp
-         ZkZA==
-X-Forwarded-Encrypted: i=1; AKwUvBwkj5xb2pz+O0Sp6amIjnLgphs/YAAEUzvlmRnQLqI//AJuqS7whR8QrzQqZqcQa97jylPzM29eVg==@kvack.org
-X-Gm-Message-State: AFuF++mGavDO+YAS/lYW+7basDmwhmzw+PaAw+muk+DWUn9aoFYVkHX4
-	bbICVWrfFvAerCMhRS8bIrQuYc7AgyxyHjRKOWyDS4eG/L+pjC8bSRe5
-X-Gm-Gg: AYBFou2fvW14sslRjwOfDOTQfVUX5k9upZhVPM7HJPcClRRYKYJYsz3lHQP5T+QVS/G
-	ISH9QuLhEq/9PMyeiV6Kvnt8S8W7oIzFc8/2Tls6ewRhXxTRXXwNMqmpqPuED7Wp2Hypls5CHMJ
-	nRIH/Erie1PKPwCzZsoAIpm1OiGRmI9M9f+ofxfCfJrdQIUIfMTyzZusyGmCsdshoaEhEftoqMd
-	EFL/fizvEuUME75Octom2lYQZQuEm+MfpI1hyK1g3Yw4vv8lhJcHc+edGGMQoHYBMik8dKGaVt+
-	MSgdLToeEF5tUErqxsPjh3MGIw5B0MoP/mDbrTvTx54NQsWUNJxwqrc76VCrX9ar8tXmyZyBiZL
-	pXvswQrzJrr10ejdyXvf3ib3RD9W8oBFgqa69adq1EFZCXuvWrS6ymtaxlX1cFMJQ4n++bir/nM
-	fHvZSt5cfLHo9MHuNJwPJ+vV7kD33v1f0HGYxN1+fAmdOMZZ7YMem8ddBAd0qMf4tUqEPDDq7Hh
-	L3Y4KJHF69XHSiGx0AJtw==
-X-Received: by 2002:a17:902:db0b:b0:2dd:c100:b2c2 with SMTP id d9443c01a7336-2df69e01d0cmr15666125ad.45.1790144972237;
-        Tue, 22 Sep 2026 23:29:32 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790144978; x=1790749778;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Qz31YaIUZL0HkPkLOInD8YA56WfSRIuJpUh6x60MqwE=;
+        b=sY0vlNOIRujdbqX6qW9jblw/kjE78xJvVtBLXip68vicTnm+6I+nK94beO5Elh8bG2
+         frjVOQrnTX9AqkmQwJL4depNVeqmC6HMY738Y6vJWC6v6zuHnS4N4UFVNW7RaYkVvDXE
+         xgpT0QwCenWoSAld8INPzifREUm2dH32//wNZAXj7ET3z0sAc2d7DEf131NELln5G5ZH
+         CzWyHNPxkkDc54vNMGDDgBUjiWWBSH+oVA+CAdxg4RnN1sb5HxEGiVm6MZkk/dYJovef
+         vR32veru3f8waYlZIKP8Pv9Dncgxz3bxc42qQThFs7f2EGpQPSY4CGMUIW+0v0auBSGM
+         zXYQ==
+X-Forwarded-Encrypted: i=1; AKwUvByINSc7kU7vK0refdDcPbMhnCVHPxJcNR4MERxY/Dcazx7TVUYGiwu8NPtgqQHqyRFFlIR4LoG4iw==@kvack.org
+X-Gm-Message-State: AFuF++nsm1fL3zdGceVjCIvHOM535YpM+0xgJfI8gF+dJKex1tN0EhMa
+	k7KJj3L1ZvLt6W1eDgChyfljZ7AfDeK/6qRfxXB9XB60om6Nw89YXCRELkSGd/UF
+X-Gm-Gg: AYBFou3Pd5WnEkByeIo7++JyhoDDuxbqD7Ni5hiAbIsAIJLgue7XJv9lrYkfW6xXfik
+	jJmbIJpaIz0lx9p4Yg+eVHYURzkdyp9jLsyvjzkk95svma7INExB9PRRU1tfrHi6tEa5GriyOns
+	4QI7u/JYwBudWOJebH7TehR5b9VkEY1XZJwEgt4glJLZBlTvRLia2/Urbre4PXOKq+/jG7dToXn
+	wbywOrwMBOxiySHkm7OrDcenloGk21eJ0b3WVJWcOnmqpIu5yf/bZeS0g5ay8RhARHRFerNrRP7
+	0jO07/mVTGMANHeX4VZCfe3ySLlpZPUvBPgRARPdGrWzwsKCOjpn55tFlzYC34VrvExBw037KSP
+	K9hHf66FPw7ZxraLfxvGilhwJ/tGWqly0XV5VoFrW0Oj7Rx0MYuuy4QFVWQAQPyMaR+ilAgb81X
+	oAKnVOJa1I1m15c257nillU/zTWmusRQPqRLZOEty4HrH51nfb5MgqBSUWsP5xG30mqbB40LU+O
+	F134RH0P3IWrhrBErOHGA==
+X-Received: by 2002:a17:902:d483:b0:2dd:c053:c20b with SMTP id d9443c01a7336-2df69ddf0cbmr15391165ad.39.1790144977728;
+        Tue, 22 Sep 2026 23:29:37 -0700 (PDT)
 Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a516bfdsm5620465ad.5.2026.09.22.23.29.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a516bfdsm5620465ad.5.2026.09.22.23.29.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 23:29:31 -0700 (PDT)
+        Tue, 22 Sep 2026 23:29:37 -0700 (PDT)
 From: Wen Jiang <jiangwenxiaomi@gmail.com>
 X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
 To: akpm@linux-foundation.org,
@@ -117,23 +115,22 @@ Cc: Xueyuan.chen21@gmail.com,
 	npiggin@gmail.com,
 	rppt@kernel.org,
 	ryan.roberts@arm.com
-Subject: [PATCH v9 09/10] mm/vmalloc: map contiguous pages in batches for vmap() if possible
-Date: Wed, 23 Sep 2026 14:28:31 +0800
-Message-Id: <20260923062832.479455-10-jiangwen6@xiaomi.com>
+Subject: [PATCH v9 10/10] mm/vmalloc: align vm_area so vmap() can batch mappings
+Date: Wed, 23 Sep 2026 14:28:32 +0800
+Message-Id: <20260923062832.479455-11-jiangwen6@xiaomi.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260923062832.479455-1-jiangwen6@xiaomi.com>
 References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hm9fiispoh9uecbyq3gb9w8up835bp4u
-X-Rspamd-Queue-Id: 685B21C0005
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D37571C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790144973-838246
-X-HE-Meta: U2FsdGVkX1+u3ADD8ojz++N9851y0kXg/8LNLtZahvcCEwrXv47McLYdhoOyj9j9NUAU0qSlLKEs/+rDhHQAtQ3suR0gZub+lbAZOGgqhb8/8bit+8WfsrJlwfrcRfX4iL95EjUwElGaD5Wojj24kn3QwBJYnRj6oN+92hqJHEYUSqYVioOwFI8Hq3KsAUfh7IDkBUqrYPsxX234aLIviI06s0LNSGnNfONaW3ADtLdpvyujvQW5SL3tN0aPFYwAgnO81SMt5OqTw2vSo5pTYCddQcDzrIuICSTUf3o81YRtmaMglomTVnsLS3JLnR0e1aX5KJZjHOXSANDy07eD+cfSXisLLCJB1/3s8GBr5tQpOWzKqMFlzlj0rVUAxA/L/DpQbM8lplnPqH71pFzj+c9tTqbG9wYOkW5pDQj++RrkTqLeKsOndeX13vrfw0uctGahAlKX/JkYQSW2pCQ6bvsAzApCO3OBP1e7fuIDc/RVQ5wtt6Vhd8cRrc99ziaEZQExAsjq0DYe1Agok5Z+M6aF7T1qLKVXnba+BL3s5E27M9ZUL5+dn6OeypClrP5IP2cbbIZc9r1fD0scVPBmCoRpjnmwZL+Izm+FXuH6bClO/3TNaDi/qhoOFFo3QFnQ9R8aj96gutyLyWdnAQ3mO8vU9I0j1+2rFWxTcF1/3uOZ/vjbJveevgWE1NejVfWE5513JZ5nW3x9T2t7UGgCEh5p9i0RgmfGoXIPdnzyf7zk4U45tMRNGDOYcIkLG3mv/pK2RzsCzAiEDtb6OnEgDNcaXJINEPkDXwf4P015hd/d7EoKQokRSW5Lukmnnfvy2zPveGnCRaO3U8bbMe18XQIrlJ7n66DvzL93GSvLC3g7ADjzszH/8uWsHB9Dd/S5CemhsFGJwgbXwK+uRPvP3vwimtosV9wjes35mTYuZnOcqr14SLgS6j1EHpZzFZ2vPqAk60wJqNktVi66C+f
- hQr993eq
- 9voGLo0Pm95zPX/mOlxugt9FlPOc7mn5RuZQckrSGZ/2plV0auLi7mt50yk4YakKaU27POC4J2/kNUaACz5hr4CSik/WpdBRY88BFxCEvYDN69GyJZppK6RjjvjeXQ8nlEMG+oCuTnLMTnzOpfJQbElz7HfRPh/PlqbpQRunhNKhBCiCDxFTtffmNtUly9jtF/CBodJwLp4DrZbWLa6WbVT8I08POqpb1Dni0yVT3IvOfdckWjVMnjuBzgnY0s0Ht/tF9eUCP4K/hgQ5HBdsOervLjJAUZYKk4zACbRCmiEbMWV5KzaSUYn1SjWOgSz8K1kOWGMWwYBaKGD0Zv0WFNxndnzdZScQwc5MHdP7gzQ+XTXrVA/zMuCz+cOiza/nhRv78yU21RaO1lC4I2JOg77zoQ3LdrPTwmQKrtMsT5jUVPxhKu7uKdFkLJX/heuzj92m313K4O47FgwRFQNcHafHjN5euDG3NDOY2eDQvFK8ml/YAqoh1yptPNGzDy0Um+5lCDoNm9mpUyBY0OW3DLWM/DP+y7sHNdomSZvhzPEQ86014B0zeLmFDdA9IaiCAyiLZf7g5uCgS7c88IMTIhZx4Gw==
+X-Stat-Signature: amta98qox8mamx7kwfb9awyxoifgzmx4
+X-HE-Tag: 1790144978-671976
+X-HE-Meta: U2FsdGVkX18u7+Hrq/utlH7dwZbnD6LbPZyoHKj4n/gTv1miqqL6kadhMUavsBySoV2E3p+drECJeFjEp9mA/plU4e6y49SyTpblwp7osLg0/cNOXJUbIUbSNVUr2ge6HvFEw/nug3y6vd9k67AFIz357jQdjFztFivGLXpChW/xw2NF1ceqa9Mg9zjaWE8HmDzyMPGaGXXGTomxisPrnc25srn3+1TvuxT/DVwAoqpHGw6BCNTAjX8eaHc82FZk9sCK4JbeOOCmsGrbYeyxjC3IfF0DqNXq7LdNfU6pysix8G0Qs4DetLayrQandgokt+a5W5+LiJK/5QBD07fBu3cYhNU84+THaTemdu1cyePtB3t19XUnH6LaUSsTXSHSH4DJQg+7eIWK9mAhVZkNVqxJQmzmo3n+Gf9UF1VBf67hP7+dizyeTYfCIVcxVA6VIl+jNbQTzTgmS/RnvCocm2nnipnN9tpSSTZQMMta48TWQehLJ9YGwlTyn4yb3KXSkSeZHmeiXv7GcGYYk1K9ruAOygv85zWcsCfGhi2kOJuthxgLkJsxxDF7v9QUq3yAp6uQYOc2bZNaLgzDmu9/YrCNvtZwVe3sYvr8Pbd3L/31u+BWAxrMbFK4/RvpR40YvMof5NLXnzSSIEXAqwTHZPpCcf6O38BS4b8vIOx6of8pXT/tsVQYzIJ4SWOd0BVxmi/m5IJM0BaS02NRtP9tQyFbQOQnKUhuw2+yg/IaS+L4/2tGoODu3dfIIRQ/UJiEDMbMoW9wVQUAHinU2HQHxKvUxr8kmhwQZ12jt21cwiDb858JHNhAAfv+7TrClzNbaVneeHUE3FeZV19b50swAQpxDtUYRWbrOEODJgRouxGLRrdxaLMBHqykRLpEx/aY6SS3BnZAtsUhjv60GmsJpN84xgkvuX05BPwjgQBPn6jqhsYsuQR67E60V/r0iVbwYznuDvqi1gbo0i5oVh5
+ AualpP2e
+ I+iI3jsz7TnwyuWl/nD4LWsIsq6yefoHgrNydMEl8Sqkb0Bwe0meaNeVETJkJd5FkdVh9iQoKLnYSmEKzx+tszOZnPg1Z+t0ZVbGtWnKiFdsqXTUVzkbERAGmPmoq7gWKaOT7bgenTrKNq3PYlkD43TxMRE7wcYOj6Zb930hGmW03uQ2FhsilVojE7+d8XFzzBbVSsigXmY3nGPR1x/QMy3zNUvex50L6Bfplx2R3ezoxeKaaQ2P2fua1HxJYSp8hLvuSnBzGGc6WrqfgRdQITEP2QgpeuzUqdAnaztQ705DrysoUHp9BGtoDRQMtMCCV0Np/KqfCLDh+P+BMqCwF3Iw6v0+DZb+MiBtNIX/x0omWSC1DCogf44tcchnLvaB+KS4zBJh3B6uWUxCJDR2E8NfL5v13PTSgEq28mTw2QKZZ8v8GLajTL3sgxSh/7VuSHv+Ga9iLmbZf0gLbfX3zAjLN8lmUKhVUN8aj+97vv6S4zM9mWgbI1SWyHhFcfQa0fT78rxLvxKIiD8ptWizzXBWaCf9dDFO00rEYeqFzjl2xtNKGsRNyzfN6bn5J0bk0y2UwqEuQKHqzdFUYadvJQv7HqZmq4btvpLhR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,137 +140,86 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 
-In many cases, the pages passed to vmap() may include high-order
-pages. For example, the systemheap often allocates pages in descending
-order: order 8, then 4, then 0. Currently, vmap() iterates over every
-page individually—even pages inside a high-order block are handled
-one by one.
+Try to align the vmap virtual address to PMD_SHIFT or a
+larger PTE mapping size hinted by the architecture, so
+contiguous pages can be batch-mapped when setting PMD or
+PTE entries. We do not expect any significant overhead for
+this.
 
-This patch detects physically contiguous pages (regardless of whether
-they are compound or non-compound) by scanning with
-num_pages_contiguous(), and maps them as a single contiguous block
-whenever possible. The mapping order is determined by taking the
-minimum of the contiguous page count and the pfn alignment, allowing
-graceful degradation when pfn alignment is less than the contiguous
-range.
-
-Pages with the same page_shift are coalesced and mapped via
-vmap_pages_range_noflush_walk() to avoid page table rewalk.
-
-As users typically allocate memory in descending orders (e.g.
-8 → 4 → 0), once an order-0 page is encountered, we stop scanning
-for contiguous pages since subsequent pages are likely order-0 as well.
+Add __get_vm_area_node_aligned_caller() as a wrapper over
+__get_vm_area_node() to simplify repeated calls with fixed
+arguments.
 
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Co-developed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
 Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
 Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 Tested-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/vmalloc.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 80 insertions(+), 2 deletions(-)
+ mm/vmalloc.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index a43965016eb4d..37cddb7f45a4f 100644
+index 37cddb7f45a4f..1a3b191885024 100644
 --- a/mm/vmalloc.c
 +++ b/mm/vmalloc.c
-@@ -3576,6 +3576,85 @@ static inline unsigned int vm_shift(pgprot_t prot, unsigned long size)
- 	return arch_vmap_pte_supported_shift(size);
+@@ -3328,6 +3328,14 @@ struct vm_struct *get_vm_area_caller(unsigned long size, unsigned long flags,
+ 				  NUMA_NO_NODE, GFP_KERNEL, caller);
  }
  
-+static inline int get_vmap_batch_order(struct page **pages,
-+		pgprot_t prot, unsigned int nr_pages)
++static struct vm_struct *__get_vm_area_node_aligned_caller(unsigned long size,
++		unsigned long align, unsigned long flags, const void *caller)
 +{
-+	unsigned long pfn;
-+	unsigned int nr_contig;
-+	int order;
-+
-+	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP))
-+		return 0;
-+
-+	/* Limit nr_pages by pfn alignment */
-+	pfn = page_to_pfn(*pages);
-+	if (pfn > 0)
-+		nr_pages = min_t(size_t, nr_pages, 1UL << __ffs(pfn));
-+
-+	nr_contig = num_pages_contiguous(pages, nr_pages);
-+	if (nr_contig < 2)
-+		return 0;
-+
-+	order = ilog2(nr_contig);
-+
-+	if (vm_shift(prot, PAGE_SIZE << order) == PAGE_SHIFT)
-+		return 0;
-+
-+	return order;
++	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
++				  VMALLOC_START, VMALLOC_END,
++				  NUMA_NO_NODE, GFP_KERNEL, caller);
 +}
 +
-+static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
-+		pgprot_t prot, struct page **pages)
+ /**
+  * find_vm_area - find a continuous kernel virtual area
+  * @addr:	  base address
+@@ -3655,6 +3663,30 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
+ 	return err;
+ }
+ 
++static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
++		unsigned long flags, pgprot_t prot, const void *caller)
 +{
-+	const unsigned int nr_pages = (end - addr) >> PAGE_SHIFT;
-+	unsigned int prev_shift = 0, batch_idx = 0;
-+	unsigned long batch_start = addr, batch_end = addr;
-+	int err;
++	struct vm_struct *vm_area;
++	unsigned int shift;
 +
-+	err = kmsan_vmap_pages_range_noflush(addr, end, prot, pages,
-+					     PAGE_SHIFT, GFP_KERNEL);
-+
-+	if (err)
-+		goto out;
-+
-+	for (unsigned int i = 0; i < nr_pages; ) {
-+		unsigned int shift = PAGE_SHIFT +
-+			get_vmap_batch_order(pages + i, prot, nr_pages - i);
-+
-+		if (!i)
-+			prev_shift = shift;
-+
-+		if (shift != prev_shift) {
-+			err = vmap_pages_range_noflush_walk(batch_start, batch_end,
-+					prot, pages + batch_idx, prev_shift);
-+			if (err)
-+				goto out;
-+			prev_shift = shift;
-+			batch_start = batch_end;
-+			batch_idx = i;
-+		}
-+
-+		/*
-+		 * Once we fail to batch pages, we expect to fail batching
-+		 * for all remaining pages, so just give up.
-+		 */
-+		if (shift == PAGE_SHIFT)
-+			break;
-+
-+		batch_end += 1UL << shift;
-+		i += 1U << (shift - PAGE_SHIFT);
++	if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE) {
++		vm_area = __get_vm_area_node_aligned_caller(size, PMD_SIZE,
++				flags, caller);
++		if (vm_area)
++			return vm_area;
 +	}
 +
-+	/* Remaining */
-+	if (batch_start < end)
-+		err = vmap_pages_range_noflush_walk(batch_start, end, prot,
-+				pages + batch_idx, prev_shift);
++	shift = arch_vmap_pte_supported_shift(size);
++	if (shift > PAGE_SHIFT) {
++		vm_area = __get_vm_area_node_aligned_caller(size, 1UL << shift,
++				flags, caller);
++		if (vm_area)
++			return vm_area;
++	}
 +
-+out:
-+	flush_cache_vmap(addr, end);
-+	return err;
++	return __get_vm_area_node_aligned_caller(size, PAGE_SIZE, flags, caller);
 +}
 +
  /**
   * vmap - map an array of pages into virtually contiguous space
   * @pages: array of page pointers
-@@ -3619,8 +3698,7 @@ void *vmap(struct page **pages, unsigned int count,
+@@ -3693,7 +3725,8 @@ void *vmap(struct page **pages, unsigned int count,
  		return NULL;
  
- 	addr = (unsigned long)area->addr;
--	if (vmap_pages_range(addr, addr + size, pgprot_nx(prot),
--				pages, PAGE_SHIFT) < 0) {
-+	if (vmap_pages_range_batched(addr, addr + size, pgprot_nx(prot), pages) < 0) {
- 		vunmap(area->addr);
+ 	size = (unsigned long)count << PAGE_SHIFT;
+-	area = get_vm_area_caller(size, flags, __builtin_return_address(0));
++	area = vmap_get_aligned_vm_area(size, flags, prot,
++				__builtin_return_address(0));
+ 	if (!area)
  		return NULL;
- 	}
+ 
 -- 
 2.34.1
 
