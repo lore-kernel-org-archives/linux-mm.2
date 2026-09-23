@@ -4,141 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0064C98307
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06DD7C98307
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:53:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFBC66B0095; Wed, 23 Sep 2026 07:53:03 -0400 (EDT)
+	id 105E56B0098; Wed, 23 Sep 2026 07:53:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3AB6B0096; Wed, 23 Sep 2026 07:53:03 -0400 (EDT)
+	id 0DDF26B0099; Wed, 23 Sep 2026 07:53:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE9F46B0098; Wed, 23 Sep 2026 07:53:03 -0400 (EDT)
+	id EE7DD6B009B; Wed, 23 Sep 2026 07:53:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AEEC16B0095
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:53:03 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4B97814078C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:03 +0000 (UTC)
-X-FDA: 85244865846.12.10BF2D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9DE3E160012
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:01 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVFSquBo;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CA4846B0098
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:53:52 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 552C41C33B2
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:52 +0000 (UTC)
+X-FDA: 85244867904.02.31CAF51
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 09AF840003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:53:49 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Ip/9PsmL";
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790164381;
+	s=arc-20220608; t=1790164430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3gvEH4PZe13Dib9FXDOeLGOf/kDxMjwupk+1LhCdBq8=;
-	b=X0hBWOfpn86c0v0aPlJ6sLY6KLJi0m2UoWAmbiZF1MLWsgwRXfDsSeR+mWCbJ3CRNMzZTs
-	xcxFCr72cKPrhTFBzwTXjvO4gqYcB1/4SDDz3b8VaxwuhDm+LqUNy/vM++VF9qqjemNmhL
-	sq/0WjSBoNLivNxYqXtrmk3RoZmoW04=
+	bh=DZPR253R3+bl6LyBiXW5gQAtjY6DOY80tr7PJYJoSn0=;
+	b=6nciwDwgHwfEy2kHawDXfY8ewr7d4gRprgsABlqSSKw308hB39x24qeRA7MYwjvB2dnAYa
+	Td1GipLFD9KJ4T76BE+ubcWVpuLzZdfPOc8EwwfmZqEXTrM0L1aKBG0cbBHmzAmCTkz6GQ
+	6TY4tHCB3SKQt3J8itlNglOuqcCqzII=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YVFSquBo;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Ip/9PsmL";
+	spf=pass (imf12.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790164381;
-	b=4HXRxeMuKoQ5fhFBow2iYPrm8DtCKQWFZnmFNutBJqRxfOfIwkbdG/5oMz3NjylsYPsTM6
-	Ul/w+ZUXLo6T5vSTArSCjPdFUGgeP3ZEKXr+uim6ECbbFDeQrmb5hlkrMvLgMfmVk7bLWh
-	Z9Z4BQmqP+zNMMa7fDlEnY5/NPgM5A0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6375E60200;
-	Wed, 23 Sep 2026 11:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EEF1F000FF;
-	Wed, 23 Sep 2026 11:52:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790164380;
-	bh=3gvEH4PZe13Dib9FXDOeLGOf/kDxMjwupk+1LhCdBq8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YVFSquBo9HtDomGw223Xmsup2p9f/dYix+XoUNIJHHR4DvN7y5dPy+o4Y4VCY3OXl
-	 xq9g51WvZMgwndo+avzJomPY3QlQBZ4+EmTI35+axGNL95H7sUmik6HUykMznOw6+H
-	 OkPTdCCPcCRm5+0BMMNpNC21j7faGXDCsTxMkwkB5s7zIsXH+VLECvkt5MWNlqcByZ
-	 TaJD1RPTAT5ePVguaIDPVgSDTGeegPR8HJOmg1y8mhheOLiVpMBjtngEDsEzyPaErO
-	 Vq2zxV4UTLzd6dCy0PU8hb8ltpsyqUB1o5lTQQZbJM6/WLqmh+in8zmrTMbVVxetyM
-	 86Gj6R7sageKg==
-Message-ID: <1acb0ac4-d2bd-4270-9a82-1747b3c62832@kernel.org>
-Date: Wed, 23 Sep 2026 13:52:52 +0200
+	t=1790164430;
+	b=fjWKeo/gMY02yWYswkiowMm3KsnEPT5NuWI4G3x/jJ/koMFNnyghCsMJV52c9887iTGG1M
+	KH0/9t276fdQlyyHGGhULoHZJe99znngxuNLyEcuCLF/GE5nrlh6oXvREdWdvbFZ3ySMAc
+	6HKlsDH33tAbFYoNVqoih9AdgYNr6Ns=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ZaCq2742039;
+	Wed, 23 Sep 2026 11:52:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=DZPR253R3+bl6LyBiXW5gQAtjY6DOY
+	80tr7PJYJoSn0=; b=Ip/9PsmLLpYTUEIiqqN7PEUCjt/tbos3gbllDcLV+dKinE
+	DxM4vzFM1FgDLuHauy7zkOFHkE+8QgTu4v3UOwe3wRUssGJANSTjHJOqGP138G+T
+	Nhqd4UMt93hU/7hAzMP4DnDStV7v3lAJgOZvyhZ0P+hcH1+UYg4pIU0KHQpm5t+5
+	XYQiGLs519bydF3F3Ly2mUsQkpmeIheUS2Amsu7SuvxdJgo6dsqyP4V/N6M8uPwo
+	Yuml8Vro5Oj2/R/nPk2G/xRZFMnqki/FTHYZUvTsblhV4A+Kj49Gi5gWyBTzSy/p
+	hvCA8ghvjVyo99no8eYyGLGNv+3L5xoksFaAmS9Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1jk3y-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 23 Sep 2026 11:52:49 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ILmd2892101;
+	Wed, 23 Sep 2026 11:52:48 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gu5bkgqma-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Sep 2026 11:52:48 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NBqkcL49086914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Sep 2026 11:52:46 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4C3D920043;
+	Wed, 23 Sep 2026 11:52:46 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F30620040;
+	Wed, 23 Sep 2026 11:52:45 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 23 Sep 2026 11:52:45 +0000 (GMT)
+Date: Wed, 23 Sep 2026 13:52:44 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v2 1/8] mm: introduce hw_pte_t for PTE table storage
+Message-ID: <4fb9f42e-73c3-46db-ac10-351a90901b7c-agordeev@linux.ibm.com>
+References: <20260903103002.1091859-1-usama.anjum@arm.com>
+ <20260903103002.1091859-2-usama.anjum@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/12] mm/khugepaged: rename mthp_present_ptes bitmap
- to eligible_ptes
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-4-kirill@shutemov.name>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260916093145.4022188-4-kirill@shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5z6t7o3bedkrjcsbyyk5y5busc6e1h77
-X-Rspamd-Queue-Id: 9DE3E160012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903103002.1091859-2-usama.anjum@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: zkg8Yjm8buhyt1eRNhnorvj4h8bfMg31
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA0NiBTYWx0ZWRfX6bMVOEi2qN4e
+ SEAEWElqPuFcMqb6XxMSAKgTBU7nj/dCzT7pboAwFXABTdsicPgdnhSpodFJ6O+u2hg509qHfDk
+ z9HbX8YO6UJxXAtAPBr1SXV/yRHUshBZqtP38jfDABopi2Q8TlICK2s09kBGBV4exDZexYbukEp
+ Oxg7zWWj4bwJEOGzokpvAGkgwx6mOV9Hci2samlSyJVgEXMEqtoph/gVCurHxiAAqf0TauaVInd
+ IvHSuwss6TAgfLNFvMkfvgEfm/lWIxq4QqGWZb1wZGJTR0i8Aqwb5xGBOLcMv/lOTIYdxzI8o3R
+ oPxWzTJkmoTyuCze3ranpvgoRtO0j9Fwo13juJtO4WWD8YTP1C0PjcAbhZUntKNvoYTNnIcU/mO
+ iX0G+Pezy0wbnkBvSeLA9ii/P51EkQzABCycAD2yGmiU5zm9dKM8qjIMLGZaPS8vA+24yUC1vPk
+ rGMSqvFG6FK+7tXalcw==
+X-Authority-Analysis: v=2.4 cv=O/KsLx9W c=1 sm=1 tr=0 ts=6ab3bd91 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=7CQSdrXTAAAA:8
+ a=WBsaCDucxrlOMaPtzzAA:9 a=CjuIK1q_8ugA:10 a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA0NiBTYWx0ZWRfX/Y5nhDG4vyXY
+ k03GeTaIqKwMRq4AUpoHFMiSiGlDWAE+orQ24P6M5Bz7btA5rwd/KAwZVyCP0QeAkoFRkdQm8Rw
+ gOzyts+JEL8Z8Grz2VhIOfiIo2KdxD0=
+X-Proofpoint-GUID: zkg8Yjm8buhyt1eRNhnorvj4h8bfMg31
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0 phishscore=0 impostorscore=0 suspectscore=0
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230046
+X-Stat-Signature: ng6r1bg51uaqbmsp4318denfpxnncxbm
+X-Rspamd-Queue-Id: 09AF840003
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790164381-751827
-X-HE-Meta: U2FsdGVkX1+dMdrHR/yLsAzytu7p9OEch1pKwnIxf7JoAlll+sLUsZ+m5mtKpGeDhAKEiZyODFTLVwNrSLrHyqslSAbGn3IDQ7Y2O/hR9Kgfyistvv8XtRnj03WQ0t/AfcE15WxeWJxqMebTHc6/RL/AMjz9mrq9zq4lps+J0PsWrFMqRcM6+cnBsFDnIWXY5UquYZSSqsCFZMWo1XMp17r6saplBrNAtdyCLswV+dO7nMxqYD7eYAKES1hamGledj1NAwMuYxQV3sLWq4csgLn5y8ODY05nKweOWP7POMykgslXPaL9B3a88Cp6mMBJ4dxuYIxxmFh8OplIa8BeZLtv/m0gLAqKr59WMoBKgNdBdmwNY3K5d9sff+U/h3ftr4r+4POQDeX4x4hegtfsW8yAi9QAhiNwfqWmJr6H26AgWrXGBnvLcsmUP+vdk7BP6Sl1LJCbH4g7gWWvyjRPih1nBGcekJPM0bQvLi2WdAdHSB1J2QXYmu2roVPf+6zESnf9leG1JfrEyeSBKvrl9e2+jeenp+3W9AKq0XGwiZ+rN2pAimcFcK1QNIQjUEopqsa51/EzcLNzcA9DLXkOc3c5LcEIJHADFm14qpveSy6nookK6oGxOJqdFTMCr9X8TViF9RRNLi9A2s5JaqmN/VR87VtVY9Lw9B69BBK7WPnAxHrnsZYgCJxpekBEALfCczLamSJ57Yz7C64l9YbRHm7KUs8dAXZHsNQqoX+bYLj0AEszut1XGISSC29aBiD7WtPFBhMhx6v+KyAW2UwZsKD9CeR7ZKns7q3IWf0Cdt8tk4x3qoEpf+lREt3k++fvlyBzTmWF7EONtK1/Ymw4gr02IN7BwKDxYBNCLzovIrp3Avu5GZf9PgsCEpi1UYlW0pOyer+I8yWqlkNy7MnV7OA7rBVqdXDmKpvz3jxtSqtTZmhcjy9QGJMqWtqack93LSypTbK0WK9qhyDU+8y
- cPZGR73/
- HEwh1zJ6qbkXSAy55vTAN2BV0xSwfMeC/+zSwDJhTfqN8V5lwjId87bndAEv+qZ6rezSfm3rkwjEMQwDf0Xnxi/ifSQbxxXkJHknLwxGWmnSH9Oii2wZOwE5A5W3yRxmb1d4rA8w3uw7BeNDg9v+5vbxiZk3SBykUWqoi4hdbMOnb3a7Sm7n1pqxS8Y0LFOpPrLhhOyfEbc7ZcjhcVyAl14Zgd8Q/ccicHmr8UVZYzgwLld39xXrDpq4bLyIgmknbEM5UMbW0/GosQfIpiS6T5kNoZQyYRXr8PObwMVbhA4/j6alUlDrA4/RE+kKYLa+7q7QRNLUU8vnMj/9sqUFqjUovhxV2kdf5JDbU7tiifiTwsb/FMyuNl0ZYtb9NtzEJAVAc
+X-HE-Tag: 1790164429-999612
+X-HE-Meta: U2FsdGVkX1/QsC1oEMw5YSGY8mtpS3gbL+WlCV6TQhJze6XHdAt1pYhHc8V1hCLqY8yAxeIoVMYRi9oKWDMbKg5i0CgCkGOgjHtLNybUJpiTrdRWiSzu8RGDM8a5vmE90gUEsMTzyDpsiyjv4dP7VIPliG96nabgUum72s3DGNFehPHJV4/Qvb28IqhzleYI454dv9nF33hvO2akY+t2ed8UgtFpti0vuTmJ9DEMIi62Xix1SfDcNth4/VXn+jKK6OpFBRE0LZiO6Ux3JEqlR4jFz+BLWGrGgFY/lswAhcK/VWS34ZspJ/I3EFgVECZAVx/8FXkGtoUanXDFp8nEAlnTnrFOYKMl61p2pqfeJiD/sNB8AHn2hAhp4NwAx/2RV+/BiPU4mChSB+2GMH35ytKduiX4uALNUnP8aFhwX57bAmeoyY4IIKoHlXSBHGMjThyYLwEhZRHJ4Hjs741umxFOs4K8WZprj9zlwjC0/VrNQC+aOcUvyOuYuPk4XIOMoq/pmGe5MSgUlPEXoGEOMNjCYcSrn0rhy0ebrCuGEuI3suMs8SLBif+KM5C8nTrs35gSW5XU9vPbkJruTSWhc3oXFpn6g28TOBpcIq5FSwzZ9a2AxJ65Uj+ll2y7z5tH2Sw+S5/jS2qIb/zq1LWKh20jakKi0woaCPDxhCLQkuwJGnWJRlk11nUicuDe2Ve8OWn6Ivvl+/fcGU6ZhVZafH3HIi5gCGqevbqOdF9dY/ZIvz9XUQtznFc0wNhuP3XljipIWZptpEePGkm/mezzZUFW0P1VyJdIJQC+laV8lYfHn9itkbi2MN874MOYBcV9SwveHdp3K5Kj6RayyXw7vq/qDfkGqNvpmIhYySrXU0K0z//SEYwqtysX03jYobAWkO3OdiD2WYjZMykQm/ng7ftsnbn4c9DJjVfAtUJXvRcH7C7/oxaPY9qS46lZtlzvw8D9Kqozmayb1NwAVac
+ mhKVTG5w
+ wuHWyRtXDEJPq4p0d5FQcNZJVeEZwjJ9uXShCMwr91VBlx33Bn1LBtp79TiGythRlsM0Joj6psdK31//zAMZdDsFu35XrPGSwaxdKVozaGDcM4FYom5vl1i1KaYS/KNdpW7LDpbGzhAczWiaCG7XbyrI6lj27wFQHiU4jANWohnosOx7QQJ+mFZSRQR58s45w7RCkS6B+QyFQgSI6NQfc6freGiWzgoLvwf4k3qxJmtoGvNEw9q+4UPJRvbAAWBsY+NTUka17Wqd3tI9u38vIpqIG2r1rTvexrA3Mso+nvvcgFaJoMwlETy2uphx2zF/FjYw2rQWL4FeBZBiejtnqkJLbUqO2zg/GvCztP+qUhvCuHfS6cY3a9dRY3ILxBxfwrlyyqbvQour/q7fcSxKX0cIdSNNN0gM8oSiIMKJFmg9ggTYx5nK3vHTGvkikHLcJFHTHnyquFRo7qO1DttLOntYHbRSEiotrugADepmUo2KmpvcP7ycXC0l35g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,31 +183,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 11:31, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Thu, Sep 03, 2026 at 11:29:53AM +0100, Muhammad Usama Anjum wrote:
+> pte_t is used both for software PTE values and for entries stored in a PTE
+> table, so pte_t * does not distinguish a pointer to a software PTE
+> value from a pointer to table storage.
 > 
-> The name says less than the bit means.  A set bit means not only that the
-> PTE is present, but also that it passed the other checks: uffd,
-> lazyfree, anonymity, sharing.  The PTE can be considered a collapse
-> source.
+> Introduce hw_pte_t as the generic name for a PTE table element. Define it
+> as a macro alias of pte_t by default. When an architecture selects
+> ARCH_HAS_HW_PTE_T, define it as a structure containing a pte_t instead.
+> This preserves the representation while allowing converted architectures
+> to enforce the distinction at compile time.
 > 
-> mthp_collapse() then reads the bitmap starting at the PMD order, so the
-> bitmap is not specific to mTHP either.
+> Name the generic wrapper structure __hw_pte_t so architectures can
+> forward-declare it when pgtable_t must be defined before the generic
+> hw_pte_t typedef is visible. This avoids header-order dependencies.
 > 
-> Name it for what a set bit means, and update the comments that named it.
+> Keep the C type definitions behind an __ASSEMBLY__ check because
+> architecture assembly sources can include this header indirectly. Include
+> asm/page.h so consumers such as linux/vmalloc.h retain the page definitions
+> they previously obtained from that header.
 > 
-> No functional change.
-> 
-> Assisted-by: LLM
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
 > ---
+> Changes since v1:
+> - Name the generic wrapper structure __hw_pte_t so architectures can
+>   forward-declare it, and explain why this is required.
+> - Use software PTE value terminology.
+> 
+> Changes since RFC v1:
+> - Add the ARCH_HAS_HW_PTE_T opt-in and generic wrapper definition.
+> - Exclude the C type definitions from assembly sources.
+> - Update the description for the new opt-in model.
+> ---
+>  MAINTAINERS                   |  1 +
+>  include/linux/pgtable_types.h | 17 +++++++++++++++++
+>  mm/Kconfig                    |  3 +++
+>  3 files changed, 21 insertions(+)
+>  create mode 100644 include/linux/pgtable_types.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2133aec4a2004..da60a8bdcddb5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17140,6 +17140,7 @@ F:	include/linux/mmu_notifier.h
+>  F:	include/linux/pagewalk.h
+>  F:	include/linux/pgalloc.h
+>  F:	include/linux/pgtable.h
+> +F:	include/linux/pgtable_types.h
+>  F:	include/linux/ptdump.h
+>  F:	include/linux/vmpressure.h
+>  F:	include/linux/vmstat.h
+> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
+> new file mode 100644
+> index 0000000000000..07da05d375c2c
+> --- /dev/null
+> +++ b/include/linux/pgtable_types.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_PGTABLE_TYPES_H
+> +#define _LINUX_PGTABLE_TYPES_H
+> +
+> +#include <asm/page.h>
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +#ifdef CONFIG_ARCH_HAS_HW_PTE_T
+> +typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
+> +#else
+> +#define hw_pte_t pte_t
+> +#endif
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I would suggest to provide __hw_pte() in this series - it is needed
+by architectures along with __pte_from_hw() right away (as opposed
+to when lands in arm64).
 
--- 
-Cheers,
-
-David
+> +#endif /* !__ASSEMBLY__ */
+> +
+> +#endif /* _LINUX_PGTABLE_TYPES_H */
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index c1ddf59c0d71a..5f462ec6fa5e5 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1312,6 +1312,9 @@ comment "GUP_TEST needs to have DEBUG_FS enabled"
+>  config GUP_GET_PXX_LOW_HIGH
+>  	bool
+>  
+> +config ARCH_HAS_HW_PTE_T
+> +	bool
+> +
+>  config DMAPOOL_TEST
+>  	tristate "Enable a module to run time tests on dma_pool"
+>  	depends on HAS_DMA
+> -- 
+> 2.47.3
+> 
 
