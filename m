@@ -4,146 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6708DC9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:08:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7356C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:09:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561806B008C; Wed, 23 Sep 2026 09:08:20 -0400 (EDT)
+	id 059CA6B0088; Wed, 23 Sep 2026 09:09:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 539846B0092; Wed, 23 Sep 2026 09:08:20 -0400 (EDT)
+	id F25E36B008A; Wed, 23 Sep 2026 09:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44FA46B0093; Wed, 23 Sep 2026 09:08:20 -0400 (EDT)
+	id DF0BE6B0092; Wed, 23 Sep 2026 09:09:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D8966B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:08:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9FD30A0836
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:08:19 +0000 (UTC)
-X-FDA: 85245055518.25.DD73383
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9F9BD140012
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:08:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B775A6B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:09:06 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48031407C3
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:09:06 +0000 (UTC)
+X-FDA: 85245057492.05.849110E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 677BC140008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:09:04 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YkJXWKu+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790168897;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hqT0qz/7";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790168944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IHUbabRXBqdvbV25eXrArHoQuD9SOTIdcQ2oJXMH2as=;
-	b=g81gIMV6EaCOhMf19FVub6SYnwJ/Ipqqqw+NYyuJ1+aB+2G6gWT2HVLqtIM8fag6c6uTyX
-	ZoCSxpGqGr06TMh1ASHLiaICuYnmdUvduaYSkDVtp3EkPbPQLRhR7FHIpr+CMAKGgVg6Lf
-	xbZkUVZ5/1sWgx5p/FeZ4fmjP+k8f+4=
-ARC-Authentication-Results: i=2;
+	bh=XQwnEEJJ9KivuXOXOPcFUQjvPID+bTdoFJ1xTtN2RfY=;
+	b=DhX8eYm6CSNuLuUnx0dm5DCdJlLZctPsvG3eKqq/tz8ji0dIu7vbqfX/vcQxnZYI0UyqRS
+	jeaX85PfXpksrUFOkPSfvAhAbpnMH6Jno6cBS5Nf5kAV2ouCxDQlDlXUnTOmJPR/s83fms
+	d+j3/E3aX1+E6lej+W/XJtxXEqZSwNw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790168944;
+	b=pyIJPTPpn3k61bnQ+bSPglr25T0zcSRpYi5tyD1Lvq04u8si0CR+nv69oiuebytjBNplFK
+	ObO54jVtTRonTAiTzt6BtOuOLMvLZKrbcQCES+EIs43pQ5PD4EfnxJvB53DKQImehWdIw+
+	QOn4cUEIgHygmh036dzk2eedvmBSvTM=
+ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YkJXWKu+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790168897;
-	b=P1+8KGYOE03ixFL/8KuUSrYsUvlMPhd6/0LBsZKxKRDxeij09qvhX69cJtpMB8ROMi/Y80
-	yLpWlNFBSIZGMpshXW+EbZZKVrR/pgpNlmzfe8UwGBrbJ4FnS+zH9p2Gy5Lec9A1j7QUGQ
-	4RV4gYt3LEO0pQJIIl5GuhhAu/qWFjs=
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43f9b120so11952797b3.3
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:08:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790168897; cv=none;
-        d=google.com; s=arc-20260327;
-        b=jkkbatgbjFDxSxeWWW8aNnb2ne9ZXEnGYg4HUBp9hAim2eMUdftnJdwxErBVu3Zwyi
-         mqTBcZp8KxBwU4m9b/jMg/EJ+PR2rOq/FEuJ5D2SKjr0hC00oVej08aLp+AV3ZnaUhJX
-         DKCBAGqEQvei8AnnUmnEmaYzcSBOD63APTcF4D5sX17RSaTU8iAcTKQfyhVHXsdDc/Jp
-         N7k5HmRMmCnu+JQ6M7cUye/RmK4T5sGWTscjUb8jIm4zkIsLWYo7vtawR2Oz52xg+2Z5
-         V5MiL7IaffC54xhZkyWn5x02m1yDskoynI92/XPjKKEed/hD9kQBVdwe0uktfDLkH3Sq
-         c9DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IHUbabRXBqdvbV25eXrArHoQuD9SOTIdcQ2oJXMH2as=;
-        fh=qvEEfoGGZ/CqL0yagPbXw35P/5/KB2oZewpiQzbAMdI=;
-        b=ji0xNXAxb0OU4bgT8UlkY0YccT1xVJPRSaNWuL7KH/MPRGVNMzAvvq+z8zAi83nKMs
-         bwNc4Z31ngbwKAsbebQrXUuIlzW3LhzNrdZ4Et9eHxNWFvTI70Xlr5NRYTeoX/kLhiiO
-         06Mbx74FKsjaGMBgjCaL9IiuqMcU5DtCVKJU2BFeX63hdNy3+y7YwVk3GUCdXeSPogWv
-         9DfykCX+0KWYwwsQygZdPjIe5FjTg7Y/Y5PuCwPqlHHd68ncwC2OVjRzRQ+vMsqVow9w
-         UV8O5cmd5AYvtSGqBCqBK3me6FWhXXwyJKEMgvrRkpm5lsNOteed4+5DBSYSBLKhIuQA
-         WzMw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790168897; x=1790773697; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=IHUbabRXBqdvbV25eXrArHoQuD9SOTIdcQ2oJXMH2as=;
-        b=YkJXWKu+nnOTO3aosKmuj/QoKYC/PTAeLodvSg5rlGUjEzq4goNI7OeLzts7FPtIMW
-         ajH95e6YSQkTuNQY+CMArb0xIzSajoE+m+TlOVizzuQqTTWaU/Z1UY4+hEKb88z3Vsgt
-         L/ojXRjGr9ZR24wNa3+EldU1E/ggVSvM3HUtcV2txoxK7ttSqaAxXzmW0Y7XY2mxzUpo
-         zbd8oemFh+/Phj3xlij6WQPXPyg7RlV1Snr5BI4WJfu6C1YSnXkzcwpkqugWaZNvhbZZ
-         DQeFFiq2xziQQD3qBBZ3kkTFLMDA2Sn7tcItvsN3tJQ3XLfJciAKXt3oiAWUNRvzepkA
-         nIiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790168897; x=1790773697;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IHUbabRXBqdvbV25eXrArHoQuD9SOTIdcQ2oJXMH2as=;
-        b=u3LCN4I7ncFGp5w2Bb1HTQL61upQxEH7Zn8OzD5VBXbeZ0IIP9Lta/5VTW3jAza7+n
-         AAXUmY7MgJv53Viy/1uhL9eB4AQ9fUhjFqTeZO8yW7twGtPzh+zuFPR5KAUtytSOin4P
-         iATA9dj7X3C4BF9lKIllYwX5ud+4kMnADnNxRDj6RBV8d4A0jGNG/OgYI7zNh7I0T80a
-         mUp9vjYNcUrBXks2D0v7aNtd5MiPTSQ65YDOtNbzP2sXRTwVzCAAvViW1HqKhQBI0kfZ
-         DC2brDSACifJ7GcHlMfQ+uX+BvlSPUQ8KwUyWl3p3rQnUvSoy7cuAMkGiz0ueHu5e2aN
-         9LkA==
-X-Forwarded-Encrypted: i=1; AKwUvBzxJKx7qEaBYest+mfEw5eg7PQIicNQngfuMPWT3fdneS8BRS++D3n21RNWpQX6oOa3LBhz7LWYDg==@kvack.org
-X-Gm-Message-State: AFuF++lXwVWz9ze/GSSV0YixKT0nNw0Krm19HVgpxKG5toH3Tkr9uMLX
-	ATDCIh3ZeyAUS8NRIt37MvB0XWBu81sNXYLK0XA6YAmJOjJv28Rlf1DHcOdwNcA6ArBZm6HNInw
-	cMwuAodDZKFReYFqtvhiuD0MrSDqnA6Q=
-X-Gm-Gg: AYBFou1dt/Q/NWbPGTM06TorjuOt5qs7YFO/xWWf3XT9qjcGqPlQSeJIf4pY1I2XObQ
-	1drUraIbZo8EQoooykFH2b2s45heDuHaYl8I1V3QrAwwU8azZTaeafSfvoJ3U7TrtlzRsjqC24x
-	otPTMzr2epCo5kr7IIoB6Gy4Z/ZvcMt82i5LGTg6AWzSonC4sq5Y7pUjGYT8xvKH3e+qOGxSEp3
-	i9/D6SLkrrBYjKZCAmXWA3IcCZGl4GyduYTW+VR2IjmGHCalBOaKmd2MDUdPH9HYkoPc8UgybE0
-	lb1sWrq6nw9YJVsZKmltDiXLkWhbInborIbvrhnv0Tq7NxzedYzLAfpW0phyVasPxfvKIk8MzEb
-	0jjIr3HUa1/jjdZKbJskjrE+dPOteYGifxQ==
-X-Received: by 2002:a05:690c:7483:b0:8a5:1570:a2b2 with SMTP id
- 00721157ae682-8a51570a635mr6866957b3.89.1790168896597; Wed, 23 Sep 2026
- 06:08:16 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hqT0qz/7";
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D844433C1;
+	Wed, 23 Sep 2026 13:09:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDCA1F000FF;
+	Wed, 23 Sep 2026 13:08:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790168943;
+	bh=XQwnEEJJ9KivuXOXOPcFUQjvPID+bTdoFJ1xTtN2RfY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hqT0qz/7RjZjaIE3DfxuDW+Q0hgAZC0uyOdtIEc6zILRmwB9MY9YYa2aFmOCIfG4b
+	 kT97EwsI1B5oXFDCzJlORDRDio7YYz3qspDWM3GJTTrn9C7u9CbovVvYGGwxjY4yff
+	 zzQcDTAl7dC54ZrW8ujG9GdWflmw8hWqYNa2N0IREMio8fn1UjoaKnt98KOTNI2J9P
+	 1TJk8Qm4dWMOXJRwA1qqkVOSEHYGVh/yX7tXUPq/KKnXIIha1McfY0eK131/Krh/bA
+	 auOhovusMqeyXk3+/2abXa/bXkldqcpMferAGEl9zZc87BE0gWFkW48vt7uoqsDEoG
+	 GX1tCKkP8bdTQ==
+Message-ID: <0b421935-d83f-473b-a21a-e7f29f8585e3@kernel.org>
+Date: Wed, 23 Sep 2026 15:08:55 +0200
 MIME-Version: 1.0
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
-In-Reply-To: <20260921192559.2619635-1-shakeel.butt@linux.dev>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 23 Sep 2026 21:07:40 +0800
-X-Gm-Features: AclHuK_8Jda0panK7HLuZ7wwf7U44o1nunsdozOcDRu1nw23Gwnh2GufMO41nA0
-Message-ID: <CALOAHbA4EgGw_uWfbXD0Q87exP7ek=z9ENuU_ARgb+DgBgy1kQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached struct_ops
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, Michal Koutny <mkoutny@suse.com>, 
-	Amery Hung <ameryhung@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
-	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 09/12] mm/collapse: open-code collapse_single_pmd() in
+ its two callers
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260916093145.4022188-1-kirill@shutemov.name>
+ <20260916093145.4022188-10-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260916093145.4022188-10-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 4n96pedpni7oow698uu8xqrkh3gbob9o
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 9F9BD140012
-X-HE-Tag: 1790168897-150800
-X-HE-Meta: U2FsdGVkX1/T0qmUzyj3oWlOIOL33Y0oYzjgGNXTB1+6Xv0JetgBkO+34vgrTL6tV0A6ylGqbUzkIAVcFLBKy9fj7lbV1klbSTfr15MSbKQy452x3TJNalts/ZsWVEhYXmBzbqLyid9S3z/63dycfen8ty79NOc+wTHC0sba71LclD4Md2UdJMCTDLkre8RhrQy9DnOO9YJL6ikAzSh/HBBn47IUrhopGUyZTMNxqIYcHPR7nS98HTWIxr9uvdIpq57Kr1lYCIuATi31P96QwCBSLJoKObnm37fXEbSM9GvdMNP2NiiwzRiwoUtNdzhixYmboiJaq3jT4aV2MJajUTY2Xlmz70ih0IwtRFxPf5ZpI5hPIYym5++H36sM5LIPOKfKQ1tbrvBi/TZq6Uo2f6o6mS3h6QuHmjwkgGGjo9gIb5EODzfZ2mQkUijVZRCI8aDA8J+BjsFNOPTmqSB8s9QTlCC0N1xd1ezaizHgJkxW1ImZcanFgOcBgx9DbnuQk8OTDMJGROFShNigQ7iKPmGn/Itocz4qvrwjtCsOqrXfxEll1PMYcGqvvWSMeHLS/DYDUa9YV6oeRiiQj5GGco0rmwmru6Bji8paqyXGpP9asGseaL4lcMsZChet+rFVvfav64voav3VSuDlTNGI6NXFMbQY6T8JwXL3ANS4c66b306LM2V46Wg9ZiJzMYy0zonWxKkTG22Tzpq/S0U28WsmfZ+WiZxi5U85nm1p8zy6jtTWvX42NtjNUBwREO3E8lqk91utatiaatdGL8ASWO17nFnRqLf2T+TArgzY2Mv/iTBl96r4SkFcJ9p0w5hxiN0rRvsfhyRldfLsD0UUr0ozTtI85dvR97q+ts7mWy1doQUnjUsb6HBns86seGEGzRzwKAZb+lDLv0bpkeYhIXecw/3NMhVrPmQNkvxrKz0CZxdja09FhDRNyZaS06COAmiM35YflvQ9G9Nle8Z
- np2woV8H
- vP7WWkq7iF7yNlLQbDsBo4OzspkmIUQtjJa23GjlCgIKSnH5enbBRnFZkfbNxgIb51HSYwduliNf8S+ayB2ciD000SNQvxlPucMjS53uckY8iJNIVyfoO8gCra4gTETfKsNh2Ca421InBB+tSNo+MwHtjmVmNs9S7D5X3u6xU2cLdZG8kkhHXyzjbL53yHIs5GJxGqOiQRiTvVNPggWMJ3OD/Fp8G9j2fnxxvR6w2Qfr8XQZHpUEBmgx57EATe0y0nMsEBlU5bDv48/AVw1j5OolK/v+asLXkGO/YQg02KH/OlzgeVNuIVajfYRsp45yjrzJY7J+AJJN1ycq6SjRg8kByLS2d4u0t5CU+Qb7nq/EHTc5hwFA2zxTVvGHHjvAZaD7k3L/MADrdAh8sdQ4+/2NcjDDr9oNsO0LHaCmxSaNl2lnKJU54dv3FqJQUGEPwlMTEkx8Rh6zp3nF3jeqwGHEgbLoaDnJdYt0ipeqrA2yEKCF/lLepdkiOd4KaMbHktshk8BVVrRj5ha0ftlttXN1OpQ==
+X-Stat-Signature: ni1xd68eywzb4k4ctzwwyq8uykf37o76
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 677BC140008
+X-HE-Tag: 1790168944-289710
+X-HE-Meta: U2FsdGVkX1/jlTAsK/45IkQH9cSHGh+0YWQ3CW+wXtTRF6MI/yw5lWh9To7GY2ByEyiiyD+FR/jwMTuKJ9woXa2ReY0CtxRoi8eKcmcFYYCucyIsqJ/5+Ox95HNA/bcMvxgE2mxQlI0Zw9yxZA+Y2HEFr+ocoYbyRBFQ6RVhFEJ0Fpnh40F114O/ePWtM08Cu5DWG4rkmJJ9TP5UVOGKulzWxfSSNiVu1ZQaGAQ1EhigfiKQd/8a4mEEfqZW01TXvOrec/CK3SSBk2lzSvg0ZLGElNsiFLnz5KhG2UV9FzMkXfyS8G/gAUnl4ad8D/SEq7CC1ASlGkkrta/9xfg4oXEgvkABhRTIO5bJjwbEhKqbo9CAibcHZOlfAi/C4VmEqPQCJT2zdWk3CEpigXwypckv0YaabGAQo5E2HQeM0AGPgwkY40clNYXMYKfoll52p3LpeC99cPDhKbaGN2O+57gk8+fUIq2QFWhHGiwLD5On6aZjERleDHUzWqIB+IcbD4kwxakGGZ2ulpqAWsR/8Vt7E9UFquCkpbB9islxqzFhcIW5DfOCd7rrlhqMkZT6G5IBqNaYQVBiuLwli7NEC1Ur0gFcLLQtUNDMeid/+SOOpxemlcSm/4svuwatJxs9dvkHAGPwOFkToxFi0VsEsAtAetXii9ugpLc724pXulxQL8Fmy5sLsNggfRvnkvFgaB7Op0FqK9hc+FbUbAsbZ+KnOLH49GU9AnIrxM9bE8wQuYAxJPvjv9ejSYxIC0TEOLadWj7pndfPDyDL4DPoPb/BCcfrgWsvSaIsOn1D5zoRXA1+N29/CByb02w4jETaSlLJPAB32Yds3ONmZ72FMma7W/wqjJOJsmXIq+EO6ouvCETkirUnzNYrqUNNFfhlXeoVtTsYWzoCsM3E/f7CkPaubk3gWB1rseGyIFNloQ4sj0+7Qv7ntyCE7NsWyY6z2PFT+wy7oXS16bNyyMs
+ SFc0xW86
+ gl4YMnrd2fMVeZXgKa1BF+237GLpTBpDYeg07jbYdwj6yGKiCRJqWHTD6geERzA1iqWxHgRVtxpIWYK+/2uA6XihyzGvX/078gIpqx3SOv+xACCABDts6geLbZZfAFxZ3o4GtmRaJIubwFDSpcGlXc9Cyygu5uol8L1nMD6m5GT4Hq8SdDKqxeqlWzyVuAWE8QhiMBNCPJ0X6wWHeZDeluXhIprLEbMP9Fue862H8BqMAI72iCt3E9xQJjDf7PRqHFK+NQEWDTL5xG4uu51+88FB2dVEE14NGwvshO3brGJY7e+sOAfkfJAYh7UvsedjnCEHYyZKd0Fm5ojI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,195 +146,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 3:30=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> This is the first series of memcg_ext, proposed at [1].  It adds
-> bpf_memcg_ops, a struct_ops type through which memory controller policy i=
-s
-> attached to a cgroup.  A charge runs the policies of its cgroup and of
-> every ancestor, and the kernel combines what they return.  BPF picks
-> between things the kernel already does; it never does the work itself and
-> never touches a page counter.
->
-> The plan is to grow this one member at a time, and to add a member only
-> when there is a concrete problem it solves and a measurement showing it
-> does.  Nothing is added because it might be useful later.  So this first
-> series adds one member, for one problem.
->
-> The problem
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> try_charge_memcg() calls __mem_cgroup_handle_over_high() before it return=
-s,
-> which reclaims and can throttle the task.  That happens wherever the char=
-ge
-> happens, so a task holding a kernel lock can be stuck there, and everythi=
-ng
-> waiting on that lock is stuck behind it.
->
-> One concrete scenario which can be resolved by this new feature is the
-> kernfs notify worker. It delivers notifications with the cgroup2
-> kernfs_rwsem held for read, and the charge for the delivery allocation go=
-es
-> to the cgroup that set the watch, usually one already under pressure. So
-> the worker reclaims while holding the lock, a waiting writer blocks every
-> later reader, and anything touching cgroupfs stalls for seconds. The patc=
-h
-> proposed in [2] fixes that one path in the kernel only for kernfs_rwsem.
-> The same path still takes kernfs_supers_rwsem.
->
-> One can make an argument that if we know the source of the issue in the
-> kernel, why not fix it similarly to [2] instead of having a generic
-> solution? The reason is that it will be an uphill and continuous battle a=
-s
-> the kernel keeps evolving and new sources of lock holders doing allocatio=
-ns
-> keep coming up. In addition, there will be cases where it might not be
-> possible to move the allocations out of locks, or where doing so would
-> make the code really ugly [3].
->
-> high_policy() lets a policy say where memory.high should be enforced
-> instead.  Its one request, BPF_MEMCG_HIGH_DEFER_INLINE, skips the inline
-> call, leaving the debt to be paid at the return to userspace.
->
-> Results
-> =3D=3D=3D=3D=3D=3D=3D
->
-> Measured on a kernel without [2], with a policy that marks cgroupfs kernf=
-s
-> lock holders.  Reproducer at [4].
->
->                                       baseline    policy    upstream fix
->   max kernfs_rwsem hold, worker        2.049 s     199 us   not taken
->   max kernfs_supers_rwsem hold         2.049 s     4.8 ms   2.056 s
->   max kernfs_rwsem write wait          4.096 s     6.2 ms   8.7 ms
->   walker passes over /sys/fs/cgroup        352       5711   6700
->   churn mkdir+rmdir ops                 13 059    364 832   415 488
->   churn max latency                     30.7 s    15.1 ms   12.7 ms
->
-> The policy matches the fix on the bystander numbers, and does better on
-> kernfs_supers_rwsem, which the fix does not help: it drops kernfs_rwsem
-> from the delivery loop, while the policy stops the worker stalling at all=
-,
-> so every lock it holds benefits.
->
-> The patches
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Patch 1 is a build fix.  __cgroup_bpf_query() only works because
-> CGROUP_TCP_SOCK_OPS is the one struct_ops attach type; a second one break=
-s
-> the build and makes a query for type 0 return the wrong thing.
->
-> Patch 2 adds the type and its registration, with no members, so nothing i=
-s
-> dispatched and behaviour does not change.  It also moves the attach type
-> enum out of CONFIG_CGROUP_BPF and fixes the register_bpf_struct_ops() no-=
-op
-> stub, which never compiled because no caller reached it.
->
-> Patch 3 adds high_policy() and wires it into try_charge_memcg().
->
-> Patch 4 is the sample.  It tracks the two cgroupfs kernfs locks by hookin=
-g
-> the rwsem primitives rather than the forty-odd functions that take them.
->
-> Known open questions
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> The semantics of memory.high for remote chargers or kernel threads is a
-> grey area and this series does not aim to resolve that.
->
-> Another open question is whether a bound on debt deferral is needed. At
-> the moment, we think that rather than putting a limit on deferral for
-> memory.high, it will be better to handle that through an async worker lik=
-e
-> memcg->high_work.  We aim to introduce that later, along with the right C=
-PU
-> accounting for that async work.
+On 9/16/26 11:31, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> collapse_scan_pmd() and collapse_run_pmd() each have a clear locking
+> contract.  The scan is called with mmap_lock held for reading and returns
+> with it still held.  The collapse is called without it.
+> 
+> collapse_single_pmd() kept that boundary inside itself.  It dropped the
+> lock on some paths and not others, and reported which by way of a bool its
+> callers had to carry along and then act on.
+> 
+> Open-code it in the two callers.  Each scans under the lock it already
+> holds and, when the scan found work, gives the lock up before running the
+> collapse.
+> khugepaged's lock_dropped and madvise_collapse()'s mmap_unlocked both go:
+> the code dropping the lock is now the code that wanted to know.
+> 
+> khugepaged's walk carries on to the next table while the scan keeps
+> refusing, and ends once a collapse has taken the lock from under it.
+> madvise_collapse() re-finds its VMA after a collapse, which it did before,
+> and now uses a NULL vma to say that it has to.  It still reports the drop
+> to its own caller, from the line that does it.
+> 
+> The lock is given up and taken again at the same points as before.  No
+> functional change.
+> 
 
-Hello Shakeel,
+I'm not sure I see the benefit. The code in the previous collapse_single_pmd()
+callers certainly gets more messy?
 
-On the open question of how deferred debt eventually gets paid: would
-it make sense for the policy to also notify userspace (e.g. via
-ringbuf) when it defers, and have a userspace reclaimer do the reclaim
-through memory.reclaim?
+Is there some other patches in this series that depend on it or what's the
+motivation?
 
-I understand one of the concerns for the async worker is CPU
-accounting. If the concern is that the kworker's CPU usage is not
-charged to the target cgroup, the userspace reclaimer could instead be
-spawned with clone3(CLONE_INTO_CGROUP) so it runs inside the target
-cgroup, and both its CPU and memory usage get charged there.
+-- 
+Cheers,
 
-One caveat: intermediate cgroups with the no-internal-process
-constraint cannot take processes, so this would only work for leaf
-cgroups.
-
-What do you think?
-
->
-> There is no prog_tests harness, so the numbers above come from the
-> reproducer and not from the test suite.
->
-> The sample's lock tracking costs about 8% throughput, because it
-> instruments every rwsem operation on the system.  That is fine for a samp=
-le
-> that has to cover every path, but it argues for a cheaper way to track
-> locks that cause isolation problems between unrelated workloads.
->
-> Future work
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Asking the kernel to reclaim on the policy's behalf, so a task that canno=
-t
-> be throttled still pays. More members, each with a use case: hard-limit
-> policy, reclaim shaping, dynamic protection.
->
-> This builds on "bpf: A common way to attach struct_ops to a cgroup", whic=
-h
-> supplies attach, detach, ordering, update, query and the RCU rules.
-> bpf_memcg_ops is its second user.
->
-> [1] https://lore.kernel.org/20260307182424.2889780-1-shakeel.butt@linux.d=
-ev/
-> [2] https://lore.kernel.org/20260910045406.485295-1-shakeel.butt@linux.de=
-v/
-> [3] https://lore.kernel.org/20260917-wehten-achtfach-getarnt-c85a4812337d=
-@brauner/
-> [4] https://github.com/shakeelb/mempressure-repros/tree/main/kernfs-notif=
-y-memcg
->
-> Shakeel Butt (4):
->   bpf, cgroup: fix cgroup struct_ops query for a second attach type
->   memcg_ext: add cgroup-attached bpf_memcg_ops
->   memcg_ext: allow BPF to defer memory.high enforcement
->   selftests/bpf: add a cgroupfs lock-holder bpf_memcg_ops sample
->
->  MAINTAINERS                                   |   1 +
->  include/linux/bpf-cgroup-defs.h               |  22 +-
->  include/linux/bpf-cgroup.h                    |  14 +-
->  include/linux/bpf.h                           |   2 +-
->  include/linux/bpf_memcontrol.h                |  66 ++++++
->  include/linux/cgroup.h                        |   7 +
->  include/linux/sched.h                         |   4 +
->  kernel/bpf/cgroup.c                           |   3 +-
->  mm/bpf_memcontrol.c                           | 188 ++++++++++++++-
->  mm/memcontrol.c                               |  31 ++-
->  .../bpf/progs/memcg_ops_lockholder.c          | 222 ++++++++++++++++++
->  11 files changed, 546 insertions(+), 14 deletions(-)
->  create mode 100644 include/linux/bpf_memcontrol.h
->  create mode 100644 tools/testing/selftests/bpf/progs/memcg_ops_lockholde=
-r.c
->
->
-> base-commit: 6e36e099b15bed1e8e5b3e3136c5e3eb56a15aa7
-> --
-> 2.53.0-Meta
->
->
-
---=20
-Regards
-Yafang
+David
 
