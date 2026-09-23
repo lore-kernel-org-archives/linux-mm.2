@@ -4,92 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4355EC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:27:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7736BC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0126C6B008C; Tue, 22 Sep 2026 22:27:31 -0400 (EDT)
+	id 51F686B0093; Tue, 22 Sep 2026 22:29:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F05A46B0092; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
+	id 4F6846B0095; Tue, 22 Sep 2026 22:29:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1D106B0093; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
+	id 40D596B0096; Tue, 22 Sep 2026 22:29:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF88D6B008C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:27:30 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2F29C80672
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:27:30 +0000 (UTC)
-X-FDA: 85243440660.12.F73E140
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6B47D1C0007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:27:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dqYl3tM1;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 216E46B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:29:09 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B264780688
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:08 +0000 (UTC)
+X-FDA: 85243444776.04.AD388E5
+Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0EA1740006
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LIElmXmp;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130448;
+	s=arc-20220608; t=1790130547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9n316uGecMdSl/OJIOHSGu5fcSAJzdq/4iqnK+s/yDU=;
-	b=CZYm55F1gBsjKCXc3JW+yLxvlpULjQzPEEs6csXUhkh5uAbKMH81ZooZqlXMpebu0g33Ye
-	coZUdvluFmHBM3WdF0nOOUl1Ymq2SxNrlYEWIT9PqiYJxPXXMcvVLb/GJMSOC/Iw2IR1DJ
-	i99pwTZ+TFR8J2RTYzO9vjtdWdnhiJw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=LT17egyswwNYbdkKQlMC/Q3krO4NMxyBssaINTEsn5g=;
+	b=jnghA40HqBokZuonjWgWJ4bg5CRa7IdYLOKxU+zgPV2mMV7asmR0HLKLUWYLc3ek5IwPzR
+	mBxhlY5p2vAWecY/PbKAesLl6LL/Vfy5RAeXg5DDLhCPv6JygEi5E+DKawtIv7N4qSKBhA
+	gPiSVEcUWUDOLdIRve4cxnXFRsm+TCk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dqYl3tM1;
-	dmarc=none;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=LIElmXmp;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130448;
-	b=FsuMHelEVAqZRbJ3ov4Tuc/IXSjOGoUJRFyBLKdMLIP3xX95OC2FdiPw/VgwCRBhfVZ1QC
-	5QsUyJvdXJp3uW64TTP9RW4wCwjEVvUHsEv3R+D2CsBpBAzk2VOSY87m7uaSV5WUsXDMhB
-	vYeq8dnCIloeDXqNMAmpw/jtz47qUPA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 94421400DA;
-	Wed, 23 Sep 2026 02:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D312D1F000FF;
-	Wed, 23 Sep 2026 02:27:26 +0000 (UTC)
+	t=1790130547;
+	b=m/BipHkDQsHRu6GqpVJ58JE0jscPnhJAW6UtpJKoItxZy6tSFRpJ35pQUstjbrMRUcTJHs
+	a7/ZQTZ6ydL51nGfIJEOqcbs8+as/TlYasVKJPcPaL2tJ2irhbXczUE2KmJjJXi8Jfxexz
+	oY8Jrg+vEckZ7ZI6kAx3eXy+bOXZXec=
+Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93a222edc62so56085185a.0
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:29:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790130447;
-	bh=9n316uGecMdSl/OJIOHSGu5fcSAJzdq/4iqnK+s/yDU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dqYl3tM1PxcISjSSdtgTTqJjrirf3epW9pDLwiuQdqVC4Zqsi/WBXp3y/B9nFxTMQ
-	 vzUFv4T5o2ZTZy9ls1cEVG7Mokxmt21cH9zUM+7Gsow7VY3b9bkrjTcsNvugC3Ktnj
-	 LsXDZADWi5gTTWcK36SOI4Mso2AcMelK6H+Op9u4=
-Date: Tue, 22 Sep 2026 19:27:26 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: mpenttil@redhat.com
-Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org, David
- Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>, Leon
- Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
- Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 00/12] [PATCH v14 00/12] migrate on fault for device
- pages
-Message-Id: <20260922192726.90dec3c4c77b8c9063dbf218@linux-foundation.org>
-In-Reply-To: <20260922053421.4092027-1-mpenttil@redhat.com>
-References: <20260922053421.4092027-1-mpenttil@redhat.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+        d=gourry.net; s=google; t=1790130546; x=1790735346; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LT17egyswwNYbdkKQlMC/Q3krO4NMxyBssaINTEsn5g=;
+        b=LIElmXmpQFY1FcHqWDmQs2iIvrJJK4lQfavYE/q0SbJ2fInW9J57TtNx5AoXgepAl8
+         bA42APGO3zaM6b54a1qrj0puD5pGZNv9U5mkgw4EMvZa1B0vhD//8MJEzFoJfRJ6qNqs
+         B8lCerWHUjnOSRWFXIKkkLleb8ICrZ5ZgqUJmC5h65zJfnQQps3w5dSpW+b+jdoC5oi3
+         KQm2EwI7ZuS36kngJVHBzkDQdHVKWkMgYd7DyhBJG9PtTiq6jJZySEe17cjE+7+/q16B
+         hA/q8IafsjJr0rfZ5Txp+GYNVgKEV4HYyung9bI5+d+gMRo+JF52I87ITbvggFt6EAY6
+         cU4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790130546; x=1790735346;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LT17egyswwNYbdkKQlMC/Q3krO4NMxyBssaINTEsn5g=;
+        b=268hIh58ns3rKNw+TJ/3FVbTQ4RtuCRNhipkq37aeuAxPTEqyAVT8037wKK392fObw
+         CIaqrF3D5Z8gRA/u3Hf1NcTGJ5xb4GTnK5eOCjzX40czhC5YEPJMZpnopG9fRmCTcOdt
+         ajJ8Xnz3EH2ZUbDUzh0JffSdZDy1s9RsBzqVniTM8oQ8m8YCzwL8KjCGkQgETi2wSkIn
+         5QORu6pU5xGG8Wped3lDcl+UqvkuPIHBytXpncfZ8dOU6HkSNralfXFxIgKZjvSSwKqB
+         +3s8NyN7mmx3zdiqZOZlU/dzntZ/K/y6Y8Uq671S8sBCINL6M9FYZwCaGga50ctcFu9r
+         k09A==
+X-Gm-Message-State: AFuF++nVoTxyASuoBs6sX0hVgyTg5qzQ0Cc5gf8RYiH6vfBBGQG32oVf
+	8rnREWR74izRq4fscMaNd0914bhyEpMgROoPYaweU/RjTUamZiV4Gcau3gVEveVDwx0Z1Buj64r
+	Nr5UAD90=
+X-Gm-Gg: AYBFou3wvg5Jc2n2LBDr/a7J42ICfbz+ia+gP1u/a6lc9T/aPgXWCFg+ar8szt12tXt
+	xVZdb7M0+TNIVa8pzhuvEijHDBNgX13yG2oZCqgw2K8Y8X/k+XqiTcackYwXGZ/l4t84gO00ejo
+	eDsALBj1h3LKSL/c1XRwYVB53U+NIrDhlQRQ7VinSSRmpzLrnP5srYVUhBnewBVe0Nu5k3J/5UV
+	B5H+jINpVA505u/R6SH5XRGxTQdQs60VLtoE7tHiURN2lu2RgoV2OKyQM239bvXvWm9fZSq8Guy
+	1bzzNwCQPBTNouMIACCu3nJgLQfxmUozcwRTqpO+CxMDn41syAwwCd9ZNyLg4izWeE4sjTLvoPf
+	JZrLx9nonkmjsEPUQJndmOPPVPVZskCk1PATBrnOVl/+A/q+xAccdttpOZcgbfZGZX0BJcSBEoY
+	xofCJpEkvGw87IAbYcra42mcIQeOaDuGpj5MATgR+R5Q/vcgKQkPGsonpuBX1HpW1gAS5GGoHOs
+	eNA8VPjCd5xlVjJjmp/qj/tLhsB2W8QHXwh3iHOTl+YaKlBWKgt427qz/tm
+X-Received: by 2002:a05:620a:6286:b0:939:6dfa:4975 with SMTP id af79cd13be357-93c25216882mr212753385a.52.1790130546229;
+        Tue, 22 Sep 2026 19:29:06 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2482302fsm122626785a.12.2026.09.22.19.29.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Sep 2026 19:29:05 -0700 (PDT)
+From: Gregory Price <gourry@gourry.net>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	gourry@gourry.net,
+	ziy@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	ying.huang@linux.alibaba.com,
+	brendan.jackman@linux.dev,
+	hannes@cmpxchg.org
+Subject: [PATCH v3 0/2] mm: refactor zonelist constructors and iterators
+Date: Tue, 22 Sep 2026 22:29:00 -0400
+Message-ID: <20260923022902.2433614-1-gourry@gourry.net>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0EA1740006
+X-Stat-Signature: 7jo8damzsj854trwxbg5czn1f5gof14c
 X-Rspam-User: 
-X-Stat-Signature: 584o7b6ghf4xczcfnk8xtpfwga8x6hwu
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6B47D1C0007
-X-HE-Tag: 1790130448-145803
-X-HE-Meta: U2FsdGVkX1+1OggRzT4zMGBvfbCdSsTllBndfEnRuyhVuiqse/G/F21zChjD3ufVWre8Ou1vz8617wy6hHOm/nYcm60B6AjJxDR5si57rsISQUqpTV0BiASUl5DSltTmNgigkY4yWaaq9g6WyCuMDL4wo6L6MG3/HjwespANWh1X4cNBPLHGKJMwq/1bAkqRVERg8KXhh3dbPc1rae9oYKw0BW/KtDueLeXsMFog937Vf5ptBchf82KOroBn0bUVqPipHaYEdSq0JVfcMKQVxknUKx0k9d+pnD2VoEkHfG87LmwSibXQd7q/nWtAeHRFxhDc0khiccZMoYJ8VqA9A/ScES/7m54nSlouOEPeTUlT8qHmUd0S546cr6GlD/02TzOy40QhCbD5z61e/7WJX+aF2IbHMsG4MZGAawSLt1ZybBt/aZ2lue9RUy43VomSB+p1adEhyRMMsGZ6x9+D9o0cY5cp5fktcKX83kzqjKtM8WAHcdD3lZ+tZIUvwyWb9wuO2dJqpKUwPvVaJJN1WhoMd2xodZN/KuUTS9PVXhew8cSRNfULjo49gl/qt6wyDDX5Oa2rV9QegtOuVDNmzRUNCWPxJS7I946ppncQrRtLjlZDERlzThSbGsYjCXTX+5VgXAroFYKSmKTl2PwZkkxcdINMCLvvxoJfJFtotfzRjskFHx2ntKn7BTtJlmAN9TyIkgyLZacYezV214wHPh6XeFbedw2sHesD8dhuj37MlrUbiyO5za/SZ4YNkS6a3k5K+TWGhft5dtImd7REOEEppfEW6UhaNpHAJ3E4hsh0PJWRF6WxtmvbYJNyWA6cSlXDtNEkWdGdBDIsGaE2BPTMrT5EjcsXVG+SeiONjqiDjfcZ7xkoCYwx/DclFQEMY79o1+cJSwVLX9YH9juabeLHea220kLx/x3hHkaJNFe+Hghjz38aM97GPihLpxCHbQ47hObEgFh0hLImmeE
- qI9RGAM8
- Kh2SUCwpHtPc96FGJtWDQuD2GtyCqyCJxjbcQqxBc4KI7e1LY4mT0a+qo4EtsoWAmA4t8LQeUwsgr9vSf1Dtl9IKKAJPBwQrQhheUne+vZwLYqam4h9xpK3KsIPTTiFduk99l8U9Ih7VU629psqzXqnBGti9xzg8uwcrNS29gBEcKm+qvJIjtw8ojql+Tp4RuyBgIYcvc8o1cb8pIr8aH5Ij6g2X9UPmdcFObHcmI/aDUFOS+tlQ1szttR5+wSECF7GXMPuHaCzWYl82hStAM5Ljuh5/D1sRcEkDmfSOAtmOw3hb8nAC/FTNq3GBG9JV78ipIRcxPC602TyNvn6Z3OlC1QVuS1jIX3lRf
+X-HE-Tag: 1790130546-617621
+X-HE-Meta: U2FsdGVkX1+EX3UtliOZLiMXYZ34Z18+IMPxAtDQ1sRL0/Kpvrs5PF+AFTH0RICpch4iQ9qQ0In6/B+lUgfk5ohtA4tb6H76ZIig0u6aJbbEo3+VNowWa9rGbpOMe0Jne38waqpqtRYQDMaUFoEr66aroZOs/8ZiBqTdeR7sOOguhQUFqf5ayeIRL8C1Jpf68jtzGlHpwyWcQGE6cLsrNualU2p7WCwS4yti/BViQnQsGgX4tXYXG39gNUeV9r8q0kMS8Yp2k6T4VnZHz52RCRn94s2udQkKothn9hjJpJtkgoJkBxhLBrtqty4wLdpvb9REC9XHOzrfLieDHwZFIkOco5c/tV76FQ5Hw6BTqxtFrY8jQzc+gyvGqh/8hw0tVxWGPEAd41CElIm/2Vwo8yuOPLjkaaz8iG/phfO0rWPjO3mLG+vDfZmDIZdscLCDAx6DDDu78uq32eKVdsoDah23D0hRQE33hVmwyXA6agQq3XzQnMUNrh6p4T8w5ZuqMwl/Gu5YcPunmZIoVyuBVuXhT0UpjYH5YiEJ7QKtTouKAlTgT/hWa7Y0Xtf0/zBxYTeVxoUEZN5Y5FdXmIP4REjEcbA3kLOMr1mS+WrJFvywUm3nzgxR1PLFCrw+s69JrDTq6nN03KOiYUrV/9oJlLH8kHNIm3ndASU6P9QVrAhPFIqlJ9w66D6Q1/bCx6tzQSpDPqIMlnfCduhNwIqpq7mO+AXioKXrvqGyTE5I4PcEoOieqPQ/l1OzF/UtrmsslyaeSxhZmN8bXdbCMO8Hh3RmKs/gzUQpYc/oqQNWUB0qeqLnHEBy8K/LnEay4/SViLw5V8EQx67QV/UmP9ih1MatiosNiC6HArzMqaLhHIG1s3KQHeQKyUqYk4OupfI9U8T34Maw0f4sqTCrYV1p7P/6cBroiUzFDyYNbZX9+Ez+6yMyrZCTB54+3GfksrQd9M7VkSAJDUqO4J0YNkB
+ T7mn32d4
+ xm4jjQlglf4UXOEOWvH17r9w8QfIcrcBrSarwR7y3zV7vEf999omIFnEiob42O4jsio9xfMX1rXHFe5uou04XUZE4U7bFxhzjbvfdkWQ03F7x8dB5jpit2vCEPL+pfQ9vLooiCuAKet6V4kRXJptHEzWHY8g7Y1It0nc/Dn7dkTvWwudcjNInsJMbQmUTyHGXoVZ0pQbK4v1V8A/Dq1qDi2NjkWk672DHDQystyaBDAG1DToOMLU4EOonvY/x/yGm/n1oLKfIqeKXbFNFcFN9YJe1di1vOJ3nPcwe/+QbHcjIt4W6YEYa7zP6T0UwRUQfzz+C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,51 +130,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 22 Sep 2026 08:34:09 +0300 mpenttil@redhat.com wrote:
+find_next_best_node() picks the next-closest node when building a
+fallback list, and hardcodes N_MEMORY as the set it picks from.
 
-> From: Mika Penttil=E4 <mpenttil@redhat.com>
->=20
-> Currently, the way device page faulting and migration works
-> is not optimal, if you want to do both fault handling and
-> migration at once.
->=20
-> Being able to migrate not present pages (or pages mapped with incorrect
-> permissions, eg. COW) to the GPU requires doing either of the
-> following sequences:
->=20
-> 1. hmm_range_fault() - fault in non-present pages with correct permission=
-s, etc.
-> 2. migrate_vma_*() - migrate the pages
->=20
-> Or:
->=20
-> 1. migrate_vma_*() - migrate present pages
-> 2. If non-present pages detected by migrate_vma_*():
->    a) call hmm_range_fault() to fault pages in
->    b) call migrate_vma_*() again to migrate now present pages
->=20
-> The problem with the first sequence is that you always have to do two
-> page walks even when most of the time the pages are present or zero page
-> mappings so the common case takes a performance hit.
->=20
-> The second sequence is better for the common case, but far worse if
-> pages aren't present because now you have to walk the page tables three
-> times (once to find the page is not present, once so hmm_range_fault()
-> can find a non-present page to fault in and once again to setup the
-> migration). It is also tricky to code correctly. One page table walk
-> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
->=20
-> We should be able to walk the page table once, faulting
-> pages in as required and replacing them with migration entries if
-> requested.
+Refactor it into find_next_best_node_in(), which takes the candidate
+set explicitly.
 
-Sounds sensible.
+This makes the existing behaviour explicit at both mm/memory-tiers.c
+call sites - they select demotion targets in fallback order from
+N_MEMORY - and lets callers narrow that set.
 
-> Tested in X86-64 VM with HMM test device, passing the selftests.
-> For performance, the migrate throughput tests from the selftests
-> show similar numbers (within error margin) as unmodified kernel.
+Then extract the per-node construction loop out of build_zonelists()
+into build_node_zonelist(), parameterised on the candidate nodemask
+and destination zonelist index.
 
-But no performance benefits are demonstrated?
+Together these allow a zonelist to be built over a candidate set other
+than N_MEMORY, into a zonelist other than FALLBACK, and iterated in
+fallback order over a caller-defined subset.
 
+These are prerequisites for generating a private node zonelist (nodes
+unreachable by default), but are otherwise general improvements to
+the existing interfaces so I'm proposing them separately.
+
+No functional change intended - purely refactor commits.
+
+Verified on x86_64:
+
+  - find_next_best_node_in() compiles to the same 319 bytes as
+    find_next_best_node().
+  - Both mm/memory-tiers.c callers grow a single instruction - the
+    added argument.
+  - Boot-time fallback orders are identical on a 4-node guest with an
+    asymmetric distance matrix.
+
+v3:
+- mention the new zlidx argument in patch 2's commit message (Zi Yan)
+
+Gregory Price (2):
+  mm: refactor find_next_best_node to find_next_best_node_in
+  mm/page_alloc: refactor build_node_zonelist() out of build_zonelists()
+
+ mm/internal.h     |  6 ++--
+ mm/memory-tiers.c |  7 +++--
+ mm/page_alloc.c   | 74 +++++++++++++++++++----------------------------
+ 3 files changed, 38 insertions(+), 49 deletions(-)
+
+-- 
+2.55.0
 
 
