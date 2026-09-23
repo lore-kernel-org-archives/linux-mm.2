@@ -4,92 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA1E7C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82BCFC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 04:32:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8456B008A; Tue, 22 Sep 2026 23:48:59 -0400 (EDT)
+	id 12A386B0088; Wed, 23 Sep 2026 00:32:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89FC56B008C; Tue, 22 Sep 2026 23:48:59 -0400 (EDT)
+	id 0DB296B008A; Wed, 23 Sep 2026 00:32:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B6BA6B0096; Tue, 22 Sep 2026 23:48:59 -0400 (EDT)
+	id F33AA6B008C; Wed, 23 Sep 2026 00:32:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 581FB6B008A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:48:59 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E07BEC067C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:48:58 +0000 (UTC)
-X-FDA: 85243645956.10.458EE85
-Received: from mta1.migadu.com (out-91.mta1.migadu.com [95.215.58.91])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D1FEA40004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:48:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eGGSwrT1;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D46746B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:32:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5EF971C3392
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:38 +0000 (UTC)
+X-FDA: 85243755996.02.4B66961
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7B4D320002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:32:36 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AVafkVcc;
+	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790135337;
+	s=arc-20220608; t=1790137956;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CwWRc/o9MtTy58JhAX4zKIymI6EPJ9a/8ATDwzpx1Mo=;
-	b=YqYkQj5Z2fcwC+Ng2pQ16mLg1NWlH/B8A9IJHWprZewSUIW3hFlQifLyyWXYeKVajoFuRC
-	BLtcAlGyOZksS3FP7Vn1fcWc3/whebzUUJOzts+0tawf+HmE9RuHsdDW039gIXfVcH3v/f
-	VgHuLo33IJvG4/+cu1r5LOblACopOZI=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6lrOFXGtRWnMkmmCqLGn+zoEvYV7WtEEV3tb/dg1dzg=;
+	b=fQCsiYPi/JfcoPDycF7GJ47Q69ZZ7DITtMJoW1kifs8qp3wLRRktAbN0tNZneEdy3KWHAd
+	0kHYO0ZKDN0Q8+3J1y01ajXJrfsJ+G3cBxJKjz0pP5MS3Hpzjuralw93Ji0fzpZ16I5wBb
+	StuF7JEEvJ+XdqkUC+9Y/faUDAohtiY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790135337;
-	b=AeoyhR9d9zAUZ54ANqqyYjfrTAgiCT+jzSJKzklpeB5+JJdlH8rvANmL3853CTdOFNTDCo
-	620T2/hb9XwQ8UZz+kXW9uCsJxPVhM0zxlcarpsuEfpFZwcGu3dg9mG4zCxIceOD9Qyfxb
-	4nWS44p46fO7tsPOJwRx1efldY6poCQ=
+	t=1790137956;
+	b=cW90IY/ir2wQSuxsT1WWP6LnmnM/zO1sz3cxAmCD5zhyaNpz+8CZdFSwaeNVDvm+8jdxZR
+	7GKp3YSTjbyFjroZoWTmI2BrvRyNwqeNoxCAPJhB/zJXSRmON06XtvqrKwQxP3XIU7mHMJ
+	U9at1TVgCEvUl3BkW4tZwhyZQ2jT7no=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eGGSwrT1;
-	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.91 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=kwj1dykHmtOFPAs+8qWDVTWLL54NsScLQymUSN+v64I=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790135333; v=1; x=1790740133;
- b=eGGSwrT1bfdsDebz6TCRNlnQKa0MDYDXCwWENpPCG1kHQM6ruG3wBZuS1aIYtY4cYC9gCtV7
- 1u1XLvwiK1rR4YX+IuWb7mIIHrKa/WKLQbF2+P6IG7KhskfRyjuc8CuCbQ34mVZLxrocAcfefBv
- 8u5L4QjGO8BHdCmWUWh1VxPk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 09235456071ae306;
-	Wed, 23 Sep 2026 03:48:53 +0000
-X-Mizu-Trace-ID: 09235456071ae306
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <97c0aabf-872d-46d7-bc98-ab50ea7035a0@linux.dev>
-Date: Wed, 23 Sep 2026 11:48:45 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AVafkVcc;
+	spf=pass (imf31.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BF1CA1655;
+	Tue, 22 Sep 2026 21:32:31 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EE8E3F86C;
+	Tue, 22 Sep 2026 21:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790137955; bh=cfGeDdBc/7PspEKVwTNh0HU7/ywQqRYyVO7lq8n9E4E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=AVafkVccv/oqCtPz4ef1y7Zons53fH6/HRvELt70+6WCLSFaR9up2j4bG6c7A0GJ+
+	 LxWsp+Q/t6PNelQi/3s6xzDv4f6RT1NKsy5ZhdHluy7xZH3WpEH82mgt0R82VDco+1
+	 Drocy/z2/CjoNEq3X5dSTtdh336qHOYKNA7aE91o=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Helge Deller <deller@gmx.de>,
+	loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] arch/mm: Drop similar platform overrides for pxdp_get()
+Date: Wed, 23 Sep 2026 10:02:19 +0530
+Message-ID: <20260923043226.331880-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/vmalloc: skip vmalloc_dump_obj for non-vmalloc
- addresses
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
- <20260921-vmalloc_dump_obj-v2-3-73fceb3ed1c8@linux.dev>
- <arJw-VKQNxWA0RSc@milan>
-Content-Language: en-US
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <arJw-VKQNxWA0RSc@milan>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D1FEA40004
-X-Stat-Signature: xsqz96a9ijpyts18goawagf4onang5z1
-X-HE-Tag: 1790135336-802649
-X-HE-Meta: U2FsdGVkX1+3nB50ro2hOgm8jQZCGzH+TbAs7za2aJj1YC23sa5V47eEBF/K9OfWWfm2laz9+/RFDM1d3+sH+sykcT86bLvNK+ZnTVqTmX8Te3J2k9N/aVl1k4pS5voHoG8QWvRVy77Qml7MG7dWJUki1WR6vVWt5szidtWK1P4Kmysf8AwOD//5q50jL47HKzaldjw8qXOvREFn7iAunidXkTkGsPdN41EbU2BUIYyuFT4NLGgtlfZDBTM24WQ7pfJ19H/S4/hmWn+6RJOigGPI7nTCLGK1gUmsNU457L86mheysB3R75oJYbOtiHNPXMAu3zWHRzrtC0H5WZIIgFMBYLbivgPXginFwuVaywUU9152xuGkm7BBwJPxlnS4EZQMAiK7EDvq3anhF/o+fra6uly5tVyFI68X8Qkxeoaxdj9LjkuySGSCKcFGpQQrZSzFQH0perxEsW1cS7FXy8PpVuqSv7XeCjAaZ9caRFRy1Ivfulke7tGyBl/T5WUYITl0qhgYX6uAcWQxnS8zPGVG54foZsJnjpL+h/2y1H4J5GXjMYJJgYmTxJzUH8BoQIpq1F5d/ALeB7U1R3o9lUqNJBXfuSipTi3ASYo5C4ZtRgGl0LM4qYxSlvvwtSaR1tzeZgoIKYPHUSXkxxVu/Po8G/WCBE71U/xqzF5Q9MjZcqQCvEwJbtQxGjasaHfHvpxB4fFSeeIm1lCuEYODqt8qvJwOmeFGJP8oGZgiyxPrnUqgn3xsmKoRzCJAWPC5NQHy1RxhkDJo/E/dd5srtrCyYjITIPXRyYwks9vbca3uj3JlMeRWUQc03WXT5B7xNfNt7pc+wCmPUPt1wDcgrqQ6TVzUo2UKEfzok5rMS0rQbPYcaaAsbLTN0N6GOBzJbkH72mOiYYvexrWvnVrcOcyNeH+EHoN5wCRBGlp5bz1RaZbR6EBdUXCXngqfVurMuoAIr2uWrqyLKq1UUrO
- 8wzX4bWJ
- tsdfDrqU4AGZvp82Q1Fxa9rSsr79rY3NLnVdNpldPBTh5aSY2GPRSwP0albm10yeKI+2zuLyp/UmbMrJEhjw9sGoO+iyL49d64HKpuRAObwZ7889yn2+1CKyCgWaSLIbwbPECLdsPGVn9qhfh/Sr6XTpDJlfd9SDxd1mBVTcktUNX44i1uKlMK2NtJFl1iJsEVx2Y0uqArezwVHt8zi28KYKjewO4bcZ/lKlSAC6RjN0YGSBFC3XyfafsZD+Cxft/BUbl9K0OUTgVbzWb0uMvtBKOYEfYAhZjMRgbgIC8f8yjIShlP0NSCUbzVomiUhWps/b1wGL8BbZP36QS3ErL2ouQaa7lLYWK8EVY
+X-Stat-Signature: 91zdib49tdcau1eos4nz4eg6jzfoch9q
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7B4D320002
+X-HE-Tag: 1790137956-450227
+X-HE-Meta: U2FsdGVkX18NVdpLt2c5E2CFFt8kcWpHY9/mz8pqA/cpE41v3VZF/J+4SnuMbhZkDbFJbKtKaL0m7jO3phiift9MpC+cbNSKMych6FXeur7j87Yc75A2RrFb4OrpVzZQf31b2+2VlXMU5InwiiOY2bxXifRpMW73CHdZcGreLX7WRssTnEftuiJELctUqUqt3V8gN9xGTlafh+uZ+zTI9jjScwULN9E38KB8qbVSmFAEBPpkkEzvdG1VkxSyVrGCK+MqqCcbY2yQr8bneiZ3JFYuo8R9XWHO1yYUFQ/somxEJZLReisxZclGWanAAF2LH6GF/mzgubmOQIHQb+urljSgh17zn3PZfdGGK8W6ea2UtlNfm3cWzItj4+SCgBsUSBJAzXmehuvvZn78rfAICN/YuZaNDhZf1GwjuI19jcDrL312a9fzHhx9NZNgKjAGPp+0P52u1teQWRcJCb45ZE/w3p//v90iRylvZ0ty+o+hjA8E2Wr32qKc8v3psjZwmhyeuM9F+M5kKy2oTuvxGu4EvrRiwDYoPQ0doqZGVKZ3JbcHdMBiYz/1FzUo/J1nqacy402/pHwCCJt38y50j7VutGcUx+Z+exQFA/Z6B1BTkq/j1dobid9dvnTJ33PONeYkTXZlYM1tt3Pnv0oaFyUfcpqXqYr/p6iKH2VprvsPTRwlqa556bm2iVOL6xJtUmOEu8SHdUBGFHMsRc/Z29br2K3fhv18ruwRdN2R5F7amgt/9en0ptR96nHhFTT26c/Y2Ty0Fgb2T17Kw5cFs46lzVybQ4uVCcFTPQ5dG5E3hPPJQ2tI8pvchluokbBUH+Yt37NOYvQaEZ01uLv183L44D00pWEduLtZM5f+Gpx6ceKbvActc3Aij4loGCR0e7JtjTGRLt+tI1hnwPmQ5YYujDPHck6wdcdYSZsonEU4w1H3KEhWoFB9UaaMxM1ko+3k7Ikw0I3G9iPGSX/
+ yTPlewZq
+ Htf+v72047cD5bodQK5sK5r8CqmQKPk/8dJv9pxhh0hqrmK+Xq0jAMloRhrQ8MGrs/qQWpB2riual4aYqgFnRnsyVZXwac41omfB+zRYreYpwisdSbc7Y2lkqlbv4GfHZ4TK4IUkyQW3HAz+RMl6tO9sZRcFszvCLtMMOoNSrxqoXQ7Lv1bjwS1hbIjTC58qGy4ikQHCm+ZyQiI0qZQT+7cM/4lucd+7hlfWI7v3IQsJNxVLkaf038xFyBoahjSwL41SiNoH+JFcNuACK9f6Va4PVzpOU87NuPmo53F5V33U4P+PIU6K5ca9My3lXXa2+h2rDzjS2hDAUQWWMIIkhgslgkCtkFkUkEYp2O3buz5Xu0M6Q241C7PNtfVARd1HrQBxBbSJG/JPH/vS24fXPkd0bajq1/8SL3BFuKKgEvNzFebzGRUUUwCK4rOdHHMoAJbO4MeN2LGW/3Ga1pFrGjMo0lHl45XRxdItISZRatdjFxRLfE2ppyE2g8B8AzDr9rKTGbexjngwrHUqbTZ8FPLce+BLf1tW3qfSTDBR7z1qK7rv+n5DaK46Oev7hn8/gKcE0LzWm9hxFTNDTT7de3xynxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,99 +96,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+There are many platforms with similar pxpd_get() overrides like the generic
+memory default helpers which use READ_ONCE() for reading page table entries
+These overrides could be dropped safely letting their platforms fallback on
+the defaults instead. Although it requires some code movement from platform
+headers to avoid build failures.
 
+This series based on v7.3-rc4 although after the following patch.
 
-在 2026/9/22 20:13, Uladzislau Rezki 写道:
-> On Mon, Sep 21, 2026 at 09:17:23PM +0800, Ye Liu wrote:
->> From: Ye Liu <liuye@kylinos.cn>
->>
->> vmalloc_dump_obj() unconditionally searches all vmap nodes even when
->> called with a non-vmalloc address (e.g. a slab or stack pointer from
->> mem_dump_obj()).  Add an is_vmalloc_or_module_addr() check at the
->> entry to avoid the unnecessary per-node trylock and rb-tree traversal.
->>
->> Use is_vmalloc_or_module_addr() rather than is_vmalloc_addr() because
->> module, BPF, and execmem allocations reside in MODULES_VADDR..MODULES_END
->> on x86_64, arm64, and riscv -- outside VMALLOC_START..VMALLOC_END -- but
->> are still tracked in the same vmap_nodes rb-tree.
->>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
->> ---
->>  mm/vmalloc.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index 30c610f678dc..d8095b558365 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -5277,6 +5277,9 @@ bool vmalloc_dump_obj(void *object)
->>  	unsigned long addr;
->>  	unsigned long nr_pages;
->>  
->> +	if (!is_vmalloc_or_module_addr(object))
->> +		return false;
->> +
->>  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
->>  
->>  	/*
->>
->> -- 
->> 2.25.1
->>
-> Do we need this check? If it is not the vmalloc address, we just return
-> noting. Another question is why do you want is_vmalloc_or_module_addr()?
-> 
-> vmalloc_dump_obj() is about VMALLOC_START..VMALLOC_END, IMO.
-> 
-> There are only two users of it and both rely on the VMALLOC_START..VMALLOC_END
-> range:
-> 
-> <snip>
-> *** mm/kasan/report.c:
-> print_address_description[403] if (!vmalloc_dump_obj(addr))
-> 
-> *** mm/util.c:
-> mem_dump_obj[1096]             if (vmalloc_dump_obj(object))
-> <snip>
-> 
-> 	if (is_vmalloc_addr(addr)) {
-> 		pr_err("The buggy address belongs to a");
-> 		if (!vmalloc_dump_obj(addr))
-> 			pr_cont(" vmalloc virtual mapping\n");
-> 		page = vmalloc_to_page(addr);
-> 	}
-> 
-> and
-> 
-> <snip>
-> 	if (vmalloc_dump_obj(object))
-> 		return;
-> 
-> 	if (is_vmalloc_addr(object))
-> 		type = "vmalloc memory";
-> <snip>
-> 
-> --
-> Uladzislau Rezki
-Hi Uladzislau,                                                        
-                                                                      
-You're right that the check is not necessary — without it,            
-vmalloc_dump_obj() just returns false for non-vmalloc addresses after 
-searching the rb-tree, which is fine for a debug path.                
-                                                                      
-Regarding is_vmalloc_or_module_addr(): the concern was that module/BPF
-allocations are also tracked in vmap_nodes rb-tree (they go through   
-__vmalloc_node_range with MODULES_VADDR..MODULES_END), so             
-is_vmalloc_addr() would filter them out.  But I agree that            
-vmalloc_dump_obj() is about VMALLOC_START..VMALLOC_END, and both      
-callers already use is_vmalloc_addr() in their logic.                 
-                                                                      
-I will drop this patch from v3.  The series will be two patches: the  
-alignment fix and the cross-zone lookup fix with the shared           
-find_vmap_area_lock() helper.                                         
+https://lore.kernel.org/linux-mm/20260918064928.793742-1-anshuman.khandual@arm.com/
+
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: “James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: linux-mm@kvack.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-s390@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  s390/mm: Drop all pxdp_get()
+  loongarch/mm: Drop all pxdp_get()
+  parisc/mm: Drop all pxdp_get()
+
+ arch/loongarch/include/asm/pgtable.h | 20 ++--------------
+ arch/loongarch/mm/init.c             | 19 +++++++++++++++
+ arch/parisc/include/asm/pgtable.h    | 20 +---------------
+ arch/parisc/mm/init.c                | 13 +++++++++++
+ arch/s390/include/asm/pgtable.h      | 35 ++++------------------------
+ 5 files changed, 40 insertions(+), 67 deletions(-)
 
 -- 
-Thanks,
-Ye Liu
+2.43.0
 
 
