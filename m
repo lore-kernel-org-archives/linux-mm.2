@@ -4,113 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5962CC9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:22:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05216C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:30:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E41B6B008C; Wed, 23 Sep 2026 09:22:25 -0400 (EDT)
+	id DEF5B6B0088; Wed, 23 Sep 2026 09:30:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BB3B6B0093; Wed, 23 Sep 2026 09:22:25 -0400 (EDT)
+	id D79976B008A; Wed, 23 Sep 2026 09:30:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AAED6B0095; Wed, 23 Sep 2026 09:22:25 -0400 (EDT)
+	id C40DC6B0092; Wed, 23 Sep 2026 09:30:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EDC596B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:22:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A5BE807C8
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:22:24 +0000 (UTC)
-X-FDA: 85245091008.26.2A56B44
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E04C3A0002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:22:22 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQwWOQky;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ACB06B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:30:22 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 450B91C31BC
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:30:20 +0000 (UTC)
+X-FDA: 85245111000.20.37EDF67
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 699B72000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:30:18 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rfKdHlg7;
+	spf=pass (imf31.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790169742;
+	s=arc-20220608; t=1790170218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fv/PJsh8Z0zTlCVSKOt2XBkxllgDkngoF7NIde+KnzE=;
-	b=5fM+hIWNC3XDULwo1sxTcAUKvyKWNkBs1+xc3wbcocNnEB4ci8pSdAnVgWql/VaJEK1frO
-	+3YOCWfdp5PR4PyjPBYwb4FE2ulwwi63eeloSTwOt3svc24NpF+XEUW6onI6JMsZg3S5aN
-	ZbAQjltC/tzae1czrKVrPNPZKIyiwSA=
+	bh=zidhQFtMBqWpP4LRT4RaIsC3YDKSMIQiZYuG7TAn+KU=;
+	b=1gP9TE1kK/qpELA8IJmJhsVjlikWYXMfNLoqrA60cdavGQMcvRNz0kl0BIBNdnvzC3luhV
+	FkwcuZ1DURkMPDtfP7BWaFqpBum/fjow6nAyEIfc/MSBzMXX48rpykvE51uA47QRhvWGM3
+	99ihtaKyqI5UcGMbprT0MLl/KgrYRPU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oQwWOQky;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rfKdHlg7;
+	spf=pass (imf31.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.224.140 as permitted sender) smtp.mailfrom=yizhang089@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790169742;
-	b=GWkqZISz2BbVdQrFb2aifSb6i7SpQuId1yln/hblcjldwFJp1Zmtxca6Vup4W3r+MuQQa9
-	jMNFx/oe1R8QNbJSjYuN4kmX2ichiINqdIfX0B5RhfY5hWvdgx4ddGi2tuQtsIWds1DHtM
-	aWFMk6YwJmmdqVK0r9zog7IZSrCzMMA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 85A34600AA;
-	Wed, 23 Sep 2026 13:22:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B955C1F000FF;
-	Wed, 23 Sep 2026 13:21:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790169741;
-	bh=fv/PJsh8Z0zTlCVSKOt2XBkxllgDkngoF7NIde+KnzE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oQwWOQkywYDf1JkmRsDbC/o6DR3oPInrHh+/leVHpzXY/fgKnBPlAbat4yOirXksi
-	 EWALa8XUeMd2tsIqTrSCJ0hISS3LcHe3D0i0Tgz4u8GN0a6ybM3BZinVZZLhG3Kwem
-	 I7b4mFWjjtLPtBFFyxKMPPiC1fv/6tqbKR6ms7bWmlQ8jqkRp5houN8+Tl0nlHq8Ok
-	 pNWxEWvRV+ENJCiZHISEOFERm2DQsybnZiI9c7WeH02xnMWwF75/9ODvNlEXLXkUxS
-	 1sCqPrGh63gyzzgORCeokaPT4Set6v00jX6f1b6hgWldcMbm+rJMuLtgU0iQ1Yzy3g
-	 sAGIwJhyz9HZg==
-Date: Wed, 23 Sep 2026 14:21:56 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, 
-	guoren@kernel.org, bcain@kernel.org, geert@linux-m68k.org, dinguyen@kernel.org, 
-	schuster.simon@siemens-energy.com, jonas@southpole.se, stefan.kristiansson@saunalahti.fi, 
-	shorne@gmail.com, dalias@libc.org, glaubitz@physik.fu-berlin.de, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, linux@armlinux.org.uk, 
-	vgupta@kernel.org, monstr@monstr.eu, chris@zankel.net, jcmvbkbc@gmail.com, 
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org, 
-	davem@davemloft.net, andreas@gaisler.com, richard.henderson@linaro.org, 
-	mattst88@gmail.com, linmag7@gmail.com, catalin.marinas@arm.com, mark.rutland@arm.com, 
-	chenhuacai@kernel.org, kernel@xen0n.name, tsbogend@alpha.franken.de, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, richard@nod.at, 
-	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	arnd@arndb.de, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
-	ysato@users.sourceforge.jp, shakeel.butt@linux.dev, corbet@lwn.net, rdunlap@infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, hughd@google.com, 
-	qi.zheng@linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 09/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for
- m68k-motorola
-Message-ID: <arPSa1dVX3AOHAvM@gremlin>
-References: <20260922-rcu-pagetable-freeing-v4-9-fe1ad1f1e303@kernel.org>
- <20260923131634.47896-1-lance.yang@linux.dev>
+	t=1790170218;
+	b=0j9ZUZb7jNxZZXZvtvFtztYkqULWo3+DXPWGNlLkW27bzdfNcUhYmq6TJVVcB8HRf59MBV
+	wJonYRNaNIvN5pHRaS0jh0yrmIaKTiRe/8ssbGtBG9oLM5d/Yu8zE57wMYp/Za+N6wrPek
+	h3pqr1v/QKj2E3eboigbPHc6BQR9Ibo=
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d4ddd179eso12037257b3.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:30:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790170217; x=1790775017; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zidhQFtMBqWpP4LRT4RaIsC3YDKSMIQiZYuG7TAn+KU=;
+        b=rfKdHlg72d5pEl1KX1XjgnIoL4XOGxB9IOKTzN28fNICW+2qhx76l5eD8T/jMl53vE
+         QmXPB9e56UcdUSdztaT2KiaFMmLtHW1/bYJ0EDvCBjAK7zodNyRVfPrbMIFkA+fK/6DW
+         ezcrglZ9t7AH8KUnhGvWnQ0wObBgYMYO00gGYe7/7usjmuqX4g9Xkvz/jNGPYwOUUB6e
+         oZQHiqBAfbZLHcdhY9V2+XA4STth050pQRTCAGySpjIi4jA/fMtPOI14DhAQ1Hc9Ayzt
+         L13B1jhumukv3I53hQ5HJB/E349OzrL66vtNtnnsLUkTN7vtc2bDj1LiM/YVlNE3gIBU
+         4+aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790170217; x=1790775017;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zidhQFtMBqWpP4LRT4RaIsC3YDKSMIQiZYuG7TAn+KU=;
+        b=zwBa84egFf0CcNddcqwOC8gBbF8pvzttTQvHdmGXj1xqWCUa1rGvyrHo0+dOqS4U9N
+         VTgavLFHHErIqFsiGNh/laHQTIaW2g/u4kxAuXS75B7WUBhN/9iG9gRTKQaQDrdBEBgA
+         g4SPkSrbrHRZ/cHAsJR7G2kDl61kmZA74GDLbfJ4IO98mJCzqhFfJvACIUXlMMarDuGr
+         anqVoRLQAqAzJByVvBpb3NpaRPbxWse6JLWBRwwoFohCuFrD60/VeOs814UZxYqu3MQg
+         Vv1elf5oB0/JOIr7OC5bqqP2PXUun6AfOHvyTxm8cM88BALhJUMRtfdkaeisDSzP0yKa
+         qCxA==
+X-Gm-Message-State: AFuF++kwOKyh9lWDtEb5dpaF79YbOvKPmp/MBTbcjmlzud4GKzba37wI
+	bgYAHE+VnkZKhB8jawRTIZP7LLaxqClGQ4fGO8P7mp6Y4rR1B0EpvVBr
+X-Gm-Gg: AYBFou29hqAZNQ4POuRC/6feXEwLPPu87hwBrPQ+028znusKcrmPvzM73/6hio4OkhS
+	gJAg9V+ERCcV+sjb+XC2qqaHlhFD1jK7i3Q+VgPR4EX4SbRWvqyzue388NDUh5ard3PHD4BNW6l
+	drBWooH7G1qS02lUlPWvED1IAlrzpswAZ5liuVF0CGVV4k/ivXImKNmRH+DGOHkFup2sDyyEysQ
+	y1h01PBGFylMUtFtLPKDFVnH6/AcIw3MIA8Z1baEUmWa5ZR/6h19b53j/aSMqF57ClMm7GUGMtv
+	+RSti1owxY1OIVBHX13nxg3tYD1LzvndojxHkquXKYPiK4mFS4lMyzfDgk4+I/fWOjz0XdHn2ii
+	rJt4uJuTtiBxCIS5kkcHATpmfbhL5Us44izM0nOlXccZ5NOUCmPj0rAWoVedvbOzbuCxhUl7Ir1
+	kPd9cAk734liOc+h9iPgvAEyU2/wiqUAfwDjFyJzqBIMoYeq8JN9AQronoCDGOkS1QinVQKIvsW
+	EqGI2qLop5Zd9OMYL+QAnam3VXIYA==
+X-Received: by 2002:a05:690c:4004:b0:89a:63da:cbec with SMTP id 00721157ae682-8a45c270a06mr12544017b3.50.1790170217243;
+        Wed, 23 Sep 2026 06:30:17 -0700 (PDT)
+Received: from [100.125.248.95] ([124.70.231.46])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8a466ab7e7csm9385007b3.44.2026.09.23.06.29.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2026 06:30:16 -0700 (PDT)
+Message-ID: <5419d3e7-bd3e-40a5-a15d-397e9019b3d5@gmail.com>
+Date: Wed, 23 Sep 2026 21:29:56 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260923131634.47896-1-lance.yang@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E04C3A0002
-X-Stat-Signature: mhp7b4u17xwbex6o4186nr9eaaoi34sm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/4] mm/truncate: clarify return value of
+ truncate_inode_partial_folio()
+To: Jan Kara <jack@suse.cz>, Zhang Yi <yi.zhang@huaweicloud.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
+ willy@infradead.org, ziy@nvidia.com, bfoster@redhat.com,
+ joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
+ <20260922110703.468389-5-yi.zhang@huaweicloud.com>
+ <5pthbyxtn7q6xi4fmkofvksmcjzfnujcw2g4fxmxjzfin5pbgf@zui3vcimb4cv>
+Content-Language: en-US
+From: Zhang Yi <yizhang089@gmail.com>
+In-Reply-To: <5pthbyxtn7q6xi4fmkofvksmcjzfnujcw2g4fxmxjzfin5pbgf@zui3vcimb4cv>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rhouq6quj9594zhd94nkuu879edzxgej
+X-Rspamd-Queue-Id: 699B72000A
 X-Rspam-User: 
-X-HE-Tag: 1790169742-73535
-X-HE-Meta: U2FsdGVkX1/YpgjJ1UvP2t7l1eCnR/9rOiXxzXJ0JpkLyaSglpAkVPYhYIstArdfNH+tQvEjqUC5eBLe10q37RjuS+kPAl2fTHTmK986BEfpZ31pE+IxRrc3i9axJIfoWIJEEzzIfj+4svp8IQNBUinPA5HR3Ql4RawJsqFaJ/O9WuR4nIqBex8nAUuI0YBJV868Vn1LP0uX++bhDX95HmY0Slx9JWzJJJRaimTjyExrzvLabegJ1JT+m/FCLNGwBXbxzQgYyoTKLzHjQkey/dTv1GOK+G/05pj7zyWJL22oXiCXpEp7rhughOExBRu4P5Bam1H6P2yrcxH5DRaxRy7wH739VLtMmL241E3f6eL+lrss93T17wnB1asl1+DiDSuUYXTlif5aDImJk/nAVm1Iodiy4qEiHlCRVqeYz3NadE9ec2ZDdt1Bsq8K7Hdbvcqu+GtpeEqJmTkwv37h6NqASW2a0S+oo9se/uUa7JzPLPgyD246B+GMcsdMbDGKwNq0C9GWzamP32+gjxFmhC2BJ+JHkkpWZci1s6VEjzxj3+a0QYUUHjEl6HGhBcCyUuJeEl3wWqEee+M+Ck6fv9Yikjbm+iKHfmjfSeZhCfuoWYlV2DwWWRJtsiTgNboAMbXbnoGYWqfOpfuUJmplyxr7gP6Lrga2We1gvjGhVzmrTaRedUhZDcwnZ760GkSWZLfA2IaLZZDAhk+CSgm2A9rcCrVUhM8pzI02i1Vi37oP7zy/dvosCGIEgFE9BPJYDzUx/v8RIqMQIgcbNQMpHIdF2kflBT/9fy3+baPJNTwrI+Bh/9MMnMp62k3cL7ryObq4wfslhEnYK1hYkGeP5h1o79vuoTRjCFuCuPu+ZQ1N2X/C7Ixt1FlLqmw5FIkIgIO0v/x6b6R33vvCFqQhykrjaczRuiMOOOqoHWNntHjwgewNxvEKJrNFc5H+0uiwZVdowuWpkeDS6LE5t68
- /ix8eWto
- /fa/JSS1OGmbPFXx49TkQIIwK65iSeDP1T/0E197x0AHC5NWhbASZJEPs/DYDJcksef04CJf5OrC4+RR4FjnUvBy3axOhXw/AUfYdyVjVZPsg99qHEe87iYkuWyQh10GfmFnLSpyGUPVI0xXMNiA6Z4FkWyueMwey58t2vnuqumV0VQWMjgfEjDWwnQifxDxUOA9UXsj+OpW6zDIN+RnViibHe7bzyswIeLj/3Lrdix5P6//t8jfJNspmuj1bG/A8139MMcE/c/C1ar0K0DFbmnazjzr88EkkuXOlZjGAtl34lLdQBIsELjeLCUzrqZsqj6fpETSkP0gwmB62c8IMloQoCrjib0QfBQXifJU1N/mV3pEiniTUTeNFDEOs5eOS/3hzYwRgSG6O8nG1XMp/EWKLb6E7dbxgS+Tfig1IFSEPtnLTKvvRwjbQVw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790170218-993713
+X-HE-Meta: U2FsdGVkX1+4sCPUgpzcJz5fSolAwxqDGHq3Pp/8yUPsW86ZXi28/Zu8xyP3V7HuFbn/SsDhJE8GwkR8WkYKEgvkbobajGwCjiiC5r3dZwdd8XLei8lwM/29h7Iy8RlF8+n66VFvJj/b8Efr+4fXcqUxp9qvGacltxIHqS86rZc5Z/jLSWiAAlvix+C2ivfom0wS1KHGBIKaplCjKmKuEyh7cDW/dMrdxgmFAhM49h+06B5/VeeeMXff+uCrE0zL2h2hNaONRgM8RyiFCB/R3HqQNmDhGvz3PyISu3tTQbEk9wDKQ7vVCsSOgBA490h0aIVzZspJacr+rmU4Dnr1SmapAFcOXXgo/m5wv62GjPo8Bf7PrV/IQ5bATieAqF8qLHW7CdGdKQl7etoRRbEgKO0zboEHK0mg7EOOQouO8XuPW/wZ+ilXzFv6DfKnK+SV07xWj97ikVzLLRdDa8gXiojMDp5mRBMVJmGSRODiBBv4SaSqyqe+30LPOw44/9nU0t7U6GISxeAra3twKwLdtI/BLRY7n95/HU9X8QCHX+5tFOECfb1FHpIHj9w+oYbBRYAZ+/6HQMZhuR2K4PgDwlZUhWqY7dyAks5ukuhVkbFtbnOSA7JPBC4mAiwWY8RCi/bLULbhskbfBNPJ6IkQk/7CLt7Lv6IuVUgvogA0iq6tZtx/IsV7iPQcnGso+fcht5iErLp06zGlc2tszon0rdp87N2gmSKnGdDHvyfx05w/ngYrfreJ8UKkn63+lx6c1Kq8dRnWDazPViE5+J6zfBzdpXTslguXwDOaOKHQ0KHrZJEFc3DQkQViK2bCAarjJcRI5lx6KnPhbKfhqZawOg5hprjg67SHCP0s/Rp8T3U0bSRbeOTs22pjVXO3i2whYuhAgKyGTP4FdpoOFCG1jm8TQuvOAW82oBHtStdk3s6ZcZXY/bbMyB6YiXMtg+Tv2cHB34Y9MzDvalpc6QQ
+ jou0LtxX
+ fcJAo4bKRZvaYHcfZ1sj7x/Kd9kCmMQm4CbRJD1dU+YYrxUQVG+vrVdEKkZp3MN6RhTxfoRTL5ziZvi7moPo4H/1oyY6OmT5uzvi9rqM0XHPBkK8+cKF9UJnp5BLwqEbu6J9rg7UQ7ztokrg7qz1Ghh4IF0t8pNLiiMzmeH2E3Po8fJBcvFo5CvzpiJnFNlprNs0ruabcxkrUIQCgoerZJp7LtoIzTEss6rmrFryquwY14KwMUOox7iNFS8r2oD/kMCEKRszdWOOKy66nI5iediriBgsUE2g3mcfAdLv6D423ZX8R+f0KPJ++GCCCRINpwKCezn8p97JJAwSoDd2X5mwbZjAihWEXTyMOm0iEoSwEgjLMo27DsWtphdbxYCWuP99pjq6+KzjRuqglxtWfgpKBUug5k6KH7an2/wQvNQXWAXRyl+fqXgguOxZLSrUOEC5ECcqF7oGx8XoEqiN3E7w89NIWALyVZigki+lJHVH7LE3Aal7TVJmigTyViw7X0yDM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,70 +132,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 09:16:34PM +0800, Lance Yang wrote:
->
-> On Tue, Sep 22, 2026 at 04:35:40PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >sun3 and coldfire are already supported, however motorola requires a little
-> >more care.
-> >
-> >Here, custom table removal logic is required, so
-> >CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE is enabled for m68k-motorola.
-> >
-> >Firstly as part of this change, the page table level must be communicated
-> >to the underlying __tlb_remove_table() implementation.
-> >
-> >Take advantage of the fact that page tables are aligned by more than enough
-> >to permit setting TABLE_PTE or TABLE_PMD in the low bits of the pointer,
-> >and store this there.
-> >
-> >Then update __pte_free_tlb() and __pmd_free_tlb() to pass this through,
-> >then have __tlb_remove_table() decode this and pass it to
-> >free_pointer_table().
-> >
-> >The page table freeing is performed via call_rcu(), so free_pointer_table()
-> >now will be invoked from softirq context, and as such may be re-entrant.
-> >
-> >Introduce an irq save/restore spinlock to handle this, and hold it over the
-> >time a given ptable entry is being referenced in both get_pointer_table()
-> >and free_pointer_table().
-> >
-> >In order to make things a little easier in this respect, separate out the
-> >logic for adding a new ptable entry into add_pointer_table() and only hold
-> >the lock during ptable entry insertion in this case.
-> >
-> >Note that original list_add_tail(new, dp) added new prior to dp, which is
-> >ptable_list[type].next, i.e. after ptable_list[type].
-> >
-> >The equivalent therefore is list_add(new, &ptable_list[type]), which adds
-> >new after ptable_list[type], only without needing to make reference to dp.
-> >
-> >Note that, as m68k-motorola specifies CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE, it
-> >does not enable CONFIG_PT_RECLAIM. This isn't meaningfully impactful.
-> >
-> >With this applied, all of m68k implements CONFIG_MMU_GATHER_RCU_TABLE_FREE.
-> >
-> >This forms part of an overall effort to switch every architecture to this
-> >mode.
-> >
-> >Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> >Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >---
->
-> I wondered about slot reuse during the RCU wait, but that can't happen :)
->
-> The slot stays marked busy until free_pointer_table() runs after RCU, and
-> the last free unlinks the page under ptable_lock.
->
-> Also ran page-table teardown stress and fork/exec churn on
-> qemu-system-m68k (virt, m68040, CONFIG_MMU_MOTOROLA=y). All 40 rounds ran
-> cleanly :D
->
-> Acked-by: Lance Yang <lance.yang@linux.dev>
->
-> Tested-by: Lance Yang <lance.yang@linux.dev>
+On 9/22/2026 7:58 PM, Jan Kara wrote:
+> On Tue 22-09-26 19:07:03, Zhang Yi wrote:
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> With the earlier rework the callers no longer rely on the return value
+>> of truncate_inode_partial_folio() to decide whether to adjust the
+>> truncation range. The pstart/pend out-parameters carry that information
+>> instead. The callers now only use the return value as a flag indicating
+>> whether the loop should be reset to pick up newly split sub-folios on
+>> the shmem path.
+>>
+>> Return true if at least one split succeeded, and false otherwise.
+>> This clarifies the existing confusing return value semantics.
+>>
+>> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> 
+> Looks good to me. Feel free to add:
+> 
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> 
+> Just as I'm checking the only use of the return value of
+> truncate_inode_partial_folio() in shmem_undo_range(), the code there looks
+> fishy. It does:
+> 
+>          } else if (truncate_inode_partial_folio(folio, lstart, lend)) {
+>                  /*
+>                   * If we split a page, reset the loop so
+>                   * that we pick up the new sub pages.
+>                   * Otherwise the THP was entirely
+>                   * dropped or the target range was
+>                   * zeroed, so just continue the loop as
+>                   * is.
+>                   */
+>                  if (!folio_test_large(folio)) {
+>                          folio_unlock(folio);
+>                          index = start;
+>                          break;
+>                  }
+>          }
+> 
+> However if folio was say order-2 (4 pages), lstart is inside the 3rd page,
+> then the split done by truncate_inode_partial_folio() can result in order-1
+> folio, and two order-0 folios. Hence the !folio_test_large(folio) check
+> fails and we won't pickup the new smaller folios so that we can free the
+> 4th one... So I think we need to unconditionally reset the loop if
+> truncate_inode_partial_folio() returned true.
+> 
+> 								Honza
 
-Great, thanks! Really appreciate the testing :)
+Indeed, that's a good point. Since this is a pre-existing and
+independent issue, I'll send a separate patch to fix it.
 
---
-Cheers, Lorenzo
+Thanks,
+Yi.
+
+
+
 
