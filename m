@@ -4,75 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D33F4C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:05:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4AEC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:06:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 800FA6B008C; Tue, 22 Sep 2026 22:05:57 -0400 (EDT)
+	id A23196B0093; Tue, 22 Sep 2026 22:06:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D9096B0092; Tue, 22 Sep 2026 22:05:57 -0400 (EDT)
+	id 9FADE6B0095; Tue, 22 Sep 2026 22:06:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7179A6B0093; Tue, 22 Sep 2026 22:05:57 -0400 (EDT)
+	id 937F06B0096; Tue, 22 Sep 2026 22:06:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE4066B008C
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:05:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6B2D4C0650
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:05:56 +0000 (UTC)
-X-FDA: 85243386312.15.A039A6C
-Received: from mta1.migadu.com (out-104.mta1.migadu.com [95.215.58.104])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1C55D180006
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:05:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQQrrWPb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.104 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790129154;
-	b=UZ2TyhTkWhETY55Qf5WKV/YgH9iTxOIJg5tMq2xaKlAgEFbEJ8bUJD2gHiTKF5RQIeEFzd
-	GevO9PAjPHHaKrHJqi7AGv8O8oESuQ+mpReDiOgQAd4XWmkubqoF0ao+Ip3EIvZ5bH+GbV
-	e8cabbW/JcxveCSopGyThCdkeFOsLR0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nQQrrWPb;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.104 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 64EEE6B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:06:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 42FCEA06BF
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:06:03 +0000 (UTC)
+X-FDA: 85243386606.29.5D7CBFB
+Received: from mta1.migadu.com (out-107.mta1.migadu.com [95.215.58.107])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0C43140004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:06:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0cdyLu";
+	spf=pass (imf11.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.107 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790129154;
+	s=arc-20220608; t=1790129161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=pN9mV2MMc0cxVzTt86OQlKGODGTfmRcUSb1r7Rj7vHQ=;
-	b=jziIk0gRJJRpEBghSdYq4gwzFg4bK1WtDw3p1Ii6/q7eeBdGIQUe9Ah3fG1orkJX9ar42H
-	dhLYy8S2R96De18Xb8cAyY0xlRhtoS4ekVSMQrfOnmRJ8zw4KnTHLZ0qdP1x9pCCpXb4FI
-	7w5s1oxWZQ19SZDlO9O08Npb23ekuFw=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=irSD7WjgOYLBk17OQ4TUlaqUTRnGrxB+iu/WUNxKdNc=;
+	b=ML3hWqWlchq22A6AixGS8Eyu0JCO6ChTc3dDFXnNYPqdsHhXJrGMImFUaWQHmWtZhS+3oS
+	HybnP3QenvqKs6pe2GQ2L3ZN6LNGX+YOZNH2vVr/LVJX7lAPRZxhuYm4wlNojKiNo0T7in
+	tO7GSxC9phZQ/d8DmYivPv5LmZY0rT0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="f/0cdyLu";
+	spf=pass (imf11.hostedemail.com: domain of hongfu.li@linux.dev designates 95.215.58.107 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790129161;
+	b=GR5WFzwWu110TAusJaLJ53ZILygAIKgENma98B+JE5hjsEGQvU4oURlWmtjKLvBD6QLhDG
+	Vfich1zy7y90qqtUIY+zy2vLK124zX1pfIebdRXxR3ScGKC0wEkCSxh6k6IpseYuozLPu3
+	/xUmluloui2bxGd9/TCy/S/zVnt21ac=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=Lh2KAWhxN/KUy7SbPIyEGCqRbIP1h0b+ba0VIRohGTs=;
+DKIM-Signature: a=rsa-sha256; bh=aoPVRLxrPlybDGOf83dbhyu8QddYp2j5TWPxs6wBNtY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790129151; v=1; x=1790733951;
- b=nQQrrWPboKTz3yKFJ1BDS/AX5JhakNG1qbKpKUiwGYvNNaI4UG9WpRucx+6sQub9Fr7fG5IT
- alfeMKyIqKA5MRYy8D3UtnWQ0sReZORsgFr+3pE7QHBohpYi1so/d9vai+YuqfNuHP1Vlj4BiNf
- mIimygs7NDFP7bXHJggsjLWA=
+ t=1790129159; v=1; x=1790733959;
+ b=f/0cdyLukEQbsWLnrKukNEVVKVvjggtnAevgEMhHpeZ9D5sXbRO3DnMFGL/OgxVnXgIBa1ey
+ g7IOjtG0bAq2Td6fqdtx4ZPmGmOon6K3vdyyZiAy/J2Fb8+mWBIhsJ10BMJ9p+DliDgvMb2aePT
+ lHDkHXsv54Lz+oonbK5XkK7g=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3e0c62f87578aba1;
-	Wed, 23 Sep 2026 02:05:51 +0000
-X-Mizu-Trace-ID: 3e0c62f87578aba1
+Received: by smtp.migadu.com with ESMTPS id 6ba19cbf58ee3a51;
+	Wed, 23 Sep 2026 02:05:59 +0000
+X-Mizu-Trace-ID: 6ba19cbf58ee3a51
 X-Migadu-Flow: FLOW_OUT
 From: Hongfu Li <hongfu.li@linux.dev>
-Subject: [PATCH v2 0/2] mm: fix hugetlb NR_HUGETLB accounting on folio
- migration
-Date: Wed, 23 Sep 2026 10:05:14 +0800
-Message-Id: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+Date: Wed, 23 Sep 2026 10:05:15 +0800
+Subject: [PATCH v2 1/2] mm/hugetlb: account migration target folio in
+ per-node NR_HUGETLB vmstat
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMSwqDQBBF0a1IjW3QUiPJVkTEz2utIBq62hAQ9
- 25rhmdw704KJ1B6RTs5fEVlXQI4jqif2mWEkSGYOOFH8mQ2dnVm2kb4uWvUtx6ZKcrMcslpMeS
- gEH4crPzuaVX/rVv3Ru+vEx3HCZdqEap2AAAA
-X-Change-ID: 20260922-for-hugetlb_state3-573f27215d4e
+Message-Id: <20260923-for-hugetlb_state3-v2-1-e8a36245bfab@kylinos.cn>
+References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+In-Reply-To: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
 To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
  David Hildenbrand <david@kernel.org>, 
  Andrew Morton <akpm@linux-foundation.org>, 
@@ -84,21 +83,21 @@ Cc: hongfu.li@linux.dev, Chris Down <chris@chrisdown.name>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
  Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790129144; l=3156;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790129144; l=3398;
  i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
- bh=Lh2KAWhxN/KUy7SbPIyEGCqRbIP1h0b+ba0VIRohGTs=;
- b=YvOPgCX20y0ccSSoHy0fUm9cg0wU5mkNoQ2pYoGvL4Evn4zDlV5WAToIEiN7MaC94cVVFkqMs
- 44lLGpFkrIFAZu91iI7yon669lqbXoigrE5wuglQhL7OyMsBEVVExQq
+ bh=hXC+tx4GVm4EpdooEXfm8U4IGYo4XIxQaYt9Zm+Q5C4=;
+ b=kG89fQSsfZPkZFrzZC8Xzjc44NNawhKI9hCnKQZ/QPjilZlfVLnsiEmBhYE8BfraxqNxICGa5
+ 6qVieM5YhGlDOWVhEg6crzKggJjGJCTSnS4bviDruMGHk9ZtmFo/aSC
 X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
  pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nhiwu1mwzpnttwj784ii37hjsoxnmiij
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0C43140004
+X-Stat-Signature: x9yx393uphxadt3zoh8oftgamwaapuwk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C55D180006
-X-HE-Tag: 1790129153-731545
-X-HE-Meta: U2FsdGVkX18/Kg/Vkg33LxYYG5FfTW2lJYnRuoPWS0cVswtuL3kDHFw5vcADhEvb1Vo6b25B9pZWYIDdtxg5msMEkc5vx+Ks25F5MjONdzAC5k+XHFm2q53vrNHpawxex9WgkGW6Z84zKctxDzO8ZEKn8EGF+1+zA7pEMTyL8jHSNJKvG/GFdHCL4LQ7ZrCAWOhmHGRYPITb9IewiXkHYPMdYBMznhZCTVJJR4MlGvaYhKd8UyIysoZCGsOeQyzfRaiMNVwmvoyajKERm2bRxzLoUpZf+66r4wu797lESOKJSmwN5rldeHRHuHEMx1HcJAZLyd1bQ6Ex553td3sYUu4/PIQogHsAtjtT4rtw9qFxwPe0kStjtUiiIIAWcOtZHG9LPv+LmOQGLrNROaMOUajSk34+jpsG5/qWqNZMeH/NTYsP3Ugok2MJDniDTqFVoderfboskfV9GloQmQxArlRFfGa7KTBCydWX6EKwmYg/qPDp2gF2AH7OKUnvKtsNs8l9A6L2ivIbXt0NkqacVVvu4igWSVCY86hJcv9ej9cWLtPv6a9oe6mGpu7RGa8KZjxCDG4baG5hAutI1XZLuFJnJomwh6PcVtspT9NbWbhqWwXMxcC8XrTHGWaJHTa77V6BpwRro6E8F+zLPTS/W3xX2PNbMnDZyXZ8D4ueK//yMapFh7oX0nyRIXISDyQn3mFHDEBeOW+jmGTFBY/lXWzlxWkFrK9WedDxE4sx1dQAr2NoTzTrZchNzjKQaO52IwnJDl5OYAQXm8aHXfFKLzbN+kLFOA5i143s2GM6EgzZ+2JBew4VQY23RPb50kQv7jKe3666JzGkqMyz2re6pS6MkSmnZohY98Ve2xSwYZUE2ZGhOvD/MLGz3V2hTO4SNvHypZDD/1dJGsFVQ4ZWfXENAg83/E2J4IH0zB9exFZ2XJg4ejQLvOIROZzj1j7c/PiFMasaRaPBkPh7cGf
- bwoHGYty
- oPYk6d/kLwx3AqscKdhGJ9fL+ojS4gGsAQO6wo2KHsIX8g4TPZ2FUzYSPociAM2fWhmNDmg0vc+RbiPkC897H6UKnUprHl9L8/Kfpp1DoUe5+MfMPdDDzL7x7X0SfctMucyrleYtG9oCkAe/0jlON7FaOezFOEzXKZb/XvlClBZPi2tHQflZ9+hYo6+2p6gZjYrfgCs0/0RwxWCheWGL3S49Oc5npcVmY6zB4htvZycmEAFfwOgfqiWT/qZ1/CyNjD+n3Jf9ddub/WVV3xhH4DKjJq75oB6cOAx7rvid/HVfrkIBrnqKIFKVRFKV08aBAVRrf5j5pKcPWjU73dE09GMYhTWSpzp78cgaEvprHFfjN95EPfkpwJlhgw7ES+B5D76M4Fom4MpCkv+9NPii5SeEoeFhxoHp4XhLpmHQtV0/vZ7hgG2abbPRIXY0epmNd53SlY1dgcX5zgxXxljnXzPVbrAWx8Df80EdxZyEvx70KvMi1F5ykHJS+0Kzmc3Zds4dr1BP2k9embn6/7ZJTYyJm9SeDq4fAF8Q3kzZ69umTmj9kjtJg0Z1KTxFvAw8kPtkmgFhgeNMsDrxgFV1TN1LuQP+0CfFQmPGy
+X-HE-Tag: 1790129160-588824
+X-HE-Meta: U2FsdGVkX18NgRBzT6wvnLs9Hwa17f/akR9EwlT56VmYK3s2PJBR2Kvv4sw13kEsXFmLbPn6FvkhnvdVMGT+yDVe6FylHGb20fvmgUV0oFMPbzMR2tyXu5DuAevKYK2lv8p2WqxMDQrEw8edrrsXnwwyudjvmBXmPrzGnqyyocuIM66Ipjk1nzODcmOgCT4ZNtD2RVE5DLUStldE5VH6QRYGP8zLp1tviRMILHptZyf1ArccypOrj0FLZ9gyYTOLsqubn4pmjIFF7LHDimLlhPVt6pn9vl6eV7UB0VuKUjmunOlK0D1/XmaLVyWxqsuo4r0NFM7psxnMCWXsJWUCohYORYUL+wp+3NzT/1BEHI/WWFqdV/cancEFt4posmzBEXqssMsvpn++4GWOmTEN5+MyJ+VJnNChMAIA35nuWx2GX/twBb1SLZ+J09GCSsLL9VyhE6hSipy8jzN1V95l1sJF5wrySTOsCeGZkDssSh49CQHi/vcOET/Plrq6x9E0H+alAdiwibDJpzg22zIaOPqbD2cuLjr7ZyL/wEQpxTroT+uW5V/wgbl51BKn60YYmwq3Dc1f684jG+F95mj0bpmeKKaQ1nthLoqfMov04hFNuwQI2t5y6zF1KvkQGlC7Sn2zf3POXXT/FZqSw1qvjKjzKHXgDpUQkieYqiHBe7qvPMGaCNLSayRMSwn1INnJuBAKw12PtQRzzexqH1PkUBOqWxRbhiiAaD1qb1jMWSpxr1X7KV/jH8mVBT1Saa6vB3GuPZICTexAGYAy4/7cQTuJQzC5jDAChFZniH0v22Fgeg4wq/0NmJKWccSeAHR48bCOrGuuhLWRcAHxb+tRt/KEb7z0z1OXb4cDOq7qtVyxYeVeaIJajfl6XtOIjSoxWZqmTAKluTENJt3BvI13V+ds4GC3U5XsILubxea0HYLteQkI0BfQVCYfM2yiwcvIYansfkhlyIwo3bttBaF
+ qpN7lOQ5
+ SB9PyWyDv7Tfb/3xwP8o46tStXRhZ90Zfzzgs7NHggN6Cns9dTl2BmSJOLuFxSq9By2qsU7aBEM+uIafYcltae7x8hxZpm777XCevB6LFBZUYfSeXxGgHpwlq5+VZG8OzmqvfKFCMY2xOm+QKfQ+4Qse/5ihcQ3elm4llqcMQJfnqRd+tMWkM2NB33SM2vqvQm3OXJVISfLCKB0BHeoJAw8iCmU6peiDNx9bhgVF21sDuyd6n/zo8QpT3BmN2+2B5YM8X+VxHZRiqK4CeX3j7ly5MYrshJbs0V2PKMu4PetDBPpAbacA+f+cr71oZDNWbdUNVzj39YhtErvrywXyDEQ8c1qyZqe5vQTu/PCpavlxFbLqC193QGqYixQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,76 +105,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The hugeTLB counters added by 05d4532b60e3 ("memcg/hugetlb: add hugeTLB
-counters to memcg") are maintained in two per-node places:
-  - the per-node vmstat counter NR_HUGETLB, exposed as nr_hugetlb in
-    /proc/vmstat;
-  - the per-node memcg lruvec stat, exposed via memory.numa_stat.
+From: Hongfu Li <lihongfu@kylinos.cn>
 
-Both are accounted against the folio's node, and both drift when a
-hugetlb folio is migrated, though in different ways.
+The NR_HUGETLB vmstat counter is maintained per folio's node: incremented
+when a huge page is handed to a user via hugetlb_alloc_folio() and
+decremented when it is returned to the pool via free_huge_folio().
 
-A migration target folio is allocated by alloc_hugetlb_folio_nodemask()
-and inherits the old folio's state without ever being accounted, while
-the old folio is freed right after and its free is accounted. That
-alone loses vmstat accounting: the target node has no matching increment
-for the decrement on the old node, so /proc/vmstat's nr_hugetlb shrinks
-by nr_pages per migration. Patch 1 accounts the folio where it is
-obtained, so the increment pairs with the free in free_huge_folio() on
-the successful as well as the failed migration path. The memfd page
-cache preallocation helper has the same asymmetry and is fixed in the
-same patch.
+A folio obtained by alloc_hugetlb_folio_nodemask() never goes through
+hugetlb_alloc_folio(), so it is never accounted, while its free always
+is. For a migration target this means the target node gets no matching
+increment for the decrement on the old node, so the global nr_hugetlb in
+/proc/vmstat drops by nr_pages for each migration. The same asymmetry
+affects the failed migration path, which frees the target again right
+away, and the temporary folio hugetlb_mfill_atomic_pte() takes from the
+same helper.
 
-The per-node lruvec stat breaks differently. mem_cgroup_migrate()
-moves the charge to the new folio and drops the old folio's memcg data,
-so the old folio's free right after migration skips the memcg per-node
-decrement; the count stays attributed to the old node for the rest of
-the charge's life, and the target folio never gets an increment on its
-new node. Patch 2 moves that per-node accounting along with the charge,
-in move_hugetlb_state().
+alloc_hugetlb_folio_reserve(), used to preallocate the memfd page cache
+folios, has the same asymmetry: the folio is handed to a user without
+being accounted, while its free is accounted through free_huge_folio().
 
+Account the folio where it is obtained, in alloc_hugetlb_folio_nodemask()
+and alloc_hugetlb_folio_reserve(), so that the increment pairs with the
+decrement in free_huge_folio(): a successful migration hands the folio
+to a user, a failed one frees it again.
+
+Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 ---
-Changes in v2:
-- In patch 2/2, move_hugetlb_lruvec_stat() no longer takes the objcg
-  parameter; it takes the memcg from the new folio and uses guard(rcu)().
-- In patch 2/2, move_hugetlb_lruvec_stat() is moved to mm/hugetlb.c and is
-  now called from move_hugetlb_state() instead of mem_cgroup_migrate().
-- In patch 2/2, make mod_memcg_lruvec_state() non-static (declared in
-  include/linux/memcontrol.h).
-- Collected tags on both patches.
+ mm/hugetlb.c | 35 +++++++++++++++++++++++------------
+ 1 file changed, 23 insertions(+), 12 deletions(-)
 
-To: Muchun Song <muchun.song@linux.dev>
-To: Oscar Salvador <osalvador@suse.de>
-To: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Chris Down <chris@chrisdown.name>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-To: Nhat Pham <nphamcs@gmail.com>
-To: Michal Hocko <mhocko@kernel.org>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: hongfu.li@linux.dev
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: cgroups@vger.kernel.org
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index da980377d353..519c30b338a8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2206,6 +2206,11 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 	}
+ 
+ 	spin_unlock_irq(&hugetlb_lock);
++
++	if (folio)
++		lruvec_stat_mod_folio(folio, NR_HUGETLB,
++				      folio_nr_pages(folio));
++
+ 	return folio;
+ }
+ 
+@@ -2213,24 +2218,30 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
+ 		nodemask_t *nmask, gfp_t gfp_mask, bool allow_alloc_fallback)
+ {
+-	spin_lock_irq(&hugetlb_lock);
+-	if (available_huge_pages(h)) {
+-		struct folio *folio;
++	struct folio *folio = NULL;
+ 
++	spin_lock_irq(&hugetlb_lock);
++	if (available_huge_pages(h))
+ 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
+ 						preferred_nid, nmask);
+-		if (folio) {
+-			spin_unlock_irq(&hugetlb_lock);
+-			return folio;
+-		}
+-	}
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+-	/* We cannot fallback to other nodes, as we could break the per-node pool. */
+-	if (!allow_alloc_fallback)
+-		gfp_mask |= __GFP_THISNODE;
++	if (!folio) {
++		/*
++		 * We cannot fallback to other nodes, as we could break the
++		 * per-node pool.
++		 */
++		if (!allow_alloc_fallback)
++			gfp_mask |= __GFP_THISNODE;
+ 
+-	return alloc_migrate_hugetlb_folio(h, gfp_mask, preferred_nid, nmask);
++		folio = alloc_migrate_hugetlb_folio(h, gfp_mask, preferred_nid,
++						    nmask);
++	}
++
++	if (folio)
++		lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
++
++	return folio;
+ }
+ 
+ static nodemask_t *policy_mbind_nodemask(gfp_t gfp)
 
----
-Hongfu Li (2):
-      mm/hugetlb: account migration target folio in per-node NR_HUGETLB vmstat
-      mm/memcg: migrate per-node hugetlb lruvec stat together with hugetlb folio
-
- include/linux/memcontrol.h |  8 +++++++
- mm/hugetlb.c               | 60 ++++++++++++++++++++++++++++++++++++----------
- mm/memcontrol.c            |  5 ++--
- 3 files changed, 58 insertions(+), 15 deletions(-)
----
-base-commit: 8d29b5365d528da545c1fe0768a55babadee95d0
-change-id: 20260922-for-hugetlb_state3-573f27215d4e
-
-Best regards,
---  
-Hongfu Li <lihongfu@kylinos.cn>
+-- 
+2.54.0
 
 
