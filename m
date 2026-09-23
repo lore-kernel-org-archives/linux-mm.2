@@ -4,88 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D473C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B1ACC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FA866B00A9; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
+	id 276A86B009D; Tue, 22 Sep 2026 22:40:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D22A6B00AA; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
+	id 24D616B00A0; Tue, 22 Sep 2026 22:40:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E8B96B00AB; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
+	id 13D1C6B00A1; Tue, 22 Sep 2026 22:40:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 456F36B00A9
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:32:58 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD2321A0675
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:57 +0000 (UTC)
-X-FDA: 85243454394.14.A68C2E3
-Received: from out-utut-a220.jellyfish.systems (out-utut-a220.jellyfish.systems [198.177.127.220])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F01D380002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:55 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=i1hlCY5N;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.220 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D59E96B009D
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:40:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 941DE1204BD
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:40:35 +0000 (UTC)
+X-FDA: 85243473630.21.57FEB17
+Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7045F100003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:40:33 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CfpXMI5a;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130776;
+	s=arc-20220608; t=1790131233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QhQdABlylOEbaAhIq2fvadeIDgLzvHLyAFVEKqUhlP4=;
-	b=0Ln5JvjUxgfTibq+yyK1x1zcmaFNkDRaac/egyLvHxRRk8Q1wfthIbToyP4y+dfkcgI82V
-	gfkzhzF2Y6U87X6XXTpnfLTNeQBokPyYZKO6f4/y9PFE9vnDtK6NAo5WiSVNajVadukXmt
-	R2pKsPXaHXkdb8MS38i24zSMziO899s=
+	bh=W3w6U0s2Y7YXfrVrGfZe4mA3TtjZw00BYj0SWxYptNI=;
+	b=6/ZHcjCMA3ZTWTc7jwjG19kSEtXNSNgjXsTjOUyO0z+yFV7W/0PdrX/bMC9puXpH4rmsZX
+	YbfNH2VfL4oQSI4XtN8k+scnGYi4kjOfLozhfrxRvJBnI4R8pfVKwVbVOihp7LnIm8joTF
+	KvPOf84KfMjq++lVQZSfeG8oOv3yQPA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130776;
-	b=Xy7URnQ45E9qVMZjMnwwFPdBjtxXD3redRP/iOudJUCvhs+B2RmrycCAxeyhartci7+JCP
-	P7kxRfuuzAjZx4q5L4TLIOsPXMNnD/s5JCf/zYymW7xsKzFRxca/zlz5OMniM0MGGYhUNN
-	N+ndZf57+bmFYPULMTuputJZF/r6WHk=
+	t=1790131233;
+	b=BpxuzzDPq/5+v8YckLWIgdkPX2oTHIAwgn6seuENv9N4Lutmsn55HOA6V9tvg8P0cQ/ovY
+	yF4FNNuS4tFU3E+Owj9algT30Zi+5lzb833kN/bQ7HVIJAAIN2R5T/36mfpUpdcaQ5Um8n
+	wcYZcqohRFeDdnZ87/G4wmCz2Iq1TEU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=i1hlCY5N;
-	spf=pass (imf30.hostedemail.com: domain of hi@tychen.cc designates 198.177.127.220 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
-Received: from [10.18.116.108] (unknown [120.199.7.38])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLbn1Thyz8sZ1;
-	Wed, 23 Sep 2026 02:32:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1790130774;
-	bh=QhQdABlylOEbaAhIq2fvadeIDgLzvHLyAFVEKqUhlP4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1hlCY5NgNFlNCgoXdHhCpD75lDhkozAfMmrWrvw3kEdi4U88oip1XEEBNuEXwrSr
-	 pPmuVn4RA7Bt3TNUIH0BiZCabZZ0z/2sFgchhdYojlUiFxNd/jmVAgwoIDW/MOH8oc
-	 Am0afPogrBPMxizTPbYAuH7B0j9ovWTMvtm1fLsaBIXSVSk/kc+0zN5UvyrxJoay/x
-	 tXmtIVlXZK2ZKSgKWPpuQhMYI6wsNHXeKR6oOfDWUGMEdhbfIeIOnUP6Z/mBBz4d9J
-	 tmEbAFoSEHujRV6w7NsBfX8YOR5NDVEdJTrCQ+8ZdHkyg5L6v0dvaZdpD3E6myC2SU
-	 PkXmPHPkSkAGA==
-From: Tianyi Chen <hi@tychen.cc>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] memblock tests: fix BUILD=32 address conversions
-Date: Wed, 23 Sep 2026 11:32:49 +0900
-Message-ID: <179013076994.1911052.6395482478037915192@tychen.cc>
-In-Reply-To: <179007180279.508753.4595268983388589280.b4-review@b4>
-References: <20260916161105.2548281-1-hi@tychen.cc>
- <179007180279.508753.4595268983388589280.b4-review@b4>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CfpXMI5a;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=j+Y4V2mMNGYI+hceNSPMN7m7nsV8dKsfzNn4H+9807E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790131230; v=1; x=1790736030;
+ b=CfpXMI5aTccg0TDiztH2M7y0sI8ldiU1pQ5qll35wjmNGh/C9kJ77aqN/x5dEDCfKsTDyfXE
+ 0IgqoO6zHiiVemsWUYQaNf78HpvdzZoJhCagQR9jEgnMFfRvT+GAyhF0A8Joo4Aa7kX+whzGgsT
+ 5zLmtkMOTdtHHMpAYyYRZ6fc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 41c7d1fbf26606a1;
+	Wed, 23 Sep 2026 02:40:30 +0000
+X-Mizu-Trace-ID: 41c7d1fbf26606a1
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
+Date: Wed, 23 Sep 2026 10:40:22 +0800
 MIME-Version: 1.0
-X-Envelope-From: hi@tychen.cc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: Chris Down <chris@chrisdown.name>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org, Hongfu Li <hongfu.li@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Nhat Pham <nphamcs@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+ <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7045F100003
+X-Stat-Signature: zcxw31h1siqef9bp9psqqge65y7y9qjn
 X-Rspam-User: 
-X-Stat-Signature: urhpmu6eqw756aryj5os9p4ufjdp1fg4
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F01D380002
-X-HE-Tag: 1790130775-676758
-X-HE-Meta: U2FsdGVkX1/mbE5qnrBu8eHtj08jBYU0BfnMFfz3Z88hAXKXoHJvOIPmooRjnt8458lSTEXUN8A/NsXEQpFHpS2spx9OnoECokTcL15pSv4mtUqLhBANx+N2tvieKWwJZ1r2V5ucDy4dKfzikyzzwSrmElj+YN964b7Ch/rqZNw6kGElOoQPNhFJLL3spPt9GMm6S4UN6IIP9e8ijRlTOgOiFFOPFdU2Ly7mof29vJgJfs75WvIQ3qzOhgXK3dXnf4H8FcvKvTBdH9UCT6W7C1NDSPo1q9Yz82SXoCz2+w32NaSEhvKFG5H4ND9TsIiFL4oGrJc3eTdtlEaqFUSkEqKdOlXcg9t3kdcEIaMBJ1IUzhbd59DyC44MBqGVwP0DpZ/7+tCs5vAdPQzp0QKPbIRC9EX0qqdW1XEYXJCxI6p/d43NKFjaYnLlzeOamUW7ihGHp/8CpEbuRcVWd8Mi8ZXV+0anb2AQdigswy1Dv4RxIYC+51l8oUuCn99P3j4Bvok7LaCwTbuXB9OHhjp5y0TVJJ0h3+xMN5SZp3ps/birdUp2Amt6OLo2qifyRP3rG8fyhOlCA/0eQTFoKmuSl6pV+iJAUrOMJUWyXs31pamxzIJpgA7lVoIrz9kIr2lqpdJAPcNfymVs1S/9xs5PxxeJT0JyDbDECdQuKAAypYKQZNkMCuc+N3YkB+Bm8AEXHm83eRJ0ngmatyXg6W/MHL1F2uizCTCNRK6s9aCvWHPe2J5bJg0I7w+H5CXxThxUij9JOKyqoJqhuD2kCG0ozW50VdGW5rYxScFy5PmBbfvMrsdQAqPffySlEsqEC6nF+TyW6bHzFQvj593OIQlIY5We9KMZetzR/R9jOhzM9ZB4vuzK8irjfywZrKeudSu5GuJQXg3O56l9PMjofg9arHxxNUsXXZxHtXOOyy15myk+fBWhOHmklTLSgks8f7Le64guEqmuy0zjTyvPnr1
- A8EzBq16
- fhZBTfF3J5fjZ73zQMapV3OfAP11J0R/Y5bUnZzUlOPHGKggpqrcaaius0A+LEyLx8NvIv/OnlP0L42WY5VtK/wbkuRdGxbrI7oXSUso1c4kWZ1uPX7TmJqO2HFkGPRzHsNVH3/vvfKjISjWAkgNrwTgtkvZOeEcFhKRMfL5oTEFa64nlrwOUqDJzB4YVe8/J/LcwCUsQVtn5+JjvKgb/t6DIMFY0VdvpPO1lbUd+tOPMRgPRQO79AwIgMCrH7zBTp53kfA0AwEG5fqjXhn1025adFsXMKQfV4/egvaOhuWeK0tY+lQpNxEtCAgXKu+t6tRTYikBvIWDSaiwyF5omsnpSBZwr4FJOgq1rajEB13JujUGq9t284PEzk5pM62pQnAaXgbZBA2RzlCtLFMlzuujZSWYalzMz6Hj9m6t0ZQXLlCY=
+X-HE-Tag: 1790131233-701848
+X-HE-Meta: U2FsdGVkX19Z1sf/B4z/hd8+OWT2cXjK8IW9px25CNohO47qPN+QMP/e0NcPsxh5N2evrULi584WCwfz3LiNO2mzCSWlKL6LzdTX9rmB4UHHns686BtGe8gYgdthCTXe1BnvUb4peRt9Nl57kznkNJPd7eS/aFm2y+H36DI+iFErTxYpZ6f/TM9zrSQL9H0aO8rPHDuhOc4Oq7dNyVJI2NryQFQ24t9/jD6KUx6IQmUJmqOkOM4kCUGATDmIyqWwixjFUb3mLeUMlIw3FGgF8WTNDbI2uGo1yMazruzxnMWeyjME+zrc8l3YMDFSbD4z99Kph063/pMj3ygwb9zIybFlHjMcEMhvxfhZtCQfbmXzj7mQKz7c8HylX2AiUCNhlyen5tTN2qtAyUDeno7lcyS6rA7CEZgZu70Mu7+IJSXLjOkk0Pvqr0gNLFmXxQI/iWZDB5z9qt3KAMGzSNzFWEI2ktU75U4cSpkuv1qMOx26KnMytJ1RGH00dnu0uFWzvxSEFkiMnO0Yck6W0M+BzoVNGVHyHN6VuVpxO3m8kEbDAY6wasFcOAeueNqCaGAVEwMJFj+rQtkKZ6rmqlT50go2CgnG3XrXp2nIWPwjHtZadDGdjK74MqDdMuoYwrGgqh+4N4ZEQK1i5L/Wx+nUqQQEnh2faDOcD9ec2tv7eAMQsCUl6mebJeAnPddviHlHEVqXvyo6XwpuG71FOVXFxaeyBmZNSVSNaKCZEjPJH4RwjxrQDA3VEY4jDUR8CdQpjDK/+wOcTYIM7wYqUiqPZaZIGH3SNUqX0F2C/GOWSgiYvke4xENmOwNxXXHg8I3U5rV6bjMMix0REY7pnzpiEc20MRTIpDx+U3uv7A5srkvuXNlU2iDrhjuvFTr0wfructZ3vbRfAbFIUqjzDXe/wXp3JciHLXQl6jO761hNIxn9zSUs4e0DKGFZvAJ0Z7PAFxD2Hvm5vJby2iPMQPe
+ ARhYEZWC
+ 6uPjdzn1P72zq/bIePrpvTOrp9AwOpytNxaV/6bQw4sR6cQnkRpPZ496F7v0fE+8ukaZimG9NEHeaCzuzgguV+Zw5dZ+dJLx0pSP2bK3ZqM1T4lf4oRB9aS7pnuf8SmIWtn5c883zNO1LPRfchdBjtj4lvc9dDbEjEvJZxNUJlk2i9jAQx2Q7j9uD37vbMUSu2rh+RNhTK2SIRHCfUDBShIjgRNmcZ7oC/XlbWiPVDUUAgSMa1DRZCVyeqbQbsknI8tCIIr7ajA4ClUumvgZBMn5f5S8QE7y2cmfwTv2OllTUQUzVbvzNKKBFaKvU28xOfnjidyrIA/8lQd7vB507newE0QvoRHqj1bc+6eCilSRY5BvTA+lBu87Bmn7WIMBhHYWT8bupez1DSrETrMFtYvMUlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,31 +100,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Mike,
 
-> Does it mean BUILD=32 without NUMA does not pass with clang?
 
-No. I reran v1 with Clang 18.1.3 and BUILD=32 without NUMA: all 189
-checks pass. The previous cover letter only mentioned the NUMA-enabled
-configuration tested then. Sorry for the ambiguity.
+On 2026/9/23 10:05, Hongfu Li wrote:
+> From: Hongfu Li <lihongfu@kylinos.cn>
+>
+> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+> stats. These stats are accounted against folio_nid(): incremented on
+> the folio's node when handed to a user, decremented when the folio is
+> returned to the pool.
+>
+> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+> to the new folio and drops the memcg data of the old one, so the free
+> of the old folio right after the migration skips the memcg per-node
+> lruvec decrement. The hugetlb count stays attributed to the old node
+> for the rest of the life of the charge, while the target folio gets no
+> increment on the new node; its later free decrements a counter that
+> was never incremented.
+>
+> Migrate the per-node lruvec accounting alongside migration. Global
+> memcg totals remain balanced because they track resource consumption,
+> not node placement.
+>
+> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> ---
+>   include/linux/memcontrol.h |  8 ++++++++
+>   mm/hugetlb.c               | 25 +++++++++++++++++++++++++
+>   mm/memcontrol.c            |  5 ++---
+>   3 files changed, 35 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index a8358f297b65..74110a324f9e 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -984,6 +984,9 @@ unsigned long lruvec_page_state_monotonic(const struct lruvec *lruvec,
+>   unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>   				      enum node_stat_item idx);
+>   
+> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+> +			    enum node_stat_item idx, int val);
+> +
+>   void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+>   void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+>   
+> @@ -1452,6 +1455,11 @@ static inline unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>   	return node_page_state(lruvec_pgdat(lruvec), idx);
+>   }
+>   
+> +static inline void mod_memcg_lruvec_state(struct lruvec *lruvec,
+> +					  enum node_stat_item idx, int val)
+> +{
+> +}
+> +
+>   static inline void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>   {
+>   }
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 519c30b338a8..76d019594b39 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -23,6 +23,7 @@
+>   #include <linux/mmdebug.h>
+>   #include <linux/sched/signal.h>
+>   #include <linux/rmap.h>
+> +#include <linux/rcupdate.h>
+>   #include <linux/string_choices.h>
+>   #include <linux/string_helpers.h>
+>   #include <linux/swap.h>
+> @@ -7378,12 +7379,36 @@ void folio_putback_hugetlb(struct folio *folio)
+>   	folio_put(folio);
+>   }
+>   
+> +static void move_hugetlb_lruvec_stat(struct folio *old_folio,
+> +				     struct folio *new_folio)
+> +{
+> +	struct mem_cgroup *memcg;
+> +	long nr_pages = folio_nr_pages(old_folio);
+> +	int old_nid = folio_nid(old_folio);
+> +	int new_nid = folio_nid(new_folio);
+> +
+> +	if (old_nid == new_nid)
+> +		return;
+> +
+> +	guard(rcu)();
+> +
+> +	memcg = folio_memcg(new_folio);
+> +	if (!memcg)
+> +		return;
+> +
+> +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
+> +			       NR_HUGETLB, -nr_pages);
 
-> I see a lot of warnings with gcc and BUILD=32. Do you mind fixing them
-> as well?
+Why not use mod_lruvec_state? mod_memcg_lruvec_state is an internal
+API for memcg, I don't want it to be exported.
 
-Done in v2. I reproduced them with GCC 13.3.0 and removed the remaining
-physical-address-to-pointer casts, used __pa() in tools virt_to_phys(),
-and initialized end_rgn to address the maybe-uninitialized warning.
-The latter is a false positive; each insertion already sets the index.
+Thanks.
 
-The virt_to_phys() cast also sign-extended 0x80000000 to
-0xffffffff80000000 with GCC BUILD=32. A separate boundary check now
-passes with both compilers in 32- and 64-bit builds.
+> +	mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
+> +			       NR_HUGETLB, nr_pages);
+> +}
+> +
+>   void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
+>   			enum migrate_reason reason)
+>   {
+>   	struct hstate *h = folio_hstate(old_folio);
+>   
+>   	hugetlb_cgroup_migrate(old_folio, new_folio);
+> +	move_hugetlb_lruvec_stat(old_folio, new_folio);
+>   	folio_set_owner_migrate_reason(new_folio, reason);
+>   
+>   	/*
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 88824f783571..a5335da5d425 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -1015,9 +1015,8 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+>   	put_cpu();
+>   }
+>   
+> -static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+> -				     enum node_stat_item idx,
+> -				     int val)
+> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+> +			    enum node_stat_item idx, int val)
+>   {
+>   	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>   	struct mem_cgroup_per_node *pn;
+>
 
-GCC and Clang each pass seven configurations with -Werror and the default
-ASan/UBSan flags, including BUILD=32 with and without NUMA. Details are
-in the v2 cover letter, sent as a new thread:
-https://lore.kernel.org/r/20260923023126.1910311-1-hi@tychen.cc
-
-Thanks,
-Tianyi
 
