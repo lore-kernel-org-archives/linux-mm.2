@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F90C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 01:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8610C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 01:35:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B3D86B0088; Tue, 22 Sep 2026 21:34:14 -0400 (EDT)
+	id B4B0D6B008A; Tue, 22 Sep 2026 21:35:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63E3D6B008A; Tue, 22 Sep 2026 21:34:14 -0400 (EDT)
+	id B21CA6B008C; Tue, 22 Sep 2026 21:35:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52C366B008C; Tue, 22 Sep 2026 21:34:14 -0400 (EDT)
+	id A11C06B0092; Tue, 22 Sep 2026 21:35:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A2E46B0088
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:34:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E10E880673
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:34:12 +0000 (UTC)
-X-FDA: 85243306344.28.FA6DB2C
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E12461C0003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:34:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GsQk4z6h;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EB896B008A
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 21:35:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 70A8CC0526
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:35:51 +0000 (UTC)
+X-FDA: 85243310502.03.56A2249
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B2488C0002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:35:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VrtS+bkq;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790127251;
+	s=arc-20220608; t=1790127349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ju8/8hlgVD7koLs0Ca8D1iyAWrg9qc7MYYjxWgNuOVs=;
-	b=Jmcq6c4vlY8KmbqA1/lRxV5F8pfnmbzmRsHwOE2YqkIEVN7jIeqZfAGNBv1VGBzu84RACR
-	Tyb5+pwMj8ZYSEdZYPzj/qsRRWwsyDkPaFP0nxPuiyUWBiTyfFBoocXc434+sOg4hImhZA
-	slV1+dHo4PNdE2b80RsmRJ8EYoyij+I=
+	bh=ngMEIbTaabSp9OnaFNAXRZtKwgGuZEQbttwH5KAHvBk=;
+	b=60q/3Vn/NCS3aDJhOe0e7xP/Cv5Ncf3hOQJy4kn/Wg4biPLGouobwLVSLdJBIJhpxrweHt
+	eLqjbVa6YOBh13lT7Z8CDNoh/kj6vzFIPQ22SvcZC/nbIzF2cLeW0MfxF3EpYzeMVlFwzh
+	OwlAmzWuagUSaivsKCXeFFqvTxxbi7I=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=GsQk4z6h;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=VrtS+bkq;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790127251;
-	b=kc8ZtF3HdAVE7LtUuPx4Y5RzepIWm5LufUTtFG7SokXxDqes6vdavdvJksQ/XZjHYs1f8Q
-	L3m2uKGg9R6V+a7Wo6Lb8ip2ovluTCGUfGvBP6wBr6aMyU/C8dJibcbZCjN5K7y99KjnmX
-	ewDW/3R4yfhAMNt2EXzOq0f3ToyYv8o=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1790127247; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ju8/8hlgVD7koLs0Ca8D1iyAWrg9qc7MYYjxWgNuOVs=;
-	b=GsQk4z6hTRVQMT+9gpIkxCk8aXmFJXrzgPinPubAhL74oZjV/81Nb7XLsg1ceURF5GFAjZZRgocwajBuXhlz7RfTVzViSuip6MwR6FSpInMz1rKs29/1uxX6AFTzOJ6c4ORzURJ7P2jpcQBQW0Kc70f/11ii4iWmA3fwq7lO79Y=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XBVICt._1790127243;
-Received: from 30.74.144.107(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBVICt._1790127243 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 23 Sep 2026 09:34:04 +0800
-Message-ID: <1619fbdf-9d68-43ef-afa6-66dbe3e61c77@linux.alibaba.com>
-Date: Wed, 23 Sep 2026 09:34:03 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: don't release a swapin-error marker as a swap
- entry
-To: David CARLIER <devnexen@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
- kasong@tencent.com, bhe@redhat.com, chrisl@kernel.org, baohua@kernel.org,
- nphamcs@gmail.com, shikemeng@huaweicloud.com, hughd@google.com,
- syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
-References: <20260920155002.1030454-1-devnexen@gmail.com>
- <fe49c311-582b-4ee2-8d17-42a758351570@linux.alibaba.com>
- <CA+XhMqy_0UPL5HfPYhPHeJ-ZngG4DRzme_a32sLSYd2VGSjo3g@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CA+XhMqy_0UPL5HfPYhPHeJ-ZngG4DRzme_a32sLSYd2VGSjo3g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+	t=1790127349;
+	b=7nOWLPD8LICTDqdvEBjap8LHGl1RTrjHmc4m2N45I24r/j9bKvAocAY5lC4Kp5ggR8rpJa
+	VVVoAHBAMVUuyD4oLjJtTMtKXpmSbqRwxQcZNCZuU0J8CNljh7TpIradg0rjlW2ICjPIV1
+	HKGAWmCzcPz9YCjF5yRS0+7CHpJONus=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E3211601F0;
+	Wed, 23 Sep 2026 01:35:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB94F1F000FF;
+	Wed, 23 Sep 2026 01:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790127348;
+	bh=ngMEIbTaabSp9OnaFNAXRZtKwgGuZEQbttwH5KAHvBk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VrtS+bkq7nbM/bIMJ1aDsy5TOCMtXDAWqmICbzzFXOyzo+Xl/TnMj9cikpTsEP2Fs
+	 Vi4hqUuSxKGP8/51jriiXvpx+EcM3Ip1RQ9t4PioTGwo+tIqpk1JSEnnTb6OJXCdnv
+	 byODjXSdYQxzfu/bygzI/sweUUKWhpkN9ktqYMQI=
+Date: Tue, 22 Sep 2026 18:35:47 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qinyun Tan <qinyuntan@linux.alibaba.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Michal
+ =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, David Hildenbrand
+ <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Usama Arif <usama.arif@linux.dev>, Dave
+ Chinner <david@fromorbit.com>, Qi Zheng <qi.zheng@linux.dev>, Yosry Ahmed
+ <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>, Chengming Zhou
+ <chengming.zhou@linux.dev>, Xunlei Pang <xlpang@linux.alibaba.com>,
+ cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] mm: restore per-memcg reclaim for NONSLAB
+ shrinkers under nokmem
+Message-Id: <20260922183547.788d21b89868bf820e94cc62@linux-foundation.org>
+In-Reply-To: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
+References: <20260910080722.3961351-1-qinyuntan@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ejuj6sqe7trp8q5m3wnqjiirt1crrgyi
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: E12461C0003
-X-Stat-Signature: 96is5pjacg19ucj1muoirrw8u6giumxc
-X-HE-Tag: 1790127249-139254
-X-HE-Meta: U2FsdGVkX1/JoIl4sXAfz0D/ELZ14M4I9yKl1ZXqRBQjnHOtw7aLJU5CINJgAt3JoDfxyHMXJkywSd8drLhgt4NmrXqkqyRuhGWlOkwGWQEebIuY8xBXkfv1fIu9RCDBH2ozRV5AwHLHjG6mkc01e29F7wFLDD8R+8NaHO17OInQ+6JFEKtE5ScH5iFomHIMjAfwwi4/6jIu7rnnLMgD0H8bnNRYgT3wCzTh7oUnPidn8bg+fGyWWs6h/zrqBu1Eugi4/1hO88Clq9+2RfZTX9xjD1OCPhfXUZC+NRp2BTRmlZJVDWYZN6af1a0ZGcyi+sBm8nUpt7ZeR8Cx0GQW2zPPIEJdh3qddp+0K9oRgEKGrSSs4poVpZOw+UnlqgQOI8hKuqaKEzJlI7lmO4FqumBAix689nUSBQyaOylT5i12cu+RTkEgl7Ovmb2vIICsLqEjfOEXtdxdnNV3ZIVnbGEBlXemklXJhYVcn/Hgv6Bzw3fxP1BKUMj8iBPYYidSQbOu1AOxv2ohsPOgdkQ9+5dBQHScscO/dTBAT5AqvucoBbrCsCBAwGb/lCZ05XgnrKw970smjiuv4snXJ5MDepuYJ6fK7FytWv/h5eR0XDyb/R4+ueN4X86urK2hXdvuvXX/pq7+czFMO3GhzeEL+cbEL8D1I5OxSLGI7aqZiS54HejQhcxvZD+zxVBH+7AFvdeYuVlYeSDU09upnAbjWYjfLG2XncswX1Hy6o4DXLvx0+1WEjYsXcMNHOe0hT7An7dO4jaiepLe+9TvZ7bWrxkvc2MRzfHKM4AcXtFKjSSTnANXXBG6ckGoKPhvg28JCaizY0hwJ2eBXfXdtodv8Yv6SRMWk0CrC/ayfrO7hxhjFlQdYzQYt6pLKyNkogiOG4IzZEmUeEU0T3AoPdgO2Q9yoBVAapvNfSeyLkSozbpVXRsunFcLURikFnm7bD8g+vEjHCthDRppz9pJb3x
- n3P/aUBP
- ANN2FHYmgDdEF4gNaky6IxS8TzFOkNmq5SS0R4ozl4JYFYM04/8Gdkq5qCC+uZ7mZJdmWy2X8tXzhGzOS8m0t4rf2IFYG30pYY9d5eWR1ECtuKkHMWXJx+EqxxNUpFy23FeBg5g6qZNqeCn9Xdmdjp6eG3xVBLrO+sKcvgdT0HKwBQjADznHe0Rj8jCCVD0TaEzizg/tQMJOd+m/YfK0eZTnx9k8U1b06A/nNawT/x48XucfBlzYtUjZpvA8XL5oVEjTwnf80/YgD0QSafDHQ93qfKYnfU1hi/jNNhVx22RhQfjAFVvpi3LR+c2mI4ZgB6EjCFx78T7i6yGiNHnCSVZnkUbR2ndM68xOxvVFt/rPcU02UyMWG0lKVpoS9ZDnxOBkoZPGxvlQiTsQgLoI73lFJ3/YFqFOJ/2PHQZW6H7eUCY20xMjDQ6LFRRfb7d/8jN7SDDuu+sHq36+8OE3YWupHhEzalWkLDsBXrJDToHAi5cElNpiMCGyBBnZi05A7ZvybGdx5uLbjn9XRsqNDCFLnoXcRIAoze4qbqdnYqRGAm7I5AlR5L7iUsK+9/gPPdlHR
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B2488C0002
+X-HE-Tag: 1790127349-402147
+X-HE-Meta: U2FsdGVkX1+i5gMnphikw11iL0/7z7cbbNUX1NLjmK2CTsIudSGdvz0ST6FmJqsZ7eHAh7VJZfoUkahDG45Ncd9QPcfcvqkeN5LURpPwZ2Jl81Q4RzSpGhvf4df/PLS2294UhCHpUngBa/2/0wzlSTzcqsyiMwX0Hu+O7+OFG8Bp0VJtzkv2+LPcmaaz5BKrZSnSKgjBPlp9aX8nz+E9YV3RYMSoC+JMhbGl0buqvOUIygxxViwcmQvwy91WJN5CfNXagnOqKjTwiGxdl/eP5bqepjPlV/bHTY1gy8JiEWJLvH/ochTMKHFF1iXFN0EPXtG0tT7F3VKcuLoz1BHyroUPaB+CNw9AJcP3NGG6Q3S0KsTuBlqUkvjv80N0YrypfK22huJ9jxHJyBHGLG+Tcxvk28Vfniaf0L0FCz35bkr/Wa1c4RPvAuZ6jZMQhhuFqW27+LOZAP+fmeBxN0NHVPIPSnAwCHyngcSpqTE+7bk+o+RlkXG47AwHFBKl4CkYqOGqG1XUBKoBE24qXQbKjb3k9QK/Igqj6ZlipUK/ZRxIfh1wVgClyoRrB97LWf5S0PzEnAIF1vg64ehIu0V/sWU+hVhxsuj16hBwij08hHAwZw6j3D33tMAQTMCM7MO+NC3KaOBobyZRkoLL1tK5HnjCDZvD+9yaHTKjBu+h6cNgyhZq8Dk+JNF/4CpJWYrucGSDjc8n4jDcdYptQhs7gV8PEcvGzPKNsKEloOXOT529lgx2r6iaryg6wR3HfN7U21bf4uUGgijP1jRGvzVc4hxoCbnJPwO0dOH30ULSaUVhBE1PEBVcCQWUAvekPdmI8nNjuMXaVGjfdxNQNTlBrByUUZ4kMk1zB8RSvJCpjkGjKhe2BL0KfrnH5R4ACtenvnBqZ6srmVZSWHn526nc1B2uNGqzmqtM6g0jp+K3yVlCmuu1MlPnndHhxmuTw5iZKenI5SZUW8kLR9HN7F2
+ zCJxGhXH
+ XSLBDT2f4wu2ciDnASf68bMPuXYM5E1Ed5W256PEPLBNYq/vxgwm5bYXe1wxUanLyiW2qa7I+HCrUoGxOWMmD5kbZ8RHdUWffw/dT+xIzYgYkJUFdqIECoyaRvGUoHXr2YrPuegAosA21EZXILgT8Hrt2s9wZNsc7wOFlWD1GBD+55iPcIyBPZk+Nu8DE6PQ2cQx7+3zA/6MRQNMysQBGg8g1E1od1d7S4mLWxOJ+JnVMAQIs/RJzLVI1qLyiLVh/WAR6TOr6YuBaB43D1jxvcQm1J1xXiW7dTKch4SiShXf1vZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,78 +98,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, 10 Sep 2026 16:07:18 +0800 Qinyun Tan <qinyuntan@linux.alibaba.com> wrote:
 
+> With cgroup.memory=nokmem, the THP deferred split shrinker and the
+> zswap shrinker are degraded in two ways.
 
-On 9/23/26 5:03 AM, David CARLIER wrote:
-> On Mon, 21 Sept 2026 at 03:45, Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->>
->>
->> On 9/20/26 11:50 PM, David Carlier wrote:
->>> A failed shmem swapin frees the swap slot and leaves a PTE_MARKER_POISONED
->>> entry in the page cache. On truncate or eviction shmem_free_swap() passes
->>> that marker to swap_put_entries_direct(), which warns because it is not a
->>> swap entry. There is nothing left to release either way.
->>>
->>> Skip the release for non-swap entries, as every other caller already does.
->>>
->>> Reported-by: syzbot+23b25ba3c6bf971f9c57@syzkaller.appspotmail.com
->>> Closes: https://syzkaller.appspot.com/bug?extid=23b25ba3c6bf971f9c57
->>> Fixes: ac2d3268284b ("mm/swapfile.c: remove the unneeded checking")
->>> Signed-off-by: David Carlier <devnexen@gmail.com>
->>> ---
->>>    mm/shmem.c | 6 ++++--
->>>    1 file changed, 4 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> index b572c60f2af8..94f2c59c8cfc 100644
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>> @@ -1184,6 +1184,7 @@ static long shmem_free_swap(struct address_space *mapping,
->>>                            pgoff_t index, pgoff_t end, void *radswap)
->>>    {
->>>        XA_STATE(xas, &mapping->i_pages, index);
->>> +     const softleaf_t swp = radix_to_swp_entry(radswap);
->>>        unsigned int nr_pages = 0;
->>>        pgoff_t base;
->>>        void *entry;
->>> @@ -1200,8 +1201,9 @@ static long shmem_free_swap(struct address_space *mapping,
->>>        }
->>>        xas_unlock_irq(&xas);
->>>
->>> -     if (nr_pages)
->>> -             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
->>> +     /* A swapin-error marker holds no swap slot, so just drop it. */
->>> +     if (nr_pages && softleaf_is_swap(swp))
->>> +             swap_put_entries_direct(swp, nr_pages);
->>>
->>>        return nr_pages;
->>>    }
->>
->> Makes sense to me.
->>
->> But another issue caught my eye. Since we already call
->> shmem_recalc_inode() to decrement 'info->swapped' when handling poisoned
->> entries in shmem_set_folio_swapin_error(), shmem_free_swap() still
->> returning 'nr_pages' for poisoned entries would cause a second call to
->> shmem_recalc_inode(inode, 0, -nr_swaps_freed), thus triggerring
->> WARN_ON(i_blocks) in shmem_evict_inode().
->>
->> I'm not sure if you've observed this warning. IIUC, shmem_free_swap()
->> should return 0 for poisoned entries.
-> 
-> Hi Baolin,
-> 
-> Thanks for the review.
-> 
-> I think returning nr_pages is needed. shmem_set_folio_swapin_error()
-> decrements both alloced and swapped, so shmem_recalc_inode() sees
-> nothing freed and the block stays accounted. The second decrement in
-> shmem_undo_range() is what finally releases it. Returning 0 there
-> would leave i_blocks non-zero at evict time.
+Obvious question which may have recently been addressed:
 
-Yes, you are right. My memory is coming back :). So,
+Why are we keeping nokmem around?  How useful are its memory savings
+and is anyone actually using it?
 
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Clearly it isn't well tested and it increases our testing space (beyond
+out testing resources, apparently).
+
+If the right answer here is "kill it" then this patchset is introducing
+risk into the main codepaths in order to fix codepaths which shouldn't
+be there anyway, yes?
+
 
