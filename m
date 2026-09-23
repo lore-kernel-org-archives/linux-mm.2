@@ -4,84 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A200FC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:34:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C1BEC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:37:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B10076B0096; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
+	id D86EF6B008C; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC19A6B0098; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
+	id D382F6B0092; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B2276B0099; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
+	id C02B76B0098; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA466B0096
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9966C07B2
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:21 +0000 (UTC)
-X-FDA: 85245121122.22.189D530
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 107F64000A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LwVkJj9Z;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 87D7F6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:37:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C25D160808
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:37:32 +0000 (UTC)
+X-FDA: 85245129144.17.6C73E5C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2FE84A000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:37:30 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYKKX16e;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790170460;
+	s=arc-20220608; t=1790170650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nAi96pIQ95HWh44XRESIidPNe1NFI5clCoocx23jiPE=;
-	b=MDcvVpSAIYmR8lUwAhSnjlKqutMIgvktTYOpvG7l8vk89/r9tVp225t+aqlGp1PvoaRX1S
-	PTs+Ouz7gVump7Q92oDww/tQNMGsXwYCGYfzf2caJvvuRMIk7NAQVyf3mUPAdu1Mv8DT9D
-	h+OgyYcooSyXUF34QRd8jzV+Yxu7f5g=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LwVkJj9Z;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=LoOuDRGVtcin4lz+35JXooeq4HMJZWCeB4CFS2sN82w=;
+	b=mbkUA/DoHP7aXMr0sqWgFmXOPXWy5Tjr5nBontp+nVIROTbpg6h7Olc/F/trReSdiXkhn5
+	w9FOFJi+JniPvbSeGDMfZgqgJ0Kr9YY4ozy4X1nZ8DUvwn5ncAR0NHuj0zdXzf/qt4JbXt
+	LSx2Z0pfAexBhIfAgMpAh2ZYN6rf6Kc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790170460;
-	b=72r8tOd8C/b9haxmfqI9HhIYYZaC5mBa4tmfz+osQqcaW1vf/LSR5EU0HLZwMHy3TscLPC
-	4sSyNH9Gqf/F4Ixko35iFWcZBHZYTBniGYJaeruGBMa33Q0xBjn3lzazXVvte3Of1T6ZsA
-	BDE6giN3rp8DSHS95Ck6LlApet1dhN0=
+	t=1790170650;
+	b=rGkUFu+/yxkXMLzEcUn7y52QmDNS5pq7iwogcxAo5Z9kAf1L5TUQo9F9J0ZKcpPJDEi3vl
+	Z2OoIqO1YwhZ6Uq0JVE6vTEKUT9+6PEFxfeq+8U8fgnFz36UTXRoWVVs/6eRUsxGTVmaw5
+	k0M+RCmIRaIQU2DHxATSNY7veB8RHVU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OYKKX16e;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 925D7600AA;
-	Wed, 23 Sep 2026 13:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1AC1F000FF;
-	Wed, 23 Sep 2026 13:34:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 605914351E;
+	Wed, 23 Sep 2026 13:37:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB681F000FF;
+	Wed, 23 Sep 2026 13:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790170459;
-	bh=nAi96pIQ95HWh44XRESIidPNe1NFI5clCoocx23jiPE=;
+	s=k20260515; t=1790170649;
+	bh=LoOuDRGVtcin4lz+35JXooeq4HMJZWCeB4CFS2sN82w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LwVkJj9ZkDQNHUczf9zcG7g0DgTpgrnyciNJ/Cx7aktOA81IDL4565Pa4ewbNgbnL
-	 sOxlBJ0HEeSge6kIxE/QzVDN5gDP0zv/C3w3Zablx/uNLD1Tw42b1DihXctbcdWxvA
-	 qEAZu/JL0E0D42ihlsjAJDN7CWFYRBQ5uIcV2gu0bQShATr7as45XPupetHkHlLoAE
-	 UaEbw5YtE8p2mo6O0YDwAOTETtZwfbe50Qx4/bcBIf6wGFN2Db7/5+qGLWgFOlj8k/
-	 l2XE3/dkDQ9HcGI6hM+MbeGmMg24gbbhpHiS7j91lf3l8I+pmVLM/e+UecWuYd1O/i
-	 C07+7kOLqzv6g==
-Message-ID: <63f49a8b-cabf-4b93-a7e2-76b62c463a90@kernel.org>
-Date: Wed, 23 Sep 2026 15:34:11 +0200
+	b=OYKKX16eY3t1xaXCZTv38418gdMGxdTo9ZtAW/Kg+f8pRevCHjHtOK0VhJEG+UxZQ
+	 Hamy6AOqoQ+Z3e2DsJQxZIDhWk+P1jD9YzhnWqSA9cAJ6NfhPRcZGHNPRToTu3sjng
+	 OLvyRdio/Y/CAGYTOKdFBJ2DXeyNhCj+D4MZeiSkTMRhhZTJafYAnEAQycArREQ210
+	 9O+YfM3bLFzb76jEYgXNesAWBUEk905Xv6Gi8UkCX5Ezsv7omCIQbJrfUnDoyN6vlY
+	 JsXEIFcFdOMizU3Yjnr+gWdG6KtzcR6I3NZTwxNLjddDjeZhW06cev2TYhsSeNLtLE
+	 STLNckEd3pR5w==
+Message-ID: <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
+Date: Wed, 23 Sep 2026 15:37:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/12] mm/collapse: declare the collapse interface in
- collapse.h
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-12-kirill@shutemov.name>
+Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
+To: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>
+Cc: Amit Shah <amit@infradead.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Aneesh Kumar
+ <AneeshKumar.KizhakeVeetil@arm.com>, Christoph Lameter
+ <christoph@gentwo.org>, Dave Hansen <dave.hansen@intel.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, Hugh Dickins <hughd@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, John Hubbard <jhubbard@nvidia.com>,
+ Kirill Shutemov <k.shutemov@gmail.com>, Matthew Wilcox
+ <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>,
+ "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>,
+ Sterling Alexander <stalexan@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Yang Shi <shy828301@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, William Roche <william.roche@oracle.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
+ nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ jane.chu@oracle.com, muchun.song@linux.dev, liam@infradead.org,
+ shuah@kernel.org, boudewijn@delta-utec.com, linux-mm@kvack.org,
+ Breno Leitao <leitao@debian.org>
+References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
+ <arPElEV0zDhXrteb@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +140,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260916093145.4022188-12-kirill@shutemov.name>
+In-Reply-To: <arPElEV0zDhXrteb@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 107F64000A
-X-Stat-Signature: suikiymt34sp8bme8qryoxf6a1amn8c9
-X-HE-Tag: 1790170459-813219
-X-HE-Meta: U2FsdGVkX19GoWID2fgYjjH6zzAWgIDsY5f6RR/S7rSnVZyE5O+jadzYT0b4TzzUUSaMqMUyC9QnNRtBejoEX1CijoGmoAgxh9hwv1011+Rkk0vKUF/cOQSnKkCMa6HJ2zjEVlXyLHUX0u3D0oVa20nVfY9hGJ7ni7GUi2CWCKZRID/sEOzZ9RCu47WyyNALemvxF9bkgHdsBuT5P12yKuk2JOWosNvkZwjFvlJrbpiQZQY24yGz6oEgqcBcq/nhKeAuLb0rtafZhdQsRiU5PK5uZclb95tAIrmEEUwSDN6x+d5VVKXoCGuPThml6mW7E5BbAO4XlqMd/TGJQ1jdPMtf0BVedSn9g7EbIKL070BrSFh5JGr64TPY8LM8UdzSVq5mfDOZrGYI2la6u4jKvuUMFUTFsIfP6EOJVlSOCOdU644Z5CQvr52k1L/AldhEpMpInnLOwgICy7BMDoGfEn0RcN0MtxxDklSg6ktkn9UL+WY6/cxQoOEzi10fDschlPYrpUQ6tIlBtl/+9Qm2Dip7AQ0AOPKwsc1QZqXn6fh+x8P3w4h7LeBh/xfKIHQHh4TLrQZEL9gkhXe/g/K9OUXQ4N0WQU3W6mtISsBM6y5886wg60XCx+2lv12XAPde59l18EGcHA9KLagRS7NVRZq2nRty6A37KnZGD7T+fAACdFyWxnX2cTVtjZAe6P5pS4N9H3n5kD2XL/1fxKyUjKkFlpBf47DNyiUvGv7KZwTgE9fNefUDoPVd8SJTxkozu79Yne5aATPDzN+iUoqzFnrDI3XGg3/4tpm6cWSwlPerWZw5z/pbgtT6mifkjMKTOuM5EsI98qchPpU1x3c7vOitBWT4u5gC5rBaUXt2FDiw6Kv/OnceDMG1hub2qewvnYL6mUps9X75yW+LhwRZ1cclVl/vl0xVrGQbOeRlOMqnmB8pdgeex4HnvrWdM/5ioabW6e+94CkoOdXxZ0T
- jOEsKWOw
- mI8LiWIXm+92yGRAbrQ4UmjQdTzByCRTz4TIIvnxCBxyDkIrdS2Gssxn/MwOPU8gdNFNdweI3wEI/yHFv/17qmmIfeauHDb/M6bWPgTWCGEV7yBne10P4sbUYwIRUbN93MgINO5j0IkJNihucS/0rCYNfbKIuYliWsnIqcR2/O8MBQD89yoA6q33FLH7TP+vE/BjJqBaGNnyxq58Y5JWFfkJrC6RcVPG8uO3cLkxLzCWf/uuYMtflut8NXD6wrrS3VKo8NOEuU1UoA5jeKg623eDFJMY7KX8/l85PhH7N+cL178WQD/zHHoyRIfukJPs4My6i
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2FE84A000A
+X-Stat-Signature: 7xropfeywd1j3e4iy1hcp86djent3smo
+X-HE-Tag: 1790170650-444533
+X-HE-Meta: U2FsdGVkX18G+lAiVLp20KnZtEaALYvg6vX6XKE57nJrDFwDRFMZ+xkCu4vRZrXR6SXs4/hv9nM1GCTGZ1fW1lypadD8UkXgkA5uNwy8vCmjwewewgFqkirnamr+Up0J50+fU9NirojX6lnqrk6XuS1tt2yhtGAA+KOwq2WrhOY1DWnKXUrUcBJAlcxf3QnzVoXGIon0qGPq1o+n4vr4sYc47xedu1MEz66/TR6qWKKCbFhZ7aaSeDLW/IAGfiUYuEJLS9EuNEeRwYdxVNS5sNUtjrj0l9tlXtvEC8twNYcXl5dBa5cw2cZNMLbIUmFw+tcfX/HhpUBPm0c1K45+tgAOtvfrQ1VqkiLpTvKGlgD0TfyDYGf5OXL4Kwk+awu+paiRO2YbgW+GtNJiAmwrzYdCSCA74yq35gEb/sQBUrcYWAv2Pi7OkaXXrLUX3suPPSxy8uLA5xfmpVWtz07FhHQkHdeVHnNNsYFwwvvqiPzVNZmJDRVky9zGhjvP8mkOYyKja3aFxz+EOkmNcgsnneeZRnFUrpmkm1l58Qd3Sbc1jtLH05eZgGkk0kIowSwr7/R95BuGTsKHzFN0Ns/6v3GgIqn27idxXGbQtATgVah5xpYOMYiosB9d7KX3mvAgxCIB53pfoQvClyjNi/u0H0qhjf7RKtXuW9cxXf29t7AXO9CpsrthH9nXOpB4DOagukfy1i26Uy7JOIcW5FrE//mJhDxCYqm3X/OSTzI0Km90kRdLiPBusqDl9fsOKpeezrS3j3bLpAvhJvzZgoIlXVDuItx3f2XvnhlyQ0OrK9CTqC6Nz6f4XknTs4KbXvbp566mCfRA43BdB3SEgJzjUiFI0FBDRObupijCUmGLVycyrwBebCBEmaFlcRpmXFgpparcrF0zc46YS6eOqxuJQ4vQ+uc2QzVx/oaVAWzKxOBxtlJt/GhaFTtdmmE1/7EeUuWtVHvmLduQ5bb/mNr
+ 4OAkq2xT
+ U6LjtUlX1tVA33fnzhDz6iCEqRIM1JYn6K66m7Kerj1sAIvZAcyWChdKSc0lbV56sJvVOCGV4rGEUMayp1BkCn1f1NdbCIVapf7jJqzgQxnW1j7QSQJkznNHgeVuqz/fHUr1iNCfvMdhcOOEyZO0Syb/xRc+aHMTO4KRwJKTAHLjHl/orzrlvcPLVq/wPrWyBMttQapmPV9lh7JqlRDJFMd4gv5Mzs52JCcKZFEk9rKYkoHIZSjsFIY3Pd/r6VROBcUqMpxykh9wAylLEF4RW3uJogQTyr/dx4EyeJcVFXDs6bMp2j5znoJM72ds5YYguSHV4J6ypzQOPBJCP4p3sbTRoYm2dHhFCYjm9YHB0m7EIxdsAVPsTqeeJ28yYmWO6TXSI3TsAWZLo6jKSHfpEbN385Qt5QZluWpr8M4I1KG71RrZ5gmyhwF8BYc29VOgT8FiPS61Qyo0oUomAib1ZL/on9DkoGoNV7NPV48mU4g1qArN6ZGTrBItRlq5QGWkRX/Vaz7C0nsmDJ/0akTRds/EEyaLZNwIZDWHs5gxk7Wnih3tS07wbm2RloyHTz7Qvnq76
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,91 +158,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/16/26 11:31, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 9/23/26 14:57, Harry Yoo wrote:
+> On Mon, Sep 21, 2026 at 09:26:22AM -0700, David Rientjes wrote:
+>> Hi everybody,
+>>
+>> We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
+>> We'd like to invite MM developers to attend and will announce the topic
+>> for the next instance on the Monday prior to the next meeting.
+>>
+>> Our next Linux MM Alignment Session is scheduled for Wednesday.  The
+>> details:
+>>
+>> Wednesday, September 23 * 9:00 - 10:00am PDT (UTC-7)
+>> https://meet.google.com/csb-wcds-xya
+>> backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
+>> doc:
+>> https://docs.google.com/document/d/1QQfZFPHa-pGEGf4A06cSqS0jdJwuZ8ro9JU5H0YSUQ0/view
+>>
+>> This week's topic will be Hwpoison, see the discussion in 
+>> https://marc.info/?l=linux-kernel&m=178796007385067&w=2
+>>
+>> No specific agenda other than to gather core MM developers with hwpoison
+>> developers and discuss:
+>>  - where validation should live, esp with regard to the page allocator, or
+>>    strict invariants in the page allocator
+>>    + implications for the fastpath
+>>  - handling for folios of arbitary orders
+>>  - handling partial folio poisoning and split failures
+>>  - race conditions between memory_failure() and concurrent
+>>    alloc/free/compaction
+>>  - soft offline for pages in the pcp lists
 > 
-> A collapse takes four calls:
+> [+Cc Breno]
 > 
->   - collapse_control_init() - set up the control a caller carries;
->   - collapse_scan_pmd() - scan one PTE table, under mmap_lock;
->   - collapse_run_pmd() - collapse what the scan found, no mmap_lock;
-
-As discussed, having a single collapse_pmd() function might be cleaner if that's
-easily possible.
-
-	collapse_pmd()
-
->   - collapse_control_release() - done with the control.
+> This might be worth some attention:
 > 
-
-And as discussed, I hope we can just get rid of a release function that's not
-actually supposed to release anything right now (unless I was missing an update
-in one of the patches).
-
-
-> All four are static in khugepaged.c, as are collapse_possible_orders(),
-> which says what a VMA allows, and the revalidate a caller needs once a
-> collapse has given the mmap_lock up.  No other file can ask for a collapse
-> without them.
+>   [PATCH v5 0/9] mm/memory-failure: keep hardware-poisoned pages out of the next kexec
+>   https://lore.kernel.org/linux-mm/20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org/
 > 
-> Declare them in collapse.h, with a comment stating the order they are
-> called in and who holds the lock over each step.  Each function says
-> what it needs and what it does where it is defined.
+>   - The question: How best can we pass information about poisoned pages
+>     across kexec when the kernel accesses a poisoned page, panics and
+>     calls kexec, so that the next kernel avoids hitting the poisoned
+>     pages again?
 > 
-> hugepage_vma_revalidate() becomes collapse_vma_revalidate(): it is part of
-> what a collapse offers now, not a helper of the daemon.
+>     One challenge here is introducing another source (a new EFI bitmap
+>     that represents poisoned memory, in addition to existing
+>     PG_hwpoison) of poisoned pages adds complexity and confusion.
+> 
+>     David Hildenbrand suggested that we should simplify this as much
+>     as possible in a way that we don't have two sources of information
+>     w/ inconsistency between them and using memmap as the only source.
+> 
+>     e.g.) By consuming the EFI bitmap only once when initializing
+>     memmap (to propagate poison information to not just free pages
+>     through __free_pages_core(), but to the all pages on memmap).
+> 
+>     Another challenge here is that we don't have functionality
+>     to poison pages early in the boot process before memmap and buddy
+>     are ready. So any allocation before initializing them might still
+>     allocate poisoned pages.
 
-Is it just me or is collapse_vma_revalidate() an odd part of this interface?
+I've been thinking some more (and will reply in detail to the series), but I do
+wonder whether memblock should actually be thought about poisoned ranges and
+refuse to hand them out (reserved/allocated).
 
-You'd expect a matching function that performs the initial validation on a given
-vma.
-
-Maybe we should have a
-
-	orders = collapse_vma_validate(vma)
-
-that really just wraps collapse_possible_orders(), an expose that instead to the
-collapse users?
-
-So they'd use collapse_vma_validate() to then call collapse_vma_revalidate()
-after temporarily dropping the mmap lock?
-
-
-[...]
-
-> -static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> +enum scan_result collapse_vma_revalidate(struct mm_struct *mm, unsigned long address,
->  		bool expect_anon, struct vm_area_struct **vmap,
->  		struct collapse_control *cc, unsigned int order)
->  {
-> @@ -1264,7 +1264,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
->  	}
->  
->  	mmap_read_lock(mm);
-> -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
->  					 &vma, cc, order);
->  	if (result != SCAN_SUCCEED) {
->  		mmap_read_unlock(mm);
-> @@ -1299,7 +1299,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
->  	 * mmap_lock.
->  	 */
->  	mmap_write_lock(mm);
-> -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
->  					 &vma, cc, order);
->  	if (result != SCAN_SUCCEED)
->  		goto out_up_write;
-> @@ -2741,7 +2741,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
->  	return result;
->  }
->  
-> -static void collapse_control_init(struct collapse_control *cc)
-> +/* Set up a control before its first scan; cc->policy is the caller's to fill */
-
-
-Kerneldoc please. Applies to the other ones exposed as part of the same
-interface as well.
+So we'd use the bitmap only to feed memblock, but not for anything else later
+(if possible).
 
 -- 
 Cheers,
