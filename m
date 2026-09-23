@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBEDC982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:31:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBAC9C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:31:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC8236B009E; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
+	id DAE496B009F; Tue, 22 Sep 2026 22:31:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A78F46B009F; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
+	id D5F896B00A1; Tue, 22 Sep 2026 22:31:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98EE36B00A0; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
+	id C75536B00A2; Tue, 22 Sep 2026 22:31:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 799DC6B009E
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:31:44 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0607F40672
+	by kanga.kvack.org (Postfix) with ESMTP id 9C45F6B009F
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:31:47 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F3C351A05EB
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:31:46 +0000 (UTC)
+X-FDA: 85243451412.26.88FABF0
+Received: from out-2z4y-a139.jellyfish.systems (out-2z4y-a139.jellyfish.systems [198.54.127.139])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0D653A0006
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:31:44 +0000 (UTC)
-X-FDA: 85243451328.13.6D3E229
-Received: from out-2z4y-a153.jellyfish.systems (out-2z4y-a153.jellyfish.systems [198.54.127.153])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 31157C0004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:31:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DQ1m2Cq3;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf22.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.153 as permitted sender) smtp.mailfrom=hi@tychen.cc
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=IwvCtPGS;
+	spf=pass (imf15.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.139 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130702;
+	s=arc-20220608; t=1790130705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=atpMB5sAObGBHnnZwrOzoT8hf1VnqLifryohDjX8lnw=;
-	b=W5ywuP2DYEHHk+dx1sF/ZhAG1njTF2jHU/YScxve6aIej2H8Q9BNqQF8uQc/P4msxfzszH
-	7k15t1OuEqRx2O3rQm+Lh62cvgQ0Y7V3S7ZL+ytGsRb/ZToC73M1Dg8GrE3cnh08CCMTiL
-	yB+PKvQeLP4O6jLNB2ag05VoB/mIPuU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4NmJHuTnYwRJLDD5IFTn5S7aIbzSeEjEGBUsClZv5Uw=;
+	b=OEZDdvyndn7D1/iBFK25zMwZZ5MU+WUG8XQVEnmWachXrN0un9PRF5B9XeZbseSw2GloDi
+	VRnbguhSr+uFaTSsEMceTKsYYdztGrPjgQGhoF7559iJnMozUQiaC6EJM7Clv8vdhihvwF
+	o6kFm9MdQ6pS7Wc3uU58gC7G5kso51g=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=DQ1m2Cq3;
-	dmarc=pass (policy=none) header.from=tychen.cc;
-	spf=pass (imf22.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.153 as permitted sender) smtp.mailfrom=hi@tychen.cc
+	imf15.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=IwvCtPGS;
+	spf=pass (imf15.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.139 as permitted sender) smtp.mailfrom=hi@tychen.cc;
+	dmarc=pass (policy=none) header.from=tychen.cc
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130702;
-	b=fnRF5ke1t7Tz95nqYatXjvA7GWiwuJUH7nIwlvjm7Zay3RM0TV+nF2BcjYvmN3rbHzdoRc
-	UROc1tQCmOyExtcI+AzR3oFpssUs/htllVRQMQbtESzEeQt3XBvVJsUw70bRrga1zpOKWE
-	U2Sk0gExdikj4xtUZrcHqD2hUwX2VRo=
+	t=1790130705;
+	b=gpGE877L0gWco0XGrHHPuL3OOKEP3cWrhmbAVLO7APCr6znVQFUxQGX3lic6vRfCBV/urV
+	buoLftj9lgzJaC5FfaBSiKdSQXLKfzLk4skhiN93dTFllApeMAxXUooUFaxaxubijnIjBf
+	9Zg5oKvW0nqWNWSBQAIAx/mRwOVLy+M=
 Received: from fedora (unknown [120.199.7.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZJ3fkcz8sYH;
-	Wed, 23 Sep 2026 02:31:36 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZL28X8z8sYF;
+	Wed, 23 Sep 2026 02:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1790130697;
-	bh=atpMB5sAObGBHnnZwrOzoT8hf1VnqLifryohDjX8lnw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DQ1m2Cq3mutHCmf62FSW3M/unrd1lwHkBQARS34Crz9uY49SCD15QOhS9fI975POz
-	 kFUV8asMjEoSR8PU6pJIcBAuXRpW6+B96JcoFVSmZPS2TbwSSK6eZgrTNVFjVnpGMn
-	 15YWHFNgN5s5y5N+xRr55hL75j/kKUrMkGvBYhrnu9WdEM89ixC31s8KmbCsG3tEXQ
-	 U3yW6+nNQEsP5WAOqp8VU+7Wzc3/kkG5EUxiiMB74y75dnbtJySeOAoA9/YaglZstS
-	 wZ6q/Y+dIKQJE3PsrXY7IBAO5/QOiW7jugWLwpkHD233D6C978J81S4H31EIQLyULy
-	 s/jqhLWjiwYtQ==
+	s=spacemail; t=1790130700;
+	bh=4NmJHuTnYwRJLDD5IFTn5S7aIbzSeEjEGBUsClZv5Uw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IwvCtPGSL00D6EVhxp68pIUcsDF5v/TCpS02ROzmyWaN25dgQ/w7fM2ZrfdIOyv3Q
+	 XE/m0L+SQFLr43XtMEAPrOJxawXXeYRa2aNst48Hm4dtwVm6yk67eJqpC/obEFO/kz
+	 qP/PvcvOAgPx2H6lrvK0FaPVSiszRg40gqSyJjOLd20zDBjXPWdpUT+VG1vfeyyr2J
+	 TDG59e/VCES1uW4qtNUyumRAvdMOjjpK2e0L3qcRw2VpbugDhWsLIdU6RV02gRk4Xx
+	 AndLiO9jGTt945vGT7VWgW8i/nI6P6PqLdKNvqJ7MVH6C/7ILnrJN6W+tG+FQ+01ko
+	 pEoYBQNoMcQjA==
 From: Tianyi Chen <hi@tychen.cc>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/4] memblock tests: fix BUILD=32 address conversions and warnings
-Date: Wed, 23 Sep 2026 11:31:22 +0900
-Message-ID: <20260923023126.1910311-1-hi@tychen.cc>
+Subject: [PATCH v2 1/4] memblock tests: use physical addresses for region removal
+Date: Wed, 23 Sep 2026 11:31:23 +0900
+Message-ID: <20260923023126.1910311-2-hi@tychen.cc>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260923023126.1910311-1-hi@tychen.cc>
+References: <20260923023126.1910311-1-hi@tychen.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
 X-Rspam-User: 
-X-Stat-Signature: po9d8u8qqwtmkzd1rifmxrcuwh7rbtpk
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 31157C0004
-X-HE-Tag: 1790130702-96851
-X-HE-Meta: U2FsdGVkX1870M1vPaRPL2bR3LsQa4bGYLKW8rdNV3jwuA3NXBodvpQNZaKrwCWhXe07rFh/6UlY/R4AALpZE2+lW5APmBwb77hcbM3viF072R2/HcL7AUQwKddK42kM9+GXT2A8sw3Y4IYEaswN/+kWsYamNjHOjB+zNbrXHDzaM6PvOjFMENbgM4x8MbyWCBp9faokSRmcA40xLeLWi4+6rUaTki+aj8ofClFzDGT764DfI5XcGFNq85S/KuWZVOHQsL4A4oK/myZS0bsbubMAUktYZPqzoXMekLJu4Ef2Gy2SpIAfAbv7xzmxyljPuLUtMA+EskrPPd2Byba+WZhA9JY6vC3dfOegmLD3dIFuwgbjKt8INHeBodtfy+QJWIm3M7TluCx1+4Zc4ThmE5pjNLbQ0VRE7JN8StZh/r5dJBBxiocDjZOcMVJuScUBQExgVEYoahuBgj0I5+x7ytBj7u36FcGj1kMhXcaKlkIjvfmeNrZmO9CHiaH5sURD+Qh7R5rlWEx2Ejmeuc9njdvZoRKimANxLVJth7y5UgxPlWhe7Qgh4u6swpzV0LY8y8tsT2WhmNWiS4EDTJEUcrGXHy3ACFOmQ722wpyHg7dL60W7Iq/WA7vSk/6MkL4k8Lq9Zb5BXLMEy055C6sTNhY3OyW7BHsPJlOD+vxco6JQCgtODaagsB2e8PkZKAcApKXowcCW06Dqbi3mSe27XvM5FTtqYkhgt37Dt9rl8j4okPHMGvD6yMUwwOP2krFP6UVveJhJsqD9EtCv+CQLo5rjzDvbMN346VibvBmqz3SLGWWU3WRqVz6sBWEcrKKYyj4LcJx4GDiwebEKwN0B07EPo3c8PuSTM/+2Mfm7hRm177v2a8LbvFdjwx16snMYHnz3W4UszqCJn3mG9BF0Zqq83x0gSMevlphQ1hWTCSpDHWfNh50nhIuU/oD2gcV/YdgHB1efu5hktGGpxZI
- 2v9kc9Xj
- dj21JJVLI8Ny2mDtl2j0cGXZ6+Cykn2oCU0mT87Xzws/+2hci+VxTCm8pKaeY7xrINZJWx6grOZGoYFH5vPBidhYLvvqkxYFyijGX5O1e9l35BOoFGSwVTTmegP0/aK/RvKHUasfwErAoPqvmDF/1DzZE0+ZRfbqrfnZlQbJ3DeoXct6+wbOuCDiqAqG4jrTV0lbGHKhPD+9IrKCJ5+m+3mrR04K9GZezMth+MpdRLV6XJad6QAPpCIUC2BAAlladKz6jflz30VRAJHVlUYm85ANlksuJvoVHm2Ha3nkQejigTkBrpSyt1nfBsN1wb2W2XJfRIJhsWOQ8Xv/sFH+UJIeCaMFLFhMVliiU6lr4RJ5ydnNu0zPRIQKjT4waDBJkomGc
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0D653A0006
+X-Stat-Signature: c341r9bdpabiuxmtq8e7k9ctq5ra9tyi
+X-HE-Tag: 1790130704-81417
+X-HE-Meta: U2FsdGVkX1/PLsqYP59xWP7bLhk7J2+mdyHCnndH2Ypo0D5jwRFtEQYJcsciaX0OV/tv18i30IiVliqfjDtC9yMt8YF/Oy8mWec5W1408mFYxRfAaFb2gdbVFA7CcI/w79uP/bhnV6O1/SFzOeEPEixT7qRoezGmq5VvpiBdr2rkykAcgJQZsN54OrpQqPJm+3Z+SGdE+yYT8UDb4upaOlS11HgfxyK5smsS8Z8J3FZXdqvaIjB12j7nGWl6TWfPPGHDf2yYT5CLJLQiNpIqRFWSNE0qJ4DxPj2ZlC1Ascf/bhwn8f4vboBsYDUrMMWobnDaidEOKsOm4MxHunT6mK+PCg4B9AeVP7EelT54xobSIfE4UTg8ZRwUT7Iz9yEgdcyGrnhDLWTuIm6lbRw+VMDiZkS2PrT2MawqdGRLge0EbpsLsaTlyJruEzGL1+2NsvuR5k43qXcw5tjJLdxJSWOgGwUm7CzQuOr+VQK5kyt5GHRa16D5HDq/lelwgiPnDQ2exWOJyq5tpasYsu5aSC9Q/Ad74CrQWiVIvjCRew5FFxXLNcPaPI7O6YPYYO6JsmzjUiqxoCw1OCpf0Qiq7Zf5yG8iRVXlf1gmL7PPnZGqQk7vUE0TqMd/oKkLwz22piKANrgvgrmRbJ/CyEV8pGFsiOoh5NFTr4f/zVMAFGBtMznhVngl22hAApB7OizrZofXr+dGCHGQjzy3zrhc2vNrs0TtwXy1pjvaT/Hs+1kGCPr/JdPbs7pxRpPfSDO9bu94suVAlFAp+euNVDrOyq11RCDd6sYPXI3p7QIpU9GVNoAKMaspnTmML2r88hHX0nU+/UDTBfi1pg5Mx/OXcXOk9HVm+s3hiuw8kv49G8UXkCnfUZAKbgcLhRU4swHzWIKa3P8lkXud8U4FOXB7hf/OTKoWFB4Uj5N4DRHfLkDUGqCQ32k6fBeXWRbP5Qetcnn13vmLRXP3XzCD78Q
+ p0Vc40qm
+ U4+gNLNDYfmYXr2RZDLg6yuejuAH8AYvksWKJCmV7LpO5kf1eOIShGr1TRYKeKtqK2ayZ4tWIh0kpYd2nv2vf41pk5glS96TGil0V8/h8hexC2Ac7spe/9OqbNJ8vCpfL/BSl/CfTeyOeBvMQqC9KpW5VLY8k0Re82bHPGxUZu+4UBjT+y/qPj93u0FJAePshh51Ivrz4tk28gFjS2mFYBC3cyhft7qvHAieMga0Em01J8VUE/wPTyKxu2c4dwAH54Ke0N3RYGfrK29pbU3MVy+WCHguqFTSNq8GneowK1JdLG+IYBjJb8bDJKOaZ3Mm99N0f+JYlo4bw6y/bGyvoEUJ4dhNnXEsG4nUS5TekME6/AV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,49 +92,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix the BUILD=32 physical-address truncation and sign-extension failures,
-and address the remaining GCC warnings reported during review.
+With BUILD=32, phys_addr_t remains 64-bit while pointers are 32-bit.
+Casting the address near PHYS_ADDR_MAX to void * truncates it before
+memblock_free() converts it back with __pa(). The reserved region is
+therefore left unchanged and memblock_free_near_max_check() fails.
 
-Changes in v2:
-- Use memblock_phys_free() for all synthetic physical ranges in the basic
-  API tests, not only the maximum-address check.
-- Keep the dummy-memory address conversion fix unchanged.
-- Use __pa() in tools virt_to_phys() to avoid a pointer-size warning and
-  sign extension of 32-bit pointers with their top bit set.
-- Initialize end_rgn to avoid GCC's maybe-uninitialized warning.
+Use memblock_phys_free() for all synthetic physical ranges in the basic
+API tests. This also removes the integer-to-pointer cast warnings from
+the other removal checks. Retain the checks that freeing past
+PHYS_ADDR_MAX clips the removed region.
 
-Clang BUILD=32 without NUMA also passes on v1 (189 checks). The earlier
-cover letter only mentioned the NUMA-enabled configuration tested then.
-
-Validated v2 with GCC 13.3.0 and Clang 18.1.3, retaining the default ASan
-and UBSan flags and adding -Werror. Both compilers build without warnings
-and pass ./main -v and ./main -m -v in each configuration:
-- Default and NUMA=1.
-- BUILD=32, with and without NUMA=1.
-- 32BIT_PHYS_ADDR_T=1, with and without NUMA=1.
-- BUILD=32 NUMA=1 MEMBLOCK_DEBUG=1.
-
-Each run passes 189 checks without NUMA or 272 with NUMA, including both
-allocation directions. A separate virt_to_phys() boundary check passes
-with both compilers in 32- and 64-bit builds; GCC BUILD=32 failed it on
-v1 for 0x80000000 due to sign extension.
-
-v1: https://lore.kernel.org/r/20260916161105.2548281-1-hi@tychen.cc
-
-Tianyi Chen (4):
-  memblock tests: use physical addresses for region removal
-  memblock tests: zero-extend simulated memory addresses
-  tools: use __pa() in virt_to_phys()
-  memblock: initialize the region merge end index
-
- mm/memblock.c                            |  2 +-
- tools/include/linux/mm.h                 |  2 +-
+Fixes: 21a233f68afe ("memblock tests: add additional tests for basic api and memblock_alloc")
+Assisted-by: LLM
+Signed-off-by: Tianyi Chen <hi@tychen.cc>
+---
  tools/testing/memblock/tests/basic_api.c | 20 ++++++++++----------
- tools/testing/memblock/tests/common.c    |  6 +++---
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-
-base-commit: 5728d3523f12826a2b180c1c5738f74e33197e14
+diff --git a/tools/testing/memblock/tests/basic_api.c b/tools/testing/memblock/tests/basic_api.c
+index 01e836fba488..47bcdcc115a5 100644
+--- a/tools/testing/memblock/tests/basic_api.c
++++ b/tools/testing/memblock/tests/basic_api.c
+@@ -1730,7 +1730,7 @@ static int memblock_free_simple_check(void)
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+ 	memblock_reserve(r2.base, r2.size);
+-	memblock_free((void *)r1.base, r1.size);
++	memblock_phys_free(r1.base, r1.size);
+ 
+ 	ASSERT_EQ(rgn->base, r2.base);
+ 	ASSERT_EQ(rgn->size, r2.size);
+@@ -1778,7 +1778,7 @@ static int memblock_free_absent_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r2.base, r2.size);
++	memblock_phys_free(r2.base, r2.size);
+ 
+ 	ASSERT_EQ(rgn->base, r1.base);
+ 	ASSERT_EQ(rgn->size, r1.size);
+@@ -1832,7 +1832,7 @@ static int memblock_free_overlap_top_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r2.base, r2.size);
++	memblock_phys_free(r2.base, r2.size);
+ 
+ 	ASSERT_EQ(rgn->base, r2.base + r2.size);
+ 	ASSERT_EQ(rgn->size, total_size);
+@@ -1881,7 +1881,7 @@ static int memblock_free_overlap_bottom_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r2.base, r2.size);
++	memblock_phys_free(r2.base, r2.size);
+ 
+ 	ASSERT_EQ(rgn->base, r1.base);
+ 	ASSERT_EQ(rgn->size, total_size);
+@@ -1938,7 +1938,7 @@ static int memblock_free_within_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r2.base, r2.size);
++	memblock_phys_free(r2.base, r2.size);
+ 
+ 	ASSERT_EQ(rgn1->base, r1.base);
+ 	ASSERT_EQ(rgn1->size, r1_size);
+@@ -1976,7 +1976,7 @@ static int memblock_free_only_region_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r1.base, r1.size);
++	memblock_phys_free(r1.base, r1.size);
+ 
+ 	ASSERT_EQ(rgn->base, 0);
+ 	ASSERT_EQ(rgn->size, 0);
+@@ -2003,7 +2003,7 @@ static int memblock_free_only_region_check(void)
+  * Expect the total size of reserved memory to be updated and the counter to
+  * not be updated.
+  */
+-static int memblock_free_near_max_check(void)
++static int memblock_phys_free_near_max_check(void)
+ {
+ 	struct memblock_region *rgn;
+ 	phys_addr_t total_size;
+@@ -2026,7 +2026,7 @@ static int memblock_free_near_max_check(void)
+ 
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+-	memblock_free((void *)r2.base, r2.size);
++	memblock_phys_free(r2.base, r2.size);
+ 
+ 	ASSERT_EQ(rgn->base, r1.base);
+ 	ASSERT_EQ(rgn->size, total_size);
+@@ -2086,7 +2086,7 @@ static int memblock_free_overlap_two_check(void)
+ 	reset_memblock_regions();
+ 	memblock_reserve(r1.base, r1.size);
+ 	memblock_reserve(r2.base, r2.size);
+-	memblock_free((void *)r3.base, r3.size);
++	memblock_phys_free(r3.base, r3.size);
+ 
+ 	ASSERT_EQ(rgn1->base, r1.base);
+ 	ASSERT_EQ(rgn1->size, new_r1_size);
+@@ -2114,7 +2114,7 @@ static int memblock_free_checks(void)
+ 	memblock_free_overlap_bottom_check();
+ 	memblock_free_within_check();
+ 	memblock_free_only_region_check();
+-	memblock_free_near_max_check();
++	memblock_phys_free_near_max_check();
+ 	memblock_free_overlap_two_check();
+ 
+ 	prefix_pop();
 -- 
 2.55.0
 
