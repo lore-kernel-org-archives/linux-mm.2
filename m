@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79519C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:35:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A68DC98309
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:40:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 494816B0093; Wed, 23 Sep 2026 06:35:54 -0400 (EDT)
+	id 1B7FA6B008A; Wed, 23 Sep 2026 06:40:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C056B0095; Wed, 23 Sep 2026 06:35:54 -0400 (EDT)
+	id 1903A6B008C; Wed, 23 Sep 2026 06:40:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A7E66B0096; Wed, 23 Sep 2026 06:35:54 -0400 (EDT)
+	id 07DE36B0092; Wed, 23 Sep 2026 06:40:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D76C6B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:35:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB5C9160785
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:35:53 +0000 (UTC)
-X-FDA: 85244671386.05.BFC635C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D10666B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:40:45 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 510D640744
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:40:45 +0000 (UTC)
+X-FDA: 85244683650.26.FCC18B6
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AF3A4120005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:35:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ewmaVXkx;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9F8CD180002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:40:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Hd5V7b2l;
+	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790159752;
+	s=arc-20220608; t=1790160043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gLOUNMxbH4leB6t2EuFHXMPMUGDuNnfudM9PRhQyXZg=;
-	b=4UlI67vonAO8p/tHXzL+9RSD8C161DWtmlisaxfz1aPxLwrZk9ctf0sxtOyhwTYuDzi2nJ
-	E+IHaaV4MLJpxZJY+vL7TDXE6kErIzw3yJDOIazKvf/hIYF3znB0iry52s4ZNuIzbY/yqj
-	UoS+ZkNVppupo1kisybNJbFkxAMJ4Wc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790159752;
-	b=beMo9hLTklFD0x++5T/cZMsedCw5egvn3vhr/3eNGScZSl/NTvoEtbLjOGO3S3rWSHTiJN
-	cjBus8+8ZqjzNoW6dJN8CmJYxsUX0h9XplOtwHnmgr2rVonAGj4lhC427jBbTg6O2oPg2c
-	qSJnC1YbY4KFzEWCBe4i8ZJrXs5OLbk=
+	bh=uQ5JYntVPCplUTY3sEfB1TwWkLv13hCX8Prz1WJTkWY=;
+	b=3oYXc0bHgfOXtPFhrbdRj1lXgYwK6RJ3apuDGxu7QTQSiBcO6oXvSsIGkZumour95cZPSw
+	rQiI7d96Qt95Kk062SeXkGy+xpVTsoLec0PlWGSPCv5lGpPuXt6FddkPauInvxNSYKdrva
+	9Ds4fZJvOecfuLx2EgsHrMu0tsjHUDs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=ewmaVXkx;
-	spf=pass (imf29.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Hd5V7b2l;
+	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790160043;
+	b=6aE+qkJ3chZ3T5rPbRrI/9G39Ts0DRCnU/47pJ9cmdTb6L6Ayy8l0rIhb7OJoO80KTv9jE
+	4MQMP5kXmuelGkcdUqNYdtgzMjegzWVqIuYY/3RgWqwSMZ4374EgatPJpX/Tk1KYS+2ddX
+	Hc84KVq6fgASn581hHFnNBt4jzpbjS0=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 451161570;
-	Wed, 23 Sep 2026 03:35:47 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 074E7143D;
+	Wed, 23 Sep 2026 03:40:39 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B5ABC3F86C;
-	Wed, 23 Sep 2026 03:35:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 789533F86C;
+	Wed, 23 Sep 2026 03:40:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790159750; bh=v9G6lJSh6OMVo7mppK0Hk+jifrbC6I47Gu6icD1n1fw=;
+	t=1790160042; bh=M87HFnkQVfHN19+6QwqoNSTVdvNLwPr786eNk6QJp9k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ewmaVXkxLy98D6T0jp9a151FmO0Op77gHcimtZp1SgvTUTUKuJQ5luNggprLpjZMg
-	 JZOuDeYoO+3y/I6Omc7mGGCSkjuReFAYGypqx14TBycfBylH51cJ9b2S2q0oi4rNBO
-	 xrDH/ShQcUVeiWgWolvO3OpJNpP1DHa8nrUOGvJA=
-Date: Wed, 23 Sep 2026 11:35:45 +0100
+	b=Hd5V7b2lJCRJq/Ms8s/d8tR11f/qhMBk7Oe4j58RXcp6qt6aQwikHkHXDqQsG6y9I
+	 WrsMl87aoacM9e9KjV+HavYIIvBZEd/CGC6r/SsKz0KRi08xCTqHV7X/fKTG0AIXAW
+	 zPWUJE30Iut++MHgK+DBrex+Gg1pDcKlkP4p7uMQ=
+Date: Wed, 23 Sep 2026 11:40:36 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
 Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
@@ -76,23 +76,26 @@ Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
 	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
 	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 06/13] dma-contiguous: Accept an explicit minimum
- alignment
-Message-ID: <arOrgRfi1k12clT7@arm.com>
+Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+Message-ID: <arOspFxWZ1DjgcAr@arm.com>
 References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-7-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org>
+ <arKsFofudnTYpXj1@arm.com>
+ <yq5aik3w344o.fsf@kernel.org>
+ <arOfD6syXOgQhZYA@arm.com>
+ <yq5a5wzw2ree.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260921144847.501151-7-aneesh.kumar@kernel.org>
+In-Reply-To: <yq5a5wzw2ree.fsf@kernel.org>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9F8CD180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF3A4120005
-X-Stat-Signature: qrphzbfaiumh4bh5qhj18xf4511ojcth
-X-HE-Tag: 1790159751-928814
-X-HE-Meta: U2FsdGVkX1/eFyfNyixcie7WK+QZCkrYW3plObJZffYYVtYuf1i1Qdq/OkNaFIf9pbnAYXQN+uBJ/32yBrPVxihWjOG7qb1BjTMWD3PsrySh43iZUoFeyoUZBdvZFmnsgLmk8TS+1MZW/ZtV9ymOAy0h2/5n8pGHbWLbBpxwNu+qnEEPfogGow8mQRXvjMkRNxGpvWjxImGGIBkEGOKd110TRDoOQCHdz+rYGkzgIzD22z+U3s5bDdIwMIqHfT1+OqbspYbrGTo+UkoQyDuqJqn67kWCutE+5otv7C14R2JKwVM2gVVJuRZkSNFMOIZ4kzvWd7kZmdke0tVNwOjm2fTSzJFYfpIPb0oxYxRVSOEGoPwfHC8DcjFHrBbVyi9QAju7mQfqxfwi8ZiN86m70tcbPzjnHVTZZJSE54QfZCvOrsIyBkLHklEyKnODkefFwK3+ScJNzl3+DSou3xwLFsRBHoaOe+X2uPjzYKBI/hZiH5TvbVmHjxGXIgTPkEy2hrhv9pJA6uEeefY5F91QO1DJ/YcJi0l+QwGmgbjMhhFDjQURXUvKVOnOPsfC1vWT9mYJj0nFT/bx1BwMOhAFL58sP5uGrrNVOBbaOQCNyUjMghM5qDWndvJdVYxNj+KagniS+CEVBVa5rX+JprS7OQRtGh/UzYy19cCZTh3qGHyT7J3mLidn7DE4f5Jp2sKUQeCdNYpjlwG4AVsoR7o0tmeI+fhgbLHacXLxhWpOnr6W3KQ9HOwq7UTsdgQrrYEXOU/FTi6q1wyEHrfqZ6iBk5PS/n3XH0OhZcBEFTiqu0ORb305KoLcyoZqo3HNEwwt3TrIiSimY9y49qChGrC/fo6VYt5A4inh1hU7XkXPbovJZ6J80cCx5jVYqXGU/dG5W97eY/bMZTm0ZYbNvkDP5AsLpXSMxkytoQOEM40FLeS8rs+KjnSoA/S2LytVBavHBW0v+TZ2ufVgNrQZHQe
- nkvsfADf
- SVUjGTmiigPwV8vRJOsbw3XlEtA+c7v6wpW6DKyjLROOZIi5+h1sW//Cjmj4pAvHRhn9ABGN5UkBWCD86Y1FB9PlVLGawaQxNkILgxQSBqe+Bz+TFLvjeWDmPBZTB1hv8lwMaNpQTTIWTW/LFc1vwxTc6iYf0JMQ9GOJoubSa0IzVA/RQ06ff7qiIoxCI2l7yh+5+EevGhTrBSdwRx5upQTkj6O9atr19Lz4dcHpxYQncluo=
+X-Stat-Signature: m9hzmygyapph64yhp1oiyemt1a8nt45j
+X-HE-Tag: 1790160043-322699
+X-HE-Meta: U2FsdGVkX18Pr37d1jP8lEWBMemEp+dKou5QRvYUmIlQG9aO63AhORgGiB5aUuPnKe43hWhV9fx/UDkEoUx9tZmilqCPqX94I5P+Yh5HMnrbBbrcL7UR9jM1ODwTMab4jfsm0HQ6l6E8+6lC0Thd7Dulp2WrlNPTX5TaGV5fvnHrbVXhska27H3iv/dCSJvYGAzizo60+N5I892HBnmK2xja5etxRtEuzvZOkgfcZaMPDTh4yWf7g0tWqYvcuc7ePnzRfHq0J5VoP9451QCMZSY434Xpp+QnNSeen60iVKlawKEXt0uEH86hiLYRgYILFyjzPFKOdMpd7D5W6eY5n0v8w9k31NJulHFlxqCOH/Wugza2GerGZ/gV9ITXMPX8VKJSaNVa6aQIIB7mvorCNKe3tys/Hoeb6HhvMf6d0BlCCHxARCPIuohwiQcAXVE6399mM/FTnoNwa5rtWmfoXj4xUdl3sIb6QuxOn1vsMsTmrKMJaH1RQO8cY+subsU4XU2FsJ1CnPnsUEP3wsc8ecKyyQQAxGhLNnIrJc5u+qIqOJlBWFLUzOd3UZ3bOdrk0V6PEXG4f4IA1GI1QjAQBTFF9IJzma1vzorsBF/Jg+B9xeIVlv+BBPQvy+VHXT2WguKxszOO+PBOd/djMOuMVIpPc8ta8l1oVSTzRfCVvWrsHbLTR4EXwazKFaR05bX4S2O46HCkd/AO82wTksN8E457CSNJXewfiSKoBmNYnBopUSqemeUbOLPK2pNbPM7OFIaIkyyfUPwhrY+tO5cxoC5Tn9wwDLQfPIVeMZyeqOsqueoN14dlamDR549MAXdeGT7JCeCN8aVI2rIkwHX7Vw1Ef8NH9141fOzESAOg3WOgADgsCi5O1nUhSQtkLplAZe5fNQKRPq0i+P0W3pO17blXbyZTYZ7Xy2dOQ+IHJ75IJbWcM7C2yVXKJN7li7VBu8k3qyl9q1OaWsTPDz6
+ w/EFkPsi
+ ZM/lyRNYUSM+7O7WZGZCmRN0iORbn/feWTH0afgYB+F7rlmllS+yhJZYGuwZM2j65EKzXq1vWKOAfbTD9aIIvPPd/pIrpPoUwa1MdL96RmAtoZTOLM9JSWoVxWmdUJtBTMmmB0PXVNOKTEFI18w0AIrCoc+9TVKfxOxI2tKWmwGo1vzRdeBqHW7ok3XONS6QrAA+fTBadIQ/yVqjtC9ytkjMWBc3R18v4NZBo+ghcf/O6R1f4A1JhYNiN2XNuNw89KRZCZffMNzztFOerqyKt9K+PI7cbIw4RWEX9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,26 +103,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 08:18:40PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> @@ -125,7 +126,8 @@ static inline int dma_contiguous_reserve_area(phys_addr_t size,
->  	return -ENOSYS;
->  }
->  static inline struct page *dma_alloc_from_contiguous(struct device *dev,
-> -		size_t count, unsigned int order, bool no_warn)
-> +		size_t count, unsigned int order, unsigned int required_order,
-> +		bool no_warn)
->  {
->  	return NULL;
->  }
-> @@ -136,7 +138,7 @@ static inline bool dma_release_from_contiguous(struct device *dev,
->  }
->  /* Use fallback alloc() and free() when CONFIG_DMA_CMA=n */
->  static inline struct page *dma_alloc_contiguous(struct device *dev, size_t size,
-> -		gfp_t gfp)
-> +		gfp_t gfp, unsigned int align_order)
+On Wed, Sep 23, 2026 at 03:58:25PM +0530, Aneesh Kumar K.V wrote:
+> Catalin Marinas <catalin.marinas@arm.com> writes:
+> > On Wed, Sep 23, 2026 at 11:23:27AM +0530, Aneesh Kumar K.V wrote:
+> >> Catalin Marinas <catalin.marinas@arm.com> writes:
+> >> > On Mon, Sep 21, 2026 at 08:18:36PM +0530, Aneesh Kumar K.V (Arm) wrote:
+> >> >> +int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+> >> >> +		size_t requested, struct cc_shared_pages *mem)
+> >> >> +{
+> >> >> +	struct cc_shared_layout layout;
+> >> >> +	struct page *page;
+> >> >> +	unsigned int order;
+> >> >> +	bool zero = gfp & __GFP_ZERO;
+> >> >> +	int ret;
+> >> >> +
+> >> >> +	if (!mem)
+> >> >> +		return -EINVAL;
+> >> >> +
+> >> >> +	ret = cc_shared_calc_layout(requested, &layout);
+> >> >> +	if (ret)
+> >> >> +		return ret;
+> >> >> +
+> >> >> +	order = get_order(layout.shared_size);
+> >> >> +	if (order > MAX_PAGE_ORDER)
+> >> >> +		return -EINVAL;
+> >> >> +
+> >> >> +	/*
+> >> >> +	 * State transitions require a linear-map address and may modify memory.
+> >> >> +	 * Allocate from low memory and defer requested zeroing until afterwards.
+> >> >> +	 */
+> >> >> +	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
+> >> >> +	if (nid == NUMA_NO_NODE)
+> >> >> +		page = alloc_pages(gfp, order);
+> >> >> +	else
+> >> >> +		page = alloc_pages_node(nid, gfp, order);
+> >> >> +	if (!page)
+> >> >> +		return -ENOMEM;
+> >> >> +
+> >> >> +	ret = cc_make_shared(page_address(page), layout.shared_size);
+> >> >> +	if (ret) {
+> >> >> +		if (!cc_make_private(page_address(page), layout.shared_size))
+> >> >> +			__free_pages(page, order);
+> >> >> +		else
+> >> >> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
+> >> >> +					    layout.shared_size);
+> >> >> +		return ret;
+> >> >> +	}
+> >> >> +
+> >> >> +	if (zero)
+> >> >> +		memset(page_address(page), 0, layout.shared_size);
+> >> >
+> >> > Does the memset() post sharing logic work for pKVM as well? If nothing
+> >> > clears it, we have a small window where guest data is leaked to the
+> >> > host.
+> >> >
+> >> > Is there a case where we *do not* need the memory cleared? If not, maybe
+> >> > we can move the logic in the arch set_memory_decrypted().
+> >> >
+> >> 
+> >> I don't think every architecture or platform can unconditionally zero
+> >> memory in set_memory_decrypted(). Some callers may need to share valid
+> >> contents with the host.
+> >
+> > Is there any? That would be a bad assumptions in the caller. Most
+> > set_memory_* backends don't preserve the content as they change the
+> > encryption key. So properly written code shouldn't rely on this unless
+> > it knows specifically it's only running on pKVM for example. The only
+> > use-case I see to avoid explicit zeroing is when the caller doesn't care
+> > about the page initialisation and wants to save some cycles. The
+> > encryption key change would take care of the security aspect.
+> >
+> 
+> I checked this, and you are right. We cannot expect the contents to
+> remain valid across sharing; set_memory_decrypted() is destructive in
+> that sense. Since pKVM does not rely on memory encryption, it needs to
+> zero the memory unconditionally in set_memory_decrypted() to avoid
+> exposing existing guest data. Other CoCo implementations may omit the
+> memset(0). We still need to zero the memory when the caller requests
+> __GFP_ZERO, where the memory location is expected to be zero.
+> 
+> We could either zero the memory unconditionally or pass a flag to allow
+> this micro-optimization. We would also need to audit all call paths to
+> avoid redundant zeroing after set_memory_decrypted(). Let me know if you
+> have a preference for either approach.
 
-Can we not just bake the alignment further down in these functions
-rather than getting the callers to pass the {required,align}_order?
+The simplest is probably to always zero in the backend and ignore
+__GFP_ZERO to the allocator. But it's probably only marginally smaller
+than passing a CC_SHARED_ZERO flag down. Get codex to try this as well
+and compare the diffstat.
+
+There's an argument for the flag approach from a performance perspective
+(avoid zeroing unnecessarily) but not sure how much it matters in
+practice.
 
 -- 
 Catalin
