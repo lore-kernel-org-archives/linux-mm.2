@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D74C9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 22:56:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60A6C98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:01:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E3F36B0096; Wed, 23 Sep 2026 18:55:54 -0400 (EDT)
+	id E9A646B0088; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 195526B009F; Wed, 23 Sep 2026 18:55:54 -0400 (EDT)
+	id E4B606B008A; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AB1D6B00A0; Wed, 23 Sep 2026 18:55:54 -0400 (EDT)
+	id D60886B008C; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DAE106B0096
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:55:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6CA2BC018A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:55:53 +0000 (UTC)
-X-FDA: 85246536186.11.C3C13B4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BBD0C1C0003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:55:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsCpPBhU;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B42D36B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:01:56 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42B1416019D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:01:56 +0000 (UTC)
+X-FDA: 85246551432.12.0224C23
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ACDDD40014
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:01:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLUEIV05;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790204151;
+	s=arc-20220608; t=1790204514;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y/8cCai3+gMWO6LIo701U/Zh4RgUpa9pwpp5h99P4sw=;
-	b=5W2OQdeXe3JoBQXAAfdrbovDl0ZdyHXld9uHjjDkS56sZdD4WFyUPGiPd02KaCOTRFPA/i
-	23lD7GKZl7TNbqB/kg1CukRQpUggWgQfbm+dXy0XKK1aJzsoQayGWN9eJqr8fNWrqLPBtX
-	71cvsueMl4j/oN68MvZVnSet74IbAk0=
+	bh=mAVq8riAYpkFQqE3vtYLztepdMXLNV8rYLOj0yWRQXo=;
+	b=UFZ1KfsNKisKEqM1PSsvu+H8UIbGv0BocoMOYnXoVxfij1tUQjezz+z+dVXD7bslAMkMlF
+	Fs49k7q9bSpmxB6OHZK7wJD+jPUM6mFMXUUFaK/ib3cdzsikN25U1nRqa+zEdsLt9o83vL
+	0ocugReuYF2S+Xb6MjRezeLDtpzvrv0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CsCpPBhU;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NLUEIV05;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790204151;
-	b=C0Xe/n/RCjNfvK9hsZcMCCz5jLHETrDHbZHYT7W7+7yzu+2/v68La2ZiL1Pv7GRJbGU3dz
-	+M4ybZJNST1BjhIUB4Q29p3vx+TtFt2K4mMMUQgBL/0n1QNnrMgwPeasMlCdfO7PeZ3mT/
-	Na3l9aVhMv87s6i2OXBe7ncJc7b0qn0=
+	t=1790204514;
+	b=cmVP2HPLqjpTPsqcihaZkQaeaOOo8XjUhuCUcc45MJIGSVRhyaZEuFdNM8gcCgjNTYFOVp
+	ZcnmcfXlkjCI15afU/zzZssCOPlmzLN2K+toJjUx2xoVkPBBsL1gMt7qA4sdjyVkLM9UI3
+	AP1c71dD7fbPL8xXQHLjBzsM5ozJB1E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05FF341A08;
-	Wed, 23 Sep 2026 22:55:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AC21F00898;
-	Wed, 23 Sep 2026 22:55:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8672060008;
+	Wed, 23 Sep 2026 23:01:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8160E1F000FF;
+	Wed, 23 Sep 2026 23:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790204150;
-	bh=Y/8cCai3+gMWO6LIo701U/Zh4RgUpa9pwpp5h99P4sw=;
+	s=k20260515; t=1790204513;
+	bh=mAVq8riAYpkFQqE3vtYLztepdMXLNV8rYLOj0yWRQXo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CsCpPBhUck5u9x5fqVL0K/bW6iAUQ97QJJMFy1hh6nDVhkPc77hjwuwNSu3o3/98A
-	 fgk6cddigQYs+obUykSIkWJeH3tjG6j7cJmd6aLY3VpU9bH/XAQVff/t/3Pk8gwxAL
-	 KD1ck/Yubn1NJCbxKm6s8RcwpyW8yn8/21uwh0wXi38NgncvXpKgOB6U2Ng1lGbnSE
-	 Mye7fHN/UA/h1vLqlt0v3wJr+17DZC8pRp3WSsIPERTefWpHHIf0EqvAQugfGEbRgH
-	 3MxDk4HzIMoRUK3eRXuLqtbIIRVHpFEqYbxoK2kQWMoqvW6M6r+gZfmmPzG+DyBSmz
-	 WEAzPHfNEjGZw==
+	b=NLUEIV05TiKc0C/byycgiDauYslTGWVbc+nJ1MUD9VUnqU25rGdqejVNIqBf3pKFJ
+	 5vpamPJuuFs302pY7sKIbWnzJH32VnHKvul5fJk3jKvVr7Tc+RFWXj9/iGc6IbDVjl
+	 jCkFhVX+S5jF61sHSBBZOd0TuT3bqST8wCP0BMs9ud2VQgDsc4+ALG3BZb2tvRbwc8
+	 rD9T9C5cZmKTsNXBA80mNGwvnvY3UmL55JJqvuEJmNzO1rvzvBkuoryvD8WVHSieJo
+	 2LInadbEVFU7SMGahlhm0imyS859rWt1Y/OvYWDYXJH3pd+0RiHs+LPs5X/QFonpeZ
+	 Ws1Um62uUwtBg==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH 1/6] liveupdate: luo_file: look up outgoing tokens
- by id
+Subject: Re: [RFC PATCH 3/6] fs/namespace: Add vfs_open_detached_mount()
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Samiullah
- Khawaja" <skhawaja@google.com>, "Pratyush Yadav" <pratyush@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Alexander Graf" <graf@amazon.com>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Mike Rapoport" <rppt@kernel.org>, "David
- Matlack" <dmatlack@google.com>, "Hugh Dickins" <hughd@google.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
-In-Reply-To: <20260923224408.3745689-2-pratyush@kernel.org>
+To: "Andrew Morton" <akpm@linux-foundation.org>, "Samiullah Khawaja" <skhawaja@google.com>, "Alexander
+ Graf" <graf@amazon.com>, "Mike Rapoport" <rppt@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Hugh Dickins" <hughd@google.com>, "David
+ Matlack" <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260923224408.3745689-4-pratyush@kernel.org>
 References: <20260923224408.3745689-1-pratyush@kernel.org>
- <20260923224408.3745689-2-pratyush@kernel.org>
+ <20260923224408.3745689-4-pratyush@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 22:55:49 +0000
-Message-Id: <20260923225550.32AC21F00898@smtp.kernel.org>
-X-Rspamd-Queue-Id: BBD0C1C0003
+Date: Wed, 23 Sep 2026 23:01:52 +0000
+Message-Id: <20260923230152.8160E1F000FF@smtp.kernel.org>
+X-Rspamd-Queue-Id: ACDDD40014
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: ks1s3uwjkqx45trm1khxqdmwwsh7rb98
-X-HE-Tag: 1790204151-376428
-X-HE-Meta: U2FsdGVkX19AyyOjYu1ncgSP/g00MCUlF6Hn42zmUGdEo3owI89QD0uEaSiR0Cwnty/SFVRxF4Ee69Saw9nPl+3coKtRUHv5XhCoHfXKzUkeDseGxrEB6hrlJH0ziPVGojOn1o+CRgsr/k7eSC7IRB1n45JI7/Bh3m8qJjOl9TyQQ9r/VTe4dFnP4yR2MswlIwH5ac/c0JdAzCcBZPM77eoFAgwubvle6HNRGdZPBk2KWsYyg/4psQhyJ5UoZNsjQhmIBNqQp21dt/BGhEUJ5XfyiHCBt6uDDdZxFi3mwUud/dpfvgS3YRU7c7rAnigwyR0WRELZ2FEpsY+fwBFWvbqzLLYnbf3jiPlIp7cs2EwY3wMCQjjx/ldHptFsgm1Gfb6EvH6jXZbB5MfITgVNbEbSUqbvkgAcsUD0QAVMnhaNQifakyGNOhLoJXswFncwXzC372YnOEmytFWBOkafyZ3ZmAlLvJ1JfLGT58i6VGg7Ot17sdSGQgJuek2niJKSCM4JaWEBduwylRcKdDOnyZ6bSwj3H/rDISSGRsQ8JDnNb9OOFC6VaHGw9sDB2xDRCZkpUd1sCy+xmjotIoMBanBS/8CUiJCfkRXE2R4lR0iUhxqymYMsMdSIadkRPR5DfG6CaQt5sdFvbjSHBj/WJT3Aug7Irh7tShtH7eWzp3tyVu0dIzx9ZaSeYl4NRwoDIkxAhPfy7+BQ/YIq0Ds1LK3LUgHe9efWoVTTyVfm304M+dLorfwukIUyYc8839ugpY7Z5c+mxb+C74fEE3VP5ElhG9ESGSWuTf7+VPct1wBOEiu+YMWCa9lMyO+WofQbQsvt3lTQFf9rUt2PcaVJXXVN3Q4pVPwOhupR5VdxGAAODu3IknSGOA3ZVWkrl8p5W+XdskhQcuWSsXOk7u7yjHEIFhk9B45G84KT+c25GpXVSttJmAYH5/N1O0CAvjsBGvCn0Kz7NWUFxQG7+ZM
- 9c+rQjdN
- f0jqn2eCVuMCn7Uf9rAnNItp2+2PrsvA33YCXqppBopF4jTWhCaxOKd0KwyjmLJceNB5xBFxQPAEX4t+2aqGhktZLDvd3n04G+9HGXwbW7b14XgjcEZhqJUO1blFMcaspnCfTmf6rJg2uvqG1TgkQLZBJXzppBheNNuTwP0Y8qxpP512uHmAnW2udO+bd5vJ9X0FsoSZ8YOet/LkjUVwb7HDHUHU6MZqOKDGP7B3x9pqKl1eg/Y0W0Qllse9vD4fBGrqIXxPK4NwPYZ0nVQwN9dg3IRxBv3px3UhI5srGqp394wYvzZare1Ix8CcfwhlBLp3EzLXp5z0zO8USp62jN2fmORLOGq1cxd9qpxFEYrebuJgsfxvRE7fWWGaoI2Rpi3ptnxCY3BXGrSiiIU9J61JGZi3DfMK95gnZeYeEurD+6TbDDmImnfGyosB/9DnBztI6SvR4G4nJFFe9NiG9CZ4/Fc2/xHB1navbEPVM2Ijsv8g1+OVQinXmHgXfCHK84sZsO72EdCUgCvv/d9+KqbQAadhRsz4UAfEKNRYaFVVPb4k8gckMJnzwzGLJT3VMGoP6VEd7umuXgYNzhmAtf5kmziHh+FK8yjN6terngODzNZvtWu9atklrod4I3mK0xrh6dY43IB330/Q=
+X-Stat-Signature: s9831u7ujoy8murcjx4arhj1qonixkd5
+X-HE-Tag: 1790204514-853424
+X-HE-Meta: U2FsdGVkX1/kQTxoG4VQrsPR/kRI2lYiOC9shkmNImzA3n3G2tp5lLlNsZYJpyk/PYkrgMv3VeyLRTE50UaNZ9UlIsK/O8P+TH+jU08OrI/qaSVWIRA/tD4LmdwdJRqIVdeKy3VqZ+ZE9RWsTZ5mzD5tu/8GMAZWQ5y/WD97vyNZiK5sQuVm3K79wBVuPwxlXHmWsZrjj8bW8PgA07ax+kp1cLD+vi8Kx1KHa8h1jgRv4P8LOxP3Q2190p77Qp1s8pBo+HjalvI1hPZ1Q/VaAZmk8mqx4K43NxiahU+Lczj6UV7tFqBdl/SnWfGPxozSGaOeFqDXO7nB1UvrspPYUqYxMmhCSVSs6WrlsKy7DROq6eFrBXJI3LJZJy+hngXjqwQPnufYDY+pe+WeozrZXKXDXm/2tkjqyUgCuGrspcqQfkT/KUMEhLI53w5yoVfKe1bAE1fml+DNC8ix8h2XL9DaqouWBQ1FtVY6e+xXbFQO7ixXJYzccrE/ZGGOHM9C+E6Ti9oez2arwsrE6FGBQ2GTjW5yFY1rVCyxavZDgRFee/YPes0Q+ic8LrzARvlTDsiRSKS0BAwoBBvwdKYJkyN5tU7pHWJSVppPnQLodvQ4oZkePf2oVbm4Lx5iOBg9NQce6icbZl5rFRetDaXu1TDKgT50n0YdqwYxDSE7Ffp3ZTKINULldfEV4qHiVDF5qkl4l+G2NM0qAWaRjvKp4TR7pG6+GGzq6SEIhHgN5Z+tvVWlKiHpSVu0FUd0JJCMKvv3WtKSYzzis4z6h/UQXRycGguEo3RsIa4mimuOlWa0I2cV3P4AK3m8AH/vCWvcZAEHKkr0QPKtyd5LxWpyV01vBYa+VFBG5dluaFV/Em+Q4Ns8Go/sP0oj1COzjZgfZhfcv+XBIEMzXkLmIqSly97A/qsXyg1u+iw9G/MGi15aTxnF2BHLYWYzHMjM4/b6+KVVdBgLTqRIlXAtE6E
+ iULF0vz0
+ nSqAkF8ns1NEalFNv27YRcitvoIYLFgDryq0Vmuo6+QsbD0XF3FNZk7H78QuRY6nUAmWV/tnCjBzaU/1jBM74ZvKk2h0GPP2yWErwIPZY5n+MkReFrR0Rjax6WZuQMSJyd2qvJNeJL1l4+8ms3wX8/aWXtVIhnOlMeRs+wKpqBgT5eu2qPZJiAV+SsEH6fDJktO+MLUEwWdRbeGRD5JDG/zbRTj/fbMzL0XfSZAyvOCM/jJZTwftA1FZTZiC4mwmfXBl4dihGf3Xb85zCB7D3cwoXzaAuMi3w5lgq6OowIMzs71clb3rP4omNmlbWefRkXnvnFGSzC3KuGaGRHJW3NN/xpjaFNCgqV2BydCJXAMhroHT/uEO37HuH/iMsQ2quwaCNkkrlacultJd2TmUQLuwHcv45OqkxLAOrYcRBQPxVEr9DMKe1vOiWE0M6fj4duCC1kt4H5J0AFXDpuj77cKM3pNtZJg7Cka0tDAh5SsafGrVuHxJxdxDj0sjDHByucUM/+bkNYAWjRu7IchQXVFWJHBTgFepmug1hZiBYR5md5xU7ETiQlsyX2pickRpr8ZDb39hY10gQEJ6AQMSQ97qVKDEoES0MV22onCwfkRHgQm3xh2qzc7ung1UrViKASmo24r2XGHU6keM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,99 +95,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] liveupdate: NULL pointer dereference in liveupdate_get_token_outgo=
-ing() on incoming sessions
-- [Medium] liveupdate: flat ID namespace in liveupdate_get_token_outgoing()=
- risks cross-handler collisions
-- [Low] liveupdate: O(N) indirect function calls in liveupdate_get_token_ou=
-tgoing() list traversal
+- [Medium] fs: mount reference leak in vfs_open_detached_mount() error path
 --
 
-commit 17b042e4901cfc25a86dec1038092fbe1eb5d060
+commit 7bbd41a97d183f30490f0856f394037fd1846a6f
 Author: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-liveupdate: luo_file: look up outgoing tokens by id
+fs/namespace: Add vfs_open_detached_mount()
 
-liveupdate_get_token_outgoing() is used to look up tokens of dependencies.
-It does the search based on struct file. LUO provides file handlers a
-get_id callback that can return the unique identifier of a resource. This
-patch uses ID to look up dependencies in liveupdate_get_token_outgoing()
-instead of struct file.
+This commit factors out the creation of an anonymous mount namespace and an
+O_PATH file for a detached mount into a new helper, vfs_open_detached_mount.
+This allows in-kernel mount creators to hand a detached mount file to
+userspace, similar to what fsmount does.
 
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index a39992da504fb..51817d202ce26 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index 1ecd96c918b33..5e7ba2b61dd9a 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
 [ ... ]
->  int liveupdate_get_token_outgoing(struct liveupdate_session *s,
-> -				  struct file *file, u64 *tokenp)
-> +				  unsigned long id, u64 *tokenp)
+> +/**
+> + * vfs_open_detached_mount - Publish a new mount as a detached mount fil=
+e.
+> + * @mnt: The mount to publish. Must not be attached to a mount namespace=
+. The
+> + *       caller's reference is consumed on success.
+[ ... ]
+> + * Return: the new file, or an ERR_PTR. On failure the caller's referenc=
+e to
+> + *         @mnt is dropped, as the mount cannot be published.
+> + */
+> +struct file *vfs_open_detached_mount(struct vfsmount *mnt)
+> +{
+> +	struct path path __free(path_put) =3D {};
+> +	struct mnt_namespace *ns;
+> +	struct file *file;
+> +
+> +	if (WARN_ON_ONCE(real_mount(mnt)->mnt_ns))
+> +		return ERR_PTR(-EINVAL);
 
 [Severity: Medium]
-Will this flat ID namespace risk cross-handler collisions?
+Does this error path leak the vfsmount reference?
 
-Because liveupdate_get_token_outgoing() searches across all preserved files
-using just an unsigned long id, it loses the context of which file handler
-the ID belongs to.
+The function documentation explicitly guarantees that on failure, the
+caller's reference to mnt is dropped. If a caller inadvertently passes a
+mount already attached to a mount namespace, this WARN_ON_ONCE condition
+evaluates to true and the function returns an error without dropping the
+reference.
 
-If different handlers use overlapping namespaces, such as IDR indices or
-pointers that might alias depending on object lifetime, a lookup intended
-for one handler's object could incorrectly match an object from a different
-handler that happens to appear earlier in the list.
+For comparison, the error path immediately below for alloc_mnt_ns
+failure correctly calls mntput(mnt) before returning.
 
-Could the API require the expected file handler context to scope the search
-safely?
-
->  {
->  	struct luo_file_set *file_set =3D luo_file_set_from_session_locked(s);
->  	struct luo_file *luo_file;
->  	int err =3D -ENOENT;
-> =20
->  	list_for_each_entry(luo_file, &file_set->files_list, list) {
-> -		if (luo_file->file =3D=3D file) {
-> +		if (luo_get_id(luo_file->fh, luo_file->file) =3D=3D id) {
-
-[Severity: High]
-Can this cause a NULL pointer dereference on incoming sessions?
-
-In an incoming session after deserialization, luo_file->file is initialized
-to NULL and remains NULL until the file is explicitly retrieved.
-
-Because liveupdate_get_token_outgoing() is an exported API that accepts a
-generic struct liveupdate_session, an in-kernel caller could mistakenly pass
-an incoming session.
-
-Prior to this patch, doing so would safely return -ENOENT because NULL =3D=
-=3D file
-is false. With this patch, luo_get_id() will blindly pass the NULL file
-pointer to the handler's get_id callback.
-
-Handlers like memfd_luo call file_inode(file), which would cause an
-immediate NULL pointer dereference and kernel crash.
-
-[Severity: Low]
-Are these indirect function calls necessary during the list traversal?
-
-Replacing the direct pointer comparison with luo_get_id() performs an indir=
-ect
-function call (fh->ops->get_id) if defined, on every iteration of the
-files_list traversal.
-
-Because this function is used to look up tokens for dependencies, it can be
-called for every dependency of every preserved object, resulting in O(N * M)
-indirect calls.
-
-Since the ID is a constant property of the preserved file, could it be
-evaluated exactly once during luo_preserve_file() and cached directly in
-struct luo_file?
-
->  			if (tokenp)
->  				*tokenp =3D luo_file->token;
->  			err =3D 0;
+> +
+> +	ns =3D alloc_mnt_ns(current->nsproxy->mnt_ns->user_ns, true);
+> +	if (IS_ERR(ns)) {
+> +		mntput(mnt);
+> +		return ERR_CAST(ns);
+> +	}
+[ ... ]
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923224408.3745=
-689-1-pratyush@kernel.org?part=3D1
+689-1-pratyush@kernel.org?part=3D3
 
