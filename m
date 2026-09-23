@@ -4,94 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78819C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:21:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7837C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:31:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 843C46B0093; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
+	id B8BD16B008A; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F4AE6B0095; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
+	id B3CF06B008C; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E46C6B0096; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
+	id A2B686B0092; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 441886B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF317A0729
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:21:20 +0000 (UTC)
-X-FDA: 85244785920.01.89E020D
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 738A51C0008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:21:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ahMOEPjT;
-	spf=pass (imf18.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CE506B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:31:47 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E84A812076E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:46 +0000 (UTC)
+X-FDA: 85244812212.13.64F5197
+Received: from mta0.migadu.com (out-165.mta0.migadu.com [91.218.175.165])
+	by imf15.hostedemail.com (Postfix) with ESMTP id ABA1FA0005
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:31:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kkL8JV72;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790162479;
+	s=arc-20220608; t=1790163105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=D59ll9Cqgn4VIwMdD2H3ggT0fglPHG03tnHtRxDpyso=;
-	b=OxTf1ADLddomrHIdj1dgxubrcqcxhc3zVRS+E8sLUT0GmcgxiZFt+Hz8kKiPlvwCosL3Rw
-	pVyyr28KfzfV4I6jbdqPxqMTyBniBpMQ6o+OAFuErZdjFmetUPTXdxkhqsUSyGXFFKQffy
-	dhn2G7P1O9A3S6tZj/rtuRviOZY84SA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ahMOEPjT;
-	spf=pass (imf18.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2/WRRTJsGTNGqbwUBw0lhJz6QCUq2eoUdRWvG4bg+nw=;
+	b=5Cz0jqUnmjDG4jPjXfQJ696o2lWzyoOkIHUGQ0J5ut11IJ/P6S6MmimIZNPndWXLJ9auGv
+	ww/KVWz3R8137nTDTRKi+4Gl5kXiMPuSNA1Ago8++iNQL7dfL82AOdEsTC7iqvTWjsUp1O
+	+zegVAaShDbY4KxrfErvw84TVLssVy4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790162479;
-	b=UHO8h2yJG8xltDwq3kLC6TH3D9LMMyOJ9x3YHB/xNDkQKE7sOLB4FND+nXrthk0ZkhtMI1
-	mLA7vJFYYpBalwlfgQZLwlC5SliEtZiXbDdnU2NRI0Qk05Eh+VRCogZRBivEUkxtqH0doK
-	oXu6ajMkfdVg7o2hdCUY1mNSssW5GBw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=D5
-	9ll9Cqgn4VIwMdD2H3ggT0fglPHG03tnHtRxDpyso=; b=ahMOEPjT1wiz58wN6i
-	GaFqKzCkFYIdEG3J876IqJUV0WHafDPhuqpRjlNegc54ua3WCl462yA/uYD7Tc34
-	9AQBYeJgj2Rlwbj52x7ZYHjnazKwJGdF33PmPc/N/TXq3vDWrqep0lrnKBpHGDfx
-	L0mH/jcBmGvqB7bnNsBo6F19M=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDXn08JtrNqnlFPAQ--.25126S2;
-	Wed, 23 Sep 2026 19:20:42 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Hui Su <sh_def@163.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] mm/migrate_device: consolidate compound folio handling
-Date: Wed, 23 Sep 2026 20:20:41 +0900
-Message-ID: <20260923112041.2103427-1-sh_def@163.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDXn08JtrNqnlFPAQ--.25126S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtFy8CrW3Cry3Aw13KFyrXrb_yoW7uw4kpF
-	40g3WDtrZrWryjkw13Zr48Ar13urZ3Xa1fKFZrGwna9Fs8JFy3uw1Iq3Z8XFs8u397AFyx
-	Zay7ta4xu3WDJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piHa0PUUUUU=
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6Qs3lmqztgsF1AAA32
+	t=1790163105;
+	b=TKYvgvnpsHIbnjHzx8pFiRY0kT53BGkGlVJj4A5Kffc1t0qdU5vwkskgSi4pnqghlUGrql
+	wwzxSANGwTz0dMGPH3nboXGdf9IW0I0aklHGuHqDP1fhW2XvA7/Q0FzMrzLhu1Nk0uk47R
+	1J4qmDZHzKOOiqRd8SgrC2RtygHq3h8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kkL8JV72;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.165 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dRRV4UmPvG3+M432ExTQaUHSvuzp5ixmXuLNEW7Fyxw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790163102; v=1; x=1790767902;
+ b=kkL8JV72Q4lertG1VBG+4HVYJlSVqnVkAiSEdfcT2eIsXvrRfB4hh8aE7qde6owRYDEzd9yt
+ fYEJYuB0ZAsmE6aJ0p3u0W2TQJSwZ5Z6PPLmg/DIr7JrsMHbccDOEU7axBX4BOR9Ufoal/Ft/1S
+ 4ed2nA2FAIcdSE2RoQWxPM/0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 5edda2cd734faa91;
+	Wed, 23 Sep 2026 11:31:32 +0000
+X-Mizu-Trace-ID: 5edda2cd734faa91
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH v2 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <2f01bd33-6b51-4978-a19b-cd1fd0bd013c@linux.dev>
+Date: Wed, 23 Sep 2026 19:31:12 +0800
+Cc: Hongfu Li <lihongfu@kylinos.cn>,
+ Chris Down <chris@chrisdown.name>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ stable@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Nhat Pham <nphamcs@gmail.com>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <BD68F59A-FA10-4308-904C-EF82EF59C101@linux.dev>
+References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+ <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
+ <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
+ <1835413c-e2de-41b0-8225-161afa50676a@linux.dev>
+ <10149B0C-4108-4DB6-84B7-A301E8158CA4@linux.dev>
+ <2f01bd33-6b51-4978-a19b-cd1fd0bd013c@linux.dev>
+To: Hongfu Li <hongfu.li@linux.dev>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: ABA1FA0005
+X-Stat-Signature: tu5z13xo87gof6bi5y5tsw4yqkx8t7k3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 738A51C0008
-X-Stat-Signature: 6j75yfe38ntjoq7mg7puw6bhwobyt46h
-X-HE-Tag: 1790162477-76519
-X-HE-Meta: U2FsdGVkX1/O+N2H/rQ/nirEkecm+fApNUg8gv56tp4Runqf+5D8cajVN+fMYr7uf46r4ZWwkZhoUvUGR7wL4U5kskuDvDFN4AjtyPtWndRZLT5b+5PBsILRuWlKLkAd0RwvuyohJk2RO3cvAHj5KnAYldm7zOyB1JJs3eDU0R2uugyZwORJHoOnswWEFXOSr4/DfVbzc18QOE8Fk7nUFlh1p8io1oIxknhMWbUBANZv5p1TfToxV+HHFr1SjQSS4dIwM8X+DtsNfy5pir5jgEibTYhpp6DywZ9lXxMbXb4/qEOHFTPjointO3z2jsQkaCkjDUo1/RvB2tGsWjz29gZRviCkpwdGpDGjWf8P/c66/X88TAP+one7cHqxgfyPV9UaqG8NaJUo/w+DjVyGp6BJHcRoOUrVTFr1xSiZGJ8MVe4qBGPXoNtHQplFS4wAOx7NtYWmues1bRrVdup5a6gWSXmasM9WvFFjMxpNDdz6y9LsbKeiVpCeKhXuOsgQA/nyzn/9rvEkq1qW2kRgdhU2PvPdh57fpbZ+WM8nvddB31Fl1LkJpN5Hq94OIifH3GJn0NQMv1GN5em8gWnEh9S/zcWPEHl6AzP20IuXHamX3V1Ye2XKk0jmKcj4odvRwnX0/8oPpDz1pURTI7ugMqJUgYtrPrD8oEDDyVsGGE9+VEKkO9QPqG9AJokwUJ53bas5dMM84Lr0KXIjdZr6k1TEMvEN4Zus3qFA1RN7U5Wj4z/9tFpdn9CoiDaOSbHxTqTwNAL1TFx1zX3IbOkU7HFYn075cmbuL9kkg9TJmRCb4RajyJ4LDgIeyu1DbCQFDjV5d3Xqo3tTsrk0KfIWd8v9SkeNb4WeKmaTcQnyLGE0F7v5vQzkzvH2fUkH/Zje+3EuDNTUVzIqJynI5CoML8S+OBCiPdvLNPXNwqfFiDCs1dAX8fkELlkjKHLqRE+ee7S5ascPPCeLKD+Pca1
- pCzeHz6L
- 109XkOBH+bOklAs/n7GSPiY/OaBv4x5Ljcnx+0b3VytV1XW7o6W4Q3y9mA2pbNc/1Gxkw80zRkC7loAbEk5vcMPTefxJzfC7YGTHU9YK/GStXdVku25SBQXgBY/gRwRTZiXHy7DYB/XuQTlR0QOHvoohQ+JTazVaOOAyXyK5RRjA4E5TlU8u1kkyt25ojiCzadgccZTE+9oZhsn2vbsU75Nbbaui5SfIqH/F+6Ju6b7OiMgWZWmbpF47DpPvFVKSYFPFktuzOFpzj4nt3beF75BDqLdH9O9KsCWSY4dgrSGt1FP84MyjiCYAr7pTwCd7tp/rz4M5sZzk3594IZwkwDggXTm1zIt792BbGTVNNtoX1SajrQgo/aFn/UfRzsHdqYD+H55uvUS6IePqGW9L3ilErbXw6kgY1AmtonytBJ6cerG+X1ukH8PtQMIqroEQbt6oSh3MZkDv8zeBsG4YTyfhA6k2d/3UisK1q3/9BxhFf7LQ=
+X-HE-Tag: 1790163104-17217
+X-HE-Meta: U2FsdGVkX1+QgH7YtxL+pfLncQvfYI+/m50JuJo86twRpzaTh3ZBiAmd3kgduHCJPNWYQHGw3YvqNvnHUVJ0rbBxuaGOH60XhvsN7O3Pnq2yht06+1kRKgQKKLAeR8zkfc3Q2M5YN3h5SvvU10R1p8ed69AR6kbG0wAxHgapzjWpYSdK7Gn+QCE2pUp1JYXYheC6U9TAHPhRrl3T5kn9Dj4tD3zGWxQI6pKQnwrz6wLVBLlobygmN55vzVraxJjLxq8dMKnWrLsnRBFPb5GLJHeWzIoQfDeSOxTZq0tiTtS6JaDsDz7j/jOFtVHadTOccN8tWMo+6F/mJ1IaraT49VVKJKSPKc8K3axIDHIUWPVt1wPApVPb5OB17pSUDsN1uBc/NkLZx4R3ZdcTxHrjk1jmGwhWx7a0UdiXKSFiwW6t7DHuEJYsBUrJIJPYLkLoTgg2JK9KIrz9R3Yuhe2bgS7qEPFaINNZYh7oW3dq/OgQlSoypgsOLg77nyJ4yGKScdQZwav16PZLac4U5vb1c1PP/Lp9eG3Nl6Obxuw+xOQC17NP0H8TkT4Q3RoKVScUmdNUg73g2KHS8dGIXf1Kw/pDs2ZBlS1kAUrxxIk5mZayF/+R5MOTPL3Qljmwvj8pFg+/73PCXq5WxppLlbawB5KumfR+WdKwWbkO/6VVHG7XNpQxRWv/G6mhnRzOlNLIOiDtuvVK1PjYbdd2WktTp98f6ERt20uawJvQKjAU5Y1Z+XrrDAXeAk29bTQDucjpztj/Mw02x7sIyOKGRfAjqe7vMiVCkiBY+/Q8IlRLqmIfRp8Q+E0djOR9rrffmq7dH5x71XOOSfuPMcQANYq2oC0GcPr1PUoWzC9itMxeUc1xiYbSdHQM49j6cakNo+i5ZYVIp5yfWjV6YzYcNy/JrVBTbj2vJV7ysJrDuJ+lWVsTiwyJfjaFOZjNwJJV9eSjBHCGq6bgIfvkwQrcb/R
+ dbjiQ3xe
+ QsLRDyRTGIa7gxj7m10bpqTNsZHgZBmXFFAEn/NDPZLPTqdYlVehM5tTBH2VbeaXIDhHFGJpbgVpQzOZqoXS9SVXhDlqYXLerHtcglobnyAbQ2wFFe5VtNPIiPtsCdWjuH8EF8vjQBZ0e/F4GtrQNfw08STZ9bI6eG883WV4T5JeubHRgJnQhVeSxuUyMw4jqYtreivOSFPCDqyuE8WZbCCrwpT5dDwISHrwqaEm6ZJ/UEMOoi/H1rCUhQ2JzjPEt77a2iSuzlBqPiBjYF0Gj5xQ/Ho0KhbDxvZhSR6cL/opHUuqWv7ubBFy3q6oYRnE7ZC1r4aV/WfuEoqqnLZUpw9fkJtmDkoqIo0ei9LsyIs/pNsvD6Ss2Q7W7qFqovsIoFvwewBPAfw/14UQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,186 +111,278 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
-compound folios") added handling for compound folios that do not fit in
-the remaining PFN array.
 
-migrate_device_range() and migrate_device_pfns() duplicate the logic for
-locking device PFNs, encoding compound folios, and handling this boundary
-condition.
 
-A compound folio cannot be represented partially for migration. Use
-VM_WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
-retaining the existing defensive handling: release any lock and reference
-acquired for the current folio, clear the remaining entries, and stop
-collecting.
+> On Sep 23, 2026, at 17:55, Hongfu Li <hongfu.li@linux.dev> wrote:
+>=20
+>=20
+> On 9/23/26 3:56 PM, Muchun Song wrote:
+>>=20
+>>> On Sep 23, 2026, at 11:40, Hongfu Li <hongfu.li@linux.dev> wrote:
+>>>=20
+>>>=20
+>>> On 9/23/26 10:40 AM, Muchun Song wrote:
+>>>>=20
+>>>> On 2026/9/23 10:05, Hongfu Li wrote:
+>>>>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>>>>=20
+>>>>> memory.numa_stat exposes per-node hugetlb counters from per-node =
+lruvec
+>>>>> stats. These stats are accounted against folio_nid(): incremented =
+on
+>>>>> the folio's node when handed to a user, decremented when the folio =
+is
+>>>>> returned to the pool.
+>>>>>=20
+>>>>> During hugetlb folio migration, mem_cgroup_migrate() moves the =
+charge
+>>>>> to the new folio and drops the memcg data of the old one, so the =
+free
+>>>>> of the old folio right after the migration skips the memcg =
+per-node
+>>>>> lruvec decrement. The hugetlb count stays attributed to the old =
+node
+>>>>> for the rest of the life of the charge, while the target folio =
+gets no
+>>>>> increment on the new node; its later free decrements a counter =
+that
+>>>>> was never incremented.
+>>>>>=20
+>>>>> Migrate the per-node lruvec accounting alongside migration. Global
+>>>>> memcg totals remain balanced because they track resource =
+consumption,
+>>>>> not node placement.
+>>>>>=20
+>>>>> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to =
+memcg")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>>>>> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+>>>>> ---
+>>>>>   include/linux/memcontrol.h |  8 ++++++++
+>>>>>   mm/hugetlb.c               | 25 +++++++++++++++++++++++++
+>>>>>   mm/memcontrol.c            |  5 ++---
+>>>>>   3 files changed, 35 insertions(+), 3 deletions(-)
+>>>>>=20
+>>>>> diff --git a/include/linux/memcontrol.h =
+b/include/linux/memcontrol.h
+>>>>> index a8358f297b65..74110a324f9e 100644
+>>>>> --- a/include/linux/memcontrol.h
+>>>>> +++ b/include/linux/memcontrol.h
+>>>>> @@ -984,6 +984,9 @@ unsigned long =
+lruvec_page_state_monotonic(const struct lruvec *lruvec,
+>>>>>   unsigned long lruvec_page_state_local(const struct lruvec =
+*lruvec,
+>>>>>                         enum node_stat_item idx);
+>>>>>   +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>>> +                enum node_stat_item idx, int val);
+>>>>> +
+>>>>>   void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+>>>>>   void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup =
+*memcg);
+>>>>>   @@ -1452,6 +1455,11 @@ static inline unsigned long =
+lruvec_page_state_local(const struct lruvec *lruvec,
+>>>>>       return node_page_state(lruvec_pgdat(lruvec), idx);
+>>>>>   }
+>>>>>   +static inline void mod_memcg_lruvec_state(struct lruvec =
+*lruvec,
+>>>>> +                      enum node_stat_item idx, int val)
+>>>>> +{
+>>>>> +}
+>>>>> +
+>>>>>   static inline void mem_cgroup_flush_stats(struct mem_cgroup =
+*memcg)
+>>>>>   {
+>>>>>   }
+>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>> index 519c30b338a8..76d019594b39 100644
+>>>>> --- a/mm/hugetlb.c
+>>>>> +++ b/mm/hugetlb.c
+>>>>> @@ -23,6 +23,7 @@
+>>>>>   #include <linux/mmdebug.h>
+>>>>>   #include <linux/sched/signal.h>
+>>>>>   #include <linux/rmap.h>
+>>>>> +#include <linux/rcupdate.h>
+>>>>>   #include <linux/string_choices.h>
+>>>>>   #include <linux/string_helpers.h>
+>>>>>   #include <linux/swap.h>
+>>>>> @@ -7378,12 +7379,36 @@ void folio_putback_hugetlb(struct folio =
+*folio)
+>>>>>       folio_put(folio);
+>>>>>   }
+>>>>>   +static void move_hugetlb_lruvec_stat(struct folio *old_folio,
+>>>>> +                     struct folio *new_folio)
+>>>>> +{
+>>>>> +    struct mem_cgroup *memcg;
+>>>>> +    long nr_pages =3D folio_nr_pages(old_folio);
+>>>>> +    int old_nid =3D folio_nid(old_folio);
+>>>>> +    int new_nid =3D folio_nid(new_folio);
+>>>>> +
+>>>>> +    if (old_nid =3D=3D new_nid)
+>>>>> +        return;
+>>>>> +
+>>>>> +    guard(rcu)();
+>>>>> +
+>>>>> +    memcg =3D folio_memcg(new_folio);
+>>>>> +    if (!memcg)
+>>>>> +        return;
+>>>>> +
+>>>>> +    mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, =
+NODE_DATA(old_nid)),
+>>>>> +                   NR_HUGETLB, -nr_pages);
+>>>> Why not use mod_lruvec_state? mod_memcg_lruvec_state is an internal
+>>>> API for memcg, I don't want it to be exported.
+>>> Thank you for the review.
+>>>=20
+>>> mod_lruvec_state() would update the node counter a second time.  It =
+calls
+>>> mod_node_page_state() as well, and the target's node counter is =
+already
+>>> updated in alloc_hugetlb_folio_nodemask() (patch 1/2):
+>>>=20
+>>>     lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
+>>>=20
+>>> For an uncharged folio lruvec_stat_mod_folio() only updates the node
+>>> counter.  The target folio is not charged to any memcg at that =
+point; its
+>>> charge only appears later in mem_cgroup_migrate().  So the node side =
+is
+>>> already covered and only the per-memcg attribution has to follow the
+>>> charge here.
+>> Looking at the first patch again, I do not think the
+>> overall accounting is incorrect. My concern is where NR_HUGETLB
+>> accounting is performed.
+>>=20
+>> The low-level allocation helpers only take a folio from the
+>> hugetlb pool. They do not have enough context to decide how
+>> the folio should be accounted. That decision should be left
+>> to their callers, once the folio enters the relevant usage
+>> lifecycle.
+>>=20
+>> hugetlb_alloc_folio() is a good example. It first obtains a
+>> folio, then calls mem_cgroup_charge_hugetlb(), and only
+>> afterwards calls lruvec_stat_mod_folio(). At that point,
+>> the folio has the correct memcg and lruvec, so all relevant
+>> counters can be updated together.
+>>=20
+>> After this series, alloc_hugetlb_folio_reserve() and
+>> alloc_hugetlb_folio_nodemask() account NR_HUGETLB before
+>> returning the folio. This makes them unsuitable for callers
+>> that need to charge the folio afterwards. Before the charge,
+>> lruvec_stat_mod_folio() can update only the node counter.
+>> The later charge does not associate that earlier update with
+>> the new memcg.
+>>=20
+>> If a caller accounts again after charging, the node counter is
+>> updated twice. If it does not, the memcg and per-node lruvec
+>> counters remain missing. The caller then needs a memcg-only
+>> correction, creating a special accounting protocol between
+>> the helper and its callers.
+>>=20
+>> Migration exposes the same issue. The target gets node
+>> accounting before it inherits the source memcg. The second patch
+>> must update the lruvec state and then cancel its node changes,
+>> because the target allocation already updated the node counter.
+>> This works, but makes the accounting lifecycle harder to follow.
+>>=20
+>> Would it be cleaner to keep these helpers focused on allocation
+>> and let each caller account at the correct lifecycle point?
+>> Normal allocation can account after a successful memcg charge.
+>> Migration can move the complete lruvec state after it succeeds.
+>=20
+> Hi Muchun,
 
-Move the shared collection and encoding logic into a helper so both
-interfaces handle compound folios consistently. Also use memset() for the
-compound-folio tail entries instead of open-coding the clearing loop.
+Hi,
 
-If locking a folio fails, leave its source entry zero while still consuming
-and clearing the slots belonging to the whole folio. This prevents a tail
-page from being treated as a new source PFN by the caller's next iteration.
+>=20
+> Thanks a lot for the detailed explanation.
+>=20
+> One thing keeps the target accounting in =
+alloc_hugetlb_folio_nodemask(): the
+> node counter is paired with the folio's free, and a failed migration =
+frees its
+> target right away (put_new_folio()/folio_put() -> free_huge_folio(), =
+which
+> always decrements the node counter). If the target were accounted only =
+after a
+> successful migration, every failed migration would decrement a node =
+counter
+> that was never incremented.
 
-Document that an encountered compound folio must fit entirely in the
-remaining range or PFN array.
+You're right, and HugeTLB is really tricky. I think HugeTLB might need =
+some cleanup
+in the future to better handle the accounting here. As a bug fix, the =
+current
+changes look good to me.
 
-Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
-Suggested-by: David Hildenbrand <david@kernel.org>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Hui Su <sh_def@163.com>
----
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-Changes in v3:
-- Keep the source entry zero when migrate_device_pfn_lock() fails instead
-  of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
-  slots belonging to the compound folio.
-- Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
-  keeping the defensive clear-and-stop path independent of CONFIG_DEBUG_VM,
-  as suggested by Balbir Singh.
+A future cleanup, might be to have all the underlying HugeTLB allocation =
+functions
+update only the global node statistics (use mod_node_page_state instead	=
+of
+lruvec_stat_mod_folio). Its caller, if it needs to charge memory
+cgroup, can then call mod_memcg_lruvec_state that updates only the =
+memory cgroup
+statistics.
 
-Changes in v2:
-- Fix the helper parameter indentation and keep the declaration to two
-  lines, as suggested by David Hildenbrand.
+Thanks.
 
- mm/migrate_device.c | 91 +++++++++++++++++++++++++--------------------
- 1 file changed, 50 insertions(+), 41 deletions(-)
+>=20
+> Unless there is a way to let free_huge_folio() tell that the folio =
+comes
+> from a failed migration, and skip the decrement for it.
+>=20
+>> An uncharged path can explicitly update only the node counter
+>> if global accounting is still required.
+>>=20
+>> This would keep policy out of the low-level allocator and make
+>> the accounting lifecycle easier to follow.
+>>=20
+>> Thanks.
+>>=20
+>>>> Thanks.
+>>>>=20
+>>>>> + mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, =
+NODE_DATA(new_nid)),
+>>>>> +                   NR_HUGETLB, nr_pages);
+>>>>> +}
+>>>>> +
+>>>>>   void move_hugetlb_state(struct folio *old_folio, struct folio =
+*new_folio,
+>>>>>               enum migrate_reason reason)
+>>>>>   {
+>>>>>       struct hstate *h =3D folio_hstate(old_folio);
+>>>>>         hugetlb_cgroup_migrate(old_folio, new_folio);
+>>>>> +    move_hugetlb_lruvec_stat(old_folio, new_folio);
+>>>>>       folio_set_owner_migrate_reason(new_folio, reason);
+>>>>>         /*
+>>>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>>>> index 88824f783571..a5335da5d425 100644
+>>>>> --- a/mm/memcontrol.c
+>>>>> +++ b/mm/memcontrol.c
+>>>>> @@ -1015,9 +1015,8 @@ static void __mod_memcg_lruvec_state(struct =
+mem_cgroup_per_node *pn,
+>>>>>       put_cpu();
+>>>>>   }
+>>>>>   -static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>>> -                     enum node_stat_item idx,
+>>>>> -                     int val)
+>>>>> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>>> +                enum node_stat_item idx, int val)
+>>>>>   {
+>>>>>       struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
+>>>>>       struct mem_cgroup_per_node *pn;
+>>>>>=20
+>>> --=20
+>>> Best regards,
+>>> Hongfu
+>=20
+> --=20
+> Best regards,
+> Hongfu
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 009bfa8b212d..68b787bdc8be 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1392,6 +1392,40 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
- 	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
- }
- 
-+/*
-+ * Collect a device folio into the page-granular PFN array.
-+ *
-+ * Return the number of entries consumed, or 0 if the folio does not fit in
-+ * the remaining array.
-+ */
-+static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
-+		unsigned long pfn, unsigned long remaining)
-+{
-+	struct folio *folio = page_folio(pfn_to_page(pfn));
-+	unsigned int nr;
-+
-+	*src_pfn = migrate_device_pfn_lock(pfn);
-+	nr = folio_nr_pages(folio);
-+
-+	VM_WARN_ON_ONCE(nr > remaining);
-+	if (nr > remaining) {
-+		if (*src_pfn & MIGRATE_PFN_MIGRATE) {
-+			folio_unlock(folio);
-+			folio_put(folio);
-+		}
-+		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
-+		return 0;
-+	}
-+
-+	if (nr > 1) {
-+		if (*src_pfn)
-+			*src_pfn |= MIGRATE_PFN_COMPOUND;
-+		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
-+	}
-+
-+	return nr;
-+}
-+
- /**
-  * migrate_device_range() - migrate device private pfns to normal memory.
-  * @src_pfns: array large enough to hold migrating source device private pfns.
-@@ -1410,35 +1444,22 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-  * migrating pages that aren't free before unmapping them. Drivers may then
-  * allocate destination pages and start copying data from the device to CPU
-  * memory before calling migrate_device_pages().
-+ *
-+ * A compound folio must fit entirely in the remaining range.
-  */
- int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- 			unsigned long npages)
- {
--	unsigned long i, j, pfn;
-+	unsigned long i, pfn;
- 
- 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
--		struct page *page = pfn_to_page(pfn);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		unsigned int nr;
- 
--		src_pfns[i] = migrate_device_pfn_lock(pfn);
--		nr = folio_nr_pages(folio);
--		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				folio_unlock(folio);
--				folio_put(folio);
--			}
--			memset(&src_pfns[i], 0,
--			       (npages - i) * sizeof(*src_pfns));
-+		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
-+		if (!nr)
- 			break;
--		}
--		if (nr > 1) {
--			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
--			for (j = 1; j < nr; j++)
--				src_pfns[i+j] = 0;
--			i += j - 1;
--			pfn += j - 1;
--		}
-+		i += nr - 1;
-+		pfn += nr - 1;
- 	}
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
-@@ -1454,33 +1475,21 @@ EXPORT_SYMBOL(migrate_device_range);
-  *
-  * Similar to migrate_device_range() but supports non-contiguous pre-populated
-  * array of device pages to migrate.
-+ *
-+ * A compound folio must fit entirely in the remaining PFN array.
-  */
- int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- {
--	unsigned long i, j;
-+	unsigned long i;
- 
- 	for (i = 0; i < npages; i++) {
--		struct page *page = pfn_to_page(src_pfns[i]);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		unsigned long pfn = src_pfns[i];
-+		unsigned int nr;
- 
--		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
--		nr = folio_nr_pages(folio);
--		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				folio_unlock(folio);
--				folio_put(folio);
--			}
--			memset(&src_pfns[i], 0,
--			       (npages - i) * sizeof(*src_pfns));
-+		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
-+		if (!nr)
- 			break;
--		}
--		if (nr > 1) {
--			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
--			for (j = 1; j < nr; j++)
--				src_pfns[i+j] = 0;
--			i += j - 1;
--		}
-+		i += nr - 1;
- 	}
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
-
-base-commit: fe2ec83746e501645709761605c2464a44fd2929
--- 
-2.55.0
 
 
