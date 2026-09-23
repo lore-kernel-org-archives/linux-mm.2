@@ -4,93 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A69AC982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9586AC982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:26:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3253A6B0092; Wed, 23 Sep 2026 05:24:55 -0400 (EDT)
+	id 7BE096B008C; Wed, 23 Sep 2026 05:26:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D6176B0096; Wed, 23 Sep 2026 05:24:55 -0400 (EDT)
+	id 795456B0096; Wed, 23 Sep 2026 05:26:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EC5E6B0098; Wed, 23 Sep 2026 05:24:55 -0400 (EDT)
+	id 6AC596B0098; Wed, 23 Sep 2026 05:26:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EEDAB6B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:24:54 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 63E0B14062A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:24:54 +0000 (UTC)
-X-FDA: 85244492508.10.541EB23
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B8E5EA000B
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:24:52 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lf/HJYmS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 321ED6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:26:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AE1DE1C3443
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:26:25 +0000 (UTC)
+X-FDA: 85244496330.01.66118DB
+Received: from pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.83.148.184])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 591431C0008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:26:23 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=oGGEk5YE;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=719a38815=dipiets@amazon.it" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=719a38815=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790155492;
+	s=arc-20220608; t=1790155583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rLKRb8Y4+nISCnQaxnX4ctxBf/lcPEd8M1PAoqnsICk=;
-	b=7meJxyJaNnWgF64rLN9Ra/WX+06YX8ImkV5RftVraZrSzG0oA4vjWrgv/2G3wSnj6B4HvR
-	7r9YV8Ys6rXcL6FGL7ywWouHKdfEbt398IkFL3t5fHARon4QLzuYKDzwmayHBKCUsEwKB/
-	D3DcNVVFnNTm9VRDuRlQo7iKng8+drU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lf/HJYmS";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=cN5MLZiwNeqRdcxWX8m8G6mrJrXWNABdWnBEab4FCPQ=;
+	b=VYJ9Xq1DurTFNPKuc2uE0RM0jp/V5rRKRepI43LHyjO31W++dXUIrK+tBtyDmZrDkv/r8y
+	ta5BqUXA84vTUXhOpPD8XEby/mI55/6J/37fpDUEhTiPZqDtXLXCb81nNwNj3e+6h5dzIY
+	EH19aiLKt1CByHyUHbng6kPmuUGM0/E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790155492;
-	b=7zsWIT+mOlRGk+O/juFs4MGEQ8OQDqS0rXXs63ISC9l10SJ0yQK8h9dmQCSrm3FBLqCv7m
-	sHRzfk7CaVyemA4+1zuCYiDX94puqBpJYUhfZ08Th+CNbMjNNd+4g0cHdo2iheyg9aF0m4
-	VO8zuKtEWJBhrJEVIi9Gq8bY6JaaGeg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D327242E13;
-	Wed, 23 Sep 2026 09:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F05E1F000FF;
-	Wed, 23 Sep 2026 09:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790155491;
-	bh=rLKRb8Y4+nISCnQaxnX4ctxBf/lcPEd8M1PAoqnsICk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lf/HJYmS7UTiPzh9amAhYD2S1aZFVo3LNH5rJLGdyYuILAzd5aGZtD7Z+A88a9tmL
-	 hHM6MECEikQkwhUsVWW9OiN+brnRisqJ9m4BU9synUw13IBOU89ZTDelvYTT+MbfCr
-	 YHCOAWS4p2NquBk89ID0zbIa8fuQleDE9KqU4RAhKfHJPAKRRbVI/pQHilGVcicP07
-	 EW/UgyDgmSBMmHsdSA0fJ+c0tZ/MA4+6VdDCVG/bt0KetNYvzUPxCl4XaT+mMKf/Jf
-	 B1arbqfvaLL4O7tkudrCw1fmUe8fqQeMQ5Yhy/QP0Sg91jXC39kkSIBIAWf4RbKs6W
-	 EnUBG7zakOYgg==
-Date: Wed, 23 Sep 2026 12:24:43 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Tal Zussman <tz2294@columbia.edu>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Dave Young <ruirui.yang@linux.dev>, linux-mm@kvack.org,
-	linux-s390@vger.kernel.org, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH] vmcore: convert mmap_vmcore_fault() to use folios
-Message-ID: <arOa28u0tRZ-jGYi@kernel.org>
-References: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
+	t=1790155583;
+	b=jn8o/ON4petVy9HnUuz4VdaKqU/36bBWiB8lg5REPbY6ZXbSwa0saQSxbREVAGiGUDdqZf
+	0ZHO+K8xYe+nn+i1IGBKROl6YPCF4ILoIRxrKRRKwAborwi2ZcIYOnuUp5+EQKe618iGJ+
+	o5DdUXi8kLfbbzqmCtJhQ8gnvjIZyKo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=oGGEk5YE;
+	spf=pass (imf18.hostedemail.com: domain of "prvs=719a38815=dipiets@amazon.it" designates 35.83.148.184 as permitted sender) smtp.mailfrom="prvs=719a38815=dipiets@amazon.it";
+	dmarc=pass (policy=quarantine) header.from=amazon.it
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
+  t=1790155583; x=1821691583;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=cN5MLZiwNeqRdcxWX8m8G6mrJrXWNABdWnBEab4FCPQ=;
+  b=oGGEk5YExfdKtGDkirTlu0eBCqp0xxa9hyaH5KPBtz3HPgmwfIoys0eo
+   EYxQPtEctU7xkkjtTIDaD4tWFSfwSZN7WXPRivznPvDDx3aGj6B9cKRVj
+   Gt6wu7r8TX0AEDCqPbh39qExcuocOd9wUFG9etQ2y/OUr0YA3eGj6aXEZ
+   rK6JnSfR7/VHr/gx3hVPy/VeXrTIJW6O5UOOmlIkfEIQs+PE0Dv0MN1iH
+   gw7+MKKHEAHfx0r4P3a08jpekI1d2LoYBHxAhMlxh8qBc+ZS31lWiTJ2T
+   rQs75SDXhK4XTPElGSxOcQG+kOL4e/q5BXLPJqRtYsWm+pMqrW/yJwLDU
+   A==;
+X-CSE-ConnectionGUID: Swfc1b/cRayzY0r31UWeqw==
+X-CSE-MsgGUID: rikSOqHrQaeO+po9b2UnIw==
+X-IronPort-AV: E=Sophos;i="6.27,118,1787011200"; 
+   d="scan'208";a="29214507"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-014.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 09:25:29 +0000
+Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:5405]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.1:2525] with esmtp (Farcaster)
+ id cd567582-b90f-43f2-a34a-5f02aae20a7f; Wed, 23 Sep 2026 09:25:29 +0000 (UTC)
+X-Farcaster-Flow-ID: cd567582-b90f-43f2-a34a-5f02aae20a7f
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49;
+ Wed, 23 Sep 2026 09:25:29 +0000
+Received: from dev-dsk-dipiets-1b-77b833da.eu-west-1.amazon.com
+ (10.253.66.177) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.49; Wed, 23 Sep 2026
+ 09:25:25 +0000
+From: Salvatore Dipietro <dipiets@amazon.it>
+To: <vbabka@kernel.org>, <akpm@linux-foundation.org>, <willy@infradead.org>
+CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <blakgeof@amazon.com>,
+	<brauner@kernel.org>, <brendan.jackman@linux.dev>, <david@redhat.com>,
+	<dgc@kernel.org>, <dipietro.salvatore@gmail.com>, <dipiets@amazon.it>,
+	<djwong@kernel.org>, <hannes@cmpxchg.org>, <hch@infradead.org>, <hch@lst.de>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>, <mhocko@suse.com>,
+	<ritesh.list@gmail.com>, <rvvandan@amazon.com>, <stable@vger.kernel.org>,
+	<surenb@google.com>, <ziy@nvidia.com>
+Subject: Re: [PATCH v4] mm/page_alloc: avoid direct compaction for costly __GFP_NORETRY allocations
+Date: Wed, 23 Sep 2026 09:25:12 +0000
+Message-ID: <20260923092512.101833-1-dipiets@amazon.it>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <6c94405a-48e4-4842-a096-e2fbbbaa862f@kernel.org>
+References: <6c94405a-48e4-4842-a096-e2fbbbaa862f@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
-X-Rspamd-Queue-Id: B8E5EA000B
+X-Originating-IP: [10.253.66.177]
+X-ClientProxiedBy: EX19D032UWB003.ant.amazon.com (10.13.139.165) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5kiyisygx7xs8z4q79ah8h1fxj3yu8iq
-X-HE-Tag: 1790155492-449475
-X-HE-Meta: U2FsdGVkX1+N7IILhvis2z2zcn4ra/+KRePxrupnH/CeAVDENOxLEuA5+AGZKermKgU/ytt3Z+yMYajgESg0zz7L9o8UaY7h2FkQft8+WmblY6n7y/RQ3gFKvt8DsH9WFeoUjrgZRVpGlavzySSAry3c+MNCyp25X4YSxgTJNm5ndFUkKWz6nssaia1Rf2TDouv7VZ+kBM8uS7uU0bbKtFsC0hfrGizL+p7pZVsi+q4jCZ8ysM90JZ0ffSJAGYYOHo3eoCVzDnvlECjdtM4xNXdLYVnTUrJk/ndpZhRdpSZRr7K7n7Ebox2mH7K7AxOQMoK7iEv9sTzuZAPsa0Jp54Qaj5skzbX3js1liVpvMTPjvr/9tXNOCxboT/wBs/kCQwgISOKxcwUBDnZl4p6YWg6JzKXdvHD60ypabVH+imf9uvO4u/A0k9qmGh+9OCG9n3AV86hFwfy1E1jVm1J5wOua2YDRvTdGXni8hjUpjW/Yi3BSmGTuLyzKz20yuk1FqWCZQsz0oltJup9okI38Y2sP49US9ANqmjFdGDjAMqWCdCzUOk2Dgq6r7co7lduxCAEQ58e7E4zPXOs+T9f5I5OFuqzZoKq1IhvGsCprqnMXiqfNItFij2Aqc1jLOUujTAsigy5PsNjyWJ5NEQzjtD9jxph5Z8kuOgxKRAmLlsVygOUGwx/BVj52almaEGSi3/6EhaAEkNv0Oo9reQCzXiVzwmMHbFnq/+GZBWK4ALI9NuulDl+PVVX9Tpitlx/h+iGuBdXiMNXROYnmBwiDRhGVs1gOmcUsS1u+z6DrDQhMb0TvWH08jXjCP3Usp/nuYRhCo/29i7uoT2y76cVMCKMT0B3Ve26NgRNeRcXvErkyeWo9TZNA5nrC1oBmmqBGlJiz4KMnmQcvdkNCA7FEog4UNWzQf/w6N+B1k7ugDHnfISG7DAvlAyWg8Vp3ZNw0WYnoHKN022y3i/BhMka
- tIYZ1ovT
- +4l9C/sKyIqhbOjQDlwTdr5y36SwhLL1gzADjos3XOzbP3yWxzghknndx32MxpF6By0HVlILkqLXpybSJse6e4wBasOtYlXAjvYJQCNqVVq57xJ5BjBtcM8IWOnA4Jr9rSKynFJfAZNDgqdoEgEEO9pswcD5J4qs1oPnZBiSUZgLP6QYJmwJ+1k8DBAoQB7J3KKQtfoMCgGGAvZQD00LWFtEXzYKqrl0Ofcc4YrZINjAcFU7VbFHADss/+fDz2jwWV5ezODEpkz66UuYweODqnim3q5ovakxAA7ewJL7qaA9LsJUSqOXgBOgarw==
+X-Stat-Signature: 7g88yn3u6im18fgp5q9az6ceustymrq6
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 591431C0008
+X-HE-Tag: 1790155583-239218
+X-HE-Meta: U2FsdGVkX19Hjv6vLGijrxGlN6/+UsM8jePudPulTcP6C+HZBCRFWSWADlBSU3m0A+qhflL4iiO7zcTbnfV2R4kJcjikXOUybh5jeC4hDCPJvFeVT4zHJY6M/XK7m1k2XKI22Zm6CggWjfQCp/DmPbQ6zP3lVDD0SOAKtOZkrUusDJGAQ4qkmt4P46I9ucFPAP5hXKItEa97eLd8oDHW0XKD/0ViCCd6Jb0UmJdGlFhEKN4JMuC5hMp2ufc4Ep4fuYJBZm+jUrZCKeVN6gXdOX2SXfYzJe7ZK8tCw25RfBCJV1+1BKT9saVa/mbJgvv9zUdE9Abo7LdHzWniQ0lv4y4gpjm4c19em7FTFyU/t0X+UP7wvM+9j3ZREuVvQtUR5JAaY7sTIFo5VAFu0rHYf0YhgkUMMmha2D+78bIr8/EDWp3bAvSoJXCVMgIUKW4c9mG+YhQ8UV+MxDi+rgsAM57p6zx73Am3cb4alyrEOgPEEXGWeHgU6s+gVhtXgG50bddFwX5hTS1hmY0XhfPfH+Xx2Vq+zE6ZKcJyKjLysawqewopOxDpdCM6SO7rl3BpLw9X65JwcA5XXRPIa6/fSbzgeW/iX3UMjo3McNBeOAEOBhGfNAnytlDMgWyP+XbA6Rd+9ILxfDgM0VOyRsvzJGVpRRSttKgVAdT2vP37tNIZ+b8xby17R0BDDZDnuvdo1bHSQ5+RrEjIkYM4aA7Y1u5Tn1U9eSVKpwas0WEyMfT/tXOrC2+QYS4kDyohRxQRKj40KhRLWZFU5YZhNvEa12cEFpKZXeuO1tFq0S7fUVYQq5qAz/bXywB0XCq5AoOoSxWGSbyBG0IzzbvBQJLv8++liFEyucqehRQ+d09QCmdFRz6Af2x5spIMbXONFPcFeWDIqSOIKcobSkiS1j4EPxzuxq2Nz3Ca5ccWD8EClFm/tD5gqTnOMEegCzIOXpFFHUBFMkCq0kmKOL6YQin
+ DwsdJO3t
+ AsimLaQKM8WpwP+jIqqQLiS9fNGa8/eBOL39wBPbYM1wexJ1Ju5MiYWOxikxlWELTRQ4VcsrW/z/4MuNl377xgbEVSjlWNgR73wZyjKu0Sfc8+6QK2dZ6Gr18WbtE/p79XtJHBWo0KXBMU3RysO0hsJZRwmw9k9lKVq8YyGxfMTVXyTG7bpq4v4zKpXUmFIkIpNEmERm7KnQbHCchLVaz3n4h3WBFCL3uolUwSF8nYoLI7MOz9lQFX1MUlkMpIqJp4bY6ic+0rs6vlcvaX1GVDRLUv6cmP/KaK6uLKWTxWJ5HRcqT0q6OxOTWfMqzlXFmEbapoK0pvc+y8CUGPgAhEySlGnHjZNCahrnTrlVCgE9lUb8bR9Z81stG7i9a5kM9OEmiLc/QLrGgugG38PaNzLJ36Nky17pgQDg0DCVhsl6zhf45QJ3RB+TAlfd8MCYrvqPxM8PVnXhAet1Qy1Yvt85yyDerx0aA3pvmPx0NoCnR3luhx9eZRKvBxihUbnGonecq7usg4nrmWmqenRNlzPKGpNiKDMHPAoZAH+yhYkCrX7Hv3ssFsMHU7F7l3FMTq5qw3IJH0QPIni0GZJcmrsiUXsWa0XqY9Elulh+UqLanifF7LrMZrU7D31yT5jpRyDbrhBp1XXAOJ3jRwRrDB2kSG28LELlMPCPUBa9zvtjATq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,87 +118,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-(cc s390 folks)
 
-On Tue, Sep 15, 2026 at 07:42:15PM -0400, Tal Zussman wrote:
-> Use a folio for the page cache page the s390 fault handler reads the
+On 9/19/26 06:13, Matthew Wilcox wrote:
+> This patch is still piling hack on hack.  We haven't made a serious
+> effort to understand what's going on, we're just adjusting flags until
+> things stop sucking.
 
-I tiny bit of context why is this only relevant for s390 would have been
-nice :)
+I have tested two new kernel patches on v7.3-rc1, each isolating one behaviour
+(diffs at the bottom), and ran the same pgbench simple-update workload
+(1024 clients / 96 threads / 1200s, 3 iterations each).  Baseline is the
+unpatched regressed kernel; target is ~135k, the pre-5d8edfb900d5 number.
 
-> old kernel's memory into. This removes four compound_head() calls and
-> one of the last callers of find_or_create_page().
-> 
-> The vmcore mapping only has order-0 folios, so the logic is unchanged.
-> 
-> Compile tested for s390.
-> 
-> Signed-off-by: Tal Zussman <tz2294@columbia.edu>
-> ---
-> This is based on the kexec-next branch of the liveupdate tree.
-> ---
->  fs/proc/vmcore.c | 27 ++++++++++++++-------------
->  1 file changed, 14 insertions(+), 13 deletions(-)
-> 
-> diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-> index 44d15436439f..2dc3803aa11d 100644
-> --- a/fs/proc/vmcore.c
-> +++ b/fs/proc/vmcore.c
-> @@ -474,29 +474,30 @@ static vm_fault_t mmap_vmcore_fault(struct vm_fault *vmf)
->  	pgoff_t index = vmf->pgoff;
->  	struct iov_iter iter;
->  	struct kvec kvec;
-> -	struct page *page;
-> +	struct folio *folio;
->  	loff_t offset;
->  	int rc;
->  
-> -	page = find_or_create_page(mapping, index, GFP_KERNEL);
-> -	if (!page)
-> +	folio = __filemap_get_folio(mapping, index,
-> +			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, GFP_KERNEL);
-> +	if (IS_ERR(folio))
->  		return VM_FAULT_OOM;
-> -	if (!PageUptodate(page)) {
-> -		offset = (loff_t) index << PAGE_SHIFT;
-> -		kvec.iov_base = page_address(page);
-> -		kvec.iov_len = PAGE_SIZE;
-> -		iov_iter_kvec(&iter, ITER_DEST, &kvec, 1, PAGE_SIZE);
-> +	if (!folio_test_uptodate(folio)) {
-> +		offset = folio_pos(folio);
-> +		kvec.iov_base = folio_address(folio);
-> +		kvec.iov_len = folio_size(folio);
-> +		iov_iter_kvec(&iter, ITER_DEST, &kvec, 1, folio_size(folio));
->  
->  		rc = __read_vmcore(&iter, &offset);
->  		if (rc < 0) {
-> -			unlock_page(page);
-> -			put_page(page);
-> +			folio_unlock(folio);
-> +			folio_put(folio);
->  			return vmf_error(rc);
->  		}
-> -		SetPageUptodate(page);
-> +		folio_mark_uptodate(folio);
->  	}
-> -	unlock_page(page);
-> -	vmf->page = page;
-> +	folio_unlock(folio);
-> +	vmf->page = folio_file_page(folio, index);
->  	return 0;
->  #else
->  	return VM_FAULT_SIGBUS;
-> 
-> ---
-> base-commit: 4d17a004cfd5489f88ad0a7a151dea11a533338b
-> change-id: 20260907-vmcore-fault-folio-4b382eeff262
-> 
-> Best regards,
-> --  
-> Tal Zussman <tz2294@columbia.edu>
-> 
+  Config                                          Avg TPS   % vs baseline
+  v7.3-rc1 baseline (no patch)                      59,408            -
+  (a) post-reclaim drain step skipped               70,615       +18.9%
+  (b) compaction disabled only                     107,210       +80.5%
+  (c) v4 (full non-blocking, reference)            154,835      +160.6%
 
--- 
-Sincerely yours,
-Mike.
+
+We can notice that:
+
+1. The drain_all_pages() IPI is not the driver.  (a) skips the whole
+   post-reclaim drain step for costly __GFP_NORETRY -- that is
+   unreserve_highatomic_pageblock(), drain_all_pages() and the retry
+   together -- and the entire step is worth only ~11k of the ~96k gap.
+   Whatever the split between the three, the cross-CPU drain cannot
+   account for the bulk of it.
+
+2. Turning compaction off is not enough.  Your gfp_compaction_allowed()
+   one-liner (b) gets about half the gap, and it declines across
+   iterations (135k -> 98k -> 89k).  It drops compaction for
+   __GFP_NORETRY at every order that can use it, __GFP_THISNODE
+   excepted, not only at the costly order v4 gates on; the decline is
+   consistent with the zone no longer being repaired.  (c) only makes
+   the costly attempt non-blocking and leaves kswapd/kcompactd working,
+   and it does not show the decline.
+
+3. We have collected metrics to understand how often the
+   allocator stalls and normalised to a million page writebacks (nr_written),
+   over the same 3 x 1200s iterations as above:
+
+                                        compact_  allocstall_   pgscan_
+                                           stall      movable    direct
+     v7.3-rc1 baseline                       513          277    90,230
+     (a) post-reclaim drain skipped          912          472   129,249
+     (b) compaction disabled                   0          778    44,737
+     (c) v4 (full non-blocking)                5           39     4,407
+
+   The baseline enters stall compaction ~100x more often per page written
+   than (c) does.  (a) makes all three metrics worse.  (b) removes direct
+   compaction entirely (0 stalls) but does not remove the work: it enters
+   direct reclaim 2.8x more often than the baseline (778 vs 277
+   allocstall_movable), and still does half the baseline's direct scanning
+   (44,737 vs 90,230 pgscan_direct).  (c) cuts both instead -- reclaim
+   stalls 7x lower and direct scanning 20x lower (39 and 4,407).
+   That is why (b) recovers only half the gap -- the stall moves from
+   compaction into reclaim instead of going away.
+
+If you agree this is the right direction, I am happy to send a v6 with
+(c)'s behaviour plus the defrag_mode fix discussed in the v5 thread.
+
+
+Thanks,
+Salvatore
+
+
+---
+For reproducibility, here is the exact diff behind each measured row
+above (all against v7.3-rc1).
+
+(a) post-reclaim drain step skipped -- 70,615 tps:
+
+  diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+  --- a/mm/page_alloc.c
+  +++ b/mm/page_alloc.c
+  @@ -4487,7 +4487,8 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
+   	 * pages are pinned on the per-cpu lists or in high alloc reserves.
+   	 * Shrink them and try again
+   	 */
+  -	if (!page && !drained) {
+  +	if (!page && !drained &&
+  +	    !(order > PAGE_ALLOC_COSTLY_ORDER && (gfp_mask & __GFP_NORETRY))) {
+   		unreserve_highatomic_pageblock(ac, false);
+   		drain_all_pages(NULL);
+   		drained = true;
+
+(b) compaction disabled only -- 107,210 tps:
+
+  diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+  --- a/include/linux/gfp.h
+  +++ b/include/linux/gfp.h
+  @@ -380,7 +380,8 @@ static inline bool gfp_has_io_fs(gfp_t gfp)
+    */
+   static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
+   {
+  -	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
+  +	return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO) &&
+  +		(!(gfp_mask & __GFP_NORETRY) || (gfp_mask & __GFP_THISNODE));
+   }
+
+
+
+AMAZON DEVELOPMENT CENTER ITALY SRL, viale Monte Grappa 3/5, 20124 Milano, Italia, Registro delle Imprese di Milano Monza Brianza Lodi REA n. 2504859, Capitale Sociale: 10.000 EUR i.v., Cod. Fisc. e P.IVA 10100050961, Societa con Socio Unico
+
+
+
 
