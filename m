@@ -4,101 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB87C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:53:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B371C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:59:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91A836B0093; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
+	id C332F6B0088; Wed, 23 Sep 2026 01:59:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F36E6B0095; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
+	id BE5786B008A; Wed, 23 Sep 2026 01:59:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 808546B0096; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
+	id AFC126B0096; Wed, 23 Sep 2026 01:59:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7746B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:53:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 311EF403B2
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:41 +0000 (UTC)
-X-FDA: 85243960242.01.BC49114
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9F51F180002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfiMSTdw;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D6656B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:59:46 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7BB0A06FC
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:59:45 +0000 (UTC)
+X-FDA: 85243975530.10.BDB0F42
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3E96F4000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:59:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8VgSOXe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790142819;
+	s=arc-20220608; t=1790143184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLg7eC5tmmPMhZrdk3Y2A4+KtVVGLpx4Z4IOl6QmxuU=;
-	b=PrhAgk6wX+s0jPZ/OXe/iRez/JwAWaVBa1joXXIVCJM+Qi00tDKH9g3JowbzQEmHsstEkB
-	KmWkTh0xZx69EncxO2MQpHpo6Rq6e2Sk9k3twC3biZC7BvSI96sJ+HsnViDMrMyizb7LuS
-	oZXqCPpA49rJFRT9/TXf1SelsWK7dCo=
+	bh=T0q+UNTS7TEJdRtDKrLfE/EvgmECHCAwTbTZ2Ttusqc=;
+	b=7SCmdfJnfAgJN7rHabPqnIhm1eYnu6DwGLUd7sjNuqVwQAsjWD+2TWuhZkqaXe5hQbXPGA
+	KoeCFiKb31diNLQ5ZWfqEJ9Y/0X+Pd+TMvan/pbMdFSsV2bHy26XZBTaKRKtX/qYy9aiIS
+	5YAMEznj5lWEmUv86H9e8lKSLR40oYo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dfiMSTdw;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h8VgSOXe;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790142819;
-	b=PzDnRtFrkLM7liYlQ91ZuA2zyceKi2Gfijwk26XEF5znpHxADzoMDtQB9EbiXt9N8JQqoL
-	Xdd3DfRSim9vb/I4wZDbNFDgGiuhwxuXVL6eEgua9vdkVpHSvEG1lGFHCzPaCe2aPLX2KA
-	h2WQBBYZ/8rnadEHa4W+6ii4m1geIKw=
+	t=1790143184;
+	b=zc+Bs5ZTWl3PZw6Tmb1BYI044U0htVVTI6ZC7iJ8cB9Fzdi/abTpV1TZrs9OKsReRjOKxE
+	ByKDjJemJDBDI1IGXQBducK9WA40QCksMzuciLrI9GIy92x8EAHSZ3F+Qutn4OnyaUeJCr
+	HHiGLSrHe+LYmEd//uSW7VQpLMK16Sw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D71D46020A;
-	Wed, 23 Sep 2026 05:53:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B328E1F000FF;
-	Wed, 23 Sep 2026 05:53:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 71C6B43434;
+	Wed, 23 Sep 2026 05:59:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1E21F000FF;
+	Wed, 23 Sep 2026 05:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790142817;
-	bh=NLg7eC5tmmPMhZrdk3Y2A4+KtVVGLpx4Z4IOl6QmxuU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=dfiMSTdwFtu0GCkhWemNFDgm+eZPZTNwX9NfJANQl2p7VUL12gPuLOT5GFrp9s1/W
-	 gYHsfaLK7hikvujYiuXBUn8tMKa90RN/oaYf2S0NAbKARN3nHId0g1n9dBJrUeJeqm
-	 1Q44Iafx85llSabeXDEcOdxXWocXCUP5y+CfG+SLeH3LQKK2DCfDxkDMtcFBDaOqJv
-	 3HMHpRbUUmlsMii5otr4W/LYqrG4eJChKhKMXRP42VluhoUFMzhKQPjXcnsbxGFGAB
-	 eSZq2hnozQ8Ha+TQTKHYQZsH+7U8XaqMquyRiYdYscnEhoNd02LZ7qoYGMlm0AwCPg
-	 wXpHkFmSzOfPQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-In-Reply-To: <arKsFofudnTYpXj1@arm.com>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-3-aneesh.kumar@kernel.org>
- <arKsFofudnTYpXj1@arm.com>
-Date: Wed, 23 Sep 2026 11:23:27 +0530
-Message-ID: <yq5aik3w344o.fsf@kernel.org>
+	s=k20260515; t=1790143183;
+	bh=T0q+UNTS7TEJdRtDKrLfE/EvgmECHCAwTbTZ2Ttusqc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=h8VgSOXe4RBqqrmytkAtjUaYqpFZB31iG18EYsKuzTkeYHceZmdu1gDbB9HrOqDlJ
+	 uFvavOa8tcq5OzbHDrc5SnPNB5Q/MWDsCtjjDliUFCs6f9dtytrKzPMHJXp/jj9Vaw
+	 G/Y9OjeXbYQ6DKa82i2CCcwLx+79TmTO1D+d1bdOn605DffZKS/Y1jvfqkJm2D0PiN
+	 i0XHJXfBg5bR8fDO6CnT0FCgMVNTeieOiZnYpQBS9FFylEFTIZMtO/Wvgq6GnQMxWi
+	 PSDa0eKT3ycmB/EGiQ9Mwl/i8y6Yd8yl+ugUEoNDnwvPsAZegiIULIwVcS3jBheejI
+	 l9fUoogPcOIkQ==
+From: SJ Park <sj@kernel.org>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] mm/damon/core: prevent size quota overflow in the temporal goal tuner
+Date: Tue, 22 Sep 2026 22:59:38 -0700
+Message-ID: <20260923055939.3495-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260923002600.1825448-2-donggeunyoo.kernel@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 9F51F180002
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ygsjimgismaftw4antwy4cnh6xmmt75s
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bpcux5rk6efypeqyzs4ew48hh7jaf9kn
-X-HE-Tag: 1790142819-914408
-X-HE-Meta: U2FsdGVkX19UfnxaKKX/HNPXj1OVu3nkghLYcUjAvMT5LXJdLO2YEJ2IH2lcZceuguALVsoAJ5nicMZJX8V7nk7sgOkl2VZuEYZnJk0focxa2BzWFKd/Icg84msL5gY+AgM/8no1uknrSSsCH48GBUh5CcczE007mtBQAc79yGBicL/wD+MoKurhkLCKMECIiSSqhQe1djgUsjRFuadheq2yyisiVHxD1CS8dF2B36ReUV1/UEU9JU3Fcce4hMSMzS+KuIUmjeAWK4CG997yXzcyAN1thgu3DtaUPD+Res4ggUk228/QsQbFlo+1uXrtzx5mzzF1GCNrJRV8Gaq1Z/WF5Rv0bQN8GgnNUACq21/E9kSbMWD/M2Tp164LHG/AMJGv730bz3jfRjofcH4W0PX8rkMaZ8pO23vGdriiPIhx9kOmuBvR/oBBu+Ll2DcH6FZJa8RHAoyavT6GwamFy1Yybo01BEnkM8HIyvMQ7nYyklWQg3jkZZE9QbvpaDB8tP2uXaSACffQcf4m+f3cfwLC7jiMpzH0UrB0hwFFVe6I+KNErcb+ZUk/6TWRSEjxHLI5/EuW+0+2PSG7zQ4M6KlWV8/HoQz9vzy4a+YN9wRWIIJuMDDMiZOBSfDjv6lV7kz86TjynshnBl1Jc2Q0N1yuFI9ADSz99ScsZlVFhpcx2Vs0vsUyx/CRsfZp9u1RLa94HGgwaTgKlMTp90B0PlxREWfgpz+PcN0rGVSxfsXvgXPl4/Dt3r1OWvGqzydNuUXNSa2CKyuuNIeejVjHLg3J/IsjFyDX0p1XN9IABu86DjPcJMu7KXdoK8QVjCV+n+Femv9kK/Zx0LjTtNQwR8iVmxPGuIW1Xy8HYtU6a0A/RFalJf5jVfckRTZ2G6CFiAstm0Jksssaqvp0rp4ZS7Phx+0M7LK0VbbCB7skbuZKBy/P/7/1NQwKOc0fFXoXzQefW6px98uN3rKiWCw
- JtfojP85
- U4jabJWvStoW1G4w5dEECG88AKH3EuiWL8/ETrzES2sLh2PkMCVRzZ0EKVNJIx07k7PSRyu6c6TSoLPrrmyhrtdYDRGLvnwtWuRwZEQivTMhcnOSD/fV3SwceIeIw10GQZF6r+Pn+1X8kGw8se+8CpWywvcZubrYADhWd6TBJF8cVyB/iwuXXoApAg7XFDNUo6CHkRHJ76wWUOV6iGCJ1ZUnKgpy2o1CBTvPT5ugGlZmYWrSH339veXRLegvY1vyjNEsEcy1oIaqWLFE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3E96F4000A
+X-HE-Tag: 1790143184-970173
+X-HE-Meta: U2FsdGVkX19B4JsWtzGnOqoOrHx1Zy4unwmIh8MjCZtCB/J01jOLMi4rbWOSwZbqILAIeAXk41+GgPEwYlFk0E8ZzWUt1xwO+6ZlAXqLio3z8un+vHByLq9TdVchu7HcDtzB2VkJ/6tzxCAZHv0gj/bJ3SPVxBBK8CCZkGBfJJI8LFLKhJpgoZBo2COXvVB7gLA9Yq/Zw3ibQTr55m7LMsqzSABwzSR4TmLBwk/SjqQgYI5E7hlVOIGBFF0W6xTcZTPeGRlQOLwz+2ay+58A9jZuh2RaTCxDJkr6h+9csukqVX5yiUq9tA+Q2Uke1nZDova6TVOH3ZEkwjl0caClHCPTQxfIRrV99cGp4PkzKaQ1RRmeCZznMCg/5ITQJlTDuEqb0RFnXIna57xG2lHax1FXpmDt9ylZ5+ONBjYc289d61owyVo91gg8+Jrm8SKBn2tP5P0fvCZ0cpbkRAteht0Yhw/sByFR+hKgfaX9azn51zUwDp32t7HfUEG1DK+bmFdwHX1uFQU4r+M7Hfuqr1fKOZoTmpCPK86+Rnr51CFXdFLr1SPsMQ7Kd8sRFrI6uZfXOm8GTGZE/iG4zxMYVp7SkBelI1uQCOIRwIIsd+r2tAr7SJZ63oG0QCMZI92hAJ9t7Bxcu/QfaiR4sg9QclrlEDhLjUX8c8OSjvZF25GdQUbUaUi2C0mg38H8KatVyMPMaKQ2YW1o2UFtGQaqbnD3xY2qfea7Wt/J1KH/FEfzNRsN2Z8RPK29Mi0oD33UmSw/CKMVCmu4R9hPXHLI+Mfka++R1e5XUTTLJ3Xg051THXF9Y5ePrcnB6TAGLoM7qPvI7s1dxsGL3GY9izjbRFQLzcxtrDpmH4YztNnSv+bnXycgBMjKD8UamuoKzSb2ORt2vokE13s95EVxma36wXiKS3XuRXp9o5EJLGK3H4uYIrFsQzW3T/uecbnibp9RccuVYFHXm1G5ncytG0f
+ WNNwCJnL
+ byrrbueA8iITrVvmXbVGE0N3xbUEf2O3RHbmdBE28kuyTRPx4eNfkYe/BEV0IS2NgaoQyEmX9STE82zwOdcoVXkY/pvfZFSF2M+paXTynQcM+kEBnCLPNa+yi/0Kbq+0pW6zvB36vlkCdSaVYDnLJZUtrVaBWHK2tt9VlhYOdfAiNJ9wR7mBgclmo3hXFNKEBoJxmSQ42kPZGid8uoVxrux+kLSC1KvP2yzke03Uo7uJEJoYIPRgdSpFV8UANFl1st4JZGohrLH5L29eam4OnL/WYjRxcDeAKjK+ury7W6S3kPgVhb+rONkZ6FJwLF8YnyxxNycI/kyIgAAU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,79 +94,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Catalin Marinas <catalin.marinas@arm.com> writes:
+On Wed, 23 Sep 2026 09:25:58 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-> On Mon, Sep 21, 2026 at 08:18:36PM +0530, Aneesh Kumar K.V (Arm) wrote:
->> +int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
->> +		size_t requested, struct cc_shared_pages *mem)
->> +{
->> +	struct cc_shared_layout layout;
->> +	struct page *page;
->> +	unsigned int order;
->> +	bool zero = gfp & __GFP_ZERO;
->> +	int ret;
->> +
->> +	if (!mem)
->> +		return -EINVAL;
->> +
->> +	ret = cc_shared_calc_layout(requested, &layout);
->> +	if (ret)
->> +		return ret;
->> +
->> +	order = get_order(layout.shared_size);
->> +	if (order > MAX_PAGE_ORDER)
->> +		return -EINVAL;
->> +
->> +	/*
->> +	 * State transitions require a linear-map address and may modify memory.
->> +	 * Allocate from low memory and defer requested zeroing until afterwards.
->> +	 */
->> +	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
->> +	if (nid == NUMA_NO_NODE)
->> +		page = alloc_pages(gfp, order);
->> +	else
->> +		page = alloc_pages_node(nid, gfp, order);
->> +	if (!page)
->> +		return -ENOMEM;
->> +
->> +	ret = cc_make_shared(page_address(page), layout.shared_size);
->> +	if (ret) {
->> +		if (!cc_make_private(page_address(page), layout.shared_size))
->> +			__free_pages(page, order);
->> +		else
->> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
->> +					    layout.shared_size);
->> +		return ret;
->> +	}
->> +
->> +	if (zero)
->> +		memset(page_address(page), 0, layout.shared_size);
->
-> Does the memset() post sharing logic work for pKVM as well? If nothing
-> clears it, we have a small window where guest data is leaked to the
-> host.
->
-> Is there a case where we *do not* need the memory cleared? If not, maybe
-> we can move the logic in the arch set_memory_decrypted().
->
+> damos_goal_tune_esz_bp_temporal() converts the scheme's size quota
+> into basis points with "quota->esz_bp = quota->sz * 10000", both
+> unsigned long, and damos_set_effective_quota() divides the result
+> back by 10000.  quotas/bytes is unbounded; bytes_store() hands it to
+> kstrtoul() as is.
+> 
+> On 32-bit the product wraps for any size quota above ULONG_MAX /
+> 10000, that is 429496 bytes.  A wrapped product below 10000 divides
+> to a zero effective quota: 429497 gives 0.  damos_quota_is_full() is
+> then true on the first test of every charge window.  Other wrapped
+> values are wrong without being zero: 500000 gives 70503.
+> 
+> Triggering this needs a scheme with a quota goal, the temporal goal
+> tuner, and a size quota above ULONG_MAX / 10000 -- 429496 bytes on
+> 32-bit, 1844674407370955 on 64-bit.  The scheme then makes no
+> progress for as long as the goal is unachieved, which is easy to
+> notice, and writing a smaller size quota restores it.  Nothing is
+> corrupted and nothing leaks.  This is unlikely to be hit on a tested
+> setup.
+> 
+> addr_unit does not cover this.  It only scales the numbers a paddr
+> context writes to quotas/bytes, so a large enough scaled value wraps
+> just the same, and vaddr and fvaddr contexts take raw byte values.
+> 
+> Bound the multiply.
 
-I don't think every architecture or platform can unconditionally zero
-memory in set_memory_decrypted(). Some callers may need to share valid
-contents with the host.
+Looks good to me, thank you for finding and fixing this!
 
-Also, if zeroing is added only to the CCA implementation, the allocator
-must retain __GFP_ZERO for platforms such as pKVM. This would cause the
-memory to be zeroed twice on CCA.
+> 
+> Fixes: af738a6a00c1 ("mm/damon/core: introduce DAMOS_QUOTA_GOAL_TUNER_TEMPORAL")
+> Cc: <stable@vger.kernel.org> # 7.1.x
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 
-How about extending cc_make_shared() with a flag indicating that the
-memory must be zeroed, and passing that requirement down to the
-architecture-specific implementation? The implementation could then zero
-the memory at the appropriate point: before sharing for pKVM and after
-the destructive transition for CCA.
+Reviewed-by: SJ Park <sj@kernel.org>
 
-The allocator could derive this flag from __GFP_ZERO, remove __GFP_ZERO
-before calling alloc_pages(), and let the sharing operation perform the
-requested zeroing with the correct ordering.
 
--aneesh
+Thanks,
+SJ
+
+[...]
 
