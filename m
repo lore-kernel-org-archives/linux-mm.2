@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B575EC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F16EEC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:35:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93EA06B00A9; Wed, 23 Sep 2026 02:32:41 -0400 (EDT)
+	id 8CF116B0088; Wed, 23 Sep 2026 02:35:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EF936B00AA; Wed, 23 Sep 2026 02:32:41 -0400 (EDT)
+	id 87FF36B008A; Wed, 23 Sep 2026 02:35:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DCD16B00AB; Wed, 23 Sep 2026 02:32:41 -0400 (EDT)
+	id 76E326B00AA; Wed, 23 Sep 2026 02:35:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 466406B00A9
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:41 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A478B1206EF
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:32:40 +0000 (UTC)
-X-FDA: 85244058480.22.87E7DD8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id ED6D7120008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:32:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hXRHhmrB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F1D46B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:35:56 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B83B7A0711
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:35:55 +0000 (UTC)
+X-FDA: 85244066670.19.C3BB126
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id E948D40008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:35:53 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y6nkKtCz;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790145159;
+	s=arc-20220608; t=1790145354;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hUUD5AsSXzkphFJZvhrBYYbjoBXgpQvRiJn9WGnnTwc=;
-	b=DBSo0E7JlqDRELEpisIHtd8YE0Lgj/NuIKyvTsEhJ113GkT2VdiCqPhOwOhffNQvNGUT48
-	YYBl7Z3AGJjjGTltjsk6yDI0RS5Q5sidOXLMwApvfIH4robKd63xJ13j5EEBeU40f1G6XO
-	k3Z7GhpqYHr3KHRKybQjteNjCFXdw4E=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hXRHhmrB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=0lkUVys8gvUjF/9PcP1iToEGr3wc3OwcQw4hSpUPIN0=;
+	b=sAGPh67gJW/4RLfwZvA20r18HrXB36d2am8wdkYHXeITRYpYtvno9p02XTPLFN9ZUivSjF
+	mEqa1hz223a+LZWMVwhfYIQFmiOix9Cy1ep5llw9fINYu1LTPqME1LZMxdVksyE/G9Rgwe
+	DIXBdOSI+gTw8qBPCwwauPdbuVZoNTY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790145159;
-	b=SknFTD0NZOUFmjq3RC7bAbFWUnbjh70IcT7HO9APlwfXe20gY78KfkUKkPQbjlCP3jc9zG
-	WooLhnmcCzTmWQ0dPVyKxFHD1jHd2HegdGRxz8cAvS2jtffcZQlWEobTrEPpvZow5K7t12
-	1G7JGqxGqmhfyO6C1XraDakqD1M2L9M=
+	t=1790145354;
+	b=jVA5KKlSETmkOl9CJcsS7OBBXkjquLgvEk0OtR9mv2jIFvzgM9wb1ioLkU005KW0rPR5vo
+	enCPUyMwYsHijxoLrna9jdcX5np5P5TRtbizPOhljVITR7E0Bw6eLdBucr4nN21ckaPypu
+	GPUpsrtGVm++N9qw6ktDcRNUrnU7e74=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Y6nkKtCz;
+	spf=pass (imf11.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 39E55601F0;
-	Wed, 23 Sep 2026 06:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E4A1F000FF;
-	Wed, 23 Sep 2026 06:32:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29120436F4;
+	Wed, 23 Sep 2026 06:35:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F34E1F000FF;
+	Wed, 23 Sep 2026 06:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790145157;
-	bh=hUUD5AsSXzkphFJZvhrBYYbjoBXgpQvRiJn9WGnnTwc=;
+	s=k20260515; t=1790145353;
+	bh=0lkUVys8gvUjF/9PcP1iToEGr3wc3OwcQw4hSpUPIN0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hXRHhmrB9NhcEkiy7kvByZxgQdF2vfg2sXL63KJyiVDOAbH4giWC3rrE1BYeZx3P8
-	 GlMqexvqR1BEnxX+bIlseBFGTRMIe8avCCI/W/HCZEHmRS403M3NHZup7vuVRAhUgx
-	 yxoCQJLQTVrxDmhTe5J9/i5t41chXhheoL4AJO/45XmGvDvFOOPQYIguBWMOgbYttC
-	 2ZKj2ODVAjDOEoM3VdCfDZ6XfoXNCkjd+NalL3o1/A5G10ZWYUqS4JVQddQlZkKM6W
-	 TLZIQ7Tlh7ff/pR8nFPrWCKUQ69LPN2/R7Ai7w2iOuavHVf8r0TKz6k9uKpIQ6ZX4u
-	 BjFAQ7dvmSCVg==
-Message-ID: <80206444-d0c3-4dab-a5e3-a2909e58ea33@kernel.org>
-Date: Wed, 23 Sep 2026 08:32:29 +0200
+	b=Y6nkKtCzEeqId9jMLa0VpqG7vVmn6qXI47fFEsnF917E5SKaQy8E14ioPXN/eoegQ
+	 CfgIhwCcqL1okZeQtygWog5zd0RFe+uSsZXrzBmPHzWXEJtXG4ypSy+1uD5rFx9Cj7
+	 l/9d6pUxhAMnzY4DpakXGPQ7BZPsnQECF3dV0jopfD4LGmhoEGsvCxRlCxIert7RYm
+	 IE2KgQ2Xs93KwTdDGmGbOPGanWdhNR0wzp8hJs1oXu/lL57s9Qm0trbH93804Yz3oh
+	 kTdqLdQ5HpGG0fDu+C+Zc5TGoeH2uT3I0dfV6+9T45m+fCB7i6NV574TgvmTMJisBa
+	 ruNJ0CX+0KYVA==
+Message-ID: <7ea6e90a-e2fb-4793-b6ea-e292388bdfdf@kernel.org>
+Date: Wed, 23 Sep 2026 08:35:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: let the bulk and folio allocators carry
- alloc_flags
-To: Gregory Price <gourry@gourry.net>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
- akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- brendan.jackman@linux.dev, hannes@cmpxchg.org, ziy@nvidia.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, ying.huang@linux.alibaba.com, apopple@nvidia.com
-References: <20260914155115.439742-1-gourry@gourry.net>
- <20260922130558.48402-1-lance.yang@linux.dev>
- <arMxm4ia5Md-Zt4R@gourry-fedora-PF4VCD3F>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Subject: Re: [linus:master] [mm/secretmem] 97d34aa65c:
+ stress-ng.secretmem.ops_per_sec 99.5% regression
 Content-Language: en-US
+To: kernel test robot <yi1.lai@intel.com>, Lorenzo Stoakes <ljs@kernel.org>
+Cc: oe-lkp@lists.linux.dev, lkp@intel.com, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, Daehyeon Ko <4ncienth@gmail.com>,
+ Mike Rapoport <rppt@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Hagen Paul Pfeifer <hagen@jauu.net>,
+ Jakub Kacinski <kuba@kernel.org>,
+ James Bottomley <james.bottomley@hansenpartnership.com>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Suren Baghdasaryan
+ <surenb@google.com>, linux-mm@kvack.org
+References: <202609230824.7a9189aa-lkp@intel.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -123,17 +125,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <arMxm4ia5Md-Zt4R@gourry-fedora-PF4VCD3F>
+In-Reply-To: <202609230824.7a9189aa-lkp@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: cr5z7hpmi6shrejhybnxhobqbf8jpgio
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ED6D7120008
-X-HE-Tag: 1790145158-368405
-X-HE-Meta: U2FsdGVkX1+uYmZy4iGuWmOCdoKsYKWi31u3FNMs0fIc0ovr4BjkHROUzFsIgXOz/GvaTH8K7TnlYcTAW+OAz9tzRO/CFGBFRLxv2FIiYYnaMzOGeJo50wUmSHeuqgr5iyXzsFyxUg0jHpMeSEmXO/SqbWrUHvRiqGGBn6bWRL7Laze4d5uazKDVXXPNi4oPOuV2pnoCtdmwyCBtOLfTl3e/25jZlUBs1l9AdGW9T27iegnmxO6abkPtlOVlwN/ksd+IFzspP7xT8WK8QXx1+kJk0AVITxT7H4kgRiZXLLOBEsXnoSrl3l5wVPJxy0f3WeAiQLB8TIoZ2gkWs924kicTR5GtKjyN8lYrAp2ZpHAGJvfRml0b7CPl8ElsNA3+ROus2k/DkwZ/Mz55z9BDNfSV+6QfvvM9uWNi0uaS7/yWPOqO5X6gOGi2pbBOfVWBYiweHvsAkb3xGRL1XZVKX0TpT/VraMTifW+Zq9kh1iAOQuXhzmmPd7CYG4sDAaSywKOKzHS4ygu+8NyrUk/iZ+QPug2/I6Rf8/8SnOgEu9pvZ0pOMezTCEjQ/yPuGQwrFT59XTaZk/o2yJI557jfnDyThdDpcK0K5HvA0lumQb+726ll50PURNuxz0cfS2mb5b+0jHTSHrNBaaVHO0efRVbiAENCPwl0aooxMaK6flwEWDzGjIwmWicEldJCslbWRiuXsZiMv81yYAKKtC5LEVYpdmUbAhoXWcMTRRohvs/LMOZFJXqtInDJZKvJ9HFBhWt6OxbSHRCsIy3Hp4LRNxYwmVrg96G3kM5T2fGFoDgDEBnRQDcrkS33MTXSU65qciTV0tPaQe8d6gpPMcwAybBFsQ1wMcmJYlQUSHfBErQqxMEb4NsYwJqiWWDtlVtj40PO/mYrrSNy88j2hNRaqWlq7rdNUyRrIE6ZRMFhCPlDMbUgLaSI6DtTajiO3nALXHPRHQvDdGPKOIEhJr4
- MVFl6q+c
- 40Ay317HPtR3cs/eVdLau+RlMvLdDZ7QNfI6/RM3pjQcAQPINGW/7rJ9cIXxw0R33ZJEUn1SDNC2VOc0u9tqO2RMLSS7dINspoT8zEAhO6DhH+lyzyHRoRRuRdA2nWfs01XCVYsPI5BTYfynflOKCIBKkZI5/s2KzN2ufomgAw9qAl1ZLo4UCmjnH4DYgzQhdZNy2gjF02X2e/P/h7HFm90mc/jVtzJQOawA35rZH2Qj5njqME9akCt2Se5Y4dA6amRAF1UKR5kDXS3vKVbdSaYtjbB+TMtAr9f7oRnGp1hO2BRC3WUu0lPgHjX5nhB6hUJIkD0jp1P3NKtZK+Lvm4ASUI/FAHSDCeFtjkmNm464r0cl0x8T9bArlB2fK4sVvmLhA
+X-Stat-Signature: knrkxwd93xdcyajhwwxqqksd7m75gj8n
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E948D40008
+X-HE-Tag: 1790145353-643638
+X-HE-Meta: U2FsdGVkX1+z151n/BhS1k2ZAMBxsa7iotFVkOGfSbl423/MPZ6qjjS2mVpv9CsaDD245Fr60FOZZIu0zW0IS+ZkLNEaLdLsyxuKd7LqmfT2BSt8GyoxiTXVOvR1eRnR3O58Qjl3n1fPc9GM9N5vRSP50JehgFae/8jZZ3+fHosDg1/xN+I6b7UWxihLuFlqep88qwmL239ruMCRMBv9h5FBEbZkG5ZF3ljWZO5li7KsAjUnqdfVXqueZo3BPsLp4XXEEnh7Z7agQVlWPsPtR6A684avmdHVBCyo2GlfNFEUWA0rVA0uimUCYJjPKFINJy9oEJwxBmo2UCCD/IUxkqb5nyQ9CvAI6dIHGFW9PqGbdMfgZ+t1lc5F/XMcXrQ0qAhbZ3hjQdpLsCkOXIwcbxFA1TSPIWxsR7XjH4soQ4K1KieZl4dkJ3YkuJRjyutql1yu5XxT6Io9zKfaDMUHH6DG+VS6AiZSPrDclcZ5uRYkvl6H17Nr9Bl0KrFBrhhzru364CFRWmn08LBTzccAF8EFJ15SIJDTAXq8GH7bHVYu3Pr/WFynKxD4hlEbV4yD7lCNeK8Pc5VDyC1r8Ei8YjZryb4GV9fwTjI69anxW/E2m+dj5NtG5KgJCg9G8BDseXC30C1PIszi8V+EjWkH2ArOW0MQdlHwQYkwyCRYMcAU9xMBbsPmeyI9hyYnts2YJQ92ir7TmYO3yfkTHUKmxfGrYz8udDRQng5oajtXMqoeI1xGPokvZpJ41pM+kFQx3BeBPQfhVmF+PGKnATJ7JBmgTwg3RWyjdnOiTVxzL1KKtL7npLPA+40ntRjyr3+kUfKCOTSKmCNeu08eg2sUtSIYCya1glDyXd6tLyRz9XW0bkYImEoNrxKn7hWGpkDOwV0PxXq+qkhGM+6fL54w4HmS0pMNDpfzhvu1AAavBURKr7EjRR7D/akf4ggte+pFFGXwXVJME28LX1SN5pA
+ ZcWwM2zD
+ NzfAO5jt5AbTSz3f8WR8H253qG4RlmWSHDbSrDh0mQpfYNT4y6HFLGPLvsePP6vYl28RoEPhAwiFbZdTby7KAgUnvQ6/h3Ql0XwNWblUMdA0en+2LQwZlpZ91RqHoVBefap2r3/uQCqBqlyGdkLyZNHoJoUwwAMI+I4vrw37RdUdDXs2d/0fleHfJ8xn1SxBZOduSjLXazasUR+qfIHoNrz9wJAL6zmdPq6H+S00o9/yqXFcRJ6xXe1sEMEwtdp0Gp2zd71pYxW9vaicGicuY222jNZs9Nz0DDJDlJ6VE36KPc327qHfV6MI0Nlbmtqr7e4M1NdDLhWj4kxpTrKKrh1ERmEpjmQKh/ipaZz3yTxQ5LSh/zwknKMeC9ZoxD4FdD6QlegaZ6zyHNsaF/VPdCjKSsKE7xnYcoZFUwJg6UwmAkwWFPzKEfMPJX7WyCxqwALv57PgsYHlHyqsYPhnTmYE/UDaTVADGPs2j3z9KAScqPRyVOA3xAxb7U/M16A3h6rvO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,51 +143,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 03:59, Gregory Price wrote:
-> On Tue, Sep 22, 2026 at 09:05:58PM +0800, Lance Yang wrote:
->> 
->> On Mon, Sep 14, 2026 at 11:51:14AM -0400, Gregory Price wrote:
->> >__alloc_pages_noprof() takes an explicit alloc_flags, but the bulk and
->> >folio entry points do not, so callers cannot select allocator behaviour
->> >(e.g. an alternate zonelist) through them.
->> >
->> >Thread alloc_flags through both, matching __alloc_pages_noprof(), and
->> >keep the flag-carrying primitives mm-internal (page_alloc.h) so the
->> >public gfp.h wrappers stay flag-free:
->> >
->> > - add __alloc_pages_bulk_noprof(gfp, ..., alloc_flags) in page_alloc.h
->> >   alloc_pages_bulk_noprof() becomes a wrapper passing ALLOC_DEFAULT
->> >
->> > - give __folio_alloc_noprof() an alloc_flags parameter and moves
->> >   __folio_alloc_node_noprof() moves into page_alloc.h
->> >   __folio_alloc_noprof() is no longer exported
->> >
->> >No functional change: every caller passes ALLOC_DEFAULT.
->> 
->> Yeah, but what if a caller passes ALLOC_NOLOCK in the future?
->> 
->> __alloc_pages_noprof() checks alloc_nolock_allowed() first, but
->> __alloc_pages_bulk_noprof() can enter its fast path without that check.
->> 
->> That fast path can reach _deferred_grow_zone() or pcp_spin_trylock().
->> Shouldn't we do the same check first?
->> 
->> Or am I missing something?
->> 
->> Cheers, Lance
+On 9/23/26 03:00, kernel test robot wrote:
 > 
-> There is some concern around NOLOCK here yes, in fact sashiko picked
-> this issue up and I've been poking at it.
-
-It's possible to document it as unsupported, add a VM_WARN_ON_ONCE etc.
-It's not necessary for bulk alloc to support ALLOC_NOLOCK just because it
-takes flags. e.g. kmalloc_nolock() supports a subset of gfp flags as well.
-
-> I've actually been reworking this patch and pulled in changes from the
-> ALLOC_UNMAPPED series to address this all at once.  I've been developing
-> a page allocator unit-testing harness to help validate some assumptions
-> before I post it.
 > 
-> ~Gregory
+> Hello,
+> 
+> kernel test robot noticed a 99.5% regression of stress-ng.secretmem.ops_per_sec on:
+> 
+> commit: 97d34aa65c29cca85e3e9050f4c936389b38a054 ("mm/secretmem: properly account locked pages") https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git master
+
+Well maybe there is some inefficiency that can be fixed (haven't checked)
+but if it's the cost for proper accounting then so be it? I doubt creating
+secretmem pages is something userspace would have to do intensively enough
+to matter.
+
+> testcase: stress-ng
+> config: x86_64-rhel-9.4
+> compiler: gcc-14
+> test machine: 224 threads 2 sockets Intel(R) Xeon(R) Platinum 8480CTDX (Sapphire Rapids) with 256G memory
+> parameters:
+> 
+> 	nr_threads: 100%
+> 	testtime: 60s
+> 	test: secretmem
+> 	cpufreq_governor: performance
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <yi1.lai@intel.com>
+> | Closes: https://lore.kernel.org/oe-lkp/202609230824.7a9189aa-lkp@intel.com
+> 
+> 
+> Details are as below:
+> -------------------------------------------------------------------------------------------------->
+> 
+> The kernel config and materials to reproduce are available at:
+> https://download.01.org/0day-ci/archive/20260923/202609230824.7a9189aa-lkp@intel.com
+> 
+> =========================================================================================
+> compiler/cpufreq_governor/kconfig/nr_threads/rootfs/tbox_group/test/testcase/testtime:
+>   gcc-14/performance/x86_64-rhel-9.4/100%/debian-13-x86_64-20250902.cgz/lkp-spr-r02/secretmem/stress-ng/60s
+> 
+> commit: 
+>   35b0fb391b ("mm/mremap: reset unfaulted VMA page offset for MREMAP_DONTUNMAP")
+>   97d34aa65c ("mm/secretmem: properly account locked pages")
+> 
+> 35b0fb391b0df573 97d34aa65c29cca85e3e9050f4c
+> ---------------- --------------------------- 
+>          %stddev     %change         %stddev
+>              \          |                \  
+>    6080503           -99.6%      23092 ±  3%  stress-ng.secretmem.ops
+>      85584           -99.5%     385.28 ±  3%  stress-ng.secretmem.ops_per_sec
+>      71.48           -16.0%      60.07        stress-ng.time.elapsed_time
+>      71.48           -16.0%      60.07        stress-ng.time.elapsed_time.max
+>      97435 ±  2%   +1276.4%    1341103        stress-ng.time.involuntary_context_switches
+>     230308           -96.1%       9096        stress-ng.time.maximum_resident_set_size
+>   18401243         +3349.6%  6.348e+08        stress-ng.time.minor_page_faults
+>      20417            -8.7%      18639        stress-ng.time.percent_of_cpu_this_job_got
+>      14581           -25.0%      10937        stress-ng.time.system_time
+>      13.34         +1858.5%     261.33        stress-ng.time.user_time
+>       6898 ±  2%  +96037.7%    6631576 ±  3%  stress-ng.time.voluntary_context_switches
+> 
+> Disclaimer:
+> Results have been estimated based on internal Intel analysis and are provided
+> for informational purposes only. Any difference in system hardware or software
+> design or configuration may affect actual performance.
+> 
+> 
 
 
