@@ -4,92 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91D17C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:15:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93E91C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:15:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BA2E6B00A0; Wed, 23 Sep 2026 06:15:14 -0400 (EDT)
+	id 640676B00A2; Wed, 23 Sep 2026 06:15:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46AB56B00A1; Wed, 23 Sep 2026 06:15:14 -0400 (EDT)
+	id 5F1EB6B00A4; Wed, 23 Sep 2026 06:15:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A73F6B00A2; Wed, 23 Sep 2026 06:15:14 -0400 (EDT)
+	id 4BB096B00A5; Wed, 23 Sep 2026 06:15:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 171B16B00A0
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:15:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9CDCBA6B32
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:13 +0000 (UTC)
-X-FDA: 85244619306.07.6F105B0
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2985D6B00A2
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:15:18 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E14AA06E5
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:17 +0000 (UTC)
+X-FDA: 85244619474.02.1D32DEE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 03ECF40008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:11 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UnImGiUN;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 06F4F140005
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QGnSIAF+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790158512;
+	s=arc-20220608; t=1790158516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k7YELTFQNH7j9BvemS3D+5shFIScXDKY2I62M6OGUww=;
-	b=BcZOuafHr/G/i64mwpOZCLkjwUJTSRzG1bZIvVbf2LUV6Apc454UMcArizh2ddR5ehYChf
-	kQqeyAASLD5Sh3BN5ow91vTI3FmgIjOZEs8bNX8Qw25VWcTITEWJ1oQHG6dKtYSGngMk8O
-	0XBOsUWnrbOYWz8SQlgTDyasBHN3CYA=
+	bh=s7JRcQFcD/nLSCcRzyB24nV92nZBWi01kt7jJ+1f3Ug=;
+	b=uYSf1suDCJg2LklRpf164N27CRyntuipSAKoOn5T+mxJr52QgcIqYoO7Lq0/P9NFY2BLCa
+	HgFsR3QRMBkw/LXgw8vXgNe2Jced4f8TjgrHqx/9KN6+02QnuMzcuXXDAQFrWH8fhp0BHa
+	sO8+Vv/jMksTE2DvzuxPXXBFpu2KQAE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UnImGiUN;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QGnSIAF+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790158512;
-	b=rgjCyqCX4HGcbu/7804fiJfqh0zlHlR88KP7EsvJLzlvz7nk8ASoNEX2soRI8+4AEz80rw
-	XJEvj3JJQdf1v26w99Qj7hg3Uwsq3rqksauj38+1JUOpilTIv9kUCBbY9xYwquZLqKRzja
-	iCqRhA0P4defNwotjFmTeUv3FFBEgK0=
+	t=1790158516;
+	b=3Oc4tmcPY9ydjjgk58S4H0gop6PfxnmHWFn6iRaFibaBNMysdk0Cs8CN7x5fDXPpjgd9xu
+	IwnsP8ghNTnjIBxPcYwa8fEVIiY1WEP5z0Gts8vivsI0wNO7Nuv1VRrkgl9GrWfN6vNc4L
+	oGNZE9Zz3cQdvbd2Ea2sQyvaG8h7R0A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5A41140E59;
+	by sea.source.kernel.org (Postfix) with ESMTP id 59B2440E59;
+	Wed, 23 Sep 2026 10:15:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44C91F0089B;
 	Wed, 23 Sep 2026 10:15:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA431F0089A;
-	Wed, 23 Sep 2026 10:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790158511;
-	bh=k7YELTFQNH7j9BvemS3D+5shFIScXDKY2I62M6OGUww=;
+	s=k20260515; t=1790158515;
+	bh=s7JRcQFcD/nLSCcRzyB24nV92nZBWi01kt7jJ+1f3Ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UnImGiUN2/myjs8Neflq48mmgdjZYYc4VUBwwh2d5bAoxr1jP23mCfwMS147zHAm8
-	 9RfCTWuUfbGB0E20WzRr1BQs3W2SnLuaQ6+Hm8athKeteLLdgCwOZjNxh7aHwlWR+C
-	 OV+DejIdfvd2tlhLIKviB67wyTwKopviC3Flv1Keae97Q6obY0leVmd5hdIjQG6jRV
-	 7ZB/VYTs+yCx9uIS6AUZ9VY9xuNEQm1xje2pWk9Hk+ODKIgMuhn7cRrCJBewR0Urxa
-	 tN1jILP0idlevObPsRWYCsQ9EM9kDCxBu/1WUfvRG97iCyUssBhigUWNZ0QeWqpNjZ
-	 ntTWsFGili3HQ==
+	b=QGnSIAF+YAH7QPIIk+YoBktEsy9/RjQmeN5BIv8wzE96jANMKcwFC7A5bMccseKTU
+	 RkllXwBOdg5qOJvjV9pNFCiPRCsra8Rej7BXiy4tjyL+4r+uUr2dQBlQw4Jq0Cbg5n
+	 +W2tWXmflDSfXKCKYY0vEFo06nTMfc/BKcHDkoujHj4GdxJ2rgni5vU1jf2zqp3AJh
+	 /352QzvBMr4n6lXut8kPaUxNvWKIQK5DktQiBhgdS3OiothQ2q1ggHdwpMdFTOojGH
+	 rCHsU63C70Q4q5BinpYcQhKOg/sNGDuByxlgqOiDfqjoKNkU/e1kkTd9NSUb2f1fr5
+	 CTh2xnLPxs0lg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v3 4/7] mm/damon/tests/core-kunit: test quota_goal->complement commit
-Date: Wed, 23 Sep 2026 03:14:49 -0700
-Message-ID: <20260923101454.5748-5-sj@kernel.org>
+Subject: [RFC PATCH v3 5/7] Docs/mm/damon/design: document damos quota goal complement flag
+Date: Wed, 23 Sep 2026 03:14:50 -0700
+Message-ID: <20260923101454.5748-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260923101454.5748-1-sj@kernel.org>
 References: <20260923101454.5748-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 03ECF40008
-X-Stat-Signature: ssc3rm9ecwhr1quaq8ufyibiua64w888
 X-Rspam-User: 
-X-HE-Tag: 1790158511-5565
-X-HE-Meta: U2FsdGVkX1/NKziCYgN2E1o13PB4w+KvqdSdfdobBXVSlRPCH/+Md+khvYbbATU83LmMMu/Kv4Hhb7vKmo3E2Hb7cUpV7st8WY1hPYl7/BLVG3F6CKK+3aCbNxG5HbmRU47bQuxDLmqitgttd6zktfEzXLRE7Ze0jdN0CMV3q7s7h7q+QzuulwCkZ6oLIkKmYw3TeZqFL62k4ZsulW0Yk6tkUJSQVhX+Ee5e/NpLlHX9AJGyZ2a7SkKmnfCEruqFJn+nyzojyQ9QkJtjp6RqWnsL8mdW3K7B7V2PkP0hzcRmpO0Rr5UGOizIuLf9jIr0kMtzR686yXphhHteMnHfsXppXaWLNaMRTqPZ1fj7+k2oYFgmjkQxhoB+RXvRFJdq+jkMaQg21KODODhoBxHqmPW9DggUAYSpaegKwOa1uDKMEXkQZvt5OPJN5NvFtUw6maLSniSdTxzjbj/VVRvfUdBTIsRac5IsE91JerYAJA9E20pKtzXVGlQV5xh4APYOwg3OYuy6bCX/cEt+g0ZDyfZShql4CNA/12npgBofDo0OyLf0SZXEXgUIrDn7BD/CvL7CBHuohg5DXRQVjwOwgnuk4gEt/q85bjLSgSiOmTwSfJbYnWdsVo4BPp67NZNBjr8eEHKchakByLxIpH3y3xlJ5L20bO3Y6QkqBjpFsYVnoovSFFxnaAwjVwQx5SAnkSho7MiEutwJSmVJC18XE2x866bI9JkEJ2yU4ErV7sYyxI2fLHDpOyKo0Wc2ok/b96UewNhe4bkstEhZAbypQcDOiwaf8ZKo46lXvKsy+fhB9aA1ym77FbS5hOI3OmdSFVEhyIrfaO1Zk1C+jjyzytabtAETpuFDPNlAgq+AzblXFNHkVZ6dR23lnB9PPt0+yJoS7UR6+8mGGmxDevQAwfQqsw4IBCW1OnFapZfWNJqXv7XJq6cSwBKnVG3Cm25VDmVtdhzdcSk85YUK1/w
- 4nMV0//7
- IWXrVfhOQzVlU3yEEjWfItqE0qFA1f10MurCTjVfRIdk0QBrPqIvwYXli7fxf/C3YikWWEjkaBB88wmbIr98/R5lK5fbSH6t5GIrFzVXk52e41+n46tfO8NOl1vGOuHc9Gk0DveQkYWXzplLbNJ8+tta3bG8wAr6M6vU7OAu0Eq4CV5Ud22eERO6mB1XQE08nz49OGnTUnQAbS/gaWiHBUiQJz+Ky+9SJfm9lcQwyNaNbjPIpQuNf+YU+a8LlF6JTG5CkVmTClHy+fHEmGO+R2bHL0Q==
+X-Stat-Signature: oxfphxy5gke6qf5trdz7bbup4gy1a1n8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 06F4F140005
+X-HE-Tag: 1790158515-281531
+X-HE-Meta: U2FsdGVkX1/j/cwpNdrueea7DyrFP5Uu3+ApQJFOarq4II/L3wCEpEH8xCiePGzokFOG0M11n5tT+uG0F49oXXJcfOJE0uYjR4lo7b09ION+xWXnZxUGd80QcVLqGeNIicp/7iJ9ZhZZw6HPdOSdbotQzHwv1KIemy4qlH3YuzQpL4EHTw7+qsJJWzkWgysqjoODH1H1SIGwrJc1yXxvYXn1fnxFS4Nc603Yf+ydURK59PW9aXPSjmTY1hCsfnCJLhgnWAQHKPADgfhs5UU0HkyaPIt7XaEj4o4Bk0L1fVc77k/UReDyiDJJlQt3YToSiO/x63WmfLs547iQdZSOSHs65tYNsPC1Q455pHvqvVo2r46V2kQCg8+gRCqF2t4GWRFc3k67jz3EsKoggdx+gzZqFbVDJn8J/cQqb6zSLUX8Zjx4bojTFtQGXLwLd0dMuZnO/ERY5/MhaJ3qqVGB/jiaV4zdSZQqJGBNM/y8HEuWnry+3nSJMFa7aWipy9V4jg1uTu9abUlaRewocXm3jZZLproWQr81qkUckWA0cOEo1cC+JVMhRo12wQY6poHuTqTFm4j4Yq0Bxgk0/WUe0PL2xxhg+FxTrNLgCn4/DLKeOdeEYnRdmpceRxfvS8Qwfd8J+bSSuBWX8tAK9FJnBjnuW4TuWNknw1MLdcUDKUnA2aVJ9LHsJJ6g5qMzXBKGZHz+KmbLJj1+xywffcbz9/3KUH6G2SBw2OzmyzFWCrhS/BM3gntwvq8+5acboWXj68aWyOLpHPfCoPbuqVwOB18KKcfMCac2DfdNhDojwdVctHxmO9kV3/ZcFPMGCkCaTXTNRrJV/iNjADa0t+SndUGt8F+Rcfmt46t1QOg7mJqBssW5tcibP+zteifpmPjFfcL9ik0LSWhgE+YDXKirrhzcRwS3YegZ+PzpChij0c5ow95z6hO4ouGlGK2xZvV8PyGU91HgKyivZyOHhdJ
+ Z/5oG3Yv
+ Dbm4GqMwaXFJy5MMc2f0NBGuwQeUIBROvG2uDR1LyKupbjAbXVlGqcut5JXHa0mDzq/JT6+6uo+5l/YqAEAwTPC1eCUngmd+sx+gGJYOdbKyNUmvKR5T1eV7wRmTTMW9SDLcyOnuzd75rMUJYyNOCf7r6I7s17IhL6VK+hOeInsLtmT1M36o/hiA5qX8hyV5yPs4PogUnlkz1ECQuoBwIaY/zfOBhfQXUnJ4EOP0DZUabYjk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,35 +104,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend existing DAMOS quota goal commit unit test to test the complement
-flag.  Set the source complement flag and confirm the destination is
-updated to the given input.
+Update DAMON design document for the newly added damos quota goal metric
+value complement flag.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/mm/damon/design.rst | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 72dfb9c595a4..ce15e693bc0e 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -819,6 +819,7 @@ static void damos_test_commit_quota_goal_for(struct kunit *test,
- 	damos_commit_quota_goal(dst, src);
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index e82390e77a70..5cd651b1b7aa 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -702,10 +702,10 @@ There are two such tuning algorithms that users can select as they need.
+   that the zero quota is a valid quota, and therefore ``qt_exceeds`` :ref:`stat
+   <damon_design_damos_stat>` will keep increasing in this case.
  
- 	KUNIT_EXPECT_EQ(test, dst->metric, src->metric);
-+	KUNIT_EXPECT_EQ(test, dst->complement, src->complement);
- 	KUNIT_EXPECT_EQ(test, dst->target_value, src->target_value);
- 	if (src->metric == DAMOS_QUOTA_USER_INPUT)
- 		KUNIT_EXPECT_EQ(test, dst->current_value, src->current_value);
-@@ -862,6 +863,7 @@ static void damos_test_commit_quota_goal(struct kunit *test)
- 	damos_test_commit_quota_goal_for(test, &dst,
- 			&(struct damos_quota_goal){
- 			.metric = DAMOS_QUOTA_USER_INPUT,
-+			.complement = true,
- 			.target_value = 789,
- 			.current_value = 12});
- 	damos_test_commit_quota_goal_for(test, &dst,
+-The goal can be specified with five parameters, namely ``target_metric``,
+-``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
+-mechanism tries to make ``current_value`` of ``target_metric`` be same to
+-``target_value``.
++The goal can be specified with six parameters, namely ``target_metric``,
++``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
++auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
++``target_metric`` be same to ``target_value``.
+ 
+ - ``user_input``: User-provided value.  Users could use any metric that they
+   has interest in for the value.  Use space main workload's latency or
+@@ -733,6 +733,13 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+ - ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
+   (1/10,000).
+ 
++``complement`` is a boolean parameter that determines whether to use
++complemented value of the target metric.  For example, if ``complement`` is set
++and target metric is ``active_mem_bp``, it is effectively same to
++``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
++``user_input``.  For the metric type, the user should be able to emit
++complemented metric values on their own.
++
+ ``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
+ ``node_memcg_used_bp``, ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
+ point the specific NUMA node.
 -- 
 2.47.3
 
