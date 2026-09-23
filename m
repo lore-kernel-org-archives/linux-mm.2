@@ -4,98 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A68DC98309
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:40:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BD1C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:47:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B7FA6B008A; Wed, 23 Sep 2026 06:40:46 -0400 (EDT)
+	id 34A216B0088; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1903A6B008C; Wed, 23 Sep 2026 06:40:46 -0400 (EDT)
+	id 2FAFB6B0092; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 07DE36B0092; Wed, 23 Sep 2026 06:40:45 -0400 (EDT)
+	id 2119A6B0093; Wed, 23 Sep 2026 06:47:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D10666B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:40:45 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 510D640744
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:40:45 +0000 (UTC)
-X-FDA: 85244683650.26.FCC18B6
+	by kanga.kvack.org (Postfix) with ESMTP id 002B36B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:47:14 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5AD5B406F1
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:47:14 +0000 (UTC)
+X-FDA: 85244699988.28.1899703
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 9F8CD180002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:40:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Hd5V7b2l;
-	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf23.hostedemail.com (Postfix) with ESMTP id 84789140007
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:47:12 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oltc4gXy;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790160043;
+	s=arc-20220608; t=1790160432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uQ5JYntVPCplUTY3sEfB1TwWkLv13hCX8Prz1WJTkWY=;
-	b=3oYXc0bHgfOXtPFhrbdRj1lXgYwK6RJ3apuDGxu7QTQSiBcO6oXvSsIGkZumour95cZPSw
-	rQiI7d96Qt95Kk062SeXkGy+xpVTsoLec0PlWGSPCv5lGpPuXt6FddkPauInvxNSYKdrva
-	9Ds4fZJvOecfuLx2EgsHrMu0tsjHUDs=
+	bh=fDDF6SKtt0mSiUPfmFFg2n4tvXakbgPe2tlV1YMzcgU=;
+	b=Zh7T5Yx/WK2hxIi3GnhOaAWpAtZGGV6Q+uZ8aN9E5HgxMSypEctSGz4RfJxuaWKclLq29/
+	Pcvsk7fqnGaqrFvgNZ4hEeYDVlB/dQG+OSS96POmlZ+XK4Q+4PLwGutRpZM63Q6+tm3RrO
+	apda4ZrpXpa18I33erC8lb776sOZ/kM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Hd5V7b2l;
-	spf=pass (imf06.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=oltc4gXy;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790160043;
-	b=6aE+qkJ3chZ3T5rPbRrI/9G39Ts0DRCnU/47pJ9cmdTb6L6Ayy8l0rIhb7OJoO80KTv9jE
-	4MQMP5kXmuelGkcdUqNYdtgzMjegzWVqIuYY/3RgWqwSMZ4374EgatPJpX/Tk1KYS+2ddX
-	Hc84KVq6fgASn581hHFnNBt4jzpbjS0=
+	t=1790160432;
+	b=gwG0D9azqpDgaTn5u4RMg1PnGgyZXbBCSqtBnzHrNL6/7S9KuHF8XlIeVjAHqIfDDcegC2
+	hKaIKHjnsxaRNLzn0FMvW9Gkf7RAovJNSNa6C0yvcvxDXhslRyEvEgzsQdujrq3oKYDukD
+	j38JSqI3pD5OSTc9l3n3ImsHpv9F1Y4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 074E7143D;
-	Wed, 23 Sep 2026 03:40:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 27861143D;
+	Wed, 23 Sep 2026 03:47:08 -0700 (PDT)
 Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 789533F86C;
-	Wed, 23 Sep 2026 03:40:39 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C63FC3F86C;
+	Wed, 23 Sep 2026 03:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790160042; bh=M87HFnkQVfHN19+6QwqoNSTVdvNLwPr786eNk6QJp9k=;
+	t=1790160431; bh=jBpobpGD6Ea5rJoVfzQTN7ysJ2G/gw8VNJRkAAGh20k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Hd5V7b2lJCRJq/Ms8s/d8tR11f/qhMBk7Oe4j58RXcp6qt6aQwikHkHXDqQsG6y9I
-	 WrsMl87aoacM9e9KjV+HavYIIvBZEd/CGC6r/SsKz0KRi08xCTqHV7X/fKTG0AIXAW
-	 zPWUJE30Iut++MHgK+DBrex+Gg1pDcKlkP4p7uMQ=
-Date: Wed, 23 Sep 2026 11:40:36 +0100
+	b=oltc4gXy8tuCEPLl8q04CzNR/M2uenYDnBnMu3UBGTi3Torjd7pC1U7F1T5SRjm/s
+	 GrTdEKfdLYGY7NiOGO8bqTXh4rBHevv/UctDKm6ABR5WXJmD4pDTY5K/wSUsXaFHCc
+	 SKzG87M596tYPnIzCnJR5XLCEGs7yh3k4BQ1yPDY=
+Date: Wed, 23 Sep 2026 11:47:08 +0100
 From: Catalin Marinas <catalin.marinas@arm.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>, Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-Message-ID: <arOspFxWZ1DjgcAr@arm.com>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-3-aneesh.kumar@kernel.org>
- <arKsFofudnTYpXj1@arm.com>
- <yq5aik3w344o.fsf@kernel.org>
- <arOfD6syXOgQhZYA@arm.com>
- <yq5a5wzw2ree.fsf@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Breno Leitao <leitao@debian.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 2/2] mm: kmemleak: scan the struct page array in
+ MAX_SCAN_SIZE batches
+Message-ID: <arOuLEZfEqmce4iO@arm.com>
+References: <20260921-b4-kmemleak-page-scan-v1-0-fb97d4801b3a@debian.org>
+ <20260921-b4-kmemleak-page-scan-v1-2-fb97d4801b3a@debian.org>
+ <arJPsqUSHGiitXQR@arm.com>
+ <20260922183921.b30bc1c3ba9443e021910851@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <yq5a5wzw2ree.fsf@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9F8CD180002
+In-Reply-To: <20260922183921.b30bc1c3ba9443e021910851@linux-foundation.org>
+X-Stat-Signature: jhrg6h7z53r6wwjwgop5regnnx65g74z
 X-Rspam-User: 
-X-Stat-Signature: m9hzmygyapph64yhp1oiyemt1a8nt45j
-X-HE-Tag: 1790160043-322699
-X-HE-Meta: U2FsdGVkX18Pr37d1jP8lEWBMemEp+dKou5QRvYUmIlQG9aO63AhORgGiB5aUuPnKe43hWhV9fx/UDkEoUx9tZmilqCPqX94I5P+Yh5HMnrbBbrcL7UR9jM1ODwTMab4jfsm0HQ6l6E8+6lC0Thd7Dulp2WrlNPTX5TaGV5fvnHrbVXhska27H3iv/dCSJvYGAzizo60+N5I892HBnmK2xja5etxRtEuzvZOkgfcZaMPDTh4yWf7g0tWqYvcuc7ePnzRfHq0J5VoP9451QCMZSY434Xpp+QnNSeen60iVKlawKEXt0uEH86hiLYRgYILFyjzPFKOdMpd7D5W6eY5n0v8w9k31NJulHFlxqCOH/Wugza2GerGZ/gV9ITXMPX8VKJSaNVa6aQIIB7mvorCNKe3tys/Hoeb6HhvMf6d0BlCCHxARCPIuohwiQcAXVE6399mM/FTnoNwa5rtWmfoXj4xUdl3sIb6QuxOn1vsMsTmrKMJaH1RQO8cY+subsU4XU2FsJ1CnPnsUEP3wsc8ecKyyQQAxGhLNnIrJc5u+qIqOJlBWFLUzOd3UZ3bOdrk0V6PEXG4f4IA1GI1QjAQBTFF9IJzma1vzorsBF/Jg+B9xeIVlv+BBPQvy+VHXT2WguKxszOO+PBOd/djMOuMVIpPc8ta8l1oVSTzRfCVvWrsHbLTR4EXwazKFaR05bX4S2O46HCkd/AO82wTksN8E457CSNJXewfiSKoBmNYnBopUSqemeUbOLPK2pNbPM7OFIaIkyyfUPwhrY+tO5cxoC5Tn9wwDLQfPIVeMZyeqOsqueoN14dlamDR549MAXdeGT7JCeCN8aVI2rIkwHX7Vw1Ef8NH9141fOzESAOg3WOgADgsCi5O1nUhSQtkLplAZe5fNQKRPq0i+P0W3pO17blXbyZTYZ7Xy2dOQ+IHJ75IJbWcM7C2yVXKJN7li7VBu8k3qyl9q1OaWsTPDz6
- w/EFkPsi
- ZM/lyRNYUSM+7O7WZGZCmRN0iORbn/feWTH0afgYB+F7rlmllS+yhJZYGuwZM2j65EKzXq1vWKOAfbTD9aIIvPPd/pIrpPoUwa1MdL96RmAtoZTOLM9JSWoVxWmdUJtBTMmmB0PXVNOKTEFI18w0AIrCoc+9TVKfxOxI2tKWmwGo1vzRdeBqHW7ok3XONS6QrAA+fTBadIQ/yVqjtC9ytkjMWBc3R18v4NZBo+ghcf/O6R1f4A1JhYNiN2XNuNw89KRZCZffMNzztFOerqyKt9K+PI7cbIw4RWEX9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84789140007
+X-HE-Tag: 1790160432-893827
+X-HE-Meta: U2FsdGVkX19dAmoRxqO3CYjDroSGAKE/NgxHYRHmXP0SSwFlfg/aWQSE69jSAu7Ue4Hl8JVmT5YoofSgYBsfho5FcEoipwRU0o0LuktwWnC/rLm2anFKBhLXry8I2cpBC3FC4P66FBCoVUo3fxVRjs5xQkR1slESGuuS657ZAC685DOV8hK1a58QgN6CE78X5PL1ndcQdw8A3ZmJF5m+4Jd10cMhUdklkcQ6iIyY0yrvyPgQMB61fY3xOE5zss2GPNZufnj3/+Jh6TIydsLownvOsObEI42gg0t65CKUk/HlpGhbjOQnCBPU0UBgiLlL/f+sCJvoa36uNv3vwLSzY8k3b4TeCABstuG031HprBf5O9epNmtbWMQu98C4N622L08lEpajzuDoCvXIqZblz1L41LNry2NIbetZfzKXmiNW36ACTYdBLzdZwTPEKIQ69Mv7UHyxTXR5g6YuQ/LcnOPfDvL/BFhRR5Ofp8MZu9FhsVthIBPBVnuuFDkJEcaforqr4WDt5A8x4OQ3O6MWMKYGES7LSTENJ2u6L8SJD4l8ihvo2lXRge8klPABxwCoYaE0zJInSYfomSrLwQgUQrEasHtmlFifsqG+o6m2a8B809Cma08lo3oVYfR44FgS2udZhTqW8mJVSz6YpvFqRCBUCfoeX40MVyGHdV1I+sVLzBZMOk+mKYvAMHhzULuRWYzChsm4/zqsXmCBRRWqotczvf8g4tyHiHmw3acSvNmvOHQ2nTOB1VgxtXbIsp+x80hJeHfqnrEC3rlkTkQsP739U0KAEQL2oW59g1iSoq2BlQr4qZelHyBchzKzLImzcTGZcNXGbxGERsQKnSo+hr+f/YYSQjO6imrctyPpspBMTHiRlYb1/vW9WOP1TmGYR5NUriu2wL6PsFG7LtOGn4+QDMVSxFU7/DrFgkunuzlMrPNkZRVtSORRI1onPOBKGkejdbYHTgVbvhf/yuP
+ LEl62Jn0
+ Kvu+zsaOEehVYzS27Kric3glSzSJcYJTZAATGAJkUBsNHRWqh3XuGSqBTtq3+FuROoRp0oCFGaEYreRm6wOBDrnj5BW2JNpkZIPtjqB+oLR4RwZo9pGVmYSL/pydnMHwRszvjPwNnsTWRcNuwuwTwkkRX4bDu2gPn3GbNmc8p8XFHhqqTbTGtKjlYtBWtMT4r9KlxoyoKDYOxbSCCPsvEwomrPmXyi21mdrF1TYmsaN6XpekJeGQjYA5n4qlkgdI4AcevmqhTXPeXGNJ/Tn53nhn1OxTtUNkafsQO4fZjGBBd/A52E5ETDmxVLJmTh7GsJy8NHD4w65REuGI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,98 +91,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 03:58:25PM +0530, Aneesh Kumar K.V wrote:
-> Catalin Marinas <catalin.marinas@arm.com> writes:
-> > On Wed, Sep 23, 2026 at 11:23:27AM +0530, Aneesh Kumar K.V wrote:
-> >> Catalin Marinas <catalin.marinas@arm.com> writes:
-> >> > On Mon, Sep 21, 2026 at 08:18:36PM +0530, Aneesh Kumar K.V (Arm) wrote:
-> >> >> +int alloc_cc_shared_pages_node(int nid, gfp_t gfp,
-> >> >> +		size_t requested, struct cc_shared_pages *mem)
-> >> >> +{
-> >> >> +	struct cc_shared_layout layout;
-> >> >> +	struct page *page;
-> >> >> +	unsigned int order;
-> >> >> +	bool zero = gfp & __GFP_ZERO;
-> >> >> +	int ret;
-> >> >> +
-> >> >> +	if (!mem)
-> >> >> +		return -EINVAL;
-> >> >> +
-> >> >> +	ret = cc_shared_calc_layout(requested, &layout);
-> >> >> +	if (ret)
-> >> >> +		return ret;
-> >> >> +
-> >> >> +	order = get_order(layout.shared_size);
-> >> >> +	if (order > MAX_PAGE_ORDER)
-> >> >> +		return -EINVAL;
-> >> >> +
-> >> >> +	/*
-> >> >> +	 * State transitions require a linear-map address and may modify memory.
-> >> >> +	 * Allocate from low memory and defer requested zeroing until afterwards.
-> >> >> +	 */
-> >> >> +	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
-> >> >> +	if (nid == NUMA_NO_NODE)
-> >> >> +		page = alloc_pages(gfp, order);
-> >> >> +	else
-> >> >> +		page = alloc_pages_node(nid, gfp, order);
-> >> >> +	if (!page)
-> >> >> +		return -ENOMEM;
-> >> >> +
-> >> >> +	ret = cc_make_shared(page_address(page), layout.shared_size);
-> >> >> +	if (ret) {
-> >> >> +		if (!cc_make_private(page_address(page), layout.shared_size))
-> >> >> +			__free_pages(page, order);
-> >> >> +		else
-> >> >> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
-> >> >> +					    layout.shared_size);
-> >> >> +		return ret;
-> >> >> +	}
-> >> >> +
-> >> >> +	if (zero)
-> >> >> +		memset(page_address(page), 0, layout.shared_size);
-> >> >
-> >> > Does the memset() post sharing logic work for pKVM as well? If nothing
-> >> > clears it, we have a small window where guest data is leaked to the
-> >> > host.
-> >> >
-> >> > Is there a case where we *do not* need the memory cleared? If not, maybe
-> >> > we can move the logic in the arch set_memory_decrypted().
-> >> >
-> >> 
-> >> I don't think every architecture or platform can unconditionally zero
-> >> memory in set_memory_decrypted(). Some callers may need to share valid
-> >> contents with the host.
-> >
-> > Is there any? That would be a bad assumptions in the caller. Most
-> > set_memory_* backends don't preserve the content as they change the
-> > encryption key. So properly written code shouldn't rely on this unless
-> > it knows specifically it's only running on pKVM for example. The only
-> > use-case I see to avoid explicit zeroing is when the caller doesn't care
-> > about the page initialisation and wants to save some cycles. The
-> > encryption key change would take care of the security aspect.
-> >
+On Tue, Sep 22, 2026 at 06:39:21PM -0700, Andrew Morton wrote:
+> On Tue, 22 Sep 2026 10:51:46 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
 > 
-> I checked this, and you are right. We cannot expect the contents to
-> remain valid across sharing; set_memory_decrypted() is destructive in
-> that sense. Since pKVM does not rely on memory encryption, it needs to
-> zero the memory unconditionally in set_memory_decrypted() to avoid
-> exposing existing guest data. Other CoCo implementations may omit the
-> memset(0). We still need to zero the memory when the caller requests
-> __GFP_ZERO, where the memory location is expected to be zero.
+> > On Mon, Sep 21, 2026 at 05:30:27AM -0700, Breno Leitao wrote:
+> > > scan_zone_pages() scans the struct page array one page per scan_block()
+> > > call:
+> > > 
+> > > 	if (scan_block(page, page + 1, NULL))
+> > > 
+> > > scan_block() takes kmemleak_lock with interrupts disabled for the
+> > > duration of the call, so this acquires the lock once per online PFN to
+> > > scan a single struct page.
+> > > 
+> > > Gather runs of adjacent eligible struct pages and pass each run to
+> > > scan_block() in one call, capped at MAX_SCAN_SIZE.
+> > > 
+> > > The longest kmemleak_lock is now held is MAX_SCAN_SIZE worth of words,
+> > 
+> > Remove an 'is'.
 > 
-> We could either zero the memory unconditionally or pass a flag to allow
-> this micro-optimization. We would also need to audit all call paths to
-> avoid redundant zeroing after set_memory_decrypted(). Let me know if you
-> have a preference for either approach.
+> That was actually correct, but it doesn't read well.
 
-The simplest is probably to always zero in the backend and ignore
-__GFP_ZERO to the allocator. But it's probably only marginally smaller
-than passing a CC_SHARED_ZERO flag down. Get codex to try this as well
-and compare the diffstat.
+Ah, yes, you can read it in a correct way as well ;).
 
-There's an argument for the flag approach from a performance perspective
-(avoid zeroing unnecessarily) but not sure how much it matters in
-practice.
+> > Also, MAX_SCAN_SIZE worth of bytes rather than words.
+> 
+> edited, thanks.
+> 
+> How's this?
+> 
+> : The longest kmemleak_lock hold duration is now MAX_SCAN_SIZE worth of
+> : bytes.  The same bound scan_large_block() already applies to the data
+> : sections and the per-CPU areas.
+
+Looks good. Thanks!
 
 -- 
 Catalin
