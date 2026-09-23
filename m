@@ -4,181 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D397C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:05:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBCE6C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 08:14:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 556156B0088; Wed, 23 Sep 2026 04:05:49 -0400 (EDT)
+	id C697C6B0088; Wed, 23 Sep 2026 04:14:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 506526B008A; Wed, 23 Sep 2026 04:05:49 -0400 (EDT)
+	id BF33D6B008A; Wed, 23 Sep 2026 04:14:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CEB46B008C; Wed, 23 Sep 2026 04:05:49 -0400 (EDT)
+	id A94B56B008C; Wed, 23 Sep 2026 04:14:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6AF6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:05:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C03714072C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:05:48 +0000 (UTC)
-X-FDA: 85244293176.25.A0DA8F8
-Received: from mta1.migadu.com (out-132.mta1.migadu.com [95.215.58.132])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 546BB180002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:05:46 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xOV70F6T;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8001C6B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 04:14:16 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 120D912070C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:14:16 +0000 (UTC)
+X-FDA: 85244314512.29.8183921
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 575EDC0002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:14:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCJlfOwt;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790150746;
+	s=arc-20220608; t=1790151254;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8PVPdXmv6NnvLVZVQ7aZbUUffkgQCjLv7KTz76oZcF8=;
-	b=T9Er0Y1vonidm2YgURdGGtpfxaPk99VpK2lo5GjvCZyB94kSraCoVfaDIafawNbHtHQVRG
-	3rr0EHrdLHE0FUwXX7KBw6Mg9AkuNhYWJClMPBUbm/iYHF8/AbhRQ2NU7me9Pa8wXGtSKm
-	5TJ361im323SWyudi19xjRsc70LDh24=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xOV70F6T;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	bh=4asDkf1r4nhSOrT7R8hAyZcEQKKYrXhZ/zPFbXlZHas=;
+	b=kWk47tB3pjRZoXgpA7fqngLXUnxBb4JHj6EpEQxd9dwuJ5/usa5Yh92YjI518SeDd5CyhA
+	K1dD+xdOqMNLEBIcAQ/mXETK1Whn8fO3O32u1U3AUfRrDdrbtC32qvfXsE6RzyzzXL/QMz
+	aeAtbvwKqcK3YB+W6SRifKs3LTkHt7Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790150746;
-	b=PtqTIeUQALtWoGVSZ2aiwP05mCEs1oplV3qB38lj9cbN3Qe8goziLv0VRxnbnxUDkklh4A
-	NeI3QpnWL3spUYSHFIlmxnhzAW191TFCb2z7DNvVbMCLNIyJTAIjLiTK1FIRamluH8Xx6W
-	nqcBq3+qqC3hgjrU7xVG6qfel7dAW98=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5BGZTHY8kFe6g0IgkeIcnp2oHzMTIKE0zyxoC0cn6HM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790150745; v=1; x=1790755545;
- b=xOV70F6TL/N5yFZSi3f9S+2hZYWUVOoxwR+uo5RtdPViIRjcwWGIPwQHE5MNUvXqJRoa2pMV
- XETkKl1JSJyJHgttnEozZ0pTPXm5t7sE2VvyT5/K7JPxqS/v4eFeFvfsBFsjwV0h+5+G2v3PAcg
- ZOM5ie5XofVZ8V6lcFShF+2Y=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0dc515f7c86dd02d;
-	Wed, 23 Sep 2026 08:05:34 +0000
-X-Mizu-Trace-ID: 0dc515f7c86dd02d
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: ljs@kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	guoren@kernel.org,
-	bcain@kernel.org,
-	geert@linux-m68k.org,
-	dinguyen@kernel.org,
-	schuster.simon@siemens-energy.com,
-	jonas@southpole.se,
-	stefan.kristiansson@saunalahti.fi,
-	shorne@gmail.com,
-	dalias@libc.org,
-	glaubitz@physik.fu-berlin.de,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	linux@armlinux.org.uk,
-	vgupta@kernel.org,
-	monstr@monstr.eu,
-	chris@zankel.net,
-	jcmvbkbc@gmail.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	davem@davemloft.net,
-	andreas@gaisler.com,
-	richard.henderson@linaro.org,
-	mattst88@gmail.com,
-	linmag7@gmail.com,
-	catalin.marinas@arm.com,
-	mark.rutland@arm.com,
-	chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	tsbogend@alpha.franken.de,
-	James.Bottomley@HansenPartnership.com,
-	deller@gmx.de,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	chleroy@kernel.org,
-	hca@linux.ibm.com,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	borntraeger@linux.ibm.com,
-	svens@linux.ibm.com,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
-	arnd@arndb.de,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jgg@ziepe.ca,
-	jhubbard@nvidia.com,
-	peterx@redhat.com,
-	ysato@users.sourceforge.jp,
-	shakeel.butt@linux.dev,
-	corbet@lwn.net,
-	rdunlap@infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-openrisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arch@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-alpha@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	hughd@google.com,
-	qi.zheng@linux.dev,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 04/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU arm
-Date: Wed, 23 Sep 2026 16:05:23 +0800
-Message-ID: <20260923080523.9480-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260922-rcu-pagetable-freeing-v4-4-fe1ad1f1e303@kernel.org>
-References: <20260922-rcu-pagetable-freeing-v4-4-fe1ad1f1e303@kernel.org>
+	t=1790151254;
+	b=ZGb7TQ+7VKXLJjWj/eIXV3KzIaJtHbRLnMZ5+g6sGKp1F3HZLnq9dCTnuZp4Co/c4ef4Wh
+	JrblZJfe70k5CGURUSjtmCZlVcvtqawKGS0OWteN/l8oR3WQ4n5u4o7H8XOyufdaCR8SHU
+	v7HAV9Mk8xI1ZHaUh0VA8DmVtyojvVQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mCJlfOwt;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C4D1041766;
+	Wed, 23 Sep 2026 08:14:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376301F000FF;
+	Wed, 23 Sep 2026 08:13:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790151252;
+	bh=4asDkf1r4nhSOrT7R8hAyZcEQKKYrXhZ/zPFbXlZHas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mCJlfOwtX67y203buKELQIT2TJkfDrkJVRWjviTUThii3FIl01hNmt/2/N5niDJsO
+	 pMfVhn9hKYcyv1hPNTj3q8nO0Pds6VFO+rGQe1AtibuYmlGhfEvG5fzsVNd5VZj00d
+	 fkgcgDIaUfRNs16fD4U8B+bk8I0EVqFfud76K+T15hPjY5Wnzx7h17G1IEpBvKdbdT
+	 fwOMBpLGIgd0Nxsna3HHhcpWKXrmzcnrf1IYhuJaw4NDIion+IMG6MmbJbYDpOjNxG
+	 ds54K/vBGhy978o0s9QlAtQmkuOq1eOy+SdadnN3yilV4MeGzEJApyN21XCzbDlSMz
+	 y5uiJtnDQNScw==
+Date: Wed, 23 Sep 2026 09:13:40 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH v2 00/40] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Message-ID: <arOCPN02xB7mykju@gremlin>
+References: <20260914-b4-mmap-prepare-vma-flag-sanify-v2-0-7d9781ed5361@kernel.org>
+ <20260914180811.057cba8fcc48d6e0b53a2683@linux-foundation.org>
+ <0b064fe6-ddb3-4f26-a1f2-2e9dd88d590f@kernel.org>
+ <CAJuCfpFBichJH4OcmSHTb1rOuQBT6k5pXeua9_KgpWjDBKvsYw@mail.gmail.com>
+ <aq6kzpK7wPl3iFGe@gremlin>
+ <aq6lW9FvL69QeA9H@gremlin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 546BB180002
+In-Reply-To: <aq6lW9FvL69QeA9H@gremlin>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ftxf1w3991u33t6pjt3ym1fw7gbtfxbh
-X-HE-Tag: 1790150746-167542
-X-HE-Meta: U2FsdGVkX196myUTw7b+lnUsMSXkXHFiR/BGCKAJkHkzGUnRUTZ2ziWSpUHKJOXEWAkxo1T9kL7iJ/nKuepWAMoBKENm9aEgI0hwjqIxGXrVadYom4kyoTXgX1OP9wGWVEoZZugYuIu20R9VtBRJCdjeTjGWOLxKFrSvmj0kbGaGbB4/OCOLn5jOUtsQlAAIswIOmUpqZmZDQNlrLYk/JVd7gbQlSpsv21ldOTUIH02kN8hNJItMPyvF1qWlnRymllF2IPD+8CallHhYoeaHNTDXjZAQhF+2ha6q2e/MOAzZF2uteQRTKr0t0lDVFHG4RcseKqeJzs0IL0JFB2yN1jrhEyGXwX7JTNvrq/+b5tRMTj7fpcfX3NeKXET03UJyW6hYA6ujIwtfdqMj7FOODBM7JvDiA9POOKet7fZYQet40dEBWbjFEMFeGcYJ52JV8W1Y874ZekQ/1qQsC7cuxmC0S+7Nvzy4NgrtOwjhZtAjxfgCEl6w5B0Adn2tTOnMvq1iTAqTuI3jg+jdXzLn9NNmU8ZgEaVP6g4z/QKu8lRRq1A4zbJgzJX+0tH0S5eM/+zTCIHL0B3u/TeeqC0Y3gSf+CJD9Tesb62YpQznJtcWTpHFVPLdwmRQyFaGv4ngs9VSuq7a+LTmhqpfBTaDMdtrulZcKcXKNKmdq5JpRP6GElQllhPG4VMR5/FMCjpw8eYyjDc6YNWvOdEoVET833sCNWiXYYHUu9lV7fGlOOxIVQWpmJiEmeJ0zI4dlOGuIZBIE0QbRFb8fbwFh78DoMNcVe923+zqmkTKodWjSDWooM3PoV76gmngwkq+WSpIf8IZgzg2i+YrHvqS+93qCc9BkS2lGDlEpFOzqekaYwiHeYMJpxlMziifsSNsPe3InPFqTSELhJHjuIaXjfxpSUy7r911Svx8suy12VAxBn+GScQZzrVMYvR1V9ZUrw3AIQT2cBd06qo7G0qaNJO
- VZAXwjTs
- XWSSmYMZnlG3pvGwRiTLNk6MIrbHTtYai4oY2tKz/pxsN6xLLQnw6oHZJjqBOW6fysuSOR5jkoltX+zzuBUDxbHcvdasQaGLVBpcNN9BPJcqYMsD8fdCyWh43ZRSvRGyCnGNg9QO8fnJ+94/scCcIAHDey+bP/Pm4VhyAEnBlMbGE2otgyIPnPC75D422VZfJDcXqoB2t+CExteyNE2D4xrI2SRvlNcpi9U2Fv1Gastv7G4xcz17KPqu+U9wrNoVu4/R4bmHywkPz5Q+jDzyGMY3TWyPojSQFVtfzGLeWQoWRwdrX7cXyEA7HzFm/IwdOhEvTPmQpalpD/ErNiz0wrjYPEx9CZUWF/r4ICerFfvkoVjBVo8k8BK5Nj3r0ODFz4k924+Dmdq0C8drh9s6zNnH6gfy4LG408UJ1
+X-Stat-Signature: nwpurie7d3zu9omr1jh735hohrgt1oa5
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 575EDC0002
+X-HE-Tag: 1790151254-537842
+X-HE-Meta: U2FsdGVkX18XkAWpoy+lfkPuG2nWUXla5wT+P8k4zo7LVQjfGKWNmli8hZ19JJkrssMMf40iSmN4yAcbbkOj5x5Zgvd0IVPxK/0k/7UyDwe2mjh6kHHp8/7Z14XTb4JiUTMpiKo/O9+R5Uzs1XjVOUeeqg1QAikXJXM9wiapLtK7wDX2myOZS87EYLFM8FQyZkBBUUDKNfiPJGHBEUxyQs39P4A3BV0OJ4UaaVv4bC471CQNZ5FfoZbreyBviZOLjcP9XQCKQFpQZG1pkYH39OoSirXKsdZijMSR2eXMQnQe3w6KXNFmukYt/65zbp3Uw6x7fUPY7B3bpDBKgobkRbqeWiwy6yzjLKAGJSr+YuwMQ3wkt9SAFeZ06XJQWzve4NV9Zt50bwlc0bsqC4ePX9L+YJvO561qHDTnerotdyOyVnxnlKorSkplFsUWG4dnY3Gp8g/1VUxGTYiOFxdM6YIA452VdN1e4AveXeqHHGh+Khu4EaFbeX6lEK6HFGf0FfP6oZ3pH+9n0uTwTRZqUaBR10ApOItPky/KHWVXCcRCLm4PGbqne7l8dq1h6yP6uMFGei0nZFgk0QZaZ9RlU5kMv8m2mFYS8dgPz/VZu4+17uU6J4rk/uHc1WJJ4AvIFMtkRK5O20Tymnm63nggxv+nLlgekCdgzDFZRP2CgLKady8mgpp8DuYY4HvIVqaoYlqHo9HJmInp4OnF2Vn1e0R8PQmZK5oTP1GRA6WZSFMjfhcqD2BpAsX3FtdCaMb3bdN/prcUA6o1qXc8Rrztz0w94T61nBzA/6Yvtl98o54om5RGJmo7EutPFsdIO4DAjyjSB8Ie6vRdeFS8AKF0FZxzspEGZkOeQZTz4LfBMfWx3OOMcT3+bi53izOaNfCjFbVL9Mq95Y0qxORu24I38Xe2jpE2vb8yRKZXlt0To9/aswgG2T7Qtm2aZMXETluLddkYnSjXrtMxPU6UQh9
+ z2LnJgIC
+ /vHZ/S2JRefliHv/irqFpHReViLtidNoLxpDKhN7f/bsj9UknrGCMA+UBzzM0YF0C+TcI9gjZthzP9QKp/3OMxmWeNpF4+/48MPGN5nGHverGzbvqw4Q23/cYHsFumB4/of1nbK1Nb/wS2FqPNQqX7kL0FFPcVDLky6fN3DLBQaGsxK2O0nJSTvpzNQDYrkcpIGBuorCF/e3sYyBjqZfnedvW5P6rnFKIcjvRZcVGZs03Ij3G+7w7jZbInFzJgi0GKPjvKTQnc1ZpZ3KgXLYPxUkmx+N4jz214N1gKBpUOiDdBr5rL3wJC5iVXisITlDTqtDOws29mfqNGi1UY5o6pFIr5ebBwvaFB/r9zLq7xTiym/q9zjgUFwnJL7I5PKbE04Mx0IqYsDynZWCp6gdd9ZQV5Dznp3MDyyx9PpZHFRPeVELLH4cmzxXtJZ2lI0fz1FXsstpwSJR7qWh+mm5/QffDczmburK0rdAZQhMdNZ/Gbwcxbx+fKMrDcrD0oYbVfeTbIVntnWVm1Hhgr52L3fazTLHl0ZGuob3ta83eRgtmRA4rvImnXkrL845VPITsCsNw8Zg9rCmRxIHSYpg66nRDYRtRqAuZY4BoBaQpg9+7/ebNjhESw07AD+7kqBp6aq/CZVDCfkUnJcLOGnNXTN47vZ1TthZsHUMGk1fKBst9Rz6Kw/YSpg01DoE2CvpQaRrVeZJJBzcJYfKBFsY6QatQVbT+62EfbUAt/qRDSmr7/yFHs9JQuspOAMQQAU88UvbjBL/IqpeS4A+LI3xLBuPO3Q612xEvAlwhKwcQLbBCH/kP9psqaqEFB6Hw04mWuFYN5KMzWFaXsL01SqF588cLtvJa1FbpcMyfocz2n83lNaleRhX656bjEp7fS5p1f6HnM/h/yWBsBwADKM6lv84JUggrAbK8UmbngGQ5Jt2bbVIBUaWLAAV052glWWGKj/Sn2xD7r2rSdAiIXhXBLK7eDBmU
+ MPsCzhef
+ 6Ts1it0zHjfywBqCypDLufy+LK+mDPodbluTMw5PtkHklt0jh0nwysNP4/FIKEePK4o8pHq8rFEkhJFwE5LaJ7eGfMH6VbB7Mk5o64QZvjCaxQac8KIKR1TIA7ljDA2aqM7KHHyG9IB9uYNzBrZCRGzz22sVGUHtFcEBMjdkF/XwqKVlpVpzoS5PS4g+Ei74FPte7i8UsxVfKcen56ZvPjJ4J4dwYhIWwjVClwPH+damGQF0plq3ZPkQFDgUiGZhMWcutdeaiyPIYpVbrBeHioUFz7+GuuqNAxE92E7qbPN5I9Zleg8b6IEDGQMwbI75hFavrTlw/Xpeg8cYORQ62rPOAdlP6ej1E6OSh5FveInCn28IBJYBYUSu6f4z6B61vKyNfz7MKdmBmgk/xgEITNxhXqmimzArt3/cnVUgKBP6IA9cGeAcBCodoPabQv+T7U9afzsqSaAC7iG+Vba+VCTlbR4bjFBbn1n6d1KITv7HPwbbzCumKdrqyhET9D5tyx6ulVKTHSeO3si50r5uJ0vRNT9DWMQwxVDRqd7MMfL7Ap/xUaLMzJ/oxYOmv1QueA7sHv+xIQQe5EAXRM3iGiXNW5NT5tFManeHdjBRVKjLvSm6Xf/AbPSboKmshj0qBHepffI9VCQy4n5VWsl4NOgqvCLOpzvBlcetuaART36iayhhN6kem5YZHlkaQZP5tFxrVwJx8jdXVXs+Jiw8rkxWgXpWvudl0KLaqoEKDEh1GxaiqOVeYLZ68wZR+u0MN5Vk1E4LjV4clAAOBvp5OrqSlsNGS6VcL+RESLTBFfxSq2Np25uQbgLjxWKwdyId1fyvpV18BY+PbwKRKvBi4qQJ269FX2Dre0VmMuNI5rwtAKliwRp/ikSE1u4n2kyPWa2f1MoiQoBvHNz0KtjP0kK/ealOJ6q1AhtBbUyAETlxPkjhlWzCjZgd6ba+82Ep5Cw5VBX5DCST3WIIeopO1kUhpXOCj
+ N+y2IC7/
+ 9o0XBTPPIJrOLYmb2mLqCKyrp1wDh7/ciKnjYTLJUFtleHHJHrg4SUZsLA7RCbQMMMCiMlSiXZHzA7Y9FMaDN7a6nIriCI9Js7BVagtLeIFTFvJRH3zJrR1Fd7F3HI3GGHkIL3EOzQeZuj+nVadGqFx93WS8gCK/Ba33xKOlkBg/RlnPimMejXk3vggxz1667FyT7eCbl9Sltqm1oLQ4MJOIwy1yBQ25CLwZpsnqx2p7U5i18DWsOG4TkcpnNBPBl5K3QvTRB1lQztmG1OVtA4nKEhZ+jHNQoAI19fcQB90w/P/WdQxcfvexmliu3Mm7Q2tvBzg6t+wEcKnN/oaqKy7NXfEWO/JbE1DmOD8TqkZlHPv2AoLs+lFIlQftPbG6ZbeIlbeOucRzXcUmCJp1AW385F3ed4Vp59PYbYZth/Ydj+Dafz1lUKeDW9vXnsPE6Enclsv85r77wNGjfZRJ9H3AAIivLkBa/kMkfY7gVkjyz5aoU6RFrMwYg/bkg3LMesDqbmTGuK7yNjJmuqkentkvxFvr9WASzkvk/6UFflMhCJx3CmEZ2vgooIitUHKhb+YbTbi9oaJdzik4RTVP4QcUZIKE/wZZ3J2KR6JKS7LvIuHBn8+jSG+B+4qIGnFiUNfX7aQeHDId7STchg+dJhTUeh5qCe7dclnWwiRJ/1ejg4umcaKQxMFVqYAwlYVTqXtrm2Y4Cds6AetKVFz9mR3AqFU5EEJfkpCPkOpq7FjbawjE0vMTJ6yGHej7I6J7foUAvi3qxSHQyn05RkHGpdvCwHFNCrIdQ8iPgqaeKgQpN2an+mqmdEgdkTnPJ5koj5s4vYf1IQ67d1B+SXAFCory9TZkMfnGIYn2hV/wP+fYMN1KAJZWUdx+XyFhyRlSn2ybz59R9ceWyYcnajE0EWVQrcF9o+JL8pz5Nu5/qTg+Kn4i0Ve8KIe/5Oo2udPKnCCjZFT1mR/Daz13W5a/EUOBglRHi
+ kExmKtjN
+ Uo/U+2/0GRzvfQxY9h5Yx/ED7kqC7dIPpXQT2/ksMyZkmwy3MVO9tTGu6HQyor3h0AFxGAwpg7yQ1JqNZidSbMqLzPeQskDYSCfDkHpypjQCQMDld1uOHH3BFDj0bpOEA0tpysjbhJ20TuFvarqU8/Hs+LvK/sTx52U9/EhMzwj3nuqEpA3dvf+yknqmg43XYJJzjB3VRIOyB88rs4gUy49L6rvEy5uwZALJ21KySlBTkgflKQQXVt+19moaoTX/1PmcPR1skt2m2675PSkfHPPrx9x/fs1UhQ82ErD+Rfxy3NzaJY1nyKq9XgRo+GwK+ZAv8P+Q84EU3xUCoB/g6Kovr1l9Ofdp0R4tM6xpZSZJ6ZI+HrrcCYdN/w6vOpTUy4MjttozlsOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,70 +159,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Sep 19, 2026 at 04:09:13PM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Sat, Sep 19, 2026 at 04:05:57PM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Fri, Sep 18, 2026 at 01:31:24PM -0700, Suren Baghdasaryan wrote:
+> > > On Fri, Sep 18, 2026 at 1:21 PM David Hildenbrand (Arm)
+> > > <david@kernel.org> wrote:
+> > > >
+> > > > On 9/15/26 03:08, Andrew Morton wrote:
+> > > > > On Mon, 14 Sep 2026 15:57:20 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
+> > > > >
+> > > > >> The VM_SPECIAL / VMA_SPECIAL_FLAGS mask conflates several unrelated
+> > > > >> properties:
+> > > > >>
+> > > > >> ...
+> > > > >>
+> > > > >> It's all rather a mess.
+> > > > >>
+> > > > >> This series brings some order to things by both limiting what drivers can
+> > > > >> do with VMA flags and switching to using predicates that describe
+> > > > >> behaviour, not arbitrary flags.
+> > > > >
+> > > > > That's a lot of patches.
+> > > > >
+> > > > > Review is thin and I expect this won't improve a lot.  Lots of "no
+> > > > > functional changes" changes.
+> > > >
+> > > > I'll expect to go through all of them. Might just take a bit ;)
+> > >
+> > > ditto
+> >
+> > Thanks guys!
+>
+> Note v3 has been posted to fix a stupid bug in 1/40 + attack some very trivial
+> sashiko stuff
+>
+> https://lore.kernel.org/linux-mm/20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org/
 
-On Tue, Sep 22, 2026 at 04:35:35PM +0100, Lorenzo Stoakes (ARM) wrote:
->Commit a0ad5496b2b3 ("arm: mm: enable HAVE_RCU_TABLE_FREE logic") enabled
->CONFIG_MMU_GATHER_RCU_TABLE_FREE (then named HAVE_RCU_TABLE_FREE) for SMP
->arm architectures with LPAE enabled.
->
->Regardless of whether CONFIG_ARM_LPAE is enabled or not, the same page
->table freeing functions __pte_free_tlb() and __pmd_free_tlb() are used.
->
->Non-LPAE PMD page tables are folded into the PGD and freed by
->pgd_free() (PGD freeing is not part of mmu_gather page table freeing in any
->case), so this is a noop in this case.
->
->Since commit 358d1c39c82a ("arm: convert various functions to use ptdescs")
->both LPAE and non-LPAE PTE page table freeing uses tlb_remove_ptdesc().
->
->Thus all page table freeing is performed under RCU with
->CONFIG_MMU_GATHER_RCU_TABLE_FREE enabled for LPAE and non-LPAE and thus it
->need not be gated on LPAE.
->
->A UP arm system can set CONFIG_PREEMPT_RCU, so a future pure RCU page
->table walker requires MMU_GATHER_RCU_TABLE_FREE to be enabled on UP as
->well, even if concurrent GUP fast is not possible there.
->
->Therefore, it is both safe and desirable to set
->CONFIG_MMU_GATHER_RCU_TABLE_FREE for all MMU arm architectures (nommu does
->not perform mmu_gather operations).
->
->This forms part of an overall effort to switch every architecture to this
->mode.
->
->Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->---
+Just a gentle nudge on this :)
 
-Tested under heavy page-table teardown load on qemu-system-arm,
-with and without ARM_LPAE. No issues seen :D
+If you guys or anybody else has some time it'd be appreciated! (obv. the v3 as
+linked above not this v2!)
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
+I know the series seems intimidating but most of the commits are very small and
+it's been in -next for a while.
 
-Also, feel free to add:
-
-Acked-by: Lance Yang <lance.yang@linux.dev>
-
-
-> arch/arm/Kconfig | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
 >
->diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
->index 408aa58a2a5b..72b9afc6ae10 100644
->--- a/arch/arm/Kconfig
->+++ b/arch/arm/Kconfig
->@@ -134,7 +134,7 @@ config ARM
-> 	select HAVE_PERF_REGS
-> 	select HAVE_PERF_USER_STACK_DUMP
-> 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
->-	select MMU_GATHER_RCU_TABLE_FREE if SMP && ARM_LPAE
->+	select MMU_GATHER_RCU_TABLE_FREE if MMU
-> 	select HAVE_REGS_AND_STACK_ACCESS_API
-> 	select HAVE_RSEQ
-> 	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7 && !KASAN
+> >
+> > >
+> > > >
+> > > > --
+> > > > Cheers,
+> > > >
+> > > > David
+> >
+> > --
+> > Cheers, Lorenzo
 >
->-- 
->2.55.0
->
->
+> --
+> Cheers, Lorenzo
+
+--
+Cheers, Lorenzo
 
