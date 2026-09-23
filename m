@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E4FDC98306
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:32:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ADA2C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:32:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60EBA6B00A4; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 8CD956B00A5; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EDC36B00A6; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 87E696B00A6; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28AB56B00A6; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
+	id 793526B00A7; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BF876B00A4
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1756B00A5
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:32:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6FB3A06AB
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC63380672
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:03 +0000 (UTC)
-X-FDA: 85243452126.29.8D40F4A
-Received: from out-2z4y-a152.jellyfish.systems (out-2z4y-a152.jellyfish.systems [198.54.127.152])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E9FDCC0002
+X-FDA: 85243452126.08.5B10F1B
+Received: from out-zbxj-a71.jellyfish.systems (out-zbxj-a71.jellyfish.systems [198.54.127.71])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E310740007
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:32:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=pqPP1eUl;
-	spf=pass (imf10.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.152 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=G5wmWHGF;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf04.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790130722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eY2FwUhC+QO6BDI+/C9DuRURjCy94COvOGbyA9JIVXI=;
-	b=dT4/5yZTdReQlzlBeaY9KPmnaDT3iOWysO3koiFoPym3XdMCVeLR6LlGzmWT2+KvvEm84F
-	ikQuJ2rs9yedOnXG+YmQzizM7fJvrojE69C+qmDancaKO9GBQkRWIhe0BZIGLOiwqIVLPI
-	wx7VUjjLuUVZgNkXIbF/dfgAYNMKYLQ=
+	bh=yOXnInNUODU5Lzwbj44QgpGQDJ5UdG0pb1N+gcZ3ygM=;
+	b=dyQhj+MpD5RaLRV1dcI4rwjafwTWU71By/qLbOqZYCxKUUBpqKoSq2GgZPUmH3YaoGcvda
+	05jfnoAc/LCJbG8zMnd1Fl0UPm7H8adEDLMReCGM68H+DbM6we658r2XyBCE8nvXkSB+2M
+	FAb47pVYc5g/YhxH2PQx4ufIWnaSwY0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=tychen.cc header.s=spacemail header.b=G5wmWHGF;
+	dmarc=pass (policy=none) header.from=tychen.cc;
+	spf=pass (imf04.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.71 as permitted sender) smtp.mailfrom=hi@tychen.cc
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790130722;
-	b=iGrm4hmd7SYEHOvj95t+FSZPAf3Kz6AhSPoTDgfSckPCy43boUi2YONY/KBPeyDUXgExfe
-	JnLxeyMmQglIrI7J1ltCMC0Glz2bRmy7EguTBosJK6sKeUF10a9Qws7qrrln/hItJ+214v
-	Foqyo4MS5R9A7LuAx2plkF2nNTF5ovM=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=tychen.cc header.s=spacemail header.b=pqPP1eUl;
-	spf=pass (imf10.hostedemail.com: domain of hi@tychen.cc designates 198.54.127.152 as permitted sender) smtp.mailfrom=hi@tychen.cc;
-	dmarc=pass (policy=none) header.from=tychen.cc
+	b=Q+wupb+P6TOXovYE4vVzN7Ob1SvotM4QnsBF0RmvLR/qBbLtvn3sbxk6Yt0Er/oLwt8Eti
+	ZpR+q6Z6j25OyRo4LJMdwqPSszdbtZlH8uuD1CCxUSFebcIGnj4FQ3ugwpN4BUSp7GAloL
+	T+xUyN9I3DDXY8XGWbAu5BQtJl/EYUI=
 Received: from fedora (unknown [120.199.7.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZS3Tcqz8sYF;
-	Wed, 23 Sep 2026 02:31:44 +0000 (UTC)
+	by mail.spacemail.com (Postfix) with ESMTPSA id 4hqLZP2xcYz8sYH;
+	Wed, 23 Sep 2026 02:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tychen.cc;
-	s=spacemail; t=1790130707;
-	bh=eY2FwUhC+QO6BDI+/C9DuRURjCy94COvOGbyA9JIVXI=;
+	s=spacemail; t=1790130703;
+	bh=yOXnInNUODU5Lzwbj44QgpGQDJ5UdG0pb1N+gcZ3ygM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pqPP1eUlaCDTUv5yCrMgjH2Wc/3DT6OkW+73aUgF1rN5slTP+4VSHmpSU3PFtP6Sf
-	 9+2OlvqjVW+bGed9UI7fz9L5qPAvygnMpQQ5bfpVf3ZIsVzSnXY0YMRfSjiuzguuRn
-	 4aTDwgxNHI1FpzJaGcVTyDkuNtWvoUOmyPEgaIuwh7/IFPjYd1eaDEbvw9EvQNNIYv
-	 qHyvBfuoCA5UTn+5tF8yB/W9W93XPPMqw7uu9ijIL3WOllCaQvdH3uKN8L7mtJGrTG
-	 BR9Fv6Vx0S9ky/PKpnL890E8FcFT4nIBpUR+gQCjcYFtme25oYZLLm4KYCxUwdRxWc
-	 hetsWI7wL3cGg==
+	b=G5wmWHGF8x5Fjt8JXLIilAfxBLUl9aQ34u42tdylL7dNFnoM1NAqY0nWyDDx+J9yx
+	 fljLl8gdfcAKGAoO9WyBRPyJoNOCD5+BqPI+iyloAdpemuOe4MzU0THBcoz/JBisi4
+	 TI8CsTXrHcTHpshU1yOCiiPwYTKWdYSbmza6yeOY5oiEZkb+eoiSajTeC2dkPnAVxo
+	 s/k5vnjcacO9S8zSilBs9zOwA7Ar2A+9aRXWn3aagBwiOmWna9bHrvEOEKQUIQ0B3r
+	 RlLNzSWPlBYcUGGMBFkZn6CpRIsCU9qQLPkk5IA8lPgRlj965ZI6YmktGqWBm73Fvs
+	 z89vhmX/xvmuQ==
 From: Tianyi Chen <hi@tychen.cc>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/4] tools: use __pa() in virt_to_phys()
-Date: Wed, 23 Sep 2026 11:31:25 +0900
-Message-ID: <20260923023126.1910311-4-hi@tychen.cc>
+Subject: [PATCH v2 2/4] memblock tests: zero-extend simulated memory addresses
+Date: Wed, 23 Sep 2026 11:31:24 +0900
+Message-ID: <20260923023126.1910311-3-hi@tychen.cc>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260923023126.1910311-1-hi@tychen.cc>
 References: <20260923023126.1910311-1-hi@tychen.cc>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Envelope-From: hi@tychen.cc
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E9FDCC0002
-X-Stat-Signature: tzrz16s8jarbch3ou6gezsgswjmotddh
+X-Stat-Signature: 1nw75ic9nkai6ukpm1gpbmgw5dahxgxk
 X-Rspam-User: 
-X-HE-Tag: 1790130721-670361
-X-HE-Meta: U2FsdGVkX191DKH3gcd+FnPehCqjSFwnRZyJv5q/yWyTt5fFbwQcnfNm6C59eUjyhxI1rjJT3AcG2Zom37Wd6nrgjhMVBlRMg1V0yyczUGhqnNtJpT0eWf1+pMyheV72y30UbCkfkJqPMf1SNEnoCe7RABbT2GsdA7SEo98lQuXlyr7JkxG8wDe+6++pbViZqcMCHRV+TK5mxSG5lwDYpl5YHihCVhZ/lwy0b2Rh7xz5/wVR9IUpUlhyds0h7v6M69wG6UJDNYc8T/Gp3wdzAn+Rn/tLb4OLcBtBYXyQJeMhTRtw4fsbjARP3O9L3BUDe/uCPTiKhtDm5OPVOpCC7g3D6ucHkdxnv6PFfRyoXYBSa44qBeILV4jm60N9mfJkHZrCj3i9ZAXM8o8YKuhm9/O4wkVHC8OTQrndkLZHK2v0WkRYS3nSX3yImjZpQqsklYCs5kx2u1XOxP/gX9iaNowZ48kIv8hz71VO4+0ylkEdrF6h1WhvuARkwSEFEFhnpZnZMPqiEK6a6YF3PkHCMPUQsHmZOObi5AtfM+D6gdjKja+W/VCnY6BGXNeUbbCb4+mWklchDqkOZidGcq38ZPrZFfiehB0561arn9KKZ3brkgnDqGNzI4JmzHWdbmEENyEPWni0PuTg334gJNLIsMFvAG6iRpqzrjpRILeK6ZOO61TyNwLtDqgJtaaht9VcQ1xoLmxfpAAmP5wzDvrasnzKYam2+YxUexoLmTMQsVOQmsB+H3kBxjOGAJJSNZHR4HehOfAICvHWvz1kTjyO93I80KsM0QpJl+u9VWSfQpE8DXY1MdCLYK33EYZ96/PON+ygn+S4kUIaRuskUlhnewI0JhG72oxSpMz3FrJMaVYrQP9sXQy4b9IcuO5zK9+gp91+WXy/xix1G8tfX5K7eMMFo9oNyPSFnKN1x02WtXBidFaho55qM6VaHqds5vft3ObyJobxcYOm81kFzq1
- PRAot5Bb
- KwHnyS5bXG/FaWhSynOE1EYrwM2pzoWFEPYJ1FfOoIAXKOWkumm3sCdFw8EUb44qto/8J5n+BGLzHkOqyC1H/UKYuuMCQQg38gRvR30FSK22PhSvEubSLhjY1oADF9y+KxRipONRbivlRJExA8ZtvPJqES1X4AYYdM9mtb4efPOw8mNxve6xdvRrjHaeF0ii5xmU6MiqrLaUmCgN8Txw2OSDldJuAVHoI3z2nWYlnFM8cOg9cC9CtuRxdy2rH2DurXpV+slk8kWPEbDYZhaXmz1UFNbkRdIBvGF/wvqQO0SxC5WhfBXWDYee67WzPonQWsy9SNcCXBjhfcGfyZii2Lb+nAInoC1Zg18F1SQHxb8gkL0ySiu12A5tSn5n5BnQyd1iJRwQo0hdMu6+hwwR0IJyTCA7OCOjlOBFjoF0HmO/uIeQ=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E310740007
+X-HE-Tag: 1790130721-685026
+X-HE-Meta: U2FsdGVkX1/9eiNhvLfz0ltqlj/5dpFmwPDMG7lswVpm1JvKn2qyH+LgsSyJzfXAvPtVXASseBSeYP5iEhj9bDaBXtIxGkBkacRLHrpPjTpAW40jLjB7sMjVmxg3EcrR3HmkKtL8E60Dmi5EgBUw0S0d0LkPzdedpudF1sKt5Uarf6OflqfxHUq9nlBWEk5kR16X/t2jQULcqf3XWaOdTxw5+5tmmEft1B1S5phex7ZL2RVPOW76SyMjgX1GCPUv62ZfDaK0VhiDBR1RdK8g09tUY3l7HyNfv6rXDN1NorKZHEFXB3BeRBZ87RRYSEHl1ASc+YhlkWVYntK7dCG+XN90V41V0Q8tC1w/1jG59gqIYhH6Ca0r1vHDeSqqYZJOJebKT/pT6UDBDIE6ZMYwQiKPVlrpv28zL74r0jHoZW6AfFn9EDU6kP404rlJP3y9+aMabYLaDS4DHIgzFfRD78OPr9K4lz6C5+fq9eWFWu4XnrBviW9rcnDUWOwzJeDA0OiyEn1QMAUsjymuTItrkLn04rNtF80yE9C2HVg8Im1LQ6wVe1W/Dsf+3fnVs+BaaFOxRk7f2s3EOWGEqqGvWNP/TIjnLWbZPE27v6MUVuM2bQbJkazqxM+v8aFEtflGHRU65Bz/K0avkFJcXFZNzsB47tfibcxJikHu8VzBZRwZVLhoKIddoInYVatv2CSCzpqBbPe7umg2JHMPEpVYFD430gYHMccEqvw9RTWRw4wMJ7HfkSPG9gXth2zRc+G+nYW57UAV0+1QK6r8pc4YhYbGFT+jOyiAFrKp2YxjCl9A9lwn44dsERjla5jtz5eJYlngNTqPORfwp1AE+WTWzK8ViCB2h3lAdYUbgMEIqS/S3z5ehsI9HehqP6lrSsZ74IC9PRy8xJumnVFPRUcI6po+s/uZTMhxHVR3hLms4xmlP3qea92qt7oey4snp4nF7Y4UU79P9MZqaI3CP8g
+ xQEbtYlE
+ GP8o8WzGcV662a4Np7Fm8dep6Cgn12ah+tWk2LsxzkH4bItQCTRbAN1dubEX5TdpAPBR+kwhhcnCMNHOhtt8/1HSI9xG6qWOYDulVL9L8XmfXmn46nR6SCzTDGrYYlDWJ8LSLFItLhOvU9L2TXy1MmGdy6OiB+zuS/MABZSFdD2fmOOotqzUPYCR5VOGPFXL0Dhm1ElS16e6csKXA32Jqe+UOL/b2NvzeKnpJtih4xyjndismg+3aoLlB5kJ9UN1zAKpW8lzsLHGoKaarSFOlRRqYipy+e2eb2lLT6YbgDCZSA+uQ1FXjMc4WheCm2vgV2oMPYHJoBAVJUWCicZj9RTdTp8n+crnMjra8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,35 +92,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With 32-bit pointers and a 64-bit phys_addr_t, GCC warns about the
-pointer-to-integer cast in virt_to_phys(). It can also sign-extend
-pointers whose top bit is set, turning 0x80000000 into 0xffffffff80000000.
+Converting a 32-bit pointer directly to the 64-bit phys_addr_t can
+sign-extend it when BUILD=32 is used. A dummy allocation above 2 GiB
+then gets registered at an address different from its unsigned pointer
+value. The low-address tests compare that value against the registered
+range and fail once the earlier maximum-address free test is fixed.
 
-Use __pa() to convert through unsigned long before widening the result.
-This preserves the unsigned pointer value and matches the other address
-conversion helpers.
+Convert through uintptr_t when registering and reporting dummy memory.
+This preserves the pointer bits and agrees with the simulator __pa()
+conversion and the allocation tests.
 
-Reported-by: Mike Rapoport <rppt@kernel.org>
-Link: https://lore.kernel.org/r/179007180279.508753.4595268983388589280.b4-review@b4
+Fixes: 284d950dd6b0 ("memblock tests: Add simulation of physical memory")
 Assisted-by: LLM
 Signed-off-by: Tianyi Chen <hi@tychen.cc>
 ---
- tools/include/linux/mm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/memblock/tests/common.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/include/linux/mm.h b/tools/include/linux/mm.h
-index 84b5954f66c3..480526de8d65 100644
---- a/tools/include/linux/mm.h
-+++ b/tools/include/linux/mm.h
-@@ -30,7 +30,7 @@ static inline void *phys_to_virt(unsigned long address)
- #define virt_to_phys virt_to_phys
- static inline phys_addr_t virt_to_phys(volatile void *address)
+diff --git a/tools/testing/memblock/tests/common.c b/tools/testing/memblock/tests/common.c
+index ac032610a56e..2a248973eb4c 100644
+--- a/tools/testing/memblock/tests/common.c
++++ b/tools/testing/memblock/tests/common.c
+@@ -67,7 +67,7 @@ static inline void fill_memblock(void)
+ void setup_memblock(void)
  {
--	return (phys_addr_t)address;
-+	return __pa(address);
+ 	reset_memblock_regions();
+-	memblock_add((phys_addr_t)memory_block.base, MEM_SIZE);
++	memblock_add((phys_addr_t)(uintptr_t)memory_block.base, MEM_SIZE);
+ 	fill_memblock();
  }
  
- static inline void totalram_pages_inc(void)
+@@ -88,7 +88,7 @@ void setup_numa_memblock(const unsigned int node_fracs[])
+ 	int flags;
+ 
+ 	reset_memblock_regions();
+-	base = (phys_addr_t)memory_block.base;
++	base = (phys_addr_t)(uintptr_t)memory_block.base;
+ 	flags = (movable_node_is_enabled()) ? MEMBLOCK_NONE : MEMBLOCK_HOTPLUG;
+ 
+ 	for (int i = 0; i < NUMA_NODES; i++) {
+@@ -115,7 +115,7 @@ void dummy_physical_memory_cleanup(void)
+ 
+ phys_addr_t dummy_physical_memory_base(void)
+ {
+-	return (phys_addr_t)memory_block.base;
++	return (phys_addr_t)(uintptr_t)memory_block.base;
+ }
+ 
+ phys_addr_t dummy_physical_memory_low_limit(void)
 -- 
 2.55.0
 
