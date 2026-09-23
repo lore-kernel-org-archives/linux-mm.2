@@ -4,80 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A0F5C9830C
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:49:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E01EC9830C
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:52:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 401956B0099; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
+	id 3DF826B008A; Wed, 23 Sep 2026 09:52:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B1536B009B; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
+	id 390266B008C; Wed, 23 Sep 2026 09:52:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C9706B009D; Wed, 23 Sep 2026 09:49:39 -0400 (EDT)
+	id 25B156B0093; Wed, 23 Sep 2026 09:52:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA05C6B0099
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:49:38 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 852F016082C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:38 +0000 (UTC)
-X-FDA: 85245159636.27.58060D4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id B379EC000C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:49:36 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbQYG4T+;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E8D816B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:52:42 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E402E807EB
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:52:41 +0000 (UTC)
+X-FDA: 85245167322.04.16A9CD0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2FC364000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:52:40 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=alIag8+0;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790171376;
+	s=arc-20220608; t=1790171560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GMEn8rMByxkBYSiMmrnZBaoksE1XA7duT9/L5oZzD14=;
-	b=5nIGG0sXp6NbpNWSuev2m+C5Lsn+87Q/koqPHl0V/TuUWBMTGP7WcgRl9tEI5vTW7s+qLE
-	wHsnsEnmPRhg9I/AXabIq7Op+HR4tZwg5cNuAXst2qPnBtdzJaCm7ZYuzH10yeltimT1i8
-	QxWKiB/TEj9olYdNZIJ5hQ2jdwMNPCA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790171376;
-	b=x4OFQ7RwumlqNsCuYCgQnHBQGPlaf5oYGywzpMREUihUJWYQbQowZaSJL9euqCjkLlMcDq
-	JrFDEaYCxox9Qr86VISStuIEI96NHMmMos3KziSFKdGoaMOWeXCgMi92BSKrxR3vNsU18G
-	Lw41m1zwYy5gJiG10un+3mtet0POZEo=
+	bh=2Vlns51KE3TZSNtfAm3ejn4phz9ygr88j2EuVAIFdaA=;
+	b=duJWYHUDwbLWIpZDC1X22yvLB3tCFvTSqwjjVmoP9+5d9ebTkwsXF6DWATAW7Pa4Zy2abM
+	cKdOwv8ngc2uAx+qdLGlT1sJGg8uIXJS0y1oV2Qe2jgzHeHMBDBmRAvYNmd7O2C8m+B4/3
+	/wc5g4vDTsP07Xps4FxwWNIfasqJTCA=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MbQYG4T+;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=alIag8+0;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790171560;
+	b=gJVtKY80ajk8o27WPlR/OpxYKPPrlS+o8eWZIb+Xd+ROc6Ekttt1bFld6s591ztYgCIQ9e
+	SnF/uWyntSlj3SoH90gTFAfoD1q75Ezk74wn0gvhtZzMbFwPBGfKxHEKynlhKnE+VCjQK2
+	5Jr+dEyXj4vF1CDgWdKT4S8wLHF9n0s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E447C40AB8;
-	Wed, 23 Sep 2026 13:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4771F000FF;
-	Wed, 23 Sep 2026 13:49:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5E4F601FB;
+	Wed, 23 Sep 2026 13:52:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EFE1F000FF;
+	Wed, 23 Sep 2026 13:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790171375;
-	bh=GMEn8rMByxkBYSiMmrnZBaoksE1XA7duT9/L5oZzD14=;
+	s=k20260515; t=1790171559;
+	bh=2Vlns51KE3TZSNtfAm3ejn4phz9ygr88j2EuVAIFdaA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MbQYG4T+HrUcgGCJB8Mr03WSESTKYUFJ+qZJSTPAvzfVoBtgEeSK+dmKLTgClqmu3
-	 Br9W2bQAi2zTh5qhSrSzPZ/4/LthoT+d2d0HCfgeGBe8fCLqVuhUsF+T40JocKxYBA
-	 qq4U7Ch/Dng+qFOv7tZUfMZalopkfx2AzXal8G1hyqz7m5WHU4Zf6voNZWLLmFSiTr
-	 e11LREhFwp7RHVy01ngL6IiRJ55rj89LCM6NmoVpAg2g12j/v5JnGFMjHN64n0frFA
-	 CzXv0dX+0NwVq9yUbT5cdkIew2c1xUy8lJF9pKHn6ThLoEJf1PJ/A7iItNkTaSGiXe
-	 O/cD+MI1FqhYA==
-Message-ID: <60634ab5-3fcc-42fb-8722-4ba6771acfda@kernel.org>
-Date: Wed, 23 Sep 2026 15:49:27 +0200
+	b=alIag8+0p5LtR7xm0nxkZi97djgHwndGeQcC+01M539hZCUvpYsywIge+oLPK2dBg
+	 GyEKblYRtBV9jDdfoKb2fY5Nx012XVo4DMIl6f42JF4s4GJeUjUIkaTByY5XH+lc2G
+	 vhDU0WDqIYYGeGCCW/VKmLWUjv4cpFFIrgnb9enZzJh3GmXLaF80Fvuol36y1uJ46e
+	 XwCUsJV+q9SZo1p3f9jKM5fZFkFSTu8HAbiCeBCc174w5MmeahZt/C0YrC5vyt1Elq
+	 4tKcuoSJo2GC/sKIdAaeYjkAAvVCJmvK7KnnJmCLmPER4cWdlEnbEr4hbqmWAjkrzC
+	 u5mIVn5Vom0ng==
+Message-ID: <3e814778-6646-4066-8f2a-6418755c53a4@kernel.org>
+Date: Wed, 23 Sep 2026 15:52:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/migrate_device: consolidate compound folio handling
-To: Hui Su <sh_def@163.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Balbir Singh <balbirs@nvidia.com>, Matthew Brost
- <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260923112041.2103427-1-sh_def@163.com>
+Subject: Re: [PATCH v3 00/12] mm/collapse: separate a collapse from its
+ callers
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260916093145.4022188-1-kirill@shutemov.name>
+ <20260916154826.a55591eec86b5514dab898ca@linux-foundation.org>
+ <aqvcElQxmtysJwbA@thinkstation>
+ <20260917151131.ececfd158627e58257ca7110@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260923112041.2103427-1-sh_def@163.com>
+In-Reply-To: <20260917151131.ececfd158627e58257ca7110@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B379EC000C
-X-Stat-Signature: 6w43nq9agxpq9s4dz6gpq3hxn7gcwnh6
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2FC364000A
+X-Stat-Signature: w54jermzshfheiawki1zgdijpisundps
 X-Rspam-User: 
-X-HE-Tag: 1790171376-349613
-X-HE-Meta: U2FsdGVkX185lUVPzOeo8fSt2RyFktFizSMh8XYo2iV1yWuJTkBY4G0rx2TJpNu+ngPysf9VajY/Pzon3Gz+zU1dIUPEykA8g9qF3PUDqBNTWQwGCSZHKIOaos20b7SaKMFdNlHqfaErzbMeS3PFJfSKoGd+CozGym5h9YAcEIO1sdZB6sH3mE8nGj2Oll9Ad3W2QBzUY52gCI+xo3UPJJdlKrOkP/8eX6lDz0JzZVgzithV5RUoyB7Kr7QosobJ+Pd69qGq4bebRFJkab6FulhrfKE0At36coOWZnznwtotvWTBAw8W2lZlbYdZGKt+S4XKPJL9Xn3PIkaCv/rbwzXwD2fr6gE0HKuIX8kQuyFOW8CA0mvWc70rfpMdrejhue52mPQlHj3Tzez5cHD1GvHSOcBtR3hh15xWrtTpoGY+bvPo5erG6uYsXnerNdJX238Y5sdZ1jqZy+OebG8vgpDdiWs/DULP/hYXkjA5VYcR5y3VpZO1XcVFxBTIOG4i11XQpXEHGoEifWBvir6VzYVl/Jn66i21hiWIoK1D+xCBrkN4gQzpFPtR2WdZgYzP/jgrGhuK1OdE3h5a5czr7AReDfQZBcObCelgTiJvEcbL5RYOCACGOtjZ9JSavDpRMannhwgFVIwXQSEPkFG/zuTddIO1xclObg+6wWCG3EaKqW4rvY4+Pg64h098np/txT+GbYuUORhK5k00voHOH8aqVJ1qXRk1lteyTxMB24OEBlE2kxTFaFI4h2F9ZzJCVAC8zDM/S0WLbNE3CUib0X2o+Nr9Npf4bo1tJprLYIF8gdhmbaWajs8Z804C064MECSjfLcyt5a0+i83MFzqO2K3nm18Mw/S4zTXPeswqVohxi6po5XNk4eyfukjWtahlBqAVj9USLXb+6mOSP1/7vO/ckrfIT6Kqc5suZAbhLUfkf6DLa5q8Fg7PEcavZjA08XU8Fwduo5bPvhAHnj
- 0P4hwMn3
- NTxriskQ5LZKCBFpLBMLLoy8N9edERUW6U2ms6qg+6NIi1SbAQuG8x9X3x0PlNdhrT8osGoBUK9cG8yZxCq+qqOZexqUvZvFXpEymrS7TRN0qa8S9apopFqDPrhgUG1ecdLBwY4ya41X0JkojmHP7XkT4YrF7uBZKEXA9fUdXr7He9ss/eWnvzkHVpsgfsewRAign0QF2b3Cw1DiOZ91sCbofSq4U5bSmu9J5gcxLWEC8o/Bczutx6/wzSE7dMiDMMDeKvG5APwB9rnLkbXj9WaHhjazQu4XVqpcFCarCKEWPRNSYlY1SmJjbJHt92GMVXYq1Mg2ek+OOwR22mC8MxONwQbPGKpbdWSbqnFeKGbffhhfEzfWzJdJyrvGcnLkqwrNnkOPkhOMH+ZuOisNpK9QfhqcGdQXpyJeGB+1/NnvGw2JMYcOKOfwPz3GzueAWcKkQwmuj3gcE89c=
+X-HE-Tag: 1790171560-611554
+X-HE-Meta: U2FsdGVkX1+GjpVhaufaNul9R3kabnlimXVUlIhvpzfLIxuNMmTAq4NTGIxa0OpUIhjEr0KHMzNpnr8dZlA2mi8EQsi3omd2oIHjkoRvbC9lIwdXfIclQHG+LyiBo5vZI7oqmOxh07wyTpX5DUg0QKZBro9jRnojvfnmOamfmd3jb/QwEeSXYRhzOlmUqlwKRjgJ9WgVgj5jXqZBBzlgm9CGgL7AtmjExoUCa1lENhgVp1wtFL6oBjkOtyVnem5d0D7GasjpJMX5BkIwQBO6lL0U3EkvVs5VORD1EyXGvHLKMn1p4saQSwdQBVEUoeb8t/pyQ6YyMKcx9YAs0DCmx/iTp1jWBToz0oNxZ/7Miew+LBi7SD8vOB1cWacexQjyTzVL974mI79F713QIdZKtFB9IgXgNW3l4wo6Q7bIWJgzQtLDU3phC7rRMucxRZatkxtEUJuiwOSPwmo+FoO/gkZRbE/aB9aykahhBO979VidPwoEApgeMkcQmYFsU7T6U3czkZlVhFl0XgB05PpT5hP4BEaH7lAFZU1To6viyNIQ3fH2c8il8yV2hofHa0Zbm0TX79/9rX1qzVBPpxeiUTHjIijVYHEFWGas3RaW0jf63Resu3LEWQ/begQi+GiPYwwWdmViSC3icDxUNmO2Xu6+8Gv/utArWcxz3R2JPkQi/uifEX4yruO+gSVAv0t4tow7SSlETXFJ9CKZNkYfZsuqpJ2eZEXmrgtIDsm2kZxVYGBRSdkyOj3rGNkWG6q6E2fN3yAPTn0vkNCBP7I9A1X9RJP3bx9wh28DjjsOVlPpHBAmnKDltAFBPI8DIn7GNEOGbagc8lbH6x07oKnC72QJxx/0QIvSXgTmNqLdim2Axqgfl4tlaryrdSLB7eUDqY5cVzszUqJ6zpEPJ+MaIJZwfPx0vouJpG2l+OchS2smnjuQFkel1peIDAtL1xIVghFFmGOdIHrXtzJ+GpX
+ M05Eu4VT
+ BTaJIvVnjzerckVe6s72r9YqofEKJEi/Fs5vhJQsRTTsKVxNkB0PGhp6wSLGev4z0SEew9zJoMpPO2Kr6xuvJdwWlWxCqcSZLXmrXDqtxVcy9E6EkSbe/yuA2nO8cQJvfBfPxN2E9hSAfOJLUtOUO5EJlQPSuKCgkeFW8RwGiQs9cydIRue7IcikXER78coR2NqrmaQPwk5R0A4fFKD6xeNcKeUPt5rPAbK6o2Pk4Hk2uuPqRFWlvIVecKdgHiO2YpRmT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,125 +148,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 13:20, Hui Su wrote:
-> Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
-> compound folios") added handling for compound folios that do not fit in
-> the remaining PFN array.
+On 9/18/26 00:11, Andrew Morton wrote:
+> On Thu, 17 Sep 2026 13:26:51 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 > 
-> migrate_device_range() and migrate_device_pfns() duplicate the logic for
-> locking device PFNs, encoding compound folios, and handling this boundary
-> condition.
+>> On Wed, Sep 16, 2026 at 03:48:26PM -0700, Andrew Morton wrote:
+>>> Here's how v3 altered mm.git:
+>>
+>> BTW, is it helpful to append a range-diff to the cover letter on a new
+>> revision of a patchset? I can do it in the future if it is useful.
 > 
-> A compound folio cannot be represented partially for migration. Use
-> VM_WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
-> retaining the existing defensive handling: release any lock and reference
-> acquired for the current folio, clear the remaining entries, and stop
-> collecting.
-> 
-> Move the shared collection and encoding logic into a helper so both
-> interfaces handle compound folios consistently. Also use memset() for the
-> compound-folio tail entries instead of open-coding the clearing loop.
-> 
-> If locking a folio fails, leave its source entry zero while still consuming
-> and clearing the slots belonging to the whole folio. This prevents a tail
-> page from being treated as a new source PFN by the caller's next iteration.
-> 
-> Document that an encountered compound folio must fit entirely in the
-> remaining range or PFN array.
-> 
-> Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Acked-by: Balbir Singh <balbirs@nvidia.com>
-> Signed-off-by: Hui Su <sh_def@163.com>
-> ---
-> 
-> Changes in v3:
-> - Keep the source entry zero when migrate_device_pfn_lock() fails instead
->   of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
->   slots belonging to the compound folio.
-> - Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
->   keeping the defensive clear-and-stop path independent of CONFIG_DEBUG_VM,
->   as suggested by Balbir Singh.
-> 
-> Changes in v2:
-> - Fix the helper parameter indentation and keep the declaration to two
->   lines, as suggested by David Hildenbrand.
-> 
->  mm/migrate_device.c | 91 +++++++++++++++++++++++++--------------------
->  1 file changed, 50 insertions(+), 41 deletions(-)
-> 
-> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-> index 009bfa8b212d..68b787bdc8be 100644
-> --- a/mm/migrate_device.c
-> +++ b/mm/migrate_device.c
-> @@ -1392,6 +1392,40 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
->  	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
->  }
->  
-> +/*
-> + * Collect a device folio into the page-granular PFN array.
-> + *
-> + * Return the number of entries consumed, or 0 if the folio does not fit in
-> + * the remaining array.
-> + */
-> +static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
-> +		unsigned long pfn, unsigned long remaining)
-> +{
-> +	struct folio *folio = page_folio(pfn_to_page(pfn));
-> +	unsigned int nr;
-> +
-> +	*src_pfn = migrate_device_pfn_lock(pfn);
+> I guess so - that would let people see what changed immediately rather
+> than having me send it later on.  What do others think?
 
-Let's rant about migrate_device_pfn_lock().
+Ideally we'd have that for all series, such that it wouldn't be the authors
+responsibility. Because even if Kiryl does that, nobody else will really do that :)
 
-It looks up a folio (which we do as well !?) to then get+lock that folio, but
-doesn't tell us about the folio, but we're supposed to magically unlock and put
-that folio on the backout path?.
-
-And if it fails (e.g., folio_get_nontail_page() failed) we simply go ahead and
-work on that folio (folio_nr_pages() etc)?
-
-What?!
-
-Now that we have a single caller of migrate_device_pfn_lock(), can we please get
-rid of this abomination and figure out what to do when migrate_device_pfn_lock()
-would have returned 0?
-
-
-> +	nr = folio_nr_pages(folio);
-> +
-> +	VM_WARN_ON_ONCE(nr > remaining);
-> +	if (nr > remaining) {
-
-It's odd to add recovery paths for something that is mostly an internal
-assertion. The pattern is odd.
-
-I'd either
-
-if (WARN_ON_ONCE(nr > remaining)) {
-	...
-}
-
-Or only do the VM_WARN_ON_ONCE() and drop recovery, expecting this to be found
-early during testing.
-
-
-> +		if (*src_pfn & MIGRATE_PFN_MIGRATE) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +		}
-> +		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
-> +		return 0;
-> +	}
-> +
-> +	if (nr > 1) {
-> +		if (*src_pfn)
-> +			*src_pfn |= MIGRATE_PFN_COMPOUND;
-> +		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
-> +	}
-> +
-> +	return nr;
-> +}
+(I assume if people would use b4 we could build some automation fairly easily.
+But that's wishful thinking)
 
 -- 
 Cheers,
