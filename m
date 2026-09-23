@@ -4,92 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CE78C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:42:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84447C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5C16B0092; Wed, 23 Sep 2026 10:42:06 -0400 (EDT)
+	id 9BE886B0093; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28D086B0093; Wed, 23 Sep 2026 10:42:06 -0400 (EDT)
+	id 96F1F6B0096; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A3ED6B0096; Wed, 23 Sep 2026 10:42:06 -0400 (EDT)
+	id 85EF86B0098; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EE91A6B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:42:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 837CDC0803
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:42:05 +0000 (UTC)
-X-FDA: 85245291810.11.A72FB71
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id D13B6180002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:42:03 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QcVZOIKN;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D9A86B0093
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:44:23 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E0FC380839
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:22 +0000 (UTC)
+X-FDA: 85245297564.18.9E31262
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1C8801A000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:44:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tyqL4yQj;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790174523;
+	s=arc-20220608; t=1790174661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OR88A52FEt3lOkvnEZ4uK2ghKDHsLZlk+8865hLTCG4=;
-	b=TqzA8i79l17eGTYit4NG6Eotm/YOSWLZREedS/OCy6lX6TnI3sAMbUN/2I2uaXhws3CXeI
-	GU5FBVZwzhKaqsYskPMPKITyUzfzs0KLvtc/kmLMt7XnIJEcH+AtgwLzqQaS/wS6/Nq4t1
-	rD8qqm/cHtzKLeoRYFsz2Vf9jzBtblw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QcVZOIKN;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
+	b=mKpjgSdVRVbnH7ObqitChZTQbSJBCEp7d1Q1xdItOgc7HHxjLv4uzaqjnmQVna0DPf/MRZ
+	QRo3kv7Yn4rK8X1G+8YKc/1ozhCK3p9dr+7C6tI2cXGcb1jVAJLVabzoIGtaPjJeaXcmHz
+	utOC/9/Ee4ahwzHgPWvzRFe1pl6EEp4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790174523;
-	b=eWRAcj9EhNOIC350eQ1FCaaa7so9NWT4DXEVrl2tHuwjcNNg3tQn1Fmd7fq0CJrYhCR6Rc
-	1bbaTnU/7INN94LPI+h34aJcMifKVQ/fjvlCQWtQpJvb5H5bfs0FggQT/sSMHIv7l9QscX
-	d6MiSwTQ6XZsMNkDlTBF6G1cSyYgPqE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FA4443D7F;
-	Wed, 23 Sep 2026 14:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2961F00899;
-	Wed, 23 Sep 2026 14:41:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790174522;
-	bh=OR88A52FEt3lOkvnEZ4uK2ghKDHsLZlk+8865hLTCG4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=QcVZOIKNnkHsMtzRW84CuzwqKyR1jt8ezbPvTyPhkRFrP7wXCKIcZtML8YHKAvRZv
-	 8tmDA26fqEmDxJfTb0y+7FMG7l/V3xbVf+Lb7TbfsfkmHqOA5aaZlKiU2WrAeA6Y9t
-	 pcnLaQV66lMzU4Y5wC2VwGcyVosiqHCXAiDhNdpSMAeeX6M8n7+WKxuDhWiRExAIoV
-	 Oj7a67DxYNB6ZqPwTJsFXTYRHC7fJRHzYhoadCScagkQlZFBQje8zGpCCdmC9bZqx/
-	 kGBpayNm65fYIe0ijg8pHCeRLOl9lQ9EAGh+nN490WKqUDJbLV0B4tX7Lu8LOeq1Hs
-	 0Og3Prdju3L1Q==
-From: David Hildenbrand <david@kernel.org>
-To: David Hildenbrand <david@kernel.org>, 
- Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
- Wei Yang <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>
-Cc: linux-mm@kvack.org, Nanhai Zou <nanhai.zou@intel.com>, 
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>, 
- Chen Yu <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>, 
- Tianyou Li <tianyou.li@intel.com>, linux-kernel@vger.kernel.org
-In-Reply-To: <20260920084946.3266279-1-yuan1.liu@intel.com>
-References: <20260920084946.3266279-1-yuan1.liu@intel.com>
-Subject: Re: [PATCH v10 0/2] mm/memory_hotplug: optimize zone contiguous
- check when changing pfn range
-Message-Id: <179017451853.5582.14450577931941446538.b4-ty@b4>
-Date: Wed, 23 Sep 2026 16:41:58 +0200
+	t=1790174661;
+	b=H+9CwJYCVWKdcv+ojbqsDAzUxsJl18UKO7oyUwdwRy9red91Bn1DI4V88RQOQO6oqwpQso
+	oenNR60wzZTjGHMTlfHWd3OqHoFj9q2efheh7eMm90TRypQ7JwSJy8RH3TXzUh4aUjMdMn
+	y1LwzGL87rb7DzvdjaBZ2HsbPZwM2UQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=tyqL4yQj;
+	spf=pass (imf19.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.179 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-52ff0eea420so7597821cf.0
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:44:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790174660; x=1790779460; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
+        b=tyqL4yQjuiReOTWVc7IxoKs4X1s5t5pA0EI8EvK6Qr/GlkcrqvjlpxvwMlK7gUIJSe
+         0S2R9OjRKUBhIJ/BT/vin1wlHpGnm5MhreWNq0ykxilU7HlzQyEEkE1qHteFOxDGWZeh
+         HKU2YaYlCHTkw9cGMIBq3k/4dslR86ZvQAl0AJDqCE9k1A4War0HDOekrTHjXpepcONg
+         M8cdvH2BmOYQXVcz2ff1FftlMxE7NL9U+MqgiZIxjWe4eI9CH8IlqER+W10Z12KWFh/k
+         DMhW1WrbLzeQTecq4CUaP2bY/5TRUPT2ZLhz/HwUK+n/l2RSrhYVFdAQHREkJ44DGbnA
+         siEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790174660; x=1790779460;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Ida2noRUeQ9O57M8GX64707eMt/ciX4GKxu6FkxXbAo=;
+        b=nqDx0m5y6dNc8fg61Fh7TXafuc0KRBET8SOdWpTjEy/eL/ADc2VDL3y+KpRTpdrYzE
+         Ma9ANma3GOMew1qR9S4G5gmbxug18NNnC0aZIW/5KY1znplQ+F9fWliZcr8h1qcMhnNY
+         A9ViliiBH0QMXGBTJvvgDOIba3OPIapz1dU7eh3YU0EnZb0CEr3p0ya8hpaGXXDw8VHM
+         FcgvT9aiNnRfBJbHY0ezq/JPnVij/8f7P9lmMWIHzdBCNwGn4DNVkLxcmxti7oIJIo7g
+         K0jJC7urHAbIHuleYcQqPxJdxyr7beu8Gxemr654HnA8EsdMtn0fTkYCoL3SJuajas28
+         TI6Q==
+X-Gm-Message-State: AFuF++mVsqcl8ztSrm+KTbeU8SjzWTJdRWpfj90H8K+79x+uwfNuyDEy
+	OxWsOkO+O4gidI9fLQyTxoSygdtO8XfJvfWaEOXkzCiq3cr0wKGjlyz5mzf30BNB5dA=
+X-Gm-Gg: AYBFou0x1abFfBT79DfzCH1vki77ZZq0aUkFj/KyWOQjQ3UTBGYtlpkutxr7446IQrT
+	9vXj5zma67FfN6I+7UFhLdjzkKppHYJktmSqMpLbf91KxkUCvIbCn9F0TZ0wl4hgJ2KTIlQ21IC
+	4PxGwJNlmVdpZGBWzQJ0Qpqf+zGex19W28gl25BU1Mx1WenBLI88DoRTh7w4Ll7KGVog/w9xibD
+	2p8pYFJz5Ey6p/lmZL3re/0oZPXnjO1ipgxz3FPQYWgFnR8XDhHEwwQoQFjIu5MYesg2+wAUTEY
+	vF1kX7gZCJ00701JPJSzaB72OK8/Zy6ObzLC9EM6ZJ/gaAx3UktsXZuds6DFiolftPguMEHSnmg
+	pn5sQR+cXaydy4jeP11ccSVdfsE6VKQOSBBFVZfnpv7v/1NZo15PFiKxaSpVrBPdgzF61VmE3+d
+	cf8BgXvij4629t7ePIjKYTZ1r39QFc0+rr0RjX0qqzr/WvC1U2FQLxoY/zRJv2Z2VuzP9bokhk7
+	N70WWuZ74N2fvyWflQUweqdIzzNNNYXsjt1dcyAPMWOCpQtrRFyEYlG
+X-Received: by 2002:a05:622a:86:b0:531:2eb:be76 with SMTP id d75a77b69052e-532db85279cmr96539711cf.22.1790174660094;
+        Wed, 23 Sep 2026 07:44:20 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eaec185esm21362971cf.3.2026.09.23.07.44.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 07:44:19 -0700 (PDT)
+Date: Wed, 23 Sep 2026 10:44:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	liam@infradead.org, david@kernel.org, vbabka@kernel.org, jannh@google.com, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Subject: Re: [PATCH 01/10] selftests/mm: exercise MADV_COLD and MADV_PAGEOUT
+Message-ID: <arPjwPwVxdvdR5S0@gourry-fedora-PF4VCD3F>
+References: <20260922235830.2350770-1-gourry@gourry.net>
+ <20260922235830.2350770-2-gourry@gourry.net>
+ <arPgwegm8XgbEUrO@gremlin>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D13B6180002
-X-Stat-Signature: t9zajzjwogxhfghw7wnoob3pzbihmbqr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arPgwegm8XgbEUrO@gremlin>
 X-Rspam-User: 
-X-HE-Tag: 1790174523-947874
-X-HE-Meta: U2FsdGVkX18BYb3FBDwfkQQ3Cr9Q5y8ReitNC9oF9wYCjvMyL7NAtRx1awkISjFp3+6ild3hqSIFh8spDqppYxoIQKekXzmwn8XbUStdF5MDG9fX+I1rmi3ywfO3LQSaTjtC7RXknBicbiWwqSWGCnzJTs4/bU07ADTTkJDliP+WQ5jNxu53vQgWj1OXG9mfT5YvmGTkLggqO7eJVVkFB9o9UKBdyu5OC5cvCuUGDk3elqiou3a5XHqsz1N42s9UB4Hug9loT/9p9/6Pe+0YysoO2ZnxCS4vOZ9LNsVM/YdOm/7z/+vd0q1B8KX8Qp4DetyQ0DXDeYQcvq5O1oqpaZ6tbjwDP2HTf7rtkG+JOnPqOjV1gOdTfgY6qtNFfzPTjaogwlb1Z3LBaoAFGRR4nFsVJ7acFjFEMp6vZSwEW2NPVA93fYFwP8J8y4aBGyYpKsX5kSp+OzXtSARI7YP4oQdNfkUpCyUDrRuhG6rdGrNVMVfDqr5OMjsU7JLSMxhnySMK/+na4jDZZBb3tSR0DDk6G/lWqyGYs9cb14xfPHYQ0cON/eXxWnx6Y+lOjqA9zOdwHn27ZHpY/rrVryFV93JUA14diWuJm8JvXSksa/H/f4+SuQjfnwD5Zcltma2er3inqmWyv21doGFOoJ4fy4L0ebF3xqMxnKXTn2el0iWdvPOYjxCod776TTX6TspyAZmhQeokIFTqPs+KOOHtZyOk3zvjfSgLHnJJugY8Y43KlD4I0ZR3PbgaF5BHGeLI4NNi7BXHhL2yy43ueEih/gElncUunL7IsVHeIFR7S89HLOrgeyZwlpkYAWpW+cDl2cRU4ypTjWf/m5jVejaqrC8qjKBQNHcptZ8hjtNc5C04EnGXVWJ1eEB+mq4HK/vQhsLWeF1K88c11q2uOBM7zqsunrNVA0dhDDhoCQaOaidIIiNwhqRFmO80qAlEiYsNoSiRK3Z45ggmY5JimQV
- Cv0u/gmv
- hhYTJE9FCdl1ThCGxBUKcfcr+PQjymVw9WM8IM8q9UE54iwAeEiW9Ggd92NWegAoB/ue/SlBPQA/C0AHlHasx0bT32Z2euIn4n1caJGCqDGqAwcMoHYMo/xgupi0rvEV7YBcqJJQCuD9qbooOxFkMGEZhXKKP1MNWhrU5MnWWClfi+v2U6AaVXyHnHP46GXRuhmSSaqAe9H2CAUfHhspl62A7Yh5JEZTBE+L1cmKjAvAbB/iUeVFVtiWMAfPkpoc/699/U0D9nWIgTguepwCWn+6cUZtod7Wu4ucNWwItnQYcAvEk/C5dnMFx65ZUJKT4Hb6Dd5ofyuaRUubES2PYHwreC3RgUya7QDh2lA1rgmIhnt8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1C8801A000A
+X-Stat-Signature: r5fbhezdbstzq9yg1t7mew6ncrqurr65
+X-HE-Tag: 1790174660-92418
+X-HE-Meta: U2FsdGVkX19r7ZJPvYNoroIlmmU8wjXI34jFFi7mpy6QeBDa4AmFxU46jzFaVJHCjm4FFoEQ57UR/ieMxP7dzGuk5c1V8MIuZthvmgR8Xbe4WlzREOMA1IkNe9fy5mJCitd+RI0FTrBA64YJiLSfam2j6tVhj/uFi9tpsX9SNzoTguV3YdeWO0j2K8Ggl+Z41tLBcSoH2+lc//LnbYDOTD2pC4t7mTQJ1xOM6pST9CTQtEff4ols2Jv6lyCr30/BRGQjgxZnufo++JsD//8wo9HskzgBShnNWa2/zObfT4dLyMz7FApsBtojlJ6lbPrl61gqcnvJRhl1nIqNI3TY2MArX21zxUDvqTN25/50/osy9MPatfTPXd9j+v5Icesw6MxtkBe1a3BpD3BVvnVTOKVZgCsr6I946LJ6WM6X/AN3goap0Qfonos2iZDML7sa9y+PUERYc+5sAWH3STrsbLMdetA1pXpHLeJu4eryQH1ypcP5SK8EChbiLV1/q9qxWWKWls4pv9lnOTKyFU06mSocBwTggT1j9r3EKQZ4axoIJ8ulRMjONCCw+N0E5ipXrS7huuj6iQZyuZi+VOb1fhN+rOyq/NfJ47qBdY5gfwYn1dUz8m8rYpnSMfwO+I2Yl7m3O33kSFQqplt96nFI8pdplbNc2PlctzjLVnO2ilxtELmIOf5VpwouJg+xWFhkR3FqD+2eVj3BMwUCTTg4Fbq2q7s/l4/xbqGlDrwm7oGvElmL8fSNAqN7zqB8U3MGeLwVEQwmFjVEqd7Z9aKRwR8Tj9XvAtIviy6BimbQkf1i1ap9NaOx1K+8KWzJO1oDIshaIwCXvQr+El8vamaus3BJRIwnyo+qynfnj9YDvfR6VMiF7IMni2e/GxF1vj3s4fl/I6iQ+87t+kpyx++jKLGE2RTIV4ThTDszAthcCPMhlnM0tn/9I3OTtdkNKmcZt484PK0yYHVatFveV1/
+ g6zNmUr6
+ VpcnjjTIK85aSNFwIYWuBZegSUS61e1nl5EcMaEgo193zrX9AUbmrBCdTYD40Ehqv4YdQpv0xGz8IEcuEwZSDEl1A11f9MBPJVa5lfXM3NdlwSoqeAusYfscv5qYRVgDBLlABes55LwSi76AHiEoZKeXU3NUssHt1wOw+/VquK55xwuRWuZVqTBue9QaOA30yHFb/A2JhPSWnKRE5dIDiWC3R6p0QXygIX2tfln+TEJ6s9J7YzkQmCqvOk+PsrPpVQS3OlszC+1JdxwscCtNaSXaPlCSrfzbwjnJydNY+4XbaubNozdbN54bA828F2CmCe1rpTTkEeHyDfwlfBrYkKMXQoVYPlPA7VWdmC8XUtCvAyEQqCw1cA/ORU/qSpWDBazsJJwm765sLyfdErEonHT5L3/TgpDMaBb7fsdp7GMDlOdqt7Wwe894iOg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,46 +122,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 20 Sep 2026 04:49:44 -0400, Yuan Liu wrote:
-> This series introduces a pages_with_online_memmap member into struct
-> zone to avoid pageblock-by-pageblock scans across the entire zone and
-> improve memory hotplug performance.
+On Wed, Sep 23, 2026 at 03:26:05PM +0100, Lorenzo Stoakes (ARM) wrote:
 > 
-> Approach
-> ========
-> Add a new zone member, pages_with_online_memmap, that tracks the
-> number of pages within the zone span that have an online memory map,
-> including present pages and memory holes whose memory map has been
-> initialized and for which pfn_to_online_page() succeeds.
+> I think in general we want to avoid putting stress tests as part of the
+> selftests in general? Or at least if they might take a long time to run or
+> excessive memory usage, etc.
 > 
-> [...]
+> Though that might be benchmarks, as we have the THP stress tests so maybe it's
+> OK?
+> 
+> >
+> > Assisted-by: LLM
+> > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
+> 
+> In any case I really do think this should be split out into smaller parts, this
+> is a _gigantic_ change :)
+>
 
-Applied, thanks!
+Absolutely, but alas my poor email hosting throttles me if i send too
+many emails - and sending a 38-part series where the important part is
+the endpoint of the refactor moreso than the individual tests...
+instant 24-hour timeout.
 
-tree: mm/core.git
-branch: memhp-7.4.misc
+I'm working on a solution.  Need better hosting.
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+> Since you list a whole bunch of different test areas and you're exercising
+> different things you should be able to split this out logically across those I
+> think?
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+As mentioned, this was originally ~28 patches split out, but i think
+ultimately only the contractual tests should be shipped.
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+Maybe there's an argument for keeping some of the implementation
+details - they're fairly easy to find in the code below for individual
+inspection.
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
+Examples
 
-[1/2] mm/memory_hotplug: make shrink_zone_span() more robust
-      https://git.kernel.org/mm/core/c/1a3fed34
-[2/2] mm/memory_hotplug: optimize zone contiguous check when changing pfn range
-      https://git.kernel.org/mm/core/c/554e941f
+contractual: These tests won't change behavior based on implementation
+ - authorized file PAGEOUT evicts a clean file page;
+ - unauthorized shared-file PAGEOUT leaves the page resident; and
+ - private-file PAGEOUT reclaims a COW page but preserves a file page.
 
--- 
-Cheers,
+implementation detail: behavior can change without breaking a contract
+ - full and partial MADV_COLD on a PTE-mapped THP
 
-David
-
+~Gregory
 
