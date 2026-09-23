@@ -4,142 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51BB5C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:03:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73028C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:11:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B9E36B008A; Wed, 23 Sep 2026 11:03:29 -0400 (EDT)
+	id 536756B0088; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 092436B008C; Wed, 23 Sep 2026 11:03:29 -0400 (EDT)
+	id 4E7B26B008A; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEAEC6B0092; Wed, 23 Sep 2026 11:03:28 -0400 (EDT)
+	id 3FDB76B008C; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D066A6B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:03:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6755CA019C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:03:28 +0000 (UTC)
-X-FDA: 85245345696.14.903B22B
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0F1D040016
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:03:25 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=legRpnlw;
-	spf=pass (imf04.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 22B336B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 979A41A0789
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:11:54 +0000 (UTC)
+X-FDA: 85245366948.15.8312B11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6E02A160014
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:11:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bOu4yUj0;
+	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790175806;
+	s=arc-20220608; t=1790176312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EPMS68PrdsNZ7gxMuinRUE0IfYfyKMgfUfdMr4QVRdc=;
-	b=JMzDDFbq+TA6KDQ/i1XZm8Y8u4bMyiqc3JaJSBx3pd4o+wT4SvopDLqekm1Wh+nq0OgdWH
-	KD5mQ1Qx86tDD4LPQXUUDGCYJJGWyQl/waEtMqx8dtL7/tVEpKEm0UeNZWDnXhFdFZsc5Z
-	W4fraTkZQepU8noKm+ug+38/825/ZB8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=legRpnlw;
-	spf=pass (imf04.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	bh=P2btTVDYltsgCYavYwVuiOIHeKZyL8Gt5tbLOPUFFJ0=;
+	b=LrCMsOWInPR+8yTdgqQ/vuRPdKRPKJ9JZgQBg536gB8/iGgZw6VrIDKMzMCZApVltSAg3/
+	LfXcoosevZhPcwYdRkk9Hhtkh+K/VAjTpLOodyeo41zavBZSt43XSrFln1zJz7SqSSv+kS
+	HBwCSncpPxNBImyRUxCsc/85B+idtHc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790175806;
-	b=p9lDCprt4kaheg2SOlWv+fUvuaNuFnE55fMyOLYNYjt9RbaDMGCVd7yBXL8NMluhMMNAJZ
-	J0ayEYV8bvogO2IeAERMzGZ7Uv0HAD9g2Tpy/YmsQCpE/2jOxIg6f/TalGCT2wBtiKXYRb
-	e2U2PuVnHBnC2eWkWCI4ozVPsStoJ48=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8ZSiX1729315;
-	Wed, 23 Sep 2026 15:03:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=EPMS68PrdsNZ7gxMuinRUE0IfYfyKM
-	gfUfdMr4QVRdc=; b=legRpnlwwBNFRcTq/CZDs8TTt1LOY8ZALejjsTBirCrBap
-	jsyVl+trUUzyqVEB8KlhRVZmzG1I9+gP7nHuVWjM7R38Czjhon0nCDw2et2wkPXW
-	hjYJzJnznMlSScMmXY9HnBJbCUROYJK1c21U5FJZm1ne/wVNJLnotz3Z4Npvqp87
-	kRq142raq84vNlGDsYHQpARJXMYTDRjX44oNW6q2F7XWJqlEmHr0eMMNNEaENOF7
-	irM1oYV34LCGw2+Um971AUwXp3oJa6ajeQD9JopIFo3hLq26TSOECXvFjoHc8G0z
-	sFo15txgDgNzY3CzU1L/ayXY65X1bDZHjUP+a7gg==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gskgqkf58-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 15:03:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68NCLOTW008015;
-	Wed, 23 Sep 2026 15:03:21 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gvb6qhh5w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Sep 2026 15:03:21 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NF3H9Q45678974
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Sep 2026 15:03:17 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 969D42004B;
-	Wed, 23 Sep 2026 15:03:17 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20BE020043;
-	Wed, 23 Sep 2026 15:03:17 +0000 (GMT)
-Received: from osiris (unknown [9.111.16.152])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 23 Sep 2026 15:03:17 +0000 (GMT)
-Date: Wed, 23 Sep 2026 17:03:15 +0200
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Tal Zussman <tz2294@columbia.edu>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <baoquan.he@linux.dev>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Dave Young <ruirui.yang@linux.dev>, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: Re: [PATCH] vmcore: convert mmap_vmcore_fault() to use folios
-Message-ID: <20260923150315.9636E6a-hca@linux.ibm.com>
-References: <20260915-vmcore-fault-folio-v1-1-a0cb6278670f@columbia.edu>
- <arOa28u0tRZ-jGYi@kernel.org>
+	t=1790176312;
+	b=NAMVMUgA/wGuSAWRqYK8EKH/ifIGYv9+ci6P0bdpUgE9/4mw3E6I63B/AhJAgRqMRMkYOG
+	RObyJb38lAwMN1/9wXWLfM0v936xmtiXcNMXzLUx8O3rGh2PDkw60j0Qez/iTGqTvs++Dn
+	HTuFw1cBTb/7arsvldj87ISTpwo1CZE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=bOu4yUj0;
+	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8C911A32;
+	Wed, 23 Sep 2026 08:11:47 -0700 (PDT)
+Received: from [192.168.4.158] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BF113F86F;
+	Wed, 23 Sep 2026 08:11:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790176311; bh=0ZF92qlGhBT9ghFKBAdomT/d7B9mUVR6sojJo9EGm84=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=bOu4yUj0Q/cyKCDPQmnlZSSfBzN2YZFcQ+BYeXIGsn3j2NxCyoWazWfOEchSwBK6z
+	 p7crav7v88lmt9BsVnUEIn7iRY066xMU2EuJK+FPQ0L1X2J3RaUrkxZaBNckO20vz+
+	 0TW+qGgaK5iTEA87RU/L+SeG35VjqNjOB4ZTOJt0=
+Message-ID: <86fb3438-8028-49c5-9b4e-2a0970efb91d@arm.com>
+Date: Wed, 23 Sep 2026 16:11:47 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arOa28u0tRZ-jGYi@kernel.org>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=G+OJgNk5 c=1 sm=1 tr=0 ts=6ab3ea3a cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=tmzvjasgP5eedGtlEQQA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1OCBTYWx0ZWRfX/qSUEZ3ICfbP
- 7iWCMIwXU5aJvSlo+TUNfSx/zcug0TQTOx7H1zGwf4+35SfwQDbGypwj+EfDXa4pjvxwrTHwywa
- aLMiZ7JeoxTII636kNUW8fw+7rL19TZEJiSnOOGrfENYkcyI/cPBlxDXnAtLX2Rw4ZZf2k1qH5+
- Nii0arC9pVTp49hFkzP+rzL2Alm6JEZYQORsRHW2r/jdPMXwzMtrafxX9acwKjRe8Kisgi5gcfs
- DMD84THhbs/RpPrGeO+mYOFjQS4F+85CpurAM8dvfIu1SFqHiL7t8In/BWSkl40s74TEb9ZGgMl
- bGoEKzESMgf11BkvY8/CJUMQMnd85vJoGzVtEOKqPGJyUWHAdfiPtGyKBYmcV8HMBNi2UFoGjoY
- Q1qnt2CVX+ph5r7n1aE2/ArbJMhaCbQ9RPkN99SJ+E15r8o56d4ZImMCY5Lf86yJUel/07ZOBKm
- 32lc7ubpUXFyIkLCh+A==
-X-Proofpoint-ORIG-GUID: 4vjiCbd2QrgeY-ClIPHd8SPJDf4qfF44
-X-Proofpoint-GUID: 4vjiCbd2QrgeY-ClIPHd8SPJDf4qfF44
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1OCBTYWx0ZWRfXzOYLA2lYxR2S
- pq1L4QWw/Hp6whvGa3TuUfsA494gdgXC6XF4Se6Ux5rEwrn+jSscBHwUT1a3BVjBeu+bApkvb5M
- DnE8RqZcdeWnaTvcqjmfo/TcDeKKetA=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 clxscore=1011 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230058
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0F1D040016
-X-Stat-Signature: 8m8ngh1uqxaui3dbncatbtjje11fcga8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+Content-Language: en-GB
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
+ Marc Zyngier <maz@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
+ Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
+ linux-mm@kvack.org, Michael Kelley <mhklinux@outlook.com>
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org> <arKsFofudnTYpXj1@arm.com>
+ <yq5aik3w344o.fsf@kernel.org> <arOfD6syXOgQhZYA@arm.com>
+ <yq5a5wzw2ree.fsf@kernel.org> <arOspFxWZ1DjgcAr@arm.com>
+ <20260923130611.GF1540250@ziepe.ca> <yq5atsng10b2.fsf@kernel.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <yq5atsng10b2.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790175805-343055
-X-HE-Meta: U2FsdGVkX18PH5sDWvb3pihsfSOJWvOXn+0G4iWgteDkYSuwXT43p/EUhbyaGWtmSSuZaH/BeSEHm/4ZUd5K6plcs16rDHgD1fGn6kkHrElAjUqavzYAW09cQHgT/qtN2b8Zqg55/0iq/vYgtQXrlBML7ChpmhrggNRERbGCxUrUAM6ExNMLdIdD6WRtOtTVdesFDWxCLRXMeeu4jpnqsE0w1fTBZQWU6dZkqAc8NAAjoie2HlFVqZmZtBr9b68YhXr1l8SpRYBGPvxCdi8N95I8S3s7lqLHVZYmbLELbeVlxx7bLU8TV56YZAhmhBTHM2bO5BSgSxdw4luxqiheXj5urr+Bv28FPJvuG/ghX08n18oKAqplFoQuUsQd72dscyWpOrYL4p7nwsR2iRT+DIjuOkFBw4ParYOsv/8bXdhkL/jbQJd6ZXBB0+sADLDYZ0SErcJrZgmtETo1oQORubeGMrz2/cvjkAFgWqHp2NhGvg3lIhhSgr0UQ4kuofs7zDaYJsy+Mwo0Vwq6DgFPxZxQcZi07Gi/kX2vn1wOXhpKk0fEkJ6DfJGaXPvVv+4FPsle04OLlTzWWdllXZ4Q5+shFTavT4SAQhiQc/c8606Ii1Br1iiCNst4aByyLVm57g/4MuTpSTefcR+AKwzY6PSud61eOuSTr4ZfTNbI16G8k/7Rv/o8e5d2WTC5iwPPqFJJTMKs7uRvuv6HL9FFUIhHSCMkqR8WNb0rz/fFbkH4HCX36h0u1Hwsrer30kRFqetGwlWAsiHeFduqfQs/a+QIWFCFWt7o9/ZZsbL0W3hhH3+Kq4/Ut+tEABR/lFZKvGRueyaGeBZCZ5RmRUTEKTET34FngoYAL3StP0UhzAKiPHWk82QCH0YwmMYRS5/3G/dkMmaQ5ORDC8SSXwH+C8jVEvqQyTvGe3eQJk2byVvdBYvId9kdxr7hkwCrkuIKnie/j6ae4M7YGk0Q0tq
- ICIT9r7y
- KjN9ItzNIfu2Z5Q5cpMj/16id28d6ACy6UPbAz0G06POWCqi9CiUOBMOV+47MKq3IkEtO3BJxz3lebfgXAB7C35JnC+gaPdmDKSxXD5fec8hcJazE6+qia65O7BWJGBwUYs815FD8B/jVYW5nzqPhVPJF6u6+TytPmvlo8dmcp8t+GIBF2Px0XF2szu3tA+vqg6crBRAkHQq11w0e6dM0xSFTVZjYHUlgVJjtpAADyEEy6JbTkZ++fojERjgLb+zi7sKKzrIKbDwQg400BwBRoxPLJpNkAOW3Fil2/Zdap4CNC2XXs5FzAI7H2wrJeTUgiip6z/hGHP5GUQFwUeJveH2JgVvynus7Wa8ZPo4cprgSxljNvey0VY3UJlRrOgkSmyQb
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6E02A160014
+X-Stat-Signature: okkoi91to69ye7xdesiqubxgjm7khe5x
+X-HE-Tag: 1790176312-133452
+X-HE-Meta: U2FsdGVkX1+XhRzlOCrGbr7eIidDho85KW14BSz1xY7FEnuIcJbSK9rlC7thTPiOjQ+2KBLvoQu4RpOMGItDwQqcIkex//CJdflmfN+bAWx0FNNbyUpDVotZ5rHthOl1dXh/ervRu0MkNkGdf98Gj/5R+cOwc8M1ah8cbxsduhza8l6HimMpt80ZIY6IIBGZUm51uoZbZEDHJVBvrRTqolIg3EkAY9ihSUfTO4EEUFAzOKvKuIJf0Jbywu9gLfKtXqlyxwJuCYNJ3FGwunArqyteBzKGfIvdHYVYcRAjtxvK0M7RITHk8IPfN7Gury7zzFjYbOR1rIgTBvQdn8JMKgIfuk84Nq81zJvNqX7/Zt/hHNRKv5d1uOPdlnodZHj8jHNOAWUyLSUHVkDokGVyECPj/j5BEj0lZdaFiWzf1XrRx14nVt3vu2dblpr3N9TmRjcp0FI2gZP4JHZxjeQF6keZ8kIms2jgX7me8Fd33Ci+GU3W4ie8+6h/3ixyVfDb0eHDFlrOBzemqEvePhpVspkA4xvP3HsSCNEry3t8Eh9gILZRONYd+/EWaALiVW/uL7vdMrIae8aeazWLSuRvA8NEnjmxD6EiyC+Lrpch/pvGqewWr/txtDgCaS+rXVFI6XJkY7F/fj2BOUBDkDjAwmGbvsc/OcWRMjFb9DtY0QFTAi5kO9v4oKK5BhqqZ7DhkaThVlMrQ1b10R/hzNn7CgvMBfBRCYDQBcQ9ijBdok09i7tjnRvsyRCW04zNw6gNwzcQfWI8jYBe6mQXe5kaSMPqYyWlnwBeLXs8Y20++idLGxLeJqCAbNJz7GNzEfpPorV4J6EeOE9t6nY1KxxMhstiYgNTkUAKGjs9TJDCL9cQp8qxlsFG1FEXjoTw6KkHk0H5FogbfQUcyCanfFFbQYVD5K6ZPH8+ojZrmGVy1Vtn9ThE4rH7/XyBrezZddmH8JYf3Ym+KnCyt2uU/Z+
+ qntWODqJ
+ 7yN95p64i3ZyMRMYYqyy6bWUhBNTo5ZCFIHkBaRcR0KTaysg5OyV2ionkm6zCgQvT3C2PXHirnEhbQiyTGDO4R+8YER5TohkGw5C5Th7s07Diesfl8Ng8uSiOJhUm1A28by7QJMNTm8Rt8vDIMUvN5e15JnHNnhIo04omgjFY4+R5rKiaibPcfbuGuMrC3idwwS33Vy7rNImVSCpKC/7/CmO81BWDSEo0JIFK2GJ1HN1AXJKMs7iQ8EALSbyaGW2LI2LqZNEWGmeXaT1IxkjOI/SRo5xdo0QLP5vy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,20 +103,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 12:24:43PM +0300, Mike Rapoport wrote:
-> (cc s390 folks)
+Cc: Michael Kelley
+On 23/09/2026 15:58, Aneesh Kumar K.V wrote:
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
 > 
-> On Tue, Sep 15, 2026 at 07:42:15PM -0400, Tal Zussman wrote:
-> > Use a folio for the page cache page the s390 fault handler reads the
+>> On Wed, Sep 23, 2026 at 11:40:36AM +0100, Catalin Marinas wrote:
+>>
+>>> The simplest is probably to always zero in the backend and ignore
+>>> __GFP_ZERO to the allocator. But it's probably only marginally smaller
+>>> than passing a CC_SHARED_ZERO flag down. Get codex to try this as well
+>>> and compare the diffstat.
+>>
+>> For patch ordering I would convert to use the allocator first
+>>
+>> The semantics of the new API should be clear
+>>
+>> If you pass GFP_ZERO then the resulting allocated memory is zero
+>>
+>> Otherwise the allocator does Whatever The Arch Needs to not leak
+>> private data out.
+>>
 > 
-> I tiny bit of context why is this only relevant for s390 would have been
-> nice :)
+> ok
+> 
+>>
+>> Once places are converted to the allocator lets go see what is left
+>> and ask why it is left and what API it actually needs.
+>>
+> 
+> I'm also considering requiring the address passed to cc_make_shared() to
+> be in the linear map. This is currently required by both TDX and CCA,
+> while AMD SNP appears to support vmalloc addresses. The only user of
+> that vmalloc support is Hyper-V VMBus GPADL setup
+> (vmbus_establish_gpadl()). How should the generic CoCo shared-memory
+> allocator handle this?
 
-It is the ifdef CONFIG_S390 just two lines above the context diff of
-the patch; but I was wondering the same and had to apply the patch and
-look at the result. :)
+This came up in the past and there was a recommendation to alloc shared
+pages and vmap them ? I have lost track of it.
 
-In any case:
+Cheers
+Suzuki>
+> -aneesh
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
