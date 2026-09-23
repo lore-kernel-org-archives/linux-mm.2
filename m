@@ -4,115 +4,202 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF21C9830E
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 18:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42765C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 18:36:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8F126B0088; Wed, 23 Sep 2026 14:29:11 -0400 (EDT)
+	id 24D686B008C; Wed, 23 Sep 2026 14:36:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B184C6B008A; Wed, 23 Sep 2026 14:29:11 -0400 (EDT)
+	id 1FDCF6B0092; Wed, 23 Sep 2026 14:36:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A06E46B008C; Wed, 23 Sep 2026 14:29:11 -0400 (EDT)
+	id 0C6F76B0093; Wed, 23 Sep 2026 14:36:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BBE06B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:29:11 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D32F5A6D0D
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:29:10 +0000 (UTC)
-X-FDA: 85245864060.07.FB76851
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BC379180006
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:29:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dQiVeOwy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790188148;
-	b=SuDaP8oY9We4iHzzQU7gIjRvhs2cUpIZPTyF4gHUFa5sRKrSZWjCFpWg98sP+AJ2vVaw45
-	amcSigdrjdBm01p4zdeVzHQfa4xeG8IpmxaaraYsyoSqyyzfNKNulNsXxYYsXoDBMyffOL
-	BCW8luav28o2NuiF1qR9W4ouQ5kanwI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dQiVeOwy;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf16.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790188148;
+	by kanga.kvack.org (Postfix) with ESMTP id CDCEA6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:36:54 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C4DB1801C7
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:36:52 +0000 (UTC)
+X-FDA: 85245883464.12.F02D283
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazolkn19011004.outbound.protection.outlook.com [52.103.1.4])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DF6854000E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:36:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=Tq0+BtKV;
+	spf=pass (imf17.hostedemail.com: domain of mhklinux@outlook.com designates 52.103.1.4 as permitted sender) smtp.mailfrom=mhklinux@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790188609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VJRggr8Jo+4xnYriufpWi5ZTOCU71H6VyNEQvZD3g8c=;
-	b=OYWqNT22WoWbYHi6e0q0YaOlDnhiSwmEAZH9gUB227ZIL92VUvxdJzRK+XhV/cahAazExq
-	bJ714i771h5RrN+l1Z3/UqxbIs1fNNkgBGYluqfurzzAowZSvp03J9Lc5qUF1bysFjyqpC
-	FGmvjwUR6roRgxigBpHxdBdL9zMkL3g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790188148; x=1821724148;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=E+5H6Hkg/bzB1vGeLXUZfraHnynICvJ3BjbD8z4M9VA=;
-  b=dQiVeOwy52MCpBDXhbQ6VW0UqAroi3wNJmltEJ72FnBXiWXBM05d7+4J
-   QgOMgyISp8YXXYXsbeBTZOaDLF2jNIx8+6qEoftqDfifO/0Xx8VotaGJw
-   w1S7Slpx8vzXgLEnVV09cspuwbu0PGe/zQM2wL+YZxDeR0Gkn050pqKUe
-   pT/B9TfDRZT4tGS/hx+7zBaGCqpOc5AXFd2BYVfuddKl5ANnnzh7/hPG8
-   /JpKO1p2wTDyTsUiUer9zqlQzD01ockUrUcvxhksbwb1WPLKb8W6M6zpt
-   6Q2KlJCvdy8/1oANPi9f3ZeJXioTaqMQ17foCnl7RLfJ2BzDpT0iqUWQx
-   g==;
-X-CSE-ConnectionGUID: QPpNYAWyTgWqyBv1zefj4g==
-X-CSE-MsgGUID: ++WdgW24QmOK5TCZsx4WTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="94735407"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="94735407"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 11:29:05 -0700
-X-CSE-ConnectionGUID: GQ8QUU1bRyimf5Xjg38kZQ==
-X-CSE-MsgGUID: CjwF445XRACo36KlNejzMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="301675316"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.110.121]) ([10.125.110.121])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 11:29:04 -0700
-Message-ID: <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
-Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Jianyong Wu <wujianyong@hygon.cn>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu
- <yu.c.chen@intel.com>, Dietmar Eggemann	 <dietmar.eggemann@arm.com>, Steven
- Rostedt <rostedt@goodmis.org>, Ben Segall	 <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider	 <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
- Phil Auld <pauld@redhat.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,  "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
- "jianyong.wu@outlook.com"	 <jianyong.wu@outlook.com>, Yuan Zhong
- <zhongyuan@hygon.cn>, Huangsj	 <huangsj@hygon.cn>, Fengyu Wang
- <wangfengyu@hygon.cn>, Zhiwei Ying	 <yingzhiwei@hygon.cn>,
- "justin.he@arm.com" <justin.he@arm.com>
-Date: Wed, 23 Sep 2026 11:29:03 -0700
-In-Reply-To: <09261c8222994a41a04ace5f342475df@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
-		 <20260827122816.756234-3-wujianyong@hygon.cn>
-		 <20260831115004.GF776954@noisy.programming.kicks-ass.net>
-	 <da32ba66d95fd88869ba052f97698b9a4d6c3dc6.camel@linux.intel.com>
-	 <09261c8222994a41a04ace5f342475df@hygon.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+	bh=azluML+L/THkKQd0Bo22pEK1BeWUUaGMc56rYHaWyeQ=;
+	b=eQRFKQWXKtrt0Jf+KqwBLQNxzfnNicze5ciuwIPNxOgMaSMkT9l0G5T2m4tOeFi8hA/NUf
+	nr+d9pnWTq5WRAqAG+asfqiG0/8O4xEe3sfX46Hh4PL6inncbs1mpsdQxkASJ9ywnlZNnZ
+	sj2npgBOcfjGgDq8Bd7f3dxoCAITsMo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790188609;
+	b=in6jIPf8QPvX5kSd6KvSwfNiygY/ROW7j4VURuoquJ9AE4zNTF8tub2PBtszDHEhMuE9pt
+	BlhFQB78977MSvYOPCFNnTakwwjYMs1pLkWr7ZLoHST+GuCJdZlOd0g8Ora3qwqgzGN5kQ
+	bUgaoj9+3BJdx+VkO51ZcZ/pm234OxU=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=outlook.com header.s=selector1 header.b=Tq0+BtKV;
+	spf=pass (imf17.hostedemail.com: domain of mhklinux@outlook.com designates 52.103.1.4 as permitted sender) smtp.mailfrom=mhklinux@outlook.com;
+	dmarc=pass (policy=none) header.from=outlook.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L0lOEUBNjOfRAPwT1ujf3YBo1DdL8Is2qCPniCavHKbw9iT/Bn+29Ihrxjccv0NMiPXIpivmKXygWGrfSqJaem753sfBhNCDU9ojnRJCrLTMRbWtcOt1+8eCcmMl6pA1Y0ADKRhUerIRcfV4miZzw5Pwu0aAN05f9phPRyhd53z79RHM8EY6yMgf2gGwD9dIlTyc2PEZwwzDxkpeavlRXZTx/qgyL6P5ZlfryntxEGO6R9Cfe7TQY+p4/fGGrglZAury6MdQGM/em7PFYmXCpTttej7u4p8bsZTrrXKCHm93mbBHhyLf358F7Ko/tITus8mgf/cnCuhOigrQHp2enA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=azluML+L/THkKQd0Bo22pEK1BeWUUaGMc56rYHaWyeQ=;
+ b=fxNnJj0lJYiL1bSYHurt/BC4FFRowbrS5Rzvbd0piZNTia0bE2XSd9mEQjt9z2sFgBxP1DfT04DQrMRYPtDOErdywo5l3cfQSr2BdlKi+XNMbygW8sEoNCTzjF1Z/puCJkGy665aRT62msDLdzFFTxJM2pzrsrXSTo32HZoCZJLWLkxRBubgW9gabhZ00Aso9T9pMnHV/AKFR3Fq2tVzx26vkcY4IFVHXbamD2EP7J7WduPzCQcBY3kYBeYKpw34OWflLa6Tz8/medQmpqPojOdsWuAa+0GOW5M+CpHYiip5/iMrKo/R/Qr4KEZCut2qnuOH6lDaN3G9QteckXEqgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=azluML+L/THkKQd0Bo22pEK1BeWUUaGMc56rYHaWyeQ=;
+ b=Tq0+BtKVhsC+i2XXRLaod0YLFT2rXQnuwDchpUJ3964gA1qFrb3BEAEsGeLNWiKy+zvJVLA5ylKz0H5S8vlvtSk5dp5muw8ne/ouY4DLH9RGIPHOS3VIG9lkxIIlULTyA3YEkJ1rUHTTpYuL2n1QafnTorfVx/n0jt8H/GoRhokbpEs4zXYQroisAXUnEE5RYSjvvVAnAhjfJavJhsHv0NIKojUYwKlXHn7GBYHYbdGjiAWIqmOoE+m+fcG/mrRH7IXBKDVJbRljjiur9lyadDsx+5kA9pr05TV7CMI87vHqsTneHCpRUq3dnw2NFpMqrusZls8IMI1SXl5vpsEG4Q==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by BL3PR02MB8186.namprd02.prod.outlook.com (2603:10b6:208:339::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.17; Wed, 23 Sep
+ 2026 18:36:46 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%5]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 18:36:46 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Kameron Carr <kameroncarr@linux.microsoft.com>, Jason Gunthorpe
+	<jgg@ziepe.ca>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Michael Kelley
+	<mhklinux@outlook.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>, "linux-coco@lists.linux.dev"
+	<linux-coco@lists.linux.dev>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "iommu@lists.linux.dev"
+	<iommu@lists.linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+	"christian.koenig@amd.com" <christian.koenig@amd.com>, Joerg Roedel
+	<joro@8bytes.org>, Marc Zyngier <maz@kernel.org>, Marek Szyprowski
+	<m.szyprowski@samsung.com>, Robin Murphy <robin.murphy@arm.com>, Steven Price
+	<steven.price@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>, Suzuki K
+ Poulose <suzuki.poulose@arm.com>, Thomas Gleixner <tglx@kernel.org>, Will
+ Deacon <will@kernel.org>, "dri-devel@lists.freedesktop.org"
+	<dri-devel@lists.freedesktop.org>, "linaro-mm-sig@lists.linaro.org"
+	<linaro-mm-sig@lists.linaro.org>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: RE: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+Thread-Topic: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
+Thread-Index:
+ AQItt+sf4ibi8Dao6KrPcVgruF+ONwI+uxT+AmeiYiACor7ERwGgpMoeAdaSfxICc2LzjwKbJ9sTAiUWR5oCj2EHzbWXZrwAgAAjsVA=
+Date: Wed, 23 Sep 2026 18:36:46 +0000
+Message-ID:
+ <SN6PR02MB4157EF24550B893D2109B138D4822@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
+ <20260921144847.501151-3-aneesh.kumar@kernel.org> <arKsFofudnTYpXj1@arm.com>
+ <yq5aik3w344o.fsf@kernel.org> <arOfD6syXOgQhZYA@arm.com>
+ <yq5a5wzw2ree.fsf@kernel.org> <arOspFxWZ1DjgcAr@arm.com>
+ <20260923130611.GF1540250@ziepe.ca> <yq5atsng10b2.fsf@kernel.org>
+ <20260923152124.GG1540250@ziepe.ca>
+ <5cbe0bde-47d8-41ca-b244-bc0329d0d066@linux.microsoft.com>
+In-Reply-To: <5cbe0bde-47d8-41ca-b244-bc0329d0d066@linux.microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|BL3PR02MB8186:EE_
+x-ms-office365-filtering-correlation-id: 39b3be55-86da-4a84-9cd8-08df19a19f50
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|55001999006|24021099003|41001999006|37011999003|15080799012|13091999003|8060799015|8062599012|51005399006|19110799012|31061999003|25010399006|4140399003|40105399003|12091999003|1602099012|10035399007|2607281247196008|102099032|3412199025|440099028|4302099013|1710799026;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?bUVaQUdTUGxzdG51azEwSVRacTFtZmkxWGozeVRmVHhrYXVVb2R4VDhyUXE4?=
+ =?utf-8?B?eGR1eElKY0pUb1ZsczdlR05uRkxmSU1VUDZVUW4vdVFqUDJKTHdEK0M5eUJL?=
+ =?utf-8?B?cFpiWXk4aUFndjFOd3ExdmFmbHA1Z3lXYmdBbmtVR0J3VWQyZ09zaUEwZmVO?=
+ =?utf-8?B?MUR3YmRVSk85a2MvVC9wWkRacG5XYUd0bXRJWml6eXFkZEtZVUVOYTViZStT?=
+ =?utf-8?B?ZE5mcDZDNytnYUtaSENxWmcyRlJOSHNyVHpBajR5TTMyVWgwZXBhWHZSdXJw?=
+ =?utf-8?B?aHErZG1MMzBNMVdmYlhOUVBITno1NGl2T0FxZ0tjazBJMjV1b2lEOHB5TkZt?=
+ =?utf-8?B?dkZ0YXZDUVZsbHZabVVvbzVzaGlMSFUvUGIyZVJyaEh5Yjl0bW5rM3NYQy9Z?=
+ =?utf-8?B?SDdUU0dveEloS2M0aHhLcmVHbmUzNUo0V2JMQlhYcWdvSW1saGY0R05IQ0ww?=
+ =?utf-8?B?cXF4WnUyZVNZOTJ0UlJRekZuYy80VHIwcUgzYUl2dWtYSE50b0JiVFdsZXlQ?=
+ =?utf-8?B?Yy8rdC9RRmhlQ1Jqb1VXRnFvR01LdXR5Y1BiWWh5Y2s1MlpySGlIOFNOd3My?=
+ =?utf-8?B?YnIwK1dDTVJKRVZ1eDNGek4vUjZGUC9qWkcyZGlhRTZkYmJyclFjd3hkclpi?=
+ =?utf-8?B?OG9HSWFWT2tLaUpjZ2pWeEIzYm1FYS95dlhFQVNqdHBFbGxxZzQ4N3RvUSsv?=
+ =?utf-8?B?VEtMeG1zVENzK3liU1MrbWlHVnVlNnowMy9saUFWTFY0NkRBajF2cllldXFi?=
+ =?utf-8?B?QVBjdXpUZkhqZ0MzRmZEVFdmQS9BQmplOHpxRXJFcmNYTENqTEQ1VFFDM3RF?=
+ =?utf-8?B?UmxQUmp1ZDJ4Uk9VTlIwTGJRVUZjeGpIQ3dUMkhoTTZEL2xhRUdkTSs4aUd0?=
+ =?utf-8?B?MU15Vnk4cUswdFNOeTAvYll1WnJKU1RDNXNZSEFxUlU4VUcyalBOZjlmSVJ4?=
+ =?utf-8?B?Q3FvcC9VVTlXamJvaExYY0N1ZlNUSnRmQzdLRXIyUmZEWmdONHhWSG01VmFS?=
+ =?utf-8?B?VkVoNlJQeTNiR1kzYVVIVGpHTWhUNXhpVStlbWloYmFSM2l4Q1BycXJjcmta?=
+ =?utf-8?B?NG5jbnlVSUtydnZ6N1BvVVNSNjdnQld0T3VGbTRtdEZiQ0UwSWtuQ3RUV05K?=
+ =?utf-8?B?elgza0ZKTHYrOHgwZFFIbkFDODByMEhZaS90TEZQaEg2NEhFdlI4dEFYbVNR?=
+ =?utf-8?B?dzFlRHNxTHdmL29jc3Q1cXhMZi9pSTkreE0wSWJHVDhPaEtYaUN3OFN6NlZZ?=
+ =?utf-8?B?QjQ3MFdXbm1Va2JyRHZzcStaSm1UKzhWT21EZnROcWdGMjdIMEpMT3VVUStL?=
+ =?utf-8?B?V2g3Q2pWQnRZVjFtQmVxRFBvLzE4cHlPMmZ6Z2Z0V1VmSTYxbkhGN2lrZWxO?=
+ =?utf-8?B?MzBLSUJyQml5VHMwYVBmbU5FdENWNVQxK1FQVmc0VHdwb1FFNFFqS2pHL3Nm?=
+ =?utf-8?B?dEZ5eGtRN1FxQU0wTW1aKzFzbzYxWWdXTTc4THcxWG03T1NoK0FwUTBoOGtF?=
+ =?utf-8?B?dFRHV1hkRWVhRWlVZ1pqaDFPSUNNSTB3SWpUQ0hoK1V3bVFkRTJCdC96bzdm?=
+ =?utf-8?Q?rnopPl9Uh7xS/a1gzbcSlfIJ8=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?dUVFNXhvaXlFRDJEYWVyWnppMjFsQmNtR0tuWFVYNndLbW13WFVpNVRMWUM0?=
+ =?utf-8?B?akZma1FEZFFpMnZteXcrdGoyYU1TcFo3cGplbGlPV1gyQmRSRStFMDlMQ00x?=
+ =?utf-8?B?ejRxQUx6VlF2Z2JCSjVwaUFLUzBLSUJPRUpJdU9UT2pQanRDeEZ6STJWeVpK?=
+ =?utf-8?B?ZU1GL1dEc0gxRmdIVnNTTkpyTDZTMDc3WWtUeDdmZXM1endRbGxhL1haMVZt?=
+ =?utf-8?B?YWpHdWU2bG1BcURCMFFtREhvVWg1U3dkTm1md0NQT1Q5YVk0SGNMM0UzZzJN?=
+ =?utf-8?B?OElMU0ZGUWY3K2J0M0lucVdRVkI0M01XdU5KQlRMeHhXQlI2Y1c1aXRJclZN?=
+ =?utf-8?B?Q0dxNFVycDRwOC8yK3AwcGRPazlycjA3akpBbmF6ak4yNDFwZ3VYYUo2ekpn?=
+ =?utf-8?B?MWFyajIwd2Q0VzlYVkRPeWFtYVZMNm8wcDRESmludkYyR08zS0xyWkhjOFZs?=
+ =?utf-8?B?aUxIOHZwMDdvOUFCTzlSZkZlOXVuMDR5aEpFY0pDVG9HQ0xGWW1GSjRyZThJ?=
+ =?utf-8?B?Q0loN3ZUbUNBV3VzMlRENDJVUFYxMEZZbmt2dzRIc000VlBHaldlSXFMQU5G?=
+ =?utf-8?B?bFhGWjR1bW03bjZhL3h1azNoUTF5b2xXTTlkb1IrM1RTV29YMk5DZU9NOExw?=
+ =?utf-8?B?MG16OWNkOTdZSjh0NDBMTG1id1JybWR2SUhMais5NUlDTlJhdDhidlJ3OVdX?=
+ =?utf-8?B?VEFyTHlYWUpIU0dMOFRmQ0E4SWNDdXY4NnlBUjlGWFJudkRuTlBVeDMwcHdk?=
+ =?utf-8?B?cVdXcXBPZml4SDJ0ZGc0RXhlVzFPcUhwK29mTTJob1J1MWVsTTVZd2FycmZU?=
+ =?utf-8?B?YmRWcEp5amFLaEphREErenZMQmtIUlRSNmJkc1c0QllkS1RBQng5eXlEQVl4?=
+ =?utf-8?B?ZnpBMU56U3p0cE56MFNZQTVCVkFGdm91NHBVMGppUW13Um5WYURBVW8yWngr?=
+ =?utf-8?B?aGZLS0MrYjlORzhqNzBuTTBFR1E2NzBDUG1QK0YwVkxsSGtmWWprallRaHV2?=
+ =?utf-8?B?eFZUczZZV09OVE0rbDZtZUMzWlFaSFBjK1RMeGJWT2pGTHo2MURiYjY1c3Vt?=
+ =?utf-8?B?N0V0VFBmYXpaZVFHY0EwNFJzQ2FvRUExVWZ5NWhBUWUvQkducWZvNHVFVGxX?=
+ =?utf-8?B?dnhUY0xNNGlYOGdTZGxsWmFrTXJldjBsNTYxNzlBU1BGRjYwOE5oaUZHSHRQ?=
+ =?utf-8?B?djJORmRpM2IwWDBrQnVENis0OXNscUNNRjFsbEFaNEFvbE5GTkxKNVZIajJv?=
+ =?utf-8?B?NGNrMWpKekxDMzEzMzhpQ0VDMy80U0hoWlZOcmYrR01KYTA5Ri9JODF2eDVS?=
+ =?utf-8?B?V1U4UHV3dVBlL2tBRXgxbkdhSUticlV2VDlXQmkvNTZudzQ3QzJDZXZwbGI4?=
+ =?utf-8?B?M2VDa0RzNTMzVVYzSnZxWXBEakc3d3BLMGoyQnh1bW9nU1RiRG4vVzB5a044?=
+ =?utf-8?B?Q3FyNzhZczJVWDNNblp2RzZqUGNwbStJbGdpQ3pOMGRWZGZ3cUgvVTJKNXNY?=
+ =?utf-8?B?UmE1RGgrcmszcnhvcVVQM1pDWUZhUjB5aVcrSlRFMDFSejM1NWlJcExWTWFX?=
+ =?utf-8?B?ZDY4SnVZTUl1U3JpQzJjWlJldXJtRkZZbGFablZjWXdLOERWQklwSCtBQ3hV?=
+ =?utf-8?B?VjBvQ3ZhUm1EVzhBT2Q2TEplNEs1eXU4ekVvRGhFQW1xMnE3YUpGUFdmUlY2?=
+ =?utf-8?B?Y0hNblVhakFMS3ZSVXJobU9GWTlvdGF4NWJOMHdFR3BpSGk3a29yUHR0NG14?=
+ =?utf-8?B?NEZpay8zWlgyWGZZeDNyTkdnZ1ZnaWJ0M2VIYXdJZXluT2ZmMHl5dHE3aHFT?=
+ =?utf-8?Q?0kzFefncJnrL0/AhQvOSEbT+zsB5ReUMibdFE=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Rspamd-Server: rspam06
-X-Stat-Signature: konc3meo9mpe5chz76uznoakwatjn3qu
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39b3be55-86da-4a84-9cd8-08df19a19f50
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 18:36:46.2697
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR02MB8186
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BC379180006
-X-HE-Tag: 1790188147-923127
-X-HE-Meta: U2FsdGVkX19FyJrX1PTGlZCGbzHE7bXOoFcD4QuvKGHJvNfrv7p54zjAqI1On0qmKOewY8eN1z5QWnzMQQQ+ZX7UqGFkjiuM1XkBgW1qhR8Cg7p1aC8zi81WaKU7ONVr+5avYDMk/mW2Y0lCYvY6Fd6J636I57dePFsN9HDHaYr1oQAMQAl7xRcEAZNXGpV+vASeXG8uCW7wxJ/hs98Nh2mZ72waGA7wTD8Me1mJMM53odlDV7dRqIb0Ho1VUeevAejHkpo3RjgbkiyWEKD6FI8G/M/5keS5V1TE3/kIFW+Ha4qgzX2ZbKPwaJXf7f4xVmVsOluF+5Mv216XiDry150f0rJZfsbDDN6tO+bYI1TlH9TI4rT1iIPT6Ntsl7bBFbzsoMcYSaxbxY3N/i7wtF4LrO4NAlwlamTdmD+KpRRhN3hYJ0OhfKF+HIJOCc5CKJxtKTYfXdWQPmm3AQxKoIldPNPgYT32gJBW47ktNUN5TMvwsisd9k0Xn6eIjd8udFnhPTqotTLGJHf2VQpoVhVYt8vaVggM+peuNiL0jbVBHF5f3E3deDqr+MfuremCvsx8dkNQs20pauuE0HMcMrvI4C9OXGNJXtT9dcYnj7wkIFpzKyq0NWTB8rRXWOEbsPZJ6KIloxgK+jNdOP7y553Tg2WrYqCfK90jdf19raEwwQqKt2AhhHnncCTz8NLd/pcOvRmKLFqnsxovGWw99oHEtWU+SUZAU/mha2yfZC6VhJ7Nzh/RjJ+ArBredtIDqQbPNTcy5kBtCdekUmmlnaXozg228t7gckjzoQcwZmbxIPKpfdG39SgpD0tqnJoV1rRTXB05BIIbK+Gs9y1q+xUL8cboZU5bcyRbQcR78n3yWWf0xyx441iybu0Ymu6kq5/qXI6DJIMNPaWGoaTkjDxTEEAlcHXV44fDmw2C8dW0J6AEhi0tEBxPth9FhJEFLyE58yR8rknC+eYZXWU
- Jjms5yc2
- XztbcVtzRU6HqDK3J1O+aKc7VnmV5IXo6J4bg74PDIx7hcDuIuasfudXQeg+mV/QrjkpdImfCTRx0pPi8cIeF7aykgy/OL2fvhyXr2oxwwlRd2BSaFdZoXzvAhP19z/n0xjHkwcpukM5bFpFnH7+a4UOcLLl2AlSmjRiDDl00cZDudly1MMUUnpdQG/ucki9V/VvItjVe9EuGAoqwwjPTSgVoDQ==
+X-Stat-Signature: he1ufo8kire81obuuc1zrkkfdbr1jo97
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DF6854000E
+X-HE-Tag: 1790188609-299894
+X-HE-Meta: U2FsdGVkX18a3eyrd/D4+l9VuIqibegmohRna/EFLXeQWLDVwjUX3YZHNQqO67pETU/OhtVBfBKj0jB7jEzLLnLYFoXtLg8jMwcNOkLX3kP05X7Hl/dSCG5X1v2+AD0SrnNoQKp0sbReq3f13I0/S3hMGMyOw9MJ7ugudBWXQp+JNopfSZqOv9ZpW9AjBX3VafB8xJ3z92wooYTtA/bfBLQqvlOwsA3XVR5W0yGsjBIrTbHvFW0qG3ZJy1NEDJtvjyRZr3Yt1XSepXtsmmivPX4I4J2B+MvY1BidukgJnzRe1GVg4/ADlcsKbL4dEKSDqpBnsVA0SZQ+j5YFplZdgXG7HQJxLJ7NaZbJ5ks/ADP7D7GYDyGlpenzM1Clowla0LzYsTnPxkeqcc0Jw1U9tSCQdWYvdhHxW8WSIhn+3xeSrtsWznlhIwW0AM22XTjYsVEVbjmcaRJo83pjZdY7iuT8V5ktUSJfpBAC+fFlaTUQBHL0JFJIn6zo8J3TN3BIbKTVhimx68LuSl0XPsqHp4uDgNkKxYAdbDfvpCAHsv/VTetEc1gJkXb+ZzuMaJ9+YZSfWxuKgvzvPLAB/V3Q+lIZuZ1aac0ri+2jkUmFM/Rhsd2yVCSbyIvJA3/hzi5gDkaaI3UhFQhHTmWa+1WnbTymkX/3ZrieFqp0wrxZClPAk26y5Lkq7vLEV8AyepqgqEWiSp//X4OPtAe/4HpOg8pVGkfXj60C7nlsQB8Lf3txzpFV9sjijQV/qO1bRcuUFlLfn5i5ImosuExp4ivDmJtRM0pglYy60o5uzI2VlG47nWY1kOKPV4sCi3tI77hgmAkDizSuh4M+et8okj6e/FFdHDdZOBgRq+FMhWLtZtiiPyLO94BcoFmnetjU+gUoewbr7dxOOB9hJsSaBXHwEPB+fKRtP8WUZIvWCZJT8dBdosB4dmrowisQdWSvvZguOsRuZoMuowKQm6IWEuB
+ 97VE2Nog
+ g/KXPm+pShLkYas/RcT9LNtTMX4T5cFbdk0gvwAnv89muxWt9k1u1kz69QuWKx2+dDewH0MGEo71ptrjIpnP8+Qp9HLPO9zHAuM9YcqzPZbMBO9qxATzhdMyc8BcVO4xICDRfmdor0xM9b1Ln6D7kO1u7lyslTShJ0seuiGqXwdrVm0PMlmjqH5/wsYpG9+74elc5Tv6RL8PY4X3hsNNfAgj/1mfTscS48JwppseOhebaiuy7ZwY9xN8ys1B2yU8lte65C9jzhNiQaMW6dBiA4lWS7cB+YKHCDttXGFZFewOo8FO4IclchDLjBhXnWPXN/orwxaAMUHJOjmFMFQudY+aLkrirMCHHsSpgQU9+IXrPXaZGfK2oYYzzrUC8hpU2qhWbcP7VwRqxVHkG8J1RSUUB287NrsS0WoEVeuBuBsU76h7JY1LA0I1yGkLrCTvJjTg5DAGc7fUx4c7cUG4KaIiP4CErAM9xHVpLJXx5mkS/tQPn/ChCWr/5fs5+dGPYrfXqZJqhx+bt4sn9C+pQtzPUeN4TfXG7IYkuB+g+SokBJvjzIU6gEvhngFzoLW5+jTfUa7WK7dIGZmdBeJiGh1ugtJwl2CZj9Jfb66aOH4O9+q0y2kPlQGz10EZiuyMCBC+XHkiki8QX4OanrXYcV7/lTwd71s45gh/Iuk6g4r0n+r9hixUNDfrtn+gprzkMg2GFlXsxQXCR4KqhtTikvje9niVru6lAL3v1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,234 +207,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2026-09-23 at 03:14 +0000, Jianyong Wu wrote:
-
-[snip]
-
-> > >=20
-> >=20
-> > I think what we really want is an ordering of caches within
-> > the same NUMA node.  So when one cache is full, we can
-> > pick the next one down the list.  That is essentially the
-> > net effect of the distance de-duplication.
->=20
-> The goal of this series is to provide a system-wide LLC affinity
-> ordering, rather than only an ordering of the LLCs within one NUMA node.
-> Maintaining one large system-wide LLC ordering would be expensive, so
-> the ordering is represented hierarchically: a NUMA-node-level affinity
-> ordering, followed by an LLC-level ordering within each node.  This
-> patch only deals with the NUMA-node-level part.
->=20
-> >=20
-> > So how about introduce a llc_next array.  We will initialize
-> > the array such that it will return the next LLC in
-> > the NUMA node.  So for the example that Peter has above,
-> > assuming C0 maps to LLC id 0, C1 maps to 1, etc.
-> > then llc_next is
-> >=20
-> > 	    c0 c1 c2 c3 c4 c5 c6 c7
-> > llc_next =3D [1  0  3  2  5  4  7  6]
-> >=20
-> > When we come back to the orginal LLC we start off with,
-> > we know that it is time to move on to a LLC in next closest
-> > NUMA node.
-> >=20
-> How should the next closest NUMA node be selected when multiple nodes
-> have the same distance from the current node?
-
-You could use some other means like node id or load in the node
-if there's a tie in distance.
-
->=20
-> That is the ambiguity this patch is intended to resolve. For each
-> source node, it disambiguates equal NUMA distances and produces a
-> unique node-level affinity ordering. An llc_next array can describe
-> the traversal of LLCs within a node, but it does not determine which
-> equidistant NUMA node should be visited next.
->=20
-
-Agreed that llc_next only covers intra-node traversal and that you still   =
-                                                                           =
-               =20
-need an inter-node order for the equidistant case. But I think             =
-                                                                           =
-     =20
-sorting each source node's row by (distance, node_id)                      =
-                                                                       =20
-already gives a stable total order; the node id breaks the tie. You can    =
-                                                                           =
-               =20
-also break it by node load if you'd rather balance than pin. Either way    =
-                                                                           =
-               =20
-no new distance value has to be invented. =20
-
-> > This will be storage efficient and more straight forward
-> > to use than maintaining an artificial cache distance matrix.
-> >=20
-> > I dislike the artificial distance matrix also for the
-> > reason that there is no guarantee that there are enough
-> > available distance slots between two nodes.  Say if I
-> > start with
-> >=20
-> >         NODE0  NODE1  NODE2  NODE3
-> > NODE0   10     20     20     30
-> > NODE1   20     10     20     25
-> > NODE2   20     20     10     20
-> > NODE3   30     25     20     10
-> >=20
-> > and there are 16 LLCs in NODE 1, I will run
-> > out of slots when I try to deduplicate as
-> > only 10 slots are available to fit 16 LLCs.
-> >=20
->=20
-> There is no system-wide LLC distance matrix in this series. The
-> de-duplication is applied only to the NUMA-node distance matrix.
-> Consequently, the number of LLCs in NODE1 does not affect the number
-> of distance values required by this patch.
->=20
-> The algorithm also takes the available distance space into account
-> when assigning the refined node distances. It does not simply insert
-> one value for each duplicate into the existing gap between two
-> original distance levels. The distance values are adjusted as
-> necessary to reserve enough space before the duplicates are assigned.
-> Therefore, the algorithm cannot run out of available distance values,
-> regardless of the number of nodes sharing the same original distance.
->=20
-
-Fair - you're right that the dedup is node-granularity, so my 16-LLC       =
-                                                                           =
-               =20
-example doesn't apply as I stated it, and I'll drop that objection. It's   =
-                                                                           =
-               =20
-moot anyway under the argument below: if the ordering uses raw distance    =
-                                                                           =
-               =20
-plus a tie-break, and the score uses raw distance, then there's no matrix  =
-                                                                           =
-               =20
-to pack in the first place and the "enough slots" question disappears. =20
-
-> In addition to providing the node-level component of the LLC affinity
-> ordering, the refined node distances are used to calculate the
-> affinity improvement score when selecting a source scheduling group
-> or runqueue during load balancing. Please see patch 12 for that usage.
-
-This affinity computation is where I think the dedup actually hurts rather =
-than                                                                       =
-                         =20
-helps. The score in patch 12 is                                            =
-                                                                           =
-               =20
-                                                                           =
-                                                                           =
-                 =20
-    Di =3D dist(src_node, i) - dist(dst_node, i)   (kept only if Di > 0)   =
-                                                                           =
-                   =20
-    p  =3D sum_i  numa_counts[i] * clamp(Di, 4, 1024)                      =
-                                                                           =
-                   =20
-                                                                           =
-                                                                           =
-                 =20
-so it reads the distance *magnitude*, not just the order. Feeding it the   =
-                                                                           =
-               =20
-refined values manufactures gains on exactly the node pairs the dedup      =
-                                                                           =
-               =20
-perturbed - the equidistant ones. Using your node matrices:                =
-                                                                           =
-                =20
-                                                                           =
-                                                                           =
-                 =20
-    raw:                          refined:                                 =
-                                                                           =
-                 =20
-          N0  N1  N2  N3                 N0  N1  N2  N3                    =
-                                                                           =
-                 =20
-    N0    10  20  20  30           N0    10  15  20  30                    =
-                                                                           =
-                 =20
-    N1    20  10  20  25           N1    15  10  12  25                    =
-                                                                           =
-                 =20
-    N2    20  20  10  20           N2    20  12  10  15                    =
-                                                                           =
-                 =20
-    N3    30  25  20  10           N3    30  25  15  10                    =
-                                                                           =
-                 =20
-                                                                           =
-                                                                           =
-                 =20
-Scenario A - a locality-neutral pull gets a fabricated gain.               =
-                                                                           =
-               =20
-Dest CPU on N1, source rq on N0, 5 tasks preferring N2:                    =
-                                                                           =
-               =20
-                                                                           =
-                                                                           =
-                 =20
-                  dist(N0,N2)  dist(N1,N2)  Di   contribution              =
-                                                                           =
-                 =20
-    raw           20           20            0   5 * 0 =3D  0              =
-                                                                           =
-                   =20
-    refined       20           12            8   5 * 8 =3D 40              =
-                                                                           =
-                   =20
-                                                                           =
-                                                                           =
-                 =20
-N0 and N1 are physically equidistant from N2 (both 20), so pulling those   =
-                                                                           =
-               =20
-tasks to N1 buys zero locality - raw correctly gives 0. Refined scores it  =
-                                                                           =
-               =20
-40 and the balancer may drag all 5 over chasing a gain that isn't there.   =
-                                                                           =
-               =20
-
-Scenario B - two physically identical options get fake-ranked. Dest on
-N1; candidate sources N0 and N3, each holding only N2-preferring tasks:
-
-                  raw Di   refined Di   after clamp(.,4,1024)
-    X (N0)        20-20=3D0  20-12=3D8      8
-    Y (N3)        20-20=3D0  15-12=3D3      4
-   =20
-Raw Di says both are 0, i.e. locality-equivalent, and load should decide.
-Refined ranks X over Y purely from invented deltas - and the clamp floor
-even promotes Y's fabricated 3 up to 4.
- =20
-Note the dedup only ever perturbs ties, so the skew is confined to
-equidistant pairs - which is exactly the case where there is no real
-locality difference and load should have been the tiebreaker.
-
-Stepping back, the matrix is being asked to do two jobs at once:
-
-    - ordering: only needs a deterministic total order, which
-      raw distance + node-id tie-break already provides;
-    - scoring: wants true magnitudes, which raw distance also provides
-      (equidistant =3D> Di =3D 0).
-
-The dedup is only necessary if one matrix has to serve both - and that
-coupling is precisely what injects the fake Di. So if you need a node
-ordering, I'd use the unaltered distance and break ties by some other
-means (node id, or load), and feed the score the raw distance too.=20
-
-Tim
-
->=20
-> Thanks
-> Jianyong
-
-
+RnJvbTogS2FtZXJvbiBDYXJyIDxrYW1lcm9uY2FyckBsaW51eC5taWNyb3NvZnQuY29tPiBTZW50
+OiBXZWRuZXNkYXksIFNlcHRlbWJlciAyMywgMjAyNiA5OjI5IEFNDQo+IA0KPiBPbiA5LzIzLzIw
+MjYgODoyMSBBTSwgSmFzb24gR3VudGhvcnBlIHdyb3RlOg0KPiA+IE9uIFdlZCwgU2VwIDIzLCAy
+MDI2IGF0IDA4OjI4OjU3UE0gKzA1MzAsIEFuZWVzaCBLdW1hciBLLlYgd3JvdGU6DQo+ID4NCj4g
+Pj4gSSdtIGFsc28gY29uc2lkZXJpbmcgcmVxdWlyaW5nIHRoZSBhZGRyZXNzIHBhc3NlZCB0byBj
+Y19tYWtlX3NoYXJlZCgpIHRvDQo+ID4+IGJlIGluIHRoZSBsaW5lYXIgbWFwLiBUaGlzIGlzIGN1
+cnJlbnRseSByZXF1aXJlZCBieSBib3RoIFREWCBhbmQgQ0NBLA0KPiA+PiB3aGlsZSBBTUQgU05Q
+IGFwcGVhcnMgdG8gc3VwcG9ydCB2bWFsbG9jIGFkZHJlc3Nlcy4gVGhlIG9ubHkgdXNlciBvZg0K
+PiA+PiB0aGF0IHZtYWxsb2Mgc3VwcG9ydCBpcyBIeXBlci1WIFZNQnVzIEdQQURMIHNldHVwDQo+
+ID4+ICh2bWJ1c19lc3RhYmxpc2hfZ3BhZGwoKSkuIEhvdyBzaG91bGQgdGhlIGdlbmVyaWMgQ29D
+byBzaGFyZWQtbWVtb3J5DQo+ID4+IGFsbG9jYXRvciBoYW5kbGUgdGhpcz8NCj4gPg0KPiA+IHZt
+YnVzX2VzdGFibGlzaF9ncGFkbCgpIGlzIHRoZSB0aGUgc2FtZSB3cm9uZyBhYnN0cmFjdGlvbiBh
+cyB0aGUgYXJjaA0KPiA+IGNvZGUuIEdldCByaWQgb2YgaXQgYW5kIHVzZSB2bWJ1c19lc3RhYmxp
+c2hfZ3BhZGxfY2FsbGVyX2RlY3J5cHRlZCgpOg0KPiA+DQo+ID4gCQlwZGF0YS0+cmVjdl9idWYg
+PSB2emFsbG9jKFJFQ1ZfQlVGRkVSX1NJWkUpOw0KPiA+IAkJaWYgKCFwZGF0YS0+cmVjdl9idWYp
+IHsNCj4gPiAJCQlyZXQgPSAtRU5PTUVNOw0KPiA+IAkJCWdvdG8gZmFpbF9mcmVlX3Jpbmc7DQo+
+ID4gCQl9DQo+ID4NCj4gPiAJCXJldCA9IHZtYnVzX2VzdGFibGlzaF9ncGFkbChjaGFubmVsLCBw
+ZGF0YS0+cmVjdl9idWYsDQo+ID4gCQkJCQkgICAgUkVDVl9CVUZGRVJfU0laRSwgJnBkYXRhLT5y
+ZWN2X2dwYWRsKTsNCj4gPg0KPiA+DQo+ID4gU28geW91IG1hZGUgYW4gYWxsb2NhdG9yIHRoYXQg
+cmV0dXJucyBmb2xpb3MsIG5vdyB5b3UganVzdCBuZWVkIHRvDQo+ID4gdXNlIHRoYXQgYWxsb2Nh
+dG9yIHRvIGltcGxlbWVudCBhIGt2emFsbG9jIHdyYXBwZXIuIEFSTSBjYW4gY2FsbCB2bWFwDQo+
+ID4gb24gZGVjcnlwdGVkIG1lbW9yeSB3aXRoIHBncHJvdF9kZWNyeXB0ZWQoKSwgcmlnaHQ/DQo+
+ID4NCj4gPiBPciBtYXliZSB0aGlzIGNhbiB1c2Ugdm1idXNfYWxsb2NfYnVmZmVyKCksIGl0IGFs
+cmVhZHkgZG9lcyBpdC4NCj4gDQo+IE1pY2hhZWwgS2VsbGV5IHJlY2VudGx5IHByb3Bvc2VkIFsx
+XSBtb3ZpbmcgYWxsIHJpbmcgYnVmZmVyIGFsbG9jYXRpb25zDQo+IHRvIHVzZSB2bWJ1c19hbGxv
+Y19idWZmZXIoKS4gSWYgd2UgbW92ZSBmb3J3YXJkIHdpdGggdGhpcywgaXQgc2hvdWxkDQo+IHJl
+bW92ZSB0aGUgZGVwZW5kZW5jeSBvbiB2bWFsbG9jIHN1cHBvcnQuDQoNCkkgdGhpbmsgd2UncmUg
+YWxyZWFkeSB0aGVyZSBvbiByZW1vdmluZyB0aGUgSHlwZXItViBkZXBlbmRlbmN5IG9uDQp2bWFs
+bG9jKCkgc3VwcG9ydC4gVGhlIG9ubHkgdm1hbGxvYydlZCBidWZmZXJzIHBhc3NlZCB0bw0Kdm1i
+dXNfZXN0YWJsaXNoX2dwYWRsKCkgd2VyZSB0aGUgc2VuZCBhbmQgcmVjZWl2ZSBidWZmZXJzIGlu
+IG5ldHZzYywNCmFuZCBLYW1lcm9uJ3MgYWNjZXB0ZWQgcGF0Y2ggc2V0IGFscmVhZHkgY2hhbmdl
+cyB0aG9zZSB0byB1c2UgdGhlIG5ldw0Kdm1idXNfYWxsb2NfYnVmZmVyKCkuDQoNClRvZGF5LCB0
+aGUgcmluZyBidWZmZXJzIGFyZSBhbGxvY2F0ZWQgYnkgYWxsb2NfcGFnZXMoKSBhbmQgc28gYXJl
+IGluIHRoZSBsaW5lYXINCm1hcC4gVGhlIG9yaWdpbmFsIFsxXSBpcyBhIHByb3Bvc2FsIHRvIHVz
+ZSB2bWFsbG9jKCkgd2hlbiB0aGVyZSdzIGFuDQphbGxvY19wYWdlcygpIGZhaWx1cmUgZm9yIGhp
+Z2gtb3JkZXIgcmVxdWVzdHMgZHVlIG1lbW9yeSBmcmFnbWVudGF0aW9uLg0KVGhhdCB3b3VsZCBo
+YXZlIHJlaW5zdGF0ZWQgYSBkZXBlbmRlbmN5IG9uIHZtYWxsb2MnZWQgYnVmZmVycywgd2hpY2gN
+CmlzIHRoZSB3cm9uZyBkaXJlY3Rpb24gdG8gZ28uIEkgcHJvcG9zZWQgdGhhdCB2bWJ1c19hbGxv
+Y19idWZmZXIoKQ0KYmUgdXNlZCBpbnN0ZWFkIGFzIHRoZSB3YXkgdG8gYXZvaWQgaGlnaC1vcmRl
+ciBhbGxvY2F0aW9uIGZhaWx1cmVzLg0KDQpNaWNoYWVsDQoNCj4gDQo+IA0KPiBbMV0gaHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL1NONlBSMDJNQjQxNTdCNzFDQUMxNDMzQjA0QjkyQjcwMEQ0
+ODMyQFNONlBSMDJNQjQxNTcubmFtcHJkMDIucHJvZC5vdXRsb29rLmNvbS8NCj4gDQo+IEthbWVy
+b24NCg0K
 
