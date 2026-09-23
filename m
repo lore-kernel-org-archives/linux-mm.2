@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE67CC9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:28:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 928C2C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:28:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E180E6B0093; Wed, 23 Sep 2026 02:28:49 -0400 (EDT)
+	id 9AB776B0095; Wed, 23 Sep 2026 02:28:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA15A6B0095; Wed, 23 Sep 2026 02:28:49 -0400 (EDT)
+	id 934FD6B0096; Wed, 23 Sep 2026 02:28:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C69F56B0096; Wed, 23 Sep 2026 02:28:49 -0400 (EDT)
+	id 8240E6B0098; Wed, 23 Sep 2026 02:28:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DC9A6B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:28:49 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3374F40578
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:28:49 +0000 (UTC)
-X-FDA: 85244048778.24.B389F3A
-Received: from mail-pj2-f18.google.com (mail-pj2-f18.google.com [74.125.227.146])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6042D1C0004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:28:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KF6NwplK;
-	spf=pass (imf18.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.146 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55A6A6B0095
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:28:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 86FCD806E6
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:28:54 +0000 (UTC)
+X-FDA: 85244048988.16.6C833F0
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B48201A0003
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:28:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EVUZfL36;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790144927;
+	s=arc-20220608; t=1790144932;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7/fcB7RWsYoduiGVrXMcsoy9SKXwqPZ/B+Usu82ABAo=;
-	b=DcGKi9qJOCfGzra/t0o34ckYypcG3eD0Wkxe0QiTelbR3KbqIwcjMSGy3lbEpbDHf/4D9D
-	2zXJrouCvSiRRZLofXUFane2nryCB18bNlx2cfN1UAp+wCKtKxBdgQrXI+em+DD3YmF+fL
-	oak28fqZNDGlI/U1R3AbNDz4iyQU7yA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790144927;
-	b=hhPsX2m69CDyVuloHufp0SFaRBQeKoafUh8s5Z9aVWZ8OIlVaqYUnLxeBFp0DEkX82+TmU
-	J/nedVhQ6LaoS3gOp7tegemwqI3WXsAuzkICya8EYPCTEHOB+euRI7QIZMGed7F6zORej6
-	U6zbCqacEihUlegmyDU4uAn4ByLHQVE=
+	bh=Qd05crYEDf1zOBsfrx9KiTFMAUGQioHKS/Nf5VbEp9U=;
+	b=1vqh+4Wfe34dZ9z0+svELbR+L77c2WdoLJBkigJk4C3nSqGyR3si9lB1TAe6YME1snfuWl
+	5sYmzMLNngrxSsYYfkAzYVlEUC1gyJoRWH3kWFV6xjf5GDOl7dzys8h4E40WMOQt/AGrdy
+	qeHMYj+xg2QwKdyGDgCkJ51YkIOq1Ro=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KF6NwplK;
-	spf=pass (imf18.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.146 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj2-f18.google.com with SMTP id d9443c01a7336-2db22383fe8so2352755ad.2
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:28:47 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EVUZfL36;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790144932;
+	b=4qmQVlmdXsN8WtdFLRKQbChjfbDwg7jezTi0hSLLM2xY9MjqGyhdpMpyIXwHibTVirrhK9
+	UnGZbUpwZYPY3PMIObrj8PSPTc1rEOoJ1eIkRcpQLc4tSWy8kEKrB8HPY1oKwtW1PoFAWs
+	dFuP6108VT04KIi0/88w3j8cRfwNvp0=
+Received: by mail-pj2-f42.google.com with SMTP id d9443c01a7336-2df4c9d14b8so1832445ad.0
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:28:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790144926; x=1790749726; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790144931; x=1790749731; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=7/fcB7RWsYoduiGVrXMcsoy9SKXwqPZ/B+Usu82ABAo=;
-        b=KF6NwplKBtWwqg6tcqypRMMHYE0x7La+49+aB5x+eq75wfu3CDPrfmCHVcv8iLHLFr
-         RMf84e93hr8EaQ2epW9f6UgBRBzggVodoP5gMjh0BBpIEdPiiiyyJme6ms523G8SkjGi
-         K03reAPLpItLTc/en7F72Oy0WnmdeLSz+6S0ixugm5jAbTqN+DnNY0HrgLaSUF4f8gdX
-         DRxYY1mFsPb8F7APdEa5nhbcajElqIRnC1ZBFaCldmHYj3mkpx7wBpi51U7ZbzjGSYaU
-         X2g0sW1jnktM5S2QNlq/UijGVhST/7MChVbVv9oR/Jp20VosNCek80lxtUqOGzbapkO/
-         CK1A==
+        bh=Qd05crYEDf1zOBsfrx9KiTFMAUGQioHKS/Nf5VbEp9U=;
+        b=EVUZfL36pjlDZ7sUTbQCgMTXuuiQtkGayIuZsXGKmAlOm3I7bB+hNW+Bx/ASNZCgbw
+         f2aKfBfcFDRssLC9mxB9if4ZzRsT1dB232xWZPfNojGRPLa23aUiGwy0lUtMJYwazX84
+         re9Ckj/gNK/THirkkna/ooK3EQb1keMbzHwjzE23xpqpJeqEQpOLKBqsPxACOVPQo060
+         mzjBY5SKI3kPOfXYE3VdS6z0XqLpukIpbf1pjXItHLXj43wtoH/1Ez3LGegFZoxLtIRb
+         wzn5+uhPPj01Vp85LUdcbUji4aIl1xNK7CDsjFfnHUAinmz3X6FcJWpSkDD+iO5C/0Kc
+         EWPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790144926; x=1790749726;
+        d=1e100.net; s=20260707; t=1790144931; x=1790749731;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7/fcB7RWsYoduiGVrXMcsoy9SKXwqPZ/B+Usu82ABAo=;
-        b=oeRvX2G9ZWPyqI1hJCjNH9O6iOyJr0xJy/ZYkfGO7xpZ2jOx7rrnLFrCxwpK7AWVDZ
-         /ovUJOIkgNRjrCPCpCBgFrZgpwJwaTpmQ0x/B2eF5xis0KoUsLmh6zuYsTqvP7+IQYVd
-         FbIoMOBL7ZWQrkIPLSaqgeUWP1/FxZ7n6IY+lcfBUCtG8+xruQYNY7lwZzcBBx3wO1fa
-         aXZzOYWANW5a4IzmeEpv6jM+EIEVSYjy3tVu/O6gXx35QeJgJFYgow1Ji3p/SXCqc851
-         8LoDlwV562lpQYvXxTGYIUrFtDwCHvUnYd4skZq9A1XgoXDqHsZqlsGb/W5S6C4Ij2I/
-         fwyA==
-X-Forwarded-Encrypted: i=1; AKwUvBxggAyrLN0NfF80aLutjQrfa4WZOxO+GZ+Y/AlrFpqaYsJJD0ids2NsU+VMlYFxV0el6PJEMToLTA==@kvack.org
-X-Gm-Message-State: AFuF++kihLxm7CYl8ZFtBQ65lk1atsqbVDJUnVP0YqbbXvCM/eCHJFc/
-	1aVZvK7mqu/8W0DmHl2+4d5xSFtgd2c5u82BdMND1Np3TdQgbCJ+z8b/
-X-Gm-Gg: AYBFou3R4DiEbZcdcwgyvulXwCyHu6xgqJHO2zMdpnjNpJ0wuiju+PWDaxxsYmU9viW
-	+wj0CPGyh8Vz/vp8JwB9gUVHKuLIhefLOeUZUeX4iGM3dZGPUqXXw5UXA96I8LLs+9IFP5En/pr
-	bvvg9XKbj4OdYdnCdMfJWW1Jvh8ZI+Q6wKwXdPPObGzdxLAYUM9EMg5mTsRrxgc2SLSTjBC02wE
-	bX0Bb0afBSdMgyAkSnxl6Qds4zBinQYZc/T0Ut/k7Jdl8Gr5V50PQQ7XmIbfF7pOVbaH8jltbFM
-	p+W+TzQRLydq6PghlCNfMlxi9DbYvXkdAzCh7zvqATPSNCmelYJjOX/il6K2ttL1tEHoaNE/0Y1
-	y4I0t83hhX5l+/wUC2HpgyBH36cxiRmC8QY3bWk6wwSfkNoHBctDJiHnOAPBryP+9p9ea7vJX4c
-	nhE8WIxjLWdK0pDGTff7j3xyHlBjc60OaSXlOctSzr5vsUnRZhXDwDd5igKqDeL2jgMz7GaXcnq
-	22/FwlZfU3uLpiQFXmb9Q==
-X-Received: by 2002:a17:902:d2c2:b0:2dd:c0ff:e724 with SMTP id d9443c01a7336-2df69de446amr13040735ad.54.1790144926198;
-        Tue, 22 Sep 2026 23:28:46 -0700 (PDT)
+        bh=Qd05crYEDf1zOBsfrx9KiTFMAUGQioHKS/Nf5VbEp9U=;
+        b=nLJ25iuGKEH6UJYuaDyCwYiOql2GaNrwSuLpgikDhzi1pc6C5hVmN+5A7eFEl8rdUN
+         PyU8QUT2UmfUpToNppKeFnc+6/QIqOS2G/+njuYeO1AYnsKmaIzixEN9/AydoKtnruLG
+         4MIcf2oIYbfCUbIAbHsGVhn2TMDEV3SXDVQozOaarvHxBH1MI0tEOr6IFR9SPo4aDyeh
+         qbz8hzExWWM8iDOuCJGsHHYkLLx0WdtI6VaprjUMquUOxn33RVbFgxIeU/K5xhLsZrUV
+         vKRNaOfSLYTOMFvH+eZRSFnRB1qCbBoR/gD5qZXkcFpO+pG6hgyvZgsqvLSNj3bfhGrv
+         ffIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw68AwPY3LpFPQpO3oV3CIWLvscCuDu03/FOKUFb4r3I1onGegRzqERtbKJ2fFfryH7YCJtvW23MA==@kvack.org
+X-Gm-Message-State: AFuF++lU49w44gBwtbe3GdvNb2X5R4tPtSOaobs5rO65SwhRT9E68Ug/
+	NmtJ74B9NTvKoVTw4Y2MQcIpcfNe2ol8SO/1uf0zdS2pDKQBH/4BttXy
+X-Gm-Gg: AYBFou1ejMBhM0wmR0r1iMNG1gxfu2TM7QvZGrYyuzNHXNw1QzyEPcXq6xrtoGyuj3n
+	vkZ7u2Mqo94hwGLq1F47zWPon6ShLzeG4HU56Jxy1npOP3lsqF/JF8CdqsytDfpBaP3KIg72/EC
+	bxl3pyBrGUFtCNXqyzeNtH3ZF3yCk+SnN030FDcsSvvp+6YvDfjUWatKBk/7ZgBSJP3BeMV+W2r
+	jm/AWi6gJ9yr8GJQEjkIW5ffjPW2jV20UvOlKs8/QNG4E/aK0P3EX7SezcOAuiy8z6edrQSbfIH
+	Fb4S9gnL+Q1vnlneNyqVBsCEbj1gvjUeMMGbC7UBBVUP+kKteg1DbTebHUL3GsyPC+I6egzu1EM
+	Il7VwzwE1aj5z5oU8bsNxMxHAJIocjlEUYktqczDVQ2rYC+QEEjcX3lRvjBpEnxsAHmeU1pxAM9
+	zY/y03gCu7b/WRjWzmMHLP2colRwhlRbm/BQfawatCL6jJq0JBRLxgAX9vvBvFaAM+NK76WtQdx
+	cYzIqIoGFfvASXoeyuWzw==
+X-Received: by 2002:a17:902:d4cf:b0:2cf:b9f9:18bb with SMTP id d9443c01a7336-2df6987811fmr11433845ad.4.1790144931608;
+        Tue, 22 Sep 2026 23:28:51 -0700 (PDT)
 Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a516bfdsm5620465ad.5.2026.09.22.23.28.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df6a516bfdsm5620465ad.5.2026.09.22.23.28.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 23:28:45 -0700 (PDT)
+        Tue, 22 Sep 2026 23:28:51 -0700 (PDT)
 From: Wen Jiang <jiangwenxiaomi@gmail.com>
 X-Google-Original-From: Wen Jiang <jiangwen6@xiaomi.com>
 To: akpm@linux-foundation.org,
@@ -115,22 +115,22 @@ Cc: Xueyuan.chen21@gmail.com,
 	npiggin@gmail.com,
 	rppt@kernel.org,
 	ryan.roberts@arm.com
-Subject: [PATCH v9 01/10] arm64/mm: add pte_set_huge() and pte_clear_huge()
-Date: Wed, 23 Sep 2026 14:28:23 +0800
-Message-Id: <20260923062832.479455-2-jiangwen6@xiaomi.com>
+Subject: [PATCH v9 02/10] powerpc/8xx: add pte_set_huge()
+Date: Wed, 23 Sep 2026 14:28:24 +0800
+Message-Id: <20260923062832.479455-3-jiangwen6@xiaomi.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260923062832.479455-1-jiangwen6@xiaomi.com>
 References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: yt63u1wx5byki7zek8n75exnss3zf9fg
 X-Rspam-User: 
-X-Stat-Signature: 8okjw1wewo7q9bbfg7r11yimbzxqwmfq
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6042D1C0004
-X-HE-Tag: 1790144927-835834
-X-HE-Meta: U2FsdGVkX18nfaue/ay5475RJ21F0CtGUktJV6OSPJ4aqpDZ40SEcNiOLMK3HoQutPV+ueeiGwPxmHrrojYjQmfl+hBpSGWy0P8fe/ePxWucWrQfOmCXQx8jreqRrZe+IvL/wxVOd9NoLm7oGm58gpDt0bu2JajVJFnkcEncA8mFpnsWJT+oi7tYAhHY/I+iiuW9ycTMoe1ziNRoucgFR8K3kMFIX+EuJNyyz5E55rRIGRFos9COU6X3iBwl38shPsAx5RiuzeLEw09XLTggRafnpUMhcRL8E+xtDnAtyfak9agafdbebGY8dCEG2QOrYrG1sv9oNrFYb0lgroPBYKloOBUPXu9ZjcdooA0nUxn3u09hXDttKGVTMstfd5W+qZfhQiLg7x0XxvJEORrO0pJgvVInTcRT+n8IWM21PV4zsirZSw28Y7a7OEfcfqOEza9OYFkeS818wI6OzQP6wz86DaneDH6d8+XI1SYG6n0U8/onczju3ZlM9OPWN9oPXP2KvMgiOxB2bBp3QK290Unu9vqDGy3pbFFIk44ZVcx+r8TV8D4muQNNmhnF7qZCF+hyw5I8ebMrRE53eySYRZ3zXJeDFj1dJhw145dWbqTBO/T2amPEnaKDbe+gqh7n0A1x5YpHEoW8M+fDvg50Fg8F0WYFOoY4HtDyzWz5E2GvHMwfKbSfur2HsStVGAynR4FvgIixegq/rf6efxgBRR8f0crrAh6hbqHRjvMpk4n/YxGLIh8PMLb+CpAMon2mk2XlIVHRwZAqkFKyXHRn36Wli0dKNn4lEr3dB21DJ+OBl257oAhRBa9Xvq87o7jArVxhmZ6hoJKQYV1+9GN8Z6sdUt2UpWRRCmzSxDqa3VBHubHd4g/Xe8RhtBFjRstUuNxYbTK8UyF9VFLNBqOBODOSXpaEoz1Z+s3ULdFKzjens+klavJJGaDsnx5eRSiUWIyRbWTDd/xG9O+mvyW
- +2Ivc/fh
- mnOir9yXnvfTicsr3SGloylXDT5rez8k4Y6aiIQzxCqvY/CBCn11FzLacpl61aD7SvPoTMXhRXNFp2rhmkUqUnWXtR/9UW0/XE6nUG7oGbVeN6+MU6f7FtY8398u/gkhxa7ld2Lr8jhoclgmyJlfnGsVLfgTtWX9lpj2F0b84CjhNV9ASdS8X4UY2qyV6yM3r/TaY+/gB6ETflaoqLRDnp+LLYn1jZCU55JuBWrISDczNG73nfbbMoY0PW2jybqsmHzyow1wy12D4Vc3hhFsPOHIZqfeWBgAlRbHmHQUe3n6JDCkvRK4Y4PK51+Y6HlAgFCxT9nPycvid9T0rVNBsF444uC4ayRh5AK7qPi7GMSIuHSq6fpj4DoCSszjfl78kZM+ZAycp1RBEdcWf5SCy8UmU1mlrDfZffaKNp0R5DJWz95HnS3tVa7YDMiY6btjb9ZBaK5b+vNKkRvpcglClfA0PieAzvu5ndkIJpTeNDZxDZNE4utzqSNdqCQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B48201A0003
+X-HE-Tag: 1790144932-84120
+X-HE-Meta: U2FsdGVkX1/5X0S3IltH95L6hEDgiwkMsCD67SVIWm2dDkbr6PpT2tSAzUcLNaUNK3MwmGniMO/yGmo77vh28guMKE3IVFTEYD1Mkodc0YeqlanURLzYa+TmfUymEKvP+p4/NW2eC1BoItz50iD0+OL1OnIvXMJVKKQ8O6Om6TVlpxp2BtzlZalUhWKZVIbnG580rx4LZAA8VHifp5AeHhJ/syKKpGosOvB75OVHM/TQVGqxKUGfO7z/9HYEe+gzx3WyHE8IGJlej5bciKDKLO6dIWXMSJmKUVQ5qnhAAp0QvJhNMFUBMdpQEgnynZ7WpUdsbCUG5rJQHREEkcvy+LTmExTw6+ImGWDN4bD8uvvXk2OHneCuV2UEqTi2Y9P5T2Xv3SNFovRk8z0KkeWFOAMyhLeuqbwjjgIdbRGSbgAwA3oBS+4sjDwcaIWyiI930w3ZTsxccQKcaq2flnTlOaYFEMQnuXbdBQGfYuGJM621HA//AX0NswD02HsOe+cCrMMVm4qWKOCovqZ5H9Ai0m8mhZiPB+euvqMniHtDmkfkNixt1nX6g6053Kt+LJyZV0KwIq0a83y6l1FA0z5/y4YGZshfa9zB48jswyh64vnOa09rxOwY6huAVfSRNdvWRbFKHbJCSPCM6VbY4iYURTMpqGcFw64bUqo27i/bvP6QO/cx8ObNb85eE8C1VNbMfHz/vDUVeN0jo6HyBqtxpL+YIdEJXC03zIPMdUNatJTxE5NP1Zp9619GJOeuonrYZCP7MRLGlIb9m4iKRNUb4KDAvgqz0yXhf3V48QBBwJa3YzVidjVTcCJC7whsHnSq4LFGEcs66fU37UYdc3CAzw2zlDUVwEGl5DJAUWuMA4oFpiFaHB5557OFGJW9QJ0rISi8zXwsTiGpdwa9xfrQg4jVfxEtmAltwFeabw+NO8Hc5xiFKkowjwW6zyqBCFT4P0lKBXthYBOOLtQ7UNA
+ NBpynFm6
+ +DMJvHi6wJSl4tmFBx42ESvQE/vtKxlrIKnwbtCREBYDttOUIQgbqnJWj19EWd8kLKOyP/4qJUmAXoanFidgpBEh58Gg4dfBnL5Esx+eIfN29ASImz2e0l+SKyqsQHbquZWyve7R9RQY/iH21+jttSqQK5vAWKB4lI9K/p6Mt2v7Wu+SGrD30eZsqFmCgfPT3J4g2iNBuaZb08Ozwh1jc+VjVc5PEiAj1WwMuL8/Ks6dwdZzfz1/y/CoOFUPsxTXkNkR0iUSLa8vsCwt5ryE9kUD2H8g5S5qL3R0lsW8JW1jOZq+JWyPfyWAXCF2ZPtnJJN1NPm2Hr0dyrsGbUrqNjhw2OAfwpVKC37akCtmZHTM8sm7PRS5dosT+mA2FS8jWtLVjhj4xynorA9oiapQnNH/0rGXoh3A1n+6ewvjy1ZY8VRG87EVvQH9XKzUhoQfgne2OntB0QuN5uBHAk3Eitw24hV9suTy0P+6taxKO4K0rsCpR600VjO29et8QibJYNLaWHdHEvk4snW8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,74 +138,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
-set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
-helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
-unavailable on CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to
-HugeTLB internals it does not otherwise need.
+vmap installs PTE-level block mappings (SZ_16K/SZ_512K on powerpc/8xx)
+by reusing set_huge_pte_at(), a HugeTLB helper gated by
+CONFIG_HUGETLB_PAGE. This makes the feature silently unavailable on
+CONFIG_HUGETLB_PAGE=n kernels and couples mm/vmalloc.c to HugeTLB
+internals it does not otherwise need.
 
-Add pte_set_huge()/pte_clear_huge() to arm64, joining the existing
-pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
-__set_ptes() and __get_and_clear_full_ptes() directly, so they do not
-depend on CONFIG_HUGETLB_PAGE.
+Add pte_set_huge() to powerpc/8xx, next to the existing
+pmd_clear_huge()/pud_clear_huge() in mm/nohash/8xx.c. It builds the huge
+PTE and writes it into the backing cells directly, without going through
+set_huge_pte_at(), so it does not depend on CONFIG_HUGETLB_PAGE.
+
+No pte_clear_huge() is needed: 8xx does not implement
+arch_vmap_pte_range_unmap_size(), so the vmap unmap path never takes the
+PTE-clearing branch.
+
+In practice PPC_8xx selects HUGETLBFS unconditionally, so
+CONFIG_HUGETLB_PAGE=n does not occur there today; this is a decoupling
+cleanup rather than a new configuration.
 
 There is no caller yet: mm/vmalloc.c is converted later in this series,
 once the generic fallbacks are in place.
 
 Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h |  6 ++++++
- arch/arm64/mm/mmu.c              | 20 ++++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h |  4 +++
+ arch/powerpc/mm/nohash/8xx.c                 | 29 ++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 6000905a2e865..9b762eb68cff0 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1978,6 +1978,12 @@ static inline void clear_young_dirty_ptes(struct vm_area_struct *vma,
- 
- #endif /* CONFIG_ARM64_CONTPTE */
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index e2ea8ba9f8cae..1ee3f8f0de974 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -235,6 +235,10 @@ static inline pte_t ptep_get(pte_t *ptep)
+ }
+ #endif /* CONFIG_PPC_16K_PAGES */
  
 +#define __HAVE_ARCH_PTE_SET_HUGE
 +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
 +		  pgprot_t prot, unsigned long size);
-+#define __HAVE_ARCH_PTE_CLEAR_HUGE
-+pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size);
 +
- #endif /* !__ASSEMBLER__ */
+ #endif
  
- #endif /* __ASM_PGTABLE_H */
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 79d90226fd5dc..4a3d084bb7556 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1912,6 +1912,26 @@ int pmd_clear_huge(pmd_t *pmdp)
- 	return 1;
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index a9d3f4729eada..2518d2a6bdb41 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -220,3 +220,32 @@ int pmd_clear_huge(pmd_t *pmd)
+ {
+ 	 return 0;
  }
- 
++
++/*
++ * vmap PTE-level block mapping. Sets a present kernel mapping directly,
++ * so unlike set_huge_pte_at() it needs neither CONFIG_HUGETLB_PAGE nor
++ * set_pte_filter() (a no-op for non-exec kernel mappings).
++ */
 +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
 +		  pgprot_t prot, unsigned long size)
 +{
-+	unsigned long pfn = __phys_to_pfn(phys);
-+	pte_t pte = pte_mkcont(pfn_pte(pfn, prot));
-+	unsigned int nr = size >> PAGE_SHIFT;
++	pmd_t *pmdp = pmd_off(&init_mm, addr);
++	pte_t pte = pfn_pte(PHYS_PFN(phys), prot);
++	pte_basic_t val;
++	pte_basic_t *entry = (pte_basic_t *)ptep;
++	int num, i;
 +
-+	VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
-+	VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
-+	VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
++	pte = arch_make_huge_pte(pte, ilog2(size), 0);
++	val = pte_val(pte);
 +
-+	__set_ptes(&init_mm, addr, ptep, pte, nr);
++	/*
++	 * Make sure hardware valid bit is not set. We don't do
++	 * tlb flush for this update.
++	 */
++	VM_WARN_ON(pte_hw_valid(*ptep) && !pte_protnone(*ptep));
++
++	num = number_of_cells_per_pte(pmdp, val, 1);
++
++	for (i = 0; i < num; i++, entry++, val += SZ_4K)
++		*entry = val;
 +}
-+
-+pte_t pte_clear_huge(pte_t *ptep, unsigned long addr, unsigned long size)
-+{
-+	return __get_and_clear_full_ptes(&init_mm, addr, ptep,
-+					 size >> PAGE_SHIFT, 0);
-+}
-+
- int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
- {
- 	pte_t *table;
 -- 
 2.34.1
 
