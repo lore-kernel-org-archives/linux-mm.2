@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0CBEC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B2BC982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9CEC6B0096; Tue, 22 Sep 2026 22:29:12 -0400 (EDT)
+	id 1C3876B0098; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73D76B0098; Tue, 22 Sep 2026 22:29:12 -0400 (EDT)
+	id 19BA06B0099; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98A1B6B0099; Tue, 22 Sep 2026 22:29:12 -0400 (EDT)
+	id 062176B009B; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73D646B0096
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CEE0E6B0098
 	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:29:12 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 59AAE140682
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 602881C3348
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:12 +0000 (UTC)
+X-FDA: 85243444944.16.E957C62
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9B023140005
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:10 +0000 (UTC)
-X-FDA: 85243444860.14.070EA5A
-Received: from mail-qk2-f12.google.com (mail-qk2-f12.google.com [74.125.230.204])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9400420002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:08 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=D59jl4Jk;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cNaX9bUv;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130548;
+	s=arc-20220608; t=1790130550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2DTbYesErX7uqQ2UiAVBtVPVMTumuecPrjo9lCd5uig=;
-	b=GgRV5wPutpGDdUUaYk6sdHD8SkdUcxEr5aNWrT7Lo8/9Q/m6WmbVeRMqb8H8i0jB2Cijjp
-	VtZodxopAnb6PnNrdVnuN32yp89J5QMai5yMj3+GphWjZm3WgxjzeVVYR5KbztDriqZXCy
-	dIsvSGbgRvRqZmqwHhmbho6C2EqW3VE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130548;
-	b=3R0ao72u9OyyvvyhTZJlSi2euyEM4Vf1TFKJtJIaHa40k5Km9mSU5WDCQBfx6rrFrHKAj8
-	yx9TGSFzdK9F3I2p0Q1EXBm4IEz4/7Kdpnes2Kqc84ISWkHQcMjU2xqnJaT63fNNq1jnV9
-	TO/gBPtkbRLIgzQaF/mrxwGCl7ugl/M=
+	bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
+	b=wMz4u9+ApHRxIz5mlL3SEI0BEkYhAEdAUZff5TY9Gp9wFmPLs04vuT6xcsI9tPsue2UMeT
+	nFEv9nus8oHlJ3V4fa5YI3BEqbJcF3fY4K0Elr+7Je2UAVCEx48Cuy3V2P+iU6NzJOzLBs
+	njkMCVK4BgqgY98EhFgEUSH5tBDUQjU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=D59jl4Jk;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.204 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk2-f12.google.com with SMTP id af79cd13be357-93910cadea0so34515985a.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:29:08 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cNaX9bUv;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790130550;
+	b=MgzsWf0sZCXv9uIwDF/8YWSsfs4/laXojHAutuzSOKVpkL4EtWzpLSU6eBvhzxQkJ28tPs
+	XFrliNOWAZAVy0vD9TnZhf6a422SEXOYLBP0IDNEvOfN0FMHz73219NTsBv2/aPoJOl+wD
+	cMnlMApv0T1ZmpsXYNqO04fad/BjbZM=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93be6d3f424so132437285a.1
+        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:29:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790130548; x=1790735348; darn=kvack.org;
+        d=gourry.net; s=google; t=1790130550; x=1790735350; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2DTbYesErX7uqQ2UiAVBtVPVMTumuecPrjo9lCd5uig=;
-        b=D59jl4Jk47Y5QDX5Mv4vi5LTLuZ65jpWSYsyPC6OY3Rhc3tQrIQThjGZpESx5zJi9k
-         eQM//Rqwa2aqvJB4fAO2TyOzGugZ563C6p1h5v4Om28pLMwut0l0ZXIzaOaYes8m3QjZ
-         8ESlZLcCNrLuBlKlqcy3Xs/ydCUS1+GuXl2OBJo2QBr86vg7FTOMm8LOJTXF/tstMznC
-         wnyXWOeCNSefT1cvPVSrGTxhForaL+VjlcT2Igt9nc2ZZjUnYK0mr/US4uRmnpAcSaGx
-         Q97zkhNTc6jHIZk8cz3VrXpNf6SlrfHhGabotodFmWQmvWsglqP6LWPqFvuadM30M/d1
-         uWAg==
+        bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
+        b=cNaX9bUv//XUiJPL9BkPypiBkYGMlLxJjFji6ufwsiQNtJGNwt1zOmSxdygUplhN4v
+         EPCe4PpUVaYCka2PAokyQptURRIEkE92CI6VTM+bpvumvi6NGA7aT1YxZf6RfHtC7mO1
+         mp71He7/GA+COuo2v2JTXCRTt1zLR/xzs2puwbqJJWkWiYzMxUCoUT2OQ+dsZ91LWWXC
+         RrpR9kZU4EJxBBv/mhKd1mwRDyVJZu0Z0+3ObuviJQAacfXHaBf7RHRt1eBuwujuM266
+         7PD3FpkzUofGFxi/RhPMjxPeoV48Nwx/PkhsjrXO6l12KssEDbQ2d0yzAA5HfeJxj7vD
+         Jrhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790130548; x=1790735348;
+        d=1e100.net; s=20260707; t=1790130550; x=1790735350;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2DTbYesErX7uqQ2UiAVBtVPVMTumuecPrjo9lCd5uig=;
-        b=rvWVPapb+a3E341lseWivj8ntX6u4khNmkAKEIhhZA9Zova0ILdYu/OrX6+x2N1c4a
-         hpxmJogxW3mAMpcivy8bae66EM+bgG3+bphY9lmT2XOSsHDpjJWXh4+3kkFdm2AsAm9k
-         Zgz7i0bImu9G0N8xMzCacbiIUtqiTzuiAhYO3g2GI6Z0acnaDBnlF9a8RdzfcsQhEUsQ
-         8yNMSkXvXO3wRLJS1rmop56l8LtBrip350lj5HgR7edmJiSc1sL0O2zg0V++vdDk+Art
-         IZOcqrJKX2uoJKLPF8MVZN9GXT3a81gzMPdF1o/uLcNz6gru+nXj98rFCDHzkhYDQSOU
-         5iYA==
-X-Gm-Message-State: AFuF++m/4iZz1YrsyVV0HYV80SQ3F1UMY00Hb7fJBR6zu3xU+KuFPx6W
-	G7kvuzKtrmLhqcfUseQLrDp6gLQTdCcUhcZFYCTz5IMMhHFifLae2laHzl5WopdXrWeYp97qKQn
-	caW+a/0E=
-X-Gm-Gg: AYBFou1Kf55MWJ6tYZM6EB9w/TNer1BlC+c1m/U+VPpCYUHQLpAJf8gWQw9Hbuf1QhL
-	hwd04oXDbYAnoXuhewZ89d7a7yige0XDkUdVhpsEziey6W87GgXyulfeNgLSMlHmXcIvCzj0n7y
-	wrsPUg/gymZ8hUYusIMs0D3bRFTMPFZM36diX6/uc9POOAKBSl1bWTOkyVp0LqhS47WZ65CqEnU
-	iRjzB4qRMLM8yGGDdwVfxLsI6J4pTyoFG+savN+30DoLH58sjjN9INNAG2OiNoNcW83I6wrmXTg
-	A9+Tz2HQHTpcm1ZKJb6XQWi/+Re50mjwMDhKEm0+IcT6l4JJFCqAQ+R518gwLgULp0gX5OfTaQX
-	puWeDDCBX6hAMslUdSkJG1CT9d1+5c7VS9ZdPX9lmw+wZdgjbByXFd6yw3PJ8MexHogHQKlunqL
-	Xfdz9+/xoFyfWYRDtQb0uX3R5Ajz4y7nYRlqafeD5nKdfBUJreEup5slELTRHbtsBWfOKhbPhj6
-	TQgyTPfWE5QQkXIoI6+mCbN98zbmm9rnV0sx0yJL4q0wn5RlGX5tNHD4c/j
-X-Received: by 2002:a05:620a:3902:b0:93a:2221:5460 with SMTP id af79cd13be357-93c251af18dmr218974285a.40.1790130547657;
-        Tue, 22 Sep 2026 19:29:07 -0700 (PDT)
+        bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
+        b=adFoVnJSyIUXG51IDKylzKT1oxXcUR9qq0r44EC8k2HgXndXVHsHv/0vIlO5hVIkEk
+         c4CFVMQ3yqRLojU5MwzlRfacAmiK+EzHFAUGTIJb4K3/kaDrPi6gcnDga8YfrlvJEkOY
+         MmmsxUml/sv9QLhZRqZxQKkeG2SfBlY4y/2FKnoGellVDqqtvYIFRsf1lWeXs7Zp12xV
+         wSUvf0i7xdCAd8JCEJPYGT4SVJYsozvmk1JEb6P23kbd9YdP7EBgqmZFJBsOmOmznQh/
+         AH/UNsMMenvXjcBjbR20iafemsZcW/85KhGtxF69JCaWwFnqFgRXUT40WXY/MSOJCYdr
+         ZqEA==
+X-Gm-Message-State: AFuF++ntI83IntkhAG6ZJG90BMrsPNz4A7/RC7VGWXmenWus7H/WnXAw
+	9TOzXm8ZwvrG4FJItntxAJBfYAyBQ2RFnS4Z2itM2DW6TGJBqqFKU+5tgUU+/wvjNmCnY6cFxk9
+	fP9wX5XE=
+X-Gm-Gg: AYBFou26UznPYUPWxCPx7oCD1JMa4KAeWRr3EhAc+JcFnKzZKh6yW+v2bhaHZSa3XVo
+	oygpKLkf+bGWNmnSNlpalUnI8279yW1ayC4k27UqufnO6/1piSwzfnDkWkajKMdTlKnWj+TONkU
+	hWflmkKjppxKuh2rEK7CfnkoLjHVOMy8s+9RjOAhivB55PPxODdYeVMaVCGtyWqmzfC76ewmfwK
+	tpETQDWrc9NTUGZOy46wGTa88Va3FjrG+mp4FhUU8TiAVLhxcxcfM5mfcpjb+jQshEHlVG5qkI2
+	T32LJWU5ENQtYJo77QwNYATQ/AL0J9vCk8qeTb96Vo9iTlYAV8NWTKc3T8wCjEMIN/Xwz+RDp85
+	NFax1bj4f3LV4efl2oJOSrJ9C/5Wnnl2uSnUDmvG4wAm7YFd7NlKl3cVQ8+wYakqLaQtgoG4JSb
+	lssygvyEZUB8efVq70DdizdtfHrAeVf7iaveYA5MVHvvJ24gCVDkJRjFM0MQXFb/CdA2uS74R1I
+	Z4JwRU0HSEByYbbSv9tKXEevg22RNW+ua5szBUci0bCUHwt7sZP9GV1KSuH
+X-Received: by 2002:a05:620a:4112:b0:939:fbe0:9abc with SMTP id af79cd13be357-93c17e2edd3mr739670285a.9.1790130549781;
+        Tue, 22 Sep 2026 19:29:09 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2482302fsm122626785a.12.2026.09.22.19.29.06
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2482302fsm122626785a.12.2026.09.22.19.29.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 19:29:07 -0700 (PDT)
+        Tue, 22 Sep 2026 19:29:09 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -110,24 +110,23 @@ Cc: linux-kernel@vger.kernel.org,
 	ying.huang@linux.alibaba.com,
 	brendan.jackman@linux.dev,
 	hannes@cmpxchg.org,
-	Balbir Singh <balbirs@nvidia.com>,
 	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-Subject: [PATCH v3 1/2] mm: refactor find_next_best_node to find_next_best_node_in
-Date: Tue, 22 Sep 2026 22:29:01 -0400
-Message-ID: <20260923022902.2433614-2-gourry@gourry.net>
+Subject: [PATCH v3 2/2] mm/page_alloc: refactor build_node_zonelist() out of build_zonelists()
+Date: Tue, 22 Sep 2026 22:29:02 -0400
+Message-ID: <20260923022902.2433614-3-gourry@gourry.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260923022902.2433614-1-gourry@gourry.net>
 References: <20260923022902.2433614-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9B023140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9400420002
-X-Stat-Signature: dy6teybwy8paufxjpzkdhgkrz7m1b931
-X-HE-Tag: 1790130548-155099
-X-HE-Meta: U2FsdGVkX1+FJhMtox3Dhr6gIYsvEIoQekVLJukzrBsB2kNS/UVBlvuzOlJ/2S/xGJoUx0HVNGR6NPcaJs+yhRJuxW0wBhUR1sE8pjiq1fgdJwQ382VkA2btomL2fdl1FPEpHaarAgYrXqaK1Ex9Yos301+wLl2nQIzwqL5/122lWf7aMIa64RbLbz5v9ddbatht1jRg3Ga/WoGlotnumxUOqXw+SlESrJVLsIi6J6oC6b1iO5ZkmCFyc6jc4oqfWqxF/G49cWBAXzNBjbbOHPW7BjUUQ/jgVzqmzGKohQgHCAEIfaKsyYEkWW/QRujHeqiNqXAI6zrafqwJlCh3za6c5V2akNwizzFAAqRO0zndR68xILuzgrsLIwjpqsFAFdpb33GCeBdWxfkBCZUINpXrguufFtTECaQ0736njqwm+zO+tV4vQK1BfMzHWkj5xQYfqZAja9GGD5ATG5R2d14QiYjBHLP3oXzlzm1jEFc1d9XEZ1ldUTS4z+IyUWZ1vqVhkEda5OK6wzMHuwcn0HzRTlvbBYvMlr3gDV+W5OnNRNH8m0UCqUinHrO2XKmpBQTWwZeIRG7/N8DGs3ip9nGVGINExodg9yfMqLvtzWSpH7Q01mNCAPQLt4meqmLCmLouJHUWoe0IhakQpaAUHru7lvyyE8APGvZX9kPvUzY4N2g+Dbg1rE0x0uP58idDBUWzstGzKAoXOVAVmvF/c09Ko/wsFnGy7vfjJW5YqnLVgcShnnrVjVFPLBfQ+sZRWPyCJ4e1KHdSc1NCt15Eg9oHk4tq+RvurJ/r44KILW4EJrzo1OSaE+Lw9WTgTa5s/lx/8yzdOn3A3rN6wrLLLH1O1yeVH3uhPPT/RiAGoslyQYmPuZJCaETMzAH+l9Sh6+yv3FTKoaLj0592Qc0Cp6bBoxEp1/cTVIr+hnK2SLg3k2MFCbBpGMwgNnPyTTx0dYwNt2SkZeBBnkOyKr8
- SnNpxkXR
- ygZYsNFYFA3RI/Ar6rWdwLGgbzRdSiIQzXDsXDRnecxlkMLBizv4GrwrplzHI5O/38ycWPjJ6BVrD2QbJXtdj9DHoIVgKxagDHah0uAokGXCJ/AAZ7DdJ1lNySipSOmPHB4k3Vv06ZwtPoy7opJrGlhNcQoI1agpdPgdeELbb1Vx3i30XZIMXH+It3yso9+SaLL4Kxbf0Kv/qCIm/BhY6dyJ4jrKvZfp5g/iiUpy85YOO3PoJ1hxuU3HERJFjeQJFTPMkXdag1Se4iLJXBi7BbY9Y/zNBAqETh7s0GDVPQpTxg39bGBRBtZhxKMIbfVoyJhF40B2FkoNvgOigolyyH6WbRRw9pdTUXl97e0SKM9Zi0wjj0ivxS9dEkbMSiQGc8AD992k0mGy9sL7QQcV1utXPTwe8ZEEaUBKGaq6ETHky1oF1907wWqp2fKm98qtoiBzM6n/VywOjnpeLkpD/drTW3A==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: j3b91shfihybkpgq94ixdisdaq1pgx5t
+X-HE-Tag: 1790130550-885960
+X-HE-Meta: U2FsdGVkX1+9JdpWReTo5AqxLUEKgbE24esY1vLJ7sp3ihcF2apuvmFm9CFc1YmhDv6IaZczCw197xUmFFL9t6xmp3xVUDuXGYB5/R9i4zwyFmeuIUD3DOWadxfQEXeBnlbNfwpJk6fc/5WHgJ+j1dXvtKiUrlIc17V6D4O2OkvraQqXrafoZ7YcpHRm1C3sQY11Ool0gl2LOMNbCqhhh1fzsjz8pkwnBSh95Rq8bWxBFHBk+nDg8hAFZLMKcRt/LmRwklURKdbLN51qnvuOH8mj17PQ6Y/J8ZdYB2ZFFhoo+gWB+VCn9IkMdCbIv3yp/jEZgOOmy1t25X3Onc4/9tQItkhugTVnwzWdjClD4coiuog6Bf/7pINQs2LJmgu0lzoCQJx2P6D/CwvRQCTWUmBTIrWxInHvHKtO/985CpNf7wFbrWXOf6TeBYPjczJ2QFvYYGwROuoVONjUq56I4ZiFeOaTjEXoJOeyrR8y3xJqHmUyX/VYz0/wBLbK4xdOVDiajVvgzxBAGOq0mbFOvL+ivPw5CXAqu6Gr96W3oXuKXZGCb37pJzN5IRKaQmdXLBS3Jwm0/qFxeybiygiavxMCW0/LhMZWFb3aZt3BGBZQvdq4jt8elg6RX4prCDLoFJy02M77u1en/g/UNl97SzOshOOBQCX5CDLRT3Dv0DjT+F04/txQBIq85MCM95LyBBViiRjCDFtfs+XKV4rFnA8jjyCmXcsZCluXVFW+Xn9XAQBrS3/GzB7pcBIDD0TlYgRkWV+tMa0qRPdT1Zd6Fbh4BhBwTjLaaQNm0xx9MoBUcKIw5RO3yn0mPFqHRMlUeZeMM9jmjWMmdMC9RtPa5eq7NvylVsVYQrgsaotgysgMNye7iRYTQmFzHY30qgoiD5yyGJNHKixicM7YXLTNQiCzPEcgq5wL3WpW2z5jhovXE7fpcs+vYf7DgqhxlreggWdXDaw6RFBypuwKSHq
+ AVVj4zCT
+ TOfuQd85Ksk3ePHvZsdm556FbOu2E4wSUnqYue9lVBppOxelhFwA7W5i/bu59lJpCACCNugf16SSNu9Offk79EHFOcu3wZ8FakgnY9H78bbYZicpFuooBm5Q2xsgCoBEjPnuGCOfqVu6lyT7YPW5iNPexmQoqQjV9s4aibUZFP6Wi1CA9Oc0vLvSppYSW/wVRyRdXDyhsiFHgf3QMS5U8K/rVD3zMUuwRckincSZL4rcEdaR30dEgtOYFSWqy6DwkraXWlAPfjEv8lDTAy50fPL5i9QeVFwGbntiFjRsHWmdDtTDASCmbzap6DA0xkWy10CTugOzQfaYlWUp2nObzPzZlMFbW4LZwcdMzoY5j6J6npJIFSbrlZHfvOt2P3UpzjhQn4TYrCnf4Y7u5M6L/ZcYaLKNBPwjBQkAqHs8BdXEyJWduZUC4bzfhtYvu6VBp9z8JdLnFU+o6I5+dEuxeF7ZetehC1b7pk8oW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,132 +134,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-find_next_best_node() picks the next-closest node for a fallback list
-from the full N_MEMORY set. Refactor it into find_next_best_node_in(),
-which takes an explicit candidates nodemask.
+Extract per-node fallback-list construction into build_node_zonelist().
+Build each selected node directly into the destination zonelist so no
+intermediate node_order array or node count is needed. Print the
+fallback order as each node is added.
 
-This enables building fallback lists with non-N_MEMORY candidates.
+This lets us build new zonelists from candidate nodemasks instead of
+just the default N_MEMORY node state list.
 
-No functional change: every caller still selects from N_MEMORY.
+Add a zlidx argument so callers explicitly select the destination
+zonelist. The existing caller continues to use ZONELIST_FALLBACK.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
+No functional change: build_zonelists() builds and prints the same
+FALLBACK list over N_MEMORY with node_load updates as before.
+
 Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- mm/internal.h     |  6 ++++--
- mm/memory-tiers.c |  7 ++++---
- mm/page_alloc.c   | 13 ++++++++-----
- 3 files changed, 16 insertions(+), 10 deletions(-)
+ mm/page_alloc.c | 63 ++++++++++++++++++-------------------------------
+ 1 file changed, 23 insertions(+), 40 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index cbdec2193fad..0434dfcfc36f 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1133,7 +1133,8 @@ extern int node_reclaim_mode;
- 
- extern unsigned long node_reclaim(struct pglist_data *pgdat,
- 				  gfp_t gfp_mask, unsigned int order);
--extern int find_next_best_node(int node, nodemask_t *used_node_mask);
-+int find_next_best_node_in(int node, nodemask_t *used_node_mask,
-+		const nodemask_t *candidates);
- #else
- #define node_reclaim_mode 0
- 
-@@ -1142,7 +1143,8 @@ static inline unsigned long node_reclaim(struct pglist_data *pgdat,
- {
- 	return 0;
- }
--static inline int find_next_best_node(int node, nodemask_t *used_node_mask)
-+static inline int find_next_best_node_in(int node, nodemask_t *used_node_mask,
-+		const nodemask_t *candidates)
- {
- 	return NUMA_NO_NODE;
- }
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 54851d8a195b..25e121851b58 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -370,7 +370,7 @@ int next_demotion_node(int node, const nodemask_t *allowed_mask)
- 	 * closest demotion target.
- 	 */
- 	nodes_complement(mask, *allowed_mask);
--	return find_next_best_node(node, &mask);
-+	return find_next_best_node_in(node, &mask, &node_states[N_MEMORY]);
- }
- 
- static void disable_all_demotion_targets(void)
-@@ -450,7 +450,7 @@ static void establish_demotion_targets(void)
- 		memtier = list_next_entry(memtier, list);
- 		tier_nodes = get_memtier_nodemask(memtier);
- 		/*
--		 * find_next_best_node, use 'used' nodemask as a skip list.
-+		 * find_next_best_node_in, use 'used' nodemask as a skip list.
- 		 * Add all memory nodes except the selected memory tier
- 		 * nodelist to skip list so that we find the best node from the
- 		 * memtier nodelist.
-@@ -463,7 +463,8 @@ static void establish_demotion_targets(void)
- 		 * in the preferred mask when allocating pages during demotion.
- 		 */
- 		do {
--			target = find_next_best_node(node, &tier_nodes);
-+			target = find_next_best_node_in(node, &tier_nodes,
-+							&node_states[N_MEMORY]);
- 			if (target == NUMA_NO_NODE)
- 				break;
- 
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 090419c70173..7f706e3d7e50 100644
+index 7f706e3d7e50..07e03c7c7771 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -5802,9 +5802,10 @@ static int numa_zonelist_order_handler(const struct ctl_table *table, int write,
- static int node_load[MAX_NUMNODES];
+@@ -5866,31 +5866,6 @@ int find_next_best_node_in(int node, nodemask_t *used_node_mask,
+ }
  
- /**
-- * find_next_best_node - find the next node that should appear in a given node's fallback list
-+ * find_next_best_node_in - find the next node that should appear in a given node's fallback list
-  * @node: node whose fallback list we're appending
-  * @used_node_mask: nodemask_t of already used nodes
-+ * @candidates: nodemask_t of nodes eligible for selection
-  *
-  * We use a number of factors to determine which is the next node that should
-  * appear on a given node's fallback list.  The node should not have appeared
-@@ -5816,7 +5817,8 @@ static int node_load[MAX_NUMNODES];
-  *
-  * Return: node id of the found node or %NUMA_NO_NODE if no node is found.
+ 
+-/*
+- * Build zonelists ordered by node and zones within node.
+- * This results in maximum locality--normal zone overflows into local
+- * DMA zone, if any--but risks exhausting DMA zone.
+- */
+-static void build_zonelists_in_node_order(pg_data_t *pgdat, int *node_order,
+-		unsigned nr_nodes)
+-{
+-	struct zoneref *zonerefs;
+-	int i;
+-
+-	zonerefs = pgdat->node_zonelists[ZONELIST_FALLBACK]._zonerefs;
+-
+-	for (i = 0; i < nr_nodes; i++) {
+-		int nr_zones;
+-
+-		pg_data_t *node = NODE_DATA(node_order[i]);
+-
+-		nr_zones = build_zonerefs_node(node, zonerefs);
+-		zonerefs += nr_zones;
+-	}
+-	zonerefs->zone = NULL;
+-	zonerefs->zone_idx = 0;
+-}
+-
+ /*
+  * Build __GFP_THISNODE zonelists
   */
--int find_next_best_node(int node, nodemask_t *used_node_mask)
-+int find_next_best_node_in(int node, nodemask_t *used_node_mask,
-+			   const nodemask_t *candidates)
+@@ -5906,20 +5881,24 @@ static void build_thisnode_zonelists(pg_data_t *pgdat)
+ 	zonerefs->zone_idx = 0;
+ }
+ 
+-static void build_zonelists(pg_data_t *pgdat)
++/*
++ * Build one zonelist ordered by node and zones within node. This results in
++ * maximum locality--normal zone overflows into local DMA zone, if any--but
++ * risks exhausting DMA zone.
++ */
++static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
++				int zlidx)
  {
- 	int n, val;
- 	int min_val = INT_MAX;
-@@ -5826,12 +5828,12 @@ int find_next_best_node(int node, nodemask_t *used_node_mask)
- 	 * Use the local node if we haven't already, but for memoryless local
- 	 * node, we should skip it and fall back to other nodes.
- 	 */
--	if (!node_isset(node, *used_node_mask) && node_state(node, N_MEMORY)) {
-+	if (!node_isset(node, *used_node_mask) && node_isset(node, *candidates)) {
- 		node_set(node, *used_node_mask);
- 		return node;
- 	}
+-	static int node_order[MAX_NUMNODES];
+-	int node, nr_nodes = 0;
++	struct zoneref *zonerefs = pgdat->node_zonelists[zlidx]._zonerefs;
+ 	nodemask_t used_mask = NODE_MASK_NONE;
+-	int local_node, prev_node;
++	int local_node = pgdat->node_id;
++	int prev_node = local_node;
++	int node;
  
--	for_each_node_state(n, N_MEMORY) {
-+	for_each_node_mask(n, *candidates) {
+-	/* NUMA-aware ordering of nodes */
+-	local_node = pgdat->node_id;
+-	prev_node = local_node;
++	pr_info("Fallback order for Node %d: ", local_node);
  
- 		/* Don't want a node to appear more than once */
- 		if (node_isset(n, *used_node_mask))
-@@ -5916,7 +5918,8 @@ static void build_zonelists(pg_data_t *pgdat)
- 	prev_node = local_node;
- 
- 	memset(node_order, 0, sizeof(node_order));
--	while ((node = find_next_best_node(local_node, &used_mask)) >= 0) {
-+	while ((node = find_next_best_node_in(local_node, &used_mask,
-+					      &node_states[N_MEMORY])) >= 0) {
+-	memset(node_order, 0, sizeof(node_order));
+ 	while ((node = find_next_best_node_in(local_node, &used_mask,
+-					      &node_states[N_MEMORY])) >= 0) {
++					      candidates)) >= 0) {
  		/*
  		 * We don't want to pressure a particular node.
  		 * So adding penalty to the first node in same
+@@ -5929,18 +5908,22 @@ static void build_zonelists(pg_data_t *pgdat)
+ 		    node_distance(local_node, prev_node))
+ 			node_load[node] += 1;
+ 
+-		node_order[nr_nodes++] = node;
++		zonerefs += build_zonerefs_node(NODE_DATA(node), zonerefs);
++		pr_cont("%d ", node);
+ 		prev_node = node;
+ 	}
+ 
+-	build_zonelists_in_node_order(pgdat, node_order, nr_nodes);
+-	build_thisnode_zonelists(pgdat);
+-	pr_info("Fallback order for Node %d: ", local_node);
+-	for (node = 0; node < nr_nodes; node++)
+-		pr_cont("%d ", node_order[node]);
++	zonerefs->zone = NULL;
++	zonerefs->zone_idx = 0;
+ 	pr_cont("\n");
+ }
+ 
++static void build_zonelists(pg_data_t *pgdat)
++{
++	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK);
++	build_thisnode_zonelists(pgdat);
++}
++
+ #ifdef CONFIG_HAVE_MEMORYLESS_NODES
+ /*
+  * Return node id of node used for "local" allocations.
 -- 
 2.55.0
 
