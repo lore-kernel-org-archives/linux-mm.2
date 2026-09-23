@@ -4,128 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E2B6C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:21:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78819C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 11:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D55E6B0092; Wed, 23 Sep 2026 07:20:59 -0400 (EDT)
+	id 843C46B0093; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5966B0093; Wed, 23 Sep 2026 07:20:59 -0400 (EDT)
+	id 7F4AE6B0095; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BC4D6B0095; Wed, 23 Sep 2026 07:20:59 -0400 (EDT)
+	id 6E46C6B0096; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C64F6B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:59 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DE5BE8077F
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:20:58 +0000 (UTC)
-X-FDA: 85244784996.14.41A2FC8
-Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0961E1C0003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:20:56 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="L 98RMmX";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=qU+wGpuY;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 441886B0093
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:21:21 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF317A0729
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:21:20 +0000 (UTC)
+X-FDA: 85244785920.01.89E020D
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 738A51C0008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:21:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ahMOEPjT;
+	spf=pass (imf18.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790162457;
+	s=arc-20220608; t=1790162479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ktiZUKec4B6HZzJ+HNFJ4iYy4188Qhi+lPMjiYgieJ0=;
-	b=jNqkLRepEpuVduwULgsZNTjqBrmKhMNchEFSKWGT2c3TsTpiwssAWHBA7E89dvRvbz13Uc
-	e4CW1El0d6hM8hYq4s/gM54YH92k7/TmwgNpJtsOFu1zLJPJRO1z7dr/LLwUKn0PTyLwzJ
-	gAQWVLUOq6yCcK/qjaIfWeKkJp+tae8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790162457;
-	b=IDVsIZeAVhBx1aNwum3CCSiSNgZbBowYd4/jOkbK121bU+uaeqZ5YqTlphG3300/wW2SBX
-	65mxWghEJN3mlmu2lRNKNq1v+1mjpYBmIEmdDs+0L7t/hgj43ZuMwfvSTGxX/6DjPFpgq9
-	BeTfbdNX3xmXebasVagrrIvKA/ze5+s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=D59ll9Cqgn4VIwMdD2H3ggT0fglPHG03tnHtRxDpyso=;
+	b=OxTf1ADLddomrHIdj1dgxubrcqcxhc3zVRS+E8sLUT0GmcgxiZFt+Hz8kKiPlvwCosL3Rw
+	pVyyr28KfzfV4I6jbdqPxqMTyBniBpMQ6o+OAFuErZdjFmetUPTXdxkhqsUSyGXFFKQffy
+	dhn2G7P1O9A3S6tZj/rtuRviOZY84SA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="L 98RMmX";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=qU+wGpuY;
-	spf=pass (imf21.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id 8302E1300181;
-	Wed, 23 Sep 2026 07:20:55 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Wed, 23 Sep 2026 07:20:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790162455; x=
-	1790169655; bh=ktiZUKec4B6HZzJ+HNFJ4iYy4188Qhi+lPMjiYgieJ0=; b=L
-	98RMmX2tvfQopY1x7eEjV9sTfX+l8j0VI1k01xg0D+Qmrf6ioEAr6nemXKJ4dxEF
-	Oo0TffjnNinl/3GQd41+cnNNgtg4qBrj8TCx15p3Ms06jdCn2azCvucDkwtJ59wz
-	D8pBs9Q/MR66hU8HkUbZ2JQn870SHFXEnOTEDPtZj1qWgX1+qXkPemxwRzE1le5L
-	ah2OxvHYyfs9IcLHMn2UIOaig10RjgR+L7Rdtf2zsO+HdX/N877mLo9iuJNaKb3E
-	hoDQTgzxAkx7T+74Cgk8VPWla70HDKmtNgZEcwpfUcjo053579zNK7GmFV1L1H2S
-	RgmKwDx6qpP2AKh96RWhQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790162455; x=1790169655; bh=ktiZUKec4B6HZzJ+HNFJ4iYy4188Qhi+lPM
-	jiYgieJ0=; b=qU+wGpuYPN3hKO+M+jMFavBC8IWCUdrgpnyeGM0ze++b3XJa6mF
-	a3qcuTyl1sXjHvU/eQpeGl+3lyCo4USxjMw9vF1QOuc/kQatBAUK+OroKgEja0gD
-	mjYsBl6z3PHOjM9SuWCITnRBzVDpDUfoJCMONZ/G2PS0lGzAfLJ3eGdrlGIPp5mr
-	dc2a5UTOjGmzvrQE4owdPur1EqZ8Gl8nvo2N2gAAWD/F0FYTh3k73xjRxv63hYJ3
-	5RZqDt3BuW7aNxcgk898YiHLq1w98JDIDrXq38aVvoEoRW1HLmwVZ+WXxJmtbv4H
-	sWidPGjZU66tDqqUBzhZeOnlHtyL9E4Uhcg==
-X-ME-Sender: <xms:F7azavxogpDrfF4DNFL1eKcZyaLyIifkD3nR1ZRYKCDBCzqdcNT2Gg>
-    <xme:F7azapm_Ip8OGxjSen2YTfdBmEHNx2nSn0zexKKF-LjZciNHf-j0cjlG91DTqDxLk
-    ul2OFHNIeEUU6UGQR48HqSLu0rzLpWwp9Iww_ke3fCOnTi-8yRcrBE>
-X-ME-Received: <xmr:F7azaoBnzmW26a655BnpjHaY6rH0AzBSlqHQJW9OtSleJ8IE5F1hl45tHrc>
-X-ME-Proxy-Cause: dmFkZTGYKaX4MJrWiZQMObUvdDS/QWbPENP4/QfruR5BVC0vDr3fwy8UqZaiMm19WVvCJj
-    0rjC2wvVme8pZCZK4Hk73qsmr2qCNpQkL2lxolYz2oT+uCsVBU1r74piGSnXzeClBinZV7
-    y3sxhX+8TAkchK3N+UMQqjVLMQq4uynP4uBOC2y0eE+zIaGoNSwYA6DO1H17PSNo7adr3v
-    zojz82agX4yD8xYnPoAfAweqTZDQka1uyTOk1rUyA2wF2i+pTDCXEHTcXXCXckIiOGFMS9
-    RF8C9KpMBE6BRRNKbAjci9rBuBiDk4EEvDDezb/DoxDzAECoRSW1iKrymdowfjbRej8fo2
-    1fWqr2HTppvuYAkHu+XIoVQXJOiBnpn14qMCD7wVZMNdSs8WjzmZa0LCmexgVyTst7xXCV
-    8vrC5ID1UpF84NYRlV5wWUzeAeZrT7F4j2e/cj7Zx7V53e201mLuDIv+/RuQ0mj/VgPgvy
-    9sVH1R1Ngny8Rf4YlRIVLg9pOhHQTAipWD7r2nF0cQSF+vvqJhDIzyedY2MCw0+Tua+wuO
-    Cyx1D0Y8G3TrhzF0t2c7Fbnnl0ebdqM3oNftdN4qhfBYE7OA1G6iijrPP18j85XPYmw4qi
-    eevpq4izXY2aoM/WK135q5sIZ31zBMEPadTnZfXdg7nTknDl95Pg2+lUFqAw
-X-ME-Proxy: <xmx:F7azamcnDK08mifL84qQeuza90uRKs54JJQcFkR6hr9HwM5sWERw9w>
-    <xmx:F7azauptGNy_k84Tb9wPHFq9GIwU8W_MtL3tfwSMZP09VJaKfgKzGQ>
-    <xmx:F7azaqK4rhh7EUVDwIAsIoH5zX030UctfN-PANF85p9THr4j5d3mlQ>
-    <xmx:F7azavQ-EzhrMhKhAa63jnDmwRhHHHih65emu4DYNKz-CTtzoF5cqQ>
-    <xmx:F7azajpKXdNZS_Ql3gtTIKKMJ-xv-1D89RkX7k717JM6Poi4E83vb7G7>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 23 Sep 2026 07:20:54 -0400 (EDT)
-Date: Wed, 23 Sep 2026 12:20:53 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org, 
-	rppt@kernel.org, peterx@redhat.com, surenb@google.com, aarcange@redhat.com, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com, 
-	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in
- move_swap_pte()
-Message-ID: <arO1r1NfMVLPwqtQ@thinkstation>
-References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
- <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
- <49208ed6-6c20-49a9-9c0d-0e1cffe1898f@kernel.org>
+	imf18.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ahMOEPjT;
+	spf=pass (imf18.hostedemail.com: domain of sh_def@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790162479;
+	b=UHO8h2yJG8xltDwq3kLC6TH3D9LMMyOJ9x3YHB/xNDkQKE7sOLB4FND+nXrthk0ZkhtMI1
+	mLA7vJFYYpBalwlfgQZLwlC5SliEtZiXbDdnU2NRI0Qk05Eh+VRCogZRBivEUkxtqH0doK
+	oXu6ajMkfdVg7o2hdCUY1mNSssW5GBw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=D5
+	9ll9Cqgn4VIwMdD2H3ggT0fglPHG03tnHtRxDpyso=; b=ahMOEPjT1wiz58wN6i
+	GaFqKzCkFYIdEG3J876IqJUV0WHafDPhuqpRjlNegc54ua3WCl462yA/uYD7Tc34
+	9AQBYeJgj2Rlwbj52x7ZYHjnazKwJGdF33PmPc/N/TXq3vDWrqep0lrnKBpHGDfx
+	L0mH/jcBmGvqB7bnNsBo6F19M=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDXn08JtrNqnlFPAQ--.25126S2;
+	Wed, 23 Sep 2026 19:20:42 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Hui Su <sh_def@163.com>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/migrate_device: consolidate compound folio handling
+Date: Wed, 23 Sep 2026 20:20:41 +0900
+Message-ID: <20260923112041.2103427-1-sh_def@163.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49208ed6-6c20-49a9-9c0d-0e1cffe1898f@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDXn08JtrNqnlFPAQ--.25126S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxtFy8CrW3Cry3Aw13KFyrXrb_yoW7uw4kpF
+	40g3WDtrZrWryjkw13Zr48Ar13urZ3Xa1fKFZrGwna9Fs8JFy3uw1Iq3Z8XFs8u397AFyx
+	Zay7ta4xu3WDJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piHa0PUUUUU=
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6Qs3lmqztgsF1AAA32
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0961E1C0003
-X-Stat-Signature: sozgt5s7t4op7fjz8p4ia1ye3n6a9hbw
-X-HE-Tag: 1790162456-237321
-X-HE-Meta: U2FsdGVkX18qn40U/tbgjGCDs/Lw8+FfhoHgAfaqw7vzU7zUOQh9NNFXRBBR1kYslo0vTGCq7vgTwPMj7ysan7iu1qGKx3M7mVvdgyZ7eOO3FjtcoANdaaYZPSWau4kDAJGwlfPUDqGbRefbJhHGLfaIalVb0jyt1/2b3S6A2H6zQQvRFQe+JGL5Ih5G7wOZugp18KbKvZ2jnOqZV42p2GJLI8C8xdHFwOt4wLPgn/buDs8pbNTwd4xKukK+FFp8gSyA9Md33UzMcwC8KlLcj66v9qcxtyVJxYBMKH5LCc1Rtv0D9uVKDnLfaLU9wD5r6krmtobB4d/xGGqJesYYgoL2Wku0/bhvqViOaJeV899gMNgv4Dfy1UmJXdakhxYmE33+BSuqyHkiQKNbPXVA2KKZPA8fpfsBt/24c2vpri4ZJgGUocaTcGWJinqgfmq6Ko+7PqptzoJ39h3mCr0fWeNDR6t6HwhlwJ8d/YwlTkYo7N+wJFpMEAC865kYSMyxCbNmIf2EtEEwPuWMfYezbo0c0fLR5HUTU9hD+czFR1MzxJFWrvvXipVbznep0gD6LFWtNxKEo1MFh+ZKg0tmSsqhCiI3NtuUbXGL9zes0gIzXfDJsxMdtKfS/fvXZkmzYwzVZ38o8G9J+PZK7FBdte1P85AiWjd9XjWeMt0UBkaDG7i4hhN2qEN27bYQqZjp2pJ5388YIM2wQ789PXHleROSQ3znoGMu8j6U4xH0v0h/uEGbAyqnjMDTF/pxvyRv3QHPKKWyiUnUcWooqhdf0ZPjXMLcJn/BmCgXMS21MA+EwAjhIlisxWnNAwWon0HLJrWbc1h0hh63L+vAV9F3oTlSOrL/ZveAcxJpCEAwXSj5H/6Mqhvnbtg9cVVl58jzoJsfwiM4QIKTGXzHUFrqGOTeOGi+fV1XihV/uB3BSYirlFnFlOMMK+gXoK3zftfLwwJ1Itu6EAwzZttcF/Z
- STcvPl+m
- Ocm+cM/Ji83hLZXf53Y8/gcGjIFEcIqV7gAwxXmC9xDHT0vDUVZP2VY60eW5gxUehGrh8lH5oXmGZRLshVPMvEEr61pEWfME6M593IbS6SYd2gcZFGSsVvA+JTHrRRNfOj0qXny1AIIUMHgOlY8T7alnm2cdISZZm+CXFgjrX+dg8FgshqvwjPxw0WhVHx8x8cAm32SIJ2xlTi07zEAmN0v8JyPVuaJJ9Ea3KYwX7hxqyM4TofR+ixRBeHdzdIJeVH5RGapc8JTpuX+5jrrgCOKREg/obClrRrTyB8CbgLrDz45dViBquLG115EaaNJ1du+XXJ34S4Ywsxe9COLfsHhQbzFFg8j5Fr487RkMhOdXHNnd4gePsGPpeoWUafpl+kd6UMMTJo5cs3qdUaw2q+zI5Z/71V63ECWNkDmGjBamdv022TpXJ/fR8s37neVndWGjK8EbTjFaQFzIs6WXCsiZEYhsitSXIuQTWpHs32pt6dtFgVWTLEAJZFzVdnpC8W+0ig8qNUfP3kNjxOFl0LE01TLxcCcfsd2VsSBo87kT6YA8laF8C9VEtTf6OID5hhLdUZ1LTckQOYDsmyPmo4SoFVspTvkLABYqzS0jQjVoInB0=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 738A51C0008
+X-Stat-Signature: 6j75yfe38ntjoq7mg7puw6bhwobyt46h
+X-HE-Tag: 1790162477-76519
+X-HE-Meta: U2FsdGVkX1/O+N2H/rQ/nirEkecm+fApNUg8gv56tp4Runqf+5D8cajVN+fMYr7uf46r4ZWwkZhoUvUGR7wL4U5kskuDvDFN4AjtyPtWndRZLT5b+5PBsILRuWlKLkAd0RwvuyohJk2RO3cvAHj5KnAYldm7zOyB1JJs3eDU0R2uugyZwORJHoOnswWEFXOSr4/DfVbzc18QOE8Fk7nUFlh1p8io1oIxknhMWbUBANZv5p1TfToxV+HHFr1SjQSS4dIwM8X+DtsNfy5pir5jgEibTYhpp6DywZ9lXxMbXb4/qEOHFTPjointO3z2jsQkaCkjDUo1/RvB2tGsWjz29gZRviCkpwdGpDGjWf8P/c66/X88TAP+one7cHqxgfyPV9UaqG8NaJUo/w+DjVyGp6BJHcRoOUrVTFr1xSiZGJ8MVe4qBGPXoNtHQplFS4wAOx7NtYWmues1bRrVdup5a6gWSXmasM9WvFFjMxpNDdz6y9LsbKeiVpCeKhXuOsgQA/nyzn/9rvEkq1qW2kRgdhU2PvPdh57fpbZ+WM8nvddB31Fl1LkJpN5Hq94OIifH3GJn0NQMv1GN5em8gWnEh9S/zcWPEHl6AzP20IuXHamX3V1Ye2XKk0jmKcj4odvRwnX0/8oPpDz1pURTI7ugMqJUgYtrPrD8oEDDyVsGGE9+VEKkO9QPqG9AJokwUJ53bas5dMM84Lr0KXIjdZr6k1TEMvEN4Zus3qFA1RN7U5Wj4z/9tFpdn9CoiDaOSbHxTqTwNAL1TFx1zX3IbOkU7HFYn075cmbuL9kkg9TJmRCb4RajyJ4LDgIeyu1DbCQFDjV5d3Xqo3tTsrk0KfIWd8v9SkeNb4WeKmaTcQnyLGE0F7v5vQzkzvH2fUkH/Zje+3EuDNTUVzIqJynI5CoML8S+OBCiPdvLNPXNwqfFiDCs1dAX8fkELlkjKHLqRE+ee7S5ascPPCeLKD+Pca1
+ pCzeHz6L
+ 109XkOBH+bOklAs/n7GSPiY/OaBv4x5Ljcnx+0b3VytV1XW7o6W4Q3y9mA2pbNc/1Gxkw80zRkC7loAbEk5vcMPTefxJzfC7YGTHU9YK/GStXdVku25SBQXgBY/gRwRTZiXHy7DYB/XuQTlR0QOHvoohQ+JTazVaOOAyXyK5RRjA4E5TlU8u1kkyt25ojiCzadgccZTE+9oZhsn2vbsU75Nbbaui5SfIqH/F+6Ju6b7OiMgWZWmbpF47DpPvFVKSYFPFktuzOFpzj4nt3beF75BDqLdH9O9KsCWSY4dgrSGt1FP84MyjiCYAr7pTwCd7tp/rz4M5sZzk3594IZwkwDggXTm1zIt792BbGTVNNtoX1SajrQgo/aFn/UfRzsHdqYD+H55uvUS6IePqGW9L3ilErbXw6kgY1AmtonytBJ6cerG+X1ukH8PtQMIqroEQbt6oSh3MZkDv8zeBsG4YTyfhA6k2d/3UisK1q3/9BxhFf7LQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,74 +99,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 01:40:51PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/19/26 02:46, Donggeun Yoo wrote:
-> > UFFDIO_MOVE on a swapped-out page installs the source PTE at the
-> > destination unchanged, so a uffd bit set on the source lands in a
-> > destination VMA that was never registered for write protection.  It is
-> > then permanent: the bit is dropped only by change_protection() under
-> > MM_CP_UFFD_{WP,RWP}_RESOLVE, which uffd_wp_range(), mrwprotect_range()
-> > and userfaultfd_clear_vma() issue only for a VMA registered in that
-> > mode.  pagemap reports the page as uffd-tracked, and MADV_COLLAPSE
-> > refuses the range while the bit is set, because collapse_scan_pmd() is
-> > strict about uffd on swap entries.
-> > 
-> > move_present_ptes() and move_zeropage_pte() build the destination PTE
-> > from dst_vma->vm_page_prot and arm RWP only when dst_vma asks for it, so
-> > the destination's own registration decides the result.  move_swap_pte()
-> > copies the source PTE instead and only ever sets the bit, never clears
-> > it, so one UFFDIO_MOVE behaves differently depending on whether the page
-> > happened to be resident.
-> > 
-> > Clear the uffd bit on the moved swap entry unless the destination is
-> > RWP-registered, as copy_nonpresent_pte() does where it installs a PTE
-> > into a destination that may not be armed.  A WP-registered destination
-> > stops inheriting the bit as well, which is already what it gets when the
-> > moved page is resident.
-> > 
-> > Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-> > ---
-> >  mm/userfaultfd.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> > index 74f04c323c50..6495666c596b 100644
-> > --- a/mm/userfaultfd.c
-> > +++ b/mm/userfaultfd.c
-> > @@ -1452,6 +1452,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
-> >  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
-> >  	if (userfaultfd_rwp(dst_vma))
-> >  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
-> > +	else
-> > +		orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
-> >  	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
-> >  	double_pt_unlock(dst_ptl, src_ptl);
-> >  
-> 
-> In move_present_ptes() we don't run into that issue as we create a new PTE from
-> scratch
-> 
-> 	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
-> 
-> 
-> Staring at the
-> 
-> 	if (userfaultfd_rwp(dst_vma))
-> 
-> I do wonder why we don't have to take similar care about wp ... I'm sure the is
-> a good reason.
+Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
+compound folios") added handling for compound folios that do not fit in
+the remaining PFN array.
 
-The RWP branch does not preserve anything from the source. It arms the
-destination whether or not the source had the bit.
+migrate_device_range() and migrate_device_pfns() duplicate the logic for
+locking device PFNs, encoding compound folios, and handling this boundary
+condition.
 
-WP has nothing to arm. The bit is per-PTE state that userspace sets
-explicitly with UFFDIO_WRITEPROTECT or UFFDIO_COPY_MODE_WP. Registration
-alone protects nothing, and UFFDIO_MOVE has no MODE_WP flag, so a moved
-page in a WP destination starts unprotected, same as a faulted or
-copied one.
+A compound folio cannot be represented partially for migration. Use
+VM_WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
+retaining the existing defensive handling: release any lock and reference
+acquired for the current folio, clear the remaining entries, and stop
+collecting.
 
+Move the shared collection and encoding logic into a helper so both
+interfaces handle compound folios consistently. Also use memset() for the
+compound-folio tail entries instead of open-coding the clearing loop.
+
+If locking a folio fails, leave its source entry zero while still consuming
+and clearing the slots belonging to the whole folio. This prevents a tail
+page from being treated as a new source PFN by the caller's next iteration.
+
+Document that an encountered compound folio must fit entirely in the
+remaining range or PFN array.
+
+Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
+Suggested-by: David Hildenbrand <david@kernel.org>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Hui Su <sh_def@163.com>
+---
+
+Changes in v3:
+- Keep the source entry zero when migrate_device_pfn_lock() fails instead
+  of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
+  slots belonging to the compound folio.
+- Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
+  keeping the defensive clear-and-stop path independent of CONFIG_DEBUG_VM,
+  as suggested by Balbir Singh.
+
+Changes in v2:
+- Fix the helper parameter indentation and keep the declaration to two
+  lines, as suggested by David Hildenbrand.
+
+ mm/migrate_device.c | 91 +++++++++++++++++++++++++--------------------
+ 1 file changed, 50 insertions(+), 41 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 009bfa8b212d..68b787bdc8be 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1392,6 +1392,40 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+ 	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
+ }
+ 
++/*
++ * Collect a device folio into the page-granular PFN array.
++ *
++ * Return the number of entries consumed, or 0 if the folio does not fit in
++ * the remaining array.
++ */
++static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
++		unsigned long pfn, unsigned long remaining)
++{
++	struct folio *folio = page_folio(pfn_to_page(pfn));
++	unsigned int nr;
++
++	*src_pfn = migrate_device_pfn_lock(pfn);
++	nr = folio_nr_pages(folio);
++
++	VM_WARN_ON_ONCE(nr > remaining);
++	if (nr > remaining) {
++		if (*src_pfn & MIGRATE_PFN_MIGRATE) {
++			folio_unlock(folio);
++			folio_put(folio);
++		}
++		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
++		return 0;
++	}
++
++	if (nr > 1) {
++		if (*src_pfn)
++			*src_pfn |= MIGRATE_PFN_COMPOUND;
++		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
++	}
++
++	return nr;
++}
++
+ /**
+  * migrate_device_range() - migrate device private pfns to normal memory.
+  * @src_pfns: array large enough to hold migrating source device private pfns.
+@@ -1410,35 +1444,22 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+  * migrating pages that aren't free before unmapping them. Drivers may then
+  * allocate destination pages and start copying data from the device to CPU
+  * memory before calling migrate_device_pages().
++ *
++ * A compound folio must fit entirely in the remaining range.
+  */
+ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+ 			unsigned long npages)
+ {
+-	unsigned long i, j, pfn;
++	unsigned long i, pfn;
+ 
+ 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+-		struct page *page = pfn_to_page(pfn);
+-		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned int nr;
+ 
+-		src_pfns[i] = migrate_device_pfn_lock(pfn);
+-		nr = folio_nr_pages(folio);
+-		if (nr > npages - i) {
+-			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+-				folio_unlock(folio);
+-				folio_put(folio);
+-			}
+-			memset(&src_pfns[i], 0,
+-			       (npages - i) * sizeof(*src_pfns));
++		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
++		if (!nr)
+ 			break;
+-		}
+-		if (nr > 1) {
+-			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
+-				src_pfns[i+j] = 0;
+-			i += j - 1;
+-			pfn += j - 1;
+-		}
++		i += nr - 1;
++		pfn += nr - 1;
+ 	}
+ 
+ 	migrate_device_unmap(src_pfns, npages, NULL);
+@@ -1454,33 +1475,21 @@ EXPORT_SYMBOL(migrate_device_range);
+  *
+  * Similar to migrate_device_range() but supports non-contiguous pre-populated
+  * array of device pages to migrate.
++ *
++ * A compound folio must fit entirely in the remaining PFN array.
+  */
+ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+ {
+-	unsigned long i, j;
++	unsigned long i;
+ 
+ 	for (i = 0; i < npages; i++) {
+-		struct page *page = pfn_to_page(src_pfns[i]);
+-		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned long pfn = src_pfns[i];
++		unsigned int nr;
+ 
+-		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+-		nr = folio_nr_pages(folio);
+-		if (nr > npages - i) {
+-			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+-				folio_unlock(folio);
+-				folio_put(folio);
+-			}
+-			memset(&src_pfns[i], 0,
+-			       (npages - i) * sizeof(*src_pfns));
++		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
++		if (!nr)
+ 			break;
+-		}
+-		if (nr > 1) {
+-			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
+-				src_pfns[i+j] = 0;
+-			i += j - 1;
+-		}
++		i += nr - 1;
+ 	}
+ 
+ 	migrate_device_unmap(src_pfns, npages, NULL);
+
+base-commit: fe2ec83746e501645709761605c2464a44fd2929
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+2.55.0
+
 
