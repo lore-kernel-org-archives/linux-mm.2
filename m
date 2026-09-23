@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA7EEC9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 242CEC9830D
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:33:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0A756B00A1; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
+	id DF1766B00A2; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE1F26B00A4; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
+	id DC8586B00A4; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A9226B00A5; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
+	id D05636B00A5; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5952B6B00A2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A92096B00A2
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:32:47 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEBE8C0129
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:32:46 +0000 (UTC)
-X-FDA: 85246326732.15.D945792
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B228A3F76
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:32:47 +0000 (UTC)
+X-FDA: 85246326774.07.B863A5D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id C24951A0004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:32:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8NxxRmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2C187100008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:32:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VQZ7swZ1;
+	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790199164;
+	s=arc-20220608; t=1790199165;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XLT6rcitkEt0bhRj6dmLwO7jPae4xTn40m6tjQsGjWg=;
-	b=ZKpEOJD45k9m8gHJCFT85rKSAW8OX+vTYcbd2hM83/6irLBspZyKI36iWZmQt9E3q9nfcN
-	ndKVOOn5zL4/2WgbbQoDh+4Pnaxn13i3XL23Cd3WPSMqBjkDKZHRcXT6iSQiryAofO/n+n
-	n054tsgJ5ybQxXYH67ypBveey1jYWxo=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E8NxxRmK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org
+	bh=WK97Gq7edc4CWCQmwomLpJOjV1idQ49x43obeOSf0fY=;
+	b=X98y9NMo+0AOQ6O/E2eSnQFcCTUYXUcpYUyTj4pykAS5gQ2Yv2m7LM9qVZ+1fQwNU4Hqsr
+	3IgILskv0/wp4uYu5PPoXhHilCdG0J0JUS3uI2MsnuwHFL+hG1t7fbHBP7JhHSfRDlnxoa
+	XpEb+8SzGeylFr3FQixDli/RY3myVE0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790199164;
-	b=tpgXMCD5wnaz3ZOjYXK1ZbkrmzennxPhdrxrmkUYhDDJ3wp+Mr3KoV4e8iHK6JYkmVW8IY
-	rBBQh4CipnvsZbhkEDcCyD0egAgM2Kt+RzNNJ5cVHGrInIKXkCCMSwx3GltFDQArGp6av1
-	2vjK2kQzoQKmZAp2qqykl/eMJdQW18g=
+	t=1790199165;
+	b=SGdv0ffeaETKf4DS180Rm1ugXxWhTlZThabjMV07pFqo5Vs0l93AOIjnb3Ha5iGIXM2P+s
+	U0I7isT9SF5ddHq8fLZoWRs4MIzCfyK7vWdRNEA7aKusrYdM4v6vOW7zKOc2v/ITX9x3KL
+	h/udNr4jdO9tzkRasS8rQ1UnkaRngz8=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VQZ7swZ1;
+	spf=pass (imf14.hostedemail.com: domain of devnull+kasong.tencent.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+kasong.tencent.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F28343F25;
+	by sea.source.kernel.org (Postfix) with ESMTP id 64DCD43FB0;
 	Wed, 23 Sep 2026 21:32:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1DDCBC2BCF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 35BC8C4AF12;
 	Wed, 23 Sep 2026 21:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790199163;
-	bh=F7Ybs+UnoH15Z+C6t0pZPct+6mxob0eiqLWChRfhCk8=;
+	bh=lCnOjWIjAtP1yg4fNlobLAfUGV6MCr4aJdathae1sTw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=E8NxxRmKYmu7XXWNo5GkQfRwnZr05kwfJwhDk6ICROdKJTTRUx0aq/zY1Ur3M33Aj
-	 RfxsqVIzpNEi/gyiBTs+uL9XZ+cb2X6VxiyRFjAvq6WwsoahcLVC+SYg/Is04vKD72
-	 C3KyF9f5u3KIe3m5l5MY9ar/oBu7wpbXE5cBbh+faoKvQ66v9GK2+C92Q/UnfTpmrR
-	 HKc3BTuwsXfSPx24vzJr42OK9et1N60ZDoJ8rFH1NI77JkaEAB462i9HTbGLCE1SEw
-	 pCSevPNuzp/lSfy8gz+l2L6YP7VVK/+QONeL23ckUKPxqpX7kOY6OFehhl0vdtmD4i
-	 3gcDTKex0a3SA==
+	b=VQZ7swZ1RYYjOjBaVVU9PmAPrKsbC+Lkty1FobDdeVBCiT2TZPcDFR4Frisg5OS8h
+	 LpAX8GUOEMcGDrvSPKWWNxffAV2AweVArIWzIZntWvjHthyv1WIgJTt8MLHaSkmxFl
+	 a5RmJhY8fynEsneN15D5ei53S8uIbORzE4S8PtVEPtc5Z5BrlnEmt4+tU+HqPxb9sZ
+	 x59cwBKRfFlg4a7Id92WFYDmkCmjTQzNvFxitSctYpVPUTqDlGc4byFrxiWipXvKA7
+	 O5uZd5tJn055798OweROyIuRtS5V8upj2ypopgk7Af70Sl7HgA3NiB/+fHqgdQmlVL
+	 O3oJyfZGWcw1Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06A41C98313;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C0C4C98311;
 	Wed, 23 Sep 2026 21:32:43 +0000 (UTC)
 From: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>
-Date: Wed, 23 Sep 2026 23:32:35 +0200
-Subject: [PATCH v6 04/17] mm/huge_memory: split the routine for splitting
- anon and file folio
+Date: Wed, 23 Sep 2026 23:32:36 +0200
+Subject: [PATCH v6 05/17] mm/huge_memory: rename __split_unmapped_folio()
+ to __split_frozen_folio()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-swap-thp-cleanup-v6-4-ba1b4ba72c6f@tencent.com>
+Message-Id: <20260923-swap-thp-cleanup-v6-5-ba1b4ba72c6f@tencent.com>
 References: <20260923-swap-thp-cleanup-v6-0-ba1b4ba72c6f@tencent.com>
 In-Reply-To: <20260923-swap-thp-cleanup-v6-0-ba1b4ba72c6f@tencent.com>
 To: linux-mm@kvack.org
@@ -94,25 +94,25 @@ Cc: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
  Shivam Kalra <shivamkalra98@zohomail.in>, Kairui Song <kasong@tencent.com>, 
  Kairui Song <ryncsn@gmail.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790199160; l=8306;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790199160; l=4280;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=dOJyL8IG9RVvH6KLP68TxljYyrB1bKWLEdWsFRfNmxo=;
- b=M5xVhC3qKALj78ArBjYIYb/7GECUSEhvM2BPhegOukcy2eV+2StCN8BjY4OIycRYa4ItGPY1C
- 75w9fK8MwOFAKDjyfn4uG6sblpHqJY2BNdBOxncZG5PF5ogNfvHri6P
+ bh=0tFQGQYoeM+DEYcm38D1h/sxX+0NJVFyUi8PLZkhh8o=;
+ b=HzFKI9Us9gEuTHBixDaUISCMUSTKiCmB0vtgkZgPKMJuArJ62XMZbcI4yupzzVIPE+Z+5MQns
+ gTKTgOeI9CCBwI2yaWdoH2NHSWm0Y8Ca3OYTOY4NlbNEFnCJXmqXGZS
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 X-Endpoint-Received: by B4 Relay for kasong@tencent.com/kasong-sign-tencent
  with auth_id=562
 X-Original-From: Kairui Song <kasong@tencent.com>
 Reply-To: kasong@tencent.com
-X-Stat-Signature: 3hru8fxqpp6oq6ra8z7ei5ttrqrapx1d
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C24951A0004
-X-HE-Tag: 1790199164-188848
-X-HE-Meta: U2FsdGVkX18oXfNl08oxbEqukY3ToKzNP7YZGfxg9m2EVpihACj2ZPDrOa4sY39XbV0gQSgm6VK61FqQnQTxHq8xGe/0DVSaF6iUIBrLUT9dUCTnmWZjsyDVzuipVRad4xXRHhc1tc5hJU4nJB+THnoNzC4UhXjH3L99Ivau4vUh9D3OXVxuMQh/lzIdVhvXzr0rNgUmjRCaQbnoCyZrOrNvpWhMVFdzrw6Ze+lddneFpyTTRbixn1RnLfMv6h2eaYrF2x2olECf/BGJr7UiP71+GaDKXgltsb5bJPB3FOJx6efXhOhuVIp3MX+kPSOPlKTpax/fspdRs4cv/N27rWokIkWA3xM9/TYwdgRKfpdzd3TzFthTbdH5g1W9WeDkJj1qcBlVVstTScI8DeT6P3jWlV7h/SrLmgJ7B8LJuI5lYe89gfG9DE04duk2zVJH4yJACKqsGEaeJbSHdE+9ELyp0fW1ZTlZux+qLmKHISsqGM85+g5sV1aYK78uHoTJ4Dfx53PIceI7Z0U8cByjMh/1jGCiWy8yMAGKgUeU2E9CNhJ+36YRqGyA13OjVH1Ay82WRmo/WVrV8Zzx+sZDcVy1R2U7ct1GwnepKyJJDia+LpZbsTmBYYgc5hZhDa1XSiSNTc5MLSv+bxcbD/FIilNgFj2xZ4WCBhpKSRuh0XyZaTAX1vXgLHRlJeOdmXq3ozdzt7XuJhUFZozLv1kK7VAe5FUS+SVyYgSunjU4qjJZfxo9T9nOnhJowUVYuSZtBajCaQNTyy7+l33xOMnv22LsbzavNz5wfYW/cHMw4a/OL+Srx9yGjt4mmI98vpU5rFEdesb7CbE7BHEKzRYJShgtN+mwZ/aMHOTx0qwChzaTUupDug20drUT369B8h/sCCX9ggAjRsOSIEc9MplYBh89dcSAV1KH4O2ILzyniBD13lGWWnCk8HqTfEqwnE8/W208y2DjS/lhbTKmw/B
- qNQ0fgZR
- pcf4UKV4trXLWPZsh7RmqJP55QrwWLUQD/jFDS3Fz+svYQl706KR03iFCVdq+Ee6wpZy0YcpdAx5leCrqgBol6wUqZ4DUdL1ChOBzY4gx1KWWWOt2z6sXsJzhBpjCXk2VP11ggOzjRLsobnz8pEv5fIM6w+U4PjkQ42Exqp6sx9pD/v4Yon9InMnRRdJQtwpiqpRg7torRL9NmZva7w5Ra0PuvA8BhqGBl5aOx5X0RDwIRCINPPyhkOlV6hSPt2SJkGrmjC5dBXEYOswFJDFvBA3xO2psMduZ5lp9WSqcETNPG92kxQmGefgq5AgDbProV0+8FE0D8dFqvZR1Osq9q0uo6wxnEnbRGUhWdGNL+UKlOYk2He42SdkkPhFVkorBDPS+OFlEbcJz/+A6PmKwxRcKKpoJgnOeEnJjsd030o/O/KPGRwbqRBiMkKb6B678bf9O7EAQ268dlehiOLccE/1IIozKPdH8xACfn2pAEdD+WFLxCujrrxMODSdy5QfHpkyj/DgvEOvJ3H2WmuM5y73QZbo+1oWypZ7PRqNohSS+fZTiusvKT38N/xR4KYnlV4kq66EgtmDPcGKHTp16LhcIPw==
+X-Stat-Signature: ujoi6b1jr5t7ffqpipmf3r4sarafxp1d
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2C187100008
+X-HE-Tag: 1790199165-985422
+X-HE-Meta: U2FsdGVkX1/fAhVnhGLlWyCfcCC2zHoWcoUxdvNZh20nl91rHQlB04Dky35p04sVmZHEQCe/sC0Q+8E9Vs3UytExR/D52I9L/mwrohiaO4Z6JGWT/3E8wSaYyjuyP9CBBCvP7QiH71vu85QT6ld+4qHYwsCAkQmACXaAn8QoIkL/osSopQrYR/TEf+r/Ud/PHAJKC3Re1YX+HIYXfli7ZhGhKHAWsUWZYBmPLRAwK8g1ibVMr7wVTs3XIgzfgWrcc735Oo+5W+mik8Cjmrr4dD/ZsyAPEd0ks4Ris4UU5fJsGY0m/PXnIvdQFWHOZkWVlyR0AAfnV2zWQFz1On0gyBdyu1ZfEIntKOWEMdd5PRpBo7/Df9gpglNb7FBZHg/itXh4p/BeiDSEZud74Bsh6eNypUFFB/+eTvS3RYu/MOI7xqRbrixtG09IKC7Cc6z0l7+8kIR0dGGVX0jL7msnh4Wt3KLfchcglI5aQmKDdaMhBCoDeQrY/D90e3ULbzedutA7LSr92evRyy8IKtiozfLMPsnzag8MqiWSIGfGSAtmt7dPnrCXnanFDpi8htYM9GrSyvXoyobd6ioaFTQHiG9mOwUh49lcwmpWUot7eZl8XIIYC6TXUGxt95vhIS4Tzd6bnfy3zwUAWi+rvU56Vva+wF86kM44+jYl5kfj8wqwr6fujc63DlFIGhknGwiQUN21TgMXHTOaGVPY8PKST0uiuQ6a/UXEXw2eE9aFoStyS5cKChxx7ckS8316B7I2NbXV6zUX6eEcOG0lJnG8MbtQBGPcnoFaHWntRjjaN46CCud/t+mSxODezWFqqpDS5D6+xKcWr50jHnzFVPSbvwXYuYZx7BSdY8OSC/wAmmKzzjQ1iSkp+BjueuHIRddeXocRoHM2inMJWrz5E2SS8yjFtlQMS9pP2RM1qjGn3EdFNyxEbJShzF/KYeeHcgBSj9GsLVxKU8icTI5deRO
+ 2P7epV8R
+ qF4gB03pZ3Jzop2MnZpQP3r60O8DnwVSYIWLnpR63Yl+LybmeugPS2ZGGrxMsgWnf2rvx7TzXI6p3vQ/CM9neBb6pVJ+kx61f96wBffQGj9SP1tU9kWxy3QHZNXRPE1pY/qjIQEuxk8eJxD92RBzPVKuaB8sx/lqjCVWBtGXxXR4r2QpfDPKyvK/55bwfr1gj7LaZzFV3jCd+YsDYI+ivs0yAFTqFHkKwMfegeSYG+36S97Ou9PY2qp9zWi+BW0e+XtFz8dJ2hzz+VjWkHcdW4OkRTnJE7Xd9qIFG8spR3+FqR0ljxB7nzyWo3GdjvFEIG1deuQcunBNM5mjU6l9yOK2rztiJCkd6mpDRqGxu3YuTF1WUkBaz/gD989wieqgTThzxCf8Q+5GRqdb99HZjUEAcWXmH5A5FaIsCb8UOR242QKs+NveBt5ympdajZFkg1m3qIWnqek/0YP27JbYCESD0BGn3y8mWoBGuWW5D89RJsyWHdziwuasHv7pe7YVGRYp0265v/k4Mcp7wTSWAUIeGwsXhiJJyKM5zjuzpbTdMhumUPNdwA+uWPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,241 +122,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-No functional change intended. Before adding more logic, split
-__folio_freeze_and_split_unmapped() into an anon and a file variant so
-each path can evolve independently. The two paths shared little beyond
-the folio freeze call, the LRU locking, and the unfreeze skeleton, but
-differed in all other per-folio bookkeeping and routines.
+The helper splits a folio whose refcount is frozen: the frozen refcount
+is the state it relies on, while unmapping is arranged by the caller
+beforehand. The old name caused confusion and people may try to call the
+helper on non-frozen folios.
 
-While splitting, some cleanups become easy to apply, and helped drop a
-few now-redundant checks.
+Also add a VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio)) to self document
+that frozen implies unmapped.
 
-The zone_device_private_split_cb() calls are only kept in the anon
-variant, as device private folios can only back anonymous memory, and
-add a VM_WARN_ON_ONCE_FOLIO() at the entry of the file variant.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Suggested-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Zi Yan <ziy@nvidia.com>
 Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/huge_memory.c | 124 ++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 78 insertions(+), 46 deletions(-)
+ mm/huge_memory.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index a475278e1e67..1efd858892c1 100644
+index 1efd858892c1..5f54a3559e4e 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -4007,11 +4007,9 @@ static void folio_reset_partially_mapped(struct folio *folio)
- 		      MTHP_STAT_NR_ANON_PARTIALLY_MAPPED, -1);
+@@ -3810,8 +3810,8 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
  }
  
--static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int new_order,
--					     struct page *split_at, struct xa_state *xas,
--					     struct address_space *mapping, bool do_lru,
--					     struct list_head *list, enum split_type split_type,
--					     pgoff_t end, int *nr_shmem_dropped)
-+static int __folio_freeze_split_anon(struct folio *folio,
-+		unsigned int new_order, struct page *split_at, bool do_lru,
-+		struct list_head *list, enum split_type split_type)
+ /**
+- * __split_unmapped_folio() - splits an unmapped @folio to lower order folios in
+- * two ways: uniform split or non-uniform split.
++ * __split_frozen_folio() - splits a frozen @folio to lower order folios
++ * in two ways: uniform split or non-uniform split.
+  * @folio: the to-be-split folio
+  * @new_order: the smallest order of the after split folios (since buddy
+  *             allocator like split generates folios with orders from @folio's
+@@ -3850,7 +3850,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+  * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
+  * split but not to @new_order, the caller needs to check)
+  */
+-static int __split_unmapped_folio(struct folio *folio, int new_order,
++static int __split_frozen_folio(struct folio *folio, int new_order,
+ 		struct page *split_at, struct xa_state *xas,
+ 		struct address_space *mapping, enum split_type split_type)
  {
- 	struct folio *end_folio = folio_next(folio);
- 	struct swap_cluster_info *ci = NULL;
-@@ -4019,8 +4017,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 	struct lruvec *lruvec;
- 	int ret = 0;
+@@ -3860,6 +3860,9 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 	struct folio *old_folio = folio;
+ 	int split_order;
  
--	VM_WARN_ON_ONCE(!mapping && end);
--
- 	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
- 		return -EAGAIN;
- 
-@@ -4035,24 +4031,75 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 	 */
- 	folio_reset_partially_mapped(folio);
- 
--	if (mapping) {
-+	if (folio_test_swapcache(folio))
-+		ci = swap_cluster_get_and_lock(folio);
++	/* Frozen implies unmapped, callers unmap before splitting. */
++	VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
 +
-+	if (do_lru)
-+		lruvec = folio_lruvec_lock(folio);
-+
-+	ret = __split_unmapped_folio(folio, new_order, split_at, NULL,
-+				     NULL, split_type);
-+
-+	/*
-+	 * Unfreeze the after-split folios and put them back to the right
-+	 * place. Keep the head @folio frozen until the end: sub entries
-+	 * in swap cache must be updated first, so a concurrent
-+	 * swap_cache_get_folio() cannot return the head folio for a sub
-+	 * entry (folio_try_get() will fail on the head @folio until unfreeze).
-+	 */
-+	for (new_folio = folio_next(folio); new_folio != end_folio;
-+	     new_folio = next) {
-+		next = folio_next(new_folio);
-+		zone_device_private_split_cb(folio, new_folio);
-+		folio_ref_unfreeze(new_folio,
-+				   folio_cache_ref_count(new_folio) + 1);
-+		if (do_lru)
-+			lru_add_split_folio(folio, new_folio, lruvec, list);
-+		if (ci)
-+			__swap_cache_replace_folio(ci, folio, new_folio);
-+	}
-+
-+	zone_device_private_split_cb(folio, NULL);
-+	folio_ref_unfreeze(folio, folio_cache_ref_count(folio) + 1);
-+
-+	if (do_lru)
-+		lruvec_unlock(lruvec);
-+	if (ci)
-+		swap_cluster_unlock(ci);
-+
-+	return ret;
-+}
-+
-+static int __folio_freeze_split_file(struct folio *folio,
-+		unsigned int new_order, struct page *split_at,
-+		struct xa_state *xas, struct address_space *mapping,
-+		bool do_lru, struct list_head *list,
-+		enum split_type split_type, pgoff_t end, int *nr_shmem_dropped)
-+{
-+	struct folio *end_folio = folio_next(folio);
-+	struct folio *new_folio, *next;
-+	struct lruvec *lruvec;
-+	int ret;
-+
-+	/* Currently device private folios can only back anonymous memory. */
-+	VM_WARN_ON_ONCE_FOLIO(folio_is_device_private(folio), folio);
-+
-+	if (!folio_ref_freeze(folio, folio_cache_ref_count(folio) + 1))
-+		return -EAGAIN;
-+
-+	if (folio_test_pmd_mappable(folio) &&
-+	    new_order < HPAGE_PMD_ORDER) {
- 		int nr = folio_nr_pages(folio);
- 
--		if (folio_test_pmd_mappable(folio) &&
--		    new_order < HPAGE_PMD_ORDER) {
--			if (folio_test_swapbacked(folio)) {
--				lruvec_stat_mod_folio(folio,
--						NR_SHMEM_THPS, -nr);
--			} else {
--				lruvec_stat_mod_folio(folio,
--						NR_FILE_THPS, -nr);
--			}
-+		if (folio_test_swapbacked(folio)) {
-+			lruvec_stat_mod_folio(folio,
-+					NR_SHMEM_THPS, -nr);
-+		} else {
-+			lruvec_stat_mod_folio(folio,
-+					NR_FILE_THPS, -nr);
- 		}
- 	}
- 
--	if (folio_test_swapcache(folio))
--		ci = swap_cluster_get_and_lock(folio);
--
- 	/* lock lru list/PageCompound, ref frozen by page_ref_freeze */
+ 	/*
+ 	 * split to new_order one order at a time. For uniform split,
+ 	 * folio is split to new_order directly.
+@@ -4037,8 +4040,8 @@ static int __folio_freeze_split_anon(struct folio *folio,
  	if (do_lru)
  		lruvec = folio_lruvec_lock(folio);
-@@ -4062,7 +4109,7 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
+ 
+-	ret = __split_unmapped_folio(folio, new_order, split_at, NULL,
+-				     NULL, split_type);
++	ret = __split_frozen_folio(folio, new_order, split_at, NULL,
++				   NULL, split_type);
+ 
+ 	/*
+ 	 * Unfreeze the after-split folios and put them back to the right
+@@ -4104,8 +4107,8 @@ static int __folio_freeze_split_file(struct folio *folio,
+ 	if (do_lru)
+ 		lruvec = folio_lruvec_lock(folio);
+ 
+-	ret = __split_unmapped_folio(folio, new_order, split_at, xas,
+-				     mapping, split_type);
++	ret = __split_frozen_folio(folio, new_order, split_at, xas,
++				   mapping, split_type);
  
  	/*
  	 * Unfreeze after-split folios and put them back to the right
--	 * list. @folio should be kept frozon until page cache
-+	 * list. @folio should be kept frozen until page cache
- 	 * entries are updated with all the other after-split folios
- 	 * to prevent others seeing stale page cache entries.
- 	 * As a result, new_folio starts from the next folio of
-@@ -4072,29 +4119,15 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 	     new_folio = next) {
- 		unsigned long nr_pages = folio_nr_pages(new_folio);
+@@ -4169,9 +4172,9 @@ static int __folio_freeze_split_file(struct folio *folio,
+  * @list: after-split folios will be put on it if non NULL
+  * @split_type: perform uniform split or not (non-uniform split)
+  *
+- * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
++ * It calls __split_frozen_folio() to perform uniform and non-uniform split.
+  * It is in charge of checking whether the split is supported or not and
+- * preparing @folio for __split_unmapped_folio().
++ * preparing @folio for __split_frozen_folio().
+  *
+  * After splitting, the after-split folio containing @lock_at remains locked
+  * and others are unlocked:
+@@ -4274,7 +4277,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		i_mmap_lock_read(mapping);
  
-+		/* compute next before the folio can be freed below */
- 		next = folio_next(new_folio);
- 
--		zone_device_private_split_cb(folio, new_folio);
--
- 		folio_ref_unfreeze(new_folio,
- 				   folio_cache_ref_count(new_folio) + 1);
- 
- 		if (do_lru)
- 			lru_add_split_folio(folio, new_folio, lruvec, list);
- 
--		/*
--		 * Anonymous folio with swap cache.
--		 * NOTE: shmem in swap cache is not supported yet.
--		 */
--		if (ci) {
--			__swap_cache_replace_folio(ci, folio, new_folio);
--			continue;
--		}
--
--		/* Anonymous folio without swap cache */
--		if (!mapping)
--			continue;
--
- 		/* Add the new folio to the page cache. */
- 		if (new_folio->index < end) {
- 			__xa_store(&mapping->i_pages, new_folio->index,
-@@ -4113,7 +4146,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 		folio_put_refs(new_folio, nr_pages);
- 	}
- 
--	zone_device_private_split_cb(folio, NULL);
- 	/*
- 	 * Unfreeze @folio only after all page cache entries, which
- 	 * used to point to it, have been updated with new folios.
-@@ -4125,9 +4157,6 @@ static int __folio_freeze_and_split_unmapped(struct folio *folio, unsigned int n
- 	if (do_lru)
- 		lruvec_unlock(lruvec);
- 
--	if (ci)
--		swap_cluster_unlock(ci);
--
- 	return ret;
- }
- 
-@@ -4269,7 +4298,10 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 
- 	/* block interrupt reentry in xa_lock and spinlock */
- 	local_irq_disable();
--	if (mapping) {
-+	if (is_anon) {
-+		ret = __folio_freeze_split_anon(folio, new_order, split_at,
-+						true, list, split_type);
-+	} else {
  		/*
- 		 * Check if the folio is present in page cache.
- 		 * We assume all tail are present too, if folio is there.
-@@ -4280,10 +4312,11 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 			ret = -EAGAIN;
- 			goto fail;
- 		}
-+		ret = __folio_freeze_split_file(folio, new_order, split_at, &xas, mapping,
-+						true, list, split_type, end,
-+						&nr_shmem_dropped);
- 	}
- 
--	ret = __folio_freeze_and_split_unmapped(folio, new_order, split_at, &xas, mapping,
--						true, list, split_type, end, &nr_shmem_dropped);
- fail:
- 	if (mapping)
- 		xas_unlock(&xas);
-@@ -4383,9 +4416,8 @@ int folio_split_unmapped(struct folio *folio, unsigned int new_order)
- 		return -EAGAIN;
- 
- 	local_irq_disable();
--	ret = __folio_freeze_and_split_unmapped(folio, new_order, &folio->page, NULL,
--						NULL, false, NULL, SPLIT_TYPE_UNIFORM,
--						0, NULL);
-+	ret = __folio_freeze_split_anon(folio, new_order, &folio->page,
-+					false, NULL, SPLIT_TYPE_UNIFORM);
- 	local_irq_enable();
- 	return ret;
- }
+-		 *__split_unmapped_folio() may need to trim off pages beyond
++		 * __split_frozen_folio() may need to trim off pages beyond
+ 		 * EOF: but on 32-bit, i_size_read() takes an irq-unsafe
+ 		 * seqlock, which cannot be nested inside the page tree lock.
+ 		 * So note end now: i_size itself may be changed at any moment,
 
 -- 
 2.55.0
