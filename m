@@ -4,139 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CB41C9830E
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7E8EC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 967EE6B0088; Wed, 23 Sep 2026 13:23:38 -0400 (EDT)
+	id 96C526B008A; Wed, 23 Sep 2026 13:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9179B6B008C; Wed, 23 Sep 2026 13:23:38 -0400 (EDT)
+	id 91D9C6B008C; Wed, 23 Sep 2026 13:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 806716B0092; Wed, 23 Sep 2026 13:23:38 -0400 (EDT)
+	id 80CA46B0092; Wed, 23 Sep 2026 13:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5625B6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:23:38 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DBD7214086F
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:23:37 +0000 (UTC)
-X-FDA: 85245698874.03.4762EE1
-Received: from mail-oi2-f43.google.com (mail-oi2-f43.google.com [74.125.231.235])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0163440005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:23:35 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=UODT2y6D;
-	spf=pass (imf01.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.231.235 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E5716B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:26:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9E411A083B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:26:23 +0000 (UTC)
+X-FDA: 85245705846.06.4D6E620
+Received: from mail-qv2-f14.google.com (mail-qv2-f14.google.com [74.125.230.142])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 0A20518000F
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:26:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FNxTzfRb;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.142 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790184382;
+	b=JYUUjIMJCTHU8fuJBvFA0mApLE7uANUbLSx0gxq9xn8nnagSfp3Zfl+VQMTTWf7rLgRHAj
+	VvOlS0hUF8/o1nfqOBD41lyxSJUsCD5XueJR6obtt3brVYubDf6JgYVOSygSmrP+6AYT/a
+	CvQ2BE6IchurslCMotlJdmnRxZYPLjo=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=FNxTzfRb;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.142 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790184216;
+	s=arc-20220608; t=1790184382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1FwE1NfmDw+YKo1XdhlQDW5TQG+slKv16o9ht1shLNo=;
-	b=YnpV0MWDABtPThy8LJLvqxTvS+/dGY2d2hEO4H6J5NTSQ7deWAKArpCJjmlZF0OgD7q/BQ
-	rt551Kpw8OsuSkQpiMYyLYAHhcLhBG5PWahmEC6AixpibgkEdlnXYESbTkhXKJG5L4NbhS
-	N8+L9fIxm+vFpW6wb6eJJG4w5J2wGRQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=UODT2y6D;
-	spf=pass (imf01.hostedemail.com: domain of jgg@ziepe.ca designates 74.125.231.235 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790184216;
-	b=TGuaVibbnyUwuzLC41GOIk98edUeMuRAC9Qvp8EjUGucN2HXjKRBXlOuuTFEBJNpzGlKFM
-	vlajSltnbwcACvZ+CpJu6DeDZnZqJ1yerHyRR/IvrZKaUBhc499HLpsHQzzgkkMZ5BM65U
-	86b8bnbI2KEO1rOEs1NwHt0DE/wyous=
-Received: by mail-oi2-f43.google.com with SMTP id 46e09a7af769-7f4f0d1779dso1184335a34.2
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:23:35 -0700 (PDT)
+	bh=ygDODDMwSzeN83/ZHU0g9sP6Gsnzm05V7Ys0IkkdAKM=;
+	b=V359oZw0JTkRV+VYvekPn8k3zH+bkr21owmSs49ldsOTDQ3KlrhX4Er8m/0yz5z6YyHjd7
+	HEKaHR8Razg3WSTwIQ0GwZi/rPJsw5IqzLmU3hi+HKHWtc865d5LRAGFIFXRX3Fej9nHrt
+	nrNZgZCA/5iygq+4zFqjd5Xj1Sqr1ZA=
+Received: by mail-qv2-f14.google.com with SMTP id 6a1803df08f44-90cdfcbe20aso11117246d6.2
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:26:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1790184215; x=1790789015; darn=kvack.org;
+        d=gourry.net; s=google; t=1790184381; x=1790789181; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=1FwE1NfmDw+YKo1XdhlQDW5TQG+slKv16o9ht1shLNo=;
-        b=UODT2y6D0wXFFlnscOMnIY4oVKzvcW2mJogfFNeaQSrhjlBJWJ+62z60xV+6MeYM65
-         ulF7qY/2u6yXbChHRH5JGr/mVEZJoLcZjJz8nYUC6fwBzK7qr0YKnjHtQOAwfwgznj8Y
-         D5Ag4o5ykGzNN7x8XPzeX//PWqOL9SMCngNuH022bs/LTOBm0XR/VRbpzkxc3NWZOMMi
-         BvDxlpNBAu7ATQUbCO+1rpk2q6Sr4SMcUsdnbMW+G7WkMJBUy8SRp2ff8edCWj/gFRy5
-         h22nPCzRawqAExA2qe8TrTDoWt2H77WmbN16cLHrkzUGs8OI1IaBGo+PDGLs/2aXDJoT
-         W9gQ==
+        bh=ygDODDMwSzeN83/ZHU0g9sP6Gsnzm05V7Ys0IkkdAKM=;
+        b=FNxTzfRbwuwESVdxVzItTJyE5HC11IgjvYbj7odlvklv9DqC+7Urz8XQFzk5ukiZy3
+         cfKeZeyAY6/58z4sSQPgLEadSGzOb5GoscYErH7Ad8KlWjFn8BNX6u+0YB9JS+IfIuEu
+         q4Dt1q16NODHWN2R63q1SipP4i0d80nnz99zK/9GvC9IaH48kP58SeOzxaSIxJVM3/R3
+         SpfiVXnqXeKF81kPRORqfwnaYVdTRtQ1v3QhPw0Lr1TisJ6i3F8XbkRZ9xHZVsEUhC7G
+         6tulaARxT1ujdsZUN3uQyz5srL5HcAO5iFt/QQ4nRfmmfRZrbbHPR4akIveTH9Yb6iRS
+         2Z5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790184215; x=1790789015;
+        d=1e100.net; s=20260707; t=1790184381; x=1790789181;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1FwE1NfmDw+YKo1XdhlQDW5TQG+slKv16o9ht1shLNo=;
-        b=p4FyZKKo5KlZVXsTBYozPOrpdlXRwKAGc9Yd6JiokDx6QakOfrA1SHk1vbGolfe36Q
-         ALNmW9cAFr2m1IpT0YxmFt/HzdOynFudpyEdyH9F+CG6GLQmNOE71jG/RhUaGQkLuH4Z
-         SZ0BcVXvxNXepi/9+HjwdrfoSR6dORPWdIwhcXB2SyKng5vYvLs6flibn2a3xyk0jx+h
-         rp5efO7qqd+dpu18dDae6ONi+aBuCh9lgZtkZ5Dld7EHUEsfmQuYg61j8/zY6yz7Kx6C
-         GozogJdjqTTGxROh8YTa4tZWaFPH9WWDmVDnWkfecOKh63qalfEioEzekg4TzcKAH1YH
-         2sDA==
-X-Forwarded-Encrypted: i=1; AKwUvBxgjMgVlzkISQgt8LNp26cPbaraP6F3U4dgPimyQj0OUhjDMKn79fBUQAiT+s9PBubgBd8eBeGr/w==@kvack.org
-X-Gm-Message-State: AFuF++kf1q1b7mWYpJ9ztRsDA9UevFZn2z38OqRNCQl+7Fhv5ojc6K9x
-	j36IY6IVsCDFRSs8/30Nh3Xz8j0Hs3YKabS+bwiC0EW1DeFQUzrDwA359m5LFz/TkmU=
-X-Gm-Gg: AYBFou0fnmegJysgH4zdHUmBXuG1w4J/mqp1Dn1EO0BFfjW5bY9efeK7s/btzOEofEI
-	A/AKspDvMnjcXYbFqfykNiBMFIQ9WxILVZrBzS47QX7xfvIBcrPiYCbSXW2IdDtpCCdrBj2JKw7
-	ndBNgFcn1+nuFI3joAOj02s973JOlGreXMPK0P3ANzjpSSsgJQZWT7i/ds5Pqju98IgIEMsJzTh
-	iq824s22YF0hyQqqd3pHvIHBkZw1LfbXu99UJcoHATWh/5u0iFGw8QkiMukEOItSMmEZ4PtEoYU
-	xVIoy/4sK//G2QIm6A6GeA23xkuKEF5+2SQXbYGLcE+OBYJiQ+NGWsn7yidyMt2z9ffZ/ukLODj
-	neUUjFMF7dOMoh/tBNDOMrHihojjQsBjueIfNV9yQgU9jbwzl8f0XZN+LvPui9gvM/rCMscQ4lN
-	BVBwdYmVfl/1uVXXFz771e0lpwRCUg2WKIeh594hlGl0bJ
-X-Received: by 2002:a05:6808:1313:b0:4b5:5bfd:518f with SMTP id 5614622812f47-4d5b85af4d4mr3232472b6e.21.1790184214658;
-        Wed, 23 Sep 2026 10:23:34 -0700 (PDT)
-Received: from ziepe.ca ([130.41.10.202])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4d5c522604asm2686648b6e.15.2026.09.23.10.23.33
+        bh=ygDODDMwSzeN83/ZHU0g9sP6Gsnzm05V7Ys0IkkdAKM=;
+        b=gcCW0Fw9SGoq0dD0FW8XTvcUxJQzj64fxKDtuoEf3X8sRz+d3LBVaZ6a7zLfWf+cl8
+         5yQmCNCNWGo+RspxN6A2F/+dBMfz3VwFFt5qRL+5SEDCCKBVO5u7Wz+1pPn/9QlzmDqP
+         MAw2YCbnwKLljGt07GdW777QtxADUBCsxQDCbzTibYyxbip7ataNTI7GbyF9iwC2GwFu
+         0T9/AhyooTtlBGvO23uXjJGFytbyqgQ0wBGwVHt9iGAK++SI6IDhqGuZCPepvaoPZ2Jl
+         GNXiZYYyJ2JSsZDnB7Ux7Wv2xuZgiPTR076Frr3y54bM589Z2drpPIcA6I5ARicNh0jo
+         6iWA==
+X-Gm-Message-State: AFuF++l8LZaUeP+fP2GkRhw5EJZqC3TM80DssEcGicNaFgl/Eypv/7ME
+	WTZTQip0/g+s7Nntc39sco6v3p4hS7Qib6Qb62uw+cLlcxE5x/p6RTq4n7e/lWWdRo0=
+X-Gm-Gg: AYBFou3HtiFXnTR2U0eu7+pvCghx3BCsmL4y/BTtjoj+RLCbx5lJO5rJkCS5grLSHGm
+	tkeslZgkPxra3T2ziS9BcvyNEl/yogYJV4FfxdD0SsNxVi56HEFfU1oJ86BFplk868LKgwXxZZR
+	5Z8kd+srK7l82lYkQkJgIsN881NE+bA7i688y2jzekrD/MjtHFteqkqXB6XUMaGr2duqktBZW/l
+	r3GbgttdqMjrGIyOYf9Ji8/8lVf3qeO3Nahv/RL95mqVHD5C0bOXGoytRcrHAf/TTnwm8jUUeVF
+	Er+/IxvHdOyatr85y6KTl16HNZ9Jll55PmGgtTrE0F4i0Ha/TpH3/W6ZhHyungDEMcd6/NcDEz+
+	3LnbcTP8o4euAaAt81c8gPc4TEVl8ahztR8fzYHzK2k28ItdF1ArtfwjNRzxbakrjlQtPqeQaG9
+	VC2HmnJMcWvf9dICe2ZbSpQxsnrrknlSpThipc9yQYX0A/U/h0WSCWDUvmAVFi1UMhRpNei/C9+
+	vgINSORRdn+4nx5HgN5V9FlrmexBdvwWKdMSl+Qk2vMxlHHrO+0bQg=
+X-Received: by 2002:a05:6214:29ec:b0:910:3ddb:d2b9 with SMTP id 6a1803df08f44-9140c33814emr52013376d6.19.1790184381067;
+        Wed, 23 Sep 2026 10:26:21 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9140c454374sm24399576d6.35.2026.09.23.10.26.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 10:23:34 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1x9Qgv-0000000E9nH-0xvE;
-	Wed, 23 Sep 2026 14:23:33 -0300
-Date: Wed, 23 Sep 2026 14:23:33 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Kameron Carr <kameroncarr@linux.microsoft.com>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, mhklinux@outlook.com,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
-	christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Will Deacon <will@kernel.org>,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-Message-ID: <20260923172333.GM1540250@ziepe.ca>
-References: <20260921144847.501151-3-aneesh.kumar@kernel.org>
- <arKsFofudnTYpXj1@arm.com>
- <yq5aik3w344o.fsf@kernel.org>
- <arOfD6syXOgQhZYA@arm.com>
- <yq5a5wzw2ree.fsf@kernel.org>
- <arOspFxWZ1DjgcAr@arm.com>
- <20260923130611.GF1540250@ziepe.ca>
- <yq5atsng10b2.fsf@kernel.org>
- <20260923152124.GG1540250@ziepe.ca>
- <5cbe0bde-47d8-41ca-b244-bc0329d0d066@linux.microsoft.com>
+        Wed, 23 Sep 2026 10:26:19 -0700 (PDT)
+Date: Wed, 23 Sep 2026 13:26:17 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kernel-team@meta.com, akpm@linux-foundation.org, 
+	liam@infradead.org, david@kernel.org, vbabka@kernel.org, jannh@google.com, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Subject: Re: [PATCH 05/10] mm/madvise: factor huge-PMD folio processing
+Message-ID: <arQLDnIocQkdRzUI@gourry-fedora-PF4VCD3F>
+References: <20260922235830.2350770-1-gourry@gourry.net>
+ <20260922235830.2350770-6-gourry@gourry.net>
+ <arP4Igew3iL9qVKW@gremlin>
+ <arQGK4RbYWYm4En7@gourry-fedora-PF4VCD3F>
+ <arQItpXkh7WV4yyR@gremlin>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5cbe0bde-47d8-41ca-b244-bc0329d0d066@linux.microsoft.com>
+In-Reply-To: <arQItpXkh7WV4yyR@gremlin>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: i4hck8rye7yk7h451q6trwtin3xxha1s
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0163440005
-X-Stat-Signature: nnu7sjj1yxn6kirr9ef54ej9zhpbpd5h
-X-HE-Tag: 1790184215-73471
-X-HE-Meta: U2FsdGVkX1/q3IqRvOEf4lh/0U1kQ5qwfzkoDaD7oygOheC+DpymWq0bmWI7pknoz5+hhoB7oDheBzgLbAQfux9GIo8Ah94fSFGE7Pkfq2fEScYDxmZOXTkJYdL31pvEIhMbFcokISgg9qhPB/zzRO5hoID9rWKbjyxc7OVGNllrXPlv98XV8SxSHXgOwVr1OXkN3G8l2TWKErhSZ4xhNAZ1ueGk5c4axH+U70kp2UzT9J/YSdyxCbRGuWyMWw7tVBOhktlN3jpLnGZ3MeMiPNYJr37/scwf5mP48UK6U7oXLtoPaoFVebwnUhIxVudPGHXt0g9H0BCUVyY7H1fBdEi5tbm4ZmITMFqrvzYHEp91LnGRKBXqm9qhzREPjo/D+zhCx+nz1vBOSeeGY7GazsMz/NMjqDx1AiDEpQ38IIyTsVPlEdfjS3DbgkHtwYhAMRdQCzQWIwZ0t3RPN00Eb3/o15zdowOk91ctT/ZS73xjEc9e9xxkyFrSBeqorIb9P/MVLGll/sB+wTv6ARvvCeCafXEH9ANvDg06VVjs1A3UcOrv/gyfQAtCq7xhA8XHWtgsgbgWvupidgdq37k7ChB7AidyTO9OETTTQEkyEAJcOjD9AZqz3KNdeaaB9X94eOuzLebx6+HTUTZy92fDFsqLW/Uw6r4XXp/h8FwI3QuKNRBIlyW+FFn1iaN6iV6q2ceW88/GXVXj+08mOb9r3QdSUahnwg3+DI9KpvP3Q1LPlsMm9d4w0iy1r9LfVIYLnrhlTOTTwjhRYBDITS7NS1dnsDcrUn5oq+gzZ1AjyI2LnUn4sZA8WDF9MJUp2W/N3goiNW603JC6PuByyeXg2y0mLv1O/XllSiaQn/2SzZoex1gehZtVShaXbDO1JQHz4lMl2ZLrvZgLl7m1aCysFnposWWo7bmzeYbWyN9MKlcapLkyydTL4jsB2sv3tqkIqirhsylvx4DRRCeO0gf
- mChup8rh
- a65X5NuioaeEZY/NxBo8UHGhBmK0JNt5+i9tsHsveWQ7py8N6+khfAvs9C7lvLukq1a4eq2q0MGIIbnJ66uSE7GTFgO7YS/+mKFqeP3wurabJJnUD9Rp+DQLNq70lQbzLKMThg9BQb3CWna22iTz1GE1l24/GFa4/fovSQIA665bwtL3PxyaOTvitEVuoh6xoY7YKmqQmuAYMb6WeZbAs52b9UWE+rRxXhziKhty0G/FZ5335dpbqsuGJWmFPqpGPW0sA0+Ed9MAbcV1Wnq8jRdEdNgqnTbCwZHp/
+X-Rspamd-Queue-Id: 0A20518000F
+X-HE-Tag: 1790184381-456818
+X-HE-Meta: U2FsdGVkX1+BZDM+gGpoZb1ZN79mx5S053p3jnzmaju1woUOPj7lusqi/awKrQMzSBbDNUBDFHZh6UqFs4umQYpH4VvtP5tS225Em7Mh/kE7G4PT4469ncgVaY6jJB5uVGiZDpP2jht1SctKrwHOb+NT0KRfqNv52DnUcnXmi/xzVYzwJoyQYHR9BT2r0Qh3xEDxVHxtexJmFAg0q0ajHS3LlLKK40U1E/ScoNaNEJEWOKdnNWvxh5LtDesUXs5PK64mculTiEhtZ6GbE5ef8WCDYCr5KBBpk9VsDmS5BsWcwwqckH4NtJdjU10SuE8ZPSdnEq1GOyToOHJ0ScFLdw3gDTEEEKAiBmCzMm7Gx7iGUfleZLTYJrhTOkpS2u6Xb0Cw3blb0Kkd+480CJSND3Mqlnoil8pc7mKx8ZtlhSu1A5KWQWOHN39FsmH9Gg7NJK0RV627vje+LjzQyzsEH2WcEhwsloHLovU9cHFbzB3FKcHWF8AqOlFqTVa3kLdqPlnYLWIdZUc7BLj1DzUpEltaJSFKkUDEaSpWF11XIWWoVIHKDtRQIkuY29FojB/VbKyp5/7pzYdggHc1JiIYaEMQoXG1s7i6WUOLevHzg+akfdsYfSYNRk9EFJOLpUZ6Eoyxl/bCpWGLXuQO2IlwPE1Pzx1xAAumAlPtDnxv6D5sy0fimxEdw96Qc3XofNk6V7WkSAlehn0+wU9AU0JRKfpTIkFwRuHnDS4ULscrYDfz2cyoA7OtuepI93KW430qm+QszDxkG6U7M9KE4MGWOXLEVOxkdQjv8KgEH2PLBb0jZww8BrtZnRPPSWZfumML2vACPXn8lDEESRiF54kdWraHDXr2tnU+YhR+jAJMgJe9586YdhuH73SoSgXPeQirUIJU33WhTE/wZ8zBtCV3rZosnc8yQBy1OQR+Pq2JUN+eEE5I1uE7fjxu+3a2Nv35eOMleSrNubA1sTavRMd
+ WzoXcRbI
+ 5an+E+ozYuNLJHw4QsppEvOjkSRc7okQMQjSJmYmM6Rjs6Sms7iP/wZedeR7UBeQtJbcmnwGo9TRjKqdmqIcx6185OlWCUV5C6JeOWmgRmSX4B6BeU8mRitVUPOiFdynoaulHGTC9in/pDg2MOWNbBaXh/RorLe/7HNUPKDH/tAgvMfV+nhr/RMWWu13dAuapCAf5DeyOCNya7lvGqu0OgSyoQBsu7oZDSVLgMfGug6w2htgHKYNPwiEM/DYrkHai/3bUtGT0MsGr37w21EN39A9q/IDv+7jcfGQgpR4ev9Hg6q6rFxiC5bnlVZcpK7WtgxNvx9ghn//z8rA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,45 +124,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 09:28:54AM -0700, Kameron Carr wrote:
-> On 9/23/2026 8:21 AM, Jason Gunthorpe wrote:
-> > On Wed, Sep 23, 2026 at 08:28:57PM +0530, Aneesh Kumar K.V wrote:
-> > 
-> >> I'm also considering requiring the address passed to cc_make_shared() to
-> >> be in the linear map. This is currently required by both TDX and CCA,
-> >> while AMD SNP appears to support vmalloc addresses. The only user of
-> >> that vmalloc support is Hyper-V VMBus GPADL setup
-> >> (vmbus_establish_gpadl()). How should the generic CoCo shared-memory
-> >> allocator handle this?
-> > 
-> > vmbus_establish_gpadl() is the the same wrong abstraction as the arch
-> > code. Get rid of it and use vmbus_establish_gpadl_caller_decrypted():
-> > 
-> > 		pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
-> > 		if (!pdata->recv_buf) {
-> > 			ret = -ENOMEM;
-> > 			goto fail_free_ring;
-> > 		}
-> > 
-> > 		ret = vmbus_establish_gpadl(channel, pdata->recv_buf,
-> > 					    RECV_BUFFER_SIZE, &pdata->recv_gpadl);
-> > 
-> > 
-> > So you made an allocator that returns folios, now you just need to
-> > use that allocator to implement a kvzalloc wrapper. ARM can call vmap
-> > on decrypted memory with pgprot_decrypted(), right?
-> > 
-> > Or maybe this can use vmbus_alloc_buffer(), it already does it.
+On Wed, Sep 23, 2026 at 06:14:29PM +0100, Lorenzo Stoakes (ARM) wrote:
+> >
+> > I think there's some tweaks that could be made here, but I err'd on the
+> > side of "don't break shit" before I went twiddling.
+> >
+> > It is at least easier to understand, but certainly this shows how poorly
+> > the original code was structured.
 > 
-> Michael Kelley recently proposed [1] moving all ring buffer allocations
-> to use vmbus_alloc_buffer(). If we move forward with this, it should
-> remove the dependency on vmalloc support.
+> Yeah, if this is an intermediate state I won't necessarily insist but it just
+> feels so odd.
+> 
+> Maybe have a look at it doing the split in the function and see how that
+> sits?
+> 
 
-Even better vmbus_alloc_buffer() can use the new allocator API
-directly so it doesn't need to open code the set_memory_decrypted arch
-call.
+There's an implied v2 for this series i think, i was going to look at
+this commit a little more closely for sure.  There's a balance between
+making a reviewable patch and fixing poorly structured code.
 
-Lets do it!
+Let me take a crack at reworking it on top of the series, and then see
+whether anything appreciable changes.  If so, then I'd prefer to keep
+that in a separate commit so the behavioral change is very explicit.
 
-Jaon
+Some of the sched() nonsense is going to look equally weird.
+
+~Gregory
 
