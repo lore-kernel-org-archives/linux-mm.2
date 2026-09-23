@@ -4,148 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0AA5C98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:34:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE76C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:34:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAF3D6B0088; Wed, 23 Sep 2026 13:34:13 -0400 (EDT)
+	id 8444D6B0092; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C604C6B0092; Wed, 23 Sep 2026 13:34:13 -0400 (EDT)
+	id 81BC36B0093; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4F6E6B0093; Wed, 23 Sep 2026 13:34:13 -0400 (EDT)
+	id 7592D6B0095; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A7906B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C9DAEA6CDB
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:12 +0000 (UTC)
-X-FDA: 85245725544.11.6606A46
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3FC051C000F
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oIPXhDnn;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1B06B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0EADA08E4
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:31 +0000 (UTC)
+X-FDA: 85245726342.05.00F3CC5
+Received: from mta1.migadu.com (out-154.mta1.migadu.com [95.215.58.154])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A167F10000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="cO/AhfdZ";
+	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.154 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790184851;
+	s=arc-20220608; t=1790184870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kPlu2H6XNVNAm+eyKaf+KNtcUOLDMiz/SdRoD9k3csw=;
-	b=marm4Eo71vHWsLFvUlRLJDTlX86Va9nmOiFOm9lDn3qZAxzIneJHh93DnC5SCDem43Oynq
-	JJUIJKuuufIk2ctu4yEYdZWzZ2sfBl422iipTciVq3WIFPZ/j0V3sviDuXGdzCE5UdV6Dx
-	Ob1bTx/w3ITofqWXgyNXENZPEiD96WQ=
+	bh=Z5a/WMvvuGUuOMoghidvmDY8vZ3gL9C91wyH+oZ07lY=;
+	b=hormAmgqeY1Q4Kp2MnOypPylN5ddiNKhiXphRBHS1osn1FRFP9DHBzZub437/Fx7VjIt6c
+	r/WNFMj0nXDT/ECRo/t+pj6ZoVih+Zyp9uOmEGExVSjIuLiq4IXeDdd30/N7a7FAG5VAtt
+	Mujmqaxce99C5hY6WF4CyYyLpDKbDak=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790184851;
-	b=S1JBDe+Uhok8t/a3Yn79P6vl0TcY8QPnM3helCiPpz2yUdHW/mwcifWTvTu1W87PrnbuLx
-	gagn/ExZVO3YwDIuIXD7lQp11mqO36f0AA8y9h2w9tm+rUcXHzmBt2HAHI+GPnB38K707L
-	Vh1kjAUsbamD3s5rhJq1gzvBKUMUtHY=
+	t=1790184870;
+	b=mpqEeZXarzig5ipNtKIPeCUfz4Mxf/8vJ3aOQRmB64GNLhBz8KQQ6mzQ1FS4KfOBCs8zHD
+	t0ZI5Q2zUntGr0cTP4B3I5l4LwV8Zht+Rav07rIbwqv5i6songsWM3WUBW0EyfTW+c9AI+
+	y5n8LNLSwoxDAmCcT2DvhjzTaMW+HRk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oIPXhDnn;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C3A6F602C4;
-	Wed, 23 Sep 2026 17:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7578A1F00898;
-	Wed, 23 Sep 2026 17:33:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790184849;
-	bh=kPlu2H6XNVNAm+eyKaf+KNtcUOLDMiz/SdRoD9k3csw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oIPXhDnn6KrbHUdB8J3HtxFj0acE8ktVqJkOruOhJCvNG5tAAVxIsyoHMYMRieHKt
-	 Is5+S1MolM3HFRsMb1jGHJLJBKDKhutQW6ZfXT/uIcKRR1r6PUVXazNarmpYGmlPd0
-	 DrVxZDA5/RDFBx7/03GL1IZtxQpOt/AyuqUyDXzSfV+fX36mqbt0ecrQoeMZoKoF4P
-	 +Cw4hzzM0pyksIgfNEY/yt9LZw5XVPHz+WoNZuUa2xzYl1ssIwnutkaiQTvVstnnbO
-	 sloaQyC80Sym14M1BLGJIqAR7U69u/36OLTFb2LZOlo2vRK66xJr47KsIDUd4H3N/u
-	 MIh65qBa71P4g==
-Date: Wed, 23 Sep 2026 18:33:37 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
-	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
-	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-sound@vger.kernel.org, bpf@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, 
-	fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v3 02/40] mm/vma: predicate setting mmap_prepare VMA
- fields on new vma alloc
-Message-ID: <arQNTibMdh6x_T04@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-2-4583d8a23bca@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="cO/AhfdZ";
+	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.154 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=EJYd5eCHl5xQ8DHPfFFy7axjDaK7yOO1wMEyNS6gPb8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790184868; v=1; x=1790789668;
+ b=cO/AhfdZAKbPU3IldkEeFiyrjfrV0BJPZs/b3cOgQivxv0RDmJ6kP6VBEyHwDZUbw+qOxvl6
+ Z/3Ibxryusx19MJmlJL17PdtVisLAiL/0Ij2seiRPpegXTjkEqQxSZAU4fV0FJATK1Mj9m2IxpO
+ WI7ADKYnMObRzC3rf4JhJyKc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f743616c5fc41547;
+	Wed, 23 Sep 2026 17:34:27 +0000
+X-Mizu-Trace-ID: f743616c5fc41547
+X-Migadu-Flow: FLOW_OUT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-2-4583d8a23bca@kernel.org>
+Date: Wed, 23 Sep 2026 17:34:27 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Ilya Gladyshev" <ilya.gladyshev@linux.dev>
+Message-ID: <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
+ bit
+To: "Zi Yan" <ziy@nvidia.com>
+Cc: akpm@linux-foundation.org, andrew+netdev@lunn.ch, apopple@nvidia.com,
+ artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, david@kernel.org,
+ Liam.Howlett@oracle.com, edumazet@google.com, harry.yoo@oracle.com,
+ hramamurthy@google.com, ivgorbunov@me.com, joshwash@google.com,
+ kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
+ torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
+ yuzhao@google.com, ilya.gladyshev@linux.dev
+In-Reply-To: <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
+References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+ <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
+ <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A167F10000A
+X-Stat-Signature: t83o3qraz4x97tbjc4s4gqziqybeqkqc
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3FC051C000F
-X-Stat-Signature: ue9nbqwfqw943yxupmk4nfopw1c1aetr
-X-HE-Tag: 1790184851-503823
-X-HE-Meta: U2FsdGVkX1/X29Jsht6dgP8utRAc6pDMVneFny12FT8WwklRwmvqSJylACPGb2iHbBPxYxpgi/eoYVlUKfnPIKX2McxG28jlJ6WCKkNF27fjdo4q6AbEK0x3okrhiSq3mSkhrNRHofQrbWcjNqqTNcWM0j1o8fpviSsJ6LtIF5m0cJ/3vFy2vi/MoKUR0FTRbRImRkj8vr9Ndcf6h1bFQyUSOXzT8N2DB9ew/+RyDP65qZLSZcbmiRBF63YSHgPUAN7nZda72jmzO47K39hfw9UqZfjBKEEM6wdciiaoyAk1i8ARTTSkRXbjmc5R7szVh7a3/AzT3Hgki2552s4gs9sCl/gNu1mo6/dbNJEOC3wuirb1cJQo6kwZaxkJO/lCBDcN+mMFz4IXv8k49JPeLm4XkZeOxtVCNGtOBFTc22E8wOaFQw89U4nmINaZc9K+V4c+gYkpGoKjHgTUnv4ZhCMfT21HXJ4IVlAN1a8nfZYLYra8fI5WSW+MYqIOYzY49indHGwSxpemZB1zvthzgxvPCL7XZ3ai6dueZzTELdQdmuS7IQiTi64RtqVtp3c7djdOeIAWUEIv3W2fN6O6TLphsVBnY1rLI0W76GEbGbxSIkAREx4IU3BzokjJTiPBr38vbl5Hxg8YqoVWxDWyr/yoN8Ha90SWl5DSaLLc7dfVSko5L8lrjz2QJxGyC6D47yLnRn8vKK8NMLH0vZ+iJCKQWsRXW0itcLa81GuL09O7zLP9jLndzKPWy7ws83e6WE5V4KWzCFBJoEl12c9++2jNiMTqtghTa8y9iiKLnuZRmzxht7VM8anQcY4Z8Ih4CtqxggwABwStZitV0Ea80JAJGPVnCYXT2czv7cuMLQmLEWgHl2ataq4eqU2Su7IuDMNMOw6WH2xPwuiJjcazj5k2rESRh+camCQLI3m509B3JaZqV+wPJ/JdhZ/MURKYLuDLVbHlnEmzf/syXHl
- pmysMELC
- hMjZKQwFHAefotz6HblmxLFHO5PgO13wwVS8SwzUHUv1ddJvvb6w2PR/ALBy9cgRHM8MZjOu1jtOQt1cSfVTA0cmNFFIVfcnEl+a1VEkegKmzXGpUOR4zbX1WZ621BDAZuqJpcLGl1823Rt4hZORA01n720bhG87VQnCu4Avz/9EFunxa4A76+pb1CW4sSuaMebTCi1F3WG2XHrS3Ynxno+t1DYguejsiwCG7TWdyyC1fLTIZWXBqi+qjESnUl/9Bs+QjG2ktbXuH/LmIFHjFEi/uPB3zaroWv1RJKTQPNnH8dgMp7boBxHShZLuwojrLjUlNPp5fEYzKlCGNl7cM/5ZZVPK9CrGl1g2AEvITBeMepQc90c358oFEX7VE37sy1kVRn4+wIsEtMezvYVpkmJTBCtnMYSgKvlWiu/b64YrX2vlvFGYeLF+AKiTMIl5yg8l7W6za7MXgYL2mbvSSFuQ/3aYuvhcS6YYmmlbMQtKDTaVKuO0PClzxr47aOhU1NAccP8V86HkiqikIJ0JiVsjRlbdQiii1fsfPeFDckQydoOOH9LdCsMQ0f8EKx3V1PMNmZ+Dyet/Xn28SLxuS3nYwznwq1qIXe+vlYxsQkdgkUeX0ISmXPbf/W8/4akjrm0jL4RGlGANNgzsAa+VOXWxi6LuPUHWVesYk8/lc3EML0dbMhkNiO2jQy68oKVEnHtBQhX+vgQGJ7L1Tpj8Sp6HkwHpbwfvM2ysafoKUbl9e+QByD9DFgtD1uhNtUI1u2quyj1slff6grMnFT7BRZdd6/r4IXpW+FJ3xAOqOlG0eDcEasl2tekPKCSR3/JTH8A/MdIzIoiQHZAJiCO4azNvHyawv3nq/NTvBdClp/VPg+uLT4YxRP51TYyIjHiG3jTKFCHdh3qslCq+p2COVL/UqiJQKbpr34I6oTiCVBYcPfH9e54J5mcGMGJ7JoGM8G785oiw49vlh9Mu9jzo6qMhlivtg
- Yyd6wFbM
- SLMgtoj2JGu1UEP5S1cfB+akcltZe8tQH/BYM44EBOuAcKLQEqra/DEpvsAMBp0ToDDvLdiQgAB6QWrTDZtxVbFo8CjYFU82/iMeM9ojvPwjckUib/mli/EktvNS3RYQyVi3C6ziQqHObrsiuKtebvl/Jr2HlIYM+sybxAD4pVz7bEMvQryVgQZ4qfbsWWsYrjXy/0jH+7KRplzYCMpaDJBjnpRAV3xvG2cfOtoSuXKH40eExuviC+SY3hPSKaGuByLU9Pf7jyOqs4uAtx0UV5ctBTuFJ17yx08DEYT/yrb7cPv501ztztiZvEoytMzL+HHfE+T4lVshd29dp6sm6C2Brl48HZcYb699y2JnyI2bYjU3gJDSN8icyWayx8iYt1+vyNwt2aMoZjFOnces2tTMQlXdLakDG9fFZetoErPhFtJGG1JaklJN5qzq/hJtlXLYcxrtWXkAEaCvzYJaLZQFNrvNUIrFy4G6U25KtMa3ANKuEwREXm6l5/kZf3V8pqHSGvEF+CrkHQxWXNOM+Kxa09UutR4fgaOs0x571YQroFobBevQ1svQy5Ngw+AS871BF9DHzFZHUP9uiD8et0+tjK2qnH8zGkCZDls0VHHkK4pPV+AZZW2ncpH0lfXI0o0qu4R8tbqv/E37oGc1LFW+c51D9EB8QlbWOl/Y1qDkfJ1Wqzq/CJsHXM+145BdyCY+3c7vbAZaumYJ7INCczaPFryt2FvyT9fIem14+DsD1EwJYWC6NOzJbiY4XkQ71fl3aTg6c1/waqYKokJ78NF5gETqqv0De7cOPaQaW4DNzQP2VB0VGT5v2iHeo13Ksy/N3mdMP4mau8hotCc14h3tqyG7qd3OkAn1s1eqyNtb9QqG3IZxJ2NAMB0UD3SpcLNgj3rU5cwxS7tcyCJcF9YiIdHG3Q/KBaUUpFbpzTUNnPWJx11cqO6GqE4q6am8ihsiQ4FWPNkr9dNzKUZs6Y2oq4Hft
- UAZhFDqq
- TKCDpa1PGKtPiKWY2u0VwNO8mwL3N237j8siUdSuMZFIk9tpO4sibTRpqaTxbSYRM6hCTdeYAxe65nvhEq/b8gI0tE2CFEkYAp/gJbIl3OvZk+JOSPr0WnRCPBA9dCRJAcvYj+42BSYTb4hW0WhDUDUIjxzOoSHe20M665RErhG6FBaJ9CaVUOBnSCPoAXpct0CKRUC3nEeiWM/kf1Yr21Lw8+U5ImFgOn6QanpdzaF2L2rmq607jvAZGuY0DLZhsNt6yObtp4G43tjuxsy4ysurZKDojFyxSYMnFmWXx6DKr+JXFym9VNqXsBPY0MQJxiYKauK+lnpKv7wuyok+yW1Bm+7Bxbt9G9P6gDoc1cnllfq1FGAe2/rqWdydvDk8v8h7nZlP7+T47Q3EY3PMZUORY+UCkdQcOZPu/4q5OcNYGRjIq6bs9WGSJxmhIj7WCzCO+z8C4KbvNWH55q/5r7/fjPjBjPtSOh17s0QbuPD3Yszm2UDOJtakDa2SDPxVpTL4ag+x8B+6/QBsYPIFXIwxgi7Tro+FPWNbPBC/Jtmwf0/NXtLjOj3KFt0DOfiSkvDpBUiJZ8KUa01O8Jn26Qes4W+TTxYCwW8iiupZX+pJNHGxSpF3dXQ/YT8RaQ7/GfYrutKYb+KJUnnBKhh6W4PHm1QwGIzHgC2oHwE7gyy409xievqpEXN8LBNooT0+7B0drJQ2ix4caZ8glxU6hxj0YDAkbDtol1fiaYfYNNceMbxmg9hIvqnp1zd5ckLJjvc6JJu7LiF/SXAYV4/fDjWmuIuiS3GZUh5MC4VwWyqBRs95ko7+7FciL9RhCufhjIcFgDWQQA+3UR8s5cVtZB1wQHNp9dMsJ4Rsr4pjX1PjE8T5GE+fyECaCuKJoBtCX6kmcFAzCLUCSEV5Yd/V9ce/hsWdyVBkBWZYNyK9MsAaIkeIaSkzCsHLg1olD2nUy5kqMRUbPSJoAxWOZik4wxKH3hTrr
- l4QQSYsw
- +oCJtbllYQNaoYMyXkstQV23/dGhnZU+NyFdvnTTT0ZcKp2M5Igclww1CAjuMJ33mwF1spNMERVVmVV8xRoXF6Ii+zcQhhSy1GPFl+wtbIgSWaAGNSnbbGlNJlORCWevE6pTr32IVJLHl2kYNP1fCEYGNdEehapenBZwjiNXEJ9db20WgEAFvvIKRQR6/QPU7Ede3eHrvBgQPMF4ToKOWruV0PfjcnralXTsUXjB0nNhdfFKZW9cmKfCX8r5OYVk880xuCFmSsa1C2CU6r4dQAa1rq6vkKm54EzqD+NkiqxbCkj6PQ5FG6m6QVKQvWr8sy9r6XKkVTJBGRXYnlpcxR
+X-HE-Tag: 1790184869-106674
+X-HE-Meta: U2FsdGVkX18BwS3zVLaPEKxWvEGwpUxnUINA2a0caVKKFrarQ63mdWQM5VeCmCIfVbKt1Nyiv9tLg7SVDCw1tjL6K+XZcCBHOzOQ4ERvGOneZpIeccSTFGHn1uQdhBIt4EM1d4kyBAYoESkzvTeu6XbiQs0av5EnJEx3pQsTU21bzhj/V5U103nTwUkheTarOM67hjVT9aAmQ2+3t1JEqhu7OQ2oyWuVHK9ss3eaI1Sd4qffk+JiPcG5CEX5LWhj8vh0+pb/iIQhsz/GSrZva3O8lNlA4CPqXoGeg8Cz9ZFtrdc5NxDD5ushMp/JDe1MQqISA+b4ft8CsuKJ/dw9rZvu7S7rSYy/M+LOHe10GuE0FkZeMM4+dccMHO/2lXI59rH/WvqPOV/A53LOo3Ynfn3ldh8RplplNpry3qrGqZPqfcaCw4IUgRAtz9mRCHfwRSkmSlqFTV9WSQz9qEzTq/kX0Z81YfSGNLaH4NfZ77FGx9A9IK1wEACVlrH//anD7vU60m3JiHVZpeYyMgJeGBpQ4vBB1cX5awMtjrpA7wfxdLZ/DDnrdWY3si26cU2MHY3O/9C75dIcHUTKSRwaUglhw4ndXuL3An8VmLMY/emccQHGnIp6nTIifWNoIvYF/zOQhT+hb6ogltHgY7LjigV/qbzGXEczYzKK4MSAe33b39+rI/DjNHMDzz/CnBM0UrpM01WnbiirDGaAISuDWrx9p/+NgIRfa8mRt8fFNYIJG5V5f1i+/c+Kh86ZMD3wsJVEhFbaEMKKgl7H+CW7pmo+UjO5IRVOEqdf/OsyT1DsF266Pat7uI/9hlMakIzTvL8R89q2fMqAjUEMoKpWFlRbed5C4Zc1KpqmZwMZ0kTsNc56db1ACmN4gHTDD25QT9Lt31/AXGIC108uXMEgeuS2ImeGqFS3iNfIWgV+cGJy8oguRGBgxbvfbLGUuqVV/frcYjKmLizkaQhg+Lh
+ 01+GNIiq
+ Te+xHUUz2oDd1OCZobNjFJeVXHgo4RHaXayTQscnseU+z3lwh0tJQnge9uJf0nw6mrpfRQF0BDswL4YzSUN7PoofNw9d9x4TualfiohiKQqSXbxok1/lSbjlPcjML7kQtx+SzOEUsxaB7TFrQ1fz437ENzf4nIywyFwZLJfkQsEJgcXR4vOpIYDdu/0Z5louEWZYfKwm5Agvgo/zqTWTQ/IbkBWUug677LJK92DiHZlrzU/J1/KQ/crnBqWfRHByP3cSP3fOqXUf3/M/viNI0JGbJ7tRsKUnvcZTOZwjQqumAmO5WCxEAW3mj6uO7fPLdtIuv7e7cQaLC5bnF/zYu9Q3ZJxpImiNHufFyC0iO2DBqdXn4YMe4yALmE2HvN5vESk4H28Xluy9TCL0M0uGs6wDTqFXwK4/Yx81ROOk6lSBHvUEmJSVWWLFH6hypQ8anzmmZJHcALUAeCq9nUStTg6wkrwmtgBBnLIwPeR0CHfa881NTL43liF0IJt9BLffJk9VA4VxKTYECpUoN3F4yAnlI70JQFcpzAm6UHAeuHQ8rYbmkK3BqLVo7SQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,9 +100,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrew - please drop this patch from the series, I will send a separate fix for
-this to go into an RC.
+September 15, 2026 at 5:42 AM, "Zi Yan" <ziy@nvidia.com mailto:ziy@nvidia=
+.com?to=3D%22Zi%20Yan%22%20%3Cziy%40nvidia.com%3E > wrote:
 
+
+>=20
+>=20On Sat Sep 12, 2026 at 3:50 PM EDT, Ilya Gladyshev wrote:
+>=20
+>=20>=20
+>=20> The current page refcount implementation uses a single counter valu=
+e
+> >  (zero) as dead. So, to prevent incrementing a dead refcount in
+> >  folio_try_get(), it fundamentally requires a CAS loop.
+> >=20
+>=20>  This CAS loop can act as a serialization point and can become a
+> >  significant bottleneck during high-frequency file read operations
+> >  [1][2].
+> >=20
+>=20>  This patch reallocates the refcount value range:
+> >=20
+>=20>  (1) refcount < 0 means dead refcount (uninit / frozen)
+> >  (2) refcount =3D 0 allowed only as a temporary state (see below)
+> >  (3) refcount > 0 is a regular reference count
+> >=20
+>=20>  In other words, refcount is now split into "dead bit" and a 31-bit
+> >  counter.
+> >=20
+>=20>  Refcount decrement now works as follows:
+> >  1. Counter decrement
+> >  2. If it is now zero, try to put it deep inside the dead zone
+> >  (CAS to INT_MIN). Or you can view it as "set up frozen bit and reset
+> >  counter".
+> >  3. This CAS can fail only if someone grabbed a reference in-between =
 --
-Cheers, Lorenzo
+> >  that's okay, this page is their problem now.
+> >=20
+>=20I am not sure this works. David raised a concern on V4[1], where if a
+> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
+> properly handled. "this page is their problem" only works if every
+> folio/page free functions call a generic folio/page free function that
+> checks the page type and does the proper handling.
+
+>> Refcount decrement now works as follows:
+>> 1. Counter decrement
+>> 2. If it is now zero, try to put it deep inside the dead zone
+>>     (CAS to INT_MIN). Or you can view it as "set up frozen bit and res=
+et
+>>     counter".
+>> 3. This CAS can fail only if someone grabbed a reference in-between --
+>>     that's okay, this page is their problem now.
+>
+> I am not sure this works. David raised a concern on V4[1], where if a
+> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
+> properly handled. "this page is their problem" only works if every
+> folio/page free functions call a generic folio/page free function that
+> checks the page type and does the proper handling.
+
+After some thinking, this scenario is indeed possible and problematic. Th=
+e
+complexity of the required setup give me hope that there are some implici=
+t
+barriers, however I wasn't able to find them. But I am not an mm guru,
+so maybe I missed something :shrug:
+
+-- Below is a minimal buggy scenario --
+
+Thread A: network code that calls page_frag_free()
+Thread B: calls folio_try_get(). Maybe it is the DAMON paddr scanner,
+          maybe this folio was previously used in page cache
+          (however this noticeably complicates the scenario)
+Thread C: user of folio's reincarnation. It also requires destruction via
+          folio_put() and not via free_frozen_pages() -- for example huge=
+tlb
+          or memcg charged folio.
+
+Refcount operations as follows (FR =3D FROZEN):
+
+A: DEC 1 -> 0  [ page_ref_dec_and_test() ]
+B: INC 0 -> 1  [ folio_try_get() ] =3D> success
+B: DEC 1 -> 0  [ page_ref_dec_and_test() ]
+B: CAS 0 -> FR [ page_ref_dec_and_test() ]
+B: * deallocates via __folio_put() *
+
+C: * re-allocates page *
+C: DEC 1 -> 0  [ page_ref_dec_and_test() ]
+A: CAS 0 -> FR [ page_ref_dec_and_test() ] =3D> success
+A: * deallocates directly via free_frozen_pages() * =3D> BUG
+
+This can be fixed with a `s/page_frag_free/folio_put/`-style patch, howev=
+er
+it seems unreasonable...
+
+
+> Before your patches, only a speculative page getter can see any page an=
+d
+> folio_put() handles the last reference drop. So it is safe today.
+>=20
+>=20Let me know if I miss anything.
+>=20
+>=20[1] https://lore.kernel.org/linux-mm/086b119c-b777-46ae-b087-798ca3e4=
+4ecd@kernel.org/
+>=20
+>=20>=20
+>=20> The size of the dead zone allows performing an optimistic increment
+> >  inside page_ref_add_unless_frozen(), replacing the previous read + C=
+AS
+> >  loop with a single RMW operation. This reduces cache line bouncing a=
+nd
+> >  improves scalability, especially in NUMA scenarios.
+> >=20
+>=20>  [1]: https://lore.kernel.org/all/20251017141536.577466-1-kirill@sh=
+utemov.name/
+> >  [2]: https://lore.kernel.org/all/CAHk-=3Dwj00-nGmXEkxY=3D-=3DZ_qP6ki=
+GUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
+> >=20
+>=20>  Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
+> >  Co-developed-by: Ivan Gorbunov <ivgorbunov@me.com>
+> >  Signed-off-by: Ivan Gorbunov <ivgorbunov@me.com>
+> >  Signed-off-by: Ilya Gladyshev <ilya.gladyshev@linux.dev>
+> >  Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
+> >  ---
+> >  include/linux/page-flags.h | 13 +++++++++++++
+> >  include/linux/page_ref.h | 30 +++++++++++++++++++++++++-----
+> >  2 files changed, 38 insertions(+), 5 deletions(-)
+> >=20
+>=20--=20
+>=20Best Regards,
+> Yan, Zi
+>
+
+---
+Ilya Gladyshev // foxido.dev
 
