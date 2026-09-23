@@ -4,95 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE76C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:34:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A04C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 17:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8444D6B0092; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
+	id 329A46B0088; Wed, 23 Sep 2026 13:45:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81BC36B0093; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
+	id 2D9B36B008A; Wed, 23 Sep 2026 13:45:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7592D6B0095; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
+	id 1C99B6B008C; Wed, 23 Sep 2026 13:45:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D1B06B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:32 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0EADA08E4
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:31 +0000 (UTC)
-X-FDA: 85245726342.05.00F3CC5
-Received: from mta1.migadu.com (out-154.mta1.migadu.com [95.215.58.154])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A167F10000A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:34:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cO/AhfdZ";
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.154 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EA0B36B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:45:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86611160842
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:45:49 +0000 (UTC)
+X-FDA: 85245754818.23.D48A1DE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AEEC91C0004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:45:47 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SZvW1r2i;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790184870;
+	s=arc-20220608; t=1790185547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z5a/WMvvuGUuOMoghidvmDY8vZ3gL9C91wyH+oZ07lY=;
-	b=hormAmgqeY1Q4Kp2MnOypPylN5ddiNKhiXphRBHS1osn1FRFP9DHBzZub437/Fx7VjIt6c
-	r/WNFMj0nXDT/ECRo/t+pj6ZoVih+Zyp9uOmEGExVSjIuLiq4IXeDdd30/N7a7FAG5VAtt
-	Mujmqaxce99C5hY6WF4CyYyLpDKbDak=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790184870;
-	b=mpqEeZXarzig5ipNtKIPeCUfz4Mxf/8vJ3aOQRmB64GNLhBz8KQQ6mzQ1FS4KfOBCs8zHD
-	t0ZI5Q2zUntGr0cTP4B3I5l4LwV8Zht+Rav07rIbwqv5i6songsWM3WUBW0EyfTW+c9AI+
-	y5n8LNLSwoxDAmCcT2DvhjzTaMW+HRk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=gBATB8uu2oRqNmBGt1NsSq+MtGX6Gp4XwS/NcICfVSc=;
+	b=pSUtnC7nBrAAIC1LGtbBqjHf3Z8DM8Dw2ARzBcvtkLJBx2HAX02sU/Jpgs+iwPuMYPzJiZ
+	t51fQTaF9eEvKkyrE5dUOBrihNBeXug45Y4Dw71KXv9zlpGIZDhXhU0mCLC3/AlkNu/tfg
+	xNLpMmN80CZfnKNB1YgxwmQC1qr+j90=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="cO/AhfdZ";
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.154 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=EJYd5eCHl5xQ8DHPfFFy7axjDaK7yOO1wMEyNS6gPb8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790184868; v=1; x=1790789668;
- b=cO/AhfdZAKbPU3IldkEeFiyrjfrV0BJPZs/b3cOgQivxv0RDmJ6kP6VBEyHwDZUbw+qOxvl6
- Z/3Ibxryusx19MJmlJL17PdtVisLAiL/0Ij2seiRPpegXTjkEqQxSZAU4fV0FJATK1Mj9m2IxpO
- WI7ADKYnMObRzC3rf4JhJyKc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f743616c5fc41547;
-	Wed, 23 Sep 2026 17:34:27 +0000
-X-Mizu-Trace-ID: f743616c5fc41547
-X-Migadu-Flow: FLOW_OUT
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SZvW1r2i;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790185547;
+	b=3d2NRooLryj/BpGYGkXmGj9qz8894KKZ/Rtt6jIVfG9CZAl7pgwHnKLov3336WGJSyswIY
+	WVk0HaA+uro/kcGW6j2PwU6j6ql4qwWhKRRNIaxyUySSH5rc5JXTRU3OrxQpqbgm8Pxn3m
+	743eSpOvMsf1mRC1XlvNFanpWefZUV4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B767404AC;
+	Wed, 23 Sep 2026 17:45:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326261F000FF;
+	Wed, 23 Sep 2026 17:45:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790185546;
+	bh=gBATB8uu2oRqNmBGt1NsSq+MtGX6Gp4XwS/NcICfVSc=;
+	h=From:Date:Subject:To:Cc;
+	b=SZvW1r2ik+DDhg7vkKvvs618HlAFXyxsfvGQfSM6EI8MT2IkGKP0UiZKgozWz5V+u
+	 83lw3cVk/Wjvxf/Pf6FmG/RwmUfKCGxjbWlbAxGOcTwidoJNgpJiqqqhJIxD34frPk
+	 WReIvz64KF8bnDkJ5odUtPC8qZ8DGOkHLoVfMIhwHAwAJ1OsBRh5Gt81JCW5L8OSTP
+	 q0QNwCNtey+lO7Ci8+X3P4ncdaONp4EHQM2JSNJiRQrddzywYtZymwFhn/kY2/Wq76
+	 +rkzv6JnXGn0rN3RTDwPRd91Azi6Yr1YFSW+K+iexFgPbUjPOG/wTP6h4PmeH3dDcH
+	 IUFXBCmHIlZ+A==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Wed, 23 Sep 2026 18:45:41 +0100
+Subject: [PATCH] mm/vma: predicate setting mmap_prepare VMA fields on new
+ vma alloc
 MIME-Version: 1.0
-Date: Wed, 23 Sep 2026 17:34:27 +0000
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-From: "Ilya Gladyshev" <ilya.gladyshev@linux.dev>
-Message-ID: <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
- bit
-To: "Zi Yan" <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, andrew+netdev@lunn.ch, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, david@kernel.org,
- Liam.Howlett@oracle.com, edumazet@google.com, harry.yoo@oracle.com,
- hramamurthy@google.com, ivgorbunov@me.com, joshwash@google.com,
- kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com, ilya.gladyshev@linux.dev
-In-Reply-To: <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
- <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
- <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A167F10000A
-X-Stat-Signature: t83o3qraz4x97tbjc4s4gqziqybeqkqc
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MMQqAMAxA0atIZgNtlYpeRRyKRs2gllRUKN7d4
+ Pjh8TMkEqYEXZFB6OLEx65hywLGNewLIU/a4IzzpnUVzvzgtoWIUSgGITwuklv4JPSVqSdrXaj
+ HBnSgQvU/74f3/QD6PtX7bAAAAA==
+X-Change-ID: 20260923-fix-mmap-prepare-overwrite-6304d112a4c7
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2429; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=B/5OxH4zopJDHw6XR/oNfqdty/0ftHeGKu0ofzE6qRQ=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK2CLjXS2s2qf181v8xJGaF9Zx97Ct5WeMDZp9LDNnha
+ Cf9kTOzo5SFQYyLQVZMkeX5F/H9QSJh8zov+LvBzGFlAhnCwMUpABPRlWX473ije1/kep09ew53
+ 7DjrYLvx7xxG020Pbl/o+q8vmeqdNIPhf/xxAZefS87LfVGUVGmVf6Trybg6Zb6axoY5b86dyJf
+ 0YwcA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: ny7e1c9ecrbiixaqgx7ri6nq5bifyn8j
+X-Rspamd-Queue-Id: AEEC91C0004
 X-Rspam-User: 
-X-HE-Tag: 1790184869-106674
-X-HE-Meta: U2FsdGVkX18BwS3zVLaPEKxWvEGwpUxnUINA2a0caVKKFrarQ63mdWQM5VeCmCIfVbKt1Nyiv9tLg7SVDCw1tjL6K+XZcCBHOzOQ4ERvGOneZpIeccSTFGHn1uQdhBIt4EM1d4kyBAYoESkzvTeu6XbiQs0av5EnJEx3pQsTU21bzhj/V5U103nTwUkheTarOM67hjVT9aAmQ2+3t1JEqhu7OQ2oyWuVHK9ss3eaI1Sd4qffk+JiPcG5CEX5LWhj8vh0+pb/iIQhsz/GSrZva3O8lNlA4CPqXoGeg8Cz9ZFtrdc5NxDD5ushMp/JDe1MQqISA+b4ft8CsuKJ/dw9rZvu7S7rSYy/M+LOHe10GuE0FkZeMM4+dccMHO/2lXI59rH/WvqPOV/A53LOo3Ynfn3ldh8RplplNpry3qrGqZPqfcaCw4IUgRAtz9mRCHfwRSkmSlqFTV9WSQz9qEzTq/kX0Z81YfSGNLaH4NfZ77FGx9A9IK1wEACVlrH//anD7vU60m3JiHVZpeYyMgJeGBpQ4vBB1cX5awMtjrpA7wfxdLZ/DDnrdWY3si26cU2MHY3O/9C75dIcHUTKSRwaUglhw4ndXuL3An8VmLMY/emccQHGnIp6nTIifWNoIvYF/zOQhT+hb6ogltHgY7LjigV/qbzGXEczYzKK4MSAe33b39+rI/DjNHMDzz/CnBM0UrpM01WnbiirDGaAISuDWrx9p/+NgIRfa8mRt8fFNYIJG5V5f1i+/c+Kh86ZMD3wsJVEhFbaEMKKgl7H+CW7pmo+UjO5IRVOEqdf/OsyT1DsF266Pat7uI/9hlMakIzTvL8R89q2fMqAjUEMoKpWFlRbed5C4Zc1KpqmZwMZ0kTsNc56db1ACmN4gHTDD25QT9Lt31/AXGIC108uXMEgeuS2ImeGqFS3iNfIWgV+cGJy8oguRGBgxbvfbLGUuqVV/frcYjKmLizkaQhg+Lh
- 01+GNIiq
- Te+xHUUz2oDd1OCZobNjFJeVXHgo4RHaXayTQscnseU+z3lwh0tJQnge9uJf0nw6mrpfRQF0BDswL4YzSUN7PoofNw9d9x4TualfiohiKQqSXbxok1/lSbjlPcjML7kQtx+SzOEUsxaB7TFrQ1fz437ENzf4nIywyFwZLJfkQsEJgcXR4vOpIYDdu/0Z5louEWZYfKwm5Agvgo/zqTWTQ/IbkBWUug677LJK92DiHZlrzU/J1/KQ/crnBqWfRHByP3cSP3fOqXUf3/M/viNI0JGbJ7tRsKUnvcZTOZwjQqumAmO5WCxEAW3mj6uO7fPLdtIuv7e7cQaLC5bnF/zYu9Q3ZJxpImiNHufFyC0iO2DBqdXn4YMe4yALmE2HvN5vESk4H28Xluy9TCL0M0uGs6wDTqFXwK4/Yx81ROOk6lSBHvUEmJSVWWLFH6hypQ8anzmmZJHcALUAeCq9nUStTg6wkrwmtgBBnLIwPeR0CHfa881NTL43liF0IJt9BLffJk9VA4VxKTYECpUoN3F4yAnlI70JQFcpzAm6UHAeuHQ8rYbmkK3BqLVo7SQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790185547-431555
+X-HE-Meta: U2FsdGVkX18dT30S1X6uG5uuJ9vh3LckNN4KcuJU/5dV9ooFsz+baPrA3rrxpAiscJqM52GW+maSSo55xZZD1I8KFUFeKCqIYABRR0Um/l3YN/DfTe/Ebmtcx9Kr5xpd1xBZ6KXDEaOE11eF9Xxu0CXWU3BNoAfQXHES26/21KzQcEbuplJdV9EECl9mfLjt0x35na18W8yp1N7ItTzYftEGTBwXEucIDofjydFOju020ycXycHjahSyxycVcnZ+3Y+f3q5G+MP233+I2xwKpvq9CgqKp/RodIXp2EdeYaH2CDj1P+QnNtyMMkVPtaPg0ZHIY5IcERub3Xiy3HkzZx1ZKwY1e9rPssW3sYG0lQ9Olz5nt6jSDuIJ3gsRZBLaJe0cBDvyi5xidqJ2dpmzpCsNNhNKQnZ7GlvhBmqiex12rATuBHuhh/YknP252xOoZnDiWKoOTrh/Kxh5i+9U3HmzeVcsnM/gHV+Uj47ZcaoLvUBUnTbTcn6ZwA3lJ+zQ2CAjX+EeKjvLKa0oYI/SexXtr4XqsK2MLaZs1d3YkldxJiY7K7W7q/M29yVliHG8x8KxTANsY3+sflh++ZD9cZ6QqFN8/B/B1J9L2talVoAoZIvNHu+5h56Fm8sz1eK2cGUvp2ufSA7txiuuPu+xdXjTc9Qdh73PhJODdI79rhRs9qCJtHws7uko/fjqAsrgssK9lSlZrn6tsA8rV3nXMpoWruMfptxZYyxq6YUwBb/eDt5p8HCWzO4x6M/xoN7fTihMlUe6PqWXOrllhgPjCWV24rxZjT/etewYyndqOep7K/lHgMNx8sUOwQKFijfr1P1JkAAfW2muHzLOi0ify34Pmir5Qv5k83uROi0WMeElZB5A8CyadCTS+nz2i02Fb6lY6A/8HgondfHLvQsy8GEmfTWWKPYZ9oeGRCj/GGrsY7e8zTfIQyjQ9L8GSchV1KJFKwnK629KsOtZjoA
+ D/bQWnV1
+ 4wotn7nWbuxrOZbK+kN2LAs9aPHhW8jhjOYHF6PbtkBL33hG2pfU5F3QjcmwwS5G9p3eWvNENqbct0klP9+PI5nBLXGO+9XoAF5cBrBKt2wHjN4p42UPthnD0Vwk5emiMhsGhvuzUZKZ5PpxrSrNUdAHbiZ/dIsXitcSzQ0ssvvE8No2NRuhlC5FumYGLwrcCAy53obWIBXDEEg2C1uVxOq7iZAKpj4ZoRHL3ZWE64mAlpTMLdYNwB52s4R4yKVaXjvfyyWMhPrKNjSmxxtThRNyBC1eHrh1jU22m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,135 +105,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-September 15, 2026 at 5:42 AM, "Zi Yan" <ziy@nvidia.com mailto:ziy@nvidia=
-.com?to=3D%22Zi%20Yan%22%20%3Cziy%40nvidia.com%3E > wrote:
+It only makes sense to manipulate VMA fields if a new VMA was allocated,
+rather than merged.
 
+VMA merging does not compare vm_ops or vm_private_data, so a merged VMA
+keeps its own, which is also what the legacy f_op->mmap path does since it
+never touches an existing VMA.
 
->=20
->=20On Sat Sep 12, 2026 at 3:50 PM EDT, Ilya Gladyshev wrote:
->=20
->=20>=20
->=20> The current page refcount implementation uses a single counter valu=
-e
-> >  (zero) as dead. So, to prevent incrementing a dead refcount in
-> >  folio_try_get(), it fundamentally requires a CAS loop.
-> >=20
->=20>  This CAS loop can act as a serialization point and can become a
-> >  significant bottleneck during high-frequency file read operations
-> >  [1][2].
-> >=20
->=20>  This patch reallocates the refcount value range:
-> >=20
->=20>  (1) refcount < 0 means dead refcount (uninit / frozen)
-> >  (2) refcount =3D 0 allowed only as a temporary state (see below)
-> >  (3) refcount > 0 is a regular reference count
-> >=20
->=20>  In other words, refcount is now split into "dead bit" and a 31-bit
-> >  counter.
-> >=20
->=20>  Refcount decrement now works as follows:
-> >  1. Counter decrement
-> >  2. If it is now zero, try to put it deep inside the dead zone
-> >  (CAS to INT_MIN). Or you can view it as "set up frozen bit and reset
-> >  counter".
-> >  3. This CAS can fail only if someone grabbed a reference in-between =
---
-> >  that's okay, this page is their problem now.
-> >=20
->=20I am not sure this works. David raised a concern on V4[1], where if a
-> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
-> properly handled. "this page is their problem" only works if every
-> folio/page free functions call a generic folio/page free function that
-> checks the page type and does the proper handling.
+Currently, these fields will get overwritten by whatever state is
+established in the mmap_prepare hook, and if the VMA was merged,
+vm_ops->mapped will not have been called, so this could destructively clear
+existing state without replacing it with anything valid.
 
->> Refcount decrement now works as follows:
->> 1. Counter decrement
->> 2. If it is now zero, try to put it deep inside the dead zone
->>     (CAS to INT_MIN). Or you can view it as "set up frozen bit and res=
-et
->>     counter".
->> 3. This CAS can fail only if someone grabbed a reference in-between --
->>     that's okay, this page is their problem now.
->
-> I am not sure this works. David raised a concern on V4[1], where if a
-> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
-> properly handled. "this page is their problem" only works if every
-> folio/page free functions call a generic folio/page free function that
-> checks the page type and does the proper handling.
+There is an implicit requirement that vm_private_data and vm_ops are
+fungible across VMAs which means that losing the 'new' state is
+fine.
 
-After some thinking, this scenario is indeed possible and problematic. Th=
-e
-complexity of the required setup give me hope that there are some implici=
-t
-barriers, however I wasn't able to find them. But I am not an mm guru,
-so maybe I missed something :shrug:
+However in this case the 'old' state is being overwritten by potentially
+invalid 'new' state, so this must be rectified.
 
--- Below is a minimal buggy scenario --
+Additionally constify have_mmap_prepare while here.
 
-Thread A: network code that calls page_frag_free()
-Thread B: calls folio_try_get(). Maybe it is the DAMON paddr scanner,
-          maybe this folio was previously used in page cache
-          (however this noticeably complicates the scenario)
-Thread C: user of folio's reincarnation. It also requires destruction via
-          folio_put() and not via free_frozen_pages() -- for example huge=
-tlb
-          or memcg charged folio.
+All existing in-tree users either derive state for the tree or are
+unmergeable due to VMA flags, so this has no direct impact.
 
-Refcount operations as follows (FR =3D FROZEN):
+Fixes: c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Note that this is cc: stable to account for any possible back-ports that could
+break it (unlikely) or out-of-tree modules which might be affected.
+---
+ mm/vma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-A: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-B: INC 0 -> 1  [ folio_try_get() ] =3D> success
-B: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-B: CAS 0 -> FR [ page_ref_dec_and_test() ]
-B: * deallocates via __folio_put() *
-
-C: * re-allocates page *
-C: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-A: CAS 0 -> FR [ page_ref_dec_and_test() ] =3D> success
-A: * deallocates directly via free_frozen_pages() * =3D> BUG
-
-This can be fixed with a `s/page_frag_free/folio_put/`-style patch, howev=
-er
-it seems unreasonable...
-
-
-> Before your patches, only a speculative page getter can see any page an=
-d
-> folio_put() handles the last reference drop. So it is safe today.
->=20
->=20Let me know if I miss anything.
->=20
->=20[1] https://lore.kernel.org/linux-mm/086b119c-b777-46ae-b087-798ca3e4=
-4ecd@kernel.org/
->=20
->=20>=20
->=20> The size of the dead zone allows performing an optimistic increment
-> >  inside page_ref_add_unless_frozen(), replacing the previous read + C=
-AS
-> >  loop with a single RMW operation. This reduces cache line bouncing a=
-nd
-> >  improves scalability, especially in NUMA scenarios.
-> >=20
->=20>  [1]: https://lore.kernel.org/all/20251017141536.577466-1-kirill@sh=
-utemov.name/
-> >  [2]: https://lore.kernel.org/all/CAHk-=3Dwj00-nGmXEkxY=3D-=3DZ_qP6ki=
-GUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
-> >=20
->=20>  Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
-> >  Co-developed-by: Ivan Gorbunov <ivgorbunov@me.com>
-> >  Signed-off-by: Ivan Gorbunov <ivgorbunov@me.com>
-> >  Signed-off-by: Ilya Gladyshev <ilya.gladyshev@linux.dev>
-> >  Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
-> >  ---
-> >  include/linux/page-flags.h | 13 +++++++++++++
-> >  include/linux/page_ref.h | 30 +++++++++++++++++++++++++-----
-> >  2 files changed, 38 insertions(+), 5 deletions(-)
-> >=20
->=20--=20
->=20Best Regards,
-> Yan, Zi
->
+diff --git a/mm/vma.c b/mm/vma.c
+index 9f0a0acf694a..6cde67883fb0 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -2849,7 +2849,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma = NULL;
+-	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
++	const bool have_mmap_prepare = file && file->f_op->mmap_prepare;
+ 	VMA_ITERATOR(vmi, mm, addr);
+ 	const pgoff_t anon_pgoff = addr >> PAGE_SHIFT;
+ 	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, anon_pgoff, vma_flags, file);
+@@ -2892,7 +2892,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+ 		allocated_new = true;
+ 	}
+ 
+-	if (have_mmap_prepare)
++	if (have_mmap_prepare && allocated_new)
+ 		set_vma_user_defined_fields(vma, &map);
+ 
+ 	__mmap_complete(&map, vma);
 
 ---
-Ilya Gladyshev // foxido.dev
+base-commit: fe2ec83746e501645709761605c2464a44fd2929
+change-id: 20260923-fix-mmap-prepare-overwrite-6304d112a4c7
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
