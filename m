@@ -4,120 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9918AC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:20:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EF44C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:24:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E5586B0088; Wed, 23 Sep 2026 03:20:34 -0400 (EDT)
+	id 271136B008C; Wed, 23 Sep 2026 03:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BCEC6B0092; Wed, 23 Sep 2026 03:20:34 -0400 (EDT)
+	id 2218D6B0098; Wed, 23 Sep 2026 03:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D2CA6B0099; Wed, 23 Sep 2026 03:20:34 -0400 (EDT)
+	id 0C2A86B0099; Wed, 23 Sep 2026 03:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A80A6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:20:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D8147160728
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:33 +0000 (UTC)
-X-FDA: 85244179146.21.C36B7F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E55C840008
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:31 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UguBxu4m;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DA0A56B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:24:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 60A47806FF
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:24:18 +0000 (UTC)
+X-FDA: 85244188596.19.EF90B31
+Received: from mta0.migadu.com (out-144.mta0.migadu.com [91.218.175.144])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2530E1C0004
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:24:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZitdDEzV;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790148032;
+	s=arc-20220608; t=1790148256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nLS1n8qV6eC9W4rvdxBSwAmsHoTxZonjQLzxFgw28Wo=;
-	b=bMd/e7G4MSF0Ym0h4LzottuwWas8zfLgbvpm0oMZmXGPxuWHsqJ6ze/snHij0pMcy8KdaG
-	Fvcw8giEZX/NA8iv1Hm3GpP+toMRsoWbacbL10W9Si4Fn+4IUG0fXwtULqmRsaVqF1u3A+
-	x9lPFpu8EQhREZ4Vb8sTfe4AVi8aIQU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UguBxu4m;
-	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=icLMF+2/Iw8IDBt9dpophh7lbB30Acj6lKTNCi2akZs=;
+	b=VGzp3pMlyAEG7cq9Zav/8AXAtW3ivw3b/YMOb8UGYpLmx7y8TznrIYTPLaRMc/aBsbi+vK
+	w+cK/zOXb4NH+1Ey6f+CFprL2twhW7qeiDNPbm81ff4x4nIaK79Pe4O3/n8C9cpCfJeBxU
+	TFr2hARSncLdTcXDaWehV/AzQ3xPUFU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790148032;
-	b=5rtmY5zhgtyhtHHQYmbVcI9MAwKV8RJYu3eenwi3+3jPL8YOxuq4UdclR7Bdh/YAcxvwUB
-	MQKVpDZmruNIihObrGPYK25Wa0mTUP0NPWo+zhdk3up9EqT77n4mUOS7lg8U5K7uTd87Q6
-	tRjkBwDa4/JxdOHVu/zYXJ1vsjrQdA8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 718604450E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5523C1F008BD
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790148030;
-	bh=nLS1n8qV6eC9W4rvdxBSwAmsHoTxZonjQLzxFgw28Wo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UguBxu4mwJWYSrWKx4bzSAfl6n/EYHutzXXLv6onceqt9w1Km/iiVb/srT0FUSS3N
-	 ZlBe8al3MoCZHCXXUmLZRGHqOkWcH4YF986CCdhw7DHmWj+AVGuu0Bm8MTO4I8W+Xs
-	 LVaglygw6aT21BY7iqKZ3TB+Blqn5Tf9HXWiYeKHcDjvXA7hfU5PuPfIX2/IraV4Kg
-	 a8eesWwn9H+7T7iIsfawE9eRlxnNpiDIHo8uiQcgHMW7CYGtgkZGHVwMkAoVPZlpTr
-	 Y1Gm8i8UJwngCs0OXbxok+thnuNz7iI3uoRywcP+T4XXWwH1lmTbRws5mX9yfdUDiM
-	 9v134bJUlxv0g==
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66fb93aee5eso600303d50.1
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:20:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzGbK8MkaC4m66QQgaQ6QkLaSVHphcjWDW5VZRUHZqnExqqTF23vxQ09Bn2zQOwD7R5UT3bcj7nuw==@kvack.org
-X-Gm-Message-State: AFuF++k63REZy05ENm49o8LZvHraVHECCwmgagFI9D4IgvGvboD7bLtH
-	cMvE2KO/yc8Ikw/dUVsVqpbOOKJ5TKje+9zEB8T0xQoJA1AoQeRVw5AANGT+o8qzo0JVZQlrTs/
-	DJ+b47JsMcFVQ/nvP9h5sUwLbRAPxGW4Z9xQe345FZw==
-X-Received: by 2002:a05:690e:bc8:b0:672:9f72:7c04 with SMTP id
- 956f58d0204a3-672d5a1405bmr755720d50.102.1790148029577; Wed, 23 Sep 2026
- 00:20:29 -0700 (PDT)
+	t=1790148256;
+	b=HZERbAUk1M1nV6gDQCesniBfPepksU9AVVd9rLaJvd+Rc6+hFgqtgPDUv4ECwRnN1D+Y6E
+	865W8kqSFgdcjApfw95W5V2gW5UtWVu0HuW0DzIvzp3L/Cwv0AUHSpFzcPXf4+bmfpe3yR
+	2Jg/IsNdtzxKVF3NkJPTIEI436i9f9M=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZitdDEzV;
+	spf=pass (imf21.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.144 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=jtYR83JV3L8wH6uuzBN56BU8b17HKc/GBiTiWGypKto=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790148251; v=1; x=1790753051;
+ b=ZitdDEzVB8mro4S6SKoYLF46N93dHTjFZinvSzB1Tf9JAfw8A0Ns0W8eVy7glk/5tinhIev+
+ ZJMzkM1YUd3WJnC3LVSjPGiT0vEQ42MnVITnvnmBHRs2Hqds/vqK+uPltPzqNwHHfJJExQAYCTR
+ Vln16SrZK9gLi+f5kAde2HAg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 37f5cbda674b2a55;
+	Wed, 23 Sep 2026 07:24:07 +0000
+X-Mizu-Trace-ID: 37f5cbda674b2a55
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org,
+	akpm@linux-foundation.org
+Cc: david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	guoren@kernel.org,
+	bcain@kernel.org,
+	geert@linux-m68k.org,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	shorne@gmail.com,
+	dalias@libc.org,
+	glaubitz@physik.fu-berlin.de,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	linux@armlinux.org.uk,
+	vgupta@kernel.org,
+	monstr@monstr.eu,
+	chris@zankel.net,
+	jcmvbkbc@gmail.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	richard.henderson@linaro.org,
+	mattst88@gmail.com,
+	linmag7@gmail.com,
+	catalin.marinas@arm.com,
+	mark.rutland@arm.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@hansenpartnership.com,
+	deller@gmx.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	chleroy@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	ysato@users.sourceforge.jp,
+	shakeel.butt@linux.dev,
+	corbet@lwn.net,
+	rdunlap@infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	hughd@google.com,
+	qi.zheng@linux.dev,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 01/12] mm/khugepaged: deposit a newly allocated page table on collapse
+Date: Wed, 23 Sep 2026 15:24:00 +0800
+Message-ID: <20260923072400.3028-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <arN7q5nHz7iebA_e@gremlin>
+References: <arN7q5nHz7iebA_e@gremlin>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
- <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
- <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
- <arEVDBlfsUYKK004@gourry-fedora-PF4VCD3F> <CACePvbXG5kjZmRsdd0a4HfbnNa6w5s9b_1OCySbwvY+HuCqOVg@mail.gmail.com>
- <ad1c4de51f1fbbfc7345036af8f39fb450c1f3c7.camel@surriel.com> <CAKEwX=NKC=N-YaiwZK7HPM4MfX-7JG_KeHukS0+vjHqMZTV4dA@mail.gmail.com>
-In-Reply-To: <CAKEwX=NKC=N-YaiwZK7HPM4MfX-7JG_KeHukS0+vjHqMZTV4dA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 22 Sep 2026 21:20:16 -1000
-X-Gmail-Original-Message-ID: <CACePvbUijn+9poYGFL0kiA+ADAxLULcmuVpfx3=9UbbRemyjRw@mail.gmail.com>
-X-Gm-Features: AcwNN1XNF8jCOBxQkoAP5mypVrfmU5thuNYjjY3TJ8Y1KZCkSFtYtgfK_yupyfs
-Message-ID: <CACePvbUijn+9poYGFL0kiA+ADAxLULcmuVpfx3=9UbbRemyjRw@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Baoquan He <baoquan.he@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E55C840008
-X-Stat-Signature: k5b9ot5ybcjoo8r4g6ns5wagmymefc5g
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1790148031-963778
-X-HE-Meta: U2FsdGVkX1+/VmTZ8XY+tgWTHkpGVNOliQso0oXb8SDKuVkESbxFurogBXM+14yVl6BcH9q+NfHurGY7De6ayyBe45tw1bL0+Cf95jc82Bl+36DM7I1yZQkVo8TPuZkXhn0U9mEm0BC27a4VoDuLTqAgzWPOIUUztB3v8nfGFaLYkPSL9gg8fk5eihHxerjmL2x1g1wCfHXU2HD/p0pKEC/zk9UUYXBZ4mL9SHeUsz6QKbA5Y2fwI+lRtwk9v8q+SS3Oau5TiKnLX8zuSOK0kcUgPthFkKRcx1IqQTz/ocsQbvqpBADRTK/Tx0XlrTx4l8iqCBFfHlJFKlKbQqN6YYSgn4f38+j9O0EeI6ghbRjqj7fXnBA6PijXySZEpHTYOVwEWuy2WF3cLMMxRwNpPLY3zUwm89px4Da8v/r3DxAQhZryo9twFXhmxiAr7QOc+oqc/t+bTGpHUVW6eBbDukVGZPKbA207Mfx9GLlx4Lsi0eYJD1HLO4K5h7/Hr7EHkYh5RSJUwRM65tyDImSmMjmNyiVqAOkfXBVAupubDN43WBdN7J3omFcKyNIFzde8sgPwtwtgEI/wuAtOrXvn1GS6irSVgcKkPM+edh8p5VZYger50EWwmxwauioDwG/DpbsKTBZOYKgPvUGA8W3PcVEVFlf8o3xoi2hQp5vcryZiiQ6lpq4RMSChMW+hLpugQCbw6WfsawGlrAFUcz3GxFJyxMXbreV3XAZegBzWisTHzvoBt3ijlkvulEBZUCZDjDQdTdAVxawkGEKtG015q80fPR2TBNc858frQMgDj+AeXgHMMLjuVAsCuHDsQBJwjXNZSz6PKLjhoOmmesA0qBdJq609q4T9KepVQCKcbp/L3kz9ZT5wQ78AqWDcH9MSuXX0FC3rDrjdoD/zRhiIBQJCdSF2uWjNa0dnLz01ofBpp4otyVGnMil1R0mY82kxfJ6jxV4HN4aX2xrQoiu
- fTaCcXWN
- R5hVGd1irBcbHm3dJZ5NbZ/7eFbpAS3iGH6QTWl+lOm0NBhyMEpHqSkwEX3EkbfmR3mTy4NAfuVbYBqdIU6RnYDmkqNo79i1NTOZm4T/AQY/j/a/WpZz6+QC3L2cCTPyy7CciMAE2PFrjAArrrfaJ3Xck0axKgvtvmcSYpI6NvKo+4izUdCoaHAcoKxd1TE0JMkHdHHOz21kQf2mrKvEiApuiPFdfs49UQ9sfkVgndO4RZL+vjrKYnTRcHSWlJabsWqy27pwZnclP7LHJq/QQOTFDNLVv1Mc37SqoiyOXBObsJu26Iiq3k0/9G+d0ZQR/UOi8rsErmabVjMxdGG7drpOueSk+ht1tXdE8iliEYsN0tiU9iMzLoEtklbyZXA8YpHAmgHCDsQ8YS1QzfCm5Usr0F/AmZkr+zNmZmLsTH/PD31FscnInL9OXK1w5I+4sMRju22usjwIhZ84+vk0j1KeLuLZHNHSZh0lcUaSlEp8F16nZ4Ec3OPn2G456jKeMqYCqAyJVA2mfwfbuskM8aMc3YqYKyQKrpLGQ
+X-Stat-Signature: zzskj6pcx3grny8d7epdr9fz3sriznj4
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2530E1C0004
+X-HE-Tag: 1790148255-580110
+X-HE-Meta: U2FsdGVkX1+Wb+LB0d30XP8VsEHHoSmju5Q3MCT0sl4tdKM/JH+w33kHTISUYSBL2lhb3s6FVRMxKwDWaRs6SjFMcHmwz1RF2aA08Q8vzBUXEWw5/dK8Qv4KQs2ackyhDwGhVW4YQGMSqECyPaHP2DZwZa3gSvcs31xmvpLLATcMu5BYA3lbIPubcNy5kIawbSpIaTQM1j+C+A+Z4K6Sp0hZIdsuwxcZR5/XHZklImEsOktdQc7Kgt7StvpUz0+cul6n/RhVOvam/IweEtKaYxqKSOo9LK8zRmtORWhQVKW0ikIMGMhaXx7c+n6Z+kE2Z4H333WwIfCPHlvCU02CpnbyXnunrq/v3NmBD7h0yd4Ls+0ecCoUIPTiqTZYiaLhx+1iKWFONVHYmvlUGQKmaMW3fKxM7ToSnO8lwPJ2220UrMwenFpmGvMq9BuVBXFca0EEszSNiBsPjzCqGkM0rnfm7llFtvseOj8ciSKMo1H2snsYks79r0pmhO3qlh5AFOks2qw7mIhXPu8N0giE/ptQ+fjfrb6Sgg/9ivjQIg7SmPSxpGuL3mm14q74NaPYyP8Eto/rC9Jx4n5QCG8VTVspybTjeRiaT+zMEWNR9gyKS7ihWAS41Bva+63JSi99awFTtSNUXYT+Eyse48h4pESAwNXFcOzP6j9kE1itDH7UDvifJod63w2Bsx2dEF5h1OSZi08YE0eMSfir8///UjJISOHkw+TYzcSHnHN0Y8gKJ0oMvJ2v2S4aG8H/8YzgAgeCTk8p2nLZXR1djfFvJNMLrA/HoaAZtkLmlNQHhCzUx6TOkIvcQ5E25T0bMAFqaTxe1CFxIAIUuyKf81F+1uir+Tm7UgxXyGinkhsKyWI5gIbV/ZQNzs9yA/O/6GIVU+0xIzQDrn5dNXLwGW4C8ef9VH7X3oJVzWFSfI59olsygbo1EOWVO3He3PDl6FsG0Xq+aV3FJfbWe8JidDd
+ ip9aTgQJ
+ FhUXMkfNrKzPZgY77o2Q6xrchwwCe7FHSeQ8P+0mHfn85F35iZRn74SgJOnIIKtY013+5Q0V5DWGgIDmG1ohvdVaPmMW9wFAP4SYBD4CgYMGEt2LTpdPrTCjXF4dt29r11bYlxVxXyDIjR1Q9tXLSJ0Lr6bmIxqoRUIL2yFunJllT6toSsnRkf8rybZLih+I4PbgkyXnzAA2JMKA9hVSE49O6hbp+HKuynxP56bnHlwNU+sGwVJz79zh+aMvY+uBxQAgmIHleysib9Pon7yJ4yGX76ICcW9aAf3+Ffso5NnanGUZdY0sYgrSNyv9beJr9FIym3fg49o/9OKQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,63 +186,122 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 7:21=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
+
+On Wed, Sep 23, 2026 at 08:14:01AM +0100, Lorenzo Stoakes (ARM) wrote:
+>Andrew - would it be possible to make one quick fix up below?
 >
-> On Tue, Sep 22, 2026 at 10:15=E2=80=AFAM Rik van Riel <riel@surriel.com> =
-wrote:
-> >
-> > On Mon, 2026-09-21 at 06:11 -1000, Chris Li wrote:
-> > > On Mon, Sep 21, 2026 at 2:53=E2=80=AFAM Gregory Price <gourry@gourry.=
-net>
-> > > wrote:
-> > >
-> > > >
-> > > > You can't know the compressibility of memory until after you
-> > > > compress
-> > > > it, and requiring a user to predict the future by forcing them to
-> > > > limit
-> > > > the total amount of workload compressibility does not scale with
-> > > > the
-> > > > number of workloads of variable compressibility of data.
-> > >
-> > > You likely just need to pull a SQL query on your fleet to get that
-> > > number.
-> >
-> > This feature is not being developed for just one
-> > user. It has to work for everybody.
-> >
-> > >
-> > > > That should tell you that your model of reasoning about this issue
-> > > > is
-> > > > ill-suited to address the problem.
-> > >
-> > > That is what I'm suspecting. Nobody in a sane mind would want to
-> > > zswap
-> > > 100% of the RAM and maintain reasonable SLO.
-> > >
-> > It could make a lot of sense to have some default
-> > limit upstream, that says the zswap pool is not
-> > allowed to take more than half of memory, because
-> > at that point the compressed content will be
-> > crowding other things out of memory.
+>On Tue, Sep 22, 2026 at 04:35:32PM +0100, Lorenzo Stoakes (ARM) wrote:
+>> collapse_huge_page() deposits a PTE page table on PMD collapse in order
+>> that it can be utilised for subsequent split operations, meaning that those
+>> operations do not need to perform an allocation (as they are in a context
+>> where it might be unwise).
+>>
+>> However the PTE page table which is deposited is the one which is currently
+>> mapped by the PMD entry that is in the process of being collapsed.
+>>
+>> Once deposited, the PTE page table may be used in a split of any other
+>> unrelated PMD entry.
+>>
+>> This is currently not an issue as this operation is performed with VMA/mmap
+>> write lock + anon rmap locks held, so ordinary page table walkers will
+>> never accidentally end up walking the wrong thing, and GUP-fast is
+>> protected by an IPI via tlb_remove_table_sync_one().
+>>
+>> However, the series to which this commit belongs implements RCU-safe page
+>> table traversal, at which point this becomes problematic.
+>>
+>> This can be resolved by using pte_offset_map_lock() which gates on a PTE
+>> PTL and a pmd_same() check, but lockless walks are unsafe as things stand.
+>>
+>> Resolve this by simply allocating a new, zeroed, PTE page table to deposit
+>> at the point of collapse.
+>>
+>> This path is already costly and an allocation has already been performed
+>> for the huge folio, so this allocation is statistical noise in terms of
+>> performance and memory usage at this point.
+>>
+>> With this PTE page table deposited, RCU-free the existing PTE page table
+>> so it is safe for page table walkers to traverse within a grace period.
+>>
+>> This also brings this deposit case in line with all other page table
+>> deposit logic which deposit a fresh page table.
+>>
+>> Additionally, this was the only place in the kernel that displaced a page
+>> table like this, so eliminating it also helps consistency.
+>>
+>> An edge case for deposit exists for powerpc and its hash-based MMU - it
+>> stores hash slot data in deposited page tables and zeroes them on withdraw,
+>> so a zeroed deposited page table works correctly for it.
+>>
+>> Since khugepaged runs as a kernel thread, do a little dance in
+>> alloc_deposit_pte() to correctly charge the allocation.
+>>
+>> This is already done for the folio allocation via alloc_charge_folio() but
+>> no such wrapper exists for a page table allocation.
+>>
+>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>> ---
+>>  mm/khugepaged.c | 32 ++++++++++++++++++++++++++++++--
+>>  1 file changed, 30 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index f49a6710933b..dab421f8233e 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -1278,6 +1278,23 @@ static enum scan_result alloc_charge_folio(struct folio **foliop, struct mm_stru
+>>  	return SCAN_SUCCEED;
+>>  }
+>>
+>> +static pgtable_t alloc_deposit_pte(struct mm_struct *mm)
+>> +{
+>> +	/*
+>> +	 * khugepaged is run from a kernel thread, so need to manually set the
+>> +	 * correct memcg so the allocation gets charged correctly.
+>> +	 */
+>> +	struct mem_cgroup *memcg = get_mem_cgroup_from_mm(mm);
+>> +	struct mem_cgroup *old_memcg = set_active_memcg(memcg);
+>> +	pgtable_t pgtable;
+>> +
+>> +	pgtable = pte_alloc_one(mm);
+>> +
+>> +	set_active_memcg(old_memcg);
+>> +	mem_cgroup_put(memcg);
+>> +	return pgtable;
+>> +}
+>> +
+>>  /*
+>>   * collapse_huge_page() expects the mmap_lock to be unlocked before entering and
+>>   * will always return with the lock unlocked, to avoid holding the mmap_lock
+>> @@ -1293,7 +1310,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+>>  	LIST_HEAD(compound_pagelist);
+>>  	pmd_t *pmd, _pmd;
+>>  	pte_t *pte = NULL;
+>> -	pgtable_t pgtable;
+>> +	pgtable_t pgtable = NULL;
+>>  	struct folio *folio;
+>>  	spinlock_t *pmd_ptl, *pte_ptl;
+>>  	enum scan_result result = SCAN_FAIL;
+>> @@ -1310,6 +1327,12 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long s
+>>  		goto out_nolock;
+>>  	}
+>>
+>> +	if (is_pmd_order(order)) {
+>> +		pgtable = alloc_deposit_pte(mm);
+>> +		if (!pgtable)
+>> +			goto out_nolock;
 >
-> I actually am skeptical of gating zswap usage (both pre- and
+>Fixup is here:
+>
+>-		if (!pgtable)
+>-			goto out_nolock;
+>+		if (!pgtable) {
+>+			result = SCAN_ALLOC_HUGE_PAGE_FAIL;
+>+			goto out_nolock;
+>+		}
+>
+>Thanks!
 
-Isn't there a zswap limit some thing like that? In our deployment we
-have limits for memory + swap as well as page fault latency to detect
-SLO issues. There is a feedback loop.
+With that applied,
 
-> post-compression), but I would like to note that for post-compression
-> size, we already have that knob for zswap, default to 20% of physical
-> RAM.
-
-I think swapping too much to zswap does not make sense. e.g. 100% of
-system RAM. That is my point. It is not a value you cannot determine.
-We can find an universal answer with a safe margin if we want. That is
-my point: it's not a value you can't determine. We can find the answer
-with a safe margin if we choose to. If you don't want to, then that is
-a different story.
-
-Chris
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
