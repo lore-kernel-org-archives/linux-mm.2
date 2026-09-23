@@ -4,98 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73028C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7305AC9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 15:20:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 536756B0088; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
+	id 67F8F6B0088; Wed, 23 Sep 2026 11:20:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E7B26B008A; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
+	id 632886B008A; Wed, 23 Sep 2026 11:20:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FDB76B008C; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
+	id 546DF6B008C; Wed, 23 Sep 2026 11:20:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 22B336B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:11:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 979A41A0789
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:11:54 +0000 (UTC)
-X-FDA: 85245366948.15.8312B11
+	by kanga.kvack.org (Postfix) with ESMTP id 31D186B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 11:20:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A78CB1A0535
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:20:34 +0000 (UTC)
+X-FDA: 85245388788.12.CAC8B14
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6E02A160014
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:11:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bOu4yUj0;
-	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	by imf25.hostedemail.com (Postfix) with ESMTP id A5BDEA000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 15:20:32 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=mPCFAHmZ;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790176312;
+	s=arc-20220608; t=1790176833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2btTVDYltsgCYavYwVuiOIHeKZyL8Gt5tbLOPUFFJ0=;
-	b=LrCMsOWInPR+8yTdgqQ/vuRPdKRPKJ9JZgQBg536gB8/iGgZw6VrIDKMzMCZApVltSAg3/
-	LfXcoosevZhPcwYdRkk9Hhtkh+K/VAjTpLOodyeo41zavBZSt43XSrFln1zJz7SqSSv+kS
-	HBwCSncpPxNBImyRUxCsc/85B+idtHc=
+	bh=p2ri7f9dqehfec0Yybwmyko2e6UZRcsiGyPJi3YOYow=;
+	b=TuEb1CjLHpk2lRywwJT4PlN3+pEcrzvuFYs9rSN23ORI3+rkZgdM4qJfS1xeczNwdp4i+B
+	2Liuo5IHHdegldVLFnENYwLNCyJ6226YB5/1r/fA5NxpMPEDnsdYx90tTLaIdJzGQhxJfT
+	2DWVaLJNnOM4M12Iykxkq7p7c9/1u+0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790176312;
-	b=NAMVMUgA/wGuSAWRqYK8EKH/ifIGYv9+ci6P0bdpUgE9/4mw3E6I63B/AhJAgRqMRMkYOG
-	RObyJb38lAwMN1/9wXWLfM0v936xmtiXcNMXzLUx8O3rGh2PDkw60j0Qez/iTGqTvs++Dn
-	HTuFw1cBTb/7arsvldj87ISTpwo1CZE=
+	t=1790176833;
+	b=fiV7ynqDNnP6ZQ9AdSDy77JEfMDUfixN+7MpxC6Edx8Y9JzQ3XlOK0Tfxp3RnpPyzLme0o
+	oLQBm2y2/P43/xAV1MXBbK5ziaRdS+4iMCiz8BL90hjZGm5tK1j1LH2rZ2dEori8uHQv2U
+	kth2Am3iafUJTmxyINtm7JVD9l7F9dU=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=bOu4yUj0;
-	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=mPCFAHmZ;
+	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B8C911A32;
-	Wed, 23 Sep 2026 08:11:47 -0700 (PDT)
-Received: from [192.168.4.158] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8BF113F86F;
-	Wed, 23 Sep 2026 08:11:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 170D01516;
+	Wed, 23 Sep 2026 08:20:28 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E79ED3F86F;
+	Wed, 23 Sep 2026 08:20:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790176311; bh=0ZF92qlGhBT9ghFKBAdomT/d7B9mUVR6sojJo9EGm84=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bOu4yUj0Q/cyKCDPQmnlZSSfBzN2YZFcQ+BYeXIGsn3j2NxCyoWazWfOEchSwBK6z
-	 p7crav7v88lmt9BsVnUEIn7iRY066xMU2EuJK+FPQ0L1X2J3RaUrkxZaBNckO20vz+
-	 0TW+qGgaK5iTEA87RU/L+SeG35VjqNjOB4ZTOJt0=
-Message-ID: <86fb3438-8028-49c5-9b4e-2a0970efb91d@arm.com>
-Date: Wed, 23 Sep 2026 16:11:47 +0100
+	t=1790176831; bh=plzh3izsHXGgmShwIXotE4fldBJ7kvc6B3ReIpURaYw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mPCFAHmZzgwdrxNMzuHRfXYirzpSiYJQcS8aJ301s2u2mfEr1wZy19i1cUSGKQSw3
+	 42zIFSwpkZEZJ2rnyqPudLRvMa8F5eo/Lct8ZJyZ8S+TqCfHuTTqNWS5T2ATQDiQQ5
+	 Dtb9iS2rPYhJlArINvaQ79bDm/LAssiqGw4sfcPg=
+Date: Wed, 23 Sep 2026 16:20:26 +0100
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, liam@infradead.org,
+	nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+	kas@kernel.org, ljs@kernel.org, vbabka@kernel.org, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, shuah@kernel.org
+Subject: Re: [PATCH] kselftest: mm: use helper to identify anon_ops in
+ khugepaged test
+Message-ID: <arPuOvSlZr_uheSL@e129823.arm.com>
+References: <20260923110133.429745-1-yeoreum.yun@arm.com>
+ <0241581e-3823-43ec-9c6d-2346433f8f87@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7 02/13] mm: Add an allocator for CoCo shared memory
-Content-Language: en-GB
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Catalin Marinas <catalin.marinas@arm.com>
-Cc: linux-coco@lists.linux.dev, kvmarm@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- iommu@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>,
- christian.koenig@amd.com, Joerg Roedel <joro@8bytes.org>,
- Marc Zyngier <maz@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
- Will Deacon <will@kernel.org>, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, linux-media@vger.kernel.org,
- linux-mm@kvack.org, Michael Kelley <mhklinux@outlook.com>
-References: <20260921144847.501151-1-aneesh.kumar@kernel.org>
- <20260921144847.501151-3-aneesh.kumar@kernel.org> <arKsFofudnTYpXj1@arm.com>
- <yq5aik3w344o.fsf@kernel.org> <arOfD6syXOgQhZYA@arm.com>
- <yq5a5wzw2ree.fsf@kernel.org> <arOspFxWZ1DjgcAr@arm.com>
- <20260923130611.GF1540250@ziepe.ca> <yq5atsng10b2.fsf@kernel.org>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <yq5atsng10b2.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0241581e-3823-43ec-9c6d-2346433f8f87@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6E02A160014
-X-Stat-Signature: okkoi91to69ye7xdesiqubxgjm7khe5x
-X-HE-Tag: 1790176312-133452
-X-HE-Meta: U2FsdGVkX1+XhRzlOCrGbr7eIidDho85KW14BSz1xY7FEnuIcJbSK9rlC7thTPiOjQ+2KBLvoQu4RpOMGItDwQqcIkex//CJdflmfN+bAWx0FNNbyUpDVotZ5rHthOl1dXh/ervRu0MkNkGdf98Gj/5R+cOwc8M1ah8cbxsduhza8l6HimMpt80ZIY6IIBGZUm51uoZbZEDHJVBvrRTqolIg3EkAY9ihSUfTO4EEUFAzOKvKuIJf0Jbywu9gLfKtXqlyxwJuCYNJ3FGwunArqyteBzKGfIvdHYVYcRAjtxvK0M7RITHk8IPfN7Gury7zzFjYbOR1rIgTBvQdn8JMKgIfuk84Nq81zJvNqX7/Zt/hHNRKv5d1uOPdlnodZHj8jHNOAWUyLSUHVkDokGVyECPj/j5BEj0lZdaFiWzf1XrRx14nVt3vu2dblpr3N9TmRjcp0FI2gZP4JHZxjeQF6keZ8kIms2jgX7me8Fd33Ci+GU3W4ie8+6h/3ixyVfDb0eHDFlrOBzemqEvePhpVspkA4xvP3HsSCNEry3t8Eh9gILZRONYd+/EWaALiVW/uL7vdMrIae8aeazWLSuRvA8NEnjmxD6EiyC+Lrpch/pvGqewWr/txtDgCaS+rXVFI6XJkY7F/fj2BOUBDkDjAwmGbvsc/OcWRMjFb9DtY0QFTAi5kO9v4oKK5BhqqZ7DhkaThVlMrQ1b10R/hzNn7CgvMBfBRCYDQBcQ9ijBdok09i7tjnRvsyRCW04zNw6gNwzcQfWI8jYBe6mQXe5kaSMPqYyWlnwBeLXs8Y20++idLGxLeJqCAbNJz7GNzEfpPorV4J6EeOE9t6nY1KxxMhstiYgNTkUAKGjs9TJDCL9cQp8qxlsFG1FEXjoTw6KkHk0H5FogbfQUcyCanfFFbQYVD5K6ZPH8+ojZrmGVy1Vtn9ThE4rH7/XyBrezZddmH8JYf3Ym+KnCyt2uU/Z+
- qntWODqJ
- 7yN95p64i3ZyMRMYYqyy6bWUhBNTo5ZCFIHkBaRcR0KTaysg5OyV2ionkm6zCgQvT3C2PXHirnEhbQiyTGDO4R+8YER5TohkGw5C5Th7s07Diesfl8Ng8uSiOJhUm1A28by7QJMNTm8Rt8vDIMUvN5e15JnHNnhIo04omgjFY4+R5rKiaibPcfbuGuMrC3idwwS33Vy7rNImVSCpKC/7/CmO81BWDSEo0JIFK2GJ1HN1AXJKMs7iQ8EALSbyaGW2LI2LqZNEWGmeXaT1IxkjOI/SRo5xdo0QLP5vy
+X-Stat-Signature: djk4aa8x8zr7rzfza9wpxmtwpwxmuh9c
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A5BDEA000A
+X-HE-Tag: 1790176832-103563
+X-HE-Meta: U2FsdGVkX18NPal67Qns1AyEifsZzj1+bHG4Ct2A2BoEUfvpxq6ACVkVIKDp9ONgYlTVGjCJqHE8IVSZvRsyhOtok+CS63Ch2as5eV7he39Z/eGEjm1BkEgURU1NXcXlQ2xvrgvouGl2wteYbwKezqbeRpnwDTXGieyuxQIIj0/E0c2wBpzvzn6KqmYzOdV0oT+GBpElvPmOrtyF8a+HjzUTQGUrTMDuRhw0yYtx3WY9amLZ1/GV0B9LlxqHj8T9tnOF7mhSqk1tzCQFcltnJvUy76Hejpws9WIjr89UtQL88n//AGYDJZrCXtPy7OdgjEolvYXv/xiCTaucAcXUXXwRKJRCnXeaTI5AqlFyznqSg2X0RYsoZZfKh2uFTzOKdqyNT6Rwi9dNIqlpTEYWb3F+bNzYQmfUhXwq/VH049R8U4CLwZ7gl6/2coyrbr3v+iwZBrQLeW2cNpumelir8J7uybwcC21yZW+YfTn/n3uBhGLdcfjHXZ8XJwIE3UatoU4SAtz7js7tITo2lZNqHRIh8d9l8Tx4hpUBZdvhPXqmjzh5p/aZd6Yhw3KHUHd49IfrUFSbyVrLc/z23x9U28aHEhGEd9ZNMYz6zxuWl9Lk0LVrSuP79eoIaWatfl97szsiOcI/hujZ1gw52B6J3wAEmdHaHHmowHS2qV8uzy4fIlr7OEZXuEmBtS9UHxzlZCTGZgEJHtVJki+RN0FpKMOldwk23No0VLfCl2b1HvEXnReJ37x7oMZ91pKGxtff3+aMSyThErgdZ2OvzRjxhE+39sUTjdh++1Mf/kppWQavnEaiYu9ftQDmv38eWLCfCRN4H/3QUx9fyzeEQW6yh6xmWwcRsT36p5WRujbY4c8mn5eAguhNwDB3EcdXMhkOqdF4eddL1Cmj1DvfcCOJmA6UiRuMdnU3R9aHelp0dlZXF35yKDjf7ZIXUNds3kRiAtafgHUAqPsnn9GWsNM
+ Fjw1GmUX
+ Aqx/2qWsc5VGhs2gS8jEKpSL31519GNvj5G8qy/V5F8nX6GGSfiU1Q8PJINdk+fRBFam5rbzTWLSLr48OBRQ9iY2SIDbm1Fg2UQv54TbDUZ2ydkSajWVr9lgRpXADn9GITaAAfbNidNBOb1cEB5SS3sXc1rvLWhNl+JR/aep/GzWmLf3zdj7eEOhmuxq7a4HX6kp7HUAPYlED4JY9mYrcF0+b/cM1ow/q8ILID20i9c3N2p97qNB3PlLbBA47nw/GBD5Tp5mMHXu6afmOyO97oEqHrMt977YgfUv5xUSXfJXjEI+AlRa+RrFNUOU/aaZnaehI592NdGKq2GCgF8beqND/xebIp0NGOCPXqEli5hcW+t4Sezm7h+spBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,46 +95,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cc: Michael Kelley
-On 23/09/2026 15:58, Aneesh Kumar K.V wrote:
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
+On Wed, Sep 23, 2026 at 03:54:48PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/23/26 13:01, Yeoreum Yun wrote:
+> > Instead of comparing mem_ops->name to determine whether mem_ops is
+> > anon_ops, use the is_anon() helper.
+> > 
+> > Suggested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
+> > NOTE:
+> >   This patch is based on mm/mm-unstable.
+> > ---
+> >  tools/testing/selftests/mm/khugepaged.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> > index bdc0c7c117d9..b0cb02bf1a73 100644
+> > --- a/tools/testing/selftests/mm/khugepaged.c
+> > +++ b/tools/testing/selftests/mm/khugepaged.c
+> > @@ -618,7 +618,7 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+> >  		usleep(TICK);
+> >  	}
+> >  
+> > -	if (!strncmp(ops->name, "anon", 4))
+> > +	if (is_anon(ops))
+> >  		madvise(p, len, MADV_NOHUGEPAGE);
+> >  
+> >  	return timeout == -1;
 > 
->> On Wed, Sep 23, 2026 at 11:40:36AM +0100, Catalin Marinas wrote:
->>
->>> The simplest is probably to always zero in the backend and ignore
->>> __GFP_ZERO to the allocator. But it's probably only marginally smaller
->>> than passing a CC_SHARED_ZERO flag down. Get codex to try this as well
->>> and compare the diffstat.
->>
->> For patch ordering I would convert to use the allocator first
->>
->> The semantics of the new API should be clear
->>
->> If you pass GFP_ZERO then the resulting allocated memory is zero
->>
->> Otherwise the allocator does Whatever The Arch Needs to not leak
->> private data out.
->>
-> 
-> ok
-> 
->>
->> Once places are converted to the allocator lets go see what is left
->> and ask why it is left and what API it actually needs.
->>
-> 
-> I'm also considering requiring the address passed to cc_make_shared() to
-> be in the linear map. This is currently required by both TDX and CCA,
-> while AMD SNP appears to support vmalloc addresses. The only user of
-> that vmalloc support is Hyper-V VMBus GPADL setup
-> (vmbus_establish_gpadl()). How should the generic CoCo shared-memory
-> allocator handle this?
+> This should be squashed in the other patch under review.
 
-This came up in the past and there was a recommendation to alloc shared
-pages and vmap them ? I have lost track of it.
+Okay. I'll squash with v3.
 
-Cheers
-Suzuki>
-> -aneesh
-
+-- 
+Sincerely,
+Yeoreum Yun
 
