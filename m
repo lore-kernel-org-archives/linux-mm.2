@@ -4,169 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AFF2C9830B
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3410CC982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:58:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9910C6B0088; Wed, 23 Sep 2026 08:56:40 -0400 (EDT)
+	id 3516C6B008C; Wed, 23 Sep 2026 08:58:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 969566B008A; Wed, 23 Sep 2026 08:56:40 -0400 (EDT)
+	id 329BE6B0095; Wed, 23 Sep 2026 08:58:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 858236B008C; Wed, 23 Sep 2026 08:56:40 -0400 (EDT)
+	id 268026B0096; Wed, 23 Sep 2026 08:58:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E54E6B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:56:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 73FE01607F6
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:56:39 +0000 (UTC)
-X-FDA: 85245026118.27.19A8DB3
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E999A120002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:56:36 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=QM48kRVX;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=77262bac03=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=77262bac03=alexghiti@meta.com";
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790168197;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A0046B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:58:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8AA27A07AB
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:58:02 +0000 (UTC)
+X-FDA: 85245029604.09.BA5FC88
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C19FA1C0008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:58:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zxnby2nw;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790168280;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w6aYP/WGma+CZxHbYVrCOq+IGJ59B5MNaNiRltaBsIY=;
-	b=bNU18qZGiXctGRT6gWAPVxfc2Efa5dwpt8f4zbAiLRais5MLYuPZR+uTUCSNtwj9nvCD1R
-	Bvp+VzVL2HIAW5ZV0fYvudz2D0L+biE5QH0pZdb0D9Zc0xv7r4JQBvt6d3QBtRvTFTsy7s
-	qv3WP+OOdHHQWScQYvc6md51MG2q/3E=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=QM48kRVX;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf29.hostedemail.com: domain of "prvs=77262bac03=alexghiti@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=77262bac03=alexghiti@meta.com";
-	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1790168197;
-	b=vmJqNwh9m2VSyFSIndwQVhbPGWY7iGB7Wy4jB4tRCk3uXUv4bTBK5Eu2h73lv0DNjLGH2T
-	zUJanapFA+tWqQovVF8FdYrFsD6NdFmpFsSvUpffSTIepw3P8Z4SqFPHPuEmj5jAMpySzP
-	zQ9/rbR0OUmmwcUWePJF6z+TN9uOIpg=
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8J6CO1145569
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:56:35 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	pps82601-s2048-2026-q3; bh=w6aYP/WGma+CZxHbYVrCOq+IGJ59B5MNaNiRl
-	taBsIY=; b=QM48kRVXKpecMA2HKZlUHYTYeblPj2PwDiXNYgaELcY+4blPJCHkl
-	WnOq74Qma6mHBWyL7kNLfzD5f724Bn70LINbKvPtz+tosR5For+dsSEdeWOJQz/o
-	GxeMcb1gbqjFQ8PoMzoLAteVIo0MU0JUHXxO8NIyAoIsB7jnm45Bl0vXFhMjbV+S
-	ptHDR2P3ppPkou99iHDsL/oxrV/hb0QuDiRdlSoPg3G4FYmrDfjzH0NbgHcNon4V
-	ShyLuLOEmp7pXksscyUIIMLPnAw0Fz2SUIBxqb+Uj7wzFzCrw1Q1addlXugfLhDY
-	OJFT5eTBaWiV1CbYkqR0lWIJzVvI7tmog==
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4gv1a4pann-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:56:35 -0700 (PDT)
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6aab38d12d5so1196738a12.2
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:56:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790168194; cv=none;
-        d=google.com; s=arc-20260327;
-        b=DTEVE6fA0LeNG2zW95dlmyUGZjUVl1XcPLrMKQAv1eDiP3PHTA29HNCiGemrZZgUB1
-         9Uhwe1cxXyzekSDklVKzsJPFVCYuVfJSuKBfcl+kQ/JWymknKLD8I11bT6w2nvKoXXKx
-         qJKMPDhdo4uInc4BfuwxeQNl4TJKiY8109nDiGoIzrIsDc/9IvMssA+M8OPFxvSCscCL
-         csJWLB3Bg5qwzex6F6fbeV7i5z3QeR7+nme7BQyGCRvmqDaGZQnE+++DKRNAEgPD/3uF
-         8L4bLCsHVsrRBfaTHFov7bFhUSjTgIJg/gMWEJ17sPG+UiqGeYvkSNwrg43fEBKTtLqZ
-         yhrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=bqEiNZo3w6DxJ+jQKjV3KdDyTNPbxkoMRHGCPwXcb/s=;
-        fh=OUGrylLeRkVwbhFrdeYl8e9gQykWUMgCqOSqxfwr9MA=;
-        b=fS4i7nc8s7ucw61ZrrxUX2dP8LVUf32opolQ25SO9JWerN080AXmvVLtkx/n8VGaXh
-         asOaFwiAsi+tNzjQNe/8qhK6K7y7QJ5Uq/RXlnVBNvEbfWl4BLo6c3HA9UNjU0P9sSOA
-         Vm8s9JAmVb/LFTGQH/aqJ7goHXHsENuVJ/26P/ho2hxGwOjRRfFVscz8/huccYG8Qr/9
-         fCinoya4quQRDRG+mfWrmANoU5qz7pOgFSqAuCxZupTwcrZvE4fx63obxlvd314i0Q2u
-         0aFQmwudJ9snP5tdZ0rqGrICDlhrBob0Ky6dT8f6y1aPRUDVVFjSYoA7zOJy1hH4ZTX6
-         fIfg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790168194; x=1790772994;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bqEiNZo3w6DxJ+jQKjV3KdDyTNPbxkoMRHGCPwXcb/s=;
-        b=mc0BQW/lKDIBdn7EvVDa+tsR3nT8eRUFA0U0IuhXegHaUoC2w69EcNkd2KB39CC/uv
-         lHwc30kRYDOGO+N5gtgksp69a+B7AClq52E+/gIfaRoXFO5NVxBJTnbOGqqeQGF1fJyu
-         uMumc44/ONAUlNEPLlsi1jqPndlJHSMykHEWhgMKqCkuqdtqkpL7JM/t+51rbgDPKxdl
-         piE1p+NwnJEWvbX10dLIPv80Ezi1GpQ2CgKuwPk+/BjGFsRuqIr69GDAZrN2Q0gfub3+
-         AQej7oDkww0dr5A22XoZw8lMCj0fVE6WvhDqrfF7p2QjAzThDrcarPQ9DKivshnuG2ao
-         pPqw==
-X-Forwarded-Encrypted: i=1; AKwUvBy6zZhcmJ8luaZw11180mIZTr3Mz+64EwrK3kgMDhI7eJMIOoOk5F7ppXKZmQBGcedpXDTcndBV8Q==@kvack.org
-X-Gm-Message-State: AFuF++lGpzo2dbpm/5FO5e+9nf5+qm2Kq6fucrg62GSwKEbCInJSpOdN
-	JuknlEg23j8tXz/eIFgHmGYcdgY/N+u8r9YT4GH3KqhCOmYW4gLYU6BwsDBkptjA/sBuCpCPLSF
-	5iElLnxEqA3ianpGWjv9Mzp+E6h3NTEzgh5Ru+VNjWgfRV3Ws74LfFjQXYSsBzxuAxxC5NG5F9n
-	uyRIbau3AE/yS10OWd4DRZmqAMyg==
-X-Gm-Gg: AYBFou20tWJ7cXjjrSxo0+uMdWvKQ790ZsQAHIbPSzwFSZNsvHYPVfLn60NN7UT28tw
-	mphnk7P6z2p9PiJiNy1Y38HnH9ycPCX437K0Ayf5iKyrqy66Q+zSkDlM3y6Bju7byaRFNPIEfYF
-	7p4f1cK48+oSgMti7KnfFOPY7vnxZ2h30r2yF2kmSKW0ExyU/2CBDtfr+cFnFA/Awlg9dO6hqgr
-	BsTJ8lyEapEVe1OMg==
-X-Received: by 2002:a05:6402:3549:b0:6a9:93cf:2367 with SMTP id 4fb4d7f45d1cf-6aab3b82acfmr2389936a12.41.1790168194044;
-        Wed, 23 Sep 2026 05:56:34 -0700 (PDT)
-X-Received: by 2002:a05:6402:3549:b0:6a9:93cf:2367 with SMTP id
- 4fb4d7f45d1cf-6aab3b82acfmr2389903a12.41.1790168193603; Wed, 23 Sep 2026
- 05:56:33 -0700 (PDT)
+	bh=OQ0v5smSirSLn3Dbt8DawQtx7Fm5uc1AWxyasCUTYn4=;
+	b=5z3mekz/3nH69ls2nq7Xy3H0fyfLyUgk/sbcCxbV089vCPfnUca+0314jBgK1cVw1sSqbp
+	1go3WdjddgXgmYbsVcC7eiaYINI2R8hGClUpV1SMqujynLGzhbq/4/sKnRbvyta0xXMfVX
+	R+omkOF3segIjWHC1iDvdsKxLKfe6xU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zxnby2nw;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790168280;
+	b=iYPq5qMBTYFKEdMIbZyb5eXb+zs7tVJK2TxXN4FvNkvu74sGjR9ZIzLOvgB8ClgCmZEr3B
+	8rADDiupx8Pfk5GH4VWP5Vs0NevDCrq28Cg5WBg7syQIlQxKP83hrGkmd46TTR/o0u9+uV
+	vZ8cCovoPe0/QGqQTNNfoIslCm5NQf0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B9612434F9;
+	Wed, 23 Sep 2026 12:57:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0356D1F000FF;
+	Wed, 23 Sep 2026 12:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790168279;
+	bh=OQ0v5smSirSLn3Dbt8DawQtx7Fm5uc1AWxyasCUTYn4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Zxnby2nwT6agUfUxNFYQVFQcnq60D3e0EEiVBZXPeNMAsd92FqsxKviV5uj/bvzfI
+	 dD/gfXnh/YJxcXOkYTa9Mq5+lvXX0MsOogKSlYr9sE11uFCcSNyu9ZHFKVaMFpWDWZ
+	 6SWx1Ff/NCdQTHqlLFQEqLPJfLwtrNNFVmblGdvIcxqA9Fx6M6ARNVqRhkyvH4v8KJ
+	 1jdzpEIuWqWtw9RYbWgySMWjGtmGmkKT2quL6gqcmldLgNIXva5ugTkBs9bblyyxtz
+	 Qegl7qNWZgAitzeo62X094x0NbBU2byB3UhEMQlyktpxAxBvCcJI2K78R2Ad6JEKnu
+	 vejZV/UiECaNQ==
+Date: Wed, 23 Sep 2026 13:57:57 +0100
+From: Harry Yoo <harry@kernel.org>
+To: David Rientjes <rientjes@google.com>
+Cc: Amit Shah <amit@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
+	Christoph Lameter <christoph@gentwo.org>, Dave Hansen <dave.hansen@intel.com>, 
+	David Hildenbrand <david@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Kirill Shutemov <k.shutemov@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>, 
+	Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 
+	"Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Shivank Garg <shivankg@amd.com>, Sterling Alexander <stalexan@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Yang Shi <shy828301@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	William Roche <william.roche@oracle.com>, linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org, 
+	nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	jane.chu@oracle.com, muchun.song@linux.dev, liam@infradead.org, shuah@kernel.org, 
+	boudewijn@delta-utec.com, linux-mm@kvack.org, Breno Leitao <leitao@debian.org>
+Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
+Message-ID: <arPElEV0zDhXrteb@thinkstation>
+References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
 MIME-Version: 1.0
-References: <20260722163536.773166-1-alex@ghiti.fr> <20260722165907.784020-1-alex@ghiti.fr>
- <CAKEwX=NJH2nM=vMPk_=ugJ26uNjH4AMdHXeaasuPrbSEGxpJOQ@mail.gmail.com>
-In-Reply-To: <CAKEwX=NJH2nM=vMPk_=ugJ26uNjH4AMdHXeaasuPrbSEGxpJOQ@mail.gmail.com>
-From: Alexandre Ghiti <alexghiti@meta.com>
-Date: Wed, 23 Sep 2026 14:56:22 +0200
-X-Gm-Features: AclHuK9iADqo6BDBUkusfSuGCdLOo-LJcD0oUEhsZ8PqoiomeOSbz6M_fQmGJPk
-Message-ID: <CAEmasaX8apLztgcRCpGxyDWAs9Vc6hU815o9AG5DZUU_5RpQbA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] mm: swap: overlap synchronous readahead
- decompression with disk I/O
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
-        hannes@cmpxchg.org, yosry@kernel.org, chengming.zhou@linux.dev,
-        david@kernel.org, ljs@kernel.org, liam@infradead.org,
-        vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-        kasong@tencent.com, ryncsn@gmail.com, chrisl@kernel.org,
-        baohua@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfX+ih6VKRrQ6h8
- iwznGoWE+pICABfzE78aaupVb65vLzumPUM91j0JfLJmqYtXNPst1TqA4r+cCtfSOWd5EYxhWsq
- uS39nodzJj1+2bz6JcKCiLcDNfTh99nG9eNoK4Em01DTB0Ex1CaYHQ4BYDOvFHcJVr5VFEvk41G
- GQrZ48CIzMpy5K9bo2xnMN6Cs861K0ne0JcM/FCtNI2VCniKdey+HQvV3qkJdA3N4ArcbwyLulf
- nlbjL1y6E95mKnwdYOIDXfkrSb863OZvwj9heUOyGTKoCNF3MGosiv/3YyyJDnGYWrVmC5dMrV2
- CnadyH9nQNdAymMb/HmvdlY1f6xYhO3IVfbwxkb6O1gPC+dFY191o3sYjHClooANGw9zmkt62GZ
- INoiUhofK/CnOzRv5ndKNzw64682B7k/dqHAiaJbjXd9A0I2NZaE+cLU21q68Ewzc5M2XTsPuYm
- tS1Gdt+sFrf/KE+nghQ==
-X-Proofpoint-GUID: lDX0xv1A83yHbC5_AUBc2drdCaDnueDb
-X-Proofpoint-ORIG-GUID: lDX0xv1A83yHbC5_AUBc2drdCaDnueDb
-X-Authority-Analysis: v=2.4 cv=Pa9qFShd c=1 sm=1 tr=0 ts=6ab3cc83 cx=c_pps
- a=CYpx6mtW7qE8U/l5VCnCPQ==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
- a=pGLkceISAAAA:8 a=6U9HwWF0I8vdP4q4yZsA:9 a=QEXdDO2ut3YA:10
- a=22KAYETGZJnyhCxlFjxL:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfXx/fgaYhxIEte
- RZGKRlt0wZbjBREnq5hzT6tnUzcGxzy+KM4XofEZ97xISA7mYzjwdrO0YMz4IVfMhkE0UPQ7b7S
- FUyiX7oqp6b++LgPXG7MzHUTBuvbZ18=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
-X-Rspamd-Queue-Id: E999A120002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C19FA1C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 58nszgpifgisjxqb9gdqiduufry5fgn3
-X-HE-Tag: 1790168196-447676
-X-HE-Meta: U2FsdGVkX1+CCuYXPpvoC2GQFsGGlDLr7iS4etYh52Br/+mreodEKEOLuBeU3JJ6+t87v3Hw3x0g6HxpFOS/dgbdLLPEs/39htJ0ScCfDh1VJV7gdS7PeKLnoxr1KLBHNCn+43cqOa5Iurk0zbtgKj8wAu4VSOxWA+XQv/+G0Ec+IIHCoF52FcPDwxsjG/UxYOT3C4H/Mw6b+pzJXym5jVe25nBWpN94PEZ/8ajgMNQdO29fw4g7IRR7JqQTuTh1uNpWUAHCyXTPtgkZyLw8NZT1qzl+AUoSs2XhAnjm4YyPKzYrku/0J3motwluSBxfT2yOeYbHqUcld4inJ5IoUABUoW0bCGoCErqpsPR8eCkSBl4DTWM3cAtTYT4jZgxW+O7L7aI5QwfdMTeRBdG6818QU5xGYToQkK2Wx6vKpDXc+Tz+biWRxyemp83njWE1fkPlbeuEnh/UXlomUlPsE0kiIW07j8K616j/zpKtCZoSb/J/ygOBNnShGq5ZWLmhhtPgjAIyNmd13xf9plFI+KmHY2W09yLe3HQtfY6nEqdSOKuCzWaX29cottAjVfAKwe9nXy8ATCFK+AP9CWNUkfyacWNggnGRXShzJ9oyJvP77clnV3rulF07JZ9QbivM+hNHcSi1VhwN/gQQFpXp1xgfk3RlCCgWuqWMo93JrYHozIuA5QJcIpIAWu7P1mXS98UmXOTyrdKfa5eaKDyNY90BKJlmLvZXzLss7SHjJ3/+ZyD+DB7nharblfd9x56mxwLRsjUSqSQN5n5o0UvZ2WJiGLYt8Q50YAbFBGx9AWf6CJLkN9hCMuSUttj5yp/ajJSHTqwDHhaj9ZuZXpIcWB5zxekwAChrvKK92Ys1Orksu8cxzxi9ZDxGTpFY4VRSSjtg0bs8RiwzuKM81Wjd2k5vw96MsAq5C6TpfhNWg94mnNJjSAvYPbUIiIOCvdx0SWNmuETDj5nRIhjIODD
- NqV/Piv4
- MWRtvzNQOU9bMvQ+WoejGmRvc5P5pzetgiLPzaS3a95VUNBWs6bEZD1nD/Omet/jV4V/qZyTdK2N7/IH+YiPiRNw/wUGHLma+mIqSQDTmxIGF0+cqA9laFucChUcgILOlGTT9PPfARfkqWoggigtNdPl+Wx3EVIdpmxGQe5EKvQ7GX9EhwpM8bETb1PMEnWacZSvDikZUNvLxORW/4ZLlepJj/zg08A0iol65PKGqWQaLNIrANa0HyfB2IgU+ox0q4bnk3F1qq0waV4rNSF2XOGEMXUjfXPV/JThCPWEgLPU9v1QZIOb6AliVVSAeCvFyuKEY0InCMo4Y+t5/36q4tsuwEZGMY1b8ytZf8XjmJ2jYGzTEiRHcKkgOCQPcRBdZ6x+X15OzTAKcqr3B0daaxIy6J/tjEElrQmjKQKyUeJWDuBWGJVzia+klsBQUIOhmZtgsVlX9wjIdqOHGnZ1ETeQyp4ab4blYg5gV32WTZ4qja3wOMIiCE+pKEBBWct7NoTNM
+X-Stat-Signature: 1ystk5jt9e3kdzgdzxmijsu9wkzx6x9t
+X-HE-Tag: 1790168280-530183
+X-HE-Meta: U2FsdGVkX1+DTHpR+q6fkDtmCkELZjUxJ2GsudL1WXWIDLoJbqYeSLrZc+MiXmB0ojKaKRvcml5R6oP5sOGgOKloAgrgjahw3Fvb5pPe5ruRi27cNjREB+TamV4XNsK2kVo1X8q4FLVAkgpLagPGS0fgdnskQn4lsiQy6GFw94GtRvCHSaMBPdQ2FxHvGv1uRp/sqCM8Ssvrr5MreZVreii/40FDR4CW4LHA1Zna4mcCbs7V1cRNqqvd8nXq0CrOXU/CwnJJ/w5ph2Lrzr195CVamoeWDBV8WNx0Ia3pVcqziNE2hK+p/wE/k6HVkkZ29N1RdMVq3oaJWvhSgQbidyec9pFZcY0Ky5so6fYKTGYsFHlFjOxV+6nxKw+RSH5Fj+WJhHNgL1sEXaLXRcdeIATMiYlbBI9fkkSPYmqeLZTLjlknwRq4Ne28A0djT74YO5C8zoVael3Z0K7qdlhnXKatLU/HCq0UTHKg0G+WPf+Zlq1pNUd4fEiDPV+FaS0G0+aYP408PV87BNYvkGo29TVOojZWv4KFQB4OLnuITC7vkg1Ax/Wuo0GhBJgR+nmt3gw458r7YHV4pNar+KBARyr3HeHiJqLSFak57dfvMBuQDQ87axOW8fiNkHb+/s8HrqWRRrvMdW7qGHM5y3L+EG+usZJr4YpOukLbNEouALTD08JKFz5HNvMFssHZouV21veO0W0U3TOo8FGfgzvuU0sa9gYdd6+QQIfdp0+kH6vUgdxHuYvfDzXgmQQlaI4hEYa/PrZwRzJ+8lZnS/EqOSGHM7oUiu0+W9WO4baMNqRtetJ0eQ4O8l/MEdQmTFDu/gap6+zynomzUdP01AaO8PNqtm6jpzpBlm0uCW8NRkqOehvdKsYqMNLtGIwxx4kYGi8dv+xKStafvkK/zZ9ZwbgVpiaN14q8OprMsYBSDEJ8cVrwTeiOP4ba+RIFFmYBQeuGnfVPfMk7W3QCTZM
+ LsANVZEx
+ 0DEw+cTx6oribED07T8nDwj0bBPLbhhCDKKVgpSzAi9RoMtcMJaxMgz6wRVQ4gXCnKqctaPUOBY16GEnZFekxzgSPK4D8cSgwDg1V2CzNra4FuX3tQ36rcQSGM4z838iSkovMw4LNLigv9Btz1PGbKrCopc9ABIM/nuEfyFTPe2RPnzc6w9sV4wNFLQAXemiZkKgFCygmeqz7x5OZBsKzUoGCecWQkzocb0jby5uGiTy38NMdQEN5Chcd+I1p0MDBublJdZOhNn0hxpJBwX4Vjoarpr0K/5jIvVUC2oo5Se2bR3TRKw9aKBbIxQVCxVDwmO0y0a3K/uHx7Yau7YotYTB1d2uYHFaEV6x1TC2SvT3gt39ei4FG9aAn6e4IBMBwKSJxo3Rzf8Vr1obBghZDT96BMPV/T/+2Xn2IWqUGmhv+HI/qlXsAWOXvpQX3iNzoDopCna8sXyiwnX9QQahV1UjH7tLURdxRl7HpR3auGUDsRktk7lINlb95RBsVjrILaRwJYsXd84v1CMgNb/w1S5GUNOjDWxLoIY9dOKP7LFC2VTpjjy/C0Zz+nA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,79 +106,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
+On Mon, Sep 21, 2026 at 09:26:22AM -0700, David Rientjes wrote:
+> Hi everybody,
+> 
+> We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
+> We'd like to invite MM developers to attend and will announce the topic
+> for the next instance on the Monday prior to the next meeting.
+> 
+> Our next Linux MM Alignment Session is scheduled for Wednesday.  The
+> details:
+> 
+> Wednesday, September 23 * 9:00 - 10:00am PDT (UTC-7)
+> https://meet.google.com/csb-wcds-xya
+> backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
+> doc:
+> https://docs.google.com/document/d/1QQfZFPHa-pGEGf4A06cSqS0jdJwuZ8ro9JU5H0YSUQ0/view
+> 
+> This week's topic will be Hwpoison, see the discussion in 
+> https://marc.info/?l=linux-kernel&m=178796007385067&w=2
+> 
+> No specific agenda other than to gather core MM developers with hwpoison
+> developers and discuss:
+>  - where validation should live, esp with regard to the page allocator, or
+>    strict invariants in the page allocator
+>    + implications for the fastpath
+>  - handling for folios of arbitary orders
+>  - handling partial folio poisoning and split failures
+>  - race conditions between memory_failure() and concurrent
+>    alloc/free/compaction
+>  - soft offline for pages in the pcp lists
 
-On Tue, Sep 22, 2026 at 7:07=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> >
-> On Wed, Jul 22, 2026 at 9:59=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> w=
-rote:
-> >
-> > Swap readahead reads the whole window sequentially: the device I/Os are
-> > accumulated along the way while the synchronous, zswap-resident entries
-> > are decompressed inline. The I/O is only triggered afterwards, at
-> > blk_finish_plug(), so the synchronous zswap decompression is pure added
-> > latency in front of the read the fault is about to wait on.
-> >
-> > Trigger the I/O before decompressing the synchronous entries: split the
-> > window walk into two passes. Pass 1 issues the async device reads and
-> > defers the synchronous neighbours; pass 2 reads the deferred entries
-> > while pass 1's I/O is in flight, overlapping the CPU work with the disk
-> > reads instead of serialising it in front of them.
-> >
-> > swap_cluster_readahead() walks a contiguous offset range, which is chea=
-p.
-> > swap_vma_readahead() instead walks the page tables so we cache the
-> > entries we encounter in the first pass to reuse directly in the second
-> > pass.
->
-> Hmmm does not seem like you're taking advantage of the device-level
-> contiguity of swap_cluster_readahead() either way? You're calling
-> swap_entry_synchronous() (i.e zswap_is_present(entry, 1)) one entry
-> (i.e one tree walk) at a time.
->
-> If you're not taking advantage of contiguity, just share the logic haha.
+[+Cc Breno]
 
-I cannot stash the zswap entries in an array for the cluster readahead
-path since the window is not capped like it is for the vma readahead.
+This might be worth some attention:
 
-So I'll use the contiguity to avoid the zswap tree lookup on each entry, th=
-anks.
+  [PATCH v5 0/9] mm/memory-failure: keep hardware-poisoned pages out of the next kexec
+  https://lore.kernel.org/linux-mm/20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org/
 
->
-> >
-> > Results [vm-scalability mixed zswap+disk swap-in, 256M zswap cap (~73%
-> > disk), Sapphire Rapids, zswap=3Dzstd, shrinker off, n=3D3]:
->
-> Hmm how do you have disk swapin with shrinker off?
+  - The question: How best can we pass information about poisoned pages
+    across kexec when the kernel accesses a poisoned page, panics and
+    calls kexec, so that the next kernel avoids hitting the poisoned
+    pages again?
 
-The test workload I used filled the zswap pool so new folios were
-written to disk.
+    One challenge here is introducing another source (a new EFI bitmap
+    that represents poisoned memory, in addition to existing
+    PG_hwpoison) of poisoned pages adds complexity and confusion.
 
->
-> >
-> >   metric                  mm-new    +patch    delta
-> >   swap-in tput (KB/s)    119247    131261    +10.1%
-> >   swap-in wall (s)          106       100     -5.7%
-> >   swap readahead (pages)   1.56M      1.55M    ~same
-> >   zswap-in (MB)            1895       1872     ~same
-> >   disk swap-in (MB)        5207       5190     ~same
-> >   major faults            260148     260212    ~same
->
-> Obviously this would help zswap, but what if the backend is disk swap,
-> and all of this is just pure overhead? How would the numbers look?
+    David Hildenbrand suggested that we should simplify this as much
+    as possible in a way that we don't have two sources of information
+    w/ inconsistency between them and using memmap as the only source.
 
-You're right, I assumed the overhead would be negligible but I haven't
-measured it, I'll come back with numbers (I'll test with the
-contiguity optimization you mentioned; the overhead should be even
-less visible).
+    e.g.) By consuming the EFI bitmap only once when initializing
+    memmap (to propagate poison information to not just free pages
+    through __free_pages_core(), but to the all pages on memmap).
 
-Thanks for your review Nhat!
+    Another challenge here is that we don't have functionality
+    to poison pages early in the boot process before memmap and buddy
+    are ready. So any allocation before initializing them might still
+    allocate poisoned pages.
 
-Alex
+> We might even want to be bold and discuss a holistic design overhaul if
+> it's warranted.
+> 
+> If anybody has ideas for future topics, please let me know and I'll try to 
+> organize them.  We'd love to have volunteers to lead future topics as well 
+> as requests for MM topics to be presented.
+> 
+> Looking forward to seeing all of you on Wednesday!
+> 
+> Time zones
+> 
+> PDT (UTC-7)		9:00am
+> MDT (UTC-6)		10:00am
+> CDT (UTC-5)		11:00am
+> EDT (UTC-4)		12:00pm
+> Rio de Janeiro (UTC-3)	1:00pm
+> London (UTC+1)		5:00pm
+> Berlin (UTC+2)		6:00pm
+> Moscow (UTC+3)		7:00pm
+> Dubai (UTC+4)		8:00pm
+> Mumbai (UTC+5:30)	9:30pm
+> Singapore (UTC+8)	12:00am Thursday
+> Beijing (UTC+8)		12:00am Thursday
+> Tokyo (UTC+9)		1:00am Thursday
+> Sydney (UTC+10)		2:00am Thursday
+> Auckland (UTC+12)	4:00am Thursday
 
->
-> >
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr
->
+-- 
+Cheers,
+Harry / Hyeonggon
 
