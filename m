@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2CF2C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:13:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9AA1C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 10:15:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35706B008A; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
+	id D92F36B008C; Wed, 23 Sep 2026 06:15:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0D0E6B008C; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
+	id D43E46B009B; Wed, 23 Sep 2026 06:15:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FC366B009B; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
+	id C5B326B009D; Wed, 23 Sep 2026 06:15:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7515A6B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:13:50 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5C7F140755
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:13:49 +0000 (UTC)
-X-FDA: 85244615778.08.D826A00
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0EA5A14000E
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:13:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPhKOaCv;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9795A6B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:15:05 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18ECC406EE
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:05 +0000 (UTC)
+X-FDA: 85244618970.18.1259D1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 91F364000E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:15:03 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RZkL4J40;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790158428;
+	s=arc-20220608; t=1790158503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PREKX6Wfx3ocgL0Q8g3oQ27X39xtDWzJRCtGGTbSjy4=;
-	b=hl+OzpiPe1GqL6tO75iAzfqPIxes8fXY3egm3Oo05sAG9x+qi9P+W+cpPpiyJ4AIhsEklN
-	TLikKAZP54FCr+zE6yP1SC50C8WVavtOFIN0SC/IGHPVbEdKq7r2PfNjW4usRHCaEmPIMi
-	e3h3Fr+cCMC+FwUm9Sw+CJqj+Lvfdho=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HPhKOaCv;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=n2I0phNfS1GHR21q/jaUR6mt3UcxFaFBL1i6WHN29zk=;
+	b=NRDF5fi7hp1b3nAZUjS8h/bXym+RBt3NpadgUJz1QlOL0KgRQu+ZrSoTpxqM09rR1xbjm3
+	dYnaLJTLMpAG79ol40iitFYXdvXtTVP/VbqSv+6b4ob/dQx2oDYqU+oVLD/PAgvtJMkEQo
+	HNblym/JW4L6tkCb6bgBDh82HCKgBRY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790158428;
-	b=1c65d3UTa9nspUPbc1d3ZGJ0McqpOm9+by+ILEvxsEd6lHIjWcb0gTK1uJIisgtCJJ2gsl
-	nGiK29chT42ZwEthE/5m3aNLk2uCFll053HInom9Br38NyZgn7cDhtBFobSKmyy/7II8YK
-	x9EjJtg3QUu2DzRd7pO79n48HLBtjfo=
+	t=1790158503;
+	b=Xsnh1ErcP2FXLrj4sCbC5nhXGcvbV5EGY/nrI4xBTl2yyskL/futR5e0ThQsvaMwFXCWBK
+	u/87m0Pt1ynaECqZ0XT1yR/f3dGh1jHyNXfJH2+nKav50AKaUZrrueDeqp9ucx5EEwqpFg
+	81lRzysxacumWWkS065pU3wTJqVK4wQ=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RZkL4J40;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F07B41B29;
-	Wed, 23 Sep 2026 10:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382301F00893;
-	Wed, 23 Sep 2026 10:13:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 095EB601F0;
+	Wed, 23 Sep 2026 10:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3701F000FF;
+	Wed, 23 Sep 2026 10:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790158427;
-	bh=PREKX6Wfx3ocgL0Q8g3oQ27X39xtDWzJRCtGGTbSjy4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HPhKOaCvWCzYSlAAHvGPirT13fNYuHIJ2LWzRria8HssijiCd0iFrRZLIukuZ3FU1
-	 EGZe1X5rXLmLUkikEjc4K5RoUaBZoClgb2pTgfTI4HJ7jt7TaQzMKZ0gNMpD5x6xtx
-	 ZEfxcZsObvhR1V4IjHTAbT4cwCLbgsl9rQi6pqQW9kbO6lwtyacD7aVdFbNcpHH0JA
-	 df0thB5tKOtukXu8mCV2+Ivf+pVKMQf63PYEMuBByA8zBHaG7/xL49PfU+OhTZsU7d
-	 cT1ObMow7SOsSVrurB0qxnQ+lPfHkTK8LIhgWSx115Hb9ZGAmbrHzzHcEOrKmN0FC6
-	 J9QiqSXszvWXA==
-Message-ID: <5271866c-a334-453b-a95c-8bfbede1232b@kernel.org>
-Date: Wed, 23 Sep 2026 12:13:39 +0200
+	s=k20260515; t=1790158502;
+	bh=n2I0phNfS1GHR21q/jaUR6mt3UcxFaFBL1i6WHN29zk=;
+	h=From:To:Cc:Subject:Date;
+	b=RZkL4J40sAKB8oxLocTAgCS7qxCzP1aqm7k2O0R3kutq8qj10XEv6uinZXZAdL1lC
+	 zbs3ovBnGhalMg7MTU5VS3/KfyinJkVjCArcQMAqGQhzmJEQkTQxI3N2MP4FxTausV
+	 z5+J6PblR8fiEL2kDrJvcvC91LYK5Vfr75iG9axznnDjTQG3Eq50vZX/tKVaEqX+yB
+	 B8FzbSzRIBISuoNmTYd0eKMEslNcFeI92IY5/FmXUySaHwX3qV2ny4dRyqixXMPm/N
+	 /m10R9b0DsPDJwr7CnZ5EBeqD+zmyZTUA3ZiU5F8Rt20/afIeszbr1sdZEf++qbUv8
+	 +ca+3QM09puEg==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v3 0/7] mm/damon: introduce damos quota goal target metric complement flag
+Date: Wed, 23 Sep 2026 03:14:45 -0700
+Message-ID: <20260923101454.5748-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] hibernate: handle potential errors in
- hibernate_{map,unmap}_page()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
- Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org
-References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-3-7f7dfae3dbe0@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260917-hibernation-v1-3-7f7dfae3dbe0@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hb833ckd8ts1q5nnznn49mgudxu5gpds
-X-Rspamd-Queue-Id: 0EA5A14000E
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790158427-598476
-X-HE-Meta: U2FsdGVkX1+lXX97EdB7N7R0PaFw9HFQP9ZfQao4EVjNuFxoU4xl5FeZ9pam9LqMnb7xAfclmlUoyQzJg/xlJSCROrxIfVnFl7NO10E7gL7bcz5bucpsVjWlopeX3/XjCJhbX4McOSGd2bP7vfTZBpdNiclOYylC42Sjz+8di2GZZcYK3eL0tBO0LJzcwI0CVq9gmXQhlZiJ5DrPXmdWoTrxcV5wkEc2dFM37NNcUewoK5ND39bOXhy1khM1y4qSbzn7t8vU4YR+PcBZx74NB/bgV6KzypB6OduP16fNT1ZnWo0KwVMPwdI79i93Lxnd5XAOqdZ27gplTQiBD4DdNLW7JY8q4iNAjW18bWbYX9JRDlKWxNKXU2SEq26Dg8FieCEnLmXYDrtHvs4iEYUvH3SPF9KjzvgsG7Ks8PpYXxm3wO4N2H7RJ9/2hXRQxy5RkcXjL++jaDVTaD7VrUMchVIXaav6vAyE8X4tC0y0GhHOL5UDG8h7VTygpV9icL64vVEedn/Cjtp0EbW3HwFFsHHBj64st3h6kuuDaPHc09efR2IjCM6bcdAhSP+XxVJxpDWlJiGFjBW4svZGdSZYq14fil2aTWOKzYbzfTTIdhBf4oo9KCxWGNAdDF15KpA/A5wMKCpaKaAjp0Ibx7OK/UIcHybegEG+ZZDyIdmuW9Rrza3AsBuEiJXNJKmZbihhUnwrdiqII/ezSxbAOCGnZtNq6Y/+jBrFpTgO+CYXxQGpue8sLIrPQehvN6lzks3vA8QDbnh8kiZ0iyv2q3J0wyPHCFm/i61RDEQ8RmVHel5nG5QhbO6ua8WGjeUcAtfo6NvAAb+UI1O/NKWmq6/mHOTgIZQS+MShLulBFsmb5INUUvVHqiN0vCE7MwjjvqE4Bz8IxSM8hfvKtCO6U4A+qCFKzg3dsJKiKtEq6h7N+WDVFomYylpU5YsMzFiynWbqXkM1AjKR27CONmlsZqD
- WYv4BcoQ
- F5N3OKjTYYr0Txt2Xfld43VklnM7gsu5BisfGEcuiV6vpmpdHs1sJrAZz/YMHGWloEUNWOdVUXO3JD8muEhynm0gU1POyhk37958slZpd1hUh027yFMsYN6nyklxWI2LBWwOCuAyVMIHeMp+W6kEsJwGN5IsGosEDE2Jp4QyPZj0Qvm++ikNo83m6Ad6cenkLf0z/3ABzxtwLxvFIzLEldtyhrtskfQz/pLDVVnqWxwHMnwpugkr8KpPfWx9ebSrcdazYKMMMD0iCzCkVCyuZUlCvWKW3h7eQo3mbuBFcX/9wMbpi/pNno7K3qA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 91F364000E
+X-Stat-Signature: do86na5p1yjoipa9noyb8mukymz1xokr
+X-HE-Tag: 1790158503-705481
+X-HE-Meta: U2FsdGVkX18fS311OLC6mX68QvGf2c0xJSC5E+Kc9+SSyjhztZAlvAD4SGBP9WWuLtKUO++kKdAkKBry8PHq9Pev768+4KggVY0ynPWteNHBDzHFhK0S+CXaJSW1FmbKuISeM4KMQwXZII4M00911PdevChKargEQ3u+J0KAlwwPuvW0tjm8kGZ8+z8iOo8Ec4vZWXbgmeWnPLBFPfpEoUX54u+VILw0iBPG1a7LlxxssmCwsV9WlrGtVBgJLlRRaZlRpz+lUlvqfgaG76QQWY+X99jMPwSqPsvXGHbGaADnRDNX+Bt9zjrgAHJtH6kp+DfvPjbcZZas4zhoIeOmm+B+f65c94dLoL9rL/GsoucPNgszzAMa2E48vdxBUXFBgwHO1GU26uU8H3Hjs/xsWcmXoVrvOis0yUhcnfKckIriCo69BIFypDHmF2wCr0mg2a3qM7PeJDvq8+XKZqJzw+4xl8hCpCOWKzoEoDmy6/m7bpho/oPArD8OyTTP7NbnMKV6imzTKHa7n/DNckGMqdEGNCd1T9szFeaJHdDJ+L+Q5Y23qzWw0fZfvb5nDjeIjA/L4IrZlkwgY6/80Lt7BwjRx6EA3OWymmyKqrQGjE0rIWoToxEqS8WCSB9wqyVgfoEBkuLIv2fAchItZ1gQrHHGJqjCR4CQUh/VzVYYfPsI0o56viU8x7WI1aEPEAyLS2VKK43sdrLG+iKop89qriT6KHBQJg9UmHCt2Bz0pk33vD/2bW5xk4RsK6Mj8yHUYTfF8Yv6r5crBWhW16+Wv4STHnq2axYuzQyPBmuQSK2XrvqYED2eYjvdX3PqIxNOYVY6wCFVLaUHfqqlNZv8BXfe9ac0+wNkETMvzLLRts1KXX519Ndg4tTLmITI6jDoDPJ6I9yTfTqwIWTtBZmJTuRALrptMQqsBBWfoJgsrRdXtC+RppLEH73RGzF8ABhQ41DoWZoU6AmS6BZlxWK
+ pBv6j315
+ exNwNeFiIdTMTf/T7TWD7Z1qBjYsP3RKhicdM//e2dEYb77YEm+K4R5Rhlidm5BtIAwNaWZhb+tDKElKVq6L8u+aGNq0+ZcDuaxlSMOwN/5Axvv0eK/HPh/kCDJ5tT2tNhOmCm+eMG2Dgi7cBA5Ac/wQt3GBWE5mU3vYLZctNWGJ47c3t26CMB+WY3/J3Tc2I8RLPb8xMHkuhkWHRjIRisi38a+o/U9nluDe98YjQiJBluZA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,21 +106,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/17/26 08:07, Mike Rapoport (Microsoft) wrote:
-> When safe_copy_page() had to map/unmap pages only because of
-> debug_pagealloc() there could be no errors in the kernel page table
-> updates.
-> 
-> However, with the increasing desire to remove pages from the direct map
-> this assumption becomes a real stretch.
+Aim-oriented DAMOS quota auto-tuning assumes the aggressiveness of the
+scheme (quota) and the quota goal metric are directly proportional.
+Depending on the scheme setup and usage, keeping the relationship can be
+challenging.
 
-What's our general direction in that regard?
+For example, let's suppose a memory tiering approach for higher upper
+tier utilization.  One common idea for that (TPP) is utilizing two
+schemes, one for promotion and the other one for demotion.  The
+promotion scheme migrates hot pages from lower tier to upper tier,
+aiming for high utilization of the upper tier.  The demotion scheme
+migrates cold pages from upper tier to lower tier, aiming for head room
+free memory of the upper tier.  Both schemes and their goals are in
+direct proportion.  However, for this kind of use case, we need to
+implement two different goal metrics (per-node memory utilization and
+free memory ratio) while essentially the free memory ratio is just a
+complemented value of the utilization.
 
-I'd assume we'd not want to modify the directmap from hibernation code and
-simply fail instead if we encounter that scenario.
+To avoid adding too many new metrics, we are adding metrics that turn
+out to be really needed for each found use case.  For example,
+some_mem_psi_us, node_eligible_mem_bp and hugepage_mem_bp don't have
+their complemented value version.  But it is not really difficult to
+expect use cases that their complemented version can be useful.  For
+example, hugepage_mem_bp use case may need a way to reduce the hugepage
+ratio.  That would require a complemented version of hugepage_mem_bp.
+Adding a new metric for each of such use cases could make the number of
+metrics unnecessarily high, and discourage flexible usages of DAMOS.
 
+Add a new flag, quota goal complement, to allow flexible tuning goal
+setup without unnecessarily increasing the number of metrics.  The flag
+specifies whether to use the complemented value of the given goal metric
+for the tuning.  For example, if the complement flag is set, the upper
+tier memory utilization ratio metric works the same as the free memory
+ratio metric for the tier.
+
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20260919011359.88921-1-sj@kernel.org
+- Avoid quota goal value underflow for some_mem_psi.
+- Handle complement flag for psi goal with unset last_psi_total.
+- Pass complement argument to damos_new_quota_goal() from core and
+  core-kunit.
+- Explicitly document no-op complement behavior for user_input.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260918142827.85303-1-sj@kernel.org
+- Avoid quota goal value underflow.
+- Fix usage doc for number of files in each goal directory.
+- Rebase to the latest mm-new.
+
+SJ Park (7):
+  mm/damon/core: introduce damos_quota_goal->complement
+  mm/damon/core: add complement argument to damos_new_quota_goal()
+  mm/damon/sysfs-schemes: support quota goal complement flag
+  mm/damon/tests/core-kunit: test quota_goal->complement commit
+  Docs/mm/damon/design: document damos quota goal complement flag
+  Docs/admin-guide/mm/damon/usage: update for quota goal complement file
+  Docs/ABI/damon: update for quota goal metric complement sysfs file
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  6 ++++
+ Documentation/admin-guide/mm/damon/usage.rst  | 15 +++++----
+ Documentation/mm/damon/design.rst             | 15 ++++++---
+ include/linux/damon.h                         |  4 ++-
+ mm/damon/core.c                               | 33 ++++++++++++++++---
+ mm/damon/lru_sort.c                           |  5 +--
+ mm/damon/reclaim.c                            |  5 +--
+ mm/damon/sysfs-schemes.c                      | 30 +++++++++++++++++
+ mm/damon/tests/core-kunit.h                   |  3 ++
+ samples/damon/mtier.c                         |  2 +-
+ 10 files changed, 97 insertions(+), 21 deletions(-)
+
+
+base-commit: 976311048bbb3a9e455552281fb9927fe6e8f091
 -- 
-Cheers,
-
-David
+2.47.3
 
