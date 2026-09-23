@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4382EC9830C
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:24:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 049E1C9830B
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 12:25:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 620126B0095; Wed, 23 Sep 2026 08:24:16 -0400 (EDT)
+	id 18F366B0098; Wed, 23 Sep 2026 08:25:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F83D6B0096; Wed, 23 Sep 2026 08:24:16 -0400 (EDT)
+	id 166BB6B0099; Wed, 23 Sep 2026 08:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50EB66B0098; Wed, 23 Sep 2026 08:24:16 -0400 (EDT)
+	id 07D1B6B009B; Wed, 23 Sep 2026 08:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30DDD6B0095
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:24:16 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B5D7C80798
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:24:15 +0000 (UTC)
-X-FDA: 85244944470.14.917C7BC
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D32A16B0098
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 08:25:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 256C3120790
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:25:49 +0000 (UTC)
+X-FDA: 85244948418.09.914BA38
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D6DBB40003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:24:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcO6poHv;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5ABB512000E
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 12:25:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MfZsCQi7;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790166254;
+	s=arc-20220608; t=1790166347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fz7wnacojcCCtGK9ldyNPikquj5YfjQzpeki9G2X8DI=;
-	b=wFn73TB4mbYcs7EWYg/8AGMhtQrijScYT262S6PgnR0ecOwihbjn8IklfZFN7f7tps3+lN
-	m0/a053OoDMwBlzZ9wvJE74/8F1kBN27E9a/SE7CErpzdEN5rp3FHDprSLscb1cN+uHEvg
-	lzmVE4OdapxS6jcukVfIo8DSRnGNjU8=
+	bh=7fw3yY5Wf9Fir6xKwPXXniu+pUqrdHiW7D7iGY40Hrw=;
+	b=45nefMlGvAHT1oKs0n8vcxepLbCMZA3jyP8PeXzqeuQ+KUTjyScgrnTlcw9AY7NiOAs2he
+	tvW1prT2OHf0Dlrl/smcbSx1xJQpA+HV1PaXrGOmA2f/qy00SHWtxHSybehe3uwJJ/dXvG
+	cGRi0fIkbw4YrHWVh39vB6WkDl4wCNg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HcO6poHv;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MfZsCQi7;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790166254;
-	b=dEdRBBlciB/qSyafo+PelSV+pzucJdGmUc7BaxYwcj7i7GS6DqZC5zsa/FHRFnS7R6cSZw
-	34/+dyPHNrVsWAU2InPfSbHgaaFJByzhDESzaXQ/Ma76uyOIF2VyMnhU3dNxbIB/b1RQYk
-	ptUSoQslNPt4hPoefdNkbMtCGLDc7us=
+	t=1790166347;
+	b=npyJ6GOD8TAjjoOGx1khff+1eIEDZYW+zele9fpnmw/i7ROuYhLS+Z0Cms7Z50FUlws4Ru
+	b84Gp5u6inXasf8Bbv0Yya3aNVxYrorCwOjD1Oinxfa+XSjZxQmVoh3gIhh40QGlSEZDR1
+	70u+GCPRpu6XIzEDp8cjFx+aZbVTkEw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06907400AE;
-	Wed, 23 Sep 2026 12:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823F01F00893;
-	Wed, 23 Sep 2026 12:24:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9668A4149F;
+	Wed, 23 Sep 2026 12:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831291F000FF;
+	Wed, 23 Sep 2026 12:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790166252;
-	bh=Fz7wnacojcCCtGK9ldyNPikquj5YfjQzpeki9G2X8DI=;
+	s=k20260515; t=1790166346;
+	bh=7fw3yY5Wf9Fir6xKwPXXniu+pUqrdHiW7D7iGY40Hrw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HcO6poHvX+9qlNd1qxKmYnGXiuf9GFggnkCljgozbVFRxRyTBLJG0U7eTh5rZxKze
-	 aVNJliJp+v7IBHUnr9hS+uzT7jnxsG7FVQcxPdoqH/67j71dEZK5oNsFx5k7U7secu
-	 k+2nWm9wFzKZyzJHySiZXiEUpKcbB+Dy4YVtvbJVoQQUmUDrhtZsHng+pTepwEkdRR
-	 m2q4EKP3fXaHsYZ1I+wKuAwAzAPLk9En8BV+BJ2JwEeUPrcqn6YLB/ea6e2sE0cif6
-	 a0QPuavKg4YY6UuunaYulXXyaKh6k23jJMSaiR6UGtOXbNKdKIz8dRPuEbUgmwArME
-	 Gasc4NMMkitrQ==
-Message-ID: <2add40dc-6541-41e3-8233-521cce7e0d33@kernel.org>
-Date: Wed, 23 Sep 2026 14:24:04 +0200
+	b=MfZsCQi7XCwQ+ZISuhHFDYg0bO/uLrea1cWM5FombOJwYX1tMSeDnkwIXaTKzkCJ6
+	 DH+uryfyQ47XD0F/qqJJK6nfyE5rrLigrJk4FymjeWXOxdU9CUKJGKx5l1BUJxjTJH
+	 d20fjUcFiyPa4NXdLHdhCVi6v2rra4dkT3TmyTjgtLJ8SEcx9svXJ+2YP3c6YLkrSC
+	 YS65FQEMtfj7Cs7LMWJZKZ6YUF4IVvOrqeHgYYyzh8kaD+u4uaDlXrAWws8V6EL+c8
+	 Vy0JR8BQHk/nRSQWhJ/IFV7nUOtT+uKiF0XMZUwCYn/ruL/XJFYvpYf0jvDkHXAKAj
+	 KXKyZclgSwokQ==
+Message-ID: <59920c39-ec87-4879-9370-e99c14f4dcf9@kernel.org>
+Date: Wed, 23 Sep 2026 14:25:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/12] mm/collapse: state what a collapse may do in the
- policy
+Subject: Re: [PATCH v3 06/12] mm/collapse: drop the collapse_possible()
+ wrapper
 To: Kiryl Shutsemau <kirill@shutemov.name>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
@@ -81,7 +81,7 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
  Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
  Jann Horn <jannh@google.com>
 References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-6-kirill@shutemov.name>
+ <20260916093145.4022188-7-kirill@shutemov.name>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260916093145.4022188-6-kirill@shutemov.name>
+In-Reply-To: <20260916093145.4022188-7-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D6DBB40003
-X-Stat-Signature: k51pmoua5ssqpwp4swp1roqo8yjnfauf
+X-Rspamd-Queue-Id: 5ABB512000E
+X-Stat-Signature: 4xsbcja7is7cx7n6gb1cw5p6hb97b888
 X-Rspam-User: 
-X-HE-Tag: 1790166253-198127
-X-HE-Meta: U2FsdGVkX18QByccPPP9PXxntry/0Owl3Ybzhz3HFk6vckV4mpr+foEHJp+18r6JmTX4BM7f4CrBLldeLjQn+Gqo1+WdIScbqq3r/ijfS9O4StVLGPS8DButtkXA69E070G62Fs2bB36eLHzrNz1i1wXJU5/vLmt7LkeTUo4en3G6lnbWeXyMNDUEzhESYDcUhHhgYut+BNx/LPjrnk97wmnqwjYMGDygPN1IqgHp8n1sdKhwu/jF/IZMmezmxUMLgbbE6fyHuQUXdlY6EG5wUspXQLqsEaWSEqW/joEKC9zUPQl9cPmcvyj+e8MzWmUGtmTDCMUxTwkFCL6lv2ZntLusmsK41fbVYhNDCvaMcriwT+xOasE0bmuXM+hnvtppQ87hY4uMDL1QX22yiMGbi84Yk44gVHjdIVWWeXfEZWiVRtXw6ElN4hGK4NqqbVwDa07d8LIbRzItsZntwYkRhyW/blOXEKCaTKWdawd4SRgAsArKTLWlQ9U3FwZr69BoF5kLf9pYMVfez0UEbWEqK2RbktfS8iTgNd1h3NpfSpAj/bwuRJU3EFmkTK3iMhBjLcTPPku+zxKP7W70Vf60G01TmttWumUd05Hjnqwk/irgB8HMpjZ/MzrJkOGBpJLZtDi4RGKlND+2F3ks4EuD1JbeOMeLYHUkb4kfHYZ9y+qnbtZc5RKTmFajTsZQWsN7fsjpGEqiPUTMrEK+ym0nF/JZ2vY6d4w+gsQA/AC+jJMnJGMJyJiuHw3rNfuDEAfkYTfeoBisn/r2Wcfqk3rq/h8Wu/7eKGQWLxp8WILeb+8Z+cIJXgNU79VPO5XMKzmmbKwDmuk/BKNqGQR7nriqgRb3rsPjVrmDbJTraqPoXGD4ubxJBHhDeikWKbVIRqcvrvS+wg0W6KUaNYbz+SI0SoaZwYe1CHSpWKIVOUuDORgOwBdg8xilc3sA2TDM3WONZpXdyS3ioYozIp9Xzw
- dH7AwACQ
- HTwMJ74MuRfNsIKunyjdKVKzgUuDGTQnHBml/Kys6yYfA2Mpq8SG0neBVyiqhvgGLfhFQuSq+7vqRDO9rZC4ofpKA5Xor8GWiCiroXxqWN053iDv3UQs0z/a8nadrEknpA82wkInmtwqFFbSZCfBWw0KOzM/G4NwXGqkDYHhvKIquq/ZgwU6Tmuce+aB70jJzDKjYy0TCv3Jo4f21rAuT3ZtDL2yFcb+ArikXQ5UQGddvH9xUU6EXYN3Z5RP7N4QK/Iy0ZPNVCJ4tdTJwIVFt1M402l12Sewsv0j1vzrfGeE/LL9/RRD+KYAWrEId49ODac3DtMKN+d4gZyk=
+X-HE-Tag: 1790166347-552654
+X-HE-Meta: U2FsdGVkX19LxLDbx9Fo+SVdHYI+SIorzGaLsbIYpUf3jIDU0If2I3h5BizZuU9roqDXHZFHzzGuHBJ646fsyUGySXHi7XtcKDShF4oaZOKLWcM5dgTJPSNr0ibDDP6JOHSJKl9cs4i77N6479DDEuHQhUNFZf0KL9p1Wr6qmAqcdBWRzOn17wnRSwpmbay9Z2nuSF+ARrgiQBEzo54c/EtyvovYLoBZGiOQdakmNhwK+c+yN79691Y4+jZZvdlPT/3fwtaMkf+6KjjWk1osDFC9ZdY8dfgPKAbSY959fhoyebHn0S4R3oeIhR1jEsEBv2RB/iiuAjD1LkBBDhLEIqZNs+v6bhpP0bZZIaB4tn3YM2n2eB5ANB/nZuKQD1fl0hqjPpvorrY30F4S5xHMnk018EQ5ntB0r+uHbaqOlpO5wyGxQf+DXGI9Ke3PX09XvNbOR7OxHMNdYz5qZM/U+e53F32PxmTrzwfqJKF9Gi6WEU/Np7MWXhXXI6SG0qPeme+chPGEqOG7CSIhRZp/XXxXW53UDQlAQWYhWcht/nyf/aAA9AaOab0xX1ZXXOoVY0vtPIdokVIVTIOTSQnDWR9n0e+Mx9ITg01fEehdr4Av3GFcini/qcN3bCfUCC0/Rx1aQ+pnwm5kmg7zA71XjZZwKcdjRhGfLdbOH7d+ykQUd/wLNFrWKnrZJRhD634hyzXCJTixOR9uXCleUmrdP0m6opfwWUVPnz6Tqh4q3hOy7Z5iCG3FV4mkNAwEFuSvQjxPbExUrFrg4V48uIfGoSPUtWiSDz0lYuCp6FfeatmpKJcwRYYPiobm5taoVDZAPYzRcx4gySZsDaNKIvO2adRnpifmWpInBN986C6LW46h63OuVg4KTFF9F3OZR8HM87Hb0fwH9/wTacxceMSEpnIvj+UsPJEup7bbFbxa7eZH6NbD59EZWzm/fM3ZjnePFw6Y0sgu2IDEHes/U3M
+ AUpt4FVZ
+ EIyCpD/ttR728t8YORKLqZYqwvAf3GrLxNcqkE8VQ9H3UA34bU9BylHYPAgS8ADZhkEp2mW9hnXY0s/vsTgQZIZFpoMqxmYabxUjbxKJQD0ScevOm/+2f9UHemduUAVTrCCgt1RUGDA6RQ1bBi+vxKfoyTnOrOQloMoNdQtZfYSEY7maapyKZwhLdn8zhtSO/3DwbKtbbcc2TskccBzMRySp0MfUtD2W0PkBH7B/h3xwP0drVpcFUzyJTlMESBUduOOf3uMiFw7tD2wNt/LQ1OFgLQI9uZW9kf4rU2tRcKIHHvuY5iKw8B/q5+BusDMk5v56da8ciezPcylM+DrR9a27cpTOUDiJStD09GcF3PKYvF/eOx8wHRyiUrXUNpQg6HOTL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,153 +149,36 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 9/16/26 11:31, Kiryl Shutsemau wrote:
 > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Tests scattered through the collapse path decide what a collapse is
-> allowed to do by asking whether khugepaged started it.  Between them they
-> settle:
+> collapse_possible() only forwards to collapse_possible_orders() and turns
+> its mask into a bool.  Its three callers can test the mask themselves.
 > 
->  - which VMAs are eligible, and how hard to try for a folio;
->  - how many empty, swapped-out or shared PTEs a window may contain, and
->    whether a sub-PMD window is held to a stricter rule than a PMD;
->  - whether a range has to look used, and whether a MADV_FREE'd page is
->    left alone;
->  - whether the PMD is mapped as part of the request, and whether dirty
->    pages are worth writing back and retrying.
-> 
-> None of those is a fact about khugepaged.  Each is something the caller
-> decided before asking, and the collapse code should not have to look up
-> who called to find out.
-
-Agreed. Removing plenty of these is_khugepaged checks is nice.
-
-> 
-> Add struct collapse_policy for the caller to fill: khugepaged from its
-> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
-> Every test becomes a read of a field, and cc->is_khugepaged goes, having
-> no reader left.
-> 
-> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
-> call.  That is the one change in behaviour.  The max_ptes_* limits and the
-> defrag setting behind the allocation mask are sampled once per pass rather
-> than on every table.  A table scanned early in a pass and one scanned late
-> are then treated alike.
-
-Fair.
-
-> 
-> collapse_file() also drops a NULL check on the collapse_control.  It has
-> one call site, reached only from collapse_single_pmd(), which dereferences
-> cc unconditionally, so the check was already dead.
-
-Worth putting this into a separate patch? Likely not.
-
+> No functional change.
 > 
 > Assisted-by: LLM
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > ---
->  mm/collapse.h   |  31 ++++++++++++-
->  mm/khugepaged.c | 114 ++++++++++++++++++++++++++----------------------
->  2 files changed, 93 insertions(+), 52 deletions(-)
+>  mm/khugepaged.c | 15 +++++----------
+>  1 file changed, 5 insertions(+), 10 deletions(-)
 > 
-> diff --git a/mm/collapse.h b/mm/collapse.h
-> index b115034d9018..7044dc71c7c2 100644
-> --- a/mm/collapse.h
-> +++ b/mm/collapse.h
-> @@ -45,8 +45,37 @@ enum scan_result {
->  	SCAN_PAGE_DIRTY_OR_WRITEBACK,
->  };
->  
-> +/* What a collapse is allowed to do, decided by the caller that asks for it */
-> +struct collapse_policy {
-> +	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
-> +	unsigned int max_ptes_none;
-> +	unsigned int max_ptes_swap;
-> +	unsigned int max_ptes_shared;
-> +
-> +	/* Take no swapped-out or shared PTE into a sub-PMD collapse */
-> +	bool strict_sub_pmd;
-
-Reading this variable name without the documentation I have no idea what it
-means. It looks like the wrong abstraction.
-
-Maybe you instead want to split max_ptes_swap and shared to a PMD and non-PMD case?
-
-I am also confused why you use "strict_sub_pmd" in the collapse_max_ptes_none()
-handler below? Something seems odd, as it doesn't amtch the description here.
-
-> +
-> +	/* Leave clean lazyfree folios to reclaim rather than collapse them */
-> +	bool skip_lazyfree;
-> +
-> +	/* Refuse a range with no sign of use */
-> +	bool require_referenced;
-> +
-> +	/* Map the PMD over a file collapse instead of leaving it to a fault */
-> +	bool install_pmd;
-
-Confusing.
-
-If some of these policies are anon-/ file-specific, the name should indicate
-that, so there is less head scratching.
-
-> +
-> +	/* Write dirty pages back and retry once instead of refusing them */
-> +	bool writeback_dirty;
-> +
-> +	/* How hard to try for a destination folio */
-> +	gfp_t gfp;
-> +
-> +	/* Which VMAs are eligible, as thp_vma_allowable_orders() spells it */
-> +	enum tva_type tva_type;
-> +};
-> +
->  struct collapse_control {
-> -	bool is_khugepaged;
-> +	struct collapse_policy policy;
->  
->  	/* Num pages scanned per node */
->  	u32 node_load[MAX_NUMNODES];
 > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 8889f75cf45f..cb08789b2d38 100644
+> index cb08789b2d38..62bafe509bb7 100644
 > --- a/mm/khugepaged.c
-
-
-[...]
-
+> +++ b/mm/khugepaged.c
+> @@ -512,17 +512,11 @@ static unsigned long collapse_possible_orders(struct vm_area_struct *vma,
+>  	return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders);
+>  }
 >  
-> +/* khugepaged collapses on its own initiative, so it obeys its own settings */
-> +static void collapse_policy_khugepaged(struct collapse_policy *p)
-> +{
-> +	p->max_ptes_none = READ_ONCE(khugepaged_max_ptes_none);
-> +	p->max_ptes_swap = READ_ONCE(khugepaged_max_ptes_swap);
-> +	p->max_ptes_shared = READ_ONCE(khugepaged_max_ptes_shared);
-> +	p->strict_sub_pmd = true;
-> +	p->skip_lazyfree = true;
-> +	p->require_referenced = true;
-> +	p->install_pmd = false;
-> +	p->writeback_dirty = false;
-> +	p->gfp = alloc_hugepage_khugepaged_gfpmask();
-> +	p->tva_type = TVA_KHUGEPAGED;
-> +}
-> +
-> +/* MADV_COLLAPSE was asked for explicitly, so it is not held to those */
-> +static void collapse_policy_forced(struct collapse_policy *p)
+> -static bool collapse_possible(struct vm_area_struct *vma,
+> -		vm_flags_t vm_flags, enum tva_type tva_flags)
+> -{
+> -	return collapse_possible_orders(vma, vm_flags, tva_flags);
+> -}
+I think we added this deliberately to make the code easier to read. I don't care
+enough to argue to keep it
 
-Why are we not calling this collapse_policy_madvise to match its description here?
-
-
-[...]
-
-> @@ -2943,6 +2952,9 @@ static void khugepaged_do_scan(struct collapse_control *cc)
->  
->  	lru_add_drain_all();
->  
-> +	/* One policy for the whole pass, so every table is treated the same */
-
-just drop that comment.
-
-
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
