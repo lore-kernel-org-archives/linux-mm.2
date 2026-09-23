@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9AC0C982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:55:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD27C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:55:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25936B0092; Wed, 23 Sep 2026 05:55:53 -0400 (EDT)
+	id 580416B0093; Wed, 23 Sep 2026 05:55:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD6746B0093; Wed, 23 Sep 2026 05:55:53 -0400 (EDT)
+	id 531316B0095; Wed, 23 Sep 2026 05:55:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A17CE6B0095; Wed, 23 Sep 2026 05:55:53 -0400 (EDT)
+	id 46DAA6B0096; Wed, 23 Sep 2026 05:55:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7911C6B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:55:53 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A4D980747
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:55:53 +0000 (UTC)
-X-FDA: 85244570586.28.1D27901
-Received: from mta0.migadu.com (out-60.mta0.migadu.com [91.218.175.60])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D75BC1C0004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:55:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DrQnOgmx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 16EED6B0093
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:55:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96A7BC06FB
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:55:57 +0000 (UTC)
+X-FDA: 85244570754.12.B6DE756
+Received: from mta0.migadu.com (out-65.mta0.migadu.com [91.218.175.65])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6076720002
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:55:55 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ciGN5Y9+;
+	spf=pass (imf03.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790157351;
+	s=arc-20220608; t=1790157355;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NabPNZHr5mecnLD+vNS2JghWeV472RHqEnng+5C4Adg=;
-	b=Ssp04zzJnFu3mH9uQOfnEVx7LCttjHgh875Fmh+t6WPD57xsu2OthcNyWpXQLzdBQUzGDd
-	fYTh+CWrnEtRdl7AnbDMhxPjHxpvmUhoZxBeYi2LBex1u+XJ1rZsW1LnmaEjOKOKlwHAdo
-	tICRR6oGtqymyTFcHgTwoYKSnRJJVzY=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DrQnOgmx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.60 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	bh=KLPKSI9kFj6i8iR1n3JuJChE7C8hbJOTjhwKEGT7aSE=;
+	b=0hH/5tjcuSNE2t+XLxQzCxqf7PWMRRVp9vRKCSMGTJAqGEmLrbqHnfh4niisZL3kLMZXLQ
+	Ni5FqQoYnRRrwaLljmIvRWygfYopr+H3nuDRleWdzxSPBQWOyf9D6WQ7Bvpo+MUv4WT4jW
+	DU/wOEJ471OgZmRhvrjfkmeEGaxywrA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790157351;
-	b=eG6xgfJVmi+uBvKPNtGqkq4W8irYf+U/GQ3U/oWgZUQ7LaTSEBEY2leTDKMUAvJBZap/Vx
-	fSiBoalqMb+uEzjW/T1IJJ1I+6UjbZCSi/52+9Y/rnqRvD4XBS3UmHTBI/oUxPJVUIhycb
-	2JS2Q+jmalOl+DpQV1tsIuS/j9Xng30=
+	t=1790157355;
+	b=RAL4sPInxfD1XW9VWeBUQYKXEllQbBW5p7uuO7fzv+2Ol7pwOpxg7UmTHbhK9cyEqmZPEw
+	wjwTHd286jRBAKBklFk0mL56Z2Mc8OaE+bkJzAWShauPV9z0eqFt+I8fjGQ43yOdFyNOoU
+	NK94j9N3Z90knxb3Rv+HMyqpMrMaXE0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ciGN5Y9+;
+	spf=pass (imf03.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.65 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5Is7JMNOpQLdWBTlUPSeZum1vcwwGh4zN96nRQEcfxc=;
+DKIM-Signature: a=rsa-sha256; bh=uJ1O5s9VLtgzemkGDdrkmpPu2/dB4/tV80lAnRg6dCo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790157349; v=1; x=1790762149;
- b=DrQnOgmxr1FAGP4QY/rW7CbrJf4jU5MoRo9767JyoxWhhFdihqYekvqiSzb7zrKFr0fRtQ7n
- jQEQcYWY/QZGhgL3uje5N16ufvu0+XPeIJtY3/jlWZKNAkbylKFCJixlGeKzZHpzqlwrQxNjgfv
- T0dWNTkebyUNqFnGNgwbpNWI=
+ t=1790157354; v=1; x=1790762154;
+ b=ciGN5Y9+jbEgWZ9u8vHalcYYozkWFW1c/WZqxX2fT+rzwkcLDPt7eYeNx10QhY2bYTzJnxXw
+ Q5Veq2rz0dYfteX26KvuXueXNAVqlEdAD2FeqH9ESbeRzMhFt/L8VCVMzGf6OGMH8KmSAu4vcl/
+ Yv3ki7MqFPJGH++DtehsSp/Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 585754956f1076bd;
-	Wed, 23 Sep 2026 09:55:49 +0000
-X-Mizu-Trace-ID: 585754956f1076bd
+Received: by smtp.migadu.com with ESMTPS id 2fd1ec4fc6184996;
+	Wed, 23 Sep 2026 09:55:54 +0000
+X-Mizu-Trace-ID: 2fd1ec4fc6184996
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <e8f65e6d-440b-418d-b7ba-e05ca2b0d712@linux.dev>
-Date: Wed, 23 Sep 2026 17:56:50 +0800
+Message-ID: <2f01bd33-6b51-4978-a19b-cd1fd0bd013c@linux.dev>
+Date: Wed, 23 Sep 2026 17:55:49 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] alloc_tag: Add trace events for tracing allocations
-To: Abhishek Bapat <abhishekbapat@google.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>
-References: <cover.1790025465.git.abhishekbapat@google.com>
- <06c3a9b52785e6968ea15709a55365b2342c7a15.1790025465.git.abhishekbapat@google.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <06c3a9b52785e6968ea15709a55365b2342c7a15.1790025465.git.abhishekbapat@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Cc: hongfu.li@linux.dev, Hongfu Li <lihongfu@kylinos.cn>,
+ Chris Down <chris@chrisdown.name>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Nhat Pham <nphamcs@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+To: Muchun Song <muchun.song@linux.dev>
+References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+ <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
+ <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
+ <1835413c-e2de-41b0-8225-161afa50676a@linux.dev>
+ <10149B0C-4108-4DB6-84B7-A301E8158CA4@linux.dev>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <10149B0C-4108-4DB6-84B7-A301E8158CA4@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 4ztjp499j3mfizimoyz59ay4urux4hkr
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D75BC1C0004
-X-HE-Tag: 1790157350-842227
-X-HE-Meta: U2FsdGVkX1+og2uO+8Whz2MRDq+c2OSlHA868rC27zdJblWv3VdtVcjGIfZW5kkrlssj/wiBrjWsFkOa7ETJVn1YKAGHqWn/mUq8bLUe5TwVVBsPaNgTJ7yvwM0RkpmMT4QVACmNzPxkq/gZhoSoV5109PvgTIAll195ArD8ma1spNKEuMFI/3YbLYWbioUcrYTCMTAG2PHmhQWFXEsXcXyWP4bKth01ohMzwp7GjBmRwCJ6zVHE+THx2RHjprHAFw+rISVJcXNvdfAYHHUWLJBaALHtBRenTljrzd6oGqOsSyUVDKaNk+ZFoGFqTCbfW5oH9efdomwK2XU5feiJuJjqjov/ZUPX7HJ4vKI/30/bL37maiDpeOM3+Cx1rMER1cLEua7FdYZ2MIoQWGHlRtDXXPA0IrnuGwPmDh53IdN6GAuD0S1lB5o7RIRQ0SB3ewJm36eoiLcc1mO7nXLYeNls0DjY3EAqkfNRBvsHZDmnfotH1XYajw71Z3t1BHRzE5Ui96RMJQMkhMeM7TuONCIKhnm1ajiiMnyEbTXUsHREVxJr+gemyx+YaVEcmUDPkwC8MmXKdP7bexhzs3yPu2J1QcYUtgI2/J/TbNx2P/603Yw/JDeWzBsGoEPJiUQ1ixIVbI9RqPr+zxPo42yIAeGV6Cx/iMwlsG4Z9yf8sRpdlf5xejbEVjICkPMZAKEJcB3XLZjac+Zscvsnki+Pxr089BY1jInVvGgj+PEXzzzxMautH2jNTaqeiqYcsdck0jV85QgI3men0/9tVPAe6tvl2Wka6FdghJ6DWCKFaLp1cqnu1tvDKLG9sD1fUCO8OTY4mmxUMvXGm2og62k//1nsT38xHcrbc3vtgT1+hcD1M2SOqmt+xn/yBpMTYmFdVpFGWeBTk8sclFD1ZRJyW25zRNHgCyBXiDXJj/pATk6KKUF2fVY0+6PzBLv2D6ynb+si+/zsnNbLoXRpMpO
- TZWLrLua
- EoEyzrvtddSqxmwuj9s7BBAAzvmMgh2J0pK9gu5r8BUz/TMonYXO/PHVv6UZODuT2vMhm02dK6tvg0vLaW0EQ4rCgdrVPJ7kqAvEytnJ37S5K+qusfdTEqzCorE7mXaeqOklvFdaJj67Fcj9Tx03o8xBJ41Nm7YIIH69woKA6iuJ0HqzIiRcU8q61e2EGwnmF4ivua/S9sSP+KGGfBdLLT5o8sDHA+yTYGPV5oZtREM3shO7+8lbacNqx68ZdO4MJtujhkCBjlL5C+XXRxCbKYQzRefYeKC272w5H9i9K3M18nFTP8GpFEmIgS5mBBMEgIFcJ5EacHQ3qYryfspop1LZ75lbUcZkcT7fsSVou9SB3zay9LxD6OqKD5Q==
+X-Stat-Signature: szwjfty9phgt65z67i3ayhdghnw5kj54
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6076720002
+X-HE-Tag: 1790157355-4006
+X-HE-Meta: U2FsdGVkX1/sYhymS50p3dvksG+exQwYSDa40+7qXzxE8UukSvb3DY4r1YfGubNvVZ+0WmSQYN5SFza+bqD28F+sm6yhYzvmIMQF00afNiSUqiX5RrUiDSSEa7MmUBuN8+4JBtwE3s1cOhyeFrClVje1xZlHVH+e6G68bJ8EWJLAbI6XP7MkCJRKYZXtO1BGpSeoikUYxGd3JUc13kZxEP0IA/LjFYzMPwI0H3d0uUy1VWPapxLAPy91acnymi8umwxeMyL9Vknuuu1J1UrUYb73TgMnWdxAvykCaJ0qZk8ZYz0Mo483QOyLuCh5kmMUmsYk1Z2RY0Xo1RZtEHnXIfoUi98JYZrB5Yk6mK03Xsylieqvl8bg/8Wc+dVaJdOYw9qmu+X3dB6SE/kMZU6kDVW4twsmJl1sgNcNs4I4m/Mv5CgzRL3GMesyJFw1fir4mgaopE5Uoypw/xin//KGPtiXbmPd2zHha3S6jHoeJ+yiyIya70mRmwtmU9ofSJhfqYbbsCpXG2BRtKWEj+pj778mLM0KzGrirva6DklpTnrSimh7qacaNdwE1YxiBMd6Yyeyvh0HVP5uZb+1Jd7ecGG/2+emB/RPLCVKk190MfGSB/8Xbmq0y9qiyqx9DGkYbHQAObE0cMY9Q5oklppROO9+Fyoti5haMb2q7XwAnY09f9wqJLuCcyy5iU8rb/uq8cPDPdt0VLCBLbl6OTfv59D3AbcXJ1YA42JLw1Gsjz8w1ulXWbrBsFo8kFkiSfX8vtChNBzegAPDf7Erk9gmzDCpbULvNeBTG5IHNKMw66g0qTFxd78kpyDbkhYZlVEpwCCRElayf0nkZNx1M0ZUN1m+d6gpn4WoLRjOenubwP1DlHHhzK3rgE/P5JbVgTtlW2EhnPBVM8oIeHPiBUAP72tGVnqE7GoBv4RmS7WpEh29x73fgxmYM1BTFYBuOESZdKZuC7ZOE26wCI4mcrJ
+ aic/EWDI
+ jD6Ub8gDdA/ZCq0xP6Mzcyo03m62Ig0sL11ONvx5MMk6XfpLLpMSbR8ai8Qp8OgyRzpC9QprkAKJmen7V5x3vU2956Y0ArghYJLmMhUMYogh1rRyVCOwRFLRTtVSm9G2rlEAqe7VzRSWGxdTM5WCqC1L5arvfQD/r62fc2kM/jVUHOO8otx9/qOF/cE8/zk9bGNYh8iH2RLZZGoD+LS7Bysz4Uy1NSXvxCZBAH0btBTG889Z+c0yP2tNljpSH4jO/f6Q0dJyFgYDQX/6F0SUR0y79fYXoFMxze1U76047pd/l49iWa9mLONCIefmsASAFwPIR9PgUMitW/1sdgfXkailWy6yOpf542BkXtoTex3fn/qqM67fLTjKe/SjwCFKsUJAUKjmAPzKq3k07zTDtu9T1kg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,365 +103,219 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Abhishek
 
-On 2026/9/22 05:26, Abhishek Bapat wrote:
-> The memory allocation profiling framework intercepts allocations across
-> the core subsystems, but currently lacks runtime tracing hooks for
-> standard observability tools to dynamically track the context (stack
-> traces and lifecycles of the individual memory chunks) of the
-> allocations made.
-> 
-> Introduce three standard trace events to allow this tracking:
-> 
-> 1. `alloc_tag_hit`: Fired at the exact call site. This allows userspace
->    tools to trigger and capture a call stack.
-> 2. `alloc_tag_mem_alloced`: Fired in alloc_tag_add upon successful
->    allocation. It records the allocated size, the tag, and the uniquely
->    generated codetag_ref metadata pointer.
-> 3. `alloc_tag_mem_freed`: Fired in alloc_tag_sub right before memory is
->    freed, yielding the same codetag_ref to allow tracing tools to find
->    the corresponding allocation.
-> 
-> Because the introduced trace events occur at different stages in the
-> call stack, userspace tracing tools must stitch them together to form a
-> complete picture of a buffer's lifetime. Here's an example of how
-> userspace correlates these three events:
-> 
-> 1. On `alloc_tag_hit`: The tool captures the stack trace and caches it,
->    keyed by the combination of the current thread's PID and the `tag`.
-> 2. On `alloc_tag_mem_alloced`: The tool extracts the PID and `tag` from
->    the event and looks up the stack trace cached in step 1. It creates a
->    new active allocation record, mapping the new provided `codetag_ref`
->    to this cached stack trace and the newly returned allocation size.
-> 3. On `alloc_tag_mem_freed`: When the memory is freed, the event yields
->    the same `codetag_ref`. The tool uses this reference to look up the
->    original allocation record, correlates the free, and safely retires
->    the tracking entry.
-> 
-> Also, introduce `alloc_tag_trace_key` static key to minimize the
-> overhead when no tags are being traced (the usual case). Once tracing
-> for any tag is requested, the key is set, opening the path to check
-> whether tracing is enabled for the current tag.
-> Nore that the mechanism to enabl tag tracing is implemented in the next
-> patch, therefore for now, `alloc_tag_trace_key` stays always unset.
+On 9/23/26 3:56 PM, Muchun Song wrote:
 >
+>> On Sep 23, 2026, at 11:40, Hongfu Li <hongfu.li@linux.dev> wrote:
+>>
+>>
+>> On 9/23/26 10:40 AM, Muchun Song wrote:
+>>>
+>>> On 2026/9/23 10:05, Hongfu Li wrote:
+>>>> From: Hongfu Li <lihongfu@kylinos.cn>
+>>>>
+>>>> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+>>>> stats. These stats are accounted against folio_nid(): incremented on
+>>>> the folio's node when handed to a user, decremented when the folio is
+>>>> returned to the pool.
+>>>>
+>>>> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+>>>> to the new folio and drops the memcg data of the old one, so the free
+>>>> of the old folio right after the migration skips the memcg per-node
+>>>> lruvec decrement. The hugetlb count stays attributed to the old node
+>>>> for the rest of the life of the charge, while the target folio gets no
+>>>> increment on the new node; its later free decrements a counter that
+>>>> was never incremented.
+>>>>
+>>>> Migrate the per-node lruvec accounting alongside migration. Global
+>>>> memcg totals remain balanced because they track resource consumption,
+>>>> not node placement.
+>>>>
+>>>> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>>>> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>>>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+>>>> ---
+>>>>    include/linux/memcontrol.h |  8 ++++++++
+>>>>    mm/hugetlb.c               | 25 +++++++++++++++++++++++++
+>>>>    mm/memcontrol.c            |  5 ++---
+>>>>    3 files changed, 35 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>>>> index a8358f297b65..74110a324f9e 100644
+>>>> --- a/include/linux/memcontrol.h
+>>>> +++ b/include/linux/memcontrol.h
+>>>> @@ -984,6 +984,9 @@ unsigned long lruvec_page_state_monotonic(const struct lruvec *lruvec,
+>>>>    unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>>>>                          enum node_stat_item idx);
+>>>>    +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>> +                enum node_stat_item idx, int val);
+>>>> +
+>>>>    void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+>>>>    void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+>>>>    @@ -1452,6 +1455,11 @@ static inline unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>>>>        return node_page_state(lruvec_pgdat(lruvec), idx);
+>>>>    }
+>>>>    +static inline void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>> +                      enum node_stat_item idx, int val)
+>>>> +{
+>>>> +}
+>>>> +
+>>>>    static inline void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>>>>    {
+>>>>    }
+>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>> index 519c30b338a8..76d019594b39 100644
+>>>> --- a/mm/hugetlb.c
+>>>> +++ b/mm/hugetlb.c
+>>>> @@ -23,6 +23,7 @@
+>>>>    #include <linux/mmdebug.h>
+>>>>    #include <linux/sched/signal.h>
+>>>>    #include <linux/rmap.h>
+>>>> +#include <linux/rcupdate.h>
+>>>>    #include <linux/string_choices.h>
+>>>>    #include <linux/string_helpers.h>
+>>>>    #include <linux/swap.h>
+>>>> @@ -7378,12 +7379,36 @@ void folio_putback_hugetlb(struct folio *folio)
+>>>>        folio_put(folio);
+>>>>    }
+>>>>    +static void move_hugetlb_lruvec_stat(struct folio *old_folio,
+>>>> +                     struct folio *new_folio)
+>>>> +{
+>>>> +    struct mem_cgroup *memcg;
+>>>> +    long nr_pages = folio_nr_pages(old_folio);
+>>>> +    int old_nid = folio_nid(old_folio);
+>>>> +    int new_nid = folio_nid(new_folio);
+>>>> +
+>>>> +    if (old_nid == new_nid)
+>>>> +        return;
+>>>> +
+>>>> +    guard(rcu)();
+>>>> +
+>>>> +    memcg = folio_memcg(new_folio);
+>>>> +    if (!memcg)
+>>>> +        return;
+>>>> +
+>>>> +    mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(old_nid)),
+>>>> +                   NR_HUGETLB, -nr_pages);
+>>> Why not use mod_lruvec_state? mod_memcg_lruvec_state is an internal
+>>> API for memcg, I don't want it to be exported.
+>> Thank you for the review.
+>>
+>> mod_lruvec_state() would update the node counter a second time.  It calls
+>> mod_node_page_state() as well, and the target's node counter is already
+>> updated in alloc_hugetlb_folio_nodemask() (patch 1/2):
+>>
+>>      lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
+>>
+>> For an uncharged folio lruvec_stat_mod_folio() only updates the node
+>> counter.  The target folio is not charged to any memcg at that point; its
+>> charge only appears later in mem_cgroup_migrate().  So the node side is
+>> already covered and only the per-memcg attribution has to follow the
+>> charge here.
+> Looking at the first patch again, I do not think the
+> overall accounting is incorrect. My concern is where NR_HUGETLB
+> accounting is performed.
+>
+> The low-level allocation helpers only take a folio from the
+> hugetlb pool. They do not have enough context to decide how
+> the folio should be accounted. That decision should be left
+> to their callers, once the folio enters the relevant usage
+> lifecycle.
+>
+> hugetlb_alloc_folio() is a good example. It first obtains a
+> folio, then calls mem_cgroup_charge_hugetlb(), and only
+> afterwards calls lruvec_stat_mod_folio(). At that point,
+> the folio has the correct memcg and lruvec, so all relevant
+> counters can be updated together.
+>
+> After this series, alloc_hugetlb_folio_reserve() and
+> alloc_hugetlb_folio_nodemask() account NR_HUGETLB before
+> returning the folio. This makes them unsuitable for callers
+> that need to charge the folio afterwards. Before the charge,
+> lruvec_stat_mod_folio() can update only the node counter.
+> The later charge does not associate that earlier update with
+> the new memcg.
+>
+> If a caller accounts again after charging, the node counter is
+> updated twice. If it does not, the memcg and per-node lruvec
+> counters remain missing. The caller then needs a memcg-only
+> correction, creating a special accounting protocol between
+> the helper and its callers.
+>
+> Migration exposes the same issue. The target gets node
+> accounting before it inherits the source memcg. The second patch
+> must update the lruvec state and then cancel its node changes,
+> because the target allocation already updated the node counter.
+> This works, but makes the accounting lifecycle harder to follow.
+>
+> Would it be cleaner to keep these helpers focused on allocation
+> and let each caller account at the correct lifecycle point?
+> Normal allocation can account after a successful memcg charge.
+> Migration can move the complete lruvec state after it succeeds.
 
-nit: s/Nore/Note/ s/enabl/enable
+Hi Muchun,
 
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> ---
->  MAINTAINERS                      |   1 +
->  include/linux/alloc_tag.h        |  57 ++++++++++++---
->  include/trace/events/alloc_tag.h | 122 +++++++++++++++++++++++++++++++
->  mm/alloc_tag.c                   |  28 +++++++
->  4 files changed, 196 insertions(+), 12 deletions(-)
->  create mode 100644 include/trace/events/alloc_tag.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 24420a8c06d0..29e1f7915cb9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17096,6 +17096,7 @@ S:	Maintained
->  F:	Documentation/mm/allocation-profiling.rst
->  F:	include/linux/alloc_tag.h
->  F:	include/linux/pgalloc_tag.h
-> +F:	include/trace/events/alloc_tag.h
->  F:	include/uapi/linux/alloc_tag.h
->  F:	mm/alloc_tag.c
->  F:	tools/testing/selftests/alloc_tag/
-> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> index 7f2d80a59792..2994934cf44a 100644
-> --- a/include/linux/alloc_tag.h
-> +++ b/include/linux/alloc_tag.h
-> @@ -128,12 +128,33 @@ DECLARE_PER_CPU(struct alloc_tag_counters, _shared_alloc_tag);
->  DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
->  			mem_alloc_profiling_key);
->  
-> +DECLARE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> +
->  static inline bool mem_alloc_profiling_enabled(void)
->  {
->  	return static_branch_maybe(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
->  				   &mem_alloc_profiling_key);
->  }
->  
-> +static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
-> +{
-> +	return static_branch_unlikely(&alloc_tag_trace_key);
-> +}
-> +
+Thanks a lot for the detailed explanation.
 
-The tag parameter is unused here. Let's remove it for now and add it back when needed,
-to avoid the -Wno‑unused‑parameter warning.
-Some CI bots go through each patch one‑by‑one, so we can't leave warnings in
-intermediate commits.
+One thing keeps the target accounting in alloc_hugetlb_folio_nodemask(): the
+node counter is paired with the folio's free, and a failed migration 
+frees its
+target right away (put_new_folio()/folio_put() -> free_huge_folio(), which
+always decrements the node counter). If the target were accounted only 
+after a
+successful migration, every failed migration would decrement a node counter
+that was never incremented.
 
-One other thought: what about adding a sysctl knob here?
-It would let users grab all alloc‑tag tracked allocations within a time window?
+Unless there is a way to let free_huge_folio() tell that the folio comes
+from a failed migration, and skip the decrement for it.
 
-Thanks
-Best Regards
-Hao
+> An uncharged path can explicitly update only the node counter
+> if global accounting is still required.
+>
+> This would keep policy out of the low-level allocator and make
+> the accounting lifecycle easier to follow.
+>
+> Thanks.
+>
+>>> Thanks.
+>>>
+>>>> + mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
+>>>> +                   NR_HUGETLB, nr_pages);
+>>>> +}
+>>>> +
+>>>>    void move_hugetlb_state(struct folio *old_folio, struct folio *new_folio,
+>>>>                enum migrate_reason reason)
+>>>>    {
+>>>>        struct hstate *h = folio_hstate(old_folio);
+>>>>          hugetlb_cgroup_migrate(old_folio, new_folio);
+>>>> +    move_hugetlb_lruvec_stat(old_folio, new_folio);
+>>>>        folio_set_owner_migrate_reason(new_folio, reason);
+>>>>          /*
+>>>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>>>> index 88824f783571..a5335da5d425 100644
+>>>> --- a/mm/memcontrol.c
+>>>> +++ b/mm/memcontrol.c
+>>>> @@ -1015,9 +1015,8 @@ static void __mod_memcg_lruvec_state(struct mem_cgroup_per_node *pn,
+>>>>        put_cpu();
+>>>>    }
+>>>>    -static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>> -                     enum node_stat_item idx,
+>>>> -                     int val)
+>>>> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>>>> +                enum node_stat_item idx, int val)
+>>>>    {
+>>>>        struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>>>>        struct mem_cgroup_per_node *pn;
+>>>>
+>> -- 
+>> Best regards,
+>> Hongfu
 
-> +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_tag *tag,
-> +			      size_t bytes);
-> +
-> +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag *tag,
-> +			     size_t bytes);
-> +
-> +void __alloc_tag_trace_hit(struct alloc_tag *tag);
-> +
-> +static inline void alloc_tag_trace_hit(struct alloc_tag *tag)
-> +{
-> +	if (alloc_tag_trace_enabled(tag))
-> +		__alloc_tag_trace_hit(tag);
-> +}
-> +
->  bool mem_alloc_profiling_permanently_disabled(void);
->  
->  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
-> @@ -200,8 +221,13 @@ static inline bool alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *t
->  
->  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes)
->  {
-> -	if (likely(alloc_tag_ref_set(ref, tag)))
-> +	if (likely(alloc_tag_ref_set(ref, tag))) {
->  		this_cpu_add(tag->counters->bytes, bytes);
-> +
-> +		if (alloc_tag_trace_enabled(tag))
-> +			/* Trace successful allocs with their unique ref */
-> +			alloc_tag_trace_mem_alloc(ref, tag, bytes);
-> +	}
->  }
->  
->  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
-> @@ -222,6 +248,10 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
->  	this_cpu_sub(tag->counters->bytes, bytes);
->  	this_cpu_dec(tag->counters->calls);
->  
-> +	if (alloc_tag_trace_enabled(tag))
-> +		/* Trace frees with their unique ref */
-> +		alloc_tag_trace_mem_free(ref, tag, bytes);
-> +
->  	ref->ct = NULL;
->  }
->  
-> @@ -247,21 +277,24 @@ static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
->  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
->  static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
->  static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { return false; }
-> +#define alloc_tag_trace_hit(_tag)	/* NOOP */
->  #define alloc_tag_record(p)	do {} while (0)
->  
->  #endif /* CONFIG_MEM_ALLOC_PROFILING */
->  
-> -#define alloc_hooks_tag(_tag, _do_alloc)				\
-> -({									\
-> -	typeof(_do_alloc) _res;						\
-> -	if (mem_alloc_profiling_enabled()) {				\
-> -		struct alloc_tag * __maybe_unused _old;			\
-> -		_old = alloc_tag_save(_tag);				\
-> -		_res = _do_alloc;					\
-> -		alloc_tag_restore(_tag, _old);				\
-> -	} else								\
-> -		_res = _do_alloc;					\
-> -	_res;								\
-> +#define alloc_hooks_tag(_tag, _do_alloc)					\
-> +({										\
-> +	typeof(_do_alloc) _res;							\
-> +	if (mem_alloc_profiling_enabled()) {					\
-> +		struct alloc_tag * __maybe_unused _old;				\
-> +		/* Fired here to cleanly capture the caller's stack trace */	\
-> +		alloc_tag_trace_hit(_tag);					\
-> +		_old = alloc_tag_save(_tag);					\
-> +		_res = _do_alloc;						\
-> +		alloc_tag_restore(_tag, _old);					\
-> +	} else									\
-> +		_res = _do_alloc;						\
-> +	_res;									\
->  })
->  
->  #define alloc_hooks(_do_alloc)						\
-> diff --git a/include/trace/events/alloc_tag.h b/include/trace/events/alloc_tag.h
-> new file mode 100644
-> index 000000000000..af2182501864
-> --- /dev/null
-> +++ b/include/trace/events/alloc_tag.h
-> @@ -0,0 +1,122 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#undef TRACE_SYSTEM
-> +#define TRACE_SYSTEM alloc_tag
-> +
-> +#if !defined(_TRACE_ALLOC_TAG_H) || defined(TRACE_HEADER_MULTI_READ)
-> +#define _TRACE_ALLOC_TAG_H
-> +
-> +#include <linux/tracepoint.h>
-> +
-> +/*
-> + * alloc_tag_hit is generated at the exact allocation call site and can be
-> + * used to capture a clean stack trace.
-> + *
-> + * To link this stack trace to the actual allocated memory chunk, tools must
-> + * correlate this event with the resulting alloc_tag_mem_alloced event. Since
-> + * multiple threads can hit the same tag simultaneously, tools must match BOTH
-> + * the `tag` field and the implicitly recorded PID provided by the core
-> + * tracing subsystem.
-> + */
-> +TRACE_EVENT(alloc_tag_hit,
-> +
-> +	TP_PROTO(struct alloc_tag *tag),
-> +
-> +	TP_ARGS(tag),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(struct alloc_tag *, tag)
-> +		__string(modname, tag->ct.modname ? tag->ct.modname : "NONE")
-> +		__string(filename, tag->ct.filename)
-> +		__string(function, tag->ct.function)
-> +		__field(unsigned int, lineno)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->tag = tag;
-> +		__assign_str(modname);
-> +		__assign_str(filename);
-> +		__assign_str(function);
-> +		__entry->lineno = tag->ct.lineno;
-> +	),
-> +
-> +	TP_printk("tag %p, module: %s, filename: %s, function %s, lineno %u",
-> +		__entry->tag,
-> +		__get_str(modname),
-> +		__get_str(filename),
-> +		__get_str(function),
-> +		__entry->lineno
-> +	)
-> +);
-> +
-> +/*
-> + * alloc_tag_mem_alloced is generated after memory is successfully allocated.
-> + * It captures the exact byte size.
-> + *
-> + * The `ref` pointer identifies the memory chunk for tracking its lifecycle
-> + * (e.g., matching it with alloc_tag_mem_freed).
-> + *
-> + * Because the kernel isolates active allocations within the task struct
-> + * (current->alloc_tag), this even will always share the same implicit PID as
-> + * its corresponding alloc_tag_hit event. Tools should use the combination
-> + * PID + `tag` to correlate them.
-> + */
-> +TRACE_EVENT(alloc_tag_mem_alloced,
-> +
-> +	TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes),
-> +
-> +	TP_ARGS(ref, tag, bytes),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(union codetag_ref *, ref)
-> +		__field(struct alloc_tag *, tag)
-> +		__field(size_t, bytes)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->ref = ref;
-> +		__entry->tag = tag;
-> +		__entry->bytes = bytes;
-> +	),
-> +
-> +	TP_printk("reference %p, tag %p, bytes %zu",
-> +		__entry->ref,
-> +		__entry->tag,
-> +		__entry->bytes
-> +	)
-> +);
-> +
-> +/*
-> + * alloc_tag_mem_freed event is generated immediately before memory is
-> + * freed. The `ref` pointer matches the one emitted during allocation,
-> + * allowing tools to match it to it's corresponding allocation and
-> + * call stack.
-> + */
-> +TRACE_EVENT(alloc_tag_mem_freed,
-> +
-> +	TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes),
-> +
-> +	TP_ARGS(ref, tag, bytes),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(union codetag_ref *, ref)
-> +		__field(struct alloc_tag *, tag)
-> +		__field(size_t, bytes)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->ref = ref;
-> +		__entry->tag = tag;
-> +		__entry->bytes = bytes;
-> +	),
-> +
-> +	TP_printk("reference %p, tag %p, bytes %zu",
-> +		__entry->ref,
-> +		__entry->tag,
-> +		__entry->bytes
-> +	)
-> +);
-> +
-> +#endif /* _TRACE_ALLOC_TAG_H */
-> +
-> +/* This part must be outside protection */
-> +#include <trace/define_trace.h>
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index f30ef8dd24c7..a5339767efd5 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-> @@ -19,6 +19,9 @@
->  #include <linux/kmemleak.h>
->  #include <uapi/linux/alloc_tag.h>
->  
-> +#define CREATE_TRACE_POINTS
-> +#include <trace/events/alloc_tag.h>
-> +
->  #include "internal.h"
->  #include "page_alloc.h"
->  
-> @@ -55,6 +58,9 @@ EXPORT_SYMBOL(mem_alloc_profiling_key);
->  
->  DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
->  
-> +DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> +EXPORT_SYMBOL(alloc_tag_trace_key);
-> +
->  struct alloc_tag_kernel_section kernel_tags = { NULL, 0 };
->  unsigned long alloc_tag_ref_mask;
->  int alloc_tag_ref_offs;
-> @@ -485,6 +491,28 @@ static const struct proc_ops allocinfo_proc_ops = {
->  #endif
->  };
->  
-> +void __alloc_tag_trace_hit(struct alloc_tag *tag)
-> +{
-> +	if (unlikely(!tag))
-> +		return;
-> +	trace_alloc_tag_hit(tag);
-> +}
-> +EXPORT_SYMBOL(__alloc_tag_trace_hit);
-> +
-> +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_tag *tag,
-> +			      size_t bytes)
-> +{
-> +	trace_alloc_tag_mem_alloced(ref, tag, bytes);
-> +}
-> +EXPORT_SYMBOL(alloc_tag_trace_mem_alloc);
-> +
-> +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag *tag,
-> +			     size_t bytes)
-> +{
-> +	trace_alloc_tag_mem_freed(ref, tag, bytes);
-> +}
-> +EXPORT_SYMBOL(alloc_tag_trace_mem_free);
-> +
->  size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
->  {
->  	struct codetag_iterator iter;
+-- 
+Best regards,
+Hongfu
+
 
