@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D231BC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:53:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D72C98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 05:53:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB0E66B008A; Wed, 23 Sep 2026 01:53:00 -0400 (EDT)
+	id 968C66B008C; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B61C86B008C; Wed, 23 Sep 2026 01:53:00 -0400 (EDT)
+	id 93FAB6B0092; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A77DB6B0092; Wed, 23 Sep 2026 01:53:00 -0400 (EDT)
+	id 87D196B0093; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 833406B008A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:53:00 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0DCBD406B3
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:00 +0000 (UTC)
-X-FDA: 85243958520.07.E13B551
-Received: from mta0.migadu.com (out-133.mta0.migadu.com [91.218.175.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CDA27160006
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:52:57 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SbXL1Nkk;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 620B36B008C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 01:53:34 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E39781406ED
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:33 +0000 (UTC)
+X-FDA: 85243959906.14.474E10E
+Received: from mta0.migadu.com (out-145.mta0.migadu.com [91.218.175.145])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D586980008
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:53:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xcVDaIA6;
+	spf=pass (imf02.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790142778;
+	s=arc-20220608; t=1790142812;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
 	bh=cDpl+8fAMWXWk3vxBqwwjNppy0bAFDqdJm2qys9c6UY=;
-	b=iZhSpoZFbYjPPqHCWsYFsVLBqLH6HuLHaDeJWKhMKiBBz5yJVKP3i0JCP7YmVQiPHordxl
-	y443NoL//C9dA+LdLdK9M/WGQ7v+QVGwEumyMKrqbU9G71F7PeCl0EX2wkU+EEpcjGxRgT
-	rubG89oMkI6nRkRWxpJ5SZJFMN/GIdY=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SbXL1Nkk;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf08.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.133 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+	b=UmdUrECZn0XZRH3LTF0dHO3nrxqYT6mxSRfICwvpKo5T5Q43gAjcdQg1TA0zgq7IOD9kht
+	2QHyAYLiTq2Nnn6haJhw07h0tB+PsMQY7gxbcckU4hMUpLnz813OADvwjoRhv9+jcRe6dv
+	2oMAg6IxxIYC7pSxnMfi8L494EGF86o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790142778;
-	b=B9K4YfQ+LN9bbaxFUEBmg9Ma7MwSaiiRpHshIdMNi9JpRejvxp+WdORerFIreb0QnZeBcQ
-	JYBiR+hS0iRxXPs8abG+aRgPOSk/XuuJtV/2O+J0LY3hG5e9fVz0ofh3utSrLivuzO/DyU
-	VxFBtwY6kODoxGPou0cvOvHUbULyCVI=
+	t=1790142812;
+	b=sm8ZKwl/EY+1PMpNcV0Oj923WDwRTbdQbygPX/fFO1U3USCnSz1JmHB44/oKtwjiHKACLJ
+	CJwp+FAptAz1mvGxh4l204I4A9LGksAQaX1Sgk/R2viUw9DwytkA51x+0G5fTSRZ7YkzOc
+	yqLiRN/05zbEdbxgjj8jxzYFaoV6TE0=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xcVDaIA6;
+	spf=pass (imf02.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
 DKIM-Signature: a=rsa-sha256; bh=GtzyIimaRhdHKGvlttK2axmNG4AJfexvcRRfGpY2ECk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790142776; v=1; x=1790747576;
- b=SbXL1NkkSWY+U7gyzXlZ6xqymEghVCzzdVcfFuqpBUOti+BsDZ/ATK6NoQOWS8zBFSvLJrIe
- fm70YV79Pq0EplWJhQaGDyJ33PvOMlpnpznYrn7R5tjyQSgjFeUjIHtaxbJG/8UvbJmrVMyfNHE
- +j4uSh7oLVlKPsUEVB+P0ekQ=
+ t=1790142810; v=1; x=1790747610;
+ b=xcVDaIA6AxJGFyl59gR9e+k4n6ll3IV+Ux5WtvjeEy7Uqvr9qSjbHiEbS4u701fHPsgb4MF3
+ 3WqOxoxDpUxacdcTKFiA3B63AJSLpbG3pM5hg1XYuBZPCNBId9XqzuCuQ9/OGIUbZEOkcqWxbRE
+ 3rWw06t2Zb0ebyMbx6R0GkPU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b3c3f588ab93e6be;
-	Wed, 23 Sep 2026 05:52:55 +0000
-X-Mizu-Trace-ID: b3c3f588ab93e6be
+Received: by smtp.migadu.com with ESMTPS id 4e0d178c503526e4;
+	Wed, 23 Sep 2026 05:53:30 +0000
+X-Mizu-Trace-ID: 4e0d178c503526e4
 X-Migadu-Flow: FLOW_OUT
 From: Kaitao Cheng <kaitao.cheng@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -81,20 +81,20 @@ Cc: Muchun Song <muchun.song@linux.dev>,
 	linux-kernel@vger.kernel.org,
 	Kaitao Cheng <chengkaitao@kylinos.cn>,
 	Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH] nvdimm/pmem: remove test_and_clear_pmem_poison()
-Date: Wed, 23 Sep 2026 13:52:26 +0800
-Message-ID: <20260923055226.56129-1-kaitao.cheng@linux.dev>
+Subject: [PATCH v2] nvdimm/pmem: remove test_and_clear_pmem_poison()
+Date: Wed, 23 Sep 2026 13:53:18 +0800
+Message-ID: <20260923055318.57485-1-kaitao.cheng@linux.dev>
 X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D586980008
+X-Stat-Signature: 4wsqbsbn35wpuu7nioqdtd1fcu9drm68
 X-Rspam-User: 
-X-Stat-Signature: moy7o3pqjowygofkoda7nkadr9pcra3z
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CDA27160006
-X-HE-Tag: 1790142777-225835
-X-HE-Meta: U2FsdGVkX19r6SyaTuB8bFR61fh//cZ4WBaBmXIAjvs4ab6H+n+oJMPI1FvBHlBNI8o9mFYLiLoigkq46LoLXbWUEljIxQbDOqNAelmiL/l8IwP0ZXUpJ2TFPwl0ZqAtH8X672fMISCho13zumlQN961MKw3m6w3pE1Y8BX91K4VAM9hi+m/aNhdJHj/dOOach+x97d9ZYwwmR3L8E6kyA46NUGQfJZu2r6neSTcUNM6RIj/ELfXp/NVbh89VdI9ME3xgFoiTLwfG3TlL+/jntAonxwn6uCKvaGsktE+OmLPJM2olIMSZiA2gy11SpU3D6VBTjnmEpBTateDc3RgDoppuNciYeSfETrLLx04YGK2Paz4Qs55f0DylNgC6T+bG9P/0JYTHBOcsALRoCD6LqOq9dnJ2cKLopr0ByHzeFYqy+7+XJg8H0fC3xNBZ4HehH9Le3ZvZLwCiC5+zuicZsCJxyES5WvQXcczuDWk4n7PbSrXZha26Yt3ZL9kCr5QuPBkrFRrj+S73wqMBlWzdSE98WUbdBQHh8KZhphCBrkh05r8SmN6dPJS+zhakpmQxVJz/u8nQMnWODyEcPGcQ1SEHH1PuLIu7uwJlISM9FnHQ5I2Ph2R1Xd9NfHW358YT9DfLoC1uFE6Qf/QrN6EIMsac9bUHGoa7K56VgBpFUlePLTmJY3NNJ1geq9EqlLNk1zISNE8PLGj+aC1A42MB+oBvXSI1ITE0EUP2erHzqDtSZKsBOxsOSvqv0Pz8uGIQ1fiiI9xZ+u6owwmpxgVtPHdsHKtE9Wav3ZxucBUZjqXwR3XoN/nMNs466aQRtSYrfFTTW0uldawT5It4ozdZyGp5e4Cxj9xwktTwPtkXf+bay6svTDItjqYDW2glX+4REdjLPFAE5r4KiqkQfCnlOtsVZT0PWe//NCfDuBext6/Ld/ccuCGaZak8fKUqe1BEqp+ERupavYhmN3FGXP
- mQXM8WI9
- OzNGv0rJYuRif10+GbEst/RbqWsCZ1B5OphQynxTd+cf8kW4N9hLsha7HYIlAyaDbTUPtNPe5BNZ7vP081m1TBEtu/KquqPRcwpZwcRLCp4VRDKv9Yzs2kJxwjLUzqIiRvnnlykvHgNPSmLLzVLE6rOq9ZRVwHitbHg77333a+NQNovUKbOhsbdpbyyf8wf56GBXuSptyION9rC3bW3J6cHv/WjsTxF1iAaPRRRDaEUbigwHM5ZUY0xZyyE6pXGfELzgdsWaF6A3VrJsbTMwnansKRWadlz/OXXfbg9f+TaeAPIw=
+X-HE-Tag: 1790142811-606771
+X-HE-Meta: U2FsdGVkX19agD1i0cAHa7jPg1xaTmVVh5T7fleQkO7zEbZy9/AUOkYmd78vWrt+aQ79VrOl31ilrFI5UnUKiKcmn4YwnHf3HoXkgKcsQHJlL6nNNdRYKYif94pq+ae6hfOv3Cc1XSw2Gdp2RzHxs2q6JZfCH6p9cnJisxyh9deFaXcWyLt3wRowF55hs2efceonGAS5jiclViZKU+QCcqQZbaJr+etp+gO+WK63FTEI3FGdlNasJKGofzMeEVnkt+cQrQNwVXhn2PfViyxx+qGkQebbK6eLG5h579qmEyNu8zigS9VKxzM7DtYZ+DsKSchtgeVZ5MVqAYajIRhSsZgIcejkyRkdCMUJyPvap0us2s0imT5F9aC2lApnef+w1ey0aBBUMHO7cPZRiVHgOBixBbiLjg+twcBsLWKJrnBkyPa0eOuT/V7qjXiOH60WRluUbErOZJF3Uz5CI57yFkbROxrtcjxVy7+/6pMG6UxIqqI/jXogNg79t/ZP+44foRx/yQ2ZmCXGm1lreYOTqXNN3ywRi0k1KyhUcSfGe9ds1M4vO0WvxY0O820aNfVB14MwbeERMkrwlk7PqxFXBZR501ieVCmLE+ukwgyXaw+tAAubl8WILCmVuanSM5BmgodOaKy/1EZDKMkj0hI/lhmjdVfyd4FWP+7oQNk3+5cs7qMuRiUDEafbAgV1bs4ZvBizA66/TzbGStnKiuVjFvc8oPpne7G1heUMctfLvv/OGYlvT+kvfcbg9Ck8UhRaJLxVpXzTnwM8kToPM5WCt13GAQWLClIp4hu9tWGrkkbNtaBPH5ebvfNfoBgjHgB0pbqoD+BMpL5KrxgRwmuC/A7zDvjekS3yrz5+8uToOlP9K8C70t0KI0dYabn5ObM1e0gYeUpfOAmytkymmwOlt5xkkwcnUZuXjqPc/qpQ2IhktWUzTnkl9WZTzFHRHimpxQWDR8Y69FfrVp9vz0C
+ MPw8t2yr
+ av4Z6CK8bWRlprBTEibW3FX9+2Fohy09gRY2U9y67SxKxlTNMNA9wzd6aBKDtW3r2aphS0k0SlWepOxhnqbpacyFv+NTmnUCpE5xqAgquVUKL+neUXKHMUJ92VCBiTxYJuy842SrSJoxk1SipHkN7FpyGZhva1VyopPHFQ1FIAb20xEeky86eXCUXFhQ6qylgMvFz6htvql9zuJsEBFut0ZFRa5UXiUZNDr6o4HKLDUCeOElFVWphvyfyYphas38h6C+ow9qsZfoKrDR1MfFdJlTjatdOxTS3uQDwuEfSxUCzGpI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
