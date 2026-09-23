@@ -4,159 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81EFBC98302
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:11:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7A25C98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 14:19:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 676316B0088; Wed, 23 Sep 2026 10:11:52 -0400 (EDT)
+	id BB3AE6B0088; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62C026B008A; Wed, 23 Sep 2026 10:11:52 -0400 (EDT)
+	id B64996B008A; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4ED0E6B008C; Wed, 23 Sep 2026 10:11:52 -0400 (EDT)
+	id A2C966B008C; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27A246B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:11:52 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 914A01A07F9
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:11:51 +0000 (UTC)
-X-FDA: 85245215622.30.F49DE75
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 4FBF680005
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:11:49 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=IttdNk1I;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf30.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.141 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790172709;
-	b=YgXdMctNL+ruxdvfQbP9a1+gVtWN+dBuyTh+9910qjFjDzJPf8CmiSTaDTXakpW/QhZfV/
-	6PREkbF36KHJYDMUD1SUuPpLJQ68XBGHQlL1zg04c5n0mUSYYLPkyFe7zihCMVL7zn4gQ6
-	TbdrmVqyGrMWAb+0y/zlqM2Ka+0yMeM=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=IttdNk1I;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf30.hostedemail.com: domain of hannes@cmpxchg.org designates 74.125.224.141 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 792686B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 10:19:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 06B75807D6
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:19:40 +0000 (UTC)
+X-FDA: 85245235320.19.781FDA4
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9A85210000C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:19:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ayo5EVps;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790172709;
+	s=arc-20220608; t=1790173177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7LX2hgCSw8Eo3VcIXgLYrzvPbWMXRZn6yDRkmN7Gj0=;
-	b=S4Wxriaupc6ym6B10bIL9VGYurOgDiD2BjiF4ltElvlfQXkb/Nx5M8P9msxGvEJA6Vf5ty
-	tt8fy6lihedvNTXIQU3KYx3vRKiTIKNhjHU7SkQQ3t12QXkS/lrSqN1fsqEMie26K2ad5R
-	U1nZOcbT7jqqXQVG4pBEC7HKDUevTho=
-Received: by mail-yx2-f13.google.com with SMTP id 00721157ae682-85d43f9b120so13154467b3.3
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:11:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1790172708; x=1790777508; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f7LX2hgCSw8Eo3VcIXgLYrzvPbWMXRZn6yDRkmN7Gj0=;
-        b=IttdNk1IN8bJqYYnllB1ggabdMq7NR2VsZ96lIKZGBEB6e42hUvrL6jz2h1bIsaEWF
-         YlMxNtg/MW+CnrHIOux0SpmlzcxJUnI2aWxi/QNcKSSyE2jMFbZ4c7pBq4HjCXBs2cX0
-         gedp2g+UBhjAQwb3SVl6tW0qdIqScoMtA60u+qeOIk4Vg5+7tnpQH82X1A5xMqYfvEJL
-         3FbORBu/TR21CJidBWbj9QWkuTOKYl/e+2uOPBQ8mWCzUdlNy6GrJxV8sFgYVLncuK6s
-         sXFZuaLMA+Kvnv1aplKMgdsWuOAuIhYEKiOxCyD6QLtsTiVz1qjXb61zaI5Ev4kK+DR4
-         RQfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790172708; x=1790777508;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=f7LX2hgCSw8Eo3VcIXgLYrzvPbWMXRZn6yDRkmN7Gj0=;
-        b=Gx5NR3mWOSACI49pv2scRu8LwElAmfwshh3JlNWwDxD+72NCq5YNPZAvhQpoSDaZ8w
-         ElKm2CwFiFcQimSvwxZXQkI3yQ7DSszU0gRIVlGWTopEbwvKx1hb3SYv5NRS+Iva7fqq
-         AKT65oeU8puBTrSAzq2+lwnnt9ZqmRnlBsS4E4huWCdu/WhsRGVL4fHrUivx/a8cl48C
-         s+R7jBOTtzzk0Qv8I9R1Lr53C6V44txZrmJONxJulklAA9daZ91qzEv+ZNRecCXrzG39
-         8cCA8Wdh7Nk8/07KSr7qkp3YJzC3bJndD5tijky7AnmWWzZyVZyVbA5hMnKEqkcHUdzJ
-         PplQ==
-X-Forwarded-Encrypted: i=1; AKwUvByb9yDvWRcWSgas7u3yf3oI4Fh4n+b623vv5/4tOtL7nC0WwFgb1l7CaUNzJ6cXyGgIEwJ7XKzQ/g==@kvack.org
-X-Gm-Message-State: AFuF++ml6KHjteOUH01QpdSxnxMTSSP2JSvbU9lDp0VIxrDqxSfiUkse
-	um5Jekg48yFb6Fl3WR+V185mJ4uCOcSVbJa982bl2fw2zeQP8gqFUEoJ+oTZvFR+MrI=
-X-Gm-Gg: AYBFou0bmWie2tPHZw8c2E/oABAux8E9AwaRcIUYvQ/pr42oDJOn1NaqS+9b/zXxDST
-	iRZ6Ru5oXqz7vmU7pXow8RU7rdDUKx13SSIYLrDXjc4v5FB/gR7FeXgoT0u6ZziD6LB6s5NdSoA
-	o9ReahdOgR9PwZOrovm/fEyhiQpDD60qevTpA3KEupBNgIuvZ3MLQ6nAX0PeRQUaghA4tH4cRn3
-	bzVl9Kp+w3vOotbRJg+t9DCgXhztn128rDXNXkZcnuvJogJE37hO0paBYpfv/qyXpo9xg3Fnzqd
-	gS3YWOJ5LArUMCbObmGtVvKaYJZ+kcMHSWLv9ZCY6SvXuN4vdkyvrjF/hbJNeiQGgEoLvdqRYW9
-	0wM6Vx9EBzaTdlHUY08kuToVduObBZe1E3J4YWpKqrOdIfettK33Z0PBCIg+z8ZiL9gL5HAJuNP
-	v6MxVp4Qs3KjDJGYEPn3hJ4PuiBuZ03GQWGtMtVNp67v5CJs0HN3p0HVzxtnFG4tBoYhNCP2wYS
-	RO4sHA=
-X-Received: by 2002:a05:690c:5705:b0:89a:63da:faaa with SMTP id 00721157ae682-8a45c8372f3mr11122287b3.101.1790172708255;
-        Wed, 23 Sep 2026 07:11:48 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-532eb3396f6sm20644991cf.19.2026.09.23.07.11.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 07:11:47 -0700 (PDT)
-Date: Wed, 23 Sep 2026 10:11:43 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, Rik van Riel <riel@surriel.com>,
-	Gregory Price <gourry@gourry.net>,
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <kasong@tencent.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Barry Song <baohua@kernel.org>,
-	YoungJun Park <youngjun.park@lge.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Wenchao Hao <haowenchao22@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Tejun Heo <tj@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Kunwu Chan <kunwu.chan@linux.dev>,
-	Meta kernel team <kernel-team@meta.com>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org,
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <ryncsn@gmail.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <arPeH5MPDaD95aDp@cmpxchg.org>
-References: <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
- <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
- <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
- <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
- <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
- <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
- <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
- <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com>
- <CAKEwX=NrN7-u7gnGvWX3qfHaBQcN6FKsFP-4-k76F=sxM1LJqg@mail.gmail.com>
- <CACePvbVuFULQVvi4UOrvKaJ-5kdWWU5iJH20gH-9nZ-6ZbEqMQ@mail.gmail.com>
+	bh=2QrGt4Pc68eDNguGqvx9OXhAmFpd9eQ/n73e2TGYr7Y=;
+	b=r3v5Mdr7KLUlCaykjMAiO9jR00426ehzUcQISJpfGWTA5SzMdIR+0jtpGb0pWBsE1mTnxu
+	Hs3MMuPOINkSRaWX6UoIXj+NSaAcsaTI3/Uu+BiEyQJRJhHOB8N586q61rM01UHqOxVqeH
+	EakL6uWClS0nX9jdoIrfPKiL9QaDsbQ=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ayo5EVps;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790173177;
+	b=ICHX4ie6U3FZKM99S/FO/+ndz9y3uuGek+ShrGJC2zwmI41MX7l8vGdmVtOrL/U+1K/RZe
+	n9bSlZY0ZiJ/SIfTDjQFiuKQniquQDQxcI8ByWHOy5fe1+eNIIycBYQ0JVoVW2J+4yp7Nj
+	LJY7irkBvgVZYz9p1AuyrvFQUCNSTTE=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68N8Zw1U1031879;
+	Wed, 23 Sep 2026 14:19:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=2QrGt4Pc68eDNguGqvx9OXhAmFpd9e
+	Q/n73e2TGYr7Y=; b=Ayo5EVpsou0Bg5ugqBjm1S51XWE2MeL2ndK2c3GelXo1lK
+	5hqPlah33xvQY5TiqA2OfPyJI1ZfTumV1sglYPdZ7J+lNyzWArp/be+tEWybqdm3
+	7Ve5yTDM8a3+Wg9738uiD6xhWxhhylckW5ZqezRi8Cc9Q5AEunEWV7aQhM7NO27B
+	Okbrx6sv1HOopcrolJiHRaZ338lgyLIYvzb9FxdGj5pvFeSaKMzAE4F41qbtjSQq
+	AV2hzyIV7EIC4N8FA7xw5n0/wfnzR+ZzBswzL4IaeXJmPTTJzIuRCesqj3zRD8qt
+	+Z1j6e4HHxla/ubKARuqvWe/47TX0HQ0l8xHnmJQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gske1useb-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Wed, 23 Sep 2026 14:19:11 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68NCp1Qt007936;
+	Wed, 23 Sep 2026 14:19:10 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gvbt2s7yt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Sep 2026 14:19:10 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68NEJ8X148628044
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 23 Sep 2026 14:19:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1776520040;
+	Wed, 23 Sep 2026 14:19:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C68F20043;
+	Wed, 23 Sep 2026 14:19:07 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.224.92.206])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 23 Sep 2026 14:19:07 +0000 (GMT)
+Date: Wed, 23 Sep 2026 16:19:06 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Dimitri Sivanich <dimitri.sivanich@hpe.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Lorenzo Stoakes <ljs@kernel.org>, Will Deacon <will@kernel.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        David Hildenbrand <david@kernel.org>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>, SJ Park <sj@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Jan Kara <jack@suse.cz>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+        Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Christoph Lameter <cl@gentwo.org>, Mike Rapoport <rppt@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, ziy@nvidia.com, pfalcato@suse.de,
+        ryan.roberts@arm.com, linux-kernel@vger.kernel.org,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-parisc@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v2 0/8] mm: distinguish PTE table storage from PTE values
+Message-ID: <5a0c73a1-6875-49fc-8f85-28808cd6be19-agordeev@linux.ibm.com>
+References: <20260903103002.1091859-1-usama.anjum@arm.com>
+ <1401e907-04ff-4ee5-ad03-00d88531a091-agordeev@linux.ibm.com>
+ <e4bf62ca-886e-429b-a268-3c0ef7903bc8@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbVuFULQVvi4UOrvKaJ-5kdWWU5iJH20gH-9nZ-6ZbEqMQ@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: f8x9f53pnwx7hmrctqut8endid38wj97
+In-Reply-To: <e4bf62ca-886e-429b-a268-3c0ef7903bc8@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: jvicsneNpoTmGgGlWjYDZudGR7T2so9J
+X-Authority-Analysis: v=2.4 cv=EOCTQFZC c=1 sm=1 tr=0 ts=6ab3dfdf cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=m85HiHUexkU1pPaUjCgA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1NiBTYWx0ZWRfX9B/05+SWggVO
+ 7agvUqd8dhoypg0FPuJExRBm8O+PxCJzpiY8LotmGeU/DhT6/xu2/Uj3hl/SR7hiQoNSed7OI9+
+ TYVYgcC+u3rRF7SNRXDHxINKwsUMnTo=
+X-Proofpoint-GUID: jvicsneNpoTmGgGlWjYDZudGR7T2so9J
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1NiBTYWx0ZWRfX4HZcFdO5tIXY
+ snGn2A3Db+S3OG1OjdgVbfGZEGUTHcIaKBobABDkMlLHsfwV9fFr8s4ZCTnpAdQPz9gYCpcRvNL
+ meevVhPsIY2xb+UjLfiuVZTJR5I9Zgb+lOAD2ZqjDqXobpTi1VgByCxa+Ljb1FmoZoT62x64nIQ
+ fdbmdyOp5uOBulJ9CpL0SOdFeWBnq23WXXdkmA4qDJBSelEfQbx6eUpb5+qNjYHhR6WCsLgthO5
+ OBtuzT2aI8D749f3QJiK8fKsdS96je+rKxtHth8BGDr1UF7hBJcUQiLfUmB5WMY7DowN0JvY/Jx
+ 4rIY70z4mFoa/Tic/6RAu9AhrTMaPpFzTTPwaqBT8FJxQwKV98aap20VP54g4vtUBeIGWlNiLHY
+ vnukgu+KUPBn3PwkU+WliZg6ZldU5ChvdsqyiDG96cfqv7YaCvZMLzqxSd3YW2i1WLbfmVoGiqY
+ oe0K7aX7lcrg4NwlsCQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-23_04,2026-09-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 priorityscore=1501 clxscore=1015 spamscore=0
+ adultscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609230056
+X-Stat-Signature: 3qnry3bwfsfeqew9ynjhbt6xbmjricgr
+X-Rspamd-Queue-Id: 9A85210000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4FBF680005
-X-HE-Tag: 1790172709-1033
-X-HE-Meta: U2FsdGVkX186U+YbcyVWqVBfQz5YCU0di5cBGFkDIrCK1YUjxX0NZsGshV67texSq7/drZkRMF5jr/4QoaJMZYxqu9IeEUscM6Wr2FPpIAnw0GNwcfcO0xlT61yGxFlvft7H+tmDQm+VOX9gM7xJD7jbCwr9mt8bkCaJei6DazHS6M1sWberlFySz/KRRjkpGQ/T3HOF+fWtTXDFpnbEzmIcuMhftOnLm/sKZJiy5b+GckQu2b4Xp7cZEMXeEj/7DAvuF5o6xOkeNYEDGGm8nxypn7bnOW+RxEQKgfIo9o1HaoQeOWuAZV36NnOfbk9njzr6BqU1sbl0za8BzB3bL7rAmS80nExYTJBHtj69+gYDroP5bO4CsD9qkwc9fqVKEVuxLHVDZMnIFiXF62ce9aDSSiD6DmUu/zM7obJUWwFnEXs00n1dBAjCUHrHCQpxwekyLv/8xyNK21SW9k7dUoeVSpqkmNJ7UjN1iVWf7YdQaSCYfV/TGcUXmBA6DL1YTuOb/kl2NI8dnw25n/UV22reOFzjAX24kMgvKEMxcB2tHk496A9WDZYgCDzSU/2Kr5rqawgaqOrIVDNQczPL5ctysvrOGMZmc4hA7mm0EazgITarlmZtRzaKLspSNtz4pUR2PyYVrp8N4eQ+mD+mgZ3GFTSwKK9G05jIXzs9IHD1CfU5AXPKtsnbSQdpO7ZkBZw+EqiyiCwWvdmK78SGXUky1aUsLNW3Ogz5p602Feo+IXIiFuYoOCI6+yYN43bKiBAIUlaaT034A3gvEDISEL0JM57QjWF2QHMoDhLI77pKlg9gdES6OyQu3N4GcCEGygadNAy0/uHXjwS7TmSANJnz3p1chyOw3iJtK/OKUhTOPZrWWCsGpT8aWo43vvR5Oc2W7wzO6oZ3cJTLSUVTRuiF0/MGWhamZ6Fuf/4HSS5uq6xvbNy/hQ6MfhBWdRzlbWTcpCMk9CkUWQJThe/
- IkmR9oN1
- O/Sjm+TK/UE8ti7SMvuxWBHTj9oARbGBE0r8huytn3/iYjbigsmQRoYtmocIVqUIBrzelmXKLktW66L50GatVp9Zy2efmC1czLegUhsEWUIBv+53dBkMloNRlhx2EOeAk4Cy5fX4gKAkueNjrDzthZ0bFZb/KO0fr0FMorvWnUOykHt+Hxn62Ev8dRwyUiWEIEjWOFvOIUV3eH8fTa42qXj5+Oogfs7HpEPrZFvsIl0lsu9S2OJ3QSc0E5ECBWrx1LIjxuWH801TWJhD95Nwm6yHSe/S6TBrAPdR08YmFvvgSwhVDpqyUjFwgB496APyr6Tfetr7z7Kbo9lffLVmyA+SlnO6nHt+vxedMzqeh8hzslFiYlDJyBvpXLSJY3KwzjKui2lX6AjMB1P6vFn+R00fI/WXhG+PG6eQrKz4Ocs9vEzvXpJxBurVqTcZBDtPxqS0mASfCFo5p7yA9cQYjv9FJQ5kzt0PmWuz0QjBecTt7cbxD0QkwIg3k+0qVUNitX/RnwUGSZBtNZ4yuWn/ytN0UFNVSjaMFrf6ieziw2skLyNnU6ullPtGyL5MDOLday+zNpNSdui/QxkWc0Hg9o0xAhnhwlTnEbAksvasVp1GsAEk28w5Si8wfnOpfi6va3bqYtICjirNe14SmwSEj5P+wRw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790173177-264605
+X-HE-Meta: U2FsdGVkX1+MoscNcDO6EGi70/eX6TvNVan1NScyEhcrdhldjMsOm/UETKq5uCulMEQ7FxMNyL2oIwwiZNNc523gLdqmhapF8ueIKUIVnFBIforgFhkTs+kE2Godpa4b1Z6lRMjq1YBoSgn1ph0i/27tMyBtkhR9M6uVJ8y9zbd2CCh/PjrSpaIGgUtBMZsFL49+pU0jRqH7E4pfzB8KITpwFc68AyNCZSbGfTUwgwNvX7ZPOi0OQ8nwcodw2cBXBwh7oyyV9BvQYSHoKzZCi4H3JHGG86sjyKIA7YOTv5OcCEsZF9eRWrxatknfMiZlcRau99mgU8Ktm84wIfUEUNSHBa+GtpQRx0a0nJQz6U+UQOPDCuynr9hDv1tJ7qy+aPvywo8m5dcm+yaDrN16sUQGSFgj/NnTSGeEKQrKmoDQnbv90fUYAusVIhURefm4JGmHh2MuOrBMK6QzzjMEy1xWfnSj0DP2B8j7OKW/lObnZtxQgLIWhKttYg+mTeY2cD3tdeeT61G4pRF5lKqtiw1zeRbBU3aiLaAiZb1JXwi0DPV4vH7OX6A73YfmdET1aj32sOjejWyNeZUq3cI0wTB0YXACWIeKA+7dtBimB7l73f6Tb0YtR96dVEqy7OtoAFAAjyJRQUD1VI+KJ0bte/CTXrE1i/lVzJ5fQ5nkhd4iEno9Ed+FzHjHdjX/97x25y3KcMtDB+MI/pxKmyfeyl80P/u0IVYvy2BmeIkWedN1LTP6UDQUzUuh80/WwQVLKqvxcL896kcFlC/Q9H/LW/9UXIWkZhz/AhX/9IX8HIr4BJCesSVMMQC+DXIhSGD2mz2Th9Ijd/AAszOA93eJKRoKJxRIPKLWtMpouksIF8kZKdsquStjpfBloinAS0lgmPQ0shhxg7KDegOmlznEAUAM98xXUjTotMSenxBujvhZV16doQz1bVTDZNGFPgRPMcdJBMtKBme2YUQxP4w
+ NAr7OXCw
+ VKjW0q9yYvFZ/8R9FtwO/a4ylJuN10v3Wtdr+A/X3zihfLRghjSE4IHlkcQ2kWVxhaVnpcDTM3bvBbBujoJpBTb4Y8dP5xXQpXsji2qY+IRLTVwsXhwLVHFtz74rK4YUU28BzBkYz+DrPztbH6JbXk+NSheYJ+lhwEIP0GNI5LXYUxgWg67ocIlOvNSgWIQZ/zjlVQ2k+dTCGtWncADLJvX0v9CqcdrzIe2wA9BhppN9xRcgvUcn8b0rxYrFW5cJ/rH4wLr8DvILQ887UizcKNlkq8QxJYFE6NvT4hzrw3N+GFSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,43 +184,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 09:37:48PM -1000, Chris Li wrote:
-> On Tue, Sep 22, 2026 at 7:33 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >
-> > On Tue, Sep 22, 2026 at 8:23 AM Chris Li <chrisl@kernel.org> wrote:
-> > >
-> > > On Tue, Sep 22, 2026 at 4:59 AM Rik van Riel <riel@surriel.com> wrote:
-> > >
-> > > Yes, I can agree on what you observed. You are using anon + zswap on
-> > > that app alone. That is not what I originally asked.
-> > >
-> > > My original request was for the whole system: what percentage of the
-> > > total system RAM size has been swapped out to zswap.
-> > >
-> > > Because when you have 100% of zswap out, it will likely trigger
-> > > different kernel code path on allocating memory. You might suffer
-> > > global memory pressure you did not observe in the single app memory
-> > > pressure case.
-> >
-> > What does this 100% figure refer to? Pre- or post- compression size? I
-> > legitimately cannot tell.
+On Wed, Sep 23, 2026 at 02:47:08PM +0100, Muhammad Usama Anjum wrote:
+> > However, is there a particular reason this series is against mm-new?
+> > Should it be against the master, it would be easier for me to try it in our CI.
 > 
-> The 100% I mentioned above refers to the pre-compression size. See my
-> previous email in this thread for details. I have been asking for a
-> max(%) number in your fleet for more than six emails now.
+> I think, mm-new is the branch in which this series would be picked up. This is
+> why its based on that. Are you referring to mm/master?
 
-Because people keep telling you that it's immaterial. The job of the
-compression layer is to make pages smaller. It has no business
-deciding what is "too much", what is "too hot". That's the job of
-reclaim and OOM killing. That's the job of cgroup residency controls,
-of things like MGLRU's min_ttl.
+No, to the Linus master.
+I will try to backport it and give it a try.
 
-You have absolutely no way of knowing what a safe threshold is for
-every usecase now and in the future.
+> -- 
+> Thanks,
+> Usama
 
-The argument isn't we need a bigger limit. And I refuse to haggle with
-you over what the precise value should be.
-
-The argument is a to use an xarray and keep making pages smaller while
-the policy layers deem it reasonable to do so.
+Thanks!
 
