@@ -4,125 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D5EC9830C
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A200FC98302
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 13:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20B756B0093; Wed, 23 Sep 2026 09:32:21 -0400 (EDT)
+	id B10076B0096; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 195EC6B0095; Wed, 23 Sep 2026 09:32:21 -0400 (EDT)
+	id AC19A6B0098; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05E336B0096; Wed, 23 Sep 2026 09:32:21 -0400 (EDT)
+	id 9B2276B0099; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C64A86B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:32:20 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 636821A07C4
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:32:20 +0000 (UTC)
-X-FDA: 85245116040.13.E4705A9
-Received: from mail-vs2-f12.google.com (mail-vs2-f12.google.com [74.125.227.12])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7C1EEA000C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:32:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jKuUPloH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.227.12 as permitted sender) smtp.mailfrom=yizhang089@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6DA466B0096
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:34:22 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D9966C07B2
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:21 +0000 (UTC)
+X-FDA: 85245121122.22.189D530
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 107F64000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 13:34:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LwVkJj9Z;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790170338;
+	s=arc-20220608; t=1790170460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NG4JXegZ//HjY70YRieR3wxtkpzy8rT/C0WH6S4BaKE=;
-	b=BHAOJLwhHR27t9RdAa62hpuLKD2Pp1C/jM5hd2ZL7slCe1s8G4fRqJpPzNpctISNQOKvWU
-	Hk/pS7zfrOGmDmQTSqDD42DxKfBXPYmwsxiylTVESo9t2qAiOouoMdOiF1ujoq3FObXx/I
-	X0Gm6/LBqdrYsJKdIViYlNCflrr+hV0=
+	bh=nAi96pIQ95HWh44XRESIidPNe1NFI5clCoocx23jiPE=;
+	b=MDcvVpSAIYmR8lUwAhSnjlKqutMIgvktTYOpvG7l8vk89/r9tVp225t+aqlGp1PvoaRX1S
+	PTs+Ouz7gVump7Q92oDww/tQNMGsXwYCGYfzf2caJvvuRMIk7NAQVyf3mUPAdu1Mv8DT9D
+	h+OgyYcooSyXUF34QRd8jzV+Yxu7f5g=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jKuUPloH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of yizhang089@gmail.com designates 74.125.227.12 as permitted sender) smtp.mailfrom=yizhang089@gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LwVkJj9Z;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790170338;
-	b=phwCnPXU7YDTiHcu7E/3qnnxf49XGbLqiX2f8XcqwPCe5AkCBs9tTXvJ7UT8VDm+HM9hnl
-	uoJjUmDBA/j4LDsx8iHGEqv3MD0phZ2MwqILQcT3mAHCUIs5R/uFvnbtzIhSqIjGrMT551
-	OMzpQWIKzKjJZu/r3AGQADZqNBEoYzQ=
-Received: by mail-vs2-f12.google.com with SMTP id ada2fe7eead31-785686d2112so299738137.3
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:32:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790170337; x=1790775137; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NG4JXegZ//HjY70YRieR3wxtkpzy8rT/C0WH6S4BaKE=;
-        b=jKuUPloHD5HFsX+1NWVe5ZFpkxVpiW7809qUTA9psKIIALIISEIO4bAVzP3jMjDzG9
-         EwV1NCzbOuV/jgOfBeTHbv1chAH2uRprpcVFQF97psCYz9Q1bN2SkQvYa2TqkJmUuXj2
-         sMlPQ//ixKLVru+ovmnTli2Mqi47bOx8nJ3LVKmz9pDeuwjE6J+TeBqwgAdyaOe5ldYz
-         jh4z/Ap4NNwNFcKtyHw/t9QTFL2KEr3QQ6i/yiiXwhBghTaQCFP93sUulo1YfPXQ0Dec
-         XSQaBI+oMSs+uCR9mPoWbBfdxGpDW0u8lKCyP6qvw6JLavsqysRm7+oHydsZfLGhMvuk
-         CvsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790170337; x=1790775137;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=NG4JXegZ//HjY70YRieR3wxtkpzy8rT/C0WH6S4BaKE=;
-        b=EmY4ukg1PLnNMZExPpvj3QfEAx/fLtrTyG8IrJ6deG7sHY8FMnfhEEfbRZdgJgPKDu
-         /fEpAbm6HBjmFSRu5Qpvkv/+3jauvszwMzIZAr3tAyr1acVpd6kutnLjhv4XjioPQ9K5
-         vGcR/HH5VZqp2gBo1OQJ+C9akvAvZHhM76ehrXkgZOucibrTBjh4iusad08hDirCyCcF
-         ra7+GOc2PALY+nn9qedjFH3xQowuhN1tf9QamaC3zD7LNTr4Fh9J8d/Bldw2ubnzoZcA
-         7y01vQoSvR/lPwwUd1r3ORfR10w6ykTYSaxgx6xbzk19CcB49cafc/TR3F7HOiCpaxZu
-         Sd1g==
-X-Gm-Message-State: AFuF++nF6uJ6XnrpvrPPSZLMbFmi4tMdLRF7H4noA2sZFKRPnj/87MA3
-	T2H+ENIYfWao51y6Hq73TedHLJcjGj3+sqTpbOjhoJ95DaT0PEI0ayHW
-X-Gm-Gg: AYBFou3+aoizYuMf/dCHj20iHpsGaX0mgpLS2JnHHMqzM3Gu8mfF+CZN7t2RqXq6A6K
-	J//koa5cnkOTQcQdnd3IFXOzucbqwxXn3xTv0gMVawCUx+Hj4RAx/WuPGRMz7rR9XWJNWx+cJMM
-	BZWCktcce0gSyosUfRtac2TzIQtwBHAJwT9TdQKey1Ixq4RHEUOeuh8/H8SfzS0uGcUUQfuwbds
-	dKl51ZaH3ndoJBO4FD2PCCF4yp40YLLE2YKOKmd/m7a2oy9cFbjMSkEihKaFb/U77eEUOcfs6W4
-	r1GxQ0/t7AKqIP8kxeoBXh+AVyRXZUX+yI/XtjLSLu/zbRUqTduHxdrFEHYv9pW3v4mFm5czBQD
-	CqGG6Eq8CjeNmHJ17vmyC2GbrQgyCGnmmUV7ERh2iUs6IVQuPP8NAuL8mqERbPBBTsQy/dgK/It
-	7rM4pkEll3BFnHNnmFhweHEqvlD1qTtsKGYbP7QB7tERdyagv5yxaJhhzg9UewZbp+j50/Q96xZ
-	fLCOmZTJbJqRRSH8Ec=
-X-Received: by 2002:a05:6102:38c7:b0:7a8:1ff8:5741 with SMTP id ada2fe7eead31-7ac1b610a6fmr2117008137.10.1790170337260;
-        Wed, 23 Sep 2026 06:32:17 -0700 (PDT)
-Received: from [100.125.248.95] ([124.70.231.46])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9851e8c4f2csm922107241.10.2026.09.23.06.31.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Sep 2026 06:32:16 -0700 (PDT)
-Message-ID: <4277af28-222b-49de-9372-4087f1a7e942@gmail.com>
-Date: Wed, 23 Sep 2026 21:31:46 +0800
+	t=1790170460;
+	b=72r8tOd8C/b9haxmfqI9HhIYYZaC5mBa4tmfz+osQqcaW1vf/LSR5EU0HLZwMHy3TscLPC
+	4sSyNH9Gqf/F4Ixko35iFWcZBHZYTBniGYJaeruGBMa33Q0xBjn3lzazXVvte3Of1T6ZsA
+	BDE6giN3rp8DSHS95Ck6LlApet1dhN0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 925D7600AA;
+	Wed, 23 Sep 2026 13:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1AC1F000FF;
+	Wed, 23 Sep 2026 13:34:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790170459;
+	bh=nAi96pIQ95HWh44XRESIidPNe1NFI5clCoocx23jiPE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LwVkJj9ZkDQNHUczf9zcG7g0DgTpgrnyciNJ/Cx7aktOA81IDL4565Pa4ewbNgbnL
+	 sOxlBJ0HEeSge6kIxE/QzVDN5gDP0zv/C3w3Zablx/uNLD1Tw42b1DihXctbcdWxvA
+	 qEAZu/JL0E0D42ihlsjAJDN7CWFYRBQ5uIcV2gu0bQShATr7as45XPupetHkHlLoAE
+	 UaEbw5YtE8p2mo6O0YDwAOTETtZwfbe50Qx4/bcBIf6wGFN2Db7/5+qGLWgFOlj8k/
+	 l2XE3/dkDQ9HcGI6hM+MbeGmMg24gbbhpHiS7j91lf3l8I+pmVLM/e+UecWuYd1O/i
+	 C07+7kOLqzv6g==
+Message-ID: <63f49a8b-cabf-4b93-a7e2-76b62c463a90@kernel.org>
+Date: Wed, 23 Sep 2026 15:34:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] mm/truncate: fix data loss when truncating
- straddling large folios
-To: Brian Foster <bfoster@redhat.com>, Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org,
- akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com,
- willy@infradead.org, jack@suse.cz, ziy@nvidia.com, joannelkoong@gmail.com,
- djwong@kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com,
- chengzhihao1@huawei.com, wangkefeng.wang@huawei.com, yukuai@fnnas.com
-References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
- <arKHDqdDkQajvAk6@bfoster>
+Subject: Re: [PATCH v3 11/12] mm/collapse: declare the collapse interface in
+ collapse.h
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260916093145.4022188-1-kirill@shutemov.name>
+ <20260916093145.4022188-12-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Zhang Yi <yizhang089@gmail.com>
-In-Reply-To: <arKHDqdDkQajvAk6@bfoster>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260916093145.4022188-12-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5f6qqrfaordwsghp5tjgbz1pzozmzzig
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7C1EEA000C
-X-HE-Tag: 1790170338-696176
-X-HE-Meta: U2FsdGVkX19+8cncdWSvdly2or+/BbKEYexBSYTfrPnZJ5oRd4FNmbvTKCUmv+P3tlZM8ZTe+dotFlAGPydM1XxyFR8zxuvmXEmH5GRptSjy5SwxTAq3eN+/LbKv47700g59LqLlxMsdFQMSX5l/ZOd//jHoBHwsXC9RUKyBITZrI43LqKZSB81h7/PyHc3d1p+Ft9cTLsBDgUl8R20iBZupS/AXrb1k3cs1K6v+aUpvNfxRLpweUMQqLmCV9xrpVb4Fzd+qcfdBzF38/u4fTiSP6U2l5N5OLSWxBxtQU5kPblvNqdzoQxwlrWk4+1OJ1hVWE9KRF89hoXUwXqXSa4RB6sQQWISUVAKUCIt2ewHWb85ru0lnVp0MG4q8o6tb5b/HQvHnBsuKBso03Vynh7385Kilhp23i6jIPF0pYQxBoV+pxWhfjrDt62CHbUOEycxlD6abPbrCq47024Qj1mqYQ3DMI76wzesyFSApBxco+lfIwLtorsVX3RnchCq8k39hn27AMD1uOewmZKnoaEWw4DxRWrolkYhRRYlqAIFcKUecHrNQYVlPVfCdxBnyydU/EZQJ/9tImY8Kun0TSdS3rJ9vr7oWBsOL4ZScFXRx10ZwSDbt18YfzotjllQI5Q/5O/I46RQDGMFr/gTWF/4kI9weB7hTC0HLij4lKq9aHLIBeYvbLD97ytga3mTANdsgC2TP4XsVfsdQzTJ720arZdUaE7CuFvd8WZazwgdGVQHF187kKRwZ+i0QdaLKjBzEc7X4HasMeOLplOI61gfBCAr4p7k3RMB9QQDgJ/BuAYcGtBsXxgLay5QP3w3KbkWOPkZRVnhMFrOrzqrwMGAdsbZ+48SVFZOscKWjGngUZfsgPmt5yydnVRVC0dyZskLhkGIvcruVY4m1XkhYeBLEezUeoU3+njKJDnUtyRBj3L6ja17JwQfHlrMC8c+igXfY1Ch7PfTY7mDjT+Z
- sa7OrSat
- nbozit026ioqXdBRmqVWoOaOI6eGgminDdKh04rASOtI7KY8gYFXGgUolhUjZ3EOabwtBOtF/31BXditVcUYGlcCzwicE8ZbaFNL34UmVLF+3p+psRoYvXFIMDh+tx+N4sDmCuuvHF7/ofOnPiSOtXFLNR6JhIkQNpEIR6VoHlWfYlvCEKZEpZiymgWCptzpxffqAo8S7RimLHQOfAzrY6sw/jQSmxFAEDDFUdEWOP9Lta+p8BOWXHf8f8XJ6gGmTAeQfZEgdAOGmgWXwbDHYCu2twhC1x5UZRaVhsZ2jkrmp6xiGso4yAIJCdBbv+SNnQ7qSQ14+Qec0+UvbeOrqRS5fkPe6jDAcsDbh9a+3xeZdKUy3N/fXRZixA8NC0nOJGEq4NWq1omGkbl88RUJIrllYeDQ0kUvuYoakhNER85G29pvIkE+r8ZIf1etVXcpfobgWGM11EZ4lE/MBmKJ8oNIX5kRmdsO1Bs1lkCDA7GRJohtjCfDunKOuJg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 107F64000A
+X-Stat-Signature: suikiymt34sp8bme8qryoxf6a1amn8c9
+X-HE-Tag: 1790170459-813219
+X-HE-Meta: U2FsdGVkX19GoWID2fgYjjH6zzAWgIDsY5f6RR/S7rSnVZyE5O+jadzYT0b4TzzUUSaMqMUyC9QnNRtBejoEX1CijoGmoAgxh9hwv1011+Rkk0vKUF/cOQSnKkCMa6HJ2zjEVlXyLHUX0u3D0oVa20nVfY9hGJ7ni7GUi2CWCKZRID/sEOzZ9RCu47WyyNALemvxF9bkgHdsBuT5P12yKuk2JOWosNvkZwjFvlJrbpiQZQY24yGz6oEgqcBcq/nhKeAuLb0rtafZhdQsRiU5PK5uZclb95tAIrmEEUwSDN6x+d5VVKXoCGuPThml6mW7E5BbAO4XlqMd/TGJQ1jdPMtf0BVedSn9g7EbIKL070BrSFh5JGr64TPY8LM8UdzSVq5mfDOZrGYI2la6u4jKvuUMFUTFsIfP6EOJVlSOCOdU644Z5CQvr52k1L/AldhEpMpInnLOwgICy7BMDoGfEn0RcN0MtxxDklSg6ktkn9UL+WY6/cxQoOEzi10fDschlPYrpUQ6tIlBtl/+9Qm2Dip7AQ0AOPKwsc1QZqXn6fh+x8P3w4h7LeBh/xfKIHQHh4TLrQZEL9gkhXe/g/K9OUXQ4N0WQU3W6mtISsBM6y5886wg60XCx+2lv12XAPde59l18EGcHA9KLagRS7NVRZq2nRty6A37KnZGD7T+fAACdFyWxnX2cTVtjZAe6P5pS4N9H3n5kD2XL/1fxKyUjKkFlpBf47DNyiUvGv7KZwTgE9fNefUDoPVd8SJTxkozu79Yne5aATPDzN+iUoqzFnrDI3XGg3/4tpm6cWSwlPerWZw5z/pbgtT6mifkjMKTOuM5EsI98qchPpU1x3c7vOitBWT4u5gC5rBaUXt2FDiw6Kv/OnceDMG1hub2qewvnYL6mUps9X75yW+LhwRZ1cclVl/vl0xVrGQbOeRlOMqnmB8pdgeex4HnvrWdM/5ioabW6e+94CkoOdXxZ0T
+ jOEsKWOw
+ mI8LiWIXm+92yGRAbrQ4UmjQdTzByCRTz4TIIvnxCBxyDkIrdS2Gssxn/MwOPU8gdNFNdweI3wEI/yHFv/17qmmIfeauHDb/M6bWPgTWCGEV7yBne10P4sbUYwIRUbN93MgINO5j0IkJNihucS/0rCYNfbKIuYliWsnIqcR2/O8MBQD89yoA6q33FLH7TP+vE/BjJqBaGNnyxq58Y5JWFfkJrC6RcVPG8uO3cLkxLzCWf/uuYMtflut8NXD6wrrS3VKo8NOEuU1UoA5jeKg623eDFJMY7KX8/l85PhH7N+cL178WQD/zHHoyRIfukJPs4My6i
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,122 +146,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/2026 9:47 PM, Brian Foster wrote:
-> On Tue, Sep 22, 2026 at 07:06:59PM +0800, Zhang Yi wrote:
->> From: Zhang Yi <yi.zhang@huawei.com>
->>
->> Hello,
->>
->> This is the fourth version fixing data loss when truncating straddling
->> large folios caught on the upcomming ext4 + iomap buffered I/O
->> conversion.
->>
->> When truncate_inode_pages_range() punches a hole or truncates a file,
->> truncate_inode_partial_folio() splits a large folio so that the caller
->> can drop the in-range sub-folios while keeping the out-of-range tail
->> intact.  This series fixes three distinct problems in that path that
->> can each lose the valid out-of-range tail of a straddling folio, plus a
->> follow-up that clarifies the return value semantics.
->>
->> Patch 01 aligns the truncation boundaries inwards to the mapping minimum
->> folio order in truncate_inode_pages_range().  With a non-zero min_order,
->> folio_split() stops at min_order instead of order 0, so a boundary
->> computed at page granularity can land inside a min-order-aligned
->> sub-folio and the truncate loop drops that whole chunk, valid tail
->> included, causing data loss.
->>
->> Patch 02 looks the end-edge straddler up by its page index through
->> __filemap_get_folio() in truncate_inode_partial_folio().  After the
->> first split the straddler is unlocked and only transiently ref'd in the
->> page cache, so the page pointer derived from the original folio can be
->> freed and reallocated as a different folio in the same mapping, and the
->> mapping check cannot catch it, which may cause incorrect splitting and
->> potential data loss.
->>
->> Patch 03 reworks the contract between truncate_inode_partial_folio() and
->> its callers.  If the second split of the straddler fails, the function
->> reported success unconditionally, and the leftover incorrect end
->> position could cause the truncate loop to drop that valid tail.  After
->> rework, it tells the caller the exact page range safe to discard via new
->> pstart/pend out-parameters, so the truncate loop never touches a
->> straddling folio that still holds valid out-of-range data.
->>
->> Patch 04 clarifies the return value semantics to "at least one split
->> succeeded", which is all the shmem caller needs to decide whether to
->> reset its scan loop.
->>
->>
->> The second patch fixes a pre-existing race issue that is reachable
->> today, so it is Cc'd to stable.  Patches 01 and 03 require a dirty large
->> folio that carries no filesystem private data, so they are not reachable
->> on current filesystems.  They were found while developing the upcoming
->> ext4 iomap buffered I/O path[1].
->>
->> Thanks,
->> Yi.
->>
+On 9/16/26 11:31, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Hi Yi,
+> A collapse takes four calls:
 > 
-> Modulo Jan's comment on patch 4, this series looks good to me. FWIW:
-> 
-> Reviewed-by: Brian Foster <bfoster@redhat.com>
-> 
-> Brian
+>   - collapse_control_init() - set up the control a caller carries;
+>   - collapse_scan_pmd() - scan one PTE table, under mmap_lock;
+>   - collapse_run_pmd() - collapse what the scan found, no mmap_lock;
 
-Thank you for the review!
+As discussed, having a single collapse_pmd() function might be cleaner if that's
+easily possible.
 
-Yi.
+	collapse_pmd()
 
-> 
->> [1] https://lore.kernel.org/linux-fsdevel/a638a8fb-c184-4069-ae33-379ec12cd514@huaweicloud.com/
->>
->>
->> v3->v4:
->>   - Move the patch that fixes data loss when min_order is non-zero to the
->>     first patch position, aligning start and end in
->>     truncate_inode_pages_range(). (Zi Yan)
->>   - Add patch 2, fixing the invalid folio2 issue under concurrency when
->>     truncate_inode_partial_folio() splits at the end position. Use
->>     __filemap_get_folio() to obtain a reliable folio2. (Jan Kara)
->>
->> v2->v3:
->>   - Rework the folio2 validity check logic to fix the invalid
->>     folio->index issue. (sashiko)
->>   - Clarify the pstart and pend setting logic and the corresponding
->>     comments to make it more readable. (Brian, Joanne)
->>   - Split the patch into 3 small patches. (Zi Yan)
->>
->> v1->v2:
->>   - Export pstart as a new parameter so that the generic and shmem
->>     truncate paths don't need to recompute the start value from the
->>     return value. (Brian)
->>   - When min_order is non-zero, align [pstart, pend] to the inner
->>     boundaries of the folio to ensure they do not point into the middle
->>     of a large folio, which could otherwise cause valid data within the
->>     folio to be incorrectly cleared. (Joanne)
->>
->> v3: https://lore.kernel.org/linux-mm/20260916092450.654408-1-yi.zhang@huaweicloud.com/
->> v2: https://lore.kernel.org/linux-mm/20260909062339.473816-1-yi.zhang@huaweicloud.com/
->> v1: https://lore.kernel.org/linux-mm/20260903115018.2034541-1-yi.zhang@huaweicloud.com/
->>
->>
->> Zhang Yi (4):
->>    mm/truncate: align truncation boundaries to mapping minimum folio
->>      order
->>    mm/truncate: look up the end-edge straddler by index
->>    mm/truncate: fix data loss when splitting straddling large folios
->>      fails
->>    mm/truncate: clarify return value of truncate_inode_partial_folio()
->>
->>   mm/internal.h |   4 +-
->>   mm/shmem.c    |  13 ++---
->>   mm/truncate.c | 128 +++++++++++++++++++++++++++++++++-----------------
->>   3 files changed, 91 insertions(+), 54 deletions(-)
->>
->> --
->> 2.54.0
->>
+>   - collapse_control_release() - done with the control.
 > 
 
+And as discussed, I hope we can just get rid of a release function that's not
+actually supposed to release anything right now (unless I was missing an update
+in one of the patches).
+
+
+> All four are static in khugepaged.c, as are collapse_possible_orders(),
+> which says what a VMA allows, and the revalidate a caller needs once a
+> collapse has given the mmap_lock up.  No other file can ask for a collapse
+> without them.
+> 
+> Declare them in collapse.h, with a comment stating the order they are
+> called in and who holds the lock over each step.  Each function says
+> what it needs and what it does where it is defined.
+> 
+> hugepage_vma_revalidate() becomes collapse_vma_revalidate(): it is part of
+> what a collapse offers now, not a helper of the daemon.
+
+Is it just me or is collapse_vma_revalidate() an odd part of this interface?
+
+You'd expect a matching function that performs the initial validation on a given
+vma.
+
+Maybe we should have a
+
+	orders = collapse_vma_validate(vma)
+
+that really just wraps collapse_possible_orders(), an expose that instead to the
+collapse users?
+
+So they'd use collapse_vma_validate() to then call collapse_vma_revalidate()
+after temporarily dropping the mmap lock?
+
+
+[...]
+
+> -static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
+> +enum scan_result collapse_vma_revalidate(struct mm_struct *mm, unsigned long address,
+>  		bool expect_anon, struct vm_area_struct **vmap,
+>  		struct collapse_control *cc, unsigned int order)
+>  {
+> @@ -1264,7 +1264,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
+>  	}
+>  
+>  	mmap_read_lock(mm);
+> -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+> +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>  					 &vma, cc, order);
+>  	if (result != SCAN_SUCCEED) {
+>  		mmap_read_unlock(mm);
+> @@ -1299,7 +1299,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
+>  	 * mmap_lock.
+>  	 */
+>  	mmap_write_lock(mm);
+> -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+> +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
+>  					 &vma, cc, order);
+>  	if (result != SCAN_SUCCEED)
+>  		goto out_up_write;
+> @@ -2741,7 +2741,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
+>  	return result;
+>  }
+>  
+> -static void collapse_control_init(struct collapse_control *cc)
+> +/* Set up a control before its first scan; cc->policy is the caller's to fill */
+
+
+Kerneldoc please. Applies to the other ones exposed as part of the same
+interface as well.
+
+-- 
+Cheers,
+
+David
 
