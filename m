@@ -4,129 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6B2BC982FA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9A4C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 02:29:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C3876B0098; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
+	id 8EF2D6B0099; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19BA06B0099; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
+	id 8C7606B009B; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 062176B009B; Tue, 22 Sep 2026 22:29:13 -0400 (EDT)
+	id 7DCC26B009D; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CEE0E6B0098
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:29:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 602881C3348
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:12 +0000 (UTC)
-X-FDA: 85243444944.16.E957C62
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9B023140005
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 57B796B0099
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 22:29:14 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDE3B140682
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:13 +0000 (UTC)
+X-FDA: 85243444986.06.5684C36
+Received: from out203-205-221-245.mail.qq.com (out203-205-221-245.mail.qq.com [203.205.221.245])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4FB0C40006
 	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:29:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cNaX9bUv;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=vz2vN8vm;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf07.hostedemail.com: domain of zhenghui.hao@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790130550;
+	s=arc-20220608; t=1790130552;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
-	b=wMz4u9+ApHRxIz5mlL3SEI0BEkYhAEdAUZff5TY9Gp9wFmPLs04vuT6xcsI9tPsue2UMeT
-	nFEv9nus8oHlJ3V4fa5YI3BEqbJcF3fY4K0Elr+7Je2UAVCEx48Cuy3V2P+iU6NzJOzLBs
-	njkMCVK4BgqgY98EhFgEUSH5tBDUQjU=
+	 in-reply-to:references:dkim-signature;
+	bh=c2/UpacLji4hUGx/IMN7tFqHhex9cxgusaR9P8+O/3I=;
+	b=C0bUj/4j9CFja/vaxEaeQRliPDCCMJ6uY3H1XEAZdqpjQcCmOFpyGmEklYE7y0h2eMfBEI
+	13G8qXU1l7M3X4QP7txRoXuIMBT4JK68F2RztPOw1llx2Tk6tGjgndQe0lcEYyIrSKMEam
+	632j2CEW8PnXr1OJvWK2jC4hz76kuFg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=cNaX9bUv;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf07.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=vz2vN8vm;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf07.hostedemail.com: domain of zhenghui.hao@qq.com designates 203.205.221.245 as permitted sender) smtp.mailfrom=zhenghui.hao@qq.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790130550;
-	b=MgzsWf0sZCXv9uIwDF/8YWSsfs4/laXojHAutuzSOKVpkL4EtWzpLSU6eBvhzxQkJ28tPs
-	XFrliNOWAZAVy0vD9TnZhf6a422SEXOYLBP0IDNEvOfN0FMHz73219NTsBv2/aPoJOl+wD
-	cMnlMApv0T1ZmpsXYNqO04fad/BjbZM=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-93be6d3f424so132437285a.1
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 19:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790130550; x=1790735350; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
-        b=cNaX9bUv//XUiJPL9BkPypiBkYGMlLxJjFji6ufwsiQNtJGNwt1zOmSxdygUplhN4v
-         EPCe4PpUVaYCka2PAokyQptURRIEkE92CI6VTM+bpvumvi6NGA7aT1YxZf6RfHtC7mO1
-         mp71He7/GA+COuo2v2JTXCRTt1zLR/xzs2puwbqJJWkWiYzMxUCoUT2OQ+dsZ91LWWXC
-         RrpR9kZU4EJxBBv/mhKd1mwRDyVJZu0Z0+3ObuviJQAacfXHaBf7RHRt1eBuwujuM266
-         7PD3FpkzUofGFxi/RhPMjxPeoV48Nwx/PkhsjrXO6l12KssEDbQ2d0yzAA5HfeJxj7vD
-         Jrhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790130550; x=1790735350;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yWWHCDlvz4uiBBqUhZH0RsVaOlDUvVDcH0PiwNo8xZc=;
-        b=adFoVnJSyIUXG51IDKylzKT1oxXcUR9qq0r44EC8k2HgXndXVHsHv/0vIlO5hVIkEk
-         c4CFVMQ3yqRLojU5MwzlRfacAmiK+EzHFAUGTIJb4K3/kaDrPi6gcnDga8YfrlvJEkOY
-         MmmsxUml/sv9QLhZRqZxQKkeG2SfBlY4y/2FKnoGellVDqqtvYIFRsf1lWeXs7Zp12xV
-         wSUvf0i7xdCAd8JCEJPYGT4SVJYsozvmk1JEb6P23kbd9YdP7EBgqmZFJBsOmOmznQh/
-         AH/UNsMMenvXjcBjbR20iafemsZcW/85KhGtxF69JCaWwFnqFgRXUT40WXY/MSOJCYdr
-         ZqEA==
-X-Gm-Message-State: AFuF++ntI83IntkhAG6ZJG90BMrsPNz4A7/RC7VGWXmenWus7H/WnXAw
-	9TOzXm8ZwvrG4FJItntxAJBfYAyBQ2RFnS4Z2itM2DW6TGJBqqFKU+5tgUU+/wvjNmCnY6cFxk9
-	fP9wX5XE=
-X-Gm-Gg: AYBFou26UznPYUPWxCPx7oCD1JMa4KAeWRr3EhAc+JcFnKzZKh6yW+v2bhaHZSa3XVo
-	oygpKLkf+bGWNmnSNlpalUnI8279yW1ayC4k27UqufnO6/1piSwzfnDkWkajKMdTlKnWj+TONkU
-	hWflmkKjppxKuh2rEK7CfnkoLjHVOMy8s+9RjOAhivB55PPxODdYeVMaVCGtyWqmzfC76ewmfwK
-	tpETQDWrc9NTUGZOy46wGTa88Va3FjrG+mp4FhUU8TiAVLhxcxcfM5mfcpjb+jQshEHlVG5qkI2
-	T32LJWU5ENQtYJo77QwNYATQ/AL0J9vCk8qeTb96Vo9iTlYAV8NWTKc3T8wCjEMIN/Xwz+RDp85
-	NFax1bj4f3LV4efl2oJOSrJ9C/5Wnnl2uSnUDmvG4wAm7YFd7NlKl3cVQ8+wYakqLaQtgoG4JSb
-	lssygvyEZUB8efVq70DdizdtfHrAeVf7iaveYA5MVHvvJ24gCVDkJRjFM0MQXFb/CdA2uS74R1I
-	Z4JwRU0HSEByYbbSv9tKXEevg22RNW+ua5szBUci0bCUHwt7sZP9GV1KSuH
-X-Received: by 2002:a05:620a:4112:b0:939:fbe0:9abc with SMTP id af79cd13be357-93c17e2edd3mr739670285a.9.1790130549781;
-        Tue, 22 Sep 2026 19:29:09 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c2482302fsm122626785a.12.2026.09.22.19.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Sep 2026 19:29:09 -0700 (PDT)
-From: Gregory Price <gourry@gourry.net>
+	t=1790130552;
+	b=W17ez2ENvxpYH/yEGZh+eBfMr2KfKBYy9SKrmK7n1yYVuxjOCFPomCNuAkfnZo+unGV5Ww
+	S8zre/+2Yzo/awJ44aLo2cZnPmZz0yCsy8ncEmY5UrVDCezdFa/abqyG8+P2L7xnr+Mxmf
+	/by8JYsngzjknX/mYHkvFTm8NUl8pt0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1790130546; bh=c2/UpacLji4hUGx/IMN7tFqHhex9cxgusaR9P8+O/3I=;
+	h=From:To:Cc:Subject:Date;
+	b=vz2vN8vm0Tw+loz/KZ5PjYSA6gRneWt5g0MKzmoPCv1OX6p9zR0YWVbza4TQA5BdY
+	 zuj1AxxMIIlHnYji3+oHL3l12Ur7ysf3QfLrFXCpkbmjkpaVx/2rKlw5P+xYXtP0aF
+	 bRk2b4S+XdD4frJWQtDWUV2dj4O6sgpXpdGhhUi8=
+Received: from XJSH01426.meizu.com ([61.169.203.203])
+	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
+	id 7441BCFD; Wed, 23 Sep 2026 10:29:04 +0800
+X-QQ-mid: xmsmtpt1790130544t34ssj30y
+Message-ID: <tencent_AA61551D1F50E61F46C8542F5C8874512C05@qq.com>
+X-QQ-XMAILINFO: OUHdjnmRxhl6BrhFTxZKSInajEwOTmtmJoO2V5moqyaxr8nL4Mf/Oyq1lHw+eA
+	 pr/MHUc9WZpFzxT7r3vdWoVGksgTLf1bfd8dvUbeyY+veYXedXRGHFYlEVrw0zM6QSTjL3k2Ghmz
+	 kYEXoRVQV68W+Cq8fandcWFZnlJLev53nKFcTavqQY/tsd707MmdcAxkd5IepEwI8LHJ0RXP5vyY
+	 HXl/7wEoK6v+sit6crTStbXGUFpt8ZhhdNJNVYksgkrRVqArhiBLZNhRWQRgbyZhMYMmUFmI/Jp7
+	 7E6OqmajEcLawJM2DOlLr/7QQOldvPVBGAimcBmnOMjLwTYAP+I8L+pEDrsyh39u4lMNaKgNaf1b
+	 VlEoWLAgenHMFLfaG9r5a9XlE6Q5ibWUULVPbvdRtXcUInuY/+1NfEEBkPqFbsrgT0LqzUS+9bcM
+	 3sKCNpVBtswt5AAooBSIs+fXNOZpWN0EA2LqBiOp9xdhZ5sXZmX77uUVw2gCPDdEWhRhGy4sOAMG
+	 CZOd5SjAadGkoIglI6ECanXGkDIWd0HMUzRFTutgaOCrELwWMhNMe96ZCIsIL8TuJT2PsdcgdAFf
+	 GzrrLwkcLeHQeu1YKTc5V94hPQ17sJb+tXPkjfhvU3ILc+LIiZaZ/hW/mgVdlNVs9YtUJpS0LvRm
+	 cXwHD7s2J7vb7Rt9+vYPX3UGtxN5domOhBGJ+jYuTzMqhJAQ/hH3eg0IeSKIs9TGQTcrpPkfgbgy
+	 hM/0epZ0du/0sEdy/6Isgvr9sI70+PFqtQjGISYaned20O69r4HlVDQlh1VEwOotWFivlAGqDwLn
+	 w+afkpMDNuHC5qMXl3IEFrN2HTi737Ufq5LDuK7CK8+VRb7toEmcqGeDxIoNGUB7uNIUdFaNnBVf
+	 nWYMprVUmZcZFK2vPcp16hI27SAMt963w2sX2yIaOG6YekEsOzhY/FRaQHRUxJc1Fe8LX68vfkue
+	 UU9vigAVk9Wsz/O9mp/rgL5rGmCtpAhD3mJlmQvVvWtgyT9mc8OIC35TAD3K/VpEvOaJyDIbc42A
+	 rcygEDXJZB5SIH7pJFtc9D+6aPKc7YThLTOirIiD11Id8y4qYiXtYCzQWJePVQSv64Xe5iOTCfJE
+	 XBptFeu6ZJLlFo/vogTY7jntjk88RNGg6D3/h7I2q7oem0F50JZ68dVHgG7Q==
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+From: Zhenghui Hao <zhenghui.hao@qq.com>
 To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	gourry@gourry.net,
-	ziy@nvidia.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com,
-	brendan.jackman@linux.dev,
-	hannes@cmpxchg.org,
-	"Zenghui Yu (Huawei)" <zenghui.yu@linux.dev>
-Subject: [PATCH v3 2/2] mm/page_alloc: refactor build_node_zonelist() out of build_zonelists()
-Date: Tue, 22 Sep 2026 22:29:02 -0400
-Message-ID: <20260923022902.2433614-3-gourry@gourry.net>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260923022902.2433614-1-gourry@gourry.net>
-References: <20260923022902.2433614-1-gourry@gourry.net>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	Zhenghui Hao <zhenghui.hao@qq.com>
+Subject: [PATCH] hugetlbfs: fix stale comment in hugetlbfs_file_mmap()
+Date: Wed, 23 Sep 2026 10:28:58 +0800
+X-OQ-MSGID: <20260923022858.263689-1-zhenghui.hao@qq.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9B023140005
+X-Rspamd-Queue-Id: 4FB0C40006
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: j3b91shfihybkpgq94ixdisdaq1pgx5t
-X-HE-Tag: 1790130550-885960
-X-HE-Meta: U2FsdGVkX1+9JdpWReTo5AqxLUEKgbE24esY1vLJ7sp3ihcF2apuvmFm9CFc1YmhDv6IaZczCw197xUmFFL9t6xmp3xVUDuXGYB5/R9i4zwyFmeuIUD3DOWadxfQEXeBnlbNfwpJk6fc/5WHgJ+j1dXvtKiUrlIc17V6D4O2OkvraQqXrafoZ7YcpHRm1C3sQY11Ool0gl2LOMNbCqhhh1fzsjz8pkwnBSh95Rq8bWxBFHBk+nDg8hAFZLMKcRt/LmRwklURKdbLN51qnvuOH8mj17PQ6Y/J8ZdYB2ZFFhoo+gWB+VCn9IkMdCbIv3yp/jEZgOOmy1t25X3Onc4/9tQItkhugTVnwzWdjClD4coiuog6Bf/7pINQs2LJmgu0lzoCQJx2P6D/CwvRQCTWUmBTIrWxInHvHKtO/985CpNf7wFbrWXOf6TeBYPjczJ2QFvYYGwROuoVONjUq56I4ZiFeOaTjEXoJOeyrR8y3xJqHmUyX/VYz0/wBLbK4xdOVDiajVvgzxBAGOq0mbFOvL+ivPw5CXAqu6Gr96W3oXuKXZGCb37pJzN5IRKaQmdXLBS3Jwm0/qFxeybiygiavxMCW0/LhMZWFb3aZt3BGBZQvdq4jt8elg6RX4prCDLoFJy02M77u1en/g/UNl97SzOshOOBQCX5CDLRT3Dv0DjT+F04/txQBIq85MCM95LyBBViiRjCDFtfs+XKV4rFnA8jjyCmXcsZCluXVFW+Xn9XAQBrS3/GzB7pcBIDD0TlYgRkWV+tMa0qRPdT1Zd6Fbh4BhBwTjLaaQNm0xx9MoBUcKIw5RO3yn0mPFqHRMlUeZeMM9jmjWMmdMC9RtPa5eq7NvylVsVYQrgsaotgysgMNye7iRYTQmFzHY30qgoiD5yyGJNHKixicM7YXLTNQiCzPEcgq5wL3WpW2z5jhovXE7fpcs+vYf7DgqhxlreggWdXDaw6RFBypuwKSHq
- AVVj4zCT
- TOfuQd85Ksk3ePHvZsdm556FbOu2E4wSUnqYue9lVBppOxelhFwA7W5i/bu59lJpCACCNugf16SSNu9Offk79EHFOcu3wZ8FakgnY9H78bbYZicpFuooBm5Q2xsgCoBEjPnuGCOfqVu6lyT7YPW5iNPexmQoqQjV9s4aibUZFP6Wi1CA9Oc0vLvSppYSW/wVRyRdXDyhsiFHgf3QMS5U8K/rVD3zMUuwRckincSZL4rcEdaR30dEgtOYFSWqy6DwkraXWlAPfjEv8lDTAy50fPL5i9QeVFwGbntiFjRsHWmdDtTDASCmbzap6DA0xkWy10CTugOzQfaYlWUp2nObzPzZlMFbW4LZwcdMzoY5j6J6npJIFSbrlZHfvOt2P3UpzjhQn4TYrCnf4Y7u5M6L/ZcYaLKNBPwjBQkAqHs8BdXEyJWduZUC4bzfhtYvu6VBp9z8JdLnFU+o6I5+dEuxeF7ZetehC1b7pk8oW
+X-Stat-Signature: 75yh1imn6pwhc7zkr61ihfoqb4y5hox9
+X-HE-Tag: 1790130550-835649
+X-HE-Meta: U2FsdGVkX18g37XlEqbD8XXFl/P1doR1wR7bGcaYkkXhzzBTEd2C9E21HCcHDHHeh5mkroXtFQH9j8tRrk0fYrGHwk4ngcHkGuRPDR6wRDAbRo4QajynkNp4K/7ttmQJPREB304OsXbNfzk7KEXd9I2VYFSDAt6ZeMxQqQcsXydgEKK11VhVU8N7+0RZVVJqVcwRXmOyNZGUIwIf3syK1UGVhyU1XOZrVSZ3/hrbaE+bVTa0vnWv8mIU1HXq8V6hnO4X00B4ZtlTfYanAOoeXecizzKLlG+e2vT7i5/W1r3+TaiQU8bFktB87YD6fdbcysK1PenI7UMD8oGyRdgd9waEabiJsHAtjhyHYJZ2hVzJSRIP0o9pmjecNpRltWHam7s7euYwK1dspm0DH9yg4cwFtLECaWY/uHz+2c5uzRCoPlIw43RTj/3vaOfkXij7TKwrjeyUNE0H4mOtmn6tUFAsAzpS1FC3Z7vFQi/3rcLFZ0DX1gymx0sMplrueW5q8IhaTodwleHQeOUiP4+1RY+n738AqIfSOHpsqYzykcOsvb7Sw/PRBT/N3okpAAIJgtodXRukSVoWMHSgm+1i2afxTeyZh6FMwhPiFbIoGMFnftAjfw9LDB8EUEYQvvRmAPs8+Qzyrg+dvpSELbSAxvDjkatgmJYLro4DF6WORXclYatFjsk/LKwA8kNizKu65j5tToHBAGaRMtf+/EJjMvkpYjIOO4NzytHrwNQ94tT4X1UmJK9Zqo5Rvisq82gni3kaQncD3J4+mBdAqcbPjxeuY4rg6MHqD2S92vwZ6wrVwNAsw+vz8wQD0DLgd3StMe6KMx2Pn8IUJaMaALo4LCNNH3fWotkbCaXqIYh5XNcAyXfx9XtNktIR4sV2NK9/WbWlfNFkF6bNk13+0lxr0Yux5xxF7G+C0Ts4ZLxiIdsQM+L6fETvI6/XXI92h3SMdnDy2e449fBXb+LFNm8
+ 2StyKoKV
+ q0/8xtv+0MnIxAPNIMKmoSZ4btqjfW9/vRzAtXUA/gd7irUVqrkfePJDeslt1ph77Rnh31uO1FJMG+2Od81EoIh3y5XbYFz5UDXYeLJKeDpZ9SU0+DKHQixDlOUo8okNPSHZ9UvdVAtNqc4Gbd+xU/jZswZ1XaCh/az5jlDKQFQS685Ms+zChRdqkxC0to+TqYR6ti1gxix3D35gzi5nH6qUmKzhPqCwqtsjEM8rdPokA+Lh/U7WcMs0Wykv3ksHFd4CCTFId7mUXxsDwQsYxhj7gX55+wWE0y9+0cjOcE0Xy0nq7hAXthwOcTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,128 +105,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extract per-node fallback-list construction into build_node_zonelist().
-Build each selected node directly into the destination zonelist so no
-intermediate node_order array or node count is needed. Print the
-fallback order as each node is added.
+The comment above the VMA flag setup in hugetlbfs_file_mmap() says the VMA
+address alignment has already been checked by prepare_hugepage_range().
+That function no longer exists: it was removed by commit eff41389d824
+("mm/hugetlb: remove prepare_hugepage_range()"), and the check now lives in
+hugetlb_get_unmapped_area().
 
-This lets us build new zonelists from candidate nodemasks instead of
-just the default N_MEMORY node state list.
+The comment also mentions ia64, which was removed from the tree by commit
+cf8e8658100d ("arch: Remove Itanium (IA-64) architecture").
 
-Add a zlidx argument so callers explicitly select the destination
-zonelist. The existing caller continues to use ZONELIST_FALLBACK.
+Point the comment at the current function and drop the ia64 reference.  The
+rest of the comment, which tells future edits to add any error return only
+after VM_HUGETLB has been set, is still accurate and is left untouched.
 
-No functional change: build_zonelists() builds and prints the same
-FALLBACK list over N_MEMORY with node_load updates as before.
+No functional change.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Zenghui Yu (Huawei) <zenghui.yu@linux.dev>
-Signed-off-by: Gregory Price <gourry@gourry.net>
+Signed-off-by: Zhenghui Hao <zhenghui.hao@qq.com>
 ---
- mm/page_alloc.c | 63 ++++++++++++++++++-------------------------------
- 1 file changed, 23 insertions(+), 40 deletions(-)
+ fs/hugetlbfs/inode.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 7f706e3d7e50..07e03c7c7771 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5866,31 +5866,6 @@ int find_next_best_node_in(int node, nodemask_t *used_node_mask,
- }
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 7611a8470ea2..e2aaf1b56e7f 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -106,11 +106,10 @@ static int hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
  
- 
--/*
-- * Build zonelists ordered by node and zones within node.
-- * This results in maximum locality--normal zone overflows into local
-- * DMA zone, if any--but risks exhausting DMA zone.
-- */
--static void build_zonelists_in_node_order(pg_data_t *pgdat, int *node_order,
--		unsigned nr_nodes)
--{
--	struct zoneref *zonerefs;
--	int i;
--
--	zonerefs = pgdat->node_zonelists[ZONELIST_FALLBACK]._zonerefs;
--
--	for (i = 0; i < nr_nodes; i++) {
--		int nr_zones;
--
--		pg_data_t *node = NODE_DATA(node_order[i]);
--
--		nr_zones = build_zonerefs_node(node, zonerefs);
--		zonerefs += nr_zones;
--	}
--	zonerefs->zone = NULL;
--	zonerefs->zone_idx = 0;
--}
--
- /*
-  * Build __GFP_THISNODE zonelists
-  */
-@@ -5906,20 +5881,24 @@ static void build_thisnode_zonelists(pg_data_t *pgdat)
- 	zonerefs->zone_idx = 0;
- }
- 
--static void build_zonelists(pg_data_t *pgdat)
-+/*
-+ * Build one zonelist ordered by node and zones within node. This results in
-+ * maximum locality--normal zone overflows into local DMA zone, if any--but
-+ * risks exhausting DMA zone.
-+ */
-+static void build_node_zonelist(pg_data_t *pgdat, const nodemask_t *candidates,
-+				int zlidx)
- {
--	static int node_order[MAX_NUMNODES];
--	int node, nr_nodes = 0;
-+	struct zoneref *zonerefs = pgdat->node_zonelists[zlidx]._zonerefs;
- 	nodemask_t used_mask = NODE_MASK_NONE;
--	int local_node, prev_node;
-+	int local_node = pgdat->node_id;
-+	int prev_node = local_node;
-+	int node;
- 
--	/* NUMA-aware ordering of nodes */
--	local_node = pgdat->node_id;
--	prev_node = local_node;
-+	pr_info("Fallback order for Node %d: ", local_node);
- 
--	memset(node_order, 0, sizeof(node_order));
- 	while ((node = find_next_best_node_in(local_node, &used_mask,
--					      &node_states[N_MEMORY])) >= 0) {
-+					      candidates)) >= 0) {
- 		/*
- 		 * We don't want to pressure a particular node.
- 		 * So adding penalty to the first node in same
-@@ -5929,18 +5908,22 @@ static void build_zonelists(pg_data_t *pgdat)
- 		    node_distance(local_node, prev_node))
- 			node_load[node] += 1;
- 
--		node_order[nr_nodes++] = node;
-+		zonerefs += build_zonerefs_node(NODE_DATA(node), zonerefs);
-+		pr_cont("%d ", node);
- 		prev_node = node;
- 	}
- 
--	build_zonelists_in_node_order(pgdat, node_order, nr_nodes);
--	build_thisnode_zonelists(pgdat);
--	pr_info("Fallback order for Node %d: ", local_node);
--	for (node = 0; node < nr_nodes; node++)
--		pr_cont("%d ", node_order[node]);
-+	zonerefs->zone = NULL;
-+	zonerefs->zone_idx = 0;
- 	pr_cont("\n");
- }
- 
-+static void build_zonelists(pg_data_t *pgdat)
-+{
-+	build_node_zonelist(pgdat, &node_states[N_MEMORY], ZONELIST_FALLBACK);
-+	build_thisnode_zonelists(pgdat);
-+}
-+
- #ifdef CONFIG_HAVE_MEMORYLESS_NODES
- /*
-  * Return node id of node used for "local" allocations.
+ 	/*
+ 	 * vma address alignment (but not the pgoff alignment) has
+-	 * already been checked by prepare_hugepage_range.  If you add
+-	 * any error returns here, do so after setting VM_HUGETLB, so
+-	 * is_vm_hugetlb_page tests below unmap_region go the right
+-	 * way when do_mmap unwinds (may be important on powerpc
+-	 * and ia64).
++	 * already been checked by hugetlb_get_unmapped_area().  If you
++	 * add any error returns here, do so after setting VM_HUGETLB,
++	 * so is_vm_hugetlb_page tests below unmap_region go the right
++	 * way when do_mmap unwinds (may be important on powerpc).
+ 	 */
+ 	vma_set_flags(vma, VMA_HUGETLB_BIT, VMA_DONTEXPAND_BIT);
+ 	vma->vm_ops = &hugetlb_vm_ops;
+
+base-commit: 93f51579e7df248780214094418f205253383cc5
 -- 
-2.55.0
+2.53.0
 
 
