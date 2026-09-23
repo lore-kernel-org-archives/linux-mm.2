@@ -4,121 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156CEC982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 06:58:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06BEFC982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 07:00:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 046256B0088; Wed, 23 Sep 2026 02:58:44 -0400 (EDT)
+	id 8AE3C6B008A; Wed, 23 Sep 2026 03:00:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 01E0A6B008A; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
+	id 8603A6B0092; Wed, 23 Sep 2026 03:00:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4F926B0098; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
+	id 727D76B0093; Wed, 23 Sep 2026 03:00:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B72B26B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 02:58:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 92BFBA6AA8
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:58:41 +0000 (UTC)
-X-FDA: 85244124042.11.E90DDFC
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D0FBB1C0003
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 06:58:39 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmqNmuUt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3EBCD6B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:00:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB9FF1404EF
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:00:52 +0000 (UTC)
+X-FDA: 85244129544.26.CC2F709
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C088C1C000C
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:00:50 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MuGgxUdI;
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790146719;
+	s=arc-20220608; t=1790146850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
-	b=wgWf8gehYLB6iVkTM985ckwM1onFhkMyP7xs6FmDcE5bLrs3EZmCmvEf3ECBJWc2E9JvS9
-	enMsKMSpDi5XDCi0k2GzjyPzdvZ4HN+F2Jz0PFpaViZ6nuI0f0c+sXiH7sUSJ4n3i+oKxP
-	7c7nNSzxZQPdHtXarghsnJAT8GcMJL4=
+	bh=lCQN40gpWl4KlONMsfIv5Q1s2Cplx4oRk8E/qqjTVqg=;
+	b=MKitGqZxMgxMlrCJRVDtqN0vTaNdRmfrEM/MAg5lm9KjViQ/gCcbQ1r5buC6xlaWkxEp3+
+	1hAewcpKsjsSK1xbfYeDHnxZNXdOBkAaOZdsu28jeMHt/hy0onjQMiKHBEbygzKggh4H7g
+	Z9uzcIrdtqzPXJhLhwsuBliOr9HZ5RQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NmqNmuUt;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MuGgxUdI;
+	spf=pass (imf18.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790146719;
-	b=f4yiyD1FwyND2fiEOR+5VGVc7tn5RQlI9HLU4wx6JWbVymlcNak++Tn5LZ7zF2AIOD9CGS
-	JPgBDtWbBVHnDLpW+tR459WVj2iejXM+ITJQZT6D0RvD6Xh9JmTZNo3tXHjnbke7rdAi5Z
-	ZhnltjuG+OGaxS5xyTize+IB4eIovm4=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso3520765e9.3
-        for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790146718; x=1790751518; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
-        b=NmqNmuUtXDPLq80Nppopm5GJ/eN68/AKu5TpxbLtT0uQ/kFB0z8oCjwjZhjdAhstnf
-         GXekxxNl0HTgas1pFagSe4qMd6+b5GrCiulYaFaJGtYYL5ISNoL2vzmrsYR8s+j+0qJD
-         uk1HNu8TkHo9rr6hfR/ifjyz9XtfzcY/+w1/SfwfHojQFo4bTGXG+UPQSvRvNGAUyVdV
-         5DU37jZ7DThJ2kR/oNFlkVy8wSqhQr70eQ1/NB1iTPO7FYb8Q/msNiM8fNHrKbMOVtNa
-         hhXbkGSWXx5s71JKW3gAhhxXhVlkIm/i65i8dUrEYYXITBuYkhJ36Re6V+iWLfvlFTX0
-         SyUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790146718; x=1790751518;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=iZrjQ33poEdSxILO2JDtHpIllTCJBtOtLGzw0UbF9Hs=;
-        b=pWj7+fk3MRAzSuQwv56gA3CTsqCVpgyPXT0q2FfqTvIblLCjNVAxwmbCNNGOornO6D
-         nQUEXvO/xYqc6v2KaVK8imq8c8aD5c2/5g1a/aQtoZT2tLLFml6qoSWCqzLoAwwauzsA
-         eiQCIagYYMfxR3sy6uBWu1fWwarWPEg5mheYIXrmppxGK9Es9E87Xxm9T308/+mrfzDQ
-         wLaS+9oE/rzPi+6Xv6fEzMtNEtgntnx73m+qqryF9Uq7Lj+d/33gz2X/YII0RRiWxZM0
-         kfi2WxNFtUPxsdTsNMmk/Ez1CELA5TXKsJuzdwQDrF4wR4jFuCt+iJJQqH6iSoIQw7xj
-         hfQw==
-X-Forwarded-Encrypted: i=1; AKwUvBzDNTyaHr28buuLc/PKfZrKpudmSo8R95S7Nw8relKl9Z3FCEDVEs5/dm9CnJUE1JVPRvitjFX8OQ==@kvack.org
-X-Gm-Message-State: AFuF++n543PxvTAvGm45ss8nLfEF7vTCQoDKOq9UM5FE0ebxEbHGVjQ5
-	CHpEboJjohmr4oWK5Xt2NCzXgLNKB91mRbCAgwKY5ew9a09oPN/x2pHR
-X-Gm-Gg: AYBFou0owR4olmemIfGCXdf50Ja1mbCk3jvRYPtu+8tBMoC0NbPMMHldz1N+FHc/Ezz
-	eI3CqKhuaQ9b4168F1yBMMRmX/YD3frKe6bVC9JDFjHNsd93BRvxfQ+cB+NPY5HDhT81pehhZ4C
-	xxMdq2uvZSWXx0/w5nM5zsNzQA1utDKDn/qoAGvejpuRDGfrbDlA9z2Uuo/fhg0Vh0qaAhzeZ66
-	dqyQOpZDDHgrwmCt/Eh02kugDciw3QWqnfM6AdHLxmK20+6X+Y6Nf8T+P0lvIRaM1sWdT0Ra9Zj
-	Q7Xd5/5eOxqXYgusj4mJk+0/A1zHrSYnvIyoxojYL3pzeQFHVxtJROcqBXnIBw1CsJUbkA9bnu5
-	RrOSZen0TmLq4rqdsTyT6+UbWuXHnmGkgXh910Y0BvNaH9GWBKeNrRgb4ohy9WJo5Zua72APvHG
-	jEiSaChzPq2gLzjdXYPj93DROOxp3LeJnqre8aqBw9ia1xFuH/rCvGRauqBRa3nq3s/496KMd4R
-	b/Uzo9s1y3+h71Heaik6NTtW3UdVCtsUPmfQ8rKB0mxo+CvwWET8LdCG8tAjDSEKn9S+7Q3yo/f
-	iTJZE56BmOx1s+fqwEFJcz+zHTrzFOcZh1hwDA==
-X-Received: by 2002:a05:600c:c176:b0:49f:c451:b4ab with SMTP id 5b1f17b1804b1-49fdf152561mr17989925e9.29.1790146718132;
-        Tue, 22 Sep 2026 23:58:38 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-095-114-182-160.95.114.pool.telefonica.de. [95.114.182.160])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe23d4288sm22524325e9.12.2026.09.22.23.58.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 22 Sep 2026 23:58:37 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	Jinmeng Zhou <zhoujinmeng@bytedance.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/hugetlb: fix max-only subpool accounting on alloc_hugetlb_folio failure
-Date: Wed, 23 Sep 2026 08:57:14 +0200
-Message-Id: <20260923065714.20781-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20260428113037.88766-2-enderaoelyther@gmail.com>
-References: <20260427145247.84157-2-enderaoelyther@gmail.com> <20260428030712.66256-2-enderaoelyther@gmail.com> <20260428113037.88766-2-enderaoelyther@gmail.com>
+	t=1790146850;
+	b=rs2AzaEChFf59e5azYo5V3ufvXpaIAX1GCmoHhdmSYka9ZzmZEdFTjGAnaX0yCrg4KOfQH
+	jw4mUd9HWeUSVg2t5ljTfUKDuGmlUv7Ixt1Hrdjw+sqRkUA6DKUGvnnqFQqMPwRM2X3sn9
+	729ko4V7WOuLsAgDvUNY7g7uTBJfxD8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1FD2344887
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:00:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ECE1F00904
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 07:00:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790146849;
+	bh=lCQN40gpWl4KlONMsfIv5Q1s2Cplx4oRk8E/qqjTVqg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MuGgxUdIOC23Am0lCqXeku8DEsnnCt1yl3RWtWDI7hbJxBPJHEkP4chf7CUhyAJec
+	 Fb7pJ8u+WwNqxj5W1gcmmm+iWMlF+aN/N4VOWBTR+VNt0K1T22HbnQEcD4K0laMnfr
+	 VvEdPkVMqw5Ck76BL98HKW8/9sq8zan06nWRUti7boVVNJ6FmVGg3VstsQzti37524
+	 mQwZ53x9xrRJS0G7ttB80RSRErXxUXmB4t+bd6YUb0wCvkWh9KeDpguAU0F7kO2AHg
+	 +kLtqfXcbKbM/db1BKYGK3CZxsL4z3F9Huq5AV2s7D2yDmXSBzZX+fpKzYZAzyTijm
+	 O4prJqEQV8Dag==
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab20a33so655447d50.1
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 00:00:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwCxiAutGmCtgIazl3nTsHPm1nymyPd6oNahyn59eFSl/Utr4cOwkyeV8hkKK+O8kdU0mxLy4FhMw==@kvack.org
+X-Gm-Message-State: AFuF++k1YTiXPJ0bP5M8iU+k03e3rou46Fa/ggWur6SZyGzxn8++1gZN
+	1PBJhWAu4Z51e6dHA+RohfIHlEFseBtk3dX8tPuLHapKzZPcobKLLxZ2C59d8MuTZNty/Iq/WZ8
+	Gn+46Sly5/Gni5y7EQv7tr/9imjKX9I/Br1gKG1nS5Q==
+X-Received: by 2002:a05:690e:1343:b0:66c:c7f5:df48 with SMTP id
+ 956f58d0204a3-672d5737312mr802920d50.1.1790146848099; Wed, 23 Sep 2026
+ 00:00:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 7wx4bm87qfrkrfex7c3fwnm4mmeprk5w
+References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
+ <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
+ <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
+ <aq8dja2-timYBwyB@gourry-fedora-PF4VCD3F> <CACePvbXudjxQ5vrrY4D1nOXKaFNQUn-tL+p3O0zfxtHXK99ojQ@mail.gmail.com>
+ <e879ac65cb0940325736df7984c737edf1c6be94.camel@surriel.com>
+ <CACePvbXThspPYD8DZkAeiJtYuMV79vGgC1SGhpMwhn4COWOtcg@mail.gmail.com>
+ <785353ef79844e81a8cd97e87b00ef1f785b15e5.camel@surriel.com>
+ <CACePvbXZ4i-DsmbQdNtBQb79y59uwZC9J8qHD2wTWpcYaet3LQ@mail.gmail.com>
+ <83539be885f15bb567b30264f5f62e718f4a9fd0.camel@surriel.com>
+ <CACePvbXZQERwLF_f2FYTHsv--kq_-Aw2vVVFF+z+ovdnsHy1bA@mail.gmail.com>
+ <a75b2eac4297ca6b238dde6f9246d2c1807b935f.camel@surriel.com>
+ <CACePvbW_-6M63_a7Cp+09dTmpHeMEdj9VDQZf8g8qoYKQD=wvw@mail.gmail.com> <02616d611c9e862afc6c8c3118b6be096756b3bb.camel@surriel.com>
+In-Reply-To: <02616d611c9e862afc6c8c3118b6be096756b3bb.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 22 Sep 2026 21:00:36 -1000
+X-Gmail-Original-Message-ID: <CACePvbUHoJ7bBn_iKrMyducFzKkHpfe8htZZYW=b8v+EGRF2jQ@mail.gmail.com>
+X-Gm-Features: AcwNN1XT6dea5Ukn40MXBsRA9i8L-35_Qe0P1p4ktS2PPdbOhpSXJI25FuwqsFY
+Message-ID: <CACePvbUHoJ7bBn_iKrMyducFzKkHpfe8htZZYW=b8v+EGRF2jQ@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Gregory Price <gourry@gourry.net>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kairui Song <ryncsn@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C088C1C000C
+X-Stat-Signature: ehe8j7mua6h9ym7iomkpn4b5ijsh8ba3
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D0FBB1C0003
-X-HE-Tag: 1790146719-509938
-X-HE-Meta: U2FsdGVkX19mlgCyTmscr91AyZJrbTMScYReq99tSlYuY9Y+YJkqBAPKkRs1RGG7rbLvXLAWFLCSfCqsrd4vzXJzgSYHnnPfTyKFGhQspRPia3CWE0tN03U2NbHKEtkm/XqGUcep8mZhj2bVPpCI8EAwgPzyz95neYKmZAIvE6mUi0xzp0uJHOduZ1DLCp9D/pxVgvYBnRgb5If9UHU+7P5VBvNqRVESvwRi/qjvfpAx92g2V+YeLdrWHMMUvLwSRxM3knJWbJyGrhIJ3aIASubltu6hnVj3zpEBXPnUjELukmj0FWyz/FQqtK7mC1uWgZPddiAklGWkuOJzVoYmNOlQZCHzHdRixmO2TsCrZ0obIlZ5194ZRv2fbCq3s9cPHp7FD0g48jM4/jH54+xdkSyoZ2MXvNIhIpQAaAdd6LsVxKf9jzpU25YP5QzYnskk22Sd4oRT6vJ8fYU2AlidR2qSCaw8Jwm9Zz/Mf08fAaCAMzr8vxROFSF5qBI/2GnA22NEY2F81/tB7CCfyiFVOjmmSXsYJd7rWIT+6IZ0pjTdeZQvP5aIZ7KCGR5g4GeQp2IPwvfcZ4CLPN59gx2586KwnHXI0C2pM7O29SCyqOf3BP50gBmHOlU62L709eAPIy2GE9wmGnBxHKnrHgfyf6vf0haZMkJY9gMkrWgCBSq/H1EtyoQZBGLhtiRv3Xjnn/hB3RiqoAIgKPcoYTKgbjw6o8TZq7F+sye/Envgn8VHxBA6YE/Z50ohxKAcogOnhNC/xiYpd7M/hNTYuxC2lnMwzv/gO69iJA0BJjxhQjKPOhrHGdXjYcwKexz4wnQ7iF65kzdmaLml59jmM5XredmEin3lP9hT+Dh8G3DBjscGp9S39YeR+6R6kI906xgs2G6KazE3M0+sLZwAKLshMz/lqV4OruDZZDuqn0+MgWy/+2yfc+eK8KJL16wycM2VWtUPPxz73OhpqNvwlzF
- 994z6TMA
- dYdYbgSidfY/XcZvN2Bs4okIS1F6ezDr5vTZ12NCht0IKwX5nF3qeZr8/OMXfQNwuPUx8tT47QzfEMZntY4URKdTF0whHVFdTcvK+BfWiJ73VWseXyglyogZBo+Acw6kd+i3gn5/TjhGqE5h0hkO5OvpjmxzxBmHItgTK3Zf1mCfihwn3gn+sGL3u58Bml7cLtqFfoj3rIiHzpKwWuOoHofNwicwAclB7qsbX1J4FfRyWFx6nO+ws6viCiZw7Eo/JmZg0n42srTh2fG64vMz9eDBm9e0sGrJryM1VDIqrt4dy4kIPr6iKMlHOfyY32oQUkI/YyEnycsm3y1KwbyCoYFyG2V6NvlBAihsF49UdZn0KI7lDCaD8659XfClO9RlauoqUvbmkou93kOY+jX98Vx9UtOXu2sXtabYYGur13/WNhIqe8vz7x8Xjpw==
+X-HE-Tag: 1790146850-730267
+X-HE-Meta: U2FsdGVkX1+4ZIVznrI/9U4rbecQ3ElMABGJTPYYCOLlqxVfIfSyFGpn2TZus3pJOcc3a9fuVRdM9J5eF6ZTjpLwlOoX0OdBoSqxblwy+uHGC31/VOArMv6szY1lW3M3MHlpz8xaWTYuYvDxbMEBSGM8hLqd0qogkW0jS+OFhaEqfPGDcWpc571E28mBcDjm7OflSXT8ZOfpg/WzR69T0dbU7QFOjnpj0JlxvKHjg/G6zFRnMqh1aRGXRqWrwnMDjTDlMT5z8s8XLyg8zyFuSKrHu/Hq2n52hVshfezmm8dHRO8EofqLuChWCB1ef9Vp2cmhdEtTseueBZ/5GpxzA856c/0BGmZnGVPgT0eH0LAQjpKZDns4RHcDY/6dYGLgKzTqDBmNF5Z11y0asgdUGBzqcDJO9AOtOig9ixzx+oCohvxdIfUKtvGMX47sNvFjgeSVQt9Gwem3HG8AezAr3sZxMRa+2TroP6beYcum8vKtpvyk/cGdP/UNYRrdbcrh8OijN3xmZwWmp5I2q2qOfw31hc8MXiBwCQB5cjgbTmsS5ykkf5D5WJzWQ718S5qAOHvKkJr8aHbCdkJX7BHk0g9eSjRmCrHWU4niDoWJhA8eh5kcW5LH+iXIktYIcqq05kcMkhlvdv54YQLllp2SAXIj1waI+fLr0vKY8+eViRV71ykSQ3k1V15wksYyvfUDe0+S1Gb4s2e67ZpTXw9gArcjU/7q5G14HrjAw53wey3kJTZ8WzSgxFuNT3O2bakvcFm+jEclq7OsOYci3ZASkqTZCuqmmgTFafjFo0yIQ0hqPqR7V0XW3BsJ0IOtobp2jsAD8AxuLfEysA9XzPZnqpe06e8te82rrC19UcoMI6L2PqFUi8QhVMPnuWYNA/gu2pn7Qp+QxZTfgiQ2qfq/37bK05gU8tpjFE787mBVKcdes4VwsQj3ALkmLxQLdnJEaw8ecUPNwkvhGODWrMJ
+ ibXNgtj4
+ xXZjxxzxjcjtNokY0hU/6W6UT1U8Z/NAhGtvlxEbKhLz8fqHtDOiPRjQ6KZhNSJbi8YYBju6gHIu+7au+nEOsTITQc6PZkigfH9E2iLqNVZ0EruXaqWYmCTZ+JK61dtshfk5tuEAKGWks+00qTX53VhFt5S+ECiKw5hn8QkHDTJzuGqlXNULI9r/apEBwCRpgOSlYnFl0e9cLl/+a076tt3SOgqcujzYBFYns5WCiIsG/G2oaFMn2FHsS5MyYbD7vcD/lZe1wMAg5dSjvY6VDsCkSEnX/ZAO3t9hw8xC43ft+ncDkTsq05gHZXuANyaa1Vgiss4XcsywFJJ9uColPBP/vWK0Be3qh+9ItYmGieQsrAQ2dgzCkQyQgCD18lQjEnyFgcXqIVwHUvcsaUljgjJ9r4UWYRyPqBYGpEHiGz6AW6Uc6aj3KQmOZI7pv2mGYFU0R7ZfXGp0omDcSX2CuBwiSqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,96 +131,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Apr 28, 2026, Zhao Li wrote:
-> Mounts with min_hpages != -1 are left unchanged for now.
+On Tue, Sep 22, 2026 at 5:49=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> On Tue, 2026-09-22 at 05:23 -1000, Chris Li wrote:
+> >
+> > > > > > > Zswap:           8812236 kB
+> > > > > > > Zswapped:       24927876 kB
+> >
+>
+> > My original request was for the whole system: what percentage of the
+> > total system RAM size has been swapped out to zswap.
+> >
+> 24.9 GB out of 64 GB is 28%
+>
+> That is how much application memory was swapped out to zswap.
+>
+> 12% is how much system memory is used by zswap.
+>
+> Those are two very different things, and it really is not
+> clear to me which of the two you are talking about at what
+> point in time.
 
-In case it helps with that follow-up, here is a small reproducer for the
-min_size case. It needs no hugetlb cgroup.
+Let me clarify: I want the ratio of memory swapped out to zswap
+(before compression) compared to the total system memory.
+Give me the max of your fleet is fine. I have been asking this number
+for your usage case for over 6 different email now.
 
-The pool has two huge pages and no overcommit, and the mount is
-size=8M,min_size=4M. A test maps a 4-page file MAP_SHARED | MAP_NORESERVE,
-touches the first N pages, then unmaps and removes the file. Five rounds
-on one mount:
+>
+> >  My observation is that, even with zswap, when 100% of
+> > system RAM is swapped out, the application suffers greatly. There is
+> > a
+> > reason why we only have 7-10% system RAM swapped out.
+>
+> You mean for your specific workload, you do not
+> want more than 5-8 GB out of 64GB to be swapped
+> out?
+>
+> That is perfectly acceptable. You should be able
+> to configure that.
+>
+> However, your configuration values are not a good
+> default for my setup.
+>
+> I believe we need to set the default to something
+> that accommodates a diverse range of desktop and
+> mobile users.
 
-  N   faults ok / SIGBUS   statfs free / blocks   HugePages_Rsvd
-  -                                               2 (after mount)
-  2   2 / 0                4 / 4                  2
-  2   2 / 0                4 / 4                  2
-  4   2 / 2                2 / 4                  0
-  2   2 / 0                2 / 4                  0
-  2   2 / 0                2 / 4                  0
+Act. That is why I am asking for the maximum percentage that
+represents the upper bound for an actual usage case.
 
-The two SIGBUS faults keep their used_hpages charge. Half of the quota
-stays gone with no file on the mount. used_hpages then no longer drops
-below min_hpages, so hugepage_subpool_put_pages() never restores
-rsv_hpages, and the mount has lost its minimum reservation for good.
+>
+> Most of those users do not know what they will need,
+> but they will know to close a few browser tabs when
+> things get slow.
 
-The out_subpool_put: path skips this case on purpose, as the commit
-message says.
+They don't need to know. Such a bound exists naturally. We just want a
+safe margin. You say such a boundary doesn't exist. I say that
+boundary exists; that is the main contention.
 
-Same result on v7.3-rc4 (f0100363d8c3), on v7.3-rc4 with this patch, and
-on next-20260922. That tree also has 6f8b22e85eac ("mm/hugetlb: fix subpool
-minimum reservation rollback"), which fixes the hugetlb_reserve_pages()
-error path. This is the fault path. Tested under QEMU x86_64, one CPU.
 
-Thanks,
-Karl
+> The companies running thousands of servers that
+> are carefully managed, and which overwhelmingly
+> have the same configuration values deployed to
+> them are more than capable of setting the dozen
+> or so config values their entire fleet might
+> need.
 
-#include <fcntl.h>
-#include <setjmp.h>
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <sys/statfs.h>
-#include <unistd.h>
+I agree; I wouldn't want to configure each machine differently all the
+time. In my mind, swapping out that much system RAM to zswap already
+results in a very unusable system. If you haven't try that, I suggest
+you try it before suggesting a number > 100%. At 100%, it is not a
+usable system, so we don't need to make a default for that. Defaulting
+to 8PB or 8TB is way too much.
 
-#define HPAGE (2UL << 20)
+Chris
 
-static sigjmp_buf env;
-
-static void on_sigbus(int sig)
-{
-	siglongjmp(env, 1);
-}
-
-/* usage: t <hugetlbfs dir> <pages to touch, at most 4> */
-int main(int argc, char **argv)
-{
-	int n = atoi(argv[2]), fd, i;
-	volatile int ok = 0, bus = 0;
-	struct statfs st;
-	char path[256];
-	char *p;
-
-	signal(SIGBUS, on_sigbus);
-	snprintf(path, sizeof(path), "%s/f", argv[1]);
-	fd = open(path, O_CREAT | O_RDWR, 0600);
-	if (fd < 0 || ftruncate(fd, 4 * HPAGE))
-		return 1;
-	p = mmap(NULL, 4 * HPAGE, PROT_READ | PROT_WRITE,
-		 MAP_SHARED | MAP_NORESERVE, fd, 0);
-	if (p == MAP_FAILED)
-		return 1;
-	for (i = 0; i < n; i++) {
-		if (!sigsetjmp(env, 1)) {
-			p[i * HPAGE] = 1;
-			ok++;
-		} else {
-			bus++;
-		}
-	}
-	munmap(p, 4 * HPAGE);
-	close(fd);
-	unlink(path);
-	statfs(argv[1], &st);
-	printf("ok=%d sigbus=%d free=%ld/%ld\n", ok, bus,
-	       (long)st.f_bfree, (long)st.f_blocks);
-	return 0;
-}
-
-  echo 0 > /proc/sys/vm/nr_overcommit_hugepages
-  echo 2 > /proc/sys/vm/nr_hugepages
-  mount -t hugetlbfs -o size=8M,min_size=4M none /mnt/h
-  for n in 2 2 4 2 2; do ./t /mnt/h $n; grep HugePages_Rsvd /proc/meminfo; done
+>
+> --
+> All Rights Reversed.
 
