@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EAF8C9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58BBBC98304
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 21:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C7356B0088; Wed, 23 Sep 2026 17:42:16 -0400 (EDT)
+	id ED0846B0093; Wed, 23 Sep 2026 17:46:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A4FD6B008A; Wed, 23 Sep 2026 17:42:16 -0400 (EDT)
+	id E810C6B0095; Wed, 23 Sep 2026 17:46:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48CCA6B008C; Wed, 23 Sep 2026 17:42:16 -0400 (EDT)
+	id D718B6B0096; Wed, 23 Sep 2026 17:46:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 231606B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:42:16 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A2C3B14015F
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:42:15 +0000 (UTC)
-X-FDA: 85246350630.10.2CB7170
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 938C5140007
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:42:13 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vGkmqUjw;
-	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id B3D886B0093
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:46:33 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4A886A2A04
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:46:33 +0000 (UTC)
+X-FDA: 85246361466.02.5C8DCB8
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6A6A340007
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:46:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jciCGrZN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790199733;
+	s=arc-20220608; t=1790199991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u6pK8WWxgAS5aSXBypjoYgNFtTJptEjH9aEN/q6mC+U=;
-	b=nPynCwjXrrqt66G4F96DV8DWVWQH4unA2XCxDOq8XAy0n4uJrOJX17KsoyAFNDf4mMd/oF
-	VSoV0JBQjzqf6p/TBlnIgvL5J2CIUhGGYRB6OWCky+37wAe7Ce/MvAC8WXwwHuu89cHs4K
-	cBsR0Mf6pILfkQwzTKKAA43ePcMjWvY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790199733;
-	b=WGuKpQInzLsRDMP5HYZddP36MI8CBidG/tXoiV5kdx7WCWdhykO8/XZ6XwaOjnL80k8iMA
-	5UIJBGYv6qUUQ0Kua+mQF2ZK+y3h+bdVci9BNX15+MZli/0BcAhQfBJ87l8eVc23IeYNVF
-	mBfBaBWSNQGMCLmTxYEXl5wVIc21c3U=
+	bh=CWYKTy9ur2zfAfW3YtEaKW/NAKkIGa1U+2owoaIL5wE=;
+	b=EBi7fyn3A2IIN6E1bFvtNDrV5N6pm39C1stz+RVtPqQlKfS5hljZYqDsu22ecs2G79gkNQ
+	pjZXc1T44XqmDvXKYpPBsxR8B8PSVpkd8hdQsg1YPLNiixwMw45Dt6rC8Z/47+biyJmjP1
+	CeJ815hFj9NCji4/z+s7Z5q6HesWfXI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vGkmqUjw;
-	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=u6pK8WWxgAS5aSXBypjoYgNFtTJptEjH9aEN/q6mC+U=; b=vGkmqUjwzn1tF6XDIzZN/SCaT6
-	13tYRqeYwss47O2D0jAm9SXWBz0WBlL8Pu4ON8hNHYjXxQulSUsTywTyZ8G+6YD5wzekT3//lV1vy
-	4pK4JkokcvY1F9zNtwYI5xT9cVqJxu+h99NVJG6K5bIkB59kV8/rdEe6fNc9Sk54XWZhr5mCIus/r
-	LH5vjqEcpBfkrZbCRc1U8LhDlBnm7GPIuGt1vGJ1EU6kjkQEFAoefAf5PCfp16OWA9LZxNkDDY83h
-	EpRUBq+/vc2D6KPau2hVWER+dhlrArBbEBCQiLfywuswSfgGMKI+s/5I7E3s1HfjE2BnUCAb4djYc
-	t8bJMk2A==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9UjA-0000000EXiK-0L1C;
-	Wed, 23 Sep 2026 21:42:08 +0000
-Date: Wed, 23 Sep 2026 22:42:07 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, kernel-team@meta.com, jack@suse.cz,
-	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
-	joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, brendan.jackman@linux.dev, hannes@cmpxchg.org
-Subject: Re: [RFC PATCH 0/6] mm: pass alloc_flags through folio, filemap, and
- bulk allocators
-Message-ID: <arRHr05gy_eu4WVA@casper.infradead.org>
-References: <20260923211041.3127588-1-gourry@gourry.net>
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jciCGrZN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790199991;
+	b=FicBPZkUGfbgHEXyQ90F90fOQWKdsEe5mYaOLhGdmgDQU9MUz8kRcqrjThr9Qj4QGo3GOT
+	xdjWSrELZAuttIl0NrbWb9wbM5UR/vz6lN6B8Xk6SV3v8guqEV5z+p1D5aUEYeMzjWXbK3
+	uttV4t2SWzyzVLwvk7jU/RkOQbhax1M=
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b965f447cso10816795e9.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 14:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790199990; x=1790804790; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CWYKTy9ur2zfAfW3YtEaKW/NAKkIGa1U+2owoaIL5wE=;
+        b=jciCGrZNcQWwjQ2G151Pwa6xbmNmJk9T0ajLnukE3DJszoQGiSpx1ltLHze2prHCpl
+         YVvt35UoMpl+HMITuKM5rx3jBHXr4zqCyo6ZkeJSkCD2zWxGHwJXkZhubkhvvRP/Ojce
+         U1Di2bCJSiNyj+5R4c7PpBb3FecRoPL0WaTz/1SDweX7w29qEcEZBvvUqPSp7vYTMkdx
+         5yr1KQZAjPHLo3+IkAYV/3iWwFL/UMmMPDcxJFec8/8p1I6nqShD5ntY3/XYjEnIkL2w
+         PHk/y7yc7SULdcBXsoEka5vzr+pvjaHn1v7C15Om+ilc3AxUsCr4u3HbeEsd3wKYzbIx
+         AhbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790199990; x=1790804790;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CWYKTy9ur2zfAfW3YtEaKW/NAKkIGa1U+2owoaIL5wE=;
+        b=RIMfPemIkWiOvD3veC2h6qm+nW3ksgmHC8l/I3mowf6V+C48yjONLSxTloJD54hdRL
+         a8InpMpnzr2Bm5/6QWkqemEtUhVLWwGIFjclYxZgIN8tIeXESM/uIomRc4t5ZegB+h2b
+         tRHJkb6uWJv7fcgqDnqgzCEIu7YiaE4FP+GxuzNdPlmma9Nr0l2WFqLEHS4kq0fAUwOp
+         r3CHSxRxTf8BIznze53DuUtKVx5ffYw66wPlI2exvC09N/4UGPfoqD9U2/999eDsuA+L
+         a5terLd3ZA2F5zsBlSLPeeHF+aO7kLBaZw/c9dDgBoaAlfSfKVA86wT/3V91CAKeVG0Q
+         ok2Q==
+X-Forwarded-Encrypted: i=1; AKwUvBw8GKwyekmWxlCoTzM4W4pmt5sqq1IBIxuiNyzNxxAzgnV49TwGYVlJvMtm/1t8IV00gFDWDcGJ4Q==@kvack.org
+X-Gm-Message-State: AFuF++kJhzug6d7fBY5PNxBM1EIYZRWRu7aYqrT8lbgKOMJvrj8KZ67G
+	uDvS4PUq067oLHEfqJzAK0ziKf+MYfhEdDwwwMcTJHafBOo/1q8GV/2r
+X-Gm-Gg: AYBFou3kX25IS1pa/E7rGsA7QE09FIFuDBdLUU8wm8HI2Dkrdmg3+p2LcahuMH0GWl/
+	vFMeHOvZkHpm8/qaoH8PL4O6j8u8a+acBjt7spu4V5hqWECsaXLmWYBMhHER38VdAAxBG4RV5i6
+	GoWeHQgzecFq7PRmicwvV0iFC9AL0lmuZPYw2fpqGnR9ltL3Xafoa2WZ8Me8AEqDYC8EAkhB7Fu
+	SeiZAWD3azwmEG4rN2faOw3Cq2S75+Vf4u+v9RuPdH788NbYyxxSczWgAoxMPP5l59zupfOsf3C
+	4hBbfU8JUklKgEHCp3EFUIfpx7ABOQRoVCaKuq+kJaxH0hrKyjADXjp37dAfZuXRGKL8sTI9H1E
+	woLcexKWsUEZb8n/u8GdiGjAb0v+1kqzV+5On1fB6XNQPKBkzloEm3NV1QFcYl4A+shFhuldPyw
+	yVUJvXQiLf1ceqe82zLkiBf6n06ofbj8VGPuHK7DSG7xQ5/De3ej8PB/WXTk1U2pMcze/WznSJF
+	4J8+XkavzuXVuOPtM+XdIDioJyB22FWCdn54Ad1cDzYqO6FuVz0Rv1FFIb589tXhoxS3ON73312
+	fENCLx+9LRekFicu2mFRd3zfoLlDPnsSnC5ZkDeKAV9e2eIA9kxDBH4LCWD2njgFWlz4Ps9Nzwy
+	KzWyy0yhl/uWBVZY=
+X-Received: by 2002:a05:600c:8b22:b0:49e:7d25:f397 with SMTP id 5b1f17b1804b1-49fe66d30c4mr8601345e9.15.1790199989777;
+        Wed, 23 Sep 2026 14:46:29 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-a4a2-9601-c082-2dcb-3f3b-92b8.310.pool.telefonica.de. [2a02:3100:a4a2:9601:c082:2dcb:3f3b:92b8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe43fc27csm26083595e9.2.2026.09.23.14.46.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 14:46:29 -0700 (PDT)
+Date: Wed, 23 Sep 2026 23:46:27 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in
+ damon_new_scheme()
+Message-ID: <arRHl5blMrrmvhkU@gmail.com>
+References: <20260921171155.3359-1-sj@kernel.org>
+ <20260922120845.44460-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260923211041.3127588-1-gourry@gourry.net>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 938C5140007
-X-Stat-Signature: o1958937dcw69671qi4i9btj9971dpts
+In-Reply-To: <20260922120845.44460-1-sj@kernel.org>
+X-Stat-Signature: kydnnbrsyhkrtuqgw988k37k6jb1t3ng
 X-Rspam-User: 
-X-HE-Tag: 1790199733-793349
-X-HE-Meta: U2FsdGVkX1/WPHiXwU8y29H/sF+4xX8kLaqvOkloQFGcPManrboxiqxrO7C5KxjEZct5E/nMBZV5X2IiEIbOX2h3VbkCSUbmczPmsRaj2imCpMjn2mAg3k/GTN4OxdyuE3MExpdCXiclHY8JRQapV5u6y095SeW7AlOxzibxTdtF/CzfHgFan6xf+UNbsfdPiE3E2aug83o0Lzn2IQDMHhKPq16g9ISos4/FeMJ6krRP1/EZZUhRLA40RiuXPsy2IjawufnvTw2f8GC0Dlz65FqYQJqKbVxDeemPIGwSHHDggy8FixfvRkNLwDhDquewHBm9Ab/xIpwgDT5Thj09noZWZ9Jd8d5yrfhPpqM8xlDteTaVvlNgMOO5Zc2Ew/qql+lh6sWD2yyZxDPXRVwy7vgq3LGELHYpMWOSM7RW6Z7DYDcBxY8a0dNc5vQQpMgPP7H9ucT+ADQLo/2U+1CGS/hNKY8r9BVQmSeNkAtqi2IPs7fgizal+qGcVaCGSBUjPDg9cEK2XvKIDj1dgKXC1/YBLTg3EHrDE23j6VQjS1LqarbXsEZEKD2+klITfDsonb8n1Kav3kIRQOoaNF8D8qSgiw65vO5fm4KnKLoHjEOJUwRxjAslLNfVKeDO0z67AYG89JH3aKpgx0H6CZWTAcCSWGUZC0rTYoyYHo4dHcBvvl/vQVbVlxs7OYa1rEvrzWESaEKkzZGWYRxYvp6KqDfaPvV1SiyxLrh98g7wXsqEgij9jydZStfBDZlaPqQFgftJ5mayL5YOCmiS/e0F69vicc0An0Agxo+atJK4SfPauDjy11QLTTvDY9SSEXSGlNT1FR5B3Ei4MExy19FDfwytcCcsR8OFCM8hOjGbnAD4nBnDZ5yby0xd7Js0fgP2nE68h98iu9ll61zhI/2obB367k/giuSWFZ1Uu0jzTD/UGW1OISj3Nx3gaEpHcZVOFi6zohPXCTzj9K9rulE
- KsSDmH0E
- bibOSIb1E1DO07hmGcNUyCwNfYY9K5u/ZxcyUA14yhnM0tGDJ1xXe0R24bqGHTV8alh972xbrejMKDzqBHVCFBCwhpsacNdAD9P+DtEKi+RkabPuhmQEdoMlAmN5jVVvbzxF2Z77el/7SWMHMESyS2XcZUUajajVrQ09hS2xvupAzFqfa5g/8MX2lsPXuxguM+2DQ8fYybT33nrW99EEChFKQS1P50B2WE+ejdB42KG7LWDkICeA8BmqfvwIl2qKdfwENWHUbZo5ik4MbgXyX3D9JsgNL0axw2kDYdp0TFmid+isrL7iSQIwwy/t0bzAzjbq2/zg+IBONurhCahTXHe7MK9GxewQ5TWW9Q5IHENnwdB3QuzQw2Mkfu+1XkKMYioCBVRBOJmBIALc=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A6A340007
+X-HE-Tag: 1790199991-144285
+X-HE-Meta: U2FsdGVkX1+oi6inUxZDqj5x2KeWM7aeFeDgeanWCSUOpC/N0kvguMFn+4je1CfAkmHVUI5EO6Y7f39wUJN4EK63Ry9ZFaO0NYfxK8OPIbA76enV23aF5mZnRNH/fLJh4/IZPVLdV04DXqvMQHSi1J8iFFxbdQ4wM3m2JeqUUtDL3X7hd7H0V22CoP2m+pIetHClzQYD0MSuoYjRC4HEXc9DSjeHb2RdQybeBb5KcwX5COxg5okHbbk0AUkvnqtqJb62XXM3jGBoXG6JZDkbHrqgMdu/phk0DP+4YqHVBl3dppPyzs4bWwA7mgUd77FDvKD99kUReOazCIOu5j++EDLMfnMkZlNL/cdKKpi2B7tCEodnoJKHhrUKuv3LR4tatRto60/zmHGkG2WvZF5c7tQ28DLF7ixIopPvTxe0OszBq+zUjRiJNLao0aDAxUQUD8c2vdwc3hi0NSBx4taW8vzkwKVCOar3kJ5f2+99FfDoqPeZogug3nJdRq4YDrIZ/7352Reab/G+Ld6dSt8kutVywKvW8IXXLmRY9DA3GmQRDr00dFfrrUFqNi8dPP+KmOTQ9EwFj0zAbyo7j26yBLVVM/AnkK5Pbn2F3Na6qCx9yzsjPzPV6XQRsPc5WRavnHLgq4G+W5BXXAWBt6WX+lgx47T8oMR9D8ZHAeI2sikTAxZA6n3cz9dHLSov4oJc8P1PFPfe7VnXpq+0akhmMjuJ8psHMiVB8HVCo67DLJHQ8OWdyWPS53ZJGq7zyj0PyZve2RVCBYanrS3m5DkcOT+B4TrdIRtHBr+Lq18BukJCWsYHXm80692roLWo+R9LzRoudXnWBGJgrvAE+0bRhppG+Aij3wunpINYRuE4HfdaOHKVAtC94U2NkXtHH7JJOuKBEOjKy/uatrLLYwoeNIuzvXP6Ofk8wEXiTgj1hvzF4btJuJi6alvEBMp+VS/hVj6kahwg+0oQjS1s8A8
+ hyDFQr5y
+ EZlgD2rlnYbAYn6u5e7eCiCVPd20KXmaaFgLY1Jy+LZz6d/0sxu/ELiGRncD5J3KqwaaFPbClmfNEn1gSc8Ym4gepUzE88VVhQw+aTs+q0xhkk0xCtOhUxyhvB0+6l8Iv1LfSTkf6YdV4no8romhbbxhBjFc73JkMSw0xIFk8rq9yPV99Svx9+EBXlU5IfpX5q0t/aHj4JOhnVHYCc2XjcxUrG/ZP2JG3dVr8Fi70zNZvyNS08sSYACq5p9U01eqmVFNttlld+pVL0JbgKYeGvCeK4tqd/DUCISjXs28ir58uZ6N2whYTpeQyZwyk5iP6E8TgFsluHVmXjP2o2sJbBaJcqB9NxtXziaDgnSXyqpgGKNAaoB3O1P1ZvAKdLEht6+I5wdDnWhyqaW8/kI72FSpKPrR6ppbQErYUAeXILshZdQeLZVQ/Wwftgv97KYzAW4Jcq6YIFZeIv/wzTcH3M0l8ElY+uocP5w/4jjmnhh17P+boZmhyp02PepI8SoNCu6FH3/AtsmjCAaA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,11 +123,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 05:10:34PM -0400, Gregory Price wrote:
-> The folio, filemap, and bulk allocation interfaces currently hard-code
-> ALLOC_DEFAULT before reaching the page allocator. Multiple MM series
-> need to select allocator behavior through these paths, so pulling these
-> changes out ahead helps both series avoid conflicts.
+On Tue, Sep 22, 2026 at 05:08:44AM +0100, SJ Park wrote:
+> To calrify my opinion more, "caller's quota" feels unclear to me.  I hope it to
+> be more clear that it means "the quota that is passed as a parameter to the
+> function".
 
-I really think this 'expose ALLOC flags' idea is wrong.
+I've made it explicit that this means the quota passed as a parameter
+to damon_new_scheme().
+
+> > > 
+> > > damon_commit_ctx() first copies the running context into a temporary
+> > > context for validating the proposed parameters.
+> 
+> I'd prefer using the term, 'commit' instead of 'copies' for clarity.
+
+Changed to "commit" for the context operation.
+
+> Now I understand you added the comment for commit 60bd24f272d0.  I think Fixes:
+> should also be 60bd24f272d0.
+
+Agreed. I checked the diff and earlier callers. That commit first passes
+the running context as the source. v2 uses it with a plain Cc: stable.
+
+The LLM suggested the wrong tag, and I didn't notice it when checking it.
+
+v2 is rebased on mm-new and passes all 46 KUnit tests on x86-64 and
+i386. I'll send it soon.
+
+Thanks,
+Karl
 
