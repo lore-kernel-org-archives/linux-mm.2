@@ -4,82 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1707DC98309
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222E1C982FA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 09:47:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F09406B0093; Wed, 23 Sep 2026 05:44:39 -0400 (EDT)
+	id 104276B008A; Wed, 23 Sep 2026 05:47:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB9E16B0095; Wed, 23 Sep 2026 05:44:39 -0400 (EDT)
+	id 0DC596B0096; Wed, 23 Sep 2026 05:47:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A506B0096; Wed, 23 Sep 2026 05:44:39 -0400 (EDT)
+	id F0D0B6B0098; Wed, 23 Sep 2026 05:47:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A28496B0093
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:44:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1C409120637
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:44:39 +0000 (UTC)
-X-FDA: 85244542278.30.1FA998D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 45A73180002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:44:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/XKkXgE";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA9296B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 05:47:08 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 455484072B
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:47:08 +0000 (UTC)
+X-FDA: 85244548536.24.D305540
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 879B118000A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 09:47:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmNaAty0;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790156677;
+	s=arc-20220608; t=1790156826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2XeVpYfjcdkpvh9ayAywqm3l1TSy3mb/tb9TU8su0lI=;
-	b=hghFODCj2fMm0DjbENkybX4JHtf7A+mKxMiVaaN+OIMMe8JEpUXPomRSL+2l40Xk28BnHh
-	1WLF5LItN8cPicC5vwm7UAvZKpqzgtWIHg2TrDUMvbjKlvf68NBNRMh4nfXZ3ZMmtq8BdY
-	pIufgdEPpx9zbCqNh2fnirCFXI9BBEo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790156677;
-	b=q7e7dliiNfEILxocxHlt+22TTzaB9EUsv8DArXNxOXoOvG+GqOlBW7sH85aviEU995SIUY
-	6AUVpKZCxK195FHbS8mGalBGyRBVRw5tEhCm2/FpuaMk5O7YfAZV7LcUNEy+u63YwmBcTV
-	46BGoqeoYzd9sPzPLoTLQycx9yx3/1M=
+	bh=q9lu7/Lfykw5rD9RIMqHSiEol63xjIdEyxl0Gcv3hpo=;
+	b=xK/YhcFU60V3lVen3ZghdMScIO+e0cUwufhyLOJ14eQ8yDzX6dHxTWVI6dtZguiRiCM2Jf
+	oj3+TfJysLs3sl8xcAbazk8V9by2f7WAmPc+jIBfwgGTYx6rwjQoCl6gObhcXnT4StjlSd
+	UVaamJOySal6OjECyCDcVpr66PiTXkI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/XKkXgE";
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WmNaAty0;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790156826;
+	b=YBzulNdJuBOQJSIV0/JN01gqkxPNjWlCBi93f6dgZ877fhIdCpL+wmN77YlmusrPHgw39g
+	uaxTxy9cRKArEklGs0d3M39BDoxWo0wsv6eP9rzZgVz4z9mh7ovWB2hqmPSewkHjegNzI6
+	QV/f782iIiNrL7Jhl8tOEov9BlK1bik=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6DDAE41AA3;
-	Wed, 23 Sep 2026 09:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12081F000FF;
-	Wed, 23 Sep 2026 09:44:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 07E5E600AA;
+	Wed, 23 Sep 2026 09:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0908E1F000FF;
+	Wed, 23 Sep 2026 09:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790156676;
-	bh=2XeVpYfjcdkpvh9ayAywqm3l1TSy3mb/tb9TU8su0lI=;
+	s=k20260515; t=1790156825;
+	bh=q9lu7/Lfykw5rD9RIMqHSiEol63xjIdEyxl0Gcv3hpo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b/XKkXgEKU0YOjuXbwcfy36V3foj+p2K3KoT2nV14+trO1X2xhjmwe/2DHgIRafV5
-	 w2N9S6AOKo9aE0469WHHoIvvnWH0hRiy+4BgBs4l0Gumj2JlaL8UjtxvoBrQqrpZQ4
-	 iGUr8pPVEbHxSAibGSwyngYH+j2jgzN/UFIAgbosnvj4cagxjp6lKHVpb0WwoWaRXy
-	 7a50y3wU0xzbhfT4GEYBHUYgdNsicPhHRz6E+t7MRRH2vPeca3M6gDws5LlFTCleyv
-	 i+JwDuEPHowWMKM16/jvYw7ZGlGDzUXINd2zx8ljSfgsEwlHXLRfdap6la9ZlYaV5/
-	 Q6WPtWciFN0LA==
-Message-ID: <00d07f4a-f679-486f-9413-6917b5213854@kernel.org>
-Date: Wed, 23 Sep 2026 11:44:27 +0200
+	b=WmNaAty0/yAlFHU43CCV2MnKPupK91y4CnUMGEPeh8kUxiMJUVFllGCnEn+XOmwGQ
+	 jtlvJlSlTo3pXUrwqWFokdpYCApi0lr1RmxxvWBXUTbVZf1W3uMFwAY1NHYkIBYb7h
+	 nuRxiRXpupiJkqa41j5HZAfQSgHa4I1bvNweGE1VLB12K3Xb9yp8565qAjjqByqEdr
+	 YErL9gNtCzYJriHq48dJYL0TnKGxgmyjrXSWvOdY9cZzlMTcKiLi3OUVthdWHc684f
+	 5zQqvMwgkRmNx6lztZ2a4kpyFR8UaBglnNyLfEZInlMVmnff0Vwz5sDSgVeUEwYY8H
+	 qm1dmQ8eGJU6Q==
+Message-ID: <d9a77381-cf88-4726-9223-c16a5c6608c2@kernel.org>
+Date: Wed, 23 Sep 2026 11:46:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org,
- ljs@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, baohua@kernel.org,
- alex@ghiti.fr, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- liam@infradead.org, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, willy@infradead.org, linux-mm@kvack.org
-References: <20260916224437.1164512-1-joannelkoong@gmail.com>
- <20260920162014.4479-1-lance.yang@linux.dev>
- <e22eb6f7-7eb4-4f50-af2b-13a2e3952cac@kernel.org>
- <CAJnrk1Zk_4awd5OfbvsCLts1YPsB6JjjOF2hiSmg-wAp+_KUDw@mail.gmail.com>
+Subject: Re: [PATCH] mm: madvise: drop MADV_PAGEOUT folios at swap writeback
+ completion
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>,
+ akpm@linux-foundation.org, willy@infradead.org, jack@suse.cz,
+ liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com,
+ chrisl@kernel.org, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ baoquan.he@linux.dev, youngjun.park@lge.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, mhocko@kernel.org, yosry@kernel.org,
+ chengming.zhou@linux.dev, kunwu.chan@gmail.com, tz2294@columbia.edu,
+ hch@lst.de, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260921152449.629486-1-alex@ghiti.fr>
+ <70cae945-3a4a-40db-96ac-5ce66a3fa186@kernel.org>
+ <CAGsJ_4y8-wD0yMV8GCtCz5MfNrOKqUaTd+UgH=8MoP_nuvPnGg@mail.gmail.com>
+ <108487b7-0529-4282-b5f4-355804b4c0cf@kernel.org>
+ <CAGsJ_4zGmGh70QtRBpnhueev3qt_bgB4ZiE9fkW-hgNjAVhv+w@mail.gmail.com>
+ <2e695c8a-4212-42b5-bb51-fbe1aa162e1d@kernel.org>
+ <CAGsJ_4z2nakqBCKd_uAn4bfub99r3NJt2spOUx-K0M7bHW3_-w@mail.gmail.com>
+ <4c7c6ea0-84a7-45f6-989c-d1502b90694c@kernel.org>
+ <CAMgjq7DeYsJxG_VCf2KnViV5nd10m-PPYzXRD1fi8QcGWwD0qw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAJnrk1Zk_4awd5OfbvsCLts1YPsB6JjjOF2hiSmg-wAp+_KUDw@mail.gmail.com>
+In-Reply-To: <CAMgjq7DeYsJxG_VCf2KnViV5nd10m-PPYzXRD1fi8QcGWwD0qw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: eddau67cj7md71qexuhmfu4899fu1e4g
+X-Rspamd-Queue-Id: 879B118000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 45A73180002
-X-Stat-Signature: mmeuskjn181tan7wubkrbjhmdc8i9tur
-X-HE-Tag: 1790156677-909314
-X-HE-Meta: U2FsdGVkX1+KoAEeBN28SAGX1BvAWp8f9dUetmFIqnoJ6zPiRgkoEx1flj+84xj2LOOJHH5egB5wG/JaMnFbAuHym7Trgbe9MJIol7uprfQx9+WTYgI19Fl3k1B9s3IAO7qWz8pf0NdSZAiFDBqpQWVto8ddiiyDyH24csXWQ7bAYhOnnYSyMZiN7pr4WBT/9F8JuHoZMw3acAGZJvxf1X8sLJ/GrXncTGfdGeZyV+TApkbW+X5mmZ15CxC41fqESWviBe+KZ+GzKBlvsYPpOsZhaWHVLw1dNWfEANobLEtR3oRG9IvjmFknWG8DjlXRgLuTJg+dO039sA1f7wbhx2RDFZAXTbuWaFpsQp0TaxOTwFYfH7BFbCk1+78Temm7z+vQV/uJh8X+BSgAPFwSH1k4paU+V/YNaKdWi52EV4wF402H4iSWFvIKkuZGiaVPFx57TXlk8QcoL8a8Siq90qGI+1BdEjfWHYdMJoo00u6a6Uj8Hr2D/X89q5IO/qNAxvi+LuWIOqdvyy2cH/QWxdWuaOuDl6A0nxeG6VihfXtsPNgctpOOh71s2Y7wPvu1D2eMFK35rm1u6AfpKQkigSbkvvmOUDPxr+bR5Z4rXQOQmMZIKVyHonsMphonJJKcHAjefMkjNrf1Oup4BksvceAokB1i4HdawElQNzhYB9wZcRcGGFUih0W6nB/Oj2xr2NED5uaTrDyS7+C0KWtlef5Cwj4o/uD3B2XDjhdPLU+37YR1HqO+CoCWCrWBWkQBu+Y1fFYHFF9Er72pd8aG7fTPbH86dpq4bugpWfCHFE/lfSpqYJMgvBQBPNgVW0dMzWJBTWZtIEAhEgW5RxdOqOkDX9zKulU1O2WejuFi+wH7kK0OHvXUpTLA0F5scv+QLk2TYhHhJ5Oer4KguLvXQIjry0hKmnMga+17kgU//S7YXZioDQpQfqwlN4b2ZZg61rEa+9uKgpzj079lwVX
- zc094DL0
- fDw0JvExQblQ0Zl5N6burpAfFyh2nVbElimlVKN3LkOHB75de/o4H1Vda5WRzZpJxnxpYMmW2wRRzIHsXARo3AjW7pUSaHTGY5mSx7S8s73J3AN5I460E0Vqtq0kL8TNh2hUKWg/0vwDMQWMNghR0/iJjn0NPOYzhsKJd3Vea41lxCW7WV7Md2R4jO8jPZIOLjuQKSYT0NadDUQG0oeu7JjC2rboijuX8vLm1hpdJySqZbuvIomAI6J+ztmmdYowAIK2fsR0FnZ57hCnd4qEkXs7LrtWsgg5dI6iz3Mmb5J+E70YBSm7piJnaZQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790156826-604070
+X-HE-Meta: U2FsdGVkX1/SMeGQMJiZCw0b+rEev2lmywUr0XbcyysKTPz8VIYpL0wJPUQXpp7wh0LTIR6Iu012xugpin0cSkOQ3BnUrq5yDaOTERqkNcsi1XBZPNZGuZ/5R+W/wPsiaO3yZfDa8rt71Uxbd+o0yjcDNbf8XWs+hI34gf4sFsxH7OUoKpJzbrWoSWv9DHvqODKZB3sBCpHvhJckNIzstGGGkx0TzSNGKZPg/sQ9s7v3QAFLG9oEc4nnV+Qko6pddTkGhF/UJqjITh1FDUD9aQccflKUZNC5ytkpIvpRLjnplMTSM1gxJRXeZBbqSLH5yJfkpu6+rKVr+TCGYT80MATqgcwa8eN4G5CbIQQCDMuzyfbRywkwBGCEQyMjhs/wriyy/oBtiNl86MexKVyNivfrjgM7gL5WaXNAZR2zSx0OjQ1CogR96WX9qamw+7xjKNy83SVqCii8y3vr0YaIAGFH+DtRw7hfGRZC2ehwIPGyMIAw/CNo3a+NCNzOSRJNasVy84ZSVvuNR2uqi0qNcz91Wyd18BEGTvXrAF5AN89KuwxwXVkSHpzzDAbHucTAJ5cqVpLt0KUgt/gNKIsKntgumex2i3GeffvOly4b6KHTGkQ3nNPbWamBPX9JpUr9rC1NXX76j1LBqnJpwubyQQ+6jpQO+JvziUXd9OJydU2MeXQDz+/hFSjMTsSMulezZzlByx5COGvj1CJ39xWyEqXTMBsNGzEfwTJLQj/ukZeA98QaRjschrGWCZ/D4KdmCFZGtKKgBhfXfLPr1aByZqJVWIh2h2FevhtxidKz4H0uLogQ+1MgxfhWBXrsr0CUkzy6mBinKOU1DQYMl5CcR3oXAg9tfd71lupJrx7Q5xPGW+I+dZIvlHjoCa4oX6VhMQ0lmLU/ItU0VmzI/2PkyhBwWNx0jD3T4E6iErFkOZsmB2DKIl5XVaUqXVx8SxyKPhxqa9OXYuMUeSYurHA
+ NfZypoUl
+ ue50rX7SbO59n+QnSMVmT5TGv9su+N5ti3uzBCMKHdzdnJutRvwzRH57jBN1OjpySwj5w3rZuTJcRhfaJClyVhK3FRWZgtx9N8dRJnJsi8iPsi2PFoZjyewZNBbIpHUymFHFWngSJvgTkzrtsU8zKSjzWbK6zWj6pf7z/23JsAMPU/BMkNTC2Kioq7z0KfnZhVrhxPWsErvvHS+oD/DnJAGv4x8y/0+aUKexwJWxTsDkLXBzkqhMbreC/gCXrnqgnJMw+h3KZUAbeA1JIZ4qN7Rxb6R8cZKM5msz0hkbZMhl6JbS3n1znwINPRgf5eHj9tmGcwSrT/qVs058Mxy96vTiQJKd8d2wirouz8VOLE3BRCgJHPPdfl4YcLch9Y1/DAwWhluzCX5zpW04IAGjvCVOabdPXVL60eLKOScMrTDeJjsI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,116 +154,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 02:44, Joanne Koong wrote:
-> On Mon, Sep 21, 2026 at 3:12 AM David Hildenbrand (Arm)
+On 9/23/26 11:35, Kairui Song wrote:
+> On Wed, Sep 23, 2026 at 10:46 AM David Hildenbrand (Arm)
 > <david@kernel.org> wrote:
 >>
->> On 9/20/26 18:20, Lance Yang wrote:
+>> On 9/22/26 22:55, Barry Song wrote:
+>>> On Tue, Sep 22, 2026 at 7:26 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
 >>>
->>
->> "David objected to the scaling", not quite. The tricky bit is the scaling when
->> collapsing (creep).
->>
->> When freeing, I'd assume scaling should be alright.
+>>> I guess that's because the LRU is not always accurate. There are cases
+>>> where our prediction of future access patterns may be wrong, resulting
+>>> in refaults?
 > 
-> Ah, apologies for misinterpreting your comment.
+> Hi All,
+> 
+>>
+>> Right. But these would happen in both the SYNC and the ASYNC case. Which seems
+>> to indicate that making the SYNC case behave like the ASYNC case (keep in
+>> swapcache before evicting) could actually improve performance?
+>>
+>> Or is the SYNC case in general so fast that it is not a problem and the
+>> swapcache is just not a good use?
+> 
+> I think the problem is not LRU being inaccurate, but ASYNC case could
+> overshoot the anon reclaim very easily. File folios can be simply
+> dropped, and increase nr_reclaimed, but anon writeback (swap) can't be
+> done durig the reclaim iteration so nr_reclaimed never increase during
+> the scan iteration. So the scan tries hard to scan and reclaim more
+> anon folios, more than it really needed.
+> 
+> I think the real fix is some kind of different watermark, throttling,
+> or a different counter to limit the scan of async swap. I mentioned
+> this at LSFMM this year but I guess I presented too much at the same
+> time so few people remembered it :D.
+
+:D
+
 > 
 >>
 >>>
->>> Em ... I'm not sure max_ptes_none should also become the mTHP underused
->>> threshold ...
+>>> Even on Android, which uses zram with very fast synchronous swap-out,
+>>> I can still hit the swapcache from time to time. So perhaps with a
+>>> slower device, such as an HDD, keeping the swapcache around for longer
+>>> could allow applications to hit it more often?
+>>
+>> Why is that specific for HDD? It's the exact same app behavior independent of
+>> the underlying swap technology.
+> 
+> If you have a shared folio, you must use swap cache, and even for
+> single used folios swap cache is the way to do synchronization,
+> regardless of the device.
+> 
 >>>
->>> Say we're on arm64 with 64K pages and set it to 16. Khugepaged PMD
->>> collapse uses 16, while mTHP collapse turns the same value into 0. With
->>> this series, an order-5 (2 MiB) mTHP enters the deferred split queue
->>> because it has 32 pages, and is considered underused once more than 16
->>> pages are zero-filled. So the same knob means 16, 0, and 16 depending on
->>> where it is used ... That's a bit odd ... no?
+>>> I don't know. Maybe Alexandre can share more details about this
+>>> benchmark. I'm also a little surprised by the 15% regression in
+>>> Sysbench OLTP. My initial feeling was the same as yours: we should
+>>> release the memory immediately after writeback completes, for both
+>>> synchronous and asynchronous I/O.
 >>
->> I very much prefer scaling over using absolute numbers as proposed here.
->>
+>> Right. And see if we can identify why we are swapping out the wrong things :)
 > 
-> With scaling, I don't see a way of avoiding having to queue every
-> anonymous folio of order >=2 to the deferred split list at fault time
-> in the non-default max_ptes_none case, since any folio can now
-> potentially qualify as underused. 
-
-Exactly.
-
-I was primarily arguing that I don't want this overhead for the majority of
-Linux installations out there that ship with
-
-$ cat /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
-511
-
-IOW: we add them (PMD THP folios today!) to the deferred list for
-uuderused-scanning but never actually scan them because of:
-
-	if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-		return false;
-
-Now, what you are saying is we might want less overhead for installations that
-modify max_ptes_none, like Meta's fleet. See below.
-
-> This drew some objections in v1,
-> particularly for the Android small folios case. I read that as ruling
-> out scaling. The objections were a) the list_lru lock contention and
-
-It was the "deferred shrinker list and lock" contention, yes.
-
-> b) the limited upside vs cost of splitting small folios.
-> 
-> For a), I don't think there were any hard numbers showing this is a
-> problem. If it would be helpful to have some benchmark numbers, I'm
-> happy to run a synthetic one (patch 3 applied (which adds anon mTHP
-> folios to the deferred split list), only order-2 enabled,
-> max_ptes_none set low enough, all threads in one cgroup on one node so
-> they contend on the same lock, each thread faulting in a large private
-> anonymous mapping). I'm happy to run something else if anyone has a
-> workload they would trust more. Johannes also mentioned batching as a
-> mitigation. If the contention does turn out to be an issue, I'm happy
-> to prototype that and measure it too.
-
-Right, I raised that. Johannes thinks it could be fixed with batching. I was
-concerned that it would become rather ugly. We'd have to see how that could look.
-
-> 
-> For b), v1 unconditionally queued every folio of order >= 2. v2 added
-> an optimization patch for skipping queueing entirely if max_ptes_none
-> is at its default value, which would also carry over if we went with
-> scaling. So I think with that patch added, for the objection to b), it
-> depends on what max_ptes_none Android actually runs. At the default
-> max_ptes_none, nothing would be queued at all, so a config that sees
-> no benefit from splitting small folios would pay nothing for it.
-
-I would assume everybody except some special users that fine-tune underused
-shrinker run with the default. I did some digging in the past regarding public
-documentation about how to set the parameter, and most of them just defaulted to
-511.
-
-I would be surprised if Android even knows about this parameter ;)
-
-> 
-> Does that make scaling acceptable to you and Barry? If so, I'd prefer
-> that as well because if/when intermediary values are supported for
-> mTHP collapse, that support would have to be proportional, and it'd be
-> easier to reconcile the two with split also scaled. If not, then what
-> would be the suggestion for where to take v3?
-My opinion is (open for discussion :) ) that scaling is likely the better
-approach. With the following notes:
-
-(1) If we want to enable mTHP collapse with scaling as well, this needs very
-good documentation and also another thought on how to work around the problem of
-creep (e.g., refusing to collapse if creep would be possible according to the
-max_ptes_non setting and warning).
-
-(2) Systems where the underused shrinker is effectively inactive should not add
-folios to the deferred list. Including PMD THPs, which we unconditionally add today.
-
-(3) If we want to exclude certain small folio sizes from the underused shrinker
-(e.g., order-2? order-3?) it might be better to just hard-code that in the
-kernel instead of giving the admin a choice it cannot possibly make easily.
-
+> I think we are not? It's about over-reclaim. In the worst case we
+> might put every anon folio under writeback, while no folio is
+> reclaimed, if the device is super slow.
+Ah, that hints at the real problem then? How confident are we that that's what's
+happening?
 
 -- 
 Cheers,
