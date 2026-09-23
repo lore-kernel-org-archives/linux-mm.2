@@ -4,126 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6717C9830D
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:04:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20845C9830D
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:06:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0A3C6B008C; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
+	id 023C06B0092; Wed, 23 Sep 2026 19:06:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BAA86B0092; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
+	id F17FC6B0093; Wed, 23 Sep 2026 19:06:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AA4A6B0093; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
+	id E301E6B0095; Wed, 23 Sep 2026 19:06:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E4CB6B008C
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:03:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D9607140191
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:03:58 +0000 (UTC)
-X-FDA: 85246556556.22.A804B3D
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf09.hostedemail.com (Postfix) with ESMTP id F223E140004
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:03:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BuH0Onw6;
-	spf=pass (imf09.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB07F6B0092
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:06:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3CC97C0192
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:06:48 +0000 (UTC)
+X-FDA: 85246563696.05.C1CFFDA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9032E18000D
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:06:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZzuHD4Gf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790204637;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1790204806;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
-	b=3DaJ/u2mYr2kQMA+jm3twOfeyXd2Gi6+B6cTW0Vwj+jnR2g9FoJ3E1MKDXMt+9Vbo81qEk
-	WwzCZAuTV9tukaoKL1/7/iK4sBfsCxFarUQXQuI3yz50u4ASEUK0kSLXkIH+t4ZDlTH7V3
-	TdOvp3GjjtKJvjg/yh1qL7zjKST0ht8=
+	bh=WZdmhBqOMuKYNscPsuUbYi6tP3G80UEN5EI2cwEtmR8=;
+	b=ow5CrJMZHfPgCMX+t0fbbQQyzc22o/YvbbuHGxVGJUpOjvJGjGmfbTXUuDEY1S+Qj7Ab3X
+	+gqbau1F4cZu1arEB1fQHWZR2T3u9RDqD1QmSwHmxa3psdWoJB6si9kOCp899F7PI7NPfF
+	ix0BD2xiJJYD10h9QmNF/fj1dFWThk0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BuH0Onw6;
-	spf=pass (imf09.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZzuHD4Gf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790204637;
-	b=GCbtLlHWPzWVvNl+75c+ZSP5kVfljyVzxpnyPuJJN3zw21sepw6Pbz9jOK4GbIMe1rGJqE
-	hmc60lW9AlJ3fswQZjqPIXMn+mw4L1412T2x5cuVTQ5IHuDcJZtywhYiq9ms8u4/szRz3e
-	ogv8eMERHxUjb07oIfty7PwcsmGTIMA=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f89so1045492f8f.3
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 16:03:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790204635; x=1790809435; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
-        b=BuH0Onw65fpscjjL4T6c4JVg/o9TLcXF98wDWIroUnRIBoKXCWxGsFR8F3p/Ey29qF
-         Ms59tL5Uwyvk9Uq5DfTv6exEK22ZK1bfRYUAVLZYtNm+FADtbX5buGnFNTn4izC1wned
-         se8Ypdb2SmNAz0NvDabf1ufb6ZQ3WfO5vuYcT5zTI2/gS5agmBYa8ttLydJ0WkNgefHE
-         +NEeVjxvTnoMgSBdghv76d/drBu8Ek2T1YK3U+x+4cqySseFLLr9EjtqoEBEkQjR7YdX
-         q2yDrysSQqKqNnVL3Kk+64PS+fw3275/+Lkf7GTJwbt+9lDsOVe2gYQxmvPXKk30BcEr
-         It4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790204635; x=1790809435;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IT+kPykiDUVKChmVTT4JFPPqjHccYovstoU8+/L1N6I=;
-        b=HRzjVGjmsehuricZn+H4AigGUsBJ1TgzJjHVXx1rkmhBn67U3MA+wQZUCnMyh9DEsM
-         yeOM1upRN4rP3Ovba6BzJWr9Dr31sV6fbJZRMyIJYTFO/HOVi/5zG9AyFhEHWhlJRD7e
-         /Mi0Xh91rHEBxdKmDg7Gg5qaO5P2kLCSJZ2qL3Pu/5fcm5SnU8rnOT3k7rrhXHB0x6YN
-         kOW5OT0rxLWuqewKUatunMwDg2jRjWQJ2oTGtSVjYvpVtJ6YSSrIKmEDR2pWAJNA4ltN
-         zuoNIssaO+TGGhZHyUwSXlGOK3GrLaSMJFtvQBpR1JapC9cmSwZxwgAX+DIhJoK5MlCq
-         G4+A==
-X-Forwarded-Encrypted: i=1; AKwUvBztkkOteeZe1U4k+xS0IyjIcW3tO4BZIM0HchcSlx0mNON7I6JIXNepyibuLYXC7rTbg0t50Drg5g==@kvack.org
-X-Gm-Message-State: AFuF++kKfiFq45hYgJWyNoa418atP3o946CpLAZyCvJ7YRYUg/8ElSW0
-	f/S6P0xhD5uz54UFMLb+39R/5uLbtUOWhsdGFdGVmAxic1PLM0strJzU
-X-Gm-Gg: AYBFou3Dmne4Ap8QoYHz9DuiCz3zzYIcnTWPqy3v+esWjjOWYCRhrK7gQRQQ3WSgQ0G
-	sQPemovPgELMPXmPe6XDcMjpOzSi5NuuqCvd9NBT7pwppsOEpquzHnQhsAZfq+QawUld3svOO41
-	GDqI99y6fLvjJfkc4kP6VXzUxqdnn5Ztj9xkoZMDQymgoSQGO8jlqa3/E3t3juLYA1RJ50V93Po
-	PdvJTjObjwvE5YJwrbwrKahHtYgmnX4e4l1fQmk1DZpZ9tsg+qX5F2FqP0QTtoJ0hJ+3JMo4V3w
-	m2e34R1xwy+cqyrBXcA+MSZkUNSCHjutc/vLd3wG6uyJb9Hu7IE4at1Zd5+k1M3EymrBsVamitn
-	uzo+2f1tScDaF3sbNFGZIzoiInWT5Fq5/plzfCDe+WO4koJL0GEiU4FLKBIOS0Y+5ODw5/u9z5F
-	8oxYIG6kplir529lyOljRTtfKQ74niJ37a4JaFi68/iAXStlRldCo0bPzfNZVVwNsfjfts1Ups/
-	qlnHhaQCDryuQMu7J5fSo7nx3m6cKz3LM2w3S5QuOiZodmS4vFqtYdroRIyeRz7JgCwG5bO
-X-Received: by 2002:a05:600c:530e:b0:49f:cc2a:f73a with SMTP id 5b1f17b1804b1-49fe66fbeb9mr10115395e9.25.1790204635318;
-        Wed, 23 Sep 2026 16:03:55 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe5dfa6a7sm31259815e9.12.2026.09.23.16.03.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2026 16:03:54 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>,
-	Pedro Falcato <pfalcato@suse.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Toshi Kani <toshi.kani@hpe.com>,
-	linux-mm@kvack.org,
-	regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/mm: avoid a reclaiming allocation in pud_free_pmd_page()
-Date: Thu, 24 Sep 2026 04:03:50 +0500
-Message-ID: <20260923230350.365304-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <e11449f0-d9ad-4d1b-ab21-2be7d71fe335@intel.com>
-References: <e11449f0-d9ad-4d1b-ab21-2be7d71fe335@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F223E140004
-X-Stat-Signature: 1t5myb1amu7grcas67dckcu4r8xxarif
+	t=1790204806;
+	b=ndY4muGZsoaSjv8rkdsDCnIubLnKKDTEyGboD/J4/apLiQOgJdclpxyyst9l4yzaADKtof
+	wDYZKRjZ9I+IVyK30kgLwpfOU4YGt0zwh9pAqS1Znorw3EIUzKygnDgCgUC06ayhTceBOh
+	ktgQ42KxdXJ+gGFL3TO71dAhtGPLJS4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BFEC340758;
+	Wed, 23 Sep 2026 23:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E847A1F000FF;
+	Wed, 23 Sep 2026 23:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790204805;
+	bh=WZdmhBqOMuKYNscPsuUbYi6tP3G80UEN5EI2cwEtmR8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=ZzuHD4GfgdAkX+OUfQZ6s7tIgAQjGqlqG7OhOna8OhvbMDSeHf6VeKfOHVcSh4/tm
+	 8XIBmh7+Vx7lTluK+P8eFyYsACVvqdN4LsDY+JRyF+2WvXMocelVF+MBLGwxj3HUmE
+	 tKi+7G74HzQEWKKQQ1Duf93OfrGeAiWU9A2MfKgNPir+AR/wFXQ1mwAF00nZpV7674
+	 2tELmsn+Tn/7ooLIyS4NPUHqZwOaHCptdW68CGWV1EWC50i6yX7sjcech7zZY4Onpm
+	 UfjrFl+wjzhmL5Kh261xy7QdpWy10OiAZ708xw1p9jqE5xAJ4nCdpAu9KWJry3mpRZ
+	 tCaljRNJprcWg==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH 4/6] mm/memfd_luo: allow preserving a tmpfs mount
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Hugh Dickins" <hughd@google.com>, "Mike
+ Rapoport" <rppt@kernel.org>, "Pratyush Yadav" <pratyush@kernel.org>, "Samiullah
+ Khawaja" <skhawaja@google.com>, "Alexander Graf" <graf@amazon.com>, "David
+ Matlack" <dmatlack@google.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260923224408.3745689-5-pratyush@kernel.org>
+References: <20260923224408.3745689-1-pratyush@kernel.org>
+ <20260923224408.3745689-5-pratyush@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 23 Sep 2026 23:06:44 +0000
+Message-Id: <20260923230644.E847A1F000FF@smtp.kernel.org>
+X-Rspamd-Queue-Id: 9032E18000D
 X-Rspam-User: 
-X-HE-Tag: 1790204636-191636
-X-HE-Meta: U2FsdGVkX18Dxi1VXsr/9s7sPS1Qcyji4CIdua8TsJMoeB8p9qOea30qimRFPF7OAAEhaZLTCiic5smDIyAlUwTBBSeM0fNTL+lJJKX0krtW4/ILSctgbJgf0fzMkdhC1fZjYZ7tW8oO6Bg58mfSrUabLYspbBYIiNeYxem1Na+BQAYcRCVXTFGOEYyENInL32LS5PRFKU9AIH33Lfx0Cpv6k/LYkr5ANkNtuBVDL2qYyuiScr1LrpAlNaKJ9LJPWlpTKPKzbr7PgqyxXo7sCAG0FykJxcZ21N2uhcCEBR5BMepr1w4lKhuOIsg5R7OyQn3moxKtfJIlIIia7OiOGNp+wv4wsLRcLsYQR+mVuQqPnVmjT22X3oo/9KmnMpWAgW8OzBBqGh/yV0Why56bB1e8kSHaRgkpZOylCOoA6UVqCuFsSnT8ChmDBCsBvso68L5g4rZ8o5mlie8ex+YmOuIF5r644aMFmSnFI0TyvPeV6ZQzBiXxm1foHlS3WoSOE1uC1A60qmQG29dLnEnhJpUO8edNtYrIAQ45/qr+x7NHwdE2HfmypuNZYrfV2gJIPk6/sq7co1LShNY+HSj+oXFRiPpYQVUafRpEt1I6jRkmuXR0WuGGDk+PZgNVmMtDruWv1aq1Qvcg/wac/mFW8PQXjEa/IVhz2x/nMU3kYX+6ylnsw8CGcaogdwN7d3eCR1UfAS/GP2LInYLQHb49j5c8Qwhrst6QIEkbF6SbDDxLJPdaQXdE4fJ4L2RbAdQemPSQEvk593EOCG0X0b58nvl3NfdEbFH38NNJuka85GuLVGnXwXWobqzKn1DKdmFrGe2K+rKrEsW8obsgAh8kjmtaWCcAHrRGXquqKxL/XeZtVMWrojebvJV0YnYkrSCkodDY7XjK8a6rjh2sav1c9gY3B9uMj48wwrS6KV2i9ZEp7z9szyvwmqNJPAlJouG/lJmnIOsnGRbZacz1qqT
- nN2QFiLJ
- yezv8NVBlsl1HwHYD38R4acUTjIbubocLXErXt73miNwYemMQJyLlGqVpruXYsiWOXL6qJixt9+knn8fOxP5cFRhI9/nELYlUM7WxCdcIl1HVK/N88NgWtyDREN6X8ZYUQzTsRitDVb5BIPWWK8olxoT9D/rILl03Cfeee34ZHeLXCzfXaQNMmYz2KINHr4kFgGyI4iSwRVc41lPwyiakaDN2totVjsvKxPaKhnEoJgM6QmYZ6M+4qGaMsKVT2Am5oVNkndqOnQJs2WFgJbkJw1Cjvmjh9Gk8LeoO0Dd5epM8u2fewQHMznGYJY+mo0gtUCsGSYT6HbGNgs4qaxUfHW37eZQvLR26ejb477iH/Qykh7RLH9rkL7rKCPfl5AAytwh2SXKd5sJVBqQV1DxpmmZI7PIK21iM8CWR4h1t9GgWDnd8gvMIpxQm8nKEBXZRcFwfYFhF1SACwVaitfqpqjLMiSlzudQtbf29kcHa7hF5EKXd6LehWr0hdEZJV2xXgP3JabihU2fXaoXfcMVTszYPCVPlh1eV82EP2dRjafEDB41RJvk0fzTNkVD/NP5oXNgRE9mNAwUinsEE4JRWaH68PC1DZfokQV2wKqmoifHdUdjQ9wuN7NXwgeRk+5OSXDFSZb/VuivrKF/KtuIuLnven49mv8zZXPcE
+X-Rspamd-Server: rspam07
+X-Stat-Signature: g71x6sgywcxgkiofdxr55rydm9mfh4tj
+X-HE-Tag: 1790204806-930884
+X-HE-Meta: U2FsdGVkX1/21RIuTwCpC3De/TftgMLzVT5gm/QMLO3b2gzchWW56ix6GEYPUzQ4vZ13MRo7STtIfY80m7uGwXgx12z1sNoMHsveccRv4n/MxEcZk1f08hVDMEYOPXEy6k7AwavoWMpf+qD2Uk9jC0kZt2YefK48CAVCc7X3MDi/4orhNG9s9xwJiA/YcFSe0p4oJZsfjos8lL9Mk1ywb7eu52EAKz7e5gCQLgg2cP86bY95Rq2+QtZRB3ki2J1u+2qh/9mzvIa8EQDnKhNgcfOtQedBA4JF1s6Wggj4izMA83rfgS4htEmQS3kSExkgguKn8uAYPaBeE1t8TFw5XiJZ89MTZg04MyLMm6M6bjRHBBcSNBc4b55oPl0YqCfQLQQu6u0ymwJMkXbcKA1rbBksRXq9+Flo5uHnjnWH6hclhH4QWLhtmC4aXfrFyuXvevs7BisbcOazteeLA0PtgkjfW52f6/jzLFmrucBQUMXYdHfflqf+O9An7zKyeaqvkNcZXK5Kgg5VMO/Dhd5S/itpQMyiNLG5bOV39o7YrHcn1DIUtNb/Oq8DqlxKuahz6vJLJHCqw5G0ZZPzSAdD/QdwxVRYeRbetjoDsZcEmaoHcsYQsOGdbVtMzhHkZfC1ilfSTjl8dSFl5t4hXQzclbm+D73fsy90XvS6lpZxKsnaDRmtZ3Dv/HRHrI7uy94T1NzlNhfMrDGQzwo7Vffs6KzKUsJKqllv1dKqBZyNIsAnRmdMSrlDlO+vNAOnAs4K2aGS+7fR5ApcD9MJnitQQd7Vg4jM55jxBcUU9i6zDwoIyPk+8b65TcgEWxWCO0dTnB7sGImrcYAwbay6M0W1ojpRcsfhVqGbxqOqphb5nYZIIFw/MKAUJaYzTYiynFER+J+a/aC6cBKMoAp55ynvDHkilFD0kvyJ5fK/0RaWAE6vZrbbga/IJHvN776+2z+ZRRMjeV2ChVFuqfq2+lP
+ nO7YzmPP
+ CsFUZdcMvdZ/eL/sVVX3ye4sSZEG9zdnfWrpkf+s0mcib2+YJ5QmHN4SuPZG+ZWjOFXqVBMserta4VF6VrTDbo7L1dQ6jkHjUCDZElRr+s9iXrxTgPOk59D6QBmqoqkYeZvdBCxCeoWME3oVWY8KU4JRsJhO+uHUh01tHBaITa8yI8suVBJ3ck1+GOW2hplZc4GPW/BY2QAPQ4b31fVRMnXM/GRMhySGj9RJNs3kuelMyY1NN0mkeLGSbYLBVYzfpaIsYeMaj6A6yk1KRzeqt3suvknhE2W6pGSpT1zBjrBamJxuDL0tLlQi4MEJbNI8y9AH0BG3H/POJovF+3qMncouko4EOKKdGs79YyV1jbdsoyTRHAex9MwQyfrzpz25Mpw2YgCAR+ic50S4TPNskpZSJQur7SS2h33h7wlsolBY7Qhau27cq8IKrs1SYN2cuO+4Z7O87QaWV2ONugBVyjk8UG9/z6tdqRMJJ7q1sLZjWHP8inxGJ8BVw9fG2eZFw/sBGilTC9IeBk9D/6ht0AGPrFF28R06phQOk+fnxm/VfvN3QX6J/XsTwuqCu1mesTM28G1SVRkkiUPmSQBKnrBzolRJmJqHTQ6IVJgT7km/IqCkew/6KBXXS+4hsSzchprpuxFcfFhLmp88=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,35 +95,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 15:53, Dave Hansen wrote:
-> I think that means we can do something like the completely untested
-> attached patch.
->
-> Looks like Mikhail came to basically the same conclusion.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] mm: tmpfs LUO drops group quotas due to incomplete USRQUOTA check
+- [Medium] mm: TOCTOU race allows unsupported ID mappings and quotas to byp=
+ass LUO validation
+--
 
-Yes - v2 does the same thing, and also drops the now-stale NOTE about
-the page allocation.  It went out about 20 minutes before your mail:
+commit 20e62ff0b162f0ffc76cd0d972cc6c760a83d003
+Author: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-  https://lore.kernel.org/all/20260923223116.20090-1-mikhail.v.gavrilov@gmail.com/
+mm/memfd_luo: allow preserving a tmpfs mount
 
-It was tested on a box that reaches this path at boot without any
-instrumentation (from amdgpu_ttm_init()), plus the TTM shrinker
-reproducer; the details are below the scissors there.
+This commit adds support for preserving a tmpfs mount across a live update.
+It preserves the filesystem block limit and root directory mode, while
+resetting other options to default, identifying the mount via a file
+pointing to it.
 
-Two things in the attached sketch, in case it gets picked up as is:
+> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+> --- a/mm/memfd_luo.c
+> +++ b/mm/memfd_luo.c
+[ ... ]
+> +static bool tmpfs_luo_mnt_can_preserve(struct liveupdate_file_handler *f=
+h,
+> +				       struct file *file)
+> +{
+[ ... ]
+> +	/* These features are not supported. */
+> +	if (SHMEM_SB(sb)->mpol || sb_has_quota_active(sb, USRQUOTA) ||
+> +	    sb_has_encoding(sb) || is_idmapped_mnt(mnt))
+> +		return false;
 
- - The first hunk prepends the patch name to the SPDX line
-   ("pud_free_pmd_page-simplify// SPDX-License-Identifier: ..."),
-   which will not build.
+[Severity: Medium]
+Does this condition improperly accept tmpfs mounts with group or project
+quotas active?=20
 
- - Making it return void conflicts with the prototype in
-   include/linux/pgtable.h, and vmap_try_huge_pud() still does
-   "if (!pud_free_pmd_page(pud, addr))".  The arm64, riscv and powerpc
-   versions also always return 1, so dropping the return value looks
-   like a reasonable follow-up across architectures, but I kept v2
-   x86-only and returning int so that it stays small for stable.
+The check only tests for USRQUOTA, which means mounts with grpquota or=20
+prjquota will bypass this rejection and their quota state will be silently
+lost across kexec.=20
 
-Your comment above the flush explains it better than the "INVLPG to
-clear all paging-structure caches" one-liner.  If you prefer it, I can
-send a v3 with it, or feel free to fold it in when applying.
+Should this use sb_any_quota_loaded(sb) to properly detect all quota types?
+
+[ ... ]
+> +static int tmpfs_luo_mnt_freeze(struct liveupdate_file_op_args *args)
+> +{
+> +	struct super_block *sb =3D args->file->f_path.mnt->mnt_sb;
+> +	struct shmem_sb_info *sbinfo =3D SHMEM_SB(sb);
+> +	struct tmpfs_luo_mnt_ser *ser;
+> +
+> +	/*
+> +	 * A remount can install a memory policy after can_preserve() accepted
+> +	 * the mount.
+> +	 */
+> +	if (sbinfo->mpol)
+> +		return -EOPNOTSUPP;
+
+[Severity: Medium]
+Does this leave a TOCTOU window for ID mappings and quotas?=20
+
+While mpol is re-validated here to handle concurrent remounts, checks for
+is_idmapped_mnt() and quotas are missing. If a user concurrently adds an ID
+mapping via mount_setattr() or enables quotas via remount after the
+tmpfs_luo_mnt_can_preserve() check passes, those unsupported properties will
+bypass validation and be silently dropped across kexec.
+
+Should this re-validate the ID mapping and quota state as well?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260923224408.3745=
+689-1-pratyush@kernel.org?part=3D4
 
