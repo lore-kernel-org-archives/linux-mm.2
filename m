@@ -4,92 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09D17C982EA
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E1D5C982EA
+	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 03:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8C0A6B008A; Tue, 22 Sep 2026 23:39:35 -0400 (EDT)
+	id 9561D6B0093; Tue, 22 Sep 2026 23:41:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A15176B008C; Tue, 22 Sep 2026 23:39:35 -0400 (EDT)
+	id 906C66B0095; Tue, 22 Sep 2026 23:41:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DD096B0093; Tue, 22 Sep 2026 23:39:35 -0400 (EDT)
+	id 7F5D26B0096; Tue, 22 Sep 2026 23:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0DB6B008A
-	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:39:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDA23A675A
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:39:34 +0000 (UTC)
-X-FDA: 85243622268.17.427CA92
-Received: from mta1.migadu.com (out-242.mta1.migadu.com [95.215.58.242])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7FFCD1C0002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:39:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ABB4USa2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.242 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790134773;
-	b=L4Flg7Q6lz4nv/L03DB1sd0K1AanA7QR2HtusZdgLdW+SNfJlT8rxl64YPvs+Tb7+r/rY2
-	Q9KWcvTJgYBjfX3IqXPaN4IHABkLSitddYeBa5qFOAWDiOEUenQwHvKrxvqyXwkem+GxHf
-	w5YKQf5ko87NRAUy9teNe4Jqa+BJnOs=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ABB4USa2;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.242 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 549246B0093
+	for <linux-mm@kvack.org>; Tue, 22 Sep 2026 23:41:08 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E3FB120675
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:41:07 +0000 (UTC)
+X-FDA: 85243626174.21.7D45A8E
+Received: from mta0.migadu.com (out-153.mta0.migadu.com [91.218.175.153])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CBBFFA0005
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 03:41:04 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t5KzfUbR;
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.153 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790134773;
+	s=arc-20220608; t=1790134865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0TptEs3dVH890tylyf3i/qImne671caOdboC4cbmfnM=;
-	b=2//oeWrSME6+K9jFsu6szqOcwFgJpLkRxqJuHNSn6eBrj1FFKa8ZlT12K/S9dn/6JgVLd7
-	mCSs1pH8dlNyEOdpZe1WHkioL+RW587EbksgoIV2XnsdxFPxT5jtQbaOHPKG04E1LtBtSa
-	kLIxUs82s4VYG0KGGjXd5D3VBEV68Ks=
+	bh=YicmoMpBvPwbZSKoyDjZGS1lR6dkUxkLQuwNZdKD4fg=;
+	b=pZnMYu2dIOZBXyxUxc1Mu9jAVWoF4e+BmsX8i87Fg2h974MtlFOCDtVfFW7w88a4QTfRfZ
+	dzXWHczqkVMXjRVlluq0I2h66oHqfPlsj5iTnE/ZMKiYmiyd4jgLjmYsvsdeoBQ4q4KuoZ
+	Aud41NJvi6nPwP+KfoIV8UWiSdvl9Fw=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t5KzfUbR;
+	spf=pass (imf25.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.153 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790134865;
+	b=lo2gSAwgh32F8bcbNxzlj/n07WgGGBgVdQnZQvkYX0TKS2EqHB2D8I4caZ1gAolEgsesC+
+	ZCxH9Hd3mbIKI32ieOJtCGTefWFVVfWpj/0M/vm5wZ7zGtZ8uoSfSLHkAhE7+uur850Bc+
+	qJQwQKR2AaT0CsAnrf5e8bEhc3It7l0=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=QY8AVjCbcaW+wVLRtHjQxzMTz4h9U9+ldEP+b+H2GcE=;
+DKIM-Signature: a=rsa-sha256; bh=g0/Z5c9aDwytCwk3EVHISBOUhMOmw+UqfCuabJU23Po=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790134770; v=1; x=1790739570;
- b=ABB4USa2vu6w6QWM6kEX42ZQQoHM9Gxuc2x9l0bTvGcQKklfXHgbDlXtCcBNUl4++CITb+Ln
- 7zU8QcXZBNXjlHBsecDtE5ZQBSzqYr4npPnyBnbjWnjVo+Rfxx18VXtakgOhYCQulJi5SS1q3CH
- EmUa6xXOFyz5urVSgh7eXN7w=
+ t=1790134863; v=1; x=1790739663;
+ b=t5KzfUbRPgwv6bU849Gk4sjU/WqthHJxWnYgZ9CznQ3o4Ck0wIbxT85pCzznXxrcJtwcMKwQ
+ DMe4S/Mui0Td3ETfzxqRd45JJF1Q+PDHNHQjSK/l7mYjRq3dJxcyFjZq6B5/J6f/2Xg9tiZtcQL
+ 33KAUZsseBYKCQ+GFiDjP/p4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e2387b4930517eb3;
-	Wed, 23 Sep 2026 03:39:30 +0000
-X-Mizu-Trace-ID: e2387b4930517eb3
+Received: by smtp.migadu.com with ESMTPS id 6f051fd9b05117c8;
+	Wed, 23 Sep 2026 03:41:03 +0000
+X-Mizu-Trace-ID: 6f051fd9b05117c8
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <19136e23-3af6-4bf5-93cf-46bb1dc46c08@linux.dev>
-Date: Wed, 23 Sep 2026 11:39:25 +0800
+Message-ID: <1835413c-e2de-41b0-8225-161afa50676a@linux.dev>
+Date: Wed, 23 Sep 2026 11:40:55 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Paul Walmsley
- <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-References: <20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev>
- <20260921-vmalloc_dump_obj-v2-2-73fceb3ed1c8@linux.dev>
- <arJ4PLGlF7uhNWOs@milan>
-Content-Language: en-US
-From: Ye Liu <ye.liu@linux.dev>
-In-Reply-To: <arJ4PLGlF7uhNWOs@milan>
-Content-Type: text/plain; charset=UTF-8
+Cc: hongfu.li@linux.dev, Chris Down <chris@chrisdown.name>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Nhat Pham <nphamcs@gmail.com>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2 2/2] mm/memcg: migrate per-node hugetlb lruvec stat
+ together with hugetlb folio
+To: Muchun Song <muchun.song@linux.dev>, Hongfu Li <lihongfu@kylinos.cn>
+References: <20260923-for-hugetlb_state3-v2-0-e8a36245bfab@kylinos.cn>
+ <20260923-for-hugetlb_state3-v2-2-e8a36245bfab@kylinos.cn>
+ <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <15ac7069-d687-4985-90bd-25bc900b4bdd@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: o1mhc9ypmwwpf77p37eg4skajpzdpqoy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7FFCD1C0002
-X-HE-Tag: 1790134772-163371
-X-HE-Meta: U2FsdGVkX19AM/cGdVuenjFzyTWryc1xtsls/ewrib4MtdkTT0t48PN9F15Qq71/RmN3gCvhwQWwOAT9e70vy+Ch8y3zGsgaI1aCx901nNnisK17UHuob41Aob1IXR96YXjoBNWWgr+YZJHSOm++SdYKihYkYd77WoIcYw2w+Bwlb+zjq286a3bBI6BIxoJ2gZy5htnTjEsngwf8CSNP3H9wo7avvT6xHjz/FGiyw9o4M/Ss1QfDxMiS18sQ9Lk6onXvscuphBWNJw3bd2xgdLoyDjORQapJCh4tdH+r4MbOUW0q8JnawbpO2K6GbV8OvLGtWmdafHjbwsp5b2arCex0r1vROFfzpw36NpnceQOmnHLWjs+DMwlcJdPZyNKirFu1qB3vxXX5m8gHXMzef6QjeAdf+YADeiSw1K4+T8oYwVP2dHg2cy8cboztyzmv+N/Gv4jqtv+wQ6DJtKTMCQDRAKtG4MSh8J5iLnnLbvVRRiU5OiQAiqmzPCh/eSXHV3dHGdlphtP/jQnrBJKNnIoTluW+fSca7K7dnAfaDVPqrWqNq7lNE5jBP+fNRXvH63kqk3CJFPo8/s9env8C2i3mWph5AocxaEe4HZOUgdndvR8SgBMNHeEkbegOgH48DO9AUjhYDJxeOV6gaIJsSKibvVTkdaiWm2ClBmKBS4QpOidiOIBuIzmmgjODhgKnTHvpdHXOICuHho+PmYevMWodPOF9YNGE49jfUvmw6u3g4/KExB69jKlQiAIAhF8M0sQMNoT3CeP6pEXstgGelnR72MQSwxw3lYpYXjyW43ZOksfQa5hhevlejcbWxRSuK5xOiw4AJ84cVjaTyFx1unB+cOCkwgons3sS1/YSoQS6t7lkUBH0LtCLsotWolQpZgYB+RznqAPvQT0rbp4lBWu56y9b5+ice+TR+4FSP/X7sUxJfEeqOnLwFWxeIsmoZa4goIaa+1Om6yNMeRE
- NYNNtK9p
- JmDMYwijHiV9YpadMonJkvn3pWjy21znNtWlY/sxrhfsxXsiY8/5pfnCNePr6w9sFxImYdnWHNgySvshegcJDdNBr+eiLnlGYD2mFMrWL/kD9p8Ohm5/NTDImAda0npmtpnBrkgbrpFQfUCEwzHm9+jLehG45qKLrmFuSzBwTG7KlqqcXQ/7tUPRkIJfHZd+q13EKUie/BAQUAvV4B0y+pbgIVd+d4prBH4Hw1rYoM8EzC16NgmMiQdc/nfQQK1onU03uBEYw91j0pcqV7gGlLxqZ2+wXamJ0KVRX/H0KfT2n5c+0pSiq11OACM53iTbnVsvU1JnqTw3ugV8nvPwu+dBYfWrGzdCUUtnw
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CBBFFA0005
+X-Stat-Signature: 9chjhh5idoz9hud6hid86frjip9jba1k
+X-HE-Tag: 1790134864-78130
+X-HE-Meta: U2FsdGVkX1+agenQUkMwi/tI5mhvMrL14HkCJG5jYagdTVcSV0JwTHZWDFjpsrgnnlNO5wwu07LsNv33c5yknzFu4EKfRIqi9UYe6XfW26Pw4IGSKQ7Q34Vv/kISBk5s+D7zzoRzToKLnhKFPuK8LVMz9J6or3qoEc/DWg+5YfOu2xdKCLReH4Z2tQLM8/oJMtPNOhNLgDU+GB6ZiftSy7VrlpthSgjHwbDjD3W0g9AR5f+U9MInxFwPRJOhdWe+ON7fuSglUVhdJVbxZTPoS6OJozmSHd7I93m6CxorrwdYDGTzM0MOYdEzcrP/Tq8CGAOdRt3iIJGm2ovkDT0gJsjvngtMSv9YsFgMZ9FTioJOaupyuO+hFyqEEOTKeGhxTDIQyz0S9ucSXklC4hBNo6s0Q+XOGwB8gIqGofHdFZYMEdxqIEbC7xmwNmpxWbBj2jY40u3+hgfSu3M5HMmMK08G6hELzlMouGaRYTui5rr3X3f/sb3UeHwJfEdmqd/ryERd7KBr32TwuFVUBNCb/jbuuK1owAspCmsx3CEOFd6LCcC0lffOeCdN2hiTlDa1r9RYybbuzEzZRS15RReXvLPB/XoDnltJehMebp3PkveKUNHhVcAk1CDzZ2QvjRDqet0etd99//wxoOqRwI2/U1+s7Z+hnS8Y43t1AcVz1SYu+8sC9cS+aXWIWwwdni3wpycQK/zI/KTZl/+o61Jp+Ql7mocOCk+rE78kz1Hfp+JcDF6gqhDcx1bQ5QVZ9ydaOfE0TfvVgEcPWpqKWhx2RZgDQ0oqDJDlFoP7akg/d8PJWhaofCDKWvS5rdfBMvMnnIQIJvjWwSK34y6n8c1YwhqFS+pN2HFEln7eLY6VaW5yAAocAxkhEBMy8v40cJmzK+yE4FEFNxgP9dRuxZTtyEHD2plxc4vHCcWd8cV9xCcafnUkZ2ucgTfnbFeby4u0AuQYq2cPAUg0MSTPHd3
+ Z2yH5OPY
+ rPW/qQPvZ/klkpOuqJuuq4T6RYp8D34DNVDp1Ti1CVi6mWTXULy1TcRy1bRjpjO6JytZGxIjfLXm2YTh3Tkq2uLDfGAZBrt+3yjbELN7IyoPoDWCE7APmp7VB0vLOh4a2yHFyjHrGq05yChec0Jb6FUmUCSwHmwZ9OIQ8cprDBdvIuo9+2PpYteOdJfqGHNCR27AVkF3Vkare57tkO3UuhyGuZfTH3vgmDPFWobZAbEkf/3r6nGA+zTrMuzGGgQrNFbV6zynWCcJroHwmKzqOvgfPxu9umrKoAcl2C5owqyXzC2ax/wsfL1CG3bd/4hkAe4GnSh9A4uSlnDmBnLYQjm5gAUYqbOkY34uTIxec9coUUEv3XhKUAEPc9B3k/rEvGoajoSjGehiAkgL7hu0Yr0fur4Ea6wkcfX4awBVyo85Fu+I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,169 +101,155 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-
-在 2026/9/22 20:44, Uladzislau Rezki 写道:
-> On Mon, Sep 21, 2026 at 09:17:22PM +0800, Ye Liu wrote:
->> From: Ye Liu <liuye@kylinos.cn>
+On 9/23/26 10:40 AM, Muchun Song wrote:
+>
+>
+> On 2026/9/23 10:05, Hongfu Li wrote:
+>> From: Hongfu Li <lihongfu@kylinos.cn>
 >>
->> vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
->> but a vmalloc allocation may span multiple vmap zones.  The VA is
->> stored in only one node's rb-tree (addr_to_node(va_start)), so an
->> object pointer in a different zone than va_start maps to a different
->> node and the search misses.  This affects any allocation larger than
->> vmap_zone_size (64 KiB) on multi-CPU systems.
+>> memory.numa_stat exposes per-node hugetlb counters from per-node lruvec
+>> stats. These stats are accounted against folio_nid(): incremented on
+>> the folio's node when handed to a user, decremented when the folio is
+>> returned to the pool.
 >>
->> Iterate all vmap nodes using for_each_vmap_node, like find_vmap_area()
->> does, but with spin_trylock instead of spin_lock as this function can
->> be called from atomic dump contexts (OOM, KASAN, RCU).
+>> During hugetlb folio migration, mem_cgroup_migrate() moves the charge
+>> to the new folio and drops the memcg data of the old one, so the free
+>> of the old folio right after the migration skips the memcg per-node
+>> lruvec decrement. The hugetlb count stays attributed to the old node
+>> for the rest of the life of the charge, while the target folio gets no
+>> increment on the new node; its later free decrements a counter that
+>> was never incremented.
 >>
->> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+>> Migrate the per-node lruvec accounting alongside migration. Global
+>> memcg totals remain balanced because they track resource consumption,
+>> not node placement.
+>>
+>> Fixes: 05d4532b60e3 ("memcg/hugetlb: add hugeTLB counters to memcg")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+>> Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
 >> ---
->>  mm/vmalloc.c | 24 ++++++++++++++++++------
->>  1 file changed, 18 insertions(+), 6 deletions(-)
+>>   include/linux/memcontrol.h |  8 ++++++++
+>>   mm/hugetlb.c               | 25 +++++++++++++++++++++++++
+>>   mm/memcontrol.c            |  5 ++---
+>>   3 files changed, 35 insertions(+), 3 deletions(-)
 >>
->> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
->> index df42d8a6f058..30c610f678dc 100644
->> --- a/mm/vmalloc.c
->> +++ b/mm/vmalloc.c
->> @@ -5278,17 +5278,29 @@ bool vmalloc_dump_obj(void *object)
->>  	unsigned long nr_pages;
->>  
->>  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
->> -	vn = addr_to_node(addr);
->>  
->> -	if (!spin_trylock(&vn->busy.lock))
->> -		return false;
->> +	/*
->> +	 * A vmalloc allocation may span multiple vmap zones, so the
->> +	 * node whose rb-tree holds the VA may differ from the node
->> +	 * the address maps to.  Search all nodes.  Use trylock as
->> +	 * this function can be called from atomic dump contexts.
->> +	 */
->> +	va = NULL;
->> +	for_each_vmap_node(vn) {
->> +		if (!spin_trylock(&vn->busy.lock))
->> +			continue;
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index a8358f297b65..74110a324f9e 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>> @@ -984,6 +984,9 @@ unsigned long lruvec_page_state_monotonic(const 
+>> struct lruvec *lruvec,
+>>   unsigned long lruvec_page_state_local(const struct lruvec *lruvec,
+>>                         enum node_stat_item idx);
+>>   +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>> +                enum node_stat_item idx, int val);
 >> +
->> +		va = __find_vmap_area(addr, &vn->busy.root);
->> +		if (va && va->vm)
->> +			break;
->>  
->> -	va = __find_vmap_area(addr, &vn->busy.root);
->> -	if (!va || !va->vm) {
->>  		spin_unlock(&vn->busy.lock);
->> -		return false;
->> +		va = NULL;
->>  	}
->>  
->> +	if (!va)
->> +		return false;
+>>   void mem_cgroup_flush_stats(struct mem_cgroup *memcg);
+>>   void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg);
+>>   @@ -1452,6 +1455,11 @@ static inline unsigned long 
+>> lruvec_page_state_local(const struct lruvec *lruvec,
+>>       return node_page_state(lruvec_pgdat(lruvec), idx);
+>>   }
+>>   +static inline void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>> +                      enum node_stat_item idx, int val)
+>> +{
+>> +}
 >> +
->>  	vm = va->vm;
->>  	addr = (unsigned long) vm->addr;
->>  	caller = vm->caller;
+>>   static inline void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>>   {
+>>   }
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 519c30b338a8..76d019594b39 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -23,6 +23,7 @@
+>>   #include <linux/mmdebug.h>
+>>   #include <linux/sched/signal.h>
+>>   #include <linux/rmap.h>
+>> +#include <linux/rcupdate.h>
+>>   #include <linux/string_choices.h>
+>>   #include <linux/string_helpers.h>
+>>   #include <linux/swap.h>
+>> @@ -7378,12 +7379,36 @@ void folio_putback_hugetlb(struct folio *folio)
+>>       folio_put(folio);
+>>   }
+>>   +static void move_hugetlb_lruvec_stat(struct folio *old_folio,
+>> +                     struct folio *new_folio)
+>> +{
+>> +    struct mem_cgroup *memcg;
+>> +    long nr_pages = folio_nr_pages(old_folio);
+>> +    int old_nid = folio_nid(old_folio);
+>> +    int new_nid = folio_nid(new_folio);
+>> +
+>> +    if (old_nid == new_nid)
+>> +        return;
+>> +
+>> +    guard(rcu)();
+>> +
+>> +    memcg = folio_memcg(new_folio);
+>> +    if (!memcg)
+>> +        return;
+>> +
+>> +    mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, 
+>> NODE_DATA(old_nid)),
+>> +                   NR_HUGETLB, -nr_pages);
+>
+> Why not use mod_lruvec_state? mod_memcg_lruvec_state is an internal
+> API for memcg, I don't want it to be exported.
+
+Thank you for the review.
+
+mod_lruvec_state() would update the node counter a second time.  It calls
+mod_node_page_state() as well, and the target's node counter is already
+updated in alloc_hugetlb_folio_nodemask() (patch 1/2):
+
+     lruvec_stat_mod_folio(folio, NR_HUGETLB, folio_nr_pages(folio));
+
+For an uncharged folio lruvec_stat_mod_folio() only updates the node
+counter.  The target folio is not charged to any memcg at that point; its
+charge only appears later in mem_cgroup_migrate().  So the node side is
+already covered and only the per-memcg attribution has to follow the
+charge here.
+
+>
+> Thanks.
+>
+>> + mod_memcg_lruvec_state(mem_cgroup_lruvec(memcg, NODE_DATA(new_nid)),
+>> +                   NR_HUGETLB, nr_pages);
+>> +}
+>> +
+>>   void move_hugetlb_state(struct folio *old_folio, struct folio 
+>> *new_folio,
+>>               enum migrate_reason reason)
+>>   {
+>>       struct hstate *h = folio_hstate(old_folio);
+>>         hugetlb_cgroup_migrate(old_folio, new_folio);
+>> +    move_hugetlb_lruvec_stat(old_folio, new_folio);
+>>       folio_set_owner_migrate_reason(new_folio, reason);
+>>         /*
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 88824f783571..a5335da5d425 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -1015,9 +1015,8 @@ static void __mod_memcg_lruvec_state(struct 
+>> mem_cgroup_per_node *pn,
+>>       put_cpu();
+>>   }
+>>   -static void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>> -                     enum node_stat_item idx,
+>> -                     int val)
+>> +void mod_memcg_lruvec_state(struct lruvec *lruvec,
+>> +                enum node_stat_item idx, int val)
+>>   {
+>>       struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>>       struct mem_cgroup_per_node *pn;
 >>
->> -- 
->> 2.25.1
->>
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 89c327a6ce7d..3719dc02dcaf 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2511,7 +2511,22 @@ static void free_unmap_vmap_area(struct vmap_area *va)
->  	free_vmap_area_noflush(va);
->  }
->  
-> -struct vmap_area *find_vmap_area(unsigned long addr)
-> +static inline int next_vmap_node_id(int i)
-> +{
-> +	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
-> +}
-> +
-> +enum vmap_lock_mode {
-> +	VMAP_LOCK,
-> +	VMAP_TRYLOCK,
-> +};
-> +
-> +/*
-> + * Add a comment here.
-> + */
-> +static struct vmap_area *
-> +find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
-> +		enum vmap_lock_mode mode)
->  {
->  	struct vmap_node *vn;
->  	struct vmap_area *va;
-> @@ -2534,16 +2549,40 @@ struct vmap_area *find_vmap_area(unsigned long addr)
->  	 * addr is within 2 or 0 nodes we should do extra work.
->  	 */
->  	i = j = addr_to_node_id(addr);
-> +
->  	do {
->  		vn = &vmap_nodes[i];
->  
-> -		spin_lock(&vn->busy.lock);
-> +		if (mode == VMAP_LOCK) {
-> +			spin_lock(&vn->busy.lock);
-> +		} else {
-> +			if (!spin_trylock(&vn->busy.lock))
-> +				continue;
-> +		}
-> +
->  		va = __find_vmap_area(addr, &vn->busy.root);
-> +		if (va) {
-> +			*locked_vn = vn;
-> +			return va;
-> +		}
-> +
->  		spin_unlock(&vn->busy.lock);
-> +	} while ((i = next_vmap_node_id(i)) != j);
->  
-> -		if (va)
-> -			return va;
-> -	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-> +	*locked_vn = NULL;
-> +	return NULL;
-> +}
-> +
-> +struct vmap_area *find_vmap_area(unsigned long addr)
-> +{
-> +	struct vmap_node *vn;
-> +	struct vmap_area *va;
-> +
-> +	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-> +	if (va) {
-> +		spin_unlock(&vn->busy.lock);
-> +		return va;
-> +	}
->  
->  	return NULL;
->  }
-> 
-> 
-> and we use the helper in the vmalloc_dump_obj()?
-
-Hi Uladzislau,                                                       
-                                                                     
-Thanks for the suggestion.  I have adopted the find_vmap_area_lock() 
-helper approach in v3.  The helper unifies the cross-node iteration  
-logic with a mode parameter for spin_lock and spin_trylock, the      
-latter used by vmalloc_dump_obj() for atomic dump contexts.          
-                                                                     
-find_unlink_vmap_area() is also simplified to use the same helper,   
-removing a third copy of the iteration loop.  The helper returns with
-the node's busy.lock held, so the caller can unlink_va() under the   
-same lock before releasing it.   
-                                                                     
-Will send v3 shortly.                                                
-
-> 
-> --
-> Uladzislau Rezki
-
+>
 -- 
-Thanks,
-Ye Liu
+Best regards,
+Hongfu
 
 
