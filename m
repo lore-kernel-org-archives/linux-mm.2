@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18E65C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402A6C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:12:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6FF26B0088; Thu, 24 Sep 2026 12:02:45 -0400 (EDT)
+	id 003FC6B008A; Thu, 24 Sep 2026 12:12:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E205B6B008A; Thu, 24 Sep 2026 12:02:45 -0400 (EDT)
+	id ECF686B008C; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D37166B008C; Thu, 24 Sep 2026 12:02:45 -0400 (EDT)
+	id D72B56B0092; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A8E1C6B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:02:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2CDAD1A03FE
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:02:45 +0000 (UTC)
-X-FDA: 85249123890.24.CD28200
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7BFC3160012
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:02:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCVCgE0g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ABB066B008A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F0AF160432
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:12:56 +0000 (UTC)
+X-FDA: 85249149552.30.076FC82
+Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
+	by imf25.hostedemail.com (Postfix) with ESMTP id DE51CA000C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:12:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vvuyppw0;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790265763;
+	s=arc-20220608; t=1790266374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTVNxkLpxxqWMqUQZ0iwgzz/ZL7tmFRV02wmYrTnaqI=;
-	b=vUWeQBJTs0m8fahnxsPPek3O+kX+1cruBM4ebgPXkwm91gonvjRZJAECzrN4aZIMDxIy2K
-	jvSPmu489UOJkMj53hBTW6DQ/FcxvvZofjZ29otVdfuosH0aEJCAtJh/h1vcAVXhv8R0cb
-	Xd3lb3IUmwgF/UZqJrkdJAiaj3BeVUA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCVCgE0g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	bh=t9KOuD1e2N9vK51vFGoG009Qk6qgMITkvgNwXFVPFeY=;
+	b=DqkrtQXqvfNcelT8JQuJPtwhdVx/bunZNo8fGpShexUNWyyqyX78xb3ETDf8ya2g5ulxjq
+	+UrCKmGR4pmvIrKDyUCOm9ymFIrBKdE+Vp7XwOY+4ER6nH4X0tlFfcXK/Wv5fruk216EcH
+	hre9eVrylbOdstCfZrZLteBk1YwhM90=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790265763;
-	b=62oCD7M6tuCEDP/pdXeoRLinpINyKToj88VuuZ/kliMtxAdi1nbaE7fe8qNMC3khaEHc0i
-	Oumsh6yr6DIZbUvbSY9fUAQ949yWY2IeXkUlZmdT9WZRHWhu7ZELoh7o6fKceO9PYLISxR
-	L5HewuoPAx5w3lyRi5GZl+RtWQUF+r4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 03E3A601DE;
-	Thu, 24 Sep 2026 16:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7769E1F00893;
-	Thu, 24 Sep 2026 16:02:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790265762;
-	bh=LTVNxkLpxxqWMqUQZ0iwgzz/ZL7tmFRV02wmYrTnaqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JCVCgE0gmJUzhASH+5rtu/5xRKwTuLgflc/WYMUQqRPPnF9eI+KOFeYkTO8Hj9Asu
-	 lbIam1iYoMGzFAljxVrWwRbgIxINu4lshZrJIGGYrNa7OLMnEogLxR8YWuzOzCddZN
-	 4rjqCo+1pd+4rkDWcIyXhh3/E0Ly+Hz2ffau6jPxiS9hnkwG1A/+v3o95vWGPGZ/9R
-	 k449H4J9d3LUcEk72NCiYEiPVxoaoWNgviro55RD1GvOrIxfXrdSDJXKkQzOPTGyE8
-	 4/Gk1eVUwiTQLWHPl9yE2MN2pRY8uPzQPcGVf/FHGn7+apyRqj7iMM151m4VIRGFJB
-	 PlnDtnnDfHEeQ==
-Date: Thu, 24 Sep 2026 19:02:35 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
-	Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pm@vger.kernel.org
-Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
- pages
-Message-ID: <arVJm8CiLG6vpy9-@kernel.org>
-References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
- <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
- <arP0-maAEi5yeNnl@kernel.org>
- <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
+	t=1790266374;
+	b=xy4112BaOpBUd6NQjGL0mkudY/567lYv13C/HAhoPgdaUc8aXDn+F9WQu9BV0Xrz4V7XZu
+	OnKjF47SNcUuTP/+/G8ce8ttADltg9Pn4mnxrmszVSTXXJb1EoiPe9F92IIsA/6/jWEmBZ
+	GpzMhNI68Tz0TvTF0shQLnW9kaRmUKY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vvuyppw0;
+	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1ohFjSCIUwpH5qBdu4MdlkXa39XLJc1SPyL+HjcbYJw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790266371; v=1; x=1790871171;
+ b=vvuyppw0Z2r0+Rq8/SGGRepA0ks9dB6StSfiBceiUGvawrL0E1Nx+BW222xWQ8Vod/E2OhdO
+ AOIufS4fmNtDB3O272S9QoLdcic7AVc5A79YYpO/y3+9CPY85/o1HdtLeFcqev0J0xJjlG2fpJG
+ efzA09dt6K09VdcF+TImFDJo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 87c44c435beead6e;
+	Thu, 24 Sep 2026 16:12:51 +0000
+X-Mizu-Trace-ID: 87c44c435beead6e
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <0f5d22fd-24f2-4235-92f5-3dc065e0f153@linux.dev>
+Date: Thu, 24 Sep 2026 17:12:46 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
-X-Stat-Signature: o71s3g9tm4ibqkuze7xy1rwr9h6trsy7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-11-usama.arif@linux.dev>
+ <a8ff997a-2d09-44f4-85c3-322927f75d1d@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <a8ff997a-2d09-44f4-85c3-322927f75d1d@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7BFC3160012
-X-HE-Tag: 1790265763-751112
-X-HE-Meta: U2FsdGVkX18gYkEUB5UQK2bE0Jz+0cL3s+eMwf9xSlwaLNGr8lGaWixpSAa7iJkCSRPlhy7p1l4cpdYF53shHEUjQ1JgGabZum65vDlQpEop7bqg1ARyMClc5OpK4RhKiO2XHzLKdpyO+qRfp51QPsaqZ1agMc8yKBH9SJKwrXKt1/V/nvKj2hkPDvSAH3L283qb06M3nkmTLs8cZoXCAPt0zh/+EHXSi4+CwaYPYIaSIPCLO5Rw2uUThxAw0jnTJ5un24aaDOOL64NRWe5QFsHiXqQb9A9r3QTpB74ca57TTuf8ZrKnUNUB2PY8c6qhV2QdX7u7JR9QLjH8JTrEfd34Uk5l/2I09mWBjhTsIhGCq8bFS2KLL61wN+dqgkc5ROWx2K7QF+5vDqvWLmESdsBjA8AVBUZBRp3H/wQuWiwF3EA0v92FBrxpv8PFpJhqxmuJj6USsY+kYYMkLhS/NxWZ7GMjOoUnFtziiYKnuZVGUARD01LGeFyUCSG4XlatVnt7gSfmjyIYe3s4tbRtt2g36TLCJE4YJ4aug6P/7+4HZ2p1xpWZ9BwaqGQR5bsSRjcLjM/g0x6cfa71M/o+v10APGbdq2ShOxzmV1t/2LlA2c+0rjG4U+ZixpvSQuAwQf3/TNmLh7yMI2XXtmD62/ap0ZjtGDDCKK2bnJqibWB5PetknYyUNKE0EMUuUDSXtiDs2RhJ2dZKt+vCWfJIcq2W1sRiHj/GH5ifCAfUcQehAMffq8nYi6VqWJ4mC6l9bqVPZ637ujtrV6ackUUzvapdEpqB7JIYcjQ1oHI5bs6Tp4KRF9nkRYiE9elyRPImr5hQvqIW5rQj8IvjIWaqefecCGjEzMqgoOR1uMbkN1j9pT3wxiZEAztNofo/OmsLI2esiq1Rx9l/iyd9TJC9IZFIkDsy33bCa8f7Jso4qfao4iROMb/7wF1vm28AWkXbUykSHGNlL58jDL6eMZy
- xAVfJMts
- pLKMhBoxvAbemM2yycSWG/iolNBtNtUfILUEZKGalBSqleZJQfl6d6oBddmxycnSdTGCwidRu6ekWrjTd/xGs/MnpFOFrZzeifoHGEGgXw04svQ7S8xMSeJ07Z9aIk+XSgLuB0P1O+d7Jeh8idP7JE95s94SRZ5zhDSAT5GZFijYHx6ocE3FkXlgw/0CLCH0tcenQyVKt2MJbhBaRH29jezPuzuef6JuL8bxLbJb72jzY8FVXwKxK3xuJJlaX71fR9uPfYBQn/I6Vh+gFAS7nNAGTzA==
+X-Stat-Signature: 1u8zibrr8prbt6z1r54x8saf1aopw3yx
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DE51CA000C
+X-HE-Tag: 1790266373-799465
+X-HE-Meta: U2FsdGVkX18fEncV2PXv2QSCMYUWyJn7OiQDJDeY/JJBNPWx3qfimljvfWCRt3LpNw8deWtb3dDdl3TTK1bjMCkbm4jGlzao1Km8yWLcWsokX/D8/kOwQ4pv+kbKqiXY4R7+tHyHBP3vtqGwoH8ulidrD9886miqFg3BrqMKobN8UCnJuW5IBsza3GCWB2wvC+Y0h8oNDgq3FLbrQzKHKVZMQ96R6wxa4i4e8qyRu1bwVU5/cmIo4lk7b4o0POnso0KrljrbF1gQ1TS7rdQ1Tg+ygLYJ+SJb/IKX+OzoqrhgiqoTBVIh8EOsQtrhQ8anBqB+YvS0U7l7V/r7vlTuu0Ja9ISsOxlse2LOTYTvi+mSuCGHUvb5qyuQRsMa4LbUXV2F02g6xw/mz+EswDLoyXgrPv3GzAGwWopY+5yjuOejs63W04ZJy3m8d9sopaAiuum620KSwhYPo7a2RljGtIoguZtPbbHQuVF7/wBs1yie580mxW0W+6o6nPH7xnlOuh/4ih9DZXy+s+EOIAOoIPo9MOB723kR87KmStL1eFQaX4VQ8Osq/FcPJcRJelVSy/RhOgVwSVwIPvbDt5indj++NaOmqWc4cX2VEQJrtFOiXLYBK4tOYNSlOU+lyceTzmjGg/MIENUsNPTbKq+7hYjyX49+U+B5hvRARsw5qP9Y9vgVhOFj2OxUQsn5XbCdfyciq14MiArDc7HiSPO4L3+gXt5V4pkVeQ6hHIGaAEBg3qabkDDtpxgjARWausmQMdIwNrQ6u1v4D1/CsYaHON/u3Qpo0YZW162BmhBfNAQlUcfB3PJDcRJ3fTHX4+RPARiuA/XJTKKG8KzC3WNM5FpvPh9MusOmBecRkCXDIxCteBlxTpBCFdXMJUNcdt2Jy1pUUCRb65R5dcLff/68Ua9qj+gKjNUr8bsO3GWxcFfM1KQQOXBtWUSeFxcV/oGlpMW/AwOampWT3/O6OLq
+ P+LpkjdX
+ QiwhVfuoci1PhmGXRyRdbCweUCb/y9U4uK6stBk8+OTL0p7I3jefUGP8TRW8U5z8xlOhRQ18xnBtLkgYTn0UFmjLRpVahb3gNa3XwmWPa451qYRmoaxRbpfpowJNgMuMjn9JcHU0iUMlKFKiKfR342x9QrMcXf1jWBriYf48TUprTPMdqpfPrPzU99pHfFngU3hETSYI1PQ8XwyVj4PLawZv7MJiU/WbE1ZItFoCkuenVOJccifd51JaeQ377Ae9TVAgUw4hWubMAY3KZ/etDxorhgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,125 +102,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:19:33AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/23/26 17:49, Mike Rapoport wrote:
-> > On Wed, Sep 23, 2026 at 12:31:26PM +0200, David Hildenbrand (Arm) wrote:
-> >> On 9/17/26 08:07, Mike Rapoport (Microsoft) wrote:
-> >>> The pages protected by KFENCE are removed from the direct map.
-> >>>
-> >>> safe_copy_page() temporarily maps and unmaps them using set_direct_map
-> >>> APIs, or, when the stars align, even using debug_pagealloc_map_pages().
-> >>>
-> >>> Neither of these APIs cares whether it is a KFENCE page and both blindly
-> >>> perform the update of the kernel page table for any non-present page.
-> >>
-> >> Agreed, we should route this through the actual mechanism that modified the
-> >> directmap in the first place.
-> >>
-> >>>
-> >>> Ability to use debug_pagealloc_map_pages() to remap KFENCE pages when both
-> >>> KFENCE and debug_pagealloc are enabled is an amusing coincidence.
-> >>>
-> >>> But with increasing appetite for using set_direct_map for hardening
-> >>> purposes, it becomes too big of a hammer to enable saving any non-present
-> >>> page in the hibernation image.
-> >>>
-> >>> Another gotcha is that loongarch that does not have a direct map at all
-> >>> advertises ARCH_HAS_SET_DIRECT_MAP to allow coexistence of KFENCE and
-> >>> hibernation.
-> >>>
-> >>> Extend KFENCE with a bitmap that tracks which pages are protected and
-> >>> provide kfence_force_mapping() and kfence_restore_mapping() APIs that allow
-> >>> forced mapping and unmapping of KFENCE pages.
-> >>>
-> >>> Use these APIs in hibernate_{map,unmap}_pages() for KFENCE pages.
-> >>>
-> >>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> >>> ---
-> >>>  include/linux/kfence.h  | 29 +++++++++++++++++++++++++++
-> >>>  kernel/power/snapshot.c |  7 +++++++
-> >>>  mm/kfence/core.c        | 52 +++++++++++++++++++++++++++++++++++++++++++++++--
-> >>>  3 files changed, 86 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/include/linux/kfence.h b/include/linux/kfence.h
-> >>> index e5822f6e7f279..33a126cb6d1b7 100644
-> >>> --- a/include/linux/kfence.h
-> >>> +++ b/include/linux/kfence.h
-> >>> @@ -222,6 +222,32 @@ struct kmem_obj_info;
-> >>>  bool __kfence_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab);
-> >>>  #endif
-> >>>  
-> >>> +/**
-> >>> + * kfence_force_mapping() - make sure a KFENCE page is mapped
-> >>> + * @page: page to map
-> >>> + *
-> >>> + * Check whether @page is protected and map it if needed.
-> >>> + *
-> >>> + * Requires: is_kfence_address(page_address(page))
-> >>> + *
-> >>> + * Return:
-> >>> + * * false - failed to map @page
-> >>> + * * true - @page is mapped
-> >>> + */
-> >>> +bool kfence_force_mapping(struct page *page);
-> >>> +
-> >>> +/**
-> >>> + * kfence_restore_mapping() - restore mapping of a KFENCE page
-> >>
-> >>
-> >> The name is misleading. You are actually restoring that the page is
-> >> unmapped/protected?
-> >>
-> >> 	kfence_force_mapping vs. kfence_restore_mapping
-> >>
-> >> is confusing.
-> >>
-> >> Can we find a better pair of function names that describe what is actually
-> >> happening?
-> >>
-> >> Maybe something along the lines of
-> >>
-> >> 	kfence_prepare_copy_page
-> >>
-> >> 	kfence_finish_copy_page
-> >>
-> >> That rather expresses what the caller intends to do.
-> > 
-> > Naming is hard :-D
-> > 
-> > I feel that _copy_page() is to vague and adding hibernation there is to
-> > mouthful :(
-> 
-> Yeah, I wouldn't mention hibernation.
-> 
-> 
-> 
-> > 
-> > And these could be used outside of safe_copy_page() someday.
-> > 
-> > How about 
-> > 
-> > kfence_set_page_present()
-> > kfence_set_page_default()
-> 
-> 
-> Maybe spell out "direct_map" ?
-> 
-> kfence_set_direct_map_present()
-> 
-> kfence_set_direct_map_default()
 
-They are not necessarily in direct map :)
-loongarch does not have direct map, but still supports kfence
- 
-> But yeah, something along those lines is better.
-> 
-> -- 
-> Cheers,
-> 
-> David
 
--- 
-Sincerely yours,
-Mike.
+On 23/09/2026 12:04, David Hildenbrand (Arm) wrote:
+> Having another look ...
+> 
+> 
+>> +
+>> +/*
+>> + * Split a present PMD into PTE migration entries, for the rmap migration
+>> + * walker.  
+> 
+> I assume pmd_is_device_private_entry() is also allowed?
+> 
+> "present or device-private PMDs"
+> 
+
+Yes, ack.
+
+> 
+>> Like split_huge_pmd_locked(), the caller must hold the PMD lock and
+>> + * must already be inside an mmu_notifier invalidate range.
+>> + */
+>> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
+>> +				    unsigned long address, pmd_t *pmd)
+>> +{
+>> +	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+>> +	if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
+> 
+> pmd_is_valid_softleaf() would include migration entries and swap entries?
+> 
+> I'd assume that try_to_migrate_one() will never call us with something that is
+> not a present or device-private PMD?
+> 
+> Shouldn't we instead just
+> 
+> 
+> VM_WARN_ON_ONCE(!pmd_present(*pmd) && !pmd_is_device_private_entry(*pmd));
+> __split_huge_pmd_locked(vma, pmd, address, true);
+> 
+> And not offer some weird fallback where we silently don't split?
+
+
+Yes, that sounds much better. The function right now is:
+
+
+/**
+ * split_pmd_to_migration_entries() - Split a present or device private PMD into
+ * PTE migration entries.
+ * @vma: The VMA containing the PMD.
+ * @address: The PMD-aligned address the PMD maps.
+ * @pmd: A pointer to the leaf PMD entry.
+ *
+ * For the rmap migration walker, which only ever hands back those two entry
+ * types.  Like split_huge_pmd_locked(), the caller must hold the PMD lock and
+ * must already be inside an mmu_notifier invalidate range.
+ */
+void split_pmd_to_migration_entries(struct vm_area_struct *vma,
+		unsigned long address, pmd_t *pmd)
+{
+	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+	VM_WARN_ON_ONCE(!pmd_present(*pmd) &&
+			!pmd_is_device_private_entry(*pmd));
+	__split_huge_pmd_locked(vma, pmd, address, true);
+}
+
+> 
+>> +		__split_huge_pmd_locked(vma, pmd, address, true);
+>>  }
+> 
+
 
