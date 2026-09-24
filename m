@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29268C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:08:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38AB4C98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:09:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C83C6B008C; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
+	id 0BBC16B00AC; Thu, 24 Sep 2026 06:08:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 389F26B00AB; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
+	id 093E46B00AD; Thu, 24 Sep 2026 06:08:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28E656B00AC; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
+	id EEBDC6B00AE; Thu, 24 Sep 2026 06:08:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E24E56B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:08:41 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6908112021F
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:41 +0000 (UTC)
-X-FDA: 85248231642.20.1F619E3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCBDA6B00AC
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:08:58 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4659C802AE
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:58 +0000 (UTC)
+X-FDA: 85248232356.18.FC8982D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AD0D6120009
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:39 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7vVYIE0;
-	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 86D22C0005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UuUMyUgz;
+	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790244519;
+	s=arc-20220608; t=1790244536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
-	b=A8IJhccbrMlNhEkrPamQ6HzyCQssUIjyzO3Jo9RvfGL14p2raIWxxkSP1djGQ4zTt/AFhv
-	t99Q4k5gz1E3uN+z3oAF+imu9C5UOyTTVxtBmk3vFsMY/UNhhOuuQWYPLovgqnN50oOIMC
-	FvxzA+cWhz+5mBS1G4UbBZdnyw9NNGw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790244519;
-	b=ZjXKt1C8KLoT1nci47RB4UNS2899CmNdW2fc3Elcqkz1MsQdog+7C0c/BZGAxUd0Lt+TTn
-	aQWveYpu9Q3Ckt0yNE0v/IfknuR5eghK79z7AjapmtsR1JoaZRZdv+5YtEEv+uYLNpZsKT
-	obMxF67UHNjXHOlnVu/XGfK9DRn7kwQ=
+	bh=/F4y/7yxyUDiC6xbvLu9ph4vBP4DM40ibzlyQTAOh0c=;
+	b=aGwJobsWbuZpSp62RBtWpMS1l6XCREIhn1MZFg5daS11EQHYrRvZeEfFvNPgduvloFnEO0
+	YAbimlBP9tveuWWd7fA6V49DdmFb7rf+s3nGrEihV0QPtsJpDd0SdIssyvG6x7Dhvpps5T
+	Ul1PVnXQxQCKNW9rNi/2l9UJRz6sgwM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7vVYIE0;
-	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UuUMyUgz;
+	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790244536;
+	b=Sbbjh0ooITs/2+eaaSHEwgJ7U58uzJonR6eTTG2HOxXBXbOk7dk/ujHuLgLbOelTwaTm2G
+	sH3UVr9AxIKdKS6L09KUe0kB4DAlgU37rvCx30ktG/qL2rlbnbFHyhYAOGAyFoskjp/ra6
+	5SBvRnj7NHepYLk/Oszt5gMrQnwAoaI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EC8A2418D2;
-	Thu, 24 Sep 2026 10:08:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AACF1F000FF;
-	Thu, 24 Sep 2026 10:08:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C682D40C06;
+	Thu, 24 Sep 2026 10:08:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A8A1F00893;
+	Thu, 24 Sep 2026 10:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790244518;
-	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
+	s=k20260515; t=1790244535;
+	bh=/F4y/7yxyUDiC6xbvLu9ph4vBP4DM40ibzlyQTAOh0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h7vVYIE0aMAfRYhJEF3IrnQkTPB+l8URFB8a2ES5HlMFPDWYqoftWe2Ff8rVJSgHz
-	 //Op1zX/iwMgv9mXBkckDouFTPX0yIsuZxqyC0hSZbgJNOHGHh/SORbTcQbJNWXXo2
-	 nUcxq5smZ+bkK8UdPl+zQcHG5xIFmbrqMpdGAiQ26FV2D4kvBW8Su/Mij/C3EDF8gK
-	 l4YYQMnmrMqIuikyKNc99VEKE2PCSbB7BLEPIu5WwybWevD7t2nNjyS/K4mLgpcVP/
-	 /sv9QW2fUVc4LunoMvqqgAhjOq6/Ihho9u3wzSDnaqja06rEay4I3ZS+EXulKYaZK7
-	 HA1XNHuabSvRw==
+	b=UuUMyUgzUZWtthyh61vaCwP7ZLcWxHojwv+uEizpKSKXauzTbqg6EVPm0mJDppj3X
+	 ztyjgCs08HO+QzCrg8WCWibDXFvPYpFUKjIYI4O6sAoOJr+8RltFEDWZuHR05Mmh3j
+	 drE4nAushbHuhZXqr7khJTBd9CfA7GwiknoMQ8yVPjKzfEYauZlDgzQk77n+jj0y3T
+	 q8sHWy4IAz2LpKhmDLPNDY5p9N9napTpJ2vyOkZCuS505Ogd89yBRjUeGWBX4ZwPsU
+	 cgg41AK1Qx1QJI002BGvsJUwlMCFUqXRoyHGKNpPql89lBdfad+a7TqNmPIQYO3YtP
+	 eNHWgKjV1jtWQ==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev,
@@ -127,9 +127,9 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v8 10/14] dma-buf: system_heap: Limit scatterlist entries to the buffer size
-Date: Thu, 24 Sep 2026 15:35:25 +0530
-Message-ID: <20260924100529.1398790-11-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v8 11/14] dma-buf: system_heap: Allocate shared buffers using CoCo shared memory allocator
+Date: Thu, 24 Sep 2026 15:35:26 +0530
+Message-ID: <20260924100529.1398790-12-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
 References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
@@ -137,13 +137,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AD0D6120009
-X-Stat-Signature: g58xh9yznt8s65oc61ez637ycwmy9oob
-X-HE-Tag: 1790244519-579866
-X-HE-Meta: U2FsdGVkX180jntGfWbnl3DmMrooqGkg2StsYPmOVE0RSYy9YrJ6W2BN7W2b0pMDF/heGKpMltWGFmCYPnfnOX6ripnOu/UPFokiyjRfEvLDfifrxeQzTcpom7I7ApjH1ACmxBb5v4uNvLERSLWWDvjqZ2++l9pL6AGq0/PYLoBpzE0/5E8SDF++3oXrA0L4qD6MnDZd8pa8zo0JU9Wn3OP+r8qs4D5G87FUR6Reza8E7jiaOhPYXJ9i3Uxd89FsZ3O04EoIL9YxYvPdf/UCh1xYrfhzdb4AlIhpdMjz81klKvP+BTQjXbBA2xNjXoBiMWxiBCw4dPOK/Ma/HvvLKz+8eUCZ43ZZ/HWWX6XJBQ67OcX/7II1oQnPvBrOG2xq5lsj+56NU4D5J2t10Qe97TEwoU4soMFt/Fmo0C9RF7kKe1m+VzdDA4Yk3PhHlIt3o8h1QOcpZWBxh3co5bF2AGHC06c19FDc1a/jOYvYaXgkwDjSmAFilo08G4GW/MWS5EyGjq+lRfoanpBY57td/bSwCd1tI1a+HQi4rC2LzVHiX256I4lf16esqASVPhKieYuoQqEpfwxXT+jmnpaUkMfJIyJTPvPXCna5qV0HlSMlqfnZO+qqiE0rrDN3Nws+wujQogKmYRQA5/joZPVW4oG4eurrLZ6vAcplZZGbg/zKxP4/f+kfgZS0UAmfTvXUuTEmTlKUMLFPXumBh2rSguHPkFQ8sfDfCl5qzm6lx6gKsxXyUPle7/4rb/I2U+squya3y8jiC5oyr08QzDVdDhcrKPgfbL8dTxDIyh9Mnlykij4LX+fAm+UpCBgAvfoItyABbpGTQESoF6Hkslkk9saQpHD/gvwNTOVV50xxD06itxftu2yGpneLQGW0dcd/QNU4oZsWKmmzivc2Abf7YkUw/i68NfxFlTPrv5w5DiqtjRWhJQgkfM6xRU20yuqkrHEDchKNxUIQfvdWVrL
- sRSNh+Z7
- aJk8wiLhfmbu7/EO0bQ74jg9QQSPsuAHJijwhKB/vY2VQHguXIgZpVcaor9J2JqGn4GOBqctxZRm0BYtyxtjeMO19E3aS627AxTm4yOm4WGgKPafJAUQzEXehutKb56/T9rQ+Pt6m/zBg5ykRvZOG+/JVedzgYdO6q0cbQ28jQGfQ4hyf0WrXM/BXN8vfgXHwgYHqCe25rmSAIfR+OJX+WZNCzkgXZVScf81o6usil+0q0NO3JRALMz7Ha2jREnufrRXUF3MEWQjw47sVKCsILu9bmR7nb0HcK/VxLwZQL74eE4G0LwuFNZ/BHjf/VJCR36w0x4ktj3hVdl/9k3n/PRGU4RBnBkFbqXG4txYlFCg1i4IM3hqUGMizXf5X+h0Z5DqdIO67Too4dxVgQaZaedwmRB1/dUsC+pqYEFFdzbEX0uIdqRzEnPhPr37aG4lELnsxFq4TDjvIQdAeHBRUDI76+vvtcGqdEdOcSVVNgoWup7dIzbruClodMrcw/GluC8KT96ZOPiNUsfK/YMHTwvhgBjWuZqUxnf0It/I2OEoT1Y9/7LTnSGzpAvbU5ZXipYkx9wdiZx2ReWE2kS7Pu+OC0A3LokmRuE0VdCQYPoA8Nj8=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 86D22C0005
+X-Stat-Signature: m1uy9dcjkbc57wtqua8kq7zbroqk4rqs
+X-HE-Tag: 1790244536-326886
+X-HE-Meta: U2FsdGVkX1+fN93+ZOMDYFv6iM7q+wM3tavC3CRuSL3G7TmrIFXxpr8F/gyAIFaSLK+CHO1kZ0lpnZ0ahe/FRFs6ZT0tYDFWZWiitkWI954CvxqmrtKXA0egdMXrCeQfg5xFPIB5Ix9pBVbB4Dm1S1iWFMah6d1huFmIaP02MMhfU52l+vxqKNKZrLo0+FWBlqjS5olhT9h/hwqu4BP0jASxY33bmHbQ8klzRRk+h43LDB/IKZFg2YV/kSnmmNykpsZDI2uO8rXVcZVFyoFgmAOHi2PNHMN+KbuHFfQdMFEc+UquuTlpBWHLbH80mRffPK93ngIthQH5qVpyQ4vdo72OX7NBtMK3konUBZ1dLhTEvu0n+B4S6N0H4R5G5aEVpoK6GHgCmnnJLp064mw/F94gSeo5YjBqyX7q0A+b5z3rBfq/0sGXxNEHx6waL2hrK4SMSr7wNQC49AFnL6Lv9xf/aDRoz7JmnqnFYF44gAm6IrStcwmb7+7eWY9pBWAk1CN4POHAQ3H9HkR7ckf9ONISY7c0fehuY+MIvpzbnCIfRI9Bw1KwfQTfaI4Z8WZrxvJ7mEJeiCHA+NqTnpIw14ajWUAeKGsubn3L40omSm+tdzTsl5f5QQ4/2vDVvOvzQvZQatqqsVZ4Ocl9nCzhL63jr1HXTkRIVF3TjvpOT8ZcSO1aIRKPxkbdmQnBvK/S04x/QRR09RIlY/ta1GyCzdIVCQE9/ImnZerdsyWNQBgcUjdbRiXCuTk2O7bGO+xr2NNAOk9jz3zblguWazf8eK8xg03plx8uYK+laRYWXB6Iq/N0CcCa4zGSS43K93Vp5p0bcvROoxA/oRg72UZT5+SMEk0XDmNvsjw6Vqu/8s7yJRnYgdzIZNZji/e5OsNtRIwIY+JOLD6+05s/F4/PbQQMeMR3o1dFZc3BK7KLwTTKBtg584Fv8oALY4iDqv1mZVSFl4h3X4mP3ouEIBW
+ WLhKh1Om
+ U+DUorHwatiTWgmnFnF2+cbHWivciERUwVFjK/C3Si98kfv36re7s3zSv6x3yoe3+oHpASDMJgXM6hKOuaBKoYHM4HN/FeCQdawBO+jRmi4EaXNQfWMvNlx68sJL3cTHijlJCuf7EU/8E4c8rccYCWRER+muwVbeUBWaaKK7Tvz3nv5zF2/bva4N9ouZ2F95HVKy3wKGH3cP7q6NMg2vezjx+V2mluGMQRURnE7/UK9o4G8sywskW4uNzC/re3UwK733elyM6Iu/y4CoVUKXmtk4E/5LsK5u0amhP8rVOPJcrhnU/+ul/TF4pIAHbOIo/FcA3Yfo/SBbzy+MCMuH6Qn0aRJcKIvI/oTEyhtVRnZ2DNEmUo1rmVSBmg4uTNPEM8zL5jp25R6hRzSxP/5GWsFV3mTifpEY69TQJkUnk5B0jyXIiBCrNQR/SY8ob4gcEfSw0kaKcHkefSPF7OS2Rn/oEarQCg7eQsPN4+v59O0uS6I3WeFnrY+LvbyTD2C93GuCBP+cn+KO94Qw9TnrjajPy5tZjZMU0YuBIOP/YiHF0mTzTT3C8iZwvoLSs++YAyide2L3H0/f6J0P2ep1oocaK12h9kFQIq/QSC4OsXMAfkAg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +151,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The system heap currently allocates each backing page no larger than the
-remaining dma-buf length. It can therefore use the complete
-compound-page size for every scatterlist entry while keeping the total
-length equal to the buffer size.
+The system_cc_shared heap currently allocates its backing pages using the
+normal system-heap order policy and changes each resulting compound page to
+shared state. That is unsafe when an architecture requires state changes in
+units larger than PAGE_SIZE: an order-0 tail is neither sufficiently aligned
+nor large enough to transition independently.
 
-Shared backing allocations may need to be rounded up to an architecture
-shared granule size. A backing allocation can then be larger than the
-remaining buffer length. Describing the complete allocation in the
-scatterlist would incorrectly expose the rounded tail to scatterlist
-consumers as part of the dma-buf.
+Use the common CoCo shared-page allocator for every backing allocation of the
+shared heap. Preserve the existing preferred-order search and its GFP policy:
+each candidate order is passed to the common allocator as a byte request, and
+that allocator rounds it up when the architecture shared granule is larger.
 
-Track the remaining buffer length while constructing the scatterlist and
-limit each entry to the smaller of the compound-page size and the
-remaining length. The complete backing allocation remains owned by the
-heap and is still released normally.
+Add __GFP_COMP for shared allocations because an order-0 candidate can
+be rounded into a high-order allocation. The system heap uses
+compound_order() and page_size() for accounting and release, so the
+returned allocation must retain compound-page semantics.
 
-This does not change behavior with the current allocation policy, but
-prepares the heap for shared-granule-sized backing allocations.
+Calculate a rounded internal backing length but retain the original
+length in dma_buf::size. The preceding scatterlist-length change ensures
+that the rounded tail is not included in DMA mappings or other
+operations. This permits a 4 KiB request on a 64 KiB shared-granule
+system without exposing the extra 60 KiB to an importer.
 
 Cc: Sumit Semwal <sumit.semwal@linaro.org>
 Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
@@ -178,34 +181,226 @@ Cc: "T.J. Mercier" <tjmercier@google.com>
 Cc: "Christian König" <christian.koenig@amd.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- drivers/dma-buf/heaps/system_heap.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/dma-buf/heaps/system_heap.c | 121 ++++++++++++----------------
+ 1 file changed, 53 insertions(+), 68 deletions(-)
 
 diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
-index c8959eadc71d..b5b8cdf65f23 100644
+index b5b8cdf65f23..5970b76416ae 100644
 --- a/drivers/dma-buf/heaps/system_heap.c
 +++ b/drivers/dma-buf/heaps/system_heap.c
-@@ -406,6 +406,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+@@ -11,14 +11,13 @@
+  */
+ 
+ #include <linux/cc_platform.h>
++#include <linux/cc_shared.h>
+ #include <linux/dma-buf.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/dma-heap.h>
+ #include <linux/err.h>
+ #include <linux/highmem.h>
+-#include <linux/mem_encrypt.h>
+ #include <linux/mm.h>
+-#include <linux/set_memory.h>
+ #include <linux/module.h>
+ #include <linux/pgtable.h>
+ #include <linux/scatterlist.h>
+@@ -65,34 +64,6 @@ static gfp_t order_flags[] = {HIGH_ORDER_GFP, HIGH_ORDER_GFP, LOW_ORDER_GFP};
+ static const unsigned int orders[] = {8, 4, 0};
+ #define NUM_ORDERS ARRAY_SIZE(orders)
+ 
+-static int system_heap_set_page_decrypted(struct page *page)
+-{
+-	unsigned long addr = (unsigned long)page_address(page);
+-	unsigned int nr_pages = 1 << compound_order(page);
+-	int ret;
+-
+-	ret = set_memory_decrypted(addr, nr_pages);
+-	if (ret)
+-		pr_warn_ratelimited("dma-buf system heap: failed to decrypt page at %p\n",
+-				    page_address(page));
+-
+-	return ret;
+-}
+-
+-static int system_heap_set_page_encrypted(struct page *page)
+-{
+-	unsigned long addr = (unsigned long)page_address(page);
+-	unsigned int nr_pages = 1 << compound_order(page);
+-	int ret;
+-
+-	ret = set_memory_encrypted(addr, nr_pages);
+-	if (ret)
+-		pr_warn_ratelimited("dma-buf system heap: failed to re-encrypt page at %p, leaking memory\n",
+-				    page_address(page));
+-
+-	return ret;
+-}
+-
+ static int dup_sg_table(struct sg_table *from, struct sg_table *to)
+ {
+ 	struct scatterlist *sg, *new_sg;
+@@ -337,6 +308,20 @@ static void system_heap_vunmap(struct dma_buf *dmabuf, struct iosys_map *map)
+ 	iosys_map_clear(map);
+ }
+ 
++static void system_heap_free_page(struct page *page, bool cc_shared)
++{
++	struct cc_shared_pages mem;
++
++	if (!cc_shared) {
++		__free_pages(page, compound_order(page));
++		return;
++	}
++
++	mem.page = page;
++	mem.shared_size = page_size(page);
++	free_cc_shared_pages(&mem);
++}
++
+ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
+ {
+ 	struct system_heap_buffer *buffer = dmabuf->priv;
+@@ -345,19 +330,8 @@ static void system_heap_dma_buf_release(struct dma_buf *dmabuf)
+ 	int i;
+ 
+ 	table = &buffer->sg_table;
+-	for_each_sgtable_sg(table, sg, i) {
+-		struct page *page = sg_page(sg);
+-
+-		/*
+-		 * Intentionally leak pages that cannot be re-encrypted
+-		 * to prevent shared memory from being reused.
+-		 */
+-		if (cc_shared_buffer(buffer) &&
+-		    system_heap_set_page_encrypted(page))
+-			continue;
+-
+-		__free_pages(page, compound_order(page));
+-	}
++	for_each_sgtable_sg(table, sg, i)
++		system_heap_free_page(sg_page(sg), cc_shared_buffer(buffer));
+ 	sg_free_table(table);
+ 	kfree(buffer);
+ }
+@@ -375,22 +349,39 @@ static const struct dma_buf_ops system_heap_buf_ops = {
+ 	.release = system_heap_dma_buf_release,
+ };
+ 
++static struct page *system_heap_alloc_order(unsigned int order,
++	     gfp_t flags, bool cc_shared)
++{
++	struct cc_shared_pages mem;
++
++	if (!cc_shared)
++		return alloc_pages(flags, order);
++
++	/* The shared granule can raise the actual allocation order. */
++	flags |= __GFP_COMP;
++	if (alloc_cc_shared_pages(flags, PAGE_SIZE << order, &mem))
++		return NULL;
++
++	return mem.page;
++}
++
+ static struct page *alloc_largest_available(unsigned long size,
+-					    unsigned int max_order)
++		unsigned int max_order, bool cc_shared)
+ {
+ 	struct page *page;
+-	int i;
+ 	gfp_t flags;
++	int i;
+ 
+ 	for (i = 0; i < NUM_ORDERS; i++) {
+ 		if (size <  (PAGE_SIZE << orders[i]))
+ 			continue;
+ 		if (max_order < orders[i])
+ 			continue;
++
+ 		flags = order_flags[i];
+ 		if (mem_accounting)
+ 			flags |= __GFP_ACCOUNT;
+-		page = alloc_pages(flags, orders[i]);
++		page = system_heap_alloc_order(orders[i], flags, cc_shared);
+ 		if (!page)
+ 			continue;
+ 		return page;
+@@ -405,6 +396,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ {
  	struct system_heap_buffer *buffer;
  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
++	struct cc_shared_layout layout;
  	unsigned long size_remaining = len;
-+	unsigned long sg_remaining = len;
+ 	unsigned long sg_remaining = len;
  	unsigned int max_order = orders[0];
- 	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
- 	bool cc_shared = priv->cc_shared;
-@@ -454,7 +455,11 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+@@ -417,6 +409,16 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	struct page *page, *tmp_page;
+ 	int i, ret = -ENOMEM;
  
- 	sg = table->sgl;
- 	list_for_each_entry_safe(page, tmp_page, &pages, lru) {
--		sg_set_page(sg, page, page_size(page), 0);
-+		unsigned long sg_len;
++	if (cc_shared) {
++		int err;
 +
-+		sg_len = min_t(unsigned long, page_size(page), sg_remaining);
-+		sg_set_page(sg, page, sg_len, 0);
-+		sg_remaining -= sg_len;
- 		sg = sg_next(sg);
++		err = cc_shared_calc_layout(len, &layout);
++		if (err)
++			return ERR_PTR(err);
++
++		size_remaining = layout.shared_size;
++	}
++
+ 	buffer = kzalloc_obj(*buffer);
+ 	if (!buffer)
+ 		return ERR_PTR(-ENOMEM);
+@@ -439,7 +441,8 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 			goto free_buffer;
+ 		}
+ 
+-		page = alloc_largest_available(size_remaining, max_order);
++		page = alloc_largest_available(size_remaining, max_order,
++					       cc_shared);
+ 		if (!page)
+ 			goto free_buffer;
+ 
+@@ -464,14 +467,6 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
  		list_del(&page->lru);
  	}
+ 
+-	if (cc_shared_buffer(buffer)) {
+-		for_each_sgtable_sg(table, sg, i) {
+-			ret = system_heap_set_page_decrypted(sg_page(sg));
+-			if (ret)
+-				goto free_pages;
+-		}
+-	}
+-
+ 	/* create the dmabuf */
+ 	exp_info.exp_name = dma_heap_get_name(heap);
+ 	exp_info.ops = &system_heap_buf_ops;
+@@ -486,22 +481,12 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	return dmabuf;
+ 
+ free_pages:
+-	for_each_sgtable_sg(table, sg, i) {
+-		struct page *p = sg_page(sg);
+-
+-		/*
+-		 * Intentionally leak pages that cannot be re-encrypted
+-		 * to prevent shared memory from being reused.
+-		 */
+-		if (cc_shared_buffer(buffer) &&
+-		    system_heap_set_page_encrypted(p))
+-			continue;
+-		__free_pages(p, compound_order(p));
+-	}
++	for_each_sgtable_sg(table, sg, i)
++		system_heap_free_page(sg_page(sg), cc_shared);
+ 	sg_free_table(table);
+ free_buffer:
+ 	list_for_each_entry_safe(page, tmp_page, &pages, lru)
+-		__free_pages(page, compound_order(page));
++		system_heap_free_page(page, cc_shared);
+ 	kfree(buffer);
+ 
+ 	return ERR_PTR(ret);
 -- 
 2.43.0
 
