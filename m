@@ -4,143 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D65C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:52:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73940C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:53:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83C7C6B00A9; Thu, 24 Sep 2026 14:52:07 -0400 (EDT)
+	id 7F05C6B00AB; Thu, 24 Sep 2026 14:53:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8147E6B00AA; Thu, 24 Sep 2026 14:52:07 -0400 (EDT)
+	id 7A0E16B00AC; Thu, 24 Sep 2026 14:53:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72A746B00AB; Thu, 24 Sep 2026 14:52:07 -0400 (EDT)
+	id 6B7256B00AD; Thu, 24 Sep 2026 14:53:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F16B6B00A9
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:52:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BEE0E4036D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:52:06 +0000 (UTC)
-X-FDA: 85249550652.17.F95F4D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 13D3E2000D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:52:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmKwra2T;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A0DC6B00AB
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:53:19 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC196C0472
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:53:18 +0000 (UTC)
+X-FDA: 85249553676.19.B9CF481
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 09CC8A000B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:53:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MZrYCRc4;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790275997;
+	b=YtBn+MtX35oCC6uwFehmtMKjExg+NOP7hBUn7wPi4QtpZIWrpjKaYl+hyca4ihN+e7n4RE
+	h6+nCBIfTsUbZJ1nXNLOHI7b6KyvgV0GIRLWVUhr6tGWyqMddIoelRigTCOyr15WKNTAwz
+	kpijq6qB955EdVedIP/BoIuVxMVl2/M=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=MZrYCRc4;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275925;
+	s=arc-20220608; t=1790275997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8fQuNmR+wyKKa/NE7gKqnglhXs6oXfwgf7LqT0NLqJM=;
-	b=zi+PhiqS7uC4VryftFziFzeFLvablBRSCklvV4PHgNs9wESjXwax3/Td099EWd1D6npr4l
-	QdIsqR5QLVmgtJLG7U9U1ofSCAaPcq9fibkO1oc930gQNnWOkCMWRrUu9ywoR27Rg19ktb
-	OAt1CWQtR9xkVZIMkhYzX5dOC4MEDbk=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hmKwra2T;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275925;
-	b=KEwQEKDgsDob0nbt8dXkQ1/+ObAhXKPuzamSFmuS9BAPxkkw6rX1U+cWhR8yUAhLgJD9hl
-	X3P9p7U0enVk1RsSk3qv+N9J2x/ZMHp3M1MzQK4zxhWBnHlMfVT+rWDfWhaqmDFuNyd0Yn
-	wD5vyJqDNVzmvTeu2THoOoPdEaKM7/c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AEDB060236;
-	Thu, 24 Sep 2026 18:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E851F00893;
-	Thu, 24 Sep 2026 18:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790275924;
-	bh=8fQuNmR+wyKKa/NE7gKqnglhXs6oXfwgf7LqT0NLqJM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hmKwra2TGt4NKXHAA/TkRcGPes5yT9c5nvFOd+aZbIBb7FPyc7k5fI9FVjH9eU4GG
-	 sODuhzOfxulRS+W1TQ3EiWAHBIdTotMlSZba1Zftbd3TRwCMVH/BoCBE0RnoxRtNik
-	 oXOPyebbT1FC9GA19P4NRoEdFGMIwEzKIX/PEN4ZgpKlbbq7Wn06FFrvEdj9QL+WWx
-	 MgKLgK3yz6RTLmkPgA8Xu6Vs+paDS02BGoGLXXkQew1Mxmq75NIxaodkh1HOvLTjr2
-	 AOtX5ao831YTZLHT9N9YMT57zQXlry8BCfVNNahANt8tvX99YtRVHO8EYnTQok5MF+
-	 50pdsWexQGSSQ==
-Message-ID: <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org>
-Date: Thu, 24 Sep 2026 20:51:50 +0200
+	bh=EJILEH5+ka8tzKqUVnB7R8kbKSlDulJBwhuxcrxu3g4=;
+	b=pRMkDDb3+XoUl9fuXkSZ5R3oyrzI5t9QGx7DmIemsdjrtVY9O+09w5SZ+HTcJwGonjCPpf
+	xK2ghfifbHOG1G1ckBHc07+pT+wMsPRcLz4Ml1fxFG2Otbz6EsvqrFCqRL84/+U35nhlZs
+	/Lido4oXEM5X6w74iMdSRIPJKC8n3RI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=EJILEH5+ka8tzKqUVnB7R8kbKSlDulJBwhuxcrxu3g4=; b=MZrYCRc44NmK1/D5cDgxMbBZ4K
+	rJDe3lulb3qEdJhh6cmUkzSfnNflMzceAXOU/MWh2zlmwuKX1XgaFF5xk3oIeLnVfLCM74lmDlsfk
+	YmbqbuHqAxvU2bxlSN1tyAkTHlLLmco8Grc0/3TfuxSlJ1bqyINdyAVFtijDGoKwHge0OnkhzfRQH
+	RYakcAgulkv9KQ+6b6h9thSYs4u+uNSnH+I2Z3Z/Dv01bW+rHvSc+y3QFCvDdncyADhvQi9Wjr6CY
+	F5wyfFwGDVwecJR/yrr4c/tJaYhcKiSgROjBcz4WAHlCKWfmLwa1aX7GehFfbS164eK3vM344/XVC
+	9Vx9wYCA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x9oZB-00000000JXz-44fz;
+	Thu, 24 Sep 2026 18:53:10 +0000
+Date: Thu, 24 Sep 2026 19:53:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jane Chu <jane.chu@oracle.com>, linux-mm@kvack.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian@brauner.io>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v9 08/15] hugetlb: Use the has_hwpoisoned flag
+Message-ID: <arVxle46OHWjL7Sk@casper.infradead.org>
+References: <20260805210557.1118966-1-willy@infradead.org>
+ <20260805210557.1118966-9-willy@infradead.org>
+ <a51a6236-8881-4479-8f04-39676e0e1f14@kernel.org>
+ <an3uN4TAAZ2miXhe@casper.infradead.org>
+ <7608c80e-645b-4d07-bba3-ef45ee36fba4@kernel.org>
+ <arGidwZQrrWVPAoj@casper.infradead.org>
+ <7a23511f-365f-436f-b934-6a520510409c@kernel.org>
+ <arQkP2uEzog8ChN0@casper.infradead.org>
+ <6121136c-de9d-4577-a30d-f00dbe244e5d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
- bit
-To: Ilya Gladyshev <ilya.gladyshev@linux.dev>, Zi Yan <ziy@nvidia.com>
-Cc: akpm@linux-foundation.org, andrew+netdev@lunn.ch, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, edumazet@google.com, harry.yoo@oracle.com,
- hramamurthy@google.com, ivgorbunov@me.com, joshwash@google.com,
- kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- torvalds@linuxfoundation.org, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
- <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
- <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
- <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 13D3E2000D
-X-Stat-Signature: z33iaqh4xrc9wi65pktza77u8byse577
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6121136c-de9d-4577-a30d-f00dbe244e5d@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hixzoooq99cxepc31o4gzgqgx7uqahxf
 X-Rspam-User: 
-X-HE-Tag: 1790275924-632912
-X-HE-Meta: U2FsdGVkX184patTxI6Madx6IE+dgskZY6hPAYG5jwCpCdA+pPFwgUm81CWDZTMiYVOtLBt4KVBqRzAxO4Y9T1dgKolVbtFZ5hntcUGLzUJihVPx1swx2hRywvmH2ScyoR07M0gSlUGK/VcH/rXzs5Vrgs7VcaFZOCgp+9VBDUtJ0NnGX/xOo+klKDJSBdhOrwdVntAPowTU9VFJvij5jmVyMT8KXt//NAsVRcKWDliheBhTwS5HCY5fY1ZDcKG0x4MYne1VCErF0dvQi36kSS1yLMTe3xkaoWP+IqjJbhkWPFLJr2vSZd1sMK347GoXl1FnwfOI99HMdH+UdZE1AvID7FmM/OCzEfIN0PYG+OOZ0r2dYWPuqDZ7IHY/1/bi71ZZnbQ5wfgK9Z3kJ0Df1W04qNxNXQth5F3vu8cknA/2XZYq44pYbfGkiZ8M+hRU6xFftj97tqU1L8CWehSNdfUsaYBsqu8zojp8eIdrJouM1ZlHjphzDpZchDb6diyKNjXiN8aL5hdSFeyjwEWAzh3VkcQ1BXpH7q+RGF9QuOwg7kPq2D7/X5L6i9Y+z23nEJHIiJlTped6xkRVnyuR/NQ48Mz+HRA5Wq4hay0kdBG/rhoLeFqeY4ZVli5QGcmtNcdLfVaBzKlvd8ZbP4ZMKnEbH0XNxq+STqqGLpNJz1Ulfq7soWFst3Z80PZ11wPfytcBCQG7dbEZ4dyJBFR7sxw0ntNhqmEGQuujhs1Z1/7Tc0sQLtPpeoON+dY/3jVS/vOyAx/MAYTsu6/PceqAympt6pcEglRucxT5taTIZy8OTY9+2PAI92/YI9NXd0pe3WnojXDXYGdgYBgurJQGc8yZvFfTMi11YZNvc+Djx3lr2agV8LAAm4TfFxvTTCTCI5OOOOwLYEdUt55o4BFjyFimQUi+KUBLyjdr2nyj9A4W/q4LVywUYXLNIy6ZfwuJ1BBnCnEKZlo0SFjyFjE
- fOe88nox
- cNs/EWr9Mszp9xXHFvRaj5vT/M4s8iwREf6QVGCZO6eZa35zFnW3Jm4hTNCunWhXKhql1Eh5MpiE4Bic5s6zq15tCqiVXXvlrK3WALpzsVPurXOtbmpgvIC7U1hpLmaRomfXTZ1Y4SfoeUpXPKNAs1Ynm0StugJ/zjBdGh3Pea7id1kVehtDWF2jmg6NRsRGWsEaFRAdfTaN+uKW3mloYFw4Lg3wsji+jMZxsJ8N4xE9D4/C3U5BNJ2DhdioCb58JdG2LroUSgL6xUzJvE/cMbt1sCwrPxOa+m+Ql7vCmWnnPo5iBoYPHj5crmqPZwno4PKMFSA43bO7hkdHGHgm4dPAfVmTGx/VHJqnHzU+/9d0dGQ0KNrgQovnS494cdNO454MjTZyucZI9XFM=
+X-Rspamd-Queue-Id: 09CC8A000B
+X-HE-Tag: 1790275995-95529
+X-HE-Meta: U2FsdGVkX1/ls7X+vf1KfDt9bQdaWQ4IscUHD7Sa5q7vG5geEPF8biZebdqnj6NrMCi3UMow8Ka7At/z0LTBBdJAQL/cHVcnUxKWElSMtBnwMDH2p1hD0uEwSfk+EH2DPrw+LHdtcgJLWhwGcpdQ3aCIZOB0CSY053zJ6EYcGcbnA94tuxIBbGMtbw3BiN3zyySE9thuUyg31C9hbXCNfIz1y/sNpUpWDK/qdVO62co9Gnqzr+1BhsrlyclpRphZCZWp6wRWjY3nH2PsH8Pzit/ExsmBzvaqypEwdn2Gq0U6dQobfcYRpi1cjl4jRoYWYECV9FM2N4BpNSW8ShOPWy04EDaW7oWA5jMXfwBDVhkFKi4oqogaPSg3vV8z8fCxouAb9l9RREBsaf1Foe02qQdSVTVUkWVkND8eUxaAinHGhbMXh9x+ql3rR9EMv6cilx9Nqc7990t/0tj6jDxJhm+huxiY0xhhyjntBQrdjWQ/i2rs4qEx5+wLiJaGyfIdC9MDgtbofNT0qv+ttnYj3EoYGBZGH/f5yq5WYYqLB5NgR3tC7ONAwBFo+HC9jY8E1zctoAJ3KOX5Xlqq2oh7U8WQ8Nz1NLkpjHaAVdJht489tSvO32efsaqZlKa4tiJbuqDZq5SNl21J+QutA8WirQYSCq/l7QoSK30X2EHvZlB5NrpoA1r1ufDjfrin6ye+8l8PfzilqeEPMFmmHJQZLyf39pYYnB5cjonaZKXPxE+uWWgnpA42vKiMOQv6TeMKEKnmi2cwYVThByObkUtf73P7NzshSi7Mh6LpIxjTchljzLTcNcFyo1LZAPMfqxOTOFbRQKYAZ1Z3/ublZ3uo/UJ/p3XQ4gRadk9qriO71wU7TpvkXBf2bsSQedX9upeHGe9ZLCitcnCTW/15K2j7CD7sk5gecwsD7y/CqMIYf2hb1vBVlJUcRUylmyQ9LR34PQVWnmldAUQ7yaWi0ox
+ FxGQiL6j
+ jiBbzEen1PG6WDSPP3aFRa66f0qHGawabCA98FVDAY1OkIExIzODQBwCiTCi9nRPg3A6CiG2qJZN1byxNwONkTPKycT+h+lKtD7fjwjtXfA2KOEQk+54fcYqKE7Xv0xxCvMuLtkc5ixcACcD8/q1g77BrbPTVU+367w1Xfe2csTl1EbEWCGGxAOeAl4amBOFw9lq364hhAXjIS9D9Z948m5dllSUOsYIqUQ+Qb+f0EBtFxJLQMdbAxCpskisWcmMgbqprvpVq1AhEbjMc8u/LoGPH8kAqdVfcgUilmNd2fpX3jDDiKlEnELzgvHwjiLcA0aYD21HDbeF9YEDQoAWs5yEIsqEU7H867y5BShAwL8XOXfVwnvMEzmstCoWU7iepP+gSh6QDeR/y040=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,97 +104,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 19:34, Ilya Gladyshev wrote:
-> September 15, 2026 at 5:42 AM, "Zi Yan" <ziy@nvidia.com mailto:ziy@nvidia.com?to=%22Zi%20Yan%22%20%3Cziy%40nvidia.com%3E > wrote:
+On Thu, Sep 24, 2026 at 12:32:13PM +0200, David Hildenbrand (Arm) wrote:
+> > Oh, no, it's awful and complicated.  We could strip out the two bugfixes
+> > which are at the start of the series, but why would we want to do that?
 > 
-> 
->>
->> On Sat Sep 12, 2026 at 3:50 PM EDT, Ilya Gladyshev wrote:
->>
->>>
->>> The current page refcount implementation uses a single counter value
->>>  (zero) as dead. So, to prevent incrementing a dead refcount in
->>>  folio_try_get(), it fundamentally requires a CAS loop.
->>>
->>>  This CAS loop can act as a serialization point and can become a
->>>  significant bottleneck during high-frequency file read operations
->>>  [1][2].
->>>
->>>  This patch reallocates the refcount value range:
->>>
->>>  (1) refcount < 0 means dead refcount (uninit / frozen)
->>>  (2) refcount = 0 allowed only as a temporary state (see below)
->>>  (3) refcount > 0 is a regular reference count
->>>
->>>  In other words, refcount is now split into "dead bit" and a 31-bit
->>>  counter.
->>>
->>>  Refcount decrement now works as follows:
->>>  1. Counter decrement
->>>  2. If it is now zero, try to put it deep inside the dead zone
->>>  (CAS to INT_MIN). Or you can view it as "set up frozen bit and reset
->>>  counter".
->>>  3. This CAS can fail only if someone grabbed a reference in-between --
->>>  that's okay, this page is their problem now.
->>>
->> I am not sure this works. David raised a concern on V4[1], where if a
->> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
->> properly handled. "this page is their problem" only works if every
->> folio/page free functions call a generic folio/page free function that
->> checks the page type and does the proper handling.
-> 
->>> Refcount decrement now works as follows:
->>> 1. Counter decrement
->>> 2. If it is now zero, try to put it deep inside the dead zone
->>>     (CAS to INT_MIN). Or you can view it as "set up frozen bit and reset
->>>     counter".
->>> 3. This CAS can fail only if someone grabbed a reference in-between --
->>>     that's okay, this page is their problem now.
->>
->> I am not sure this works. David raised a concern on V4[1], where if a
->> folio lands to page_frag_free()'s free_frozen_pages(), it will not be
->> properly handled. "this page is their problem" only works if every
->> folio/page free functions call a generic folio/page free function that
->> checks the page type and does the proper handling.
-> 
-> After some thinking, this scenario is indeed possible and problematic. The
-> complexity of the required setup give me hope that there are some implicit
-> barriers, however I wasn't able to find them. But I am not an mm guru,
-> so maybe I missed something :shrug:
-> 
-> -- Below is a minimal buggy scenario --
-> 
-> Thread A: network code that calls page_frag_free()
-> Thread B: calls folio_try_get(). Maybe it is the DAMON paddr scanner,
->           maybe this folio was previously used in page cache
->           (however this noticeably complicates the scenario)
-> Thread C: user of folio's reincarnation. It also requires destruction via
->           folio_put() and not via free_frozen_pages() -- for example hugetlb
->           or memcg charged folio.
-> 
-> Refcount operations as follows (FR = FROZEN):
-> 
-> A: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-> B: INC 0 -> 1  [ folio_try_get() ] => success
-> B: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-> B: CAS 0 -> FR [ page_ref_dec_and_test() ]
-> B: * deallocates via __folio_put() *
-> 
-> C: * re-allocates page *
-> C: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-> A: CAS 0 -> FR [ page_ref_dec_and_test() ] => success
-> A: * deallocates directly via free_frozen_pages() * => BUG
-> 
-> This can be fixed with a `s/page_frag_free/folio_put/`-style patch, however
-> it seems unreasonable...
+> Andrew usually wants us to separate bugfixes (especially stable ones) from
+> other work. Unless we all agree that they are not urgent and can go in in
+> the next cycle. I assume that's the case here.
 
-There needs to be a common page freeing function that dipatches stuff.
+I don't understand that preference, to be honest.  As long as they're
+first in the patch series, they're easy to pick out and don't depend
+on the other patches in the series.
 
-folio_put() is not the best future-proof thing, because not all pages will be
-folios sooninsh.
+> I am not convinced about the huge_poison thing though, that originally caught my
+> attention.
+> 
+> So trying to understand the race we are trying to solve (that is independent of
+> the original idea of the patch set), I realize that these races are only on some 
+> slow paths we don't particularly care about for performance.
 
--- 
-Cheers,
+They are not hot paths, I agree, but they are user-triggerable paths.
+So I'm not happy about the ability to spin up thousands of threads and
+delay other accesses to hugetlb_lock indefinitely.
 
-David
 
