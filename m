@@ -4,143 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED1AC9831A
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 12:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 289D1C98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 12:52:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDF8A6B0088; Thu, 24 Sep 2026 08:36:57 -0400 (EDT)
+	id 040A06B0088; Thu, 24 Sep 2026 08:52:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D90F66B008A; Thu, 24 Sep 2026 08:36:57 -0400 (EDT)
+	id F35006B008A; Thu, 24 Sep 2026 08:52:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7F746B008C; Thu, 24 Sep 2026 08:36:57 -0400 (EDT)
+	id E49CC6B008C; Thu, 24 Sep 2026 08:52:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DB616B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:36:57 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D08F480340
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:36:56 +0000 (UTC)
-X-FDA: 85248605232.09.47EB025
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 06B49C000B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:36:54 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RfPA0jnX;
-	spf=pass (imf28.hostedemail.com: domain of elver@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C78406B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:52:51 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D6171C26FA
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:52:51 +0000 (UTC)
+X-FDA: 85248645342.30.CF23285
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 517E2180004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:52:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790253415;
+	s=arc-20220608; t=1790254369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gAR7nTOPxRo/mfR2u3OdcokbjHynlMhWcl3pdNDsUgo=;
-	b=080XKfmsg9fY+6Zp0mMJi3o0qqi9nfshMBv4mhxFAaWHSEcYOTErDlysUIfj37lnYEmGLm
-	Pt7e33AosVtAnsbTdjGgA0WUwWa9FivdA4E6THmpGBOd/ub6fGEx0G/vUmTfSDDstB7vY6
-	HfhExfhlvlsYt1ZYl+JRJeCft/xalLY=
+	 in-reply-to:in-reply-to:references:references;
+	bh=CSnAjhoDwvWnEW74al7mKjH1DVylJwe0Kh4/FdK8xpE=;
+	b=iL8N6afaWRtQoj7MoY/Z1Bpakzwe/AP9oihPZuw5U7QHZSeLl9bA/YWB4K5ds1+fQLXJL1
+	7uChl3VDAGSLHIi63dNMw4bUFGlwGm8CZeH6xpLkBIUFt+iiLSPVUx3chVIzDPBDqh6Ueh
+	jZYSkBA2HYOpvmWv2Vttj8GPyjvrSB0=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RfPA0jnX;
-	spf=pass (imf28.hostedemail.com: domain of elver@google.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of joro@8bytes.org designates 85.214.250.239 as permitted sender) smtp.mailfrom=joro@8bytes.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790253415;
-	b=QVpskdAYPTLSX5DuVkr24f1sMnX1VIqORSpxOgQ5kltS+lZcBsDl+Cmxf1K7NP6+dKrsCh
-	EToJEg2WTV8mJ4DMLzFDwzakkBR/BXcAaQG9Z4E6vwnT66rIMzOFW9lYQNY7fFQpOkfH4T
-	QrvTnfdCyTQ4SfWG1V602sf/jJ+o+c0=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so15601805e9.3
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:36:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790253413; x=1790858213; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=gAR7nTOPxRo/mfR2u3OdcokbjHynlMhWcl3pdNDsUgo=;
-        b=RfPA0jnXsTjzUIVyyLWlqtUsjMQurkuSAZzlsWAPcLGBBDstd7qj2K8tlUwHWhjV9A
-         15wTMTdrFQsNynpUVb/sYFOfg3qrmuvsQ7orYVfHMzStrYPAb86t0nT20SlcMFe7gIkw
-         5k9680Isbr//bK5ailONpbFQhD2Y9yuAE7pucGnZQs8FsgPafhzxRfS/338af+pYcXca
-         ac3Pi56l+HZOEOfA04f7mgYhJa2+gS5reBA8Umyfq/0EC1yoQwmENSLvViOxEvqQNa2z
-         00xxssXzVHY6zEQWP8rouf0qAUQl/HNdoruNOnO4T3zkFqY78hbc3GdyFlMj1dS4xxgL
-         8yWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790253413; x=1790858213;
-        h=user-agent:in-reply-to:content-disposition:content-type
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gAR7nTOPxRo/mfR2u3OdcokbjHynlMhWcl3pdNDsUgo=;
-        b=jiIE8uIqAprJCZRhNAbL5zXi/PqvoaTeOLytluRIZeNWoYDcfkX/n9Sb/v7zE32g2b
-         tlHAoyJMPFW9/7fq91pUd4pM5JgYkwPZdUAVkvfDKzag0eCdQS0bZB9gyguwmkz1zTrH
-         xS9vwvOeTZ1kYUgm96UMjO6y0igvmhegkBbXPMxIhk6Gs6sio/Hvhdj0dvdK7BJMradF
-         f/m6KQJXWF0tKKwTt1A9NgAKKbJh54qwOqL5PpCf5cDDtmxMyLqs9I2/Njo3PnSoQNH7
-         qg04GPDEZ9M4uvYTArtViToAlvj0bWTr4sxn8HjkpCRV7czJm8AoZlFSgW81p8mXgdZe
-         m4Xg==
-X-Forwarded-Encrypted: i=1; AKwUvBzeW5JqC0Ymt4ETDudPvj+962pPYz9bNAcn8ISfa4C9IvKNWT9I8X81ux/6I6QutZc3XC7yyfJWgg==@kvack.org
-X-Gm-Message-State: AFuF++my4F0rKniRQmxgcOLOcI2qyrEEkjb4tuKLUSphSH6B/H5TNmVi
-	jOkyeYFxUyYGd/iaW4H4wgwdMTkViSHQ+dHFfPTtBWn2YlPz01yS8idzQSRVSOtWbQ==
-X-Gm-Gg: AYBFou1x7tuOcdXKVl8fid6DPyyihE71e4kgUXAIdKERsHXK0PyNFdzqAHOMrBDD2AZ
-	aIZIc7TugR2a6dX8smh3lpG3pIMoZPdTxHf2P8jjXnhK0hzE+/7QNHNySimqiPLnbdxrpp1wwXO
-	/ltjcKUxVztwzjbvUEvY4zboV1AoqyD/kDg4hDGmqzWNZoXMP/eXl0tLB+uyfWU0Z5GDiX3I/fN
-	da873/PcTJRGxx+KnK80jo3jfYwdvqSFqy9BpU0rmiM/CTm4AUsMBy3/o1CumRbiEsRmML4/vfw
-	t0++gJX90KE8tW6NPphEkCNYaionOqUs3b1iEqigMM7/yAhVr43PnP6d3oQw3L+TMS5YC8IeAAH
-	Z0gDYypaSau8lN9zcrH+vSgSZ76lcgR5D6DDSpBY13h5hYNcuTCG97+U1Zxe31nvUVWoht35/Ws
-	LcRuNZabYnndpyHeqFUPwcqt3oinZXoLtYRI0yDIQ6XFlEHpEKFfb0Z69129HrFSjohFEfZklo9
-	j7pLtgzhTyW0lIb7HkatFbUkOqSvtG69JX8v+ld1Q==
-X-Received: by 2002:a05:600c:3514:b0:49f:ce72:e931 with SMTP id 5b1f17b1804b1-49fe6701e7emr38631215e9.35.1790253412640;
-        Thu, 24 Sep 2026 05:36:52 -0700 (PDT)
-Received: from elver.google.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fe0c4cc01sm56905385e9.3.2026.09.24.05.36.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 05:36:47 -0700 (PDT)
-Date: Thu, 24 Sep 2026 12:36:40 +0000
-From: Marco Elver <elver@google.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kasan-dev@googlegroups.com, llvm@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org
-Subject: Re: csky ICe (was: Re: [PATCH v4 2/3] slab: improve
- KMALLOC_PARTITION_RANDOM randomness)
-Message-ID: <arUZWKjKr5I5tlOj@elver.google.com>
-References: <20260511200136.3201646-1-elver@google.com>
- <20260511200136.3201646-2-elver@google.com>
- <6106aefa-47c7-4bda-a51f-8a2fba3bf715@roeck-us.net>
+	t=1790254369;
+	b=3kzh6ploD6AlvkttSCrwYYaQziBGgcDZHDjJ07itfdBXf5gZya1UVasCEATlcPBzIm88PQ
+	OLAct6f/VfG5LXXZWEZvdQSUz4jfDlpo6MvqoxZJV467IqWqHo92F9E0pVTLOsmqpYaH/P
+	K3anUsrmClx90y076sSoJobMRVPXqC4=
+Received: from 8bytes.org (p200300f6af404a00e4ccc4fdbbd66590.dip0.t-ipconnect.de [IPv6:2003:f6:af40:4a00:e4cc:c4fd:bbd6:6590])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id C66711C7465;
+	Thu, 24 Sep 2026 14:52:46 +0200 (CEST)
+Date: Thu, 24 Sep 2026 14:52:45 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, will@kernel.org, 
+	robin.murphy@arm.com, iommu@lists.linux.dev, liam@infradead.org, 
+	maple-tree@lists.infradead.org, linux-mm@kvack.org, ashok.raj@oss.qualcomm.com, jgg@ziepe.ca, 
+	kyle@mcmartin.ca
+Subject: Re: [PATCH v5 0/3] iommu/iova: convert from rbtree to maple tree
+Message-ID: <arUZwesREX05SZ0J@8bytes.org>
+References: <20260818152505.1057922-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6106aefa-47c7-4bda-a51f-8a2fba3bf715@roeck-us.net>
-User-Agent: Mutt/2.3.2 (2026-04-26)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 06B49C000B
-X-Stat-Signature: smaqcz9ej5nd6drtea49fujc6yw8dgrc
+In-Reply-To: <20260818152505.1057922-1-riel@surriel.com>
+X-Stat-Signature: hobmpd71yrgjqhbaeq1ttiy9a5xu7co8
+X-Rspamd-Queue-Id: 517E2180004
 X-Rspam-User: 
-X-HE-Tag: 1790253414-324052
-X-HE-Meta: U2FsdGVkX1/Njx+hwWgbuFzyupS8X5QMN29z28B9yz4zSuXtxXW0+pYcFg/dcTJ2B1d+6Zr/7mWe94F5AZTD1XMF3lhwxqOVg7KlYPnnyWWhzwO5jRuZuk0kOMWUXmV8JF8CpLxZeNf9jcAaa0nh7ZqUCoKQM1rw1vHWmASsoC1aqHHYQBSL/ZIKSYzleKGwJza9wBOnQNMXYDWlbzWJdf4O4AjL0q9BWcuZRtDDm30hOfDWpiQBbPy5pvoNQWx1cTRyM9SpDmJ6ISmwpj8gO8NZNiOKXJygbmUHkhOUs25vygksQYGeVMQiE5SFq2a4RQ/sFSDgUXXZ0TkI92Tcsvf928XtTVDHI2Qe8HMYxgi4W9zBdl6CksJfUUn84nwI+UPIh3zBduLnzP6HKpVHUb37YT3+jIVo+z5WlwNbaC3ekXG0TXJj78/R1qVoVuFARtKNtE6kQ+aOOMeCvUcQRUEGWQsJzcYmbW+qw20f+rnJGd4+5cgB+wQ90UFtemVB5qLsST2eawtuQJWF8HxxKtMqHl1hXaAg3hhfo/hFpDggPDTMcif/trp1U4xIPxTtHUb8bTWynqDlB4FPCWQzD3BnwNtuVq7xx4qZLvTeKdUddzpPxi0HxGPShVY9bocGkMozgaKl2p4Z7C8YsQ2soMImkXIwc90GKOAncab2qu4dTQbd18d2TzefGn1RWF7ZmvUcFEV5Ms+vi1RkOvksKuk+ERw1k96g+p6Zg/wFJqMKUfEIJxsHXRFiV/J8YCTyhFXplnyIcogKhtLLKd9wdcyXJmL5+gedxNH77o0CHN94yX84nWw2SoJEXLdmmfi2cSadGMxChN6Vst/2hVfOPRfuUcGpnCoW7AGlp+GSdEoQpuGamUdC59yMFPFcfzlwoqXVZVnl3fXCqBOoTD5O9uHFTgjFSTARB+4atDtxpKMWCMn/Ne1GdKMs6sxa+19ATNSlryDGBr/Ydp6cdL2
- cgyz8jHn
- z8fnS/w19ur+pxNTspU7vsT1wucDkR8xyve8myFmglJh6SsdOmIRuZkQQoQNX62d9svh1w9DHloFUI5PdHb/y9k3NkLlwgYXzlpbf41eyvVmejcbwFw1PW8JtllaOzxsHK+iaWzf+FVa/oF5+HXkbYw8BSZSwxSveshgtQpOgG98/asbIGfZd/vt9ZcFayFzQ7p3o0LrBjKpAGbxebTG3ZUsTsN/nDesHDwJ7beHlpavs/BoJ82JB+dbCLVyroe5zmCGAH8WOSPC8v8DWOHtTYKGbOD9pVHq6WnpNaWpF4zsERYjsiZteU5rbuK/rzCxYMV4KadWNXLJHmGltyeiFg6fE5Wk9CgaQm67wCA9AjLJPH7aPV8JbZXGeHeX/l/3xN21DTMpBmAaj4qWNoS3wWVtYhI+UookZd+jHWQui8F5NwLVn01cIpijMMapdJXKfK+jXvpcjFmsKLq+u5FWlKyZYjvM9lng5JIczh7D4crCnxzkwu5ALYbVgcYTjFH1vXQX5AKwrRPNIoJk+u1XUxGW7gw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790254369-512207
+X-HE-Meta: U2FsdGVkX18RRWd6w+8NI8QcxnOEj5cLS+/Jr9NHWhdVkfzW0whhRVGEboZLcJ1xMmTgc6qufJdYi1fPGp4y2ftABvyp/bG4o6h/9uab2v7CcyA18HPCuDfRRM+36/YQGbM5DZfLwyOaLlRv01AClFOgfdRVYFj9eAe68tAK4rFGPaB6FiCGcIe/3Ld3nuqriGIzcLp4mPEgVnGrf8f9ZE101gaGW+oORMLgBL9wfPwpNIdU00Rh2r92VPXxAqmnSV3bNvGZPLh7FS8VRorKZhmiSC597wD7dnPg6FaBQtac0Ct1AyH466bpBYLb/9CrcinIvlm5jhIoykVpgvMFv/mV3hwKdNq2mxVv1gk/2x/p4rBn6hZZ1OHUAik24bu4BvbDbx3QQPUeuj6Te7eRc5TY3cHrjttI9bNyOhWJT46/JQVHaLr4PVgyD3ttEDZCFTeMFBjC2LxBBblf0LJwtnUInqPWuVtogNCAV0jCfAWjpCti4wVeMr/+byVkqJZB2tRXdbz2w/Izij1mOac/5FPzApqk9obBi6rcsPAsFpALQU/FKCWAjECs3MFH4Q3K6dbEmrtlOTFp2tVwFSJ42Lq7kk0glIFfrnF03ggODbyfYTN8JCw79PnPOkbEtX3ELIvfI8fmQryfkv5ReCpP8gTvbySBWaiof0//FQfVfZz9phJ+wTXLWMnPoOR6vEuHyWU8Ush1O3eo2J3peA/dcXGJiyTFohdeG0pD54rWIue0Lhs42uGxDodVHlaem1Uxq7FoGf7Hp7Sf01YNeRyiZNgcN8N6UzsMOw1pTSZxdtbcqDNqQ5Ufhh0fQiyUr+6Egz/Vy+6++uRy/1pUIW6/4r/mN+BuIiHCUXXmYAkRuM7HcL79O/rtWbrW65PzZmYXad0nMoMS0e5pOz1QGxnY262ZXg/3h5tdjnIBS2hC4GAckRhunWAtd7CK/7EfGD6Vq7+/zTTdfr45A6/f7Hp
+ Hhd63H0f
+ RMN8MrPGZ+xuHnmV8oM5slXdfPLIW5Bz7HBHzYRdkmkO6+yljhDvc6QSEsILPA1Mfq30Mpo63IwCWPqeM4nOyZXzHzH9U4LHxOqrHO/qopQl26hZqJA+N6SayhRni3zur2Nux3wTVsN89f0dxZbDs6lI68L9znCPUT841
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,120 +81,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 07:58AM -0700, Guenter Roeck wrote:
-> Hi,
+Hi Rik,
+
+On Tue, Aug 18, 2026 at 11:25:00AM -0400, Rik van Riel wrote:
+> Occasionally production workloads at Meta run into the linear search in
+> alloc_iova() in ways that cause real issues. For example, when enough
+> CPUs at a time fall into the linear search trap, systems have been known
+> to get stuck for so long that it causes soft lockups.
 > 
-> On Mon, May 11, 2026 at 10:00:49PM +0200, Marco Elver wrote:
-> > When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
-> > to identify the allocation site. _RET_IP_, however, evaluates to the
-> > caller's parent's instruction pointer rather than the actual allocation
-> > site; this would lead to collisions where a function performs multiple
-> > allocations.
-> > 
-> > With the generalization to kmalloc_token_t, we now generate the token at
-> > the outermost macro, and using _THIS_IP_ would fix this for all cases.
-> > 
-> > Unfortunately, the generic implementation of _THIS_IP_ relies on taking
-> > the address of a local label, which is considered broken by both GCC [1]
-> > and Clang [2] because label addresses are only expected to be used with
-> > computed gotos. While the generic version more or less works today, it
-> > is known to be brittle. For example, Clang -O2 always returns 1 when
-> > this function is inlined:
-> > 
-> >         static inline unsigned long get_ip(void)
-> >         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-> > 
-> > To provide a reliable unique identifier without breaking architectures
-> > relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
-> > to _THIS_IP_ where architectures provide a safe implementation, and
-> > falls back to a zero-cost static marker where _THIS_IP_ is broken.
-> > 
-> > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-> > Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-> > Signed-off-by: Marco Elver <elver@google.com>
+> This series indexes the iova ranges in a maple tree instead. Its gap
+> search makes alloc_iova() O(log n).
+
+Thanks for working on this, I really love the idea and more efficient
+allocation complexity. For long-term maintainability a few things need to be
+sorted out, though.
+
+First, I will ask AMDs IOMMU driver team to do some performance and regression
+tests with this series.
+
+> struct iova loses its rb_node and shrinks from 40 to 16 bytes.
+> The maple tree keeps its nodes outside the entries, so total memory
+> use ends up about the same as before.
 > 
-> With this patch in the tree, I get ICE erors when trying to build
-> csky:allmodconfig.
+> Patch 2 handles the one thing the maple tree does that an rbtree does
+> not: erasing an entry can result in the need to rebalance a tree, and
+> allocation of maple tree nodes.
 > 
-> Example:
+> iovas are freed from atomic context, and GFP_ATOMIC allocations mean
+> the erase can fail. When it does, the entry is marked IOVA_DEFERRED
+> in place and the struct iova is freed. The marker keeps the range
+> reserved until iova_drain_deferred() retries the erase.
 > 
-> Error log:
-> sound/core/oss/mixer_oss.c: In function 'snd_mixer_oss_proc_write':
-> sound/core/oss/mixer_oss.c:1202:1: error: could not split insn
->  1202 | }
->       | ^
-> (insn 183 400 184 (set (reg:SI 0 a0 [orig:307 _55 ] [307])
->         (xor:SI (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
->             (const:SI (plus:SI (symbol_ref:SI ("*.LANCHOR0") [flags 0x182])
->                     (const_int 132 [0x84]))))) "include/linux/slab.h":759:52 288 {cskyv2_xorsi3}
->      (expr_list:REG_DEAD (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
->         (nil)))
-> during RTL pass: final
-> sound/core/oss/mixer_oss.c:1202:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-> 0x779b51e2a1c9 __libc_start_call_main
-> 	../sysdeps/nptl/libc_start_call_main.h:58
-> 0x779b51e2a28a __libc_start_main_impl
-> 	../csu/libc-start.c:360
+> Ashok Raj asked on v4 whether the marker store can fail in turn, since
+> the WARN_ON_ONCE there reads like error handling for a case the comment
+> claims cannot happen.
 > 
-> This happens with lots of files, not just this one. It is seen with all
-> versions of gcc starting with at least v13.x. Reverting this patch fixes
-> the problem. Bisect log is attached for reference.
+> Code examination shows that, with the current maple tree code, the
+> IOVA_DEFERRED maple tree store will never result in an allocation,
+> and cannot fail. This series adds a test case which allows us to verify
+> that maple tree property continues to be true.
 > 
-> Any idea what I could do to avoid the problem other than stopping to build
-> csky:allmodconfig ?
+> Only a corrupted tree, one no longer holding the iova at its own range,
+> can reach a store type that allocates. The WARN_ON_ONCE is more of an
+> assertion than a recovery path.
 
-No idea what gcc is falling over here, but the below patch could be a
-workaround/fix. Does that work better?
+This is a lot for the interface contract between the IOVA code and the Maple
+tree. We need a way to test and enforce that the maple tree implementation
+adheres to the requirements of the IOMMU code going forward. You mention that
+there is a test included, not sure if it covers all expectations this code has
+(especially when the expectations are different from the ones in core MM code).
 
------- >8 ------
+The last thing we want is regressions in one of the IOMMU-layers core
+componentents because of changes to core MM code.
 
-From: Marco Elver <elver@google.com>
-Date: Fri, 8 May 2026 14:51:45 +0200
-Subject: [PATCH] csky: Implement _THIS_IP_ using inline asm
 
-Both GCC [1] and Clang [2] consider the generic version of _THIS_IP_ to
-be broken:
-
-        #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-
-In particular, the address of a label is only expected to be used with a
-computed goto.
-
-While the generic version more or less works today, it is known to be
-brittle and may break with current and future optimizations. For
-example, Clang -O2 always returns 1 when this function is inlined:
-
-        static inline unsigned long get_ip(void)
-        { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-
-Fix it by overriding _THIS_IP_ in <asm/linkage.h> (which is included by
-<linux/instruction_pointer.h>) using an architecture-specific inline asm
-version. Additionally, avoiding taking the address of a label prevents
-compilers from emitting spurious indirect branch targets (e.g. ENDBR or
-BTI) under control-flow integrity schemes.
-
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-Signed-off-by: Marco Elver <elver@google.com>
----
- arch/csky/include/asm/linkage.h | 7 +++++++
- 1 file changed, 7 insertions(+)
- create mode 100644 arch/csky/include/asm/linkage.h
-
-diff --git a/arch/csky/include/asm/linkage.h b/arch/csky/include/asm/linkage.h
-new file mode 100644
-index 000000000000..04afd3583e25
---- /dev/null
-+++ b/arch/csky/include/asm/linkage.h
-@@ -0,0 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_CSKY_LINKAGE_H
-+#define __ASM_CSKY_LINKAGE_H
-+
-+#define _THIS_IP_ ({ unsigned long __ip; asm volatile("grs %0, ." : "=r" (__ip)); __ip; })
-+
-+#endif /* __ASM_CSKY_LINKAGE_H */
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
-
+-Joerg
 
