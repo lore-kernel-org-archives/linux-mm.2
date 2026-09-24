@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C733C98310
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 06:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADE02C98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 06:35:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93A2F6B0098; Thu, 24 Sep 2026 02:34:12 -0400 (EDT)
+	id C23766B0088; Thu, 24 Sep 2026 02:35:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9124C6B0099; Thu, 24 Sep 2026 02:34:12 -0400 (EDT)
+	id BD40B6B0093; Thu, 24 Sep 2026 02:35:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 827AF6B009B; Thu, 24 Sep 2026 02:34:12 -0400 (EDT)
+	id AE9ED6B0099; Thu, 24 Sep 2026 02:35:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BA2B6B0098
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:34:12 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 829AE14027B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:34:11 +0000 (UTC)
-X-FDA: 85247691102.07.10FE9E7
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010006.outbound.protection.outlook.com [52.101.46.6])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4F43C1C0002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:34:08 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=1PrFq0ZC;
-	spf=pass (imf20.hostedemail.com: domain of bharata@amd.com designates 52.101.46.6 as permitted sender) smtp.mailfrom=bharata@amd.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 84DCA6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:35:53 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0870B16027F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:35:53 +0000 (UTC)
+X-FDA: 85247695386.22.CA1D590
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011070.outbound.protection.outlook.com [52.101.52.70])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EDE8240007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:35:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XmKxNnJT;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of bharata@amd.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790231648;
+	s=arc-20220608; t=1790231750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rs9glKE/E/uZ4cc8ih2YoPEtsOZEoucC7qzwfJpfqIg=;
-	b=IcUmA8+H16JoMTgma3qXxCpxhnsoUxUPKDV7XSfWSLe3diSwEkHEM57xhwr9sBxNqZFFU9
-	f39AXmU2m2ROfTvnWvQZApcFHfJQU0qSLDdfZKcoR9zBAizZ7Ci/V1mQ+7Jfz285HaT0+d
-	NX9r/OXF/Zo6OKLcK9/OdVSRAlI/QDA=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790231648;
-	b=diFD250HhcfFX74M2oAJJ4sgDMXJQaBbdciw9vFBnaTSm7/xqkKAsJmpol9KB9vUNJCTzZ
-	nwB9b6LLPPaZZhqaNyKL8lCFjCl5VrrV/oIOKRkEkxRW97UFFX62Tq1uS9LHh8zLQeH1v1
-	Y2XVU4pOcXi66LTstvPKT8++67/4Lg8=
+	bh=gxT5Vr8KXbRrXgqtigc2fQQrMC2wVCM8t8tUu6gVGBo=;
+	b=Q3K7mAK58226IwDL1jPOpUyvJlqWpHOgSd1S72MpB6cEEb3E5oZVTHxLFQy+G/RI1bEPcz
+	7NkMuEQeyTfe6PxmjUmSN3lOA4Fp25ogPh6XFe+72g3DGpWAyqccy1QIm4s7dpOaefx+KU
+	qW8vfiP2Uo09NXgdMZPJD9n8ngNqM8U=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=1PrFq0ZC;
-	spf=pass (imf20.hostedemail.com: domain of bharata@amd.com designates 52.101.46.6 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XmKxNnJT;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf17.hostedemail.com: domain of bharata@amd.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790231750;
+	b=VX0nAWqkp+VUarCco8RgvhD452QXxdrdT2FxiRLXANUOpT+d0MonWCCixjr/uLGiUQ5JeW
+	UfJ6wv88DPkDB/oqLylFgKLf0BcMu25sS3Df5BRc7/c+wRQPlVDC3XlXA2NviGu1LDw47Y
+	MtyhUVpZWlvJnxxTXvPHLokIhkspfyg=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qxnu3cP+48TUYf3e15hQJtxnnUViis4IOG8mzzdTLOJ4+xnUGcxsrzWrXbXvFbqj5/cI5OuTsFoskdrNOrj5lchylNC8NwgylSliiw/nxZlLJiHI0kn1sdRuxA2GnQm0VGn1Wzkhk2h74HImKHIsQPjiDz5xtuLIkPipCkVc4vDUnIyah8VOIxleQ6QL463IXYxR/coRUvAgzJPUrmpzt/PvlzRLSu+KMODQJBhRHiPglzZpZ6CJXGcUtGPLm/JIXqiFBwqGay9n9etM7lpD20X2IUKZhfdQR3qHd2oitOYRGdQ1pXolZ8vxPCcahtBDS2ecWa5I5YTT46Q5ysQQ2g==
+ b=yxgEEXwluboscZpJW/XtqBOEG57jndhPYrkARNV2TPTQTJgchqiESqFsqz0LRA0d2l218G/PcvyBKeUP8zOn1HCLtwaZRDx6GBLieEpNCO+LZgLc/VvwqJaFZEiZIGLiBOTPc2o8P4GETwvKogQ1bX7XplFMDdoYVsjbsDTmaf9KG+R3ik1zUe8ovTah8qBcwn64DvL8T7MeVZKJ2kqmtyYMDA6/V3tlh6DnIHab9wZo/w1IIP6y4rB8L6vzfygNmLuccfn42rfz3mhW9SoSt38bJMfluM3XQRibBIPUlVhJ/W3MLma9qfcf4ZkbjRDli+o04HylsIRlVnMgF8thgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Rs9glKE/E/uZ4cc8ih2YoPEtsOZEoucC7qzwfJpfqIg=;
- b=bktdGgoCFrsfmafejwlMfGerccA3XbaaSXkpUz/hfTo1quZqCYUlC5ggNvHgmYOu2GfqafvB/tLbVtD60JXFLjAVwe9wzEDKuGGXX20WIeiiDBxhhkQaoom9jmOL5Cv+FOGlWjp3XfGC80Wg4JlV5tvUiQ48ur73QuTmlx7Rqkmz2/HOxSTZ73vhYTBICzCGSd3gCJyp9VxJgopEP/iErcGbAvQOHadJlZmqCFpOixwHVb1FklcVjJy942WZkWYczwOfiGVRorKsAS/8zNFqQkqgPNM9EYAW9AO1+6whKEo2Zeo0az5NYbwC/Uk1o1qVtIhqMuNJCshsk7t2Zk/rEg==
+ bh=gxT5Vr8KXbRrXgqtigc2fQQrMC2wVCM8t8tUu6gVGBo=;
+ b=HLjX+6paKRkRarBBN1UamzKR/CEmv6QRcfNxX32sN5QoE8pupDa4Zn9/OfK4/kpPhvoD0K6UxPr0vRTnAI2leUieNOzXBhy64G2L/ltuj7wF9hD280DNcU88CvqdhzbuA2H+QT3QOc7CtgG4WspsPXIK8CES+UQyIH3IP5Q2yQpksh186IJJcbPj/T0/zqaVPbPZnfi9H5f/IwkXlxJdg4yh++1EmMZ0pWAFP+S44NAi/pY0YWffb8KjqMdH1owG51ppSonFfJo26JQvY//zpkTOUK2zbiYbQ90vDIFpqebrtyz0Q9+IzlhH1QHjxDpeaf3yMhIaJtwla5LrdRCuxw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Rs9glKE/E/uZ4cc8ih2YoPEtsOZEoucC7qzwfJpfqIg=;
- b=1PrFq0ZCg2kPDYSkNVGQVQInQnyIso6natR7C9LlSO1QQEm8Wja1lytj2JBRw/+6B/my5VDFOKHLmNY+Y4nmu1zOnqgeuGlBehEjwiq9gy/Gm1OxKHbc6gBLk3jht6fvs/OJ1FDroPNb1h/Od1p4QGrwOlUhxzeFlBOFhTZCOYc=
-Received: from BN9PR03CA0730.namprd03.prod.outlook.com (2603:10b6:408:110::15)
- by SA3PR12MB834210.namprd12.prod.outlook.com (2603:10b6:806:517::14) with
+ bh=gxT5Vr8KXbRrXgqtigc2fQQrMC2wVCM8t8tUu6gVGBo=;
+ b=XmKxNnJT+1kocK/pbTebGPYYr3ueBxNkkgDodo1IbOOyaonXWuEDQYHVr6SLT3vFTIWVpqYxn3EoTc8BIfDzX3QaD6rJKRtxEPfU/0hIrwjDVd/EnSggM3SGQMdceeSqOwWKTEtKFFZqkuDrlz5R5MbJl7gBZhlzjydNSU/fhf8=
+Received: from CH0PR03CA0030.namprd03.prod.outlook.com (2603:10b6:610:b0::35)
+ by SA1PR12MB999251.namprd12.prod.outlook.com (2603:10b6:806:4dd::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 06:34:02 +0000
-Received: from BN3PEPF0000B36F.namprd21.prod.outlook.com
- (2603:10b6:408:110:cafe::25) by BN9PR03CA0730.outlook.office365.com
- (2603:10b6:408:110::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Thu,
- 24 Sep 2026 06:34:02 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ 2026 06:35:45 +0000
+Received: from CH1PEPF0000A34B.namprd04.prod.outlook.com
+ (2603:10b6:610:b0:cafe::94) by CH0PR03CA0030.outlook.office365.com
+ (2603:10b6:610:b0::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.10 via Frontend Transport; Thu,
+ 24 Sep 2026 06:35:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN3PEPF0000B36F.mail.protection.outlook.com (10.167.243.166) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH1PEPF0000A34B.mail.protection.outlook.com (10.167.244.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.5 via Frontend Transport; Thu, 24 Sep 2026 06:34:02 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 06:35:45 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
- 2026 01:34:01 -0500
+ 2026 01:35:45 -0500
 Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 24 Sep 2026 01:33:53 -0500
-Message-ID: <22734e84-84ee-492f-9083-9e3034664a9b@amd.com>
-Date: Thu, 24 Sep 2026 12:03:47 +0530
+ Transport; Thu, 24 Sep 2026 01:35:36 -0500
+Message-ID: <c590eef7-a7e1-4c8e-aca5-03eb81ae7697@amd.com>
+Date: Thu, 24 Sep 2026 12:05:35 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH v0 0/3] pghot: x86: IBS Memory Profiler for hot page
@@ -119,38 +119,38 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36F:EE_|SA3PR12MB834210:EE_
-X-MS-Office365-Filtering-Correlation-Id: 110a341c-2f29-455c-9761-08df1a05d2db
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000A34B:EE_|SA1PR12MB999251:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac2e73c8-accf-4f6e-32da-08df1a061067
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|6133799003|10067099003|11063799006|5023799004|56012099006|18002099003|22082099003;
+	BCL:0;ARA:13230040|36860700016|82310400026|23010399003|1800799024|376014|7416014|10067099003|11063799006|6133799003|22082099003|18002099003|56012099006;
 X-Microsoft-Antispam-Message-Info:
-	EhteMQs3v8GTrfSuCfmu135eyYlrLy+TNbNSXWgwSPrfiqGrMnyomo71sZt+/haZwqXpd43oaI/SH88UnzrtUaVH32aNezMq8+WJyTdYOV1RXTkLSzffgc4rsFZ8rytMV+oo6mKNC6p7XRWW3dyiC+dXQeQA2mx7SNvtA5gHuncShUq85jDM1niC2l0x+8vCbDjTzUuHhg4mRr0ZKzY8Y95fV1RI0jHe3DcHAzhiciR0OJAnxM2sI1R3ki8sa6HyA+MminJd9oBBr/H6pYq3pfKMapI/j2AmF0qq69uLarv60ZnGqpSjm7Z7Kw/ipguYqT/TDYmUU3UVbcxnOPcHmXsnt6zdn84TJkyzBvxcql+JooTxZ+r9JQEv9r5FQEd1y/a+U8qJ4WKfSWJ/gzrnXEckm5t84SXcLjQcSY2WIJCF9cAJe0rZNYHwRJZAG2QGvYLZZ+MFgFCwuDU4/1R84Zqp7NeTtCnq7kQUoNxPr4zrYsuSzk4/2qCqUXiHf+Xxw/RfjIZgszoMpVU/IqsGIDWGy/jHZHWzZXj8uUxyQyBFxVPgAaanYRoLuyqKb1UcIXkf55mb6UlSnYDV1irGUxkmLgM9l0i+Id0de2N0rlSrbFeKjFbR5pDL67ijC0GHvI0uriQ8d4hJuBDJK0yb4h6jjzCxbBpucJMxVWX92yxb3CklICF1JNWtnuieZpvUdl0/zgPwslONna1J1SuzEw==
+	JcBvHd1dcAHMXwffGUkFfdKQiBR1AnnyThFEKVGdoWGerwIUmyIcsa9S16gsi0IiVxBADMQO0egMX4Vsq98QPBEnFB5q9qD8TZsgEXXb2ma0ohLi7yTcq4o65pSoVuTUvIj/Hj4WxI6E2MUWKOknFVyOJT4EbLLyvw0k9/tHtUxlVAyHJEnmCibz3jPwiV3HMv0QmvlGda/hrWKRR6KeZHxYFQVsA+wQ9ysHlrBJ/Gi+5truk/QoEY2WnIiXJoxr2lQG3KqqlYfwWXH00J3MaUcOSv4qXA9UgaTGMHtbsqgVpI9UZcOr4NqIWqlxegsdMfZ/LeKy0MeIj3TVmibsGXiasgDF8+hFfuF6WGKz20lxrneeHA1i+H3q1fJZCZvmfxeDbWwIc5f1CIePuZZCNz9UwZAyATmdjssNbuolx+i3guHdhyqNbEIYl8p4J5KwDcJdd/pLmNyarcLMouYOUSubFxyVfPafYdwOPhCfCXaQKsrRRZ2YoRQDsllLJ3ilgjh7SF1PIVPaXp9o3764tNI/0bwbiDFinmxMaTaJV/+yVvMVa44i6K1N1DAchltWOIUaSfs0yki+oAA0JHaMBaM7S8Y9V4PsBaVmXgyBrp6zuecTzwEl1pt2ac0NpV/kHR3GgcbXzVt6udou4ZqYGGtJV9wA3A48RFQABPgjtv/phZJbfH/9pEoYdpfwJKNmFB67peFFLw7rJubbGwG6Lg==
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(6133799003)(10067099003)(11063799006)(5023799004)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(23010399003)(1800799024)(376014)(7416014)(10067099003)(11063799006)(6133799003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	XWUwoGOSNHGkOmyyWn6KCLFy3YHvSUQlZ+e12+WqGlDGEn0bRHGSbjIjPW4CaEihtwj3BgAKsENOuFv8LGYXqAy1Xvrw4VCcFXJ4J8WO7c6H6RuWp223xZBOVt6dfKkoHgxYS1+eBSj1ycypcJh1BH19FS9ZdQUe09KG+3g4BtTFdL9skQEMx1i56HI1PAXZLkO+XjccEhOl4HSd/UVvt6jloaQcYHeSyhBtlZqWE4qNxJ8ET2ZzECIad02YfL87BNqPiu8LGZ6Maq5qKPcgtDK/VR+0+VO8eDBS9/HYKbFvRzDTCn5/lMs+1hwruOMdNxbSalJpGEnDsqrrwS7vDC0XOYLwFtCYu6bKTsctunIL/Fo8qYV2yVOlAATMqEXwigEACJj8/yOnCVwleWqRA7xPRG2wkKlvFia3aGfjn6ScCDFSaFEIyXuYHsLRB+Ua
+	g3DBeC9KdR90Zu9OoW5shcAu2c1oCLGIpok+jrfmJXrdgl7qrfOnA6y4gK4ALc6ZwVTklxiR4JtuU6hBcojGhw5ZS7qlGajmsTvTsCA+S4mEaRqutTn3Uou3teRiamIrYcsfKZrmm+X/Jp8sgNHPtTQrc9UH/CvUq8Hj676fvjJgtBo5vS+FolRybnL8Zl2vIFypDqz8iTRBvn531mp7w6AQqFLk11zg/biC14eqfdaZFxXCtOYyhkq90cR5yd59N5gBIGkG6xF9LKck56rQI0CQWe4yBF09nX/MEJQcqr8MgY+MWpy78wu4kiJ4prYi1oCuCEzrDOt368WmgPtz8H3++u4YC5XoWc3926cNAkPdbRD1UfFUNJlVk6q3L5mIAIQOerA1C6DUikuXffZfebSKnlyQN7uFtU0i8plbLy0g86itXkUQxw3Myrc0JrOh
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 06:34:02.4274
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 06:35:45.6679
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 110a341c-2f29-455c-9761-08df1a05d2db
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac2e73c8-accf-4f6e-32da-08df1a061067
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B36F.namprd21.prod.outlook.com
+	CH1PEPF0000A34B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB834210
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB999251
+X-Stat-Signature: 3s59iiwoigig8dtbs46a65jnc9ydgwsm
 X-Rspam-User: 
-X-Stat-Signature: ehfi7goxzgsbemrbzybxdgdpxb8ujtxw
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4F43C1C0002
-X-HE-Tag: 1790231648-468731
-X-HE-Meta: U2FsdGVkX1/O+cgQp2iitwgqF9Cw296fPGUkM8kSga8BzXH+n0jrolmg234krdvsQj2PGlNxjDwXsIh896/SKK7OOTxXK+i4Kc6BSHREBF0+d2oZr/pTmeSql0iYBenS+j6l9zMycximfJ27K+eNVMMW0iIRhrFca/ouuLOZe2NOof5WUJJYM+eHWv4dM+2Zr1mL8sLwQNbFUFJ6PFJa5Q08Z1QEiiLB2ZAbKoXl2MqPG2SBNcxnNYmdYWD/jQZE7HVZJT83XIQDWiXzYbIczphPlh9rNtDo0ZjHsuQ0RtsGT7otMNkvrwl0WFkLRUo50TL/RwKf8yPlRNSZ1m3k475OjvqU3vlrnO/044Lrogl8QIyrt4ZjWVv3MNXvrAOOCq8mlCXQqMVtPZD93yKNmwswEdC9tQ1bRbJWv7mY42ceFPuto7PvfRnBABc0qxnnUly3ZHogYvw6qDovM34UMkADyZ0B9yceH4NW+rDnZ6dxjpz92hEiCsouTQdDoYp9Ck6JI+sqwOyML6o8J95ThzDHmjazmFfVnYD/LW4ofAmV2GwpWw4ZmCRHwo+dr2oXT53ROM4riJ8aA+r+bGmdcKnCVq89xYyR3fB/FQBiaL732sCNEuZqD1h6ZjETnLF22wDssUJ/J8p9AlKkXTr0dHcJ+Y1BMq+2adxVAjugCnbMpaFvlu6ptA68QCOxSpLywZbJxKww+ZCgE7G/AwkitK2KGq4k9xiWXSZIfhL0Z5vRxG/3ghW334IUYtNd5Jpw9F2kL8CxH2Le0cxgmEGnybIryh1GT5q3bW9OHGepLvTmR04OR914xoCMJHF4gSPyogoZ2JCoefq/WrpViZTEa3k80WkoCtDJfMqb07S8Ccbp+e1koUqXecwaYCZ2yz15OR1014waityYqTX2VkfAvwHWG07lZFtgJJYKT1qeIvYjvtnmermFHTMmEa7mVXg+7WSFpe711C9CoMztQKQ
- mZD21wlJ
- URxN0dgtIoq5TK8vqP2HMqB26JW+jyR4kXjmC+CR0EV4q926wcFscUD+3pAmLyWzCAioMYhHd1niHYf7TH2DP30sRiB1k0eHwEcfNkO36oCqc3ewmDMfuTWqtO604JP2bAWfwMHckeUprF+R20f6kVONYZwR/Tzi3/Lm6kjhA5cVpS77GOCXWJGt34OXSrm1vF1k7E+DQCbAGkjeOwHB9FyLVix2LvaCfZY1ftJNj/lNo7gnD5OnsEBGXNCfOHhgGLdfctBFXSYryX+FuORnWP564eHp6aP1KGRj3+MxwzPcgF05WO8l6AfBo6YVFskg7ov6jXG9jT0ZS9Khkg3Ygbg2d6GjtYlnPaVozjnv4DX7ckNrYb4AQmjOW9MGfJrU9YbXmUAHpkbizEUSm7+usaBEiky48Mb3byjCmThiCFKSlG6Pdy3NKixCqzrr/QTkzQ0TemiozVvFHKnqgqnF2mWHVAl3+juJX8ZW61F3Z6NVOYws=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EDE8240007
+X-HE-Tag: 1790231749-213622
+X-HE-Meta: U2FsdGVkX19uVDEVjGaFpkpdA5EMH6E+UoT4G5kH90Poe5joPQEfc0ucCZ0+BJSzG7D594fSDzPZFz97TOX6mwiSZBIdBm2iEq/jmlMtPIo/1ooVL2/kTiWrUIUggLPApBrFHfambch9sIvFdSHTrdnd+087h1leBlpKAALHkMwY8fWrtSnJVmyvrHdYtc18BbDXAH+xIUedEhyAQZFZaHdN7pQ3Hxx2q5pr5RC2WaSw9UMcPHQWgyEJT9lBegC7bayyeunDgEFySFj1TIYkUQpeGq2RDPsIVywDkneUcfg8rIaW8ZlxoSjqau3IYzO8pdik5RP+ywZiBoufyuAJi2O+q+odOAclTciXzCCgmAYTPXx6NMprurVxpsWQP8V/kbaeZRHrihyJ2fkKcDej3rEJOSvoZrRPzNMNMAkedFkN8HB+Xfcjb0o0LDXYXMdapKMGECg6Vp+p4PXhT5mRmpLrTaJDxC42KXkoTYb6czQ2L27lsnaUqAK31jae+sCREErI1wm23g1tv0z47JRk0g1a7b+CMBuIhU0BT6t2Mlg14iaNs+HNnIQcyov6ku6PsMtMKuESy8qbxCpN0Pp/q5NK3A6rThP17YKWCgr7WG0F21kJ9XHQys+RjE8ffE82b/MmLsXswA2mrcw5gkP2G5wuzRI7wRDBMpnjjH7BqijLJ/e1mQkFcxol4DL5D4D6sZBm/RiUDvK2uLrBZusFSQsZT0WOT+KRgu4MaQDDmRJkBIJooY2mEDnnR1hviAsbSVmJs/XlltDI7a3EDNOmxlQlZhn8ijril0UkEbtsxlHMyd8q/12da3tHdtBT6C7UNCap/efqjmk20+RSTFnSdOU6ZZg5QpW5Ah4s3hZD9iC3pT7NHwSKwUjDRMFLZOqT3qtlARLSirp3c3BsL1uri9mNPMBPNDH9UTZqLa0wxhqWUCOLCxN8A4ADqUeBGDTs9HGwcnUggcdQUbsCeEW
+ T85r29vx
+ FquB2c71rvX33FnhiiUc2pSf+MfnqCktEYKpCSoH0bubPUNFkVoRTPwYjXca2WJOWCVW0FkLMwd6Zq4bQYeFSSH3uY0SFQe8Pc2xOkJnfknRKrqtCaDUk7+Lo4y+X6EYXdrxluc8xoT2aauIV4gHVR19OJ5jLy2rwnfivldnKU3wPB94z/6A16sU9Emanm+UOam2lqxY+lZ+MLueDRMeyKJmgvEAERNsDIX4xxI/YgUcvZiPoMQihFvuq5smlMcahZW1Bld+h1FTNnFnWS1xp6qJ9Ll0fN6+lZ+l0N5h0YhYvokI7Lt9KcGtSrMtnegC66VMEXzm29tpoaTmfAOPYAvUTgDdX9f5M88aGjp4shslKXYbY+hoxaCPBn6GHg6PDzmR51P6RfLhbbnTYj9B88p2Gq3e6521iJ4QT26UrmdnTclS2Del7+yJ4ItligP62cdCgeFfgqBdnOeFlsTXmXEJPqcDdM3ZvhtviJ67vGznvhS8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,132 +162,79 @@ On 24-Sep-26 11:52 AM, Bharata B Rao wrote:
 > 
 > Detailed per-benchmark tables (throughput/latency + vmstat and pghot
 > promotion counters) are posted as replies to this thread.
-======================================================================
-Tiered-memory promotion: baseline vs NUMA-balancing vs DAMON vs pghot
-hwhints (IBS) - multithreaded runs
-======================================================================
+llama.cpp tiering benchmark: base vs pghot-hwhints (kernel 7.3.0-rc2)
+====================================================================
+3-run average per configuration.
 
-Runs taken on one machine, same workload and sizes.  This is a self-contained
-comparison of four ways to promote a hot working set from a slow (CXL) tier
-to a fast (DRAM) tier:
+Workload: llama-bench (llama.cpp), Mixtral-8x22B-Instruct Q4_K_M (140.6B
+params, 79.7 GB), -t 64 -p 512 -n 128 -r 5 --mmap 0.  pp512 = prefill
+(compute-bound); tg128 = decode (memory-bandwidth-bound).
 
-  - baseline        : no promotion.
-  - NUMAB2          : the kernel's NUMA-balancing tier promotion
-                      (numa_balancing=2), driven by NUMA hint faults.
-  - DAMON fine+quota: in-kernel access monitor with a migrate_hot
-                      scheme (paddr), driven by the kdamond thread.
-  - pghot hwhints   : per-PFN hotness from the IBS Memory Profiler
-                      (hardware sampling), promoted by the kmigrated
-                      thread; shown at two IBS sample periods.
+Setup: 3-node box, N0/N1 DRAM (256 GB each), N2 CXL (distances 10/12/50).
+Bench pinned to N1 CPUs with MPOL_PREFERRED_MANY({1}); a 200 GB hot hog on
+N1 forces kswapd to naturally demote ~1/3 of the model to CXL; each mode is
+then measured while the hog keeps N1 under pressure.  pghot target_nid=1,
+freq_threshold=1, promote_window=3000ms, rate_limit=65536 MBps, kmigrated
+100ms/512.  hwhints arms AMD IBS (l3miss-only=1, period=10000).
 
-Machine / topology
-------------------
-- 256 CPUs, 792 GB RAM.
-- NUMA: node 0, node 1 = DRAM (fast tier); node 2 = CXL (slow tier,
-  256 GB).  Promotion target = node 0; cold data starts on node 2.
-- Kernels: base = 7.3.0-rc2-base+ (baseline, NUMAB2, DAMON);
-           pghot = 7.3.0-rc2-pghot+ (pghot hwhints).
+Legend (columns)
+----------------
+  r1 = base / notier        7.3.0-rc2-base   nb=0 src=-
+  r2 = base / tier (NUMAB2) 7.3.0-rc2-base   nb=2 src=-
+  r3 = pghot / hwhints(IBS) 7.3.0-rc2-pghot  nb=0 src=0x2
+  (nb = kernel.numa_balancing; src = pghot_enabled_sources; 3 runs each)
 
-Workload
---------
-- 64-thread pointer chase, 64 GB total buffer, 16 GB hot set, 240 s
-  timed phase.  Buffer relocated to node 2 before the timed phase;
-  worker threads bound to node 0.  "hot set" = 16 GB;
-  over = (node0 - 16 GB) / 16 GB.
+Table 1 - Throughput, 3-run mean +/- stdev (llama-bench tokens/s)
+----------------------------------------------------------------
+metric                       r1       r2       r3
+-------------------------------------------------
+pp512 mean                69.43    61.34    57.90
+  stdev                    0.85     1.78     2.21
+tg128 mean                4.094    4.883    4.975
+  stdev                   0.045    0.053    0.023
+tg128 vs r1               1.00x    1.19x    1.22x
+pp512 vs r1               1.00x    0.88x    0.83x
 
-Configurations
---------------
-- baseline : numa_balancing=0, no promotion.
-- NUMAB2   : numa_balancing=2 (tier promotion via hint faults).
-- DAMON    : sysfs defaults (sample 5ms, aggr 100ms, update 60s) +
-             migrate_hot (paddr, nr_accesses>=1) + max_nr_regions=
-             100000 (min default 10) + quota 128 MiB/1000 ms with
-             nr_accesses weighting (hottest first).
-- hwhints  : IBS Memory Profiler as the sole hotness source
-             (numa_balancing=0), pghot_freq_threshold=1, IBS
-             l3miss-only=1; IBS sample period 10000 and 5008.
+Table 1b - per-run values (3 runs), shows consistency
+-----------------------------------------------------
+                             r1       r2       r3
+-------------------------------------------------
+tg128 run1                4.099    4.856    4.949
+tg128 run2                4.037    4.836    5.005
+tg128 run3                4.146    4.957    4.970
+pp512 run1                70.37    63.37    61.01
+pp512 run2                68.31    59.03    56.61
+pp512 run3                69.60    61.64    56.07
 
-Metric notes
-------------
-- lat  : steady access latency, ns/access, mean of last 25% of samples
-         (lower is better).
-- node0: end-of-run placement on node 0 (numastat -p).
-- promoted: bytes migrated to the fast tier (DAMON scheme sz_applied;
-         NUMAB2/pghot pgpromote_success).
-- CPU  : cumulative cputime over the 240 s run of the single promoter/
-         monitor thread - kd = kdamond (DAMON), km = kmigrated (pghot).
-         NUMAB2 has no single promoter thread; its cost is distributed
-         across the application threads (scanning + hint faults).
-- over:  The "over" column is measured against the 16 GB HOT SET, not
-         against B0: over = (node0 - 16 GB) / 16 GB.  B0 promotes
-         nothing, so its node0 is 0.0 and its over is n/a.
-
-
-Table.  Multithreaded results (64 GB total / 16 GB hot)
+Table 2 - Key vmstat counters, 3-run mean of run-phase deltas (millions)
+-----------------------------------------------------------------------
+metric                            r1       r2       r3
 ------------------------------------------------------
-id   config              kern   lat  node0  over   promoted  promoter
-                                (ns) (GB)             (GB)   CPU
----  ------------------  -----  ---  -----  -----  --------  ----------
-B0   baseline            base   320   0.0     -        -     -
-N2   NUMAB2              base   143  16.0    0%     ~14.6*   distributed
-D3   DAMON fine+quota    base   119  23.9  +49%      24.7    kd 13s(5%)
-H10  hwhints IBS p10000  pghot  215   4.9  -69%       4.9    km 20s(8%)
-H5   hwhints IBS p5008   pghot   92  11.6  -27%      12.0    km 38s(16%)
+pgpromote_success               0.00     3.07     1.74
+pgpromote_candidate             0.00    12.80    12.86
+pgdemote_kswapd                 2.58     4.78     4.40
+pgmigrate_success               2.58     7.85     6.13
+numa_pte_updates                0.00    26.06     0.00
+numa_hint_faults                0.00    25.12     0.00
+pghot_recorded_accesses         0.00     0.00    12.86
+pghot_reported_hwhints          0.00     0.00    30.79
+hwhint_total_events             0.00     0.00    30.79
+hwhint_dram_accesses            0.00     0.00    17.74
+hwhint_extmem_accesses          0.00     0.00    12.86
+start N2 % (at SIGCONT)         28.3     28.9     27.6
 
-* N2 pgpromote_success over the timed window is ~14.6 GB; some
-  promotion happens during the load phase before the vmstat baseline,
-  so the reliable figure is the placement: node 0 = 16.0 GB (exact).
+Key observations (3-run averages)
+---------------------------------
+1. base/tier (r2) tg128 4.883 is +19.3% over base/notier (r1)
+   4.094; pghot/hwhints (r3) 4.975 is +21.5% over r1 and
+   +1.9% over r2.
+2. Consistency is tight: r3 tg128 4.949-5.005 (stdev 0.023);
+   r2 4.836-4.957 (stdev 0.053).
+3. hwhints armed IBS: ~35M events, ~13M on CXL; pgpromote_candidate
+   12.9M matches pghot_recorded_accesses 12.9M (1.00x).
+4. Prefill (pp512) pays a tiering tax: r2 0.88x, r3 0.83x of r1.
 
-Supporting counters
--------------------
-- N2 : numa_hint_faults 3.73M, numa_pte_updates 12.9M.
-- D3 : sz_applied 24.7 GB, qt_exceeds 229, regions settled ~21-71.
-- H10: hwhint_total_events 1.40M, pgpromote_success 1.29M.
-- H5 : hwhint_total_events 5.91M, pgpromote_success 3.15M.
-
-Findings
---------
-1. Accuracy (placement):
-   - NUMAB2 places exactly the 16 GB hot set (0% over).
-   - DAMON over-promotes (+49%, 23.9 GB): a coarse-then-quota scheme
-     bounds volume but still moves ~1.5x the hot set.
-   - hwhints under-promotes within 240 s (-69% at p10000, -27% at
-     p5008) because hardware sampling observes only a fraction of
-     accesses; it had not fully converged at 240 s.
-
-2. IBS sample period is the coverage knob.  10000 -> 5008 roughly
-   tripled events (1.40M -> 5.91M), nearly tripled placement (4.9 ->
-   11.6 GB) and cut latency 215 -> 92 ns.  period=10000 under-samples
-   this workload.
-
-3. Latency does not track placement linearly:
-   - hwhints p5008 reaches the lowest latency (92 ns) with only 11.6 GB
-     on node 0 - IBS targets the hottest pages, so its smaller
-     placement is well-chosen.
-   - DAMON needs 23.9 GB to reach 119 ns.
-   - NUMAB2 places the exact 16 GB but its steady latency (143 ns) is
-     higher than its own first interval (119 ns): numa_balancing keeps
-     scanning and faulting the workload's pages after promotion, an
-     ongoing per-access tax (12.9M pte updates, 3.73M hint faults).
-
-4. Promoter CPU:
-   - DAMON kdamond and pghot kmigrated are both out-of-band and cheap
-     here (kd 13 s; km 20-38 s over 240 s, i.e. ~8-16% of one core).
-   - NUMAB2's cost is not a single thread; it is paid by the workload
-     threads via scanning and hint-fault handling.
-
-Caveats
--------
-- Two kernels: base (B0/N2/D3) and pghot (H10/H5).  No separate
-  no-promotion baseline was taken on the pghot kernel in this set, so
-  cross-kernel absolute latency should be read with that in mind;
-  placement / over-promotion is the primary accuracy metric.
-- The CPU column is the concentrated promoter/monitor thread only.  It
-  excludes distributed costs: NUMAB2's scanning + hint-fault handling,
-  and IBS interrupt/sample handling for hwhints.
-- Latency is not isolated to a single cause (bandwidth, working set,
-  selection quality all plausible); placement is the primary accuracy
-  metric and latency is supporting.
-- hwhints coverage is still ~27% under the 16 GB hot set at 240 s
-  (p5008); it was still climbing at the end of the run.
+Caveats: base and pghot are different kernels (7.3.0-rc2-base vs -pghot);
+the natural-overflow setup settled at ~30% CXL at SIGCONT in all runs;
+3 runs per configuration (per-run values in Table 1b).
 
