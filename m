@@ -4,89 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3A59C98311
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:52:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 990C7C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:52:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADE6F6B009E; Thu, 24 Sep 2026 04:52:03 -0400 (EDT)
+	id A69A26B0088; Thu, 24 Sep 2026 04:52:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A67F36B00A0; Thu, 24 Sep 2026 04:52:03 -0400 (EDT)
+	id 9F3C06B008A; Thu, 24 Sep 2026 04:52:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 930F96B00A1; Thu, 24 Sep 2026 04:52:03 -0400 (EDT)
+	id 8E5076B008C; Thu, 24 Sep 2026 04:52:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5EBE76B009E
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:52:03 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF00CA02AD
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:52:02 +0000 (UTC)
-X-FDA: 85248038484.15.65223A7
-Received: from mta0.migadu.com (out-253.mta0.migadu.com [91.218.175.253])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3ADBFA0005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:51:58 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AD976B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:52:25 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB27480232
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:52:24 +0000 (UTC)
+X-FDA: 85248039408.01.41A8675
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 437F5A0004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:52:23 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BhFgSU6x;
-	spf=pass (imf15.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790239921;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YAI8SybEfXeShLfAowqsqXI375ce/B9OJKBkJkJLtqs=;
-	b=RRbATZo9jD+RX/NU3yMcLHg/fsP9HzEaXHwdNsb6arztwRKzFQz1BLo1K8vlFgmhi4pX9e
-	VhCg2mUf7MLVaLZ/HGM6l1CKhCglQf0X2W0yl+cMksnS3BM4SLpmfyrEnVgG0saRfoOAFk
-	cBtlX5eP6/2zl8YmS7R4QYYmX/Sc/+g=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5mi1tiQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790239921;
-	b=QgQw6Oug3WtIbslfpHkziMDRk7DHGodkY4pzsREkD2SKvjS8N2Z1lTc9FT5V3zJrSPFKcC
-	UshxI0jBHqRF+gEDxOsIF5+NDXlttNiZTUJvbokx+f3ZdQu0B1VoWaxbTIygdVwCQaviU1
-	HK3uEaTrmMEjcsufd10MiS+elYGwVU8=
+	t=1790239943;
+	b=lj2cF497kgq28SvrgtwN2V+Amoe6fJcEbG9ruSYOD8VbxZ7l54pj1WN4tXn/jbzPONd2zs
+	t/8jhVRPj2DGHKmwkSsgmBVRx6cP/5byUEMYlDx7PkkRFwAeQuuKSWTBJ5tYEgdANk37pl
+	GZQPDhcGOH9w7/XlCcBU82X9vmNuCOU=
 ARC-Authentication-Results: i=1;
 	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BhFgSU6x;
-	spf=pass (imf15.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=SSX9xIAupprnWjWqUwH2oYEZRlvMUWqzHUN8lhagogw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790239918; v=1; x=1790844718;
- b=BhFgSU6x72wnDos1k2qf6Fd9lM1UlkPIf4CIWWmHLJt7j/fJqj6dWrgEuE72JmEnf9OHrR+F
- kEukD5SkxDpC607CU2XjUQygInZipl9G3Gbx5Zo3kT7RiwH0sI79Z++bonMUUDKAiDkyUmMbN31
- VCGxdOzEQoiTuFnDpxkCzjco=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id bf2fbf69d3d2174c;
-	Thu, 24 Sep 2026 08:51:57 +0000
-X-Mizu-Trace-ID: bf2fbf69d3d2174c
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Thu, 24 Sep 2026 16:51:40 +0800
-Subject: [PATCH v3 2/2] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R5mi1tiQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790239943;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uWMhh+Vr2gIxwHKH0IoyS9nRGOMWCcgjZiTj2nIYyiM=;
+	b=yksLeiCWOXe9HsuxRIyaiOSXxyB0CcwhQQ6AVa6SzfEW6Big0qbz+T0UQC9LqM9ho37QJw
+	4kiXkLgyz9vnzx52Eo4M7/pNLYoQShf0bWOHIaK1v0rHYlowvEho6BQulCfq5zsHRmMRrH
+	OhTlsLKHhXjbkJEaymMtCIHAu5nlbRg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75642406BC;
+	Thu, 24 Sep 2026 08:52:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2116F1F000FF;
+	Thu, 24 Sep 2026 08:52:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790239942;
+	bh=uWMhh+Vr2gIxwHKH0IoyS9nRGOMWCcgjZiTj2nIYyiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R5mi1tiQKGkktN6ni0msY6lIOn680upbYYmWPhP0bEoC4/sOKoPWa18jz04oK42AK
+	 4w2hU0VgsSYfUsx5l9nYsMwwSy6fIspuaTRzFulowUKw+zqqVpvT0UqaQa3bzsCbNM
+	 PNqbv+tv0GUXiIXwyMp4bviiWcHjWMSWxB/YgmB5kqv5snWfRICyLJrV4diYCPWM3o
+	 YG+SL6YXwMA8YifrP1fuTsM1yVI6QnYPqVZ/ucWWEDbM+FPIKanV18ZDY0vvIhgp9f
+	 eAUaTX/9ow46HrwcXL3emBRJ2UjO67+66oik/ixS14ceRCu0Qm0ffw2w1hHw+ZcnXh
+	 UXKCgAMHr4Ovw==
+Date: Thu, 24 Sep 2026 09:52:16 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	harry@kernel.org, jannh@google.com, liam@infradead.org, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, riel@surriel.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org, 
+	syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
+Subject: Re: [syzbot] [mm?] [ext4?] WARNING in __folio_set_anon
+Message-ID: <arTiHRj-i_17L3qo@gremlin>
+References: <6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com>
+ <20260924065458.49698-1-lance.yang@linux.dev>
+ <0a0a07f8-8ac9-4d75-b4c6-c403865f0be9@kernel.org>
+ <08bbb615-a054-472c-9873-787cc0f7a4d7@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-vmalloc_dump_obj-v3-2-5bdee3da37b3@linux.dev>
-References: <20260924-vmalloc_dump_obj-v3-0-5bdee3da37b3@linux.dev>
-In-Reply-To: <20260924-vmalloc_dump_obj-v3-0-5bdee3da37b3@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <08bbb615-a054-472c-9873-787cc0f7a4d7@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: pyo49ia9m7nyo5xfug5u84fqz6y5n9so
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3ADBFA0005
-X-Stat-Signature: snaxui4os8yqwp5fe5jymex46kyzs9aw
-X-HE-Tag: 1790239918-399064
-X-HE-Meta: U2FsdGVkX19D9fnWhVkA3RLp+K0IoGa37K+tn8sj9nryyKC7AYpQAqoHFU3B/prk7rxJKAqkAlXceXlWijPTkTnVFazYFeiDfg+S/Ce2/UGGrY55AWUi67LS8yB3fZ67N9KTMzXiWZ4xZ9WY0mLN3qq1dNlZoOg/6e30X1Pbt67hQwkiR5WXMqGZbuCiVTP2CCeiYBKhiFsAyeDoD7FUQXaseggIvW27Qh8gPVViVc7pgGzqFf3bFjLeKCB8K/6Piadcub5zIy9lvE7HXCJdufDzIPeqw4G7PrpxsReMNEur+iKD3WRVvU+FJvARtafT+pb9onExbQgQ9sQNqGJWC9RVZXrTrUg4d/lzqxFK1wBjUf7xlSsACKKdzQRT+JaS+uNC/U+kN9ngyZX7igrwZFeCxskqqNJNhwRHsEn+Mb6rXFU+jZMTzWo66/qAmy1fRUwhcru2aWdcxSHEwhHtG9/ziYmIOMdBCINVpJYS4O0K7nthCjxDv/EuKfsLlUYNEy2pSgGpBYEW0PksiflvNjz/U1fUVt69A7Kdan8Y5UYBk4v1FPxs7d4QASFI+I3HcGRuX70OBGnW1/Q04tCPV4ofiZURsNPtrjE5KeeQaydR50xpDXWxChj2WpqGZUZ2e+bnnGkQr5bFrt7eV8OTPH2pNSIjEs0DbMhdcIYLlWTy0R+C2vwzK4j8WtTlh+TKxPyUJ7CdJUObRnrVzM9BtDDdGGUMBE2GefiXUJk7KU+kU7lMeN4964RG4tFm3MnsqYXJABSl5RyUBV+FY/xlvXdbaGpJolquUBksd4J83X3oY3qKwgyP9FhJS2YnVd411Z2WZZj3LpThBri4avZnbOxD5WZ3dumgXG0Vqg0TeXwdYKT2iM4/jDlkSesXArLWDZ2VUeGGclA1en/KwH+K89WE7BbzYKrWOUj8y6U/fiEeupd3F6MLHJAA09K9fxYQiVL/Ay6TIhMppzKoMac
- 4AyUxpUc
- faMQbrwPIpXjbCoJKG3qeXdZPS8yXLMOsyMzt/LL4Y7aInxKKqNjtXjGEJ6FRfNg8ja6q+O1mV+VuL43E76yrV2fkMtKMm8pyRqlOmDMuZW8Z4KGtTmUWIeAqCeBs8vBq9fr8qywTZeRV7ppbAtldb3cab2NJ5mGgywT4UePHL0u6IsbiNlgrPJe4dHYJegYFqdDJl/8KYnMhVnJaOyTKOvtGbi9/r+6zwGFuPsUJhvuXieJeuHZZBMsmr24fv7K/Xe3MZaHcU3jIge/3K4fPd/bwbEfBPhtMI1Qt
+X-Rspamd-Queue-Id: 437F5A0004
+X-HE-Tag: 1790239943-436569
+X-HE-Meta: U2FsdGVkX1/venzhhuDVcDVSiIk69A0L22oHqgXGo6ecPrF8SUXBsI/ugBomHuZHF8X4ezz3AJVYRogHUKgvReP91MM7nQPsxIKkkA8Nid2GV/WC0Pdv1tFI33487yZ9VwkpUshegTktpDirOEfrSfjA75XBACg9FiK6Lcsh8cL8INJ3nD6G1MgYYI2GTmRluLW9uQW0w1IHGdt4z5J6PjQkNeEQylqUyTSLMQlwzgJmBEIk6V/xn4wbOH4qWd4h9hWCNpM/f+T1EWjVAJZAzwQbTvjg08Ss5Ilp17rDgqCZi8rInfOeI4Qk7i16a6O99tWrm6X7V7Ci3yDP8sMVc6UkqGxwwSu6tIpzRBH+tnZQbkZe1pXG6wDJ+BK4Sq2/IccIQJ29V4Xk2XToJ7sw8IwStQGWsOSEYZkQeWSRVcbeVv4NrcQBBw3fyUzEsmgoGoEFWl9MieA2laSg+hvjbM0d5cOalFKe+fJyYVYnEILtCUrpe7UdnWz+DtC6f0Z6iOuzV3wDn1AJcFNYY4dqaNY0iWEo7NbWFUIEaOqVcfjROw7N9ws5TUsN5Q/QlvIsomtrRE1fYQNSexRjW7Zls93L0Tj8MMsJkjNJo2GmswoO+u2DzH5/de+H/Vt635UKtjRaxG8Ki8zVq0FgNtVM1SYvIA2XZ6tOCpgceazKpUIcPAWUAO9YXNUaybInd3SLbUQxPrGbzijZ93NqrvK4m6SBi7CZAGuNagyzIzuHkSKl8gaQAqabINIxWvx16VqPBsEyxl3nL0oA/eugOq9kPnaBuh10Js1L3y1csa2BUTZRntXYxMGd0P3zC1Ob45q4qjuBuA159fgn8UgC/F9STQScrJVc+iGFR9fRaP1ww6wRP/f/UcDvoBFm5u5t0r2VPjxbfYyKyYzrbRUDzTeWps3MOzvm/EnmdVu5Udt/5DyPbeoHSrqjMfHT0suWhrCpFKg+ABJ3oZLX8yXyK1s
+ YzApLVts
+ Zkey42TVLB6G/befRzfDP8g8wGuoOU00pwaXgZk7QG4+W80JLzwuc5dCxgdEWoOLVyJ1seJ2qMl08mOnDL/KM46XF7G5+QWaIq/D7af4soWQ5Vt/ROQOg1WIWBsi2j81LLOm1YkNlX+6q66/NiMS2UiYYrQXY/+M2zPeg7jJYe1iW09r5GHuWNl/VUTQS+Hh+zgTqrvJCc0Jtqg02ytM/6VFrRf7PMKbksccj1YBD9Jxco9itOvhhGiDSXXcqQZS5ZWP//EYGhVqg0ed9SodHQMc6hqLHCUrdjnJmMp7JG4QVQLTcI3//QOAxRlk4QIlyMhwRuWDeozLXyZaZd1XrjbPgf7+fHV26JbFS5OkprpoQKQ1Pi1lALn/pFZQyKI5NdSp3zckexp+ChWubIS5oSjhxAQfZbfJ7qU3eLtlE5NepMrtZi7zS2+0cxhlG5LItt2NEkD7xZ+1tL+unXjSPkyatnPiA2p9mBYOHXGgig3h9sM5aKPj4W4ZujtCKLNyXViBFh2uQwtB/Bku4j0kT9n9HhCrJnB4rEwekpa6YK+FXtQRAm3+qnm0ahB4CQmqb+CqXJsQdEqHbaJl0d5kn3jTpuzGukHfybjjAiBZ6VrI5nQaVlP0nebkeb0zE4FBPTcEfrBTqz2eluIHwmGg8tIDawaxs4BJKFZnxxpYDlkA5kT7DNKUxnFb1TnPO6r1wRxfDP85LH7+ipqxqYKxLYLFn7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,181 +96,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+On Thu, Sep 24, 2026 at 09:50:02AM +0200, David Hildenbrand (Arm) wrote:
+> On 9/24/26 09:43, David Hildenbrand (Arm) wrote:
+> > On 9/24/26 08:54, Lance Yang wrote:
+> >>
+> >> On Wed, Sep 23, 2026 at 10:00:37PM -0700, syzbot wrote:
+> >>> Hello,
+> >>>
+> >>> syzbot found the following issue on:
+> >>>
+> >>> HEAD commit:    38872197cae2 Merge branch 'for-next/fixes' into for-kernelci
+> >>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+> >>> console output: https://syzkaller.appspot.com/x/log.txt?x=17a44d25580000
+> >>> kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
+> >>> dashboard link: https://syzkaller.appspot.com/bug?extid=c181d3198e98f8aef8b9
+> >>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+> >>> userspace arch: arm64
+> >>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16a36515580000
+> >>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16dcf4c9580000
+> >>
+> >> Looking at the repro, emm ... the repro maps an O_RDONLY /dev/zero fd with
+> >
+> > Does this trigger upstream or only after Lorenzo's rework (not upstream yet IIRC)
 
-vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
-but a vmalloc allocation may span multiple vmap zones.  The VA is
-stored in only one node's rb-tree (addr_to_node(va_start)), so an
-object pointer in a different zone than va_start maps to a different
-node and the search misses.  This affects any allocation larger than
-vmap_zone_size (64 KiB) on multi-CPU systems.
+It'd trigger with my make MAP_PRIVATE-/dev/zero true anon stuff too yes.
 
-Extract find_vmap_area_lock() from find_vmap_area() to share the
-cross-node iteration logic.  The helper supports both spin_lock and
-spin_trylock, the latter for atomic dump contexts (OOM, KASAN, RCU).
+> >
+> > 46827ac1ab221 mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous
+> > db7438ea23180 mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous
+> > 54e8e096ea86b mm: implement file_is_dev_zero() to uniquely identify /dev/zero
+> > fb24843cfd9eb mm: move drivers/char/mem.c to mm/char-mem.c
+> >
+> > I assume it triggers upstream. Does it also trigger with lorenzo's changes?
+> >
+> >> MAP_SHARED | PROT_READ. do_mmap() clears VM_SHARED and VM_MAYWRITE, so
+> >
+> > Clearing VM_MAYWRITE for a private mapping is odd. Can you point me at the code
+> > that clears both things?
+> >
+> > I assume we still have the file pointer, and as the file is read-only we remove
+> > VM_MAYWRITE. But why are we removing MAP_SHARED? (where?)
+>
+> Looking at the code, it's the
+>
+> 	if (!(file->f_mode & FMODE_WRITE))
+> 		vma_flags_clear(&vma_flags, VMA_MAYWRITE_BIT, VMA_SHARED_BIT);
+>
+> So we end up with VMA_MAYSHARE_BIT but without VMA_MAYWRITE_BIT and without
+> VMA_SHARED_BIT.
+>
+> So it's by definition not a COW mapping. But it's marked anonymous and confuses
+> the system :)
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/vmalloc.c | 111 +++++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 69 insertions(+), 42 deletions(-)
+This is definitely a bug. And I added these asserts specifically to find
+bugs like this with anon mappings:
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index df42d8a6f058..e5b465de1559 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2517,39 +2517,81 @@ static void free_unmap_vmap_area(struct vmap_area *va)
- 	free_vmap_area_noflush(va);
- }
- 
--struct vmap_area *find_vmap_area(unsigned long addr)
-+static inline int next_vmap_node_id(int i)
-+{
-+	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
-+}
-+
-+enum vmap_lock_mode {
-+	VMAP_LOCK,
-+	VMAP_TRYLOCK,
-+};
-+
-+/*
-+ * Search for a vmap_area at @addr across all vmap nodes.  An
-+ * addr_to_node_id(addr) converts an address to a node index where
-+ * a VA is located. If VA spans several zones and passed addr is not
-+ * the same as va->va_start, what is not common, we may need to scan
-+ * extra nodes. See an example:
-+ *
-+ *      <----va---->
-+ * -|-----|-----|-----|-----|-
-+ *     1     2     0     1
-+ *
-+ * VA resides in node 1 whereas it spans 1, 2 an 0. If passed addr
-+ * is within 2 or 0 nodes we should do extra work.
-+ *
-+ * Returns the VA with @locked_vn->busy.lock held; the caller must
-+ * release it. If @mode is VMAP_TRYLOCK, nodes that cannot be locked
-+ * are skipped.
-+ */
-+static struct vmap_area *
-+find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
-+		enum vmap_lock_mode mode)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
- 	int i, j;
- 
--	if (unlikely(!vmap_initialized))
-+	if (unlikely(!vmap_initialized)) {
-+		*locked_vn = NULL;
- 		return NULL;
-+	}
- 
--	/*
--	 * An addr_to_node_id(addr) converts an address to a node index
--	 * where a VA is located. If VA spans several zones and passed
--	 * addr is not the same as va->va_start, what is not common, we
--	 * may need to scan extra nodes. See an example:
--	 *
--	 *      <----va---->
--	 * -|-----|-----|-----|-----|-
--	 *     1     2     0     1
--	 *
--	 * VA resides in node 1 whereas it spans 1, 2 an 0. If passed
--	 * addr is within 2 or 0 nodes we should do extra work.
--	 */
- 	i = j = addr_to_node_id(addr);
- 	do {
- 		vn = &vmap_nodes[i];
- 
--		spin_lock(&vn->busy.lock);
-+		if (mode == VMAP_LOCK) {
-+			spin_lock(&vn->busy.lock);
-+		} else {
-+			if (!spin_trylock(&vn->busy.lock))
-+				continue;
-+		}
-+
- 		va = __find_vmap_area(addr, &vn->busy.root);
-+		if (va) {
-+			*locked_vn = vn;
-+			return va;
-+		}
-+
- 		spin_unlock(&vn->busy.lock);
-+	} while ((i = next_vmap_node_id(i)) != j);
- 
--		if (va)
--			return va;
--	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-+	*locked_vn = NULL;
-+	return NULL;
-+}
-+
-+struct vmap_area *find_vmap_area(unsigned long addr)
-+{
-+	struct vmap_node *vn;
-+	struct vmap_area *va;
-+
-+	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-+	if (va) {
-+		spin_unlock(&vn->busy.lock);
-+		return va;
-+	}
- 
- 	return NULL;
- }
-@@ -2558,26 +2600,14 @@ static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
--	int i, j;
--
--	/*
--	 * Check the comment in the find_vmap_area() about the loop.
--	 */
--	i = j = addr_to_node_id(addr);
--	do {
--		vn = &vmap_nodes[i];
- 
--		spin_lock(&vn->busy.lock);
--		va = __find_vmap_area(addr, &vn->busy.root);
--		if (va)
--			unlink_va(va, &vn->busy.root);
-+	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-+	if (va) {
-+		unlink_va(va, &vn->busy.root);
- 		spin_unlock(&vn->busy.lock);
-+	}
- 
--		if (va)
--			return va;
--	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
--
--	return NULL;
-+	return va;
- }
- 
- /*** Per cpu kva allocator ***/
-@@ -5278,14 +5308,11 @@ bool vmalloc_dump_obj(void *object)
- 	unsigned long nr_pages;
- 
- 	addr = PAGE_ALIGN_DOWN((unsigned long) object);
--	vn = addr_to_node(addr);
--
--	if (!spin_trylock(&vn->busy.lock))
--		return false;
- 
--	va = __find_vmap_area(addr, &vn->busy.root);
-+	va = find_vmap_area_lock(addr, &vn, VMAP_TRYLOCK);
- 	if (!va || !va->vm) {
--		spin_unlock(&vn->busy.lock);
-+		if (va)
-+			spin_unlock(&vn->busy.lock);
- 		return false;
- 	}
- 
+	VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma)); <-- fires
+	if (vma_is_anonymous(vma))
+		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address)); <-- would have fired
 
--- 
-2.25.1
+It's because mmap_zero_prepare() keys off VMA_SHARED_BIT when it should be
+keying off the terribly-named VMA_MAYSHARE_BIT.
 
+(VMA_MAYSHARE_BIT actually tells you if the mapping was mapped shared _in
+the first place_ specifically because of this clearing of VMA_SHARED_BIT,
+VMA_MAYWRITE_BIT.)
+
+So it turns out forever a readonly /dev/zero shared mapping has quietly been
+converted to yet another variant of a 'special' anonymous mapping that we
+weren't even aware of.
+
+And it's got an incorrect pgoff (but not anon pgoff now) as a result,
+similar to the usual MAP_PRIVATE-/dev/zero case.
+
+So the solution is simple, check for VMA_MAYSHARE_BIT in
+mmap_zero_prepare(). The Fixes: will be in the sands of time.
+
+I'll send a fix out.
+
+>
+> --
+> Cheers,
+>
+> David
+
+--
+Cheers, Lorenzo
 
