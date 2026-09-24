@@ -4,111 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05A2C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C77D1C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:49:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C7BB6B009F; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
+	id DB5A46B00A4; Thu, 24 Sep 2026 14:49:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 379076B00A0; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
+	id D8D1B6B00A5; Thu, 24 Sep 2026 14:49:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28E816B00A1; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
+	id CA3DA6B00A6; Thu, 24 Sep 2026 14:49:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE34A6B009F
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:06 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 659601C2CA8
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:06 +0000 (UTC)
-X-FDA: 85249540572.19.69CD865
-Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6D8DB40004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OH9wo06k;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F20D6B00A4
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:49:24 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 376ABA04BC
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:49:24 +0000 (UTC)
+X-FDA: 85249543848.27.2B369F5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 85B2C1C0003
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:49:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MkzA4Aw+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275684;
+	s=arc-20220608; t=1790275762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WoNcrnopXK6rxbcsah/NFUis2KIsIWy3hztRFhbamQE=;
-	b=TT6yTVetg/MNocUCkDuHTIX4h81qm6xFaFF2P/8ZEcgS33lu7n0csoAb6qcBTiMmLo9QiF
-	4fV1UpVCRdI8WK2du80hw1N1mdYdjXCsIZZwmFhCp6o0/oo/n7ROpSvLYwbGiV5dJmx+bm
-	AdvHQPtYtqUKeLhN0BHa9UaApn88URs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275684;
-	b=ryZyXapDGkIDFpB9Zij/Rfs3/xNeSR3HhQvHKmQJWzmZ+IoPw7GFcL+s7m1TVGR85Hyq+H
-	mX2KzBMXKHaIAPF2UUwQVpR3PLhqe439Hp4b0CMP+UGxskKE4hKqDhGZsLcm3cs5/JqNVR
-	g0yMc0T6pUJ5lelZahvihBQs4u/c0nQ=
+	bh=iVk+J+6paKfWpDyMf+0qbJj+JcumdT6cHUdD/JaU5MU=;
+	b=HVDBtgPtb8xUMifDQk/wuAKXnCJHWQXessyfYjcHgSHurOL6kO1GYQsrDim/QfeRv4qoCG
+	vujtUu7M3dR//uaBlKgs3J5XPOr3ayfSBhzwrUPKkR5mep1wczUceDw9xw4i7odENuaPPJ
+	E6RKadd9VP9VhujYD8BYrURRFkSHOrM=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OH9wo06k;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=9jyiyub5pkrnacT6pD4Pz1+9t1/b6Bu7Fi8ftJHlMSQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790275683; v=1; x=1790880483;
- b=OH9wo06k9/Fnu35XwoLBll23iqCQGlAEPK/fZrp1NIsjqWL4AoK+57TmyYAIXhjd3LlgOU40
- wk/Q49psUZi0DQRSbLOE4IqagUfT6Blu76471uezZmTTc7ruCQtPQSNtq182el/aYCOM6BVqHKz
- 82sHkBTL+v5+97pVPYWa+Ezc=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f865f6d5c743fba8;
-	Thu, 24 Sep 2026 18:48:02 +0000
-X-Mizu-Trace-ID: f865f6d5c743fba8
-X-Migadu-Flow: FLOW_OUT
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Tejun Heo <tj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	David Dai <david.dai@linux.dev>,
-	JP Kobryn <jp.kobryn@linux.dev>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Aaron Lu <ziqianlu@bytedance.com>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
-	Hao Lee <haolee.swjtu@gmail.com>,
-	kernel-team@meta.com,
-	cgroups@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 7/7] selftests: cgroup: check that high_work reclaim is charged to the memcg
-Date: Thu, 24 Sep 2026 11:47:11 -0700
-Message-ID: <20260924184714.912181-8-shakeel.butt@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260924184714.912181-1-shakeel.butt@linux.dev>
-References: <20260924184714.912181-1-shakeel.butt@linux.dev>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MkzA4Aw+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790275762;
+	b=wSna6po2K0udGWglmO+oTiNrh90PYccSM4rB/SacJK2ZKXBMOwplR9yBqys4nh65CKsZ8G
+	Szk/SWp0D+BpUymtao9SVUPVJAzNdKjIaLLYI8vU7O2CEjlNFJ8ggsPl6K9bkA68BMprQ7
+	INBXyDC5jVkzsQDdxGuK4xh8kSlmXEg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4E46F600D4;
+	Thu, 24 Sep 2026 18:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13E41F00893;
+	Thu, 24 Sep 2026 18:49:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790275761;
+	bh=iVk+J+6paKfWpDyMf+0qbJj+JcumdT6cHUdD/JaU5MU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MkzA4Aw+cQHzFciygv95Z/EZT6W6NoJYoXb74juTqpXbV+B6umLRdm7RaOmMP2+jn
+	 FOtnGi3WgylnfImvI8URJnAHEzLgLQEhfW+xBEMZ2sO94rNeJ/FMYhHkKcfvJQ1sE7
+	 eL7I8pSoRTcvy31Scc4P9/3XGh7hG1KjZgbwhgQxa8l5FHt1UQKhpZlimXvwAcf0SU
+	 fNF4ClO/wkyJeKKJjhmEcPisE0m2uOWKFbe4fZR1BSOMU1XKGLtMw+b2m2AnvUpAnR
+	 QdgMjkyC3rE3ob8Whzq+OUaLrBgpgwOaSe0/jaaz+H8++6TGtxSevOHwgbGFwU6pl+
+	 GCOCNZkYZZjsA==
+Message-ID: <82738d2b-9c2c-474e-b90a-60a1140b5bd6@kernel.org>
+Date: Thu, 24 Sep 2026 20:46:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/memory: reuse 16 PTEs of an exclusive large
+ folio on a write fault
+To: Yuan-Hao Hsu <aa9736195201@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260918064238.868-1-aa9736195201@gmail.com>
+ <20260919073134.639-1-aa9736195201@gmail.com>
+ <20260919073134.639-2-aa9736195201@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260919073134.639-2-aa9736195201@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6D8DB40004
-X-Stat-Signature: ffffcewtqnoqejke3xqadtwzwmcuwfr1
-X-HE-Tag: 1790275684-47209
-X-HE-Meta: U2FsdGVkX1+GwdvB7RSW92LeLaRNyhwtaWnsTNJNcgYgmCjQ3glCtLEjFgb9mSTHBq+lDFPfUaD4b9VWSpqzoQ2R5eBhEgp5MEPcRIm9Z4hTRk8EDscW7T5nNtAKB4cJ8CKozVyHQdk6lD/zQwhtZIrtWnUkATUXPBgnOJPvxWKaEq/b1EkA/lnUeu2nOms9NegvrLbDnzLa0YoN+0TXCJrZT5vGdhlfM1q4cA3Z8BL5yzQ63PtwKnR2GrD1Te7xfNcLo4W9uExGwI7P2kzSTF2H4qknYKOkgQ53An3tzGHnBbblup0+UrLXNYKOcpQoRHTfCRdpBsZNU+XuRZ+ct4FW1DOi/vGoaEWNBUpOBwM6nQEiNNY6k7pOh53zT1f+WVkLspo/t/iEKRa1rncSG5KVwxHtp9jp9d8TFqYXMjFrwbAz7rZCLjsJ06JNd70e9N/2GApCgQVkoZQCa8yklroqf+9a3f6QlqBBSAU6qFQ0XwniPzkl4s6A5wOI6fDcqqjYTZ1S4asrVcwitXIZhSJ80uDbXEG/q5H6gzkcrpQH0ZMcGQYDq0QTpgx87ljre8A7Lu5YNY7FHWdwJKOxmyuFZspwA2sqEymZqH1DlDQZOPbCi8H78VRQ3xbu8CABh1KjoVX3kkR+tpYXYFFbBkCmncNqCNvGQ2LGscIKczN7fGGVBR2jKhDYbUrtCLLqIf4qsKnitMyPgxPw3ApZyLChzCu82Fs6dCzQb2qIbiFzDgBmg8g+7SM5xJsco2T3qjCxH6N8+RS9zai6u/l4MYFAUgL4SarZovRZA4qyI7IloRnFOFbK7tLNWAVHsyvV6hdpMR1wIUSLcpyKdK9KOprYMIwFXPPKDeUsFSaIk7/XLe4q9DsgKdSRVvogVXlh4+3i8wh+BMOlDsgsb4wMyn1s4nDmf/mbJFzpEpF9flL4HnlRaTj62+E71IzH8S/aKE2gdRKqr4BVKv1Z/G1
- W6elNcwW
- dEGVNmud0jZc5ctJGHRzHOQeEhmkk3rpLyq029tWKpLOOBD1UPXOeNf8vAzmVvzUXcxGZVNa+fRWpnL3dvWsSGv75eqJcuolP9zBg3w/W+w66ADkhmdNatBiHUsa6YGsYzFb5WnuncibHOx2HibypgKVZ6e8L3FJIRD8bkU1mbKb2ttJjq5k2ix5xfG6OdJB0ii1E9a0DzIuDTWt0f5oQ+sjnuwNQcq9quRv1LW+2wwX44Nfae7F6BA/vjzHIYR8dSfyF2K+Qlc9tuf8QC8nFmuqZ3PzUhOtXDnGkG0fbZFwuF7A2FGm2xqKTEFsTs+4fvLfIBxXgHS7XtNu4Ye2Z2coaQsPaD8w5ClPr
+X-Stat-Signature: jrb4qmsfj9xw8jeq7qe581erhtitfp5a
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 85B2C1C0003
+X-HE-Tag: 1790275762-291933
+X-HE-Meta: U2FsdGVkX1/rgp5SQcDruBP/IH4jt5AuzcY9d4xn6K0BTae2OeATUz+V1CsLjPDskpsD7P0VAUmQhvKKfaWAqOj+0gFw6KoyQq7PyQ/rCJGOBwnzyI0MZFxP41PmO8++YfyS6ZxguDS3MMPX4O0K7lfRR9l19P5uP2YnkvrX7GVZkwMrZGDsaxU6utnp/6nSEtcMbeLw4wmFjcH2XAQAbTQnEGBAOPlvXqNr6a53SCdlKUG/iArohatcfRE+APOnJ/OjBcsDPxElbXxDAneDP+wWITEF2XL9ZZocPMshfNfdV9GcwlEjJup/6GXYU/GWTG4HStNBwQiU9sr958mvjK/dv1NyB0Q/R+bvYR1nvkvYwS0VCLqEsYvl4MnaNZXe+djpAiPBIVhxd9IlruqyC5nSSXSOeoxk/GVyJxNiuDoD3WjIuvRTCWBvH8fJJ+08Xmcri+XhQYQEpiQ3eozq6tpZxGJA3AEfXZSbv8XZTZ3tMA+Zmw67Jr7tibH6bojH05flf3jk1RpDHsDDAAIELmR2SC3LQOpHmioMjxQj5C9YB3wEIU513LelJV5Nh+CQvB/nov0JFjCGxzEjoF0qgKYaXL2UdKyt86huseqsgiPxwL1KztXFO1UjRV9oKNvqPzSll3zh5Rpp0qpJLL2tkSfbPCMpxOWCMlocFALjDAAvxD30Cp9wEBQtHrCY/mRX7QiMgEyQvKI+6xUq556LDKgwb/HAPlt4wEpbAksxQBRshyimh8bCcimg/vPWSH95U+cc5PIRM4/VAV95Bqb7MF2joIGHoWD/JyG+1tmd2AN/Uu9/lyH4JWCumFUXmg7BGONGsnbP7c4coaEjwpGA1pX/kunkMF/MuUHQYejRlwX3Jqp9dwIrs7qm8SWscXhGrVkmGmVs26Qh6cSJ5tEcERivMAiW7AL1YhTHFNfbhbZ8eQ0g60GTW/b9GEHGJronumXN0slk9VklvHEG8oR
+ RpNR8GAl
+ lyvthofkQJ/uYDrqOFbCm3WRODwhPiPTVO2VMpN5oru4jGelXoEt/b482P9Gr4ZMuYZnURRe0EmIHq5X/PYOlviHgeIqfF+7iMQKWqr/UDVg7yfoimOge2F523rb1bHL6uTsb0Eo7serkWrCPx0hrAr3Xe1a0KE+MFrnudBAchCT+3iiiUpsboSwWHDd5hMPT6Z1ha4IETB+DYqDyOiUX7zFKlqFxiuEnhW+6MW2h+XTO/P3Wnc1IzM9Qn8IIe285T47spRtIFzOppXi3eWru7I8m7dZCVIOtpXWH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,382 +144,313 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fill a memcg's TCP receive buffers from softirq while its only task
-sleeps, so the memcg goes over memory.high and high_work reclaims.
+On 9/19/26 09:31, Yuan-Hao Hsu wrote:
+> fork() maps the anonymous pages of the parent read-only and clears
+> PageAnonExclusive on them.  Once the child has exec'ed or exited, the
+> parent's write fault takes the reuse path of do_wp_page():
+> wp_can_reuse_anon_folio() finds that all references to the folio come
+> from this MM, the page is marked exclusive again and its PTE is made
+> writable.
+> 
+> For a large folio that check is about the folio and holds for every
+> page of it, but only the page that faulted is marked exclusive and
+> made writable.  Each other page takes a write fault of its own and
+> takes the large mapcount lock to find out the same thing again: 16
+> faults for a 64K folio.  The same THP mapped by a PMD is reused by one
+> fault in do_huge_pmd_wp_page(), and do_swap_page() maps all PTEs of an
+> exclusive large folio writable at once.
+> 
+> Barry proposed reusing the whole mTHP from one fault in 2024 [1].  The
+> reservations then were the latency of the individual write fault and
+> how far to go around the faulting PTE: a contpte-sized block was fine,
+> anything bigger not yet convincing (David's replies, linked below).
+> Commit 1da190f4d0a6 ("mm: Copy-on-Write (COW) reuse support for
+> PTE-mapped THP") then added the per-folio check and left faulting
+> around for later.
 
-test_memcg_high_work checks that the memcg's cpu.stat and
-memory.pressure grow, which only happens if that reclaim is charged to
-the memcg.
+I'm fine with the original idea of limiting this to reasonable chunk
+sizes, reducing the work we do in a single page fault.
 
-test_memcg_high_work_cpu_max also runs a CPU hog in the memcg under a
-cpu.max limit. The reclaim time should come out of the memcg's quota,
-so the hog should get less CPU while high_work is busy.
+The patch needs work. I disagree with various decisions
+either you or the LLM came up with like
 
-Both need swap, so the anon memory can be reclaimed.
+* Uglifying do_wp_page
+* Not handling unshare
+* Calling wp_reuse_large_anon_folio() to do some batching to then call 
+  wp_reuse_page in same page fault
+* Batching multiple pieces in a loop
+* Using can_change_pte_writable()
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+I tried to see how to implement it cleaner. I think we should definitely
+start with:
+
+From 3d16faebcbbd1b970edb51ef2f710ca51e9709af Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 24 Sep 2026 19:43:15 +0200
+Subject: [PATCH 1/2] mm/memory: factor out anon reuse logic into
+ wp_try_reuse_anon_page()
+
+Let's move the core logic from do_wp_page() into
+wp_try_reuse_anon_page() to prepare for further changes.
+
+No functional change intended.
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- .../selftests/cgroup/test_memcontrol.c        | 332 ++++++++++++++++++
- 1 file changed, 332 insertions(+)
+ mm/memory.c | 45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 0ed82347044e..00802804c0d9 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -18,6 +18,7 @@
- #include <netdb.h>
- #include <errno.h>
- #include <sys/mman.h>
-+#include <time.h>
- 
- #include "kselftest.h"
- #include "cgroup_util.h"
-@@ -1474,6 +1475,335 @@ static int test_memcg_sock(const char *root)
- 	return ret;
+diff --git a/mm/memory.c b/mm/memory.c
+index 338fce99e7119..67fcf67bc64fd 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4414,6 +4414,34 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 	return true;
  }
  
-+#define HIGH_WORK_NCONN		16
-+
-+struct high_work_args {
-+	int ctl[2];
-+};
-+
-+/*
-+ * Fill some anon memory, accept HIGH_WORK_NCONN connections, then sleep
-+ * without ever reading, so all received data stays charged to the memcg.
-+ */
-+static int high_work_receiver(const char *cgroup, void *arg)
++static bool wp_try_reuse_anon_page(struct vm_fault *vmf, struct folio *folio)
++	__cond_releases(true, vmf->ptl)
 +{
-+	struct high_work_args *args = arg;
-+	struct sockaddr_in sa = { .sin_family = AF_INET };
-+	socklen_t len = sizeof(sa);
-+	int sk, i, rcvbuf = MB(8);
-+	unsigned long long x = 1, *p;
-+	size_t size = MB(256);
++	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
 +
-+	close(args->ctl[0]);
++	VM_WARN_ON_ONCE(!folio_test_anon(folio));
 +
-+	/* Hard to compress, so reclaiming it to swap takes real work. */
-+	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (p == MAP_FAILED)
-+		return -1;
-+	for (size_t j = 0; j < size / sizeof(*p); j++) {
-+		x = x * 6364136223846793005ULL + 1442695040888963407ULL;
-+		p[j] = x;
++	/*
++	 * Private mapping: create an exclusive anonymous page copy if reuse
++	 * is impossible. We might miss VM_WRITE for FOLL_FORCE handling.
++	 *
++	 * If we encounter a page that is marked exclusive, we must reuse
++	 * the page without further checks.
++	 */
++	if (!PageAnonExclusive(vmf->page)) {
++		if (!wp_can_reuse_anon_folio(folio, vmf->vma))
++			return false;
++		SetPageAnonExclusive(vmf->page);
 +	}
 +
-+	sk = socket(AF_INET, SOCK_STREAM, 0);
-+	if (sk < 0)
-+		return -1;
-+	if (setsockopt(sk, SOL_SOCKET, SO_RCVBUFFORCE, &rcvbuf, sizeof(rcvbuf)))
-+		return -1;
-+	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-+	if (bind(sk, (struct sockaddr *)&sa, len) || listen(sk, HIGH_WORK_NCONN))
-+		return -1;
-+	if (getsockname(sk, (struct sockaddr *)&sa, &len))
-+		return -1;
-+	if (write(args->ctl[1], &sa.sin_port, sizeof(sa.sin_port)) !=
-+	    sizeof(sa.sin_port))
-+		return -1;
-+
-+	for (i = 0; i < HIGH_WORK_NCONN; i++)
-+		if (accept(sk, NULL, NULL) < 0)
-+			return -1;
-+	if (write(args->ctl[1], "A", 1) != 1)
-+		return -1;
-+
-+	for (;;)
-+		pause();
-+	return 0;
-+}
-+
-+static long psi_some_total(const char *cgroup, const char *control)
-+{
-+	char buf[BUF_SIZE];
-+	long total;
-+
-+	if (cg_read(cgroup, control, buf, sizeof(buf)))
-+		return -1;
-+	if (sscanf(buf, "some avg10=%*f avg60=%*f avg300=%*f total=%ld",
-+		   &total) != 1)
-+		return -1;
-+	return total;
-+}
-+
-+/*
-+ * Socket memory charged from softirq can push a memcg over memory.high.
-+ * The reclaim then runs from high_work on a kworker. The memcg's only task
-+ * sleeps the whole time here, so its cpu.stat and memory.pressure only move
-+ * if that reclaim is charged to the memcg.
-+ */
-+static int test_memcg_high_work(const char *root)
-+{
-+	int ret = KSFT_FAIL, pid = -1, i, sk[HIGH_WORK_NCONN];
-+	long usage, high, some, current, sent = 0;
-+	struct high_work_args args;
-+	char *memcg, *buf = NULL, c;
-+	in_port_t port;
-+	time_t last;
-+
-+	for (i = 0; i < HIGH_WORK_NCONN; i++)
-+		sk[i] = -1;
-+
-+	if (!is_swap_enabled())
-+		return KSFT_SKIP;
-+
-+	memcg = cg_name(root, "memcg_test");
-+	if (!memcg)
-+		goto cleanup;
-+	if (cg_create(memcg))
-+		goto cleanup;
-+	if (pipe(args.ctl))
-+		goto cleanup;
-+
-+	pid = cg_run_nowait(memcg, high_work_receiver, &args);
-+	if (pid < 0)
-+		goto cleanup;
-+	close(args.ctl[1]);
-+	if (read(args.ctl[0], &port, sizeof(port)) != sizeof(port))
-+		goto cleanup;
-+
-+	for (i = 0; i < HIGH_WORK_NCONN; i++) {
-+		struct sockaddr_in sa = { .sin_family = AF_INET, .sin_port = port };
-+
-+		sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-+		sk[i] = socket(AF_INET, SOCK_STREAM, 0);
-+		if (sk[i] < 0 || connect(sk[i], (struct sockaddr *)&sa, sizeof(sa)))
-+			goto cleanup;
++	if (unlikely(unshare)) {
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		return true;
 +	}
-+	if (read(args.ctl[0], &c, 1) != 1)
-+		goto cleanup;
-+
-+	/* Just above the current usage, so this write does not reclaim. */
-+	current = cg_read_long(memcg, "memory.current");
-+	if (current < 0 || cg_write_numeric(memcg, "memory.high", current + MB(2)))
-+		goto cleanup;
-+
-+	usage = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
-+	high = cg_read_key_long(memcg, "memory.events", "high ");
-+	some = psi_some_total(memcg, "memory.pressure");
-+
-+	/* Fill all sockets until they stop taking data. */
-+	buf = calloc(1, MB(1));
-+	if (!buf)
-+		goto cleanup;
-+	last = time(NULL);
-+	while (time(NULL) - last < 2) {
-+		for (i = 0; i < HIGH_WORK_NCONN; i++) {
-+			long n = send(sk[i], buf, MB(1), MSG_DONTWAIT);
-+
-+			if (n > 0) {
-+				sent += n;
-+				last = time(NULL);
-+			}
-+		}
-+	}
-+	sleep(2);
-+
-+	if (cg_read_key_long(memcg, "memory.events", "high ") <= high) {
-+		ksft_print_msg("high_work did not run, sent %ld bytes\n", sent);
-+		goto cleanup;
-+	}
-+	if (cg_read_key_long(memcg, "cpu.stat", "usage_usec ") <= usage) {
-+		ksft_print_msg("high_work CPU time not charged to the memcg\n");
-+		goto cleanup;
-+	}
-+	if (some >= 0 && psi_some_total(memcg, "memory.pressure") <= some) {
-+		ksft_print_msg("high_work stall not in memcg memory.pressure\n");
-+		goto cleanup;
-+	}
-+
-+	ret = KSFT_PASS;
-+
-+cleanup:
-+	for (i = 0; i < HIGH_WORK_NCONN; i++)
-+		if (sk[i] >= 0)
-+			close(sk[i]);
-+	if (pid > 0) {
-+		kill(pid, SIGKILL);
-+		waitpid(pid, NULL, 0);
-+	}
-+	free(buf);
-+	cg_destroy(memcg);
-+	free(memcg);
-+
-+	return ret;
-+}
-+
-+static int high_work_spinner(const char *cgroup, void *arg)
-+{
-+	for (;;)
-+		;
-+	return 0;
-+}
-+
-+/* CPU time @pid has used so far, in microseconds. */
-+static long task_cpu_usec(int pid)
-+{
-+	unsigned long long ns;
-+	char buf[128];
-+
-+	if (proc_read_text(pid, false, "schedstat", buf, sizeof(buf)) <= 0 ||
-+	    sscanf(buf, "%llu", &ns) != 1)
-+		return -1;
-+	return ns / 1000;
-+}
-+
-+static long now_usec(void)
-+{
-+	struct timespec ts;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+	return ts.tv_sec * 1000000L + ts.tv_nsec / 1000;
-+}
-+
-+/*
-+ * The setup of test_memcg_high_work, plus a CPU hog in the memcg and a
-+ * cpu.max limit. The reclaim that high_work does for the memcg should come
-+ * out of the memcg's CPU quota, so the hog should get less CPU while
-+ * high_work is busy than it gets otherwise.
-+ */
-+static int test_memcg_high_work_cpu_max(const char *root)
-+{
-+	int ret = KSFT_FAIL, pid = -1, hog = -1, i, sk[HIGH_WORK_NCONN];
-+	long current, h0, h1, h2, t0, t1, t2, u1, u2, reclaim, lost;
-+	bool cpu_enabled = false;
-+	struct high_work_args args;
-+	char *memcg = NULL, *buf = NULL, c;
-+	in_port_t port;
-+	time_t last;
-+
-+	for (i = 0; i < HIGH_WORK_NCONN; i++)
-+		sk[i] = -1;
-+
-+	if (!is_swap_enabled())
-+		return KSFT_SKIP;
-+	if (cg_read_strstr(root, "cgroup.controllers", "cpu"))
-+		return KSFT_SKIP;
-+	if (cg_read_strstr(root, "cgroup.subtree_control", "cpu")) {
-+		if (cg_write(root, "cgroup.subtree_control", "+cpu"))
-+			return KSFT_SKIP;
-+		cpu_enabled = true;
-+	}
-+
-+	memcg = cg_name(root, "memcg_test");
-+	if (!memcg || cg_create(memcg))
-+		goto cleanup;
-+	/* 20% of a CPU, in short periods so the numbers come out smooth. */
-+	if (cg_write(memcg, "cpu.max", "2000 10000"))
-+		goto cleanup;
-+	if (pipe(args.ctl))
-+		goto cleanup;
-+
-+	pid = cg_run_nowait(memcg, high_work_receiver, &args);
-+	if (pid < 0)
-+		goto cleanup;
-+	close(args.ctl[1]);
-+	if (read(args.ctl[0], &port, sizeof(port)) != sizeof(port))
-+		goto cleanup;
-+
-+	for (i = 0; i < HIGH_WORK_NCONN; i++) {
-+		struct sockaddr_in sa = { .sin_family = AF_INET, .sin_port = port };
-+
-+		sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-+		sk[i] = socket(AF_INET, SOCK_STREAM, 0);
-+		if (sk[i] < 0 || connect(sk[i], (struct sockaddr *)&sa, sizeof(sa)))
-+			goto cleanup;
-+	}
-+	if (read(args.ctl[0], &c, 1) != 1)
-+		goto cleanup;
-+
-+	hog = cg_run_nowait(memcg, high_work_spinner, NULL);
-+	if (hog < 0)
-+		goto cleanup;
-+
-+	current = cg_read_long(memcg, "memory.current");
-+	if (current < 0 || cg_write_numeric(memcg, "memory.high", current + MB(2)))
-+		goto cleanup;
-+
-+	/* How much CPU the hog gets without high_work. */
-+	sleep(1);
-+	h0 = task_cpu_usec(hog);
-+	t0 = now_usec();
-+	sleep(3);
-+	h1 = task_cpu_usec(hog);
-+	t1 = now_usec();
-+	u1 = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
-+
-+	/* Fill the sockets slowly, so high_work runs many times. */
-+	buf = calloc(1, 64 << 10);
-+	if (!buf)
-+		goto cleanup;
-+	last = time(NULL);
-+	while (time(NULL) - last < 2) {
-+		for (i = 0; i < HIGH_WORK_NCONN; i++)
-+			if (send(sk[i], buf, 64 << 10, MSG_DONTWAIT) > 0)
-+				last = time(NULL);
-+		usleep(15000);
-+	}
-+	h2 = task_cpu_usec(hog);
-+	t2 = now_usec();
-+	u2 = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
-+
-+	if (h0 < 0 || h1 <= h0 || h2 < 0 || u1 < 0 || u2 < 0)
-+		goto cleanup;
-+
-+	/* The receiver sleeps, so the rest of the memcg's time is high_work. */
-+	reclaim = (u2 - u1) - (h2 - h1);
-+	lost = (h1 - h0) * (t2 - t1) / (t1 - t0) - (h2 - h1);
-+	if (reclaim < 30000) {
-+		ksft_print_msg("high_work used only %ld us, too little to test\n",
-+			       reclaim);
-+		ret = KSFT_SKIP;
-+		goto cleanup;
-+	}
-+	if (lost < reclaim / 3) {
-+		ksft_print_msg("hog lost %ld us, high_work used %ld us\n",
-+			       lost, reclaim);
-+		goto cleanup;
-+	}
-+
-+	ret = KSFT_PASS;
-+
-+cleanup:
-+	for (i = 0; i < HIGH_WORK_NCONN; i++)
-+		if (sk[i] >= 0)
-+			close(sk[i]);
-+	if (hog > 0) {
-+		kill(hog, SIGKILL);
-+		waitpid(hog, NULL, 0);
-+	}
-+	if (pid > 0) {
-+		kill(pid, SIGKILL);
-+		waitpid(pid, NULL, 0);
-+	}
-+	free(buf);
-+	if (memcg)
-+		cg_destroy(memcg);
-+	free(memcg);
-+	if (cpu_enabled)
-+		cg_write(root, "cgroup.subtree_control", "-cpu");
-+
-+	return ret;
++	wp_page_reuse(vmf, folio);
++	return true;
 +}
 +
  /*
-  * This test disables swapping and tries to allocate anonymous memory
-  * up to OOM with memory.group.oom set. Then it checks that all
-@@ -1780,6 +2110,8 @@ struct memcg_test {
- 	T(test_memcg_oom_events),
- 	T(test_memcg_swap_max_peak),
- 	T(test_memcg_sock),
-+	T(test_memcg_high_work),
-+	T(test_memcg_high_work_cpu_max),
- 	T(test_memcg_oom_group_leaf_events),
- 	T(test_memcg_oom_group_parent_events),
- 	T(test_memcg_oom_group_score_events),
+  * This routine handles present pages, when
+  * * users try to write to a shared page (FAULT_FLAG_WRITE)
+@@ -4499,24 +4527,9 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
+ 		return wp_page_shared(vmf, folio);
+ 	}
+ 
+-	/*
+-	 * Private mapping: create an exclusive anonymous page copy if reuse
+-	 * is impossible. We might miss VM_WRITE for FOLL_FORCE handling.
+-	 *
+-	 * If we encounter a page that is marked exclusive, we must reuse
+-	 * the page without further checks.
+-	 */
+ 	if (folio && folio_test_anon(folio) &&
+-	    (PageAnonExclusive(vmf->page) || wp_can_reuse_anon_folio(folio, vma))) {
+-		if (!PageAnonExclusive(vmf->page))
+-			SetPageAnonExclusive(vmf->page);
+-		if (unlikely(unshare)) {
+-			pte_unmap_unlock(vmf->pte, vmf->ptl);
+-			return 0;
+-		}
+-		wp_page_reuse(vmf, folio);
++	    wp_try_reuse_anon_page(vmf, folio))
+ 		return 0;
+-	}
+ 	/*
+ 	 * Ok, we need to copy. Oh, well..
+ 	 */
 -- 
-2.53.0-Meta
+2.43.0
 
+
+And the maybe go into this direction, where we really only try to
+batch exactly once, and include in that patch out PTE of interest. IOW, optimize
+for the common case and also take care of unsharing.
+
+
+Some things I am not sure about
+* Hardcoding WP_REUSE_MAX_NR_PTES, likely should be determine differently.
+* Marking all 16 PTEs young+dirty. It's somewhat the same thing as we do in
+  map_anon_folio_pte_pf(). On arm64 it's already fuzzy with cont-pte. With
+  transparent coalescing we'd actually allow it directly. So it does feel like the right thing.
+
+I also wonder whether some part of the function could be factored out as helpers for
+other code to use in the future. I also suspect that there are more cleanups to be had.
+
+Long story short, needs more work, but I am out of time.
+
+Entirely untested:
+
+
+From 1db2c61661cc854eabb8619a2717d1ddf43a95f5 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 24 Sep 2026 20:03:01 +0200
+Subject: [PATCH 2/2] mm/memory: reuse 16 PTEs of an exclusive large folio on a
+ write fault
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/memory.c | 120 +++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 115 insertions(+), 5 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 67fcf67bc64fd..dab2a274783bf 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4414,10 +4414,78 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+ 	return true;
+ }
+ 
++#define WP_REUSE_MAX_NR_PTES	16
++
++static unsigned int wp_anon_folio_pte_batch(struct vm_fault *vmf,
++		struct folio *folio, unsigned long *addr, struct page **page,
++		pte_t *pte, pte_t **ptep)
++{
++	/* modify_prot_start_ptes() needs most PTE bits to match. */
++	const fpb_t flags = FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY;
++	struct vm_area_struct *vma = vmf->vma;
++	unsigned long batch_start_addr, batch_size, folio_idx, nr_before;
++	unsigned int batch_nr_pages;
++	pte_t *batch_start_ptep;
++	pte_t batch_start_pte, expected_pte;
++
++	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) ||
++	    !folio_test_large(folio))
++		return 1;
++
++	/*
++	 * We'll try batching in a naturally aligned block surrounding our
++	 * faulting PTE.
++	 */
++	batch_nr_pages = min(folio_large_nr_pages(folio), WP_REUSE_MAX_NR_PTES);
++	batch_size = batch_nr_pages << PAGE_SHIFT;
++	batch_start_addr = ALIGN_DOWN(*addr, batch_size);
++	folio_idx = folio_page_idx(folio, *page);
++	nr_before = (*addr - batch_start_addr) >> PAGE_SHIFT;
++
++	/* Stay within the folio. */
++	if (nr_before > folio_idx ||
++	    folio_idx - nr_before + batch_nr_pages > folio_large_nr_pages(folio))
++		return 1;
++
++	/* Stay within the VMA. */
++	if (batch_start_addr < vma->vm_start ||
++	    batch_start_addr + batch_size > vma->vm_end)
++		return 1;
++
++	batch_start_ptep = *ptep - nr_before;
++	batch_start_pte = ptep_get(batch_start_ptep);
++
++	expected_pte = pte_advance_pfn(batch_start_pte, nr_before);
++	if (!pte_same(__pte_batch_clear_ignored(expected_pte, flags),
++		      __pte_batch_clear_ignored(*pte, flags)))
++		return 1;
++
++	if (folio_pte_batch_flags(folio, NULL, batch_start_ptep,
++				  &batch_start_pte, batch_nr_pages,
++				  flags) != batch_nr_pages)
++		return 1;
++
++	/*
++	 * Our faulting PTE is guaranteed to be part of the batch, and all
++	 * PTE bits are compatible.
++	 */
++	*addr = batch_start_addr;
++	*page = *page - nr_before;
++	*pte = batch_start_pte;
++	*ptep = batch_start_ptep;
++	return batch_nr_pages;
++}
++
+ static bool wp_try_reuse_anon_page(struct vm_fault *vmf, struct folio *folio)
+ 	__cond_releases(true, vmf->ptl)
+ {
+ 	const bool unshare = vmf->flags & FAULT_FLAG_UNSHARE;
++	struct vm_area_struct *vma = vmf->vma;
++	unsigned long addr = vmf->address;
++	struct page *page = vmf->page;
++	pte_t new_pte, pte = vmf->orig_pte;
++	pte_t *ptep = vmf->pte;
++	unsigned int i, nr = 1;
+ 
+ 	VM_WARN_ON_ONCE(!folio_test_anon(folio));
+ 
+@@ -4426,14 +4494,56 @@ static bool wp_try_reuse_anon_page(struct vm_fault *vmf, struct folio *folio)
+ 	 * is impossible. We might miss VM_WRITE for FOLL_FORCE handling.
+ 	 *
+ 	 * If we encounter a page that is marked exclusive, we must reuse
+-	 * the page without further checks.
++	 * the page without further checks. Don't process more than a single
++	 * PTE in that case.
+ 	 */
+-	if (!PageAnonExclusive(vmf->page)) {
+-		if (!wp_can_reuse_anon_folio(folio, vmf->vma))
+-			return false;
+-		SetPageAnonExclusive(vmf->page);
++	if (PageAnonExclusive(page))
++		goto reuse_single_page;
++
++	if (!wp_can_reuse_anon_folio(folio, vma))
++		return false;
++
++	/* We can use any folio page that is mapped in this page table. */
++	nr = wp_anon_folio_pte_batch(vmf, folio, &addr, &page, &pte, &ptep);
++	if (nr == 1) {
++		SetPageAnonExclusive(page);
++		goto reuse_single_page;
+ 	}
+ 
++	for (i = 0; i < nr; i++)
++		if (!PageAnonExclusive(page + i))
++			SetPageAnonExclusive(page + i);
++
++	/* Careful: don't mark unrelated PTEs soft-dirty by batching. */
++	if (unlikely(pte_needs_soft_dirty_wp(vma, pte)))
++		goto reuse_single_page;
++
++	if (unlikely(unshare)) {
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		return true;
++	}
++
++	/* See wp_page_reuse() */
++	folio_xchg_last_cpupid(folio, (1 << LAST_CPUPID_SHIFT) - 1);
++
++	for (i = 0; i < nr; i++)
++		flush_cache_page(vma, addr + (i << PAGE_SHIFT), pte_pfn(pte) + i);
++
++	pte = modify_prot_start_ptes(vma, addr, ptep, nr);
++	new_pte = maybe_mkwrite(pte_mkdirty(pte_mkyoung(pte)), vmf->vma);
++	modify_prot_commit_ptes(vma, addr, ptep, pte, new_pte, nr);
++
++	/* Remove stale read-only TLB entry for the faulting PTE only. */
++	flush_tlb_fix_spurious_fault(vma, vmf->address, vmf->pte);
++
++	/* But update the MMU cache of all changed PTEs. */
++	update_mmu_cache_range(vmf, vma, addr, ptep, nr);
++
++	pte_unmap_unlock(vmf->pte, vmf->ptl);
++	count_vm_event(PGREUSE);
++	return true;
++
++reuse_single_page:
+ 	if (unlikely(unshare)) {
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 		return true;
+-- 
+2.43.0
+
+
+
+-- 
+Cheers,
+
+David
 
