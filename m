@@ -4,93 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27E78C9830D
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 01:22:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFD43C98304
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 01:56:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE8FB6B0088; Wed, 23 Sep 2026 21:22:01 -0400 (EDT)
+	id 820666B0088; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A3D6B008A; Wed, 23 Sep 2026 21:22:01 -0400 (EDT)
+	id 7D1636B008A; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BAFD26B008C; Wed, 23 Sep 2026 21:22:01 -0400 (EDT)
+	id 698C76B008C; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FA726B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:22:01 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E283A0162
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:22:01 +0000 (UTC)
-X-FDA: 85246904442.13.C20964F
-Received: from mta1.migadu.com (out-195.mta1.migadu.com [95.215.58.195])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B31C81C0004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:21:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P3Y8eHu4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790212919;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F9C76B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C78ED1C1C0B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:56:23 +0000 (UTC)
+X-FDA: 85246991046.17.B62C5A2
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D52FB1C0002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:56:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V4mTc4bL;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790214981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2LWhXez4sMk0Rj3dZzRA5D+BV0ovazgjrIQQ/T3RSaA=;
-	b=fYNOBJmTsVD91MX1t7rEILf/n7ieHAM98SI7iopxOdNodXCGiXlZi6ab/48VKgiKx8RpHJ
-	wqT3a/H2QUfBU51Bdi9QVRITytlXdnuX+38LDQoOpg0R03/9yP2RegLOo8N+DW4cg1Tptj
-	ce9remUYf8ZxUqQA0ZhJr+daLq0Vvag=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=P3Y8eHu4;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.195 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790212919;
-	b=gywfZ/LyQ4DM4jN+bxbpfkQIbvNjD2gkgXZCXrAd4DVmDLzaSSYBKd6bqBQvC+PUnr8qr/
-	pv7b70EWOy/frBnFJ/WK5k7A5AjMlXwAeSlebgkifV4QuSEp6Y+ddhqPzKA5porVCEqdCh
-	v2CcSSMHxrLRO1gwRrkSyXHtPaTjflk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LDy+LskDsltkd/pJbNPXOEFYwbrB9PfyRO1YpNEnmcY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790212917; v=1; x=1790817717;
- b=P3Y8eHu4JpfHp0G9Z0fmjyEfLX+PsH2nq49v3PYwXOJbBjtsXKLhJEijyIFlrjAlDzDtVypp
- d9RxliYp7EjHWagyo8TDQSWZ7vc/CeEgGuuKsuyLFhzOJlmrTElszdNTcxlgKOb59TZiiOCISO4
- cPYmiGJN9y94hgX/N/Xfih3A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d7a3babc8545e2f9;
-	Thu, 24 Sep 2026 01:21:57 +0000
-X-Mizu-Trace-ID: d7a3babc8545e2f9
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <edeaa8cc-e14a-4cf6-bb1b-1d3fd44d9cbc@linux.dev>
-Date: Thu, 24 Sep 2026 09:22:53 +0800
+	bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
+	b=Kq+REIkgXcHX7jKkc5oP4E7Cuw/tsLmzytaFFcn8fTAigKK1uHDTf7DiewXW0dVT+OTmtQ
+	KhUhgET+RRjRl+UA/DNQwY5rbiy6fnv4TwXQJRC5vUdU/U31/TD9TkbXozd2mbc9aesOnO
+	XbBH6SvKwbZFRosvad7oZcCSI0IOMRg=
+ARC-Authentication-Results: i=2;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=V4mTc4bL;
+	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790214981;
+	b=wVoQb800mfjKT6VdmPP+acLfjF4wEZHCwI3XprWRzJSF2Gwh7FNqlAR3FBA589u2Cxsi/G
+	pOMIysCjXA8NJn1cSSCpoliLTV/4IO3N4YWaHDK7EHAiyJej81B/M1wfWzuLVOR6Fyso+W
+	On68SN5mB1HtQsvyr/MSXuROE4BipYY=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e64ccso10126765e9.0
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:56:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790214980; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HaZdAvhkGAT9k+pwUV287dIWe2BqBlpo7ZZ3M0wayUDDpNnow1DB4rRo1DmXFreBz9
+         UAUcvtLlaXMnifuT+7DnVUjkToFX17g3HedwjeiIG2JN12AEiuT6mn5/w0xG1uJtQAZZ
+         /tWpNEIrqHAJQIJeQ18xxIgyNUdiZJ2ryMHP+fHs/dvNuumf4JYpB+lJX1EMWO37440J
+         zg22nFKsmCvM+l4q7EGaEPqImYsOYxn7EY/8M/LTlntOO3ejdy/jVgsjhIvFYL/MQM6H
+         UO255KO+SdrPeg6DGhqyBIoP1ulsP/1bdOxuswvadLV0LfY2ADPUUmp2oo6vtjcxcRuI
+         WNgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
+        fh=KI6Y8iNamtghImqpRJASfDc2Nqba7uYoJw5R0PxYD6s=;
+        b=og4agU14gaFwEih5Db2eVbRveCjPiEDNwDFVeyYAKAayA5lWEyKi7dtHNKuQq7SJbv
+         xcunDEQ0vaEnE/DHz4MLldeVzj4afujyrhCFn+wAESvZzpDHmxdhSeqwV94pfxtr31NC
+         B9kY/9CpCy6t2tkFvdiDn0p6ahrz0/rcjBoSppM6OXSSQuXMBNpSp5QClqr3y8S/gbI1
+         +8kipGlgfdt2S4WkYpgUMykYxM1cxFL8rW6zqSSzNPc5ahcDbVqJkoGeHD2lvaLA9uxE
+         9gF5qfNM0PcTlp38vPOcutYMfajaZYhAb2Oy6h94nhooR1kGaMdkIvsvZ8zUl2HS930Q
+         CGJA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790214980; x=1790819780; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
+        b=V4mTc4bLPsmQeKABnGE/xXws8MpFmzYKfxwWhstWdn414uV9aKiMTr7oBDK0en/9nP
+         qR6mz6GRcKWx1gPWo0bseLQKqtwAJmDAlEYPqndcXL1gn2m5hTlHK1tEoaqbfalw/46O
+         raGPFy6aMBCR/mFK4arAGi3IpuT4xpa/4Li+X/WCvmR1orNDvY+lqalYGerMlnYjZmaQ
+         YzEwPy4IC7VDnOGjNpleAq3oph3n5TAoYdMCE1Q+rH0xLI9R3QtvpEGVRK6UCvAHICEV
+         QRFFPp5CriNRlEEPqJSDPvkVzgdggLNIsuklC3+V2jck89nGium3Cp+LeXCc//nSaTRj
+         eGPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790214980; x=1790819780;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
+        b=ZFTKGXaJ5sddo2xxZ3TdBQxIzYeYfai1/M6oH2ZIuFKX/a0AOqDAsDEePqYPZ0YPKK
+         inLeYSSlY9zT5Up1L5uLHqu9k4zjLHEPlEhIq2oVljfNDmpjeUGPNoo2F4cVZXYZWuSV
+         1v30PtG88ePgeYKspsYdwgozEiUbFMQwRBMNF5JlaiIbzGit8Yf8QGh+pHv0LHDQBC2a
+         I7SZVvq3Y3EDMP5mEJupyUMNOM4z85WnCQgEOMI9+ZNrXbMuW5pk5SJiIPojK5MwlnXU
+         Cpg5xqDT4gmk6sU9Hlhk4SKd5gQmS44f5U9wLPnw3OFnHWaS8Acs9iRKKAgioWfWvK1L
+         oOuw==
+X-Forwarded-Encrypted: i=1; AKwUvByOgF7+RAuChheCAnft/V5LRh4cdfO2m+j/YMyfStcM5EkR5IIC92WbVHl4Z3SQ13bYwGhUDNcL6w==@kvack.org
+X-Gm-Message-State: AFuF++lscDAQ5n2DY7l8DojnRvRp0/rla5IEjPX02XpuiPvktB4A//Ke
+	HbVolctc0B5Vjdsa9Y58fTEY/DVqoxvDZXjHyeUWE2V65P9cQJm+wTvqG2MjZYeAOeLit6ynNkl
+	AWLYIXH6uyKmvX5MKTSHgoHuAxPGn7dA=
+X-Gm-Gg: AYBFou3ns6oT4h0EEIUxEJcY86BDgjyNG1WlXIxaRhFAAPf5OCFx2wIMnKs4YG2Hnsv
+	p5b0mjpvdd+PJcnhvA+PWjluBhUefIE/+C0X9KbQz6kAHTLAkii8i8zd3fcfUBSGNb0Royk5mSz
+	eSPCvIdO/xjXO3n6NUUfFPEFCX8grhC88kc/vC3TXu1kC1sd48cCbhaU5dYFsvquykB/AbrTH1x
+	jpPEQ4wAm4OG6e5Dq0oHWNYdeHNr8GXahyw6WVLLNMcPAbMR7E2jUQb97Mik84mX+FFdNLAN4dB
+	tpOSnsvLpS6iumN7pYik1/3ymQvjnb0NtUKi2lIbAo2ZB/0npS3lLK+5G4K0+e+/G0CG11cA7MZ
+	XW2elYVjztpJebA==
+X-Received: by 2002:a05:600c:34c1:b0:49f:bd3c:bc21 with SMTP id
+ 5b1f17b1804b1-49fe670781emr14793475e9.28.1790214979782; Wed, 23 Sep 2026
+ 18:56:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] alloc_tag: Add trace events for tracing allocations
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>
-References: <cover.1790025465.git.abhishekbapat@google.com>
- <06c3a9b52785e6968ea15709a55365b2342c7a15.1790025465.git.abhishekbapat@google.com>
- <e8f65e6d-440b-418d-b7ba-e05ca2b0d712@linux.dev>
- <CAL41Mv7P3xDAvTGtdSHEG3Cvu70W6uhZ9mThm-OD3PcGDDU17w@mail.gmail.com>
-Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAL41Mv7P3xDAvTGtdSHEG3Cvu70W6uhZ9mThm-OD3PcGDDU17w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r4dj467uthiezo9x7b3rfafeqdxapr1f
+References: <20260920072043.430390-1-hebaoquan@kylinos.cn> <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+In-Reply-To: <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
+From: KunWu Chan <kunwu.chan@gmail.com>
+Date: Thu, 24 Sep 2026 09:56:08 +0800
+X-Gm-Features: AclHuK_mj4niWNcydt7-p-fYvtFJAG2bfKOsnaAyE3CnlQa3pCABR1PEvyYvBP0
+Message-ID: <CAN_Opa9usQWbCFL0chY-MCJ94-SQt4neOmcgz2S+_b=90fFZLw@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
+To: Chris Li <chrisl@kernel.org>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org, 
+	youngjun.park@lge.com, david@kernel.org, baoquan.he@linux.dev, 
+	gourry@gourry.net, riel@surriel.com, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D52FB1C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B31C81C0004
-X-HE-Tag: 1790212918-591160
-X-HE-Meta: U2FsdGVkX19QwfgnjvptFbVan+txk8PgsDpVDkyokIzr5AWTTkpGs2/h+kEw7UF8f4mDcIFs6nsxPnMt70KWn+5EHawSjxK13BgDhWf0nUPfVcsenZ/bOOAPcZo04PPF2bZZR1D6xsQPz1YPARJhgpaO6LorM9+Ah8ebUrIjVBP0iFGDjaAeC+IposhynBaJI/Wh2ZOcDFnoe7rX1LMCxiwBP9iW0gZ2hNdawnILJk7zRMdgQl3B4YfesiVTgqY4wxlsjMSb1uYfe36fFztLWDayxY0DfV3yTTmNsyf+8KNjkT5M/d+60P/PXOMu7hoYu/HzAUp1TjBNHqhNVAig/nt2zB7WMXlAgRw25Hpmt2a20orTqQoMzi6b3iVM77p8dB0CN5YkQ/S+cI4YGtYYQJII0/Y7SM/xzmPazqbuBF2D+FLpF2DKp87sNjZmQL6LDyFWVUT+uu9HdsMLC4m3U2bO35VLvdvmBUd7TlvJlIbDYIvJfv44djGg8gQ7WjQvc4VvtE9Q4nByD2CTTtWqO7MfSMRMMUOkzXbO/nSn8IcsfZ4xlvipImBdHVQkKlq02UZWh986EezNr3DCwMK28bWjmCHHdlgl9hP7JCCN7YK+AEQlWV2Fwp18xUMmdHKatrj1vv7CHkFK48VjTRTmlkniaSp7kNrUDJqXbXwlfnEm02Wt1ZKqhMrhZ2nOK1KpbbnWFGCFmSipAU9d3ixNuhdeMbQx+dlE2SHJly5RSpEtnfJbC46HVRL3d47uP78ALQLmvi+/TzGLTrDpkIDM62bBDXzWUAbrF0ERBfWFppthNn6YcdMG+OKTDVk8a9hvy+XJX2U9rGAci0glNAuV6q1swYmVutPphX/EJzrHC5XWpwaqD1y9dJeiuYzy8bXE9S+4lTnAOApocDWaOkip2E4hI5w2qO3moG/hPzrM3JAAInfcF3owzBNPa9zvY6U7I3CWmRkcjkqySA+GGni
- dy9Pbs+x
- qXmJHcvHT5Yw5+eXJJzbBN4Snd53p039a3Fr786M/ESRRK8tprX09d06Syc/MnBWcifPXLMs+jjTSL39OwXxjO/pSgYuL1wK2dWRV5v6cEWZRTccg1mmjwnm+iYu0GjXrv78+BDla8IPo0R3yOA53zMtCx6zeMNfYeCCTLU6VUdfEMwQpUs4oes9/V5UqkzSOFl9t0XzA4ITIj9/a9y0EvRXo/8dyQiThqc/HwrAclDRCqccXy/kvkFyUk/JSlMuwLkFeUDfZLKEDb8ut1YC14a10THIh8CqiKpMHc5f4AC2pAaSSnkGGpbcDyLy8WoLeBKKhDPoSqrDPR1bcrnqfgHfevqFZNB39QFFZRI2Ea2WxzUmNZbfwZbi2tA==
+X-Stat-Signature: bhiaqjeppqj16nh7fkhkihuqco7daz4n
+X-HE-Tag: 1790214981-925854
+X-HE-Meta: U2FsdGVkX19IDKLxuquPiQSdu1JjzNmTjq9HcOzFGJ0QGwKf/XcFgde9jpB/YLcB9i5RXVGFipy/N7brJCLuyf4tCTzLIWZgALt6REkyYMX5nTCjPdQmVSQgtkfONOu+fMNkEzVu9bxg/+u/VY3Q7Ad1HnZQ4vZz6e9Q4jnh21pkZcgzJVkywAUTlzP36kzVZjj+PD2qq5LcS+q6Mn11WRX/Y4YkRHGHnJoGgG/Q42JnnVOOjs4MtwLGoMLJ/rhETMGvP2wlH4YdwoceRk3DRg3KB9gEGi4WpnPtx6Pa59KdApa25lfOIaSQKLkpgSArOqbk7tzne+VXiL8Fyg2JU2nQDKSP+XsbAyh6ua9k04T1C5RGuHAek3AEOtygNsrEoUB/hu/OlxELOC58CuWcoGTjvf+kEd2lL428qqtvS77//muBXyED7v5knhLAa5UsuNjzNFJn3ye9tTwNOytT5fknkWGTffpobH45QJ2Gr+9ZPV6ASu/9DlmNyjXSgsN1pkDEXNo/uFt4rhFBp57sWwd64tD4IbjeZ+1AXAauipzOTSBp7Ix3eIGoKLTPBX0h//8xrEez/1piDClp4A+KS3tSHJE/8K2tsW/3BDAd1sq6/amJ47lfdwXrU1EpJFkCyYux+8OO4UGyiBbr2ZXWAPmK2mM73EzKtQO/vAEb7gLhsP1j5mvbWgnSKe0njkgA07aNsCxTiv0IJu9QO/wHR7UploN+/wOa1LaOBgNoPI/4APVHxNtDNJGzDPWpl+Ng9xfTZ5jBZJwf0hWK5hNvgF98LJVnysfqSreZ4vXVcu5+1lzbMrNnBv4tsWCgoS+S3joECJYxENowEn1SQ28u0ZZtM2shqEdWptMr/PDKCo+n0Ng2He8MTdhe/zW8q4xQ53y0uTov3Ot5AMPA2CbuqNPS1TPj/8F9t5p9RDcPO5RnRRk2uIWXXf0KuUuh974Epyz3an7kqHipcOakpCS
+ LRJu0y4+
+ 5Hb9xEJYfDd8OTXfTO2lupEQEzn9NH6JAFwe+uZmaB9QLRVZIQ9Yl+v/clOD+H8PUj3lPEdVg9PsB8Ty87y0E3MlS6oIF8gYfMWGViFoCO1+OFgNoB4srNUmU4Lx7eIGsZ1t2XUHaRviaZFs3f7x+xd1+U36hFiQFeUchW1frTPdJUdpqVP8EEgUVthaiqzUMFoU3cf6T7SLtA5Y5ub+r5BO1WhVo73RZYn8aPUPCCAXa4m+lg6MA38fN+tET12TJ5l4XVFP7A/eiofE6RxYqBrYdj74f6Ag02eqdiYeuqHQ9HmC5cEM8P68brwo+YMLmdsC5ZwkDrN2G6ie7ommP4VXDTzbOzYwH1tSlSCucuupQh+I3rA9esB41al+FBwfUJguq9XGBCipmxyX/x9gj/avdaheHkY3ioyBz35kSTtmnEBiBv3fjibyMXT5Y94AWtW1smLTqZUCbTp4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,389 +143,308 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Abhishek
-
-On 2026/9/24 04:12, Abhishek Bapat wrote:
-> On Wed, Sep 23, 2026 at 2:55 AM Hao Ge <hao.ge@linux.dev> wrote:
->>
->> Hi Abhishek
->>
->> On 2026/9/22 05:26, Abhishek Bapat wrote:
->>> The memory allocation profiling framework intercepts allocations across
->>> the core subsystems, but currently lacks runtime tracing hooks for
->>> standard observability tools to dynamically track the context (stack
->>> traces and lifecycles of the individual memory chunks) of the
->>> allocations made.
->>>
->>> Introduce three standard trace events to allow this tracking:
->>>
->>> 1. `alloc_tag_hit`: Fired at the exact call site. This allows userspace
->>>    tools to trigger and capture a call stack.
->>> 2. `alloc_tag_mem_alloced`: Fired in alloc_tag_add upon successful
->>>    allocation. It records the allocated size, the tag, and the uniquely
->>>    generated codetag_ref metadata pointer.
->>> 3. `alloc_tag_mem_freed`: Fired in alloc_tag_sub right before memory is
->>>    freed, yielding the same codetag_ref to allow tracing tools to find
->>>    the corresponding allocation.
->>>
->>> Because the introduced trace events occur at different stages in the
->>> call stack, userspace tracing tools must stitch them together to form a
->>> complete picture of a buffer's lifetime. Here's an example of how
->>> userspace correlates these three events:
->>>
->>> 1. On `alloc_tag_hit`: The tool captures the stack trace and caches it,
->>>    keyed by the combination of the current thread's PID and the `tag`.
->>> 2. On `alloc_tag_mem_alloced`: The tool extracts the PID and `tag` from
->>>    the event and looks up the stack trace cached in step 1. It creates a
->>>    new active allocation record, mapping the new provided `codetag_ref`
->>>    to this cached stack trace and the newly returned allocation size.
->>> 3. On `alloc_tag_mem_freed`: When the memory is freed, the event yields
->>>    the same `codetag_ref`. The tool uses this reference to look up the
->>>    original allocation record, correlates the free, and safely retires
->>>    the tracking entry.
->>>
->>> Also, introduce `alloc_tag_trace_key` static key to minimize the
->>> overhead when no tags are being traced (the usual case). Once tracing
->>> for any tag is requested, the key is set, opening the path to check
->>> whether tracing is enabled for the current tag.
->>> Nore that the mechanism to enabl tag tracing is implemented in the next
->>> patch, therefore for now, `alloc_tag_trace_key` stays always unset.
->>>
->>
->> nit: s/Nore/Note/ s/enabl/enable
->>
-> Ack.
->>> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
->>> ---
->>>  MAINTAINERS                      |   1 +
->>>  include/linux/alloc_tag.h        |  57 ++++++++++++---
->>>  include/trace/events/alloc_tag.h | 122 +++++++++++++++++++++++++++++++
->>>  mm/alloc_tag.c                   |  28 +++++++
->>>  4 files changed, 196 insertions(+), 12 deletions(-)
->>>  create mode 100644 include/trace/events/alloc_tag.h
->>>
->>> diff --git a/MAINTAINERS b/MAINTAINERS
->>> index 24420a8c06d0..29e1f7915cb9 100644
->>> --- a/MAINTAINERS
->>> +++ b/MAINTAINERS
->>> @@ -17096,6 +17096,7 @@ S:    Maintained
->>>  F:   Documentation/mm/allocation-profiling.rst
->>>  F:   include/linux/alloc_tag.h
->>>  F:   include/linux/pgalloc_tag.h
->>> +F:   include/trace/events/alloc_tag.h
->>>  F:   include/uapi/linux/alloc_tag.h
->>>  F:   mm/alloc_tag.c
->>>  F:   tools/testing/selftests/alloc_tag/
->>> diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
->>> index 7f2d80a59792..2994934cf44a 100644
->>> --- a/include/linux/alloc_tag.h
->>> +++ b/include/linux/alloc_tag.h
->>> @@ -128,12 +128,33 @@ DECLARE_PER_CPU(struct alloc_tag_counters, _shared_alloc_tag);
->>>  DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
->>>                       mem_alloc_profiling_key);
->>>
->>> +DECLARE_STATIC_KEY_FALSE(alloc_tag_trace_key);
->>> +
->>>  static inline bool mem_alloc_profiling_enabled(void)
->>>  {
->>>       return static_branch_maybe(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
->>>                                  &mem_alloc_profiling_key);
->>>  }
->>>
->>> +static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
->>> +{
->>> +     return static_branch_unlikely(&alloc_tag_trace_key);
->>> +}
->>> +
->>
->> The tag parameter is unused here. Let's remove it for now and add it back when needed,
->> to avoid the -Wno‑unused‑parameter warning.
->> Some CI bots go through each patch one‑by‑one, so we can't leave warnings in
->> intermediate commits.
->>
-> Ack.
->> One other thought: what about adding a sysctl knob here?
->> It would let users grab all alloc‑tag tracked allocations within a time window?
->>
-> You mean to enable the static key? With the following patches, it
-> would mean that the state of the static key would change by writing to
-> sysctl and through IOCTLs. I am not sure if letting the static key be
-> controlled by two mechanism is a good idea. I'd like to get Suren's
-> thoughts on this.
+On Tue, Sep 22, 2026 at 10:23=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
+:
+>
+> Hi Baoquan,
+>
+> First of all, thank you so much for the great work. That closes a huge
+> gap in the xswap stack. It is a huge step forward.
+>
+> On Sat, Sep 19, 2026 at 9:20=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn>=
+ wrote:
+> >
+> > This is the writeback layer for xswap, on top of the base series. Post =
+it
+> > as RFC for discussion.
+> >
+> > The base series keeps every swapped-out page in zswap. So the pool must
+> > refuse new pages once it's full. This series gives an xswap slot a
+> > backend to go, and charge it only when it really goes to real disk
+> > space.
+>
+> We should also preserve the charge to the swap counter when swapping
+> out to xswap. I don't mind having an additional counter track
+> compression memory vs. disk usage, etc. The swap counter charge should
+> preserve the current behavior.
+>
+> > Design
+> > ------
+> > - Backend: when zswap refuses a page, take a slot on the real swap
+> >   device with the highest priority and write the page there. One IO per
+> >   slot.
+>
+> More than that, it should also happen when zswap needs to do the
+> writeback. Zswap has some write back hooks when the system is under
+> pressure. Those hooks should be introduced into the core swap stack so
+> other swap types can benefit from them as well.
+>
+> I would like to point out that the allocation strategy should be
+> different when allocating for the swap backend. We might want to
+> introduce an allocation flag for that. The backend doesn't care about
+> fragmentation as much. Fragmentation is a performance optimization
+> here. The backend can tolerate fragmentation. In the upper layer, swap
+> entries are 2^N aligned and sized. It is a hard requirement.
+>
+> > - Ownership: that slot has no swap cache folio, so record its owner in
+>
+> Clarify: by "that slot," you mean the backend swap entry has no swap
+> cache folio.
+>
+> >   the swap table entry. 0b100 in the low bits marks a backend slot, and
+> >   the xswap type/offset go above. The physical side then does not treat
+> >   it as free, and readahead skips it.
+>
+> I don't want to get ahead of ourselves. You have only considered
+> writeback from xswap to disk so far. A stretch goal for you is to
+> consider how we can mark the swap table so that it can work with other
+> swap types as well. e.g. e.g., writing data from SSD to HDD. We don't
+> have to do it in this series. But it is good to start considering this
+> kind of thing so that we don't lock ourself out when we want more
+> generic writeback between swap tiers.
+>
+> Stretch 2 is considering how to deal with data moving from xswap to
+> SSD, then SSD to HDD. The front swap only needs to point to the HDD
+> and skip the SSD completely. It shouldn't require a forward chain.
+>
+> > - Per-slot record: ci->xs_table[], one unsigned long per slot, allocate=
+d
+> >   the first time a cluster takes a backend. Zero means no backend.
+>
+> There might be some micro optimization we can do if the whole cluster
+> does not point to any back ends, we might be able to design the array
+> access so that we don't need to allocate the back end pointer array
+> for it.
+>
+> > - Read: a written-out slot has no zswap copy, so swap_read_folio()
+> >   follows the pointer and reads from the backend.
+>
+> We need to pay attention to the race condition here when moving data
+> from xswap to the backend. I am not saying you have a bug here, I
+> haven't read the code yet. I imagine there will be some very tricky
+> swap cache interaction going on here.
 >
 
-This idea came from a kmalloc leak we observed on an OS.
-My colleague took over this issue, and he first asked me
-whether memory allocation profiling can track allocations
-over a period of time. (I was happy he immediately thought
-of our memory allocation profiling.)
+Hi Chris,
 
-Thanks
-Best Regards
-Hao
+> > - Release: verify the slot still points back to the xswap entry first;
+> >   the record can go stale.
+>
+> What do you mean the record can go stale here?
+>
 
->> Thanks
->> Best Regards
->> Hao
->>
->>> +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_tag *tag,
->>> +                           size_t bytes);
->>> +
->>> +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag *tag,
->>> +                          size_t bytes);
->>> +
->>> +void __alloc_tag_trace_hit(struct alloc_tag *tag);
->>> +
->>> +static inline void alloc_tag_trace_hit(struct alloc_tag *tag)
->>> +{
->>> +     if (alloc_tag_trace_enabled(tag))
->>> +             __alloc_tag_trace_hit(tag);
->>> +}
->>> +
->>>  bool mem_alloc_profiling_permanently_disabled(void);
->>>
->>>  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_tag *tag)
->>> @@ -200,8 +221,13 @@ static inline bool alloc_tag_ref_set(union codetag_ref *ref, struct alloc_tag *t
->>>
->>>  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes)
->>>  {
->>> -     if (likely(alloc_tag_ref_set(ref, tag)))
->>> +     if (likely(alloc_tag_ref_set(ref, tag))) {
->>>               this_cpu_add(tag->counters->bytes, bytes);
->>> +
->>> +             if (alloc_tag_trace_enabled(tag))
->>> +                     /* Trace successful allocs with their unique ref */
->>> +                     alloc_tag_trace_mem_alloc(ref, tag, bytes);
->>> +     }
->>>  }
->>>
->>>  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
->>> @@ -222,6 +248,10 @@ static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
->>>       this_cpu_sub(tag->counters->bytes, bytes);
->>>       this_cpu_dec(tag->counters->calls);
->>>
->>> +     if (alloc_tag_trace_enabled(tag))
->>> +             /* Trace frees with their unique ref */
->>> +             alloc_tag_trace_mem_free(ref, tag, bytes);
->>> +
->>>       ref->ct = NULL;
->>>  }
->>>
->>> @@ -247,21 +277,24 @@ static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_tag *tag,
->>>  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes) {}
->>>  static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
->>>  static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { return false; }
->>> +#define alloc_tag_trace_hit(_tag)    /* NOOP */
->>>  #define alloc_tag_record(p)  do {} while (0)
->>>
->>>  #endif /* CONFIG_MEM_ALLOC_PROFILING */
->>>
->>> -#define alloc_hooks_tag(_tag, _do_alloc)                             \
->>> -({                                                                   \
->>> -     typeof(_do_alloc) _res;                                         \
->>> -     if (mem_alloc_profiling_enabled()) {                            \
->>> -             struct alloc_tag * __maybe_unused _old;                 \
->>> -             _old = alloc_tag_save(_tag);                            \
->>> -             _res = _do_alloc;                                       \
->>> -             alloc_tag_restore(_tag, _old);                          \
->>> -     } else                                                          \
->>> -             _res = _do_alloc;                                       \
->>> -     _res;                                                           \
->>> +#define alloc_hooks_tag(_tag, _do_alloc)                                     \
->>> +({                                                                           \
->>> +     typeof(_do_alloc) _res;                                                 \
->>> +     if (mem_alloc_profiling_enabled()) {                                    \
->>> +             struct alloc_tag * __maybe_unused _old;                         \
->>> +             /* Fired here to cleanly capture the caller's stack trace */    \
->>> +             alloc_tag_trace_hit(_tag);                                      \
->>> +             _old = alloc_tag_save(_tag);                                    \
->>> +             _res = _do_alloc;                                               \
->>> +             alloc_tag_restore(_tag, _old);                                  \
->>> +     } else                                                                  \
->>> +             _res = _do_alloc;                                               \
->>> +     _res;                                                                   \
->>>  })
->>>
->>>  #define alloc_hooks(_do_alloc)                                               \
->>> diff --git a/include/trace/events/alloc_tag.h b/include/trace/events/alloc_tag.h
->>> new file mode 100644
->>> index 000000000000..af2182501864
->>> --- /dev/null
->>> +++ b/include/trace/events/alloc_tag.h
->>> @@ -0,0 +1,122 @@
->>> +/* SPDX-License-Identifier: GPL-2.0 */
->>> +#undef TRACE_SYSTEM
->>> +#define TRACE_SYSTEM alloc_tag
->>> +
->>> +#if !defined(_TRACE_ALLOC_TAG_H) || defined(TRACE_HEADER_MULTI_READ)
->>> +#define _TRACE_ALLOC_TAG_H
->>> +
->>> +#include <linux/tracepoint.h>
->>> +
->>> +/*
->>> + * alloc_tag_hit is generated at the exact allocation call site and can be
->>> + * used to capture a clean stack trace.
->>> + *
->>> + * To link this stack trace to the actual allocated memory chunk, tools must
->>> + * correlate this event with the resulting alloc_tag_mem_alloced event. Since
->>> + * multiple threads can hit the same tag simultaneously, tools must match BOTH
->>> + * the `tag` field and the implicitly recorded PID provided by the core
->>> + * tracing subsystem.
->>> + */
->>> +TRACE_EVENT(alloc_tag_hit,
->>> +
->>> +     TP_PROTO(struct alloc_tag *tag),
->>> +
->>> +     TP_ARGS(tag),
->>> +
->>> +     TP_STRUCT__entry(
->>> +             __field(struct alloc_tag *, tag)
->>> +             __string(modname, tag->ct.modname ? tag->ct.modname : "NONE")
->>> +             __string(filename, tag->ct.filename)
->>> +             __string(function, tag->ct.function)
->>> +             __field(unsigned int, lineno)
->>> +     ),
->>> +
->>> +     TP_fast_assign(
->>> +             __entry->tag = tag;
->>> +             __assign_str(modname);
->>> +             __assign_str(filename);
->>> +             __assign_str(function);
->>> +             __entry->lineno = tag->ct.lineno;
->>> +     ),
->>> +
->>> +     TP_printk("tag %p, module: %s, filename: %s, function %s, lineno %u",
->>> +             __entry->tag,
->>> +             __get_str(modname),
->>> +             __get_str(filename),
->>> +             __get_str(function),
->>> +             __entry->lineno
->>> +     )
->>> +);
->>> +
->>> +/*
->>> + * alloc_tag_mem_alloced is generated after memory is successfully allocated.
->>> + * It captures the exact byte size.
->>> + *
->>> + * The `ref` pointer identifies the memory chunk for tracking its lifecycle
->>> + * (e.g., matching it with alloc_tag_mem_freed).
->>> + *
->>> + * Because the kernel isolates active allocations within the task struct
->>> + * (current->alloc_tag), this even will always share the same implicit PID as
->>> + * its corresponding alloc_tag_hit event. Tools should use the combination
->>> + * PID + `tag` to correlate them.
->>> + */
->>> +TRACE_EVENT(alloc_tag_mem_alloced,
->>> +
->>> +     TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes),
->>> +
->>> +     TP_ARGS(ref, tag, bytes),
->>> +
->>> +     TP_STRUCT__entry(
->>> +             __field(union codetag_ref *, ref)
->>> +             __field(struct alloc_tag *, tag)
->>> +             __field(size_t, bytes)
->>> +     ),
->>> +
->>> +     TP_fast_assign(
->>> +             __entry->ref = ref;
->>> +             __entry->tag = tag;
->>> +             __entry->bytes = bytes;
->>> +     ),
->>> +
->>> +     TP_printk("reference %p, tag %p, bytes %zu",
->>> +             __entry->ref,
->>> +             __entry->tag,
->>> +             __entry->bytes
->>> +     )
->>> +);
->>> +
->>> +/*
->>> + * alloc_tag_mem_freed event is generated immediately before memory is
->>> + * freed. The `ref` pointer matches the one emitted during allocation,
->>> + * allowing tools to match it to it's corresponding allocation and
->>> + * call stack.
->>> + */
->>> +TRACE_EVENT(alloc_tag_mem_freed,
->>> +
->>> +     TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t bytes),
->>> +
->>> +     TP_ARGS(ref, tag, bytes),
->>> +
->>> +     TP_STRUCT__entry(
->>> +             __field(union codetag_ref *, ref)
->>> +             __field(struct alloc_tag *, tag)
->>> +             __field(size_t, bytes)
->>> +     ),
->>> +
->>> +     TP_fast_assign(
->>> +             __entry->ref = ref;
->>> +             __entry->tag = tag;
->>> +             __entry->bytes = bytes;
->>> +     ),
->>> +
->>> +     TP_printk("reference %p, tag %p, bytes %zu",
->>> +             __entry->ref,
->>> +             __entry->tag,
->>> +             __entry->bytes
->>> +     )
->>> +);
->>> +
->>> +#endif /* _TRACE_ALLOC_TAG_H */
->>> +
->>> +/* This part must be outside protection */
->>> +#include <trace/define_trace.h>
->>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
->>> index f30ef8dd24c7..a5339767efd5 100644
->>> --- a/mm/alloc_tag.c
->>> +++ b/mm/alloc_tag.c
->>> @@ -19,6 +19,9 @@
->>>  #include <linux/kmemleak.h>
->>>  #include <uapi/linux/alloc_tag.h>
->>>
->>> +#define CREATE_TRACE_POINTS
->>> +#include <trace/events/alloc_tag.h>
->>> +
->>>  #include "internal.h"
->>>  #include "page_alloc.h"
->>>
->>> @@ -55,6 +58,9 @@ EXPORT_SYMBOL(mem_alloc_profiling_key);
->>>
->>>  DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
->>>
->>> +DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
->>> +EXPORT_SYMBOL(alloc_tag_trace_key);
->>> +
->>>  struct alloc_tag_kernel_section kernel_tags = { NULL, 0 };
->>>  unsigned long alloc_tag_ref_mask;
->>>  int alloc_tag_ref_offs;
->>> @@ -485,6 +491,28 @@ static const struct proc_ops allocinfo_proc_ops = {
->>>  #endif
->>>  };
->>>
->>> +void __alloc_tag_trace_hit(struct alloc_tag *tag)
->>> +{
->>> +     if (unlikely(!tag))
->>> +             return;
->>> +     trace_alloc_tag_hit(tag);
->>> +}
->>> +EXPORT_SYMBOL(__alloc_tag_trace_hit);
->>> +
->>> +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_tag *tag,
->>> +                           size_t bytes)
->>> +{
->>> +     trace_alloc_tag_mem_alloced(ref, tag, bytes);
->>> +}
->>> +EXPORT_SYMBOL(alloc_tag_trace_mem_alloc);
->>> +
->>> +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag *tag,
->>> +                          size_t bytes)
->>> +{
->>> +     trace_alloc_tag_mem_freed(ref, tag, bytes);
->>> +}
->>> +EXPORT_SYMBOL(alloc_tag_trace_mem_free);
->>> +
->>>  size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
->>>  {
->>>       struct codetag_iterator iter;
+I read the "stale record" here as the xswap-side xs_table[] record
+of the physical slot in patch 04/17. xswap_backend_alloc() sets it
+with xswap_slot_set_backend(), while the physical slot also has a
+reverse mapping installed by xswap_install_rmap().
+
+The two records are maintained separately. In xswap_backend_free(),
+the forward record is cleared only if it still matches, and
+xswap_free_phys_slot() then checks the reverse mapping in the
+physical slot's swap table entry against the xswap entry being freed.
+If the physical slot has already been recycled for another xswap
+entry, that check fails and the slot is left untouched.
+
+So my reading is that xs_table[] can still record a physical slot
+after that slot has been recycled, while the reverse mapping in the
+physical slot's swap table entry identifies a different xswap owner.
+
+Thanks,
+Kunwu
+
+> > - swapoff: try_to_unuse() used to skip these slots. It now reads them
+> >   back, marks the folio dirty so reclaim re-stores it in zswap, then
+> >   drops the backend.
+>
+> It seems data can remain in zswap past swapoff? That seems wrong to
+> me. In my mind, it should just read into the swap cache or promote to
+> the upper swap tier.
+>
+> > - Reclaim: an xswap entry's count can reach 0 while its folio is still
+> >   in the swap cache; the physical scanner reclaims the redundant slot
+> >   through __try_to_reclaim_swap().
+>
+> Clarify: I assume you mean swap cache reclaim not the memory reclaim.
+>
+> > - Large folios: a read starts at the first physical slot, so the run is
+> >   reserved whole and must be backed contiguously; otherwise the fault
+> >   retries at a smaller order. xswap is SWP_SYNCHRONOUS_IO, which also
+> >   skips readahead.
+>
+> I imagine the front swap needs to be contiguous, but the back swap doesn'=
+t?
+>
+> > - Charging: Record the owner at allocation but do not charge. Take the
+> >   charge when the entry gets a physical backend slot, and give it back
+> >   with that slot.memory.swap.current then counts only real on-disk swap
+> >   usage, and a cgroup with memory.swap.max at 0 can still swap out thro=
+ugh
+> >   zswap.
+>
+> I want the old swap charging behavior back. Please don't change that
+> behavior. That behavior change should be a separate discussion and
+> split out from this series. BTW, I am against that change.
+>
+> Great work.
+>
+> Chris
+>
+> >
+> > Note
+> > ----
+> > The base series is sereis of xswap foundation. This one depends on it.
+>
+> Do you have a git repo I can fetch from? I will try applying your
+> patches as well. I assume mm-unstable should be the base?
+>
+> > So if anyone wants to apply this patchset, the order is base-commit
+> > as below, then xswap foundation, finally this patchset.
+> >
+> > [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
+> > https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos.c=
+n/T/#u
+> >
+> > base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
+> >
+> > This partially refers to Nhat's vswap-v4 series. E.g patch 1 is
+> > consistent with his patch 3, patch 12/13/14/15 are from his patch 8.
+> >
+> > And the last 2 patches are fixing bugs when charging patches are added.
+> > Since the charging of xswap is still under discussion, I dind't merge
+> > them into commits. Will squash them or take them off once decision is
+> > made.
+> >
+> > Testing
+> > -------
+> > qemu KVM guest, 8G RAM.
+> >
+> > A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
+> > turned off so that every page has to reach a backend slot. Note that it
+> > need create xswap device firstly then disable zswap, so every page has
+> > to reach backend slot.
+> >
+> > The workload is memhog, as in the base series. Every page is filled wit=
+h
+> > a fixed pattern, so the data can be checked after a readback.
+> >
+> >   # echo 1 > /sys/module/zswap/parameters/enabled
+> >   # echo 100 > /sys/kernel/mm/xswap/create
+> >   # mkswap /dev/vdb && swapon -p 0 /dev/vdb
+> >   # echo 0 > /sys/module/zswap/parameters/enabled
+> >   # mkdir -p /sys/fs/cgroup/xswap_limit
+> >   # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
+> >   # MEMHOG_FILL=3Dpattern numactl --cpunodebind=3D0 --membind=3D0 ./mem=
+hog
+> >
+> > 1. Swapout to the backend
+> >
+> >    Run the workload with 5G of memory in a cgroup capped at 4G:
+> >
+> >    # awk 'NR =3D=3D 1 || $1 ~ /xswap|vdb/' /proc/swaps
+> >    Filename                Type        Size      Used      Priority
+> >    xswap0                  xswap       8155132   2392176   100
+> >    /dev/vdb                partition   4194300   2392176   0
+> >
+> >    The two Used values are equal, so the pages reached the backend and
+> >    the xswap side accounted for them.
+> >
+> > 2. Pages are read back from the device
+> >
+> >    Lifting memory.max and touching the pages again reads them back. The
+> >    pages-swapped-in counter went up by 265642, so the read did reach th=
+e
+> >    device. 1010 of the folios read back were 1M, each read with one IO:
+> >
+> >    # echo max > /sys/fs/cgroup/xswap_limit/memory.max
+> >    # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swp=
+in
+> >    1010
+> >
+> >    hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
+> >    capped below the PMD order.
+> >
+> > 3. verifies data correctness
+> >
+> >    After the readback the data is compared byte for byte against the
+> >    pattern, one time with zswap on and one time with zswap off, so the
+> >    pages come from zswap in one time and from the backend in the other
+> >    time.  All bytes matched.
+> >
+> > 4. Destroying a device returns its backend slots
+> >
+> >    The device was filled, then destroyed with no readback first:
+> >
+> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
+> >    3157220
+> >    # echo 0 > /sys/kernel/mm/xswap/destroy
+> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
+> >    0
+> >
+> > 5. verifies the charge is correct
+> >
+> >    An xswap entry is charged only when it holds a backend slot, so the
+> >    two counters have to show the same number of pages:
+> >
+> >    # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 4=
+096 ))
+> >    526852
+> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 / 4 }' /proc/swaps
+> >    526852
+> >
+> >    Nothing is charged while the pages stay in zswap: with the pool hold=
+ing
+> >    them and the backend untouched, memory.swap.current stays 0.
+> >
+> > 6. A cgroup with no swap room can still reclaim its anon memory
+> >
+> >    With memory.swap.max at 0 and no xswap device, the cgroup ran out of
+> >    room and the workload was killed. With an xswap device and zswap on,
+> >    it swapped out through zswap, was charged nothing, and was not kille=
+d.
+> >
+> >    E.g if memory.swap.max is set at 100M, the cgroup will be killed whe=
+n
+> >    the cap was reached.
+> >
+> > Baoquan He (12):
+> >   mm, swap: tag a swap table entry with its owning xswap entry
+> >   mm, swap: prepare the folio-less allocation path for xswap
+> >   mm, swap: add a physical backend for xswap slots
+> >   mm, swap: use the xswap physical backend
+> >   mm, swap: fall back to disk when zswap refuses an xswap page
+> >   mm, swap: support swapoff of an xswap physical backend
+> >   mm, swap: reclaim physical slots backing cache-only xswap entries
+> >   mm, swap: back a large xswap folio with a contiguous physical run
+> >   mm, swap: enable THP swapin for xswap entries
+> >   mm, swap: drop swap_folio_sector()
+> >   mm, swap: do not retake the cluster lock when uncharging an xswap slo=
+t
+> >   mm, swap: drop a refused xswap backend run directly
+> >
+> > Nhat Pham (5):
+> >   mm, swap: prepare the swap IO path for xswap backends
+> >   mm, swap: split the swap memcg charge helpers
+> >   mm, swap: do not charge zswap-backed xswap entries
+> >   mm, swap: charge an xswap entry when it gets physical backing
+> >   mm, swap: don't gate xswap on the physical swap free count
+> >
+> >  .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
+> >  include/linux/memcontrol.h                    |   6 +
+> >  include/linux/swap.h                          |  69 +-
+> >  include/linux/swap_ops.h                      |   9 +-
+> >  mm/memcontrol-v1.c                            |  10 +-
+> >  mm/memcontrol.c                               | 147 ++--
+> >  mm/memory.c                                   |   7 +-
+> >  mm/page_io.c                                  |  95 ++-
+> >  mm/swap.h                                     |  35 +-
+> >  mm/swap_state.c                               |  12 +-
+> >  mm/swap_table.h                               |  53 ++
+> >  mm/swapfile.c                                 | 742 ++++++++++++++++--
+> >  mm/zswap.c                                    |  20 +-
+> >  13 files changed, 1026 insertions(+), 181 deletions(-)
+> >
+> > --
+> > 2.54.0
+> >
+> >
 
