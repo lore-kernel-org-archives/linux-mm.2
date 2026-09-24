@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4956C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:47:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65728C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B90096B0098; Thu, 24 Sep 2026 14:47:54 -0400 (EDT)
+	id 6FB9C6B0099; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B19206B0099; Thu, 24 Sep 2026 14:47:54 -0400 (EDT)
+	id 6D3666B009D; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E0396B009B; Thu, 24 Sep 2026 14:47:54 -0400 (EDT)
+	id 526A36B009E; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 68A9D6B0098
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:47:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 655401A0478
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:53 +0000 (UTC)
-X-FDA: 85249540026.25.4F3B32E
-Received: from mta0.migadu.com (out-162.mta0.migadu.com [91.218.175.162])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 767DC4000A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AIwnS3bu;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.162 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2778B6B0099
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 107361C27EF
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:59 +0000 (UTC)
+X-FDA: 85249540278.20.3945EFF
+Received: from mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0C868A0008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:56 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hRt6T8GX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790275677;
+	b=ctQ/R4LZLQniPlhq36EKn5U4DbNq73cLrzA+2gxllmqrENsR88dnArvqnpNohU/UTxNKok
+	LzquDq0etLHklboqm1tQeo5GMe4nEhlsWlXbG2rz5wQW26GBdgVztjIvHYdYAvsmXOleYx
+	IyeOKxDpnrpPd6/U4egG0E0dgwKndU4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hRt6T8GX;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275671;
+	s=arc-20220608; t=1790275677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/GTpbeNre9f+7NRFhSsYmx2laiBunXLJbfODm/8I8WI=;
-	b=BdPSQe5RMjKyhZvRAD5kWuxwf/0+sgAytp4db4b2yDPtQpFxE8wbqu7ZCGMSE8MCyobLNJ
-	hxew/k8mrr3fviOqJf/pPYSlqFP3zfp8htTyAjcZZz5x55gDmxVRpD425T6uLwXldY6TSj
-	GP/bOCOSaWrWjuh51LT6Gw9agceIL1c=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AIwnS3bu;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.162 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275671;
-	b=GFISolnNKy9LMvRT3kzez/+7i6EzQ68m5FerFMAxbzNHSWgCDWiD7Q+BGYXGxTG/fw//Za
-	GDTaAtxak68GSirhSu2ZHLh7VMjEnEa/rTAArLPGDDXN/hxmF449ZpC/wSGJ73rXCzRDSh
-	v+4GP+ZneXuM1cIMF0mkJayHlmP0fGA=
+	bh=2JogHQaCxW8NClL5DvCzu+C8uVXKBS+4ZOUPX7Drto4=;
+	b=R3HGfhbexZfEk2zmhbkItFx+8GgVVA7aIN3rOXiRrE8uQVoslRoKoB8hNKp6BfLJ1N4Nk7
+	eQuO3Yjjc8CG2HbIo+J2frlPzCaCsiYx7a81TAcYT+HJglxT2o3OMAuhQAlHVkF2z4oyvJ
+	NH5gEsY4qRXlrFtKt0RUtWA4kw4WxGM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bvsZVhH3fXVvwRMjzbTh1Q0bqUQyRzPT8xCixvm+AS8=;
+DKIM-Signature: a=rsa-sha256; bh=YPDMx5Cpm0Ky2M5qOc3ie9+dgsk3KEGxwc7kMebFStk=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790275670; v=1; x=1790880470;
- b=AIwnS3bu82n/6i8h81+UuybcqZEvxDzN7ZVnE6jw/vZ85Yfr99LPq3lcClGmhALWsbZyGqVF
- C2z4WFkDopIheipluEuhSDyU0G2o5iiX9cqpVOuB79wTUUBWy+vMkyFSdOqDmj2T+M3Hs2OSD2B
- nVkJSwtECuvECqKlE6NS/W/8=
+ t=1790275675; v=1; x=1790880475;
+ b=hRt6T8GX88GoHf5QBQK+pSkz/vS596pjl0ZY5HL4IoVLD1gXsNPWE8+Xin3CSM9peiBdJvj1
+ B65aPsUnHWs30w5E5gAIRODr+kWUrvbJ9gaAbrxPzFjn7Gx8LnXrMnqoPAcE14G74xU6IWJ3BHT
+ D4bL3PTKBTIjkOk0NGppL7H0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 687bc44cdcacb26c;
-	Thu, 24 Sep 2026 18:47:49 +0000
-X-Mizu-Trace-ID: 687bc44cdcacb26c
+Received: by smtp.migadu.com with ESMTPS id 458fdd5e55f5d437;
+	Thu, 24 Sep 2026 18:47:55 +0000
+X-Mizu-Trace-ID: 458fdd5e55f5d437
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>,
@@ -93,22 +93,22 @@ Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 4/7] sched/fair: add cfs_bandwidth_charge() for kernel work done for a cgroup
-Date: Thu, 24 Sep 2026 11:47:08 -0700
-Message-ID: <20260924184714.912181-5-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 5/7] cgroup: take set_active_cgroup() time out of the cgroup's cpu.max
+Date: Thu, 24 Sep 2026 11:47:09 -0700
+Message-ID: <20260924184714.912181-6-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260924184714.912181-1-shakeel.butt@linux.dev>
 References: <20260924184714.912181-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: a4fqwki5rkurwrqq3f9dri77ang18nja
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 767DC4000A
-X-Stat-Signature: aex8zqecyosuz8zxyefu4b5jaja89n6d
-X-HE-Tag: 1790275671-721479
-X-HE-Meta: U2FsdGVkX1/WN/fDpXXcpKgU5sgGZI7brICSpTZrBDL7WHO0f4tk2iJdkHv2smmPNaWNF4oL5ieImrJyx4eBR0DPVA3dhDYEvKSkRGfjvzsKukPzUyQtTrcbGKoDXBPMylkX9ZEc5d5gVa5TsOu8Gh6apigieTnmf/jJRvXZlakIFJDnEgWOcLN+HXNt1/xzvrj4i3Fc7zrfcA76go2gLPnT9IDwfT0S3Y3ryrG1huaez5+PoJI7UHQ9/oaBdDpD9ZQKQGYmziIFDUnRvDJycYZiiD+BbevpqebUBqj2a0n8Bj7GpR82e+3O7rV57aBD1hpLNPBjFTkMZeMgjUiBgIJ9TL/6L1S+2X032PahuwE/Wa3wRurwPUCRcvxWhJ1S6eVb4tMQ5kHmlFKUl3DcCDk52gqyduxoUQy0UifadRTIqw9vsw1uO722Kh4nKSYzIjzvxeHdviYKtwS0IJdSTqaCKT3g+vxf3YY6XJMAwo1vLiVlYXgPS+z6KgaoMaVXqFGehqGQNqtNljSc7TSN+tdGt1TmQt79E1MdliNrzg0aIkItYjZ3QOUVWTCpoMlUmiTcfObehwRnukc9kzerlN+LyVZ6+bYmPllPpjePBPXSLDG5meLMsWHRidMf6n2x07lrNQOjL/WcOnFuK7Qxxgo3+uMebYREk7wy7wPYKNeeovbUKTwZkQZCPiAVwlUM9KJRMYBIc3v8NgYodwSc2fuOrWJ4ztBg3ZUt1wAanHzoSubNobvcaiYjUf3y8EX9dbjnfOVZKUxALJn55Sj4F+CGMWqnRUZG5fHvt37fTHDhXgSPwHTIkHcfPc2/4jobsTBXQpE7K1WLoxOzIVW8JOWKKdMSro+bi17f+q7jhBmV9/M3wuiMok94ke3hXhrYGDzBDZ8wWM7Rzadh8FweT/T6UVdKSTvx602souT+oeWG8iKr0nYXtzx+/9DA0FzgZeHoEqksnmwDMogwC4z
- DptW78L9
- wxfcIzE3HFrr+DQ5qKYwGKf48nBm07ThESgWJsYSaAbfTXT0psHKlC4n+Dm1KaBoGRJNykePT69XflkdiLPma7oZ2fw2MQpxMe/+UtCXuLiVHqY5zXHtc/0bOXgVAww5maM2Q28GZ3gF+T38F33UBDu2j2mH29lqojzL9054KbnPK3QAXDQwRAkKeX8PhzCO9YrccP1Kosv/T57lrsFmW3/pErg7hWvD7bsD+ork785ojQPISBCB0xj4+YaewPMtmDc82i/LUwUDI7rGx/TrLD+ft2zgzzJPcMtk7TOPsMtTQNuvvEmdSuCWxeUk/DslVqJ0ozVUoChicFod1/ryzHtogMyLOQ8AyQIYP
+X-Rspamd-Queue-Id: 0C868A0008
+X-HE-Tag: 1790275676-891782
+X-HE-Meta: U2FsdGVkX1/L1vUjtJUWoAWeY/ZRMcTutghgiIC+Xn1R9SCwy9mzqfQXHHNBAzaZINhpxo17ThmWGUaqhwxchZpoyOXVpYSEg9qosn9dind3a+643/OdWPwt7+gTckh0KB2jWZUTyd4mxNNtGb3W9+E9L6lZJ3H2VYVd07gza8EZKqkROM0V7ORHdmLyKG3SPA9GiUNgKRuITRG1/RU8zdMHS4tiTTLTlCTR+x+qPsrgvpdHXPKNUECwo2I+zo3Iu3NuAEvhIwlSqFxvNaYCUDDOUE6bdWjypY0ODLwE9f43HpkPyeIFgFUwyW7Qneh7BMEKssRYPWg417Oxe+q3aUJVC0sEyVWQtFb41YtM7Okn9Oso3iif06oxsyE5JD8HKm0LoopJ+QFD5e/5hRjMab2lf3EpGBtCWQOFPQ+95e8Ws7oJTJOUA+b/q+5wVoqT12pFPSX6v5rIg2BEOrOaSrAsHNGLeBv9Dffd6xVlh/9+nCEI73+m/EuYl5nrOv4QzjlYPF/q3/EhoZruvt4AwYsKGfjiTtMn8FkLNccCZ4WmZCZDa/OxFZ6ezoaII/50wSPXvSw6BqAzYx/JOeRtdEJjF4DregdMU/XkdkUGo2pjSchrPG3Lp/Fu4Vad1QKeAGjSiewBt9UAs14oCrSWaUxWp65W7NYIEbMAlvTSb/gkktUbPmpjAsTwgQ0fnLus9yB4FrH0gA5g22DGFKLatRFTfRZUEtPzqa94Lv+nMoIYL0oPoUpeRc24/Nzg9b7xr/RXPz5yBanxkhjCgfFUZB6l9z/c3hh8cVw8VPuYwzxdm80e1QQEAzyTqid0Rqu2j7bpK0+iifOtK0Kj4GXslKnjfQnJR0a7xkxaXVTNrh4fWbZSamG3MaEwD7j61PNgm3BFMGn3GdGqViUAZGVAfMFrFS7TJ1CUebvOS2n+LFZ3PYr7DcqxNotyCvi7fo2nhqwQh5Z7DWdWDR/INQu
+ wBiU3F9m
+ eKVecM6wji5g4G4CPkeHTskNcPp5Hl2LFD/Q217dPBvBen4g+S2xc8S0Xt24fqLE8fezZtYgt3T+h37m0G61JNwDn7MXrI2yeHOwQvHaO1t+7bTOJjqx7DSxglJ7eHjURAWP1ITrk1crpIYROC6jzLmN/q6jpwnBL0YgSrQKTpE95xMURFeCZF6DLwEIrNZ3VsEsgAtjYtalwl15IBzscBsOMriYt/ED2dp3L21AG2zhm3vpY5C+7kLU/OBUt8KRG+kha/5IVtDHR8k/YH8PlUkVYIFbXWu1P/avcSKHjqgFVWyJmp0SAj0+FK5Phlt+EI3lORY/CdBKDFaVQouLs78O7HDE10wTCxmha
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,128 +116,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-set_active_cgroup() charges a kernel thread's CPU time to the cgroup it
-works for, but only in cpu.stat. The work still does not count against
-that cgroup's cpu.max.
+Kernel work done under set_active_cgroup() shows up in the cgroup's
+cpu.stat, but the cgroup's tasks still get their full cpu.max quota.
 
-Add cfs_bandwidth_charge(). It takes the time out of the cpu.max pool of
-the cgroup's task group and of each limited ancestor, the same way the
-group's own run time is taken. The work itself is never throttled: it
-has already run. Instead the group's own tasks get less time afterwards.
-
-What the pool cannot cover now becomes debt, paid out of the next
-refills. The debt is capped at one period's quota, so a burst of work
-cannot starve the group for long. Changing cpu.max clears it.
+Remember the task's run time at each set_active_cgroup(). When the
+active cgroup changes, charge the time used under the old one to its
+cpu.max quota with cfs_bandwidth_charge(). The caller is in the root
+cgroup, which has no cpu.max, so no quota is charged twice.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- kernel/sched/core.c  |  1 +
- kernel/sched/fair.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
- kernel/sched/sched.h |  8 ++++++++
- 3 files changed, 52 insertions(+)
+ include/linux/sched.h |  2 ++
+ kernel/sched/core.c   | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 002941f60e88..7ecea9cfa702 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1358,6 +1358,8 @@ struct task_struct {
+ 	struct list_head		cg_list;
+ 	/* If set, CPU time is charged here; see set_active_cgroup(): */
+ 	struct cgroup			*active_cgroup;
++	/* se.sum_exec_runtime at the last set_active_cgroup(): */
++	u64				active_cgroup_start;
+ #ifdef CONFIG_PREEMPT_RT
+ 	struct llist_node		cg_dead_lnode;
+ #endif	/* CONFIG_PREEMPT_RT */
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index b9e288b76da9..a487da494795 100644
+index a487da494795..91fec6461e4f 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -9809,6 +9809,7 @@ static int tg_set_cfs_bandwidth(struct task_group *tg,
- 		cfs_b->period = ns_to_ktime(period);
- 		cfs_b->quota = quota;
- 		cfs_b->burst = burst;
-+		cfs_b->debt = 0;
+@@ -5738,8 +5738,9 @@ unsigned long long task_sched_runtime(struct task_struct *p)
+  * @cgrp: the cgroup to charge, or NULL for current's own cgroup
+  *
+  * For kernel code that does work for a cgroup. The time it uses is charged
+- * to @cgrp as kernel time. Returns the old value, which the caller restores
+- * when done. @cgrp must stay alive until then.
++ * to @cgrp as kernel time, and taken out of @cgrp's cpu.max quota. Returns
++ * the old value, which the caller restores when done. @cgrp must stay alive
++ * until then.
+  *
+  * Only for callers in the root cgroup, like kworkers. The scheduler still
+  * runs the caller in its own cgroup, so from any other cgroup the time would
+@@ -5753,6 +5754,7 @@ struct cgroup *set_active_cgroup(struct cgroup *cgrp)
+ 	struct cgroup *old;
+ 	struct rq_flags rf;
+ 	struct rq *rq;
++	u64 used;
  
- 		__refill_cfs_bandwidth_runtime(cfs_b);
+ 	WARN_ON_ONCE(!in_task());
+ 	WARN_ON_ONCE(cgrp && cgrp->root != &cgrp_dfl_root);
+@@ -5768,9 +5770,15 @@ struct cgroup *set_active_cgroup(struct cgroup *cgrp)
+ 	rq->donor->sched_class->update_curr(rq);
  
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 69145dda0df5..84250bd5caa2 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -6626,6 +6626,7 @@ static inline u64 sched_cfs_bandwidth_slice(void)
- void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b)
- {
- 	s64 runtime;
-+	u64 pay;
+ 	old = p->active_cgroup;
++	used = p->se.sum_exec_runtime - p->active_cgroup_start;
++	p->active_cgroup_start = p->se.sum_exec_runtime;
+ 	psi_set_active_cgroup(p, cgrp);
+ 	task_rq_unlock(rq, p, &rf);
  
- 	if (unlikely(cfs_b->quota == RUNTIME_INF))
- 		return;
-@@ -6638,9 +6639,51 @@ void __refill_cfs_bandwidth_runtime(struct cfs_bandwidth *cfs_b)
- 	}
- 
- 	cfs_b->runtime = min(cfs_b->runtime, cfs_b->quota + cfs_b->burst);
++	/* Take that time out of the old cgroup's cpu.max quota as well. */
++	if (old)
++		cfs_bandwidth_charge(old, used);
 +
-+	/* Pay back the kernel work charged by cfs_bandwidth_charge(). */
-+	pay = min(cfs_b->runtime, cfs_b->debt);
-+	cfs_b->runtime -= pay;
-+	cfs_b->debt -= pay;
-+
- 	cfs_b->runtime_snap = cfs_b->runtime;
+ 	return old;
  }
- 
-+/*
-+ * Kernel work used @delta of CPU time for @cgrp, see set_active_cgroup().
-+ * Take it out of the quota of @cgrp's task group and of each ancestor with
-+ * a limit, the same way the group's own run time is taken. What the pool
-+ * cannot cover now becomes debt, paid out of the next refills. The debt is
-+ * capped at one period's quota, so the work cannot starve the group for
-+ * long.
-+ */
-+void cfs_bandwidth_charge(struct cgroup *cgrp, u64 delta)
-+{
-+	struct task_group *tg;
-+
-+	if (!cfs_bandwidth_used())
-+		return;
-+
-+	guard(rcu)();
-+	tg = css_tg(cgroup_e_css(cgrp, &cpu_cgrp_subsys));
-+
-+	/* No limit here or above. */
-+	if (READ_ONCE(tg->cfs_bandwidth.hierarchical_quota) == RUNTIME_INF)
-+		return;
-+
-+	for (; tg; tg = tg->parent) {
-+		struct cfs_bandwidth *cfs_b = &tg->cfs_bandwidth;
-+		u64 take;
-+
-+		guard(raw_spinlock_irqsave)(&cfs_b->lock);
-+		if (cfs_b->quota == RUNTIME_INF)
-+			continue;
-+
-+		take = min(delta, cfs_b->runtime);
-+		cfs_b->runtime -= take;
-+		cfs_b->debt = min(cfs_b->debt + delta - take, cfs_b->quota);
-+	}
-+}
-+
- static inline struct cfs_bandwidth *tg_cfs_bandwidth(struct task_group *tg)
- {
- 	return &tg->cfs_bandwidth;
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 6c3ad70e58b8..2d1adfd7ad37 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -456,6 +456,8 @@ struct cfs_bandwidth {
- 	u64			runtime;
- 	u64			burst;
- 	u64			runtime_snap;
-+	/* Kernel work charged by cfs_bandwidth_charge(), not paid yet: */
-+	u64			debt;
- 	s64			hierarchical_quota;
- 
- 	u8			idle;
-@@ -618,6 +620,12 @@ static inline bool cfs_task_bw_constrained(struct task_struct *p) { return false
- 
- #endif /* !CONFIG_CGROUP_SCHED */
- 
-+#ifdef CONFIG_CFS_BANDWIDTH
-+void cfs_bandwidth_charge(struct cgroup *cgrp, u64 delta);
-+#else
-+static inline void cfs_bandwidth_charge(struct cgroup *cgrp, u64 delta) { }
-+#endif
-+
- /*
-  * A weight of 0 or 1 can cause arithmetics problems.
-  * A weight of a cfs_rq is the sum of weights of which entities
+ #endif
 -- 
 2.53.0-Meta
 
