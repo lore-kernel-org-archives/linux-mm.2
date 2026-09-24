@@ -4,93 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82001C9830D
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 02:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8771BC9830D
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 02:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B26A6B0088; Wed, 23 Sep 2026 22:39:52 -0400 (EDT)
+	id 84CE36B008A; Wed, 23 Sep 2026 22:41:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 563B76B008C; Wed, 23 Sep 2026 22:39:52 -0400 (EDT)
+	id 7FDC56B008C; Wed, 23 Sep 2026 22:41:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 478B76B0095; Wed, 23 Sep 2026 22:39:52 -0400 (EDT)
+	id 6C6446B0093; Wed, 23 Sep 2026 22:41:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B8386B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:39:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16C9316018D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:39:50 +0000 (UTC)
-X-FDA: 85247100540.17.4767D5D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 4457E100002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:39:48 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=W9dvdB6P;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4861A6B008A
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:41:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C7B62801C7
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:41:34 +0000 (UTC)
+X-FDA: 85247104908.20.AF12775
+Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9484980005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:41:32 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UZfw8DNC;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790217588;
+	s=arc-20220608; t=1790217693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tAL3zinmg72nAILl47EIjpKFCkkRuTmOSr/ESWJ7J9U=;
-	b=vDTDv7B4g/sTfi98wSkyHt77XcxYDAsbMbreR1LGl3hlGNqge4HYeqWuauu8tOlMozVzcL
-	6EahRWGbdbPQd9rR5khX1n0M4GPC4eFYZAoImUv/g3LkRvwPN5VvTMYLeSrm/RUvAQywf5
-	2Y+DpZ1akIQas8qGVz5sfUHRqLp8HiY=
+	bh=4JyEcF/oNMZQFBpW+pWfHZaiat0WqM84Tbff9DsrqFA=;
+	b=y9fvfZGVXvgb4xpBfBeWfuWdMD1iod02vclDkwYMLYq8J8Oh1Wcidc2jU+nk4PUDdm/Ds7
+	G+jDJIcvHCq2LdznjQkrP4SB6lRO0gLm2Plo0bpqaqnLutPCIySBDVuyH8F2KOyGes4gZM
+	anuna0T/JyI7FfkrjPBwKpSyr72jQG8=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=W9dvdB6P;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf14.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UZfw8DNC;
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790217588;
-	b=8aak4b8K+3KTaN8PV+90NVly4FLr5nBtlDxZOLfodjqz8xjaJKFMSlb4e5vFB+B9ua+ONG
-	Ce1x9c+YgYTxdBxxemdowKmpvHwg9QdWOJKj6twmejNLIIb77I7YOPD0+fwnKLz/ptbB57
-	zev79OG6qVxctkJOwy6aBxtgxydFgs8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DEBC2152B;
-	Wed, 23 Sep 2026 19:39:43 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A45A03F632;
-	Wed, 23 Sep 2026 19:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790217587; bh=3UySuy0edx/w4nroYpQEQ/Z+8cXRxme0G3UIaaNXRho=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W9dvdB6PABoqEIc2TG5SXEtkYgDlLcfCsAH2A8xTJ28MzEOSL4kQT4Tb/RV9o82mx
-	 aNNlThhvY2jILwuUGc3V91j6OsfekK3GSDWmL8XPWS5k8Lq0sYDWsjq4m+wApM8zDa
-	 NWD2ARF5LdcFQMCBAUWEEEdhzl8+cvE02LDRQwCU=
-Date: Thu, 24 Sep 2026 08:09:43 +0530
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Mark Rtland <mark.rtland@arm.com>, 
-	linx-arm-kernel@lists.infradead.org, linx-kernel@vger.kernel.org, kasan-dev@googlegrops.com
-Subject: Re: [PATCH V2 1/4] arm64/mm: Use pmdp_get() for PMD accesses
-Message-ID: <tqe22ttrsw7wy5m7wk3u6gv4e2kdj5jrqnvoay5omugin52lbt@2pybz3ov237b>
-References: <20260922061638.3967467-1-anshuman.khandual@arm.com>
- <20260922061638.3967467-2-anshuman.khandual@arm.com>
- <212067fe-1b16-4b87-87a7-4ce50847eb24@arm.com>
- <m72rpspdg5cv7xptent4tglgd25zehx462nfmcx5uyjwi2ag7p@bc6hvhosgtfb>
- <bce043cc-0f69-4297-8f31-92dcfbc0061d@arm.com>
- <7dn5t2m2fzuwxj2anuycz245hnctqc5mgaj5vdx7ybfql7arwv@6ac363txw3ff>
- <e852a2db-c15a-4e9f-b92e-ffd5740498cc@arm.com>
+	t=1790217693;
+	b=M/K7vd1c3KOSJWfbIAPdlkqrlKpEyyeIV3YNAR/5wXCVuWF7Afv522eSMREExmGxkdIimg
+	G8Iw5ZknEeUdXTvo+3i+nikkihkdngzp46BYJSZ2lu0qFugpL2vgzKbxocw9xrxEplEain
+	TzzoLulxv6dWp0LxmIf1NtJIKwFlgYU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4JyEcF/oNMZQFBpW+pWfHZaiat0WqM84Tbff9DsrqFA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790217689; v=1; x=1790822489;
+ b=UZfw8DNCvzVWg99NPcR+Ebt/gMs9c2wbKlw9VF7xDnBODEnpn+5L/KTQ8WXUFmA/7/S3z6nK
+ uOHQ/7PMLg78DwOZDksDiNr+2zlrYBU6LyvH534tTa4wCqRE3GujpnsHM+atPSdOawKRtGksWF9
+ Z8XnWYcQsOI8qU0frPT9vz3w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1489725b085043fe;
+	Thu, 24 Sep 2026 02:41:26 +0000
+X-Mizu-Trace-ID: 1489725b085043fe
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	guoren@kernel.org,
+	bcain@kernel.org,
+	geert@linux-m68k.org,
+	dinguyen@kernel.org,
+	schuster.simon@siemens-energy.com,
+	jonas@southpole.se,
+	stefan.kristiansson@saunalahti.fi,
+	shorne@gmail.com,
+	dalias@libc.org,
+	glaubitz@physik.fu-berlin.de,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	linux@armlinux.org.uk,
+	vgupta@kernel.org,
+	monstr@monstr.eu,
+	chris@zankel.net,
+	jcmvbkbc@gmail.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	davem@davemloft.net,
+	andreas@gaisler.com,
+	richard.henderson@linaro.org,
+	mattst88@gmail.com,
+	linmag7@gmail.com,
+	catalin.marinas@arm.com,
+	mark.rutland@arm.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	tsbogend@alpha.franken.de,
+	James.Bottomley@HansenPartnership.com,
+	deller@gmx.de,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	chleroy@kernel.org,
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	svens@linux.ibm.com,
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	ysato@users.sourceforge.jp,
+	shakeel.butt@linux.dev,
+	corbet@lwn.net,
+	rdunlap@infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-sh@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arch@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	hughd@google.com,
+	qi.zheng@linux.dev,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 10/12] mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc32
+Date: Thu, 24 Sep 2026 10:41:20 +0800
+Message-ID: <20260924024120.14225-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260922-rcu-pagetable-freeing-v4-10-fe1ad1f1e303@kernel.org>
+References: <20260922-rcu-pagetable-freeing-v4-10-fe1ad1f1e303@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e852a2db-c15a-4e9f-b92e-ffd5740498cc@arm.com>
-X-Stat-Signature: 6m3a7fm3bauoyohuns3tzzdxwd7brup8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4457E100002
-X-HE-Tag: 1790217588-550066
-X-HE-Meta: U2FsdGVkX19Ys9KWYcdYL2odiMjDaFyhMmcPkmwib9w8XuswI3pNqeGclKM/0ZV8rFa9WKfelRnqxYCDHixhnL84I1pwqTcslXePVidOF5A9K7p/ZtlmwCH2I9mpEqwpNnJfmDA4d4j7Lrva/lytaksxrZgyoT6gE+iOLUS5T2GHopLeBWvKFEj3GFOXmAAx4tr9I33zS1do3cfw4ou2ftBjd/WiycF9WLjlrNkwQ5gN7NIUIaCZAp9ka5cPF4BsMAybr9MW12qlGeEOsv9jOQvJ0RltDrW8wnT824KD8Ks3761baM7Is+hp1QneXMJSfwqcIF8tGn8TwNGTS5hka/JbqueQ2UHhmxv3Gh3QqRbJPTc/fO1Sd7hmUpKN3ykty6VatxwGlmujt4OxNCBTkJQtFuwJmrn/pzNDhhLHOVc/n3mmED8ia4xmEqmkom123elXoCs7LC+u54PAG1XYTQ0TTuOQgJaP5+/G5fKNZVftp6NFCfx/1OWqkWBy3ZHBVDXG0Qbf3GmVXOSyHF1duV3khpR9wZv0CbUuLVPMP3AQ4GYtqudxicvdTiCAxpa5VXtrx7MZ0QMjN7/pDTIs+0HEIK6X/Y3+UER/ApXZ9RwP+IwX1vXsAmV9YrHnStdyYVbEbEjxUczm3L0dqpwuDtv4hnmT04cquOFye5+kgowoRSAnFYdslo9DfXZtaIq5PCPIQxBkuGxKmEy+MVYqAfJ5bEEOGwTe1ylPNeHREFgeyFjpPyQfc+MWUbETTLBI5dgKCx4A3PHpDDejv1PC52WkmrZ6TKCiQnfelMCVO0q1L9krkBUyrcmS8j9hLFM0kO+tewquTEEbFNLKEevIgm1ZfsaEFYEJXnneNSypI91n3WyEi7E9YC+aDFjKc+h7ST+7cLdFoGyv3v4ugSV7lWLngxiEGYkF9QkeGCI2isOsMpUI4YCT56xTEBgbU9LPESE/YWnyCu9d2UUXbFJ
- ADaEyl58
- TiUjsqTp+OPOWKd7HUXXjfUFJzus8J57qkev5lUqX+Zu8yn5u9rJYqqYh9TbJlg3dzuRZnzoegZq1Memch1cO+YB8Vn8SSuslOPHs8fo/3qKJ/rrCTCFx0Q6OqY1D1zbwRHFbxFPVTADpf6dDpPXjp2uYT1GuQ66B23lguUJyeONWWSnavt0oJ8wred7VHWaZs8hysH0r9byM+0wOQZ0g8gXrVYtIlY0VHQ0jFgn5ROFlChiMnZNfutfE3Dhbmgq22Mh2doNccWA6somMJRFfkUTDWLefzBywso/7Oli8yvXzMzvPvMomDfxUOgpiBTsjGhFi+w9XAYxrIqcoomW3qHQj4MifHaoEV5d5QjuM6IlyCvNwk8VjCFk6uxt4uNUpX1cI5J4azGczg+7Pa1A+zWQgvA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9484980005
+X-Stat-Signature: 6ozrgmr6gecpp8tiudx1euacairm15gj
+X-HE-Tag: 1790217692-750959
+X-HE-Meta: U2FsdGVkX1+DC1gHWLM3lyiWP+c38uxGoC7DK5nJ+xNzpEdR6AOrnHHC6iJ/u7rSy3SiVhpEV37OQkFZRNXCCTmAqliUkn8qNVgeRYg8BKncHGxjc/RXaLx4+nsdmAxuOyQTvoPQ1OrwPWziN3pGu1DfQ3OGFM515YbDSYRqhJiXO5LwL1nAuY94LXXx+pgyGmjBXMvLm/pcKFGf4z5RTpnkiE8DdnHACv3wU98/EuI0KnmQ6E1vLfJ3jmhVlS/P3H4vbDOhAye2ZBxOjtyACA6U4BejnALTrwfuJ3Arntkk8bEd7+dPBI11brOVBdab9mF+KDrTgHR6b6YnPyDH7HAbdQZ9Y1WJ9Y4AF2QuumgObid8a6Lg9MIHRaiVdPM+UFkHSXvn36+bOsUFWLYdMI1+aNyY9zCuqpFbbVUnJ7GDCuh5c9jAkzW+R3Neq2yvG5WoJtSKizgnmFEDIpNOi2Mk10MXuFw1V+xt2Cw6iTIg//kZwZk5hjccu0o2p1Th1JjY4d1hYaYB+G47Oor4MDXh1qhNiTRuMzoj1CJzQ6N1crNwZmgbmPo3DdQ1Y5o6zwOHWcmmm3diWpNkqGsHTeVDTXJhex02E/HFXiW3N1aTFGZz3L8RE1JMnKzisBBUDPPca6obZ2IUnXU+LOUYWmvBoji5kAQssAeQ5SDHx/Y9HJlc2wmKoFPSl1ol/knbTCaaI4crEC4sms3ixSizQPKEtGZxshD6ARU6zsrruTkQIwG1xH4ncRZ872G0itDKfR03ZhL4BG3C18RND1nlDtEj1Z6MQAUBSx6sg+mScx6wbRC5gSH+IOqYpCPyemZ71q94s7oXgFHeZrBjq5d0gEW/KnkmihVaoJHz+rn9G0uivl8Oxb5oC5rmGBCn4GTZ80xZ7jrfvV/X83mSO/1k0H/c0trJxjSu1C1K7+UBmtDAXqlsenueSTyVBzE0dLTYETWgeRuwMt/9jxc8w36
+ gWTKBd+x
+ pxCa5aBLwPBJ87IXAm5v6Yj1KX3x8BMEXQz5nBs7NYKfDwI02TGRoHx0+IulsdYlf/Tw/++cgBzSUpd6JtM7x/bBmTR8F6K0NBxPUYH0GnkAo+Y29QseoSvfePbR1rQEEJVaAWi/OGtTQWEWDXcxRFf9HGeXARUJNnbMiyXeOexQE/a9e4MDt8tkXGEpQas4pT5M9hqjx76O7k1IAA718SL8PuL3yD2GxZQ8YLBWiD/QeoZoLhgeVQnNn7kmiSCKq17yGAOoU4vioOm5bkQkmVJRwG2/fDSOzpuQz+eKOl2d3VHiE9nUmBY189VuPJ7Y2lE7ikFVgzkZzYs96NKAwD0AQeMt4b6duVq2Sd++ukrMes02jVZ0RaEuF3Z9rbqKTHws6e7zlWsWV74HZpGtAarh+u51QfCWlWYBe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,80 +186,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 01:50:34PM +0100, Ryan Roberts wrote:
-> On 23/09/2026 13:22, Anshuman Khandual wrote:
-> > On Wed, Sep 23, 2026 at 12:31:42PM +0100, Ryan Roberts wrote:
-> >> On 23/09/2026 12:01, Anshuman Khandual wrote:
-> >>> On Wed, Sep 23, 2026 at 09:32:17AM +0100, Ryan Roberts wrote:
-> >>>> On 22/09/2026 07:16, Anshuman Khandual wrote:
-> >>>>> Replace READ_ONCE() with pmdp_get() for PMD accesses in preparation for
-> >>>>> supporting both D64 and D128 translation table formats.
-> >>>>>
-> >>>>> READ_ONCE() cannot currently be used for 128-bit page table entries on
-> >>>>> arm64 because it does not provide the required 128-bit single-copy
-> >>>>> atomicity, causing builds to fail for accesses wider than 64 bits.
-> >>>>>
-> >>>>> Although LDP/STP provide the required atomicity when FEAT_LSE is
-> >>>>> available (as required by FEAT_D128), extending READ_ONCE() to support
-> >>>>> 128-bit accesses is undesirable. READ_ONCE() is a general-purpose API,
-> >>>>> so doing so could encourage other 128-bit users that would either fail
-> >>>>> to build in configurations without D128 support or, if D128 becomes a
-> >>>>> runtime option, silently permit tearing on systems without the required
-> >>>>> hardware support.
-> >>>>>
-> >>>>> Instead, standardize PMD accesses on the existing page-table helpers.
-> >>>>> These can be overridden on arm64 to provide 128-bit single-copy
-> >>>>> atomicity when required. No functional change intended.
-> >>>>
-> >>>> I notice you have an unconverted READ_ONCE(*pmdp) in
-> >>>> pmdp_test_and_clear_young(). Is that intentional?
-> >>>
-> >>> Converting the above READ_ONCE() instances as pmdp_get() cuases a build
-> >>> failure as pmpd_get() which is defined in generic pgtable header is not
-> >>> visible inside platform specific pgtable header, even with a forward
-> >>> declaration.
-> 
-> I was wondering why the forward declaration doesn't work, but looks like some c
-> files include asm/pgtable.h directly, which explains it. Let's assume there are
-> good reasons and unpicking it so that only linux/pgtable.h includes
-> asm/pgtable.h is not practical.
 
-Agreed.
+On Tue, Sep 22, 2026 at 04:35:41PM +0100, Lorenzo Stoakes (ARM) wrote:
+>Careful handling is required for sparc32 which implements page tables as
+>part of a shared backing page.
+>
+>To support this, a custom __tlb_remove_table() function is required, as
+>specified by CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE.
+>
+>This allows __pte_free_tlb() and __pmd_free_tlb() to specify which page
+>table level is being freed, which is transmitted to __tlb_remove_table()
+>through setting the lowest bit of the page table to 1 for a PMD and 0 for a
+>PTE (the page tables are 256-byte aligned so this is safe to do).
+>
+>Next, since the page table freeing is done via RCU callback, and thus might
+>be executed in softirq context, update the spin locks to IRQ save/restore.
+>
+>Then, in __tlb_remove_table(), figure out whether to free a PMD page table
+>via free_pmd_fast() or a PTE via the newly introduced __pte_free()
+>function, using the lower bit encoded in __pte_free_tlb() or
+>__pmd_free_tlb() to determine which to call.
+>
+>As part of this change use this spin lock rather than mm->page_table_lock
+>for all shared page table exclusion, as RCU freeing means that page tables
+>can be freed from soft IRQ context so both don't have an mm and also
+>mm->page_table_lock is not IRQ-safe.
+>
+>Note that the specification of CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE disables
+>CONFIG_PT_RECLAIM for sparc32, which mirrors sparc64.
+>
+>This forms part of an overall effort to switch every architecture to this
+>mode, and with it complete, means every architecture now supports
+>CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+>
+>Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>---
 
-> 
-> >>>
-> >>> In D128 V2 series these conversions were performed later in the series,
-> >>> when platform specific pxdp_get() overrides were added via ptval_get(). 
-> >>>
-> >>> But to avoid this, we could just move pmdp_test_and_clear_young() inside
-> >>> arch/arm64/mm/mmu.c file instead. Folding in the following change builds.
-> >>
-> >> I'm not sure if/how this might affect performance? Probably not significant
-> >> since they are for higher levels, so not called as frequently as pte helpers.
-> > 
-> > Right, should not have much performance impact.
-> > 
-> >>
-> >> Another option would be to implement arm64-specific pxdp_get() helpers in
-> >> asm/pgtable.h to override the generic versions?
-> > 
-> > For now those will still be based on READ_ONCE() just like the default ones.
-> > Although trying to drop similar redundancies from other platforms :)
-> > 
-> > https://lore.kernel.org/linux-mm/20260923043226.331880-1-anshuman.khandual@arm.com/
-> > 
-> > But given D128 is going to define pxdp_get() anyway it might make sense to
-> > define them now and withdraw the above series :) Seems like s390 platform
-> > also has similar situation.
-> 
-> Given the desired end state is that arm64 defines it's own pxdp_get() helpers, I
-> think the best approach is just to define them now (as READ_ONCE()).
+Also ran page-table teardown stress on qemu-system-sparc (SS-20, sun4m,
+CONFIG_SPARC32=y). All 24 rounds ran cleanly :)
 
-Sure, will do that.
+Feel free to add:
 
-> 
-> Thanks,
-> Ryan
-> 
-> 
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: Lance Yang <lance.yang@linux.dev>
 
