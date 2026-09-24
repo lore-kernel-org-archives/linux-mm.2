@@ -4,149 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CDC0C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:21:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C44C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:24:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 626EA6B0088; Thu, 24 Sep 2026 13:21:09 -0400 (EDT)
+	id CBD216B0092; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D7D96B008A; Thu, 24 Sep 2026 13:21:09 -0400 (EDT)
+	id C6DCC6B0093; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7156B0092; Thu, 24 Sep 2026 13:21:09 -0400 (EDT)
+	id B60246B0095; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EB3F6B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:21:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9DC28C043F
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:21:08 +0000 (UTC)
-X-FDA: 85249321416.23.9796BF8
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf04.hostedemail.com (Postfix) with ESMTP id D4B8F40006
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:21:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="jHwxq5j/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790270466;
-	b=JPv9X1FRxZu3HbSVBAcbzn3uS+VAHajZRUOhF85wnEUZJ7tsM+DpE5RuxmtPQwLkN3Olua
-	k87Wu6Gr+QybVdbEFNGFGUTICC7rZcuYeRqbHhQMQZ25PgnW5Cm44GLkLHgwHyhZvp8CQg
-	vUFfsusj4+PqZvbUSd/l7Zt0pbyCIUc=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="jHwxq5j/";
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 809746B0092
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E03BD1A0431
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:24:33 +0000 (UTC)
+X-FDA: 85249330026.17.71BB3CD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8D7A2180002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:24:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dhEWgyGx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VC50vUiM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LR6NReq+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pzdn+HWp;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790270466;
+	s=arc-20220608; t=1790270672;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zYEK7bqTK81B9cfb1lNVZACMRyatDb4IFpKYqtTn76M=;
-	b=LglnnXdm9uoGJcue/vDI4SxMMv00Zt0fQw/G/f8Y4s9UXwqt+wrCx3s1mmaUhPusRg/4GN
-	BGZX0iIAyClJXL+EoQkF1BmJ0nozbdAcd/5EX5A8SyQd7edveaK8LV0FKbA7G5wDrbkgdm
-	J37B7jOr9GcpozuMynQFHSkuTQ6nc7E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790270466; x=1821806466;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zYEK7bqTK81B9cfb1lNVZACMRyatDb4IFpKYqtTn76M=;
-  b=jHwxq5j/QAnTxmpcPWm0kOOTaMv0eahDMLoXJIbUbsHVsipVmHw/ATgX
-   6AK9wlW4ttiosC4j9X96ogxI2GAMsGiR2tQzfjnWlrk1N5MzWzXpKyG34
-   nT6vL5VKvx7QbEwcSUSVZTb32vbazj8qEHx3qvDpvTj16ahYAzep1h7nR
-   2914gyjQXXqMAeP51NKQo5cago/jh7KADQOHjyUeXE36VVxZyPFx+vI1b
-   O6pqVkQpA9ND+1Rtgi2b2NJnhG96I5Y/MaxMFVzLoGxzCzE6AiMYENs2R
-   TDDRYmOpc0oNV8YZXKgGOvDflI2d5Zgg6sLjVTQxL4V1WnYxBMYpbZJ1m
-   w==;
-X-CSE-ConnectionGUID: P18ygnDuQi+QZjmeCEznrA==
-X-CSE-MsgGUID: 3voKYcH5RYenLYX6kBFEVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="107437032"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="107437032"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:21:05 -0700
-X-CSE-ConnectionGUID: vf3yPULhQ2GSNc4Lw1fP6Q==
-X-CSE-MsgGUID: TESpmyX2RdaAm3wzd41vtA==
-X-ExtLoop1: 1
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.110.171]) ([10.125.110.171])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:21:03 -0700
-Message-ID: <d8b502f7-a552-4600-b348-614d1d62afa5@intel.com>
-Date: Thu, 24 Sep 2026 10:21:03 -0700
+	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
+	b=aJJGWIrKj+mzuIfeV5gvbV6NdL7Co2l5eL3hldQqf6/78QpoOqyt005WdyTVNPGYj0+y5s
+	K+PW480jDn6yEGMrKQBpUllROBckkteKDxaXkkXHAKugQ098rQyUKGk9SVX8xqeIlQYjYC
+	IZuoZyYzJpzG3SYsPfLoJDNJ5sdHYLA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dhEWgyGx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VC50vUiM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LR6NReq+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pzdn+HWp;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790270672;
+	b=4VFAyT+ewIs2ANs0X1llZeEwz0YYMKJ2/+BW7AEqOHhQdh0gKk34+nsZifF1zUC0r+NU8p
+	fVnNgxiIXOq1n44oJB25hfZ+/EdceSgrnFqU6U4cc+v46g8nimz9VTcPuRvNYdNkCAlXaR
+	GA2pWohN8nUQlncLSsorqDq/PePWa8E=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4757721E73;
+	Thu, 24 Sep 2026 17:24:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790270665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
+	b=dhEWgyGxS5Z5ctqdR0yICoWzdBB0/evYvqjpk5eOD1jcIcU4aOxCPylklMp5aBo/6Rmq5I
+	dUXZ62pEbl3eetWcqBF0MgLnil7RZTifdXtkp/gE+M3+zD8xTqFzsvM/pq/kkK6t0qV4N8
+	VPUIl6MH31xZUMUAowWjb1qWMhkknyw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790270665;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
+	b=VC50vUiMtbYDIbX0z7mDu1x6GjouR4gRpsmavETWMf7FxDOkkNtaAVSvfw7hMqFmDfFvoc
+	xCrnojy1ZCfzhBAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790270661; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
+	b=LR6NReq+TnUe5fdXqufVbr4D3bjuLwcDrpW2pU5O3+qenfciV90e6EhHdfYQPbhFZWo4FV
+	ta1usx9+3SVdWMDBaYY4ThbqIs4HZ+B4HbHXslThf0OXSFXTeNHoIahAtWZuOZPozfxvJd
+	ovyj1jVSV3EpC7Nvd4rpdichfy5LO3s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790270661;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
+	b=pzdn+HWptHAnoGOU288Z97sHw5tQ7d/athgrR1UmFoXDnphsjPqP6U+o/LPuaivqTfyN4z
+	0i9GFyYTvdSFZSBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBA3C13354;
+	Thu, 24 Sep 2026 17:24:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YW4xMMRctWrdCwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 24 Sep 2026 17:24:20 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 6C4EDA132E; Thu, 24 Sep 2026 19:24:16 +0200 (CEST)
+Date: Thu, 24 Sep 2026 19:24:16 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, Christoph Hellwig <hch@infradead.org>, 
+	Mikhail Rudenko <xyzzy@yandex-team.ru>
+Subject: Re: [PATCH 0/5 v2] fs: Deferred inode reclaim
+Message-ID: <pu4x4cgddu7pcb6gm5bue3eksr5rarbcqu4h3un2z56txi7p6x@ydiql33kyvtb>
+References: <20260911081309.14137-1-jack@suse.cz>
+ <20260917-entweder-limitieren-kiefer-f033614058bd@brauner>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/mm: Drop the page allocation from
- pud_free_pmd_page()
-To: Pedro Falcato <pfalcato@suse.de>,
- Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Toshi Kani <toshi.kani@hpe.com>,
- linux-mm@kvack.org, regressions@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260923223116.20090-1-mikhail.v.gavrilov@gmail.com>
- <arVV9WLXQOwR8Hy8@pedro-suse.tail5790ac.ts.net>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <arVV9WLXQOwR8Hy8@pedro-suse.tail5790ac.ts.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 98717a5prppafq6ftynt85cyya3owpts
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260917-entweder-limitieren-kiefer-f033614058bd@brauner>
+X-Rspamd-Queue-Id: 8D7A2180002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4B8F40006
-X-HE-Tag: 1790270465-96080
-X-HE-Meta: U2FsdGVkX1+5Ni4q21gN5NR5O3IDTYtNpbaWl65Ugx4twMvmlEShtnqqBFvDSpYz7ix8VLK5Js4Mgqf4SxWQO3KBkVqEuMAn/oYcoAUynBu1yCXXU82R5jpcJqNVENINUfQN7SClbO6K4DjzD7T9KTa3CIza8rhJpCElWSkTWLfgx72yY+6/2BMauzQf800RWSR7GiO4zsEgjp0WNDyLbWwMsgV5JuA9WqrQiSx7cruyggCTj1dAhyxX/olFryt/6dIFdOVTM/WX7dtrqeCbcxKcY8chZ4l4aR0iopKkzKCjm9zyVNWabFlSongaaWPQg7ZR0f39XMg5LFXliSLlbxw9aOiRtzIS7O5z/ku3tmEU/DUbrpT5LpY7tsXODM18I2cyR1vj9OPvjKH38eCqRDwMvpXQjJKd8PloOd9EhzOV8r5msz+RQ9StoursbN+oCwDV0VxjTjBbqnFRICSrP5ztieWvqpe1zvCi33tozjR7KfJnnPqwJ9eEgPaYW1dCiJDvVBF84TPYeHwfazX+LrwBZe02oVXf3btvf4iZx0tRXpbbKe8RHJJK4LDvJuHlzk+A6iEE9DumdGqsnU9X35PrlP+OJNjz/mNNl3p3GdZQ7HoYC9SbMjNsrEwV+d4l4EMxMs4eNCz/DU0EZdNFOKS2Us9h1umKsFWh5yWMRpmXGaz2P15FyFIkagrW9I8A1IcOBxulOpWbBAt/39EOizrLBPcmA/hbJz1eYo0mRWVRmM8fiEHWHogbNeszjttYCsqzAWoaveagGEuPTvf0Fd+ceUztLC13DCfBpRFS0pLEC3Ngrtj67SAO3Kl/b426MihxUPyi/DK19EGoLc7ClwodbbJs9etrr6skjA1bq97hnQ6PJQfx4tNlC9IPdYyiJd3ue1aBKOH8sitRrGsHjXyi5/tjXkz40hP1Dc5gwFCo5dY27wahr1lMgfnEcsoHG39xE3u5fSog441P17l
- 9EszeLPX
- +OT6dgkrdMy3OGf/MIY2ykV+rh/Nqjg20R96HLrCTGb9MIyw9MbCba1vwYTIeZxt80VTfPN0VEbJK/AzxdANyJvF5Hzoic3qm/V0ArLSH4+RaLk9kyuzonz+S+sfWS4jH0od+qhQGNoPKOgEIKcM5b6c2/jZUYLnCxJb1+ltd6TFcbaX6ABH/1wFh8nsGAID8cbpUcu5XmluECswJ/zY3Ggrom79CbBYcIAQeenTPPyBuibuFJ3OJa8bJwTFolI5JtY7SWL7FUrQltwZVojy0YnJtYuTJD6U3tswmTZc32ziP3FBCqFJAd+pbEiXw/gYsA/QO+NCSCXoJLCecfe8aj9TJ8Xtp13U3kQrL
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zneaqh7cbmfsssf7e7p9kxaz9arxgs3u
+X-HE-Tag: 1790270671-721236
+X-HE-Meta: U2FsdGVkX19VrrpGAE4U9RA1/0QDc1nXRJHEdWhS4FvhxRXKcnsiGqlcb6XNPWNXhw5+l6dk/yYQZe3iJmCZJUWcTfSf7HgB0vtIBLMrniQ4xpJn7IhpK2CQTcMXRQVWu3yIizspPi2O026Yut7/uC+UvfA5YZk1EeOc5mKwW32380k7clX3lbuZaV6qbYIcHQWXup8cQOdI8TkNroreeIytfRMP+E+v4kGVksEgge9Z75gQ7Bv3aQwiWC45wTYofZsK3mvFbOaei3uqUXXT+yarMJmrT5fjMc95T/hL9wh/PbwrAHf1wz9zYnx35zFrjyUu15QjfMaL6ZgNoiYIOFJppRFQeriI88fHIx2i84MhNLq+Z+nhfnXCijc5/t9shrEommAPiyGN6dG+fqD8wdxQDuAEQ12i1MS2JmwlD40hTxB5qlIt1F543z5Cm0zv8NrfODSXNuWuSjzAlrQKXmqGxkVaHRIFnFPL7hLS7po9sgbsVsp4DSuXRWjySOwL0esdBaFNojqj8vKpxdnFpsZ+LQ8RdY4tNY5WeafaoGShc+cwdwTGudX55YFzBTJ4IjLxG/SUNRsX3zR4xCRFZPhzInp2LgwNFlw6xKmXy9pFzbCoPOuq4kcsklL44X1Ny/T6J2G+N1FZsmXHHUDeHeZ/TdYvR7weUR91mZv3g5qME6wiCgMpx9FvkFsf8aWLq3xRUGsQrUUrhZEz+g+Spx8naUigoIqjyNCzFf8eO3Gx9/zFRuQjVnq+Cu290jXT1wBkMYqoULU7EtuZxpqev6ekCZRCLuUqD+4764RmOfq9Kajpnk1hOw+9+A5i0hr+O6bMUbU7CON7TmqSGkx/MxBLpdgWWd7acG6ogRpKDK11FhLmqk8fMqrAJZW6jpG6zSPzp/kOX35aTSdLqgunV4xqvjJbirCwFUkZcs9rcdQe4m8Qrxr9V0pXuRFUOW3N2AHClNW2rQF9l4KU3Gv
+ CuquoFTo
+ 59wSRHOCSBf4bcNccDz6IPYJqFT9IAEmziZYjqR+hyHuvAxW8aQrRUzhX14hXhaHKBwRLceX0866iBr3BVMaiQMUj/HQT3RfYlDtHiIsf6FgIvwY8UJDl0smselME65Kq2dADzi52hnhAGms34g2l7P/bgtqubfCGSzJr8t/ybLsuEYnyqO0RbiEUXuBGG0i664dbR33nX5/64303+gXlob7mnfrg+xU4DSFv1/Xe3p1j1ClijM3yZhI0uDjoJMKiwmhr89xJc7ctUz8RNmBQFcz1BOmTxVSAQKpH93/hgUfiAgZqQNYPFxFvUiU0mVY1Of6Lq7l05AI7ZC/RRlw4cI963A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,10 +133,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-OK, I've got a version of Mikhail's fix with a changelog and comments
-I've munged a bit:
+On Thu 17-09-26 11:56:17, Christian Brauner wrote:
+> > Hello,
+> > 
+> > after a long pause here is a second revision of my patches implementing
+> > deferred inode reclaim to deal with MM warnings due to GFP_NOFAIL allocations
+> > from reclaim paths. This happens because to reclaim some inodes, filesystems
+> > have to do IO including complex operations using journalling and forward
+> > progress of these depends on successful memory allocations (which is impossible
+> > to guarantee from reclaim context).
+> > 
+> > This time I have fully tested the patch set. In particular it survives full
+> > fstests run on ext4 both as is as well as when marking all loaded ext4 inodes
+> > for deferred reclaim to stress the deferred reclaim paths. I have also tested
+> > (when marking all inodes for deferred reclaim) the patches by creating a memcg
+> > with 128m memory limit and then scanning from 10 processes 600k inodes in total
+> > which heavily exercises deferred inode reclaim paths. This also verified
+> > efficiency of throttling of marking of inodes for deferred reclaim. Basically
+> > we cannot guarantee any particular limit on the number of inodes queued for
+> > deferred reclaim as that is bound only by their number in memory and memory
+> > pressure. But as the number of queued inodes grows, the tasks creating them
+> > get slowed down so eventually some equilibrium is hit. In my VM this was
+> > at ~10k inodes (only slightly above the 8k limit when throttling kicks in)
+> > but this all very much depends on the reclaim pressure, speed of deferred
+> > reclaim etc. so I don't think this is some representative number.
+> > 
+> > The first patch is a pure fix for a problem I've hit when running fstests.  The
+> > second patch deals with lazy timestamp updates which I've decided to handle
+> > better directly inside the writeback infrastructure instead of deferring
+> > reclaim. The remaining patches implement the inode reclaim deferal. Ext4 use of
+> > deferred inode reclaim is there mostly as a demonstration. Other filesystems
+> > need to determine which inodes need deferred reclaim and mark them as such
+> > which generally requires good internal knowledge of the filesystem. I'm hoping
+> > that once the infrastructure is there, fs developers prompted by MM warnings
+> > will start using it :). I know for a fact that besides ext4 e.g. btrfs is
+> > hitting MM warnings in inode reclaim as well.
+> 
+> This all looks worthwhile to me!
+> Note that Sashiko is complaining about long-term stalls introduced by
+> this patchset. If this is intended or bs then please let us know.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/daveh/devel.git/log/?h=pmdfree
+Yeah, there are some good suggestions from Sashiko. I'll address them and
+respin.
 
-Does that look OK to everyone?
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
