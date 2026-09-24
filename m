@@ -4,108 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C141BC98304
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 04:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E62C98304
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 04:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A1006B0095; Thu, 24 Sep 2026 00:07:47 -0400 (EDT)
+	id DB2C96B008C; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 852836B0096; Thu, 24 Sep 2026 00:07:47 -0400 (EDT)
+	id D64636B0098; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76A8B6B0098; Thu, 24 Sep 2026 00:07:47 -0400 (EDT)
+	id C7A2E6B0099; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C3586B0095
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:07:47 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3BBDC0205
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:07:46 +0000 (UTC)
-X-FDA: 85247322132.09.A070F8A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D7DF71A0002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:07:44 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+eQpLFa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790222865;
-	b=rlgpcp+gJaAwynbfyIekeTBncBmih2LBr+rCACRFxvb5+HlnwWU+ZK1zt0wX0OoMcxN+60
-	bkNfu5WwKeNxiIXZgA5Vqg3Q8M67Z27I4+4GTsahH0YzgC9ye3T7H13LviKNCwmRycuHqS
-	9lGuptNJC7j24a42JxZy3klXPUOAVLg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W+eQpLFa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A90936B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 153A1401E1
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:13:05 +0000 (UTC)
+X-FDA: 85247335530.08.6B55004
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 103D7140004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:13:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZjqTNrHw;
+	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790222865;
+	s=arc-20220608; t=1790223183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wlxzHAl4jd2Dy0VVw5bc0eae7SydK76Gy5QsoWtTugw=;
-	b=xejyz0sDcQGthD23x2uVIUlJ99vY/bZYlQxsOFzYjs3fCJkRlp0zoMc+xm73gffh7CAr6r
-	H0xZ50zo+V9n9MrseguOk3K5sdX0jtxRJGeDPQ7mQcn6Dye3ePkgobSJ4ps1kDpn+2NQIe
-	S9D8jVKyZAygIs2YI+idQd0VgtW9Ye0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B628843751
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:07:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0571F00893
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:07:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790222863;
-	bh=wlxzHAl4jd2Dy0VVw5bc0eae7SydK76Gy5QsoWtTugw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=W+eQpLFaM2rcqsBrwxptT+1AE4q8ovSwO3chFMk819v3awDKts+y5Vk6cayF3ClxE
-	 Fl5WCojNXMrnxkT4G+aF96bfpimhq6BS3ZvRyNDiIFIlXxQvSXF8INmmLoc+yvkKC6
-	 NLx9Q6TnmT5AIco6f2+k549wDAisZdSuDL54+mE/2ctC7zPDHPJrAdVLnnTZ43sgGC
-	 XrZQ9MliKDafN8cVGbCYAtNdWJhwGnTqNQOU8jbiieEIHq45AYa9Jp3tzr9Nhn6tC5
-	 +B5kJ6gY0a+Qmk1rHyGpvh5fcc8iIMUwF7ja9OFZb1D34FQi7KYflEF0xFN4XYIm9g
-	 bO6pNhB4cMVFw==
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910cadea0so96031085a.1
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:07:43 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzRNRMz9pGyBeDyQTjZ82cF8Pw+Y9GRA/Wu0UR9+/LvCGC45ix5ZRFjZh2LOz5wyG6y9FpDO1NwYQ==@kvack.org
-X-Gm-Message-State: AFuF++k+/LprTP5Pio2WLqKD2m4LD1gQZHFk54a3qwGp5JEWjxWpfCon
-	0RumVuuec0uyB/b6tT0uoDkAupA/jvDKtcs+GMGI8/If9EaUpG/vzCWdpSWtDdzUsU0FQxI2+7j
-	piQPfmq9rmcdiWG7uZWAtq3MGi60ilS8=
-X-Received: by 2002:a05:620a:178a:b0:93b:6113:21c with SMTP id
- af79cd13be357-93c3625bfedmr121073085a.10.1790222862939; Wed, 23 Sep 2026
- 21:07:42 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iv81RNA485adQFvrL4+HZjzDjbdgSHwKqirIAdW4HY4=;
+	b=esJOe4LlvsMrr6/OL1e4DBTVuFzY5/Aly926i8jqm0oRI8tdRupjlAd7YdKQ8lzWTZni2G
+	gd9Gltcbz9Jgzo51tbcwB3AGai6dsVt1nMjewnnb1wWufFMGouakF2b6EYuOszj7EGeM1q
+	Hy0HYKEOf6n7zBGoWPcLcYGqbPjQmzI=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=ZjqTNrHw;
+	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790223183;
+	b=T7Yj2PZxFI5KGTIFz689DV7mJpE5sGK5ImPAyDsB7zwTQQ52fvLr3OIQR9xMGNQEdJ96Pr
+	NDyhyFAqoBKjtwerATZNo/g+o2849AG08vT7vdXSV3burQbGkmCPFxQcV1NtfXboSeQT/R
+	weG5ocbAY8jFuCWPu1iL8sZ+ikZV6TU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
+	Content-Type; bh=iv81RNA485adQFvrL4+HZjzDjbdgSHwKqirIAdW4HY4=;
+	b=ZjqTNrHwAlJ2M/cArk9hKPvbBufLBaJtptxYdQb7413DMPTmJwjJeoRfyEviU0
+	kuF3Wh4Sw1iOEGSb/5uIz6/8tK+l+S0QaDGZkwe9a8AsQovXL95HSAl3Oiif0x8N
+	r9T7e/mOzeJIIH7r3m4cch0AkYv/DJzJOUyYtiwsyQ3B8=
+Received: from localhost (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3X9Y0o7RqWqn_AQ--.41231S2;
+	Thu, 24 Sep 2026 12:12:37 +0800 (CST)
+From: Hui Su <sh_def@163.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
+Cc: Hui Su <sh_def@163.com>, Balbir Singh <balbirs@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4] mm/migrate_device: consolidate compound folio handling
+Date: Thu, 24 Sep 2026 13:12:10 +0900
+Message-ID: <20260924041210.13d04b8be24495fc593665283d2e4453d449502f@163.com>
 MIME-Version: 1.0
-References: <apcVhWzEwkwHYjB1@KASONG-MC4> <20260901220430.79810-1-baohua@kernel.org>
- <SJ1PR11MB61051CC2791B67C97BEB2D4B8CB72@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <CAGsJ_4yRJnr4xXdokVHu85b7XPe0p6rZ+Lzv4sE_gCWdOF4YAw@mail.gmail.com>
- <SJ1PR11MB6105505CAF620B23978FBEF18CB72@SJ1PR11MB6105.namprd11.prod.outlook.com>
- <SJ1PR11MB61057EF65B62E06E2C2049008C812@SJ1PR11MB6105.namprd11.prod.outlook.com>
-In-Reply-To: <SJ1PR11MB61057EF65B62E06E2C2049008C812@SJ1PR11MB6105.namprd11.prod.outlook.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 24 Sep 2026 12:07:31 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yHZ5ck1hk+Lo-7aQudApm0Nx=4yssUDrRTz681PuW=tw@mail.gmail.com>
-X-Gm-Features: AclHuK_Oo5VaIVxMohMOcnCcWX2KkBDujM8Sp4JE6sgnmpi0H7GmNxPODugX6SA
-Message-ID: <CAGsJ_4yHZ5ck1hk+Lo-7aQudApm0Nx=4yssUDrRTz681PuW=tw@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/mglru: dynamically protect readahead fault folios
- under refault pressure
-To: "Ababneh, Ehab" <ehab.ababneh@intel.com>
-Cc: "ryncsn@gmail.com" <ryncsn@gmail.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"axelrasmussen@google.com" <axelrasmussen@google.com>, "kasong@tencent.com" <kasong@tencent.com>, 
-	"lance.yang@linux.dev" <lance.yang@linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>, 
-	"weixugc@google.com" <weixugc@google.com>, "yuanchu@google.com" <yuanchu@google.com>, 
-	"yuzhao@google.com" <yuzhao@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 19becgh381by1xktxptcee8bmex6oszu
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wD3X9Y0o7RqWqn_AQ--.41231S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GFW3WFyDCF47Ww48uFWktFb_yoWxKFy3pF
+	40gasrJrZrWryjkr13Aa18Ar13urZ3Xa13GFZxGrn7uFZ8JFyfuw1Iq3Z5XFs8CrZ7XFyx
+	Zay7tFy7Z3WDXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piWlk3UUUUU=
+X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6ha9HWq0ozZl7AAA3e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D7DF71A0002
-X-HE-Tag: 1790222864-802193
-X-HE-Meta: U2FsdGVkX19IwW9RdjlU5B2Ukkhf9eNiHDOpkYgX2YL6wvUMcParV4W4oKdQeOTphD4iIMmixKxCaVS0zEmSwSRGETzsGRcWeWVlBhQTg+u+ww7UWY6CiSW30oNmLDdUiRxFx6FYlX1Z3hdwMgX1fUtZMo1Y6xEty6srB/Mj7AQDJgfdElXZuU3UwFKfIBj3KF2WWwshbqrbHv1OHocu2aAP+Wxkt78xFp5xXPmpOt5SOqYVZbHFZqerdmnIeWwrirFSBE0ewaZliplGNgX0DJ9l6ym50obTmeAjFzGql9CHarCzwG7Dr6CYDeVdu/hsv537lqRRyZoB1vnVivL/Mcatb73uOEdygak3tJQM85pETfR+XR4dJJM3zmyDOQmSEaPG2Sfl3ohBM7HXPcggjxgtTTmaefxrkHa8xPYKSVJzkAghQtUAOXxPyWkc/sEbegKpBTkHCpehb1DZLETxHFERsio/J22yn2pPccxPDMa+Yr2FdiRuUE4OG6G54Fnb6h67xguBsdXFjMOY0e5aIUThJhE+HYiOlfp09NcAG8W8tNaeMMwhwa2SBL9GjaeBcKbbledlM4vT+oQ2LGAI2HvCjYzpzDCFu2F0kzYPLcJRQ0kB1qvfsEL+SCQkuCBsoISAo1DzTv28UBgfLD5ri2CGSR9h1pv3eJN4H358UeetJ4+DmGHPYEJQUc30DE/r5bkZ2atUgI3y5RLxTEQbXC1abA74n6LerJwTwrXUhzDx+XKUoxDniDu9uLovvqfUhM+LZmodCMiQENgI7eMYy/3YxZkUfBMPYOpcoLzBSQOpij0jo7VIBjQOafxsvpCUQ+bMAyH6alyan1O3zEJCOaoSeEDH9tY32V1YmgbyYKH5ZnxkymbnbQrf6tWXs8BmlkMXiVyzQyHsCJ0EFoK66wOuB3qHfohuIeMXcG2v/LVzgTqklpb08wvD7xA2XJ5Qk6r4a95KllXN1BDhjcU
- 52HwrqXY
- 4oWobPv2pzk1XBtvT7CCkki99srYIOMjIo5gAUejrFx0Ah0Lvdresv/atkTahKgbUxFe2QFTxn7+XiXhOXkIGgj2EgqyG086kV7tjURLgvdC036QWgLFq3bPBiaZg0xqpn4uXOxZCs6egCnG4u4Qt5sM/xKLEnjLzXTVCf6isgS1s3pO0wImdtnlScdEWKm9/jQ0wtCQWhgbE8f6OmGpIY5yjwKF7YuiDtwngr7gG2/08BJnovlO6Q7iyqwfhri0SULrTNmFIFc5kVl4ISjN97Sm7/wnKGiAgcqmEqcQRKXcfUWdKVpif8xDp99IgD19FwjIBSEStYzRbzam6NnKpdhjvLamsgpTUmBxXPEohzyRdFyqbU3Gz0weN0Q==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 103D7140004
+X-Stat-Signature: s1x5qayu5zjnikz6kggzxzzcfybk1htp
+X-HE-Tag: 1790223181-588161
+X-HE-Meta: U2FsdGVkX18PyvW/n9RfjTfvHSqYXZmMpaImON+pws6YHzpqt3XOTdQza4ffBW6omXh2WCgGmggAK8Y77tBJOhoTL/4uH2IECMOUAQIlMGLIEPesWlIQ0m1ipzmtwcg4rBPR2WxK37Sr+8zuDfezWHGtD5nsnTs7ASLnnBz1HuBWTpQVKDb+DhVOwq/FVkL6EkwgFQVd3Pe60L1xQIp7NMsIp6SxJUE+wZFasWtPzV7tKde6bJ5boJuSw9AF787+wAfWTjJ7UPGLQfmRscxSWrPkCyNg3YTxiBou2wsFzSLUDeT5VeT6gAbS3qWGsJq/TyM/N0ZWhc7Zy5XV782Nz/aZT1mWYAA5ux/puGLscr44X5NxSsvl8eRjmdzofT+jsc1IAehGbhnkXtxHyZWK4YizXQriGL12wE8+HnqbguwdB1IsQyVeEo6gSUMo6HXsChGL46aoEy0WkUzWOPAqkXa7tXIiOwsSX8AN60P1IkFbqRJeExsDiNtdsqV52swmBPoK8R2hVNm0Lir172Va0MQ+XewBBqEkljPFyN91ZWfoZRaB9Zarc6JyFPTfuZ23yozSa4uVhPpik1o8vlaP+Nkh6P+YmNkhTJ1jLdlEdhPUcHP0ON8JiqaVyxJ5CeOQsxcC2csY11HO3Pvp7QSEk6cHk1UZznwVi8IWwRStkM9DpxphowD9FNe0xp5s7/Y/ryf78RdSI6K2PnM/A8T24xdpPCDcwGhHMszZJPT/6V4svTqxOkSC7uuGJkKQmGmSQA9oNbigcoQ/IaFcKpbPntPLjaXO9cs1pGLQ+exmAu6GjKE4wV8atNw+HLIQQuD/cTurh2J+XrI1R1+WSuRpwZs35mT65ED83NMGhnegVvcYXbbvORc9HSSkiDrmrmiDZDMCctgxNVDMp6DVL5g5CVZujkhR2Wo3JSP9lU5hJbEw3cC9AiAOqjHjO0YRBem5wVLdB3tgBbY530lh+Zx
+ MAzxS6ls
+ mbXVvzhHtV4X/BERXtSgdUTDznEGiRuZ2ED2jlioLDz2WEO23YKe7Hn3wYZAXTWyEV/ErjXgg5GwvhtDvzJ3sAZp93QQl7QudiiJmQH/qkbsgWgKzs+b9WPfRHhi4gupkmZNoQtWkVs9p4gx165g/OjJuCqmMIh5JIC9B5UTutZyGyBdebEbR0A3Jzydlj9n36ezGTRzzn9RXCMI3VQ1ywW0J8A/xRRtKb91V4Lrv4jbX3Ll1MRIwLI0Kue0yHzaoLH/okyB0iqMwbHluK6bNIlKUapRKID+fxiNH8Xp/c67Zi2e5aO1Tq3Oh9hXl3WNNmZY3CFcuDQqRXrDnfGHyG0EU7rqaNukVBPPfkwhNLi2DJpr83Ar7fhXfopfoQ40Gk69c7Csd7iDtXuorqYN9SKQ2+jSJfzyH7JPWiflS72HfK472kmr6gKg5CEnGGKiugYb4ldm8SYfl1IHrNoEqr7fVV4AH9C8btPm19u4khIkIGKiBEFuEUxukYUpXgZk1ACMp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,79 +87,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 11:43=E2=80=AFAM Ababneh, Ehab <ehab.ababneh@intel.=
-com> wrote:
->
-> Hi Kairui, Barry,
->
-> Apologies for the delay in getting back to you with these results =E2=80=
-=94 my
-> test environment got corrupted and I had to spend some time recovering
-> it before I could re-run the benchmark.
+Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
+compound folios") added handling for compound folios that do not fit in
+the remaining PFN array.
 
-No worries, Ehab. And thanks very much for your testing!
+migrate_device_range() and migrate_device_pfns() duplicate the logic for
+locking device PFNs, encoding compound folios, and handling this boundary
+condition.
 
-[...]
+A compound folio cannot be represented partially for migration. Use
+WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
+retaining the defensive handling: release the current folio's lock and
+reference, clear the remaining entries, and stop collecting.
 
-> > > > I agree that reverting the commit that caused the regression is not
-> > > > the optimal path. I expect there are many workloads and scenarios
-> > > > that benefit from the behavior introduced by that commit, so
-> > > > reverting it could unnecessarily regress those workloads.
-> > > >
-> > > > I will run the Cassandra benchmark with Kairui's MGLRU-FG patches t=
-o
-> > > > see whether they address the issue I am seeing. I will send the
-> > > > results when they are ready.
-> > > >
->
-> Thanks for the pointer =E2=80=94 I gave your MGLRU-FG fix a try against t=
-he same
-> Cassandra read benchmark I used for my patch (4 nodes, 720s, 100 readers)=
-.
->
-> Results with MGLRU-FG:
->   Op rate:                  55.0k - 56.5k op/s
+Move the shared collection and encoding logic into a helper so both
+interfaces handle compound folios consistently. Keep the reference,
+lock, size lookup, and PFN encoding together so cleanup acts on the folio
+whose reference and lock were acquired. Also use memset() for compound
+folio tail entries instead of open-coding the clearing loop.
 
-I noticed this is even higher than your dynamic
-readahead fix: "throughput ~51.9k-52.7k op/s"
+If a PFN cannot be referenced or its folio cannot be locked, leave that
+source entry clear and continue at page granularity. Compound tail pages
+have a zero page->_refcount, so folio_get_nontail_page() cannot acquire
+them. They are therefore skipped one slot at a time. This preserves
+collection of later allocated pages in a device chunk containing free
+PFNs.
 
-Is this a run-to-run variation, or is the improvement stable across runs?
+Document that an encountered compound folio must fit entirely in the
+remaining range or PFN array.
 
->   Latency 99th percentile:  6.8 - 6.9 ms
->
-> For reference, here's where the other variants landed on the same setup:
->
->   Regression (6cbdd9726fb5, "mm/mglru: use folio_mark_accessed to
->   replace folio_set_active"):
->       p99 ~9.2-9.5 ms, throughput ~41.8k-43.6k op/s
->
->   Revert of 6cbdd9726fb5:
->       p99 ~5.5-5.6 ms, throughput ~51.9k-53.1k op/s
->
->   My dynamic readahead-credit fix:
->       p99 ~5.8 ms, throughput ~51.9k-52.7k op/s
->
-> So MGLRU-FG recovers most of the latency regression, but the revert
-> and my fix still recover more of it: p99 with MGLRU-FG is noticeably
-> higher than with the revert and my fix (6.8-6.9 ms vs ~5.5-5.8 ms),
-> though it's still a big improvement over the regression's 9.2-9.5 ms.
+Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
+Link: https://lore.kernel.org/r/60634ab5-3fcc-42fb-8722-4ba6771acfda@kernel.org
+Suggested-by: David Hildenbrand <david@kernel.org>
+Signed-off-by: Hui Su <sh_def@163.com>
+---
+Tested on x86_64 with KASAN:
+- 7/7 private-device HMM THP cases passed on the exact v4 tree.
+- Local KUnit validation covered success, get/trylock failure, and
+  truncated compound-folio paths.
 
-We also have this :
-https://lore.kernel.org/linux-mm/20260901220430.79810-1-baohua@kernel.org/
+Changes in v4:
+- Fold migrate_device_pfn_lock() into migrate_device_collect_folio() so the
+  folio whose reference and lock are acquired is also used for size and
+  cleanup decisions.
+- When a PFN cannot be referenced or its folio cannot be locked, leave only
+  the current entry clear and continue at page granularity. Compound tails
+  have a zero page->_refcount, so folio_get_nontail_page() cannot acquire them.
+- Use WARN_ON_ONCE() with defensive cleanup when a compound folio does not
+  fit in the remaining array, as suggested by David Hildenbrand.
+- Document that a compound folio occupies consecutive page-granular entries
+  and must fit entirely in the remaining PFN array.
 
-you once reported it as :
-"throughput was approximately
-49.4K to 50.3K ops/s, averaging about 50.0K ops/s, while the 99th-percentil=
-e
-latency remained around 7.0 to 7.1 ms"
+Changes in v3:
+- Keep the source entry zero when migrate_device_pfn_lock() fails instead
+  of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
+  slots belonging to the compound folio.
+- Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
+  keeping defensive cleanup independent of CONFIG_DEBUG_VM, as suggested by
+  Balbir Singh.
 
->
-> Happy to dig further if useful =E2=80=94 let me know if you'd like more d=
-etail
-> on the latency distribution or a longer run to confirm these numbers
-> are stable.
->
+Changes in v2:
+- Fix the helper parameter indentation and keep the declaration to two
+  lines, as suggested by David Hildenbrand.
 
-Thanks
-Barry
+ mm/migrate_device.c | 92 +++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 44 deletions(-)
+
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 009bfa8b212d..34d687882d85 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -1376,20 +1376,47 @@ void migrate_vma_finalize(struct migrate_vma *migrate)
+ }
+ EXPORT_SYMBOL(migrate_vma_finalize);
+ 
+-static unsigned long migrate_device_pfn_lock(unsigned long pfn)
++/*
++ * Collect a device folio into the page-granular PFN array.
++ *
++ * Return the number of entries consumed. Return 1 with a clear source entry
++ * if the current PFN cannot be referenced or locked. Return 0 if a compound
++ * folio does not fit in the remaining array and collection should stop.
++ */
++static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
++		unsigned long pfn, unsigned long remaining)
+ {
+ 	struct folio *folio;
++	unsigned int nr;
++
++	*src_pfn = 0;
+ 
+ 	folio = folio_get_nontail_page(pfn_to_page(pfn));
+ 	if (!folio)
+-		return 0;
++		return 1;
+ 
+ 	if (!folio_trylock(folio)) {
+ 		folio_put(folio);
++		return 1;
++	}
++
++	nr = folio_nr_pages(folio);
++
++	if (WARN_ON_ONCE(nr > remaining)) {
++		folio_unlock(folio);
++		folio_put(folio);
++		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
+ 		return 0;
+ 	}
+ 
+-	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
++	*src_pfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
++
++	if (nr > 1) {
++		*src_pfn |= MIGRATE_PFN_COMPOUND;
++		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
++	}
++
++	return nr;
+ }
+ 
+ /**
+@@ -1410,35 +1437,22 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
+  * migrating pages that aren't free before unmapping them. Drivers may then
+  * allocate destination pages and start copying data from the device to CPU
+  * memory before calling migrate_device_pages().
++ *
++ * A compound folio must fit entirely in the remaining range.
+  */
+ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
+ 			unsigned long npages)
+ {
+-	unsigned long i, j, pfn;
++	unsigned long i, pfn;
+ 
+ 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+-		struct page *page = pfn_to_page(pfn);
+-		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned int nr;
+ 
+-		src_pfns[i] = migrate_device_pfn_lock(pfn);
+-		nr = folio_nr_pages(folio);
+-		if (nr > npages - i) {
+-			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+-				folio_unlock(folio);
+-				folio_put(folio);
+-			}
+-			memset(&src_pfns[i], 0,
+-			       (npages - i) * sizeof(*src_pfns));
++		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
++		if (!nr)
+ 			break;
+-		}
+-		if (nr > 1) {
+-			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
+-				src_pfns[i+j] = 0;
+-			i += j - 1;
+-			pfn += j - 1;
+-		}
++		i += nr - 1;
++		pfn += nr - 1;
+ 	}
+ 
+ 	migrate_device_unmap(src_pfns, npages, NULL);
+@@ -1454,33 +1468,23 @@ EXPORT_SYMBOL(migrate_device_range);
+  *
+  * Similar to migrate_device_range() but supports non-contiguous pre-populated
+  * array of device pages to migrate.
++ *
++ * Entries for different folios may be non-contiguous, but a compound folio
++ * must occupy consecutive page-granular entries and fit entirely in the
++ * remaining PFN array.
+  */
+ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
+ {
+-	unsigned long i, j;
++	unsigned long i;
+ 
+ 	for (i = 0; i < npages; i++) {
+-		struct page *page = pfn_to_page(src_pfns[i]);
+-		struct folio *folio = page_folio(page);
+-		unsigned int nr = 1;
++		unsigned long pfn = src_pfns[i];
++		unsigned int nr;
+ 
+-		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
+-		nr = folio_nr_pages(folio);
+-		if (nr > npages - i) {
+-			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
+-				folio_unlock(folio);
+-				folio_put(folio);
+-			}
+-			memset(&src_pfns[i], 0,
+-			       (npages - i) * sizeof(*src_pfns));
++		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
++		if (!nr)
+ 			break;
+-		}
+-		if (nr > 1) {
+-			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-			for (j = 1; j < nr; j++)
+-				src_pfns[i+j] = 0;
+-			i += j - 1;
+-		}
++		i += nr - 1;
+ 	}
+ 
+ 	migrate_device_unmap(src_pfns, npages, NULL);
+
+base-commit: fe2ec83746e501645709761605c2464a44fd2929
+-- 
+2.55.0
+
 
