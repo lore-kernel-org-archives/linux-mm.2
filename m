@@ -4,153 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5576C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:57:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B9EEC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 079726B008C; Thu, 24 Sep 2026 13:57:14 -0400 (EDT)
+	id C0FED6B0088; Thu, 24 Sep 2026 14:15:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02A6B6B0092; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
+	id BC2806B008A; Thu, 24 Sep 2026 14:15:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5B5F6B0093; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
+	id AD8036B008C; Thu, 24 Sep 2026 14:15:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CB7F96B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 622901401CB
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:57:13 +0000 (UTC)
-X-FDA: 85249412346.13.15A2174
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D477BC0005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:57:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gFOOJ6lX;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 861FB6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:15:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 19563C0465
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:15:13 +0000 (UTC)
+X-FDA: 85249457706.03.E2946BD
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 64CAC160007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:15:10 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="OAIh3W t";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790272631;
+	s=arc-20220608; t=1790273711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7kE9HsUX44un0zsngBjEnaGDjKX5zQ1DwZixp0+UiPA=;
-	b=JBlwdtUtsweKKSiVcuzdn/XwMWd3cj+L1pTdxzL++DSLEQGgW4y1/pzCGzWcyfCEDERWYu
-	P3Tj3zsJOFcBGqnSR2cEzKjtEEAUCH9RT9eHdBA1N51blmA4aIbEI1QDwrwnnlCUsnjX5A
-	p3O/L22pYn13PJ5avDdg1BN4aaqrYHY=
+	bh=wX8CSj2fNMWwCN/CUlUpxrxanIa2BZUzno2ME71/0zE=;
+	b=dzJ6MtX4nZziaMOiqA0nxzme+E/bTg3sr+eIs81jLpqtfwva4K2iiTH6ySYcrumbEs9D5f
+	2E2VsLSTLRi/XIFnGzyzyAjcbZDvI+/7IkbWxkJ9rYv5GRaMWRidGn/xdOCn084cv2tXEZ
+	s6skiNwhJQe6CsOdUmSi+FAvkKb0b5E=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gFOOJ6lX;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b="OAIh3W t";
+	dmarc=pass (policy=quarantine) header.from=surriel.com;
+	spf=pass (imf08.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790272631;
-	b=XYcxyM+365cxZTAtKUsaCyXvJdeU65PALd+dfmYRvKZn3ENHWMN/8gEjt8fKpIFgduT+Ns
-	10w582tZ9Q5CPSnuikBzWRPAH3wPSzObQosoE0vVsY0BhC2ZDYBBgPRchW82eEup4BRjuo
-	oncrsy3zeNYVaLok93x8fA8JaGqDACE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790272631; x=1821808631;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7PzxkTqNasNQwTYWLD3humalS1r1ifxDG7NI4O67jJg=;
-  b=gFOOJ6lXk2+waJoHX9qQ9pQppRjsioQrgk4T/qecsegXBgr4xEn2V+K9
-   wpfeQxz8Xij6kHPfrC/dW/jL3oP1ltA2D2G7Q2isZWguB53OZu4BBQdHa
-   ScSefQolsjwWAhc8qpi0kVdeJjb0sbSNmImgmiHrm1IUQV6SvOfL9q2x6
-   Ai4NJR91Xi/Sp6cKQaZlAgikyoEHzJ4Kifp7cZpyFbmOVhNW+BmkXa6cc
-   ZrraOWSgwYDs1pA/kZ9SX1aK17EjfB2QhgkQkGkSCKtYZlo52o/pzry5y
-   hEuwFkEQ3bPoiBTPYMCGeQi60spJwvyXTMHCigsWchzVfwcHxaMK6qiQx
-   w==;
-X-CSE-ConnectionGUID: AZ0KLgoiRCCy31cM2P7aVQ==
-X-CSE-MsgGUID: Qphjo9SeRIyO/+sJNibx8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="90098861"
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="90098861"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:57:09 -0700
-X-CSE-ConnectionGUID: jvAxloPTTMG3609yo6txNg==
-X-CSE-MsgGUID: xQE0XoJ1QBuNuuiki0EiRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
-   d="scan'208";a="273317475"
-Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.110.171]) ([10.125.110.171])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:57:08 -0700
-Message-ID: <6a0c2fd9-b2e1-40d2-b7a1-ba93cb3c53a3@intel.com>
-Date: Thu, 24 Sep 2026 10:57:08 -0700
+	t=1790273711;
+	b=NXzxjm9TmGQwqWvspDaqZ4+sATblIBTPx9f4x/7toWnoNHaQ1Tn4H2+Nv7OdHBdn6PQkMM
+	bKZe818Ro3+NTExuUJpEY95Y72VtAHsnK8fHajMBY6vHGp7JkiLziKZmSfYGkIO21zbOPP
+	vx8hJTd3ehhgkmTgqGcwSopq8jdy0HQ=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID; bh=wX8CSj2fNMWwCN/CUlUpxrxanIa2BZUzno2ME71/0zE=; b=OAIh3W
+	tGD3YH8owDqUp8FviZpRcyXxHQqpTPleog+faXwIQZh19fWn0SW/U5aEYDzlYglaflJbiiF6t1k4m
+	bo+fCQ0U0Q2u0m+jicUUH42aRuCUD15VoZfupmNR9d8u1FdUiLCnRKlFLcun1d6znBHhkFXN2lBhP
+	TiBv7p9NChjggdQrsD/M/jrX1xnYse8KbIMqauuw+rhFMSAcHD5KnyOlz6L3YYHQNaRLX4pj59uHO
+	GRAYtKLvk5mtHCh9uydQQD53zlJ+Vuqv4n7i8XdEEFAfd0maQ1ogkh90OFcOznMeq0pxq5ksBHe7G
+	a4XmqjJKjRthdWfxgUF722GpMqHg==;
+Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
+	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.99.5)
+	(envelope-from <riel@surriel.com>)
+	id 1x9nvx-00000004TfP-3vhu;
+	Thu, 24 Sep 2026 18:12:37 +0000
+Message-ID: <7571f005bca65aa4ad5e7ec89e62801ad058b689.camel@surriel.com>
+Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device
+ infrastructure
+From: Rik van Riel <riel@surriel.com>
+To: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, gourry@gourry.net, haowenchao22@gmail.com,
+ corbet@lwn.net, 	hughd@google.com, baolin.wang@linux.alibaba.com,
+ tj@kernel.org, mkoutny@suse.com, 	skhan@linuxfoundation.org,
+ kunwu.chan@linux.dev, kernel-team@meta.com, 	linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Date: Thu, 24 Sep 2026 14:12:36 -0400
+In-Reply-To: <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
+References: <20260918180241.3424851-1-nphamcs@gmail.com>
+	 <20260918180241.3424851-2-nphamcs@gmail.com>
+	 <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing
- while booting
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>,
- x86@kernel.org, linux-mm@kvack.org, regressions@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9xxybqeiieeq8y6hzg88jz9o9fg9ambm
+X-Stat-Signature: jhitr4o1sq7wbg777rybqqy1qeynwyqk
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: D477BC0005
-X-HE-Tag: 1790272630-578331
-X-HE-Meta: U2FsdGVkX19G9NsULy55Q4Wqm1z0Takjw4po4qDSennTrkGPgGj4XbjZkEyYG852BR1qoX3mfy6F3+7/5hSPTQrFc1NrTQ/uwSK0kX4w74s+KMfvke/Pz9q/FjkyzEUsg4qkNwaIvBsoSYzxOkAOm20eEr36hxupIVj5ENYdtFbVf5sGVH9jlmoscjhMycGSNYR4WWlryVXJHwGqryAPy+S5+D95uolQTxRw4TL8691hQ7WvLpuMiEVb8hSvWaY0+t6WyQC3hEIuaJDcOqDF7za5AJ7nPyxJ6PFsBMkOV0cktmRtCzvjTLtozrz8Zkse+vzpfUxpui3lGn+c3UTfBwySfRJT1GnQqWLmL6l6UEvfjdSQaJB5/DKe0A2HyxmfhFpE6IZd4sTcDMLDAWb4YMxgkj7Ql5qtzd8FtBIDeJ0VmXU7847y7XZKg1Sb6CCgOpZB+qBnN5G1TaJT9I5Vm+meXt6zKCgFf/0BYwYXScVdzaek79mnNgA7tecXg040CgnsFBXCq6m61MLFBfAXYPFzuzaXdELIEkUZWVanc0BpegZlAGAfuW1DrhyqkOIpZ+xKPYnIxqUniKhy5go1P1cSOViTDc5ztcdXNUPwpTY1+2Z8G/YtBj909nCnTh7K2zg8z6n5aVzJSEZM27FlUF3LXVALB7gl6LPuL1SO5wqEujS+1BKtusyS4lURMZ39zAM2oONMNDtWYH/YeprIF1BdXTR0oFSllZuBNR1kchH7jukilc+FUon3UEtbOnazptlk9nRkQXPikpkX+JAuPMR5fNqNZER/Kbh4IJv1YnHone6dx6WS0F1SEgXOlysviqRLYYTj55ydMhF6/GA5YDgJ3ZKSIfLifZxmr1ydD/YqDS+A1MeBMHZJU/DaMN8s1MMBIUDyksHltgH5al0QezYY6DRbQDMcNGtdi9SbbVPUKa1M5UTf7RhFXXfnllQx2JYjPvEmsvGp4kr3U15
- 9ljhSEQG
- 6kJn3keVAPAgeUB1eteweiwfXfV/1N+kFPGEBy7Nu9CFd9H8zY0VJKlh7Z7rAytW3CQZVIemKZb2eoaUvNljHX0tQNW8N3mzgXDXYOQJhxHOw86pGUE5bCJVRHJe/j/HvP9R/BZiAZdyeMFvm0H4wABDyFZmfoJUJIPxAnItxbeBbqD/AjNTu8m11vq08ji9kIqglcxCNfA3KlX8CZjenTT1wuYx5HR253wNAquoBl/V8fOujxpfqsJX1aGKuUwJtdjyVmHSwLiQczEVA8wL9I8ac7g==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 64CAC160007
+X-HE-Tag: 1790273710-397859
+X-HE-Meta: U2FsdGVkX18jbqqA1ePqIvtVg3DdiBMi1NsS50K57HYqna1CwZWMLJ8JZ+GaACJQ4Winjz4rVMUQjFIhvQlqhuafdyz00pHspkvVpe2CX70JQm4LRDslMyUzAe1MH4q1b0BGgZkGw1m9l66ie+nsbN7xta6ZZ7hhtdl9CALwRGWEXe8gr1qVsee6vVm3HT8O+S71X/JxnykF9s+Eh8D0mCM9+Zk8oPptF+Wbcdm90b6W5++CyIPXdeKFXfKtrqfQY/qUrPPZF5BwCYcezDr/kc+rUlj/yXnvRsWTT+nzsMQFOqn3ouV/ClMsysr5+xYusac0IDPpYN9cZF6hmvVQFI+eASpBQuiO+9qU8BkuRyKB1uZe9BcAwBB6jMoRAY97rQqEpcCNQqaa6PGkxJhGTRtI21zatJHaYrz6yinOPFQXSylUsyf+aEuPa6L2SAqxvhLSP2sieSdEJse/yYs4vTZX/uki+PfCKp1jqRtoXzl8wg9RB5BKEXXJjhjB0+x2v3BJU/R5YwOf5HKalcINpgH/PdoZOQ/0rBlnyYutBsKX37k1f4yFfPw6SG5WqdWQfMTJMXYiMosy6ZlZqMT6kzPD3L6nDTvFbVLi+kGjpvUEuEQsTL3VJ/TLBZFbMOFNCG598fMjratRiASuxPVnypYw79XOlh6GZIb5bGd0NqgINpJUWixU+IThOIl2kSkmBemxu+5k3GHrI7+MuaO+u7LlFbfvFADJsOIXVT00qCOUczNTCSKzLvHoMTSMlZaUOqFpya1gbBultCa90rZNCuR5ngLOgqnwheky4mfBydw6VFmGcv0KMZnyT2vLXui9INryL3m9Vsd2Hxnf5RfytT7qtL95wEXe+M6bHQeXEH+1Xg/11uQpTVKXvCyR7rPamMKQeCQksZXRUh5syz5jvtjFUca4IgBKqWEhxzHGRbyeohQaBqXXNasrEVbsJkNXpegv6FAXUr6DOWCk0BQ
+ HAmS+nna
+ ciVnUVdssmLLMB2D/loBxNVTjnpH1cQspWQizhqiRLCy8dYKk2+J6cTEM2LEgyUDsqQTHKJSM5ITVgrb5wIeyKVme5JcMBHxaULAIWXW62kYG6Cb1LY4f5gG7o+iRuRZ/B7tWpT3XEQQR5UcQgXNLWn31fhRVuiuoE54ZgiySuHMLeCxnWTdj9tIyeub+6M2ibHjcasMPXS1Bkk/oUxu4cVcoJggnRtPSDx/xVqsrEltaPjpyRKSoz/vKxLH30gl44RVYBMldwVmSBXCSxTFLiIF0XduQwFCqrYKow14AkBYD+37lATxxP+7KHquJlevZ7a9CAcIWJFgR4g8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,26 +131,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 02:23, Mikhail Gavrilov wrote:
-> Keep putting the table on the list, but don't schedule the work while
-> the system is still booting.  The next kernel page table freed after
-> boot schedules it, and the work then frees the early table too, after
-> the same IOMMU flush as any other.  If no kernel page table is freed
-> after boot, the ones freed during boot stay on the list.
+On Tue, 2026-09-22 at 23:18 -1000, Chris Li wrote:
+> On Fri, Sep 18, 2026 at 1:03=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wro=
+te:
+> >=20
+> >=20
+> > @@ -482,6 +491,11 @@ void swap_read_folio(struct swap_io_ctx *ctx,
+> > struct folio *folio)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (zswap_load(folio) !=3D -=
+ENOENT)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 goto finish;
+> >=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (unlikely(swap_is_vswap(sis)))=
+ {
+>=20
+> There are too many swap_is_vswap() in this series. It fragments the
+> code path, making things harder to reason about. Esepcially around
+> locks. I count 22 in this patch alone.
+>=20
+> I consider this the biggest drawback of this series. This
+> fragmentation of the code path.
 
-There seems to be an awful lot of chit chat about how and when the
-boot-time tables might get freed. Like:
+Could we avoid that by simply always having everything
+go through the vswap abstraction layer?
 
-> So on this box the early tables wait until the first module is
-> loaded, and no separate drain is needed.
-Wouldn't a "separate drain" be all of 5 lines of code?
+When everything in vswap, we don't need to test for it.
 
-/* Take care of deferred freeing from boot: */
-static __init int free_boot_kernel_pgtables(void)
-{
-	schedule_work(&kernel_pgtable_work.work);
-}
-late_initcall(free_boot_kernel_pgtables);
+Handling the details of what's behind the vswap would
+be handled one layer down.
 
-Then we don't have to reason about it at all.
+Chris, do you think that would be cleaner?
+
+What am I missing?
+
+--=20
+All Rights Reversed.
 
