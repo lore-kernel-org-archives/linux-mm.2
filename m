@@ -4,136 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 340E7C98311
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBE06C98311
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:46:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309656B008A; Thu, 24 Sep 2026 06:31:32 -0400 (EDT)
+	id A2B456B0088; Thu, 24 Sep 2026 06:46:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E1056B0092; Thu, 24 Sep 2026 06:31:32 -0400 (EDT)
+	id 9DCD06B008A; Thu, 24 Sep 2026 06:46:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D0066B0093; Thu, 24 Sep 2026 06:31:32 -0400 (EDT)
+	id 8A48B6B008C; Thu, 24 Sep 2026 06:46:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEA456B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:31:31 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE5561C23DD
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:31:29 +0000 (UTC)
-X-FDA: 85248289098.15.7E64A7F
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A81362000A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:31:27 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zNfNCSPZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vbDmVdxb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=J74NF9iY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MsZq+Mkj;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 62C416B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:46:23 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E287D1202DA
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:46:22 +0000 (UTC)
+X-FDA: 85248326604.09.98A1698
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C4901180002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:46:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="J34oFs/E";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790245887;
+	s=arc-20220608; t=1790246780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xCB1GnTROqtgtC+Ay0yMAheRFnWXLRm8yqSmXov/XW0=;
-	b=a8qqmh9Lte295m4reGCL977qABgOWk4xep+a2SFJQNKXlFydowPp5P9034qw/VAqil7WW+
-	oFjvz7ZI0EtL71Flt/VuY0QHdyaroUU45LEiqCQ1SjpZMaXED6stJ7nAhTYLeXO1s51nig
-	oPoqcDkEz5Q65fHEPsyxVua3Sx+DSh4=
+	bh=FcwnbNetS6ulda+gTiRcez+BFmf9QclUqZrzpT2HS3U=;
+	b=RMXM359srZdgYUJMzmdgBs8+rKpuvRWdaM3pyOKv04tbOFNntUnBF5GtSpWfKbo3VWVTeH
+	16ZHeUmawO+CqrfnmCNbmlFamkTNbtrx8RtF/Pxn6aIlrHOVl3Sy0eMpcwGzOei0NEM+5D
+	tiRHAKJeJe854Q1ZValcLCBiRvfxsAo=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zNfNCSPZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vbDmVdxb;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=J74NF9iY;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MsZq+Mkj;
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="J34oFs/E";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790245887;
-	b=spqNXBK3jTpulnzgpK5G1wsG1zif2ytdx0HsIawyJ0j5XKxrySX+Vs1JT3apuukYJOyQ/w
-	17qnX6hyFD5atrAKMFxA9Rw5Y+A7/tjbG7jNd7O2CiaurQ/3F9UF/UWaE0YK2SvzPtdReb
-	vsDOp93xHnBUiKwP8KxjmQ98YdQA2QA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 133AE200A5;
-	Thu, 24 Sep 2026 10:31:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790245882; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCB1GnTROqtgtC+Ay0yMAheRFnWXLRm8yqSmXov/XW0=;
-	b=zNfNCSPZP0SpkAQkGRLD6HgWA9MwVhUV9X1/tV5qkI692+o7URF7e4dX1uEAUZgtPMavcB
-	if0P/jkGtttcVECmfFbHSvoOf378SoaaTzY4+pMPMHACCKXtDpos8V/GdzNYyxPaPTAwiA
-	r2rvcdi0884Mn8BvWzj5nvEZ+aWwb1Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790245882;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCB1GnTROqtgtC+Ay0yMAheRFnWXLRm8yqSmXov/XW0=;
-	b=vbDmVdxbh0zA0K5bCCtx7id/XYCLqY//kwcvC6UvMdM2ZD6NKcR/f/mgtEvdcHaiDA2Gmp
-	k+4ABwVHA2AGi/Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790245878; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCB1GnTROqtgtC+Ay0yMAheRFnWXLRm8yqSmXov/XW0=;
-	b=J74NF9iYNLw5mH55CkajqTlC/paZFBur0mteL3FY5qDyKTMST/n33MfnOubGm+SOVG1YQT
-	WSh/fD9eeAqwaB6KP9OcYTA//ZVw8+9f9M8B5N0C84XQOAPIqaYG57BpYlliPKTkIGrBf8
-	gWAwgZCbloeUK8U6F9CA0hqLrsqvPlo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790245878;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xCB1GnTROqtgtC+Ay0yMAheRFnWXLRm8yqSmXov/XW0=;
-	b=MsZq+MkjM49BpLXHFHghPNwTWPQf3HqylNIAJ3f859xZ/rnO8sgd1KkkGp0RBdVyu6tJMr
-	e2rMfRaEY1qIUOAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DAC8413354;
-	Thu, 24 Sep 2026 10:31:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Zs+eLPX7tGqQZAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 24 Sep 2026 10:31:17 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 61D80A132E; Thu, 24 Sep 2026 12:31:17 +0200 (CEST)
-Date: Thu, 24 Sep 2026 12:31:17 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zhang Yi <yi.zhang@huaweicloud.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, jack@suse.cz, 
-	bfoster@redhat.com, ziy@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, hughd@google.com, baolin.wang@linux.alibaba.com, 
-	willy@infradead.org, joannelkoong@gmail.com, djwong@kernel.org, yi.zhang@huawei.com, 
-	yizhang089@gmail.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	wangkefeng.wang@huawei.com, yukuai@fnnas.com
-Subject: Re: [PATCH v4 1/4] mm/truncate: align truncation boundaries to
- mapping minimum folio order
-Message-ID: <ui2ybt3gdynpxiwz6z56u6vedv6ic3npi726yndba3a3u7rqqj@owkcfnjnbvtn>
-References: <20260922110703.468389-1-yi.zhang@huaweicloud.com>
- <20260922110703.468389-2-yi.zhang@huaweicloud.com>
- <5a454f2a-8ae2-491d-b903-750c945cfb9d@huaweicloud.com>
+	t=1790246780;
+	b=ur3TYlC3DVXaMAWMO7DjJnE0EGwhIjLzwZsrZj9oCVOj8P04zlkW5cZk3mgp7z6d0yvORV
+	Z9rLyikKESjGvUDX1r5RfDCdjzgzdzXeMQDyCYm90pTiHQyjgWxatWldMuvdTyNa1tfYdr
+	AJKWGsgZs+z3HG/bNEkKQysnNaTR1h8=
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c254f6c7a56so240549566b.1
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:46:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790246779; x=1790851579; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:feedback-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=FcwnbNetS6ulda+gTiRcez+BFmf9QclUqZrzpT2HS3U=;
+        b=J34oFs/EE8RVju/zna8h7R1/2mjTB0W7iNvoWUqlxSiiNiYax4GLyEPyzTIIG4/dYl
+         I+gUE4SlKsSrxmdVWWJlqSAEoUSp7HS3UmJDLCsZF62VZ72iio/CnbI0Cla8YAHalkni
+         LtQVbTQZ1atTMLGcEVW11evMubSXZGFyrKa7zcQaz09vZqb479TxGKYMYjo5HKnjUKCw
+         c8cyPJ9RlJZunR0N2EvDynkRNylzPBbQk0v00SpGOCcwd90cbvJE0I0I9UFhaYBK2jb4
+         6jS7u5F1IHFJGuqnQFLBvV562FgpKcs0nsN1iBb0mFndsBcP6CAKAny09ajypF0OOBGH
+         Sflw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790246779; x=1790851579;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:feedback-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FcwnbNetS6ulda+gTiRcez+BFmf9QclUqZrzpT2HS3U=;
+        b=R77O0W7tUzeW0T/pS3mCklr8Cp90x9wOv3CUzkVdabLaWWTtXrlc7fQAGyu/ih5wYh
+         5sqNmSkaydk8L+acqhnA8yEFl846UGBCFptmSr9ZOuLgtp4iufu/qGTm3qsbFFEGXKaO
+         EYLQRcfPKhmAAcbgLavCWBmokPlgLsWbOj6uM2gXYJQb+FguOZiOwg472JCsKYV9ChNX
+         ZA4er0js9kGPPobKnPQsEMn6+Z0YBSYCWrFKIXyGpWuld/BZ2tPx33ujOu1HgEyCWyES
+         oU4/yD5w0vlRp/FnZfVZ8U8bQakmdNGV8H4T3mUlH+onf1eF7tcZDuLQVZdezW4HXAFP
+         FkpQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxpNNH2fRJfagnGjmK3DIGacSqAJvHvFvFeGCtJbp7uaYiMpAyOwsdPV/ILtAcvDt2+xTPLKQ9NpQ==@kvack.org
+X-Gm-Message-State: AFuF++mD1B8Kt4fFXLzRHyboFZmOX+rGAsGM9eCi1flsmA5SICN7GVvh
+	TOzaiKvw15pEz2k1Ob2xShOcdlffdOGnS5eLB8nM9ovfueYdJk3/TZA3
+X-Gm-Gg: AYBFou3oFhCfU2pV+tgLox51JTR/geiC4zFY7KSiN9/RQ0S86tanHrPY/1gQxi7PslK
+	JvJsChfYWezrzIMCdj+Qok+p2l79sNAImtObZqi98E1M5ETW+H7oLOolrcaCghkFVkJXKyNhaae
+	u/oLPtAvf87nj/aGe/sx7vJNYcuZLKYBezrd+9s+3rtkAo/ABFOlrX5NYi72fGU0Ua29WzGkMTm
+	1NJGEXyv0iEx9P2DJEQOrcV+CDFrVgT8kHLuOMrDF8AM145YoK3y9gR/lsU5i1TDYBN7I7Eu1qT
+	AgLN/6FNZ0RVBZPmq7azdEVUuZb0hPyHIWBsMNGPue1THvtkkPB83YcKZA0Ff8W6w6AF+lXnQ1U
+	dff+Wn9+Tl/yIvglOWoLJqcKQmCMAObqa25Z1j3PqkHA1lPkUiDReMGViRkRRscGeVwz+fj39CT
+	Vp4DBTUnkcRWZy8NfZ1a6OAiix/nUzibMHJtEl+bTab4EaCT5u9fmRunN+/3KoePf4QmngRSc7W
+	gFtB3VyGV8BhR5ob1Hn4LwwMKK+/HdIIYmvzIlFFn9IQOu6QtScYydGYG1c
+X-Received: by 2002:a17:907:e00b:20b0:c29:41d1:a0d5 with SMTP id a640c23a62f3a-c2ac52c1075mr87901466b.18.1790246779035;
+        Thu, 24 Sep 2026 03:46:19 -0700 (PDT)
+Received: from fauth-c1-smtp.messagingengine.com (fauth-c1-smtp.messagingengine.com. [204.75.18.200])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae5c5c4csm283656766b.18.2026.09.24.03.46.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 03:46:18 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 3A77C198004A;
+	Thu, 24 Sep 2026 06:46:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Thu, 24 Sep 2026 06:46:16 -0400
+X-ME-Sender: <xms:cf-0arVgu635GU8W5oXma-sLXwWAwBD1u9S62C7zSYEPH3L4s01Nuw>
+    <xme:cf-0amzYKbsfWyYGQQdLBTFdrpsXrafewNUiKHb-73RiWfk4OZqjZLMG2ArESgJOG
+    vAaiFnCRxhJRhomRwr1q_g-tDZCSr8ALHam7egr98UJfYnL--cQSRBk>
+X-ME-Received: <xmr:cf-0arDFM_gVAbPn0O0dLznIq0EIvH_0Q15S1kLkEUcqiJf6J8gxwtIuSrE>
+X-ME-Proxy-Cause: dmFkZTGUsvC9QSiKYNuIPHnuaTqnwZezjmL5UGmbpczRDwqaVuV+W7EoNW2a28xiJXSy+L
+    PbJmYVKzPfJt6xvzdJCY5vqEwgi2ZLQro2KTCiol2XABI9ABKYtxP8FBemQHFrNME0b6vl
+    fYnQ+Wpi/2qzxY5N5wodWyH/2Iq+xOMMEdh1SSRV894hCtVqnLOIJaif633f2/rwHysp+z
+    ePXKS6G49ln+oXdrB5yHB/kaqXADUHEzhzeGIF6Hox9ZDLCDUx1PgRj+pRXrSvBvz6ys9o
+    kdf3JR0qz8ab8OD0lH/yMlAU6kFGfCx7xJDLz80/YPu66g3epj25j+EBBmtmFgArMPUPYc
+    o87jPnfGQh/AeKIVeMiqFHLnAZakS57e4qHhWWUEbwHU6IH7Ft6Nl22oc5iO7pPLIkabR4
+    Sf2JCohmvoXV12tj6Wm6jB0PQmPQ2uOclz9TLpDeySZFxNt9EOwhyA3eRCapdRNq+FSUU9
+    5nlKz2qr6+i57KeuhZnvugZU9+SN46UQ8/8lnF/c/MjAygvD8w8D1jhMVa4tVfRXjIbTjy
+    o2mXBbuPsY5HGCiH41J0owxE1SE0Bycm5RCbKQBK/AxVuX8Im4TuuCAgqaPIVsMu890ggf
+    NeCI1Mf61zy+ZgtQ3QxVpD8KNuuIUDE8iDuiWKwkEIwHpX0cvMMveC/m2OeA
+X-ME-Proxy: <xmx:cf-0aqiBXAHhUFfiD9DCvMqK9Bc9b5aY9T8HNSj8bzPe7H_5If0KyA>
+    <xmx:cf-0ajXbgqdGqppAiI_DJhberRbF9Q0N9gRm37Snj5C1oxfk3Pfpjw>
+    <xmx:cf-0asF663HiH-yv7O49kFRexxKWa-CSCG6nIbFgDaatPju2XSNHSw>
+    <xmx:cf-0ahGU4LImYrQNoI1Ktfmu_kdV0X3r5LElVRlNMDkIY4hAC748og>
+    <xmx:cf-0apuG876QKYZojKSovoBmFzW_zK75581V3OU159p5U4ecWTEcNCyA>
+Feedback-ID: ifa9e4bbb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Sep 2026 06:46:08 -0400 (EDT)
+Date: Thu, 24 Sep 2026 11:46:07 +0100
+From: Kiryl Shutsemau <k.shutemov@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>,
+ 	Amit Shah <amit@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ 	Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
+ Christoph Lameter <christoph@gentwo.org>,
+ 	Dave Hansen <dave.hansen@intel.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, 	Hugh Dickins <hughd@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ 	John Hubbard <jhubbard@nvidia.com>,
+ Matthew Wilcox <willy@infradead.org>, 	Mel Gorman <mel.gorman@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, 	Mike Rapoport <mike.rapoport@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 	"Rao,
+ Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
+ 	Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, 	Shivank Garg <shivankg@amd.com>,
+ Sterling Alexander <stalexan@redhat.com>,
+ 	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, 	Yang Shi <shy828301@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, 	William Roche <william.roche@oracle.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
+ 	nao.horiguchi@gmail.com, tony.luck@intel.com,
+ wangkefeng.wang@huawei.com, 	jane.chu@oracle.com, muchun.song@linux.dev,
+ liam@infradead.org, shuah@kernel.org, 	boudewijn@delta-utec.com,
+ linux-mm@kvack.org, Breno Leitao <leitao@debian.org>
+Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
+Message-ID: <arT9TVHmM3WDjWnk@thinkstation>
+References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
+ <arPElEV0zDhXrteb@thinkstation>
+ <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
+ <arPdnxhX9VHnDx15@thinkstation>
+ <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5a454f2a-8ae2-491d-b903-750c945cfb9d@huaweicloud.com>
-X-Rspamd-Action: no action
-X-Stat-Signature: 48aydw15rcnxkce4zib51xititzwtyej
+In-Reply-To: <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
+X-Stat-Signature: yf17i6omtkb1nmjx7cnyde6irridsjde
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A81362000A
-X-HE-Tag: 1790245887-317065
-X-HE-Meta: U2FsdGVkX1/lrK/KciROtUDtu+uQvZuRAHey5SdQqk3YJ0sdZ0xl98e8Cu26sPoSIa3VU0rWI5aBJOKpomOdkt8eKiyCgVaJnhjboXvtteeh7h5Cwo3MoBYf7mgyLavlmYebYkZX3e/txCAwOuJt8iV4KGs0MPrXZxFFFIt4G9sFan4njiGld10mFvjsu5KnPMMqrm9ZmidxLytm4KH1I/p1o6aHpiFQtnaIGblSr8JdfDHIUbrIb6v/ASvGs/FcjPQZ40MxrdNoD7WDDBo31RTaunigo6iUfvo1H4eAFB3OPj4bTcJjmZY9S8NXbQ5Mu17s4Qiq1kfbepZLuphhYTKLKD6STxAFVJcqRMLs2KkKuVGASwCcqXfsw5SndzfEllRHmdgB01ivMiQl7zQ+nvF27ELSGm6fvTFrnVD0tmFPkSP+KMOmXhvcOMSf/n4m4Kh26wBc7fUt8IEfOyoVRpLzl/Qb0YKIMdMseiK7gVrodE0R+9XSWjQgGCrPrxDdna7aFhO6APfvThXxAYBe2+Fuzwvb5cWUa56xNvCtKX8ILzr9aUhVxx8g0yIuogpvyAOp6czYux4wFBSCZYmj3O0bup5Z/5P09cJ3AScGrV+xkI/kuRwEOgAVXbfuKfoRvTe4tVuQaTBO96XewEFCxcDTuCD2AwLcKWKvz2JQz523rD3k7ghUq4U3Z/6Bk5iZrTLI1zD5eC4AjvdoUkZlFRUibfZSFPApbCulo7AMJnURcifub6SHUw1M8VO9ANL8Qlxme8/HQohOZ+ifeDnMi4D4HpYyShqHl1kQHMe91HnFcrhOG/qfz5bBI4ZKGflzWuFtsgKtjCqJTfQblercK4h9UXU+JcZ+KnuIk9BzzVx6icWCnqijj4bKZojffpO+nrtnzxuUkLW8sSjbtS7PPnRDuhf92kFb19SpVrdpw0nVhgRG5xRyGecD/IAOFNRiJN25TbWPTauMlxStdEU
- SPTtmIpb
- 7iwwKx5qVPJ8fXa8LBb5+Gn6i8pcgRN/vfX6EHgpJgL0lmLNHWgBpYitMQHxB7wkWJNp+TMOwochkm6RryJ+n+9vA3ASgBxzTmDRkALuRq+VeUpOOZj4V7hdOhO4yLaRZ3QPcxO3dCzz9iwKV1bFXoEug+f4hLr4cBzNKq9XTcRUOdbziuLLvZWm5GjWDnyU/GqGygTqqQafLwNqQNzVBk6PN6L4KUojEg4uCwi6cZaZLPbq8rCivq2RvE+bydw45G1QewFZHnA6ylQ0zA7P5BBpxLYCz5TZF+ZfRi+dsRTnWwOBVxoRRwwJPPzBGSKYOZhEksU2H0KfOb0P4JJ461o5C+Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C4901180002
+X-HE-Tag: 1790246780-649438
+X-HE-Meta: U2FsdGVkX18dsj+lK4pKxeBtlGc9UlezrbeqqKet0xnl7fQpFSrBMxiw9wxIzAoVATTmJn6nTK35CvSlxDgo6lr6ys2ROsfZKCHem5yvq5Il/NDg5/GRaLqHbnilKbSlDTO0uB5B0Z9mXR0F+XIqs95BCIfH7eTFGAJElGjNHksLhl1z6Kn5pXIFDqtjuf6ggNpyTo8FrAE5NyFUJOGi4gwAllaU0TJWnj4KgmJ6a1Sqm2l70BG6TeZwa6NJKoW8NPp06LlhhO49i5Kw5xyxc2MXHukXgAmPjwVPwZY8Pu90fvxmyZ0K27wsgrFm2MXclOID/ZEsdW8X3EGYNffqBSG7ywMUgJdXAlQUcty/cJGLAaYvgqXbpLBA/eJK7xaWh57daxWwesHP7GlXGyORF+xkDJQMRUUDYt+4AD+r72m3iks4QEBP3/WHWHmfX+o3X9sQ5u1RuyRPPZbKYfEiLTRClSd7YCkN0okbTEl8YSmvdCX62paIVsqjp7Q8kUpdu0MNXyM/bh+is0dD5J+LKoCtzCVMQsdw8LExYVPmiFbxs3yhGRhJmMsB/ZJHHFiDdvcyjhA1CCEE9Qn8/1lCPfLM042b4jvvag7fwNkzq8zTFJcBPVl8xJulBnLc4cq2YMWYl/wl9R675FuM8ygLWug5pfbJ8MafkWbfVtql698/iUQFLHMZViGtYuHLlfDHer5vFjaDavlOMXzizEYpNdIjNAwobb7d6DY39Ltkgpno25x95GS9lg/zjXMg+irDQZFGXZAdn8qyETQ51XeXw6OCAhawS/Xj9KOEo94t877GnBYLkeLzu+K6tKOE0plQWtdWn62BLNRsu8dXFCMN6/DuOm1peN5Sstkri06m6lE/N4yqq1iQZqHgKBXDZhXmR9IueHsIqr4hz2OumlXpHCd3nBtF84xWf0SA9++y6yTCHzWPX7rzboRf9nyDRmg2yVaD9fOlzZ43Kleg/xr
+ V596PM5d
+ UWfxyxb5S9735dBDc+4U9wWpGVF9ui9BElmx0isUvbbrHexVs70RCN4H2XLMM7iCuQ85vdThlCSpEP+spoWDUitCEd3N/t8GgGkTzKcyiXFqrOyJS2/kyvbAmcP7wXU5eFfiYF3NJdRtFaLO36V6C6ANUF0xXssbt70NtnEaMzT/IKlSwFsIyVshKtwgHcdyOsMYJc4/b/8h3aojaSipHef4n/L/19Tz6/x0hPuOElOxzFGex5Y7rlgdDNEjdpFoiKYkn/2aU7LuV9EphVQ0DdZOfR4tccIkhzmkKO0a+D6OCGHu685X/Z40PHfOa52nAJHH8TWYY0UyywUV+5rkLz++1svuliiPfEEKVZOLlYw5PztZYw02qZb3fQ59kv+iBnFj3EqNT5QC60OB3JJ4UyLhuXt+VujoeT7Urq6pS8tmZepb6RHD5R/0euZ/NHW4SguuCfhLDpQieuzsLeUtlvh9mJKnAVpF3Xf72ZqUGUjVbbPq1qSiSIRk2L8BLaHv4IhLYqq880SY+72mDL5Y7ybUc9Y4Wl+G8C24eo7RC6WM2XTL6HVk1ejdURmt2Uh5XqMg7MB4jeInHttw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,84 +172,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 24-09-26 17:31:40, Zhang Yi wrote:
-> > @@ -395,6 +397,10 @@ void truncate_inode_pages_range(struct address_space *mapping,
-> >  	else
-> >  		end = (lend + 1) >> PAGE_SHIFT;
-> >  
-> > +	start = round_up(start, min_nrpages);
-> > +	if (end != (pgoff_t)-1)
-> > +		end = round_down(end, min_nrpages);
-> > +
-> Hi, all
+On Thu, Sep 24, 2026 at 10:32:29AM +0200, David Hildenbrand (Arm) wrote:
+> On 9/23/26 16:36, Harry Yoo wrote:
+> > On Wed, Sep 23, 2026 at 03:37:14PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/23/26 14:57, Harry Yoo wrote:
+> >>>
+> >>> [+Cc Breno]
+> >>>
+> >>> This might be worth some attention:
+> >>>
+> >>>   [PATCH v5 0/9] mm/memory-failure: keep hardware-poisoned pages out of the next kexec
+> >>>   https://lore.kernel.org/linux-mm/20260915-hwpoison-kho-v5-0-3bc7a57bd503@debian.org/
+> >>>
+> >>>   - The question: How best can we pass information about poisoned pages
+> >>>     across kexec when the kernel accesses a poisoned page, panics and
+> >>>     calls kexec, so that the next kernel avoids hitting the poisoned
+> >>>     pages again?
+> >>>
+> >>>     One challenge here is introducing another source (a new EFI bitmap
+> >>>     that represents poisoned memory, in addition to existing
+> >>>     PG_hwpoison) of poisoned pages adds complexity and confusion.
+> >>>
+> >>>     David Hildenbrand suggested that we should simplify this as much
+> >>>     as possible in a way that we don't have two sources of information
+> >>>     w/ inconsistency between them and using memmap as the only source.
+> >>>
+> >>>     e.g.) By consuming the EFI bitmap only once when initializing
+> >>>     memmap (to propagate poison information to not just free pages
+> >>>     through __free_pages_core(), but to the all pages on memmap).
+> >>>
+> >>>     Another challenge here is that we don't have functionality
+> >>>     to poison pages early in the boot process before memmap and buddy
+> >>>     are ready. So any allocation before initializing them might still
+> >>>     allocate poisoned pages.
+> >>
+> >> I've been thinking some more (and will reply in detail to the series), but I do
+> >> wonder whether memblock should actually be thought about poisoned ranges and
+> >> refuse to hand them out (reserved/allocated).
+> > 
+> > I believe this is what the patchset actually did in v2.
+> > 
+> > That way we'll have to either
+> > 1) make any architecture that supports kexec select ARCH_KEEP_MEMBLOCK,
+> > or 2) make kexec scan the bitmap when allocating the memory.
 > 
-> The sashiko pointed out an issue on this patch:
+> My naive design would be:
 > 
-> > [Severity: Critical]
-> > Can this integer overflow on 32-bit architectures?
-> >
-> > In truncate_inode_pages_range(), pgoff_t is a 32-bit integer on 32-bit
-> > systems. If a hole punch or truncate operation occurs at an offset near
-> > MAX_LFS_FILESIZE, the start page index will be close to 0xFFFFFFFF.
-> >
-> > When min_nrpages > 1 (e.g., on filesystems supporting min_order > 0 like
-> > Ext4 with bigalloc), rounding up this index wraps it to 0.
-> >
-> > Would this wrap-around cause the entire page cache for the file to be
-> > truncated instead of just the intended tail, leading to data loss?
-> 
-> This is a pre-existing issue, and it is not specific to the truncate
-> path.
-> 
-> On 32-bit systems, for a mapping with a non-zero minimum folio order,
-> the last min_order-aligned block of a file of MAX_LFS_FILESIZE is also
-> the last block of the page index space, so the folio covering it ends at
-> or past the last representable page index.  All places that do offset
-> calculations on such end folios carry an overflow risk, e.g.,
-> folio_next_index() wraps to 0 for that folio, and the values derived
-> from it are wrong.
-> 
-> For example, on a 32-bit environment I create an ext4 filesystem with a
-> 16KB blocksize, where the maximum file size is 0xFFFFFFFF000
-> (MAX_LFS_FILESIZE). If we run:
-> 
->  xfs_io -f -c "pwrite -b 0x10000 0xFFFFFFFC000 0x3000" /mnt/foo
-> 
-> The last folio starts at 0xFFFFFFFC000, but its length is 0x4000,
-> so calling folio_next_index() on it will overflow, leading to
-> unpredictable errors.
-> 
-> 
-> I think the root cause is that sb->s_maxbytes is set to
-> MAX_LFS_FILESIZE, which on 32-bit is (loff_t)ULONG_MAX << PAGE_SHIFT.  A
-> folio is at least min_order pages and min_order aligned, so the file
-> must have at most ULONG_MAX + 1 - (1 << min_order) pages for the last
-> folio's next index to stay representable.
-> 
-> I suppose filesystems that use a non-zero minimum folio order should cap
-> sb->s_maxbytes instead of using MAX_LFS_FILESIZE directly, something
-> like this:
-> 
-> static inline loff_t max_lfs_filesize(unsigned int min_order)
-> {
-> #if BITS_PER_LONG == 32
-> 	return ((loff_t)ULONG_MAX + 1 - (1UL << min_order)) << PAGE_SHIFT;
-> #else
->     return MAX_LFS_FILESIZE;
-> #endif
-> }
-> 
-> Any thoughts?
+> 1) Teach memblock early about poisoned memory ranges. Don't let it hand them out.
 
-Yeah, I guess it makes sense.
+I suggested using a bitmap because ranges are not scalable. Some memory
+failure modes generate errors repeated across the physical address space
+(think of a column failure, for instance). It would produce too many
+ranges to be viable.
 
-> Besides, I understand that since this is a pre-existing issue, it
-> shouldn't block the merging of this series?
+We already consult a bitmap in memblock for unaccepted memory. We *can*
+do the same for poisoned memory.
 
-Right, I don't think this belongs to this patchset.
+But I am not convinced it is needed for the initial implementation.
+Memblock is a small portion of kernel allocations. If we step on broken
+memory there, the machine is dead and requires repair. It can be
+improved later if the rate is too high.
 
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+  Kiryl Shutsemau / Kirill A. Shutemov
 
