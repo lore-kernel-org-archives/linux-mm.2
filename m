@@ -4,104 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF0EC9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE837C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:29:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 838AB6B0093; Thu, 24 Sep 2026 05:28:48 -0400 (EDT)
+	id E2E7B6B0096; Thu, 24 Sep 2026 05:29:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8107D6B0095; Thu, 24 Sep 2026 05:28:48 -0400 (EDT)
+	id E05876B0098; Thu, 24 Sep 2026 05:29:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74FBE6B0096; Thu, 24 Sep 2026 05:28:48 -0400 (EDT)
+	id D1C856B0099; Thu, 24 Sep 2026 05:29:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F8E86B0093
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:28:48 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DC537A5C74
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:28:47 +0000 (UTC)
-X-FDA: 85248131094.25.D3E8F45
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 2F235C0002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:28:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QIeFFGxa;
-	spf=pass (imf28.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id B77536B0096
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:29:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA36AA5841
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:29:38 +0000 (UTC)
+X-FDA: 85248133236.13.16C8B78
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3B5621A0008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:29:37 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm+Fwa7r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790242126;
+	s=arc-20220608; t=1790242177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0vgJBFcAarvZPPjPRuyQRtOiNZIDP2Jdgbmv47TJbwY=;
-	b=Q6bam05V8cQtfhQRPr2l0QzlAG6Ai+91PTFDdttYlY9rGjnGldHOGXIsEIRaEI3Qa9Va9f
-	IGHYsyok6GLrE0jQWAggUx4B1M05tSx3EL4789mpmGt7pzR4N7BzLd2zpkRwdnEeCUXT23
-	wq/PG+EXv/Sv5mE/h3ONAkNa8xyouAc=
+	bh=ks0w1rHPiDMbqqG99fpjPwGGuK/nceQ8BW9BfzFj+fc=;
+	b=5mSXA/IbMNZgteDwOMsmg9p49C5MsNLUF1UbITxG2n9OCdmqneKZuTxPN5kdH/9Jf2mCYW
+	ESa2hUhvkIi/rtwNde0v2U/BxmqnLoPNNaQJhntw/7xsYaruZHSp/aw/5n5QnE+6TsVsKD
+	wF1yi6e1ubSOmygeqc9OJ391KOGOE+c=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QIeFFGxa;
-	spf=pass (imf28.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lm+Fwa7r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790242126;
-	b=xYzr2LHcwlEScRFlEMdTOmwmIGKPrV0XBez8kG5tgjfYy9icaSeQfz2MJo0uyUFUoAMjML
-	CIOqnAW49lP7T/pjlZ8hCqNHBruyMfKn6c/kgq6ysqsfc65TG50uXjokM084/YOiMEXan7
-	PXKHSlAGpQC1xTdHtwUidOu1+qGt5go=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=0vgJBFcAarvZPPjPRuyQRtOiNZIDP2Jdgbmv47TJbwY=;
-	b=QIeFFGxaGPCo0/SVEk68hpIKgYJMMzL4hRClLXtJ9qdII7iAVJ3g/G+Hn+GzFD+ilOWqW0rOi
-	ooAg/zA7gqo/+L8HIYMBhPQPKa7rEIr1+DL1rP2BYsQthDBu0T2yevDfTMTSSofa7KtRGj08+bM
-	I8JZzXgNw1WolVRaEHq5jHU=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4hr7W71sC4z1K9D2;
-	Thu, 24 Sep 2026 17:16:35 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 625884057A;
-	Thu, 24 Sep 2026 17:28:41 +0800 (CST)
-Received: from [10.67.109.91] (10.67.109.91) by whupemk100010.china.huawei.com
- (7.152.184.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 24 Sep
- 2026 17:28:36 +0800
-Message-ID: <5a88421d-10ef-4fca-9acb-85a27a3c1173@huawei.com>
-Date: Thu, 24 Sep 2026 17:28:35 +0800
+	t=1790242177;
+	b=1/ghOBxj+DnUsgMte8enJGO9JV09skjvAB7A91VSGXCdGlstBW1mHVxnYJFQS9ckbQOUpt
+	NR0EkslUgUGipEnznZ+XvHjjqWBE/v2jb8ec20Z3sboZnLTWaEgUTuRIbVejU1DghHAFSF
+	8f3kZWNtVmEZ7rfQjIftfCHl+L5OMqA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B7151600AA;
+	Thu, 24 Sep 2026 09:29:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0B71F000FF;
+	Thu, 24 Sep 2026 09:29:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790242176;
+	bh=ks0w1rHPiDMbqqG99fpjPwGGuK/nceQ8BW9BfzFj+fc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Lm+Fwa7rBukjDdQpzJDEQf80YAJJBMO9WT/Y84Z6zBCDoesGJ6lMYoymrAxpvRA/S
+	 5qZID6fZ7FitJC+kX5Yc34J7MOKOWr96hil/eb6D9lTLKqrInm0p79sHbtkEB828/F
+	 +t0EmQwm9flvR3SQlv69+Ls75YyUsCPM4rdoCQtuLS/2vMtiafQ1zltIhEjmQaFBlF
+	 PssluRWFi1r0lqm4805PJMCr4h2mnQDIPNhHUascXIyWR7R5mdO0N6q4NAGoT/nKcT
+	 /LQgTaA583h5uLTLE+y/lA89MG+G1gz9Vkxi9WBl2ocBXPekK5O7Ehciij3CxQUwUd
+	 JdaGuBdtP21Bg==
+Date: Thu, 24 Sep 2026 10:29:29 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>, x86@kernel.org, 
+	linux-mm@kvack.org, regressions@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: don't defer freeing kernel page tables while booting
+Message-ID: <arTq_8FGRj7a85kw@gremlin>
+References: <41a59ba9-039e-454f-8d31-f647db802ada@kernel.org>
+ <20260924072819.33277-1-mikhail.v.gavrilov@gmail.com>
+ <65b94694-d503-46c5-9f13-f0f7f8bba8d8@kernel.org>
+ <arTl5Cc1B-2_BoHP@gremlin>
+ <arTmLiTLnxhwohH1@gremlin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC -next 0/5] net: charge socket memory budget to memcg
- upfront
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: Eric Dumazet <edumazet@google.com>
-CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<kuniyu@google.com>, <pabeni@redhat.com>, <willemb@google.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <horms@kernel.org>,
-	<ncardwell@google.com>, <matttbe@kernel.org>, <martineau@kernel.org>,
-	<geliang@kernel.org>, <mhocko@kernel.org>, <roman.gushchin@linux.dev>,
-	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <cgroups@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <mptcp@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kselftest@vger.kernel.org>, <lujialin4@huawei.com>
-References: <20260924080219.1036588-1-caixinchen1@huawei.com>
- <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com>
- <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
-Content-Language: en-US
-In-Reply-To: <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.91]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk100010.china.huawei.com (7.152.184.41)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arTmLiTLnxhwohH1@gremlin>
+X-Rspamd-Queue-Id: 3B5621A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2F235C0002
-X-Stat-Signature: oownf19s8a6ewkrggzxyrfpjm966paea
-X-HE-Tag: 1790242125-9703
-X-HE-Meta: U2FsdGVkX1+In5bVGCR2lLA/CgkgGClfk8GmuwtsL+giMcVk7NC016ND+YHChW977JtDOT+FQDzF8TD8p9Y+n8a1UVt4niR35IOCrOLyfARQLNf/pXCWPNXS1CZ3c3RBEqaiSvoXx5PJW8DXoggVaO1n/PvtRw7uBxJZly4ihY7AYQ3QjPnOnJdZN2f7zLDvvB8+qTxqm5Jn9EZMIZA44YV/INY3zQx6zwD/7RN8oqhXPq5fhrB9uhB/0izv8ULwsXWMVxjAE/Xali2uSaH8aM4rD2OQhhagwujHg90Lrd3fpA0rVXqwoN8BXyKatbbDQp+3q0Mqwdw6Wp2Y344MRcMxpjOgJZvhsCxAPtdKBWtsYuXSN7cC7AiTBFacXdQv+d0IIMmZbxXkmPHqvJrLGi40UhUExJc610xcKWWwya+cjRh6KQT3cp5pvlyt4CGQ8/YIEJ4XqaI4mz0QXkjKrxBuJXO8WErRjd7ajKqfnsGjv5OBnV6dfUkMpYpfFjtDU1INVkKszE9JHfKTzP4+mH/zxP7stjpX2fjvjZ7GPBKKapr1k6Mi24TX9SgArtzFkJ4Ktpgk44v/NgTRiheDoJM5ksYyCu91DM3mAFnOeSvuYZ/C4qhGcvOxO+c8tebXuRNuKKoUFvsJrPX3uxl/msm3JhnuGOsQ9Et4sfaivvX9gjSftx6vr4KuSz+1YdcJAMxDL/iqARS7+Tn4R8HTa7t+547qzLoXnXTs+tDBd6a0oQZR9IMAt6I1sZ4d2G8Cd9j9nq8tTessXbj9tGmoaSdMTXf5Nkzyr90ZMjAaKbmcYn01AxgawdD9fiTBV72xJlWeLj+KMq9HBIpn+n/5lgTTkvgci53aL8NVMR5zw33TnmAV+c28zA3POzU5bGxjl+UG6QYXx8sWZ/tbP4B323O0xsRymdyJnW4fQGWk+cS8HYtbyH+0ASvTONIuS1fTqn/K0T7tPsY9R9jS/hw
- 6KU1QFGN
- Br9SaIxkqX7G0XAztKIKDz9Yk1Kyrcrt5ckrr0D0brG7yhUJQTWrBXxC6ZbpA5Voeo1uJgJfUy8pO2VUIQ9oavYFee+1zGdU3o60dNHlJ7a6NADV4tRYW59YPgRjm9KHir7jWVk1R3uljeWGat2BZoOfydvwJ6+ys3HSKBcpnIxxsnxt7zz5q0GpOzr4NMojNFOtNaMzjl5R526zCd68KhaK34UFXJten7YTlaZnO4uAt8GsVhYSrI8gW95hEQ6WnJbyzWysXLcadJ2gLmBmSBvaqNe2aPFm+V6oJV4/2tCBGUbO9R0k6vZSBMtcbcpCjMUQrb99xIBU77FDaUPkRa/1Jp5jN0NzTVFJ6p+priNdv1b/+pNFFNv6+wQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gy7rujz4exuxb61q9ia75ypnzn4m4pps
+X-HE-Tag: 1790242177-791317
+X-HE-Meta: U2FsdGVkX1/Cf/NnUiBOL6mH7OCrzoU9ET9OY/xT92Ktxp+4QUHI4Zy5jWLEQgS+yVvknYq9j5aParFJMCpqoqaln63AUd8QE8BkB3fL6BLq8mAgMVZo8v/CkbPBm8pA7KiislU2c/XlN4AWCH2tqrSYGYCCPX41P6aC6jJVd3UFa2aveQrXk1VFeLZZe9N8IQgyFywCPEQ5HrbjWRxDQ8L+ypKiGW3cnjWqRJJH0HDhlZ8ZPVT4S1k9G9uMIRJofvklcCW+rreDjTMyGQBc8HF8b2CRTNILdN5KzMS4WfW1w+oAGaneKVfrr3bk5M85F7PdyJtpJZWkjZQu9nM5TWGwM4gWjQC3vu1A77BOPfLQ7JHDeb/PbKL5ewq6UrI2PbQ9xLa6IHwV4/9Vn0RZHJB9cjgrAFLCf/1CYmk3g39xzOzTjYqMgnNzSUORZsDtSYnUcSaO2Y9tLcowq3M5FQTmsqJf6qpXTaSR7n7DYJfofVyJDZSn7s/T2c4doyNlHCr5WeeXtweWtTSUkZWo/LU0CccAfWvszUAWEElGdOozPTP/Veoys8tjtrbNLMK1TQrzc8TXOgiRlpfll/waA0LPs3x12Kkk/i7puv8CmRxxI4xYlTKqV/3mujYKbOaUk13TONazVe80kFBw47vRcF/ejXuY9QMNF1VVqHm0F80C3t8833CG4oxmw7ftYEtJhQz1gqDNSK3Bwyx+7pJkbWg4w3oooew8XThaRFKVjvAbiI7v8iRfHvo5AtwzgNVGJZNrzUep/xNfv7+g3V0An1ATvYAwTbajNJO4Bd1GKPSS4LAt2YWNVRVaLzPYcHBOtHb2UnI/qjHRIwgpu9ol8KOWBInMECgPC9YlCSe1k9Fedg2phNaq/UtArbnQpIWTLvBrWooyNVabAr4d80r26LygonArqEFvPrBbrDPaI8RL6M6r87VIOGZFIbC6imcuNN+4CCU8rD5t5aAdJbV
+ yVEJPg28
+ U+DMPxXdYZ3tVrSz8f0DyIdaF1uh/wiGYmLanaWc6Zm6SXeSCJqmEb4+ok0Skb9s3ijS4YD0B66vNh3A9S5kk0BGmVqxfY+1uz0Fw9K06qKNToo0waNfr233xgMZcqT5Qp8A7N4NAX3UUHX82bvsI+oz/l9qOK5dUbYyEaMPUPiVnTQrj0XIbKVsY0djLmTNxQkkLQIhnw+C7bAWTkMY4mGxDFz1Ls45EiU2bDikOQbheDy9qFutyEFxYzVG4Hrc25bRHp4LCiaYU6jka4lM+d8BecaTQmMGR+A/U1Nh5dAH9I/mbzNtbUC1BEfyGB/e4E1MJWV8GcEKpDTQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,327 +100,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-And there is a repro
-
-#define _GNU_SOURCE
-#include <arpa/inet.h>
-#include <errno.h>
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/stat.h>
-#include <unistd.h>
-
-#ifndef SO_RESERVE_MEM
-#define SO_RESERVE_MEM 73
-#endif
-
-static int fd = -1;        /* receiver: SO_RESERVE_MEM + RX charges */
-static int fd_tx = -1;        /* loopback sender */
-static struct sockaddr_in addr;
-static volatile int stop_flag;
-static long n_opt, n_opt_err, n_tx, n_tx_err, n_rx;
-static int mode = 3;        /* 1=A only, 2=B+C only, 3=all */
-
-static void pin_cpu(int cpu)
-{
-     cpu_set_t cpuset;
-
-     CPU_ZERO(&cpuset);
-     CPU_SET(cpu, &cpuset);
-     pthread_setaffinity_np(pthread_self(), sizeof(cpuset), &cpuset);
-}
-
-/* Thread A (CPU0): random page-aligned SO_RESERVE_MEM targets.  A
-  * random target is almost never equal to the current reserved value,
-  * so nearly every setsockopt performs a real reserve or release
-  * (sk_forward_alloc_add RMW) whose window can be interrupted by the
-  * NET_RX softirq charge. */
-static void *hammer(void *arg)
-{
-     long n = 0, err = 0;
-     unsigned int seed = 0x9e37;
-
-     (void)arg;
-     pin_cpu(0);
-     while (!stop_flag) {
-         int val = (1 + rand_r(&seed) % 63) << 12;
-
-         if (setsockopt(fd, SOL_SOCKET, SO_RESERVE_MEM,
-                    &val, sizeof(val)) < 0)
-             err++;
-         n++;
-     }
-     n_opt = n;
-     n_opt_err = err;
-     return NULL;
-}
-
-/* Thread B (CPU1): loopback UDP flood.  Each sendto() enqueues to the
-  * per-cpu backlog and raises NET_RX on the sending CPU, so the RX
-  * softirq (skb charge -> __sk_mem_schedule -> sk_forward_alloc_add)
-  * runs on CPU1 -- truly concurrent with thread A's detector windows
-  * on CPU0 under KVM.  sk_setsockopt serializes setsockopt callers via
-  * the socket lock, but softirq writers do not take that lock: this is
-  * the same collision topology as the original sockmap verdict pair. */
-static void *sender(void *arg)
-{
-     char buf[1024];
-     long n = 0, err = 0;
-
-     (void)arg;
-     pin_cpu(1);
-     memset(buf, 'x', sizeof(buf));
-     while (!stop_flag) {
-         if (sendto(fd_tx, buf, sizeof(buf), 0,
-                (struct sockaddr *)&addr, sizeof(addr)) < 0)
-             err++;
-         n++;
-     }
-     n_tx = n;
-     n_tx_err = err;
-     return NULL;
-}
-
-/* Thread C (CPU1): drain the receive queue so charging keeps flowing
-  * and every freed skb's udp_rmem_release reclaim pairs against a
-  * charge that may have been lost to a race. */
-static void *drain(void *arg)
-{
-     char buf[4096];
-     long n = 0;
-
-     (void)arg;
-     pin_cpu(1);
-     while (!stop_flag) {
-         ssize_t r = recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
-
-         if (r > 0) {
-             n++;
-         } else {
-             usleep(50);
-         }
-     }
-     n_rx = n;
-     return NULL;
-}
-
-static int cat_file(const char *path)
-{
-     char buf[128];
-     FILE *f = fopen(path, "r");
-
-     if (!f)
-         return -1;
-     if (fgets(buf, sizeof(buf), f)) {
-         printf("[*] %s = %s", path, buf);
-         return 0;
-     }
-     fclose(f);
-     return -1;
-}
-
-int main(int argc, char **argv)
-{
-     int secs = argc > 1 ? atoi(argv[1]) : 30;
-     socklen_t alen = sizeof(addr);
-     pthread_t ta, tb, tc;
-     int one = 1;
-     FILE *f;
-
-     if (argc > 2)
-         mode = atoi(argv[2]);
-
-     /* dedicated v2 memcg so memory.current is observable; recreate it
-      * each run so the balance starts clean (a leaked/deflated balance
-      * from earlier runs would poison the results) */
-     rmdir("/sys/fs/cgroup/repro_rmem");
-     mkdir("/sys/fs/cgroup/repro_rmem", 0755);
-     f = fopen("/sys/fs/cgroup/repro_rmem/cgroup.procs", "w");
-     if (f) {
-         fprintf(f, "0\n");
-         fclose(f);
-         printf("[+] joined /sys/fs/cgroup/repro_rmem\n");
-     } else {
-         printf("[!] join memcg failed (%s), continuing in root\n",
-                strerror(errno));
-     }
-
-     fd = socket(AF_INET, SOCK_DGRAM, 0);
-     fd_tx = socket(AF_INET, SOCK_DGRAM, 0);
-     if (fd < 0 || fd_tx < 0) {
-         perror("socket");
-         return 1;
-     }
-     setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one));
-     memset(&addr, 0, sizeof(addr));
-     addr.sin_family = AF_INET;
-     addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
-     addr.sin_port = 0;
-     if (bind(fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-         perror("bind");
-         return 1;
-     }
-     getsockname(fd, (struct sockaddr *)&addr, &alen);
-     printf("[+] udp rx socket fd=%d on 127.0.0.1:%d, mode=%d "
-            "(1=A only, 2=B+C, 3=all)\n",
-            fd, ntohs(addr.sin_port), mode);
-     setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (int[]){ 1 << 20 }, sizeof(int));
-
-     if (mode & 1)
-         pthread_create(&ta, NULL, hammer, NULL);
-     if (mode & 2) {
-         pthread_create(&tb, NULL, sender, NULL);
-         pthread_create(&tc, NULL, drain, NULL);
-     }
-     printf("[*] running for %ds ...\n", secs);
-     sleep(secs);
-     stop_flag = 1;
-     if (mode & 1)
-         pthread_join(ta, NULL);
-     if (mode & 2) {
-         pthread_join(tb, NULL);
-         pthread_join(tc, NULL);
-     }
-
-     printf("[*] done: setsockopt=%ld (err %ld), sent=%ld (err %ld), 
-recv=%ld\n",
-            n_opt, n_opt_err, n_tx, n_tx_err, n_rx);
-     cat_file("/sys/fs/cgroup/repro_rmem/memory.current");
-     cat_file("/sys/fs/cgroup/repro_rmem/memory.stat");
-     return 0;
-}
-
-
-On 9/24/2026 5:25 PM, Cai Xinchen wrote:
-> Hi,
+On Thu, Sep 24, 2026 at 09:59:36AM +0100, Lorenzo Stoakes (ARM) wrote:
+> On Thu, Sep 24, 2026 at 09:57:57AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Thu, Sep 24, 2026 at 09:31:40AM +0200, David Hildenbrand (Arm) wrote:
+> > > On 9/24/26 09:28, Mikhail Gavrilov wrote:
+> > > > On 9/24/26 09:07, David Hildenbrand (Arm) wrote:
+> > > >> Should we instead simply skip the
+> > > >>
+> > > >> 	schedule_work(&kernel_pgtable_work.work);
+> > > >>
+> > > >> and rely on anybody freeing stuff later to just free that one alongside?
+> > > >>
+> > > >> That avoids throwing in more freeing handling.
+> > > >
+> > > > Yes, that is simpler, and the early table then goes through the same
+> > > > IOMMU flush as every other one, so there is no need to reason about
+> > > > what an IOMMU can see during boot.  The only cost is that it waits on
+> > > > the list until the next kernel page table is freed after boot.
+> > >
+> > > If we're worried about that actually causing problems we could drain the list at
+> > > a later part during the boot stage. I'd suspect we free something else later
+> > > already and simply drain the list ...
 >
-> Thank you for the review.
->
-> We found that sk_forward_alloc is a plain int updated by a non-atomic
-> RMW (sk_forward_alloc_add(), where even the read side is not
-> READ_ONCE), and its writers span three unrelated lock domains:
->
->   - socket lock, process context: SO_RESERVE_MEM and TX grants
->      (__sk_mem_schedule(), sk_forced_mem_schedule());
->
->   - receive-queue lock, softirq: UDP RX charges and the
->      udp_rmem_release() fold;
->
->   - no lock at all: sk_mem_charge()/sk_mem_uncharge() from
->      skb_set_owner_r() and skb destructors, and the sk_mem_reclaim()
->      fold itself.
->
-> Any cross-domain pair loses an update.  A lost charge is still
-> returned in full by the matching skb free, so it resurfaces as a
-> phantom surplus in sk_forward_alloc, and the next fold hands it back
-> to the memcg via __sk_mem_reduce_allocated() ->
-> mem_cgroup_sk_uncharge() - an uncharge with no matching charge.
->
-> We first tried to fix it with locks, and hit three walls:
->
->   - the socket lock cannot be used: its holders free skbs (e.g.
->      tcp_recvmsg()), and the destructor's sk_mem_uncharge() would
->      need to re-acquire it - recursion.  That is why these helpers
->      are lockless in the first place;
->
->   - a new per-socket spinlock serializes the RMWs but not the bug:
->      __sk_mem_schedule() publishes the grant before the memcg charge,
->      and the charge may sleep (GFP_KERNEL, memcg reclaim/OOM), so no
->      spinlock can cover both steps; a fold in that window can still
->      refund pages whose charge afterwards fails;
->
->   - such a lock would also sit on the per-packet charge/uncharge
->      paths, exactly the hot path the cacheline layout around
->      sk_forward_alloc was tuned to keep cheap.
->
-> Are there any good solutions to solve this problem?
->
-> On 9/24/2026 4:26 PM, Eric Dumazet wrote:
->> On Thu, Sep 24, 2026 at 9:36 AM Cai Xinchen <caixinchen1@huawei.com> 
->> wrote:
->>> The memcg socket accounting currently charges pages to the memory
->>> cgroup per grant (__sk_mem_schedule() publishing forward allocation)
->>> and refunds them later from skb destructors.  The refund side folds
->>> per-skb "was this charged" snapshots back into the socket balance
->>> under concurrent lockless RMW, and races there can drive the memcg
->>> socket balance negative, ending with:
->>>
->>>      page_counter underflow
->>>      WARNING: ... mm/page_counter.c ... page_counter_cancel()
->>>
->>> This series flips the model: a socket is charged its whole memory
->>> budget (sk_sndbuf + sk_rcvbuf + sk_reserved_mem) to its memcg when the
->>> budget is established or grows, and refunded when the budget shrinks
->>> or the socket dies.  Grants and per-skb charge/uncharge stop touching
->>> the memcg entirely, so the racy refund pairing has no code left to go
->>> wrong: refunds can never exceed charges and the balance cannot
->>> underflow by construction.
->>>
->>> Tested: full arm64 build with 0 warnings; each intermediate state
->>> compiles (bisectable); tools/testing/selftests/cgroup builds clean.
->>> Runtime validation on the workload that used to trigger the underflow
->>> is pending.
->>>
->>
->> Charging sk_sndbuf + sk_rcvbuf upfront to memory.current is not
->> viable, especially for servers handling large numbers of connections
->> (e.g. 1 million TCP sockets):
->>
->> We specifically went in the exact opposite direction in commit
->> 4890b686f408 ("net: keep sk->sk_forward_alloc as small as possible")
->> to make sure idle sockets hold zero forward-allocated memory and
->> non-idle sockets hold less than one page (4 KB) in sk_forward_alloc.
->>
->>
->> 1. Massive phantom memory charges and false OOMs:
->>     With default sysctl_tcp_wmem[1] (16 KB) and sysctl_tcp_rmem[1]
->>     (128 KB), 1 million completely idle TCP sockets immediately charge
->>     144 GB to the cgroup's memory.current while holding 0 bytes of
->>     actual packet buffers.
->>     Worse, once TCP autotuning grows sk_rcvbuf / sk_sndbuf during a
->>     short burst (up to tcp_rmem[2] = 6 MB and tcp_wmem[2] = 4 MB by
->>     default), TCP does not shrink sk_rcvbuf or sk_sndbuf when the queues
->>     drain and the connection becomes idle again. 1 million long-lived,
->>     mostly-idle connections would permanently pin hundreds of GBs (up to
->>     several TBs) of non-existent memory in memory.current, forcing the
->>     memcg into constant reclaim thrashing of real page cache/anon pages
->>     and triggering premature memcg OOM kills.
->>
->> 2. Overcommitted caps vs. physical reservations:
->>     sk_sndbuf and sk_rcvbuf are per-socket upper bounds that are heavily
->>     overcommitted across sockets, not reservations (unlike 
->> SO_RESERVE_MEM).
->>     Comparing this to vm_committed_as is flawed: vm_committed_as tracks
->>     virtual address space overcommit globally and is never charged to
->>     memcg's memory.current for the exact same reason.
->>
->> 3. Broken memcg limit enforcement (memory.max bypass):
->>     __sk_mem_raise_allocated() drops mem_cgroup_sk_charge() completely,
->>     while sk_memcg_budget_sync() ignores charge failures ("the new 
->> budget
->>     is used uncharged"). When a cgroup reaches memory.max,
->>     sk_memcg_budget_sync() fails in sock_init_data_uid(), 
->> tcp_init_sock(),
->>     setsockopt(SO_SNDBUF/SO_RCVBUF), or autotuning, yet sk_sndbuf and
->>     sk_rcvbuf are still raised. Subsequent skb allocations in
->>     __sk_mem_schedule() will then allocate real physical memory without
->>     charging the memcg at all.
->>
->> 4. Unnecessary struct sock bloat and hot-path overhead:
->>     - Adds 8 bytes (sk_memcg_budget + sk_memcg_budget_lock) to struct 
->> sock
->>       (even when !CONFIG_MEMCG).
->>     - Acquires spin_lock_bh(&sk->sk_memcg_budget_lock) inside
->>       sk_mem_reclaim().
->>     - Every TCP socket creation charges rmem_default + wmem_default
->>       (416 KB) in sock_init_data_uid() and immediately uncharges 272 KB
->>       in tcp_init_sock().
->>
->> If you are hitting a page_counter underflow race in socket memcg
->> accounting, please share the exact race / stack trace and fix the
->> underlying accounting bug rather than charging uncommitted buffer 
->> limits.
+> And on that, yes, I don't think there's anything to worry about there.
+
+Though maybe it's worth ensuring the drain? Shouldn't be hard, so like:
+
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index f3754cefb19e..67f286169632 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -457,12 +457,29 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+ 		__pagetable_free(pt);
+ }
+
++static void schedule_kernel_pgtable_free(void)
++{
++	schedule_work(&kernel_pgtable_work.work);
++}
++
+ void pagetable_free_kernel(struct ptdesc *pt)
+ {
+ 	spin_lock(&kernel_pgtable_work.lock);
+ 	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+ 	spin_unlock(&kernel_pgtable_work.lock);
+
+-	schedule_work(&kernel_pgtable_work.work);
++	/* No workqueues exist yet. */
++	if (system_state != SYSTEM_BOOTING)
++		schedule_kernel_pgtable_free();
+ }
++
++static int kernel_pgtable_drain_early(void)
++{
++	/* Drain any early kernel page table frees. */
++	schedule_kernel_pgtable_free();
++	return 0;
++}
++
++core_initcall(kernel_pgtable_drain_early);
++
+ #endif
+--
+Cheers, Lorenzo
 
