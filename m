@@ -4,101 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C81BC9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3894C98310
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:39:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 800226B0093; Thu, 24 Sep 2026 04:36:01 -0400 (EDT)
+	id C9B8D6B0095; Thu, 24 Sep 2026 04:39:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D8356B0095; Thu, 24 Sep 2026 04:36:01 -0400 (EDT)
+	id C72346B0098; Thu, 24 Sep 2026 04:39:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 715586B0098; Thu, 24 Sep 2026 04:36:01 -0400 (EDT)
+	id BAE426B0099; Thu, 24 Sep 2026 04:39:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 540F46B0093
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:36:01 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF686140240
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:36:00 +0000 (UTC)
-X-FDA: 85247998080.12.7C8F9AB
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9917F6B0095
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:39:18 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 27C13120262
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:39:18 +0000 (UTC)
+X-FDA: 85248006396.17.73F586F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3AE4980003
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:35:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X31XwyZE;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id A41A2120008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:39:16 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJaLWzWo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790238959;
+	s=arc-20220608; t=1790239156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e7EM2scO1Xc78BwoAUHajjylw+akcDb4zR59+Q7scyY=;
-	b=41MtW58gJnpoaEpKVJPijDVc+mAmu2Uy+11DgOe+KtgPTjk4yaId+5wd9dz5nIiULOfPRy
-	dA8CW2OMG9FX3krxDtSrVCEVptw3OONbND25lhLcSVbvp8HiXluuFRlMWUpljJF0uxhSDY
-	B20C3ekEyV8+cRvJX1Wegm/iV2e5m90=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DUq4tGaO0XgV7gLkA9KRgzuKApXd4+gn0m0gS9k1Cj8=;
+	b=tndb8aMY+Cm3h5Jx24tqDqNPfyLYa6gKGz1/N/4fX0yZy+P//2dTux1ezjIONuGlmzXaO/
+	vXjfub2p2o/l+VDlJ2g++e7jRoTu1V3RdDQSkCcygmpsUJiWt/UG3eRa6KUNY2qagPwIEH
+	Rrvkat9rp8tjSnWx5FjA8jRRdGzpV+8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X31XwyZE;
-	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJaLWzWo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790238959;
-	b=RRUdXXxLUYw11MZVuRpo+EI3E6vVN8iiGQMS3JGQV9cNPcMqTuakk0Ay24E50QZ+7E205f
-	FXfE2JUTRcW+lH3VctyQfwWM8KrP7BpOQjmuZAJImnuR7UPF6Q7e19mPmDZOzTk5npYdIb
-	MYHgC5xks+H9NmqVE22+wxOOG7u4Pyc=
+	t=1790239156;
+	b=K8/HI0AilfkBinHqfia0Hh8v7yj8IqzhLyINQRoxeJmTZVYzhhqGBzOp+9j616t4yPlVjr
+	26bjXMrMIuBgXKcMrwHEzQJOetjdh9dgwTvd66424XxlIn+xhsyUD+GkctuXsBthk7TMMg
+	vurmQHj4XDbm5CiF204CFbDJgnli7w8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6582040C32;
-	Thu, 24 Sep 2026 08:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7F21F00893;
-	Thu, 24 Sep 2026 08:35:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D025140A5F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:39:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74DA1F000FF;
+	Thu, 24 Sep 2026 08:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790238958;
-	bh=e7EM2scO1Xc78BwoAUHajjylw+akcDb4zR59+Q7scyY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=X31XwyZEWdHBJJBkwh+YGKGtWaKuIhss1ceDmg2QfxyV2X31Pppi40vmjCTILvnnb
-	 HrfOnU7BMetUV7eps82Hyhcz7Z0liQ4ND+29yycijKUs4CZQB4q7y069slEnJOnd8/
-	 CNZxGl7NAAmR5lcDhHKyx+vtzOdaYixVosaL6aolLXTam1ZOC7Wi9CPWo3p13yFB36
-	 QDY3Og6jLZBEgLDp3bl8akP6miMDKR6EeR6ukVYgP8FK6UN+EQDsJUalySXr1qxVB+
-	 FO0idQCoegSt9g7eEZu4yfAViCkCg77UcAr0T9ZdcsDk5GkU62SNwQ42iqhj/PxDvR
-	 aGQcdycbSPiQw==
-From: Mike Rapoport <rppt@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
- "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>, 
- Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
- Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>, 
- Arnd Bergmann <arnd@arndb.de>, Baoquan He <baoquan.he@linux.dev>, 
- Pratyush Yadav <pratyush@kernel.org>
-Cc: x86@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- kexec@lists.infradead.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arch@vger.kernel.org
-In-Reply-To: <20260922041321.233986-1-pratyush@kernel.org>
-References: <20260922041321.233986-1-pratyush@kernel.org>
-Subject: Re: [PATCH v3 0/4] kho: rename "scratch" to "bootmem"
-Message-Id: <179023894799.508379.10846192044961348704.b4-ty@b4>
-Date: Thu, 24 Sep 2026 11:35:47 +0300
+	s=k20260515; t=1790239155;
+	bh=DUq4tGaO0XgV7gLkA9KRgzuKApXd4+gn0m0gS9k1Cj8=;
+	h=From:To:Cc:Subject:Date;
+	b=GJaLWzWol9L0JtsIAb+i5Wc041CkEFDHTJ7tOdZO46kJeT1AkJ1tHegF210T+K9f5
+	 ONNmIm7qTs2zNKKFWlk4tYJfRO6iV5B5tm5gzGJ0aFNWFrQ/GrGerCJbqWecLd9tfO
+	 HqeMrW/J/gU8NQENyXDj/EYMcJghq+OoZETdT48c8gvdGLKOn+hrnn6MDQadc+mA9m
+	 NGyuJiAEEMk23fQwhZwnD8NjRvaPnJ1p6dEZqwnjZ43m/sRtNd+PSBwCvo5xk6k/cN
+	 rnwsfdxQMey6+EHiXwGpmXXI7shytME+SDNrU70CLuCkuY4hiTUY0LleO+to7ktWrZ
+	 M6G854jyyDCEg==
+From: SJ Park <sj@kernel.org>
+To: damon@lists.linux.dev
+Cc: SJ Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: DAMON Beer/Coffee/Tea chat reminder for the week of 2026-09-28
+Date: Thu, 24 Sep 2026 01:39:11 -0700
+Message-ID: <20260924083912.3464-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: ztxq18hnedpxod9nai636cnq79g93urj
-X-Rspamd-Queue-Id: 3AE4980003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790238959-369287
-X-HE-Meta: U2FsdGVkX1+BoCD5kNXeqWmhJ2mBJYp9PstEbL4FCA6oN4BJ+JYBwLN+TEH4/3byEsLo4tKXzyd1RwlI6YXoZMNlttYKp5GpRfnuY9EzUmRHFJakD4K+fHkrvOAzxTKaeSDuOJ1PLl/NcnlQ4Jw8aQGkRpAgThIpsw5R4KrvydUXqtplcHnwnRkVBb1gLf2JNx75Zhy2IaK7WxW9cjy+Xkv5e7vHIGX/0r1XQk5HFna0JFfl6juZCml65AviIaiqqajinkpblZ3mUxH1/PVIUE93+gIQ7SfBh6kWzJn3JlZ8e8Z/eKHoU908qsWK+NRFq01Ru9d6J5qd6me/CDyDMhlfXF7hni4PL+JQheqcBg3zNl9ZnH5EHVMtzIH7TZA5E02Uu07qBO7ZYDuZSq0Z03fGvhTzj6iNPlIrUn/KOuRgQdkYOySH22/vkp9YQlU579OEbmMFxF+FtOg+cGLzXLHw0fvr3CUyjbuSOYHitKmeqEazymt8E8nZRnh+BrNmrvjRKMP7utlHf0Dd6gq1fxLQzjhBSgtJ8sUJlrL+R6UNUjMG458W8VIHG9c8AAqQA5I9C8behmhzL1LYNj2U+ZCGAKYNSTkqBCh13qmUojtCDFrWtVyR1x9io7sZuGpgU7+EP+40XKjOzSISWDOXA+/TNFPQmVwwF5lwyK0NDtTjP0fmmn2yUP/5qt9z6JpflZH3ptbZ7dA0rpkabtBwTEXCvXf7T8yDwW786xG09/ayCzXCN5QPNAOe0HPikDYQFM9+Uvv0ovr6tM6jjVN9eQAg15QLZc2PuUs8+HZTpLZri2OIawUFbMIqgD+qF6mVFDahRmtNBA0A8i1CuULyHSrWAFsJWBB0+g0kZC9YIQUaGx2OpP4NF5uoM67nPfMJo3H+q0E4C0bjLQZ91JwB+oBglC0i57CAvBtC+JsIxesMlXrcBhYREC2xg1dM9PbM8z8kCvVvAIZZ01Liib7
- 7/WYCYw4
- XQezajCP/BFDf7aFMnDX1WDAnDIofJ1+6oBxqX/5O2h5+0DldK1W8pg4t2DFzFJe+ilcXazPfHEHjV3TA8cdWmDUdIkylobD7cnNbRbVuE1gOvPwVlXjvTmt/mDebgiCvdYQr8VmAOZzPOy3YjBnKhaTqRPoLk+n6acZQHdFRw3X8bt2HvUvsb3gxIcH4qJCkHlDeCXuZ46GH5q1VMNSrAeB/nNHIIPFIQ22fBQgFchHTGMIlCri9aUhpmQ==
+X-Stat-Signature: uts8cbx1f54p64qkijd37jsyy5715gok
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: A41A2120008
+X-HE-Tag: 1790239156-358509
+X-HE-Meta: U2FsdGVkX1/4MaeUKC8WC9QXXIueXVoeBUWSBnqwrHNKYSTgf4SELEezyMiaCX0UHPxjJJKOnfxQq1PnGzl92qhBPtGzw25fTlLuf8+rmSB2jcv3vGuyyc/nMfloUaPQMU1oWhEx4Rr7lA8RlqnrdugBebpiUsZ3QT7xRUyhOhChwgxPyt9HiinYdj2WhDF9P4LAvU6BmgTohCGwBii9Otk9EVa37ApapRGZL/9wC02nUszXfQTHqOSmYVQn9uFcP41+FlvHOSS2/2rmEuDaqqjLR0gZwsfAnJFxSNaYzoC7nOmMOaqYWhZiXM8EfRZ7W0gVYZBbUB94QFvpKtYGFoapWnAfGbdZcmQ335k50ArxO+mFQzxgs4MQqlCFLNunlQKPIIZ3fJZEi7r1TAUyiFPpLEs59WtamPXh+CQFhQpqoT/cehowPhYEo2T256J26HCfFaNj00k/p7d71rKPOBebrN2a5CMhFWfInLevn9miNkqx6uCHjVf+wJWuaCUNhMHxRuXZsBRiDoZJlp8hIKIlCDRsV2ySc4y0ra8hVrWWcPDhvR13OPk3ZDS9Y1/kLgLRq2X7qFbWibxh49rTkW3DzEy5Q3a9RxWjfrrL+LLn626/f92pX1qyQKRc2nUN2kxk/4DWAp/IsAlB4eFpdEs3BGX5jjEPDyX7BRgG169XBDBmxlsfG2OABK2cQ3rWOTY7VmscYmV1fq7Lu92MB7acuYEbEm+x3pnZy76Vqpzp7KYjDXAkAF7cHUnDUWzd7Wh2d9zWAEH8U5NImn6ElPegkFIy/HW/xoCFQbZK0G5bwO5IlLHrWIjd9wMGXqq4q4DMLra7gEPquvTfKaHb8I6S9WnIs6xhgVHv2C647SCABt9s+ZznMwMc4LWMdLftoeB7jCJ8pdQINmbB4R2ogQUfRPw5pofLtTX5WNRnvZlFtjzdRph2uy7AM8ZaAgbHfudv9K9Q4V3nnbj6fW0
+ RSSRG0/Z
+ DPQ0/Ff70YT2pFUVo0G+B7QGCResY1at+/v1ces58iXtP/HKNSIKcFWUJUNZqT8ZaPTsP2/ugKHuno/Atj2gyasf7wBlMAHYOXhr5NaCINk2WxZDLHNBc5NWI4AjGKGsYboZpLLW8wqU4YogiPtStdAmAqmCEftVRa+SNJqvvrvxCa5R0HmvE3EDah6egWrKCMk8KDQWxDDgdgrMVhlWROn3CCU+/9WmTJXsX/zZhv++8DHcHr4xIwCozKZgmooQ2hOBLAbIsXO+HOXPyngtGz4TqNK4ZP49rXYJ+NuaNapB4malHCqLDQNt2mMoutzT6YSJk40B2FnkR+GKYo/+Yx+WU5Xto5raE2BtS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,35 +89,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 22 Sep 2026 06:13:12 +0200, Pratyush Yadav wrote:
-> kho: rename "scratch" to "bootmem"
-> 
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> The term "KHO scratch" is vague and overloaded. It does not accurately
-> describe what the memory is for. This was discussed previously at [0].
-> The conclusion was to rename "KHO scratch" to "KHO bootmem", since this
-> is memory passed by the previous kernel for early boot allocations.
-> 
-> [...]
+From: SeongJae Park <sj@kernel.org>
 
-Applied to kho-bootmem branch of liveupdate/linux.git tree, thanks!
-
-[1/4] memblock: get rid of CONFIG_MEMBLOCK_KHO_SCRATCH
-      commit: 5e309f53050f33faf74f55332f359099d7346464
-[2/4] memblock: rename KHO_SCRATCH to KHO_NOPRSRV
-      commit: 05a84ceadf7024be320e2ba82fe709db4a4180bd
-[3/4] kho: rename KHO scratch to KHO bootmem
-      commit: 85d3615cea17968788aa6581fd242e34d8953e58
-[4/4] kho: rename kho_scratch= commandline parameter to kho_bootmem=
-      commit: 8fe64603a47506c3b357002460c3a9c0d8d4d321
-
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux
-branch: kho-bootmem
-
---
-Sincerely yours,
-Mike.
+Hello,
 
 
+This is yet another reminder of upcoming DAMON Beer/Coffee/Tea chats
+(https://docs.google.com/document/d/1v43Kcj3ly4CYqmAkMaZzLiM2GEnWfgdGbZAH3mi2vpM/edit?usp=sharing)
+for the week of 2026-09-28.
+
+As usual, we have two time slots for meetings in the week.  The slot for
+Tuesday is already reserved, though.  I will also be in Europe in the week of
+2026-09-28.  Changing the time to CEST.  Next six time slots are as below.
+
+2026-09-28 (Mon) 18:00 CEST (not yet reserved)
+2026-09-29 (Tue) 09:30 CEST (not yet reserved)
+2026-10-12 (Mon) 18:00 PT (not yet reserved)
+2026-10-13 (Tue) 09:30 PT (not yet reserved)
+2026-10-26 (Mon) 18:00 PT (not yet reserved)
+2026-10-27 (Tue) 09:30 PT (not yet reserved)
+
+Please reach out to me (sj@kernel.org or whatever) to reserve the
+not-yet-reserved time slots for your topics.  The reservation is made in a
+First-Come First-Served way, and I will send a Google Meet link to
+reservation-confirmed attendees.
+
+Please note that other time slots are also available on demands.
+
+Shared Calendar
+---------------
+
+You can get the schedule via this shared Google Calendar:
+https://calendar.google.com/calendar/u/0?cid=ZDIwOTA4YTMxNjc2MDQ3NTIyMmUzYTM5ZmQyM2U4NDA0ZGIwZjBiYmJlZGQxNDM0MmY4ZTRjOTE0NjdhZDRiY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t
+
+
+Thanks,
+SJ
 
