@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 896A7C98324
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:09:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C45C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:19:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8DB86B0092; Thu, 24 Sep 2026 11:09:10 -0400 (EDT)
+	id A9EFB6B008C; Thu, 24 Sep 2026 11:19:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A653A6B0093; Thu, 24 Sep 2026 11:09:10 -0400 (EDT)
+	id A28D56B0092; Thu, 24 Sep 2026 11:19:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 953E56B0095; Thu, 24 Sep 2026 11:09:10 -0400 (EDT)
+	id 8F0F76B0093; Thu, 24 Sep 2026 11:19:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C23A6B0092
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:09:10 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E790803B9
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:09:10 +0000 (UTC)
-X-FDA: 85248988860.20.8C6B0F8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FE2C6B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:19:01 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 056CE402E3
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:19:01 +0000 (UTC)
+X-FDA: 85249013682.14.1462019
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2D49318000A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:09:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ouxl2a3v;
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 68EA540011
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:18:59 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVDH9WLs;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790262548;
+	s=arc-20220608; t=1790263139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f1SJ5qwFSMkgbZE6m/nDwefDqrv5UvLqOn5y2QRCfZA=;
-	b=6HOp5rAMUhppm5CsVmq+aqcKHwuYTUFKmMWG2ggCaZ+P76NyHZWYGA3t0AALZINJitK9lO
-	VCCQXOqHlI4xrPcMp4LipmrOqem99yjJpwlVvUbsQojVejXGcBvqjwNnpoi7vTQ0vEwruy
-	Zyom9BTsyq1+v1rEtLSO2KjuTzUceMQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790262548;
-	b=SJTh+LSqn2dY5RFYLA3COuwnuimXarjqC1q8uZabJVPxlj81M2HA7zLYNAIbcdDR+HYCYF
-	pCiDXhqgHQiUp3OK9U4ZzMDnsta/bcDkTHR4U6jr2mJcbTcge6PdJ1YDCKxViaIHCbboYq
-	e0rZ6kWiOn6vphgf6McnHpEt6ri6/zY=
+	bh=r7s1CAgd45i1qVFJKno+reNnGoGUQMAT+I7uYiP/nks=;
+	b=xCskSODUhsMKPHeIQnj7i7kXI3f/y0Z7U1JPHiSkFvMULrkiuOGhCQWORUcjgYUyXTz5CR
+	L0YS6WzzMaBQkYerucy2e29P3+sSL2ryDY8t0QixRhHr2KuZq0tTVEAd489XNDULw4wZ7C
+	Lfgx2M5f4CdYgYu/vPbLHS8L2Q7KCHk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=Ouxl2a3v;
-	spf=pass (imf16.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VVDH9WLs;
+	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790263139;
+	b=szbdRVLo9IFn9Qz2PbR5SBzeoB09nvs6j0/ErJa6vsWYD9xiIHduRSE3o0uRvvq5TgciIS
+	WofNDpLtEkZtFT43HXi8udbJiUVQD4gE1FrigN79/L/r+tG9d68Q3IUgrFwXoAWUo1jQyy
+	wCFm9S7XiRu79hbmTOqjbJWyv7eHEF4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 83DC160209;
-	Thu, 24 Sep 2026 15:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734291F000FF;
-	Thu, 24 Sep 2026 15:09:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1790262547;
-	bh=f1SJ5qwFSMkgbZE6m/nDwefDqrv5UvLqOn5y2QRCfZA=;
+	by tor.source.kernel.org (Postfix) with ESMTP id D7256601DE;
+	Thu, 24 Sep 2026 15:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6A61F000FF;
+	Thu, 24 Sep 2026 15:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790263138;
+	bh=r7s1CAgd45i1qVFJKno+reNnGoGUQMAT+I7uYiP/nks=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ouxl2a3vHSSaOQKJ1SJKuM0VXh3++g0batEkZ2MV+2otwiAv4JZruOqJbxveGpveY
-	 Bk5f95+RBlfRrTFQDK/ecu3Gak+Kb/5IDAtr61y35JFhy1O2zDJRTMPhHpOalqLzoX
-	 mvoigUmfYBLxZPvdGuyLquPJhlIJQYjyDK+r0+hs=
-Date: Thu, 24 Sep 2026 17:08:49 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>,
-	syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
-Subject: Re: [PATCH] drivers/char/mem: mmap readonly MAP_SHARED-/dev/zero
- correctly
-Message-ID: <2026092406-irritably-maggot-9512@gregkh>
-References: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
+	b=VVDH9WLsvrmzpUg4Z+hLDHBG/pO4qlIBnTIodD5pt0BF9Re7iMX6ULoPqbHSz2RnM
+	 mymMnw1a5pmRQCiKHNjX4xaFkJd3E2HmVEGs+O7u5jfWVN5bmkH6nlOUe7THYjtE/f
+	 mL9o7Tj6iKdrgU8ZuOjyGB03amWLl/t1FrPbO9ve033yVQ+VQR2hizSLCNpgOzVIWT
+	 6XnXVTerX2Y6rVe8Mk+UHq65CpLKmamkWuT4mkfE3jZlWwLjl051pbc+nuoNQpiPAh
+	 +Z2Nny5WtQQtwJzs7+VmPoQhFBBLhVHeoXzW8TFatOOXvBDWsF+IG4mzjumIzBkQ0I
+	 foBvXytVcx/3g==
+Date: Thu, 24 Sep 2026 16:18:56 +0100
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Conor Dooley <conor@kernel.org>, 
+	Damien Le Moal <damien.lemoal@opensource.wdc.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 0/8] replace CONFIG_SLUB_TINY with a slab_tiny boot
+ parameter
+Message-ID: <arU956kfc1QpA7N-@thinkstation>
+References: <20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
+In-Reply-To: <20260923-slub_tiny_rework-v1-0-a0e66d536eb5@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2D49318000A
-X-Stat-Signature: j9prex9j9fkrtxy9c69hwtydchq4pdb6
-X-HE-Tag: 1790262547-945002
-X-HE-Meta: U2FsdGVkX1+Oe23u3M3HakGpWmuqBtLRvD+tQkPx+81I23cXpAU0Mz9Db1LqrV8u8EeumVqUzSnrcLhOKb1jsK2mGfbcAYbj0n4NEmpeLVkmL6knv6qxDjNkNSy99ggk+isXuiK48EUBnVGYVYcTczYav+m3LutSKfpJE54Gc1V0uWv01XwoYACRGUNG+nz2Y1MDxkLw1PxLJpLMWneAGVdH6Fdca7MGAyMa4tAi57n4AAtYFMGEkJlpkZgpQZkn836pJaSAXbIJeU0sJ1/WJAABzGqySFjo+SJCt62KNBevbrkrj3/u0OcW0pXdGnRNzWAaCcOKBZzqJIjAV6qJUYA4904wpfirMYR/vq2E1yfBikuk7xpsLm5jDh2efX4ggO453OZKPLbS+XnjuOlpXClnyV6eX93KXU8Fk0YP302284jsUerxAhvh5OWfpeMwRl7ha4P7op9Aej0A769BoG9HhLnIjv/tPQ2pUO5h1C1qlVdqxUdaVFo6x1w4RqPQ6QSsc9AKgXrlSSP5hLsDlmIzFPslcqAyEnuwnkYIctpGJHx4l6mEwwvFaUqAkB42LaTxlME8NVm5/4dgrWVlsO2ZLe9vq8wXQZIDoPoz198JN9LUgLTQ+TsE8iV2w1XlvF+8gQvda7liMSBxi214gxpQgCsCQYXs+X4QT0rdXrxYSNG0hM7bhDBALaorSamvrGSYW4vlzpnpBmbICxROFnlvlO+SFcfdmqY5YOoR1tEXgAvpYMFb1O7RmNjf1XHdd0rgFf1HskEiiqb2kT80RG32VMBYsUgbFNub1EaTOiOxhlqPmbj5Xda+Q/Nyhcm5B3030Vp11viisUKrO/ISqkAID1qaIlYW/UYyu8EgiKKur8YO80FhcimBSs99hSODcOxiRq01US1xjfd0Dk374T8KzVxQmKy0o+cWwQx4ULWDP7JqsE+ftLOBESMV4yS1qGSvrPSXqrjr+va0Xbi
- NOdVQSMU
- jfrIhAldcMdL/fcyuLN6wUhst5WrgMqP1O8lunLnepWeu84J1bCmhf2gQR8SLTlbcqrS3QA9Lv29ihiStrYmGcicIlVesY5f0J4s702WpAkAZWL8L+uXJDA9B+P0xXNF/igHzzcoztqoY8OY1l6+kNkfpn1LR8Zyl0nW3EWgiIpRaReriHVhfElyl0KozkX+RcXuN0/ZLNOdLS/UakzfZ31Up6N4J9rIdgi593SP4n+yU4qHhTqOqpskBeY6XowLfJ44yF9tT3LxjTQ/Tu8dCq1uDi0HfIlrV4x+TjvVyY3Ed8ek4sr3xXzoyaT78f93i3dzAOpLJZruk74cMKZVynzELZe349uzWVpX9fqoRxkALWQYYqbs6A40qAspYsVF8UHStq7opK+MGZDGRvmSRj2gPp8Auv5le/Ek2jQw0WePqFmpklk4Cxdyltxca9OQjqqvLI7TiC0kOvV47BkyDB/wSHsSnoqoypblx7CJTNsd2G4m+Zilv6Cxm0i6BbPF1LUbF7Ubi6UOqoLy4Nw24sMoIEhoiJq/CyeFxamP4lyeYzCwRxnnhQ8Ld1gkTqIy8mI59iLCj9R+oTXXwrCbi0fzTCetvDJDIpr8bQ3gCR0QkSXY=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 68EA540011
+X-Stat-Signature: qeqrxak8fhgahzm43zgfxo9x54u9afnf
+X-HE-Tag: 1790263139-276877
+X-HE-Meta: U2FsdGVkX18zh7Y3MKG7yTZLkigaYmmGdxqJRkPDC+gJOwJJviPEHVk4ipq+w9YnrH1eK5euYs9W09swnGjFrYrQqMRrp6HPKRuxRH37yvvG7ObQE3TEIb3GUjQOoCJuOkhFxrJTuHRycZmj/eGRHu80TR8kg8g7FBlUkbz8L+cw52NrcqB0oagI7jGkwFfg0aKjDvHIlyZ6VSLlp1UBk69XuBIhfX22fuGcs6mD6S0DZDIG7oSBUZuqqK/hiyRYpVW6MLrY/pHCU8wqRpekV+hmc8d7jueO4mWnCACla8+gzToHvMiny6/hzQFIO6qdkW8H279Rzs0ICWJCNWP8iUeMxF4nqB3dZRPdltoB72rPBZlfAiIBNq+8ScXZ3RbZBl7aORpfbCR8SVAeGX2C+tFJrc/6ZfNzao2CfWxHzSS3LBz0Q3MPupEj4PqVKw/lpLrRYVG7JFfsx562yG5vBzuhWX/Dx9r7bMNYK2quNU4IrCXCp30yDgs62toCMhRog29YZycwjzuMLqyYZbOqq3bCPv7+kVsf+4Hvc/O4bEsq5GbnwKJp9Am2gs3NuaGoF+WJnadTXMOn53quo/5jUJqDeOlrROL6Pts8/APy26Fer2Pe/D/wPc/KP+OVhiI+VF7bbyJHAK86cOL4KRdFeY7O1c1KPtKwCLg9FRCKe7XzrTI+WdM7PWeUPmul8CwlpHgJ7M3PXnj51R2Ctu+PXyn97bxebB7Tj1ukeJ7LJXHt/yecctpeolEzAlu2WwXAZ0aq6wIl4+1O4K1drOBMLZT9DTRG2MpF+FWUC0kpfhKDd7jbsVfyPB9yafTwz65B+dP9yDGdO+kS2107NhsuLHwBrh58DrBOjP1DEO8Zb4CB5iWiBTrltVLMMcjXNByevPkHuLGWaG34W2Nuqti3rkZOFGBq41kslBReyxeKztK8KTqcvBDPla0kAMy3AIC0IT1S+dmo3FEaetZNgUV
+ FmJ/nCRl
+ 6aHgNFpnram6b/Ltk0aHYlidXruST6GioNf+Tx/2h8hUqNJQUgciYvy1udZe65rhv9oZNVhdQEsVb4fydGeo3ckTRMN7LKozmuo5ObKJZAuI+2oT/zfais9SJAJHGCuDGnn4ESqgr2bwuIzA2zufe1wX4FunN/I9xd/MdlhHah5uJht+90rZJpUEOKKdDr3EQcbRFlPNMVH5OQ/TerNBswHDD6KZOtFz9psM2M0569noR0vA1q/Xidw3Yegy6zTHc6gZfqQOpz0wBHpvst5nxKkdIL2B2wOzvZwG+xSHETcd18QsA2hrC9NZyadAyvUgDIHBgL54n8+NZ28Y23QDFsKnxJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,66 +93,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 03:48:24PM +0100, Lorenzo Stoakes (ARM) wrote:
-> Rather surprisingly, opening /dev/zero read-only then mmap()'ing it
-> MAP_SHARED gets you true anonymous memory (albeit in a VMA with
-> non-NULL vma->vm_file).
+On Wed, Sep 23, 2026 at 05:45:05PM +0200, Vlastimil Babka (SUSE) wrote:
+> To sum up, after this series:
 > 
-> This is a by-product of MAP_PRIVATE-/dev/zero being how anonymous memory
-> was mapped in Linux's distant past.
+> - CONFIG_SLUB_TINY is a deprecated option that has no interaction with
+>   other options and only controls the default behavior.
 > 
-> It happens because mmap_zero_prepare() gates on VMA_SHARED_BIT and when
-> mapping a read-only file MAP_SHARED, do_mmap() clears VMA_SHARED_BIT and
-> VMA_MAYWRITE_BIT.
+> - New slab_tiny boot parameter controls the functionality (and can
+>   override CONFIG_SLUB_TINY in both directions).
+>
+> - slab_debug=N can effectively achieve most of slab_tiny and on a
+>   per-cache basic
+
+Allowing "slab_tiny=0" doesn't make much sense given that
+CONFIG_SLUB_TINY is deprecated anyway. I was assuming specifying
+"slab_tiny" would enable it and not specifying it would disable it
+unless CONFIG_SLUB_TINY is set.
+
+Also it's bit confusing to have multiple ways to achieve the same thing.
+Is there a reason why we can't interpret "slab_debug=N" as
+"slab_tiny_enabled = 1" internally and drop "slab_tiny" boot parameter?
+
+> - the implementation is simpler with many ifdefs removed
 > 
-> The gating is incorrect - the (poorly named) VMA_MAYSHARE_BIT flag exists
-> explicitly to tell you if something was originally mapped MAP_SHARED.
+> [1] https://lore.kernel.org/all/CAHk-=wh-k04MsoEC0SGKff2Snm6bBF_e+0pHOKwaWv4umZ_SnQ@mail.gmail.com/
 > 
-> So the fix is simple - gate on this instead.
-> 
-> This isn't exactly a common use case, but it's unexpected behaviour which
-> now causes an assert if CONFIG_DEBUG_VM is set.
-> 
-> While this bug has existed since the dawn of time for linux (or at least
-> since 2.6.12), it hasn't caused issues in the past, so while it's incorrect
-> behaviour, it doesn't seem necessary to backport that far.
-> 
-> The mapping is now accounted at mmap time and can fail with -ENOMEM under
-> strict overcommit, and read faults allocate folios. However this is normal
-> behaviour for a read-only shmem mapping.
-> 
-> Commit 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE
-> file-backed anon folios") is the first patch at which the debug assert
-> fires, so target that instead.
-> 
-> Fixes: 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE file-backed anon folios")
-> Reported-by: syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com/
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 > ---
->  drivers/char/mem.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Vlastimil Babka (SUSE) (8):
+>       mm, slab: refactor slab_min/max_order handling
+>       mm, slab: introduce slab_debug=N
+>       mm, slab: rework KMALLOC_RECLAIM handling of SLUB_TINY
+>       mm, slab: make SLUB_TINY handling dynamic for sizing decisions
+>       mm, slab: convert CONFIG_SLUB_TINY checks to kmem_cache_debug()
+>       mm, slab: remove remaining compile-time checks for CONFIG_SLUB_TINY
+>       mm, slab: add slab_tiny boot param
+>       mm, slab: deprecate CONFIG_SLUB_TINY and reduce its Kconfig effects
 > 
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index 63253d1de5d7..5b93c92c2cf1 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -503,7 +503,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
->  #ifndef CONFIG_MMU
->  	return -ENOSYS;
->  #endif
-> -	if (vma_desc_test(desc, VMA_SHARED_BIT))
-> +	if (vma_desc_test(desc, VMA_MAYSHARE_BIT))
->  		return shmem_zero_setup_desc(desc);
+>  Documentation/admin-guide/kernel-parameters.txt |   4 +
+>  Documentation/admin-guide/mm/slab.rst           |  18 ++-
+>  include/linux/slab.h                            |  17 +--
+>  lib/Kconfig.kasan                               |   2 +-
+>  mm/Kconfig                                      |  16 ++-
+>  mm/Kconfig.debug                                |   2 +-
+>  mm/slab.h                                       |  32 +++--
+>  mm/slab_common.c                                |  12 +-
+>  mm/slub.c                                       | 149 +++++++++++-------------
+>  9 files changed, 120 insertions(+), 132 deletions(-)
+> ---
+> base-commit: b4218126d498275444f315b0ed4cef6add6beabc
+> change-id: 20260911-slub_tiny_rework-8f2634dd17a7
+> 
 
-What's the odds that something "big" actually relies on this?
-
-I'm all for the change, but be prepared in about 5 years for people to
-start complaining :)
-
-Want me to take it through my tree?
-
-thanks,
-
-greg k-h
+-- 
+Cheers,
+Harry / Hyeonggon
 
