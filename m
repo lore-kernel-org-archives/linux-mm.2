@@ -4,85 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6040C98314
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:33:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C854C98310
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:33:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF3D56B0096; Thu, 24 Sep 2026 03:33:25 -0400 (EDT)
+	id A1E9F6B009B; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCBB96B009B; Thu, 24 Sep 2026 03:33:25 -0400 (EDT)
+	id 9CEE96B009D; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B089A6B009D; Thu, 24 Sep 2026 03:33:25 -0400 (EDT)
+	id 90CF36B009E; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CC3F6B0096
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:33:25 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2279BA0297
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:25 +0000 (UTC)
-X-FDA: 85247840370.15.31DF0EC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AC8B51C0005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+dr+PLy;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 72C0F6B009B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10E1FC024B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:43 +0000 (UTC)
+X-FDA: 85247841126.28.92FE14D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6F2F11A0007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhn+7D+e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790235203;
+	s=arc-20220608; t=1790235221;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=EJpjMTknjAg8m6edUWX7pkcAao0lqt/jwCgbAjXhxuQ=;
-	b=8mBRbTfmj188CFhYkfnfj7r/2pvBZqGYIfHQrVkVFQ3fEAz0Xbq3lfc5mdT9RsGTlYsnp0
-	HSYa/nc8ScCea7OSM00gI0bQn77TuAgrHJlxXvHhCx61sffcRSdQTAPuWgDfk2VPUhi0rg
-	pm+rhRBzZxR9BiafjYLIOAhbeVBFUUA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790235203;
-	b=U75dPwc5qsp38bedaqJemS2kn5qaJ0lKa2vZ9OoAQfSaDmJED+Dc6bqg4wfCs81yeHa5ka
-	r21t+03CIFtkGFToILESLMzvxpZSmsqBYGxEJ+JOVefwm9cBMSfGZbhi7AjRnu2zYNwIor
-	lLDpHj4xTlSU9vXx6JGnPk9+zzE9DAs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=H5Q3QsVfjPbwHPredQl/X4zsaUQV/JInoABBnQSnw6Q=;
+	b=n+adYvq5EuUAhwuk+hFsf24BoZgPLfYtt18i6RV6N2JUTrLHuL+CFPh/aE2cr6+HxEo9uk
+	5OAmhz0li0LnocG8Xvv1KF+fa6XD7Kj6gCiN+P6dY/oahqF6K6mbQ8IizzP3TqILvXK95K
+	rvOXSgrPx/9CBIIwRs7YiCzUcSHiQwA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+dr+PLy;
-	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhn+7D+e;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790235221;
+	b=Le4x+OxsDd/Vi4HnHxxbEudgkxnEVrmfqUteoWj1natZewnU8t6Fkn/u6dpyagOEPGR5Q1
+	0lfCBay831EZ36VMgXat5wz5fZJ0VUCKJYuFE4YLC/m1PVJv2w5mATpfmLPvQj/QydWMW/
+	ZtuA3MbJCwtYVTGih6o3t0c5o1Iwt0A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3F76660232;
-	Thu, 24 Sep 2026 07:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5FF1F000FF;
-	Thu, 24 Sep 2026 07:33:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A2904152F;
+	Thu, 24 Sep 2026 07:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536641F000FF;
+	Thu, 24 Sep 2026 07:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790235203;
-	bh=EJpjMTknjAg8m6edUWX7pkcAao0lqt/jwCgbAjXhxuQ=;
-	h=From:To:Cc:Subject:Date;
-	b=m+dr+PLy9r9acw8UKcqnqXzdbz3e6yLclZOaNz7XkdkjSwCPOFJZXcDvP+iFKZyLF
-	 wIihObsdCvYtN9Uwo5LEVTSg3/SIYkfaGSwAIOqFcxiBttzJtwAi7fW2Zmv2vBK2yr
-	 BP01sa9zJMufH3Zc8YDHH+bzS7JwSCTHYbgSIes1zQmPqNJETpTL/DaAalemJWFSsv
-	 +YkngtOmXhVhqI+GJbjAJ8b0TyQ0efnxr4zetLXQrwP3AzmjJMdwsKVUxbE0a9aVwo
-	 pzwDDxEUG3ydgFVGWmtlhsHLQqkqU+3iojEM6u7iGzyZghpCxEyoWVnfaZEbgCXYXX
-	 fO6EkZJGyg+nw==
-From: Mike Rapoport <rppt@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
+	s=k20260515; t=1790235220;
+	bh=H5Q3QsVfjPbwHPredQl/X4zsaUQV/JInoABBnQSnw6Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Fhn+7D+e67rHaXPDUh3AOVhf7mjueV2X8n8PyxcwU6Fv4wFT6wdhOGd/lU5omuykW
+	 kTROp/SUjTAWT7Z2enCDG26KMlM8sVn3XkIk3DELRNUNSymlZTstHKGXcG52suoWP5
+	 6WaYxmeRGb1+NKg5yUr7hZvMJW6iCjQkdEaJmQRwfNEBp+8GoR3aUbc1HB1iFNbMUE
+	 ahKcDVy+pEcMj/ES2IqXrD5OPvrYPwinxceNF3Y2qyw7uP0U9SvEBdHa5Mh90gle+3
+	 LEL84QuPuD032GGpvhalZOKIrt9mlmK1v12M3061d4YjSj5sDvtbC3ToV+yuz3uf6F
+	 eUpAQ2ImpC2Rw==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] memblock: add missing HugeTLB flag name
-Date: Thu, 24 Sep 2026 10:33:07 +0300
-Message-ID: <20260924073316.2325178-1-rppt@kernel.org>
-X-Mailer: git-send-email 2.53.0
+Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in damon_new_scheme()
+Date: Thu, 24 Sep 2026 00:33:36 -0700
+Message-ID: <20260924073337.7440-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <arRHl5blMrrmvhkU@gmail.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1z7kyczbc4w9ymixah3xenyx3e6opctu
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AC8B51C0005
-X-Stat-Signature: bufqoyogy9iq1bxhc6j4mw996r3kacb5
-X-HE-Tag: 1790235203-399536
-X-HE-Meta: U2FsdGVkX18iNCFvoZhr8zDpAuAASJz232kf0KELPnzgfMBMjrTbWp7EG6wga0TjyAllqWroau7fDljJMhLcSngT5QEc0noc1PucVJvn1qUw0m6r11UjgxgMJdMVMVVCo3SixNEHeMVKlrt9ARdZieTMkLdHzvHNZpkpCetOYIvBgl/EKcgb66uvD/V7xYWaFp64hijlJT6ZbtlTG07boBKow1R2JkDLxR7OkRAh5zhZCdH3nWMlXo3wsq16xz+IBfbntPwjVzFogjzGuS0txGTBQhiWeO65mGOmn9yKgQtxjhw0cil9Ok1aGKL9/Wl5F6xIvPZKtb3cQvORSRV4RqfycBOVqC3rq7pj4LrcdsFPyI0GLR9YplshNx3tKpZHsAefdPdXdENdfKSg4cBQ4F719/UVhXkPrbzviJkAmzFa9AGpKIS+3RasCTWNws/Zbx1SLJ6almEZmQQmqYqYFIK8Jls+dHsacPCErDqkdmmxj/ErGl2lhZGZrOou5QHaKs7Wk6APo4bDKciya2/8GbZArcKwyjb4h2e9d7Epu9Th1mtmQx3fmR17If9ojP6ugYzYCE9oRHHZE04kkcUHBK9UV/CjiqnIh7Bd5dW7ozQj0zkBEQSeLNQNMpb1iJiLqabnKmBG4iQ5mWqBfVJGU44FVUWr0tAeka2Yd5ziT42kxmSnN5/txOuQDkMDsP7CB9OqZNBJQk65LPg1QwA9FN81RZXboGADgnUPDeKxpwOHoi5hBrtrp2ouFtvpotu3CCVArP2ikCKPimHNymdaOLuNDNmorVYLn0spb7gIailG8jidzXbfEMNzuF/voz9RrjkRjkWE6yxKZpzBzxbfLECeHL2SzKGi2M/TcNU8zzHf8UR/dJBYAobArSf4S7nW/87QTY/QYI8RtT4MWvY7BtBMAIE21eLjLQvvzzUzbGVkNIvkACP67qcCEArfYVLU6IhvRap8y7jQpSac5se
- d7OfLOXP
- fjcgopt0wj25Y2rUFWuJLt2ag9TpHdw11IBY8GRaBFdGOvwp8Z+pxD03Rz24PymvxdVc+3Df8FgJMYG7TYoGlNL0vUZB1nL6iI5btgdF17RGhG3KNGio7H/sgXa9FggHtMHkbxJJoanNEnBZCrywd0CBJiNIhtAnxMMohLfR0UImnhBIAoZJTJkC4WMWD2cnjTTAlF8uTjYQFhBtVQ+OtYqxU3WO/s6D4QX9qhY1YHyyu+jo=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6F2F11A0007
+X-HE-Tag: 1790235221-621984
+X-HE-Meta: U2FsdGVkX18z7J+2UAqHGqS6gI8cRGC3MAKn7i0NwLUJYW0WnWNenw7eGD6iKiRswbsQxePKbX0Vh2esQGMt4P+gpjpN3WTlRXw8Mnx23U1+Ol9bEr4Mfw76wiRNAbl0CezSqeNBDlzlZD1WXtbyt41ky7x1cXOMfV1SLXMXxYZNjrwvVi10hiI3i+t1uxj/6uaEiQsrYzJ3H3yenOKZTOlpCSip2FRIvDe6DdBVvDb85DcQHr0LaROGl3io+Cs6OVLrWZ/CgW0Imb436wvoBtT+DAxrzNEhFosbfJg8NEkWLQe8kEaSE1CdU23GGFnSwEZ1FLeZE1JEQoGH7VnJaTvbT4faSUb7eCddlz6CuFFNpA2/JYV6faG+gpJh5eNuYtLuhnFQkx5GCUJwucAezf7rZOG2XB2k/E+//urpHp3ygvU6YwRrdebT6JwOZ9lrb+TKGJOdKXNgugXE46xh6YmWA343zuYtzoRTllE40RisImvgjPMoC44nUH6dw0jIQaCQTV5cqOah9gACC3KhUUuqcVzkExqgzArpLpoKoQDB/kg/PS4CqEb5RNswKTFIFJ9K16xurswbmhLztFY7DIo95xPixjDegXtx/PrwfbGv1p8QTNuL5GKym4T8INTcOAzlncbv68JsiR8hPltxjSwgQbIQbYooxpXTalbUq6XigmBJP3mLKmHRBBLmprNH9qbTzSd/f/i3upWM+n0KIMOPRiG0r39WcDlr3mNCEXHvH0QPterr3Y0UAz/BFuaDoDu+CO9D6i1sjD/5s0jvUXkb1+Sm3+0jIOK0cmvnnw3/Khz9cKkI64rMEFDG8n8w0x3tP6xzJzm9geGqtNjmpqgLXDO5l+Mf4qFKggfqOAp9jGuBUC6iiSX4Bh9u61d5wCP5Cj1TGnlZbqfa4mo40xtcyR5nfQIHX1r+X7u4E3H6HLctW+7sP5SH7aFmblL0ve6mZXT62T9XpW/f3d/
+ grWnwQ1s
+ k23IsGo4f9uUhPCnlVWBe+xOJXoMeywHmiGj57UO6tmI3icKJpFTyhOszrMSNDdoig51BDd600j5Ro0PbffPe6fftRxzLL3cf7mO7IWQ8o0nmg/u6iwyvvMY5r8frlTT5r9FnbwwtLWAks3DMl0rFvkfe1zcOWqGJl7bx2lTBrsiMjL0eoX2CJqlskT3a+wlvm3KJ6Jvis7bxM8z+EPmcqOQcj5Hc3+ZtgXsxemPq9vY4gppuaYEe+SmpC1ByTvIwJNDjwymfT9IryJI7zOiMgRVJQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,32 +93,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Wed, 23 Sep 2026 23:46:27 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-The following changes since commit 6e33dc90df108c76899dc544a42d17adcba61668:
+> On Tue, Sep 22, 2026 at 05:08:44AM +0100, SJ Park wrote:
+> > To calrify my opinion more, "caller's quota" feels unclear to me.  I hope it to
+> > be more clear that it means "the quota that is passed as a parameter to the
+> > function".
+> 
+> I've made it explicit that this means the quota passed as a parameter
+> to damon_new_scheme().
+> 
+> > > > 
+> > > > damon_commit_ctx() first copies the running context into a temporary
+> > > > context for validating the proposed parameters.
+> > 
+> > I'd prefer using the term, 'commit' instead of 'copies' for clarity.
+> 
+> Changed to "commit" for the context operation.
+> 
+> > Now I understand you added the comment for commit 60bd24f272d0.  I think Fixes:
+> > should also be 60bd24f272d0.
+> 
+> Agreed. I checked the diff and earlier callers. That commit first passes
+> the running context as the source. v2 uses it with a plain Cc: stable.
+> 
+> The LLM suggested the wrong tag, and I didn't notice it when checking it.
+> 
+> v2 is rebased on mm-new and passes all 46 KUnit tests on x86-64 and
+> i386. I'll send it soon.
 
-  MAINTAINERS: update memblock tree URLs (2026-09-09 20:28:14 +0300)
+Thank you Karl, looking forward to the next version!
 
-are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock.git tags/fixes-2026-09-24
+Thanks,
+SJ
 
-for you to fetch changes up to ba13f1f32d96d7ce9069ae4f32404ecde8da89c4:
-
-  mm: memblock: add missing HugeTLB flag name (2026-09-15 15:54:35 +0300)
-
-----------------------------------------------------------------
-memblock: add missing HugeTLB flag name
-
-Rework of HugeTLB bootmem allocation forgot to add the name for a new
-RSV_HUGETLB flag for proper display in debugfs.
-
-Add the flag name now.
-
-----------------------------------------------------------------
-Meijing Zhao (1):
-      mm: memblock: add missing HugeTLB flag name
-
- mm/memblock.c | 1 +
- 1 file changed, 1 insertion(+)
+[...]
 
