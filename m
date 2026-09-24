@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F770C98314
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:36:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A993AC98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:38:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 962756B009E; Thu, 24 Sep 2026 03:36:24 -0400 (EDT)
+	id 87ABD6B0098; Thu, 24 Sep 2026 03:38:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 939E16B009F; Thu, 24 Sep 2026 03:36:24 -0400 (EDT)
+	id 852826B0099; Thu, 24 Sep 2026 03:38:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8500A6B00A0; Thu, 24 Sep 2026 03:36:24 -0400 (EDT)
+	id 7681D6B00A0; Thu, 24 Sep 2026 03:38:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 61DAB6B009E
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:36:24 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DD9E31A0246
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:36:23 +0000 (UTC)
-X-FDA: 85247847846.04.5857BD4
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0C045140007
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:36:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xo4e0qcW;
-	spf=pass (imf26.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 522976B0098
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:38:28 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D211B40249
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:38:27 +0000 (UTC)
+X-FDA: 85247853054.30.CA3DCC0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 399AE1C0004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:38:26 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qrg79Odc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790235382;
+	s=arc-20220608; t=1790235506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AM/1COYI+X2cxZahYdg2nMaQ9CPWb/Pi9FF0HZq9dI8=;
-	b=RnCvvHOpOFqKTCszZ9bm1pUiXH+UEq0tS4e6YRS+Dm51+qWkxYOy49WS+uWsNd5Ko6yYYC
-	eVgtspvNTzF4kilZegGgQBZ84tIDmL+BtRkXjgP7TwBoXzRWDj/uY8J+4KEFi60yMEX/7Z
-	wOx1Nx1e26DsMeYjRtixZtUlypQVJqA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790235382;
-	b=n9iPMjo5kdK9QYBERCHmTT2XvzKv26rMTrPCXSFBKbqHmE3jy3ZOu9qKbCoCPuWM15pfiJ
-	Gtn8dlSGetU8Oj6wXGpLZGfrV9Zos0x6TU3zJ3ohWc+Bm1I5XHfw4kUaXe89xwCPhF539w
-	sGIya0zKmso0YGnIxsySQXaZBw0xvTc=
+	bh=syHUjeiyU6PAQHnSegmJU/Xn5fIogA7Zi7eAXuaZd0w=;
+	b=L5nrDJR/7MDhp0QyVfqmOzxfyjr2NHdCiQpXhrKK5gsF8uD3d0T20+42E1bQr9rlfQY+Mu
+	vUgqvvuxJnQ3Fcu/Z7y5h1SzGCfMavEj5XEE+ChTMOH4bFu85D7KYNMtpcMhP0x1EHl4Y1
+	temLVaPt9wPU3stvEAnbhqm/HU6PYro=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xo4e0qcW;
-	spf=pass (imf26.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=AM/1COYI+X2cxZahYdg2nMaQ9CPWb/Pi9FF0HZq9dI8=;
-	b=xo4e0qcWYUKb+XSdoEELGMTI9wjW82TMlWcj31whkd2V3Qjx9MHato7sp5L3DCl4rrjFgXAk2
-	l+apV22HWtkX2LDdzIWioU1kaq2lpBRU81qUybOOqT721sSCyjyEdMe63VVppSohvA0QfMgfApF
-	wvtZ8BublnUnhUv4ijDY2XM=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hr51N5Gw1z1prLc;
-	Thu, 24 Sep 2026 15:24:08 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6D41C40537;
-	Thu, 24 Sep 2026 15:36:16 +0800 (CST)
-Received: from octopus.huawei.com (10.67.174.191) by
- whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 24 Sep 2026 15:36:14 +0800
-From: Cai Xinchen <caixinchen1@huawei.com>
-To: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<edumazet@google.com>, <kuniyu@google.com>, <pabeni@redhat.com>,
-	<willemb@google.com>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<horms@kernel.org>, <ncardwell@google.com>, <matttbe@kernel.org>,
-	<martineau@kernel.org>, <geliang@kernel.org>, <mhocko@kernel.org>,
-	<roman.gushchin@linux.dev>, <shakeel.butt@linux.dev>, <muchun.song@linux.dev>
-CC: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<mptcp@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kselftest@vger.kernel.org>, <caixinchen1@huawei.com>,
-	<lujialin4@huawei.com>
-Subject: [PATCH RFC -next 5/5] selftests/cgroup: compare socket memory deltas in test_memcg_sock
-Date: Thu, 24 Sep 2026 16:02:19 +0800
-Message-ID: <20260924080219.1036588-6-caixinchen1@huawei.com>
-X-Mailer: git-send-email 2.18.0.huawei.25
-In-Reply-To: <20260924080219.1036588-1-caixinchen1@huawei.com>
-References: <20260924080219.1036588-1-caixinchen1@huawei.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qrg79Odc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790235506;
+	b=IukrygMJRrfbIECLLQ6BlyKmrJNYd5JyiEZ3aMtz9MP62wT/0llw9KJCnPYoVkO2TiU3KM
+	N0P4lhCs2XTCqBgcoOuO3iNStEFURYmim3U4GcwvKaFpgMGzoknArYhTzvx42otjiFTcoB
+	lQZet+wTRZe8Hu7dOdKmIaUysA+vMCU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5830941A1D;
+	Thu, 24 Sep 2026 07:38:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F4F1F000FF;
+	Thu, 24 Sep 2026 07:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790235505;
+	bh=syHUjeiyU6PAQHnSegmJU/Xn5fIogA7Zi7eAXuaZd0w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Qrg79OdcGPfgl7yoXl3ptDh3IKF+UVtWixl4nCRdJqTGzJZ+s1Q/oDpS1tvP5TbmU
+	 NC/P3mvbNVR2+m1S835Pu6Brj4w2XDBtdsxcTRzLAGRNZ0ek1YUfRQay4KrGBYVwSP
+	 c/1mkMp1GSHwPMMZCV7oAdOOPyVA9oyXrssm/mTg12mdArxvR3+Vl5KYhLriakA9mb
+	 l/cnPm91MdLqYgXSXXTT03lz59Mp7424d4AfeLbVjh9oqanpGJ4zauMw5X2uFjzT2W
+	 TR2o7CkHFMIgi7kDWyK7afhFP1BP82PNGmcb4v/0pzFiydme+Isv5TB4vSibkKCO01
+	 1I4uk/WoQjk6w==
+Date: Thu, 24 Sep 2026 08:38:18 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>, 
+	Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>, x86@kernel.org, 
+	linux-mm@kvack.org, regressions@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: don't defer freeing kernel page tables while booting
+Message-ID: <arTTVY4bwYKzeWgb@gremlin>
+References: <41a59ba9-039e-454f-8d31-f647db802ada@kernel.org>
+ <20260924072819.33277-1-mikhail.v.gavrilov@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.191]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- whupemk100010.china.huawei.com (7.152.184.41)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924072819.33277-1-mikhail.v.gavrilov@gmail.com>
+X-Stat-Signature: p4nh1a8g1ac7u3ybeqr7bun4ercotx3u
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C045140007
-X-Stat-Signature: xyckt4hwesjbfikq11nek8u6c7wk89hg
-X-HE-Tag: 1790235380-629756
-X-HE-Meta: U2FsdGVkX18GeW+Gwn8NCAiCQIE+jrPVjUd6t67tZkpDcUd/NP4tMA+MIlpf47hRbx073qaiE0Hx9bbU/jPa4e1TTvfE9GgKp5SUSbmLISXhkaLNcSKMJSaBZkCnjRCHJynuheKdytHUIn+Y1fGHx3e38eWPkfrEttqXArV/LJCVEtFfvCIpGwAupcktBBOe+r6JHqSuDL6LEHXarlx1ay4FktTmwfL2c9vf/pk4PVc9tBuIrtLipuJA/BBLof3Fnty87jeJSHg41JWFVSm/0LrmzloTL2/ytKVakp/mGXIrBwBb9ApzaybziWPOVCjzmWCcRRdF1ZBqvBi8h5PAhHzLAxWa7KgBo8c2VQbLd8U2EdhU1tvAlt87xpSIsPqRnc5kmaxvYsPX/Z9b0/MxBGTON+YsTbkXQ0RDC6pTsrsDMK/6nozRKaGS8hNYkIid72/WtVvin4Bi7Rtzo17q7h6UYvMY2LCxHr1kj0VAPFVE+akMYdZB+VjXXUWd7CypxmYSsEXkyUCbVLNM+AY4Jz2SjLNjXw2iVdCaf+a+2WhLxKEudahv//4vkQU2FR1yM+2Yh/CLv97ug/n66wnQrPRQGQZ8DMOYVFVcdTd4bmcZQVk+7W1/u2k8JIGubg8g/mzcCHPxgsvB4YT0iiSf2E1s+C2spPIyMvsZLlpwI14h3Rh6rIc/GWisxnKdo0Mbuo7brxr3qlhXDTeX6aeg5cMjkHaMDUdHnCBkeLu7fTz2jczBJrx71b5kTrbhiU15YECdoKSNqrA3+lukY3EBcaVR/4ALfLiBucFhJAq5CxHF7H6Tb4dCH5h3Rbji4y0wzj8iQjbN6UAqkGlDoIfZtjmp6Aid3/CMd9II+xh+VmZ+Hc4LMxl3unH0noPpju1ShhyAT8Yj4Pe2ZFCcG7AICYItlYjuCySUjYVY4/tJUeEpe6eODLWdWcnctgVzdI3FAb+1DST73bEkP3OFTt4
- wXfv+WZg
- dXhAygAxKGaXXj8ZiNhCk/Y5ZRDr8D3/MunDLxJvQa9Kkdfmn2EXwsVLCFzZVMSupGt6lllChGoker49JXxwWlRG5xNHN45DlBCmeOnqXt6T/QwvSgV2vIoRmQFyLdztSxNs+/RmmnTqvjsfoO6sB8cIA7DOnSkT6ZaukSDG5ImFAkvMg2BHUgzqr5QCdIpcWmCJpqSLqXfZhR0Aw4YJsqIWHuVpRS1mr+/yQTxxdXUCrUS4vn4afOFRgIxWGwSkoxWjUxeiKms+zlj6+MaMN9WPSm4a5HJdqenfd8UyqfnazmxCzZHVsLZX2JeczvbDsAlUZlR4xYD0b/GpqymH4TZUubA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 399AE1C0004
+X-HE-Tag: 1790235506-962789
+X-HE-Meta: U2FsdGVkX18U1M+cuvXYNeABXx7zY4PfRrgJ2Zvilvg7Vh+b3iPTphiXtTtQyMDTpg3y1XpYqMrOHQjk2m72KCBXlEcgQSYajvLT/qgqnc27Fd63Rlscoazl8j27SsorXFbb5sJN0rXuC1my0owzj309bZkZ6LfpEdCQEz7xc45vt55jSlRaJGiP+BuxCLBQOtuua78/C+dQ/1V700AmPD6Rn6jJXwbSFqW/qiUfDRymKZ3V+F8X+f2l+LAQrNZAY/hgt4dItgNmWh7VJ8fa7zuMHK728geCDNs3bjHEVkNrlr7jf6VH9gMJG+S2XBS/yPTZgXivoG6IZanfD7+ggKuj3WO0UxLyDlNmAqLqm+cnkQ/IacSSBEwg58SYHpwEBJH5GUGdW2Qijn6dlCTMR/dKIvNveR73MTYETr7F+DGX/RgZTF5NDdJHxTZ6mW0XAx3t7/aCYKLsYxtzGveqO37ouCRMuAFJGRgUbiinEa4tL1kezPw0fkGftCTccSxf68ViR8orBiK0D8Yq3iECFzG83OisSxGajdE/0wyjnKCt565VNxgMxmDY8VZarx5l/J7u9zCxbgsShlO2bh7HQFAeqW+NuPE6x00NL5GgnxL9skNfSg4i7eJ8kAG9iDj393NoxeaEEN+YjxmlCoWZ3v+997ZLFFAw9I2oEb4cp50BA9936f84Y/u3Q5zKc8GcOqjDlbxajCmjqv5VIhtGRm9hOO+a04wxS8nl44pDp9LDnwE1lz0xSYXRTA2aJKQxqZSluiWZfXUJkrcvQt69Xw/H4bNK6zjXXtbkA+MKu19Nd1Ma7T+l5oT29HdOjA18cvLs5Uft2waqKdxklwu/2ft5AWGn6KQzMSSfWl3HBvaCNV6KdH3lDPZB6yuOLT5GuyzJTTRi589X1fQGUQ3ghnGIyiZ6XiAza0uFzYv175PKBwoXTdqurTyzUY70MLKwKMRXHZjWWC3RlrI1uvX
+ ATNb/t74
+ virHcrFhxFxBz07Dgrs4sDB8xBrCW/MRZgCjbPGzT8RAx1C9hAsYyCMX3IfTBjx+aE+kZZxWHt9mTs5mrzav4QOLWV0q/H4UEVtT1LVYCCuASGP8SbC824Ahwbh2eArBkj5fKZXRE7NbHT4QcMxJaDwupTphQiJwJtJ6db4GJgT36dAq7KnIYOBHhFQqPxbKtmZ4ljwtt3BMvi5IFCcX2+FsnOW9YfDslAWLGJHcBOOZk4+pWV74JnQeh2rgxUsRC809fjvQv7nCO8k6Bof3Gl6n0of72uXileZnQF46qkdSRACCe4mA6u/zeJYq8GwWc/muVxar5L5Y2bcU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,70 +97,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_memcg_sock() baselines memory.current and then requires the
-growth of memory.current to match the absolute value of the "sock"
-counter.  That relies on "sock" being zero at the baseline: with an
-idle listener it used to be, because socket memory was only charged
-for in-flight buffers.
+On Thu, Sep 24, 2026 at 12:28:19PM +0500, Mikhail Gavrilov wrote:
+> On 9/24/26 09:07, David Hildenbrand (Arm) wrote:
+> > Should we instead simply skip the
+> >
+> > 	schedule_work(&kernel_pgtable_work.work);
+> >
+> > and rely on anybody freeing stuff later to just free that one alongside?
+> >
+> > That avoids throwing in more freeing handling.
+>
+> Yes, that is simpler, and the early table then goes through the same
+> IOMMU flush as every other one, so there is no need to reason about
+> what an IOMMU can see during boot.  The only cost is that it waits on
+> the list until the next kernel page table is freed after boot.
+>
+> I'll send a v2 that way once I have booted it here.
 
-With upfront budget charging, a listening socket is charged its full
-buffer budget as soon as it exists, so "sock" is non-zero at the
-baseline and the absolute comparison breaks.  Baseline the "sock"
-counter as well and compare the growth of both counters; this is valid
-under both the old and the new accounting model.
+Please wait for me to have a look through this issue before respinning,
+please.
 
-Assisted-by: opencode:glm-5.3
-Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
----
- .../testing/selftests/cgroup/test_memcontrol.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 3a84d068fbf3..54dae37291c3 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -1335,9 +1335,12 @@ static int tcp_client(const char *cgroup, unsigned short port)
- 	char servport[6];
- 	int retries = 0x10; /* nice round number */
- 	int sk, ret;
--	long allocated;
-+	long allocated, sock_pre;
- 
- 	allocated = cg_read_long(cgroup, "memory.current");
-+	sock_pre = cg_read_key_long(cgroup, "memory.stat", "sock ");
-+	if (sock_pre < 0)
-+		return KSFT_FAIL;
- 	snprintf(servport, sizeof(servport), "%hd", port);
- 	ret = getaddrinfo(server, servport, NULL, &ai);
- 	if (ret)
-@@ -1365,8 +1368,12 @@ static int tcp_client(const char *cgroup, unsigned short port)
- 		if (current < 0 || sock < 0)
- 			goto close_sk;
- 
--		/* exclude the memory not related to socket connection */
--		if (values_close(current - allocated, sock, 10)) {
-+		/* exclude the memory not related to socket connection;
-+		 * compare the growth of both counters since the baseline,
-+		 * as the listening socket may already hold socket memory
-+		 * (e.g. its pre-charged memory budget) at the baseline.
-+		 */
-+		if (values_close(current - allocated, sock - sock_pre, 10)) {
- 			ret = KSFT_PASS;
- 			break;
- 		}
-@@ -1384,8 +1391,9 @@ static int tcp_client(const char *cgroup, unsigned short port)
-  * The test forks a TCP server listens on a random port between 1000
-  * and 61000. Once it gets a client connection, it starts writing to
-  * its socket.
-- * The TCP client interleaves reads from the socket with check whether
-- * memory.current and memory.stat.sock are similar.
-+ * The TCP client interleaves reads from the socket with checking whether
-+ * the growth of memory.current and memory.stat.sock since the baseline
-+ * are similar.
-  */
- static int test_memcg_sock(const char *root)
- {
--- 
-2.18.0.huawei.25
-
+--
+Cheers, Lorenzo
 
