@@ -4,153 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C14C98314
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 06:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E530DC98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 06:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB2F26B0099; Thu, 24 Sep 2026 02:37:43 -0400 (EDT)
+	id EC9F06B0093; Thu, 24 Sep 2026 02:43:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8A7D6B009B; Thu, 24 Sep 2026 02:37:43 -0400 (EDT)
+	id E53476B0095; Thu, 24 Sep 2026 02:43:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9F616B009D; Thu, 24 Sep 2026 02:37:43 -0400 (EDT)
+	id D1BD16B0096; Thu, 24 Sep 2026 02:43:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81C576B0099
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:37:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDB99140283
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:37:42 +0000 (UTC)
-X-FDA: 85247699964.11.B6CBDEB
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010016.outbound.protection.outlook.com [52.101.56.16])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E80AD180004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:37:39 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=gmgslRry;
-	spf=pass (imf24.hostedemail.com: domain of bharata@amd.com designates 52.101.56.16 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790231860;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 973EC6B0093
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:43:29 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 33DB71C1CC6
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:43:29 +0000 (UTC)
+X-FDA: 85247714538.09.49C001C
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8C87C120008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:43:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m396F3tx;
+	spf=pass (imf29.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790232207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2cuHss1f5nj2E2L2f3iB/jediY0K3vNyJk5p/GIhpXo=;
-	b=uEpWQrhaqtsEQsW9smNsRR/noUnzW7gzoz29C2uhOxEDqibR/vNDbvmHxA5XfiRUag97UF
-	3B4Ds1brRC2N1StHzvwql0f7LsFT1LxWRdf/HHMU8O5iRngYS/OfWzw2lAmj98qvM7udka
-	FFzbkBo07i7FgSmvVI7Rk8ciqH3XEVQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790231860;
-	b=bwhKgOevDNQ7m1HfhroGgwVJALGqUUpNGXFPM6MI1n7u0d1drmFPrPJrPjwnF2T/ocpE3H
-	tlMkU4STrf1oHMgTLdvPIdoapmq4xHQTm1m3syTS/h9gwmBoxYZaAWcFjXlI8CIhMnWO1p
-	/BDC0CNQQHLUGx4Ge2btSTc7He36FHw=
-ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=gmgslRry;
-	spf=pass (imf24.hostedemail.com: domain of bharata@amd.com designates 52.101.56.16 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NDTlwm1MtxBvmoQ7VH9SJQY2iXoIg3qxtwv6EGLRH0eTaWzC3zWHlwpwhYyhTg19y6TWJ/z1fg4dqkyiBJWDdZ4IYhrSHUEUGfgOTK5Ipb7RN3Gx1mGzGRxnTmnHnmpWBiMi2hgpxIqG4DvzTDzQIeeLSJWH0mJhCEQF4P2CFRKsMP2G0EIPr01tqyDx6EjVkUz19+8QoXR9sMyoE0mvrkRAoaIeO80EqyRr+ItjhDXNX4svxeMDAze+BiTeurctA0BEn37EcNyWDbm06FTQKtMSOi388BXB35R5VmrIC9Ei8kLC7QxsjoLhlOIKaspeJXXKm0ngya/7V2Le4FtYbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2cuHss1f5nj2E2L2f3iB/jediY0K3vNyJk5p/GIhpXo=;
- b=d6IfvuchQ9O+N/FiQJVImvJ9/ZvEZW2PwJRvH3/t4DmQPg5A4DXdZtCn3Irkzdt+YjYihIRZLEYIXNJsiKMM/z1e59m+RgUxYE8Nz1eP8IYq7eB0Jw9YlTambZqIzNZXt9ML0N2PIE9hahX3mrzxmxdt2ATPgZylPSNwLWKElYsLW8wzX36BfzZQpXKmGufOmCQ2yjXPY6S/zgMHh3nkD3eJCLRPiniKaX5ubGFU+SIr8H7u5MD6Dgf4ofk2ddb8mz9M5MVE5/3dOdmpzIYvu56N06rLtNf8LEW6XLnm1PLkjG0fB2KsFt/T3C2bjPJ7Ft7aYPDRwqYo961E8hkACg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2cuHss1f5nj2E2L2f3iB/jediY0K3vNyJk5p/GIhpXo=;
- b=gmgslRry3t4KMiIU7DC69ZWFvSPDumos5/O1iYY6wA4w07QFysxUmgqOy1Oau3tdyeUn5X5mz0tlb8mJukuoIG5dx2Q9PuccMVTIuqhrDpghjph+5SjYaj+ukhAY5Ro1aRlwDiMqCeOCRE6fGJXAjpO9jPlXSfJZdk0xsIzPtZI=
-Received: from BN9P222CA0030.NAMP222.PROD.OUTLOOK.COM (2603:10b6:408:10c::35)
- by CHAPR12MB999248.namprd12.prod.outlook.com (2603:10b6:610:2ff::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 06:37:35 +0000
-Received: from BN7PEPF000000A1.namprd04.prod.outlook.com
- (2603:10b6:408:10c:cafe::8b) by BN9P222CA0030.outlook.office365.com
- (2603:10b6:408:10c::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.16 via Frontend Transport; Thu,
- 24 Sep 2026 06:37:35 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN7PEPF000000A1.mail.protection.outlook.com (10.167.248.153) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 06:37:35 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
- 2026 01:37:34 -0500
-Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 24 Sep 2026 01:37:26 -0500
-Message-ID: <61cf8070-008b-4909-8b20-e138d3b33289@amd.com>
-Date: Thu, 24 Sep 2026 12:07:20 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=sd81Spa/YxvQixpMcNxhaEy6XglgEfTWtaXZ4D7EaWc=;
+	b=CfLXGRcmZ7WQO8My8AufvU5VzvSdUK59y8Vcz/4HIpoUj1mR6ZwJKAnKZG4vSh1zc9/4qd
+	JlsOZ5ajAE+0O18A7D6LYDscUuodHDnlUNLVFQrPOyz54ph/nHzWoVUWFQVIoPBCQDmz1/
+	2c1cGWMcnyWz4hsKOyhSaRgERpRUYSg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790232207;
+	b=iVypAOlm/fta9pDx/dYUPWZeh0xXHPKz3NU8OQZe3OCrhM6ZSCvUpSkOc/OjsUap62x4/b
+	7n3afhzgXeerpchFdy9TB83k69ShifsvmYMdJBUpjyiN969G6vjmGRh0ZheIHPxx8jLOfi
+	lfKWKzuPuZYZIfoeagqL6GlV85ykEfo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=m396F3tx;
+	spf=pass (imf29.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912df756so12703045e9.3
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790232206; x=1790837006; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=sd81Spa/YxvQixpMcNxhaEy6XglgEfTWtaXZ4D7EaWc=;
+        b=m396F3txl5lo24bU0MJmnUCRcfMzEVn3RMbZMRiYiweEiPUDgAoKJ2XzngvIq9Lf91
+         Est5tZj/xnWznyj7d3rWxPNPkFaQ5iFjjXcp7/BcO9wlYG9NY6bOb+vb+9S2W/pjngL2
+         cn5mRmzHsKz7MMFvREd0kXU/pySYqeuiQW/Wdh1fS0su/Q6mfDYv5dcz0PUz3AeuWRLh
+         uo14UASDunkReIcuzU21qGlh4Tcr9yF37vZlMmyXNDeTwwmkRym5Kb0jFraN1ey1cWbz
+         RnRXsHHP+o7Fj4mw0cAbAjSZ4fmqW48wjBNo0DFsuHmlpVYgGb9a4mwGLfn8vvaPC4bR
+         gZpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790232206; x=1790837006;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sd81Spa/YxvQixpMcNxhaEy6XglgEfTWtaXZ4D7EaWc=;
+        b=EAn9h5elmbEyQXfGv2vAlILDv4LZb6NvQL7G98YeBdatT93UoG+NNdga5rqJNtIDeB
+         9ZayzbGdPyj7YBpXo0KK6wMQl38j8cy6VaEgZlMt6adteDUqLH05cEeUsurv5ch3zHJ5
+         XJuSr4/6HUUvZa0lU3tBHMZCk8IC1pXoGJ/HqesHYqS1fvobLvzu4TJwyZGFr6Uagkm2
+         93GorO/yYSb37K0uqAe9TQRyEC8hticcO2v5EsZeCOZyPbXnK8mzEo3eQwPPMkv5S8Vp
+         bTSiNqv9nfH5Zk9IYVAri+WZd6TvpbKNNi8zbXk7Uaqj888m/asIz1P18CG8n2OJ740k
+         SSkg==
+X-Forwarded-Encrypted: i=1; AKwUvBzMKBxEk/BtP3fglYIZQEKT0UshLOP3WpwyzFeJCEU9Ml3Fatujz0nlSS3Ysfir0rtclmUXPU6yew==@kvack.org
+X-Gm-Message-State: AFuF++mMGb8Gg+hzYxOnORjg3ASMLdoSPuyubARIeKzMOB5eQMDmLvnS
+	wcKjRSG2Mcv/N6SDTy8okNWvPSU2tH2X/6/7xzSc2CdSVAEX66bid6HL
+X-Gm-Gg: AYBFou0CW3FqZYRR2tuNLrbWxeEG2WBa2gf+ZOXRNXXVFtlPKZ2pMtrZ4VLs2Q1eUvo
+	wG3hdkxD482LT+YwxJOkU/bY6GF3CmenT86/6j9k4b/sfpfcRyNjvvOvZOHBiX+Loq83YULrtID
+	LcXee42Ygv5vCg8f8pKIoNUU1eJX9F8DvOF+7u3HFNlLxmOQ0Hhc+jraP5cabTaNZ7nZ3/w43A0
+	czDO5wXTSlh9zvzGC3fE1ilbyB9PJlzG7BPoZ2Uo9H0uTX4BUm6BBxuIsETXIhXT8VCAd6BKJbR
+	Hp9O3VI1AYo/2UGcmtnHM3Ih5caSxodZS1UoL2YcsdyS6jX9HuTCw8cQKvH+vyAoq3PeLFgifn1
+	swdc+2NdIGQ+wYzqFBnjmPeq3wS5rGbVt4nAAvgdM+4pJlAPaKXs/tqinwBzwBF/8grN06Dmxco
+	7X+8NyTIMsHnwTVJ1hueVFyJCB0m/diIdNM96SP3ErWCRRvrUn7cI+0WyUYF3cQWvorOjB70yfF
+	d2bS/Lrw741g1LGAr+AcuHvAF8VYelZG6QAhvQ1A7tRlWiXc+7ig14B4dZyar5txLTPzUA=
+X-Received: by 2002:a05:600c:8b22:b0:49e:6fd2:a45 with SMTP id 5b1f17b1804b1-49fe66d81fbmr22703135e9.16.1790232205833;
+        Wed, 23 Sep 2026 23:43:25 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fdf99df60sm90788905e9.1.2026.09.23.23.43.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Sep 2026 23:43:24 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Subject: [PATCH] mm: don't defer freeing kernel page tables while booting
+Date: Thu, 24 Sep 2026 11:43:21 +0500
+Message-ID: <20260924064321.23787-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v0 0/3] pghot: x86: IBS Memory Profiler for hot page
- promotion
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<xin@zytor.com>, <luto@kernel.org>, <peterz@infradead.org>,
-	<Jonathan.Cameron@huawei.com>, <gourry@gourry.net>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <dave@stgolabs.net>,
-	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
-	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
-	<balbirs@nvidia.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>,
-	<linyongting@bytedance.com>
-References: <20260924062206.319314-1-bharata@amd.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260924062206.319314-1-bharata@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF000000A1:EE_|CHAPR12MB999248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35470ac9-8dad-414b-8145-08df1a0651ce
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|36860700016|1800799024|7416014|82310400026|56012099006|11063799006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	HEhchYiFyQ4LeculKYX7/9WrZh0wtWZfBuont917UT0OHmDTzWla2yp3njj1Ev++AS+t5qY5u9SqWS7fCoq6aEdhh2umYj/Zvp7iNmfI1adBwO9JFbIk7x3IDua9ZTHSxVWX13CKNGXblWjiQ52s1wDnE+dyT7ShA42cUGPzk/Lnr0pwaoRfYffpegJlgx+YMc7ISPKFRDBr6ZHJft1t7dQXeYvTSCB1yrKZCgJZSNrA3/srUV3VGTaSRylc3yXc/GGGKeWXlannVnVi8Z74m6iMg5HkxgmD6+fG0ID4LJI7ryLu4dRZfSN8jo9luMJNjMFQwJf9tRSTGr9iNeLST/UDCNsWiNFzCtglom21guzx0WNC8pytECrvfACkc2n15Q83Y6uevP0oqqoFuGwMv7UNFehkim3LM8IXX01zPWRk0in3wj2tzBXfN7xB0BtKC+AcW3po81/179e476dyC4EtY7TRUsjuAbQXmEDKamQIbeu8ssmtPS+jjCasVijnn0gsCtrfuf/NS6PrQa6t/nd0J08fRM7RDkIoHkHvcFh6OZLK8+3JDZhCNpF1sqXlAW0C3eY7agaMiexps/QH7nJNO36ESdgtlhcO28oYnQJSjQlj1AlYzHlK/nokv7Y9yGrmSjYvlyfzEB8Ri6RWM2Kdl0TTCSt62wO6kkfH5PzdQbG3n8dHlt2uv2ahJa7Q5iSMv1EKkGKnMFkUBJSU6g==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(23010399003)(36860700016)(1800799024)(7416014)(82310400026)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	aupPwZ5vrl+MWfxqNAqku/eMLHs8gzRFqRvMNvLVhiHvvJPtaVzr+z6lvYie7p9MHXOrgiU8PP+a0VxguQhbbWU+Us5ddaH9tGTECFI/vZLRk38g2V11LfDhEPUO7EfMU00ypx4Nbk/dwc4Kb2TQhL4WnZMRvcg3LcLzJtmOWTq4te4J3HpMVKOIquFDxJz9BcB8+/52yJK2PwWdRX7bpBNiUmn55IFZp3he9hN5p6ASXRI+z839cbY97uMXNk8QHKxxTNFdre1Yy+Q1MbYV+IYft1LGZbTYlrQny0inVK0maufEmWg2Aq7fT2+v+DK2D72y5g0CpkOmRQoE6rLvbWXUvNmSgMqB9DCuRHPQqhOLaG8vCncF056Imf9yBou1A0SONxV6e2wipkh4hIvBaWOmfgDvF54O9yVMN4HUfk6TN4F2o3MdZwSmHlsEIXtZ
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 06:37:35.4132
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35470ac9-8dad-414b-8145-08df1a0651ce
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN7PEPF000000A1.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHAPR12MB999248
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8C87C120008
+X-Stat-Signature: gr45hn7mt6b1kguni91x7tu1698tq63y
 X-Rspam-User: 
-X-Stat-Signature: ke3rif4jra1fickyuchjm6xpm7m8yk3j
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E80AD180004
-X-HE-Tag: 1790231859-418654
-X-HE-Meta: U2FsdGVkX19GHT4hiZDy2VHpAHsfKP+AqJGPItUAzzt8ih1kp3WallWdXsD8ADgAikwXJQ7jVYzvmJ5oMk8rGU7X8M3XS8ZlGi+hbC3cQW9uSN+mTIze15wA5W8TYfyf5xXiwsKQoOk4EuRhJNJfPnlP4aJiMKdGiUKhuhYlnJAAovdlH6NFQ1cBklS1gMo/quB2wwEzthT5F0c4zKo/O3L/IBqUTTuW1NrLmH/+3HqUX8JSSJ4QMWiFW+xJUz9lfrHWL4V7eDRbzeQsIJ1Whw5VkTPiBJvlqlPaEGw0lSKk4pUFB+VbiAvzQIvpVn4eg8xJyEWT3Rkr00e1j1S8Sb3PcjGewHQILcrWJwul+oCeJqfqTchD7XzDjH/oXD3llbD3Pj7VxAq71tEe+BfCPEBa6+HvOQQtYDyeGH399nuLK6Lgb4LAaJtmOWJuYsfasiFyrDxt6v0bJNljai2irEqq3f73+vZAL/Wt3WbQj/V1m31ai/P1O71uEQVFESdRcG3NLupfzHb2OAfD2nc/jixKH75uTBxPM59AmadEMg2xUMKc6tvjs7Aoyur7IFLB8JDyqDcwAoH7vkua/uo/1c3OUPBNRtxpZd4Nr/GLSMJzA16EYJbdoNQSjbdwynB4porDCS8+4n0OyNKvlwEuTOa30K3FsIPpf+YFibkcYCj1QVP5de3nf/XtrR4F8YMwD7RRta0UtwSQC+vEme9CdTSgv08E5/ZQmrtl2QAg3Xd4tQzggIs0ZiuUzM0oXQ+nv0FlyfH/PYaJAfGYpOZ2C3ykWR0SNFP9jJv9Aa/yeGO1mRJ83XL0DzWsrtK/jAV2jio4H023WvC6//8NmsRz87vnhD6zSjNxPTOWFkIEBCI8Vt7pjFtvmfyUv+yIQzKCgxKhY2xr+FHtmiCwaSFBsFvqgXSZWJgFUxf/jgVZAPYCBNFqzGAzcs1rGYwFEJ17wmc7QCuLn9PM/zyo+Zr
- rjFCQwRn
- skZXbIj7/J2999RmzOHx/Gcku2pd6TcyNtwQxkogHkTCnvdOuGF/Akd28DlCsHLaadccR+n7kbdKuM8XsqoP2EMhZR0WN7bUOM3CM8o6mDG0ku6I6pJcadV2NwxsxjG2Mn/BjTfnWPdSSCIAXjo1yF5X3TqGCnTnDTafwamx/FvMhN4icEQHwTcUCledmoFI13uO6aBfKBNjDvO5hOxMs3GtgN7BOiXQnnELu5QgYBHm48MWUDNMhMluowLTiKLkaW5RXAYwWcqaeleDaq91Rker9xNm49wY9lSAJA8Iq28IZ5APSFn2WDP+FVo7eItGenDaL9WVa+i7J3nQECfb8huHF4lQDWzu1EVDRjz95FURxJQULfTNWTfPcnoFF6ViBfukjnazXtBu8cpbxj9221zsDMt8xrzt3mWyMxh6aT2MzgyicYRHqljf13AbIOBtTW/zrEGXtge3SJaNdlGSdUNY/gNWEaumz3QWCujXTMtqBZ8s=
+X-HE-Tag: 1790232207-942739
+X-HE-Meta: U2FsdGVkX18hSrCYM9MVtMIWq7pIQlWGdlEUxKQB9Y67zyUaT2l7fcsJCfW/U1ouZnX+/58OBxiJ+JCWHGE0OGwYBo8sfXck3ZaeSmo5Hw3y/bpTlV+9DSVwH01x56hqsSDuU95doYg4MmxMcsl1PWAky3LHKaXtJq9XDY+bJTPyhPz7so+pbzAFsiQPLDLZqy0R/8MuWzhia89UBczAlakjj+ex70itgnnedSvVB+NdKMVD4EfOG0IK99CUKVria+1yH3e8XNDEDvFl4okbVabb4JvJKoG1ilb8ji8V/dIej8KWuRRy+eCCndtAaOn3N69r5CPPx//sOHhq9l3lQ2xVVBmQR0SGSirfpi3MVW+nGIX/DikafmyuQgb1ZFjxzVCNZOIsbmWDqRvD3VTgbMsHzkNIPewMpz4PoXhRvKUVaZyWLUn0kBCDJIW0+Zwy6CpwvxYi4AEG133HXbgjNT1TqfNsZ5+fDh8KlDfXvCHmf+JJtTrQvhlHr4OpGhs973KgjVTsQsMOHzJ7zPb6ivOSetg15ydSMg2b1bxoi8LVZqaca3irxVfzJ192qgrWAiKcuq9W4X8jVMy62cGW6HSzkvmHrrdBJizpK0Y/asJo+cMrOzmiJPYgnaav1AW7VaZA2oJGwbGiHjcrZK/t5TQVELpNNM761kP39qPuDxMbbo6bI2H4UNR+aoXn4r6sXTP3VUvOMPauKQXGdPZAQvNDeB+ah+hsfW6jZz7RjNdVrgfQnGxbdBmYaDo47sOKjBiAnrocAa1pdZ+9EkcNabT8RkBuGjA4flQvAY8eWrQM3YXK++CQIkoHmtJPDQfwJrz4BsYHKVADN1Iip2Wq3TOkhjrSII3sSPIXojEzTUAO+JghzJopbz3AoVwSVHdbmFxMEJBeNjJ7ZguJQYRdtWhQ6LHmeffOFJXNuIeT3Dq8tD2qZ/azOZTwsQxMSkwPCjzUXrr9p+gmtNYtvNZ
+ KnKwm1oO
+ EIqj0iLfcphUsk6Pc8CvIdSDKlQbDrFPCsAd4mOIaIs+04z2GA28RpqnLqEr8jkFSl3WFFRcICAHV2OF3+tGGyG/EiyWkDT0Rh7DLQeojV/Wbs0hTJoSOFtHs2+wIRtqPcV4tjIn/s96SzMu1AvYvcONPZaMV7GNg5G+kThxjyoYHJKzE8m0HKQHGzP3eZMUmXUYpoNzCluYcJpMhrxVRzg7Ngv9ZwJKqWHa7KDGHGFciQGOef0ZxCl5EX3fpKmWDQeJruElSDHCXbh4Da8vZU7X6V659pUaja7KTtfexyU6FeO4i+qRM1o+t0zXxWgJi93wlTD15piegA4xxF7U2NXcEs6zwDyBBf/JE1eUFZFCL3hWZzbZhP6FC7/+E58sxXae9StgWaIFnQJi85mEshRCxs5AnipFIvBhIh/iQnlgDB8rrTSq0RP05o1GgPfyYbpKx9uRmTk8SAjfhTTWNGWSbRwLpYXHTsY/LoiDQRuDLLUypB1/SizAqRA23MJ8W58y9QJsROvfCJ1g8+8PwLsTowxvVM/Qi4eJFwy6kwY8I0VWD6yr0hJBHrA39uerYhcKVUKBwtM0vBEkk9K4S5IQNrxyQ//FEn23dc4VpSe81mmNMgCiwVrkxsdAZfXMtl4X73wWV10dvijjdOReU0i2twg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,91 +131,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24-Sep-26 11:52 AM, Bharata B Rao wrote:
-> 
-> Detailed per-benchmark tables (throughput/latency + vmstat and pghot
-> promotion counters) are posted as replies to this thread.
-==========================================================================
-Redis + memtier: hot-page promotion on a CXL-tiered system
-==========================================================================
+Booting with a boot-time function tracer and a filter, for example
 
-Benchmark: an in-memory Redis server is loaded with a ~64 GB dataset
-(62.2M keys x 1 KB) whose pages are then explicitly migrated to the CXL
-node (lower tier); the Redis server and the memtier client run on a top-
-tier DRAM node (node 1).  The measurement phase drives GET traffic with
-memtier (16 threads x 100 conns, PASSES=12) over 50% of the keyspace so
-that repeatedly-accessed lower-tier pages become promotion candidates.
-Promotions target node 1 (local to the accessing threads): NUMAB uses
-the accessing node, pghot uses pghot_target_nid=1.
+  ftrace=function ftrace_filter=pud_free_pmd_page
 
-System : AMD Zen6. Nodes 0,1 = DRAM (top tier);
-         node 2 = CXL (lower tier).  Redis/client pinned to node 1.
-Kernels: base=7.3.0-rc2-base+  pghot=7.3.0-rc2-pghot+
+panics on 7.3-rc4 as soon as the tracer starts:
 
-Cases:
-  C1 base/NUMAB0      base kernel, promotion OFF (baseline)
-  C2 base/NUMAB2      base kernel, NUMAB tiering promotion (hint
-                      faults); promotes to local accessing node
-  C3 pghot/hwhints-10k  pghot, NUMAB=0, source=IBS mprof,
-                      period=10000, freq_thr=1, target_nid=1
-  C4 pghot/hwhints-5k   as C3 but IBS period=5008 (kernel min,
-                      ~2x sampling; 5008)
+  [   23.531178] Starting tracer 'function'
+  [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
+  [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
+  [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
+  [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
+  [   25.981629] Call Trace:
+  [   26.125727]  <TASK>
+  [   26.413912]  ? pagetable_free_kernel+0x20/0x120
+  [   26.990283]  queue_work_on+0x97/0xf0
+  [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
+  [   27.566662]  cpa_flush+0x394/0x620
+  [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
+  [   29.151729]  set_memory_rox+0xa2/0xf0
+  [   29.584018]  create_trampoline+0x431/0x6f0
+  ...
+  [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
 
-==========================================================================
-Table 1: Benchmark metrics (memtier)
-==========================================================================
-Case                   Ops/sec   vs C1     Avg     p50     p99   p99.9
-                                                           latency (ms) ->
-----------------------------------------------------------------------
-C1 base/NUMAB0         285,288     ref  179.46  177.15  344.06  358.40
-C2 base/NUMAB2         295,475  +3.57%  173.18  168.96  325.63  364.54
-C3 pghot/hwhints-10k   285,923  +0.22%  178.91  177.15  344.06  358.40
-C4 pghot/hwhints-5k    285,290  +0.00%  179.24  177.15  346.11  358.40
-----------------------------------------------------------------------
+The boot-time tracer is started from early_trace_init(), which runs
+before workqueue_init_early().  Making its trampoline read-only splits a
+large page, and CPA collapses it again right away.  The split table has
+been a kernel page table since commit 9e4a3ec3411b
+("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
+collapse frees it through pagetable_free_kernel(), which queues work on
+system_percpu_wq - still NULL at that point.
 
-==========================================================================
-Table 2: Page-migration / hotness metrics (vmstat delta)
-==========================================================================
-Legend: C1=base/NUMAB0  C2=base/NUMAB2  C3=hwhints p=10000
-        C4=hwhints p=5008  (both hwhints: target_nid=1)
-        ('-' = counter not present on base kernel)
+The deferral exists so that IOMMUs using SVA can have their paging
+structure caches flushed before a kernel page table is freed.  While
+system_state is still SYSTEM_BOOTING only the boot CPU runs and no IOMMU
+has been initialised yet (on x86 that happens from pci_iommu_init(), a
+rootfs_initcall), so there is nothing to flush.  Free the table directly
+in that case.
 
-metric                       C1          C2         C3         C4
------------------------------------------------------------------
-pgpromote_success             0  10,433,506    575,010  1,107,371
-numa_pte_updates              0  20,333,730          0          0
-numa_hint_faults              0  10,433,506          0          0
-numa_pages_migrated           0  10,433,506    575,006  1,107,369
-pgmigrate_success             0  10,433,506    575,006  1,107,369
-pghot_recorded_accesses       -           -    575,677  1,110,760
-pghot_reported_hwhints        -           -    964,304  1,967,044
-hwhint_total_events           -           -    964,324  1,967,078
-hwhint_dram_accesses          -           -    388,027    854,679
-hwhint_extmem_accesses        -           -    575,674  1,110,758
-hwhint_useful_events          -           -    964,304  1,967,044
-pgdemote_kswapd               0           0          0          0
------------------------------------------------------------------
+Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+---
+#regzbot introduced: 9e4a3ec3411b
 
-==========================================================================
-Key observations
-==========================================================================
-1. NUMAB tiering promotion (C2) helps only marginally: 295,475 vs 285,288
-ops/sec (+3.57%), avg latency 179.5 -> 173.2 ms, promoting the full hot set
-(10.43M pages / ~39.8 GiB) to the local node.
+Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX, lockdep and KASAN
+enabled, booting with the command line above plus earlycon=efifb so
+that the oops is visible:
 
-2. pghot with the IBS hwhints source is flat vs baseline at both periods
-(C3 +0.22%, C4 +0.00%). numa_pte_updates / numa_hint_faults are
-0 (no NUMA balancing); promotion is purely hardware-sample driven.
+  7.3-rc4 (fe2ec83746e5)             panics as quoted
+  + revert of 9e4a3ec3411b           boots
+  + this patch, 9e4a3ec3411b kept    boots
 
-3. Sampling density scales promotion linearly (period 10000 -> 5008
-doubles reported hwhints 964,304 -> 1,967,044 and promotions 575,010 ->
-1,107,371 pages, ~2.19 -> ~4.22 GiB); ext-mem/CXL samples map ~1:1 to
-promotions (freq_threshold=1), dram/already-toptier samples are not
-promotable.
+With this patch the boot-time tracer works as intended and records
+pud_free_pmd_page() being called from vmap_p4d_range() during boot.
+All three kernels also carry my pud_free_pmd_page() v2 patch and
+unrelated local changes elsewhere (HID, sound/usb, Bluetooth, debugfs);
+none of them is on this path.
 
-4. But even ~4.22 GiB is only ~10% of the ~40 GiB hot set, so throughput
-does not move.  Unlike C2 (which promotes the whole hot set), sampling-
-based hwhints at these periods covers too little of the working set within
-the run.  Reaching C2's gain needs far denser sampling and/or a longer run
-so hwhints promotes a large fraction of the hot set.
+9e4a3ec3411b is also in 7.2.7 and 6.18.53, together with the deferred
+pagetable_free_kernel(); I have not tried those.
+
+ mm/pgtable-generic.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index b91b1a98029c..2d9b4ba33b46 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -440,6 +440,17 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+ 
+ void pagetable_free_kernel(struct ptdesc *pt)
+ {
++	/*
++	 * While the system is still booting only the boot CPU runs and no
++	 * IOMMU has been set up, so nothing can be caching this table and
++	 * there is nothing to flush.  The workqueue this defers to may not
++	 * exist yet either.
++	 */
++	if (system_state == SYSTEM_BOOTING) {
++		__pagetable_free(pt);
++		return;
++	}
++
+ 	spin_lock(&kernel_pgtable_work.lock);
+ 	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+ 	spin_unlock(&kernel_pgtable_work.lock);
+-- 
+2.55.0
+
 
