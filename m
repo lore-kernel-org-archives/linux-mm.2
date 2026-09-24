@@ -4,138 +4,242 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFD43C98304
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 01:56:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9DA5C98304
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 02:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 820666B0088; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
+	id B0CE96B0088; Wed, 23 Sep 2026 22:21:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D1636B008A; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
+	id ABE196B008A; Wed, 23 Sep 2026 22:21:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698C76B008C; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
+	id 95E4F6B008C; Wed, 23 Sep 2026 22:21:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9C76B0088
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 21:56:24 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C78ED1C1C0B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:56:23 +0000 (UTC)
-X-FDA: 85246991046.17.B62C5A2
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D52FB1C0002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:56:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V4mTc4bL;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5640D6B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 22:21:01 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BBAD31C1C2E
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:21:00 +0000 (UTC)
+X-FDA: 85247053080.18.CEEEB9D
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010028.outbound.protection.outlook.com [52.101.201.28])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BE2D2180007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:20:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Os7y4AZy;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790214981;
+	s=arc-20220608; t=1790216458;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
-	b=Kq+REIkgXcHX7jKkc5oP4E7Cuw/tsLmzytaFFcn8fTAigKK1uHDTf7DiewXW0dVT+OTmtQ
-	KhUhgET+RRjRl+UA/DNQwY5rbiy6fnv4TwXQJRC5vUdU/U31/TD9TkbXozd2mbc9aesOnO
-	XbBH6SvKwbZFRosvad7oZcCSI0IOMRg=
+	bh=e3+f00+7OE+5/QGLyNup2ZjMtqagdnIsAWYHKTCo4rM=;
+	b=a2Cy49NjohE/8zTC7dwkfwghAfaFUkCQeDGGiwPCFqEuaWM4q6kZfV8uTupkkzs27LOmAf
+	8gDxhZSGb9rgtUW0UWH4xtUD3Ulxu6SV4Gvr7zGHCXKyJ4eMCNf8ROMd0T1JCeWAKEuq/R
+	l6JjrvaHTTGxh74/YS33z3OR+gp7FTE=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=V4mTc4bL;
-	spf=pass (imf20.hostedemail.com: domain of kunwu.chan@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kunwu.chan@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Os7y4AZy;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.201.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790214981;
-	b=wVoQb800mfjKT6VdmPP+acLfjF4wEZHCwI3XprWRzJSF2Gwh7FNqlAR3FBA589u2Cxsi/G
-	pOMIysCjXA8NJn1cSSCpoliLTV/4IO3N4YWaHDK7EHAiyJej81B/M1wfWzuLVOR6Fyso+W
-	On68SN5mB1HtQsvyr/MSXuROE4BipYY=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e64ccso10126765e9.0
-        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 18:56:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790214980; cv=none;
-        d=google.com; s=arc-20260327;
-        b=HaZdAvhkGAT9k+pwUV287dIWe2BqBlpo7ZZ3M0wayUDDpNnow1DB4rRo1DmXFreBz9
-         UAUcvtLlaXMnifuT+7DnVUjkToFX17g3HedwjeiIG2JN12AEiuT6mn5/w0xG1uJtQAZZ
-         /tWpNEIrqHAJQIJeQ18xxIgyNUdiZJ2ryMHP+fHs/dvNuumf4JYpB+lJX1EMWO37440J
-         zg22nFKsmCvM+l4q7EGaEPqImYsOYxn7EY/8M/LTlntOO3ejdy/jVgsjhIvFYL/MQM6H
-         UO255KO+SdrPeg6DGhqyBIoP1ulsP/1bdOxuswvadLV0LfY2ADPUUmp2oo6vtjcxcRuI
-         WNgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
-        fh=KI6Y8iNamtghImqpRJASfDc2Nqba7uYoJw5R0PxYD6s=;
-        b=og4agU14gaFwEih5Db2eVbRveCjPiEDNwDFVeyYAKAayA5lWEyKi7dtHNKuQq7SJbv
-         xcunDEQ0vaEnE/DHz4MLldeVzj4afujyrhCFn+wAESvZzpDHmxdhSeqwV94pfxtr31NC
-         B9kY/9CpCy6t2tkFvdiDn0p6ahrz0/rcjBoSppM6OXSSQuXMBNpSp5QClqr3y8S/gbI1
-         +8kipGlgfdt2S4WkYpgUMykYxM1cxFL8rW6zqSSzNPc5ahcDbVqJkoGeHD2lvaLA9uxE
-         9gF5qfNM0PcTlp38vPOcutYMfajaZYhAb2Oy6h94nhooR1kGaMdkIvsvZ8zUl2HS930Q
-         CGJA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790214980; x=1790819780; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
-        b=V4mTc4bLPsmQeKABnGE/xXws8MpFmzYKfxwWhstWdn414uV9aKiMTr7oBDK0en/9nP
-         qR6mz6GRcKWx1gPWo0bseLQKqtwAJmDAlEYPqndcXL1gn2m5hTlHK1tEoaqbfalw/46O
-         raGPFy6aMBCR/mFK4arAGi3IpuT4xpa/4Li+X/WCvmR1orNDvY+lqalYGerMlnYjZmaQ
-         YzEwPy4IC7VDnOGjNpleAq3oph3n5TAoYdMCE1Q+rH0xLI9R3QtvpEGVRK6UCvAHICEV
-         QRFFPp5CriNRlEEPqJSDPvkVzgdggLNIsuklC3+V2jck89nGium3Cp+LeXCc//nSaTRj
-         eGPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790214980; x=1790819780;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=T6Z/PnVGjpKTIVo2L9T5LNyOiMhwiMnMKAIShdnqWZU=;
-        b=ZFTKGXaJ5sddo2xxZ3TdBQxIzYeYfai1/M6oH2ZIuFKX/a0AOqDAsDEePqYPZ0YPKK
-         inLeYSSlY9zT5Up1L5uLHqu9k4zjLHEPlEhIq2oVljfNDmpjeUGPNoo2F4cVZXYZWuSV
-         1v30PtG88ePgeYKspsYdwgozEiUbFMQwRBMNF5JlaiIbzGit8Yf8QGh+pHv0LHDQBC2a
-         I7SZVvq3Y3EDMP5mEJupyUMNOM4z85WnCQgEOMI9+ZNrXbMuW5pk5SJiIPojK5MwlnXU
-         Cpg5xqDT4gmk6sU9Hlhk4SKd5gQmS44f5U9wLPnw3OFnHWaS8Acs9iRKKAgioWfWvK1L
-         oOuw==
-X-Forwarded-Encrypted: i=1; AKwUvByOgF7+RAuChheCAnft/V5LRh4cdfO2m+j/YMyfStcM5EkR5IIC92WbVHl4Z3SQ13bYwGhUDNcL6w==@kvack.org
-X-Gm-Message-State: AFuF++lscDAQ5n2DY7l8DojnRvRp0/rla5IEjPX02XpuiPvktB4A//Ke
-	HbVolctc0B5Vjdsa9Y58fTEY/DVqoxvDZXjHyeUWE2V65P9cQJm+wTvqG2MjZYeAOeLit6ynNkl
-	AWLYIXH6uyKmvX5MKTSHgoHuAxPGn7dA=
-X-Gm-Gg: AYBFou3ns6oT4h0EEIUxEJcY86BDgjyNG1WlXIxaRhFAAPf5OCFx2wIMnKs4YG2Hnsv
-	p5b0mjpvdd+PJcnhvA+PWjluBhUefIE/+C0X9KbQz6kAHTLAkii8i8zd3fcfUBSGNb0Royk5mSz
-	eSPCvIdO/xjXO3n6NUUfFPEFCX8grhC88kc/vC3TXu1kC1sd48cCbhaU5dYFsvquykB/AbrTH1x
-	jpPEQ4wAm4OG6e5Dq0oHWNYdeHNr8GXahyw6WVLLNMcPAbMR7E2jUQb97Mik84mX+FFdNLAN4dB
-	tpOSnsvLpS6iumN7pYik1/3ymQvjnb0NtUKi2lIbAo2ZB/0npS3lLK+5G4K0+e+/G0CG11cA7MZ
-	XW2elYVjztpJebA==
-X-Received: by 2002:a05:600c:34c1:b0:49f:bd3c:bc21 with SMTP id
- 5b1f17b1804b1-49fe670781emr14793475e9.28.1790214979782; Wed, 23 Sep 2026
- 18:56:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260920072043.430390-1-hebaoquan@kylinos.cn> <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
-In-Reply-To: <CACePvbXiUmGV920BM58FKuP_iuvhRuoSZrGrrS53rLctJd5uVw@mail.gmail.com>
-From: KunWu Chan <kunwu.chan@gmail.com>
-Date: Thu, 24 Sep 2026 09:56:08 +0800
-X-Gm-Features: AclHuK_mj4niWNcydt7-p-fYvtFJAG2bfKOsnaAyE3CnlQa3pCABR1PEvyYvBP0
-Message-ID: <CAN_Opa9usQWbCFL0chY-MCJ94-SQt4neOmcgz2S+_b=90fFZLw@mail.gmail.com>
-Subject: Re: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
-To: Chris Li <chrisl@kernel.org>
-Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org, 
-	youngjun.park@lge.com, david@kernel.org, baoquan.he@linux.dev, 
-	gourry@gourry.net, riel@surriel.com, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	t=1790216458;
+	b=CTvkZgEpPtYHPsd2WZOWBjahnN+MRrllLDll09U3KPj7KjkMfa+zeKXjlHTC5F0TMn2KDJ
+	fLttsgqLhIb+sfeZVAE4qcntUWRjEj1WCfvpcw/Z+joSD1omFmBMGb93FHgQAykv+sjjkK
+	KHC2Fw3ooqPXdADx5ZVND2K/N7weqC8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FEW8NXvNN7Ip1AMDoH/NDr10ZP/j0MD++ZTreI9Y8fvmDEmCahI/USddG4Bd+0uLHze+Vfqw2VsyOBrqBOhsaOoBo+4Jm+cIpNjbPZd4XpCv979BXO0F45I5QqZbYsUP4CupmPrEWvAhxxvz+80HtYgOH7/pUrwsaxhEjRdAvxaRqz43b9iNuu2rUOLu2eudZuhmRh9qos8eI9djOT4U7wDA2wgvV8fEGctFMdbvY4fMYvauhrLoR+ut0m+h9T+DtILpdiBBMoJkj2nhvCinAvATNNKt2T1+KN2C3xyvI5mUxdLBqKYvBHQsnqSkN37R67+1AsWth/1tXeLB9WZWiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e3+f00+7OE+5/QGLyNup2ZjMtqagdnIsAWYHKTCo4rM=;
+ b=EPldav/v6eXctrUXtVxtv/+1RM7EIoIOyzNB/W/Ju29wIqjgdZ+8kjWW7WVF8jlP6PSV6eEV07FO/D9n44bLKuawxX3UGHHWbbtRYyS+vYayWXMLIWLtoRCnc9p90cZOY6g8koVGVm7CCWuEwtPFpcJOfO7r2WnB5H+Szi1I6U/L4RY0611ftlxlPCKkxFijucw50d/wP1vCbwl96wlLQnlAc+f2BILenGjIf1H3CldzzeYMQGMszzr0gyjZTFnS92oF0eQCi7wTQn6XYOM2do+1rHvCyrO/rtht+QWHarcXmdNl0r5btvn7ZjuZYbUh55hxY59rwZjsm6angf/dLg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e3+f00+7OE+5/QGLyNup2ZjMtqagdnIsAWYHKTCo4rM=;
+ b=Os7y4AZygLP9mAZXIrqyEXUU3/QQMgwFCOFFLhP71NnUy8Ft7xIZS3EKcwS1i6L/FK1Lrf/7PdWBai7Gz6ZJwqhRB9czYqVq2FJKVc0nWlJXNVcYJMCwVGb2m8ZaXZNNEhFsuVElQkcBHPCI1+rsnRKmKlpsHdooIuntR61pXDA5a9lhH28tB5kwGlyV+BMWsy9LZz6uFuubudiB+/K+0F/J+PAis/TUe3ItrWbCgrK+atteghn6vF5/GYTs80YCEZbgce355DS2MUygx+/9yq1OtZbVBH0WBL5W/yLQdIYawmnyI8KLy0d08mJkQGdwNBgZl+oW4NiFBVtVLx0hyw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by PH7PR12MB9150.namprd12.prod.outlook.com (2603:10b6:510:2eb::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 02:20:49 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 02:20:48 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>,
+ Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
+ Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
+ Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 01/40] mm/vma: fix mmap_prepare file handling, remove
+ file_doesnt_need_get
+Date: Wed, 23 Sep 2026 22:20:43 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <26EB9785-2909-4D49-A755-09A72BA94BD0@nvidia.com>
+In-Reply-To:
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
+References:
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D52FB1C0002
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0946.namprd03.prod.outlook.com
+ (2603:10b6:408:108::21) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB9150:EE_
+X-MS-Office365-Filtering-Correlation-Id: d756cd66-f5e7-4f68-4938-08df19e27286
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|10067099003|4143699003|56012099006|5023799004|11063799006|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	vAF891Uu3yvreEx2UHQuX6W8IEX/mlPqs3+Smof8FvsPNmQScSoDs2+FB3x3k2uo19SVOuCIXnoy9MTEEbZIu1gRy/CtimvSKSN9rskBe221z5ehDUtRP6nVu9iIGODbzbMefZ4TWyNY5el+DkXzcJr0R1IRygulCqZyWT5QiHT2Ct4rc9B1yNkzMva3/s1blmVxF7XABRHByA+Pt8HHYfp4kObzMhotCFZgidIrmL9icQcXAZq4dndy2+igaco2x0rG+2bk+beqGHM407OOa/Ra5MlI19WI2U1Ij0DM/G2D/llIDRjvbNTbYsbXcmvL5HvN6KKqrP7BceSPmSqJ4mg1WFnp+E+xpNLTT33/KUh0xFAJBVTdsDyjWL9OsbU70hgnUGVBwPY+k3cCuVoWM/eL/zR8R/7jXTCyCYTzUHbzG8ehTuDT4/bPFnXC5mVNQngIeUvY0Bmw1kT2B777w/jkQdz3YhaBEMMNSMQaAa+PWyrrq8SmZRDXEgiFDfobCOchSvLQdY5pcCKbf+QckqMLlSgHKipl2+GAJtbIHgpnydo6rBQpwbEeBzt1XJGPY+l+ALxei0ObL+uKYu+6KpIzfWEKIilf39mTynQRlQCMvf3pfLhT3FvMy9o4xDa/hyZdt2kh20vdftLnEjSLlHH/cbNrOT+9Smse0z4QCkw=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(10067099003)(4143699003)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?xh9+5RAafXZuRSQI4trYeDWrakKa8YzB2EWrmma0gz9ppwIRDb06jzYHyZqp?=
+ =?us-ascii?Q?u8/RHkZZwTL5ZBLXTTm9H9lOnW1K9p56dt+2CThYqPSAX6ya4BI/vDAnt5NZ?=
+ =?us-ascii?Q?RFVAZK54FbBskogNUtvlOTl2QyjJcVhLT++eFs8+1fh2K6bqtgzdvId5Kdo6?=
+ =?us-ascii?Q?xUP4HmCLvXcz8MQnAIOQCc99ySTvYMQZ+oRBMWj9Ky6irHLJyGPMxhMnu3ke?=
+ =?us-ascii?Q?Iry/L167hUUgO6Ctf5XLaaQWRKwUTybgURTgWSoomwogACAc8pDEuOd8bG6k?=
+ =?us-ascii?Q?mlXzbsq7mYhJWFKj3uUOgf/P5LXbbQbNj00xu/kX9gGegRwPEk6euEMvJd+g?=
+ =?us-ascii?Q?A5SpAYqSXLvVaiW66c73h1fjSi+oCH9bZ+cF9+HwVOfwKACr2y6RDHxaJOsi?=
+ =?us-ascii?Q?Gcb3G9KI/b/o/VaAGOV7c6AGIhFssDV4uzrVubsGurTWaZOMsxK7M/d6WST7?=
+ =?us-ascii?Q?ITvOCYYQ5+A94DNE1PtR6MhBM3KBONyVh9xrBbywBwS7fkeA2P0HZYgViKSp?=
+ =?us-ascii?Q?jlcZdE/msUaQS6oemeaBS5UZxJYudGWqKtstdnt/Ez+YisvpScg4eDXHyf96?=
+ =?us-ascii?Q?eU0i6nfR464z8JVs9qEMkK+kNpVy8HMx4pPHbcNgfwfyEhGegNSc8EUFt/wV?=
+ =?us-ascii?Q?y5tFdqOtmoI1nr2NMTGMDqrDeT/G+oMqXebVARSlqPEQ86MmSbFzI8E64+3C?=
+ =?us-ascii?Q?25b4Gs9i2s5yILNWsXKEIidNaewLODMlJWawHRkdgUkt+OhHY3s3O9kf0Hsi?=
+ =?us-ascii?Q?+EmgriPx9z6Cwg1mT/pr8884lJnS2iY5JiL7kAlgXWR0oLc49xFCUD4PIvRc?=
+ =?us-ascii?Q?+cVStPKeojSdIxUmOLeBN0L2nqJGKAeZSgRlLDdYsgQ7U11nP9+CMK0N+v2G?=
+ =?us-ascii?Q?YshkYrCoF49A0g3B4QWhzU/syMA4wa5QaZ/rMn8FBsq1BWVr2qgMcySnY7c/?=
+ =?us-ascii?Q?4byNwN3j9Admm4UpXmr4qbKpxRYb+cjOVfe0IyJMnZMzwtq25HH3mO4DPKQl?=
+ =?us-ascii?Q?KjPcLqay6p1HXC5i21PqdfATgGW9e4HHHLVlDDLpysdqMh/jQEEmOTiiMckM?=
+ =?us-ascii?Q?nfA2OB7resXhmLRoIlJLl2LWnJ6CqVq818PvlwxiVylzBDFUDlZxfdreTGRW?=
+ =?us-ascii?Q?hhLj+R1aO4pXK2cCXLi7RUNjiwKWUo5/as0aXPHJMQHeLa9GtNyyIEb7qRop?=
+ =?us-ascii?Q?JqomsCxbuc+6T95HoH0XXtozR20hqbvkN5q7qvJ44JE1fCgLIrkI3c0ZZ/I2?=
+ =?us-ascii?Q?5kBNupIwy+T9vP1AkSBs/fhhuZxvCLbd1a28H7ErdfR88AoZCVzLPFet9POB?=
+ =?us-ascii?Q?ZhXQux02XLAitI+S3gRaSY0C6mOK7fb6c7dD15dG2B1/5pPytOj79s+ExALB?=
+ =?us-ascii?Q?fq2DQr63c7yI5Z1RWyRkbIJm+HKgdL8ieevnZ9M4E0IjDfgAzZ3CTWDu8H8G?=
+ =?us-ascii?Q?gvgEjfdS9y3eVY25A0RMep6sDjPhNQsDLFaHH3T98410rIhHNreRbHDF5Imo?=
+ =?us-ascii?Q?gZg8ljPQUmAAyW8gUwlSCo3SDG4RL/4Q+8Mlb8DpjBb/ssp5rAfcCp+jXM2z?=
+ =?us-ascii?Q?Hvw4Bg/Miyby5KHxG9D9JQHlsjE37CbMAzwvfov1Aa9F1NaoL6jSJtSxxqTY?=
+ =?us-ascii?Q?V1VOYwDdQsY6tOcktVdAIDJz3EF3hiN8DGryokehm6qSH1TSqu/Rc0S2TOqI?=
+ =?us-ascii?Q?tQaa6WgxvbLi4yFfwaUug0GRPQ4yeyQNIrAcsEVMSJbAb9bM?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d756cd66-f5e7-4f68-4938-08df19e27286
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 02:20:48.6665
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZI+lxUdi2FGrBf75OaraOZjkam5K29+pXlxtyhA+lzIAkyF+iRrKsxWnomUYCtj7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9150
+X-Stat-Signature: z3rstuog8uycb4y3ssfoxmwhamtetyjz
 X-Rspam-User: 
-X-Stat-Signature: bhiaqjeppqj16nh7fkhkihuqco7daz4n
-X-HE-Tag: 1790214981-925854
-X-HE-Meta: U2FsdGVkX19IDKLxuquPiQSdu1JjzNmTjq9HcOzFGJ0QGwKf/XcFgde9jpB/YLcB9i5RXVGFipy/N7brJCLuyf4tCTzLIWZgALt6REkyYMX5nTCjPdQmVSQgtkfONOu+fMNkEzVu9bxg/+u/VY3Q7Ad1HnZQ4vZz6e9Q4jnh21pkZcgzJVkywAUTlzP36kzVZjj+PD2qq5LcS+q6Mn11WRX/Y4YkRHGHnJoGgG/Q42JnnVOOjs4MtwLGoMLJ/rhETMGvP2wlH4YdwoceRk3DRg3KB9gEGi4WpnPtx6Pa59KdApa25lfOIaSQKLkpgSArOqbk7tzne+VXiL8Fyg2JU2nQDKSP+XsbAyh6ua9k04T1C5RGuHAek3AEOtygNsrEoUB/hu/OlxELOC58CuWcoGTjvf+kEd2lL428qqtvS77//muBXyED7v5knhLAa5UsuNjzNFJn3ye9tTwNOytT5fknkWGTffpobH45QJ2Gr+9ZPV6ASu/9DlmNyjXSgsN1pkDEXNo/uFt4rhFBp57sWwd64tD4IbjeZ+1AXAauipzOTSBp7Ix3eIGoKLTPBX0h//8xrEez/1piDClp4A+KS3tSHJE/8K2tsW/3BDAd1sq6/amJ47lfdwXrU1EpJFkCyYux+8OO4UGyiBbr2ZXWAPmK2mM73EzKtQO/vAEb7gLhsP1j5mvbWgnSKe0njkgA07aNsCxTiv0IJu9QO/wHR7UploN+/wOa1LaOBgNoPI/4APVHxNtDNJGzDPWpl+Ng9xfTZ5jBZJwf0hWK5hNvgF98LJVnysfqSreZ4vXVcu5+1lzbMrNnBv4tsWCgoS+S3joECJYxENowEn1SQ28u0ZZtM2shqEdWptMr/PDKCo+n0Ng2He8MTdhe/zW8q4xQ53y0uTov3Ot5AMPA2CbuqNPS1TPj/8F9t5p9RDcPO5RnRRk2uIWXXf0KuUuh974Epyz3an7kqHipcOakpCS
- LRJu0y4+
- 5Hb9xEJYfDd8OTXfTO2lupEQEzn9NH6JAFwe+uZmaB9QLRVZIQ9Yl+v/clOD+H8PUj3lPEdVg9PsB8Ty87y0E3MlS6oIF8gYfMWGViFoCO1+OFgNoB4srNUmU4Lx7eIGsZ1t2XUHaRviaZFs3f7x+xd1+U36hFiQFeUchW1frTPdJUdpqVP8EEgUVthaiqzUMFoU3cf6T7SLtA5Y5ub+r5BO1WhVo73RZYn8aPUPCCAXa4m+lg6MA38fN+tET12TJ5l4XVFP7A/eiofE6RxYqBrYdj74f6Ag02eqdiYeuqHQ9HmC5cEM8P68brwo+YMLmdsC5ZwkDrN2G6ie7ommP4VXDTzbOzYwH1tSlSCucuupQh+I3rA9esB41al+FBwfUJguq9XGBCipmxyX/x9gj/avdaheHkY3ioyBz35kSTtmnEBiBv3fjibyMXT5Y94AWtW1smLTqZUCbTp4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BE2D2180007
+X-HE-Tag: 1790216457-134915
+X-HE-Meta: U2FsdGVkX19doqDElhKYKqmHIxfo4s5i6SAIc7GiboKy0GWACnF7RoRuHBBXdkozywb4f4TrYZ9pvVA3M9lz+8bOLvhynlVkFAMk0brzPMJD3mgMNd6luWlif6wV+PHtG+DO6o4YafXZ9472zvuK9GwPK7nZnuheYgNySMiehQp2x7mLYaaRnCLDRY/mOtvZK3cMXsVHA5psP83SmekiHM4OK0hibn2QLNxVwkSuURWlHykEe3UTM32NMk115NENwqzx8rUkz2H/QBv9HNInNa4lIiz5ZnpqIxtRFavSsbRwcXCX2Wywzy4AqQ+Cj4jN9cfkZQZss0FkALom8hWckd1FLJKP4wAopo0wsxZjSfIM8C+FPFLzzZvAheAQDzhiMPCl2ZT9V43KoX4OnjS59U8tO+9ss5wwRtrieT44huAKmyRhurPZ/DP5sDWw2quCDEyM3G1qLz2dzUZ3xTwT82NoVNyuak9bla58mt1HYFBCVP14RNUkIl8bXJxXqqv1f8NgCcRrWl6nai75BRYI1M/axlCHnAsXGwMZGUZrAoSAF79WToWVynPoW6qrtcJpgLMlfftyd++Of3KieEkp90oNPKlQsSyNoYznNfkV3FmAkyXElXkI1jZQAqI2zrNqDhZT3TvwRbreXjoh3TOjdnagDP/oI9BcVlQsd9SmIZCQuXmPE4Tp3R0xWsjEpxwmWWPuss93RzAgTCJmreLomz9Cp/uKawDv9AeKiPRT4FySSbcddnBj4UBSo+vkGEPBYKQDwrPhAA0k1xX8nQTn4igslmNvzCv+xmYly/63oS7KXM+J5LcBA8Pz6v58bDMWQG43GGpvoFXoJwFfMZvEaDe4bcqFqBZRmEWbYYkeiewXRbCf93g8OR/lcYD62hq9KaKiTw+gbbx03Q0uq03GSGjmvuCcn6Mca5QDnme2d5h2wHo66CxCcEO4mt37JvZ7CxLX+BnGEq2VhspgV/1
+ D6T6BOt2
+ CGjGI2sAHGNdhhR6JrRgZlViuodO2D9T9g+7R0EDjc+C7FcbxSfI+IgQHir8+WQ1gHgMYmwn/qCAQtwL0xZC/ip0pgEwsHW+6fizDz99Hb1u0G+2asX3AbWKX2Fz/48LwgdOTvSLH7tqojUBDq/ivbAjSUFhtRZ8x04XMLVThUXrT1unz3HpAvMynv5KGU2wRYRauSOUMdacyUNhpJ0BUGHyv1Iq7a/UQ3uJlfZCbJHuijG9D5dmtttGeb06VFAqHPrxWAkQW/bSqUtvPCFLrR19/y5A6FSkkg/zXiFQK++H+qnhN3tSzTMhPZpC3JFZ27kVd6bAHVFM6+WsPDWuzKdFrqwlIHA30EEd9aS7knNr2koh3eg31NKjKHjAWTOktLDyzV/rCgXOEiSY033svip7m3gW3TfJtYzek3WSO3hERs1pSiZ+JqXTk4uG1H27QsQl1Tga9d9ktVUnM3HrS/6dl/u0uSeZu4W5HOe4SffWntg5mUt0CBRMW0BauEIUFXLRqkaX0UhCTF4ohqRyTXgffWrfoxQ3XyHa4kYZZ+YRbgAilBz12VPn9pcwzAJPmhI5PQsQ6JGHQpu80ItPTMx4WQm7j5d+WVDt0mNnIK5b/diTIPJCVgjfkXM5VSq/jcXAJgzXvRlPWzypbWlU9kxYv4eV3lMaqpdGRDamHtTjgv6WGVOUf8z7in3+ZxQeCuwFB+3OfkOP4hE5DKrYsZgVZo7FU2L1m2oDBbWXSmjrtTlBW9WP1dZjcEj/HyUR5gAMs2DRw40doyqyCo1Ywx2WQTN9VrQGxPf4d2vaWqA6BcCqevW6MpqAFKFMoM71GFqXGlIAtx98uOapluoaaxUIhd9HJ+jOkQqX8reUMXxiixXF0lFdhD39Fc8KofyYTwQgZfK8mHy9JL0RT05x4kox1etV7LFPpXsRnxQ8QnXA6dMVP/l5jtejgwp0R0/yzc9Ngl54iP/nBbJuSyT9TSjh1D776
+ EdWDHWtA
+ dLnA+5SAfycs/zAavHkgQdBQI/8p7QwWyIgLmmqhbrFiuoT5JZyl9QUG/oHNezLVU0OKi3vWTNWLHO08b71rwBOeGtjadyrBPGHVxtTBAKLVIfqv/QL2sZa7Pd5rCnOuRg9shItmah0kzH9Vy5rbuA7P3mxMOxRYzop8uX70qPCdg1VuxyvIkDwXA9e9PyH5rlroTNjo5TO3Y47SqupcMuazAox/A81kgPFqD4BcR7KEzKP+Rxkaj7cDQs3n4/yQgqfcoOaG11fS0PuYUm8j7q5OeqAz8M89xNk+/7nkTJflWClEZOLlUfh5teDQj67SelqzGkfT9V51yDFEi1DlZOt7oZ7Ot+5PKCPJLYI4XLlIadASWvfrRnrz9Ng3xWPofD756ssJh7P8B6V0IjC/JkDU2SfTA5AVm6aS3QEYSZF666n51/awaYfz1ZpeR6AJ5QYJ4qanoH/QPugrEKam5CacqmLDenc9I6QaT93FFRU6X8JivtM49DEGkcrwObYYR3TFXdinEp0zH/4OGpFNqUeGtAedsn27Gue185CN8cRCpAQdP3rjhm29/LY1jZefrwLUx7ThF5xvoHFlcG5KWfFUMLZduHXbob6zFHuqq/118Zxtt5R1Ttvph8OcDwF+NtUl9NL0RUWgIF6a589MwkYuo972h7mwPE5ijetTN9apAgdgDNG9teVklElw1+kSzOAwzl5BliM/0LX4s7Usx2vce8Md6ewAKoJhYnFim79QMMl/qOUqAGYdaiPzlcyFwmA8oKkE7qkIZUxi7fHgk9utXO4/kUeDBG3bCMDvXMJQ++QYIMUTZrqYsjEPiXC7QTZbYXqwcpVHndMrvQSM5iZM/2dNEm4tMVxLB8PjKbkGzkumlrUxLPnZr1kC1RyT4XG+mg+dqTDWCibjl550XPcyolbDvfsEgIDvECbp8H94+JXk/SWGmQc+Qw6nx70xURxXxWx3RC0NHXhkE8qaDnRrGVABc
+ UUZv+opj
+ +vWJRsheR2JsRdAaMEFmAS5ea3PVD0AwcTIaffgQaiXoifS7YhpVLDm2KhLepoL97VIPrng+V7/g5KnoSOxGaQh+Bl/U25F3nwvRVw6/kSMDCssggfCzstjhIvUQc3C449P4MPQnnAiZG6ktxxj5hhwy5LEmUs6wr6NAbJS7EKvBE3XowS0W9SzKNAlmQR+R+Oa6k0eRJpeMq8i9CXlkiY5AEY2/z/E4aFuDqb/CNiv3of6DoX66sM0atd9Ye30NSEwZR6qGeUNtepokz0y0nRCnPojowK+EJFcjlo4lhUQO7LyfNg4EAtnv7ynFEhImaJF0qVpdlfHkn4cgpSh+2oKqhVCfBIxNgDcWcu2956Dv08RMhX8YYA/8S8kSp777ZQZ+1y+62hou77YVhUTBopAR6pgb2EyPqvd/aeCB6qpiIWSLCZAFDiD3yem/JBM6LpwlN5ydv3Li8GVNEl8CfYpjGHXH75ls8XcOSS1aK5X9sjVM5VorLv2rAlbcW/INNXtORFR9vlGgEN5XmjG38Eut2it8EvmkpNMio5G3yODgrRSrHqCbkykcXYgnZZOP0EOXoTu+nHqSGkMLm54MzVEdufLAOrNDph8j2F2ceu8oYZ+oO+bEkkLyf0pFyYUwC+dvatu9/A7IBedzxXda2wRfgzF+ouLgedRzLBH5J/kUG624yvJQtUUKw0I+Ufu49uUG9opIvRJDq4GDRAc/fyZBE3/ExSoOn03ZdF+WVdukMfUYM65UrynC7kOHoCOAh7znMMLcl/8zgtxQVLkismcxt6iGCTeuzikH4UBPbV+SB2cCXrS+3dz3vpWzk/EY7WcttDDivw6B39MO1cS9pb3JYcQjBjSshUKb3sermxOPc1vdViCkIipEtuXGy0wElZJhQQIu9Qce1pPs3mxyeuVSz5goPOp1pL4jzxIS1eKI63uAmk5+lDM4iiSCHUkowF9Ym1J/9nMp5XEf3HJMlRqnghxEa
+ 9UESJOdL
+ pmAu/fxEMFJSDcdoCA50Y9hnlV984RU9Ahp66Q+NjMFizLc2bwJ7BIC8EIjm2zBaLPqquqkF4SyB10MeftgnX0Zn+zJP+uEixkvEif9y+g5bE5d8nLT/U0qgsT3t2fMkYUCurfB5LREtiLD6H21vifOnE9rNvIS7PoOMlSyAgkgvLQnn6BfTZiBXhS0K7aiI9c/n8taF5q696dd8gad6b7D9VS2j/eEkqwepJ8DVwAnorPdYFZ65G6wxAW2al1P9lTNP3EeZ8zKGZZnMo1zbQHZDg77JQQ5h+BKMY7qWS4+kvGSoDPOcyKu9VlKmViGj4QE481otkjxcZ9DuRxjar6DcrVly2524G8KSPNSAgcLLB8/rJ7tiPcbPG/7UkiPVpA5Wb9KLtE9kEDrg2KSFlLWTv1v4ieF6fSCZpq5FMqsQOPLVi6zKkegprf82zKHn41iMlFbmciNEn4oOLee8eU9XN/zQwU5x1fbPs7zYl7maan0K7H5lNzcND/kvyl9393c9CK9On/JQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,308 +247,144 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 10:23=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote=
-:
->
-> Hi Baoquan,
->
-> First of all, thank you so much for the great work. That closes a huge
-> gap in the xswap stack. It is a huge step forward.
->
-> On Sat, Sep 19, 2026 at 9:20=E2=80=AFPM Baoquan He <hebaoquan@kylinos.cn>=
- wrote:
-> >
-> > This is the writeback layer for xswap, on top of the base series. Post =
-it
-> > as RFC for discussion.
-> >
-> > The base series keeps every swapped-out page in zswap. So the pool must
-> > refuse new pages once it's full. This series gives an xswap slot a
-> > backend to go, and charge it only when it really goes to real disk
-> > space.
->
-> We should also preserve the charge to the swap counter when swapping
-> out to xswap. I don't mind having an additional counter track
-> compression memory vs. disk usage, etc. The swap counter charge should
-> preserve the current behavior.
->
-> > Design
-> > ------
-> > - Backend: when zswap refuses a page, take a slot on the real swap
-> >   device with the highest priority and write the page there. One IO per
-> >   slot.
->
-> More than that, it should also happen when zswap needs to do the
-> writeback. Zswap has some write back hooks when the system is under
-> pressure. Those hooks should be introduced into the core swap stack so
-> other swap types can benefit from them as well.
->
-> I would like to point out that the allocation strategy should be
-> different when allocating for the swap backend. We might want to
-> introduce an allocation flag for that. The backend doesn't care about
-> fragmentation as much. Fragmentation is a performance optimization
-> here. The backend can tolerate fragmentation. In the upper layer, swap
-> entries are 2^N aligned and sized. It is a hard requirement.
->
-> > - Ownership: that slot has no swap cache folio, so record its owner in
->
-> Clarify: by "that slot," you mean the backend swap entry has no swap
-> cache folio.
->
-> >   the swap table entry. 0b100 in the low bits marks a backend slot, and
-> >   the xswap type/offset go above. The physical side then does not treat
-> >   it as free, and readahead skips it.
->
-> I don't want to get ahead of ourselves. You have only considered
-> writeback from xswap to disk so far. A stretch goal for you is to
-> consider how we can mark the swap table so that it can work with other
-> swap types as well. e.g. e.g., writing data from SSD to HDD. We don't
-> have to do it in this series. But it is good to start considering this
-> kind of thing so that we don't lock ourself out when we want more
-> generic writeback between swap tiers.
->
-> Stretch 2 is considering how to deal with data moving from xswap to
-> SSD, then SSD to HDD. The front swap only needs to point to the HDD
-> and skip the SSD completely. It shouldn't require a forward chain.
->
-> > - Per-slot record: ci->xs_table[], one unsigned long per slot, allocate=
-d
-> >   the first time a cluster takes a backend. Zero means no backend.
->
-> There might be some micro optimization we can do if the whole cluster
-> does not point to any back ends, we might be able to design the array
-> access so that we don't need to allocate the back end pointer array
-> for it.
->
-> > - Read: a written-out slot has no zswap copy, so swap_read_folio()
-> >   follows the pointer and reads from the backend.
->
-> We need to pay attention to the race condition here when moving data
-> from xswap to the backend. I am not saying you have a bug here, I
-> haven't read the code yet. I imagine there will be some very tricky
-> swap cache interaction going on here.
->
+On 17 Sep 2026, at 12:22, Lorenzo Stoakes (ARM) wrote:
 
-Hi Chris,
-
-> > - Release: verify the slot still points back to the xswap entry first;
-> >   the record can go stale.
+> The map->file_doesnt_need_get flag is confusing and the existing
+> implementation has holes.
 >
-> What do you mean the record can go stale here?
+> Drivers are permitted to change the owning file of a mapping. If they d=
+o
+> so, they are required to take a reference on that file.
 >
-
-I read the "stale record" here as the xswap-side xs_table[] record
-of the physical slot in patch 04/17. xswap_backend_alloc() sets it
-with xswap_slot_set_backend(), while the physical slot also has a
-reverse mapping installed by xswap_install_rmap().
-
-The two records are maintained separately. In xswap_backend_free(),
-the forward record is cleared only if it still matches, and
-xswap_free_phys_slot() then checks the reverse mapping in the
-physical slot's swap table entry against the xswap entry being freed.
-If the physical slot has already been recycled for another xswap
-entry, that check fails and the slot is left untouched.
-
-So my reading is that xs_table[] can still record a physical slot
-after that slot has been recycled, while the reverse mapping in the
-physical slot's swap table entry identifies a different xswap owner.
-
-Thanks,
-Kunwu
-
-> > - swapoff: try_to_unuse() used to skip these slots. It now reads them
-> >   back, marks the folio dirty so reclaim re-stores it in zswap, then
-> >   drops the backend.
+> The mmap() operation which ultimately invokes __mmap_region() is guaran=
+teed
+> to drop the refcount for the original file the mapping was made under, =
+but
+> this is not true for the replaced file.
 >
-> It seems data can remain in zswap past swapoff? That seems wrong to
-> me. In my mind, it should just read into the swap cache or promote to
-> the upper swap tier.
+> This has been addressed so far by tracking map->file_doesnt_need_get, w=
+hich
+> is rather poorly named and unfortunately fails to correctly track wheth=
+er
+> or not an additional put were needed in a number of cases.
 >
-> > - Reclaim: an xswap entry's count can reach 0 while its folio is still
-> >   in the swap cache; the physical scanner reclaims the redundant slot
-> >   through __try_to_reclaim_swap().
+> Make life easier by removing this flag, and instead drop the reference =
+for
+> both mmap_prepare and the deprecated mmap callback in a new function
+> put_map().
 >
-> Clarify: I assume you mean swap cache reclaim not the memory reclaim.
+> Track whether this needs to be done by aligning mmap_state with
+> vm_area_desc and store the original file in the map->file field, keepin=
+g
+> the updated file in map->vm_file.
 >
-> > - Large folios: a read starts at the first physical slot, so the run is
-> >   reserved whole and must be backed contiguously; otherwise the fault
-> >   retries at a smaller order. xswap is SWP_SYNCHRONOUS_IO, which also
-> >   skips readahead.
+> In order to have the same behaviour for both types of hooks, only drop =
+the
+> reference __mmap_new_file_vma() itself took in its error path, deferrin=
+g
+> the replaced file's reference to put_map().
 >
-> I imagine the front swap needs to be contiguous, but the back swap doesn'=
-t?
+> To make this work correctly, map->vm_file has to be updated before any
+> error handling, so update __mmap_new_file_vma() and call_mmap_prepare()=
+ to
+> set this field first.
 >
-> > - Charging: Record the owner at allocation but do not charge. Take the
-> >   charge when the entry gets a physical backend slot, and give it back
-> >   with that slot.memory.swap.current then counts only real on-disk swap
-> >   usage, and a cgroup with memory.swap.max at 0 can still swap out thro=
-ugh
-> >   zswap.
->
-> I want the old swap charging behavior back. Please don't change that
-> behavior. That behavior change should be a separate discussion and
-> split out from this series. BTW, I am against that change.
->
-> Great work.
->
-> Chris
->
-> >
-> > Note
-> > ----
-> > The base series is sereis of xswap foundation. This one depends on it.
->
-> Do you have a git repo I can fetch from? I will try applying your
-> patches as well. I assume mm-unstable should be the base?
->
-> > So if anyone wants to apply this patchset, the order is base-commit
-> > as below, then xswap foundation, finally this patchset.
-> >
-> > [PATCH v3 00/14] mm, swap: extendable swap devices (xswap)
-> > https://lore.kernel.org/all/20260916101929.149106-1-hebaoquan@kylinos.c=
-n/T/#u
-> >
-> > base-commit: baa8de2f3448d1466a888a805c18d01c998fe052
-> >
-> > This partially refers to Nhat's vswap-v4 series. E.g patch 1 is
-> > consistent with his patch 3, patch 12/13/14/15 are from his patch 8.
-> >
-> > And the last 2 patches are fixing bugs when charging patches are added.
-> > Since the charging of xswap is still under discussion, I dind't merge
-> > them into commits. Will squash them or take them off once decision is
-> > made.
-> >
-> > Testing
-> > -------
-> > qemu KVM guest, 8G RAM.
-> >
-> > A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
-> > turned off so that every page has to reach a backend slot. Note that it
-> > need create xswap device firstly then disable zswap, so every page has
-> > to reach backend slot.
-> >
-> > The workload is memhog, as in the base series. Every page is filled wit=
-h
-> > a fixed pattern, so the data can be checked after a readback.
-> >
-> >   # echo 1 > /sys/module/zswap/parameters/enabled
-> >   # echo 100 > /sys/kernel/mm/xswap/create
-> >   # mkswap /dev/vdb && swapon -p 0 /dev/vdb
-> >   # echo 0 > /sys/module/zswap/parameters/enabled
-> >   # mkdir -p /sys/fs/cgroup/xswap_limit
-> >   # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
-> >   # MEMHOG_FILL=3Dpattern numactl --cpunodebind=3D0 --membind=3D0 ./mem=
-hog
-> >
-> > 1. Swapout to the backend
-> >
-> >    Run the workload with 5G of memory in a cgroup capped at 4G:
-> >
-> >    # awk 'NR =3D=3D 1 || $1 ~ /xswap|vdb/' /proc/swaps
-> >    Filename                Type        Size      Used      Priority
-> >    xswap0                  xswap       8155132   2392176   100
-> >    /dev/vdb                partition   4194300   2392176   0
-> >
-> >    The two Used values are equal, so the pages reached the backend and
-> >    the xswap side accounted for them.
-> >
-> > 2. Pages are read back from the device
-> >
-> >    Lifting memory.max and touching the pages again reads them back. The
-> >    pages-swapped-in counter went up by 265642, so the read did reach th=
-e
-> >    device. 1010 of the folios read back were 1M, each read with one IO:
-> >
-> >    # echo max > /sys/fs/cgroup/xswap_limit/memory.max
-> >    # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swp=
-in
-> >    1010
-> >
-> >    hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
-> >    capped below the PMD order.
-> >
-> > 3. verifies data correctness
-> >
-> >    After the readback the data is compared byte for byte against the
-> >    pattern, one time with zswap on and one time with zswap off, so the
-> >    pages come from zswap in one time and from the backend in the other
-> >    time.  All bytes matched.
-> >
-> > 4. Destroying a device returns its backend slots
-> >
-> >    The device was filled, then destroyed with no readback first:
-> >
-> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
-> >    3157220
-> >    # echo 0 > /sys/kernel/mm/xswap/destroy
-> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 }' /proc/swaps
-> >    0
-> >
-> > 5. verifies the charge is correct
-> >
-> >    An xswap entry is charged only when it holds a backend slot, so the
-> >    two counters have to show the same number of pages:
-> >
-> >    # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 4=
-096 ))
-> >    526852
-> >    # awk '$1 =3D=3D "/dev/vdb" { print $4 / 4 }' /proc/swaps
-> >    526852
-> >
-> >    Nothing is charged while the pages stay in zswap: with the pool hold=
-ing
-> >    them and the backend untouched, memory.swap.current stays 0.
-> >
-> > 6. A cgroup with no swap room can still reclaim its anon memory
-> >
-> >    With memory.swap.max at 0 and no xswap device, the cgroup ran out of
-> >    room and the workload was killed. With an xswap device and zswap on,
-> >    it swapped out through zswap, was charged nothing, and was not kille=
-d.
-> >
-> >    E.g if memory.swap.max is set at 100M, the cgroup will be killed whe=
+> Also when mmap_prepare() changes the file and is then merged, the refer=
+ence
+> count also must be decremented, so update the logic to call put_map() i=
 n
-> >    the cap was reached.
-> >
-> > Baoquan He (12):
-> >   mm, swap: tag a swap table entry with its owning xswap entry
-> >   mm, swap: prepare the folio-less allocation path for xswap
-> >   mm, swap: add a physical backend for xswap slots
-> >   mm, swap: use the xswap physical backend
-> >   mm, swap: fall back to disk when zswap refuses an xswap page
-> >   mm, swap: support swapoff of an xswap physical backend
-> >   mm, swap: reclaim physical slots backing cache-only xswap entries
-> >   mm, swap: back a large xswap folio with a contiguous physical run
-> >   mm, swap: enable THP swapin for xswap entries
-> >   mm, swap: drop swap_folio_sector()
-> >   mm, swap: do not retake the cluster lock when uncharging an xswap slo=
-t
-> >   mm, swap: drop a refused xswap backend run directly
-> >
-> > Nhat Pham (5):
-> >   mm, swap: prepare the swap IO path for xswap backends
-> >   mm, swap: split the swap memcg charge helpers
-> >   mm, swap: do not charge zswap-backed xswap entries
-> >   mm, swap: charge an xswap entry when it gets physical backing
-> >   mm, swap: don't gate xswap on the physical swap free count
-> >
-> >  .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
-> >  include/linux/memcontrol.h                    |   6 +
-> >  include/linux/swap.h                          |  69 +-
-> >  include/linux/swap_ops.h                      |   9 +-
-> >  mm/memcontrol-v1.c                            |  10 +-
-> >  mm/memcontrol.c                               | 147 ++--
-> >  mm/memory.c                                   |   7 +-
-> >  mm/page_io.c                                  |  95 ++-
-> >  mm/swap.h                                     |  35 +-
-> >  mm/swap_state.c                               |  12 +-
-> >  mm/swap_table.h                               |  53 ++
-> >  mm/swapfile.c                                 | 742 ++++++++++++++++--
-> >  mm/zswap.c                                    |  20 +-
-> >  13 files changed, 1026 insertions(+), 181 deletions(-)
-> >
-> > --
-> > 2.54.0
-> >
-> >
+> this case too.
+>
+> Also update __compat_vma_mmap() to manually perform this step for stack=
+ed
+> file systems using the compatibility layer, and update
+> compat_set_vma_from_desc() to replace vma_set_file() with a correct
+> refcount/file update.
+>
+> No in-tree driver is impacted by the incorrect implementation of this
+> currently (no driver that does this is mergeable for one), so this does=
+ not
+> need to be a fix.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  mm/internal.h |  1 +
+>  mm/util.c     |  5 +++-
+>  mm/vma.c      | 83 +++++++++++++++++++++++++++++++++++----------------=
+--------
+>  mm/vma.h      |  6 +++--
+>  4 files changed, 59 insertions(+), 36 deletions(-)
+>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 0dca33db068f..fe576d468af4 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -7,6 +7,7 @@
+>  #ifndef __MM_INTERNAL_H
+>  #define __MM_INTERNAL_H
+>
+> +#include <linux/file.h>
+>  #include <linux/fs.h>
+>  #include <linux/khugepaged.h>
+>  #include <linux/mm.h>
+> diff --git a/mm/util.c b/mm/util.c
+> index bf0513d1d3d0..016932780925 100644
+> --- a/mm/util.c
+> +++ b/mm/util.c
+> @@ -1228,8 +1228,11 @@ int __compat_vma_mmap(struct vm_area_desc *desc,=
+
+>
+>  	/* Perform any preparatory tasks for mmap action. */
+>  	err =3D mmap_action_prepare(desc);
+> -	if (err)
+> +	if (err) {
+> +		if (desc->vm_file !=3D vma->vm_file)
+> +			fput(desc->vm_file);
+>  		return err;
+> +	}
+>  	/* Update the VMA from the descriptor. */
+>  	compat_set_vma_from_desc(vma, desc);
+>  	/* Complete any specified mmap actions. */
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 55917d097933..fa784f069da4 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -24,7 +24,8 @@ struct mmap_state {
+>  		vm_flags_t vm_flags;
+>  		vma_flags_t vma_flags;
+>  	};
+> -	struct file *file;
+> +	struct file *file;	/* mmap()-specified file. */
+
+IIUC, file is never assigned other than MMAP_STATE() and should not
+change after mmap(). Could it be made const to prevent any change?
+I assume mmap_state will not need to handle the nesting issue like
+vm_area_desc, so file can be const.
+
+> +	struct file *vm_file;	/* May be updated by mmap_prepare. */
+>  	pgprot_t page_prot;
+>
+>  	/* User-defined fields, perhaps updated by .mmap_prepare(). */
+> @@ -43,8 +44,6 @@ struct mmap_state {
+>
+>  	/* Determine if we can check KSM flags early in mmap() logic. */
+>  	bool check_ksm_early :1;
+> -	/* If .mmap_prepare changed the file, we don't need to pin. */
+> -	bool file_doesnt_need_get :1;
+>  };
+>
+>  #define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, anon_pgoff_, =
+vma_flags_, file_) \
+> @@ -58,6 +57,7 @@ struct mmap_state {
+>  		.pglen =3D PHYS_PFN(len_),				\
+>  		.vma_flags =3D vma_flags_,				\
+>  		.file =3D file_,						\
+> +		.vm_file =3D file_,					\
+>  		.page_prot =3D vma_flags_to_page_prot(vma_flags_),	\
+>  	}
+>
+
+
+Best Regards,
+Yan, Zi
 
