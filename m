@@ -4,128 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD6AC98314
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:39:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FAA2C98311
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:51:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42DCB6B008C; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
+	id 025A26B0088; Thu, 24 Sep 2026 05:51:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 405166B0092; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
+	id F18EA6B008A; Thu, 24 Sep 2026 05:51:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31B926B0095; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
+	id E2EC36B008C; Thu, 24 Sep 2026 05:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 10A386B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9ECA11A02A6
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:39:16 +0000 (UTC)
-X-FDA: 85248157512.06.2079997
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D84C7C0008
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:39:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ruYF8cws;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790242754;
-	b=Mxh1b8uYePuL9cjpMIe4EBYvsSGGCNo6UMAmDILSVGVsohMvrDYeilBrOW9gFQLtXPXsNO
-	zVgMzvZIwCVKy+kfBRkQ9tVWKv0jJ/t+YIbQQWJoKzr2tLDmXmGjV81AndhqXjhYFMYFyj
-	8C4bKJnOL3d57KA7OhK6XcBZ8BDpufY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ruYF8cws;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B857E6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:51:52 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D76F5A596F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:51:51 +0000 (UTC)
+X-FDA: 85248189222.13.8B98B14
+Received: from mta0.migadu.com (out-119.mta0.migadu.com [91.218.175.119])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 1501880004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:51:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xZMLpfPT;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.119 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790242754;
+	s=arc-20220608; t=1790243510;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
-	b=MqgysFDgOnd1Bj5wy+yLyYP3ja6QmE/TmRGRjn17IA7zUo5IKtVlXkAIgKZpRqC2TMEz3k
-	R0NsutjUDS/g00vhVsUG/S+pRO8zehUVRVky6XMHgXOyxDod/xT74d5XS5BVUfW2HohO+J
-	bDzqu0xCkFkgQDsqQJU19ZLq2Fou2Ew=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f88so1279731f8f.2
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:39:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790242753; x=1790847553; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
-        b=ruYF8cwsSgyeKXzQl8WrWfrnKmxMuCc352wplTujC2jaHfCzLqBjrdE/o+taPU1Ezm
-         VhYlu76A+neF84iZN8YPlPjuA4P2pz4PqAkjN63koINfJc4g2uWUiSg6MF1KL9Mu/5Oy
-         x1nznc3RNGSlCBR/1ZldGZSWcqU/vSU8UcbDrQZUDPxRF+h3SyestrSO6e2+1tGxnx0K
-         Migao5p/tOvQyoCFoUqnGhjc7Sr4twjiroFGv0wh7rnStfNwp5siB+ra+vsyn3ITdi0U
-         /eaSIe1puSPL9F9dafva9WgZKBYg9Wos6J2OLLJ01GVTn7yhimM6m+JiL15WMAUZyjPY
-         1/lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790242753; x=1790847553;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
-        b=j55AtYZ/t3jQ+ffYnyScTUnzIpWonQLYIRvszvPS/7Dy1foKNQfFPhTHQfLlLveBd9
-         4Rca6aNvbgJiyB4iAlcBtj9BN1q+JYNKx/FEcTKQRLCSY0q1jA4pJ+6pu+Y1gnc491kj
-         nk/Ni9yng+3WhhQ3k6mVEemW+tqz1LvXaJUAHk/GcRX4/QuhWKmPQJTp+2W9cT7I6tW/
-         q86dOn0dtHnebH9j2eJ21pMqqL/dj834TydaIw7GZUz6F9U0HKj9h3TSlVB2XqJfR4aj
-         whKQGvlnxL2LDaDvR2wWDwkm5tFhYmFZPC5rX18SRIfOxr4C7Wi4Vci9KwMWk9jnO8aV
-         Rv0A==
-X-Forwarded-Encrypted: i=1; AKwUvBzD08svO8ce2wZX5xGcaJtVWVOo9PiYhNRl7lnxNbpb7MhbNntT/8wcR7F3CcSAv1+BNMsU+5naaw==@kvack.org
-X-Gm-Message-State: AFuF++krzpen6YszW/EnHmLg/jZT42bGZujnNdEpo4cmRO8HyK0OLpJJ
-	A5HDgdmQbny5awzKfNxAvwoe2hEFEYl1xNZEgcWY+DebdZr7iUOU5pqh
-X-Gm-Gg: AYBFou2dOQCHeEdWUFTIybmYhAc0cDS1ubp52lCoDGrFJIfRFrMGzZreoEFKcQYhsg6
-	3hlDli2y9wPRLh8p2eu8lINyG0bUUN6OLh9tApEgXmG5AXGs2UACopu4sqS9J1WfCp9OU/42fc0
-	IatLd512P3m23KDOyUH8+5Qq3LCPGimqY36PFmbZ8NRAGDsLvuY5ER0bGcVfZi1kOb1Nc46DUBJ
-	FdF0FPvz4I/hwkGZwV+6ucLaJE/Y7Hf44QXmNFAygfZ2rsib6mXQpP66ffHaQA0Ts4gzoM7xCd4
-	2UbzA49LdPBjvYLjhyUE0vTcFy72uyuKCSck8nwpQdclgsK5qT4e1Ovj2E7OjS8SlzyrKgNeOiz
-	Y2aMF6txvwLeH9/4U/bb2oa/SYbKxn/QmcF7oLOzYjbpesNuUccSjGKCrbyqUUjpuqLqPkZAie3
-	yNCEbQAvonhvJG7dL5jz7xXdDnRX/AfzVB8Nsm5pMnTcK5wKa9I3Vr583eBf/XEsFm85qYQnwYa
-	IHBm1WmJqKadKE/FKtOEQlm7KV6yNjz5OfHIu9LpJb8wIpKj+TFQfVFbyVE5N4B3lbRq1qc
-X-Received: by 2002:a05:6000:617:b0:486:f46d:bb02 with SMTP id ffacd0b85a97d-4887197b60emr3087180f8f.57.1790242753297;
-        Thu, 24 Sep 2026 02:39:13 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488682668e7sm15230022f8f.4.2026.09.24.02.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 02:39:12 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing while booting
-Date: Thu, 24 Sep 2026 14:39:09 +0500
-Message-ID: <20260924093909.25643-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <arTtl-7Nl5Ie0SEs@gremlin>
-References: <arTtl-7Nl5Ie0SEs@gremlin>
+	bh=/xbq8w4zV+lOpG5fg640Cu74R6KHbiwPj4h8/5bIjG0=;
+	b=cpXj61m733z9ORyKbv6PXU9hGMbjD6bvoXHIh88yLeIinAZjG2vTlWUb6jQ5YV9wT2ttgv
+	uh6n1+Z+YqRuzbpZ8tau3T+qW69Vq7cz16hj9GvW07mVPOdVgWI91Kw2tpmOBYiGEwGsiq
+	zID3gA08gS9YP6SR7nYMJ3cnTocPUV8=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xZMLpfPT;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.119 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790243510;
+	b=zzfDfeIY4tlzMQtzWJ5JV2M2epR2QTtr6GhxZHi6ISW7DO4S7i993mMvKFZihZhS6efT4b
+	w9B01ixYGzTuPQA5D53adGA76B3fFZD5w75OJTsxNWqfxpH0w74wuyjphn4dg2bJqjxRGv
+	Ds7+wKKS17jO+SDXSxR5WMOwmkncjok=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Uowqm2jO0yCtBtZYHi4L/i6oyjJ7ieGNuGUp4Pxn/rQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790243505; v=1; x=1790848305;
+ b=xZMLpfPTmUslAHyAVqYRqdja9Ug3ngqZ/tRXCIN9oJFG9sArbXb9unJL9OWkdFVa7AgWVvaq
+ s+YW38gagSu1HK8wBa5Gt1u12ZCwsQfDcMpAzLf+cRY0zN9Xf2DYBuQE0GdDljOccR+VoRihXp7
+ VnBPY1NUzd9Gjv7hxRUMqCxk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id be840ac3b29f6435;
+	Thu, 24 Sep 2026 09:51:35 +0000
+X-Mizu-Trace-ID: be840ac3b29f6435
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
+Date: Thu, 24 Sep 2026 17:51:26 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/hugetlb: fix overbroad MMU notifiers for unshared
+ PMDs
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aiqi.i7@bytedance.com,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de
+References: <20260924082004.82450-1-lizhe.67@bytedance.com>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260924082004.82450-1-lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: mn3y4sdjrarphngq58wn6qnxb9hz4uix
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1501880004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D84C7C0008
-X-HE-Tag: 1790242754-657733
-X-HE-Meta: U2FsdGVkX18j07A2Y4Skiwb+95SIi0r0/tAp6mAqLQhWHGeBeTQHmqtBAtRF6Pdzbu0jvuMsumYmCBMWBAkQek1ix/3t8p4eJZszla35HiGfiSXcbAcQKMG/RZTNVEo/H6UHzQH+tuD3amiHrC3OrbSjAoU5r9kpWYOjJn+IcbjLVkI711SSIlMIUOVwy2nXEysP44iNhLoMLVQammC56qz7VK4r4WGP6zFUvR6mkKDj0zwjEJl2aPO43/St3IwBt6aPluHGikBNLVUsy4mZt8LJVUfEiNlsaSHizMNVdaqvSNBTBIjjdzqadG++wrvJpUMnwJxtiECPXqtihPu7nYLUJQR0ag1ItbrPJwiVt5TqrXN+0+Xb6lE0aJuBCrAreawQJttSFgf4mPcQiM0qgHbrAko3MutZE3Yyi13vHLGiMkKo/htLyT2WUZCVR8T3AG/8cB88/Ey/S1QuY9rTHTODWVEtLI5cLX9Sio0K3RGTxjxZBcvC17UHv8KdTPfUV1d+XnTRD6xRb3gLa8E2ryQ6OUDNxdRxX5WPs8SehHO7eVT6rzLchREN3ojaWXa1ETKcKXyy2RYa/FIH6YsA2RnKc1oIwSjXqRcfwifHxbV9jHNSzJqx7Z0Btn1Im1rsVlPz7D3Uo7j72g5w9N/MMINAjlMVpjUknNWJRqyb9hixjviM1qjY/K7/Zf2GedjnDOf2FHLAK2bCHaizqjHh1tdYYFTQZVSqmDxV1enfWj/i4d4LY73GoX9TivOo75xk/cs6fZveuhGI9U1MntEtur7WZECALZSLRigM/tqrTXRFnH467HSwyGIqkG9l0KrPAxI3llsX587CffI9Y3TTFkWnCn6kBrxEjxeCY6XioITQef14b74dXKPU1kHL62Shft7SNhLKicM7lR9Ed92S8dQ6aEH5dehbCQTo8++Q/Hf6La4+0tbfCvOPWHxWt3rWYLxLkeY6E88Q/KJe7qQ
- bntYwxaw
- i8QdI2jWz/Ew5X9J3cNyWs9SzsdP2UyzfDWaVM4VmGwqqwz78lJoVYJbF5AdFgKODNZ/d20Nv3UJWQkX5SzlKIWsafeKtGZUYy95bUKsajQAwnw5N5xfYvBXdqJ0iUoYoE8JIsIF5nBMQdM+U60WeAsBrj7b7QcaNisGx8h7SyxkA9+ctfM6XlgK3fCNZhwOcz/PMudC4+mV6uJ8k3haB5gpZl7aUUYZMP+EIvJ8npWDQ8zDtDFQZ1eLXycw3krgG6vE/OfNkER1ZGvnZrlBbi+Q46E1jLwrAh2Z0TGyHg+l21piHSDJ5cbRpXWekMXwfm2L9t3MKw61e15dHYGzO3mPXRiiWtr/KRBVyFAN/hXZ5Z50RFeHtOucAUF6GD8J4gU04xaF4ZgoEap0t9wZLR4je4O4hvm7AZGIZFpQciUINJUlu4iWMBbLxVQbRVgus20yx3qPhW0GjZe7fVd+2QDAVYYmO23+dZcYLt0OioxHip6I0Th7LgYZ12S0Dx1HeVaV2+Wiz65AB8dyXfN3QW0YhWBKzkyva0oD2nFPK+RkrdQDnVSZIqXdZIwuJhBC6eAJtQN3V3epdcbU+NZG09d58mU7FXwzj0ekn
+X-Stat-Signature: uu9tsguqf8un1z3suh6ux4fgo9n4bku9
+X-HE-Tag: 1790243507-310310
+X-HE-Meta: U2FsdGVkX18Ku7ZGWrEmBZHMI1XzXo5E7UHBtqDnXZZQleuxN6e3qCz5IbLtfRIztKaSxFWbC8KFnAIfrS5c11XBPq+0E6OE2SldzsdXSGvIQOpwinefXgPVGyCQ81gvgbI6//2b1hG4cMZlqnc1oiBbq2SiCGUkCxio1VK8FVrOX39VC8wY6wgJzAHG9Z5+elOTNgbrm/UdrKweSQ2zhKRB8q2o7uctZLxMAZ3LvuHAQ9V7MZhUWiYK8xYBUISY7aosVf1TJJqUmwRX5JtO66wE6YDSNX79tT5hkCctp0O+ddBHhy0AeYgSe987gE6YznLaqK/xjbBd6NuK+ZFrhopHY+m22P8SpQbgpinVbmrX/BXlwhPbr3dkSrVyJaQ0c6kEJmFivwZOlKcV86j7iHh8+fIh/fHsDF4Qyd/SN30P7bi/OtqhlGn62D+mmt/aHRDCXU94TEF4BVMcc0u4FPuB4nCoyxos39KcIApf5MqTapJ+YXyDSsOUg8u0702DBnJBn78owtseQIWSb6jPFo3xyhM4he37EaUsDUpsTSgj3EAnug82l25heDaI55XudQWPlUzVkCXjIHrirTjTsZgptC0PJTHgtSEwxWqgpj+OAUpA1TSATHiSzBkCTjC4D08dCFpx8Yv63cD5x8jgV3h+34gKnagfIjEc0eEGI4LmcIDB5gBoJYIgvUgXxZSko840ocEdz7ZzUVLcqsssvDblpdaAtC5aNVP/0P56QSO31x1N+5En7MrsjkEpyR7zy3A0fCf41EN2eqgAm68Wc327yCbiIoL5YSMmE0Fqcyelr/zFVbOb0KuyANwCFzLlOtArzZmYJBOFy0Vk9g9ln3idrWOz9i/X1tOsJHjwObcakYguHjCgW7D2yEM4lF/X94fOfCl7iPVs7O0uJFIErOYWcgX3la51RzhEAFJAMkt8wd2nn1qa+uy8U87zY9uvNYKrWtZ/1nQBbzYLeLf
+ y2+9V6rB
+ FXTxLbxdnwJJ4drnFQYFFMJEg+++DBSiQu34pjTp07mQjXNqLQzwsYkKZI3Au0XwHD2gBks9iTO/TuGhAQAdiPoSXJpIyPqDwHlyCBH5SORmxFfiCiEgnnAz6zQRqDgEpkBh0CQmYnO4x3lWfe0uXdWhI2wH2ZhWfwVUX9jBZTGXbXoB9aZCA6BYjRzpWl7u9r6moBERrIpbmjfvHP/hbT3iQV4NCSyTmO28/bmyiyzUALuIJSsd+O8J22HPVaiwMxeTzm6gQ0o8Oa58wiNocvkKuEEm/YaWiiKPO3n7sUpidlu7wGSmYm5rl0TXPojf+21T43t9OJEtiav/mECQb6gDEQHKZBy3eXns0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,19 +92,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:31:15AM +0100, Lorenzo Stoakes (ARM) wrote:
-> I know I said go ahead so it's my fault not yours, but in general please don't
-> respin so fast :P
 
-Noted, sorry for the race.
 
-> Maybe we want to ensure the drain? Like below:
+On 2026/9/24 16:20, Li Zhe wrote:
+> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
+> PMD sharing is possible. That is only needed when huge_pmd_unshare()
+> actually detaches a shared PMD page table, because clearing the PUD
+> invalidates the whole PUD-sized virtual address range.
+>
+> For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
+> a shared mapping can pass the "PMD sharing is possible" range test in
+> adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
+> not currently have any shared PMD page tables. KVM then receives a 1G
+> invalidation for a 2M operation and zaps unrelated secondary mappings,
+> so the guest has to fault them back in.
+>
+> Avoid this by tracking active PMD-sharing attachments per hugetlbfs
+> inode. The count is incremented only after huge_pmd_share() successfully
+> installs a shared PMD table, and decremented when __huge_pmd_unshare()
+> actually detaches one. Since huge_pmd_share() can run concurrently under
+> i_mmap_lock_read(), use atomic operations for the count. A zero count is
+> used to skip the conservative notifier range expansion only after
+> excluding concurrent PMD sharing with the mapping write lock.
+>
+> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
+> improves P99 QPS stability while punching pages, reducing the QPS
+> degradation ratio from 7.09% to 1.45%.
+>
+> Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
+> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+> ---
+> v2: https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.com/
+> v1: https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.com/
+>
+> ChangeLogs:
+> v2->v3:
+> - Rework the sticky state based on Andrew's feedback: use a per-inode
+>    counter of active PMD-sharing attachments, so files can return to the
+>    no-active-sharing state after PMD sharing ends.
+>
+> v1->v2:
+> - Rework the implementation based on David's suggestion: remember
+>    whether PMD sharing ever happened for a hugetlbfs file, and skip the
+>    conservative notifier range expansion while it has not. This avoids
+>    the per-unmap page-table walk.
+>
+>   fs/hugetlbfs/inode.c    |  1 +
+>   include/linux/hugetlb.h | 43 +++++++++++++++++++++++++++++++++++++++++
+>   mm/hugetlb.c            | 13 ++++++++++---
+>   3 files changed, 54 insertions(+), 3 deletions(-)
+>
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 7611a8470ea26..78e27ce0a6f63 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+>   		simple_inode_init_ts(inode);
+>   		info->resv_map = resv_map;
+>   		info->seals = F_SEAL_SEAL;
+> +		hugetlbfs_pmd_sharing_init(inode);
+>   		switch (mode & S_IFMT) {
+>   		default:
+>   			init_special_inode(inode, mode, dev);
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 16c4c4caa126c..6b4f92b7f7ae4 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -12,6 +12,7 @@
+>   #include <linux/page_ref.h>
+>   #include <linux/list.h>
+>   #include <linux/kref.h>
+> +#include <linux/atomic.h>
+>   #include <linux/pgtable.h>
+>   #include <linux/gfp.h>
+>   #include <linux/userfaultfd_k.h>
+> @@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
+>   	struct inode vfs_inode;
+>   	struct resv_map *resv_map;
+>   	unsigned int seals;
+> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+> +	atomic_t pmd_sharing_count;
+> +#endif
+>   };
+>   
+>   static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+> @@ -516,6 +520,45 @@ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+>   	return container_of(inode, struct hugetlbfs_inode_info, vfs_inode);
+>   }
+>   
+> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
+> +{
+> +	atomic_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0);
+> +}
+> +
+> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
+> +{
+> +	atomic_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
+> +}
+> +
+> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
+> +{
+> +	atomic_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
+> +}
+> +
+> +/*
+> + * A 32-bit counter can theoretically wrap, but doing so would require
+> + * billions of active PMD-sharing attachments to the same inode and is not
+> + * expected in practice. Treat any non-zero value as active so a wrapped
+> + * negative value still takes the conservative notifier range.
+> + */
+> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
+> +{
+> +	return atomic_read(&HUGETLBFS_I(inode)->pmd_sharing_count) != 0;
 
-Yes, that removes the one caveat v2 had to state: tables queued while
-booting no longer depend on a later free to get the work scheduled.  On
-this box they were drained at the first module load, but that is one
-machine.
+Testing for non zero covers the negative half of the cycle,
+but the 2^32nd increment changes the value back to zero.
 
-I'll mark the initcall __init, boot it here, and send a v3 no earlier
-than tomorrow, so that the others have time to look.
+The inode-wide total is not bounded by PID_MAX_LIMIT because
+one mm can have an attachment in every PUD-sized part of a
+large mapping.  For example, a 4-level x86 mm has about
+131,000 user PUD slots.  Roughly 32,769 child mms can therefore
+create more than 2^32 attachments by faulting one address in
+each PUD of a single large inherited MAP_SHARED hugetlb VMA.
+This also does not require one backing huge page per
+attachment: huge_pte_alloc() installs or shares the PMD table
+before hugetlb_no_page() attempts to obtain the huge page.
+
+At the zero value, an unmap can take i_mmap_rwsem for write,
+observe no active sharing, and issue only the original narrow
+notifier.  Its subsequent __huge_pmd_unshare() can still
+clear a PUD and decrement the counter from zero to -1, leaving
+the rest of the PUD-sized invalidation unreported.
+
+Could this use a 64-bit or saturating counter so an active
+count can never be mistaken for zero?
+
+Therefore, I recommend using atomic64_t.
+
+Thanks,
+Muchun
+
+> +}
+> +#else
+> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
+> +
+> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
+> +
+> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
+> +
+> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>   extern const struct vm_operations_struct hugetlb_vm_ops;
+>   struct file *hugetlb_file_setup(const char *name, size_t size, vma_flags_t acct,
+>   				int creat_flags, int page_size_log);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4f6f58bf3db6c..cb27c06d1f7a7 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
+>   	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
+>   		return;
+>   
+> -	adjust_range_if_pmd_sharing_possible(vma, start, end);
+>   	hugetlb_vma_lock_write(vma);
+> -	if (vma->vm_file)
+> +	if (vma->vm_file) {
+>   		i_mmap_lock_write(vma->vm_file->f_mapping);
+> +		if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
+> +			adjust_range_if_pmd_sharing_possible(vma, start, end);
+> +	}
+>   }
+>   
+>   void __hugetlb_zap_end(struct vm_area_struct *vma,
+> @@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
+>   
+>   	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+>   				start, end);
+> -	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
+> +	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+> +	if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
+> +		adjust_range_if_pmd_sharing_possible(vma, &range.start,
+> +						     &range.end);
+>   	mmu_notifier_invalidate_range_start(&range);
+>   	tlb_gather_mmu(&tlb, vma->vm_mm);
+>   
+> @@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+>   	if (pud_none(*pud)) {
+>   		pud_populate(mm, pud,
+>   				(pmd_t *)((unsigned long)spte & PAGE_MASK));
+> +		hugetlbfs_pmd_sharing_inc(file_inode(vma->vm_file));
+>   		mm_inc_nr_pmds(mm);
+>   	} else {
+>   		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
+> @@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather *tlb,
+>   	pud_clear(pud);
+>   
+>   	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
+> +	hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
+>   
+>   	mm_dec_nr_pmds(mm);
+>   	return 1;
+
 
