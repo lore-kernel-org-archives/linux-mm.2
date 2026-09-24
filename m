@@ -4,98 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A87CC98310
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 06:55:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00A17C98310
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:08:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 989796B00A9; Thu, 24 Sep 2026 02:55:12 -0400 (EDT)
+	id E5AEA6B008C; Thu, 24 Sep 2026 03:07:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 960E26B00AA; Thu, 24 Sep 2026 02:55:12 -0400 (EDT)
+	id E0C766B0092; Thu, 24 Sep 2026 03:07:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89E6E6B00AB; Thu, 24 Sep 2026 02:55:12 -0400 (EDT)
+	id CD3BF6B0093; Thu, 24 Sep 2026 03:07:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6220E6B00A9
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:55:12 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E04E212027C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:55:11 +0000 (UTC)
-X-FDA: 85247744022.26.923129D
-Received: from mta1.migadu.com (out-193.mta1.migadu.com [95.215.58.193])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 85B9A100002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:55:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VCGuzl9i;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.193 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790232910;
-	b=LpIJwR2m4TeNnrUB0As8/lvdaF/OLoPttXpjwry1jnhgAe/2fzvaJOH8H7+AQHU9Ijbvw4
-	PvVjGbETT6EzEZgcS4HcjiR3hGLCSLi9U5bfB9D65b5C7hrQbTRl0KoPJZymjckFiGLjO8
-	qhS0fME8KNr2xca/+Uw4DUqZVAJivQ8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VCGuzl9i;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.193 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E1746B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:07:59 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C03BA02C7
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:07:59 +0000 (UTC)
+X-FDA: 85247776278.15.487A086
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 55E55A0005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:07:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQJbdOLA;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790232910;
+	s=arc-20220608; t=1790233677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+nxRNqk4OBgxEszkoR9fxbUBZaLO9aIivBieueXvh4=;
-	b=BjHUllPNjLH3tUQrpbzAdtZmTDfZXrhel1xZ00WQC8SzfEpkLWcEVmvKTvb7caTvLHTwEN
-	YXebVFpeF8jp7yzyLtGu63D1qXAOgGDnxQzpTYbVBnK/fRgL29I2s24O81DYxZ3GSCDELH
-	FkCY5y9xg5N6lD3ZlPCKDEsQiz3s0Vo=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=glcjkHLB5beTJmB/ldaaeqGVtDBeDFJY3It48SWNTvg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790232908; v=1; x=1790837708;
- b=VCGuzl9iUVZ6mhBP4R5KF86D/sJRFiw1q0l0bZDxpHoAP0LyPKkVf3RcPByfPfJWPuUVfko+
- MkJjcxj8ljgaPI2gaPAE4qa4giGe/j5U6VitbcA7VkHG23LBCy/NI4cXaij2DluLli5J1ocwzHB
- 9QAIN0tKdNaDtGJv2VRbx2wM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 46fe3896734aaa3f;
-	Thu, 24 Sep 2026 06:55:06 +0000
-X-Mizu-Trace-ID: 46fe3896734aaa3f
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	ljs@kernel.org,
-	akpm@linux-foundation.org
-Cc: harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	liam@infradead.org,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	riel@surriel.com,
-	syzkaller-bugs@googlegroups.com,
-	vbabka@kernel.org,
-	syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
-Subject: Re: [syzbot] [mm?] [ext4?] WARNING in __folio_set_anon
-Date: Thu, 24 Sep 2026 14:54:58 +0800
-Message-ID: <20260924065458.49698-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com>
-References: <6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com>
+	bh=mEMedDFi9mFkp6jCqF0VrbvDKNuIkj1/7PXdOKCq+kE=;
+	b=OnuJK/0fqgXbmheufbQWG0eyTEieaM7J0QL9vz8uFVNOUTGocmeXp+3kLvFeCeMUZNzH0J
+	Xpy4OGWFiPodfA9BbmOauIaePSchV+0X9xhCk4/NvrN3frKLY9L73QjKvTJbLlfRwGZQ24
+	wbpO9jEAh2VAf+Q0ET59eSQdygE/YXs=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQJbdOLA;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790233677;
+	b=dhHDtBK2ZUEEha6yQO9JBrUDhPwuDr7DhmnvDj2NGjDh3OkhT9wQLJdBU+20nhiElV3Ok9
+	/fGGfGaIt+Rsnd7QoSdGD5xQndjvkBGBuJY3dh/BK8xazgEz4G4wfzI3duXQeWCtk9ZRb1
+	gUIarXDJjgGh75RGPTpi3d5xfgJynpQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B8AFA416F1;
+	Thu, 24 Sep 2026 07:07:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C128A1F000FF;
+	Thu, 24 Sep 2026 07:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790233675;
+	bh=mEMedDFi9mFkp6jCqF0VrbvDKNuIkj1/7PXdOKCq+kE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KQJbdOLAdAoeUmQNZYOWsQ+KwIVQmJINzs5RxLAPvqdG8+KBfOeVGO8ywz2N9NiDK
+	 xwiiDNSHGv/1iLZNFDDuOyrlVMeHRxjM0ppRkOf3GTYhRiIPhq4As0s1tgvNcJQz9z
+	 0ijoG8Xw3nf4hs4eZQ4hCBMBgwvmw0L/g9ZWWZpoNlLCYVOKPW6lHZ7G9Y47Tk6VpN
+	 qPeyAk+4a22CaO2FuE7Jeynwu99I5ZyvbEqc4l6srO7RdlFq/wGeW8EU9Rw04hfEPB
+	 PQmNs/ZdZ5ahp839B/m4yzyQgTiUWhxr5JRnXBVeyUnxG2dClGLnqyJ1m1/jFe2vss
+	 VlPOQIS/zdvtQ==
+Message-ID: <41a59ba9-039e-454f-8d31-f647db802ada@kernel.org>
+Date: Thu, 24 Sep 2026 09:07:45 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: don't defer freeing kernel page tables while booting
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>,
+ x86@kernel.org, linux-mm@kvack.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260924064321.23787-1-mikhail.v.gavrilov@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260924064321.23787-1-mikhail.v.gavrilov@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hymgnppk8qfadwkyiqjkcwnjtohfm5q6
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 55E55A0005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 85B9A100002
-X-HE-Tag: 1790232909-599538
-X-HE-Meta: U2FsdGVkX1/0ZHSAW4RB1TJDyblnV0qT0Q1o69STTh5GRN7AWujVSdNZbnW/bESmYvj0l/uQNEutBN5gsxqqYZiYJuBSWDjnqeaQCkWsrPi9lAR4gdRAiMQdHo0FsJHIlAa0IpcNZnjzdHM/46mnkIxzbINa075qcPa+1J8K5MVLE5WkWZ5mPrtYERbPWihai9JmSRCTLNPHY5UO6Wf1jMppm0O03gLS4zxYwSi+qEx+UaYkSqfYalYBG5xZ352GCVAdEWFSpe4OPERsCs1zNwoHm+r1P/P8GPbQYyoxhCQxCV5QNkLypSbJ388PtpPXHeoHgNexyQw/ZnjoODsW4ihXr/RPPNItbBSadue2RXnNvy9q/bX8QcaMf+ILvVHlRc3exOTux4c+P3bybiUZp6V0OdCviZ5zvhg8Bi9hA99+c66pduXu1FKBlnDusC0WRiVpu1CBVvOtalj9JLrJpxUJRT/OMkv5hJFj4IYJ6xRp+AAcNAhHXK0cn8ECJocVqZx7g+DMLLCLLwuOXaAQkgsjyO3aNUQ8Ypavu/jRlqsk0z3YOnZ4cjc74o8DqUjupKMk85eK4sUE7Qusdua4neQ1raEjOrGsGdGM7pT6s2MlMzMe1+Zkd+ZPfnw1B6e5fVZwYUL5lfzrDQpAphSM7gERUUu6qREdKHhB/xFoxQWL7QW1Qow6YdYUcfZODJjR55Ptl7apnuHyeRQzcmJUk8k7VQsXP5aOFFJtOx7JCSSnTNexG76u5tOH76BonKk1rN9JtPApQ+I2amKWlSePVpZDidtPeJVC1UOdxpjSHYDqZ5agFxr0o9nJj18u6l772eV/zjBLBuvccFEnf6sXAuCLLQegeqWdSAEGzwJxNYWyp6wHaFYdg7zYtUp72zOhWiu2azy6XNRTESpdrELkmvUkzWBovluhKTdl6pH19d9+KfnGwVkPRy7HeY/gXB2WErTtX5XOIa+ISLLXreA
- mwHuaOTs
- yPXHekxGymnAbRgbtwJTzcbxUst916uH4v8dQ/TEwNMPiId8UOvaC5gUQG1zsvR0ot13W3Q+nILDld6me2obZR6uIXMpRK1C7Ozin3c5W5OcDk3cJJ2ktdm6ZRXMzKnfER41cSagCs80GXlG6zYA0m2yfOdwMBZaEM72SM/uOhrhYrPJGw4BVH+qfYovb+mjfYe5bp+fMK4HH5d5PJW4SOdkT9fMfDdyj+yE6R/7dZamIA5IVvSfOVtucaiKSmZV+OY7dyl0Mu8kki8eJjmRaZE2FEWgjewKKHtFv6JPyh4+K6iSv4vUB8GtEf4g3Y+b2bR3U9Odvsh3hzx1g2P/2h+DQc8ZW5hUOdVzFox63vVjYEZwVS+EWT8KxG5F7G7/xpX3SKDlnIKs1FrxtcYNd7cSGvHo0JMtgwuuh9SxysB7Hf7XhbGydmXO/zhFLO4DwJLqJRnXq37XON/deTmDbFjfDP9PXQQfp9uZsJ1MV2gjFp7SE1vqq9d0cw80Mh8VMeuCbW2bgcbD33jcD2zJ6LFL1rN7l/q2pBXH6Dx6vGZAgvHQ5OWgY2+q+XU5V15pBdGfGwHJUyn/jLBtnzEjvbJ+OE/MIVDaAqgxbAqMfIxH1Ghgx3Eed13ucBJY5jyH6CVpBoJ1BPnOUcMilcKs+YbiJtrF54x+Nhh4KuaXHsESBRHONWPEDw0fFB+z21ywC8jhZu55bdO+S3EMgjysHz4eDvrEN+cVns/pBWUlORx2j6QyKnBLXRoUL4f1Ddgi6bCOArv1JUZqHAekZXWoYw2fYWPpsTrFTTquatiikSZotEJkd3dJ66k28jJ8cZy4eWAtS3JRL9HzATF3o7yuDZoSs52b6NJExs+4l1P6zeyXg28brhowFWtxalzaD1JVt0Hfh8xnMyE8FJXEKsNvRKPCnihE3rmYvrYfKBb/inyLuz4XP0wfWYdoSjBsMvMv3dAKXRVoopHuNbFsn0MKR911KwBkF
- sFR+YHYG
- jUVAEXQuP3Se3fBe+Gfr+YtteGeaBTxyNPQNkLWuhQRDExfJpHoj+nA3fQcRo2wE+TZcO0LslzjTvUQObBd7dgKk5ZvvCmj7FTYeWxiELeY=
+X-Stat-Signature: t8ds3tcmtihpreekbjxonbjs9uwkij44
+X-HE-Tag: 1790233677-275500
+X-HE-Meta: U2FsdGVkX19wwy1Dyhpt8T7zS/jRSki2jSGsOjUUMnTDv8FGvjiT5IhN5JoiHHdER2lihacPXPS9NUgBhwirWUM93t3+vvvlasSz4BF0+P5Orf+Ap736QOEwQHc00ZviCAl3UwNaqNbF/8e7uXhqCzK8Q9kLYbZaXkyg6wj7ENKPXjMHEpfSIXikoEbhvZ2Wy4mmR+zOP0F9xKaRjYLwEtJiTmJyaaI1wXtPN6CWSopDuZgvliMeTsY2jAQxvfmFZZ0h7iKGmQLP1tyCbVjhbkpYHtUTAUqMrBAzi3va+Z6UlVeMMhtzklqv7FfM+f4B2QMcj3eTMDmCoh7fxfCIheXPC8roVIfaDoaKtJxj/nvkPCA2JqJ0OxGJtwda/kncm10J+OGc44hte64YtTi7B3jysWs4BJ+WrcC2H7uGplxGPExZoi2DV2h7vDbHOj6VILyQM/nzD29rgrNOxVHALJzuojPZueFBXkBXORov2H8Vk9fXuGvnLfQGWD1hw+OS1ppw0Kp9FODNwokyjPz033wcgcqURvFGFfhedIbxxdAYfb706Tc7ma641ASrVJq8D4XrWHRAC85QfEuadSXKUxaTSzcmxHXhhasFhy45CUe9IxCzmHu8+HjAhrHyMb8GOU7H9kgV9UgKAlRfzLw4EldgmoTVfme/WHrEzF+zUgvEOtjdq/dW4dlhp9O8qIUugeFwJY96VXiVe33n648nJKEp+lRwe6JoIEJgrO7qdE/V2qlTpCQ2HiBBCJ9ajYt+qOk/i6xDyVf3t0QcT8PB5PRDXiLOoA7tdUBARzKi1P1icTvJg2GRIuibjbmRIutNc8lGcH5rVxKCH0IYDm0EnlC9q8e3sa9OfXKqBR3SLrI6XUfPXZPheXaw3rg86qPtmfI8sOQAysHtCslfckKSkUlKUTFhsct45QrejJEQkItmbLqCOnRnYLeGF1XBrEWZy2mzEXT7D4jxpLMASet
+ +X5amLVp
+ luE8t7roGfotuV7+E7pX4u8d1Y9zXADxJrkVz/YI7tGkdSZ1g/OwJ/DB+CGxYziiNrjTpbzMe8ocmlbCj9IROlQp34or8DK9oiUp8CzLnI1cjbuqwtcMGRU5Y/j3TcSvh+dTk8CsFg5vzsNFo0g/cLks7wbkh5YLrCuMYfSAv7darKG6uZM0+TD6MwmGykPQAdPlO8yr2ES8ODXanWw9eArA/2KvAx0gTQk6/pN70Hb/tzokQzAmKWSK0EYYAt7RC7ihjGpSwpet4j1uz8UGf0CHrehiolRJstqAxfe9ECtrEGeiqc/Hvx+acFuOu6HYI5mDQ9r2QDkxz1D9Lg/0Gi1smll5IgF3GStddrZ7oHBTGI3BzPUJ9Y0djLOl/qGyybLO8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,130 +145,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/24/26 08:43, Mikhail Gavrilov wrote:
+> Booting with a boot-time function tracer and a filter, for example
+> 
+>   ftrace=function ftrace_filter=pud_free_pmd_page
+> 
+> panics on 7.3-rc4 as soon as the tracer starts:
+> 
+>   [   23.531178] Starting tracer 'function'
+>   [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
+>   [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
+>   [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
+>   [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
+>   [   25.981629] Call Trace:
+>   [   26.125727]  <TASK>
+>   [   26.413912]  ? pagetable_free_kernel+0x20/0x120
+>   [   26.990283]  queue_work_on+0x97/0xf0
+>   [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
+>   [   27.566662]  cpa_flush+0x394/0x620
+>   [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
+>   [   29.151729]  set_memory_rox+0xa2/0xf0
+>   [   29.584018]  create_trampoline+0x431/0x6f0
+>   ...
+>   [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
+> 
+> The boot-time tracer is started from early_trace_init(), which runs
+> before workqueue_init_early().  Making its trampoline read-only splits a
+> large page, and CPA collapses it again right away.  The split table has
+> been a kernel page table since commit 9e4a3ec3411b
+> ("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
+> collapse frees it through pagetable_free_kernel(), which queues work on
+> system_percpu_wq - still NULL at that point.
+> 
+> The deferral exists so that IOMMUs using SVA can have their paging
+> structure caches flushed before a kernel page table is freed.  While
+> system_state is still SYSTEM_BOOTING only the boot CPU runs and no IOMMU
+> has been initialised yet (on x86 that happens from pci_iommu_init(), a
+> rootfs_initcall), so there is nothing to flush.  Free the table directly
+> in that case.
+> 
+> Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> ---
+> #regzbot introduced: 9e4a3ec3411b
+> 
+> Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX, lockdep and KASAN
+> enabled, booting with the command line above plus earlycon=efifb so
+> that the oops is visible:
+> 
+>   7.3-rc4 (fe2ec83746e5)             panics as quoted
+>   + revert of 9e4a3ec3411b           boots
+>   + this patch, 9e4a3ec3411b kept    boots
+> 
+> With this patch the boot-time tracer works as intended and records
+> pud_free_pmd_page() being called from vmap_p4d_range() during boot.
+> All three kernels also carry my pud_free_pmd_page() v2 patch and
+> unrelated local changes elsewhere (HID, sound/usb, Bluetooth, debugfs);
+> none of them is on this path.
+> 
+> 9e4a3ec3411b is also in 7.2.7 and 6.18.53, together with the deferred
+> pagetable_free_kernel(); I have not tried those.
+> 
+>  mm/pgtable-generic.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index b91b1a98029c..2d9b4ba33b46 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -440,6 +440,17 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+>  
+>  void pagetable_free_kernel(struct ptdesc *pt)
+>  {
+> +	/*
+> +	 * While the system is still booting only the boot CPU runs and no
+> +	 * IOMMU has been set up, so nothing can be caching this table and
+> +	 * there is nothing to flush.  The workqueue this defers to may not
+> +	 * exist yet either.
+> +	 */
+> +	if (system_state == SYSTEM_BOOTING) {
+> +		__pagetable_free(pt);
+> +		return;
+> +	}
+> +
+>  	spin_lock(&kernel_pgtable_work.lock);
+>  	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+>  	spin_unlock(&kernel_pgtable_work.lock);
 
-On Wed, Sep 23, 2026 at 10:00:37PM -0700, syzbot wrote:
->Hello,
->
->syzbot found the following issue on:
->
->HEAD commit:    38872197cae2 Merge branch 'for-next/fixes' into for-kernelci
->git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
->console output: https://syzkaller.appspot.com/x/log.txt?x=17a44d25580000
->kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
->dashboard link: https://syzkaller.appspot.com/bug?extid=c181d3198e98f8aef8b9
->compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
->userspace arch: arm64
->syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16a36515580000
->C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16dcf4c9580000
+Should we instead simply skip the
 
-Looking at the repro, emm ... the repro maps an O_RDONLY /dev/zero fd with
-MAP_SHARED | PROT_READ. do_mmap() clears VM_SHARED and VM_MAYWRITE, so
-mmap_zero_prepare() marks the VMA anonymous. MADV_COLLAPSE then allocates
-a new folio and adds an anon rmap, hitting the warning in
-linear_anon_page_index().
+	schedule_work(&kernel_pgtable_work.work);
 
-Can an anonymous VMA without VM_MAYWRITE legitimately have an anon rmap?
+and rely on anybody freeing stuff later to just free that one alongside?
 
-Cheers, Lance
+That avoids throwing in more freeing handling.
 
->Downloadable assets:
->disk image: https://storage.googleapis.com/syzbot-assets/c5963fdd6790/disk-38872197.raw.xz
->vmlinux: https://storage.googleapis.com/syzbot-assets/a8c2cab00c45/vmlinux-38872197.xz
->kernel image: https://storage.googleapis.com/syzbot-assets/bde15d173380/Image-38872197.gz.xz
->mounted in repro: https://storage.googleapis.com/syzbot-assets/c81cc2849c33/mount_3.gz
->  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=11cb4405580000)
->
->IMPORTANT: if you fix the issue, please add the following tag to the commit:
->Reported-by: syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
->
->------------[ cut here ]------------
->WARNING: ./include/linux/pagemap.h:1130 at vma_flags_is_cow_mapping include/linux/mm.h:2315 [inline], CPU#1: syz.0.17/4884
->WARNING: ./include/linux/pagemap.h:1130 at vma_is_cow_mapping include/linux/mm.h:2329 [inline], CPU#1: syz.0.17/4884
->WARNING: ./include/linux/pagemap.h:1130 at linear_anon_page_index include/linux/pagemap.h:1130 [inline], CPU#1: syz.0.17/4884
->WARNING: ./include/linux/pagemap.h:1130 at __folio_set_anon+0x240/0x298 mm/rmap.c:1491, CPU#1: syz.0.17/4884
->Modules linked in:
->CPU: 1 UID: 0 PID: 4884 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT 
->Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/14/2026
->pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
->pc : linear_anon_page_index include/linux/mm.h:2315 [inline]
->pc : __folio_set_anon+0x240/0x298 mm/rmap.c:1491
->lr : vma_flags_is_cow_mapping include/linux/mm.h:2315 [inline]
->lr : vma_is_cow_mapping include/linux/mm.h:2329 [inline]
->lr : linear_anon_page_index include/linux/pagemap.h:1130 [inline]
->lr : __folio_set_anon+0x240/0x298 mm/rmap.c:1491
->sp : ffff800095456de0
->x29: ffff800095456df0 x28: 0000000000020000 x27: 1fffe00019e1007c
->x26: ffff0000cf0803e0 x25: 0000000000020000 x24: dfff800000000000
->x23: 0000000020000000 x22: 0000000000000000 x21: 00000000200020d1
->x20: ffff0000cf0803c0 x19: fffffdffc3c10000 x18: 00000000ffffffff
->x17: 0000000000000003 x16: ffff800088b97000 x15: ffff80008a849000
->x14: 000000000062064d x13: 0000000000000001 x12: 0000000000000000
->x11: 0000000000000000 x10: 000000000000003d x9 : 0000000000000000
->x8 : 0000000000000000 x7 : ffff800080c16020 x6 : 0000000000000000
->x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff800080ab2d0c
->x2 : 0000000000000000 x1 : ffff0000d07a1d80 x0 : 0000000000000000
->Call trace:
-> vma_flags_is_cow_mapping include/linux/mm.h:2315 [inline] (P)
-> vma_is_cow_mapping include/linux/mm.h:2329 [inline] (P)
-> linear_anon_page_index include/linux/pagemap.h:1130 [inline] (P)
-> __folio_set_anon+0x240/0x298 mm/rmap.c:1491 (P)
-> folio_add_new_anon_rmap+0x1a8/0x10ac mm/rmap.c:1663
-> map_anon_folio_pmd_nopf+0xfc/0x160 mm/huge_memory.c:1365
-> collapse_huge_page mm/khugepaged.c:1438 [inline]
-> mthp_collapse mm/khugepaged.c:1532 [inline]
-> collapse_scan_pmd mm/khugepaged.c:1781 [inline]
-> collapse_single_pmd+0x21e0/0x3748 mm/khugepaged.c:2797
-> madvise_collapse+0x2a4/0x6f4 mm/khugepaged.c:3231
-> madvise_vma_behavior+0x3e8/0x339c mm/madvise.c:1372
-> madvise_walk_vmas+0x4c8/0x9bc mm/madvise.c:1721
-> madvise_do_behavior+0x5f0/0x7c0 mm/madvise.c:1916
-> do_madvise+0x28c/0x2f0 mm/madvise.c:2014
-> __do_sys_madvise mm/madvise.c:2023 [inline]
-> __se_sys_madvise mm/madvise.c:2021 [inline]
-> __arm64_sys_madvise+0xac/0xc8 mm/madvise.c:2021
-> __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
-> invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
-> el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
-> do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
-> el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:758
-> el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:777
-> el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
->irq event stamp: 1412
->hardirqs last  enabled at (1411): [<ffff8000869b7264>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:210 [inline]
->hardirqs last  enabled at (1411): [<ffff8000869b7264>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:221
->hardirqs last disabled at (1412): [<ffff800086991a8c>] el1_brk64+0x20/0x54 arch/arm64/kernel/entry-common.c:445
->softirqs last  enabled at (1120): [<ffff80008013c050>] local_bh_enable include/linux/bottom_half.h:33 [inline]
->softirqs last  enabled at (1120): [<ffff80008013c050>] put_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:251 [inline]
->softirqs last  enabled at (1120): [<ffff80008013c050>] fpsimd_restore_current_state+0x39c/0x9c8 arch/arm64/kernel/fpsimd.c:1797
->softirqs last disabled at (1118): [<ffff80008013bcf8>] local_bh_disable include/linux/bottom_half.h:20 [inline]
->softirqs last disabled at (1118): [<ffff80008013bcf8>] get_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:234 [inline]
->softirqs last disabled at (1118): [<ffff80008013bcf8>] fpsimd_restore_current_state+0x44/0x9c8 arch/arm64/kernel/fpsimd.c:1790
->---[ end trace 0000000000000000 ]---
->
->
->---
->This report is generated by a bot. It may contain errors.
->See https://goo.gl/tpsmEJ for more information about syzbot.
->syzbot engineers can be reached at syzkaller@googlegroups.com.
->
->syzbot will keep track of this issue. See:
->https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
->If the report is already addressed, let syzbot know by replying with:
->#syz fix: exact-commit-title
->
->If you want syzbot to run the reproducer, reply with:
->#syz test: git://repo/address.git branch-or-commit-hash
->If you attach or paste a git patch, syzbot will apply it before testing.
->
->If you want to overwrite report's subsystems, reply with:
->#syz set subsystems: new-subsystem
->(See the list of subsystem names on the web dashboard)
->
->If the report is a duplicate of another one, reply with:
->#syz dup: exact-subject-of-another-report
->
->If you want to undo deduplication, reply with:
->#syz undup
->
+-- 
+Cheers,
+
+David
 
