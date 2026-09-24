@@ -4,113 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4E7C982FD
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 05:41:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FA3EC98304
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 05:43:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F0CE6B008C; Thu, 24 Sep 2026 01:41:58 -0400 (EDT)
+	id 0C4B66B0092; Thu, 24 Sep 2026 01:43:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57B1C6B0092; Thu, 24 Sep 2026 01:41:58 -0400 (EDT)
+	id 074BE6B0093; Thu, 24 Sep 2026 01:43:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 442AD6B0093; Thu, 24 Sep 2026 01:41:58 -0400 (EDT)
+	id EA6436B0095; Thu, 24 Sep 2026 01:43:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 172776B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:41:58 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A2A4F40204
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:41:57 +0000 (UTC)
-X-FDA: 85247559474.02.DE21702
-Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 719DB1C0005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:41:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf20.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B96AC6B0092
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 01:43:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 483D5A014B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:43:27 +0000 (UTC)
+X-FDA: 85247563254.28.B9EFA5C
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A471440002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:43:24 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NcxhIdww;
+	spf=pass (imf12.hostedemail.com: domain of pan.deng@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=pan.deng@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790228515;
+	s=arc-20220608; t=1790228605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6HcCkk65DtKcmHg0R+HrzReMSbryQ+mJ4EPp/4Ges94=;
-	b=P4QwIiY42cLobgvwvL9f5yO3PtSK6mcyfuMBERTC2pyl/9hat0pGw2p3L+ti1wHtzc35BV
-	N3sRhvCYnlFZFixQl8A1/W13BRmDAvTzFDCdDaXddYzdJVV9tj07U82JFhUcuETUMG1ATr
-	VqbyogOC3Y7sVriS0tBmW6xRp3Csn98=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kTOc/qof4zOpFXLyLL77HblTdrgly07fJ1s7N9icwTI=;
+	b=xq/FxoFRTTuD8GadG3JdhB2wx9DXsd1cZsM7Oxm159YXB0/yPk7XmqTjmWKsmQl2wSHN4C
+	Z9ryM9tRfsqvoUpMzYALGYJqMTljJy1Zp5674fPIST8FTslfH/QNmLMDqnvDDCjtkyVGVq
+	pvDMxNk9/egOOhR5XWO5Rg9VdYz0tTA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf20.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NcxhIdww;
+	spf=pass (imf12.hostedemail.com: domain of pan.deng@intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=pan.deng@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790228515;
-	b=oG8EW/wMMXUJ8l3o9o7O21HnS91nQQdEzgKWzNWaaxiu1MsxBGw4aEwcNqpiZTcAJk0GHh
-	lurLlnRuFBioAxg/Ycy0oV/XA80aDoABZ8zgJl3kqx3ejYOe9WXB9TdPoTQxfXcmZK1lMt
-	1Wvm0Gay30iyA9+j2kCg0Q3ei7WrLuk=
-Received: from maildlp1.hygon.cn (unknown [127.0.0.1])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hr2lC5MSjzTSdf;
-	Thu, 24 Sep 2026 13:41:43 +0800 (CST)
-Received: from maildlp1.hygon.cn (unknown [172.23.18.60])
-	by mailgw1.hygon.cn (Postfix) with ESMTP id 4hr2lB1lFczTSdf;
-	Thu, 24 Sep 2026 13:41:42 +0800 (CST)
-Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
-	by maildlp1.hygon.cn (Postfix) with ESMTPS id 31937774F;
-	Thu, 24 Sep 2026 13:41:35 +0800 (CST)
-Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
- (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Thu, 24 Sep
- 2026 13:41:42 +0800
-Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
- cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
- 15.02.1544.036; Thu, 24 Sep 2026 13:41:42 +0800
-From: Jianyong Wu <wujianyong@hygon.cn>
-To: Tim Chen <tim.c.chen@linux.intel.com>, Peter Zijlstra
-	<peterz@infradead.org>
-CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
-	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
-	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"jianyong.wu@outlook.com" <jianyong.wu@outlook.com>, Yuan Zhong
-	<zhongyuan@hygon.cn>, Huangsj <huangsj@hygon.cn>, Fengyu Wang
-	<wangfengyu@hygon.cn>, Zhiwei Ying <yingzhiwei@hygon.cn>, "justin.he@arm.com"
-	<justin.he@arm.com>
-Subject: RE: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-Thread-Topic: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-Thread-Index: AQHdNiA3jheQVPdvikWpN4gB9aTKG7a3i1wAgCMFioCAAQKWYIAAjPiAgADjB/A=
-Date: Thu, 24 Sep 2026 05:41:42 +0000
-Message-ID: <f6ebab3d0e44412dad17ac64a3b93339@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
-		 <20260827122816.756234-3-wujianyong@hygon.cn>
-		 <20260831115004.GF776954@noisy.programming.kicks-ass.net>
-	 <da32ba66d95fd88869ba052f97698b9a4d6c3dc6.camel@linux.intel.com>
-	 <09261c8222994a41a04ace5f342475df@hygon.cn>
- <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
-In-Reply-To: <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
-Accept-Language: zh-CN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.0.231.37]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	t=1790228605;
+	b=iL3XOcbAMvsHMfbDgo9kSuvflSXTGyuPGfxIeJP0gjROmuy2OtSjeRI14IziD02LpRf7HH
+	W58hlJPRtClkgXSrak2ethvnBWYwPn7xsxAMz+0vjAAxWWEyk0rn4cTQ9vHYhJDSziK7ot
+	reak4oXzW/mxIChGoWQf6mOqJps3b7o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790228605; x=1821764605;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=UyNcwb9UBjEd4LNKzNSR126TJWgimVj/XZKwh+zDpgg=;
+  b=NcxhIdwwK7Plox15nBmHsONN70HjmZzN9cj8BrX1BoRV32l1x1MiIhXB
+   cAsCJUFwI34uUgQkj2zMDSwIo4OhKvvF++Xl1O71APOcfI4aFbGcM5VmR
+   kOGpJ7+6Fq4fyLGjrbk8unLHyyXTIa14jWWuNqIQlvk1337vC+L/t9dSY
+   +B03qDUGFPqxZ7HThJTaxnVVSe9uJyGyuxDbkBK2MbigCe5M//Vl3jwvv
+   a0W+sjik0MtkqVkuPhzWEo0nds19ZtkPbS2df0x48jNBNsSYryRzJBLmp
+   xH2f4UFX1adNperIsgx7s9KRlHEpAHOqBoYyIw/xdhI+sh4vxyxbKqrbM
+   g==;
+X-CSE-ConnectionGUID: WuOIXZmVT1aTtqwpoXw1XA==
+X-CSE-MsgGUID: JyJSyyKQSNC1/drqnOsWTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="89761771"
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="89761771"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 22:43:23 -0700
+X-CSE-ConnectionGUID: D9IIlMmRR+qJbdbJs9L2lw==
+X-CSE-MsgGUID: 47sN1UB9R5mCTtuwQLSFOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
+   d="scan'208";a="303452120"
+Received: from linux-pnp-server-17.sh.intel.com ([10.239.166.49])
+  by orviesa002.jf.intel.com with ESMTP; 23 Sep 2026 22:43:20 -0700
+From: Pan Deng <pan.deng@intel.com>
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Tianyou Li <tianyou.li@intel.com>,
+	Wangyang Guo <wangyang.guo@intel.com>,
+	Zhiguo Zhou <zhiguo.zhou@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>
+Subject: [PATCH] mm/vma: avoid redundant file rmap tree re-insert on new_below=0 split
+Date: Thu, 24 Sep 2026 13:43:01 +0800
+Message-ID: <20260924054301.2330822-1-pan.deng@intel.com>
+X-Mailer: git-send-email 2.43.5
 MIME-Version: 1.0
-X-Stat-Signature: yygtxo56m6gs6u8uadgyez8kyt6g47tt
-X-Rspamd-Queue-Id: 719DB1C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A471440002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790228510-334536
-X-HE-Meta: U2FsdGVkX18Twf8a5QTujIGgLBAX8+ISmoD8Qng+OMZKHAhxZn8XZgpvFWZNn8sEif6KgmwYoLc6qPJnE3ykpiorTDr6T3HuC/c8alWFesvPN44Xmg7P/muXjVxz85ClOxWo5i+6p1dxHUOwebZZM3Qtm6YkrtYoo7I9YcweX0ZG7GP6plKbJ8VtkYU/xWLbsmsERs/0iQ3h1rGT/thBXK6n/xqXVIcyoRZYV1VZ80PoRpDwhVbgnBOhhE3scTWSZ32DWK7kFNXNpbcLQUtACsE/baQCfUaA+6pMyoRBIf/NDceajqPqV40ZeSkIfxadbMlgLoUHcYVZQBexJuYQXwEIPykI7qp+Pk5i0csR9qP6qS+Rt6Tpcr9sIhrrvo345oypjwKb3bj57j5lmrZaKIncg/nieLwGZc4ju+4rqjrrJ2qHCQmqw53e3zciHFuUCUORxWcLgL7WKNFqourogevdTD8dEuF3JDPuu7ezp3ZOyH0AFcmPQ4BQi/hnQSRsrKo0iYSuDyYctwN5pXliHM+EG0FwS5DeQ0kQtOwrRRoJViQ1WXUyGQuXKTTx3pztNUg6Rx+fJmtivG1l4i1xLOZzU+AvBvJrhBtJXCwnddy1Y3af1x/aHx75wpY5/yx3yvgA8dIM5NMjtn/J5CqRRwGmSnINc9SFEHOdwVTTsJyIZ7yfpuO5AsnR63d6RFMXlyPHYwWUsS+fyp+ZJncWnJSQ3F2y79T/cdmU5j5FnihYJLnoGcujYYf2IfqtmlzKs8PkKUlQ47yDpYnHUXvna2EPc2D49ejYZZqsKyccQRZ/aiYBhovV9JFQFf83irLj91PGDTtyHmYLMgGXjzD0UVIc5hGtFP7LUrRfh+bNI84sqsuMnlx2bHFN+PXM96r2dEPMm8/G3iJ5v9nNCpzcaPstJ0uoV1UABaFVH2c+ghOaxyP1X4Cgqr5XVL5z7C18pBQmqxYN/k8BdJi2VOW
- DU7s7WqK
- S5bczN/kltrGCZv9WVkBPXDh4m0uBUoO8JSAKo9ELq4Upi+CKhUgSYjPhwbP46n6i6L4oD1IOH0qherGEv91R0cjwEjuI9TMV7muqKMJgtXf5SkqaCjm3z1l1otlQ91VYqEpboWkGMzbheqmFn3SiTHqdBLMj7ITKSrqYwzwlk2BhdqqaMqs93OMjywWtTYhbg/CQtv+PTyng5vR+w6kjedNQnnaAxK0nOHliErCHtEyRylIViYnlrvaWGTBnVUycQiDREiDWBM1aONqIKJy7ufTJ+CLRSPqVA7G91njqLIr7fGbVQghO+rvL0Ip9U779AEfyhNAm0B2E03uR6ryOV5W+FgBsWmwEpdiLQU0F1Wa3bUkzf6smCwBFtwBd/USIFF+jji7mpTm7Ni7ipXUS6Mkn6NJTE5fNH34Khi9Ldtvh0cstZK2OTWegdp7cIxll2d8W4SfteMbatF9tVFdCZ2mTHnrd1KK5NdVRBOQ3wceU3THZm0hAI0R8QwPBcbxic561UTQ1iCviMX8E3oJw5U/XXaZtdKaq6FV/e0uvSaluxMMXZbs1kJ7g5ywrMC6ERi/ESovTk29/Q95cE0j8f7RuzGuVny3ePZIRLnDIzaLjCtpV30vJqlHbqWv0qp/A9BqEdrvZqdnIhUBWJLQGFwMVn0sUeEIxZeTl4MvXAl2tTCeK278fKYYITmtVjXtuXzd1gljTpkiICd+5CUxD8Dtbe9pNkXBy+9DVhpq36z5Tavqecd3uCYKnlImwl8P2/ZGbPVXbBcOi+BqYc+wT3OKbCXcx5YJFNnMMBSwfeB7BEIY8YMgqxIy13POaEfNo8oJg
+X-Stat-Signature: x8ajxcg7tim1fccab7z1bc8dhggrjygx
+X-HE-Tag: 1790228604-539705
+X-HE-Meta: U2FsdGVkX1/dUpOiPvzKHOhWjrSyixOoQZHPAyLPe3Y4wi/jBhrXU5mewZjjfkb2ZvBu8Q8ayrtxACkVg5kaGphz97Nt68tmK00cfuwqlmQIS/IDmU7uM/dtOrHtEBO/PJXehfqVl7r9ZoR8ihvDh1ePz7yixMEzdvSAF1C1eyXbFPGK2vXr4wOqhSoe/2xBfUOdeZ3pwzb4bv4eAc3e0aYsaVtWmgYmlXh2J7Jr6/4x2AbEEyHbYNxdsE/qqP8Qw1qtGevkg8XeejXNAWvTV6o+1Li+ltpyOZRj4xPayPsQKQFtnMsnaIDhCPxBucwb7l/lsStHP3fuzSNqpvvRbHFE7MyZ5iaRFzANOaU0N+ed9rJqKkSXCYS9KPzEdY++g3hOkF1CwGPQ+FwqBxYRZIg66S7KY4t0VzbJkBxRQ9m8Tp9/zCutspQozn+G/hU8DeGnUETCMvCTmaviVgnRu8d3uf18R5/unl3PE61f8vtPPs8werWCvclj6Vd4DRdMNetjf5TIYPccBt+HsXzDxdXSJjarlFauvCeqNg1Vd2cVfginaKx8A1mASR4SslfX783NMtByI6Wci6TnBAjn/6yQ8PM1+PQaaU61GLwRah6WuJK5h1TP39SpbSfrTlRiqtDgyQdbt0404MZQZdFZ4wU4hVJ43HjUA+jYTh92uOwp2EX8Pls0T2Zo6Fvv4/LJiL+OPo2EvnN50SkJfHLA0wkLllVhdca43yZwmHw249lUCzbc7UbxFlwPvnxZJ4z+1yqzLhoCz+NCplnhaDNC+UpqthJHADQlsOaZ5vtHAGeYDIqUw7+WPlomq5FRt8aT3bo7U0U3lgGh3lgdFzIGU9V5IMAGUsyjXa1hnmdVM9G80jYWCLa8AgUXGwfmvEjQDQ5PJdpwNYsZftDujxLJ3JELqCpqONF9kHduKj6qlxCtl9OzmReehE3Vz43zFEwQFm0uuCL4HVOajmRGJzi
+ cbPGuO69
+ eWpATs4CKJo13BzZr6HyM8gNz4tDHT/w9gn+VTIt8AtzUW0ULryYFejwo4oN9c+mf40n2JZsQ0HyEmIPsoxn8SfYvr/GoTMLR7uWJMXDUwrr/wGXqqtWD3bu+0S6hb/cGogymQ3V84tdQsxfeiiN/n6Nrym8xYZt5RpoE3K4ZrzOsbpcFdwwoU5N12SEGBv6/go506Jq0fheYIQ2C8AnAKREXesOKm73kUfFPvd8teY5qJ0efNp+XWc6hEgFVbXixXnous+/vddrH9rA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,189 +109,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SGkgVGltLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFRpbSBDaGVu
-IDx0aW0uYy5jaGVuQGxpbnV4LmludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJl
-ciAyNCwgMjAyNiAyOjI5IEFNDQo+IFRvOiBKaWFueW9uZyBXdSA8d3VqaWFueW9uZ0BoeWdvbi5j
-bj47IFBldGVyIFppamxzdHJhDQo+IDxwZXRlcnpAaW5mcmFkZWFkLm9yZz4NCj4gQ2M6IEluZ28g
-TW9sbmFyIDxtaW5nb0ByZWRoYXQuY29tPjsgSnVyaSBMZWxsaSA8anVyaS5sZWxsaUByZWRoYXQu
-Y29tPjsNCj4gVmluY2VudCBHdWl0dG90IDx2aW5jZW50Lmd1aXR0b3RAbGluYXJvLm9yZz47IENo
-ZW4gWXUNCj4gPHl1LmMuY2hlbkBpbnRlbC5jb20+OyBEaWV0bWFyIEVnZ2VtYW5uDQo+IDxkaWV0
-bWFyLmVnZ2VtYW5uQGFybS5jb20+OyBTdGV2ZW4gUm9zdGVkdCA8cm9zdGVkdEBnb29kbWlzLm9y
-Zz47DQo+IEJlbiBTZWdhbGwgPGJzZWdhbGxAZ29vZ2xlLmNvbT47IE1lbCBHb3JtYW4gPG1nb3Jt
-YW5Ac3VzZS5kZT47DQo+IFZhbGVudGluIFNjaG5laWRlciA8dnNjaG5laWRAcmVkaGF0LmNvbT47
-IEsgUHJhdGVlayBOYXlhaw0KPiA8a3ByYXRlZWsubmF5YWtAYW1kLmNvbT47IFNocmlrYW50aCBI
-ZWdkZSA8c3NoZWdkZUBsaW51eC5pYm0uY29tPjsNCj4gUGhpbCBBdWxkIDxwYXVsZEByZWRoYXQu
-Y29tPjsgQW5kcmV3IE1vcnRvbg0KPiA8YWtwbUBsaW51eC1mb3VuZGF0aW9uLm9yZz47IERhdmlk
-IEhpbGRlbmJyYW5kIDxkYXZpZEBrZXJuZWwub3JnPjsNCj4gbGludXgta2VybmVsQHZnZXIua2Vy
-bmVsLm9yZzsgbGludXgtbW1Aa3ZhY2sub3JnOw0KPiBqaWFueW9uZy53dUBvdXRsb29rLmNvbTsg
-WXVhbiBaaG9uZyA8emhvbmd5dWFuQGh5Z29uLmNuPjsgSHVhbmdzag0KPiA8aHVhbmdzakBoeWdv
-bi5jbj47IEZlbmd5dSBXYW5nIDx3YW5nZmVuZ3l1QGh5Z29uLmNuPjsgWmhpd2VpIFlpbmcNCj4g
-PHlpbmd6aGl3ZWlAaHlnb24uY24+OyBqdXN0aW4uaGVAYXJtLmNvbQ0KPiBTdWJqZWN0OiBSZTog
-W1JGQyBQQVRDSCB2MiAwMi8yM10gc2NoZWQvdG9wb2xvZ3k6IEludHJvZHVjZSBhIE5VTUENCj4g
-ZGlzdGFuY2UgbWF0cml4IHdpdGggdW5pcXVlIGRpc3RhbmNlIHZhbHVlcw0KPiANCj4gT24gV2Vk
-LCAyMDI2LTA5LTIzIGF0IDAzOjE0ICswMDAwLCBKaWFueW9uZyBXdSB3cm90ZToNCj4gDQo+IFtz
-bmlwXQ0KPiANCj4gPiA+ID4NCj4gPiA+DQo+ID4gPiBJIHRoaW5rIHdoYXQgd2UgcmVhbGx5IHdh
-bnQgaXMgYW4gb3JkZXJpbmcgb2YgY2FjaGVzIHdpdGhpbg0KPiA+ID4gdGhlIHNhbWUgTlVNQSBu
-b2RlLiAgU28gd2hlbiBvbmUgY2FjaGUgaXMgZnVsbCwgd2UgY2FuDQo+ID4gPiBwaWNrIHRoZSBu
-ZXh0IG9uZSBkb3duIHRoZSBsaXN0LiAgVGhhdCBpcyBlc3NlbnRpYWxseSB0aGUNCj4gPiA+IG5l
-dCBlZmZlY3Qgb2YgdGhlIGRpc3RhbmNlIGRlLWR1cGxpY2F0aW9uLg0KPiA+DQo+ID4gVGhlIGdv
-YWwgb2YgdGhpcyBzZXJpZXMgaXMgdG8gcHJvdmlkZSBhIHN5c3RlbS13aWRlIExMQyBhZmZpbml0
-eQ0KPiA+IG9yZGVyaW5nLCByYXRoZXIgdGhhbiBvbmx5IGFuIG9yZGVyaW5nIG9mIHRoZSBMTENz
-IHdpdGhpbiBvbmUgTlVNQQ0KPiBub2RlLg0KPiA+IE1haW50YWluaW5nIG9uZSBsYXJnZSBzeXN0
-ZW0td2lkZSBMTEMgb3JkZXJpbmcgd291bGQgYmUgZXhwZW5zaXZlLCBzbw0KPiA+IHRoZSBvcmRl
-cmluZyBpcyByZXByZXNlbnRlZCBoaWVyYXJjaGljYWxseTogYSBOVU1BLW5vZGUtbGV2ZWwgYWZm
-aW5pdHkNCj4gPiBvcmRlcmluZywgZm9sbG93ZWQgYnkgYW4gTExDLWxldmVsIG9yZGVyaW5nIHdp
-dGhpbiBlYWNoIG5vZGUuICBUaGlzDQo+ID4gcGF0Y2ggb25seSBkZWFscyB3aXRoIHRoZSBOVU1B
-LW5vZGUtbGV2ZWwgcGFydC4NCj4gPg0KPiA+ID4NCj4gPiA+IFNvIGhvdyBhYm91dCBpbnRyb2R1
-Y2UgYSBsbGNfbmV4dCBhcnJheS4gIFdlIHdpbGwgaW5pdGlhbGl6ZQ0KPiA+ID4gdGhlIGFycmF5
-IHN1Y2ggdGhhdCBpdCB3aWxsIHJldHVybiB0aGUgbmV4dCBMTEMgaW4NCj4gPiA+IHRoZSBOVU1B
-IG5vZGUuICBTbyBmb3IgdGhlIGV4YW1wbGUgdGhhdCBQZXRlciBoYXMgYWJvdmUsDQo+ID4gPiBh
-c3N1bWluZyBDMCBtYXBzIHRvIExMQyBpZCAwLCBDMSBtYXBzIHRvIDEsIGV0Yy4NCj4gPiA+IHRo
-ZW4gbGxjX25leHQgaXMNCj4gPiA+DQo+ID4gPiAJICAgIGMwIGMxIGMyIGMzIGM0IGM1IGM2IGM3
-DQo+ID4gPiBsbGNfbmV4dCA9IFsxICAwICAzICAyICA1ICA0ICA3ICA2XQ0KPiA+ID4NCj4gPiA+
-IFdoZW4gd2UgY29tZSBiYWNrIHRvIHRoZSBvcmdpbmFsIExMQyB3ZSBzdGFydCBvZmYgd2l0aCwN
-Cj4gPiA+IHdlIGtub3cgdGhhdCBpdCBpcyB0aW1lIHRvIG1vdmUgb24gdG8gYSBMTEMgaW4gbmV4
-dCBjbG9zZXN0DQo+ID4gPiBOVU1BIG5vZGUuDQo+ID4gPg0KPiA+IEhvdyBzaG91bGQgdGhlIG5l
-eHQgY2xvc2VzdCBOVU1BIG5vZGUgYmUgc2VsZWN0ZWQgd2hlbiBtdWx0aXBsZQ0KPiBub2Rlcw0K
-PiA+IGhhdmUgdGhlIHNhbWUgZGlzdGFuY2UgZnJvbSB0aGUgY3VycmVudCBub2RlPw0KPiANCj4g
-WW91IGNvdWxkIHVzZSBzb21lIG90aGVyIG1lYW5zIGxpa2Ugbm9kZSBpZCBvciBsb2FkIGluIHRo
-ZSBub2RlDQo+IGlmIHRoZXJlJ3MgYSB0aWUgaW4gZGlzdGFuY2UuDQo+IA0KPiA+DQo+ID4gVGhh
-dCBpcyB0aGUgYW1iaWd1aXR5IHRoaXMgcGF0Y2ggaXMgaW50ZW5kZWQgdG8gcmVzb2x2ZS4gRm9y
-IGVhY2gNCj4gPiBzb3VyY2Ugbm9kZSwgaXQgZGlzYW1iaWd1YXRlcyBlcXVhbCBOVU1BIGRpc3Rh
-bmNlcyBhbmQgcHJvZHVjZXMgYQ0KPiA+IHVuaXF1ZSBub2RlLWxldmVsIGFmZmluaXR5IG9yZGVy
-aW5nLiBBbiBsbGNfbmV4dCBhcnJheSBjYW4gZGVzY3JpYmUNCj4gPiB0aGUgdHJhdmVyc2FsIG9m
-IExMQ3Mgd2l0aGluIGEgbm9kZSwgYnV0IGl0IGRvZXMgbm90IGRldGVybWluZSB3aGljaA0KPiA+
-IGVxdWlkaXN0YW50IE5VTUEgbm9kZSBzaG91bGQgYmUgdmlzaXRlZCBuZXh0Lg0KPiA+DQo+IA0K
-PiBBZ3JlZWQgdGhhdCBsbGNfbmV4dCBvbmx5IGNvdmVycyBpbnRyYS1ub2RlIHRyYXZlcnNhbCBh
-bmQgdGhhdCB5b3Ugc3RpbGwNCj4gbmVlZCBhbiBpbnRlci1ub2RlIG9yZGVyIGZvciB0aGUgZXF1
-aWRpc3RhbnQgY2FzZS4gQnV0IEkgdGhpbmsNCj4gc29ydGluZyBlYWNoIHNvdXJjZSBub2RlJ3Mg
-cm93IGJ5IChkaXN0YW5jZSwgbm9kZV9pZCkNCj4gYWxyZWFkeSBnaXZlcyBhIHN0YWJsZSB0b3Rh
-bCBvcmRlcjsgdGhlIG5vZGUgaWQgYnJlYWtzIHRoZSB0aWUuIFlvdSBjYW4NCj4gYWxzbyBicmVh
-ayBpdCBieSBub2RlIGxvYWQgaWYgeW91J2QgcmF0aGVyIGJhbGFuY2UgdGhhbiBwaW4uIEVpdGhl
-ciB3YXkNCj4gbm8gbmV3IGRpc3RhbmNlIHZhbHVlIGhhcyB0byBiZSBpbnZlbnRlZC4NCj4gDQoN
-ClllcywgdXNpbmcgKGRpc3RhbmNlLCBub2RlX2lkKSBwYWlycyBpcyBhIHN0cmFpZ2h0Zm9yd2Fy
-ZCB3YXkgdG8gb3JkZXIgbm9kZXMsDQpzaW1pbGFyIHRvIHRoZSBtZW1vcnkgem9uZWxpc3QgZmFs
-bGJhY2sgbm9kZSBzZXF1ZW5jZS4gSSBvbmNlIGNvbnNpZGVyZWQNCmFkb3B0aW5nIHRoaXMgYXBw
-cm9hY2gsIGJ1dCBkcm9wcGVkIHRoZSBpZGVhIGFmdGVyIHJlYWxpemluZyBpdCBsYWNrcw0Kc3lt
-bWV0cnkuIEZvciBpbnN0YW5jZSwgbm9kZV9hZmZpbml0eV9kaXN0YW5jZShBLCBCKSBpcyBub3Qg
-Z3VhcmFudGVlZCB0byBlcXVhbA0Kbm9kZV9hZmZpbml0eV9kaXN0YW5jZShCLCBBKS4NCg0KVGhl
-IGRlZHVwIGFsZ29yaXRobSBjYW4gZW5mb3JjZSB0aGlzIHN5bW1ldHJ5IHByb3BlcnR5IGZvciB0
-aGUgcmVzdWx0aW5nDQpub2Rl4oCRZGlzdGFuY2UgbWF0cml4Lg0KDQo+ID4gPiBUaGlzIHdpbGwg
-YmUgc3RvcmFnZSBlZmZpY2llbnQgYW5kIG1vcmUgc3RyYWlnaHQgZm9yd2FyZA0KPiA+ID4gdG8g
-dXNlIHRoYW4gbWFpbnRhaW5pbmcgYW4gYXJ0aWZpY2lhbCBjYWNoZSBkaXN0YW5jZSBtYXRyaXgu
-DQo+ID4gPg0KPiA+ID4gSSBkaXNsaWtlIHRoZSBhcnRpZmljaWFsIGRpc3RhbmNlIG1hdHJpeCBh
-bHNvIGZvciB0aGUNCj4gPiA+IHJlYXNvbiB0aGF0IHRoZXJlIGlzIG5vIGd1YXJhbnRlZSB0aGF0
-IHRoZXJlIGFyZSBlbm91Z2gNCj4gPiA+IGF2YWlsYWJsZSBkaXN0YW5jZSBzbG90cyBiZXR3ZWVu
-IHR3byBub2Rlcy4gIFNheSBpZiBJDQo+ID4gPiBzdGFydCB3aXRoDQo+ID4gPg0KPiA+ID4gICAg
-ICAgICBOT0RFMCAgTk9ERTEgIE5PREUyICBOT0RFMw0KPiA+ID4gTk9ERTAgICAxMCAgICAgMjAg
-ICAgIDIwICAgICAzMA0KPiA+ID4gTk9ERTEgICAyMCAgICAgMTAgICAgIDIwICAgICAyNQ0KPiA+
-ID4gTk9ERTIgICAyMCAgICAgMjAgICAgIDEwICAgICAyMA0KPiA+ID4gTk9ERTMgICAzMCAgICAg
-MjUgICAgIDIwICAgICAxMA0KPiA+ID4NCj4gPiA+IGFuZCB0aGVyZSBhcmUgMTYgTExDcyBpbiBO
-T0RFIDEsIEkgd2lsbCBydW4NCj4gPiA+IG91dCBvZiBzbG90cyB3aGVuIEkgdHJ5IHRvIGRlZHVw
-bGljYXRlIGFzDQo+ID4gPiBvbmx5IDEwIHNsb3RzIGFyZSBhdmFpbGFibGUgdG8gZml0IDE2IExM
-Q3MuDQo+ID4gPg0KPiA+DQo+ID4gVGhlcmUgaXMgbm8gc3lzdGVtLXdpZGUgTExDIGRpc3RhbmNl
-IG1hdHJpeCBpbiB0aGlzIHNlcmllcy4gVGhlDQo+ID4gZGUtZHVwbGljYXRpb24gaXMgYXBwbGll
-ZCBvbmx5IHRvIHRoZSBOVU1BLW5vZGUgZGlzdGFuY2UgbWF0cml4Lg0KPiA+IENvbnNlcXVlbnRs
-eSwgdGhlIG51bWJlciBvZiBMTENzIGluIE5PREUxIGRvZXMgbm90IGFmZmVjdCB0aGUgbnVtYmVy
-DQo+ID4gb2YgZGlzdGFuY2UgdmFsdWVzIHJlcXVpcmVkIGJ5IHRoaXMgcGF0Y2guDQo+ID4NCj4g
-PiBUaGUgYWxnb3JpdGhtIGFsc28gdGFrZXMgdGhlIGF2YWlsYWJsZSBkaXN0YW5jZSBzcGFjZSBp
-bnRvIGFjY291bnQNCj4gPiB3aGVuIGFzc2lnbmluZyB0aGUgcmVmaW5lZCBub2RlIGRpc3RhbmNl
-cy4gSXQgZG9lcyBub3Qgc2ltcGx5IGluc2VydA0KPiA+IG9uZSB2YWx1ZSBmb3IgZWFjaCBkdXBs
-aWNhdGUgaW50byB0aGUgZXhpc3RpbmcgZ2FwIGJldHdlZW4gdHdvDQo+ID4gb3JpZ2luYWwgZGlz
-dGFuY2UgbGV2ZWxzLiBUaGUgZGlzdGFuY2UgdmFsdWVzIGFyZSBhZGp1c3RlZCBhcw0KPiA+IG5l
-Y2Vzc2FyeSB0byByZXNlcnZlIGVub3VnaCBzcGFjZSBiZWZvcmUgdGhlIGR1cGxpY2F0ZXMgYXJl
-IGFzc2lnbmVkLg0KPiA+IFRoZXJlZm9yZSwgdGhlIGFsZ29yaXRobSBjYW5ub3QgcnVuIG91dCBv
-ZiBhdmFpbGFibGUgZGlzdGFuY2UgdmFsdWVzLA0KPiA+IHJlZ2FyZGxlc3Mgb2YgdGhlIG51bWJl
-ciBvZiBub2RlcyBzaGFyaW5nIHRoZSBzYW1lIG9yaWdpbmFsIGRpc3RhbmNlLg0KPiA+DQo+IA0K
-PiBGYWlyIC0geW91J3JlIHJpZ2h0IHRoYXQgdGhlIGRlZHVwIGlzIG5vZGUtZ3JhbnVsYXJpdHks
-IHNvIG15IDE2LUxMQw0KPiBleGFtcGxlIGRvZXNuJ3QgYXBwbHkgYXMgSSBzdGF0ZWQgaXQsIGFu
-ZCBJJ2xsIGRyb3AgdGhhdCBvYmplY3Rpb24uIEl0J3MNCj4gbW9vdCBhbnl3YXkgdW5kZXIgdGhl
-IGFyZ3VtZW50IGJlbG93OiBpZiB0aGUgb3JkZXJpbmcgdXNlcyByYXcgZGlzdGFuY2UNCj4gcGx1
-cyBhIHRpZS1icmVhaywgYW5kIHRoZSBzY29yZSB1c2VzIHJhdyBkaXN0YW5jZSwgdGhlbiB0aGVy
-ZSdzIG5vIG1hdHJpeA0KPiB0byBwYWNrIGluIHRoZSBmaXJzdCBwbGFjZSBhbmQgdGhlICJlbm91
-Z2ggc2xvdHMiIHF1ZXN0aW9uIGRpc2FwcGVhcnMuDQo+IA0KPiA+IEluIGFkZGl0aW9uIHRvIHBy
-b3ZpZGluZyB0aGUgbm9kZS1sZXZlbCBjb21wb25lbnQgb2YgdGhlIExMQyBhZmZpbml0eQ0KPiA+
-IG9yZGVyaW5nLCB0aGUgcmVmaW5lZCBub2RlIGRpc3RhbmNlcyBhcmUgdXNlZCB0byBjYWxjdWxh
-dGUgdGhlDQo+ID4gYWZmaW5pdHkgaW1wcm92ZW1lbnQgc2NvcmUgd2hlbiBzZWxlY3RpbmcgYSBz
-b3VyY2Ugc2NoZWR1bGluZyBncm91cA0KPiA+IG9yIHJ1bnF1ZXVlIGR1cmluZyBsb2FkIGJhbGFu
-Y2luZy4gUGxlYXNlIHNlZSBwYXRjaCAxMiBmb3IgdGhhdCB1c2FnZS4NCj4gDQo+IFRoaXMgYWZm
-aW5pdHkgY29tcHV0YXRpb24gaXMgd2hlcmUgSSB0aGluayB0aGUgZGVkdXAgYWN0dWFsbHkgaHVy
-dHMgcmF0aGVyDQo+IHRoYW4NCj4gaGVscHMuIFRoZSBzY29yZSBpbiBwYXRjaCAxMiBpcw0KPiAN
-Cj4gICAgIERpID0gZGlzdChzcmNfbm9kZSwgaSkgLSBkaXN0KGRzdF9ub2RlLCBpKSAgIChrZXB0
-IG9ubHkgaWYgRGkgPiAwKQ0KPiAgICAgcCAgPSBzdW1faSAgbnVtYV9jb3VudHNbaV0gKiBjbGFt
-cChEaSwgNCwgMTAyNCkNCj4gDQo+IHNvIGl0IHJlYWRzIHRoZSBkaXN0YW5jZSAqbWFnbml0dWRl
-Kiwgbm90IGp1c3QgdGhlIG9yZGVyLiBGZWVkaW5nIGl0IHRoZQ0KPiByZWZpbmVkIHZhbHVlcyBt
-YW51ZmFjdHVyZXMgZ2FpbnMgb24gZXhhY3RseSB0aGUgbm9kZSBwYWlycyB0aGUgZGVkdXANCj4g
-cGVydHVyYmVkIC0gdGhlIGVxdWlkaXN0YW50IG9uZXMuIFVzaW5nIHlvdXIgbm9kZSBtYXRyaWNl
-czoNCj4gDQo+ICAgICByYXc6ICAgICAgICAgICAgICAgICAgICAgICAgICByZWZpbmVkOg0KPiAg
-ICAgICAgICAgTjAgIE4xICBOMiAgTjMgICAgICAgICAgICAgICAgIE4wICBOMSAgTjIgIE4zDQo+
-ICAgICBOMCAgICAxMCAgMjAgIDIwICAzMCAgICAgICAgICAgTjAgICAgMTAgIDE1ICAyMCAgMzAN
-Cj4gICAgIE4xICAgIDIwICAxMCAgMjAgIDI1ICAgICAgICAgICBOMSAgICAxNSAgMTAgIDEyICAy
-NQ0KPiAgICAgTjIgICAgMjAgIDIwICAxMCAgMjAgICAgICAgICAgIE4yICAgIDIwICAxMiAgMTAg
-IDE1DQo+ICAgICBOMyAgICAzMCAgMjUgIDIwICAxMCAgICAgICAgICAgTjMgICAgMzAgIDI1ICAx
-NSAgMTANCj4gDQo+IFNjZW5hcmlvIEEgLSBhIGxvY2FsaXR5LW5ldXRyYWwgcHVsbCBnZXRzIGEg
-ZmFicmljYXRlZCBnYWluLg0KPiBEZXN0IENQVSBvbiBOMSwgc291cmNlIHJxIG9uIE4wLCA1IHRh
-c2tzIHByZWZlcnJpbmcgTjI6DQo+IA0KPiAgICAgICAgICAgICAgICAgICBkaXN0KE4wLE4yKSAg
-ZGlzdChOMSxOMikgIERpICAgY29udHJpYnV0aW9uDQo+ICAgICByYXcgICAgICAgICAgIDIwICAg
-ICAgICAgICAyMCAgICAgICAgICAgIDAgICA1ICogMCA9ICAwDQo+ICAgICByZWZpbmVkICAgICAg
-IDIwICAgICAgICAgICAxMiAgICAgICAgICAgIDggICA1ICogOCA9IDQwDQo+IA0KPiBOMCBhbmQg
-TjEgYXJlIHBoeXNpY2FsbHkgZXF1aWRpc3RhbnQgZnJvbSBOMiAoYm90aCAyMCksIHNvIHB1bGxp
-bmcgdGhvc2UNCj4gdGFza3MgdG8gTjEgYnV5cyB6ZXJvIGxvY2FsaXR5IC0gcmF3IGNvcnJlY3Rs
-eSBnaXZlcyAwLiBSZWZpbmVkIHNjb3JlcyBpdA0KPiA0MCBhbmQgdGhlIGJhbGFuY2VyIG1heSBk
-cmFnIGFsbCA1IG92ZXIgY2hhc2luZyBhIGdhaW4gdGhhdCBpc24ndCB0aGVyZS4NCj4gDQo+IFNj
-ZW5hcmlvIEIgLSB0d28gcGh5c2ljYWxseSBpZGVudGljYWwgb3B0aW9ucyBnZXQgZmFrZS1yYW5r
-ZWQuIERlc3Qgb24NCj4gTjE7IGNhbmRpZGF0ZSBzb3VyY2VzIE4wIGFuZCBOMywgZWFjaCBob2xk
-aW5nIG9ubHkgTjItcHJlZmVycmluZyB0YXNrczoNCj4gDQo+ICAgICAgICAgICAgICAgICAgIHJh
-dyBEaSAgIHJlZmluZWQgRGkgICBhZnRlciBjbGFtcCguLDQsMTAyNCkNCj4gICAgIFggKE4wKSAg
-ICAgICAgMjAtMjA9MCAgMjAtMTI9OCAgICAgIDgNCj4gICAgIFkgKE4zKSAgICAgICAgMjAtMjA9
-MCAgMTUtMTI9MyAgICAgIDQNCj4gDQo+IFJhdyBEaSBzYXlzIGJvdGggYXJlIDAsIGkuZS4gbG9j
-YWxpdHktZXF1aXZhbGVudCwgYW5kIGxvYWQgc2hvdWxkIGRlY2lkZS4NCj4gUmVmaW5lZCByYW5r
-cyBYIG92ZXIgWSBwdXJlbHkgZnJvbSBpbnZlbnRlZCBkZWx0YXMgLSBhbmQgdGhlIGNsYW1wIGZs
-b29yDQo+IGV2ZW4gcHJvbW90ZXMgWSdzIGZhYnJpY2F0ZWQgMyB1cCB0byA0Lg0KPiANCj4gTm90
-ZSB0aGUgZGVkdXAgb25seSBldmVyIHBlcnR1cmJzIHRpZXMsIHNvIHRoZSBza2V3IGlzIGNvbmZp
-bmVkIHRvDQo+IGVxdWlkaXN0YW50IHBhaXJzIC0gd2hpY2ggaXMgZXhhY3RseSB0aGUgY2FzZSB3
-aGVyZSB0aGVyZSBpcyBubyByZWFsDQo+IGxvY2FsaXR5IGRpZmZlcmVuY2UgYW5kIGxvYWQgc2hv
-dWxkIGhhdmUgYmVlbiB0aGUgdGllYnJlYWtlci4NCj4gDQoNCk15IGludGVudGlvbiBpcyB0byBk
-aXN0aW5ndWlzaCBlcXVhbCBub2RlIGRpc3RhbmNlcyBhbmQgZ2l2ZSBhIGRlZmluaXRlbHkNCnRh
-c2sgbW92ZSBkaXJlY3Rpb24uIA0KV2hhdCB3ZSB3YW50IHRvIGRvIGlzIGFnZ3JlZ2F0ZSB0YXNr
-IHRvIGFzIHNtYWxsIGFyZWEgYXMgcG9zc2libGUuIElmIE4yIGlzDQpQcmVmZXJyZWQgbm9kZSwg
-YW5kIE4yIGlzIHNhdHVyYXRlLCBOMSBpcyB0aGUgbmV4dCBub2RlIG9mIE4yIGluIHRoZQ0KYWZm
-aW5pdHkgbm9kZSBvcmRlciwgaXQncyBuYXR1cmFsIHRoYXQgcHJlZmVyIE4xIHRoYW4gTjAgZm9y
-IHRhc2sgYWdncmVnYXRpb24sDQpyaWdodD8gVGh1cywgd2Ugc2hvdWxkIGdpdmUgd2VpZ2h0IGZv
-ciB0YXNrIGluIE4wLiBTbyBOMCBpcyBtb3JlIGxpa2VseSB0byBiZQ0KY2hvc2VuIGFuZCBtaWdy
-YXRlIHRhc2sgdG8gTjEuIENvbnNlcXVlbnRseSwgdGhlIHRhc2sgY2FuIG1vcmUgbGlrZWx5DQph
-Z2dyZWdhdGUgdG8gTjEgYW5kIG5vdCBldmVubHkgc3ByZWFkIGluIHRoZSB0d28gbm9kZXMuDQog
-DQpBbHNvLCBnaXZlIGEgcHJlZmVyZW5jZSBiZXR3ZWVuIE4wIGFuZCBOMSBjYW4gbGltaXQgdGhl
-IHRhc2sgbWlncmF0aW9uIGZyb20NCk4xIHRvIE4wLiBCeSB0aGlzIHdheSwgd2UgY2FuIGFjaGll
-dmUgdGhlIGdvYWwgdGhhdCBrZWVwIHRhc2tzIGluc2lkZSBOMS4NCg0KPiBTdGVwcGluZyBiYWNr
-LCB0aGUgbWF0cml4IGlzIGJlaW5nIGFza2VkIHRvIGRvIHR3byBqb2JzIGF0IG9uY2U6DQo+IA0K
-PiAgICAgLSBvcmRlcmluZzogb25seSBuZWVkcyBhIGRldGVybWluaXN0aWMgdG90YWwgb3JkZXIs
-IHdoaWNoDQo+ICAgICAgIHJhdyBkaXN0YW5jZSArIG5vZGUtaWQgdGllLWJyZWFrIGFscmVhZHkg
-cHJvdmlkZXM7DQo+ICAgICAtIHNjb3Jpbmc6IHdhbnRzIHRydWUgbWFnbml0dWRlcywgd2hpY2gg
-cmF3IGRpc3RhbmNlIGFsc28gcHJvdmlkZXMNCj4gICAgICAgKGVxdWlkaXN0YW50ID0+IERpID0g
-MCkuDQo+IA0KPiBUaGUgZGVkdXAgaXMgb25seSBuZWNlc3NhcnkgaWYgb25lIG1hdHJpeCBoYXMg
-dG8gc2VydmUgYm90aCAtIGFuZCB0aGF0DQo+IGNvdXBsaW5nIGlzIHByZWNpc2VseSB3aGF0IGlu
-amVjdHMgdGhlIGZha2UgRGkuIFNvIGlmIHlvdSBuZWVkIGEgbm9kZQ0KPiBvcmRlcmluZywgSSdk
-IHVzZSB0aGUgdW5hbHRlcmVkIGRpc3RhbmNlIGFuZCBicmVhayB0aWVzIGJ5IHNvbWUgb3RoZXIN
-Cj4gbWVhbnMgKG5vZGUgaWQsIG9yIGxvYWQpLCBhbmQgZmVlZCB0aGUgc2NvcmUgdGhlIHJhdyBk
-aXN0YW5jZSB0b28uDQo+IA0KDQpZZXMsIHRoZSByZWZpbmVkIG5vZGUgZGlzdGFuY2Ugc2VydmVz
-IGJvdGggcHVycG9zZXMgbWVudGlvbmVkIGFib3ZlLiBIZW5jZSwNCmRlZHVwIGlzIG5lY2Vzc2Fy
-eSBmb3IgdGhpcyBwYXRjaCBzZXJpZXMuDQoNCkJvdGggYWZmaW5pdHnigJFzY29yZSBjYWxjdWxh
-dGlvbiBhbmQgbWlncmF0aW9uIGNvbnRyb2wgcmVseSBvbiBhIGNvbnNpc3RlbnQNCnJlZmluZWQg
-bm9kZSBkaXN0YW5jZSBtYXRyaXguIFRvIGtlZXAgdGhpcyBjb25zaXN0ZW50LCB3ZSBzaG91bGQg
-YXZvaWQgdXNpbmcNCnRoZSBkZWZhdWx0IG5vZGUgZGlzdGFuY2UgZm9yIG9uZSBvYmplY3RpdmUg
-d2hpbGUgYWRvcHRpbmcgYSBkaWZmZXJlbnQNCnZhcmlhbnQgZm9yIGFub3RoZXIgcHVycG9zZS4N
-Cg0KVGhlIG9ubHkgb3BlbiBkZXNpZ24gcXVlc3Rpb24gaXMgd2hldGhlciBzeW1tZXRyaWMgbm9k
-ZSBkaXN0YW5jZXMgYXJlDQpzdHJpY3RseSByZXF1aXJlZC4gU3ltbWV0cnkgaXMgcHJlZmVyYWJs
-ZSBidXQgYWRkcyBpbXBsZW1lbnRhdGlvbg0KY29tcGxleGl0eSwgc28gdGhpcyByZXByZXNlbnRz
-IGEgdHJhZGXigJFvZmYuIElmIHN5bW1ldHJ5IGlzIHVubmVjZXNzYXJ5LA0KSSBjYW4gY29uc3Ry
-dWN0IHRoZSBub2RlIG9yZGVyIGZvbGxvd2luZyB5b3VyIGFwcHJvYWNoIHVzaW5nIHRoZQ0KKG5v
-ZGVfZGlzdGFuY2UsIG5vZGVfaWQpIHBhaXIsIHdoaWNoIGlzIHNpZ25pZmljYW50bHkgc2ltcGxl
-ciB0aGFuIG15DQpjdXJyZW50IGltcGxlbWVudGF0aW9uLg0KDQpZb3VyIHF1ZXN0aW9uIHRvdWNo
-ZXMgb24gdGhlIHRyaWNraWVzdCBwYXJ0IG9mIHRoaXMgcGF0Y2ggc2VyaWVzLiBJJ20NCm5vdCBz
-dXJlIEkndmUgYW5zd2VyZWQgeW91ciBxdWVzdGlvbiBjbGVhcmx5LCB0aG91Z2ggdGhpcyBkaXNj
-dXNzaW9uDQpoYXMgcHJvbXB0ZWQgZnVydGhlciB0aGlua2luZyBmcm9tIG1lLiBUaGFua3MgVGlt
-Lg0KDQpKaWFueW9uZw0KDQo+IFRpbQ0KPiANCj4gPg0KPiA+IFRoYW5rcw0KPiA+IEppYW55b25n
-DQo+IA0KPiANCg0K
+Splitting a file-backed VMA removes it from the mapping's i_mmap interval
+tree and re-inserts it, two O(log n) walks with rebalancing, all inside
+the i_mmap_rwsem write-side critical section.  For a file mapped by many
+processes that lock is a single serialization point, so the cost translates
+into reduced exec throughput.
+
+While the re-insert is needed whenever the sort key changes, it is not for
+a new_below=0 split: there the new VMA takes the upper half and only the
+original VMA's vm_end shrinks, so vma_start_pgoff(), the sort key of the
+interval tree, stays constant and the VMA is already in the correct
+position.
+
+This change skips the re-insert for that case.  vma_prepare() no longer
+removes vp->vma from the tree; instead vma_complete() detects that case and
+only recomputes shared.rb_subtree_last up the ancestor chain.  Everything
+else keeps the remove + re-insert path.
+
+The case is detected by comparing vma_start_pgoff(vp->insert) against
+vma_start_pgoff(vp->vma): only a new_below=0 split leaves the former
+greater.  __split_vma() adjusts pgoff via vma_add_pgoff(new,
+linear_page_delta(vma, addr)), and linear_page_delta() is
+(addr - vm_start) >> PAGE_SHIFT with addr strictly inside the VMA, so the
+delta is at least one page and the new VMA's pgoff is strictly greater.
+For new_below=1 the two are initially equal and vp->vma's pgoff then
+increases, so the comparison is false both before and after the caller's
+endpoint updates, and the original path is taken.
+
+Inferring the case this way keeps the change small: struct vma_prepare
+gains no field and no caller changes.
+
+Moving the remove() out of vma_prepare() leaves vp->vma in the tree with a
+possibly stale sort key across the caller's endpoint updates, so
+vma_complete() re-keys it *before* inserting vp->adj_next: otherwise that
+key-driven descent could place adj_next in the wrong subtree.
+
+Measured on v7.3-rc4, on a 2-socket 192C/384T system running UnixBench
+execl (384 concurrent execve of the same binary), dropping the redundant
+remove + re-insert yields ~14% higher throughput by shortening the
+i_mmap_rwsem write-side critical section during the file VMA splits that
+execve performs on the shared libraries.
+
+Signed-off-by: Pan Deng <pan.deng@intel.com>
+Reviewed-by: Tianyou Li <tianyou.li@intel.com>
+Reviewed-by: Wangyang Guo <wangyang.guo@intel.com>
+Reviewed-by: Zhiguo Zhou <zhiguo.zhou@intel.com>
+Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
+Assisted-by: LLM
+---
+ include/linux/mm.h                |  1 +
+ mm/interval_tree.c                | 13 ++++++++
+ mm/vma.c                          | 54 +++++++++++++++++++++++++++++--
+ mm/vma.h                          |  1 +
+ tools/testing/vma/include/stubs.h |  4 +++
+ 5 files changed, 71 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index dd09c438fa23..baf489343f86 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4181,6 +4181,7 @@ void mapping_rmap_tree_insert_after(struct vm_area_struct *vma,
+ 				    struct address_space *mapping);
+ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 			      struct address_space *mapping);
++void mapping_rmap_tree_propagate(struct vm_area_struct *vma);
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last);
+diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+index 7bbbf15cfbf0..3b81c990aab2 100644
+--- a/mm/interval_tree.c
++++ b/mm/interval_tree.c
+@@ -64,6 +64,19 @@ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 	__mapping_rmap_tree_remove(vma, &mapping->i_mmap);
+ }
+ 
++/*
++ * Recompute shared.rb_subtree_last for vma and its ancestors, for a vma whose
++ * interval changed but whose vma_start_pgoff() (the tree's sort key) did not.
++ * The NULL stop node makes the walk run up to the root, though it ends early
++ * once the recomputed value stops changing.
++ *
++ * Wrapper because INTERVAL_TREE_DEFINE() above declares the callbacks static.
++ */
++void mapping_rmap_tree_propagate(struct vm_area_struct *vma)
++{
++	__mapping_rmap_tree_augment.propagate(&vma->shared.rb, NULL);
++}
++
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last)
+diff --git a/mm/vma.c b/mm/vma.c
+index f29abb30956b..e1dbfd5094cd 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -365,11 +365,43 @@ static void vma_prepare(struct vma_prepare *vp)
+ 
+ 	if (vp->file) {
+ 		flush_dcache_mmap_lock(vp->mapping);
+-		mapping_rmap_tree_remove(vp->vma, vp->mapping);
++		/* vp->vma is re-keyed by vma_complete(), if it needs to be. */
+ 		if (vp->adj_next)
+ 			mapping_rmap_tree_remove(vp->adj_next, vp->mapping);
+ 	}
++}
+ 
++/*
++ * vma_split_keeps_rmap_key() - Check if vp->vma keeps its file rmap tree key
++ * @vp: The vma_prepare struct
++ *
++ * True only for a new_below=0 __split_vma(): the new VMA takes the upper half,
++ * so its vma_start_pgoff() is strictly greater, while vp->vma's (its key in the
++ * file rmap interval tree) is unchanged and its tree position still correct, so
++ * only shared.rb_subtree_last has to be recomputed.
++ *
++ * Relies on vp->insert being assigned by __split_vma() only; the check below
++ * catches a second assignment site whose VMA does not abut vp->vma.
++ */
++static bool vma_split_keeps_rmap_key(const struct vma_prepare *vp)
++{
++	if (!vp->insert ||
++	    vma_start_pgoff(vp->insert) <= vma_start_pgoff(vp->vma))
++		return false;
++
++	/*
++	 * Today only a new_below=0 __split_vma() reaches here, where the new
++	 * VMA abuts vp->vma at the split point once the caller has updated
++	 * vp->vma->vm_end.  If a future vp->insert user ever violates that,
++	 * fall back to the safe remove + re-insert instead of trusting the
++	 * fast path.
++	 */
++	if (vp->insert->vm_start != vp->vma->vm_end) {
++		VM_WARN_ON_ONCE(1);
++		return false;
++	}
++
++	return true;
+ }
+ 
+ /*
+@@ -384,9 +416,27 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ 			 struct mm_struct *mm)
+ {
+ 	if (vp->file) {
++		if (vma_split_keeps_rmap_key(vp)) {
++			/*
++			 * Split paths go through init_vma_prep(), which
++			 * passes a NULL vmg, so vp->adj_next is never set.
++			 */
++			VM_WARN_ON_ONCE(vp->adj_next);
++			mapping_rmap_tree_propagate(vp->vma);
++		} else {
++			/*
++			 * Re-key vp->vma *before* the insert of vp->adj_next
++			 * below, so that the latter descends a valid
++			 * search tree: vp->vma is the only node left in
++			 * the tree that may carry a stale sort key
++			 * (vp->adj_next itself was removed in
++			 * vma_prepare()).
++			 */
++			mapping_rmap_tree_remove(vp->vma, vp->mapping);
++			mapping_rmap_tree_insert(vp->vma, vp->mapping);
++		}
+ 		if (vp->adj_next)
+ 			mapping_rmap_tree_insert(vp->adj_next, vp->mapping);
+-		mapping_rmap_tree_insert(vp->vma, vp->mapping);
+ 		flush_dcache_mmap_unlock(vp->mapping);
+ 	}
+ 
+diff --git a/mm/vma.h b/mm/vma.h
+index 024fabe63560..3f791e4d13f6 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -23,6 +23,7 @@ struct vma_prepare {
+ 	struct file *file;
+ 	struct address_space *mapping;
+ 	struct anon_vma *anon_vma;
++	/* Set by __split_vma() only; see vma_split_keeps_rmap_key(). */
+ 	struct vm_area_struct *insert;
+ 	struct vm_area_struct *remove;
+ 	struct vm_area_struct *remove2;
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index d6136e19a8af..3b5184aeee54 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -267,6 +267,10 @@ static inline void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ {
+ }
+ 
++static inline void mapping_rmap_tree_propagate(struct vm_area_struct *vma)
++{
++}
++
+ static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
+ {
+ }
+-- 
+2.43.5
 
 
