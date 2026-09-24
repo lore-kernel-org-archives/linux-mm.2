@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A2E3C98311
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:08:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29268C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5001D6B00AA; Thu, 24 Sep 2026 06:08:25 -0400 (EDT)
+	id 3C83C6B008C; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D6F06B00AB; Thu, 24 Sep 2026 06:08:25 -0400 (EDT)
+	id 389F26B00AB; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EE036B00AC; Thu, 24 Sep 2026 06:08:25 -0400 (EDT)
+	id 28E656B00AC; Thu, 24 Sep 2026 06:08:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AF4E6B00AA
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:08:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A81491A02B6
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:24 +0000 (UTC)
-X-FDA: 85248230928.22.170604F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E24E56B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:08:41 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6908112021F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:41 +0000 (UTC)
+X-FDA: 85248231642.20.1F619E3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F2DF9C0003
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:22 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5n6MGK2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790244503;
-	b=7kxH/ZeV0cJVOdA69ykgcNQTE85HizJXe0/OOWmZJaXGwmIF1fazw3+DEe3/78kMuKFmEx
-	Ki9KM9K2xLDX3DUh2vQQ8jKPCtvYjEfOKQXdic0zwIhdWDAcR42UyNug13s2f1ZZfl9ikJ
-	h5wyphameLT2jNTGhtfhgRoHliuUw6U=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P5n6MGK2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id AD0D6120009
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:08:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7vVYIE0;
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790244503;
+	s=arc-20220608; t=1790244519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eJJYWMaIvtyGybZXxXutyXnVsQUWKbvJkU+PAxP2pXo=;
-	b=Jm2b/2KDsQaqcGcLMedMfMx6Y+iwSflG1+N3SswMtf1mrk1GEqM4f3F8xEF90UG6V8cXi9
-	hlLHm4PuWps79wOXcK5QsjmVBZ4THeBErcCF+GJF8bl0EltEcH4C0U53+YYvcvZPCUtvLb
-	t29a/GJr2e+lWUjLf/xObPkUoAKs+Nk=
+	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
+	b=A8IJhccbrMlNhEkrPamQ6HzyCQssUIjyzO3Jo9RvfGL14p2raIWxxkSP1djGQ4zTt/AFhv
+	t99Q4k5gz1E3uN+z3oAF+imu9C5UOyTTVxtBmk3vFsMY/UNhhOuuQWYPLovgqnN50oOIMC
+	FvxzA+cWhz+5mBS1G4UbBZdnyw9NNGw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790244519;
+	b=ZjXKt1C8KLoT1nci47RB4UNS2899CmNdW2fc3Elcqkz1MsQdog+7C0c/BZGAxUd0Lt+TTn
+	aQWveYpu9Q3Ckt0yNE0v/IfknuR5eghK79z7AjapmtsR1JoaZRZdv+5YtEEv+uYLNpZsKT
+	obMxF67UHNjXHOlnVu/XGfK9DRn7kwQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h7vVYIE0;
+	spf=pass (imf29.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D92C40199;
+	by sea.source.kernel.org (Postfix) with ESMTP id EC8A2418D2;
+	Thu, 24 Sep 2026 10:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AACF1F000FF;
 	Thu, 24 Sep 2026 10:08:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFC51F00893;
-	Thu, 24 Sep 2026 10:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790244502;
-	bh=eJJYWMaIvtyGybZXxXutyXnVsQUWKbvJkU+PAxP2pXo=;
+	s=k20260515; t=1790244518;
+	bh=wOq7lOU2FcK7bFNXejlGbOi1XU8BMJcPZcRxtw9e4Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=P5n6MGK29mMINRCHXIC8ydY+dR/BkV3ROd/aUdApCPS+tbFHhPY9xh+IR68I0PFZX
-	 qdeg4Edf9fGFKzHej5CvdNa2YRkY0pKwBFvYUy0sQDmi8swhQP3oWtFnfxTcXfbUHP
-	 1ZlVi6klX6hVnRO31ygdNMLxpMEYjdZIeH894C1JnC9BS/PlnPfqVEt2z+3MFrEC2R
-	 PicLxLThzW/dl8ZVGDCk5J0DJiWSl7rspSCPEHVq1HnG2MDl3siNIpqesN4z5Q7Zbh
-	 ZHj+EnHjZ0NNkfeLftPM+pEIwR7vHerabIurntNfIjJLl15srVpl7Bxc2nciD4DSb7
-	 9ifohJ9q8AY+w==
+	b=h7vVYIE0aMAfRYhJEF3IrnQkTPB+l8URFB8a2ES5HlMFPDWYqoftWe2Ff8rVJSgHz
+	 //Op1zX/iwMgv9mXBkckDouFTPX0yIsuZxqyC0hSZbgJNOHGHh/SORbTcQbJNWXXo2
+	 nUcxq5smZ+bkK8UdPl+zQcHG5xIFmbrqMpdGAiQ26FV2D4kvBW8Su/Mij/C3EDF8gK
+	 l4YYQMnmrMqIuikyKNc99VEKE2PCSbB7BLEPIu5WwybWevD7t2nNjyS/K4mLgpcVP/
+	 /sv9QW2fUVc4LunoMvqqgAhjOq6/Ihho9u3wzSDnaqja06rEay4I3ZS+EXulKYaZK7
+	 HA1XNHuabSvRw==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev,
@@ -126,22 +127,23 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v8 09/14] swiotlb: Reject misaligned restricted DMA pools for CoCo guests
-Date: Thu, 24 Sep 2026 15:35:24 +0530
-Message-ID: <20260924100529.1398790-10-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v8 10/14] dma-buf: system_heap: Limit scatterlist entries to the buffer size
+Date: Thu, 24 Sep 2026 15:35:25 +0530
+Message-ID: <20260924100529.1398790-11-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
 References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tjz8m1dyi5zb8ycm1zzrxzgauyo3u5nb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F2DF9C0003
-X-HE-Tag: 1790244502-676572
-X-HE-Meta: U2FsdGVkX1+IXPNP9KQ586TA4GLa0FmFiw8UVBjsyMQYs8ixE3NYGQ5f44bbriP2/aLvF1VUdDVmgkrB1KDo2M9+FAj2kx7nqSZiQfCvvbTrRUHmd079WUZX9vTLrsscuryU5Xq7yd9KYUFYFRnr0J3BebobkxkwjJVQHkTJ8APd5Lt/6PMvKdzq79X92K0taHMDlpXHJnaMEar5/bjuRcopaPuyyEiDh4cetQnXA1BBPB2/bEWTHbfWgTghdXywBPvdGniYrvlYLyH/WUhqbvCSqJJveujvkKQ8TnLVacIYEm6q1Om7yE6aWVMpfsEaHy776eqX632Bp8YQnpY3OGTj/WTHufFTTp48iUwJd6PfeAMToleBhXQX475OeeDyFo29MzLltfVB2kFd2+JuLnk43xO55IYuVHIrDxtcnuheMWoLOfnJ1nCsEAyk/Ya+6dZUUKqtBdMjlXz1FBfrafz2i3jz+E6gHUWZnNNKQcWiV7MwN7s99ZFTpKG9RdFJ4S4FfR1EcWvf/mxp8tLKvCj5D7+29Zwk0qV2KzpNhuljC5f8yyEbTxyN6HyrKnBGOwHnA6Yde0O6WLFKHKzmZ/nosT9D8dZLDAS4AGKQ4WzDPTHep+T0UN6DwPIKIkJtbgHu0FLX6gAacf9fd1tzuBcw6Tkcjm2KpXHvErjVreToRgrveR/P61CpBv5SqeQWm8oVLFNhX1Z0emm+UQos7rPXr+AAZhKfyzkItfLbkT8sUnxQStI2pSljBQe9f21dSAkFw4vltJhTw2jJJnB4MntIJMXVyxUHp/biJxgyd8A8GrWi/Li3I/rS5NWkgqnnGw8IQ7Nr4xWMuNJEI8PmQMT9qPlLd0mTd5YQ28V1BfogdVb8kG0jcuEELmjlBDF+CIzKEu0mWtpr0HbMOBjDwrXfDhbo/ltSSmNrckknqQddaKJSaijbNQNuepA/1kDVknc5PfVbMsBN1+iZ01p
- xgWoAr4m
- 4mG9SuZcpizLwi0uBabrWDBki9Hm07CSUbkd+Hv+1nwT1VQB7kvcQ63ffw/ayppwOy1LGyPkQHwhLItf+qIDpddk0D/n5zxxz7i1N1IX1+Im288I1/3SAHfEKOtYRAR5Zw1Jc/hJmiuDlk+L6OqWTUeK4/0U3nfdZ0eHID82IgjecBS8M9gdYKdruaXFE14hQ3nsy1wJE0YRno2DbQKWpDkIsgi7y7HbfEW7LFy2Q4fxvjB3NyW/r3cj07qJtBXBnAUHmTuWgOI1fJkD/pNwrSI3fkp8WYu67ZDx7aIGeQCyGW7vwH0XbtI21NCrODzoWwhYv6lJZdtvKeghDQVkelVCR/0x4bToXUbTzEKKQBuzJm73NRkNnsvTldUdKDrIA4VmFtAWL2EKPFL8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AD0D6120009
+X-Stat-Signature: g58xh9yznt8s65oc61ez637ycwmy9oob
+X-HE-Tag: 1790244519-579866
+X-HE-Meta: U2FsdGVkX180jntGfWbnl3DmMrooqGkg2StsYPmOVE0RSYy9YrJ6W2BN7W2b0pMDF/heGKpMltWGFmCYPnfnOX6ripnOu/UPFokiyjRfEvLDfifrxeQzTcpom7I7ApjH1ACmxBb5v4uNvLERSLWWDvjqZ2++l9pL6AGq0/PYLoBpzE0/5E8SDF++3oXrA0L4qD6MnDZd8pa8zo0JU9Wn3OP+r8qs4D5G87FUR6Reza8E7jiaOhPYXJ9i3Uxd89FsZ3O04EoIL9YxYvPdf/UCh1xYrfhzdb4AlIhpdMjz81klKvP+BTQjXbBA2xNjXoBiMWxiBCw4dPOK/Ma/HvvLKz+8eUCZ43ZZ/HWWX6XJBQ67OcX/7II1oQnPvBrOG2xq5lsj+56NU4D5J2t10Qe97TEwoU4soMFt/Fmo0C9RF7kKe1m+VzdDA4Yk3PhHlIt3o8h1QOcpZWBxh3co5bF2AGHC06c19FDc1a/jOYvYaXgkwDjSmAFilo08G4GW/MWS5EyGjq+lRfoanpBY57td/bSwCd1tI1a+HQi4rC2LzVHiX256I4lf16esqASVPhKieYuoQqEpfwxXT+jmnpaUkMfJIyJTPvPXCna5qV0HlSMlqfnZO+qqiE0rrDN3Nws+wujQogKmYRQA5/joZPVW4oG4eurrLZ6vAcplZZGbg/zKxP4/f+kfgZS0UAmfTvXUuTEmTlKUMLFPXumBh2rSguHPkFQ8sfDfCl5qzm6lx6gKsxXyUPle7/4rb/I2U+squya3y8jiC5oyr08QzDVdDhcrKPgfbL8dTxDIyh9Mnlykij4LX+fAm+UpCBgAvfoItyABbpGTQESoF6Hkslkk9saQpHD/gvwNTOVV50xxD06itxftu2yGpneLQGW0dcd/QNU4oZsWKmmzivc2Abf7YkUw/i68NfxFlTPrv5w5DiqtjRWhJQgkfM6xRU20yuqkrHEDchKNxUIQfvdWVrL
+ sRSNh+Z7
+ aJk8wiLhfmbu7/EO0bQ74jg9QQSPsuAHJijwhKB/vY2VQHguXIgZpVcaor9J2JqGn4GOBqctxZRm0BYtyxtjeMO19E3aS627AxTm4yOm4WGgKPafJAUQzEXehutKb56/T9rQ+Pt6m/zBg5ykRvZOG+/JVedzgYdO6q0cbQ28jQGfQ4hyf0WrXM/BXN8vfgXHwgYHqCe25rmSAIfR+OJX+WZNCzkgXZVScf81o6usil+0q0NO3JRALMz7Ha2jREnufrRXUF3MEWQjw47sVKCsILu9bmR7nb0HcK/VxLwZQL74eE4G0LwuFNZ/BHjf/VJCR36w0x4ktj3hVdl/9k3n/PRGU4RBnBkFbqXG4txYlFCg1i4IM3hqUGMizXf5X+h0Z5DqdIO67Too4dxVgQaZaedwmRB1/dUsC+pqYEFFdzbEX0uIdqRzEnPhPr37aG4lELnsxFq4TDjvIQdAeHBRUDI76+vvtcGqdEdOcSVVNgoWup7dIzbruClodMrcw/GluC8KT96ZOPiNUsfK/YMHTwvhgBjWuZqUxnf0It/I2OEoT1Y9/7LTnSGzpAvbU5ZXipYkx9wdiZx2ReWE2kS7Pu+OC0A3LokmRuE0VdCQYPoA8Nj8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,57 +151,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A restricted DMA pool is a firmware-described ownership boundary. Unlike
-a pool allocated by SWIOTLB itself, its base cannot be moved and its
-size cannot be rounded without claiming memory outside the reserved
-region.
+The system heap currently allocates each backing page no larger than the
+remaining dma-buf length. It can therefore use the complete
+compound-page size for every scatterlist entry while keeping the total
+length equal to the buffer size.
 
-Confidential-computing guests may require private/shared state changes
-to cover units larger than PAGE_SIZE. Passing a misaligned restricted
-region to set_memory_decrypted() can therefore fail.
+Shared backing allocations may need to be rounded up to an architecture
+shared granule size. A backing allocation can then be larger than the
+remaining buffer length. Describing the complete allocation in the
+scatterlist would incorrectly expose the rounded tail to scatterlist
+consumers as part of the dma-buf.
 
-Validate both the physical base and the complete reserved size with the
-common CoCo shared-range helper before allocating SWIOTLB metadata or
-performing a state transition. Perform the transition through
-cc_make_shared().
+Track the remaining buffer length while constructing the scatterlist and
+limit each entry to the smaller of the compound-page size and the
+remaining length. The complete backing allocation remains owned by the
+heap and is still released normally.
 
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
+This does not change behavior with the current allocation policy, but
+prepares the heap for shared-granule-sized backing allocations.
+
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: Brian Starkey <Brian.Starkey@arm.com>
+Cc: John Stultz <jstultz@google.com>
+Cc: "T.J. Mercier" <tjmercier@google.com>
+Cc: "Christian König" <christian.koenig@amd.com>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- kernel/dma/swiotlb.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/dma-buf/heaps/system_heap.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 394db93b7eb9..5f65b11260e0 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -2008,6 +2008,14 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index c8959eadc71d..b5b8cdf65f23 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -406,6 +406,7 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+ 	struct system_heap_buffer *buffer;
+ 	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+ 	unsigned long size_remaining = len;
++	unsigned long sg_remaining = len;
+ 	unsigned int max_order = orders[0];
+ 	struct system_heap_priv *priv = dma_heap_get_drvdata(heap);
+ 	bool cc_shared = priv->cc_shared;
+@@ -454,7 +455,11 @@ static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
  
-+	if (cc_platform_has(CC_ATTR_MEM_ENCRYPT) &&
-+	    !cc_shared_range_valid(rmem->base, rmem->size)) {
-+		dev_err(dev,
-+			"Restricted DMA pool must be aligned to %#zx bytes for memory encryption\n",
-+			cc_shared_granule_size());
-+		return -EINVAL;
-+	}
+ 	sg = table->sgl;
+ 	list_for_each_entry_safe(page, tmp_page, &pages, lru) {
+-		sg_set_page(sg, page, page_size(page), 0);
++		unsigned long sg_len;
 +
- 	/*
- 	 * Since multiple devices can share the same pool, the private data,
- 	 * io_tlb_mem struct, will be initialized by the first device attached
-@@ -2041,8 +2049,8 @@ static int rmem_swiotlb_device_init(struct reserved_mem *rmem,
- 			int ret;
- 
- 			mem->cc_shared = true;
--			ret = set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
--						   rmem->size >> PAGE_SHIFT);
-+			ret = cc_make_shared(phys_to_virt(rmem->base),
-+					     rmem->size);
- 			if (ret) {
- 				dev_err(dev, "Failed to decrypt restricted DMA pool\n");
- 				kfree(pool->areas);
++		sg_len = min_t(unsigned long, page_size(page), sg_remaining);
++		sg_set_page(sg, page, sg_len, 0);
++		sg_remaining -= sg_len;
+ 		sg = sg_next(sg);
+ 		list_del(&page->lru);
+ 	}
 -- 
 2.43.0
 
