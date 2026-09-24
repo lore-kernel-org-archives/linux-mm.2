@@ -4,81 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4535EC98321
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:54:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CC54C98326
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:57:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FAFB6B008A; Thu, 24 Sep 2026 15:54:18 -0400 (EDT)
+	id D4BCD6B0088; Thu, 24 Sep 2026 15:57:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1ABA66B008C; Thu, 24 Sep 2026 15:54:18 -0400 (EDT)
+	id CFCE16B008C; Thu, 24 Sep 2026 15:57:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09A716B0092; Thu, 24 Sep 2026 15:54:18 -0400 (EDT)
+	id BEBEA6B0092; Thu, 24 Sep 2026 15:57:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D3DD16B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:54:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97D926B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:57:40 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6CBF81C2372
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:54:17 +0000 (UTC)
-X-FDA: 85249707354.06.5EB0C97
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9B7E01A0002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:54:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ue+9AbvB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2EE31A68A4
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:57:40 +0000 (UTC)
+X-FDA: 85249715880.06.EBBEAB0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 668781C0008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:57:38 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kq9a9Rkn;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790279655;
+	s=arc-20220608; t=1790279858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0HJNKuMWG8smWqhbQSNH8vsLE/Fn0+yWkGNbv2CcO2E=;
-	b=EwQc6XxD1mtqf6q4usUZPacHJDoJK8tU0l7mjoLIkJTzwpTLLbGeqZa9KeTCshgTqujAQI
-	KOoFaFA4IpBoN+oCO2q0iJ4g7JuEnw3+J9+uxTfTnM0KumiSk76R6FMQjD0yAgSAKkgTwZ
-	OUwFCiiFTSfwQwgh6iAYAqgY8kcIRo8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ue+9AbvB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=nLpeLpLGjwOfKcTCnCQSU5EO1VPuu9jb7mm6xziMJmI=;
+	b=ba7uLpvpbTwF9adzcwyjV41ZgtXWyELcGXjbMEp20gDomap5dFGdBbqkEazYR7sDgYmRhP
+	qC466gtmvZoTR+0Nx0qkyrKPelrvcUbE1seKhU7PIaCDiEpsY11+KdrtwKl9IauVuclxXi
+	rGzYQkbIK/ri+iqF4g78tHYN8jnb5xw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790279655;
-	b=JugBaNIo/dcf/E58VxJMnpGk7KlKquuNSvCTMZIemi+riwKoyzdDCaPExBXNcXMbF+S2FB
-	9rcwjadUHoyQEYMrnh0jRWQH6ZOjpzCKkwH7uDqEcn/eYxmin6Kh6GdsnzVj8hnz/8A2kL
-	g6dRtpzx5HAMU9rbncdqcP+RdLdYfyE=
+	t=1790279858;
+	b=wQytt63rukMUMdA6nhn+mypE908EhgpP2CimeoJ7qsI/NhyxZQfu6Ifglc/WvNkeuSvPKv
+	r5CrCIGdDRU6SABWbef3ceU9BjSk25nFNbcQ6DdFLNFCCHLXSOHLfdeVjPaJ8aAtkw+UpS
+	DLyl2YyVfGaRhUABochImCf2unkaQaQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kq9a9Rkn;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BB3A41FCC;
-	Thu, 24 Sep 2026 19:54:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B13A1F000FF;
-	Thu, 24 Sep 2026 19:54:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8384B602BA;
+	Thu, 24 Sep 2026 19:57:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A4A41F00893;
+	Thu, 24 Sep 2026 19:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790279654;
-	bh=0HJNKuMWG8smWqhbQSNH8vsLE/Fn0+yWkGNbv2CcO2E=;
+	s=k20260515; t=1790279857;
+	bh=nLpeLpLGjwOfKcTCnCQSU5EO1VPuu9jb7mm6xziMJmI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ue+9AbvBliMX+AIYWSvzQWUAHjFI3jdLOlYH/aiNY3rhxae13ZiGjmWsr8aJZNcpr
-	 MfQ1/lX8DbksvJiuh/nkNXdhKQe81Z2d8J4cm9YHvfu0c61XAOxufIl4bGlteKSYa8
-	 3ZxGS5STiI1p6uzVLM6rQlB7RiVVJOjXfEvc4MfFDn0cZrc/5OGQij2Y5y8akxyKOt
-	 QrJ8ML2y4spobTgcJPcgtV+cNiAaLhG9i5cVWxzjvybQ87SHmd0fMDX5VkeYBwd8R7
-	 VNVePZoQSbnizLpo3ctvplSR/tUOuDV4rK1BKVLcgMxf8plzTKyPdXN+oUImJ7G2wI
-	 SWj4KOKPH2BTQ==
-Message-ID: <25cae0dd-6b4b-4519-8119-231e2f65da46@kernel.org>
-Date: Thu, 24 Sep 2026 21:54:08 +0200
+	b=Kq9a9RknlpZlo4b0eupTsElXigFXrIUanPBhI2KXLjqTN/OC5vQIWmqhocXZcLk7j
+	 ghadO3hpttkfqq9lCf9lAvvUc3oTnfF1y4bCLNvFwNpR2gjUhz+LxaK37+wB5et3hd
+	 FE/alFY4UU3uy98KmcCzzeHqKUv/VhYvKBgs+VI+QEX5kqxM8vj7JtZUkC93vh6VVT
+	 AkP76/uLIhqaKfSay37MHOV5bQ4DSDQn+NQ/AkmAQIsCtj/gug7rmK4l6FAy1sfgaR
+	 UC4sdM78ApgRJWW2sd4E9ocFMi0IOuFlUwWwnJ82CAk1BIaVA+Hj2CRPMZ8JuOnN9V
+	 ZGa7SaSgPlnmQ==
+Message-ID: <8fd983e9-286a-45bf-a4f0-62dbe64772ff@kernel.org>
+Date: Thu, 24 Sep 2026 21:57:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] mm/memory: reuse the whole exclusive large folio
- on a write fault
-To: Yuan-Hao Hsu <aa9736195201@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, liam@infradead.org,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Barry Song <baohua@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <0c0c19d0-997a-4c8d-a103-2b3d153f4e32@kernel.org>
- <20260919111851.678-1-aa9736195201@gmail.com>
+Subject: Re: [RESEND v7 11/29] mm: split PMD swap entries into PTE swap
+ entries
+To: Usama Arif <usama.arif@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-12-usama.arif@linux.dev>
+ <7f6eb404-8139-4208-88eb-03ea8a4bf3a9@kernel.org>
+ <326b26d5-481e-4524-8b9d-c4d54924626e@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260919111851.678-1-aa9736195201@gmail.com>
+In-Reply-To: <326b26d5-481e-4524-8b9d-c4d54924626e@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: boyrweasj4wpenoiewfbigxrpijm8cg7
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 668781C0008
+X-Stat-Signature: hrotsh49imhscx4eaxj8ikt3nr3gthss
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9B7E01A0002
-X-HE-Tag: 1790279655-603386
-X-HE-Meta: U2FsdGVkX19MaYah0O3W+l4G0aNmjZ1Xhjd+334pFC0JYsiRP7yE3OujCCbkpA4NtgRjuPpCiGSLXGRGdMZ9gNgVJRtqAqyolLhborqCyVlAFB8erPqduNw03YZx8Df6itN3ZmxWa3KRA6nTCRlxaZtBXvsOj5dupAPA3k2aTASn890LeLsyG0Okn76X7HkvX5Mpx/pYgDN/FulU4XQ9SZfm4rsTx51WgSqse0z9NMvl49grjElVRkPGV5J/GOhq3eQxF/OWabgaP8h88bWKUEih5H7uDddkArnO/+YKdi6LGHIKoWug8FAmnSn5DppE/wgepSOGt1uPjf66bvW8uYCUC9A/bTTsUwDUh7tGdLB5j5gcq/UNnzfYZk9y+baZxOLyuyetZ/Zguid9BrDTCjJfRarroiSSLP6lZlneDv475wQgeQmzVeLa2BDxAV5tKjAfd3a8ZkVe31HrldJy9pVt3dn/7d4Nk/Y1KPfaDDd3WSa7+lwTaFDcekjWL2KpCbAbqV3bPfNqLrevT/oLlZWg9EveX/3/rjJi/igEzDADxFEFtd8cYW5mNY0I8QnE41t4GesiedVlsrste4ceuDVdiwkYbW9D0ZmpH9DEOeDtsYkKGATllnkRqL0a61r8s8jeyVgjb8xm5H3LtsCNE7NvRuareR79EKqTPsZoLIv9OthF/wGKCwB3nU3CtmrKowU+YF1j/GGv5OLwYkn2fdt/grLA9GsJz8l3Fh/sEkYC5i0hyUq/YTQq/RTF3cs+ZTnEh55F8OX3D6LSEF9NCW/5In7pYIFGpsou/sMTCE82uxmQaOSEJ9bhqeMSBYWamRYgq9S9POIjFvjz4Eeqa5sNCfF7dsdH9IZ24iOiWT4p8PsZQ9Ceci8nSA+gEKFMbf63d9F9vssuUlkYH0kiHmoyUhdserJhNgVX1x167KbKauhfJuNzqk0xn5ZdObKeIRX8K+T0+d4Vx+6STkI
- DNTKZhGR
- iieFiJf1hcA9/Sd6SNJXRcLwpZoqJv3O9RD863+nX3fpIjZePRpw84GlYYgUOccT9t64nrN2P8LSXelqQq9AxER+TNPuCHPxQ8ufXT6I7YyGIcYdJjt+eH0DO+WW+l+DR1FY9tXtlGmFrWNLYy3McLtuEHvoVR73gSEs8SsMFsgsu/4Vyj7RMxO+AnqiGgNl9Uxepkwu75EwdRGYoherAq/3i16pZei63SXWYBa+OcuYCp4LyQi2cjERO0rnbpY9oFy1vrEP0gqtkNDs=
+X-HE-Tag: 1790279858-443931
+X-HE-Meta: U2FsdGVkX1/iAnUg/FXPfe48Kq3sv0E/y7ukEkkEnq+2+zLwPDUHSSWlyfggnI0OCMPDneij9yplqEqL4Oz0r3siFhl00YtmJINm1ilAcchmk6T9zalLROM08eFpItB/8aZgMBUG+nR3rMgoHFX4Ebmhd2m57nV17Krn/NAd7aPPmEOI2reKnwM7DJBmKibmfOzQ0x3K8NeaEScLnvJlq9+vzM78gDDs4jvf7swMYntEJZpC34SbCsOZMadd14+l6O40BR7jdVJextnhRBQPg1zjfCvvrEwRULp+sp0fnHxy0tE/GCQwJvmoP5NIhG9acTNid+O/hyGjvVI/jhzw6k83wjJj/9skD/EnZWULld0ZG1MaCeviKVdNuYFwrz+qyoIjIP4HPid2XaajHLgltQS3LdlF0LOjgizAc2Bsu/PaYBGgaEas3DQg8+oUU062targioC9trRj/buWAEH2sCI2RcBgwohAIL5kWg6mXNn1j5RezZouWcMPyYrn0cuGJfsO6ZdlVklFVM5l74q4O+gcJfG6P7Y74zeExITLMdzr0mGOE4VTAIfIuVM+UYO8r67NAcbBcRhHkuAtaEKaO89c3Vzm6+mGzTlfb0LouERKraFhQzwfAGba2V8G3DwyM8dcrYGnJ2fBsDBAS5NdWrOnIz3vhFJcE7xucDuEGhnWiAtviyYEtvUtQGOyYYbC9vXHaMmmDZo2HiCnEdxBSVidT+1jIjIlxYGPqkOB2iD/BkpCThIviWenX+xwr6rBFZqTp4whNIyPJoqb3cWshrHaTCRyoeabdSSlrH7ewkFErvQypBXRX7u0uI+yy6aOyiWu3eUg9QeYH9lygrAvxgLeK82W55bxpoyBy1fWzXZFVSCzlzlfWBL/6ZTf/g+56K+CQt3GhkFHlDwO2mNcryg0ixV3EfvDMOYJeADR3Vk/PwD5TtBh3MYXRbHn2pA9I1IY4X0gv2n90TPPYPP
+ KzIDrM/f
+ JtWxtbRYv9XjCXSIeg+LL93PoDGvZN9QELYhA0bnO/BolaZ2pbzXdyUO4PhRSMYY27lIyPSyehw2XLpJ1RiuYr2b2tCCiSbd59VQACuhWSGkWZK4rVHLHi2csBque4Ahtky8PnYgXVyeEueZT/jWFV15/lyeqCtmiooSlyblbipdeCk6QD+9N4iMGP0fkBpFXU1I9nzWa+vqb3A6tpfeawJT9Va+n6wbiRKtBYOAwLT9dHL9I7KuF5+lFwk97IXCklNxb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,29 +150,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/19/26 13:18, Yuan-Hao Hsu wrote:
-> On Sat, 19 Sep 2026 12:10:56 +0200, David Hildenbrand (Arm) wrote:
->> Are you measuring the worst-case latency of a single write fault or only the
->> average over all writes?
-> 
-> The single fault.  Each store is timed by itself (clock_gettime()
-> before and after), and the latency numbers come from a pattern where
-> every store takes one of these faults (one store per folio), so there
-> is nothing else in the average.  The tables show the median of those
-> faults; I also have p99 and max (i7-12700KF, in a VM, us):
-> 
->                      v7.3-rc3+              patched
->                      p50   p99   max        p50        p99        max
->   64K, 1 fault      0.42  0.57  25-26      0.71-0.74  0.96-1.10  28-60
->   2M, 1 fault       0.50  0.67  0.7-1.2    10.0-10.2  12.2-15.8  13-22
-> 
-> max is the slowest store of a run, median over 15 runs.  The 25 us on
-> the base kernel are interrupts; the VM has those on both sides.  The
-> 2M row is the worst case by construction, every one of those faults
-> walks all 512 PTEs.
 
-Thanks. See my other mail, we should focus on keeping the fault path as fast as
-possible and minimizing the work in there.
+> 
+> Done, it reads better than I expected, because the three bit tests
+> hoist out of the loop rather than running HPAGE_PMD_NR times:
+> 
+>   } else if (pmd_is_swap_entry(old_pmd)) {
+>           pte_t entry = softleaf_to_pte(softleaf_from_pmd(old_pmd));
+> 
+>           if (soft_dirty)
+>                   entry = pte_swp_mksoft_dirty(entry);
+>           if (uffd_wp)
+>                   entry = pte_swp_mkuffd(entry);
+>           if (anon_exclusive)
+>                   entry = pte_swp_mkexclusive(entry);
+> 
+>           for (i = 0, addr = haddr; i < HPAGE_PMD_NR;
+>                i++, addr += PAGE_SIZE) {
+>                   VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+>                   set_pte_at(mm, addr, pte + i, entry);
+>                   entry = pte_next_swp_offset(entry);
+>           }
+> 
+
+pte_next_swp_offset() does something similar internally. I suspect there could
+be ways to optimize that out ... anyhow, good enough for now :)
 
 -- 
 Cheers,
