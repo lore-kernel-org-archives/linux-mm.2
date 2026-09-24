@@ -4,102 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CAB2C98304
-	for <linux-mm@archiver.kernel.org>; Wed, 23 Sep 2026 23:28:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EC69C9830D
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 00:10:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A85346B0092; Wed, 23 Sep 2026 19:28:12 -0400 (EDT)
+	id C60B26B0088; Wed, 23 Sep 2026 20:10:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A367C6B0093; Wed, 23 Sep 2026 19:28:12 -0400 (EDT)
+	id C11D26B008A; Wed, 23 Sep 2026 20:10:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 924EF6B0095; Wed, 23 Sep 2026 19:28:12 -0400 (EDT)
+	id B004A6B008C; Wed, 23 Sep 2026 20:10:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D06E6B0092
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 19:28:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DA8C61A0115
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:28:11 +0000 (UTC)
-X-FDA: 85246617582.29.F479D07
-Received: from mta1.migadu.com (out-85.mta1.migadu.com [95.215.58.85])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F04A440002
-	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 23:28:08 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="p/tjJQbH";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 884926B0088
+	for <linux-mm@kvack.org>; Wed, 23 Sep 2026 20:10:53 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D83FCA0128
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:10:52 +0000 (UTC)
+X-FDA: 85246725144.01.6375D08
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C84D6180004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:10:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYdpj11J;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790206089;
+	s=arc-20220608; t=1790208650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OIrOn8xctsdQQDNeQdRku02Zq+U+2COm+blhhp9fc/s=;
-	b=GwA4T2FD6BjLAkwVLIEXDuo8Uw0ycrvOzYnp9kjCUjUZm5gq6Que1ARcA33YWM7SOTg40Z
-	9Bxn2gdUXN1mHTlTC4cIvtA0PZjwlNWJ1cuJH873URYosMJ1yvUHWfUXRh85QI66jcxw+C
-	g1l9SkZ8Pc0MPZPdL+fp6ADXszxjCvw=
+	bh=zQq8mahuuqrFopJghWcTwTNWIgqjB8mu7IEWM1TnLbs=;
+	b=QagLL90QkhFMgMSG5EUe7O2ORMac6ans/wYJnGs2qdAc3wSlMHLZPsOJtLoAL1r6GR+a8k
+	JAzYhSYV9gRCzQFryNkSCMAy6cSk8PhKwfbJti4ml7ASRwWfA6V2Mz0ePLbxk696PbUeSA
+	PhTW88lgJXBRQvZuVhDfiRijPv0CUyY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="p/tjJQbH";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf04.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.85 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IYdpj11J;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790206089;
-	b=2/AuXyIrQqRbAdpNqT7sFJXjom731bcAQUt57XafqC0NPFroQaExUpKzvohImg5zdx0jon
-	fC8puJoRqmDd2mz+5JLx4uI3ixFe5IE2F2uMUGE4fdf9okbsJdQFzlgXq21m5IUva5ER5h
-	ICG50HF/vpnrYTvaBI3RFLg7z15m7TU=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=MvumBShhqXhAx5A4XnSnlBOd7T1e+nrArHC0D0D2ILE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790206084; v=1; x=1790810884;
- b=p/tjJQbH1r+Mu4nL+WUVU8yNeG/vzL3ZUqHLb4IqRFIVu4VN5T+AEiNOWvIYKZ0gLmhPefJH
- awaqW6uhHo3Lhy2dHoH8L6XXjQXSXvVhsPlqcvOwc58DeEVCznc3QzGnVpWH9d9scyQL7UYBgSC
- QGSZyVZ30ekzOg1481IxbJ/A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9e4aaf2a06ca83ad;
-	Wed, 23 Sep 2026 23:28:04 +0000
-X-Mizu-Trace-ID: 9e4aaf2a06ca83ad
-X-Migadu-Flow: FLOW_OUT
-Content-Type: multipart/alternative;
- boundary="------------w02yeVEA7OyGJFRzsrh3hdEm"
-Message-ID: <d4547411-eeae-46c5-a30b-12d8cdde9329@linux.dev>
-Date: Wed, 23 Sep 2026 16:27:57 -0700
+	t=1790208650;
+	b=ChkOB8l2bAHeotUKfAP2kdufNN4A7ZcycjoVzWfvwzmZxfFpgpVe7Rv4jDtGZCSrh9MaIZ
+	WVfgGVbb+kOxelXfpghLEZFRh6a/PUiig3ma+pREbMmCp3iOaDSYvxWX8l30hlnA3cC8hy
+	6c1Yv8F9wnPaTFiXBYkJRBnoFvpuWrk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790208649;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zQq8mahuuqrFopJghWcTwTNWIgqjB8mu7IEWM1TnLbs=;
+	b=IYdpj11Jlb6NkP1oYpLkTcneXGzMc/pjKioFaaTs6ilZnosPz0KmoA0qljHa4kRYTYg6s5
+	iMp1YBcxjBn3Sw48m1nB+m4ZU3nu9CtnBa/LnDAOuUpWzCcEzFp3DMVsAEMAem67kSDalo
+	tiXQau2HMBIwUcJimp6IjD1f0kP0jaw=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-655-5Y1iFyR9OgC6EPm_-lDQDg-1; Wed, 23 Sep 2026 20:10:47 -0400
+X-MC-Unique: 5Y1iFyR9OgC6EPm_-lDQDg-1
+X-Mimecast-MFC-AGG-ID: 5Y1iFyR9OgC6EPm_-lDQDg_1790208646
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-5b8c58d7635so662838e87.1
+        for <linux-mm@kvack.org>; Wed, 23 Sep 2026 17:10:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790208646; x=1790813446;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=zQq8mahuuqrFopJghWcTwTNWIgqjB8mu7IEWM1TnLbs=;
+        b=j3j0O7pi8VmlZzuEfFzs5JZG1KflHu/JAUQ37zn4+5XcpCwe4bAyF1JZ4MHn1BvBbc
+         JYjNL2h8FFtqcwswYLIuGYuLJgx8y07+ZWBz3Vr6ed0Wvx+sHiyU4jzr9bHAd+4tu4np
+         GihBJyMdy3OlWb3MSrJ+QQd0yies7iSFnSWECXq3tFortwf+8/m/Rl9aaX4MHXwlEJNm
+         lySYy2y5bOgsLoWCzmtfukqmxm1t728f/HXTcTnDXj9pvF9HJUeVdebhr+Uu/HwNpaeG
+         nwP0pjWtI/u41PLMMmkZfnqYfRCMH0gqOz7MGOh0bt3V5C1+zh0VFTVLuL0yLPfHkQ1k
+         b6hg==
+X-Gm-Message-State: AFuF++nT/RNIkJZdcoM9axUU4fw7iZK/C7TrkuzKG90FZBJGxQXBw2sI
+	2rjkLfSSkTUG4RpupUfommZEtHEOHgQP2xIt4WdeBvQP610ZQsV8mmNKoA0Jk62Ftsf+jQZ8P3g
+	Y/thFFjizSnUf8KbyrfLceVhijvnwJuFnQOZtBVxA/SyT665IeGs=
+X-Gm-Gg: AYBFou1V5HtxWL98jXS5EwtNZ1UO5lRdkgm49K+fXDZppayfodcDrUrz1dhZlnL387C
+	PySZ358QqlsBEt5N9NIBkwh3bRgXojZWX5NV/SmMN/Hbhkg5OoyPrTE7pZZaS4kGdjgeFYr8FG0
+	T6j+2fPTZHMQgk5XrX6UOqAcGJhfBLm6lbzYgKVke8vOnHV9OxB0vSoHrd/igTw7Wa3GwjAI4yj
+	nm8WCXJydXBDMTxxbaYLFsURMTbpTvUD7L3ciWS6U777ZHDk1zxX9W6qXfFwqqXDnQcgHZVM7z2
+	CvAobcGtlIaUKthq7itLPgLhnr5Bs6qz87aOGeH621NopslUiafMQV4H76Jz1bERrz/TBoSOnED
+	Wll3v+DYKu3q+veUhxBnFPSC92hNSg94=
+X-Received: by 2002:a05:6512:6cf:b0:5b6:184c:7daa with SMTP id 2adb3069b0e04-5b8df09deddmr250425e87.51.1790208646151;
+        Wed, 23 Sep 2026 17:10:46 -0700 (PDT)
+X-Received: by 2002:a05:6512:6cf:b0:5b6:184c:7daa with SMTP id 2adb3069b0e04-5b8df09deddmr250403e87.51.1790208645639;
+        Wed, 23 Sep 2026 17:10:45 -0700 (PDT)
+Received: from [192.168.1.86] (89-27-86-246.bb.dnainternet.fi. [89.27.86.246])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8d8552dafsm963966e87.7.2026.09.23.17.10.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2026 17:10:44 -0700 (PDT)
+Message-ID: <63211ea4-9eae-4241-8926-9e81334c5f7a@redhat.com>
+Date: Thu, 24 Sep 2026 03:10:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
- Update
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
- <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
+Subject: Re: [PATCH 00/12] [PATCH v14 00/12] migrate on fault for device pages
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, dri-devel@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Alistair Popple <apopple@nvidia.com>,
+ Balbir Singh <balbirs@nvidia.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>
+References: <20260922053421.4092027-1-mpenttil@redhat.com>
+ <20260922192726.90dec3c4c77b8c9063dbf218@linux-foundation.org>
+ <5b1d0fa6-d183-446e-bc52-56e0afd3f398@redhat.com>
+ <20260923141936.d1f9e5b85355f0bdc6a6ecd2@linux-foundation.org>
+From: =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+In-Reply-To: <20260923141936.d1f9e5b85355f0bdc6a6ecd2@linux-foundation.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 8c21hYB4HRzZZjRUgoFTHn1FSfmY2MdGemFHrQMgLTQ_1790208646
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4i3ypxxm4uqcw56ffihggfx5optzjefa
 X-Rspam-User: 
-X-Stat-Signature: rmrjymzwqis6h6nsaruhcnazoygwn3yh
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F04A440002
-X-HE-Tag: 1790206088-372386
-X-HE-Meta: U2FsdGVkX19bGgQ1LPQdj+pzX8ZX6b17dtCNhhTcHCMxadVCfsVU/utCkzVkIl0yIuOpksL9MPHkyq7qSmeyU9k1Eg8QRLQ3d12PcoCBDI31ZFY3+6bZgV0Y+r4UOD5VcXhFrrYOwtfUXRRfAJz5KovoPz8YARtcxezvNyBIFfxUfuMZzsEuWkeqhAGZ/eo0s2O08PUD5BeLGFG73d6gDmnuHY2ObnZmkVVCQ+qxrX0xX6fwZAU+lOV4yjI0gM4EzlvMYe9TwuwvTripMib+5WJHNR3grLl3+GdImvX/alIcUIeil5qyaf724JyR6g2TzZsiipUeYZ4lwcOWM/oHsPldVCSGR4nHl6Ynyi0PSOdrygAUUsvYIG5Ci8SVtFkG+P4Rwx0aeEWLz6JEFfVDKgRm3i7Cz/2Yvl8Vi6camPQDgy3EFsVyFloXjmA1N5xyduMGchPrfRDLe5DKPdGy9qaJTY1CLnTfzfc9ZMX4uL8V+nU9rA/TwHaMF/S/vZBy6+7d1OIrEA84GvaznBHJP5jerRipFiaK7xObL9X3lOZWaAtnETig4WNERRqMdNKWKYWnX0LDDxr42M2yDjfm7gXO3kJgs8c3GjP7fCRXskggQEmozfCtor/mUQixtNPnDKPID544tXFakzKZ5X+c4GBQpOjvEmJ3oMQyxkXFJThHa8dFnb59Tmi8vbgOc/0kbZ2InR8y17WbYbqI8y3C4XcUr3OXg+kB0BQ7kc4M/FpSY1dcmGIZCCFIiJpdwl3CuIeYoBOei13U1VzGIKqTe4ZjhU0SHLayLJPCvgjs4/l2mWx0Bvg15mTE9/9HZj827Q2PAvLv21Y9qMRxYgDIfqdhgxjbbdGWTyIrksFMdVBoB7zmLyQUNMUcIJoJz0sfrJjC9pnagA6cgNgF6WCgn5sqnt6a1oX3RMxeEnNSXgcq+SWW9ON3x1Kc3tJJE6Xa+5v4FLvDRr0lSk8k0q/
- BGuDsy4p
- YczDyJjdTH8ZWpAit73FpMM+tq9D3zE594/YkgeXtB31Tv1KUr+aCO+Li86FYuCfF7AvTQdx/34LCTeczZkwn9dC+CZuJMm1bdePZBwzDtvbfz374/W3fWBBLvJF7Q+3oj4o8lVUNVNRiYcKchl8ACdcVWuNf9MVWB2iCLzxtbaK7B7O/DZTLTnylZMc2n6Y1Gfw5jZFPPlNUKbs5hZSi6aiMpFG0oD+tVa8who1vr8EG+un2wsSRq9diFWs93CgVqu2Y69r8sJ+zJAFlFl20Qdkw/DGpjJfQZs8wqp79unurcy0FydyJGQJQjNoyM9TAnJQVG7RRZrMumvjlfV38XOQ/FrMA4apN0oPIU0/bMj1cKOqzV2gKirC6NrIxA5QO4JTdd8iAG25IcJ2iJnOvpRGmea5c0HOAiHc40Inneh/ki4gECUxXW+Dm22AsctD0UJ0GZGlZgkCG6HMK3h3deQ3oFWCCoY/HXzoTgXcOP15MNuxtzn6t+w38Ess4WDESbQ5cyYgL7GWfbTGrvNlwYsPGUQ7ad17sQxRTMUbM3AvIf2tyBIsxKA9E0ihMVB3Qc6Nh
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C84D6180004
+X-HE-Tag: 1790208649-72394
+X-HE-Meta: U2FsdGVkX19Wj3SCf8RloKXfDXTy+cEi/EYgkzc+6ADrZxwWbo1AOZA47xg50+wEzqz9UvS2tv8ri+zqQnbFYlvAfaSbKg8t1JX3k+VGgRKregtUfdLEG9xxBXea3QvfdlqH2YAe9dOZ1okejEEysGf+zlGFYpIPyJVTwCZwX3ryzXHcmOseeHQmrW1pL0/UAfLUfvZWJQtcIXp9hwJ90QjvOw8LCu4anaTr4q6KAxDumxECmDrVfV6D5iEzhmkVLeyHLTJPK55vFU/NwD3HXnDpTXasoa+VUXOiyv7Fk9YgtOv7tPkJ2V1j5aBrJfYsrO0bxjUxkUf05Au5RmkZnMZn2sW3zew+UzgMMhRfPztJ82IvYkaTV5p4UNnOzXXJRWRy1ZbB59Hqq6tqrpsdrxR1jMHAxwF7TEoq/pxOT5vvwGzWhOQng9yGD0X1DnedysQDtyv11pELODGTFayuVbk1vhOTSY4C7a7/gzQQTtNNxGmoU7qvyBLyEnBXOk391LdT4rROlqtzaVftSG3ByltNvJUixicK1rCkDH7rRNVIYiEShZWmSayGMgKitxtZmpiv99MSJ884xwJvCuY6vtHv/lFJWzPPEtkRx2U1YyzS1NoU+tYJSX6Vu7VC7nQgu6Vfj4lvVMbblD2FVXp9GBOdie6BoOj9+D4lphkHRf7Mtpy8E8qtLfIAhfjAdBuRValMpDTZoJUaoAhO2ejyJiqhlo4HUhj77CPrESqXGVpdFL5brTg3UHh95YZ7v2GCC0elfdQnUMCIluF3AUeAG6KnG4aLbq1v4ix1FZQOSMg045ljp54AUtk7duo6fDeorPsIkZHMi+nrbx1SDu1EQ0eNbD7zIlYnAzVWAxjU2Rd3KseQE+CEsSQDk+ETHreYAWQwRIu8DKMzFGQIDCdZEcjhzTk0XUvZwIkQezzg1GcFrXau4wQ1oiXIvXIQHwoQGstVWaW8u1PiHF4bmt3
+ mKDWUMYz
+ Fx8Zd7BiACYiZrtEMArlFhaWjt1XnDRH9eutTUYh8sxQw60wx0LVVTzA+rjPpXwO9ZfE/RdcsAnhTb48bSCUEGAArHFiE2Ud2WtpanyNFPhulHusBO245n5CCJoxDy5u4stNSWPLFCUtKd/ntQ3iIzU2AHWn5wPJLME7VBEuVyXsPAKcicJrH90yrcCOkdAcszI6yGWbrnaIFWOTOczEc0/mWI6Bg9jDiJY53QHZ7hB8YVT+rpdHhNzrrMFK/v/WikNqWaMNu2MKMK7WmJpGtWds7eVNNPUHhUo1A4pl2tzK6OaNnnrBf6QGZ/Iu5bmlnGv4NwicHK5p++BTncHTs0qNL+vulYY5mNoS3sjUDdllNOZ6nqAcytiC/2/W74GSX1EvUBucg0KL+o5qCIyzc0XYvrTzmCNfjvtgTqVW2Bj6PbZnx39erK+uIf6RAyP5JhM/Wy8Sq4rA0W/pCLGA+edDcxhEiqvd5JMRWvH0qkxh3ihU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,208 +139,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------w02yeVEA7OyGJFRzsrh3hdEm
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
+On 9/24/26 00:19, Andrew Morton wrote:
 
-在 2026/9/22 11:53, David Matlack 写道:
-> On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun<yanjun.zhu@linux.dev> wrote:
->> 在 2026/9/18 13:06, David Matlack 写道:
->>> Future Work
->>> -----------
->>>
->>> Following this series, we expect to make further improvements to the PCI
->>> core support for Live Update:
->>>
->>>     - Allow P2P across Live Update by avoiding resizing or moving
->>>       preserved device BARs and preserving all upstream bridge windows.
->>>
->>>     - Support preserving Virtual Functions by preserving SR-IOV
->>>       configuration on PFs and enumerating VFs after Live Update.
->> Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
->> kexec is a foundational step for minimizing downtime.
->>
->> As we look toward complete end-to-end support for DMA preservation
->> across Live Update—especially for VFIO device passthrough and dma-buf
->> sharing scenarios—IOMMU table/domain preservation becomes crucial to
->> prevent IOMMU page faults when devices continue performing DMA during kexec.
->>
->> I would like to ask about the current status and roadmap regarding IOMMU
->> Live Update / KHO (Kexec Handover) support:
->>
->> Is there an ongoing effort or RFC series for IOMMU handover / page-table
->> preservation currently in development or under discussion?
->>
->> How is the coordination between the PCI core Live Update mechanisms and
->> the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
->> restoring domains or handing over root tables)?
->>
->> Any pointers to active discussion threads, RFCs, or future plans
->> regarding IOMMU participation in Live Update would be greatly appreciated.
-> The first IOMMU series to support Live update, can be found here:
+> On Wed, 23 Sep 2026 08:29:34 +0300 Mika Penttilä <mpenttil@redhat.com> wrote:
 >
->    https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
+>>>> migration). It is also tricky to code correctly. One page table walk
+>>>> could costs over 1000 cpu cycles on X86-64, which is a significant hit.
+>>>>
+>>>> We should be able to walk the page table once, faulting
+>>>> pages in as required and replacing them with migration entries if
+>>>> requested.
+>>> Sounds sensible.
+>>>
+>>>> Tested in X86-64 VM with HMM test device, passing the selftests.
+>>>> For performance, the migrate throughput tests from the selftests
+>>>> show similar numbers (within error margin) as unmodified kernel.
+>>> But no performance benefits are demonstrated?
+>> There are no performance regressions for current tests.
+>> Real benefits come if want to do migrate on fault.
+>> For migrate on fault today missing pages are collected as not-present and
+>> the caller has to fault them and re-run migrate_vma_setup(); folding 
+>> HMM_PFN_REQ_FAULT into the collecting walk removes that extra
+>> fault+retry round-trip, dropping two page table walks. Page table walks
+>> are not cheap. Not to mention simplified implementation for driver.
+>> Also, the vma looked up as part of the walk is readily available for
+>> migration, eliminating the need for explicit vma lookup - one more
+>> performance benefit. Net effect two saved page table walks and
+>> one vma lookup.
+> It certainly sounds that this series will result in performance
+> improvements, but have those improvements been quantified?
 
-Thanks.
+Yes I think Alistair mentioned those walks showed clearly in perf traces
+in his experiments, and that served as a motivation for this series
 
-I have a question regarding the restoration sequencing when module 
-dependencies are involved during a Live Update reboot.
-
-For the standard hardware/driver stack, the sequence seems to naturally 
-follow the kernel's early initcalls and device probing (e.g., IOMMU 
-early hardware handover -> PCI bus topology/BME preservation -> IOMMU 
-domain attach & DMA ownership claim -> VFIO/iommufd cdev binding).
-
-However, if there is a custom kernel module or subsystem (let's call it 
-Module A) that is not part of the standard PCI/IOMMU device probe 
-callback chain, but strictly depends on the fully restored state of PCI, 
-IOMMU, and VFIO/iommufd:
-
- 1.
-
-    What is the recommended or standardized way in the Live Update
-    architecture to guarantee that Module A's restoration happens
-    *after* all its underlying dependencies (PCI / IOMMU / VFIO) have
-    completely finished their restore processes?
-
- 2.
-
-    Is the expectation to rely on LUO (Live Update Orchestrator) phase
-    notification callbacks (e.g., late restore notifiers), Driver Core
-    mechanisms like |-EPROBE_DEFER| / |device_link|, or something else?
-
-Any guidance on how cross-subsystem restoration order and async probe 
-dependencies should be handled in the Live Update framework would be 
-greatly appreciated.
-
-Thanks,
-
-Yanjun Zhu
 
 >
-> The IOMMU series builds on top of the PCI core support (this series)
-> and the VFIO series linked further up in the cover letter.
+>> This series also addresses the vanished/reborn page table while
+>> collecting problem which can crash current implementation.
+> Oh.  I didn't get that message from the v14 changelogs, and crashes in
+> the current implementation are not what we want.  In fact, addressing
+> those is more important than speeding things up.
+>
+> Under what circumstances to these crashes occur?  Can/should we we fix
+> those in a minimal -stable backportable fashion before moving on to speedups?
 
--- 
-Best Regards,
-Yanjun.Zhu
+It is about races between concurrent MADV_DONTNEED and collecting, where the
+collecting arrays overflow if page table is cleared, recycled and reinstantiated
+as large page.
+I am not sure if there is minimal fix to all the corner cases,
+or would it be more like the approach in this series.
 
---------------w02yeVEA7OyGJFRzsrh3hdEm
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+--Mika
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">在 2026/9/22 11:53, David Matlack 写道:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun <a class="moz-txt-link-rfc2396E" href="mailto:yanjun.zhu@linux.dev">&lt;yanjun.zhu@linux.dev&gt;</a> wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">在 2026/9/18 13:06, David Matlack 写道:
-</pre>
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">Future Work
------------
-
-Following this series, we expect to make further improvements to the PCI
-core support for Live Update:
-
-   - Allow P2P across Live Update by avoiding resizing or moving
-     preserved device BARs and preserving all upstream bridge windows.
-
-   - Support preserving Virtual Functions by preserving SR-IOV
-     configuration on PFs and enumerating VFs after Live Update.
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">
-Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
-kexec is a foundational step for minimizing downtime.
-
-As we look toward complete end-to-end support for DMA preservation
-across Live Update—especially for VFIO device passthrough and dma-buf
-sharing scenarios—IOMMU table/domain preservation becomes crucial to
-prevent IOMMU page faults when devices continue performing DMA during kexec.
-
-I would like to ask about the current status and roadmap regarding IOMMU
-Live Update / KHO (Kexec Handover) support:
-
-Is there an ongoing effort or RFC series for IOMMU handover / page-table
-preservation currently in development or under discussion?
-
-How is the coordination between the PCI core Live Update mechanisms and
-the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
-restoring domains or handing over root tables)?
-
-Any pointers to active discussion threads, RFCs, or future plans
-regarding IOMMU participation in Live Update would be greatly appreciated.
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-The first IOMMU series to support Live update, can be found here:
-
-  <a class="moz-txt-link-freetext" href="https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/">https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/</a></pre>
-    </blockquote>
-    <br>
-    <p data-path-to-node="6">Thanks.</p>
-    <p data-path-to-node="7">I have a question regarding the restoration
-      sequencing when module dependencies are involved during a Live
-      Update reboot.</p>
-    <p data-path-to-node="8">For the standard hardware/driver stack, the
-      sequence seems to naturally follow the kernel's early initcalls
-      and device probing (e.g., IOMMU early hardware handover -&gt; PCI
-      bus topology/BME preservation -&gt; IOMMU domain attach &amp; DMA
-      ownership claim -&gt; VFIO/iommufd cdev binding).</p>
-    <p data-path-to-node="9">However, if there is a custom kernel module
-      or subsystem (let's call it Module A) that is not part of the
-      standard PCI/IOMMU device probe callback chain, but strictly
-      depends on the fully restored state of PCI, IOMMU, and
-      VFIO/iommufd:</p>
-    <ol start="1" data-path-to-node="10">
-      <li>
-        <p data-path-to-node="10,0,0">What is the recommended or
-          standardized way in the Live Update architecture to guarantee
-          that Module A's restoration happens <b
-            data-path-to-node="10,0,0" data-index-in-node="125">after</b>
-          all its underlying dependencies (PCI / IOMMU / VFIO) have
-          completely finished their restore processes?</p>
-      </li>
-      <li>
-        <p data-path-to-node="10,1,0">Is the expectation to rely on LUO
-          (Live Update Orchestrator) phase notification callbacks (e.g.,
-          late restore notifiers), Driver Core mechanisms like <code
-            data-path-to-node="10,1,0" data-index-in-node="150">-EPROBE_DEFER</code>
-          / <code data-path-to-node="10,1,0" data-index-in-node="166">device_link</code>,
-          or something else?</p>
-      </li>
-    </ol>
-    <p data-path-to-node="11">Any guidance on how cross-subsystem
-      restoration order and async probe dependencies should be handled
-      in the Live Update framework would be greatly appreciated.</p>
-    <p data-path-to-node="12">Thanks,</p>
-    <p data-path-to-node="12">Yanjun Zhu</p>
-    <blockquote type="cite"
-cite="mid:CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com">
-      <pre wrap="" class="moz-quote-pre">
-
-The IOMMU series builds on top of the PCI core support (this series)
-and the VFIO series linked further up in the cover letter.
-</pre>
-    </blockquote>
-    <pre class="moz-signature" cols="72">-- 
-Best Regards,
-Yanjun.Zhu</pre>
-  </body>
-</html>
-
---------------w02yeVEA7OyGJFRzsrh3hdEm--
 
