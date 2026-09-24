@@ -4,131 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5860FC98315
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 14:19:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 491E0C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 14:34:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550566B008C; Thu, 24 Sep 2026 10:19:37 -0400 (EDT)
+	id 0B0F36B0088; Thu, 24 Sep 2026 10:34:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 500F66B0092; Thu, 24 Sep 2026 10:19:37 -0400 (EDT)
+	id 062996B008A; Thu, 24 Sep 2026 10:34:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F09D6B0093; Thu, 24 Sep 2026 10:19:37 -0400 (EDT)
+	id E93036B0092; Thu, 24 Sep 2026 10:34:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 121366B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:19:37 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DEC41402E0
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:19:36 +0000 (UTC)
-X-FDA: 85248863952.10.5F6C054
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 7F0991A000D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:19:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="M EHybno";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pJYL5aAD;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C13D76B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:34:14 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55051A03C9
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:34:14 +0000 (UTC)
+X-FDA: 85248900828.22.03E4535
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6F922A0007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:34:12 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAWWQW+Y;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790259574;
+	s=arc-20220608; t=1790260452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=McYcr38jGkYoq6hJYVs/3wa8SJ7PvSHzvJ4tlA7QJEU=;
-	b=aLlfeOQnz6Uf21Qj2PJlcma2sXZUo4WIRD5jT9g5zsRz2Y6AcIARExvU6wU3rWkwk7z/X/
-	MHW8eSbARxGE8oGuP/y3BR2rXWJKoE2A/YU3sh8bes6hO6nLpu/sv524EnsNtY+gsW/so8
-	udR0tmUrEp+ahaKtyhSKLqoZdyc6QPc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790259574;
-	b=zR3OYmRU1aSmWB7YGer/NjtLvViaFRkLML0Z56SDKeQEYqaOJ3jdyuF3wjRvLwCgLvcKQ3
-	mijWMOR1vmTdKLutJsWJ/gRFKCt70QV+qusbN0MxQckRHO+smOEyBmAEQ6lhPpAEu4ZwcJ
-	VFiXUZGUZH0b9qrf7Tks6Tk4c9ktiDc=
+	bh=5s/G29r5xlQqoidU08e1WfbzuhCV/MEnckaYH46M6N4=;
+	b=cLCZFeveAr4m0XuVmz7ovyN3tPBqwKI/Vac5RchjLKfHaekTLs50hZvSSWKsb8XVRUy+0z
+	sCgYtfbQKfrVDE8vB+UDCTXhZDPz0kp8W/nm6rHJcg1ORkufhSTy4QAYcNpxd2sE4BcUH2
+	YYYeXH3lHAoGWxE/YkkUDp56MxH/8js=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="M EHybno";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pJYL5aAD;
-	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 005ED7A00CA;
-	Thu, 24 Sep 2026 10:19:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 24 Sep 2026 10:19:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790259572; x=
-	1790345972; bh=McYcr38jGkYoq6hJYVs/3wa8SJ7PvSHzvJ4tlA7QJEU=; b=M
-	EHybnodPAi0vyHE4w1u+WjjsefaBd5sAenXno6pdWVaFhV+DidxRXQauuafeNv89
-	xdg7bimN1AygAFhhu1GpzojLVPbQrcGID0Al5GDakS/iriSXM5hrnjuKUDg4vx6H
-	hSMOI5pXbXx8Xl14WKFAd4ge4M2GC/IbHr6XqYtzWV2oB85fNYMVtkmXjQiV6gTG
-	SdF9SJNSXYHTey+6GExEWAL/dXz+YwpJhtKxhXSu871GXntOJVdiZ6MdqL9p/Q6g
-	9Rg4gXPQLsnxZ74g6JXDoITXKQnkKnxcbSw77zhy1/2JQwhEcBzoEsn6LfRb//bH
-	wgcxa/YIiqSTzUPYpIlQw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790259572; x=1790345972; bh=McYcr38jGkYoq6hJYVs/3wa8SJ7PvSHzvJ4
-	tlA7QJEU=; b=pJYL5aADr7ST8ElOgPGfLyuRO+xqRDha5E1QkCuycDE/h4URjj8
-	W3EmkWuUyMmo5EvoaTTTmqR8BZ6DYaDFljEq2Qf058iHMT6v/uJEfhRYSPOdp2Qy
-	NdrybLoGL8ehBLDzLKF9NDJIzNjcQCmB6D+5c8p2UJ72ieFxoJWvIJc10SFxTKBp
-	4DyUBNdQLaUDj0NMazSrpVa/pHNnBpW5BxfQPftWX46QfvVPc4rfOT1k+APihSCg
-	eJRaSc8jzTy/EMzM0+zN/Qcucrr4aQKgVWAsALAQ70NXJxLDDwPCubGA6PdqOa+T
-	xu+zOlUn9N9vQQYPNQT8O/ysajbpyB5dRHg==
-X-ME-Sender: <xms:czG1auR58td8xtILAxWYdDiCaqKMel9Ik7cxovJ8dnAaQIM2MHRQTQ>
-    <xme:czG1ahZ5kC94CPb_syoHqMNYcw5FG27mTD1SD-8_xs9d1r7xARKphYPV1qmP1pYNk
-    FrE1WF_UDQBOXYRibI2OJIabXMjtUrCd0SbI_m9CV2qE4-deAPlad2gSg>
-X-ME-Received: <xmr:czG1ajPkzZB5us_Gl0maUdvtMVGux_5uprOkfjffDZx0Khn4ZXRmJjR3Xh8>
-X-ME-Proxy-Cause: dmFkZTFUWZumAd0xpsnSEp5napptMkaBEDQBlJcKnhY8V8OVhpHPmRT+v7DP9/F5PdmAr7
-    TYY47q7uxRPI74Vh0dDckmkyW74thi5bYOR8UXGK5D9E8A/wZ6IJqTCMFvp0pDqVVI9IF1
-    ids8NGZob+fMMzrhBfCbZrbgvSuiwl4z9Gi6qZz8M54k5J/4XvizD9rLBT4sy7crZ6W9Ct
-    0uXzn5tb6N7qM2T+oS8sku9r/Ms+Gf9lT8JNHd3aiMZFRcqGcVhNrV3QMcBtrWfSObbddQ
-    wW4CNC0DRtMIUgDKYVjm6GxRbbUhDiLdMsdGfOindIzRWwsu1vvIHG3+6CDnWvFfBB9KtO
-    U9DP603j56jfQ2Bzx8bxndqlejYd+2JxadDm+BfELtpOKt3iDs8g3Z+eptGPxZlwnYm6m/
-    xRmWHLBi39KTpxH3W8OKIXZGb37ej9hrelkaPbSHnRUeLTtMVi63brE9WlxHUCZsW0oviY
-    19cCSfwVzDKaPcg403dlKebUm9iQbFmJlo2vPeZAaHCmy3Rdhc8VUqFe9m+ZBzWwCBL83T
-    OYLpaldJQ5TcUO1dM2IK+hhqTY4Rweqj6hA/qSFd77KnSzTqlVmTw3/7Ca6ls61P/6OPxO
-    g8OpfG4Hgt7s1A62dPLlHfw3rdTkWz6D4ov+bDzZb8UmBl3aaLe83cwoeZJg
-X-ME-Proxy: <xmx:czG1aiPI2w2IQJkwaLEFhA5biMsjXi1VWOtqS6xrczCwaGAiYnSzgw>
-    <xmx:czG1avNgj0CeVDoHH46feo0sumKo05KNvYFl47VbB3oWe7YWh6neRg>
-    <xmx:czG1amYaukv4x-KQTuyPXuxMXhAWggXU91-y3cJwwAlJfWGU47khOw>
-    <xmx:czG1algs20Y-L23Bxs0NY7TYfVEnAxthVckdAT27O_nBpavnPZYwfA>
-    <xmx:dDG1apXiRxco3WCoKuBJ-I2kLSVSWCWtAXV63EL5RKyC1PHCnF5bOq42>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 10:19:31 -0400 (EDT)
-Date: Thu, 24 Sep 2026 15:19:30 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v3 08/12] mm/collapse: separate scanning a PTE table from
- collapsing it
-Message-ID: <arUrhkCjop-htTZh@thinkstation>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-9-kirill@shutemov.name>
- <ebf8972a-0c92-41c4-9f42-22ffb820d07a@kernel.org>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fAWWQW+Y;
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790260452;
+	b=MKnAcAV4ohNAhi0H030r2lZapoRs3IUZrv1pqzQA80MBcq1MWjCt/MNXdpkr6uzfOYa//l
+	uvlBeRaUpu4whebFSTxvNVOTpjUBCeGMfWlH/aMPFR5G4/EVdUZ9A8ZmrEir+wB9JakXyS
+	L1LmdSvZfbd0/ZYCWeG6qNaFGdphuXg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4B5944392B;
+	Thu, 24 Sep 2026 14:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540A11F00899;
+	Thu, 24 Sep 2026 14:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790260451;
+	bh=5s/G29r5xlQqoidU08e1WfbzuhCV/MEnckaYH46M6N4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=fAWWQW+Y+CK3KEpZnau1N5gWdiMD5xMnDis+H57BJy3MqgvUHH0XsZQk4NWb8zNNk
+	 f3SDtdDFKtuMQ5MA0WwSbrS6KAn2N74/Z13FOIFHz5d3nF7ShGg9HI/QvHTWv70K7c
+	 KPT+cvyOZ9HYFuABx/SF3GmfHk/ciVcwh9LPb9joqlpBoW2UegkoDDKLO95vgbr3ll
+	 FN3hfCKgVv7ucxPdDlyuKuuKPMafYDGmB6Wmlwelp5VgqMqKAgaMF0kEQJHKsAVv2n
+	 oFXv3CqbdOGk9GJ52+JsBnl6NedYm4nQUAVFUzLCjLl8P8fTDQUvy+lNvRLn5S8HMY
+	 JM/hjbJV4adBA==
+Message-ID: <54f42979-fc19-44ff-bd11-cb43f13bcd32@kernel.org>
+Date: Thu, 24 Sep 2026 16:34:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ebf8972a-0c92-41c4-9f42-22ffb820d07a@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm: page_alloc: do not give all non-blocking requests
+ reserve access
+Content-Language: en-US
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Matt Fleming
+ <matt@readmodwrite.com>, Salvatore Dipietro <dipiets@amazon.it>,
+ akpm@linux-foundation.org, abuehaze@amazon.com, alisaidi@amazon.com,
+ blakgeof@amazon.com, brauner@kernel.org, brendan.jackman@linux.dev,
+ david@redhat.com, dgc@kernel.org, dipietro.salvatore@gmail.com,
+ djwong@kernel.org, hch@infradead.org, hch@lst.de,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-xfs@vger.kernel.org, mhocko@suse.com,
+ ritesh.list@gmail.com, rvvandan@amazon.com, stable@vger.kernel.org,
+ surenb@google.com, ziy@nvidia.com
+References: <20260910114602.926944-1-dipiets@amazon.it>
+ <aqQlUr-1h07G8JWM@cmpxchg.org>
+ <8d6a8a63-4adc-458a-b548-a47bf5ff8eb7@kernel.org>
+ <aqq8pWI0u1IZNWHT@cmpxchg.org>
+ <9f415dc7-adad-4161-b20d-7c3173f50ff3@kernel.org>
+ <arFBJdYaRx_iJNDA@cmpxchg.org> <arFBWvzXPYrKuIYi@cmpxchg.org>
+ <arFFKGrpPwtTkoCi@casper.infradead.org> <arFUPOi6gadAvD3E@cmpxchg.org>
+ <c4a6d3db-8b57-400d-a377-a7acbf45d3ba@kernel.org>
+ <arKI_AwXQxicc_iH@cmpxchg.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <arKI_AwXQxicc_iH@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6F922A0007
+X-Stat-Signature: q543gwiisr4q899pd5udxfhybensnhen
 X-Rspam-User: 
-X-Stat-Signature: ajd5sbwrf6ub4iz89u73hy8358da66rh
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7F0991A000D
-X-HE-Tag: 1790259574-915663
-X-HE-Meta: U2FsdGVkX1+VF/c7NOuWksRx0avyTWSOCkq5ShRWTAkDkgHHG+GRUtVKM9KrshHQE9F+HOf448KVhSgjOWjf0WqoV+e7rzz5fXrpUjxQ2iAD6BGwK7x15VaQ+rCGJrQAV30+cusUmxub0o4fnkBnPGZApL9HAZTQwVktq4hXc/RoVWzspmVEhSEqp9us/ItpH/FARs9XJCtAsz3Gp8bXYLe7AOsIOMjpLzL9waIEySpkd6fM+akDEipjyktjulgkMorEnrchHVEXxFwIA+HBR/jAFGDEKS03x/naPrVQiPg2z44i2LQvN5MQy3RYGrd4gTS/IrIcuWgZfoY8AbN8bg/xQUR7VGnWL88CSMH913H9dUNl2ymae/ob+i266uKjbhX2yrcaFh0YNlzKcm4WaYDp+3y5kO5zIW4GhnbZ7YzbT2pnE+7xbWezrudCFWbHk/QBg9ToCXNX0CA8GBJRrVT+o3SqBQqzobVF1bvzmnImY2+OgwqjtGHTFsGyl2EWPdA+jL0QrfqF7PwznNA8UjSzqXmxkXjr2RsKUKKZiNKZfvceudWHskHfjh449FZB4WoIICp7+/XsyTDAQD4CK7ScznNbuhuHGyViuF87M5+dSrYC5uQzszWE3aM96bbB2GiMUlIjsNdHMmm7lw5vb1Vp4yw5mIkfJanPJcXvai1rDTKY0iqjwA6wBe9XzMkOxIXq8Vl2fV4SlkLhAP3IlLT7lZF7sYxELqya77DeeOiiltmcpEz5fKF4bnzE4Xo8dXbL4wJvdDyYWVTTfwCzCCDXmnHuUKsmNxS+gOv9mWYS+ziM+PrajRDGfg2oasPnHNcGZI7Qds+d/9B6eVs9oz7l0ldY9JSpIjpfgF3I/vDweNR/hCmb3jDu7DTvBfIM0668qdVPyRtm0Qva7IpSnGUdFWzY69ua1Q1Z5T0VKnVMAoHw87g1I45A05VPF9nX1CoEZrRcs0M2QUaQdWf
- 2SAKO0z3
- qTdF0Ux3ap3MiLSEXLKvFIN/XndGFejvCKFDRMSzWAi26pEAOsVcTnRMBJoQ0MTbHKkPfQDYNJH5uivBm+wEnS3mMmdCHbcWUAASjUfRuBIuKGV6M1qlZUwnArroUgn6z222xr2EvwuzQnw9gnC4LcusVVZSVkINGUGYyvaRjgxxYoTt+GXa2Xp3iwMldN3GRMzKaPeuqwxRqjqbtbmSS82f5mK3kIUOv/a+0MYeoVSSsGnLn6yK6psETc8QBTF1p094u2WiYg9EGhJxb86G2PPhAOZKgaddntSUz2E8DJsoCCXKIfsG8dBMlVDiqnY3eBzubkjpx+AQlbqCNNnff1cKdCTaGSrcpP5YZo2p1nsHaM4s4DzWPj05ZwCNsWbzwqTdzPiwf0QzD7JR0828C8qZ8oOA1tQ5uslzA3iHkLKG4XrdT3tuwXNn6QNSuHK5DaI6y8gYf991Rz1q77IOHqPNNjjQDMQ6Qp+zu1OdaPNuPqaw=
+X-HE-Tag: 1790260452-826314
+X-HE-Meta: U2FsdGVkX18Z71pDthJo/x3YTAA0JSEFpygdJD8XZCfJLL1nQGvoT0rYDxZFGAB+o/D/uxbiLjIN73J4KpT9euDuAS1sJBxhrf1okxIN4dZ/inqE8zeYcjRH1vyHcNR1TAEf9oljjwtPNtDPbvJEa1Ys/C9pj8F8i3VyYtxWTaHi92QzJbJ/HgV/k3/MvMkN/vebugA15YszVBgqojXm+ZR9KnY5U+5B2d0W98wtvI7GCRScsrzaTWCDZUyZg4aA0ylrel9N1c6emuapgLjBJ0KS/vKRXibfF3PolWsQ6b/LCjRzPRIhfA15UN1pW+6xoqvEO7/oj2QJm5IUhqMqaoG3yE8lsVEtdK+iNv4CvWzpw/Uu8Hr/m2axX9b8QQHSwlwp1DxclFVZaUpgDOBwvLPhoFEp6V1gX7bZvsZ33Ex4GrS4IYY988I+ZTIANajCTWLxc/Fz175xuq0ARkzXCvzSpuJWht/jZk4f6h1y9n+2u3/RHG/mtQdM8h+N+QMcade04kacGPCL8CJSY+ageZcxI9O3oIQeDFhnfYahWAio5ugj9hB4jQJ1vWI/1JM5XpRudt8MOh1E54iBun69x8Tz4dHSmXSlneJQ/awKY7Wo3Um+kmB2becbn6gzYPz/a7t2dmzc9imVO8BJxZ++6aooZr69pc5sQQDuV9NyrZBbOIkda8uK3K58T26flHIBHH3MiYSZppUMPKti1mW+/Jn2HUjwetCqMWGeMCO80V6JIM3SRNUyXQ3he+0yQc4O/CR1Kk9B89do9k1/Y8sXojjFZPjo1bBbZ2RBdQRiTAQk0i1Hro3N07KyaISWp3iIo2Wokg0uLrSoYomVK5fdVZRRO/X0QSGU+NjeuZ25ywl9yl9zrN6UBzvPw9SzCAr8PCUt+eB9Bz0sWOJQEGhVCxpZ9hHyYOYbAeMaFE3HTdFeRRZsDID4XObY6nnz4juALPXhMLObVq9KCDEHhc7
+ MWFkkOVN
+ ejdviwMiQ2zxVwaXOjXdJbtEa1znspcGfxN8Z8yq5m+gjxVXNO8k6VxqwCzGSXh5spzWGyUoNfAaqgDSH3YaTSlTASSw9rnuEQkAbG+vfsU3IFcwQPRbllFzxnD29MTvmAjJMJXdpL9+ETdOKzmxhUd6GVQFQRvl61BV4yQYe2HAvRTf44ikC66zpW69upZqFbxPNZBG498CpS5yHgUEF3L2QgtOhpPkxJ2KVDmaCfDqyQJpeR8TCq0nMveWJL51PT3FpcrgH0s6Si56RJJviT9zRhQ4Bp4Pz1xqZNLi6MbrUVz+hyh8z4q2i5JRTeMo1xDh4lUMc5LfjFYKbompq4GFwXaUScrs+SjubcfnThlS1QiS6TX9zrkc4b7e4GP5K47vM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,185 +149,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 03:04:05PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/16/26 11:31, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > A collapse is two jobs.  One reads a PTE table under mmap_lock and decides
-> > whether the range is worth collapsing.  The other allocates, isolates,
-> > copies and flushes, and wants the lock given up first.
-> > 
-> > collapse_single_pmd() did both, so the boundary between them was somewhere
-> > in the middle of a function.
-> > 
-> > Give each half its own function:
-> > 
-> >   - collapse_scan_pmd() scans one table and only reads.  The anonymous
-> >     scan that used to carry that name keeps its body as
-> >     collapse_scan_anon_pmd(), and collapse_scan_pmd() is now the entry
-> >     that picks the anonymous or the file side.
-> > 
-> >   - collapse_run_pmd() does the collapse the scan asked for, and is
-> >     handed what the scan returned.  SCAN_SUCCEED means there is
-> >     something to collapse.  SCAN_PTE_MAPPED_HUGEPAGE means the page
-> >     cache already holds the PMD folio and only the PTE table is left to
-> >     retract.  Both are work for the run; anything else is why there is
-> >     nothing to do.
+On 9/22/26 15:56, Johannes Weiner wrote:
+> On Tue, Sep 22, 2026 at 01:52:41PM +0200, Vlastimil Babka (SUSE) wrote:
+>> 
+>> 
+>> On 9/21/26 5:58 PM, Johannes Weiner wrote:
+>> > On Mon, Sep 21, 2026 at 03:54:32PM +0100, Matthew Wilcox wrote:
+>> >> On Mon, Sep 21, 2026 at 10:38:18AM -0400, Johannes Weiner wrote:
+>> >>> +++ b/mm/page_alloc.c
+>> >>> @@ -3246,7 +3246,9 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+>> >>>  			 * reserves as failing now is worse than failing a
+>> >>>  			 * high-order atomic allocation in the future.
+>> >>>  			 */
+>> >>> -			if (!page && (alloc_flags & (ALLOC_OOM|ALLOC_NON_BLOCK)))
+>> >>> +			if (!page &&
+>> >>> +			    ((alloc_flags & ALLOC_OOM) ||
+>> >>> +			     (alloc_flags & ALLOC_MASK_ATOMIC) == ALLOC_MASK_ATOMIC))
+>> >>>  				page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+>> >>
+>> >> Would this be slightly neater?
+>> >>
+>> >> static inline bool may_access_reserves(unsigned int alloc_flags)
+>> >> {
+>> >> 	if (alloc_flags & ALLOC_OOM)
+>> >> 		return true;
+>> >> 	if (alloc_flags & (ALLOC_NON_BLOCK | ALLOC_MIN_RESERVE)) ==
+>> >> 	    (ALLOC_NON_BLOCK | ALLOC_MIN_RESERVE)
+>> >> 		return true;
+>> >> 	return false;
+>> >> }
+>> 
+>> I think it should be named e.g. may_access_highatomic_reserves() as
+>> may_access_reserves() is rather generic and would seem to imply an
+>> ALLOC_RESERVES match (see 2/2).
 > 
-> Makes sense.
+> Note that it doesn't actually check ALLOC_HIGHATOMIC itself. It's just
+> the hail-mary AFTER trying the primary migratetype. So the name still
+> doesn't look right, and rmqueue_buddy() reads kind of awkardly:
 > 
-> The naming is a bit suboptimal and inconsistent.
+> if (alloc_flags & ALLOC_HIGHATOMIC)
+> 	page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+> if (!page) {
+> 	page = __rmqueue(..., migratetype, ...);
 > 
-> collapse_single_pmd
-> -> collapse_scan_pmd()
-> -> collapse_run_pmd()
+> 	/* Allow OOM and order-0 atomic */
+> 	if (!page && may_access_highatomic_reserve())
+> 		page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+> }
 > 
-> Maybe it would be clearer:
+> It would have to be may_access_highatomic_reserve_as_last_resort() or
+> something?
 > 
-> collapse_pmd() ["single" is rather useless]
-> -> collapse_scan_pmd()
-> -> collapse_scanned_pmd()
-
-Yes, the naming is awkward.
-
-The problem is that collapse_ is the prefix of everything in the
-interface, so it cannot double as the verb: collapse_pmd() says what the
-function is about, not what it does, and collapse_scanned_pmd() has no
-verb at all.
-
-Each name needs one after the prefix, hence scan and run. I don't
-particularly like it, but it seems better than scan and scanned, no?
-
-collapse_single_pmd() itself goes away in the next patch. You asked
-there why; I will answer there.
-
-> > What the scan found and the run needs travels in collapse_control.  For
-> > an anonymous table that is the orders and the referenced and swapped-out
-> > counts, which mthp_collapse() and collapse_huge_page() now read from
-> > there instead of taking as arguments.  For a file it is the file itself
-> > and the offset in it.
-> > 
-> > The file side moves with the anonymous one.  collapse_scan_file() used to
-> > run with mmap_lock already given up, and called collapse_file() itself
-> > when the page cache looked worth it.  It now runs under the lock like the
-> > anonymous scan and only reads; the run does the collapse.
+> Hm, this is a mess. Looking closer, I think there is more breakage,
+> name aside.
 > 
-> So we add more locking to the file path to merge both paths cleanly? Or did I
-> misunderstand that paragraph?
-
-The lock is held over the scan now, but it is taken fewer times. The
-current code drops mmap_lock before the file scan, before it knows if
-there is anything to collapse. Most scans find nothing, and each of them
-pays the cost of unlock and relock for nothing.
-
-Dropping the lock only after a scan found work mirrors the anonymous
-side, with the same batching shape.
-
-> What do you mean with "and only reads"?
-
-That it no longer calls collapse_file(). The scan looks at the page
-cache and says whether there is work; collapse_file() is the run's job.
-
-I will drop the wording. It does not help.
-
-> >  A file
-> > collapse works on the page cache and never sees a VMA, so the scan takes
-> > the file reference while it still has one and the run gives it back.
-> > 
-> > That changes what a refused file table costs khugepaged.  Every file
-> > table it scanned used to end its pass over that mm, because the lock had
-> > been dropped to scan it; now only a table it goes on to collapse does.
+> You suggest in 2/2 to use the same helper in unusable_free. But I
+> think that's broken. My 2/2 does not look like the full fix either:
 > 
-> The last sentence makes no sense. At least to me :)
+> The fundamental problem is including the highatomics reserves in the
+> watermark check for any allocations that first prefer a different
+> migratetype - "regular memory". Any time we do this, we allow those
+> allocations to draw down regular memory to 0 based on the presence of
+> the highatomic reserves. And when reclaim, swap etc. come along there
+> is nothing left for them. ALLOC_NO_WATERMARKS e.g. permits ignoring
+> the wmarks but doesn't grant access to highatomic *freelists*.
 
-It is also wrong, so I will rewrite it.
+Hmm yes, we'd have to be nuanced about which freelists we allow allocating
+from depending on their particular watermarks. I.e. if we passed the
+watermark checks only thanks to zone->nr_free_highatomic, we would have to
+try those first. I assume it would be complicated and perhaps with perf
+impact. But maybe if we managed to keep this complexity outside of fastpath
+attempts?
 
-Before this patch collapse_single_pmd() set lock_dropped for every file
-table, refused or not, and collapse_scan_mm_slot() bailed out on it.
+The CMA handling had a similar issue and now we have that balancing
+heuristic since 16867664936e ("mm,page_alloc,cma: conditionally prefer cma
+pageblocks for movable allocations")
 
-The mm slot stays, so the next call comes back to the same mm at the
-saved address, but every file table cost an unlock, a trip through
-khugepaged_do_scan(), a relock and a VMA lookup.
-
-Now only a table that gets collapsed pays that.
-
-> > Two things on the file side stop being rescanned.  When the page cache
-> > already holds the PMD folio, the scan says so and the run goes straight
-> > to retracting the PTE table.  A run that refuses dirty pages and may
-> > write them back retries collapse_file() alone.  The checks the scan makes
-> > ahead of it are ones collapse_file() repeats under the page cache lock.
+> So I think there are two choices:
 > 
-> Is there any way we could move these changes into separate patches? These
-> changes are bit squeezed into the last part of this description. And having to
-> much happening at once makes this rather hard to grasp.
+> (1) Let *everything* with some sort of reserve access fall back to
+> highatomic, or
+> 
+> (2) Only allow ALLOC_HIGHATOMIC to include highatomic reserves in
+> their watermarks check. With limited opportunistic fallback to the
+> highatomics *freelists*, like the order-0 atomics above.
+> 
+> My intuition is that (1) might weaken the highatomic reserves to the
+> point of uselessness, and we should probably go with (2):
+
+I think the goal of commit 281dd25c1a01 ("mm/page_alloc: let GFP_ATOMIC
+order-0 allocs access highatomic reserves") would be defeated with (2). The
+order-0 atomic fallback to MIGRATE_HIGHATOMIC freelists would be there, but
+the watermark check would never let such allocation through anymore, if
+there wasn't a free page on the regular freelists? So it would become (some
+races aside maybe) a dead code?
+
+I guess your current patches are a compromise that can work, as patch 2/2
+improves the current worse-than-(1) state to exclude the plain non-block
+allocations.
+
+> watermarks:
+> if (alloc_flags & ALLOC_HIGHATOMIC)
+> 	unusable_free += zone->nr_free_highatomic
+> 
+> freelists:
+> if (alloc_flags & ALLOC_HIGHATOMIC)
+> 	page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+> if (!page) {
+> 	page = __rmqueue(..., migratetype, ...);
+> 	/* Opportunistic fallback for order-0 atomics */
+> 	if (!page && opportunistic_highatomic_fallback())
+> 		page = __rmqueue_smallest(..., MIGRATE_HIGHATOMIC);
+> }
+> 
+>> > I tend to be hesitant with single-use abstractions, but no objection
+>> > if people think this is better.
+>> 
+>> True but single-use ALLOC_MASK_ATOMIC is also not that great, and the
+>> usage makes the code hard to decipher. And see my reply to 2/2.
+> 
+> There is one small upside, which is that it pairs with the
+> ALLOC_HIGHATOMIC check that precedes it. The comment says "order-0
+> atomics" get a hail mary, but there is no order check. That order-0
+> comes out of the sequence of events here: we first check highatomic,
+> which is order > 0 && atomic. If that, and the native type, fail, we
+> do the hail mary for atomic, which must be by definition order-0.
+> 
+> If you abstract that privilege into a generic "can access highatomic
+> reserves" without an order check, it tempts refactors that cause bugs
+> like the above.
 
 Ack.
-
-> > Tracing changes with it.  mm_khugepaged_scan_pmd and
-> > mm_khugepaged_scan_file used to fire after the collapse, so for an
-> > accepted table their status field carried what the collapse made of it.
-> > They now fire before it and read SCAN_SUCCEED for an accepted table.  What
-> > the collapse then made of it is for mm_collapse_huge_page and
-> > mm_khugepaged_collapse_file to report.
-> > 
-> > Assisted-by: LLM
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > ---
-> >  mm/collapse.h   |  14 ++++
-> >  mm/khugepaged.c | 166 +++++++++++++++++++++++++++++++++---------------
-> >  2 files changed, 130 insertions(+), 50 deletions(-)
-> 
-> [...]
-> 
-> > -/*
-> > - * Try to collapse a single PMD starting at a PMD aligned addr, and return
-> > - * the results.
-> > - */
-> > -static enum scan_result collapse_single_pmd(unsigned long addr,
-> > -		struct vm_area_struct *vma, bool *lock_dropped,
-> > -		struct collapse_control *cc)
-> > +static void collapse_control_init(struct collapse_control *cc)
-> > +{
-> > +	cc->progress = 0;
-> > +	cc->scan_file = NULL;
-> > +}
-> > +
-> > +/* A scan that took a file reference should have been run */
-> > +static void collapse_put_scan_file(struct collapse_control *cc)
-> > +{
-> > +	if (WARN_ON_ONCE(cc->scan_file)) {
-> > +		fput(cc->scan_file);
-> > +		cc->scan_file = NULL;
-> > +	}
-> 
-> See below regarding _release: having _put functions that are not supposed to put
-> anything except with BUG is akward.
-> 
-> > +}
-> > +
-> > +static void collapse_control_release(struct collapse_control *cc)
-> > +{
-> > +	collapse_put_scan_file(cc);
-> > +}
-> 
-> Do we really have to introduce collapse_control_release() just to perform some
-> safety checks for BUGs? I'd rather keep the collapse interface minimal and not
-> introduce _release semantics when there is actually nothing to be released?
-> 
-> Or will you add more into _release in later patches in this series?
-
-Not in this series.
-
-The engine I have on top of it gives both a job.
-
-I will drop it from this series and add it with the engine. The shape
-might change by the time the engine is posted.
-
-The check at the top of collapse_scan_pmd() stays, open-coded: a scan
-that found work on a file table holds a reference, and the next scan is
-where one that was never run gets caught.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
 
