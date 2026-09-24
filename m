@@ -4,117 +4,243 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13940C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:46:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94D0C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:50:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132D56B0088; Thu, 24 Sep 2026 11:46:19 -0400 (EDT)
+	id 6439B6B008C; Thu, 24 Sep 2026 11:50:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E3C06B008A; Thu, 24 Sep 2026 11:46:19 -0400 (EDT)
+	id 61BD76B0092; Thu, 24 Sep 2026 11:50:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3BD96B0092; Thu, 24 Sep 2026 11:46:18 -0400 (EDT)
+	id 4E3246B0093; Thu, 24 Sep 2026 11:50:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CE7C86B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:46:18 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5F189A042A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:46:18 +0000 (UTC)
-X-FDA: 85249082436.17.8F47BD8
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 72E0340007
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:46:15 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RDdrIsSO;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790264776;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EF64A6B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:50:39 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDB6A1A03E2
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:50:38 +0000 (UTC)
+X-FDA: 85249093356.03.5855ABB
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011001.outbound.protection.outlook.com [52.101.52.1])
+	by imf02.hostedemail.com (Postfix) with ESMTP id EC45780009
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:50:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IF6Z6NTA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790265036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TB5IToX1mrhtHSOFBF5/UhvzwKQBZ1KaprAe4S6LDUA=;
-	b=2UpQHXcQlPm3dwfAegfDcrKkxS9/nKVw/NRkpKkwncI1QpbJVkXte/LHDK+y00zstA5eXf
-	GJ/MzO1NIXxdwEiw17Pdox8T/R1W1HFUjVWhCd3DsS/AGQn5M3B4jRTILKfyYbHBzG32va
-	SGaAwJaWgc6f7KYB8ETaITkB1b6dYEw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RDdrIsSO;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf17.hostedemail.com: domain of tim.c.chen@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=tim.c.chen@linux.intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790264776;
-	b=SdssM3BKWqc4nPk4luEbN/TaN9OZ5CwCgFsLmyJyxv/90ppN6a+PJTuCHXVijNnI5ZNVne
-	01D7b5MLOxcnbin/OVkGOg3UNooySRVP7a2c8c8soR+Xe1PD4MdXDt223B/HMM2Xzwyb+A
-	vQnFHpxc44lSwUywqGaqMtk3vIDdT0Q=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790264775; x=1821800775;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=nebAgd+oc/9pxolDcsX4SlSOFmTaJAYhDJSCFrW8+R4=;
-  b=RDdrIsSOs3kbk2UhAwHQFXFwo/gySfyKRHkgLhpCVpRwn1Pik+FcT8KE
-   3zuAcqwAI/nO7SQjKlZqNhh6nqsGuiBYuxarEWo9hiiuM9vmjMmfWoY/t
-   3FgSIUyAhgOjAYVfnakBPeSDG5N3bolGgi8yvkMaIYO/mEw9Bs/mLV8wU
-   21my8+IUKhb2VDk6kZAs8SRWjZwFAXGXrWrTgPTLX1uWHEk3CbpzZGVpf
-   9vGUcFFzSZUr0KUMSQQn9BA8Lycwu3n74ZUAERSiSEiPhshEPpk3J+ij4
-   PrigAXVrSe7SJ+1sH26ZXdyAXa2C6cMvAce8kw2xh2/48l3J6n9yiEKeS
-   Q==;
-X-CSE-ConnectionGUID: ULidfHilTNyq/MwV6QJQ+w==
-X-CSE-MsgGUID: MpbEz5xzQfCFQkzP2n2vXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="89811274"
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="89811274"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 08:46:14 -0700
-X-CSE-ConnectionGUID: Cs0jxIVAQDC3lXFF74IA6A==
-X-CSE-MsgGUID: XnPMUumxS8SuMKgym8GSGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; 
-   d="scan'208";a="273283537"
-Received: from schen9-mobl4.amr.corp.intel.com (HELO [10.125.110.190]) ([10.125.110.190])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 08:46:12 -0700
-Message-ID: <112e526b4013e23c70adf5b8883db8e75358b473.camel@linux.intel.com>
-Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
- matrix with unique distance values
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Jianyong Wu <wujianyong@hygon.cn>, Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu
- <yu.c.chen@intel.com>, Dietmar Eggemann	 <dietmar.eggemann@arm.com>, Steven
- Rostedt <rostedt@goodmis.org>, Ben Segall	 <bsegall@google.com>, Mel Gorman
- <mgorman@suse.de>, Valentin Schneider	 <vschneid@redhat.com>, K Prateek
- Nayak <kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
- Phil Auld <pauld@redhat.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,  "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
- "jianyong.wu@outlook.com"	 <jianyong.wu@outlook.com>, Yuan Zhong
- <zhongyuan@hygon.cn>, Huangsj	 <huangsj@hygon.cn>, Fengyu Wang
- <wangfengyu@hygon.cn>, Zhiwei Ying	 <yingzhiwei@hygon.cn>,
- "justin.he@arm.com" <justin.he@arm.com>
-Date: Thu, 24 Sep 2026 08:46:11 -0700
-In-Reply-To: <f6ebab3d0e44412dad17ac64a3b93339@hygon.cn>
-References: <20260827122816.756234-1-wujianyong@hygon.cn>
-			 <20260827122816.756234-3-wujianyong@hygon.cn>
-			 <20260831115004.GF776954@noisy.programming.kicks-ass.net>
-		 <da32ba66d95fd88869ba052f97698b9a4d6c3dc6.camel@linux.intel.com>
-		 <09261c8222994a41a04ace5f342475df@hygon.cn>
-	 <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
-	 <f6ebab3d0e44412dad17ac64a3b93339@hygon.cn>
-Content-Type: text/plain; charset="UTF-8"
+	bh=xiYwQEGkKM+tsHhc5VwTwt7K0S2UtKAK9YfSG0KXgVg=;
+	b=3/HawJIBka+3fZ+E1nFXTRRs34nBmt92jBLgwTuXNkNdBm6XOgLWUE8eLy5wGosKVpDQke
+	ZwYE9jcbNK9qQla+By1Hu97oU2B/wRfwBar6Q54stqAVU5h4692cUVJRm6d9tQXEiJptHG
+	tlaZJARp/R/T5cnqeJj9yxS6fxKjRWQ=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IF6Z6NTA;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790265036;
+	b=Wmt9HsuoyAXkqSgkxG1kgC2IRTuQYBm7A4c2f+mMTD2+Ah3SMPHRYXB1WHMRAfeoHVn7PI
+	FEdyZDPtE3Blhq+J6GL6lFno3PlriO9UpEk/4T9UV1BC0S+nlX0skV8bkyboWee6Fwm+z+
+	9LTDysnYFJ2KhHn7KbbY/ftP4VF4PdY=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V0m6eg89kopQFl3u4IGUBlxCnRazbDM7W04AjUEYr82pv8x3G4EpPCeTJFTnq9Z3QRmF5PXWl55elFHrnYrWUn4x5FE12iIiO6F9A11TvvNhobLjyHxWiEU8biVfMLJHjaUZfYMiPQG9Tjbu3uZGBc/a1ulAl7XApQL/xa77nCyvqRRPPrCSxI27K8aewe8Q06odz3SUDH4abSX3Uv9yIJ2GcjQiQvjWGNT9gOuoa9rYWRzqHKthceT7n+BjEvtY0s+MlDIQulvEGA4DWoKN6n2l2paRfjj9tf1Hams1uPpHxnc1a4GsvHQNkMF3OK6h58qYgat5rnU5xII5t6dUYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xiYwQEGkKM+tsHhc5VwTwt7K0S2UtKAK9YfSG0KXgVg=;
+ b=Gf3FvOtghUQBfr7F4QG4XyIMI6foJRQhNGdy256hkHEMKvApKl/Of58X25Zuuuzy3BEVB2afSZGGqyJqyr1C/R2ODJioj14x1TKCZ5Qb6o0sD40/IppygmWTsZt89iHlxYLmMoFxiZz66TNpkEJPZara/pzNkKCbXhofbpNOxybxN7+EHTKRSupSl9SE5TsvNrVMH4CdZ2H+NEor58jKQo+fTWTMQfUnb0ZZxMqRAgRmAVcn5GNG8yOpEQHS9DA0gordDSezG/XdQTJB2OxIdp/FAvbD3YwsetFAhId3D11+o+2yVzckZMpgi0gI0ZckCxVxultg+HkeNXlzgeCRow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xiYwQEGkKM+tsHhc5VwTwt7K0S2UtKAK9YfSG0KXgVg=;
+ b=IF6Z6NTAI6zMdc80b8hHyu7XZ5ItC6YPpawMOAVwcEXXe/HtfKdW/gsVcwLD+HrX36GiVCpcWjLZi/UStlcuKnjO0ZGkxW9pqUjtKCYYykoW0RRZg8+DnC9YkFnYrMSy5sCZiq7DBPrQPnl8EofbQbCdDniNBexe5pkQUwe6nsLpvFCPRHs+u4GHzd36hLuuGS2IGhtOi5ilhY4PerGPsLd8mMnp/gdjmjKCO/IE+eMh5dQbSfJypmCakvvDzVi4IO6nerwHidZSF1SABPm0pOtAApXStVwUTsOSzqdGm5SvNctqL0x556wcEN/PDxWUMOjN/iwxYkT8tZxciJlx0Q==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by MW6PR12MB8916.namprd12.prod.outlook.com (2603:10b6:303:24b::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
+ 2026 15:50:20 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.014; Thu, 24 Sep 2026
+ 15:50:20 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>,
+ Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>,
+ Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+ Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>,
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Michal Hocko <mhocko@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>,
+ Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-rdma@vger.kernel.org, selinux@vger.kernel.org,
+ linux-sound@vger.kernel.org, bpf@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 24/40] mm/mlock: eliminate weird VMA_IO_BIT abuse and
+ simplify
+Date: Thu, 24 Sep 2026 11:50:14 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <CBD619D6-8717-4C81-B5EA-D1D0771BDA3A@nvidia.com>
+In-Reply-To: <arT3K71l86fUVldk@gremlin>
+References:
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-24-4583d8a23bca@kernel.org>
+ <93672B94-BB0C-4713-8F8A-3619D81DB7BB@nvidia.com> <arT3K71l86fUVldk@gremlin>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BN9PR03CA0293.namprd03.prod.outlook.com
+ (2603:10b6:408:f5::28) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-X-Stat-Signature: 7racwa9mmb8hoktuez6an7csskqfanq9
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MW6PR12MB8916:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3951ee8a-f586-4cea-8c7e-08df1a538978
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|366016|1800799024|4143699003|11063799006|56012099006|10067099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info:
+	/DYJt0aMJ6rftIKDZrc71LKGQ4W8+lcZLcsIYkbZGdwY2zccTnAXJPeDfYA+Nziv5GZkLnvQvTmx1APX7yJ3Z0fM+V/7rX4pRa1ELWppgvJS/vG9tUooAjm7RWGR7HIdd0fcLYEG+/l3W162rN6m82GQSKUzJJe0duMhzZpruk33ZhmtId0c59DpSkdTmwVwC7/EWHgvCrExEXpc1Wp0I9Yn/uWNm7PUK+B2F7BKf6VjN1ye91ceps1/+oKvvFFzACjuuiRwo/gatru1OqVKDO3Kw8dQlO/I5gV1eOxQRErokp0seL+Cr2Xu/yNCTbSDW3xrNqUzxXfA9QtQheVpGMMcdElcfVoYBNVYyWrdLEPIq2FySzJ8Lt98mN4Zl7/CuafIDohKB+7KDJuqFf4h2bI/92aGToe+hrIIbvaXOtTcqWziVak3sSDBxhLv+eTzciaUZCg0Fdqs5PCgy+8107nhabOQpkmMYDtABZhWaTFtsTvILoUSJfnOL0Pgol1NQrb3cSe5L3Nokxc7mf6OhuEi8lLzCUzOF2g6a6iWcbNIfeAtS42t/GmePumu8JZUjyDTvdhBrF8zUIrYov9hPRmGQnPFRWxf2BIHY48qxD0KAo0giYL6nCSgM5SUFXYSb8SQqPqIwTUM9jAX+BuUHU/esSPwNYZhC91uhPadmSI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(366016)(1800799024)(4143699003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?JeJopQ5lfzE2bWSt/Rmd4DJiBX+xQ19R2cjS+3FNRB+VOfKsUyKVeiFNfFto?=
+ =?us-ascii?Q?T1itSYQafYF82gHn8U/jUnW67ukMkUbFi8Vu9CYzq1vn+3bWo4drKKtbALjw?=
+ =?us-ascii?Q?KhfgmQ6QO49d4xP6qbULxYFHNd3rJfmlsPDTynTfcj3eYuHBpbNZ/FHpvuuW?=
+ =?us-ascii?Q?jx8R/J8gwSksEqNxwNHHWqCRJaSqzpQUvQD1uYeRxCuMVwhnaGTmmmhXaJ8B?=
+ =?us-ascii?Q?GpnPmHPbShhZt0cD5onLQVoSD2RQxTcZ1wtiUfDNMoZkjWs9HeIHSCdM8LnT?=
+ =?us-ascii?Q?bWk9ZSa8RsOPzvBbh6t++9lCMFGWE+lxd7KOgmnhH+Z/e2pyIGslV/2XCH3p?=
+ =?us-ascii?Q?10qTuQyYf46q1PWd+O+DpXx/OiPIRgz8QgCI3xAU2KoZuG7E4sFdIdAuU/YK?=
+ =?us-ascii?Q?of8TmfHniOwk4udbD+3+WEpEZ1jAgLASY3Mn2rq+ax5W2mti4qKiv76ax1Bi?=
+ =?us-ascii?Q?9xh15nVXYneJTZbzYrXbmQyLdMe11FsPqUrdO/WrifsHtJjJzU1wKLK6Qu+Q?=
+ =?us-ascii?Q?mCbA9fO5wRlkM0KBUwsrjpfAQOy3JmuuXU+wlQ+YGtVN7DzGQHfEohi19cpz?=
+ =?us-ascii?Q?zwCeZvmO3V2UlMi5Jz0Kou33OUISZfBL5F7BWfZnl0b0K4/9KKFF2TQOiXv9?=
+ =?us-ascii?Q?+QnbqDy+2Tr2KB8Ecsi5gbY3Kf8g2fyyN7Q7w99XI8HcacYOsvIwckOjl/IJ?=
+ =?us-ascii?Q?os5jKc40ERkR5sbb3+ESbwM0hYcqv5xoqEZfQrGWfsW3ohtHKPgjXK7KIR/Y?=
+ =?us-ascii?Q?RZL1hmRqnyloks/PznSICTu+x1FzulX1U/OrjHJyVHTUVRzb+dmI8vhrZq+/?=
+ =?us-ascii?Q?iRX9w0H6ioRV//gYIFyrlLEu8TnyFPGUJzFyq7dU72ahIq9qwYCOyfbbXXH4?=
+ =?us-ascii?Q?WnzHlO2Yut+2wTg1HvNOFxR56rQzcUVaMUov+qmIs8g5RD6E4JduQR2l/MHP?=
+ =?us-ascii?Q?rtQCOcvitugM8YnO2pvWw+csx8n6oAWxf9rShnPLlbtiy6nzSeKh1JJnUVEX?=
+ =?us-ascii?Q?BKu/1bACk6Pv2yK1ULFYmtgqUn4blD14c6U/LyvB90zdqt+2OO4K0xUO7plR?=
+ =?us-ascii?Q?Y+AANLdWHtQcQWlsnzy8uZP3hAfZAbukv/aeu8Vd9pjWHQp4Q4/uGoL1MO3B?=
+ =?us-ascii?Q?J3AvVrB0dcjCT1Oq/Y7YjXUFsfneZZLLzzjqZCXFv1GlspsxXGS9JT8PfVam?=
+ =?us-ascii?Q?X50c5hH2anHbHVX65jlJqPa4y8jQbciLyrW5LjjfTVo8jTBUXqd0B4nRNySH?=
+ =?us-ascii?Q?H5W37HtIv9R9zRrkAy3Y2WlUgHG/Ar0b76YR/gKmiPEBSoTYakyg8J8W1IyU?=
+ =?us-ascii?Q?lDrhzr0q5X4PqS6vEhYdqHU85i+knwTMxAko+Py+Yvjt+ZBmipxC3Tytglqa?=
+ =?us-ascii?Q?RcdCNcGHT55EDiB6IUqUL5/j/Xt80zy+FaNXnuuojKXc6xQjwhynj9qHW68z?=
+ =?us-ascii?Q?+wQ2KlVlj8zp+J7MEpam2sp4fniY1miJYDZnd80O5AJO0Zo1a4P+YCCZg9uq?=
+ =?us-ascii?Q?iNW5w23JZ7nokJfdxTTPHyo1W6+E2TYT3XtDWlY0JD0IUxmjduxz3jS9y4oX?=
+ =?us-ascii?Q?blHc8YtDIVKjGyNgi7wOCpytbjdw2TN3Du5S93jmTOTFHq8xmrbOPTcnrcOc?=
+ =?us-ascii?Q?aKBYmVL0VeNadD7HwwdJJMzUEHIrCihidb0S2x3tUv/NsceCCg5RfuIeFfd0?=
+ =?us-ascii?Q?7Vy3JTwd09vU9/v86yNsbGr1jdC72MzbQfSI1ldMp2FAgNAFWSfgJddGaviK?=
+ =?us-ascii?Q?PZRpuHwfVA=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3951ee8a-f586-4cea-8c7e-08df1a538978
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 15:50:20.2851
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zN/2ejWQwO24ocq4CdeF4UkGV6z628t5mCXiPUme/B7EMRlZTdImbbwwAf3STLlS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8916
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EC45780009
+X-Stat-Signature: oiwu7w4do48m7jjtkqr6jgnxj53br3ue
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72E0340007
-X-HE-Tag: 1790264775-499489
-X-HE-Meta: U2FsdGVkX1/yBneEzT4TJpoqQynO1tRABcRbb4v6C8Qzk8A0v3nDziYzLUC6x22SOAGVv/zQJPSm0WWiIz4unSdfWksFrJ7zvm9ux106SmxOAyh/x9+uYcX8NLcfRzypMve7onHoTiL6+gnDbpLX+VYUkJ0t6UobLULKDSHd6ff+oiwYa3FisUD50xDgdw76pHDH1wuJxuIXz3WaneLxzPHvvAhYY6L7bdhhrDns+99DrjQYGuRc4Egvba1BaVDGGX6XcG/07oChy8WekLRzZBPUhuEMcfaO2EF0fAj1CtGUpxIbL2VPttRirfp78JNd54+E342OKQDTR7puvOwFdgwZczaxiMdHUUjQzOlp16z/3h1aVxRTRhpJx/x3bK0JFyDo45RMF4jEneJjVaMYuSq0R8oCQA0bDPPzWMSl9xXLUAOTnCk0dRV2J5hzLgcKRdUvG5dPqMFXiBVjZJr/YMVmfbeGcLTutFY0ha3kVk+KzAhiD+9vXWfsNmAMpz8tWbI/B+bCiuBEWdwIN34jvVvJ/T987YRVhVbEAL11QENaDpIeWnmTUjx/qEqBRvSU2LecsWd1IGOMjmSSNDzjx5De4w17kMPH1cTwVlX1NeG/6/ooOlDrrllwuTzXpPxKnpA28P4JxIgH80wBK8aWNTNgOwF0TZtBQEJ46p0d39CkPGD1DhdYfs/CIq9pjn7IFZIFm8WMHquP3EXgFdUs/zH5OQ4Fxfe9U8UWMj1HzSgMs1tU8BuAmvkHzueUhz4ShT0VkXZELiZy15IgcjZbGP1uOE92GLRU0XB2YHYerehEALxK6zDvkHMLZjAs2D6Q+5QNuxc77sNMKF4f11mKxjEwh/y0SFW/EGGx3fHdAoUJ2zg1S4OT02TQrr4J51DsjlP4gaYCTMu18S4EsqxWy3iejZYnjWzPNOwd/Ebt5LzEU/4z5aibvSTehaWVXCHO7utEBQM2i8lmqIIpXH7
- p3NqLPbS
- SlUlM5MHHtEr4NK4Co/+ygd66JJNmtMw2yuJArM1sVvqj3eqXGCeMLGLM4gdKD6KDOSzXSLvb3IigciD8hiC/+QPKUV25cFJBIc2OmdeYBJhPIAoJq4daCO/4t8gRQpTn66RaQvfFIQzQ8GpKI75OkjQy8vQjvj0l79kc7NGsiIH516bKecc+kTdtBfwopcZc5axfIsF8jY2xt22e7KpkKRA9jwji1Zu472/WuSR2Eb+Q7mPp/UusZOhkTPQYBmk9amj9Euj6Ar5P0sEv/xxfqyoIRyuJn4saY11nWMNoS2pDNvtfXWmfDNK9GYdFuudW49NJlqc3mVM2gqFWaWxYjcMetHk0MXngS/U+/QkZj6BBNMprVp+j2DlsfMo+0XlN9eS4LTfkI2SdVitpwBCSwinf1wjTCMesaNQB6kA5yEE6lOJ5hxnI0o0x6+7wkRFCEUWcdnTXVGj/CI2vQAFnWrJ7xhRtOgPbYwwmhQ8ruxmKniC9q2SD/SJElXes0gdMHCEHY+hn0gXbUiEDePuzzT3GcMDFPvPCopbchQ0hWOjsRTWkhbg9LgbPQTN8724tWNjhcOUaPXhevkRoGLTtKjgMxuvSJODtX8McMIYrA8K2ZqU7RJKb45eSEhM6t6gkBEhe3p7cjw/1uUO8QAm76ob/Lah40BKO9CFp/d2RE/PFxY+jP2SQC5B+eRyVQkxbjB2Qr5mes5LQRgnTqIa9LeYoFd48oe9gIqEf
+X-HE-Tag: 1790265035-978799
+X-HE-Meta: U2FsdGVkX1+myCpbD262twb0Sh+Uu9nt8E9jJ26mT6Qk1NAU3rg4GzGjTjWS/ip4STEpdu4NAv8lWDihPvQ0nMVx3xxgxgdoDaBmuyrVm7uHviGsu1tZsZcPkdbCYlbOANX976+BCDLvq/xtqZLW6P9CZKCgCc8RGGvmRWFlOigfXT7ouu7t6RXG64/AB9b1b4/+djqF1bq6RC+yJLfyV/OyIHuhpVgLlmv/R0W9wNNqp5Ikdbg5z3DX1kv81TsQDccdw5TCXSwHX7tA78sPDYROMtwVmAsjML3Xtd6rn2V8P5JARO9MnsGLaykSWTKm1hsRXlUHFZ5nbYk+S8VOwVsy/tSdHK6ivdWm90bzrTN1oSJuJPC6G4svYFt04fZQjZ2pcgqh58y7U9q8oc1Ygj6vSXoHkTNi10urFm7mrurr1h1Hc/lQhCdO0c/bRyzhsnrxAKyHaXmOPauuWnACZNJknQ5V8Y2O3Bq/DpK9vEIuTkjA74pBtXdZrIve9HhZKu2+cNn3QNIvN3r9plTxBSr3qAMqjVUpBOAmg4I5XcivHnVZUMBujKlqMdhuokXnJB9MGbAT+UexWgiJr4VCEBEYSav713W3SacKWKilD0HWIi9S1OJqbMPfn8pv2Lyi6XTY4/rw9vgHmnwHeCNm7+HeDB/Sg7uRlElU2uKdheD+J0XFJQugX8U9UxY2RJcU9GR7/eyqMlTcsX4GVziwH0OTJR5Jn+gLlk0vrMJCUpaSCPVCGaTql5FX0J+lYUPXLghhM4uflHSfmhLNl57gswg8ZJARPzqBRNaXaYCWQj2RQtZXoCdjzio0oyryfVqxdelzmBtmp2KFsUGb5nvWG9Vyt/G3gQlkuFhrbYj1sO3v+xMAKj1bm+I/RnCKeQjR5Vt4vlTie8xgv57CZl9Fyb9A8RV8RAI0d/avpAPkH/I5WKT6CdXrKnhxmdhxd8jRriDubvxOerLvI/SnJ78
+ EU0vAH/r
+ evotP7wddT3PRVwfdOLlR//J3rdibPafwewbPCpVec8ZmFAOEDtosZUbEXOKfCSL1YdRPyBGlt/TPLoFKDJOYyCIY8Y2DPMLLLXrgpY/2p1tiwF3vQ9TlwnNp6tTPeCY5SK3Bdsyh4xdY+l8nWUNVcUNos39lSEUGFa5AbZ2g0L96OiB1gdad0TVyDZiYyD0lFZHzCrMmwGC/hz7jJgSMpKrnJz8NXLTxZ6oVaztpmfC6uOmvCGsjA4X9f0FYC6UGaqF5nPSDDZwsPGwmRw1n8lZrXOvQSFVr1n12aLY4I9GVsP587MhSey828saZAIsuXtrPjiCGbPNRC24TwffRExCFYtlwu3vRbYEdkFIaYo44SWrJtchfyC0C8aE73FqGBW2jFzRvIDTRkTi0mp47WPQftiW/dXwP9/hkXQLcNVemtSiJ5OL9iK6Fr7e2NUS6Bn7k5IKUFLhXCrIU2KqnnoaZ2LX//Z6dqzrHWTbW2zZq/ez4AkCUygfza/h3LsgacMxm54A7zqUjkg9WueYbXV8H37v4KzvNWT/viYRikOojghhbTmPjacJKKBUA9UWt/g6AmdetoTm7y7xgUzM2S8fKJcHV9ZTya7KreQ3IenEYX0mXKx/1EkxqyuZPPg5C0fBSm3hu6K030cX1VMAvnYTLII/rMX0Y8cg+oUMrndYJZVIjpyeS4epPAUUkFQhTSyDxHxAnVu05OukV9HmJOgfx8cP8sus2XODXq7lzZLSL+tzMEhKtVmZXZswvrVteKCudCGeybuaJTBseO7BSda7vavlazgg3vdoJe8QfY2jq6ZB90oxCwOg4mtxWScAJYuWPEaXz4XD+wVERmsh4NxNLbjZ1CT7nM/P5uC84xUBqGINzXlGPEKe7is2e6ex7SvoxNrtI7ldYfCkWjOLjoFIEGy4tt7rXMiIKfMQEGxn1+IFtgs/gpHGJNlxMEiTb0E3mnb/WletiZ3UK5kQffnSWzr6B
+ cgH89/Rz
+ FR35+ssBbqsfihkn58uEt2LyxNaHBKC0oiFpseAKQpIida59yVHLW4NdSKtdCW9Z3BxyM8+hPZ370slh68+KNTXagCvJRi8SQW6DARNc2CRrHAoIJ8zxzDKrM0+LrEmg1SsTShQLjSTrq5jPseYgNJuRQph+Pgx13E7JQbxzrLIM/6n01oDkaKaNWu1vZJ/CC1Y5ZQdLzyInxVrGtK0gCVJzsG+72r8dv1n52B4ivRp8ejZzmh8GPJ1tJcvGpdcc8IFrV201PU4rU6EwuV4sDONeU8J01Vlz7bmXguENihl0fShlILOb6Qn1ZlY3mHGV4iXXxBmAIgat3kaxHsVKo+eQcFTnV7Aq4bTHrb6/ixeBYkDZng8f3g6h/qi+mJkWuleuBvNTpmGY4FXhi8uCi8ue89xthJz6kBcsrAB8bogCd0iaKCqwZDizHCNTnUvURoVS3+938IqpGC3TssYdpZstkf20lG5lInM9a98tOQe1QgEzl3cIFn+HcPRygxWXllG/DGEMfzMlKk84Lqjak2lKQEqm0tHGMb08M0T0RMcIo45VOWqVeNfMMUQYWWf7Cxsx82iGjxpnbAifBzOgL9fncETdB026xaVQ+jyaS0PuPO4Kzb5Wqy0HCFieAdP4Almq8H66rps1B7vZKsW6Hl/ghRxW2s9brQ0z8QW91oG4LvIrODOuDkru4XvHeA0IyTQciWi/0j4pI9sDTht1Tmi3ilW2WCyqnzY20z8KsVd6OQ88BASRoOttwJTXw1U34K7YlAahReRaKP0xXr6dOTrmtWKy7VNdHD8/LLF9+JxqlPggC3XEartwCWh00cZRza7ELLKRbFu09CxqdqfmFSt7mrM/RLU/FT1qoxlPrN1R9HVonPfMOedzV8y1l5FIbNsvFGaIY3mdAZbIZQWRIuKrRaOwwxt3NbSHxokUyYXIGclHnkPr9aqeLuqJEIHzqEIj+5NJBDW8gRwxHQJbBX/gy5oCS
+ PBMTqi/i
+ rpjWRsC2Hqer7KM0CnD4tvz0fLm9F6lmqbDNjmE70jZxWPdy4xfmGN1ZRg9NLKmN64PNU+R8lfE/OAOdWqHCsNthggCU+VJG4QCYOb9MpcAQ/FGnRKufOHoIE7R88CaPJHwrvex8U/lghocv507N6uWikyyW2Sf8WT3uUkGHqCkJcQL6CVLQOP24qZDEgghDGy7+eaIPNnk5zysPTz0uPIuYKQE2oDZpWGwbueftiGi920B8JGeJ03RFHbP+yY0oqxItS6vGriRgWjuLtY8wHMIM884H0g7vGie5jRdBFfIhsThNrytOOYA2vZE7yV2BOQawKc7/1egBLgYwl/uQLcYgnlu0Rr0DkMCZXu2OKO7yaZx95y/0tkdV/dM1WbMQdOWWkgFli0UjM18oJAreqyeYm7ED1b7Gh8j3Q6vlIA2aFH0dNgMo+2XBfoCcMd6F0gl9Tfo/En4IolCKblLLE5RwF8zrnuZdbmcpXwg/YOnlQruFSMoN5WjN/JqfmQCAfIRTlwX7Xrqx1X0wIuLR3jrwd9cHmWX5zRtJYBrUKK5pTdGA155K+Sb+gtA37lBbeK73kvt5uE8En9mosUBMR8SeymKfBAe+siyYXBcZc1fdYwHBwgorKBzZk6Bgxg9uJJXgwnnnjJM5u/FINBUSBQz2UbrgXsBfKp7TMUuT/MynnaC+PW5RGNTjnfCERmtoF7BZAm/VTCmL9om9Nzp8g32SULjnL+CTIwu3/2PjMCOlCoOwEWgGqI9vu8dakNE53wLQOouttmCLW72cI0T/+WrvUlPvtwGPPaKRZam0tmET2aai/MaGByV+Gxv9ZiIxmCCv2ReyNaUp4sOv+NSmHxwM7Hcr96loi8/DWrv5zb1OFFLlMG1Z65u+175r9WsUfS3Kd3yaMKumWWHfiPrv86NHNIQfHdZDpBaIZyFI1rmoziuoEgYq01VGK4qT0VpH1Pk0dzxi89Ir5+ARfOPk4NCWrHave
+ xdGmM9u1
+ NpjfnfxUOJyC3QDSM22P8cgbaKkPQz/aZMGHG6OiJj6pr3nNWpzGZQ47qNO+6TnwHA75Z0F83HvFfwLGFsvEFfFoERU+4DRkTNgkr3AUlSfgGsZ6sFNr2ol9shxo0iZCEyAiosAW4DzHXjYeN4Vitwkx7yK26CMshtY6VgXpAJSmFlWUZN/fXJK9VgLJ5wEFbq0kKg3Oqtco76QFt7HEAWHjZvirus58daj+o8b9YNHrh6czbPWemD0f7ln613SbRIdvMzgNQ6UOCuR/nuIAJGuJ4xTm2g1YpmSLFRWEUp2V7xHR5MpolX5lYC4jxGVDQz4olQSeXnmC9z9ppy5TKR7hr52f88sAo66+mNqsXOgzyHbCfuYVIrJbHM8aD89URXkvZ6Xe70Qb2IueYYvslaFXUQHvSocBXD0vyYTEGG6Bv7PNABu2PBlC8lN33NHx5AlmVvcTBGsgmkLDNOFvSicpYu1w3m0gwCa0CA0PDGkfn5hyZc9X+s4RqashwcFBs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,289 +248,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-24 at 05:41 +0000, Jianyong Wu wrote:
-> Hi Tim,
->=20
-> > -----Original Message-----
-> > From: Tim Chen <tim.c.chen@linux.intel.com>
-> > Sent: Thursday, September 24, 2026 2:29 AM
-> > To: Jianyong Wu <wujianyong@hygon.cn>; Peter Zijlstra
-> > <peterz@infradead.org>
-> > Cc: Ingo Molnar <mingo@redhat.com>; Juri Lelli <juri.lelli@redhat.com>;
-> > Vincent Guittot <vincent.guittot@linaro.org>; Chen Yu
-> > <yu.c.chen@intel.com>; Dietmar Eggemann
-> > <dietmar.eggemann@arm.com>; Steven Rostedt <rostedt@goodmis.org>;
-> > Ben Segall <bsegall@google.com>; Mel Gorman <mgorman@suse.de>;
-> > Valentin Schneider <vschneid@redhat.com>; K Prateek Nayak
-> > <kprateek.nayak@amd.com>; Shrikanth Hegde <sshegde@linux.ibm.com>;
-> > Phil Auld <pauld@redhat.com>; Andrew Morton
-> > <akpm@linux-foundation.org>; David Hildenbrand <david@kernel.org>;
-> > linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > jianyong.wu@outlook.com; Yuan Zhong <zhongyuan@hygon.cn>; Huangsj
-> > <huangsj@hygon.cn>; Fengyu Wang <wangfengyu@hygon.cn>; Zhiwei Ying
-> > <yingzhiwei@hygon.cn>; justin.he@arm.com
-> > Subject: Re: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA
-> > distance matrix with unique distance values
-> >=20
-> > On Wed, 2026-09-23 at 03:14 +0000, Jianyong Wu wrote:
-> >=20
-> > [snip]
-> >=20
-> > > > >=20
-> > > >=20
-> > > > I think what we really want is an ordering of caches within
-> > > > the same NUMA node.  So when one cache is full, we can
-> > > > pick the next one down the list.  That is essentially the
-> > > > net effect of the distance de-duplication.
-> > >=20
-> > > The goal of this series is to provide a system-wide LLC affinity
-> > > ordering, rather than only an ordering of the LLCs within one NUMA
-> > node.
-> > > Maintaining one large system-wide LLC ordering would be expensive, so
-> > > the ordering is represented hierarchically: a NUMA-node-level affinit=
-y
-> > > ordering, followed by an LLC-level ordering within each node.  This
-> > > patch only deals with the NUMA-node-level part.
-> > >=20
-> > > >=20
-> > > > So how about introduce a llc_next array.  We will initialize
-> > > > the array such that it will return the next LLC in
-> > > > the NUMA node.  So for the example that Peter has above,
-> > > > assuming C0 maps to LLC id 0, C1 maps to 1, etc.
-> > > > then llc_next is
-> > > >=20
-> > > > 	    c0 c1 c2 c3 c4 c5 c6 c7
-> > > > llc_next =3D [1  0  3  2  5  4  7  6]
-> > > >=20
-> > > > When we come back to the orginal LLC we start off with,
-> > > > we know that it is time to move on to a LLC in next closest
-> > > > NUMA node.
-> > > >=20
-> > > How should the next closest NUMA node be selected when multiple
-> > nodes
-> > > have the same distance from the current node?
-> >=20
-> > You could use some other means like node id or load in the node
-> > if there's a tie in distance.
-> >=20
-> > >=20
-> > > That is the ambiguity this patch is intended to resolve. For each
-> > > source node, it disambiguates equal NUMA distances and produces a
-> > > unique node-level affinity ordering. An llc_next array can describe
-> > > the traversal of LLCs within a node, but it does not determine which
-> > > equidistant NUMA node should be visited next.
-> > >=20
-> >=20
-> > Agreed that llc_next only covers intra-node traversal and that you stil=
+On 24 Sep 2026, at 6:21, Lorenzo Stoakes (ARM) wrote:
+
+> On Wed, Sep 23, 2026 at 04:06:14PM -0400, Zi Yan wrote:
+>> On 17 Sep 2026, at 12:22, Lorenzo Stoakes (ARM) wrote:
+>>
+>>> When performing mlock() or munlock() otherwise normal VMAs have VMA_I=
+O_BIT
+>>> solely to fix a race with migration which might otherwise double-coun=
+t
+>>> mlock VMAs.
+>>>
+>>> This is unnecessary - at the point of applying folio mlock state, whe=
+ther
+>>> setting or clearing PG_mlocked, we know whether or not we are locking=
+=2E
+>>>
+>>> Solve this in two ways - thread a boolean through the page table walk=
+
+>>> indicating whether a lock or unlock is being performed, and run a loc=
+king
+>>> walk with VMA_LOCKONFAULT_BIT set and VMA_LOCKED_BIT cleared.
+>>>
+>>> This state never occurs otherwise, as VMA_LOCKONFAULT_BIT always impl=
+ies
+>>> VMA_LOCKED_BIT. These are also always cleared together.
+>>>
+>>> Then, update folio_add_lru_vma() and mlock_folio() to check only for
+>>> VMA_LOCKED_BIT, and update try_to_unmap_one() to check for VMA_LOCKED=
+_MASK
+>>> instead.
+>>>
+>>> Also remove the useless invocation of allow_mlock_munlock() which sim=
+ply
+>>> returns true if unlocking and instead rename it to allow_mlock() and =
+only
+>>> call it when locking.
+>>>
+>>> Finally, with the other mlock abuse of VMA_IO_BIT addressed, update
+>>> mlock_vma_folio() and folio_add_lru_vma() to simply test for
+>>> VMA_LOCKED_BIT. munlock_vma_folio() tests VMA_LOCKED_MASK instead, as=
+ an
+>>> unmap racing with the locking walk must still munlock folios the walk=
+ has
+>>> already counted.
+>>>
+>>> While here, also replace some deprecated VMA flag predicates.
+>>>
+>>> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>>> ---
+>>>  mm/folio.c    |  2 +-
+>>>  mm/internal.h | 10 +++++++---
+>>>  mm/mlock.c    | 51 +++++++++++++++++++------------------------------=
+--
+>>>  mm/rmap.c     |  4 +++-
+>>>  4 files changed, 30 insertions(+), 37 deletions(-)
+>>>
+>>> diff --git a/mm/folio.c b/mm/folio.c
+>>> index 47a437e0f7fd..35e242b48870 100644
+>>> --- a/mm/folio.c
+>>> +++ b/mm/folio.c
+>>> @@ -505,7 +505,7 @@ void folio_add_lru_vma(struct folio *folio, struc=
+t vm_area_struct *vma)
+>>>  {
+>>>  	VM_BUG_ON_FOLIO(folio_test_lru(folio), folio);
+>>>
+>>> -	if (unlikely((vma->vm_flags & (VM_LOCKED | VM_SPECIAL)) =3D=3D VM_L=
+OCKED))
+>>> +	if (vma_test(vma, VMA_LOCKED_BIT))
+>>
+>> I think it is worth documenting VMA_LOCKONFAULT_BIT alone means mlock =
+in
+>> progress, like you did in munlock_vma_folio(). Just to keep the protoc=
+ol
+>> explicit for all the readers.
+>
+> Well I'm not sure it's necessary here honestly, because this never chec=
+ked
+> VMA_LOCKED_MASK anyway, and VMA_LOCKONFAULT_BIT never made a difference=
+=2E
+>
+> So the meaning of VMA_LOCKED_BIT here is strictly 'is it locked' and it=
+'s
+> correctly handled.
+>
+> And I fear that it becomes whack-a-mole - the neat thing about this cha=
+nge is
+> that you no longer have to special case the stupid VM_SPECIAL thing, an=
+d can in
+> fact do the 'normal' thing of _just checking_ VMA_LOCKED_BIT :)
+>
+> So I think it's better not to.
+
+Your reasoning makes sense to me.
+
+>
+>>
+>>>  		mlock_new_folio(folio);
+>>>  	else
+>>>  		folio_add_lru(folio);
+>>> diff --git a/mm/internal.h b/mm/internal.h
+>>> index b2c6c9435021..84aa3e6c8bac 100644
+>>> --- a/mm/internal.h
+>>> +++ b/mm/internal.h
+>>> @@ -971,8 +971,7 @@ void mlock_folio(struct folio *folio);
+>>>  static inline void mlock_vma_folio(struct folio *folio,
+>>>  				struct vm_area_struct *vma)
+>>>  {
+>>> -	/* The VM_IO check prevents migration from double-counting during m=
+lock. */
+>>> -	if (unlikely((vma->vm_flags & (VM_LOCKED|VM_SPECIAL)) =3D=3D VM_LOC=
+KED))
+>>> +	if (vma_test(vma, VMA_LOCKED_BIT))
+>>
+>> Ditto.
+>
+> Similar reasoning to above.
+>
+>>
+>>>  		mlock_folio(folio);
+>>>  }
+>>>
+>>> @@ -989,7 +988,12 @@ static inline void munlock_vma_folio(struct foli=
+o *folio,
+>>>  	 * always munlock the folio and page reclaim will correct it
+>>>  	 * if it's wrong.
+>>>  	 */
+>>> -	if (unlikely(vma->vm_flags & VM_LOCKED))
+>>> +	/*
+>>> +	 * VMA_LOCKONFAULT_BIT alone marks an mlock walk in progress, see
+>>> +	 * mlock_vma_pages_range(). An unmap racing with the walk must stil=
 l
-> > need an inter-node order for the equidistant case. But I think
-> > sorting each source node's row by (distance, node_id)
-> > already gives a stable total order; the node id breaks the tie. You can
-> > also break it by node load if you'd rather balance than pin. Either way
-> > no new distance value has to be invented.
-> >=20
->=20
-> Yes, using (distance, node_id) pairs is a straightforward way to order no=
-des,
-> similar to the memory zonelist fallback node sequence. I once considered
-> adopting this approach, but dropped the idea after realizing it lacks
-> symmetry.=C2=A0
->=20
+>>> +	 * munlock folios the walk has already counted.
+>>> +	 */
+>
+> Here it's worth mentioning, as it's specifically relying on the new
+> behaviour. Although it's neatly using the VMA_LOCKED_MASK to handle bot=
+h the
+> locked case and the 'being locked' case :)
+>
+>>> +	if (unlikely(vma_test_any_mask(vma, VMA_LOCKED_MASK)))
+>>>  		munlock_folio(folio);
+>>>  }
+>>>
+>>
+>> Why I am commenting in the middle of the series? Because I am taking
+>> a quiz given by LLM based on this series to get myself enough backgrou=
+nd
+>> knowledge to review this series. This mlock part came up at part E
+>> and I only have part F left before I can do the full review. :)
+>
+> Thanks! :) I really appreciate you taking the time to look at this! Sor=
+ry it's
+> so large.
 
-Ordering symmetry can be resolved by looking at (distance, abs(node_id_i - =
-node_id_j)).
+Sure. It is great learning material for me. Thank you for the patches.
 
-> For instance, node_affinity_distance(A, B) is not guaranteed to equal
-> node_affinity_distance(B, A).
+>
+> I held this series back from last cycle to help with review load, then =
+spent
+> some time fixing various AI-discovered things, and all the patches are =
+necessary
+> (well for the most part) to get where the series needs to go.
+>
+> I think the change is worth it though!
 
-node distance is symmetric if you don't modify it.
+Of course, great to see hacky code being removed by this series.
 
->=20
-> The dedup algorithm can enforce this symmetry property for the resulting
-> node=E2=80=91distance matrix.
->=20
-> > > > This will be storage efficient and more straight forward
-> > > > to use than maintaining an artificial cache distance matrix.
-> > > >=20
-> > > > I dislike the artificial distance matrix also for the
-> > > > reason that there is no guarantee that there are enough
-> > > > available distance slots between two nodes.  Say if I
-> > > > start with
-> > > >=20
-> > > >         NODE0  NODE1  NODE2  NODE3
-> > > > NODE0   10     20     20     30
-> > > > NODE1   20     10     20     25
-> > > > NODE2   20     20     10     20
-> > > > NODE3   30     25     20     10
-> > > >=20
-> > > > and there are 16 LLCs in NODE 1, I will run
-> > > > out of slots when I try to deduplicate as
-> > > > only 10 slots are available to fit 16 LLCs.
-> > > >=20
-> > >=20
-> > > There is no system-wide LLC distance matrix in this series. The
-> > > de-duplication is applied only to the NUMA-node distance matrix.
-> > > Consequently, the number of LLCs in NODE1 does not affect the number
-> > > of distance values required by this patch.
-> > >=20
-> > > The algorithm also takes the available distance space into account
-> > > when assigning the refined node distances. It does not simply insert
-> > > one value for each duplicate into the existing gap between two
-> > > original distance levels. The distance values are adjusted as
-> > > necessary to reserve enough space before the duplicates are assigned.
-> > > Therefore, the algorithm cannot run out of available distance values,
-> > > regardless of the number of nodes sharing the same original distance.
-> > >=20
-> >=20
-> > Fair - you're right that the dedup is node-granularity, so my 16-LLC
-> > example doesn't apply as I stated it, and I'll drop that objection. It'=
-s
-> > moot anyway under the argument below: if the ordering uses raw distance
-> > plus a tie-break, and the score uses raw distance, then there's no matr=
-ix
-> > to pack in the first place and the "enough slots" question disappears.
-> >=20
-> > > In addition to providing the node-level component of the LLC affinity
-> > > ordering, the refined node distances are used to calculate the
-> > > affinity improvement score when selecting a source scheduling group
-> > > or runqueue during load balancing. Please see patch 12 for that usage=
-.
-> >=20
-> > This affinity computation is where I think the dedup actually hurts rat=
-her
-> > than
-> > helps. The score in patch 12 is
-> >=20
-> >     Di =3D dist(src_node, i) - dist(dst_node, i)   (kept only if Di > 0=
-)
-> >     p  =3D sum_i  numa_counts[i] * clamp(Di, 4, 1024)
-> >=20
-> > so it reads the distance *magnitude*, not just the order. Feeding it th=
-e
-> > refined values manufactures gains on exactly the node pairs the dedup
-> > perturbed - the equidistant ones. Using your node matrices:
-> >=20
-> >     raw:                          refined:
-> >           N0  N1  N2  N3                 N0  N1  N2  N3
-> >     N0    10  20  20  30           N0    10  15  20  30
-> >     N1    20  10  20  25           N1    15  10  12  25
-> >     N2    20  20  10  20           N2    20  12  10  15
-> >     N3    30  25  20  10           N3    30  25  15  10
-> >=20
-> > Scenario A - a locality-neutral pull gets a fabricated gain.
-> > Dest CPU on N1, source rq on N0, 5 tasks preferring N2:
-> >=20
-> >                   dist(N0,N2)  dist(N1,N2)  Di   contribution
-> >     raw           20           20            0   5 * 0 =3D  0
-> >     refined       20           12            8   5 * 8 =3D 40
-> >=20
-> > N0 and N1 are physically equidistant from N2 (both 20), so pulling thos=
-e
-> > tasks to N1 buys zero locality - raw correctly gives 0. Refined scores =
-it
-> > 40 and the balancer may drag all 5 over chasing a gain that isn't there=
-.
-> >=20
-> > Scenario B - two physically identical options get fake-ranked. Dest on
-> > N1; candidate sources N0 and N3, each holding only N2-preferring tasks:
-> >=20
-> >                   raw Di   refined Di   after clamp(.,4,1024)
-> >     X (N0)        20-20=3D0  20-12=3D8      8
-> >     Y (N3)        20-20=3D0  15-12=3D3      4
-> >=20
-> > Raw Di says both are 0, i.e. locality-equivalent, and load should decid=
-e.
-> > Refined ranks X over Y purely from invented deltas - and the clamp floo=
-r
-> > even promotes Y's fabricated 3 up to 4.
-> >=20
-> > Note the dedup only ever perturbs ties, so the skew is confined to
-> > equidistant pairs - which is exactly the case where there is no real
-> > locality difference and load should have been the tiebreaker.
-> >=20
->=20
-> My intention is to distinguish equal node distances and give a definitely
-> task move direction.=20
-> What we want to do is aggregate task to as small area as possible. If N2 =
-is
-> Preferred node, and N2 is saturate, N1 is the next node of N2 in the
-> affinity node order, it's natural that prefer N1 than N0 for task aggrega=
-tion,
-> right? Thus, we should give weight for task in N0. So N0 is more likely t=
-o be
-> chosen and migrate task to N1. Consequently, the task can more likely
-> aggregate to N1 and not evenly spread in the two nodes.
+For this patch, feel free to add
 
-I think you should get true affinity metric based on real distance. Bias ba=
-sed on node
-property can be applied separately and a easily controlled manner. =C2=A0Th=
-at has the advantage
-of setting the bias based on factors like load or others.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-It is a bad design to have to tune a hacked up
-distance to change the bias.  It is hard to control
-the magnitude of the bias and use a similar and consistent
-bias with the current approach. The distance you inject to
-disambiguate is not the same from node to node.
 
-> =20
-> Also, give a preference between N0 and N1 can limit the task migration fr=
-om
-> N1 to N0. By this way, we can achieve the goal that keep tasks inside N1.
->=20
-> > Stepping back, the matrix is being asked to do two jobs at once:
-> >=20
-> >     - ordering: only needs a deterministic total order, which
-> >       raw distance + node-id tie-break already provides;
-> >     - scoring: wants true magnitudes, which raw distance also provides
-> >       (equidistant =3D> Di =3D 0).
-> >=20
-> > The dedup is only necessary if one matrix has to serve both - and that
-> > coupling is precisely what injects the fake Di. So if you need a node
-> > ordering, I'd use the unaltered distance and break ties by some other
-> > means (node id, or load), and feed the score the raw distance too.
-> >=20
->=20
-> Yes, the refined node distance serves both purposes mentioned above. Henc=
-e,
-> dedup is necessary for this patch series.
->=20
-> Both affinity=E2=80=91score calculation and migration control rely on a c=
-onsistent
-> refined node distance matrix. To keep this consistent, we should avoid us=
-ing
-> the default node distance for one objective while adopting a different
-> variant for another purpose.
->=20
-> The only open design question is whether symmetric node distances are
-> strictly required. Symmetry is preferable but adds implementation
-> complexity, so this represents a trade=E2=80=91off. If symmetry is unnece=
-ssary,
-> I can construct the node order following your approach using the
-> (node_distance, node_id) pair, which is significantly simpler than my
-> current implementation.
->=20
-> Your question touches on the trickiest part of this patch series.=C2=A0
->=20
 
-I think the design can be much simplified if you don't have to invent a new
-distance matrix.
-
-Thanks.
-
-Tim
-
-> I'm
-> not sure I've answered your question clearly, though this discussion
-> has prompted further thinking from me. Thanks Tim.
->=20
-> Jianyong
->=20
-> > Tim
-> >=20
-> > >=20
-> > > Thanks
-> > > Jianyong
-> >=20
-> >=20
+Best Regards,
+Yan, Zi
 
