@@ -4,133 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42912C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:54:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5576C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:57:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 298896B008A; Thu, 24 Sep 2026 13:54:54 -0400 (EDT)
+	id 079726B008C; Thu, 24 Sep 2026 13:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26FF46B008C; Thu, 24 Sep 2026 13:54:54 -0400 (EDT)
+	id 02A6B6B0092; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 185BF6B0092; Thu, 24 Sep 2026 13:54:54 -0400 (EDT)
+	id E5B5F6B0093; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4546B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:54:53 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBB49C0465
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:54:51 +0000 (UTC)
-X-FDA: 85249406382.06.BA7C1BA
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B9E7740002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:54:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1dabzC96;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5V+Xm0Lm;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Zmc8otqh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vaGP2Q23;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB7F96B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:57:13 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 622901401CB
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:57:13 +0000 (UTC)
+X-FDA: 85249412346.13.15A2174
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D477BC0005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:57:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gFOOJ6lX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790272489;
+	s=arc-20220608; t=1790272631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sPoUMczHVknhsJ12DVLSqidzCMjk30NE8xDC/mrh66A=;
-	b=PEcTC3dPvYp88V4YqekARRiEu16N870Mko5USpPvQvk+eahZ+aSdAjPmBNGT/axyLU7OAx
-	ultdzaixxPDHVI/bZS1MtTO2EDafUi0EWHQ0D7RVAyqnXrn0v45v1zVca57SgaEzwQm0xQ
-	wrCdsPAhtIARxPipT9mUYSOlkRzHTlg=
+	bh=7kE9HsUX44un0zsngBjEnaGDjKX5zQ1DwZixp0+UiPA=;
+	b=JBlwdtUtsweKKSiVcuzdn/XwMWd3cj+L1pTdxzL++DSLEQGgW4y1/pzCGzWcyfCEDERWYu
+	P3Tj3zsJOFcBGqnSR2cEzKjtEEAUCH9RT9eHdBA1N51blmA4aIbEI1QDwrwnnlCUsnjX5A
+	p3O/L22pYn13PJ5avDdg1BN4aaqrYHY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=1dabzC96;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5V+Xm0Lm;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Zmc8otqh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=vaGP2Q23;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=gFOOJ6lX;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790272489;
-	b=wZkjF1iqGVm5tM1ow6tXBuk718xkgvQ+8BA7rNw60wnhZvtEM6N8DoSdvnuZtBZJxyOjbP
-	Ut+0lw/SVmW3Suaqcl4c5T28HmHLdrr7g8PM2nYnQEi8TRnSzg8M+7Vexx1EBYEOfWOPQG
-	MvxNRNUeLwHvsWbUWDJWwRyRgBCKY3s=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C7CA200DD;
-	Thu, 24 Sep 2026 17:54:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790272484; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sPoUMczHVknhsJ12DVLSqidzCMjk30NE8xDC/mrh66A=;
-	b=1dabzC96kiSPOb63TTR6AAp1dpdu7gunvuVBRLLT2fpTucld5nJctSSp+DME5uod//vvqJ
-	B9pHXrCHS+1/qVpO0YN/QxuLzmVpGp0l7Hzq8kz/XsAk5VnpDi6dauTGMvDeLI9iwiR8Oo
-	HfZFxDIBeh6QjfN+3zxY+11lkrFthas=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790272484;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sPoUMczHVknhsJ12DVLSqidzCMjk30NE8xDC/mrh66A=;
-	b=5V+Xm0LmlqvboqghMvAbW68fmUrJPPnoxXkXBT824xC1P1mtYRMYrN6UmTnTf4RTFvw0z1
-	P4nriVTBHg+1rwBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790272480; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sPoUMczHVknhsJ12DVLSqidzCMjk30NE8xDC/mrh66A=;
-	b=Zmc8otqhfK23cSsnuGcgYqZ2cbJGbbvydGGnX4+fHtcLbTP7EoF7vmVFOV7M5GS/kJXnDf
-	Fc1incyjRSDfPxQrNa66YDOdPRHfiYvl6UtsZJocmjC+vtsgCvYn/cDjNxs+r9eb4Wpub5
-	mmtatN8s2LT5TNdC+4IgMw9ie1ijGVw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790272480;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sPoUMczHVknhsJ12DVLSqidzCMjk30NE8xDC/mrh66A=;
-	b=vaGP2Q23vAtxEh2j4xsiSqIYkKc6px4rHblnOzMDrUNhseJE5faein5S8mcXPQqbdFhLOU
-	adfZcT3GgZGeRKCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 12C2E13354;
-	Thu, 24 Sep 2026 17:54:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5LwkNd5jtWq1YgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 24 Sep 2026 17:54:39 +0000
-Date: Thu, 24 Sep 2026 18:54:37 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
-	"H . Peter Anvin" <hpa@zytor.com>, Mike Rapoport <rppt@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Toshi Kani <toshi.kani@hpe.com>, linux-mm@kvack.org, 
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86/mm: Drop the page allocation from
- pud_free_pmd_page()
-Message-ID: <arVjbTpD45MiXM6B@pedro-suse.tail5790ac.ts.net>
-References: <20260923223116.20090-1-mikhail.v.gavrilov@gmail.com>
- <arVV9WLXQOwR8Hy8@pedro-suse.tail5790ac.ts.net>
- <d8b502f7-a552-4600-b348-614d1d62afa5@intel.com>
+	t=1790272631;
+	b=XYcxyM+365cxZTAtKUsaCyXvJdeU65PALd+dfmYRvKZn3ENHWMN/8gEjt8fKpIFgduT+Ns
+	10w582tZ9Q5CPSnuikBzWRPAH3wPSzObQosoE0vVsY0BhC2ZDYBBgPRchW82eEup4BRjuo
+	oncrsy3zeNYVaLok93x8fA8JaGqDACE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790272631; x=1821808631;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7PzxkTqNasNQwTYWLD3humalS1r1ifxDG7NI4O67jJg=;
+  b=gFOOJ6lXk2+waJoHX9qQ9pQppRjsioQrgk4T/qecsegXBgr4xEn2V+K9
+   wpfeQxz8Xij6kHPfrC/dW/jL3oP1ltA2D2G7Q2isZWguB53OZu4BBQdHa
+   ScSefQolsjwWAhc8qpi0kVdeJjb0sbSNmImgmiHrm1IUQV6SvOfL9q2x6
+   Ai4NJR91Xi/Sp6cKQaZlAgikyoEHzJ4Kifp7cZpyFbmOVhNW+BmkXa6cc
+   ZrraOWSgwYDs1pA/kZ9SX1aK17EjfB2QhgkQkGkSCKtYZlo52o/pzry5y
+   hEuwFkEQ3bPoiBTPYMCGeQi60spJwvyXTMHCigsWchzVfwcHxaMK6qiQx
+   w==;
+X-CSE-ConnectionGUID: AZ0KLgoiRCCy31cM2P7aVQ==
+X-CSE-MsgGUID: Qphjo9SeRIyO/+sJNibx8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="90098861"
+X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
+   d="scan'208";a="90098861"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:57:09 -0700
+X-CSE-ConnectionGUID: jvAxloPTTMG3609yo6txNg==
+X-CSE-MsgGUID: xQE0XoJ1QBuNuuiki0EiRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,121,1787036400"; 
+   d="scan'208";a="273317475"
+Received: from jjgreens-desk24.amr.corp.intel.com (HELO [10.125.110.171]) ([10.125.110.171])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2026 10:57:08 -0700
+Message-ID: <6a0c2fd9-b2e1-40d2-b7a1-ba93cb3c53a3@intel.com>
+Date: Thu, 24 Sep 2026 10:57:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8b502f7-a552-4600-b348-614d1d62afa5@intel.com>
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing
+ while booting
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>,
+ x86@kernel.org, linux-mm@kvack.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9xxybqeiieeq8y6hzg88jz9o9fg9ambm
 X-Rspam-User: 
-X-Stat-Signature: 5p33jq3ce9q5be7qxze9iup54tjquez9
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B9E7740002
-X-HE-Tag: 1790272489-60125
-X-HE-Meta: U2FsdGVkX18+tRV8jqqonJVaXSBAYV1W3DX1pk+olmMW0TRaMsB857EkXlUZttRpXnwU8XgpS+Edb4UHiITkYg45NlSWIYQMwygmD09od/m+KoO/7ylKdfwBhooawIaqtcx6Wymgugq6I/I8uEs855qdc0eiYwCr+5kltkd4HQftKFxTIzfuYeDvAXB+5QGNZJZBU1TTtXMfKEO2gV9yJLoubW2zT+Vzw4CM0RJo3vEoBFqm+ZPOcseMtOCy+iiIRyLP+gWhQJYV+2VdCGxbV+Ps8ugu9g8WpSPqmHCN0rKeQSMOZsu6SnUfsi0T37X3AAwMT45I0AO2g8bMRJZfVaLwcFd0ldI6q+C0dN/BrLL4g59ROaexFM6dvsqIGDHtUSvOXAAoEWmH6ZfR/QZ4KCtBY5iJcgxPVcz+r76BLs/2k6ULUqmYlDUYj35r69fO2o/iKRMWBeEYnnx+BIGYjXk1PO8XeqZ614b1A10sVWANhk0MSvrICluK4wgq36y8t0RxPGKmAfYb3iZ2ZunEQ2VbjQq/Rf18UegVFD8mqG1RV7na052iRqv3eEDfeXxaC/oGE+y1Q0eX8d3wBtd84q2BASZpz4k4+tQPyczz1lXv8x9iUdKiAcqGpaou9J5MLIuEziePNpRgHgMPrN6O67N0l8lk7cDLiaBzx6gMZ8DgoEBa7uweFTqo+GQ2ISDlVvYf4uoM3tMb69f1nFXUTG+ei4wWPxIY0ujWTZJAEu2PKFi1m576MxSODhe5NeUHtinss+XPpvBrfy3f/NO2UWsTXTnjFio1GB/aRjChZ5/A7gF/1hQGujVKCSZZCLAcX6ygGjIFUhocNQTLwcatqY02lq1/jK4ud2p4OcJ32IJIXG5HfQmBwhuV8NfbyLqa2i/vsPdR+5GV0U0gI08nBQxf2lzMBUXipdCtdhkx912Vb9u++oOPIetBpyayCzW6ykxovUdtvYqj9xurPj8
- FaCVIzB8
- b6DMFDynPQgeg8s1ftwawuiKBGAzvwLkX1BdJJuRa9bIW+Jd1g/ul4vd+vVhbNcp0uOlc4bRqW62F4bV8Xw7yUjr/kFSXLnwyFbkKOidmgMBN/CIuPZWhaR5Ysa3hSci8LJHWippXZRCdI+2WI+E5hAl6WsOX0Mx/WzZW3BhZIpixeBiCHZh7/zthJile6RHrAL8wF53FLxXGK8j7PoAwyp0SMcYMaeZOGgWS4ZpKB/DfDP7t+g43sQcZVN6zNDB5Zuk8vu5PkwZjfW+d1rhqNafzfYZ76LIlFFIzkebBljakgR7jZdeCQPUljE0YUUqAgEaZxAznoRcMGcUE2In9S0ze/Hqk9yQIZLzQGaCW7yVPSanybHyQbjOa8cv8w2BlKYdsC7kpJHJvXiSk7jfBnpPqZYMs//1LmcTD
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D477BC0005
+X-HE-Tag: 1790272630-578331
+X-HE-Meta: U2FsdGVkX19G9NsULy55Q4Wqm1z0Takjw4po4qDSennTrkGPgGj4XbjZkEyYG852BR1qoX3mfy6F3+7/5hSPTQrFc1NrTQ/uwSK0kX4w74s+KMfvke/Pz9q/FjkyzEUsg4qkNwaIvBsoSYzxOkAOm20eEr36hxupIVj5ENYdtFbVf5sGVH9jlmoscjhMycGSNYR4WWlryVXJHwGqryAPy+S5+D95uolQTxRw4TL8691hQ7WvLpuMiEVb8hSvWaY0+t6WyQC3hEIuaJDcOqDF7za5AJ7nPyxJ6PFsBMkOV0cktmRtCzvjTLtozrz8Zkse+vzpfUxpui3lGn+c3UTfBwySfRJT1GnQqWLmL6l6UEvfjdSQaJB5/DKe0A2HyxmfhFpE6IZd4sTcDMLDAWb4YMxgkj7Ql5qtzd8FtBIDeJ0VmXU7847y7XZKg1Sb6CCgOpZB+qBnN5G1TaJT9I5Vm+meXt6zKCgFf/0BYwYXScVdzaek79mnNgA7tecXg040CgnsFBXCq6m61MLFBfAXYPFzuzaXdELIEkUZWVanc0BpegZlAGAfuW1DrhyqkOIpZ+xKPYnIxqUniKhy5go1P1cSOViTDc5ztcdXNUPwpTY1+2Z8G/YtBj909nCnTh7K2zg8z6n5aVzJSEZM27FlUF3LXVALB7gl6LPuL1SO5wqEujS+1BKtusyS4lURMZ39zAM2oONMNDtWYH/YeprIF1BdXTR0oFSllZuBNR1kchH7jukilc+FUon3UEtbOnazptlk9nRkQXPikpkX+JAuPMR5fNqNZER/Kbh4IJv1YnHone6dx6WS0F1SEgXOlysviqRLYYTj55ydMhF6/GA5YDgJ3ZKSIfLifZxmr1ydD/YqDS+A1MeBMHZJU/DaMN8s1MMBIUDyksHltgH5al0QezYY6DRbQDMcNGtdi9SbbVPUKa1M5UTf7RhFXXfnllQx2JYjPvEmsvGp4kr3U15
+ 9ljhSEQG
+ 6kJn3keVAPAgeUB1eteweiwfXfV/1N+kFPGEBy7Nu9CFd9H8zY0VJKlh7Z7rAytW3CQZVIemKZb2eoaUvNljHX0tQNW8N3mzgXDXYOQJhxHOw86pGUE5bCJVRHJe/j/HvP9R/BZiAZdyeMFvm0H4wABDyFZmfoJUJIPxAnItxbeBbqD/AjNTu8m11vq08ji9kIqglcxCNfA3KlX8CZjenTT1wuYx5HR253wNAquoBl/V8fOujxpfqsJX1aGKuUwJtdjyVmHSwLiQczEVA8wL9I8ac7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,18 +158,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:21:03AM -0700, Dave Hansen wrote:
-> OK, I've got a version of Mikhail's fix with a changelog and comments
-> I've munged a bit:
-> 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/daveh/devel.git/log/?h=pmdfree
-> 
-> Does that look OK to everyone?
+On 9/24/26 02:23, Mikhail Gavrilov wrote:
+> Keep putting the table on the list, but don't schedule the work while
+> the system is still booting.  The next kernel page table freed after
+> boot schedules it, and the work then frees the early table too, after
+> the same IOMMU flush as any other.  If no kernel page table is freed
+> after boot, the ones freed during boot stay on the list.
 
+There seems to be an awful lot of chit chat about how and when the
+boot-time tables might get freed. Like:
 
-LGTM. This is where we find out if we have a solid understanding of x86
-paging caching guarantees :)
+> So on this box the early tables wait until the first module is
+> loaded, and no separate drain is needed.
+Wouldn't a "separate drain" be all of 5 lines of code?
 
--- 
-Pedro
+/* Take care of deferred freeing from boot: */
+static __init int free_boot_kernel_pgtables(void)
+{
+	schedule_work(&kernel_pgtable_work.work);
+}
+late_initcall(free_boot_kernel_pgtables);
+
+Then we don't have to reason about it at all.
 
