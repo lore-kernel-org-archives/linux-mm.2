@@ -4,70 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FBAC9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3FCDC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:11:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A96B6B0095; Thu, 24 Sep 2026 15:11:44 -0400 (EDT)
+	id 10D106B0096; Thu, 24 Sep 2026 15:11:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 182026B0096; Thu, 24 Sep 2026 15:11:44 -0400 (EDT)
+	id 0BED56B0098; Thu, 24 Sep 2026 15:11:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 049156B0098; Thu, 24 Sep 2026 15:11:43 -0400 (EDT)
+	id E52896B0099; Thu, 24 Sep 2026 15:11:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D07526B0095
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:11:43 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6B0B01404AF
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:11:43 +0000 (UTC)
-X-FDA: 85249600086.05.786DA1D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B62246B0096
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:11:48 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 27AEA40454
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:11:47 +0000 (UTC)
+X-FDA: 85249600254.07.2991D96
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8CBEF2000A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:11:41 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GPAlFBAt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2FC5F140006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:11:45 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=eV3bZfMr;
+	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790277101;
+	s=arc-20220608; t=1790277105;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oSpaGOgRlFaEX6Djx0U9Wf8iqz6mTgAhJ7wWma2xQvU=;
-	b=YoEulrws675mntOGCYaSRgrfiB116SwuSw4JrXiqb+vLmlsqN13ox3DdVeGF7GDraGxLw8
-	2PsTg1A8bgfS9me2c7txSYz+nhfACQLFzlZ8Aqme4mGJDXWopRr+uhKuGbSD3N86I8K8Z0
-	jiQFlXci53h0+eE9KKusGsKXo48qNFk=
+	bh=vXy3giDmFd1mpjVovzH1Ji8JFcbrRLf3noPlGrGzrHI=;
+	b=QRDIq5YxqKHYHsEGNBNgOcg8ADpu2yR5CYMDmyZTQTxuyaXkjJWutU1775pIWvfyngj1Cd
+	4ZFOJ6VFKHHuL5zXh382CljNHsU+P6f9/Pt1VrhZalpXJlP8IOG59BgLreFG/9ImsUAbDf
+	GvnWxZsKYabIrkIWf4kQuy8zqkLS598=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GPAlFBAt;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=eV3bZfMr;
+	spf=pass (imf09.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790277101;
-	b=rFXAWoDhW5tpblwwCK7Rur+ITLLPYmVCqiWOmGmw/fkfSEPKbPttiIiokmSNegNoZ73zJc
-	336IWeWCowiJHipXS/zW2VGdZ0bDGeeui/51yi3UmHFTzT/l2lbHcyXn4OVFbqKZNGGW9a
-	UJSVvfJnusmsDOaZd6M5Msw/Bi1ssio=
+	t=1790277105;
+	b=cEQFUeoiNAzF+v7qDXrhARTHFrn55H+7ZK7PehcMV3jSbEwvnd7KDfaFJOHWmEmCynSvhb
+	R8RHWXzJTvrl8sHmuHGSqyej16+gUl2UrFQIylFQbJWswPXFMAI5FjdSER7t4UgqZ9lpuD
+	nh4EpFqI2JFpW34LazD7w0TBdg6TjFA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 20B191E8D;
-	Thu, 24 Sep 2026 12:11:37 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C74511EA6;
+	Thu, 24 Sep 2026 12:11:40 -0700 (PDT)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4A3FD3F86F;
-	Thu, 24 Sep 2026 12:11:37 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EF9D63F86F;
+	Thu, 24 Sep 2026 12:11:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790277100; bh=fDkgRwO1bSLmE20FjTBQYz0rSMBZdZYYVM8/o1IT0V4=;
+	t=1790277104; bh=g3AhOUqfUFRDC8KW+TFZcN4eqAIWIuTzDwCjFRxwO7U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=GPAlFBAtX8ns+cMS2XIw5tZow6WHg72k4VFEyV6SkkghzKJFEdeA4MwPWujeARwwX
-	 WHTSoYp31utUWywI4YXgdM92JadbgT5/3flyNZll9HugogFacVdYI6YSYagDNKcDJR
-	 NgGXNwDMLiXBih0iLFB3vjRRZEjR7V86oRFlDw7I=
+	b=eV3bZfMr8N5DtL4R4+zm/kgood6J/egHPdyIW7Mu7W7490GvTmwQv2ogFYif42fEv
+	 g7ZKemF5kKNsDqEQk4Q3xazuZ7XAcQ9Q5qtx9jMs8q1x/hQFureb93zsNsJT1DXg2q
+	 /Tq4/EZ3ptEdIYexJngZK57m3sSx0/kiWP6kp4dI=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Thu, 24 Sep 2026 20:11:18 +0100
-Subject: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
+Date: Thu, 24 Sep 2026 20:11:19 +0100
+Subject: [PATCH v8 4/4] kselftest: mm: remove check_huge_shmem()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-fix_split-v8-3-cba7359d882a@arm.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260924-fix_split-v8-4-cba7359d882a@arm.com>
 References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
 In-Reply-To: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -83,27 +83,27 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5654; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=fDkgRwO1bSLmE20FjTBQYz0rSMBZdZYYVM8/o1IT0V4=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqtXXdGx79YGZps9yF/7wwsZToJptGpYy5CgrtL
- IzLraqJp8OJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarV13QAKCRBt1cPRWsUx
- MxmeDACqgTanCs17S883JUW3jGlxbmdTTM/Q/vfT2y70PDaDDj6zs2IIJge5avkyEHFkFRzjjhl
- lrZs18knmquEo7LScoOxvCtD/k/4GC2dgLE+zii+8zQVq/i22heDazpK5cEn9akOYYEGa5pqgfG
- rvUUujhX3CZyp+255kwmohH49zdRBwjAJ0+pwdepOYEc20ec8mLaHYmjVCxK5Jqf6kdxDP5B+Zs
- D+hthXo/gwSpie9UCbQlBEWV67Gbax8c4Rr8lLi17MkCaqlR4x+9FJE8+Cm6OsTuGCdYhM6/TRW
- oz4draSDkVDIdT/5d7/ZAMtVKrtVx/lvu6f4ORS4ebdD3CB+ke0vXpCPJiZbjHVqTMqDqrFa0Bd
- ORy4/fjuBSZgO8qggOzcuXTzHCSpa2SRESBJ/agHV/hMlRKEoT2C6djkje817gCmk++tGxCMipQ
- jLLh4QSRcjr2eNVFFHF+nI+mTKfu4H2MPtouU2JYK7U+I7PQnp5asZDhQvzizbBKNhOIY=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7410; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=g3AhOUqfUFRDC8KW+TFZcN4eqAIWIuTzDwCjFRxwO7U=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqtXXdRG/ZRP34qhtVmLPDZhRSrGb+H+F+e/i8n
+ jEdR9g5IeCJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCarV13QAKCRBt1cPRWsUx
+ MwOYC/9vRpci1QI5FsM/WJwnN7ZWxWHc/mjdn1hZusyRlx03RGyrjLFLeQjEgzE6ZSFczbjGdOv
+ gWW2P604/+MdOh1Xb6PQPZCH1O2xzql7JaE9EBlU9qRzVKCARbmyMZGZ3GaHGOF6uN7RSpNPbks
+ UrxAlTSG7TuVscxbxS0c0y21c+b18Qx4p519OC60Uwh4uHQEFU4hTOODNLjBtC3XqtlK4oXHP5Q
+ rTdZPM/M04KQAmbdgro6/UNnQ5I5+DspzRPdimw1yAAww72TSoZ2ZsEpqh5stJzmE+7xRZm5kaH
+ Iwa7vqvF8QtftBKKsTtsqg5Ugq6dhbbmDTDqFlTSmRhH3rtcEGS2D/dtQmht8d4I0bwY07+DGY8
+ EjMeJqidjTnkl5u2sJ0qVewmNAZfTQNXB8LCaYau1oLIUa7lVaYIklF9cYsw0/idXBoGa5QIoE4
+ aCq8N5CTzeAthmIPJ53RO/qg/q6FoZB+ljdQf0M/XkiY17b9sA4C64kaoCs7QTcVOEdVw=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2FC5F140006
+X-Stat-Signature: 5e8yn5uspj3cdbpgswprogq8sf7c4i8h
 X-Rspam-User: 
-X-Stat-Signature: stjajhuhp5jff9dm6k7ke4xu38pqfzns
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8CBEF2000A
-X-HE-Tag: 1790277101-675654
-X-HE-Meta: U2FsdGVkX1/SFLHIZGR+UqpCo6VvVXkcCQO3Q2Wz5iCFB4crAJisGSOmB0QTt5zhmsojs0fQKgCt3FDdlIT1KKEFRoPN4XFR3KBbVUsPq3TYxEExZca+0IV0GNhR+zqsNg4XPOpWKH1/9S8ItVYmf1AeipI5cWY5ImCXjRigxaxM9XiohJBSB/9rwUz4aRxhySEpLu8oXnayz2RnbEjZwZMi4vuJopR6JacBnuyJDyLMZFrN5hmu2LsXIyAha+xUn1+lly3RASYzvmQiXccMEpSfn6OowLvTbiSnQqymHEYU7AxMriwsmBnx3h1124a9L6OSmXeJvoUNq6SIyhtf/9sKSAO80ulm6w4xN5QMfwuF42jIOcEnReTGcFj9rmvmJ3s3fJuJZfQwMYkcy0diUvihcrwkFErT69c6K6n0Ysg4CClnOAFMJnqccsEyIi/zaquamb5xenDU1iOsyLOb1Aa+M57w6+cDh7liCenA4+hN8cxtiR1io2sCfmZKAPNAcIrL3DdmdBsJb/mZwd48+wOniD5zJkS6ZNETutyDL4+O3grjODjsnEHPwzta3sNpTSnnupCOyDq7+A3vdA2yomYAmeQqMghLE0tKxuZOz2uJs/vJ4KrWRCzLJh6M705qnlJO2csGGySiDMVLMaTw9me4sWPLjqEpo1AZdg9N1g7EXvafDHVAYZJ1U8hkW/tIcZf13XivzSXZ/nCfL3Nglo8F7Y1LaEoH/7eUTG8K/dTqistGVcN167z5p2kCWQBAHDCgammwUYm5w8gUOGJMBLKC11oBW5wHNd0egLxkVZq9bu/5zTsTrzYaTfvWqC5Nfxj2WzkFDh8ev1rgA/1+SSi/UbekRxPRUfcI8Q2R3qcN7cfycj5puB6ZH2vEZuz4dsthWFzfLMWULPGSNJKQ+IhzM3RcVPNd6AXXH4qsD05olZQSGgA57xOXJRotzg8IjHbMCYXgt5Xvvuk/CAa
- 0cJvyP2/
- El7n5T3j2pqiGYMJ45Fimz65yDCozY9X9nsyEIA0t11q2Iy3WkOG/C62Q/z690P5hvcEjCCDFI/u75z+lbBptIO7L+qiPvjnn1EzJuLx15Ybxp9fAoYufFUr9ozJNKrgF5P2PoFgqBSczi5nI4TgO4q15K8Thme3rvC3LGvA4Ajxge3kAbalMzvWhEYgplILbXoTEjgHpGf8e8oZqDRpEYJq+h4WsvMLjUa68Q6txfEq1jWOYh89LZqn9jUqR9wmvcRhrMAe/RmSiOKMcgy54G6/A7ZY2SleYXzUvrNEqFph5c4xdZIce6rPxxw==
+X-HE-Tag: 1790277105-609884
+X-HE-Meta: U2FsdGVkX1/M1ClAqlTylhHMvKBXI0bJNwfx5QA/2uxd6HqUjDDMS3soY4SGScFyi8RY9GzWV7QdItHkpzPF1rHgFZRLqLoJ/j/0MDNAvxigDXS7TbeGzWmwaFWBDiY0xBMFSlJ4o5qjdx1ZKsyMBxOVopZCGWfn/HclXt7KxPgVTn5BuHGc+o0PuQ/c5lFfUdJgowQm/4UwWd4V7cznX9KeSTeXo+8Nq3PHyKIdvGa5+6KG3jgAfAMz5i6GFfHsek1eZPnpXiE+3jfKL6bPEUfRczhe7Qp5xhr4Oq9PoNzTxDch6ruggagctZgyg5OGTl8FPPnkSBT1ekiQeTgzlI7ARLmjROZzp17gfLBgR2Br31RwK7GUbBVJQuY/tn5YH6zAgeUGI7OoDnhtBObEh1Ovwc//92oUBu3XmW6mQr4SWQM7wqzmZxDOtKZKAdyLcH5mj0jlrEEOp8W1QJ4ilmyrHpyNmndSMZWKHz4cLoET6auSRMgeAvofaoZ2r5b/GcZkd4zirgIf6oXT6ISJb+I2MuAY5ut+2F/yLMeeP2cldWTEuCBOCWQ6qKlel19ZrvKGmrPsHVHU5blE6oeLuHiuTCDVLl+M6smVGxqI1fKEqWhTB79ZsgNTmqbOGBEbXodbFIISTdC5zQnJZNP4yjrfo1LpjUVnoYII3QV80a9fyfEtLTfrdh+DFtxp3cShp18AMy4Fhb/cB+Gazha4gfp47LU0ByCrjkegTts4DH1KX3lb39EwUJYtBIkPFVil3k02/uot2cPVYfW76NXp4u9+xGPA8FjbQcnEFVrIdZmeb3OqNRzWv17HFaZiMw/cWR7t0s+shYtXX1pQuC7RIzxwhW59xKV1dYtBpjVeLi7GyQdUoo+vMNmNRsiAHTuxeMOyG1LvfocEbMAoMTn2WfWyfCEnSDgomD0AFdqMCqnawZaGGYJZJvWju+rhbbA4TDanxBmeEsUNsS05Clo
+ Spt3R0bw
+ OTol8wT6GA9WZqRqcvcOTTqMp6ZkINPeIvsOzZLOGlOaWAxoYRBpPuuU4vpGBK3TzXqM4Tf4Oldh/fyEeFz3f/Gd7F7XjszVGs7KsIm0NyzTHQxUQC1SXlkFTsrI+C0Ah1ZM4uHdZNrPRjmsS62/68zW6PFuMB98tCtNYjN0TTUg5Sj5o1Q+3RCgBxpm2nTXQPGBVnmIcwwhxLRZ3D7CYjgNvNSjE9FeWIeSeuBBgcUtrvkaJUysEWbKJan/nHFyV4Vtl6O+wKe5qOITcgE9bgd0a6NQ6QluHKbVdwFsmUOepZEKx26lx0wrCuzaEPUZaEzGziOH1Gv81OI3vwAF6oCYr/olcq8uloVS4TcBuLyBJsWFCJLf8/WT9TG9HeloE4KWlZit8jnXOAPo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,177 +111,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-check_large_folios() only checks for large folios without distinguishing
-between anonymous and file-backed huge pages.
+check_huge_shmem() was required to distinguish shmem huge pages because
+/proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
+as opposed to “FilePmdMapped” for file-backed huge pages.
 
-To add huge page type checking, integrate the huge page checks into
-__check_huge():
+Now that /proc/self/smaps is no longer used to detect huge pages and
+/proc/kpageflags is used instead, it is sufficient to distinguish
+between file-backed and anonymous pages since the ShmemPmdMapped is also
+kind of file-backed.
 
-  1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
-     check_large_folios(), since only the mapping type matters. This
-     identifies PMD-mapped huge pages.
-
-  2. Otherwise, use check_large_folios() to detect large folios. This
-     covers mTHP cases.
-
-  3. Check the folio flags according to the huge page type.
+Therefore, remove check_huge_shmem() and use check_huge_file() instead
+and cleanup khugepaged's check_huge operation in mem_ops.
 
 Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Suggested-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 ---
- tools/testing/selftests/mm/vm_util.c | 90 +++++++++++++++++++-----------------
- 1 file changed, 48 insertions(+), 42 deletions(-)
+ tools/testing/selftests/mm/folio_split_race_test.c |  2 +-
+ tools/testing/selftests/mm/khugepaged.c            | 38 ++++------------------
+ tools/testing/selftests/mm/uffd-common.c           |  4 +--
+ tools/testing/selftests/mm/vm_util.c               |  5 ---
+ tools/testing/selftests/mm/vm_util.h               |  1 -
+ 5 files changed, 9 insertions(+), 41 deletions(-)
 
+diff --git a/tools/testing/selftests/mm/folio_split_race_test.c b/tools/testing/selftests/mm/folio_split_race_test.c
+index e4660bf89b62..1a9840b73e61 100644
+--- a/tools/testing/selftests/mm/folio_split_race_test.c
++++ b/tools/testing/selftests/mm/folio_split_race_test.c
+@@ -181,7 +181,7 @@ static uint64_t run_iteration(void)
+ 	for (i = 0; i < TOTAL_PAGES; i++)
+ 		fill_page(mmap_base, i);
+ 
+-	if (!check_huge_shmem(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
++	if (!check_huge_file(mmap_base, FILE_SIZE, NR_PMD_PAGE, pmd_pagesize))
+ 		ksft_exit_fail_msg("No shmem THP is allocated\n");
+ 
+ 	if (pthread_barrier_init(&ctl.barrier, NULL, NUM_READER_THREADS + 1) != 0)
+diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+index bdc0c7c117d9..73d6ab404430 100644
+--- a/tools/testing/selftests/mm/khugepaged.c
++++ b/tools/testing/selftests/mm/khugepaged.c
+@@ -57,7 +57,7 @@ struct mem_ops {
+ 	void *(*setup_area)(int nr_hpages);
+ 	void (*cleanup_area)(void *p, unsigned long size);
+ 	void (*fault)(void *p, unsigned long start, unsigned long end);
+-	bool (*check_huge)(void *addr, size_t len, int nr_hpages, unsigned long hpage_size);
++	bool (*check_huge)(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+ 	const char *name;
+ };
+ 
+@@ -343,12 +343,6 @@ static void anon_fault(void *p, unsigned long start, unsigned long end)
+ 	fill_memory(p, start, end);
+ }
+ 
+-static bool anon_check_huge(void *addr, size_t len, int nr_hpages,
+-		unsigned long hpage_size)
+-{
+-	return check_huge_anon(addr, len, nr_hpages, hpage_size);
+-}
+-
+ static void *file_setup_area_common(int nr_hpages, enum file_setup_ops setup)
+ {
+ 	const int open_opt = setup == FILE_SETUP_READ_ONLY_FS ? O_RDONLY : O_RDWR;
+@@ -444,20 +438,6 @@ static void file_fault_write(void *p, unsigned long start, unsigned long end)
+ 		ksft_exit_fail_perror("madvise(MADV_POPULATE_WRITE)");
+ }
+ 
+-static bool file_check_huge(void *addr, size_t len, int nr_hpages,
+-		unsigned long hpage_size)
+-{
+-	switch (finfo.type) {
+-	case VMA_FILE:
+-		return check_huge_file(addr, len, nr_hpages, hpage_size);
+-	case VMA_SHMEM:
+-		return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+-	default:
+-		ksft_exit_fail_msg("Unknown VMA type\n");
+-		return false;
+-	}
+-}
+-
+ static void *shmem_setup_area(int nr_hpages)
+ {
+ 	void *p;
+@@ -481,17 +461,11 @@ static void shmem_cleanup_area(void *p, unsigned long size)
+ 	close(finfo.fd);
+ }
+ 
+-static bool shmem_check_huge(void *addr, size_t len, int nr_hpages,
+-		unsigned long hpage_size)
+-{
+-	return check_huge_shmem(addr, len, nr_hpages, hpage_size);
+-}
+-
+ static struct mem_ops __anon_ops = {
+ 	.setup_area = &anon_setup_area,
+ 	.cleanup_area = &anon_cleanup_area,
+ 	.fault = &anon_fault,
+-	.check_huge = &anon_check_huge,
++	.check_huge = &check_huge_anon,
+ 	.name = "anon",
+ };
+ 
+@@ -499,7 +473,7 @@ static struct mem_ops __read_only_file_ops = {
+ 	.setup_area = &file_setup_read_only_area,
+ 	.cleanup_area = &file_cleanup_area,
+ 	.fault = &file_fault_read,
+-	.check_huge = &file_check_huge,
++	.check_huge = &check_huge_file,
+ 	.name = "file",
+ };
+ 
+@@ -507,7 +481,7 @@ static struct mem_ops __read_write_file_read_ops = {
+ 	.setup_area = &file_setup_read_write_fs_read_area,
+ 	.cleanup_area = &file_cleanup_area,
+ 	.fault = &file_fault_read_and_flush,
+-	.check_huge = &file_check_huge,
++	.check_huge = &check_huge_file,
+ 	.name = "file",
+ };
+ 
+@@ -515,7 +489,7 @@ static struct mem_ops __read_write_file_write_ops = {
+ 	.setup_area = &file_setup_read_write_fs_write_area,
+ 	.cleanup_area = &file_cleanup_area,
+ 	.fault = &file_fault_write,
+-	.check_huge = &file_check_huge,
++	.check_huge = &check_huge_file,
+ 	.name = "file",
+ };
+ 
+@@ -523,7 +497,7 @@ static struct mem_ops __shmem_ops = {
+ 	.setup_area = &shmem_setup_area,
+ 	.cleanup_area = &shmem_cleanup_area,
+ 	.fault = &anon_fault,
+-	.check_huge = &shmem_check_huge,
++	.check_huge = &check_huge_file,
+ 	.name = "shmem",
+ };
+ 
+diff --git a/tools/testing/selftests/mm/uffd-common.c b/tools/testing/selftests/mm/uffd-common.c
+index 1fb967ef4985..a76851aced4d 100644
+--- a/tools/testing/selftests/mm/uffd-common.c
++++ b/tools/testing/selftests/mm/uffd-common.c
+@@ -196,8 +196,8 @@ static void shmem_check_pmd_mapping(uffd_global_test_opts_t *gopts, void *p, int
+ {
+ 	size_t len = expect_nr_hpages * read_pmd_pagesize();
+ 
+-	if (!check_huge_shmem(gopts->area_dst_alias, len, expect_nr_hpages,
+-			      read_pmd_pagesize()))
++	if (!check_huge_file(gopts->area_dst_alias, len, expect_nr_hpages,
++			     read_pmd_pagesize()))
+ 		err("Did not find expected %d number of hugepages",
+ 		    expect_nr_hpages);
+ }
 diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 969d7202500c..7d23038af1df 100644
+index 7d23038af1df..65bc4761d1c9 100644
 --- a/tools/testing/selftests/mm/vm_util.c
 +++ b/tools/testing/selftests/mm/vm_util.c
-@@ -351,13 +351,13 @@ char *__get_smap_entry(void *addr, const char *pattern, char *buf, size_t len)
- 	return entry;
+@@ -470,11 +470,6 @@ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ 	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
  }
  
--static bool check_large_folios(void *addr, size_t len, int nr_hpages,
-+static bool check_large_folios(int pagemap_fd, int kpageflags_fd,
-+		void *addr, size_t len, int nr_hpages,
- 		uint64_t hpage_size)
+-bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+-{
+-	return check_huge_file(addr, len, nr_hpages, hpage_size);
+-}
+-
+ int64_t allocate_transhuge(void *ptr, int pagemap_fd)
  {
- 	int order = 0, pagesize = getpagesize();
- 	unsigned int nr_pages = hpage_size / pagesize;
- 	int orders[MAX_NR_ORDERS], status;
--	int pagemap_fd, kpageflags_fd;
- 	bool ret = false;
- 
- 	if (!nr_pages)
-@@ -368,15 +368,6 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
- 		ksft_exit_fail_msg("invalid order\n");
- 
- 	memset(orders, 0, sizeof(int) * MAX_NR_ORDERS);
--	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
--	if (pagemap_fd == -1)
--		ksft_exit_fail_msg("read pagemap fail\n");
--
--	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
--	if (kpageflags_fd == -1) {
--		close(pagemap_fd);
--		ksft_exit_fail_msg("read kpageflags fail\n");
--	}
- 
- 	status = gather_folio_orders(addr, len, pagemap_fd,
- 			kpageflags_fd, orders, MAX_NR_ORDERS);
-@@ -387,8 +378,6 @@ static bool check_large_folios(void *addr, size_t len, int nr_hpages,
- 		ret = true;
- 
- out:
--	close(pagemap_fd);
--	close(kpageflags_fd);
- 	return ret;
- }
- 
-@@ -411,57 +400,74 @@ static bool check_huge_type(uint64_t categories, enum check_huge_type type)
- 	return false;
- }
- 
--static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
--		  uint64_t hpage_size, enum check_huge_type type)
-+static bool __check_huge(void *addr, size_t len, int nr_hpages,
-+		uint64_t hpage_size, enum check_huge_type type)
- {
--	int pagemap_fd;
-+	bool ret = false;
-+	int pagemap_fd, kpageflags_fd;
- 	int nr_pmd_mappings = 0;
-+	uint64_t pmd_pagesize, scan_mapping_size;
- 	uint64_t categories;
-+	unsigned long pfn;
-+	bool check_pmd_mapping, allow_nonpresent;
- 	char *start = addr;
- 	char *end = start + len;
- 
-+	pmd_pagesize = read_pmd_pagesize();
-+	if (!pmd_pagesize)
-+		ksft_exit_fail_msg("reading PMD pagesize failed\n");
-+
-+	check_pmd_mapping = hpage_size == pmd_pagesize;
-+	scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
-+	/* Some mTHP tests check a partially populated PMD-sized range. */
-+	allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
-+
- 	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
- 	if (pagemap_fd < 0)
- 		ksft_exit_fail_msg("open pagemap fail\n");
- 
--	for (; start < end; start += hpage_size) {
-+	kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-+	if (kpageflags_fd < 0)
-+		ksft_exit_fail_msg("open kpageflags fail\n");
-+
-+	if (!check_pmd_mapping &&
-+	    !check_large_folios(pagemap_fd, kpageflags_fd,
-+				addr, len, nr_hpages, hpage_size))
-+		goto out;
-+
-+	for (; start < end; start += scan_mapping_size) {
- 		categories = pagemap_scan_get_categories(pagemap_fd, start);
--		if (!(categories & PAGE_IS_HUGE))
--			continue;
--		if (check_huge_type(categories, type))
-+		pfn = pagemap_get_pfn(pagemap_fd, start);
-+		if (pfn == -1UL) {
-+			if (!allow_nonpresent)
-+				goto out;
-+			else
-+				continue;
-+		}
-+		if (check_pmd_mapping && (categories & PAGE_IS_HUGE))
- 			nr_pmd_mappings++;
-+		if (!check_huge_type(categories, type))
-+			goto out;
- 	}
--	close(pagemap_fd);
- 
--	return nr_hpages == nr_pmd_mappings;
-+	if (check_pmd_mapping && (nr_pmd_mappings != nr_hpages))
-+		goto out;
-+	ret = true;
-+
-+out:
-+	close(pagemap_fd);
-+	close(kpageflags_fd);
-+	return ret;
- }
- 
- bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- {
--	uint64_t pmd_pagesize = read_pmd_pagesize();
--
--	if (!pmd_pagesize)
--		ksft_exit_fail_msg("reading PMD pagesize failed\n");
--
--	if (hpage_size == pmd_pagesize)
--		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
--					CHECK_HUGE_ANON);
--
--	return check_large_folios(addr, len, nr_hpages, hpage_size);
-+	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_ANON);
- }
- 
- bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
- {
--	uint64_t pmd_pagesize = read_pmd_pagesize();
--
--	if (!pmd_pagesize)
--		ksft_exit_fail_msg("reading PMD pagesize failed\n");
--
--	if (hpage_size == pmd_pagesize)
--		return __check_pmd_huge(addr, len, nr_hpages, hpage_size,
--					CHECK_HUGE_FILE);
--
--	return check_large_folios(addr, len, nr_hpages, hpage_size);
-+	return __check_huge(addr, len, nr_hpages, hpage_size, CHECK_HUGE_FILE);
- }
- 
- bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size)
+ 	uint64_t ent[2];
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index 072a6c756c51..b5d59729d432 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -96,7 +96,6 @@ uint64_t read_pmd_pagesize(void);
+ unsigned long rss_anon(void);
+ bool check_huge_anon(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+ bool check_huge_file(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+-bool check_huge_shmem(void *addr, size_t len, int nr_hpages, uint64_t hpage_size);
+ int64_t allocate_transhuge(void *ptr, int pagemap_fd);
+ int pageflags_get(unsigned long pfn, int kpageflags_fd, uint64_t *flags);
+ int gather_folio_orders(char *vaddr_start, size_t len,
 
 -- 
 2.43.0
