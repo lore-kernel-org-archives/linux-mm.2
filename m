@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25752C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D05A2C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B5F86B009D; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
+	id 3C7BB6B009F; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 266EB6B009F; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
+	id 379076B00A0; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12E766B00A0; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
+	id 28E816B00A1; Thu, 24 Sep 2026 14:48:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE18A6B009D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:04 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62E6AA66E1
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DE34A6B009F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 659601C2CA8
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:06 +0000 (UTC)
+X-FDA: 85249540572.19.69CD865
+Received: from mta0.migadu.com (out-190.mta0.migadu.com [91.218.175.190])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6D8DB40004
 	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:04 +0000 (UTC)
-X-FDA: 85249540488.10.9667589
-Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8125B40006
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hAD3XP6R;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OH9wo06k;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275682;
+	s=arc-20220608; t=1790275684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r/kZABDU8cK6a3kV+TCEZT4x9rOimF4qC6zdNvt/dLk=;
-	b=TCxD5lBsVGi5moLhCLn6l5eMGppvZC58gVoZ76ksBl/Sa9pMlZx/BmmxykJa9oqdjpbYva
-	RQpqjT52u34PkuGHqa1ZLrwZO0wCdqlXKF/YSbte/2zRTGufxC0oJeyShmp8TheeTUfHpe
-	cNna3zcF0Dj4w6m3xiuPEP0UpNG61Go=
+	bh=WoNcrnopXK6rxbcsah/NFUis2KIsIWy3hztRFhbamQE=;
+	b=TT6yTVetg/MNocUCkDuHTIX4h81qm6xFaFF2P/8ZEcgS33lu7n0csoAb6qcBTiMmLo9QiF
+	4fV1UpVCRdI8WK2du80hw1N1mdYdjXCsIZZwmFhCp6o0/oo/n7ROpSvLYwbGiV5dJmx+bm
+	AdvHQPtYtqUKeLhN0BHa9UaApn88URs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275682;
-	b=sVEZskPgt8sYbhDop5v80b9PhdtxeN4V9LFRhGEr8h8F+4DMxvhaePWsWcFHzx7OCXmpax
-	3NhHCI4GUGV5E6YjKFQS8zJBqkMRNZtkzU7j/yD0g/eEmPi2bFamPwMVFu55zkm/E1z/vh
-	bsvbfjjGN+MjdS1WaIHlCx9ENKVQicQ=
+	t=1790275684;
+	b=ryZyXapDGkIDFpB9Zij/Rfs3/xNeSR3HhQvHKmQJWzmZ+IoPw7GFcL+s7m1TVGR85Hyq+H
+	mX2KzBMXKHaIAPF2UUwQVpR3PLhqe439Hp4b0CMP+UGxskKE4hKqDhGZsLcm3cs5/JqNVR
+	g0yMc0T6pUJ5lelZahvihBQs4u/c0nQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hAD3XP6R;
-	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OH9wo06k;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.190 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vhv2GOBN4FsPRGu+ZsZgfVd3kVqXyiVymVSJNtKa9ts=;
+DKIM-Signature: a=rsa-sha256; bh=9jyiyub5pkrnacT6pD4Pz1+9t1/b6Bu7Fi8ftJHlMSQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790275681; v=1; x=1790880481;
- b=hAD3XP6R9aGJHbBjel4SliVEZcMmOYmFPVeqheIfk61X6C9KBVu4XThcsfqnyJlMIG2ZFEX9
- aDJl9pxnpOwbXl/I+ZtGK3bajDqSoSSRrqXncelufYFwCDezVY75FqacEmQR5bNYGQsRNCTVoVP
- RSRvVn/dR3AJshcwNK3lsVC8=
+ t=1790275683; v=1; x=1790880483;
+ b=OH9wo06k9/Fnu35XwoLBll23iqCQGlAEPK/fZrp1NIsjqWL4AoK+57TmyYAIXhjd3LlgOU40
+ wk/Q49psUZi0DQRSbLOE4IqagUfT6Blu76471uezZmTTc7ruCQtPQSNtq182el/aYCOM6BVqHKz
+ 82sHkBTL+v5+97pVPYWa+Ezc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 57a02f3e5119bc77;
-	Thu, 24 Sep 2026 18:48:01 +0000
-X-Mizu-Trace-ID: 57a02f3e5119bc77
+Received: by smtp.migadu.com with ESMTPS id f865f6d5c743fba8;
+	Thu, 24 Sep 2026 18:48:02 +0000
+X-Mizu-Trace-ID: f865f6d5c743fba8
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>,
@@ -93,9 +93,9 @@ Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 6/7] memcg: charge high_work reclaim to the memcg
-Date: Thu, 24 Sep 2026 11:47:10 -0700
-Message-ID: <20260924184714.912181-7-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 7/7] selftests: cgroup: check that high_work reclaim is charged to the memcg
+Date: Thu, 24 Sep 2026 11:47:11 -0700
+Message-ID: <20260924184714.912181-8-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260924184714.912181-1-shakeel.butt@linux.dev>
 References: <20260924184714.912181-1-shakeel.butt@linux.dev>
@@ -103,12 +103,12 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8125B40006
-X-Stat-Signature: nh3xrbpy1eo1isehymmnpjp7t3ygozuz
-X-HE-Tag: 1790275682-721119
-X-HE-Meta: U2FsdGVkX1/nrbHXNKykpFBYWTnkY7qUmhaDuf3SLVK/UjD148Ct05zI6GyQEsO3Z0KHIzA6jSv9WVlzuZyRscU/CxyG/PRmVTFLzV9HQuNknCKLfk/CVA6ZpWhuvgIW/ngGPRVQgrW32v9KAB8JBPFqd1crm9rtXzzJvsqX+xlvib/nSpBQr5VeCj5q5lV/0OJrs6QeRvExCzeZd69yL1z3lBIF703mVODNrC7ZNy5Hef9YaNAjF4Tep10aCs8zWIZZnx/jCBX6kdFEYhQaQlfiAAaze6iGypce+OhrJIacU4LYp8ALbUk/gqoIxnwk1yQT4GHx+aB4sYe343OLNhaerum2g8PF4zLQhZIBGg5LX2vR1UFkd4mqFGIqtnEnweHOMKSUsDsHMiZaMV9GuauK3cSilDXsFBJceDRRRAsNzma6RrcpvJhcHGSFNsQfECn6eDgxbezeTapt50ybfyk3cKRqOZW+qilDzzXPtOeq+ITdCf/r0z3zwo9C33Khf3CKInBPhtJ7daB3CmB6Er0n4XGTtGbELACdIiBCD1G8M6GJ9DzPstgGlZG1qiglK0t/X5giF4Z5ZnWw12gwZxEQJ0pR+P1Gsfo9rllh4cti16HX1OfUmhy9wP7+P5B+UMD2iOwpZJBUKSFLbHRQW7UaFB3llXbnKGAmbzX8T+eKHnzXFsd0DwavcXsUxZi6SgyWgFIVL3ac8pshgp0vCaVSSkqruPM9SEZLDDL3MIzOuuVDcGQ5Z7irxIT8u2V/jhCays2aD84+Wc1vnbQ5hcdeAreabHQg6U5RWcvlMIWAwhOZ1scJlF5QR8c+g3FJaIrfOOUZoeuWOegTN75qUCCa9qa0zl8aoPIvrQlWNS4V0A/VgM9QNp3bBoIa6+a/MYFZdweLS0ELZ1w7TbHuOMYwiPsdJVS7keIXHb2bOSd7P+VSNvNkx0ADUzI7ZkjBGVwJd1ejzPD2C+L2T6K
- xQGH/abD
- IsfUOgesHa6aUNtunWvM+XQ71rSRrfejjM3VyTxJMopk5HGERRbQjAuSaEMz2ejUEH3icODQDrF5Fb4FnSc4S8H+/D6WTiYvXG77qNWc1Duvod+qZQPpmaLCDqDbZuy9hDI4HyO4yN8qGezft+rv3F6HDaNy01kgmhm9VdMyQS82R1oZPNv0t1C9QgGr63LSUpAmv8l+5cdPR8O7VPniJhXN90bL69CynOIp6v3S3YmevDz/hp5SBTpV5oHKM40rvIA6CaW+I6rJwP7D05NJU1qjk1lpk8q0HizTcjeH5VzjQQlbv0TKYOImG10M6JWnI/BGhxaNP5jkZ+Va3FonRF4WJC4PgEF3JqU+M
+X-Rspamd-Queue-Id: 6D8DB40004
+X-Stat-Signature: ffffcewtqnoqejke3xqadtwzwmcuwfr1
+X-HE-Tag: 1790275684-47209
+X-HE-Meta: U2FsdGVkX1+GwdvB7RSW92LeLaRNyhwtaWnsTNJNcgYgmCjQ3glCtLEjFgb9mSTHBq+lDFPfUaD4b9VWSpqzoQ2R5eBhEgp5MEPcRIm9Z4hTRk8EDscW7T5nNtAKB4cJ8CKozVyHQdk6lD/zQwhtZIrtWnUkATUXPBgnOJPvxWKaEq/b1EkA/lnUeu2nOms9NegvrLbDnzLa0YoN+0TXCJrZT5vGdhlfM1q4cA3Z8BL5yzQ63PtwKnR2GrD1Te7xfNcLo4W9uExGwI7P2kzSTF2H4qknYKOkgQ53An3tzGHnBbblup0+UrLXNYKOcpQoRHTfCRdpBsZNU+XuRZ+ct4FW1DOi/vGoaEWNBUpOBwM6nQEiNNY6k7pOh53zT1f+WVkLspo/t/iEKRa1rncSG5KVwxHtp9jp9d8TFqYXMjFrwbAz7rZCLjsJ06JNd70e9N/2GApCgQVkoZQCa8yklroqf+9a3f6QlqBBSAU6qFQ0XwniPzkl4s6A5wOI6fDcqqjYTZ1S4asrVcwitXIZhSJ80uDbXEG/q5H6gzkcrpQH0ZMcGQYDq0QTpgx87ljre8A7Lu5YNY7FHWdwJKOxmyuFZspwA2sqEymZqH1DlDQZOPbCi8H78VRQ3xbu8CABh1KjoVX3kkR+tpYXYFFbBkCmncNqCNvGQ2LGscIKczN7fGGVBR2jKhDYbUrtCLLqIf4qsKnitMyPgxPw3ApZyLChzCu82Fs6dCzQb2qIbiFzDgBmg8g+7SM5xJsco2T3qjCxH6N8+RS9zai6u/l4MYFAUgL4SarZovRZA4qyI7IloRnFOFbK7tLNWAVHsyvV6hdpMR1wIUSLcpyKdK9KOprYMIwFXPPKDeUsFSaIk7/XLe4q9DsgKdSRVvogVXlh4+3i8wh+BMOlDsgsb4wMyn1s4nDmf/mbJFzpEpF9flL4HnlRaTj62+E71IzH8S/aKE2gdRKqr4BVKv1Z/G1
+ W6elNcwW
+ dEGVNmud0jZc5ctJGHRzHOQeEhmkk3rpLyq029tWKpLOOBD1UPXOeNf8vAzmVvzUXcxGZVNa+fRWpnL3dvWsSGv75eqJcuolP9zBg3w/W+w66ADkhmdNatBiHUsa6YGsYzFb5WnuncibHOx2HibypgKVZ6e8L3FJIRD8bkU1mbKb2ttJjq5k2ix5xfG6OdJB0ii1E9a0DzIuDTWt0f5oQ+sjnuwNQcq9quRv1LW+2wwX44Nfae7F6BA/vjzHIYR8dSfyF2K+Qlc9tuf8QC8nFmuqZ3PzUhOtXDnGkG0fbZFwuF7A2FGm2xqKTEFsTs+4fvLfIBxXgHS7XtNu4Ye2Z2coaQsPaD8w5ClPr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,39 +116,381 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When a charge from IRQ context puts a memcg over memory.high, the
-reclaim runs later from high_work on a kworker. The kworker is in the
-root cgroup, so the reclaim does not show up in the memcg's cpu.stat
-or memory.pressure, and does not count against its cpu.max.
+Fill a memcg's TCP receive buffers from softirq while its only task
+sleeps, so the memcg goes over memory.high and high_work reclaims.
 
-Run the reclaim under set_active_cgroup(). Its CPU time and memory
-stalls are then charged to the memcg's cgroup, and its CPU time comes
-out of that cgroup's cpu.max quota.
+test_memcg_high_work checks that the memcg's cpu.stat and
+memory.pressure grow, which only happens if that reclaim is charged to
+the memcg.
+
+test_memcg_high_work_cpu_max also runs a CPU hog in the memcg under a
+cpu.max limit. The reclaim time should come out of the memcg's quota,
+so the hog should get less CPU while high_work is busy.
+
+Both need swap, so the anon memory can be reclaimed.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- mm/memcontrol.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../selftests/cgroup/test_memcontrol.c        | 332 ++++++++++++++++++
+ 1 file changed, 332 insertions(+)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4d00748c8a5b..f1d0ba8b48cb 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2456,9 +2456,14 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
- static void high_work_func(struct work_struct *work)
- {
- 	struct mem_cgroup *memcg;
-+	struct cgroup *old;
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index 0ed82347044e..00802804c0d9 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -18,6 +18,7 @@
+ #include <netdb.h>
+ #include <errno.h>
+ #include <sys/mman.h>
++#include <time.h>
  
- 	memcg = container_of(work, struct mem_cgroup, high_work);
-+
-+	/* Charge the reclaim to the memcg's cgroup, not to the root. */
-+	old = set_active_cgroup(memcg->css.cgroup);
- 	reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
-+	set_active_cgroup(old);
+ #include "kselftest.h"
+ #include "cgroup_util.h"
+@@ -1474,6 +1475,335 @@ static int test_memcg_sock(const char *root)
+ 	return ret;
  }
  
- static void high_irq_work_func(struct irq_work *work)
++#define HIGH_WORK_NCONN		16
++
++struct high_work_args {
++	int ctl[2];
++};
++
++/*
++ * Fill some anon memory, accept HIGH_WORK_NCONN connections, then sleep
++ * without ever reading, so all received data stays charged to the memcg.
++ */
++static int high_work_receiver(const char *cgroup, void *arg)
++{
++	struct high_work_args *args = arg;
++	struct sockaddr_in sa = { .sin_family = AF_INET };
++	socklen_t len = sizeof(sa);
++	int sk, i, rcvbuf = MB(8);
++	unsigned long long x = 1, *p;
++	size_t size = MB(256);
++
++	close(args->ctl[0]);
++
++	/* Hard to compress, so reclaiming it to swap takes real work. */
++	p = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (p == MAP_FAILED)
++		return -1;
++	for (size_t j = 0; j < size / sizeof(*p); j++) {
++		x = x * 6364136223846793005ULL + 1442695040888963407ULL;
++		p[j] = x;
++	}
++
++	sk = socket(AF_INET, SOCK_STREAM, 0);
++	if (sk < 0)
++		return -1;
++	if (setsockopt(sk, SOL_SOCKET, SO_RCVBUFFORCE, &rcvbuf, sizeof(rcvbuf)))
++		return -1;
++	sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++	if (bind(sk, (struct sockaddr *)&sa, len) || listen(sk, HIGH_WORK_NCONN))
++		return -1;
++	if (getsockname(sk, (struct sockaddr *)&sa, &len))
++		return -1;
++	if (write(args->ctl[1], &sa.sin_port, sizeof(sa.sin_port)) !=
++	    sizeof(sa.sin_port))
++		return -1;
++
++	for (i = 0; i < HIGH_WORK_NCONN; i++)
++		if (accept(sk, NULL, NULL) < 0)
++			return -1;
++	if (write(args->ctl[1], "A", 1) != 1)
++		return -1;
++
++	for (;;)
++		pause();
++	return 0;
++}
++
++static long psi_some_total(const char *cgroup, const char *control)
++{
++	char buf[BUF_SIZE];
++	long total;
++
++	if (cg_read(cgroup, control, buf, sizeof(buf)))
++		return -1;
++	if (sscanf(buf, "some avg10=%*f avg60=%*f avg300=%*f total=%ld",
++		   &total) != 1)
++		return -1;
++	return total;
++}
++
++/*
++ * Socket memory charged from softirq can push a memcg over memory.high.
++ * The reclaim then runs from high_work on a kworker. The memcg's only task
++ * sleeps the whole time here, so its cpu.stat and memory.pressure only move
++ * if that reclaim is charged to the memcg.
++ */
++static int test_memcg_high_work(const char *root)
++{
++	int ret = KSFT_FAIL, pid = -1, i, sk[HIGH_WORK_NCONN];
++	long usage, high, some, current, sent = 0;
++	struct high_work_args args;
++	char *memcg, *buf = NULL, c;
++	in_port_t port;
++	time_t last;
++
++	for (i = 0; i < HIGH_WORK_NCONN; i++)
++		sk[i] = -1;
++
++	if (!is_swap_enabled())
++		return KSFT_SKIP;
++
++	memcg = cg_name(root, "memcg_test");
++	if (!memcg)
++		goto cleanup;
++	if (cg_create(memcg))
++		goto cleanup;
++	if (pipe(args.ctl))
++		goto cleanup;
++
++	pid = cg_run_nowait(memcg, high_work_receiver, &args);
++	if (pid < 0)
++		goto cleanup;
++	close(args.ctl[1]);
++	if (read(args.ctl[0], &port, sizeof(port)) != sizeof(port))
++		goto cleanup;
++
++	for (i = 0; i < HIGH_WORK_NCONN; i++) {
++		struct sockaddr_in sa = { .sin_family = AF_INET, .sin_port = port };
++
++		sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++		sk[i] = socket(AF_INET, SOCK_STREAM, 0);
++		if (sk[i] < 0 || connect(sk[i], (struct sockaddr *)&sa, sizeof(sa)))
++			goto cleanup;
++	}
++	if (read(args.ctl[0], &c, 1) != 1)
++		goto cleanup;
++
++	/* Just above the current usage, so this write does not reclaim. */
++	current = cg_read_long(memcg, "memory.current");
++	if (current < 0 || cg_write_numeric(memcg, "memory.high", current + MB(2)))
++		goto cleanup;
++
++	usage = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
++	high = cg_read_key_long(memcg, "memory.events", "high ");
++	some = psi_some_total(memcg, "memory.pressure");
++
++	/* Fill all sockets until they stop taking data. */
++	buf = calloc(1, MB(1));
++	if (!buf)
++		goto cleanup;
++	last = time(NULL);
++	while (time(NULL) - last < 2) {
++		for (i = 0; i < HIGH_WORK_NCONN; i++) {
++			long n = send(sk[i], buf, MB(1), MSG_DONTWAIT);
++
++			if (n > 0) {
++				sent += n;
++				last = time(NULL);
++			}
++		}
++	}
++	sleep(2);
++
++	if (cg_read_key_long(memcg, "memory.events", "high ") <= high) {
++		ksft_print_msg("high_work did not run, sent %ld bytes\n", sent);
++		goto cleanup;
++	}
++	if (cg_read_key_long(memcg, "cpu.stat", "usage_usec ") <= usage) {
++		ksft_print_msg("high_work CPU time not charged to the memcg\n");
++		goto cleanup;
++	}
++	if (some >= 0 && psi_some_total(memcg, "memory.pressure") <= some) {
++		ksft_print_msg("high_work stall not in memcg memory.pressure\n");
++		goto cleanup;
++	}
++
++	ret = KSFT_PASS;
++
++cleanup:
++	for (i = 0; i < HIGH_WORK_NCONN; i++)
++		if (sk[i] >= 0)
++			close(sk[i]);
++	if (pid > 0) {
++		kill(pid, SIGKILL);
++		waitpid(pid, NULL, 0);
++	}
++	free(buf);
++	cg_destroy(memcg);
++	free(memcg);
++
++	return ret;
++}
++
++static int high_work_spinner(const char *cgroup, void *arg)
++{
++	for (;;)
++		;
++	return 0;
++}
++
++/* CPU time @pid has used so far, in microseconds. */
++static long task_cpu_usec(int pid)
++{
++	unsigned long long ns;
++	char buf[128];
++
++	if (proc_read_text(pid, false, "schedstat", buf, sizeof(buf)) <= 0 ||
++	    sscanf(buf, "%llu", &ns) != 1)
++		return -1;
++	return ns / 1000;
++}
++
++static long now_usec(void)
++{
++	struct timespec ts;
++
++	clock_gettime(CLOCK_MONOTONIC, &ts);
++	return ts.tv_sec * 1000000L + ts.tv_nsec / 1000;
++}
++
++/*
++ * The setup of test_memcg_high_work, plus a CPU hog in the memcg and a
++ * cpu.max limit. The reclaim that high_work does for the memcg should come
++ * out of the memcg's CPU quota, so the hog should get less CPU while
++ * high_work is busy than it gets otherwise.
++ */
++static int test_memcg_high_work_cpu_max(const char *root)
++{
++	int ret = KSFT_FAIL, pid = -1, hog = -1, i, sk[HIGH_WORK_NCONN];
++	long current, h0, h1, h2, t0, t1, t2, u1, u2, reclaim, lost;
++	bool cpu_enabled = false;
++	struct high_work_args args;
++	char *memcg = NULL, *buf = NULL, c;
++	in_port_t port;
++	time_t last;
++
++	for (i = 0; i < HIGH_WORK_NCONN; i++)
++		sk[i] = -1;
++
++	if (!is_swap_enabled())
++		return KSFT_SKIP;
++	if (cg_read_strstr(root, "cgroup.controllers", "cpu"))
++		return KSFT_SKIP;
++	if (cg_read_strstr(root, "cgroup.subtree_control", "cpu")) {
++		if (cg_write(root, "cgroup.subtree_control", "+cpu"))
++			return KSFT_SKIP;
++		cpu_enabled = true;
++	}
++
++	memcg = cg_name(root, "memcg_test");
++	if (!memcg || cg_create(memcg))
++		goto cleanup;
++	/* 20% of a CPU, in short periods so the numbers come out smooth. */
++	if (cg_write(memcg, "cpu.max", "2000 10000"))
++		goto cleanup;
++	if (pipe(args.ctl))
++		goto cleanup;
++
++	pid = cg_run_nowait(memcg, high_work_receiver, &args);
++	if (pid < 0)
++		goto cleanup;
++	close(args.ctl[1]);
++	if (read(args.ctl[0], &port, sizeof(port)) != sizeof(port))
++		goto cleanup;
++
++	for (i = 0; i < HIGH_WORK_NCONN; i++) {
++		struct sockaddr_in sa = { .sin_family = AF_INET, .sin_port = port };
++
++		sa.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++		sk[i] = socket(AF_INET, SOCK_STREAM, 0);
++		if (sk[i] < 0 || connect(sk[i], (struct sockaddr *)&sa, sizeof(sa)))
++			goto cleanup;
++	}
++	if (read(args.ctl[0], &c, 1) != 1)
++		goto cleanup;
++
++	hog = cg_run_nowait(memcg, high_work_spinner, NULL);
++	if (hog < 0)
++		goto cleanup;
++
++	current = cg_read_long(memcg, "memory.current");
++	if (current < 0 || cg_write_numeric(memcg, "memory.high", current + MB(2)))
++		goto cleanup;
++
++	/* How much CPU the hog gets without high_work. */
++	sleep(1);
++	h0 = task_cpu_usec(hog);
++	t0 = now_usec();
++	sleep(3);
++	h1 = task_cpu_usec(hog);
++	t1 = now_usec();
++	u1 = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
++
++	/* Fill the sockets slowly, so high_work runs many times. */
++	buf = calloc(1, 64 << 10);
++	if (!buf)
++		goto cleanup;
++	last = time(NULL);
++	while (time(NULL) - last < 2) {
++		for (i = 0; i < HIGH_WORK_NCONN; i++)
++			if (send(sk[i], buf, 64 << 10, MSG_DONTWAIT) > 0)
++				last = time(NULL);
++		usleep(15000);
++	}
++	h2 = task_cpu_usec(hog);
++	t2 = now_usec();
++	u2 = cg_read_key_long(memcg, "cpu.stat", "usage_usec ");
++
++	if (h0 < 0 || h1 <= h0 || h2 < 0 || u1 < 0 || u2 < 0)
++		goto cleanup;
++
++	/* The receiver sleeps, so the rest of the memcg's time is high_work. */
++	reclaim = (u2 - u1) - (h2 - h1);
++	lost = (h1 - h0) * (t2 - t1) / (t1 - t0) - (h2 - h1);
++	if (reclaim < 30000) {
++		ksft_print_msg("high_work used only %ld us, too little to test\n",
++			       reclaim);
++		ret = KSFT_SKIP;
++		goto cleanup;
++	}
++	if (lost < reclaim / 3) {
++		ksft_print_msg("hog lost %ld us, high_work used %ld us\n",
++			       lost, reclaim);
++		goto cleanup;
++	}
++
++	ret = KSFT_PASS;
++
++cleanup:
++	for (i = 0; i < HIGH_WORK_NCONN; i++)
++		if (sk[i] >= 0)
++			close(sk[i]);
++	if (hog > 0) {
++		kill(hog, SIGKILL);
++		waitpid(hog, NULL, 0);
++	}
++	if (pid > 0) {
++		kill(pid, SIGKILL);
++		waitpid(pid, NULL, 0);
++	}
++	free(buf);
++	if (memcg)
++		cg_destroy(memcg);
++	free(memcg);
++	if (cpu_enabled)
++		cg_write(root, "cgroup.subtree_control", "-cpu");
++
++	return ret;
++}
++
+ /*
+  * This test disables swapping and tries to allocate anonymous memory
+  * up to OOM with memory.group.oom set. Then it checks that all
+@@ -1780,6 +2110,8 @@ struct memcg_test {
+ 	T(test_memcg_oom_events),
+ 	T(test_memcg_swap_max_peak),
+ 	T(test_memcg_sock),
++	T(test_memcg_high_work),
++	T(test_memcg_high_work_cpu_max),
+ 	T(test_memcg_oom_group_leaf_events),
+ 	T(test_memcg_oom_group_parent_events),
+ 	T(test_memcg_oom_group_score_events),
 -- 
 2.53.0-Meta
 
