@@ -4,135 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FFA0C98311
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD6AC98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 698F76B0088; Thu, 24 Sep 2026 05:36:28 -0400 (EDT)
+	id 42DCB6B008C; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 649DB6B0092; Thu, 24 Sep 2026 05:36:28 -0400 (EDT)
+	id 405166B0092; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5386B6B009E; Thu, 24 Sep 2026 05:36:28 -0400 (EDT)
+	id 31B926B0095; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 27B126B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:36:28 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A14891402D0
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:36:27 +0000 (UTC)
-X-FDA: 85248150414.11.9D7B6C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id C4C3F140005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:36:25 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i62KZs0V;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A386B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:39:17 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9ECA11A02A6
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:39:16 +0000 (UTC)
+X-FDA: 85248157512.06.2079997
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D84C7C0008
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:39:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ruYF8cws;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790242754;
+	b=Mxh1b8uYePuL9cjpMIe4EBYvsSGGCNo6UMAmDILSVGVsohMvrDYeilBrOW9gFQLtXPXsNO
+	zVgMzvZIwCVKy+kfBRkQ9tVWKv0jJ/t+YIbQQWJoKzr2tLDmXmGjV81AndhqXjhYFMYFyj
+	8C4bKJnOL3d57KA7OhK6XcBZ8BDpufY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ruYF8cws;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790242585;
+	s=arc-20220608; t=1790242754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZiYfP3OJ/9LAMpeByACJ22Dt1rNk0pU/miAnrdFKvlc=;
-	b=221l/8pOzhpc8OSNEhk+RnWgyHaN1mSmKgXeZdut7w/XhA/P5dNXiI3lgvRjP7xrR0RY8y
-	mHjKsqyJ6rtQEbAdV2pX4K631GONkIUoDtkA1VWAN5KUJyqbFYJnWUeydZvERWiXVTWwVh
-	YANxDu6N30M5J83IVa/AQLRrf24X4ac=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i62KZs0V;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790242585;
-	b=1XZZwCL5EIB6VIwgrDTX+FLfcYwyvAPFD7R3PTw1YjhAiyRQv1etHanoReHGT1BTwQ7bPO
-	hluMTUOcRNKHebtjX9Yify/axup2wUHxsPs+6494okZ4qVrm87cyreaK2FnvKE7qSdTJ7v
-	XfSt/UsV+qrfxZXjnYDGO9KVpX8+m1Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CB0DD405B9;
-	Thu, 24 Sep 2026 09:36:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C551F000FF;
-	Thu, 24 Sep 2026 09:36:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790242584;
-	bh=ZiYfP3OJ/9LAMpeByACJ22Dt1rNk0pU/miAnrdFKvlc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i62KZs0VBwe+7WBncDD2NIaGeytnxoCGW4Vafmq0m9+p38DyxbtEY9F5+z7w8RKUI
-	 at2jPMAUdLGsOUedUT/Qs/GhkYLvX5xwWmLR4E093NhOY2B5AsPmLMTIYd0n1b3eLE
-	 jhIHPNz/x+Rp64R6tyhnplcsec22FnQ4SrGhtQLsrwH0+Cm/NeU3z9pg0VBt9ToLhj
-	 Q7Zrc9xaStAscYiuWDpsqw2oUJ1Li0YUXbw7+rGS3g7rIksABijDxpbfG4K9ZwVYCC
-	 Z7i6jmG/FLBm6CXdF95+gRQYlDQL6tw6t5Wz5xcqudIbdlZZ1BYUfP78+H/98o7l4l
-	 QLY5FdGww5brQ==
-Message-ID: <0d798541-6486-44ff-ae57-f631d1465688@kernel.org>
-Date: Thu, 24 Sep 2026 11:36:19 +0200
+	bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
+	b=MqgysFDgOnd1Bj5wy+yLyYP3ja6QmE/TmRGRjn17IA7zUo5IKtVlXkAIgKZpRqC2TMEz3k
+	R0NsutjUDS/g00vhVsUG/S+pRO8zehUVRVky6XMHgXOyxDod/xT74d5XS5BVUfW2HohO+J
+	bDzqu0xCkFkgQDsqQJU19ZLq2Fou2Ew=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6350f88so1279731f8f.2
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:39:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790242753; x=1790847553; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
+        b=ruYF8cwsSgyeKXzQl8WrWfrnKmxMuCc352wplTujC2jaHfCzLqBjrdE/o+taPU1Ezm
+         VhYlu76A+neF84iZN8YPlPjuA4P2pz4PqAkjN63koINfJc4g2uWUiSg6MF1KL9Mu/5Oy
+         x1nznc3RNGSlCBR/1ZldGZSWcqU/vSU8UcbDrQZUDPxRF+h3SyestrSO6e2+1tGxnx0K
+         Migao5p/tOvQyoCFoUqnGhjc7Sr4twjiroFGv0wh7rnStfNwp5siB+ra+vsyn3ITdi0U
+         /eaSIe1puSPL9F9dafva9WgZKBYg9Wos6J2OLLJ01GVTn7yhimM6m+JiL15WMAUZyjPY
+         1/lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790242753; x=1790847553;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Bo1Dt03xk0CNyDvjLToBhLcXGkmtA+S3j19+BkyISnk=;
+        b=j55AtYZ/t3jQ+ffYnyScTUnzIpWonQLYIRvszvPS/7Dy1foKNQfFPhTHQfLlLveBd9
+         4Rca6aNvbgJiyB4iAlcBtj9BN1q+JYNKx/FEcTKQRLCSY0q1jA4pJ+6pu+Y1gnc491kj
+         nk/Ni9yng+3WhhQ3k6mVEemW+tqz1LvXaJUAHk/GcRX4/QuhWKmPQJTp+2W9cT7I6tW/
+         q86dOn0dtHnebH9j2eJ21pMqqL/dj834TydaIw7GZUz6F9U0HKj9h3TSlVB2XqJfR4aj
+         whKQGvlnxL2LDaDvR2wWDwkm5tFhYmFZPC5rX18SRIfOxr4C7Wi4Vci9KwMWk9jnO8aV
+         Rv0A==
+X-Forwarded-Encrypted: i=1; AKwUvBzD08svO8ce2wZX5xGcaJtVWVOo9PiYhNRl7lnxNbpb7MhbNntT/8wcR7F3CcSAv1+BNMsU+5naaw==@kvack.org
+X-Gm-Message-State: AFuF++krzpen6YszW/EnHmLg/jZT42bGZujnNdEpo4cmRO8HyK0OLpJJ
+	A5HDgdmQbny5awzKfNxAvwoe2hEFEYl1xNZEgcWY+DebdZr7iUOU5pqh
+X-Gm-Gg: AYBFou2dOQCHeEdWUFTIybmYhAc0cDS1ubp52lCoDGrFJIfRFrMGzZreoEFKcQYhsg6
+	3hlDli2y9wPRLh8p2eu8lINyG0bUUN6OLh9tApEgXmG5AXGs2UACopu4sqS9J1WfCp9OU/42fc0
+	IatLd512P3m23KDOyUH8+5Qq3LCPGimqY36PFmbZ8NRAGDsLvuY5ER0bGcVfZi1kOb1Nc46DUBJ
+	FdF0FPvz4I/hwkGZwV+6ucLaJE/Y7Hf44QXmNFAygfZ2rsib6mXQpP66ffHaQA0Ts4gzoM7xCd4
+	2UbzA49LdPBjvYLjhyUE0vTcFy72uyuKCSck8nwpQdclgsK5qT4e1Ovj2E7OjS8SlzyrKgNeOiz
+	Y2aMF6txvwLeH9/4U/bb2oa/SYbKxn/QmcF7oLOzYjbpesNuUccSjGKCrbyqUUjpuqLqPkZAie3
+	yNCEbQAvonhvJG7dL5jz7xXdDnRX/AfzVB8Nsm5pMnTcK5wKa9I3Vr583eBf/XEsFm85qYQnwYa
+	IHBm1WmJqKadKE/FKtOEQlm7KV6yNjz5OfHIu9LpJb8wIpKj+TFQfVFbyVE5N4B3lbRq1qc
+X-Received: by 2002:a05:6000:617:b0:486:f46d:bb02 with SMTP id ffacd0b85a97d-4887197b60emr3087180f8f.57.1790242753297;
+        Thu, 24 Sep 2026 02:39:13 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488682668e7sm15230022f8f.4.2026.09.24.02.39.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 02:39:12 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing while booting
+Date: Thu, 24 Sep 2026 14:39:09 +0500
+Message-ID: <20260924093909.25643-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <arTtl-7Nl5Ie0SEs@gremlin>
+References: <arTtl-7Nl5Ie0SEs@gremlin>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] netfs: Fix missing alloc tagging of direct mempool
- allocations
-Content-Language: en-US
-To: Hao Ge <hao.ge@linux.dev>, David Howells <dhowells@redhat.com>,
- Paulo Alcantara <pc@manguebit.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- "Christian Brauner (Amutable)" <brauner@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Christoph Hellwig <hch@infradead.org>
-Cc: netfs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Erhard Furtner <erhard_f@mailbox.org>, stable@vger.kernel.org
-References: <20260923063759.34667-1-hao.ge@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260923063759.34667-1-hao.ge@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mn3y4sdjrarphngq58wn6qnxb9hz4uix
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C4C3F140005
-X-Stat-Signature: sag4f4tabsfdd34ae1crg8xrwn8b4g9u
-X-HE-Tag: 1790242585-436302
-X-HE-Meta: U2FsdGVkX19bZ0nOV8+mx2/2krf9cpkvxeZPa122H96wv0zQuIx2gfif+fBFIk7LAw7bJDUlHTxWsVaW9/g9PC7qdym3I77nt1YXtl8I1A38MJfTGb42T3wPJIzcrXQJcNcgjE/JMnyzGwoVHDLJodV72i9LdrnO9pLAvRiUoRZaL1terFcqcB53+qGRUO/JYD+qskhVy0aLWh6QN73MyoAQ48DxxjqbSsSD8fDNINKFiGtoNey6ziJwU3zXQj1vDd5cpq2ccFGBa3z9PSWJiSfaDCKXg/+/xXF7a+spPR3NjE7xE8+XJjdvb1w0yTaG4FW8YsK/RlIR3t/Nc8L2OyUVBtmyix0zWmEB1KBf/V+xz4td+B1l4l/BHLc4RHeYbP0TVcMZZsWhZd7Kk1jMeoE3IJhCm7tvBwzIYqvjlAiGVsgSpsoR976RhHfSnRr1lnhBuop3rv3oXRrfkFTKCwsWHNa+EOmFpxBTHfK9wI6RpEuFcZTuqYfzHUUP2lqaSgvOAnHunu47mrr17nwa3+XgNRZuNiyeIeebOccbDuWIi1gx/H++fX6DxIRqOEKgPZhiW5Ojy6gUetpl3pTwVLgPebeYBz2PTh5BbiKyiP1dKC+oYVqexgTDdXlxqcOxBPJWu12wwLsj40brhaHBwLT4OsLcaoExVnawFNw6ov7HRH//0rHOvMuGtNoQIoepEIdpJZm771J9oJoAA9IOW/fcPxBAZdFN7mHtjAyX4SATVJi8UIstzDDNV6/lIZ9NbbafoAAPryM+DdycxiZQ24tMo49s1eGqDNlIvhMZTERB4d2KF36ptg9KpACI1iE+SSN5LMfIdgXQ1IohS8SaPhZhNvXdHLTPq6X6ICP/xxftk/ICFWIpDXa8HEKPiDRqoX+iv11kBtxCh/2sn43DtwNzxbhLiK6OSttBD1Yjp7D9lNOZVe3cV5/ezomo01htPTAukyKSm1qPA+rm2BQ
- ThCMuGcT
- ph21okW+2wWbB/bAGXnlwwMBw9PDWvcKtpLJIacRI+bsYRJzjKLrsw890+CZtLia3dbVbt2bGJd1VKFhw2EVq3CKdJHYYIBNtDeREbHRZ0aELuellnwVqKtnGwo1alqemAXfJIS23csjFoPLoNmyq3qSV1QlE0XGbzi/I2J2X06443m0mEF9gP0HYD1V5f+epy2hs0aqBo63qR+tVo7NHe1O6a61kEYKeQfpuXvP+Et5NugH1fz6d+y+1M508OD3m52pm4aScc6pkUtKUIMDyfaYqtWblH9ykAfxhjsI9pMglQ7v5jdMLvBW5PQ4zNlLqhHUgthe/XdNFaGUeOdOTsuLu0FhzJDZMuAEOi7j5Fgb9AEUBubTPvV+iEQ==
+X-Rspamd-Queue-Id: D84C7C0008
+X-HE-Tag: 1790242754-657733
+X-HE-Meta: U2FsdGVkX18j07A2Y4Skiwb+95SIi0r0/tAp6mAqLQhWHGeBeTQHmqtBAtRF6Pdzbu0jvuMsumYmCBMWBAkQek1ix/3t8p4eJZszla35HiGfiSXcbAcQKMG/RZTNVEo/H6UHzQH+tuD3amiHrC3OrbSjAoU5r9kpWYOjJn+IcbjLVkI711SSIlMIUOVwy2nXEysP44iNhLoMLVQammC56qz7VK4r4WGP6zFUvR6mkKDj0zwjEJl2aPO43/St3IwBt6aPluHGikBNLVUsy4mZt8LJVUfEiNlsaSHizMNVdaqvSNBTBIjjdzqadG++wrvJpUMnwJxtiECPXqtihPu7nYLUJQR0ag1ItbrPJwiVt5TqrXN+0+Xb6lE0aJuBCrAreawQJttSFgf4mPcQiM0qgHbrAko3MutZE3Yyi13vHLGiMkKo/htLyT2WUZCVR8T3AG/8cB88/Ey/S1QuY9rTHTODWVEtLI5cLX9Sio0K3RGTxjxZBcvC17UHv8KdTPfUV1d+XnTRD6xRb3gLa8E2ryQ6OUDNxdRxX5WPs8SehHO7eVT6rzLchREN3ojaWXa1ETKcKXyy2RYa/FIH6YsA2RnKc1oIwSjXqRcfwifHxbV9jHNSzJqx7Z0Btn1Im1rsVlPz7D3Uo7j72g5w9N/MMINAjlMVpjUknNWJRqyb9hixjviM1qjY/K7/Zf2GedjnDOf2FHLAK2bCHaizqjHh1tdYYFTQZVSqmDxV1enfWj/i4d4LY73GoX9TivOo75xk/cs6fZveuhGI9U1MntEtur7WZECALZSLRigM/tqrTXRFnH467HSwyGIqkG9l0KrPAxI3llsX587CffI9Y3TTFkWnCn6kBrxEjxeCY6XioITQef14b74dXKPU1kHL62Shft7SNhLKicM7lR9Ed92S8dQ6aEH5dehbCQTo8++Q/Hf6La4+0tbfCvOPWHxWt3rWYLxLkeY6E88Q/KJe7qQ
+ bntYwxaw
+ i8QdI2jWz/Ew5X9J3cNyWs9SzsdP2UyzfDWaVM4VmGwqqwz78lJoVYJbF5AdFgKODNZ/d20Nv3UJWQkX5SzlKIWsafeKtGZUYy95bUKsajQAwnw5N5xfYvBXdqJ0iUoYoE8JIsIF5nBMQdM+U60WeAsBrj7b7QcaNisGx8h7SyxkA9+ctfM6XlgK3fCNZhwOcz/PMudC4+mV6uJ8k3haB5gpZl7aUUYZMP+EIvJ8npWDQ8zDtDFQZ1eLXycw3krgG6vE/OfNkER1ZGvnZrlBbi+Q46E1jLwrAh2Z0TGyHg+l21piHSDJ5cbRpXWekMXwfm2L9t3MKw61e15dHYGzO3mPXRiiWtr/KRBVyFAN/hXZ5Z50RFeHtOucAUF6GD8J4gU04xaF4ZgoEap0t9wZLR4je4O4hvm7AZGIZFpQciUINJUlu4iWMBbLxVQbRVgus20yx3qPhW0GjZe7fVd+2QDAVYYmO23+dZcYLt0OioxHip6I0Th7LgYZ12S0Dx1HeVaV2+Wiz65AB8dyXfN3QW0YhWBKzkyva0oD2nFPK+RkrdQDnVSZIqXdZIwuJhBC6eAJtQN3V3epdcbU+NZG09d58mU7FXwzj0ekn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,125 +133,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Christoph
+On Thu, Sep 24, 2026 at 10:31:15AM +0100, Lorenzo Stoakes (ARM) wrote:
+> I know I said go ahead so it's my fault not yours, but in general please don't
+> respin so fast :P
 
-On 9/23/26 08:37, Hao Ge wrote:
-> Commit 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by
-> adding a mempool") added a mempool for the folio_queues and made the
-> request, subrequest and folio_queue allocations distinguish between
-> writeback and everything else.  Writeback is part of memory reclaim
-> and must not fail due to ENOMEM, so it allocates under GFP_NOFS
-> through mempool_alloc(), which may dip into the pool's reserve and,
-> if that runs empty, wait for elements to be returned.  The
-> GFP_KERNEL paths, which can return -ENOMEM to their callers, invoke
-> the pool's ->alloc() callback directly instead.
-> 
-> The direct call, however, skips the alloc_hooks() wrapper that the
-> mempool_alloc() macro provides.  The pool callbacks, mempool_alloc_slab()
-> and mempool_kmalloc(), call kmem_cache_alloc_noprof() and kmalloc_noprof()
-> and rely on current->alloc_tag having been set by the caller.  With
-> CONFIG_MEM_ALLOC_PROFILING_DEBUG=y this leads to
-> 
->     current->alloc_tag not set
->     WARNING: ./include/linux/alloc_tag.h:161 at __alloc_tagging_slab_alloc_hook
->     alloc_tag was not set
->     WARNING: ./include/linux/alloc_tag.h:166 at __alloc_tagging_slab_free_hook
-> 
-> at allocation and free time respectively, as reported when reading
-> files on a CIFS mount.  The allocations are also missing from
-> /proc/allocinfo.
-> 
-> Wrap the direct ->alloc() invocations in alloc_hooks() with a new
-> mempool_alloc_noreserve() helper in include/linux/mempool.h, next to
-> the other alloc_hooks()-wrapped macros such as mempool_alloc().  The
-> GFP_KERNEL paths keep their failable allocation semantics, they just
-> get tagged now.
-> 
-> Fixes: 1d78d56c43ef ("netfs: Fix folio_queue ENOMEM in writeback by adding a mempool")
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Closes: https://lore.kernel.org/all/0b004319-9ef7-437c-a4dd-174d6a9a83db@mailbox.org/
-> Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-> Suggested-by: Suren Baghdasaryan <surenb@google.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+Noted, sorry for the race.
 
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> Maybe we want to ensure the drain? Like below:
 
-Seems ok enough as a hotfix. The naming perhaps isn't ideal, we have
-mempool_alloc_preallocated() already for the opposite case. Maybe
-mempool_alloc_no_preallocated() to complement it? Rather long though.
+Yes, that removes the one caveat v2 had to state: tables queued while
+booting no longer depend on a later free to get the work scheduled.  On
+this box they were drained at the first module load, but that is one
+machine.
 
-I guess long-term it would be neater to have a mempool_alloc() variant with
-extra parameter that says if preallocated pool is allowed or not. The "gfp
-== GFP_KERNEL" check is probably not an universal one. mempool_alloc() is
-actually rather aggressive in getting objects from the pool before even
-attempting reclaim. Makes sense for I/O usecases but maybe not for this one?
-
-> ---
-> Changes in v2:
-> - Move the alloc_hooks() wrapper from fs/netfs/internal.h into
->   include/linux/mempool.h as mempool_alloc_noreserve(), per Suren's
->   suggestion, so it is not netfs-specific.
-> 
-> v1 Link: https://lore.kernel.org/all/20260922023541.51532-1-hao.ge@linux.dev/
-> ---
->  fs/netfs/objects.c        | 4 ++--
->  fs/netfs/rolling_buffer.c | 2 +-
->  include/linux/mempool.h   | 7 +++++++
->  3 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/netfs/objects.c b/fs/netfs/objects.c
-> index 7f6a3e912602..ad549daa9c79 100644
-> --- a/fs/netfs/objects.c
-> +++ b/fs/netfs/objects.c
-> @@ -34,7 +34,7 @@ struct netfs_io_request *netfs_alloc_request(struct address_space *mapping,
->  
->  		rreq = mempool_alloc(mempool, gfp);
->  	} else {
-> -		rreq = mempool->alloc(gfp, mempool->pool_data);
-> +		rreq = mempool_alloc_noreserve(mempool, gfp);
->  		if (!rreq)
->  			return ERR_PTR(-ENOMEM);
->  	}
-> @@ -214,7 +214,7 @@ struct netfs_io_subrequest *netfs_alloc_subrequest(struct netfs_io_request *rreq
->  	struct kmem_cache *cache = mempool->pool_data;
->  
->  	if (rreq->gfp == GFP_KERNEL)
-> -		subreq = mempool->alloc(rreq->gfp, mempool->pool_data);
-> +		subreq = mempool_alloc_noreserve(mempool, rreq->gfp);
->  	else
->  		subreq = mempool_alloc(mempool, rreq->gfp);
->  	if (!subreq)
-> diff --git a/fs/netfs/rolling_buffer.c b/fs/netfs/rolling_buffer.c
-> index 424e77a9a109..d30d5ef6d86e 100644
-> --- a/fs/netfs/rolling_buffer.c
-> +++ b/fs/netfs/rolling_buffer.c
-> @@ -29,7 +29,7 @@ struct folio_queue *netfs_folioq_alloc(unsigned int rreq_id, gfp_t gfp,
->  	struct folio_queue *fq;
->  
->  	if (gfp == GFP_KERNEL)
-> -		fq = netfs_folioq_pool.alloc(gfp, netfs_folioq_pool.pool_data);
-> +		fq = mempool_alloc_noreserve(&netfs_folioq_pool, gfp);
->  	else
->  		fq = mempool_alloc(&netfs_folioq_pool, gfp);
->  	if (fq) {
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index a0fa6d43e0dc..6da502aef2f7 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -70,6 +70,13 @@ int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
->  #define mempool_alloc_bulk(...)						\
->  	alloc_hooks(mempool_alloc_bulk_noprof(__VA_ARGS__))
->  
-> +/*
-> + * Allocate a new element without dipping into the pool's reserves or
-> + * waiting.  Returns NULL on failure.
-> + */
-> +#define mempool_alloc_noreserve(_pool, _gfp)				\
-> +	alloc_hooks((_pool)->alloc(_gfp, (_pool)->pool_data))
-> +
->  void *mempool_alloc_preallocated(struct mempool *pool) __malloc;
->  void mempool_free(void *element, struct mempool *pool);
->  unsigned int mempool_free_bulk(struct mempool *pool, void **elem,
-
+I'll mark the initcall __init, boot it here, and send a v3 no earlier
+than tomorrow, so that the others have time to look.
 
