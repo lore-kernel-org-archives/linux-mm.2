@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3693C98321
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98FE3C98321
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 19:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 767F66B0096; Thu, 24 Sep 2026 15:25:19 -0400 (EDT)
+	id 9FF756B0098; Thu, 24 Sep 2026 15:25:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CA2C6B0098; Thu, 24 Sep 2026 15:25:19 -0400 (EDT)
+	id 98A0A6B009B; Thu, 24 Sep 2026 15:25:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5925B6B009B; Thu, 24 Sep 2026 15:25:19 -0400 (EDT)
+	id 852446B009D; Thu, 24 Sep 2026 15:25:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2315B6B0096
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:25:19 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4979B6B0098
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:25:23 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76C1C16030D
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:25:18 +0000 (UTC)
-X-FDA: 85249634316.03.4B08EE9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id CF49FC000C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:25:16 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uk9VLad9;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BA435A0451
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:25:22 +0000 (UTC)
+X-FDA: 85249634484.03.B16E614
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DDE58A0006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 19:25:20 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2pUprhT;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790277916;
+	s=arc-20220608; t=1790277921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kTOMC78hYvS4j1N/2zdXN2BOuarPzYcebqGM60fGb1E=;
-	b=gjzilFlOtejA7nfxULKAU4s3u4yRvCTBMAUNIS535A2gq6cbphwHjCNvWGHuPdqVX8b1ns
-	MqAn4PgL6mpD1jHl0wJY29zUDwejKirVUuvlHfvBBrFI2FqXGaRLAPQepOCsutzaGPn/Ip
-	Mrj/kt5xq2icJngSmTu3uhEMOyFgp9c=
+	bh=t2tvt0mN+rfQIn0XcEUNtP28LzckUHtZkO5l64gDOok=;
+	b=qlpW9smmRREwc/BMxoF4Sz6NQ8RJS7d5xynwzukWMpr/gA0aTky0lkZASO+LQ5vNp/CmQz
+	v49wPwnCdEmrA/PBOvwITPJtRoCp8tn92psDDqqiOxjsBY2rlpMllvpPZUMy1QVSrJumKD
+	Ttz/haalBOdvVK3wALGzPwsUhX2AluM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790277916;
-	b=4TUC/xOuSNyuNSFxxSOp6a8tjRKIIIbF2AfAoPsWQUF6fqS+yfDIGO2fbRMoo/DYLDXZN3
-	l9kX2Zm5IYBUIY4OlSM86hW4eCeUUnS1nT5JOyNv0W1s3VlkIDjWANln41oi4k1ZGsgby2
-	TetpvoO0by9JKCnriBwR7aNouxCZqLY=
+	t=1790277921;
+	b=TQ4X4rFo7DhU705ggHHHJSsJ2zS3Pua5JbsUa+huA4grEkndXA0xlKhNamUSZFeTjg2o0U
+	lhCNm8sur7JNtalwphOBv/ZXwwgYzPRVye573DwhHYxnmdXQ0TmKX32RcvRLjfxKpaR1nc
+	k6CoOI2E2apzf9nUhnUplAH87O08WQs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Uk9VLad9;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E2pUprhT;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 55390600D4;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B63741795;
+	Thu, 24 Sep 2026 19:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02C01F00893;
 	Thu, 24 Sep 2026 19:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33111F000FF;
-	Thu, 24 Sep 2026 19:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790277916;
-	bh=kTOMC78hYvS4j1N/2zdXN2BOuarPzYcebqGM60fGb1E=;
-	h=Date:Subject:To:References:From:In-Reply-To;
-	b=Uk9VLad9LzwzSjWcD4uq9aAkxNO+ukDyV9bQn2Vanyv+1K6CW0pemtuWvev8LDwVS
-	 RJfttSYCp9KRyHOOeDaITobw0TOq3HrRqUm6Ba1rC8nrQD7eYDYTPgNQae6d3Xs/gt
-	 7aJjb0GhtrUzkl7+0yTDybsjsJhhmDMPr7ZNb2McOlCp1YgGncHkCmRkz3qkKQUBdF
-	 cT/2UkHXuOaJW+/7OV6p3LJxh9xLK7JaDBnN1Y3vY6ZXjgfEStyhOLVo5lEigBetV1
-	 z3LozGyd4eDPkbdPQtCxVBWyJZvNz5+/10XJqM78NqjWWpXPMErX4Yw7yGnYWodAB3
-	 vSIelN++i5ALA==
-Message-ID: <f6f3a109-efd5-4371-9442-f87e73367521@kernel.org>
-Date: Thu, 24 Sep 2026 21:21:26 +0200
+	s=k20260515; t=1790277919;
+	bh=t2tvt0mN+rfQIn0XcEUNtP28LzckUHtZkO5l64gDOok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=E2pUprhT9/xwQ9JjC3QDHZ6WqHqRvyWkQ/fT1SA+mJGJ9Sscsom0u+SS0svWOgisH
+	 sV2vxa8TOvmlrSnsAYnQJr8BEE/wmhpasXR4FfFuEhaOMO1XJrREILb1bqKgT0mjio
+	 JgC1sT1fMupQp75dEFBL4vjEl0gyZ5cMv8e/VXVkTFnACzYMADFFnYEIUW7Me3vxSc
+	 3e+BYAyaEqTReMGpedv1kTZjQBnMY3mjhTVUynxRiOR3pdmGBY866Mwo17cVmQDFdH
+	 e0uKVSmK7/mDX9uwSrAKwea1RIZJeVTFuYc5aKQoH5RJnV4c2B/JfnurcivxoUo5VM
+	 1B0UJ7z0GKODw==
+Message-ID: <2c1def7b-aceb-45c7-9cf0-8518ef26dff3@kernel.org>
+Date: Thu, 24 Sep 2026 21:25:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: remove the unused zone->unaccepted_cleanup
-To: Usama Arif <usama.arif@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, axelrasmussen@google.com,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev,
- kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, qi.zheng@linux.dev,
- rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
- vbabka@kernel.org, weixugc@google.com, yuanchu@google.com,
- hannes@cmpxchg.org, kernel-team@meta.com
-References: <20260924191103.3475117-1-usama.arif@linux.dev>
+Subject: Re: [PATCH] selftests/mm: fix mlock2 errno handling and false PASS on
+ ENOSYS
+To: Park Tae-sun <ts930@dgu.ac.kr>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260923-selftests-mm-mlock2-fix-v1-1-750b627854c6@dgu.ac.kr>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260924191103.3475117-1-usama.arif@linux.dev>
+In-Reply-To: <20260923-selftests-mm-mlock2-fix-v1-1-750b627854c6@dgu.ac.kr>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CF49FC000C
-X-Stat-Signature: i9m83hwfnjudq7zpuezcftqzbgq55nmf
 X-Rspam-User: 
-X-HE-Tag: 1790277916-613703
-X-HE-Meta: U2FsdGVkX180D4BTMux5Bx4/pne5Fzsywqpo83M/FbPi8pNosiMEIVvJIFt4fuQNTKGlpki/tkAJJwW9gYKOvYkqOOgYK0GaZcJo+6MnA0L6F3V00ABNKXI4Zs3F1gScK1pFqSrb1eFR0eM7DuZn810tMyk4KNE25Ur0eSZbeHbVrDoFPSkdCvNXvmhsybS4YUz87tsmtAXxLVLo0HEMXUb5TcP2f+cxYmUH2oxjIV2IyDgd8TxKf/7vJvHb5/ZTas/NJ5ShhInyBoV1Ph7ox6e2qHONbjELRKFDcQjj3ig0FCVXWtqphNPWr/GEwmT4Dh+qsBR1gbKy5ofGS52b4yidCTAfrNW9LJLUOZ+gqVIS1fgIQBl8RMpQfnCQANeuTULeEs94DjnapKNulBCT1zVKIDFLGAALbJQSREhs/bg2JVbYkMXV0W0kQw2nqJ4cq35c8ZRjvob/jTZ8tGLWG5ubAcQam3DKNlBS6YeDJ5FZ5Klg0bkVQw50gBZjcmZPbwABGQvUnf5dGIo9P3mk4iSeh+dge71C31peN8CA3hKvcmM+Vam3nu2IKLK8Oz2HSbNGnvbaFOCw9ZZVP02SIplLL4c1RqkRdVz9fvzs2KzLByTNZ6I4PNEkwli6vqqSyeyYMKLv/kOAJoK0mfHkW5Tr6EX/cahR54c5RuqyYM+Mzw5iIpZJ5byKNmaGtM9Sczm0Bf98CQU5TX6hX+ooOHAY6qFZtzQ48c2B18tm8n2ifLkX8q917vXqVHwhAvmGTYXxcqnRUYDvGr8uIo4WMaZK/D+092ieCEOP3LVKLTHU/6oGkfVI9uq6DDl26VuoalENkkp/c92fKegTFIAt0S1MPMVgEqwAJ7zxulB/+3bpiRTqnOsATxfqfoEpbwWaAmj8ESYW8IKc7VPqlUa9zay9J+tlYNfNwDx57gtiaObL9ubKE6mZg8GALt8L877O3kGK96xc/cRZauOsheu
- cgItqSZF
- hHgpj3E7d31n4rW+X78mwswJ1E23kIz/XMGhcVX6z0NZ+oVEZ3okbcIUxZO7dWUkCnKS1+urtJLY8kMZ+hEam7bqEb/x+KS5gSmj6ZQHpeP7bre2Dswu4mRQrN7YIhCfD4sH4ufu+p8Fm+gNT2dsXOdgVaQjIHKW3PmxBgA9vSzGAnv6ZdtHnt4JxPUz+vpKxxKCqiTfHE5FbeykmGS+xJcHogFABrKdW2jiZgYpQjHW9DoDHKj8XXLtULjZ0Ckxy1SBe90ZPUe9JarBL4kwiMMa7torUkv32SRIqOHQ1Pv1CM5uD57EV29ZcruM65EaLXu9R0yCCtW6Ygrw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DDE58A0006
+X-Stat-Signature: rgqzwwngpj3qzdr7cg6ye8ch1sfbw4j6
+X-HE-Tag: 1790277920-172332
+X-HE-Meta: U2FsdGVkX18T/9HDYi0TXkWjSFHfPSHIaw5xktJncHWK3H3sVEZMCXCdrvqtTBajuFjvg+oIJWQ2N3JmIlkHgQ993fyEJIUCzH3DQCobC9E8pRF1YaADs+GoeEtOXFPwVYBrtRi+IeO2HARkyr9OzwveAwXIxbRbAHnTHR4UuEODGSyuOPRfqt0qovYjiNyy/jEh8L54vdcQK2KYr6XcZGkqOObNnCMmDEYYZYBc7KhVDP80MoqtA8SNHIxZjV6rsVjE65ua6UcyeKpsWCbbqMZzPhifO65jRQ2MNJMYbnCrQMpraeCkDCDgqLvfYWKSYAB5ciUpNlfvDRI/UavRioMDbYL5ZHIFerDXNZP9K4WBo9O2d+tXqcyRB1y/31adWA0p5zU3Nuh5ZqXs6ljhEExxNJ9MzNLedtI9zFuxAyY1f+Y03AourSgpPJ/LV/y2j3xdCG9i149BUs8bW6lu3yionKaf412+NjPyyaegM1NSqXAqrj9NzjV5FoNBR6PzVTE5sq2SRrxFTV86k5RG0GvpXXwJwRK0k/fk6qzjM5FzYGoYL8Q4HOEejuRzRdGIJ65DsjS+O2b2Gzi1VyB+tFfWz56X2s7B3L0+7BzbkyAc8kR53Zzx+j0K8o0CFJH9SAx8dhX2AatvDLCvOxnMesGpx7FMlK2dTXtyPhkI1UK/zevr+U/z3yZFdjalgxaaI6BKy9jIup/spy7n8rNX0MhDwVVfVnrT3IWxK85sFoV6R2lMKo9V/dHyG8oX/SwwG9Vr3zGhetB4ljJjDjz5Eqg0nbNIngat6uIiG/BHPINY5FY+v8fk0uORqxPh/Hp/44oIVn4fzmHNmdHMv+3d2XKwajvy+gm8b/q5xZuTwhO9mo5FVEA+su6/8cJ/MhA2BMXQT4T1uyxyClN/u7NO+KqO1BkBjyDKrEiY+t0xG0lj/Jw3mxZba2Er7h6+alJ/rpZiSzq7Oze+6YJlsak
+ CKdoMK5B
+ XZmUyPMb+xDveL3a7aOdbToOB9VbydOo7qkNdL7apwpar1+aWBZ7TwgwnQDDoYICZe+eds3UAIksM4nTVeGUe5R5fe5J6yrFTRlYqwci415VV3M5kY+uYZRB+FW8QhitIsoMXMU6BuLJg7+LZUWBNZ5LtQ6OVNSI3wDIaIClVKpNCP2pWoZpxZaYzwjpcvHUyzQU1hvPuhXmxbSkeTYfGaQjYLUTmF2Rii4SYtsKEBLMolOC22EOd8P8HfuWegBhjjz0C6OUSxxIQnCZSJSF2xedt7ORnHOIRsy6G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,13 +144,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 21:11, Usama Arif wrote:
-> Commit fefc07518227 ("mm/page_alloc: fix race condition in unaccepted
-> memory handling") removed the zones_with_unaccepted_pages static key and
-> the work that decremented it, but left the work_struct behind in struct
-> zone. Nothing uses it anymore, so let's remove it.
+On 9/23/26 11:26, Park Tae-sun wrote:
+> While inspecting selftests/mm syscall wrappers, I noticed that mlock2_()
+> in mlock2.h handles the syscall return value differently from other
+> wrappers:
 > 
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>     int ret = syscall(__NR_mlock2, start, len, flags);
+>     if (ret) {
+>         errno = ret;
+>         return -1;
+>     }
+> 
+> Commit 1ddae9d67ee1 ("selftests/mm/mlock: print error on failure")
+> introduced this intending to make mlock2_() behave like libc by setting
+> errno and returning -1. However, glibc syscall(2) already returns -1 on
+> failure and sets positive errno. Assigning "errno = ret;" overwrites
+> errno with -1.
+> 
+> To verify this, mlock2 was disabled in the kernel (via sys_ni_syscall) to
+> return -ENOSYS. Testing revealed two interrelated defects:
+> 
+> 1. In the unmodified test, mlock2_() clobbered errno to -1. The check
+>    "if (ret && errno == ENOSYS)" in main() was bypassed, resulting in an
+>    immediate crash in the first test:
+> 
+>        ~ # ./mlock2-tests
+>        TAP version 13
+>        1..15
+>        Bail out! mlock2(0): Unknown error -1
+>        # Planned tests != run tests (15 != 0)
+>        # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>        (exit code: 1 - FAIL)
+> 
+> 2. After restoring mlock2_() to directly return syscall(), errno correctly
+>    retained ENOSYS (38), entering the ENOSYS check in main(). However, it
+>    then called ksft_finished():
+> 
+>        ~ # ./mlock2-tests
+>        TAP version 13
+>        # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>        ~ # echo $?
+>        0
+> 
+>    Because ksft_set_plan() had not been called yet (ksft_plan == 0) and
+>    zero tests ran (ksft_pass == 0), ksft_finished() evaluated 0 == 0 as
+>    success and exited with KSFT_PASS (code 0) without any TAP skip header.
+> 
+> Fix both issues by:
+> 1. Returning the syscall() result directly in mlock2_() so that errno is
+>    preserved.
+> 2. Calling ksft_exit_skip() on ENOSYS so unsupported kernels report a TAP
+>    skip ("1..0 # SKIP ...") and exit with KSFT_SKIP (code 4).
+> 
+> Verification on the mlock2-disabled kernel:
+> 
+>     ~ # ./mlock2-tests
+>     TAP version 13
+>     1..0 # SKIP mlock2() syscall is not supported
+>     ~ # echo $?
+>     4
+> 
+> Re-enabling mlock2 in the kernel confirmed all 15 tests pass cleanly:
+> 
+>     ~ # ./mlock2-tests
+>     TAP version 13
+>     1..15
+>     ok 1 test_mlock_lock: Locked
+>     ...
+>     ok 15 test_mlockall_future_droppable: droppable memory not locked
+>     # Totals: pass:15 fail:0 xfail:0 xpass:0 skip:0 error:0
+>     ~ # echo $?
+>     0
+> 
+> Fixes: 1ddae9d67ee1 ("selftests/mm/mlock: print error on failure")
+> Fixes: 65c89684896d ("selftests/mm: mlock2-tests: conform test to TAP format output")
+> Signed-off-by: Park Tae-sun <ts930@dgu.ac.kr>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
