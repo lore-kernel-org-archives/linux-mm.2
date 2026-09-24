@@ -4,137 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A3BC98310
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:12:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C655BC98310
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:19:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D03A6B008A; Thu, 24 Sep 2026 03:12:44 -0400 (EDT)
+	id A79946B0088; Thu, 24 Sep 2026 03:19:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 981946B0092; Thu, 24 Sep 2026 03:12:44 -0400 (EDT)
+	id A29DF6B008A; Thu, 24 Sep 2026 03:19:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86FF36B0093; Thu, 24 Sep 2026 03:12:44 -0400 (EDT)
+	id 919256B008C; Thu, 24 Sep 2026 03:19:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C42B6B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:12:44 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E78AD1A0278
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:12:43 +0000 (UTC)
-X-FDA: 85247788206.05.B34E318
+	by kanga.kvack.org (Postfix) with ESMTP id 6C1B96B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:19:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0017E1A027D
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:19:32 +0000 (UTC)
+X-FDA: 85247805384.13.508F761
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4064020003
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:12:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N8Uy5/ZV";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 438ED1C0006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:19:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b4iXV3Na;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790233962;
+	s=arc-20220608; t=1790234371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NFMZJ8bfMe7hv8ow3sVzkwXX9jGxt6hLpAj9/6k7EV8=;
-	b=WyWbSU613zuph/VUyY5geL+GtsSc0uJ0fdPQOL4/ecEphv4RYNDF0/qnQiEqpbVK+V03fM
-	Gpivpa++szwx2iQWO0Hb1EveEv5KVyBjib7I7nxilhFI8t6yZWG+PWlL6dCiLJ8r7+2eGn
-	gDjnWa4tAClagpSPOLUEMT+UHU7ISSs=
+	bh=HRGpzjaTceiGt52QZ0R/rEbnbWW0z7ilUt0hAEkQ7UI=;
+	b=jSFTNJzkiyBWyh7pbqA3utMPPCEWVwSrcGPbuLhfUv2dk/98dAa9UBvNmpfvzvbbm4pJrJ
+	OabfxMvACEv2/3OjQiRwmTdrkD1dkI7R/9IyFebEak3T3z9mW6eW3+K4LW88Urkat9OYVv
+	fqM03pToRlyxBwV0VOYQU78kxNlOOsg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="N8Uy5/ZV";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b4iXV3Na;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790233962;
-	b=aU/OkcD8RkhCJxGIeJimH9jtmTmE5C+0O30IyzN9VVoPB+qaPL4+TxQWPBepVSocaqiKe5
-	FyPg5pCq5dJiN/QKjiLe2BU/5kTwZEVxusEKiokI56mHdURpejewvHzUV5lFjfxWptRRWZ
-	Yu/KRf/L2/stS4cgc9s9j0NKLPrfSY0=
+	t=1790234371;
+	b=sCWqWhFfROEdW+pE1Nzpmy1JDhJsZNAqUxxjb3gXz+WG8ez3nnjyhvJoTP4YoPzUMUvHQ2
+	t9YTOdyACysdKL5vPUNVCJmq+63zamezVNOmz+8Vwh+22e+EUkask/Sse+6QSV12ToOkIH
+	FEdpZeWg/etBpLqRlglgPVJybd3mnS4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0ED096020C;
-	Thu, 24 Sep 2026 07:12:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3CB1F000FF;
-	Thu, 24 Sep 2026 07:12:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C6B42601FF;
+	Thu, 24 Sep 2026 07:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2501F000FF;
+	Thu, 24 Sep 2026 07:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790233960;
-	bh=NFMZJ8bfMe7hv8ow3sVzkwXX9jGxt6hLpAj9/6k7EV8=;
+	s=k20260515; t=1790234370;
+	bh=HRGpzjaTceiGt52QZ0R/rEbnbWW0z7ilUt0hAEkQ7UI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N8Uy5/ZVcNg7GQc6ga/4f6riaFB2eScs0ehWn5RE0IjCUBhMRPovH4J9/kEHOsn+o
-	 FC8wQz85M7asIudcCmh02IH3sM0yyaf+IVUrt97Nh20o+5CZpelqEFvZnY03ZX/LGc
-	 YypFEGGg/HSTCedKzw1tj3+jsKOYM/GYVfMryS4UWKSsjxU0k1kFIfFJFs8tSlnvmb
-	 Z/NTZ3HWrx5VllywgUjeJKHx043/MuxtXEngUhuQTAf02O2PeSPzdbUBO7hqCGfDpu
-	 Louob+P8g+WmXew3qqychIFWyjZ97XrLnbWT8T5daucZ4TUfz6MV3ZxJNkcp8gy8Ow
-	 H99WIGmnAw+FQ==
-Message-ID: <1e4580ab-75dd-4092-8afd-69180d064942@kernel.org>
-Date: Thu, 24 Sep 2026 09:12:31 +0200
+	b=b4iXV3NabyOxUcBPZ8lgAovkC6m2VuuSKldwe0olRSxe98ajOQgDN/wubgMNxfblC
+	 DG06jdpCLXpNrYvcVcI+dZZACChVDXYmK7wITwUltHVKHWlavEfGXflk3uqbZcq2eS
+	 HTrLyut3xvn0gueitiwmIZtGd5Sou6IvK0NSRcicaAWLu3orguL3ENfH7fe9PEMWWm
+	 /lEADdsAFofMOWo3QvSz/XvZYt4zJXRTDfbXoj1xDlxk0nkfggUgxJTriNLZ5sKQY9
+	 BbminPUgyo9WdKHRQ69iA7zv3YRLyCg46fUZdpwDV6AIzV/yzuzwgZYJehpnaLi0Az
+	 dngTMEtU1HIog==
+Message-ID: <a4bf1f96-787d-4c1e-9bef-52ab2be570ae@kernel.org>
+Date: Thu, 24 Sep 2026 09:19:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts
- page cache / rss counters
-To: Ayush Ranjan <ayushr@modal.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jan Kara <jack@suse.cz>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Gregory Price <gourry@gourry.net>, Pedro Falcato <pedro.falcato@gmail.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924061708.1645968-1-ayushr@modal.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH] mm/vma: predicate setting mmap_prepare VMA fields on new
+ vma alloc
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260924061708.1645968-1-ayushr@modal.com>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4064020003
-X-Stat-Signature: abmdesyxejaazmwyox4zhz967skjc8rs
+X-Rspamd-Queue-Id: 438ED1C0006
+X-Stat-Signature: 93rnreixopuadjjxdgjresibqa4fyb7o
 X-Rspam-User: 
-X-HE-Tag: 1790233962-146813
-X-HE-Meta: U2FsdGVkX196c1BIYG95Igv97SfJafNRWcHlIiq9iEpGkhG4b3B969MVJdvSY1LzMl1awLVmqqw14zOMv7btvHARcEfy3rJOBMVmSnP8OxM7Meau7WQcMgS5mKGJRW5ikxrumEyHxPbeyKDs/hjV/JxuhUN/o9bGwV5DmWiFo83HQDrc8PjFAJ/QrHRgHXkPPtUc7TW2rzLsW04fX9Cl3cZxG2lLwNFIisXbsPdtoTuLEhoxMqB3J9FCLpAwpL8VsuiXmZNPnKqb11FBvH6+EvyCO4GuTwAMYJqEiA/UAOgmNYQlHfX97ldAu/CXTylKQeYbiGH7ythz1UtqRhw5o2opVBKzqGQyP0i1I5U+VcNERiagv3tRY93ZEq4p/Kx0UR8GIgRmnMfj3JFJ0+c5rWRvM84uGaw161IdS9MS3SqocEOS8+5WwOUk0/e5j0hGQ04pnfkJoRUa90yrw1zJbIdfGVkKSHsRdhyQxDqrrege5OkoKuNPs8bJSPgu7e1ln8i7JIQ/WIV+S8ds0Hr+l5sk53B5BYKvk35XGiI4tDL47CjN4k6OxeZQm23wW046NRkqkmsmSrZmsGJo4SJ+69ujdxRIQiMQijGP6yq2TgdDIJpe6AtIA4IPf7ejP2YkrM64McSqkSEo0gdzGPWhQu6FlXCyGyVgQmewMs1IZscf330HBwpvhzM8I1DMFtxxGAmnWyUBcBjPJE8ECT0uYinebLndM6BZdrEmBKxZ+8aM5+UVoEDxM1eG45PQiBzFYI3S96kxfR4JCe5Ly+fbkrQHsCklh1xixaQVbwgYb77epgfGLayBmoBbkjVFxgT4rfBsx4pkCAFSXED/pzFbEnBOE37rYW95GzZOfAI5xviwnmMj/96G9Hm6KIOtY67sSoT0dsPQdsrCgSju4fZ8O+5I6nGKaU8x2Y/IBR4/RqMWYzlHOT/ExAg0L5LXLHhwfSH/57iDq1D9VwYbgfv
- 6CMUH/Qw
- C/o8yZJjXNCekFc2Pl+WyLuadhaZYp0Yu1jQ/hEMgI1IaALZE1ChnUUzTO7HEzX5fC4aC0sCY0ALHUoL9PLAFyqlBskqocUcuTq1E9dFQqNUaAiWZsyYvHTFLdl5kWR8sQxLttelDbhSZEMAh2PeQ/v32QkboBhwUhhdl9wG2ASw12BHbtD8zI1BJqdg4Lp7c/WMk0pDifPt2KSI3RordBjW4uAyrmzxzGpXzVfIW4jM8slp3dFcN0/w5qFTzaGUdO4tWtWVpNamoDvwb/vnqf4QOmEpJfWU+GYp+w67oamH1rBc8El9gjw6MAtLi/iSbmDfBRqkc3ZiIZHXdpGyVBQWnCTddEyophNRwkSO/5+vW0q3ae18wFzGIw9KJUunSzi4/z/P4EpNT5rELNP4WDtHXAgs70NGZ9c3Q7o+ETej+xXnrLzVF6n9MiyioBulgVbEbufqtnzJh3rvcpJDgFKhRPU4htzOdkxH98/rHLtamPE5xF5cskovmCBly3rWo7cS0jh5ca7RU5zg=
+X-HE-Tag: 1790234371-208570
+X-HE-Meta: U2FsdGVkX191UIeDiHtslZdn1xvtuzZmFsnX/1iOlpv5rxRkF95zmDlRwPIFjXO+7RmOl9s271vQRTK/WCdQm2JlUKZnIHkOyuRbVzM2VhajrSGvDKazrJieMi/vZFyAJJiD7WwI+dDzo9futHKzqdJoMr6VPzg7fgLmMg/q7KI02g6VMRYxX2WTwz20+CJref3H7YgJTwWX0xBrB45qa9XCOZV/rY3CQzCOfD3R8EV0XxE3bdkSLAmkrD+k7lUncgWR2n/9tnOISVzFTXb4GXo3o7TQikK4Azpz9RxY8LEjoVEJvacWDUsGlWpbxqgexZhEiSs5HlHPnswZpEy1dT5YoJlHHAU5oorWsfSWnJU5Mprm5GVPZLJUvmsR8ZqAPpp+ekVOzJf1II8tIy6BK8PjO6yzuKaZhaKwdUrF+2z+gJoIZzmT0zIcOxbXU/j9G/hx8xeVZ5hncSafeBkvwGE5PL6E0DdHI9dmOOYvwHtknGERo32JvVqz3RCBdF/hIwNn2UyiV+pzyHzj5qY0xR1hrt2WyvZ+gyx83GaSKIlM9tqUk24Xi+/LZed12h6HJbZHLt7TqfvtvrSmOHpgBo3E+tRYL+QeKrMdk/ZmnpvCW/pCSka6lGMkOek7Id3hzqTgUEri049CZgBSGPCJuYygY3nVRY3hJbjFCCSL7J1hr3TRP308UM2df8Lxn4Ai973L/6z8GwG0/IEDBZHaqsAV8c3A3pCQ3RYQ7JS1vDXlQNN4XaW0ecc4XDM8oLOdohWCddPJGxxMdKKatFn8aO4upYmMoXSgguqJIGG8+T2iZUkWCLnWBDiCsGBreO5UpFErJg1UhSa8/qvAoBjsVHgs5obv0gEaCAstshCkv5zL8hl9cz15iRq4WjQLS6qeugCgtC3b2SJBUWijrFs0nF1v2bJ8c8mpQAxgmm6VtxClFGL3y7Ai6m9wKgdRMTlUr2gZh8mfA6MKYNPmqaU
+ eb0AWopr
+ SrjDNhylrOqITIkdESkwsN2SC9FMQSKh39Qj71pGkWf28qHJeLe+OMaBxgRZ18eVo23Kus7Xsow7cgcQMFFnMsittRGm3LbtvRCTF3KDeJ91gBCYptxMV+ZMUmEve4ln6NV5CDhSJrrs8m71h8KaTd+9x3s/AA/B1p/Kci0qYwp8pmJbpIWCCIduWFy4eKGUfz4eXj+DhqAA921CDorZK990VVW2mgmGhaiVJGQWhBk6tCFmJINaJxy+X+vnUqeGYIG4gsDeTRFqcIvWT04a2ZcG68pGJaekx1rjnntyUCpE+P6ZBgjczuY2rzsDmv3CQKc9IVM9/Pzs0qsM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,40 +136,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 08:16, Ayush Ranjan wrote:
-> Hi,
+On 9/23/26 19:45, Lorenzo Stoakes (ARM) wrote:
+> It only makes sense to manipulate VMA fields if a new VMA was allocated,
+> rather than merged.
 > 
-> We are seeing shmem/tmpfs page cache corruption on production hosts
-> running a workload that punches holes in a memfd (hole-punch based
-> memory reclaim) while other threads and forked children fault the
-> same MAP_SHARED mapping. The kernel taints but does not oops:
+> VMA merging does not compare vm_ops or vm_private_data, so a merged VMA
+> keeps its own, which is also what the legacy f_op->mmap path does since it
+> never touches an existing VMA.
 > 
->   BUG: Bad page cache in process ...  pfn:...
->   page dumped because: still mapped when deleted
->   ...
->   dentry name(?): "memfd:..."
+> Currently, these fields will get overwritten by whatever state is
+> established in the mmap_prepare hook, and if the VMA was merged,
+> vm_ops->mapped will not have been called, so this could destructively clear
+> existing state without replacing it with anything valid.
 > 
-> and, more frequently, a paired rss-counter imbalance when the mm is
-> torn down, always exactly one PMD-order folio (512 pages):
+> There is an implicit requirement that vm_private_data and vm_ops are
+> fungible across VMAs which means that losing the 'new' state is
+> fine.
 > 
->   BUG: Bad rss-counter state mm:... type:MM_FILEPAGES  val:-512
->   BUG: Bad rss-counter state mm:... type:MM_SHMEMPAGES val:512
+> However in this case the 'old' state is being overwritten by potentially
+> invalid 'new' state, so this must be rectified.
 > 
-> Seen on 6.12 and 6.18, x86_64, bare metal and VM, with
-> /sys/kernel/mm/transparent_hugepage/shmem_enabled = always.
+> Additionally constify have_mmap_prepare while here.
 > 
-> This looks like the same corruption Gregory reported in March, which
-> as far as I can tell stalled without a fix; that report needed ~100
-> ballooning VMs to reproduce:
+> All existing in-tree users either derive state for the tree or are
+> unmergeable due to VMA flags, so this has no direct impact.
 > 
->   https://patchew.org/linux/20260326162611.693539-1-gourry@gourry.net/
+> Fixes: c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file callback")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+> Note that this is cc: stable to account for any possible back-ports that could
+> break it (unlikely)
 
-Indeed, it looks like what was reported in
+Does it mean that patches are on the way to mainline that will break it, but
+it's unlikely they will be backported? Or there are no such patches yet?
+Just curious... if it's the first case then with the amount of random stuff
+that goes to stable these days, I'd rather assume they could be backported
+at some point :)
 
-	https://lore.kernel.org/all/20260326162611.693539-1-gourry@gourry.net/
+or out-of-tree modules which might be affected.
 
--- 
-Cheers,
+That is never a concern, and even suggesting it can bring hch's wrath ;)
 
-David
+Anyway,
+
+Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+
+> ---
+>  mm/vma.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index 9f0a0acf694a..6cde67883fb0 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -2849,7 +2849,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+>  {
+>  	struct mm_struct *mm = current->mm;
+>  	struct vm_area_struct *vma = NULL;
+> -	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
+> +	const bool have_mmap_prepare = file && file->f_op->mmap_prepare;
+>  	VMA_ITERATOR(vmi, mm, addr);
+>  	const pgoff_t anon_pgoff = addr >> PAGE_SHIFT;
+>  	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, anon_pgoff, vma_flags, file);
+> @@ -2892,7 +2892,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+>  		allocated_new = true;
+>  	}
+>  
+> -	if (have_mmap_prepare)
+> +	if (have_mmap_prepare && allocated_new)
+>  		set_vma_user_defined_fields(vma, &map);
+>  
+>  	__mmap_complete(&map, vma);
+> 
+> ---
+> base-commit: fe2ec83746e501645709761605c2464a44fd2929
+> change-id: 20260923-fix-mmap-prepare-overwrite-6304d112a4c7
+> 
+> Best regards,
+
 
