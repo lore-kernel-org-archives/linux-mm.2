@@ -4,157 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88681C98317
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:55:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0198C98317
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:57:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A16166B008A; Thu, 24 Sep 2026 06:55:31 -0400 (EDT)
+	id BF0326B008C; Thu, 24 Sep 2026 06:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EE6D6B008C; Thu, 24 Sep 2026 06:55:31 -0400 (EDT)
+	id B800B6B0092; Thu, 24 Sep 2026 06:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903FD6B0092; Thu, 24 Sep 2026 06:55:31 -0400 (EDT)
+	id A1A356B0093; Thu, 24 Sep 2026 06:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CF7A6B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:55:31 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81A4D802D4
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:55:30 +0000 (UTC)
-X-FDA: 85248349620.07.9127CD7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C0172140010
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:55:28 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJ9XvXG2;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 60F556B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:57:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7EFBA5EC1
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:57:50 +0000 (UTC)
+X-FDA: 85248355500.16.608E64A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4CD99180007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:57:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rwkH7yk/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZcaR9tcI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VGdEVve7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lQcXohwT;
+	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790247328;
+	s=arc-20220608; t=1790247468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wQCJYntSH0F5QVJYSosc1oqNqnyivE4G/pZp3dfTNnU=;
-	b=KFSzSxUhzDhhLehCFbNsv09Da/By1c57/6r0OG9ZghaabNm2O2LM6bGCAQ3PJqFuawJcj4
-	CPOdwFhfy8e88tNbQSgI/phU811A2V6Z4b11Tt5kvRYs0HakB2YQyk99W+Kfjl9vxuwVdY
-	dKJUpZZZr5/D6uJH8zJ0taYsSh0IOxg=
+	bh=qGe1Uyoj3hhwaqMmmb4P4GWQZZ0XVbX1aCs+aO9Y1iA=;
+	b=I1DU3CjMNthSpmcgRr57YkpGG1pv20pXgHThgy7CivGj0dkzBC2hY8dUs8bcMnccQI4EHI
+	JzaryzGcgJOA5w1Bp6S24Ge4LdPLuG7g1NQrTckUfISuCERLLmabYkOvzD09wnsAGDbHtD
+	aD1RFLeXjxUMzXhSOSNteyYcf0FgEBI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dJ9XvXG2;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="rwkH7yk/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZcaR9tcI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VGdEVve7;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lQcXohwT;
+	spf=pass (imf06.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790247328;
-	b=398Tj/MTZc9UsbRm1eB2RJfC3KF0hUHD6Vg3C5oVRGr5Ymahn3IfRlm+L5wtdKiQ8Ws/UD
-	MeJIfKvySVBWTzyN9LZTWnJ3ELByHruuket59fTrxBCNNr710uvzf+4xpEe/Fcwhc3ACKJ
-	T28GQ55hyPvGrza4uVAZyH6TNFo7kqw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F0C6601DE;
-	Thu, 24 Sep 2026 10:55:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0C61F00898;
-	Thu, 24 Sep 2026 10:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790247328;
-	bh=wQCJYntSH0F5QVJYSosc1oqNqnyivE4G/pZp3dfTNnU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dJ9XvXG2Pdv4ywmQhxsP/omtI+lvZR/CvFBcjc1vTCkyko34Ty0iYtALxUUy4P8bp
-	 aTUdAahs0dqVnjk89VmVeZGiVXwdoelftWz2RzvQsxFdVzaJVlkOej83jH7foxGl6i
-	 lYdZBgPp9ekR3adIUDbFMEs4Iu0loDmkg9Xd0mHAF18dwkr6VRN9ZywbLHkV228++W
-	 XuzU/Sp2o2KPxAkQtUsi3iZBEi3tdwhqclOC78oYTsa7ahrZ0w9fce6UUp2+9Bf3uN
-	 jq07OQzJjK6pIj7GoQ7lAfoMrrh6Sk1UQ8gk8zPXxLtt4xdGtO213WeO3UR3n2cTCo
-	 Az0CCF3B77X+w==
-Message-ID: <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
-Date: Thu, 24 Sep 2026 12:55:10 +0200
+	t=1790247468;
+	b=K3xL25dils1rs7FTL2p+GZTwZqLNioF5/vexAKfFUPhTiE0W3PUyJH/9hlz/q2qKIV4PZH
+	KG62iwXzEOfEHI0UFVYG8abwWCOQORU2vK/wxGfd3D0TiLXGmAuO0oIneDtqNoIKpVOGvp
+	Wqb+0bPByXrkoBnBsFFEf0EU5tAb5ik=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BAD6A21F05;
+	Thu, 24 Sep 2026 10:57:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790247463; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qGe1Uyoj3hhwaqMmmb4P4GWQZZ0XVbX1aCs+aO9Y1iA=;
+	b=rwkH7yk/nadi0w+6IrC3tuhGWnNWPkleBFeW/8SVSb7/yEL5RvRcN7EKX91i9dGkvCfrSl
+	JhxQj7nh/5RfVYKaOBUlwys1qbT/5pxgrPVDkaYyn2hy4vG5JpVF/fCAXzNPrlTonHmO5c
+	S7A0BtSAbMfg4+bag4QKVCZh54D85uk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790247463;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qGe1Uyoj3hhwaqMmmb4P4GWQZZ0XVbX1aCs+aO9Y1iA=;
+	b=ZcaR9tcIrRhdwUhtPcQUMDU/BnzZD1b2TbxVw1Ln1mjLffpVUzU9Pyy+M4ae0dlCGg2r9t
+	ffEYs6mm2LwOUWCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790247458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qGe1Uyoj3hhwaqMmmb4P4GWQZZ0XVbX1aCs+aO9Y1iA=;
+	b=VGdEVve7YyDaxnDIgn08n2nt1Hb+Rhy8pzwOvhyxpkOhY2jiGd8MALSMaKMiHo16n/c1yJ
+	bO1ieKBMGNnp3GQVIWdNG1QSkhSnwLc5bHSdtCKULjtjpg3L9sDUBFA6GI8YvA3108+pHx
+	+D+snlQkaUCM9jXELaSKS9GipaQ6uVw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790247458;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qGe1Uyoj3hhwaqMmmb4P4GWQZZ0XVbX1aCs+aO9Y1iA=;
+	b=lQcXohwTmm7KFljPOB4yE7ES2ohOCoH4SMLNRblhmwysOdz2dxoWV1F8ZSqaAnIgXxRqAT
+	MiEGr4/JwtQAmTCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8EF8B13668;
+	Thu, 24 Sep 2026 10:57:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id kOtDGiICtWqoAQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 24 Sep 2026 10:57:38 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 20EC2A132E; Thu, 24 Sep 2026 12:57:34 +0200 (CEST)
+Date: Thu, 24 Sep 2026 12:57:34 +0200
+From: Jan Kara <jack@suse.cz>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, axboe@kernel.dk, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, 
+	tj@kernel.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v8 3/3] writeback: record bdev targets in foreign
+ writeback tracepoints
+Message-ID: <xktq4fmpdlbtrncw2zjdu73mgstjsceq7qurdmatditlqhhavz@53m37febbjki>
+References: <20260922125015.3435215-1-sunjunchao@bytedance.com>
+ <20260922125015.3435215-4-sunjunchao@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
-To: Kiryl Shutsemau <k.shutemov@gmail.com>
-Cc: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>,
- Amit Shah <amit@infradead.org>, Andrew Morton <akpm@linux-foundation.org>,
- Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
- Christoph Lameter <christoph@gentwo.org>, Dave Hansen
- <dave.hansen@intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
- Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- John Hubbard <jhubbard@nvidia.com>, Matthew Wilcox <willy@infradead.org>,
- Mel Gorman <mel.gorman@gmail.com>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <mike.rapoport@gmail.com>, Peter Xu <peterx@redhat.com>,
- Raghavendra K T <rkodsara@amd.com>, "Rao, Bharata Bhasker"
- <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>,
- Sterling Alexander <stalexan@redhat.com>,
- Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, Yang Shi <shy828301@gmail.com>,
- Zi Yan <ziy@nvidia.com>, William Roche <william.roche@oracle.com>,
- linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
- nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
- jane.chu@oracle.com, muchun.song@linux.dev, liam@infradead.org,
- shuah@kernel.org, boudewijn@delta-utec.com, linux-mm@kvack.org,
- Breno Leitao <leitao@debian.org>
-References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
- <arPElEV0zDhXrteb@thinkstation>
- <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
- <arPdnxhX9VHnDx15@thinkstation>
- <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
- <arT9TVHmM3WDjWnk@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <arT9TVHmM3WDjWnk@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C0172140010
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260922125015.3435215-4-sunjunchao@bytedance.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4CD99180007
+X-Stat-Signature: 5bxpd69sjw368dbr7qnp3rrmawora1nf
 X-Rspam-User: 
-X-Stat-Signature: sas79d31x873rtj49za3hgm9q39b3cwd
-X-HE-Tag: 1790247328-297117
-X-HE-Meta: U2FsdGVkX1+cFCNVlpEaGtb+KCI9Isj4kKqcA1OA8DcylA7QTw3a9apQ1e5Jsw7fIGuUKaoLOwzd5dviqjkFz0dj5oQFuIiIy2ew5g2H8517AcOZeouyXjraosGzCtc50+6C9RJ1TNFBbUxqfAuiNMJRN9HZWZCSXWybeOkYYqKO6+HSBdiXeQvwbxLycAhrV0i6YXvnEvWmAeH42b8D8UneJWFF2Et/nE9zqC5zGyisIVTk84C45fUH/8WOxm2lCAwgpOAN2vir+6DAyAI5+CFlHybXYdQWAT2an5XdJPVWNkEK11ZN8CrctCXAncwJ9VNAf/2A/0S2V6to8ZhqnCXjWVM0UuZibmcUxrzhGSebriOv72Mu2bi7teT6+gG/oBEjWj5FFjYXwWrYB7dKk4QpenDlj0cIP/G0xP0OTfEXm+QEJW7Z7L3D7I9fU3U2g42x9UTExEhIntlhSxwNI2VSVlwfAwQdv8ll/Xq305sa02nqhtUKG27ryd9MIcd7QUhMVTDF4SStxSuSHldIPUsyCbDhHw0aSvPRBwLjrn6js8jLssjpNTlUu7ofxfOxl5KvHPPMK0Js/iLvYqnoW5+jr1tFFscbk4o5E1OpqxFCEcFH14ISGsWE9hwofZzJ7jzbXllodSKRtReO293f6tZ9MSC/dXwOuk5VvGgFM94eado8HQkTVfwDU68yoR5xwuPLF6knlEJ++grvZ7ZJ/tJ2byHmbIbvPOfPGdvKhAWdD99VrAoVBKX4I73QLxnGjcb9rdsSOmyUZCOW9P/NWY1qWnNVD7a6jrJaysdMB8LMRJXsdcvdELO7O2SksqbBfth4Z4RIJH7RRzJEdvr0L/pxjYSs5g2+geXXDa2IhijO2Nexq+pnUAfLg7D4tN9qqGkP588cvqobTi6ptMpKfF1DCnjEAHtggyRTpuY6zliykZjXHvtDjj80Y4osLDfsYL76oxwiI7OigYESdIw
- 6Kb0u5a/
- 6mZzs3W5MR8awU3DQGQbJPsKSu5koMllX3LsoVG4ZQ4gcYVbLSa2hVzf/RWDXERfP6Vtfw37WJmaw5xR9tpFZ5GT0obaIoA6dqDJEeRwQugsU6b7WOqcvUyViYAAGmKEeyHHJ3+NYMRU/LKlQYyxKl1/yYin/WUiEBF+S7Oz41F5uhfqaZzU9QJ/Oa44YMVpxs9cNudtR/giq2j3qLekfBttY6c1oH2xuqboz5ktRCnJJwOuX6EZSxI8x7cr1yPlBRInmuvl3ghKOamFCvGy1RyIUz8/G5u902SLNvbCtJbR4UrkCLCDb0HeYwAvnsgak1otVBGQvA+AOVpQ=
+X-HE-Tag: 1790247468-470640
+X-HE-Meta: U2FsdGVkX19YM+/WEEvsm4HUnY7xaxVCMTsvLFIUnuvNqAxzfce2pfmrfmdTDvFXZCVwGc4+4OYJqHj/nsgl+cN3aSHt4MKjLLhV2Xk7crNnNVoyyCvT13z3ZXm+GqlznmtEB1OcZPOs7xnfdnC+Y82oYWP7eyoYKdhLNkX2dvn2rbUbEx9jvdCilE4vRIcQt/Ipeyn3kaQpZcFT44v9+l6LZfjOPKsMmr7N4icxP2lKo+Z0otsuFn+azdzWL5mS/iZooUvyUGlDHM0lgmKM/Qybf7sicywM8aDmEvK1NdrsKrc61dZ66cpTpR6INuB0swf6hY8p1Tb3wTWp/BGoCMdNbkhUakJpX8xCPGZ1xt5+eO3xvubwGtupG6gjVK2rIqbOshBp8Gd46UGVF1gixDizeQiu1iVDFuvXsg+82M/wo3HtIZddByMD7fAbylMMrvNmKwH4k1Rx6TQYIrRxb12r+o9u+1MlZFAB3KLmbsw1U6yNUUs++z8z/k6QQlRDwsZRIBDmMaJKLEXdRmVYbB01CNzM9ePreS1bHHBq1Np914SinrwXuf6PgQRh9pkT//dGcd0eSBGJSNAt+jzRHZVsCWM1kCnM+dTfKyrwf1odZYBrH2D9MJQ0Vc85qC4UkKFdRgKwZnKtWf3nyC190fh8Q2VA52AEUJ1T4F836+Su8qnYdWn3rJPnBN+l/z6AQvB9nHl2ZIHWaCIZspU0k69oxEKJtH+DPA/OA5NRtMf8hWAhnXhmHBNVqfkAPw4b5l4rmzLagdS6ScltOGs09rASfK1QEEqehGFP2/RzBXhOGz5nCuB+GU1bEXAdyCOlDFsWtV96cOiRONa/tC9aDDE60oygLiyZq866UM5iXW7V8r2ruF9v9lkCko3XwicgMeJRXKjN0KSuuOk6ILjRLdo+xIcyd6hkose2pON0y8/bxY6hqEV19oZ270rghZUmN+ZA108Rdf2Cy08efcR
+ KLv+uMPs
+ 0JWZLkBFoP8hC66GWm0Ja+eu7IABHYkYChThJx7IfE1/vehjJBgrUO/clAFiydw+mU3ZFZJU30LuhgRE5l7wANFRwibvOSvUgTJcS7zn57Bo9cz7HCTZVYpHqaONsWPCBhioHml36DoXabwAVWgkxKWs9HB4OGPruAdwtO/RQtcNY9OTKx2JWGOyaD/b+dveNYHm7tSAIEDG1YOTGw+7lyC+smcMzeuonRf+UNxnDqeHA63Cq9PH+0XkkfRUiHyy6ZUsUg6JSYJRKWNeVS6MMpFzWd327DlQLiRfIat0OkIMgldlca1VhTv3+vJlH7Hp+nb1Tsd6O0riCuOTCqaIok3N7cmpUL4gtIliPYSIyXrSgfYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,41 +137,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 12:46, Kiryl Shutsemau wrote:
-> On Thu, Sep 24, 2026 at 10:32:29AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/23/26 16:36, Harry Yoo wrote:
->>>
->>> I believe this is what the patchset actually did in v2.
->>>
->>> That way we'll have to either
->>> 1) make any architecture that supports kexec select ARCH_KEEP_MEMBLOCK,
->>> or 2) make kexec scan the bitmap when allocating the memory.
->>
->> My naive design would be:
->>
->> 1) Teach memblock early about poisoned memory ranges. Don't let it hand them out.
+On Tue 22-09-26 20:50:15, Julian Sun wrote:
+> Add dev to track_foreign_dirty and flush_foreign so traces can
+> distinguish foreign-wb tracking from the bdev-only path. Append the
+> field to each event and print it as major:minor; zero denotes the
+> normal foreign-wb path.
 > 
-> I suggested using a bitmap because ranges are not scalable. Some memory
-> failure modes generate errors repeated across the physical address space
-> (think of a column failure, for instance). It would produce too many
-> ranges to be viable.
+> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
 
-These are in 2M granularity. Is that a real problem?
+Hum, won't it be better to introduce new tracepoints instead of kind of
+abusing the existing ones and filling in zeros? At least if I were to use
+these tracepoints, I'd prefer that.
 
+								Honza
+
+> ---
+>  include/trace/events/writeback.h | 22 ++++++++++++++--------
+>  mm/memcontrol.c                  |  8 +++++---
+>  2 files changed, 19 insertions(+), 11 deletions(-)
 > 
-> We already consult a bitmap in memblock for unaccepted memory. We *can*
-> do the same for poisoned memory.
+> diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+> index 13ee076ccd16..ffd1b8df4231 100644
+> --- a/include/trace/events/writeback.h
+> +++ b/include/trace/events/writeback.h
+> @@ -273,9 +273,9 @@ TRACE_EVENT(inode_switch_wbs,
+>  
+>  TRACE_EVENT(track_foreign_dirty,
+>  
+> -	TP_PROTO(struct folio *folio, struct bdi_writeback *wb),
+> +	TP_PROTO(struct folio *folio, struct bdi_writeback *wb, dev_t dev),
+>  
+> -	TP_ARGS(folio, wb),
+> +	TP_ARGS(folio, wb, dev),
+>  
+>  	TP_STRUCT__entry(
+>  		__array(char,		name, 32)
+> @@ -284,6 +284,7 @@ TRACE_EVENT(track_foreign_dirty,
+>  		__field(u64,		cgroup_ino)
+>  		__field(u64,		page_cgroup_ino)
+>  		__field(unsigned int,	memcg_id)
+> +		__field(dev_t,		dev)
+>  	),
+>  
+>  	TP_fast_assign(
+> @@ -295,34 +296,37 @@ TRACE_EVENT(track_foreign_dirty,
+>  		__entry->ino		= inode ? inode->i_ino : 0;
+>  		__entry->memcg_id	= wb->memcg_css->id;
+>  		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
+> +		__entry->dev		= dev;
+>  
+>  		rcu_read_lock();
+>  		__entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
+>  		rcu_read_unlock();
+>  	),
+>  
+> -	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu",
+> +	TP_printk("bdi %s[%llu]: ino=%llu memcg_id=%u cgroup_ino=%llu page_cgroup_ino=%llu dev=%u:%u",
+>  		__entry->name,
+>  		__entry->bdi_id,
+>  		__entry->ino,
+>  		__entry->memcg_id,
+>  		__entry->cgroup_ino,
+> -		__entry->page_cgroup_ino
+> +		__entry->page_cgroup_ino,
+> +		MAJOR(__entry->dev), MINOR(__entry->dev)
+>  	)
+>  );
+>  
+>  TRACE_EVENT(flush_foreign,
+>  
+>  	TP_PROTO(struct bdi_writeback *wb, unsigned int frn_bdi_id,
+> -		 unsigned int frn_memcg_id),
+> +		 unsigned int frn_memcg_id, dev_t dev),
+>  
+> -	TP_ARGS(wb, frn_bdi_id, frn_memcg_id),
+> +	TP_ARGS(wb, frn_bdi_id, frn_memcg_id, dev),
+>  
+>  	TP_STRUCT__entry(
+>  		__array(char,		name, 32)
+>  		__field(u64,		cgroup_ino)
+>  		__field(unsigned int,	frn_bdi_id)
+>  		__field(unsigned int,	frn_memcg_id)
+> +		__field(dev_t,		dev)
+>  	),
+>  
+>  	TP_fast_assign(
+> @@ -330,13 +334,15 @@ TRACE_EVENT(flush_foreign,
+>  		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
+>  		__entry->frn_bdi_id	= frn_bdi_id;
+>  		__entry->frn_memcg_id	= frn_memcg_id;
+> +		__entry->dev		= dev;
+>  	),
+>  
+> -	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u",
+> +	TP_printk("bdi %s: cgroup_ino=%llu frn_bdi_id=%u frn_memcg_id=%u dev=%u:%u",
+>  		__entry->name,
+>  		__entry->cgroup_ino,
+>  		__entry->frn_bdi_id,
+> -		__entry->frn_memcg_id
+> +		__entry->frn_memcg_id,
+> +		MAJOR(__entry->dev), MINOR(__entry->dev)
+>  	)
+>  );
+>  #endif
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6042c694d56c..534b0d537a09 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3956,12 +3956,12 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>  	struct inode *inode = mapping->host;
+>  
+>  	if (memcg_bdev_frn_wq && sb_is_blkdev_sb(inode->i_sb)) {
+> -		trace_track_foreign_dirty(folio, wb);
+> +		trace_track_foreign_dirty(folio, wb, inode->i_rdev);
+>  		mem_cgroup_track_foreign_bdev(memcg, inode->i_rdev);
+>  		return;
+>  	}
+>  
+> -	trace_track_foreign_dirty(folio, wb);
+> +	trace_track_foreign_dirty(folio, wb, 0);
+>  
+>  	/*
+>  	 * Pick the slot to use.  If there is already a slot for @wb, keep
+> @@ -4032,6 +4032,7 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+>  			 * the timestamp for a later flush.
+>  			 */
+>  			frn->at = 0;
+> +			trace_flush_foreign(wb, 0, 0, frn->dev);
+>  			queue_work(memcg_bdev_frn_wq, &frn->work);
+>  		}
+>  	}
+> @@ -4048,7 +4049,8 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+>  		if (time_after64(frn->at, now - intv) &&
+>  		    atomic_read(&frn->done.cnt) == 1) {
+>  			frn->at = 0;
+> -			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id);
+> +			trace_flush_foreign(wb, frn->bdi_id, frn->memcg_id,
+> +					    0);
+>  			cgroup_writeback_by_id(frn->bdi_id, frn->memcg_id,
+>  					       WB_REASON_FOREIGN_FLUSH,
+>  					       &frn->done);
+> -- 
+> 2.39.5
 > 
-
-We can do many things. I don't want it.
-
-> But I am not convinced it is needed for the initial implementation.
-
-As I expressed yesterday, I won't tolerate anything in hwpoison code that looks
-like a hack.
-
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
