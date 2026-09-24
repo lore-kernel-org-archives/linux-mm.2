@@ -4,102 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F224C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 20:50:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35170C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 21:02:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65B1E6B008A; Thu, 24 Sep 2026 16:50:14 -0400 (EDT)
+	id 3155F6B0088; Thu, 24 Sep 2026 17:02:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60B036B008C; Thu, 24 Sep 2026 16:50:14 -0400 (EDT)
+	id 2C67A6B008A; Thu, 24 Sep 2026 17:02:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F99D6B0093; Thu, 24 Sep 2026 16:50:14 -0400 (EDT)
+	id 1DC536B008C; Thu, 24 Sep 2026 17:02:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DB666B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:50:14 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B33C88045B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:50:13 +0000 (UTC)
-X-FDA: 85249848306.26.B964473
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BDAF910000C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:50:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnZtoxDG;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EB20E6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:02:49 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7F2CE403B7
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:02:49 +0000 (UTC)
+X-FDA: 85249880058.12.B68FA88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 306E0120004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:02:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gre+hySW;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790283011;
+	s=arc-20220608; t=1790283767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q+5hSUgLRco8Y6SztQmttTVOAj16Ju9U76wx3kQ59ho=;
-	b=I3LGPlTBbrRuZUTpWFrgVvOf2Q4C/MHxieyi1pKDsk80dTUM6WNJ+dPAO0FzWwRJDOg/Z0
-	eblJQG6TrJjADOYsfBXT5A/ZlPFtMfzTKjkPhoVOysQFeD3HjmNFu/JJejh2xutcB4sS9s
-	qfTgy8GwOX0GUjhvtypW9jexLuBoHp8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790283011;
-	b=q3NBksIp4n/pt+gURiQgPg5FIpiE0IVQVmGRmfOngz1+Sf1cmcbIQgydvT/to//pQYdzcj
-	1kVj7VhnnF4e9KT7vxyNcZXEweMO2zFgs3ifKF9hSSMkJ3dmtd5ntpsrPTD2wTkQMD/RBi
-	mMhjtLkTCqTDbTMq8mScKa6576b2Pwo=
+	bh=XoiJXxM6i/kbsQEIiuA+nIFj4EQ8kOYLlbyqdsm+xTc=;
+	b=0+h6zWlxpT/t0vTmtNkhQ3FUcLdGGqH0tvz4sez0di8Y9J3PjiJIFo7TZreovhEgaYI0fJ
+	l9ziFWTOJmv8I0BPVhyLggZIF3bC8npHmCRpr/FmohLb7ivNxU7iuSv2gV07YjeF5ykbqV
+	zn9wEY2kBQOM3yCp7Z//BC+LfSq2PfQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnZtoxDG;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gre+hySW;
+	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790283767;
+	b=FCynZ2s/lnthZOFWfc/DkYNhQAdIDcJP9fhKafQYjnCENekYrwfvxWP1jhPVxhgkA58Vwg
+	C1So/7MwEjVohEEf1YCLyMjDCmQd807mFpYC5ni65OYwWERh14rO/TEjzU5xec0oRpGWvd
+	VFKKyIWY4oeH1eoAcMmG7Z3T+rXyKrc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E241E44782
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:50:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7981F0089E
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:50:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8667A602CA
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:02:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBF21F0089E
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790283010;
-	bh=Q+5hSUgLRco8Y6SztQmttTVOAj16Ju9U76wx3kQ59ho=;
+	s=k20260515; t=1790283766;
+	bh=XoiJXxM6i/kbsQEIiuA+nIFj4EQ8kOYLlbyqdsm+xTc=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FnZtoxDGh/uBvSnm9FYLg5Ef8RadgMeHyJbMn3WuO2kLW/CtOiBSM7pUwNfkJ7pSa
-	 gtctJh3CvDnUWO8YQttG8hbx26uR4xKKDHQWnpk+7bWEB/elSbZjAWmju0yWZxuewQ
-	 zKrN3gbVz4e1+6uoOAcYAQnypQNrEGk+4pmnCJoJHev2Kalsunga5gSjanl11GqCkV
-	 DPlVCdzgA7Ue5rh/wrUkA5DRST49Y8l2k2fAX8EeeYtpjG+q8YBK4PaoD2Xr468UKT
-	 wiVhwqRNWjPcQMar4L8seIPtzVrmq8RtZMfs1m4+bB4NnGH6RCuz/V28v2NKrXZUnR
-	 GWWJGBWofs0Ag==
-Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfa7b2093so25739885a.1
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:50:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwrpG2+LEur8R7SwxYPI9Wdi8FtO5HIElpj8x8vY+FMcnmemmUDz0eA3ZKt1+CNnRGIuZNsh427gA==@kvack.org
-X-Gm-Message-State: AFuF++m9t0EI9fZKGdA7xdhO/yaCqqwHz4Iq5TaVrg5VIhrhh2Bkm+x9
-	2daQ+KPrM3pvZd9JFlmgvMZ4JC8WCgeWccXqCyWzwT51lIA+LchL4K8LBssfVALW6uo8gY3C2S/
-	lSbAfB3EHDGzK24PlFws1Lbg20gNyIhQ=
-X-Received: by 2002:a05:620a:4506:b0:939:9d06:e997 with SMTP id
- af79cd13be357-93c43c95edemr89967185a.26.1790283009873; Thu, 24 Sep 2026
- 13:50:09 -0700 (PDT)
+	b=Gre+hySW4Jcz6RHQZXjSedwjaQRk3V5Msvma829u3XUHKWLJTnz4sDzashDTfOPN6
+	 VtK+wv0V9y3/FM/D5kxsa5vcWpRHSox3YmpUShUhKSeIeNpsKMnWY+fhui0WfNi9qX
+	 AjzSbiuGAPcQ+2ueHQ33MCPcKhiIGtgJQ9ARiZ6XOOFqLnizMdkory1LoOgcXGDB0D
+	 0Rz6YPypeeH2FNrlJc1tauCxBWyNb88Oa6bxM/avzQl5IOEGdIuywI+yrI/KoE1pbY
+	 IVgOj379nXeMFK4EhWBUVwCoQpObxwGscSax+dBCPxYsYoTHWll87TXwTuNoB/ybZg
+	 QFymTZx0RE+zQ==
+Received: by mail-qk2-f42.google.com with SMTP id af79cd13be357-93be29bb454so32943485a.1
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:02:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwMIZN80LEIP/8GwhbwvhbTRwsAAL8mvc6Gic2aSAERtdbqpmIxcYhVAuhUl/6jskytPXHWkJWknQ==@kvack.org
+X-Gm-Message-State: AFuF++nXFyDm6j0hfNwThcMGYwr/t2Qe0MrEMjRa/yIMVTO7b1AehGOq
+	49TsYsrBajaouMX/3CVXEQWx1n4+aKBdxGyMnN2F3THmPYKBXHVKCdKpDVIDS/NAFIl9gta3ULW
+	FbY6HpMHdP3CE2JnnKhw9RvPkcFXClFU=
+X-Received: by 2002:a05:620a:4612:b0:93c:234e:d10 with SMTP id
+ af79cd13be357-93c43b86557mr105850685a.11.1790283765486; Thu, 24 Sep 2026
+ 14:02:45 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260924191103.3475117-1-usama.arif@linux.dev>
-In-Reply-To: <20260924191103.3475117-1-usama.arif@linux.dev>
+References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-4-dev.jain@arm.com>
+In-Reply-To: <20260924131106.1730494-4-dev.jain@arm.com>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 25 Sep 2026 04:49:58 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yiSp_9R5Bc4WR3UF7th03c+FsNyDPK6cyHfpiEGHveyg@mail.gmail.com>
-X-Gm-Features: AclHuK9L9SJ1j1Bl7NzcGznD7Wnm5jocUxdYyhg7nXWVX1BHCFN_NNxlXTqkJLg
-Message-ID: <CAGsJ_4yiSp_9R5Bc4WR3UF7th03c+FsNyDPK6cyHfpiEGHveyg@mail.gmail.com>
-Subject: Re: [PATCH] mm: remove the unused zone->unaccepted_cleanup
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, axelrasmussen@google.com, 
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, david@kernel.org, 
-	kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, 
-	rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com, vbabka@kernel.org, 
-	weixugc@google.com, yuanchu@google.com, hannes@cmpxchg.org, 
-	kernel-team@meta.com
+Date: Fri, 25 Sep 2026 05:02:33 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yVhXF+-gOrOB+JOK6nZt19SA=LT+gXpmaMpErg6Ra5NQ@mail.gmail.com>
+X-Gm-Features: AclHuK_dkYU1S8LfF7mhgKUW-YMPRJkOty82Eqfv1olkQu1iouCk5LG5Qs9Q-x0
+Message-ID: <CAGsJ_4yVhXF+-gOrOB+JOK6nZt19SA=LT+gXpmaMpErg6Ra5NQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/9] mm: move anon-exclusive batch helper to rmap.h
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, 
+	andreas@gaisler.com, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
+	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BDAF910000C
-X-Stat-Signature: guirg4xeh6fh8e9wmyf1xd8ojj4j9udc
 X-Rspam-User: 
-X-HE-Tag: 1790283011-793435
-X-HE-Meta: U2FsdGVkX1/DkXvTCoVA/QoVUFpydmc/RCIqiYzfaL4i4HOUKwaQaI7TUH/u0osZYmBhf2FImrYu47BQBVMAEOjUnpK+T0+6sIiIOTfn9YSLXef8BHHtDvCKjoPQDOyCE8Loq1XHWwffg00CT3zezQFYT2Yocbm6PjMJPiH9F0V7c5X2ChPhsmP0JwYyQaijfVyxCDij8zqaenRTsAhDAMSluIIB6XBF97x5/GWrSqfXp6c6C3OjTUQ8D26VYu50KVW9VvQ2r9tnRWC/HEcKgislsA6ieLzIP9kYDYxFqAqMtHOB+aiL7b6yEhlJEdujuB/dmZu1k9OZ1CCqhiA2krJ0pll215xGvhf+aLHI1gjp7XD+MeEyloOlCt1Fxd4sMyLOsTMdtuNNd8z6QbwzRnfli3glTI/kxFeV4Q8h/qRaxu243telLt8G/Jqm3fZJSl6ysD25QgH66i6juVrKfOZtJGKNFgNSq0MN9O5ti7jCvbV4luq2vlk65AQXXvN8SlXcNm5vNa+w0xqa7i13NxDXGviECkXXKkVag03D6BiyK8Z6i6YxEYIynMsmu6CBBB0RGckqVD871As4oqmYtmIIVTA0h204wzeDC16M7H0rn89pY79W+pPCXzLv56h+4lq4nbROua3alaP+zPaK9hAWJpShV410WCaBumLJfXcns1n5xACaxflVZT/WcLaEz/Rpo7H5Ppu66PFTrGl3F4dWuZYy5AVK8Vrt9EGVul7DsiZq6eP/8ScoJerCpWMOE+N9mgm3o4eGE/WrsmlvUYnF4QEs271rbQ72rOtIGAC8+i6mTCCv6n0xhYuk18aUnNolFz1UYF0ZrDsh06p2HvWoENyUNdSNNpBYe+xl7jfAHCLu078Nwb5isYPRz3bv86sfRXctDH3wPcuaj6Dn4dkSF8ZFpvrpk2EVX/gJQ9qBYx89PwRN7gRdQA84Od7z7atFCA3TOo8Bxlsy9DJ
- 7zzp2mSU
- 7ttkQ2Uhbz/HX77Ea9DGFl/OK3N95tgexqXocW3TvY38puumYHIc/J2uPkHWBKJxNQUIhXtearpL7jted/OKw9QgrUoZKoJoHaSt6xPQHwSbMsc5douo27uwQdSNZNMvIOOZX76n3yl+UrXHvM+twW4CpGQL/BJGMADeO9vjY7VG1EF3o8k+eA1b/+gWjHyozOoUF3jItrzNF17zjHR+C1ab/GH6QUMzaovYx7qtxFPr6Doq+ruSPrkZkNsWlgDLvFQ7Wbw3/6AJtnVKlA7o2+671z6J3cmiBOsQ67mTTbKebKF96WWvbd1+9mBAYFzdcWpz0tr45F8dYRox6EYsO5jzB91EwDhJnpgMa
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 306E0120004
+X-Stat-Signature: amcqjkzdedzucaym5s3n7io6xfoj4886
+X-HE-Tag: 1790283767-543269
+X-HE-Meta: U2FsdGVkX1/ziTlEZEwRx8TW7YmvyxQS/wi0Rq05ieiSOMW0/0FMeItxceo2uXN3vJRmB4CUnO0IqNWXLLw6UzCwVQP0HrTlk9he93Xgu2RKXkyTHt8WXVgiAYOdrBCC7kzCvpzUS9goXWSuSV44/5Ipl8O967hGAaX4OCHG1YGBJ4Wn7nKsobvO8cRIrk5SaskS+nWYoOnunVyW/1mVP0yRPP8zn25Hp4Lju8rrvM50jaiVCP0LbIAO1MiSg2REb5SFy5FjCdElKjetw1xF8P/p0WPMaNn/ilKnj6NAyZwRwLdtjXAuHn0KBjHYn5YJqVhFWHBLAqGemdFdrTikLJU5hCJDMu0CzSDDV+YThLAQMgD2Rb7Yyizp1Xb5MPIZcpCvQKzd67b1YEdRz8SFTQOfA0JRBMv/wAQe0Y0W8KMbfK1Et78WvDYZ5CmmQlcTPzv461RlJh/82pp6NPHqtvkCo5DX0dS8OwZ59HKLlpyyfP18UgI7AQwXDGRtxxLgSZqh1AJtUnH/dbvRqzGmJp/C3/2QZjNzzcMMeXUAtF3LzoM07Q2Wd8fLYmeboEY4ZEQXT7ughajIyWFXpCMAJR6ZRRC91m4rffNebbRt3WNEGL69jmvybwIG8t2Sg4U+TkAp6GwkGbpjknC9796UNKCqyZ0dN0CULmon+VnWcDQlMoG+RuQYIYoVU5ES6iQa9jW7xtmR6ToKREEhPGlm9Q2wriHnj8TGAU1QiTP/CaD0N0iSyjoiXJ6vDInCURCmKCqfQtBDLXEmeAY7jy5iMH5mEA7GN8GfriaFBQzoyFPVBzspGDiSzDDb6kdWvQpvofpjGD72VZSjfDJY4XuCHUdTfDqbV91792awW7Vt6gmUlVyw9sbBMGIM8qt0+YfoDhYPRwCWUeSBWJEGT3RIrldLKclOPUWjzupB+y+b/FR8HFNFwbG5NA7metf5Fy+yc35nv+8Q2CXKRvBFNmI
+ ODAb2br5
+ KaqWCXV/esBWEazuk1FTXPolkId9wKCwsp+RPlyX2wEeFfhnuckaMmGfJ0Hij4X/yIgwClx3cnp7PazI0p7r9faqwx6poxkT3eiC2NSLFCgL5xPBGotMWuIsBALs3SY7p3kbmc/c+ORUxMbdGkcyHUQT4yfjM6GBuOG2TZEXdOgKt6vFh2MRrhsj8QTuPCQ9FSkeeKbGGltHmNVukmpINb4GUcxLIyeiaoBIwLeWmuatC2+/BMIRj+cDdSegmWdmZI3eqOKT4p+vg0EtP1XgYN1hzHRvlB9p7F6PNB2J7AQ8s8mQ4PsTnkFxsQik5sDUKYI5oEQ+wuME1iz8fmF57H9AmDBW9NdHeIlfU9+b3Q7bzs4uArsxu+lQRtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,18 +109,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 3:11=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
-rote:
+On Thu, Sep 24, 2026 at 9:11=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
-> Commit fefc07518227 ("mm/page_alloc: fix race condition in unaccepted
-> memory handling") removed the zones_with_unaccepted_pages static key and
-> the work that decremented it, but left the work_struct behind in struct
-> zone. Nothing uses it anymore, so let's remove it.
+> In preparation for optimizing large folio unmapping, we need to reuse
+> the page_anon_exclusive_batch helper in rmap.c and rmap.h and obey the
+> existing use in mprotect.c .
 >
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
+> Therefore, move it from mprotect.c to rmap.h.
+>
+> While at it, change return type, start_idx and max_len to unsigned long
+> type for future proofing against THP support at >=3D PUD level. Also
+> shorten expected_anon_exclusive -> anon_exclusive.
 
-Nice catch.
+I really think the `expected` prefix makes the semantics clearer, so I
+don't think it's necessary to remove it.
+
+If you really find it too long, maybe just use
+`expected_exclusive`, since we're already in the anon context and
+know that it is definitely anon.
+
+Another option might be to make `*exclusive` an output parameter.
+Then we wouldn't need to call
+`expected_anon_exclusive =3D PageAnonExclusive(first_page + batch_idx);`
+in the caller.
+
+ static __always_inline unsigned long
+page_anon_exclusive_batch(unsigned long start_idx,
+                unsigned long max_len, struct page *first_page, bool *exclu=
+sive)
+
+>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+
+Otherwise, the patch looks good to me.
 
 Reviewed-by: Barry Song <baohua@kernel.org>
+
+> ---
+>  include/linux/rmap.h | 17 +++++++++++++++++
+>  mm/mprotect.c        | 18 +-----------------
+>  2 files changed, 18 insertions(+), 17 deletions(-)
+>
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index 74cca0e3c7264..62ef511a6175a 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -106,6 +106,23 @@ enum ttu_flags {
+>
+>  #ifdef CONFIG_MMU
+>
+> +/*
+> + * Get max length of consecutive PTEs pointing to PageAnonExclusive() pa=
+ges or
+> + * !PageAnonExclusive() pages, starting from start_idx. Caller must enfo=
+rce
+> + * that the PTEs point to consecutive pages of the same anon large folio=
+.
+> + */
+> +static __always_inline unsigned long page_anon_exclusive_batch(unsigned =
+long start_idx,
+> +               unsigned long max_len, struct page *first_page, bool anon=
+_exclusive)
+> +{
+> +       unsigned long idx;
+> +
+> +       for (idx =3D start_idx + 1; idx < start_idx + max_len; ++idx) {
+> +               if (anon_exclusive !=3D PageAnonExclusive(first_page + id=
+x))
+> +                       break;
+> +       }
+> +       return idx - start_idx;
+> +}
+> +
+
+Thanks
+Barry
 
