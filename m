@@ -4,149 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9FA8C98314
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:03:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BD9BC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C22E56B0095; Thu, 24 Sep 2026 06:03:57 -0400 (EDT)
+	id 438086B0092; Thu, 24 Sep 2026 06:05:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB2036B0096; Thu, 24 Sep 2026 06:03:57 -0400 (EDT)
+	id 40F876B0098; Thu, 24 Sep 2026 06:05:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9BDD6B0098; Thu, 24 Sep 2026 06:03:57 -0400 (EDT)
+	id 3258F6B0099; Thu, 24 Sep 2026 06:05:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 81EF26B0095
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:03:57 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08253A5D93
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:03:57 +0000 (UTC)
-X-FDA: 85248219714.03.5416CB4
+	by kanga.kvack.org (Postfix) with ESMTP id EE89E6B0092
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:05:52 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7252D802B4
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:05:52 +0000 (UTC)
+X-FDA: 85248224544.29.2D58FE1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 67C7D140012
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:03:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMbxskam;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id D7D1840006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:05:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HuU4b+q4;
+	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790244235;
+	s=arc-20220608; t=1790244350;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q6qe1GeJ9XQcp2Qtuu+QjoS116ZDPXf6D3ecAVzIRhY=;
-	b=6683ck93Mj2agY7nfQHM/kQRfWT9XUuwjJEs03skUSAPvACBNFP09r1k//zN5ucmhmnncG
-	fcynemDv+gXtCHSFnJM8M34j0BwnVa0bDqoXNXf/0bD6CemhJ/HLcokAczeAn3TBxsygRY
-	U3f2+DVdJFsK4Qz9m4hl/dgDykdsKpk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ztftWGB4Dg2CGLoIiNhW4BtmrBs2qH8L0ze0TvfkyVY=;
+	b=fTvQHjaF0Qqwpu40zbbPnHsBTycAFuNQVrlsC/KxWMFTuYGxkcu6Ify7CHFhpkTIMSRdp3
+	12amDysto/38+Mek6JbD8GRi1scev4YhhSAGeBLuPKJwCJhGCr5kM6ixrTsktfryt84fMh
+	3EIPkeCpbYfjsbC+CYQ7dm6cYD00WYY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790244235;
-	b=OaDjb1xd9oawGj+35+56xsK2oVdun+K3+SXouODqYUrd2nNNBeUoOhyrGJkhn45jNIYcy9
-	d8/hUFFvH3KqOf28mMB1BDeyv43FREQKvlRJApZ12aaYmmZTgpUpbSBw437RZX+Rq/Vriz
-	5iR9HhV3kyi1ZI/TEr/udkkKdDCkya8=
+	t=1790244350;
+	b=X92VDs5w4f5QOgwt0Qz8X1C9Cc/qdqmlVTK9fNTlnmKS1K11FPZy0Vgv/ejSMbD67OrU4g
+	66ZPnsIkOjjm8enGFwzfD4BOju4/9b7lcRT7frrvBf3mW9fnV0LXMAfDQioaOfFGOXjqMz
+	I9YtZGQ79pdiPKa3LdreRRVbL+Rod8A=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMbxskam;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HuU4b+q4;
+	spf=pass (imf04.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 98303601EF;
-	Thu, 24 Sep 2026 10:03:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097291F000FF;
-	Thu, 24 Sep 2026 10:03:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CD386021E;
+	Thu, 24 Sep 2026 10:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F5F1F000FF;
+	Thu, 24 Sep 2026 10:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790244234;
-	bh=Q6qe1GeJ9XQcp2Qtuu+QjoS116ZDPXf6D3ecAVzIRhY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DMbxskamLqIuQ517s1qWGAAn1E+xsD1IWLYGPnumbRx6pTv8bCwHJNooLP/0Y9MmF
-	 ewyfTQFlrtMHi0vbNbmoGXeP02wTiKXQwMUnfW6BJPnwha3F6zTor4G266x5NCtrLZ
-	 UINk2FfnnrWpmI4AgQSRtCEaaer/qXtOU6XcHLmcrADLmAXvRTfOudurStBkH10L0j
-	 cHXvTwq8BsOo1ESnuzegeDjHk5jwPxjbI7VL3VpDQNaTCWwI1ExYzT3hhqIHmtSCUY
-	 phCcWTevzoeBg5AakjX55gtjhS7DlK4HJYPRuO/TGOEmjyYP86Mnf1i03HAWs2ule+
-	 sZHwPnp+ZmfYA==
-Date: Thu, 24 Sep 2026 11:03:23 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Doug Gilbert <dgilbert@interlog.com>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <mkp@kernel.org>, Jaya Kumar <jayalk@intworks.biz>, 
-	Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, Sebastian Reichel <sre@kernel.org>, 
-	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
-	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
-Subject: Re: [PATCH v3 01/40] mm/vma: fix mmap_prepare file handling, remove
- file_doesnt_need_get
-Message-ID: <arTvHhdoxZi_LslN@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
- <26EB9785-2909-4D49-A755-09A72BA94BD0@nvidia.com>
+	s=k20260515; t=1790244350;
+	bh=ztftWGB4Dg2CGLoIiNhW4BtmrBs2qH8L0ze0TvfkyVY=;
+	h=From:To:Cc:Subject:Date;
+	b=HuU4b+q4DW0y1jFU/pkX+Y4Fhfh0EI89bHg3rugjNjh68OTBVkfJc+jWtGFdfePnm
+	 k+qTHsx1VdLGmFvtcQe3yLmTJMO+2UbYXbjlLAUNUeew/THoupZHRLbW1A+sOnnaQ3
+	 suyP7PpixoipAIDRd40wP6z9vX1F9/BcjD/3E3z3FzealKw9unKna4CfSYTU3chF/M
+	 BeCJzSCxycJ/7UMrx5MowndgxpxqIxGYqaQyXAS8Ec2aRI5BwolYB0Ad2GmT9tcAOp
+	 yB9imNYXb3ltmkm/2TqZzdLOGvB5zSz7bCVC0xidic9b4NEkeHKnJBgiAZ81jpwAar
+	 C+jT4eU3TVRTg==
+From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
+To: linux-coco@lists.linux.dev,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	iommu@lists.linux.dev
+Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	linux-media@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v8 00/14] coco: guest: Add a shared-granule allocator for host-shared memory
+Date: Thu, 24 Sep 2026 15:35:15 +0530
+Message-ID: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <26EB9785-2909-4D49-A755-09A72BA94BD0@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 67C7D140012
-X-Stat-Signature: 91qkhutmq5n3j7f6b6mzr9kf6qj5re5y
-X-HE-Tag: 1790244235-577587
-X-HE-Meta: U2FsdGVkX1/ndp/rMXrD1kmQt4lSTm64WvF978okjRm+CQuygrUpSykDxPhzI+GDAnJsPKalrXfrZbwBKA0YJzf6PNcF/dC5isdYtACtNm6CduLE3tDrTGS/V/EXoKd/wrKK7IIWN0jg2qbd1QisdGM7FidQrT6+gwCeLbAiqHXbvLGcgSSSIabg0GTbvGCAxLe0GtJWXO+7xpA/Th9NmC4yLryTNgEPAZXbpzW9jP+jZHcS0nGTxsHD/Fcpl7ynTd+NWQmH0dAYw3BIz+JL3XFT8m9ii0/gHW2qgdUT4+QusSt8gqKp4gOOF3/+02Awbyuuqz9Bed/MV3VuaQGbMWAf4l+DRCHeLBjVUqRvS87ZMy0Xzwuam2O+/m7d4/dfOf+++OhtymLgcJRjVo9TiNGHWQtEyJ9gXnCZJa0PUGEoS3zxPpH5NIoBGlEcXMJQv7qzOvNN3vMkUoBz5m+iBggZ7V26sDy7K2oB3yAcYEwupDxBFShg7HUIvyM+NguaAO05HZsbwCTLOAy+5ES0uwH4kTJ27qOlD4cCbi2uj5a/47KiHgJmjjsH0X3EZq5w0zJ5rAmXr/edWQbeyiBVpcP2Anx0LPH92p6L0VB1d1bH0vVhounJf+KnKeOyAS6Fv8fv76ubaqQwBD1bKcA8Gn35GUyYDGsOeo0dM6II3JiW4QP7zGElpHwP0D/afyvUXwUGdRVYtz723pVAPuWy0BGNDJOvdxSmzRvv8vVmTph2x0+3wxvdGuaIZ4MpFbo24Lc3V/GJP/uU26bEFbil/KSTncfr2+OtP3uc+YP685+FXFvLwQmeIntDTg5rhSf7yB9QlZ2JK1QcmmCGDBPJEHUZg0Mm9X31R93okUItS0TgKRFDR48gYmAbym1uhUZO2almkbFNr5ls2vgrhdZmsqu+eZkQ+B81G/nEQUxYtFWOtbc1wWJWz4Xbe7jxSwuCAO5L8mWwbp0JX/pWQZr
- VPnMpP07
- 7vri+2bBVu/d4+QLs56bkA2l/ZoGnPSzMwLuG4nVIxgFT9oX/pt6PcgCNilvnQYycZ4URFkCii2xdX4Kh1H79IBoHdFPHbCmNlt6EbuS7rIKTueHimF2kXtz7ojKQy5vn+fKV8vMm3FSErc8XUNzP1q5WLjR/Xf9QfBqecLR4hRYi9JJYRUghpfClKqxfXrOnusDCBbl0xnMrIu8GnR8fU8ZPxC+40z51wrlc6t/2IKx0BwZoTQpY3U/c550/2GBMTuZ6hvRjA7u3wvt2L1q+8j7Ub6kwm1WJK8fZvvHQ4JLTEr/mdMLtghjdrn46vUscTmZmTrvll9zMyy8ms4NYZ1gAaKX32eFJ4OJp22BMHQpdrI0BsSsodt4y9vNmL5SWxS9cyTsYjyt7qgSENeydQGJp6LtpwO7WqvdmMFDL6KvscMIoVqmtBAKfcBYJfHCFzVZEEpMi0jsJiN2GO/MOsseViFYyR38KACjsUEFiRLvq3nONuHh1lO5HhExIkP28GX00ntY4UZ8NjshqqJfMMr4qp7YTVlLicors3k2OnqC4XIS151yer4aroXxo8BUH/7uVNQvDy3x/CK7b+5pX5QEfXMEFBviM3HDl6TZhVTxmgyyRbCGMbjopj1iDia5m4wR7DpYoGp4bRNMWB1jZX/gNGK41w3c2O1rovxDpkyDhrv2CwANISW8GysP0nbIj5StV5AA3omZSH0qstR5GPjOIY8LaFTPQGkMkzvcIiOOu9UazO0+ACTRrVjMiiUpFsCwzBXfDNawV6uLrYc/lKyQ5Uy8IfqLyfpAsS54hYelsu9PH7puGsCBBDewuCq890qBPZZ6UyCQSRQgsg7q3FA8rhSrZc3AstnlCMYHGhCf9cpVA1v3i6pOqTbviHxCazz7nDrmYerc465E9kPTAmEntK8+Q+OKUYxeWG7wXKaOhCJtbTCCkAo+XCPzurw0H4qCIbh2HG50j615+njfz3027HyME
- RhcZgw9D
- TpbztBK1UrfOKDfE6KH9vxGAQf+vtt2sFVmSbA2rPzOPkAOCmiMZz3ehc/0G7hfagcu2ag78u04CfJOeHd6Ul1xHfMrT9bVT8QEdvh33fO8cD2/q2rBaG+x+BTxs1t4pU4ZWJ+V0OEImFLed/w4aW7oLFkegy4R14Tp4wF/ARXVXTzX8XBP1LMMcqPXzf3oIoto9l0WvUHV5tvkGyCp1pswzfyYNU4UpXE/aFh76lErMH2Oc95aGeYVKBorohCqSbTZZr7rIPmwMXFQ1owI71LCMt6/4GaszEnuHcelNM9uFloJF1UlOsw4CZdVztGYxwRQeefy2OYcHco0wR1MLSgKnc7Ww38e7FA/s+TAM8Gim93+HCOUZX+RT5165G6BYDUhbQ+Ihq0sa241p1TmqL7MViOddeX/Jus2q1YHp9TQFInLbjcHwYZdDXmruySCF8/iluB3waRmbqC/1RKsXUDcrs6eO1/esbawVAimYNkdsVI2hAxYfrPkG2yQn/dV7ikDKilOiod/o1GentWreUp/8N7eOflKhUDPysBGxlvYU8HpNEom/Qti4iTV0HTlxVd8ZXGEfRFUSUPN7iads+g9uv80KkOQj984R8NdLRdVHwu5IGtwnASSf0lgPuzXsKdPr7E5g9gQ4V/2fQ0f4lFPX1CfWeiM9fTl+GOw6ujEK1C6UZVjNEGQQXSrp4QlA8UG9ubH7TX9mwysbtPZ2fVeF0fxueeBBcX0v/PFF1LcWO3xIp7dfFlzAND70GjRg9wWpc44sX4xeChvLPRhymGKbcehf7vqWIg6yqN5q/V1haylMFFoqzf1epNbL4kayuqEk1Rk2kGulIv6zl9UaEF/eFIhR7gOAdmDZcMZSZruFrUkmcj0sXk0ekVGgMpiJ8TLx7QnMbTgNCnmHsEJeboIejP19uGuNvDYx9BXbLm6jUSTVVh+5pr2paoUFT+Dlr+m1vStCKpZWLXmp3435Is1SRB3QP
- IHD+fxA8
- qr77OTmw3jvKfbVjedLQ2o4XrIJb4ueB+GOcuT8sBJsP2kvgh2/TPWzpMP+1m7xqqqBmqDHY4Bmw5k/bZKwrV80JgJUJBz9lsRuKobfLSgctt+XmIlKZgGPKC/+pgpKqjkkfsILOOWqkiTNA3o/ltaPE4W8KgA6qvyaktoLDmntQYxykTBblcYMmhBANZxcrgyygg6UotMLAaJHoG2KCOkdSlN+c6IavdlBDyZE/rl2qhnrL19r7QiXlCIZOQzX/T3hgl7WqbLVQ/xyppkiohsuNfXY2vXG8pYy11oGrRX7smyGatwdTPKowE8EVt6mElZ+tc+TMNKlpA2o914+XfKy5Us2BXmjlmZGz+qLQckxRiAA6jngC9+NYxbia3T5+lTmmwwSpTj3p2NpTTo/y0o9F4pog+VqAMeRqWkBdUGzpLBr7X4Hv9bGdGBWcsa0lkUy56RpVfS9k9ayktLUv6VFQC4bfqClcAkhKwrCoJW5tPxaz9QF19Nh2T+cY+z6QigGkV4kU76P7aCRytD5mh0CfW0cV6D5LRDfZ1lNDxi9lH/3BqhbEG8SsVD5OJ/Kx1nG6UmqCBitzTTIknHJ8nXwQPtRQCkC7embK/TcqCCc93xxL9sO7G74bdLk2iRPeJGRLrZIFhKaYlPNIA4T38BzaxtYB4ggfUKAor6gmvECb8Ttizrv7UPjmPNSBS5Hk1SwjsluB2iJdo9VYPLO1FTZCmNKzeSKWGIMDByJxPgC91LDMXjpZ4gIQQkPWicdMGmmLwQuPrA8TbQsOH9uDIWzxGbOUYW8oiLx0Z3xJfby8kMlPMjt7HDtcYktVfvgRMKMx3/3qsw9mY8ta3WU258SgMxpKxJjxM47qvcaMyZcleNYlq/3SQEnUIYU1LDPKCJKhxM8qsW6DDpd8A/2BqLJ2uJGz4/EnlC5/b+QmWHLR9BcpeDPPKy4crq3BxVWwWkBW77dUTfBZAR0hiVvIpPQqWL4da
- MvOuleJl
- dfSJmiQHr4rz+ansOD7eu2ADi+fQ6pop276/jYnlSKxxLAxRKCS2VCI+ZzZTv62RDkZQHAfMNXUFhXXLjEe5bRF4lejU4mt55VNEqwVkY1oxfywbw7a91b5QAb6r6Gfh5g9nV6++WlQIUWTNyBWVpL+4+WSOfxRMQs/BgkV3suBiQSBXN4rlafdKYddjtcY6tS9OcNaOJWgckjqDD9SgPGJ9m2nHYYZN1qylXIqI2tauvCtEAuXm2MUjytqXvzcPFvbIYqDUHmtIgdzVU9Lk//Ucb/N80CpsE2tapAljDjIJ5Jonpsg7hdQ4wHxQ50KiiYhhELFXQjrnVvCk91zqtkhfM0uqoJbpqY/2g2HeP7hM4KkCStP4LjuTizB2S+pxwgmtUioilSXtYQruHyxVca
+X-Rspamd-Queue-Id: D7D1840006
+X-Stat-Signature: n918dw4y1daitoiien6x8wthj93zhod3
+X-HE-Tag: 1790244350-874099
+X-HE-Meta: U2FsdGVkX188P9/ZKeiB+fYjQf40ZPWe6xse9pl4NPXCCeLiPSW09cTMz6nP+edLqmADfV5M99CL9Xek8C10SO8l77iYl4LnoDCroETDFncGQs3ex0zT0vt6Mt9eR1P7nIOIl1WkOf6btEYLH2qY39WRWJ1YI5WgbSlv3YmMG6FufAFMvJj04Q9XqZrVBFKS8wsZPjfXxgOD1df6dJvTxbMcpAXh5Ierq18N3JF3p3heSPACXrtetMKCJVecaLzURPTySpXD9bGl6vigdRBMCXFP2ysZnGQdjC09amcr1THT3Gy31Cv9fxdUlyM/MA/eKm5U1KfkytX6K8N8hjUvoCX9ZuGS0rPKlVdtMYNZQIB0cflEKYtQxnY3gwRYmYg9XUmbSwI9CFrm8EP0l8FJU0R638Ao7AZq56Uzblc2DepPZiS6nqEOm48r0LnWXjrCpd77GBLjVa766XI20k79XPGLaK0tGEca0+CFulGSSDf6HXnrWm2isoGhaXcELqsHWCi/gWn+ezfHUSZUp08yKvfmFfSxwhIM5qOYN7aiHkHzxd8SihN954jlBGHYpWGOJnKnxTKScPg4T3wHgiUh3OjTFWtcruW4P0bJNBqeyZjj8EgSFKodFByJ54cPg9nD2yLMJ/jDjtIcH6cmQS27yO+5qb0lpuviBoeONVzYhzawf3le9dxjsip0uAJez6xYTYwZriUdprgEdWA9PNOLW6yIdZb/PNnoQSdIjzBfeDkMyPcqOAdVZz7M6npbggAsQbv9QJinxTI6pjoPyhiLlIaaLAMviWOVQ5Rt9PezxRubWZTMfKkx9VCut98OJpoawOdRhkZEIB17husbRfx/qgC0+NAkeaexgWAfzA5RrW+JXiFkCIQ7WMZiQ3lTX41A150wPqUMR4fAZeWIxuoe1S1xLzlGSkbe/UHFi4UjYqpEEF+LZ2pbEz4xOB06m1P85M78QEpZgduxt2DiDJi
+ Nce0xqnI
+ AYPt+m3Z6WeFU9YMZy6I+wD7uYCeBqw704lTE9cXNvHzdL+a658OzEDIsyPCwCMzEcvhDtZ9BPJZ3pQwRz5W4rRbiNnhtL9bzxtfYAcp9pzz/5kRC6+AWa6we1xrbsTMkoxsdBroom+e8wX6yvxIb9RLqkO9wnmDoC7qDpNeGP2LinIFJaMkZRA6Ex5GS7/O07clVL/Epdy1DY9RVK8b6SBPEn7uGd9nJB5htwbOwLRSArDn1xjqM9Cdq2X7YYmGHM73IwpR6dfzuYCiuWT4JW/Dl01NXGBovdst68/3T9N8JFQVcUFdl0zK+NlqTugHTsBVHoWJy0IWEd/8u34cEDm5H4NCGWZEjznRAxM5BQ1oh7yG0U/rBhWDm09n8jmiL67UMcPlnr66yY2bELqQFBswteerYjYJi/oZEFBHtidO+UlXufGqu71iukHW3CfhSUhgtttwIKwbc5Rg1v6VtOqUpm/+LGFNrFBE3GlMBlCKKnRVDVThQLzhHQKurAqgIOJh8HfiLR4t+5m6GJJCZUgBkeuebzDclAb9G5Xyce+vqXoqlSNo2LE2rdfVAz/8nkmkrkSDm0yJgrSSn2Fk3NI8xyQaLzcG9uf0Wf0uDMMYacBtQD3CUWrzhKdYoNRr0zduDMj8FUcEmu4KkNoov82CdCevb5Rk4IfCT0ewTRbR7/Dm7AR3sqhfsRNE+ETE2mofgzqmhfAIt7xhC/jH/FxmhQNxh1Q/LIDRZqiH+6S2KFIZASkrz07JvM0XAF3lhH7nXTz9smN8Fia/OghLlH+O93qxOWjdI/ci0vFpBxlR+7x4j0mQR6vexoAtTp614/5ibqpDnjHI3ZoPec+P2Qqb4frc1KNge1spJQUsidaCialmQRlwJpOXBl/o/Of/KtZ9fh/kRwfBd68PCg196N+HK0enogDtrUvIYhRCZGLwZLEgswVnQUbo60yRAkDeFdQ1+6U88Yr3GeeDBMiC2REn4zBLe
+ AR2Jj2IB
+ Tu1+GS6t2chGfb7leb42Kps0CGENfanwMz+JE5fA0MI0VMaJSlPfdBGCMBANjgTTgvxLJk7jmqjF4AljC1yREELpVI1ME6cAqz02dl7XjpEU/3lvJDr8gZ1l4A8rl9nsb7ZiyN0RMQkkVCSiP6EThYt/izS2KLi04tis7jWp5dx6BzNVRlqeG2wyvwYa/U6daYIRdjLBNhRuNSLMWTlXBIQ0UYsD3l+f8F210qf1DFGVjeGKLwsEs4ZdYg2usNW8EfNei00tDUyqkb61mr0B4Y4yr7XFvzz5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,137 +150,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 10:20:43PM -0400, Zi Yan wrote:
-> On 17 Sep 2026, at 12:22, Lorenzo Stoakes (ARM) wrote:
->
-> > The map->file_doesnt_need_get flag is confusing and the existing
-> > implementation has holes.
-> >
-> > Drivers are permitted to change the owning file of a mapping. If they do
-> > so, they are required to take a reference on that file.
-> >
-> > The mmap() operation which ultimately invokes __mmap_region() is guaranteed
-> > to drop the refcount for the original file the mapping was made under, but
-> > this is not true for the replaced file.
-> >
-> > This has been addressed so far by tracking map->file_doesnt_need_get, which
-> > is rather poorly named and unfortunately fails to correctly track whether
-> > or not an additional put were needed in a number of cases.
-> >
-> > Make life easier by removing this flag, and instead drop the reference for
-> > both mmap_prepare and the deprecated mmap callback in a new function
-> > put_map().
-> >
-> > Track whether this needs to be done by aligning mmap_state with
-> > vm_area_desc and store the original file in the map->file field, keeping
-> > the updated file in map->vm_file.
-> >
-> > In order to have the same behaviour for both types of hooks, only drop the
-> > reference __mmap_new_file_vma() itself took in its error path, deferring
-> > the replaced file's reference to put_map().
-> >
-> > To make this work correctly, map->vm_file has to be updated before any
-> > error handling, so update __mmap_new_file_vma() and call_mmap_prepare() to
-> > set this field first.
-> >
-> > Also when mmap_prepare() changes the file and is then merged, the reference
-> > count also must be decremented, so update the logic to call put_map() in
-> > this case too.
-> >
-> > Also update __compat_vma_mmap() to manually perform this step for stacked
-> > file systems using the compatibility layer, and update
-> > compat_set_vma_from_desc() to replace vma_set_file() with a correct
-> > refcount/file update.
-> >
-> > No in-tree driver is impacted by the incorrect implementation of this
-> > currently (no driver that does this is mergeable for one), so this does not
-> > need to be a fix.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  mm/internal.h |  1 +
-> >  mm/util.c     |  5 +++-
-> >  mm/vma.c      | 83 +++++++++++++++++++++++++++++++++++------------------------
-> >  mm/vma.h      |  6 +++--
-> >  4 files changed, 59 insertions(+), 36 deletions(-)
-> >
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index 0dca33db068f..fe576d468af4 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -7,6 +7,7 @@
-> >  #ifndef __MM_INTERNAL_H
-> >  #define __MM_INTERNAL_H
-> >
-> > +#include <linux/file.h>
-> >  #include <linux/fs.h>
-> >  #include <linux/khugepaged.h>
-> >  #include <linux/mm.h>
-> > diff --git a/mm/util.c b/mm/util.c
-> > index bf0513d1d3d0..016932780925 100644
-> > --- a/mm/util.c
-> > +++ b/mm/util.c
-> > @@ -1228,8 +1228,11 @@ int __compat_vma_mmap(struct vm_area_desc *desc,
-> >
-> >  	/* Perform any preparatory tasks for mmap action. */
-> >  	err = mmap_action_prepare(desc);
-> > -	if (err)
-> > +	if (err) {
-> > +		if (desc->vm_file != vma->vm_file)
-> > +			fput(desc->vm_file);
-> >  		return err;
-> > +	}
-> >  	/* Update the VMA from the descriptor. */
-> >  	compat_set_vma_from_desc(vma, desc);
-> >  	/* Complete any specified mmap actions. */
-> > diff --git a/mm/vma.c b/mm/vma.c
-> > index 55917d097933..fa784f069da4 100644
-> > --- a/mm/vma.c
-> > +++ b/mm/vma.c
-> > @@ -24,7 +24,8 @@ struct mmap_state {
-> >  		vm_flags_t vm_flags;
-> >  		vma_flags_t vma_flags;
-> >  	};
-> > -	struct file *file;
-> > +	struct file *file;	/* mmap()-specified file. */
->
-> IIUC, file is never assigned other than MMAP_STATE() and should not
-> change after mmap(). Could it be made const to prevent any change?
-> I assume mmap_state will not need to handle the nesting issue like
-> vm_area_desc, so file can be const.
 
-Oh I had assumed that this couldn't be const and I thought I'd checked that, but
-seems not, it can be :)
+This series tightens the alignment requirements for buffers that are shared
+between confidential-computing guests and the host, and adds a common
+allocator for host-shared memory.
 
-Will fix that up for v4 thanks!
+When a guest runs with private memory, buffers shared with the hypervisor
+are not only accessed by the guest. They are also accessed by the host
+kernel, and the host may manage the corresponding shared/private state at a
+granularity larger than the guest page size.
 
->
-> > +	struct file *vm_file;	/* May be updated by mmap_prepare. */
-> >  	pgprot_t page_prot;
-> >
-> >  	/* User-defined fields, perhaps updated by .mmap_prepare(). */
-> > @@ -43,8 +44,6 @@ struct mmap_state {
-> >
-> >  	/* Determine if we can check KSM flags early in mmap() logic. */
-> >  	bool check_ksm_early :1;
-> > -	/* If .mmap_prepare changed the file, we don't need to pin. */
-> > -	bool file_doesnt_need_get :1;
-> >  };
-> >
-> >  #define MMAP_STATE(name, mm_, vmi_, addr_, len_, pgoff_, anon_pgoff_, vma_flags_, file_) \
-> > @@ -58,6 +57,7 @@ struct mmap_state {
-> >  		.pglen = PHYS_PFN(len_),				\
-> >  		.vma_flags = vma_flags_,				\
-> >  		.file = file_,						\
-> > +		.vm_file = file_,					\
-> >  		.page_prot = vma_flags_to_page_prot(vma_flags_),	\
-> >  	}
-> >
->
->
-> Best Regards,
-> Yan, Zi
+This matters for CCA systems where the Realm stage-2 mappings managed by
+the RMM can still operate at 4K granularity, while the non-secure host may
+manage the IPA state change at a larger page size, for example 64K. In that
+case, allowing a guest to convert and share only a 4K subrange of a
+host-managed granule is unsafe.
 
---
-Cheers, Lorenzo
+Architectures such as Arm can detect incorrect accesses to Realm physical
+address space PFNs through GPC faults. However, relying on that as the only
+line of defence is fragile and can still lead to kernel crashes. The risk
+is especially visible for shared buffers that are later mmapped into
+userspace, such as guest_memfd or dma-buf backed allocations. Once
+userspace can access the mapping, the kernel cannot guarantee that
+applications will only touch the intended 4K region rather than the whole
+host page mapped into their address space. Those userspace addresses may
+also be passed back into the kernel and accessed through the linear map,
+resulting in a GPC fault.
+
+To avoid this, host-shared buffers must satisfy two constraints:
+
+  - the address must be aligned to the CoCo shared-granule size
+  - the size must be a multiple of that granule size
+
+The series adds a common CoCo shared-memory layer for enforcing these
+constraints. It provides shared-granule geometry and range-validation
+helpers, byte-oriented private/shared transition helpers, and
+alloc_cc_shared_pages() with a node-aware variant. The allocator rounds a
+request to the architecture shared granule, allocates suitably aligned
+contiguous pages, transitions the complete allocation to shared state, and
+returns the transitioned size alongside the page.
+
+The corresponding free helper restores the complete allocation to private
+state before returning it to the buddy allocator. If private state cannot
+be restored safely, the allocation is deliberately leaked rather than
+returning potentially shared memory for unrelated use. Since a
+private-to-shared transition may modify memory contents, __GFP_ZERO is
+applied after the transition.
+
+The generic shared-granule size defaults to PAGE_SIZE. For arm64 CCA, the
+series queries the host IPA state change alignment through the Realm Host
+Interface, caches it during Realm initialization, and exposes it through
+the arm64 memory-encryption operations.
+
+The common allocator is used for host-shared allocations whose backing is
+owned by an individual caller:
+
+  - GIC ITS command queues and tables
+  - dma-direct allocations backed by CMA or the page allocator
+  - backing allocations for the CoCo atomic DMA pools
+  - dma-buf system_cc_shared heap allocations
+
+Hyper-V users of set_memory_encrypted() and set_memory_decrypted() are not
+changed by this series. Those paths are not currently used by the arm64 CCA
+code path, and therefore are not part of the arm64 CCA IPA state change
+alignment problem addressed here.
+
+NOTE: I have not added explicit MAINTAINERS entries for mm/cc_shared.c and
+include/linux/cc_shared.h, as I am unsure whether we need a separate section
+for common CoCo-related files. I will add the entries based on feedback.
+
+Changes from v7:
+https://lore.kernel.org/all/20260921144847.501151-1-aneesh.kumar@kernel.org
+* Add the following new patches:
+  * "irqchip/gic-v3-its: Preallocate VPE L1 tables"
+  * "mm: Assert CoCo shared allocations may sleep"
+  * "mm: Zero memory during shared memory transitions"
+* Drop the arm64 RHI and shared granule size patches so that the series can
+  be rebased on top of upstream to enable Shashiko review.
+
+Changes from v6:
+https://lore.kernel.org/all/20260904103452.1197239-1-aneesh.kumar@kernel.org
+* Add a common allocator and geometry/transition helpers for CoCo host-shared
+  memory.
+* Convert GIC ITS, dma-direct, atomic DMA pools, and the dma-buf
+  system_cc_shared heap to the common allocator.
+* Limit dma-buf scatterlist entries to the requested buffer size so rounded
+  backing is not exposed to importers.
+
+Changes from v5:
+https://lore.kernel.org/all/20260706060432.1375570-1-aneesh.kumar@kernel.org
+* Rebased to latest kernel
+* Drop patch arm64: realm: Move Realm memory encryption ops to RSI code
+
+Changes from v4:
+https://lore.kernel.org/all/20260427063108.909019-1-aneesh.kumar@kernel.org
+* Rename the helpers to use CoCo terminology
+  (mem_cc_shared_granule_size() / mem_cc_align_to_shared_granule() instead of
+  mem_decrypt_granule_size() / mem_decrypt_align()).
+* Use __DMA_ATTR_ALLOC_CC_SHARED to pass CoCo shared allocation requirements
+  down to CMA-based allocation helpers.
+* Add validation for restricted DMA pools to reject pools that are not aligned
+  to the shared granule size.
+* Add dma-buf system heap handling for cc-shared buffers.
+* Split the previous combined DMA/SWIOTLB/ITS change into smaller subsystem
+  patches covering ITS, DMA direct, SWIOTLB, restricted DMA pools, dma-buf
+  system heap, and arm64 Realm support.
+* Rework arm64 Realm support by moving Realm memory encryption ops into RSI
+  code and exposing the CCA shared granule size through arm64_mem_crypt_ops.
+
+Changes from v3:
+https://lore.kernel.org/all/20260309102625.2315725-1-aneesh.kumar@kernel.org
+* Fix build error reported by kernel test robot <lkp@intel.com>
+
+Changes from v2:
+https://lore.kernel.org/all/20251221160920.297689-1-aneesh.kumar@kernel.org
+* Rebase to latest kernel
+* Consider swiotlb always decrypted and don't align when allocating from swiotlb.
+
+Changes from v1:
+* Rename the helper to mem_encrypt_align
+* Improve the commit message
+* Handle DMA allocations from contiguous memory
+* Handle DMA allocations from the pool
+* swiotlb is still considered unencrypted. Support for an encrypted swiotlb pool
+  is left as TODO and is independent of this series.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan He <baoquan.he@linux.dev>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: "Christian König" <christian.koenig@amd.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Joerg Roedel (AMD) <joro@8bytes.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Sumit Semwal <sumit.semwal@linaro.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Cc: Brian Starkey <Brian.Starkey@arm.com>
+Cc: John Stultz <jstultz@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Radu Rendec <radu@rendec.net>
+Cc: "T.J. Mercier" <tjmercier@google.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Cc: K. Y. Srinivasan <kys@microsoft.com>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: dri-devel@lists.freedesktop.org
+Cc: iommu@lists.linux.dev
+Cc: linaro-mm-sig@lists.linaro.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-media@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Aneesh Kumar K.V (Arm) (14):
+  mm: Add an allocator for CoCo shared memory
+  mm: Zero memory during shared memory transitions
+  irqchip/gic-v3-its: Resolve the default NUMA node explicitly
+  irqchip/gic-v3-its: Allocate shared tables using CoCo shared memory
+    allocator
+  dma-contiguous: Derive shared alignment from DMA attributes
+  dma-pool: Allocate CoCo atomic pools using CoCo shared memory
+    allocator
+  dma-direct: Align CoCo shared DMA allocations to the shared granule
+    size
+  swiotlb: Align shared IO TLB pools to the shared granule size
+  swiotlb: Reject misaligned restricted DMA pools for CoCo guests
+  dma-buf: system_heap: Limit scatterlist entries to the buffer size
+  dma-buf: system_heap: Allocate shared buffers using CoCo shared memory
+    allocator
+  swiotlb: Make rounded shared pool capacity allocatable
+  mm: Assert CoCo shared allocations may sleep
+  irqchip/gic-v3-its: Preallocate VPE L1 tables
+
+ arch/arm/mm/dma-mapping.c                     |   5 +-
+ arch/arm64/mm/pageattr.c                      |   3 +
+ arch/powerpc/platforms/pseries/svm.c          |   2 +
+ arch/s390/mm/init.c                           |   3 +
+ arch/x86/coco/tdx/tdx.c                       |   3 +
+ arch/x86/hyperv/hv_init.c                     |   6 +-
+ arch/x86/hyperv/ivm.c                         |   4 +
+ arch/x86/kernel/kvmclock.c                    |   6 +-
+ arch/x86/mm/mem_encrypt_amd.c                 |   4 +
+ drivers/dma-buf/heaps/system_heap.c           | 128 +++++-----
+ drivers/hv/connection.c                       |  41 ++--
+ drivers/hv/hv.c                               |  11 +-
+ drivers/hv/hv_common.c                        |   2 -
+ drivers/iommu/dma-iommu.c                     |   2 +-
+ drivers/irqchip/irq-gic-v3-its.c              | 153 +++++++++---
+ drivers/irqchip/irq-gic-v3.c                  |   4 +-
+ drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c |   3 +
+ include/linux/cc_shared.h                     |  39 +++
+ include/linux/dma-map-ops.h                   |   9 +-
+ include/linux/irqchip/arm-gic-v3.h            |   3 +-
+ kernel/dma/contiguous.c                       |  41 +++-
+ kernel/dma/direct.c                           |  73 ++++--
+ kernel/dma/ops_helpers.c                      |   2 +-
+ kernel/dma/pool.c                             |  25 +-
+ kernel/dma/swiotlb.c                          |  80 ++++--
+ kernel/kexec_file.c                           |   3 +-
+ mm/Makefile                                   |   1 +
+ mm/cc_shared.c                                | 232 ++++++++++++++++++
+ 28 files changed, 682 insertions(+), 206 deletions(-)
+ create mode 100644 include/linux/cc_shared.h
+ create mode 100644 mm/cc_shared.c
+
+
+base-commit: 704340f1cd0dcef829eb62f5b48ae95a2ce17bdf
+-- 
+2.43.0
+
 
