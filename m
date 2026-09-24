@@ -4,128 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6466DC98321
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 20:13:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46BFAC9831F
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 20:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6661E6B008A; Thu, 24 Sep 2026 16:13:44 -0400 (EDT)
+	id 187306B0092; Thu, 24 Sep 2026 16:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 616BC6B0092; Thu, 24 Sep 2026 16:13:44 -0400 (EDT)
+	id 15E6E6B0093; Thu, 24 Sep 2026 16:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5059C6B0093; Thu, 24 Sep 2026 16:13:44 -0400 (EDT)
+	id 075026B0095; Thu, 24 Sep 2026 16:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AB6B6B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:13:44 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B2B8DC044B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:13:43 +0000 (UTC)
-X-FDA: 85249756326.25.C35B32B
-Received: from mail-lf2-f13.google.com (mail-lf2-f13.google.com [74.125.229.205])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6D1A9A000B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:13:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=Rx9lsumE;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.229.205 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CE9666B0092
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:15:19 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6C45A40470
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:15:18 +0000 (UTC)
+X-FDA: 85249760316.14.9D63637
+Received: from mta0.migadu.com (out-193.mta0.migadu.com [91.218.175.193])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2B7F74000D
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:15:15 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ChxHHwVg;
+	spf=pass (imf11.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790280821;
+	s=arc-20220608; t=1790280916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qyy44jhEy5lmMDUm2Z3Ant0w7Ak4jDzWxPvH420aZFw=;
-	b=D9lSB6OShsPf9omQ8lkXcr3Jd4z2CnFOyNXOp8RFpZUAZw39BBzBdJcs+cBBjlgaMGzO68
-	cn6Zwn6YoWLJuLUsnd4FkX3+j9wWRWSob6CIvDx84wRLbgiQ1L8B4/nKmayYnpWXuQ/iXh
-	b9p/WcgGB8VKnzCZ45XR5QPFzDkuLCA=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=Rx9lsumE;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf25.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.229.205 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
+	bh=IQ+Q6b31tVRCANGEVGMnh/gtRt24762TRSbgsQ3sP0o=;
+	b=7M2oZ2kv7BH2+LxwCwmuoVbb/FgTbK6qi+geFDv5xyD1E3qVHz8fJ7nJXFAG9zokFiJrJp
+	eUU/0jT0XzyET2u6B1W6ND1gB9f7YtAJTeQOFyPHQOmjAh0NLmE29eVsXb5f1MOMCtuAw4
+	I4q30noaeziShWbcu68rqt+zQN/Y2VQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790280821;
-	b=t9JOqBP/BY7AUTq9kpg6Uye/kaaSTxq7bM0MgKUuG7indiLNfqOXWMqJ6nyu2BO2Eebr3w
-	YDOg67l/WorJHHqrx6UMEVSk/eauXuSz1a490P5MJGnVzOPwcUwBUz5aF88QwVBEgID/8u
-	7OHlgKcrD9MqYUOviAc7nZyYU59uHKk=
-Received: by mail-lf2-f13.google.com with SMTP id 2adb3069b0e04-5b8d6489419so187575e87.3
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1790280819; x=1790885619; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qyy44jhEy5lmMDUm2Z3Ant0w7Ak4jDzWxPvH420aZFw=;
-        b=Rx9lsumEQrPvfX17VKBVLrQe7RDdH+QpiwbjQCnX089zS8OEx64X2oamq/k2I10YK+
-         e1KxPg9NzWOJMN37IwSHxLAM2IWgeLAoHqmxhxwi6hXthrH07KYOp3hrzRLIvTlyMZDd
-         0PAUoY1DDXWJg0z6PXN8OUMXkRJNR9XSPyx9k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790280819; x=1790885619;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qyy44jhEy5lmMDUm2Z3Ant0w7Ak4jDzWxPvH420aZFw=;
-        b=Xgi9lEKvyf2nYvbt0Ccw7iXjwreh5324jBrf3z/7RoQb7QnXvRnUaoedhBHZ7TeFIN
-         4ieB4wtVBb+1DVRbBHHqGIXme+LZMAgw7tA4/EbGDRuIKGwyvO5uaCiOKl4AmkZcuZRE
-         P9BF3MVBJSQR9xd/DgGu7jG+ZE624I1+hdHNqgSFkq+ElnwJRO39r8gfL3yXj/nK0sxs
-         CZk4jOtTll6u/IWf1QY2wuhDoCGSBZdsdVlg9QZ/JVtRB5/L7x6caruOQePBsrFajNCC
-         BcrO9uKdbWdb/AbPcge9S5VM8X6VxOKbJ2iApacH73x2qFZwfHG+a2+M4lWLzYER8mr/
-         Kuig==
-X-Forwarded-Encrypted: i=1; AKwUvBzEUuFt7khUItnrZ58tPPZrQb0Xq4+bcHT3S7o9hF4GPGdWumSuSUAXwZI/KZdQD9eKKV9+V6T5xg==@kvack.org
-X-Gm-Message-State: AFuF++krefXn1HBmwHiTCnVpljMZRdofEQesyl+wwcP8XOcs0mMVgIKg
-	YxBILSl+/tKeSXxy1WujMcHT5NKtc9bnU/Gl5qATkLRs/05M2pP9KK7EuPrebjKoKomqrjLSebD
-	r5FV/JL+qJQ==
-X-Gm-Gg: AYBFou1Fbue2UAkUX9cc2mOc9xexfKiTKmoIHIA4ish/oeS9CnFccwYaPUoSI/HkeqJ
-	5dRi36awPrjPePKvDqs/EwzEZdrXmyGBbRhoDCu/sv2iEEneEirLaeWjGiL3AgbE/X2k2+tGZ15
-	3ASH0I6cSLEzsc1Tv+Wzv1Yqz3bm4rH52gGpxAAvevES9pDDd9c+Rg7kQG3uoH+OpfFRzfNF3QV
-	9Qkd+HW2LFL5KGg4KVPO25cOvr9840J950Uul13gUdD+KH0TCQsS3vd+gJG/h2UAMF4yZwwvyiW
-	QnfB9Qdq3su7iIw6XSZkwfmttbZU2lBkqiEIVvRpuqlN6KHDkFTraE6xWjzc6aWuPOLVea65EyQ
-	lWKdCmPB9E7cPD87CABIKO3v5E7ydkHmKrdvstTQA6ZiP2hYtXhenosoJY7TSD2w/N+kp+gzLyV
-	ZqASmwzK1BVvQVC2XIUAU+G2o5J8RuaBCAg2t3FBPjL8iJEjo7dzNwMkr5XQVtdCZPmXamOjmlj
-	YguwpVZ5tZbLr3PvzoEKKCvhXpOOYbiIWmteDCt1HO7bLs=
-X-Received: by 2002:a05:6512:3d04:b0:5b6:1883:b1ab with SMTP id 2adb3069b0e04-5b8df07ab3amr1081317e87.40.1790280819359;
-        Thu, 24 Sep 2026 13:13:39 -0700 (PDT)
-Received: from mail-lr2-f35.google.com (mail-lr2-f35.google.com. [74.125.230.99])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b8e6ae6311sm21468e87.24.2026.09.24.13.13.39
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Sep 2026 13:13:39 -0700 (PDT)
-Received: by mail-lr2-f35.google.com with SMTP id 38308e7fff4ca-3a64b06fc66so512691fa.1
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:13:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByoz18berTaFDM8QZ4Yq9r58IWaqFyTWJRypiSBWZEu5TU+r6l6r5bQWvHMOACL0L3grB4Qi3q0zA==@kvack.org
-X-Received: by 2002:a17:907:94d5:b0:c26:1648:a060 with SMTP id
- a640c23a62f3a-c2ac249c6bemr320808866b.27.1790280421536; Thu, 24 Sep 2026
- 13:07:01 -0700 (PDT)
+	t=1790280916;
+	b=CU4Zhrw7Ne5c71UZJOmNenceA8qAadIKvVyt1VhIVoe9xjmmOjs/dr+w9J/KJ9067r2ubu
+	3zsPmrHVCxrBTGYOqp4FMcgY7CKntTigo0fjFdy2uRmhcu6tP9ssYGKjRkggNtUF6Tr4JX
+	MRTYvOAt0wMIi2v4x4oDkZ3KCpZgKnc=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ChxHHwVg;
+	spf=pass (imf11.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.193 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=3FK/qIMRQSXYGyL8CzqTw7WcVWDR72Geww9KG/fEIE4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790280914; v=1; x=1790885714;
+ b=ChxHHwVgP9KdlO3V13lZO747makbszLlWUeQH45JDzr1Ect26ZLJ5QK+I9f58Lk0zeN1jOyO
+ g8w7hAeP1UrmlTpgsNCiCnDhDNFmfGqOyN7vpKYorX+1jSRcxhGh9RFPElVR28J+R4heqKeJVvv
+ EdnAqvHDihIS4Z7agyct5Ggk=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f3b409eef374a769;
+	Thu, 24 Sep 2026 20:15:08 +0000
+X-Mizu-Trace-ID: f3b409eef374a769
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c8b8504c-8e54-479f-a372-3d2755edaf88@linux.dev>
+Date: Thu, 24 Sep 2026 13:14:59 -0700
 MIME-Version: 1.0
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
- <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
- <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com> <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
- <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org>
-In-Reply-To: <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Thu, 24 Sep 2026 13:06:45 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wh3LLDV2AMZn1PZcU1o3Na-BNcQtP=LPXouLKPZWaiRdQ@mail.gmail.com>
-X-Gm-Features: AclHuK_dV8YPGJI0TEUvEYODnc_z16AdoaIsLG5kL3upeb_9xIleI71LaAxD0v0
-Message-ID: <CAHk-=wh3LLDV2AMZn1PZcU1o3Na-BNcQtP=LPXouLKPZWaiRdQ@mail.gmail.com>
-Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated bit
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Ilya Gladyshev <ilya.gladyshev@linux.dev>, Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, 
-	andrew+netdev@lunn.ch, apopple@nvidia.com, artem.kuzin@huawei.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, edumazet@google.com, 
-	harry.yoo@oracle.com, hramamurthy@google.com, ivgorbunov@me.com, 
-	joshwash@google.com, kirill@shutemov.name, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
-	muchun.song@linux.dev, pfalcato@suse.de, rppt@kernel.org, surenb@google.com, 
-	vbabka@suse.cz, willy@infradead.org, yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6D1A9A000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 3/4] memcg_ext: allow BPF to defer memory.high
+ enforcement
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+ Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ Emil Tsalapatis <emil@etsalapatis.com>, Jiri Olsa <jolsa@kernel.org>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev,
+ Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ bpf@vger.kernel.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
+ <20260921192559.2619635-4-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: JP Kobryn <jp.kobryn@linux.dev>
+In-Reply-To: <20260921192559.2619635-4-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2B7F74000D
+X-Stat-Signature: r35oohrsabqgrd6kabi43rhkaycwqbpy
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4gbeu9y6jnr687cnwqh79fd9ygpeud65
-X-HE-Tag: 1790280821-597373
-X-HE-Meta: U2FsdGVkX19Tz1BblwDaX0yL6C0JZUSx7BPsDLJKKdYn+CURN36EQww0n9SKIisbt3f8dBJMBytxDnx7rrNjbAbIcULFjUOh4x+9GYNm0sAgKFPce+YwwTJOjBazqqJwpVRST4Mi2AOrK1NUHtpYITQGPQ5ZK4EgtnuIPE1MS92BHsZGw78UkI3hES4k+K7QjPUdWIA+BRJLDutYGOsC2LByKqHig57tiuesoj0D+NbFgbhte9jSFfpfMQ/U7Qx+tEPCa2hbAH1wsR+6IgjK9LU5Or/IYGrE+/HyrzyWiq5caiDBd74rG6PCBFo/kZb6dCuLnDncY66BvDLesYFe6WzjEyCQ0jlEN3GR+hbRXuGBdqTr8N8pu09ogV6cARiHpKjs+19zJnHZllR4CtZs2jL14S1GaHTNMe16dF/kQtqKHCGKsjcfdngm4JBrihLfkQ6v4HZJJ2Pl3C70qAtj5CqtZjVoRIH/M/+KGL4j2qFCJsOiyxXKtJqivfFMrbhtmR6ZcCAxKTnD4/D05ttWQ5Zo4QtYax3LeFSdJtHKuZKW8qzA42D00koeF3P9Z8EPRraRcoOlwG24Kb6eEZkuks1NutAyPPm0/Xijzkc4mjWl2M2sKRV7eMh5ShNicBbCfpRSsUEFnXTifFodHztD3S65xKNcdJvtrGk5fDsT5GsQ9lpGOTZ2XGwtNjzCRlLYYK9CTb6u1sh0/XXjhIgMhyr4QndTmf1gCmi7uT4iBJeAY3AYpu6O/L33JNPJjxnnW1VPYVza6yAEy6zdBMyxn2LEPl2AjpJ//UN85WI42jEF3sTH7rg6xfYfj1ApxNsWPZP/RNEhBNAnrvgZofO4j22SLEZJotheYRQlkQwn4ZMdCsaKizwua4IXCzEtVokLU4Mcfp+nEYtdBfLHYPEDXr0U/A+EYrUsg0JYimDlrpK1TdZ5bskfVGXO2NbhBtreiKpE+RwRsbuMgdcUsw0
- WaCyvsJm
- pQ02LqIIey5IoYWRwcJnl5Ialr6R9lzDF9BVX0bPc/wfvwQeMcWHlDjxOWf8h9T0fdsLlaJaA1BSW6ZyaOlcmlOSDeq9JHaWGAtt4dHjtPRpWS4ejvMvqtquavza0hKiGzaXTrK/fc39CJAvXEsuWe8WolmVVlV/N6I1LoIvIHQVeheXu3X5IWsJuE15EME1NuRFIgT73fjrnynD2JJ1fukmHQzoLfFQniHiXoda17lvhg2QZo+TZz3r5KyOp8Ax3xXo3Ty6ZLhZjJWacFDYHM7HF1VFWvJIgufZSTUtoFC6B9BluPdnGC4J/kbCCRF5aVLBz8c8hX2IFX/RPg4yDh8qtYowxtr/uyAMmiTgcJW6gU2FBHSgpypcWtuFrx7lzPAqiKI2yVMVynNM1H9ZR0ajq+gDaefHGsgWI3uaZHIZaSUY4n9sB+QLkHhfxiCTUVPgCryDPVDNVM/TvC+qkWud9kTLmWPz1Cejw
+X-HE-Tag: 1790280915-904469
+X-HE-Meta: U2FsdGVkX19zXbn47IFm8lUMaGfSoLjjMNE27syKtCDKgChPpYDZcMFEkhx/9+bBENwJZpaS2hlt388qHqz/RscWXDVFomtk2jc39l/fbjHpHFp3E8ZgQjw3c3duoGYB3ByQGFqaEeizDXa8iVnupgc2Dv0uyYlF2DI3FjfSPMJ6dxULLm1oyLlKvsCv3WUhXeDL/58IZe+rJvKU9Zg2mC9gA2ep+AEb/r7VsvyFG9KEynbUceH9cPu7e4F1Yyp0EMdHZIKXpsSE2+J+fGmDrtL4Ud7ggyNJiMCffzPsmgi/QT3NgfDXSp87DfFs55poFq3ihtPRNyV17//y/a+tB7xVVa6kTVJ6umisRL5IJNh4YNQ/C+VcKHvI5tY5t54W/0JGFRwqfAp/biqLArcVJUt+aYKlfOaJzZRbccurJA39z+0XPgB8kX6p3zI+glSukcLVWR20UxDkMV+fUCaVPZuOoWrFbmRgCPMEiCAxwRadFs4f2j54g51andRMO7e50TBBocIiwGqBNlUGFLOd7cS3MdGJszU2kDqhnvW2CIyhlDMoWT7AHd1P9pAYwcoJF9d7ArTu2YdR57iL4BS/r7T4nHjGpS3y9KP5CnTK2S3NN0WDZgv8geTqG1fczVWdpvwqO0TCkgDCjSjSRvH5k4eiAiV1mdrU9tFhPRbqQdXAi5CWArXKBIZJEJV/9QyzbZBgbmOUIgUdVhi3+qQLuqJX5ZfahNd0VILDeKPKEZDuyKIIHno6rmcigZHI7Ry43mRPoFtv+btgkJV1j4elVEkiKNc2iw6WOReXuJpeXEjqbBgZLhO+IuIzNvBYKqBJSxeYvloMvOumBw3VIRQr0Hx3hzQVG+FkPVaRx4pk2vRtxJ/JFlAMpoM6TMuFr66xpXjAvQ/isy2mE5k9jCRuQl947YheAA5x1+u87eLbmDLoUxppQg/R+SWBac5Zqed+LCEiRjBftruy6JVuNGD
+ 1SE0kfH+
+ sX8DQtGzw8xah3NK/YN02Jv57ri/gDv4aXu3hKiciv1Af0nP4DHwYUWdEYdt5r0NhGdt7gYeQxK1A3jPd2ohNbtNi08WhwSYjNmY3XMiEw4lqmTpYqYQKs9O1eArQ48LGiZdmB7MT3e5/5A+aw2IJ26u/vrGCVZlYB8h6j23wLaIwwSUzjpM6P/Czg1SeZQFMV+PIOQZyyNllYs0bTQnZWOxy8UTLlSYzQCxvNgyyBNC3vGJnPNX0/gKrQGVlgVajOFW0ndRot2RObAa/XdG0P6bhOprL9mdSCs5Dm8q710I+If4K5JLMB+csz0xS8X7VHdpRT+RWHnVgz+asl49vMXrVt2AqvoDnMHLVwzOz3vTtr/YMBPyEf2iKBLcvgPxP3KrKR763yDwUdnvxy9R0JLIPhRitBGBLVrooAfXApoUs9do+w1iTBVUpJEQgOkMpRW5PGRXQxPRnLKqwBJ9ykDSn4KVPJc7O7uDXebQh19EYHN0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,60 +109,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 24 Sept 2026 at 11:52, David Hildenbrand (Arm) <david@kernel.org> wrote:
->
-> There needs to be a common page freeing function that dipatches stuff.
+On 9/21/26 12:25 PM, Shakeel Butt wrote:
+> Before it returns, try_charge_memcg() calls __mem_cgroup_handle_over_high(),
+> which reclaims and can throttle the task.  That happens wherever the charge
+> happens, so a task holding a kernel lock can be stuck there, and everything
+> waiting on the lock is stuck behind it.
+> 
+> Let's add high_policy ops through which a program gets a read-only snapshot
+> of the charge and returns a request.  There is one so far:
+> BPF_MEMCG_HIGH_DEFER_INLINE skips the inline call.
+> 
+> A charge runs the policies of its cgroup and of every ancestor.
+> task_struct::in_bpf_memcg stops a program that allocates from re-entering
+> the charge path and the dispatcher with it.
+> 
+> A memcg outlives its cgroup while it has charges, and cgroup_bpf_release()
+> frees the arrays when the cgroup goes. Take the reference for the walk.
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
+>   MAINTAINERS                    |  1 +
+>   include/linux/bpf-cgroup.h     |  3 ++
+>   include/linux/bpf_memcontrol.h | 53 +++++++++++++++++++++-
+>   include/linux/cgroup.h         |  7 +++
+>   include/linux/sched.h          |  4 ++
+>   mm/bpf_memcontrol.c            | 82 +++++++++++++++++++++++++++++++++-
+>   mm/memcontrol.c                | 31 ++++++++++++-
+>   7 files changed, 176 insertions(+), 5 deletions(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 6215fcb07770..0c84beab396f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -5032,6 +5032,7 @@ L:	bpf@vger.kernel.org
+>   L:	linux-mm@kvack.org
+>   S:	Maintained
+>   F:	mm/bpf_memcontrol.c
+> +F:	include/linux/bpf_memcontrol.h
+>   
+>   BPF [MISC]
+>   L:	bpf@vger.kernel.org
+> diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+> index 4e8150848bd2..e19cf83e58f3 100644
+> --- a/include/linux/bpf-cgroup.h
+> +++ b/include/linux/bpf-cgroup.h
+> @@ -517,6 +517,9 @@ static inline int cgroup_bpf_struct_ops_attach(struct bpf_map *map,
+>   
+>   #define cgroup_bpf_enabled(atype) (0)
+>   #define cgroup_bpf_enabled_runtime(atype) (0)
+> +/* Nothing can be attached, so the walk has nothing to walk. */
+> +#define bpf_cgroup_struct_ops_foreach(var, item, cgrp, atype)		\
+> +	for ((void)(cgrp), (item) = NULL, (var) = NULL; 0; )
+>   #define BPF_CGROUP_RUN_SA_PROG_LOCK(sk, uaddr, uaddrlen, atype, t_ctx) ({ 0; })
+>   #define BPF_CGROUP_RUN_SA_PROG(sk, uaddr, uaddrlen, atype) ({ 0; })
+>   #define BPF_CGROUP_PRE_CONNECT_ENABLED(sk) (0)
+> diff --git a/include/linux/bpf_memcontrol.h b/include/linux/bpf_memcontrol.h
+> index 8204d894761e..76ea5d1c3d32 100644
+> --- a/include/linux/bpf_memcontrol.h
+> +++ b/include/linux/bpf_memcontrol.h
+> @@ -5,13 +5,62 @@
+>    * A bpf_memcg_ops is attached to a cgroup.  A charge runs the policies of
+>    * that cgroup and of every ancestor, and the kernel combines what they
+>    * return.  BPF only picks between things the kernel already does.
+> - *
+> - * The type has no members yet; they come with the policies that use them.
+>    */
+>   #ifndef _LINUX_BPF_MEMCONTROL_H
+>   #define _LINUX_BPF_MEMCONTROL_H
+>   
+> +#include <linux/types.h>
+> +#include <linux/gfp_types.h>
+> +
+> +struct mem_cgroup;
+> +struct task_struct;
+> +
+> +/*
+> + * What a policy can ask for when a cgroup is over memory.high.  The kernel
+> + * ORs them, so one policy cannot undo another.
+> + */
+> +enum bpf_memcg_high_request {
+> +	BPF_MEMCG_HIGH_NO_OPINION	= 0,
+> +	/*
+> +	 * Skip the inline reclaim and throttle.  The debt is kept and paid on
+> +	 * the way back to userspace, where no kernel locks are held.
+> +	 */
+> +	BPF_MEMCG_HIGH_DEFER_INLINE	= 1U << 0,
+> +};
+> +
+> +#define BPF_MEMCG_HIGH_VALID_MASK	BPF_MEMCG_HIGH_DEFER_INLINE
+> +
+> +/* Read-only snapshot.  Only values the caller already has. */
+> +struct bpf_memcg_ctx {
+> +	struct mem_cgroup	*memcg;			/* charged memcg */
+> +	struct mem_cgroup	*memcg_over_limit;	/* NULL if none found */
+> +	struct task_struct	*task;			/* current */
+> +	u64			cgroup_id;
+> +	u64			over_limit_cgroup_id;	/* 0 if none */
+> +	u64			nr_pages_over_high;
+> +	u32			gfp_flags;
+> +};
+> +
+>   struct bpf_memcg_ops {
+> +	/**
+> +	 * high_policy - say where memory.high should be enforced
+> +	 * @ctx: snapshot of the charge
+> +	 *
+> +	 * Return: bits from enum bpf_memcg_high_request, or 0.  Other bits
+> +	 * are dropped.
+> +	 */
+> +	u32 (*high_policy)(const struct bpf_memcg_ctx *ctx);
+>   };
+>   
+> +/*
+> + * Run every high_policy on @memcg's cgroup and its ancestors, and return the
+> + * combined request for the caller to act on.
+> + *
+> + * @memcg:	the memcg being charged, never NULL
+> + * @over_limit:	first memcg found over memory.high or swap.high, or NULL
+> + * @gfp_mask:	the charge's gfp mask
+> + */
+> +u32 bpf_memcg_high_policy(struct mem_cgroup *memcg,
+> +			  struct mem_cgroup *over_limit, gfp_t gfp_mask);
+> +
+>   #endif /* _LINUX_BPF_MEMCONTROL_H */
+> diff --git a/include/linux/cgroup.h b/include/linux/cgroup.h
+> index 5dfa915a630e..cf92b6cec819 100644
+> --- a/include/linux/cgroup.h
+> +++ b/include/linux/cgroup.h
+> @@ -959,10 +959,17 @@ static inline void cgroup_bpf_put(struct cgroup *cgrp)
+>   	percpu_ref_put(&cgrp->bpf.refcnt);
+>   }
+>   
+> +/* Fails once the cgroup is gone and its bpf state has been freed. */
+> +static inline bool cgroup_bpf_tryget_live(struct cgroup *cgrp)
+> +{
+> +	return percpu_ref_tryget_live_rcu(&cgrp->bpf.refcnt);
+> +}
+> +
+>   #else /* CONFIG_CGROUP_BPF */
+>   
+>   static inline void cgroup_bpf_get(struct cgroup *cgrp) {}
+>   static inline void cgroup_bpf_put(struct cgroup *cgrp) {}
+> +static inline bool cgroup_bpf_tryget_live(struct cgroup *cgrp) { return false; }
+>   
+>   #endif /* CONFIG_CGROUP_BPF */
+>   
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 8b3d47a325cc..4b20a346aaa8 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1031,6 +1031,10 @@ struct task_struct {
+>   #ifdef CONFIG_MEMCG_V1
+>   	unsigned			in_user_fault:1;
+>   #endif
+> +#ifdef CONFIG_MEMCG
+> +	/* A bpf_memcg_ops program is running; do not recurse into policy */
+> +	unsigned			in_bpf_memcg:1;
+> +#endif
+>   #ifdef CONFIG_LRU_GEN
+>   	/* whether the LRU algorithm may apply to this access */
+>   	unsigned			in_lru_fault:1;
+> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+> index fd6dff150f01..cfd0f1d443c9 100644
+> --- a/mm/bpf_memcontrol.c
+> +++ b/mm/bpf_memcontrol.c
+> @@ -246,8 +246,17 @@ static const struct btf_kfunc_id_set bpf_memcontrol_reclaim_kfunc_set = {
+>    * request and the kernel acts on it.  Nothing here reclaims or sleeps.
+>    */
+>   
+> -/* CFI stubs.  A slot points at these while its policy is being detached. */
+> +/*
+> + * CFI stubs.  These really run: a slot points at them while its policy is
+> + * being detached.  Return 0, the identity for the kernel's OR.
+> + */
+> +static u32 high_policy_stub(const struct bpf_memcg_ctx *ctx)
+> +{
+> +	return BPF_MEMCG_HIGH_NO_OPINION;
+> +}
+> +
+>   static struct bpf_memcg_ops __bpf_memcg_ops = {
+> +	.high_policy = high_policy_stub,
+>   };
+>   
+>   static const struct bpf_func_proto *
+> @@ -326,6 +335,77 @@ static struct bpf_struct_ops bpf_memcg_ops_desc = {
+>   	 */
+>   };
+>   
+> +static void bpf_memcg_ctx_init(struct bpf_memcg_ctx *ctx,
+> +			       struct mem_cgroup *memcg,
+> +			       struct mem_cgroup *over_limit, gfp_t gfp_mask)
+> +{
+> +	ctx->memcg = memcg;
+> +	ctx->memcg_over_limit = over_limit;
+> +	ctx->task = current;
+> +	ctx->cgroup_id = cgroup_id(memcg->css.cgroup);
+> +	ctx->over_limit_cgroup_id = over_limit ?
+> +		cgroup_id(over_limit->css.cgroup) : 0;
+> +	ctx->nr_pages_over_high = current->memcg_nr_pages_over_high;
+> +	ctx->gfp_flags = (__force u32)gfp_mask;
+> +}
+> +
+> +u32 bpf_memcg_high_policy(struct mem_cgroup *memcg,
+> +			  struct mem_cgroup *over_limit, gfp_t gfp_mask)
+> +{
+> +	const struct bpf_prog_array_item *item;
+> +	const struct bpf_memcg_ops *ops;
+> +	struct bpf_memcg_ctx ctx;
+> +	u32 acc = BPF_MEMCG_HIGH_NO_OPINION;
+> +	struct cgroup *cgrp;
+> +
+> +	if (!cgroup_bpf_enabled(CGROUP_MEMCG_OPS))
+> +		return acc;
+> +
+> +	/*
+> +	 * Only the default hierarchy has a cgroup_bpf, and the static key is
+> +	 * global, so one policy anywhere turns this on for v1 memcgs too.  A
+> +	 * v1 memcg still cannot get here, because memory.high and swap.high
+> +	 * are both v2-only and so it never builds the debt that leads to this
+> +	 * call.  A hook on a path v1 can reach needs its own cgroup_on_dfl()
+> +	 * test: a v1 cgroup has no effective array and an uninitialised
+> +	 * cgrp->bpf.refcnt.
+> +	 */
+> +	cgrp = memcg->css.cgroup;
+> +
+> +	/*
+> +	 * A program can allocate and re-enter the charge path.  Skip the
+> +	 * nested call.  This guards the callbacks only.
+> +	 */
+> +	if (current->in_bpf_memcg)
+> +		return acc;
+> +	current->in_bpf_memcg = 1;
+> +
+> +	rcu_read_lock_dont_migrate();
+> +
+> +	/*
+> +	 * A memcg outlives its cgroup while it has charges, and
+> +	 * cgroup_bpf_release() frees the arrays when the cgroup goes.
+> +	 */
+> +	if (!cgroup_bpf_tryget_live(cgrp))
+> +		goto out;
+> +
+> +	bpf_memcg_ctx_init(&ctx, memcg, over_limit, gfp_mask);
+> +
+> +	bpf_cgroup_struct_ops_foreach(ops, item, cgrp, CGROUP_MEMCG_OPS) {
+> +		if (ops->high_policy)
+> +			acc |= ops->high_policy(&ctx) &
+> +			       BPF_MEMCG_HIGH_VALID_MASK;
+> +	}
 
-I think this all needs to be entirely generic to all pages. Agreed.
-Everybody needs to do it right.
-
-But I think that in the scenario that Ilya mentioned:
-
-  Refcount operations as follows (FR = FROZEN):
-
-  A: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-  B: INC 0 -> 1  [ folio_try_get() ] => success
-  B: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-  B: CAS 0 -> FR [ page_ref_dec_and_test() ]
-  B: * deallocates via __folio_put() *
-
-  C: * re-allocates page *
-  C: DEC 1 -> 0  [ page_ref_dec_and_test() ]
-  A: CAS 0 -> FR [ page_ref_dec_and_test() ] => success
-  A: * deallocates directly via free_frozen_pages() * => BUG
-
-the big here is that the de-allocation was done not from the state of
-the *page*, but from the state of who finished it off.
-
-So that
-
-  A: CAS 0 -> FR [ page_ref_dec_and_test() ] => success
-
-is not a problem per se. It's a fine case of "we had one single unique
-final free".
-
-The failure is that A then goes on to do that
-
- "deallocates directly via free_frozen_pages"
-
-because A mis-judged the page as having the old stale state that it
-had  when *A* was using it.
-
-IOW, I think the soluition is either:
-
- (a) every user of put_page_testzero(page) agrees tro do exactly the
-same thing and there is no difference between how that final
-"0->FROZEN" is dealt with, so it doesn't matter that A is freeing a
-page that C allocated for something else
-
-or
-
- (b) the CAS 0 -> FR state sequence always looks at the *page* to
-decide what to do, never at the caller state (ie A will look at
-whatever C wrote when it allocated the page to know how to do that
-final free).
-
-Hmm?
-
-            Linus
+If I'm reading correctly, the gfp_mask at this point doesn't account for
+task restrictions, so the BPF program may see __GFP_FS, __GFP_IO, etc
+which may later be cleared when setting up the scan_control instance.
 
