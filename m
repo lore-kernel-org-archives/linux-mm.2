@@ -4,140 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6587C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 21:59:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0580C9831E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 22:31:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE0246B008C; Thu, 24 Sep 2026 17:59:24 -0400 (EDT)
+	id 62D5B6B0088; Thu, 24 Sep 2026 18:31:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D91776B0092; Thu, 24 Sep 2026 17:59:24 -0400 (EDT)
+	id 5DF2E6B008A; Thu, 24 Sep 2026 18:31:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C81176B0093; Thu, 24 Sep 2026 17:59:24 -0400 (EDT)
+	id 4CCE76B008C; Thu, 24 Sep 2026 18:31:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C8336B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:59:24 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A13BB1C2D7C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:59:22 +0000 (UTC)
-X-FDA: 85250022564.14.9E9F492
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C1807180003
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:59:20 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YBzEinXx;
-	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790287160;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 278A16B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:31:33 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 908DE8046A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:31:32 +0000 (UTC)
+X-FDA: 85250103624.17.E365770
+Received: from mail-qk2-f43.google.com (mail-qk2-f43.google.com [74.125.230.235])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9003A160004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:31:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SycTMO2V;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.235 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790289090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NevIoRhVPx1e2+eEuK5IsXEei6EeRuHGTwV+ThnOoJ8=;
-	b=C4t07H7NJxDBVYiswmPRzVJ7hByfLwxk0V9Zej1MdUz1w2fU/vcp+H+/eYcFTUFk6ENsWX
-	G/Ss9JoVr5l8hDlTcubbKq/MicOn8WfJM6ik9d5QfXNvADgBNqtMrrXfRrqAt3RQEHzKYE
-	ZvBQjNva7oui3iLrIdFA20kHJ4pd/10=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YBzEinXx;
-	spf=pass (imf06.hostedemail.com: domain of dmatlack@google.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790287160;
-	b=UH5+PVQFjMwp0OX0SLoRhmErWN4FX7nT/ovzx0aiO8iD+sNjTPh3/oQLm3Gq/xkyRmbZf7
-	R6LDtWILc+21J3c/nEr5xACTtGefgOqNXfLpgC6HqZ38fgHyZJhU+YFRjI8ucau4NE++26
-	weuzELdOhFIo+sDG3u3EYXlVxZardYo=
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea50db3so87469a12.1
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:59:20 -0700 (PDT)
+	bh=KLxQ1V7eKFjM5hpU7Dk8oYI/it/LXUSsiWfbILSfCAs=;
+	b=38+ABOVqx37TnqMx39WSmtAoT/4sB4t4/OYJCwpSw/VfpJIGuMmBHJanAy7adSA5xETOv4
+	I8u2J0swqaev6eV7JE/Pg03DN+gMilRC1p4nMvD3djXkdDimFz0FkyTprNNSz8O8y5YjVV
+	XkXGuZ/YcRupfmZQP3ua0CLDGu7ZFOE=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=SycTMO2V;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.235 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790289090;
+	b=jfZLRux6b095Aw7APTV7IGjm300uhPWSiw6ZxOtOBc9seWVCSufPWXHgTsOurFMvp1iXqo
+	2WEC4qFABcRpq1t57DUBVC5uo1rpIVtm3Nydu77jCrQLqhdW3du8KzESOq8oG+ShgG4wIa
+	lmRXwUAHrTpcdmG80OVuwXy1Wnjc5TA=
+Received: by mail-qk2-f43.google.com with SMTP id d75a77b69052e-530e2f50d01so4026921cf.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:31:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790289089; cv=none;
+        d=google.com; s=arc-20260327;
+        b=f50xbbsfY48NVf+kycFl8Q2LPIXAM6cnjvU3L7HZFEsVLpSw6dEYoDvb7fJ9cCKLp/
+         npvWtu+180A/2JSLDroyQVLIXf9KVCr6s7Q8FC0nk408EYLHht0dvqS6ErEINAcLKfle
+         anaBgMcsD3f+CHMeXnoxh6RzWnJMi7BvDAHuBOZnP9elJIihOdaujdVgQVOWgw/q7xxZ
+         bX40pAUFG+9RF5n8o2EgpP6k+lrXny7fLvOq9LAjCZIvXUGA8YTMlyxs9c1jpYeRqU0u
+         oVfnv+GSEG9VionUyjr03QJOeKFsWEk/yPwWQugfLTWEOpyRrXDU+A/0K+rVV/lKnjXi
+         na5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=KLxQ1V7eKFjM5hpU7Dk8oYI/it/LXUSsiWfbILSfCAs=;
+        fh=Skhg9vLwfgRMHXyFGRRaE03GWg0sPlyXJhGp22wyE+g=;
+        b=ck+uW/hEyZR8h/oO9BBQ7/FplbcIyIJC7xC843rMHpeUbVxgL4o0YNP6cPLPyYKk9r
+         Vh3WJyqw2gi2d4juO+ziLmt/LkLi7GTwsSlXrmO+bdrF+8fyKlgY+TTJSuZRlOZejXe6
+         MfNhIb7X2OG5UyLLFvkjhunh/0cCjKV5go84whHYm/MgHHY7UR+JG2Pp5Ek5mm3zQ/c8
+         5Yx4ZrqrYDbcvt1XQTUxN9fDRvtslefjTu4r2ca3z1MK/4t2XC+ejrnN7q/6dQDo7yUe
+         IIbnfqKAssM6YKPSwpue421uUw/9LSakY30GHAEem8VcfJFGy7zwDSnRrNGv0NUwPvEw
+         2nDg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790287159; x=1790891959; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=NevIoRhVPx1e2+eEuK5IsXEei6EeRuHGTwV+ThnOoJ8=;
-        b=YBzEinXxtQhNNZgikRkI0V7pTWC8uxuE6D4XGo0awBK22ZMGt3MmJkqvMDOIWeR/mY
-         CaX09HKLfSfsh+2nL/Gdrhy1882IWdAlxWlyLoAlTtYgd8k+Yu69Aj52ink0mM5LMg6V
-         UqLMl2y52m11dVZyxloK/mf0AwJYMjpeRL0FWEMQfZINMAyyXGQG207MABLuexH3Xt/R
-         TddtBbuNhXuUZgSpyhEU+5OTtnHpFpYF7sxqxWhM6z7lUCd4alTgAazMfuYj2C/OFTq5
-         6mX6NBekaUC31sMVRkqRg4jfvkcBceoxZsodTo0VpFTorjneuYhAjKoh/W3HeFu7XHo9
-         qogg==
+        d=google.com; s=20251104; t=1790289089; x=1790893889; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KLxQ1V7eKFjM5hpU7Dk8oYI/it/LXUSsiWfbILSfCAs=;
+        b=SycTMO2VYmujy2Vt0vWnA/85GBaTRWtUB8esLxRRNqexRnhRrCFvKzdcAvNjkOophV
+         d3mUqN9uMXWGU8E3x59SvSW+WUfvrZRfBFj47HA0huKpQl/ci1LUXXE+62nBAC7z+VZi
+         uMngDnAOfUsBK+G3njNOBlt0qeKVKebHar2uYEcybwtACZ5bQbly2wn8a1i3otiUaQbR
+         usB0UEjJU/uJhiVes5SgkDo1z/U9bboLH/buMVAwRrzuWBRWhLVWWiVPaRpOfcAaVHGx
+         rGgUNS0Cw7LndQpp5J8wQdQtMkhmVpo9Xq8Cr/+gz7PSTl5GcDBUSCVXZbxAQRxjmXrX
+         OyLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790287159; x=1790891959;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=NevIoRhVPx1e2+eEuK5IsXEei6EeRuHGTwV+ThnOoJ8=;
-        b=Lc/nbNc5mxJSNfrJoib3jLM1vNBSrDJzE8Fw2Ejy0Kj9egdFvDVXEzFcx+yKmdr6KS
-         6Uic2g7QXROyufBrXYz3KDGkmu47eX9E3aMBweqaEel2HjNTAn31zCXQJroKC77Ok23J
-         Q9kaC2rV+a0+LaDn1tfHzlQq5SI3q3vo5jWfY9p7YMb6s1nLGTOGQq7LPtnkqnk8y1GY
-         NgEYwSYTzdpGTR/EiYTZAvLBqQOm4+R8ZsAMBvb5nP0kPgZdpsp8/ZszrAIY3zeg+n2A
-         P9f/l3OW7+VMr909UK3JL4E7ADLm0oXn6QEgqp7z9NSv9ZIXNpcEPqkzGc+ReezndTfY
-         Co5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxYJJ+mbkO9el4CpkG2C8wRYWncfXs+24s03ONQbuJSHUGknV7vcsC2LZHiaQhPhjql5+vctV0RxA==@kvack.org
-X-Gm-Message-State: AFuF++mo9EuUwC1/ielcr0KTKc+VmBagpE2SjKPmOIXQ5Lijg4uJoDh2
-	g2yFX7a0uNZnyVachAeBml8Dm/8z7OWuGepFMSwRyhxtABQyjsCctFNtJ9f9vTcDug==
-X-Gm-Gg: AYBFou2Yk35EyMF4Z6v2Yky7VQalgZe0o1CRWdYFH3QXZ7BQwoxTlkmcIJUleQfPw9v
-	JA24GTInX2LhnRpxH5Uz8W1LgNqJaunHwSLnqYNql4arRL4QPAhJ8EJuFrp9Xy/Wwmh5m7oPckb
-	0DEWPOgegzDPHEDVS/cG8J8axK3/+xuTyc2e7PqE4WrkPxdAiCHMDJStASwQMjR4A8H0IlTpX0Y
-	J7FZ+OfmHA9P68xvWUVxnp/227KdgsRWbmVtmOqgVyqNNn3XPadqSA0V6UNJs3yKJ+GvcVY8c6U
-	DziY9bNPCY17RNqR41o21sgWPT6u4BAi7jt5jKeKMOrNbUo7Z4pddY73bjmNOJ9IoliXWTsHJZ3
-	m483dcFfQU9vtiBcfEhcGnFN3g/hUflO3GHqRNCOpdtIeufqAl+YHoY1VNkp6FRuJjGN5JeVMQH
-	ELmlzMezcObvvElBaiU/U3MG9OpOgDGIiH8GIGdRqfHyPhlHrAHR42G8fRe9vbPLLsqcVJwNNwT
-	9p7ayVjfJfnToOnPQJWV12uo+GzzXZna3sJH7UC
-X-Received: by 2002:a05:6a20:548d:b0:3dd:a008:dc3e with SMTP id adf61e73a8af0-3de0e89e58bmr4338025637.44.1790287158837;
-        Thu, 24 Sep 2026 14:59:18 -0700 (PDT)
-Received: from google.com (192.150.203.35.bc.googleusercontent.com. [35.203.150.192])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78791e4b3sm309308a12.17.2026.09.24.14.59.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 14:59:17 -0700 (PDT)
-Date: Thu, 24 Sep 2026 21:59:11 +0000
-From: David Matlack <dmatlack@google.com>
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
- Update
-Message-ID: <arWdLyuHJwcU5tVn@google.com>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
- <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
- <d4547411-eeae-46c5-a30b-12d8cdde9329@linux.dev>
+        d=1e100.net; s=20260707; t=1790289089; x=1790893889;
+        h=content-type:cc:to:subject:message-id:date:mime-version:references
+         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=KLxQ1V7eKFjM5hpU7Dk8oYI/it/LXUSsiWfbILSfCAs=;
+        b=gBJV4bkBVbGSPl8ko0PtWnObukBVlJ6A00gKqCwfh3GgEzD/FC4aZ+s2fT3eqFA+RS
+         TfpnDaCkKE7YOmytUXcYbIEzqUKeu0E4msLRRcQ4UZt+GYuIpcLBSNIXBHP/iBf6DwFM
+         FJbWomtHpzBkmbJMYcZYaVDwOFKuxbUQWpdk5lOEfVoOe05jX2vJkjsB7qcwvxSo3WXR
+         Q5qQhrou/iH2JSHOt1zplRe/QU03thYCBvo2CzDJ/GIwR3yHtuE6rplDzCI5xb+t6wla
+         JlIREwzvhMKB6wlnsifZcEfWWBPKiU9lx3ECjQJuZn1gBRwiGEtvmDtXjXW5QN+LWCTL
+         awrA==
+X-Forwarded-Encrypted: i=1; AKwUvBxxxyeDxNHOeHpc+tsCLNMuNARLDd9X1A/zkXy+qEjGksfCT+qWtvHuLXTRn2Wo88K9/AUoS1/J4g==@kvack.org
+X-Gm-Message-State: AFuF++lhIHAbYj37IByQIHZzLRBoK8q/rP03P1EsvWUCZw51C9blVKHb
+	qFnnv5FK3op62U5FBrBjHco/YPqLX/ZxOiEDQxJQ92LwF6qTK7lGilM74mufTVrJ9lz9bp5/4B9
+	gCochSK4g7LmSEqYYhgMdoPBr9piyn9T//ri4m6SL
+X-Gm-Gg: AYBFou0jRBzQFjJCdju/a7QKwG6DOEgHrnzC8KgaUhtrUBvShQu5qDHnKpC44c8PIV/
+	zFMCbKCrnoV9ptVlYTw8U5OxgKVF1p7c1//wZwgoguWCqyKDViuqRCcmD7Pw6fztxe+If2DR67i
+	4g7ImmAehTX3ssYJEt5fNEj/AiMXI4DjIxHLj89OvGUxtJxPatOIrfcMmZqIRiK1+aXvo43jpT+
+	s4FkXJ4z3tmppL05/QNm7bO8tZ2cppxolk9M4blJYUfJIUks63Det8s/t1jCw2FpkcnGnYGL3Hp
+	ek7HNHWI9UjhItUx73FBB7lD77Sjtm6EZKIoHH2zJ+X28CunkAr6vOMHz4ZC0yOMkdwAaOvRA42
+	Q+5oIIHBoZc6+OVq1pSn7uWMDnPjV0KUSSB1M3ZbSJQ==
+X-Received: by 2002:a05:620a:2b93:b0:936:eeab:307e with SMTP id
+ af79cd13be357-93c43cc5676mr141474285a.9.1790289088659; Thu, 24 Sep 2026
+ 15:31:28 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 24 Sep 2026 15:31:27 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 24 Sep 2026 15:31:27 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <179028368162.2007072.12117327378679658047.b4-ty@b4>
+References: <20260910-gmem-inplace-conversion-v13-0-dd6fbf94f4e1@google.com> <179028368162.2007072.12117327378679658047.b4-ty@b4>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d4547411-eeae-46c5-a30b-12d8cdde9329@linux.dev>
+Date: Thu, 24 Sep 2026 15:31:27 -0700
+X-Gm-Features: AclHuK8DxWsVWtzA-dbMsis8Esd8BT_dOvi97JucFF4AgqprHJknTuuePlOITb0
+Message-ID: <CAEvNRgFpMwduvHPGJ5fLoVPr_iGn=ELzY4AcMGHESC6CkMyeTw@mail.gmail.com>
+Subject: Re: [PATCH v13 00/44] guest_memfd: In-place conversion support
+To: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, tarunsahu@google.com, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, Xiaoyao Li <xiaoyao.li@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C1807180003
-X-Stat-Signature: zpikktunnmj7nqz3imdco8op9z6meong
-X-HE-Tag: 1790287160-67172
-X-HE-Meta: U2FsdGVkX18uoc1fl0ZfP8sKGzn6m0u/KbSwc/Oy1NtWAVkdu21N6N+Gsl5tSXp+7rJzwIVIkZvzWsKXTES1g538ilqDoiKsEt8Ke7sKAM1rIntozk5qZE6oFj01GMMbNx2KJBdqf9LAUIT30pbQifvX3B8B8+Eb1fBS5vd7gquIOKh8+FNLH3FDDqPZ2d/pWFRuQ2eQkO9Sz2fsdux7Xx9tbbNIaa5kYswZSwUAEqmLoKUPOqIQav9pXyZP4GdXyYDKOdtbgMVo8KDZVQzVyp7zGytrg4Sdk4i0Fmi6EYz+5qZWhz3O6pt3KjGUU/AYk5TCvRoRvosCBYF7qZPn/yGrvXMh0Ra8QlTiXEkigr+OP4+IYsQVLb88LqsGiMqvK9/954yNbnlRJ3+FgCHKY4OI34Am6ovr8zXJVSY9JgE5XaHVmkicL6LYYNYzA3NynlFAtVweN6zmg9qLxpFgkjegd8hqfK2ZAJOpQg+jR6bZ+Yuvca5c20CpNw6LManB+TpwxFG4TViaTwVNj75Zto5R2kXjnjcF96gwbMcdav/Kd72wKyrtqjiTpCzS37pGTNEQFN+kfdK+goY535X/LFoOKombB6cg48mu9oItBmZIsFooxR4AHuKC7uRAW8gHgnC7kzlsTRpK3pO0YcAmE3sI1lc7jRt/kb5H8w51zX677E9HawCXyEvsLGhewyi26VTim6Nf0mNJ7pWmNmm+B0uYKtnNJjtL0sHyhxxP449CioYmC+lf7A+Fe7RjdoUP4XSXX8W0Xar4MPo33rFHhUyee7oZuZYIGOFlY8zimoRW6GiYVC+ewEbcaxU3Uhli5ojXDuh9jRz/eOzMZsWHV1P+fh7wtpnz1gDPQt7mcCfeNaW4RMwAk/eeCo3Nnop51TcGJr4yWAQQna+gmj9aQGUSkFL1Lg1cFy+B8BiFD9fEVqgY3nwsPZHIRcB2AbUDfriLMyHwXEHgdvIaPY8
- OQfkBBhh
- a/YKmvPMTUbhY4SzX4oY5lDI3H9IEaf3ptRdu+mNmrw0m6aC3BNMS7N84zCtXIT3spNyqyB4vFTk9TLLDDDNqARM0ryqLIySPrHsZSilnCRoYGY6snITHFlvP6wE4gduqI4x0sOH+RelR66j2senlrVOVjBrw/p6trica0lBFjqT/bOSAPiWdvbi1ecFKvK7Lse3qN38c9C4eCA+B7OG4DPhtdbKhmHLJsTsABrtuVYbdeKaBq1SvJitrvJlsBN37o0Lbqa1hyoo/ERZZhqNnvGVPA+M+oGUuLzpfI/Tlj2AVqpDqeq1N+W8JLufc68RiIk+5Xqg45kqHMWdXtbJFwcz99AbCk7S8onyfhLiKrYQiBRJPP/Cm4fR28hU3bWYGl247jscDkTWLw/k=
+X-Stat-Signature: f4rp3txrckec4e3wj36w4q8ksubzn5gy
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9003A160004
+X-HE-Tag: 1790289090-440146
+X-HE-Meta: U2FsdGVkX1/iOdNDQejqB6yxLk3/kLKFXeyK3NpnPCDqI0o3QKGcCjhs2XmKNaqpv2Xh1LVge5M+3W6zNsGrqPb9x0sDFjpRsnQXRt4YBPyQUWFxahG6p3qS2MxGKNA8wBhDoyKho0L5v5Fh6gjvoclVjBgAqXh8xycgz2M1pjS9VBudL6nCX7i+lXiylpJ0i+p+rZAVLJXpC9nkm3ONTdDVNe7pA9GSaOKzoAN0QLdw2Ywmj2XAcBIQ+xmFFx5cz1vpmbTxx5Me1qjw2V7IMU4gBDOmVn7x0fhNBbCFo3svva1shSGp4SG4Qmf3IvHy4gIOKJz+UUxBs5EpcvSWXsSLgriRterFnc3u4waCwOKiUkgYEa4cwcRF8peXHvTuR6DL2vK+R3djFU5+5TQ0DTc7rron6Esph0vFYPJFUNCNTy3tgiaaZfmuZLvBcApjJ4LOmxbBmWR9dvVbfsA5SVzaVZv/z9AMmhR+64GYM3OhrhP0pclZTjg+O8EQcZ8iQe9k88/1oxtGJ3kSlxZKgdoXQSRwxsdOAm36+Ba7qS56/UyWpsoZwWx4NbqKCCe4vznwoLh4iuTgl8vmMuiShph9As3dMZJ7vQ45aTm7CHGKcbrV7ySf+kbOQnX9z8f+KXVfL507uAqXA0PEWnKZM5jB200aaPUGAzNFurbUStNU/eUdDxLIwW1caf8zEULghH7Rr3IBSB8Ed7NvY5chJwtb0HgtZ9vdRo6eQVDlt+7uD2/ZHv/iTO0wvryc1ywIs/w7UrIkPB+rqx/9C8QJ07i/89cR1icmNkz6WtfAnOiYEscAympwlAjyyFvkoL+TB8Tpkp1YE9ygTqdfGQXVVlofRynS9aH83jIcEhrgpryOJChM8GdKj+hKJcVKCxlbNKEXqPZAZbFEzhQt87hARdws030UyZgIvrkOojQc0MpYmvzuUAa+OsriblBEBZ3YV75F68vbON+VWPAYKsP
+ 2uojAuen
+ KO+iJboTpYkLJnjU0daZxB9flA0OzvblqFPMZwrp2cILQH+L3KLFBz1W+lzbnRMCbckDaFx49LecWt3B6RgIFjVpx5D/O4dpkNFHb2TGl3UNDC4wbKuHTRt0omnZr0shg9D/06WNXGBj63T3DZWmPuUwMuv3KwB3Of8JoWKzzRY1i2i4cQi5FwX470UeZ5WLR05vKxhRiTnzyvV3y+OgITGtK9r0T4FA1M/hKEjhRE06E5GkvBesG17p5HPlw+Age+WQHiDHn5L4o7OLVj+kP53uZOS2+9ziBc/UbfYoObD50w+kO2nKC8jAneGuIyENsDcsCZx5uXgjRW/6gRvNSxPGRKcvsqP/OiovXOIKL17Q8xwig0pe1rEGInQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,157 +168,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-23 04:27 PM, Zhu Yanjun wrote:
-> 在 2026/9/22 11:53, David Matlack 写道:
-> > On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun<yanjun.zhu@linux.dev> wrote:
-> > > 在 2026/9/18 13:06, David Matlack 写道:
-> > > > Future Work
-> > > > -----------
-> > > > 
-> > > > Following this series, we expect to make further improvements to the PCI
-> > > > core support for Live Update:
-> > > > 
-> > > >     - Allow P2P across Live Update by avoiding resizing or moving
-> > > >       preserved device BARs and preserving all upstream bridge windows.
-> > > > 
-> > > >     - Support preserving Virtual Functions by preserving SR-IOV
-> > > >       configuration on PFs and enumerating VFs after Live Update.
-> > > Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
-> > > kexec is a foundational step for minimizing downtime.
-> > > 
-> > > As we look toward complete end-to-end support for DMA preservation
-> > > across Live Update—especially for VFIO device passthrough and dma-buf
-> > > sharing scenarios—IOMMU table/domain preservation becomes crucial to
-> > > prevent IOMMU page faults when devices continue performing DMA during kexec.
-> > > 
-> > > I would like to ask about the current status and roadmap regarding IOMMU
-> > > Live Update / KHO (Kexec Handover) support:
-> > > 
-> > > Is there an ongoing effort or RFC series for IOMMU handover / page-table
-> > > preservation currently in development or under discussion?
-> > > 
-> > > How is the coordination between the PCI core Live Update mechanisms and
-> > > the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
-> > > restoring domains or handing over root tables)?
-> > > 
-> > > Any pointers to active discussion threads, RFCs, or future plans
-> > > regarding IOMMU participation in Live Update would be greatly appreciated.
-> > The first IOMMU series to support Live update, can be found here:
-> > 
-> >    https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
-> 
-> Thanks.
-> 
-> I have a question regarding the restoration sequencing when module
-> dependencies are involved during a Live Update reboot.
-> 
-> For the standard hardware/driver stack, the sequence seems to naturally
-> follow the kernel's early initcalls and device probing (e.g., IOMMU early
-> hardware handover -> PCI bus topology/BME preservation -> IOMMU domain
-> attach & DMA ownership claim -> VFIO/iommufd cdev binding).
-> 
-> However, if there is a custom kernel module or subsystem (let's call it
-> Module A) that is not part of the standard PCI/IOMMU device probe callback
-> chain, but strictly depends on the fully restored state of PCI, IOMMU, and
-> VFIO/iommufd:
-> 
-> 1.
-> 
->    What is the recommended or standardized way in the Live Update
->    architecture to guarantee that Module A's restoration happens
->    *after* all its underlying dependencies (PCI / IOMMU / VFIO) have
->    completely finished their restore processes?
-> 
-> 2.
-> 
->    Is the expectation to rely on LUO (Live Update Orchestrator) phase
->    notification callbacks (e.g., late restore notifiers), Driver Core
->    mechanisms like |-EPROBE_DEFER| / |device_link|, or something else?
-> 
-> Any guidance on how cross-subsystem restoration order and async probe
-> dependencies should be handled in the Live Update framework would be greatly
-> appreciated.
+Sean Christopherson <seanjc@google.com> writes:
 
-Note: Some of what I write below is not yet merged into the Live Update
-tree so may change. Samiullah Khawaja will be giving a talk about file
-dependencies at LPC where some of these topics will be discussed.
+> On Thu, 10 Sep 2026 16:55:26 -0700, Ackerley Tng wrote:
+>> Here's v13. Thanks everyone for the comments and fast responses!
+>> We're now at ~3 weeks to soft-close at 7.3-rc5.
+>>
+>> v13 is based on 7.3-rc2 and:
+>>
+>> + Hugh's patch to export lru_cache_drain_for_folio()
+>> + Another series [1], which makes kvm_gmem_get_pfn() NOT return a
+>>   refcounted page to KVM.
+>>
+>> [...]
+>
+> Applied to kvm-x86 coco.  A *huge* thanks to everyone who helped with this!
+>
 
-LUO does not have a global "restore phase" or late-restore notifier.
-Restoration is on-demand and driven by dependencies, and userspace does
-the orchestration.
+Thank you so much everyone!
 
-There are two types of objects that LUO manages:
-
-1. FLB (File-Lifecycle-Bound) data, for shared/global state.
-
-   An FLB is retrieved lazily the first time someone calls
-   liveupdate_flb_get_incoming(). The PCI core does that from
-   pci_setup_device() during enumeration, and the IOMMU driver does it
-   when it initializes. So the order in which this global state is
-   restored is simply the normal boot/initcall/probe order of the
-   subsystems that use it. LUO does not impose any extra order.
-
-2. Files in sessions, for per-object state (vfio cdevs, iommufds,
-   memfds, ...).
-
-   Files are retrieved either by userspace (LIVEUPDATE_SESSION_RETRIEVE_FD)
-   or by kernel code (liveupdate_get_file_incoming()). Retrieval can
-   happen in any order and is idempotent. When one file depends on
-   another, the dependency is expressed between the two files, not
-   through a global phase.
-
-VFIO -> iommufd is an example to follow (see Samiullah's IOMMU series
-[1] on top of Vipin's VFIO series [2]):
-
- - Outgoing: when a vfio cdev is preserved, iommufd_device_preserve()
-   calls liveupdate_get_token_outgoing() on the iommufd file the device
-   is attached to. That fails unless userspace has already preserved
-   the iommufd in the same session, so the dependency is enforced at
-   preserve time. The iommufd token is then recorded in the preserved
-   device state.
-
- - Incoming: the recorded token is what connects the device back to its
-   iommufd after kexec. Retrieving and re-attaching to the restored
-   iommufd is the next phase of the IOMMU work, so that part is not in
-   [1] yet. The building blocks are there, though:
-   liveupdate_get_file_incoming() lets one file handler pull in a file
-   it depends on by token (it is idempotent, so the order userspace
-   retrieves in doesn't matter), and ->can_finish() lets a handler
-   block LIVEUPDATE_SESSION_FINISH until everything it depends on is in
-   a consistent state.
-
- - Device binding: vfio-pci's ->retrieve() simply fails (-ENODEV) if the
-   preserved device is not bound to vfio-pci yet. There is no probe
-   deferral inside LUO. Userspace is expected to make sure the device
-   is bound (e.g. wait for udev) before retrieving the file. In the
-   meantime the device is protected: the PCI core keeps bus mastering
-   and BDFs stable, and the IOMMU core reattaches the preserved domain
-   and claims DMA ownership, so no other driver can bind to it.
-
-If you can share more about what Module A is and what state it needs to
-carry across the update, I can try to go into more detail. But
-generically I would recommend:
-
- - If Module A has state that must survive the Live Update, model it as
-   a LUO file handler. If it depends on specific VFIO/iommufd files,
-   record their tokens with liveupdate_get_token_outgoing() in your
-   ->preserve(). Then in your ->retrieve(), get them back with
-   liveupdate_get_file_incoming(). If something isn't ready yet (e.g.
-   the device hasn't probed), fail ->retrieve() and let userspace retry,
-   and use ->can_finish() to keep the session from finishing too early.
-
- - If Module A is a driver that binds to a device, the normal driver
-   core mechanisms (-EPROBE_DEFER, device links) still apply for
-   probe-time dependencies. Live Update doesn't replace them. But
-   restoring the preserved state itself should probably go through LUO
-   as above.
-
- - If Module A doesn't need to preserve anything itself but just
-   consumes the restored VFIO/iommufd objects, the simplest option is to
-   let userspace sequence it. Userspace already knows when the devices
-   are bound and the FDs have been retrieved, so it can hand them to
-   Module A at that point.
-
-[1] https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
-[2] https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
+>
+> [...snip...]
+>
 
