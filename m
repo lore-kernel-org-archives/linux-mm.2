@@ -4,103 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419DDC9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:22:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1799C98317
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:23:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E1ED6B0093; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
+	id DF68E6B0096; Thu, 24 Sep 2026 07:23:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 392966B0095; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
+	id DCE9E6B0098; Thu, 24 Sep 2026 07:23:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25A776B0096; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
+	id CBC756B0099; Thu, 24 Sep 2026 07:23:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F048F6B0093
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:22:15 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 716E91202FF
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:22:15 +0000 (UTC)
-X-FDA: 85248417030.25.4D6D908
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AAC37A0004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:22:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLcpADPq;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B6B86B0096
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:23:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F0A5D1602FD
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:23:28 +0000 (UTC)
+X-FDA: 85248420096.18.11EFEAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1B56D20002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:23:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iys0hoQv;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790248933;
+	s=arc-20220608; t=1790249007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ctwayjHvAj5rO/ALkHWHVIPs9SRT5FDkZw4zngF4FsM=;
-	b=H2NKOp6ODLPEUkCN+wrbISBvLbu4mWf3NR1/Kx6NA0BTwq+9vrvNcBIgYLoefA7Frcv29a
-	DMhQp5HAl0PD9Rj7PGtdfjGqoIs1rDwweef9SWdfsiTAv4J+rq//AZ8HLp0rQVa43vkrBS
-	OMSPTGWDwyS801JUJWXyFOEfUkKsbDw=
+	bh=hhV4Eg9T44LxurIyyLkrw3Z+JXOB/cbv08FDOkNxdEI=;
+	b=CMmy9I7JXjHrmC1/3w0RBNQNuRU9GUepG4JDDxDQtA7mCu2gE0qlj6UWfPAdtKqApesDOB
+	IeMsarHSLMO0dmGmgs2EsEhWPMa/+O3gzN3VJkQ7D6bg0Wc6Cd+fOjdWviyFNY94tOMKoI
+	A50lmcEyqRt3ZUE6UnRZRZMIMq+jmBU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLcpADPq;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iys0hoQv;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790248933;
-	b=PaaXskeszesMU89UQNCNuN93dTXihsFtwYSp6rj3R40p0k/b3NhVN7N7QDDSlfyaA49whi
-	kDVqpz2QaA9VBvoQ6NAKRx2DBiyVE+LxcdJNL2fH5EjlvTmIdwMMVWjiuFUf1K3n0/9BP2
-	5+WkCFCUWy92tmbsM+/1CAHabMJ/rOw=
+	t=1790249007;
+	b=icZdagperfn2APFHGKnZ4fltu9crxw5HXiEq8fM9nJSdvTqWD8ctQh1qr0/pjnjf2Z1Gln
+	hBFoqxzM2M5xnSiHpo6Imlq6+Ktrxx5WiijAhZYiOwVA8Ve+otyFGuV232oBTWoAtfMzbS
+	RMEzoMqGUJJj0OfMgGvDV/OA2okfoR0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A2D9600AA;
-	Thu, 24 Sep 2026 11:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9961F00893;
-	Thu, 24 Sep 2026 11:22:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7B14640AE0;
+	Thu, 24 Sep 2026 11:23:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907871F000FF;
+	Thu, 24 Sep 2026 11:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790248932;
-	bh=ctwayjHvAj5rO/ALkHWHVIPs9SRT5FDkZw4zngF4FsM=;
+	s=k20260515; t=1790249005;
+	bh=hhV4Eg9T44LxurIyyLkrw3Z+JXOB/cbv08FDOkNxdEI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SLcpADPq4EEZy7CYxm/FfpTvXhOBlV7k27ge46+15mUNqtekLfytiC8znGla+1Snm
-	 PSbv92RSUcUv8ktM2tceZ9jdbEwC8TEK3PQTCtuySbOVTtsTySc7dsgsv/ScPTeVF8
-	 +JF2qqpHzRTVTTLnIT7nMcFBnjMaGkSGLudLCsU3Ix3do4DOJ90KnBEK+xYnM0mcGj
-	 H5k6GSwsaDxcQo4fcythrZ1YRBgmS802wUIdl4m/qMSmatE8+BseUx2JXkwVVqypy0
-	 ezrylZ6VcLud0LgaGtIs5YFzeuzIQDJh4PMRLOmx9POlfqEiLVL+b/y1OT7BZwTuEG
-	 GQ56tSjWThlVw==
-Message-ID: <cf2fe0bb-a79a-420e-8b65-3c8dfa5fadbb@kernel.org>
-Date: Thu, 24 Sep 2026 13:22:00 +0200
+	b=iys0hoQvNxPyv8wESrU1CfxLXmoq9WrKRFiR1q+ees7JXBwaj2n3/C8qQ1Bd15T2o
+	 CF37ogQyhsmJI6Qh5mQU20iCjwsaRkLFhO086AuAj0s0euAFqTp5cZZ87IGz355Fl6
+	 ULSd3TUYTyhuXxjR9w/ZZzX36uqKtsaTYTiVia+W3Dv3wd0JNS1+XwMhjxblt7W8m2
+	 +SjT5lRat2kTufiGMeJF33jz+juHeo3RegrqxwY7yH66TzPZ8VcyZyJcWeStyM3YPE
+	 ozjEQqjYypddUu1UannWOXsNZ78JqHgatubSnIdz4jCDcQwPZBGGk+Stci0nzGQbZq
+	 GAVDOvFO+1xIQ==
+Message-ID: <9a36d20b-ae48-49a2-807e-28e5e1461974@kernel.org>
+Date: Thu, 24 Sep 2026 13:23:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
- frames into the block
-To: Breno Leitao <leitao@debian.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
- <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
- kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
- <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
- riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, kernel-team@meta.com
-References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
- <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
- <aqpczrtIwSG948iv@gmail.com>
- <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
- <aqvHHHuWJ-y4WRJZ@gmail.com>
- <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
- <aq1RaH0eE0hZfNpr@gmail.com>
- <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
- <arE3UjqPsxctWckg@gmail.com>
- <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
- <arJqVWN-prvI_0NP@gmail.com>
+Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
+To: Kiryl Shutsemau <k.shutemov@gmail.com>
+Cc: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>,
+ Amit Shah <amit@infradead.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
+ Christoph Lameter <christoph@gentwo.org>, Dave Hansen
+ <dave.hansen@intel.com>, Davidlohr Bueso <dave@stgolabs.net>,
+ Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ John Hubbard <jhubbard@nvidia.com>, Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mel.gorman@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <mike.rapoport@gmail.com>, Peter Xu <peterx@redhat.com>,
+ Raghavendra K T <rkodsara@amd.com>, "Rao, Bharata Bhasker"
+ <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>,
+ Sterling Alexander <stalexan@redhat.com>,
+ Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Yang Shi <shy828301@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, William Roche <william.roche@oracle.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
+ nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com,
+ jane.chu@oracle.com, muchun.song@linux.dev, liam@infradead.org,
+ shuah@kernel.org, boudewijn@delta-utec.com, linux-mm@kvack.org,
+ Breno Leitao <leitao@debian.org>
+References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
+ <arPElEV0zDhXrteb@thinkstation>
+ <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
+ <arPdnxhX9VHnDx15@thinkstation>
+ <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
+ <arT9TVHmM3WDjWnk@thinkstation>
+ <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
+ <arUDeFDdSV1xANiU@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -147,17 +146,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arJqVWN-prvI_0NP@gmail.com>
+In-Reply-To: <arUDeFDdSV1xANiU@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1B56D20002
+X-Stat-Signature: k59csbf4kj4ybutscgb6rmoxgmb3berm
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: AAC37A0004
-X-Stat-Signature: 74gwope719p9b43qxwwq6z1kfuux9psf
-X-HE-Tag: 1790248933-652436
-X-HE-Meta: U2FsdGVkX1+pAswM2pEV9Yk1ftw5ZNx26mWyEhxCz9ITDV7nIMxx0JerWXIcBhIqi8d5aBl8piwdX2bh6A3XgxjA9Jdxjz4x1qXIQl9rYLj0p+9hyAXN+qVSnA70gH4Z3cjUv1ivFm+JROBowO7JhLwtfhQIe4pRL8Jnu+ctIUNLgzGsH1rsHxU4gL8Y1CaW+VXH8go2WnyXJKFMuhqA++cdSIvOSiVn5PaMuO6JEq64HbhSRLqY46Od19OelbYpIOgFb8igUraRhxBUDR8ouiJJnxSG6OTS9s2HN5D/HS56bTX5xwE/ZPdKYAz1VCMsstD3amMHUFKNVon1Lx4p+ITuzzXtmvuWIvrP7602rGXu6a38q4sH+c7QHSU/dhzyTgaaewPi4UixCe25iDVtDA7mtHn7TF/V63sZgcAYwTqw+PkgK/eut4NxzoMOWRR4gXoKMsH+I2+yHEpQMkePERjVcUuUWa9oCHnp2TQZDkOYKfUw8jaYxUbXSMuvQ9jsctUt6nsR0MFlFA/1ii4X3t4oxDui82lqScROCPALAVpnek0rzsiJ2tdW8H/RLDdhmFEJNgsXm5Lr0bklsdMNwIGiCRUWdJpw7VcQBpnQktBxhZTXx5HjBv/FbQwoVc1mWpNdTG+kEqpzKfZ9KSSnkN+KXmzv3wfb1pTERYdH0vjQQDszyV/4+boSsKN6HTIhj2UqbsPgEBlC7/7CsJF4xkFU42Y/SV3xr6am3mWE9+y9k79UieuMDByxJVIFpXDuLAN9HCglpalra1s+aOGQleKE2rnYcL3l3ZQL/NFvpKbUGszK4OPnKCdRaaPwF6Sf0UjVxeCkWEWVXSEF9OTtcvGyIXn6IoQULQKnDGm4B/0M/G6rJp5K8VhaU0CLIG/EDYZSCa+T4K8WFIlX9eVGzwT4UbnOeMQqlYlkJhn0//Bs1Evo5fz0s5NYp6a8oE97OQQH/vHDLDNz4EiuHYI
- aj22rtr8
- Mta/pM6N24oXZEDEOGEDr5le6eg1ujWk9oqUiu/ScjDLHxZeL9lbLM6IXAiWZ5VaCn8mia4ONeJVHj4pO7CL8qR+1bYMHvMVYQfKD+BBGEOkN3Zd9/Vtj40EiQgWel2g2RR3kc7HCpDCzPW+wuFrOQKDs90LgxAu4VpgmKCKxIjXQmbm/14s5xmxZWuHrT4u+CrwRiJSKDvFxDkf4x6uDddv8RQYmef3cVAPit+M7ooxyQsLw2IIEDurGYGxMgPBEgaBCgqaMt5izso93+YrYgjxlpZb+6i4JZE+yN1y7X7XaSxtyr2IxQAnilXPKudwVvo7vIscb5bsJMI887n7bTr6T+YoOB4kUfcBs5ZqXQBB6MjwQLd52mNC2vzjAeNJlkJd4
+X-HE-Tag: 1790249006-53363
+X-HE-Meta: U2FsdGVkX19f9LXWUE2I1rYV+eQd5w5BoWa6ZtZMAtxAgkVIj7PPxk+V5xjeWYBbSmj8ViloYEmWlVNAxC8CAml6oO8zfmTMVcaDbxTCOkNtYaZU6qx++WmI/4wWQh3s4TN1UyaYYrkVMGTWkVWPB3CTm6ZyQ5APxgXHwda/hKt0/16ZzRTv6oZbueIDQVPkd0h2HSXjG8di+lCI0Y3VPm558hLMPNkd5eQPdn3QckJEAo7ORBez9jh52x8I4hE39IBDqDaQpFFCcTcIocVqza2v/BUvgds91OTPGhmUqj4F72XfGR1nHBouSr9rHtud2f2ZKjJ5G1uNhUNKZG6lri0Gp/W+Gb9OR8ML0icalBPXT5XMv68V+vsOTvcir4A6VDgEMpISBcR/laF4YHAiGVBKtUyjNL5zjUeKVAvW5sken7UyFa5/BJGIpkfCRG+3P0iiPdzpRxvKLBfr9p/1ff9RiqXkKOWI0aTJiqcx14IRSpZHKiPQqdLhFilZyGp98JhXrXgiH7KhJHA5jbkPZgMB/JepFrQMm0Et3DJbIibV88nF+mfnBRWuQwDI4BZnIoRhFaLaw2wYKixOLo/cjaEWv9q45oen9TEiIltJ9SI2+HGHzMVeLDF9dx0edZMCEH+FamzrOS5xe5ihmpHCluVhiBnqB6xnn8aCmMkfS9yHxkoV10zViq7dU+TSuDFwEvWm0MiKgJJzybk6RUmcvNtfoJpbcGvXTuFJa3jnChxlAsK8G8Pqp8cZMR+AzHOExdZcy7n4qdu20x1L99kSLkrKlOPRfZnzwpYE+Q9ubK5V5mls/mIOPSP0YSFtbn25PgivSGINUsxuSVvR6wLKpjbzcVxczdQSngKZJrfpA0QCTPne/ylsxj181dhqfdIjA4bpqv7Jj3KT1FVyVJx5weD7cyTnLzy/S1Ie6ragPvNM2/WyGEDqSMCTp3KrVjByswBISrworqN87RU/4FS
+ k2/lfdCm
+ 9xxdjqUDWMN0XJtlSmtwRfZ0Txcyi9wrTVuEdkZ+DjSqfCgTjiSNBZyyAjVYLka2h9dzTfdrcaGfl6us0nkv0itJb/w+o7wGZtfPGylTNMKBqp5Dhr1Cz77YAVKrBiC0dd262w4lXnO6l6BAWkWQeHmFENj5DSvwubkFmknA5NyFEcjOp6TtTpmQR3xKIRHJyiejmDYT8zTa5yi8qsVOGX8KcY1m7Z/5PaBbr133Sk6a99RHKt+XAXeIm8rFNncYs71ni0Sm4tUzNl9GqgDIEM8GzXcXq3SN6QZE7kuqgC8gkXV+dE87U4UhapNR7f/nKmBufxaN8Yy92lC6MTpmRDO2kLw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,198 +164,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/22/26 14:34, Breno Leitao wrote:
-> Hello David,
-> 
-> On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/21/26 16:31, Breno Leitao wrote:
+On 9/24/26 13:19, Kiryl Shutsemau wrote:
+> On Thu, Sep 24, 2026 at 12:55:10PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/24/26 12:46, Kiryl Shutsemau wrote:
 >>>
->>> The EFI table is only written when there is a memory failure. That is
->>> the only thing that writes to it:
->>>
->>> 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
->>>
->>> You can see it on patch "mm/memory-failure: efi: record
->>> hardware-poisoned frames into the poisoned-memory table"
->>>
->>> Then, when the kernel kexecs into a second kernel, the EFI config table
->>> is queried and the pages are poisoned from it at boot, as they are
->>> getting into the buddy allocator, in __free_pages_core().
+>>> I suggested using a bitmap because ranges are not scalable. Some memory
+>>> failure modes generate errors repeated across the physical address space
+>>> (think of a column failure, for instance). It would produce too many
+>>> ranges to be viable.
 >>
->> I am not sure that is really the right place. That means we only poison free
->> memory.
+>> These are in 2M granularity. Is that a real problem?
 > 
-> Right, and that is a real gap. A frame only reaches __free_pages_core()
-> if it is handed to the buddy allocator, so anything this kernel already
-> took from memblock -- the memmap itself, early page tables, percpu --
-> can be sitting on a recorded frame with nobody noticing.
-> 
->> Shouldn't we poison as soon as we initialize the memmap, and check
->> whether any memblock allocations ended up on that poisoned memory and bail out?
-> 
+> 2M is arbitrary. We can trade finer granularity for the size of the bitmap.
 
-Thanks for the history on this.
+Sure. And if you run into scalability problems you can go to coarse granularity.
 
 > 
-> That is close to what I had until v2, where the bitmap was walked at EFI
-> parse time and every set unit was memblock_reserve()d:
+>>> We already consult a bitmap in memblock for unaccepted memory. We *can*
+>>> do the same for poisoned memory.
+>>>
+>>
+>> We can do many things. I don't want it.
 > 
-> 	for (off = 0; off < bitmap_size; off += PAGE_SIZE) {
-> 		...
-> 		for_each_set_bit(bit, map, nbits) {
-> 			u64 unit = off * BITS_PER_BYTE + bit;
-> 
-> 			memblock_reserve(phys_base + unit * unit_size, unit_size);
-> 			nr_units++;
-> 		}
-> 		...
-> 	}
+> What's wrong with it? The last step on allocation from memblock check if
+> the memory is poisoned in bitmap. If it is, try again next range,
+> starting from the next non-poisoned address.
 
-Yes, that what I have in mind.
-
-> 
-> Set the full v2 patch at
-> https://lore.kernel.org/all/20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org/
-> 
-> Kiryl raised some concerns, such as x86 does not keep memblock past
-> boot,
-
-The memmap contains that information. If it's a scalability problem with
-thousands of hwpoisoned 2M ranges, don't try to keep kernels running on utterly
-broken systems, seriously.
-
-> and kexec picks placement from iomem_resource via
-> walk_system_ram_res(), which memblock_reserve() does not touch. 
-
-Where we could scan the memmap. If we find scalability problems with that they
-should be addressed there.
-
-> So the
-> frames stay out of buddy, but the next image can still be placed on
-> them, and since nothing sets PG_hwpoison none of the existing hwpoison
-> users see them either.
-
-Memblock knows which ranges were poisoned. It shouldn't hand these out, neither
-to memblock users or the buddy.
-
-And is it knows that these ranges are poisoned, it should be marking them as
-hwpoisoned when we initialize the memmap.
-
-Kiryl probably remembered the unaccepted-memory hammer and thought of hwpoison
-of being just another nail. It's not. hwpoison is a proper kernel infrastructure.
-
-> 
-> Most of the discussion happened here:
-> https://lore.kernel.org/all/aog_uH5fTsJzXjjx@thinkstation/
-> 
-> v3 then poisoned the frames from mm_core_init(), right after
-> memblock_free_all(), taking them back off buddy. 
-
-They should have never been exposed to the buddy.
-
-> That breaks with
-> CONFIG_DEFERRED_STRUCT_PAGE_INIT, where the struct pages above
-> first_deferred_pfn do not exist yet at that point, and Kiryl's other
-> point was that the shape was wrong regardless: flag the frame on its
-> first add to buddy, not after buddy is up.
-
-The flags should be set earlier and pages never even handed to the buddy.
-
-Handing out poisoned pages from one allocator to hide them from another
-allocator is stupid.
-
-> 
-> See the discussion at:
-> https://lore.kernel.org/all/apGbDOnPm5VXP5ez@thinkstation/
-> 
-> Which is how it ended up in __free_pages_core().
->>>> From that point on, the memmap should be our reliable source of information.
-> 
-> Sure, is this approach better?
-> 
->   - the bitmap is read as the struct pages are initialised, and the only
->     thing it does there is SetPageHWPoison();
-> 
->   - __free_pages_core() keeps the hook but tests PageHWPoison() instead
->     of the table, so a recorded frame is still held back before it can
->     enter buddy;
-> 
->   - nothing else queries the table.
-
-Why should we give pages we know are poisoned to the buddy? And why should we
-let memblock hand out poisoned ranges?
-
-I'm sorry, it's all hacky.
-
-I see why we want a bitmap from kernel A to kernel B, but once the kernel is up
-we have established infrastrcture to identify poisoned pages.
-
-Just look at the mess in the patch here I replied to. Pairing bitmap scans with
-memmap scans ... hacky.
-
-> 
-> One caveat on "exactly once": if that means one pass at one point in
-> boot, it is what v3[1] did -- hwpoison_init_boot() from mm_core_init(),
-> right after memblock_free_all() -- and it does not work. With
-> CONFIG_DEFERRED_STRUCT_PAGE_INIT the struct pages above
-> first_deferred_pfn are not there yet at that point.
-> 
-> Link: https://lore.kernel.org/all/20260826-hwpoison-kho-v3-5-6f79c4b605bc@debian.org/
-> 
-> So I _think_ we want to do it once per frame, as that frame's struct
-> page comes up. __init_single_page() is the single function they all pass
-> through. Is __init_single_page() the right place to query the bitmap and
-> mark is as poisoned?
-
-That's what I originally had in mind, but I am not sure if it's the right time
-to query it.
-
-Assume we tell memblock about the poisoned ranges early and it would not hand
-them out.
-
-memblock_free_pages() would never get called in the first place.
-
-All pages would look like they are simply allocated by memblock.
-
-We'd have to traverse the poisoned ranges in memblock once to set the hwpoisoned
-bits.
-
-> 
->> For this code here, just remember globally whether we hwpoisoned any page. If
->> so, just walk the memmap. If not (the 99.9999% of all systems, no need to scan
->> anything).
-> 
-> Yes, and the counter already exists: num_poisoned_pages and we can query
-> it. I am also planning to add something similar in the EFI table, like
-> an ->empty field, which will be cleared when a bit is set, avoiding
-> doing bitmap walk on the happy path (not a single poisoned page).
-> 
-> Anyway, range_hwpoison() short-circuits on it today,
-> 
->       if (!size || !atomic_long_read(&num_poisoned_pages))
->               return poison;
-> 
-> so memblk_nr_poison_init() can gate on the same thing and walk the
-> memmap, with no EFI call left in drivers/base/memory.c at all. That
-> disposes of the misleading name there too, which was where this
-> started.
-> 
-> Now, the half I am less sure about is checking whether a memblock
-> allocation landed on a recorded frame. Poisoning at memmap init cannot
-> prevent that -- the memmap is itself a memblock allocation, so the
-> struct pages do not exist while the early allocations are being made --
-> it can only detect it afterwards, as a pass over memblock.reserved
-> before memblock_free_all().
-> 
-> The alternative is to bring v2's memblock_reserve() back purely to keep
-> the early allocator off those frames, and still poison at memmap init
-> so the flag is there for everyone else. That gets both properties, at
-> the cost of frames that are Reserved and HWPoison and never in buddy,
-> which I have not thought through for unpoison.
-
-
-Thanks for the history on this. I tried to summarize my thoughts above. I might
-be wrong.
+See my reply to Breno on the other thread.
 
 -- 
 Cheers,
