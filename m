@@ -4,98 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5249C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F70CC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42E776B0088; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
+	id 1E7CA6B008C; Thu, 24 Sep 2026 12:20:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DF476B008A; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
+	id 1BF506B0092; Thu, 24 Sep 2026 12:20:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CE056B008C; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
+	id 0ADBB6B0093; Thu, 24 Sep 2026 12:20:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EEE2A6B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:19:28 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7490EC0428
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:19:28 +0000 (UTC)
-X-FDA: 85249166016.24.A5F884E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CCB0F140006
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:19:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdniQZtX;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790266766;
+	by kanga.kvack.org (Postfix) with ESMTP id D63E76B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:20:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 601E4C0416
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:20:37 +0000 (UTC)
+X-FDA: 85249168914.21.564CE79
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3B74D8000B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:20:35 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mnC9YYtt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790266835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r66646FaaMJmMMJtghlI/Jm1UKe8pCt6tSOa0dL7Cmc=;
-	b=viOivlWappreBFq5EPPUHqhc7AGYJhYtD+Q8ZwfdRKxeM/5ursuGQXRRalN0l6zMaGM6PE
-	1sWq95hHRVU/OKbLb0DQToVR0TWj8K5Pm1TnP5PQlM2O6BV5F0OpDVEaKu8Gtf0hszZKU2
-	tdVb4WheN59AfSPkkewvvjYNSsquKFo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790266766;
-	b=0zJoIDJbfg0O5VtIgygC8mzpmUOyVUJ8FpyPMy/yfROTb1b3YXUKXJ7jo/4hNJZhm+F9g3
-	n4cBgocHpRBdFK4pWuxOm5e9woAq0G7TovPSRDSXHPUK6WnO9/92hVIdp4GKYD4rzJ5Ipk
-	jaUhXLKy9OKn1hjxilhBFSUfiT23eYk=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdniQZtX;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 21DF1601DE;
-	Thu, 24 Sep 2026 16:19:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24CB1F000FF;
-	Thu, 24 Sep 2026 16:19:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790266765;
-	bh=r66646FaaMJmMMJtghlI/Jm1UKe8pCt6tSOa0dL7Cmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LdniQZtX4VayI3layjWdH4eFwyIF4H2Bq/vkmWjcfnkWIAwhEABQuq80dlBDeCe9n
-	 VSFQnk+R5ZEvRXfbMH9Diul7TU7qquNPg9rZizuO7XkXLQ2VOYpL8o2m6xzzujwoOd
-	 jemxUJFqOVj8o9Yz+fG7IqtthMIkmcjgmFXc164DQE/77DySgEnq+H9IKUcHj1CgEC
-	 1bJEPf0Sfjj6L/l4EyU1/EM2tCrRA5ERREOjE+1O92aH4amkcecW56ODAMlKoPpi1j
-	 dArMrpCMbNZF74xPxGBNWOFoLwdCcDkSDQKWepXEif42nqcvbgimieEl1boZFJn2H0
-	 c5c1WvpdiU9aQ==
-Date: Thu, 24 Sep 2026 19:19:17 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Steven Rostedt <rostedt@goodmis.org>, x86@kernel.org,
-	linux-mm@kvack.org, regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing
- while booting
-Message-ID: <arVNhTkI3kesfRs0@kernel.org>
-References: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
+	bh=Y4C/eEY5hpNw6IZ6GmmYyn13brOMotH1yARGM3FuI/E=;
+	b=71dO2St6VOWSJ1b5LXLFP0hyBeaIH8MkGvsIZVvtNwPGEObZmuidkUgrAQizEgik6UVQE+
+	Wen0UsWHxGtR4PbWsziemVa+OyTeXvqipasVjjzK7Fmk9Hpkwgea1q/jmOuoDffUnOi909
+	L86zimrZW420N+hHdH6rvlOYNcJ/t2I=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mnC9YYtt;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790266835;
+	b=2Hdg72iLwumdjJE9HdcpTTBJvYbYglkyaWgkUtnRngb6zlM0LV22BQHH9d1v6jjctiysx6
+	qfU8fq9dP2jHXiM0xCxklUJoT/YZSkE1TuowuuFBwlEjZjZL5KPk3z1nFDNmqpHwWlv2Jw
+	6H+oEY4d7zy01SVURFec3Yi5SWwjRyo=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485984ebf5cso745f8f.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:20:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790266834; cv=none;
+        d=google.com; s=arc-20260327;
+        b=V7ri+JNwQQKSW6IG7vaj4ieSMcBLM5nqTNU2NX6g7f55VMJg4r6w0NJWmg0HoCH8qN
+         DOsIIrY+PmbVDJ7++X8SJhj3iFH0JaeonHdUhWWCJLADJJftp/TQoIwDl6CE71WeT+FK
+         ZpYE9YVxGmB70aUYzLMsMh+X1YxFjH49b0v3emQcDolgf8ZCIaHdhB015k4zMCUWeX6z
+         1HeofoLUV7JEqmgzTfgYt8Dc7qX7vHJ7+CJM00/q5M90Gc7AI6jdrYbIbHU8UBVB6s6Y
+         UmtgJyaxu3yLE7R9kUAz2ucf8FByLNYWuqrDjfIscroPmzFr58FY9MItDUyWUiymhJmo
+         Mddg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Y4C/eEY5hpNw6IZ6GmmYyn13brOMotH1yARGM3FuI/E=;
+        fh=/s8+RNf2U57stN4GBlZiI1O3an/SijF59UnxwfS434s=;
+        b=SDw2xw8jiCmb3cJqBlqPN42m4E/05gy1Un8cYhJM/zaH5al63yzlfij68tumOyOt5r
+         fjEfVeo8dNFUIT+BBbLlZM5pTcDCgsVOJf4g5YQoIdXGs75MDtdL5pXWpjuNETkGS8LH
+         n/B1usYpgaYvC6gBc66tt9UWO/uV9N17Q9p0euIo61qXZ5NzOKgOqcpWG8OfCvsXiaWl
+         ou64KILlhRCl4YQHQxD6rL9ua6qc6B0W/3/emQdmz3f7GmYL6U5jdLeisEXOutuGI12y
+         wZu/xhT47JfHcyncGhqjXPcPD3fFu4AqFkBgYTf53+abrzrzZTMoA+y62Ln0sAlfpUKx
+         7iuw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790266834; x=1790871634; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Y4C/eEY5hpNw6IZ6GmmYyn13brOMotH1yARGM3FuI/E=;
+        b=mnC9YYttOIK1LsW4zDFnUTW4tm/pXzdvOAou1NTQOJOucAqKNbVuM+Tvg6BvSMyKTg
+         NG+4x8RCNtTpu+5XhF4kB8oVJTWKiO+rUlr5YRRuPbr50wAK0oSBtp4MeGH7N6eJqz/a
+         IkVO+Eh7EhJGmctqQeYow0U2bpOw0X0jHs5YZuy0IpwHtB2gdpMolVNdnm/FCNlsqt6B
+         OQ6aAvOUwgj9sM1sDXEeAojMeNNIKHsr3JuK8DN6ym0fYNZUCV/39QsFFmhYyl4Z63tX
+         0dsr/jerNahSkYPTjPX+H1scmwiJytlZkgGLxSiJxz7RMXVl159nNzZGVyQZCgS3ZJe4
+         gHhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790266834; x=1790871634;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y4C/eEY5hpNw6IZ6GmmYyn13brOMotH1yARGM3FuI/E=;
+        b=c0vRS2d/PKBjGEcUwtpbaqdL5JYM5rOyf4qJkzYmKMSmVzXCum82WB1Q2rb0jvsET+
+         yD+lX70gG3Byc40XUl5gy9aGvjAuBUw4QFV0bxQ2UrZHbXWZFwEJMkcBMx1QgJ4jaz4b
+         U7362eU4/7zF7TOqnW9XAPn0V14WEonw/zNmAhEQHaFPcelHCgzb5mQx8kWxp00/Z4QP
+         kin3hZ2YA5Z+Wlwj6UD8G0Uz63Bum2Vw2qA83Dk6UE/jXUCZ6KuFWlmRqC3jP4OTlEBe
+         1LQhgW0YA6pG0HNMr3LG06I7+aGM6k3BT/s+DFIC9dVKFoUuVM7qoJ9GObitkDaaddmx
+         6sQw==
+X-Forwarded-Encrypted: i=1; AKwUvBzpBC18xk+ctw2qGmvCkfeyfILnotyDdf0PERYSSxS21yGS8LEZvm6PAXct2NZZxPjt3LvbKFzVhQ==@kvack.org
+X-Gm-Message-State: AFuF++kI9d2A61Re1r8/+lbSIEKBWYEBZqWnhxsOyA6PzI3ckAjdVCXQ
+	6gMkp96yAYFNKmUDhmKNei3DMyLCg7ByrZ+LHL7u1GpjGVojvSazHsQWMzvuYSjhFuz1aNJ8PEW
+	ks3kTDOitsQ5+uE6ijOvY8ynKGzZAktU=
+X-Gm-Gg: AYBFou10J1cqfv1hiC+cWfhqjuqdTnhn8sSEzRhMk4Q2t2n0vLTgp9rFkBAotj7/TdO
+	ofXqQS1/h8HDMW/9YzlnwtJzHdx41RWo1ZTIDMYXJoPwI7kBkNCJ63btRpbob0nXm7lXQybAD69
+	0sJB82OADaeHLsUwnKuMkq1IotXVMCpWpIBcyw1qBDJqC4MVSNqwUJEDLj+foqApkemNmMApGR3
+	AkY4Kbgtb0Sr2EP8ccllUM6b14s3hKxnF02mYq90xSl4uHXybWZAaSWVajwNQ2BpM3KrvfYuAL/
+	rlI8XTUKA+XYzZCrTITOprtOh1iaS+/iuW8JgFFnC0oVovyU8Il20GpKZoJEdT2PVOtQjdNxDGZ
+	ox07W2FKpeg==
+X-Received: by 2002:a05:6000:26cd:b0:486:fe8d:298e with SMTP id
+ ffacd0b85a97d-48872ad7729mr4973566f8f.53.1790266833368; Thu, 24 Sep 2026
+ 09:20:33 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CCB0F140006
-X-Stat-Signature: 1iu9wjoxwtxpuwrgdd3tpzgr5ckzf5jd
+References: <20260918180241.3424851-1-nphamcs@gmail.com> <20260918180241.3424851-2-nphamcs@gmail.com>
+ <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
+In-Reply-To: <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 24 Sep 2026 09:20:22 -0700
+X-Gm-Features: AclHuK-lGJJsKLxr6Qb-y2IvmlUpoUB7yhNg4AVw4NM-rENBoqlMKdnr9zU6afg
+Message-ID: <CAKEwX=OP3Gb9sVOvch+p4j7quzgy-rUY=UTZau5ztMj7heJJoA@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device infrastructure
+To: Chris Li <chrisl@kernel.org>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
+	baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
+	skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ngfshp7kr681mh1hhfffqbj8odwjpxa9
 X-Rspam-User: 
-X-HE-Tag: 1790266766-951262
-X-HE-Meta: U2FsdGVkX1+TDWee9hL4Xgf70aCE1Mi9SzGqaqo/J7QbN6cqrtbK01Gqgk+QDBjTVxuvg8kXzxE3Ery0agT9vugiR3ocamC3tCThEqIEk7jHcZHPv1G4NI7ThKy0eBYF9DbMTWFxY9isozQQI+MyRkatmdAjsTeUZg4wVDisO7UI3gZFpj0OG/v2EJ+QUW1PwX5fem5WuNxQTb6V9VZEq6A6hEm728tRSBBQKl1NsCX/wA9NRdNIqlw/uwWU2cXjgkUh8CrWtmxWUDGfGIW7VJKf9kXMBEw33vbYjVAXzLrC4b3yOWaARlMw/3KZuJMBnpara7IRPOkyfrgIGmAZL9hypXF3QaZDWbuV3NWmpLigpb+q7rjYOJ6nxAGkKprlf5oB7yGH8yw2GJ3kum4eIgMOLNcHGNvIuTIOn0jxZ6HIwrBIfbx9h1gUgBftF7aJUEPeyPeYJwsTOqHlwQ0jrTBNbOVhpx8we5s7ltiAfZSo9At3CqlSFNruTmdK6YbtN/4qbsO32XiRTPVBnsQWMmb80yRiNJ/0C+PFibqEAoF/8cBB26Iwr90EyHVIYVCwF0iHRAajnTZ9GsiOwtSNAuDXOxXbLGX1KFzOIIaEcmSHgzx+0fMrtgQcORFRPaUU9KqY4rYiKKcR0B9CsAmywrSixVjZPs3e6jMzf7XIg4l6W2A6aTpkxdRQ9DKne2TQNOQpCRZErI3dE95j4IjJmjOqROtrOnleziKOfL7DwndA2JHFB/XBMmgKD2X9lit3FSLwn9fSxLruPlMisO7cTwRCfPEPoU+PsiG3IilrSDmqHhpRrod0NaRYqRySnBGAsQKtU6VUxUcVooS+SAzea1/c9h5MRA2tEO7lYZ+zCl/Hu0ZZST/2hQBRZl/WXx0A1981nlaeUFHR4tro1Ci+3j991Nl2gojLEETPKn+YepMKVokIsouyiShhvPff34Xvy0nvTZxdsKHqpdzvfyS
- uIX7AZjP
- SqHvEr5aegXM1SA3TvJmCAD8Fjd69FGre/6Mut/3Cj0hoohDsfA7xiMHPBqtm0eTJQFhCZwrdjGpylTjOLK3E1G3UuvuDcCSFmTamOartKkANXmi9bFHDa7xNAAcocQWd/qpauEZMZJJhvygaEBeaie9Whwbunf3y85hEbCp5+keSDWjmzGAkktJS7/CvFy+2o3Igh/FsQ3q6Z0za+JKEcVN0hnkgMb91DC3z1H8ji0gh4KlaIRzukHD7xJ04HjClq/wfmDSxXU63zLGTVGB8C8CqrmlgFCe0VyzLBXhdf6lQsWhkm9BSQup1kH7ekRgxYWErcj4B38nkhczRywVxGjjlhJ0XOJdqNn8oSnHjoQ/RdfOYvIdNUXgU1A==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3B74D8000B
+X-HE-Tag: 1790266835-366152
+X-HE-Meta: U2FsdGVkX1/SukSG8ILKegI4/ThPDNdjspIYsM59QH3VoLE7LEOy2UdlO4maXqFs2tIW3R7JjnyZkO5j6T0EXCAKpWb72ZPEdE+kPiQQaSiDS/e5TDICFvIccstFkx8eR9euFSyLXT0GMS9ASRoCvpATkP0lF2ohaSAAHDU7ughwhK2qhjxAteBDd1T4BkugvvOBVTBZDD2Hjb8aQF/2GX69GbYVw9FwuBuJgxJWCyvG1uHBLtOo2boEX5XiXZ0f8fTJykOc7f38VzOPMwrAmEUG53sFZq+HuybOmHoQq1Isu3gCnaTcgIhBhItlk6KTVD2mtYCpS4iocoA0a2Fe9elf7a66N3dnzK1iISTWlDI1KtEqTcy8K5jroH4IlcxVe8lMB7+RkptHqSjpA1mK/ME6cXh9aAWzvxCwXKr5bC8723PjEGc7PSxidIHF/lEkIPbQonQ/e2kpYjQcV3qi6JGidgk4c1joas8JOjzLqTUWVw5KoOzUryzWRTqEqNxOmOfh0juVTWKDBQhlzCDq7cgEHXlVikFD56FICBr6jZfdmfFumz77e//TJgZT7q56bP1cHpoGHFaoYB32PuIzj2FgM27JlTjdFT3sl9PKOyAtAkBz4oVY7wiun/lms5lAOSbrrsV+6LK6s+JeETitC1TLpETiN1XN8Xe/ZW39F84MwObAOBnCUna7E3r+KLy/QetB7h36K6/2QXQfEvcHVZagWSnTKAHmkftF9NumO9JoRwSYsEVevPC3+ga2Yz/EhGK66x7NhW0Y9aoCatQk6XbYPKlgqHjbhfpAaOKyMH0Qr6iv4SL/R2DhS3JRnzqWpYI/mJU7JkRHsl8u++cK4GOig4wl4LUQ4UNMiHzPp3lhQStDuTwei4sC0GAf+TG8jyhcdlHMUZ6vLD9UMGuTtUFLJYczbzmwJi7JopzVNoxsWG4hKqEs4TY5+Lu4mY0YBqO1ey4chDvLLKFC2u3
+ ojDg5S7R
+ 7k78DEW9v8eOSxkwWHQSBLILF80b/dnFbH0+ex9uattmO4yYRasmosHXFCca7ng0Fd8HNO6E/25Vu48pha5B4oxBFwENGWCmQFixbh7mEmFMMs67RK5BhdFuLNDAiMvnS6bp11MPx8B5O2Pwv5tIV3o33JY4AUMpS4pSVVw9L/+3rnHAl+liitY3dUcE3/CTuL0slB/iNsga4RvGWXyN8oDScdfbhnrBhzB0c+LdexO3eTrCVALRMLP/1Jko7A3U82y1cC5i9J07F8OhFKrBT6fZDVnGtBwCAxQnW6q2mPQz7NlDG9nAzF1puORRoM07tBUAE+yFN80MDpZ4efqQNycIIuZSTxXBDewa79d3W1p+tqHyelESyXHxwxsV8pv3pkBecfURcMl1hK/DCXcDw77peATjzC45syPkI3+zsAaxZb6u5PrZVrpis2FIHrfPBowXv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,105 +152,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 02:23:07PM +0500, Mikhail Gavrilov wrote:
-> Booting with a boot-time function tracer and a filter, for example
-> 
->   ftrace=function ftrace_filter=pud_free_pmd_page
-> 
-> panics on 7.3-rc4 as soon as the tracer starts:
-> 
->   [   23.531178] Starting tracer 'function'
->   [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
->   [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
->   [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
->   [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
->   [   25.981629] Call Trace:
->   [   26.125727]  <TASK>
->   [   26.413912]  ? pagetable_free_kernel+0x20/0x120
->   [   26.990283]  queue_work_on+0x97/0xf0
->   [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
->   [   27.566662]  cpa_flush+0x394/0x620
->   [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
->   [   29.151729]  set_memory_rox+0xa2/0xf0
->   [   29.584018]  create_trampoline+0x431/0x6f0
->   ...
->   [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
-> 
-> The boot-time tracer is started from early_trace_init(), which runs
-> before workqueue_init_early().  Making its trampoline read-only splits a
-> large page, and CPA collapses it again right away.  The split table has
-> been a kernel page table since commit 9e4a3ec3411b
-> ("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
-> collapse frees it through pagetable_free_kernel(), which queues work on
-> system_percpu_wq - still NULL at that point.  That commit is correct in
-> itself; it only lets CPA reach pagetable_free_kernel() before the
-> workqueue that function relies on exists.
-> 
-> Keep putting the table on the list, but don't schedule the work while
-> the system is still booting.  The next kernel page table freed after
-> boot schedules it, and the work then frees the early table too, after
-> the same IOMMU flush as any other.  If no kernel page table is freed
-> after boot, the ones freed during boot stay on the list.
-> 
-> Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-> Link: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
-> ---
-> v2:
->  - Keep the table on the list and only skip scheduling the work while
->    booting, instead of freeing it directly (David Hildenbrand)
->  - Say that 9e4a3ec3411b is correct in itself and only exposes the
->    problem (Lorenzo Stoakes)
-> v1: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
-> 
-> Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX, lockdep and KASAN
-> enabled, on 7.3-rc4 (fe2ec83746e5) with the same unrelated local
-> changes as noted for v1, booting with
-> 
->   ftrace=function ftrace_filter=pud_free_pmd_page,pagetable_free_kernel,kernel_pgtable_work_func
-> 
-> The boot that panicked without the fix completes.  The table freed
-> while the tracer installs itself does not show up in the trace, since
-> the tracer is not live yet at that point, but the first kernel page
-> table freed after boot does: systemd-modules-load freeing one from
-> __cpa_collapse_large_pages() schedules the work, and
-> kernel_pgtable_work_func() runs 0.8 ms later and drains the list.  From
-> then on every pagetable_free_kernel() in the trace (660 entries, none
-> lost) is followed by a work run within a few milliseconds.  So on this
-> box the early tables wait until the first module is loaded, and no
-> separate drain is needed.
-> 
->  mm/pgtable-generic.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index b91b1a98029c..f7f504f57914 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -444,6 +444,12 @@ void pagetable_free_kernel(struct ptdesc *pt)
->  	list_add(&pt->pt_list, &kernel_pgtable_work.list);
->  	spin_unlock(&kernel_pgtable_work.lock);
->  
-> -	schedule_work(&kernel_pgtable_work.work);
-> +	/*
-> +	 * The workqueue may not exist yet while the system is booting.
-> +	 * The next kernel page table freed after boot schedules the work,
-> +	 * which then frees this one as well.
-> +	 */
-> +	if (system_state != SYSTEM_BOOTING)
-> +		schedule_work(&kernel_pgtable_work.work);
+On Wed, Sep 23, 2026 at 2:18=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+>
+>
+> There are too many swap_is_vswap() in this series. It fragments the
+> code path, making things harder to reason about. Esepcially around
+> locks. I count 22 in this patch alone.
+>
+> I consider this the biggest drawback of this series. This
+> fragmentation of the code path.
 
-Maybe we'll just skip collapse on boot?
+This will mirror my response at [1], but I'm responding here for the
+record and for your convenience.
 
->  }
->  #endif
-> -- 
-> 2.55.0
-> 
+It is needed because vswap *is* a special device, with its own
+requirements. If you don't special case-it, you'd get undesirable
+behaviors.
 
--- 
-Sincerely yours,
-Mike.
+Let's take Baoquan's patch series as an example.  It treats the xswap
+device as just another swap device, without any special consideration
+for it. Which creates several problem:
+
+1. At allocation time, cgroups that disable zswap might get an xswap
+slot, because you don't do any check that the device you allocating
+the swap slots for is xswap. At swap_writeout() time, it is *stuck* -
+we already do the unmapping step, so we cannot reclaim the page.
+
+Ironically a physical swapfile backend could have bailed us out here,
+but it's not in that patch series yet :)
+
+Vswap both has swapfile backend, AND allows you to bypass it if the
+cgroup disables zswap. Both involves a bit of swap_is_vswap() check,
+but I think it's worth it :)
+
+2. Per-CPU allocation caching: since all devices share the same cache,
+xswap will invalidate the caching of other devices, and vice versa. It
+would be fine if the these devices are interchangeable, but as noted
+above, it's not, especially without physical swapfile as the backend
+option. So you're forced to taken the slow path more often.
+
+Vswap gets around this by adding its own per-cpu allocation caching,
+
+So by being too lazy and not carefully distinguish the swap devices,
+not only does xswap not work for the writeback use case, it cannot
+even work in deployments where some workloads (cgroup) select zswap,
+whereas others select disk swap. It can only work if you intend to
+have a single class of device - either virtual/xswap or disk swap -
+but not both.
+
+Maybe instead of just grepping for swap_is_vswap() and throw your hand
+at the complexity, read the code and try to understand why it's
+necessary first, then propose simplifications if you have good ideas
+in minds.
+
+>
+> This is questionable. A vswap device does not go through swap on.
+>
+> This changes the behavior where swap devices always go through swap on/of=
+f.
+>
+> I wish the swap device went through swap on to be able to start swapping.
+>
+> Chris
+
+What usecase would necessitate the need for swapon/swapoff interface?
+Other than just trying to shoehorn it to an existing interface?
+
+I've expressed why I dislike the interface in [1]. Other than the
+sizing aspect, which we are already discussing in another thread,
+priority also makes zero sense. You are literally exposing an
+interface with only one correct answer - what's the point?
+
+Justify your interface choice with real userspace use case, not just by
+conforming to the status quo.
+
+[1]: https://lore.kernel.org/all/CAKEwX=3DPEEkYiNRaVhCuM4E6mxB9huPKfkDa4m62=
+VMTzedg1oYw@mail.gmail.com/
 
