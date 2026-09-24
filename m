@@ -4,140 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2962C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:19:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FDDFC98310
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 08:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBE296B008C; Thu, 24 Sep 2026 04:19:48 -0400 (EDT)
+	id 65C326B0093; Thu, 24 Sep 2026 04:20:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6F9E6B0092; Thu, 24 Sep 2026 04:19:48 -0400 (EDT)
+	id 60C746B0095; Thu, 24 Sep 2026 04:20:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D36CD6B0093; Thu, 24 Sep 2026 04:19:48 -0400 (EDT)
+	id 525576B0096; Thu, 24 Sep 2026 04:20:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AAD046B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:19:48 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 92B6512024E
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:19:46 +0000 (UTC)
-X-FDA: 85247957172.12.03317FC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CB0BF40009
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:19:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+gQShgo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 31CB46B0093
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:20:51 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BCC7E40279
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:20:50 +0000 (UTC)
+X-FDA: 85247959860.24.0FF9B57
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7F7121C0005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 08:20:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=liHlDVfe;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790237984;
+	s=arc-20220608; t=1790238049;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j38sKxcUuo+v+Xf2oFDiECaiMijka26xvcA+axqRQxY=;
-	b=IlyEAZoo38iFFrCmlaXc6OT4y5c40m8ZkfFKdwDfLWcppGcHN1b4FJibNPcvXdmwptzt14
-	nsXGjPc8Y0ddiiSQk8+3EmFaPhNi29Wsu8w6LC426YDlB4gnVKKHKmS8/CucU6eQb0UTYC
-	Bqh2tyHr9zRMDrjLOyvJZUJxxaW83gQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790237984;
-	b=7unJ2eLAjhEVQb2ywtydDIVEOfK9yxlnnZR6dbOli8jXPca7ELoaxbOLtrm+JXCB5Wa+fM
-	ghwyT92eBBIRdubNPHQY/fE/3B6xIlV/73qbGqCUWB0FTrZjjg7eLKDUpcgFadbfdTt88w
-	zXRcBkVowe7DPRiU9VtBeZRX8PEnZn8=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=zxzIZ5mEDu53hBL9tVtFRMsrCTu/a/cXLKfvDqCdxFU=;
+	b=pznPrRkA14dYV8/9cS0wdLGs06NkkVqQsZqeFt9liDYBiLZAI+NFTzngFTkuUf6kpH/aT/
+	pr/+6Vcby8VvnQC+GsOWPbAbVkerdavgswNDBj3bO594wXgG9Yf45Fy8mlXq3T9bt+hDIa
+	bmbrxVvHfTaJiepa1mvz/ra84o0ErRA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n+gQShgo;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A0AA601FE;
-	Thu, 24 Sep 2026 08:19:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BEF1F000FF;
-	Thu, 24 Sep 2026 08:19:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790237984;
-	bh=j38sKxcUuo+v+Xf2oFDiECaiMijka26xvcA+axqRQxY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=n+gQShgouLNB4db+aIgFmU0669lvvGgyqD5kLZaf6uVg42XzHAnFT+lXpFJw9bJKb
-	 EO1Bjtpb6VPH/M/4BVZKIF8ezAVotbvVw8WTP+tW7F7BQrt3if0KdoQ6pQ47M1GMdH
-	 TXRFzeOPvpjVJbZM7hixJhvVnDv+asJOWGsjGrSOyCVwDX7k2TE0Iqih5KSeCNZ1n/
-	 savoOMzeKelYBBa5rpykQ3V84ZCeIBG69Sj7aXKVzhDzOdo1rW4d1WvT8pPU+PZroG
-	 ppFv+Rwl1qgTNwaPNx/AA9iHYcGixy3TEbTwZAglGLRyta1LNgIqUlzPACmUYjrV0Y
-	 VrBK2DVCZG97g==
-Message-ID: <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
-Date: Thu, 24 Sep 2026 10:19:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org
-References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
- <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
- <arP0-maAEi5yeNnl@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <arP0-maAEi5yeNnl@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=liHlDVfe;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790238049;
+	b=t6vnUgyZp9LepRHnvC06WFih2GVaiCr8GVbQ/F7v2Wp+D+BlCutwgegMHr6ECjzgonFway
+	S8lEnjMMzxwh9//zMsmLIhJCg6YzzA3BVjZDe6MTE7yagAu6PHlk/XFdlM44DgGQ01mHXv
+	V8wvw3ejMqcYYOoiXty6/qzLPiMzfg8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1790238037; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=zxzIZ5mEDu53hBL9tVtFRMsrCTu/a/cXLKfvDqCdxFU=;
+ b=liHlDVfeJplrJxnGGALb/qZrN1P3+Z3dTZWq/WeU9Sr0bpc5huKbS5L1bmUObZeog396+e
+ KspW6oYqjpZjYkgTzITtAm4nIZBrCLdekd+YMLubNIFCht0N/Ok69RXl6p9c6o0bcg/DWb
+ hcbeLFAsvXhLJ7O1n91LqFg+0ogmxVjb6Z0dBc0HdrgdSEQWU9mU9F8qf6LzzlKVpbhD3F
+ 9TULEuVfSCq3L+KjIgIeDuRKjtt3WDQut10K/wGXmkgYqV+mG6Wg4xrq8EBLDKOJ5RVMP4
+ 9XmATAsmPWB3wwiNt8wP6XmAL6gOE3qoiq5o0Jn+2Z15dUFc6z89jezs4olY8A==
+From: "Li Zhe" <lizhe.67@bytedance.com>
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CB0BF40009
-X-Stat-Signature: ae7zxfzrnm59h57eojgusf4jjnqdc44r
+X-Mailer: git-send-email 2.45.2
+Subject: [PATCH v3] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+X-Lms-Return-Path: <lba+26ab4dd53+332290+kvack.org+lizhe.67@bytedance.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>
+Date: Thu, 24 Sep 2026 16:20:04 +0800
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<aiqi.i7@bytedance.com>, <lizhe.67@bytedance.com>
+Message-Id: <20260924082004.82450-1-lizhe.67@bytedance.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Rspam-User: 
-X-HE-Tag: 1790237984-733605
-X-HE-Meta: U2FsdGVkX1+F156nFsQKmSrae6oHiWZ+n6ZyjTIbWBF+UbvwTZ+1zQ8s/pFd8I93cE9V4RtFEiw1srx/XTR4yjDdOVVexqyveTzgJwXfCABdOph6hoijSpN9DGDyagh/hklwG/sLYuJEzIeCFn0SsC5yNA+Pi9kbg/+kHDHBepVS/fEusOIRGiZz58aLUe5v1C2kyHVtKFeGDDYNiVXQHBnSqIj4p2kMDOrVXz+XdEs1BWqTMT0v2ZtMN7SHh1VZ16ghOiY0OwK0LuYxlM8OqgmS+90a6vBtfHDAfqQuEFP7vSXZBfqKxg21P4CUYY9LTKKacB3YIPnJ0d5UW7SaVQXHTeqpj8lwTbfhksDdfgCfIcZ8wea82F07hRGdOcDiaG5KjWsO7Hl9FBnE6ZRIS/GXOYj+kIs86JaaK5+N00Lk1yOlFd3IfeW9Xte+knf2D1cDWXDltAUqo9vkryx4RNRKIoP8n+3f78BDk+oKqtnFCfgW6jNor/hxpQoHrFPmRGbCZOJE4KcfC2BdmkH/BsCSG3Y/yDo3BuSGwQx4czPdTkeXOK/rlKwCgt93QRps9B1bAFA5MbeBPFRL5wjelAgSzmHd01PutuiN9R3AguYCE2X+IddJtyks/lexXJhvMqcxmHX4oM7S+6ffyQGokUNHG2FzNl4wA8fs3jz+XqBTB7pTxEvv2R7QeNlIiMe8hZjEIrXyK/gU0cvwAVmtbBo7IxVHOL0egj64wH15SzMvdJy0PyEX7mn6G3pUh94GEokcK3RTVrKKkmgxbeoyP/PDPE2oQuyLlppy1Jw+/9Ns0pRYLUybjRGZi0Naz1tyaqtWWtSCncgBiROFXjKzv5dDCNhx1jCUQn4ziZzA17hbDchq6CkuNftON/TedoM/5EUnzdtErWq4rwV9l+wrZuufx6+NnIJYuHp6fWF9wk8cdicmH56YQbf/2vB5Vt+gZG/vjic9biTxAAXMW4a
- tGNMSL0w
- gQc9l+mEOthAy/lxGjnvd47t5RScKCryCCD0GHsttc3aoF306h9GlMk1TZYd/wr9TI0rUfCtUHh8iwYbsfNTClLblVetGv+DqfldrZTTZCF3y0zDHwwFt3MeZQWB1FkPfTl4q9mxay6p0E7AYrg+KyfLTeX1vSCH2Ru0VYYnYHA+KxyTJlWQYRgMGymrUFKicVSTelFVt7yDhUI/AvWQNc0lghpfqlLts735Z+Infy+2Z63Wy+V52qMdnXgXx1XR1QN/kQy4O09AtHlLIaRl4cCyCLPxAb5oVVCjH
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7F7121C0005
+X-Stat-Signature: ouqnjmnad5x9q8hmkc97fmb1byb8416c
+X-HE-Tag: 1790238048-970953
+X-HE-Meta: U2FsdGVkX1/S6mI4dk8L0YMeLfzXDQKUHKMTJzAifaxy1kO8Ax6/Ondgco0Z0UzUEyFzN2FSpIg9fMzMNIloiQYrp+rhBpK8mRD6dF+LZ0Q1OapeDSu2RRm6Dc5AeGSPDiby26X5ZNBFyHRJCLXfOQgJ5WDwmvOPHXIA2aNDSkz6VIxsT3vivbMVEPasgC7YMehSM3fv2xCHgZNfNUt1+cigwMNkjiVTKkKnMBZWGjhVHG6zjh0qeEJb8Cnk8AhuMjmvGWH9asxJTk9IdAwU4hzwwBmcpb+i2Mo5F68Ey8TKSTHvMdxD+nZ5yLeevJf3DVV+tFwshOAjjsTzpgDI8jyrivRW92aMFO01zKAoxnMzPQF3S8m97yHqc3QcJpzB9lSP9PqQ7/jcMZ81Y8RW99J/l3IgZuC6Mb8mORqcL/5ZrHtrT8CDfH5PNcIBngyjPT5koo0RtfkOuABFn0kpdI0dv08owsYvdibz1flbT7HlF059dJQ4OPDnZOsaPXVUUapFgA09/S0Ilo0r1gUoFFNXLBUE3pOp28+9ejVV/4t9mcI/ZffXNLrnmS6JnBUxQ2nzVXpQL4ZOurPCbK89e9A+ryFUY2Qg/20Y2A1QyY8trhaMtPYo+KsHAxIPo3yl62R1g+Ixh3bGaBxdKNEkHK67QLqzbU/bj/jc6kZc9UtAP5tGm9YyJFXoIMXx61sOGKIvIIewUImmzNf0yjTo5Xp/M+xFPgwPY7ewd1xIrf+XoyRoMA8s3xOKrhhVD3eKtU9Z0KRwmr4letJQXDFPRP4kWqAuk1lMukWHXxF9+wzolIZz7F+DzTOpRReWTIP9wZkj9lFIMYTkOr4DM/IPuFFuQIUIrJzFyR86HiiY/mJ9NYT+hQNK8oirjTS5+B9EmYbWmOVHphIj54oHLO4/uvhAchNgpe7/SjvLAo/+c+I8/0yGbGO34O72UDJ53hMRp3W3UqrHlTqB/lGZkbc
+ il68An+0
+ TgN3fTIeiz7eUk7qsKHdGCOSuq+957ngFIepOeH4QtFXMcLgqFNMDdI+y++I7zwytKu+xn7TgPHdd3RkUSiA2C37n9BOqx/3H0rL/gZMkqt5rk9sPXbPXRxGI86Uit8W1cU0mYaFtyMN0zDuwq0aa3s1EqOJLzW/BswlPP3+8qS6onrO0y+l+RGtEsDKlorBUmA3eOi2SlyBfZp53b9XEFjxHDek1yRQuNFAJoTG6zqbyIyJ5DSZ93qvbJ4KJ3ZYFh6hMWP8XAbCj2qsgPUVUh1obuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,117 +87,180 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 17:49, Mike Rapoport wrote:
-> On Wed, Sep 23, 2026 at 12:31:26PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/17/26 08:07, Mike Rapoport (Microsoft) wrote:
->>> The pages protected by KFENCE are removed from the direct map.
->>>
->>> safe_copy_page() temporarily maps and unmaps them using set_direct_map
->>> APIs, or, when the stars align, even using debug_pagealloc_map_pages().
->>>
->>> Neither of these APIs cares whether it is a KFENCE page and both blindly
->>> perform the update of the kernel page table for any non-present page.
->>
->> Agreed, we should route this through the actual mechanism that modified the
->> directmap in the first place.
->>
->>>
->>> Ability to use debug_pagealloc_map_pages() to remap KFENCE pages when both
->>> KFENCE and debug_pagealloc are enabled is an amusing coincidence.
->>>
->>> But with increasing appetite for using set_direct_map for hardening
->>> purposes, it becomes too big of a hammer to enable saving any non-present
->>> page in the hibernation image.
->>>
->>> Another gotcha is that loongarch that does not have a direct map at all
->>> advertises ARCH_HAS_SET_DIRECT_MAP to allow coexistence of KFENCE and
->>> hibernation.
->>>
->>> Extend KFENCE with a bitmap that tracks which pages are protected and
->>> provide kfence_force_mapping() and kfence_restore_mapping() APIs that allow
->>> forced mapping and unmapping of KFENCE pages.
->>>
->>> Use these APIs in hibernate_{map,unmap}_pages() for KFENCE pages.
->>>
->>> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->>> ---
->>>  include/linux/kfence.h  | 29 +++++++++++++++++++++++++++
->>>  kernel/power/snapshot.c |  7 +++++++
->>>  mm/kfence/core.c        | 52 +++++++++++++++++++++++++++++++++++++++++++++++--
->>>  3 files changed, 86 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/include/linux/kfence.h b/include/linux/kfence.h
->>> index e5822f6e7f279..33a126cb6d1b7 100644
->>> --- a/include/linux/kfence.h
->>> +++ b/include/linux/kfence.h
->>> @@ -222,6 +222,32 @@ struct kmem_obj_info;
->>>  bool __kfence_obj_info(struct kmem_obj_info *kpp, void *object, struct slab *slab);
->>>  #endif
->>>  
->>> +/**
->>> + * kfence_force_mapping() - make sure a KFENCE page is mapped
->>> + * @page: page to map
->>> + *
->>> + * Check whether @page is protected and map it if needed.
->>> + *
->>> + * Requires: is_kfence_address(page_address(page))
->>> + *
->>> + * Return:
->>> + * * false - failed to map @page
->>> + * * true - @page is mapped
->>> + */
->>> +bool kfence_force_mapping(struct page *page);
->>> +
->>> +/**
->>> + * kfence_restore_mapping() - restore mapping of a KFENCE page
->>
->>
->> The name is misleading. You are actually restoring that the page is
->> unmapped/protected?
->>
->> 	kfence_force_mapping vs. kfence_restore_mapping
->>
->> is confusing.
->>
->> Can we find a better pair of function names that describe what is actually
->> happening?
->>
->> Maybe something along the lines of
->>
->> 	kfence_prepare_copy_page
->>
->> 	kfence_finish_copy_page
->>
->> That rather expresses what the caller intends to do.
-> 
-> Naming is hard :-D
-> 
-> I feel that _copy_page() is to vague and adding hibernation there is to
-> mouthful :(
+Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
+PMD sharing is possible. That is only needed when huge_pmd_unshare()
+actually detaches a shared PMD page table, because clearing the PUD
+invalidates the whole PUD-sized virtual address range.
 
-Yeah, I wouldn't mention hibernation.
+For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
+a shared mapping can pass the "PMD sharing is possible" range test in
+adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
+not currently have any shared PMD page tables. KVM then receives a 1G
+invalidation for a 2M operation and zaps unrelated secondary mappings,
+so the guest has to fault them back in.
 
+Avoid this by tracking active PMD-sharing attachments per hugetlbfs
+inode. The count is incremented only after huge_pmd_share() successfully
+installs a shared PMD table, and decremented when __huge_pmd_unshare()
+actually detaches one. Since huge_pmd_share() can run concurrently under
+i_mmap_lock_read(), use atomic operations for the count. A zero count is
+used to skip the conservative notifier range expansion only after
+excluding concurrent PMD sharing with the mapping write lock.
 
+On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
+improves P99 QPS stability while punching pages, reducing the QPS
+degradation ratio from 7.09% to 1.45%.
 
-> 
-> And these could be used outside of safe_copy_page() someday.
-> 
-> How about 
-> 
-> kfence_set_page_present()
-> kfence_set_page_default()
+Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
+Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+---
+v2: https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.com/
+v1: https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.com/
 
+ChangeLogs:
+v2->v3:
+- Rework the sticky state based on Andrew's feedback: use a per-inode
+  counter of active PMD-sharing attachments, so files can return to the
+  no-active-sharing state after PMD sharing ends.
 
-Maybe spell out "direct_map" ?
+v1->v2:
+- Rework the implementation based on David's suggestion: remember
+  whether PMD sharing ever happened for a hugetlbfs file, and skip the
+  conservative notifier range expansion while it has not. This avoids
+  the per-unmap page-table walk.
 
-kfence_set_direct_map_present()
+ fs/hugetlbfs/inode.c    |  1 +
+ include/linux/hugetlb.h | 43 +++++++++++++++++++++++++++++++++++++++++
+ mm/hugetlb.c            | 13 ++++++++++---
+ 3 files changed, 54 insertions(+), 3 deletions(-)
 
-kfence_set_direct_map_default()
-
-But yeah, something along those lines is better.
-
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 7611a8470ea26..78e27ce0a6f63 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+ 		simple_inode_init_ts(inode);
+ 		info->resv_map = resv_map;
+ 		info->seals = F_SEAL_SEAL;
++		hugetlbfs_pmd_sharing_init(inode);
+ 		switch (mode & S_IFMT) {
+ 		default:
+ 			init_special_inode(inode, mode, dev);
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 16c4c4caa126c..6b4f92b7f7ae4 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -12,6 +12,7 @@
+ #include <linux/page_ref.h>
+ #include <linux/list.h>
+ #include <linux/kref.h>
++#include <linux/atomic.h>
+ #include <linux/pgtable.h>
+ #include <linux/gfp.h>
+ #include <linux/userfaultfd_k.h>
+@@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
+ 	struct inode vfs_inode;
+ 	struct resv_map *resv_map;
+ 	unsigned int seals;
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++	atomic_t pmd_sharing_count;
++#endif
+ };
+ 
+ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+@@ -516,6 +520,45 @@ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+ 	return container_of(inode, struct hugetlbfs_inode_info, vfs_inode);
+ }
+ 
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
++{
++	atomic_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0);
++}
++
++static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
++{
++	atomic_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
++}
++
++static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
++{
++	atomic_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
++}
++
++/*
++ * A 32-bit counter can theoretically wrap, but doing so would require
++ * billions of active PMD-sharing attachments to the same inode and is not
++ * expected in practice. Treat any non-zero value as active so a wrapped
++ * negative value still takes the conservative notifier range.
++ */
++static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
++{
++	return atomic_read(&HUGETLBFS_I(inode)->pmd_sharing_count) != 0;
++}
++#else
++static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
++
++static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
++
++static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
++
++static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
++{
++	return false;
++}
++#endif
++
+ extern const struct vm_operations_struct hugetlb_vm_ops;
+ struct file *hugetlb_file_setup(const char *name, size_t size, vma_flags_t acct,
+ 				int creat_flags, int page_size_log);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4f6f58bf3db6c..cb27c06d1f7a7 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
+ 	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
+ 		return;
+ 
+-	adjust_range_if_pmd_sharing_possible(vma, start, end);
+ 	hugetlb_vma_lock_write(vma);
+-	if (vma->vm_file)
++	if (vma->vm_file) {
+ 		i_mmap_lock_write(vma->vm_file->f_mapping);
++		if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
++			adjust_range_if_pmd_sharing_possible(vma, start, end);
++	}
+ }
+ 
+ void __hugetlb_zap_end(struct vm_area_struct *vma,
+@@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+ 				start, end);
+-	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
++		adjust_range_if_pmd_sharing_possible(vma, &range.start,
++						     &range.end);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	tlb_gather_mmu(&tlb, vma->vm_mm);
+ 
+@@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	if (pud_none(*pud)) {
+ 		pud_populate(mm, pud,
+ 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
++		hugetlbfs_pmd_sharing_inc(file_inode(vma->vm_file));
+ 		mm_inc_nr_pmds(mm);
+ 	} else {
+ 		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
+@@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather *tlb,
+ 	pud_clear(pud);
+ 
+ 	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
++	hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
+ 
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
 -- 
-Cheers,
-
-David
+2.20.1
 
