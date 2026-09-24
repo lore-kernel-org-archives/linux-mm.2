@@ -4,85 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE4FDC98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:51:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B91D9C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:52:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE0BE6B0088; Thu, 24 Sep 2026 14:51:31 -0400 (EDT)
+	id BBECB6B00A7; Thu, 24 Sep 2026 14:52:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB8506B00A7; Thu, 24 Sep 2026 14:51:31 -0400 (EDT)
+	id B966D6B00A9; Thu, 24 Sep 2026 14:52:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCEC46B00A9; Thu, 24 Sep 2026 14:51:31 -0400 (EDT)
+	id A85516B00AA; Thu, 24 Sep 2026 14:52:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4A126B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:51:31 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 35E8CA6833
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:51:31 +0000 (UTC)
-X-FDA: 85249549182.18.8B9ADF6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 75C5740003
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:51:29 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9TaPuWg;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 880AE6B00A7
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:52:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2F65A1C2D68
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:52:01 +0000 (UTC)
+X-FDA: 85249550442.20.04987BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5DEC7100003
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:51:59 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWev+vg3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275889;
+	s=arc-20220608; t=1790275919;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=19lgN71Gpsx5vFX/9xhZyr5Tn9Zwnud+YgNQwdRHAz0=;
-	b=KAlRCjZn9uvMW7ReYQsWImFAt3mrh6lIEXYCieo8IeOaqmqALgvNzN3CoYisnveXKeUrNG
-	+Fb7WuhtfaDGWIzc9KVj7JmPK6mGrh3dHzIPOPXI3rhO20pqAYgfLovy2a8JCpitZBX+CQ
-	hBj4NisiGmrdOaskSAvJ+1ocnLRxJSE=
+	bh=POlX+wONx1gCTE6Vq8TjSNhvRxCbSmUHbAHjJxxduJA=;
+	b=gb4ZI2mEoD7c5hEGYdxtuO9DILVTbtGBAJEzd4UPm4omalelDlltCHib5mA6MgtBelv+ba
+	XAokN9L9Bmtm+dX4oDPGhCTejKFqX77PnfbWXgjDthVA0zN2tpgGWhL680ID/SpNxFsMgx
+	3pcoA9m7ex+SgRfPgI69xTWSzFEzrow=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B9TaPuWg;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gWev+vg3;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275889;
-	b=Bphgk3+EU3b13JKHqecM48O1S9maoX1LHCc9SXNU60/bXcD9PmfbZaDssz2MG8VZ4e0uYc
-	jwEcg9+Uko6XWUbzeMRjgoySHj24hsY5iYkzKJHxnW7BqFi0MdPyNeTjcdeLD23ElIj9nK
-	SiAf7yv8XSpQIsPpKyS+iGbuqghKHa4=
+	t=1790275919;
+	b=UQtdkewyC8b8CrgxGWgJBISTOIbPZccFjJDCV+4q04eWkwFAtgXlTnYE55QcekYkgLIbHA
+	IWrAIqQQ3ghGYfIJqBTUeXkmep1dRy2UuCZEkayTt0kj0vcut7DJ9WtLruUGJPwYFReg0d
+	5XNzOoLjZy04jsfs/Dim/d8gAgyqnu0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DE605600D4;
-	Thu, 24 Sep 2026 18:51:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA4B71F000FF;
-	Thu, 24 Sep 2026 18:51:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C9E4343D84;
+	Thu, 24 Sep 2026 18:51:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D9F1F000FF;
+	Thu, 24 Sep 2026 18:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790275888;
-	bh=19lgN71Gpsx5vFX/9xhZyr5Tn9Zwnud+YgNQwdRHAz0=;
+	s=k20260515; t=1790275917;
+	bh=POlX+wONx1gCTE6Vq8TjSNhvRxCbSmUHbAHjJxxduJA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=B9TaPuWgeX2V6EXNOynhKmYXxpgBuhF0GO9GvEleV73ppMJ+4jg0gfKTK508nINu0
-	 y5E68P/eS0N1Nf2rY9y/C35ESNH3DuJHHqCrktyZKsEz142m40zL+RvZubdy2Bbj6N
-	 B0gGhz7zq8YO1mV19YDxCBqcO/vi5mSTd8odzb0MeZcOcB11UVJJtzGXMG2x4uJaSx
-	 J6Es0Ej/BiLSmH0sepF5PDeoQzTg3lpupc7vbO24JxIqjpYE92LknGL0hQWuXIc+2N
-	 lQWjUiD9QO4+Z4unk5ZVWj6SNX/rkJMzJgTrpEerfy+R/pvx/8bE5MjCg6M/22H1aH
-	 pbA958pAZJ98w==
-Message-ID: <c01aa1e3-f2cd-4b28-8e6a-8e8a1c36c641@kernel.org>
-Date: Thu, 24 Sep 2026 20:49:13 +0200
+	b=gWev+vg3aOUbjtwtT3U2+C2VyN7eOtcfSBJs3s8YonBNI/+ZZ7xc1mf6k3ukzx0PH
+	 Nb814Zy6qTVPFJpgHeTrhLWHbWJXlGYju1D2NrpmJPctR+FCbAJDal4gVTwnWwW2xI
+	 /MFTvB3yrPrnMGBOFMN4O88mm0HjIb4cEaoDuj+UNT4EqcaMrg/MKzFJ8w/H78bLVm
+	 fw9oOITb653B8XboMh1yPGGCS3ctD7pEsjXS9288YTGJolEMdjEWCUs65za7t3JhlA
+	 tImKWiPpv8xP/PxYxxQlkz6Rpt893lRL4IjOhyugIHB+gp0xVjpO+tnRCf3dnynPqs
+	 aEjtLEJvNH9Nw==
+Message-ID: <16d3f4da-cc35-4d1a-99c2-270fad68728e@kernel.org>
+Date: Thu, 24 Sep 2026 20:47:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org
-References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
- <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
- <arP0-maAEi5yeNnl@kernel.org>
- <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
- <arVJm8CiLG6vpy9-@kernel.org>
+Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing
+ while booting
+To: Dave Hansen <dave.hansen@intel.com>,
+ Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>,
+ x86@kernel.org, linux-mm@kvack.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
+ <6a0c2fd9-b2e1-40d2-b7a1-ba93cb3c53a3@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arVJm8CiLG6vpy9-@kernel.org>
+In-Reply-To: <6a0c2fd9-b2e1-40d2-b7a1-ba93cb3c53a3@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 75C5740003
+X-Rspamd-Queue-Id: 5DEC7100003
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: okhsyn9k9a6474wor5sjozuwoan9znb9
-X-HE-Tag: 1790275889-187791
-X-HE-Meta: U2FsdGVkX19NP8KZPS7Qp6JbKjnv2CcNOIWsa8AbkBVBmVZ23JN2EKqTLRHz3it0/nyJ3e+eUYfDInmB7hDK46AZyW3veuVK9jFiwGTClMxL1U2Ky9mIWPfjLxq7Jqm9LmX9gP/Nk9+bNwSoyC9nZF7/RwY4FGgi7pFKDiLaE0EwUmAqkLawyg0qYs4nT3HViCTJoyv9BJL7Lk5O8avXgi6mW7UdhnQlj4iqEoepcPinK1jf7YvPAeP1O6VL6E1s9zfPuEQ4jQ7NB84EtmPETGWJ/F9XDqriz5cO+BAIA6Lo6nuOZ0fUSb+CnQQSZJjFQqWC/AzvioD99YBt+FJHY3wvydi/XuKK6gzYCxBIJCoNY+kSoS0YvkJ16MwEu7kcBS6rQysOQk7g52o/T8yR2K0SmxBGGdeTvKdoud8WkZ60/B76Z1QXT1UG3MojUO+095/vo3ATr+iDFNFe7IwaqW/Y2LgpJQ6OOpc9u2taSSK8rABBfLKSlcB+OzStVqP8FrWIKxQh51cg9rQFXupk/aWvYd+9oOSEesm4vNJ0kZ+SslsuiqfH2V6mFo+nXLqK2V28UuxOzsndZv3jg0g1BRENTKQHG7Xy52SmX9wsMyStx1hlC1Wqsuzn0t4MTQbyeOM0StXuPIPbF6uEUUqN8MHGISazukZ33GnZ8OWOH2deq1nT/NQk3t5yJBFzDfUPYRDv+W0sQilIKTCKudwmBU9+4TWJiLr/HuZvbbNZksdkNR2Hl03KbdW7K+6adpOg2P6FLsCHURi7TMHBRsLM6fnAvwamfSyzLIQdpT+/ERtGLLeO5jVPDeLzoybC9037JFfJNS68x+5k2aIDqHhef3Nyp2WI0br1jeLMTc+6/WNrbyKbLUCdx1/Hnqd8vyse/nR/3Trvjlz8E906dpfAT/Fk36QptnbRXOWMrdL+mv6McDv49bBnkJadJ+Qb9FenUJcLvQVcm2D2FJMxEQT
- cnrwXmqN
- iLNg7QYEmVHtL56CEPXKiplLv18jLPgvVHD4+oNVET5NsoiBCjqYoiU8KK++cqJkQ7EOMGe14gyhizwPXdMMkXlhHlbFcshkrIx6kqHDME5Vn4x85z2yZY+w2MKIXpbx/a0mEpxVTE64htXo6k63/UOzLAd92HQtjYNwoQmgtYKMMdihdvv+XhYFRg7GLF8vzsxoq24uyO98fKeWSW0n7herSNlZpKDe9AVWnsnp2wBJm49UWvYEKUIbC4qozU0t623D2
+X-Stat-Signature: p5uu5qbwhr3ok1zhk7s5pi7etbip8r51
+X-HE-Tag: 1790275919-236334
+X-HE-Meta: U2FsdGVkX1+gZGtf9ovnS2NGwNz+u5E1iPKEtkePL7CCc4U74biBrSRjd2TWAgfdR40P1FHjWBmuOXdH++HSUByI07Djow1Hq/yfg7ZX/4UfYotgAXZ5IMIMCmTItx7CFKVKrhWeXBlieO9zxyAdqoP8cznPir+GbVTsMZWBIZ3GPNO3JxyZImNj+MKWoMZGgC+qN6qE9qW9N49GpCCaOR7tBJwCqaHgiHdtsa7U2+bGTifpIO1OWp0Gc6Uy2/NE7LiqrVRZrqtfDK53jHGrWVmU4yNtcOTrFy8Pq6PBpg9GXDBeLS+oWesBdIfCJzPzU6s1bxfAjqNhHUo5w8uMxchXTsTX0cA2Fb5ipk0n98lDC7iVzv3dL6tltp+ZCtTXPp3G/qhk8nelZ1NLCqqPhwbYYr3ixnCJM+dss68Wb0Wm6Np496nRdzntpwoA0MuP24v4s2Me6xH4lYsik78p5Did/Ssl+yUppqNB0wgCJVeLWV5//WVGYLW5e2ovY5h8J+3KcdAnLrk1KLvcCqZEhTsblpNO44ZSZnUS4Z5Wv1hrqPVUzGq1+z1ix1iVoSv8QNrMY8dkIIYCl6aPMghuZ3ENjQmanXqsH0f2ndxgCBIpnVsAV6SEk9C3LIU8P9S61ljkjZuCACI5hm++MOSLApzfBf9VKrMDTdJhI5CPyFUbGHXOaYPruCsxS/WWIjpg32bABYfWyvFOL2uFmbZFhTQ+pWd3IMdsVD4QMVSwvFyx2a4zaE1BTHa5lgaCWDd0fgEUWvNi+bDFT4HMYaVUWYQInZPb8xcIo2Ek3L/MOmv2ElUQX28qvm3o0CSqYtPECjaUZZB2ZeserlrT4sUNQDG8J25QX/ZTdHry9V514zGvKIst7jT9gkZWzlzVq69zI8Cwfve//ML4y1Bpr4YZv4PggQRoYN0pu64BWto4sSyRSwiqqZ/s1nnWcgZPONJ7e1Yget069En8nfI0Sa8
+ eFRddcKz
+ nXI5Ti/UVGT/iBI2W1Mdf3q954uiqZnPRR4+v4gOoAjlIpexnbyR4B7OYLc05IUUBkZP9w9XNkj5IuXQqU93l9xbFfWiP53s9Y0lJM1izdIE07jmDA1/sgYmK29zphqceUbMLQMNoDAyF4nNVON150OhkuhMYgoQJj3rNWLgzH3A1oDjC+m1eoWDoo52DdIVlzhen2OjLxqNTcVk/SorNoKhPVaRMHzco9e+v9omu17YNVYlaOLPAy5xhHaOteGG/az0klLoNP4/y3v0faGuQA+aFH91hdWNw5FUyugjkX9JB6ppDCD0PB1Yaw0bGFyZRYS2LiVyxwRQoqcNJAj3/FZtZMw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,42 +148,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 18:02, Mike Rapoport wrote:
-> On Thu, Sep 24, 2026 at 10:19:33AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/23/26 17:49, Mike Rapoport wrote:
->>>
->>> Naming is hard :-D
->>>
->>> I feel that _copy_page() is to vague and adding hibernation there is to
->>> mouthful :(
->>
->> Yeah, I wouldn't mention hibernation.
->>
->>
->>
->>>
->>> And these could be used outside of safe_copy_page() someday.
->>>
->>> How about 
->>>
->>> kfence_set_page_present()
->>> kfence_set_page_default()
->>
->>
->> Maybe spell out "direct_map" ?
->>
->> kfence_set_direct_map_present()
->>
->> kfence_set_direct_map_default()
+On 9/24/26 19:57, Dave Hansen wrote:
+> On 9/24/26 02:23, Mikhail Gavrilov wrote:
+>> Keep putting the table on the list, but don't schedule the work while
+>> the system is still booting.  The next kernel page table freed after
+>> boot schedules it, and the work then frees the early table too, after
+>> the same IOMMU flush as any other.  If no kernel page table is freed
+>> after boot, the ones freed during boot stay on the list.
 > 
-> They are not necessarily in direct map :)
-> loongarch does not have direct map, but still supports kfence
+> There seems to be an awful lot of chit chat about how and when the
+> boot-time tables might get freed. Like:
+> 
+>> So on this box the early tables wait until the first module is
+>> loaded, and no separate drain is needed.
+> Wouldn't a "separate drain" be all of 5 lines of code?
+> 
+> /* Take care of deferred freeing from boot: */
+> static __init int free_boot_kernel_pgtables(void)
+> {
+> 	schedule_work(&kernel_pgtable_work.work);
+> }
+> late_initcall(free_boot_kernel_pgtables);
+> 
+> Then we don't have to reason about it at all.
 
-Ugh :D
+Jup, that's what I hinted at in v1 and what Lorenzo replied to v2 as well.
 
-But where are the pages mapped/unmapped then?
-
-(I know, I should read your doc patch)
+(late_initcall vs. core_initcall)
 
 -- 
 Cheers,
