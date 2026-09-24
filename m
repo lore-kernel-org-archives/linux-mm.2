@@ -4,88 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C854C98310
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:33:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89B39C98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:36:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1E9F6B009B; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
+	id 3948A6B0088; Thu, 24 Sep 2026 03:36:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CEE96B009D; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
+	id 36C796B008A; Thu, 24 Sep 2026 03:36:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90CF36B009E; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
+	id 282276B008C; Thu, 24 Sep 2026 03:36:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C0F6B009B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:33:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10E1FC024B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:43 +0000 (UTC)
-X-FDA: 85247841126.28.92FE14D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6F2F11A0007
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:33:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhn+7D+e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2086B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:36:10 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 49B251A0229
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:36:10 +0000 (UTC)
+X-FDA: 85247847300.02.346B6F5
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf16.hostedemail.com (Postfix) with ESMTP id D7437180006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:36:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1b9WN7Ta;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790235221;
+	s=arc-20220608; t=1790235368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H5Q3QsVfjPbwHPredQl/X4zsaUQV/JInoABBnQSnw6Q=;
-	b=n+adYvq5EuUAhwuk+hFsf24BoZgPLfYtt18i6RV6N2JUTrLHuL+CFPh/aE2cr6+HxEo9uk
-	5OAmhz0li0LnocG8Xvv1KF+fa6XD7Kj6gCiN+P6dY/oahqF6K6mbQ8IizzP3TqILvXK95K
-	rvOXSgrPx/9CBIIwRs7YiCzUcSHiQwA=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cGA4BclgCv1i/IvFkHJAXUEs0wfbHqkLQowiIIB8YsE=;
+	b=PNGsl0C3QboVg/X/mUKQn8yVPRCzCXZlTuNgbKRfvnNyuhgpmAxZQ+luYtG6/n5OKc7LB7
+	14YhRcsm5jeTSxNjgx+tIpf3o1E8byem75Fkm+xva86wGNLt08J+elnbALGYvYim20ERUI
+	OpHJRiiXGRx/Tu30wwXpWLlLnlzLkr8=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fhn+7D+e;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=1b9WN7Ta;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790235221;
-	b=Le4x+OxsDd/Vi4HnHxxbEudgkxnEVrmfqUteoWj1natZewnU8t6Fkn/u6dpyagOEPGR5Q1
-	0lfCBay831EZ36VMgXat5wz5fZJ0VUCKJYuFE4YLC/m1PVJv2w5mATpfmLPvQj/QydWMW/
-	ZtuA3MbJCwtYVTGih6o3t0c5o1Iwt0A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A2904152F;
-	Thu, 24 Sep 2026 07:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536641F000FF;
-	Thu, 24 Sep 2026 07:33:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790235220;
-	bh=H5Q3QsVfjPbwHPredQl/X4zsaUQV/JInoABBnQSnw6Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fhn+7D+e67rHaXPDUh3AOVhf7mjueV2X8n8PyxcwU6Fv4wFT6wdhOGd/lU5omuykW
-	 kTROp/SUjTAWT7Z2enCDG26KMlM8sVn3XkIk3DELRNUNSymlZTstHKGXcG52suoWP5
-	 6WaYxmeRGb1+NKg5yUr7hZvMJW6iCjQkdEaJmQRwfNEBp+8GoR3aUbc1HB1iFNbMUE
-	 ahKcDVy+pEcMj/ES2IqXrD5OPvrYPwinxceNF3Y2qyw7uP0U9SvEBdHa5Mh90gle+3
-	 LEL84QuPuD032GGpvhalZOKIrt9mlmK1v12M3061d4YjSj5sDvtbC3ToV+yuz3uf6F
-	 eUpAQ2ImpC2Rw==
-From: SJ Park <sj@kernel.org>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/damon/core: preserve the caller's quota in damon_new_scheme()
-Date: Thu, 24 Sep 2026 00:33:36 -0700
-Message-ID: <20260924073337.7440-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <arRHl5blMrrmvhkU@gmail.com>
-References: 
+	t=1790235368;
+	b=TT7GOt+XU1XOFvHHMgQ1eeYLuH/mbf015I4ko9Otu7Y39BwUNI0CZpygDMPWcS0Ov2jBJ8
+	Wq3wYQM66jgY150a2fe3Qv+cdREfCcBjh6bQxA0TP+1MydNYSXNm1ThT6ypoh/7VGB0TxJ
+	IOSCmmAbiSKLLzQ0CAd11qGmwckqlOE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cGA4BclgCv1i/IvFkHJAXUEs0wfbHqkLQowiIIB8YsE=;
+	b=1b9WN7Tap6vm0/csUpWLxjCK7jZxPzWlkenA5HYWoo3km5g/8gjhEqjXwv+SHF04NYGTP481a
+	1JBpT4tNmWxq7DOZen+2Y19oOUGWD+Jxse3VRq3FeRbeyMMJ+c5d8gY1rGi1Ej4CguGiJH+W35b
+	iVtkDC08d4gSlIk7gP3TR7E=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hr5181gbNznTVk;
+	Thu, 24 Sep 2026 15:23:56 +0800 (CST)
+Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B42340578;
+	Thu, 24 Sep 2026 15:36:00 +0800 (CST)
+Received: from octopus.huawei.com (10.67.174.191) by
+ whupemk100010.china.huawei.com (7.152.184.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 24 Sep 2026 15:35:57 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<edumazet@google.com>, <kuniyu@google.com>, <pabeni@redhat.com>,
+	<willemb@google.com>, <davem@davemloft.net>, <kuba@kernel.org>,
+	<horms@kernel.org>, <ncardwell@google.com>, <matttbe@kernel.org>,
+	<martineau@kernel.org>, <geliang@kernel.org>, <mhocko@kernel.org>,
+	<roman.gushchin@linux.dev>, <shakeel.butt@linux.dev>, <muchun.song@linux.dev>
+CC: <cgroups@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<mptcp@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kselftest@vger.kernel.org>, <caixinchen1@huawei.com>,
+	<lujialin4@huawei.com>
+Subject: [PATCH RFC -next 0/5] net: charge socket memory budget to memcg upfront
+Date: Thu, 24 Sep 2026 16:02:14 +0800
+Message-ID: <20260924080219.1036588-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1z7kyczbc4w9ymixah3xenyx3e6opctu
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.191]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ whupemk100010.china.huawei.com (7.152.184.41)
+X-Stat-Signature: 4d1d6sig3msj37yx9h4ebapqo3sdswuh
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6F2F11A0007
-X-HE-Tag: 1790235221-621984
-X-HE-Meta: U2FsdGVkX18z7J+2UAqHGqS6gI8cRGC3MAKn7i0NwLUJYW0WnWNenw7eGD6iKiRswbsQxePKbX0Vh2esQGMt4P+gpjpN3WTlRXw8Mnx23U1+Ol9bEr4Mfw76wiRNAbl0CezSqeNBDlzlZD1WXtbyt41ky7x1cXOMfV1SLXMXxYZNjrwvVi10hiI3i+t1uxj/6uaEiQsrYzJ3H3yenOKZTOlpCSip2FRIvDe6DdBVvDb85DcQHr0LaROGl3io+Cs6OVLrWZ/CgW0Imb436wvoBtT+DAxrzNEhFosbfJg8NEkWLQe8kEaSE1CdU23GGFnSwEZ1FLeZE1JEQoGH7VnJaTvbT4faSUb7eCddlz6CuFFNpA2/JYV6faG+gpJh5eNuYtLuhnFQkx5GCUJwucAezf7rZOG2XB2k/E+//urpHp3ygvU6YwRrdebT6JwOZ9lrb+TKGJOdKXNgugXE46xh6YmWA343zuYtzoRTllE40RisImvgjPMoC44nUH6dw0jIQaCQTV5cqOah9gACC3KhUUuqcVzkExqgzArpLpoKoQDB/kg/PS4CqEb5RNswKTFIFJ9K16xurswbmhLztFY7DIo95xPixjDegXtx/PrwfbGv1p8QTNuL5GKym4T8INTcOAzlncbv68JsiR8hPltxjSwgQbIQbYooxpXTalbUq6XigmBJP3mLKmHRBBLmprNH9qbTzSd/f/i3upWM+n0KIMOPRiG0r39WcDlr3mNCEXHvH0QPterr3Y0UAz/BFuaDoDu+CO9D6i1sjD/5s0jvUXkb1+Sm3+0jIOK0cmvnnw3/Khz9cKkI64rMEFDG8n8w0x3tP6xzJzm9geGqtNjmpqgLXDO5l+Mf4qFKggfqOAp9jGuBUC6iiSX4Bh9u61d5wCP5Cj1TGnlZbqfa4mo40xtcyR5nfQIHX1r+X7u4E3H6HLctW+7sP5SH7aFmblL0ve6mZXT62T9XpW/f3d/
- grWnwQ1s
- k23IsGo4f9uUhPCnlVWBe+xOJXoMeywHmiGj57UO6tmI3icKJpFTyhOszrMSNDdoig51BDd600j5Ro0PbffPe6fftRxzLL3cf7mO7IWQ8o0nmg/u6iwyvvMY5r8frlTT5r9FnbwwtLWAks3DMl0rFvkfe1zcOWqGJl7bx2lTBrsiMjL0eoX2CJqlskT3a+wlvm3KJ6Jvis7bxM8z+EPmcqOQcj5Hc3+ZtgXsxemPq9vY4gppuaYEe+SmpC1ByTvIwJNDjwymfT9IryJI7zOiMgRVJQQ==
+X-Rspamd-Queue-Id: D7437180006
+X-HE-Tag: 1790235366-165665
+X-HE-Meta: U2FsdGVkX18FIXBEZO1nCMyDw9M5VlR99WeBRGHtOTDebaGvyIm/lU7tjjKu8gY0w5pPXQoBMR7uTTuDktD1/Q8ygehQA329DhDmnLcUFlviWW6+DY2oXtCRDVwv6Mx7+6SkLvGfCZowzrswhfIK40/IswkVZYUXJpNjCJx49IxX5NifV11hp3NiqmpsOE8+rfwaUfP6vqKSW+jEbvGFp2vMmR1aOsyPNBEez9wdHB7CYO2uqgijwdBinDuM87Aq4VzZqEMV+oPGFL1VABdpenjWKCvtBk0xpp361lYBkuQISXM1DlGpFGLy6DFAyhvCC8Hby+B0fG6Shl8HYQbpvPoG/+JdlUe/8BdbWIjDCwdas0AYkKrQ9JY6L5U3RVgF4HTZasCeY1QyJPET1jJdaXQqE6nyPBVKe/+r2T/21bDO70KrZ6m1WTQ0NpzUQ350gv+rwPcC0P2HUCLRitm4FG5LUfGSPGrXZ5TMsufCHj3LHcOaKIntIHVTHwLkV4BHzsCfYI7jCterPS5VWG/aMGkJpU+xDd42nRW4FFj+pmiWJPanLvhyPjPubyMTBa2pNWBMFzWZkDw6YvvrPOE2FbwKkoakQgvq88wyDcEhkj6FV9uppoTDGTDvcp+RI4p4hjzQIVhLPZ9o+BFVniOeEmbxjiA+4XfNvQ7h5Iy8JbRZAMyhwr0YMazUj/u0BvQPo89BQnalRNNoG9QzkXb+kuSmdG2D7HXeJg+KyH58DB5EbeqExaftdnEOCW7GjDh7AM75oNvOmgIpCa0RvQGcfECP6MztwnHhhZLGcZ73uyx/1bVxJGgxTSkh67YFYwzPurT90B2FFJfI72OGsLeBgVW9CcDfEEJdFoJbuGuiO/pWhfsmQaYRBJlfwAwofWkpVNlOmwQtx2NeRG7etLdG4lSvwvwSIo9AOimtjF1292EmWEef7Kd/lI71I9SrExU4ko4ajHJRFTJWeRm4h5X
+ 7xR4hye+
+ G/nGYj/qj7GF7YFW7pinXzWnJyWiplKg4+oZFpOSeM+L1diXm1hjn+QTvZJX5GViS2XGsnrF+FISoXomErTf8gF78dc7zlPa9l4BXrRAFzu6LK9ZcVsoiLK4dKojrbJH744tdaU4WqmUNfC+ot0N89p3rPU27CZq667vgIONJdteuDhK5GKrvv3NJijuMp7NpSS8L/j+wy7heZrb6DWdEQyZCOPsk7y8/WtzrNp1AQkBTkfBdhQD8h3PgEf914zsOuB8tC0VhhvXyLFc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +101,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 23 Sep 2026 23:46:27 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
+The memcg socket accounting currently charges pages to the memory
+cgroup per grant (__sk_mem_schedule() publishing forward allocation)
+and refunds them later from skb destructors.  The refund side folds
+per-skb "was this charged" snapshots back into the socket balance
+under concurrent lockless RMW, and races there can drive the memcg
+socket balance negative, ending with:
 
-> On Tue, Sep 22, 2026 at 05:08:44AM +0100, SJ Park wrote:
-> > To calrify my opinion more, "caller's quota" feels unclear to me.  I hope it to
-> > be more clear that it means "the quota that is passed as a parameter to the
-> > function".
-> 
-> I've made it explicit that this means the quota passed as a parameter
-> to damon_new_scheme().
-> 
-> > > > 
-> > > > damon_commit_ctx() first copies the running context into a temporary
-> > > > context for validating the proposed parameters.
-> > 
-> > I'd prefer using the term, 'commit' instead of 'copies' for clarity.
-> 
-> Changed to "commit" for the context operation.
-> 
-> > Now I understand you added the comment for commit 60bd24f272d0.  I think Fixes:
-> > should also be 60bd24f272d0.
-> 
-> Agreed. I checked the diff and earlier callers. That commit first passes
-> the running context as the source. v2 uses it with a plain Cc: stable.
-> 
-> The LLM suggested the wrong tag, and I didn't notice it when checking it.
-> 
-> v2 is rebased on mm-new and passes all 46 KUnit tests on x86-64 and
-> i386. I'll send it soon.
+    page_counter underflow
+    WARNING: ... mm/page_counter.c ... page_counter_cancel()
 
-Thank you Karl, looking forward to the next version!
+This series flips the model: a socket is charged its whole memory
+budget (sk_sndbuf + sk_rcvbuf + sk_reserved_mem) to its memcg when the
+budget is established or grows, and refunded when the budget shrinks
+or the socket dies.  Grants and per-skb charge/uncharge stop touching
+the memcg entirely, so the racy refund pairing has no code left to go
+wrong: refunds can never exceed charges and the balance cannot
+underflow by construction.
 
+Beyond removing the racy pairing, charging the budget is the more
+accurate accounting: once the budget is established the memory is
+effectively allocated to that socket - the protocol fills the buffers
+on demand and no other socket in the cgroup can spend that capacity.
+The "sock" counter therefore reports memory the sockets already own
+rather than memory that happens to be in flight at the sampling
+instant, the same model vm_committed_as uses for claimed address
+space and hugetlb uses for reservations (charged at creation, not at
+first touch).  The visible consequence is that an idle socket holds
+its full budget charged for its lifetime.  Global protocol accounting
+(memory_allocated, tcp_mem pressure) is untouched.
 
-Thanks,
-SJ
+Patch overview:
 
-[...]
+  1/5 net: charge socket memory budget to memcg upfront
+     Core tracker (sk_memcg_budget), lifecycle charge points, memcg
+     removal from the grant path, lazy shrink sync in sk_mem_reclaim().
+
+  2/5 tcp: sync memcg budget on protocol buffer updates
+     tcp_init_sock(), tcp_set_rcvlowat() and the four autotune/pressure
+     buffer writes in tcp_input.c.
+
+  3/5 mptcp: sync memcg budget and drop backlog page compensation
+     MPTCP budget writes, memcg inheritance transfer, and removal of
+     the now double-charging backlog_unaccounted compensation.
+
+  4/5 Docs/admin-guide/cgroup-v2: document upfront socket budget
+charging
+
+  5/5 selftests/cgroup: compare socket memory deltas in test_memcg_sock
+     Make the test valid under both the old and the new model.
+
+Tested: full arm64 build with 0 warnings; each intermediate state
+compiles (bisectable); tools/testing/selftests/cgroup builds clean.
+Runtime validation on the workload that used to trigger the underflow
+is pending.
+
+Cai Xinchen (5):
+  net: charge socket memory budget to memcg upfront
+  tcp: sync memcg budget on protocol buffer updates
+  mptcp: sync memcg budget and drop backlog page compensation
+  Docs/admin-guide/cgroup-v2: document upfront socket budget charging
+  selftests/cgroup: compare socket memory deltas in test_memcg_sock
+
+ Documentation/admin-guide/cgroup-v2.rst       |   6 +-
+ include/net/sock.h                            |  21 ++
+ net/core/sock.c                               | 237 ++++++++++++++----
+ net/ipv4/tcp.c                                |  11 +-
+ net/ipv4/tcp_input.c                          |  10 +-
+ net/mptcp/protocol.c                          |  42 +---
+ net/mptcp/protocol.h                          |   2 +-
+ net/mptcp/sockopt.c                           |   3 +
+ net/mptcp/subflow.c                           |   5 +
+ .../selftests/cgroup/test_memcontrol.c        |  18 +-
+ 10 files changed, 261 insertions(+), 94 deletions(-)
+
+-- 
+2.18.0.huawei.25
+
 
