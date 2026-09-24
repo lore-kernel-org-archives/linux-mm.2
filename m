@@ -4,115 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03150C98310
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:57:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A034EC98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:58:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FF6D6B0093; Thu, 24 Sep 2026 03:57:42 -0400 (EDT)
+	id B886F6B009F; Thu, 24 Sep 2026 03:58:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B05C6B009D; Thu, 24 Sep 2026 03:57:42 -0400 (EDT)
+	id B38916B00A0; Thu, 24 Sep 2026 03:58:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE2056B009E; Thu, 24 Sep 2026 03:57:41 -0400 (EDT)
+	id A519D6B00A1; Thu, 24 Sep 2026 03:58:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D067E6B0093
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:57:41 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4ECA940274
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:57:41 +0000 (UTC)
-X-FDA: 85247901522.10.07626AB
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 85F4580007
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:57:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HJkKE8j1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 81EA26B009F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:58:06 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 125DE120262
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:58:06 +0000 (UTC)
+X-FDA: 85247902572.14.26832ED
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 280BDA0005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:58:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=jsRrZlnt;
+	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790236659;
+	s=arc-20220608; t=1790236683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hxnh7K5pul4WrdHHRSoLszYKzHojdYKXEO6rx1LCqCE=;
-	b=pJjUl6O/YrFlsUn09yygbq/lZlg3VJDMk7wL6hz1RsVUroBWUgUqLEStY5uA/JTIi5z8jZ
-	mnxw+HM/1pBV+T26cJhwbWWNdzVWNg8pbhuFLqWNuOEWDQ4XXD1EAoUSlQgRhKIOtQi/ug
-	ldonqNFnFrKFI8Z3MMSzGqFlEpuykBY=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HJkKE8j1;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+	 in-reply-to:references:dkim-signature;
+	bh=cH8utLFYEujpE6X6Qzd7ExQckIBLy/Lta27TjnKc3ts=;
+	b=AQ8eEzRDaerSjjv0oRaD/d1c6TjVAauZ+GJvS9bRbh03ZWCvd9xKmr/NGkGJ88NWijv+gd
+	CuMlRana5LD6tXRKty2vvzqG0J9lWnsxCvv6TuUGo81i+tjLnEfYxxtx1XrinVgO/c+TUD
+	6eoVr2PNGWmp+vGTShSyV+vKWwhxERk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790236659;
-	b=5PwZggMchGmYn4s2ESnjiAgq35I0wIuLI4rYxyBXO0dauBf3GkbC617oQUtDNomYCxPNW5
-	E//VSMqc3bklDHHoAlchgXSvz8ShyMMhX86jucsQO/zD/BmmksJdiLBErmswKVrRiBKFrJ
-	gWNs3uRdPY/JsnA3hAyG1+77bAhGwPo=
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-39dbdfaef3cso976449a91.1
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:57:39 -0700 (PDT)
+	t=1790236683;
+	b=FBlliDNcFiHoZQ0UhcE2yhvJIOd+TynljNnnzoVSm5CfrnQrmGfobWXF/cfBqoZsNOz/Ut
+	uIROJfQ6V1LFAdF+ynpS0ZVPIxLl0NTgYeT4y4EnvoXPEjTEg+69QLP+P/DxnRrQvS9cSQ
+	HY2KVamfkdFQp2AQoE6OJgSvYzhxn1k=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=jsRrZlnt;
+	spf=pass (imf25.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccda24afso996868a91.3
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:58:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790236658; x=1790841458; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=hxnh7K5pul4WrdHHRSoLszYKzHojdYKXEO6rx1LCqCE=;
-        b=HJkKE8j17dHzNfAwddClLMRs29Hf/AbY4v3Wl3pOBQxOKywmW8xqK3sehiSzdM2VzX
-         x/z8unbmF8iv8AYXQ6kVu6OcnjYSBGLa4OV6Co79ANCfAgMkIFrZrKfBU++CpBtCXCpO
-         m9uFV/k90hMcrkL3c28JimBZzlT0XEJXLravjzHAm5+bNrpLtsY2dCz+zbNNCCVLr05m
-         Y54td52dk6dXKSRDUdrV8tZxNrZ6F/4gSUjES2Mn22f+Kxv6RVHJlhBvJQ1AB0tnMgsx
-         CCimZvx/t2nKuxhLe51dUreJy4agVztSUcXYLnv8cIxw5IwE3hwGGfuWlayKK53YDcdY
-         jOXQ==
+        d=bytedance.com; s=google; t=1790236682; x=1790841482; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=cH8utLFYEujpE6X6Qzd7ExQckIBLy/Lta27TjnKc3ts=;
+        b=jsRrZlntWzxwm81H+5tzqwAzi4zFUcp+IAny7WTqo/ZZfR5KDY4tdwcShVieewpX+F
+         PyV5fWKYidvsyf1J52i2TE9vMTUI4PRQHUnFV3IhceeduH9WQ/FiKmiXOZQc8W/udAqC
+         HsbNJRNZf14BlASCh2CMuFQtVzNtCCuA2+XUijESPlxBpjMgx6Q/Y6ZfbNEh0RxGLNfg
+         3BDOXIHU+qu4hR9Qi3oI5HIu7UwroHLIrgOWMBqoOJxG4hXR1gepRanGluyoh8kzAA38
+         zqo0TDcgxjswKuiqMXyfsvswSdP2XUdyrdlv53SC3i5eAlsbNPXQNiJq22hAhGmQuZOS
+         xr1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790236658; x=1790841458;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=hxnh7K5pul4WrdHHRSoLszYKzHojdYKXEO6rx1LCqCE=;
-        b=CxplCmDbUzWsnnHpzH+6r+WZZuEmqqJabYXr4PN7idyGd4q1ZEH0D5xq19PH9ZOqE4
-         TXmYmFLiaZ9lIvYwoDSJ0MO2DQghXZ7o9jPBo2A3bfqLBuQWOqM/L6AF2lVK1jKKQdxF
-         N/iJlycFCwe0CL09Q8O6NQML6vXtSSuwSbn+CUzV62tI6G/UZE8vfCW8VTetJKH0MREi
-         T4Lfcncig1Uumj3riEEaWNjhTyP643jO4qHFp9WogLei6h7CzLo3R0czmQvkdrpRMQQa
-         kianGzqG1O2awah0/YCDe5Bx+6rkXywPTZ4OzyU2wVe9c4rPmIywdMzaqEsnL8Yj6pfK
-         Mz7w==
-X-Forwarded-Encrypted: i=1; AKwUvBwtrPkVJqsk+Rkw2N7E2q/R72Olv/ndKyYhr9lpYm/8M3SGOeDybsU++LMy4sXrWm9pmESq4dwD/Q==@kvack.org
-X-Gm-Message-State: AFuF++kudbuqY5V/ntr2rzM4X3MOG9BiCklltc2ubU458XphaoAZfF7S
-	xsWkRUFIgN0jvD1+ftQYp8C8mu0Txfvo4Qx9//qHS9GKohqf6ngeJI/f
-X-Gm-Gg: AYBFou3iHfDIXPSi4k01m/SuyGA0aoAUHEFvXE28/6+ylLnPHHQL/od4ADshSnpLB6R
-	J/7PTdJLKQqsQSS3iI53zdnrkqhboxliYoDEuSlNhvfTakou7EgI2+JSFHc15t78RtXCGclIHYc
-	TKaYyAt3JCVQw3F8AlMleh/rphZ/TPJSpK/4lOJkKHzxOcC5i8KmUuTX1jwJJsBYocA10gMPm2D
-	cn0NvyUMQAqOnp84H15g+Axy5nMt6sCV/xbtjjR0vPHYBBQuTgt77CaMD+DbNmDaMCa5DuWnaTp
-	0PF5bOpqOgBJQ7u8Vul+Fk9CybGM3PzabJRPjDv7u+i59ybinJBnfbYV0eYBUAMQ36JaIpfpgJQ
-	SA5hqRgEUU2Z8kJ9hFkwjaj0IEc2oWxC+bMq0U5/mCFagEq8BjmPA7KzSeQHL2YXp0pAZgAOskF
-	vc2T084hqNt/a5BxNbd2PuFf7xi00oQtaph5DQG0Ki7O/Qhwikbq/F/f4qRQXLSRIgta7lGeWQ
-X-Received: by 2002:a17:90a:2ce6:b0:3a0:a055:1741 with SMTP id 98e67ed59e1d1-3a0a0552127mr323462a91.27.1790236658340;
-        Thu, 24 Sep 2026 00:57:38 -0700 (PDT)
-Received: from celestia ([2402:1980:867:387a:70b:38f1:a1dd:9303])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0972eec92sm3573872a91.7.2026.09.24.00.57.35
+        d=1e100.net; s=20260707; t=1790236682; x=1790841482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cH8utLFYEujpE6X6Qzd7ExQckIBLy/Lta27TjnKc3ts=;
+        b=y7iIqV0PngSLIHCZrwUMxkVhnTCH4KhLCY34Cfu/KtHgMYVfkd6nb5ifA2CEFxlgy4
+         cyGGwN0eYwOcB9sDAHQT90uZmrF/FWQMTM3QEiwwsqRurKgJV4Szh6PYOvID3W7iS8Ta
+         vVkmFiKQa1XMwlRz+98iu4PLDyw/kzmw5PUZqpUahQCtMPsRyeWyRej4T2bocZ5FFRMF
+         Iyqu7t2a4Jikn0MxJiG6+Y6du1XYu+rIAZg6/bZBczy/2MVAqYcqVQ2/ukHBkTkTmfzk
+         9z9ZTLOi75VPjm3DVyUyaGfjhJTuQ4GBP391yIUHOsrsieKwc/XW0hzbk+Wn/Xu6n7Xo
+         QmRw==
+X-Forwarded-Encrypted: i=1; AKwUvBwOb4GnszgRZAISzaykVx5wGleekAdz/y2QCC7rgMq7twoz4u6BzCohZoRsjy4y0JjUmQTduLTCEg==@kvack.org
+X-Gm-Message-State: AFuF++lh3MBNmGCS7b1OGBPLbAaIOlEYMZxYA7edJtHU2xkUgFvlF1n5
+	JtKKiW/eR2dBVhVuqJLjihkF39uX5/I7zCOC+7kR+slJa93ydQ2RW2WScG5mUem3sSI=
+X-Gm-Gg: AYBFou2GrqP3da3MhTkhZlx7+OGereHj7pjmvUfL7gpSYeG5gooBJ69QynFMl4SVcCy
+	aclmNVvEc90629PqGg50iDC9nb5t7NjHsjd0JY88jx13auUMNGAzsaGh7KgQrthT5kfK5DTJM53
+	y8Igno1PEMuQGPUajD+zD72oUusBcN+5ZtaVCM2IhMR+YUuT+M/kTRdRDJNSNsejAL9LB4PHO3z
+	9lrG0R/1BwECpzNvutV4ENuVyCq9IgIrOtncbLowczBLR8S6GxjMcmPCz/7/DGKHZdY9e9OOaFQ
+	fR5KoGT97kJUm+R5AZS8/9P6AG5MdIqminK/4OErJaBgeC9n/RepViC6Dplm1CMS0Zk7rDW185P
+	PwZgYR+Z4L9Q93w+7a1jrg5omR61IpRJLY9VZWhKwJm/gNiM09LH0XftPbIwV9/ZVMGp0+ymzYS
+	7GSnk5XlB1uaiuKhoC8TRgSIf9ywWDj/+gGx1WPzrx1IifYoHDINDA1OAc7RWC/qMGNsqzDZyKT
+	dkdSDocyUZstAu8SVQ=
+X-Received: by 2002:a17:90b:390b:b0:39d:f66e:1720 with SMTP id 98e67ed59e1d1-3a09860771cmr1679255a91.13.1790236681626;
+        Thu, 24 Sep 2026 00:58:01 -0700 (PDT)
+Received: from n232-176-004.byted.org ([36.110.163.97])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0972eec92sm3575622a91.7.2026.09.24.00.57.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 00:57:37 -0700 (PDT)
-From: Liew Rui Yan <aethernet65535@gmail.com>
-To: sj@kernel.org
-Cc: aethernet65535@gmail.com,
-	akpm@linux-foundation.org,
-	damon@lists.linux.dev,
+        Thu, 24 Sep 2026 00:58:01 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RESEND PATCH] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
-Date: Thu, 24 Sep 2026 15:57:42 +0800
-Message-ID: <20260924075754.6839-1-aethernet65535@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260919190953.86705-1-aethernet65535@gmail.com>
-References: <20260919190953.86705-1-aethernet65535@gmail.com>
+	linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v2 0/6] mm: Unify device DAX and HugeTLB vmemmap population paths
+Date: Thu, 24 Sep 2026 15:52:53 +0800
+Message-ID: <20260924075259.2013039-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85F4580007
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tk1yr431dro387bitotyyykyky87s9ef
-X-HE-Tag: 1790236659-22812
-X-HE-Meta: U2FsdGVkX1/QjdRl0XNMzU2IZakRcAYxlQ2A57EIr2D0PVzaOdCp22iH/gO+Eq6gWVvOINVHrPV/zOGdoICbT/yLZoCKAlOl3KXCkK16PsP5AObmu4pb8x3pyiNM81hdNKcbp/t/Nu6ZigRp4ZQXGPU+xQGr3i+fbfsDQdlVMr6PgdzMDF0CjOxJeQiNy90rCGPaP+4IrFUoTah5Ye2hR8UJhtTQWtZEesjwci1YCSAo9xdEI0bXXSduPbGkkcYscN4BBdiR9QJoKJdqEIM99WVQdzreVsvqI7ApJrozuoHeYmAwtv90q3eqTyTEe7AmNWCITwYkRCWkSYHL5yWhlLUlSpAFLpKQgfKhS9Z1HHu6VXUCKw/BDnAw41StMsNbtzBLEmpftnDpImQnF0Aou7Tjq8KtknoNNLPN3roUb6C6oiB1fsmg86CvNE4vwfoJZ2P7/ss8x0z7eyp1hmdiTipKoV50MOM1LwfmaefTushNmjUfeXzzV57zBOAB9EZ79jnXEUuMQq8pPYllo9wsRloFm0DaTqycqqoOhCSglkWYLC9Ct7MwDwpl8gig4ISwPuqrUvFDzhQNprjNvOtPDslvymb/OhO4DigX9jioHAwiM4koFWq7K9ArEV//D223J4UXlrg4e/geZjSG2PEIqO9NkZTpE2vYXYw3fvkuB2ac/V/L0aawRE+tXtdwd784d6ehCty+jUSWBcAGitztHLroKpqWL10H/NEyOAzD0Jx8eifZ9LnCvaVSqiVDrxU9Je3cfwYbor/vmSoVN/TpMv7OTlSBYo14q+c20iRqDMTLVqm4DOKZO4GLLQSqpQgSeJTRwzz3+z1fmiEuZc4CA2vrYCVGyhDpUvY2NmmLy2nXLUmL5y7n3kumldJcxFX1Lk4n8ZIBEB/1aWmCZUbAYzw7gUk74xNvGdIgi8aqbFneBL30zM7Niwm4cxfngrXi3sYQDAJGLdD7WxGcg/O
- dy9PxalW
- uliz9S4rylrzQXuGEyUwvgL3JW8hXe3jmt0v9fKRuvZafjYIipNBFSYabBHXnQfFizw09V5ssMTHp3ZMoRedUr5Y4B/0C0ciKd1L4y3XRrPugfo54rvsPOcw1zDhr1R4gaSVnOWETVRyp2HYPErVFQ38E93d3JDu9rHyLXtNI1Q4xcd5cNtAQtvdpRSo0dU/8R9SrugSrqYMgsSqDqqGDDFMZu4FP8XJ74hP6TeU0uQGCA3cTzejYGm00CjpRFBZspr/2i7PUTqpssUKBWT/LsO2fL5GCo+HV8n4xUMTW72TLEGLTSHmFS5Lzj6ZkkDWC4mMBVwt30qYUJ1cC3FFE0PjF78J8WWIaGj1x3cc/o57TMfxXnmVcQBSNfOBzH9LaoRNQ0r32YtAXJS+2kiS4h31t6X/JP6yAD0OmC/ytqLognuhsuB5YpjIzBg==
+X-Stat-Signature: 6ow8y1f7sp6w35tfny39y54whwbqxxwc
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 280BDA0005
+X-HE-Tag: 1790236683-657792
+X-HE-Meta: U2FsdGVkX18tLpcDH/ANWj1EAOF781pF3L/ZldoSJkL9BC8paNIpUi3JTr9raAa5sBw1lxhyBKWwCk2WwPjiWRdcSKhsRG3XKq/JnZPKdVFzedC4tTHEvm4lxN1NgDcbBoKirKFY2xdYaU8AMkLxRbA8nax6fSbgvEtAowjpipJJAa+sFTUdzMv6YX2DNdZb6KjtYsY+fcfX9ll/5tN15yxOy3E5dosz6jGFFUcAiD/ZL5qZGVLTqLgSmD1rkRabMF8zuQKD3ZuzElx9axp1fSTVr/+ybIZ9zxQjBiF0HKJFQphB2tu/5NVNYIFEEA6oOgZSc9yRnTlGUVgVdzEW/auXP9ZSImlJxlVtZuYERYIlRiRYw/wVzwFvsNw8YObOLTd9Z0h/0F11Vo9mz3xmrTpQE3lPSYEHsm8UWNmkjUICxmK/HlWOA9IaorSqKbPbvdp5nE96X82tiHBwAkU+Nmt8RD6R+0VV497E3o5pRaizMxtFn4MPuEt04UMKHRPxLZCycIKPPAbAqPsIW6TPCnSvTIYGk6ie36r7FbJR6FsPnZFvWeCu2D/Bwj+9VCMHfIrYUjlMpdEC52pIQNc2mmzdqtBSBdRmlXFITSw926bF/xXR+gopgpLnsa21R8WuoU5bCqYy1rA5ob5GrRTgWYxaiNVRNFzvnBSY11y7x8bb9RzZCW9orokB/GoEudwLZkN/khwXGkgh4vtwgnUwPv9BD5SJ8F1vITjV+TcBZIagmuIOS7O+PACwP8OSortu+Nblyr97wN8VcVjdfHx0zyJOupQFeitwLA/DhgRjEU2DXJZNtg6h7UeJN/MUI/2awSU2K+CbRt9w4CwTyi3tdpkffVY7Y+AeK4EQlVg9emDmQ3aDkVWCPd8JqyWYgQZE1Xpo/2rY8+ooczVndXE5h4yb1wxK6K4q3qxTxhAKzqLV0ODwvkjKDymCf7DE84XrUoNKWhs0M1u0dUWvWPq
+ DakQExGz
+ YtpYB0RFPeWDSy4hG7rVdlLbDQyQ9tm8iOUOq+IrOkF7+U2BPssVhFlHtUBoPPmtH4VGh3Gp+bYcZeXarPrcNLrGybI2P32LWicdWY7uJSEuC+FSgEFdvfO2+tnFnq3ubETUXiYWmT11ZpeMN20EB57klTOOXNrZ70+eZnYxVbB7dJJozby9zRR2WnMw+i08Ug4uSgG1I6nwNmURmtLOk56FdtcRstxFqigbcbUJLTqMakCnmhSu7HQ3pIfXxLQEWLf4R2bd+PCh1ZBIKhjNH1RavHyk9KCQtbQON++Q4CCr3uimSnm1qkK+D3UsfClvfcxr6Q1wPD2d/9i4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,67 +130,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi SJ,
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [1]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: unifying their vmemmap population paths.
 
-Just a reminder, I think you might have missed the question I asked.
+After the preceding Device DAX conversion, both HugeTLB and Device DAX
+describe optimized vmemmap mappings through memory-section metadata and
+use per-zone shared tail vmemmap pages. The generic code, however, still
+carries a Device DAX-specific population flag and compound-page population
+path, along with arguments and helpers needed only by that path.
 
-On Sun, 20 Sep 2026 03:09:10 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+This series first removes VMEMMAP_POPULATE_DAX and moves selection and
+reference handling for the shared tail page into the common vmemmap
+population path. It then removes the generic Device DAX-specific
+compound-page population path and routes section vmemmap population
+through vmemmap_populate(). The powerpc radix path continues to use its
+architecture-specific compound-page population implementation for
+optimizable sections.
 
-> On Sat, 19 Sep 2026 09:07:25 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > On Sat, 19 Sep 2026 16:01:58 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
-> > 
-> > > Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
-> > > regions") introduced a minor issue that causes the last region to be
-> > > skipped before it is processed.
-> > > 
-> > > Example:
-> > > 
-> > >     1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
-> > >     2. Quota is configured to process only 100 bytes per window.
-> > >     3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
-> > >        addr}_from is saved at (Target, 100).
-> > >     4. Window 2: The loop reaches R2.  Because R2 is
-> > >        damon_last_region(t), the old code unconditionally returns true,
-> > >        skipping R2 entirely and resetting the charge_{target,addr}_from.
-> > > 
-> > >     Result: R2 is permanently skipped even though it has never been
-> > >     processed.
-> > > 
-> > > Add a test to prevent this regression in the future.
-> > > 
-> > > Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
-> > 
-> > Other than a trivial style that I commented below,
-> > 
-> > Reviewed-by: SJ Park <sj@kernel.org>
-> > 
-> > [...]
-> > > +static void damon_test_last_region_quota_reset(struct kunit *test)
-> > > +{
-> > [...]
-> > > +	t = damon_new_target();
-> > > +	if (!t) {
-> > > +		kunit_skip(test, "target alloc fail");
-> > > +	}
-> > 
-> > Let's drop braces for single line, as suggested [1] in coding-style.
-> 
-> I will change this in next revision.
-> 
-> By the way, Sashiko reported an issue [1]: min_region_sz is not
-> power-of-2.  While this do not cause any real issue in this test,
-> non-power-of-2's min_region_sz is not legal.  Should min_region_sz
-> initial value set to power-of-2 value (e.g., PAGE_SIZE) in the next
-> revision?
-> 
+The remaining patches remove the unused ptpfn argument, open-code
+vmemmap_populate_address() now that no caller needs its returned PTE, and
+add a warning for inconsistent zone initialization of shared tail vmemmap
+pages.
 
-[...]
+This is the fourth smaller step toward the broader HVO generalization.
+After this series, HugeTLB and Device DAX use the same population model
+instead of parallel generic paths, while powerpc keeps its
+architecture-specific implementation.
 
-> [1] https://lore.kernel.org/damon/20260919081239.8A3D91F000FF@smtp.kernel.org
+[1] https://lore.kernel.org/all/20260513130542.35604-1-songmuchun@bytedance.com/
 
-[...]
+v2:
+- Expand the comments around the slab initialization boundary as suggested
+  by Qi Zheng.
+- Collect Acked-by tags from Qi Zheng.
+- Defer the patch making vmemmap_populate_compound_pages() static to a
+  follow-up series that cleans up the powerpc vmemmap population code.
+- Add a new patch to warn about mismatched zone IDs between a page and its
+  shared tail vmemmap page.
 
-Best regards,
-Rui Yan
+v1: https://lore.kernel.org/all/20260913083734.86802-1-songmuchun@bytedance.com/
+
+Muchun Song (6):
+  mm/sparse-vmemmap: drop VMEMMAP_POPULATE_DAX
+  mm/sparse-vmemmap: support device DAX in common vmemmap path
+  mm/sparse-vmemmap: drop Device DAX-specific population path
+  mm/sparse-vmemmap: remove the unused ptpfn argument
+  mm/sparse-vmemmap: open-code vmemmap_populate_address()
+  mm/mm_init: add zone mismatch warning during page init
+
+ arch/powerpc/mm/book3s64/radix_pgtable.c |   3 +
+ mm/mm_init.c                             |   5 +-
+ mm/sparse-vmemmap.c                      | 200 ++++++-----------------
+ 3 files changed, 59 insertions(+), 149 deletions(-)
+
+
+base-commit: f19407ca08644f728cfe9762bf1d1f6985826c47
+-- 
+2.54.0
+
 
