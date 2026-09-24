@@ -4,126 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5882C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843F2C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3D4F6B0088; Thu, 24 Sep 2026 05:23:18 -0400 (EDT)
+	id 9BAB76B008A; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B145B6B008C; Thu, 24 Sep 2026 05:23:18 -0400 (EDT)
+	id 991FE6B008C; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2BAC6B0092; Thu, 24 Sep 2026 05:23:18 -0400 (EDT)
+	id 8A8BE6B0092; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 783946B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:23:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 987231C22F1
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:23:14 +0000 (UTC)
-X-FDA: 85248117108.16.BE52FA2
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E6A78120008
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:23:12 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=S7TQWtTF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BBC96B008A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC25EC02AF
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:25:49 +0000 (UTC)
+X-FDA: 85248123618.10.982C499
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9B6FD4000C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:25:46 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=oujNsmgU;
+	spf=pass (imf01.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790241792;
+	s=arc-20220608; t=1790241947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=7QZ8HgImhCopDFDWHquBQ0HUnxqZBWvfTbRoX5PG3mc=;
-	b=Kp8va9oxGgitY0L/TWljp12igYGOELBWZj48FWmB0gkMyAgjk2apgMzJwIv6beqRcLUmxU
-	W6vHGpe8hZBy8C2L3FGbPOyjvVG0BDtRow6Cb7WFR/cFqwCgx2A17lZGIIeguQ0MAVZR6k
-	wONbMbucq+qyuOGY9DQpJhSzSxWHT40=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bDikpWMchPRZnYe6ZTjPxkVDUAVMs72pAdd9atbppWw=;
+	b=oQUYWUor/kma7XZ7yB1M3ZU5nC4NLh7rO9tslfvebYcN0yvKxTZDTjQsoO4Bp91fr8gnus
+	mSZ7YBJoaAQ6lg2sovFiVrzkUFoFS1VeylxvSzlaaLlvQG6ZyziZp1bbO6YZ5lAGxt56U3
+	dlpPLVWTtvnMVtnobLRbcDsrqgYrmbg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=S7TQWtTF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=oujNsmgU;
+	spf=pass (imf01.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790241792;
-	b=Sz3yIe84CSmp/hMMbdr9hVuOAk7PqaSz3jKmsJ7+PP60NsBhAfjysV562+jPtiBAmoEFg0
-	mp/h8nQjekrHk3WlvW8Yumk5Ooz39Zjouoo91orHP9lJVC3T6BJi3AOSXLZ/KQY13rsGdl
-	qSxQUwXRv/cGgKM+EnfX6WM56dVd68c=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so1494838f8f.3
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 02:23:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790241791; x=1790846591; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7QZ8HgImhCopDFDWHquBQ0HUnxqZBWvfTbRoX5PG3mc=;
-        b=S7TQWtTFbRnk+2wFaYyQ25op1KqP6DyjgeXzLsjoFP5tkD4amwnOsxXuDvu1zakaHh
-         I/UF09R5CEMMSKZtmkDYtyvAIB84s1G3E7mqTjAF9E35jkTCsyecL81RoTgR3vxTB2BK
-         Rqh9+E7G77qr0hkfs0ULeb8UdUOZ3y80TYyhdqVX6iS04eUH5FxWCrcIbphFWth3MRQ9
-         CVfz+DnZTEPNvaC8jNFrKsQhkQvlvkHTadtP/Sw26W4TlhCRHypEiNIxeATbBpWGd0Mm
-         rGQzs8L+6qBp4pWVzm3FUOxRJZPzGDwTBwNLtZnfBoPSZdP/ykEDxxdrgvnPqeU7+5q1
-         qNTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790241791; x=1790846591;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7QZ8HgImhCopDFDWHquBQ0HUnxqZBWvfTbRoX5PG3mc=;
-        b=kMAWkrUCaXyrUvJPVosl8RMZcDHZ54RzjZlx3D7yqJ4oliyVNT7EMrY6GnokI5qIT1
-         ZGsvaf1L2C5jMBQl1nLN/IYtg9JybzpGFT82XDkY+7V4eKUZ0y863up16ov1gM0QTgzA
-         NnKqbTl7tIjLf6kr9zHqJ5EpmbvC/jvDN+UdSDa78JO+tRUX1aLOEbuGdBdn5oSQPcrt
-         eI/Yg7yzP83nghWwvf/tTGPuXOZUz9MUTHhqh01DFpzYKedG7WZoooH0S/NehsE+4zdA
-         JVD55KpfLD2Et0xLKmA+rl+Q8gDruX/8hdBKzgld8Dsvk3dQKOo7XjTkRTu/uF4sWoY9
-         nsXA==
-X-Forwarded-Encrypted: i=1; AKwUvBwTC963V7Dthi1deYxfX0Qw/qqPcHvb5jujdRbKSfM68P5ulrHQ2pvMlDAVHKu7Z+8Su0DINB7ioA==@kvack.org
-X-Gm-Message-State: AFuF++linqleLJR0adH7oRg1vBapXz1y2Sb9yHm4nWFwHiMonlBp+EAf
-	tQUBDGxwrwwO+quy/kqPJFzQVde1vMwd22164Y8LDAj8YYLH0ZIj05vy
-X-Gm-Gg: AYBFou0xA/zhuJ9HDfnVKEkcxZ55CaZ78yU/UA9k5+WNHI82slwoTI8QOmAbIplFZGQ
-	wGDs1rTs/FPRbdvbP6hy432ON9uEhY0pAQON3pR9+NVsyXsdHhyw9bxgCvE1BeSVjOisURwO9CN
-	/oLE94Qzxj2Hc4v2/I8+DUrALztCHOmPLgs934DGOmPHR66f5dmjf55seyE+gVDKoOFalfDu4S7
-	5zg4rqANATQxOhnCUWifHYz10dSh3cL8wAPnmdCs4+h0i+Eb1QL2nN0/bZJ5z8QKLy2CP6I4kgU
-	RB3Ciki0Ubd3buYozsU3XDKOBA1SphyF6I+pD6eoEDtNnLIDjW8w+jA6+wts6Fpn19ivI+FDlKi
-	yXr0sEDwmCJ02ePLwipQc/EoeGXkqxANx/GtZmFCbjfpHSFMYnT5WfNKWJZHXsAAm/uBnIaci/F
-	9c1hTbZhJiCN+7TS4CGSxg/nu+vC8ACiFRBSnjnVLLqFH4lpuwvh3ZOAb4eYkYs9svlieTjbPYK
-	WtHpreRCIbl4Ahdd9vq0YtalcjH04H3KX9HZ218psEf7Tlb88IZLL4F4zFGAhz+JlDo9oV1
-X-Received: by 2002:a05:6000:2c07:b0:486:fa7b:d3aa with SMTP id ffacd0b85a97d-4887172d776mr3144237f8f.23.1790241791054;
-        Thu, 24 Sep 2026 02:23:11 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-488684862a3sm12164848f8f.7.2026.09.24.02.23.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 02:23:10 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	regressions@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] mm: don't schedule deferred kernel page table freeing while booting
-Date: Thu, 24 Sep 2026 14:23:07 +0500
-Message-ID: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1790241947;
+	b=xpD2PyHEASvC5SyHCm+R29LE+nOrD2bmg1R+hEsQKcHit0nZdV1TpDpGngFdVatYroTnps
+	SJmoUOhaM+FwFnBsFf9O5e1O/+P3VeoQ5zWslaP8axrRsf6O9v2H8Ih4IzaWfTe5MDW6Sh
+	SXv8wYBbWbjSDaeJwmIJ5Y7ARQXqF5s=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=bDikpWMchPRZnYe6ZTjPxkVDUAVMs72pAdd9atbppWw=;
+	b=oujNsmgUBwdI/eT1H+Qs5F7p2O9MDX6RLH5o2hJQlaLXAb/j6LdmuAxKAUikKwjx4ELt2b2y2
+	lgUdHwxOESQ7bGcylb6iraoXxxUeyVASQYTIWGMFuLFmCa9f6T1UfMS9oTgO2W7hua9cXwHXMQz
+	TcR+D/VUrVG60YNnOWDC2RI=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hr7Rh5MhQznTVd;
+	Thu, 24 Sep 2026 17:13:36 +0800 (CST)
+Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
+	by mail.maildlp.com (Postfix) with ESMTPS id 91E8840586;
+	Thu, 24 Sep 2026 17:25:40 +0800 (CST)
+Received: from [10.67.109.91] (10.67.109.91) by whupemk100010.china.huawei.com
+ (7.152.184.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 24 Sep
+ 2026 17:25:36 +0800
+Message-ID: <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
+Date: Thu, 24 Sep 2026 17:25:35 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC -next 0/5] net: charge socket memory budget to memcg
+ upfront
+To: Eric Dumazet <edumazet@google.com>
+CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<kuniyu@google.com>, <pabeni@redhat.com>, <willemb@google.com>,
+	<davem@davemloft.net>, <kuba@kernel.org>, <horms@kernel.org>,
+	<ncardwell@google.com>, <matttbe@kernel.org>, <martineau@kernel.org>,
+	<geliang@kernel.org>, <mhocko@kernel.org>, <roman.gushchin@linux.dev>,
+	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <cgroups@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <mptcp@lists.linux.dev>, <linux-mm@kvack.org>,
+	<linux-kselftest@vger.kernel.org>, <lujialin4@huawei.com>
+References: <20260924080219.1036588-1-caixinchen1@huawei.com>
+ <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com>
+Content-Language: en-US
+From: Cai Xinchen <caixinchen1@huawei.com>
+In-Reply-To: <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.109.91]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ whupemk100010.china.huawei.com (7.152.184.41)
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9B6FD4000C
+X-Stat-Signature: ng3zgqeayrkaxsudiqyicf1pt1ayeg55
 X-Rspam-User: 
-X-Stat-Signature: pjo96et6ac4u97betsgpzboukje7i7kt
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E6A78120008
-X-HE-Tag: 1790241792-952549
-X-HE-Meta: U2FsdGVkX19noqD1/8YBNR8iguS1/yh3Ihpnm+KgxcuHe3hBZYzOioN+dTOjFCWotM0tWw47WPkx+QnD+iWOHXG2ISCRpLXj6kSIZ3kT7IYU4P/OwF41Ti+q5WNZNPOFJ+YdgkTEGlOwIgukLvQhrVMbZXB50GnyWlZF8qxzMNSyW48soEflsSMy31Uejks7wB/oUxD91u+vRpLtO9x22OCHLw3mufEZA/UUe1mJQvIc0lHGqWqjFQz4Ad3TDNhp4qV7L7x5J4PrxQXNFYMt+KhKTOEdfRKuKOX4RX2ZDeAR+IiXL686u6RfmVJQkWrmvGjHbhvT81uIdf9AFc9NF9LJ8gn0g0Ps0tMCivbahqrQ4C3z4HusgVgPjiWNDuAjVSsRCqreGLI26ZFop0fsk9+SgalhM9QlERI9j7eUIi8g8QIldUfc9QTjtY82e08e55SUVoNR+sHzBjKPcqiYtJOJylCkQ7iy6JtVRQkyS4m2T/14O/GjMRLJQ9hpq4mPIQJTwwVx/BcfZzaUBW2i9kJbCfCkAHM/JTfhaxU7+yJVtcR8pYqmzLXyu9i833nSlOppqhc1QdXD/mSzviiA2mg1Lq8vI29v6Wfk2hhpEs1tn7PF0Vm1caD/L0qSHxaNJknT5TUeJGiPeIgg8DqidoROXIx5x5d6V9DutHxcM9KXcPuxKEqVHf7NvQ1zBcn03nXg8xux0j1ndwxYDU7hVj/zoT9HfXxG1vX79YLm4S442WtVHRu5Lh1Uvorg7FkKXGZLoN+FGe6lePGSnJyHDUBMizRTfE5vy9aTU0LkKVRh8ImfnbhOPZxVcDWItQwE80JiwFTIKBTibTs6mV7Ob3H9U5Lk6P4h6fd1WNIghVOoszu88yaxuI6vykI/VhI2Yw+8pWoVGhOURdTKyCwPO+2wlqjltt/fiiC+hDXtwfAgyUMth5yNtQNdQQgsxaFb5tJjIt4HrlQVkEYXnca
- QCFSyibM
- iObg/QdVKnU6Gn/n6FchTGHRu7maZn++ofyyDusoneS1kl6RoP3L7nyps/gu42Rfx7slIWZQOxeXkNunMIVyg6nhB05zszxK78bnhGS4YtJSBvZGGhF7epct5PMpp4ypoXbBbHpmqTd/cAsxsrTPKGGu4mJFJ9Gb5E+ndNaK+B+07M3LoNIgdBcW+lRDLlLSIgntSOT2kC975XTm0RcuHwc17Z1nLnvuhdZQNqPdX9wTBb2sk7/0s4gBcQD1rHEGmt0GOjSzRlYzUH8m7z9fdL4THgdTAIQQS38sCA4pbdznlDTm6q3jNBx2+KKbr5jNXfVw4BAQO63al0wdscGi+lAi5Fg9NpdDMAPnGypGZakyLnlh9NNBKslXhwnK5LcUkLH5/7+vaqIIDTlhviZ7yW+nouKw6OwsHE5qDbhE/poC6QoxeKcAIKU0YbtE9ABphTMQuXzZkaWLJgolnNkOGtlQ0qj/jmgHyI7mci2W35bRKzkDGHNSPDaV9r1EL+vC+mygifn+RjMKxz7bLvvDMOBQTwJXnb0ndPIs9UYu5yKwudn+BDrgQY+lPQUg92xkGfgqynAMw/fSOJ1uuXD8cqF9vsU7vNRbZTwxhrBtdcSWhAWg=
+X-HE-Tag: 1790241946-85193
+X-HE-Meta: U2FsdGVkX19BOEDAqo5hQhUsLRN24p/mbnmkFTCXCgJfwegNRAxZ9LmDfwNb9OfYg5D2ib/Y/K86mxCs4WMnBt6k/uT4vUmqZfNjf4pr9M8Mgm/+nlD5NLbcTTRjbv486x3v5HayRd4iDQw05NGqyj7HGqPR19lp4uxyZZo80YK4sHgweRtJinMZp1ds8fbzs3lh64ZY3FmnJtTRdlO2HWBSnLyNU/G/5T5EiS13dEAnTQlTYK5JcZVuMevpcTFTQvP7Pk7OyNPzicN8t/vlowQZgk3aOYEVfl3SgQjgClOSk1QnRHXyhXwWI8cs9VulHrKVF+oDJK3r0Su4/319Tpr3vrcHDXrlHn+lP3ui2cjLzlwIlkFKkQvfuURnnbFgR0O+vvsOO3ixG2v24kn0BFh+z849UWwgBYzvVUpHQiS0yU3KHVlsG6BR99UMMOfaxcpUm2KX5rgSnxoQ2LqlngYYmqeJl32X87hPVxO7KIXgttDFGnjHa/zynSzfNczphOhlwhjOutc8mhoNmfVtF5/sXNZ24Ilgq+jGc/RC8AF8UplqxeYGGkl1GL/d306lS69evSTVri6d/KhZyfnWKAjGc6TmNB5LGIkPkilAaodwgAxq3MAsLqJTKAjS2dkbANdFkdi2Js1Hcsl7WjnpEAo3wMP5AV9bADYz0dp1Dqr+t0yx/zlm3H4ccqQygrfZPDDzvPBk2M4yuhxkku5VWRl9tKRdlDNplpNu5FhtkMct2ren6F6RdqL0aoIqX1Gs/MIdx6voJXF+R4Mx8IeREu/XiLUP/FoEBRZ1gExIfPsOoNUhzvUVFWHRvy348989VgtxhzOr6lq3mwZbfdbKBMh6eN9QjEi2kdVbhLj0hi/0dyg3Ymt+NYW71lrZVREy/2iKxR7IH3p/EofF244JUG1NWnLd/FVoW0u6M/mkOiLT0zj2Z26ihWp9TVbJDqFiJpqfd4qkRhprUvCscgQ
+ LPsHxl9Y
+ /KTZUSJvAehfHuup+aUBQoYkhWmno6sAfR2ENOa8otbpn2ZR9AoWbWezV/EYiO+0gGSNl/r/JRLBfhANkgmuzhePWwOYmlPzx1TjTDcTDvScyFS8CAdSCnrqgumZnHvEQZ1MNFJg3Ad+rUMqxxk8PklOS6izGK+OEo8WWfQldsXK6bfFwOmelidQbyzhaIUP/FE7QThLMXez2Y2Ispy3qFBVXL36Vm4psQxYhw2pdXddnrzwV9HUQzjFNxwDr0zD/Z/a8aPTK93Zquk7rKvRS8KJTFwKEzm8c4K5pMODPjbYJn1DGZsbHpXQ4HuySvsQzU8xJvPV8pFzR9sUrEYJVa6vXxFG2CRV1r6O0C1J3ZYp8AcSIwkX/mgO3GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,97 +108,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Booting with a boot-time function tracer and a filter, for example
+Hi,
 
-  ftrace=function ftrace_filter=pud_free_pmd_page
+Thank you for the review.
 
-panics on 7.3-rc4 as soon as the tracer starts:
+We found that sk_forward_alloc is a plain int updated by a non-atomic
+RMW (sk_forward_alloc_add(), where even the read side is not
+READ_ONCE), and its writers span three unrelated lock domains:
 
-  [   23.531178] Starting tracer 'function'
-  [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
-  [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
-  [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
-  [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
-  [   25.981629] Call Trace:
-  [   26.125727]  <TASK>
-  [   26.413912]  ? pagetable_free_kernel+0x20/0x120
-  [   26.990283]  queue_work_on+0x97/0xf0
-  [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
-  [   27.566662]  cpa_flush+0x394/0x620
-  [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
-  [   29.151729]  set_memory_rox+0xa2/0xf0
-  [   29.584018]  create_trampoline+0x431/0x6f0
-  ...
-  [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
+   - socket lock, process context: SO_RESERVE_MEM and TX grants
+      (__sk_mem_schedule(), sk_forced_mem_schedule());
 
-The boot-time tracer is started from early_trace_init(), which runs
-before workqueue_init_early().  Making its trampoline read-only splits a
-large page, and CPA collapses it again right away.  The split table has
-been a kernel page table since commit 9e4a3ec3411b
-("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
-collapse frees it through pagetable_free_kernel(), which queues work on
-system_percpu_wq - still NULL at that point.  That commit is correct in
-itself; it only lets CPA reach pagetable_free_kernel() before the
-workqueue that function relies on exists.
+   - receive-queue lock, softirq: UDP RX charges and the
+      udp_rmem_release() fold;
 
-Keep putting the table on the list, but don't schedule the work while
-the system is still booting.  The next kernel page table freed after
-boot schedules it, and the work then frees the early table too, after
-the same IOMMU flush as any other.  If no kernel page table is freed
-after boot, the ones freed during boot stay on the list.
+   - no lock at all: sk_mem_charge()/sk_mem_uncharge() from
+      skb_set_owner_r() and skb destructors, and the sk_mem_reclaim()
+      fold itself.
 
-Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Link: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
----
-v2:
- - Keep the table on the list and only skip scheduling the work while
-   booting, instead of freeing it directly (David Hildenbrand)
- - Say that 9e4a3ec3411b is correct in itself and only exposes the
-   problem (Lorenzo Stoakes)
-v1: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
+Any cross-domain pair loses an update.  A lost charge is still
+returned in full by the matching skb free, so it resurfaces as a
+phantom surplus in sk_forward_alloc, and the next fold hands it back
+to the memcg via __sk_mem_reduce_allocated() ->
+mem_cgroup_sk_uncharge() - an uncharge with no matching charge.
 
-Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX, lockdep and KASAN
-enabled, on 7.3-rc4 (fe2ec83746e5) with the same unrelated local
-changes as noted for v1, booting with
+We first tried to fix it with locks, and hit three walls:
 
-  ftrace=function ftrace_filter=pud_free_pmd_page,pagetable_free_kernel,kernel_pgtable_work_func
+   - the socket lock cannot be used: its holders free skbs (e.g.
+      tcp_recvmsg()), and the destructor's sk_mem_uncharge() would
+      need to re-acquire it - recursion.  That is why these helpers
+      are lockless in the first place;
 
-The boot that panicked without the fix completes.  The table freed
-while the tracer installs itself does not show up in the trace, since
-the tracer is not live yet at that point, but the first kernel page
-table freed after boot does: systemd-modules-load freeing one from
-__cpa_collapse_large_pages() schedules the work, and
-kernel_pgtable_work_func() runs 0.8 ms later and drains the list.  From
-then on every pagetable_free_kernel() in the trace (660 entries, none
-lost) is followed by a work run within a few milliseconds.  So on this
-box the early tables wait until the first module is loaded, and no
-separate drain is needed.
+   - a new per-socket spinlock serializes the RMWs but not the bug:
+      __sk_mem_schedule() publishes the grant before the memcg charge,
+      and the charge may sleep (GFP_KERNEL, memcg reclaim/OOM), so no
+      spinlock can cover both steps; a fold in that window can still
+      refund pages whose charge afterwards fails;
 
- mm/pgtable-generic.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+   - such a lock would also sit on the per-packet charge/uncharge
+      paths, exactly the hot path the cacheline layout around
+      sk_forward_alloc was tuned to keep cheap.
 
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index b91b1a98029c..f7f504f57914 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -444,6 +444,12 @@ void pagetable_free_kernel(struct ptdesc *pt)
- 	list_add(&pt->pt_list, &kernel_pgtable_work.list);
- 	spin_unlock(&kernel_pgtable_work.lock);
- 
--	schedule_work(&kernel_pgtable_work.work);
-+	/*
-+	 * The workqueue may not exist yet while the system is booting.
-+	 * The next kernel page table freed after boot schedules the work,
-+	 * which then frees this one as well.
-+	 */
-+	if (system_state != SYSTEM_BOOTING)
-+		schedule_work(&kernel_pgtable_work.work);
- }
- #endif
--- 
-2.55.0
+Are there any good solutions to solve this problem?
 
+On 9/24/2026 4:26 PM, Eric Dumazet wrote:
+> On Thu, Sep 24, 2026 at 9:36 AM Cai Xinchen <caixinchen1@huawei.com> wrote:
+>> The memcg socket accounting currently charges pages to the memory
+>> cgroup per grant (__sk_mem_schedule() publishing forward allocation)
+>> and refunds them later from skb destructors.  The refund side folds
+>> per-skb "was this charged" snapshots back into the socket balance
+>> under concurrent lockless RMW, and races there can drive the memcg
+>> socket balance negative, ending with:
+>>
+>>      page_counter underflow
+>>      WARNING: ... mm/page_counter.c ... page_counter_cancel()
+>>
+>> This series flips the model: a socket is charged its whole memory
+>> budget (sk_sndbuf + sk_rcvbuf + sk_reserved_mem) to its memcg when the
+>> budget is established or grows, and refunded when the budget shrinks
+>> or the socket dies.  Grants and per-skb charge/uncharge stop touching
+>> the memcg entirely, so the racy refund pairing has no code left to go
+>> wrong: refunds can never exceed charges and the balance cannot
+>> underflow by construction.
+>>
+>> Tested: full arm64 build with 0 warnings; each intermediate state
+>> compiles (bisectable); tools/testing/selftests/cgroup builds clean.
+>> Runtime validation on the workload that used to trigger the underflow
+>> is pending.
+>>
+>
+> Charging sk_sndbuf + sk_rcvbuf upfront to memory.current is not
+> viable, especially for servers handling large numbers of connections
+> (e.g. 1 million TCP sockets):
+>
+> We specifically went in the exact opposite direction in commit
+> 4890b686f408 ("net: keep sk->sk_forward_alloc as small as possible")
+> to make sure idle sockets hold zero forward-allocated memory and
+> non-idle sockets hold less than one page (4 KB) in sk_forward_alloc.
+>
+>
+> 1. Massive phantom memory charges and false OOMs:
+>     With default sysctl_tcp_wmem[1] (16 KB) and sysctl_tcp_rmem[1]
+>     (128 KB), 1 million completely idle TCP sockets immediately charge
+>     144 GB to the cgroup's memory.current while holding 0 bytes of
+>     actual packet buffers.
+>     Worse, once TCP autotuning grows sk_rcvbuf / sk_sndbuf during a
+>     short burst (up to tcp_rmem[2] = 6 MB and tcp_wmem[2] = 4 MB by
+>     default), TCP does not shrink sk_rcvbuf or sk_sndbuf when the queues
+>     drain and the connection becomes idle again. 1 million long-lived,
+>     mostly-idle connections would permanently pin hundreds of GBs (up to
+>     several TBs) of non-existent memory in memory.current, forcing the
+>     memcg into constant reclaim thrashing of real page cache/anon pages
+>     and triggering premature memcg OOM kills.
+>
+> 2. Overcommitted caps vs. physical reservations:
+>     sk_sndbuf and sk_rcvbuf are per-socket upper bounds that are heavily
+>     overcommitted across sockets, not reservations (unlike SO_RESERVE_MEM).
+>     Comparing this to vm_committed_as is flawed: vm_committed_as tracks
+>     virtual address space overcommit globally and is never charged to
+>     memcg's memory.current for the exact same reason.
+>
+> 3. Broken memcg limit enforcement (memory.max bypass):
+>     __sk_mem_raise_allocated() drops mem_cgroup_sk_charge() completely,
+>     while sk_memcg_budget_sync() ignores charge failures ("the new budget
+>     is used uncharged"). When a cgroup reaches memory.max,
+>     sk_memcg_budget_sync() fails in sock_init_data_uid(), tcp_init_sock(),
+>     setsockopt(SO_SNDBUF/SO_RCVBUF), or autotuning, yet sk_sndbuf and
+>     sk_rcvbuf are still raised. Subsequent skb allocations in
+>     __sk_mem_schedule() will then allocate real physical memory without
+>     charging the memcg at all.
+>
+> 4. Unnecessary struct sock bloat and hot-path overhead:
+>     - Adds 8 bytes (sk_memcg_budget + sk_memcg_budget_lock) to struct sock
+>       (even when !CONFIG_MEMCG).
+>     - Acquires spin_lock_bh(&sk->sk_memcg_budget_lock) inside
+>       sk_mem_reclaim().
+>     - Every TCP socket creation charges rmem_default + wmem_default
+>       (416 KB) in sock_init_data_uid() and immediately uncharges 272 KB
+>       in tcp_init_sock().
+>
+> If you are hitting a page_counter underflow race in socket memcg
+> accounting, please share the exact race / stack trace and fix the
+> underlying accounting bug rather than charging uncommitted buffer limits.
 
