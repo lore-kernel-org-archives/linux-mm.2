@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20635C98311
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:06:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D934CC98311
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 10:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C3D26B009B; Thu, 24 Sep 2026 06:06:27 -0400 (EDT)
+	id 01B106B009E; Thu, 24 Sep 2026 06:06:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39B256B009D; Thu, 24 Sep 2026 06:06:27 -0400 (EDT)
+	id F35236B009F; Thu, 24 Sep 2026 06:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28A0D6B009E; Thu, 24 Sep 2026 06:06:27 -0400 (EDT)
+	id E4A026B00A0; Thu, 24 Sep 2026 06:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E92C96B009B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:06:26 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85A2BA02FD
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:06:26 +0000 (UTC)
-X-FDA: 85248225972.15.6B54907
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C576D6B009E
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 06:06:43 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5731A1402CE
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:06:43 +0000 (UTC)
+X-FDA: 85248226686.29.201BEA3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D2FE1140008
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:06:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM+mpu9q;
-	spf=pass (imf23.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id A3C7A40003
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:06:41 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OA0Wwjkr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790244384;
+	s=arc-20220608; t=1790244401;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ied2AelGOAUoBLypHiwb2BL1zLogQy2LqP9NEecl9Ec=;
-	b=VWJXbD9jaO8PQVsbJrz9d//Sg/MZXayBdw5p7yRG8lQdKpk/FLi6rOsozlQqr2s+kohw0u
-	LNFqjaL9ROjM90SYIKM4Ep0AM7QGMI/wDrhgfo6EkFWzz1VB/7LyTQab9YpR4YsVtC4UZ0
-	7WE3MivPhWb6OXEaJz9XBPCLaf7t5Ug=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790244384;
-	b=tZBDl+NvSLe/Kbg/UzZpz5OV0zWslXPXYx7kAUoMqcHK4fDKY6Llu2EAD0RrDqTtsmmgHW
-	YzS1Nld8QP5FPBbBrzao+odpIt3Ia5I5W578jiBvl5hzNY6DS3Quz7/sjYEDeespOSsILT
-	WIYUTiTQasrlWi+B17gZjv8YD26BibY=
+	bh=+jezVnsczHca2+N3DdTe1/ZWux4ulhsHRjwwcueBcvY=;
+	b=LhXO5oifihVdWSllz5DK1ig6cYZEcRfbkmwrl1opXJcU0JnEqqj/Cw9ki0NQ4VyBXjdWhe
+	xDKZaNqQVARbDfnT0eodUOeHahdKttPSS+93eRC8fCz7AWGYebTCe3o9rMLqQ5WLbkosSh
+	C1fiNbcREUN2f1nqOzEIUnr+7rhB6jA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AM+mpu9q;
-	spf=pass (imf23.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OA0Wwjkr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790244401;
+	b=6sT88mMy+Ua2cBPjc6L7RqEun5c7JpPBy9+krYbhbC5n+HaYfKi3oSXqgOKqmWCGxOvOos
+	Khgq7UWBV9IAxLPxcoQZHP3tlKWn5sMbm83KaRzKMgAd0qgIS0EEZlor6TrQg0O1Kg7IoU
+	bjQqD6acIhVNggHNZSFHvss+lIAVU9w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18AA243F85;
+	by sea.source.kernel.org (Postfix) with ESMTP id E8144432CE;
+	Thu, 24 Sep 2026 10:06:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982691F00898;
 	Thu, 24 Sep 2026 10:06:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD31D1F000FF;
-	Thu, 24 Sep 2026 10:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790244384;
-	bh=Ied2AelGOAUoBLypHiwb2BL1zLogQy2LqP9NEecl9Ec=;
+	s=k20260515; t=1790244400;
+	bh=+jezVnsczHca2+N3DdTe1/ZWux4ulhsHRjwwcueBcvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=AM+mpu9qGXxDz7bD9e86xWdXibQkZA/5cUFq8K+AJhu+OLOZOG3vMF9mBRTc+zGqI
-	 yRj9S4yaKhbuaIGypSGuFG49BwMWg7fZoz4YBrRNXGjOa8KkLOa6Kqdg9Mmjwt0q9Q
-	 ehXg0pJlZ1ALhgUqcXmE6XX5MLHMwgqnU3WirpecNc1Es05E37mMF/ufHlErk7/MSf
-	 iYgfs7myFqVwvkuOx0gREfI/UFZ+04YCqr2grhPtJdc/U8KkMMPJgqf3yT/2Rfmqui
-	 JTCFvApGvxYleMqambDrmxZ3rg9Pz/jTjTmV4Ve6a523KZYTJFPlknUQuc9r3kvPDT
-	 oi++Sb59RmMoQ==
+	b=OA0Wwjkrad2J01S7AVOXgv9vB7OxITzitM9cqnBHo/R+SMmR/Wb6JnEi/VOvV2Mr5
+	 2GQ0T5KPCERTOQQyaKhjIMcAEoJCmXuPc/1IlVl4GqUieGyYG9M7bq9V9hdPzuGu75
+	 zm5bZ6Vq9QKL5c2wtyNV07tR16E9ZCOrsDt/JCGwoBvTAiOwutEZ44qNObS1JXTIQm
+	 thqkWUr0JA9TdGwc9tUQRVAHzwZRsT4bDyZTeHuozNp3wPg4eqZQgmF/val0gVwhXN
+	 oIIrRZN/VaX3X3Ibu2efYFQqrrjq3udn0ykeO2gGCkLVxqnNNfkpFsX/NM1LKugnmA
+	 wsfiHOZHqec5A==
 From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
 To: linux-coco@lists.linux.dev,
 	kvmarm@lists.linux.dev,
@@ -126,22 +126,22 @@ Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
 	linaro-mm-sig@lists.linaro.org,
 	linux-media@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v8 02/14] mm: Zero memory during shared memory transitions
-Date: Thu, 24 Sep 2026 15:35:17 +0530
-Message-ID: <20260924100529.1398790-3-aneesh.kumar@kernel.org>
+Subject: [RFC PATCH v8 03/14] irqchip/gic-v3-its: Resolve the default NUMA node explicitly
+Date: Thu, 24 Sep 2026 15:35:18 +0530
+Message-ID: <20260924100529.1398790-4-aneesh.kumar@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
 References: <20260924100529.1398790-1-aneesh.kumar@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: whr7cx9nn7qwckc8d83nj6uzg4ofhu3s
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D2FE1140008
-X-Stat-Signature: 197mjk5ao4gxcppx6shh78yjfyynznzz
-X-HE-Tag: 1790244384-254236
-X-HE-Meta: U2FsdGVkX1+4dGUjkVBOxlBChQpDLrHuX4pINWefVeYbePvSIOpJL6cxb4vlqNz9/tEax2F3vpZOeMiuX8d11mFa0FoCxQy9R/ZCC9HbC5LQNQx90bC4RdqX4pQfqiX8l3vzXOBCxdgIYr8S4JtGTEwbKfPBdaoBg1QSrM72ZzNYMAu49oOUoDqBI6wLN64L1d/YuIw3CCV2uURjwTyYEDBPXnovXJIZpLvNyCFyvmB4flT0/7HyD9IJEiEV9yrYdY2ABu46jGVUkZQrRHBQoURL+kM7KEM8DVAacflhJkbYd+45LWRL/R3/5qeFJdPknom9TlOP3bAiLtv/ayEvfdRX8l8U2IHoC5yuJRIqoxyeZhxnOIVMNOE4g4b/c5qxETIcMEJOh01rU8MmlVS18O9UtJdfP0FzUW3WXwmfrlRGlt+TfBeAYuCbzXT1aUpl0rhGAJmzUUzm+z+ia3adPRqNeuRz2r6qlXPlsKBIQKGqUYGnHeOhC2ejJx6vzbVc6EEaKHMKxTvO0M/L1mMGObwLeW6CViShBzuvFjTABk58VOSDwCBcKxINkKMGE6iNHL2um6DJdIlZmaGlwrVfjlV5VUmH5K/iuiTzS8g6nQRsWp+Q57KAoGQP5EfnUReg4PZPxBlyD8KZz+C/xye4TIXV62PbKms2oQQ6sXy7w9Z/206AOH9UFwE1Py8QUkV8DoAnOjG7Mv6SkAOWmGJOrzFXIi071JVENelRtPGtXRtoiQ4fUTDLaFz1hgfQjRkWPWnAiuK7FMSxUibqrYMH81r31bLf8QPg+XWVfE6BG94B8GJ/bLwWCpCbcNCCbfIS7/ZvLlbCoknKC9d3l3agsMUxBjhiiFTgmgGBH9Ee3CrpksTmPn+E6DcYJAcDdgCjdvirgw7tSA0dx69FHk+bnv9p2Frp5qx2CuPMkyfO+26sRK6ZVwvN+126eDiv+HFnpB9qbCsc8Hpy5YuJIzb
- 5PNujfsW
- Kh62FKqunfubAW66DuwHDeyhKhQvjQlUsbHVHJj2N1xnsyhmBMfJ/qglB1tEnaEsX2gPj1NwHQJ52+/i14K9Tz8J4gaybHRt6NJBI80dq1qFQFSmh6bE4AuXyR1PAEo0T1COFS6QhKZy9mm8+PvYPwFdGfGjF7+IVYh8AQ3fhTQ61BaWfecmXvCSTIgxOm0tiV2uytqLASKrUMmTIFjJG/zPp/MuiMxqTBLUqCrVDh1w+xTnY+XttkD3cCGz46jmI2GWjhpXbxZZs/jCbG0rBmVjE3Njfg0UU3k+RNqCq90xWiVj7zY8Djffm2J3M3yt3ZkVYmaQCJhicoANglYWfQ37hQnUndz2O4thkAZfz1N5r12F6oX+aeCPD8QqQyVRLrpzfzzMJwtp/f4MSRuIO6Ex7ApjsBzqVsx/BuqzRu0s/DOndR4eF4IhdGTjY6QeFJfa05rndBB1DInUsfokoEADmHksy9V7rnipiGOWmZ1Jc0cV5XNoE7c9x/Vnf3KX+OHGwfb1Z0WQgReIhkDmXr2cB+zU2RcEPCau4CJXwz5ciDl7K/A9v/YDpAIk/WQZcLaoS8UjXcOKh7zoN3alYmUIR8XGgEU8ouxqlFidtchifw2O1ytNsSquq1hC77xIl0ENu75914+jlCayqQiFpQeYpcKjy1epNlBg5cCTK8uatyzcbAKvivJrevw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A3C7A40003
+X-HE-Tag: 1790244401-791337
+X-HE-Meta: U2FsdGVkX18bYTvgNZZvLWPaIpiC4r2+7QDotsWNZpNYDM2XNufgdi4FQcATlPQoYviH3hKHHySRsZDmq76JeoMwRXqzjzQuPP2+WFUjzuVeBB0hkZ93B6vIHaQhUZWAJbkA6V5OMQKjo9sxBJJiFPB+UXLhmNloXJyFNQnFbFejnPfNy5ob46U8IqM/BiVB0FM3YLlqaTqu4jo5pJg69SVDjrbt1+iML0MS0oBaghHrS35oa3uKQ2SwzsAgCx5WDRMIRSrVvE5aIs6fz4sv/mMGb42dQrh5BN4V5E71kQQdvHVVUv3zTixYiOq8TtD1gv+zPUilVKIQjA2lW553EHUSh/kHuvtV0wJ0zG7Tw/emFakzEEzoqwmfwpj5gP+3FoMPMdUYT9EdUroKO3Ma0vVaPjssJ/9vj3jtp6H3wZsKRPwUvSPOYj3QDmAplGoKhjf2EKACyWSHfd8tkIMeyvZB0WeFjevefs2ProhWkOqCAa3lHlMbDaiRxeSPnsRiVq3LPxPUfr5QTEr4tyq+MYgxfce2ROHcxlsXwxw7RG988/llAw4a91XW14frjMu/dgliljGE5jSZG+CxI2aGBxXkLxRrQDEHnmdkbZUwEUHioNgWaCBk4L857/oTJBSsywtLvS2oULHegHmlce9LkqhGUi5SDK1rxlHFuVAqThBgVO620ni6jkJ2pHkgiCaNV9LLkGquxlVhNVLM/p/eh5XlPQQ4jvSlU1DfY533j1v77OorfpSwiYRxJDtGCDpfHIjT2lTQrHviHNqtZz6dpF2Ahp+Mo2E+5xHNyAenr9+d7VhH39JmvCUxI5jUycMLsD4CsRGZOnPdWxRvKIqANhVBJQUI7sgZltgdZBxYQ9xdxf+T1gLk0Nd96YCeojtSnNoQoL2cN8zoPuPlRrK9SX3Dmxm9AN6fdg9yhDP3o7XG4MnJz2Q4gRgnL/XQg2A3rR1jblfm76J3YiXfv0C
+ SpcSvdAe
+ bx4MxFJJhqCoI+qtdjBvEuXQwtTIgUexH7YOgp4K4wkXDQ4yheZolRTU4CqMEFgmmlmzkWRUAR+NpbQja+e01qmG+ysf6CKFUKCflywOVgDXNQ/kuK44QOF+aLz6cl2lJ6cEgmh+HGInFoDwL4FBIS2SMOb3zZ2DquTvyrZW0zkgNGWA/cZ8RN+Id4XZ91TyciyVtYOjfRVupAP536ck+cRG3JaXP/O7MR5OP+AD5BJulQItpscrW4ns4nmEy3xhf6VHqSEfIdOwi1CezxtO/hFyL0M1BisFtjzlYWx4t1P6ckZ7JlDyG0Hkt3inXZ7zVQt3RsYoVXhS2TX6/G0r1Z2bH26Xras32akSWsf2ffGniERE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,442 +149,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Architectures need to zero memory at different points in a private-to-shared
-transition. For example, pKVM must clear memory before sharing it, while Arm
-CCA can only clear it after the RSI transition has completed.
+alloc_pages_node() resolves NUMA_NO_NODE to numa_mem_id() internally. In
+preparation for switching ITS allocations to the CoCo shared memory
+allocator, resolve the default node explicitly in its_alloc_pages().
 
-Make zeroing an implicit property of set_memory_decrypted(). Each architecture
-or platform performs the clear at the safe point in its transition. On x86,
-perform it in the prepare callback while the private mapping remains
-accessible. This avoids adding a flag to set_memory_decrypted() and threading
-it through the architecture-specific callbacks.
+The CoCo shared memory allocator interprets NUMA_NO_NODE as a request to
+apply the current task's memory policy. Passing numa_mem_id() instead
+preserves the existing nearest-memory-node placement across the
+allocator switch. This patch does not change the current allocation
+behavior.
 
-Keep allocations on platforms without memory encryption on the ordinary page
-allocator path so the original GFP constraints, including __GFP_ZERO, remain
-intact. Remove post-transition memset() calls that are now redundant and
-explicitly clear allocations on paths where no transition occurs.
-
-This intentionally makes every private-to-shared transition destructive;
-callers can no longer use set_memory_decrypted() to preserve existing contents.
-
-Assisted-by: Codex:gpt-5
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: x86@kernel.org
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Cc: Long Li <longli@microsoft.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Radu Rendec <radu@rendec.net>
 Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 ---
- arch/arm64/mm/pageattr.c                      |  3 ++
- arch/powerpc/platforms/pseries/svm.c          |  2 +
- arch/s390/mm/init.c                           |  3 ++
- arch/x86/coco/tdx/tdx.c                       |  3 ++
- arch/x86/hyperv/hv_init.c                     |  6 ++-
- arch/x86/hyperv/ivm.c                         |  4 ++
- arch/x86/kernel/kvmclock.c                    |  6 +--
- arch/x86/mm/mem_encrypt_amd.c                 |  4 ++
- drivers/hv/connection.c                       | 41 +++++++++----------
- drivers/hv/hv.c                               | 11 ++---
- drivers/hv/hv_common.c                        |  2 -
- drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c |  3 ++
- kernel/dma/direct.c                           | 22 ++++++----
- mm/cc_shared.c                                |  7 +---
- 14 files changed, 72 insertions(+), 45 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index bbe98ac9ad8c..ae1f5de66fad 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -339,6 +339,9 @@ static int realm_set_memory_decrypted(unsigned long addr, int numpages)
- {
- 	int ret = __set_memory_enc_dec(addr, numpages, false);
- 
-+	if (!ret)
-+		memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
-+
- 	WARN(ret, "Failed to decrypt memory, %d pages will be leaked",
- 	     numpages);
- 
-diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platforms/pseries/svm.c
-index 7a403dbd35ee..a344e094fe1c 100644
---- a/arch/powerpc/platforms/pseries/svm.c
-+++ b/arch/powerpc/platforms/pseries/svm.c
-@@ -9,6 +9,7 @@
- #include <linux/mm.h>
- #include <linux/memblock.h>
- #include <linux/mem_encrypt.h>
-+#include <linux/string.h>
- #include <linux/cc_platform.h>
- #include <asm/machdep.h>
- #include <asm/svm.h>
-@@ -59,6 +60,7 @@ int set_memory_decrypted(unsigned long addr, int numpages)
- 	if (!PAGE_ALIGNED(addr))
- 		return -EINVAL;
- 
-+	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
- 	uv_share_page(PHYS_PFN(__pa(addr)), numpages);
- 
- 	return 0;
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index be7e009e7b59..f2e28a2710e0 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -129,6 +129,9 @@ int set_memory_encrypted(unsigned long vaddr, int numpages)
- int set_memory_decrypted(unsigned long vaddr, int numpages)
- {
- 	int i;
-+
-+	memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
-+
- 	/* make specified pages shared (swiotlb, dma_alloca) */
- 	for (i = 0; i < numpages; ++i) {
- 		uv_set_shared(virt_to_phys((void *)vaddr));
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index f904a636d449..1f1f39082391 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -978,6 +978,9 @@ static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- static int tdx_enc_status_change_prepare(unsigned long vaddr, int numpages,
- 					 bool enc)
- {
-+	if (!enc)
-+		memset((void *)vaddr, 0, (size_t)numpages << PAGE_SHIFT);
-+
- 	/*
- 	 * Only handle shared->private conversion here.
- 	 * See the comment in tdx_early_init().
-diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-index 0b4a1c0b0b16..a42468e81c34 100644
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -156,8 +156,10 @@ static int hv_cpu_init(unsigned int cpu)
- 			 * page in non-root partition here.
- 			 */
- 			if (*hvp && !ms_hyperv.paravisor_present && hv_isolation_type_snp()) {
--				WARN_ON_ONCE(set_memory_decrypted((unsigned long)(*hvp), 1));
--				memset(*hvp, 0, PAGE_SIZE);
-+				int ret;
-+
-+				ret = set_memory_decrypted((unsigned long)*hvp, 1);
-+				WARN_ON_ONCE(ret);
- 			}
- 		}
- 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 2ce4dfe53472..e9c7799a0094 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -755,6 +755,10 @@ static int hv_mark_gpa_visibility(u16 count, const u64 pfn[],
-  */
- static int hv_vtom_clear_present(unsigned long kbuffer, int pagecount, bool enc)
- {
-+	if (!enc)
-+		memset((void *)kbuffer, 0,
-+		       (size_t)pagecount << PAGE_SHIFT);
-+
- 	return set_memory_np(kbuffer, pagecount);
- }
- 
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index cb3d0ca1fa22..3e9b7ad3dea2 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -248,7 +248,7 @@ static void __init kvmclock_init_mem(void)
- 	 * be mapped decrypted.
- 	 */
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
--		r = set_memory_decrypted((unsigned long) hvclock_mem,
-+		r = set_memory_decrypted((unsigned long)hvclock_mem,
- 					 1UL << order);
- 		if (r) {
- 			__free_pages(p, order);
-@@ -256,9 +256,9 @@ static void __init kvmclock_init_mem(void)
- 			pr_warn("kvmclock: set_memory_decrypted() failed. Disabling\n");
- 			return;
- 		}
-+	} else {
-+		memset(hvclock_mem, 0, PAGE_SIZE << order);
- 	}
--
--	memset(hvclock_mem, 0, PAGE_SIZE << order);
- }
- 
- static int __init kvm_setup_vsyscall_timeinfo(void)
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 2f8c32173972..47cae102acd2 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -13,6 +13,7 @@
- #include <linux/dma-direct.h>
- #include <linux/swiotlb.h>
- #include <linux/mem_encrypt.h>
-+#include <linux/string.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/bitops.h>
-@@ -285,6 +286,9 @@ static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
- 
- static int amd_enc_status_change_prepare(unsigned long vaddr, int npages, bool enc)
- {
-+	if (!enc)
-+		memset((void *)vaddr, 0, (size_t)npages << PAGE_SHIFT);
-+
- 	/*
- 	 * To maintain the security guarantees of SEV-SNP guests, make sure
- 	 * to invalidate the memory before encryption attribute is cleared.
-diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
-index 1ab3581b096a..3be779093f3c 100644
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -13,6 +13,7 @@
- #include <linux/sched.h>
- #include <linux/wait.h>
- #include <linux/delay.h>
-+#include <linux/cc_platform.h>
- #include <linux/mm.h>
- #include <linux/module.h>
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index e9807af23537..ac5507acb1a0 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -32,6 +32,7 @@
+ #include <linux/set_memory.h>
  #include <linux/slab.h>
-@@ -263,29 +264,27 @@ int vmbus_connect(void)
- 		goto cleanup;
- 	}
+ #include <linux/syscore_ops.h>
++#include <linux/topology.h>
  
--	ret = set_memory_decrypted((unsigned long)
--				vmbus_connection.monitor_pages[0], 1);
--	ret |= set_memory_decrypted((unsigned long)
--				vmbus_connection.monitor_pages[1], 1);
--	if (ret) {
--		/*
--		 * If set_memory_decrypted() fails, the encryption state
--		 * of the memory is unknown. So leak the memory instead
--		 * of risking returning decrypted memory to the free list.
--		 * For simplicity, always handle both pages the same.
--		 */
--		vmbus_connection.monitor_pages[0] = NULL;
--		vmbus_connection.monitor_pages[1] = NULL;
--		goto cleanup;
-+	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
-+		ret = set_memory_decrypted((unsigned long)vmbus_connection.monitor_pages[0],
-+					   1);
-+		ret |= set_memory_decrypted((unsigned long)vmbus_connection.monitor_pages[1],
-+					    1);
-+		if (ret) {
-+			/*
-+			 * If set_memory_decrypted() fails, the encryption state
-+			 * of the memory is unknown. So leak the memory instead
-+			 * of risking returning decrypted memory to the free list.
-+			 * For simplicity, always handle both pages the same.
-+			 */
-+			vmbus_connection.monitor_pages[0] = NULL;
-+			vmbus_connection.monitor_pages[1] = NULL;
-+			goto cleanup;
-+		}
-+	} else {
-+		memset(vmbus_connection.monitor_pages[0], 0, HV_HYP_PAGE_SIZE);
-+		memset(vmbus_connection.monitor_pages[1], 0, HV_HYP_PAGE_SIZE);
- 	}
+ #include <linux/irqchip.h>
+ #include <linux/irqchip/arm-gic-v3.h>
+@@ -236,7 +237,7 @@ static struct page *its_alloc_pages_node(int node, gfp_t gfp,
  
--	/*
--	 * Set_memory_decrypted() will change the memory contents if
--	 * decryption occurs, so zero monitor pages here.
--	 */
--	memset(vmbus_connection.monitor_pages[0], 0x00, HV_HYP_PAGE_SIZE);
--	memset(vmbus_connection.monitor_pages[1], 0x00, HV_HYP_PAGE_SIZE);
--
- 	msginfo = kzalloc(sizeof(*msginfo) +
- 			  sizeof(struct vmbus_channel_initiate_contact),
- 			  GFP_KERNEL);
-diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-index fe50090dcc01..6e836a02910a 100644
---- a/drivers/hv/hv.c
-+++ b/drivers/hv/hv.c
-@@ -123,12 +123,13 @@ static int hv_alloc_page(void **page, bool decrypt, const char *note)
- 	if (!*page)
- 		return -ENOMEM;
- 
--	if (decrypt)
-+	if (decrypt) {
- 		ret = set_memory_decrypted((unsigned long)*page, 1);
--	if (ret)
--		goto failed;
--
--	memset(*page, 0, PAGE_SIZE);
-+		if (ret)
-+			goto failed;
-+	} else {
-+		memset(*page, 0, PAGE_SIZE);
-+	}
- 	return 0;
- 
- failed:
-diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index 31256cb22b39..af6b1531d600 100644
---- a/drivers/hv/hv_common.c
-+++ b/drivers/hv/hv_common.c
-@@ -505,8 +505,6 @@ int hv_common_cpu_init(unsigned int cpu)
- 				/* It may be unsafe to free 'mem' */
- 				return ret;
- 			}
--
--			memset(mem, 0x00, pgcount * HV_HYP_PAGE_SIZE);
- 		}
- 
- 		/*
-diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-index 26fe9c3f22e3..7d922e0a28f9 100644
---- a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-+++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-@@ -13,6 +13,7 @@
- #include <linux/mem_encrypt.h>
- #include <linux/mm.h>
- #include <linux/pgtable.h>
-+#include <linux/string.h>
- 
- #include <asm/hypervisor.h>
- 
-@@ -61,6 +62,8 @@ static int pkvm_set_memory_encrypted(unsigned long addr, int numpages)
- 
- static int pkvm_set_memory_decrypted(unsigned long addr, int numpages)
+ static struct page *its_alloc_pages(gfp_t gfp, unsigned int order)
  {
-+	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
-+
- 	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID,
- 				  addr, numpages);
+-	return its_alloc_pages_node(NUMA_NO_NODE, gfp, order);
++	return its_alloc_pages_node(numa_mem_id(), gfp, order);
  }
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index da665ca22d5c..356d4e09e1c8 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -211,7 +211,8 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 	if (force_dma_unencrypted(dev))
- 		attrs |= __DMA_ATTR_ALLOC_CC_SHARED;
  
--	if (attrs & __DMA_ATTR_ALLOC_CC_SHARED) {
-+	mark_mem_decrypt = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
-+	if (mark_mem_decrypt) {
- 		/*
- 		 * Unencrypted/shared DMA requires a linear-mapped buffer
- 		 * address to look up the PFN and set architecture-required PFN
-@@ -219,7 +220,6 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 		 * allocation.
- 		 */
- 		allow_highmem = false;
--		mark_mem_decrypt = true;
- 	}
- 
- 	size = PAGE_ALIGN(size);
-@@ -324,7 +324,9 @@ void *dma_direct_alloc(struct device *dev, size_t size,
- 		cpu_addr = page_address(page);
- 	}
- 
--	memset(cpu_addr, 0, size);
-+	/* Zero after remapping because the page may be in HighMem. */
-+	if (!mark_mem_decrypt)
-+		memset(cpu_addr, 0, size);
- 
- 	if (set_uncached) {
- 		void *uncached_cpu_addr;
-@@ -435,10 +437,13 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 	unsigned long attrs = 0;
- 	struct page *page;
- 	void *cpu_addr;
-+	bool mark_mem_decrypt;
- 
- 	if (force_dma_unencrypted(dev))
- 		attrs |= __DMA_ATTR_ALLOC_CC_SHARED;
- 
-+	mark_mem_decrypt = attrs & __DMA_ATTR_ALLOC_CC_SHARED;
-+
- 	if ((attrs & __DMA_ATTR_ALLOC_CC_SHARED) && dma_direct_use_pool(dev, gfp))
- 		return dma_direct_alloc_from_pool(dev, size, dma_handle,
- 						  &cpu_addr, gfp, attrs);
-@@ -449,6 +454,7 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 			return NULL;
- 
- 		cpu_addr = page_address(page);
-+		mark_mem_decrypt = false;
- 		goto setup_page;
- 	}
- 
-@@ -457,11 +463,13 @@ struct page *dma_direct_alloc_pages(struct device *dev, size_t size,
- 		return NULL;
- 
- 	cpu_addr = page_address(page);
--	if ((attrs & __DMA_ATTR_ALLOC_CC_SHARED) &&
--	    dma_set_decrypted(dev, cpu_addr, size))
--		goto out_leak_pages;
- setup_page:
--	memset(cpu_addr, 0, size);
-+	if (mark_mem_decrypt) {
-+		if (dma_set_decrypted(dev, cpu_addr, size))
-+			goto out_leak_pages;
-+	} else {
-+		memset(cpu_addr, 0, size);
-+	}
- 	*dma_handle = phys_to_dma_direct(dev, page_to_phys(page),
- 					 attrs & __DMA_ATTR_ALLOC_CC_SHARED);
- 	return page;
-diff --git a/mm/cc_shared.c b/mm/cc_shared.c
-index 85e16f4504b8..9eb79832a702 100644
---- a/mm/cc_shared.c
-+++ b/mm/cc_shared.c
-@@ -104,7 +104,6 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
- 	struct cc_shared_layout layout;
- 	struct page *page;
- 	unsigned int order;
--	bool zero = gfp & __GFP_ZERO;
- 	int ret;
- 
- 	ret = cc_shared_calc_layout(requested, &layout);
-@@ -117,7 +116,8 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
- 
- 	/*
- 	 * State transitions require a linear-map address and may modify memory.
--	 * Allocate from low memory and defer requested zeroing until afterwards.
-+	 * Allocate from low memory and let the architecture place zeroing at the
-+	 * appropriate point in the transition.
- 	 */
- 	gfp &= ~(__GFP_HIGHMEM | __GFP_ZERO);
- 	if (nid == NUMA_NO_NODE)
-@@ -137,9 +137,6 @@ static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
- 		return ret;
- 	}
- 
--	if (zero)
--		memset(page_address(page), 0, layout.shared_size);
--
- 	mem->page = page;
- 	mem->shared_size = layout.shared_size;
- 	return 0;
+ static void its_free_pages(void *addr, unsigned int order)
 -- 
 2.43.0
 
