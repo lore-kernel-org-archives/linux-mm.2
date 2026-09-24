@@ -4,103 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843F2C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BDEFC98311
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 09:27:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BAB76B008A; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
+	id 776806B0092; Thu, 24 Sep 2026 05:27:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 991FE6B008C; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
+	id 724BC6B0093; Thu, 24 Sep 2026 05:27:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A8BE6B0092; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
+	id 63AD96B0095; Thu, 24 Sep 2026 05:27:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BBC96B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:25:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F7806B0092
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 05:27:54 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CC25EC02AF
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:25:49 +0000 (UTC)
-X-FDA: 85248123618.10.982C499
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9B6FD4000C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:25:46 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oujNsmgU;
-	spf=pass (imf01.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CB0BDA5C7D
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:27:53 +0000 (UTC)
+X-FDA: 85248128826.10.3C94AF8
+Received: from mta0.migadu.com (out-217.mta0.migadu.com [91.218.175.217])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6691B180002
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:27:51 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=czuAz6+f;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790241947;
+	s=arc-20220608; t=1790242071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bDikpWMchPRZnYe6ZTjPxkVDUAVMs72pAdd9atbppWw=;
-	b=oQUYWUor/kma7XZ7yB1M3ZU5nC4NLh7rO9tslfvebYcN0yvKxTZDTjQsoO4Bp91fr8gnus
-	mSZ7YBJoaAQ6lg2sovFiVrzkUFoFS1VeylxvSzlaaLlvQG6ZyziZp1bbO6YZ5lAGxt56U3
-	dlpPLVWTtvnMVtnobLRbcDsrqgYrmbg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=oujNsmgU;
-	spf=pass (imf01.hostedemail.com: domain of caixinchen1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=caixinchen1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	bh=5f7eDWrEAxsskMCWSghcr3IBmYC/YDZeBkEGQ/WYK2Q=;
+	b=h65MyTJqb1tINQtxszuFtIP539HNPtRZFG0yijuCfzXfJHJUFpHLRq0spveeuFQKFdmsWJ
+	uFxm6LZG9ik2CYtLAUbUYY6HgQcDSw3eEaVaWMGShR0HkrrA+Cab9bPdB7jTOapmMb9Rro
+	lO0990hc4ZXxsUMJcJQ6M//KzL3R7Wc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790241947;
-	b=xpD2PyHEASvC5SyHCm+R29LE+nOrD2bmg1R+hEsQKcHit0nZdV1TpDpGngFdVatYroTnps
-	SJmoUOhaM+FwFnBsFf9O5e1O/+P3VeoQ5zWslaP8axrRsf6O9v2H8Ih4IzaWfTe5MDW6Sh
-	SXv8wYBbWbjSDaeJwmIJ5Y7ARQXqF5s=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=bDikpWMchPRZnYe6ZTjPxkVDUAVMs72pAdd9atbppWw=;
-	b=oujNsmgUBwdI/eT1H+Qs5F7p2O9MDX6RLH5o2hJQlaLXAb/j6LdmuAxKAUikKwjx4ELt2b2y2
-	lgUdHwxOESQ7bGcylb6iraoXxxUeyVASQYTIWGMFuLFmCa9f6T1UfMS9oTgO2W7hua9cXwHXMQz
-	TcR+D/VUrVG60YNnOWDC2RI=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4hr7Rh5MhQznTVd;
-	Thu, 24 Sep 2026 17:13:36 +0800 (CST)
-Received: from whupemk100010.china.huawei.com (unknown [7.152.184.41])
-	by mail.maildlp.com (Postfix) with ESMTPS id 91E8840586;
-	Thu, 24 Sep 2026 17:25:40 +0800 (CST)
-Received: from [10.67.109.91] (10.67.109.91) by whupemk100010.china.huawei.com
- (7.152.184.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 24 Sep
- 2026 17:25:36 +0800
-Message-ID: <d8c12b4e-4ff2-4c62-a40d-d67bb4680a0d@huawei.com>
-Date: Thu, 24 Sep 2026 17:25:35 +0800
+	t=1790242071;
+	b=LpoiWABE83xXFCgr5r1arS1mitdOQRuyu3c/Z6AfZekBDNbxX6m89WI26Q7PsfOLo6BN52
+	Is+Ga8hr3xQrO37LyUDEGKC33AVepyj2LDoQpjXEbJ1ukDIJ9L0igQmj7mda99NeUxB8YX
+	+R7MlfXzpKfs1wXgXT3qHdeDlJ9DQNU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=czuAz6+f;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.217 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yQ1JL3OS1DIhfdfcLe4c8iEZGo0TsjpYksuAFp/3C9s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790242069; v=1; x=1790846869;
+ b=czuAz6+fWkcvel/Ss9yzDdaaRu5B7Vc6wVDqP8BP4o9hrQr87bNJAeSi8Gj3Xk2Kn6fXep0f
+ 2Yxc5UbBub1YEt4sDfOtHKMS2u7DpyivoZQ8nGpiAmrkzbcACMh3zldoCgerts1IrFflCOPXbmv
+ 6im9RzleA2/1AtVK18GchuTg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 17e50b02eda3b91c;
+	Thu, 24 Sep 2026 09:27:49 +0000
+X-Mizu-Trace-ID: 17e50b02eda3b91c
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <f46ac4fb-6ef3-48e8-b098-bd210ea276b7@linux.dev>
+Date: Thu, 24 Sep 2026 17:27:38 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC -next 0/5] net: charge socket memory budget to memcg
- upfront
-To: Eric Dumazet <edumazet@google.com>
-CC: <tj@kernel.org>, <hannes@cmpxchg.org>, <mkoutny@suse.com>,
-	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
-	<kuniyu@google.com>, <pabeni@redhat.com>, <willemb@google.com>,
-	<davem@davemloft.net>, <kuba@kernel.org>, <horms@kernel.org>,
-	<ncardwell@google.com>, <matttbe@kernel.org>, <martineau@kernel.org>,
-	<geliang@kernel.org>, <mhocko@kernel.org>, <roman.gushchin@linux.dev>,
-	<shakeel.butt@linux.dev>, <muchun.song@linux.dev>, <cgroups@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <mptcp@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kselftest@vger.kernel.org>, <lujialin4@huawei.com>
-References: <20260924080219.1036588-1-caixinchen1@huawei.com>
- <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] [ext4?] WARNING in __folio_set_anon
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, harry@kernel.org, jannh@google.com,
+ liam@infradead.org, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, riel@surriel.com,
+ syzkaller-bugs@googlegroups.com, vbabka@kernel.org,
+ syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
+References: <6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com>
+ <20260924065458.49698-1-lance.yang@linux.dev>
+ <0a0a07f8-8ac9-4d75-b4c6-c403865f0be9@kernel.org>
+ <08bbb615-a054-472c-9873-787cc0f7a4d7@kernel.org> <arTiHRj-i_17L3qo@gremlin>
 Content-Language: en-US
-From: Cai Xinchen <caixinchen1@huawei.com>
-In-Reply-To: <CANn89iJVGmYwQerOixGurH6vw-GtvSAQq6u6zSNZoyZrcEx6Jw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.109.91]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- whupemk100010.china.huawei.com (7.152.184.41)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9B6FD4000C
-X-Stat-Signature: ng3zgqeayrkaxsudiqyicf1pt1ayeg55
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <arTiHRj-i_17L3qo@gremlin>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790241946-85193
-X-HE-Meta: U2FsdGVkX19BOEDAqo5hQhUsLRN24p/mbnmkFTCXCgJfwegNRAxZ9LmDfwNb9OfYg5D2ib/Y/K86mxCs4WMnBt6k/uT4vUmqZfNjf4pr9M8Mgm/+nlD5NLbcTTRjbv486x3v5HayRd4iDQw05NGqyj7HGqPR19lp4uxyZZo80YK4sHgweRtJinMZp1ds8fbzs3lh64ZY3FmnJtTRdlO2HWBSnLyNU/G/5T5EiS13dEAnTQlTYK5JcZVuMevpcTFTQvP7Pk7OyNPzicN8t/vlowQZgk3aOYEVfl3SgQjgClOSk1QnRHXyhXwWI8cs9VulHrKVF+oDJK3r0Su4/319Tpr3vrcHDXrlHn+lP3ui2cjLzlwIlkFKkQvfuURnnbFgR0O+vvsOO3ixG2v24kn0BFh+z849UWwgBYzvVUpHQiS0yU3KHVlsG6BR99UMMOfaxcpUm2KX5rgSnxoQ2LqlngYYmqeJl32X87hPVxO7KIXgttDFGnjHa/zynSzfNczphOhlwhjOutc8mhoNmfVtF5/sXNZ24Ilgq+jGc/RC8AF8UplqxeYGGkl1GL/d306lS69evSTVri6d/KhZyfnWKAjGc6TmNB5LGIkPkilAaodwgAxq3MAsLqJTKAjS2dkbANdFkdi2Js1Hcsl7WjnpEAo3wMP5AV9bADYz0dp1Dqr+t0yx/zlm3H4ccqQygrfZPDDzvPBk2M4yuhxkku5VWRl9tKRdlDNplpNu5FhtkMct2ren6F6RdqL0aoIqX1Gs/MIdx6voJXF+R4Mx8IeREu/XiLUP/FoEBRZ1gExIfPsOoNUhzvUVFWHRvy348989VgtxhzOr6lq3mwZbfdbKBMh6eN9QjEi2kdVbhLj0hi/0dyg3Ymt+NYW71lrZVREy/2iKxR7IH3p/EofF244JUG1NWnLd/FVoW0u6M/mkOiLT0zj2Z26ihWp9TVbJDqFiJpqfd4qkRhprUvCscgQ
- LPsHxl9Y
- /KTZUSJvAehfHuup+aUBQoYkhWmno6sAfR2ENOa8otbpn2ZR9AoWbWezV/EYiO+0gGSNl/r/JRLBfhANkgmuzhePWwOYmlPzx1TjTDcTDvScyFS8CAdSCnrqgumZnHvEQZ1MNFJg3Ad+rUMqxxk8PklOS6izGK+OEo8WWfQldsXK6bfFwOmelidQbyzhaIUP/FE7QThLMXez2Y2Ispy3qFBVXL36Vm4psQxYhw2pdXddnrzwV9HUQzjFNxwDr0zD/Z/a8aPTK93Zquk7rKvRS8KJTFwKEzm8c4K5pMODPjbYJn1DGZsbHpXQ4HuySvsQzU8xJvPV8pFzR9sUrEYJVa6vXxFG2CRV1r6O0C1J3ZYp8AcSIwkX/mgO3GA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6691B180002
+X-Stat-Signature: bfxq68gwgk7dbdo7z3buwgk3o8nxtbtj
+X-HE-Tag: 1790242071-274860
+X-HE-Meta: U2FsdGVkX18DRa5XHj9tWcZ/EPIlXvEjt+hC7DEyVKYB9zi/3V8kA31t12knrlGcsDDHB6jqmA2rNFj6bYQt6T1V0pExMGMlToMVLwEolG+O+eyBUIshPkjB7+gByFB0H/mHAyDgJCOZX5zWiXfvfJ+JyM09hGrlPVu3AgvArSLzLGHu72zncAq7276RyCX4jtyg5skSAmflilfbAOrGN1pVw61aI3AE3yC59GimgcV221YS5hkrWwppnfHXUi52QHHPK/Hvf3dIaDeXKRFWQ1W5z9JeqkHA1BdPbDAaUBFiUYRZ128dU8uVf51IU0Uaox2gfb/W3eqlIwQ1I7imdbTLXgWghyM6lLuYAXx9QZbBYVvd3y7tXucxBNRj7jtncqu33aI9nhUbdxQv6nbZojeUbdPcSp/euH3EvSCwjPYLiDzy8PCQZjp6fHAR3USts3bLMZxEl0arkKZUvXC3G5hHATAVQcNORj8bfKP0TyYfnVwg/1MnyF02nBHnGagu1dT3wf4w/4KgVrTYVtB4shunoIQNFjGjMDv+xvoKwUJ9TxqTk80O0/uElPzWBZRDLBGOZK6TWBqiCdCYA7xPOBChDPGUSK2jhPTUw/jEz2+QOY0lmJLpZ+nz6rA4NL9QwhE6kUwT9uFDpJj8cjlYeLo5p3CM7AoJIb3NdZx8mgZxuzRUikmaBKuuT0jVZlb/89BpicZzade6jTt2XimiP3rKopP72LHIFO4bxy9dXlAKyV9Y+ZhFRQ5sqR4YfOJi2du2eGgmTd5GV2Fq9TUvFjz+F2HntI70i0s1b2ff1aYae127sFWFrrN4sPN5g5RTQg6nXmxjBusF9kBZ3F02KZUEtC09AOMbrRxEPhk2GcbRVDFoGcDS72sN8vSjCwXD0CLrfsRmPVuv83FT7gsTI1AUGgqXIei+84jRin0m518auHAwXEai0mX1uYNe4azTXtBro6Dte0nloo1t0r2
+ pJHhPIyP
+ H+IqL3aGOlfV95JiFB3OK4pQeH7Q8Ds4Un/jVOYaZ1lDnFPMA8RrSCuXVUr3bR1tCffj2npvx+C61kGJmyZB2FZT3rH8oe6ujNpE5Xo2dyTMe/BAT1Tpsn1pTzNlBr7jG0cMAHjkX7bRi0JGuB88uwTk8JTIklUhlxqmLkAMMVb6ep/hSQMoPgUCgl5JsYeUXIhI4dUEArBWmqit0elsIcO01j1B4TXSs/5LWlEFUsvuyK/V8MMfq9Xf2IR+ATtIHKsuQwMUJB7SNRdC55lZ5cvk2mrQUKgI3ZnAjQFJtPwkBjsnbq8wmTARUgrzxyCzbR9buCwi4YQDjJASTFZdcj686673JDbEeerwnhT/cFstteedKzOwIJrN5Eyhpm75uNG106mHqXk8AvghFET+yJQupVChsVC0+BrsIsuek+Bd68R/LagJrzP9yV2UOKw5j7pYjc50V0y6/Ww78cpyglp3Afs7fWgZrWXKpPqOxVfIIxp2PMf9QElI07HJPljD1jaYEj3H9KKnjQMDuJVARggiSNfU67Ia6U4p5GaribeqpLXR9g0tfeKMyzZFLXV9vUf6EZ64bmlyb9m5M1Zshl+RKuXI12iF1eolF5yYM0XDrwTJrDHk9TTPzuOsIwdr7nUU8SGwo8+HMcbxLrNeMUCLy9B8jrQEEPmv0i4Tsi2EtKdyFLLMPBnrpxGTGzko5WGGOTTaZW0dew6mH4Q5SF6lPfrsjTz8cV/L5fBeE3YRCqcU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,126 +98,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
 
-Thank you for the review.
 
-We found that sk_forward_alloc is a plain int updated by a non-atomic
-RMW (sk_forward_alloc_add(), where even the read side is not
-READ_ONCE), and its writers span three unrelated lock domains:
-
-   - socket lock, process context: SO_RESERVE_MEM and TX grants
-      (__sk_mem_schedule(), sk_forced_mem_schedule());
-
-   - receive-queue lock, softirq: UDP RX charges and the
-      udp_rmem_release() fold;
-
-   - no lock at all: sk_mem_charge()/sk_mem_uncharge() from
-      skb_set_owner_r() and skb destructors, and the sk_mem_reclaim()
-      fold itself.
-
-Any cross-domain pair loses an update.  A lost charge is still
-returned in full by the matching skb free, so it resurfaces as a
-phantom surplus in sk_forward_alloc, and the next fold hands it back
-to the memcg via __sk_mem_reduce_allocated() ->
-mem_cgroup_sk_uncharge() - an uncharge with no matching charge.
-
-We first tried to fix it with locks, and hit three walls:
-
-   - the socket lock cannot be used: its holders free skbs (e.g.
-      tcp_recvmsg()), and the destructor's sk_mem_uncharge() would
-      need to re-acquire it - recursion.  That is why these helpers
-      are lockless in the first place;
-
-   - a new per-socket spinlock serializes the RMWs but not the bug:
-      __sk_mem_schedule() publishes the grant before the memcg charge,
-      and the charge may sleep (GFP_KERNEL, memcg reclaim/OOM), so no
-      spinlock can cover both steps; a fold in that window can still
-      refund pages whose charge afterwards fails;
-
-   - such a lock would also sit on the per-packet charge/uncharge
-      paths, exactly the hot path the cacheline layout around
-      sk_forward_alloc was tuned to keep cheap.
-
-Are there any good solutions to solve this problem?
-
-On 9/24/2026 4:26 PM, Eric Dumazet wrote:
-> On Thu, Sep 24, 2026 at 9:36 AM Cai Xinchen <caixinchen1@huawei.com> wrote:
->> The memcg socket accounting currently charges pages to the memory
->> cgroup per grant (__sk_mem_schedule() publishing forward allocation)
->> and refunds them later from skb destructors.  The refund side folds
->> per-skb "was this charged" snapshots back into the socket balance
->> under concurrent lockless RMW, and races there can drive the memcg
->> socket balance negative, ending with:
+On 2026/9/24 16:52, Lorenzo Stoakes (ARM) wrote:
+> On Thu, Sep 24, 2026 at 09:50:02AM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/24/26 09:43, David Hildenbrand (Arm) wrote:
+>>> On 9/24/26 08:54, Lance Yang wrote:
+>>>>
+>>>> On Wed, Sep 23, 2026 at 10:00:37PM -0700, syzbot wrote:
+>>>>> Hello,
+>>>>>
+>>>>> syzbot found the following issue on:
+>>>>>
+>>>>> HEAD commit:    38872197cae2 Merge branch 'for-next/fixes' into for-kernelci
+>>>>> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+>>>>> console output: https://syzkaller.appspot.com/x/log.txt?x=17a44d25580000
+>>>>> kernel config:  https://syzkaller.appspot.com/x/.config?x=56ed23170c168d4c
+>>>>> dashboard link: https://syzkaller.appspot.com/bug?extid=c181d3198e98f8aef8b9
+>>>>> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+>>>>> userspace arch: arm64
+>>>>> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16a36515580000
+>>>>> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16dcf4c9580000
+>>>>
+>>>> Looking at the repro, emm ... the repro maps an O_RDONLY /dev/zero fd with
+>>>
+>>> Does this trigger upstream or only after Lorenzo's rework (not upstream yet IIRC)
+> 
+> It'd trigger with my make MAP_PRIVATE-/dev/zero true anon stuff too yes.
+> 
+>>>
+>>> 46827ac1ab221 mm/vma: make MAP_PRIVATE-mapped /dev/zero mappings truly anonymous
+>>> db7438ea23180 mm/vma: only permit MAP_PRIVATE /dev/zero to be mapped anonymous
+>>> 54e8e096ea86b mm: implement file_is_dev_zero() to uniquely identify /dev/zero
+>>> fb24843cfd9eb mm: move drivers/char/mem.c to mm/char-mem.c
+>>>
+>>> I assume it triggers upstream. Does it also trigger with lorenzo's changes?
+>>>
+>>>> MAP_SHARED | PROT_READ. do_mmap() clears VM_SHARED and VM_MAYWRITE, so
+>>>
+>>> Clearing VM_MAYWRITE for a private mapping is odd. Can you point me at the code
+>>> that clears both things?
+>>>
+>>> I assume we still have the file pointer, and as the file is read-only we remove
+>>> VM_MAYWRITE. But why are we removing MAP_SHARED? (where?)
 >>
->>      page_counter underflow
->>      WARNING: ... mm/page_counter.c ... page_counter_cancel()
+>> Looking at the code, it's the
 >>
->> This series flips the model: a socket is charged its whole memory
->> budget (sk_sndbuf + sk_rcvbuf + sk_reserved_mem) to its memcg when the
->> budget is established or grows, and refunded when the budget shrinks
->> or the socket dies.  Grants and per-skb charge/uncharge stop touching
->> the memcg entirely, so the racy refund pairing has no code left to go
->> wrong: refunds can never exceed charges and the balance cannot
->> underflow by construction.
+>> 	if (!(file->f_mode & FMODE_WRITE))
+>> 		vma_flags_clear(&vma_flags, VMA_MAYWRITE_BIT, VMA_SHARED_BIT);
 >>
->> Tested: full arm64 build with 0 warnings; each intermediate state
->> compiles (bisectable); tools/testing/selftests/cgroup builds clean.
->> Runtime validation on the workload that used to trigger the underflow
->> is pending.
+>> So we end up with VMA_MAYSHARE_BIT but without VMA_MAYWRITE_BIT and without
+>> VMA_SHARED_BIT.
 >>
->
-> Charging sk_sndbuf + sk_rcvbuf upfront to memory.current is not
-> viable, especially for servers handling large numbers of connections
-> (e.g. 1 million TCP sockets):
->
-> We specifically went in the exact opposite direction in commit
-> 4890b686f408 ("net: keep sk->sk_forward_alloc as small as possible")
-> to make sure idle sockets hold zero forward-allocated memory and
-> non-idle sockets hold less than one page (4 KB) in sk_forward_alloc.
->
->
-> 1. Massive phantom memory charges and false OOMs:
->     With default sysctl_tcp_wmem[1] (16 KB) and sysctl_tcp_rmem[1]
->     (128 KB), 1 million completely idle TCP sockets immediately charge
->     144 GB to the cgroup's memory.current while holding 0 bytes of
->     actual packet buffers.
->     Worse, once TCP autotuning grows sk_rcvbuf / sk_sndbuf during a
->     short burst (up to tcp_rmem[2] = 6 MB and tcp_wmem[2] = 4 MB by
->     default), TCP does not shrink sk_rcvbuf or sk_sndbuf when the queues
->     drain and the connection becomes idle again. 1 million long-lived,
->     mostly-idle connections would permanently pin hundreds of GBs (up to
->     several TBs) of non-existent memory in memory.current, forcing the
->     memcg into constant reclaim thrashing of real page cache/anon pages
->     and triggering premature memcg OOM kills.
->
-> 2. Overcommitted caps vs. physical reservations:
->     sk_sndbuf and sk_rcvbuf are per-socket upper bounds that are heavily
->     overcommitted across sockets, not reservations (unlike SO_RESERVE_MEM).
->     Comparing this to vm_committed_as is flawed: vm_committed_as tracks
->     virtual address space overcommit globally and is never charged to
->     memcg's memory.current for the exact same reason.
->
-> 3. Broken memcg limit enforcement (memory.max bypass):
->     __sk_mem_raise_allocated() drops mem_cgroup_sk_charge() completely,
->     while sk_memcg_budget_sync() ignores charge failures ("the new budget
->     is used uncharged"). When a cgroup reaches memory.max,
->     sk_memcg_budget_sync() fails in sock_init_data_uid(), tcp_init_sock(),
->     setsockopt(SO_SNDBUF/SO_RCVBUF), or autotuning, yet sk_sndbuf and
->     sk_rcvbuf are still raised. Subsequent skb allocations in
->     __sk_mem_schedule() will then allocate real physical memory without
->     charging the memcg at all.
->
-> 4. Unnecessary struct sock bloat and hot-path overhead:
->     - Adds 8 bytes (sk_memcg_budget + sk_memcg_budget_lock) to struct sock
->       (even when !CONFIG_MEMCG).
->     - Acquires spin_lock_bh(&sk->sk_memcg_budget_lock) inside
->       sk_mem_reclaim().
->     - Every TCP socket creation charges rmem_default + wmem_default
->       (416 KB) in sock_init_data_uid() and immediately uncharges 272 KB
->       in tcp_init_sock().
->
-> If you are hitting a page_counter underflow race in socket memcg
-> accounting, please share the exact race / stack trace and fix the
-> underlying accounting bug rather than charging uncommitted buffer limits.
+>> So it's by definition not a COW mapping. But it's marked anonymous and confuses
+>> the system :)
+> 
+> This is definitely a bug. And I added these asserts specifically to find
+> bugs like this with anon mappings:
+> 
+> 	VM_WARN_ON_ONCE(!vma_is_cow_mapping(vma)); <-- fires
+> 	if (vma_is_anonymous(vma))
+> 		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address)); <-- would have fired
+> 
+> It's because mmap_zero_prepare() keys off VMA_SHARED_BIT when it should be
+> keying off the terribly-named VMA_MAYSHARE_BIT.
+> 
+> (VMA_MAYSHARE_BIT actually tells you if the mapping was mapped shared _in
+> the first place_ specifically because of this clearing of VMA_SHARED_BIT,
+> VMA_MAYWRITE_BIT.)
+
+Cool! Using VMA_MAYSHARE_BIT instead of VMA_SHARED_BIT in 
+mmap_zero_prepare()
+should do the trick.
+
+> 
+> So it turns out forever a readonly /dev/zero shared mapping has quietly been
+> converted to yet another variant of a 'special' anonymous mapping that we
+> weren't even aware of.
+> 
+> And it's got an incorrect pgoff (but not anon pgoff now) as a result,
+> similar to the usual MAP_PRIVATE-/dev/zero case.
+> 
+> So the solution is simple, check for VMA_MAYSHARE_BIT in
+> mmap_zero_prepare(). The Fixes: will be in the sands of time.
+> 
+> I'll send a fix out.
+
+Thanks, Lorenzo!
+
+>>
+>> --
+>> Cheers,
+>>
+>> David
+> 
+> --
+> Cheers, Lorenzo
+
 
