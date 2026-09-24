@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B44D1C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 13:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85A6FC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 13:12:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61F66B0099; Thu, 24 Sep 2026 09:12:16 -0400 (EDT)
+	id A029B6B009D; Thu, 24 Sep 2026 09:12:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A416B009B; Thu, 24 Sep 2026 09:12:16 -0400 (EDT)
+	id 9D9C66B009E; Thu, 24 Sep 2026 09:12:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4FDB6B009D; Thu, 24 Sep 2026 09:12:16 -0400 (EDT)
+	id 8F0896B009F; Thu, 24 Sep 2026 09:12:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8810D6B0099
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:12:16 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 725826B009D
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 09:12:25 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1D83280200
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:12:16 +0000 (UTC)
-X-FDA: 85248694272.22.902D425
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0D06E16032F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:12:25 +0000 (UTC)
+X-FDA: 85248694650.22.A42DDD8
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6E0CCA0004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:12:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XGt0CeCZ;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4886A1A000C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:12:23 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=e9ypsXuA;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790255534;
+	s=arc-20220608; t=1790255543;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mYb57EjGmrAjRTv0wPln83hYJ0U6JaIwjdkM/PwUg9w=;
-	b=wJaUcKcBf32RoP+LJqAHJY/Ja8bCJsqb7O0osyvHzCD0vAacDbzRP8T4Jj9O9lZW85u4Xl
-	E/Kl5HfMWTtjyhLOILAR9g2Q3OT/qpkE3zO4Ai7aZbkHwJsSktQCiBniNAT6o4IKMm/jFu
-	ELGm9IIGv4JQJjkrJCTygOP1ZljDtq0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790255534;
-	b=nxdAfrM0gn7+vew/Emx+HFFyqqm3CSJGu7K5eKmVxD7tPptkO2+Afywm3rmbgiotLFYmwc
-	pv07b0ZkV0PRWlXKZGtay4+BlFYV0wibtoy0tf97YtWEOuM7ldI7djo8+0JQl8hklH6o8M
-	Kg21P1oiZwVYURR9TdSqvYo5V+9GxnY=
+	bh=NpqhjGqVIixU6okLk6Ml9UfeFxYF+fjWz6tD3inWrF4=;
+	b=Wa5yeVonRkS5cZxiWbrtI6fchMpQfk5BQdHLeMbN+1e1B99WgHYULo5XsL0OruzVwxE4Lt
+	Moy9xi3vx0nEJ6NxYq/0vdJzY4cwV/v26iht4ku7bMYQ7Z4abpT9nGFk0BAJVtCw0pyhMr
+	65tuJDc7Eg9yylpC75+LWvQF73yTUQ8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=XGt0CeCZ;
-	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=e9ypsXuA;
+	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790255543;
+	b=0ry/VmiYWf9d0U1jAjLWYqJEvZqi5rkK+Q7A4YPTecdIpqrirtn53ri/dqXhPDJxsW6zI3
+	XxN1H2MOLRbQSfZEbkiEo4aNki4xE0zyUiP5LDuseWucFP3dQoJ0biEW32y2r2jCkJEy8T
+	VZs9BnwLmcbz8uIKNxKEcInz5CRGwJA=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30BFB1BCB;
-	Thu, 24 Sep 2026 06:12:10 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DC7691C14;
+	Thu, 24 Sep 2026 06:12:18 -0700 (PDT)
 Received: from cesw-amp-gbt-1s-m12830-01.blr.arm.com (cesw-amp-gbt-1s-m12830-01.blr.arm.com [10.164.195.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 906783F86F;
-	Thu, 24 Sep 2026 06:12:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3D3483FAA1;
+	Thu, 24 Sep 2026 06:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790255533; bh=SdgJCddjPp7/Mvalka61vw2zQLeW42ALZN0qZGzm4do=;
+	t=1790255542; bh=zg4Gpqj8nP6uUFsMj+aijEa4Qysw1f63qlOvk3k1K+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGt0CeCZXa84341ORqXF1Qk53S9zQuTR0fAfx2PSczJ/Sfzz5uIjthi3J94axjDk6
-	 GMjtt4emAlgBb0XiCPUbJwHR3xR6FaetJXSRzB8mtYD19DrZkM312UGHrqy+hykZYb
-	 +2EeSHa7InZYwv+F6wTirMo5P72UNRg18QhSkUu4=
+	b=e9ypsXuAUEFUhUGiy2kuIWnONzTqWzmAlFPKs4AetqbG7BtTn9f3qUlgSGgefbBFk
+	 TolsSjzBbvi0sBApOPtUgZ/la9iLY1I3EWzAWzImW+e6a+yk4iaRJoyXCpF2qrQRgV
+	 DNGkB4orI3Y2KQ0YV5/f+7q+t2n9XurcSsoRDn14=
 From: Dev Jain <dev.jain@arm.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -93,22 +93,22 @@ Cc: Dev Jain <dev.jain@arm.com>,
 	sparclinux@vger.kernel.org,
 	ryan.roberts@arm.com,
 	anshuman.khandual@arm.com
-Subject: [PATCH v3 6/9] mm/internal: add set_softleaf_ptes
-Date: Thu, 24 Sep 2026 13:09:34 +0000
-Message-ID: <20260924131106.1730494-7-dev.jain@arm.com>
+Subject: [PATCH v3 7/9] mm/memory: use set_softleaf_ptes for uffd-wp markers
+Date: Thu, 24 Sep 2026 13:09:35 +0000
+Message-ID: <20260924131106.1730494-8-dev.jain@arm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260924131106.1730494-1-dev.jain@arm.com>
 References: <20260924131106.1730494-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4886A1A000C
+X-Stat-Signature: hyuttuo713op8x1j48pqseng3xuy4dtb
 X-Rspam-User: 
-X-Stat-Signature: jwysexoqnohhwxext1p97ogpiobsg1op
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6E0CCA0004
-X-HE-Tag: 1790255534-435317
-X-HE-Meta: U2FsdGVkX1/DhPt9uTO/a0D0fB0aL7xhrgZW4qyB/iLzO4P8tdu6mH6Bv6HIyercrH9LGHTCprrEn/aQCaVmNoJHu8NOeVGGXvY2AFiEqGQ/U9dqctmWyfvMXm//OGOMZDjPOLo7eL3o10koprRHpjSTfhX+z/7zs2LbrBT20m0utFsLdFm52YBA31ZXfvjJXy/ouLlQducS6VdCsVdSyO7doR1x4uTRDH9L86hlaaN9ZtgWc6dYQXmH80oxTmpKfcfdyy1AyJYYvBdku/cmnB9RiJm1YRKwZL83LQRgDQYZ4B0yFjVdOLSLTYKXFiFSPrFRU7UB07yVT2l++m6J9crTy5e2bb5U7LDvjcH88I8/Cg6LTmuBs2RkPe6gcfFji8Ba4FsxfC8l2ioEHRZAvLkyCl74MhAnGPUBbSAmsEduOkWU94l2APa3vfag5c4MI2QOPgmlSIq+PgiKtdtZ1UdgOnEN1mVCWEI5da2YiGlFuDvGCayxT4Nl5fBMtmEinYlvdcY+v+5IVRNwylGr9gS7z96rSY48nYeCztu4cmzVwPKgalJYFKRMTTitD7Krtl/Dz822RyonraNOpb8W0p7lf+Esrt0E0kPsrnlg5rfaT2MTqLy0pdnfHpwrg1W8D0u1H4UEHVfAvU2iYZ51AW8z6YSZT7S/KF/tAJVNlAt6u0rM0oROry4QRtrtosdWJ3XlZ2pkyw7YDRKqRbbDrPA1R91DsgegPXmOeY7y0sdZjErKa/e0jOcRTpn9KaOz7umRcPIfcsZQa7N54v9jw1ychDexqr7gVZrCjkadpZwjCARHN5maHTZ8lrvtUu/TidGit9b1/CNje41oBv3JnCI6uQzeGBXTYi0xVFSLrogxSB1TktUHjJS0ZmI52AABwbwyDwUrBMyek6VRiZgbDq30TkJZvS8CYogUfT5IomQvoU9UuAb5/XRrPQFHF8eS1Hf6ZbNd9ByubBPyqd5
- 5l1nET0d
- OhgKkamUpmuS9buCYKpYi929OqBcBMWxqAILFFQAr+lfwpVCUj4gCTA3efdcnZ6j1UACgxH3pMtgDBVSsize5KyYb0mfgAPbq8ZGBXycBKSY0n3QEGlj2DInoE/LUEiI5EWogLFH6g1924dWBvZ7wSqucjP3PQZT3Vzis5u+mEeathzDL1MltxwuI4/52FQuwyqhedhvapVxv4Eoo/u4vP6tb8VkgtwoPptGKU6mnC5Kz7tULJ30Juvixunw+C1IlSOT+DvEJuLnT9qEylBkyXT2MoxKgvIqst5Ap8QEEq3vNakDqLyiONsP+KDWQwUsDXT7I
+X-HE-Tag: 1790255543-774658
+X-HE-Meta: U2FsdGVkX18RSuG583a5ljy3DmFzUPQCIS4WHt9X7To3cOV96VWhkdAqhgVJU2D0RAv/LXwJ+uR2gSrwKq34OclnuY1OZ274YWyI9gi9ACoDK3nODOhSAwLmDR+8F5F2f0z0KI0FcFwtFTIfb7E9XVp6D/OPUwf3JyEwJAU52Elv4+CzN0rKXJ34w+1jsDr3V9ksCsb3zPCjChQlmtqHZoZkduGRS5qfyaalgrsWv2bfzta4bAhVYnUUf1IMfYHUNnIu9vdkC9qENmpbAev1bRV6p+XKhOShbpFqCLOqwF9eFvzH8gdQAx+BWv/3E97ljaHE7GkpBM+BZ/F4M9bxUW5nlRiPTQBL7eqGtgmFTMQ8PgWX+jDP2Tst7blA/eV2nSXcHFwMItfjcaevMRNoxXHnk5kHxM+RaFzKDPfM3jhWLb7taSECqUdfDExHFCAJy0Tpq3whlX0UPsffnYBri3/Ot80CeiOah58Wqb+wxUuFvfIJLoCYikIdZk2Z8Y2FmBimcKjTH+k7WvT2WhERau06qlqrGXDNQeNg2HruNrLBEpPzlHtRoAlTihs8cxBrDQFp9mhyLPB7gTM5Af6C/w8nLzSde7xQEdy57/2f/lTENLdv2H0E/iPfLS/ASXhj2fOsUqZpWTP3deTV+vlpM3GymbKYeJUHzoVw9FfnaWo78HnkEpsAYS60xeL48Bld4OUEOC+G1L9t8qbsbisjot+OYoQqXlDkvAPleMUCBgY+h7m66CoIaMXbE9ffUwFTC7GEVBtwAaA8UgxQEZMUW1RB+EEOpDxiTTCv6L37+gWck6rTb/wf8Etf+hXTChC8cbW/95Ibuv+bbmTMmKYmEEyR5C8TLNB8SUZv2Rhf4cbySfX+5QUEecWWp0theGriuIGecP/acEYTYwo6Y5InHTc/2Nxxx5mLIZzqtXAH+M3/RVYhlG59J+h2hC15BSHP/vfeNUkPpld9uc4Gj0d
+ O3O2unjj
+ e3Ie71vKjjG6DmZUp9AdID1h8ymg+JlvwcIEhFm6F2MI96SUPvMCNLEP2irlhCbqNeBlE0dvEAhApLmKa7gsl044NKx6z8x9FztKeoMc9+Zp0v9a/BGIt1BQizuKa+gkk42IUtx1HqB9ywVK0Ujp+wUjWCc4q86UWv/H0LylUypJP0cTvUSqRipd/40HcMB9t3/5b0+dVRhjQv3pVdMjA3YrqkLTGG4L4Ic++uDoBTrEFsZFsRKDtut516EdPPym49uqdoyPaEOWHlmPej6MY34J5dmoMQl+BPSQDPMJlaOCwXAUsv3IBDsUr3eU9QCkhFiWt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,69 +116,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently we have a helper called set_ptes() which is used to set
-consecutive present ptes in the pgtables. To do the same operation but
-to set "consecutive" nonpresent (softleaf) ptes, add set_softleaf_ptes().
-
-The softleaves which have a notion of consecutivity is swap softleaf,
-and those grouped by softeaf_has_pfn(). The latter is trivial; future
-code can convert present ptes pointing to the same large folio to
-swap softleaves with consecutive offsets using this helper.
-
-The other case is softleaf markers. They do not have a notion of a swap
-offset or PFN, so future code can use set_softleaf_ptes() to store
-multiple (same) markers on the ptes.
+Use set_softleaf_ptes() to store multiple uffd-wp marker entries instead
+of open coding the batched setting.
 
 Reviewed-by: Barry Song <baohua@kernel.org>
 Signed-off-by: Dev Jain <dev.jain@arm.com>
 ---
- mm/internal.h | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ mm/memory.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index b8ec379b90bb0..0ffc9565c3273 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -508,6 +508,39 @@ static inline pte_t pte_next_softleaf_offset(pte_t pte)
- 	return pte_move_softleaf_offset(pte, 1);
- }
+diff --git a/mm/memory.c b/mm/memory.c
+index 60fd0a08b35f5..bed5cd90356f4 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1700,14 +1700,8 @@ bool cond_install_uffd_wp_ptes(struct vm_area_struct *vma,
+ 	if (likely(!arm_uffd_pte))
+ 		return false;
  
-+/**
-+ * set_softleaf_ptes - Set consecutive softleaf PTEs.
-+ * @mm: Address space the PTEs belong to.
-+ * @addr: Address of the first PTE.
-+ * @ptep: Page table pointer for the first PTE.
-+ * @pte: PTE to set for the first entry.
-+ * @nr: Number of PTEs to set.
-+ *
-+ * Install @nr softleaf PTEs, advancing @pte when its softleaf entry
-+ * represents consecutive offsets. Swap entries advance through swap offsets,
-+ * PFN softleaf entries advance through PFNs (encoded by swap offset), and
-+ * marker entries are repeated unchanged.
-+ */
-+static inline void set_softleaf_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned long nr)
-+{
-+	softleaf_t entry;
-+	bool advance;
-+
-+	entry = softleaf_from_pte(pte);
-+	advance = softleaf_is_swap(entry) || softleaf_has_pfn(entry);
-+
-+	for (;;) {
-+		set_pte_at(mm, addr, ptep, pte);
-+		if (--nr == 0)
-+			break;
-+		if (advance)
-+			pte = pte_next_softleaf_offset(pte);
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+}
-+
- /**
-  * swap_pte_batch - detect a PTE batch for a set of contiguous swap entries
-  * @start_ptep: Page table pointer for the first entry.
+-	for (;;) {
+-		set_pte_at(vma->vm_mm, addr, ptep,
+-			   make_pte_marker(PTE_MARKER_UFFD_WP));
+-		if (--nr_ptes == 0)
+-			break;
+-		ptep++;
+-		addr += PAGE_SIZE;
+-	}
++	set_softleaf_ptes(vma->vm_mm, addr, ptep,
++			  make_pte_marker(PTE_MARKER_UFFD_WP), nr_ptes);
+ 
+ 	return true;
+ }
 -- 
 2.43.0
 
