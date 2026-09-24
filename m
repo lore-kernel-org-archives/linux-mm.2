@@ -4,119 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8F77C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB12EC98317
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:20:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B02A6B0088; Thu, 24 Sep 2026 07:03:11 -0400 (EDT)
+	id B30176B0088; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 987936B008A; Thu, 24 Sep 2026 07:03:11 -0400 (EDT)
+	id AB9E46B008A; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89D666B0095; Thu, 24 Sep 2026 07:03:11 -0400 (EDT)
+	id 9369A6B008C; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 571546B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:03:11 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DDD3B1202F1
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:03:10 +0000 (UTC)
-X-FDA: 85248368940.08.9E88416
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F279740012
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:03:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaruF16c;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0D26B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D414FA032F
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:08 +0000 (UTC)
+X-FDA: 85248411696.07.A9F9268
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8E67F18000B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L1TmZyqY;
+	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790247789;
+	s=arc-20220608; t=1790248806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qb5cHE2dgUrO0e26v2XgbM47NF6xvjd6olYZGEGtg3M=;
-	b=ODTAxBgMflvj2ci9vzo/QPadFDRbEbuH2DqPHG9SkjgvGwIX0OS2OzsugeBZ0q4MtpNlrt
-	7I5kufxuvjfa/XXDdhmJOIsY8E6A0MEIlMfGfj9NhbtEpPO8da/B2fcv8HYqVQGJUEEGFH
-	x7GveEJIrg0CUM5gtJEUzhxlmtsdpeU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790247789;
-	b=OpTqiuuIl/0JuGfu64bWClryr4UCclnkHDq5Junt6zdWLxgCq0FQGS3Y+P/4VhWR3z0OCv
-	jUZvy9YyR24kngK+5bORY+z1fwvv9VtXkkDz+hoCQCJxVlM0HlBUmZqL45P+ZBUDgmlxSF
-	meXHTtsZvPWnZwRmbEjZcwJjXQTL4nM=
+	bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
+	b=wzSP023X/5USqxX4s3nkThAwfA9YZK63jrqHCM6DQnqar/Q7Lz0mNlmRHvsv9Vz6158ccj
+	2z8YU6MukSfbKxtI7KQdrZtqF5K0F31/zScxCeoIxJOYB5ZZ8uRpcgW4NXgXKrp1YFunw1
+	T0z4rIiCG2sT1jsuZ7B1yyyDnd960gs=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaruF16c;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8E34D60200
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:03:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4611C1F0089B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:03:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790247788;
-	bh=qb5cHE2dgUrO0e26v2XgbM47NF6xvjd6olYZGEGtg3M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=iaruF16c2G/cqjPSVprB5bCJNcjbvA/mX1AvmBrCN8B07E6qtOfbqcjiRFAG9sTAQ
-	 3V5fGKtIn4/uIpfE0ORNmjAKzsBpDoDXAgqdeHtToWTNEDOrCkpwjfCoBhDY9/LTyS
-	 MPDF33u00byP9ILEiJ6ebFfyGIagy5wEbc4Fn7tkYCo1nSGnxA95nHQbEkydNB3hsa
-	 ktFNOrWV0+Gdf/dfOeLJJ7f6HTDrTuuro6R/r+xy69a+YMWDEu6QxpCH0ENUiemFrF
-	 4DYyr6YdFUJK7WFIuhILlgD5C/vSP1ij7M4hWS3BVBQx+Y129btYPHTr9Uw18yntWV
-	 nz6IP5RigS+XQ==
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aa8d882so1979899d50.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:03:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByFbXdRXdmc0aVb12fJkBpOcAYRT/LpN84m/NbmGD37V7IUP1opJOURTjOsD4Yi8rNnsw3OPBH89Q==@kvack.org
-X-Gm-Message-State: AFuF++lcw0mwdjuSMVxXIhxA+OT4w2Oa3i/Wj8c+DgITRCKll6IOjDOB
-	pF3e/9JOkUNlURQzcZSZcLGsK2flNnWRQASTIM/m8E5PtRS+GrAUU+X+24eaPM5jaN0t3w5LZ9d
-	gTZBa878SrkqtWx26He8F9gOSkcdxHCHdQuZCnQBYpA==
-X-Received: by 2002:a05:690e:43c3:b0:671:1256:56f3 with SMTP id
- 956f58d0204a3-672ed2624cdmr748540d50.21.1790247787078; Thu, 24 Sep 2026
- 04:03:07 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L1TmZyqY;
+	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790248806;
+	b=LXDPEsFsIRU2+wHOEhpGdFZmjlga5eNjnHWBdA1RKuQeWoQziCKDMYnjvveYxMiqUnx/1F
+	9vJ1QkH/ZClLJfQuj30iDfJkwnPA7E7vroF9bk2Z1XbCZLJlcEumMqfkXJv/bZ4RI+i+gO
+	AEPpcCCRO4Ru75tg+agi1VIiiOCuADI=
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a9edfc851so284543666b.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:20:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790248805; x=1790853605; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:feedback-id:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
+        b=L1TmZyqY1f1twAOQi0gxCpJ2akTiOrHh6TsgCjmUM+Op3FlmEwT9jJa3kOsJ6vMjwu
+         OYslj79DMRBjgWIY/Eo7jtND/qjuoM027Aa9889bRmXX7VAqnHblwxD7hq6iulA7Zzq+
+         jNWzsPTt/oS8a6UPG80ES3GKtl9NAs+h/qPt2VA2WAQWl/43YQQoqSlK+Na4hL4VFRur
+         nZi8neuYmMcrxRqk5EwiUiE0Kfsb9QK/dBNZaQoJeNUviOzgtteUspvITRN0JEqBdr7f
+         nKSWrpC+fOmNVrISCa98ZHUTYlRjyLnB/d8uccL4SZku8NxlQI7OOA46kTvpgvxwf0RM
+         gZfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790248805; x=1790853605;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:feedback-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
+        b=jmbB17xH1MXZa+Q0IwFK0VuuuFo1bF7MyPO736o4ZCQx2SXAUZyWed33kFMdWjyueJ
+         Yyu0DugrtRG4hKUJXEgFBIpHL4JfPu3H+8a5xzRB6XvsuBEiI3iWf8NShqBkUSBue3Gq
+         ugQ5ptb5qY3CmLRYO4X52OR1a8Ahf46XrIVclxk10v8Mq09bquP8JPPdeM412KUe5m1X
+         KmKOE1egGe7pqVSisDtMluYaj+/IAJ2ale98GlO/rn89KNR9jLP0n3IzBRUxm7LCVF35
+         eVk3SjZ2XX+7mtnm5+0NobE49UQ2/yOzhip0gNKbevKYHlcD0+zNKJnhFKUDneAihrws
+         upbg==
+X-Forwarded-Encrypted: i=1; AKwUvByQ+1KqTu1fWzXFMlWr1vNi0ad6Q9j2onpv56RI5QwFDLtnKPG2UcSyr4KsTs/ohyLIT+DkpF52GQ==@kvack.org
+X-Gm-Message-State: AFuF++nUuJMyB5rrNWWKsfYfWXi2x6wSt7sJ51Ya3qD9stfqM9REETnM
+	5NQ67gaa9vpY3nfJknUwFsXMz1wpr1mRbu/kqdt4dVPSk/HDJ11Wro+Y
+X-Gm-Gg: AYBFou14jpa73YJj3eaH8sfTAsSff7xVquc2dLyYAialfp9OR53wcB7J4mCeB8nfTWb
+	eV/y4FZkU3WX1dZYrtX9yNH57fSU+BgTWwLEcQMAN+koIol7SET9B6Sl2j1KFU5PIW1c6lcgeOh
+	8UYg81aIAdPU5BPFuOBy66OYZ6L3a4PwaYwradIPKqmgmdQuAYHly5RdBhCMwZpUftpBgDZFVJJ
+	D1ZAaViDiVKWvlLiYILmSj2Tudu+smvF4EP/NhQjSlgMQORGtu8uKKJKp4HSESuXTBaXobHXzC0
+	hN7jK2Xdpa0l2vfsxKJsXulSmH3x63WPuk8jbeMD5VrzXdL2ewW1Tes9y4gC4x/8V/fSgyzCpeW
+	vekbFyanTxt5JRqBMa94RdsboKpfxKE0y4PTdaBD/pHl+RqRzan5Qnl4+PjxRDO6pEBy/GQoMEJ
+	lXkRmKxUTjn8e9ZFyYm5nsdC2VH/24HvWE5AwGJdTOmgouezJOZzTXfgAD0O4XvEWZGP8s3rH/Y
+	NoSe4SIDXZkZZ8Nkl3STRGPEhQzKnu6uVTqM9L3eYTh9xnN+5Hhb6zdAARc
+X-Received: by 2002:a17:907:c012:b0:c2a:8cd4:cf36 with SMTP id a640c23a62f3a-c2ac22e1662mr167385366b.34.1790248804955;
+        Thu, 24 Sep 2026 04:20:04 -0700 (PDT)
+Received: from fauth-c1-smtp.messagingengine.com (fauth-c1-smtp.messagingengine.com. [204.75.18.200])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae5c7134sm291538866b.17.2026.09.24.04.20.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 04:20:04 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 8321F198005A;
+	Thu, 24 Sep 2026 07:19:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Thu, 24 Sep 2026 07:20:03 -0400
+X-ME-Sender: <xms:Wwe1aoHxpD2GUkf8jfK2wDtt0h-YqzzKIzL84kUvaXYcnmY4axV3gQ>
+    <xme:Wwe1akjHwz3xl_pcnN7Q_UhAVTKXbdV-JsvpRuG6Wh9WJ00tg0nOv6OC8cjSwxIRh
+    5DmHftdfy7Gj3dkBgloA9W1y72gCW1GW9iJRRKPEvQYRs6qMF4qfRIj>
+X-ME-Received: <xmr:Wwe1alwhKNtlEPc5wdXI1K7uOYNVupMJCVDk7N0aie2Gh_n6e2MAHgyUl70>
+X-ME-Proxy-Cause: dmFkZTEemkH/gTllvrJQao9k3oTuIGHSE6fjeYMBPOOM70MmZFQCiNkkP8ox51KasaOxkE
+    DfOiKw7u2ML+4aqlaveeC7bi5IIBD/aid3NVfALkLOH3kJBkCrS9Q9ph8TpWitSM/pWIgs
+    /nrEjYJnBNJHwBd9H3rrzRz6pXoyoNrVZK9jEhQN3rPEkqkIBpc9HTdVx7InB4jcSUwb3E
+    eMkEma2bPyJjaoSCNjsJxFBPIf+Gklhp8Skenca/KokKG3raOClFfElXCDrPqLi2OnglE6
+    dWLlbxLMHUwZOKdq4VQME/xn2wS27h0tVwYj6bmYhvImEJh6Mube2HOFRVC3rGVKfhlpm5
+    JSkf66ZU+v5jUaunXACswkpeQPmCji+ImeK0FXC79CShfSH1lUvPXqQx5Zq6ZxokRfTSYg
+    A6F0BtUUecmOrzA0ZIvUuABGMfUNZs77c8M4hULgsty3v6Jf8932WwqQOB/TPUurF50KP6
+    mnSPCkZdHsOdPsCi0+3EsOUSyPV1kMapk3/GTrB1E1dsN4e6oqnujFXcF7ZiFDQtzmXzfJ
+    krMC2I2k42EvNYiJs3l0V3armzEAuRfsDdBDSikCQteCX7HF+FpflFwseXJ7dTsBDv1LnJ
+    i/acyfpwwGK/Umvpm5mw7APdNzmyChxecTaxO2rD/mQb4fk4jptfjZ72EUGg
+X-ME-Proxy: <xmx:XAe1auQRVNiaJHOKpRct0TutvCPVxvcZu6oUvd93SpQpMkg6vr1yig>
+    <xmx:XAe1asEs0Zm4GI42ak-uA-yMo4VlMtDhjZptCGgeQUF6L8b9qQ48nA>
+    <xmx:XAe1al37l4_t143Yw9EsvBefeKb0kFJjS7KKpPpHnreX76NAhe9TpA>
+    <xmx:XAe1an1-ryh40fdYC9XKVzCbGbvV4XAdVH_0Z-GrqI8R2Oqo2Og2ZA>
+    <xmx:XAe1apdeOpL5Y--D8eiHeAfEFy8vDSwWlSlmvaJXKkB4f3Wnqhy8IWcU>
+Feedback-ID: ifa9e4bbb:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Sep 2026 07:19:54 -0400 (EDT)
+Date: Thu, 24 Sep 2026 12:19:53 +0100
+From: Kiryl Shutsemau <k.shutemov@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>,
+ 	Amit Shah <amit@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ 	Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
+ Christoph Lameter <christoph@gentwo.org>,
+ 	Dave Hansen <dave.hansen@intel.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, 	Hugh Dickins <hughd@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ 	John Hubbard <jhubbard@nvidia.com>,
+ Matthew Wilcox <willy@infradead.org>, 	Mel Gorman <mel.gorman@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, 	Mike Rapoport <mike.rapoport@gmail.com>,
+ Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 	"Rao,
+ Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
+ 	Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, 	Shivank Garg <shivankg@amd.com>,
+ Sterling Alexander <stalexan@redhat.com>,
+ 	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, 	Yang Shi <shy828301@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, 	William Roche <william.roche@oracle.com>,
+ linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
+ 	nao.horiguchi@gmail.com, tony.luck@intel.com,
+ wangkefeng.wang@huawei.com, 	jane.chu@oracle.com, muchun.song@linux.dev,
+ liam@infradead.org, shuah@kernel.org, 	boudewijn@delta-utec.com,
+ linux-mm@kvack.org, Breno Leitao <leitao@debian.org>
+Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
+Message-ID: <arUDeFDdSV1xANiU@thinkstation>
+References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
+ <arPElEV0zDhXrteb@thinkstation>
+ <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
+ <arPdnxhX9VHnDx15@thinkstation>
+ <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
+ <arT9TVHmM3WDjWnk@thinkstation>
+ <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
 MIME-Version: 1.0
-References: <CAKEwX=MP=zuTnLT=coS_EpXe2KwXq=79yBnsEGXwcZZsW3S=Yw@mail.gmail.com>
- <aqJXx2vtbKaRLt3x@fedora> <aqLi6cIjD2wJwk0B@cmpxchg.org> <CACePvbUG1ApMzMdEzf-63rpjgGVNsRk21pT72OQGJpM=OtRUew@mail.gmail.com>
- <aq6cVXPLUUwJA7-2@gourry-fedora-PF4VCD3F> <CACePvbVaPDnva8X-Xmz84r7j5HjTuih-w5phpw7cerK2uPnK6w@mail.gmail.com>
- <CAMgjq7CJBHkoZmg9oKNgGA8czL0djyBTCAkPz8ETm-tX=Qci4g@mail.gmail.com>
- <arEotFqE7ZZoxMHd@gourry-fedora-PF4VCD3F> <CACePvbXb1WLz=OAAzVawf3oc3+dE3Z7qfPdagQ2dYuf3OALc2g@mail.gmail.com>
- <arFe215hUcjLhvmS@gourry-fedora-PF4VCD3F> <arOeYHEf9aO7AU5X@MiWiFi-R3L-srv>
-In-Reply-To: <arOeYHEf9aO7AU5X@MiWiFi-R3L-srv>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 24 Sep 2026 01:02:54 -1000
-X-Gmail-Original-Message-ID: <CACePvbXHan6Sfmdq6JFrcaMMy6SGvzPs-pautLtg-9D6=W09qg@mail.gmail.com>
-X-Gm-Features: AclHuK8VFQcjyBqPb4h6LbJpz-yiYCZ7Fqjey1egs43oMEG0gsapG1F4wdinNfg
-Message-ID: <CACePvbXHan6Sfmdq6JFrcaMMy6SGvzPs-pautLtg-9D6=W09qg@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Baoquan He <baoquan.he@linux.dev>
-Cc: Gregory Price <gourry@gourry.net>, Kairui Song <ryncsn@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Rik van Riel <riel@surriel.com>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F279740012
-X-Stat-Signature: 3mwym87c74ww6nh3cquh3q9py8kbxnmw
-X-HE-Tag: 1790247788-152617
-X-HE-Meta: U2FsdGVkX18ONN2/KtgSrWJ+BYeUARyykhUEsHxP6C0q9UESYfLHovfN0CCzCGV23RDvttmNO8vQJZ4CiANm/+bH/WoCJITc/sWiY4k6OuCAO1N9/+44MedQdNo7eHMhGvNNhK+0tvNVIJKVTlVJ/yHtWxW5CBAFh+yMUgjHANbgJubiebt7it0qsYEJFmrD3bJlg4x0L+nTxm2QckljBV+Ja6dzJ0CTQ19lfJVZqtSkJjmw9GGPW7iu071v0WQf4Ox/yTqHuvTcQQJ/DIZJeWfzbAETY6FhPPUqEOBKxQqAqEHod1keMgi8Ycv3pEqiiUZ+15ump0YaIvru6kSBCumutvzvt4zvjj3P5LFxlkdQEBPgAW/pIZ/MDtE6SZ8btAcLrjLblWFzcHOKApCy1OcJo7KBPQbNlSeqW05bljgS08Tsi4/8Q8wq7tjqFcZQNAfzNYZaSPrmYBtouUk2rgNOqGO66WfqReFCsd1UpxSkhqrC6IssQZkM1rMppJjpdp74/PlZZHrEeBk5TunGaM5QsQROaMYTYDEvyhb/YvpTRFSLsUZAQVlstFtroQIU/y+Amt0vSYoseT6TrLHB0uP8Jvj7zwJtvBd08HBmoBdnWPcZvtgoG5yS+LZ3x6FrPOP1qQiwbzmJ83ViVXD3gPFFSqhWKIxzkzihMh6pNE/7/ytfmE/W7eiyUuonpC/RmiVSqR9phSqIreoCiLTb14OEFqaJNn8L9FEFz8xDSnVUnc0ZbrtRIsRpPivj44gjPOjR9vRl8RaC5iH7/faJtRAhNSQE0+PYI4Enla8Ng+hh4FLzC88A1AxVkdjhL0VJRYCdCQIxeneFb5UV9o9gKLKGGKPURzROAw4LTONjHL6atmIMrenkz4FIjBK/I+CmML+q/VYH6dVQsKFh1MNr1z7PflNiF9z86xzInVPjWNoVZLqUXXnM1AeCsJmPjbi+jxSMKcH10UH9nib7GcG
- YI0TLOD9
- FuWy37som8f8fzrVbbYnNxccJLIi2lK7W2+I/v0ux+fO7g4AoOYbaiFlI1TxCAJFZ+mf4JC0qWoUJoSu8V+1V2diZzM+N08tWgSERLat4HV9iAXcjkYVXOKNMhXCjS6GIoiXwFLpqWx46buYOLvmEj9QMnb5LfdR4dmH0q0aT6Y0nA5H/XjvUTFtNJm9Ol9IP/vwvgryAKVrmWO8cN+YBWEMfVvm0DfHJOIns00wTNP0bOjbSiaYkTdQR/SnfYHCWx1ToiP/I8ecUMsI/vDc0wq0I+Lno2mkgX4GeRfXV13mgBVboISIeruA93KGg/cCCwFGL2qeq9XuPiKCxRkSR1Ibc2xR2/sYN1j0xkHtYwgemCzZEaoc8vImNVc8kI5fktbC8YBqynWb5DNOzobkopb4aC28ZUVtjwPntvfRhywJTVu9K4fKyAfEK7QE7MBiEhyiDc7HQ6mGZEanQ/Ee8MsqO7w==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8E67F18000B
+X-Stat-Signature: zqdi1fqn8h6mcq1fgzu53n3p7z6aq73z
+X-HE-Tag: 1790248806-744856
+X-HE-Meta: U2FsdGVkX18AGnZ77WgHOeQmS5+YVAeMNGxRqBnPIthkrWN4HH302djkT/ZVvctgTotrI8bk09ebAwaKZ9qCfsmz3dOUxBm5Oqt16Tfiq99foNVM35UrdI+gDrNUOu9cZzYxfLlbICu9FaB2g2Rqk4VNpHmI2ZZE4FQ7fJLE7oeXLASom2s9hjukRQ43HEOEbK355n98H4r+knC6oIR1nsW7/DHiXeve7WaE8cafmlEGMorPnCw77W5Jzz2Wk9nH9SWCGX1WSR8sXEG3BFrBEqGZeUTh9piayY5KxTWQL2LR1Y73ZhyKRXlEDcYIkzuW0eEyKgabgF5IKB0coZpBMIqzGB5ZVb0hTo2r8ImxGG2TreLo+RrhZdy3BKk3JkXjiXpBZuu9xjcjh0H0Zak1XowdO6/c30nN254DtSdiNFv/gSCFPiER1Zx7pu2NOrqo19YjaCwueSFuilH7aZcupM+y0Rw7OlC8f2jaQllsRYprigmp+KqpUv9XZQKuk/3cNv3Qo0XbiYhEj0yBtwSY2e0wvuR+h1p/GiEw8s3TbOKtiaRHA9hrDOXG7BsmL5Jtp9VUc8dyQpi4ZrcKpwkXs/W/csS2wOTabCqvViqOcbQRVC3SjpU+LfxZBpdyBw/kWY8RBhwjCodwLYeTZih7p51nWioQQ1ZN4076oP/1ESk70CjGWKxz7zvTWNGElydikDuWGOeBruYBz8BqSF/QurbI5iZgi1IiWviGyqI6B7RWgO56ja3Ger9ff+NVrBn234Sljz+mKWSCGES7Qbm2frZIBm6CeecDVcT++4wUqOz9/MFFf5zWc41jqXY/QM30kt9dGakrCC5j70SqPgzapHf08sNwf6ec61+yJCVQMXr4MJsJ/oOU3Y4vEWpdHhJpfdXpbExAfryc8HbRqPhFEj6dxrsXI9qECZjYznUbc1eriYrCOTwegqsuZ5auuyxsn7bAhwlhlTXU3NloThc
+ rk39WzzM
+ 5BUqMM9mJQcANO32DzWv85XMgVPkWarUtqdV85r/L/AI+tCvU31Inqr2FxxdUEFyoOuWiA1qvs3uf1deRMnN+qnnB7vWS5IegrcbwxdBC/efjKi4ncOG4KFvFrrQvBCjTPJnCgjuHRHBpMKnjfdb1tpb15nmP9d4QS4VYb2RyuWQTtloeWvdbPe6lrUG2EDcQWhwbrut0WfB4eBjIly+WHpX59YTrSzmQIt3LuFcg8bJhAi3nPjtRtrI/oKYvlacZZCHM7ogP9m86TZ64dltDPhx4cL5Wwk3PGlYjum77INWdWFpuBs1mIr8v3IpEgZCfHXq70Ib3cjEML5QDIGT148lgA2vpbze53/XMz1FPBCEddy3KiDHWPx+Jn8gQ0jBeOUHGetXbLExFNIdGTACi15nLrkmM4PPPZzaErh695JN7yRce+EHEzcJ+E7Oy1/u7XBDMaowTyMY9Y/+B4EJC91DABK4e34HW2M83clpEkPsF/eZNWfbpeRjJYCnJion8SZBuBFvg6fpLbuw/EGHanq8sHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,111 +174,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 11:39=E2=80=AFPM Baoquan He <baoquan.he@linux.dev> =
-wrote:
->
-> On 09/21/26 at 01:02pm, Gregory Price wrote:
-> > On Mon, Sep 21, 2026 at 06:32:56AM -1000, Chris Li wrote:
-> > > On Mon, Sep 21, 2026 at 3:27=E2=80=AFAM Gregory Price <gourry@gourry.=
-net> wrote:
-> > > >
-> > > > This would preserve the existing memory.swap semantics while allowi=
-ng
-> > > > both backing resources to be constrained independently.
-> > >
-> > > It sounds like you want memory.tiers have limit enforced.
-> > >
-> > > I suppose it is possible. Again I want to see how people would
-> > > actually use this feature.
-> > >
-> >
-> > Possible, but arguably not needed. the swap and zswap counters already
-> > work for this existing interaction.
-> >
-> > As I pointed to in my response to Rik, in every reasonable use of
-> > pswap+zswap the global swap counter is pointless.
-> >
-> > So then pswap=3Dswap and we're left with zswap and swap.
-> >
-> > And I'm not convinced your reading of the swap counter as a limit on th=
-e
-> > *logical* memory allowed to be swapped out is actually accurate.
-> >
-> >   memory.swap.current
-> >         The total amount of swap currently being used by the cgroup
-> >         and its descendants.
-> >
-> >   memory.swap.max
-> >         Swap usage hard limit.  If a cgroup's swap usage reaches this
-> >         limit, anonymous memory of the cgroup will not be swapped out.
-> >
-> > There is no documentation I can find that has ever documented these
-> > counters as "the amount of memory requiring a fault".  If you put a
-> > compression system in front of physical swap - the counters as-describe=
-d
-> > would still be accurate, while your reading would be broken.
-> >
-> > "swap" here is highly implied to mean "storage" as opposed to memory,
-> > which is why "zswap" defines its limits in terms of memory.
-> >
-> >   memory.zswap.current
-> >         The total amount of memory consumed by the zswap compression
-> >         backend.
-> >
-> >   memory.zswap.max
-> >         Zswap usage hard limit. If a cgroup's zswap pool reaches this
-> >         limit, it will refuse to take any more stores before existing
-> >         entries fault back in or are written out to disk.
-> >
-> > If you're presently using swap.max to mean the "logical amount of memor=
-y
-> > allowed to be swapped" - then your usage does not meet the definition o=
-f
-> > the knob.  You need to justify that your use case cannot be expressed
-> > via memory.min/low controls:
-> >
-> >   memory.min
-> >         Hard memory protection.  If the memory usage of a cgroup
-> >         is within its effective min boundary, the cgroup's memory
-> >         won't be reclaimed under any conditions. If there is no
-> >         unprotected reclaimable memory available, OOM killer
-> >         is invoked. Above the effective min boundary (or
-> >         effective low boundary if it is higher), pages are reclaimed
-> >         proportionally to the overage, reducing reclaim pressure for
-> >         smaller overages.
-> >
-> > That's an SLO interface.  memory.swap is a provisioning interface.
-> >
-> > As it stands, I'm left viewing zswap's counter inclusion in swap as mor=
-e
-> > of a bug than a feature - they account for different things (memory vs
-> > storage usage).
->
-> It's hard to say. When 37e84351198b ("mm: memcontrol: charge swap to
-> cgroup2") introduced memory.swap.*, it was clearly defined as charging
-> "the actual number of swap entries used by a cgroup". Please see the
-> commit log. With that, zswap still reserved a swap slot even when the
-> data never reached disk. And not to mention zram, it's backend is RAM,
-> but not physical disk.
+On Thu, Sep 24, 2026 at 12:55:10PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/24/26 12:46, Kiryl Shutsemau wrote:
+> > On Thu, Sep 24, 2026 at 10:32:29AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/23/26 16:36, Harry Yoo wrote:
+> >>>
+> >>> I believe this is what the patchset actually did in v2.
+> >>>
+> >>> That way we'll have to either
+> >>> 1) make any architecture that supports kexec select ARCH_KEEP_MEMBLOCK,
+> >>> or 2) make kexec scan the bitmap when allocating the memory.
+> >>
+> >> My naive design would be:
+> >>
+> >> 1) Teach memblock early about poisoned memory ranges. Don't let it hand them out.
+> > 
+> > I suggested using a bitmap because ranges are not scalable. Some memory
+> > failure modes generate errors repeated across the physical address space
+> > (think of a column failure, for instance). It would produce too many
+> > ranges to be viable.
+> 
+> These are in 2M granularity. Is that a real problem?
 
-Right, that definition matches what I have in mind. The actual number
-of swap entries regardless of the backing type.
+2M is arbitrary. We can trade finer granularity for the size of the bitmap.
 
-Changing the meaning of that breaks existing users.
+> > We already consult a bitmap in memblock for unaccepted memory. We *can*
+> > do the same for poisoned memory.
+> > 
+> 
+> We can do many things. I don't want it.
 
-> Now some deployments do use memory.swap.* as an SLO signal, and that is
-> real use cases as Chris and Kairui told. So I don't think this is about
-> who is right and who is wrong.
->
-> To keep the existing deployment working and at the same time give the
-> physical slot its own knob, I think the solution is to add a memory.pswap=
-.*
-> counter as you suggested. And that is not something we think of from a
-> brain storm, it comes from real deployments which already depend on the
-> current memory.swap.* behavior.
+What's wrong with it? The last step on allocation from memblock check if
+the memory is poisoned in bitmap. If it is, try again next range,
+starting from the next non-poisoned address.
 
-I think it is important not to break the existing usage of
-memory.swap.* behavior. I am fine with adding another counter.
-
-Chris
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
