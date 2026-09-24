@@ -4,169 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB12EC98317
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B104DC98317
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:20:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B30176B0088; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
+	id 9D1E06B008C; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB9E46B008A; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
+	id 982916B0092; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9369A6B008C; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
+	id 871F46B0093; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0D26B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:20:09 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D414FA032F
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:08 +0000 (UTC)
-X-FDA: 85248411696.07.A9F9268
-Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8E67F18000B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:06 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 61C6B6B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F07868012B
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:44 +0000 (UTC)
+X-FDA: 85248413208.22.1CCB83B
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8F3EB18000A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:42 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L1TmZyqY;
-	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dZ68cN26;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790248806;
+	s=arc-20220608; t=1790248843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
-	b=wzSP023X/5USqxX4s3nkThAwfA9YZK63jrqHCM6DQnqar/Q7Lz0mNlmRHvsv9Vz6158ccj
-	2z8YU6MukSfbKxtI7KQdrZtqF5K0F31/zScxCeoIxJOYB5ZZ8uRpcgW4NXgXKrp1YFunw1
-	T0z4rIiCG2sT1jsuZ7B1yyyDnd960gs=
+	bh=2ObzkTUR2MT6hgOq6WkJvQc/IYSMc6ABw6/YFMb349Y=;
+	b=EdUFbEeE0zy1zjhYFRtGniGOVMf49m+O51p1W8L/YRUlnscK6zVZ7MXj9bVXxuuum1fdW0
+	epU5TbgYGwapSMNAzdMfCPDjQpn6ekvNPYnJ9TeMNtr9T0l/E2EIDv2uvVCozO+Qm8itUU
+	QuB7Lb1+iTP1qGwBL/Yr8HWNglreRBM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790248843;
+	b=QUwausXAkGeU5CPD5zLTYzxbWifZ4HtB9sgTKkDpHhaPBvgyLotPPLN8o5OloVA3MB4ag9
+	oRpc742uciB9OCoxIBvIWBXPxFTA3FFn7CeuphodgbOFNB+axEevPKk9PdCEPe+WyYfRXZ
+	ZegIZ9CVX3moCaSL78lDRG2cffHNHVU=
 ARC-Authentication-Results: i=1;
 	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L1TmZyqY;
-	spf=pass (imf16.hostedemail.com: domain of k.shutemov@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=k.shutemov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790248806;
-	b=LXDPEsFsIRU2+wHOEhpGdFZmjlga5eNjnHWBdA1RKuQeWoQziCKDMYnjvveYxMiqUnx/1F
-	9vJ1QkH/ZClLJfQuj30iDfJkwnPA7E7vroF9bk2Z1XbCZLJlcEumMqfkXJv/bZ4RI+i+gO
-	AEPpcCCRO4Ru75tg+agi1VIiiOCuADI=
-Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2a9edfc851so284543666b.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:20:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790248805; x=1790853605; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:feedback-id:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
-        b=L1TmZyqY1f1twAOQi0gxCpJ2akTiOrHh6TsgCjmUM+Op3FlmEwT9jJa3kOsJ6vMjwu
-         OYslj79DMRBjgWIY/Eo7jtND/qjuoM027Aa9889bRmXX7VAqnHblwxD7hq6iulA7Zzq+
-         jNWzsPTt/oS8a6UPG80ES3GKtl9NAs+h/qPt2VA2WAQWl/43YQQoqSlK+Na4hL4VFRur
-         nZi8neuYmMcrxRqk5EwiUiE0Kfsb9QK/dBNZaQoJeNUviOzgtteUspvITRN0JEqBdr7f
-         nKSWrpC+fOmNVrISCa98ZHUTYlRjyLnB/d8uccL4SZku8NxlQI7OOA46kTvpgvxwf0RM
-         gZfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790248805; x=1790853605;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:feedback-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R4OaDlxvzX9mKOFy6ILGdRaMRWgslNMIeO55AJwGVgc=;
-        b=jmbB17xH1MXZa+Q0IwFK0VuuuFo1bF7MyPO736o4ZCQx2SXAUZyWed33kFMdWjyueJ
-         Yyu0DugrtRG4hKUJXEgFBIpHL4JfPu3H+8a5xzRB6XvsuBEiI3iWf8NShqBkUSBue3Gq
-         ugQ5ptb5qY3CmLRYO4X52OR1a8Ahf46XrIVclxk10v8Mq09bquP8JPPdeM412KUe5m1X
-         KmKOE1egGe7pqVSisDtMluYaj+/IAJ2ale98GlO/rn89KNR9jLP0n3IzBRUxm7LCVF35
-         eVk3SjZ2XX+7mtnm5+0NobE49UQ2/yOzhip0gNKbevKYHlcD0+zNKJnhFKUDneAihrws
-         upbg==
-X-Forwarded-Encrypted: i=1; AKwUvByQ+1KqTu1fWzXFMlWr1vNi0ad6Q9j2onpv56RI5QwFDLtnKPG2UcSyr4KsTs/ohyLIT+DkpF52GQ==@kvack.org
-X-Gm-Message-State: AFuF++nUuJMyB5rrNWWKsfYfWXi2x6wSt7sJ51Ya3qD9stfqM9REETnM
-	5NQ67gaa9vpY3nfJknUwFsXMz1wpr1mRbu/kqdt4dVPSk/HDJ11Wro+Y
-X-Gm-Gg: AYBFou14jpa73YJj3eaH8sfTAsSff7xVquc2dLyYAialfp9OR53wcB7J4mCeB8nfTWb
-	eV/y4FZkU3WX1dZYrtX9yNH57fSU+BgTWwLEcQMAN+koIol7SET9B6Sl2j1KFU5PIW1c6lcgeOh
-	8UYg81aIAdPU5BPFuOBy66OYZ6L3a4PwaYwradIPKqmgmdQuAYHly5RdBhCMwZpUftpBgDZFVJJ
-	D1ZAaViDiVKWvlLiYILmSj2Tudu+smvF4EP/NhQjSlgMQORGtu8uKKJKp4HSESuXTBaXobHXzC0
-	hN7jK2Xdpa0l2vfsxKJsXulSmH3x63WPuk8jbeMD5VrzXdL2ewW1Tes9y4gC4x/8V/fSgyzCpeW
-	vekbFyanTxt5JRqBMa94RdsboKpfxKE0y4PTdaBD/pHl+RqRzan5Qnl4+PjxRDO6pEBy/GQoMEJ
-	lXkRmKxUTjn8e9ZFyYm5nsdC2VH/24HvWE5AwGJdTOmgouezJOZzTXfgAD0O4XvEWZGP8s3rH/Y
-	NoSe4SIDXZkZZ8Nkl3STRGPEhQzKnu6uVTqM9L3eYTh9xnN+5Hhb6zdAARc
-X-Received: by 2002:a17:907:c012:b0:c2a:8cd4:cf36 with SMTP id a640c23a62f3a-c2ac22e1662mr167385366b.34.1790248804955;
-        Thu, 24 Sep 2026 04:20:04 -0700 (PDT)
-Received: from fauth-c1-smtp.messagingengine.com (fauth-c1-smtp.messagingengine.com. [204.75.18.200])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2aae5c7134sm291538866b.17.2026.09.24.04.20.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 04:20:04 -0700 (PDT)
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8321F198005A;
-	Thu, 24 Sep 2026 07:19:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 24 Sep 2026 07:20:03 -0400
-X-ME-Sender: <xms:Wwe1aoHxpD2GUkf8jfK2wDtt0h-YqzzKIzL84kUvaXYcnmY4axV3gQ>
-    <xme:Wwe1akjHwz3xl_pcnN7Q_UhAVTKXbdV-JsvpRuG6Wh9WJ00tg0nOv6OC8cjSwxIRh
-    5DmHftdfy7Gj3dkBgloA9W1y72gCW1GW9iJRRKPEvQYRs6qMF4qfRIj>
-X-ME-Received: <xmr:Wwe1alwhKNtlEPc5wdXI1K7uOYNVupMJCVDk7N0aie2Gh_n6e2MAHgyUl70>
-X-ME-Proxy-Cause: dmFkZTEemkH/gTllvrJQao9k3oTuIGHSE6fjeYMBPOOM70MmZFQCiNkkP8ox51KasaOxkE
-    DfOiKw7u2ML+4aqlaveeC7bi5IIBD/aid3NVfALkLOH3kJBkCrS9Q9ph8TpWitSM/pWIgs
-    /nrEjYJnBNJHwBd9H3rrzRz6pXoyoNrVZK9jEhQN3rPEkqkIBpc9HTdVx7InB4jcSUwb3E
-    eMkEma2bPyJjaoSCNjsJxFBPIf+Gklhp8Skenca/KokKG3raOClFfElXCDrPqLi2OnglE6
-    dWLlbxLMHUwZOKdq4VQME/xn2wS27h0tVwYj6bmYhvImEJh6Mube2HOFRVC3rGVKfhlpm5
-    JSkf66ZU+v5jUaunXACswkpeQPmCji+ImeK0FXC79CShfSH1lUvPXqQx5Zq6ZxokRfTSYg
-    A6F0BtUUecmOrzA0ZIvUuABGMfUNZs77c8M4hULgsty3v6Jf8932WwqQOB/TPUurF50KP6
-    mnSPCkZdHsOdPsCi0+3EsOUSyPV1kMapk3/GTrB1E1dsN4e6oqnujFXcF7ZiFDQtzmXzfJ
-    krMC2I2k42EvNYiJs3l0V3armzEAuRfsDdBDSikCQteCX7HF+FpflFwseXJ7dTsBDv1LnJ
-    i/acyfpwwGK/Umvpm5mw7APdNzmyChxecTaxO2rD/mQb4fk4jptfjZ72EUGg
-X-ME-Proxy: <xmx:XAe1auQRVNiaJHOKpRct0TutvCPVxvcZu6oUvd93SpQpMkg6vr1yig>
-    <xmx:XAe1asEs0Zm4GI42ak-uA-yMo4VlMtDhjZptCGgeQUF6L8b9qQ48nA>
-    <xmx:XAe1al37l4_t143Yw9EsvBefeKb0kFJjS7KKpPpHnreX76NAhe9TpA>
-    <xmx:XAe1an1-ryh40fdYC9XKVzCbGbvV4XAdVH_0Z-GrqI8R2Oqo2Og2ZA>
-    <xmx:XAe1apdeOpL5Y--D8eiHeAfEFy8vDSwWlSlmvaJXKkB4f3Wnqhy8IWcU>
-Feedback-ID: ifa9e4bbb:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 07:19:54 -0400 (EDT)
-Date: Thu, 24 Sep 2026 12:19:53 +0100
-From: Kiryl Shutsemau <k.shutemov@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Harry Yoo <harry@kernel.org>, David Rientjes <rientjes@google.com>,
- 	Amit Shah <amit@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- 	Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>,
- Christoph Lameter <christoph@gentwo.org>,
- 	Dave Hansen <dave.hansen@intel.com>,
- Davidlohr Bueso <dave@stgolabs.net>, 	Hugh Dickins <hughd@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- 	John Hubbard <jhubbard@nvidia.com>,
- Matthew Wilcox <willy@infradead.org>, 	Mel Gorman <mel.gorman@gmail.com>,
- Michal Hocko <mhocko@suse.com>, 	Mike Rapoport <mike.rapoport@gmail.com>,
- Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 	"Rao,
- Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>,
- 	Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, 	Shivank Garg <shivankg@amd.com>,
- Sterling Alexander <stalexan@redhat.com>,
- 	Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>, 	Yang Shi <shy828301@gmail.com>,
- Zi Yan <ziy@nvidia.com>, 	William Roche <william.roche@oracle.com>,
- linmiaohe@huawei.com, ljs@kernel.org, osalvador@kernel.org,
- 	nao.horiguchi@gmail.com, tony.luck@intel.com,
- wangkefeng.wang@huawei.com, 	jane.chu@oracle.com, muchun.song@linux.dev,
- liam@infradead.org, shuah@kernel.org, 	boudewijn@delta-utec.com,
- linux-mm@kvack.org, Breno Leitao <leitao@debian.org>
-Subject: Re: [Invitation] Linux MM Alignment Session on Hwpoison on Wednesday
-Message-ID: <arUDeFDdSV1xANiU@thinkstation>
-References: <45af1b22-49d4-5d60-e7ad-14a1a33c8dc9@google.com>
- <arPElEV0zDhXrteb@thinkstation>
- <42221bdb-44f9-4c86-a572-1d1372026836@kernel.org>
- <arPdnxhX9VHnDx15@thinkstation>
- <ce6659a6-a658-4311-8c8d-193d309bf85b@kernel.org>
- <arT9TVHmM3WDjWnk@thinkstation>
- <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6c79bc6c-abb7-407d-84cb-c9ab29732646@kernel.org>
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dZ68cN26;
+	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1790248837; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=2ObzkTUR2MT6hgOq6WkJvQc/IYSMc6ABw6/YFMb349Y=;
+ b=dZ68cN264+z34BUy7Fyo6XhZy7uZEk6e42CWSql3+I8sAvFUv7bB7i9QtYZSUGALi3+dFX
+ T27/3rcdBZ9f7Yd/rxGjhojYSUv37FNmFwKGgqHB1czBy18gnX61hAjr9PRCAHR0VsQxAe
+ qHCBN20lBfz5wHi5I1eFHUL30KbZYpFVdzfGFLAC2/NJXDPwACcEXHIro133OlytcW3ixl
+ f8LlFi/j3EQEAsGsFMUY4p9tM4BGbBW0htc3zL2tUHzqvZFQOI7dhP9OqAN3q16b+5oKv+
+ RsK1DrJfKZb9pjmMPYntTEyHhthG42Wiv3D2shGGHCjy3f2VpbwOvS91YCkcvQ==
+Content-Transfer-Encoding: quoted-printable
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<aiqi.i7@bytedance.com>, <akpm@linux-foundation.org>, <david@kernel.org>, 
+	<osalvador@suse.de>
+Message-Id: <83eefc56-cdb3-4e9b-9a2c-13819493afaa@bytedance.com>
+Mime-Version: 1.0
+To: "Muchun Song" <muchun.song@linux.dev>
+Subject: Re: [PATCH v3] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
+Date: Thu, 24 Sep 2026 19:20:20 +0800
+X-Lms-Return-Path: <lba+26ab50782+96abc2+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+References: <20260924082004.82450-1-lizhe.67@bytedance.com> <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
+User-Agent: Mozilla Thunderbird
+In-Reply-To: <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8F3EB18000A
+X-Stat-Signature: d3athjz8ouh66bqiym4xom9o7cj6r9oy
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8E67F18000B
-X-Stat-Signature: zqdi1fqn8h6mcq1fgzu53n3p7z6aq73z
-X-HE-Tag: 1790248806-744856
-X-HE-Meta: U2FsdGVkX18AGnZ77WgHOeQmS5+YVAeMNGxRqBnPIthkrWN4HH302djkT/ZVvctgTotrI8bk09ebAwaKZ9qCfsmz3dOUxBm5Oqt16Tfiq99foNVM35UrdI+gDrNUOu9cZzYxfLlbICu9FaB2g2Rqk4VNpHmI2ZZE4FQ7fJLE7oeXLASom2s9hjukRQ43HEOEbK355n98H4r+knC6oIR1nsW7/DHiXeve7WaE8cafmlEGMorPnCw77W5Jzz2Wk9nH9SWCGX1WSR8sXEG3BFrBEqGZeUTh9piayY5KxTWQL2LR1Y73ZhyKRXlEDcYIkzuW0eEyKgabgF5IKB0coZpBMIqzGB5ZVb0hTo2r8ImxGG2TreLo+RrhZdy3BKk3JkXjiXpBZuu9xjcjh0H0Zak1XowdO6/c30nN254DtSdiNFv/gSCFPiER1Zx7pu2NOrqo19YjaCwueSFuilH7aZcupM+y0Rw7OlC8f2jaQllsRYprigmp+KqpUv9XZQKuk/3cNv3Qo0XbiYhEj0yBtwSY2e0wvuR+h1p/GiEw8s3TbOKtiaRHA9hrDOXG7BsmL5Jtp9VUc8dyQpi4ZrcKpwkXs/W/csS2wOTabCqvViqOcbQRVC3SjpU+LfxZBpdyBw/kWY8RBhwjCodwLYeTZih7p51nWioQQ1ZN4076oP/1ESk70CjGWKxz7zvTWNGElydikDuWGOeBruYBz8BqSF/QurbI5iZgi1IiWviGyqI6B7RWgO56ja3Ger9ff+NVrBn234Sljz+mKWSCGES7Qbm2frZIBm6CeecDVcT++4wUqOz9/MFFf5zWc41jqXY/QM30kt9dGakrCC5j70SqPgzapHf08sNwf6ec61+yJCVQMXr4MJsJ/oOU3Y4vEWpdHhJpfdXpbExAfryc8HbRqPhFEj6dxrsXI9qECZjYznUbc1eriYrCOTwegqsuZ5auuyxsn7bAhwlhlTXU3NloThc
- rk39WzzM
- 5BUqMM9mJQcANO32DzWv85XMgVPkWarUtqdV85r/L/AI+tCvU31Inqr2FxxdUEFyoOuWiA1qvs3uf1deRMnN+qnnB7vWS5IegrcbwxdBC/efjKi4ncOG4KFvFrrQvBCjTPJnCgjuHRHBpMKnjfdb1tpb15nmP9d4QS4VYb2RyuWQTtloeWvdbPe6lrUG2EDcQWhwbrut0WfB4eBjIly+WHpX59YTrSzmQIt3LuFcg8bJhAi3nPjtRtrI/oKYvlacZZCHM7ogP9m86TZ64dltDPhx4cL5Wwk3PGlYjum77INWdWFpuBs1mIr8v3IpEgZCfHXq70Ib3cjEML5QDIGT148lgA2vpbze53/XMz1FPBCEddy3KiDHWPx+Jn8gQ0jBeOUHGetXbLExFNIdGTACi15nLrkmM4PPPZzaErh695JN7yRce+EHEzcJ+E7Oy1/u7XBDMaowTyMY9Y/+B4EJC91DABK4e34HW2M83clpEkPsF/eZNWfbpeRjJYCnJion8SZBuBFvg6fpLbuw/EGHanq8sHA==
+X-HE-Tag: 1790248842-440249
+X-HE-Meta: U2FsdGVkX1/xj0iSNl57mXzOy7O6Nm2o7uwU7WFnAQB+nIVOJ31DYCp6TQl3GIG9MS+HHUE7UXAXy1mNH7WlFeunBxA0cfaCT6VSXctWpkwOUu+N7Wg/UaV0XBtcg1VX41O1MdK9kh9Xw2TmAoI88Wot/XomWkyg8fgx4mpzmqYc59vQ3bLu0flfyp/GSed+K8tqaZI5mxIJD8/Q3yDH0LraAgINuP4T8dB0efvr66lFQXj4XtU2pqViRg4ZqSFHlMmmCxVK0FeCpfKb8ZqdlNfnNS/cGfMEaXlXS1xThXV424Ru/zz0rye78uGRnFINQrxbmTogT/w05x6J65gu0auoBCzPaNigdH5dnsymbBv8L6aPnRPQtInkwzyM4Yd+zntd53gqJyX3oNRguQ/7jXS19xqg7uL3OLcziHuvaHe3vIrUEmCkkZC2SJUFhChUlpnh5ZjZZrKT7jYkd2J4rGAgUW0Da8r5QFOcQWDO2NPs5NCpDLKSNnX6qj9fXOMN3Mee7DqfQJ6WU9k+MMLeLRmegCZLmfD6/eOcGE2AFC8Yy6P6fSFKq0Dvk8C55/8VvERf45R6mfgQ3a7Hc4k9kpzQmsO0OJEK3Ffdo1/oxRwMzNhhW9KR2lFiRMTyamYmDoII8NZ6CUVxlDYh7MnAYRrZ5BQE4/6hvUtAiPVN4JwcShc1ik4gMQYVoupEtj0ojAImt7wwWJQPIX5zeyUq/gPqCy8D4ELo1bOmvwENdSAIDJk1mOIIW23j/7GrWkw5EC64R9BESTJIWcuFReJn3Yr59QypZ7c0h6gRmKPsCz9M1cqKu3mejlcujKsUpSMnkYwqKtsFAKrRf2vM0a7L7t1VVL3fPon4HJK1pjvrJR922obFdjPv0JAsrxInde91Wbqq7wU5TubZfrkcZvV58HxIfYLCD9r5T1xpEIxgj9TwSCvvcrIeUubZtRi2p6TbfqFmokZsDzWsyW3VlP2
+ nf894hRR
+ Z/O0O3qYPhFEQF7zFZr+MZIdauqUlF7rJxHz6gBRC2M+MZkVzf+E8gXVi9oycvYu9NmZyUOFRpLuyumgqkxAHNrSNu4DNPaslEHCby0Lq0K+uEzsvZaRiP+xnBC+2w8qyb2/21GEQ/H0CZa6LRqvMPfQa/kl+V3rRNoorbBW1wMy/P5L4KBThW8FEx79vFf/Nv0WjnabRCYRT9uQeAo7Db//kDQonHdFjbGZbYq3N8wW7BFZ1CQi8FkrUOjP0Ovc4Bmx9SFhDyITJeTSFA5ymCHBCSt3v6mr6tzcNo1tgBes4470kGEcwio+rLRpbgtMDtM4d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,40 +90,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 12:55:10PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/24/26 12:46, Kiryl Shutsemau wrote:
-> > On Thu, Sep 24, 2026 at 10:32:29AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 9/23/26 16:36, Harry Yoo wrote:
-> >>>
-> >>> I believe this is what the patchset actually did in v2.
-> >>>
-> >>> That way we'll have to either
-> >>> 1) make any architecture that supports kexec select ARCH_KEEP_MEMBLOCK,
-> >>> or 2) make kexec scan the bitmap when allocating the memory.
-> >>
-> >> My naive design would be:
-> >>
-> >> 1) Teach memblock early about poisoned memory ranges. Don't let it hand them out.
-> > 
-> > I suggested using a bitmap because ranges are not scalable. Some memory
-> > failure modes generate errors repeated across the physical address space
-> > (think of a column failure, for instance). It would produce too many
-> > ranges to be viable.
-> 
-> These are in 2M granularity. Is that a real problem?
+On 9/24/26 5:51 PM, Muchun Song wrote:
+>
+>
+> On 2026/9/24 16:20, Li Zhe wrote:
+>> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
+>> PMD sharing is possible. That is only needed when huge_pmd_unshare()
+>> actually detaches a shared PMD page table, because clearing the PUD
+>> invalidates the whole PUD-sized virtual address range.
+>>
+>> For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
+>> a shared mapping can pass the "PMD sharing is possible" range test in
+>> adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
+>> not currently have any shared PMD page tables. KVM then receives a 1G
+>> invalidation for a 2M operation and zaps unrelated secondary mappings,
+>> so the guest has to fault them back in.
+>>
+>> Avoid this by tracking active PMD-sharing attachments per hugetlbfs
+>> inode. The count is incremented only after huge_pmd_share() successfully
+>> installs a shared PMD table, and decremented when __huge_pmd_unshare()
+>> actually detaches one. Since huge_pmd_share() can run concurrently under
+>> i_mmap_lock_read(), use atomic operations for the count. A zero count is
+>> used to skip the conservative notifier range expansion only after
+>> excluding concurrent PMD sharing with the mapping write lock.
+>>
+>> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
+>> improves P99 QPS stability while punching pages, reducing the QPS
+>> degradation ratio from 7.09% to 1.45%.
+>>
+>> Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
+>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>> ---
+>> v2:=20
+>> https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.co=
+m/
+>> v1:=20
+>> https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.co=
+m/
+>>
+>> ChangeLogs:
+>> v2->v3:
+>> - Rework the sticky state based on Andrew's feedback: use a per-inode
+>> =C2=A0=C2=A0 counter of active PMD-sharing attachments, so files can ret=
+urn to the
+>> =C2=A0=C2=A0 no-active-sharing state after PMD sharing ends.
+>>
+>> v1->v2:
+>> - Rework the implementation based on David's suggestion: remember
+>> =C2=A0=C2=A0 whether PMD sharing ever happened for a hugetlbfs file, and=
+ skip the
+>> =C2=A0=C2=A0 conservative notifier range expansion while it has not. Thi=
+s avoids
+>> =C2=A0=C2=A0 the per-unmap page-table walk.
+>>
+>> =C2=A0 fs/hugetlbfs/inode.c=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+>> =C2=A0 include/linux/hugetlb.h | 43 ++++++++++++++++++++++++++++++++++++=
++++++
+>> =C2=A0 mm/hugetlb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 13 ++++++++++---
+>> =C2=A0 3 files changed, 54 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+>> index 7611a8470ea26..78e27ce0a6f63 100644
+>> --- a/fs/hugetlbfs/inode.c
+>> +++ b/fs/hugetlbfs/inode.c
+>> @@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct=20
+>> super_block *sb,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 simple_inode_init=
+_ts(inode);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info->resv_map =
+=3D resv_map;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info->seals =3D F=
+_SEAL_SEAL;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_init(i=
+node);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (mode & S_=
+IFMT) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default:
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 init_special_inode(inode, mode, dev);
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index 16c4c4caa126c..6b4f92b7f7ae4 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -12,6 +12,7 @@
+>> =C2=A0 #include <linux/page_ref.h>
+>> =C2=A0 #include <linux/list.h>
+>> =C2=A0 #include <linux/kref.h>
+>> +#include <linux/atomic.h>
+>> =C2=A0 #include <linux/pgtable.h>
+>> =C2=A0 #include <linux/gfp.h>
+>> =C2=A0 #include <linux/userfaultfd_k.h>
+>> @@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct inode vfs_inode;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct resv_map *resv_map;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int seals;
+>> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>> +=C2=A0=C2=A0=C2=A0 atomic_t pmd_sharing_count;
+>> +#endif
+>> =C2=A0 };
+>> =C2=A0 =C2=A0 static inline struct hugetlbfs_inode_info *HUGETLBFS_I(str=
+uct=20
+>> inode *inode)
+>> @@ -516,6 +520,45 @@ static inline struct hugetlbfs_inode_info=20
+>> *HUGETLBFS_I(struct inode *inode)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return container_of(inode, struct hugetlb=
+fs_inode_info,=20
+>> vfs_inode);
+>> =C2=A0 }
+>> =C2=A0 +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 atomic_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0=
+);
+>> +}
+>> +
+>> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 atomic_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
+>> +}
+>> +
+>> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 atomic_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
+>> +}
+>> +
+>> +/*
+>> + * A 32-bit counter can theoretically wrap, but doing so would require
+>> + * billions of active PMD-sharing attachments to the same inode and=20
+>> is not
+>> + * expected in practice. Treat any non-zero value as active so a=20
+>> wrapped
+>> + * negative value still takes the conservative notifier range.
+>> + */
+>> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 return atomic_read(&HUGETLBFS_I(inode)->pmd_sharing_=
+count) !=3D 0;
+>
+> Testing for non zero covers the negative half of the cycle,
+> but the 2^32nd increment changes the value back to zero.
+>
+> The inode-wide total is not bounded by PID_MAX_LIMIT because
+> one mm can have an attachment in every PUD-sized part of a
+> large mapping.=C2=A0 For example, a 4-level x86 mm has about
+> 131,000 user PUD slots.=C2=A0 Roughly 32,769 child mms can therefore
+> create more than 2^32 attachments by faulting one address in
+> each PUD of a single large inherited MAP_SHARED hugetlb VMA.
+> This also does not require one backing huge page per
+> attachment: huge_pte_alloc() installs or shares the PMD table
+> before hugetlb_no_page() attempts to obtain the huge page.
+>
+> At the zero value, an unmap can take i_mmap_rwsem for write,
+> observe no active sharing, and issue only the original narrow
+> notifier.=C2=A0 Its subsequent __huge_pmd_unshare() can still
+> clear a PUD and decrement the counter from zero to -1, leaving
+> the rest of the PUD-sized invalidation unreported.
+>
+> Could this use a 64-bit or saturating counter so an active
+> count can never be mistaken for zero?
+>
+> Therefore, I recommend using atomic64_t.
+>
+> Thanks,
+> Muchun
 
-2M is arbitrary. We can trade finer granularity for the size of the bitmap.
 
-> > We already consult a bitmap in memblock for unaccepted memory. We *can*
-> > do the same for poisoned memory.
-> > 
-> 
-> We can do many things. I don't want it.
+Thanks for the detailed explanation.
 
-What's wrong with it? The last step on allocation from memblock check if
-the memory is poisoned in bitmap. If it is, try again next range,
-starting from the next non-poisoned address.
+I did consider that such an extreme case could theoretically cause a
+problem, but I expected it to be practically unreachable. But since we
+can cover this corner case simply by using atomic64_t, that is definitely
+better.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I will switch the counter to atomic64_t in v4 and drop the 32-bit wrap
+comment.
+
+Thanks,
+Zhe
+
+>
+>> +}
+>> +#else
+>> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
+>> +
+>> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
+>> +
+>> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
+>> +
+>> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 return false;
+>> +}
+>> +#endif
+>> +
+>> =C2=A0 extern const struct vm_operations_struct hugetlb_vm_ops;
+>> =C2=A0 struct file *hugetlb_file_setup(const char *name, size_t size,=20
+>> vma_flags_t acct,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int creat_flags, int page_size_log);
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index 4f6f58bf3db6c..cb27c06d1f7a7 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct=20
+>> vm_area_struct *vma,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!vma->vm_file)=C2=A0=C2=A0=C2=A0 /* h=
+ugetlbfs_file_mmap error */
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>> =C2=A0 -=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_possible(vma, sta=
+rt, end);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlb_vma_lock_write(vma);
+>> -=C2=A0=C2=A0=C2=A0 if (vma->vm_file)
+>> +=C2=A0=C2=A0=C2=A0 if (vma->vm_file) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i_mmap_lock_write=
+(vma->vm_file->f_mapping);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (hugetlbfs_pmd_sharing_ac=
+tive(file_inode(vma->vm_file)))
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adju=
+st_range_if_pmd_sharing_possible(vma, start, end);
+>> +=C2=A0=C2=A0=C2=A0 }
+>> =C2=A0 }
+>> =C2=A0 =C2=A0 void __hugetlb_zap_end(struct vm_area_struct *vma,
+>> @@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct=20
+>> vm_area_struct *vma, unsigned long start,
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmu_notifier_range_init(&range, MM=
+U_NOTIFY_CLEAR, 0, vma->vm_mm,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start, end);
+>> -=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_possible(vma, &range.sta=
+rt,=20
+>> &range.end);
+>> +=C2=A0=C2=A0=C2=A0 i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>> +=C2=A0=C2=A0=C2=A0 if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_=
+file)))
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_=
+possible(vma, &range.start,
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 &range.end);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmu_notifier_invalidate_range_start(&rang=
+e);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tlb_gather_mmu(&tlb, vma->vm_mm);
+>> =C2=A0 @@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm,=
+=20
+>> struct vm_area_struct *vma,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pud_none(*pud)) {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pud_populate(mm, =
+pud,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (pmd_t *)((unsigned long)spte & PAGE_MASK));
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_inc(fi=
+le_inode(vma->vm_file));
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mm_inc_nr_pmds(mm=
+);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ptdesc_pmd_pts_de=
+c(virt_to_ptdesc(spte));
+>> @@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather=20
+>> *tlb,
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pud_clear(pud);
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tlb_unshare_pmd_ptdesc(tlb, virt_t=
+o_ptdesc(ptep), addr);
+>> +=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
+>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mm_dec_nr_pmds(mm);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 1;
+>
 
