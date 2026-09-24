@@ -4,85 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B104DC98317
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419DDC9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 11:22:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D1E06B008C; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
+	id 3E1ED6B0093; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982916B0092; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
+	id 392966B0095; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 871F46B0093; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
+	id 25A776B0096; Thu, 24 Sep 2026 07:22:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C6B6B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:20:45 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F07868012B
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:44 +0000 (UTC)
-X-FDA: 85248413208.22.1CCB83B
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8F3EB18000A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:20:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dZ68cN26;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F048F6B0093
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:22:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 716E91202FF
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:22:15 +0000 (UTC)
+X-FDA: 85248417030.25.4D6D908
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id AAC37A0004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:22:13 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLcpADPq;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790248843;
+	s=arc-20220608; t=1790248933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ObzkTUR2MT6hgOq6WkJvQc/IYSMc6ABw6/YFMb349Y=;
-	b=EdUFbEeE0zy1zjhYFRtGniGOVMf49m+O51p1W8L/YRUlnscK6zVZ7MXj9bVXxuuum1fdW0
-	epU5TbgYGwapSMNAzdMfCPDjQpn6ekvNPYnJ9TeMNtr9T0l/E2EIDv2uvVCozO+Qm8itUU
-	QuB7Lb1+iTP1qGwBL/Yr8HWNglreRBM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790248843;
-	b=QUwausXAkGeU5CPD5zLTYzxbWifZ4HtB9sgTKkDpHhaPBvgyLotPPLN8o5OloVA3MB4ag9
-	oRpc742uciB9OCoxIBvIWBXPxFTA3FFn7CeuphodgbOFNB+axEevPKk9PdCEPe+WyYfRXZ
-	ZegIZ9CVX3moCaSL78lDRG2cffHNHVU=
+	bh=ctwayjHvAj5rO/ALkHWHVIPs9SRT5FDkZw4zngF4FsM=;
+	b=H2NKOp6ODLPEUkCN+wrbISBvLbu4mWf3NR1/Kx6NA0BTwq+9vrvNcBIgYLoefA7Frcv29a
+	DMhQp5HAl0PD9Rj7PGtdfjGqoIs1rDwweef9SWdfsiTAv4J+rq//AZ8HLp0rQVa43vkrBS
+	OMSPTGWDwyS801JUJWXyFOEfUkKsbDw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dZ68cN26;
-	spf=pass (imf16.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1790248837; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=2ObzkTUR2MT6hgOq6WkJvQc/IYSMc6ABw6/YFMb349Y=;
- b=dZ68cN264+z34BUy7Fyo6XhZy7uZEk6e42CWSql3+I8sAvFUv7bB7i9QtYZSUGALi3+dFX
- T27/3rcdBZ9f7Yd/rxGjhojYSUv37FNmFwKGgqHB1czBy18gnX61hAjr9PRCAHR0VsQxAe
- qHCBN20lBfz5wHi5I1eFHUL30KbZYpFVdzfGFLAC2/NJXDPwACcEXHIro133OlytcW3ixl
- f8LlFi/j3EQEAsGsFMUY4p9tM4BGbBW0htc3zL2tUHzqvZFQOI7dhP9OqAN3q16b+5oKv+
- RsK1DrJfKZb9pjmMPYntTEyHhthG42Wiv3D2shGGHCjy3f2VpbwOvS91YCkcvQ==
-Content-Transfer-Encoding: quoted-printable
-Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<aiqi.i7@bytedance.com>, <akpm@linux-foundation.org>, <david@kernel.org>, 
-	<osalvador@suse.de>
-Message-Id: <83eefc56-cdb3-4e9b-9a2c-13819493afaa@bytedance.com>
-Mime-Version: 1.0
-To: "Muchun Song" <muchun.song@linux.dev>
-Subject: Re: [PATCH v3] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
-Date: Thu, 24 Sep 2026 19:20:20 +0800
-X-Lms-Return-Path: <lba+26ab50782+96abc2+kvack.org+lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-References: <20260924082004.82450-1-lizhe.67@bytedance.com> <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLcpADPq;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790248933;
+	b=PaaXskeszesMU89UQNCNuN93dTXihsFtwYSp6rj3R40p0k/b3NhVN7N7QDDSlfyaA49whi
+	kDVqpz2QaA9VBvoQ6NAKRx2DBiyVE+LxcdJNL2fH5EjlvTmIdwMMVWjiuFUf1K3n0/9BP2
+	5+WkCFCUWy92tmbsM+/1CAHabMJ/rOw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A2D9600AA;
+	Thu, 24 Sep 2026 11:22:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9961F00893;
+	Thu, 24 Sep 2026 11:22:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790248932;
+	bh=ctwayjHvAj5rO/ALkHWHVIPs9SRT5FDkZw4zngF4FsM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=SLcpADPq4EEZy7CYxm/FfpTvXhOBlV7k27ge46+15mUNqtekLfytiC8znGla+1Snm
+	 PSbv92RSUcUv8ktM2tceZ9jdbEwC8TEK3PQTCtuySbOVTtsTySc7dsgsv/ScPTeVF8
+	 +JF2qqpHzRTVTTLnIT7nMcFBnjMaGkSGLudLCsU3Ix3do4DOJ90KnBEK+xYnM0mcGj
+	 H5k6GSwsaDxcQo4fcythrZ1YRBgmS802wUIdl4m/qMSmatE8+BseUx2JXkwVVqypy0
+	 ezrylZ6VcLud0LgaGtIs5YFzeuzIQDJh4PMRLOmx9POlfqEiLVL+b/y1OT7BZwTuEG
+	 GQ56tSjWThlVw==
+Message-ID: <cf2fe0bb-a79a-420e-8b65-3c8dfa5fadbb@kernel.org>
+Date: Thu, 24 Sep 2026 13:22:00 +0200
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-In-Reply-To: <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8F3EB18000A
-X-Stat-Signature: d3athjz8ouh66bqiym4xom9o7cj6r9oy
+Subject: Re: [PATCH v5 7/9] drivers/base/memory: count inherited poisoned
+ frames into the block
+To: Breno Leitao <leitao@debian.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi
+ <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>,
+ kas@kernel.org, kexec@lists.infradead.org, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Brendan Jackman
+ <brendan.jackman@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ hannes@cmpxchg.or, shakeel.butt@linux.dev, linux-efi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, rmikey@meta.com,
+ riel@surriel.com, harry@kernel.org, linux-cxl@vger.kernel.org,
+ driver-core@lists.linux.dev, kernel-team@meta.com
+References: <20260915-hwpoison-kho-v5-7-3bc7a57bd503@debian.org>
+ <de41b78a-8471-4832-be0c-35d410a4499a@kernel.org>
+ <aqpczrtIwSG948iv@gmail.com>
+ <b8ad366a-a019-4462-9dce-f687f60ee7f2@kernel.org>
+ <aqvHHHuWJ-y4WRJZ@gmail.com>
+ <caac2cb9-8faa-49bc-ae8a-47c5fd7b7e58@kernel.org>
+ <aq1RaH0eE0hZfNpr@gmail.com>
+ <fb2237be-f7bc-4ad6-bcb0-7c3ef53136ef@kernel.org>
+ <arE3UjqPsxctWckg@gmail.com>
+ <ad2ed3ed-959a-4af3-a2f5-4c21e5af62d6@kernel.org>
+ <arJqVWN-prvI_0NP@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <arJqVWN-prvI_0NP@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790248842-440249
-X-HE-Meta: U2FsdGVkX1/xj0iSNl57mXzOy7O6Nm2o7uwU7WFnAQB+nIVOJ31DYCp6TQl3GIG9MS+HHUE7UXAXy1mNH7WlFeunBxA0cfaCT6VSXctWpkwOUu+N7Wg/UaV0XBtcg1VX41O1MdK9kh9Xw2TmAoI88Wot/XomWkyg8fgx4mpzmqYc59vQ3bLu0flfyp/GSed+K8tqaZI5mxIJD8/Q3yDH0LraAgINuP4T8dB0efvr66lFQXj4XtU2pqViRg4ZqSFHlMmmCxVK0FeCpfKb8ZqdlNfnNS/cGfMEaXlXS1xThXV424Ru/zz0rye78uGRnFINQrxbmTogT/w05x6J65gu0auoBCzPaNigdH5dnsymbBv8L6aPnRPQtInkwzyM4Yd+zntd53gqJyX3oNRguQ/7jXS19xqg7uL3OLcziHuvaHe3vIrUEmCkkZC2SJUFhChUlpnh5ZjZZrKT7jYkd2J4rGAgUW0Da8r5QFOcQWDO2NPs5NCpDLKSNnX6qj9fXOMN3Mee7DqfQJ6WU9k+MMLeLRmegCZLmfD6/eOcGE2AFC8Yy6P6fSFKq0Dvk8C55/8VvERf45R6mfgQ3a7Hc4k9kpzQmsO0OJEK3Ffdo1/oxRwMzNhhW9KR2lFiRMTyamYmDoII8NZ6CUVxlDYh7MnAYRrZ5BQE4/6hvUtAiPVN4JwcShc1ik4gMQYVoupEtj0ojAImt7wwWJQPIX5zeyUq/gPqCy8D4ELo1bOmvwENdSAIDJk1mOIIW23j/7GrWkw5EC64R9BESTJIWcuFReJn3Yr59QypZ7c0h6gRmKPsCz9M1cqKu3mejlcujKsUpSMnkYwqKtsFAKrRf2vM0a7L7t1VVL3fPon4HJK1pjvrJR922obFdjPv0JAsrxInde91Wbqq7wU5TubZfrkcZvV58HxIfYLCD9r5T1xpEIxgj9TwSCvvcrIeUubZtRi2p6TbfqFmokZsDzWsyW3VlP2
- nf894hRR
- Z/O0O3qYPhFEQF7zFZr+MZIdauqUlF7rJxHz6gBRC2M+MZkVzf+E8gXVi9oycvYu9NmZyUOFRpLuyumgqkxAHNrSNu4DNPaslEHCby0Lq0K+uEzsvZaRiP+xnBC+2w8qyb2/21GEQ/H0CZa6LRqvMPfQa/kl+V3rRNoorbBW1wMy/P5L4KBThW8FEx79vFf/Nv0WjnabRCYRT9uQeAo7Db//kDQonHdFjbGZbYq3N8wW7BFZ1CQi8FkrUOjP0Ovc4Bmx9SFhDyITJeTSFA5ymCHBCSt3v6mr6tzcNo1tgBes4470kGEcwio+rLRpbgtMDtM4d
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AAC37A0004
+X-Stat-Signature: 74gwope719p9b43qxwwq6z1kfuux9psf
+X-HE-Tag: 1790248933-652436
+X-HE-Meta: U2FsdGVkX1+pAswM2pEV9Yk1ftw5ZNx26mWyEhxCz9ITDV7nIMxx0JerWXIcBhIqi8d5aBl8piwdX2bh6A3XgxjA9Jdxjz4x1qXIQl9rYLj0p+9hyAXN+qVSnA70gH4Z3cjUv1ivFm+JROBowO7JhLwtfhQIe4pRL8Jnu+ctIUNLgzGsH1rsHxU4gL8Y1CaW+VXH8go2WnyXJKFMuhqA++cdSIvOSiVn5PaMuO6JEq64HbhSRLqY46Od19OelbYpIOgFb8igUraRhxBUDR8ouiJJnxSG6OTS9s2HN5D/HS56bTX5xwE/ZPdKYAz1VCMsstD3amMHUFKNVon1Lx4p+ITuzzXtmvuWIvrP7602rGXu6a38q4sH+c7QHSU/dhzyTgaaewPi4UixCe25iDVtDA7mtHn7TF/V63sZgcAYwTqw+PkgK/eut4NxzoMOWRR4gXoKMsH+I2+yHEpQMkePERjVcUuUWa9oCHnp2TQZDkOYKfUw8jaYxUbXSMuvQ9jsctUt6nsR0MFlFA/1ii4X3t4oxDui82lqScROCPALAVpnek0rzsiJ2tdW8H/RLDdhmFEJNgsXm5Lr0bklsdMNwIGiCRUWdJpw7VcQBpnQktBxhZTXx5HjBv/FbQwoVc1mWpNdTG+kEqpzKfZ9KSSnkN+KXmzv3wfb1pTERYdH0vjQQDszyV/4+boSsKN6HTIhj2UqbsPgEBlC7/7CsJF4xkFU42Y/SV3xr6am3mWE9+y9k79UieuMDByxJVIFpXDuLAN9HCglpalra1s+aOGQleKE2rnYcL3l3ZQL/NFvpKbUGszK4OPnKCdRaaPwF6Sf0UjVxeCkWEWVXSEF9OTtcvGyIXn6IoQULQKnDGm4B/0M/G6rJp5K8VhaU0CLIG/EDYZSCa+T4K8WFIlX9eVGzwT4UbnOeMQqlYlkJhn0//Bs1Evo5fz0s5NYp6a8oE97OQQH/vHDLDNz4EiuHYI
+ aj22rtr8
+ Mta/pM6N24oXZEDEOGEDr5le6eg1ujWk9oqUiu/ScjDLHxZeL9lbLM6IXAiWZ5VaCn8mia4ONeJVHj4pO7CL8qR+1bYMHvMVYQfKD+BBGEOkN3Zd9/Vtj40EiQgWel2g2RR3kc7HCpDCzPW+wuFrOQKDs90LgxAu4VpgmKCKxIjXQmbm/14s5xmxZWuHrT4u+CrwRiJSKDvFxDkf4x6uDddv8RQYmef3cVAPit+M7ooxyQsLw2IIEDurGYGxMgPBEgaBCgqaMt5izso93+YrYgjxlpZb+6i4JZE+yN1y7X7XaSxtyr2IxQAnilXPKudwVvo7vIscb5bsJMI887n7bTr6T+YoOB4kUfcBs5ZqXQBB6MjwQLd52mNC2vzjAeNJlkJd4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,270 +165,201 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/24/26 5:51 PM, Muchun Song wrote:
->
->
-> On 2026/9/24 16:20, Li Zhe wrote:
->> Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
->> PMD sharing is possible. That is only needed when huge_pmd_unshare()
->> actually detaches a shared PMD page table, because clearing the PUD
->> invalidates the whole PUD-sized virtual address range.
+On 9/22/26 14:34, Breno Leitao wrote:
+> Hello David,
+> 
+> On Tue, Sep 22, 2026 at 01:33:51PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/21/26 16:31, Breno Leitao wrote:
+>>>
+>>> The EFI table is only written when there is a memory failure. That is
+>>> the only thing that writes to it:
+>>>
+>>> 	action_result() -> efi_hwpoison_record_pfn() -> set_bit()
+>>>
+>>> You can see it on patch "mm/memory-failure: efi: record
+>>> hardware-poisoned frames into the poisoned-memory table"
+>>>
+>>> Then, when the kernel kexecs into a second kernel, the EFI config table
+>>> is queried and the pages are poisoned from it at boot, as they are
+>>> getting into the buddy allocator, in __free_pages_core().
 >>
->> For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
->> a shared mapping can pass the "PMD sharing is possible" range test in
->> adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
->> not currently have any shared PMD page tables. KVM then receives a 1G
->> invalidation for a 2M operation and zaps unrelated secondary mappings,
->> so the guest has to fault them back in.
->>
->> Avoid this by tracking active PMD-sharing attachments per hugetlbfs
->> inode. The count is incremented only after huge_pmd_share() successfully
->> installs a shared PMD table, and decremented when __huge_pmd_unshare()
->> actually detaches one. Since huge_pmd_share() can run concurrently under
->> i_mmap_lock_read(), use atomic operations for the count. A zero count is
->> used to skip the conservative notifier range expansion only after
->> excluding concurrent PMD sharing with the mapping write lock.
->>
->> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
->> improves P99 QPS stability while punching pages, reducing the QPS
->> degradation ratio from 7.09% to 1.45%.
->>
->> Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
->> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->> ---
->> v2:=20
->> https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.co=
-m/
->> v1:=20
->> https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.co=
-m/
->>
->> ChangeLogs:
->> v2->v3:
->> - Rework the sticky state based on Andrew's feedback: use a per-inode
->> =C2=A0=C2=A0 counter of active PMD-sharing attachments, so files can ret=
-urn to the
->> =C2=A0=C2=A0 no-active-sharing state after PMD sharing ends.
->>
->> v1->v2:
->> - Rework the implementation based on David's suggestion: remember
->> =C2=A0=C2=A0 whether PMD sharing ever happened for a hugetlbfs file, and=
- skip the
->> =C2=A0=C2=A0 conservative notifier range expansion while it has not. Thi=
-s avoids
->> =C2=A0=C2=A0 the per-unmap page-table walk.
->>
->> =C2=A0 fs/hugetlbfs/inode.c=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
->> =C2=A0 include/linux/hugetlb.h | 43 ++++++++++++++++++++++++++++++++++++=
-+++++
->> =C2=A0 mm/hugetlb.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 | 13 ++++++++++---
->> =C2=A0 3 files changed, 54 insertions(+), 3 deletions(-)
->>
->> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
->> index 7611a8470ea26..78e27ce0a6f63 100644
->> --- a/fs/hugetlbfs/inode.c
->> +++ b/fs/hugetlbfs/inode.c
->> @@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct=20
->> super_block *sb,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 simple_inode_init=
-_ts(inode);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info->resv_map =
-=3D resv_map;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 info->seals =3D F=
-_SEAL_SEAL;
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_init(i=
-node);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (mode & S_=
-IFMT) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default:
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 init_special_inode(inode, mode, dev);
->> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->> index 16c4c4caa126c..6b4f92b7f7ae4 100644
->> --- a/include/linux/hugetlb.h
->> +++ b/include/linux/hugetlb.h
->> @@ -12,6 +12,7 @@
->> =C2=A0 #include <linux/page_ref.h>
->> =C2=A0 #include <linux/list.h>
->> =C2=A0 #include <linux/kref.h>
->> +#include <linux/atomic.h>
->> =C2=A0 #include <linux/pgtable.h>
->> =C2=A0 #include <linux/gfp.h>
->> =C2=A0 #include <linux/userfaultfd_k.h>
->> @@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct inode vfs_inode;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct resv_map *resv_map;
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int seals;
->> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
->> +=C2=A0=C2=A0=C2=A0 atomic_t pmd_sharing_count;
->> +#endif
->> =C2=A0 };
->> =C2=A0 =C2=A0 static inline struct hugetlbfs_inode_info *HUGETLBFS_I(str=
-uct=20
->> inode *inode)
->> @@ -516,6 +520,45 @@ static inline struct hugetlbfs_inode_info=20
->> *HUGETLBFS_I(struct inode *inode)
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return container_of(inode, struct hugetlb=
-fs_inode_info,=20
->> vfs_inode);
->> =C2=A0 }
->> =C2=A0 +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
->> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
->> +{
->> +=C2=A0=C2=A0=C2=A0 atomic_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0=
-);
->> +}
->> +
->> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
->> +{
->> +=C2=A0=C2=A0=C2=A0 atomic_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
->> +}
->> +
->> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
->> +{
->> +=C2=A0=C2=A0=C2=A0 atomic_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
->> +}
->> +
->> +/*
->> + * A 32-bit counter can theoretically wrap, but doing so would require
->> + * billions of active PMD-sharing attachments to the same inode and=20
->> is not
->> + * expected in practice. Treat any non-zero value as active so a=20
->> wrapped
->> + * negative value still takes the conservative notifier range.
->> + */
->> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
->> +{
->> +=C2=A0=C2=A0=C2=A0 return atomic_read(&HUGETLBFS_I(inode)->pmd_sharing_=
-count) !=3D 0;
->
-> Testing for non zero covers the negative half of the cycle,
-> but the 2^32nd increment changes the value back to zero.
->
-> The inode-wide total is not bounded by PID_MAX_LIMIT because
-> one mm can have an attachment in every PUD-sized part of a
-> large mapping.=C2=A0 For example, a 4-level x86 mm has about
-> 131,000 user PUD slots.=C2=A0 Roughly 32,769 child mms can therefore
-> create more than 2^32 attachments by faulting one address in
-> each PUD of a single large inherited MAP_SHARED hugetlb VMA.
-> This also does not require one backing huge page per
-> attachment: huge_pte_alloc() installs or shares the PMD table
-> before hugetlb_no_page() attempts to obtain the huge page.
->
-> At the zero value, an unmap can take i_mmap_rwsem for write,
-> observe no active sharing, and issue only the original narrow
-> notifier.=C2=A0 Its subsequent __huge_pmd_unshare() can still
-> clear a PUD and decrement the counter from zero to -1, leaving
-> the rest of the PUD-sized invalidation unreported.
->
-> Could this use a 64-bit or saturating counter so an active
-> count can never be mistaken for zero?
->
-> Therefore, I recommend using atomic64_t.
->
-> Thanks,
-> Muchun
+>> I am not sure that is really the right place. That means we only poison free
+>> memory.
+> 
+> Right, and that is a real gap. A frame only reaches __free_pages_core()
+> if it is handed to the buddy allocator, so anything this kernel already
+> took from memblock -- the memmap itself, early page tables, percpu --
+> can be sitting on a recorded frame with nobody noticing.
+> 
+>> Shouldn't we poison as soon as we initialize the memmap, and check
+>> whether any memblock allocations ended up on that poisoned memory and bail out?
+> 
+
+Thanks for the history on this.
+
+> 
+> That is close to what I had until v2, where the bitmap was walked at EFI
+> parse time and every set unit was memblock_reserve()d:
+> 
+> 	for (off = 0; off < bitmap_size; off += PAGE_SIZE) {
+> 		...
+> 		for_each_set_bit(bit, map, nbits) {
+> 			u64 unit = off * BITS_PER_BYTE + bit;
+> 
+> 			memblock_reserve(phys_base + unit * unit_size, unit_size);
+> 			nr_units++;
+> 		}
+> 		...
+> 	}
+
+Yes, that what I have in mind.
+
+> 
+> Set the full v2 patch at
+> https://lore.kernel.org/all/20260821-hwpoison-kho-v2-6-5743791e48e6@debian.org/
+> 
+> Kiryl raised some concerns, such as x86 does not keep memblock past
+> boot,
+
+The memmap contains that information. If it's a scalability problem with
+thousands of hwpoisoned 2M ranges, don't try to keep kernels running on utterly
+broken systems, seriously.
+
+> and kexec picks placement from iomem_resource via
+> walk_system_ram_res(), which memblock_reserve() does not touch. 
+
+Where we could scan the memmap. If we find scalability problems with that they
+should be addressed there.
+
+> So the
+> frames stay out of buddy, but the next image can still be placed on
+> them, and since nothing sets PG_hwpoison none of the existing hwpoison
+> users see them either.
+
+Memblock knows which ranges were poisoned. It shouldn't hand these out, neither
+to memblock users or the buddy.
+
+And is it knows that these ranges are poisoned, it should be marking them as
+hwpoisoned when we initialize the memmap.
+
+Kiryl probably remembered the unaccepted-memory hammer and thought of hwpoison
+of being just another nail. It's not. hwpoison is a proper kernel infrastructure.
+
+> 
+> Most of the discussion happened here:
+> https://lore.kernel.org/all/aog_uH5fTsJzXjjx@thinkstation/
+> 
+> v3 then poisoned the frames from mm_core_init(), right after
+> memblock_free_all(), taking them back off buddy. 
+
+They should have never been exposed to the buddy.
+
+> That breaks with
+> CONFIG_DEFERRED_STRUCT_PAGE_INIT, where the struct pages above
+> first_deferred_pfn do not exist yet at that point, and Kiryl's other
+> point was that the shape was wrong regardless: flag the frame on its
+> first add to buddy, not after buddy is up.
+
+The flags should be set earlier and pages never even handed to the buddy.
+
+Handing out poisoned pages from one allocator to hide them from another
+allocator is stupid.
+
+> 
+> See the discussion at:
+> https://lore.kernel.org/all/apGbDOnPm5VXP5ez@thinkstation/
+> 
+> Which is how it ended up in __free_pages_core().
+>>>> From that point on, the memmap should be our reliable source of information.
+> 
+> Sure, is this approach better?
+> 
+>   - the bitmap is read as the struct pages are initialised, and the only
+>     thing it does there is SetPageHWPoison();
+> 
+>   - __free_pages_core() keeps the hook but tests PageHWPoison() instead
+>     of the table, so a recorded frame is still held back before it can
+>     enter buddy;
+> 
+>   - nothing else queries the table.
+
+Why should we give pages we know are poisoned to the buddy? And why should we
+let memblock hand out poisoned ranges?
+
+I'm sorry, it's all hacky.
+
+I see why we want a bitmap from kernel A to kernel B, but once the kernel is up
+we have established infrastrcture to identify poisoned pages.
+
+Just look at the mess in the patch here I replied to. Pairing bitmap scans with
+memmap scans ... hacky.
+
+> 
+> One caveat on "exactly once": if that means one pass at one point in
+> boot, it is what v3[1] did -- hwpoison_init_boot() from mm_core_init(),
+> right after memblock_free_all() -- and it does not work. With
+> CONFIG_DEFERRED_STRUCT_PAGE_INIT the struct pages above
+> first_deferred_pfn are not there yet at that point.
+> 
+> Link: https://lore.kernel.org/all/20260826-hwpoison-kho-v3-5-6f79c4b605bc@debian.org/
+> 
+> So I _think_ we want to do it once per frame, as that frame's struct
+> page comes up. __init_single_page() is the single function they all pass
+> through. Is __init_single_page() the right place to query the bitmap and
+> mark is as poisoned?
+
+That's what I originally had in mind, but I am not sure if it's the right time
+to query it.
+
+Assume we tell memblock about the poisoned ranges early and it would not hand
+them out.
+
+memblock_free_pages() would never get called in the first place.
+
+All pages would look like they are simply allocated by memblock.
+
+We'd have to traverse the poisoned ranges in memblock once to set the hwpoisoned
+bits.
+
+> 
+>> For this code here, just remember globally whether we hwpoisoned any page. If
+>> so, just walk the memmap. If not (the 99.9999% of all systems, no need to scan
+>> anything).
+> 
+> Yes, and the counter already exists: num_poisoned_pages and we can query
+> it. I am also planning to add something similar in the EFI table, like
+> an ->empty field, which will be cleared when a bit is set, avoiding
+> doing bitmap walk on the happy path (not a single poisoned page).
+> 
+> Anyway, range_hwpoison() short-circuits on it today,
+> 
+>       if (!size || !atomic_long_read(&num_poisoned_pages))
+>               return poison;
+> 
+> so memblk_nr_poison_init() can gate on the same thing and walk the
+> memmap, with no EFI call left in drivers/base/memory.c at all. That
+> disposes of the misleading name there too, which was where this
+> started.
+> 
+> Now, the half I am less sure about is checking whether a memblock
+> allocation landed on a recorded frame. Poisoning at memmap init cannot
+> prevent that -- the memmap is itself a memblock allocation, so the
+> struct pages do not exist while the early allocations are being made --
+> it can only detect it afterwards, as a pass over memblock.reserved
+> before memblock_free_all().
+> 
+> The alternative is to bring v2's memblock_reserve() back purely to keep
+> the early allocator off those frames, and still poison at memmap init
+> so the flag is there for everyone else. That gets both properties, at
+> the cost of frames that are Reserved and HWPoison and never in buddy,
+> which I have not thought through for unpoison.
 
 
-Thanks for the detailed explanation.
+Thanks for the history on this. I tried to summarize my thoughts above. I might
+be wrong.
 
-I did consider that such an extreme case could theoretically cause a
-problem, but I expected it to be practically unreachable. But since we
-can cover this corner case simply by using atomic64_t, that is definitely
-better.
+-- 
+Cheers,
 
-I will switch the counter to atomic64_t in v4 and drop the 32-bit wrap
-comment.
-
-Thanks,
-Zhe
-
->
->> +}
->> +#else
->> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
->> +
->> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
->> +
->> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
->> +
->> +static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
->> +{
->> +=C2=A0=C2=A0=C2=A0 return false;
->> +}
->> +#endif
->> +
->> =C2=A0 extern const struct vm_operations_struct hugetlb_vm_ops;
->> =C2=A0 struct file *hugetlb_file_setup(const char *name, size_t size,=20
->> vma_flags_t acct,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int creat_flags, int page_size_log);
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 4f6f58bf3db6c..cb27c06d1f7a7 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct=20
->> vm_area_struct *vma,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!vma->vm_file)=C2=A0=C2=A0=C2=A0 /* h=
-ugetlbfs_file_mmap error */
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->> =C2=A0 -=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_possible(vma, sta=
-rt, end);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlb_vma_lock_write(vma);
->> -=C2=A0=C2=A0=C2=A0 if (vma->vm_file)
->> +=C2=A0=C2=A0=C2=A0 if (vma->vm_file) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i_mmap_lock_write=
-(vma->vm_file->f_mapping);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (hugetlbfs_pmd_sharing_ac=
-tive(file_inode(vma->vm_file)))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adju=
-st_range_if_pmd_sharing_possible(vma, start, end);
->> +=C2=A0=C2=A0=C2=A0 }
->> =C2=A0 }
->> =C2=A0 =C2=A0 void __hugetlb_zap_end(struct vm_area_struct *vma,
->> @@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct=20
->> vm_area_struct *vma, unsigned long start,
->> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmu_notifier_range_init(&range, MM=
-U_NOTIFY_CLEAR, 0, vma->vm_mm,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 start, end);
->> -=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_possible(vma, &range.sta=
-rt,=20
->> &range.end);
->> +=C2=A0=C2=A0=C2=A0 i_mmap_assert_write_locked(vma->vm_file->f_mapping);
->> +=C2=A0=C2=A0=C2=A0 if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_=
-file)))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adjust_range_if_pmd_sharing_=
-possible(vma, &range.start,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 &range.end);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mmu_notifier_invalidate_range_start(&rang=
-e);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tlb_gather_mmu(&tlb, vma->vm_mm);
->> =C2=A0 @@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm,=
-=20
->> struct vm_area_struct *vma,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (pud_none(*pud)) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pud_populate(mm, =
-pud,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (pmd_t *)((unsigned long)spte & PAGE_MASK));
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_inc(fi=
-le_inode(vma->vm_file));
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mm_inc_nr_pmds(mm=
-);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ptdesc_pmd_pts_de=
-c(virt_to_ptdesc(spte));
->> @@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather=20
->> *tlb,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pud_clear(pud);
->> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tlb_unshare_pmd_ptdesc(tlb, virt_t=
-o_ptdesc(ptep), addr);
->> +=C2=A0=C2=A0=C2=A0 hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
->> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 mm_dec_nr_pmds(mm);
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return 1;
->
+David
 
