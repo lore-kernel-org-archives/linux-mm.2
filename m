@@ -4,105 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56548C98321
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 14:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48893C98321
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 14:56:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EB2B6B008A; Thu, 24 Sep 2026 10:48:59 -0400 (EDT)
+	id 434556B0088; Thu, 24 Sep 2026 10:56:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49BFE6B008C; Thu, 24 Sep 2026 10:48:59 -0400 (EDT)
+	id 40B936B0092; Thu, 24 Sep 2026 10:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38AD96B0092; Thu, 24 Sep 2026 10:48:59 -0400 (EDT)
+	id 321E26B0093; Thu, 24 Sep 2026 10:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 134F76B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:48:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 923B61603A2
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:58 +0000 (UTC)
-X-FDA: 85248937956.12.014E88E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B088F140014
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:56 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtMiur73;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AF4036B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 10:56:14 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F9E9A03F7
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:56:14 +0000 (UTC)
+X-FDA: 85248956268.14.A6B7CA8
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 35E931A0003
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:56:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y o5jOJr";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aMPccB4L;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790261336;
+	s=arc-20220608; t=1790261772;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Ef8wq2izULSXVId0JXzBJbDsipWW1k2VtR4xrhp74CU=;
-	b=YC5OGty9G3mMnOnIiTsOFW9hNxcutqUMbW2ZBkbCZXajY/j42vac9NLzcgVPZTsQxmMzk4
-	HDPPmnCYWRLC56aIhIfnntDJQrFL8y9qBDuCBMdhlnTUv6jd8bVY1YgLvqyewcJKCXVnHC
-	2F0SYasfT+I4UssBq9qtMRknsfzK1Ws=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790261336;
-	b=q/QtW/6Jfd+YPQ6UAJCqdN9aPYv637MRbTRiJyvfTN1MGQ0R3+C5Mxpbe6LZPFBc+OnQUD
-	n4JlqZRzEoWBNRNnBUuYY7BWLkddH4F2TG2RyRQNWy0Ts/K37A8oTKWvZ8C3gGpgabBDJ0
-	s3ZZkOQPXuyAOgQ0pqhFkAlpkYk+H78=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7Zf7UhNhsq+m5MHp88ue4Z8T5ykpaIrCSq+h+GNOPCQ=;
+	b=tM+kkF3LCmgLPy1kLqdPHYFIGFsdN+1uHezXs/kOjcwnVklB6bbUW366dyrTrFsnVNa/mp
+	qYA2w64wmQYD1uCYCjCp6ftZeM7iq4s+nBP5vuZUnOoo+VpZfL2rt+6v0Qn/oonYZNsVa+
+	ED3AFbjlp129Ngd6gItUGa+3uatHCFU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtMiur73;
-	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6B5541E59;
-	Thu, 24 Sep 2026 14:48:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EE21F000FF;
-	Thu, 24 Sep 2026 14:48:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790261335;
-	bh=Ef8wq2izULSXVId0JXzBJbDsipWW1k2VtR4xrhp74CU=;
-	h=From:Date:Subject:To:Cc;
-	b=CtMiur73rgdpsv7DLPuFaeMmrEkdTtqnye4sQnYnbVD0lufUeqnOCMmhTVmkDn5Y2
-	 EhLMHwljSI23Va+QQIaefZzjqO7lOMMj4p+48mv01J6wP7eQNrRwNyLMvz4O5PJyrm
-	 1OAWd+8qfDxbfOTG5G89ETVeUR4QCMg8EV0uTwjjJFpZInaZgQk2WPJZ7axwiVTvTw
-	 rO58q2zA2lziHgNKge4XLsHlkDz9XkjFkNK5P1nr7pabX6Jiv8vNNtHUc54tcpK/aD
-	 orfA91SjsKeZVl+qVaHH/xor0PJwbXYoAOpYcaX86thGF735KrV/xlQ73b6QRuOfFN
-	 UnkFRGCZEw0IA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 24 Sep 2026 15:48:24 +0100
-Subject: [PATCH] drivers/char/mem: mmap readonly MAP_SHARED-/dev/zero
- correctly
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="Y o5jOJr";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=aMPccB4L;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790261772;
+	b=YLKZMh/CuSv1OluBpIe6+y7e+l8s7LKElkGUMrvSys4Fn98qAvNadBWx2xn3te38/qwQiD
+	XI/zqGHRWPkDV+EzYfTPXDEtLJNPbmnxAIPMA5f9xQypoAOLWvwe4Siqvu16n82uJEsnSL
+	SLCK+9+7QLQu1UPxaidni8x2ZxET7RY=
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 915F97A00A2;
+	Thu, 24 Sep 2026 10:56:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 24 Sep 2026 10:56:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1790261770; x=
+	1790348170; bh=7Zf7UhNhsq+m5MHp88ue4Z8T5ykpaIrCSq+h+GNOPCQ=; b=Y
+	o5jOJr7HkYESWPD7VL4ga0L6PQnqODZFH3M8I1Ye3sZzOh+w6QkHYTKsrtvgeQ+M
+	TG2CadFM0R9nnSStChhahL7OsnnSlsAHTVNXUzMT7/gLNzbfvqCIZM77aTeHiE3b
+	YnmSLiuiQF16RT5c6WT8IPxT3XqfPP/nZiWSOfI/X0zS4zwcgFOQqPktNpGy1WrZ
+	O0qiOR/EoM9uScVdvTmsfhlZMCC1TsdeWAasv422xLoC4IjILYLknPSYjx5ml7kt
+	ay/4/M9rP0DG2o3A9qy8hnLPQc913Ae37rp+lMtk9JgLCjokHhTRlCrKfi1pQIol
+	Z9MVRL+8O+Taks4nnMFog==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790261770; x=1790348170; bh=7Zf7UhNhsq+m5MHp88ue4Z8T5ykpaIrCSq+
+	h+GNOPCQ=; b=aMPccB4LzKgv2Xl1CNxzJ73UiN5MKUgG/oEdnwiKYnX5zpJF2TG
+	mn4D4KVJDD4I0oKD0ssm5mVkC7rOg9JFJ0Xb9GNja2S6SSFhLDGCF5MOG2Rg7j4b
+	/cvXnk2SKsemTcRb0L4nKDAVoodVT0i5tz65LSx/dB7KPhD88Okej/7aCmY2B5YZ
+	y1xzAcD0X5aTTJPL1EAEQbLLHY0vL/jJTIjqJFZ+eoWRMFBkquJEz6Op4/pVHG6P
+	hXvI6mSgArLS7oThmhiS5Gwc7QjyYY21QBTjwqBltKyz/G1iWlpiJYAPm30fBdpK
+	Up4qJNtYm6aH7OKvuzAxSCNscxFg+O5+ryQ==
+X-ME-Sender: <xms:CTq1aqMj3BEof6H8wXpOcmnU5RgIQXLHncxJ-c8HBUg3x-xtZDGAWw>
+    <xme:CTq1amlZo-SECRR8BthPpV5zmDwOG8Tw_yHo9DrpDQ03elrnbSedxlhGSGp2f_hic
+    -Jgbz4G0XO8OhoE2wn9-MeQO1HFIT1dl2W2J0_bLfuXoE0nDUZBxxJ9RA>
+X-ME-Received: <xmr:CTq1aor55WVV1F4xbvZ5FDEsTqHWnovtamqVKzkfhdp690ho1iVkSDkFUJQ>
+X-ME-Proxy-Cause: dmFkZTEm121JmsM5WFX6TDLqpqwjAt7B+uos9puGugA7o1qqmXn88fL/H1ePvop0i/LXov
+    tPO5Pnpg8ogWRE+0d8EpdKh/RBdx0uQvC0VQz8189EvnP/wykjNIOc1B0SJFOlQ1PaU+I1
+    gjE9nHMd1cSXU6xngE0kLMDSZyBacVjLV82trwEaG/PnuK6kMM/do1fIDzvJmA5fw9nPfQ
+    AaUhBhZ3MAIwIcipCOw7vmFKav9t/s9TlH3hq/mfjrI6JK6lMVc3JbTHXQs6p6y3q6h338
+    U+OOVetaNL6J1uwACNrE1BxVgbkDqcdhOioMAQW7Aihn5Ovbn8Ozoekz6wRpUq1Halt6mt
+    q5lcgBomB966B7loBHPC1FVIe4WdBPkf71raIa94xKztjMOiDEkgVQT5/E7itPP+V7vR75
+    Mk9wbVCBUWhT0aJSy3N30xSkYyyMlXm1n6J8w+gS9Sgue2CEtlvvSNwCp1PdLOXHLA0EkB
+    uitFyJnSXrhX1GU082B5DMQ7WNc+NPiXn5+MqOgrZNUFEf09NwvlkNU2ryUHila/NRUYly
+    +qwSoNb5gEFgzPqLpq2WNiwhopg93ssgd0VkKBrq4fCguyD5JxNeIyrkCNocCxs407vLxH
+    USrxOFH31bvN6HfunPc0guB6RELJytiKi9n9Skre+6hY7J7EK0yAwV953B2g
+X-ME-Proxy: <xmx:CTq1ai4IfYpnICN3DRz00cedHKLxWpYDCdpZ0GUbR4VjFOrXfbAXcw>
+    <xmx:CTq1aqKH5cRSwQSmG4--GspL7Av_fuelDj1Gqedz6AQX4PdjEIXEEg>
+    <xmx:CTq1aunMfXY0yTA1O7moWbdamrt2Ipa65I4lFcldxIS26jxnwdUF9g>
+    <xmx:CTq1ah_gU3l04Crgfzd-keoASyegxIuNES11KRezM2No5GQIEGrebA>
+    <xmx:Cjq1avwcFPhORVd0Fvlf4EKrzNy-iiimWmbTJPDwhURH52l6Q7bh-Fx_>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 24 Sep 2026 10:56:08 -0400 (EDT)
+Date: Thu, 24 Sep 2026 15:56:07 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v3 09/12] mm/collapse: open-code collapse_single_pmd() in
+ its two callers
+Message-ID: <arU2L6CDg0FlC4yI@thinkstation>
+References: <20260916093145.4022188-1-kirill@shutemov.name>
+ <20260916093145.4022188-10-kirill@shutemov.name>
+ <0b421935-d83f-473b-a21a-e7f29f8585e3@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrDuggw3oVYqLkPmtAyUpExBb8
- e4NXX7weCdVuKHS3J3k2K1ayQ3DraO0xfwEmzaT9BL6SUZe7WDFzl94YUfUkl8frlt0KK+iY0j
- DPSQItcXb0fr//rFc1w9TrLi4bgAAAA==
-X-Change-ID: 20260924-fix-dev-zero-readonly-shared-f2d46c156ce2
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
- David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Lance Yang <lance.yang@linux.dev>, 
- syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2333; i=ljs@kernel.org;
- h=from:subject:message-id; bh=ZdGZct0TOO0xWQUR2P2vX192qB2uqrOpBR+IwqHzVOI=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK2WgSsy2CZtJHLbn3XcydmNrXLVp1K91cI/Z+15Jn/u
- T1zN06e3lHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJ7FjI8L9ont2CFR/arG9m
- bJIt+1KkI5pnbvWQ0Y5BKOPMK4+TKxUZ/rtuO/RQW/hPz5RX+/8/2H9Y1TRit0Kie3JVq+r8eaF
- hL9gA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b421935-d83f-473b-a21a-e7f29f8585e3@kernel.org>
+X-Stat-Signature: q38srixsexuxjopr5k5muyo8ushfq9ra
+X-Rspamd-Queue-Id: 35E931A0003
 X-Rspam-User: 
-X-Stat-Signature: b5gfui7d6c1fybzestftbkeaesihuik1
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B088F140014
-X-HE-Tag: 1790261336-835267
-X-HE-Meta: U2FsdGVkX1/GjxcQZRoNbXWpdRCfVtUXKZv/ubxsmATMi5A70K2cHB0b0ZOA9/IBouPFUKwvv4zWtvY0R1CCf0adZIljcAAh9iRjAZ19ZLWlzPUnkLoY//Zbguhz5UWZVvdLNPaGjSFhC7dGUxpdk8Nje4IBJrJfSKY9mF9iP3OnvWpNmoay1AqaccThaQFVcVoWEYRoPgdRpJUjNM5BSCDd52QYDWJd2JHlk9LOXmiqcX188rNW7zIDP598dJDY7x6st4iWkXX8YJPIlOSJ/xDlL61OnuTh3HUSxXcc19FpkxNiPYKJ0xH7R4Q/8M6SfW25bOxCYXPs6pYUMzup0mMRlvAMMymxz0dj0AJsRe3l050rbnyk9L0VuIuX0Ct6wyMVG9/WEGhtkYWkfq8LhuoLmagftfXHOAbBCGBft++Ve8tZcoAEhSKq0DeMO/McwU8t11VBx2bR1BqE17isaR//SqiXPrDRgaSKMWIbKRXoPHeYCqDUhi+Enwwnu0P77GgGj0gbyheQ5yiDc4QHWafYI8wiHlM3v+2xnzy4vHroDOAfrSK4yPFTLgYKG6ymIXhq/wzlmBL2dKNOREXSjqNUJPYu7JDxDN7U0Q8L6WBmTD2UX5RzclL61sFH20T+K7J8dzD6hGwx+LQ6M6YSjC8sUHsaohJCaUrsvnfO0i4Tpio7chYHi9TZ+4Y69ohBdWWvjicowKC++FJxY6ktoCagSdmBUbNwNu/hAqffSgA+Pf80GjuSXGw8aoX7C8e0boc0R2JuC/Mv/U0YvWJAua8+8rUbway8aPt21nGz3CGivYXBBRF7CqgLyqJ/pZKmyfuHLiXrQnPFSwPeXcYVCYbJS91FOLh9ZCxUlQvncmDxMLn2rbarApoFU/vxwcs23nJIDisQnqSzgi6KMMNtI5DpxsPz1JSfC5n27zOYCOVlU64X4H3rk0WnFg1U1WVNoxyVaPqkDuFjzZKhluq
- LUws+XgM
- Qifu/9FSyFWOi1CTFqILIZguEyH3NwAGd/ain7IEuZ8g6qnqsD+6t41c9vBA1/F5SbYv0ANaz28KsVKyouB/BgUnXvi1GZluKTnevl+quk3Zf2kkUydLktiCsSbMhnDrSSrcvjcSiASdb6FdxpyT9TeQMbtYJwkOrJYq9ECiNXBUA3r7DxwgG3fuibixM9F/2kd7gPPWptk1SD9wbcU80OhmisuqFjcN5+WdQuz4Gnwx5xX/T3bqGjphG3LdHYM104BPlP8cLq0kAPF/WRpHzLXPg0HpwI9yywiX0ovhcd4MVRblZlaKA2NSEP0PfWBexJcS9XiXrTeYyfMhhCA0JLyjSL8vbium43jxaBxaXDCS3yY1622YUtex1B6qVYgL3cV/zclHkY80qf8QsCtrLgkvrVpq4LkhtnZrpMr/ffGkd3K+shLgRwIyUaFrgojGABd6J11YXqWky9BK7lk7TgTpFyhEo8FYPLKP4UqynQRp7n3l1CcFrkwROtWR1ay3qIHQ0
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790261772-544796
+X-HE-Meta: U2FsdGVkX1/DlA6wJiFTZIf57IkUi0mePQlQRJtMjG3C8VQRvQOaUIvJvOUXzaDQhGlDAkgmApzE8WQ6ohz0xUquHVxIwLdjEhYTGcddUQmTUZJF0q0Mx1c+kTUxdaYHczVEUgVV1jX3KnPNJ7Svg+L/scRacbegHoGT0UuEn/5b9WGe7QHMMDIZW7MwyiphNhrH9Yumtze36emeTrx3G4j+HhDyyR/s0dLd90o+AIXwqQ4jeA5/Bb5zrtKQjQtR+0egd5YpFENbpjbWsHD+znGDigWtEqUckoNm54H+pfUQOzw7jBSvv8e/ZgBAyIdMe+RiCmTbTmuZvTTjoP60Or0YuwoymWssrdQQLGVrsoTstySGvVkFeIrzlA+njEkcxOoEc6484YXwhGZsPCtNUiylEfDwlXDxUX0YcJCVEf5zYSbGBCbS9frscqA4GEBrnsHqeMXKms0I2ZumUp0LC5ewbovoIxzcBUN50bPmXVT6hDNApFu1inkSBD2rGmHR3NHwsCujRAk3Zx6dR5WZBVDeGw75xsJ2trv17Ce89CXaVX7xPAMEQO3qLCLkpFoXzlmCkh68ZDFBB7A6hNoLAJwWOPga2MdKxi8R3GsCu2mGSE+XhN5Gg68o0CLdST91dOkcCvRTOjIVEOnWCqyuQW/8+wxbzMBqOLOB6sWg7Yqil/IB9B2+i/z70C9bHfaJU1/ZMCInj2Qg1fWogMgnVAOLvOTXMkNqgn9EalxTpO0UIsoeAb1NdDtVAWH72/62x/lGaigw9PFne30/EktHyujuiH2OxFHTRJdSme5wHcTGjK2Q02lCuwbKW6M/fmc4t3/5ZAzm02DMi8jgO8+ouC2Ms55zft9D1ecZntV0H2aEi5/aaHUg1GH0is4P/G7DX1ok6g6PUyXwYADW0ZuSRHEzevFYJ7AhXaZxK68DlN/LgNgYiRUh8XmYzsSrymganXsI4IBvHoTzOeyzyN8
+ bvX+UUMa
+ 0hQHzlApk1FU0TWoby89jcHkxs0wV/0HZaZhtu3ndPR05jjOLsqrSFjm7ldmeBf+p9ejgu6Xyj3UNSHkcv5hOROBVzR5q1Ku5kikRLV+gGrrRmWb9njsVkAkoZwoDFiduov2nhy5HZz9Kgvtr9VJioy7tVbuGvSV9VhE1BIoAC69wYxq1Tv/FqTgCGVcfVsxBTXer5J6a5u+90EUoVzhzI5UgYkjBhFvcF8AERQcjGedE9j6STFLqvksLhEJfvXUUI9at4SImPC+NwdQj8IwsGf6CByayXGZ6GCysMni1ESKgjdbQk1csTXhPR/XxPqYWnJgUETHDh1QTxGPSh+fmdE7xYJL55vPOP8kPFVBi0JS1I9Xqf2YQlenhFr/HCp0jLPNTn8y9Vbdafgb608WUaHkSZXgEz8+fJxjIOgAUsy3LktN8SGunnapB9qsZwdRUgadATvMDj62vfidZ/vmw+oTn/8vDFK+Nl6kAQeSkQHJLWmaBKm2bJq//Y6MgTTRDRvo8f7LNaP1+HQA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,65 +136,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rather surprisingly, opening /dev/zero read-only then mmap()'ing it
-MAP_SHARED gets you true anonymous memory (albeit in a VMA with
-non-NULL vma->vm_file).
+On Wed, Sep 23, 2026 at 03:08:55PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/16/26 11:31, Kiryl Shutsemau wrote:
+> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > 
+> > collapse_scan_pmd() and collapse_run_pmd() each have a clear locking
+> > contract.  The scan is called with mmap_lock held for reading and returns
+> > with it still held.  The collapse is called without it.
+> > 
+> > collapse_single_pmd() kept that boundary inside itself.  It dropped the
+> > lock on some paths and not others, and reported which by way of a bool its
+> > callers had to carry along and then act on.
+> > 
+> > Open-code it in the two callers.  Each scans under the lock it already
+> > holds and, when the scan found work, gives the lock up before running the
+> > collapse.
+> > khugepaged's lock_dropped and madvise_collapse()'s mmap_unlocked both go:
+> > the code dropping the lock is now the code that wanted to know.
+> > 
+> > khugepaged's walk carries on to the next table while the scan keeps
+> > refusing, and ends once a collapse has taken the lock from under it.
+> > madvise_collapse() re-finds its VMA after a collapse, which it did before,
+> > and now uses a NULL vma to say that it has to.  It still reports the drop
+> > to its own caller, from the line that does it.
+> > 
+> > The lock is given up and taken again at the same points as before.  No
+> > functional change.
+> > 
+> 
+> I'm not sure I see the benefit. The code in the previous collapse_single_pmd()
+> callers certainly gets more messy?
+> 
+> Is there some other patches in this series that depend on it or what's the
+> motivation?
 
-This is a by-product of MAP_PRIVATE-/dev/zero being how anonymous memory
-was mapped in Linux's distant past.
+The locking. Scan and run have different locking expectations.
 
-It happens because mmap_zero_prepare() gates on VMA_SHARED_BIT and when
-mapping a read-only file MAP_SHARED, do_mmap() clears VMA_SHARED_BIT and
-VMA_MAYWRITE_BIT.
+I tried to explain it multiple times. Probably not well enough.
+Let me reiterate.
 
-The gating is incorrect - the (poorly named) VMA_MAYSHARE_BIT flag exists
-explicitly to tell you if something was originally mapped MAP_SHARED.
+The scan reads a PTE table under mmap_lock, fails often, and does not
+drop the lock to move on to the next table.
 
-So the fix is simple - gate on this instead.
+The collapse allocates, may sleep in writeback and takes mmap_lock for
+write itself, so the lock inherited from the scan is no good to it.
 
-This isn't exactly a common use case, but it's unexpected behaviour which
-now causes an assert if CONFIG_DEBUG_VM is set.
+collapse_single_pmd() hid that boundary inside one call. It dropped the
+lock somewhere in the middle, on some paths and not others, and
+lock_dropped was the only way for the caller to find out.
 
-While this bug has existed since the dawn of time for linux (or at least
-since 2.6.12), it hasn't caused issues in the past, so while it's incorrect
-behaviour, it doesn't seem necessary to backport that far.
+With the two calls each has one rule: the scan runs in the caller's
+locking context and never touches the lock, the run is called unlocked
+and takes what it needs.
 
-The mapping is now accounted at mmap time and can fail with -ENOMEM under
-strict overcommit, and read faults allocate folios. However this is normal
-behaviour for a read-only shmem mapping.
+There is nothing left to report, so lock_dropped and mmap_unlocked go.
+It is the same move as Nico's da98790891a4 ("require collapse_huge_page
+to enter/exit with the lock dropped"), one level up.
 
-Commit 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE
-file-backed anon folios") is the first patch at which the debug assert
-fires, so target that instead.
+It also makes moving the scan to per-VMA locking trivial: the caller
+owns the lock and the engine never sees it. I said as much in reply to
+your note on v2:
 
-Fixes: 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE file-backed anon folios")
-Reported-by: syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/6ab4ae75.80e1c6cc.1e8e5f.000d.GAE@google.com/
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- drivers/char/mem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  https://lore.kernel.org/all/aqQf9hSy0iNjnL6t@thinkstation/
 
-diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-index 63253d1de5d7..5b93c92c2cf1 100644
---- a/drivers/char/mem.c
-+++ b/drivers/char/mem.c
-@@ -503,7 +503,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
- #ifndef CONFIG_MMU
- 	return -ENOSYS;
- #endif
--	if (vma_desc_test(desc, VMA_SHARED_BIT))
-+	if (vma_desc_test(desc, VMA_MAYSHARE_BIT))
- 		return shmem_zero_setup_desc(desc);
- 
- 	/*
+Patch 12 depends on it, since madvise.c gets the two calls and their
+lock rules rather than a bool.
 
----
-base-commit: 62f4c998b297cf233997a2b4cd6fc2d2df0319c9
-change-id: 20260924-fix-dev-zero-readonly-shared-f2d46c156ce2
+On messier: what the callers gained is an mmap_read_unlock() where they
+decide to run, and what they lost is a bool telling them whether
+somebody else had dropped their lock. Each caller now takes and drops
+its own lock and knows it, and the engine never touches a lock it did
+not take.
 
-Best regards,
+That is more lines at the call site and a simpler locking rules.
+
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
