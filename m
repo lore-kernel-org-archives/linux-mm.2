@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 402A6C98318
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:12:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5249C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 16:19:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 003FC6B008A; Thu, 24 Sep 2026 12:12:58 -0400 (EDT)
+	id 42E776B0088; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECF686B008C; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
+	id 3DF476B008A; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D72B56B0092; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
+	id 2CE056B008C; Thu, 24 Sep 2026 12:19:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ABB066B008A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:12:57 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5F0AF160432
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:12:56 +0000 (UTC)
-X-FDA: 85249149552.30.076FC82
-Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DE51CA000C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:12:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vvuyppw0;
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EEE2A6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 12:19:28 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7490EC0428
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:19:28 +0000 (UTC)
+X-FDA: 85249166016.24.A5F884E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CCB0F140006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:19:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdniQZtX;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790266374;
+	s=arc-20220608; t=1790266766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9KOuD1e2N9vK51vFGoG009Qk6qgMITkvgNwXFVPFeY=;
-	b=DqkrtQXqvfNcelT8JQuJPtwhdVx/bunZNo8fGpShexUNWyyqyX78xb3ETDf8ya2g5ulxjq
-	+UrCKmGR4pmvIrKDyUCOm9ymFIrBKdE+Vp7XwOY+4ER6nH4X0tlFfcXK/Wv5fruk216EcH
-	hre9eVrylbOdstCfZrZLteBk1YwhM90=
+	bh=r66646FaaMJmMMJtghlI/Jm1UKe8pCt6tSOa0dL7Cmc=;
+	b=viOivlWappreBFq5EPPUHqhc7AGYJhYtD+Q8ZwfdRKxeM/5ursuGQXRRalN0l6zMaGM6PE
+	1sWq95hHRVU/OKbLb0DQToVR0TWj8K5Pm1TnP5PQlM2O6BV5F0OpDVEaKu8Gtf0hszZKU2
+	tdVb4WheN59AfSPkkewvvjYNSsquKFo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790266374;
-	b=xy4112BaOpBUd6NQjGL0mkudY/567lYv13C/HAhoPgdaUc8aXDn+F9WQu9BV0Xrz4V7XZu
-	OnKjF47SNcUuTP/+/G8ce8ttADltg9Pn4mnxrmszVSTXXJb1EoiPe9F92IIsA/6/jWEmBZ
-	GpzMhNI68Tz0TvTF0shQLnW9kaRmUKY=
+	t=1790266766;
+	b=0zJoIDJbfg0O5VtIgygC8mzpmUOyVUJ8FpyPMy/yfROTb1b3YXUKXJ7jo/4hNJZhm+F9g3
+	n4cBgocHpRBdFK4pWuxOm5e9woAq0G7TovPSRDSXHPUK6WnO9/92hVIdp4GKYD4rzJ5Ipk
+	jaUhXLKy9OKn1hjxilhBFSUfiT23eYk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vvuyppw0;
-	spf=pass (imf25.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1ohFjSCIUwpH5qBdu4MdlkXa39XLJc1SPyL+HjcbYJw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790266371; v=1; x=1790871171;
- b=vvuyppw0Z2r0+Rq8/SGGRepA0ks9dB6StSfiBceiUGvawrL0E1Nx+BW222xWQ8Vod/E2OhdO
- AOIufS4fmNtDB3O272S9QoLdcic7AVc5A79YYpO/y3+9CPY85/o1HdtLeFcqev0J0xJjlG2fpJG
- efzA09dt6K09VdcF+TImFDJo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 87c44c435beead6e;
-	Thu, 24 Sep 2026 16:12:51 +0000
-X-Mizu-Trace-ID: 87c44c435beead6e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0f5d22fd-24f2-4235-92f5-3dc065e0f153@linux.dev>
-Date: Thu, 24 Sep 2026 17:12:46 +0100
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LdniQZtX;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 21DF1601DE;
+	Thu, 24 Sep 2026 16:19:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24CB1F000FF;
+	Thu, 24 Sep 2026 16:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790266765;
+	bh=r66646FaaMJmMMJtghlI/Jm1UKe8pCt6tSOa0dL7Cmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=LdniQZtX4VayI3layjWdH4eFwyIF4H2Bq/vkmWjcfnkWIAwhEABQuq80dlBDeCe9n
+	 VSFQnk+R5ZEvRXfbMH9Diul7TU7qquNPg9rZizuO7XkXLQ2VOYpL8o2m6xzzujwoOd
+	 jemxUJFqOVj8o9Yz+fG7IqtthMIkmcjgmFXc164DQE/77DySgEnq+H9IKUcHj1CgEC
+	 1bJEPf0Sfjj6L/l4EyU1/EM2tCrRA5ERREOjE+1O92aH4amkcecW56ODAMlKoPpi1j
+	 dArMrpCMbNZF74xPxGBNWOFoLwdCcDkSDQKWepXEif42nqcvbgimieEl1boZFJn2H0
+	 c5c1WvpdiU9aQ==
+Date: Thu, 24 Sep 2026 19:19:17 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Steven Rostedt <rostedt@goodmis.org>, x86@kernel.org,
+	linux-mm@kvack.org, regressions@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: don't schedule deferred kernel page table freeing
+ while booting
+Message-ID: <arVNhTkI3kesfRs0@kernel.org>
+References: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 10/29] mm: make PMD migration-entry splitting explicit
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-11-usama.arif@linux.dev>
- <a8ff997a-2d09-44f4-85c3-322927f75d1d@kernel.org>
-Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <a8ff997a-2d09-44f4-85c3-322927f75d1d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924092307.22813-1-mikhail.v.gavrilov@gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CCB0F140006
+X-Stat-Signature: 1iu9wjoxwtxpuwrgdd3tpzgr5ckzf5jd
 X-Rspam-User: 
-X-Stat-Signature: 1u8zibrr8prbt6z1r54x8saf1aopw3yx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DE51CA000C
-X-HE-Tag: 1790266373-799465
-X-HE-Meta: U2FsdGVkX18fEncV2PXv2QSCMYUWyJn7OiQDJDeY/JJBNPWx3qfimljvfWCRt3LpNw8deWtb3dDdl3TTK1bjMCkbm4jGlzao1Km8yWLcWsokX/D8/kOwQ4pv+kbKqiXY4R7+tHyHBP3vtqGwoH8ulidrD9886miqFg3BrqMKobN8UCnJuW5IBsza3GCWB2wvC+Y0h8oNDgq3FLbrQzKHKVZMQ96R6wxa4i4e8qyRu1bwVU5/cmIo4lk7b4o0POnso0KrljrbF1gQ1TS7rdQ1Tg+ygLYJ+SJb/IKX+OzoqrhgiqoTBVIh8EOsQtrhQ8anBqB+YvS0U7l7V/r7vlTuu0Ja9ISsOxlse2LOTYTvi+mSuCGHUvb5qyuQRsMa4LbUXV2F02g6xw/mz+EswDLoyXgrPv3GzAGwWopY+5yjuOejs63W04ZJy3m8d9sopaAiuum620KSwhYPo7a2RljGtIoguZtPbbHQuVF7/wBs1yie580mxW0W+6o6nPH7xnlOuh/4ih9DZXy+s+EOIAOoIPo9MOB723kR87KmStL1eFQaX4VQ8Osq/FcPJcRJelVSy/RhOgVwSVwIPvbDt5indj++NaOmqWc4cX2VEQJrtFOiXLYBK4tOYNSlOU+lyceTzmjGg/MIENUsNPTbKq+7hYjyX49+U+B5hvRARsw5qP9Y9vgVhOFj2OxUQsn5XbCdfyciq14MiArDc7HiSPO4L3+gXt5V4pkVeQ6hHIGaAEBg3qabkDDtpxgjARWausmQMdIwNrQ6u1v4D1/CsYaHON/u3Qpo0YZW162BmhBfNAQlUcfB3PJDcRJ3fTHX4+RPARiuA/XJTKKG8KzC3WNM5FpvPh9MusOmBecRkCXDIxCteBlxTpBCFdXMJUNcdt2Jy1pUUCRb65R5dcLff/68Ua9qj+gKjNUr8bsO3GWxcFfM1KQQOXBtWUSeFxcV/oGlpMW/AwOampWT3/O6OLq
- P+LpkjdX
- QiwhVfuoci1PhmGXRyRdbCweUCb/y9U4uK6stBk8+OTL0p7I3jefUGP8TRW8U5z8xlOhRQ18xnBtLkgYTn0UFmjLRpVahb3gNa3XwmWPa451qYRmoaxRbpfpowJNgMuMjn9JcHU0iUMlKFKiKfR342x9QrMcXf1jWBriYf48TUprTPMdqpfPrPzU99pHfFngU3hETSYI1PQ8XwyVj4PLawZv7MJiU/WbE1ZItFoCkuenVOJccifd51JaeQ377Ae9TVAgUw4hWubMAY3KZ/etDxorhgg==
+X-HE-Tag: 1790266766-951262
+X-HE-Meta: U2FsdGVkX1+TDWee9hL4Xgf70aCE1Mi9SzGqaqo/J7QbN6cqrtbK01Gqgk+QDBjTVxuvg8kXzxE3Ery0agT9vugiR3ocamC3tCThEqIEk7jHcZHPv1G4NI7ThKy0eBYF9DbMTWFxY9isozQQI+MyRkatmdAjsTeUZg4wVDisO7UI3gZFpj0OG/v2EJ+QUW1PwX5fem5WuNxQTb6V9VZEq6A6hEm728tRSBBQKl1NsCX/wA9NRdNIqlw/uwWU2cXjgkUh8CrWtmxWUDGfGIW7VJKf9kXMBEw33vbYjVAXzLrC4b3yOWaARlMw/3KZuJMBnpara7IRPOkyfrgIGmAZL9hypXF3QaZDWbuV3NWmpLigpb+q7rjYOJ6nxAGkKprlf5oB7yGH8yw2GJ3kum4eIgMOLNcHGNvIuTIOn0jxZ6HIwrBIfbx9h1gUgBftF7aJUEPeyPeYJwsTOqHlwQ0jrTBNbOVhpx8we5s7ltiAfZSo9At3CqlSFNruTmdK6YbtN/4qbsO32XiRTPVBnsQWMmb80yRiNJ/0C+PFibqEAoF/8cBB26Iwr90EyHVIYVCwF0iHRAajnTZ9GsiOwtSNAuDXOxXbLGX1KFzOIIaEcmSHgzx+0fMrtgQcORFRPaUU9KqY4rYiKKcR0B9CsAmywrSixVjZPs3e6jMzf7XIg4l6W2A6aTpkxdRQ9DKne2TQNOQpCRZErI3dE95j4IjJmjOqROtrOnleziKOfL7DwndA2JHFB/XBMmgKD2X9lit3FSLwn9fSxLruPlMisO7cTwRCfPEPoU+PsiG3IilrSDmqHhpRrod0NaRYqRySnBGAsQKtU6VUxUcVooS+SAzea1/c9h5MRA2tEO7lYZ+zCl/Hu0ZZST/2hQBRZl/WXx0A1981nlaeUFHR4tro1Ci+3j991Nl2gojLEETPKn+YepMKVokIsouyiShhvPff34Xvy0nvTZxdsKHqpdzvfyS
+ uIX7AZjP
+ SqHvEr5aegXM1SA3TvJmCAD8Fjd69FGre/6Mut/3Cj0hoohDsfA7xiMHPBqtm0eTJQFhCZwrdjGpylTjOLK3E1G3UuvuDcCSFmTamOartKkANXmi9bFHDa7xNAAcocQWd/qpauEZMZJJhvygaEBeaie9Whwbunf3y85hEbCp5+keSDWjmzGAkktJS7/CvFy+2o3Igh/FsQ3q6Z0za+JKEcVN0hnkgMb91DC3z1H8ji0gh4KlaIRzukHD7xJ04HjClq/wfmDSxXU63zLGTVGB8C8CqrmlgFCe0VyzLBXhdf6lQsWhkm9BSQup1kH7ekRgxYWErcj4B38nkhczRywVxGjjlhJ0XOJdqNn8oSnHjoQ/RdfOYvIdNUXgU1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,74 +103,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 24, 2026 at 02:23:07PM +0500, Mikhail Gavrilov wrote:
+> Booting with a boot-time function tracer and a filter, for example
+> 
+>   ftrace=function ftrace_filter=pud_free_pmd_page
+> 
+> panics on 7.3-rc4 as soon as the tracer starts:
+> 
+>   [   23.531178] Starting tracer 'function'
+>   [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
+>   [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
+>   [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
+>   [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
+>   [   25.981629] Call Trace:
+>   [   26.125727]  <TASK>
+>   [   26.413912]  ? pagetable_free_kernel+0x20/0x120
+>   [   26.990283]  queue_work_on+0x97/0xf0
+>   [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
+>   [   27.566662]  cpa_flush+0x394/0x620
+>   [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
+>   [   29.151729]  set_memory_rox+0xa2/0xf0
+>   [   29.584018]  create_trampoline+0x431/0x6f0
+>   ...
+>   [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
+> 
+> The boot-time tracer is started from early_trace_init(), which runs
+> before workqueue_init_early().  Making its trampoline read-only splits a
+> large page, and CPA collapses it again right away.  The split table has
+> been a kernel page table since commit 9e4a3ec3411b
+> ("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
+> collapse frees it through pagetable_free_kernel(), which queues work on
+> system_percpu_wq - still NULL at that point.  That commit is correct in
+> itself; it only lets CPA reach pagetable_free_kernel() before the
+> workqueue that function relies on exists.
+> 
+> Keep putting the table on the list, but don't schedule the work while
+> the system is still booting.  The next kernel page table freed after
+> boot schedules it, and the work then frees the early table too, after
+> the same IOMMU flush as any other.  If no kernel page table is freed
+> after boot, the ones freed during boot stay on the list.
+> 
+> Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Link: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
+> ---
+> v2:
+>  - Keep the table on the list and only skip scheduling the work while
+>    booting, instead of freeing it directly (David Hildenbrand)
+>  - Say that 9e4a3ec3411b is correct in itself and only exposes the
+>    problem (Lorenzo Stoakes)
+> v1: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
+> 
+> Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX, lockdep and KASAN
+> enabled, on 7.3-rc4 (fe2ec83746e5) with the same unrelated local
+> changes as noted for v1, booting with
+> 
+>   ftrace=function ftrace_filter=pud_free_pmd_page,pagetable_free_kernel,kernel_pgtable_work_func
+> 
+> The boot that panicked without the fix completes.  The table freed
+> while the tracer installs itself does not show up in the trace, since
+> the tracer is not live yet at that point, but the first kernel page
+> table freed after boot does: systemd-modules-load freeing one from
+> __cpa_collapse_large_pages() schedules the work, and
+> kernel_pgtable_work_func() runs 0.8 ms later and drains the list.  From
+> then on every pagetable_free_kernel() in the trace (660 entries, none
+> lost) is followed by a work run within a few milliseconds.  So on this
+> box the early tables wait until the first module is loaded, and no
+> separate drain is needed.
+> 
+>  mm/pgtable-generic.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index b91b1a98029c..f7f504f57914 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -444,6 +444,12 @@ void pagetable_free_kernel(struct ptdesc *pt)
+>  	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+>  	spin_unlock(&kernel_pgtable_work.lock);
+>  
+> -	schedule_work(&kernel_pgtable_work.work);
+> +	/*
+> +	 * The workqueue may not exist yet while the system is booting.
+> +	 * The next kernel page table freed after boot schedules the work,
+> +	 * which then frees this one as well.
+> +	 */
+> +	if (system_state != SYSTEM_BOOTING)
+> +		schedule_work(&kernel_pgtable_work.work);
 
+Maybe we'll just skip collapse on boot?
 
-On 23/09/2026 12:04, David Hildenbrand (Arm) wrote:
-> Having another look ...
-> 
-> 
->> +
->> +/*
->> + * Split a present PMD into PTE migration entries, for the rmap migration
->> + * walker.  
-> 
-> I assume pmd_is_device_private_entry() is also allowed?
-> 
-> "present or device-private PMDs"
+>  }
+>  #endif
+> -- 
+> 2.55.0
 > 
 
-Yes, ack.
-
-> 
->> Like split_huge_pmd_locked(), the caller must hold the PMD lock and
->> + * must already be inside an mmu_notifier invalidate range.
->> + */
->> +void split_pmd_to_migration_entries(struct vm_area_struct *vma,
->> +				    unsigned long address, pmd_t *pmd)
->> +{
->> +	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
->> +	if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
-> 
-> pmd_is_valid_softleaf() would include migration entries and swap entries?
-> 
-> I'd assume that try_to_migrate_one() will never call us with something that is
-> not a present or device-private PMD?
-> 
-> Shouldn't we instead just
-> 
-> 
-> VM_WARN_ON_ONCE(!pmd_present(*pmd) && !pmd_is_device_private_entry(*pmd));
-> __split_huge_pmd_locked(vma, pmd, address, true);
-> 
-> And not offer some weird fallback where we silently don't split?
-
-
-Yes, that sounds much better. The function right now is:
-
-
-/**
- * split_pmd_to_migration_entries() - Split a present or device private PMD into
- * PTE migration entries.
- * @vma: The VMA containing the PMD.
- * @address: The PMD-aligned address the PMD maps.
- * @pmd: A pointer to the leaf PMD entry.
- *
- * For the rmap migration walker, which only ever hands back those two entry
- * types.  Like split_huge_pmd_locked(), the caller must hold the PMD lock and
- * must already be inside an mmu_notifier invalidate range.
- */
-void split_pmd_to_migration_entries(struct vm_area_struct *vma,
-		unsigned long address, pmd_t *pmd)
-{
-	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
-	VM_WARN_ON_ONCE(!pmd_present(*pmd) &&
-			!pmd_is_device_private_entry(*pmd));
-	__split_huge_pmd_locked(vma, pmd, address, true);
-}
-
-> 
->> +		__split_huge_pmd_locked(vma, pmd, address, true);
->>  }
-> 
-
+-- 
+Sincerely yours,
+Mike.
 
