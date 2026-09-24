@@ -4,82 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E62C98304
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 04:13:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA49C982FD
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 04:22:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB2C96B008C; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
+	id 253236B0088; Thu, 24 Sep 2026 00:22:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D64636B0098; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
+	id 22B066B008A; Thu, 24 Sep 2026 00:22:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7A2E6B0099; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
+	id 1675E6B008C; Thu, 24 Sep 2026 00:22:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A90936B008C
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:13:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 153A1401E1
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:13:05 +0000 (UTC)
-X-FDA: 85247335530.08.6B55004
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 103D7140004
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:13:01 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ZjqTNrHw;
-	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CD0696B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 00:22:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B3789120209
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:22:23 +0000 (UTC)
+X-FDA: 85247358966.17.0D7F63F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 89B0040005
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 04:22:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vcaCmMp8;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790223183;
+	s=arc-20220608; t=1790223742;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=iv81RNA485adQFvrL4+HZjzDjbdgSHwKqirIAdW4HY4=;
-	b=esJOe4LlvsMrr6/OL1e4DBTVuFzY5/Aly926i8jqm0oRI8tdRupjlAd7YdKQ8lzWTZni2G
-	gd9Gltcbz9Jgzo51tbcwB3AGai6dsVt1nMjewnnb1wWufFMGouakF2b6EYuOszj7EGeM1q
-	Hy0HYKEOf6n7zBGoWPcLcYGqbPjQmzI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=B+l2baNjads9ypsuvHYYts3WZDcQaL+ObhhWN33GAkg=;
+	b=a2kh/+Ys63iTk+zVX0C4+Ue+HREsL4P2Cwev8c9/97s0G4ai4fnTZZlSU0byck6Dgk2KkP
+	H/0afvCHAoiQuc5VVKk+o76SgxbRpN4U1GoK1eUSdXNL0cnl8+PatWO/BiS9IoQ0JK4a6v
+	PoTYDxv8ktWfqi4IJl1P6GC573f2xJI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=ZjqTNrHw;
-	spf=pass (imf23.hostedemail.com: domain of sh_def@163.com designates 117.135.210.2 as permitted sender) smtp.mailfrom=sh_def@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=vcaCmMp8;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790223183;
-	b=T7Yj2PZxFI5KGTIFz689DV7mJpE5sGK5ImPAyDsB7zwTQQ52fvLr3OIQR9xMGNQEdJ96Pr
-	NDyhyFAqoBKjtwerATZNo/g+o2849AG08vT7vdXSV3burQbGkmCPFxQcV1NtfXboSeQT/R
-	weG5ocbAY8jFuCWPu1iL8sZ+ikZV6TU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version:
-	Content-Type; bh=iv81RNA485adQFvrL4+HZjzDjbdgSHwKqirIAdW4HY4=;
-	b=ZjqTNrHwAlJ2M/cArk9hKPvbBufLBaJtptxYdQb7413DMPTmJwjJeoRfyEviU0
-	kuF3Wh4Sw1iOEGSb/5uIz6/8tK+l+S0QaDGZkwe9a8AsQovXL95HSAl3Oiif0x8N
-	r9T7e/mOzeJIIH7r3m4cch0AkYv/DJzJOUyYtiwsyQ3B8=
-Received: from localhost (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3X9Y0o7RqWqn_AQ--.41231S2;
-	Thu, 24 Sep 2026 12:12:37 +0800 (CST)
-From: Hui Su <sh_def@163.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>
-Cc: Hui Su <sh_def@163.com>, Balbir Singh <balbirs@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, Zi Yan <ziy@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v4] mm/migrate_device: consolidate compound folio handling
-Date: Thu, 24 Sep 2026 13:12:10 +0900
-Message-ID: <20260924041210.13d04b8be24495fc593665283d2e4453d449502f@163.com>
+	t=1790223742;
+	b=7y0amaw8abd5TeViva2ZnfUfWD1Hzf5TJBFwVUMjlCaDlaumPGuHHq3CkCWxYfFXJW5Lf1
+	huigZ5NSqK59Tvz2kufTWC3mMB6oIZrgLir6nb/11ljDV3jDutBS0Gx531DVPf0j3qw2t2
+	g3noBMIAhjhO39YoZ5+abo/EWsHPgyo=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 728BB152B;
+	Wed, 23 Sep 2026 21:22:16 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17AE03F632;
+	Wed, 23 Sep 2026 21:22:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790223739; bh=fUdSVAPf6JXOiBt1WWMuSzllWnjreq6oNfBQJVovxRA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vcaCmMp8KMgI7rlLS5ZdKK8H9cM1yzjrrGOEQJN1omkufGYnpJu1rXNXvkRmte5If
+	 JM82hP0WEX+At0U6W5yRcvzxzqF2hKPJV4EX7zarCcdCE2nIZPwkJ9WahHNcaiNPSB
+	 w0ABcm0ZfrX3w23T+UrHGy8IFaoNbLi2EBRYeZ8c=
+Date: Thu, 24 Sep 2026 09:52:15 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Linu Cherian <linu.cherian@arm.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH V2 4/4] arm64/mm: Use pgdp_get() for PGD accesses
+Message-ID: <6g6jx5mcpv3zkxqyysfyldn6zgc2m6vydjwnoz3balrdjre2pe@wdso3tebrjn3>
+References: <20260922061638.3967467-1-anshuman.khandual@arm.com>
+ <20260922061638.3967467-5-anshuman.khandual@arm.com>
+ <a2365246-53a4-41e6-a655-6813f913cc1f@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wD3X9Y0o7RqWqn_AQ--.41231S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3GFW3WFyDCF47Ww48uFWktFb_yoWxKFy3pF
-	40gasrJrZrWryjkr13Aa18Ar13urZ3Xa13GFZxGrn7uFZ8JFyfuw1Iq3Z5XFs8CrZ7XFyx
-	Zay7tFy7Z3WDXaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piWlk3UUUUU=
-X-CM-SenderInfo: xvkbvvri6rljoofrz/xtbC6ha9HWq0ozZl7AAA3e
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2365246-53a4-41e6-a655-6813f913cc1f@arm.com>
+X-Stat-Signature: 3uoyocx6jffa4xfh63jw767y56usjmht
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 103D7140004
-X-Stat-Signature: s1x5qayu5zjnikz6kggzxzzcfybk1htp
-X-HE-Tag: 1790223181-588161
-X-HE-Meta: U2FsdGVkX18PyvW/n9RfjTfvHSqYXZmMpaImON+pws6YHzpqt3XOTdQza4ffBW6omXh2WCgGmggAK8Y77tBJOhoTL/4uH2IECMOUAQIlMGLIEPesWlIQ0m1ipzmtwcg4rBPR2WxK37Sr+8zuDfezWHGtD5nsnTs7ASLnnBz1HuBWTpQVKDb+DhVOwq/FVkL6EkwgFQVd3Pe60L1xQIp7NMsIp6SxJUE+wZFasWtPzV7tKde6bJ5boJuSw9AF787+wAfWTjJ7UPGLQfmRscxSWrPkCyNg3YTxiBou2wsFzSLUDeT5VeT6gAbS3qWGsJq/TyM/N0ZWhc7Zy5XV782Nz/aZT1mWYAA5ux/puGLscr44X5NxSsvl8eRjmdzofT+jsc1IAehGbhnkXtxHyZWK4YizXQriGL12wE8+HnqbguwdB1IsQyVeEo6gSUMo6HXsChGL46aoEy0WkUzWOPAqkXa7tXIiOwsSX8AN60P1IkFbqRJeExsDiNtdsqV52swmBPoK8R2hVNm0Lir172Va0MQ+XewBBqEkljPFyN91ZWfoZRaB9Zarc6JyFPTfuZ23yozSa4uVhPpik1o8vlaP+Nkh6P+YmNkhTJ1jLdlEdhPUcHP0ON8JiqaVyxJ5CeOQsxcC2csY11HO3Pvp7QSEk6cHk1UZznwVi8IWwRStkM9DpxphowD9FNe0xp5s7/Y/ryf78RdSI6K2PnM/A8T24xdpPCDcwGhHMszZJPT/6V4svTqxOkSC7uuGJkKQmGmSQA9oNbigcoQ/IaFcKpbPntPLjaXO9cs1pGLQ+exmAu6GjKE4wV8atNw+HLIQQuD/cTurh2J+XrI1R1+WSuRpwZs35mT65ED83NMGhnegVvcYXbbvORc9HSSkiDrmrmiDZDMCctgxNVDMp6DVL5g5CVZujkhR2Wo3JSP9lU5hJbEw3cC9AiAOqjHjO0YRBem5wVLdB3tgBbY530lh+Zx
- MAzxS6ls
- mbXVvzhHtV4X/BERXtSgdUTDznEGiRuZ2ED2jlioLDz2WEO23YKe7Hn3wYZAXTWyEV/ErjXgg5GwvhtDvzJ3sAZp93QQl7QudiiJmQH/qkbsgWgKzs+b9WPfRHhi4gupkmZNoQtWkVs9p4gx165g/OjJuCqmMIh5JIC9B5UTutZyGyBdebEbR0A3Jzydlj9n36ezGTRzzn9RXCMI3VQ1ywW0J8A/xRRtKb91V4Lrv4jbX3Ll1MRIwLI0Kue0yHzaoLH/okyB0iqMwbHluK6bNIlKUapRKID+fxiNH8Xp/c67Zi2e5aO1Tq3Oh9hXl3WNNmZY3CFcuDQqRXrDnfGHyG0EU7rqaNukVBPPfkwhNLi2DJpr83Ar7fhXfopfoQ40Gk69c7Csd7iDtXuorqYN9SKQ2+jSJfzyH7JPWiflS72HfK472kmr6gKg5CEnGGKiugYb4ldm8SYfl1IHrNoEqr7fVV4AH9C8btPm19u4khIkIGKiBEFuEUxukYUpXgZk1ACMp
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 89B0040005
+X-HE-Tag: 1790223741-963743
+X-HE-Meta: U2FsdGVkX19HlrUSyp9yHWaxwiBdJFkXPU42rcgjrEo86qCsUgdK1QODaBbvzgXXhdbKEfEDbhEgeM9pwIV7ljDr3Z8jfHNZV90YKkHnJzEsTTUKsZRoF1icmwaTMHLKldmv24hElSn3syXP5+G+O/tkqwNSKnPCnVLcPc8B7es8kdA8npKxKCpkB6ETnb+huYI3umwpe5DxayH0+YV5YJAFYBtmLNM03kqqbYpnZpcAiMy0q78+/cb8y66f0wyLYdRGB7/FfQi6BMMFoUofcr6HdWOX9q85uSFBZbFsbif+YnxuZPSkr0tPviK9bjGp/IyZzvrfFCRz+SVX5bNaPpU87TPF3rHjimiUgRWs208A0KNVUECjF5u8mpvqEfQVmvznrsfBkgVS2hvmLKWvInifmvC4pPWGWFfkPFecsxnOLZ66AmqPjn/Oekj674ngJyNVTT9jHNhQ00In6U9k3OxxmdXmdE08O3KvNIz0ox/P4Gr3mN6iGgjVqxkIQ3raljqwCIB+PniM06A1QcYKPE8wfhCbc4dOh7jN7oai/EUzClaNwBhF7tsvvFebxiM+2BDbYt5szDYsz7oXPnSNkv9u9CSGFbsARgX3P6tKJW8kWix9hvR5OGuL0ooU8a4gQ3XaveYdxbNvw+LUgUiDYtCd4p48TmKSOlPUlnZhVH+ftwrMVC4p8WoasixnanRV++A21bTVwUBVw+iqEkZJWpiBeubnWwaoxCXiDhXR5+tiVlLhJRwuUY4VxaQN7Nc8R262rG1uS4xQFlIlFEcHsv8vA7vpZ70VDKlyvUaNr0DOe7FIFB/swIe4/VOFsvyzSmGMMJDa/6OffLT3twAZugyp2izqDzPWhLIBSQd5c9PBTVTjcj5/j1Y8A6CuG6RLICNpZkAAyzk4f7wwK80neuCuGUUWLraIvo9AF+T3rA6JTVMZoz4jfWF1TbBPj+NUgkAaM3N5LoU47izRLiD
+ OiXFnZG7
+ A6qlolkcToE0G//hiRi4qUhBpQyygwsh24+f4yf82wIjlFIu8gqUgcbmPrBR1SW3xzDYagd9BQcJIcEE8elNOW2y7CFZjdhhOt5o1+Q8MMOeOva4Pmwek1QXDe3uZBmdUx8jsfwzjie+I0IiCbZHyY2qmdZFD86oGeChXyA0ut5BikzPioc6OzpD7RCvmHt8BkVSLdT2B4CV7cLtrPZlVw3GVT1cRsebEYlPEV5xWbOz3s9WMzZe/8GmJgsq/3wEUmKpZxK0dspN7vdws5H5xsc7Dp5Sf9JkaGHFE8OPaFqCVoLyCZxBgY4qk62rrujPhFGwn/d1tZmjoOST+BqnWN1Bd2Bl/dx9EpMFvTItV5OKdnTGx8+3OQ/B0GpNwzuRfDdK+U28G5SVE2/iHxlcaQUDsRZ4nLuV5eYACXDiFjcge0aMt4z/MCqgF4OftZvSICIIkAe9VDllhSPp0FltiRfIi+v6OJH3///PMvg/n3f+IVEfUQ4tC9BLBfoSFPmv5tBa0U5P5jHjS1ZqvZ+632HeHqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,218 +93,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit dc41e961a269 ("mm/migrate_device: avoid out-of-bounds writes for
-compound folios") added handling for compound folios that do not fit in
-the remaining PFN array.
+On Wed, Sep 23, 2026 at 09:31:28AM +0100, Ryan Roberts wrote:
+> On 22/09/2026 07:16, Anshuman Khandual wrote:
+> > Replace READ_ONCE() with pgdp_get() for PGD accesses in preparation for
+> > supporting both D64 and D128 translation table formats.
+> > 
+> > READ_ONCE() cannot currently be used for 128-bit page table entries on
+> > arm64 because it does not provide the required 128-bit single-copy
+> > atomicity, causing builds to fail for accesses wider than 64 bits.
+> > 
+> > Although LDP/STP provide the required atomicity when FEAT_LSE is
+> > available (as required by FEAT_D128), extending READ_ONCE() to support
+> > 128-bit accesses is undesirable. READ_ONCE() is a general-purpose API,
+> > so doing so could encourage other 128-bit users that would either fail
+> > to build in configurations without D128 support or, if D128 becomes a
+> > runtime option, silently permit tearing on systems without the required
+> > hardware support.
+> > 
+> > Instead, standardize PGD accesses on the existing page-table helpers.
+> > These can be overridden on arm64 to provide 128-bit single-copy
+> > atomicity when required. No functional change intended.
+> 
+> I notice you have unconverted READ_ONCE(*pgdp) in:
+> 
+>  - p4d_offset_phys()
+>  - p4d_offset()
+> 
+> Is that intentional?
 
-migrate_device_range() and migrate_device_pfns() duplicate the logic for
-locking device PFNs, encoding compound folios, and handling this boundary
-condition.
+Platform overrride for p4dp_get() should solve the problem as well.
 
-A compound folio cannot be represented partially for migration. Use
-WARN_ON_ONCE() when one does not fit in the remaining PFN array, while
-retaining the defensive handling: release the current folio's lock and
-reference, clear the remaining entries, and stop collecting.
-
-Move the shared collection and encoding logic into a helper so both
-interfaces handle compound folios consistently. Keep the reference,
-lock, size lookup, and PFN encoding together so cleanup acts on the folio
-whose reference and lock were acquired. Also use memset() for compound
-folio tail entries instead of open-coding the clearing loop.
-
-If a PFN cannot be referenced or its folio cannot be locked, leave that
-source entry clear and continue at page granularity. Compound tail pages
-have a zero page->_refcount, so folio_get_nontail_page() cannot acquire
-them. They are therefore skipped one slot at a time. This preserves
-collection of later allocated pages in a device chunk containing free
-PFNs.
-
-Document that an encountered compound folio must fit entirely in the
-remaining range or PFN array.
-
-Link: https://lore.kernel.org/r/c99ca53a-73ef-4a0c-8738-eba1cc89bea2@kernel.org
-Link: https://lore.kernel.org/r/60634ab5-3fcc-42fb-8722-4ba6771acfda@kernel.org
-Suggested-by: David Hildenbrand <david@kernel.org>
-Signed-off-by: Hui Su <sh_def@163.com>
----
-Tested on x86_64 with KASAN:
-- 7/7 private-device HMM THP cases passed on the exact v4 tree.
-- Local KUnit validation covered success, get/trylock failure, and
-  truncated compound-folio paths.
-
-Changes in v4:
-- Fold migrate_device_pfn_lock() into migrate_device_collect_folio() so the
-  folio whose reference and lock are acquired is also used for size and
-  cleanup decisions.
-- When a PFN cannot be referenced or its folio cannot be locked, leave only
-  the current entry clear and continue at page granularity. Compound tails
-  have a zero page->_refcount, so folio_get_nontail_page() cannot acquire them.
-- Use WARN_ON_ONCE() with defensive cleanup when a compound folio does not
-  fit in the remaining array, as suggested by David Hildenbrand.
-- Document that a compound folio occupies consecutive page-granular entries
-  and must fit entirely in the remaining PFN array.
-
-Changes in v3:
-- Keep the source entry zero when migrate_device_pfn_lock() fails instead
-  of setting MIGRATE_PFN_COMPOUND, while still consuming and clearing all
-  slots belonging to the compound folio.
-- Use VM_WARN_ON_ONCE() for the truncated compound-folio invariant while
-  keeping defensive cleanup independent of CONFIG_DEBUG_VM, as suggested by
-  Balbir Singh.
-
-Changes in v2:
-- Fix the helper parameter indentation and keep the declaration to two
-  lines, as suggested by David Hildenbrand.
-
- mm/migrate_device.c | 92 +++++++++++++++++++++++----------------------
- 1 file changed, 48 insertions(+), 44 deletions(-)
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 009bfa8b212d..34d687882d85 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -1376,20 +1376,47 @@ void migrate_vma_finalize(struct migrate_vma *migrate)
- }
- EXPORT_SYMBOL(migrate_vma_finalize);
- 
--static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-+/*
-+ * Collect a device folio into the page-granular PFN array.
-+ *
-+ * Return the number of entries consumed. Return 1 with a clear source entry
-+ * if the current PFN cannot be referenced or locked. Return 0 if a compound
-+ * folio does not fit in the remaining array and collection should stop.
-+ */
-+static unsigned int migrate_device_collect_folio(unsigned long *src_pfn,
-+		unsigned long pfn, unsigned long remaining)
- {
- 	struct folio *folio;
-+	unsigned int nr;
-+
-+	*src_pfn = 0;
- 
- 	folio = folio_get_nontail_page(pfn_to_page(pfn));
- 	if (!folio)
--		return 0;
-+		return 1;
- 
- 	if (!folio_trylock(folio)) {
- 		folio_put(folio);
-+		return 1;
-+	}
-+
-+	nr = folio_nr_pages(folio);
-+
-+	if (WARN_ON_ONCE(nr > remaining)) {
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		memset(src_pfn, 0, remaining * sizeof(*src_pfn));
- 		return 0;
- 	}
- 
--	return migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-+	*src_pfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
-+
-+	if (nr > 1) {
-+		*src_pfn |= MIGRATE_PFN_COMPOUND;
-+		memset(src_pfn + 1, 0, (nr - 1) * sizeof(*src_pfn));
-+	}
-+
-+	return nr;
- }
- 
- /**
-@@ -1410,35 +1437,22 @@ static unsigned long migrate_device_pfn_lock(unsigned long pfn)
-  * migrating pages that aren't free before unmapping them. Drivers may then
-  * allocate destination pages and start copying data from the device to CPU
-  * memory before calling migrate_device_pages().
-+ *
-+ * A compound folio must fit entirely in the remaining range.
-  */
- int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- 			unsigned long npages)
- {
--	unsigned long i, j, pfn;
-+	unsigned long i, pfn;
- 
- 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
--		struct page *page = pfn_to_page(pfn);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		unsigned int nr;
- 
--		src_pfns[i] = migrate_device_pfn_lock(pfn);
--		nr = folio_nr_pages(folio);
--		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				folio_unlock(folio);
--				folio_put(folio);
--			}
--			memset(&src_pfns[i], 0,
--			       (npages - i) * sizeof(*src_pfns));
-+		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
-+		if (!nr)
- 			break;
--		}
--		if (nr > 1) {
--			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
--			for (j = 1; j < nr; j++)
--				src_pfns[i+j] = 0;
--			i += j - 1;
--			pfn += j - 1;
--		}
-+		i += nr - 1;
-+		pfn += nr - 1;
- 	}
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
-@@ -1454,33 +1468,23 @@ EXPORT_SYMBOL(migrate_device_range);
-  *
-  * Similar to migrate_device_range() but supports non-contiguous pre-populated
-  * array of device pages to migrate.
-+ *
-+ * Entries for different folios may be non-contiguous, but a compound folio
-+ * must occupy consecutive page-granular entries and fit entirely in the
-+ * remaining PFN array.
-  */
- int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- {
--	unsigned long i, j;
-+	unsigned long i;
- 
- 	for (i = 0; i < npages; i++) {
--		struct page *page = pfn_to_page(src_pfns[i]);
--		struct folio *folio = page_folio(page);
--		unsigned int nr = 1;
-+		unsigned long pfn = src_pfns[i];
-+		unsigned int nr;
- 
--		src_pfns[i] = migrate_device_pfn_lock(src_pfns[i]);
--		nr = folio_nr_pages(folio);
--		if (nr > npages - i) {
--			if (src_pfns[i] & MIGRATE_PFN_MIGRATE) {
--				folio_unlock(folio);
--				folio_put(folio);
--			}
--			memset(&src_pfns[i], 0,
--			       (npages - i) * sizeof(*src_pfns));
-+		nr = migrate_device_collect_folio(&src_pfns[i], pfn, npages - i);
-+		if (!nr)
- 			break;
--		}
--		if (nr > 1) {
--			src_pfns[i] |= MIGRATE_PFN_COMPOUND;
--			for (j = 1; j < nr; j++)
--				src_pfns[i+j] = 0;
--			i += j - 1;
--		}
-+		i += nr - 1;
- 	}
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
-
-base-commit: fe2ec83746e501645709761605c2464a44fd2929
--- 
-2.55.0
-
+> 
+> Thanks,
+> Ryan
+> 
+> 
+> > 
+> > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > Cc: Will Deacon <will@kernel.org>
+> > Cc: Ryan Roberts <ryan.roberts@arm.com>
+> > Cc: Mark Rutland <mark.rutland@arm.com>
+> > Cc: linux-arm-kernel@lists.infradead.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: kasan-dev@googlegroups.com
+> > Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> > ---
+> >  arch/arm64/mm/fault.c       | 2 +-
+> >  arch/arm64/mm/hugetlbpage.c | 2 +-
+> >  arch/arm64/mm/kasan_init.c  | 6 +++---
+> >  arch/arm64/mm/mmu.c         | 6 +++---
+> >  arch/arm64/mm/pageattr.c    | 2 +-
+> >  arch/arm64/mm/trans_pgd.c   | 4 ++--
+> >  6 files changed, 11 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+> > index a6afd8929a10..43f25418275a 100644
+> > --- a/arch/arm64/mm/fault.c
+> > +++ b/arch/arm64/mm/fault.c
+> > @@ -160,7 +160,7 @@ static void show_pte(unsigned long addr)
+> >  	guard(irqsave)();
+> >  
+> >  	pgdp = pgd_offset(mm, addr);
+> > -	pgd = READ_ONCE(*pgdp);
+> > +	pgd = pgdp_get(pgdp);
+> >  	ptval_to_str(pxd_str, pgd_val(pgd));
+> >  	pr_alert("[%016lx] pgd=%s", addr, pxd_str);
+> >  
+> > diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+> > index 5771bf49e1fe..e05e5b41ae50 100644
+> > --- a/arch/arm64/mm/hugetlbpage.c
+> > +++ b/arch/arm64/mm/hugetlbpage.c
+> > @@ -284,7 +284,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
+> >  	pmd_t *pmdp, pmd;
+> >  
+> >  	pgdp = pgd_offset(mm, addr);
+> > -	if (!pgd_present(READ_ONCE(*pgdp)))
+> > +	if (!pgd_present(pgdp_get(pgdp)))
+> >  		return NULL;
+> >  
+> >  	p4dp = p4d_offset(pgdp, addr);
+> > diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
+> > index 4dd8c1186471..f61f5bc09467 100644
+> > --- a/arch/arm64/mm/kasan_init.c
+> > +++ b/arch/arm64/mm/kasan_init.c
+> > @@ -102,7 +102,7 @@ static pud_t *__init kasan_pud_offset(p4d_t *p4dp, unsigned long addr, int node,
+> >  static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node,
+> >  				      bool early)
+> >  {
+> > -	if (pgd_none(READ_ONCE(*pgdp))) {
+> > +	if (pgd_none(pgdp_get(pgdp))) {
+> >  		phys_addr_t p4d_phys = early ?
+> >  				__pa_symbol(kasan_early_shadow_p4d)
+> >  					: kasan_alloc_zeroed_page(node);
+> > @@ -256,7 +256,7 @@ static int __init root_level_idx(u64 addr)
+> >  static void __init clone_next_level(u64 addr, pgd_t *tmp_pg_dir, pud_t *pud)
+> >  {
+> >  	int idx = root_level_idx(addr);
+> > -	pgd_t pgd = READ_ONCE(swapper_pg_dir[idx]);
+> > +	pgd_t pgd = pgdp_get(swapper_pg_dir + idx);
+> >  	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
+> >  
+> >  	memcpy(pud, pudp, PAGE_SIZE);
+> > @@ -280,7 +280,7 @@ static int __init next_level_idx(u64 addr)
+> >   */
+> >  static void __init clear_next_level(int pgd_idx, int start, int end)
+> >  {
+> > -	pgd_t pgd = READ_ONCE(swapper_pg_dir[pgd_idx]);
+> > +	pgd_t pgd = pgdp_get(swapper_pg_dir + pgd_idx);
+> >  	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
+> >  
+> >  	memset(&pudp[start], 0, (end - start) * sizeof(pud_t));
+> > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> > index 83709d987e7c..76d8d320aeed 100644
+> > --- a/arch/arm64/mm/mmu.c
+> > +++ b/arch/arm64/mm/mmu.c
+> > @@ -434,7 +434,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+> >  {
+> >  	int ret;
+> >  	unsigned long next;
+> > -	pgd_t pgd = READ_ONCE(*pgdp);
+> > +	pgd_t pgd = pgdp_get(pgdp);
+> >  	p4d_t *p4dp;
+> >  
+> >  	if (pgd_none(pgd)) {
+> > @@ -1649,7 +1649,7 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+> >  	do {
+> >  		next = pgd_addr_end(addr, end);
+> >  		pgdp = pgd_offset_k(addr);
+> > -		pgd = READ_ONCE(*pgdp);
+> > +		pgd = pgdp_get(pgdp);
+> >  		if (pgd_none(pgd))
+> >  			continue;
+> >  
+> > @@ -1827,7 +1827,7 @@ static void free_empty_tables(unsigned long addr, unsigned long end,
+> >  	do {
+> >  		next = pgd_addr_end(addr, end);
+> >  		pgdp = pgd_offset_k(addr);
+> > -		pgd = READ_ONCE(*pgdp);
+> > +		pgd = pgdp_get(pgdp);
+> >  		if (pgd_none(pgd))
+> >  			continue;
+> >  
+> > diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+> > index 826856ef64a8..dfa1356daac2 100644
+> > --- a/arch/arm64/mm/pageattr.c
+> > +++ b/arch/arm64/mm/pageattr.c
+> > @@ -399,7 +399,7 @@ bool kernel_page_present(struct page *page)
+> >  	unsigned long addr = (unsigned long)page_address(page);
+> >  
+> >  	pgdp = pgd_offset_k(addr);
+> > -	if (pgd_none(READ_ONCE(*pgdp)))
+> > +	if (pgd_none(pgdp_get(pgdp)))
+> >  		return false;
+> >  
+> >  	p4dp = p4d_offset(pgdp, addr);
+> > diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+> > index 7afe2beca4ba..06470d690f9f 100644
+> > --- a/arch/arm64/mm/trans_pgd.c
+> > +++ b/arch/arm64/mm/trans_pgd.c
+> > @@ -134,7 +134,7 @@ static int copy_p4d(struct trans_pgd_info *info, pgd_t *dst_pgdp,
+> >  	unsigned long next;
+> >  	unsigned long addr = start;
+> >  
+> > -	if (pgd_none(READ_ONCE(*dst_pgdp))) {
+> > +	if (pgd_none(pgdp_get(dst_pgdp))) {
+> >  		dst_p4dp = trans_alloc(info);
+> >  		if (!dst_p4dp)
+> >  			return -ENOMEM;
+> > @@ -164,7 +164,7 @@ static int copy_page_tables(struct trans_pgd_info *info, pgd_t *dst_pgdp,
+> >  	dst_pgdp = pgd_offset_pgd(dst_pgdp, start);
+> >  	do {
+> >  		next = pgd_addr_end(addr, end);
+> > -		if (pgd_none(READ_ONCE(*src_pgdp)))
+> > +		if (pgd_none(pgdp_get(src_pgdp)))
+> >  			continue;
+> >  		if (copy_p4d(info, dst_pgdp, src_pgdp, addr, next))
+> >  			return -ENOMEM;
+> 
 
