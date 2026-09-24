@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65728C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25752C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FB9C6B0099; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
+	id 2B5F86B009D; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3666B009D; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
+	id 266EB6B009F; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 526A36B009E; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
+	id 12E766B00A0; Thu, 24 Sep 2026 14:48:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2778B6B0099
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 107361C27EF
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:59 +0000 (UTC)
-X-FDA: 85249540278.20.3945EFF
-Received: from mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0C868A0008
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:56 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hRt6T8GX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275677;
-	b=ctQ/R4LZLQniPlhq36EKn5U4DbNq73cLrzA+2gxllmqrENsR88dnArvqnpNohU/UTxNKok
-	LzquDq0etLHklboqm1tQeo5GMe4nEhlsWlXbG2rz5wQW26GBdgVztjIvHYdYAvsmXOleYx
-	IyeOKxDpnrpPd6/U4egG0E0dgwKndU4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hRt6T8GX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DE18A6B009D
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:48:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 62E6AA66E1
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:04 +0000 (UTC)
+X-FDA: 85249540488.10.9667589
+Received: from mta1.migadu.com (out-58.mta1.migadu.com [95.215.58.58])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8125B40006
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:48:02 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hAD3XP6R;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275677;
+	s=arc-20220608; t=1790275682;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2JogHQaCxW8NClL5DvCzu+C8uVXKBS+4ZOUPX7Drto4=;
-	b=R3HGfhbexZfEk2zmhbkItFx+8GgVVA7aIN3rOXiRrE8uQVoslRoKoB8hNKp6BfLJ1N4Nk7
-	eQuO3Yjjc8CG2HbIo+J2frlPzCaCsiYx7a81TAcYT+HJglxT2o3OMAuhQAlHVkF2z4oyvJ
-	NH5gEsY4qRXlrFtKt0RUtWA4kw4WxGM=
+	bh=r/kZABDU8cK6a3kV+TCEZT4x9rOimF4qC6zdNvt/dLk=;
+	b=TCxD5lBsVGi5moLhCLn6l5eMGppvZC58gVoZ76ksBl/Sa9pMlZx/BmmxykJa9oqdjpbYva
+	RQpqjT52u34PkuGHqa1ZLrwZO0wCdqlXKF/YSbte/2zRTGufxC0oJeyShmp8TheeTUfHpe
+	cNna3zcF0Dj4w6m3xiuPEP0UpNG61Go=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790275682;
+	b=sVEZskPgt8sYbhDop5v80b9PhdtxeN4V9LFRhGEr8h8F+4DMxvhaePWsWcFHzx7OCXmpax
+	3NhHCI4GUGV5E6YjKFQS8zJBqkMRNZtkzU7j/yD0g/eEmPi2bFamPwMVFu55zkm/E1z/vh
+	bsvbfjjGN+MjdS1WaIHlCx9ENKVQicQ=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hAD3XP6R;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=YPDMx5Cpm0Ky2M5qOc3ie9+dgsk3KEGxwc7kMebFStk=;
+DKIM-Signature: a=rsa-sha256; bh=vhv2GOBN4FsPRGu+ZsZgfVd3kVqXyiVymVSJNtKa9ts=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790275675; v=1; x=1790880475;
- b=hRt6T8GX88GoHf5QBQK+pSkz/vS596pjl0ZY5HL4IoVLD1gXsNPWE8+Xin3CSM9peiBdJvj1
- B65aPsUnHWs30w5E5gAIRODr+kWUrvbJ9gaAbrxPzFjn7Gx8LnXrMnqoPAcE14G74xU6IWJ3BHT
- D4bL3PTKBTIjkOk0NGppL7H0=
+ t=1790275681; v=1; x=1790880481;
+ b=hAD3XP6R9aGJHbBjel4SliVEZcMmOYmFPVeqheIfk61X6C9KBVu4XThcsfqnyJlMIG2ZFEX9
+ aDJl9pxnpOwbXl/I+ZtGK3bajDqSoSSRrqXncelufYFwCDezVY75FqacEmQR5bNYGQsRNCTVoVP
+ RSRvVn/dR3AJshcwNK3lsVC8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 458fdd5e55f5d437;
-	Thu, 24 Sep 2026 18:47:55 +0000
-X-Mizu-Trace-ID: 458fdd5e55f5d437
+Received: by smtp.migadu.com with ESMTPS id 57a02f3e5119bc77;
+	Thu, 24 Sep 2026 18:48:01 +0000
+X-Mizu-Trace-ID: 57a02f3e5119bc77
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>,
@@ -93,22 +93,22 @@ Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 5/7] cgroup: take set_active_cgroup() time out of the cgroup's cpu.max
-Date: Thu, 24 Sep 2026 11:47:09 -0700
-Message-ID: <20260924184714.912181-6-shakeel.butt@linux.dev>
+Subject: [RFC PATCH 6/7] memcg: charge high_work reclaim to the memcg
+Date: Thu, 24 Sep 2026 11:47:10 -0700
+Message-ID: <20260924184714.912181-7-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260924184714.912181-1-shakeel.butt@linux.dev>
 References: <20260924184714.912181-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: a4fqwki5rkurwrqq3f9dri77ang18nja
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C868A0008
-X-HE-Tag: 1790275676-891782
-X-HE-Meta: U2FsdGVkX1/L1vUjtJUWoAWeY/ZRMcTutghgiIC+Xn1R9SCwy9mzqfQXHHNBAzaZINhpxo17ThmWGUaqhwxchZpoyOXVpYSEg9qosn9dind3a+643/OdWPwt7+gTckh0KB2jWZUTyd4mxNNtGb3W9+E9L6lZJ3H2VYVd07gza8EZKqkROM0V7ORHdmLyKG3SPA9GiUNgKRuITRG1/RU8zdMHS4tiTTLTlCTR+x+qPsrgvpdHXPKNUECwo2I+zo3Iu3NuAEvhIwlSqFxvNaYCUDDOUE6bdWjypY0ODLwE9f43HpkPyeIFgFUwyW7Qneh7BMEKssRYPWg417Oxe+q3aUJVC0sEyVWQtFb41YtM7Okn9Oso3iif06oxsyE5JD8HKm0LoopJ+QFD5e/5hRjMab2lf3EpGBtCWQOFPQ+95e8Ws7oJTJOUA+b/q+5wVoqT12pFPSX6v5rIg2BEOrOaSrAsHNGLeBv9Dffd6xVlh/9+nCEI73+m/EuYl5nrOv4QzjlYPF/q3/EhoZruvt4AwYsKGfjiTtMn8FkLNccCZ4WmZCZDa/OxFZ6ezoaII/50wSPXvSw6BqAzYx/JOeRtdEJjF4DregdMU/XkdkUGo2pjSchrPG3Lp/Fu4Vad1QKeAGjSiewBt9UAs14oCrSWaUxWp65W7NYIEbMAlvTSb/gkktUbPmpjAsTwgQ0fnLus9yB4FrH0gA5g22DGFKLatRFTfRZUEtPzqa94Lv+nMoIYL0oPoUpeRc24/Nzg9b7xr/RXPz5yBanxkhjCgfFUZB6l9z/c3hh8cVw8VPuYwzxdm80e1QQEAzyTqid0Rqu2j7bpK0+iifOtK0Kj4GXslKnjfQnJR0a7xkxaXVTNrh4fWbZSamG3MaEwD7j61PNgm3BFMGn3GdGqViUAZGVAfMFrFS7TJ1CUebvOS2n+LFZ3PYr7DcqxNotyCvi7fo2nhqwQh5Z7DWdWDR/INQu
- wBiU3F9m
- eKVecM6wji5g4G4CPkeHTskNcPp5Hl2LFD/Q217dPBvBen4g+S2xc8S0Xt24fqLE8fezZtYgt3T+h37m0G61JNwDn7MXrI2yeHOwQvHaO1t+7bTOJjqx7DSxglJ7eHjURAWP1ITrk1crpIYROC6jzLmN/q6jpwnBL0YgSrQKTpE95xMURFeCZF6DLwEIrNZ3VsEsgAtjYtalwl15IBzscBsOMriYt/ED2dp3L21AG2zhm3vpY5C+7kLU/OBUt8KRG+kha/5IVtDHR8k/YH8PlUkVYIFbXWu1P/avcSKHjqgFVWyJmp0SAj0+FK5Phlt+EI3lORY/CdBKDFaVQouLs78O7HDE10wTCxmha
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8125B40006
+X-Stat-Signature: nh3xrbpy1eo1isehymmnpjp7t3ygozuz
+X-HE-Tag: 1790275682-721119
+X-HE-Meta: U2FsdGVkX1/nrbHXNKykpFBYWTnkY7qUmhaDuf3SLVK/UjD148Ct05zI6GyQEsO3Z0KHIzA6jSv9WVlzuZyRscU/CxyG/PRmVTFLzV9HQuNknCKLfk/CVA6ZpWhuvgIW/ngGPRVQgrW32v9KAB8JBPFqd1crm9rtXzzJvsqX+xlvib/nSpBQr5VeCj5q5lV/0OJrs6QeRvExCzeZd69yL1z3lBIF703mVODNrC7ZNy5Hef9YaNAjF4Tep10aCs8zWIZZnx/jCBX6kdFEYhQaQlfiAAaze6iGypce+OhrJIacU4LYp8ALbUk/gqoIxnwk1yQT4GHx+aB4sYe343OLNhaerum2g8PF4zLQhZIBGg5LX2vR1UFkd4mqFGIqtnEnweHOMKSUsDsHMiZaMV9GuauK3cSilDXsFBJceDRRRAsNzma6RrcpvJhcHGSFNsQfECn6eDgxbezeTapt50ybfyk3cKRqOZW+qilDzzXPtOeq+ITdCf/r0z3zwo9C33Khf3CKInBPhtJ7daB3CmB6Er0n4XGTtGbELACdIiBCD1G8M6GJ9DzPstgGlZG1qiglK0t/X5giF4Z5ZnWw12gwZxEQJ0pR+P1Gsfo9rllh4cti16HX1OfUmhy9wP7+P5B+UMD2iOwpZJBUKSFLbHRQW7UaFB3llXbnKGAmbzX8T+eKHnzXFsd0DwavcXsUxZi6SgyWgFIVL3ac8pshgp0vCaVSSkqruPM9SEZLDDL3MIzOuuVDcGQ5Z7irxIT8u2V/jhCays2aD84+Wc1vnbQ5hcdeAreabHQg6U5RWcvlMIWAwhOZ1scJlF5QR8c+g3FJaIrfOOUZoeuWOegTN75qUCCa9qa0zl8aoPIvrQlWNS4V0A/VgM9QNp3bBoIa6+a/MYFZdweLS0ELZ1w7TbHuOMYwiPsdJVS7keIXHb2bOSd7P+VSNvNkx0ADUzI7ZkjBGVwJd1ejzPD2C+L2T6K
+ xQGH/abD
+ IsfUOgesHa6aUNtunWvM+XQ71rSRrfejjM3VyTxJMopk5HGERRbQjAuSaEMz2ejUEH3icODQDrF5Fb4FnSc4S8H+/D6WTiYvXG77qNWc1Duvod+qZQPpmaLCDqDbZuy9hDI4HyO4yN8qGezft+rv3F6HDaNy01kgmhm9VdMyQS82R1oZPNv0t1C9QgGr63LSUpAmv8l+5cdPR8O7VPniJhXN90bL69CynOIp6v3S3YmevDz/hp5SBTpV5oHKM40rvIA6CaW+I6rJwP7D05NJU1qjk1lpk8q0HizTcjeH5VzjQQlbv0TKYOImG10M6JWnI/BGhxaNP5jkZ+Va3FonRF4WJC4PgEF3JqU+M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,73 +116,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kernel work done under set_active_cgroup() shows up in the cgroup's
-cpu.stat, but the cgroup's tasks still get their full cpu.max quota.
+When a charge from IRQ context puts a memcg over memory.high, the
+reclaim runs later from high_work on a kworker. The kworker is in the
+root cgroup, so the reclaim does not show up in the memcg's cpu.stat
+or memory.pressure, and does not count against its cpu.max.
 
-Remember the task's run time at each set_active_cgroup(). When the
-active cgroup changes, charge the time used under the old one to its
-cpu.max quota with cfs_bandwidth_charge(). The caller is in the root
-cgroup, which has no cpu.max, so no quota is charged twice.
+Run the reclaim under set_active_cgroup(). Its CPU time and memory
+stalls are then charged to the memcg's cgroup, and its CPU time comes
+out of that cgroup's cpu.max quota.
 
 Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- include/linux/sched.h |  2 ++
- kernel/sched/core.c   | 12 ++++++++++--
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ mm/memcontrol.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 002941f60e88..7ecea9cfa702 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1358,6 +1358,8 @@ struct task_struct {
- 	struct list_head		cg_list;
- 	/* If set, CPU time is charged here; see set_active_cgroup(): */
- 	struct cgroup			*active_cgroup;
-+	/* se.sum_exec_runtime at the last set_active_cgroup(): */
-+	u64				active_cgroup_start;
- #ifdef CONFIG_PREEMPT_RT
- 	struct llist_node		cg_dead_lnode;
- #endif	/* CONFIG_PREEMPT_RT */
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index a487da494795..91fec6461e4f 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -5738,8 +5738,9 @@ unsigned long long task_sched_runtime(struct task_struct *p)
-  * @cgrp: the cgroup to charge, or NULL for current's own cgroup
-  *
-  * For kernel code that does work for a cgroup. The time it uses is charged
-- * to @cgrp as kernel time. Returns the old value, which the caller restores
-- * when done. @cgrp must stay alive until then.
-+ * to @cgrp as kernel time, and taken out of @cgrp's cpu.max quota. Returns
-+ * the old value, which the caller restores when done. @cgrp must stay alive
-+ * until then.
-  *
-  * Only for callers in the root cgroup, like kworkers. The scheduler still
-  * runs the caller in its own cgroup, so from any other cgroup the time would
-@@ -5753,6 +5754,7 @@ struct cgroup *set_active_cgroup(struct cgroup *cgrp)
- 	struct cgroup *old;
- 	struct rq_flags rf;
- 	struct rq *rq;
-+	u64 used;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 4d00748c8a5b..f1d0ba8b48cb 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2456,9 +2456,14 @@ static unsigned long reclaim_high(struct mem_cgroup *memcg,
+ static void high_work_func(struct work_struct *work)
+ {
+ 	struct mem_cgroup *memcg;
++	struct cgroup *old;
  
- 	WARN_ON_ONCE(!in_task());
- 	WARN_ON_ONCE(cgrp && cgrp->root != &cgrp_dfl_root);
-@@ -5768,9 +5770,15 @@ struct cgroup *set_active_cgroup(struct cgroup *cgrp)
- 	rq->donor->sched_class->update_curr(rq);
- 
- 	old = p->active_cgroup;
-+	used = p->se.sum_exec_runtime - p->active_cgroup_start;
-+	p->active_cgroup_start = p->se.sum_exec_runtime;
- 	psi_set_active_cgroup(p, cgrp);
- 	task_rq_unlock(rq, p, &rf);
- 
-+	/* Take that time out of the old cgroup's cpu.max quota as well. */
-+	if (old)
-+		cfs_bandwidth_charge(old, used);
+ 	memcg = container_of(work, struct mem_cgroup, high_work);
 +
- 	return old;
++	/* Charge the reclaim to the memcg's cgroup, not to the root. */
++	old = set_active_cgroup(memcg->css.cgroup);
+ 	reclaim_high(memcg, MEMCG_CHARGE_BATCH, GFP_KERNEL);
++	set_active_cgroup(old);
  }
- #endif
+ 
+ static void high_irq_work_func(struct irq_work *work)
 -- 
 2.53.0-Meta
 
