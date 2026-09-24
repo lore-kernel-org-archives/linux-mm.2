@@ -4,131 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02CA2C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8ED3C98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 15:26:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BACC6B0093; Thu, 24 Sep 2026 11:23:01 -0400 (EDT)
+	id BBE016B0088; Thu, 24 Sep 2026 11:26:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06C2E6B0095; Thu, 24 Sep 2026 11:23:01 -0400 (EDT)
+	id B6F2C6B008A; Thu, 24 Sep 2026 11:26:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9C6C6B0096; Thu, 24 Sep 2026 11:23:00 -0400 (EDT)
+	id A85966B0096; Thu, 24 Sep 2026 11:26:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C84956B0093
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:23:00 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3F1B3403A9
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:23:00 +0000 (UTC)
-X-FDA: 85249023720.29.378EB2B
-Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 478D240011
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:22:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="r HiW/DH";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ldzREHgy;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8048E6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 11:26:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C38FC03B5
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:26:19 +0000 (UTC)
+X-FDA: 85249032078.22.34A8DB4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 02ACD180007
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 15:26:16 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l6n9ELTV;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790263577;
+	b=T1OdsqOJaE6KIjpBL7SebhzGN75n9S1zB/i+Czd+/6m1/H8fCnHj9E/Rnt0O2W0GVNp0pI
+	JLMc3yf9B9SZYeTz93jIAzd/Xr/CjN8fYzryvMkFrNS1/vkykhKGCQz96gga3M4IjQINAv
+	HLzkGGX+eLYtcRsiEEW8y6B6uB2LA6Q=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=l6n9ELTV;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of robin.murphy@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=robin.murphy@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790263378;
+	s=arc-20220608; t=1790263577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i9829kPweuklhix3Z1AJfyPME8Dj1E3vcoJGw3M8wqk=;
-	b=VaJJFg2B3HBl4qm1ig2qdVGfQD5FMcajkI26mRHgHxMhUuo36P+Dr7nuSmIdd5N0uqdSaB
-	WSilnLrHw2R+acLhoqcnMpX+PUINvA1TNsvpBkNNGMXsyi9IJSkXb4IPaWDlsz5k80lxdP
-	d5r6Cs2i+jrxdGavHy4wU9AiGjwFOls=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790263378;
-	b=r+aKKw+9afS9rjQYoWcehPg9qt84KAap+WvKeYiaezQdsags4FqsgbEqDZWY1t0d3b3zK8
-	5XzQBTvUSUFZVGBHRFH9qLxLa01bRqt+vdAV4fcrbVcWRAlaYDIfKtQDveI/OZiTUbakAR
-	ZyakmKoeyHuBMceH51ZL6acx09EBJ6k=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="r HiW/DH";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=ldzREHgy;
-	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.159 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id CEAF57A00F7;
-	Thu, 24 Sep 2026 11:22:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 24 Sep 2026 11:22:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1790263376; x=
-	1790349776; bh=i9829kPweuklhix3Z1AJfyPME8Dj1E3vcoJGw3M8wqk=; b=r
-	HiW/DHek+JmfrjHge6+5C9Qq7tzQKeVot5KGDx5KDOk5tTqMfrK6MTIm/uxK0DS9
-	CuCwOTUvtLTyX/0bl/25EPfDPwCSYVOSVzlNa8mMvqdBVsuJdveRt1F296iDdBBu
-	vCT9AYnoDTn5ubo8QggHHPcWpPGWn059EUeol9yFM/doqKWQjPOOgx3sp+VOkOf0
-	Cv2yp3RiF77jwASVIitq9UMKDySW5O5FmhuHE6LiR0yrbBRLBJqmLEDLGZojj+JI
-	4sJ6tCR81IwhrcAqF/fkMegwBFCAn6tGnyq++AsCI6iyoGzckbXIWJyoTqZspLYh
-	ZA3z8Ojfn/8AYJ3JxJv/Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790263376; x=1790349776; bh=i9829kPweuklhix3Z1AJfyPME8Dj1E3vcoJ
-	Gw3M8wqk=; b=ldzREHgy8qn/M67eVWZG1M9WNO1oVErf0HZcYvoi6NqEQMUKbhn
-	bOIAoaO3fnBQJ1WPq/JhdwNu4HtWJWR89hyjxbZqK5FgRiRAXp9JSLI2hYyP6lnq
-	ZBx5YU8oQtzpqTaIOUY+AJVKidm3Djfk1r7VvsIzP287bozKM5En+/qmHQg110EH
-	3340bNAwp/ZA6oXHEYbpS9l/EKnHz14FG66Lbx8opVCVAZFtsrfj02ECbmhwvmM+
-	bacjNYbemrGG8plMCyNspk6r+KxNl+y0nPjzrv8x0dInmO+0aHDBbZac9cMLFIkV
-	C4AlljPvACf5D3Lvhua8CkTI+WspfqUOqQw==
-X-ME-Sender: <xms:UEC1au9yDacykCnlx_WP67kQpJSkPNWA5yLrV91me4eVDGaZLihJIg>
-    <xme:UEC1asVk8Lnl_rcGxvYYBcjojy3rSvCdH6Y3jNkGe7N4XR2J4reHkLSrd9ZeY1CUr
-    TrEqyqMzIFLAacv_OQRLJtkl0fvZFWVYE5JesBoQNI36lpluBQXvz1t>
-X-ME-Received: <xmr:UEC1arZ3uLBl3_ssQkZvswUtrcOYch5TPavc0S3BEPZEPOWuYntfoWMU-o8>
-X-ME-Proxy-Cause: dmFkZTFOEUn76qAsDivzyhzaxVg7PBFGRMw+JOhFLqg+cNl/nhm8GytXTnazGyDSxwsGhK
-    j/+NkLfyi36dqu7YdqiPFUiCwIsC1ecyqSlqD3Tm3hsRlecNHu92tTNpFDWN+dz3gvKG6F
-    kN5sIFxDwtuWxWxoOY5Cuvq4sRqgoamTjVSTdtIc3wp8gBL3r56ubVMWhtzdXQ/CCaCogi
-    3u0GJXH7g/d5NIYGaXEA/71nb/j3UTqjEE5ZBwkqiRSN6z8w6QuD75ih3hLZEhI0hzYuY5
-    9UTL2y/fCg3Qga4bEbwRZkYBSwgzIa1EHyrLI7bgmDJR4jI8MMpa/XGhfqVoCL41U4VdPA
-    3jolhBlpuiuG5Ou3hokvPOnz/Q89mLkYMrjPAYjITIbsEpktlB6Cg4Mm5mEVLFfU/6gQf8
-    kklLUDvf7klk/P/ynJ3R9L9w+IMxpUNzHXVF5ENjbheqjRJzYBJmmvxXzkpErjl5zHRW0z
-    63kXRk0zRkkKEe6BuHAbHnnC5chSxOxfJZUlk1b3Wgbodb+Kh7os4JoftfVzuIOy9tFkzC
-    cqGP/6YUQ3FDRGn5Aurmxcgv01jUlsvAG2Why4sdj6Ah8fac1ngNEwwBAUyIbGqzP/ohmM
-    tmuGP1q0Bx56xS8dr2K0kCqihfpR48oEVX3WlAUE4EXHWZHKoV23ua1WITsA
-X-ME-Proxy: <xmx:UEC1aupICPxJWcKkt8t7vflDAD3oAj2LL1M3w1VwnAj9Y-Ikia5lPw>
-    <xmx:UEC1aq7_qO5Oo-YzWV4RA46mTsJXXLnexyxh4nc59ikI7eDZLnl14w>
-    <xmx:UEC1agWyou9GYHWILQj18DawbYQoIgCAnLZqsEUmHDBm6VJjfBo2Sg>
-    <xmx:UEC1aguVsLFGZpdWn8wHty3ntBLcN048_hojDKhqnfXZNB6ILy9lwA>
-    <xmx:UEC1amhavBbJoUeYNurtAFWp7GVDHeBBEeK-nn1jAkrNj7Qzvmj2hEOQ>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 24 Sep 2026 11:22:55 -0400 (EDT)
-Date: Thu, 24 Sep 2026 16:22:54 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v3 11/12] mm/collapse: declare the collapse interface in
- collapse.h
-Message-ID: <arU8w9qDCvKod7PO@thinkstation>
-References: <20260916093145.4022188-1-kirill@shutemov.name>
- <20260916093145.4022188-12-kirill@shutemov.name>
- <63f49a8b-cabf-4b93-a7e2-76b62c463a90@kernel.org>
+	bh=qBA8WUUDk0qcKaw11Oj0h76VJLKac2jdxEolUBxlMHY=;
+	b=uMQBj9//UOufu45BNqKKyvnbxpVLD1Kz+CjNt6OtSrVX5Xye9kGhKchb+uGSL7Kie/AVCZ
+	LdUwNM5wZRHM31ChPlBw6NQqTSgwNNVFyEgFbXN6oqxvGY4D3DBFhZDEhHedsYJYT/S0Al
+	dwq+hjWMZ7ylXeLRRtngZ3ihL2VxTnE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55C7B1476;
+	Thu, 24 Sep 2026 08:26:12 -0700 (PDT)
+Received: from [10.2.212.23] (e121345-lin.cambridge.arm.com [10.2.212.23])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 30A883F86F;
+	Thu, 24 Sep 2026 08:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790263575; bh=B+Qpq0mGaw3xi25XZVIMrbmAYpvPUbmJS4mCwVTqyrM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=l6n9ELTVe2ZkaCPB8nIwz5Sc7JZOs68VmMkYvZCShdny6ZjohUe8b19JXSchJMYF4
+	 uO3QIiF/YMJxoSE0UMYdLjyadb9nHTaDBWegle8Ib7Io9p8Jy5sXqC9NrROZxTUzzZ
+	 GNcyquiJ6/sK6Y7PClYCIdP05QXcDxGvwxBTKEdQ=
+Message-ID: <9547761f-7688-4351-b172-9e9d5fa28b15@arm.com>
+Date: Thu, 24 Sep 2026 16:26:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63f49a8b-cabf-4b93-a7e2-76b62c463a90@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 478D240011
-X-Stat-Signature: 8spgmiu8a6y6bmc6m9ifyogh9xk5iuft
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/3] iommu/iova: convert from rbtree to maple tree
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
+Cc: kernel-team@meta.com, joro@8bytes.org, will@kernel.org,
+ iommu@lists.linux.dev, liam@infradead.org, maple-tree@lists.infradead.org,
+ linux-mm@kvack.org, ashok.raj@oss.qualcomm.com, jgg@ziepe.ca,
+ kyle@mcmartin.ca
+References: <20260818152505.1057922-1-riel@surriel.com>
+ <20260818152505.1057922-2-riel@surriel.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260818152505.1057922-2-riel@surriel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ha1pp7zy4x8ho7zkmpwms1g5ikesygxh
 X-Rspam-User: 
-X-HE-Tag: 1790263378-621697
-X-HE-Meta: U2FsdGVkX19bhtlt1xZ1HQV5Udi3avPNM2A2ylhL4iA9wTh1OcjWG7FLr/+DZsrq0gGYarTtbxVEOC4fd2WSW2LJjq4pF3bSn7H4JZRy7ax9xUNF3DXmNxX3Dx5rbrA5EwcXh2uo4swcM2JulzzPO4JcdEvKGLYNMPRDGMYUubWfB9FB+4/sQRm3rf4EVh7OrrIVHNS8VF4J071u5aOE+Gc+wpWWAK+AiIYU/yjhn1Xl4eV9HIDp8Pd/TWm4NwO5ISOIKoXQOXGr+eRZJO9NlHzOg+QehpaH5dWgTcAqMujOYhhCEjnJ2SE2NQ09MJo+Yx8rJz2J8SkqjVuGnm2pSlaJfL15m3dutjB0rgwhgsueeekk5hgmLseBPa2iHBBkaqagerY4FSxllUYjE91Zfq64ibivK4nHrogU8lE2JJynMNfjlDtgpxS2qk+auX00GYyn7wWl99agR0GHqg0DJSyg9DZ8hLZKvF0F3VEpR7tDOjrEJWEkVYDEjUHbocaf07agbPb5gHOTv+Ioph57vUXg8/+84je9NF08WsdOAEX0NI7/Z6iyz/m8YA+E9M+9/xRvw66rVASWPx1w/9DxSnhAjkfNtXrl3aWr3viuzRKoU0NxeHyS8t+JobvfCrM1ZdKCPOYNGMylq+h1GuPH0PR+FMpeOo5OcQKjjI6mzUSClKBgB7yLhzDKqLSexminLHaMFXE89p6kJT9+UXEpyMVP13tVCYvme31TcskCtpOmaJ1qL3eDwaVZ92lBAyKIpM2j327fFDFwq5WornrperwO3RvEiUCdqc2fS8zUgnoo8Nq9UZWIgMQpcS5FwFR7LZw6bPD4VK/U4CqXXFIvHrM/VT3uu+APRaQx42c4/2qGJ/TtA7PZ5xXMJ5TVl2lPsYcWrozBRNg5RitGWuFzs5lMPRUPLqhsC4R43gr5C5Hp2gp9cDLG/ilV9jsfh3RCbXjobWeQJ1+EhgRjxjn
- S8O3dy+F
- 3ntwNoBRl4W83pxkyuFMrd2Fc8pZsb+MEENqrNdU95Z/FSnvdgYvRO2YnPR4SiTdLV5VeataISZTcTQf3jP6AcqUnhFr+LDOukLtVQ0nYBsZfbmE5KHAkwXwA789bWoPW+DXC1oElMCi+UY4ICmFPrLETDGnAsITm9Esmum3i0gDxE8sOAT+7yegVyYLh1V/AoKnrda/4QI4vQsIUeVCZqSuPfqyMSaAmrKjgYlccfCY3qWK6dJbCnmv/YVcQnxmrzmRKMDMdNNXKyXD62FxA9T0g95cSMzM8dx/1cIn0kx0cCq3Xi+4uNLZroalTLyyb6uTOTu609JHejzLAgDR+Ahyvqufuq8M5yp8k1XtSpNg6qRIcg9odtKfIHH7/oi4GSceZYj+mq8M0USCf3OIBBnWqZkp0u1g+eEKU5JmtvSk/k4EWV1cBrEk4EpTioUDHO7gsZ+Fwf6ueP00GOzDkebHCyQ==
+X-Rspamd-Queue-Id: 02ACD180007
+X-HE-Tag: 1790263576-96790
+X-HE-Meta: U2FsdGVkX1+hTjjdK6AXiwu0Qr1wAwKzp1hohtZuBSEebYZBYdYLqkCqkrdU9nVZwyX9KS8Ab9c1ueph0mE7gVJCiboyhDqiQbIJ/cDKx4sR9BJ0pKIz1YN8Cd4qnMKYVU2vPBzsGypzWpkTLqA3GJg4zERjWS0MClRM8q0qLICSArp9BAUhQLKgIfUhS/6GLU0T631P4BMFA/OXBFx93kANyuweEOc9ICzeMPpOcv8zIVtRN4c3zuvCaxplX3t2PN3ArPAi3ReKjkv1HhYDyBXoAH48cviwnqMgZyGjt27NGJuY3a+aCDrtR8imZf/2CLEJYtp2E9lsNX5+Dp/oKHCmhPgrSQpuh7KRHX0EJUw9dKhufOzBujJmh2mgCLFgKZXFvWUk6J3WXweXwp8R9MxmyLqUWNxVx6gaz1h+c7H+22sL78EzzA6lxQoPQ1PXOYlVu09yraroVsAdkniagm4+oV/xtUXlp6cXI7I1rCiKnZxzpE1QQ4p3Fj3xYhH1B6cESWAp7Wt+4xcWGyugDUsfLn38EkINHx3NWFfjDezA4dlL5F/99Ys7uM1ZGJPBjiD6gk7NL5zXmQ0HFcP/g+B4exZzi022ueiX3ApYISqrq09bvEhtKvgg4vLLprsFRC9X+Zx5i5l4bavxeDwLpOMLgAUPzvy0DOYlHpYMa3Fqr3ftiyGfjpYwaPHv92xsQTMPsjJ0U+cW7iTONSZEiI643rYU6KlozoLsbirTVRm8aYXOOZVYoV+FXrvXFLgjAZRimZiTOi9IGwhkB4ItVHAy4MGaV/v9Nm4aSZ6y/X+5h8kfZmLq1oii5UmMAfZII/8kJJi4aP+eJkDLSZFUzXmQthYfZMqYX6gJAr98yRfaR8GpDRs5VGS0IaCbb6mOT40ZynAjRYNxVnsskT8pfwH/CoKnZKevhtDhl9PdntTvhNekpdu7MtDU2KWmWXkIZsIegydcMab4AiydfCc
+ jmreNSVx
+ QJaKs4SCTFtNreDZL+ueUWjAKVP6cXqZ+Sq+G551Ay5oNsj0eyRnEXLj6/7vkv1QMdIWhdT+8HpXUFubNGi++y+xCOk6MNCcE+/Lw4fnP4b5zpxuN0NHoxSQ/4KVn8VLLvIaUE7lkyDvOWWkFugA0U1C870rBNHtZbBzOT4g9sN7d4NFD6K5kpMdpFrFjJbH+1Vhk69qYLabQHKNnJ4/MLt31VCUBwfVn16Dqq9ByzswdPX4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,100 +93,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 03:34:11PM +0200, David Hildenbrand (Arm) wrote:
-> On 9/16/26 11:31, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > A collapse takes four calls:
-> > 
-> >   - collapse_control_init() - set up the control a caller carries;
-> >   - collapse_scan_pmd() - scan one PTE table, under mmap_lock;
-> >   - collapse_run_pmd() - collapse what the scan found, no mmap_lock;
+On 18/08/2026 4:25 pm, Rik van Riel wrote:
+> alloc_iova() looks for free space by walking the rbtree linearly.
+> On production workloads at Meta, enough CPUs have ended up in that walk
+> at the same time to trigger soft lockups.
 > 
-> As discussed, having a single collapse_pmd() function might be cleaner if that's
-> easily possible.
+> Index the iova ranges in a maple tree instead. Its gap search makes
+> alloc_iova() O(log n).
+> 
+> __alloc_and_insert_iova_range() asks mas_empty_area_rev() for the
+> highest free range below limit_pfn. Alignment is handled by rounding
+> up the allocation size, prioritizing speed over address space waste,
+> with the thought that many iova requests on a system will be similar
+> in size, and reuse the same holes.
+[...]
+>   static int __alloc_and_insert_iova_range(struct iova_domain *iovad,
+>   		unsigned long size, unsigned long limit_pfn,
+>   			struct iova *new, bool size_aligned)
+>   {
+> -	struct rb_node *curr, *prev;
+> -	struct iova *curr_iova;
+>   	unsigned long flags;
+> -	unsigned long new_pfn, retry_pfn;
+> +	unsigned long new_pfn;
+>   	unsigned long align_mask = ~0UL;
+> -	unsigned long high_pfn = limit_pfn, low_pfn = iovad->start_pfn;
+> +	unsigned long search_size = size;
+> +	MA_STATE(mas, &iovad->mtree, 0, 0);
+> +
+> +	if (size_aligned) {
+> +		unsigned long align = 1UL << fls_long(size - 1);
+>   
+> -	if (size_aligned)
+>   		align_mask <<= fls_long(size - 1);
+> +		search_size = size + align - 1;
+> +	}
 
-Answered on patch 9: the two calls are the point.
+Perhaps it's a bit too much of a cool trick, but I think technically we 
+could just do "search_size = size + ~align_mask" unconditionally.
 
-> >   - collapse_control_release() - done with the control.
-> 
-> And as discussed, I hope we can just get rid of a release function that's not
-> actually supposed to release anything right now (unless I was missing an update
-> in one of the patches).
+However, either way I do worry somewhat about the increase in 
+fragmentation and premature failures once the space starts to fill up. 
+Say for simplicity we have a start_pfn of 0 and limit_pfn of 4 - with 
+the current code we can successfully allocate a size of 1 (to IOVA 3) 
+followed by a size of 3 (to IOVA 0), or even in the opposite order for 
+the same result, whereas with this workaround we couldn't ever allocate 
+the 3 either way if its search_size has to be 7.
 
-Will remove in v4.
+AFAIK there are real-world use-cases where the usable IOVA space is 
+relatively small compared to the sizes of some of the buffers being 
+mapped, such that packing density matters (i.e. media stuff in mobile 
+SoCs), so if at all possible it would be good if maple tree itself could 
+be improved to support searching for a free range with a particular 
+alignment (either explicit, or implied natural alignemnt of the size) 
+rather than having to bodge it this way. Unfortunately we also can't 
+just relax the general DMA API guarantee that DMA addresses are 
+naturally-aligned to the mapping/allocation size, as who knows how many 
+devices that might break.
 
-> > All four are static in khugepaged.c, as are collapse_possible_orders(),
-> > which says what a VMA allows, and the revalidate a caller needs once a
-> > collapse has given the mmap_lock up.  No other file can ask for a collapse
-> > without them.
-> > 
-> > Declare them in collapse.h, with a comment stating the order they are
-> > called in and who holds the lock over each step.  Each function says
-> > what it needs and what it does where it is defined.
-> > 
-> > hugepage_vma_revalidate() becomes collapse_vma_revalidate(): it is part of
-> > what a collapse offers now, not a helper of the daemon.
-> 
-> Is it just me or is collapse_vma_revalidate() an odd part of this interface?
-> 
-> You'd expect a matching function that performs the initial validation on a given
-> vma.
-> 
-> Maybe we should have a
-> 
-> 	orders = collapse_vma_validate(vma)
-> 
-> that really just wraps collapse_possible_orders(), an expose that instead to the
-> collapse users?
-> 
-> So they'd use collapse_vma_validate() to then call collapse_vma_revalidate()
-> after temporarily dropping the mmap lock?
+> -	/* Walk the tree backwards */
+> -	spin_lock_irqsave(&iovad->iova_rbtree_lock, flags);
 
-collapse_vma_revalidate() re-checks what the scan ran under: a VMA at
-the address, anonymous if the scan went that way, covering the PMD
-range, allowing this order.
+FWIW I'm not much of a fan of the implicit scoped-cleanup stuff in 
+general, but this seems like an instance where using guard() to simplify 
+all the early returns might be worthwhile.
 
-A collapse_vma_validate() could bundle what the callers check before a
-scan, for the sake of symmetry. Feels like overkill to me.
+Thanks,
+Robin.
 
-> > -static enum scan_result hugepage_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> > +enum scan_result collapse_vma_revalidate(struct mm_struct *mm, unsigned long address,
-> >  		bool expect_anon, struct vm_area_struct **vmap,
-> >  		struct collapse_control *cc, unsigned int order)
-> >  {
-> > @@ -1264,7 +1264,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
-> >  	}
-> >  
-> >  	mmap_read_lock(mm);
-> > -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> > +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> >  					 &vma, cc, order);
-> >  	if (result != SCAN_SUCCEED) {
-> >  		mmap_read_unlock(mm);
-> > @@ -1299,7 +1299,7 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm,
-> >  	 * mmap_lock.
-> >  	 */
-> >  	mmap_write_lock(mm);
-> > -	result = hugepage_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> > +	result = collapse_vma_revalidate(mm, pmd_addr, /*expect_anon=*/ true,
-> >  					 &vma, cc, order);
-> >  	if (result != SCAN_SUCCEED)
-> >  		goto out_up_write;
-> > @@ -2741,7 +2741,8 @@ static enum scan_result collapse_scan_file(struct mm_struct *mm,
-> >  	return result;
-> >  }
-> >  
-> > -static void collapse_control_init(struct collapse_control *cc)
-> > +/* Set up a control before its first scan; cc->policy is the caller's to fill */
-> 
-> 
-> Kerneldoc please. Applies to the other ones exposed as part of the same
-> interface as well.
-
-Will do, for all of them. The overview in collapse.h stays; it is what
-ties the calls together and says who holds the lock between them.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> +	spin_lock_irqsave(&iovad->iova_lock, flags);
+> +	/* No 32-bit request this large can fit until the hint is cleared. */
+>   	if (limit_pfn <= iovad->dma_32bit_pfn &&
+>   			size >= iovad->max32_alloc_size)
+> -		goto iova32_full;
+> -
+> -	curr = __get_cached_rbnode(iovad, limit_pfn);
+> -	curr_iova = to_iova(curr);
+> -	retry_pfn = curr_iova->pfn_hi;
+> -
+> -retry:
+> -	do {
+> -		high_pfn = min(high_pfn, curr_iova->pfn_lo);
+> -		new_pfn = (high_pfn - size) & align_mask;
+> -		prev = curr;
+> -		curr = rb_prev(curr);
+> -		curr_iova = to_iova(curr);
+> -	} while (curr && new_pfn <= curr_iova->pfn_hi && new_pfn >= low_pfn);
+> -
+> -	if (high_pfn < size || new_pfn < low_pfn) {
+> -		if (low_pfn == iovad->start_pfn && retry_pfn < limit_pfn) {
+> -			high_pfn = limit_pfn;
+> -			low_pfn = retry_pfn + 1;
+> -			curr = iova_find_limit(iovad, limit_pfn);
+> -			curr_iova = to_iova(curr);
+> -			goto retry;
+> -		}
+> -		iovad->max32_alloc_size = size;
+> -		goto iova32_full;
+> +		goto alloc_fail;
+> +
+> +	if (mas_empty_area_rev(&mas, iovad->start_pfn,
+> +				 limit_pfn - 1, search_size)) {
+> +		/* Only real exhaustion sets the hint, not a failed store. */
+> +		if (limit_pfn <= iovad->dma_32bit_pfn)
+> +			iovad->max32_alloc_size = size;
+> +		goto alloc_fail;
+>   	}
+>   
+> -	/* pfn_lo will point to size aligned address if size_aligned is set */
+> +	/* The gap is search_size wide, so alignment cannot pass start_pfn. */
+> +	new_pfn = (mas.last - size + 1) & align_mask;
+> +
+>   	new->pfn_lo = new_pfn;
+> -	new->pfn_hi = new->pfn_lo + size - 1;
+> +	new->pfn_hi = new_pfn + size - 1;
+>   
+> -	/* If we have 'prev', it's a valid place to start the insertion. */
+> -	iova_insert_rbtree(&iovad->rbroot, new, prev);
+> -	__cached_rbnode_insert_update(iovad, new);
+> +	mas.index = new->pfn_lo;
+> +	mas.last = new->pfn_hi;
+> +	if (mas_store_gfp(&mas, new, GFP_ATOMIC))
+> +		goto alloc_fail;
+>   
+> -	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
+> +	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+>   	return 0;
+>   
+> -iova32_full:
+> -	spin_unlock_irqrestore(&iovad->iova_rbtree_lock, flags);
+> +alloc_fail:
+> +	spin_unlock_irqrestore(&iovad->iova_lock, flags);
+>   	return -ENOMEM;
+>   }
 
