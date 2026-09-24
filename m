@@ -4,128 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C44C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C76BC98321
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 17:35:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBD216B0092; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
+	id 24A336B0088; Thu, 24 Sep 2026 13:35:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6DCC6B0093; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
+	id 1FA7D6B008A; Thu, 24 Sep 2026 13:35:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B60246B0095; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
+	id 0EA556B0092; Thu, 24 Sep 2026 13:35:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 809746B0092
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:24:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E03BD1A0431
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:24:33 +0000 (UTC)
-X-FDA: 85249330026.17.71BB3CD
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8D7A2180002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:24:31 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dhEWgyGx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VC50vUiM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LR6NReq+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pzdn+HWp;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6E0C6B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 13:35:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 38B5E1202D0
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:34:59 +0000 (UTC)
+X-FDA: 85249356318.03.6F8C7D4
+Received: from mta0.migadu.com (out-252.mta0.migadu.com [91.218.175.252])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E8C52140014
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:34:56 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ujNcoCKY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790271297;
+	b=GMNL1Gr9efK42baMJOMdLmAmRWvMgRDOIDo4mqpA+oI2SYFBEPlrXatml7vS+r4h8JGMAK
+	SXKn/f3h6eTPfyV/SYqcUmf18SvMP3gxITYW09gEjZRgEeSGK5NM8SpHXFwExiWfG/Czt/
+	YgV+Vk/F1JYE7fxMgM1Zkw61noG/OyI=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ujNcoCKY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790270672;
+	s=arc-20220608; t=1790271297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
-	b=aJJGWIrKj+mzuIfeV5gvbV6NdL7Co2l5eL3hldQqf6/78QpoOqyt005WdyTVNPGYj0+y5s
-	K+PW480jDn6yEGMrKQBpUllROBckkteKDxaXkkXHAKugQ098rQyUKGk9SVX8xqeIlQYjYC
-	IZuoZyYzJpzG3SYsPfLoJDNJ5sdHYLA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dhEWgyGx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VC50vUiM;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LR6NReq+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pzdn+HWp;
-	dmarc=none;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790270672;
-	b=4VFAyT+ewIs2ANs0X1llZeEwz0YYMKJ2/+BW7AEqOHhQdh0gKk34+nsZifF1zUC0r+NU8p
-	fVnNgxiIXOq1n44oJB25hfZ+/EdceSgrnFqU6U4cc+v46g8nimz9VTcPuRvNYdNkCAlXaR
-	GA2pWohN8nUQlncLSsorqDq/PePWa8E=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 4757721E73;
-	Thu, 24 Sep 2026 17:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790270665; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
-	b=dhEWgyGxS5Z5ctqdR0yICoWzdBB0/evYvqjpk5eOD1jcIcU4aOxCPylklMp5aBo/6Rmq5I
-	dUXZ62pEbl3eetWcqBF0MgLnil7RZTifdXtkp/gE+M3+zD8xTqFzsvM/pq/kkK6t0qV4N8
-	VPUIl6MH31xZUMUAowWjb1qWMhkknyw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790270665;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
-	b=VC50vUiMtbYDIbX0z7mDu1x6GjouR4gRpsmavETWMf7FxDOkkNtaAVSvfw7hMqFmDfFvoc
-	xCrnojy1ZCfzhBAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790270661; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
-	b=LR6NReq+TnUe5fdXqufVbr4D3bjuLwcDrpW2pU5O3+qenfciV90e6EhHdfYQPbhFZWo4FV
-	ta1usx9+3SVdWMDBaYY4ThbqIs4HZ+B4HbHXslThf0OXSFXTeNHoIahAtWZuOZPozfxvJd
-	ovyj1jVSV3EpC7Nvd4rpdichfy5LO3s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790270661;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nvmWxh/7sadN71Ry+teJ71fIRtn4jq4tR13Iaa3OJy4=;
-	b=pzdn+HWptHAnoGOU288Z97sHw5tQ7d/athgrR1UmFoXDnphsjPqP6U+o/LPuaivqTfyN4z
-	0i9GFyYTvdSFZSBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBA3C13354;
-	Thu, 24 Sep 2026 17:24:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YW4xMMRctWrdCwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 24 Sep 2026 17:24:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6C4EDA132E; Thu, 24 Sep 2026 19:24:16 +0200 (CEST)
-Date: Thu, 24 Sep 2026 19:24:16 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, Christoph Hellwig <hch@infradead.org>, 
-	Mikhail Rudenko <xyzzy@yandex-team.ru>
-Subject: Re: [PATCH 0/5 v2] fs: Deferred inode reclaim
-Message-ID: <pu4x4cgddu7pcb6gm5bue3eksr5rarbcqu4h3un2z56txi7p6x@ydiql33kyvtb>
-References: <20260911081309.14137-1-jack@suse.cz>
- <20260917-entweder-limitieren-kiefer-f033614058bd@brauner>
+	bh=NsWUm9lOFd97AbuUlb84GT0EVIl/aMxzy1lD/uof35w=;
+	b=IOlv2+E4HFOKX0FzydCVIgzl3RYLLcANSWaqannExH8WY1hBbvZeENHqdsgn+yCrl3/G/Y
+	Qxeyh0yPAPekMUkadE4QS21XAhlxWkoid/X7Q8ESyTYdK9AqihPBdw5Bapvi1sueTt8Gv1
+	0wz1WPSOujUOchZaiZDxlMowZcCNklo=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=yZ9rx3BhSXpvURnJe/ABajoUQEwR3f64gTF6zXhSG4A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790271295; v=1; x=1790876095;
+ b=ujNcoCKYuR8dbQfyWdHLqzOEPnPhwT7CLW/h5MUyxv0cCg2qskTfbTdooNJcQgs+Ss1J5Arj
+ 7K9zQwZmBxATu6m1/G7iYMUp/a8ya/kWCkfCQXIwAdqZFOB+GhVCQwclBBeDb6jt8CMMFQ/BHkp
+ fSFnUP+SXNzW2RnpVlXwSdsI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f5cad8d26f570659;
+	Thu, 24 Sep 2026 17:34:45 +0000
+X-Mizu-Trace-ID: f5cad8d26f570659
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <326b26d5-481e-4524-8b9d-c4d54924626e@linux.dev>
+Date: Thu, 24 Sep 2026 18:34:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260917-entweder-limitieren-kiefer-f033614058bd@brauner>
-X-Rspamd-Queue-Id: 8D7A2180002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND v7 11/29] mm: split PMD swap entries into PTE swap
+ entries
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
+ kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
+ willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
+ ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
+ lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
+ shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
+ luizcap@redhat.com, kernel-team@meta.com
+References: <20260914122950.3283997-1-usama.arif@linux.dev>
+ <20260914122950.3283997-12-usama.arif@linux.dev>
+ <7f6eb404-8139-4208-88eb-03ea8a4bf3a9@kernel.org>
+Content-Language: en-US
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <7f6eb404-8139-4208-88eb-03ea8a4bf3a9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: md8putti7d1j9f7m4tc47o9rohnj6wqo
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zneaqh7cbmfsssf7e7p9kxaz9arxgs3u
-X-HE-Tag: 1790270671-721236
-X-HE-Meta: U2FsdGVkX19VrrpGAE4U9RA1/0QDc1nXRJHEdWhS4FvhxRXKcnsiGqlcb6XNPWNXhw5+l6dk/yYQZe3iJmCZJUWcTfSf7HgB0vtIBLMrniQ4xpJn7IhpK2CQTcMXRQVWu3yIizspPi2O026Yut7/uC+UvfA5YZk1EeOc5mKwW32380k7clX3lbuZaV6qbYIcHQWXup8cQOdI8TkNroreeIytfRMP+E+v4kGVksEgge9Z75gQ7Bv3aQwiWC45wTYofZsK3mvFbOaei3uqUXXT+yarMJmrT5fjMc95T/hL9wh/PbwrAHf1wz9zYnx35zFrjyUu15QjfMaL6ZgNoiYIOFJppRFQeriI88fHIx2i84MhNLq+Z+nhfnXCijc5/t9shrEommAPiyGN6dG+fqD8wdxQDuAEQ12i1MS2JmwlD40hTxB5qlIt1F543z5Cm0zv8NrfODSXNuWuSjzAlrQKXmqGxkVaHRIFnFPL7hLS7po9sgbsVsp4DSuXRWjySOwL0esdBaFNojqj8vKpxdnFpsZ+LQ8RdY4tNY5WeafaoGShc+cwdwTGudX55YFzBTJ4IjLxG/SUNRsX3zR4xCRFZPhzInp2LgwNFlw6xKmXy9pFzbCoPOuq4kcsklL44X1Ny/T6J2G+N1FZsmXHHUDeHeZ/TdYvR7weUR91mZv3g5qME6wiCgMpx9FvkFsf8aWLq3xRUGsQrUUrhZEz+g+Spx8naUigoIqjyNCzFf8eO3Gx9/zFRuQjVnq+Cu290jXT1wBkMYqoULU7EtuZxpqev6ekCZRCLuUqD+4764RmOfq9Kajpnk1hOw+9+A5i0hr+O6bMUbU7CON7TmqSGkx/MxBLpdgWWd7acG6ogRpKDK11FhLmqk8fMqrAJZW6jpG6zSPzp/kOX35aTSdLqgunV4xqvjJbirCwFUkZcs9rcdQe4m8Qrxr9V0pXuRFUOW3N2AHClNW2rQF9l4KU3Gv
- CuquoFTo
- 59wSRHOCSBf4bcNccDz6IPYJqFT9IAEmziZYjqR+hyHuvAxW8aQrRUzhX14hXhaHKBwRLceX0866iBr3BVMaiQMUj/HQT3RfYlDtHiIsf6FgIvwY8UJDl0smselME65Kq2dADzi52hnhAGms34g2l7P/bgtqubfCGSzJr8t/ybLsuEYnyqO0RbiEUXuBGG0i664dbR33nX5/64303+gXlob7mnfrg+xU4DSFv1/Xe3p1j1ClijM3yZhI0uDjoJMKiwmhr89xJc7ctUz8RNmBQFcz1BOmTxVSAQKpH93/hgUfiAgZqQNYPFxFvUiU0mVY1Of6Lq7l05AI7ZC/RRlw4cI963A==
+X-Rspamd-Queue-Id: E8C52140014
+X-HE-Tag: 1790271296-111189
+X-HE-Meta: U2FsdGVkX18+xRKaThdX5SUyk4xrGU4zY1lsbmrZCUsqJeuKHmfXKqNrQgU8+tr7JASn5JJWsHkixV9IxlZEERJhitkB9FQzh1yJInwPjEYDPLWf2ecZHcFNwdeSRf5lyi8dB+KI1XrqS8p4jx4bJmBwvshMVKxsrUqT9hB1nIbrHFu034pGLzJebT3zHnNeiRDo2uX8Y+8uuflN8eAwnB7pyFlss6s6mziuVU4LqNwfAH/CYq7w8RAzkqmSjnK00Oevw/tVJm8d2Inl6tRc2IANgNyQs8One2t1xz4yfj8pSCkuaDxarFklIhwX2mpRjA+cgU/UmikjI7pq4GEPeS7jc/tMvI8ifXwJT4jR/Xxe2VIlCZPWFIggq4jVLyDDGRulICa6HJkfQb4bGwQC13P0Owi7rcuBviKsHygngpw8VPLD1GZChWHI7gwXvZ9hqladZkYQjV7zwUPVw3WDln5M0vz2AhnokCj5emduqHQXDRsXesap6PUzjxBYTKu8KxOMzgj1KLBIYtnxw+3wKZ2afYBXGqZD2ofTOR/U14KdvtOksLrp10olNKkflHiuwHKR8RD45mLhnOJ2HI2EoO8PcqNRK3CXjVMU+7uXwuw/WUV7XwXB1346JRgrm2V/annlyKUslG0CtYNKeqxVmjqDmE6aEyHjYHamx2QmIuChnvSm+vLhem1sC5P5GKGdhXNt7wb6xWZ2ce5/qsAnvAq+t3mg2HDSaVUV/Shx38zbrqHjOqiQTHVche381IQPhu/08xDjUXR05LCKxp5L3/Ua7IP3ElcgGLH5ZaI6l4oVU2WAKS2VNTNmRu/XQufXCYKYEXfkhAxX45CwnPpuLP1v/Iujb3z4oC1+skWq8wUqbweDACGzP9jkHX8tlIfP0up6DJlzLHHaskcPzb2qHN/69MsINi9U72FYytF4EeNOqhkEwA3pQJMQEU+ecK2uUdS56BeyKO6bJYAi16j
+ iELz0iYf
+ hT+bXfYXshAivzzmscEDSLrOXiuTB1QL9HuEss6OdO0qgeEUQPw4JgTX+0WSV1uW1U/tux8hLAGZgr7vEx7uOCrgI6R6mNUoz8c2/6XeYF9fiXKYaP+owRdxoNU5jTKIUtA9pH79zN+Wk1zSqdehOCwm6JBY9HIuxWaLYkVVVX2JYnNjXGcZFUR8lRhnftRWYLY5U1oiv6LV7sreyXcGHXQYRB0dAv6ZYRgcAJUJY+in2OS+6pzO1ck2A9x0d/Jc7xs++LnNxzowMTdAS5SOotDKTJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,51 +103,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu 17-09-26 11:56:17, Christian Brauner wrote:
-> > Hello,
-> > 
-> > after a long pause here is a second revision of my patches implementing
-> > deferred inode reclaim to deal with MM warnings due to GFP_NOFAIL allocations
-> > from reclaim paths. This happens because to reclaim some inodes, filesystems
-> > have to do IO including complex operations using journalling and forward
-> > progress of these depends on successful memory allocations (which is impossible
-> > to guarantee from reclaim context).
-> > 
-> > This time I have fully tested the patch set. In particular it survives full
-> > fstests run on ext4 both as is as well as when marking all loaded ext4 inodes
-> > for deferred reclaim to stress the deferred reclaim paths. I have also tested
-> > (when marking all inodes for deferred reclaim) the patches by creating a memcg
-> > with 128m memory limit and then scanning from 10 processes 600k inodes in total
-> > which heavily exercises deferred inode reclaim paths. This also verified
-> > efficiency of throttling of marking of inodes for deferred reclaim. Basically
-> > we cannot guarantee any particular limit on the number of inodes queued for
-> > deferred reclaim as that is bound only by their number in memory and memory
-> > pressure. But as the number of queued inodes grows, the tasks creating them
-> > get slowed down so eventually some equilibrium is hit. In my VM this was
-> > at ~10k inodes (only slightly above the 8k limit when throttling kicks in)
-> > but this all very much depends on the reclaim pressure, speed of deferred
-> > reclaim etc. so I don't think this is some representative number.
-> > 
-> > The first patch is a pure fix for a problem I've hit when running fstests.  The
-> > second patch deals with lazy timestamp updates which I've decided to handle
-> > better directly inside the writeback infrastructure instead of deferring
-> > reclaim. The remaining patches implement the inode reclaim deferal. Ext4 use of
-> > deferred inode reclaim is there mostly as a demonstration. Other filesystems
-> > need to determine which inodes need deferred reclaim and mark them as such
-> > which generally requires good internal knowledge of the filesystem. I'm hoping
-> > that once the infrastructure is there, fs developers prompted by MM warnings
-> > will start using it :). I know for a fact that besides ext4 e.g. btrfs is
-> > hitting MM warnings in inode reclaim as well.
+
+
+On 23/09/2026 12:20, David Hildenbrand (Arm) wrote:
+> On 9/14/26 14:28, Usama Arif wrote:
+>> Once a PMD can hold a swap entry, everything that splits a PMD - mprotect()
+>> or munmap() over part of the range, MADV_FREE, a pagewalk with no PMD
+>> handler - has to be able to split that entry too, or the callers that rely
+>> on split_huge_pmd() to hand them a PTE table would find the PMD unchanged.
+>>
+>> No reference counting is needed: a swap entry pins no folio, and swap_map
+>> is already one per slot, so the PTEs simply take over what the PMD held.
+>>
+>> The migration-only entry point cannot reach the new branch, because
+>> page_vma_mapped_walk() never hands back a swap PMD for the folio being
+>> migrated. Warn if that ever changes, and force the regular split anyway,
+>> since the branch leaves folio and page uninitialised.
+>>
+>> Test the pre-split old_pmd rather than re-reading *pmd in the trailing
+>> folio_remove_rmap_pmd() gate, so every entry-type test in the function
+>> interrogates the same snapshot. That part is cosmetic: pmdp_invalidate()
+>> leaves the PMD present as far as software is concerned.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+>> ---
+>>  mm/huge_memory.c | 36 +++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 35 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 873887aed0bc2..0e347a545588c 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3304,6 +3304,21 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  			folio_add_anon_rmap_ptes(folio, page, HPAGE_PMD_NR,
+>>  						 vma, haddr, rmap_flags);
+>>  		}
+>> +	} else if (pmd_is_swap_entry(*pmd)) {
+>> +		/*
+>> +		 * A PMD swap entry has no page, so it cannot be turned into
+>> +		 * PTE migration entries.  page_vma_mapped_walk() never hands
+>> +		 * one back for the folio being migrated, so this should not
+>> +		 * happen; warn, but also force the regular split so that a
+>> +		 * broken invariant cannot make the code below dereference the
+>> +		 * uninitialised folio and page.
 > 
-> This all looks worthwhile to me!
-> Note that Sashiko is complaining about long-term stalls introduced by
-> this patchset. If this is intended or bs then please let us know.
+> I disagree with the force (and the comment). We cannot make each and every
+> assertion that never happens (unless someone messes up real bad and would find
+> this during early testing) have recovery code.
 
-Yeah, there are some good suggestions from Sashiko. I'll address them and
-respin.
+Yeah that makes sense, I will fix it for next revision.> 
+> The real bug would be calling split_pmd_to_migration_entries() with something
+> unexpected. See my reply to #10 where we bail out earlier
+> 
+> 
+>> +		 */
+>> +		VM_WARN_ON_ONCE(use_migration_entries);
+>> +		use_migration_entries = false;
+> 
+> Can we just have on the beginning of the function a check that
+> use_migration_entries is only ever set on present PMDs or device-private entries.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I have moved it into the previous patch (#10) as
+
+  VM_WARN_ON_ONCE(to_migration_entries && !pmd_present(*pmd) &&
+                  !pmd_is_device_private_entry(*pmd));
+> 
+>> +		old_pmd = *pmd;
+>> +		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+>> +		uffd_wp = pmd_swp_uffd(old_pmd);
+>> +		anon_exclusive = pmd_swp_exclusive(old_pmd);
+>>  	} else {
+>>  		/*
+>>  		 * Up to this point the pmd is present and huge and userland has
+>> @@ -3440,6 +3455,25 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+>>  			VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+>>  			set_pte_at(mm, addr, pte + i, entry);
+>>  		}
+>> +	} else if (pmd_is_swap_entry(old_pmd)) {
+>> +		const softleaf_t old_entry = softleaf_from_pmd(old_pmd);
+>> +		pte_t pte_swp_entry;
+>> +		swp_entry_t entry;
+>> +
+>> +		for (i = 0, addr = haddr; i < HPAGE_PMD_NR;
+>> +		     i++, addr += PAGE_SIZE) {
+> 
+> Just squeeze it into one line like the other instances.
+
+Done for next revision.> 
+>> +			entry = swp_entry(swp_type(old_entry),
+>> +					  swp_offset(old_entry) + i);
+> 
+> Didn't we have a helper to advance by a delta? Ah, yes, pte_move_swp_offset().
+> 
+> I guess one could construct the initial pte and then advance one by one through
+> pte_move_swp_offset(). Won't remove a lot of code, though, so just a thought.
+> 
+
+
+Done, it reads better than I expected, because the three bit tests
+hoist out of the loop rather than running HPAGE_PMD_NR times:
+
+  } else if (pmd_is_swap_entry(old_pmd)) {
+          pte_t entry = softleaf_to_pte(softleaf_from_pmd(old_pmd));
+
+          if (soft_dirty)
+                  entry = pte_swp_mksoft_dirty(entry);
+          if (uffd_wp)
+                  entry = pte_swp_mkuffd(entry);
+          if (anon_exclusive)
+                  entry = pte_swp_mkexclusive(entry);
+
+          for (i = 0, addr = haddr; i < HPAGE_PMD_NR;
+               i++, addr += PAGE_SIZE) {
+                  VM_WARN_ON(!pte_none(ptep_get(pte + i)));
+                  set_pte_at(mm, addr, pte + i, entry);
+                  entry = pte_next_swp_offset(entry);
+          }
+
+
+> Apart from that LGTM.
+> 
+
+Thanks for the reviews!!
 
