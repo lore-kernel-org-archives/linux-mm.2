@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 172C3C9830E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:46:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BADC98318
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 18:47:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27D36B0088; Thu, 24 Sep 2026 14:46:08 -0400 (EDT)
+	id 7BE646B008A; Thu, 24 Sep 2026 14:47:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD9436B008A; Thu, 24 Sep 2026 14:46:08 -0400 (EDT)
+	id 796136B008C; Thu, 24 Sep 2026 14:47:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC8906B008C; Thu, 24 Sep 2026 14:46:08 -0400 (EDT)
+	id 684FD6B0092; Thu, 24 Sep 2026 14:47:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C9856B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:46:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13B02A680E
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:46:08 +0000 (UTC)
-X-FDA: 85249535616.18.B76A8AD
-Received: from mta0.migadu.com (out-58.mta0.migadu.com [91.218.175.58])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 72B81100002
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:46:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IOIYj5+V;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39F0A6B008A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 14:47:34 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDBF81A0480
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:33 +0000 (UTC)
+X-FDA: 85249539186.06.4379BE2
+Received: from mta0.migadu.com (out-126.mta0.migadu.com [91.218.175.126])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 982E0180004
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:47:31 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BJ7CNNkA;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790275566;
+	s=arc-20220608; t=1790275652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
 	bh=NxUX9qWvZC32+QrWRU6xZiCxoayZXJcDxKlPdOTu1uk=;
-	b=vpEoGtzd7MUn/3RbklFQBUHzNYrpYx0vcUbN2su93oR8u/8BP/5lRE+xWGhui/MmeTXHAb
-	5JsKwuSCY+npxH/DJMtFZIyeQgHZ3/D1HKyvso0yQGyTU/MUCE/LZFZ0z4IpPipPZB3Qkk
-	XIKdYmAkNTi09JuRbN5/k6EPdDwIdi0=
+	b=ZTPz2nPKGwSr7xJUKw9D+egPuLpDFJyokzgOGjpno99rzfQMKQlgt+mjReYPsCiGmyyBNs
+	T60MPF7yrB4qWglyHnMdJnZLKXWulDPQtbPet35nb9EUkGFfJJtU7imjeM6YhX4o6kdUX4
+	J1aTPi8xozSQLPTlJ8w4KjnqLfpbQoY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IOIYj5+V;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.58 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BJ7CNNkA;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.126 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790275566;
-	b=xzv1KdRsC/PfxEC5g5eAxOTK4vP4N6OcHFaWfaPGwqf8jZFX4iNyyd+kQ8Agte+v9ObJBp
-	P//6HBDQzirYL0guOF8ay7eMpt5/Aen/Wt50WyS616kFmUOrMHAcyC4HK3HfYgPn2AsW6M
-	tzDWBhDpdedugBjErDRnlxdL0wp3IoQ=
+	t=1790275652;
+	b=L+r1mKqtifGhzIKh2mRf+hJHcvksPjz8DScgK19v0UAa7maDhJeSeYm38opG4KZ8Apma9i
+	LQ/yZf3X1g7sfrUJrvTCIILBPwcOfTNmyw01ArG8MW01WFy+wehMPXgQvWoPQ9ToC/uEvX
+	/eepwZTw+kH4oFrj9jyYtTDK53dRLaA=
 X-Envelope-To: linux-mm@kvack.org
 DKIM-Signature: a=rsa-sha256; bh=91syfsU5GYx0rGSvaym71XNdT9fl8e/N6mWVzG2+jLQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790275560; v=1; x=1790880360;
- b=IOIYj5+VjsG9hUuYSnQhqlVYL/2iq+akA2W0bwrSeUSazTjLI/+WYRim3Ko5k6PxAi/HFseq
- Qmcl8gNMsI29I5ZSQtFR4dQ1kvOFDxPLF9eEIz4ttvhwcGvOl3uaubsA2DwYTnVDqky5mdy2AQZ
- pZUUyHwQ6RbIr7DV2TjHJW20=
+ t=1790275650; v=1; x=1790880450;
+ b=BJ7CNNkAtDTueQyd6x06oSMxBm3hXHxKM1rIpa6OiarT3yhC1yiJOy5g2ESesjCDUjt1O2nr
+ X5VaYxbYJirw8WOW7gSr/SEBK6xnsFqi+GxiKdOB0WfiIhuUZaCL5mfX1glS3NenpWYVslIODbO
+ c2Vocr9mU1gEpMiE540y3TNY=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 69da63fa5bdfc846;
-	Thu, 24 Sep 2026 18:46:00 +0000
-X-Mizu-Trace-ID: 69da63fa5bdfc846
+Received: by smtp.migadu.com with ESMTPS id 93734a899e7f4e5a;
+	Thu, 24 Sep 2026 18:47:30 +0000
+X-Mizu-Trace-ID: 93734a899e7f4e5a
 X-Migadu-Flow: FLOW_OUT
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Tejun Heo <tj@kernel.org>,
@@ -87,25 +87,26 @@ Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
 	Aaron Lu <ziqianlu@bytedance.com>,
 	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Hao Lee <haolee.swjtu@gmail.com>,
+	kernel-team@meta.com,
 	cgroups@vger.kernel.org,
 	bpf@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: [RFC PATCH 0/7] cgroup: charge kernel work to the cgroup it is done for
-Date: Thu, 24 Sep 2026 11:45:21 -0700
-Message-ID: <20260924184529.879516-1-shakeel.butt@linux.dev>
+Date: Thu, 24 Sep 2026 11:47:04 -0700
+Message-ID: <20260924184714.912181-1-shakeel.butt@linux.dev>
 X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 72B81100002
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 982E0180004
 X-Stat-Signature: 83k3inyieomdm5p4zxtgd8t3hfnfn9gw
-X-HE-Tag: 1790275564-408841
-X-HE-Meta: U2FsdGVkX1+y1zn3Wrwlet7MmM2skWtZdDF0dlFKU+lAcvNuEd7inGdVp5FtcodJNxXQSEYkNLENpmvUEBVEOAcWDvz4+XbAwGUy4fLueJPGl3b+kJCAciOUZ7g/kC0B95+Zfx6sZtbz5HiYWd5cAMsJJDoypij2m5hMy6L5S5M95n1zbn3VAUBYCuVqg3MgORQ6z6+k4/BBDHXfPYrtympRYqZIOTu2Jbdz0UwwEHn6FX0bA+1yolAm5gtEMOb3XxGxAEPyH64CAjYE40WV+dnP699p/SGPBW9UNoVZbzeIwem0uVqxwNIE2WLzEM7jZD7kcYQGvjlGduXDfW38KZc36Ktb5o+trhFx1bxb3lsCPVHrZunk0KPPkjuL3BR2ZpEAkcZkTI/LaAjJokgW1mnAGFp5MPXcoXy8ax1G53qRky/TSlrAorI0wbn10DUxXXfNz0WYjPnmcDFv0YqE+n+dCu2SOGAJeeF/m9dpb5mRID+vKLIgyHG7YOyMVIAPIpSHmvwYh1mLsjRImQdUYYbMfeQCiUAii6wWVt6vfE0lrirpXCtqxehD9dZhdhreGi/tHa0xtc6th/mlNq2gfn0rtY/9BOScUDSHOO7P3g7C2XaHTIb4Yia/BoT1MQwWqrB0ewcHjiKDHQ6dAiC1Hi12wqJY28mFytC1zgeVZip7/2Rka8AeoISxnkxQvdRhWDeVNP6J/yhy39Uw1xNNCxaADn4X8TvAA6tTq3CnG6E6aMPUN08vX6bk9JNBsceyQvxTLRdstkDa/Z+X8JoPbHGn2pByD21JFJ8mkGdI8A5dM8UzXPuRplixd7qIZmONk4PhCyp0NHcRSKd7sovdtGJhz1cV3sFK6MI19Nq8ZSr/CyZm0OfYi7nZgSKHuX5npVmNhr5nTCtDWuVrxSzQ50/pfX5H8GGrnTG23nP5wANMJ37HR0v3d33HubDuIF9MRK0sG6owvdut8TevZTg
- KtLe0j5Z
- OG9KRVpYXSHcMpmEnAbmgJUt6Ikao4CF+/1ZgOrsXNv066USkMLxFPpSOfcUnkz8WDI8Ysnmgwt/x6Vuz2sWBfDkN5lvSyxeOPhKqTT4UjllYQK9gzB3ItlcxY6kIrIrR8rnkO5Cb34Df6BA52OAeSa31Ha7w6OVNxu1ykDVq1zG+9khKDd8Yo1qLV0BFab+iolFhOmhm/vrs8zbxALwWhwUBdN2711F343Vx7oOkveNG7I2PCgZ8LKM3OtbgG0thO+G8qndBNFERza12dEbUO3JPSvknVd66Cw9R3HxS2PTRlwz9RWlso6ntAeUYCZkYmeiajYWRXIzNNoH/wDyU1ymitlTdfyoB3UHgTppoKkWgAAr09jB4oz8I0z6YIPhezCM3wzM6C34qXApTxVwaudgmuBggpFCViyKfKm9AKwf1f2HGjHZQePl6wt1x+7n9/Tf3Pxe22GmMAI4wbaoz36OnSSIYy5ea44TYOwgh/5+0tIU=
+X-HE-Tag: 1790275651-251604
+X-HE-Meta: U2FsdGVkX1/B7Jh6owzdpyk5mBsbq2m+LJescZE4XSg67TBm5gwMc0LvEsGQ2/2dsHPV5xNcX6SIIFumRH1DpYX+oKwHKZgE7apY7htZNUcl/B5P522bix3NP+gZbMWErVFcDe5rmDXcJ6DQJPaz85wmfLWB3TyJROr6Z25TB1OgDCrRqU7AiDbOzVoTWxPfPyneF/5wKlDGFscgriDfrPial7eCDzJggOaKYsrdf6nC65UTg9NjJqXiX6V6whH93CH+362Mb5sABimGomPK9H2Q0DEv+UEn/pFjGjJyltginDOjHtFg8VRSAON3/qwxIHNUKXQJ0t4A45JKV7mtsC+Agmba3hT7obm5FayloAbOLg+3IMH83rSG0pfdYCtu1awqiDPI8V/q54mklcS18LbehrVCoOmBk1OKujhDF7//uWlD1oSI0gYu9+/p6CWop1m4oS9OLkXFOAh28ISRNQt3Jo19vQhv5VlARwSwhs+DKunjUmrKGURhsrRraM5gqHF5uzSzOCaM6/IwsQWhqNHw6l7uzFlbw1xWhe5ifSDADCb7XCbhZfo2UgDCh329cYr9JgQkxJ698YFCltp8kK7isU9fNXTMScCe6hwNJOLvw6tSvVTxbe8D6BcidEzKiTqD+OL9UAMfyTmPRdZNIAcHAFE0wZgTIDqKnheJEoOdZOE2VNIm5Xq1fjggzI2DdHaaww4AqrarBf19YW4LqoOEq2mpppPk+jzKWHSFT68bhISc4xVWlwt5Yx3bbfN9IDrDII1mgAHysNJBlOMVgz+vcZ8dhTQcMpHP8o/izuqH65PksA1q4Acx9Z4IvlEwVapv+34TG8bamEDgdPRoMEYFn0J+yWjAl8lQOm5Yxh5Kw3Z+fYhyCo8HBq0t6o+SPyee87GtobZ6Ati3fo2XDO4z1+QmVxmwyI+sWnV90bwPDR4Bo73SKbS9T+QsVU7jij8rvePdykLk4GKMbJ3
+ LiDr7ViY
+ w9E2m5+3jDb/lgt47FMVTK/177i4UM9UZyx7duUexQTEWwabVrm6FnzjfU3qFqO/hHpSLDCZUfBZGj6JXAPDRHfayozhemUjMfqS93GJUMdL5CZdfq9X+AuQPo7HqPjyQVdkpMn3zE2VCUm8D0Gu5Rp4qpEelSXFof1RqIJ5BFcDA2eymR+kB6ADs9+bVQOaQc2nppZqV2EQq2WbEg/TrPCUbKt55diK4rOSGlspoZaARHlg1UQq7myXgDMonfmTYyalYOYFIPJYto/YvcIPiMUeYA/015kaIDT4/J9wCmhud81lCtqzRD9kpdH0Frs8f3BxCjTW0YjLV3RZobUyQsT+WNlR6HJ+h+NcMX5UlKoR3b0lo4wT0JEd/m3LeFClwuZz30AbTBMzlSm9O7HUDcZJJ3sWQCxjO48UsY1BcoPEC9hGUUbW5GOyZLOSVy7V1vK+GCQh5/+vH2Q2icEBgpUKA3cFlFuETGt8XHdCGvo70uBw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
