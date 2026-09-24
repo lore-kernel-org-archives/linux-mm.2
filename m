@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F7EC9831E
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 20:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEFE6C9830E
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 20:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 722446B0088; Thu, 24 Sep 2026 16:31:01 -0400 (EDT)
+	id CFC7F6B008A; Thu, 24 Sep 2026 16:37:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D3276B0096; Thu, 24 Sep 2026 16:31:01 -0400 (EDT)
+	id CABDD6B008C; Thu, 24 Sep 2026 16:37:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C1966B0098; Thu, 24 Sep 2026 16:31:01 -0400 (EDT)
+	id BC1D36B0092; Thu, 24 Sep 2026 16:37:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 387F66B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:31:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D51781A04A2
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:31:00 +0000 (UTC)
-X-FDA: 85249799880.09.B6608DF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9598F6B008A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 16:37:34 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2160280479
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:37:34 +0000 (UTC)
+X-FDA: 85249816428.12.AB5C06F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 17D291C0008
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:30:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwzxLk1z;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 538A52000A
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:37:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QAkIFUYo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790281859;
+	s=arc-20220608; t=1790282252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7QesB3wn8+yidQJfEr/89OKxUr18TgMww+mIYXxRsD0=;
-	b=hS6TwB2Q94FM44pPwvvLlIHdvfAy1JGRJ7iaKCFNHdNANsu+yR5FFSqLVk+uLhuj+APVz2
-	fGns4SDB+8Fc1ecGaKn1KpaxQV+lH5MbWAtPIFtPGBZ4Haq3Wviy5SPdK4578HojWQKlp1
-	lmAlKNi+Fh8dpCp5pFvo7D2JYYwEUQ0=
+	bh=dpeHbRQ1znqHhUUbc+Gddj3IasWA4/PoIh6Zvf/98So=;
+	b=a3+fnRkO0qW/v09NeNegPnwjUG9/2SarNl0+skgTlgyxVgXL5c3IUKr0t9blMBmnIJYQxM
+	VGT/Q9yBhHnn6u4FIzFu8XLSFYeA6nxkOmz1u1Tgg8Z87qAAVdxOYUAgp9BcDCSaiTwJ4/
+	qkPRP3NHyl4s4HXdNxbjI7Hju9P0Le0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dwzxLk1z;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QAkIFUYo;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790281859;
-	b=d0PBZOMxvWbBHAj8+G3faDMZHyeTBbsnSpDbbN3EtVYbTVLflO14HPSyrc9pvgbfwAwif+
-	xmYcq8gHh64dCB4+xkNMv03mKCRwbe63W6s4Az1rudoLn1ijqktQt2LtfyOIkT7lBT9YqB
-	l/WxwdHDE2BEenFCzpNYjR6o5X9nb+I=
+	t=1790282252;
+	b=sZfH6h6i3qhXBtznrphG8Ah50C47iIs5v7BdJmLyVL3ZpZLDDraTeWCP3Wx5LrGt+USrfY
+	tLKJMikJMsXZZ4j8zn1aPi9r+X/5mHka5F30AMc7dBIbsZNh7j1GSQFjpI1RBkpwbijrkt
+	lsnsxOP3VLcLO+U4TIqsxjLBvLcF/+o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 869D860230;
-	Thu, 24 Sep 2026 20:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952081F00893;
-	Thu, 24 Sep 2026 20:30:50 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D99ED601FE;
+	Thu, 24 Sep 2026 20:37:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061A01F000FF;
+	Thu, 24 Sep 2026 20:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790281858;
-	bh=7QesB3wn8+yidQJfEr/89OKxUr18TgMww+mIYXxRsD0=;
+	s=k20260515; t=1790282251;
+	bh=dpeHbRQ1znqHhUUbc+Gddj3IasWA4/PoIh6Zvf/98So=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dwzxLk1zFjuelEjbXSV1QpGBOpalmXXXwREbsm4ynBL02XEnvhS+KtKgYliWpRGdq
-	 xBQBouEEARo9WI4lxyUPxdSIRjVbsoh1q5EAZ9CBIKQhDe+Mby8nwQ5C2Eu/ce0aoc
-	 N+JA+6L+tfIdMTfLyYzFQ7q1e/Ps2Ep6SBrGQnibpWm2SOA6kXu4Y4soAANgI80KXo
-	 NJkETdjZz+7xtcfrV2SlITh2YXd6ikHSVLj12W51FQdPpBw2NAe2OdRyOGp45+S0V9
-	 QB66EBYVDUQ7hHgPuC5DX76C5hjnZkNIVbZeCevhtJo4smCmvP2ySX/ueDGXTw+bod
-	 x/L7WQo+UxuOw==
-Message-ID: <4842e76f-c30b-4204-922c-ecdd02d627dc@kernel.org>
-Date: Thu, 24 Sep 2026 22:30:47 +0200
+	b=QAkIFUYo2hlRmbyMtubPihbWhr6yGHr32Swvuat9vFy0548gpm86YeFkR+FCOfnvF
+	 ZoEcJa/Wp38T8lEo/rUn+xio3cFqTm77qWPGWZ6OUji7Hd0ZwlSTgI6DGpB/7zgAf4
+	 shaP3Reh8vNvZGnLYRcVKL7cVBzr55HmYH1absv5+SMJBATtA05BFYoxBEaTq07+si
+	 ujASbM2NpLcn4InvbQ3HhxCsOVAAf3d8YoICji3HKCFbiAx42x+ba9bzPIHO0q4s6u
+	 ZLjk8cbLPKxp9wZYNgy8QzjAz225/8+OTXzHpKPpIlGC9ZL5f55KFUaGJerk8UjFFe
+	 hH70f+9yglwZg==
+Message-ID: <e375b500-be0c-4ad2-b59c-ce1d4d58bb10@kernel.org>
+Date: Thu, 24 Sep 2026 22:37:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 13/29] mm: zswap: reject high-order swap cache
- allocations backed by zswap
+Subject: Re: [RESEND v7 15/29] fs/proc: account PMD swap entries in smaps
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
  kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
@@ -83,7 +82,7 @@ Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
  shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
  luizcap@redhat.com, kernel-team@meta.com
 References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-14-usama.arif@linux.dev>
+ <20260914122950.3283997-16-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260914122950.3283997-14-usama.arif@linux.dev>
+In-Reply-To: <20260914122950.3283997-16-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b1donxbzpt8no7q8ytu6xgnpd8zjrsq6
+X-Rspamd-Queue-Id: 538A52000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 17D291C0008
-X-HE-Tag: 1790281858-513662
-X-HE-Meta: U2FsdGVkX18Dmr1cUsFOMYm4WZm2yDOfYIdW3E49xBle1y13As6xcg6hRPiluvr3US7BBXsDCIXAurAbyOCBnEkR0FZGz2fVHhSQD1Lv0KXtBX6XACUcvMHVT5cX5WKT4bvJ0rYZGxRz3Nk508bqp9JTahX6uSzg8Rvihu2MzCpzJBvJ9nkrYnHCzeQcnGq2ryQvKPegBh+M8oszXU68qMpxUwrevt6Dsvg9xzqBxDt2VKuighZJfJdSbeLIn2Hww2Hm+AS3rWIE5ocfJHD151RpYEfYTg4G0HFKERF3iKAsunEsdo7lbst1JXaETHMsUuDDcKGv8RQbLAylyYhj0daGpvx+Xnj/kUb/JDlXc5G+2uljqdzUbkLEOIO7Xoc/QUECUCeHuaw337HWiimdBP/j+UQ4KV04/mfy2B+lplh1jfLMDT66xBf7cdu/2tfl9hdFVz9DcolMESN4VzhCexT1ll9VOruV/ez8Ud1A09gsOxAJq98YXlyqo8KraSgUoO3s2ETdad3NAX9c49bdmW85I2oNsCZvSMo/UtWUhGBrbExFLbl3EL0myQ96Df1g5BomfSipivn61LJJr1DMuZjdvZSOjftQYeRsaPO0JJO38HIs5+HehXM2TGX8GMFxbdoR1jHDUu+W38QMz+UMnSeeT50aedCbb2iDUOpupSemBzzTDW9kKnkd6nl42iQnV8W5vFGC2d6PKURvLfEHTd8FpfcRxPpp8++9FfAy5AxUV3tuQxSREjujH0mrZfKePCpqjmRnEoY2h5LNzYmeVG6MyfoOwswlaToLWqHElPEFTBIbkoz9apO9ychYRFY5/sfRdJwtY+S5r5md340hnVGkiwe3DmhwmtkXQNGlVz6Kud9hX4SsmO/5hkCJ3+IdNAEsAcagpxcA1CNqRWpL7vam/EGlUv4dgXtbbAeMAYE629tANgxivG+PTY+mmSYjl1HLoYxm0hcTPDDiXK5
- wqMHMTAX
- x4ojakjkNIuLNLLmxx3IV52FjZ//ylsYFgNyILblTT8ezbpjRQHJbzvgRTrmtXzK7URnxcev/21lffkmfeVkT7RlqDS0lKouU4ypYcFBioILJ0VppQqs53nGJni5epEKj3fm96xFZKH4DXh7QzZlG2rAm1PG32HrD31JJJB69PZ6AICNO+ZPRAVsc/PLWfzOywiLSmqdnhMU04FR2yeMVudUZ7UYW0Mgz5Gca34JO7ut/vFVJDX4wDb2WxoHuk9hp0QUF
+X-Rspamd-Server: rspam07
+X-Stat-Signature: wby4dk79ai73d9qjyif3rqde34dq4i8g
+X-HE-Tag: 1790282252-442698
+X-HE-Meta: U2FsdGVkX18Kke7QK7tryd36UtfdZoYXMf8VEsGNxPOnVy6xdO+/LJ0s5mxCEiYYGg8pExCQBteqLeZyfDB1zijZ7FL0M2Dqc5bCBSNhjitDU9OiRdO/VxgHc9fgouFoQtqGMBhLwXB3DSmRyv+rduvjUltL/D9/3Qiphx2n3uch11tFBragVY73+D7rGVBRZSrjTci5oJW99I4aKIaGbYSMCH6bkLbIwShM1QtKEE6XjodrnnK+jbU/eRcEeLP/MsCw2aBrlImog3K2kKHUFPatWiAhUkWGOg3upcBuZqds1fNt/LnlflwHku8nZ7KpGDNm0SN0brFDUC2YK+YsHO5IOJ/JY2uJoUIApHvbxjgQ90Uj0bANqZL/mLb0V3y0twXNZVnVhsvAmbyD2eHY1pfPn3EbXYO43/wnwDw0fN1RfKcVF9RhzI24N7+YVrH0q4GhajbfpBgcR54fNAF6DobXJ1GNGxOuX7ZtFBphRKrU74dgPOprEE+skk4QRTWFx1dJiu/aHC+5BapXPVmqSgusECFVbhgnWmH8O3T+O6yQ7+733ongubJ5pkLdXuRbJoqo25qJ33iVyUYLtWrmAsm5G575U+58nwnnDyRofi4241ZXOpAYlTwN8ye6fkP2ouqLSzDxvCmtiejMZCy8YG6DxKz5zs3H7i26YXtjEvfcjuanlf9B3wKD8bC2pUinpd9az2mnUIE3PxGh+SbqNPLpml6YKPIA2KmSdMP6r4NbehREVBtGAbgMbqHrnELxH5S9FNzEvoKLupKNY0rI66KOYzZ28bEd+prbGJLkpaiTZ25AGy/dlpkW85W2t27cl46asLYKdLzJw4xjIF2xf8Rlm+dXEmgQRTBWqpzPkIuDJZh4IPR2oxBFB5Vhs8ZqzkJvx63hRMZ37EijnwBrut23rGEwUTyi7VJuVSHZXkEm4u/qrMtskekCnSY/jvDJB6lwoCnrYm68Ff7Nsvd
+ r7Oj7TWn
+ B5KTq5GSvjXHkkD9ERhYk1CnLND/OVzXdhsAgJWnAfX4Hsdfr73opY5VJgS8ZT1SiRr7JCqsD9YnmzTYj00wP181C0aMWZJxAoIhCcfs5nehgeN1Q8Pn9F84g39i11iFBuR1euG0P1JqmqYDsgqBw0D8LzYvlxLZXhS3HNLvaistqnAS59BODLE5wT+Z0Tj/qHytKfdL7K+0G5AGMYY317+CHh1g0P9aDNO5jT1uZjuYr/27ituJmx70uDCB8VTSz8iWV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,25 +148,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/14/26 14:28, Usama Arif wrote:
-> zswap stores swapped-out pages one at a time, so a range of swap slots can
-> be split between zswap entries and the backing device. A high-order
-> swap-cache folio over such a range cannot be read back in one go: the disk
-> read would return stale or zero data for every slot zswap owns.
+> smaps_pmd_entry() derives a page from a non-present PMD and gives up if it
+> cannot. A PMD swap entry carries no PFN, so a swapped-out THP is accounted
+> nowhere: its bytes show up in neither Swap nor SwapPss, and VmSwap silently
+> loses them.
 > 
-> Reject that in __swap_cache_alloc(). Do the check after the folio is in the
-> swap cache: from that point zswap can neither start storing nor start
-> writing back any slot in the range, so the answer is stable. Callers
-> already fall back to order-0, which zswap_load() handles per page.
+> The slots of a PMD swap entry can have different swap reference counts, so
+> SwapPss has to be computed one slot at a time rather than divided once.
+> Factor that loop out of smaps_pte_entry() and call it from both levels,
+> then return early: a swapped-out THP is not resident and must not be added
+> to AnonHugePages or Rss.
 > 
-> Export zswap_is_present() for the PMD-order swap-in users added later.
+> pagemap needs no equivalent change - it already emits PM_SWAP and
+> type | offset+idx for a PFN-less softleaf entry - but its
+> thp_migration_supported() gate answers a different question than the decode
+> requires, so use pmd_is_valid_softleaf() there instead.
 > 
-> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 > Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
+>  fs/proc/task_mmu.c | 42 ++++++++++++++++++++++++++++--------------
+>  1 file changed, 28 insertions(+), 14 deletions(-)
+> 
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 24425e2308951..aa3f4d54a8580 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -957,6 +957,27 @@ static void smaps_pte_hole_lookup(unsigned long addr, struct mm_walk *walk)
+>  #endif
+>  }
+>  
+> +static void smaps_account_swap(struct mem_size_stats *mss,
+> +			       softleaf_t entry, unsigned long size)
 
-For 10:30pm that is way over my head to review. I'll rest assured that zswap
-folks have that under control.
+Wouldn't consuming nr_pages be more consistent with other functions that consume
+swap entry ranges?
+
+> +{
+> +	unsigned long nr_pages = size >> PAGE_SHIFT;
+> +
+> +	mss->swap += size;
+> +	do {
+> +		int mapcount = swp_swapcount(entry);
+
+While at it, can you please call that swapcount?
+
+> +
+> +		if (mapcount >= 2) {
+> +			u64 pss_delta = (u64)PAGE_SIZE << PSS_SHIFT;
+> +
+> +			do_div(pss_delta, mapcount);
+> +			mss->swap_pss += pss_delta;
+> +		} else {
+> +			mss->swap_pss += (u64)PAGE_SIZE << PSS_SHIFT;
+> +		}
+> +		entry.val++;
+> +	} while (--nr_pages);
+> +}
+
+
+[...]
+
+> @@ -2000,7 +2014,7 @@ static int pagemap_pmd_range_thp(pmd_t *pmdp, unsigned long addr,
+>  			flags |= PM_UFFD_WP;
+>  		if (pm->show_pfn)
+>  			frame = pmd_pfn(pmd) + idx;
+> -	} else if (thp_migration_supported()) {
+> +	} else if (pmd_is_valid_softleaf(pmd)) {
+>  		const softleaf_t entry = softleaf_from_pmd(pmd);
+>  		unsigned long offset;
+>  
+
+Interesting, the function already seems to do what we want. Weird that we
+indicate PM_SWAP for migration entries ...
+
+Also, are device_private PMD's handled correctly? *doubt*
+
+[maybe there were patches, not sure]
 
 -- 
 Cheers,
