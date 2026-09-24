@@ -4,113 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36049C98315
-	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:55:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F507C98314
+	for <linux-mm@archiver.kernel.org>; Thu, 24 Sep 2026 07:56:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 20C7C6B0096; Thu, 24 Sep 2026 03:55:16 -0400 (EDT)
+	id 6066B6B0099; Thu, 24 Sep 2026 03:56:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BD926B0098; Thu, 24 Sep 2026 03:55:16 -0400 (EDT)
+	id 5B6E16B009B; Thu, 24 Sep 2026 03:56:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AD236B0099; Thu, 24 Sep 2026 03:55:16 -0400 (EDT)
+	id 4CE286B009D; Thu, 24 Sep 2026 03:56:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC0A66B0096
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:55:15 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 741CF4024A
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:55:15 +0000 (UTC)
-X-FDA: 85247895390.23.91C7349
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C13CF180005
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:55:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lvFYpHpV;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2174C6B0099
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 03:56:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87586A02B6
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:56:40 +0000 (UTC)
+X-FDA: 85247898960.04.E92356B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id EEF9A40009
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 07:56:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odmVQ7Dt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790236513;
+	s=arc-20220608; t=1790236599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8XF4GERg8wBeW3ubUb+zC5tRVKKAYGhsksCUCrCMyIE=;
-	b=R0TTqy2VbRiwol+u7MYJGnBqCWDpfv11LkooO+r+xHZejDswbaOHJe8jlZzQCc6S1HKBJe
-	SGdbJoxG9xLRGkMr+VQdHxR2wOMUGcf+lJ8bfHgVrV8opR2xb8sayWcJ8JZEPNXv0shK/c
-	nEBJv2ccWEYUKhSOBK39LpSNnWTOgnc=
+	bh=AMvc3Z//XYqelk8JnFtLHUgeDJdTu8PnHAzgmjTWd/c=;
+	b=jFITbrMXjJuFRSKggxu2WcDdcIwkqYClckN5UUicOBAuidqdRRuZSaWLcuyXCHsig8hi/l
+	fAryPvyGcILeRLJ2DG31f29bCZHfkm4Vo+e1sjNWq1d58Knp8kx4CcqHuzHAAXwTVzm8v/
+	EYGZcXnM4fyVbwF+x4I/0hIoTS1srFg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lvFYpHpV;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=odmVQ7Dt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790236513;
-	b=erwGYLfHYDkInrcsZJ9M4PeLyj7hra+hfuFA0mzlYovAnPBhPdSk5SLo/xfkOtSXIVVISV
-	FbDzx8DaWgbFrqmxoyBIFY9ReKDD/0Pj109S/zOjA7SOw/9BBjF6ZhUMMQL8qRp04xt9iO
-	+9XdV3vXMqT6UgTLBD96iCEJRQ+/uhQ=
+	t=1790236599;
+	b=I+9KMt2Q6dEHy47dS5stRsUSClIT+vYzzaXb+7I1/6WtvQ+bw111A/oGyQ+lXvAhlQJrXf
+	4v2D+iIeRuslm8jHKSHraNoZIlkHKJ46dAYI1sdU3eE0AkJWH+GVZm2ZGjj4sm7NYBYno6
+	t1+yGLrulHA86+IIQUWDlHpvIrcVWYI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9B826417DD;
-	Thu, 24 Sep 2026 07:55:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7BC1F000FF;
-	Thu, 24 Sep 2026 07:54:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B60E601FF;
+	Thu, 24 Sep 2026 07:56:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14CE1F00893;
+	Thu, 24 Sep 2026 07:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790236512;
-	bh=8XF4GERg8wBeW3ubUb+zC5tRVKKAYGhsksCUCrCMyIE=;
+	s=k20260515; t=1790236598;
+	bh=AMvc3Z//XYqelk8JnFtLHUgeDJdTu8PnHAzgmjTWd/c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lvFYpHpVMwPBfEiIuvmYeJUUzULg6cdEWSx4iWYVWk727A5rZV5bpt/5Sjkl2pSTJ
-	 +koGcSegVzDsG20kO8t41OXmh6KWyi8RNfZl2ErJwNIuTh23tjzoeT8Dv37tsGeg79
-	 61gp8tpMx2xIK3zP8kYJIEm2UGPz0MsuiqmNKxY9v5C+ubE70585sEQgHP0rrKt73G
-	 695MVjPFlFxGNvVaOlYp2A83auWFA74egHtR5nruPWwDU0nzqWrYwTTl+K4hgYPEPV
-	 DQ3pwEy3zgSLOIKKJ8W+2SiDFy6P5qvxi1PY+qb9cXOQdaC3iHQ+VtthIr/FlkyQ/I
-	 POZQV/h73LJFA==
-Date: Thu, 24 Sep 2026 08:54:49 +0100
+	b=odmVQ7DtmdRtAwA/YGAps0oiLrwR0LA/kI1F1X+zml5UI3/3DHB+da17YrzTVC0qV
+	 yH+LFPuJtIOZ1e3d0k0n/QxBncDgj2d5slyT9T8+axmeNtQu9cm4aJ3VOXKKfbIJN/
+	 Jxxs/Utmeh371xIq0ZBHMAJSqKNfjoBC6GKLYGpuvhME/fL4bP8NC7+9X8KLskQu7z
+	 EWUlYS/Dq1VaR0i9DlgE1AorfAS4rbTCvdUFUbG49vzFiClOLSO8fcSbWDxusmNaek
+	 YQg3ejgRGzP+Vhtl/h12snOugfWYh9d8Z25MU6NXX8mHKc6NtiDSOvf+QiZcdyN/Um
+	 zLnGpAu0IZzGQ==
+Date: Thu, 24 Sep 2026 08:56:33 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com, 
-	dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org, 
-	guoren@kernel.org, bcain@kernel.org, geert@linux-m68k.org, dinguyen@kernel.org, 
-	schuster.simon@siemens-energy.com, jonas@southpole.se, stefan.kristiansson@saunalahti.fi, 
-	shorne@gmail.com, dalias@libc.org, glaubitz@physik.fu-berlin.de, pjw@kernel.org, 
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, linux@armlinux.org.uk, 
-	vgupta@kernel.org, monstr@monstr.eu, chris@zankel.net, jcmvbkbc@gmail.com, 
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org, 
-	davem@davemloft.net, andreas@gaisler.com, richard.henderson@linaro.org, 
-	mattst88@gmail.com, linmag7@gmail.com, catalin.marinas@arm.com, mark.rutland@arm.com, 
-	chenhuacai@kernel.org, kernel@xen0n.name, tsbogend@alpha.franken.de, 
-	James.Bottomley@hansenpartnership.com, deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	chleroy@kernel.org, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, richard@nod.at, 
-	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	arnd@arndb.de, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jgg@ziepe.ca, jhubbard@nvidia.com, peterx@redhat.com, 
-	ysato@users.sourceforge.jp, shakeel.butt@linux.dev, corbet@lwn.net, rdunlap@infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org, 
-	linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-s390@vger.kernel.org, linux-um@lists.infradead.org, hughd@google.com, 
-	qi.zheng@linux.dev, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 12/12] mm: change the contract for free_pgtables(),
- update docs
-Message-ID: <arTXJXUhjNTWz9Ga@gremlin>
-References: <20260922-rcu-pagetable-freeing-v4-12-fe1ad1f1e303@kernel.org>
- <20260924032625.28555-1-lance.yang@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mm/vma: predicate setting mmap_prepare VMA fields on new
+ vma alloc
+Message-ID: <arTT5RfK4gjW_f0d@gremlin>
+References: <20260923-fix-mmap-prepare-overwrite-v1-1-3b3f1bfcdf5e@kernel.org>
+ <a4bf1f96-787d-4c1e-9bef-52ab2be570ae@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260924032625.28555-1-lance.yang@linux.dev>
-X-Rspamd-Queue-Id: C13CF180005
+In-Reply-To: <a4bf1f96-787d-4c1e-9bef-52ab2be570ae@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: enb8dfaafpyzzxam869qmgoose8eaitq
-X-HE-Tag: 1790236513-558170
-X-HE-Meta: U2FsdGVkX180BnMSlMJG2deBYKuMC1FpAShL8H339g+YnUG8SCyYzIfSDSiej/fll+X8TI/1e6U9osLOCvBYBirOI9BL0UGig1y4i2nz6LO00Vyxik+vZ7ncoIDyPgL+zAYEiqxp3NZ+SgDOF3RknmGjtAGJ4Zrp+3KlJseVBkiWiVQN+uifb+7WkdZQA4O1r9/uJIkcur3js9O0SE1S3PA8uTIw3jEzPSN4Q0TbkUzU03sWrzI4zYGSwlqN6MyrEvkmy8ZIXbdu2RXlvFagOF5nB7fxm/W81zmZV+cqCz49MWtIwfW81tA0QRncmPP93uFJWMw8pOWakgYCo7WuzBXtbzdxNGk+zkRqkn0fvQwFeai5C9NkDKOo2xmdaLKukFC/ZBRbwAphO2jQaA1HugaHeadVA3d+tXKoGMKBj6UIRdAkfADuidsY5O0aF0DVV6CpZj8gw/C3Iwt+6FDn6xK0I3USwjlhcSPmwU2NPhdXGtzisVnF0UR8aL5LGCq2sNZ1JzZyuQHb5Pc/+6wcLEdzY+u57lsZ2xBQ4sjHShz7HOUdIeUjd+RwUxqVRiwpcHDx9wQnCCuHe+aZ7OwtVytiHJA8Uhw4R2RWz0f4YIOLgme4k8sNE1WFdr2JY4MZHgl88giCNkjJbf1Um/GrtpQ9yLgOd/08bX30CgKjEgmuuBCYELKY5kzKWXvKp74FRgqR/J8J6cfIcdYv7XTq6o9rhxD3qt700FsPkI15G1tMIDV3diPJPxA75PzhTFnvn/s+/rn1eiwhbl5rF3R674S+4y31ecgIQG59hgu1b416YVkIUHuM8b0Z5TPq/p9SkUgsNEhKlU6KTFa/14zokDAeFsjkLQsHX/mXsf+53NXoGV/TwGHm4qOdSjL405x6zRreWSs2YSGXAtQlgWTQ+i0B6bCk+VoRYuha9x+8XVuQ2TGJzDzpIOGqbyzA8g8j8ZO3Yta33qAc8L4+IHv
- n5toSHq/
- MkI3VI7q6vtZ4bddP4Dsg4wOr4wVAR1QSPfPmT402rz7xbR/fRL62BWbMcvq132Ebp5hCOGJI6PsxQIiBOUdxScwQDPTcPjOfdt/3EiN4UUREniOQRTyYzEfih+GSJBgdQLWmtQYl+sUA4j5mR0dgoxp0IF08yMMnE2N3gASolVyK6uR2WuC4jIVHF7lFiYKDbEi70ytECLFhG1e9OXz1RqVnU3BOZJq5K9f9H22LaSk5QZ3GqXR/zza4q/gZnnh6XQWcL6JGUaizIVWBZR8qhfqLC8Otak77vY7h34PwnyWmEHI5MACjbxcYykyk1FPI5USrC5fFi+Amj2dAK+vGZRM9gNzvpDYHqC9vqX4ENc3KheQBgBuVxFYa03Dpr2pqlR6B3r7Y1tdHAxyEmbTS3xOGSQ==
+X-Stat-Signature: xh65ern3t84xa18bdktchhmshz1u1hpm
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EEF9A40009
+X-HE-Tag: 1790236598-640082
+X-HE-Meta: U2FsdGVkX18X6FGAHg5Xaf8GOmfT63PKjlgBHFHfx/MNucI5K21ZhVvBUUL78vXYg+PxDsozcyQchaUMS+wvutAuhl9BA6/dnXxtmQERDWEiACROEgtz28J9TvaR4ERd/WtByZvBbkVGqIMyRjxR0ZvCODkJ3PMNKjccuFpRymWr+YXUOVZUSq57SMvpZFGfG5/pPzDi0Z4zvBchvMXdMYW9AmQXLLSE0uRKK8iDNQ2AKHI2Y16uIZO0ghKfCdnAZyjBGV195O+/PYqQFLbXDUoBFv/xPNAC94kZIkT5LNT3caX7y/1SQhxWgGPBfpNQRYRRvaCZlqBcPFx5ypdmZ2iDJxO+E2hAWmWrGtidBwEZbcUvm2H6Y2aH0dqIaMr58tPIrE2eAe4FqNUCp0g9SHV/WYMGrCzdqWFRATIVadkhaaFA4AxHKuzRA2Y+mp+NRV2ux4mdLUuCCK+4fndykcWnoNnPl1+jvUpYrm780Ueq3wL6hwS6gXH8FzK2X2C5cM4Mo5oDUtp/lpJRI/cJWkjnwU7hEVprvdQ/CwMoKB84rVDg2PLddGrIRo5K7g3skiGXQwdSSdVGzSeAzFgb1ValbWVpqKCbh2A8pVsEVEz3JzoRjmr5/k51aqFa342NB0Pjur0QTAmEyZ9on+VpAwdTkx0ACRX0UuDXXXNoyTLcBWp5j35K4j5R813flt2I3SHWWxL8hxtXRHOfMPvwehxIjWtSJ5g45e26J+CsTnWlSvpF8yCd0UVzA0Jm1DmiTUbo6mI4ryn2yTEFTWRqGdF8Wd3D2FVvQGz2Zb4rTpHEwy08KKKIc84s1RFkNgwxMP9+PWMbzlOZ5sUHQcyAZ9B59Jv9oEHvrPuTY6Vp/fvBaCtZBzzU3s8xUyYO69kQVlfsBvEWXq/AdSQRHTtdgwhT/smtxrfSO4Fd2FFxbOl9KDPVTFShjcwgyFJR1e2A3bf5sAYr+Uq71Of1X9H
+ hAoomwCh
+ c1blKpuViZDsn1h9PDbsfEMe/6bHFX+zJsDAINKIM5/9c/TNrbKOCqEc9NB8jCDl7GXdZMEp1uDL2fzB+s9dM3M3o2j11WAYdzvj5gjD1mrH+nrxXbYYuk4QVwfyDngZcGorvNfUxe8JKlo4RNl8jcKLVGB602GgLyksmANAGNMjhUIfJ8EbLngwLYN7PfYlQBe+xkbHH/PmrnttggORRoi8yjsgg2tlr3hlGkpKy6gybyXN9eH50QW1zN+DQaYJV6i8locv0KNLH6HBUwdrQ8Gkhp20LgPOg3C00vCcTXmScDWTysgg7ccRZrN8t9K4VXkG9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,84 +94,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 11:26:25AM +0800, Lance Yang wrote:
+On Thu, Sep 24, 2026 at 09:19:26AM +0200, Vlastimil Babka (SUSE) wrote:
+> On 9/23/26 19:45, Lorenzo Stoakes (ARM) wrote:
+> > It only makes sense to manipulate VMA fields if a new VMA was allocated,
+> > rather than merged.
+> >
+> > VMA merging does not compare vm_ops or vm_private_data, so a merged VMA
+> > keeps its own, which is also what the legacy f_op->mmap path does since it
+> > never touches an existing VMA.
+> >
+> > Currently, these fields will get overwritten by whatever state is
+> > established in the mmap_prepare hook, and if the VMA was merged,
+> > vm_ops->mapped will not have been called, so this could destructively clear
+> > existing state without replacing it with anything valid.
+> >
+> > There is an implicit requirement that vm_private_data and vm_ops are
+> > fungible across VMAs which means that losing the 'new' state is
+> > fine.
+> >
+> > However in this case the 'old' state is being overwritten by potentially
+> > invalid 'new' state, so this must be rectified.
+> >
+> > Additionally constify have_mmap_prepare while here.
+> >
+> > All existing in-tree users either derive state for the tree or are
+> > unmergeable due to VMA flags, so this has no direct impact.
+> >
+> > Fixes: c84bf6dd2b83 ("mm: introduce new .mmap_prepare() file callback")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> > Note that this is cc: stable to account for any possible back-ports that could
+> > break it (unlikely)
 >
-> On Tue, Sep 22, 2026 at 04:35:43PM +0100, Lorenzo Stoakes (ARM) wrote:
-> >Now that page tables are freed after an RCU grace period, it is safe for
-> >read-only page table walkers to walk page table ranges that are being
-> >concurrently torn down, provided the mm is kept alive via mmgrab().
-> >
-> >It is however unsafe for writers to do so, as they must obtain an
-> >appropriate lock to do so safely.
-> >
-> >Update the pte_offset_map_lock()'s comment block to reflect this.
-> >
-> >Similarly update the process addresses documentation.
-> >
-> >Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> >Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> >---
-> > Documentation/mm/process_addrs.rst |  6 ++++++
-> > mm/pgtable-generic.c               | 15 +++++++++++----
-> > 2 files changed, 17 insertions(+), 4 deletions(-)
-> >
-> >diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-> >index a7296f251799..b1f4f44d75eb 100644
-> >--- a/Documentation/mm/process_addrs.rst
-> >+++ b/Documentation/mm/process_addrs.rst
-> >@@ -537,6 +537,12 @@ We establish basic locking rules when interacting with page tables:
-> > * When changing a page table entry the page table lock for that page table
-> >   **must** be held, except if you can safely assume nobody can access the page
-> >   tables concurrently (such as on invocation of :c:func:`!free_pgtables`).
-> >+* Page tables may be *walked* under RCU alone, as page tables are freed only
-> >+  after an RCU grace period has elapsed. However, any entry found must be
-> >+  revalidated after the page table lock is taken (such as the
-> >+  :c:func:`!pmd_same` recheck performed by :c:func:`!pte_offset_map_lock`)
-> >+  before it is acted upon. Changing an entry requires the page table
-> >+  lock and one of the locks that excludes teardown (mmap or VMA lock).
->
-> What about rmap walkers? try_to_unmap() clears PTEs under the rmap lock
-> and PTL, without an mmap or VMA lock.
+> Does it mean that patches are on the way to mainline that will break it, but
+> it's unlikely they will be backported? Or there are no such patches yet?
 
-That's an abomination but yep will update.
+Nope it's highly unlikely. You'd have to introduce a brand new mmap_prepare
+etc. etc.
+
+> Just curious... if it's the first case then with the amount of random stuff
+> that goes to stable these days, I'd rather assume they could be backported
+> at some point :)
+
+Suren insisted on it being a fix and I didn't really want to argue.
+
+I thought perhaps it hit something real but when writing the patch I asked
+the LLM to actually check and it seems not, which is exactly what I thought
+initially and why this wasn't a fix.
+
+Anyway it's a small change so I think it's fine for stable.
 
 >
-> Cheers, Lance
+> or out-of-tree modules which might be affected.
 >
-> > * Reads from and writes to page table entries must be *appropriately*
-> >   atomic. See the section on atomicity below for details.
-> > * Populating previously empty entries requires that the mmap or VMA locks are
-> >diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> >index b91b1a98029c..a127e3e8f9b9 100644
-> >--- a/mm/pgtable-generic.c
-> >+++ b/mm/pgtable-generic.c
-> >@@ -385,10 +385,17 @@ pte_t *pte_offset_map_rw_nolock(struct mm_struct *mm, pmd_t *pmd,
-> >  * Note: "RO" / "RW" expresses the intended semantics, not that the *kmap* will
-> >  * be read-only/read-write protected.
-> >  *
-> >- * Note that free_pgtables(), used after unmapping detached vmas, or when
-> >- * exiting the whole mm, does not take page table lock before freeing a page
-> >- * table, and may not use RCU at all: "outsiders" like khugepaged should avoid
-> >- * pte_offset_map() and co once the vma is detached from mm or mm_users is zero.
-> >+ * Note that free_pgtables(), used after unmapping detached vmas or when exiting
-> >+ * the whole mm, does not take a page table lock before freeing a page table.
-> >+ *
-> >+ * As page table freeing itself is RCU-safe, page table readers can safely run
-> >+ * concurrently with page table teardown.
-> >+ *
-> >+ * However, writers CANNOT as, without a lock being held, nothing prevents
-> >+ * concurrent teardown.
-> >+ *
-> >+ * Also note that the PGD itself is freed at mmdrop() time, not under RCU - so
-> >+ * the walker must keep the mm alive either by pinning the mm or the VMA.
-> >  */
-> > pte_t *pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
-> > 			   unsigned long addr, spinlock_t **ptlp)
+> That is never a concern, and even suggesting it can bring hch's wrath ;)
+
+Yeah that's what I assumed.
+
+>
+> Anyway,
+>
+> Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+Thanks
+
+>
+>
+> > ---
+> >  mm/vma.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > >
-> >--
-> >2.55.0
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index 9f0a0acf694a..6cde67883fb0 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -2849,7 +2849,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+> >  {
+> >  	struct mm_struct *mm = current->mm;
+> >  	struct vm_area_struct *vma = NULL;
+> > -	bool have_mmap_prepare = file && file->f_op->mmap_prepare;
+> > +	const bool have_mmap_prepare = file && file->f_op->mmap_prepare;
+> >  	VMA_ITERATOR(vmi, mm, addr);
+> >  	const pgoff_t anon_pgoff = addr >> PAGE_SHIFT;
+> >  	MMAP_STATE(map, mm, &vmi, addr, len, pgoff, anon_pgoff, vma_flags, file);
+> > @@ -2892,7 +2892,7 @@ static unsigned long __mmap_region(struct file *file, unsigned long addr,
+> >  		allocated_new = true;
+> >  	}
 > >
+> > -	if (have_mmap_prepare)
+> > +	if (have_mmap_prepare && allocated_new)
+> >  		set_vma_user_defined_fields(vma, &map);
 > >
+> >  	__mmap_complete(&map, vma);
+> >
+> > ---
+> > base-commit: fe2ec83746e501645709761605c2464a44fd2929
+> > change-id: 20260923-fix-mmap-prepare-overwrite-6304d112a4c7
+> >
+> > Best regards,
+>
 
 --
 Cheers, Lorenzo
