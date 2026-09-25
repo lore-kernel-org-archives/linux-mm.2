@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEFAC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 13:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 669E6C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 13:03:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C166C6B0093; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
+	id 7849C6B0095; Fri, 25 Sep 2026 09:03:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9E086B0095; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
+	id 735F16B0096; Fri, 25 Sep 2026 09:03:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A67D66B0096; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
+	id 64AC36B0098; Fri, 25 Sep 2026 09:03:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A2186B0093
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3B83140666
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:00:45 +0000 (UTC)
-X-FDA: 85252294050.21.48C7B5D
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 258E880007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:00:42 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Tv9kOHeK;
-	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 40AFB6B0095
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:03:02 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C561EA0665
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:03:01 +0000 (UTC)
+X-FDA: 85252299762.22.AEF0976
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 42DE01C0006
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:03:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WNlscdXN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790341244;
+	s=arc-20220608; t=1790341380;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
-	b=TSQwdLaPGmYhhMcq9W8TeT8MNiwsGQ5K10EqSs4DEJ5scXxkmkAKlcbUdPeNuuVKYep41K
-	URFofFINXL7jMOf4ntejJ1g8Bk1jSu6/m7F8JuoBtrD0e7cXJeqorBQiBaz0hw1FJOzcHc
-	V31mr1Cv9MrIWUW+DGPG0amdpExjKPU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790341244;
-	b=G9Mnrsai+pCwwWEJbYM53i4dl19jker5zi4njCzQkMQXXNyu7BcRsc14sIDhmC+IBh5xVJ
-	rWlcyUlfJiCV+njWSfqa9KeXlW7g4HbgGsmztvV7BHK1aWPlxUdQYdfc4FRjGtWUUQ8ldt
-	ZbHndM5vP+ScSwl1Ly8cH+jWlwMy5iQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=BSVHtbgr7nZGd5dozOxzx685KlCmq8P9tbgu4h3dnZU=;
+	b=yGQWw+49UtA8idC1xgqkOuZyFhqOZRHL0fC7loIh1Ls447zhDE9rPGkaRSSzB+bkAFB9yi
+	NtfdQA7FiYmAHlmXAcM1I9YWrbr/LnkJ0yH2lyTu3Xom3n0Y/J4ieKiB4L88Bal2UF0twZ
+	RWJ3lax0fDjNFnZQ+ZApundlMOOb8v8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=Tv9kOHeK;
-	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db22383fe8so2977475ad.2
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1790341242; x=1790946042; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
-        b=Tv9kOHeKIJSeLS9PgU2OI1p3J17A0ta2uK6Yd5j7UUgaObLCgqBIgBtewpi7Eeycrt
-         AWltVWMVwzoYCVNvAVRQEIaqPbxp3F/H+/fFT4TUmYSUlc1Ww9LSp81bzrmKkSXGCLwY
-         xLmnq9mFY7CmnP02B/2K5e7F3o08td10yWX82YMVF8bvQnssdQujsF0PgpdUdlfDeqjI
-         0JqJkSwqunxdaAOjtjQYR0gQOC1b9NQkqt7lt5/0PojcOrqXaCL0wYx7RDT1y8W8vs3y
-         oeze5pulHbKkQu8Nttq07/xgU814bi1JJOC2YFh8Fjk0rqpsieqJXsjtn1djldVXo/FV
-         +c4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790341242; x=1790946042;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
-        b=P29+50zyyskXTu3E4tC+gRdL6B2byR5LCLzGWmA4duWp1Fsf8Jdm0bYDSJAC6hU32W
-         fp8hTotftiiKEKqG9f3J9wdv3ow2mker3b6c4ztqAsyEbZ0ZS/CYnCk9h4l4Eff0XbMc
-         Pmr/Efh5O+DSK74Y3MJlMe9xy6x0wHnozfFP962cOCMuGpOVUuV+iuBo28Hwj5l7u1mW
-         McZXH+wWZQjQb4lS7V7HW6pcus/dpVGUUX86G3D6CKRYXwi8cZYDrr3FnZYYvCGPGIId
-         Ur/4i064JCQvKeqIE/tb+I2B1K921hn9t8Gt+2fu3uJPNPsoJA3PXXw3VKRbJ1jtbNZg
-         M+Vg==
-X-Forwarded-Encrypted: i=1; AKwUvByA1Kwy+qN+NJQuwX0tsGwH80XsyT6Qctg6YBngC3mMPnvMvC8NOYyfZj5eSaErNY3RNInVgRafcg==@kvack.org
-X-Gm-Message-State: AFuF++k8E2Ox/T8FdeSl7ibse3xe5qg2FiZjBg5MQZV3/++Zs48vS4Z/
-	LMR6Yf0qu7B6lXYkeSQvBlb5fy5NjAqE+z2WGrU/4HHwxAEk72Ih1Kb2Be+sCHUioGo=
-X-Gm-Gg: AYBFou0YSP0kO9eWrgn6ZDuIyooGwwIjPkrZXcUBet2jO2noe6IOVxrbAC8y3chSSl9
-	1TDfGLmYSUYzgxHJF1Ao23GtwDn2dy6FyLP3X/s4mB8uUu8q5eaehnxkVPDNWN4CrAlAO7c/N3f
-	Sr5AKowXFPL0+KJKIMCko4wDgZhojvt626nGo8JlZ3GuXN/NgxOOwncpr6ofniNVEb4Kj3K3ID5
-	NSxiHx1zakmmDsZWn4FmNxwbCHrWyMw+7+Cmkxm09qINOCh4DemXwxxRLbfvfqVpNormY/W74JJ
-	O5nakazvN7+Q8wXvfheUKJonrKF/jzVCRzSnH0nRlVnDruSxZVe1rI5oOecLbyA5mL/5nP/ZSxS
-	QZLk6b8ifuK3ZszPa0ArXUCZkioA3E7XRxtMDf7WYTsKXR2vkxKSaH/F89MbUpjVVusN6dFCcp0
-	erVtV0YgxBJT8xqFbvDialH91vg0wn1gc4x8jT9I6aThDxzmy/M00G/BOyWi08iUCDaaf1Ywlnr
-	APT90NWN5Qn8ROVexWVuJkBXBwFbQs=
-X-Received: by 2002:a17:902:ec8b:b0:2dd:c053:82f6 with SMTP id d9443c01a7336-2df7deb7a71mr48844055ad.45.1790341241383;
-        Fri, 25 Sep 2026 06:00:41 -0700 (PDT)
-Received: from [10.254.237.61] ([139.177.225.234])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913de18asm9819175ad.26.2026.09.25.06.00.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 25 Sep 2026 06:00:40 -0700 (PDT)
-Message-ID: <87e10baa-13a8-4766-8d6d-9173a4b0c5c5@bytedance.com>
-Date: Fri, 25 Sep 2026 21:00:28 +0800
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WNlscdXN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of arnd@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=arnd@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790341380;
+	b=1RNH54Nan4P8eyBQA7T47aH5ofuiimYRxzvWYtHFUHAuo6H6FgSZkf6XTFhcFXJlW5GIrQ
+	gYIwT313qRBtkYGdHWclc7IBoJ/K8TWoWWWw4StPq02x4042NNl6gijrVUkxsZHc/3OhBm
+	wpX2EYlBsbBhD6mueA0ccJKragcvZo4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B67746022F;
+	Fri, 25 Sep 2026 13:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2101F00898;
+	Fri, 25 Sep 2026 13:02:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790341379;
+	bh=BSVHtbgr7nZGd5dozOxzx685KlCmq8P9tbgu4h3dnZU=;
+	h=From:To:Cc:Subject:Date;
+	b=WNlscdXN90cGNUO5qLV+qUylIQXV1twQZcwaPEvgzo893O5zSrhulbVIZMPPD3tSc
+	 CIE1Zo+FPehfA5Tz9xtSJibZ4mI27225gJrdT3ACPUOw4CB+eb5bVuf0Gsh/BKTbVT
+	 0p22ZY1mRW6pROBFRQYRQ0YvgnLT+Tzv9OqMSvHOSM6+5UpG7kgICT1jt42opK5SB8
+	 hCsYDjXM0k7isT/nMvumZP84dZe24nNRwy0nTcUCUBoiCPNW5AKIJ8pXMv46aqpHxk
+	 o9BRP3KxWIl/cyCBa3kZTurtFeRUOtzJOkMq1UOb0CptJiBb4ujOI/ItL+mUzq5d7Z
+	 DBy7OymJdGuZQ==
+From: Arnd Bergmann <arnd@kernel.org>
+To: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH] damon: reduce stack usage further
+Date: Fri, 25 Sep 2026 15:02:46 +0200
+Message-ID: <20260925130254.4022227-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/3] memcg,writeback: flush foreign bdev mappings
- separately from owner wbs
-To: Christoph Hellwig <hch@infradead.org>
-Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, tj@kernel.org,
- akpm@linux-foundation.org
-References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
- <20260925064444.3944820-3-sunjunchao@bytedance.com>
- <arYa1DbKNeAN-PLl@infradead.org>
-From: Julian Sun <sunjunchao@bytedance.com>
-In-Reply-To: <arYa1DbKNeAN-PLl@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hor8ek4o7ao9hqerumsrqk4hj6jb31z9
 X-Rspam-User: 
-X-Stat-Signature: z1zhjgmje8miaq9dk6oq4bj3rthk5ax8
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 258E880007
-X-HE-Tag: 1790341242-343106
-X-HE-Meta: U2FsdGVkX19J3MraEa8ZPi9bfBz+ZVC1X4xXfj4L9a5l+qlWEW0vmW+WQw3coMUiRqf+VqCCXFBmSTDzB34xIaPvKiXZGMQEskHnJhE26O//TidoXt2F6GgYvn8XAmlb+h3BxkOprmifXBBuDVCKWhePQ9yEWSYeOEjgIYql7+WkDL02JsulgVta1UwODOfEk4vYiEom59OUK8W5XK0wU/gEyr5AM61a+klVYGmXs/WwsLI4IxaDphVYvbI9JGVa2fA0IVwU5sk24qE87SDL4S/K8D8M8EUQSFxLu83Cq+HvWiHrWSMIM7/d+fhr6lxltogW0TSFYJNdq6tC1ewnLpeW+djau6MezriSUuOobokmNE93XWQRMHlncAxzMQ68eXmyy+Qol09s6s93ZfpGkIftOPrZojKlA6V9sL9JxFFuwG23y3WzayNA0f88D3KSy1Qqo5uj7ZdD8C4d12VA0Ynqii+a3Q9GHa199OiklotP8CG0nt7HvWRIEFlheCR8vYQthL/g8PPDBA8bdqChKlJSRxBRX3A4xVRED8nIh15cF58xwl+s7yM/Ls017cA+j8Sv+Bp7OR1DtsLgpKjD2Sjf9jTJ3tRJ15zjOFH192SZ9guVrDC6xEt4EQvWVG2+ZgF+lNmzMmc80BSx4YkdgmxJLUjft4iLKubLB7lG43rmkiegnU1hWS7oovcQgBv51jM7Ii17IgZDyK3sQKzGQ1OhO+iSdWUtptkcIvzuLC0XnFS7P6QMqpQ+E02/JkeP+HwXemXa0An+l8SKF7c7/puo4OVtnN8Hp7Wj12q5zeQP3oc8YUf2yI5Hu0Yh+P9+oBoyiJax5vqZc4tZfoLjktVljb34VLm5OGRhgo6gajrXdxS2lZ4zYLIfvn5Tol45r6N74sgrFVZSUhEVkYJqBd3mlXdYlok3S1Z/ODxQD6magU8pMiUEb6BzaV0Sq3GOPR0Rx4uu4RhUpF41rsT
- I3IFEB3k
- ujZwZrQEKcw9tOHfmYIAQTeT+8wUCOF0rclHBhWsVlp5gT982tOXkLNPSmqBlRsmtDnXSY966Z87/TyVtnf63qRwAvyhr6HYnK9XjRZRv8KScXZSyO4O1GTL1/qdD4BNl21C1zCjh1CnAjjRqNbhh6hauDpzMpjFidEJ8ZNyhFd28tvtsEgbllSRkrntSL86nOYF+5+Jd28ASe9VcEZuY1duUc9mSrulUJN9nr5V3B6SV378UwQX6w1zSJ0iyon71saG4Ey7uTNSg87POjM/MmvKN5XoO5yStmGWVMqo073MiMP4UO81f9jIgKjLNgg6o5v0VAh3vfAGxJx8vQsp5HoKiTmJdMDBdlwwQ/m31qlqpXtYXPSzZ3z4Cx1ON1h2p4l4c
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 42DE01C0006
+X-HE-Tag: 1790341380-730143
+X-HE-Meta: U2FsdGVkX19G6WtTuQmDivvTyAmdaOvfSZUOPPStRlPJan9n1VgU431q/ZI1FPJfo6vcSdqYIpsu/nCyeZksQlx32K+Ml/wT+qlgGsq+qa2WQ7oG8DUnNlGV6Wo2L2WxBD1ip8RdJdgANG1rhovTEZmzKf7des8Bq4CZrwJYqA6uMaDTXWtVw69sCC38gWsiV8YcbR+gKROxQ6Wu7etigaAAERPgjQnI/OLlwJ9piOe/RStXFA/vtCpExco6SQ5OfyuHWItaZjc98mAkaKIUO0Zk5j2Ud1Z1dDfgX2BjLtn91zn5/n365YmeNMT52ZI7CorI1xdJVyTNIqIrhu1Wo/84s12V/pKw0HS5/MHJ054qRioIkHgyWFdq5Y7IUXWs7K9cvT0oPq0vvK4ncOos2szjcRP2C+b+jcSgl/5BZxjW7MpaWjfK7DEKYbMYNZ1+hz/UHVNxOvyUNy7REGdHr1VuiaF9Y066gAlDgAzH/j+YvBKteQlFqmZIMdGgoIK1qBACN9LpiqXaFM6KHj8qv3nhqx54NwJVchigo2AUwHkivQgl3+8iDvogHg/8BgF5uHwq72AwZDtHeDwvQS/MpL0IWCRRf5ESJnpUy1/tdb08BrFu5pD3nRKaJg+/0UVZPeUhIVDH8Fh4xKOvBFAfvBRKKlR6CyaIAEAvvd5vP8hGyfIneu9Y85byHKyB7sc02ZW6N3iM5DcRAoujNlY2pUJu0TKJY449YZNBCuM89uFYKdcsK6i4MxT/A6uE3xB7FMhp/xDJPa308nIH0FRp9qe1g7V7PXRdkDL35ymU/XZhD+64Mszpf23IbpCZW1KULgUMBk4ZDqBUFulJbIrdMzH6PTssZ+seV0lWcBYRhZ7lDYdX1X+eaOCGsKmR05nPZXL7FwvJj6hFLomTrM48gCWELeRH9s2SgvXp41+py83gyUwc5TyMlYGP16TkitOeU7dunV8xDwb2SpT3cm4
+ VkcKjzMO
+ Pptq9ZXXZLEsIMltQYaoZCJatJRtcuGWKRkieo3ito1JPqfUchF4TwoQsMBMsqIS3VdgM+hEWqMZa1gSK4HqwYptaKTRTf1FRHRmE4gLmSKMJ8VLaOnp7NOfmk0xlWCWeBnA8IQXTq3iE8XMLcfJtd+KhXn9kB0yZi+OsjBtkLsOuVNz4ryMFYa3Wh3y7oOFBd8ZMpDCU5yyTxhLghQLpTlwd11upMj2Ak6HXBatpeEwomGX5MCFp3mdWqmFhNhU3bSd3inmE+MH4QmfuQ6LTL9pwcj6/kpal+0BI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,51 +97,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 2:55 PM, Christoph Hellwig wrote:
->> +/*
->> + * No extra memcg reference is taken: this work is embedded in the memcg,
->> + * and mem_cgroup_css_free() waits for it to finish before freeing the memcg.
->> + */
->> +struct memcg_bdev_frn {
-> 
-> No reason not to spell out foreign here..
+From: Arnd Bergmann <arnd@arndb.de>
 
-Yeah..Andrew and I discussed the naming in another thread. The idea was to stay 
-consistent with the existing naming and keep this patchset focused on the functional
-changes, leaving a broader naming cleanup to a separate patch.
+In a previous patch, I had annotated kdamond_tune_intervals() as
+noinline_for_stack in order to not exceed the stack frame warning
+limit. Unfortunately, my current linux-next randconfig builds show
+a similar problem again with clang-21:
 
-https://lore.kernel.org/linux-fsdevel/20260917065759.2643940-1-sunjunchao@bytedance.com/T/#m0d196c3b8376c9b51276f6c5d26ab9f29e170169
+mm/damon/core.c:3953:12: error: stack frame size (1288) exceeds limit (1280) in 'kdamond_fn' [-Werror,-Wframe-larger-than]
+ 3953 | static int kdamond_fn(void *data)
 
-> 
->> +		/* Reserve the slot: it may have become busy after the inflight check. */
-> 
-> Overly long line.
-> 
->> +	struct address_space *mapping = folio_mapping(folio);
->> +	struct inode *inode = mapping->host;
->> +
->> +	if (memcg_bdev_frn_wq && sb_is_blkdev_sb(inode->i_sb)) {
-> 
-> Why do we need a NULL check for the workqueue here?
-> 
->>  	memcg_wq = alloc_workqueue("memcg", WQ_PERCPU, 0);
->>  	WARN_ON(!memcg_wq);
->>  
->> +#ifdef CONFIG_CGROUP_WRITEBACK
->> +	memcg_bdev_frn_wq = alloc_workqueue("memcg_bdev_frn_flusher",
->> +					    WQ_UNBOUND, 0);
->> +	WARN_ON(!memcg_bdev_frn_wq);
->> +#endif
-> 
-> Instead please fail the boot.  If we can't alloc a workqueue at
-> boot time, we're toast anyway.
-I followed the existing memcg_wq allocation handling here, which also 
-warns and continues. Would it make sense to change both allocations to
-fail the boot in a separate patch, so the policy is consistent? 
-If you prefer to address both in this series, I'll make that change
-in the next revision.
+Do the same thing with kdamond_apply_schemes(), kdamond_merge_regions(),
+and kdamond_split_regions(), which also have individually large stacks.
+This should work to keep the deepest total stack depth down much more
+as well as avoid the warning.
 
-Thanks,
+I also tried to reduce the complexity of kdamond_fn() itself by splitting
+out the while() loop into a separate function. While this arguably led
+to slightly more readable code, it had no effect on the total stack
+usage and just made the new function the largest stack user and had
+a nonzero risk of me getting the conversion wrong.
+
+Fixes: 5a00cae64de1 ("mm/damon/core: reduce kernel stack usage")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ mm/damon/core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 4687b909d42c..9803b459a0a4 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3417,7 +3417,7 @@ static void damos_trace_stat(struct damon_ctx *c, struct damos *s)
+ 	trace_call__damos_stat_after_apply_interval(cidx, sidx, &s->stat);
+ }
+ 
+-static void kdamond_apply_schemes(struct damon_ctx *c)
++static noinline_for_stack void kdamond_apply_schemes(struct damon_ctx *c)
+ {
+ 	struct damon_target *t;
+ 	struct damos *s;
+@@ -3573,8 +3573,9 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
+  * while DAMON is running.  For such a case, repeat merging until the limit is
+  * met while increasing @threshold up to possible maximum level.
+  */
+-static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+-				  unsigned long sz_limit)
++static noinline_for_stack void kdamond_merge_regions(struct damon_ctx *c,
++						     unsigned int threshold,
++						     unsigned long sz_limit)
+ {
+ 	struct damon_target *t;
+ 	unsigned int nr_regions;
+@@ -3718,7 +3719,7 @@ static void damon_split_some_regions(struct damon_ctx *ctx,
+  * split was unnecessarily made, later 'kdamond_merge_regions()' will revert
+  * it.
+  */
+-static void kdamond_split_regions(struct damon_ctx *ctx)
++static noinline_for_stack void kdamond_split_regions(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t;
+ 	unsigned long nr_regions = 0;
 -- 
-Julian Sun <sunjunchao@bytedance.com>
+2.53.0
+
 
