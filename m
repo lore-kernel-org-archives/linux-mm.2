@@ -4,96 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11224C9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 12:56:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCEFAC9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 13:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0743A6B0088; Fri, 25 Sep 2026 08:56:40 -0400 (EDT)
+	id C166C6B0093; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04B886B0093; Fri, 25 Sep 2026 08:56:40 -0400 (EDT)
+	id B9E086B0095; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED2236B0088; Fri, 25 Sep 2026 08:56:39 -0400 (EDT)
+	id A67D66B0096; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CCA856B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:56:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67DE81A061D
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:56:39 +0000 (UTC)
-X-FDA: 85252283718.28.4A70CB4
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7F8E2140002
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:56:37 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="JQPp/4Pa";
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A2186B0093
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:00:46 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F3B83140666
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:00:45 +0000 (UTC)
+X-FDA: 85252294050.21.48C7B5D
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 258E880007
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 13:00:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Tv9kOHeK;
+	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790340997;
+	s=arc-20220608; t=1790341244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7SnpuRbhFJFzgkVobZlXzXiw+PNcOORF0vZ0Bl4vW4s=;
-	b=NYqYxMWd/yoLSSmWwzXrrtJw3/InxqsC8vFu72TFeHNWVotugdnZiRvdXi7o9kHI9+JYv7
-	TMSBpE26cCmP3yh/WgzfouibR1dGEVNtszECkbtvKGHYN0NTfUaYJADUmiY9435TCtXorH
-	opmzXVHSfljHfYHu0GqGaJc/cTV4eE0=
+	bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
+	b=TSQwdLaPGmYhhMcq9W8TeT8MNiwsGQ5K10EqSs4DEJ5scXxkmkAKlcbUdPeNuuVKYep41K
+	URFofFINXL7jMOf4ntejJ1g8Bk1jSu6/m7F8JuoBtrD0e7cXJeqorBQiBaz0hw1FJOzcHc
+	V31mr1Cv9MrIWUW+DGPG0amdpExjKPU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790340997;
-	b=kE7JhNcnj/yHlWyRHEBDv0rMltRbKo9IbFR7OJjxqWlIMnHgSzm36lVsZ/FzUwonYt5sAw
-	IvOTngxjE9AEHvAJ6rDQutBSAM1TZAW7+Y93UYk6B6NgNt6PJWRaCqVUbpjFdu1QfPNlhH
-	/Ej7K2yvutF2q1Ym/pRQxzjX25GCAzc=
+	t=1790341244;
+	b=G9Mnrsai+pCwwWEJbYM53i4dl19jker5zi4njCzQkMQXXNyu7BcRsc14sIDhmC+IBh5xVJ
+	rWlcyUlfJiCV+njWSfqa9KeXlW7g4HbgGsmztvV7BHK1aWPlxUdQYdfc4FRjGtWUUQ8ldt
+	ZbHndM5vP+ScSwl1Ly8cH+jWlwMy5iQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="JQPp/4Pa";
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 26934169C;
-	Fri, 25 Sep 2026 05:56:33 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A27B3F86C;
-	Fri, 25 Sep 2026 05:56:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790340996; bh=xm+mooZ0XkAGq6GKU7h4yi+KjgP6Je8ezgCLqOb4z6c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JQPp/4PadiQm3gluMM0otFqo8NCqzpexmW4TOx/2YJgBOhy9iBaZzg/USMbgG6i8G
-	 464Kwohpyq8Tb2u/dH+SbWe/zxdNlQkRc5bi07RReOMNdr0pxxsl2JAu2PC8Yl/rZY
-	 4d8OEjgeYrfLLTzrBon7MlH/RNJHRL4V6f2LIdAU=
-Message-ID: <ee423531-e2a0-4915-b089-905bba22d33a@arm.com>
-Date: Fri, 25 Sep 2026 18:26:28 +0530
+	imf02.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=Tv9kOHeK;
+	spf=pass (imf02.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj2-f13.google.com with SMTP id d9443c01a7336-2db22383fe8so2977475ad.2
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:00:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1790341242; x=1790946042; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
+        b=Tv9kOHeKIJSeLS9PgU2OI1p3J17A0ta2uK6Yd5j7UUgaObLCgqBIgBtewpi7Eeycrt
+         AWltVWMVwzoYCVNvAVRQEIaqPbxp3F/H+/fFT4TUmYSUlc1Ww9LSp81bzrmKkSXGCLwY
+         xLmnq9mFY7CmnP02B/2K5e7F3o08td10yWX82YMVF8bvQnssdQujsF0PgpdUdlfDeqjI
+         0JqJkSwqunxdaAOjtjQYR0gQOC1b9NQkqt7lt5/0PojcOrqXaCL0wYx7RDT1y8W8vs3y
+         oeze5pulHbKkQu8Nttq07/xgU814bi1JJOC2YFh8Fjk0rqpsieqJXsjtn1djldVXo/FV
+         +c4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790341242; x=1790946042;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OrcFZRDnFkiDn+MYWmxCF8cD4rC4Rzquwa4PDTiGChk=;
+        b=P29+50zyyskXTu3E4tC+gRdL6B2byR5LCLzGWmA4duWp1Fsf8Jdm0bYDSJAC6hU32W
+         fp8hTotftiiKEKqG9f3J9wdv3ow2mker3b6c4ztqAsyEbZ0ZS/CYnCk9h4l4Eff0XbMc
+         Pmr/Efh5O+DSK74Y3MJlMe9xy6x0wHnozfFP962cOCMuGpOVUuV+iuBo28Hwj5l7u1mW
+         McZXH+wWZQjQb4lS7V7HW6pcus/dpVGUUX86G3D6CKRYXwi8cZYDrr3FnZYYvCGPGIId
+         Ur/4i064JCQvKeqIE/tb+I2B1K921hn9t8Gt+2fu3uJPNPsoJA3PXXw3VKRbJ1jtbNZg
+         M+Vg==
+X-Forwarded-Encrypted: i=1; AKwUvByA1Kwy+qN+NJQuwX0tsGwH80XsyT6Qctg6YBngC3mMPnvMvC8NOYyfZj5eSaErNY3RNInVgRafcg==@kvack.org
+X-Gm-Message-State: AFuF++k8E2Ox/T8FdeSl7ibse3xe5qg2FiZjBg5MQZV3/++Zs48vS4Z/
+	LMR6Yf0qu7B6lXYkeSQvBlb5fy5NjAqE+z2WGrU/4HHwxAEk72Ih1Kb2Be+sCHUioGo=
+X-Gm-Gg: AYBFou0YSP0kO9eWrgn6ZDuIyooGwwIjPkrZXcUBet2jO2noe6IOVxrbAC8y3chSSl9
+	1TDfGLmYSUYzgxHJF1Ao23GtwDn2dy6FyLP3X/s4mB8uUu8q5eaehnxkVPDNWN4CrAlAO7c/N3f
+	Sr5AKowXFPL0+KJKIMCko4wDgZhojvt626nGo8JlZ3GuXN/NgxOOwncpr6ofniNVEb4Kj3K3ID5
+	NSxiHx1zakmmDsZWn4FmNxwbCHrWyMw+7+Cmkxm09qINOCh4DemXwxxRLbfvfqVpNormY/W74JJ
+	O5nakazvN7+Q8wXvfheUKJonrKF/jzVCRzSnH0nRlVnDruSxZVe1rI5oOecLbyA5mL/5nP/ZSxS
+	QZLk6b8ifuK3ZszPa0ArXUCZkioA3E7XRxtMDf7WYTsKXR2vkxKSaH/F89MbUpjVVusN6dFCcp0
+	erVtV0YgxBJT8xqFbvDialH91vg0wn1gc4x8jT9I6aThDxzmy/M00G/BOyWi08iUCDaaf1Ywlnr
+	APT90NWN5Qn8ROVexWVuJkBXBwFbQs=
+X-Received: by 2002:a17:902:ec8b:b0:2dd:c053:82f6 with SMTP id d9443c01a7336-2df7deb7a71mr48844055ad.45.1790341241383;
+        Fri, 25 Sep 2026 06:00:41 -0700 (PDT)
+Received: from [10.254.237.61] ([139.177.225.234])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df913de18asm9819175ad.26.2026.09.25.06.00.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Sep 2026 06:00:40 -0700 (PDT)
+Message-ID: <87e10baa-13a8-4766-8d6d-9173a4b0c5c5@bytedance.com>
+Date: Fri, 25 Sep 2026 21:00:28 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 4/4] kselftest: mm: remove check_huge_shmem()
-To: Yeoreum Yun <yeoreum.yun@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
- <20260924-fix_split-v8-4-cba7359d882a@arm.com>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <20260924-fix_split-v8-4-cba7359d882a@arm.com>
+Subject: Re: [PATCH v9 2/3] memcg,writeback: flush foreign bdev mappings
+ separately from owner wbs
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, tj@kernel.org,
+ akpm@linux-foundation.org
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-3-sunjunchao@bytedance.com>
+ <arYa1DbKNeAN-PLl@infradead.org>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <arYa1DbKNeAN-PLl@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7F8E2140002
-X-Stat-Signature: ad9rqqxcpaz3uicanhg4sqtbghxy1tw3
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790340997-215117
-X-HE-Meta: U2FsdGVkX19t3mYfWEnsdj/z08lItRCkkw/vzPre/qlQtm/SccvGEnYvlbS9NU2wjRM1WKiw4AaF8CYEUT2eV4BGEK3MoeIPX3HQCmeSSdOHI19ETUyywYQgmAUQNyG0U/hl3O0j9nF1So9vsWfkXpO853L9748ya4bwP1dWozi4EKjwm6YshUuihEzZlEEeZ7JwcowayS4k89SI4pzxT7ML/D2jBtJhGrO/3aN5mMIbistez4Jyckcq5P19rHtEKhTrM431umJgaK/V6Z6YEOasFRPWl61t1JtflcgrQx6+Bw13+bbzM/4cik6no7PIjKR3Q6cN5L9BvCbhm3mlJ3KL3jgKLT2gaCffTkxP5B5ZoZ+X0DwsKyz0k96vsqYmUDpg9S0nMZep3P4jWvDuCeWM1aPhBctja7QdB+3EWiRieURvMQvPqIAqLtb9OBl29PyCwsM+oO79Llt8NiFQWpwUvBy8iFDNvV389U84MXmcrSPd1UYQr3LZM2tqTDDKldhi0la+syD7vT6AwCcq3a2cWLqCFaileVpUfzO8T0V30Ld0qzXaKH6cF44tCx9N/IA4Ohggy8Tvqnb+Ey78H6wv1n9vG/6djy+5VOYAO/3U+9gER/wv4R4C9NyPhcFxVFKpLux1nL54F8Asn+xloe3WtwSGmpVSBDfjXjP3afAgfYzRstA8smrok7NMP5m/b/JGhxzXNqhja1id8HrS3cxDBcYsLOTD47mSx3xhfdNVFa+9WY/+SvTmTgrHIx5WIDCAacycZt+NrJY524UA93/S5OJ0f0P0dXnVEEhv6rdDzsa7bQ/Rn9xsZmMWVHssM3S2niR9PYkzvMLJMGKolLK00N9k4doXgkGA43OkQ+QPIqeaRaBg5KsGcs3Sau1Bs+86OWzX6WsUYT16a4TU7DqG/QURQ/xwAc3Zf23gzh4uC0pMkLMifSc36Y3aZDK2/8E6QGmXMBnRndV7dmS
- QPp4yzok
- 1CNV6SVR1ESZCYDv+Sr20Ll8IH9WNXI4iXOQIfKW2HA+K9FUSnasTIgZu2iDXqMNyni3tR9JCcW8IOgkIYb4E+/zdsaoWmQ3yKeLJ12/KmoPhXSqczt1wmPTL5jAcfVnQukIGDMXu6EPLeRhxyzXZd3FwbwtuEJVxCfSoXJBQ4wTlISOUFshRidIUiETPQb4/b6OF9WTm+7FdGj+yrWFJ8W39oiy3aBhQEPB3CVA1EB7uRvZiSOS+6AHZwISCDTNri/jn6WVYiY/C27reRjjqwDdVyZUGC4hq0k6ZsaGqXgydqgCvDCkncomUE1wMpAVn4BehNkdNk4rviWOorCM0p0ub/I2MJeVhZwcH+FLCn73O71USi0z/oiaNKRCnznMoINZAsNOeJwcJCfyh4Q6QFj7yzZvfSIvc5b2zKjyF1Y79IXW2rGcrII+qMA==
+X-Stat-Signature: z1zhjgmje8miaq9dk6oq4bj3rthk5ax8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 258E880007
+X-HE-Tag: 1790341242-343106
+X-HE-Meta: U2FsdGVkX19J3MraEa8ZPi9bfBz+ZVC1X4xXfj4L9a5l+qlWEW0vmW+WQw3coMUiRqf+VqCCXFBmSTDzB34xIaPvKiXZGMQEskHnJhE26O//TidoXt2F6GgYvn8XAmlb+h3BxkOprmifXBBuDVCKWhePQ9yEWSYeOEjgIYql7+WkDL02JsulgVta1UwODOfEk4vYiEom59OUK8W5XK0wU/gEyr5AM61a+klVYGmXs/WwsLI4IxaDphVYvbI9JGVa2fA0IVwU5sk24qE87SDL4S/K8D8M8EUQSFxLu83Cq+HvWiHrWSMIM7/d+fhr6lxltogW0TSFYJNdq6tC1ewnLpeW+djau6MezriSUuOobokmNE93XWQRMHlncAxzMQ68eXmyy+Qol09s6s93ZfpGkIftOPrZojKlA6V9sL9JxFFuwG23y3WzayNA0f88D3KSy1Qqo5uj7ZdD8C4d12VA0Ynqii+a3Q9GHa199OiklotP8CG0nt7HvWRIEFlheCR8vYQthL/g8PPDBA8bdqChKlJSRxBRX3A4xVRED8nIh15cF58xwl+s7yM/Ls017cA+j8Sv+Bp7OR1DtsLgpKjD2Sjf9jTJ3tRJ15zjOFH192SZ9guVrDC6xEt4EQvWVG2+ZgF+lNmzMmc80BSx4YkdgmxJLUjft4iLKubLB7lG43rmkiegnU1hWS7oovcQgBv51jM7Ii17IgZDyK3sQKzGQ1OhO+iSdWUtptkcIvzuLC0XnFS7P6QMqpQ+E02/JkeP+HwXemXa0An+l8SKF7c7/puo4OVtnN8Hp7Wj12q5zeQP3oc8YUf2yI5Hu0Yh+P9+oBoyiJax5vqZc4tZfoLjktVljb34VLm5OGRhgo6gajrXdxS2lZ4zYLIfvn5Tol45r6N74sgrFVZSUhEVkYJqBd3mlXdYlok3S1Z/ODxQD6magU8pMiUEb6BzaV0Sq3GOPR0Rx4uu4RhUpF41rsT
+ I3IFEB3k
+ ujZwZrQEKcw9tOHfmYIAQTeT+8wUCOF0rclHBhWsVlp5gT982tOXkLNPSmqBlRsmtDnXSY966Z87/TyVtnf63qRwAvyhr6HYnK9XjRZRv8KScXZSyO4O1GTL1/qdD4BNl21C1zCjh1CnAjjRqNbhh6hauDpzMpjFidEJ8ZNyhFd28tvtsEgbllSRkrntSL86nOYF+5+Jd28ASe9VcEZuY1duUc9mSrulUJN9nr5V3B6SV378UwQX6w1zSJ0iyon71saG4Ey7uTNSg87POjM/MmvKN5XoO5yStmGWVMqo073MiMP4UO81f9jIgKjLNgg6o5v0VAh3vfAGxJx8vQsp5HoKiTmJdMDBdlwwQ/m31qlqpXtYXPSzZ3z4Cx1ON1h2p4l4c
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,29 +127,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 9/25/26 12:41 AM, Yeoreum Yun wrote:
-> check_huge_shmem() was required to distinguish shmem huge pages because
-> /proc/self/smaps reports them using a dedicated “ShmemPmdMapped” entry,
-> as opposed to “FilePmdMapped” for file-backed huge pages.
+On 9/25/26 2:55 PM, Christoph Hellwig wrote:
+>> +/*
+>> + * No extra memcg reference is taken: this work is embedded in the memcg,
+>> + * and mem_cgroup_css_free() waits for it to finish before freeing the memcg.
+>> + */
+>> +struct memcg_bdev_frn {
 > 
-> Now that /proc/self/smaps is no longer used to detect huge pages and
-> /proc/kpageflags is used instead, it is sufficient to distinguish
-> between file-backed and anonymous pages since the ShmemPmdMapped is also
-> kind of file-backed.
-> 
-> Therefore, remove check_huge_shmem() and use check_huge_file() instead
-> and cleanup khugepaged's check_huge operation in mem_ops.
-> 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
-Looks good to me, so:
+> No reason not to spell out foreign here..
 
-Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+Yeah..Andrew and I discussed the naming in another thread. The idea was to stay 
+consistent with the existing naming and keep this patchset focused on the functional
+changes, leaving a broader naming cleanup to a separate patch.
+
+https://lore.kernel.org/linux-fsdevel/20260917065759.2643940-1-sunjunchao@bytedance.com/T/#m0d196c3b8376c9b51276f6c5d26ab9f29e170169
+
+> 
+>> +		/* Reserve the slot: it may have become busy after the inflight check. */
+> 
+> Overly long line.
+> 
+>> +	struct address_space *mapping = folio_mapping(folio);
+>> +	struct inode *inode = mapping->host;
+>> +
+>> +	if (memcg_bdev_frn_wq && sb_is_blkdev_sb(inode->i_sb)) {
+> 
+> Why do we need a NULL check for the workqueue here?
+> 
+>>  	memcg_wq = alloc_workqueue("memcg", WQ_PERCPU, 0);
+>>  	WARN_ON(!memcg_wq);
+>>  
+>> +#ifdef CONFIG_CGROUP_WRITEBACK
+>> +	memcg_bdev_frn_wq = alloc_workqueue("memcg_bdev_frn_flusher",
+>> +					    WQ_UNBOUND, 0);
+>> +	WARN_ON(!memcg_bdev_frn_wq);
+>> +#endif
+> 
+> Instead please fail the boot.  If we can't alloc a workqueue at
+> boot time, we're toast anyway.
+I followed the existing memcg_wq allocation handling here, which also 
+warns and continues. Would it make sense to change both allocations to
+fail the boot in a separate patch, so the policy is consistent? 
+If you prefer to address both in this series, I'll make that change
+in the next revision.
+
+Thanks,
+-- 
+Julian Sun <sunjunchao@bytedance.com>
 
