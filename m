@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB84C98325
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6529AC9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:39:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 766286B008C; Fri, 25 Sep 2026 04:38:23 -0400 (EDT)
+	id 397E56B0092; Fri, 25 Sep 2026 04:39:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 717696B0092; Fri, 25 Sep 2026 04:38:23 -0400 (EDT)
+	id 347E66B0093; Fri, 25 Sep 2026 04:39:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 62C476B0093; Fri, 25 Sep 2026 04:38:23 -0400 (EDT)
+	id 25EA06B0095; Fri, 25 Sep 2026 04:39:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D5046B008C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:38:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB87B1C319C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:38:22 +0000 (UTC)
-X-FDA: 85251632844.30.5851F21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2A73B160006
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:38:21 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iqff5ChK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790325501;
-	b=19bOeJAfrXpIPe/Jl3jSQMGqxPXjeKB9iBYhxMhy1a/g+BvvN6dt76q5JqVf2ZPdi8HD5i
-	Aa7ewl6ur3QdpxZUYwqXGZIcLx4feuHUL/FW93bbm0jBMDDTJKS8x9O2a9rEG71K8BDmlJ
-	SMxqPyReVuOdzrDjmWwqA57KA+JbpkQ=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iqff5ChK;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D7806B0092
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:39:01 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A9741A6AFA
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:39:00 +0000 (UTC)
+X-FDA: 85251634440.03.BCD0B76
+Received: from mta0.migadu.com (out-236.mta0.migadu.com [91.218.175.236])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 6BE0C40002
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:38:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eJSzp0FG;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.236 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790325501;
+	s=arc-20220608; t=1790325538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IB51gXtTDrNhNiCDiirEq139RmYgQaEQ6mwU888iF1Y=;
-	b=0F1l0QpLfymkRWuB5k+ZlUtyJapjrGOIWaLmyQ/um5sGQvCu0LutZ9/mw5wnmLMxWgnkgW
-	PVL0A9XDy7oWJCT4XJJepV5GUu39hY3FM8C2BlXHBjhiPGYbKZwjzlxa7w0WDZzJ9Uyar4
-	Rnl6olnMMmAeVqFa2hq3ohxNe7gPI9g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BCAE434AF;
-	Fri, 25 Sep 2026 08:38:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEBD51F000FF;
-	Fri, 25 Sep 2026 08:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790325499;
-	bh=IB51gXtTDrNhNiCDiirEq139RmYgQaEQ6mwU888iF1Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iqff5ChKCoK4N32x2WHuIvqlC7HkYdHN7CY++3i2g9vcheHBdS/+YAXTqEu5VhbjM
-	 r1Wr00IXeihhHYFf0hZRcpPS8X73+jibzL97WBQMYYsLH+yJV2kDyy+iW962/Ep0/k
-	 eDgJEl73dQQg+tW8x1DL5NS/ISDo795JI4MwOcErPy0kDRDt+bWKEOxGQEJPkINBp5
-	 9w5uKoF90x3Xaxd93MCluxJKk96knryEtEU4vZK2Qww5CezMGxIMgH2mLvKv20rEez
-	 trZ7rR50AwXsrlHVnyC8VGcNo0+pzzONAObRsFlPOMu/mxwLDt4K+HfYdSdwWXgIzO
-	 VR1QNMJOpwGJQ==
-Date: Fri, 25 Sep 2026 09:38:13 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Lance Yang <lance.yang@linux.dev>, syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
-Subject: Re: [PATCH] drivers/char/mem: mmap readonly MAP_SHARED-/dev/zero
- correctly
-Message-ID: <arYnXJHW-Rh4eNzt@gremlin>
-References: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
- <9efc7bc1-8d9d-49ac-b856-003e81558411@kernel.org>
- <20260924195826.70a87d6fb78d754bc73892cd@linux-foundation.org>
- <95e91b4a-ca16-49a3-9a1a-5b38afa6f08d@kernel.org>
+	bh=EsBjw1qninqQiDUSvcGvngsX3qUwaUajU7R7jUyn3zE=;
+	b=0qhoYRgVRtIj1ePUWyykdQARZt4/FFXvN0hy0EyPww5TK61JeKabNwfSWJILWK6Mx3IuEq
+	GtJ6floInTMzgR5UqTT75scAArkREIKSaAAO/dchPsTutNX7ljGFpBnX7Pc9uq93+HEduq
+	S5UAYFbxZr9gukNqcoNjp4Lgo7S8n+M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790325538;
+	b=ueDqjnMcFxPjo6IAPZxRJzJrkWCSOH2rmGlSkO1j1lteotPeMy8bvXjbzCeQ8xkNo4FxDW
+	ftCpNejQObPGZP0eOumAkKvfd4+reW4fKG/byu7S0kjJ5fiJ14e3xKyMDAz2ZLB6FiPSRa
+	1do0VN9cRuCjVXCJUDZ0pBxmZkXIsoI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=eJSzp0FG;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.236 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=T10y4ASlATCQTgkrEor1JdynVWZNOpt5kzchNql5gDE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790325536; v=1; x=1790930336;
+ b=eJSzp0FGzwcDzCSTjLlKyhjHW/VxPOrrcqOQ+lxJL8eLkhsfIp/tMoFm0KTBpcC99k7+HyYK
+ 6E36iuBoJgG7F5QtOIzy8zxANN68OKeTqzVAR/oj0sRSakEoCpD4+uZ31R0otRvR4bNXLR+aubZ
+ bklFo74igl1e36K4McADgXHM=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 399a8e667ef4d0d5;
+	Fri, 25 Sep 2026 08:38:56 +0000
+X-Mizu-Trace-ID: 399a8e667ef4d0d5
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 25 Sep 2026 16:38:45 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Kees Cook <kees@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	Pedro Falcato <pfalcato@suse.de>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	linux-hardening@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jason Xing <kerneljasonxing@gmail.com>, =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
+	Jiayuan Chen <jiayuan.chen@linux.dev>, Willem de Bruijn <willemb@google.com>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH v4 1/7] mm/slab: Mark the kmem_buckets_create() context
+ as a Context: section
+Message-ID: <arYy9z0_ehaVd7Iu@fedora>
+References: <20260921075811.too.775-kees@kernel.org>
+ <20260921075820.1718334-1-kees@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <95e91b4a-ca16-49a3-9a1a-5b38afa6f08d@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tci9qincgpigt1gbcnxteijt55gyhxf4
+In-Reply-To: <20260921075820.1718334-1-kees@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A73B160006
-X-HE-Tag: 1790325501-282150
-X-HE-Meta: U2FsdGVkX1/CR6X3JhBbW15iCYM+LDm1HJ0X7gDllC3IGsmA5sX1LaTXYF1C2ofgMKgOoQe1EnX7rvPGsCb6cqe7lJMgVy3B24YMGbHh5jrfhM7qwdWpRc2zTN4QXhCDLHVosD5rK/7hNpEJL4tw87ebc8Cvq8uxhLYWlMaJquCwbDdm6k6rMjJgyzhKXRzoQP1jVBPrhjAnw8pLOlTl4UKE4syaLfe3vYGnXyrDfE7b26QFfUSBc/1JFS1vYG7It3xBXzXdUNMLMWMmxmIoFTAGpVffTy0XhrKsgeFDF/fG4xCIWcK5DUD/FMGdQ7fy95opn7OlSyqALwIyVIrxWvr22Rr53vjJj+UQvqNrg0pMmRrGZ2H5JUxvYJxLDofnamg9Rc726UxXrH3cT7zgH6JtnSR7RsYVUo4VinKB553SE+QX6U4cXVS2BwgoA2RI21F52wzfaBbAL/DuvuwRgmT/+AdX8L7FCUxwppJQOLKkXQ0BmMNTLg23CT62G90L6zj2ZCOgGDjaP23t6jhbyaLGMVBJOortbtw847BUmF+fIlribfjh+I2G/yXcBiiwERL615NgVaSs3OIXfv/1tSVijhUVTdHiVmYVT3nv5eD+mP/6X1ht31AdRxbjvGQlmyufjilNv0ZAic0Gh6itHbrbsv/TrwQcqzf+ynF38fY3JAuAn6h2YQQphtNdIDo0ymNBuqg7pW83CZMHK42fiilEV13PxfN2U3hTjtsIaRRWb8M6kn/ef+oOWwuWTY1T1jasKssXLkOzfsXQ2iwU7bnWTYKXaoE1P2VVhmCYe2GUBQDLGjUL9JVXlBwuGoCSOa1RxTQ9B3TgNscyasYOT1Z2fjAFv0QTmLscMhGmTFK5LdSRpdUUeImGNn5esUz2HAfxUxGpW4xHueVSjE4EBrIEv8HNfnTZjZ1AkMtmepiwUv/5U3YIjxSuMBerj68pFk94+WwqYvFtR4VpDKg
- 1t+RoMv4
- UTGH9Nx4KOJv0ZznPrzGmZNVPjN+33LLkpUipQ1k8j8hAyUp+j4W8mcobXyWlPuSeQLivyo96NcRzzmqVMVQKcqsxIbcOfUins2W8M1j58EJBH1wdyp8nN/oLhRJ4g/D6Fk8a53VR74ZsKSNSrHhmaJIFm0Os/JfyPeb6iEU4UIfjULofYhNN6V36lel/9eGda43vGFCp2hOz0kD6YCxDxRHpga3rhx5a+Yflv95aro0lWFafwi1yQ34cR9d+w4dFOMxABdsr4lOeRHUu4I9SIcJcVBApr6OjsoGM/tqnUeQv8CofZCDa6mumf/xVqMVjt+dQAgm3J2h4Gfy9MuUm3JwAgnNFkGhUcDMvTmYjnn2IM7urpIKmgO2WvkF6gv5ZLuyRr0xJe0mRiAN9lEWomvpd1ISFnnjrZulUNQmhDU7CDA74+bwcopnyu5Wya+g2kHCoA0xximmoIh4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6BE0C40002
+X-Stat-Signature: 884ytt1jciqfq9p3mfzbbtfusshqpdku
+X-HE-Tag: 1790325538-573405
+X-HE-Meta: U2FsdGVkX19msRLCULIYbd68erl65IFlmozT1w40g6W9pXFjj8LV9ZIdCgugM9Ql3gSBZx34fZQwUOVsW25kuw2eO/1BKhEBs2lPEQRkpbxbpLwt5iPJejWh2fV13qbGqaxmB1hN+jyFN3o0R74FUGeqBtUkweixBlnZSNfzxojQaBXRouLlQrtpQ9r4PjY/lQfN3IAfMXN4VzNr2/gxOvemCZyIhiJNSe9lUpfBrb9lNiKgnqeVVcFAFUu116PnKOKCthibjgGuVHgjTMEOX8DWwdLyETlQVIFLGBopuSyyFCHzO3Ap32CToGTRfA3+G5C7ybAmlUO0Dfle+PpFEqWX+nWZZAyjVR+gPloah2v3mAtn0K8Xx13J5G4KbGDqGOLCB4lxDJCFmbaOZC5To2/Ft0C5bBZLvEOw0XRSQwEm0s6mPyUMi7Gv6XpDAXpn7Kk28v8fHSTuf5URHxnk1KsUuPNkkIo7YWvoIPBnDskGPdruDwwz9uxw3r8tr9KSVuGq9gC3SEGNfWD6GMd8xf/8k/QVDlg1kA37ECI6OrMXD8gSsL8YrBJHBP04RUsSJL2b2G/KxRfTFWNkMfK1dtIazh6NS1FkxPy8OieKSypg6pgTr3U90UXhbGfroSl03Xx/U453SNyXzo44iNI4p+D5E0TfQlbXFAg8yrdOz20HRbAs1mfNRyKY3h0U12Jwp7DZcbe5Xf3WFqiJSrpapIPKt0juxV0DGBrPu1DlbIfTiBH88BV/r30ND5A0WheuAlJjbChb2gxECqA+iC2P+Tf0apDrd46l+MhYOT1+r8JYxBsdu6bJkRTdTqcPpmQgDzkGxqKMrt0d+DF3OlAqyqqYYAXTq+vfCY3SiCaHXckFPq88JixmlvN5d4BKIyHUHl3PD0KM5K7Ap7zBlcvistJx3wzlnOJJPMPiSY2CUPwFcnxMDSkqfkUbwC+mtA3Ef698L+m60LjekITh+7G
+ 6VamZyR0
+ dFcPbaJyOXoVTkdKi6dM77FSh+RI4a2bZnoIYl/lQ2dDwtx65ylCVq+qNih6uXbJgwK+MhDMM/KR+4KEkjFIFGgvlJv9AVZuqIpEVaGQdZ8xYn8BavmG8eUtjsGOImCn/RN2hX/QRXSSk5ZUBjg3lsu+nWZ8rVTvDSCqfvyySLDGYC8qktv84MSdSGszgYcYXh0/MmZ1XOKxaao3mcX11YrGNjOIkF7dNx96r6ZrKzfI6usxDbqaQn8BF7lS2TJp8qenifUQdqCROpEhEZa+Ky8ibt1bODRxC5VLHIHX7SizfD1e0HCAN8v5ymjOmeIKXXraRJ697z6liGiL8JpRMCf7cqPhnPItQ80mEW+eZJZnbe+82vl70D8/yPQKxIZHORHCGmA1/63RvbWIFYIJx1IcCab5KpTERcRP2BEc0ubVE0XctjcBa8kLt+MSfbNqS9dz9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,140 +98,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 09:29:40AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/25/26 04:58, Andrew Morton wrote:
-> > On Thu, 24 Sep 2026 17:37:29 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> >
-> >> On 9/24/26 16:48, Lorenzo Stoakes (ARM) wrote:
-> >>> Rather surprisingly, opening /dev/zero read-only then mmap()'ing it
-> >>> MAP_SHARED gets you true anonymous memory (albeit in a VMA with
-> >>> non-NULL vma->vm_file).
-> >>>
-> >>
-> >> ...
-> >>
-> >>> --- a/drivers/char/mem.c
-> >>> +++ b/drivers/char/mem.c
-> >>> @@ -503,7 +503,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
-> >>>  #ifndef CONFIG_MMU
-> >>>  	return -ENOSYS;
-> >>>  #endif
-> >>> -	if (vma_desc_test(desc, VMA_SHARED_BIT))
-> >>> +	if (vma_desc_test(desc, VMA_MAYSHARE_BIT))
-> >>>  		return shmem_zero_setup_desc(desc);
-> >>>
-> >>
-> >> So instead of shared zeropages we'd now get zero-filled shmem pages.
-> >
-> > "zeropage".  Singular.  Used to be!
->
-> Hey, leave that German native speaker alone! :P
->
-> Yes, you'd get the shared zeropage multiple times. (some architectures like
-> s390x do have multiple ones .... likely you could even get the huge zero folio here)
->
-> ... unless the MM has the shared zeropage disabled, and fallback to anonymous
-> memory:
->
-> -> mm_forbids_zeropage()
->
-> ... we end up using THPs and the huge zero folio is disallowed, so we fallback
-> to a anonymous THPs
->
-> -> transparent_hugepage_use_zero_page()
->
-> >
-> > The accounting differences, possible changes in reclaim, memcg
-> > charging, maybe swap behavior.  Switching to a different fault handler.
-> > It's hard to foresee all the effects of this.
-> >
-> >> The alternative would be to just convert it to a proper read-only COW mapping in
-> >> mmap code:
-> >> * Not clearing VM_MAYWRITE, but keeping VM_WRITE clear
-> >> * Clearing VMA_SHARED and VMA_MAYSHARE
-> >>
-> >> Sure, someone could then mprotect(PROT_WRITE that thing) or
-> >> FOLL_FORCE|FOLL_WRITE to get anonymous memory. Just raising that as an alternative.
-> >
-> > I dunno, the whole thing feels imprudent.  To alter such longstanding
-> > core(ish) behavior.  And why?  Because a shiny new assertion said "hey,
-> > that isn't quite right".  Wouldn't it be better to squish the warning
-> > somehow and to set about this change in a very careful way?
->
-> We really shouldn't allow anonymous pages in non-cow mappings.
+On Mon, Sep 21, 2026 at 12:58:12AM -0700, Kees Cook wrote:
+> kmem_buckets_create() had the same sentence about calling context as
+> kmem_cache_create(), but lacked the "Context:" prefix, so kernel-doc
+> rendered in the body instead of as a "context" section.
+> 
+> Give it the missing prefix. Additionally fix the "a interrupt" typo
+> __kmem_cache_create_args() had.
+> 
+> Fixes: b32801d1255be ("mm/slab: Introduce kmem_buckets_create() and family")
+> Assisted-by: LLM
+> Signed-off-by: Kees Cook <kees@kernel.org>
+> ---
 
-Yes agreed entirely.
-
-It then becomes a question about how to get readonly memory.
-
->
-> We can
->
-> a) Disallow allocating an anon_vma and fail gracefully. So only a shared
->    zeropage could ever get mapped there. Might break the s390x
->    mm_forbids_zeropage(). But given that's only used in hypervisors like QEMU,
->    unlikely.
-
-Something like:
-
-	/* about to maybe prep anon_vma */
-
-	if (!vma_cow_mapping(vma) && vma_test(vma, VMA_MAYSHARE_BIT)) {
-		/* don't prep anon give zero page */
-	}
-
-?
-
-I think though it's surely the only case (I hope!) where you can possibly be
-both anon (as in missing vm_ops) and !CoW? I hope? :)
-
-So it feels better to fix it at the source.
-
-OTOH maybe it's worth special-casing so we don't allocate on read.
-
-But that brings me to c)...
-
-
->
-> b) Do what Lorenzo proposes. This will allocate real memory. Someone decided to
->    use MAP_SHARED, for unknown reasons, so I'd assume it's unlikely that
->    something breaks, but you have a point.
-
-I would say this patch is the right fix for the moment to fix the assert, and we
-can chase up with other approaches afterwards.
-
->
-> c) Convert them to proper COW mappings. After all, having the file read-only is
->    absolutely irrelevant, because we will never ever use that file. It's
->    anonymous memory.
->
-
-...My idea for the next step for /dev/zero is to remove the mmap handler and have
-some specific code in the mmap logic for it solely.
-
-Like we already have:
-
-	if (map->vm_file)
-		error = __mmap_new_file_vma(map, vma);
-	else if (!is_anon)
-		error = shmem_zero_setup(vma);
-
-And there's already specific file_is_dev_zero() code, so there you could simply
-decide:
-
-            CoW /dev/zero -> R/W anon
-shared readonly /dev/zero -> R/O CoW (i.e. with VMA_MAYWRITE_BIT set)
-
-As a special case because somebody really probably does want that.
-
-But for the purposes of a 7.3 fix I think let's go with b) [i.e. this patch] and
-follow up if that makes sense to you?
-
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
