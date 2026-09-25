@@ -4,143 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D221C98306
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:40:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC17C98306
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:47:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29FE36B008C; Fri, 25 Sep 2026 00:40:52 -0400 (EDT)
+	id A24FA6B0088; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 250446B0092; Fri, 25 Sep 2026 00:40:52 -0400 (EDT)
+	id 9FDA46B008A; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13ED06B0093; Fri, 25 Sep 2026 00:40:52 -0400 (EDT)
+	id 93A226B0093; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2276B008C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:40:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 716A9404F3
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:40:51 +0000 (UTC)
-X-FDA: 85251034302.17.E4FA577
-Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 814E7C0002
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:40:49 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z87PGL+Z;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of groeck7@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=groeck7@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 6F59F6B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5D30404F5
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:47:13 +0000 (UTC)
+X-FDA: 85251050346.07.C65A7E5
+Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
+	by imf30.hostedemail.com (Postfix) with ESMTP id AAD1680002
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:47:11 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FCNIHfma;
+	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790311249;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1790311632;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=14MXQzJGNSJiHny7BrCIDsUY2XvMualsJzu7fkY6FZ8=;
-	b=IsG4nV2sDkzEDczLOiKPO/zTboFcZnAmdTfJDrr3m6YS8xTu6GhGo0ssQ+RqtN6H0ZkBsS
-	Zqh+3rvWGAvgB6E8GAnHPImY+p35PcMUt4WVvE+LEdAqgsMy7hPTwVMFLM+0Qy0FP71DeF
-	8bTpUTdaDwhsiOiW+soP0pNr6iYGB0U=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Z87PGL+Z;
-	dmarc=none;
-	spf=pass (imf10.hostedemail.com: domain of groeck7@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=groeck7@gmail.com
+	bh=ws9g4s/YoTiDLHMA2x4FV+HBC9j3rDWE6K0TZSjCveA=;
+	b=GEeLJA0g7Ap6cJWQrfaOOk4h3RuQZVzd3uZ69WUdNwx8SQXTT7kuH0Q47FRZes/WBrjm8T
+	l5BP5lgFFGAq95jMYsOTB+ew8gkQcNd0YsNCbnvvw8K2SVHo+K/hv/og15WV2K8Pfqr2+d
+	9NMmP3rcoDKjaQps5BqNnzcIlDULG/Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790311249;
-	b=YOCV1if+p/igoJGJqcMdLJWO94+HdfiShk2I/VG2Aqj0bwlVOYBomJxq38BTjMvvqCd8C7
-	1LKGgVItYtmufImpeXhO99Km8vWTz/0aRG0ChJ5z21SMjBG7w9I05lwabpJbRBHnIsbeF6
-	MPrEoy2J4Ky0j2cE+USWNVi+yfyywlo=
-Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccb65437so342311a91.3
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:40:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790311248; x=1790916048; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=14MXQzJGNSJiHny7BrCIDsUY2XvMualsJzu7fkY6FZ8=;
-        b=Z87PGL+ZRqaRKEsaIuy76P/IZY8C8aFZ+FU0mquXjEd326SMb+dfviQ7rgxyvVyBvh
-         BAgUcMXb/ztJSwM5HKLQ8j/iakm+1P8wsnf3/Fa4GSQchn+dGNU/CSA+rO7H7sDGPU7v
-         ZvIni+B3d90wIO02PYynxW79bFt+bx5N9pfYBuv7kWdR3gG+xgmMutYEmVlVd5IIEL2Q
-         tlUUc3WBG3M6VZ8fKBB2ODSHUciJO5z1d7QCbC9EMSM2cKcX/LNbt4VnevR3QdQwxOwo
-         rpJgQmD8yN9T+kANtxjiNCTBXtC5q9PSCp+vd5zq7GjRQIdO4x+6lMuH9khf5B2G4gRr
-         KbHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790311248; x=1790916048;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:sender:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=14MXQzJGNSJiHny7BrCIDsUY2XvMualsJzu7fkY6FZ8=;
-        b=y1F6cPe1UsPaFG1pDGaei+s4+IGEWIBfLjQFLPnW2XO68cLMTIcw/9eM8IPetmZDEA
-         l7ZdQGjeVtGAhjc5nzLDkCOvtneK0WqtstoBk/LFDXmg+G+WhCeu6cbdw5n+H6C0Iysk
-         MS24THXGbT1AY9MHQFiU+7/nptrLkQEOgRliM1s6/2O3Altwt5qsME4TP+iwZbupfMsN
-         ishFOG6kTLSTPEnBTPtnadhisC6cULrw55s/f7JhcdpeHQCQVW9SoU6afgsIJDajYpu8
-         daLIVB+J5KDL7BtFeiFm07NH22bY1tXcwzfvo8VjX7ZDq4aPlIEY3JEcns+lAimhTxPN
-         Cbow==
-X-Forwarded-Encrypted: i=1; AKwUvBwY4/okZLuTl3HtSbV7k/Zhsf/XjlWpkKcgEVpveeHdeGznfqI8Ty6qBmJoHIpCoBOKwuencgSMmQ==@kvack.org
-X-Gm-Message-State: AFuF++kXVCyn4Uik1feHwgW+sTiz2McGJF8EZb+gKleDXmbkxbV+Fvqm
-	9s2SgqGxCl8ZzsanIvt/6c8GIdWkds7Mlp+tpTIGld57klPAS+s+LhuJ
-X-Gm-Gg: AYBFou3nyjyN/Z+4gfHnxXwIqyJ3snJq0nk4nD4UHnaTvmrQDTFgckLdxrNpT4QCzW/
-	Rr6QYJW9yoCBAxGlouo1Qke+UfaEFQ14QSfijabhG3bohlHLlGgKR4kfePHuKTG5Rm6UT9rxu/l
-	el+i79WAHOXi8JwmT5vtOShGOc05rxxpBxSQFLBF9kI3yDrnXE8y1nK2ULDPqvT4vE4Fn9fGMTW
-	QQG/ra60p0w65R6afnLiNsd/or2N1AtwwfT7B9ItlXUapDK9Uf3KqfjW6ewlP7V8L/Rbvj9wvmj
-	FqTqTkx90OqqdWn95V7hygjwPLXGmjYyH0+8WPykcOb1vFOni5lOi4os0Q44QjbYxyRLGfqu6ma
-	PWxTprQ7Yfk0ChVV/9bbV4lVD+zL8vMDvr7u7H2mThy4hOFANPCF3TOVrjdeGMsjzKozxaqLYrg
-	mda7YHP4uDtIYkA439Jg5ce0nQE+nAU4v5HtjRTov+9tB0eICP9MfW5WYdx9LTfa4FD16JtxLER
-	FnBiNHMx/jK
-X-Received: by 2002:a17:90b:2745:b0:39e:5c75:acbb with SMTP id 98e67ed59e1d1-3a098ad3c68mr3886722a91.11.1790311248198;
-        Thu, 24 Sep 2026 21:40:48 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0c3f74e5bsm192594a91.5.2026.09.24.21.40.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 21:40:47 -0700 (PDT)
-Date: Thu, 24 Sep 2026 21:40:46 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	KP Singh <kpsingh@kernel.org>, Kees Cook <kees@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-hardening@vger.kernel.org, Nicolas Schier <nsc@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>, Harry Yoo <harry@kernel.org>,
-	Hao Li <hao.li@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
-	Alexander Potapenko <glider@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	kasan-dev@googlegroups.com, llvm@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org
-Subject: Re: csky ICe (was: Re: [PATCH v4 2/3] slab: improve
- KMALLOC_PARTITION_RANDOM randomness)
-Message-ID: <4e2ea11c-7227-4790-af7c-67ffc86a12b1@roeck-us.net>
-References: <20260511200136.3201646-1-elver@google.com>
- <20260511200136.3201646-2-elver@google.com>
- <6106aefa-47c7-4bda-a51f-8a2fba3bf715@roeck-us.net>
- <arUZWKjKr5I5tlOj@elver.google.com>
+	t=1790311632;
+	b=vQXeV34WmZ/2aQfe4o54uzLJERpUlDbzWAj5yn+/EzH2InbrGXdRUJ0h8b3siLuENtceXs
+	/ofWP0a96S22nbbNbUhmskjOqX0TyGZPF/2HABflcXC1XvPi5oHFRKxVBu8K7VuD+YHNDh
+	lYF281/6JEvbhJgQ12vHGo8NlxFGzNs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FCNIHfma;
+	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=jh8C5ShYQXr3viaQ/Mi2fvp0GqNzxRBy1mECrQ4hGaU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790311630; v=1; x=1790916430;
+ b=FCNIHfma3LS/3JaA2BJJYgDvh1b5rgyweLTodShdjDg10c9sNGQLzo2UvkvnwLTdJtjoIrS7
+ mMXE2rZi3p1dVlTJpgMILbaFwI/JbzCqyKkox75GhQxTTxTX2sEMVAnja/huZQTORQDsTLPa2mX
+ vlIlxjfm+N/2uTk4OrJ46b9c=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f70f5b72ae709b91;
+	Fri, 25 Sep 2026 04:47:10 +0000
+X-Mizu-Trace-ID: f70f5b72ae709b91
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b1a845c3-3720-4ef6-8c97-8a40ee7bd286@linux.dev>
+Date: Thu, 24 Sep 2026 21:47:03 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arUZWKjKr5I5tlOj@elver.google.com>
-X-Stat-Signature: 95ecy6jot434hw5gy7eoj98gcakz48i8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
+ Update
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
+ Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+ Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+ Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
+ <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
+ Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
+ William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+ "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
+References: <20260918200640.887030-1-dmatlack@google.com>
+ <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
+ <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AAD1680002
+X-Stat-Signature: wfkd73he93wodxinesqfmuijbkm57e9s
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 814E7C0002
-X-HE-Tag: 1790311249-45739
-X-HE-Meta: U2FsdGVkX18EQ6IKNtOxU8oSQ9pF5Xs3nFndw4V5JybtnDCyX2VC6E13SuFkhBVY0Vi6ypFRZGckuwl5PiZ4who2/V01qL99XOC43kzLDKGZWWV/r93W+RAPniQeacwMtuw9Z/AV/MmBtIq0Yn8SSBII1O+Lnew6j5GR5cVZCwFayPFpj6kBTrrqcxIrcKTb6LdPjv0yxirRbESEsvI8/0PRvwMxlrciwf/Fn4qde7L5A3MxPRspmpa3BLVDLTBXvHEQasc0sNgE8uGLAzsK0uEe6wKNx5+bub0yD2BL5Y65g+Q9IPd/mN8qygSDzmmztAzxZxvoqOZUGO2d1DSbjWoqwayCSBn0oztb+SPEXLlHf1INn5hF3sKSpteYlTNCZcvzldciFZXqe0zmExlxvYz+ZjOEz85x0IQ+zJlPPJ7/hZZTs5BVg6sAF+FW1eyUpWYRjgYeKfC8WmFaFYc14KGoEH9s616Pz+j0XXtPl08TByEYbZJPhPEzwiiFcGE7BDrvz4LNVYVbUIlqV/TKAcwV6tpJ2q1XBzgVhVzesd4NVvf/S99kv9/fUVlUX5ajXIzHp+6fHy7AUgbLbW7PmBbW71KNRhuWJloF43M598Oe3iBUG2YUPuSJrj284X0f/WyxCDwOD8MkpnpzpEQPEJn9xXwYPXZCmwH27zgMzgB2geYp82BngpfSjhRdEo5zQUL3Wxuf746hFeunDbjfs6NijtowmvrWTxLcfFl41a5NS0qYp3j9oSLYwQupBTmtSB/958bnE6zLSR8Ewu1nTYUbRnSBRau+F15e0ssf9vpEf8+Y2u1z4qj9xS/qNo/tBd9jgsxgLq1ZwrEw48RUeO61GrM5ZENuG1K8YR0ER93iSbjm0sxbIOsYolzywayuJtkM1nq+r5jNUlzZEdYO9C+815trCohglF0Gb69RIeANwxmHf0ZrKd734XqMSkqesrx1OKyrTsu+RkFCCS3
- VTtP8QLi
- NKiri8ixnaGEvSvjCEI3zrNbOq4iG0Et8UuZ0M2ddFExpPp7gKWak8SrAugqDRxr9rMKC7Mjo8BYURbq7mjb4HlMSj6qQYvwKQ/vyTIdGR7DPdG9OoCseWIOxgfzPVf2rBhayFs8lRQHJFKl/RYZ6XbYyJTnEE6ovVTQpVZ7p31Q6RoLzPsEtevRq2rLcFalt+un9Z5GCAHRJ9jqaYplg+F7eh4Vr3Em0gYQCqFBiNr/v/nSvwQuXYIffc9gpl3HFmJz+N25lkTzp5LaDmOtRsSFkkTFsbBnR9mozqLZB3HNTvi5hbRJ+7Xfel+GnHYlWAs5wYuTGOONf2Z6Wt6eJXfK/mIdw4B2x/ytX77xqq93hog5G1sQXgaiqS2x+S40Vu4Mwr17Za5HVcJbH/FUvNTfvqdIGAz9etsVDmKBCa7OrwvWvvUfrUYIb0p9LSIAseRF4SY+Jf0lCWPe/tn9aDJ+38jI2AS+4HJIL9Z4WFxwBdrYS2xYnRcImOr22AQG4RqykCg3f1ju66UvLCd0tO391vHWqwWXtv5RzYe34zzlFxT6oZwNgNDZMi7ZHX9F/rzQ638yGkW1rr6E6mzobUX2fKKlccu7IAFNux7A+vdaCNa6fXIWSOxtb/8jaumD9A2ZK6u8XUsWSNe+bKszHxmoLElrTtmrBSyreQ252cX/S52749ka8EpoWtoNzecAgQGcGOLdqiOMu2a/0hRXGiJ+WCO7GZat8UZ6BN8rv58JKHlWsNW3fqW4h7nkDVdSa+EsaNSZvLr62wO6pkKNrQzIz+tzYFDd3WxHV
+X-HE-Tag: 1790311631-16875
+X-HE-Meta: U2FsdGVkX19j61hn+l0loVO2Ab+zTqXEcmPvvJUfxn1yPDT7QtT4XjZ3kVKdq8hGaVpbB4Uj3iDxKqwUfYZ8k4ReO1a3wM2uNQCLzQ1cQtH0yGOzMWq3TAzQop78G5WzsYXVN/M0U3uzvVDaJj5DoN+jBncCwfJihM+ujjiXYE7Eqhri+gPFafGW9tYjm9cNVlnWsgVqRNX8pKRFPUTpGAZAkG/1OXDFBDI1+ZcwicefdILGggIULThOmKNQG0K0e38Rp6noRL8lgnvOEGAw8qONMvtGVjDgHbLc9Sgd7yYeAaM4xOk7P805efpEwJGDZXRU8RyZ2Y9CYfKbzfqjRVgLlnA8bZhZ+gjCIQ+0ldlio4mL9uomBRyqDplsqeG3ouDTZMjraLHiRpTIGOsml9t0b4RfK33gbXvq1qTS1Ia+SaE04KJvLT17ZR1ZrjhodFK4Gs3jKQ9dkmUXH5+ZLlh3Y+cav6uiS5WmAeB5NJD4Dh6NnwYLK2HTLb5EnqJwADUksePmTM8095y2MKjGTkJpBO4z1EL0VbwMjg7NvEmkTBomeWuWma9jQ5grtuYI4w8chxdS8Hm4fhEAxhzFBIyvYsnMmflMewVcb022nEVRC1XAkjRVJxyHYx76qmRL9/jlRBJEKBeP0gsveh2+9vtLsx7N/nt6m1VdH5yiynSii3umPNAGoOIOIexG6Cn4XVOUSVXU6C1xcqrBF/0T9wMkOyV/kCFpVtnqx1p2UgYRHM5wkWMpDUMbhufgUokrlmE/uKVnQiFZfXI+cmXLIdvZa0W7uNQRt0TyQj37aeJCNwdlM4GyKVhjbT+KVvufcqZCjsmo/JHAr6QCw42zukKKThDylLbvd0x0KcNYOFWzGSgYNZYQ4z8wVpxOMNHEn80nzuZEzd7BFbh+ouNgvT2Wah66V7mKjx1qydu0k2DenpfWh6VaRWPTbU1s9gU9VY9iTS6JignZt42vjc3
+ T9N1x1lE
+ 9OiSfzFSGzV0X0IaX9tJkwxvDOH4O392nVTy5lzb1Ux1IWQUbYvpqWaP1TntU+mHfwhjeSwmJjzXokZN+6wpElxOAFAli50CQInwPTXjoWWNWO4HuN6BUq8SpAtBnC2nS0zRJSH2AsfwerOUQO2B+G5XDCZujwzF4vY+IB0vinbvpRuJVdEUfeStlT9CKjhKJByjIj95u0xGvu/6JYev7f/3jr2eX5jt9nJOJqFkcs587dS6vpeUJNtIkrOgRproeJkqQqzzzvpiZW8VsyJQjgRWaYgrxZ/2IY1BwWDl4Mb8kgslNV47fgp50JSvr+qfMQt8JGUg0pn5GcXS2wmz3Pq1BDnSr7dG4zr/pcbRECYI00hf3grFUjno01D9sq/xK309oK39jE37Cpg4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,129 +108,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 12:36:40PM +0000, Marco Elver wrote:
-> On Tue, Sep 22, 2026 at 07:58AM -0700, Guenter Roeck wrote:
-> > Hi,
-> > 
-> > On Mon, May 11, 2026 at 10:00:49PM +0200, Marco Elver wrote:
-> > > When using CONFIG_KMALLOC_PARTITION_RANDOM, _RET_IP_ was previously used
-> > > to identify the allocation site. _RET_IP_, however, evaluates to the
-> > > caller's parent's instruction pointer rather than the actual allocation
-> > > site; this would lead to collisions where a function performs multiple
-> > > allocations.
-> > > 
-> > > With the generalization to kmalloc_token_t, we now generate the token at
-> > > the outermost macro, and using _THIS_IP_ would fix this for all cases.
-> > > 
-> > > Unfortunately, the generic implementation of _THIS_IP_ relies on taking
-> > > the address of a local label, which is considered broken by both GCC [1]
-> > > and Clang [2] because label addresses are only expected to be used with
-> > > computed gotos. While the generic version more or less works today, it
-> > > is known to be brittle. For example, Clang -O2 always returns 1 when
-> > > this function is inlined:
-> > > 
-> > >         static inline unsigned long get_ip(void)
-> > >         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-> > > 
-> > > To provide a reliable unique identifier without breaking architectures
-> > > relying on the generic _THIS_IP_, introduce _CODE_LOCATION_: it resolves
-> > > to _THIS_IP_ where architectures provide a safe implementation, and
-> > > falls back to a zero-cost static marker where _THIS_IP_ is broken.
-> > > 
-> > > Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-> > > Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-> > > Signed-off-by: Marco Elver <elver@google.com>
-> > 
-> > With this patch in the tree, I get ICE erors when trying to build
-> > csky:allmodconfig.
-> > 
-> > Example:
-> > 
-> > Error log:
-> > sound/core/oss/mixer_oss.c: In function 'snd_mixer_oss_proc_write':
-> > sound/core/oss/mixer_oss.c:1202:1: error: could not split insn
-> >  1202 | }
-> >       | ^
-> > (insn 183 400 184 (set (reg:SI 0 a0 [orig:307 _55 ] [307])
-> >         (xor:SI (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
-> >             (const:SI (plus:SI (symbol_ref:SI ("*.LANCHOR0") [flags 0x182])
-> >                     (const_int 132 [0x84]))))) "include/linux/slab.h":759:52 288 {cskyv2_xorsi3}
-> >      (expr_list:REG_DEAD (reg:SI 3 a3 [orig:308 random_kmalloc_seed ] [308])
-> >         (nil)))
-> > during RTL pass: final
-> > sound/core/oss/mixer_oss.c:1202:1: internal compiler error: in final_scan_insn_1, at final.cc:2813
-> > 0x779b51e2a1c9 __libc_start_call_main
-> > 	../sysdeps/nptl/libc_start_call_main.h:58
-> > 0x779b51e2a28a __libc_start_main_impl
-> > 	../csu/libc-start.c:360
-> > 
-> > This happens with lots of files, not just this one. It is seen with all
-> > versions of gcc starting with at least v13.x. Reverting this patch fixes
-> > the problem. Bisect log is attached for reference.
-> > 
-> > Any idea what I could do to avoid the problem other than stopping to build
-> > csky:allmodconfig ?
-> 
-> No idea what gcc is falling over here, but the below patch could be a
-> workaround/fix. Does that work better?
-> 
 
-Yes, it does.
+在 2026/9/22 11:53, David Matlack 写道:
+> On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
+>> 在 2026/9/18 13:06, David Matlack 写道:
+>>> Future Work
+>>> -----------
+>>>
+>>> Following this series, we expect to make further improvements to the PCI
+>>> core support for Live Update:
+>>>
+>>>     - Allow P2P across Live Update by avoiding resizing or moving
+>>>       preserved device BARs and preserving all upstream bridge windows.
+>>>
+>>>     - Support preserving Virtual Functions by preserving SR-IOV
+>>>       configuration on PFs and enumerating VFs after Live Update.
+>> Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
+>> kexec is a foundational step for minimizing downtime.
+>>
+>> As we look toward complete end-to-end support for DMA preservation
+>> across Live Update—especially for VFIO device passthrough and dma-buf
+>> sharing scenarios—IOMMU table/domain preservation becomes crucial to
+>> prevent IOMMU page faults when devices continue performing DMA during kexec.
+>>
+>> I would like to ask about the current status and roadmap regarding IOMMU
+>> Live Update / KHO (Kexec Handover) support:
+>>
+>> Is there an ongoing effort or RFC series for IOMMU handover / page-table
+>> preservation currently in development or under discussion?
+>>
+>> How is the coordination between the PCI core Live Update mechanisms and
+>> the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
+>> restoring domains or handing over root tables)?
+>>
+>> Any pointers to active discussion threads, RFCs, or future plans
+>> regarding IOMMU participation in Live Update would be greatly appreciated.
+> The first IOMMU series to support Live update, can be found here:
+>
+>    https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+After cloning the source code from samikhawaja/linux, branch 
+iommu/phase1-v5, I tested the VFIO live update functionality in my local 
+KVM environment and encountered the following issue.
 
-Thanks,
-Guenter
+When I run the following commands to verify that VFIO live update works 
+correctly, I get the output shown below.
 
-> ------ >8 ------
-> 
-> From: Marco Elver <elver@google.com>
-> Date: Fri, 8 May 2026 14:51:45 +0200
-> Subject: [PATCH] csky: Implement _THIS_IP_ using inline asm
-> 
-> Both GCC [1] and Clang [2] consider the generic version of _THIS_IP_ to
-> be broken:
-> 
->         #define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
-> 
-> In particular, the address of a label is only expected to be used with a
-> computed goto.
-> 
-> While the generic version more or less works today, it is known to be
-> brittle and may break with current and future optimizations. For
-> example, Clang -O2 always returns 1 when this function is inlined:
-> 
->         static inline unsigned long get_ip(void)
->         { return ({ __label__ __here; __here: (unsigned long)&&__here; }); }
-> 
-> Fix it by overriding _THIS_IP_ in <asm/linkage.h> (which is included by
-> <linux/instruction_pointer.h>) using an architecture-specific inline asm
-> version. Additionally, avoiding taking the address of a label prevents
-> compilers from emitting spurious indirect branch targets (e.g. ENDBR or
-> BTI) under control-flow integrity schemes.
-> 
-> Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120071 [1]
-> Link: https://github.com/llvm/llvm-project/issues/138272 [2]
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
->  arch/csky/include/asm/linkage.h | 7 +++++++
->  1 file changed, 7 insertions(+)
->  create mode 100644 arch/csky/include/asm/linkage.h
-> 
-> diff --git a/arch/csky/include/asm/linkage.h b/arch/csky/include/asm/linkage.h
-> new file mode 100644
-> index 000000000000..04afd3583e25
-> --- /dev/null
-> +++ b/arch/csky/include/asm/linkage.h
-> @@ -0,0 +1,7 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __ASM_CSKY_LINKAGE_H
-> +#define __ASM_CSKY_LINKAGE_H
-> +
-> +#define _THIS_IP_ ({ unsigned long __ip; asm volatile("grs %0, ." : "=r" (__ip)); __ip; })
-> +
-> +#endif /* __ASM_CSKY_LINKAGE_H */
-> -- 
-> 2.56.0.rc1.315.gc6ed9934b7-goog
-> 
+I am currently testing with VFIO v5 and PCI core v9, and I am not sure 
+whether this behavior is expected.
+
+Interestingly, when I revert the following commit:
+
+vfio/pci: Preserve the iommufd state of the vfio cdev
+
+the issue disappears.
+
+Could you please let me know whether this is expected behavior, or 
+whether it indicates a problem with the current VFIO live update 
+implementation?
+
+"
+
+echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
+
+echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
+Preserving device in session
+vfio_pci_liveupdate_kexec_test.c:122: Assertion Failure
+
+   Expression: ret == 0
+   Observed: 0xffffffffffffffea == 0
+   [errno: 22 - Invalid argument]
+"
+
+Thanks a lot.
+
+Yanjun Zhu
+
+>
+> The IOMMU series builds on top of the PCI core support (this series)
+> and the VFIO series linked further up in the cover letter.
+
+-- 
+Best Regards,
+Yanjun.Zhu
+
 
