@@ -4,145 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A654C9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:41:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FF1C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:47:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E9366B0095; Fri, 25 Sep 2026 04:41:24 -0400 (EDT)
+	id 4919C6B0088; Fri, 25 Sep 2026 04:47:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39A616B0096; Fri, 25 Sep 2026 04:41:24 -0400 (EDT)
+	id 41BB76B008A; Fri, 25 Sep 2026 04:47:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 289D86B0098; Fri, 25 Sep 2026 04:41:24 -0400 (EDT)
+	id 330CD6B008C; Fri, 25 Sep 2026 04:47:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 030B46B0095
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:41:23 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DB9D40578
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:41:23 +0000 (UTC)
-X-FDA: 85251640446.12.8AA1E2D
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 91E5F40004
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:41:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="r9FO/Whm";
-	spf=pass (imf01.hostedemail.com: domain of tabba@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790325681;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CFE16B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:47:24 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 843E7C05AE
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:47:23 +0000 (UTC)
+X-FDA: 85251655566.21.0E726CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CFA4940002
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:47:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOy3UInD;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790326041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o+dFtfvif9TVnSmCofN+O8+24ShzOcRw1mFy/ybi7lY=;
-	b=ODdtBY6tIcwQZ8lH5WePJeuFach3oSLd51oQqB92eikeBD99Zc3TLq+yLxg6rKqbtqVw3Q
-	xlMVyo064pex51ot0tLfF/eWEMVF10+bQIZnkAq1Q79Fvo10Cr82VhTbXy1PtQq++OQnTr
-	YnqNOkgJrYKeGNkdx6cP/8hTqTnEGh4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790325681;
-	b=5Z+Ll999KLyae8lbq2XhlAk3hB7X4VvO8h3c4M/HGq94W4FU1UfikOVIzKPXCDyyJwgxLV
-	jL8PkmthSUGkqgoP13Q4vJJXciB7VObx4KBx37GJM0+CL/AnFod35jL/vDBDwdUQoVzVV4
-	E6/KNH9+L01SSvZVVyohGUwYp0G9rYw=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="r9FO/Whm";
-	spf=pass (imf01.hostedemail.com: domain of tabba@google.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b83c1421ecso3932e87.1
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:41:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790325680; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QdSUmesEdIsEzDOELhY5RAX0z4T8dL779TJfhCjTo5qsOBpD29bdemXdqHVqWsSPAQ
-         Oal7JiJOjcxVgadaQZ7oga/CRHBaeY6zRhOwl58LpC/Ux7XBpure3bREIQaIfaYx+aYh
-         cEz02XOt3/TNwamnoC24tFpnhj17q4pyxBQFT/GSpvUXfEjyh6EZZaLUmilDiaEhTCct
-         qY59pe2Tr9OKzLHsm/JQ+YqEacMJt4ivl0Byh65ZeyZjGc0eCYzsIxwUNdytcfZMkDON
-         lrCoYBmOMNgNP+bANB+gkVVFPDpmhIvxLow9biWpkVk9yJDcFtJvYHm11ZzqHSlZbwnv
-         miwg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=o+dFtfvif9TVnSmCofN+O8+24ShzOcRw1mFy/ybi7lY=;
-        fh=lxzzFNiTbkJR2p1UQYlnJAa5n4sP8KMXturDZQPkG7Q=;
-        b=o2O/kyTx1hzd2C6+67BfLot2wyI5/+/B0AZ0z2vi8oIkwtc1JbM8m12wieBSewMpWh
-         8D8Bv8atxvKaiH1QEDZiZEO6QLWAXMaFcRU3fmhtgMIhSALHpERimdOMFPJlPmgR728T
-         P75f34OFur68bsxMKqhqxSk/2nEj8NW2fZvP4B7q9Ji34WYwAEKy1VObcR0L7tHyavVH
-         Jg7kD5uT3wCxqvxkIZK9MEDVAVSEm9O1B42gPsNL/bJVnoM3VBjZWXalkJQnkiW/4scM
-         eibl3fl8JGNC4UEag8bjeuBv8ryYAT4nktFU2ttLTZ3xfYukrX0g8L1eVuHDCBi19A48
-         g43A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790325680; x=1790930480; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=o+dFtfvif9TVnSmCofN+O8+24ShzOcRw1mFy/ybi7lY=;
-        b=r9FO/WhmW2ZriUoTh4KDupuW10kFoHEuTnRe98rRFJYPRdHTnewVFk1SJCiBXEaK7a
-         37BXw/IJzvs+ph2jzi+aDwLOvZkT0xEJfn6FN/oOELu5LV2igqlcANVhf1spowQygzEL
-         apvFmdsoqIuIerG3VbXdPR2DwI+hh7mVRMHyMEuwUrasgdui7byxwdmZ1qvZKrYDPAzE
-         fryK/GHY7iS6Tb7Do31LDTtSROHxGQOFtBGi9pWy97PO8wtUpfO+I1hiWqGwDGt8zFrP
-         /zuWokMkcbuItwgvr39cftfG/Cw0+Nt8cywLeKsesifB6KnEk04NkqLnyIK8aoYPR5SR
-         1jqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790325680; x=1790930480;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=o+dFtfvif9TVnSmCofN+O8+24ShzOcRw1mFy/ybi7lY=;
-        b=0xAYDMmjsjKth9WBdkx72V80aoOo24VC/ICa7k0BhVeXsIMNqZElINSimgC+vPOF4B
-         fZ1VmB1lwghOSKIq5PBcLnw1QKLWb4IB6wdAvebH17gUM25HCSB8EIhYD95FsInB0NdE
-         rfRBVtSWe4A94FKZIF3uDJKc/pVwwkhws3g5qgqpR2eFTVE/C1CutX/CmIpX5jgXdEcf
-         2xwbdEyXfHLZphfo7z0StrvYr9O6WwvFebQA4DVP50VKmf4VzIbaZJimBIzXGyo2e7d3
-         F5IPZAWY7DbetHYkbmOKioj3D4kPdhkadQlSf/QqHeTeuSRaEzefHEpOClr4QXqIHt11
-         j9Hw==
-X-Forwarded-Encrypted: i=1; AKwUvBwxgM39q2sWYQTlX6F2tfsJm/9gfDROFqCY9DIoknsf64PLGf+44KOK6E1XGwlaMTRwGimeYjlRpQ==@kvack.org
-X-Gm-Message-State: AFuF++lijjpMFY6LhGU8k/m61IjHHnvoW+ja7v8TGeGB+DC75aztMoxe
-	LMvfecqdnBeZeilaB53ii8d7X5m4P+H/AdyDnfsKJAMNBqa6cPw3VABABFmIGmD1VCdtHn9HB5e
-	UAXgifJi3Y2kHtemBKhEoAknW7LZpDen/5qy1i80q
-X-Gm-Gg: AYBFou19ctIZCJ0J+BKrtit99SYZviRe9yJgjBxXVrX+7eFdVDReD/dKZ8azJ6H6DvS
-	Y767ttg38luLjw8opoUR8PDXvZ1nzqdTrsuzdqgkr5/Vn0B9m3Y+5Cvzrp4XQxbvncHbQADhrC4
-	jL26ULj9GeTzZQvFt9GeNW8RGKInc0uAA8hmUd9u7wPIwZhz182nXVkudwnpvqBuCgXj49hsoMV
-	tiDS5s5ULDs1FMZetvrlBIpxRXLJwezq8BEyGlsI1Fvg5IU7/kDs6jUInDxuGxmxH/5SDqzi6cA
-	N6Iey1Sc/wJUajC0HFDkyOdeYPpnNzldx6TQmgomftmgP/QqFYEgkwHeVBhhxyYZDfHZPqeh3AL
-	en25RSjm+5j249gw+AKF/k/ol
-X-Received: by 2002:ac2:499b:0:b0:5b8:e83d:6c23 with SMTP id
- 2adb3069b0e04-5b8e83d6d52mr34962e87.15.1790325678596; Fri, 25 Sep 2026
- 01:41:18 -0700 (PDT)
+	bh=y1vL/yQufHRzS8007YyJ1BmyXdeunRacUZuSMuoGx+M=;
+	b=s5b5KBavKeHjHE2DGw+bTbPwMPHHo/0uWutbaOJQWH6BmzE/rDR/kCVH9dFkvpVFUKur0X
+	YzotB0INR7QfnENgqL2/gYGg0ccciakWLKWlfhZtDnGpmReSGEeV7o1tkBHbBHq7cqWTvK
+	oDKfzH5V1MRAvoVH3CNb1XeZd/7VO5o=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oOy3UInD;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790326041;
+	b=Mlwsx6ctaMpsdYw+uBuG3YbCzArY4OEgIcJIqHJUwrpgd86+Pc9Vz+Aa63YACMqyPqiyhP
+	/g64z81rt1+gFN1N3xWnoMkN4Y7VTU1o7vxudVGN/iQzEHEa4OU22p/0rux1yaoOLP1QOG
+	3dfIPWj5Hi9TuI9lwCVMZN8mIQZiDF4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 05FA943EDB;
+	Fri, 25 Sep 2026 08:47:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6C51F000FF;
+	Fri, 25 Sep 2026 08:47:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790326040;
+	bh=y1vL/yQufHRzS8007YyJ1BmyXdeunRacUZuSMuoGx+M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oOy3UInDQUVb2Icb2GdANrlDOqYm2WoBKtKvwZCUfs1S/oGOxGpZkfziC70GyA2/5
+	 2cyexKetRbt0vlFJKsIJcWfVwRR2Jx2f/bHhgsr2eMaSnvnmDN5tJswN6YcsxEUMkx
+	 EkrelxHCJjCdO0grJXBaMOWOxZ5K2sc5U259jiYv2hZcofCoL6ufST58P/IQx/IHVq
+	 WV4iwNyyXUrR3ENvaFkivya5BrKrNYR+WA3NigD9XEAdBP7jMkCeGFBAFCCz3wAOxE
+	 bQzFwzB9xHRvtpwad2yJeA9MRRqmxdccUR7xF2GG7C/jJmSg7+83t8plPVTxb4/536
+	 Jf+/PaswgN0DA==
+From: SJ Park <sj@kernel.org>
+To: Karl Mehltretter <kmehltretter@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bijan Tabatabai <bijan311@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm/damon/core: preserve the quota passed to damon_new_scheme()
+Date: Fri, 25 Sep 2026 01:47:12 -0700
+Message-ID: <20260925084713.46887-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260924201615.4478-2-kmehltretter@gmail.com>
+References: 
 MIME-Version: 1.0
-References: <b91dbfae-20f1-4b9f-a25b-4397afae80f9@kernel.org>
- <16ffff40-4ef0-4312-a700-348603f05c0c@kernel.org> <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
-In-Reply-To: <CAEvNRgGW_VHmT82q+bUqHh_5G2Z9sUF1jJOTiVN4Z8_cA9A50g@mail.gmail.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Fri, 25 Sep 2026 09:40:42 +0100
-X-Gm-Features: AclHuK8wuRNyKESPsObp4QvTkrVR3_lCINqfI6LnWNaBHbsf2BpkSVcq1Eie6oU
-Message-ID: <CA+EHjTz+WgXEW5RTxXf4oGeEb1Tsm5Ha4nOc4S1jBcp7jxP4+A@mail.gmail.com>
-Subject: Re: [Invitation] bi-weekly guest_memfd upstream call on 2026-09-17
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	KVM <kvm@vger.kernel.org>, amit@infradead.org, aneeshkumar.kizhakeveetil@arm.com, 
-	ashish.kalra@amd.com, dwmw2@infradead.org, eberman@quicinc.com, 
-	fvdl@google.com, gshan@redhat.com, jackmanb@google.com, jackyli@google.com, 
-	jthoughton@google.com, kalyazin@amazon.com, kas@kernel.org, 
-	kevinloughlin@google.com, liruxin@google.com, michael.day@amd.com, 
-	michael.roth@amd.com, mike.rapoport@gmail.com, mvaralar@redhat.com, 
-	pankaj.gupta@amd.com, papaluri@amd.com, patrick.roy@linux.dev, 
-	Peter Xu <peterx@redhat.com>, pheragu@quicinc.com, pkondeti@qti.qualcomm.com, 
-	prty@google.com, psalian@google.com, qinkun@google.com, seanjc@google.com, 
-	shan.gavin@gmail.com, shivankg@amd.com, sidtelang@google.com, 
-	suzuki.poulose@arm.com, tatashin@google.com, vannapurve@google.com, 
-	vbabka@suse.com, wyihan@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 91E5F40004
-X-Stat-Signature: rf67ybqifrny4d6hm4dysraktbq883zc
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CFA4940002
 X-Rspam-User: 
-X-HE-Tag: 1790325681-386234
-X-HE-Meta: U2FsdGVkX19vsXnJJoG6QTBLZqEVDcihUOlfsPW775y8k1OxgeCo5Qh/FNIMqN3liJzxNVJpr/7nY6O1lGHhqIStdnHMY8euUtSZrxxvAG1w3fuAeEtQivyinN9C/MqFf68xrGTs2TLOZtwarTYi+OVNof5L44HKWn59uJW0vwnsgFFpQ3Qw6Tzrvg2Hh4uTN0WaqrV72fxYSVJTMtuerLiYUPFYpurCnwKBx7DrDW5j8dvfGSjt2HIHrgiLPhGj3CW5Jb9+uu3Wg724zFERYA3d/8vrjRYsN1GtlS6iJF6LJZntRzHlWZtG+z/y5cUr6piY37NSXovpnCEHKEeHIaknmYJRWAkErwBgc/FN5806gOzFSepMj0E/AlzopDHwqoCPOZ3ccWYF2g9qlDnqAI5Og5D0xSy8SYfvgBjJwU9v62RcoixpiV2Uvdiq6LYhMJzpA2vxbNdsvqCAHO6ih+80yiGbp8tpFNDpIOAoOLRcBrYyy8F1ZTb7SpsZFrcvH4K4oKFzN8kBpCEM3t0aQdsLY41AhqI+JuHgEG2TwPwXAWaN9ajB18rV4RQ6u5fN3PfzVWybAvrKUIzzwLiXR2t9EeGtOAMXwAkNN3xiSnuJ3qiNCOTzwYO2ksOd5Azp/cHitEXbVFJ0qHY43yxwP0n8DxxyIv9SQcNTScj28wmOzofF7HtciY7jGelId0hBcDmnNaS2PP3rPCsGYdLKKfvYrtmOJdVMG0m2HRAOiDNNFuqSHVa4VpFTN/+dSfBUb2d0xEk+5AyvXxTTFWfsi6D2ATlwhBvRxW/pJCLpobY32+Vcbo1EW5FFnX1xVvomRmXT2+Bghzx789LBBDFjG7M8cg9ik1DtlRwrV9h74rmmYk1400Sx1kP5KItZs5eWVY8NyBccC/RLX2qWCGg7y3XI+6AVc7xFbI2pwb4XeYNYYtrPmTN88Jtqm9h7SCphGh+l3NeCbgwrNkqj0+b
- 1n6ABL1c
- 8NUJr0UxhBQcy9swtmCynora6gvSxy4Bg4uIb8SUIDTHkjyNplO4DGKjNsRaeaFm2Lt+eTrheRDyWOQnB2DSOW0VtXleb6Q2FlaOvSkmzzGWZ9BbaCw5dXgTJI5rkj01j/Z4YlXpyXu2Wlc9UayqMKez4tqM4N7Gaxoehpk1z1HjxSYrno6MXBck09Ky3TLNPwO7iUTnbEWbx4eZ4o4G1IxH1MXofsKyO1sgeTyO72fuchHRt5L6lvJs4zPDx7+VuRXrdGIfzlsFtyO1cEPpzhcdHzVyRv/GVrUSD8IGwoqw/P6QJwGCxO3U6EKr8xEcP8/U46yb3mLStGPe/TXt8MuwDAsnW24Cbd8YuTuvdSy83kF+DAO75zASk9T+IW9+0NZ/WJvo78bUYcmRbJzTf72VMlImbleO/9w6P+jqoEu7o+U+nTVHh89HXZnFA93T1XKXebw2xT1+Tx6eH2AEG7cNcRg==
+X-Stat-Signature: gy8tom8goe8oonqy6nkhnoswqhgs1qsp
+X-HE-Tag: 1790326041-373302
+X-HE-Meta: U2FsdGVkX18AjTFu4j6dmPZagj08cQfRH9YGY6sHN82new/VKiaiuVz0aljjpTwouuwxmVBgAj46URa1/wNDciwU6f+qbvSZvquuzZg2R1i23lvIRPfJXXQluT8IF0ZNNoradURnGvdbFMCzRUHJL7l0iURPay6MYUlJvIrn/1NjOvOoZnbSt1NAxrHVEQPrPxjBwHnvvAKWhK09S/f1bGNoQGJBLs890no2SVF1fJlZd/nUrgeyZBy/GA9dTl2U7II0Mg2+IcncJAquuWe0mCUlKMERVO9fBgEvJUFP8/MQ/dUN5e80rMBqVgCxM/HRomi9Kb/ZtDS08hJZrpj6qoiuGcF6UsLXDgEqIMMngvTtJ2Pb7io4Kll+ZlEejXQPkxIf8vJqG47Z/UlabyNW8raY6wOTUS9yoW46TU214bGx1SsKXB6Q6Slmj49ctBdEWfAUXSHLcJ6n3UuMwIIeExfS5dO/PZhRtcpqgw6TBKbtT8XY2bbW2mtND7c23BAuTv+q6gl741JeCl8OdPgkj4zY/4+zR/136D+0H3dyyGc1ywneF+8nLDd+23L/wrKLDtayBHjS+2b8I1yy5VfFAooWEiikx4DCKjhqB6+9cGga1eKNrSoVwwTylmCLVAg28AgXJ8ApAs9jpFgc9rQO3eS3RBkRdYNQGb21Y5UiacjgVW2qq9Q9AyfD/Be8ovsjB+I2ZKlVv2RwdlK1hbg0vTDFaBnywYHeSsRy00fDJ+C3KtMcPdDU/eoCW5h19qiLwakUx8OQuIyhDn08Ugcsln/xfOgI/S0QiEtqgzA63MEXeRHjLN7LA7N35jS9bqp5pEGhrhtZZpovGF+LW5RW5UJv+417p9h/AtFgk07bKqVxP+VZfqRZU/HiHil0YUTpCnTZ6jBwfLXhxA8Gar9ywkQFSy6OForRt2Q244VLeuka4Q0qFLjdnlIQABBnJlQExjvX3XBtsyImtVz6LMO
+ LmJ8x+LY
+ 9o/9rzaX/PE3MFUF/qdf+QVFK+B2xJE9E6N4qxpVLPY88qGE7Mbgy/W+fZLUd3Am2zIr+/B8iHJ6ushT0gaPEumFoyH0se257y+Xk9PTfbb805SVn/xvsdit8TmM5uVn8hJO/1aaQRCUu5Ish2j2Plv9gUkbvm9bPE75aAegIjsBS63PuHizwV0/rn7+BxcwDWWQuBCVzDXPUOLHPNFc7vy8wGGg9ev2MuPO79/aBFArc6kHtIe/WUDCudnFqxsIvctcveHbnH1VX79kdmBdHJD4uQEqWlu1tfbJw6QJJFfpYcC3xo2rChamLCIVx3tKOn6FKiEB+3fZGNq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,32 +94,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ackerley,
+On Thu, 24 Sep 2026 22:16:13 +0200 Karl Mehltretter <kmehltretter@gmail.com> wrote:
 
-On Thu, 17 Sep 2026 19:41:14 +0100, Ackerley Tng <ackerleytng@google.com> wrote:
+> damon_commit_ctx() first commits the running context's parameters to a
+> temporary context for validating proposed updates. When
+> damon_commit_schemes() creates the temporary schemes, it passes the
+> running scheme's quota as the quota parameter of damon_new_scheme().
+> 
+> damon_new_scheme() calls damos_quota_init() on that quota before copying
+> it to the new scheme. This clears the running scheme's effective quota,
+> feedback input and charging state. Even an update rejected with -EINVAL
+> loses the running quota state.
+> 
+> For a size quota, this discards the bytes already charged and allows the
+> scheme to use a fresh quota before the reset interval has elapsed. For a
+> goal-driven quota, the consist tuner loses its accumulated input and
+> restarts from its minimum input. A time quota loses its throughput
+> estimate and falls back to the initial estimate.
+
+The end users will show DAMOS works more or less aggressively than expected for
+online-commit updates of quotas.  DAMON provides best efforts by detault.
+DAMON parameters online commit is supposed to be executed only occationally.
+Hence, the issue wouldn't be critical on sane setups.  For user_input type
+quota goals, online commit of the user input score is expected to be frequent.
+But, for the case commit_schemes_quota_goals command is recommended for optimal
+execution, and it doesn't have this bug.
+
+Karl, if you don't mind, I will add the above user impact detail to the commit
+message when I apply this to damon/next.
+
+> 
+> Commit 60bd24f272d0 ("mm/damon/sysfs: test commit input against realistic
+> destination") introduced this problem in v6.19 when sysfs validation
+> began committing the running context's parameters to a temporary context.
+> Commit b90408ef1163 ("mm/damon/core: safely validate src on
+> damon_commit_ctx()") later moved that validation into the core API,
+> exposing other callers including DAMON_RECLAIM and DAMON_LRU_SORT.
+> 
+> Sashiko reported the same side effect [1] on the RFC of the core API
+> change.
+> 
+> Copy the quota to the new scheme first, then initialize that copy. Make
+> damos_quota_init() return void, since its return value is no longer needed.
+
+Looks good to me.  Thank you for finding and fixing this, Karl.
+
+> 
+> Fixes: 60bd24f272d0 ("mm/damon/sysfs: test commit input against realistic destination")
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/r/20260702212143.0CB6D1F00A3D@smtp.kernel.org/ [1]
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+
+Reviewed-by: SJ Park <sj@kernel.org>
+
+
+Thanks,
+SJ
+
 [...]
-> p.s. Fuad, for pKVM you also mentioned that you'll need to check if the
-> guest had requested for conversion first? This might be the same/similar
-> problem.
-
-Sorry, I missed this.
-
-Yes, for unsharing. I'd said EL2 does the transition first and the
-host then accepts the conversion [1]. That holds for sharing, but for
-unsharing with guest_memfd the host would have to convert to private
-first, and only then could EL2 complete the unshare. Otherwise a
-failed conversion (-EAGAIN) leaves the host holding a page it can no
-longer access.
-
-As with CCA, the unshare would stay pending until the host checks on
-KVM_RUN that the range is private, like the check Sean described [2].
-I don't think the per-VM list in the host is required, though: EL2
-already takes the VM's lock for the transition, so it can track the
-pending request and reject conflicts there.
-
-Cheers,
-/fuad
-
-[1] https://lore.kernel.org/all/CA+EHjTwLRzrq0vY0-OosENJ2Gkknerux53aVBj0zGRQUkRQP=A@mail.gmail.com/
-[2] https://lore.kernel.org/all/aqw_uBIYig_uo5Eq@google.com/
 
