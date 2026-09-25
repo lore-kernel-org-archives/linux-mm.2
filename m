@@ -4,87 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F30D9C98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31FFEC98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:02:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F04576B0096; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
+	id 409B16B0099; Fri, 25 Sep 2026 07:02:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB4FA6B0098; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
+	id 3BAAC6B009B; Fri, 25 Sep 2026 07:02:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA35E6B0099; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
+	id 2A9FB6B009D; Fri, 25 Sep 2026 07:02:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B27D26B0096
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46706140631
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:00:40 +0000 (UTC)
-X-FDA: 85251991440.26.D0D339C
+	by kanga.kvack.org (Postfix) with ESMTP id 0748C6B0099
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:02:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C283805A8
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:02:05 +0000 (UTC)
+X-FDA: 85251995010.01.1381CBC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4450AA0009
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:00:38 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaqtgpTC;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9D3BF1C0011
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:02:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cs8M+KUt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790334038;
+	s=arc-20220608; t=1790334123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSBvmNS7ZrGQmp0x6AI9LjYH8484eEgbwZLrKBALkwo=;
-	b=RfJLSuQ9yhRfHtuLXDqsvww6uN13bjbpMfz3Iz+uYu8nezQRy4OKQLoWd0ZzhcdozOgfF3
-	MvZ775CM+LEwe+gsBP/eBhSPJmVtWeKbN+1y2ql1h9/qCrCHMZMXjYLOWp6M6Ce40t+M9f
-	XI+AaWzdn4vVEur4GrNdDkfOGrX4Uis=
+	bh=i2MF8G53+2TJNwdh6H/2D4TjPKTBJGXEPFShL5//B+M=;
+	b=6jaj9tTo6WKCdkdbovpMwnOx/FzeVXz+LfTdf1UuuNr/yZ6Q3+pzhV3FDLwHREtS2ZrlQI
+	vQkJZ6or6+EMx89M5MoAcoMnwquKrGn5H3nSVOJErUXfJN86m6dJ/l4ImpFdfWderg5lRF
+	FQRsYCtwBh1OHI8w0w52xiV57M4KRWM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaqtgpTC;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Cs8M+KUt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790334038;
-	b=czwXrU0xekqISJfgOw83CO2X9IuP3oB8FEoJqTA29wAVKFgRYrguFCC4jEMk0Le9xAfHzP
-	v2TvVQ0lhvf9tLmVEjMpfcTnysE1R6d79KyP6FVLoyMRbfXASSUnHxUSMdsRo7bmOTx0sl
-	j3w1VYMAva7nyhXd0bq5/U5AYt0ntsA=
+	t=1790334123;
+	b=7pPyWyUHa7a04z1aoRRWky0729PpRyh49YZNziHtl5AumKd72+4bywdaBCRkZhgoJXKDoO
+	nXNb32y95K1ftoOL8c7ErM076f/acircbUvz9xZnTTpf4z9qPqlgn6Xfyp3vv6LILsqsxq
+	PYD9GMOpFgcQ9LEvHiOY2950iPR7t9w=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0275E4034C;
-	Fri, 25 Sep 2026 11:00:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71CA1F000FF;
-	Fri, 25 Sep 2026 11:00:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9585E418A4;
+	Fri, 25 Sep 2026 11:02:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE011F000FF;
+	Fri, 25 Sep 2026 11:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790334036;
-	bh=XSBvmNS7ZrGQmp0x6AI9LjYH8484eEgbwZLrKBALkwo=;
+	s=k20260515; t=1790334122;
+	bh=i2MF8G53+2TJNwdh6H/2D4TjPKTBJGXEPFShL5//B+M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iaqtgpTC57Sh0JN58cp22Qidd2SWU+IqRCF21YNdtRjwz2nLkEkCdPCKkKbNjyvh4
-	 evtY/NxHNsbko26zoZztfgAgv1VG+ZdAAv4Oovra4smkT6QzB17j7i82mwCF8HOGDq
-	 no99NpY1ZWoYSLMbMdfzfCpeuty3CMkuQJQ/fFkSx/WhkjzHMa1QRfHD8PWKbYeB2k
-	 BJK6hrdq4lZ0+67kSsPLA/RD6EwBP0SCLPa9qBBPC2We2VqhREwvk3A3JO5MmO1Gdt
-	 dthhuVLNyPU7G2L0/DunkYXtDWHba6N/z1IFHZRKiPuGSfAsiC30UXmHrofaNU1zKj
-	 m6ZB//6T/YdQg==
-Message-ID: <d57e00ba-f34c-4d30-adcd-aed02f9a0d30@kernel.org>
-Date: Fri, 25 Sep 2026 13:00:30 +0200
+	b=Cs8M+KUt16tK/XUS4KBWNEBFZCG7qdya4X5Q0/m1DlAhuFxLfunQdq/oOm/3xLhmk
+	 g+mz7RXSaCtI6rsDcJwgvAYI3OjRMNkZK0LcUbazzucK5JBDOKf5kvtv/2ePJtWUdN
+	 ME7b6geBHQ5EcQiztnroB9GCESGBTwfj3BOFpkrCOl2QXW03KCgvW+wRt9Z6cGJwg/
+	 16Pn9i25K6bLCw+K0mlmbRqTKkBOUUALnFf6h+RtaMbve0sYiz7bKXvmaAm6kK77s4
+	 FXoRQNJDmxpHAXV4WVeHP31V50DVpThWrSf4TxjtqXa883PecK/QuYllTic1IK01px
+	 H5q+PVXIZC3Rw==
+Message-ID: <91d800d6-03f3-4068-8c12-618529a81528@kernel.org>
+Date: Fri, 25 Sep 2026 13:01:51 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
- pages
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
- Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org
-References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
- <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
- <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
- <arP0-maAEi5yeNnl@kernel.org>
- <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
- <arVJm8CiLG6vpy9-@kernel.org>
- <c01aa1e3-f2cd-4b28-8e6a-8e8a1c36c641@kernel.org>
- <arY_058nsjb_Ie1l@kernel.org>
+Subject: Re: [PATCH] arch, mm: promote DEBUG_WX to CHECK_WX
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ritesh Harjani <ritesh.list@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Shrikanth Hegde
+ <sshegde@linux.ibm.com>, Suren Baghdasaryan <surenb@google.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org
+References: <20260925-direct-map-verify-wx-v1-1-7fd2f7d6d23b@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +140,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arY_058nsjb_Ie1l@kernel.org>
+In-Reply-To: <20260925-direct-map-verify-wx-v1-1-7fd2f7d6d23b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9D3BF1C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4450AA0009
-X-Stat-Signature: djtgezm1jot9mhjfiig9jy94qixiono6
-X-HE-Tag: 1790334038-610535
-X-HE-Meta: U2FsdGVkX1/QG6wKcDLvRiq9vRM0yDiCeA0/ey2KsmbHXrXLu8wP9hMgFBr4iPiVJGxM0rvy7AQ836sSpVZ+97u9eklElEN5KLksB/x1snX3npUIfFTsLGDkn7TUV4wkr8FULDG3F9pLiUrqhmsfgHPjl3x5Ale6FUuiBGSw3zzUUmBZgHIfAvVmR9nsSEp2a82aYao3Pzf584mJeY7XjtHfSxvrsjNLlLSaN+KWdCoOWrm2v3eIZvEf/0tAbq7RmzsNYb4jzMVhNNyjk0Sqxk8imkWjrDqjO9Che43c055PA5W/ENTxn0GLxEONJArtPvaXIqd32QoMXbGw9ra3aDZtaB12S74zqBO4USMmwmxACUzMiT+Lcw+L8l18TfjD6yetR4sIsIoDf6hSluwiHJ4oWWZhivOLwacVdPss+Yg5BxZKk2JiQX/KCpNMw/6gKl0bOPx/sfhndaZNRIQ+aCsJ6R9Oqnl02dcY2yWp+CIIbERpd2lJgxQNn+28meOr0GKQmv4icGfDmMgoBmacuoZOEOgVTVzexVpyra5rkN50w8Gj1rqZAp3ZIiuq93pLwp4NkCW7LpG4CZbnvOZwoVw6+Ck+yqwZ6HygV+e3g7HLmoa4cVRMW+NOULmQe1yGRdxHgA/XhxZLgYmOn/r7HiUaxrbmZMaqpJimcxv87PRxDLT3JecnllrS5RJClIzdTjp1x+T1uV0zQN5LxqWkZqQFwkr1MLjTxrw/wZpnTTXr/iKoAibMgHfToMEgWd38YoxZoTrW+47qeWlAtf3fGRUgoedmvJWvOfeaURk3NKzBS2tke6SrxJAFK7rG11tGbLP0y6H0AalrqcVbLWSz/adZvVMrwTLB+U1I936I1noyL6PY3srVk7Sa7ictPCyBpFlDEX1r/aJas3tve3EUo6sxecSt3zLQ1MuHMEwcLMChT9ATQ8TzCYq81VMzw0ufzAW/uTSCeF42bknT8hd
- w6OLi6qm
- kN0GlR08olKcvzGNqDiH3c5HMKs1WATKYriUM3A+eubcHPfiScJFf8wgJBI92770r7FWDKQDtQP6h6c72or16RTWa0cVOzSGOGDT5ksOHb2HBVzQO7YRW8w7OrLVSHyCQIFr/xupxtfYbWCEsKU35kVS5h9fw9xyVzq60pi5mZTIJYxGsWLOBYwQWj0kR3iaDCvPKYWGI2BA0Vq9w9Y47OimDxPF4Y4mpcrtqjzAcd+V2oo8gydUXjIeXEvYHS8/Evkmd
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hde4dcd6638q1t5n8ngj8zdgnbsdxbem
+X-HE-Tag: 1790334123-347490
+X-HE-Meta: U2FsdGVkX194i/Y6LW25VVa9bdmYTYe26LJNhGNp/Vj72Jpfw2HnlZPVqLDGBccpvNPzMjTPiVclQMb1VzjBLNU3albaIfx4/0gloJmsd5NCMZvVoeVsbPY6CcwRTdkiELlGwmfJc9VVk4fDyEVovzbVQNkqXLMRHF5Z2fAQXpwkM8WnqHnjkQJupoKVxlyz6prkW368W5I85KMgTE5g9YLhLYHHGHyZoIKTdV7EU9J8BYtFafYDHVYBVuGSlLGsrwVTeA8S/D4l8xWucA3TJDxNBAQWr9Zf7TyzbQS9VLH9U9dNtc4ZSp5HEyOM+A0Bst0dazno5r8mGZyorM8Tfv8yCUyz0PF4QGEC0h3Oe1GTq1kSyQi0FJKUBUAV4ltLCRnabPxMsGmKgNx4t2Ooncumao7zUvo3aTungKtNWGuboXEPwzSmaOqIGXeSw62jAV526X7gyh8U2flIO47lCXCfa1uxAkiBVHLvF88k5oLl1dR4z9DtJ7+UELXB7QsUPGzz0f5vKcqwn3s/8nAdvTSrs8f4CnnNsMfIqfkaW6tVk1tGrW5GgkeUA1gfbSak0dQwTvBrCMgKzJYUXO3Mv5zLhY1ZgiCRPjQgNyEU58HZ+NR4G01WnSD/nR1ZMTuR/ySLryVyVBBR0sN6Nx0QYsNbovNBgFNHheKwXafb8T9z57NLEx+YFjBs/whnyfU1KhsepVA/cWwPtb8Ffo1Dn2USC8bTiq7FUlt5jVqdJp2DF48Kf3OSuudnWzoWF5KYdhV+SiGAwlhlSEU7GNG0mZXS/f2aFlB1KmeLSt8Va02+CCuUNfRGUQJIooxo7gKmHMFGI03gVSGeHiuIMBhTax56xAd9qCM+HtDBjs8HlC7ynD4ZNCdj6+GYAgeRDsPELMYu4eVyJb6qEpT0aW0didhJOPsJDaVhfYmjmSZEB9qpIxaxiRo2mZJo9KDXjOwzS/AO+VAs8lqNqGNmWBI
+ NqHFRLhi
+ jMVvUMdgab61ZvBQNwrkNBR5skFl1n82RhNiNhEvPOZbM2cbSjYewHIGo6giyZiSvwY0LgatnEsJ5uV9WOzBOr0kjsm8Y0HvADn1brQzfKCuz/1UQGaqO+8oBWvaOe1b1P2tfMMBUHdvi6VG7qSJCJ4QxKMVj3A/pL6IbKsEMNICqbl2PkYae7Y4pRplt8/modm1ALCLstVlLTo08juzAGdzX8g+6ToSQt9zGoD5pDXggHKxrrf/hC989Tp+vhI4BvUinwF2bUR+pGapaGEp0GaZCIqDqfPZQscfmT7e6eTX7B6+ZKIrmQDX5v9ZriOKGLJt5tslSgev/c5QXCpCMpCSyDxjmxOOeuFXk2zjbT58HAK5O6bOlc1wNJSD3LZLbcvo67UpVyTvavWOJ4l8A22AaWSKXWYswTsWfErZZVRP/5CM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,26 +158,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 11:33, Mike Rapoport wrote:
-> On Thu, Sep 24, 2026 at 08:49:13PM +0200, David Hildenbrand (Arm) wrote:
->> On 9/24/26 18:02, Mike Rapoport wrote:
->>>
->>> They are not necessarily in direct map :)
->>> loongarch does not have direct map, but still supports kfence
->>
->> Ugh :D
->>
->> But where are the pages mapped/unmapped then?
+On 9/25/26 11:53, Mike Rapoport (Microsoft) wrote:
+> Verification that the kernel does not have writable + executable
+> mappings is about detecting security risks rather than a pure debug
+> feature.
 > 
-> loongarch remaps them into vmalloc address space and sets page->virtual for
-> page_address() to work.
+> Major distribution configurations enable it in their kernels as well as
+> defconfigs of most architectures that have ARCH_HAS_DEBUG_WX.
+> 
+> Rename relevant generic configuration options to use CHECK_WX and move
+> their definitions from mm/Kconfig.debug to mm/Kconfig.
+> 
+> For arm that does not widely enable it, only rename its variants of the
+> config options.
+> 
+> Enabling CHECK_WX adds a few kilobytes to the kernel binary and while
+> the added size can be slightly reduced with churny updates of
+> architecture implementations of ptdump, the core functionality takes
+> most of the added size. It cannot be moved to .init.text because the
+> verification has to happen after init sections are freed.
+> 
+> With this, make generic CHECK_WX default to STRICT_KERNEL_RWX while
+> still leaving users targeting small kernels the possibility to opt-out.
+> 
+> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
-Okay, so it's really not about the direct map in the traditional sense.
+Makes sense to me
 
-kfence_map_page_if_protected()
-kfence_unmap_page_if_protected()
-
-Maybe something like that? Anyhow, pick one and let's move forward :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
