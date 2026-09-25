@@ -4,123 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FA4DC9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 05:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1806CC98306
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 05:30:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ABC96B0088; Fri, 25 Sep 2026 01:30:44 -0400 (EDT)
+	id 0FDDB6B008A; Fri, 25 Sep 2026 01:30:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 25C096B008A; Fri, 25 Sep 2026 01:30:44 -0400 (EDT)
+	id 0D5D16B008C; Fri, 25 Sep 2026 01:30:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 171F46B008C; Fri, 25 Sep 2026 01:30:44 -0400 (EDT)
+	id F2D126B0092; Fri, 25 Sep 2026 01:30:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E484E6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:30:43 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70AD3140561
+	by kanga.kvack.org (Postfix) with ESMTP id CE19F6B008A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:30:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD666140561
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:45 +0000 (UTC)
+X-FDA: 85251160050.11.058F155
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C9FC840005
 	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:43 +0000 (UTC)
-X-FDA: 85251159966.01.EF53D7B
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8A1C340007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:41 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=modal.com header.s=google header.b="Iu/aJC8C";
-	spf=pass (imf11.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ayushr@modal.com;
-	dmarc=pass (policy=reject) header.from=modal.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAjoFiD2;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790314241;
+	s=arc-20220608; t=1790314243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UlKVWQYb3wLiMbBgvNkQrBNBTWmCb5vBsI31GY2cd78=;
-	b=CDvH6v6akuV4tsdC26uY8nEpx550jolI9GYRymmjn7AR0k1pIdhCqEbFcrv1PauoUf8KFR
-	5y5vrIUzjrTv4vE6YTMFqdq/iShhyPJGo/2xEwVN6INERl6aAmWtXsKphaaqOZWMro/8M/
-	j1vyL0b8AchJY5F9Pd+AkkjvBW6QWBc=
+	bh=iuVHKe+kHLV/jSPQ1Sp6pScTLQ6GybikNB88F+4NQpg=;
+	b=2cnmzvIDQQXh+W3gDEt0YbhSYbEzQh43RUGXajafSM3wu0cmvkndwL5Nk7KDvp6aqpfVSO
+	isKf+cKfYvUHFfupDxjkxWmiNsFptMFO0JQUTzsJZTY2ysnyh52kT3AwC9YnlwCDRyqVd4
+	c7gEfoF1iySo9msiX7KrI2NXg66Slfo=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=modal.com header.s=google header.b="Iu/aJC8C";
-	spf=pass (imf11.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=ayushr@modal.com;
-	dmarc=pass (policy=reject) header.from=modal.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAjoFiD2;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790314241;
-	b=MzDn7yS3RSYfR2RhaFId5w7e5ABslGLdZP4OmUDPTRWxNXpIwtYercd5rrkfW5gn5MXnKu
-	KRN2GiZBcIHUjkPq2g+jnhwbmvR475f7qiRTw7fRQxhcg7B4wt7PkHc+LPcQ1eWW8ESo8w
-	pwAxDBEjgHtjpZ/taTxuNkOlRcpaNeE=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-398b3b189e0so327161a91.2
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:30:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=modal.com; s=google; t=1790314240; x=1790919040; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UlKVWQYb3wLiMbBgvNkQrBNBTWmCb5vBsI31GY2cd78=;
-        b=Iu/aJC8CIR8gmbiBj1o6U9n8lBScF9xq7Hy95bDlL7nDgrqBPb0BD8PdW0iWJMvTLp
-         TPB9FilVSt/DcoIA1uXNtkVzprwsPtKfMz04hfay+s/yMPbBqaVzPINxFM+RW4S87HTe
-         rhvk+ngb97sLnBCC7jguf98eihXtw9aB2+ZjWhHPVopQL/ANCl5+QYLN7yFOZBxpWEfv
-         BweOwfFiX9vroEwQvEgaPOF988TrmZQSoM74niDjCmPjV7wHZ3iSQkZggQ9QaP5RbvK4
-         yX2LmpPuo4dQKGI/AmF+55gmph9XfuSFsozq162xma/77EV6A4UZAHU0fGdiaCn4ch5x
-         Xjog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790314240; x=1790919040;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UlKVWQYb3wLiMbBgvNkQrBNBTWmCb5vBsI31GY2cd78=;
-        b=Mc9GUwHrMRsnJepc7GyLXiNy2agsNQXfhfWif8JfwLZfHmVH5vXmawG8Gh60KDEJ1o
-         FK08HarihY601b1dttP65GPQv2T1S0SHwFJbFhhC4EXEZ47p9zQ4T/e06lnnerJw9+B1
-         1eTwrRGvkXkfrezDtXP4+m7LcGY9x7HLjsnUO/6jlv4DYTSU2U5DHQKVILoLq4jqjnAP
-         kXV+9lYTqwWWhil877B3pwa/Uv4VptZwzot0XwNJeoNp8rH9oOmKdHcrGcBhiaC/Abg/
-         EOQfifg/cGweoV8gNsbBCp2GobOfxgdveg2Bqd2aAzBG0sVnTqzKYN6XYwt0NfQ5/aCo
-         C+0A==
-X-Forwarded-Encrypted: i=1; AKwUvBwOP/NrFZekIxKLJ/d1aDP7apE1u1kjSBI4BlFPaKfKEEfOvLfEvgm/qNROu5kMpjk+LdYBblW/Mg==@kvack.org
-X-Gm-Message-State: AFuF++mmuJlbmFZs9I+BkYdYPYt+/dQcgI6Q2kQ5rqZDqZ515Xctu/K0
-	Luj38MCq1t23cbBQFMjsxfQ/MWrLHgn9fxJA7bWEqH5nQbQak4Hrc8mHxonMXhqYXcU=
-X-Gm-Gg: AYBFou1s9k1++hFczSqe4toQ4NJvh85vLNJV/z9tDLHwYStpt2zyn8iq/eJHWdYqizt
-	HfWD1o2FUuZf8hQvlaSIabRfBeyqR9Oeg8AnXlPwV5e+qFVDWc1I3eZmxBBWtf0mX9soCmO/OD+
-	bpxO3+rcE6yrPGKBMg0DhnNQ4LXAKObzEIb1JifF8JTdTxrWtT9xNC3D1IMs0zDooBhH0BE7ewn
-	Os7U2oSrxs/8HbVjjQ180ZBr+ViFBqZlxgzwyVj6QQuduWrbvdV3cMVs8T5TbCapflaPLdSoryo
-	qHgO2fbLguaAVdJCdUyfhjbDgegVjogepMK91/CTFpOr3so9YMA6KqE+kEAgrXu0gaVoNExF3Ft
-	h+DMLN2oyoY6GDBPki86ieubeCkpspUmJNwHk78ezTi2PKTf6LOLfETXc9eyeIvAMgBBTr/qH9L
-	/1kGe3svCXV0n7Br8L/olWPtp99tN2C94ESrRqbRXRzRzE5bwSaTbGc7QccaIj4r4RAJx5vWWIh
-	AUIdrjkpa8TAGG4qAQ3qs5OHjOatyXKz7LMrSx6PceHiRl8FjQv6RowJn3v9IkP2BJE5+sgRUd8
-	BHTGxXa+HETSeKW1KVIdC0Cu4ZTW+wdEcGrOVmcynojt05uX
-X-Received: by 2002:a17:90b:1652:b0:3a0:9640:8043 with SMTP id 98e67ed59e1d1-3a098ccdd41mr4157923a91.15.1790314240096;
-        Thu, 24 Sep 2026 22:30:40 -0700 (PDT)
-Received: from devbox-ayushr-01ed.tail5292b.ts.net (ec2-44-242-192-44.us-west-2.compute.amazonaws.com. [44.242.192.44])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b998dbf2sm2199443a91.12.2026.09.24.22.30.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 22:30:39 -0700 (PDT)
-From: Ayush Ranjan <ayushr@modal.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Ayush Ranjan <ayushr@modal.com>,
-	Hugh Dickins <hughd@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jan Kara <jack@suse.cz>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts page cache / rss counters
-Date: Fri, 25 Sep 2026 05:30:19 +0000
-Message-ID: <20260925053027.1998394-1-ayushr@modal.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
-References: <20260924061708.1645968-1-ayushr@modal.com> <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net>
+	t=1790314243;
+	b=D8A6YEMQrMfumjD7j/GkDdNMD8VS1F9zAQOBgAkf4ssSK3NCAAMvJTN5EiOMTKovG/+XQM
+	/Fph0cJOP0lCCf/w95lAaHtaJjcbTy/tBBPI6rHp3X+sHBEdFywTNvam+2PbtxMMqCCDIx
+	/laCxtxf3oTu20xwd7a0jcUAPQcxgQA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0182A4458B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9F31F0089B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790314242;
+	bh=iuVHKe+kHLV/jSPQ1Sp6pScTLQ6GybikNB88F+4NQpg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DAjoFiD24Cdy6c2ES17VvfffdKkBKZC8OaKquPQylTnZu3l0Rfcfzkow9Fvr1RQpM
+	 CreQeqEJU5ZY92W638ubb5rI6AJm4tgu8yU2Oods0rF8H5iFRaC/UvmozeNqFweKfl
+	 DNjEM5WcsC2W44XwmRN6vUQIgOJ5voCv5QZkI5X/G+5xgZZMzsJzvQWvYy4gX9B/3J
+	 KwJV1JBh/C+bx5VoCTbLUD3AtEneolnWi2VACjE+DFz+yDVsRMqi72YNiGWbow+lsx
+	 1cwHVrEDdYho5sLmNjCYZHgVt06d5avWNJt/2DVQmfe3967e7PrWAZJgsSjfyjs/1G
+	 vmqiNUoe0ffIw==
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a222edc62so57163085a.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:30:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByNvsNi8ab8BM8Y4hepMO+Rlk6xra8u7t6H04rWtaQhzL11gIdF3DheKBz3spDifw+7FPbmRVkcWA==@kvack.org
+X-Gm-Message-State: AFuF++kkd/oA+lDPfoRo6ml2LKCS3sffgFYB9m66myPz1BCD4nZdNRWC
+	wpHQYVsNOU9T8dOeeXHDz9HZp47JLY7t/TyY3/r5nUmd9IoxwTgHKv7urW9g7cbAqAbMZk3oITX
+	RA+1wGJrg/j8/73eK2XC79oT2+OJLOYA=
+X-Received: by 2002:a05:620a:2945:b0:93c:b10:7243 with SMTP id
+ af79cd13be357-93c43b61d03mr262098485a.5.1790314242069; Thu, 24 Sep 2026
+ 22:30:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8A1C340007
+References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-5-dev.jain@arm.com>
+In-Reply-To: <20260924131106.1730494-5-dev.jain@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 25 Sep 2026 13:30:31 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
+X-Gm-Features: AclHuK8jj4BEC2ZukHa7pkW7xEBHFBfsvYex5BDejOLunxBiVqvO5dSgOHCPAnA
+Message-ID: <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
+Subject: Re: [PATCH v3 4/9] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, 
+	andreas@gaisler.com, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
+	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: xddtcay8jfby7wp1ewzsugtynnjwaxx3
-X-HE-Tag: 1790314241-923464
-X-HE-Meta: U2FsdGVkX1+HJjRCjp4H7CAhYCI0grnQF8FrAovXvlO3XYZpGwtcHH09/YFb+8X/+hgiSvNyeG6pA3BWHbSznWadYG9iJCiXFib/8h/z1OA36Ujhlffk28giqRs1AaadMXUkoJHmB6JHcpTcuLwp8kuwTyTW4G9QXAOpy32u2Xuv6y494DdRenmDP3o+bGx6xYvl5/kxPz3eYN8q/uuMawwB/OIk5jmjl9huaDvJXKUDi7DVl1i9F0agodNS/3jKe7JelyZn0r17v7g0JjRa/4TIjG292kHDA5ddQzxElB73ZByg734tepRseO+fuYBU+M8a1FoBx7czkTI9aNGTEavJL9R0mdlk0nzlPtapMN8TPYwQWdTMm42uTKEVJoyfeFNm8YEkTMQnnYjk5USQQVCk7joXe7t+uSLj1UcpSpmy/0zyXzRLVDbVSq8GomcsitAXUm/6z+dQwkjuxpMDOJu7Pw3c2ZE6wjzdVPs2HIum3yuNm6nhBxWZAtnNHSFbtU2VDHr0bdlXXETvpqJFI5prpuODayQeVCS6NlEECi5Jsc6AWGLHolGGnAoqPSXtXP6zn+M9nTolANCEdjf7U408ROedjTKyHdVJEWmntVObZPHotISYfcPWhfbyJX2k35KjDp9vNU9uPKSc3RDXnwnn3Phb7hi6jSrA662YJaJ3i1xuB+gbQhhk4ySFA1sPRHkk3Zlam10+rFtfCiIP0ptoa/FLVCKRkbzofn2o8wSphZeoearu3TNZC6Zw4eW9tzjlTJNhNy/SOzSAonBbbKZfRtZRoTPiM/QB+kL+zM7azXbrZ5LU3hinFvC6BNpb84cSMkpemQB+QKYmjepmrSloT1rrKveUtqd/WgYd143z7AE2sijv4/TdJ8blQ0+9q8DPqiOl+IR34FkAsOv6dodRsu1yhAQxJUS2pwbUPkkcViDU9JYGHNSBYelz7FJLiDkKwXDxa0LEcJLI2gy
- ql3567qY
- 1U4Co+iXCWI5AYrSswEjiSVswhwE6cqcoT569fyb6bVxT5er2zdQvqByF9qvCgMEGKxTmqjgqVGIwJRmWuOkq5Y6HwrJSDXrdoagTdIj5GjJ1nswaB7P+e0pytVh0znEfjR4lrGkkdyEM8CnvFZ5VeeFF8ukTYFoM0mJuCzWO8ks5p6A/PDXc2vMLqJEyP6CbL+W631kH3T7lXLJcywe60CcEBup6z0nRWor8mORkbUVoOWUKojgKzW5DNor10v+e9kXS97Vh0oFQYmKf17dBmho7f1pMaFHUbxlkbiaAusHBMLpVbb2gj6Nu7QY8uGcDKQNgw3Il5rB+MQuPz/CZozm7FhWHOMk23BN7aOFbdm2qeCbzeGczwTk8qbjCUvGDqg6pUgVwrZyOemPo5OGJhIduiw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C9FC840005
+X-Stat-Signature: 8c43ghtaq59u8g8n5dgmj7tp1f965fjw
+X-HE-Tag: 1790314243-340279
+X-HE-Meta: U2FsdGVkX18FF9affJTw1I2IDMmDJeMkAYYxMuQbOOqbFdwECzC+VxkkDUlhVJDaCf2G8P8V1Zg5djawlhDAcFM11XuZWGFSwbqfUVYfo5zCm2cyXRTUZwGEnG4UZjBmbKGXAZEjxdRjRMlCquO3kcfwUDuXVUAuPxt+3zK05Qlunh8Sija2vVIv/VjRzKY6dnYVDCOpAp5B0h4M+pdEaPTao6cyFITm3HodIXREVnm+K271X+xWWW7SId7cM6RqvfdiCJCk5pSB89r7RGQg3bkXzlsINOnFwqD3Rt79/ZRKZjyp0Vi+6PGYOtkVa8M+KzqKfs9hG8omDGMcSKaqEzBy4OKq4c1SlMRblPTF0T0ULgT9hvKWf+BnFN4FkPTEmnxGYErGItm9hCTp0EyAgNCLPjI8H54qhK/GWmCDB1QP7GRR5hDQkKW2qaZDIrzkIw7h2TjqpyjgmBtY+2e0HX8GLFQR66+VfpAxdx+ZZFp97cRnj4Cz1JsAinuFBMITYcipJlt/IAqXkF2W55QjLNsovwuzQ8tCzt/ITO+6kR7i8zUZL8wwS/UB1cHUzpEShqHsAjGbiMs8kagkecPXeQzTBrc5PPxCICXFY62NyoUsghXNq5wKnen/p4FPXUKeEzDO9KrxY3GBDHq0JFsJEOme5uSWjpFYsJtZrJDe3dlBz9fzU1wg097YDOIVrK7b9aNbCLDqTInnhkeq40xXy2A7y55vpHu5bxNHY+NhHOrfkepSoUNtWBhUNbe+sxJ+Rap45S2qIHw/bzQJM9XVy1w6hevcHcqG2Ds4C2kN9pvMdYAhtoALVeOnFO5S1mXHfuTQ7DCdVGwNi8jDJl+Mamj5Y/N2MCsYe/SUJFxIrSEOrMnmRQILfxww8/l7k7SWjpCik6u+i7oBQxbIdA/8Z/ozXFjKKXkP3zfU6lxBwAaRcIUSUpMFVQt0tIl01nR+NC+hynzVVhjAr9vRtkL
+ uSPdXEWs
+ LxWT60deE/jGW+tyzu+wvzYuQ2jMds5HZiL5fAR1Px4weNMtwzJncdsTK5gNdww7sIx7SDZdDOsy0VoEH58LIRk3Ew0uvJ4+djLf8ARt7avAYjmc8KUNK2UAHKQSw/VXswJqsLyBl8K3h9zRGDuSHMIVNXGlmfrNch+AN1bMcPRRErPECc3Q2KaP7Gp2MDJpVbe8Ns1Jn+O8jCsOTryrfQY6xTD4N+/aMNJrmaxlMOrZTYkyAJSAoxcx92obBUi/snHT2EoqeCD3AF6Us30ghU68yH0IWnat86BDV/Zyxyz6wGNS1W26gdMQcx33iCKhKdIAI+M2i4mxjRA8gWSCSeyMCyO9MDvAF9h37cybvFmM+XJZRrxsQm6ObL/geiPxYvvmJ+bMxQ5yfisc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,107 +109,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 08:34 +0000, Pedro Falcato wrote:
-> (please use the email I actually use for work, thanks; not sure how
-> you got to that one)
-
-Sorry about that. I put the Cc list together with the help of an AI
-assistant, and it filled in the gmail address from your older list
-postings; I should have checked it against MAINTAINERS. Using this
-one from now on.
-
-> >   - filemap_map_pages() samples mm_counter_file(folio) once per batch
-> >     and applies it with add_mm_counter() after mapping; if the
-> >     folio's swapbacked state changes while it is concurrently torn
+On Thu, Sep 24, 2026 at 9:11=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
-> But that cannot happen? We hold the folio lock in filemap_map_pages().
-> The folio (naturally) cannot be torn down while we have the folio lock.
-[...]
-> No, I don't think this paragraph is true. Page cache truncation (via
-> truncate, or fallocate PUNCH_HOLE) takes the folio lock for each folio
-> that is about to be truncated out. Mapping folios takes the folio lock
-> as well, except in the fork() case where a myriad of weird interval tree
-> + PTE lock interactions make it safe (AIUI).
+> To enable batched unmapping of anonymous folios, we need to handle the
+> sharing of exclusive pages. Hence, a batched version of
+> folio_try_share_anon_rmap_pte is required.
+>
+> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+> to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
+> batch of nr_pages. Refactor the function such that the clearing of the bi=
+t
+> can be done at one place without duplication.
+>
+> Note that __folio_try_share_anon_rmap can receive nr_pages =3D=3D HPAGE_P=
+MD_NR
+> from the PMD path, but currently we only clear the bit on the head page.
+> Retain this behaviour by setting nr_pages =3D 1 in case the caller is
+> folio_try_share_anon_rmap_pmd.
+>
+> While at it, convert nr_pages to unsigned long to future-proof from
+> overflow in case P4D-huge mappings etc get supported down the road.
+> I haven't made such a change in each function receiving nr_pages in
+> try_to_unmap_one - perhaps this can be done incrementally.
+>
+> Add two WARN's: check that the batch is entirely exclusive (for PMD
+> callers, need to check only head page), and that there are only
+> PTE/PMD paths converging into __folio_try_share_anon_rmap.
+>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-You're right... Thanks for the correction.
+The patch looks correct to me, but it seems a bit hard to follow
+because of the `pinnable` handling.
 
-One empirical hint that may help: the reproducer strictly requires
-khugepaged to be re-collapsing the punched ranges (it never trips with
-the default 10s scan interval), so the large-folio / partial-truncation
-angle Jan raised elsewhere in the thread may be the more promising one.
+> ---
+>  include/linux/rmap.h | 56 ++++++++++++++++++++++++++++++--------------
+>  1 file changed, 39 insertions(+), 17 deletions(-)
+>
+> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> index 62ef511a6175a..91b5763ef466f 100644
+> --- a/include/linux/rmap.h
+> +++ b/include/linux/rmap.h
+> @@ -723,17 +723,23 @@ static inline int folio_try_dup_anon_rmap_pmd(struc=
+t folio *folio,
+>  }
+>
+>  static __always_inline int __folio_try_share_anon_rmap(struct folio *fol=
+io,
+> -               struct page *page, int nr_pages, enum pgtable_level level=
+)
+> +               struct page *page, unsigned long nr_pages, enum pgtable_l=
+evel level)
+>  {
+> +       /* device private folios cannot get pinned via GUP. */
+> +       const bool pinnable =3D !folio_is_device_private(folio);
+> +
 
-> Awesome that you have a reproducer! Have you reproduced this on a
-> mainline kernel? Enterprise kernels are not supported upstream.
+If we make a helper that does:
 
-Partially. The production workload trips both BUGs on:
+for (;;) {
+     ClearPageAnonExclusive(page);
+     if (--nr_pages =3D=3D 0)
+               break;
+     page++;
+}
 
-  - 6.12.96 (Ubuntu 24.04, mainline stable build)
-  - 6.18.46 + two writeback backports (31c1d19ead2c "writeback: use a
-    per-sb counter to drain inode wb switches at umount" and
-    f6988c90671e "writeback: bound cleanup_offline_cgwb() rescans by
-    rotating scanned inodes") (Ubuntu 24.04)
-  - 6.12.0-204.92.4.4.3.el9uek (Oracle Linux 9, UEK8)
+wouldn't that allow us to avoid this ugly `pinnable` variant?
 
-The standalone reproducer, however, has so far only triggered the
-rss-counter one, and only on the UEK8 kernel. Not on our 6.18.46
-hosts, and it has never triggered the "Bad page cache" one for me.
-So it clearly does not capture everything the production workload
-does. The production workload which triggers this is gVisor, which
-heavily utilizes memfd to implement application memory for the
-sandboxed application and punches holes into it to decommit/release
-memory on the host.
+Then we can make a much smaller modification, which should
+also be much easier to follow? No?
 
-For completeness, here is a production capture of the "still mapped
-when deleted" bug on the 6.18.46 kernel (the gVisor workload
-mentioned in the report; the taint is from our out-of-tree module which
-was not being used here):
-
-  BUG: Bad page cache in process exe  pfn:1be0e380
-  page: refcount:17 mapcount:1 mapping:00000000ceb7a77f index:0x153980 pfn:0x1be0e380
-  head: order:3 mapcount:8 entire_mapcount:0 nr_pages_mapped:8 pincount:0
-  memcg:ff25c58e86be5480
-  aops:shmem_aops ino:3180f dentry name(?):"memfd:runsc-memory"
-  flags: 0x57ffffd802006d(locked|referenced|uptodate|lru|head|swapbacked|node=1|zone=2|lastcpupid=0x1fffff)
-  raw: 0057ffffd802006d ff8c38e33838e208 ff8c38e33838a008 ff25c5f1950be208
-  raw: 0000000000153980 0000000000000000 0000001100000000 ff25c58e86be5480
-  head: 0057ffffd802006d ff8c38e33838e208 ff8c38e33838a008 ff25c5f1950be208
-  head: 0000000000153980 0000000000000000 0000001100000000 ff25c58e86be5480
-  head: 0057ffffc0000203 ff8c38e33838e001 0000000800000007 00000000ffffffff
-  head: ffffffff00000007 00000000000000d4 0000000000000000 0000000000000008
-  page dumped because: still mapped when deleted
-  CPU: 170 UID: 0 PID: 947113 Comm: exe Kdump: loaded Tainted: G           OE       6.18.46-modal2 #2 PREEMPT(voluntary)
-  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  Hardware name: Oracle Corporation ORACLE SERVER E6-2c/Asm,MB+Tray,E6-2c, BIOS 89070200 04/03/2026
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x76/0xa0
-   dump_stack+0x10/0x20
-   filemap_unaccount_folio+0xf7/0x240
-   __filemap_remove_folio+0x3c/0x1e0
-   ? vma_interval_tree_iter_next+0xaa/0xc0
-   ? unmap_mapping_folio+0x70/0x130
-   ? __folio_cancel_dirty+0x29/0x110
-   filemap_remove_folio+0x47/0xf0
-   truncate_inode_partial_folio+0x15e/0x2d0
-   shmem_undo_range+0x6bb/0x930
-   shmem_fallocate+0x1ab/0x530
-   vfs_fallocate+0x17b/0x3b0
-   __x64_sys_fallocate+0x4a/0xc0
-   x64_sys_call+0x1fe1/0x26a0
-   do_syscall_64+0x82/0xf80
-   ? seccomp_notify_ioctl+0x3dd/0x7a0
-   ? __seccomp_filter+0x10b/0x610
-   ? __x64_sys_ioctl+0xbf/0x100
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x40d00e
-   </TASK>
-
-followed later, when that process exited, by:
-
-  BUG: Bad rss-counter state mm:00000000283589c7 type:MM_SHMEMPAGES val:40 Comm:exe Pid:939691
-
-Thanks for taking a look.
-
-Thanks,
-Ayush
+Best Regards
+Barry
 
