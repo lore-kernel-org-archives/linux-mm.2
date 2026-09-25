@@ -4,87 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 361C8C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 22:15:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CCF5C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 22:28:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CEAA6B0088; Fri, 25 Sep 2026 18:15:06 -0400 (EDT)
+	id 3E47A6B0088; Fri, 25 Sep 2026 18:28:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 180216B008A; Fri, 25 Sep 2026 18:15:06 -0400 (EDT)
+	id 396A36B008A; Fri, 25 Sep 2026 18:28:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 096176B008C; Fri, 25 Sep 2026 18:15:06 -0400 (EDT)
+	id 25E6C6B008C; Fri, 25 Sep 2026 18:28:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F7E6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:15:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 681A2A07BA
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 22:15:05 +0000 (UTC)
-X-FDA: 85253690970.13.276646E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E6E0B6B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:28:15 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 71AA11607DB
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 22:28:15 +0000 (UTC)
+X-FDA: 85253724150.20.4BD7AF7
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id ECCA1180005
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 22:15:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qxVDR1bg;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9F36D40003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 22:28:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S6120kZC;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790374503;
+	s=arc-20220608; t=1790375293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gv3eO9GNPrNvYVMn07KZEaWja3PX8hQiFyYjoNkPaLQ=;
-	b=XJ+g46wjSTdCDqQt2w5T2FmCNHZG4Q6yYiogfiYZ68jwW1YfcA5lwlrbWSPbXdby9vQJPH
-	7bmNrJ5t9LJfO+uPzZeqmTwrZIa30pqdfY2t6iKTLsBaRldOaIzOXAQdCoL08YgBjTiDKr
-	0qoPPoDbxv+FRUo1VzfcdYwZF/+Ye8w=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=qxVDR1bg;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=/FeqC6NsreHCzW9fFs+vzkIExlhoQtzmbN9AT65QI1Y=;
+	b=qXzNU8p8plG77ECwZfgurfjeWJZX2LRdCrwoo5N0vZX0B+gXUcDVevyZIhdaTDtlRoBCGd
+	svXI3R0gMpPAhEHPuaXrwD3fcnChTnifa+pR67jQRac59UghvcBs4nzpL2JxqqohOCKWeA
+	KNnTERowi3ROMWZ1gsYB2JBlX21J7b0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790374503;
-	b=da26QDinDQtAuhwaCYPE3XMHP9FDB/ngNQRYXuwXUU+bdNRip9Dc0UTJvnDF3FsH0MX/E2
-	uaTDPPS6D5S7eutVkJCMc60+WadYTkBPMm0hSSjihVdEwQXAxEmIiHTlEIpZTWwjiunqP3
-	39Kp92WB6fdMGy7afqF67VYie647sqM=
+	t=1790375293;
+	b=HL41fM4txJYg/Z63gxVcJpMDgTnuGMV/eUA/z8cqXDZ/XMZwhvHvIIDUM5BCtfFMaus60P
+	OrnkYud4pyM58+5i8VHtBaTqUSzMQ7HZv/54m8laDYi9TpPDcTS0GTBgUwTC0piPkmY2QQ
+	+jKZlIwhaaCHS7zNqMTTtO653aktZCc=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=S6120kZC;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE05260252;
-	Fri, 25 Sep 2026 22:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F4B1F000FF;
-	Fri, 25 Sep 2026 22:15:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 70FF960136;
+	Fri, 25 Sep 2026 22:28:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2B91F000FF;
+	Fri, 25 Sep 2026 22:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790374501;
-	bh=Gv3eO9GNPrNvYVMn07KZEaWja3PX8hQiFyYjoNkPaLQ=;
+	d=linux-foundation.org; s=korg; t=1790375292;
+	bh=/FeqC6NsreHCzW9fFs+vzkIExlhoQtzmbN9AT65QI1Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=qxVDR1bg1fo5VwO2/RGg5Vtr+CwwYlXKWaJbHeaOFrsRIEK1O6pCV38B9XtQQBxr6
-	 hAlcZq47eA0Wku2HzDmgfyqeJG9EVIDe40BQoTe/mo/gXl0SW20FqiNtv6b60Ne3/8
-	 BCCJDOSTtZbkTRGxu+3ULtmDL5DGFlj9DQTXGrRw=
-Date: Fri, 25 Sep 2026 15:15:00 -0700
+	b=S6120kZCR12iXPZt0xcZL0+Wfn1gU1RZB7NUKDNkZNJefGSfG9P6RA8Epfy+rvbkU
+	 xVs4fjUj0UHw+k+Gz9ZkgCGkot9F+dI1a3SWmLuTTxquEIyiCktMR74MXAiWNxdK6p
+	 IPoozz5ITxp6Mrzfo2l82/2c0yVPGzL/vW8rZJG0=
+Date: Fri, 25 Sep 2026 15:28:08 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Palla Raghunath <raghunathpalla.0209@gmail.com>
-Cc: linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, Brigham
- Campbell <me@brighamcampbell.com>, linux-kernel-mentees@lists.linux.dev,
- syzbot+442828bb356b10813a47@syzkaller.appspotmail.com, Uladzislau Rezki
- <urezki@gmail.com>, Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/vmalloc: do not warn on -ENOMEM from va_clip() in
- pcpu_get_vm_areas()
-Message-Id: <20260925151500.75fcb001ef8cd7f4842e62aa@linux-foundation.org>
-In-Reply-To: <20260925205450.21262-1-raghunathpalla.0209@gmail.com>
-References: <20260925205450.21262-1-raghunathpalla.0209@gmail.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin
+ Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Guo Ren
+ <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Dinh Nguyen <dinguyen@kernel.org>, Simon Schuster
+ <schuster.simon@siemens-energy.com>, Jonas Bonn <jonas@southpole.se>,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne
+ <shorne@gmail.com>, Rich Felker <dalias@libc.org>, John Paul Adrian
+ Glaubitz <glaubitz@physik.fu-berlin.de>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, Russell King <linux@armlinux.org.uk>,
+ Vineet Gupta <vgupta@kernel.org>, Michal Simek <monstr@monstr.eu>, Chris
+ Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, Will Deacon
+ <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick
+ Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ "David S. Miller" <davem@davemloft.net>, Andreas Larsson
+ <andreas@gaisler.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland
+ <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)"
+ <chleroy@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Christian
+ Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+ <peterx@redhat.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, Shakeel
+ Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>, Randy
+ Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-snps-arc@lists.infradead.org, linux-arch@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-alpha@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-s390@vger.kernel.org, linux-um@lists.infradead.org, Hugh Dickins
+ <hughd@google.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linux-doc@vger.kernel.org, Greg Ungerer <gerg@linux-m68k.org>
+Subject: Re: [PATCH v5 00/12] mm: make userland page table freeing RCU-safe
+Message-Id: <20260925152808.d4cae19cc002b1bba26502af@linux-foundation.org>
+In-Reply-To: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
+References: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ECCA1180005
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9F36D40003
+X-Stat-Signature: o88e5zjqd8mr9cy6b9zf5nqz8hn3rusz
 X-Rspam-User: 
-X-Stat-Signature: r8tpymtmxmcczj6kys6ztmifc34bperh
-X-HE-Tag: 1790374502-606251
-X-HE-Meta: U2FsdGVkX18kLru0hR2YBBe6MmejSsrkpATrUuSbe544xLEOZppyWrHuaSqMV3fzG4yPMtWg+fSdUkFo9yUhUxUpo7IcRHtPHWtx/GVlMq2Kp4FSPZZkLLXHraAidl8qH+dLqkI7tkXiB2uRG5wtmcRqnGAtHGWlda3O78SROnMNSdrFiFmyl790wv5GsFVQZuciT9XU51a/KIcvCFkhRHz9VUzgrUBsWInc3aCRno2XrfJ2ziCIFlHs4T7JsD6HrlaB6Bgg2y4TgYnQb8Kl7+F4kTDs1aqxk/pz23T1nt6ua7NKv4YBV4ElsWrELqXyQRE0wymyNZkbZpNt8O0ALeIemaZUJcmgniuHzLNdBhb6+8mpZoLCujbyuKs4XmTTaTuTi6Aa3J2t9Y88m7+Hg1HiOjzcQZkrLO2O2MLpsgV0cq81oz33Cgk9lUjTh3hqL3hthfbW/b6aKxM2gIXlK5nxKDA4i7piiZtq7jY2Jw9dg6NyKwqRdcTdAMuH6Ci6aP2mLaF5Hwmqpcfq/3i4ySttJxW4Mg58BmPS7Tzxt3ICps/mr+r5wJTvC8lKQJNS8zfbnfSWFdN75EiVe4zzFSWpGfqpCh/4AmF4le0TP8REjl8h5ecIAyNO8a3RT6yRIAOqimDNIFgkwbco3UwOfux3nX8Ks4uWg7vv+e2z0XaTWmTci/9JC3k55LRISTkoEZknExn1BoRlBVttj/I4K77clwgF33xSszxy3tuMmdJdcZLOxYVPAGvvWkdwPeEbZXiIIwi3zUwgggXZQo456v1Y2TFQ9FM/TuU7ucu27bOpFscM8IUw4owCDv4ZoZwrMt6U1mR3H6QLPEntHyDMjvK6eykXhGAM/ZlnwpB6+UbXZmBhal6Mw8I9V3nniWE3Ay4UCqvzQnEhe5XD921jy8/mwQeJuaxDnK3gZwp+exrtDfM6Vmnxqy/R/Ho3uQijcZeHXb09BW9E95EZ7y9
- 8aOQ1rIt
- ToVqJKrMFHXOwfkLh54IuYWkRs9da+bvJP7AfN6UxGg6Uqkl9W8epP2bngSRm1bFsdLtci9xkSRAZIduolq+Qwt70hPnIol1HTBSEAR4YfsYlO28x1rg9y+Gv8Cj6EmHMTxsXnQ8DmJ/kSy6dwixqFdT1x494mvXBI/npZGBuDDj2Wmult7/j3mlVhVYU2gsDWSf71yIRDanXYGMgEn4R28/mAlpqVPXWRkwpvedcWURmDnhDGZuIaeSW0ISmP5DVn4aGo4Dl22n8u5pvJXiBVmz7T9WQkkF4nBETaQv9nlua3VDrgINlpmtjPSohPHZKUpbIvC+WfTo86/SdwkFHfDEKoX1EqEKMaSsCy+v0C8pLRtNQXUa1zuMc1Re32i1cNotGP+0z+VEcWTJeRwMvzSE909+Em0kQelJYjTmAj3NIrlEa5A/YTDma3EBs7tlf4ssnX+Z7GYm8jef1FmiYuMta5F1VeWe+IJSgJS3BtRLDgfeUX1DpR3BzDvTCal7vdqaBt1LBivdnA8SKBRcmv1/4nPqssDcCQ6Xpuv19oT60ctf7183Kv81kVk3SGP3BnYBA
+X-HE-Tag: 1790375293-26871
+X-HE-Meta: U2FsdGVkX1/JLuQLnoZ+1DKXwyh2Tg0ApkqlyzqgUjAUZGTTjoYsniP63N7IAIKlfaK/SeIJCzwAca00OgM9Y+cTwdpc0ItTBHjxfggXn9rBeRc6gPx3U7HnfM6xGX4m8G08A6bgT+VwDp0HzddMY1id7XPc0lerSTZ2KsvfkZywljgQGQT4oXUnDb+Qv8bzC8OTeKLLpW0AIlMJmndgtXSN5IlmfafXff5pzU6CNWhrUvSEUy9ch/vlziCqZvQQG9FrLM8aJNkGlBhRwqnfS14g+Pd4F6B7VqbzGvUoRdj7T8cgjm4RZzm6O9nJEmZciCHSkLC9VnT1e2L2IbqyKnCgwIij7zcjIy+GZZOHs9ENiOW9+Gx5DZ08EgIoE5khu2DbNmeV3sWtRGbTuDjora87Q2P111FqIy5y0P6SQyMfBJR/gAgpBj/N34okExm8lDxsQ1UNjUNOdXaybDvIBmFZdaohtSd8dnpN3NdnB2PJcR4Ueroz1+JnIvHFjJy0frC5GQiI4CZNF08Zl/gHU6R4eiBTlmy/qLf7fpARL2/uFmYJw9mZ8miNeyNe8GPJAa3d2ZrnVSALGoZhPSockeKBe1hQa8z/iRoJtw8QqEaNue218FixPBWiNjpIlGV6/D1o9UGO1WitVvK9s8lAzgkpUZf1W5PN3Z8xwmcXRa14fjjZlueFQ7RWS5y6vZvhYHef8xB2bTYwQ055lNoNTWCPZ2W/8mkSCJwSkibJ6zpy6N15NZfmxi8W/m+watTIgJs8sd+ewtlC7iGgtCOP+zfy10GpmLMW8/Cy4kPwCxeVuG6VxLZJFsgBUzPwQvZD0TariZ4i6WS81BpfBRMGdJjZiryImVTUeJQlVQTge35deoD0rKqXDpvUfpPc6W1lwuglzDpPErvPyk3cl/KaxarsRiZLLSZkT1MAtPrTvvE1gWv1Okg+CGYWaZtO85/W+zY8L+uj4g4hOyqUiLv
+ eaS2PvYU
+ 9hTxzNgPmTtGFvr45f8xG/tALcfRYbqRhekBlVUt7KwPHUijyc2PZxJnnER9CRZY1QvfhwznZ+SOC2J9peBOf9PrkKTSENPEuH2BbY5DZyNFQGMyo2dVXFVvMvCnNJu79gtP4Im3/ihbY3P1uFaMHuFl4XQOXWgGyhdqMsQgS4sc6Wuz563Qtdoi/AiHPfnwxrYo4F4oPjfp/dQ+EOO5FDilfuqxGrj2QCGfRKqU9m7hGQvO+HkZstdTuRsuqIcn6a8rki+bdoEM5p6j+dJYqcXhjGy8giAz248YZISEpaYH8O+oZJJV7ht0Y+LbFVdEH60oDrq+alCV3EHy6BA4YHqRYIRnJ+Yp////L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,62 +140,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 25 Sep 2026 21:54:49 +0100 Palla Raghunath <raghunathpalla.0209@gmail.com> wrote:
+On Fri, 25 Sep 2026 21:09:35 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-> When pcpu_get_vm_areas() has to split a free vmap_area in the middle
-> (NE_FIT_TYPE), va_clip() needs an extra vmap_area object. It takes the
-> per-cpu ne_fit_preload_node if one is there, and otherwise falls back
-> to kmem_cache_alloc(GFP_NOWAIT), which may fail and return -ENOMEM.
-> pcpu_get_vm_areas() never preloads, and a single call can do more than
-> one such split: on a NUMA system it places one area per node group, so
-> the first split consumes the preloaded object and the next one depends
-> on the GFP_NOWAIT allocation.
+> The majority of architectures in the kernel defer page table freeing until
+> an RCU grace period has elapsed, this series converts all remaining
+> architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
+> altogether.
 > 
-> That failure is expected and already handled: the recovery path returns
-> the areas clipped so far to the free tree, purges lazily freed areas and
-> retries. But the error is checked with WARN_ON_ONCE(), so a transient
-> allocation failure under memory pressure or fault injection triggers a
-> kernel warning, and a panic with panic_on_warn. syzbot hit this on a
-> two-node VM while creating a per-cpu BPF array map.
+> This is important because it enables safe lockless page table walking under
+> RCU alone.
 > 
-> Keep the WARN_ON_ONCE() for errors other than -ENOMEM, which do indicate
-> a bug, and take the recovery path either way. This matches what commit
-> b9183788a2de ("mm/vmalloc: do not warn on -ENOMEM from va_alloc()") did
-> for the other va_clip() caller.
-> 
-> Fixes: 1b23ff80b399 ("mm/vmalloc: invoke classify_va_fit_type() in adjust_va_to_fit_type()")
-> Reported-by: syzbot+442828bb356b10813a47@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=442828bb356b10813a47
+> Doing so allows for reduced lock contention, avoids lock ordering concerns
+> and enables fast, efficient and correct page table walking as a result.
 
-I assume sysbot hit this via fault injection.    The report doesn't make this
-info easily available.  Or maybe it wasn't fault injection.
+Thanks, I've updated mm-unstable to this version.
 
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -5107,9 +5107,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
->  
->  		ret = va_clip(&free_vmap_area_root,
->  			&free_vmap_area_list, va, start, size);
-> -		if (WARN_ON_ONCE(unlikely(ret)))
-> -			/* It is a BUG(), but trigger recovery instead. */
-> +		if (unlikely(ret)) {
-> +			/*
-> +			 * -ENOMEM from the GFP_NOWAIT fallback is expected.
-> +			 * Anything else is a BUG(), but trigger recovery instead.
-> +			 */
-> +			WARN_ON_ONCE(ret != -ENOMEM);
+> v5:
+> * Collected tags (thanks all! :)
+> * Updated 1/12 to correctly set result to SCAN_ALLOC_HUGE_PAGE_FAIL should
+>   the page table allocation fail, as per Lance.
+> * Updated 1/12 to rename alloc_deposit_pte() to alloc_deposit_pte_table()
+>   and dropped the powerpc hash MMU paragraph from the commit message, as
+>   per David.
+> * Updated 9/12 to use a BH-disabling spinlock rather than an IRQ-safe one,
+>   as per Matthew.
+> * Updated the subject line of 11/12 to clarify that the patch removes
+>   now-unneeded code, as per David.
+> * Updated 12/12 documentation as per David, Lance.
 
-Look good.
+Here's how v5 altered mm.git:
 
-The WARN_ON_ONCE() is potentially redundant.  We could make va_clip()
-remove __GFP_NOWARN from its kmem_cache_alloc() and let the page
-allocator do the warn for us.  Doesn't matter.
 
->  			goto recovery;
-> +		}
->  
->  		/* Allocated area. */
->  		va = vas[area];
-> -- 
-> 2.34.1
+ Documentation/mm/process_addrs.rst |    9 +++++++--
+ arch/m68k/mm/motorola.c            |   16 +++++++---------
+ mm/khugepaged.c                    |    4 ++--
+ 3 files changed, 16 insertions(+), 13 deletions(-)
+
+--- a/arch/m68k/mm/motorola.c~b
++++ a/arch/m68k/mm/motorola.c
+@@ -181,7 +181,7 @@ static void *add_pointer_table(struct mm
+ 	new = PD_PTABLE(pt_addr);
+ 
+ 	PD_MARKBITS(new) = ptable_mask(type) - 1;
+-	scoped_guard(spinlock_irqsave, &ptable_lock)
++	scoped_guard(spinlock_bh, &ptable_lock)
+ 		list_add(new, &ptable_list[type]);
+ 
+ 	return (pmd_t *)pt_addr;
+@@ -191,16 +191,15 @@ void *get_pointer_table(struct mm_struct
+ {
+ 	unsigned int tmp, off;
+ 	unsigned long mask;
+-	unsigned long flags;
+ 	ptable_desc *dp;
+ 	void *ret;
+ 
+-	spin_lock_irqsave(&ptable_lock, flags);
++	spin_lock_bh(&ptable_lock);
+ 	dp = ptable_list[type].next;
+ 	mask = list_empty(&ptable_list[type]) ? 0 : PD_MARKBITS(dp);
+ 
+ 	if (mask == 0) {
+-		spin_unlock_irqrestore(&ptable_lock, flags);
++		spin_unlock_bh(&ptable_lock);
+ 		return add_pointer_table(mm, type);
+ 	}
+ 
+@@ -213,7 +212,7 @@ void *get_pointer_table(struct mm_struct
+ 	}
+ 
+ 	ret = ptdesc_address(PD_PTDESC(dp)) + off;
+-	spin_unlock_irqrestore(&ptable_lock, flags);
++	spin_unlock_bh(&ptable_lock);
+ 	return ret;
+ }
+ 
+@@ -223,9 +222,8 @@ int free_pointer_table(void *table, int
+ 	unsigned long ptable = (unsigned long)table;
+ 	unsigned long pt_addr = ptable & PAGE_MASK;
+ 	unsigned int mask = 1U << ((ptable - pt_addr)/ptable_size(type));
+-	unsigned long flags;
+ 
+-	spin_lock_irqsave(&ptable_lock, flags);
++	spin_lock_bh(&ptable_lock);
+ 
+ 	dp = PD_PTABLE(pt_addr);
+ 	if (PD_MARKBITS (dp) & mask)
+@@ -236,7 +234,7 @@ int free_pointer_table(void *table, int
+ 	if (PD_MARKBITS(dp) == ptable_mask(type)) {
+ 		/* all tables in ptdesc are free, free ptdesc */
+ 		list_del(dp);
+-		spin_unlock_irqrestore(&ptable_lock, flags);
++		spin_unlock_bh(&ptable_lock);
+ 
+ 		mmu_page_dtor((void *)pt_addr);
+ 		pagetable_dtor_free(virt_to_ptdesc((void *)pt_addr));
+@@ -249,7 +247,7 @@ int free_pointer_table(void *table, int
+ 		list_move(dp, &ptable_list[type]);
+ 	}
+ 
+-	spin_unlock_irqrestore(&ptable_lock, flags);
++	spin_unlock_bh(&ptable_lock);
+ 	return 0;
+ }
+ 
+--- a/Documentation/mm/process_addrs.rst~b
++++ a/Documentation/mm/process_addrs.rst
+@@ -541,8 +541,13 @@ We establish basic locking rules when in
+   after an RCU grace period has elapsed. However, any entry found must be
+   revalidated after the page table lock is taken (such as the
+   :c:func:`!pmd_same` recheck performed by :c:func:`!pte_offset_map_lock`)
+-  before it is acted upon. Changing an entry requires the page table
+-  lock and one of the locks that excludes teardown (mmap or VMA lock).
++  before it is acted upon. Changing an entry requires the page table lock
++  and one of the locks that excludes teardown (any one of the mmap, VMA or
++  rmap locks).
++* When traversing page tables under RCU alone it is important to take care
++  when operating upon leaf entries - if the value is operated upon (for
++  instance getting the folio associated with a PTE) an appropriate lock must
++  be taken to prevent concurrent modification.
+ * Reads from and writes to page table entries must be *appropriately*
+   atomic. See the section on atomicity below for details.
+ * Populating previously empty entries requires that the mmap or VMA locks are
+--- a/mm/khugepaged.c~b
++++ a/mm/khugepaged.c
+@@ -1278,7 +1278,7 @@ static enum scan_result alloc_charge_fol
+ 	return SCAN_SUCCEED;
+ }
+ 
+-static pgtable_t alloc_deposit_pte(struct mm_struct *mm)
++static pgtable_t alloc_deposit_pte_table(struct mm_struct *mm)
+ {
+ 	/*
+ 	 * khugepaged is run from a kernel thread, so need to manually set the
+@@ -1328,7 +1328,7 @@ static enum scan_result collapse_huge_pa
+ 	}
+ 
+ 	if (is_pmd_order(order)) {
+-		pgtable = alloc_deposit_pte(mm);
++		pgtable = alloc_deposit_pte_table(mm);
+ 		if (!pgtable) {
+ 			result = SCAN_ALLOC_HUGE_PAGE_FAIL;
+ 			goto out_nolock;
+_
+
 
