@@ -4,97 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F56DC9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57718C9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92E936B0088; Fri, 25 Sep 2026 07:16:36 -0400 (EDT)
+	id 56EF16B0088; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8B8F96B008A; Fri, 25 Sep 2026 07:16:36 -0400 (EDT)
+	id 546996B008A; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 782176B008C; Fri, 25 Sep 2026 07:16:36 -0400 (EDT)
+	id 483506B008C; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C2E66B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:16:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6A6E7A69C1
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:16:35 +0000 (UTC)
-X-FDA: 85252031550.29.950451B
-Received: from mta1.migadu.com (out-199.mta1.migadu.com [95.215.58.199])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0F61680007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:16:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PeGq2pIP;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25CBC6B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B55C41205F1
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:25:36 +0000 (UTC)
+X-FDA: 85252054272.15.B4AA4CA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A8716140007
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:25:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=M75n+DeM;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790334993;
+	s=arc-20220608; t=1790335535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3NXGWP3DDI3nx3zHh0W6KbsDEiXNOjPXh1/f1szRwk=;
-	b=5dsFF061E6gWT3ic3OieACsff33QCa9hrkTbSsIowS12NnmLJ5xBOY1DmlnrngE/4Zv/LN
-	NeTAAuKs944uDDiqrCm9lw5oNgqVlai4vEZTGJpfk6YwvRjP8PRkoyTqL+1ByM238uqtLz
-	0U/KVaviU5b9KgIFWwIqJv0Stx0obkM=
+	bh=8e8+df5wfcctBgj3SB35PHKnjlsn3jbfTOBrczmhJNg=;
+	b=FXV7cQPl38Sg6wy0ORN7WJZzLoYYqBEawtpw0+qJeeAzAIqH+FHes1L9+sYSxhR6OJrhiK
+	LM9fLGV9UGkgg3qMoLmwSFtEv7zsDgl1Iig74E3MpUJdinCGy0LBUjeiS0FBI64LxynDOK
+	mCSxNZl/5HpljJHM/4K+d5VYYyrkBQ8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PeGq2pIP;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.199 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=M75n+DeM;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790334993;
-	b=Jp0Ig9cHDyV0Gl+A0xQjnjJxrL4l0Avi8VYl+cIZY7eDxSsln3mNmA8WOwlSfjg7F+PVM7
-	QDNRbEo365il7ehRhcmpYG8fNo7P2kGjm1iBMmLYTvHWmW3KJIji0UuoWjZZDW111pIcVr
-	1GwNruNSe0wQJaYMg2hiXQbMeEc5g0M=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=oz2pG9OBJ90Gf8k78u+aJ5rMU8R7Mx6xKJpcKa4YZPA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790334991; v=1; x=1790939791;
- b=PeGq2pIPWZn81HPrdJU/xMFq5qkieUhspXKwW8nyx2BAFWxWYqzSqalzGOUD2D2efNUTt/ZK
- ssMssZ7j0lCR1bXIWpQ1/281cEVgxLwyaBfWK9kWm4i+ie0adTnTLjiTb/R+jXiHwKiEP8FI7W1
- Zfn4lqn9J0sG6Cn59FhxAYdE=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0b8268681074fdf1;
-	Fri, 25 Sep 2026 11:16:31 +0000
-X-Mizu-Trace-ID: 0b8268681074fdf1
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <94cb5e25-770a-4a13-ba0f-ffe4119cafd6@linux.dev>
-Date: Fri, 25 Sep 2026 12:16:30 +0100
+	t=1790335535;
+	b=fYwh/8UiVlxORD5mLgFtygARtvntV8musiIfKJcWhnNNt3Ypw1kq0Tkd4By67ocz3QTtYB
+	84JgF6/cVRDkohSNuLD+yfT346gEC0dlnU8E+RYJu14WHCCPSI7pkDQWdACKZGN7aBKSBC
+	lMsBuu7KMhDh3/VwSBarvJQRBiJULiE=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F0ED1570;
+	Fri, 25 Sep 2026 04:25:30 -0700 (PDT)
+Received: from [10.164.19.30] (unknown [10.164.19.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE1423F86F;
+	Fri, 25 Sep 2026 04:25:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790335533; bh=DtpgFzbiicIBa5lc9a3teHQLwnL49AY46x8s3sg6f9s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M75n+DeMbR3GinBqgOLAmSRcCHqIAzDJwDTbf1TPp7TdURRt68PhgnqVjp48x8fX2
+	 NAPjj/odOxS0flbdyPzm5oOfbagJ6v6LYiGkabFZ8GggGz9dpNVhjCpAeeW/DPkC4w
+	 jmNZIhzSkVXvp7ZWU+UYqM8Hj0yOb2M+eUJ4T4rQ=
+Message-ID: <f61fa70f-882a-4787-918e-4b6959062c9c@arm.com>
+Date: Fri, 25 Sep 2026 16:55:23 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND v7 12/29] mm: handle PMD swap entries in fork path
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, chrisl@kernel.org,
- kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: ying.huang@linux.alibaba.com, Baoquan He <baoquan.he@linux.dev>,
- willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- Nico Pache <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>,
- ryan.roberts@arm.com, Vlastimil Babka <vbabka@kernel.org>,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, nphamcs@gmail.com,
- shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev,
- luizcap@redhat.com, kernel-team@meta.com
-References: <20260914122950.3283997-1-usama.arif@linux.dev>
- <20260914122950.3283997-13-usama.arif@linux.dev>
- <69c54254-9657-4b95-a1cb-a6c0429c1c8c@kernel.org>
+Subject: Re: [PATCH v3 8/9] mm/rmap: batch unmap anonymous swap-backed large
+ folios
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+ davem@davemloft.net, andreas@gaisler.com, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
+ jgg@ziepe.ca, thuth@redhat.com, sparclinux@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260924131106.1730494-1-dev.jain@arm.com>
+ <20260924131106.1730494-9-dev.jain@arm.com>
+ <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
 Content-Language: en-US
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <69c54254-9657-4b95-a1cb-a6c0429c1c8c@kernel.org>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7kcmrkxngwh3ros48w4w7i3du44tt3n8
-X-Rspamd-Queue-Id: 0F61680007
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A8716140007
+X-Stat-Signature: ow137ywqdwkmrkwixzpwmmrogknoz47q
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790334992-507987
-X-HE-Meta: U2FsdGVkX1/bYW3qVEUZYTc2y68GZQjpSU1+tM2mWzV5TPjL5bZlMPS0F4tB2WtEkCTMX+rqXEszgJZICPy1ELHwWg3oJciEqiLXqGUdqUFzPyBy8bHCEAiyHHfwuh3jdJnkUZKjTY4X2wcZdNqE75hDHqoOlo0Dxd/FiVbb8UA/EQMg0mjZTQXIKGOVcOjSl0xK2xt5Dzk/MawukTgH+BcFK2vtymAE/Dtq6prNOwURnYM6aXofzbane00+53T0UBsbMDudWtE42zk4wrblB8QZ1RC78NjQj05ej9jUJ5+xoNL3DToPbDGouMn6XeSyVC2mVW+WOcgFNyIsAKVmU4gTPONRMSY79kKus5pDCA5BknUPa6eLU9s/9MAoD2rO+YlQnAg2UoAZeO6ssnntzmXbTNUw34pkqddsEZK0hiYefUyUfO+UENXZUPU8Kq5jIPsuwqYpJ/wW2Uop1tQh6beCjGkzRXQHhhUEvVRGUJPJrsjIoN83ywPKMuyoNgtYZFEPYCCmV8xzhEMUiSAfu3F0wFPxEClLrCZ5ajqzyEVsn3veo53wtoqyLnCRtqGAfl6Xu+UrdjtjXspNMPZjNND0nPjq1ikrLOHve4GM8Nyado1dVkDH96zXZDJWQ0UR2corYP5l6dGJmYBZ9sPoxY1Kfp0/VkoJK8xcwmwaWc65p+GBh8CuxrJ3D5smmoWoQaQaK6AQDg4uFXyolGtxuZpX7PFouJTnIi19s0ROz2RDy4LYgsIbxKmKl7q+X33G+l7N2lbNfFFP92VMyjK676IPMthWNfJwxvimCxRygYyGy1GZ9QMOs+4kVAk9cKQjY9V++pZtPNyZk7UW/2Zmteg6EhAyk6OpJXltr2lXCVczGJWCwk/j5+NrXfBwB5MPYr26Rx6pqT3zWqtExX93FgCnOD+mVgGFTv3PJhRUOXV4PhAC8uMi7CGOGVsbRn+uobLCH13rxxdXqScMIFp
- k+iVVnVJ
- rIE8+V23zxxamPVmuRODGHMF/8ODvmvRmIQ7F9VUhsF2EcdYpaSC/sWU0XLtbREAPrlnfFjhfLzvOm76mALiQg5MxEQG0rH56JRvEHM88vS8+ydBV3CIR+rolNGyNI11GlG9hS4ZMp9HZs26FQ0kx3rrONBlH4lW412l5b1LeZTbII2YczJvbNTEYKqH5In7YrHS7REuOXCkIPgXR1xpx/Y5S/h/0H3NrijSnggyPqfmd85B6+APxE4w6xmznMjOg+2Hhg6psyscDv9HEZCEnL2QvEA==
+X-HE-Tag: 1790335534-996995
+X-HE-Meta: U2FsdGVkX1/B4MKZpDUd36V3f4Ebm14VwKgg4m1QB6LhLT19iLWfPxcMK6c7UTpWUuZEV4Pmps8hHFYOHK9Rsakt7tvqhYxNIjFQeqh90nDlBMi7XksZI1mfdSJgZuJhrOC2qaFPnrYZPsEKVZ6MtBJHXnYAst03e0T36wy4FONKb9OZEFddLEuk0GstnEXmqeUX5GBv2BGh1d+WwYT/tOCJUaH6tPAI/X1C4MtBbHBDdTTu7QdrSKS+BABE4ByC7ba7NQMH6zuYJL50yRLtqJEFN70gZ8h8yZELQgIiEtSfS+SmSeyBSK+uVNa63w32KoONdbNPHlFsX+y5vXhlNn/pNj2OTnevSBKRmnAoiKR87aylh/tdEqCRURTbRfxYHtFI77q4MlD5Ykq3ikEfN1aAwu6RXAgDd2jJ3dAWc3DD4ia+/lAXWBa67e+K1BuMbZS8xDu3SioIMiA7GsAOza6S8xJfnSEaLt6PhnvFzabXWZr9Na/OJMTqXEieaB5dl3e1HGixdZpcN+bLtOeLAkwUf8J7iX2N8ywi1zNMXgg2+969Uqr+QoS2gF7dq9gvRM2MZwyCV2gIv6LR6Xu4Sesd/KRsI3s0hdZiPoIqRLLLcr3xO/luF5WmdHAD2poLsiKcp7k8b08TOjt9ZU0whCMPKNBV2TIERAgftu2i3Z9sLGGBunUf1TQMpMfhwW5JagbUNXRL1cebeHJ/RSppAUYD8yk9hyCgflDseW45dSiobkUXVPO88Trrz4BAR6CDwW2FLhFGrtESMcxOIGIPU8SwO0p95ElBY+bYDmo9S4DCE82hMDyqTVwo7nHs8tm9T/BCBeFC+3phWAxiLKMJBvhKekv+JLzinfSh5dgcO2wImuB3p2EjpVmT9NvSef6JGDrskW82nmwHVw18WxQLLh4To0SEpvvI26/gWZV/sikqhSvK9byGDV31QGA3H2PohVZQgzPEjH1fyBxJLVL
+ 12FVh6SP
+ 7zwkHoRDPabU9pv0Ssa/iOJh2wGIaOzzX7SsCHT3O3ceVRMVMUUaH50KYvAMfljtntIlD/gbNINUOyoEQ6gOOfq7fcwToW/dlYbwJG2XHNKVyTPharLMLEHTKaz6pQqBDaxas8nbCIxwN8HI4PoBdmO8UlIBo0rv1cysbNUnPqI370OQ3f6oUnPgSZ0sHSdf74ScAxIzrY5W2hUP6bOspxVOtdnA2xrAdlnahNPXWB3pq0pq26tYLrsmvOF5/Li6QRR/7bToIG9N+BWcHKDxL4MnZu6P2dxwFvyeycFhQHfT7ld3jKSXcrYJCbxfdgbSf4/AG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,373 +103,299 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 24/09/2026 21:28, David Hildenbrand (Arm) wrote:
-> On 9/14/26 14:28, Usama Arif wrote:
->> copy_huge_pmd() only knows about migration and device-private PMDs, so a
->> PMD swap entry would fall through to the present-PMD path and fork() would
->> duplicate it without taking a reference on the slots it points at.
+On 25/09/26 11:45 am, Barry Song wrote:
+> On Thu, Sep 24, 2026 at 9:12 PM Dev Jain <dev.jain@arm.com> wrote:
 >>
->> Copy it the way copy_nonpresent_pte() copies a PTE swap entry: duplicate
->> the swap references, clear the exclusive marker on the source, put the
->> destination mm on mmlist, and account the child's slots to MM_SWAPENTS.
+>> Enable batch clearing of PTEs and batch swap setting of PTEs for anon
+>> swap-backed folio unmapping.
 >>
->> Duplicating HPAGE_PMD_NR slots one at a time would be wasteful, so give
->> swap_dup_entry_direct() an nr argument and rename it accordingly. Unlike
->> the put side it hands nr straight to the per-cluster helper, so the range
->> has to sit inside one cluster - which it does, since SWAPFILE_CLUSTER ==
->> HPAGE_PMD_NR under CONFIG_THP_SWAP and a PMD-order folio's slots are only
->> ever allocated at a cluster head. Reject a crossing range with -EINVAL so a
->> future caller cannot walk off the end of the swap table.
-> 
-> You have a lot of patches, put you could (should? :) ) consider moving the
-> swapfile.c stuff into a separate patch, such that we can more reliably catch
-> swap maintainers attention (and shrink this patch here).
-
-Ack, the next revision will have the code to duplicate a range of swap entries
-as a patch before this one.
-
-> 
+>> Processing all PTEs of a large folio in one go helps us batch across
+>> atomics (add_mm_counter() etc), barriers in __folio_try_share_anon_rmap(),
+>> and repeated calls to page_vma_mapped_walk(). In general, batching helps
+>> execute similar code together, making the path more memory and CPU
+>> friendly.
 >>
->> The GFP_ATOMIC extend-table allocation inside the dup can fail;
->> copy_huge_pmd() then drops both PMD locks and retries once with
->> GFP_KERNEL. Bound it to one retry, because swap_retry_table_alloc() also
->> returns 0 when it decides the table is not needed. Normalise any remaining
->> failure to -ENOMEM: copy_pmd_range() treats every other error as "not a
->> huge PMD" and would then reach pmd_none_or_clear_bad(), clearing the source
->> PMD and leaking its swap slots.
+>> On arm64-contpte, batching also helps avoid redundant ptep_get() calls
+>> and TLB flushes while breaking the contpte mapping.
 >>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> [...]
-> 
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 0e347a545588c..6dfe8ef6dd371 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1894,7 +1894,7 @@ bool touch_pmd(struct vm_area_struct *vma, unsigned long addr,
->>  	return false;
+>> The handling of anon-exclusivity is very similar to commit cac1db8c3aad
+>> ("mm: optimize mprotect() by PTE batching"). Since
+>> folio_unmap_pte_batch() does not look at the bits of the underlying page,
+>> process sub-batches of PTEs pointing to pages with the same exclusivity
+>> state, and batch set only those PTEs to swap PTEs in one go.
+>>
+>> Disable batching for sparc (because of arch_unmap_one), we will batch this
+>> later.
+>>
+>> Rmap accounting and reference accounting must happen when anon folio unmap
+>> succeeds. If a large folio is only partially batched or a later sub-batch
+>> fails, account only the pages that were actually unmapped. Put that
+>> accounting in __ttu_anon_swapbacked_folio() itself instead of using goto
+>> jumps at the try_to_unmap_one() callsite.
+>>
+>> Similarly, do the finish_folio_unmap_batch() in ttu_anon_folio() itself for the
+>> non-swapbacked lazyfree case.
+>>
+>> If the batch length is less than the number of pages in the folio, skip
+>> over this batch. page_vma_mapped_walk() handles this: check_pte() returns
+>> true only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the
+>> PTE. Swap PTEs have no underlying PFN, so check_pte() returns false until
+>> the walk reaches the next present PTE to unmap.
+>>
+>> Remove the finish_unmap label since no goto callers are left now.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/rmap.c | 109 +++++++++++++++++++++++++++++++++++++++---------------
+>>  1 file changed, 80 insertions(+), 29 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index fa9fc8374fc26..cdda9efd80bc3 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -1966,12 +1966,13 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>         end_addr = pmd_addr_end(addr, vma->vm_end);
+>>         max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>
+>> -       /* We only support lazyfree or file folios batching for now ... */
+>> -       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>> +       if (pte_unused(pte))
+>>                 return 1;
+>>
+>> -       if (pte_unused(pte))
+>> +#ifdef __HAVE_ARCH_UNMAP_ONE
+>> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>                 return 1;
+>> +#endif
+>>
+>>         /*
+>>          * If unmap fails, we need to restore the ptes. To avoid accidentally
+>> @@ -2141,16 +2142,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, pte_t old_pte,
+>>         return swp_pte;
 >>  }
->>  
->> -static void copy_huge_non_present_pmd(
->> +static int copy_huge_non_present_pmd(
->>  		struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  		pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
->>  		struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->> @@ -1940,14 +1940,40 @@ static void copy_huge_non_present_pmd(
->>  		 */
->>  		folio_try_dup_anon_rmap_pmd(src_folio, &src_folio->page,
->>  					    dst_vma, src_vma);
->> +	} else if (softleaf_is_swap(entry)) {
->> +		int err;
+>>
+>> -static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>> +static void finish_folio_unmap_batch(struct vm_area_struct *vma,
+>> +               struct folio *folio, struct page *page, unsigned long nr_pages)
+>> +{
+>> +       folio_remove_rmap_ptes(folio, page, nr_pages, vma);
+>> +       if (vma->vm_flags & VM_LOCKED)
+>> +               mlock_drain_local();
+>> +       folio_put_refs(folio, nr_pages);
+>> +}
 >> +
->> +		/*
->> +		 * PMD swap entry: duplicate swap references and clear
->> +		 * exclusive on source, matching copy_nonpresent_pte().
->> +		 *
-> 
-> I'd drop that, rather obvious.
-> 
->> +		 * A PMD swap entry only exists under CONFIG_THP_SWAP, where
->> +		 * SWAPFILE_CLUSTER == HPAGE_PMD_NR, and it is cluster aligned,
->> +		 * so these HPAGE_PMD_NR slots are exactly one cluster - which
->> +		 * is what swap_dup_entries_direct() requires.
-> 
-> This is the more relevant information.
-
-Dropped the first half, kept the cluster paragraph.
-
-
-> 
->> +		 */
->> +		err = swap_dup_entries_direct(entry, HPAGE_PMD_NR);
->> +		if (err < 0)
->> +			return err;
+>> +static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>                 struct folio *folio, struct page *page, unsigned long address,
+>> -               pte_t *ptep, pte_t pteval)
+>> +               pte_t *ptep, pte_t pteval, unsigned long nr_pages,
+>> +               bool anon_exclusive)
+>>  {
+>> -       const bool anon_exclusive = folio_test_anon(folio) &&
+>> -                                   PageAnonExclusive(page);
+>>         swp_entry_t entry = folio_page_swap_entry(folio, page);
+>>         struct mm_struct *mm = vma->vm_mm;
+>> +       pte_t swp_pte;
+>>
+>> -       if (folio_dup_swap_pages(folio, page, 1) < 0)
+>> +       if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
+>>                 return false;
+>>
+>>         /*
+>> @@ -2159,21 +2169,57 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>          * so we'll not check/care.
+>>          */
+>>         if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>> -               folio_put_swap_pages(folio, page, 1);
+>> +               VM_WARN_ON(nr_pages != 1);
+>> +               folio_put_swap_pages(folio, page, nr_pages);
+>>                 return false;
+>>         }
+>>
+>>         /* See folio_try_share_anon_rmap(): clear PTE first. */
+>> -       if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
+>> -               folio_put_swap_pages(folio, page, 1);
+>> +       if (anon_exclusive &&
+>> +           folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
+>> +               folio_put_swap_pages(folio, page, nr_pages);
+>>                 return false;
+>>         }
+>>
+>>         mm_prepare_for_swap_entries(mm);
+>> -       dec_mm_counter(mm, MM_ANONPAGES);
+>> -       inc_mm_counter(mm, MM_SWAPENTS);
+>> -       set_pte_at(mm, address, ptep,
+>> -                  swp_pte_prepare(entry, pteval, anon_exclusive));
+>> +       add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+>> +       add_mm_counter(mm, MM_SWAPENTS, nr_pages);
+>> +       swp_pte = swp_pte_prepare(entry, pteval, anon_exclusive);
+>> +       set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
+>> +       finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>> +       return true;
+>> +}
 >> +
->> +		mm_prepare_for_swap_entries(dst_mm);
+>> +static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>> +               struct folio *folio, struct page *first_page,
+>> +               unsigned long address, pte_t *ptep, pte_t pteval,
+>> +               unsigned long nr_pages)
+>> +{
+>> +       unsigned long batch_idx = 0;
 >> +
->> +		if (pmd_swp_exclusive(pmd)) {
->> +			pmd = pmd_swp_clear_exclusive(pmd);
->> +			set_pmd_at(src_mm, addr, src_pmd, pmd);
->> +		}
->>  	}
->>  
->> -	add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->> +	if (softleaf_is_swap(entry))
->> +		add_mm_counter(dst_mm, MM_SWAPENTS, HPAGE_PMD_NR);
->> +	else
->> +		add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
-> 
-> Can we instead just do it like the PTE variant and move these into the
-> respective cases?
-> 
-
-Have done it for next revision, but it makes the diff slightly longer.
-The migration arm had to grow a nested if: the outer test is now
-softleaf_is_migration(), because a plain readable migration entry
-matched none of the old arms yet still needed MM_ANONPAGES.
-
-
-> BTW, I'm surprised that we don't have to handle file THP migration and always
-> assume MM_ANONPAGES. Maybe we always zap them instead of using migration entries
-> ... maybe :)
-
-
-Not zapped, just never copied.  copy_huge_pmd() bails long before this:
-
-  /* Skip if can be re-fill on fault */
-  if (!vma_is_anonymous(dst_vma))
-          return 0;
-
-so a file THP is simply refilled from the page cache on the child's
-first fault.
-
-> 
->>  int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->> @@ -1957,6 +1983,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  	spinlock_t *dst_ptl, *src_ptl;
->>  	struct page *src_page;
->>  	struct folio *src_folio;
->> +	bool retried = false;
-> 
-> Do we really need this retried logic? I cannot easily spot something similar in
-> copy_pte_range(). I'd assume once swap_retry_table_alloc() succeeds we should be
-> mostly good.
-
-I actually implemented it similar to copy_pte_range() until v5, but changed it because
-of sashiko feedback which looked reasonable to me at that time :)
-
-
-> 
-> 
->>  	pmd_t pmd;
->>  	pgtable_t pgtable = NULL;
->>  	int ret = -ENOMEM;
->> @@ -1988,6 +2015,7 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  	if (unlikely(!pgtable))
->>  		goto out;
->>  
->> +retry:
->>  	dst_ptl = pmd_lock(dst_mm, dst_pmd);
->>  	src_ptl = pmd_lockptr(src_mm, src_pmd);
->>  	spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
->> @@ -1995,11 +2023,34 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  	ret = -EAGAIN;
->>  	pmd = *src_pmd;
->>  
->> -	if (unlikely(thp_migration_supported() &&
->> -		     pmd_is_valid_softleaf(pmd))) {
-> 
-> That thp_migration_supported() thingy is one ugly function.
-
-pmd_is_valid_softleaf() should actually be sufficient here.
-
-I dropped thp_migration_supported() here.
-
-> 
->> -		copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
->> -					  dst_vma, src_vma, pmd, pgtable);
->> -		ret = 0;
->> +	if (unlikely(pmd_is_valid_softleaf(pmd))) {
->> +		ret = copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd,
->> +						addr, dst_vma, src_vma, pmd,
->> +						pgtable);
->> +		if (ret) {
->> +			spin_unlock(src_ptl);
->> +			spin_unlock(dst_ptl);
->> +			/*
->> +			 * For PMD swap entries -ENOMEM means the per-cluster
->> +			 * swap-extend table couldn't be GFP_ATOMIC-allocated.
->> +			 * Try the GFP_KERNEL fallback once before giving up.
->> +			 * swap_retry_table_alloc() also returns 0 when it
->> +			 * decides the table is not needed after all, so bound
->> +			 * this to a single retry rather than looping on it.
->> +			 */
->> +			if (ret == -ENOMEM && !retried) {
->> +				softleaf_t entry = softleaf_from_pmd(pmd);
+>> +       while (nr_pages) {
+>> +               bool anon_exclusive = PageAnonExclusive(first_page + batch_idx);
+>> +               unsigned long len = page_anon_exclusive_batch(batch_idx,
+>> +                               nr_pages, first_page, anon_exclusive);
 >> +
->> +				retried = true;
->> +				if (softleaf_is_swap(entry) &&
+>> +               if (!__ttu_anon_swapbacked_folio(vma, folio,
+>> +                               first_page + batch_idx, address, ptep, pteval,
+>> +                               len, anon_exclusive)) {
+>> +                       /* Restore the remaining PTEs that were cleared. */
+>> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>> +                       return false;
+>> +               }
+>> +
+>> +               nr_pages -= len;
+>> +               if (!nr_pages)
+>> +                       break;
+>> +
+>> +               pteval = pte_advance_pfn(pteval, len);
+>> +               address += len * PAGE_SIZE;
+>> +               batch_idx += len;
+>> +               ptep += len;
+>> +       }
+>> +
+>>         return true;
+>>  }
+>>
+>> @@ -2186,15 +2232,22 @@ static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>>          * See handle_pte_fault() ...
+>>          */
+>>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
+>> -                        folio_test_swapcache(folio)))
+>> +                        folio_test_swapcache(folio))) {
+>> +               set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>                 return false;
+>> +       }
+>>
+>> -       if (!folio_test_swapbacked(folio))
+>> -               return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
+>> +       if (!folio_test_swapbacked(folio)) {
+>> +               if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+>> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>> +                       return false;
+>> +               }
+>> +               finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>> +               return true;
+>> +       }
 > 
-> How can we suddenly not have a PMD
+> Hi Dev,
 > 
->> +				    !swap_retry_table_alloc(entry, HPAGE_PMD_NR,
->> +							    GFP_KERNEL))
->> +					goto retry;
->> +			}
->> +			pte_free(dst_mm, pgtable);
->> +			ret = -ENOMEM;
->> +			goto out;
->> +		}
+> if we look at the whole `ttu_anon_folio()` code:
 > 
+> static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>                 struct page *page, unsigned long address, pte_t *ptep,
+>                 pte_t pteval, unsigned long nr_pages)
+> {
+>         /*
+>          * Store the swap location in the pte.
+>          * See handle_pte_fault() ...
+>          */
+>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
+>                          folio_test_swapcache(folio))) {
+>                 set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>                 return false;
+>         }
 > 
-> That's .... messy :)
+>         if (!folio_test_swapbacked(folio)) {
+>                 if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+>                         set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>                         return false;
+>                 }
+>                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>                 return true;
+>         }
 > 
+>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+>                                          pteval, nr_pages);
+> }
 > 
-> I was wondering whether we could handle it slightly like the PTE case: return
-> -EIO and let the caller do that for us. We only have to return the "softleaf_t
-> entry"
-> 
-> Would avoid the retry label, the manual unlocking etc.
-> 
-> Nit sure, just a thought. The code as is is definitely too messy :)
+> The comment "Store the swap location in the pte" is really out of
+> place. Since we are already here, can we move it to the right place?
 
+I am not sure what is the "right place" you are referring to : ) More
+than that, this comments feels very out of date - it is well-know that
+the "swap location" is stored in the pte.
 
-Yeah sorry about this.
-
-I have changed it now, copy_huge_pmd() now returns -EIO and the softleaf_t,
-with copy_pmd_range() handling the retry like the PTE path. The next revision
-will look like:
-
-
- int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
-                  pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
--                 struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
-+                 struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-+                 softleaf_t *entryp)
- {
-        spinlock_t *dst_ptl, *src_ptl;
-        struct page *src_page;
-@@ -1995,11 +2020,14 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
-        ret = -EAGAIN;
-        pmd = *src_pmd;
-
--       if (unlikely(thp_migration_supported() &&
--                    pmd_is_valid_softleaf(pmd))) {
--               copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd, addr,
--                                         dst_vma, src_vma, pmd, pgtable);
--               ret = 0;
-+       if (unlikely(pmd_is_valid_softleaf(pmd))) {
-+               ret = copy_huge_non_present_pmd(dst_mm, src_mm, dst_pmd, src_pmd,
-+                                               addr, dst_vma, src_vma, pmd,
-+                                               pgtable);
-+               if (ret) {
-+                       *entryp = softleaf_from_pmd(pmd);
-+                       pte_free(dst_mm, pgtable);
-+               }
-                goto out_unlock;
-        }
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 477d7e359b447..c0ad446d0cea4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1437,11 +1437,21 @@ copy_pmd_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-        do {
-                next = pmd_addr_end(addr, end);
-                if (pmd_is_huge(*src_pmd)) {
-+                       softleaf_t entry = softleaf_mk_none();
-                        int err;
-
-                        VM_BUG_ON_VMA(next-addr != HPAGE_PMD_SIZE, src_vma);
-+again:
-                        err = copy_huge_pmd(dst_mm, src_mm, dst_pmd, src_pmd,
--                                           addr, dst_vma, src_vma);
-+                                           addr, dst_vma, src_vma, &entry);
-+                       if (err == -EIO) {
-+                               VM_WARN_ON_ONCE(!entry.val);
-+                               if (swap_retry_table_alloc_nr(entry,
-+                                                             HPAGE_PMD_NR,
-+                                                             GFP_KERNEL) < 0)
-+                                       return -ENOMEM;
-+                               goto again;
-+                       }
-                        if (err == -ENOMEM)
-                                return -ENOMEM;
-                        if (!err)
-
-
-and then in copy_huge_non_present_pmd(), I added:
-
-
-+               err = swap_dup_entries_direct(entry, HPAGE_PMD_NR);
-+               if (err)
-+                       /* Only -ENOMEM is worth a GFP_KERNEL retry. */
-+                       return err == -ENOMEM ? -EIO : -ENOMEM;
-
-as returning -EIO causes a retry. Only -ENOMEM is made retryable,
-malformed-entry errors remain terminal rather than potentially retrying indefinitely.
-
+In fact, this comment starts on top of the wrong block, which is a
+debug assertion for "when we are here, swapbacked if and only if swapcache".
+So I'd rather just remove it.
 
 > 
->>  		goto out_unlock;
->>  	}
->>  
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 477d7e359b447..84e1e1c22bffa 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -979,7 +979,7 @@ copy_nonpresent_pte(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>  	struct page *page;
->>  
->>  	if (likely(softleaf_is_swap(entry))) {
->> -		if (swap_dup_entry_direct(entry) < 0)
->> +		if (swap_dup_entries_direct(entry, 1) < 0)
->>  			return -EIO;
->>  
->>  		mm_prepare_for_swap_entries(dst_mm);
->> @@ -1394,7 +1394,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
->>  
->>  	if (ret == -EIO) {
->>  		VM_WARN_ON_ONCE(!entry.val);
->> -		if (swap_retry_table_alloc(entry, GFP_KERNEL) < 0) {
->> +		if (swap_retry_table_alloc(entry, 1, GFP_KERNEL) < 0) {
->>  			ret = -ENOMEM;
->>  			goto out;
-> 
-> 
-> For both, I'd provide a simple inline helper that maintains the existing
-> interface. Less chrun in unrelated code.
-
-
-Done, I added:
-
-static inline int swap_dup_entry_direct(swp_entry_t entry)
-  {
-          return swap_dup_entries_direct(entry, 1);
-  }
-
-  static inline int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
-  {
-          return swap_retry_table_alloc_nr(entry, 1, gfp);
-  }
-
-swap_retry_table_alloc_nr() is not a name I love - suggestions welcome.
-
-
-> 
-> [...]
-> 
->>  
+>>
+>> -       /* nr_pages > 1 not supported yet */
+>>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+>> -                                        pteval);
+>> +                                        pteval, nr_pages);
+>>  }
+>>
 >>  /*
->> - * swap_dup_entry_direct() - Increase reference count of a swap entry by one.
->> + * swap_dup_entries_direct() - Increase reference count of swap entries by one.
->>   * @entry: first swap entry from which we want to increase the refcount.
->> + * @nr: number of contiguous swap entries to duplicate.
->>   *
->>   * Returns 0 for success, or -ENOMEM if the extend table is required
->>   * but could not be atomically allocated.  Returns -EINVAL if the swap
->> @@ -3978,8 +3997,16 @@ void si_swapinfo(struct sysinfo *val)
->>   * owner. e.g., locking the PTL of a PTE containing the entry being increased.
->>   * Also the swap entry must have a count >= 1. Otherwise folio_dup_swap should
->>   * be used.
->> + *
->> + * Unlike swap_put_entries_direct(), the whole range [entry, entry + nr) must
->> + * lie within one swap cluster; a range that crosses a cluster boundary is
->> + * rejected with -EINVAL. The only caller passing nr > 1 is the PMD swap entry
->> + * fork path: a PMD swap entry can only exist with CONFIG_THP_SWAP, where
->> + * SWAPFILE_CLUSTER == HPAGE_PMD_NR, and a PMD-order folio's slots are only ever
->> + * allocated at a cluster head (see alloc_swap_scan_cluster()), so such a range
->> + * is exactly one cluster.
+>> @@ -2374,13 +2427,14 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>                          */
+>>                         dec_mm_counter(mm, mm_counter(folio));
+>>                 } else if (folio_test_anon(folio)) {
+>> +                       /* finish_folio_unmap_batch handled internally */
 > 
-> I would reduce this drastically. This will bitrot easily and the details are
-> only relevant if this actually ever starts failing.
 > 
-> Just keep the first sentence and add the details to the patch description (which
-> you effectively already have)
+> let me paste the final code here:
 > 
+>                 } else if (folio_test_anon(folio)) {
+>                         /* finish_folio_unmap_batch handled internally */
+>                         if (!ttu_anon_folio(vma, folio, page, address,
+>                                             pvmw.pte, pteval, nr_pages))
+>                                 goto walk_abort;
+> 
+>                         if (nr_pages == folio_nr_pages(folio))
+>                                 goto walk_done;
+>                         continue;
+>                 } else {
+>                         ...
+>                 }
+> 
+>                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
+> 
+>                 /*
+>                  * If we are sure that we batched the entire folio and cleared
+>                  * all PTEs, we can just optimize and stop right here.
+>                  */
+>                 if (nr_pages == folio_nr_pages(folio))
+>                         goto walk_done;
+>                 continue;
+> 
+> I am really struggling to read the code here. For anon folios, we
+> handle `finish_folio_unmap_batch()` internally, while for other folios
+> we still do it outside. This feels a bit inconsistent.
+> 
+> Also, we are duplicating the code below twice:
+> 
+>                 if (nr_pages == folio_nr_pages(folio))
+>                         goto walk_done;
+> 
+> Can't we just do `finish_folio_unmap_batch()` like the other cases?
 
-Done!
+The core problem is that we may succeed on a partial range.
 
+ttu_anon_swapbacked_folio can succeed on x < nr_pages. So for x, we
+should call finish_folio_unmap_batch. Either we do it my way, or,
+ttu_anon_folio returns the number of pages successfully unmapped = x,
+and then even in case of "failure" (we should now jump to
+walk_abort since we failed to unmap 'nr_pages - x' pages) we call
+finish_folio_unmap_batch for x pages.
 
-Thanks for the reviews!
+IMHO that is uglier. I wanted to avoid this label jumping. I would
+be interested in hearing a better alternate : )
+> 
+> That would also avoid the duplication.
+> 
+> Best Regards
+> Barry
+
 
