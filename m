@@ -4,88 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9949BC98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 12:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A088C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 12:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B1D46B0088; Fri, 25 Sep 2026 08:33:41 -0400 (EDT)
+	id 7CD446B0088; Fri, 25 Sep 2026 08:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 665AC6B008A; Fri, 25 Sep 2026 08:33:41 -0400 (EDT)
+	id 757606B008A; Fri, 25 Sep 2026 08:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A1256B008C; Fri, 25 Sep 2026 08:33:41 -0400 (EDT)
+	id 621D86B008C; Fri, 25 Sep 2026 08:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BAD46B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:33:41 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D8B26B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:38:56 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C22FA805F0
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:33:40 +0000 (UTC)
-X-FDA: 85252225800.10.63AFFD8
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com [209.85.167.198])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 15E821C0008
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:33:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf18.hostedemail.com: domain of 3Imq2agkbAC0bhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3Imq2agkbAC0bhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4B7FC062A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:38:55 +0000 (UTC)
+X-FDA: 85252239030.10.D95F0B8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D137A180008
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:38:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="qD5/3Mtz";
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790339619;
+	s=arc-20220608; t=1790339934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=3tGsQcEo2L+rh2VXZGGUz0I7c7yOYimMqn0H8hByYtU=;
-	b=IYROxONHc1EILORf6PVnGyX7K32+nerSGNz35qyMcb79Pn8AJPzydArlTW66A21j7He4f1
-	vKdde5fADKAoKzgupibAUTIx4dlTUx56IgQqtwhNuvBczAGVOGyhFE3dMIWKeu2ao8ylmM
-	h07XcQk4UUUZJa/9WZ/4tl5gnmx3Sno=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=lh5V/ptxapRIR+WqaKkNIGTXXO3FUTlIWTIAMYKtU/A=;
+	b=sEqT5gQ1SwhRhjt1lJ14GmYyU8LxBayOFTuFd+WFggI6Ahf3nLpYLS6K4LitVpZquD4MiZ
+	zLmGA/2sMpREu0rjtJPlSg3nWzUqnaCqxEiVmzlEYStY5gHAzYMM1A65cKW2XR0NM6yASx
+	Q+pWmLRlYus3aMOUQ4vtT2QHXmme6ds=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf18.hostedemail.com: domain of 3Imq2agkbAC0bhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.198 as permitted sender) smtp.mailfrom=3Imq2agkbAC0bhiTJUUNaJYYRM.PXXPUNdbNaLXWcNWc.LXV@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="qD5/3Mtz";
+	spf=pass (imf24.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790339619;
-	b=zpHCekM8FkF6SWolmsnPfPCGxlS7bHDmtFo05IQp3PfuInH4RXkH7/HTR1unb9QbLLZ0ey
-	BudG9x97xPLvgVTIY0GRyyNZWIOY7y18vpNOlYH+8BrTYFrJnkme4ARVKUKykEvUgsSjYs
-	PF/icDhx6CDT8kpDBuLVoVL7rGUN/rg=
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-4ab260600easo2811868b6e.1
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:33:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790339618; x=1790944418;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3tGsQcEo2L+rh2VXZGGUz0I7c7yOYimMqn0H8hByYtU=;
-        b=TpYpmpgzI4qEBKUgnZS6x95HPRVlrpajthaLAybHRstHrDHZ0yM3v0uEEUPaLnKGRO
-         imbUkDwkKK7JujEaaRBgRKhq5YRoEeLAKSjjdvogz+PHRoMQmnUdJIYFEMgtNBAaxiFM
-         XCGL5iQNolwlqmuaYqHQdrrNu2KaqJ3jBGIYvoow1neOG7u/ucLRwpG4r7xJdJTMdsnu
-         7MNnLvdNevGZOQmhXeZ9A+zsozN0CVt59HVkflYU2Y6Ixot8WanjOME28svEzQfWcTMb
-         O1MJrXnM/3S9PQ97GNxNNAMepcPeP0qeuIPgt7LuMiypQC9b0h2Qt+G1HVRjKLuLewXt
-         Oxzg==
-X-Forwarded-Encrypted: i=1; AKwUvBymlQ+v0M6rMeeBiYopZfDnaIXfzG7RPafztabc5RgxBzu4kQ3Kvko4Jd+UwrZgr+1mwGQgPnEN+A==@kvack.org
-X-Gm-Message-State: AFuF++np2irC1bNHYbKuIESuzCiPA/o/HbG/QUTZykODTKhzdQLqVUFD
-	7qn2Dg1RB5886Zf9Qqr+33LjgBN7NZ5+5iQMO+hz9hFalLZTNykwQewMYCIMByNsqmtyjnj/Q9X
-	ARFFQNLNwsg8nbNyNS/ifhgrlWI/NbV2JfDMqf9jXExPqe9R+d14ycNEGhsI=
+	t=1790339934;
+	b=s7rzJAaxwux98QlpXzwBXrPNA9SU/tKvX88dJe4m6/m9JjIisPRxOCW5NcQPhxusP9fYCl
+	oPnr5HmpuX5QZZr8Aj2MS1xgRGxjMSVut7yCf0nanVjOW81+TDAtmO7X7lqTIEaaqneYTD
+	PmaxGuljWYp4+q8htNhiCP1SesfzYI8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4D167169C;
+	Fri, 25 Sep 2026 05:38:49 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C6A63F86C;
+	Fri, 25 Sep 2026 05:38:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790339932; bh=3/sJDh2CYvX6ndhu9fW7GGXj1GgDR/glEJ6XbWJ6Eoc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qD5/3MtzVreV8Bh2VupUQ9nnBRZ5lh5KiqEmCUzeVaGdjdtAk42kWUtSv2TLHK3yx
+	 Gh8O6SM+8wgPCCeJEYjSksYixaZjd1X8spXfAjIn8kpc20AZ705kPC2zhifkAqAhx/
+	 nXUt2bt5rOx/fCLPrpb1Y+xpq1Vieba3A9Z8bc0Y=
+Message-ID: <bde32459-31ce-4b15-a129-4641ef1c6337@arm.com>
+Date: Fri, 25 Sep 2026 18:08:44 +0530
 MIME-Version: 1.0
-X-Received: by 2002:a05:6809:3cb:10b0:4dd:f8bb:e1bd with SMTP id
- 5614622812f47-4ddf9083167mr694918b6e.13.1790339618117; Fri, 25 Sep 2026
- 05:33:38 -0700 (PDT)
-Date: Fri, 25 Sep 2026 05:33:38 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6ab66a22.80e1c6cc.1e8e5f.0031.GAE@google.com>
-Subject: [syzbot] Monthly mm report (Sep 2026)
-From: syzbot <syzbot+list9522b235663d5a4f6672@syzkaller.appspotmail.com>
-To: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/4] kselftest: mm: replace usage of /proc/self/smaps
+ for __check_pmd_huge()
+To: Yeoreum Yun <yeoreum.yun@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5g7csy6raztzdtmj1r3ktdkjmca8zaky
+X-Rspamd-Queue-Id: D137A180008
 X-Rspam-User: 
-X-Stat-Signature: bajychpperfe575f4khspad86zs93b1i
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 15E821C0008
-X-HE-Tag: 1790339618-730845
-X-HE-Meta: U2FsdGVkX198K0BaEAUY3JKHY9EndOWgaX6hjUkeIgbM0swWsmkWjYTNp8WAfrNOR4HR+WaD7VV8FdGZv1dIdepHaAcnSEfx5Nri3fEq38jUOa3gXuwwa6lH+3N7qCq1jC6U70zemaG5hM0KaMEbfYW9RBjh6G74VhWIB+Rqv8CXqN+G3FzA9g6zR2Fhls0rI6m8ghbSqbSsFW5YsR8O9Uz/yyQzi7EkAO6aoF+cC+ds1PUnYSa1Akuwr4MZObSGhgIiIg2CYQL7hO18drlwKYj+DwCN4zhDslPbaDOVAgdTQQauiVf3sd+D5/jV6GeXg9yQkJ90vndD+sGfrcxgAHA2Ll12XH1MswEVuqM789Kmt0zltNAcgLWTGUGNg5jC2bsK6sHqSH1zUHxo+ijT4wFynEUexjiiyxMMeK99YJMgIiFAtbdCoFHB96AZA06nYHF0A5zeYzDXyoRxBcJdhKdyzHO2M+/ROlZgDszEgYketnKKU4eqALUmq023HYetHOfez1UZ4z3D72yplT3HKcGY6o6Y96PFkP1xEo6KUwi2yjLO4dyg918J5HnMXQ0wWYpi0zlOTM0GooIjpKSIyIX3JsLT4/mrZtysn13WCjV+zw94WqLaUxaiqv0cCohlqxVHyRxxiXM2tIoDLNCCfLmp0Kv6e4CDzjBtW/5NLViGPcwtKLcOdQdb1TKBfqpbHzkyH26wXQHt7RaP5ifhjWDz8NYwaSkTKqG+besJTQYKpCLh5vru8+M1t/xE9pLwYtLVV/ccWD8Qjw6t1i6/WlH/exvdgGe29hf9T1iS5mcCw6sRT6TvKHJv4xYbWNJjh62AbCZ9TukXhof9gfCOks0D8uJstTtGD5oH2VNPwrcbXjF/h/wXx8AiuDYF7s65GuxNLdsaoo02YsiBbbKP1X3UatqZ8ZoQcDkw2J1JjZM7ZHCjcr7vFQ2b4vcqTl++Bpg8NeTzWRl+XakijTu
- j1RMQJMw
- FxUhFU6b4Zi+dQtg5SrDM6doW8qJHseQE/ku4/Txkkjzc7YTgryKARiZwjWzPI0w800DFsAyC0JA4AZC67/Glx9WqO4nHmGR3mBUAufDqKbPvcgc05fZJ+2c7MKyyjcjEwob4NstEzt7sj1lotCMKp2iGBW9Vuqmen4XIR9DVq00Cu76dSFaQW2djiWgejoqmqZXtCedi/lEZ9eWyusDLjIPrg/VjMGvlUm56/p9JCPYJVSesBvuBcsb9t4ZPAH9c9TYDlFLcu4C49v4lNm39Ltq8KLfoFZ3/d+4ZR/yoEX6GCiRyePqG49r455pc6wccTqeVKfmXIC0coQhjwMTBlPlrqA+YCGpqxbG3igxBTxcIcyufXalbp0kreMdtywGYmFZ05+snqoGVsssQ1Hvs/HXyUQIB/uXBBF24OuyOicIYLdR1fJ4TNrINszb3nEH6C2UvMLTOUmA25Agpj3QQcJ4K3OcJTCvv0A/FCj3ve7bNr7CrabwKxl7zOjM9INiq2+fDnTdAoP8bWWeXh0Rn67vOMLLSbTB5S4Mw0saRiA4dk/unjicGP3XSmNQrFO2EDbD3YgEY8TY/2fb6dHVmc1aVqysNtwkwS4bV8Z9y3IgYQLgXUige/0mtkBlhP3z6LXAdivGPrIvfXNnJdwBonjhP1NEvdTRiziImtz10HFnsRUHj+ixz+P2iV6Qv5AkP028WK8LChDGUzWX0BE8nxHlJ7zsW4Z0PDcacQoA7iQqL5OXBsI7fyqaKF2s52b/oSmvNivuP6dnmUBONl0mu7lBsu01GlwV0MTxN2/wE6uQ+cOLJ5Ad+HytC5F9XXSd4+uT8D+493+2dY4Pn3/ck3VBQD+XyXQbLzyQuZJ5mGmbOLJG+aF+fIszKFtsq9WqlUcTz7UcuVgTx+DoHrbpICpnYJaiiUyseMwwEXc76gZXJ6z7TISvV4jeBLg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790339933-863269
+X-HE-Meta: U2FsdGVkX19jMm1/ELpr9eDUvsU1kbwYhU3UOwcDzhWDAF2NkKmG3ko9Zlmk95jzI+vkMPheke4WJ2EvrxXy9J/e17X29n66h2pNdb76iIoDTvYOaRmqVeAnECye7TBqCb3Rgene77pVxFqSBmBUjAWMoWsXI82xp3N4kh0ebi6Z9T024UJZU/Yj03zFB0PihDLUQPEdUv94L/Mm4PAX8wYM/5nvXfL0hpq2UshY4q64f8G55xRsR/YUSCsXTVY+EdzO3Ge1bqrJdLNL78bMXrVoQIbri9uG8aBsxnUxShUg7WlIbT3e+zucpNqrde+xeueXpeEWf+DH5ufFIjzdNRXGDraXkkJpP3HdZF+m/72j5lGNhzT1vZIz3IZWHTyvU2fd9/Ql1z+PgoftkrzQYUETwI5LQa+yLTGudcKGyPtJpyEXtjHtE/ZuSpb2byzfqGgN3Ua3z0jtM61/3C0le4UDQt4/CvMH2foKzorGQOWnZBa3Ecmw9dYy+18uVMIffr4uuBWbJY/FCzrjVCUF4EQ9x3TIoJT6o/bAHciB78maPWCuQfbJsLEhcK2rU6QzSFLux9yoexoA4VPwUkWNT8goEZ3yifhPY/x3i89FT9GormAENLqyCk5HCG+gJzhkuMXjzM4osdI/QEO3gkK2TjyCxFdRVwQCLBpMoPpql8Zzq8gXJd8yCiAtxrN57PgPIBrKB3tPNNqQag/FsN6pGl/zmsVmJ+RWGQzktYcuglImd3T3P2B/9Fm6w9eb+xXPkk622I1n+1AjLDMuIevcEAZZgQ2N33aMRHP+CjlN7SMshzE/Mk1KEnB83oYNJdSQL3HgMZQT3x8soQ0jWwpSq2Co0/h5nmESt+JO3Xc20qfNziFb58OqRzH1Sg1UpdGy/HvLRezUpV9LK2mwvaGFqcBvGDOLYona0O7NU5QJmRIEYFGawmpUQR3uDWLBendia41OJIAjqcMd1m1IIIQ
+ YzC8qE8d
+ pWp4wCxgMfjGnvmavR5JFyBr1qZNwv6SvDk7CQ0zu8JDzP9kkrHx2TpchPHwB4KGwvOqRRBnzrct71I8QAoILJJuKmHmNu3Xrao4YSVz83RMAuZ6lFcToSmJQgIXK+0fBkqquh786pwYdJYSMNpVP/kv+j/uh+4OoZ8qhlgLj1nwOvA4WoOrv+fM2wbWJCY6haE5AFMK63BlJmWDJh56cmGKeKQ94WCGpTGVu18kt0zxHzCM1l5OlAUsaw8JobUq/x2vJm1m8NunGuejHpoaqdvtiRnL3CLHNPB+DcFAa7IgT2Nr1o1oWojcTNMC7lsp9aT4KzxP7zwhlxvDYpo0g1pSOvXmqahjzM4Lzd+8rnD0ywoylYLNDcjfdYiVdrD8X3x+hqzWi6hW9kfE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,50 +102,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello mm maintainers/developers,
 
-This is a 31-day syzbot report for the mm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/mm
 
-During the period, 2 new issues were detected and 1 were fixed.
-In total, 76 issues are still open and 382 have already been fixed.
-There are also 39 low-priority issues.
+On 9/25/26 12:41 AM, Yeoreum Yun wrote:
+> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+> made by memalign().
+> 
+> The underlying VMA may start at a different address from the aligned
+> address returned by memalign(). Furthermore, a subsequent
+> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
+> already set.
+> 
+> This causes split_huge_page_test to fail because the check_pmd_huge()
+> helpers incorrectly require the address returned by memalign() to
+> match the VMA start address reported in /proc/self/smaps.
+> 
+> Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
+> /proc/kpageflags to detect huge-page mappings checking PAGE_IS_HUGE
+> and PAGE_IS_FILE accroding to type of huge page.
 
-Some of the still happening issues:
+s/accroding/according
 
-Ref  Crashes Repro Title
-<1>  3955    Yes   WARNING in trace_suspend_resume
-                   https://syzkaller.appspot.com/bug?extid=99d4fec338b62b703891
-<2>  3805    Yes   possible deadlock in attr_data_get_block (2)
-                   https://syzkaller.appspot.com/bug?extid=262a71e9d2faf8747085
-<3>  3136    Yes   possible deadlock in filemap_fault
-                   https://syzkaller.appspot.com/bug?extid=7736960b837908f3a81d
-<4>  638     Yes   INFO: rcu detected stall in sys_newfstatat (4)
-                   https://syzkaller.appspot.com/bug?extid=1c02a56102605204445c
-<5>  528     Yes   kernel BUG in filemap_unaccount_folio
-                   https://syzkaller.appspot.com/bug?extid=17a207d226b8a5fb0fd9
-<6>  329     No    kernel BUG in __page_table_check_zero (3)
-                   https://syzkaller.appspot.com/bug?extid=2b5fe617654be3d8848b
-<7>  308     No    INFO: task hung in migrate_pages_batch (4)
-                   https://syzkaller.appspot.com/bug?extid=f523acb98cd782b4872e
-<8>  185     Yes   INFO: rcu detected stall in sys_unshare (9)
-                   https://syzkaller.appspot.com/bug?extid=872bccd9a68c6ba47718
-<9>  166     Yes   WARNING in ext4_mb_load_buddy_gfp
-                   https://syzkaller.appspot.com/bug?extid=fd3f70a4509fca8c265d
-<10> 115     Yes   INFO: rcu detected stall in sys_setsockopt (4)
-                   https://syzkaller.appspot.com/bug?extid=6e61d59e9d2150c8492b
+> 
+> Since shmem pages are also file-backed, simply check whether the page
+> is file-backed.
+> 
+> Fixes: 642bc52aed9 ("selftests: vm: bring common functions to a new file")
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+Checkpatch gives a warning saying it requires atleast 12 characters of
+commit SHA.
 
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
 
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
+[...]
 
-You may send multiple commands in a single email message.
+> +static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+> +		  uint64_t hpage_size, enum check_huge_type type)
+> +{
+> +	int pagemap_fd;
+> +	int nr_pmd_mappings = 0;
+> +	uint64_t categories;
+> +	char *start = addr;
+> +	char *end = start + len;
+> +
+> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+> +	if (pagemap_fd < 0)
+> +		ksft_exit_fail_msg("open pagemap fail\n");
+
+Can we use ksft_exit_fail_perror("open pagemap") here? Will help in
+diagnosing failures as well.
+
+Apart from these nits, rest looks good.
+
+Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
 
