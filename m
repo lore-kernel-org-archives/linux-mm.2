@@ -4,148 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5732FC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 18:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86B33C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 18:32:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DC3C6B0088; Fri, 25 Sep 2026 14:24:55 -0400 (EDT)
+	id 382456B008C; Fri, 25 Sep 2026 14:32:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98DE96B008A; Fri, 25 Sep 2026 14:24:55 -0400 (EDT)
+	id 333696B0092; Fri, 25 Sep 2026 14:32:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87E746B008C; Fri, 25 Sep 2026 14:24:55 -0400 (EDT)
+	id 2492B6B0093; Fri, 25 Sep 2026 14:32:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 64CC46B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:24:55 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D41A2160635
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:24:54 +0000 (UTC)
-X-FDA: 85253110908.02.5772A89
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E732616000F
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:24:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OJM4FCyR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790360692;
-	b=Et+Yj7hrSiYtB95H82jvGaZ0YoIFWV4l+ofrb1yUkxKSFLoFEjxV1lJuCJP4K4pDx1PGST
-	dmVyDoRE5SVLso09PeGD+ICHPioGeGXJQ2+bayAxOh57vi+n29ikbz6ORWBgL++huWsutB
-	mHCwnkOMoMiVy72a09K7ClgnBwWcDOs=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OJM4FCyR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790360692;
+	by kanga.kvack.org (Postfix) with ESMTP id EB8446B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:32:36 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5A88D1C2B74
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:32:36 +0000 (UTC)
+X-FDA: 85253130312.10.161B427
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5CCC518000D
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:32:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DPXcgoer;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790361154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VuPCu0NVXXA8ZEi+lRFtiBIDXTK3MN9d4YX7eIhKxYs=;
-	b=ugVCofKxgyEEmiJjtndmxcKFbsCGHsy3DQWQDJn6vjbYBnfl4qPHJfUjPUUaUhSUdK6vP5
-	ylUFrxlZQTbBf5Bp0U6LczOjA96rRDqdU3cyy4G8hjF2WGI5nCUcda4Eo5+PG7bK6agMv/
-	5nsUrof7SzxOaqsvJa7rXUN1cHgrXZY=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b24c3so764103f8f.0
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:24:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790360691; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PDAd7uhgLzsSPISBqoOLa4uo8bB/UjxTcvpwUXgyQxllBnSVMp9wtnzfx6Tnf4dNT/
-         V1ugPRoVQ8m8oQj7ahjI20ca030mPF2kUrQ1DHuJwyCuoBGGZNTqfyfbeXIe4DWd41GM
-         ydlPJMgtc+nfpJsonvcZE98J6SgSbidXLst+lIX06TCOeeFwjNm6kN21/UZAA6+vbz3X
-         oWtY4tx8KwtZV0q3nNc+E4aIytMc+glyZcLMJgiDvtYUeH0C7MZ4CMdhZWyhncbpCOxy
-         ppNuzK3ctc1TA9pjmX9Rjq3fv78yMffwaXFGHXIjDX/P1w4eaV7H2OPECf7C3+nnNu3Q
-         K57g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=VuPCu0NVXXA8ZEi+lRFtiBIDXTK3MN9d4YX7eIhKxYs=;
-        fh=fK6XDAut77WxO4pQblMmCM/n0MqP6dI8Tf0PFFyPOas=;
-        b=fEa07gdR5UCqigx3P9IYGlCSSvf+7UDq8A6D2D7seVoD6jDONdxx4A0kMGxcwdzaWB
-         PhR5YX0I6NPzTt/5zUiwdd4bvju7nQZCTfyMlBrdCOdeg2BzdcyCNYzUw/9kQvInLesg
-         16rCjZQvdPrH5yrvaWXAYU9jQPleBx86yvGDWDBjLSSWou92F1zSs63EAGQH6P6KaN1B
-         k3zU8EZbeLn4WH0Sc+i0pFmQdqOLpTa87kFE+s2CLAmn+rROG48DPhdKr1SSH7cfbDv+
-         UM7aHqkf3PdklLp46jrvkfpgq7KMvpek2srubU8mZbwrj0DYSa4NKQT1IdtcVyvH5bhQ
-         5RXQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790360691; x=1790965491; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=VuPCu0NVXXA8ZEi+lRFtiBIDXTK3MN9d4YX7eIhKxYs=;
-        b=OJM4FCyRkB86GKwHcbP0W7QrAGaYiZ+ZHhdCt6wx+ePe3wuGfvEyhaaXMU7bZ1k62K
-         KlIknnvwfp2VEaBV0UTAIm5pfaG7pog/Veh4bkra50w/vKKUtYbkiQw0bjt36ZthWZZF
-         EcvbI2Qb3qYVleVCyusWeU0Gs66oT9AaiPjewo5d5zlSedf4SWy0ctmDBjyRbAQ/7U6J
-         FTD1+P/0U3gRwEX7VO6hWlJGfdijZoC97qXwMftcr6wU4jGKiWs/mrbaVDUdVVKxjfGE
-         v/ApQGKeggoi0koTqRAObzrMS5egrY1fbq/0NWGLTpHfQ3YQ5fPYG9ndp8bTIG1jBL6U
-         SeNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790360691; x=1790965491;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=VuPCu0NVXXA8ZEi+lRFtiBIDXTK3MN9d4YX7eIhKxYs=;
-        b=vSAsxUYyNVacjgsf76+EQPRYIUJ+GOrN03U49LS6p09eFHSF/MRz3Tvu/BnaTsLaGM
-         8HRYno2lnhtVL2rXZAXwJ2HfLNr7OWZGloMvRMqDpxRQBFUn3PINuK3+Cfg71ebtCeO7
-         wabm1vMNGgc7clQicB55JhCZfnWJAAqyOPDaXz9KbJpz7TYv1APqyCRbIfcRKLsdMvvr
-         xncvvFEPR5uRBINQAa3yx/6kEd3qEK8YrrvmdyDvyq29T1aTrupKOyOUrsk73MHI/ae6
-         YsBsGyNTmMYEo8mWp3a3gs8DJQBngKnmGGq2i0q3fFERvpqU9iAJtsr8CoTxJhUInE1g
-         NeJw==
-X-Forwarded-Encrypted: i=1; AKwUvBwVLBx1ySCm3YkpeYl+4U9O8hiE64ixHXap2M8YAuC9iB1csgegixFyHln8OmDVVYSIgeXCX/tw2A==@kvack.org
-X-Gm-Message-State: AFuF++m8ng01S8MSy8OGpqHvBN9PyzA273lb05UbyEG/lioPr5FYZVrS
-	61tKzI/sMrsP09vmBSeQl4ABoK8QpNKSdv2DQpUwydzNTZSnXPkFZ1zU1waGtlQJXSxoku6SNX3
-	OsXxlxOj1GbqICIX3kepKgLRN8G80nZo=
-X-Gm-Gg: AYBFou1CCV1Ox66tZrS+vMZzhtZ2ov2lfdKLsc5sFWT8KOkhjrJEcFB4HnHoJXm0yg1
-	5xZ2Crb2S897vv6bdthV+rcM0SgnSVrP6mbr390YXPZrufRSwL8N2/8Hl1iRLFvLYdZSOJVreS7
-	Y97N8CwQDnYgzea0VXIqRmZWPX1uQkmNPbF0tzevv4BCUJSL2AQaZxuwUFjn0rdzrt7tJNwYY8s
-	/yur3w7bhdkDItEadc5rVOkPS36VS9xGzviz4bD+ZXqdu45uF8Zi2xb37hd68hQgDcuc7p68qVo
-	4l4jw3XOYdqEIWTUiIYw2DTk8PbGRzyNrREf9X0x9lm4vQdRQwwQM6n5yHmncvY0yuLuCu0qbH3
-	AhXW1ATHdZpo=
-X-Received: by 2002:a05:6000:40da:b0:486:f907:ebec with SMTP id
- ffacd0b85a97d-488716f419cmr13910053f8f.31.1790360691287; Fri, 25 Sep 2026
- 11:24:51 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=r9iJK8cubIy4yqj3FqVyjDFMADrnpXNYWjGeV7uEiTs=;
+	b=RIb7tIyqixEyEJhFlEfH92zkn5/xSPBuDBupkQ0ApjxvXFNMhmU5huA9VYIHrTtWEjH9sG
+	nsW71t2Kukbfk1oQvIYz0rZVQGDWoA0D5GBynZUFdeyFgi0vFSBkett3BKjrIZNEk1T15q
+	SUFXiFvsxFAoBxZd33fyC0wvweA/vm8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790361154;
+	b=KDWyuM6EEyM6BC6efeExj7l83ACc9ah3/XxM3tPRwGbQB+2rflOegadtiktzy9zmHydonF
+	FE468Mk4XlYbbCpdWJZX+q9xq7GMUdNKV7rfNCshk3ZFgwFkk3+w1aF7KZR7YcG++uCAtj
+	ViSW7q73Pf7qVUCLRLJo/DUYSRvcnCc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DPXcgoer;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 940C441891;
+	Fri, 25 Sep 2026 18:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26E61F000FF;
+	Fri, 25 Sep 2026 18:32:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790361152;
+	bh=r9iJK8cubIy4yqj3FqVyjDFMADrnpXNYWjGeV7uEiTs=;
+	h=From:Date:Subject:To:Cc;
+	b=DPXcgoer43IdLffnMouUeh1bb0EpInVuAwiBWPNMIUbvphW514ePK5gHs8YImhCbl
+	 QJGYT7IaFbgduLd18n0/IcsJL3MoaKpK02ptbGcQrZ9Yh4X6QfOAqSGD4UR5/s79N/
+	 fCD5tWcOsGMAL+WVZ42sFK5VzFpt5Z45t1RVOiAmBThyM/3OKxv1/OsLYQf4d437+m
+	 iNOL1GdC4S+kLrVZOgBcjafTLT04PneRWN0VvFrVzk26cRF1tV/ZxpiJOQ6WOBbL6q
+	 vb2MRaH2ScbNFxjO3oiv18R/BGLmR9pR8BfQXFz6VFTSit4T/s7/f5HWxat+IcxumS
+	 bEOzUZ2yyO/xA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Date: Fri, 25 Sep 2026 19:32:20 +0100
+Subject: [PATCH] mm/vma: don't remove VMA from rmap if pgoff unchanged
 MIME-Version: 1.0
-References: <20260918180241.3424851-1-nphamcs@gmail.com> <20260918180241.3424851-2-nphamcs@gmail.com>
- <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
- <7571f005bca65aa4ad5e7ec89e62801ad058b689.camel@surriel.com> <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
-In-Reply-To: <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 25 Sep 2026 11:24:39 -0700
-X-Gm-Features: AclHuK-nk61jbPKSQK9eOD-whCQNgC46gTK8mZrS59_h9wP0CK07WrJWS_RDZQc
-Message-ID: <CAKEwX=NbD12FfApEb9g+3Gt_-Rmof0tovYZsxPPyk5TCbFq=Lw@mail.gmail.com>
-Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device infrastructure
-To: Chris Li <chrisl@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>, akpm@linux-foundation.org, kasong@tencent.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, 
-	muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, 
-	baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, 
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
-	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, gourry@gourry.net, 
-	haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
-	baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
-	skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6bmhosocunk54gxpyhr6x7gf4yw4sasn
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260925-speed-up-inplace-rmap-v1-1-babc48ce7c83@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gZq/VC9iriommpAa2hRBPHuF
+ pdvMfNApMAUocseCHRx5MMnFHkG02r9QshzMmilG9XqGqMQzXgKspfNToRht4JGGTeOpamMqyG
+ 1Esjx/X/74X0/jHNRwmcAAAA=
+X-Change-ID: 20260925-speed-up-inplace-rmap-808fbb3848f5
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+ Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
+ Lance Yang <lance.yang@linux.dev>, Pedro Falcato <pfalcato@suse.de>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Pan Deng <pan.deng@intel.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9617; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=wRe/8mmf8QrohRi4fFapd+vGEtGbc4T83bKKTeu/h+8=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK27bOcFnvCy1y47k2N2YewF4zL4+J3q14+xpd4arGCk
+ t+eqhWJHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZgIdxgjwyehaYF1FrUPNBUu
+ tUml3Fz06O3vtEdfRf0MDjec29cVJM3IcItxae6r4PRZXH/djrKfuHnMKpXF6d8P9cZz66/PjW1
+ fxgoA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E732616000F
-X-HE-Tag: 1790360692-80261
-X-HE-Meta: U2FsdGVkX19c35DGZgG4+7Vs98kVWUki+IK1spgVKa4SotleAHMXkTfyfeyfdefA7gdbinZypwL/9ZBCof0ogb8exjhlqNbWi0LqMKJWG2GlfVMmi6JveFbCBRKgQzHgaZHetyMXE8k9pDWCs5TF5gf+ZNY0ZkKoTZuat3l6FmfdS6Qkw6e+IiVEi/gqhXnDVXzlb2SWjK6DI4Zm/frBuAAShNVvZvTT6sz9pdfPfXuWlFsA1Rb5QlRmVi2uaLUpUhOrcrMCKOWFzilj9Qr030NPe8ILJrp4TlsZToeE1RWxH7Ihbbd5pqBGGx5eOAfzE2mb2zvICbUtNGIFXPVdLg2YqFiaOMpw4OErTcP7nxF5i8sv/9tUnXtFsrtTl2T0c682jRFqWB+ef5FgC10Qdfvekeijk2TzKDGJk86IY4KuxWfqln/IPIeeit/Hrl5qO8Nt/rkhzNvQtylBYa5krQGhchZo1Wh462ZqRzNkIWAVKq0xj/+a0Muf98zDnDvH8ZBzDKdc8Bsy9vA0FJRW44un+1eVUeuhdV+cSKp/liU1Zd4MCScNGv39WSTcnbvqo2Phh5XHO5p+vWmelI9mBImxp8ifu91EG7ykZKiX2wZoNDAu9IuV+nxI+Q9C5+CHyyPeLzRMvnfyCpgnVDmmgmKcaIKCV7PwuXwZqSHN3bgPY7M2/YDs0E0NfUxCDdJJH60dMqZ7leYmArphjHRCwELrh5ZvJ+Cg8tGZqPU87qnuuzb0cPSTpYKzIXUBryihbwy4cObUX/ADdbgg9QmpBUYqt2Vq/hR4+VSITt4txYoaLh5d2+U+RmC00Inp+IwJWmHvGf+vcaPpL9N0w4MlbXFDOtjCzCwEQFR4iDe/byJaLrhLyGI7G6KHy0NZm29zRY6wi9hxYDAWfvjLMIsDfcy1zngYgq3tki2ENu7Z2J5QsS4KhxtbI3w1nc1U0IGOsTnBs9H5SviT3ODYE4Z
- QCA+6Zzp
- 6IGOJ9iMr7TFXOcIY1txHzD96/N6voK6XKZ2WdOvMzu4LcJRsS6+So+mqCFdnxrBaXUNlN+Nul34EuD5HKF4X7Ga46kU2e4PLPWPloEXRIlbzMRHhzDWR61qRLnLHZomCs0g6Tfxkxn1R+kaAZs8OvjPAWFoQa5YFh6LQF9ct7wL4Fd1NiLUXvL8PovcVMzC9urGQZUeOFUg1ZwdI+wVZxxoJH2byh2LQnd6R+3lH7Q7Fw/jg6c0/5AaZpLNkqFVOx+cbbN9iIY2zHfYW5mgxRL5TdPHVDBVji+311fn+XxL3kZMMKMjT6ruD8R7zG/9ZbS4ls4mgPYDJjqOQ9IAa+Sdp/0OeQataazFx/t05upGOYWOh0e1DacH1UO/zggg9djdwoldfsgGI9C/D0MS2QUr96zWvf3lHuu7JfC3mgbz4u8fopQJWkNF48SXu6mExAPJft85E85/4MyIl8k2Zd6VVMMCTvIBMUqq1
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5CCC518000D
+X-Stat-Signature: 18jogws6e3c7rc395ku5rm6yy84hr1g8
+X-HE-Tag: 1790361154-300616
+X-HE-Meta: U2FsdGVkX1872wfYCMxgv6oE00bUuoxrg5F0RMMuJU2n3OEzWljDpWGScVHhZTv4zRWz/BEeeO0aOsF2FNReUHrkMaJ/MNNFqjGSZcCGySR30+FUS4GhEghHr+IJluiv0GtIYRL/gAcXVA9zTdbSo7hwBuzaVT/JqDwANMAHjlqjZSeHfHT0U3SQtrKcjQbTcxlceOWHm46AenenID0/i/vchmafn+EanX+di46BnoL9MoZl0+ggVXRfaVpAg/MeRRgJDdSCRAZ+OCvLOmBdEp8p7nBTbjXe1ZTVqi3hqsjITW8oOkeJoZCPU7x7uIO8vS/JDWH+S4knmSJkp6FJHLFJrjIObC2aQKO6q76k3KLq4PSJ+0BAyzPA3MCTQVQr4qnLv04pazgJMLEDJ9TVvHj7EvSba3ci2syx9IvwRES6HWS2T0OWm/4jIUbrJSQ3DlEfyqXFB17R8r1Yg8gWMDmnoj0oNlRuRbqqOjzy4IY7SlEzLb6DWTqVD/X64xON2MiSQJdXpeWPtpGkTJRzynrvCHoL1vszx3eqy7CPZyxai8Nu1C6K8oBPus4m4MB/W3j62Z0f/iWCgtg6NuCZuqbZHqd+exxZtgz+lOZ0pmFaM9RVrVrIPXbK4pst0kTa8X5GqMyIG97zYUfcjqa+n5kUfntXTBQMMH/Pdf1WJ6YpW289c2S53lmFT75GS9gDXSqtQiPhHBzGiViKAch6Oe+hOfQA6MbY3H8I1IFswtLLJhQ6j5wBaX0auYXc/7FgY9uwJ4CRE4zxthNT6WJkBisllZQWdT59WAKSiny8UM5gMI4SVXTDrNvP0P8fou73VgrOJziKVC8lEaeT14C50F9ZwrW8gfRu1bgQnODchzkPNZZgJ/GEEmmVjkkQ7S0VjZm014HJle7SKdPf0JXhW2TTIaMmUBRP8ZWbuW1Ec6Nz6tQ/UEyJfCcPWq4NmXMDR5d17gKfBI+7XvPU3o6
+ l/vFSjAW
+ 1RGSLkBEa1fTvvY9Pi6GCjz8hHG9+5O17nuQkgCrZuE63TTybgf3TLy3J+xfc+q8oUOgrXe/drbg1Ed3dXPngeZfo/qaC6CkqI8/+q9FCaiYezt4xL0vXsupa17ASpYcUMFOm3JaLfp+hiJEyIdRzaDfKCjroM7ZabpDNZfVf6QNzwm44msOecvowG3MK3yYH6FBGa0YYKSm7d5H1CN37upG8ZhPIBs2vC5R8CfeSb8BkrxTpziWqFEShdTsodNOEPelx3DU7CZqbTxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,46 +108,279 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 6:17=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Thu, Sep 24, 2026 at 8:13=E2=80=AFAM Rik van Riel <riel@surriel.com> w=
-rote:
->
-> Yes, but it will pay the price for going through the unnecessary
-> redirection layer always. It incurs performance and meta data
-> overhead. That was one of my previous objections to the earlier vswap
-> version. Sorry I enjoy micro optimization too much, that is both my
-> strength and weakness.
->
-> >
-> > When everything in vswap, we don't need to test for it.
-> >
-> I've been there and done that, the result was pretty bad in those
-> earlier series.
->
-> > Handling the details of what's behind the vswap would
-> > be handled one layer down.
-> >
-> > Chris, do you think that would be cleaner?
->
-> If it can wrap below the swap_ops, it is just priviate inernal dedail
-> of implementing its own indirections. That would be much cleaner. That
-> is what I am trying to pitch to Nhat in prevoius email but does not
-> have following actions.
+When updating a VMA, vma_prepare() unconditionally removes it from its rmap
+interval trees under the rmap lock, and vma_complete() reinserts it before
+releasing the lock.
 
-Registering vswap's operation as into swap_ops isn't too hard. I
-frankly don't see much wins to it for vswap itself, but it's not hard
-to do if you like it.
+This is wholly unnecessary if its page offset (file rmap) or anonymous page
+offset (anon rmap) is unchanged.
 
-What I'm disagreeing is treating it as "just another swap device". The
-implementation shares a lot of swap device's machinery, so I have
-don't mind adopting it, but you can't treat it like a normal swap
-device, and expose it to userspace like one. You get issues with
-allocations internally, and externally you give userspace a vector to
-misconfigure with device priority.
+So, track whether they will change in the newly introduced
+vp->anon_pgoff_unchanged and vp->pgoff_unchanged fields, and use them to
+determine whether to remove the VMA or not.
 
-That's why I've been insisting on what's the use case that motivates
-these aspects of the interface that you're interested in. A pretty
-design is not a real usecase, especially one that creates problems
-with userspace misconfigurations.
+The rmap lock keeps things safe as no rmap walks can concurrently occur
+during the operation.
+
+Additionally, some architectures (arm, parisc, nios2, csky) have dcache
+flush rmap walkers which take only flush_dcache_mmap_lock(), which is
+likewise held across the operation.
+
+It's also necessary to keep the rb_subtree_last field updated in the
+interval tree so implement anon_rmap_tree_update_inplace() and
+mapping_rmap_tree_update_inplace() to do that.
+
+This is done in vma_complete(), after the VMA's range has been updated, so
+in the interim the field may be invalid. However, given the locks described
+above, this cannot be observed until after the state is corrected.
+
+The anonymous rmap is keyed on anon_vma_chains not VMAs, so in those
+instances anon_rmap_tree_update_vma_inplace() iterates over
+vma->anon_vma_chain, invoking anon_rmap_tree_update_inplace() on each one.
+
+For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
+is also updated in anon_rmap_tree_update_inplace().
+
+When performing a VMA shrink or a split where the VMA is the lower one, the
+page offset cannot change, so set the flags unconditionally in these cases.
+
+When merging VMAs the page offset is unchanged only in some cases, so
+update init_multi_vma_prep() to set the flags only if the page offsets
+remain the same.
+
+These changes ultimately result in less rmap lock contention.
+
+Reported-by: Pan Deng <pan.deng@intel.com>
+Closes: https://lore.kernel.org/linux-mm/20260924054301.2330822-1-pan.deng@intel.com/
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+ include/linux/mm.h                |  3 +++
+ mm/interval_tree.c                | 33 ++++++++++++++++++++++++++++++++
+ mm/vma.c                          | 40 ++++++++++++++++++++++++++++++++++-----
+ mm/vma.h                          |  2 ++
+ tools/testing/vma/include/stubs.h |  8 ++++++++
+ 5 files changed, 81 insertions(+), 5 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6e71eaa4af3f..94c2eb055716 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4357,6 +4357,8 @@ void mapping_rmap_tree_insert_after(struct vm_area_struct *vma,
+ 				    struct address_space *mapping);
+ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 			      struct address_space *mapping);
++void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma);
++
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last);
+@@ -4374,6 +4376,7 @@ void anon_rmap_tree_insert(struct anon_vma_chain *avc,
+ 			   struct anon_vma *anon_vma);
+ void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ 			   struct anon_vma *anon_vma);
++void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc);
+ struct anon_vma_chain *
+ anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
+ 			  pgoff_t pgoff_start, pgoff_t pgoff_last);
+diff --git a/mm/interval_tree.c b/mm/interval_tree.c
+index 7bbbf15cfbf0..eafde5d12ef5 100644
+--- a/mm/interval_tree.c
++++ b/mm/interval_tree.c
+@@ -64,6 +64,21 @@ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ 	__mapping_rmap_tree_remove(vma, &mapping->i_mmap);
+ }
+ 
++/**
++ * mapping_rmap_tree_update_inplace() - Update file rmap tree to reflect an
++ * in-place change in a VMA's size.
++ * @vma: The VMA whose size has changed.
++ *
++ * The file rmap lock must be held.
++ *
++ * Invalid to do so if @vma->vm_pgoff has changed.
++ */
++void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma)
++{
++	/* Propagate all the way up the tree. */
++	__mapping_rmap_tree_augment.propagate(&vma->shared.rb, NULL);
++}
++
+ struct vm_area_struct *
+ mapping_rmap_tree_iter_first(struct address_space *mapping,
+ 			     pgoff_t pgoff_start, pgoff_t pgoff_last)
+@@ -111,6 +126,24 @@ void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ 	__anon_rmap_tree_remove(avc, &anon_vma->rb_root);
+ }
+ 
++/**
++ * anon_rmap_tree_update_inplace() - Update anon rmap tree to reflect an
++ * in-place change in the size of @avc's VMA.
++ * @avc: The anon_vma_chain whose VMA's size has changed.
++ *
++ * The anon rmap root lock must be held.
++ *
++ * Invalid to do so if the VMA's anonymous pgoff has changed.
++ */
++void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
++{
++#ifdef CONFIG_DEBUG_VM_RB
++	avc->cached_vma_last = avc_last_pgoff(avc);
++#endif
++	/* Propagate all the way up the tree. */
++	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
++}
++
+ struct anon_vma_chain *
+ anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
+ 			  pgoff_t pgoff_start, pgoff_t pgoff_last)
+diff --git a/mm/vma.c b/mm/vma.c
+index 077e23694143..8b333ec0c958 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -201,8 +201,15 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
+ 	if (vp->file)
+ 		vp->mapping = vma->vm_file->f_mapping;
+ 
+-	if (vmg && vmg->skip_vma_uprobe)
++	if (!vmg)
++		return;
++
++	if (vmg->skip_vma_uprobe)
+ 		vp->skip_vma_uprobe = true;
++	if (vma_start_pgoff(vma) == vmg_start_pgoff(vmg))
++		vp->pgoff_unchanged = true;
++	if (vma_start_anon_pgoff(vma) == vmg_start_anon_pgoff(vmg))
++		vp->anon_pgoff_unchanged = true;
+ }
+ 
+ /*
+@@ -331,6 +338,15 @@ anon_rmap_tree_post_update_vma(struct vm_area_struct *vma)
+ 		anon_rmap_tree_insert(avc, avc->anon_vma);
+ }
+ 
++static void
++anon_rmap_tree_update_vma_inplace(struct vm_area_struct *vma)
++{
++	struct anon_vma_chain *avc;
++
++	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
++		anon_rmap_tree_update_inplace(avc);
++}
++
+ /*
+  * vma_prepare() - Helper function for handling locking VMAs prior to altering
+  * @vp: The initialized vma_prepare struct
+@@ -359,14 +375,16 @@ static void vma_prepare(struct vma_prepare *vp)
+ 
+ 	if (vp->anon_vma) {
+ 		anon_vma_lock_write(vp->anon_vma);
+-		anon_rmap_tree_pre_update_vma(vp->vma);
++		if (!vp->anon_pgoff_unchanged)
++			anon_rmap_tree_pre_update_vma(vp->vma);
+ 		if (vp->adj_next)
+ 			anon_rmap_tree_pre_update_vma(vp->adj_next);
+ 	}
+ 
+ 	if (vp->file) {
+ 		flush_dcache_mmap_lock(vp->mapping);
+-		mapping_rmap_tree_remove(vp->vma, vp->mapping);
++		if (!vp->pgoff_unchanged)
++			mapping_rmap_tree_remove(vp->vma, vp->mapping);
+ 		if (vp->adj_next)
+ 			mapping_rmap_tree_remove(vp->adj_next, vp->mapping);
+ 	}
+@@ -387,7 +405,11 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ 	if (vp->file) {
+ 		if (vp->adj_next)
+ 			mapping_rmap_tree_insert(vp->adj_next, vp->mapping);
+-		mapping_rmap_tree_insert(vp->vma, vp->mapping);
++		/* Need only propagate the change inplace. */
++		if (vp->pgoff_unchanged)
++			mapping_rmap_tree_update_inplace(vp->vma);
++		else
++			mapping_rmap_tree_insert(vp->vma, vp->mapping);
+ 		flush_dcache_mmap_unlock(vp->mapping);
+ 	}
+ 
+@@ -406,7 +428,11 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+ 	}
+ 
+ 	if (vp->anon_vma) {
+-		anon_rmap_tree_post_update_vma(vp->vma);
++		/* Need only propagate the change inplace. */
++		if (vp->anon_pgoff_unchanged)
++			anon_rmap_tree_update_vma_inplace(vp->vma);
++		else
++			anon_rmap_tree_post_update_vma(vp->vma);
+ 		if (vp->adj_next)
+ 			anon_rmap_tree_post_update_vma(vp->adj_next);
+ 		anon_vma_unlock_write(vp->anon_vma);
+@@ -593,6 +619,8 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 
+ 	init_vma_prep(&vp, vma);
+ 	vp.insert = new;
++	vp.pgoff_unchanged = !new_below;
++	vp.anon_pgoff_unchanged = !new_below;
+ 	vma_prepare(&vp);
+ 
+ 	/*
+@@ -1346,6 +1374,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	vma_start_write(vma);
+ 
+ 	init_vma_prep(&vp, vma);
++	vp.pgoff_unchanged = true;
++	vp.anon_pgoff_unchanged = true;
+ 	vma_prepare(&vp);
+ 	vma_adjust_trans_huge(vma, vma->vm_start, end, NULL);
+ 
+diff --git a/mm/vma.h b/mm/vma.h
+index 7a683272c0a8..336b4ced82c9 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -28,6 +28,8 @@ struct vma_prepare {
+ 	struct vm_area_struct *remove2;
+ 
+ 	bool skip_vma_uprobe :1;
++	bool pgoff_unchanged :1;
++	bool anon_pgoff_unchanged :1;
+ };
+ 
+ struct unlink_vma_file_batch {
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index e4acc6f1fe7b..f0a69393c02a 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -267,6 +267,10 @@ static inline void mapping_rmap_tree_remove(struct vm_area_struct *vma,
+ {
+ }
+ 
++static inline void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma)
++{
++}
++
+ static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
+ {
+ }
+@@ -281,6 +285,10 @@ static inline void anon_rmap_tree_remove(struct anon_vma_chain *avc,
+ {
+ }
+ 
++static inline void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
++{
++}
++
+ static inline void uprobe_mmap(struct vm_area_struct *vma)
+ {
+ }
+
+---
+base-commit: e8d0f6a1b2a447d02845984fa6288787543cb03c
+change-id: 20260925-speed-up-inplace-rmap-808fbb3848f5
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
