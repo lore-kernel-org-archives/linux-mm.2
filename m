@@ -4,128 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0030C98318
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 01:16:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D4B7C9831E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 01:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4A776B0088; Thu, 24 Sep 2026 21:16:05 -0400 (EDT)
+	id 6A3E86B008C; Thu, 24 Sep 2026 21:18:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FAA86B008A; Thu, 24 Sep 2026 21:16:05 -0400 (EDT)
+	id 654A76B0092; Thu, 24 Sep 2026 21:18:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E9656B008C; Thu, 24 Sep 2026 21:16:05 -0400 (EDT)
+	id 56A566B0093; Thu, 24 Sep 2026 21:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 709D46B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:16:05 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D9442804C0
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:16:04 +0000 (UTC)
-X-FDA: 85250518248.30.0935E57
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A7C5718000B
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:16:02 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="DTAILM l";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39CFA6B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:18:00 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C16191A04EE
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:17:59 +0000 (UTC)
+X-FDA: 85250523078.07.0F3C968
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id CD1C710000B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:17:57 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InC5clUn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790298963;
+	s=arc-20220608; t=1790299077;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6YJfF9vd+e/pP9rJpOLnapREzWNZdTk0hFkM9a4rgQM=;
-	b=ohtW9cleA24vER46d+GVvLEyewMIXTIeeKkAXqzkwDxgWXLwlSmMLXTbkW/x5ircH/yLPX
-	CcT4mfybCYiywwbg98pNMQ+lva/EXfZ0v8fQvs2mqTSJbQGF8xExLW7xj+4iTYUvQXDbHD
-	4amVBNGabiINOZUF8/ZWZJ//zGwINjY=
+	bh=Qzl2iBr4Tj15bSdJUmjfa1MoXknfSugmmEugQM9ke00=;
+	b=Rmzuob5/Rvnm5ZSxQzVYnsOt0DzRFYEQN7Ix9NdxoAKAAgX4i/FEzZYpoJJYyDW/IR3vkF
+	MjHDNm9XeCJlUZqsS1UiibCNS03XBpvXRUOufrcTjJ2KMiEhYjV2VIL0U92gRfRtBITwIT
+	uZJXJdx8NggYp3IPp3hv9qzf7itzbsM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="DTAILM l";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf06.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InC5clUn;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790298963;
-	b=TcculNXW9fg0u7qtcPz49clGSRcVKcp9Fn7wAKMXyzmD+Dbtw4preSg00BZhmhy5RmpLWV
-	yJJJdFYmVYgMFhGg4WtpkAvYqRzPHULhR3qHU1Bcn4rkrGs7NQwD/rOmtOdd1kOV+8UXjs
-	5TJCpD//zNV/RfqH8zSgp1vEc3s2kkc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=6YJfF9vd+e/pP9rJpOLnapREzWNZdTk0hFkM9a4rgQM=; b=DTAILM
-	lz8JIy/3yZnOI9JunsSP2WWo/0fMdkdkqHNnZimRq1ZuzL99+5n3zCuRv7dDZYbThznXtJZ+FEgxk
-	a37BntDlK6EKm/Fy7s1zN/A8QHV6Yd1qAo3wBWo/XL6s+P0luxTaFavSdW1hygyhp6I0qJU7L0A/t
-	OU+EHx4bBD2VvHXm12CQQw7T9PLoEePGpDEeo4iZhjBcnqW9ddI0dce23c1fKoCIvNzzogIjL26f3
-	K4Jar5iaXv+LdJli31C1ODL6hcCpP+/sLR64dbpq3mqjEh2Ig4j48vWIotoyrLgoLWHitsGn1g6/v
-	ShMIKf+Yy7BnWuba8arT+jjmluWg==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x9uWO-000000056sQ-1PxF;
-	Fri, 25 Sep 2026 01:14:40 +0000
-Message-ID: <12541da81f59db27af46096db8da5d425135a162.camel@surriel.com>
-Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device
- infrastructure
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, hannes@cmpxchg.org, 
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
-	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, gourry@gourry.net, haowenchao22@gmail.com,
- corbet@lwn.net, 	hughd@google.com, baolin.wang@linux.alibaba.com,
- tj@kernel.org, mkoutny@suse.com, 	skhan@linuxfoundation.org,
- kunwu.chan@linux.dev, kernel-team@meta.com, 	linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	t=1790299078;
+	b=TrpXn/kjdM+9y8RxEX9E5EfsWx7SZxRCVcAJBWjBEjdLqEJV1CFGMdLgTwDT3CyhgPFk5Y
+	xfHB4DqLtydRfoDPh0CsQ5XbeDSLnO+cWF4Ojer0Sub9DaXh1xXvdDaB3ah3JGCL1iLyN7
+	G2ldWqMN2rIlgBZzjmBykf1K3ViiA2Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C1FBF44796
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:17:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5061F008BE
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790299076;
+	bh=Qzl2iBr4Tj15bSdJUmjfa1MoXknfSugmmEugQM9ke00=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=InC5clUn7OGfPux7wuIu5zfCWb0FPfhELihWg9rLnTJruPYkE4SewjY/4Ep5ZpsVl
+	 JJcbf6Ii/vC771FdXhntsG82Zgfdz0mp3BbEmNTBlWPSaQ/1lYKnJmU5odnG+K9nS/
+	 uHHPWQH9uk6brE3Mex7jhw+rGLNHPelRogD+pW+ze/5hEoIqJf+HccFkaEZBg9gsb1
+	 CjkEttImXmU5C34dyCVKEUgZvM5FQJJzOiENh2iy5XTA5CFOtD4QpildU/wp4iahCm
+	 PCyo6/vLXf5prijbOrCCyHGf9vRVX9K8AaUXiiHvVyy6bWjhEEmH1/ncr6HT4tDS1e
+	 /70ZoeD/sWMDg==
+Received: by mail-yx2-f40.google.com with SMTP id 956f58d0204a3-674138cbe59so11785d50.2
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 18:17:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzIBHUEAREfQS01t9kA1qfQ65Prt6HnPrVvj6z8cyPtaP4+4k0tUpCA2x/gT/KSiJ3DnAhUTeyReA==@kvack.org
+X-Gm-Message-State: AFuF++nougB7pKo4uml0nMeSi8q+zorMWk3AgNxaJANv/IcMd2KT975D
+	Gp6ya8hPX7XW4q6CQ9hJNvtW0W8eR4RiyOISSJhfzhHpSqkiy2JFjDfWQr5Pu6tvjFiAKrHeGf7
+	tsopX7OvDxMKaThzx2bcbZjHc339rLpfGsB099xc8ug==
+X-Received: by 2002:a05:690e:1207:b0:672:a068:8e43 with SMTP id
+ 956f58d0204a3-672ed9cdf42mr2261456d50.100.1790299075721; Thu, 24 Sep 2026
+ 18:17:55 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260918180241.3424851-1-nphamcs@gmail.com> <20260918180241.3424851-2-nphamcs@gmail.com>
+ <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com> <7571f005bca65aa4ad5e7ec89e62801ad058b689.camel@surriel.com>
+In-Reply-To: <7571f005bca65aa4ad5e7ec89e62801ad058b689.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 24 Sep 2026 15:17:44 -1000
+X-Gmail-Original-Message-ID: <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
+X-Gm-Features: AclHuK8BpPAFHsVgO1T4L8qwA8U0X0PC1mEcUr8J1TqFhwVtyy2ssRkAaIFOQOI
+Message-ID: <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device infrastructure
+To: Rik van Riel <riel@surriel.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, yosry@kernel.org, david@kernel.org, 
+	muchun.song@linux.dev, shikemeng@huaweicloud.com, baoquan.he@linux.dev, 
+	baohua@kernel.org, youngjun.park@lge.com, chengming.zhou@linux.dev, 
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, 
+	surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
+	baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
+	skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	cgroups@vger.kernel.org
-Date: Thu, 24 Sep 2026 21:14:37 -0400
-In-Reply-To: <CACePvbVQsHXt4=+qfKz-KTar9CG+3OiAfLd1EZgnRE-1gyoKOQ@mail.gmail.com>
-References: <20260918180241.3424851-1-nphamcs@gmail.com>
-	 <20260918180241.3424851-2-nphamcs@gmail.com>
-	 <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
-	 <CAKEwX=OP3Gb9sVOvch+p4j7quzgy-rUY=UTZau5ztMj7heJJoA@mail.gmail.com>
-	 <CACePvbVQsHXt4=+qfKz-KTar9CG+3OiAfLd1EZgnRE-1gyoKOQ@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
 X-Rspam-User: 
-X-Stat-Signature: eytqxu1jfa8xocrd9595qjd36g9cam3w
+X-Stat-Signature: w1qpfs5x4ktfry45cox65zqsm74p6jjb
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A7C5718000B
-X-HE-Tag: 1790298962-173214
-X-HE-Meta: U2FsdGVkX1+fybyj8891NA/4U11DK3TysvhDnNXWkCKkMrJvSmwEbsHmerre/eHDBCePPgEOfe7qn4MoDiM5d41WIbGdb+Skh0W6DlqngbqKXRO2n1ee4e875nyJoVtv/Uj9hd4YFvENO+Um6jRUlranBIV5pNGg+MOwj0L5pNBxLchUl1EJLJUsIUhYdxz2ac6YC9i9WRkNFyvKvkU5rcdW+giO8fjloByAWMtI0vKD1vBjRu9o+Q6TgYfZsCo79k3iZcxlKgNhfzkVVmBzvYCrreejHlfUSUcr9pAL1eKPTcNAWunLz7FdzE1Ddd/dDx+T2KgHi9Nh2QSIH+zO7+4nKA8xEtUrOTMusq1ubAbrz05OqkJmyC4e3pZcth0Wa93qXuPqTRI9/qiQGXAoUT1UsUpGyk3yLvp0G1mpfwzIfQ4jUdowM9FbjIZeZVykmX0krjTB2kc+u86HJLlrvt624AvDtSFYJSQlcYsvxx8vzIoOzLsEo4CId72AM5mTMOlmSETP0xA5AaVFw6ggChEzMS7FfgbSauECTr1Aa/1ECUF2o2KXjmoP1EnmssX19sLGQZ1qivGSKRpfDbAx75RVnWAsvPGSuawtb5MtZCD3LSLEZnx9cLSreSzD0zeQsSgVbDCvmrZAdebw4E1o4QR1kocH1jXJWuESvIlLhzlOGB8jgAmLB8FNpl1jJi6/BCWxA6j8IMzCQ5uEuHUV0pK+KYMcq9nN23SXuMnxfs0Re4yHEk49CjLnP/Org9WXxzdj7mrNxz0fNOpfBoYX2pUivm1cHLfIKl2urMdfqhwdGVq++c9oeA05j2DYw5pdOu5ECR/nFITHufzRA+SeLl7E/O6BTXWNdrtY57plEUj1RfyZWd7D/SFhf4LZlhTcF9bnWtqhWKDSK1fe/znWtw1AlBnUglLdBysbVLYtsG+kdQr+uL9peKhHSAMRBqotFFMU1cQz5+kl/KmGix/
- Adh/a/L8
- gjoCys0pn99dW787mQ/a7db2BBVBFhYtc5PaR2IrEtOiJRLdsyPR7dpeFelJvHXVFx5/r74LOVDL/+3kYA2JavdGOc/kncUpT18DJ0T9+iBBhBp+z9AoUsLxzwaKovdGdsEkdY3vzWRJBlcRTmvsl6cd6kpewZI60CZ6nH6eEX8C/WVQw/VOHfLPD/PSPVALz4p278ydogGHwUx9hTdHGA8w/W+7f2m9+YgDfcaXPBSP4GFYpKpyG2K8k1t5JJlXbKv9zUU+grRUCwFMYorRaL3CbUEGvQb04YFcoG5mGxaxQeAc=
+X-Rspamd-Queue-Id: CD1C710000B
+X-HE-Tag: 1790299077-190410
+X-HE-Meta: U2FsdGVkX1+bUujmD6jo7NNgE3kG+4u1gwQFCmE4DI9fKfZcotgXHXZEbDzuYzT933zZ2VMJjCcJeCOKlqhrEmaRKb3isw18KTK/rbbTg7eXhZZ/FM+QvKjhXp4n1fhCxNtkFvmYk2R5A40JL179PNZ4Jqe7VskJ9HamOGRDWqbgX0ophIBsbNXu5YYeUE+coN4Fh5a9by05smXMWiXnrznkPlZQMdFe76Lj1Mt65b5kmpiyZfuRpCJYUpT6OrSqkjdTEJF5vmlEcJ+V2MlKlfON0zIJsG/EJMjZZhjsnXHFC9zNUgM2cXhtcgpGwpGFrFX1SJWAjo+npPxVJDh1gGQvstrFKm0vIbWs2/cQSLppgz6/b7Kvjh8JJcMdgbtc4T7lSSLw3t26uf8OvzVUiULRFO4qwAzwgQZ8Vkd3ShIP6CHMuOQzEZ/8xUKZHAWPcxFgN89i7sPOmp/+5O3ovj1e0BKs1Sdd0od+iEgwZDsqJIgYvRpWrRxpXUCbErdNh9ghO1pRXW6WWkj3YF6D9t1j84Gy7/U3J8V62pve+SNDvAbxVIudcDE9m6e1r3n0ri9fUnBe82oLMa2uxpvIbdWvvgvMqlXKaF3eVpu5zLrpS1Arkce6TywsI9O+lHl9igpBjf1/J2XzGVtP/yVaNXS77CKgbEg+40qG2qfVBJwboaODarjxV2aEv3W1/88oTkMo32/J5SxmZQEz0NNBaEp/CThDYky0TEFGLY3jbnf1OBA4Ykje94FUuGO8EFIpBVvdgWNl2vdeV0jAZ8rBYDoNMlkQmgi1IMWblCtKZide7Fv2libay0zXUKl4+awiSXJbbBdNTcTlgpB7oC0LQcbes6krNVJgqe3OZ0XrdxPDekYUibomOjPHURK7gBdFxpPvm+6P7vJCI0jDMA8vlHMj89G2TJCxIuFhyTc0KEZ3ttSH7mkW2WcMS6BEGqJJcd2zyno4bwcHEpK0YXk
+ Kc7s0LuA
+ /5zPRaEnNZdCxizDqGLQqlMqaNH408lLSYwvz2fP69MiR2ugSkImHyTG9/08S7gGe3tB+lnFIBdbLxbzNqwZLP1x1ZK23DEbFaM28DsPXpYsUH56JxeYJdmeD7Uxeht8F+elTdp1c85g4MchVderzjW182BM68e82BpUmyi//SXS5QAbedyDdnPJDE3b4Y7OiBvhopQpmKS2Gp+FsQnnTV8YhBXqwNPZUhC9dSUEQVnVrpUXJtkWDpgXn5ot9zua2ilpE4rZSh6CvMRBiUz89H5UFSyIYALZwGI6uTlx54deJxYdIOgoWzeOHaVIe5M+tUhXDVtGQohnmboK0no6upCkGvcA9sWDZj3QyVJCteaJYa+1+D+/BICm/oA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,26 +114,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-24 at 14:43 -1000, Chris Li wrote:
-> On Thu, Sep 24, 2026 at 6:20=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wro=
+On Thu, Sep 24, 2026 at 8:13=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
 te:
-> >=20
->=20
-> > It is needed because vswap *is* a special device, with its own
-> > requirements. If you don't special case-it, you'd get undesirable
-> > behaviors.
->=20
-> Ack, that is why I am against making it a special device. That is the
-> whole idea behind xswap. It is just normal swap device implemented
-> via
-> swap_ops just like ext4 is a file system implemnet on top of VFS.
+>
+> On Tue, 2026-09-22 at 23:18 -1000, Chris Li wrote:
+> > On Fri, Sep 18, 2026 at 1:03=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> w=
+rote:
+> > >
+> > >
+> > > @@ -482,6 +491,11 @@ void swap_read_folio(struct swap_io_ctx *ctx,
+> > > struct folio *folio)
+> > >         if (zswap_load(folio) !=3D -ENOENT)
+> > >                 goto finish;
+> > >
+> > > +       if (unlikely(swap_is_vswap(sis))) {
+> >
+> > There are too many swap_is_vswap() in this series. It fragments the
+> > code path, making things harder to reason about. Esepcially around
+> > locks. I count 22 in this patch alone.
+> >
+> > I consider this the biggest drawback of this series. This
+> > fragmentation of the code path.
+>
+> Could we avoid that by simply always having everything
+> go through the vswap abstraction layer?
 
-The filesystem layer is relatively clean because
-it has a VFS.
+Yes, but it will pay the price for going through the unnecessary
+redirection layer always. It incurs performance and meta data
+overhead. That was one of my previous objections to the earlier vswap
+version. Sorry I enjoy micro optimization too much, that is both my
+strength and weakness.
 
-Are you saying it is time we have a similar
-abstraction layer on the swap side?
+>
+> When everything in vswap, we don't need to test for it.
+>
+I've been there and done that, the result was pretty bad in those
+earlier series.
 
---=20
-All Rights Reversed.
+> Handling the details of what's behind the vswap would
+> be handled one layer down.
+>
+> Chris, do you think that would be cleaner?
+
+If it can wrap below the swap_ops, it is just priviate inernal dedail
+of implementing its own indirections. That would be much cleaner. That
+is what I am trying to pitch to Nhat in prevoius email but does not
+have following actions.
+
+Chris
+
+>
+> What am I missing?
+>
+> --
+> All Rights Reversed.
 
