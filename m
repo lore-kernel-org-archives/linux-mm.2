@@ -4,105 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E76CC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 09:31:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A736AC9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 09:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 029C16B0088; Fri, 25 Sep 2026 05:31:01 -0400 (EDT)
+	id 908536B008C; Fri, 25 Sep 2026 05:33:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F1C8D6B008A; Fri, 25 Sep 2026 05:31:00 -0400 (EDT)
+	id 8B93D6B0092; Fri, 25 Sep 2026 05:33:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0B916B008C; Fri, 25 Sep 2026 05:31:00 -0400 (EDT)
+	id 7F6B26B0093; Fri, 25 Sep 2026 05:33:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B82626B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:31:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35999C057C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:31:00 +0000 (UTC)
-X-FDA: 85251765480.09.2DE3C98
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 81EB6140008
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:30:58 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PrcRyvDk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790328658;
-	b=m3aXrx5BBm8JFh7KauW3T9SunCuCfFK7sFdOkEhtFGbXBGGoOsilbPFnONxFPwjVwMaLXX
-	OQkj5XlbOp6qQEbtxUVI0allG4JeeMI+D7ydhnz2N89z6+EezE0UDmt3dWsSqRhDitqcch
-	dQYtV2KCzccekt03V8RiHKkMttqRtBs=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PrcRyvDk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A2A06B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:33:16 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7C141C318A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:33:15 +0000 (UTC)
+X-FDA: 85251771150.10.B84C68C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4F8E3A0005
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 09:33:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMIVa0BQ;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790328658;
+	s=arc-20220608; t=1790328794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ZPvROUzm2CS6Mg3envH0hZ0KiQZJyc6fxn16uw0Jxg=;
-	b=AWexD2YkecsR6R1SOrnGBvrVmYky+jjWOB8Bbtf3SKPb+HakpDumxS7smTwBFLX/nKXlO6
-	ZAgrgEjdmGTAb8HbwjXeHQJz100A7HuTkYW8yoTwCDbvBzLcnVolMv1cP6Fh6gam7ZxOl8
-	agzman8BSRBHTdUYlnoydG2OEvhZYSM=
+	bh=zc9n3mJqDMHT63RHHVZQRnyrWAkJ65jwuxAucGKRt8c=;
+	b=ZtwiE7tFKvelMnvrESENcnLmuuX2EBiPa1RnG4l63MDi+S+c4MePt+hvxVtGTunDyK8pLR
+	+06531GJoJqkWu4Sc7g0J8qK3dtX6p0wP2Mcm3ILBiYj/SPUs6hZvKdKOporwXbd3mp51z
+	sK62B+jE+riwcppKd8CszXYik6bZ2IA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790328794;
+	b=dML/Fj1OLnGSQS9jXysYPDfeqUyNKdX+pp9CmsUev7hncIYfn3J6k/SrlQ/k0smxQYChut
+	DK8dTYH3cahkMSeWqFD8GELgFuLVDaVipDAiVigAYs6T4etaCfkKKfNrtZIqr5tyoaEHnn
+	KtpfzreZP87DAe6NjGHP4I1tKd+Gxo8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMIVa0BQ;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A5710417E7;
-	Fri, 25 Sep 2026 09:30:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795571F000FF;
-	Fri, 25 Sep 2026 09:30:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B89BE6022F;
+	Fri, 25 Sep 2026 09:33:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D231F000FF;
+	Fri, 25 Sep 2026 09:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790328657;
-	bh=2ZPvROUzm2CS6Mg3envH0hZ0KiQZJyc6fxn16uw0Jxg=;
+	s=k20260515; t=1790328793;
+	bh=zc9n3mJqDMHT63RHHVZQRnyrWAkJ65jwuxAucGKRt8c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PrcRyvDk4tQWcaU7YEM54W8UvoKbXWTsquEdmtoe+PYIWP1qcTzpTyNSl3z8mlgsQ
-	 LnSdpsSp5U1oLFwFTRGHgnsAaa/t4O0DZfc/HpojLpvBH4Ws06rN2p3zjR+lEyU74Y
-	 TKj+ZFQZ7G3M9v+D6ciK4niXnj9PpzhQvrBEJUrX4Unu4TU4tWJyC0sxWMrKPxeV7r
-	 qQeOts850usAoS0s56E3+ILHWvhC7dLh5y+1WfoyozqGrj9lplRCwt/iy0EIg13t8X
-	 Wnz9pnIIQ+MMfCweN9eQgW1+VBOj1ghs7MNXejm1bsj3qlRD1/i3uJVkBLidSwsNhf
-	 WJYtkR1Hqu7Hg==
-Date: Fri, 25 Sep 2026 10:30:45 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH v3 01/40] mm/vma: fix mmap_prepare file handling, remove
- file_doesnt_need_get
-Message-ID: <arY7e_4p27Mic7bH@gremlin>
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
- <20260917-b4-mmap-prepare-vma-flag-sanify-v3-1-4583d8a23bca@kernel.org>
- <arVOW_frpIU_JbbP@gourry-fedora-PF4VCD3F>
+	b=nMIVa0BQ18T14JZR4xL9yjqjrPrEX6NpiZ4+6BZJys6GSNo5xl2WmCChPao2jVEIQ
+	 jfzbNthAkqojRoRFWj8OIisDLwJKu93jq7ZvFZk9/HuT1pGLId6pg7zYGPGvZEMSco
+	 rF01ycq7yBYtgtW9v42VWsXA1GXSTN3tazX8ZhrWn5k4LwGaBT9czRGHFvduLIDxSk
+	 jcWV6bRCYd7gFHL4T+HaABcjhJAh8uXt778MyFjuJm17vAPBmd/zhJB0lkOFqBcryy
+	 qjxKUZX8Zef3dE5xRk88qPloiyRonEEMoqzqBF0l+ac0e9PcnrLIVx6Rp+T7LgXVlR
+	 y+NUjR5s8nnbg==
+Date: Fri, 25 Sep 2026 12:33:07 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
+	Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
+ pages
+Message-ID: <arY_058nsjb_Ie1l@kernel.org>
+References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
+ <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
+ <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
+ <arP0-maAEi5yeNnl@kernel.org>
+ <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
+ <arVJm8CiLG6vpy9-@kernel.org>
+ <c01aa1e3-f2cd-4b28-8e6a-8e8a1c36c641@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arVOW_frpIU_JbbP@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: bij8kfnna98r4zot5wjjwdaskshawhhm
+In-Reply-To: <c01aa1e3-f2cd-4b28-8e6a-8e8a1c36c641@kernel.org>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4F8E3A0005
+X-Stat-Signature: rp9pdxgkupa5e6c5rkuh1wruq7dz1oud
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81EB6140008
-X-HE-Tag: 1790328658-980568
-X-HE-Meta: U2FsdGVkX1+jOBW9Y3yB1sH9b0pZCi1OHZ0XePitjwnWobffvrNU2bU37JhlTayNEamMUw+fpENv8VNRza6gg1MANOEM23mhgEloazQk2xUJS5ILOQ4MxMOfj3kRt/AyfcLBNbYLq3Jd3cjqF/NKIVgOaOpF9yRiGsMYlH9hih74jtpZ/Z4Z2V3qdWbSPeaPYlOCJZD05tXJFuhDj56UXs6peIrSDePxHgwPzedhWNOXaYxjZdTD5kaf9bWry4P6j9QsODIm5KsVFmuy6zfakN3r9Lk5K33UQlm9KQqfdsn5T1NVQkFEyCACxURI89jbdJa2H2vd3gWhFLRgxNxc/yFR0dkfQOjYmsZNFWIam6Mze7hKp/o4DmpyC27OXbvqE5VjZALzMkkzwcHIfu/FPqyFHlGalZSj0NGAfRReIk65sO7QxZBseM/LwJvwGruxk/tNQb7TPkakBj7Qw9nOOVJA1bvyuhLVWiRMTKqCg0uuYsRZpn1SQXGjAJkOOITvN68sw80XhSpUaNyOkmcdGi3lYSMQAxYobboNz4eRv4zBIoh52CzYigFLp+pkv3wJ2nE6AANeY9J7QmiZYrgoBILGYOzbrDIV6S0fQEWgbW6eM8xpQoEcMqF8C9WnVYh+BK3oX40ihE/fkOm8T3397khCouTuC549Xc3BcmODOeqjaBapyTeZRjd2Fm7gdpb3UW/We9uQCOXAYvZDPA+/Ey4VPLT5PW5TW4tf8J1lO4D+TW55MqYBJoBynf6mlcqOXC+nhwxLgU+uA3smHBfqn985NFHYXKbuWcTEgK6NhkTTJoFjcCVsnV8ALl9tQNiA5J880pa8EeZjRxq1c+Jv1TPFARboVq+3EyV56NHZlpd1vZGiKL20wQpTuHWNIi7v5CLDNKqRvDyZtnRqQD56UEJUnjEavWuR54ZO77WglZzGxj1YTqQxOE8kwAPQp3C79oV7sm46/XiEqlwwEZr
- JZ/ZkX6E
- 4AC6IX4flnnmAthOv1pJkBsrO3Er7KxdZNreP8TRQsWqYxfpD7CJHCp21rJCzvDuMzp6+DqR3+55HA7Icp7AEN5OoSnHuVAc8AVDE5pgRlpsuhHeDbW1jj8rdvadcnOzLwvj28GNChljh9zvMspkf0Qi5EczmipQoPzlUYhLuRh7P8Ccc4QxeHlLxDl2eqyfGJlDzJMrRynOUsC7jwvp06OVrSnlQqa7SobhqWE6MkIiDOiDzMBlKqhAZSgJqhybel8It4d6VsaXRrx4+I0BvC9gBSnJ+ap5T2PB6y8qstfmvE2g=
+X-HE-Tag: 1790328794-764848
+X-HE-Meta: U2FsdGVkX181TcidwFwoEqSrAO/iScgFSlOLeRZEdfqmLSvAiPrpOpzq1q4NyxrjZ6BfhQptRcjvjwjVUri3Hdaqm7w/DJvo/D465wA4arSxO0TRzW60LRGGH6WbmpDeEd5y6B+WLGUI1caovRHKnQ0gC2VoeHNfi3YNK10oWuhHS69j3WS4sIrt4Hr1WWBCvPAw/Ik0887nJW2EkAW8iY9UqTZUDEVy2PmP8KGstxezQTiBK5HL9Y8NiQP/IrQEv1lUjrka/gJ53eypF54PR/k8QijNj7wPIWcxkevMQqM0jZXn/ANZljemxVMyQNeWEpy29Y5QMDBEMFj4w4hGACPPPFaP1uAJRxKt1CzhLqvlQXqK0X2VLfX3QJGAiau6PR9BjkK9lGsYr7mMxzorlhg49QJ+eoEW/pd+yKqKtJy77cQQIQkMov/Lw6BtLllohPQd8gcIgZsQYbcn12RzCQDxeNLOsybCf0lEJAgY3NMnwPgYBZDTMCidAdBYE0jU3pRp8Uiubl0W1MvwdsuKmSloCELMNcq5i84cLmQ2nInCXKyaNPVgJav2sv7ZM3/zQ2lBsU6A+DUov7VlgnBEHxgMWYBuZWlrRq1QlWJkpVOxAo3y0IyhGkEGbBtywgEpf8ltD7ImdT/hgIAgSfe/6c7x86NYSTQXLpbj0O58iYEuBcNBotYuDLnvntJ99ZO/YoYNUrk0bSc/TQ9mVK9p5yJ0kgYjF4JNeGHok3QVQptk69K78cr97pVMiu1nIMlVHAoboJ+WU4mqgq4qKgXso/Ad28kMZO0V09vHH6bMaOuQ+GY//GV7xE35BDKCyiDwdCPW6wUMlfqmiSgxtd/ey6ULFrkgZkVNQi/rnuKwABNEop5KWNwj5dVTzjr9NHAy9PXPSzwWxcXjOZjEHu6bT2U4Sk3b7/eDYfSo2v+je0k70PPQV88oAANnylUVPh6sep/ZRtC0uU0/uwDIhVt
+ HcBTNFDR
+ F+GKvjrZ2nHLoAuLatwCNdCyP4t2P94ci9zmlD3q0UIDpdhPGciszsUFoxTFsXFxsgotmKESGtArHFnxlTAq92amPMJvmjTfYfT4igfwtB1oIYzcroK9hbCpv4OOmFyJOg/bm2Gx948NuU2772QPR6iJdUCSPm2lUraJJwy7g5OnOct97VHVygRVmqpD6IiyNFxjcne6nLRa7bcCp0K6nTh145cbqxSbW8YyUO+AOHIxNFbFojyqV+9vBKvqqSAzVFCUr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,68 +103,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 12:28:39PM -0400, Gregory Price wrote:
-> On Thu, Sep 17, 2026 at 05:22:10PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > +static void put_map(struct mmap_state *map)
-> > +{
-> ...
-> > +	if (map->vm_file && !map_same_file(map))
-> > +		fput(map->vm_file);
-> ...
-> > diff --git a/mm/vma.h b/mm/vma.h
-> > index e97bd2dfa786..f15faa83f3d6 100644
-> > --- a/mm/vma.h
-> > +++ b/mm/vma.h
-> > @@ -394,8 +394,10 @@ static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
-> >
-> > +	if (desc->vm_file != vma->vm_file) {
-> > +		fput(vma->vm_file);
->
->
-> Sashiko pointed out that this could be null if the vma is "anonymized".
+On Thu, Sep 24, 2026 at 08:49:13PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/24/26 18:02, Mike Rapoport wrote:
+> > On Thu, Sep 24, 2026 at 10:19:33AM +0200, David Hildenbrand (Arm) wrote:
+> >> On 9/23/26 17:49, Mike Rapoport wrote:
+> >>>
+> >>> Naming is hard :-D
+> >>>
+> >>> I feel that _copy_page() is to vague and adding hibernation there is to
+> >>> mouthful :(
+> >>
+> >> Yeah, I wouldn't mention hibernation.
+> >>
+> >>
+> >>
+> >>>
+> >>> And these could be used outside of safe_copy_page() someday.
+> >>>
+> >>> How about 
+> >>>
+> >>> kfence_set_page_present()
+> >>> kfence_set_page_default()
+> >>
+> >>
+> >> Maybe spell out "direct_map" ?
+> >>
+> >> kfence_set_direct_map_present()
+> >>
+> >> kfence_set_direct_map_default()
+> > 
+> > They are not necessarily in direct map :)
+> > loongarch does not have direct map, but still supports kfence
+> 
+> Ugh :D
+> 
+> But where are the pages mapped/unmapped then?
 
-Sashiko is wrong :) I wish I could mark responses like that so it didn't
-regenerate them on each respin.
+loongarch remaps them into vmalloc address space and sets page->virtual for
+page_address() to work.
+ 
+> (I know, I should read your doc patch)
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-(I always run sashiko output received for each series through a frontier
-LLM anyway + fix stuff that is real, see the changelog for series for those
-things that were valid)
-
-You can't reach this code without a vma->vm_file.
-
->
-> Previously we'd discussed that anonymizing a file folio is more of a
-> wart than a feature, and IIRC you intended to remove that (i think?)
-> when you removed zero-file mapping "anonymization" so some of this VMA
-> stuff could be detangled.
-
-The anonymising as existed before clears vma->vm_ops not vma->vm_file.
-
-The new _actual_ anonymisation for MAP_PRIVATE-/dev/zero clears
-vma->vm_file but only on the raw mmap_prepare non-compat path, stacked
-MAP_PRIVATE-/dev/zero is not supported as a means of getting anonymous
-memory (and would be a really strange thing to do anyway).
-
-(In general stacked file systems only operate on regular files anyway).
-
->
-> If this is an intermediate state, do we still need to manage this NULL
-> scenario, and when we drop the anonymization mechanism we add a WARN()
-> that says someone is being naughty?
-
-Nope not at all.
-
-No code path can get here with NULL vm_file and it's already the case that
-a driver setting the wrong thing NULL could trigger a NULL pointer deref
-anyway.
-
-Nothing in-tree does anything like this and out of tree drivers can trigger
-stuff if they want but it's not for us to worry about (they already can do
-that locally :P) :)
-
->
-> ~Gregory
-
---
-Cheers, Lorenzo
+-- 
+Sincerely yours,
+Mike.
 
