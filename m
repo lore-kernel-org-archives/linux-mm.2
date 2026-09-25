@@ -4,88 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A7D8C9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 07:15:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED33EC9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 07:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAE396B0088; Fri, 25 Sep 2026 03:15:18 -0400 (EDT)
+	id CE9DC6B008A; Fri, 25 Sep 2026 03:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84A16B008A; Fri, 25 Sep 2026 03:15:18 -0400 (EDT)
+	id CC1656B008C; Fri, 25 Sep 2026 03:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9A156B008C; Fri, 25 Sep 2026 03:15:18 -0400 (EDT)
+	id BD68B6B0092; Fri, 25 Sep 2026 03:16:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A09AD6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 03:15:18 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3548940548
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:15:18 +0000 (UTC)
-X-FDA: 85251423516.26.6F9AB39
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9491A6B008A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 03:16:07 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 20C8E140588
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:16:07 +0000 (UTC)
+X-FDA: 85251425574.04.0E3267D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 769621C0004
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:15:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3W8lDCm;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5FC8AC000B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:16:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FDf6YXQG;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790320516;
+	s=arc-20220608; t=1790320565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7gdWsILDeGL2fq4hXJ9qNq6gT7AIFOxT+XzWAS6HA4=;
-	b=4a+ALtFQ5cbl2WhhKIyhP99XAoibEJ3MhuX2rQT74TE2Czitizcw004gnrfftthV0fGx6R
-	4cXeg1AIHrwDGX7ieb3QrNyjIKTMl52T2x1TD8laLw7ucTLc6YtxUhFBuS7CS08vURffoc
-	sc7q6ret4Hgjf6I7fQM81t67oWDSXkI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790320516;
-	b=Cbjcr2ZIYExtgnbXo6d99CsF9vA8/jvfuVxB5G+OM6wUZz9HNVdoeiAguvwXQU85DPt7MI
-	6xMeBY0W2s3wZcSBtG4fX06HsddT3G8XILCouCFqE3ICV2bJLmPLQLmiYFRaSBbx6JlgI9
-	DNfK7B/vmcqda7O0hRnd3kCvm6tbVRk=
+	bh=d932yjix1Tn4l08d2x/Renb33cLb0uv6fwAZBrYQ3Uo=;
+	b=kPWJWKuMolISRQqWVQPBi5i1tpvxJAr2oRQyhl8VcjErG3tdyGkYAb2/dr35f2R8CaUbsj
+	nXKsUARkM624ZnBB8RyVJDfBS6rKHT9mHoG9d93uY6Uf1fiu8jBTw9g5irQPjPWgnH0TDh
+	+RtryRmdZQGmsh7pu+FFm2yGbBGhrKk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K3W8lDCm;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FDf6YXQG;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790320565;
+	b=MQ/7SlTh90mRCQhiB4j7hA8ZeKwbbXjxPPXXHeIf3oDPQPg1hEP5PtmC6kdSf16ZNB2HgB
+	Og5DjsC3bvCZC2Boh4Eup/qe3cOLMDIBIJnQ3av/n1lF8GbdC0DY32YBa26Nr6lRGbwRwr
+	yGb8wGtrJn43CxpoCFhv69xIc/8MBnM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E99FA6022E;
-	Fri, 25 Sep 2026 07:15:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA631F000FF;
-	Fri, 25 Sep 2026 07:15:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1810B6022F;
+	Fri, 25 Sep 2026 07:16:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357501F000FF;
+	Fri, 25 Sep 2026 07:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790320515;
-	bh=K7gdWsILDeGL2fq4hXJ9qNq6gT7AIFOxT+XzWAS6HA4=;
+	s=k20260515; t=1790320563;
+	bh=d932yjix1Tn4l08d2x/Renb33cLb0uv6fwAZBrYQ3Uo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=K3W8lDCm6YecnNVEKENAO2Z6Sg7cT/3eLRojKTT6Z9zscAa/v/5cqGv3GNPCLAGEp
-	 535X6IYjYQnPdQSkuW0jarjrIMu8TG3MAad+tPqdtJJd80EQSMeNM67ts1y4gFv9Mh
-	 3shg6wfIiE7m9n6ku2qbiiPe+vdifcqzKk7ZcucIOZ0Gr918jX3ObWr91F64hJC3nN
-	 1fUJppekntNIonBq0eCEDOIzNLTw4lwoewnQqUlREO5dgJGoFUlUNJHiWExvBnQrH9
-	 5Fo/LH9LtJ1n2y7hCTUi0oCupcxb7hAcZAmAYw5JPGiqrewJHmHPfD2+BevGErZTIz
-	 SKS0/2E0Ij/Ng==
-Message-ID: <a2ea9840-bca1-4c69-bc67-e6e27485aac9@kernel.org>
-Date: Fri, 25 Sep 2026 09:15:06 +0200
+	b=FDf6YXQGPQ2Y7yog7yhM2jVPqJGoH0968+QQYkyCVOKvH38V73A6X/u2SN9+oOrDm
+	 agf0RYHY1877oCucHhL43AS9RrXunzHpd2mVbwAaszX2prpEANtyRvop1WhuhwqWb2
+	 TzF7vvktfAqHLob+ntiuuh1lp9QaSojZ3imP9CgT7l+oSUhoRfi0yNAbys0FGMbHF1
+	 PxaCWqNNLXhm42sBvg55hj5RyNRv4/8jyn1ajCk/YQkwZMte3mbj+A7C8qVTQ7zLW3
+	 iTYYnzx3Ru4Wk7ISuu1RNxqqNYvST/vbPuI/oYmBCQhxeMSoLkpuWvCvlXU7xYTAiY
+	 t4h+M4mqliQuA==
+Message-ID: <8244d5fd-e448-41c8-9f58-e87499ebac21@kernel.org>
+Date: Fri, 25 Sep 2026 09:15:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
- bit
-To: Zi Yan <ziy@nvidia.com>, Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: Ilya Gladyshev <ilya.gladyshev@linux.dev>, akpm@linux-foundation.org,
- andrew+netdev@lunn.ch, apopple@nvidia.com, artem.kuzin@huawei.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, edumazet@google.com,
- harry.yoo@oracle.com, hramamurthy@google.com, ivgorbunov@me.com,
- joshwash@google.com, kirill@shutemov.name, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- muchun.song@linux.dev, pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- vbabka@suse.cz, willy@infradead.org, yuzhao@google.com
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
- <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
- <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
- <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
- <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org>
- <CAHk-=wh3LLDV2AMZn1PZcU1o3Na-BNcQtP=LPXouLKPZWaiRdQ@mail.gmail.com>
- <DLO1WIACYFWF.3N01DXYFJLMD0@nvidia.com>
+Subject: Re: [PATCH v3] mm: don't schedule deferred kernel page table freeing
+ while booting
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Vishal Moola <vishal.moola@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Steven Rostedt <rostedt@goodmis.org>,
+ x86@kernel.org, linux-mm@kvack.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260925050647.86913-1-mikhail.v.gavrilov@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <DLO1WIACYFWF.3N01DXYFJLMD0@nvidia.com>
+In-Reply-To: <20260925050647.86913-1-mikhail.v.gavrilov@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 769621C0004
-X-Stat-Signature: xx4xmp4mj1cgicfekn45tigm9688pjfn
 X-Rspam-User: 
-X-HE-Tag: 1790320516-50930
-X-HE-Meta: U2FsdGVkX1/C7l95L50g0bhBoPlftd4fejKNHCze/8ENxCrcU/e+BXJIfOHXv1OBNhJj1lERGXP+CkDreah643Ylyd6tbUu0LjkloBuneMx6FxvNw6mLoxYzJ8toxnIvanergJY5wtc2Hx5dLvwYQRKMvlAMLSxSEEuCfRAnCloEs3HgLOKC/IARZxuFFQY//pkpZzt9UxUTRowDRzNGSRLzg2zB9otWZboNj4LOZ95F+qFrHri3tpTwBH4PWGG7O4icX50lXiFCGFZEF9Jmpu+nquY+Y32YrYPxCTx46DiKVQYGOAcH00mDxMc6MwlcPbj3HVMRfu/ZpqFNnl/Jl0IUjdX1I94T7a+9vcirTe+7GBNoHATtL2Ulx+mWxkefxvPgefd/S2XJTiPp5G5RhfHrxW3G/W7/KfdNRVzeR7GeJcpeFXDydG6vNNL+VH+bau8Z38DTYK2FejdsCj519ToFqYDyxkiQA6+l2wNSHn0KdEctJNkUOYZiOErilnKP2I7SfjZZ3zmmHVDpMXRrpHNrIw4ffLSTobmEAjZLcPwaFSEEIlR4Sq5PjqPe3yrVMwYFQNSKC2qIUYFKcg6cM8SaXhe1/FMJ3p/NISNKtneNimV0uYD3vjQ8XxeuutQekvfQS0BbpmVruDzFy2Lk5Sy6QhxbCS9wxJdXnRGGdTdV5eynl0nwCKq+VuL1O/GwZFI38o4Vn1c6qMCj5NbOIdb7yt3paZNG5+G5uEhgsBTiLjqGfrJJXgVOE6sCASaUIRXgIOzAQgfGlKKI1Fj+dNBDefJo1cEjEiYIZUehtI8mJzDuVUM0EDJy7ng10hm52Vz2wJsKewYOeijWTkMQJkxqxrJ2IpOaSpeSKYbCWuWXkRmfzylC1/eG7bg8lGP9YJ602DInTHFXHs64KGdq8vWDOh+wpWE81lNTYhImuRYDPnQvQOFkasDHZ34B11Jzm7TbomazDvZp1aNjwXZ
- dpWNRZ15
- htZT6UdJskNHapWFML3dqepdlJRuvvC1aZg+ZNcyPpEGzxfyUq6q0BgbAPaoxCitcafVxHdiaztuXHcNGADiEGfiUp0aCKqqH59HPA+zatI8l6xhn1f8mQPm4yY8YpUh24ArSLtO1c6yJU4vhCZ75gTmchtZNEIOlPc0maFPkXFyWuEc0PUHG6VO8uToKWoYRxWEC13LuNfxSv8LDPw9DHNHffft6h5t1MY3Jwl/0DAZWslDWx5Vwb4OWtiSOuplPIVcMxGulbEQDWDu1HBTtFGZnWSFZvT0lP7NWNH6OIcR+QRL3RAPP3rpQwYhaBUQ7rbyOEBT08bGX6H2YtNAsqPvG99hFQtG191k0frhz4e6n4/mwU7nBrfLNrPU82Tg8ZY7FTY1J/HOOInUi9HyVUhxz9p7r+d5hS4i3
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5FC8AC000B
+X-Stat-Signature: nx6d9ousncgfc8p76fqdo4wjm98hq1du
+X-HE-Tag: 1790320565-46158
+X-HE-Meta: U2FsdGVkX19JZgR1nHQzA50GRCtIDtBypqRbHkvTvFunosyqPqayaXuAEecbEHeACATCVldWW3AuX1AAvwc95TmQCE76OLPoISFITJuqOLzwqhSkitJ0jw91eAgU/2W4VH51oLnEhuKUlgPDpChLMi6OJ5EjUsXPn37fSot0ZKSetnX+FenV1+Ah3RncwRUG/6IBvWl02m+I1g4xqWF12uLDA+wN5pOvjjY6G0iozF/CEeBlSAqq5VvCRhs8Jf2Dvcf/rvXeaHSiaf6sQEwKNwS8NATUjd1qQgAvSecOYdJ+lGq60UCXLiGJJreeeaRGMUlM4D5VGhH6YjplppuBZLnbhSBAX1o9h0fkjPRj/X4AZsGYYLP4XkDy12N4/FskFnDVOI1hOBpINEKXs7QxGbe5qcmBjt+ncq/3xu4Is1QpOtpsIjdI2XF7czRqkiiWjkymFv/MrbaXoBAiRXXUEbsJEeS1+bz7WzBQRKZe6poHgVZsrOE+GlFishX+qdpAxGu2CaOZvRzeEI7QmZRRbOTRJ/NGXFwIOx2+iDfUKkfzWokHEV4IoUm0271E8d38t6itFHz9bVVvsmbujKWxl+Pw2emYxiC8yH/toV4aBIMlxvADPWBx8kuuvQv/y+CcoahH/+buUNeO8+nLowF2MBfA1PTCSEr3kheiS6tiFt4qCytJtGAlkn2tLf0wd+MiHl+4o9AYfaihSRG2LmmuLcoHIjjJQduJGWcSyNMQ4oofxMBbf5FmR0wY+FvHvULy1WSZ7N3bgmDDPQfqP9Zo4WFGoftH2XiPexliXOmjde3oTgJ/GVLkTaiq233+RNanGpc/6L7y9szcvEuxas2cMWiwR24IV0qeznKZ1CYemjQae1in5/jlWCsc6jyj66i8YGt7euyiD4Euz+YPTlK/tx0NHQdss7A9NPDuIoXUr3H4+8AkIGGoEZetA04p0yOS7jXWG/quDi1gfQPCzLj
+ yybMw2lt
+ wc6Jiz05Kx30I2FCck8PhcZVHIjjY6eNsVMHeSlmtgkAhOId+w8J/3yN1Fymx2UcfB0VcuEzcIEFx9RTiXkMsBQ1hcGpbNQnfxwDFPIDeJK67gMg6nAF6clDrUfbNzhAPwg3kpmeKZtlQkVUL9uxA3BpOIout8xOINCJYq4WKcr+bPAdRG6vqw45dqwExHmxslLvxD6BOr0lODLBd2RgWQpncqKCE0So+KKy+Bt0aVKZi7C8U7PmqKup/kp4HCHj9OE0r71zcukMEyx+R/Fl+tDq+nkUiTjPz7fSglebfXAyo3Ryph71ezSvDADjp2VJE8jnhm1bnVa3+8fpzGCkkYetJM7LY/jqqkXAoNBDufU+MoxdOCw2HcLRgshdjsbOnvAur
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,35 +146,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 04:44, Zi Yan wrote:
-> On Thu Sep 24, 2026 at 4:06 PM EDT, Linus Torvalds wrote:
->> On Thu, 24 Sept 2026 at 11:52, David Hildenbrand (Arm) <david@kernel.org> wrote:
->>>
->>> There needs to be a common page freeing function that dipatches stuff.
->>
->> I think this all needs to be entirely generic to all pages. Agreed.
->> Everybody needs to do it right.
+On 9/25/26 07:06, Mikhail Gavrilov wrote:
+> Booting with a boot-time function tracer and a filter, for example
 > 
-> It assumes all callers of page_ref_dec_and_test() are free page
-> functions, but there are two exceptions:
-
-Right, we'll have to sort these out. Which is the right thing to do either way :)
-
+>   ftrace=function ftrace_filter=pud_free_pmd_page
 > 
-> 1. compaction_free() uses folio_put_testzero(), which calls
-> page_ref_dec_and_test() to put not used migration dst page back to
-> isolated freelist instead of freeing them.
+> panics on 7.3-rc4 as soon as the tracer starts:
 > 
-> 2. virtio_mem_fake_offline_going_offline() drops the last reference of
-> fake-offline pages, so that they can be offline.
+>   [   23.531178] Starting tracer 'function'
+>   [   23.675800] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000038: 0000 [#1] SMP KASAN NOPTI
+>   [   23.819917] KASAN: null-ptr-deref in range [0x00000000000001c0-0x00000000000001c7]
+>   [   23.964025] CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 7.3.0-rc4-fe2ec83746e5-with-fixes-v2+ #195 PREEMPT(undef)
+>   [   24.252248] RIP: 0010:__queue_work+0xab/0xf00
+>   [   25.981629] Call Trace:
+>   [   26.125727]  <TASK>
+>   [   26.413912]  ? pagetable_free_kernel+0x20/0x120
+>   [   26.990283]  queue_work_on+0x97/0xf0
+>   [   27.134382]  __cpa_collapse_large_pages+0x501/0x6f0
+>   [   27.566662]  cpa_flush+0x394/0x620
+>   [   27.998953]  change_page_attr_set_clr+0x321/0x4a0
+>   [   29.151729]  set_memory_rox+0xa2/0xf0
+>   [   29.584018]  create_trampoline+0x431/0x6f0
+>   ...
+>   [   44.343347] Kernel panic - not syncing: Attempted to kill the idle task!
+> 
+> The boot-time tracer is started from early_trace_init(), which runs
+> before workqueue_init_early().  Making its trampoline read-only splits a
+> large page, and CPA collapses it again right away.  The split table has
+> been a kernel page table since commit 9e4a3ec3411b
+> ("x86/mm/pat: Allocate split page tables as kernel page tables"), so the
+> collapse frees it through pagetable_free_kernel(), which queues work on
+> system_percpu_wq - still NULL at that point.  That commit is correct in
+> itself; it only lets CPA reach pagetable_free_kernel() before the
+> workqueue that function relies on exists.
+> 
+> Keep putting the table on the list, but don't schedule the work while
+> the system is still booting.  A core_initcall schedules it once to free
+> whatever was queued by then.
+> 
+> Fixes: 9e4a3ec3411b ("x86/mm/pat: Allocate split page tables as kernel page tables")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Suggested-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Link: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
+> ---
+> v3:
+>  - Schedule the work once from a core_initcall to free whatever was
+>    queued during boot (Lorenzo Stoakes, Dave Hansen, David Hildenbrand).
+>    late_initcall would work just as well; workqueues exist from
+>    workqueue_init() on.
+>  - Keep the fix in pagetable_free_kernel() rather than skipping the
+>    collapse during boot (Mike Rapoport): that would only avoid this
+>    caller, and any other early free would still need a workqueue.
+> v2: https://lore.kernel.org/20260924092307.22813-1-mikhail.v.gavrilov@gmail.com
+> v1: https://lore.kernel.org/20260924064321.23787-1-mikhail.v.gavrilov@gmail.com
+> 
+> Tested on a Ryzen 9 7950X with a Radeon RX 7900 XTX (lockdep, KASAN),
+> 7.3-rc4 plus unrelated local changes, by booting with
+> 
+>   ftrace=function ftrace_filter=pud_free_pmd_page,pagetable_free_kernel,kernel_pgtable_work_func,kernel_pgtable_drain_early
+> 
+> The boot that panicked without the fix completes, and the trace shows
+> kernel_pgtable_drain_early() and then kernel_pgtable_work_func() before
+> any other kernel page table is freed.
+> 
+>  mm/pgtable-generic.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index b91b1a98029c..cd227fc05d2d 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -438,12 +438,30 @@ static void kernel_pgtable_work_func(struct work_struct *work)
+>  		__pagetable_free(pt);
+>  }
+>  
+> +static void schedule_kernel_pgtable_free(void)
+> +{
+> +	schedule_work(&kernel_pgtable_work.work);
+> +}
+> +
+>  void pagetable_free_kernel(struct ptdesc *pt)
+>  {
+>  	spin_lock(&kernel_pgtable_work.lock);
+>  	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+>  	spin_unlock(&kernel_pgtable_work.lock);
+>  
+> -	schedule_work(&kernel_pgtable_work.work);
+> +	/*
+> +	 * The workqueue may not exist yet while the system is booting.
+> +	 * kernel_pgtable_drain_early() schedules the work once it does.
+> +	 */
+> +	if (system_state != SYSTEM_BOOTING)
+> +		schedule_kernel_pgtable_free();
+> +}
+> +
+> +static int __init kernel_pgtable_drain_early(void)
+> +{
+> +	/* Free the kernel page tables queued while booting. */
+> +	schedule_kernel_pgtable_free();
+> +	return 0;
+>  }
+> +core_initcall(kernel_pgtable_drain_early);
+>  #endif
 
-I had a patch for that, where we keep the refcount untouched:
-
-https://lore.kernel.org/linux-mm/20250520164216.866543-2-david@redhat.com/
-
-Long-term PG_offline pages will not have a refcount at all, and just have a
-frozen refcount. That's the right solution long-term: allocate+free them as
-frozen in virtio-mem. Needs some more work, though :)
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
