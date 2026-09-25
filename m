@@ -4,90 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95963C98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:57:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F30D9C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:00:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9322A6B0093; Fri, 25 Sep 2026 06:57:47 -0400 (EDT)
+	id F04576B0096; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E2206B0095; Fri, 25 Sep 2026 06:57:47 -0400 (EDT)
+	id EB4FA6B0098; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FA676B0096; Fri, 25 Sep 2026 06:57:47 -0400 (EDT)
+	id DA35E6B0099; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 56E4F6B0093
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:57:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 62C511205B7
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:57:46 +0000 (UTC)
-X-FDA: 85251984132.02.8508ED3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BDE0420004
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:57:44 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFSHH485;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B27D26B0096
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:00:40 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 46706140631
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:00:40 +0000 (UTC)
+X-FDA: 85251991440.26.D0D339C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4450AA0009
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:00:38 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaqtgpTC;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790333864;
+	s=arc-20220608; t=1790334038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nnw14xvfnQJHUMg1YXGWQNGAHKQa7rYgYgJD3iK4zYE=;
-	b=gXdDPrOviZolGchb+lMUsDYlTg0sjCoPzJL2ED7vL7toWPW5uwzb4xLTgoqTm/kftfnJY4
-	6G7ut6UvKa+imL6pJdyMIkFQkh92vNsJ2J8iAf8F8StI40tPy7VkQ8qdP1HmO1GTQCUqiT
-	RAcomAt9/oSrhRcld5uKd+o6lD+fqPw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790333864;
-	b=7zi45HKcn66fjdYUdCX0r/yZWRiJ9CnIcAGPXJL36zHUIQ957z8wEaWa1+LMCCSW31q+Tc
-	JLG9ZB9sD8yqpuDp5uIkpC12i4KPDhla61MNmn436CGuI/govlE0dgQUFlBR40qg21hgnP
-	xIA1G8FMl6wGNjUs66CxyRZwTYPEVgg=
+	bh=XSBvmNS7ZrGQmp0x6AI9LjYH8484eEgbwZLrKBALkwo=;
+	b=RfJLSuQ9yhRfHtuLXDqsvww6uN13bjbpMfz3Iz+uYu8nezQRy4OKQLoWd0ZzhcdozOgfF3
+	MvZ775CM+LEwe+gsBP/eBhSPJmVtWeKbN+1y2ql1h9/qCrCHMZMXjYLOWp6M6Ce40t+M9f
+	XI+AaWzdn4vVEur4GrNdDkfOGrX4Uis=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NFSHH485;
-	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iaqtgpTC;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790334038;
+	b=czwXrU0xekqISJfgOw83CO2X9IuP3oB8FEoJqTA29wAVKFgRYrguFCC4jEMk0Le9xAfHzP
+	v2TvVQ0lhvf9tLmVEjMpfcTnysE1R6d79KyP6FVLoyMRbfXASSUnHxUSMdsRo7bmOTx0sl
+	j3w1VYMAva7nyhXd0bq5/U5AYt0ntsA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 43E7F6022F;
-	Fri, 25 Sep 2026 10:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2FF1F000FF;
-	Fri, 25 Sep 2026 10:57:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0275E4034C;
+	Fri, 25 Sep 2026 11:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71CA1F000FF;
+	Fri, 25 Sep 2026 11:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790333864;
-	bh=Nnw14xvfnQJHUMg1YXGWQNGAHKQa7rYgYgJD3iK4zYE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NFSHH4853QkanVK7cAcdsVYAO7CYl3VgyNJYz2cVgQtgurMgoA3lFdYljYW/k9syR
-	 3iLr0riA8QHTHG+jgg+f7jROnNDUwZYZ633UjZ1M5/70fCm6UsfoeyKoblQAClGJAn
-	 t7eBTDsQHSF5p3YIfUhIiiKOjIu7mlTYOCEwTdT6E4BfV4XrST0m1eEG4xxAGnSsY3
-	 q+xVulTcc5tNj7kVYX00uvcM4mttnaY3zaCCQ6F3onF+q5RD/6Hec7jryDoUiiBM3Y
-	 hWPZ2MrnOGXId0wyubFDI8IcuEwFClX0ByYw1lP+xnX0C1zvIQIkKsToQ+nus7++SD
-	 yUqx0FT6Da1Cw==
-Date: Fri, 25 Sep 2026 11:57:41 +0100
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH slab/for-next-fixes] mm/slab: do not wake up kswapd in
- __kfree_rcu_sheaf()
-Message-ID: <arVERNhXeU1BX54G@thinkstation>
-References: <20260922-kfree-rcu-dont-wakeup-kswapd-v1-1-42d7e2636f9e@kernel.org>
- <2db41ce0-a510-4050-a79c-ff1f16640b47@kernel.org>
+	s=k20260515; t=1790334036;
+	bh=XSBvmNS7ZrGQmp0x6AI9LjYH8484eEgbwZLrKBALkwo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=iaqtgpTC57Sh0JN58cp22Qidd2SWU+IqRCF21YNdtRjwz2nLkEkCdPCKkKbNjyvh4
+	 evtY/NxHNsbko26zoZztfgAgv1VG+ZdAAv4Oovra4smkT6QzB17j7i82mwCF8HOGDq
+	 no99NpY1ZWoYSLMbMdfzfCpeuty3CMkuQJQ/fFkSx/WhkjzHMa1QRfHD8PWKbYeB2k
+	 BJK6hrdq4lZ0+67kSsPLA/RD6EwBP0SCLPa9qBBPC2We2VqhREwvk3A3JO5MmO1Gdt
+	 dthhuVLNyPU7G2L0/DunkYXtDWHba6N/z1IFHZRKiPuGSfAsiC30UXmHrofaNU1zKj
+	 m6ZB//6T/YdQg==
+Message-ID: <d57e00ba-f34c-4d30-adcd-aed02f9a0d30@kernel.org>
+Date: Fri, 25 Sep 2026 13:00:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2db41ce0-a510-4050-a79c-ff1f16640b47@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BDE0420004
-X-Stat-Signature: 4679wxbzux93wjhk1b8u4onp9jj68kje
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] hibernation, KFENCE: explicitly map/unmap KFENCE
+ pages
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Vyukov <dvyukov@google.com>,
+ Len Brown <lenb@kernel.org>, Pavel Machek <pavel@kernel.org>,
+ kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org
+References: <20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org>
+ <20260917-hibernation-v1-4-7f7dfae3dbe0@kernel.org>
+ <fec1931b-1173-4e14-b74a-7b3987a9b7bc@kernel.org>
+ <arP0-maAEi5yeNnl@kernel.org>
+ <d568a29b-5745-4214-96d3-1b635cd46c15@kernel.org>
+ <arVJm8CiLG6vpy9-@kernel.org>
+ <c01aa1e3-f2cd-4b28-8e6a-8e8a1c36c641@kernel.org>
+ <arY_058nsjb_Ie1l@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <arY_058nsjb_Ie1l@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790333864-854758
-X-HE-Meta: U2FsdGVkX18yy4G83ikfBUxum4xKTmLlKlV3lu8aLmdz/Qr840QB67icLD/N4YwJQjfh1vyggFJJQ7rK0Bq9iMYZ+cJ97n1zibXSdRl9cozM5BR7iSryp6SEHLxcNbhuUrSP5Xykua7bS95NwnoavaJEFFhjcg1IWptKs6/m7EAGP082HdS1bu6p2d3aMQavvrg1UKOwW+bI+KnUZYu1a737bBo6xwPEOsxXq+k+UmQzAtCwTLe29oBIkxPYNWgv9q7FEOvPMQ3mk1VeovM/dhAzqoTCxKFpVICBineAYm7zFE4E5zQXD6bKxp91eVpcLFd5KYHKuofhOs/qSaVr6T269sPu4z7mhQjvOjpktO5tn4zbVm1v91rvU9x8XLuPTH3fJLuTaXgIfPktPrzA+i8Kd8g5DiFsPBPM2VfC4m0/xHa0EoPni3LAchHzNX4IPEMNLxb3jTl9yVHURyfpuJ84vksROfoe88Rjk9kNNlUGAOrOCKYsDL0PYGWzKN8hQl0kC31sRsX77ULTJpI9m8PmV2uIDLlEyQQ1GhbTwjGkb6SbfuAf3jS1N7fbGcVdOGSY5udAiLJMGOi9XA0nSUUXqakuPWoXdML2XVyKGrDVkj72pSdUhVXtQt9CSzSWfytnzJ8+4SR1/hDNwjWyp9sIjGcJQFdI5a+CDKR7ao/ACz6JSKnCNzv1U4hkHUOq1qgHeoiZlqDwpslWXxVTtyfgNTonmkLcntJJ0ubHrFqXbhDWzOVYlK8QNiIOgi+9b5jmnOVpL9rxsauFmBLPqQzloMxci1LsYdxD72CTsSOBe4oshk4aaqxzjuSQx/x0VGbpEc2/BvKqYf7tKyC3ZV3B1i2ucEzK+H0wWuUspbA+jI1lEvs7pPlxEWZ/i1YEacpfVBACks1xfe9smpi7uV9M4w0SWX/vncO0ZTV9VKZ7Q4ggrCCppjny2eQ4o9myPIgegAMWnBWe3RppO+l
- EA8CNMvO
- iv8mz6I8v6nnO0xngcAel16FzT+MCtEC1TMWzQu/r9o+p+63VUUS1cuJGR6aRMGhncHUrMkMcfkGB7H+F5OpFusolPM+y26RMccVP0STuIGXUUKpableIRR2tlgzUWXBqgMQ0r2KreT80PLjl4jsFmmX7bSo29LIr5oLaE0UqT38CMp6XjnHiFRedewb24ao9dxSIT2fm83zUfo2N1+N63L8k74a1Re3SKfhO1zl9tDfOd5nPNR2j3P9O97ox8/ueHVqqt3/Uo2SbUCPo7PoQO5hrFn9ISthzqsJ/zqsNvOojs4RujwL25HEumT4wnd42DtOJDdA5UwK/507EiSYMMKuOK2HtQK/872BUQLqosLNEpHjeulrhjEKtYFP0U/qVMn8xUxOJi7APido+MzDPMT/Kpw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4450AA0009
+X-Stat-Signature: djtgezm1jot9mhjfiig9jy94qixiono6
+X-HE-Tag: 1790334038-610535
+X-HE-Meta: U2FsdGVkX1/QG6wKcDLvRiq9vRM0yDiCeA0/ey2KsmbHXrXLu8wP9hMgFBr4iPiVJGxM0rvy7AQ836sSpVZ+97u9eklElEN5KLksB/x1snX3npUIfFTsLGDkn7TUV4wkr8FULDG3F9pLiUrqhmsfgHPjl3x5Ale6FUuiBGSw3zzUUmBZgHIfAvVmR9nsSEp2a82aYao3Pzf584mJeY7XjtHfSxvrsjNLlLSaN+KWdCoOWrm2v3eIZvEf/0tAbq7RmzsNYb4jzMVhNNyjk0Sqxk8imkWjrDqjO9Che43c055PA5W/ENTxn0GLxEONJArtPvaXIqd32QoMXbGw9ra3aDZtaB12S74zqBO4USMmwmxACUzMiT+Lcw+L8l18TfjD6yetR4sIsIoDf6hSluwiHJ4oWWZhivOLwacVdPss+Yg5BxZKk2JiQX/KCpNMw/6gKl0bOPx/sfhndaZNRIQ+aCsJ6R9Oqnl02dcY2yWp+CIIbERpd2lJgxQNn+28meOr0GKQmv4icGfDmMgoBmacuoZOEOgVTVzexVpyra5rkN50w8Gj1rqZAp3ZIiuq93pLwp4NkCW7LpG4CZbnvOZwoVw6+Ck+yqwZ6HygV+e3g7HLmoa4cVRMW+NOULmQe1yGRdxHgA/XhxZLgYmOn/r7HiUaxrbmZMaqpJimcxv87PRxDLT3JecnllrS5RJClIzdTjp1x+T1uV0zQN5LxqWkZqQFwkr1MLjTxrw/wZpnTTXr/iKoAibMgHfToMEgWd38YoxZoTrW+47qeWlAtf3fGRUgoedmvJWvOfeaURk3NKzBS2tke6SrxJAFK7rG11tGbLP0y6H0AalrqcVbLWSz/adZvVMrwTLB+U1I936I1noyL6PY3srVk7Sa7ictPCyBpFlDEX1r/aJas3tve3EUo6sxecSt3zLQ1MuHMEwcLMChT9ATQ8TzCYq81VMzw0ufzAW/uTSCeF42bknT8hd
+ w6OLi6qm
+ kN0GlR08olKcvzGNqDiH3c5HMKs1WATKYriUM3A+eubcHPfiScJFf8wgJBI92770r7FWDKQDtQP6h6c72or16RTWa0cVOzSGOGDT5ksOHb2HBVzQO7YRW8w7OrLVSHyCQIFr/xupxtfYbWCEsKU35kVS5h9fw9xyVzq60pi5mZTIJYxGsWLOBYwQWj0kR3iaDCvPKYWGI2BA0Vq9w9Y47OimDxPF4Y4mpcrtqjzAcd+V2oo8gydUXjIeXEvYHS8/Evkmd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,119 +149,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:43:01AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/22/26 13:56, Harry Yoo (Meta) wrote:
-> > Fix this by always avoiding waking up kswapd in __kfree_rcu_sheaf().
-> > Note that there are two paths that might wake up kswapd:
-> > 
-> >   1) __kfree_rcu_sheaf()
-> >      // __GFP_KSWAPD_RECLAIM might wake up kswapd
-> >      -> alloc_empty_sheaf(GFP_NOWAIT)
-> > 
-> >   2) __kfree_rcu_sheaf()
-> >      // Let's say __kfree_rcu_sheaf() doesn't pass GFP_NOWAIT
-> >      -> alloc_empty_sheaf(__GFP_NOWARN)
-> >      -> kmalloc_flags()
-> >      -> slab_alloc_node()
-> >      -> alloc_from_pcs()
-> >      -> __pcs_replace_empty_main()
-> >      // Free a sheaf in an allocation path when the sheaf becomes empty
-> >      // and refilling the sheaf fails
+On 9/25/26 11:33, Mike Rapoport wrote:
+> On Thu, Sep 24, 2026 at 08:49:13PM +0200, David Hildenbrand (Arm) wrote:
+>> On 9/24/26 18:02, Mike Rapoport wrote:
+>>>
+>>> They are not necessarily in direct map :)
+>>> loongarch does not have direct map, but still supports kfence
+>>
+>> Ugh :D
+>>
+>> But where are the pages mapped/unmapped then?
 > 
-> So that's this
-> 
->                 /*
->                  * we must be very low on memory so don't bother
->                  * with the barn
->                  */
->                 sheaf_flush_unused(s, empty);
->                 free_empty_sheaf(s, empty);
-> 
-> Now I wonder if we should just use the barn then, lol. We either took the
-> empty sheaf from there, or there was none, so we don't risk overfilling it
-> with free sheaves.
+> loongarch remaps them into vmalloc address space and sets page->virtual for
+> page_address() to work.
 
-Well when refill_sheaf() fails, it's not guaranteed to be empty.
-Might have to put a partial sheaf to full list?
+Okay, so it's really not about the direct map in the traditional sense.
 
-... well, now we have sheaf_partial though :-)
+kfence_map_page_if_protected()
+kfence_unmap_page_if_protected()
 
-> Well but I guess sheaf_flush_unused() could end up in freeing paths anyway.
-> But that's a bulk free which doesn't involve sheaves at least.
-
-What do you mean by "**sheaf_flush_unused()** could end up in freeing path"
-but "that's a bulk free which doesn't involve **sheaves**"?
-
-> We could also distinguish which callers of refill_sheaf() can continue with
-> a partially refilled sheaf. This one likely can so we'd not have to be
-> flushing, ever?
-
-Can we do that without adding too much complexity?
-
-> >      -> free_empty_sheaf()
-> >      -> slab_free()
-> >      -> free_to_pcs()
-> >      -> __pcs_replace_full_main()
-> >      // However free path always assumes it's safe to wake up kswapd
-> >      -> alloc_empty_sheaf(GFP_NOWAIT)
-> 
-> Would be great to avoid all this from kfree_rcu().
-
-Yeah.
-
-> > Drop __GFP_KSWAPD_RECLAIM in both cases. Note that the kfree_rcu() is
-> > not the only user of free_to_pcs() path, but it should be fixed as it
-> > can be invoked under pi_lock.
-> > 
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://sashiko.dev/#/message/20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b%40kernel.org
-> > Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
-> > Link: https://lore.kernel.org/linux-mm/20260831143500.x-saxdAs@linutronix.de
-> 
-> Fixed up per your reply.
-
-Ack.
-
-> > Assisted-by: LLM
-> 
-> Changed to (per below)
-> 
-> Assisted-by: LLM # dicovery and verification
-
-Ack.
-
-Didn't know adding # blablah after Assisted-by: was a thing!
-
-> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> > ---
-> > The discovery and verification (w/ a modified kernel) of the bug was
-> > assisted by LLMs.
-> > 
-> > More speicifically, the first path was pointed out by Sashiko, and
-> > the second path was discovered by LLM while reviewing the commit with
-> > review-prompts [1].
-> > 
-> > Harry Yoo reviewed those findings and manually crafted the patch based
-> > on that.
-> > 
-> > [1] https://github.com/masoncl/review-prompts
-> > 
-> > I believe the right direction to address this issue is to make
-> > kfree_nolock() work in any context and replace it with kfree_rcu()
-> > in the scheduler. However for now it won't work under pi_lock,
-> > and resolving that would be a longer journey.
-> 
-> Indeed.
-> 
-> > Address this issue by dropping __GFP_KSWAPD_RECLAIM, for now.
-> 
-> Applied to mm/slab.git slab/for-next-fixes, thanks!
-
-Thanks!
-
-> But still could discuss a better solution per above.
+Maybe something like that? Anyhow, pick one and let's move forward :)
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David
 
