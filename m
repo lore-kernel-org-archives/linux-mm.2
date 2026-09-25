@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC17C98306
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:47:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC815C98306
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:48:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A24FA6B0088; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
+	id 03B9E6B008A; Fri, 25 Sep 2026 00:48:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FDA46B008A; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
+	id F2E176B0093; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93A226B0093; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
+	id E6BBE6B0095; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F59F6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:47:14 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E5D30404F5
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:47:13 +0000 (UTC)
-X-FDA: 85251050346.07.C65A7E5
-Received: from mta0.migadu.com (out-111.mta0.migadu.com [91.218.175.111])
-	by imf30.hostedemail.com (Postfix) with ESMTP id AAD1680002
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:47:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FCNIHfma;
-	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CB71B6B008A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43C0212052F
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:48:15 +0000 (UTC)
+X-FDA: 85251052950.06.8481764
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 793341C0007
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:48:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mBbJ0AG8;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790311632;
+	s=arc-20220608; t=1790311693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ws9g4s/YoTiDLHMA2x4FV+HBC9j3rDWE6K0TZSjCveA=;
-	b=GEeLJA0g7Ap6cJWQrfaOOk4h3RuQZVzd3uZ69WUdNwx8SQXTT7kuH0Q47FRZes/WBrjm8T
-	l5BP5lgFFGAq95jMYsOTB+ew8gkQcNd0YsNCbnvvw8K2SVHo+K/hv/og15WV2K8Pfqr2+d
-	9NMmP3rcoDKjaQps5BqNnzcIlDULG/Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790311632;
-	b=vQXeV34WmZ/2aQfe4o54uzLJERpUlDbzWAj5yn+/EzH2InbrGXdRUJ0h8b3siLuENtceXs
-	/ofWP0a96S22nbbNbUhmskjOqX0TyGZPF/2HABflcXC1XvPi5oHFRKxVBu8K7VuD+YHNDh
-	lYF281/6JEvbhJgQ12vHGo8NlxFGzNs=
+	bh=EAbfPfUo1z2sF6AlMVME2ig0vFfsexu9oO7eGK/q4T0=;
+	b=USvsnCBCjc66DLbJPBZwY3CDeAFIdfUZWt4nLLkk+KPO0Wo5tCgp7SMdGJkPdl3Fv7YnCE
+	NwHvR1oXFXnP7QmNrMItTfwdORLVVqyUwc1SGa5TZHE7dGgqe5E350UujWKMIpgSyMY73r
+	/C0LKE5MtPuDBDaN5lpWeq6vVjDEAFI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FCNIHfma;
-	spf=pass (imf30.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.111 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jh8C5ShYQXr3viaQ/Mi2fvp0GqNzxRBy1mECrQ4hGaU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790311630; v=1; x=1790916430;
- b=FCNIHfma3LS/3JaA2BJJYgDvh1b5rgyweLTodShdjDg10c9sNGQLzo2UvkvnwLTdJtjoIrS7
- mMXE2rZi3p1dVlTJpgMILbaFwI/JbzCqyKkox75GhQxTTxTX2sEMVAnja/huZQTORQDsTLPa2mX
- vlIlxjfm+N/2uTk4OrJ46b9c=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f70f5b72ae709b91;
-	Fri, 25 Sep 2026 04:47:10 +0000
-X-Mizu-Trace-ID: f70f5b72ae709b91
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <b1a845c3-3720-4ef6-8c97-8a40ee7bd286@linux.dev>
-Date: Thu, 24 Sep 2026 21:47:03 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
- Update
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>,
- Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
- David Rientjes <rientjes@google.com>,
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>,
- Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
- Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
- Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pranjal Shrivastava <praan@google.com>, Pratyush Yadav
- <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>,
- Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>,
- William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
- "yanjun.zhu@linux.dev" <yanjun.zhu@linux.dev>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
- <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AAD1680002
-X-Stat-Signature: wfkd73he93wodxinesqfmuijbkm57e9s
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mBbJ0AG8;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790311693;
+	b=SFoskmwPJzlSdNC+JVaeJk7QX0dUH4DQ2bgF2e9KRb00maH358cezvF7PgQtDi++hZuli7
+	RmnrNKk4fCq3dy03BCnsg3FoHt/AjwiCbDBOhaKtSBGEAioMuUBXW5oBp5JiRqS6prhHyq
+	NbXhG31mEWfK5wE8TerzJTkWSpY5qtQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C9D216022E;
+	Fri, 25 Sep 2026 04:48:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139BB1F000FF;
+	Fri, 25 Sep 2026 04:48:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790311692;
+	bh=EAbfPfUo1z2sF6AlMVME2ig0vFfsexu9oO7eGK/q4T0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mBbJ0AG85Go83iWFJVKJrU87L9CaAbCtMGm6NjiNKpqM7xtTKxKZvef54DAST8hdY
+	 +qge4H+e+pCaCp35Z1lQNebvY2P1qqK32vopKcRR0ex2koXo/Ox5iw650cODpaRjLs
+	 Dx4kTv+n0Xgy11j7vQIgkcBlXm0McLH6kDK8NYwc=
+Date: Thu, 24 Sep 2026 21:48:11 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: rppt@kernel.org, peterx@redhat.com, surenb@google.com,
+ aarcange@redhat.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, kirill@shutemov.name,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+Message-Id: <20260924214811.19ef8af417d37071ed8338c4@linux-foundation.org>
+In-Reply-To: <20260925042907.2330519-2-donggeunyoo.kernel@gmail.com>
+References: <20260925042907.2330519-1-donggeunyoo.kernel@gmail.com>
+	<20260925042907.2330519-2-donggeunyoo.kernel@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790311631-16875
-X-HE-Meta: U2FsdGVkX19j61hn+l0loVO2Ab+zTqXEcmPvvJUfxn1yPDT7QtT4XjZ3kVKdq8hGaVpbB4Uj3iDxKqwUfYZ8k4ReO1a3wM2uNQCLzQ1cQtH0yGOzMWq3TAzQop78G5WzsYXVN/M0U3uzvVDaJj5DoN+jBncCwfJihM+ujjiXYE7Eqhri+gPFafGW9tYjm9cNVlnWsgVqRNX8pKRFPUTpGAZAkG/1OXDFBDI1+ZcwicefdILGggIULThOmKNQG0K0e38Rp6noRL8lgnvOEGAw8qONMvtGVjDgHbLc9Sgd7yYeAaM4xOk7P805efpEwJGDZXRU8RyZ2Y9CYfKbzfqjRVgLlnA8bZhZ+gjCIQ+0ldlio4mL9uomBRyqDplsqeG3ouDTZMjraLHiRpTIGOsml9t0b4RfK33gbXvq1qTS1Ia+SaE04KJvLT17ZR1ZrjhodFK4Gs3jKQ9dkmUXH5+ZLlh3Y+cav6uiS5WmAeB5NJD4Dh6NnwYLK2HTLb5EnqJwADUksePmTM8095y2MKjGTkJpBO4z1EL0VbwMjg7NvEmkTBomeWuWma9jQ5grtuYI4w8chxdS8Hm4fhEAxhzFBIyvYsnMmflMewVcb022nEVRC1XAkjRVJxyHYx76qmRL9/jlRBJEKBeP0gsveh2+9vtLsx7N/nt6m1VdH5yiynSii3umPNAGoOIOIexG6Cn4XVOUSVXU6C1xcqrBF/0T9wMkOyV/kCFpVtnqx1p2UgYRHM5wkWMpDUMbhufgUokrlmE/uKVnQiFZfXI+cmXLIdvZa0W7uNQRt0TyQj37aeJCNwdlM4GyKVhjbT+KVvufcqZCjsmo/JHAr6QCw42zukKKThDylLbvd0x0KcNYOFWzGSgYNZYQ4z8wVpxOMNHEn80nzuZEzd7BFbh+ouNgvT2Wah66V7mKjx1qydu0k2DenpfWh6VaRWPTbU1s9gU9VY9iTS6JignZt42vjc3
- T9N1x1lE
- 9OiSfzFSGzV0X0IaX9tJkwxvDOH4O392nVTy5lzb1Ux1IWQUbYvpqWaP1TntU+mHfwhjeSwmJjzXokZN+6wpElxOAFAli50CQInwPTXjoWWNWO4HuN6BUq8SpAtBnC2nS0zRJSH2AsfwerOUQO2B+G5XDCZujwzF4vY+IB0vinbvpRuJVdEUfeStlT9CKjhKJByjIj95u0xGvu/6JYev7f/3jr2eX5jt9nJOJqFkcs587dS6vpeUJNtIkrOgRproeJkqQqzzzvpiZW8VsyJQjgRWaYgrxZ/2IY1BwWDl4Mb8kgslNV47fgp50JSvr+qfMQt8JGUg0pn5GcXS2wmz3Pq1BDnSr7dG4zr/pcbRECYI00hf3grFUjno01D9sq/xK309oK39jE37Cpg4=
+X-Stat-Signature: nygu87yqbiy9rcko9bda399q3xntxi3d
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 793341C0007
+X-HE-Tag: 1790311693-472215
+X-HE-Meta: U2FsdGVkX18IXijJKwaXNAdPWbo1McTbc9OFOmUnUmXFf44Hb3CjpCpmfwd2wToFE9K1tYaRI4mv/WxZ1j4GTY7fVEjolLl8S3dPmTwyYzbHaAdg0pj90GAQCp3kEDoP43HYx6lNqubfcLtKWQrRkXFGlzlMIPWY059gaonrCoRAD8+r6AekJhnNKxA/B6HOxvc+qTIQlWw/UpbSXHrIVpKDUV16gOUHQRqXZT/9IkHXpwS0LSmgFFFyFo2eMgbzkypcc7ygkbHBrJ8Yi+ZZF5Tv6uQR13TV3VTMQOfTQ69Cbyrk3NdmoGg+AwysgKZY8gIKW9apyiV5GQ2vYWZTERmXr+7lpUB9gTPsfk87JVHl2N9gU5h+xvSvDEtzRKj+sbP8t4FHctRGORuHAlsmpk6sitUENV7dNwSld/2T0mnOgv+m4jjf76rFAUHOoxuLOjrmcw5jrHxujTF7meRiCE2dwRJGzP//qCbJoi+LjG04VN/V22w5MehuMAJMl6rIojpCEfYd2n5/Qvo6qs6dunanmGo+eV6vUqufdPI5fjFZ8SAikDWRVSHGQfCY43DQFXUkXOIPNgE62Il7eqjt1EZr1JaTYewhbaAwfp0rpbOpfWsfkFb+q/82lc2DlpQO8KKTbn3xD9xBAlToYACg5YxMLtJ3fuDa0fKCDDBne7TyfA16WWu2vkgJv5Bzl/M9Kti1jDk3rd0vhTRPY/g0QfKIE8XTOZ/QhgkYOjE/SjIQpODZqg98b5uFbQ87nNydaOri3BmdlxT7+AgUk2GXKJ3t5k+ASGWSEoAYzZYvYtuqVHpLHg+zqfENElvcvY24rEZTLXjCKddJqnThRFgRbaMV2u3fxm92JZbPs9Q7eJpcSZNsoUr/TT3k87YL6VlfjNf4WtzXcv6X8ThxYzJDIAgbwwmIjFxVJ3j4zIz1amgWwV13py1Tj5sQjqgn84nhJHdx3mU7qKGQ6y5pFRb
+ TJkyXSlR
+ w0JXC/WgX1xUErFnXp3Pu4FscuQAz16RcWU+sjEIYuiMR/DWdC4XfHuITVcnM1Cf+d577ckaLjroLBgVKARaGPD7K4oLKCn7K2S7UIaFXKDqkOHtuK5MZDbh4PYWl3aJHQulWbX7WO2MPFW9piTZ9eJjXsUWk4DeAO6HLswN4nEXyCMTOkZm6oVsRHAZJHPQ0FbnTaGwJOFAr0IqKjJVKl+jKtjm5fi4K8H1S/D4240EDEMtmrUArrGNAMmocN8J8lcGHfyBB5YSrjG9Zp5cY8sinWUGbMPB3mBNPHZyR9AnS3FJlnXop9AWLJuHzndSSHz7Zk458Vqlo8iPeMTKZdBilNW/h+0DfXLxObbQDkA5w86NmkYM7cZNFbkMMxL9AMgNW+tnJQRsZ9WJp9cpWAuCm/dAfSD0KBT16
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,88 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, 25 Sep 2026 13:29:06 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-在 2026/9/22 11:53, David Matlack 写道:
-> On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
->> 在 2026/9/18 13:06, David Matlack 写道:
->>> Future Work
->>> -----------
->>>
->>> Following this series, we expect to make further improvements to the PCI
->>> core support for Live Update:
->>>
->>>     - Allow P2P across Live Update by avoiding resizing or moving
->>>       preserved device BARs and preserving all upstream bridge windows.
->>>
->>>     - Support preserving Virtual Functions by preserving SR-IOV
->>>       configuration on PFs and enumerating VFs after Live Update.
->> Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
->> kexec is a foundational step for minimizing downtime.
->>
->> As we look toward complete end-to-end support for DMA preservation
->> across Live Update—especially for VFIO device passthrough and dma-buf
->> sharing scenarios—IOMMU table/domain preservation becomes crucial to
->> prevent IOMMU page faults when devices continue performing DMA during kexec.
->>
->> I would like to ask about the current status and roadmap regarding IOMMU
->> Live Update / KHO (Kexec Handover) support:
->>
->> Is there an ongoing effort or RFC series for IOMMU handover / page-table
->> preservation currently in development or under discussion?
->>
->> How is the coordination between the PCI core Live Update mechanisms and
->> the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
->> restoring domains or handing over root tables)?
->>
->> Any pointers to active discussion threads, RFCs, or future plans
->> regarding IOMMU participation in Live Update would be greatly appreciated.
-> The first IOMMU series to support Live update, can be found here:
->
->    https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
+> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+> destination unchanged, so a uffd bit set on the source lands in a
+> destination VMA that was never registered for write protection.  It
+> can't be unset there, and THP collapse can't happen either, because a
+> swap entry with the uffd bit set makes the scan bail.
+> 
+> I don't think it's intentional because for an unswapped page the bit
+> doesn't come along, and I don't see why being swapped out should change
+> that.
+> 
+> Clear the uffd bit on the moved swap entry unless the destination is
+> RWP-registered.
 
-After cloning the source code from samikhawaja/linux, branch 
-iommu/phase1-v5, I tested the VFIO live update functionality in my local 
-KVM environment and encountered the following issue.
+Thanks, but...
 
-When I run the following commands to verify that VFIO live update works 
-correctly, I get the output shown below.
+When fixing a bug, please always fully describe the userspace-visible
+effects of that bug.
 
-I am currently testing with VFIO v5 and PCI core v9, and I am not sure 
-whether this behavior is expected.
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: <stable@vger.kernel.org>
 
-Interestingly, when I revert the following commit:
+Especially when proposing a backport.
 
-vfio/pci: Preserve the iommufd state of the vfio cdev
+Please review the first half-page of
+Documentation/process/stable-kernel-rules.rst
 
-the issue disappears.
+I don't mean "be reluctant to backport".  I mean "when proposing a
+backport, explain *why*".
 
-Could you please let me know whether this is expected behavior, or 
-whether it indicates a problem with the current VFIO live update 
-implementation?
+> Assisted-by: LLM
 
-"
-
-echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
-
-echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
-Preserving device in session
-vfio_pci_liveupdate_kexec_test.c:122: Assertion Failure
-
-   Expression: ret == 0
-   Observed: 0xffffffffffffffea == 0
-   [errno: 22 - Invalid argument]
-"
-
-Thanks a lot.
-
-Yanjun Zhu
-
->
-> The IOMMU series builds on top of the PCI core support (this series)
-> and the VFIO series linked further up in the cover letter.
-
--- 
-Best Regards,
-Yanjun.Zhu
+Great!  Please add a prompt to LLM's .md ensuring that future
+changelogs always provide this information.  Please also share that
+update with the rest of your organization.
 
 
