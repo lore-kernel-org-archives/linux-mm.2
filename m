@@ -4,129 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F678C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 15:44:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF9AC98325
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 15:59:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10EF86B0093; Fri, 25 Sep 2026 11:44:02 -0400 (EDT)
+	id 6AB276B0088; Fri, 25 Sep 2026 11:59:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E7796B0095; Fri, 25 Sep 2026 11:44:02 -0400 (EDT)
+	id 65C286B008A; Fri, 25 Sep 2026 11:59:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF12D6B0096; Fri, 25 Sep 2026 11:44:01 -0400 (EDT)
+	id 571996B008C; Fri, 25 Sep 2026 11:59:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BF4FC6B0093
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:44:01 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48B351606E4
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:43:56 +0000 (UTC)
-X-FDA: 85252705272.21.118D303
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2ABBB140003
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:43:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrTBj5DO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XJ2ng/tm";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Eu6JG8yN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIV7hAVN;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 374436B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:59:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2178D1206A7
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:58:39 +0000 (UTC)
+X-FDA: 85252742358.06.F4C22AB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 89040C0004
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:58:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SgZQLK/Z";
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790351034;
+	s=arc-20220608; t=1790351917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IxoD1TfpMnlHhB4OJ4JkkWL7Kpm3ztSu4F+OAJdGJJQ=;
-	b=GQ29JmqGf9SuHkZFAgygCmer7MFhkxlTlTzVgK946xdxa4UksVOwrzc69+06uCC0QEUJwl
-	vgJ9EgYj/wNnVeQhitVuWtwci7Hy7JAVnLsLw5CqwEz/kd69PCfmfnCeUaxITz7Nu5sLVr
-	+Zb1jzmN81rxG+m6eWHRMmFYd0PAWwo=
+	bh=qR8azvgZfaRgE4wOVbNM1K5aJXx9TItF6h8M3YodUMk=;
+	b=CUb/9C+OesVGHOZPvcKckVwvriUvyKuyzTBclMeuZNPU1zU/5J4Qt4CNK+GNR9VoNpwnnu
+	cHtnottQuxCJBFUY8G/NjQ9IUsz0MZhEnQLI9ApCSa8wNuU6vkt/DTgIxmRw2akqGVMbho
+	/GeG/XOFt2Qqe6B3aMHBtjc/5tlZ/vI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UrTBj5DO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XJ2ng/tm";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Eu6JG8yN;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FIV7hAVN;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf09.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SgZQLK/Z";
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790351034;
-	b=jNwpO+RZUgY00pvg94mrv2EPDQTWI11Y9QEbrTE9PGc6dcn9jQKKQzub7PBBgSnGtF2nUo
-	sLfOj8rl88223e7/HV5/3RpatgTVytQEDgf8doU9Su1vEeY9mE+RY+mvNIF3+ot+ti36oa
-	F/tC8pORHNpKo2BeYvC75e/BrqMekKI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 8A3331F7D3;
-	Fri, 25 Sep 2026 15:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790351028; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IxoD1TfpMnlHhB4OJ4JkkWL7Kpm3ztSu4F+OAJdGJJQ=;
-	b=UrTBj5DOaKy8ZYe3EDblH3vg+C+j6dbaamPZjXrvv7zSBNriO+URS81wolaSKxr2jBFiRE
-	Xevrszki8ag3T6W8ZtAcvx4XrGbblo3RaaBu+Jq6KHPi7DEm+j6EmF5nWQuwhv95dgYjYt
-	UoMkiHRQr/mSmDCZtZz/6EHBwt1GzAs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790351028;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IxoD1TfpMnlHhB4OJ4JkkWL7Kpm3ztSu4F+OAJdGJJQ=;
-	b=XJ2ng/tmOeARv54gnA9sJCwwXh3G2isJ8zW/6O/Tw1/BQdw7/H8caS5bR5dRApuElNwgXC
-	IA0JipJvgLx3StDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790351024; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IxoD1TfpMnlHhB4OJ4JkkWL7Kpm3ztSu4F+OAJdGJJQ=;
-	b=Eu6JG8yNIU0VVstgCa5gl74tXGp8A6ZXjvuBUo7OKEBPKPS4/A5IsA9PDysWuKIVi6hr6R
-	q/GwscQnab/osjlQxT9ZiELHA78pCLQ0T1rCIOoXjVXixvGgTWogiR3rCrcYs/cMWIJ9I+
-	Cm0IpEtImDZ+X/ZBkOx2vmKPihH5IV0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790351024;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IxoD1TfpMnlHhB4OJ4JkkWL7Kpm3ztSu4F+OAJdGJJQ=;
-	b=FIV7hAVNvn72bus5pVlQGvbAWf/OYQVEN83+kSYzU/y19plCj+QKR4Kj7QZgZkzdpXMqs1
-	Dz+R+0gJ4WDaiAAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7156813274;
-	Fri, 25 Sep 2026 15:43:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Aq7GD6+WtmrAPwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 25 Sep 2026 15:43:43 +0000
-Date: Fri, 25 Sep 2026 16:43:37 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Pan Deng <pan.deng@intel.com>, akpm@linux-foundation.org, 
-	liam@infradead.org, vbabka@kernel.org, jannh@google.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Tianyou Li <tianyou.li@intel.com>, 
-	Wangyang Guo <wangyang.guo@intel.com>, Zhiguo Zhou <zhiguo.zhou@intel.com>, 
-	Tim Chen <tim.c.chen@linux.intel.com>
-Subject: Re: [PATCH] mm/vma: avoid redundant file rmap tree re-insert on
- new_below=0 split
-Message-ID: <araVBBBVY-jafePL@pedro-suse.tail5790ac.ts.net>
-References: <20260924054301.2330822-1-pan.deng@intel.com>
- <araI4WsI0XMXOR10@gremlin>
+	t=1790351917;
+	b=VJ12IP22JCJhHwzmKoerqMHokAPNg5lCl12Jkt/drWQjVeQEzp2eOppb98A9tkgkANV/gB
+	/A/gFkRq/+pK+6qqkl73w+U954YUCqfj4MG5paLohKkDuhFiQYzJmNOTElWAu0vqzGlhVA
+	REkH6oLRHwqvyOrsyKVukT//aeWBFcE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 144FB60230;
+	Fri, 25 Sep 2026 15:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C781F000FF;
+	Fri, 25 Sep 2026 15:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790351916;
+	bh=qR8azvgZfaRgE4wOVbNM1K5aJXx9TItF6h8M3YodUMk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=SgZQLK/ZjTy0c1dNQAGHBfjxb6+BScZ4bBrLAmKMtrAjFjBCc474psP22+z9Q7xbF
+	 DLvGeI0/5a86Cg111z8elU1nj9UDgNB9FgPIf+OtNj7PrPff30k1WdbFXon7D7eWNH
+	 uZH5gkis5ea40x1CD5tlZTwvy/KMyX4c/1Ra+1/8g2N7h0fd9aNsjyYIypYwRhWeSI
+	 Yb/ngp7yrqGrT8odRHzIJY0kwFKBVKHn20+desMT8QYhhMhFfu1wpraK1V/jsMRMIw
+	 3oym+6bAQgvvUCIuC29xsJafd8BSCe+4/cyW7txTLiI/9gsjhuz3U1o8rugfeA0cEU
+	 N5qKTjaS0cx8A==
+Date: Fri, 25 Sep 2026 16:58:32 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	sashiko@lists.linux.dev, Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: Re: [PATCH v3 00/40] mm: make VMA flag semantics explicit, eliminate
+ VM_SPECIAL
+Message-ID: <araV69I3WLn9I_Nu@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <araI4WsI0XMXOR10@gremlin>
+In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 89040C0004
+X-Stat-Signature: dwcchfwkosqw4pq5qh16gobimieyj87g
 X-Rspam-User: 
-X-Stat-Signature: ww1u9tmee5y96kc6s47i73wd9of6d1yz
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2ABBB140003
-X-HE-Tag: 1790351034-900526
-X-HE-Meta: U2FsdGVkX1+20943HYCpQ2EXxOUDkRLMkb5pQeDnn2eqjY+bUvaMb6DKkonPj/0A2q8e+EIoAp+gKwokNwiKSDzUmSVm9FFzUnRDfBtw2iFHR936kUCPPtLKdVPv5HKlNThZluS3KOi67ldu9IMsl0XkZxRyLNDRoLkMqxT51OSjydklyAeFIer3YpQK9svvcAQdfmXYUh/brORu7ZHpgV9F79DxbeUj7RrA+rp9wBxF2rkGFbOihi3swB06W2J4FZM4Fr6BTBjBGk4SFS6O1k0xHJjzcSDU9Mrt7+LGnx2VngF9/rSgagCGLqLgV0Fmp2SaAoiXzimB65HMhUCoOAI+f/1T1ClNT9ZaoFTRoU2QqAmQye6JV1QHPXvzs8HIHrduswxxyshD2DXCV4flDwFBNHQjVPbjj/A57voTpo26D8b8iCEJNjU1u0mciOA8gqSsgdZVXlC2Vf7LbOxdUauYdiVpO+/uNKbE8wOET2ur2MEKGqH6hhnIYmo1UWzLLQNHp9GhA79l1LLxycgBik2vKg4EdpdxBQ21kCXR3jbdnGJ9N1vuVMPvinNAoGGKMLYnsh4PsS7o5GTW8+N+Voooxzmd3qYtQWmqSTkz6DGhxzsb/A9jS08XdD3Wmzo7uJ/9yZOOqXRaMeQK1N3m+OpVsWBlK4SnOxQjEuUP1pRndSKb5dMipZC/rbFN5XWnUZdUP+nC9zG3o8XvqAhMSnPZkRDVk1fZWyGqZ0V7k6UgpBZgPVCY3kr4QNbRlvGBgSStxHE1+q4ccl8dslseHUhp6YknSDpuXgYR3c3zVOqacsHHMqhjiklJJZBhZzuzAA6zyVrQUGVLxL+Ygpp+++fqwC5MxpHhXBIpJ1bZ5eKnUIlUpv5n9/WYT7iFiSfCGO9uTxGokQ1eAkhSl1M7XIO13o8qdl6z/W1jQAkz8uoH22nZKiM99LBcEF/gwNRkjdHghhmZw2sJhFuQFFA
- D8qBzi97
- E3PHZXUyFBEROMK7dndIeMJhd+7AtsAmMeYUTyV2qeBqrQNUTctbPa8IjGanYbs8S0L/7ShPKAy6RtIzeEOO1JGjRpIE8koDQWO+3UljCqabvkKvx8I8xWlvcpd8Bfgfmj76vXypNyXnsHcpIX7S82AolLfvvgch0lht4YFaFABvOn4CdkPwHDI+KjHMUkVOp1OyqeufChVhQ8Uy78OtanreWmlQkFPAN5cSoCkek5oUt+NKvqIl3XsosB7R4WrxqfqifCFDjGYyvN1aINrQdQA1l63MPI8XqGMRistY4xViKdgT7ugDT64xa9DMy+7hnrZ2OrLZl8M77c2DZIg8ssANIWw==
+X-HE-Tag: 1790351917-584971
+X-HE-Meta: U2FsdGVkX1/8nQwiXEf+Otx9fQ2RWvajAcuuYh6LXF569e5zH95+qGVSi+INHoxAHcNDp3WX/dZthdBMIs1QiSokVbnPXMrcHkSNpzXfh7Bpq53aaYzN/yKBsjJhXeDFhjDc5OxBFIIeMh7OBoj3vKFqdr02PAKxqY/EeB6I8pQHhZyH99QRLxytYvV2TrAulMtI3WD0AF8ze7/uNfTB9vk5E6dbx7W09tc8ANs7xFkREfapX9sCNsyDO7Hb1dGJ3QI7Zi3llgDSimTLmEX+NaoZbed95guvtk37NsVodzHYsPUc4AE+qKi7ZecrA1lTc6lZ42vWq8YBF57j0OnX8T/CTopUigVkNPMhViYqtXQpGuaf3LZ5A4QoepBpseEomFh47HXMVBzXfheNd/rFebO4PoPVl1DckP1db3GEy8vEHtt0NHPnR3Ztzc/hi5CbrxaCtcXRfDJjgN90qFFnQsabWPsTZDIqqNXh9Z/krdNNIiANsZsoPur/J9/EDhupWxZjDBLqBvs84/GXWhTEYvmdcJXd/L3IN2DNU7SUntvvaGjv/ZheT/uawO75MD463wLJ7GNEfpPFUtbPKz7307GBtw2+fTjuuLaNu95ZdSp7PBBAho9ulwpFVUQGuuv1klShsN95pjqj/q6R1T9bDqdCZAaRCaLegPvRZG/e2TGPI5U4zFJ9ME9CbkUBLNWWQQBSNpBRV6eVvRKv4Q5bdLEOkCaOTfJXYQ98FUaQEt42SMtUNOQB1V43pzLjm0pj5uq7V1eWBOdBCzbPZd29p95SpimWHK3XGJhF9fVDc2YGhZ5yStSF6hDXnM5lDWD0bjVzCIzD/hsI1fJED8mi2hoS57OVUpwCXPUxa0atA7VpgQdH9MJNFJXCN0x+rsBnNlTSOeLHzVMMn4sTk6dTNfmtVSV1OYkN5YxdIJYKIKSgHQkeruyeS4Hxd/rtkww9rpO20Y2vdH9Y1YcSHgO
+ 3/OLZYTI
+ 8AIPce+Yr5Iw2SCG0Khprk6kJ5Cawwa3wP8euNoH2x7c6zVMSI5NX9J/VPHDIb/anxblKtrL3akW3RedHdkF6PP3occM6b69361iTJNHt4JCAUAHgNDcL3FYi14JxEQVZllcU8T0OjCx7WEr7K91N+aXbj6Ss9aiQSIcbgH72XeSqw/1MfIc9SJNFTN/oKrsA6D8ftqZRPH+32xlH1xdC/N1t0XDJuuoPKYft1/pqAAjoqc6SkJKwjuoF+btYYJenQVIySVZtZxXR9nTmdxBAvBPPFFoUW5unm7M9Dj6LSUFdMkg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,112 +94,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 04:27:44PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > This change skips the re-insert for that case.  vma_prepare() no longer
-> > removes vp->vma from the tree; instead vma_complete() detects that case and
-> > only recomputes shared.rb_subtree_last up the ancestor chain.  Everything
-> > else keeps the remove + re-insert path.
-> 
-> This could really do with a diagram and a simple explanation.
-> 
-> In general you should rewrite the entire commit message yourself and not
-> use the LLM output at all.
+< Edit mailing list, +sashiko as I gather this kind of feedback is wanted? :) >
 
-+1 on this. Even with the Assisted-by, this needs to be understandable by
-hoomans.
+I usually don't report it, but here's an example of some false positives, which
+sashiko regenerates on respin.
 
-> 
-> >
-> > The case is detected by comparing vma_start_pgoff(vp->insert) against
-> > vma_start_pgoff(vp->vma): only a new_below=0 split leaves the former
-> > greater.  __split_vma() adjusts pgoff via vma_add_pgoff(new,
-> > linear_page_delta(vma, addr)), and linear_page_delta() is
-> > (addr - vm_start) >> PAGE_SHIFT with addr strictly inside the VMA, so the
-> > delta is at least one page and the new VMA's pgoff is strictly greater.
-> > For new_below=1 the two are initially equal and vp->vma's pgoff then
-> > increases, so the comparison is false both before and after the caller's
-> > endpoint updates, and the original path is taken.
-> 
-> This is useless description of the code in English, it's not telling me
-> anything useful at all. Human beings don't have a large 'stack' with which
-> to hold things in our minds.
-> 
-> Write with humans in mind please :)
-> 
-> >
-> > Inferring the case this way keeps the change small: struct vma_prepare
-> > gains no field and no caller changes.
-> 
-> I don't understand what inferring the case means? I think this can be
-> dropped.
-> 
-> >
-> > Moving the remove() out of vma_prepare() leaves vp->vma in the tree with a
-> > possibly stale sort key across the caller's endpoint updates, so
-> 
-> I mean what?
-> 
-> What does a 'possibly stale sort key' mean? And what does 'across the
-> caller's endpoint updates' mean? Which caller? What's an endpoint? What
-> updates?
-> 
-> > vma_complete() re-keys it *before* inserting vp->adj_next: otherwise that
-> > key-driven descent could place adj_next in the wrong subtree.
-> 
-> Re-keys what? WHat does re-key mean?
-> 
-> What you're saying here really makes me nervous. You're changing a very
-> sensitive part of the kernel and talking about intentionally leaving stale
-> state around.
-> 
-> This patch cannot possibly be considered for upstream until I fully
-> understand exactly what this means and that you understand what you're
-> doing.
-> 
-> >
-> > Measured on v7.3-rc4, on a 2-socket 192C/384T system running UnixBench
-> > execl (384 concurrent execve of the same binary), dropping the redundant
-> > remove + re-insert yields ~14% higher throughput by shortening the
-> > i_mmap_rwsem write-side critical section during the file VMA splits that
-> > execve performs on the shared libraries.
+Specifically the 2/40 (high) report was valid, as raised by Gregory and now
+addressed ready for v4.
 
-For what it's worth, I'm vaguely accepting of a similar change, but this needs
-to be _really_ well commented out, and ideally in file rmap code, _not_
-spaghetti'd in VMAs. The interval tree is complicated and some bits are not
-very intuitive. This needs to be robust. Not LLM'd into existence.
+The ones on 1/40 (high), the other 2 on 4/40 (medium, medium) and the one on
+24/40 (low) were all just wrong.
 
-This also reminds me that I should reboot the sharded file rmap effort...
+The one on 8/40 is bit but had some semblence of logic, but still not something
+I'll take action on.
 
-> 
-> This is really unconvincing I'm sorry. Real numbers please with statistical
-> evidence to back them.
-> 
-> Additionally I notice you have not made one comment referring to locking
-> anywhere.
-> 
-> This part of the kernel has VERY subtle and sensitive locking
-> requirements. I am not convinced you understand this, either.
-> 
-> >
-> > Signed-off-by: Pan Deng <pan.deng@intel.com>
-> 
-> This patch feels like a hack. You are creating a whole new set of very
-> fragile assumptions that have to be maintained throughout.
-> 
-> Again as above, a member of the core team should take this over.
-> 
-> > Reviewed-by: Tianyou Li <tianyou.li@intel.com>
-> > Reviewed-by: Wangyang Guo <wangyang.guo@intel.com>
-> > Reviewed-by: Zhiguo Zhou <zhiguo.zhou@intel.com>
-> > Reviewed-by: Tim Chen <tim.c.chen@linux.intel.com>
-> 
-> Please don't do this.
-> 
-> Upstream is not interested in private reviews. Review tags upstream are
-> based on review done in _public_.
+So a false positive rate of 83.3% here, or 67.7% if you exclude the 'meh' one.
 
-Yeah, this too. It's just noise.
+In general I've continued to find the rate to be 50% at best, and it has not
+improved over time.
 
--- 
-Pedro
+It also seems that low/medium reports (which I think were disabled before?) are
+particularly bad.
+
+(I thought those were previously disabled for being inaccurate?)
+
+I realise everybody is busy, but it'd be nice to have a means of marking
+individual reports as hallucinations.
+
+Thanks!
+
+--
+Cheers, Lorenzo
 
