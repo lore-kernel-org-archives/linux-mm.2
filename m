@@ -4,128 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD540C98318
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 01:24:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EC58C98318
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 02:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2EDC6B0088; Thu, 24 Sep 2026 21:24:52 -0400 (EDT)
+	id 648CB6B0088; Thu, 24 Sep 2026 22:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB8836B008A; Thu, 24 Sep 2026 21:24:52 -0400 (EDT)
+	id 5F9816B008A; Thu, 24 Sep 2026 22:12:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A80A66B008C; Thu, 24 Sep 2026 21:24:52 -0400 (EDT)
+	id 4E8716B008C; Thu, 24 Sep 2026 22:12:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A4FD6B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:24:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A9E080491
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:24:52 +0000 (UTC)
-X-FDA: 85250540424.26.BF16DFF
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 622531A0003
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:24:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="KQV7Ee 7";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F6E26B0088
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:12:38 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 00FD8120501
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:12:35 +0000 (UTC)
+X-FDA: 85250660712.07.BB40376
+Received: from fennec.ash.relay.mailchannels.net (fennec.ash.relay.mailchannels.net [23.83.222.58])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7C4E118000C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:12:33 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=hAMu6hkf;
+	dmarc=none;
+	spf=softfail (imf06.hostedemail.com: 23.83.222.58 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790299489;
+	s=arc-20220608; t=1790302353;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+QJhA9zddl3SAwvYptEXzT6UeU8NIqwXH98v6Wc6pJI=;
-	b=rPD/a4ekMkrDwM77W1vKMr/VYSkYc6S15VyQhm3yk5ZjGgt5HGcZjfLYOBeDZtQNkm4fVy
-	BTUFznUzeWid+NJRAC5nKWDm3XYr7pOpej+9FQ3NPh+C53c0Cl9BaIPFCJNEy+rzvEsQFC
-	WtP+Kr46cUihu/61cVqOczzDtdJN5eI=
+	bh=djP5XwafCJ4cxBiTvz9MUWwQtYHkRPgJgZ89NauuvtU=;
+	b=4ykSZkqvtVuctc56uUD3aKhisM0a51aNQ9bjdigQLe0qwZ+p/Bj8qQNndbtfZLmzm7AyBZ
+	pvgm7bS/vwSnPK57oIwYBQWo/MbHCFMpZJV2wVeAu7RhYIOac/OMoeArrZ2OJRJ51M8Gy7
+	4D1Y9dvfCQ69qT79DGaG7MGkuKgHm0E=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="KQV7Ee 7";
-	dmarc=pass (policy=quarantine) header.from=surriel.com;
-	spf=pass (imf19.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=hAMu6hkf;
+	dmarc=none;
+	spf=softfail (imf06.hostedemail.com: 23.83.222.58 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790299489;
-	b=SkM7AruippVkSMTiMoTD6KxbDQHNcbuLs+nh4GeU0N1N7rkKROYxoiibCNdnKNCJGPEO0L
-	81naQIZ8IXkxca0/jq7AGQ/BQZQCHMp7HqlvrZxQJXTh/YjSTrBGKl7BD3Jm7P/A2x59FZ
-	xySakb9uKKXRs0ut0UZpjLuQiO7f8GE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=+QJhA9zddl3SAwvYptEXzT6UeU8NIqwXH98v6Wc6pJI=; b=KQV7Ee
-	7t4+XAuk0sJ44jy3lpdCzNfmWKKj0qS8voqY66n2cj9tDXdlyk4eF0mrKIjaQmaDqpo5tLMXwIz62
-	u12mbSS5h3qOLLW4uIu9214aO4z5bG+WkrVpolUmyxWBphu7M79V7g5dYGuLNxuCg4gPTgxEUpJnX
-	Uri96RESR3bCk0lHHC6dGT0n9Ay3RvoY4b6BuAOroOUZDwbb0hoDiA2O3kXwXz5aEq/6aQqSdpSiW
-	hPP52M7cfnDYfrBpPMjf6D9f0BG3nH16V9MU5AXzGIw9cf0ec6caCiZahPN20Q/Ud71BPecafCSPv
-	gDVWxEp0O/Tu+GzkRerK10oswhUg==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1x9ufC-0000000577C-3RjT;
-	Fri, 25 Sep 2026 01:23:46 +0000
-Message-ID: <a30eb60221cda2fe726a86c2c6f859f71fc7a46d.camel@surriel.com>
-Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device
- infrastructure
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, yosry@kernel.org, 
-	david@kernel.org, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, 	rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev,
- axelrasmussen@google.com, 	yuanchu@google.com, weixugc@google.com,
- gourry@gourry.net, haowenchao22@gmail.com, 	corbet@lwn.net,
- hughd@google.com, baolin.wang@linux.alibaba.com, tj@kernel.org, 
-	mkoutny@suse.com, skhan@linuxfoundation.org, kunwu.chan@linux.dev, 
-	kernel-team@meta.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, cgroups@vger.kernel.org
-Date: Thu, 24 Sep 2026 21:23:46 -0400
-In-Reply-To: <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
-References: <20260918180241.3424851-1-nphamcs@gmail.com>
-	 <20260918180241.3424851-2-nphamcs@gmail.com>
-	 <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com>
-	 <7571f005bca65aa4ad5e7ec89e62801ad058b689.camel@surriel.com>
-	 <CACePvbV-tazW=LmsbUtAhHzR2d6JwFT5R1jYZ9_NTp1hxXH=bw@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	t=1790302353;
+	b=UI9GsFA4GOAt0SOIBv1z86C0VTiduD3WoYndQaSYxPCNjv/Ku7n4kH1QzyD1WOJfY6opiz
+	jO33il+jC1vU2XNxXbVxhY+HQdlySsibbO3tBft4CVwVZvUarRzOdM7kJso9VybKx5LbRv
+	o05qDH5J5l6K1nwWapK81KWbuMDnwp4=
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id C72233E1FB5;
+	Fri, 25 Sep 2026 02:12:31 +0000 (UTC)
+Received: from pdx1-sub0-mail-a247.dreamhost.com (trex-green-6.trex.outbound.svc.cluster.local [100.100.66.64])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 1D8BD3E1F9D;
+	Fri, 25 Sep 2026 02:12:31 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Battle-Callous: 7196804e2346228b_1790302351581_998903741
+X-MC-Loop-Signature: 1790302351581:2710523619
+X-MC-Ingress-Time: 1790302351581
+Received: from pdx1-sub0-mail-a247.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.100.66.64 (trex/8.0.2);
+	Fri, 25 Sep 2026 02:12:31 +0000
+Received: from offworld (unknown [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a247.dreamhost.com (Postfix) with ESMTPSA id 4hrZ3K2pmmzyrG;
+	Thu, 24 Sep 2026 19:12:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1790302350;
+	bh=djP5XwafCJ4cxBiTvz9MUWwQtYHkRPgJgZ89NauuvtU=;
+	h=Date:From:To:Cc:Subject:Content-Type;
+	b=hAMu6hkfDkFG2sGtKgJUR6x7TvXaA3XybQus6zjPGz9VFNcIW7t8XUUdrqX1OKRYz
+	 nM5UTYkQQuwfkaNcmQZFlUKnwOF/RxPFzFomIY84Nj5u4tp2nXBmx0nCfRcsby2Vrs
+	 2ZxdDjuNozBGTMHqt231JsCFHmbhKF+xKZakbXQ7FG2W7scbEt2FpyOSsCofD8cjBI
+	 fc8VKBC0/wbB2cOgwynv+w8c+yI639oEUYuairqMoyUEP0XDBdU/NCmaRawkq0KY/b
+	 97IrhjjjR1Ag72f0WB+DTGbwbu1rtFFyQvS7ZOxYleaYobkYKAh0JyLKnpA/VYFhlP
+	 uRXf4PhqTRtWA==
+Date: Thu, 24 Sep 2026 19:12:26 -0700
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, jic23@kernel.org,
+	dave.hansen@intel.com, gourry@gourry.net,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+	sj@kernel.org, weixugc@google.com, willy@infradead.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, nifan.cxl@gmail.com,
+	xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com,
+	donettom@linux.ibm.com
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+Message-ID: <20260925021226.52kpnmvfylw73dz4@offworld>
+References: <20260728054356.291998-1-bharata@amd.com>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 622531A0003
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260728054356.291998-1-bharata@amd.com>
+User-Agent: NeoMutt/20220429
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 3bbybjqnzepn8g9b573fu65fhyrajt9t
-X-HE-Tag: 1790299489-839359
-X-HE-Meta: U2FsdGVkX1+sa7DK80y9Sbrhq+DpKBHc9/pVns6OCQENuWkuT4z41XuNI0eM8B9FluvDxmDWHsYTtFboBnpJozOOwzu30UttioOjgb/1aTyPvStj6Crd4USzqDK5vX3G0PSs/eAqYDd80shM1HSYmx/eX734omHBnKTgBqiPnp1zCbRtvbgpzDKK/TqrXcduQqhYaSX9+EYCXBXSNdXtbreioVjvr5yM1A+ai+c1o5lfH0Omvw+IHMsRep7/ouVwPMbKErkINKHUnrFuVYjGqdJIdewrQ5L/2bCucLG/1TcEYxRgf9hm9s0lOXj8gUIUDDyCTCJeGIJh/isNo452tFzImhJqFabLyQdvqAYsoisNKJtY3ZbQDWnIkgOnwGbzqM0g8w6L4lNBFIaw+ot87Er5zEJEviGom4iEoTSNhKTbx8A/3idxDfyq6Jn89ARR5uXPmKSb0Ejjd33pt495/yZ87fWUdAKmigfgtpEOTk2MbtgZVR2U7Ziq8ICnZ3bp3O7Z1KK1F6VNZNMIeAkc8P7pk+CsvWIDlppv3/CPowurMPZkV+yT9gTidWjyicWAhyuDYJITzoUADwtks3bd9J5xI12sJEnTi4mYxwHOT4Gx1ARoSqn47EoLgyA87clqE6OXuq6fv7vU8wEP5xGFVBZ9BxOPa26Ehu+A3gYSMMALMHVHrYm6ur5eMSpivpzH0AiseJBnWCqA3f4BHci01mIM5pY+YgiDapW/I1+waYSI+DktciveqOcoPzRbgCUXSHywdsyD2kihkftysuDniY5GOGFHw0f0Vn6CY56XgMrgEYRXyMUWhD/hlgjEL9uEoz2R5aaHiBOtv6Xk97MHhGQSdERHb8BL+UYGcGc9YLuiVhh7etv7K1BSut8I27pvPc2rLe3P/mku29NYgKGDp41MUcv6oC3wIVWf05DyxM0jaPr6/olOTHBLkjJlVtaXqnExJurkpLW74iq8Yzb
- Uj53H6BD
- P6UBs5XJkPKvTZPTHH1enH3b7Uf4iT+Yd4G95rzApP+oIHMZAx0Cj8jJS7OV19iAz2arcpBGLtHfHobjl8ie4AmRD0NpNPA2TGdkPEOCLbnpGV4e9NngGjt7dwPhZqKa29GmySMFy3F620sB/LPSvJjxUT3KQUeu01TlMrTjFzOqgScrbsAWgeEVNZWIl8fci938t6VeLp8W4rcakuKi5SpbounhFP+nLJHLN3c+k/QjgrcUHorSeHAAZKqJQLiSZ+Tl3pLGsiW0Pg5WO1j4w0YBymsD7u45HI2TxRLSVawJKsQRztzpN5JxGGeZXxSkSSxLBuEhaf+15Tk+Wb4npaQFzIAUcxdGTI307LgK7Nq+7ep4=
+X-Stat-Signature: 4n9nfc411mxczefzbr99znwwobgg3kip
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7C4E118000C
+X-HE-Tag: 1790302353-814309
+X-HE-Meta: U2FsdGVkX19JyIMYoXbwT9s60p54BotMXUD3wBbGmAfrbTxI2RjJ4HI9RXE2OhAaBQSMlGwTVVIgKmi+bBibBiWPuam4K/hRT/QASS1nz5npUTn36/ZdB68rvJJfUJj5gX8LcgZj2VXnKyTnEDUKmSjs8/vt90vvtT6HB8Krb4wBW2MBLYQgrP6VJXCdEPTui8Jkj8TBkyOBNnQAvbr5MLfnO2Hn5VqikkTA+0KYcrFlTo00vRO9K1xANe9yWWBYmnVK5XedDtINfhwu60RsbXxo4DukvniZ99u2jX9HPqCLbCTTiRQGNEIac6GchlJn7O31o/7LZZpjOb7LRx63Kg5WIve0TOyf/uA1UGi4XNfKsfFGqYxlM+eiBV4FhW3yuNdNCj/C5CHatS6kxMcOZiDCCaBlzUXdNv6wwk/JmmkIIEpxxYOG61N6diMBWUH5/M9yPw06ygt3NEIxjOTa81NEEVuWOzfxvb7bF8c42QVgPLMJPQydLbdXLgB2LVRCeFO6Lguo+7hH5Lm8TGE3V0L6fNCfNnWP+z1808TSXRT1VNEdOzEQxvDCLR9xEAWE4SPLgqtAl+BN3bk2jnENbruxS6u8iNMfafcbeN9DGB2nr4EDktHIgS9+7xLUBedkZcdW1NOHKEbFNCQ5aRF7Hypr708PcwtFMaJIOWi22t5/7UMaz+Jtm3iDCR+DVEGRKtJtjgRR9n2XEfhHz/G6NDuR3Txl7GpMDEbKOT0UvGZSBnhJ5rCg6qGi7+jBMDpJlDcuCQSRX8iYWr0pALdZDRVq+l94XQ7qrTou/Gg4nigRZB5P9FrveAia6Fv/4RGLc2vG7PydHQQYEGWZ+C/HLZ2u7zsI7qQn5hEf4XOfRRDAx0qSVMALXRPtDQxuysBVd+iQDpDbKEdksdZaXG6o87n+zVp8l9dlK7G6yWR+YcZmwWDtEwsHfGVkKsjFD1Rw5a7YAm7UYB2eQ4byGtK
+ eHCqNvXc
+ sWzuOxk9vSwys9uTt0amn25oehhF5pKlWZnmQfhA18PvP01Yb9n51qYxM6R8oRPtvA8ITBlInzGwa+YIVTiUeqpLdLk9J7WdvgKY3vE8QPbg+RZfqNS7rsJ5VFRCTjoSxRatkjnW4Id97diq9k3SKsY8wE1PlM/zVheZB665fTWk2WMjEumc1FGKrNVy/0Q/i+sDNeHIfgh4LD+hINxdtgb2vwYFBsAO0a3QMrVo0HEQbg/r0hxBgoxH9ugAt+YkHxXOL6eiDZ0XTHWVMWqhIF1W/mYtyLsqzWzMs9L6nQqFhZi8JN6ujjJIQAJtJt528o+bfterPIKDvdFjiS1FLnUPRbCp+1DljNYQ0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,89 +122,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-09-24 at 15:17 -1000, Chris Li wrote:
-> On Thu, Sep 24, 2026 at 8:13=E2=80=AFAM Rik van Riel <riel@surriel.com>
-> wrote:
-> >=20
-> > On Tue, 2026-09-22 at 23:18 -1000, Chris Li wrote:
-> > > On Fri, Sep 18, 2026 at 1:03=E2=80=AFPM Nhat Pham <nphamcs@gmail.com>
-> > > wrote:
-> > > >=20
-> > > >=20
-> > > > @@ -482,6 +491,11 @@ void swap_read_folio(struct swap_io_ctx
-> > > > *ctx,
-> > > > struct folio *folio)
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (zswap_load(folio) !=
-=3D -ENOENT)
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 goto finish;
-> > > >=20
-> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (unlikely(swap_is_vswap(si=
-s))) {
-> > >=20
-> > > There are too many swap_is_vswap() in this series. It fragments
-> > > the
-> > > code path, making things harder to reason about. Esepcially
-> > > around
-> > > locks. I count 22 in this patch alone.
-> > >=20
-> > > I consider this the biggest drawback of this series. This
-> > > fragmentation of the code path.
-> >=20
-> > Could we avoid that by simply always having everything
-> > go through the vswap abstraction layer?
->=20
-> Yes, but it will pay the price for going through the unnecessary
-> redirection layer always. It incurs performance and meta data
-> overhead. That was one of my previous objections to the earlier vswap
-> version. Sorry I enjoy micro optimization too much, that is both my
-> strength and weakness.
+On Tue, 28 Jul 2026, Bharata B Rao wrote:
 
-We really only have two cases here, don't we?
+>Performance summary
+>===================
+>All results are on 3-node tiered systems (DRAM top tier + CPU-less CXL
+>lower tier). Speedups below are normalized to the base kernel with no
+>tiering (NUMAB=0). Columns compare mainline hint-fault tiering
+>(base NUMAB=2) against pghot in two modes: hint-fault driven (pghot-hf,
+>NUMAB=2) and HW-hint driven via the AMD IBS memory profiler (pghot-hw,
+>NUMAB=0, no NUMA scanning). Single run per config (abench is avg of 3).
+>
+>Benchmark      Metric (higher=better)   base-NUMAB2  pghot-hf  pghot-hw
+>-------------------------------------------------------------------------
+>NAS BT (MPI)   Mop/s total                  2.26x     2.26x     2.13x
+>Graph500 BFS   harmonic-mean TEPS           2.64x     2.49x     2.68x
+>llama.cpp      decode tok/s (tg128)         1.09x     1.41x     1.21x
+>Redis+memtier  ops/sec                      1.05x     1.05x     1.00x
+>Microbench     completion time (1/t)        2.41x     2.40x     2.35x
+>-------------------------------------------------------------------------
+>(baseline = base kernel, no tiering = 1.00x)
+>
+>Summary: pghot hint-faults reproduces mainline NUMAB=2 with no
+>regression on every workload; pghot HW-hints/IBS matches it mostly.
 
-Either the data is in the swap cache, and
-the vswap layer can directly look up the
-swap cache page.
+The IBS doesn't seem to bring anything to the table, other than just
+serve as an example - we've discussed this in the past this. And for
+NUMAB2 I would expect this to be the very best case in that you are
+not suffering from loosing the locality info.
 
-Or the data is in some slower back-end,
-and doing a second lookup is not going to
-introduce noticeable overhead.
+This is a lot of added complexity and code just to break even. And
+hardware sources should really outperform NUMAB2 for this to be
+worthwhile, methinks.
 
-If the micro optimization come at the cost
-of less flexibility, and harder to maintain
-code, are they really worth it?
+I know Joshua mentioned some improved PSI by doing the promotion async;
+which makes me wonder that perhaps just a simpler promoting kthread is
+enough, so NUMAB2 just kicks the migration to it and not done in the
+accessing tasks' context etc. And Gregory also recently improved this
+path vs NUMAB1.
 
->=20
-> > Handling the details of what's behind the vswap would
-> > be handled one layer down.
-> >=20
-> > Chris, do you think that would be cleaner?
->=20
-> If it can wrap below the swap_ops, it is just priviate inernal dedail
-> of implementing its own indirections. That would be much cleaner.
-> That
-> is what I am trying to pitch to Nhat in prevoius email but does not
-> have following actions.
->=20
-Can you sketch out the details of what you
-think that should look like?
+I mention this because I have integrated the chmu as a source of
+hotness for pghot and this was tested on a real device vs NUMAB3.
+This was based on Jonathan's rfc for the perf driver, only that I carve
+out the first chmu instance for this, and leave the rest of them (if any
+for perf).
+For example, 'XSBench' improved by a factor of ~2.7x (I would like to
+report a wider range of benchmarks at some point, but this is what I have
+now). But a lot of this bypasses most of this framework and just piggy
+backs on kmigrated moving memory. chmu does not do well with
+pghot_record_access(), which is designed for sampling... so I just set
+MIGRATE_READY right away. I also added a pghot call/api to make use of
+the regions chmu deals with instead of per access/page. The cxl driver
+just takes the dpa range given by the chmu hotlist, coalesces into adjacent
+hpa ranges (just 1 for the case of no interleaving) and feeds that to the
+pghot subsystem as a list of these contiguous physical chunks ranked/sorted
+by access density (accesses per page per second, so a large lukewarm region
+and a smaller hotter one can be differentiated and promote the latter
+first).
 
-What would the data structures look like?
+So perhaps any mm interface for this stuff should just not be designed
+around sampling, and instead proper hardware sources?
+A lot of the complexity in pghot can be removed without this imo (per-pfn
+metadata, accumulate+decay phase). Of course we still have the problem
+to evaluate the cost of replacing a chunk from the top tier(s) with the
+what the low tier is reporting has "hot". And this is particularly true
+with chmu with limited full system memory visibility (as opposed to IBS,
+for example). I don't really have a good answer for this, other than the
+user could use proactive reclaim along with the per-device tunables
+(ie unit sizes and thresholds for chmu) to configure things realistically
+for their use cases - prob. easier said than done.
 
-What operations should there be at the
-abstraction layer, and at the swap layers
-below?
+Anyway these are some thoughts prior to LPC.
 
-How should migration of data from one swap
-backend to another be handled?
-
-At this point the best way to make progress
-would be to hash out those details.
-
-If you are unhappy with what you have seen
-from others, what does your ideal design
-look like?
-
---=20
-All Rights Reversed.
+Thanks,
+Davidlohr
 
