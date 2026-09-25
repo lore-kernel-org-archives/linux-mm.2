@@ -4,130 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53A80C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 06:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0765C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 07:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 548B66B008A; Fri, 25 Sep 2026 02:55:48 -0400 (EDT)
+	id EEF6F6B0088; Fri, 25 Sep 2026 03:01:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F90E6B008C; Fri, 25 Sep 2026 02:55:48 -0400 (EDT)
+	id E79A16B0092; Fri, 25 Sep 2026 03:01:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40E996B0095; Fri, 25 Sep 2026 02:55:48 -0400 (EDT)
+	id D42566B0095; Fri, 25 Sep 2026 03:01:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1594B6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:55:48 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9AF24C055C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:55:47 +0000 (UTC)
-X-FDA: 85251374334.11.FF7E452
-Received: from mail-pz2-f42.google.com (mail-pz2-f42.google.com [74.125.228.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C5499C000D
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:55:45 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HXWeDjqc;
-	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AC8486B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 03:01:33 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 43C2D1C3217
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:01:33 +0000 (UTC)
+X-FDA: 85251388866.15.34CD138
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 58F4F120019
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:01:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZsFUjKBg;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790319345;
+	s=arc-20220608; t=1790319691;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tx5lnhA+lxgkmkf1DN+MC9Y5ctB2DhEwgjJwGzsdzag=;
-	b=p15ESqLyyAMwB6larsCI8PtFO92xHYWAOC1MtTUsLA6rrZ/LkFHSKOx0xX0ener+M0l82W
-	R7QWPuMo228M8SRZmeG1qW2F30TACQq99cW61GsQ9i2sq+dXYTjG9AmqxugVi+K/iJkXXM
-	sIZa915jVpsrxyd7KtcdGrRsNVH3Nfo=
+	bh=12GQTQF+CbA5YWBSY494mtmthnVLIa76obNaRDLDI/c=;
+	b=ApusKc0Nnoj7KZayEGn4u/cDiOH3vFHi/FBLg/gSJEUOK/mmzvvPAjjVcusYzsccCXrJas
+	AIc1qJY6Aaks9ceH/oeXcCDw0/q2yAv1stgtZLW/LNHsb33T5zbJL5gbtnH7f/zz2beTlJ
+	MLRl54bnZAvjGHqxBvY4EqAjtqMXaf4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HXWeDjqc;
-	spf=pass (imf28.hostedemail.com: domain of lianux.mm@gmail.com designates 74.125.228.42 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZsFUjKBg;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790319345;
-	b=qY+2AkMGT4mRTTVa57Q/cbQRVvgDQdNXtNgur/0uj+Es5O6W3xg7TxIqh2KesMfbrOSnKr
-	6O2Ri1oNWxDiOuMsXn34m0/tCvpUAsa82Uwmov6mfdb6y4sjWjlGQeROMpqC902IWY5Fgz
-	SFxu3xWj75gAnmiPv4+xToI+qjTON3U=
-Received: by mail-pz2-f42.google.com with SMTP id 41be03b00d2f7-cc4d04d740cso186904a12.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 23:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790319345; x=1790924145; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tx5lnhA+lxgkmkf1DN+MC9Y5ctB2DhEwgjJwGzsdzag=;
-        b=HXWeDjqcAS1Te9Srj57qGtwQCDlxf/ieFSY3n3O18YPJENDmNLHZqN8Z8g9Z8Wjm/Z
-         k3GUmbLBo0qnZ5e7/Aa7fDvBXQ8pPHvPoE8cFSZ8lgy6wr/teEazcYFiy0Qk6+8Jo1L8
-         SzXwH9tfLpiNc1dMNviblTSIBttghSTeWmjnPCTlWMKJEvwWz5F9W7nEOybeA9mZK18P
-         CKTKzQFrnSqbxREuoCxxliK0kCMx7fasvPXYbt0UhUQ8jceFsRIFdYJ+KJOFVQo5EHaT
-         DKsO25+ISaqLCY6Qly/gzIxv/4h8URcioGIyuLhw4N+Bice5y3bDWXpgG2IK5cmEfxS4
-         mimw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790319345; x=1790924145;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tx5lnhA+lxgkmkf1DN+MC9Y5ctB2DhEwgjJwGzsdzag=;
-        b=RNm1vUzZKDes3RGRDJj8ugVm/DuJo3ZE4jyePYjG3/JlzcdZaCS72G5SxrL9ZIdYhb
-         RvNzMMxsqve8seRLhvhzBziHyCjeysx6yi3WV0OczxNkzBNeg01rkmhjgg5y4qnIk2JA
-         mau+iUCI6EVuZqg6uHbodXMFoQjkBs3A20tIdvAIWiOW+eC07RK3YdP1WrSYSDUvuGof
-         PqlLtakkROFyjuMcSMOrUJbNLbEBujPgZeOFPF0RGdlAVmcQvJsDM7grkuJ66Yflfp5J
-         JNxRHt1mX2dfyGjoW9zbpv8XKYI35SriqJsaGVt4203MntBBaKuqOIjkn6FZw1iiCGuV
-         bGqQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxHMdIMzbKzgHzs08YGfOz/HvSmlqVNMyyI7WRRdhlXKYb8mM/ZOdi8MTeF+n/r96wgBXoFsxap6A==@kvack.org
-X-Gm-Message-State: AFuF++krJmgqktSP+/ee8Sf1R5K59uQJD7RS9D6Km/zqjzX9P6ME9w3i
-	eg6KLAIXGilNxIkvy0enMN6Hiaf2bZ0vZY+mYWRDzxCj0ep31gMWpPbs
-X-Gm-Gg: AYBFou15dO3KS6KYPur+Jaq4KTJZv11KaoLQOwHjStrbcWB1KMDjUEpBrrVNW7XFVy6
-	/SWvd1L7e2NesX5PKHevWs/W+v1qmRisHYhSUWMk69ZlCWIR64y0/8NdZioU4PT39aRQDR7FiKg
-	N1w3IXWNV9jfQoTn6RENdNbZjJFRAeo4r2Zv2WT1rg0CwvYo6VLvUZfyPLr/FN3PsxHInioQJWJ
-	3wcyLSQpdY1vyvNiePMXRs5jy3EQ4tEzcW4ZJFNix/MSydkS1KUmfJGIM4LToPxOmdtsjDE3YKW
-	4WE7IJFDFoJ+SdJ0qG4RJS9un4JBVy4jgRfNkylOsTn6iGNgzGXnOdxFKApP/wzlcGWbdNgrLPw
-	TtePhJ45wc9NH6Bhp4ad3CWXK88RnU1lnSDF63kVQO5UontDSxZKNDhS0RwnDwVfOhupBufxXdo
-	IqwX5V9gCxqWDvexSCbv7E4JWum3+pIDp5rlH0u8+xqxL+puwjR7OlHk9naNQtwe1fY8NRfAXBY
-	m+p/YGiyF44UO65P243soxHCvA9bzgJRvcNhxET
-X-Received: by 2002:a17:90b:3985:b0:39e:6c69:f482 with SMTP id 98e67ed59e1d1-3a098d5e61fmr4310895a91.65.1790319344531;
-        Thu, 24 Sep 2026 23:55:44 -0700 (PDT)
-Received: from localhost.localdomain (vmi2317699.contaboserver.net. [85.239.239.237])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b998e2bdsm2718096a91.13.2026.09.24.23.55.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 24 Sep 2026 23:55:43 -0700 (PDT)
-From: Lian Wang <lianux.mm@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Youngjun Park <her0gyugyu@gmail.com>,
-	Youngjun Park <youngjun.park@lge.com>,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	yosry@kernel.org,
-	joshua.hahnjy@gmail.com,
-	taejoon.song@lge.com,
-	lianux.mm@gmail.com
-Subject: Re: [RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with per-cgroup selection
-Date: Fri, 25 Sep 2026 14:54:57 +0800
-Message-ID: <20260925065521.36340-1-lianux.mm@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <arQJIjzE0BlUg0CV@cmpxchg.org>
-References: <20260916183437.2946306-1-youngjun.park@lge.com> <20260916200434.GA5784@cmpxchg.org> <arAHu_BD5oqpZJER@gmail.com> <arQJIjzE0BlUg0CV@cmpxchg.org>
+	t=1790319691;
+	b=A7zxOc8mB9zTaP4OzdhGLrQlLnqts3eRtVMfBNGo8p045tI6Qo9/KkOQ6TA7dHQT5c6tUm
+	bqWP9K97oA/luSPy8z4VOaRLZT6J8dtAxMrhWZS8MWZc7UgyxQRgTUZzH6X28DEX96MXGq
+	0fBzji+tg0Lt5CSjQ8vY25QdTb2oQvQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BDD7C43B78;
+	Fri, 25 Sep 2026 07:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD041F000FF;
+	Fri, 25 Sep 2026 07:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790319689;
+	bh=12GQTQF+CbA5YWBSY494mtmthnVLIa76obNaRDLDI/c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZsFUjKBgrpHW8BPAYX+7NWH4Sgkrz1IewWel2Oqzog+gTBQMFg6F22pt+peCYKq3s
+	 0erWR043KfeVfU7c9hbkT5gFacZ2S2SVvoQRngbPCHTQliIyjgMrzNi4YpWpgKEHAW
+	 yc6BU1+ypEBxx3O9T0wnjWani0UonVjC9NA8sauVwF1q0j9wdcKY4Q5log9VP3jvPf
+	 F+DUFg4l1MOFJwRIOvefvcRyHtzzRgAXJe+34GgThhIulZ4Mz5sFTjAiSxqKyS2Twf
+	 vVZewlqy6kOIGqFtCPEeQ36qkpjc9DDEIjbR9E3JdGeHjCxr1BOsxbGFnkAgU9dfah
+	 6cfKfYb3HfnnQ==
+Message-ID: <90fc724a-08c4-4324-9420-89fab05d53d1@kernel.org>
+Date: Fri, 25 Sep 2026 09:01:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C5499C000D
-X-Stat-Signature: qajphud4epuqm7ehdgzhw9qaxo7fm7a9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com,
+ surenb@google.com, aarcange@redhat.com, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260919004630.1159895-1-donggeunyoo.kernel@gmail.com>
+ <20260919004630.1159895-2-donggeunyoo.kernel@gmail.com>
+ <arO0a3CU_idyVsqQ@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <arO0a3CU_idyVsqQ@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790319345-437364
-X-HE-Meta: U2FsdGVkX1/HYl8WOwtyi65HyOEN6jxlfFoJ9BCgE8BC/q++xOFc8My0LmyPETcMtOwlpoRKuKAJwQ8WUvZKli3ySfAo9FyaECIPX42AehQ8dj+OprQqtI3QHm89qYrhMaJmhIfWtA1gA42B9edMXfl/uoMzUf8QNKPTrRZ9w/fA/4z1rM1j05kjC6z1ATJI2QnbIdpyDyPRDhLBGkalK67Z1xlxx0MRpw2XB9BW7Fvd9SWzLk8DpyQrH2PnVy4nVTlY2+m80SOsAm1cF7oMpuWEDLQcN0BcXIHXU7ZT6ScZjXR/pQhO3LS00mf519C5cDVpGxOuemJlVhBNhjm1b5h/KrzI1ks6lsytDNE2iaYIrVtc8BWavWxl+hcqwfoLFSwRfMC+/H2dOB9jcdLm9ufhwTBLilxMFrZAygh1+eZVxcWp9Z1HMUZM4sBz9w3tHr+PTp46cuzLdHCPduaMRQx11OO3JMSzRw9F0+R9jgJUE7yNAV94dQuhRmTGuem9e7Ln9o8HZ0kcC8bRR/BJIMOPr9o99/kGuukt7k0FvCGiB5FKU5N64kHM3TppieCW2iTz9CtliM2dDlq7gdQofCysiCGk0CPxPXI6CUBxE9SMod7mRGCyfg1XvzrMBKSNGBxrP0PcJF4Cv13nER/caDDyH9HCzTfFBTTAUSWyOYU6rHlsupAzJxzY7KU35h615piGmzmWbIx9rsjBY7NtS1/caovLasnyNjWSs0SMKXnUapstc4ovXOmTQOBvPthRjKu/KDfsmGLeECuim440y8PmjD9bo/aBxPM2AfjaRssyz3UZPzXd5RFXRVwi66+I78E7hO5prFgSSyopLa1CRKSBVlMR7dvC86beJ3x7zRoAFZADt/3ge9s4LIThar6QDOhUrn4Ycxw4TFmZHjBqU34e9vXC5uRLYPfG0cSqZJwUi67Ww9vzdDy9AMNqPwckQXLFLJ0lbJQC5a9WXK6
- j3ZqLPRP
- bhOJnNlvcGD4azD0QojSRM41G43RUgQswzdEWjNtevuA4QnsnjzJkeyKOE4CZEZnnTyLvwJu5Zc8EjSHIvFGgxUZ71BbM4hXZ0ZWv4JdWN9k7IoM/H0gEXYYiCraBZjifQ6gOnu/XmQCY6RbW6aXxzVUa8iRHhkMxGKxZr6Dmh3TeXWWH3Hd+VpwU6kA7KfdgAcmC2By3gsX22SbwUUjM4xCc5qI/G2+J3lSpXzBnBnAfmnSiHLPbbPBjYtLjdmr17mIAKHYJK6A1axX75ZobCLIMQR0PTG0kfW0+di1Aw7A+1nzJMacr9EF9GlhfnwDOGfcVO/9xs+pdXoS8Nc8IctwtGjnY8Rxgqlu32WCVLg1c/bE8dWiPqDlEheQUdJfjpnEsePgSpKuPyTACg6HFXngB1OGJkAgmEuUhiC93JST6BYcCneHLLplNvvElHNrHkT1QUmPFLORFZgszcLfE2UIxDzXmNkIHJYs2oTgc3QtkW9mvzZnes8z10bu8gHeK1/Zc
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 58F4F120019
+X-Stat-Signature: srwsqwpa65rfcbmgjip6oygzmn57rrfk
+X-HE-Tag: 1790319691-697159
+X-HE-Meta: U2FsdGVkX1//WcDd85YMWvIuY/vdxLin5SPCFURH1AoKqQNzFKDjiPtmkAHBhJPOc+BxkYxnptzxzLSx3Vj+CfkiO03X4Nw7wJqtbYg7XfDpr6wduDbK+Y3bLS0Vzw1Wu3GvkLD11x7sMWiGK5Y3HLChDy13KPvIifodFEjPMunJNjAosocnfWuohQzBLCNpAXxI3VUZfvrPYy59V0yPLyhRX+zF9os2McBj4QqR0TWvoxe3pbhj2T6ibRsviYoVwQVaPvYOEE6uVE8rR96H5q0Ihbjp1WGDxKWOwMwDXnPZeIpMnz8ySVGPTPykDyU7TrcrBWggfCTaCkFFgxU68T7S8HwVoxGbCNrYfD9FcX8+ZgEb6ZyZKlpxBdDWXU/jrbeC1qnddwe6BOYu29R0iTd+wT76IYH8GC8lDhg9wUa7jEdm5atR0ciDgL1quEHZtMp3DQ1Fh6yScFViIFue/8bZjveOvrC0mQD+L4WWZEu62oLE0KWdJzIzLMuiqEMgF3HxSW5F+siemz4k1ApBDgPbXWAF5auFBo9Ns1UpSCFzLRgb9MBb4sokp2T1W7lPKsRw7eWPSOoHGIb6k2E912Ok0we9IXTX5QJGj8NWeD2kwvFeJW4L73CCRXkDxR8/rzuIQVT9FlBOQuRjHDSBYd8AVPQWXGxvFCELooICBPfAU/0UL9Rx+CCDKnV6GcNPv/jkeVyPtQsvVdIZyZEDMZtx/ORIu9/qzPc07Z3nt6BQNyggL/5uoVoNonQrbBrEGOqhgzzzBMUWz5kiHLUQR4roNrlY2xMv2dnwd1MaRj2qVbzyEbcH32uu5ldktGQ0Ql3iHrjTOYfEw8UUhikC4fy3EyuuCU64uF0C3sMMHqO7KSkSoltGHot0IzBb+8SvblPDefVADf/mR5hW/Kr5gSq1eu0VbBjVIJVCeHd4A/wGTkroa2LGcqsA7trNfVIILJKXy2E6a+LWaqR3r5W
+ kmvQOCwZ
+ f/ORFD+rtDlaDyXpi3lOYctrjTxBsrn4aSD/bzfiRdD++ZCD3LPVFA3g5QAhmfXCBXHXFCGEFzVWqffszW8nVdpNFYFoBMzOarUh22tCoM4gTDCWG+fao3JqAc48/te4IEQLCbkW5hpDbSEMrGToL89DB4h4wSOwNP/Kw+F9Al0N2LfekeP9dCj4WRIznpdk+1V8wVcig6QZB7fjBSorDLBdEUq6yBDT7GuwBONNlhhEKChkmssBTPX2ZVulI0sNN7/gJIqZ4I5WeHKjfjQbpYZWRZnKFl+y/3dFGsTAs3iXIvzEkZrJEmR+M/5r9bZ+FIEyib8b/vriHzd9wrhXW1RPiRx3L+tU5QBLt88tFJ+Qb+DIju7gWWf9iePdx0UEOqbpk7shouyWn05jiMRrBN4kawukEfaJLRiEj4swDAqJAHYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,51 +144,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 23, 2026 at 01:15:14PM -0400, Johannes Weiner wrote:
-> If you can think of a good usecase, memory.swap.prio.min would be
-> certainly a natural extension. But we should get the usecase laid out.
->
-> The requirement to punch holes is the one I can relate to least. Why
-> would a cgroup need access to good tiers and bad tiers, but skip the
-> middle ones?
->
-> This would seem less like tiering/hierarchy and more like flat
-> per-cgroup swap pools but with obstacles.
+On 9/23/26 13:18, Kiryl Shutsemau wrote:
+> On Sat, Sep 19, 2026 at 09:46:29AM +0900, Donggeun Yoo wrote:
+>> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+>> destination unchanged, so a uffd bit set on the source lands in a
+>> destination VMA that was never registered for write protection.  It is
+>> then permanent: the bit is dropped only by change_protection() under
+>> MM_CP_UFFD_{WP,RWP}_RESOLVE, which uffd_wp_range(), mrwprotect_range()
+>> and userfaultfd_clear_vma() issue only for a VMA registered in that
+>> mode.  pagemap reports the page as uffd-tracked, and MADV_COLLAPSE
+>> refuses the range while the bit is set, because collapse_scan_pmd() is
+>> strict about uffd on swap entries.
+>>
+>> move_present_ptes() and move_zeropage_pte() build the destination PTE
+>> from dst_vma->vm_page_prot and arm RWP only when dst_vma asks for it, so
+>> the destination's own registration decides the result.  move_swap_pte()
+>> copies the source PTE instead and only ever sets the bit, never clears
+>> it, so one UFFDIO_MOVE behaves differently depending on whether the page
+>> happened to be resident.
+>>
+>> Clear the uffd bit on the moved swap entry unless the destination is
+>> RWP-registered, as copy_nonpresent_pte() does where it installs a PTE
+>> into a destination that may not be armed.  A WP-registered destination
+>> stops inheriting the bit as well, which is already what it gets when the
+>> moved page is resident.
+>>
+>> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+>> ---
+>>  mm/userfaultfd.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+>> index 74f04c323c50..6495666c596b 100644
+>> --- a/mm/userfaultfd.c
+>> +++ b/mm/userfaultfd.c
+>> @@ -1452,6 +1452,8 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+>>  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+>>  	if (userfaultfd_rwp(dst_vma))
+>>  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
+>> +	else
+>> +		orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+> 
+> Putting it in the 'else' is wrong. Clear uffd on the source
+> unconditionally and re-arm based on the target VMA:
+> 
+> 	orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+> 	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+> 	if (userfaultfd_rwp(dst_vma))
+> 		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
 
-Hi Johannes and Youngjun,
+I'm confused why the original code proposed would be "wrong"?
 
-Sorry that I am only joining this part of the discussion now.
+I prefer your way of writing it as well, but I don't understand why it would be
+"wrong"?
 
-I recently started helping carry Kairui's swap queue work forward. Our
-current v2 is here [1]. Youngjun's tier work interacts directly with it:
-v2 maintains a device queue and reader for each priority, while v11 makes
-each priority a tier and moves device selection under that tier.
+Maybe I need more coffee :)
 
-I did a functional integration test of v11 on an x86-64 host. The tier
-mask, fallback, same-priority device allocation, concurrent allocation,
-and swapoff smoke tests all worked without kernel warnings. This was a
-zram integration test, not yet a real multi-SSD performance test.
+-- 
+Cheers,
 
-One result seems relevant to this discussion: with a restricted parent
-and an unconfigured child, the child could still use the faster tier. I
-therefore agree that an inheritable memory.swap.prio.max looks like the
-cleaner first cgroup interface. A hole in the mask worked mechanically,
-but I do not yet have a convincing hierarchical use case for it; it felt
-more like per-cgroup swap-pool membership.
-
-For the queue integration, one possible boundary is for the tier to own
-the queue/reader and for the swap queue to become the default per-tier
-device allocation policy. I would like to align this with both of you
-before changing v2. I will also continue the real multi-SSD tests.
-
-If either of you has suggestions or specific test cases you would like
-to see, please let me know. I have a few test setups available and should
-be able to try some of them. I am still getting up to speed on this part
-of MM, so please correct me if I missed some context or got any detail
-wrong.
-
-[1] https://lore.kernel.org/all/20260829-swap-pcp-priq-v2-resend-0-68d3d925578c@gmail.com/
-
-Thanks,
-Lian
+David
 
