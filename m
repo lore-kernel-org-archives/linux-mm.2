@@ -4,78 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C13EAC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4C66C9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9AD06B0088; Fri, 25 Sep 2026 06:03:14 -0400 (EDT)
+	id 1059B6B008C; Fri, 25 Sep 2026 06:05:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4F776B008A; Fri, 25 Sep 2026 06:03:14 -0400 (EDT)
+	id 0B75E6B0092; Fri, 25 Sep 2026 06:05:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3AD36B0092; Fri, 25 Sep 2026 06:03:14 -0400 (EDT)
+	id EE87B6B0093; Fri, 25 Sep 2026 06:05:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 903696B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:03:14 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1FE571205F0
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:03:14 +0000 (UTC)
-X-FDA: 85251846708.14.0370D8C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 65CB6A0008
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:03:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQlSLR9x;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C72F96B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:05:04 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5798740550
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:05:04 +0000 (UTC)
+X-FDA: 85251851328.15.D601281
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7A3B9C0002
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:05:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PQeO386u;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790330592;
+	s=arc-20220608; t=1790330702;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t36CornOt9N5L78VQ17XppVwwpYO+WRPIyNlZItd53Y=;
-	b=g5tNhNigA9D98IWHMDEwSJBMiHj1jQ2RepJzHyLnhe6uKG1THmYl7qOy68Z9RZooabAQ18
-	yrOw13fWgUnWPGP+rnFkh/X+BuhPsVYa1z1axPwDihobwIfXqHp2qyDuGmUe1yIHM+ygMU
-	TiryMT/R0M2Km9EnxezCbwvgO4VONqY=
+	bh=dU7q1crf5ei7yINWaJIj4cP+u6OplpVTF9BgULui5xU=;
+	b=TKGkuHTB/lyHSC4eO4sq9uOt6FIYD1G3Fu91WAMQJartose6wB2b5AHN2uPIysXBwOXhiX
+	0PYhHMV1pLM5DMnmB4k3SZx0AOHiL0igGRSTMpD0Dy7V2xS9ZcJ7mTqCimZGJ8qyJtfWkN
+	1QTscD2KwlZX6Y9dXSmjFzTaka7J4wc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQlSLR9x;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PQeO386u;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790330592;
-	b=r5XWnklUcPi9DRDX/dmyLJsyCujj6FEoVTACrQkHVqDt8eNeRCyCms/MGZszCZDisMYPXf
-	uvP9IaFNXyjEwFBxagFr6qArRcn3T648gh0OLJ+5mX5xlcdQydQIoAKw+IzP0IfJL306p7
-	MRk5hDKRFauIGrzJPFub3tAENSrAwhM=
+	t=1790330702;
+	b=40e6kGwl3DrI/tqB5XyXN/ggozb3MNPk2k29Y0EQTwTkct5xPuFpV5EYRRi2G/q3jfwQx4
+	uMi6r/Ioj88dxtqsckoqrjU5jbOlJwwPbtT8S2n40MOPZA3Xzvtz4aIHqAHDvM8JfjgbDx
+	qnk4KDECxzzilm0w13R+jjxLBCR83r4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E338F6022E;
-	Fri, 25 Sep 2026 10:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CFB1F000FF;
-	Fri, 25 Sep 2026 10:03:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8FFC2423CE;
+	Fri, 25 Sep 2026 10:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027D41F000FF;
+	Fri, 25 Sep 2026 10:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790330591;
-	bh=t36CornOt9N5L78VQ17XppVwwpYO+WRPIyNlZItd53Y=;
+	s=k20260515; t=1790330701;
+	bh=dU7q1crf5ei7yINWaJIj4cP+u6OplpVTF9BgULui5xU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZQlSLR9xHXZe3ovZL+O5SGKyjwqcEF8nNNxUh9+RbSALwRy1mRLu+0iaqVxvv7UG4
-	 N/+won6apca3urjKK4I4XdG06ZAghJ7L+zqCotK8m4XqWrxJm8KvOjlbjSOoRKKyaX
-	 Ptpcjp5BHXjx2ms/e+tGKMvGhuA5K2W6jvJNUw2FEXMw7zc+uGxkpXMnjQaJ89GUxR
-	 ki3FLSpW9m9gUf3bEYg5P1gSA6Q1o7wdaulQwKazp5orcmaWrCljp9Wy4yo4ZdOqL6
-	 mo6nouhIG3E9BCEYv+mMLrVQkcpPZ+uLequRrGGdIsJR/HYkhfbJQHpI0vNCvNUiJK
-	 gU35NHdAbIvAg==
-Message-ID: <59c4417d-b62b-4b40-9efb-e704b4162573@kernel.org>
-Date: Fri, 25 Sep 2026 12:03:04 +0200
+	b=PQeO386uyq9Zj2RmPUhbQTxwDLMrNSLyuDhakS4xEaOiKPurJ2glp05GW5UwOZrCk
+	 7TngOd0Gikg+O1G+TqsvpMVOXIcGVyukDWeHmwY8gS08SrfGNLrw9Os8XkmTWIoRKR
+	 bCxPIS2z7J1BbZsi0kOOJhy2hiXDY3Qo03xpvRCmsFxKvoGFVy/YEDtuSMuCpASoEW
+	 aTI9QuC8ycfqG9G6cytqg3Y6UybPQA2IC0SuCKL0+Kaen97+8XntUuFNzfSTg8tvEF
+	 mt8eDIUcjq1YzgVdgfQSb+CspLnRZG296mAoj2yxBh/Uo6wI+gaqW6VduGfwTZHkFt
+	 7MVY02NaRdCVA==
+Message-ID: <75358469-e4b1-4c11-89a2-61773c89132c@kernel.org>
+Date: Fri, 25 Sep 2026 12:04:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-To: Lance Yang <lance.yang@linux.dev>, muchun.song@linux.dev,
- research@deepseek.com
-Cc: sj@kernel.org, mst@redhat.com, damon@lists.linux.dev, linux-mm@kvack.org,
- virtualization@lists.linux.dev, ryncsn@gmail.com, kunwu.chan@gmail.com,
- lianux.mm@gmail.com, baohua@kernel.org, xueyuan.chen21@gmail.com
-References: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
- <20260925081504.23569-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v3 3/7] sched/numa: scan read-only file mappings in
+ tiering mode
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org,
+ bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+ kprateek.nayak@amd.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+ nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev,
+ kas@kernel.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, hannes@cmpxchg.org,
+ shy828301@gmail.com, raghavendra.kt@amd.com, stable@vger.kernel.org
+References: <20260922182928.2199090-1-gourry@gourry.net>
+ <20260922182928.2199090-4-gourry@gourry.net>
+ <c73021d4-60c8-4446-9c08-f9d7807a3a0f@kernel.org>
+ <arXBari1QNJ-aIW8@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260925081504.23569-1-lance.yang@linux.dev>
+In-Reply-To: <arXBari1QNJ-aIW8@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ejdkuib7bx6u433zwpsgckym3t7eo9n7
+X-Rspamd-Queue-Id: 7A3B9C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 65CB6A0008
-X-HE-Tag: 1790330592-308672
-X-HE-Meta: U2FsdGVkX188D+sMnyMD9quGiSRWL9XxRAHo3RVynWKc5j0tsdkAVgh29ivsVv8t469ak0/5UQFfWeZRLn+x6Mi3GK03pcA9/Jv34TkhUvONskZJ+qWQHtie1dZkP4J0C6K+zc5WgE7qGu1pAqaHYD7StvN20AU8os0BOAtTHWIiMXxnHI+Rhva6vPwcNYHkm4KU2kjU0v5hlY1X4iodsU7R2rAVF10M5F2++X0whW9DXAL+NPrZmoz78xbRHv4hYNEvelpfQWBQwSaRVK73Gj8wvuWXO66UzQahrL+83r882uMSaf8n98Nlg7KJlgQkcAPaU0uacDHoOZhDcLeu3InDYL+IdNlMaD44Daosyn18mVyh+sf+ukzenjo53IqIgmuaF7kv44biCFIKIAnMpMH3ld+IhTr49EBYOooRF9fCqXC81u+U84I7qCHoB8S5OGPuQt9TQHwukbyMUCQfZk0qEkplnGlGvv2ZLomf9hhSVsdh6/LUIDhH0J+zFpXBS/KlKpp4xvivmDTaYIIi/aRs+8fJxlsRZtx5BPEGDG0WYoalIIX9ytBvVZkeQpopW2WD6hjuAKPjTM5oDHLtLQ/9k6JKhqCej7koTYZ7dmru946Ua/3XCCTJfvicXTjceUFBZ/rtLtg9lsDdlTaUknAn8mL0ejd0iomrqshftRFNXRKy4TBJJeTtN87uNUuL3HP08U14XJj54HegmElcyxsyGU8B39+hz839yEwj4n33A10gmWxZE+dNaqDU3rmamywsRJKu6t6HUWxEmN3doJNqMG6/kO3o7MeSrXXWA3puSub0zqmRbsC7usAX9JJjA9Vp+NRc+z98Sa4XR0bh7dMiENoUxkE88s+Ju9iet7BDTJN+cQzDkD+k+HpH+TqNGiDOyBpthSDVqlKl7aSY/ANNnT2cPxA8OPFQ/jsFmrY578hGbIpbmftVddNBTDJ0uGXFeS5isizu6yrtKAh
- xakJGObk
- xzT0rGV+E/vPJkXQAc8tVbWGJy1Ny+U8H8+K2Jwf7hHhufrk6pwljftFtrm2Bua38IrHaLaETAk1f+rcBafoRCrqSgjWya2VC8m8DXio3a/Kx58K9IrsyoN60hxlrgaW/8QdEOdxlC1/O++GvvRMJYo6yBXw13UKpdbAC/cahbwMUmM7OstaQkM1SPJRFGCXP+TOFpXufV0taZgrXr2Rw/WW8NNe4HYB1WYZCq3+HXz+L2lrnCmeP0hMI2o4JVWB669a4T9TaEe9W7J03G1w/KaA48kqhoixfRlqrgp4XWbqJYAEs7BUQYBI84Qb4JVgrrt8yhc8cM8OPvyLdDL9zE/hom6KhK4mHBYvA8Wa058NFNKcbiebjHKuHLfc83Ccc0SJr
+X-Rspamd-Server: rspam07
+X-Stat-Signature: czw3sanzjnaw6fhpas1pinwftgc7urte
+X-HE-Tag: 1790330702-523706
+X-HE-Meta: U2FsdGVkX1+K/+g3VHrS8wt66ObcXRBdT9vN/7dmhkwT5vM4l4IJLROt7SkmpJlKOEXnjUZzsYhUVL2p+e9TtjDoR72o0o+GVeIeH6SryKY8QQIiBWDq8J0JvU183mbw+6cuWLQUqCOwbjAKPY3gbHZZRZ9gjmAIWmQK2XmHtGFceczVB3T2+kOfuGEbL8U8x2ss6mEFps+TRnS5OTYeAkSYBDljYhlpiffv426O9zFq76iu/SFRNGTWNe1d4aeIlGkTrMy+ZXK6VWBhhT3/1OJpcXdHGoW46pUn+wVlvIbrFN8JUsSR2YEXrao07Ul9+IBAeiDlFSdbMJJ/GJCEFhImBMDfk6QmvNBvrdyyQxNcSvTImjf/af9ptOdBBWOmT0ifB7ofIaXdJ00sQna5obu7yUVL0NVwK5ZbTBsx2fOcsetm7Ma9p+eFOzMs9fn4mp9A5Ss/DeQIyO5+9Iqxa//3i2JTXIzprs0Z1eOK/D/8m3P4P2yJTAtNFvWrfTaG+URU+KZeHJ8G+B3PClil8pZlk9+Y6wm3/4jXBHXFCzTSAqAxLdODPfou4HuBAvhScxPd9zxvetDdxDGdanKsHT+gLOsI+RIVuG4RwhKPkHZKho5g8HI7Gc2CamfNwhsjcV72OZdMPYGLv/PPW/ncsmssLY5yMc4To3S5GxHUGw8Fuw0p2m4K3IUgpukrsoaAX/7uSYYnJK3uNZ8OXj1xycUz9maBVDSAVVUa40NDUNf+Pg7pmY5ptxutZ81AT6O/Do5tBFhr5E+5jgLYc+wG8z0bzTbLo+HJGILbXHnZC3twoD+1y0mFBf5CvdDH2GeqsR0XkGCFkW43IdihwZRC841IQyBLSCXW5/3mFkx+eqlUaFxPsr8hAsGBbJPGADkr9rj0LNa32qtCIKKhOjiVNC5AMfMZ+a4cnzDh1Y2/Jsww/U+Y4kckexe0k2qnbA6/3CWsyVTJAiS2VDKLqZD
+ uLEJg/dR
+ TSStxc1X+WTOMo9qVYdugakTufMG27HX/bsp0qg46S3kPZCj16XJduSy6EXiR4QzU6aADgkOnZ1qZJGlxetfAP1yOgslUvWee1FsMFPTOj8LE1JtAZNMWtJd9k65YbrZMCVnQ395pBie3JSUuIt6BzK7KytBIiqUgYLh7kp62csBOhIW+QNT4NCTiY+cPB0ZaENfN74dSVsXxoiMHHSQGxiYaCuevdE4N76i7KKvu4/02LF/sLLOyJ1GMcN2a04vtQCllmBfgdP1TQiLk0UrrtzQm1+bbVu5Z3tY/gBtF2cX0o1NLbmJ/Zzg3rmO1BM5hHQE0XS4NYLGv5n8rN96aZkuZow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,52 +152,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 10:15, Lance Yang wrote:
-> +Cc DeepSeek and Muchun
-> 
-> On Fri, Sep 25, 2026 at 09:04:41AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/25/26 07:44, Lance Yang wrote:
->>> Hi all,
->>>
->>> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
->>> and virtio-balloon:
->>>
->>> With this kind of workload, an agent may read a file once and never touch
->>> it again, while those pages remain in the guest page cache. Without memory
->>> pressure in the guest, they can stay cached even though the host would
->>> like that memory back ...
->>>
->>> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
+On 9/25/26 02:35, Gregory Price wrote:
+> On Thu, Sep 24, 2026 at 10:53:56PM +0200, David Hildenbrand (Arm) wrote:
+>>> +		placement_scan &= numab_mode & NUMA_BALANCING_NORMAL;
 >>
->> Heh, I read "virtio-balloon" and thought "balloon inflation/deflation, what year
->> is it?!". Free-page reporting makes much more sense.
->>
->>> cold file pages from the guest page cache; buddy gets a chance to coalesce
->>> them into reportable blocks, and virtio-balloon passes those blocks to
->>> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
->>
->> When I was at RH we were looking at this issue as well. virtio-pmem was one way
->> of avoiding the page cache in VM entirely. But it has its own limitations.
+>> Do we have to update placement_scan at all?
 > 
-> YES, they enable virtio-pmem with DAX for the read-only EROFS base-image
-> and toolkit layers, while using DAMON with balloon free-page reporting to
-> reclaim cold file pages from the guest page cache on larger writable disks.
+> in the following commits this composes:
 > 
-> They also point out that the guest must allocate struct page metadata for
-> the entire pmem-backed address range. So virtio-pmem is not free either :)
+> 	placement_scan &= numab_mode & NUMA_BALANCING_NORMAL;
+> 	if (scan_started)
+> 		placement_scan &= vma->numab_state->placement_scan;
+> 	else if (tiering)
+> 		placement_scan &= placement_due;
 > 
-> BTW, Muchun recently posted a pretty cool series for exactly that:
-> 
-> https://lore.kernel.org/linux-mm/20260903122128.12264-1-songmuchun@bytedance.com/
+if (scan_started && !vma->numab_state->placement_scan)
+	placement_scan = false;
+else if (tiering && !placement_due)
+	placement_scan = false;
 
-Yes, that will be helpful in that regard.
-
-> 
-> (It shares vmemmap backing until a DAX fault needs private metadata,
-> avoiding the full per-PFN cost up front.)
-> 
-> I have a feeling the DeepSeek team will be watching this one closely :P
-;)
+Is more pleasing to the eye ;)
 
 -- 
 Cheers,
