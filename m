@@ -4,126 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE995C98318
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 00:35:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FAADC9831E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 00:44:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 602B26B0088; Thu, 24 Sep 2026 20:35:08 -0400 (EDT)
+	id 5A1436B008C; Thu, 24 Sep 2026 20:44:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DA666B008A; Thu, 24 Sep 2026 20:35:08 -0400 (EDT)
+	id 551B66B0092; Thu, 24 Sep 2026 20:44:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F0996B008C; Thu, 24 Sep 2026 20:35:08 -0400 (EDT)
+	id 4404B6B0093; Thu, 24 Sep 2026 20:44:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AFF66B0088
-	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:35:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB710C01AA
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:35:07 +0000 (UTC)
-X-FDA: 85250415054.28.281DE19
-Received: from mail-qv2-f12.google.com (mail-qv2-f12.google.com [74.125.230.140])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DE6751C0004
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:35:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=VkTOCBrX;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 185CC6B008C
+	for <linux-mm@kvack.org>; Thu, 24 Sep 2026 20:44:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92BD116050E
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:44:13 +0000 (UTC)
+X-FDA: 85250437986.17.BE11641
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A1CE91A0004
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:44:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYI9kiAb;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790296506;
+	s=arc-20220608; t=1790297051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hT0C0mvf6r5FuTfZclgfx4VcRqH28SXA1w/+lQNjyOc=;
-	b=FmkaM5Lp/bxL+NZzHGnu40L9RldrtFN6UxCX63eR02jFqRoLGyZZrRcm7xdEJjUccQYY3x
-	7JEl/nbEmQgBk+ofB5KXjSjOFJId0Jww/g3UgOlfjADvUXYlbtCNQu3qT/4ewRYA9IRJCG
-	kgB+myeGQWDlTRhMPrMWlDbHXyIYF0I=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=VkTOCBrX;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.140 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	bh=7CueezjDbKGuBoVz0Yahi05qKiOZJU4eRx078XbgJlA=;
+	b=WnIPLeza0UMEzUYIZOKRaVedgS1iqUEsQ7GVIRo/FFGxmSZvBJvLibcHQ7wk3RfDed/euo
+	m4swLYVkV78x0mlufQrYdZeNCx2TEzZSXz0Jt60dt1Zy2SYlltFE321OFHceqQGEmcuyPQ
+	0FGwvZgvHk3Booepa+VbkSbbwPABm58=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790296506;
-	b=VBpC56aFNM2VKzwvBvItfldDRBdJTyVB/nCu7mj38ctPU8iaO7640XmAwVBpDrg2HfviT2
-	D66lkwkvapQlPGRKpwvEbpuNSPWi6DPdTqrQz+AZb4gt0L183t4qxPVzU09CE14w5XfxWa
-	nlkHaYvOp/m0Z/aIXAgpzi0z2U++EMU=
-Received: by mail-qv2-f12.google.com with SMTP id 6a1803df08f44-90cdfe60d5fso2064506d6.1
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:35:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790296505; x=1790901305; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hT0C0mvf6r5FuTfZclgfx4VcRqH28SXA1w/+lQNjyOc=;
-        b=VkTOCBrXy90mVvhhkX1ydZsUMYjKUS7SETPkfi+/2j+gqgc6YtjFiNapOVXzQtsKiV
-         tXXSSLKvOU28QFaKBkmcRc8KwTV8la2oEVX5DOp7+8XU03iV7brNr2tJsiRaDCcGBltm
-         CAeDwbkxP3ULpk1I0ZKj8YAT8VvEtFa+Wq8126mkdJqOAfXpUH1Ji9kS78yAENlnhRY7
-         irXj1kf8aVEPEmQXzLNru3A3HZh7J7+F707Ds6Em1mJTDDWlfUDEbdJ6PD+zbNCbExQu
-         2g6U7eblTuqZTx5D3M6bupYC7Uclr42NIy/pac3D4P0HU9Rx6RPfE2D5U/T5PlLJOhg4
-         gPLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790296505; x=1790901305;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hT0C0mvf6r5FuTfZclgfx4VcRqH28SXA1w/+lQNjyOc=;
-        b=IoOUkFdbvW06FwRL8ORoKRfFwyPmO3rClKip+dn5oxXJHi6nIJilKlHKfi+ev/R+SO
-         97SShVeRoD+UR8X20xkuyYl3mFxb7Mm0NimVOpWmOQIQADHsUWCAIqE/ZWN4S4kK85hs
-         qG0UiHXJIpAHC9QyYwA2ZdD3YFOaAochB1T45vV6PaBHHWKKZNaed2QSLtcDXmlC97bJ
-         wPI3AXynrLa0LVn3rS5rM1wfFUTZlmZNuW+Q6GvXbvvljpJR1KqIBAUWifu2tEOE0asv
-         AlloqF2ZniuIU28/gKpCvVejO6buDlTCO/HYYME6IaWOmshGzvLh/rQNuYq3FgbSFiGI
-         ZiOA==
-X-Gm-Message-State: AFuF++mlXGBJqHW4a5DP8QtFdmnoKXg74t0QL/Z2tGgGPwPeqKXx593l
-	Md4I8rF9MmUT92NOpIv6bUbMGu8RoLxCmgIZxR8xgKnRfMqtTn2gEK8zKK9GCXgVRxM=
-X-Gm-Gg: AYBFou0GW2VXWovien3Mr7+24ywntWgLrsoJJDX+fjXCg52RZ9L0aWa9bsJB/Cb9Ucr
-	5sOMb/8jflVX70ugLKRYnwrStgVNiwEvdjvp0UUKn/6QLDKAxTTxCVuCzTL90xrSIMIzmIJ5yLs
-	2bBXaRr0cZcO9znvKcvML/OjhYV8G3wG3npFcCslM+/dUMp0R81BH5yq3b8bjD92NHGfsUQmOyh
-	v6uZNsuKrkTv7wMKOrND7NOwnjiD7xtR1P4D9nKjLU7Yyacs8lQV+OhQSdex73cLRqgS1DIRk4G
-	4XAD9E9zmn18rc9B73Ktxf82d7W1FHqCZGZC59bHKTeDIBr3UiXnhA9IWWqhGDn7ULmoxnJ15aV
-	w/oADE9Zd/FZHcSq0zeuEu4U03CZpQfor8BcylHwGnYJffW6jXrdI+H6yU3raNrvAdE6mLdRVS/
-	djVMZXtVLyQXUGymicGqaaz8XTDQEfOrg9Oo/5Wpn5IG8pg9z6xr5MyAwUaDVBIRMHuYne9Axq2
-	i0KI0MAJS9orPcQ4DeSyGYvXQfmYzlpCRf9pRm5e78JT2N8x1I2fwA=
-X-Received: by 2002:a05:6214:5910:b0:912:bd1:49f5 with SMTP id 6a1803df08f44-9142f681cf9mr18652786d6.10.1790296504108;
-        Thu, 24 Sep 2026 17:35:04 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e87fa4sm5357886d6.41.2026.09.24.17.35.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Sep 2026 17:35:03 -0700 (PDT)
-Date: Thu, 24 Sep 2026 20:35:01 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, mingo@redhat.com, 
-	peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, 
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, 
-	vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, 
-	baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
-	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
-	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, 
-	hannes@cmpxchg.org, shy828301@gmail.com, raghavendra.kt@amd.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/7] sched/numa: scan read-only file mappings in
- tiering mode
-Message-ID: <arXBari1QNJ-aIW8@gourry-fedora-PF4VCD3F>
-References: <20260922182928.2199090-1-gourry@gourry.net>
- <20260922182928.2199090-4-gourry@gourry.net>
- <c73021d4-60c8-4446-9c08-f9d7807a3a0f@kernel.org>
+	t=1790297051;
+	b=p8s2p4MEJzkHMOfRWdHnntunWJhyWg9ax4IezWYzjHMZ7VETH6K3ebBEaM7cHx3jeBtfTK
+	2E83ytKmPFoAJ9XAIZlVhWWlc0LOGl3ttu0b0wCDVOzNOogsZe91TGJy6pMAbgB0fJansp
+	6sWSLkycch+72jWzpC7/Mupyr/xxA3A=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YYI9kiAb;
+	spf=pass (imf19.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2080943FF1
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED4451F008A3
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790297050;
+	bh=7CueezjDbKGuBoVz0Yahi05qKiOZJU4eRx078XbgJlA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=YYI9kiAbgX1TdDDAgkEuTAlJ0KkFp2+uT33t80rtu9RyLC5Hpa+cT70M7QH/STGJy
+	 GtljrnarEHB5Xu4ajcF+/FpnXGlmLXBtjMOb18yXRgaUhSE3l/d4jcqByEvokX9q2x
+	 4w72CE7EtH9tbtbyjg3tA/KbT76ApiW/3uSk8LVyD4M7qlcK6pFDdyJd0FTXg4UMJA
+	 S93Z618G2yRMrr5zbRV3b7u6v51Q80yCLRwbRceYbRlRJa4EsV2O9ycmvvipDAXblS
+	 QJwDkYqSq5zoTGyvQ0Brl6UeI9UUszo1U1HuyHWDxo+Ujp8us7rs7L4hkelY6huZzK
+	 C1EVsXcStG5tQ==
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-67375a844dfso446971d50.2
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 17:44:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx4xx0vYLcz0Ttgn2sgqNKEYH6g9SZvRVZInGj/uC2vroFfSlHfswRFRGdh8nKiujMS++CpGNk8EQ==@kvack.org
+X-Gm-Message-State: AFuF++mrzgrPKTBjuj64Uk+a1ddrzIPbFdJNE6vLExYMX2QV5904MSQn
+	2fXJcADOx7ex98EHWfchNuh5/8EE359rR4lAj8D/COHKDQGs5UTJJWZlXc+4M0u0TAYv7IQLlQz
+	dMGNu64vhq/2lstfqEGejFh+Ypd2FEcR1E9LY3E9Otg==
+X-Received: by 2002:a05:690e:14c3:b0:672:f5f5:49e5 with SMTP id
+ 956f58d0204a3-672f5f549fdmr2112852d50.58.1790297049175; Thu, 24 Sep 2026
+ 17:44:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c73021d4-60c8-4446-9c08-f9d7807a3a0f@kernel.org>
-X-Stat-Signature: tauamemde99d7qm7p8gtzhr7oeiw5zqs
+References: <20260918180241.3424851-1-nphamcs@gmail.com> <20260918180241.3424851-2-nphamcs@gmail.com>
+ <CACePvbVaDNspMDSw_qAcapKAzXj3JGV-KMYmow7aePa0POHpSg@mail.gmail.com> <CAKEwX=OP3Gb9sVOvch+p4j7quzgy-rUY=UTZau5ztMj7heJJoA@mail.gmail.com>
+In-Reply-To: <CAKEwX=OP3Gb9sVOvch+p4j7quzgy-rUY=UTZau5ztMj7heJJoA@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 24 Sep 2026 14:43:57 -1000
+X-Gmail-Original-Message-ID: <CACePvbVQsHXt4=+qfKz-KTar9CG+3OiAfLd1EZgnRE-1gyoKOQ@mail.gmail.com>
+X-Gm-Features: AclHuK8hG4dvBqcdqpHs3htOH0tZw8UjHorplhBJiHcYxmcYx2dg2FX15nlFTP4
+Message-ID: <CACePvbVQsHXt4=+qfKz-KTar9CG+3OiAfLd1EZgnRE-1gyoKOQ@mail.gmail.com>
+Subject: Re: [PATCH v5 01/11] mm, swap: add virtual swap device infrastructure
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, hannes@cmpxchg.org, 
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
+	yosry@kernel.org, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, corbet@lwn.net, hughd@google.com, 
+	baolin.wang@linux.alibaba.com, tj@kernel.org, mkoutny@suse.com, 
+	skhan@linuxfoundation.org, kunwu.chan@linux.dev, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A1CE91A0004
+X-Stat-Signature: zqhyd4zieu7ngyz6aj95fmsmtrp9ndsc
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DE6751C0004
-X-HE-Tag: 1790296505-37331
-X-HE-Meta: U2FsdGVkX18Ppu6AiB6otO5ebkvycP5FlpQ9qd/PM+hIGplLuPy8Xyz0z0rOpcwJQOAOJFBY8iaJ5ZmZsjGj0eBL3vyRUmUiuw+yEL2KkdD7E5jmn8Kpvyj9vD4TPHUtLkuZx9YGNwB5POSDHs5jW1a1DHCKVJFdGXIsX+kraVf2Pa0AsmfzDljPOMc9ZTz2/xbQJ6uYRU75QOJNf3Dw8giet/Q0gp+tJpd2Q18+jm2BG+7cf8vlnENaCQxpZ0efLhA7GfAAzyOUVrludS3vokDX8jgR4tCWnQruWt2bIDBDgClDb10Kf+ctZScQaXOyFMvSFbpyg4jGrhTv5UPYp9j9F+oPO/gKQ/3FtHhSJQTnsWtnq92Wdcww2yU0zZKhVachQ52WU99w6jYBMacJgZWMi8wH1qUAHWRDQFrIsVGG3eoNYJJKuvo0jUKFKHHwF2jWQJ1DDpCUe1dyp71hTYDPRR3TPIOseyjYO1lmTBociLVvTtFfRCxup4RHFivvYIeukF42Ybx62gx8XObWHl1veAziOkeJ4RaKnr5KtD4o9SvzXDTC53CAbdZVVm1UwGBdqJpR+v7nHHIP+fyU68utsR59HlE36NmjIBpfbBpbAMiCkPMaBDI4ZVNVb5/hneP+OdnzUWmNc4jySCixfCX8k2DvziSCqrvgl9kyOWjBQBjO2WiYlabQ1ZINc4Hyfp4PnPrKckOkhOlzD+ETL+2thwt/i1fKbLr9aW09iKhqK/XqWht2KO002LQh3ysWOgL4C1Fzb08LiJYcPjm35piVJ2GrkNbUSOj2NSDZ+fcwoT5DDgWZEr/TGwt6w7/ut3xk29B+xcil94QqWTuWr0uovA6aPK+z5D2Cdd9x56zFIqmlemXE9ZsOZNCGEkExxVbS66FQxrS3DA+ZiP0CsEEKrIIn/fgg9p1iSP+WlLWD2xDnFnoZjgc9T1ifjFUgHGO7KByJ8C2846M4SNC
- xnK3Fk0q
- g8eDcHaM+oo2Zvd8UymFff9/QIl+I0PPAEA8XeHPg1lz833uXhhF3sP8881iYdsohPX8yYayioDt78ZdGbZaAUw8Aoy/mYNfVBMd31WB3XQO8zIDXVn9Z/y3i3fpH+GOGZ9wOFW7+3DnMYtbSdKDCNyujhvdcx5BDnwlM2a8fKWeBv+FnP/0n2LQZDA5ptartTShJt3Aen0G4OF9DP5RrzkUHke0xt3dnqUXhS/yFaBSuZ6NVbPgLXVtw0/yx5oXqZM+rXqr16JZt5vwpVN38WtijvgBOK7MB7b5rwtlp2zsgedxDzO74ojCeHYcRMkuDUXzaAhkAnXa1ri4graDQqWPMpjvVe7ThEoXO+KySElNmaJNZwTzOBnpcOt51fkDj2UpMHGfRUWInMqPquWTXd2mG5Q==
+X-HE-Tag: 1790297051-486897
+X-HE-Meta: U2FsdGVkX1/ItnhklCQOnb8+aO0IRlvrGuGmAkC+NoKOeCHGHrZpdV7Je25pN9Lg05/zDfGS+Y+C7JTJYOSN7eFJQAJEL8i/uEuAKn9ASwcBXiIU96dx/B1VRDRQfy482ffIP7sjTv37lsLXL1kInW2RgFFZMoTKwHVaq0UyUQaeWZ7EZjg2N/MQHrhdUYGJZ+oeYW0OO0CJU21tInRuTQ4oOt53WHIuKHT+Y8StgYDNA4TLi6g/Y4bXiI27GxSqCmZauosgw765xVEUOMl0BpZz9AMC6xz8Z+fU/lrOxzHe6EcayZ0OSInCZ0WFaAb9EPBMIp/mPx4HlApBGIqdZGziVj1cqn7txPI4dHDELLiY2Mw4MVfgFPBKhuyLVYMDCHChWjxO5sbif0uV83Nz1Ubeh+DNmEHDWigCss8WEjhLE2wfarYXWbQ1Ozkx9lNY0x+ZcpwiYr4C+xfseuj63my7qrsNvnDE2kN8MdBa38CsJ4wdIchNgiOebl9mFjGakxeD+njTD5gHERPh38yZAl57a1ovXKzoAj2V5Ew1UBtyyT4PRlL9XKqJ5caZfAd57jE3eTZIohrHnffk9UYiGKZ0A2DPp8yI3y+wVbq/ilbs4xT0p9QBY2OwvFow7oga29RgFo8gquWR6le/QxmLW93mJV1e3Vd7UqAnL0HUaeiK0twk6HfpJnkqdL9FNRvdoJtE9kBx36kQ1iT8xz5moDKNHQwOXJclUZm2dNXpuaKQaeO1NWoTOdcsT3RRhbKcrklqUBbiq7kq1Jh72TsVhmwCCEd7JwnrQ/RUoqMFKVCX2Z1z23Leo2npCiIRYbTeEQfJ/WmQ2k8JmTtzKm+C8WFniC3gJ6haLMaoHOizMD2FJ4uwvAMCcLUR/S1felHAVCmZnb23HABTi0Iq6iZUQNVdIPnKGsZEU/niWA2bYp4Lo9cU4SozNHCkkiQ0XBLKum83W67py0hdZeCaIno
+ ATBzmnF3
+ BDWmzjlcMvjtbgFp/cMfe9eL5/Hpu6hqDr5RFAZvDoqUnGFzY426Rybmf7y34kEldCWh+KFTwRizRs8GpVkJaNvGKjSsHj5k5cqBFv6vPEZyy3jLT88TTgF+GoD7wpgBa6J0Ju3p6ndzKEJNsRIVO46sFwFn3ZMZwU9N2vAZB8QqdysuiFnpyrpegVc4CAMo1YZj1GNCKqdNWFJT6QGzrJiVMgO9iZwNalVUdlTqxCC2z53x7cLk4206paAPwYtkgICdomjdPYvmj+X7hkNTF5BdKLRb1tk3NwS0mBux3QcWBtHWL+BCcYGySSMMfQk/SFUNXDDAK0V6bkrQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,53 +114,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 10:53:56PM +0200, David Hildenbrand (Arm) wrote:
-> > +		placement_scan &= numab_mode & NUMA_BALANCING_NORMAL;
-> 
-> Do we have to update placement_scan at all?
+On Thu, Sep 24, 2026 at 6:20=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
+:
+>
+> On Wed, Sep 23, 2026 at 2:18=E2=80=AFAM Chris Li <chrisl@kernel.org> wrot=
+e:
+> >
+> >
+> > There are too many swap_is_vswap() in this series. It fragments the
+> > code path, making things harder to reason about. Esepcially around
+> > locks. I count 22 in this patch alone.
+> >
+> > I consider this the biggest drawback of this series. This
+> > fragmentation of the code path.
+>
+> This will mirror my response at [1], but I'm responding here for the
+> record and for your convenience.
 
-in the following commits this composes:
+Thank you. Really appriciate that.
 
-	placement_scan &= numab_mode & NUMA_BALANCING_NORMAL;
-	if (scan_started)
-		placement_scan &= vma->numab_state->placement_scan;
-	else if (tiering)
-		placement_scan &= placement_due;
+> It is needed because vswap *is* a special device, with its own
+> requirements. If you don't special case-it, you'd get undesirable
+> behaviors.
 
-But i'll think about this when I update the function name.
+Ack, that is why I am against making it a special device. That is the
+whole idea behind xswap. It is just normal swap device implemented via
+swap_ops just like ext4 is a file system implemnet on top of VFS.
 
-> 
-> Can't we do:
-> 
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 8a4687f67d82f..fc8862ee31442 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -4121,6 +4121,7 @@ static void task_numa_work(struct callback_head *work)
->  {
->         const unsigned int numab_mode = READ_ONCE(sysctl_numa_balancing_mode);
->         const bool tiering = numab_mode & NUMA_BALANCING_MEMORY_TIERING;
-> +       const bool balancing = numab_mode & NUMA_BALANCING_NORMAL;
->         unsigned long migrate, next_scan, now = jiffies;
->         struct task_struct *p = current;
->         struct mm_struct *mm = p->mm;
-> @@ -4313,9 +4314,8 @@ static void task_numa_work(struct callback_head *work)
->                         continue;
->                 }
-> 
-> -               placement_scan &= numab_mode & NUMA_BALANCING_NORMAL;
->                 cp_flags = MM_CP_PROT_NUMA;
-> -               if (!placement_scan)
-> +               if (!placement_scan || !balancing)
->                         cp_flags |= MM_CP_PROT_NUMA_PROMO_ONLY;
-> 
->                 do {
-> 
-> (maybe I messed up my boolean algreba, it's late)
-> 
-> -- 
-> Cheers,
-> 
-> David
-> 
+> Let's take Baoquan's patch series as an example.  It treats the xswap
+> device as just another swap device, without any special consideration
+> for it. Which creates several problem:
+
+That is a careful design choice. Keep in mind that design choice
+usually has pros and cons.
+
+I will follow your feedback here.
+
+> 1. At allocation time, cgroups that disable zswap might get an xswap
+> slot, because you don't do any check that the device you allocating
+> the swap slots for is xswap. At swap_writeout() time, it is *stuck* -
+> we already do the unmapping step, so we cannot reclaim the page.
+>
+> Ironically a physical swapfile backend could have bailed us out here,
+> but it's not in that patch series yet :)
+
+I am not sure I follow. Are you referring to the uncompressible pages
+that xswap would have to reject?
+
+One way to address that is for xswap to just bite the bullet and store
+the uncompressible pages within xswap. That way it will stay out of
+the reclaim LRU. Zswap also stores some uncompressible pages. The last
+time I checked, it was unfortunately not able to serve my case but
+perfect for yours.
+
+> Vswap both has swapfile backend, AND allows you to bypass it if the
+> cgroup disables zswap. Both involves a bit of swap_is_vswap() check,
+> but I think it's worth it :)
+
+If xswap needs the lower tier it can allocate for one. I don't think
+xswap should need to have swap_is_xswap() there. Also xswap does not
+have all the baggage of zswap.writeback enable interface.
+
+
+>
+> 2. Per-CPU allocation caching: since all devices share the same cache,
+> xswap will invalidate the caching of other devices, and vice versa. It
+> would be fine if the these devices are interchangeable, but as noted
+> above, it's not, especially without physical swapfile as the backend
+> option. So you're forced to taken the slow path more often.
+
+This will be addressed by the swap tiers series if it is not delayed.
+This should be addressed in the core swap layer not vswap. Kairui also
+has some ideas to improve that. Yes, it is a problem area, but it is
+not specific to xswap. We are well aware of it and have plans to
+improve it.
+
+>
+> Vswap gets around this by adding its own per-cpu allocation caching,
+>
+> So by being too lazy and not carefully distinguish the swap devices,
+> not only does xswap not work for the writeback use case, it cannot
+> even work in deployments where some workloads (cgroup) select zswap,
+> whereas others select disk swap. It can only work if you intend to
+> have a single class of device - either virtual/xswap or disk swap -
+> but not both.
+
+Baoquan's writeback series is out. It is by no means perfect. But it
+is much closer to what I have in mind. That is a much better base to
+work on.
+>
+> Maybe instead of just grepping for swap_is_vswap() and throw your hand
+> at the complexity, read the code and try to understand why it's
+> necessary first, then propose simplifications if you have good ideas
+> in minds.
+
+Yes, I already read your code I decide that most of the
+swap_is_vswap() should not be needed if taking a proper swap_ops
+approach. I wanted to offer you the chance to work closely with me to
+achieve that, but you did not follow that suggestion.
+
+Quote from my old email:
+https://lore.kernel.org/all/CACePvbX+3tO91BmRwaLqf3Xia32GCemt3W8tayErG81BYL=
+grzA@mail.gmail.com/
+
+"I am happy to spend some time working with you to discuss the generic
+adopted version of vswap, if you are open to it. Or if you don't want
+to waste time on it. I can have someone else or myself come up with
+the generic adopted version of vswap for you to review, which I prefer
+less."
+
+Anyway, Baoquan's xswap writeback patch series is out. I suggest
+following and improving that series instead.
+
+> > This is questionable. A vswap device does not go through swap on.
+> >
+> > This changes the behavior where swap devices always go through swap on/=
+off.
+> >
+> > I wish the swap device went through swap on to be able to start swappin=
+g.
+> >
+
+>
+> What usecase would necessitate the need for swapon/swapoff interface?
+> Other than just trying to shoehorn it to an existing interface?
+
+I like universal interfaces. Your vswap will break the /etc/fstab. The
+current suggestion for xswap using sysfs will break that as well.
+I would like to keep the /etc/fstab interface working, including
+support for UUIDs for swap devices, etc.
+I am very concerned that vswap will start kicking in without me
+explicitly enabling it. That changes the previous user-visible
+behavior. It breaks my mental model. Please take this feedback
+seriously.
+
+It is a different design philosophy to adopt a swap device to
+implement VFS-like file systems for swap, making them swap file
+systems.
+Just like all file systems have a superblock so you can probe what
+file system it is. You don't get a special sysfs interface for each
+different file system to create them.
+This aligns neatly with swap ops and makes room for future
+flash-friendly swap file systems for example.
+
+> I've expressed why I dislike the interface in [1]. Other than the
+> sizing aspect, which we are already discussing in another thread,
+> priority also makes zero sense. You are literally exposing an
+> interface with only one correct answer - what's the point?
+>
+> Justify your interface choice with real userspace use case, not just by
+> conforming to the status quo.
+
+That is why I feel your patch series are really unclean. I dislike
+special cases, I try to avoid them as much as possible.
+
+Chris
+
+>
+> [1]: https://lore.kernel.org/all/CAKEwX=3DPEEkYiNRaVhCuM4E6mxB9huPKfkDa4m=
+62VMTzedg1oYw@mail.gmail.com/
 
