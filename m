@@ -4,134 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DC0C98324
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D2A9C9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 12:04:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7ED476B0088; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
+	id 149B36B0088; Fri, 25 Sep 2026 08:04:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79DCF6B008A; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
+	id 0FABB6B008A; Fri, 25 Sep 2026 08:04:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6651A6B008C; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
+	id F2AD86B008C; Fri, 25 Sep 2026 08:04:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 442D56B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D02CC405B2
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:53:54 +0000 (UTC)
-X-FDA: 85252125588.06.9129FEF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C23666B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:04:03 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2FBAC120624
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:04:03 +0000 (UTC)
+X-FDA: 85252151166.15.4AB6F54
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0A3E416000F
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:53:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IDR+M0w+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3CDC7100003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:04:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bfORkqOw;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790337233;
+	s=arc-20220608; t=1790337841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vECCgOGkVITIc8l1v+awkByw8HVVMnL2UtHjYP5ayJ0=;
-	b=b+JfaAjThBXbhZvXbQ2cVu5lssh9kIQJ25o0XGe8aZFAToLTAcLCVM5TAL7z4poLQIgBLH
-	hLQ0/vWRw0lMOyEmY8F36aGVHTA3zhnc9BgMA/p3tNYuSIIqPAclRUfZPQScwzS7jFEA21
-	vyIC2dDw/Bakx/VrvLGeeAvxXOt+tVg=
+	bh=IuK/P9c6OAPq/+SKum+YEnA5wQo2vUmWCi3a8/VIFXA=;
+	b=Dlm6ZGVADgjzRrcd71AxKbEa6Q4oeVKpm9APdrT+dVOZJ5PTwKGctU9LbXq1FK3L+sWMc8
+	NJuonVaDCIbuaHT85LkoJwThcxrfeIf7pj2XKodaiIqgcSN1hrbREG+ByGvzo171Yo15+D
+	EJbRJGw/ioQNm6WG4WaBNm3C8k+NUYs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IDR+M0w+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bfORkqOw;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790337233;
-	b=T5NeWMghE8rGrqs36tBeXEF3TikYzrAq0ZHGoICveiYpqA7V0khRhJRR/1UohsvixGwfst
-	xzXdYNpMlF+SX6YNxvvTvMhbBZihZUFtspAEDH4u07onMyjOWI2O3kM/lsLk+KROo/yNL1
-	SMWn5hw9NQ37q8zqf9eFUlQzJC0iXG8=
+	t=1790337841;
+	b=iqJ8D8SryuGZJfzp26roZr0cWEeYcUw9lPq3VQco7D/txwxduFqOq43TtdLzXbNgxGDTB9
+	c+gkcfG+3VpDltk9KUWqMRicTPGS9vboKG5i7EPkaQpM/duS74J1cjRXJJ5Kc1HA5+RgK6
+	WGKUeN+0rJMGE573iHsGad8y6TUo4cY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 304CA41997;
-	Fri, 25 Sep 2026 11:53:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAE81F000FF;
-	Fri, 25 Sep 2026 11:53:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1373943A0B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:04:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A731F0089C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790337232;
-	bh=vECCgOGkVITIc8l1v+awkByw8HVVMnL2UtHjYP5ayJ0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=IDR+M0w+qQyxjpIpKnZih0kiclcR4uew4cO+w4CG6IUSFq4BV2c/xLfTS4tzIyoZI
-	 mHYdLybEnPWNmDrRiHy1OeB+5qZTakg0B/FdU+e5ihHB3u/sWb4Zio7L5/JrmE6lOc
-	 97rj/zycLgX3sKD8cOD/8NTDQIsa0GYskfoQfw2YPgmpKbTGA5+/IRLEJC8eqrtWLP
-	 Rde5mHc9Y4PJTS0Zp+J+SE2/glY6bTaJhBdcDthqfzHCd3DMlA5Lk9A2Dm6h/EFklP
-	 moSiaAKqkKUCkcUMbRs2YYfb7B2ZOwIajOcXjprJgHDmfkegkAdRdjyuqX5yvBTLhq
-	 QLkcwtxRKMBnQ==
-Message-ID: <6962b870-99f6-49e3-b235-9ddc04bbbda1@kernel.org>
-Date: Fri, 25 Sep 2026 13:53:47 +0200
+	s=k20260515; t=1790337839;
+	bh=IuK/P9c6OAPq/+SKum+YEnA5wQo2vUmWCi3a8/VIFXA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=bfORkqOwm/jPH01KRlZxDLwAYlym2PajjAtqz0iI3rvaSi9SxCw5xh08DCT+jq1Pk
+	 UqIOxrzR42d0Tnf3h/pfrv91Xhm9l9kIdz8PmTH1sLd8mL5Cqw8Sx3Go3Zr81NlWNO
+	 tVJh+xRci46THm57MHhfTEF9d4uYYI+gKDpY9o2/qW4kxGPsEfCRg7lmqBiXB8mH4D
+	 AgzvWQA/UTSADFicPeAnClJp69KNg44nVAr3dmAZZ0lDjZRLwGdpkL7NGMlKN7Kixw
+	 CC8V2P4xBAYZTHyFHogVgvmmClYDRl/bYi+zF8i4qvzUHUD5E180BoAFX0eaFxohcR
+	 EW4uCNSKEhz+A==
+Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-53315c1a1d3so4930371cf.0
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:03:59 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByUuoXkUyj4doV1JYwcx3Ujc+RH3Hs1lJhzl78IBNK3u/oHTuTVqMGyo2zqbCi9PQO/teSlB1F5iQ==@kvack.org
+X-Gm-Message-State: AFuF++mdTNC3YAifm5jsGct6RkPhSl0fNeVfNTyY6dgsGbSEk8xCIa8q
+	L557gqdgzwS6JCGuWmUowUDHUBCH6i3m9VyGx7xSkhB16n+x5vFHtqKehvhI+UVNFR3Ilck2FGs
+	fdbX9PHQ282tvj9Q6ZDlSkpaYk1s7Hu4=
+X-Received: by 2002:a05:620a:17ac:b0:93b:d79f:d948 with SMTP id
+ af79cd13be357-93c43eb2a12mr376097585a.61.1790337839274; Fri, 25 Sep 2026
+ 05:03:59 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH slab/for-next-fixes] mm/slab: do not wake up kswapd in
- __kfree_rcu_sheaf()
-Content-Language: en-US
-To: Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-References: <20260922-kfree-rcu-dont-wakeup-kswapd-v1-1-42d7e2636f9e@kernel.org>
- <2db41ce0-a510-4050-a79c-ff1f16640b47@kernel.org>
- <arVERNhXeU1BX54G@thinkstation>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
- gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
- CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
- UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
- XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
- 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
- FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
- QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
- 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
- icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
- uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
- SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
- cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
- La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
- FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
- bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
- +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
- jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
- CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
- HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
- SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
- 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
- 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
- 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
- wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
- NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
- OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
- jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <arVERNhXeU1BX54G@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9xkidm4ms5jtohaptyxj15xfihz169ju
+References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-5-dev.jain@arm.com>
+ <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com> <9c00b28a-8b76-48c9-9318-cf1f4abaf944@arm.com>
+In-Reply-To: <9c00b28a-8b76-48c9-9318-cf1f4abaf944@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 25 Sep 2026 20:03:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wHO4RznDsNN5rqvAc3=zMxey672tT7A_NaLFuARjqGHA@mail.gmail.com>
+X-Gm-Features: AclHuK_jh9CeCH_kPepZsAmtV7M4LNfu_ssdJYktuOmQA89haRao37oJcpOqxWU
+Message-ID: <CAGsJ_4wHO4RznDsNN5rqvAc3=zMxey672tT7A_NaLFuARjqGHA@mail.gmail.com>
+Subject: Re: [PATCH v3 4/9] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, 
+	andreas@gaisler.com, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
+	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0A3E416000F
-X-HE-Tag: 1790337232-307856
-X-HE-Meta: U2FsdGVkX18rRHlPH+Cz6k0X/H0eEQxJrBNLg9NpTQlPyqNgznCGNXLkMARnGzh2s9JaTwRWHs4NSt6QPrJ97dyvh0768/rEKoL0ug2AoPlr9FX/7SzOoZbYFfDwkwRCPFficvugmDyjCYg4mMc3781q5kIIhWS4bjXVzUVJjlLpAQDtQPBL/v/Ep1khULfXioIYnZ3M5fJEx7fwihqcr5UP1q3OJg0klffdkMzIgNgA0zTtCSHJeuY3/lMFXM11/h8lWRxdATmEjxjdctBk4G3dzdyQs1OgEI0/KEdqeGoNuWb9LTpcUtmgGXSTlB3nzU/JTMwgkKSlSvmD4Snm6uubHaLLN+uN8T//USvT/yU1uBm+l/kH6SsfZsY/xfzjQTSeaokVIHaZjDv9qG1pXatzanHOqeP5rv3/LvjqysZ9B8l1gpoHleonwmnNwLrJm9JFkfxilwUCy72WiRrRApz83aaiMlsf2DZJBpEE06JRGJ2k865Fe73kYEY0g8XY94H6CQr1E6k2YA9q2xnF0H6gNMn8xkT6DmV7s1Lr+0NgzREUP8dyzPeisupsVezm+z3pPEgBeRjDt4UaV31s+Qgbnr9zG/oNM+SOM8N8og4NiPMM7k2/Z6CyKbacGZU8OjaZMiSLjRLbSdFBVLqS2u2T2d3+oGqlKR4BJvYxHbPka94JEGIgWx3SinrLb+ta3PSOFFCgBB67qhfWnfspgnudGIxIhBCHOihu8lui8oUDj2+wXkQ66/paPjwUOSoH3okdM7mBl/XoDLhQ8o12dbGvFtEo8Y5HmaF2mie5Wd3xtDNtOl7M7vqucyKGMjMci38S0wsxsDk4SH+2KUZJjnOQasM9wePuWQpW+QkIe6VwXsjeDGkF98AK0X+VIn/oVv/p+hJrv/CRlftJZPaMIvw1hO/UGTITCbEfjHBif+vL7l3WebZE8x7K7c4JYvRq78oH1DHcwxnWiEkBUjW
- Dhk1BXmK
- SYcNH/KGTTM/tLTAA055xij9JmQR12SNd+78Cbgz4pOS2ZELYY7c6tGGOfbR/FL/odfRNJIl4oAyO/EETHbBcADwQA/LdfI321M6PYCVl/xbFhxyR4CxsvUvThhEyHozxp7Ppf96nNs3+EDb6JBAhxaWqNU27gbVIJ2YstKBF4nx+JKcYV00X6S8v50KWGag02bsU48RibrvWTVPZRs8uAtwR0RUZHRgGw8ZPZL9xuwqUbJr3oQ25J5unvlrpAptniM2ZFAy/u01l9MJrlY3mOZ7RakxlPXE76JzWljUrS+eE+wbv/S6/M7xuCJoO6CWoGPhMDEjnfq3RF7UTB2lNXFH5PRS8BgkJrDq914HrytV5QC3PpQUjg4LRE8bzxjpPk1WjPGeMtMjt5ozGb0VYNgryNgi4fiJ0x+Ls
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3CDC7100003
+X-Stat-Signature: aet8o5jyx1y95diwqxifyqmur65adc3h
+X-HE-Tag: 1790337841-388046
+X-HE-Meta: U2FsdGVkX1/oSE53bcTFVommkxTQYlibahnzYDmihVojJpGcn302X4ryyCro4T4DU+0uzKRRslYWRdwQSHi8S7il3T1pLZCciLXXEdTYpKcJgW3o5uSWVHYlLfRCZqj/wuTDFp1d/Xpo2vYeevXTMPNNF94BDOYZTEwUj2mAJUK+cGLIWBSWP6xaJ6x46fjG7QIPEFr1IM5c/CB7RE/DIhnC126sCP0O0uxLTF68xtBgVS0GCs7hCiuTS0X0qnX1uy8NU31XG17fgrNV+3AjprlcU1B7auwk9gKVMptawY+jph5xVDS+0eH+CM6kIRAL3Gri3a84cBo+li0dP/EAejxnfH0MON0oTvVgX1JhqUz5mA6Js8vsc/74j+sGZp9N3vT5LGS28lxWdhrgzMEFRsSzi8f1Ne5kLqu4M4HfXVISeHZaMci5FDkDFJ/qPyvHWlbwn4Idxo/vr5N+LOVH6ImPFYMQ6lsfAtXEx0XVf3sSIDxrHO61pjFuKUQXmBnK7cbxzNB3WpMWkKqF43LWbAADUorCHr4bgPTowTmIYhe1qOTi6PzmiFbAiMBaUtstIwsAXw6cczb/tnPl92y3ip5p0IaYwHD6EDFw5PnPzTyERoZbEjkPtfQ4tH7OhybE5ftfOMb4xG9CJda4R3Jhn8mWnleoxsbMf2cEDbbxuiV/s1yzP+iyIL/+GqWhg0cGjHbkjq/H802iM18GnXJzF+dEh9Yiu+F93gziNnCwqFLhaWYQVUUgBUCQ8an49IYoqKCdrkVTm0XLKX4dVfmv+CM4LSd9SjOLNASecQvtnoOEatunvpJ1+hzaoE+45qF/XpUbbIz1OcaxGj6U6rF80x2lInxHIHXQHDW1UlgXrImVBjdN3qmTfzpZs8RfnzMH1hVXRrbH5+HzpmbZPjWerozCgitpRstk7dfoTh6kwNAWkTJB+tn46y4CJSQ0uxlgbqlN/L/q4PYZsBoRhyG
+ D9HTH/hA
+ q1FQ0BO10CeZ9nPcwq3qD8lwwxxMVc24vr/Vv8lZr9Ur6eeE6kDl3FCFsO4euTUfG2YYb5d8z5PYC4inizk041cfixw3Uea62AeElmXYwIyIUrN+SIZW3DZLrEIlYrgLhy27hzxhBPECNO9TqeSEgBRccj1sC2Hht1FZdhN2EDwB9vyBvKZOc++fY7CochQGziNcadJN1O4IUroaBEqmCbEGAa/FlbHtaPF+bIu5duiFF3Y386L8EUSh5it5OVUk1x3QcdpS824KXaUVCRN5claO/Ko5rHcNah06ShCSRQdEX2DSGtRoZbjHPF1JppGH+unsp10R//yBT/madAawjCOu1ymSo2txlqdwfO3JbxZFRmfnvF4TavON10d3EG55JriX8Z5I2bMRtTOclshmLHZdE3EUqS1dpyXgQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,137 +110,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 12:57, Harry Yoo wrote:
-> On Thu, Sep 24, 2026 at 10:43:01AM +0200, Vlastimil Babka (SUSE) wrote:
->> On 9/22/26 13:56, Harry Yoo (Meta) wrote:
->> > Fix this by always avoiding waking up kswapd in __kfree_rcu_sheaf().
->> > Note that there are two paths that might wake up kswapd:
->> > 
->> >   1) __kfree_rcu_sheaf()
->> >      // __GFP_KSWAPD_RECLAIM might wake up kswapd
->> >      -> alloc_empty_sheaf(GFP_NOWAIT)
->> > 
->> >   2) __kfree_rcu_sheaf()
->> >      // Let's say __kfree_rcu_sheaf() doesn't pass GFP_NOWAIT
->> >      -> alloc_empty_sheaf(__GFP_NOWARN)
->> >      -> kmalloc_flags()
->> >      -> slab_alloc_node()
->> >      -> alloc_from_pcs()
->> >      -> __pcs_replace_empty_main()
->> >      // Free a sheaf in an allocation path when the sheaf becomes empty
->> >      // and refilling the sheaf fails
->> 
->> So that's this
->> 
->>                 /*
->>                  * we must be very low on memory so don't bother
->>                  * with the barn
->>                  */
->>                 sheaf_flush_unused(s, empty);
->>                 free_empty_sheaf(s, empty);
->> 
->> Now I wonder if we should just use the barn then, lol. We either took the
->> empty sheaf from there, or there was none, so we don't risk overfilling it
->> with free sheaves.
-> 
-> Well when refill_sheaf() fails, it's not guaranteed to be empty.
-> Might have to put a partial sheaf to full list?
+On Fri, Sep 25, 2026 at 7:09=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+>
+>
+> On 25/09/26 11:00 am, Barry Song wrote:
+> > On Thu, Sep 24, 2026 at 9:11=E2=80=AFPM Dev Jain <dev.jain@arm.com> wro=
+te:
+> >>
+> >> To enable batched unmapping of anonymous folios, we need to handle the
+> >> sharing of exclusive pages. Hence, a batched version of
+> >> folio_try_share_anon_rmap_pte is required.
+> >>
+> >> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap=
+ is
+> >> to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on=
+ a
+> >> batch of nr_pages. Refactor the function such that the clearing of the=
+ bit
+> >> can be done at one place without duplication.
+> >>
+> >> Note that __folio_try_share_anon_rmap can receive nr_pages =3D=3D HPAG=
+E_PMD_NR
+> >> from the PMD path, but currently we only clear the bit on the head pag=
+e.
+> >> Retain this behaviour by setting nr_pages =3D 1 in case the caller is
+> >> folio_try_share_anon_rmap_pmd.
+> >>
+> >> While at it, convert nr_pages to unsigned long to future-proof from
+> >> overflow in case P4D-huge mappings etc get supported down the road.
+> >> I haven't made such a change in each function receiving nr_pages in
+> >> try_to_unmap_one - perhaps this can be done incrementally.
+> >>
+> >> Add two WARN's: check that the batch is entirely exclusive (for PMD
+> >> callers, need to check only head page), and that there are only
+> >> PTE/PMD paths converging into __folio_try_share_anon_rmap.
+> >>
+> >> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> >
+> > The patch looks correct to me, but it seems a bit hard to follow
+> > because of the `pinnable` handling.
+> >
+> >> ---
+> >>  include/linux/rmap.h | 56 ++++++++++++++++++++++++++++++-------------=
+-
+> >>  1 file changed, 39 insertions(+), 17 deletions(-)
+> >>
+> >> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+> >> index 62ef511a6175a..91b5763ef466f 100644
+> >> --- a/include/linux/rmap.h
+> >> +++ b/include/linux/rmap.h
+> >> @@ -723,17 +723,23 @@ static inline int folio_try_dup_anon_rmap_pmd(st=
+ruct folio *folio,
+> >>  }
+> >>
+> >>  static __always_inline int __folio_try_share_anon_rmap(struct folio *=
+folio,
+> >> -               struct page *page, int nr_pages, enum pgtable_level le=
+vel)
+> >> +               struct page *page, unsigned long nr_pages, enum pgtabl=
+e_level level)
+> >>  {
+> >> +       /* device private folios cannot get pinned via GUP. */
+> >> +       const bool pinnable =3D !folio_is_device_private(folio);
+> >> +
+> >
+> > If we make a helper that does:
+> >
+> > for (;;) {
+> >      ClearPageAnonExclusive(page);
+> >      if (--nr_pages =3D=3D 0)
+> >                break;
+> >      page++;
+> > }
+> >
+> > wouldn't that allow us to avoid this ugly `pinnable` variant?
+> >
+> > Then we can make a much smaller modification, which should
+> > also be much easier to follow? No?
+>
+> David had suggested here:
+>
+> https://lore.kernel.org/all/95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.o=
+rg/
+>
+> The argument was that the helper would have no context of the pages we ar=
+e
+> operating on. Although you are correct that this makes the function harde=
+r
+> to follow.
+>
+> Maybe, revert to the original function, and have this helper
+> folio_clear_pages_anon_exclusive, which will take the folio and do
+> the page_anon_exclusive_batch =3D nr_pages sanity check, and add
+> kerneldoc to it which says pages should be within folio?
+>
+> The kerneldoc can be saved by calling __folio_rmap_sanity_checks in
+> folio_clear_pages_anon_exclusive - that will cause duplication, but
+> then it's all a VM_WARN_ON function so maybe we don't care?
+>
 
-Would have to check if anyone could find that to be unexpected.
-Seems safer to continue with the sheaf to satisfy the request at hand even
-if not full.
+Never mind. If you and David have already discussed this, then it is
+all good to go with your current code. Everyone has a different
+coding style and taste :-)
 
-> ... well, now we have sheaf_partial though :-)
+For the patch, feel free to add:
 
-True!
-
-> 
->> Well but I guess sheaf_flush_unused() could end up in freeing paths anyway.
->> But that's a bulk free which doesn't involve sheaves at least.
-> 
-> What do you mean by "**sheaf_flush_unused()** could end up in freeing path"
-> but "that's a bulk free which doesn't involve **sheaves**"?
-
-I mean we can still get to a situation where we're freeing during allocation
-and making all more complex. But at least it doesn't go through sheaves so
-the freeing is rather straightforward, no gotchas like
-__pcs_replace_full_main() allocating a sheaf below.
-
->> We could also distinguish which callers of refill_sheaf() can continue with
->> a partially refilled sheaf. This one likely can so we'd not have to be
->> flushing, ever?
-> 
-> Can we do that without adding too much complexity?
-
-Remains to be seen :)
-
->> >      -> free_empty_sheaf()
->> >      -> slab_free()
->> >      -> free_to_pcs()
->> >      -> __pcs_replace_full_main()
->> >      // However free path always assumes it's safe to wake up kswapd
->> >      -> alloc_empty_sheaf(GFP_NOWAIT)
->> 
->> Would be great to avoid all this from kfree_rcu().
-> 
-> Yeah.
-> 
->> > Drop __GFP_KSWAPD_RECLAIM in both cases. Note that the kfree_rcu() is
->> > not the only user of free_to_pcs() path, but it should be fixed as it
->> > can be invoked under pi_lock.
->> > 
->> > Reported-by: Sashiko <sashiko-bot@kernel.org>
->> > Closes: https://sashiko.dev/#/message/20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b%40kernel.org
->> > Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
->> > Link: https://lore.kernel.org/linux-mm/20260831143500.x-saxdAs@linutronix.de
->> 
->> Fixed up per your reply.
-> 
-> Ack.
-> 
->> > Assisted-by: LLM
->> 
->> Changed to (per below)
->> 
->> Assisted-by: LLM # dicovery and verification
-> 
-> Ack.
-> 
-> Didn't know adding # blablah after Assisted-by: was a thing!
-
-I want it to be! We did want to stop advertising particular LLMs (now done
-in the kernel docs, IIRC) but also document how it was used as there's a
-large spectrum of possibilities (not sure if that made it to the docs but it
-was discussed definitely).
-
->> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
->> > ---
->> > The discovery and verification (w/ a modified kernel) of the bug was
->> > assisted by LLMs.
->> > 
->> > More speicifically, the first path was pointed out by Sashiko, and
->> > the second path was discovered by LLM while reviewing the commit with
->> > review-prompts [1].
->> > 
->> > Harry Yoo reviewed those findings and manually crafted the patch based
->> > on that.
->> > 
->> > [1] https://github.com/masoncl/review-prompts
->> > 
->> > I believe the right direction to address this issue is to make
->> > kfree_nolock() work in any context and replace it with kfree_rcu()
->> > in the scheduler. However for now it won't work under pi_lock,
->> > and resolving that would be a longer journey.
->> 
->> Indeed.
->> 
->> > Address this issue by dropping __GFP_KSWAPD_RECLAIM, for now.
->> 
->> Applied to mm/slab.git slab/for-next-fixes, thanks!
-> 
-> Thanks!
-> 
->> But still could discuss a better solution per above.
-> 
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
