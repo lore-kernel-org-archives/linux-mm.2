@@ -4,96 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57718C9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:25:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DC0C98324
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:53:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56EF16B0088; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
+	id 7ED476B0088; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 546996B008A; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
+	id 79DCF6B008A; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 483506B008C; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
+	id 6651A6B008C; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25CBC6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:25:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B55C41205F1
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:25:36 +0000 (UTC)
-X-FDA: 85252054272.15.B4AA4CA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A8716140007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:25:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=M75n+DeM;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 442D56B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:53:55 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D02CC405B2
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:53:54 +0000 (UTC)
+X-FDA: 85252125588.06.9129FEF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0A3E416000F
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:53:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IDR+M0w+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790335535;
+	s=arc-20220608; t=1790337233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8e8+df5wfcctBgj3SB35PHKnjlsn3jbfTOBrczmhJNg=;
-	b=FXV7cQPl38Sg6wy0ORN7WJZzLoYYqBEawtpw0+qJeeAzAIqH+FHes1L9+sYSxhR6OJrhiK
-	LM9fLGV9UGkgg3qMoLmwSFtEv7zsDgl1Iig74E3MpUJdinCGy0LBUjeiS0FBI64LxynDOK
-	mCSxNZl/5HpljJHM/4K+d5VYYyrkBQ8=
+	bh=vECCgOGkVITIc8l1v+awkByw8HVVMnL2UtHjYP5ayJ0=;
+	b=b+JfaAjThBXbhZvXbQ2cVu5lssh9kIQJ25o0XGe8aZFAToLTAcLCVM5TAL7z4poLQIgBLH
+	hLQ0/vWRw0lMOyEmY8F36aGVHTA3zhnc9BgMA/p3tNYuSIIqPAclRUfZPQScwzS7jFEA21
+	vyIC2dDw/Bakx/VrvLGeeAvxXOt+tVg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=M75n+DeM;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IDR+M0w+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790335535;
-	b=fYwh/8UiVlxORD5mLgFtygARtvntV8musiIfKJcWhnNNt3Ypw1kq0Tkd4By67ocz3QTtYB
-	84JgF6/cVRDkohSNuLD+yfT346gEC0dlnU8E+RYJu14WHCCPSI7pkDQWdACKZGN7aBKSBC
-	lMsBuu7KMhDh3/VwSBarvJQRBiJULiE=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F0ED1570;
-	Fri, 25 Sep 2026 04:25:30 -0700 (PDT)
-Received: from [10.164.19.30] (unknown [10.164.19.30])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DE1423F86F;
-	Fri, 25 Sep 2026 04:25:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790335533; bh=DtpgFzbiicIBa5lc9a3teHQLwnL49AY46x8s3sg6f9s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M75n+DeMbR3GinBqgOLAmSRcCHqIAzDJwDTbf1TPp7TdURRt68PhgnqVjp48x8fX2
-	 NAPjj/odOxS0flbdyPzm5oOfbagJ6v6LYiGkabFZ8GggGz9dpNVhjCpAeeW/DPkC4w
-	 jmNZIhzSkVXvp7ZWU+UYqM8Hj0yOb2M+eUJ4T4rQ=
-Message-ID: <f61fa70f-882a-4787-918e-4b6959062c9c@arm.com>
-Date: Fri, 25 Sep 2026 16:55:23 +0530
+	t=1790337233;
+	b=T5NeWMghE8rGrqs36tBeXEF3TikYzrAq0ZHGoICveiYpqA7V0khRhJRR/1UohsvixGwfst
+	xzXdYNpMlF+SX6YNxvvTvMhbBZihZUFtspAEDH4u07onMyjOWI2O3kM/lsLk+KROo/yNL1
+	SMWn5hw9NQ37q8zqf9eFUlQzJC0iXG8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 304CA41997;
+	Fri, 25 Sep 2026 11:53:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAE81F000FF;
+	Fri, 25 Sep 2026 11:53:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790337232;
+	bh=vECCgOGkVITIc8l1v+awkByw8HVVMnL2UtHjYP5ayJ0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IDR+M0w+qQyxjpIpKnZih0kiclcR4uew4cO+w4CG6IUSFq4BV2c/xLfTS4tzIyoZI
+	 mHYdLybEnPWNmDrRiHy1OeB+5qZTakg0B/FdU+e5ihHB3u/sWb4Zio7L5/JrmE6lOc
+	 97rj/zycLgX3sKD8cOD/8NTDQIsa0GYskfoQfw2YPgmpKbTGA5+/IRLEJC8eqrtWLP
+	 Rde5mHc9Y4PJTS0Zp+J+SE2/glY6bTaJhBdcDthqfzHCd3DMlA5Lk9A2Dm6h/EFklP
+	 moSiaAKqkKUCkcUMbRs2YYfb7B2ZOwIajOcXjprJgHDmfkegkAdRdjyuqX5yvBTLhq
+	 QLkcwtxRKMBnQ==
+Message-ID: <6962b870-99f6-49e3-b235-9ddc04bbbda1@kernel.org>
+Date: Fri, 25 Sep 2026 13:53:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] mm/rmap: batch unmap anonymous swap-backed large
- folios
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
- davem@davemloft.net, andreas@gaisler.com, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
- jgg@ziepe.ca, thuth@redhat.com, sparclinux@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <20260924131106.1730494-1-dev.jain@arm.com>
- <20260924131106.1730494-9-dev.jain@arm.com>
- <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
+Subject: Re: [PATCH slab/for-next-fixes] mm/slab: do not wake up kswapd in
+ __kfree_rcu_sheaf()
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+References: <20260922-kfree-rcu-dont-wakeup-kswapd-v1-1-42d7e2636f9e@kernel.org>
+ <2db41ce0-a510-4050-a79c-ff1f16640b47@kernel.org>
+ <arVERNhXeU1BX54G@thinkstation>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
+ KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
+ 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
+ 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
+ tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
+ Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
+ 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
+ LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
+ 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
+ BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSNWbGFzdGltaWwg
+ QmFia2EgPHZiYWJrYUBrZXJuZWwub3JnPsLBsAQTAQoAWhYhBKlA1DSZLC6OmRA9UCJPp+fM
+ gqZkBQJqFFy6GxSAAAAAAAQADm1hbnUyLDIuNSsxLjEyLDIsMgIbAwUJGtCBUAULCQgHAwUV
+ CgkICwUWAgMBAAIeBQIXgAAKCRAiT6fnzIKmZJIUEADFx/tREzUImHrEwVHeSvDFmA7tJysI
+ UVrlvrM09E7GIuzphzv7jYmo8n3ANpCczLEVr4G0syYQdTigaZgv3+FQDIIzhKih1IHhu1Ei
+ XHlywNWKnQxxQEUNi5Mwx43wQz5XVw9F1A7gtKBKNtfogO511hAbrzagrYajyQacEJ/+sfhZ
+ 9Da8ltHIXD8pcYaHUfQgEusCgmEd9+KrUwrTbckFKmYq5chuE6yJ4J0EmWknL096jIE6CnzF
+ FRslQ3B1UKDjxVsm1ZHfir5NeWszLkTvGFsddFaWTgh8UycESG6VQzKXjjewXu2pG7YQYRpj
+ QKm1W5X2TkwWkXRBZTmfmbhxIUMh3+zf5wQ463rSmDN/8v81tdqBtAW6rH/kzg1GvkaTHXn0
+ 507yEHFzBksk2viAuIxxr7km8+/KARYLIdGtx30EG8cKzAUZOK6WqxtNCsXUJNrVE8CWrCaD
+ icoNu7Fs1c5hmPHdSTnU48ce67449DdnO4neLSNhRiGlMHJgfJUmgrxu/hcYeOZ3haWmEQ2w
+ uW1Mh01OHi8QZHCEyAbABrPs9GUgccc/4eYXX9hIgxfSkYzn8f+8NuIFPWl/0uTvjgqU29FQ
+ SbzOLxHq9439Ox40G5mS5eZXRGxITYR+6TXvRGI6P/264jvflnr/pDGUttaikU+0W+1uxgKH
+ cmYbEc7ATQRbGTU1AQgAn0H6UrFiWcovkh6EXVcl+SeqyO6JHOPm+e9Wu0Vw+VIUvXZVUVVQ
+ La1PQDUi6j00ChlcR66g9/V0sPIcSutacPKfdKYOBvzd4rlhL8rfrdEsQw5ApZxrA8kYZVMh
+ FmBRKAa6wos25moTlMKpCWzTH84+WO5+ziCTsTUZASAToz3RdunTD+vQcHj0GqNTPAHK63sf
+ bAB2I0BslZkXkY1RLb/YhuA6E7JyEd2pilZOrIuBGl/5q2qSakgnAVFWFBR/DO27JuAksYnq
+ +aH8vI0xGvwn75KqSk4UzAkDzWSmO4ZHuahKtQgZNsMYV+PGayRBX9b9zbldzopoLBdqHc4n
+ jQARAQABwsF8BBgBCgAmAhsMFiEEqUDUNJksLo6ZED1QIk+n58yCpmQFAmfIHFQFCRYU6J8A
+ CgkQIk+n58yCpmS2PA//bqN1LfcotmArgElsa+0EGZSQlYgK48pm8WAeTXTngudP9IJ4SuKY
+ HR5RNjHcBeqN+Me0zxRqYzRb8nGanHEkDyf4Im8DQM8d6vbyU+FcPmG4skud4kgS1zMHnlVd
+ SXfSIwKC/hKgdHG8aBV7545Lz9X6Iohea+94wneD0aw/hqF+QWewGZhWJriWAZtvEkzNjQOi
+ 4U9F/trLten/x7bpphDSnDMKJtITbtzATT1Dq7o7VpIUK1nCTQALMuMjKCdi8OdU/+V+R3O4
+ 0PXWvX8qrvqYapVbZ+9KqT74FsuB0Ya9uXwgBF2Q6cRuETZk5vqaqKxzqoQZCO8AOz/58j6O
+ 2RHNy/mZEN+7tJ5Tsq42zVJ4jxsT8b9YplavCMsnBgDeRWhcbYhCyttoL7nYISyWg4kQYZ/P
+ wIV3OuNv2f8iKYsxNsRuClOAF82+gvqOy1/1pprFjy8uo2pkoOrb63aOP3vO5VHnRKgra6dq
+ NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
+ OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
+ jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
+In-Reply-To: <arVERNhXeU1BX54G@thinkstation>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A8716140007
-X-Stat-Signature: ow137ywqdwkmrkwixzpwmmrogknoz47q
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9xkidm4ms5jtohaptyxj15xfihz169ju
 X-Rspam-User: 
-X-HE-Tag: 1790335534-996995
-X-HE-Meta: U2FsdGVkX1/B4MKZpDUd36V3f4Ebm14VwKgg4m1QB6LhLT19iLWfPxcMK6c7UTpWUuZEV4Pmps8hHFYOHK9Rsakt7tvqhYxNIjFQeqh90nDlBMi7XksZI1mfdSJgZuJhrOC2qaFPnrYZPsEKVZ6MtBJHXnYAst03e0T36wy4FONKb9OZEFddLEuk0GstnEXmqeUX5GBv2BGh1d+WwYT/tOCJUaH6tPAI/X1C4MtBbHBDdTTu7QdrSKS+BABE4ByC7ba7NQMH6zuYJL50yRLtqJEFN70gZ8h8yZELQgIiEtSfS+SmSeyBSK+uVNa63w32KoONdbNPHlFsX+y5vXhlNn/pNj2OTnevSBKRmnAoiKR87aylh/tdEqCRURTbRfxYHtFI77q4MlD5Ykq3ikEfN1aAwu6RXAgDd2jJ3dAWc3DD4ia+/lAXWBa67e+K1BuMbZS8xDu3SioIMiA7GsAOza6S8xJfnSEaLt6PhnvFzabXWZr9Na/OJMTqXEieaB5dl3e1HGixdZpcN+bLtOeLAkwUf8J7iX2N8ywi1zNMXgg2+969Uqr+QoS2gF7dq9gvRM2MZwyCV2gIv6LR6Xu4Sesd/KRsI3s0hdZiPoIqRLLLcr3xO/luF5WmdHAD2poLsiKcp7k8b08TOjt9ZU0whCMPKNBV2TIERAgftu2i3Z9sLGGBunUf1TQMpMfhwW5JagbUNXRL1cebeHJ/RSppAUYD8yk9hyCgflDseW45dSiobkUXVPO88Trrz4BAR6CDwW2FLhFGrtESMcxOIGIPU8SwO0p95ElBY+bYDmo9S4DCE82hMDyqTVwo7nHs8tm9T/BCBeFC+3phWAxiLKMJBvhKekv+JLzinfSh5dgcO2wImuB3p2EjpVmT9NvSef6JGDrskW82nmwHVw18WxQLLh4To0SEpvvI26/gWZV/sikqhSvK9byGDV31QGA3H2PohVZQgzPEjH1fyBxJLVL
- 12FVh6SP
- 7zwkHoRDPabU9pv0Ssa/iOJh2wGIaOzzX7SsCHT3O3ceVRMVMUUaH50KYvAMfljtntIlD/gbNINUOyoEQ6gOOfq7fcwToW/dlYbwJG2XHNKVyTPharLMLEHTKaz6pQqBDaxas8nbCIxwN8HI4PoBdmO8UlIBo0rv1cysbNUnPqI370OQ3f6oUnPgSZ0sHSdf74ScAxIzrY5W2hUP6bOspxVOtdnA2xrAdlnahNPXWB3pq0pq26tYLrsmvOF5/Li6QRR/7bToIG9N+BWcHKDxL4MnZu6P2dxwFvyeycFhQHfT7ld3jKSXcrYJCbxfdgbSf4/AG
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0A3E416000F
+X-HE-Tag: 1790337232-307856
+X-HE-Meta: U2FsdGVkX18rRHlPH+Cz6k0X/H0eEQxJrBNLg9NpTQlPyqNgznCGNXLkMARnGzh2s9JaTwRWHs4NSt6QPrJ97dyvh0768/rEKoL0ug2AoPlr9FX/7SzOoZbYFfDwkwRCPFficvugmDyjCYg4mMc3781q5kIIhWS4bjXVzUVJjlLpAQDtQPBL/v/Ep1khULfXioIYnZ3M5fJEx7fwihqcr5UP1q3OJg0klffdkMzIgNgA0zTtCSHJeuY3/lMFXM11/h8lWRxdATmEjxjdctBk4G3dzdyQs1OgEI0/KEdqeGoNuWb9LTpcUtmgGXSTlB3nzU/JTMwgkKSlSvmD4Snm6uubHaLLN+uN8T//USvT/yU1uBm+l/kH6SsfZsY/xfzjQTSeaokVIHaZjDv9qG1pXatzanHOqeP5rv3/LvjqysZ9B8l1gpoHleonwmnNwLrJm9JFkfxilwUCy72WiRrRApz83aaiMlsf2DZJBpEE06JRGJ2k865Fe73kYEY0g8XY94H6CQr1E6k2YA9q2xnF0H6gNMn8xkT6DmV7s1Lr+0NgzREUP8dyzPeisupsVezm+z3pPEgBeRjDt4UaV31s+Qgbnr9zG/oNM+SOM8N8og4NiPMM7k2/Z6CyKbacGZU8OjaZMiSLjRLbSdFBVLqS2u2T2d3+oGqlKR4BJvYxHbPka94JEGIgWx3SinrLb+ta3PSOFFCgBB67qhfWnfspgnudGIxIhBCHOihu8lui8oUDj2+wXkQ66/paPjwUOSoH3okdM7mBl/XoDLhQ8o12dbGvFtEo8Y5HmaF2mie5Wd3xtDNtOl7M7vqucyKGMjMci38S0wsxsDk4SH+2KUZJjnOQasM9wePuWQpW+QkIe6VwXsjeDGkF98AK0X+VIn/oVv/p+hJrv/CRlftJZPaMIvw1hO/UGTITCbEfjHBif+vL7l3WebZE8x7K7c4JYvRq78oH1DHcwxnWiEkBUjW
+ Dhk1BXmK
+ SYcNH/KGTTM/tLTAA055xij9JmQR12SNd+78Cbgz4pOS2ZELYY7c6tGGOfbR/FL/odfRNJIl4oAyO/EETHbBcADwQA/LdfI321M6PYCVl/xbFhxyR4CxsvUvThhEyHozxp7Ppf96nNs3+EDb6JBAhxaWqNU27gbVIJ2YstKBF4nx+JKcYV00X6S8v50KWGag02bsU48RibrvWTVPZRs8uAtwR0RUZHRgGw8ZPZL9xuwqUbJr3oQ25J5unvlrpAptniM2ZFAy/u01l9MJrlY3mOZ7RakxlPXE76JzWljUrS+eE+wbv/S6/M7xuCJoO6CWoGPhMDEjnfq3RF7UTB2lNXFH5PRS8BgkJrDq914HrytV5QC3PpQUjg4LRE8bzxjpPk1WjPGeMtMjt5ozGb0VYNgryNgi4fiJ0x+Ls
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,301 +139,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 9/25/26 12:57, Harry Yoo wrote:
+> On Thu, Sep 24, 2026 at 10:43:01AM +0200, Vlastimil Babka (SUSE) wrote:
+>> On 9/22/26 13:56, Harry Yoo (Meta) wrote:
+>> > Fix this by always avoiding waking up kswapd in __kfree_rcu_sheaf().
+>> > Note that there are two paths that might wake up kswapd:
+>> > 
+>> >   1) __kfree_rcu_sheaf()
+>> >      // __GFP_KSWAPD_RECLAIM might wake up kswapd
+>> >      -> alloc_empty_sheaf(GFP_NOWAIT)
+>> > 
+>> >   2) __kfree_rcu_sheaf()
+>> >      // Let's say __kfree_rcu_sheaf() doesn't pass GFP_NOWAIT
+>> >      -> alloc_empty_sheaf(__GFP_NOWARN)
+>> >      -> kmalloc_flags()
+>> >      -> slab_alloc_node()
+>> >      -> alloc_from_pcs()
+>> >      -> __pcs_replace_empty_main()
+>> >      // Free a sheaf in an allocation path when the sheaf becomes empty
+>> >      // and refilling the sheaf fails
+>> 
+>> So that's this
+>> 
+>>                 /*
+>>                  * we must be very low on memory so don't bother
+>>                  * with the barn
+>>                  */
+>>                 sheaf_flush_unused(s, empty);
+>>                 free_empty_sheaf(s, empty);
+>> 
+>> Now I wonder if we should just use the barn then, lol. We either took the
+>> empty sheaf from there, or there was none, so we don't risk overfilling it
+>> with free sheaves.
+> 
+> Well when refill_sheaf() fails, it's not guaranteed to be empty.
+> Might have to put a partial sheaf to full list?
 
+Would have to check if anyone could find that to be unexpected.
+Seems safer to continue with the sheaf to satisfy the request at hand even
+if not full.
 
-On 25/09/26 11:45 am, Barry Song wrote:
-> On Thu, Sep 24, 2026 at 9:12 PM Dev Jain <dev.jain@arm.com> wrote:
->>
->> Enable batch clearing of PTEs and batch swap setting of PTEs for anon
->> swap-backed folio unmapping.
->>
->> Processing all PTEs of a large folio in one go helps us batch across
->> atomics (add_mm_counter() etc), barriers in __folio_try_share_anon_rmap(),
->> and repeated calls to page_vma_mapped_walk(). In general, batching helps
->> execute similar code together, making the path more memory and CPU
->> friendly.
->>
->> On arm64-contpte, batching also helps avoid redundant ptep_get() calls
->> and TLB flushes while breaking the contpte mapping.
->>
->> The handling of anon-exclusivity is very similar to commit cac1db8c3aad
->> ("mm: optimize mprotect() by PTE batching"). Since
->> folio_unmap_pte_batch() does not look at the bits of the underlying page,
->> process sub-batches of PTEs pointing to pages with the same exclusivity
->> state, and batch set only those PTEs to swap PTEs in one go.
->>
->> Disable batching for sparc (because of arch_unmap_one), we will batch this
->> later.
->>
->> Rmap accounting and reference accounting must happen when anon folio unmap
->> succeeds. If a large folio is only partially batched or a later sub-batch
->> fails, account only the pages that were actually unmapped. Put that
->> accounting in __ttu_anon_swapbacked_folio() itself instead of using goto
->> jumps at the try_to_unmap_one() callsite.
->>
->> Similarly, do the finish_folio_unmap_batch() in ttu_anon_folio() itself for the
->> non-swapbacked lazyfree case.
->>
->> If the batch length is less than the number of pages in the folio, skip
->> over this batch. page_vma_mapped_walk() handles this: check_pte() returns
->> true only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the
->> PTE. Swap PTEs have no underlying PFN, so check_pte() returns false until
->> the walk reaches the next present PTE to unmap.
->>
->> Remove the finish_unmap label since no goto callers are left now.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/rmap.c | 109 +++++++++++++++++++++++++++++++++++++++---------------
->>  1 file changed, 80 insertions(+), 29 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index fa9fc8374fc26..cdda9efd80bc3 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -1966,12 +1966,13 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>         end_addr = pmd_addr_end(addr, vma->vm_end);
->>         max_nr = (end_addr - addr) >> PAGE_SHIFT;
->>
->> -       /* We only support lazyfree or file folios batching for now ... */
->> -       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->> +       if (pte_unused(pte))
->>                 return 1;
->>
->> -       if (pte_unused(pte))
->> +#ifdef __HAVE_ARCH_UNMAP_ONE
->> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
->>                 return 1;
->> +#endif
->>
->>         /*
->>          * If unmap fails, we need to restore the ptes. To avoid accidentally
->> @@ -2141,16 +2142,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, pte_t old_pte,
->>         return swp_pte;
->>  }
->>
->> -static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
->> +static void finish_folio_unmap_batch(struct vm_area_struct *vma,
->> +               struct folio *folio, struct page *page, unsigned long nr_pages)
->> +{
->> +       folio_remove_rmap_ptes(folio, page, nr_pages, vma);
->> +       if (vma->vm_flags & VM_LOCKED)
->> +               mlock_drain_local();
->> +       folio_put_refs(folio, nr_pages);
->> +}
->> +
->> +static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
->>                 struct folio *folio, struct page *page, unsigned long address,
->> -               pte_t *ptep, pte_t pteval)
->> +               pte_t *ptep, pte_t pteval, unsigned long nr_pages,
->> +               bool anon_exclusive)
->>  {
->> -       const bool anon_exclusive = folio_test_anon(folio) &&
->> -                                   PageAnonExclusive(page);
->>         swp_entry_t entry = folio_page_swap_entry(folio, page);
->>         struct mm_struct *mm = vma->vm_mm;
->> +       pte_t swp_pte;
->>
->> -       if (folio_dup_swap_pages(folio, page, 1) < 0)
->> +       if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
->>                 return false;
->>
->>         /*
->> @@ -2159,21 +2169,57 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
->>          * so we'll not check/care.
->>          */
->>         if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->> -               folio_put_swap_pages(folio, page, 1);
->> +               VM_WARN_ON(nr_pages != 1);
->> +               folio_put_swap_pages(folio, page, nr_pages);
->>                 return false;
->>         }
->>
->>         /* See folio_try_share_anon_rmap(): clear PTE first. */
->> -       if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
->> -               folio_put_swap_pages(folio, page, 1);
->> +       if (anon_exclusive &&
->> +           folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
->> +               folio_put_swap_pages(folio, page, nr_pages);
->>                 return false;
->>         }
->>
->>         mm_prepare_for_swap_entries(mm);
->> -       dec_mm_counter(mm, MM_ANONPAGES);
->> -       inc_mm_counter(mm, MM_SWAPENTS);
->> -       set_pte_at(mm, address, ptep,
->> -                  swp_pte_prepare(entry, pteval, anon_exclusive));
->> +       add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
->> +       add_mm_counter(mm, MM_SWAPENTS, nr_pages);
->> +       swp_pte = swp_pte_prepare(entry, pteval, anon_exclusive);
->> +       set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
->> +       finish_folio_unmap_batch(vma, folio, page, nr_pages);
->> +       return true;
->> +}
->> +
->> +static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
->> +               struct folio *folio, struct page *first_page,
->> +               unsigned long address, pte_t *ptep, pte_t pteval,
->> +               unsigned long nr_pages)
->> +{
->> +       unsigned long batch_idx = 0;
->> +
->> +       while (nr_pages) {
->> +               bool anon_exclusive = PageAnonExclusive(first_page + batch_idx);
->> +               unsigned long len = page_anon_exclusive_batch(batch_idx,
->> +                               nr_pages, first_page, anon_exclusive);
->> +
->> +               if (!__ttu_anon_swapbacked_folio(vma, folio,
->> +                               first_page + batch_idx, address, ptep, pteval,
->> +                               len, anon_exclusive)) {
->> +                       /* Restore the remaining PTEs that were cleared. */
->> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
->> +                       return false;
->> +               }
->> +
->> +               nr_pages -= len;
->> +               if (!nr_pages)
->> +                       break;
->> +
->> +               pteval = pte_advance_pfn(pteval, len);
->> +               address += len * PAGE_SIZE;
->> +               batch_idx += len;
->> +               ptep += len;
->> +       }
->> +
->>         return true;
->>  }
->>
->> @@ -2186,15 +2232,22 @@ static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
->>          * See handle_pte_fault() ...
->>          */
->>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
->> -                        folio_test_swapcache(folio)))
->> +                        folio_test_swapcache(folio))) {
->> +               set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
->>                 return false;
->> +       }
->>
->> -       if (!folio_test_swapbacked(folio))
->> -               return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
->> +       if (!folio_test_swapbacked(folio)) {
->> +               if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
->> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
->> +                       return false;
->> +               }
->> +               finish_folio_unmap_batch(vma, folio, page, nr_pages);
->> +               return true;
->> +       }
-> 
-> Hi Dev,
-> 
-> if we look at the whole `ttu_anon_folio()` code:
-> 
-> static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
->                 struct page *page, unsigned long address, pte_t *ptep,
->                 pte_t pteval, unsigned long nr_pages)
-> {
->         /*
->          * Store the swap location in the pte.
->          * See handle_pte_fault() ...
->          */
->         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
->                          folio_test_swapcache(folio))) {
->                 set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
->                 return false;
->         }
-> 
->         if (!folio_test_swapbacked(folio)) {
->                 if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
->                         set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
->                         return false;
->                 }
->                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
->                 return true;
->         }
-> 
->         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
->                                          pteval, nr_pages);
-> }
-> 
-> The comment "Store the swap location in the pte" is really out of
-> place. Since we are already here, can we move it to the right place?
+> ... well, now we have sheaf_partial though :-)
 
-I am not sure what is the "right place" you are referring to : ) More
-than that, this comments feels very out of date - it is well-know that
-the "swap location" is stored in the pte.
-
-In fact, this comment starts on top of the wrong block, which is a
-debug assertion for "when we are here, swapbacked if and only if swapcache".
-So I'd rather just remove it.
+True!
 
 > 
->>
->> -       /* nr_pages > 1 not supported yet */
->>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
->> -                                        pteval);
->> +                                        pteval, nr_pages);
->>  }
->>
->>  /*
->> @@ -2374,13 +2427,14 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>                          */
->>                         dec_mm_counter(mm, mm_counter(folio));
->>                 } else if (folio_test_anon(folio)) {
->> +                       /* finish_folio_unmap_batch handled internally */
+>> Well but I guess sheaf_flush_unused() could end up in freeing paths anyway.
+>> But that's a bulk free which doesn't involve sheaves at least.
 > 
-> 
-> let me paste the final code here:
-> 
->                 } else if (folio_test_anon(folio)) {
->                         /* finish_folio_unmap_batch handled internally */
->                         if (!ttu_anon_folio(vma, folio, page, address,
->                                             pvmw.pte, pteval, nr_pages))
->                                 goto walk_abort;
-> 
->                         if (nr_pages == folio_nr_pages(folio))
->                                 goto walk_done;
->                         continue;
->                 } else {
->                         ...
->                 }
-> 
->                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
-> 
->                 /*
->                  * If we are sure that we batched the entire folio and cleared
->                  * all PTEs, we can just optimize and stop right here.
->                  */
->                 if (nr_pages == folio_nr_pages(folio))
->                         goto walk_done;
->                 continue;
-> 
-> I am really struggling to read the code here. For anon folios, we
-> handle `finish_folio_unmap_batch()` internally, while for other folios
-> we still do it outside. This feels a bit inconsistent.
-> 
-> Also, we are duplicating the code below twice:
-> 
->                 if (nr_pages == folio_nr_pages(folio))
->                         goto walk_done;
-> 
-> Can't we just do `finish_folio_unmap_batch()` like the other cases?
+> What do you mean by "**sheaf_flush_unused()** could end up in freeing path"
+> but "that's a bulk free which doesn't involve **sheaves**"?
 
-The core problem is that we may succeed on a partial range.
+I mean we can still get to a situation where we're freeing during allocation
+and making all more complex. But at least it doesn't go through sheaves so
+the freeing is rather straightforward, no gotchas like
+__pcs_replace_full_main() allocating a sheaf below.
 
-ttu_anon_swapbacked_folio can succeed on x < nr_pages. So for x, we
-should call finish_folio_unmap_batch. Either we do it my way, or,
-ttu_anon_folio returns the number of pages successfully unmapped = x,
-and then even in case of "failure" (we should now jump to
-walk_abort since we failed to unmap 'nr_pages - x' pages) we call
-finish_folio_unmap_batch for x pages.
+>> We could also distinguish which callers of refill_sheaf() can continue with
+>> a partially refilled sheaf. This one likely can so we'd not have to be
+>> flushing, ever?
+> 
+> Can we do that without adding too much complexity?
 
-IMHO that is uglier. I wanted to avoid this label jumping. I would
-be interested in hearing a better alternate : )
+Remains to be seen :)
+
+>> >      -> free_empty_sheaf()
+>> >      -> slab_free()
+>> >      -> free_to_pcs()
+>> >      -> __pcs_replace_full_main()
+>> >      // However free path always assumes it's safe to wake up kswapd
+>> >      -> alloc_empty_sheaf(GFP_NOWAIT)
+>> 
+>> Would be great to avoid all this from kfree_rcu().
 > 
-> That would also avoid the duplication.
+> Yeah.
 > 
-> Best Regards
-> Barry
+>> > Drop __GFP_KSWAPD_RECLAIM in both cases. Note that the kfree_rcu() is
+>> > not the only user of free_to_pcs() path, but it should be fixed as it
+>> > can be invoked under pi_lock.
+>> > 
+>> > Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> > Closes: https://sashiko.dev/#/message/20260831-b4-kfree_rcu_hotfix-v1-1-4f0fb882638b%40kernel.org
+>> > Fixes: ec66e0d59952 ("slab: add sheaf support for batching kfree_rcu() operations")
+>> > Link: https://lore.kernel.org/linux-mm/20260831143500.x-saxdAs@linutronix.de
+>> 
+>> Fixed up per your reply.
+> 
+> Ack.
+> 
+>> > Assisted-by: LLM
+>> 
+>> Changed to (per below)
+>> 
+>> Assisted-by: LLM # dicovery and verification
+> 
+> Ack.
+> 
+> Didn't know adding # blablah after Assisted-by: was a thing!
+
+I want it to be! We did want to stop advertising particular LLMs (now done
+in the kernel docs, IIRC) but also document how it was used as there's a
+large spectrum of possibilities (not sure if that made it to the docs but it
+was discussed definitely).
+
+>> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+>> > ---
+>> > The discovery and verification (w/ a modified kernel) of the bug was
+>> > assisted by LLMs.
+>> > 
+>> > More speicifically, the first path was pointed out by Sashiko, and
+>> > the second path was discovered by LLM while reviewing the commit with
+>> > review-prompts [1].
+>> > 
+>> > Harry Yoo reviewed those findings and manually crafted the patch based
+>> > on that.
+>> > 
+>> > [1] https://github.com/masoncl/review-prompts
+>> > 
+>> > I believe the right direction to address this issue is to make
+>> > kfree_nolock() work in any context and replace it with kfree_rcu()
+>> > in the scheduler. However for now it won't work under pi_lock,
+>> > and resolving that would be a longer journey.
+>> 
+>> Indeed.
+>> 
+>> > Address this issue by dropping __GFP_KSWAPD_RECLAIM, for now.
+>> 
+>> Applied to mm/slab.git slab/for-next-fixes, thanks!
+> 
+> Thanks!
+> 
+>> But still could discuss a better solution per above.
+> 
 
 
