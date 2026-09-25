@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC01C9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:13:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 141C3C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:17:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6466B6B0088; Fri, 25 Sep 2026 06:13:54 -0400 (EDT)
+	id 317FB6B008C; Fri, 25 Sep 2026 06:17:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61E9A6B008A; Fri, 25 Sep 2026 06:13:54 -0400 (EDT)
+	id 2C8DD6B0092; Fri, 25 Sep 2026 06:17:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55AC96B008C; Fri, 25 Sep 2026 06:13:54 -0400 (EDT)
+	id 1DED76B0093; Fri, 25 Sep 2026 06:17:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 360CD6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:13:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC3B2A6923
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:13:53 +0000 (UTC)
-X-FDA: 85251873546.15.8A6FE95
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E961B6B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:17:05 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8662E1A05A8
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:17:05 +0000 (UTC)
+X-FDA: 85251881610.14.4BC5DA9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2B30F140009
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:13:52 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvvqWOPq;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf14.hostedemail.com (Postfix) with ESMTP id C96FF100003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:17:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtGYEP3N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790331232;
+	s=arc-20220608; t=1790331423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UvTmyd62NBwPnh1Rpluu6TR3mWFhWCcbU/2COoqGdLM=;
-	b=OA4It6ELvlimVR+Ly0uFgeJHhrQPFhy0H/9vow9n7r3Y2z1oGRqHkwYVqRnUYItLBe0veZ
-	SOcXuSGd7kjZ+6XFc3udWcHvnULYBU9olxsAQN67HFpFpN0brhkyPkCJ9macHS8OFUvALC
-	/WZmIpnf/IWXGPfae2+D3KWb8ln39V8=
+	bh=3FRgt93szZc+4T1rdPLugIec3JqcHLkBElvJ5G6NXcU=;
+	b=OSygTRYwnbhabc6egdLg5149GDfAoTjBoYc78CRqFrtvpoh3fKiSLNpVByuIzEn27OuKdr
+	rx8NPTgN5ec53ld/nfvnBfi0TopiGWIn6jjiE7kSBxudGGjDX060aORwN9pnL3PHsAWoqS
+	2H+DCHv+WZfxrs1lVu9DcLXT8Uuyqvg=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NvvqWOPq;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AtGYEP3N;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790331232;
-	b=VCOzaJIBxsNG2O84tA3rvjldR62tsNdkAJuzADHq/4+UIrw0L0CEDcH2vcHBXME1CXP6CO
-	BbfL56W5Ky2EMLY5vx+yTtB4ugKpviwy2qGI+0KVGBbVG2G+GTqDXWtJtjykrhSaQF42Us
-	w1vn1BnieYvdDbcWaYwRZCVjyGxAOec=
+	t=1790331423;
+	b=YNSFSPAh6fn+dHd/KUgylEyGWIVoH/Bdm97zERBrCG9dLek7eQ2Mj5/6SayO132tkCgZuf
+	2yCUJymZKMenHbyTwYr9DdQs+PfDlADU/um6XeO6aYFueZdqw+k9QXYrl3Ly2YVTCGKYmL
+	q2aIEtqcd1W9qSMyitfvLTEUKy87D6c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 51C7842ACD;
-	Fri, 25 Sep 2026 10:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DF11F000FF;
-	Fri, 25 Sep 2026 10:13:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 024EC418F3;
+	Fri, 25 Sep 2026 10:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12531F000FF;
+	Fri, 25 Sep 2026 10:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790331231;
-	bh=UvTmyd62NBwPnh1Rpluu6TR3mWFhWCcbU/2COoqGdLM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NvvqWOPqHwDB7b4EieW2LrcnPCJawtrbIfkw04FY4bPgyu9mU08uV6/OK3SBmW5QW
-	 27XiiSIqsyjoqK1GukPc7SuaJmpdXa4wcxGR5wyqZLL2MfMryc6MHAjpvP9BJToIiE
-	 qlPmgpdLWTALGwfqvs4oxi1IgUpmQIJ59NIHkrCBKx3qiBj65y8BFVlMu71aUd74mG
-	 ovB5F76svNHCn/TdhP5H2639BPuc30kJWQolmjCf5QuVvs3rR9FpZXo/hBoZeFIRXD
-	 N8vi0L3EUtkpmBZrmGkiew5vOooElz4cP5BJxezPJMy4UpxnZJqhSEa9fYQ7EmUmNw
-	 rLjyZ+gdlhHKw==
-From: SJ Park <sj@kernel.org>
+	s=k20260515; t=1790331422;
+	bh=3FRgt93szZc+4T1rdPLugIec3JqcHLkBElvJ5G6NXcU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=AtGYEP3NP6z0cet+t6hAByQryQKCWbDouUCH0PeUQ2awHZkpi+6rIVCMldPWEVSKf
+	 9+jSNbe0LOKUAzeRl6KKWc4zt6UY1eTVJStbRPyTDFHesMobiYC1YYyOKZKwZXiZe+
+	 D1VAKSQJvXBQHghzF4BkwoqG9ndtKculXbPssvLsU2/ghxmVQdP5/wJk7cXW1HP37+
+	 VtWtoJyYlpFBkKngpFsxGclsdb5Rkc11vHzMJOIH9evXPqUS31GAu0J+PaGN1cCUMQ
+	 H901LLkjHyVZqFIAnLBWKvxAZbvknfgIrL0gZgQ1koz/76jmaDvFRym5uAYo1h/KT/
+	 DPSUorNZqt2Mw==
+Date: Fri, 25 Sep 2026 12:16:55 +0200
+From: Gao Xiang <xiang@kernel.org>
 To: Lance Yang <lance.yang@linux.dev>
-Cc: SJ Park <sj@kernel.org>,
-	mst@redhat.com,
-	david@kernel.org,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	virtualization@lists.linux.dev,
-	ryncsn@gmail.com,
-	kunwu.chan@gmail.com,
-	lianux.mm@gmail.com,
-	baohua@kernel.org,
-	xueyuan.chen21@gmail.com
+Cc: david@kernel.org, muchun.song@linux.dev, research@deepseek.com,
+	sj@kernel.org, mst@redhat.com, damon@lists.linux.dev,
+	linux-mm@kvack.org, virtualization@lists.linux.dev,
+	ryncsn@gmail.com, kunwu.chan@gmail.com, lianux.mm@gmail.com,
+	baohua@kernel.org, xueyuan.chen21@gmail.com
 Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Date: Fri, 25 Sep 2026 03:13:31 -0700
-Message-ID: <20260925101332.49502-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260925054408.10431-1-lance.yang@linux.dev>
-References: 
+Message-ID: <arZKFznn4Z2LvoJN@MacBookPro.fritz.box>
+References: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
+ <20260925081504.23569-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2B30F140009
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260925081504.23569-1-lance.yang@linux.dev>
+X-Stat-Signature: p6nd9495o48aykquqii4uom9j7tz6gj6
 X-Rspam-User: 
-X-Stat-Signature: br73uew7fix7swuxcknogqsbasa6xuar
-X-HE-Tag: 1790331232-118204
-X-HE-Meta: U2FsdGVkX1+XEFSxsjaY8KYk619chSDGv37HskKIlerJiYo2z5nN7WfU9XmXP5mAzM2R9t9f6H5JMe/GMWaRoxZWteS813J7wsvlyfk00nVsEdGdHYH5dzjZvbtKR5PEbQHYlhz8v+gZfs3peI8j/NDZmorh9VMXQB9XFPtVuusBsKZ9MKa4rzk9PzknTOKV+9jSePpqMbxcugIznj9zRoSeL3YJbxNesiP7R2r7dkPTUVfFMbTDyc5UBV2OAuKbQyw+ArsfvNmPvaNbcdQkJ+sm0Y5CZgqyxKPHttzVAjFvgCvdsrjF+TcsCQoVGwEhagDq1qc5J3KmhU7LSfskKj5YXpxHDmRnwy8wnHHrVK1MIQcdISMwYl0e99CtaPBlscuXi2PaBw+zRpw/9Lj0dmCXdW/1p+d5p4ePFYdaR4t7DfR+GDUQqw5EKYli8a2I8Yb+OmY8PQip4CxLmxeCfskNXW0HRlUUV3wXj0L5RuqgHmqoyfbn8gQhGu8/BIR8ne9NJffcFfElA/kPzC2EQkkz0/jGKPCvpEMuL8i6clvgwcRusbKrMam1eABVBHUYQAIz1EtCFf4e15w6x5Y/IIyRKtZvLie8mVoyAOhm1Xg5xSjpOGvzh+OWOWUi41ulnCAzUelgAxGEzw/3qsl7ysquiZLw1dWNmP4j1B3oMTnmaTbi2eyB1ScipoUHhn2nNNwRLP4FY++pTKCReBMfa5PmZOaHshbynEfMZvOsUp0vlrubp0PB5Y+WQK4yIAC6nwz1SefqMuwBr4MtOf5q7NN6HLGOgHMKg74fMluZ4FrYcAcK5Gpi8VoELKTcilhQmmQU7GsmFBxQAMfnmBW36VVVVg2/eoD4rTxnxlHKZ+62ikLqPJB3782RVl1zplAZB1Snm/ycM16IzA+N+DxifUAlHPZ1UcDudAy5NXjIL+VREc0OVlMm3hGLxgZcSSggmBmhLUfnFug8y52fqrS
- RyOnN6CW
- M78Pso1eiqxX6xxJOFapNdN0Yc1jXQoC+VJMKJZLsEVPxgcwVVqX8lfgfuqbXn6H2rAAy01is9KauC2E8mXp0CuiNmTc/7tlQS6rkyGxsSrs8hxPsxojL9Wwy4MVGnUZd+sunD0g0wUQw2ZvDpFLnNKvbdpXqydeeHxbw7lrLp2UpIvx+0+x5KJzPu7+ZSGiwDa3HLD+/N2vVOCTP1mWphB6vF3KRau9KeaiXTABvcEmrAdE5sCIggSy055cshrSI44yv5Ft779BvPdsr6WnUCzFr+WnrK7vy46+NIsbefyBvSm9+ATx0WgWGU3N1Uf4jeCDveoMlCSqNxUIrcVs1eeU2PsGaIgtrmhbtnSVCysiOogpUMzEY0av5cgNn72jpnQF7x+NnGvMsMKkH3lH+KDyuJWs32ng70UUc
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C96FF100003
+X-HE-Tag: 1790331423-940244
+X-HE-Meta: U2FsdGVkX1/iUIv9k4q9AIIeGoK6plo9I5jpFpw+kPyY+O9wu8cijxJkMXdeN/u1wrpsgYCOiuI+ipw4TDVTO/E7LA3MeNmc0jJfnjgl4TVuNMVDodCmf2ypUM+qY7LDxhziXbnTyHI/EQ7lI4oJogQhaNiudPQkrKtRKo8ziEG4+2yVxyVxrizzYByRU46hIRSa6CoIQIwa2wLiJwkXEkT+MDJ7znrg2+7vj+WBqQLpfvEZi8Fic0ZmFgmzrg9eK5WfvSoEM032+TiftjqjuCM2xZ9JS2p4xY0CyLT/FxJEKCZX1nf6hOhkGXw8wzwpM7fTWJfu/gtxI502FhKzhjlxcmVUSUjKPXg+4FiaXq7Ou83Ml/yZIVUUprj+4xyIgi0/BEsF/X2cy0w9seiXvRZ/ygVIrpym3I4C6+qxOgGqWCZXfDLO1DCRH81E44cAP3f778XYdDeoG7zqQJYUXoc+vXhx12eQGR3OIJ+X44QVbp+f3IL2yoImXU7UkqOiflPbTd9uBHx7N8FXsPXhn8hutT2PnGBjupPB0A2edu/hz7qHevNo18yxW+Y6Sn1rMZjaGhs6kn44+K1SzAKMA6xKz7iWYVxzaqNwRapJhFPJ9pKQpGp4M0373uCBgtJ4TdPY1DmJIlzAY4P/awbA8/0Pw8Se73z4ESFgeHN8D/OpuZ6d/lh6Dg9jDIPOExzm5RgPOKffWtRvr5e48L3ur0q5Au2BVzfx+SraB8/MP/KWroxvT8EZi5DfbGHfFX5+W/g06VHFoGsN7iEPdJ8iYJF3yCNkDnR9mk5rRjRM6QWa0sIC4uYJkG8jX3Rz/QBukB0qr7kB3wK3pwUCzHVCKOmZb/t6+wjBZZlwlPEQUkixmB8pow2xSq3Gn+HnvigXXFm+ysXI7NKcaacnd8+llplxl3lZb+KVaV5Co0PPtUz+3XvG3Qqs9jHW0ZIpPNKmaBVqAr30EHw506EqHKr
+ v1JSdvsl
+ jBOjC0UxLjor6euKNuIV/GQY2254vK3ggCLIPAmkBdnnf97m+g4la6nS7wlO50MoeL/yMzSJaDgheUIZ3KHbP9m5Itb34hmob+j1zhD17jnKZLXFSVPUsZhf5dScBEdKygHl0EdudAadJq0hRC9ZTZI+67uvCqWqKKlyuJZW35RAVzOy8hvF7TuXNtydxTBc05ND+xQU1tL3OMCeRY8mPi69/PCkAT6qabGV9TRXlAG8ij7BoPtg2pQPlqDoMjdqYtoM1p6L2TXUV7aP+6qAF5kmm/bko/XUITNdqfPg5OZ4Up+sZYNCgBx+fbagJ6sKBe5YNs23Eq7eeQrWS0JoiXRnZDBOqUQIsFCG0CB69B9O91bPEUIDkAaiYDbQbNQXgY4JF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,63 +94,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lance,
+Hi,
 
-On Fri, 25 Sep 2026 13:44:08 +0800 Lance Yang <lance.yang@linux.dev> wrote:
-
-> Hi all,
+On Fri, Sep 25, 2026 at 04:15:04PM +0800, Lance Yang wrote:
+> +Cc DeepSeek and Muchun
 > 
-> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
-> and virtio-balloon:
+> On Fri, Sep 25, 2026 at 09:04:41AM +0200, David Hildenbrand (Arm) wrote:
+> >On 9/25/26 07:44, Lance Yang wrote:
+> >> Hi all,
+> >> 
+> >> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
+> >> and virtio-balloon:
+> >> 
+> >> With this kind of workload, an agent may read a file once and never touch
+> >> it again, while those pages remain in the guest page cache. Without memory
+> >> pressure in the guest, they can stay cached even though the host would
+> >> like that memory back ...
+> >> 
+> >> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
+> >
+> >Heh, I read "virtio-balloon" and thought "balloon inflation/deflation, what year
+> >is it?!". Free-page reporting makes much more sense.
+> >
+> >> cold file pages from the guest page cache; buddy gets a chance to coalesce
+> >> them into reportable blocks, and virtio-balloon passes those blocks to
+> >> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
+> >
+> >When I was at RH we were looking at this issue as well. virtio-pmem was one way
+> >of avoiding the page cache in VM entirely. But it has its own limitations.
 > 
-> With this kind of workload, an agent may read a file once and never touch
-> it again, while those pages remain in the guest page cache. Without memory
-> pressure in the guest, they can stay cached even though the host would
-> like that memory back ...
+> YES, they enable virtio-pmem with DAX for the read-only EROFS base-image
+> and toolkit layers, while using DAMON with balloon free-page reporting to
+> reclaim cold file pages from the guest page cache on larger writable disks.
 > 
-> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
-> cold file pages from the guest page cache; buddy gets a chance to coalesce
-> them into reportable blocks, and virtio-balloon passes those blocks to
-> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
+> They also point out that the guest must allocate struct page metadata for
+> the entire pmem-backed address range. So virtio-pmem is not free either :)
 > 
-> And it worked: time-integrated host memory use fell by 21.2%, while peak
-> usage stayed about the same, with no significant CPU overhead. Pretty cool
-> to see these pieces show up in another real, large-scale system :)
-
-Thank you for sharing this, Lance!
-
+> BTW, Muchun recently posted a pretty cool series for exactly that:
 > 
-> Kernel work still changes the world. Cheers to that!
-
-Indeed, the community is making the work a great place.
-
+> https://lore.kernel.org/linux-mm/20260903122128.12264-1-songmuchun@bytedance.com/
 > 
-> Anyhow, I still don't know DAMON and virtio-balloon as well as I should
-> (mostly I just know the people who built them) :P
-
-Please feel free to ask any question to DAMON community and me, whenever you
-get :)
-
+> (It shares vmemmap backing until a DAX fault needs private metadata,
+> avoiding the full per-PFN cost up front.)
 > 
-> [1] https://arxiv.org/html/2609.22978
+> I have a feeling the DeepSeek team will be watching this one closely :P
 
-I only briefly read the paper.  But it looks like DeepSeek's DAMON usage is
-similar to AWS' DAMON usage [1] for their serverless service.
+There are several points virtio-pmem RW from my own viewpoints:
 
-While I was in AWS, I proposed [2] a more advanced version called
-Access/Contiguity-aware Memory Autoscaling (ACMA).  After the RFC idea v2 [2],
-no progress is made so far, though.  I shortly covered it in LSFMMBPF'25 [3],
-but all I mentioned was that the project is suspended.  Recently a useer has
-personally reached out to me asking the status of ACMA.  It is too early stage
-of the discussion to say or promise something in my humble perspective, though.
+ - It makes the write async I/O synchronously, note that write I/Os are
+   not quite the same as read I/Os (read I/Os are mostly sync). Storage
+   also support multi-queues which can better leverage that, and that is
+   why sometimes brd block device is not good at high-performance nvme
+   for example.
 
-[1] https://cdn.amazon.science/ee/a4/41ff11374f2f865e5e24de11bd17/resource-management-in-aurora-serverless.pdf
-[2] https://lore.kernel.org/all/20240512193657.79298-1-sj@kernel.org/
-[3] https://lore.kernel.org/all/20250121183103.42877-1-sj@kernel.org/
+ - Note that sandbox usually has a memory limit, but dax RW makes the
+   whole rootfs addressable, e.g. if you have 128GiB rootfs, which means
+   you could fault 128GiB on the host, instead of the sandbox memory
+   size, so it might cause some security concern (as long as users
+   shouldn't expect the host memory can be used up to 128GiB + memsize).
 
+ - It can cause sync 4K faults on the host in the worst case (maybe
+   large folios on the host can improve a bit yet not quite), in
+   constant to the guest memory + THP usage. I don't know how the
+   reclaim overhead is measured currently, but it seems the dsec paper
+   also mentioned in this case.
+
+ - The guest workload will still use mmap() for many sandbox apps, so
+   `struct page` optimization is just for the optimized case, but not
+   for the worst cases, the malicious VM sandboxes can still take
+   much more `struct page` in the guest.
+
+There would be better to have some benchmark here for typical RL
+training RW virtio-pmem: but block storage semantics cannot already
+be replaced with the memory semantics.
+
+I think virtio-pmem RO is useful simply because it can reuse the same
+page cache among multiple sandboxes on the host, which can even
+warm-up other sandbox workloads, although it still has some security
+concern but I guess for RL training it doesn't matter and read is
+almost synchronous unlike writes.
 
 Thanks,
-SJ
+Gao Xiang 
 
-[...]
+> 
+> >Thanks for sharing!
+> 
+> Cheers!
 
