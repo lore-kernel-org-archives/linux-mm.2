@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 398B0C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 19:36:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F4B4C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 19:38:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AD316B0099; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
+	id A8DB26B009D; Fri, 25 Sep 2026 15:38:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35E5A6B009B; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
+	id A3EC16B009E; Fri, 25 Sep 2026 15:38:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 274C36B009D; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
+	id 97BF96B009F; Fri, 25 Sep 2026 15:38:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 000B76B0099
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:36:56 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73CDD6B009D
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:38:11 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67BE7406D5
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:36:56 +0000 (UTC)
-X-FDA: 85253292432.23.6C381C9
-Received: from mta1.migadu.com (out-156.mta1.migadu.com [95.215.58.156])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 469CC40006
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:36:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VXFF22su;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 00E83140257
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:38:10 +0000 (UTC)
+X-FDA: 85253295582.23.F40776B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 53FE518000C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:38:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DxbIi28P;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790365014;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1790365089;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M4/lST7zD2Erdwe6/sNV3cFEsUbk898lwUHJrduDZXw=;
-	b=TYQL69WYGBhWgL8+TUNo95x5E74lk++8krsqstLOb/6p35sKM2fEeuYFTADv7jV0wMptO/
-	4B2pr1fkdByO8IHzHpFcWMk2SfKp3ipKFToFsiYVMqH7Ek4JpFi+1keA0zolnU3awC7C9x
-	QhKzrBDefTYMAZ9YRAMgR4cZbQIShdk=
+	bh=0LEsbhIDjBe66cbu0GZSdPhdvVGyJ9cnICBeyy6iWkk=;
+	b=dLOeYGQ0ygh3l3mf8F6JybyjRiH/8SRCalEsXfttVmzTBW0erMOZ0RTkZWdiOJHEll73wN
+	ivIEe+raGGWX/SSfAj9kZQvZgTkEAMY/zSNbo0/kdFINRjJdZ/+vWku4v06mWV8/8UB+Rc
+	MgkUrKvGm89eNCvEpzcXPQ/HtKnRvXQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VXFF22su;
-	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DxbIi28P;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790365014;
-	b=yyvVF+npj276QMV1RBcd9jRuIAQRNAfv+nv95pJvE1TWSghN3+ikJQ1WC4GWNqSqqz/cxB
-	cv66fDY7aYrsEOCekX406VatGA9koErFL9gUvax9TSFHMUlbQMftEz4MxUPx5j9RWaTIhV
-	wzHNa3vmdb1AKyfhxiHv6/pFOEIkhIY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=M4/lST7zD2Erdwe6/sNV3cFEsUbk898lwUHJrduDZXw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790365012; v=1; x=1790969812;
- b=VXFF22sukklykt3cUSRvuT4kz/LqkM+UbDC67HTjRio2lWyy6fgve2LzsrwPa3zRWUwkUxNc
- 51cJkWVz77angGhv+3RvLJUqlq8f+ZabcwGp3y7BCkoRi7o1OL4QvVCtu35K0O5WcCbeEybTHcS
- osoWF2lWk6lPH3EBvClLbhqU=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9b23b1b9c141f10f;
-	Fri, 25 Sep 2026 19:36:52 +0000
-X-Mizu-Trace-ID: 9b23b1b9c141f10f
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 25 Sep 2026 12:36:46 -0700
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Rik van Riel <riel@surriel.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Gregory Price <gourry@gourry.net>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-Message-ID: <arbGo3QTYlUD5cVW@linux.dev>
-References: <aqjcFb6MFNiA6n4V@fedora>
- <aqjpYHbZ14A8xRtK@fedora>
- <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
- <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
- <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
- <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
- <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
- <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
- <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
- <arUcil9kxUPiymXI@KASONG-MC4>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arUcil9kxUPiymXI@KASONG-MC4>
+	t=1790365089;
+	b=1Fv0s48ptNQvej00OUteGZDlq1ylFnB8xs0FVf42VXU8CnWWrkTBjif5HucX2emyGE1TLF
+	Y9xWT0topyZFKWi5qZ6YMZ0MDAiFTudftyuJlsQ1XMAmeJDVooSORKFxbTzYT6Cf/Sinaa
+	WfasmzO43UwEgIUHF/EiCHxb2exkRnI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 875BD43765;
+	Fri, 25 Sep 2026 19:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F401F000FF;
+	Fri, 25 Sep 2026 19:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790365088;
+	bh=0LEsbhIDjBe66cbu0GZSdPhdvVGyJ9cnICBeyy6iWkk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DxbIi28P95AzIzpsaRJqifwhTdKpAAPYMwT4+wQMpyTkmjQuoUxKrj2UjvZ1CzDD5
+	 2dz5GyyZf+UVrlZzUi7246Dh6pWzJ9W7Wngn2hPuK1aiFavZpjeydxRVuDNMIUxFq7
+	 X17bAkTBN1fMC2PylaMk7Rvp4/A6m8r52ETGTJMC4t6XJXPofRdG3WdbI8bKjXZK7g
+	 G1JU9ZU6xnROvYjqRsDVA3WL2Wh4bkp3mkF7Lz4mpmR+9iPkg7uMvQ8cnOVC11EsoI
+	 5m7BmFWf1IT7ed9EuauM/1lhewkRONS0osKU8zKGAvl585hEth7Rs4equHnAMtEzz1
+	 wUQlc7U9HlCJQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/2] kbuild: Move gen_init_cpio and gen_initramfs.sh
+ to scripts/
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Shuah Khan" <skhan@linuxfoundation.org>, "Jonathan Corbet" <corbet@lwn.net>, "Pasha
+ Tatashin" <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Alexander Graf" <graf@amazon.com>, "Nicolas
+ Schier" <nsc@kernel.org>, =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <linux@weissschuh.net>, "Maximilian
+ Huber" <maximilian.huber@tngtech.com>, "Nathan Chancellor" <nathan@kernel.org>, "Willy
+ Tarreau" <w@1wt.eu>, "Randy Dunlap" <rdunlap@infradead.org>, "Luis
+ Augenstein" <luis.augenstein@tngtech.com>
+Cc: linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, "Askar
+ Safin" <safinaskar@gmail.com>, linux-kbuild@vger.kernel.org,
+ =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <thomas.weissschuh@linutronix.de>
+In-Reply-To: <20260925-move-gen_init_cpio-to-scripts-v3-2-99c493f76722@kernel.org>
+References: <20260925-move-gen_init_cpio-to-scripts-v3-0-99c493f76722@kernel.org>
+ <20260925-move-gen_init_cpio-to-scripts-v3-2-99c493f76722@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 25 Sep 2026 19:38:07 +0000
+Message-Id: <20260925193807.70F401F000FF@smtp.kernel.org>
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 469CC40006
-X-Stat-Signature: ysr18ziqzpcnxwqb11dpg4ha8cczkn8f
+X-Rspamd-Queue-Id: 53FE518000C
+X-Stat-Signature: aoxsjgdbce6az4qpmoyat3535zeyu45j
 X-Rspam-User: 
-X-HE-Tag: 1790365014-882620
-X-HE-Meta: U2FsdGVkX18jpv1HjT3fXvXLLc2kj96+cm2XH8mrgXFI+93qnsgdTgdL/+3quBz06QXIDNru0P+oXk5hVEmUY0Wu22lm/yZhpz/bufWVvHcwcHfH87JNex3XVxTZUitIZoOQ+wVkmJAAvb7QYGtRSEZdVrM4G4INmMv8CMi/0YqkscgnsIMLZmcIexogRyQUx+VG/jql1LYoM+oFZ20Lzh8DZTp7dCdGI/j9uutctJsnCns+BFNpc/ivPmL3TUmgGF+U48zK140kWPrGqsUjHxbjGvv3jldTtDDVh/65pFiTXR1lqlEi4YjawQTJ4EEYN1kdBqY7bXMtMQxeB7zu9ErsVxDtQJDgJhzLLn6HVOvkYTWZiSD7jeu5wMmEeqFa0jekj8kqpACf2gPj2JnHMLOtIhvvG6vDwxtJLztQMX9v79KuJfQPAfCYn9S+9gPIs6PKJa2XUYQiPQoGK2/num4C6ellpFwaPHBYnT9VI+Zl92BZ9IRZLzNf8f2H3FuY9glCbGj3NxIczRmQQK5KJdaNaGrZfMqcZvi92HhFbbC87O9cCvYiq8y2DjY07GE98da4Fci/QPwQHK8v9M2jvSuM2EShlMrJns1naheP7peHBqs+0+ld/EiiuhTf92pK9BuyjvcFHpNmQ5hfICqSLVD+kT/zUa9bQUcP927O6aHWYT5bXMZpc4XATYy9v5HlQxnFQZorGlbd61DFH+ifPbaVfmRMJ91EyPqmKxSo7P+M9jWuZJShgOfk9Kc1prCo1x4AU3AQABkOdclox9eLGz9L7Vj8umL2wzvHC5kLSn9eIgbRO/BsUYt42k198zpIgDzzx2pNakWsy8K3ryM9e6s/j1WbfL8q5IStRe3ZTHS4Ng/ARAsJY2EfkLrCebonxzuOu1zu+52WjWhprUxyuIPcASUDY6Jfm17AeOI0hz7WlJSDVdkdo5JwwUpiXa1y+cM1FX0nfs2sBM71Ufx
- Ndfn0Qd/
- TV8vKJTyIg+giaduI1uACv90YSBLQajNtXua/ffmx8+6eEf/eaY63uv/JH5nFE6xQ7tIGL0KK0VtFRFgOG+KAtqLBXvuCA5DWvCG5HyAj+wHFEFnqkwxDqbOVE5qPO+GRE7D+2iFeL72Oxbsyafa3FeQMc1BGq3it6Bg3J5rQJdfl0UGot8nDICYagyaRErpHg0J2+Bpz+nI0vRi7UDcFn992BLMmdefHO1yqABjvyZU/JCOUM1/hFaewxd1XdIq2ZdNKzl34plWP+M7bop5qBfJwPNKZ6kjqjefZypzoL201fYyJC9oxDCf9rF/TGUif1rvZF3/3dgNdxQH2CtqtZlApSX8b/mH4mZ24SDJIfQ2aCvq+wqvqXQwPihHF5dFYhxyer7pbrvMgxATi+KN1V1Auzv75e4y0xvIxsBsdXVQ+xK8P2zFSpi7Dag==
+X-HE-Tag: 1790365089-340094
+X-HE-Meta: U2FsdGVkX185l6+pJCe0lAnwwPSkFVFwP/uhe//sU+5t0KiV2ZndHj9ujqWy1CFqpxQ0nsX8a80raWFkKj4urTI06rnEGcFezNu0sd/E76QYU5WpMet1nSMpyObUqhNQBHGUBp5wPOstz8xgDXsacHUgQ9b+qkRisxPLH30cv2hRg9FYtqmfy5ae4wCdopVyREMNn++rPuKPAr4KxdqhYzavKs6vYkcUTgz3HsIEZxr0yw6pk2vg/TV6BnZWDDQfHLO8/0Fb4ck6o3aD2PvEpYwWuyVsWM5LnLjAK45KdNyNz9qj9PYgNqrUNH0VjoFx0OF1HnVqLXf7EsGg6cqo8+0PUsA/zzcwUWCiH7eG/BUs1AdEVFrekLy76k2NB15xXcPiU8kNv1uWuFsfUUe68/XNMQLXiiwFT/9Tc3VUjpZpvR3FYuFx2VegxnsnIeZeBmUIvEin/SYOm4bKGhJdtGvDO3oFHlIj9ZlgG9OqJzMAuSG/0iemZKi2WSb68IyqZTFjYTqTh5qHHUMX+85ZvnQ9y0CTIoUT1XSfF/vjc7H3O9A9OgCnQGA/BkDti0hdGNtIjAzoI2wHv2Z6JT9bxBH3AwzQDqua0lpxjWsilSwkLEGdnHSUOAwi2CryK9U4xwTX8GNQDH2HW/iCNOPx493sUunTCGdQudeFCOP2U1EsWBxiQ62NpOCIiDv/p5EKHLBGH5RFpM80EGIEabNhApWDwB/xa6fSg+Zc2HOM5FendrFEqFRcI+PKZL2rddIA0S0BCN6/tqM4hW2QrA6U/qKmq1T8Td1a5mbDCIuY6nZyPStzlvA0c5n5Q3RGYoXa1dzaL1q+h2eGFELVq9poZD77El45XKHfTnJOG8tBB5+5G2Ct6NJos+nD23JO3E0+/90qob01KRgZYnOnOp4gbQQtUoR/lMb3AaJ91r4xtMjHjtH6ZhR42TM/m6kNj/8acJejRBPhzFELpWUuX6z
+ hfVGnB4k
+ u3weWqgONeG/ouxis+nDB9CTxKsA1dSdIc7zEMrfFsDehhb7TTGAsio1vXHSPILW9sWKxxV2BoOkHj9uuG/qfc2YNI6yA/uMfiwFZYRhAfuzeA/0xfhaPc0YpkSz1ujPATCmNruEx9nH3K9PYGtxyCfNQvmLj36lsGGCBeE8rLY5uneSNyIWYIA8DdRy79QPrPAXxkPVugJEg2Pk5njcdf//gOUwSEA0Imbm5hwy9r8355+UiE65WEqG/vz6VRUsCAzvgUcq6w5aCxJlpWzTMFPkQ94CVueLO9nhhpqDKmudXi1HyN3wePvqDJrJWyZCIhtqsb0FcdU7sDJTRDwVu000ADs+F727SGxXquok0tiDMH6RH0lw+gHNu4O274sY4G+VEAsvicAhbsMxaYB2kLrTyui1MB1aZUh8reCjL7H07B8kkypLBFU8eLs7+e1f1lNKhkeHrv/5YatLetu3TcmBngsJlH4DNOw3a9zNj2/OTr0lADe/NO5XM+cSxYS6Y3tmoDLk0VVlSbsMEfKg8DkJaBXeyuQ9wQp7WXxD7p+51wfNf87cTVMdDCRqE60JP5BxoymLuYyXA+ENQGlVAo9JvwMdk6/hglKhomnxxS/wvnNLoSTMGFa6ZB8BLlrWmYvizjizDQaHri8k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,28 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 09:15:17PM +0800, Kairui Song wrote:
-[...]
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] selftests/liveupdate: vmtest.sh mkinitrd fails due to missing ge=
+n_init_cpio
+- [Low] kbuild: stale comment in gen_initramfs.sh assumes old usr/ location
+--
 
-Thanks Kairui for very clear description of what you want and looking for.
-After reading your email, I think you want memsw support in v2. Currently you
-somehow are implementing memsw using memory.current and memory.swap.current.
-(I am assuming you need to subtract swapcache to avoid double counting.)
-To conclude, you want to use vswap (the aim is it to default) but you still want
-your way to implementing memsw keep working.
+commit 97c7fb8e47f1b247f157846cfecd29ff5f239ed1
+Author: Nicolas Schier <nsc@kernel.org>
 
-Please correct me if I missed something.
+kbuild: Move gen_init_cpio and gen_initramfs.sh to scripts/
 
-I am wondering if you really want memsw, why not propose memsw. Someone from
-tencent proposed memsw [1] previously, so why not continue that effort? I am
-pretty sure folks from Google (people who actually work on prodkernel there)
-will be happy to collaborate with you on that.
+gen_init_cpio and gen_initramfs.sh are part of kbuild and required for
+all kernel builds w/ CONFIG_BLK_DEV_INITRD.  Move both to scripts/ to be
+more clear about their importance.
 
-[1] https://lore.kernel.org/20250319064148.774406-1-jingxiangzeng.cas@gmail.com/
+Link: https://lore.kernel.org/all/aSdrCFkUQup3qb-q@derry.ads.avm.de/
 
-Setting aside the memsw conversation, I think we should go back to the actual
-vswap conversation and list down what we agree on and where we still need
-discussion and decision. (I will take a stab at it and start a separate thread
-but still on this email and will use AI for the summary.)
+> diff --git a/tools/testing/selftests/kho/vmtest.sh b/tools/testing/selfte=
+sts/kho/vmtest.sh
+> index 0014bd76e88de..1e86ffcc3a79e 100755
+> --- a/tools/testing/selftests/kho/vmtest.sh
+> +++ b/tools/testing/selftests/kho/vmtest.sh
+> @@ -100,7 +100,7 @@ file /init $tmp_dir/init 0755 0 0
+>  file /kernel $kernel 0644 0 0
+>  EOF
+> =20
+> -	"$build_dir/usr/gen_init_cpio" "$tmp_dir/cpio_list" > "$initrd"
+> +	"$build_dir/scripts/gen_init_cpio" "$tmp_dir/cpio_list" > "$initrd"
+>  }
 
+[Severity: Medium]
+The path for the kho selftest was updated, but it looks like=20
+tools/testing/selftests/liveupdate/vmtest.sh also still calls the old path.
+
+For example, in its mkinitrd():
+
+	# Generate inner_initrd.cpio
+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list_inner" > "$worksp=
+ace_dir/inner_initrd.cpio"
+
+and again later in the same function:
+
+	# Generate the final initrd
+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list" > "$initrd"
+
+Since this patch ensures the old artifact is removed via
+scripts/remove-stale-files, will the liveupdate selftest unconditionally
+fail because it cannot find gen_init_cpio?=20
+
+Should liveupdate/vmtest.sh be updated to use scripts/gen_init_cpio as well?
+
+> diff --git a/usr/gen_initramfs.sh b/scripts/gen_initramfs.sh
+> similarity index 99%
+> rename from usr/gen_initramfs.sh
+> rename to scripts/gen_initramfs.sh
+> index 7eba2fddf0ef2..27ac1fd48001a 100755
+> --- a/usr/gen_initramfs.sh
+> +++ b/scripts/gen_initramfs.sh
+> @@ -247,4 +247,4 @@ done
+> =20
+>  # If output_file is set we will generate cpio archive
+>  # we are careful to delete tmp files
+> -usr/gen_init_cpio $output $timestamp $cpio_list
+> +scripts/gen_init_cpio $output $timestamp $cpio_list
+
+[Severity: Low]
+Is the script header comment now out of date?
+
+At the top of the renamed scripts/gen_initramfs.sh it still states:
+
+# Generate a cpio packed initramfs. It uses gen_init_cpio to generate
+# the cpio archive.
+# This script assumes that gen_init_cpio is located in usr/ directory
+
+Should this comment be updated to reflect the new scripts/ location?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260925-move-gen_i=
+nit_cpio-to-scripts-v3-1-99c493f76722@kernel.org?part=3D2
 
