@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B78C98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 14:02:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84879C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 14:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25B36B0088; Fri, 25 Sep 2026 10:02:54 -0400 (EDT)
+	id 902D66B008A; Fri, 25 Sep 2026 10:02:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD7D36B008A; Fri, 25 Sep 2026 10:02:54 -0400 (EDT)
+	id 88CA36B008C; Fri, 25 Sep 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C8696B008C; Fri, 25 Sep 2026 10:02:54 -0400 (EDT)
+	id 77BCB6B0092; Fri, 25 Sep 2026 10:02:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 757056B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:02:54 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 4FAC06B008A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:02:59 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ECD951C2263
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:02:53 +0000 (UTC)
-X-FDA: 85252450626.19.6976B1C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id CBB5D2000B
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:02:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVd9KAcu;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC94B16068C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:02:58 +0000 (UTC)
+X-FDA: 85252450836.19.E0CCB20
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id E85652000B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:02:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EdTV3Yml;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790344972;
+	s=arc-20220608; t=1790344976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNCsrq1Pv4PJ3tCFfQhR0ITmItYI/b9/JCcKk5G3gR4=;
-	b=IQSbw8C8b0zUVUpc9qaCWcltqSr95V2hEcbdQiHfUh6fPyGYqPIVro+Fbuk0Fr4Om+r72W
-	v57/AvIc789rWdut+sas0xBSRNCtaDVEbsvbfB9A8TByq2uWImSXDnCQzXe3tVw0np+Usq
-	TSzV8qW3BMYE3x86XysJcFa3io9FZhk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790344972;
-	b=uvPzu7koj3REaQr6lMchJUIvlo5wrB1W0TVFTkEqnC8CGxtsBVcGzZvpHy9UrkTwu35c6G
-	qcieO7Oszz1nytoPr67QRH3yguiRptkP1EmXRRQDgXobF+HG54CTq3rP91Ri4RAErRsPjM
-	Xrz75kBaenB/gUL6REsMTQcarvgp6ew=
+	bh=YVoSDjgao1hiZcDHTW+JplfooUkhmyZ1eZ6I1I7S+yY=;
+	b=Z+UTmdb8l/7UvAu0pX+KT+LIMazC1G3kaCPZwUoqEGsjp1sHNLeFw4MZZn6cvjCWgIEKeH
+	xAo/jIpfIIhhiHeTohS4fPEAk1/w5OmDuiZ8vblHe3L8+5pNoLWqYelZHS4qExD/6NmKXi
+	5SK5aMIfDey2MrLthKSGQb4RtxwPICg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jVd9KAcu;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EdTV3Yml;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790344976;
+	b=Ng9QWA4x1Q0HhMiglU/ez1hiepznTniyYMpaPT00cpv34EMt1RQCINV+lY1TFbKbtg+mJ3
+	KnAYj5+bKVQqnA2CYwnDw3mmg6mt1Feh+Td0lRsddB7yGzHAsSbtlSCQtGr/Lh0RYmLcBG
+	mJybVutpv4CKVpKvcXNmFF1r1Axn4CU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02305419B7;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1467060239;
+	Fri, 25 Sep 2026 14:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A841F00893;
 	Fri, 25 Sep 2026 14:02:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A503F1F000FF;
-	Fri, 25 Sep 2026 14:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790344970;
-	bh=NNCsrq1Pv4PJ3tCFfQhR0ITmItYI/b9/JCcKk5G3gR4=;
+	s=k20260515; t=1790344975;
+	bh=YVoSDjgao1hiZcDHTW+JplfooUkhmyZ1eZ6I1I7S+yY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jVd9KAcuMu0TNXZeoByHF3KAzOSxm8XMBVZ6mQ6QBVKKxJTc7/cm529qR6DbrR8Io
-	 rAoWeoJCZM+eN7ARUYqNxWblUf31m2r8SH6cjJX46DD/Ph0kY85iYkqO+a6eDEYMZC
-	 faitM5TpGFrED073qp0WLAr9ejfunVcNc6wbGLBDwxjfqJ6mj9NfeZqPmKsVicfzjB
-	 2cSe6opxwp84fTugfEwBHskJZj9y016emGRNn7jtQLkyaSHF38KgsAmK7vfWQHA37k
-	 y0fbpezVJaTCm7/xo1L1ImRh6Rh1nLMVf8GNdqXYNgD2hNuaoKD6HTGx2FeZlD8QO4
-	 5QAZSjCeKoROQ==
-Message-ID: <d7460bcd-b9c2-4a83-8248-d13a9ac1678b@kernel.org>
-Date: Fri, 25 Sep 2026 13:28:30 +0200
+	b=EdTV3YmltqmF7He/aozNeHtXl+aENragv8NRXN70r1qHSHp/eP3SWcC14FNNWWGJb
+	 M++wWTN0EcIT6IgJ8nBfUwJyBNySJuXFxepYnqGuMHEu616jhzt6Szp+jZdn1ARx4I
+	 m0SLpWyh/bmDdH+6ovd7cNxC7PgisL07t1EWIpo4TqG9mv3Udf6D7K5esrHlNoAnDj
+	 +sbRzCt0A4e/+y11s1n/hF0L2/FtNccOqGxq+2uZyvp9tNkPd2dai+8ikN3Wnl5vZp
+	 sIeZgbAgxuNkznWkdAamJxgzygvLMiYBYJuL+e0A55B0eJI0oH7WFZMkDqCNAa4Px3
+	 EVZt/DVA+s1cw==
+Message-ID: <66f5a0c2-6adb-4e03-9225-cf566b7f76f8@kernel.org>
+Date: Fri, 25 Sep 2026 13:29:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] proc/task_mmu: handle special PMDs in clear_refs and
- pagemap
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, akpm@linux-foundation.org, liam@infradead.org,
- ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- peterx@redhat.com, jgg@ziepe.ca, sashiko-bot <sashiko-bot@kernel.org>,
- stable@vger.kernel.org
-References: <20260912122822.3348978-1-gourry@gourry.net>
+Subject: Re: [PATCH v2] mm: shmem: ignore sysfs configs for shmem forced
+ collapse
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
+ hughd@google.com
+Cc: ziy@nvidia.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, ljs@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +123,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260912122822.3348978-1-gourry@gourry.net>
+In-Reply-To: <063f655b4d6c4234f3aa27ed6ecab10283ecb880.1789351825.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y5smyt9sgm7931dbwgzmrrp6jmde5usp
 X-Rspam-User: 
-X-Stat-Signature: 8r4x1i4pyfgzwb11qryi64yxsgkt6w13
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CBB5D2000B
-X-HE-Tag: 1790344971-323208
-X-HE-Meta: U2FsdGVkX18TPNvmjthk7RYWE05JmIo9zbqAfu78suSuC+9qqW5wAcKKYGJeuA60hqFaGxfhbKQ20QSXmD9FQVVNnGGSFrj7pUwJPbls3ZkifhdPrdiUHNO8SR6EwLTlPhYChCikoKWdGLCrpaQIgM4+l7hjbuT/dTuPvIK7uLPv/PRlQcLdW0nGMmyHUZ8WGMQictQ4kHPY4FKo/fz/L/2/n2qew5CrwOVw/gY5yXBXQf1BKysyEc618om0YCcurBw0Yufomo1DJl9YvzmYzSYv3QBQSpVZcDjbJ39m2zFrREFt6IsFdvOolukaQso5/0JoobQeUi/GbNjYRjD6T4l78qyyB/BHpJuj7ImeRJNh7bUgI7IU/72frdapvCXIekvhbbGgdcjfqiISAUk3irbmfe2Gg2vrZ7UxLa/ilWqQaIvIv5SXo5ZR+ddgqgfyP8gJqefqFUW1OB2Eh23IzFeAyfsxo2w8ceVLlezWXDFcCAsjaFWJWAanZigznF+Yu/pktkkpVlse4n2PTzYIA0TT0XGh5FpUgc/DwrCxTMx3DC0ZbUSzhlUTX+vzgyNncv78bdA4pWsiYInzqLiM7DniEBMsQmx94Vi1ChGPtorHOxLbl2mfv8nGmFlZVsLeJ2rtz9Ayp/fj4/SHTmFQlnln+A33vUcTLkTDf1/cD2+JTzQSeR3FNEzYYzgad+jmbu2BHhWbVu3NE3mdbdJdbbCb74arUijlNssKH04DxeMjtKMrziFjQ5tk2lixs2ggzhpMreX45KQamLMA+Vr261RHfk/GaHs57Dqgx6yHEAQii3HM1gqy7ng5ThmyG32HOT8rt4iXuXu2YbUyJKv434/SspRAerglFeNXjAilfaX/b9gs4Du/Km107GSt1L0rphTjO/GPeomZg1NeH5Xm+RQ5BOqFH/jCZphDBz00bNwykBd5jq8k4jp17l8Wsad0nlO3VHfecgboVtDz9H8
- J/xHAivY
- KTR4srNJBzPWut6DXYKmDMUfbjQg5l0bnMKvku9G+QW0vqakIAAxdsxPVvv+r0Oj2e+X9m03c8uM9dXHlKVNqutUBW0Qb9KP17vct3n7eUTrByHv+EKJ9E4kdRN6la8+41M73Mmg4yusqJzgjOUXk+Psgj1x42lJ/qx+ZfXIPoPT3OMtHpxzR38ZZV9iviRkYyoQj9sNZpi4NkNsIzUfk5vXirV3TW3rnNhI/WbVsyHdLJybRJQ6ZTy+nB+bybATG3/UrZwBdtS58EAN+MxE2QH2gdAzXzvrYk4I4Km7aBTW0ijhiSVeHU1izGpAUq1aL7/epRFJQPlLIDDWlJBWNr0ciEGb/jUesy42mVZRIzdU7DLty0fDSbfGMKtrZ2Kv4EYY2IXQE5eu4jposC4/rscK58z0yt15X0mRrd34i//0F5iI8XUQJ2tFA/LS48iB19HB6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E85652000B
+X-HE-Tag: 1790344976-188415
+X-HE-Meta: U2FsdGVkX18Kq2tKkWInxBNtWOmaHmUjep1z59UU2wqYyAwsrH8/4nTKMBS5/u9Vc3YiVN3LP2811Yygi3YPGtFj+5hFvuROetsQ84EYnH92kDG+C7VED8DZJSAXPejNFQcluPD5B3mkqRiKP5U4zdn43jkRNHQNO6Dbm/aRv+g2/6qdK5P1APD4Zxsqow/RiSee4Go+Im+9e87BL1131wT7Fk7O/XweX4vATfPGFdnPgNlOhPgoF1Qn5nDgzQiwiUrOyCQjiTcWDYT0WtlrsduhvmkBIM/pcWCr61HQhO35SvZ5fa3vFmZ+vM8fkECK4FaD5LrIRST5W2y4WqxYWDmmqPvr9HwJjoC2yucCLC/MTkGuHBRJRkaePj3UWw6YrJsyoKDTuTSD5pVyPYA02884lhkHQBj804F+uk/9Bk+hBx9d5ublQL45Vjpk2hwfCzQIQxC6LvC7BMunkXMAsoHNABNNnVo/DOEh+A+Fq04zFzfn9t8hPL3AfimDG1XKZEsof9eVi7XZuleEEXCbzSi618HdLVx12y/zPDZ+LzwACBcsREC+XLBoJUom+fu6Mv/R0NUZYaUlj0/tcheYi2qcP6CMGqAKoRwkBBNrwheX9T+217qxuOEPnLyG25f5ipRzRkw87W+pY46zifgt+xsNJQjgtsxotZHjVAWOuQqiukp8RUY75tZswx4qenXTCHtey2OU0xGTTVdcpuqpa62f1rQE58V4O18zMuJu+LRye7kkSjkRRGvvDDjGoHR2ecJii0ftIlcq6Bo1yhx5zYcRroQd1Zq4U6VnJcnCWjmURdiorkFpmf21rbPntZFGqGzCsTWzx4moeVj06E2V46peJA4NNt2RcMif/ngnQmlfXnl+T6vRL45mH1Kt/9pSM+SKs2f/q2XqeoA7fjapILPiXmENxy7kfTnJ+fhKz2BjW8e/ujyr/Pk4MXB/XjD0P0vQT4Tj+Ra7EmLeGUe
+ 9Aph7icg
+ Be5f60eAnDv6G7OQHWZqvJ0JmbczHoT4+uKtkmGLUPJJ2BQ+VWC/DJVuiCHDGzsTLdmTcOogMRgwmp+U7/uSiWGE3Huj4EQ9ubAsaWvTyc9z3QuP+mt5TLJZZ+wh+CSf9PTdsnu8GpCoCY+duWdTKmvxhzELwNK35lFmy8f4A/JHVdkGyCOVsLEZVCTuhqsDeZPOE9rVMMEAe6M4ng5/isg3g1hQACAytxC9q+8vug/XwGmEaBrghqx1+50+xumcjd/Ttse136AeyRh+Uw87l4NpjrW08nSIPwkGIpEWK424Xm32NuoGLXhFJqR6Iw0V6wgfZ/hw0uZYad98=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,68 +141,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/12/26 14:28, Gregory Price wrote:
-> mshv_vtl_low can install a special PMD from a PFN supplied in the mmap file
-> offset.  That PFN need not have a memmap entry.  Reading /proc/PID/pagemap
-> or writing /proc/PID/clear_refs for such a mapping oopses the kernel.
+On 9/14/26 04:12, Baolin Wang wrote:
+> According to Documentation/mm/transhuge.rst, MADV_COLLAPSE is expected to
+> ignore any THP or mTHP interface settings.
 > 
-> With a test driver mapping the PFN at the 1 TiB mark:
+> However, after commit 26c7d8413aaf ("mm: thp: support "THPeligible" semantics
+> for mTHP with anonymous shmem"), performing MADV_COLLAPSE on shmem will
+> depend on /sys/.../hugepages-2048kB/shmem_enabled being set to "inherit"
+> (although that is the default), which can cause MADV_COLLAPSE to fail
+> unexpectedly.
 > 
->   echo 1 > /proc/self/clear_refs
+> Fix this by returning the result of shmem_huge_global_enabled() directly
+> when MADV_COLLAPSE is requested, allowing PMD-order collapse while ignoring
+> shmem THP/mTHP settings.
 > 
->   BUG: unable to handle page fault for address: fffffb5b80000008
->   #PF: supervisor read access in kernel mode
->   #PF: error_code(0x0000) - not-present page
->   RIP: 0010:clear_refs_pte_range+0xb1/0x1e0
->   Call Trace:
->    walk_pgd_range+0x50a/0xad0
->    __walk_page_range+0x6a/0x1d0
->    walk_page_range_mm_unsafe+0x193/0x230
->    clear_refs_write+0x18e/0x3f0
-> 
->   pread(pagemap_fd, buf, 512 * 8, addr / PAGE_SIZE * 8)
-> 
->   BUG: unable to handle page fault for address: fffff57840000008
->   RIP: 0010:pagemap_pmd_range+0x3cf/0x6b0
->   Call Trace:
->    walk_pgd_range+0x50a/0xad0
->    __walk_page_range+0x6a/0x1d0
->    walk_page_range_mm_unsafe+0x193/0x230
->    pagemap_read+0x1dc/0x350
-> 
-> clear_refs_pte_range() passes the PMD to pmd_folio(), while
-> pagemap_pmd_range_thp() uses pmd_page() followed by page_folio().
-> 
-> Both paths assume the PFN has a struct page and dereference bad address.
-> 
-> Use vm_normal_folio_pmd() and vm_normal_page_pmd() so clear_refs skips
-> folio operations and pagemap skips folio-derived flags for special PMDs.
-> This matches the PTE paths, which already use vm_normal_folio() and
-> vm_normal_page().
-> 
-> User-facing notes:
->  - Pagemap still reports PM_PRESENT and the PFN to a CAP_SYS_ADMIN reader.
-> 
->  - For a special PMD backed by a valid memmap entry and for the huge
->    zero PMD, PM_FILE changes from set to clear.
-> 
->  - PM_MMAP_EXCLUSIVE is already clear in both cases.
-> 
->  - The output for an anonymous THP is unchanged.
-> 
-> Tested in QEMU with the test driver on broken and fixed kernels.  Both proc
-> operations oops before the fix and return 0 after it.
-> 
-> Reported-by: sashiko-bot <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20260912034833.2952750-1-gourry%40gourry.net
-> Fixes: 3c8e44c9b369 ("mm: mark special bits for huge pfn mappings when inject")
-> Cc: <stable@vger.kernel.org> # v6.19+
-> Assisted-by: LLM
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Fixes: 26c7d8413aaf ("mm: thp: support "THPeligible" semantics for mTHP with anonymous shmem")
+> Reported-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Closes: https://lore.kernel.org/all/20260908125105.1510704-7-kirill@shutemov.name/
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
-
-Simple fix, let's CC-stable indeed (unless I am too late and this is already
-upstream :) )
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
