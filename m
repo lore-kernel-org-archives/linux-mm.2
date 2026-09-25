@@ -4,91 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A87AC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:27:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D5ADC9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 10:35:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AD286B008A; Fri, 25 Sep 2026 06:27:19 -0400 (EDT)
+	id 2275D6B0088; Fri, 25 Sep 2026 06:35:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 684D66B008C; Fri, 25 Sep 2026 06:27:19 -0400 (EDT)
+	id 1FEDB6B008A; Fri, 25 Sep 2026 06:35:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59A986B0092; Fri, 25 Sep 2026 06:27:19 -0400 (EDT)
+	id 117B26B008C; Fri, 25 Sep 2026 06:35:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A3E56B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:27:19 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6C3FA679C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:27:18 +0000 (UTC)
-X-FDA: 85251907356.30.C61D8C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 38D3E1C0007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:27:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lw16QUas;
-	spf=pass (imf21.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E27386B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:35:05 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6E5921A05C6
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:35:05 +0000 (UTC)
+X-FDA: 85251926970.19.1194064
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E2DF6A000B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 10:35:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sHDDZXOH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EWyleEm2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mbSFHP01;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AGIdiRXb;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790332037;
+	s=arc-20220608; t=1790332503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xV0zw0Q7IQMSkiU/SQQ9pgJXpKqIp+csK9nbXVynRnA=;
-	b=SsaodnPE0o462gQtdzNPufgvjEroyDfJ/Nm7C8t3BO2BnzlfeL3x5iA3Srek5yNLCxb5YE
-	uYplJhhbW457ipDakxll3m3GOcIcU+f+biAbHq2ILDK8rM7W1FrVuccLp/Zxs2cGd7/DOk
-	tXHzBDiNdD8AtsDduczapUoN2YbBAY8=
+	bh=CmWBmGiYLCBQGGp6qkvxtGAccccpy3zMvAj3zCRN2IA=;
+	b=GACQDYoEqcySdBpj4tWk6EE2AZUpFFn30txiohKMjlxgJ7vEVo3V8irQHaW8KfwhrC3X9I
+	wrn/upjhG6NEUMcdT0fy6qG9kYTLsCr5BaEAp3j+oQ5Dn2FH4rZkfsUfEwMiIcxNeg2ORj
+	sAj5zsBz5Mwxc3yy6dXh+7420KgtuLU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lw16QUas;
-	spf=pass (imf21.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sHDDZXOH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EWyleEm2;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mbSFHP01;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AGIdiRXb;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790332037;
-	b=XlHSya/sw1fhlegQdzsau3ivUaEUpM3MJn423y9Mg8dOlWVE1t9JHVXpjBZYEzHbR29TTC
-	HSLv5UChDt9J+qascxjeeyVehhEpnbvcI2NvgdnrDAkjULwCluQQ/OUDPRmCrqbCzDqMbC
-	8pxf795fNiEAyRLTaBtW3lTsQu+3jSE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B88C46022F;
-	Fri, 25 Sep 2026 10:27:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170E31F00893;
-	Fri, 25 Sep 2026 10:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790332036;
-	bh=xV0zw0Q7IQMSkiU/SQQ9pgJXpKqIp+csK9nbXVynRnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Lw16QUasMrbf2ehZFmi/n2e+YyVirGoNCDt9qIoppC/EWnzsSrHZgpJf2Dzi3G0Bg
-	 fTF8dg50qvxsnfqwj5isv9/9OQ26pBGFlgGTX2c3tjWfAkZlYr+ibV9lL7t2PymrUw
-	 Sbs7vJIewjmd/FjZ6TZcBgkSMpfxCdwIhFLKfY3dMTwCkvedERJrb9vOS+CHBTlmxR
-	 XEv4e6qb72JXg7VGfhu2mwDTIJK/h981twA3GD9JfzlE7fT0nvVe5vIOkfYLgYE+NT
-	 yp3K6kUQPW4JiyRvKAYUpSBarAxKimWhIdgo0s++JA75szeJjRB+8Iw4AMHvIxOb5d
-	 4GOfhapgqlDfg==
-Date: Fri, 25 Sep 2026 12:27:09 +0200
-From: Gao Xiang <xiang@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Gao Xiang <xiang@kernel.org>, david@kernel.org, muchun.song@linux.dev,
-	research@deepseek.com, sj@kernel.org, mst@redhat.com,
-	damon@lists.linux.dev, linux-mm@kvack.org,
-	virtualization@lists.linux.dev, ryncsn@gmail.com,
-	kunwu.chan@gmail.com, lianux.mm@gmail.com, baohua@kernel.org,
-	xueyuan.chen21@gmail.com
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Message-ID: <arZMfTVu4t4hdHKD@MacBookPro.fritz.box>
-References: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
- <20260925081504.23569-1-lance.yang@linux.dev>
- <arZKFznn4Z2LvoJN@MacBookPro.fritz.box>
+	t=1790332503;
+	b=sTBRhD6y3ezX185EdmEQsHxevXd+xv3qrn0adsWKzpl5qfHWKwlhWcn/qbkuiBL2HGbJEv
+	xcij/jD7xefA7li4LEc4C9wp+Lvj6H1FDVdcJImIjp1Gc+3bHXukGqiY1xC+dMyduoHJBz
+	P9mkrsrtZK1Npfq/2lM83oVbu/UJufA=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0FB2020173;
+	Fri, 25 Sep 2026 10:34:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790332497; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CmWBmGiYLCBQGGp6qkvxtGAccccpy3zMvAj3zCRN2IA=;
+	b=sHDDZXOHSyUK2kf6s0YAqGzmTi1vLCDLNNZgXmrEbKyCLWk3J7pAlehfU+wKV/sYOePY5o
+	ETEWt3g8dwmv9uvSNGzI4He+yjtRQ/5iPCQdf668Wuk8tfuF5w5ROa/ErRXmeA2J1LL4PE
+	lrNZsZS/6b9cpZWAx0vHk+yo9/tJFJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790332497;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CmWBmGiYLCBQGGp6qkvxtGAccccpy3zMvAj3zCRN2IA=;
+	b=EWyleEm27YWVXBqG2SbnDiPzTHLoUvyQvU3QF4ME+bjunA7e3IHn3i/g9pTQTCxgQsSiK8
+	L6bm0pzL+BJ6NUDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1790332493; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CmWBmGiYLCBQGGp6qkvxtGAccccpy3zMvAj3zCRN2IA=;
+	b=mbSFHP01JNXU2AmaGwx4rwSzdR2m/ZlwshNNgiCJeWxKEtYfHICYb5ediWc41eQsBCcxtR
+	ZJJitcTfNXFcg3VB1IsTLFJow0UNrZxUkMmf8fFlJbpbjMY8psqZxrKzV0RFDTk85zyht0
+	saOm6R7j44wAcGono2I2vZPYhf33VJU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1790332493;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CmWBmGiYLCBQGGp6qkvxtGAccccpy3zMvAj3zCRN2IA=;
+	b=AGIdiRXb2jxsg3XbV7X5oEoMi5jXS9fP7pcbs03Qq08ABTAbG8C1K6tBCcZlDVd5d09IBA
+	ARdF+jmpZ93xVxCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DC338136F7;
+	Fri, 25 Sep 2026 10:34:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nq/PLExOtmr+bwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 25 Sep 2026 10:34:52 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 67281A13DA; Fri, 25 Sep 2026 12:34:52 +0200 (CEST)
+Date: Fri, 25 Sep 2026 12:34:52 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Julian Sun <sunjunchao@bytedance.com>, linux-block@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	axboe@kernel.dk, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, willy@infradead.org, jack@suse.cz, 
+	tj@kernel.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
+Message-ID: <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-2-sunjunchao@bytedance.com>
+ <arYaMbJUh6unvz_t@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arZKFznn4Z2LvoJN@MacBookPro.fritz.box>
-X-Stat-Signature: fzdkmk9p395q6ctcrnb1ouf9kwjk6h53
-X-Rspamd-Queue-Id: 38D3E1C0007
+In-Reply-To: <arYaMbJUh6unvz_t@infradead.org>
+X-Rspamd-Action: no action
+X-Stat-Signature: zi6tfabp7ut4rmpqwa6f8yhowe1ik8be
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790332037-701327
-X-HE-Meta: U2FsdGVkX1/8BaNTMorupH7dFZTy0/eV22j9Eg6iAHFPCYtRwNPFmqJAGZ/djmjl/TSM4ijlTvqpwcGbfS0QECErIe9HsV0oQj1SlxFJxaMo9qq6F0Av+1zWNek5qNxh9U7JXgmJ+JDhpmP9mV7Z+yaZR5DVHr1MG3ImggjSIZAb6PXyPARXl+3smh1byiApcToUuodseFaJC/f3BFZ7LtrYBe9eawvaBWZLU+6J85KyKCdfnERy7RNqd8gnxcl6K2ej9bpkaR4PnYrNm4a73vjPb0PVwAPRHirx3Fx4icOfqDGYk3Yvt9/7kQbDZxrlstvgT5Q4QSgYvX+ReTagcSnnKuSm0spyPMP3vgOo96+kbAkpT5ceOjvs4BkoAvtBJQLPggnezf8Rwx5Rn5NhOPkoSEoFRnZD6/FNEIZ8+Ku/8Yo18BD5Qz0SODjrzX12DyTWeo+oQdjnX2xHwuH1DRHekCAzdOBLf01I/ZODqPpCBqa84a90P997PlTxRaEXFLnDB2rwB1vc07KuDr4OExyroSNmz6Ef0Ufb7JeWWlzDJ8Ksa55AORvPSDwRRbdHc/dR+jeqhSrXILaUSTatu9MeUfwS1Of/FUlxw1NUQTK6gzLSSrSO3IoPkPslYaaS+FC8ftmAbVgaulHuBBmJ4gQ4QPhKKrVSWOMlVA4le0dDSRN9sulvPasFirpLMBBLgXeJ85VaZoynMfGr5sUdbTw6h+PXz+Gvbp/XjS7Pw7m3l/d0wqlmdn6iNzD4XqS1KkiDIK222BM+HqE4g1hYfFiD3A7fWgdkQRVB4KDr10DA+iR2Wapeq6LT1Hi2lDkiXQ1VhkFt30tF+mvevRf4ELf2jiyBdZjkBDfFpQ1lWbKm3fJdW9FPeidjvYwSGCO4fItt/rNRj6jYMGvRx/kpTZgAM++HFS19um7iHyKr2rYSiIKJZ5KY9pV7Bw/iHaPuZk4tu+IzCvEjai3YtfK
- 0KADNUIJ
- gX8v+sC17ZMREFXrNdulJweIsoKGVrAmDwloQjLgqubu/8fUeJPedrny4oXGzbH3LmI6sKjrDxqt+jt2LsC9mJEepfdBIFG9JkiuUOnzW1orFkDmDULQp7GsbWBVzmQiVYreeKOzJ0Rewoi4Vp+IbNByy5QRE2eT2O20sEHKV5VDMoynlLvTXjjHVuXZuosRZEPGoP2krNjSB+LsFDWrRmT2OtxgPuf1zv6BrzHpYuHD5VIZOIssSEwsnytxMk28C4XP8y3X2/XludzMPqJ8lMV1xuRgy1wJmFe3+ky+ddwPYDeDj9VdRpc3huZ2zPfzw0fg2PAmmj3PBA4zW3BQVSGgkYzlUg4qmEohs8G0n8+7JnouN6hQvGF2BRw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E2DF6A000B
+X-HE-Tag: 1790332502-794589
+X-HE-Meta: U2FsdGVkX1+TdxGnFYHzNFGf6nJSH4D3SbJtj6bcISmDXUkqwRd4lDZheUayeZzRllwGRFHDa2M78Xpg2MFmmp3W1ljNeM2dvWwC275ObMqXjxFwu+9YTkKxG207Yx8/hH3HxsBfL/9M88S9S9rwSxRYqFehhpF4xrt6MyRJJZwlwp5h1FqIWPVAPlLB3wWgqOl5D2vlTN5SuvT0JBS1ztujlufys2sh/ALFs2Lj2pUmTnBODkNZqde27knDF9+dFb26NhAL6uolOuazrAHm2EqlqZDvp9C7g2sWhvM+byf9WPRdvjLB877CyQX0BNG6RhntIYoCDiSgakrmW0yugTqp2dodsQepce2hTdpuuHTzUr1bE3qzY3uFqZN4LtR3ZoCllR4LoFnM9SD437RraPekdZNAA35eEcOjCrQEQFaEbRyQkGEyLc9AxXwx8wDTvQKFnQIyfjdaEUxJ3k8nT4kVmfkMUasRnIdJ8fIIb2yGqlczG+nrazYdgaC+Gs2PNjUbpwKYOE+XLT67jsPH5Vw0Sbf2yzZe73GOkU3CqKBgOEsh9X2HTKL9Dy9x3Hr8N4sDAWQHjKLav+tDW27qu2XAS0yTqCZhQ7g8UCSSTUSiR9/0LfyYYvbPBLM+RyJr2UpDaj47vnmFiqakOqN76XNumRT+2gvPiKLJkYIuS/svN+apRTngnFKDgjQ0QhvvyX+0xzO8nBiwk694tcgPJuAxkJTS3+Knqix1ldeiyKi6NyS9NIosCQcb3cd4Ym7ibVhExsanHh3m7RHOf9acdPxamisTmPKhJIA+pPlUpMQNB5g/s9kUImjB3vVnP9HJvZNhMToliKzpeCFbuGfLAQ41JStj0jzAyS53ZTLbpy27z8TUyhmb9sbnKhfi8vZbiA1be3zQcMADJtDZaLsV+CA7LW2AQ+tm2IUA1vmTTAt/2Fvc2iAVT2vmRJoYVTwxppD3zQXwB7Xqm1qrnlo
+ xqb0XO8G
+ u+WRkR/TQyLygUhyJ3EYkEnNsYMIq7W0MQQQRSLwRRglCIpUD+14fPna7Yx8qgyOJRJ6STVARwGGukjmeZw/B4rMJC1gBq2G719gKBOqnpRTXkOtezp7oCwio3srEga4koG8/lD0Kx1IgB+KfXJ/W5ncGbEVeGysj/Iw0bqxavj0noosAU1yJhxNEBxcGZRNDUO9WzV4eZMWhq2/UiHqjlg6zeDiKgoYL49CdY2y/xjJ4U0mDsLpixiIaE/xM0759SOyKbWc6lv741yRbRX2kV26XyyRARQp62QJKpZaSQWNEZViFBsapYWJlNzcJ28Xnw5nkQE6c/irDbYbn9j9XI37BL9rZre0tlcVbvQbqV6hHovgFUmoyGwZxrnbdDpNSDUy5OHtnmJO4cWk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,109 +137,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 12:16:55PM +0200, Gao Xiang wrote:
-> Hi,
+On Thu 24-09-26 23:52:33, Christoph Hellwig wrote:
+> On Fri, Sep 25, 2026 at 02:44:42PM +0800, Julian Sun wrote:
+> > Add bdev_flush_by_dev() to submit page-cache writeback for a device
+> > identified by dev_t without requiring callers to hold a persistent
+> > device reference.
 > 
-> On Fri, Sep 25, 2026 at 04:15:04PM +0800, Lance Yang wrote:
-> > +Cc DeepSeek and Muchun
-> > 
-> > On Fri, Sep 25, 2026 at 09:04:41AM +0200, David Hildenbrand (Arm) wrote:
-> > >On 9/25/26 07:44, Lance Yang wrote:
-> > >> Hi all,
-> > >> 
-> > >> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
-> > >> and virtio-balloon:
-> > >> 
-> > >> With this kind of workload, an agent may read a file once and never touch
-> > >> it again, while those pages remain in the guest page cache. Without memory
-> > >> pressure in the guest, they can stay cached even though the host would
-> > >> like that memory back ...
-> > >> 
-> > >> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
-> > >
-> > >Heh, I read "virtio-balloon" and thought "balloon inflation/deflation, what year
-> > >is it?!". Free-page reporting makes much more sense.
-> > >
-> > >> cold file pages from the guest page cache; buddy gets a chance to coalesce
-> > >> them into reportable blocks, and virtio-balloon passes those blocks to
-> > >> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
-> > >
-> > >When I was at RH we were looking at this issue as well. virtio-pmem was one way
-> > >of avoiding the page cache in VM entirely. But it has its own limitations.
-> > 
-> > YES, they enable virtio-pmem with DAX for the read-only EROFS base-image
-> > and toolkit layers, while using DAMON with balloon free-page reporting to
-> > reclaim cold file pages from the guest page cache on larger writable disks.
-> > 
-> > They also point out that the guest must allocate struct page metadata for
-> > the entire pmem-backed address range. So virtio-pmem is not free either :)
-> > 
-> > BTW, Muchun recently posted a pretty cool series for exactly that:
-> > 
-> > https://lore.kernel.org/linux-mm/20260903122128.12264-1-songmuchun@bytedance.com/
-> > 
-> > (It shares vmemmap backing until a DAX fault needs private metadata,
-> > avoiding the full per-PFN cost up front.)
-> > 
-> > I have a feeling the DeepSeek team will be watching this one closely :P
-> 
-> There are several points virtio-pmem RW from my own viewpoints:
-> 
->  - It makes the write async I/O synchronously, note that write I/Os are
->    not quite the same as read I/Os (read I/Os are mostly sync). Storage
->    also support multi-queues which can better leverage that, and that is
->    why sometimes brd block device is not good at high-performance nvme
->    for example.
-> 
->  - Note that sandbox usually has a memory limit, but dax RW makes the
->    whole rootfs addressable, e.g. if you have 128GiB rootfs, which means
->    you could fault 128GiB on the host, instead of the sandbox memory
->    size, so it might cause some security concern (as long as users
->    shouldn't expect the host memory can be used up to 128GiB + memsize).
-> 
->  - It can cause sync 4K faults on the host in the worst case (maybe
->    large folios on the host can improve a bit yet not quite), in
->    constant to the guest memory + THP usage. I don't know how the
->    reclaim overhead is measured currently, but it seems the dsec paper
->    also mentioned in this case.
-> 
->  - The guest workload will still use mmap() for many sandbox apps, so
->    `struct page` optimization is just for the optimized case, but not
->    for the worst cases, the malicious VM sandboxes can still take
->    much more `struct page` in the guest.
-> 
-> There would be better to have some benchmark here for typical RL
-> training RW virtio-pmem: but block storage semantics cannot already
-> be replaced with the memory semantics.
-> 
-> I think virtio-pmem RO is useful simply because it can reuse the same
-> page cache among multiple sandboxes on the host, which can even
-> warm-up other sandbox workloads, although it still has some security
-> concern but I guess for RL training it doesn't matter and read is
-> almost synchronous unlike writes.
+> This isn't really a flush is it?  This is writeback.
 
-BTW, I've thought about the sandbox writable layers for a while, maybe
-EROFS could have its own dedicated efficient writable layers as a
-optional feature at some time, but I need to think carefully first
-and look forward to get more numbers before landing a premature
-implementation to the upstream (memory semantics, storage semantics
-or just a overlay + hybrid approaches); also there are some
-non-technical points to move forward in this direction.
+So bdev_writeback_by_dev()? Fine by me.
 
-There are some other important features which are more like low-hanging
-fruits, so I'm more in a wait-and-see mode until I get a sensible
-direction on this sandboxing scenario.
+> > + *
+> > + * May sleep while submitting writeback; does not wait for I/O completion.
+> > + */
+> > +void bdev_flush_by_dev(dev_t dev)
+> > +{
+> > +	struct block_device *bdev;
+> > +
+> > +	bdev = blkdev_get_no_open(dev, false);
+> > +	if (!bdev)
+> > +		return;
+> 
+> Please don't add more blkdev_get_no_open.  You can get from an
+> bdevfs inode to the struct block_device trivially using
+> I_BDEV instead of doing another lookup.  Or just grab a reference
+> to the the inode, which would seem even easier.
 
-Thanks,
-Gao Xiang
+Well, Julian is explaining that in the cover letter. We don't want memcgs
+to hold bdev references just for foreign flush tracking. There's no easy
+way to get rid of them so they could pin bdevs for a long time leading to
+strange artifacts.
 
-> 
-> Thanks,
-> Gao Xiang 
-> 
-> > 
-> > >Thanks for sharing!
-> > 
-> > Cheers!
-> 
+As you write, we could just hold a reference to the bdev inode. Those get
+unhashed when the device dies (__del_gendisk()) so memcgs would be just
+wasting some memory by holding these inodes alive. But still, transitioning
+from inode to proper bdev reference verifying bdev is still alive will add
+a bit of hairy code (essentially what blkdev_get_no_open() does plus
+verification inode is still hashed). Plus when replacing foreign flush
+entries you're under irqsafe xa_lock so doing iput() from there is kind of
+a nogo.
+
+So I think tracking devices by dev_t is a good way of dealing with these
+problems. But then when flushing you have to transition from dev_t to
+struct block_device and blkdev_get_no_open() is the canonical way of doing
+that (and note this use is just internal to block/bdev.c).
+
+So how would you prefer to deal with that?
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
