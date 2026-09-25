@@ -4,132 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 121E6C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 18:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F6EC9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 19:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED8366B0088; Fri, 25 Sep 2026 14:59:18 -0400 (EDT)
+	id 58BCB6B008C; Fri, 25 Sep 2026 15:00:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61836B008A; Fri, 25 Sep 2026 14:59:18 -0400 (EDT)
+	id 53CD36B0092; Fri, 25 Sep 2026 15:00:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D298F6B008C; Fri, 25 Sep 2026 14:59:18 -0400 (EDT)
+	id 404196B0093; Fri, 25 Sep 2026 15:00:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 98C246B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:59:18 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C5356B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:00:53 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E0EDA06C3
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:59:18 +0000 (UTC)
-X-FDA: 85253197596.27.E3B386B
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 45C2780002
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:59:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qTX8jpSQ;
-	spf=pass (imf30.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E09D140773
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:00:52 +0000 (UTC)
+X-FDA: 85253201544.27.4DBD021
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 61824C000B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:00:50 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=e9HFQ+PY;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.140 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790362756;
+	s=arc-20220608; t=1790362850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ryWXjYMx77NDaQsPP9QlmEYj6eVxrasAG766hpzWjdA=;
-	b=Zmp2R0pMaiGpm5EzQVCw/B2NrdllJwUjmJO5JsrFqvwsN8OGPebYaHt+XiCKx5jLoRZ4g5
-	nbuyWsmf8ix+g3mImC/zJq3+UJCH3QZkcn+0AcSIt+A0O2I+E0vxLOveGjJQxZpCfnIuhM
-	AJ3IdBRu16PFhTqUVAhq1bMQuVdIkaI=
+	bh=jyusYEZ6OMCBSOJianrKz0ypKfJejIPeyJrkqXUe7fI=;
+	b=nB1GQHtcAq2uMjrQkd9oR+eQlYsBBkYIujSyWBX1dWJuCgkBv3wU9GAGgYasGy1tEr3iH0
+	Gc8YTBJCd9Z5UaPo4V8E06inhos0OJL/6z2L08AM5GIG6zLnNCugWzmS4fFX490HlrardC
+	9DmWS6nosqs4XkJxt995YxgLgzyeqqs=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qTX8jpSQ;
-	spf=pass (imf30.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=google header.b=e9HFQ+PY;
+	spf=pass (imf22.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.140 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790362756;
-	b=xSTZ6BxhIB7S6rt4f+27a7+H4Ca3LkBh1Ea7Uw3vLzhcKusefkxjPmsXPGZ5raWgsc6niW
-	41XocBVDff9DtLu4XoiaXIWgc8c8aJidAWGExxbqnzROzV5j5DJBZ0M6p+tgjxTLVNIXYZ
-	WY+sMC47KClYv7YZJ9yOmK6zRoDC9Do=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so335ad.1
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:59:16 -0700 (PDT)
+	t=1790362850;
+	b=NI/OduPgobO/aiKo73bxbjvGHNj4obvg4AhOkMr8QsWKGtTFkmsJP/jilos0KKQ1y4iCXX
+	ys6wNQ6RjiSE5tfyl5zDHIupqO6ACIdAwyAYoa0qj6PsQLG853kIcDyVZ+fa5r/MekkqFU
+	DbCHCY2EYJS6JdofudZb9Cl8VOfYkuA=
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c293c683202so182002966b.3
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:00:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790362755; x=1790967555; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ryWXjYMx77NDaQsPP9QlmEYj6eVxrasAG766hpzWjdA=;
-        b=qTX8jpSQkowAodRAl1GG0ZZxA98LPsKHRwRxmYdV6XDzaBWhedOOq9S1oSsPXnoYuz
-         faQyHNK0rr1iDLz8rk6heHgju0ESwrLMo3Oa/ynkKfYMAnZumtQlWrT3nSviXddpQ6Hv
-         wsdWGa12BiyLmOgHcbl2A9R+7ujpzMjh42KGVfAp10soLWtyAaIv2u4X+YFtd1gf3kGT
-         W4LrE8pw+jucr8VL/uujJhWngfrmIONuNh4XDOztxbLrM6PpOP+7RDLHjlkWQ/ALnUha
-         sImUTGi+tOHxumkGo139wz34BuJVWYzUzziqYCDGYH+dl3FE4072B4GYeibk/qF1DA0v
-         caJg==
+        d=linuxfoundation.org; s=google; t=1790362849; x=1790967649; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=jyusYEZ6OMCBSOJianrKz0ypKfJejIPeyJrkqXUe7fI=;
+        b=e9HFQ+PY8HSaupQMmLn/M/iKCQbJ787TZYaLzHF4o6wqYGER1YVQwMWQsmFN67lTjI
+         tiq9hDvV+UtZBPTHDK3NqIZDRk+IYutkB6Ua9fO3FnPSgJ3/vufcGnFVN5mMuw57mGpn
+         6GquUvwO2AEjMGCqgP5JD+ENC5KIQuqnAEHbo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790362755; x=1790967555;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=ryWXjYMx77NDaQsPP9QlmEYj6eVxrasAG766hpzWjdA=;
-        b=XJU7o5n8MBJovwrGuediXufPl9PZVd2RyHxtxMrG6lmKbPURgRK+oZfBMudSLph7KO
-         ECF4YGigtVR9a++7x69K9DCTzwzoKzHC3zh7NQmtQsXsEovzlOJXt9OhnSMfPXnJ7Cea
-         cuZQBvyVwE/VQjo9ZSuDowp4GmhfqErr8CSoLC5T26WVx45FMEgUMapbqj1VVkP8yXZl
-         nR5cQBWt0OydzJtz3SuX756srmR9a52jqaokPD+llyN61XGstXyRELA2cJ549otBr5Ld
-         /29w5oVjVyJPjumyDkpxXKztcMTzl8Pm0o7sLGK00PSqFrPoA4MZlZ4E0rfeeScQHoCW
-         BakQ==
-X-Forwarded-Encrypted: i=1; AKwUvByUhv9uiPId80RUS0AuFKWGtjOwGI+Y/QQ1w8xAIiZBIjvnOc2L70hew6p+yzDbBZZG3qkGgXnS0Q==@kvack.org
-X-Gm-Message-State: AFuF++k4Rn92SBQJXNMd+4jvDmFfOzyZ33AUknz2KOPGG/8z3/nrevXK
-	ZS7nhd46/PduJjDK+Ty4wCiaOYirTDoggnFmjsWjt7SPfOsAI/JzlOIVCWHLrmH59Q==
-X-Gm-Gg: AYBFou3tIvT5rW3J7N2fQ7onP6ov3Ri6YhwcBRPcaPvRqwLgW1R3W3fvUtkn6/ZRn6v
-	3o896Sa7Dv2NFrct8txR9Uuprv2FUhgUnOkaMYW0a6VIMOySjXYCzARtfyjEsGogtxh/cPsd1WI
-	WLxQVlaOFjzegQePbHQbf/SfRi1fVzuNrWivXtnpnDzIcHHtnpVx+NK838dJvwam8G3JqRVP0uD
-	3GyZ8e45TP5atGF3st2sa/+y32uEZ0dW2Ct5D5xh5WlYDxgHrXqM4p2wj8Z7oXUJNKwf8BUJvBo
-	ppOpQfDXCBVDy0k9Ur5K4tUCDaRz/VYqa1vQxMXprbiCKDKd5mz4iUEsU426z8E0Yn7JmhhZZ+1
-	53fxC4B3GiLws1AmFWlz5iucJPYfM5ak/sxFCkO7JgdskYo40CtUGXsWJ61au1PsyQ58W5IDobB
-	ux/m3TGSD1KYgHgtBUgvSvIWPw2Po5F6GStOvshtJHRQsx+sUObIBs3SqA1JRzkE78JXFXLmbp3
-	tq017sOPqvaaXb4/n+LBnU7idNu4EDuaEbjpdT1ZglwSiYvFd3pmTYbZetNmsi7ONhpopcbgUA1
-	+Ffl
-X-Received: by 2002:a17:902:868a:b0:2ca:4bb4:4bd with SMTP id d9443c01a7336-2dfa649041dmr428155ad.5.1790362754409;
-        Fri, 25 Sep 2026 11:59:14 -0700 (PDT)
-Received: from google.com (210.87.127.34.bc.googleusercontent.com. [34.127.87.210])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87fea18ebb7sm1635695b3a.18.2026.09.25.11.59.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 11:59:13 -0700 (PDT)
-Date: Fri, 25 Sep 2026 18:59:07 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-pci@vger.kernel.org, Adithya Jayachandran <ajayachandra@nvidia.com>, 
-	Alexander Graf <graf@amazon.com>, Alex Williamson <alex@shazbot.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
-	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live
- Update
-Message-ID: <aratPy2p33MObulT@google.com>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <2e88b92a-d3f2-41f7-bdbe-11fd71690606@linux.dev>
- <CALzav=eJU+fnPr-QN4s7gY_Lj8Pc3T6KXfC9kiQQ=g4rPEDMuA@mail.gmail.com>
- <b1a845c3-3720-4ef6-8c97-8a40ee7bd286@linux.dev>
+        d=1e100.net; s=20260707; t=1790362849; x=1790967649;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=jyusYEZ6OMCBSOJianrKz0ypKfJejIPeyJrkqXUe7fI=;
+        b=oG6Jm9lNDkCfd2zVVnlUHOTumyTheGuwgt4ol3EomM1ZH5/dxpcvjLUQvWy7qy20Bg
+         WIYm71As9Fmux5AWieLFoTN3MKzNey9ZtYjG3477r7D0TCOZukX034m9WnS6O8LslDCX
+         f1wO8vFkI4EDWdbnQikNUGu+DsAjRbXsbshPMwyfzA3ldVuvSRK1BHkS7MG6sZVf3h5O
+         7rViZmeZrd8hh7POHMUyWBe3KTfCv0XPt7WBiJxMXMr6e1MSN0wQJrjlsYqh0QRGudKJ
+         1ZDIfBLT7oZaKCU37uZ0mPGGbWLPkZqE6zNlEqHT1ewlUHHowK3Z2hYVwnn4psGxHt57
+         4jqw==
+X-Forwarded-Encrypted: i=1; AKwUvBwVqAu9W5zZVGKOT/IxMaV44B59M+EtCsUrmd5QWcNAsGZjug4ei+8oITf9mLnFHDGzd93aoQDFKA==@kvack.org
+X-Gm-Message-State: AFuF++nsT6zHqBi6N+UCkxCD33WwkI7ipoWYN/WNLHTChOItHjRSjXMl
+	Ngq1ZTMLvTFUo8L1GuLCwP2uUdZkZZLmQoOzcglwKo4Al0s5pCNMdVQOlPNzkCA7ELFT8QeLg31
+	3QV72ptg4eQ==
+X-Gm-Gg: AYBFou3fZId+eHLCRo3jNBIbXPYwe2WEAxNxKJv+zcrqZG2fFH1TBhG58i3FwSX+b/y
+	DFSQ/UoOX3/3sN/NMUsaW3s6YbKuXFuJiEn4miAYca6XQfNjSJF5lPuuFV2X9CM2NCFlZf+gZPt
+	XQIYGtZPYaPuSsLwS6yAJRGYSJ4PSJ/JRrFIS2L9+qR2yuXtUcvN3u8Od6nFQ3w2iLOBtrYbf9f
+	QCxwf6d3FiPb+kuVRALCRv6uJ5yWroFcSDzJpg34JGxEr1F2h+H6yTzSaUPatUpxjbThkeS5IJX
+	s5GK/Z51p7/xi/wcfXTVI1qZmaUazBTnAe3+aHpgfo2aQVgMxEGh6gxBz0imeT4x7QQZVVHwar2
+	OqMPtJeQtr3e8Ge6pRR/VIqyGJEwRUNfDZXbpr2JVPda3TGS6uxKROSph7ov4sEd4lkW5aLD4ax
+	sDIQUmNXiKK9dlnDbAaBuLruLzIxLZYznMxyMWtYJZjAkWHJ3Bw2hC9yhHAX4Dr9x0ODjSR1QuI
+	zFiWHpqQga5FkQMM/ScdV25gqwhrPVyohcgMLK7yfeU880v
+X-Received: by 2002:a17:907:7283:b0:c29:22cf:b0f5 with SMTP id a640c23a62f3a-c2aea05f3dcmr292945466b.33.1790362848738;
+        Fri, 25 Sep 2026 12:00:48 -0700 (PDT)
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com. [74.125.228.171])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae76a68aasm157119466b.35.2026.09.25.12.00.48
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Sep 2026 12:00:48 -0700 (PDT)
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c264788fd58so181571966b.1
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 12:00:48 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz7L0jnEtUukFFnhaBCxIRb86NjnbiV5ENQur3OUmgS/IWziC/ucr0H+l9xocT+9oPqwIPEzA6mzw==@kvack.org
+X-Received: by 2002:a17:907:971a:b0:c29:d525:72a9 with SMTP id
+ a640c23a62f3a-c2aea0c733amr303710766b.49.1790362848349; Fri, 25 Sep 2026
+ 12:00:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b1a845c3-3720-4ef6-8c97-8a40ee7bd286@linux.dev>
+References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+ <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
+ <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com> <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
+ <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org> <CAHk-=wh3LLDV2AMZn1PZcU1o3Na-BNcQtP=LPXouLKPZWaiRdQ@mail.gmail.com>
+ <DLO1WIACYFWF.3N01DXYFJLMD0@nvidia.com> <a1d5881926dbf4b16dc796fb1da939f32dd42f18@linux.dev>
+In-Reply-To: <a1d5881926dbf4b16dc796fb1da939f32dd42f18@linux.dev>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Fri, 25 Sep 2026 12:00:31 -0700
+X-Gmail-Original-Message-ID: <CAHk-=widZMoVwT+to2PKPfy-y2gERYWdLsZCZvXcz0ZbXYpt9w@mail.gmail.com>
+X-Gm-Features: AclHuK84xe3uYtoS3qkT2jpKdwnf58NHL9DKtWnMUTEyzhDeLLiMiURHSpbJsHU
+Message-ID: <CAHk-=widZMoVwT+to2PKPfy-y2gERYWdLsZCZvXcz0ZbXYpt9w@mail.gmail.com>
+Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated bit
+To: Ilya Gladyshev <ilya.gladyshev@linux.dev>
+Cc: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, 
+	andrew+netdev@lunn.ch, apopple@nvidia.com, artem.kuzin@huawei.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, edumazet@google.com, 
+	harry.yoo@oracle.com, hramamurthy@google.com, ivgorbunov@me.com, 
+	joshwash@google.com, kirill@shutemov.name, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
+	muchun.song@linux.dev, pfalcato@suse.de, rppt@kernel.org, surenb@google.com, 
+	vbabka@suse.cz, willy@infradead.org, yuzhao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 61824C000B
+X-Stat-Signature: y8ijmiwmwp18zyjg913gn4ddnibmdob1
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 45C2780002
-X-Stat-Signature: 3jnxgbfoq6rwx1ijw5u5i34dbe1dbhbr
-X-HE-Tag: 1790362756-800074
-X-HE-Meta: U2FsdGVkX19EdQ4pX7NmDq4XY84opUHT3tQF2foIILBdQ904Y9R/dH5vXZd+UtnW7v6FsTXlNGAt8OUxDv5MTA/Kj3skoxZBLeRcjqUcA2Gh9FITXt5eQ0hG5ZRm6rCjO+M4fCRQds7BDdQrWQ6AKzRVVV6/vhShHNS33zpwQgR0lXOJIxrrvcDePFv/gi0SWGE60JcXcy+k/VSA+O+iQuBaysRs3F5VGBhUfGi4uRWQATRiYkGIkYEyQLrNiX/1v4j+Rbr6UJp69QiM1b1tISCmdfU3M38OQRyUVCq3/2QE43Nru7q/VnWOBdenUowz/o5ccoyaCaBFYfcVymxLdVPcW9qZukhbq2meawILdYbd+1o7tXQBzMgFuj54XWGvMlH/4PfJWVh5DjHlR7WKDjakpgd25jbJZRGgBOliHLxwPylWTU/zPkRxxOSshOK/WwpyGnN5Jfu9TW+ojs4jFMukCtiaqty+BZNe5XXk8Oo3zGjaaT979ZxSsbiRlJVS5Idpy+ZsnBa/sIcooRpnqJCifK97mc7aKJhNy5DC9eYSqJZFp4OVSjrZ8V+DX4Vdwv5kC442TjgKN7r1j01k9axz9x4vbQ7Z/7vnvXkhi8d3DtP1f4Ef9jJi+mYD0rSnxjUOxKsLZ1WN7F1L1o+lDRj0rmNXJ43kgSSzNH6N8lkNDQz7LWDr72iRk9ipM9zGouVKAEi5poRp5zMTp+vEcU1z6ttWeiERCmQuz0+qbqDiglficRdRj1FjD9IGuZ2I37oABy2OWhLVZUj/VquVAXUe8HUqFn+gbHRJBy4mR59eRoVLKP2HRPzh5q520VD/nxrbk6TQDaNpM/vwFgDlwr8RMfvLHF4RrD0jiaGMXixS46TMCVFPd73FnkoJnRv32KwQc0ATSU6orpgk8zOZS9JvoIPXo+kJSe0VC0tcCrqosgL14fXak6ML7MQNJBqX1ZKxm0ttXGLbLtPGr3R
- srj3dz/j
- NLIEuqeJ1nRNnTfUo9t1mM0zeJdFg3O7kwt6H0YUek+1stoHHhhRpV2SIOB8TBVYpnKBb0zan1uA5l0i+Own2tU/+D/nDc0xKQfpuscGXLrGhSUjxZAUSPE1Rck2+qe0SAIkG9+x2rPHZmzFNh8UVxRgR1KvIafAQ6Smbl1n/ukPlWjgNiZRhOV0t5eYFPINxs/NC06iddJfYlz9m2rpblI5eylrt9qUL57u6zdnkwtySrim3V2gMoV1RRS40PwS2dUBr5EjlpKsf6NnY6bBug/GXjX9OO+lvQox46UoBWw8YQuQTAr/Z8VilB2L6SdjwgIF1mA8/r7DMnNPWsAP8zWvKOYa6eOpngjRGj0VZWo/o4keWHUnTgEre6e5bp1Y3X66QRrwjT9x+buhhRs4TkY/WE+zBMOqa5/JQLzdtuNE1/ApswfkwSYre0rHab6+OA0kh
+X-HE-Tag: 1790362850-380134
+X-HE-Meta: U2FsdGVkX18LHXNCQnryVtsXTTpDgohHIZPlMfOtyGV4qKeC+v8atQ2iKycvLaPH+VBKLWqATDlDMaTeuTVe924lo9VQ5GrbM7jPVnghr2l4Jg2HEGYFmtGo9K9yXErf0tyNkhOWQ7BlJKxL39pSpaM2ITosxuZ6U7QvtdSQEgnXZK6hGz/76P9fWYmmB02TUMY/D+WU49rvy3Q4iEjl47kt0KQUZupZiXolLkREjGfbWxEp6Wb2YHl+uxqgfd8cUI/y0KhD9DePCH4iAQENlO8y48mTJVxuQx6qBAGWD4EBekHo9z1Pybc16EIpFBIRIoLEairjnLGUnH7DdBsHR4ZZ611Ri/1H15xL2LUZU2wdXQQbPKVitfLs809uA+oWo9qUT2zJdL6m8UHKp/r7qDPuDqGSbmuFoOa2uxBTvmnTu8ykc+V/6nsuuOJ9FkEuac1CfNHuReZ+IpRk0owRDRj5Ga9u1Klg83vYSndWZUevR2eShIJNj5Vn3UgCk6Z1uI6Val4eXARyXvhJtZulHXKkPhOzXQvOgef6XMv3IOJ/3KLIIo7rLbs66Bstq2TbdL5eTnYBXn+4R5fAyFNz2SH187AnxKLwiu2Vjtrm4RMz7qRTdTGClv5sgsLRP0EeY7lyBh7knQKlxuhKWkZGMWhY7EEfUmO9dbD5r6HkvIX2/jGswprxmVVk8jkA1HsSrf4ooBL+Ys1vL163+fMrFSfqG4+LrKMuNrH/qmnnL9QpWVH/g3pPdymcjzg2lH5Zqh1tnOsH4plbuxavq2jF9kVLLR9x4+T13jMtwYOh0cSzu4UBItbBhFvvsDPzn5OyQabqUoRwUrqJ95uXv7aMLltt6pSG4nYk6cfalRL6b5mTcz08Rx91yEmb7lN+H5zHMG6Ov/fDqh0iIWF6oOXBrXQwz4mYoSPCnWqwgtH5GvCtrPzDYVipdCZUbA/GX9hMQ4RpvU30g1YOecgB015
+ dhfAXZ/3
+ LYfrxtCgBEX0IVemuMN/zKtXhlWE2B20efcmCcbfOCWIWZMY69UFRomJ2IBkIxmLxYxE/68HVvKfR1lN7UlgXkh7Udd1rIixG5S5zf+QMREDMTLCoWaFBgDWPN6wpPsPLH5NJcfxH/7FLbbiV+0mgbTrxPV2BoTbsZ+IsqRWIV7Vv6hSms+80TQEkfrAVBK9Z4Mb+opV8dayzx6y95l0dW0ZCFaPMffSUpLz3JOjABcip6wEbJ5lILaFpYPfZfKvF65Ok3n70LeX7UM7gzUv4tMmzhZGVcFPbpz98ZLPEoDtVgQCSmvU7Q83cpDzXBUp0DIkGpTc8xZt6U+DZSGeECYQE3FVGfm3u/8uQSVvS10FsrDVUIjV6RTtce21yQYE0RuAL3Y6qjftH8b3H7T06+OrKw93X8G5mWYoa1MPkZ1toK52mmhTlCwh7fNyhY19Ewh9gqWCzuCayeXc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,114 +137,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 09:47:03PM -0700, Zhu Yanjun wrote:
+On Fri, 25 Sept 2026 at 00:03, Ilya Gladyshev <ilya.gladyshev@linux.dev> wr=
+ote:
 >
->在 2026/9/22 11:53, David Matlack 写道:
->>On Tue, Sep 22, 2026 at 11:36 AM Zhu Yanjun <yanjun.zhu@linux.dev> wrote:
->>>在 2026/9/18 13:06, David Matlack 写道:
->>>>Future Work
->>>>-----------
->>>>
->>>>Following this series, we expect to make further improvements to the PCI
->>>>core support for Live Update:
->>>>
->>>>    - Allow P2P across Live Update by avoiding resizing or moving
->>>>      preserved device BARs and preserving all upstream bridge windows.
->>>>
->>>>    - Support preserving Virtual Functions by preserving SR-IOV
->>>>      configuration on PFs and enumerating VFs after Live Update.
->>>Preserving the PCIe topology, bus numbers, ACS, and Bus Mastering across
->>>kexec is a foundational step for minimizing downtime.
->>>
->>>As we look toward complete end-to-end support for DMA preservation
->>>across Live Update—especially for VFIO device passthrough and dma-buf
->>>sharing scenarios—IOMMU table/domain preservation becomes crucial to
->>>prevent IOMMU page faults when devices continue performing DMA during kexec.
->>>
->>>I would like to ask about the current status and roadmap regarding IOMMU
->>>Live Update / KHO (Kexec Handover) support:
->>>
->>>Is there an ongoing effort or RFC series for IOMMU handover / page-table
->>>preservation currently in development or under discussion?
->>>
->>>How is the coordination between the PCI core Live Update mechanisms and
->>>the IOMMU subsystem being envisioned for preserving IOVA mappings (e.g.,
->>>restoring domains or handing over root tables)?
->>>
->>>Any pointers to active discussion threads, RFCs, or future plans
->>>regarding IOMMU participation in Live Update would be greatly appreciated.
->>The first IOMMU series to support Live update, can be found here:
->>
->>   https://lore.kernel.org/linux-iommu/20260921004834.2601285-1-skhawaja@google.com/
->
->After cloning the source code from samikhawaja/linux, branch 
->iommu/phase1-v5, I tested the VFIO live update functionality in my 
->local KVM environment and encountered the following issue.
->
->When I run the following commands to verify that VFIO live update 
->works correctly, I get the output shown below.
->
->I am currently testing with VFIO v5 and PCI core v9, and I am not sure 
->whether this behavior is expected.
->
->Interestingly, when I revert the following commit:
->
->vfio/pci: Preserve the iommufd state of the vfio cdev
->
->the issue disappears.
->
->Could you please let me know whether this is expected behavior, or 
->whether it indicates a problem with the current VFIO live update 
->implementation?
->
->"
->
->echo "vfio-pci" > /sys/bus/pci/devices/0000:00:04.0/driver_override
->
->echo "0000:00:04.0" > /sys/bus/pci/drivers/vfio-pci/bind
->Preserving device in session
->vfio_pci_liveupdate_kexec_test.c:122: Assertion Failure
->
->  Expression: ret == 0
->  Observed: 0xffffffffffffffea == 0
->  [errno: 22 - Invalid argument]
->"
+> Hmmm, I=E2=80=99m afraid that since you need CAS for a safe 1->FR transit=
+ion,
+> it will result in a CAS loop for the decrement itself (like in
+> atomic_sub_unless). And this will introduce scalability issues just like
+> in folio_try_get(), but this time for everyone...
 
-Hi Yanjun,
+Note that we could make that CAS case be the thing that only the
+special cases do.
 
-Thanks for testing this.
+IOW, maybe only do that slow sequence in compaction_free() and the
+memory offlining.
 
-This is expected. With "vfio/pci: Preserve the iommufd state of the vfio
-cdev", preserving a vfio cdev depends on the preservation of its
-associated iommufd. Since the vfio_pci_liveupdate_kexec_test does not
-preserve the associated iommufd, it fails with -EINVAL.
+So we'd have two different cases:
 
-Note that the IOMMU persistence series does not update the
-vfio_pci_liveupdate_kexec_test, with those extra bits, as it would
-regress after_kexec() part of the test because the retrieval of iommufd
-is not supported in phase1.
+ - the high-performance case is ready and willing to accept the "sees
+zero" window and the extra 0->FR state that can race with somebody
+else taking an optimistic ref
 
-Please use tools/testing/selftests/iommu/iommufd_liveupdate_kexec_test
-added in the last patch of the series, it sets up the iommufd and HWPT
-preservation before preserving the vfio cdev.
+ - the unusual slow cases that are *not* willing to deal with
+optimistic ref takers do the "CAS 1 -> FR" state atomically and always
+use compare-and-exchange for their freeing path
 
-The wip phase2 can be found here if you are interested.
-https://github.com/samikhawaja/linux/tree/iommu/phase2-v1-wip
+That actually sounds like a good approach to me.
 
-Thanks,
-Sami
+But maybe I'm missing something obvious and it doesn't really solve the iss=
+ue.
 
->
->Thanks a lot.
->
->Yanjun Zhu
->
->>
->>The IOMMU series builds on top of the PCI core support (this series)
->>and the VFIO series linked further up in the cover letter.
->
->-- 
->Best Regards,
->Yanjun.Zhu
->
+              Linus
 
