@@ -4,96 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6993DC9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:15:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B1AC9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 08:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 566786B0088; Fri, 25 Sep 2026 04:15:17 -0400 (EDT)
+	id 788066B0088; Fri, 25 Sep 2026 04:35:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 517516B008A; Fri, 25 Sep 2026 04:15:17 -0400 (EDT)
+	id 738776B008A; Fri, 25 Sep 2026 04:35:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42C196B008C; Fri, 25 Sep 2026 04:15:17 -0400 (EDT)
+	id 64E476B008C; Fri, 25 Sep 2026 04:35:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 231C86B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:15:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9E3C11A0583
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:15:16 +0000 (UTC)
-X-FDA: 85251574632.02.DF6028D
-Received: from mta1.migadu.com (out-238.mta1.migadu.com [95.215.58.238])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 7650118000C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:15:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KRNnJLwd;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 423EA6B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:35:18 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1469A05C8
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:35:17 +0000 (UTC)
+X-FDA: 85251625074.19.9CDD74F
+Received: from mta1.migadu.com (out-43.mta1.migadu.com [95.215.58.43])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B7BB9180002
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 08:35:15 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PUNfiiLV;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.43 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790324113;
+	s=arc-20220608; t=1790325316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kRDJ6MnSY4s3eUr3hnETwacCU3czwQAXrUPoNwgrhH8=;
-	b=mmv7ee+IHHDLoJcMR7NCdXhg5GrIjxTIGkRFZPczGguhUVltT3gXzEIo4RdkIRhRvQXzeC
-	3LDbcoshmokorqO0Nk7e+/Z/8iCVNDHvkoCxHIg65bu7Sv8eqfg6r/5UvVYz+ZhJ02Br80
-	2ZaBDB5TOF0nc7VPrdiN2TSGN1Q0e18=
+	bh=zDv1NBOvOnF/Xs/Hh4+9hUPNuwqbSlqCA0YkWfs93sE=;
+	b=jFOrgnwBchpjG5KsW9V+d70bGpyrxkoAUxCfVQsIywxb5stAac1X8cZD+uo75JnRA8bGsk
+	lFZRKpKQk5kZCDg2cU9kIIUgjHxrxMfCR4jDWFTXCBYJmUEjUQ9rjUMfx8mOnshCQ3Wern
+	7X1RiSrEmCK/dk+k4yRp7uIEQC04uM0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790324113;
-	b=vZggodwWcwrGfhf6CZSGQuRVlcHgaQuC+QowWr71hGEggngxYLqTadr8rpMNb8waWvAPCi
-	MJwSWHuVdooTLhUDJ1GTajgurxXSuNRqoRBS343aFONPNylDS3Z40VzJJoBlDjW3XcOQ9B
-	g7ROs+EiJoD7zzZ5HZYBFtSgMXrgN/M=
+	t=1790325316;
+	b=jRz4K+bqnKsHRlnm3GGW3OV0l0w7woaC/KbqTQVoSgdP0g5l/s0tj46hj+nKBHuaJ/AEyT
+	xQLZEvd3u/FahvAyhaoqr1O/gPPNf/Mnpoj/rE1FbG08Ww30cBxsdKBdbVRc9RAkYm6pmn
+	lNYyZmogvqQfcPxajaVq9ZBDL4GDWxY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KRNnJLwd;
-	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PUNfiiLV;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.43 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=juiO3GcMTXWmLdFNZ5aDekSzxCw2FRDtxyNSWHdnk1g=;
+DKIM-Signature: a=rsa-sha256; bh=P070X2Db5gT0xjAhrfG0+0oxaFmkGwv1YHZV5sftYO0=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790324111; v=1; x=1790928911;
- b=KRNnJLwdUIq5fJcqekxo4lfAdpCs/jAWBfWjnIWqYUBxAFlskdm/kxzLMZslZtUx0aUBCw8e
- cv/gIc2bRM7OvfODZVGykpizRaA/igfaTpYWBYRe7/zfkMAUdgVf6plcopvqKCUoMbu6a/JUTMH
- H3PLxipRLHMCbRbgTztn8RXs=
+ t=1790325314; v=1; x=1790930114;
+ b=PUNfiiLVQ17SaBkQ4YQp25HefyN+ThfNVm1Ldl1euY2i1pLWBK2bLHN+6cMF8wOOrhOXwPWD
+ ZPoXoqK0ck54f3cyaRDBR6Tq+k4VsAy+bNVqFWACJf6L7psCNQH4y3g6/ZBAvAfx2/rihTrmwy7
+ 7WTlE8pYEXl9h1edMyg2v/3A=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 0c74c6bed6dbbf42;
-	Fri, 25 Sep 2026 08:15:09 +0000
-X-Mizu-Trace-ID: 0c74c6bed6dbbf42
+Received: by smtp.migadu.com with ESMTPS id 5a9ca629ca05bdbf;
+	Fri, 25 Sep 2026 08:35:11 +0000
+X-Mizu-Trace-ID: 5a9ca629ca05bdbf
 X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	muchun.song@linux.dev,
-	research@deepseek.com
-Cc: lance.yang@linux.dev,
-	sj@kernel.org,
-	mst@redhat.com,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	virtualization@lists.linux.dev,
-	ryncsn@gmail.com,
-	kunwu.chan@gmail.com,
-	lianux.mm@gmail.com,
-	baohua@kernel.org,
-	xueyuan.chen21@gmail.com
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Date: Fri, 25 Sep 2026 16:15:04 +0800
-Message-ID: <20260925081504.23569-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
-References: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
+Date: Fri, 25 Sep 2026 16:35:06 +0800
+From: Hao Li <hao.li@linux.dev>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH] slab: Remove slab_folio()
+Message-ID: <arYx_PN8cY0pmI0w@fedora>
+References: <20260923183655.3364885-1-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 7650118000C
-X-Stat-Signature: 9ydzws3userqxpq8ecbe1jxmz43drf1j
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923183655.3364885-1-willy@infradead.org>
 X-Rspam-User: 
-X-HE-Tag: 1790324113-465702
-X-HE-Meta: U2FsdGVkX19OWdPyZZytzNDeTbvWtoUxREZasep5Rb0rG69TiJUNJu5L9W69Jd9RVJ0CX2OME0Q2hxCh+9UTJJZXHHf7g3422a41UGoq03RIT3leNDTztLNO91ZjOcUVo6XuRa8iG8BsbjGC05zHkm0MLptuktEeAs8pVG/OENdwrCvN4cROA4+GQ0VweDw+62TghNM6l0/lJYEinQdjU2rLxe9I4t1d7A7J+CId2ubEGuK6H7e6b66Hd2xXU0lusHHVgv/sepS0WqpTX4HPXh2BU/zqfyjbaVfjr538aL8yBitefPJ3j6aLE9WEaNmxlpUbDsztCkRJxXVY9yCYLnksHBj2bRqkOUHMxR9FEaCJMkui4b551bneLrQarHmj/AjRa7ap55xhYRaNHZi5GCQb4ukIfDe3h2BPVJrLjRCaCfFTD0kvlberBmttZdqR+ke0v/f4Ao07AIs1FVQAG7fpRzZPzKwdhRSaMykelES2ET1mgOjYabNWZ0NwsaRYUiAW2YcVcqTVQOsS+Ozbtc7DmipqP+D/fNpGmtRvRyQ+5pjGleUd++o3wbJhycpfLGvE5zr3V5+D1unKb94Sk/XttZATHmTKA/rzpsHRgpxk/s/RkVh2Za/o0h5ji6/mSQXU1o/AuggjfrBf42aVAjEDLFE11nLBx0qlbF5GatpN4SAPAE+WOKhRHYbFsc9KtHiH3ZT3Dk4kchHka4ZpJPHdijB5wWGgmlVOHyQyy4Iu7q4RRGmcvG9+FT5JiwysW4YgcPSjm598IKVO59in5AQSFdPX9hUVOF5sTqfa7GD4QKl5DJH1VVuClEmCkmYvWFTBFFXWhq7F5Ijkqbkokrww992d+4M/kLtYCFkFs0HRZMCUS8WooRqVSoeoUQKwcpvfsfcpMDPS5gvcBuM9vZTMDyAErb4ldY4rmiisrRg2SkDk4tL5UfmH+idUH/yHWJm4WtqR/pjt8yg0493
- u9Vnfqyp
- 3kPCZj65S7leQ4m6H1SMbV5X2RhuTte4V4cd/CSZLh7jpoPqWShtZrOg+/uzk6eQdLmNKGDUBkIi+UHpi8MtOpA6joYKWReReKj9aR2HCmQqto0o7UoJFf4KyvqvZ2KF3O1e1eRUJNmTvdb004FuvzJgLzoFBR/i/3ixof16HnJZQXxcrpVGvWwy12DkBYipdePrNOfDXWjfHGI0I/MUiAPkV91QIgsfVvSxva4LPlZy76B9ZBL7+U1muRhz/MmocQd+Oz7QpyZaauiyAk8m/4Hcn+5HBUH4aD2g82kJ0me/AHfQS6OWx+q5RW2pgH3GEspo7wKpS6eHj3kS5VJklXljWeJaCa5StvtHZacwYQ2CcPI4=
+X-Stat-Signature: mk43fp77dsgg1g6cqg1q8d53hjsrakzi
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B7BB9180002
+X-HE-Tag: 1790325315-626820
+X-HE-Meta: U2FsdGVkX19xt65T3hOO7bze6Wjct9WJuYql+1Y2HJ+qYRAi/nkqgvtMCDLyGftmh77UFg0bhxpElnHMY4qwzoh9BDhed8ugWGx9REa674R9WrQSw4IjgjyACtkN4uU/y2E3dDcpuNFcVZbfh8Rx3OMClCqAKKt+g/C7rQfXSZKdo2EvBysSgByO2VcWUvW1DcpofDNGufEQgorJJ9oux+PRF8qWp29jupxy/K3X69K65wJ/uvrs+mXzQ6j/4Kt6e7hlPMxekbGLri2rqFHZNlr9mBNWpDB3Tz4Wk/SYVBvg7NWxXZW45+QO1CZ3CArWZU8GkNVT6g3TbbiYbFEhQxj9D+PScIc9+Q/hJRzjHVHa1Rivn0u9yH7dI7g0PYxO/FPTz2jvv+R2zSdhGwWIVVikfI9SFZXRiC6G7/yXzGTWqy/ZJ/QDy3vy/kyV0B+Fy2J8hw35chBGCYB9kLKRdF5A6Z6y3KHBriw0VXl57TeiFm2OmwugV3LzT+Nn3Cru+vh24L+vq+2LHra3NW/pq3MV1t/cex6povsi9yD0JIyiNmz5QUhJrYzwIjr7ILpdnUSp9xNbXAlcc6T3gtH7x4mS3gQI79yMA7CpfCEydF6ARSOibdJR6C8lEddpwrKj5fRxmaY2vOvZB93HHf1LUxHwC0Cs2SOYnrpVkdDE2b8SM+owsxrPWZqddGqOtl75Co4UsHfBz2i2ZFT2uRRBv7/tXD4yQo4bGSgtSi9nxTPuU2I4go2xxBNmiterfJDUtgp8bWu3KnIhwgLsgHpE44b8G4WlI5uoGCVFitPfAjTaFbTsZTPM51NGrB0sVJEFl1K9lPuTg/3SREQGhBlO5u7Nw/l0Cd9h7SzlJQKBBxx+/0hLwUjFb9VG6wFvWJ0Kvard2pSLz5i4Uxx6bmv6qy1vwmppx3xavVOP1P/O9vN/KoV91xHGWBes6y0eZlhrUzDASG4eoaHrZmmJjYg
+ S/mv6wCJ
+ z024wAhCZfWFSZIfbp4gKLA3hLsmbT0LG0HveNHleu7FEDQMs7X5G2ZIi+cnno+rbFcPkzgTSF9zw1kefHdRwTsSpsdanb7soyhHCC8IT/nrn7odx8LfZYXv1hgIEG6lWciaLgeoQnJ5DP3nQ53oOg+N672UO+g91Je6Hh3/Hf5AIXwmE0F0lycozaFzoZEO1i4HRjfbRSaf23zTbdXMdkFTl34lSHA4Q3dZybg4B1bpUShaK3PwHSwQAOFZ28edZKzFgTyvoqiSl1iw+yVhWUvcHuCu+zntYsXXm6c+2h77qfjE6aWXddOBw+0mi+wjpF4JZEdwtDkXVreBu4yyYEenxlx3TSBPUJA7so1ANGZhKR6KgS/mHEjmeuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,49 +89,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc DeepSeek and Muchun
+On Wed, Sep 23, 2026 at 07:36:51PM +0100, Matthew Wilcox (Oracle) wrote:
+> This is the final step of divorcing struct slab from struct folio.
+> It's still tied to struct page, but there are no more mentions of folios
+> in the slab code.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  mm/slab.h | 28 +++++++---------------------
+>  1 file changed, 7 insertions(+), 21 deletions(-)
 
-On Fri, Sep 25, 2026 at 09:04:41AM +0200, David Hildenbrand (Arm) wrote:
->On 9/25/26 07:44, Lance Yang wrote:
->> Hi all,
->> 
->> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
->> and virtio-balloon:
->> 
->> With this kind of workload, an agent may read a file once and never touch
->> it again, while those pages remain in the guest page cache. Without memory
->> pressure in the guest, they can stay cached even though the host would
->> like that memory back ...
->> 
->> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
->
->Heh, I read "virtio-balloon" and thought "balloon inflation/deflation, what year
->is it?!". Free-page reporting makes much more sense.
->
->> cold file pages from the guest page cache; buddy gets a chance to coalesce
->> them into reportable blocks, and virtio-balloon passes those blocks to
->> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
->
->When I was at RH we were looking at this issue as well. virtio-pmem was one way
->of avoiding the page cache in VM entirely. But it has its own limitations.
-
-YES, they enable virtio-pmem with DAX for the read-only EROFS base-image
-and toolkit layers, while using DAMON with balloon free-page reporting to
-reclaim cold file pages from the guest page cache on larger writable disks.
-
-They also point out that the guest must allocate struct page metadata for
-the entire pmem-backed address range. So virtio-pmem is not free either :)
-
-BTW, Muchun recently posted a pretty cool series for exactly that:
-
-https://lore.kernel.org/linux-mm/20260903122128.12264-1-songmuchun@bytedance.com/
-
-(It shares vmemmap backing until a DAX fault needs private metadata,
-avoiding the full per-PFN cost up front.)
-
-I have a feeling the DeepSeek team will be watching this one closely :P
-
->Thanks for sharing!
-
-Cheers!
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
