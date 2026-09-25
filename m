@@ -4,141 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19C52C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 21:28:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C52A4C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 21:30:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E97D66B008C; Fri, 25 Sep 2026 17:28:55 -0400 (EDT)
+	id B685B6B0093; Fri, 25 Sep 2026 17:30:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E48E36B0092; Fri, 25 Sep 2026 17:28:55 -0400 (EDT)
+	id B3CF76B0095; Fri, 25 Sep 2026 17:30:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D10E26B0093; Fri, 25 Sep 2026 17:28:55 -0400 (EDT)
+	id A2B9B6B0096; Fri, 25 Sep 2026 17:30:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BE656B008C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 17:28:55 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 141CAC074C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:28:55 +0000 (UTC)
-X-FDA: 85253574630.08.2BEE0C0
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1559640005
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:28:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KKzlE4Uu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790371733;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B4BA6B0093
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 17:30:09 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0036AA6CB6
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:30:08 +0000 (UTC)
+X-FDA: 85253577738.14.6C8A508
+Received: from mail-qk2-f41.google.com (mail-qk2-f41.google.com [74.125.230.233])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 082DE140003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:30:06 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Bme0JwRW;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.233 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790371807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NbMRl28CfB9DT6gF9ur53jbkl2XPiQfbSX+1iQMn930=;
-	b=RskOzikOMFAhk1qv3JgBKzS5JSyidfLoUoW7ndxhPm3M868Q6t74Mg6nFWXgDbDKUmvdk4
-	xcH2zdmSp+MJI96HmhS9vRy1VUVmtx1ZRSrk4TmG3IvyTzy7rGbW6jGuUlyMJNuWUOBSar
-	v/Gp8ZLMiWBkr5XJncuOm25mspoYieU=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=KKzlE4Uu;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of abhishekbapat@google.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=abhishekbapat@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790371733;
-	b=5GaPKJ0Gl116msY8JvkkDsF3YVLX/VsmWt8nsV/OhOJiy8gCsDFfrpCZDhNmbmwr31k2i7
-	eiN+BDyKfRAYOFhOlquS3WybLp5OKh3XVYf0N7T+m53dhPCLY9WpTpIIdz3OQc1cepP/jt
-	Kohe6wEEI3mPr9SUxUf/e0vKhYdkabc=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d3b445a84fso10325ad.1
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:28:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790371732; cv=none;
-        d=google.com; s=arc-20260327;
-        b=V6XULcKquClpu+9f7A2GV3PP9gwL31IMm/6l83JktDO8KjFew9qgPV3Ob0ZQcvDIX6
-         uTEHDV7IyX3NG6fA3lnL3llLJwJrXZs27N6kaXNaEFZtSZ+e603wrFn/Vc0PrfT8ZfS4
-         x7QktQwzNxa2luE1zBipo59rt7LFUVh2J2VmLZI60IT0VW083VzxzYkhAwCR9vMQ94Rc
-         smZDP99vM0uUXeOM8ETwjJHdOaJRmIHko6n+0Xa3Yh9zvfqTkK63i2RRK03Gtx+kUUKe
-         mbHsiTdSSMwkINg6fSi40XKHH9DOfu4fZKCY1SwBoc+g+bOWD0Z2YQYPbGewq0M6kY1c
-         cfwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=NbMRl28CfB9DT6gF9ur53jbkl2XPiQfbSX+1iQMn930=;
-        fh=wQ18G6eGT0benJNP/vAHGhk150PzvoITwmxL9D0iMbM=;
-        b=WrogZOscG2m97ENYdTMwg86mD4EVcwsvBhR6WfR1Q7ClWGNpdF+cDjzPLrlQieWT1c
-         B+3vIWCiwFSlzL00oI3cn/H1LQwwHu/Ld7Owu93HU+B52IlMCXS/q5Y6zSIiA60NEdXn
-         ZtYC3Xro51IzYsQzSR6Y1ZFLvlbhdeNRIjrmG5mea/svJavDfdQpmciryfI8KhJ4dwwB
-         oGdqQ2jA4tu1+gXx6qMLkHejp9v5Kt4q8zJm5Hyz+n2kezzahkROT2R5Mv0RaWqt30TY
-         aEpXnAAN8P1FKxvkWNsi4zfWjp4SZMaD2iY+LhuAaXMbk5Oc2G8JJpZ4Md9iPD7f4L4I
-         3qiw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=+fKh18UTHHYV9BhDkG+zBfHvGvhTQUS2inp00ECGTG0=;
+	b=v8bnJE01VqyRjEsnUD3oLASTX0Z1ZIJXKz9Kyybj1SJ7diRGp3DgVe/cxcB64UHfQmnS4E
+	GNnM98HXNo9SMMjve0tQe5dSL+LkB26kdUfoySR/sXaePJ/YzriNgfOh1LPzfIU807hyO6
+	YGW50Z6FmOKP58FjjT46brMTfz/NT6g=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=Bme0JwRW;
+	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.233 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790371807;
+	b=sVB1NYs9nAu5AlZ6WzSvOD4sdNINNvLxvh1j9Tn49xmuCsUtDRYt2Dcd11SXK642+ALwBn
+	bjG6J54Q2MYq1eAl9A34QAB1DE5l6MGvh978J24p36Rgf9RV9WuFL5CSOp46WmhqLc7Jh3
+	w1uF0x+WzAqWhkL/JDq5dlZ/rPzHqGk=
+Received: by mail-qk2-f41.google.com with SMTP id af79cd13be357-93bfd70b08cso158576385a.2
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 14:30:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790371732; x=1790976532; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NbMRl28CfB9DT6gF9ur53jbkl2XPiQfbSX+1iQMn930=;
-        b=KKzlE4UuITHO/+LgQpt5xKCpULP8GvdN11dzYiasfhc3rSYvxK4GitKMJuijmQssnP
-         g78CQ6re4fW+jlf6cFa3lld0hj6tTIzZQVNuGfM+EzAuaTej4qyOC03QYDS+PibQ9BC/
-         DB69vNKqnbnLW8rz3aOQ3j2nflvFbYZyGHfOiQPmAFSyjaUeNNKETvBAjcEp1HpThwGJ
-         7CsGybNoKbjZCPaZq6uweM5Qy2fR49nX99q313jDjlL0jfvNbPN7v4FXBDphuSiWJuJZ
-         ec0T0XmPL8OGf6C//0IGobgkSLOuSTsStwEOzyoSGejWSV4JPTSHMP1aokr2ENUUIUT8
-         +fcQ==
+        d=gourry.net; s=google; t=1790371806; x=1790976606; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+fKh18UTHHYV9BhDkG+zBfHvGvhTQUS2inp00ECGTG0=;
+        b=Bme0JwRWx5zRsDW7vdPx8rpd05xQ37aI0TtzB3MHsc6Eei8sR2bVGV0vXDZvMfBvB+
+         iupZUJOd+lNkrhtNDa4MW1O0EOrmmKtpntniOEip7566AMb/1GDSsq1cm2xytfg0kSLW
+         9CSyc/R0nCvhZNR9uq6wQjHp9pT9OVHyNLqvIHj6XP25TPdhASm8CrJgLLgul8KJBHyL
+         2vR9/fb9ZaOJB+a4w7/ad6CcOg+ysS2HQ3dH0XH9v73YmMuICGQLTpE4LEE3ydQ77/Gt
+         AC8ObVJuoD8jRGV/aF/V0lUbu8QFrPQFO8OgyaZ6cHhfE5jASbHIkI6b3P5jjWs9S36m
+         P4uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790371732; x=1790976532;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NbMRl28CfB9DT6gF9ur53jbkl2XPiQfbSX+1iQMn930=;
-        b=B+3j9EeYhR2eZje6bysxmE1nPElQE4gY9TnuUXefouGeqXsKk0wxbbVvzqOD4gJ/Q1
-         9YciKnhz2S2WeNJf+/eg42Tb9LAXkPlsyS6UERKxgzMubZtV/s2rachdTZ/HqHmj3OGu
-         lDlujk2yDeRzKyW+eoVaGdv88Vro0XrfiB6LBoBwhN/+OmTyYs5pkFLObO0y1TKJoPr0
-         kGdYw8JstsKDUk4/H1mhQu357cKlgphD8ejKT7L2MsQ25VfVWAK3O2He7WssVo679IkB
-         EUEQLtgSHSYVbRUwu07EVQ4cL5r95xlde9uQHzQYgPDhUimBpweECzIKlTp1sGo/F9JP
-         kHwg==
-X-Forwarded-Encrypted: i=1; AKwUvBwlbG1sbMHPVS+K8MD/vXFal8AapkxvnJylzNvaVNCYFp4nH60VWJZOQdzCZo+ArOHlxKUKQBrPCw==@kvack.org
-X-Gm-Message-State: AFuF++lZbECJ93cBHFqwMgj8T4kmuTNmqZ4aoloAxu5OCUQgrfnxg5/w
-	9ddUtTutuTurwrgje3a18CYeT9uZ9J4Jp9H3aV1F+uECWY+xPQVhGCBeupgD9lCMG1Kzyn8oZtL
-	nja3jDMZOSxi0Bn2rUm118Jl2/rVPYg8F1jtxqyvx
-X-Gm-Gg: AYBFou1qpSL6huBWS4whb7s216fu07TKckJCynUC6Z0IYoX2lomcFuHIJTgPh1SSeIA
-	qVC+M/rldDVB65cko9cx3iuexa+aHoMQClnr9mlb3PK4lxhGIPBzuZgKozxf11x1sl1vGZBVTG3
-	APPQOcPeg6hDG5rwXGZS3aLaeCib5ls85VakBKLuUM1o7wyD8FhJ2ai2qp8R+P9T6L93MVWoS2j
-	ZvCsigyW6o4WupynXRzfdJ0ghGUR+5S2iSoo6h5hIzu+iFav3VomQK6OnT6RFNR7kXgPfVCfdh/
-	+EcyJlmvT1LEqKF675dvwdjLUxWNku8EEOqSaDEPl50LBXlMlCseI8AThfKdPDIMoBXEsUWdIrx
-	Vm5TEPp9kOg==
-X-Received: by 2002:a17:902:db02:b0:2df:8e28:661a with SMTP id
- d9443c01a7336-2dfa6263bc5mr1212555ad.16.1790371731056; Fri, 25 Sep 2026
- 14:28:51 -0700 (PDT)
+        d=1e100.net; s=20260707; t=1790371806; x=1790976606;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+fKh18UTHHYV9BhDkG+zBfHvGvhTQUS2inp00ECGTG0=;
+        b=deBLmXn3d/G/k+jZhnP6qtf1TzKOf0DkHzHmDjge+/A083fDw0KM2MdWCc8/zbWhpB
+         0esvJF6jek6YWDrr4FgsaGtuJFyRbvT0c4JA/SPy9j7PJR+nmAUbnCLT499p2RpBdlZO
+         xq1vP9onjzB02pqj6M4qj3bz4aUcBU5b/em9BpPUYVFS8oq1UWNvteFPhXWYuo2FpzRB
+         c4NpVgcwMhbTayq4qQpSQiC+AR8aY6c4DaBDTLY2yzRFYqM15k6VVFdFPnCojGC+LL8O
+         lptA9oFCaUr7VugHhQQwTaBnm7E4FJ5FcS38Pe/nj3raMZgAbz2EzRFG1VWlTgEf2EeM
+         +FFg==
+X-Forwarded-Encrypted: i=1; AKwUvByF9kyD31h5sDYBcU9t+RWLMBMPn9RkKBE5QSIANyA2U01qQ8E0qhtLjFBbb93x/tyBJtDJjB2OmQ==@kvack.org
+X-Gm-Message-State: AFuF++leRJH1gUTELoyCiVeDuElF5mymf8GkQiOaibITQwh99m1dGSy0
+	7IFwyU5TbmTZ/7nU2kVD1eWpsm6LnCIy4nCFjPoOHur7omEuJqkyVNqfbOwxQJvzuQY=
+X-Gm-Gg: AYBFou1C3lVetVXi5ZEq5Wu3MTP3lPk6iO64NSNXsMSt53PBaCTnGMTSWdOJZlKGKP1
+	q3MxSV27gMrYYlNuElLOKRYWj0i5HtrFGha0OnkYPUkByZdHYIqLErYz8APPzBeem/tCoEAs855
+	BC1kTrZuL0Ua4YJOx2yTH6n0j/L9u8SpWdzuvYddYcOSHeYb2w/hYWl4r28F5E+vM3KwyuJMnM6
+	yKvmclj8Ztkylouj7CeVNDkhOPbCcGmKLHBnTn62JHfgC0R+jLvPJEvJ3o+Omq3M0TcUqC/PiPF
+	4dm8pFqO9aG3+9v3sxxhp8Io/gD9LCSsNdQ4qT5zqKL/JWdMIzM/R6V0XQasBwaOaJyrCQODGZM
+	mfBUCYEtyecV6pHFDSF6MJrZ/SRfe+KSWHsh8fVnwNQfXlZUMF5YTQU81YdOMgjtcUnrVL535Zs
+	Dm8OFLi9e65kZd7MzKq6SxGUYDVnocRFj8ZwSHijavNYrknEbOBCbjSZa4mXPxt18tSpKDclHMU
+	W6HKuxOjfN3Kddgc4rFOu0cM8VpppN8/ti4pMiSMPPsL42JSKPY/JmRi6rJcvL3Sg==
+X-Received: by 2002:a05:620a:4109:b0:93b:f083:b269 with SMTP id af79cd13be357-93c4757fbe9mr592227985a.64.1790371805867;
+        Fri, 25 Sep 2026 14:30:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c448f544asm272458885a.18.2026.09.25.14.30.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Sep 2026 14:30:05 -0700 (PDT)
+Date: Fri, 25 Sep 2026 17:30:03 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Rik van Riel <riel@surriel.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+Message-ID: <arbgZ1OGndQAsXJc@gourry-fedora-PF4VCD3F>
+References: <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+ <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
+ <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
+ <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
+ <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
+ <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
+ <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
+ <arUcil9kxUPiymXI@KASONG-MC4>
+ <araKDOz5bce52oyg@gourry-fedora-PF4VCD3F>
+ <arbJ1LTzc7H4GL27@KASONG-MC4>
 MIME-Version: 1.0
-References: <cover.1790025465.git.abhishekbapat@google.com>
- <95bf63d2b9ef14f6610d6543b6892d266e4dc5c6.1790025465.git.abhishekbapat@google.com>
- <0e2db0a0-663e-45fc-b073-126b8e80b625@linux.dev> <CAJuCfpFXky7Rj5ghPXGuL59PtG-cmXQywK3ttOHWx_v-pSSN9w@mail.gmail.com>
- <CAL41Mv5REKRLUwSZ9ViTKpBwtEEaE-A3VOK-A0pDTORVNQjeVg@mail.gmail.com>
-In-Reply-To: <CAL41Mv5REKRLUwSZ9ViTKpBwtEEaE-A3VOK-A0pDTORVNQjeVg@mail.gmail.com>
-From: Abhishek Bapat <abhishekbapat@google.com>
-Date: Fri, 25 Sep 2026 14:28:38 -0700
-X-Gm-Features: AclHuK-rlu7lCPpgcOe11vshDOR2IoynhR9zVT0TuUEQB2hYbYOMSEF_McF7A2Y
-Message-ID: <CAL41Mv6aGMHPyATA9h1dY_cThXW9PyKQsVdLCaNXOBsQKv9_Qw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Hao Ge <hao.ge@linux.dev>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <arbJ1LTzc7H4GL27@KASONG-MC4>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1559640005
-X-Stat-Signature: gxu1hmo59urtxqqtrke9rzgtgraqc9km
-X-HE-Tag: 1790371732-866572
-X-HE-Meta: U2FsdGVkX19MpUMnmPwIZyz3S4nWfDxE5VvwlCcUQ7R19vHHiAbTbs1ivdfgKHqVN4pV1g86Junnx/vjrgSRH+V2AyZxmHui2bvdLow8EEEydQ5Dk9BfhMUwg9F8FXAviRPcdfIYHX70/jUNR6daPwP2KxEKE0r2oHQPagGWPuYEUnhw+uJSRUj3w7zLdKu6wDFd2beJoIRlC+wexjsUISxsiab5c4Y3tGfWu6HBAVQAV/fIEQFcaANNI4Wltyy77HiQtq5bY35J+qqFroc9RL/7ShGz3Sj2wf0/Jv/cjYq3/tWWNQj6DJEG05GYhf5ZOXp25xE4eFtALWlsYQ4xUaXaJ9TjIQsnsCGBHYYf/nFYZLVm+ND3UByiwT1hgD+/0bh4sCMkm8YJc1VFFJEbp4wqygxcRkFiMWz5+WF2ukQOZ5FD4gd98DZUksL+1qaEQ18K0XiZzQPcEXRwhWGQIkDov6M2wdJtlklh+83jP5uzS4uuBVh7dE+JyzT3CnHhJ5YrAAdn7aScL2LOsiBzXIwBmjL06ysU162sPVrDuzoARQz0qwtpINp+c/nPk78BdwQyxr9B5AR9YCsXy68mBRQQAAMzwoMbdrNBsSQ3P+wTLTeU/2w7FuyJggfthQUhcCYlXangNueeAhKD54n2u7iy07NthI+W6GtM7rOFQLcTtJNrdFI1ALHjFRBFOaEaRM9JhF0VY0i+EtdqRZce8U7B/5y+E5Z/P7XQEXH+cWCmAEzd4eBV75BcY38FBJ1ASjgXlEM1xtsu4HSRaqlFdpVl+qo4LR+5BpgZvMRqJiPOIq3yaEwObTxqenO0x11JPMEU08jCaTVtADf01E8JLHuktxiI03U7xCwEZQpI3DjWncyadHAw125OflmUAfVscvf46/R25x3AeNKHXVRCYBVbwaXOIf87YBASY81tOLMKcSJYqXlRt6mTDkUByKcUXAk3v9RLzT6aJ0WZZPf
- AGfqRj/E
- 7WfxRoz84a0xvODOnocwm1amnQWlMdtv9Zk6MG06GR2RK5oRN+C3pM+BaLZ9YES6PhFGl+UfqvbCtNr4fkcoARECAR4lifvX2FVc/pSykTsER3i/OtFRS/wuQn2wUqWOstKrgxOi8+FpGD8N81lLuPBspCm2wDWfcOH0dghg2c2+TDeojh3s7xAhofegq8uOfNSIatvVKWKzcVCWl6s3EgU8y+6IbcAmXcUEsHo39alkefBukv3XlEoZOSg5NZMBWceihCElLiYyPz4Cgo1g9jHCbgnR36g9WSSr1JTm77SRojVs1icWR9aVLiA==
+X-Rspamd-Queue-Id: 082DE140003
+X-Stat-Signature: uah4nuxnqb4z4n44ruocwhqeeggwca9q
+X-HE-Tag: 1790371806-604577
+X-HE-Meta: U2FsdGVkX18aRnpSwT4pNZaWQjGCrD1h1ng3eGnEOHlYphtlCBUvf7xbaaQQhgYb8aW9AgOvv8P2xm88K7Mv4YBO7t2wvoh1iUmVw2AgX0xQc44mDOeV6sizyXafSKA+lhMeHcZLFVno3XIE7eMkogw+VAqGUjY9NpIN2q+Bt+OvtyZv4UapMNKs6UJn3nbn8PfvkJ8tv8IKMnEFBzd6ZZ12VRBbdD0GiYKOaNEQoQztZxhxGadWRncCZTNLbshCFbjUna2gFyIbRZdgDSNyI307wePf6/9jpch89taxOxRPPVaLA5+rosstlwoidIxz2PEwg+/7WQhYxTzPjKfVLQ3mCc9wIGvjRA933N7doDOS2OY20VpUVMAUN3WHd65AiH0e/IrjTSLIQnLDGm8QtcYgGui8aY1EeekwB0TZEBw9aFYkfv+iV+ATkJO5zmljzPToP6H0DuI681/gd1MR8cmJ2d3lR1hJt6bbW4uNM3PFT+2sYg1nwrbRd0sz7nXZhxgKrWQezJB7CkSdjmlbSZxey8FuX7wyIv9qyJL17GF2nMQU7Dh/Bqt5wMVarTIQlrYs3GHmft1dXlI9qRBrqeDb3Mwd7KnkjXo0zkczoUTYLj2BlUo0Jytel3WI2YeHxM0rMLzMyayydWkoOCmcQFpm+Dw5w4UJQ4CINVa+jXfZ08frR25zp2hSl8phGJrMddvM5kUjPt+2g/vWcAVGk9qu9HA+LMEKhPd67Xynp9Bgnw6OyiSVj07zocyNA4qqGIYVyyVt8KDa0tYmZcx+02IPf0C88c9Jkij0jYDVjNmFlqGmiWsYtCxmBfDVUC2qoofZC3WbIo6Qx9vkmWXNjdlZyvNPAlOd+uQ5M7NopU3ehhq2uOy3H4A6Mayx9D5mEH/OhSZbLcYwQN6j13IvPA9VdNzs6wbrXXIRc5UXiAnRM4qxPyNPBihZ2PiyK6Dz+qmRwXKAG3WDhjC+vMQ
+ A2yqihoG
+ Ab0QSO3tLciqYfRULOXG/A9bVGo1XW/+oTbDRaJoBb1chXEYXhlNO2w9pRMyYjNQOlX2Z7aWVgDrX3Mk7Igem4yLDvtal/eSsbz5Ax/qi2qH0XTzsvltEMK7P7i3yWHdX2Mp/AJKhfjcgBJ9nxlkGy5RxDk6aTivDhc5HFX05ABZC+0NYojQFv9qs72azWjuexWkkw+MIlnafZ6vp31rMO65WkP198UAEAnNNC/KLuq7nHF8FRu1VcdC7wPkSrSQim0dfLYI1YkmAeLmNLGTv+WE8MxcctOQWtdzw7MZ1MUix2iwXql4ZZZGckR1f5NpKD7ufoN3VXeI4jGKFosRuvkzWH8EogL0mt0q20wZ0qtSchP8u/6MakLJUzh3LYmPCdCC2zuEI3rmNYsc1Vazva5YrxDcEu2tBODyNoZDoBucSDP5HyxWdi+G40RO9LvC1hbr8Sdlepatsgy/eOrTLS8oLcF51i57WFXggE6eV5X2dQjp5oGiRU8X5FIZptp44Kcvirqommhc2tLA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,384 +148,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 2:25=E2=80=AFPM Abhishek Bapat <abhishekbapat@googl=
-e.com> wrote:
+On Sat, Sep 26, 2026 at 04:44:07AM +0800, Kairui Song wrote:
+> On Fri, Sep 25, 2026 at 12:11:55PM +0800, Gregory Price wrote:
+> > 2) something has to pay the price of virtualization - period.
+> > 
+> >    No matter how we cut this issue, something in the stack is going
+> >    to implement a method of virtualizing a swap entry.  Whether that's
+> >    a virtualization layer that virtualizes every backend, or some kind
+> >    of franken-swap device that lets a non-physical swap backend look
+> >    like a physical swap back end without charging physical swap.
+> > 
+> >    If the history of virtualization has taught us anything it's that
+> >    the overhead of a virtualization layer is *almost* never so extreme
+> >    that it isn't worth the utility of the layer
+> >    ( unless you virtualize the wrong things :] )
+> 
+> Hmmm... I mean there are tons and tons of projects trying to get
+> rid of the overhead of virtualization, if you are referring to
+> virtialization as a broad topic..
+> 
+> With careful design we can miminize the overhead for sure, and
+> that's exactly why we need to do the design carefully :D
 >
-> On Thu, Sep 24, 2026 at 11:18=E2=80=AFPM Suren Baghdasaryan <surenb@googl=
-e.com> wrote:
-> >
-> > On Thu, Sep 24, 2026 at 1:16=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote=
-:
-> > >
-> > > Hi Abhishek
-> > >
-> > > On 2026/9/22 05:26, Abhishek Bapat wrote:
-> > > > Introduce a new IOCTL (`ALLOCINFO_IOC_TOGGLE_TRACE`) to selectively
-> > > > toggle tracing on exact allocation call sites. Userspace tools can
-> > > > use the existing filtering mechanism to specify the set of tags to
-> > > > toggle tracing for.
-> > > >
-> > > > To facilitate low overhead execution for non-targeted call sites, a=
-dd a
-> > > > new `CODETAG_FLAG_TRACE_ON` flag to `struct codetag` to track per-s=
-ite
-> > > > activation. Protect these conditional branch evaluations using a gl=
-obal
-> > > > `alloc_tag_trace_key` static branch and an inline static key check
-> > > > pattern in the allocator hooks (`alloc_tag_add`, `alloc_tag_sub`, e=
-tc).
-> > > > This ensures that the trace events are entirely skipped when no
-> > > > allocation call sites are being actively traced, leaving only a NOP=
- on
-> > > > the allocation fast path.
-> > > >
-> > > > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > > > ---
-> > > >  include/linux/alloc_tag.h      |  39 ++++++++----
-> > > >  include/linux/codetag.h        |   5 +-
-> > > >  include/uapi/linux/alloc_tag.h |   9 +++
-> > > >  mm/alloc_tag.c                 | 110 +++++++++++++++++++++++++++++=
-+++-
-> > > >  4 files changed, 147 insertions(+), 16 deletions(-)
-> > > >
-> > > > diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> > > > index 2994934cf44a..dc86f8997476 100644
-> > > > --- a/include/linux/alloc_tag.h
-> > > > +++ b/include/linux/alloc_tag.h
-> > > > @@ -136,9 +136,36 @@ static inline bool mem_alloc_profiling_enabled=
-(void)
-> > > >                                  &mem_alloc_profiling_key);
-> > > >  }
-> > > >
-> > > > +static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-> > > > +{
-> > > > +     atomic_or(CODETAG_FLAG_INACCURATE, &tag->ct.flags);
-> > > > +}
-> > > > +
-> > > > +static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-> > > > +{
-> > > > +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_INACCURA=
-TE);
-> > > > +}
-> > > > +
-> > > > +static inline void alloc_tag_set_traced(struct alloc_tag *tag)
-> > > > +{
-> > > > +     atomic_or(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
-> > > > +}
-> > > > +
-> > > > +static inline void alloc_tag_clear_traced(struct alloc_tag *tag)
-> > > > +{
-> > > > +     atomic_andnot(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
-> > > > +}
-> > > > +
-> > > > +static inline bool alloc_tag_is_traced(const struct alloc_tag *tag=
-)
-> > > > +{
-> > > > +     return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_TRACE_ON=
-);
-> > > > +}
-> > > > +
-> > > >  static inline bool alloc_tag_trace_enabled(const struct alloc_tag =
-*tag)
-> > > >  {
-> > > > -     return static_branch_unlikely(&alloc_tag_trace_key);
-> > > > +     if (static_branch_unlikely(&alloc_tag_trace_key))
-> > > > +             return tag && alloc_tag_is_traced(tag);
-> > > > +     return false;
-> > > >  }
-> > > >
-> > > >  void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct allo=
-c_tag *tag,
-> > > > @@ -255,16 +282,6 @@ static inline void alloc_tag_sub(union codetag=
-_ref *ref, size_t bytes)
-> > > >       ref->ct =3D NULL;
-> > > >  }
-> > > >
-> > > > -static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag)
-> > > > -{
-> > > > -     tag->ct.flags |=3D CODETAG_FLAG_INACCURATE;
-> > > > -}
-> > > > -
-> > > > -static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag)
-> > > > -{
-> > > > -     return !!(tag->ct.flags & CODETAG_FLAG_INACCURATE);
-> > > > -}
-> > > > -
-> > > >  #define alloc_tag_record(p)  ((p) =3D current->alloc_tag)
-> > > >
-> > > >  #else /* CONFIG_MEM_ALLOC_PROFILING */
-> > > > diff --git a/include/linux/codetag.h b/include/linux/codetag.h
-> > > > index a25a085c2df1..f728295d50c0 100644
-> > > > --- a/include/linux/codetag.h
-> > > > +++ b/include/linux/codetag.h
-> > > > @@ -18,6 +18,7 @@ struct module;
-> > > >
-> > > >  /* codetag flags */
-> > > >  #define CODETAG_FLAG_INACCURATE      (1 << 0)
-> > > > +#define CODETAG_FLAG_TRACE_ON        (1 << 1)
-> > > >
-> > > >  /*
-> > > >   * An instance of this structure is created in a special ELF secti=
-on at every
-> > > > @@ -25,7 +26,7 @@ struct module;
-> > > >   * an array of these.
-> > > >   */
-> > > >  struct codetag {
-> > > > -     unsigned int flags;
-> > > > +     atomic_t flags;
-> > > >       unsigned int lineno;
-> > > >       const char *modname;
-> > > >       const char *function;
-> > > > @@ -71,7 +72,7 @@ struct codetag_iterator {
-> > > >       .function       =3D __func__,                     \
-> > > >       .filename       =3D __FILE__,                     \
-> > > >       .lineno         =3D __LINE__,                     \
-> > > > -     .flags          =3D 0,                            \
-> > > > +     .flags          =3D ATOMIC_INIT(0),               \
-> > > >  }
-> > > >
-> > > >  void codetag_lock_module_list(struct codetag_type *cttype);
-> > > > diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/al=
-loc_tag.h
-> > > > index 7d4618bea043..069ab8341e87 100644
-> > > > --- a/include/uapi/linux/alloc_tag.h
-> > > > +++ b/include/uapi/linux/alloc_tag.h
-> > > > @@ -85,9 +85,16 @@ struct allocinfo_get_at {
-> > > >       struct allocinfo_tag_data data;
-> > > >  };
-> > > >
-> > > > +struct allocinfo_toggle_traces {
-> > > > +     /* inputs */
-> > > > +     struct allocinfo_tag fields;
-> > > > +     __u64 enable;
-> > > > +};
-> > > > +
-> > > >  #define _ALLOCINFO_IOC_CONTENT_ID    0
-> > > >  #define _ALLOCINFO_IOC_GET_AT                1
-> > > >  #define _ALLOCINFO_IOC_GET_NEXT              2
-> > > > +#define _ALLOCINFO_IOC_TOGGLE_TRACE  3
-> > > >
-> > > >  #define ALLOCINFO_IOC_BASE           0xA6
-> > > >  #define ALLOCINFO_IOC_CONTENT_ID     _IOR(ALLOCINFO_IOC_BASE, _ALL=
-OCINFO_IOC_CONTENT_ID,     \
-> > > > @@ -96,5 +103,7 @@ struct allocinfo_get_at {
-> > > >                                             struct allocinfo_get_at=
-)
-> > > >  #define ALLOCINFO_IOC_GET_NEXT               _IOR(ALLOCINFO_IOC_BA=
-SE, _ALLOCINFO_IOC_GET_NEXT,       \
-> > > >                                            struct allocinfo_tag_dat=
-a)
-> > > > +#define ALLOCINFO_IOC_TOGGLE_TRACE   _IOW(ALLOCINFO_IOC_BASE, _ALL=
-OCINFO_IOC_TOGGLE_TRACE,   \
-> > > > +                                         struct allocinfo_toggle_t=
-races)
-> > > >
-> > > >  #endif /* _UAPI_ALLOC_TAG_H */
-> > > > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > > > index a5339767efd5..fb179321a2a1 100644
-> > > > --- a/mm/alloc_tag.c
-> > > > +++ b/mm/alloc_tag.c
-> > > > @@ -61,6 +61,15 @@ DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed=
-);
-> > > >  DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> > > >  EXPORT_SYMBOL(alloc_tag_trace_key);
-> > > >
-> > > > +static atomic_t alloc_tag_trace_cnt =3D ATOMIC_INIT(0);
-> > > > +
-> > > > +/*
-> > > > + * As `codetag_lock_module_list` is a read lock, we need an additi=
-onal mutex
-> > > > + * to protect against the race conditions involved in the alloc ta=
-g trace
-> > > > + * toggle path.
-> > > > + */
-> > > > +static DEFINE_MUTEX(alloc_tag_trace_mutex);
-> > > > +
-> > > >  struct alloc_tag_kernel_section kernel_tags =3D { NULL, 0 };
-> > > >  unsigned long alloc_tag_ref_mask;
-> > > >  int alloc_tag_ref_offs;
-> > > > @@ -297,7 +306,7 @@ static bool matches_filter(struct codetag *ct, =
-struct allocinfo_filter *filter,
-> > > >               return false;
-> > > >
-> > > >       if (filter->mask & ALLOCINFO_FILTER_MASK_INACCURATE) {
-> > > > -             inaccurate =3D !!(ct->flags & CODETAG_FLAG_INACCURATE=
-);
-> > > > +             inaccurate =3D alloc_tag_is_inaccurate(ct_to_alloc_ta=
-g(ct));
-> > > >               if (inaccurate !=3D !!(filter->inaccurate))
-> > > >                       return false;
-> > > >       }
-> > > > @@ -444,6 +453,81 @@ static int allocinfo_ioctl_get_next(struct seq=
-_file *m, void __user *arg)
-> > > >       return ret;
-> > > >  }
-> > > >
-> > > > +static bool alloc_tag_trace_toggle(struct alloc_tag *tag, bool ena=
-ble)
-> > > > +{
-> > > > +     if (enable) {
-> > > > +             if (alloc_tag_is_traced(tag))
-> > > > +                     return false;
-> > > > +
-> > > > +             alloc_tag_set_traced(tag);
-> > > > +             if (atomic_fetch_inc(&alloc_tag_trace_cnt) =3D=3D 0)
-> > > > +                     static_branch_enable(&alloc_tag_trace_key);
-> > > > +     } else {
-> > > > +             if (!alloc_tag_is_traced(tag))
-> > > > +                     return false;
-> > > > +
-> > > > +             alloc_tag_clear_traced(tag);
-> > > > +             if (atomic_dec_and_test(&alloc_tag_trace_cnt))
-> > > > +                     static_branch_disable(&alloc_tag_trace_key);
-> > > > +     }
-> > > > +
-> > > > +     return true;
-> > > > +}
-> > > > +
-> > > > +/*
-> > > > + * Toggles context capture for a specified allocation.
-> > > > + */
-> > > > +static int allocinfo_ioctl_toggle_trace(struct seq_file *m, void _=
-_user *arg)
-> > > > +{
-> > > > +     struct allocinfo_toggle_traces params;
-> > > > +     struct codetag_iterator iter;
-> > > > +     struct codetag *ct;
-> > > > +     int matches =3D 0, successes =3D 0, ret;
-> > > > +
-> > > > +     if (!capable(CAP_SYS_ADMIN))
-> > > > +             return -EPERM;
-> > > > +
-> > > > +     if (copy_from_user(&params, arg, sizeof(params)))
-> > > > +             return -EFAULT;
-> > > > +
-> > > > +     codetag_lock_module_list(alloc_tag_cttype);
-> > > > +
-> > > > +     struct allocinfo_filter filter =3D {
-> > > > +             .mask =3D ALLOCINFO_FILTER_MASK_MODNAME |
-> > > > +                    ALLOCINFO_FILTER_MASK_FUNCTION |
-> > > > +                    ALLOCINFO_FILTER_MASK_FILENAME |
-> > > > +                    ALLOCINFO_FILTER_MASK_LINENO,
-> > > > +             .fields =3D params.fields,
-> > > > +     };
 
-Also Suren, I wanted to get your thoughts on this filter. Here, these
-filters ensure that only one allocation site matches the user's
-request. Should I remove the masks here so the user can choose to
-toggle tracing on multiple allocation sites in one IOCTL?
+Oh absolutely, overhead is enemy number #1 - but we still deploy page
+tables and virtual machines because the utility is just that high.
 
-> > > > +
-> > > > +     iter =3D codetag_get_ct_iter(alloc_tag_cttype);
-> > > > +
-> > > > +     /* Toggle tracing on all codetags that match */
-> > > > +     while ((ct =3D codetag_next_ct(&iter))) {
-> > > > +             if (matches_filter(ct, &filter, NULL, NULL)) {
-> > > > +                     matches++;
-> > > > +
-> > > > +                     mutex_lock(&alloc_tag_trace_mutex);
-> > > > +                     if (alloc_tag_trace_toggle(ct_to_alloc_tag(ct=
-), !!params.enable))
-> > > > +                             successes++;
-> > > > +                     mutex_unlock(&alloc_tag_trace_mutex);
-> > > > +             }
-> > > > +     }
-> > > > +
-> > > > +     if (matches =3D=3D 0)
-> > > > +             /* Nothing matched the filter */
-> > > > +             ret =3D -ENOENT;
-> > > > +     else if (successes =3D=3D 0)
-> > > > +             /* Items matched, but were already in the requested s=
-tate */
-> > > > +             ret =3D -EINVAL;
-> > >
-> > > Why do we return -EINVAL in this path?
-> > > -EINVAL can mislead users into thinking their arguments are wrong.
-> > > That's not the case; the trace request they want is already active.
-> > > Maybe -EEXIST ?
-> >
-> > Or even 0 since the configuration already matches what the user request=
-ed.
-> >
-> Ack, will modify in v2.
-> > >
-> > > Thanks
-> > > Best Regards
-> > > Hao
-> > >
-> > > > +     else
-> > > > +             ret =3D 0;
-> > > > +
-> > > > +     codetag_unlock_module_list(alloc_tag_cttype);
-> > > > +
-> > > > +     return ret;
-> > > > +}
-> > > > +
-> > > >  /*
-> > > >   * Entry point ioctl function for /proc/allocinfo routing requests=
- to fetch the
-> > > >   * layout content ID, seek to a specific tag, or read sequential t=
-ags.
-> > > > @@ -464,6 +548,9 @@ static long allocinfo_ioctl(struct file *file, =
-unsigned int cmd,
-> > > >       case ALLOCINFO_IOC_GET_NEXT:
-> > > >               ret =3D allocinfo_ioctl_get_next(file->private_data, =
-arg);
-> > > >               break;
-> > > > +     case ALLOCINFO_IOC_TOGGLE_TRACE:
-> > > > +             ret =3D allocinfo_ioctl_toggle_trace(file->private_da=
-ta, arg);
-> > > > +             break;
-> > > >       default:
-> > > >               ret =3D -ENOIOCTLCMD;
-> > > >               break;
-> > > > @@ -493,8 +580,6 @@ static const struct proc_ops allocinfo_proc_ops=
- =3D {
-> > > >
-> > > >  void __alloc_tag_trace_hit(struct alloc_tag *tag)
-> > > >  {
-> > > > -     if (unlikely(!tag))
-> > > > -             return;
-> > > >       trace_alloc_tag_hit(tag);
-> > > >  }
-> > > >  EXPORT_SYMBOL(__alloc_tag_trace_hit);
-> > > > @@ -1043,6 +1128,24 @@ static int load_module(struct module *mod, s=
-truct codetag *start, struct codetag
-> > > >       return 0;
-> > > >  }
-> > > >
-> > > > +static void unload_module(struct module *mod, struct codetag *star=
-t, struct codetag *stop)
-> > > > +{
-> > > > +     struct alloc_tag *start_tag =3D ct_to_alloc_tag(start);
-> > > > +     struct alloc_tag *stop_tag =3D ct_to_alloc_tag(stop);
-> > > > +     struct alloc_tag *tag;
-> > > > +
-> > > > +     /*
-> > > > +      * Turn tracing off for the tags of the module being unloaded=
-. Without
-> > > > +      * this, `alloc_tag_trace_cnt` would never reach zero and tra=
-cing would
-> > > > +      * stay enabled forever.
-> > > > +      *
-> > > > +      * `alloc_tag_trace_mutex` is not needed here as this code pa=
-th is
-> > > > +      * protected by a `down_write(&cttype->mod_lock)`.
-> > > > +      */
-> > > > +     for (tag =3D start_tag; tag < stop_tag; tag++)
-> > > > +             alloc_tag_trace_toggle(tag, false);
-> > > > +}
-> > > > +
-> > > >  static void replace_module(struct module *mod, struct module *new_=
-mod)
-> > > >  {
-> > > >       MA_STATE(mas, &mod_area_mt, 0, module_tags.size);
-> > > > @@ -1369,6 +1472,7 @@ static int __init alloc_tag_init(void)
-> > > >               .alloc_section_mem      =3D reserve_module_tags,
-> > > >               .free_section_mem       =3D release_module_tags,
-> > > >               .module_load            =3D load_module,
-> > > > +             .module_unload          =3D unload_module,
-> > > >               .module_replaced        =3D replace_module,
-> > > >  #endif
-> > > >       };
+I suspect the level of virtualization we're talking about here, which
+amounts to a single token representing many possible backends, is an
+incredibly small overhead if designed correctly.
+
+> > 
+> > I struggle to think of a scenario that cannot be described
+> > compositionally this way - and that is without adding any kind of
+> > "tier" logic.
+> 
+> That sounds interesting, but I think this is already a mini
+> version of swap tiering :D
+>
+
+Sort of.  The key difference is that the actual resource being consumed
+has vastly differently levels of availability and at least an order of
+magnitude (if not 2-3) difference in latency.  So while the tails can be
+very bad, the P50s are generally not that severe.
+
+We do this same thing in memory tiering - we treat socket-hosted memory
+as the same tier, simply because it's not worth differentiating.
+
+But we still prefer locality within that tier.  So i could imagine
+memory-backed swap tiers having locality that is separately grouped
+from storage-backed swap tiers.
+
+zsmalloc actually encodes a mild version of this - preferring to
+compress onto the node the folio is being swapped out from 
+
+https://lore.kernel.org/linux-mm/20250402204416.3435994-1-nphamcs@gmail.com/
+
+So in fact zsmalloc already has a tiering concept built-in.
+
+> And not sure if the implementation will looks odd, e.g. like if you
+> adjust that midway, you get different slot of different compression
+> rates.?
+> 
+
+It is not an intuitive set of knobs, but then i also don't think it's
+particularly complicated math.  But yes, there are some odd looking
+configs.
+
+> That data is very helpful info! But it could be very hardware dependent,
+> especially with certain mitigations and hardwares, the faulting
+> process may slowdown by a lot. This is the right picture for most
+> cases, and for another example on one of our certain instance of VM, I
+> observed this (high pressure, batch fault):
+> 
+>                     component                      µs/page
+> page fault handling (directly calibrated)          ~1.92
+> swap machinery (slot, swap cache, rmap, zram, etc) ~1.04
+> lzo decompression                                  ~0.32
+> 
+> Kind of crazy that decompression only take a very minor part
+> of it.  While storage based SWAP goes through SPDK so it changes
+> dramatically according to the host, setup or spec.
+>
+> BTW CRAM looks really nice from the data of yours :) !
+>
+
+Funny enough this is exactly the data needed to argue that CRAM should
+not be a swap backend - you're offloading the cheapest part of the
+process.
+
+The actual win comes from allowing the compressed memory to stay mapped
+while Read-only, which means you don't have faults.  I'll call this
+"ghost-pressure" - the data is in-memory, but you have to take a fault
+because it's software-compressed.  Letting it remain mapped R/O solves
+the entire fault/swap machinery piece.
+
+We cannot safely map R/W however, as you could have catestrophic loss of
+compression ratio.  (I digress, but hopefully we can chat more at LPC)
+
+> > That shows up as stalls and PSI pretty quickly and can be dealt with
+> > by monitoring - but I can see the desire to just have them OOM.
+> 
+> Right, monitoring is less effective from somehting that is directly
+> in the kernel.
+> 
+
+Well.... I think this is probably an organizational philosophy.
+
+We are pretty solidly effective with PSI + proactive reclaim keeping
+our machines chugging along nicely.  I think this is where a lot of
+confusion is coming from - because the PSI data is very effective.
+
+> > > The second one is a policy change,
+> > 
+> > Disagree.
+> > 
+> > If zswap does not charge a physical slot, then it is correct to stop
+> > charging the counter based on the historic definition - it just was
+> 
+> Hmm, but the historical defination is the logical entry, no?
+>
+
+I think this is the entire debate, right?
+
+Historically I think it's clear that it is a physical slot, from the
+time it was proposed it was talked about in terms of consumption, and
+Johannes' original definition even said "physical" (for some reason
+this did not make it into the docs).
+
+The zswap-charging-swap was a function of zswap reserving a writeback
+slot - which means it *was* consuming a physical slot and it was being
+accounted accordingly.
+
+If zswap no longer reserves a writeback slot by default, it's not being
+consumed, and so not charging it is correct.
+
+But if you read the docs as swap being a logical counter as opposed to a
+physical counter, without the context of zswap reserving writeback, then
+I can understand how we got here.
+
+The question is how do we move foward.  Continuing to charge swap breaks
+us, but not charging swap breaks you.  At the end of the day, someone is
+changing the counter they're using (or methodology).
+
+> > I would push back on tiering - this seems like more complexity than the
+> > requirement warrants.  We may find memory-backed and storage-backed swap
+> > want different solutions in the "tiering" worlds.
+> 
+> Hmm, I mean in general swap are page fault (swap entry) based, that makes
+> them similiar and that's the common point?
+>
+
+As above, I think even in memory-tiering we have this separation of
+reasoning about different logical tiers of memory (VRAM, DRAM, CXL) but
+among those tiers we do not differentiation except maybe based on
+locality of accessor (socket0 prefers cxl on its own CXL complex over
+cxl on socket1's complex to avoid the extra NUMA hop).
+
+I can see there being a differentiation here as well (memory backed vs
+storage backed).
+
+> > 
+> > e.g. it may never make sense to give zswap/zram/xswap a lower priority
+> > than a physical swap layer, and you may never really want to compose
+> > them with one another, so why does it need to be considered?
+> 
+> Making ZRAM have a lower priority could make sense... Well I haven't
+> actually see it being used that way, but first there are users of
+> multiple ZRAMs indeed, and e.g. if you put offline batch tasks on the
+> same machine with high priority tasks, and the offline batch task only
+> want to finish their work, however slow is fine, and the user want to
+> have lower impact on CPU usage from them, with a limited storage space.
+> Well I have to say this looks odd and just a theory, but we have see
+> too many bizzard usage of the Linux kernel, there are even people
+> using deprecated GPU's VRAM as SWAP for CPU's RAM, and hey they
+> still make sense, you can easily found popular community projects
+> based on that.
+
+This is what I mean by I would push back on a tiering solution.  We
+haven't even figured this out for memory alone - let alone a component
+that composes both memory and storage.
+
+What's the chance we get it right?  I think unlikely.
+
+~Gregory
 
