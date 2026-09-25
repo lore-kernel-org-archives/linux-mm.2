@@ -4,137 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F37CAC9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 06:04:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5C98C9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 06:05:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 201DA6B008C; Fri, 25 Sep 2026 02:04:54 -0400 (EDT)
+	id 7CDBC6B0093; Fri, 25 Sep 2026 02:05:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B23B6B0092; Fri, 25 Sep 2026 02:04:54 -0400 (EDT)
+	id 77F226B0095; Fri, 25 Sep 2026 02:05:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A15C6B0093; Fri, 25 Sep 2026 02:04:54 -0400 (EDT)
+	id 6946E6B0096; Fri, 25 Sep 2026 02:05:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CBE3C6B008C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:04:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4E829A56EB
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:04:53 +0000 (UTC)
-X-FDA: 85251246066.11.C733EB3
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 60940A0004
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:04:51 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=idAmto0m;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790316291;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EA826B0093
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:05:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6DD516055B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:04:59 +0000 (UTC)
+X-FDA: 85251246318.03.186988C
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 26ED2140003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:04:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=DdnQ6g8y;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790316297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uFHv/NXcVHJN5o88N4eEkFmwnshWOqOMekRqytrwOao=;
-	b=E0Z5Pw37JHWSN5nU0BKyrmE/EBiXW9IoQ++g89ZLTTLZGCuxJcyADaILeSZub+yhwsEkNG
-	85Ph0CtOdvNJ6MC1xgerlSVnsjbxLlCR9Lu3lCCFuV8bREPGIhVTRyHrTDgLvhnlEygzZ4
-	74pSEf4RjgXvud5jI9ff4eaZvvLaJjA=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=idAmto0m;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf25.hostedemail.com: domain of surenb@google.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790316291;
-	b=6uRrSr/QHuGtNvbmGKU719kvzA1wPVGiI2MXIMQVmdxCvAekp9w/SlRbFG1Hq57b0d459k
-	p2pOpDrMiRc2qSeb8ZMNL848sES+6B/mmVT4BUM7TdVbK/dmYWs1NmJOLFu6jDOurRkpq5
-	FKMsy9xlNgdJZmdqBtzBfEObw0/ltoA=
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-52faa58bff5so177471cf.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 23:04:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790316290; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bqX5vFqJH0B+hMzHHk3ME5ladJbV0cVF+FC5xSihkBaspDKMgyFDONOvuK5PbQdWtO
-         bErwn4ButJIl+NXA5mICGqKdBU9ss27nNxqygAE2R4MulFByuHL055bmHaCPPx0/Wt1Q
-         h2PQBpIhcRJuqhzgBj6haMMqmw5XEdI9uIy8FcfpFIGODeeTRlJaqWG4EPKDY9S6TE7n
-         Cpwj97CijzgQzSx/aQW0ac238Fn54AltKnh8ETAGVImiycWSuobDHVubMubxReiJkft7
-         ZBOkgg6+yOTN0eORtNik5K3walEONHzh9gCzNRgBQ+dfc2KNOmoxRX2dmHjWshNgcrGu
-         bP+Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uFHv/NXcVHJN5o88N4eEkFmwnshWOqOMekRqytrwOao=;
-        fh=dRk4wUfeG/dg3KehpeY9E+jhppoydrmD5/J7XWlQJHM=;
-        b=lSi1cMAVlI/RiItGwrJfP3lm+s0/hreiqmDcHo6w2xCjAc058ue9TtrtynEChMFMSS
-         RyHbzeP/DBi1kjjojyz5derKfGczEeVBiG9FSvMvg1pFZ2vaadkA619nK1ON6iO69q8E
-         CA+SXRMQTXM7k0ez+qn6WXsRhyfl1klktc85+dYvnZbLCTs9aLqvzgpnNMwcCEBuNq9k
-         wiR/Sq3127jmleooi36yDiD3xWeIkrqCcQR10P9P3hW/tboM1SWCf2AmZvqoHBBt72iE
-         QcdEvHNpI2SoMjpUWPaCDttbVnBVGRKRqw6q2FcLo4EzQ9e5peJo2xHUloJjhGN3ZO+s
-         Y44A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=ErGbHipHg92SiVnmafTU9VPVGftyId1XraUSz8ZzpyI=;
+	b=4yH+2sOIYz9yQJ3wRZ2nZnQ5T1dULdh9xPh6H3iCQwlD1kkrSp3cZKGNOsNx6FhtRYGORw
+	iHNIXPHGvVReSdxMur4P2Vykc1iQ1K9pEkXb5TZ08krOvmq/W9DxsDTPMz3Uo1S3ugxJvk
+	FWgIPMpF+uYyUoWrQhvWuB57pM3hpvU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=DdnQ6g8y;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf23.hostedemail.com: domain of sunjunchao@bytedance.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=sunjunchao@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790316297;
+	b=8OnntJusBiSf9KFOa+gCT3Zg1LfFbTgBR17UYGwCDhhNGGAlHwAPVCOKeXHvMpKag3+NIx
+	P/wHhcPX45DDkHySjGKnVCo6XaEot1ZRVlEerVGOnu6ws12iHV52+56teyl7G2v93YobuG
+	uT/heBfxiMRNsW60/OzozLYaZ88unnA=
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1ceb47d53so63462a12.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 23:04:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790316290; x=1790921090; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uFHv/NXcVHJN5o88N4eEkFmwnshWOqOMekRqytrwOao=;
-        b=idAmto0mQtc6uNNyE03axtDhZbnjFL8BSPpVL9p6ItJpcyZlsXaYXlGY5+L/UKEUYM
-         3Z2U4RM9kme13K7C19UxgCD+tgYli9kSHzcybppW5IBTJvimqzuy0jwwE8XyC6n/Od6e
-         UkjTTan2lQg1XrIFY08aFG9bomOJ7AAvvm911v7fUdRgTD+hZuiA44iQlzuWae74V7Xf
-         NESEXB3uZxy1DEQYDsX3+chvdu6UMcNKceqjBl33uDn5hm4y/y3Sbmve1wtlBQlInqEt
-         mWYqz76Oy2q+z0ZdXnyXgbRirtKNOw7IcDoD8YQ3J9QVRNy/utXWwwL7u+QRwwUVVzQf
-         fsXA==
+        d=bytedance.com; s=google; t=1790316294; x=1790921094; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=ErGbHipHg92SiVnmafTU9VPVGftyId1XraUSz8ZzpyI=;
+        b=DdnQ6g8yaKxg3yvM6+icUB2vI8E5+87cGPC/8JbrtKJ/Ys2kqvGzIzWucqZTRnypJR
+         IMqgvxi03MnWywdp7434aCjtVvph9X+oKy6Gq6FZZOVywc/G1n6jug1WZwxlUpyAOBa2
+         X/HQHcu/30y38LpDyJD0R3M/+3y2jrauZTEzmCWHXm3XM5qtZuTXHT+YGknkacwxu1HM
+         YYnt20WbdiL0CDZILSpyVlYIO3DaznlGeJGc5dcEbvP51myggJUH2k2tk69oZBr/w4DO
+         zD0FZjZJBVVQPpU6gGf0EPSATQTIhxvG3HBpUZMJmVUlu4mw+DDymnT3vsByHNFlSeUN
+         xPyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790316290; x=1790921090;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1790316294; x=1790921094;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=uFHv/NXcVHJN5o88N4eEkFmwnshWOqOMekRqytrwOao=;
-        b=WMRfQ55JoyJqz5rpYXL7ccHjaf1FSCGpcJoPoAYxQlo+jyD92mGUX05ZDoDhSX/4SF
-         n74CKBGyzXb+4lQZTu5SuVorx9xCmb6fnWEw3vChxknxP33seOezEWUtvBYqAN4qAPML
-         gh0Bll09xnSNkSxzT8fy/M2uJX3ut/bamNLJEqqbMw6OCZ0S3/wCJdBbBw0P3H9TqwTF
-         cMKgAV8p1CXt91oHS0lNOP7GxrGjyAOdKfw/aoYc2oOYkYHAixWlPYXJikRH2X7hFhOO
-         1ZDHrd0iPBHWBiDd5i3ER5nxGeiwE12Hgaeio5H5N0+UY7M3Fgy8vPpL75PA6jX3iGzc
-         Vh4w==
-X-Forwarded-Encrypted: i=1; AKwUvBxx9nS1FMe9zqz/GATfqHQf8vqjm15QsPZxgudFOa7FV63l2TXzXe0HND04z5voxyXtvLyTIDgsNg==@kvack.org
-X-Gm-Message-State: AFuF++nSOX9HFJsIi37uuriO6z3Tqgs9nYLldp7GY6f7fwk4ceK5D0Rp
-	SrMGtFsLkFa1Tvz5nQ6TDZWUqVNNeCafFUSByEEoE7iAbD6AxLgTdUxfe+0WVqei5j1FFscfBQC
-	ccvzwH4JwZ7cHvc+5pgn5J1NZMah8QsWo/6Gah4QG
-X-Gm-Gg: AYBFou0dG/Lg+pjIbGr8OwveBJIhZ0zHJtPr4Z4qNKabSWQfDrON0uM2daIZWszcGu/
-	XK2pTzguTOZoN9/jcMGvcsqswjQ209XsNsHzXbY+8OorP7TUkVdCbjW/vk4JYabT0luU1eHgFbn
-	rU+mG/04NV2B9WWrbpgyR3p7s1rjREae1nn7v9Bk9aGzGObpkfXrTAwzaN8u+myfF20VN9awbaZ
-	KPC49p3APQte+p45kPFqw1upjaMmBAccG5PgCR27TVo/ZV4hyIUq2KhdprjutrDQO2PHfaZSurN
-	mdTgE1Dl4GppV4q4utcgZIZtm9URZ3DkIcgcD4B1zDzIMEZ54k1dBg==
-X-Received: by 2002:a05:622a:d3:b0:532:c8ca:5ae9 with SMTP id
- d75a77b69052e-5330e14c38bmr7040531cf.11.1790316289698; Thu, 24 Sep 2026
- 23:04:49 -0700 (PDT)
+        bh=ErGbHipHg92SiVnmafTU9VPVGftyId1XraUSz8ZzpyI=;
+        b=f7Ob1HUmqUo2PsoQmegR3zsxOGprzh68m56phGze2x9T5zDuIJkW3Qpv3LKv1FBfLE
+         hw27Os4n4u4eCxTjtYSGBGyM+sfKhH4lJtEZmfgbO72LXw4tK34KDKe9LN7466KmrPFA
+         eYRXCWPj1bp/bpgvzaucuafu81gzPowZmzs6bgoSC7oQcM4hZUV8vkubZd9v7hoo7vX9
+         ADkhCAiaGiKjf4Gb+Tzjri2aYUBy4PUhvkZZloa0vPLiMvkE3PTnshfpHh+jM4OVejDU
+         xoDdeBd9tro6HWfqk/9rvxQnDe4+ieAL3eJPBBnX7hDvijs08gwcLxaB/9NoytdbxNW0
+         WBfw==
+X-Forwarded-Encrypted: i=1; AKwUvBx+rjvnfbMdjHeib3Sjd4R2uMgz7BDHDCV4IxV7UXIm/GK15OpM/wqPzLTtQ14UmkCi7+GQzom48Q==@kvack.org
+X-Gm-Message-State: AFuF++lnO1fgdVBLumtVaHO0xMzq6jl5kk/6hyWHND2V4Q7YwiUqlpXh
+	+fw6QVFMvoFXHu2BC9NTyv1+8qNLilD6Nc23G65THfttUj8fz5Z1zmipsfl3LTkhmQs=
+X-Gm-Gg: AYBFou0r+tYTR3aRnHsdRkVSyyGKlbsZqoRulRVEUcodxiQrDYWqgxX2N1SHWmzB0rX
+	sC5DHeUgS/hi1KCooqMO9o2UzZT07ryfu7KJaalMBXOkVZZnbZDDtIZr2AaP4tEobgpmjzb9Hd/
+	SnT2+iJkfCrI5MPm7F/UO1XLUl1a+Rvk4Y5D0OC8PpKFOyhZGsSoQdUsHQsZmSpTMG3J0UEgYco
+	Yh2TkT+lBZAngFZu1kgGi3R3aRr5kZxnui5PnK5Jw3//6pvEbGggzNJaKCwQKQ7ZP6A4PCHjRia
+	ZIE8jfSsNBC7k/QNlgurS5aSUidPjAlbMToh7cds1Bqe/D4WyyGTtLIiGQv/Pdz13tPeJNWTZBn
+	SywITlHAbyyXMIDw27rChBRDynkZhmL3KzdBdHac84xLNquKGBpfbozoh9T2Dw0nZSsy5F6gLgU
+	+6Y7CzZ66ZUvQNG8A/K0bOM3k7vSYa4qpMPxQqGjHyS+X4LxiuSSK/To3acmIRuLJ9o0KP6YTAz
+	aE/LXTSgf6AZmB9mGlORsDxf0mGs/k=
+X-Received: by 2002:a17:90b:224b:b0:3a0:78b6:588e with SMTP id 98e67ed59e1d1-3a098ac6431mr2758704a91.23.1790316294171;
+        Thu, 24 Sep 2026 23:04:54 -0700 (PDT)
+Received: from [10.254.237.61] ([139.177.225.234])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0ba31f408sm651548a91.3.2026.09.24.23.04.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Sep 2026 23:04:53 -0700 (PDT)
+Message-ID: <d031dea9-aeea-4f2d-8b42-6b7362b857b1@bytedance.com>
+Date: Fri, 25 Sep 2026 14:04:39 +0800
 MIME-Version: 1.0
-References: <cover.1790025465.git.abhishekbapat@google.com> <057359f7-0e8f-416b-8b5e-0b60c1c936e9@linux.dev>
-In-Reply-To: <057359f7-0e8f-416b-8b5e-0b60c1c936e9@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 24 Sep 2026 23:04:37 -0700
-X-Gm-Features: AclHuK_lwpEJbAhWtQShe8aDhh_guZmjVwfh6KH-R_FEbCl9ftq7SLG9YWrva9A
-Message-ID: <CAJuCfpGmChqsz5SMHaaTxJQLcj200USvxZ6SQ6vrAr6-M2Vg_Q@mail.gmail.com>
-Subject: Re: [PATCH 0/4] alloc_tag: Introduce selective tracing for MAP
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Abhishek Bapat <abhishekbapat@google.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/3] memcg,writeback: flush foreign bdev mappings
+ separately from owner wbs
+To: Jan Kara <jack@suse.cz>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+ mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, willy@infradead.org, tj@kernel.org,
+ akpm@linux-foundation.org
+References: <20260922125015.3435215-1-sunjunchao@bytedance.com>
+ <20260922125015.3435215-3-sunjunchao@bytedance.com>
+ <ncq6yhwolbwkivpsohfsanfap7qwix752g53zvo6hx3ywxn5f2@hgay3kms7jsd>
+From: Julian Sun <sunjunchao@bytedance.com>
+In-Reply-To: <ncq6yhwolbwkivpsohfsanfap7qwix752g53zvo6hx3ywxn5f2@hgay3kms7jsd>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 26ED2140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 60940A0004
-X-Stat-Signature: bdo9nzakaiuau7q57hw48urj66y5dmsb
-X-HE-Tag: 1790316291-129880
-X-HE-Meta: U2FsdGVkX19VDzucol+agF5b3TD9G/sIQGgNqvleaxbkS0nTf+HvwUht92I7Qfl3EJqYqqSK3uR79URFVI4fPQWCGr1mzAZirXtIVHaJHb6kS0+KVBl/b6dQ6pOqk1bu7KzjOXZhSxzTg/gFISpIFaWXFjAhmWUYjZRB+9EwJ53n3dbx+0gyZxdyHI03c+vR9+26JAeRjlqp+YPxyouHeJDWbCOIJWWKXheA7+Blxrb5bVeWWvtvKlk/Y40y8aLSzl62swQsFXKTTJA3pzUvif6DFjk+OMnb7laqyOuTHX40mF/AihOrCuBO7PuTOCJrSDV9be4A0Z/fdhlVgBKrpAvyD3GS5hsErx6RwMjsJ6vSWhI4LmSk1SmM5xZWmVdhBbyLF29W02ALGkfBbEwyWE5U7qW9W/gtkiIxXuGXRWVbhkOI/rXA6WFL/lb2RaYnL+ZmJ7bqN1n+USsNzhNiRzteCD2A7kXPCCOFzapu1djIsksCp7kHsDa25JMCNu7/0CVS2kEy/zpdYWtSsjA7sDw2v/MARm0upHy77MXKtOX3UK+zfTY89rYDbrsWh42Zph6cbkIHoVm02ZP8tK6/fDDJOAm2ODcweUMDX1QpUNu5bZej6xpIRI+BWUb+PIvrLrD7jxd6kytIeogDzT5YY+mDGH6VaYwOEoe+rMd5xEIcbuALjrugRU5D6o0FHDz7YWjrbSC+uzPPWmG0eMwgmgcDfRY+u4839aGxyjx17HToiidIlk0l3wFq1bn++7FmFo3LsqN+LP9RT2d5z52PnRZVNpOUXPATNtzZc80wcDHEzRt0otOuWp24Y4i66K3HFdIwItSSEhhQ1Tar8GajGrtGQSKjGUXpI+MtM403lDu/bhZIKF8axZeK4rVm1jVE2kQ+rIU+GkmlfMo0n0epsKcVgrVqAbX7zZ7Rymft3QmkHB7BgZ8L9Wj6zl/TtUdiT53db7buHr3XAhobl04
- 6W/3wdA/
- asFKQWfxT4gODs1D0G7uG6Jd+fE/M1z4QrM8dJu14Nyqil3OHuCYTbAL2DkgJNgQMyTlXchiluLR72NeWMltEh0LGMxUqfUAc4DHM4gP7fcmd6I2f3iUtPqRcwiCS3680rhh+MclT53Q3IkbRhzVV/rAeU7FPL5TIA0Sd1EJqKY3Aet+E2k0SY5fF0CDqEcchgT3EdM6WCfKQweeoPWFzbO3Oy5Gd8ERJhx0GeodtSYFbYc/EDoyTpKjllbysM53CLLEUDEbRYbXj8CRvtuYM0xERPGbp8UgpPn9FgQlpkndMyqAlkVQo6LaWmpq3Ia9p34zbtGlDR2vnsVRUigTBG6OucA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: grdeyj3nddpa77orfe3oqfk7smntt1m1
+X-HE-Tag: 1790316296-523863
+X-HE-Meta: U2FsdGVkX184naGa+mUEWbqvefgYRd9FqyJHrbItWJqBMcEeHQvDNRPdsfBFIBvfkikPAuhcalgsghZSSZeUmi3hRDpK7cmbArB4RtUUT4JiuQ7GgUTmo9MvEvO+L/ntKyENd7gtK0bcn7Tm477aRKiF65QQwoFpV28QMiignBigfv0P2cEX81r8JFwVmvTtAxhXOnRP6a4WLGK3T2rBOkMp5OlTlAY27+xsaVRwchU5kddDPlyHuPgCCel5JfjVLH1NRL7hs75lq4/0Iy00L+CtF3JqWm/SYp4qkJaYuWF5g/GKkec/BdnFW4cnv0y3wRxKo4Gx/e/Wr3vAb1QOxbH/Di+S2LuwTdS/7jqdSjpMEoxro62h5SYhBua9MsmU4x5N84vCrJWi6E3tEtFpjTY4HSngGaq0yboSG5gNqPBoe2taNacsZRAvneHMccS0uebQGD8DoZh6U07z+Pwwbvq5UAM2zytznUB+AVGiY/TXm1xLdhbu5N+SZFc/BZqjwAAuSldluS8CXC0qqiJrIUzNrD5TzSKD+nKXJ7VnugNnRGOIDMICXKsWKsCuPNmZXNvWIp5/124wpEokELxVLQqqAUK+Q69lxdw0Aphm3qSodYiN3b/sO3SOOHeKGfUohpikqzCBPfxg2I60KTsCNIQvCxBNGsO1WfmClu4FHh2gA3bR4QaBgThSwKeF9qYZp8vsc/U2m52xrLzLSMSYWbCLifCV4LXlv9Wt5gka0MvnyWsHs3bmnNPAq9v2WUTZJxNM8+uQetQxaWxAd0FH3BP4STcGC0Z6RI2aauItxABtLP5TazcUge3Q8TvcGZuIqTvAsZSaA/CBLCWUJ/HtHyGDio0oB6D9G8/sTUc92GmkvQFc4jfxCRjMe26dG1DZMYME+CoKPROMHIT2QUP2KwcYtgYaTKQNYKXIoTONBiAheGVdxtLK2hpv5cbFfYGHtg+pVlLwZREvZUtrYMj
+ M4l9g5LB
+ 7IraGaXGnfrnhv5cWpTUtT0wFH3BeZ8ZOcvtMRQG84JojTdgyxUaqP6shWdfA3WiCG7gaEwvp8HlbX87+PKmgAjUo6ddyCz/mtuMdkugbBl26BC9Xz1JcfDg2gBnBskpzJaCLaksw5xuJvfovH7RUvyp6bsPhcYEBOiGS5f3IePgQMWXVNJ4NwM0p4atZoP61Tw0XeZxzyVlvC+/PwvzEHK08F6xuIa5e4Drw6BpDYJL1Kaqo6unMDsOlOfp/CXffcYm8HqMVjoTr9tWDX0n56iqDv4CJq/dYU6CDzwOgrUW10PJzjb/CziPhXUcJz1y3wFJ9jQEJ6832KFfSp49QhBwSJcBBDS/C3iwX3UUxGnWpR1w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,98 +127,303 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 2:52=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
->
-> Hi Abhishek
->
-> Thanks for your patch.
->
-> On 2026/9/22 05:26, Abhishek Bapat wrote:
-> > The existing memory allocation profiling (MAP) tool accurately maintain=
-s
-> > aggregate counters for overall memory accounting. However, relying
-> > purely on aggregated counters restrics the visibility needed for
-> > targeted debugging.
-> >
-> > This patch series integrates three new tracepoints (alloc_tag_hit,
-> > alloc_tag_mem_alloced and alloc_tag_mem_freed) directly into the
-> > alloc_hooks_tag fast path.
-> >
-> > Enabling trace events globally for all allocations introduces a severe
-> > baseline overhead. To limit the performance overhead, we let the admin
-> > select specific allocations to be traced.
-> >
-> > A new IOCTL is introduced to allow privileged users to determine which
-> > allocation tags need tracing enabled. The IOCTL utilizes the
-> > pre-existing filtering mechanism to specify the allocation tags to
-> > enable tracing on.
-> >
->
-> I think this cover=E2=80=91letter could go into more detail.
-> Also, the cover=E2=80=91letter doesn't include any how=E2=80=91to=E2=80=
-=91use.
->
-> Looking over this series, it seems you expect users to first call
-> ALLOCINFO_IOC_GET_AT to obtain a tag, then pass that tag into
-> ALLOCINFO_IOC_TOGGLE_TRACE.
->
-> This behaviour is not reflected in the existing cover=E2=80=91letter.
-> Before reading the code, I assumed I could just pass a module
-> name to trace all allocations from that module. After going
-> through the implementation, that turns out not to be the case.
->
-> Because patch 2 enforces a full mask requirement for the filter.
->
-> struct allocinfo_filter filter =3D {
->         .mask =3D ALLOCINFO_FILTER_MASK_MODNAME |
->                 ALLOCINFO_FILTER_MASK_FUNCTION |
->                 ALLOCINFO_FILTER_MASK_FILENAME |
->                 ALLOCINFO_FILTER_MASK_LINENO,
->         .fields =3D params.fields,
-> };
->
-> So to trace all allocations from an entire module, users have to combine
-> ALLOCINFO_IOC_GET_AT, ALLOCINFO_IOC_GET_NEXT and ALLOCINFO_IOC_TOGGLE_TRA=
-CE
-> together.
->
-> I have no strong objections if this is the intended design.
-> That said, we should settle on the expected usage model up=E2=80=91front.
+On 9/24/26 8:02 PM, Jan Kara wrote:
+> On Tue 22-09-26 20:50:14, Julian Sun wrote:
+>> Bdev inodes are routinely shared by multiple memcgs. Recording their
+>> owner wb as foreign can flush unrelated file data when a source memcg
+>> enters dirty throttling.
+>>
+>> Record bdev device numbers separately and queue work on
+>> memcg_bdev_frn_flusher to write only their mappings. Keep the existing
+>> foreign-wb mechanism for non-bdev inodes.
+>>
+>> Use fixed per-memcg slots. Tracking uses oldest-first replacement and
+>> expiry after dirty_expire_interval. Further dirtying during an ongoing
+>> flush can trigger another flush after it finishes.
+>>
+>> Tracking is best effort: record only dev_t without holding device or
+>> inode references. Records are updated under the mapping->i_pages lock
+>> with IRQs disabled, but dropping a bdev reference can sleep. Also, since
+>> foreign flushes are triggered by dirty throttling, a memcg that never
+>> throttles could retain an unused record and pin the device object
+>> indefinitely. Recording only dev_t avoids these lifetime constraints,
+>> but device removal and device-number reuse may race with lookup. Such
+>> races are expected under the best-effort semantics.
+>>
+>> Bdev writeback submission can block for a long time on congested devices,
+>> with up to four work items outstanding per memcg. Use a dedicated unbound
+>> workqueue to give these flushes a separate max_active budget, so they do
+>> not exhaust a shared workqueue's active slots and delay unrelated work.
+>> If the workqueue cannot be allocated at boot, bdev inodes continue to use
+>> the existing foreign-wb path.
+>>
+>> This primarily affects filesystems that keep metadata in the bdev page
+>> cache, such as ext4 and other buffer_head users, rather than the usual
+>> metadata writeback paths of XFS and Btrfs. This also covers buffered writes
+>> to raw block devices. The decision still does not account for how much of
+>> the memcg's dirty memory belongs to the bdev. Even a single dirty bitmap
+>> block can trigger writeback of the entire bdev mapping when the memcg
+>> enters dirty throttling.
+>>
+>> Suggested-by: Jan Kara <jack@suse.cz>
+>> Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
+> 
+> Mostly looks good. What I somewhat dislike about this particular
+> implementation is that we are going to have new IO issuers (additional
+> workers for bdev foreign flushes) - potentially as many as there are memcgs
+> using the bdev - which could increase contention for the device. But OTOH
+> we already have as many wb_writeback issuers as there are memcgs for each
+> device so it isn't something fundamental. What is unique that all these
+> issuers will all flush the same inode (normally inode belongs only to one
+> issuer) but OTOH these are bdev inodes where IO submission path is trivial
+> and the IO pattern is mostly random so maybe the contention isn't going
+> to be too severe.
+> 
+> So I'm somewhat wondering if the 'foreign flush work' shouldn't be a
+> global 'per-bdev' thing but after some thought that would get a bit complex
+> and it probably isn't warranted at this point. I guess the simplest way to
+> reduce the unnecessary contention on bdev inode would be to use
+> write_inode_now(bdev_inode, 0) which will just skip the inode if someone is
+> already writing it (I_SYNC check) which is I think what we want.
+> 
+> Also one more technical comment below.
+> 
+>> +/*
+>> + * No extra memcg reference is taken: this work is embedded in the memcg,
+>> + * and mem_cgroup_css_free() waits for it to finish before freeing the memcg.
+>> + */
+>> +struct memcg_bdev_frn {
+>> +	struct work_struct work;
+>> +	dev_t dev;			/* dev_t of the foreign bdev inode */
+>> +	u64 at;				/* last recorded dirtying time in jiffies */
+>> +	atomic_t inflight;		/* flush work is queued or running */
+>> +};
+>> +
+>>  /*
+>>   * Bucket for arbitrarily byte-sized objects charged to a memory
+>>   * cgroup. The bucket can be reparented in one piece when the cgroup
+>> @@ -279,6 +290,7 @@ struct mem_cgroup {
+>>  #ifdef CONFIG_CGROUP_WRITEBACK
+>>  	struct wb_domain cgwb_domain;
+>>  	struct memcg_cgwb_frn cgwb_frn[MEMCG_CGWB_FRN_CNT];
+>> +	struct memcg_bdev_frn bdev_frn[MEMCG_CGWB_FRN_CNT];
+>>  #endif
+>>  
+>>  #ifdef CONFIG_LRU_GEN_WALKS_MMU
+>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+>> index 856a7d07586c..6042c694d56c 100644
+>> --- a/mm/memcontrol.c
+>> +++ b/mm/memcontrol.c
+>> @@ -39,6 +39,7 @@
+>>  #include <linux/smp.h>
+>>  #include <linux/page-flags.h>
+>>  #include <linux/backing-dev.h>
+>> +#include <linux/blkdev.h>
+>>  #include <linux/bit_spinlock.h>
+>>  #include <linux/rcupdate.h>
+>>  #include <linux/limits.h>
+>> @@ -104,6 +105,7 @@ static struct kmem_cache *memcg_pn_cachep;
+>>  
+>>  #ifdef CONFIG_CGROUP_WRITEBACK
+>>  static DECLARE_WAIT_QUEUE_HEAD(memcg_cgwb_frn_waitq);
+>> +static struct workqueue_struct *memcg_bdev_frn_wq __ro_after_init;
+>>  #endif
+>>  
+>>  static inline bool task_is_dying(void)
+>> @@ -3875,20 +3877,72 @@ void mem_cgroup_wb_stats(struct bdi_writeback *wb, unsigned long *pfilepages,
+>>   * most recent foreign dirtying events and initiating remote flushes on
+>>   * them when local writeback isn't enough to keep the memory clean enough.
+>>   *
+>> - * The following two functions implement such mechanism.  When a foreign
+>> - * page - a page whose memcg and writeback ownerships don't match - is
+>> - * dirtied, mem_cgroup_track_foreign_dirty() records the inode owning
+>> - * bdi_writeback on the page owning memcg.  When balance_dirty_pages()
+>> + * When a foreign page - a page whose memcg and writeback ownerships don't
+>> + * match - is dirtied, mem_cgroup_track_foreign_dirty() records the inode
+>> + * owning bdi_writeback on the page owning memcg. When balance_dirty_pages()
+>>   * decides that the memcg needs to sleep due to high dirty ratio, it calls
+>>   * mem_cgroup_flush_foreign() which queues writeback on the recorded
+>>   * foreign bdi_writebacks which haven't expired.  Both the numbers of
+>>   * recorded bdi_writebacks and concurrent in-flight foreign writebacks are
+>>   * limited to MEMCG_CGWB_FRN_CNT.
+>>   *
+>> - * The mechanism only remembers IDs and doesn't hold any object references.
+>> - * As being wrong occasionally doesn't matter, updates and accesses to the
+>> - * records are lockless and racy.
+>> + * Bdev inodes are commonly shared by many memcgs. Flushing their owner wb
+>> + * can write unrelated file data, so each memcg tracks foreign bdevs
+>> + * separately in MEMCG_CGWB_FRN_CNT slots keyed by dev_t. These records
+>> + * use the same expiry policy, but trigger writeback of only the bdev
+>> + * mappings.
+>> + *
+>> + * Both kinds of records only remember IDs and don't hold any object
+>> + * references. As being wrong occasionally doesn't matter, updates and
+>> + * accesses to the records are lockless and racy.
+>>   */
+>> +
+>> +static void mem_cgroup_track_foreign_bdev(struct mem_cgroup *memcg, dev_t dev)
+>> +{
+>> +	struct memcg_bdev_frn *frn;
+>> +	int i;
+>> +	int oldest = -1;
+>> +	u64 now = get_jiffies_64();
+>> +	u64 oldest_at = now;
+>> +
+>> +	/*
+>> +	 * Pick the slot to use.  If there is already a slot for @dev, keep
+>> +	 * using it.  If not replace the oldest one which isn't being
+>> +	 * written out.
+>> +	 */
+>> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>> +		frn = &memcg->bdev_frn[i];
+>> +		if (frn->dev == dev)
+>> +			break;
+>> +		if (atomic_read(&frn->inflight))
+>> +			continue;
+>> +		if (time_before64(frn->at, oldest_at)) {
+>> +			oldest = i;
+>> +			oldest_at = frn->at;
+>> +		}
+>> +	}
+> 
+> The handling of 'inflight' looks racy. After we check, the flush can be
+> queued and we'll just rewrite the entry under the pending flush below
+> leading to odd behavior (like missing flush later in case 'at' gets
+> clobbered to 0 by the running flush)...
+> 
+>> +
+>> +	if (i < MEMCG_CGWB_FRN_CNT) {
+>> +		/*
+>> +		 * Re-using an existing one.  Update timestamp lazily to
+>> +		 * avoid making the cacheline hot.  We want them to be
+>> +		 * reasonably up-to-date and significantly shorter than
+>> +		 * dirty_expire_interval as that's what expires the record.
+>> +		 * Use the shorter of 1s and dirty_expire_interval / 8.
+>> +		 */
+>> +		unsigned long update_intv =
+>> +			min_t(unsigned long, HZ,
+>> +			      msecs_to_jiffies(dirty_expire_interval * 10) / 8);
+>> +
+>> +		if (time_before64(frn->at, now - update_intv))
+>> +			frn->at = now;
+>> +	} else if (oldest >= 0) {
+>> +		/* replace the oldest free one */
+>> +		memcg->bdev_frn[oldest].dev = dev;
+>> +		memcg->bdev_frn[oldest].at = now;
+> 
+> .. so I think here we need to block submission of work (retry search if
+> busy) and only then update the entry.
 
-Hmm, I don't see why we should limit how users filter tags for
-tracing. We should not enforce them to filter on all available
-attributes. I think it's easy to fix by adding the filter mask to
-allocinfo_toggle_traces.
+Thanks for the review and suggestions, Jan. 
+Your suggestions make sense, and I'll address them in the next version.
+> 
+> 								Honza 
+> 
+>> +	}
+>> +}
+>> +
+>>  void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>>  					     struct bdi_writeback *wb)
+>>  {
+>> @@ -3898,6 +3952,14 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>>  	u64 oldest_at = now;
+>>  	int oldest = -1;
+>>  	int i;
+>> +	struct address_space *mapping = folio_mapping(folio);
+>> +	struct inode *inode = mapping->host;
+>> +
+>> +	if (memcg_bdev_frn_wq && sb_is_blkdev_sb(inode->i_sb)) {
+>> +		trace_track_foreign_dirty(folio, wb);
+>> +		mem_cgroup_track_foreign_bdev(memcg, inode->i_rdev);
+>> +		return;
+>> +	}
+>>  
+>>  	trace_track_foreign_dirty(folio, wb);
+>>  
+>> @@ -3941,6 +4003,16 @@ void mem_cgroup_track_foreign_dirty_slowpath(struct folio *folio,
+>>  	}
+>>  }
+>>  
+>> +static void bdev_frn_flush_work(struct work_struct *work)
+>> +{
+>> +	struct memcg_bdev_frn *frn =
+>> +		container_of(work, struct memcg_bdev_frn, work);
+>> +
+>> +	bdev_flush_by_dev(frn->dev);
+>> +
+>> +	atomic_set(&frn->inflight, 0);
+>> +}
+>> +
+>>  /* issue foreign writeback flushes for recorded foreign dirtying events */
+>>  void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+>>  {
+>> @@ -3949,6 +4021,21 @@ void mem_cgroup_flush_foreign(struct bdi_writeback *wb)
+>>  	u64 now = jiffies_64;
+>>  	int i;
+>>  
+>> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>> +		struct memcg_bdev_frn *frn = &memcg->bdev_frn[i];
+>> +
+>> +		/* Keep the workqueue availability check explicit. */
+>> +		if (memcg_bdev_frn_wq && time_after64(frn->at, now - intv) &&
+>> +		    atomic_cmpxchg(&frn->inflight, 0, 1) == 0) {
+>> +			/*
+>> +			 * Clear now so dirtying during writeback can refresh
+>> +			 * the timestamp for a later flush.
+>> +			 */
+>> +			frn->at = 0;
+>> +			queue_work(memcg_bdev_frn_wq, &frn->work);
+>> +		}
+>> +	}
+>> +
+>>  	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>>  		struct memcg_cgwb_frn *frn = &memcg->cgwb_frn[i];
+>>  
+>> @@ -4202,9 +4289,13 @@ static struct mem_cgroup *mem_cgroup_alloc(struct mem_cgroup *parent)
+>>  	memcg->kmemcg_id = -1;
+>>  #ifdef CONFIG_CGROUP_WRITEBACK
+>>  	INIT_LIST_HEAD(&memcg->cgwb_list);
+>> -	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+>> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>> +		struct memcg_bdev_frn *frn = &memcg->bdev_frn[i];
+>> +
+>>  		memcg->cgwb_frn[i].done =
+>>  			__WB_COMPLETION_INIT(&memcg_cgwb_frn_waitq);
+>> +		INIT_WORK(&frn->work, bdev_frn_flush_work);
+>> +	}
+>>  #endif
+>>  	lru_gen_init_memcg(memcg);
+>>  	return memcg;
+>> @@ -4386,8 +4477,10 @@ static void mem_cgroup_css_free(struct cgroup_subsys_state *css)
+>>  	int __maybe_unused i;
+>>  
+>>  #ifdef CONFIG_CGROUP_WRITEBACK
+>> -	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++)
+>> +	for (i = 0; i < MEMCG_CGWB_FRN_CNT; i++) {
+>>  		wb_wait_for_completion(&memcg->cgwb_frn[i].done);
+>> +		flush_work(&memcg->bdev_frn[i].work);
+>> +	}
+>>  #endif
+>>  	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) && !cgroup_memory_nosocket)
+>>  		static_branch_dec(&memcg_sockets_enabled_key);
+>> @@ -5703,6 +5796,12 @@ int __init mem_cgroup_init(void)
+>>  	memcg_wq = alloc_workqueue("memcg", WQ_PERCPU, 0);
+>>  	WARN_ON(!memcg_wq);
+>>  
+>> +#ifdef CONFIG_CGROUP_WRITEBACK
+>> +	memcg_bdev_frn_wq = alloc_workqueue("memcg_bdev_frn_flusher",
+>> +					    WQ_UNBOUND, 0);
+>> +	WARN_ON(!memcg_bdev_frn_wq);
+>> +#endif
+>> +
+>>  	for_each_possible_cpu(cpu) {
+>>  		INIT_WORK(&per_cpu_ptr(&memcg_stock, cpu)->work,
+>>  			  drain_local_memcg_stock);
+>> -- 
+>> 2.39.5
+>>
 
->
-> Having corresponding Documentation would also be quite helpful. That way =
-when others
-> ask how to work with this feature, we can point them to existing written =
-material.
->
-> https://elixir.bootlin.com/linux/v7.3-rc3/source/Documentation/mm/allocat=
-ion-profiling.rst
->
-> Thanks
-> Best Regards
-> Hao
->
-> > Abhishek Bapat (4):
-> >   alloc_tag: Add trace events for tracing allocations
-> >   alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
-> >   alloc_tag: extend allocinfo_filter to support tracing queries
-> >   alloc_tag: add a test for trace state toggle and filtering
-> >
-> >  MAINTAINERS                                   |   1 +
-> >  include/linux/alloc_tag.h                     |  94 +++++++++---
-> >  include/linux/codetag.h                       |   5 +-
-> >  include/trace/events/alloc_tag.h              | 122 +++++++++++++++
-> >  include/uapi/linux/alloc_tag.h                |  17 ++-
-> >  mm/alloc_tag.c                                | 142 +++++++++++++++++-
-> >  .../alloc_tag/allocinfo_ioctl_test.c          | 111 +++++++++++++-
-> >  7 files changed, 462 insertions(+), 30 deletions(-)
-> >  create mode 100644 include/trace/events/alloc_tag.h
-> >
-> >
-> > base-commit: 8d61431ed2607386b427752505379536eb634ce8
+Thanks,
+-- 
+Julian Sun <sunjunchao@bytedance.com>
 
