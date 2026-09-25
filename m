@@ -4,95 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FABC98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:05:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED12C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 11:09:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 857716B0099; Fri, 25 Sep 2026 07:05:55 -0400 (EDT)
+	id 502316B0088; Fri, 25 Sep 2026 07:09:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82F916B009B; Fri, 25 Sep 2026 07:05:55 -0400 (EDT)
+	id 4DA356B008A; Fri, 25 Sep 2026 07:09:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744E26B009D; Fri, 25 Sep 2026 07:05:55 -0400 (EDT)
+	id 3EF826B008C; Fri, 25 Sep 2026 07:09:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 501B46B0099
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:05:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C498FC0573
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:05:54 +0000 (UTC)
-X-FDA: 85252004628.11.5B1D763
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 380A5C0008
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:05:53 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=meYS47Io;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 247C86B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:09:22 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 975F84057B
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:09:21 +0000 (UTC)
+X-FDA: 85252013322.08.513DFA0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BADEE4000A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 11:09:19 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KWg+bRtM;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790334353;
+	s=arc-20220608; t=1790334559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=27mmdRe0c97tdgwqbWs0K9g6YrSbSDeo1umZRUDrFfU=;
-	b=dswRzePxoWqT3XmyJMSARzgp0fUij7bRko3BqI5XfYzzSducsuJBfgt4IULwAU1aXzKdp2
-	BElrzxL/4NmnuyjMBCyJOSnlQO0+iZF8siIrvXlBWQaRwAf4WqHlJAlfuFq43ob9n/MpSE
-	lRx8puVOqgIutcRsqx6auXSIk8Ws40g=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=meYS47Io;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+	bh=D9+4yAsTkCuOEMniAztosEz09F8ZlUrYk2qoqu20Ki4=;
+	b=lHiI5uxmXIVsW+RRwTLiBiZGViwjUTi/z7mNtkyGon7LwoXrKVPY6wDsC5ND/FBgErKy1x
+	95zz7k8UIfWR+RswKzJzCRWivtEclNG5uW1VZJ2iu1LJQukfyYNB+Z4JEYLQd5M6/BIx8y
+	PMFIAoiS6YJOCJVD0yf8JqLkP4G/Txo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790334353;
-	b=KUGWj1SJBhQioyiFhkzhlf5frUxBEIZbmrNxFuRixFwtoAIsJYCTLpEybGHrxxON8wKXNt
-	pDdaiu3R203FER9R6GFm6sn54C59XY20GHqjYfB98Y+SU0OsQ3c8t2f6F7XOftBzDWrejj
-	eU90jMDy0hs6ehf9XgtySu6RJ2p4wQU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B4F3B60136;
-	Fri, 25 Sep 2026 11:05:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCDF1F000FF;
-	Fri, 25 Sep 2026 11:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790334352;
-	bh=27mmdRe0c97tdgwqbWs0K9g6YrSbSDeo1umZRUDrFfU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=meYS47IoTaFKQc6f4C/nVr4qaaju9aGhhYFXiJo0fHDir4+QAKlQsl+Egv4c7OSwd
-	 umEFQlktLCJ9Mwq0ZCKOjdVV2tEzaNMeOHrMj+i547WlbrgYNnNVZy5JeWrcjz0qF3
-	 M/N8n/arCSZHAzNQeG6baKscn3Ks/tPyCb8RSu41N3X+o/8SOnSqM/DabrT+iRJyrI
-	 VmEWktPKlPeuRkJ9YQDThxJ/fa2OZW+ESpzcIQ5I0YT7ElW8xfsEWzR5dwRjTP0zdK
-	 Rt3rY/Y4YAk09pJ7knDgd9SpSJDN3n3+J2w81RCNBkosK/8uPN1rq0P8PZSoG+Vf7N
-	 O7epnMVRcYjgA==
-Date: Fri, 25 Sep 2026 12:05:50 +0100
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Karl Mehltretter <kmehltretter@gmail.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Amery Hung <ameryhung@gmail.com>, 
-	Swaraj Gaikwad <swarajgaikwad1925@gmail.com>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] mm: restrict can_spin_trylock() to preemptible
- context on PREEMPT_RT
-Message-ID: <arZVV6Vq-ZJuCyun@thinkstation>
-References: <20260919171443.90512-1-kmehltretter@gmail.com>
- <DLJHZEZMLW0F.27OPPS218CX9Q@gmail.com>
- <arIY0wMQjCCsqidI@gmail.com>
- <DLO3RV3IQUOV.21BNLF4QS9T4W@gmail.com>
- <c2f8eb01-7a10-4ccb-92f1-eece29c06cd4@kernel.org>
+	t=1790334559;
+	b=IgmJN+kyLIi3BwpeC/rj0VsNPVnNzOvNMuJJvdRAtGUGOEv6CcPd4kUIAIwdsJsYJKtk5G
+	ulzfiK1BLQd+J5jTYRXBFb5zpU142d1LEzJVaT9ptpcMS2rkevfrdKGwiC2U0KF82gru0X
+	vKAZKoF3zsvlT9uAL7PjBWdlDnxm/hM=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=KWg+bRtM;
+	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 15A71169C;
+	Fri, 25 Sep 2026 04:09:15 -0700 (PDT)
+Received: from [10.164.19.30] (unknown [10.164.19.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BE76F3F86F;
+	Fri, 25 Sep 2026 04:09:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790334558; bh=X+08JXGHDhZk6jkgj/t3kmX/ETkf/ZmKY7HfCywvC/w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWg+bRtMjGqLoIq2HtiOXrjfQHC2zQacDtIxI3KeL3iVK4BJfstn2lrr+cgLf3Eag
+	 QKYCwFFsClUn/oHUOipJJ62RqgGefgj89gJsmuewjX+MGFk89ybtuUOe2321sPOsnz
+	 veaCdNDDEw0exuXjycAPli/iYr5NC3odwAerIO+E=
+Message-ID: <9c00b28a-8b76-48c9-9318-cf1f4abaf944@arm.com>
+Date: Fri, 25 Sep 2026 16:39:08 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c2f8eb01-7a10-4ccb-92f1-eece29c06cd4@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/9] mm/rmap: Add batched version of
+ folio_try_share_anon_rmap_pte
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+ davem@davemloft.net, andreas@gaisler.com, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
+ jgg@ziepe.ca, thuth@redhat.com, sparclinux@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260924131106.1730494-1-dev.jain@arm.com>
+ <20260924131106.1730494-5-dev.jain@arm.com>
+ <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: ikey4fkarpuigiw6xh83i87d7aoabw6p
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 380A5C0008
-X-HE-Tag: 1790334353-968762
-X-HE-Meta: U2FsdGVkX19XWhkzL5Kdwvf0bqIKzBWq5blPtFUn0kzhYZSletmu4pKoTf2BBm1uOWKPsUN5hs1NhlWbpyTIBNUpt220eQyJ4CvEZUyMWa2uNWyqClDJsOAW9vvRR5wzGLxD0/AjS0YB61k+2Se8W5h0s4vvu0fWjcBa6/CWIFtqKjiZiPZ6P+gSEUxgQocU0ovc/Qr49EVT+1Px58JuoqArh+NVXRqGAhP9P5TcXqs2j0Tc6tA9EDLm6LdTYFQa3xdYxNxd2kCE4UCYJMh7WnkUX3RaxZaBbR/SlQ8SD1Lc2+4gtPjbyImaEGmt5Ta/D6y69RbAJYGYbbovZu+HNlvuhKR/WNvK1d/h1y2incsQN3PtqV4HHX+ljpJzomscou2JwQMkaOWrSHxGSea1UWzkd4lyevsIYlzDZSIW2saUhDu6J/SRRsT/H4DFnHtJ01w8XEuJPSM2KRjRXYT0gCF/jCz4bkDi5IKY2r3nCwA1B3HUEQyIwLVJ6wZVJKcmCBOAAQdMn1EMxtBfo6bee0x8OadxlNYYf6/ODoljzpSq5DWlPcViYqIqwuxqmstLWzUCqFTKPOFc4zlBLYwyyNBVfE8okagQz9eBIZkRfxIpggfIR8sx/YQy5icNswcZRH/EUwv9uEejyeIhM0o187kQcM8fstuo9833dgc/twvDTsKlolGAUjvzbI4QPA+nisckn+wSDSKaaIIEJCv8UqUBGt3SX/3XCpWb1GwAUcbNBHauGvTarZC/1xUeexOmsvWWYXBxyJQjJb8pFYHt9rcasB0EDGwoTSGenjGt+EQBLKfgNIGvT53Bzo32knDSRinP6LSXu/2dww0NYpgHxSdJEojHeIpggBihBvzEWmVfmFTlTSWf99UvLUVjnqwuElMWH5ucqI8AecQ6vwk5SZKHY85R5izXM9S/DDTyfYW2q/iFQrqpcpXCVCV0s6es7mUZtGgMw4pN+Upe0bS
- g2XwW072
- hUTukdY4YrrUp/7/biTplt4hMJIYfIaJ6oxSHUdoXACdgYsEGsqXzOn9yz6A//MXeWfd1dwdWvQHHQxIsk+nIoV2J+6pvnW1LDH/svMk+oIIfQ8/klZBZRkdClE7kcSHk6K71mCGBJfLrXs/anQNqH4122DUz74UPLhOffcTtzFEE30Hyqi4Ua7p3E5wMsO0A53JGsmFQk8WDMW61opj1FVIJ2XWCue+G3vLc4nfsrST6Sje1qRaD2ZAHkeGVQXXElvNNmCipeRSJTCUU+gqAs0ComItUHM1m8CjtZT3my1p4+cTmFf+5+pYuLYLDjCAUmpQubjop8uRHu9nnd44Q3DnwjPZCdc4mgWFV76MR373lDuEEpmgUy3SYGJXq5oEmJ7azDs0NtdiV+Do=
+X-Stat-Signature: q4rh8djmmampfhr3kygmghfje4jjjhb8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BADEE4000A
+X-HE-Tag: 1790334559-346490
+X-HE-Meta: U2FsdGVkX18pm0MTpQppq9dgX5LJp1D6n9jCvtwBP1JzcEpJISW/IX/gY4Qv8nj1+D0Y4K6DGqQ+w3y8/OFgbJ7xeCc+EH9VoNCkqTrLclKIcaVjs5JcDdVb1EVVT20zeUU/ueSTBAhBuvDA1beaMxIrOcI5bTIR+UPkU7hzkELHCYsrq7zyV/8Cp9kjujpk+7reZxTL8UQOvvTy2t/Hckh7w/YYVTp7BfuqLG1YYEQibdOM10+WPdGZ+SnsezKgaIBYrV4d4hYytrImDteMASzU/x1394CNHG/miHhGONZ4Sd3VGxDTKlY4iFFP9X1LZ42LxGACoVpByyKeUrbt6Gj8EeJLFYAszi+82uEvOQOjZiPhmSPCSIlHGjY8ZDE2hZAWX8p1IY82q8SQFyUmDD3FJfEJ/JRw8BxTUCj080f8oKAQ82FLAT7FGct7g5WUi0HT5S6b6PpsCc7uA/I+bDPOzVG+1xNwgCwXojMgfbAESFNZXzSDo/tE38uj5BSn/E5q4vaGLuTbRJuXET7nUSYog7HkYbjhtd7G0NiL5lqfLVZ0xe4Lh/j6JFMocwqCI69EffAQJEaC1MLU4JxGvu/sW8U1xc6weH/oWiF47Gzlt+C6ByLDPUKwPa6UmBfS78dGu+WZ96tE5SbflUS1iaPpAlbia0GBV2Yl1OX0WlGcGodlgFHQaqqjE7Z/YN1jzosluF4LykHWwF3c+v1Qq6JelamqC1jyCEUNqpKhWxpQIYzTrMJ922NtbMlco0NjBTP7PXsozArpPLHcFN93dmoZv/eBix1XUmhpIMcDFzKmfyB4GXc6v5VAkxWqH60wX3v3q74ZCjsb2MkKuZ2xRYb5ts7qPG4I6c6G/MjbKGk1I+pG7qlxRZqa/NxGeYN8qkAMx3D/zXpEDMWVQNAE9+gR2KF2F7FpB6PWaT6DF8aPYZg2EC1L5ASxgZE4SDG6MgXwePqaCJD6XNglyUy
+ oUcd6jbi
+ J54lIqYjw4INUpOmWtp8IcUGry5KPFJJyWmoHm7qjXdGsba60QMPXcd1sOLVMGXkvRqXR0Y2OLzXPwx9DCV9BvoYxaAmh58JUSOYESV2e+hDTGr68meohhIQQDetfjnM2hB92cki6rXwunQaRFgynzd74bQqOLINdsyQXi5lqYDBp0Hj4qKzV+uIxUGKIBbtNyTQAbUQ3ZZ77YyT5rDl3Uq7IHZ4iv17f+xEgkecL31pZePkJ55bSZnETbeu03m0iEfanJQnAKRtrD4WrruHjXCZM0MmjlLuvR8+a4jcGfOq1RXi+FOLHe2SUmBsSW6Ubp12yPsKuPHoPKSJSv1j/tDMe7od8GLueEeEMorhQPO02bQsPij9wV1nwEW8/hQXbm3FDFGjXS7ffMvw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,51 +101,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 09:29:16AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 9/25/26 06:12, Alexei Starovoitov wrote:
-> > On Tue, Sep 22, 2026 at 08:04 AM Karl Mehltretter <kmehltretter@gmail.com> wrote:
-> >> a) Change MM so _nolock() allocation remains safe and can still succeed
-> >>    while pi_lock or an rq lock is held. Existing BPF behavior would
-> >>    remain unchanged. Is this feasible, or would it require substantial
-> >>    allocator changes?
-> > 
-> > I don't think it's feasible. On RT the sheaves lock, n->list_lock and
-> > zone->lock are all rtmutex based. When trylock succeeded and a waiter
-> > showed up rt_spin_unlock() has to wake it.
-> > 
-> >> b) Restore BPF local storage's dedicated allocator, and document, with
-> >>    debug checks if possible, that _nolock() must not be used in those
-> >>    scheduler-lock contexts.
-> > 
-> > No. Local storage is not the only one. bpf_arena_alloc_pages(),
-> > bpf_stream_vprintk(), bpf_task_work_schedule_*() call kmalloc_nolock()
-> > as well and the same sched_waking prog can call them.
-> > bpf_mem_alloc was removed from local storage, because it wastes memory
-> > on preallocation. Same answer for d).
-> > 
-> >> c) Have MM detect those contexts and return NULL. This prevents the
-> >>    deadlock while preserving ordinary raw-lock callers such as arena,
-> >>    but task-storage creation from scheduler tracepoints then fails
-> >>    deterministically.
-> > 
-> > This one.
-> 
-> Yeah, but how exactly to do that detection :)
-> 
-> > bpf_task_storage_get() with F_CREATE can return NULL and the progs
-> > have to check for it anyway.
-> 
-> e) Introduce raw_local_trylock_t...
 
-+1 on this :)
 
-> >> Are these the right alternatives? In particular, what behavior is
-> >> intended from the _nolock() API in these scheduler-lock contexts?
-> > 
-> > It can be called from any context and it can return NULL.
-> > That's what it does from NMI and hardirq on RT already.
+On 25/09/26 11:00 am, Barry Song wrote:
+> On Thu, Sep 24, 2026 at 9:11 PM Dev Jain <dev.jain@arm.com> wrote:
+>>
+>> To enable batched unmapping of anonymous folios, we need to handle the
+>> sharing of exclusive pages. Hence, a batched version of
+>> folio_try_share_anon_rmap_pte is required.
+>>
+>> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
+>> to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
+>> batch of nr_pages. Refactor the function such that the clearing of the bit
+>> can be done at one place without duplication.
+>>
+>> Note that __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR
+>> from the PMD path, but currently we only clear the bit on the head page.
+>> Retain this behaviour by setting nr_pages = 1 in case the caller is
+>> folio_try_share_anon_rmap_pmd.
+>>
+>> While at it, convert nr_pages to unsigned long to future-proof from
+>> overflow in case P4D-huge mappings etc get supported down the road.
+>> I haven't made such a change in each function receiving nr_pages in
+>> try_to_unmap_one - perhaps this can be done incrementally.
+>>
+>> Add two WARN's: check that the batch is entirely exclusive (for PMD
+>> callers, need to check only head page), and that there are only
+>> PTE/PMD paths converging into __folio_try_share_anon_rmap.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> 
+> The patch looks correct to me, but it seems a bit hard to follow
+> because of the `pinnable` handling.
+> 
+>> ---
+>>  include/linux/rmap.h | 56 ++++++++++++++++++++++++++++++--------------
+>>  1 file changed, 39 insertions(+), 17 deletions(-)
+>>
+>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+>> index 62ef511a6175a..91b5763ef466f 100644
+>> --- a/include/linux/rmap.h
+>> +++ b/include/linux/rmap.h
+>> @@ -723,17 +723,23 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
+>>  }
+>>
+>>  static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
+>> -               struct page *page, int nr_pages, enum pgtable_level level)
+>> +               struct page *page, unsigned long nr_pages, enum pgtable_level level)
+>>  {
+>> +       /* device private folios cannot get pinned via GUP. */
+>> +       const bool pinnable = !folio_is_device_private(folio);
+>> +
+> 
+> If we make a helper that does:
+> 
+> for (;;) {
+>      ClearPageAnonExclusive(page);
+>      if (--nr_pages == 0)
+>                break;
+>      page++;
+> }
+> 
+> wouldn't that allow us to avoid this ugly `pinnable` variant?
+> 
+> Then we can make a much smaller modification, which should
+> also be much easier to follow? No?
 
--- 
-Cheers,
-Harry / Hyeonggon
+David had suggested here:
+
+https://lore.kernel.org/all/95b8224d-3ed4-4fe3-9954-d5ba0aa373f8@kernel.org/
+
+The argument was that the helper would have no context of the pages we are
+operating on. Although you are correct that this makes the function harder
+to follow.
+
+Maybe, revert to the original function, and have this helper
+folio_clear_pages_anon_exclusive, which will take the folio and do
+the page_anon_exclusive_batch = nr_pages sanity check, and add
+kerneldoc to it which says pages should be within folio?
+
+The kerneldoc can be saved by calling __folio_rmap_sanity_checks in
+folio_clear_pages_anon_exclusive - that will cause duplication, but
+then it's all a VM_WARN_ON function so maybe we don't care?
+
+
+> 
+> Best Regards
+> Barry
+
 
