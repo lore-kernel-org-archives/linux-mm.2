@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1806CC98306
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 05:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A17C98306
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 05:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FDDB6B008A; Fri, 25 Sep 2026 01:30:48 -0400 (EDT)
+	id CC0606B008C; Fri, 25 Sep 2026 01:32:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D5D16B008C; Fri, 25 Sep 2026 01:30:48 -0400 (EDT)
+	id C98556B0092; Fri, 25 Sep 2026 01:32:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F2D126B0092; Fri, 25 Sep 2026 01:30:47 -0400 (EDT)
+	id BAE2D6B0093; Fri, 25 Sep 2026 01:32:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE19F6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:30:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD666140561
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:45 +0000 (UTC)
-X-FDA: 85251160050.11.058F155
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C9FC840005
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAjoFiD2;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0856B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 01:32:22 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 33F68160560
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:32:22 +0000 (UTC)
+X-FDA: 85251164124.17.0E8D6ED
+Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 77CFC40005
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:32:20 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=MyLJQi7v;
+	spf=pass (imf27.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=ayushr@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790314243;
+	s=arc-20220608; t=1790314340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iuVHKe+kHLV/jSPQ1Sp6pScTLQ6GybikNB88F+4NQpg=;
-	b=2cnmzvIDQQXh+W3gDEt0YbhSYbEzQh43RUGXajafSM3wu0cmvkndwL5Nk7KDvp6aqpfVSO
-	isKf+cKfYvUHFfupDxjkxWmiNsFptMFO0JQUTzsJZTY2ysnyh52kT3AwC9YnlwCDRyqVd4
-	c7gEfoF1iySo9msiX7KrI2NXg66Slfo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAjoFiD2;
-	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Ehv35jM2xSxwjjV6xaS7dv57/W9hK0TedPz2NPct384=;
+	b=w/Mh5ai+laED7xxKlKP9jpUxV9HVOXV5/CtIQVyMRRn946mNGkXQl+TsbeBAguccpE4px0
+	Vx4jfWfPu1Y1HF3vt4UkqV3g+LC686kk4gWWJj+5SXFPSK4iOroXN5ZxXIFMguDYGfI+Lm
+	pptzFXO4ye51cgjlLTMW9FTSDrMFQlQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790314243;
-	b=D8A6YEMQrMfumjD7j/GkDdNMD8VS1F9zAQOBgAkf4ssSK3NCAAMvJTN5EiOMTKovG/+XQM
-	/Fph0cJOP0lCCf/w95lAaHtaJjcbTy/tBBPI6rHp3X+sHBEdFywTNvam+2PbtxMMqCCDIx
-	/laCxtxf3oTu20xwd7a0jcUAPQcxgQA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0182A4458B
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9F31F0089B
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 05:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790314242;
-	bh=iuVHKe+kHLV/jSPQ1Sp6pScTLQ6GybikNB88F+4NQpg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=DAjoFiD24Cdy6c2ES17VvfffdKkBKZC8OaKquPQylTnZu3l0Rfcfzkow9Fvr1RQpM
-	 CreQeqEJU5ZY92W638ubb5rI6AJm4tgu8yU2Oods0rF8H5iFRaC/UvmozeNqFweKfl
-	 DNjEM5WcsC2W44XwmRN6vUQIgOJ5voCv5QZkI5X/G+5xgZZMzsJzvQWvYy4gX9B/3J
-	 KwJV1JBh/C+bx5VoCTbLUD3AtEneolnWi2VACjE+DFz+yDVsRMqi72YNiGWbow+lsx
-	 1cwHVrEDdYho5sLmNjCYZHgVt06d5avWNJt/2DVQmfe3967e7PrWAZJgsSjfyjs/1G
-	 vmqiNUoe0ffIw==
-Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93a222edc62so57163085a.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:30:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvByNvsNi8ab8BM8Y4hepMO+Rlk6xra8u7t6H04rWtaQhzL11gIdF3DheKBz3spDifw+7FPbmRVkcWA==@kvack.org
-X-Gm-Message-State: AFuF++kkd/oA+lDPfoRo6ml2LKCS3sffgFYB9m66myPz1BCD4nZdNRWC
-	wpHQYVsNOU9T8dOeeXHDz9HZp47JLY7t/TyY3/r5nUmd9IoxwTgHKv7urW9g7cbAqAbMZk3oITX
-	RA+1wGJrg/j8/73eK2XC79oT2+OJLOYA=
-X-Received: by 2002:a05:620a:2945:b0:93c:b10:7243 with SMTP id
- af79cd13be357-93c43b61d03mr262098485a.5.1790314242069; Thu, 24 Sep 2026
- 22:30:42 -0700 (PDT)
+	t=1790314340;
+	b=mmlmLI+vPa2PGUpO0RFUI70giVWK+sWqyB8/hj9sIQmyQ2HVkZJZ40qitS57VqmE2e+DDN
+	s8k0fbv2B9Oits3haCNigYQL29h9V6LUtTDwMknHacMnYqTvlvBwIheSKm29ZoaQVTGiGc
+	5TH2h0S5gyOfts2PRbV47kizn4tx7z8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=modal.com header.s=google header.b=MyLJQi7v;
+	spf=pass (imf27.hostedemail.com: domain of ayushr@modal.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=ayushr@modal.com;
+	dmarc=pass (policy=reject) header.from=modal.com
+Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-3a02902dce2so336391a91.1
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 22:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=modal.com; s=google; t=1790314339; x=1790919139; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ehv35jM2xSxwjjV6xaS7dv57/W9hK0TedPz2NPct384=;
+        b=MyLJQi7vmXMqPeOCugw+HiitePyBs47AIDUsKA0hFwcYeqo5cf+oz2nX6OBnscg7a2
+         5JTfr0lCJLSezZwm14KYY5S+Tkkh9Atkz/oA4R9rI6UlEIaKN29PpcTaw0Uhk2fEfjJP
+         GiUKloYVJGdNYaDwXEM82WxcP7mnLDIrb5pyTJU5ZoPAln3Ks2oOXCVq0wRKMlFo6nBC
+         rd2qrN58Mm6Th9sX5TMp3HOrLyFtjfsYTcib7e6X3cCqdllBcCSPgI0IAfS27JeWy8kI
+         j/27rwu/0euoDJfw69/QxnP5xKxOU5meRqFcUeWDmd1UETzw+CCpGaal4puJjV4ucT45
+         cpUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790314339; x=1790919139;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ehv35jM2xSxwjjV6xaS7dv57/W9hK0TedPz2NPct384=;
+        b=ANrzhXEyHkRLwn75n3tK6nagXpes0THCtydiEfiqh4HCqE602z0AEloHXTGzpFmdQf
+         CUnulqL8x7B18YlkPN2U+FDxTDcc0nDH9zBvpxPJZ2ejRxBANOtA2YIX9MZI7VAJATJ4
+         fY7Y2xEuZ/ETy4Y36vdLyWrp7SbmFB2GzJyFk99Wki7ByFSTFgYlQ/pOsuWlyGvirI4n
+         ohWSXlOEsrrnN86lLD2DK5sk6QxiFf0rrNtcFCoAoV7OAqyQ4QWDJNTDmdBf4IctOnO9
+         foU47x/cj9mkLVZgBUlFTC5A+Nn+gQtMgXNUjKx0ZTgKAjkgI0U0Y4W9ofNFl+gXKbka
+         ZRyQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy5tpmFNgy6MKp7FXLCB/wqhgMMhb+n4O/Jd6qHkZzyVbnjk7C0BL14iK22gNQY64QFS/bminUv3A==@kvack.org
+X-Gm-Message-State: AFuF++nRx/fVTqefNH1NcRh92yBw6eCyhvAYG653XjE/VCMvbRQcmN0Z
+	DQoLp0+CgAn3GevFwWgHHBGawKp5M60fD7J/9iS3LvfW2F0Y9ARewemQ9aiokN+Lucw=
+X-Gm-Gg: AYBFou1xgT7OExKMqwyj5vk7hjwK7b+hBRkSzd1yKC4YvbOIW2jwDaXIMF6+wHBoK4X
+	vlxPhEx17unnH8gnOWh5DkT6St1o9vNr9BHuOjbJKBr8jt6CKf7uu0kD4JODIgliAgdMp0xC6sK
+	2KEPF0qfJXAweY+0v/wlayXBVBhJcqgGvk5fVmQIAm61tifZHckkoYrwOblkIAn5ASzah9rEzw3
+	hNs/X5iG+Nc2bz9Vw3QRP7Ru81P5IjF+yECD91jpiDN5k9KXuEU9luMNL85E7ucZNWwN57hnFle
+	cQDBCXQuGC/Dov5K6BX01+iHOEstDNdNYgLKy6LVrh1EVbpAnGbDHlienhGPuTQNsMj6ZvyIRwQ
+	+VZDiV7LrMkxUNtT+mov3pbmZQkdPTzy5/8mwa8LRZpuN+J2ZiaPMx7/J2PigzkTt/0fBcMM6fI
+	VS3y7qUX3rnWAfFVrXwvjPdohAcp4wZc2njV8orKIh/0T3pg5Dr5MNrlOWiIQO48Y2Mrv1GS3dV
+	taou5rcagPNG0vekh7fJ0LKvxnfeQYzLU23gyBkE0oJYRMyltsa3/EnW1NX5U8h11ASRHUMaMTG
+	r5886gfotIajfNbPMXNDyI278g39DTD06loETeX0ClUMPtYa
+X-Received: by 2002:a17:90b:2fc4:b0:39e:6c6a:4b64 with SMTP id 98e67ed59e1d1-3a098dfb087mr4009593a91.46.1790314339197;
+        Thu, 24 Sep 2026 22:32:19 -0700 (PDT)
+Received: from devbox-ayushr-01ed.tail5292b.ts.net (ec2-44-242-192-44.us-west-2.compute.amazonaws.com. [44.242.192.44])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b4f5b1aasm936305a91.1.2026.09.24.22.32.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 22:32:18 -0700 (PDT)
+From: Ayush Ranjan <ayushr@modal.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Ayush Ranjan <ayushr@modal.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@kernel.org>,
+	Gregory Price <gourry@gourry.net>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [BUG] shmem: FALLOC_FL_PUNCH_HOLE vs fault-around race corrupts page cache / rss counters
+Date: Fri, 25 Sep 2026 05:32:10 +0000
+Message-ID: <20260925053211.2036445-1-ayushr@modal.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <uf7lys6izqrxjsp3tstqxmdok5yy3w52d3bnpkfzyjm7uiyqzr@ickbg3ocvcji>
+References: <20260924061708.1645968-1-ayushr@modal.com> <arTdLsBENhrpOyk-@pedro-suse.tail5790ac.ts.net> <uf7lys6izqrxjsp3tstqxmdok5yy3w52d3bnpkfzyjm7uiyqzr@ickbg3ocvcji>
 MIME-Version: 1.0
-References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-5-dev.jain@arm.com>
-In-Reply-To: <20260924131106.1730494-5-dev.jain@arm.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 25 Sep 2026 13:30:31 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
-X-Gm-Features: AclHuK8jj4BEC2ZukHa7pkW7xEBHFBfsvYex5BDejOLunxBiVqvO5dSgOHCPAnA
-Message-ID: <CAGsJ_4yDZypOxjwmAY_usM+v_OJahShz-_uRSAiUZUAzv14VRA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] mm/rmap: Add batched version of folio_try_share_anon_rmap_pte
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, 
-	andreas@gaisler.com, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
-	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
-	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
-	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
-	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: C9FC840005
-X-Stat-Signature: 8c43ghtaq59u8g8n5dgmj7tp1f965fjw
-X-HE-Tag: 1790314243-340279
-X-HE-Meta: U2FsdGVkX18FF9affJTw1I2IDMmDJeMkAYYxMuQbOOqbFdwECzC+VxkkDUlhVJDaCf2G8P8V1Zg5djawlhDAcFM11XuZWGFSwbqfUVYfo5zCm2cyXRTUZwGEnG4UZjBmbKGXAZEjxdRjRMlCquO3kcfwUDuXVUAuPxt+3zK05Qlunh8Sija2vVIv/VjRzKY6dnYVDCOpAp5B0h4M+pdEaPTao6cyFITm3HodIXREVnm+K271X+xWWW7SId7cM6RqvfdiCJCk5pSB89r7RGQg3bkXzlsINOnFwqD3Rt79/ZRKZjyp0Vi+6PGYOtkVa8M+KzqKfs9hG8omDGMcSKaqEzBy4OKq4c1SlMRblPTF0T0ULgT9hvKWf+BnFN4FkPTEmnxGYErGItm9hCTp0EyAgNCLPjI8H54qhK/GWmCDB1QP7GRR5hDQkKW2qaZDIrzkIw7h2TjqpyjgmBtY+2e0HX8GLFQR66+VfpAxdx+ZZFp97cRnj4Cz1JsAinuFBMITYcipJlt/IAqXkF2W55QjLNsovwuzQ8tCzt/ITO+6kR7i8zUZL8wwS/UB1cHUzpEShqHsAjGbiMs8kagkecPXeQzTBrc5PPxCICXFY62NyoUsghXNq5wKnen/p4FPXUKeEzDO9KrxY3GBDHq0JFsJEOme5uSWjpFYsJtZrJDe3dlBz9fzU1wg097YDOIVrK7b9aNbCLDqTInnhkeq40xXy2A7y55vpHu5bxNHY+NhHOrfkepSoUNtWBhUNbe+sxJ+Rap45S2qIHw/bzQJM9XVy1w6hevcHcqG2Ds4C2kN9pvMdYAhtoALVeOnFO5S1mXHfuTQ7DCdVGwNi8jDJl+Mamj5Y/N2MCsYe/SUJFxIrSEOrMnmRQILfxww8/l7k7SWjpCik6u+i7oBQxbIdA/8Z/ozXFjKKXkP3zfU6lxBwAaRcIUSUpMFVQt0tIl01nR+NC+hynzVVhjAr9vRtkL
- uSPdXEWs
- LxWT60deE/jGW+tyzu+wvzYuQ2jMds5HZiL5fAR1Px4weNMtwzJncdsTK5gNdww7sIx7SDZdDOsy0VoEH58LIRk3Ew0uvJ4+djLf8ARt7avAYjmc8KUNK2UAHKQSw/VXswJqsLyBl8K3h9zRGDuSHMIVNXGlmfrNch+AN1bMcPRRErPECc3Q2KaP7Gp2MDJpVbe8Ns1Jn+O8jCsOTryrfQY6xTD4N+/aMNJrmaxlMOrZTYkyAJSAoxcx92obBUi/snHT2EoqeCD3AF6Us30ghU68yH0IWnat86BDV/Zyxyz6wGNS1W26gdMQcx33iCKhKdIAI+M2i4mxjRA8gWSCSeyMCyO9MDvAF9h37cybvFmM+XJZRrxsQm6ObL/geiPxYvvmJ+bMxQ5yfisc=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 77CFC40005
+X-Stat-Signature: 43ok683dn9kj3s8e1kzyf76no8stst38
+X-HE-Tag: 1790314340-907958
+X-HE-Meta: U2FsdGVkX1+BEmbChe0e6sueaelvkRhnpX6JI8vkDwtqh6dqqvO9n8koL6iFv32vgDbwwLx1jlOPiYtvnBeY/H7n1E2HShAZB/w1hPaEUeO3Ud/GhbPaC/rWe4t5dhJwVqi1FQgbL/a4gh+x623W8/FfhSI56DJFjwI/Fh9rGViWoajkvAFXvHLkuWclYxmRfMEufkZB/umJA3a63JlYOJ5j+JoN5NXv4Qz9i1OZ5HGjGU2ryDeS6Buw59BemljicCSJERL1xC/YIl23X2jSvLqalIhj5b9+8AoRWSgbvplo4qG24C28CUU0nIRj5B68tS4MAwO1L53YGD3tRI0/GadtxgCPsGmY8AlLOcuBzuOj0QJ/jDLL8+Arz/CpDkg9YqAOvEvfD4V6ddwmBb75t3bk3uOb1hkipAf8mget9qWGJ2aS9jNDPa64QnAZu5ROthiO8YufQ+DTD2Yyv4iCKbNHQe3GyZPNzui9qJ772XZFPpB4IaWJo7zZe7af2u9X1F7TnKF5bCoPwAn454XCKRsl9go3xFhZomkPdInSgVCg06P5czoBJLemqNK+bOujg1Zz8zgeuVwXm6eqY8NgIfTM3DcuoX/5wghprWhclUbLD/186tSqWHN6JG5fjIKLtnsfPtxeThim4BXtgBbpkhjzqmbpVh6mKhs7BNAvXRkhlt1aDm2pkFHT7p6PziBY3G7DvqpZEDFieHWAHPGcpISU2N5Id5rWRQ15HitAA3y2xTySuf/q/v7pJQudXH0t1/Z+K3RQBcwSdZDiCdt7cNHuQKmZ3zLP4mtUJMu3KC0NG3iGNtAlYcm1KboiVXvo9xBhThZVRcpGTdlNdw9rrGi6S3e5MOoRrwxkDbhTcaG2t2ZgjZAQWdCwUy2MTMKKfPC+39agtPC/Ck7/S1Iwo2lTFB0kybegB9nVMqwum6uPEqdVEPbSUGNPtqH7e+qPm9cKZSE2Mgc/6Mx31VT
+ u11O1HDd
+ AzmptalB0elLlmh2VjOa1RKuaH82Z+cUXlSUO/Ssgf9lyl6naUuMy86VyRNoSLj7a7pYGpGgpYe0/fTlkIf7o6fpNx2TLJWneYZrigZkoz5gFDPikD6+xybydJIILmcUKD+49WXTLvhLb1nWx6GT7SnZ4daa91CMWF4GubMGaYIvnnKD8pauSLku+DkWz/mg9hsFFr+RIplgFLRmz6zLbHA+29S6Qp/csROD9jQKO1JVNyoRPlzTxMYJR1RcmClq81YU92Ld5Cfws1bCCL4yiM/11O7Fm/aPJS11OBEfhypsiOb1PmY2Qqm8JkQsi7Bb69SOnjqDNobjCBhE9ee4Hy1zpkuyz+bDlF0dDWEtVQzA+SOsIlBBByiolsWzmw4xWWyarvluPpfwetxC1mceQt6vMTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,75 +128,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 9:11=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
->
-> To enable batched unmapping of anonymous folios, we need to handle the
-> sharing of exclusive pages. Hence, a batched version of
-> folio_try_share_anon_rmap_pte is required.
->
-> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
-> to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
-> batch of nr_pages. Refactor the function such that the clearing of the bi=
-t
-> can be done at one place without duplication.
->
-> Note that __folio_try_share_anon_rmap can receive nr_pages =3D=3D HPAGE_P=
-MD_NR
-> from the PMD path, but currently we only clear the bit on the head page.
-> Retain this behaviour by setting nr_pages =3D 1 in case the caller is
-> folio_try_share_anon_rmap_pmd.
->
-> While at it, convert nr_pages to unsigned long to future-proof from
-> overflow in case P4D-huge mappings etc get supported down the road.
-> I haven't made such a change in each function receiving nr_pages in
-> try_to_unmap_one - perhaps this can be done incrementally.
->
-> Add two WARN's: check that the batch is entirely exclusive (for PMD
-> callers, need to check only head page), and that there are only
-> PTE/PMD paths converging into __folio_try_share_anon_rmap.
->
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+On Thu, Sep 24, 2026 at 09:15 +0000, Jan Kara wrote:
+> Can this be perhaps somehow related to the fixes in partial large folio
+> truncation Zhang Yi is working on, possibly even the tmpfs bug in handling
+> of folio split I've found [1]? It seems large folios are used here so that
+> matches, I just don't immediately see how those bugs would lead to the
+> errors reported here...
 
-The patch looks correct to me, but it seems a bit hard to follow
-because of the `pinnable` handling.
+That would fit what I see, for what it's worth:
 
-> ---
->  include/linux/rmap.h | 56 ++++++++++++++++++++++++++++++--------------
->  1 file changed, 39 insertions(+), 17 deletions(-)
->
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index 62ef511a6175a..91b5763ef466f 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -723,17 +723,23 @@ static inline int folio_try_dup_anon_rmap_pmd(struc=
-t folio *folio,
->  }
->
->  static __always_inline int __folio_try_share_anon_rmap(struct folio *fol=
-io,
-> -               struct page *page, int nr_pages, enum pgtable_level level=
-)
-> +               struct page *page, unsigned long nr_pages, enum pgtable_l=
-evel level)
->  {
-> +       /* device private folios cannot get pinned via GUP. */
-> +       const bool pinnable =3D !folio_is_device_private(folio);
-> +
+  - the rss-counter imbalance from the reproducer is always exactly
+    one PMD-order folio (+/-512), which looks more like large-folio
+    split/accounting going wrong than lost or extra PTEs;
 
-If we make a helper that does:
+  - the reproducer's punching thread deliberately mixes unaligned
+    sub-PMD ranges, so partial truncation of large folios is exercised
+    constantly, and the production "still mapped when deleted" splat
+    is reported from truncate_inode_partial_folio() (full stack in my
+    reply to Pedro).
 
-for (;;) {
-     ClearPageAnonExclusive(page);
-     if (--nr_pages =3D=3D 0)
-               break;
-     page++;
-}
-
-wouldn't that allow us to avoid this ugly `pinnable` variant?
-
-Then we can make a much smaller modification, which should
-also be much easier to follow? No?
-
-Best Regards
-Barry
+Thanks,
+Ayush
 
