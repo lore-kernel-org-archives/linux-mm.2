@@ -4,105 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FCFAC98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 20:04:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8A54C98321
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 20:10:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 652126B0088; Fri, 25 Sep 2026 16:04:12 -0400 (EDT)
+	id DD8A06B0088; Fri, 25 Sep 2026 16:10:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602736B008A; Fri, 25 Sep 2026 16:04:12 -0400 (EDT)
+	id D89486B008A; Fri, 25 Sep 2026 16:10:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F1A36B0093; Fri, 25 Sep 2026 16:04:12 -0400 (EDT)
+	id C50CF6B008C; Fri, 25 Sep 2026 16:10:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 221356B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 16:04:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A49B1A6E0D
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:04:11 +0000 (UTC)
-X-FDA: 85253361102.16.830649C
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9A06B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 16:10:09 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 32512A69F9
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:10:09 +0000 (UTC)
+X-FDA: 85253376138.22.01412D0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id ED858140005
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:04:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JH1E97ke;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5844420009
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:10:07 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbFAznLC;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790366650;
+	s=arc-20220608; t=1790367007;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=ePJQkIFnt4F6epeLD6EuDPC3hOp4CqTE9+zCYw95jpI=;
-	b=WDaUd5PDFh/hXo8JDoT6st1TrxNeNPqYYpArOF19g7g4KA6i/VvxKqJDIIkuDEEzbt3n4Q
-	czOYlyp+uIoGf+MmqsjdhpFTPFDpksgWzL9P0HBIJwXIflpOzlxT+aA5XdDwNX198JTvZi
-	UcORbtFQPQMUJatV3tj+faqt1Puqxns=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Yf1gqZywkOXToshDhJWRxPyIwRuJ1sOWbNbWLeQRwh0=;
+	b=uiF41xO9ocu95CZQkBNZuTVHUWS/0SMGmNdUVzvjgK6D1j5cBv1Ssva+uoqzX4U/af14nm
+	TFoMmBUUKp8SWT0jb3VSckU/56UJOzF+S5B7d+eKjsLo1dQ3LBAwZYqzYgYXaLZsEyXQQm
+	A/GGkplRiqutGo427iZHrn6VsQC/eI4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JH1E97ke;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbFAznLC;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790366650;
-	b=liIQjJJg/3f9Ml8VzHeuNR9QzGiM1yJ4wIlflh+QD5OO9fwwsVQK8S6VJrqJilD/bKTs47
-	2NGdYl0Mh6cVnl+0Phb5Uf8eR3W4pmSbRFJ76RBRccXz05dOYNEg+AXtNeKJrWK+El0z82
-	JDuT0bOWjyEKkpoUd/LD9+xWKCQwHLU=
+	t=1790367007;
+	b=EVtaZNhZAQuK20nWz52DY3Uk3u0kOMq+2MeLlpisLHJ+H71P7BRtet/UEpzOR0i4ouUu7I
+	vS6xRJ+6Yl4DvuOPPNewWHwG2XGisSJ2CL1fKY13/dDX4BWjXG2bZKC+9AxMZtKILT0eTT
+	sd6/ksTIxJD4xhuyRwcoddGYGvwXdeE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1E000439B9;
-	Fri, 25 Sep 2026 20:04:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAABE1F000FF;
-	Fri, 25 Sep 2026 20:04:08 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E944243D47;
+	Fri, 25 Sep 2026 20:10:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36621F000FF;
+	Fri, 25 Sep 2026 20:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790366649;
-	bh=ePJQkIFnt4F6epeLD6EuDPC3hOp4CqTE9+zCYw95jpI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=JH1E97kezkKPIcz7LwNFF3K1iKvj9euda68sv7W2yJ9qsjlzc0ssvJKALY+6ylfG4
-	 ybzL9EF1N3nOKx/mJovi2dH6Ael6VB8u6vOVoo3EPq/fo3BGnoFBVowf9hXX8IMgLg
-	 dD2fpKfE1K8Y6ynjbKP5IfQYfq5eJby+Xbhm7W7LLeOuInDLlYPVZL0caXXD/qc7hr
-	 ZVLikbkiFvpI9mgXB44hIhvNxa7LzErt10gsQKDRhxTpfqdPQmBRTR/WeNGUGWZ7BL
-	 3rvrZKp8UskVAQUja2xGgd1kZA9LfYNzND6v9EmOm+NewSpsBnVaGJ/CG1HjwosEqI
-	 BXFfGMqEzApaA==
-Date: Fri, 25 Sep 2026 15:04:07 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 06/13] PCI: liveupdate: Preserve bus numbers during
- Live Update
-Message-ID: <20260925200407.GA2082921@bhelgaas>
+	s=k20260515; t=1790367005;
+	bh=Yf1gqZywkOXToshDhJWRxPyIwRuJ1sOWbNbWLeQRwh0=;
+	h=From:Subject:Date:To:Cc;
+	b=bbFAznLC6/ZtUIxVhCluWB/j0yFpBiuWNLNJymRhr2bPbGWnWHQ716ymvalB5EJSi
+	 prnFLZtfOQ3rZdWXjAozyC5Lpovr1k8FfiOhJ4b+APef41PfCG3fCl8bjzPCrMEktu
+	 fx4USFfCGWBdKvMZttQUYjqnfNhXLn0LxRrjjYU/9ViwEOvqW/g0K9K9UPvZ2QMrbT
+	 Mr5715uFuRKs9Erlv4YRtXRjaWt51g96bu3pSlOaSl3lk2lVpJGlkFXaXLgnAd4RFT
+	 SzgvMuGps3b+k4dDQIIM210j/mry+b2LM2z711t9KAGCjgkaK8WG2GMkjLt9j8Vtxa
+	 h3E1vGIUbbkEA==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH v5 00/12] mm: make userland page table freeing RCU-safe
+Date: Fri, 25 Sep 2026 21:09:35 +0100
+Message-Id: <20260925-rcu-pagetable-freeing-v5-0-31e91065fea4@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918200640.887030-7-dmatlack@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XOQW7CMBAF0Ksgr2vkGTtmyop7oC5sMw5uUYLsE
+ LVCuXsd2AShLL/05/25i8I5cRH7zV1kHlNJfVdD87ER4ey6lmU61SxQoVWkQeZwk1fX8uD8hWX
+ MzKlrJRlvPZNWjErU22vmmH4f7vHrmcvNf3MYZmxunFMZ+vz3GB5h7j03PtXaxghSycY01hEEQ
+ sDDD+eOL9s+t2IeGXHJ0BqDlYFolbeGaUf8xugFA6vf6MrsPAWyoHR9540xCwZxjTGViQzuBBF
+ YK/3CTNP0DxRL+lGiAQAA
+X-Change-ID: 20260831-rcu-pagetable-freeing-84b6be830e20
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Guo Ren <guoren@kernel.org>, Brian Cain <bcain@kernel.org>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Dinh Nguyen <dinguyen@kernel.org>, 
+ Simon Schuster <schuster.simon@siemens-energy.com>, 
+ Jonas Bonn <jonas@southpole.se>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stafford Horne <shorne@gmail.com>, Rich Felker <dalias@libc.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Russell King <linux@armlinux.org.uk>, Vineet Gupta <vgupta@kernel.org>, 
+ Michal Simek <monstr@monstr.eu>, Chris Zankel <chris@zankel.net>, 
+ Max Filippov <jcmvbkbc@gmail.com>, Will Deacon <will@kernel.org>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, 
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Matt Turner <mattst88@gmail.com>, Magnus Lindholm <linmag7@gmail.com>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Mark Rutland <mark.rutland@arm.com>, Huacai Chen <chenhuacai@kernel.org>, 
+ WANG Xuerui <kernel@xen0n.name>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Richard Weinberger <richard@nod.at>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Johannes Berg <johannes@sipsolutions.net>, 
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Arnd Bergmann <arnd@arndb.de>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Jonathan Corbet <corbet@lwn.net>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
+ linux-sh@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, linux-snps-arc@lists.infradead.org, 
+ linux-arch@vger.kernel.org, sparclinux@vger.kernel.org, 
+ linux-alpha@vger.kernel.org, loongarch@lists.linux.dev, 
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+ linux-um@lists.infradead.org, Hugh Dickins <hughd@google.com>, 
+ Qi Zheng <qi.zheng@linux.dev>, linux-doc@vger.kernel.org, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
+ Greg Ungerer <gerg@linux-m68k.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9918; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=IwHL+gGhq7mbp81GXRrzD1tZw+JpDoikNpXoqfAEqUg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK2XWXuuNHfv3et0NIEW62XOhf3zFwUdmX+5SPFuhdfx
+ 5fXeVya3FHKwiDGxSArpsjy/Iv4/iCRsHmdF/zdYOawMoEMYeDiFICJOJkxMjx3uDp5ErPgnCa/
+ VcdXKLxRalwdXiX5+O28Z5d7UwqrvPgYGeYvYCgWfBOeN/1y3PMP2hNkuzvWWak/O3Tz9+ZJ/Fe
+ 0ZbkB
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: 93pi547ehihwgad14xy85e73cks1fjue
+X-Rspamd-Queue-Id: 5844420009
 X-Rspam-User: 
-X-Stat-Signature: p4doczajp5rg671b4c7zd7gyptzfcdmf
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ED858140005
-X-HE-Tag: 1790366649-11366
-X-HE-Meta: U2FsdGVkX1+Bjli47SnZMKSW5xOw+1ZxCAnt2Jk6WmfJfT0l94K1EgJOSvlSpoW5a4EDXKPiDiDuIgjZKwVVBQQf14/95PxKuuqZpHrzxWat6t0jZCEKLtBCOA3h2xYK2bRtdCkSdVhIqyYDbqM2V+47DJf7b8bSPN/tAaLIRiDPTq1QRnZAl1j9WEYNS58FvH8TnUMhQqMNu0t9R8g5quvN3+bkJWvvL12B1h5lzsYL/YuXEn10VQ2jlHTuu/YAajoXq4HTRqpI0s3sf1nm/b0al62UKw0XXYj9zTsWPyrZiZDW3BdUTfByQVadlYm2SmYDVsJLm14fFPo8rJINdECoUcvRmzeqwlQ4WpR/+GIQgb2Nj3HN42s2D5zjBVoZbmoYSz1ub5g9BwfKVdXohJLw3nh34LzJsXBYns305Y3UCLzSH+fiViVyjjsw7Sdbj4y6VtZ1szd0o9101I+YkN5zU1jimODkVSUtdePRCfZOEnY77EGo12YneotV9KcpGDbVi7JPSanA2X7KOjVq+zG5n0OwRwp7SJIJbOcG0uSAKop35IKYKvCz7ux3kgAvw4ssHNXch6r8IrexY+qhkiKObHvsBkAjM1oCjB8NB7hQw4DVVrQ2ww6VzvPzgqeVfSjzNDNfU9m6TFnFTRs6zovq9m1zcOznh8MhIRkMrmPk8ZgUqYz4D3PZEehP05WrhEVBUoMyznMvJpLNODIq/xMwoVjDhZp4PFK3UCYnFUPKx4Zm5R8YvV+V05rrB5HHRGeh5LczTnD+10zEk2wIBm/+QJC1fYzUGTypUyFQUq3R3jcxWzSJW/gdSJ7TJZDlH01Hyf1CJHNzaSDkqtLe5YrQF4k09H8hIv4y0c47w5hZsipRuJLgLZ6GiVIy4c/Kpy7eZ+m3qW9cSc7LRlEsBZlSfnXQnY6zEOgP46q1txIXtdQAKAnwZBpiEraqRWENoXBKtPeu0D/eQdjkW8I
- 5N2wCjKs
- to7SO9KblisRYUMf4E4dzSHzRlBePVOXK1r4OOLxADzbVRkr5YpvHdKiNRIfcZ1USQyav0YIlkiT1w3M9y+OC7lrChmHTfUZX8VQMejPr46ewgo1RC59jf78zUE47EOlORpPgWhKjb9OKVTvRmlKZ0qhHfWuW6EIxrCtn2tOcQD0qyXoSiIvFrnYUaUXbJ7sjS0FaIUuTz/RP3JOqPwgj0gh+QXaEkfUzAuVE1+NIzRyzdxuDBDAaxyzE2dS1TMnjx2RwXF/qAcP0iDb1frq8ZWcoFw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790367007-537612
+X-HE-Meta: U2FsdGVkX19mcQrg64NaZGTlJ4bzDHd9Y/2Sam/0aaHSwKLDdi6OTrI4EokEneqZZYyLpFr7RRjsxYQvZ/P/rTB16LXoDSZupf9PHvPnNwAykw//tM1Z+S7iHKOWXlLNd+oGmXCUXZIdfhABD66Lb4XW3b7lwrhZSdRadH2VOl9bvSU7ZabwN+rYJtt+YVfNmrbjDHfJrIoEk4nnClXmfsCKD+MKAH2DgZuTSMYEPjiWrEV3jSeXyCmIaZsJW6WrNwXm02J34EX2iIlq+mAKNxcwEHus2WAiUIVzIo9OW/xGR4p41n/9EC7NMLzTRw7eZO19e+Ax1d6i/f6TiCOTMcNAjqbND8dGNc/8GDtzI9lMyg4lgh282K81oCyDIF5AgfnTRbNOXZHsM5Y14E59fTtbks5O92PebQQvAEAzIsMiRuz0uqeX802YMvWS6N1/wWp4SLxJnCKSGAw3mvMiepdtdtQtfKke3hCXZv5agniP16Xvyhd8RL5E/Oh0UrmZ9OnGhtw8TZOI4/NXGc2mGF3yfNN0zLBVR4iSZ3SYYl85g2PU8ekQHjsuIhyHppDkJh1sedVE/1rigDpHsCxzsg/TrOsBXo/g1VA2ca+o/RhKYQasurcqPC+QXq2yEZHjR9B/8cU9ysZGOWv6GyeVxzNeoZieiG0rCxdMLW+rfYpDJarkoUcy1eeMYbcHfNbY2UP6y1mMZUPPnknPgbVbi134GSYO6Jyo9mXE1LTpdIUgkmgVAQvxZg8ug12/ncXBJrJlsOpz+jxGM1JC+0MgVQeoQEM4NDJ5oS6ZQKxaON78rsdFXWo0LlWUHgECR+p3ys5tJ7Ze9xpi8cdOYseqAVerwZ4EEzZ1uMhBpL9tFKez3q/6mZLtQrswImNcDwrfy5HtObuAhLaMsfW7BYFy0nVF5KTkL84dJaLMkxj2UH+WePDfOSBej4azPAswCgJFOrUtt3RiOb3OBafN3hQ
+ MsSjHIKP
+ dWKJjUdhrfL6dC8Jmy3a80g9Bmi368m2DyoBOvD0Vty311Guxug5qg0bsBzKuHmy5/2J9G6AC4FItTA7nJjDJXSHVRoOp9rjhZVmvZpOciX9GCJ8zSuOTBzntHMDAsrD8cV+/fDgAiyrKqU4FvdbZfziWhioyUzCPbSqf6xvbIsBSLGGPB8KStrQ8AQrOzbcbaWgpnRdX3/lqpsp8i6Up3S3vaMH3vzyCVgejW6Dx6Z1397wooXCDBi7hSKolGKEX/+xjfHQxk7ARFfLXGGrvn9hLYs45oPV5XsWjr1iyV9FVfoA6+xMj/AwdhHqKXtrkukNfN7LCxrftXZHUcAdoe9zGhGmxa+xLURpBzl/8ngOc1xits4xzsQrGs+wcsaTdiZ+T1J7RnsGk6CEYm7m9YbpVXddqJkI9foD5qIVv0S5181DsIaS994J3VQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,339 +163,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 08:06:32PM +0000, David Matlack wrote:
-> Keep the secondary and subordinate bus numbers that the previous kernel
-> programmed into bridges, rather than assigning new ones, if the previous
-> kernel preserved any device across a Live Update. Do this even on
-> architectures that would otherwise always assign bus numbers themselves,
-> e.g. when pci=assign-busses is passed.
-> 
-> Preserved devices must be allowed to continue performing memory
-> transactions across a Live Update, so the kernel cannot change the
-> fabric topology. Changing the bus numbers of a bridge changes the
-> RequesterIDs of the devices below it, which would require disabling and
-> flushing any in-flight memory transactions first.
-> 
-> Apply the policy globally rather than only to the paths that contain
-> preserved devices. Bus numbers have to be preserved above a preserved
-> device anyway, since an upstream bridge cannot expand its window. A
-> global policy matches the scope of pcibios_assign_all_busses(), and
-> gives an answer that cannot change part way through the two passes of a
-> bridge scan.
-> 
-> Bridges that do not have bus numbers are still assigned new ones, so
-> hot-adding a bridge keeps working, both during and after a Live Update.
-> The two-pass bridge scan guarantees such bridges are only assigned bus
-> numbers above those already claimed by preserved bridges.
-> 
-> The exception is a bridge that was preserved but comes up without a
-> valid bus number configuration, e.g. because it was reset during kexec.
-> Refuse to assign it new bus numbers, since that would silently change
-> the BDF of every preserved device in its hierarchy. Also refuse to
-> assign bus numbers to the other bridges on the same bus, since the bus
-> numbers of the failed bridge can no longer be read from hardware and
-> handing them out would let an unrelated device inherit the BDF of a
-> preserved device.
-> 
-> Require that CONFIG_CARDBUS is not enabled to enable
-> CONFIG_PCI_LIVEUPDATE since preserving bus numbers on PCI-to-CardBus
-> bridges requires additional work but is not a priority at the moment.
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
+The majority of architectures in the kernel defer page table freeing until
+an RCU grace period has elapsed, this series converts all remaining
+architectures to do so too and eliminates CONFIG_MMU_GATHER_RCU_TABLE_FREE
+altogether.
 
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+This is important because it enables safe lockless page table walking under
+RCU alone.
 
-> ---
->  .../admin-guide/kernel-parameters.txt         |   7 +-
->  drivers/pci/Kconfig                           |   2 +-
->  drivers/pci/liveupdate.c                      | 114 ++++++++++++++++++
->  drivers/pci/liveupdate.h                      |  13 ++
->  drivers/pci/probe.c                           |  11 +-
->  include/linux/pci_liveupdate.h                |   5 +
->  6 files changed, 146 insertions(+), 6 deletions(-)
-> 
-> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> index 68647ff4bdd2..7eabf6320abf 100644
-> --- a/Documentation/admin-guide/kernel-parameters.txt
-> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> @@ -5170,7 +5170,12 @@ Kernel parameters
->  				explicitly which ones they are.
->  		assign-busses	[X86] Always assign all PCI bus
->  				numbers ourselves, overriding
-> -				whatever the firmware may have done.
-> +				whatever the firmware may have done. Ignored
-> +				if any device was preserved across a Live
-> +				Update, where the kernel must preserve the
-> +				PCI topology (including bus numbers) to
-> +				avoid interrupting ongoing memory transactions
-> +				of preserved devices.
->  		usepirqmask	[X86] Honor the possible IRQ mask stored
->  				in the BIOS $PIR table. This is needed on
->  				some systems with broken BIOSes, notably
-> diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-> index 8af20f558086..16fbd4212e0f 100644
-> --- a/drivers/pci/Kconfig
-> +++ b/drivers/pci/Kconfig
-> @@ -273,7 +273,7 @@ config VGA_ARB_MAX_GPUS
->  
->  config PCI_LIVEUPDATE
->  	bool "PCI Live Update Support"
-> -	depends on PCI && LIVEUPDATE && 64BIT
-> +	depends on PCI && LIVEUPDATE && 64BIT && !CARDBUS
->  	help
->  	  Enable PCI core support for preserving PCI devices across Live
->  	  Update. This, in combination with support in a device's driver,
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index 825df024eec4..686887a6c8d9 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -148,6 +148,32 @@
->   * This enables the PCI core and any drivers bound to the bridge to participate
->   * in the Live Update so that preserved endpoints can continue issuing memory
->   * transactions during the Live Update.
-> + *
-> + * BDF Stability
-> + * =============
-> + *
-> + * The PCI core guarantees that preserved devices can be identified by the same
-> + * bus, device, and function numbers for as long as they are preserved
-> + * (including across kexec). To accomplish this, the PCI core keeps the
-> + * secondary and subordinate bus numbers that the previous kernel programmed
-> + * into bridges, if the previous kernel preserved any device. This is true even
-> + * on architectures that always assign new bus numbers during scanning. The
-> + * kernel assumes the previous kernel established a sane bus topology across
-> + * kexec.
-> + *
-> + * Bridges that do not have bus numbers are assigned new ones as usual, so
-> + * hot-adding a bridge keeps working, both during and after a Live Update. The
-> + * two-pass bridge scan ensures such bridges are only assigned bus numbers above
-> + * those already claimed by preserved bridges.
-> + *
-> + * If a preserved bridge comes up without a valid bus number configuration, e.g.
-> + * because it was reset during kexec, the PCI core refuses to assign it new bus
-> + * numbers and does not enumerate anything below it. Assigning new bus numbers
-> + * would silently change the BDF of every preserved device in its hierarchy. The
-> + * PCI core also stops assigning bus numbers to the other bridges on the same
-> + * bus, since the bus numbers of the failed bridge can no longer be read from
-> + * hardware and handing them to another bridge would let an unrelated device
-> + * inherit the BDF of a preserved device.
->   */
->  
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-> @@ -168,9 +194,13 @@
->   * struct pci_liveupdate_global - Global state for PCI Live Update support
->   * @rwsem: Reader/writer semaphore used to protect the incoming and outgoing
->   *         FLBs, and the references to them in struct pci_dev.
-> + * @had_incoming: True if the previous kernel preserved at least one PCI device.
-> + *                Set when the incoming FLB is retrieved and never cleared, so
-> + *                it stays true after Live Update finishes.
->   */
->  struct pci_liveupdate_global {
->  	struct rw_semaphore rwsem;
-> +	bool had_incoming;
->  };
->  
->  static struct pci_liveupdate_global pci_liveupdate = {
-> @@ -298,6 +328,14 @@ static int pci_flb_retrieve(struct liveupdate_flb_op_args *args)
->  			      ret);
->  	}
->  
-> +	/*
-> +	 * Remember that the previous kernel preserved devices for the lifetime
-> +	 * of this kernel, even after Live Update finishes and the incoming FLB
-> +	 * is freed. See pci_liveupdate_preserve_bus_numbers().
-> +	 */
-> +	if (!xa_empty(&incoming->xa))
-> +		pci_liveupdate.had_incoming = true;
-> +
->  	args->obj = incoming;
->  	return 0;
->  }
-> @@ -606,6 +644,80 @@ static void pci_liveupdate_flb_put_incoming(void)
->  	liveupdate_flb_put_incoming(&pci_liveupdate_flb);
->  }
->  
-> +/**
-> + * pci_liveupdate_preserve_bus_numbers() - Determine if the PCI core should
-> + *                                         preserve bus numbers when scanning
-> + *                                         bridges.
-> + *
-> + * This function is called by the PCI core when it is scanning a bridge. It
-> + * determines whether the PCI core should preserve the secondary and subordinate
-> + * bus numbers that the previous kernel programmed into that bridge, rather than
-> + * assigning new ones. This is necessary to keep RequesterIDs constant for
-> + * preserved devices issuing memory transactions.
-> + *
-> + * Bus numbers are preserved everywhere, and for the lifetime of the kernel, if
-> + * the previous kernel preserved any device. Bus numbers have to be preserved
-> + * above a preserved device anyway, since an upstream bridge cannot expand its
-> + * window. Applying the same policy everywhere matches the scope of
-> + * pcibios_assign_all_busses(), and gives an answer that cannot change part way
-> + * through the two passes of a bridge scan.
-> + *
-> + * The incoming FLB is retrieved while setting up the first device, which always
-> + * happens before any bridge is scanned, so this returns the same answer for the
-> + * entire enumeration.
-> + *
-> + * Note that this does not prevent the PCI core from assigning bus numbers to
-> + * bridges that do not have any, e.g. bridges that are hot-added after the
-> + * Live Update. See pci_liveupdate_refuse_bus_numbers() for the one case where
-> + * the PCI core must refuse to do so.
-> + *
-> + * Return: True if bus numbers should be preserved, false otherwise.
-> + */
-> +bool pci_liveupdate_preserve_bus_numbers(void)
-> +{
-> +	return pci_liveupdate.had_incoming;
-> +}
-> +
-> +/**
-> + * pci_liveupdate_refuse_bus_numbers() - Determine if the PCI core must refuse
-> + *                                       to assign bus numbers to the provided
-> + *                                       bridge.
-> + * @bus: The PCI bus the bus numbers would be assigned from.
-> + * @dev: The PCI bridge device the bus numbers would be assigned to.
-> + *
-> + * This function is called by the PCI core before it assigns bus numbers to a
-> + * bridge that does not have any.
-> + *
-> + * A bridge that was preserved by the previous kernel but came up without a
-> + * valid bus number configuration, e.g. because it was reset during kexec, is
-> + * left alone by the PCI core and therefore has no child bus once the first pass
-> + * of the bridge scan is done.
-> + *
-> + * The PCI core must not assign bus numbers from @bus while such a bridge is on
-> + * it, including to the failed bridge itself. Assigning new bus numbers to the
-> + * failed bridge would silently change the BDF of every preserved device in its
-> + * hierarchy. Its bus numbers cannot be read from hardware anymore either, so
-> + * they cannot be excluded from assignment, and handing them to another bridge
-> + * would let an unrelated device inherit the BDF of a preserved device.
-> + *
-> + * Return: True if @dev must not be assigned bus numbers, false otherwise.
-> + */
-> +bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev)
-> +{
-> +	struct pci_dev *bridge;
-> +
-> +	for_each_pci_bridge(bridge, bus) {
-> +		if (!bridge->liveupdate.was_incoming || bridge->subordinate)
-> +			continue;
-> +
-> +		pci_err(dev, "Not assigning bus numbers, preserved bridge %s lost its bus number configuration\n",
-> +			pci_name(bridge));
-> +		return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  void pci_liveupdate_setup_device(struct pci_dev *dev)
->  {
->  	struct pci_flb_incoming *incoming;
-> @@ -634,6 +746,8 @@ void pci_liveupdate_setup_device(struct pci_dev *dev)
->  
->  	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
->  	dev->liveupdate.incoming = dev_ser;
-> +	dev->liveupdate.was_incoming = true;
-> +
->  	pci_liveupdate_flb_put_incoming();
->  }
->  
-> diff --git a/drivers/pci/liveupdate.h b/drivers/pci/liveupdate.h
-> index eaaa3559fd77..e5d2a19d2ca2 100644
-> --- a/drivers/pci/liveupdate.h
-> +++ b/drivers/pci/liveupdate.h
-> @@ -13,6 +13,8 @@
->  #ifdef CONFIG_PCI_LIVEUPDATE
->  void pci_liveupdate_setup_device(struct pci_dev *dev);
->  void pci_liveupdate_cleanup_device(struct pci_dev *dev);
-> +bool pci_liveupdate_preserve_bus_numbers(void);
-> +bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus, struct pci_dev *dev);
->  #else
->  static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
->  {
-> @@ -21,6 +23,17 @@ static inline void pci_liveupdate_setup_device(struct pci_dev *dev)
->  static inline void pci_liveupdate_cleanup_device(struct pci_dev *dev)
->  {
->  }
-> +
-> +static inline bool pci_liveupdate_preserve_bus_numbers(void)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool pci_liveupdate_refuse_bus_numbers(struct pci_bus *bus,
-> +						     struct pci_dev *dev)
-> +{
-> +	return false;
-> +}
->  #endif
->  
->  #endif /* DRIVERS_PCI_LIVEUPDATE_H */
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index ad7fdf0d56b6..debe0ad1ef68 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -1397,6 +1397,8 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  				  int max, unsigned int available_buses,
->  				  int pass)
->  {
-> +	bool preserve_bus_numbers = !pcibios_assign_all_busses() ||
-> +				    pci_liveupdate_preserve_bus_numbers();
->  	struct pci_bus *child;
->  	u32 buses;
->  	u16 bctl;
-> @@ -1449,8 +1451,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  		goto out;
->  	}
->  
-> -	if ((secondary || subordinate) &&
-> -	    !pcibios_assign_all_busses() && !broken) {
-> +	if ((secondary || subordinate) && preserve_bus_numbers && !broken) {
->  		unsigned int cmax, buses;
->  
->  		/*
-> @@ -1492,8 +1493,7 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  		 * do in the second pass.
->  		 */
->  		if (!pass) {
-> -			if (pcibios_assign_all_busses() || broken)
-> -
-> +			if (!preserve_bus_numbers || broken)
->  				/*
->  				 * Temporarily disable forwarding of the
->  				 * configuration cycles on all bridges in
-> @@ -1507,6 +1507,9 @@ static int pci_scan_bridge_extend(struct pci_bus *bus, struct pci_dev *dev,
->  			goto out;
->  		}
->  
-> +		if (pci_liveupdate_refuse_bus_numbers(bus, dev))
-> +			goto out;
-> +
->  		/* Clear errors */
->  		pci_write_config_word(dev, PCI_STATUS, 0xffff);
->  
-> diff --git a/include/linux/pci_liveupdate.h b/include/linux/pci_liveupdate.h
-> index 710026ada2d5..d45a5b524909 100644
-> --- a/include/linux/pci_liveupdate.h
-> +++ b/include/linux/pci_liveupdate.h
-> @@ -17,10 +17,15 @@
->   * struct pci_liveupdate - PCI Live Update state for a struct pci_dev
->   * @outgoing: State preserved for the next kernel.
->   * @incoming: State preserved by the previous kernel.
-> + * @was_incoming: True if this struct pci_dev was incoming-preserved when it was
-> + *                set up, i.e. it was matched to state preserved by the previous
-> + *                kernel. Unlike @incoming, this is never cleared, so it stays
-> + *                true after the device finishes participating in Live Update.
->   */
->  struct pci_liveupdate {
->  	struct pci_dev_ser *outgoing;
->  	struct pci_dev_ser *incoming;
-> +	bool was_incoming;
->  };
->  
->  struct pci_dev;
-> -- 
-> 2.55.0.1082.g2b9226bbc0-goog
-> 
+Doing so allows for reduced lock contention, avoids lock ordering concerns
+and enables fast, efficient and correct page table walking as a result.
+
+Additionally it removes a bunch of code and architecture-specific behaviour
+which is always a beneficial thing to do.
+
+There has been much recent work on this:
+
+* In 2023 Hugh Dickins RCU-deferred khugepaged page table retraction in
+  commit 13cf577e6b66 ("mm/pgtable: add pte_free_defer() for pgtable as
+  page").
+
+* Qi Zheng has done most of the work that made this possible starting with
+  the critical commit 718b13861d22 ("x86: mm: free page table pages by RCU
+  instead of semi RCU").
+
+* Qi then went on to convert a large number of architectures in commit
+  e3ecf7c7d082 ("mm: pgtable: convert some architectures to use
+  tlb_remove_ptdesc()"), commit 44b079583f7d ("alpha: mm: enable
+  MMU_GATHER_RCU_TABLE_FREE") and the series to which it belongs.
+
+* Qi then introduced the important CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE
+  option in commit 086498aed3f6 ("mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE
+  to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config").
+
+* Finally, and critically, Lance Yang then converted the batch allocation
+  fallback case to be RCU-safe in commit 1fb3d8c20bfa ("mm/mmu_gather:
+  replace IPI with synchronize_rcu() when batch allocation fails").
+
+The work I do here is only possible due to the work Hugh, Qi, Lance and
+others have done previously.
+
+An initial task this series addresses is to deposit a freshly allocated PTE
+page table and RCU-free the existing PTE page table. Not doing so is
+currently safe, but for page table walkers relying on RCU alone, it would
+not be.
+
+Additionally, it makes it possible to implement lockless RCU-only page
+table walkers which otherwise would have required the PTE PTL.
+
+The changes are largely mechanical - the majority of arches already have
+the machinery required to support CONFIG_MMU_GATHER_RCU_TABLE_FREE and
+simply needed configuration changes or small implementation changes to
+switch over.
+
+However some arches required extra attention - sh-X2, m68k-motorola and
+sparc32.
+
+sh-X2 allocates PMDs from the slab allocator and PTEs as normal. Therefore
+CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE is set to customise page table freeing
+and the LSB is used to encode which page table level is used, with
+__tlb_remove_table() doing the right thing depending on this.
+
+This pattern is repeated for m68k-motorola and sparc32 to account for
+different page table levels. In each case, the page tables are aligned such
+that sufficient bits are available in each case for encoding this
+information.
+
+m68k-motorola required the biggest change - since RCU page table freeing
+uses call_rcu(), this means page table freeing can arise from softirq
+context.
+
+This was fixed with a BH-disabling spin lock used in both get_pointer_table()
+and free_pointer_table() (softirq being the only asynchronous context in which
+the lock is taken).
+
+As part of this change, the logic for allocation of a new pointer table was
+separated out into add_pointer_table() to make the locking more obviously
+correct.
+
+Finally, sparc32 was similar to m68k-motorola in that locking was required,
+however this was already implemented via a spinlock, and only had to be
+updated to be IRQ-safe.
+
+Additionally, the nocache pool's bit_map lock was updated to be IRQ-safe
+for softirq frees.
+
+Separately, the PTE path can't take mm->page_table_lock from softirq (no mm
+there), which is fine because the page reference count transitions are
+atomic and fully ordered.
+
+The series finally removes CONFIG_MMU_GATHER_RCU_TABLE_FREE and all related
+configurations and code that supported !CONFIG_MMU_GATHER_RCU_TABLE_FREE.
+
+As a result, page table walks can now be performed safely under RCU without
+any risk of page tables being freed underneath a walker.
+
+However, this is the only guarantee that this work provides - page table
+walkers must still ensure that page table entries are as expected
+throughout.
+
+All changes have been build tested. As most of the conversions are simply
+utilising existing mechanics that are known to work, this suffices for most
+cases.
+
+However those arches where significant changes have been made -
+m68k-motorola, sparc32 and sh-X2 - have been tested further.
+
+For each of these a boot test and stress test has been performed - fork 400
+children, each mmap()'ing 2 MiB and touching every page then partially
+munmap()'ing then exiting to trigger as much page table freeing as
+possible.
+
+All were found to be working correctly.
+
+(Note that sparc32 LEON SMP is not possible to emulate.)
+
+v5:
+* Collected tags (thanks all! :)
+* Updated 1/12 to correctly set result to SCAN_ALLOC_HUGE_PAGE_FAIL should
+  the page table allocation fail, as per Lance.
+* Updated 1/12 to rename alloc_deposit_pte() to alloc_deposit_pte_table()
+  and dropped the powerpc hash MMU paragraph from the commit message, as
+  per David.
+* Updated 9/12 to use a BH-disabling spinlock rather than an IRQ-safe one,
+  as per Matthew.
+* Updated the subject line of 11/12 to clarify that the patch removes
+  now-unneeded code, as per David.
+* Updated 12/12 documentation as per David, Lance.
+
+v4:
+* Updated the 1st patch to allocate a new page table on PTE deposit rather
+  than deposit a page table that might currently be being walked by an
+  RCU-only page table walker, as per David.
+https://lore.kernel.org/r/20260922-rcu-pagetable-freeing-v4-0-fe1ad1f1e303@kernel.org
+
+v3:
+* Added Kiryl's tag to series (thanks! :)
+* Corrected commit message, comment indentation in 11/12 as per Kiryl.
+* Corrected 12/12 documentation as per Kiryl.
+https://lore.kernel.org/r/20260911-rcu-pagetable-freeing-v3-0-7b8c86103821@kernel.org
+
+v2:
+* Updated commit message to reflect CONFIG_MMU dependency for xtensa as per
+  Suren.
+* Updated 12/12 to correctly describe the new contract re: readers/writes
+  as per Kiryl. Also fixed up typos there as per Kiryl, Suren and slightly
+  reworded for clarity, and updated commit message to reflect.
+* Updated 11/12 to reflect the fact the change is for userland only as per
+  Kiryl, also added a note about write locks similarly to 12/12.
+* Fixed bug as reported by sashiko for the sparc32 change (10/12) - the
+  refcounts are insufficient on their own, so replace the page_table_lock
+  altogether with an IRQ-safe spinlock.
+https://lore.kernel.org/r/20260908-rcu-pagetable-freeing-v2-0-1f60b64e878e@kernel.org
+
+v1:
+https://patch.msgid.link/20260901-rcu-pagetable-freeing-v1-0-5456a81c8212@kernel.org
+
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Lorenzo Stoakes (ARM) (12):
+      mm/khugepaged: deposit a newly allocated page table on collapse
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for most 2-level architectures
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU riscv
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for MMU arm
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for arc, microblaze, xtensa
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc64
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-coldfire
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for sh-X2
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for m68k-motorola
+      mm: enable MMU_GATHER_RCU_TABLE_FREE for sparc32
+      mm: userland pgtable freeing is RCU-safe now, remove leftover bits
+      mm: change the contract for free_pgtables(), update docs
+
+ Documentation/mm/process_addrs.rst       |  11 +++
+ arch/Kconfig                             |   8 ---
+ arch/alpha/Kconfig                       |   1 -
+ arch/arc/include/asm/pgalloc.h           |   6 +-
+ arch/arm/Kconfig                         |   1 -
+ arch/arm64/Kconfig                       |   1 -
+ arch/loongarch/Kconfig                   |   1 -
+ arch/m68k/Kconfig                        |   1 +
+ arch/m68k/include/asm/mcf_pgalloc.h      |   5 +-
+ arch/m68k/include/asm/motorola_pgalloc.h |   9 +--
+ arch/m68k/mm/motorola.c                  | 119 ++++++++++++++++++++-----------
+ arch/microblaze/include/asm/pgalloc.h    |   2 +-
+ arch/mips/Kconfig                        |   1 -
+ arch/parisc/Kconfig                      |   1 -
+ arch/powerpc/Kconfig                     |   1 -
+ arch/riscv/Kconfig                       |   1 -
+ arch/s390/Kconfig                        |   1 -
+ arch/sh/Kconfig                          |   1 +
+ arch/sh/include/asm/pgalloc.h            |   6 +-
+ arch/sh/mm/pgtable.c                     |  20 ++++++
+ arch/sparc/Kconfig                       |   4 +-
+ arch/sparc/include/asm/pgalloc_32.h      |   7 +-
+ arch/sparc/include/asm/pgalloc_64.h      |   8 ---
+ arch/sparc/include/asm/tlb_64.h          |   2 -
+ arch/sparc/lib/bitext.c                  |  14 ++--
+ arch/sparc/mm/srmmu.c                    |  32 +++++++--
+ arch/um/Kconfig                          |   1 -
+ arch/x86/Kconfig                         |   1 -
+ arch/xtensa/include/asm/tlb.h            |   2 +-
+ include/asm-generic/tlb.h                |  66 +++--------------
+ mm/Kconfig                               |   2 +-
+ mm/gup.c                                 |   5 +-
+ mm/khugepaged.c                          |  34 ++++++++-
+ mm/mmu_gather.c                          |  30 ++------
+ mm/pgtable-generic.c                     |  15 ++--
+ 35 files changed, 228 insertions(+), 192 deletions(-)
+---
+base-commit: 88297631d4d42f6004cb39c0ba3da7d2d10a616f
+change-id: 20260831-rcu-pagetable-freeing-84b6be830e20
+
+Best regards,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
