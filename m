@@ -4,96 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D0ACC9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 23:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED571C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 23:47:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 411186B0088; Fri, 25 Sep 2026 19:14:03 -0400 (EDT)
+	id 8B9786B0088; Fri, 25 Sep 2026 19:47:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C2E46B008A; Fri, 25 Sep 2026 19:14:03 -0400 (EDT)
+	id 86A416B008A; Fri, 25 Sep 2026 19:47:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28AB46B008C; Fri, 25 Sep 2026 19:14:03 -0400 (EDT)
+	id 75A066B008C; Fri, 25 Sep 2026 19:47:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 073F76B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:14:03 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B9128077D
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:14:02 +0000 (UTC)
-X-FDA: 85253839524.18.74211C3
-Received: from mta1.migadu.com (out-73.mta1.migadu.com [95.215.58.73])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 45FC010000A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:14:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bti3UOqA;
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790378040;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E2896B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:47:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DCE56406B3
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:47:22 +0000 (UTC)
+X-FDA: 85253923524.12.DC2A7B8
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EFE0740007
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:47:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="SlyN/wEh";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790380041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=By0gVXNoU1v4k2Fh5ILwnkmTG7p+KtlZP8PyA6fvPCE=;
-	b=4ugG+fo/wkiJOgwwatl9qfX/JipmnD8pUz/eqKR2H39oqAnAlFTJSEAdjqAT9cKyou2hfO
-	TyLSJBy5X0oJxVWiu+CHGpJxUfxZTheme/NkUve/PnqgIt9lLDOQyetmU2JqCGrpyABIkO
-	qGAZOuoAa4fKYam33iVDipVQBeJ3ztM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790378040;
-	b=AO0RkUWm6tuhkcSQcmpUUF4J3PegQ22ZqK6Ewd1cR265yNrDxJptDGDgRC0pJUgsoWWXif
-	G7NiXyVo6UfysHdvK0H5TKWW7TlPuZcMBztpiv/Ihp9q82e32aTHxg9rzZiCOUt3Jovadq
-	q0da9c4WExnnm5GFxg/tenbelnf0X9I=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bti3UOqA;
-	spf=pass (imf05.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tOxz9HoU6pRLO9zJ7CotYpqDOpegZThflwPxXAEwQro=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790378038; v=1; x=1790982838;
- b=bti3UOqAx7sMW4PbRR/lDqekpsihY2SzCblhxyTktcDJG2UqllSNK2b9TqAKUSuxKhC1bfBL
- 8rX0+VxQTqNsO7zVK5kYRVKwBluRNYeQWFKO+nv+Xlol8FSWSmzjB1/fyhI1nQklQrzsYLPO3Yn
- JG7SYfDXgCMmtVx0t658ZlXM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id faa0fec37a4f7450;
-	Fri, 25 Sep 2026 23:13:57 +0000
-X-Mizu-Trace-ID: faa0fec37a4f7450
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <293f4c3d-c6b4-4ccd-a116-71ce02341c39@linux.dev>
-Date: Sat, 26 Sep 2026 02:13:50 +0300
+	bh=qIluyRCU98I9Sdr/F/z+kOctZKsX4pt6+dPY035uhLg=;
+	b=Vm9jrCgEiRsCUCOipDBXKohPBRUC5w4MMM85E5OcgktCImJ0NpzIGaf6Z6v663lB1Gbg6+
+	wGWoeGPiwoNkMDdOGG+k4A4Rs61WlePQRT7nhEv1RNGtZJetOuTJh49meWOxqaBxUKrheS
+	QcyjzowOmGhD+PUnG0/cxB3l+5xYu2Y=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="SlyN/wEh";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf17.hostedemail.com: domain of joannelkoong@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790380041;
+	b=YWb6x6gX3BbfaOAqeDq/RzJDj1Xlrg6f92YC//lzLKRLIgHsqEBF9+eJGWxK4Dl5TeRGZU
+	/ZGGuwMEiPcyatxRVmplMVQVQer/L1Np6h1TCPSeS5Lv38RTJXrQatTTf3aTIkw1QFBC2M
+	xTBDx4vwomP2A3IYzogk46aBq6HMP0Q=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-48439feca17so1005493f8f.1
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 16:47:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790380039; cv=none;
+        d=google.com; s=arc-20260327;
+        b=b6RvP+ECCpMPd1VR2BPylzdWVGyHmiRg/T1agdHkX4kyUC37G5Rtbj4rszqmcTw4yM
+         zF14l6YdGJNRJSrfEecFU2m01oj0ZWzEi2GVnfqwCMgP96QDiQwd4TOY3yOVUcTVtwAU
+         9Qo80mm7jUVaXATW/xFC6844Q4eZIOCOcViPDvqTyLnEeGBKl5sc6/jERfjaNwvGyaZJ
+         qUiKHGzkYv74JH0nnB0li4i5MppddNL3FkCqx5ZvJk6qfTkPymPlJqpbb7u1UQUs2sgO
+         kCRrwoz2kpeIzwSapmqm9TtsjZcuZ/Ze6QBUoNiaaJkrFZMB0NzvwgKvjEvmTMuwxRCh
+         kbjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qIluyRCU98I9Sdr/F/z+kOctZKsX4pt6+dPY035uhLg=;
+        fh=qS+Er+WkgFOy2wjXarWYjWdmmhjWFU6NeT+IMA4r/z4=;
+        b=dzxhwhHSN1d0Zsg7VoGQLf0Pz7Zvj2GN0EPln8u2micGKd2beA/7lXPrRsz0GdcOuh
+         oj3nXjbrb24qAy/f7XIjWRUXuVwme1CeJz13le4UEqf872rcfTBve+InCwymAjFWIyDh
+         ju6qFGxPVVwoZScqxjFgnFFkKal4IJxfaVpCvHX2ayu7HCkEmloE52SiWOa+64eIYBSf
+         6EikvwqRyspJxrZnLCHQTGH21K/kD7SWlB7271j02STYmVfGRasqYNrq+zU4hg3O/q9d
+         sby8aRopBC3JIhEQS/utunLyTUI3f0AqEChxjSaPVwQDxjLgWx68xwTI2PCvoiY+4jlM
+         mh5w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790380039; x=1790984839; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qIluyRCU98I9Sdr/F/z+kOctZKsX4pt6+dPY035uhLg=;
+        b=SlyN/wEhXnqxeyVmQ8xzBngJcKWD+IXswAij3TI558NYFla0JyGR2JVTZYoIix77PX
+         Iyr7a7+GMAPrNYASNSbCg8vWPXhszXTGeN0OI8/v2rfwp5mU6yvhoFBVrhivYw0TQMzB
+         XbjtTPhmFPLmWl6Sp0fFJmQUIoESrYK+/kfYVWK20jwI3GiDAm0MSr6rqIyIW4/yImpU
+         XqMqFhl+ahpycNvVAbXMKOFkYGNyS9JfY5PYzwxxNz1BYQwdniiz2UQlVCPj4Iz++fJL
+         dC26Z7Jyc1NlWyOmgTqeNzwnKJyGtRSXoZ1LKbc0dpCS3pJ1Cb6XLksbwV5Gg/gCVqEv
+         CXDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790380039; x=1790984839;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qIluyRCU98I9Sdr/F/z+kOctZKsX4pt6+dPY035uhLg=;
+        b=k+aa7ricQ6JO7NDTunFeUX/1o7ZDKiJtUQeI4SH3GJbQSoeaZBQ2GZ48ih89HqTOyV
+         6k3JzeGv7dZae2h2b9wyg8ZpIp2nNBZWZxjITOEpsOhnM59LKiYd2e2LTTZt7kAQbuhS
+         +XOb+lkVwtybU2m7PmCjl3edJGCzbtBbQ36aoJ7dx8yfWvLv5/Td2kMXUeFQyqpkqA9Z
+         euJe1TMkShGdnQxDzw63z7WN/JTC3Ehodi+UioAmtmOQPx3KPTDgEgS1MGBhgYEMCZmd
+         b7IUw3XCUmyEB179Mx/DwtzRf/ZgrRBSwJ/3zN4QJ7yvW/NOyHYew5McBg60ulCSYrpu
+         /hgw==
+X-Forwarded-Encrypted: i=1; AKwUvBwKfxzl2bpKkpEJrpX9XoizfgM/QtLQAOGG4LWOoIKljQgOmIV9N1IZQ990efzDtC2Iv4KTxStdOg==@kvack.org
+X-Gm-Message-State: AFuF++mlPUOAdN/xI/7IkPMjSZjQUHZVfUBZiqzxY9md0pg3U3qZklQd
+	azB1QjlZeh0wn09Kxjp/jxWuDQA9yh39+s/UbFIom233V0gbTue4/aTCQZUwjWRPQLK8SQiAfnq
+	F78y+rV8eMgHeWhJtUCSWr1NFuP+FQ8U=
+X-Gm-Gg: AYBFou3SQ8nowKW7w4ITGigmO1aGgPoHFboaXAUpnHZUT83JRTPRwkxATEw0n7n1mky
+	I7COmgojA1UqWI6DV/UlQCYEHfsjHnU81/+XVtaWtMbZwbWb4uHbRi6Wsq2Ba5MVYo0I0Kkktxk
+	YtKVuIJIbeN7D/JAEWTfRB3IybMfTlaBkhnv4Bglhliw8xHBgOzwzjPOYoTociSdN0eof7Q+1bQ
+	opSyaUwH7HGz1YzTZKFRDyj4xui1quat+zM9EKlcPWqW6+OQ32US+P0mAlswI96pGgwyMrGyOYd
+	l0ogT/VhY0bdnTtpo7rkLdhUqe2G/YI+SDDfn13SeBtU3JESpDUEmDy8iMuAiLMDgwdh+aoaGPA
+	ZAuB29gkUZpzf/T6ikkD4APDIc7gJuOfkkYWESw==
+X-Received: by 2002:a05:600c:1d29:b0:49d:797:83bf with SMTP id
+ 5b1f17b1804b1-49fe66f3c7cmr143376745e9.21.1790380039073; Fri, 25 Sep 2026
+ 16:47:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
- bit
-To: Matthew Wilcox <willy@infradead.org>
-Cc: akpm@linux-foundation.org, andrew+netdev@lunn.ch, apopple@nvidia.com,
- artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, david@kernel.org,
- Liam.Howlett@oracle.com, edumazet@google.com, harry.yoo@oracle.com,
- hramamurthy@google.com, ivgorbunov@me.com, joshwash@google.com,
- kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- pfalcato@suse.de, rppt@kernel.org, surenb@google.com,
- torvalds@linuxfoundation.org, vbabka@suse.cz, yuzhao@google.com,
- ziy@nvidia.com
-References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
- <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
- <arbNrVX20f2WDJjO@casper.infradead.org>
-Content-Language: en-US
-From: Ilya Gladyshev <ilya.gladyshev@linux.dev>
-In-Reply-To: <arbNrVX20f2WDJjO@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20260916224437.1164512-1-joannelkoong@gmail.com>
+ <20260920162014.4479-1-lance.yang@linux.dev> <e22eb6f7-7eb4-4f50-af2b-13a2e3952cac@kernel.org>
+ <CAJnrk1Zk_4awd5OfbvsCLts1YPsB6JjjOF2hiSmg-wAp+_KUDw@mail.gmail.com> <00d07f4a-f679-486f-9413-6917b5213854@kernel.org>
+In-Reply-To: <00d07f4a-f679-486f-9413-6917b5213854@kernel.org>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Fri, 25 Sep 2026 16:47:07 -0700
+X-Gm-Features: AclHuK80nzYPo3L8D4JYoY7caSyVEbjQCvpntZXih-Vf40CJja-17fp5PIqHV50
+Message-ID: <CAJnrk1bD+4tndrOWuSENvEb7ody47HL2aNv2n+RzUqDE8mpkrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, ljs@kernel.org, 
+	usama.arif@linux.dev, hannes@cmpxchg.org, baohua@kernel.org, alex@ghiti.fr, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: uuf7wamxcwzxubnqpxdx53tbcmtug4py
 X-Rspam-User: 
-X-Stat-Signature: o45qadhkit154jsi8nsxbn1kwzf5um6o
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 45FC010000A
-X-HE-Tag: 1790378040-302733
-X-HE-Meta: U2FsdGVkX1/PAG25W6mZkQBMeGU7CIqZOqfFJDccIsg25TCduxedxYThsHk1IlVof2QsUQ3kwizKY17XlQpSnolUcLuwMbzRmKGFpKdnzYOGWi7q47En3JkgYgpky+SGWeBHK2oMiHz2og7ftaskExBFsuZxJKz66/NxAW8uUmGdCwrOwG9KhfguS4/nB6us7GfKNaYMgiZTkFUWuJkVRZ3dIrgm0jH8e9ZpSw27qeLZa3Iv2UK/DjVMGtVmIIgnctLtbsRAbWTspNw350q92teJ2nqWsrW+gtiKVvf2ZGOPHBsEyj70HEqcccRTxjDjaXtDp5o5rFFsciuPp0qrqDVxEdyk8arUm7HlWbt7Pj6uKArrskTdL1ya9rGMhzZwTxQwHUnShBc+M7hszPVTVuh+YJYdgOFE+D1ixOu85KwQVdxnJrR3Xa/sgWjwboDffCwi2cpA9FYSemVZq7lUhLxKivK4qzR43/6zpGUe+rXyMctcj8Kha5EQgv/2JTViJLo50h7EgOfh9qxZ3MMGumn/a6S/T/pW6oVEPuFLEvp0GJlk/J+S4eRAjKL7yNmlwr/yQkw+NTeHXkj4YTjI1LgxjRz5ce5/1Vqx+6dPb0O/UfX7e0XN+vJxu7EnByPgR7YxrEjdz22hWleCFjiJtMenIyIVHPj6cRscloudbbb/IM5jJsWnZNKSheYoU08G1bKlCYD7Vr2T40knoO7o9NUaD19U6rRpXcGw9jBewc5QLPqUtS+ZgQdcE3KI57u7vCipdv2D0tmchQudrWPChRGguRrlUwhCZ7fmdnYz2fCu0V3ArAkg59hLCV+JJkzXp8gzeVmXUzOIkIRsscDPQS7XotZ0wcz4fGUjKVjnHYqRvUGvSy6WHeamF9jvNy5fbhCrexhPVu+JO5lXJRsQ8XPsX70qhrqIgv2H4vnjjoSjKA/ZxodmVh7Ufr6tpB4bSv6413V/8Q++WGKnqgf
- 5rexQNj+
- X1exP49Jiu0hVFCV69bXpFyXP2yOizbn48UebFh6KgZc3ACQHwNF6pbbXMf9zABzE42mwcQWVnaUDHBiC45uE90TQ0g/RhC5VFbBySSUqt211LXqRKCYgqY8B2YJ16NyBnaLNtoES8L88UcgmP3UdfJBoo0wUCJoXk7sjoJmDT5OoIXqXo97/tFgJDFiwsQ1J8hCODbckNx1rSQkNFR6+cD41KO6UEu+fIFV/765plaUREKSLx4gjgCOJAXzO4PcJpR6+7RI3U5YUmktjCwn0MCEP3igqDPbg33DmeQNe6JtSqFz7Lgtq77A8AY5SpULXkh+7tZG2MWbWrOPJE050j+fzEnRdaK7TZRHIPY/S1r4LQC73BhetCv3sO7iRIEBRtth/BtxR6XTM0oQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: EFE0740007
+X-HE-Tag: 1790380040-625911
+X-HE-Meta: U2FsdGVkX1+42Mkoit60k4v30rx8uFw272NJrzs8dwDbJsp02MjfkB49ELGLwRJQhms5rli9gVdKKn8DoQQ4c3TZ135e+h/LAhMWhdvs0VCzTpZk4dnUPfhNhDzI7WUu0bjwiHkdQusgZvrKCdp6PLm6ByP1kBMz7YIb+iXr6HM8fTMDhAiJYQY1DMOJ2v+bYiZ0r6BO087kv8DQvxOtb502LJEHjvU2UR6rxs9EFdZg1UGblY/8yQNKe6x7LL5qa0yY/Wf4YBTP0BKSD54b3eeIwE+YJbIsD8eHOcScvmKvt+f4fPrAXRhUnTQMBLo8YSu5du0+UuD2VizE56vahr5+LsbBwqttLMXRr5FwpRQbS4zdNCb9xTr1oq5ZK9X/pUpILQ7mu8uA9wJxMPr7laFWvYL5VpWXM5jFWBBuaN+THL0fdTJgFgcpRiwIw5BpzHq4lpjceWsnwNiMHd4PtfO7lO/CSNYkFmjyZ+jCNIqaCZEfqzHXxA+eQ0PikdA0qSs3Pe3wWkEEJnUcUp6XX7H/+chW/fuOChYJPJMZslXCMHQXMGBfLa+L5j08eJO7dKBSBiox7IWSifhN9bdfFyROBV2kuvi5e0kc6/qWIBRBn4NxPUoWCyBZflL4Pm+doqqssgmJqMfuZNnr3psg3KeN19YDpc7QjgjhJk5rmejoKwF0xRZjPoxw0xj5exGt2LpTu3yszmFkIIvtQlXUQ0+Pe+fbHMw+hhvr6OhI2zL68Bu/te0UyOEqawy5AUAjJFmMTalW3GPhtGMnrz3H6kAtysAJBgDAbRWYIEQibrAP+c5GFu6KxEHsOVfiWfQVJrXi0CuNwMmsodYkPHytcJiAAgC6vs+/Eq+CdwrdmdmYYbEepaxP7qI1fAzzTHr76crLNDe3ioRsF+IqttghV0Zdc26Ptr0lDUPFh+2c89hU3t5Xw5blz8ncZySAyafFPqc93IzetWR3sq+jjXj
+ KPBsSRdF
+ TKoaiJzZ7lhKTfFphZyVkpdbOJOGDCPiishViM7eHMS9OCd6dAXe4j7ICp9e3UV+6LS5iG8oFNTNkoMThNtTB8HP33yUt86IXon6zPCxNwq7ZDFfbKMOunVY5FibKJbrN2GJDzm1iOfqmEcsJS3Pf8qQ3Pt6hF/B5sGn+QRYEI+18MYrlXndm+sDITrvXQO56/NPGHnGVv3caCTn08g80qNR6le9csztvSrFrgUQBQSz8xMtjIHw7/AKHw9w7sCACEdJU3Jyh+h9SsOXbru/YPROcTMdxcq2zm+jAAHjPQCRiVju5FEqRPDVZDmLkLRn/Mpj+BkUVoQ01mM94kE+D9cSpC8n96dJ3cBAdXMuR0RaYAmG2eT9xmRgXx6I2QikVs8xfkBPHMTfyQh7abJnK/NSkdXhoJnIlK4eT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,77 +146,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 22:38, Matthew Wilcox wrote:
-> On Sat, Sep 12, 2026 at 10:50:10PM +0300, Ilya Gladyshev wrote:
->> This patch reallocates the refcount value range:
->>
->> (1) refcount < 0 means dead refcount (uninit / frozen)
->> (2) refcount = 0 allowed only as a temporary state (see below)
->> (3) refcount > 0 is a regular reference count
->>
->> In other words, refcount is now split into "dead bit" and a 31-bit
->> counter.
-> 
-> It seems to me that refcount overflow is now a problem.
-> 
-> We can deliberately increase the refcount on a page by stuffing it into
-> a pipe.  Over and over again.  See merge commit 6b3a70773630 and the four
-> commits on that branch: f958d7b528b1 88b1a17dfc3e 8fde12ca79af 15fab63e1e57
+On Wed, Sep 23, 2026 at 2:44=E2=80=AFAM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 9/23/26 02:44, Joanne Koong wrote:
+> > On Mon, Sep 21, 2026 at 3:12=E2=80=AFAM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 9/20/26 18:20, Lance Yang wrote:
+> >>>
+> >>
+> >> "David objected to the scaling", not quite. The tricky bit is the scal=
+ing when
+> >> collapsing (creep).
+> >>
+> >> When freeing, I'd assume scaling should be alright.
+> >
+> > Ah, apologies for misinterpreting your comment.
+> >
+> >>
+> >>>
+> >>> Em ... I'm not sure max_ptes_none should also become the mTHP underus=
+ed
+> >>> threshold ...
+> >>>
+> >>> Say we're on arm64 with 64K pages and set it to 16. Khugepaged PMD
+> >>> collapse uses 16, while mTHP collapse turns the same value into 0. Wi=
+th
+> >>> this series, an order-5 (2 MiB) mTHP enters the deferred split queue
+> >>> because it has 32 pages, and is considered underused once more than 1=
+6
+> >>> pages are zero-filled. So the same knob means 16, 0, and 16 depending=
+ on
+> >>> where it is used ... That's a bit odd ... no?
+> >>
+> >> I very much prefer scaling over using absolute numbers as proposed her=
+e.
+> >>
+> >
+> > With scaling, I don't see a way of avoiding having to queue every
+> > anonymous folio of order >=3D2 to the deferred split list at fault time
+> > in the non-default max_ptes_none case, since any folio can now
+> > potentially qualify as underused.
+>
+> Exactly.
+>
+> I was primarily arguing that I don't want this overhead for the majority =
+of
+> Linux installations out there that ship with
+>
+> $ cat /sys/kernel/mm/transparent_hugepage/khugepaged/max_ptes_none
+> 511
+>
+> IOW: we add them (PMD THP folios today!) to the deferred list for
+> uuderused-scanning but never actually scan them because of:
+>
+>         if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
+>                 return false;
 
-Thanks for pointing that out!
+Ah, I missed this nuance in your v1 reply - I thought it was objecting
+to the queueing overhead for the non-default max_ptes_none case as
+well. Patch 2 in this series does what you mentioned above and it
+automatically applies to PMD THPs too. I'll add your Suggested-by: tag
+to this in v3.
 
-> Unfortunately, I think the discussion that led to those commits was
-> conducted off-list because security.  I wish we had a way to declassify
-> thse emails after the fact.
-> 
->> +/* Most significant bit in page refcount */
->> +#define PAGEREF_FROZEN_BIT BIT(31)
->> +
->> +/* Page reference counter can be in 3 logical states,
->> + * which are described below with their value representation
->> + *        state              |         value
->> + * (1)  safe with  owners    |   1...INT_MAX
->> + * (2)  safe with no owners  |         0
->> + * (3)  frozen               |  INT_MIN....-1
-> 
-> I think we need four states.  The first two are the same.
-> 
-> (3) frozen: 			0xc000'0000 - 0xffff'ffff
-> (4) temporarily overflown:	0x8000'0000 - 0xbfff'ffff
+>
+> Now, what you are saying is we might want less overhead for installations=
+ that
+> modify max_ptes_none, like Meta's fleet. See below.
+>
+> > This drew some objections in v1,
+> > particularly for the Android small folios case. I read that as ruling
+> > out scaling. The objections were a) the list_lru lock contention and
+>
+> It was the "deferred shrinker list and lock" contention, yes.
+>
+> > b) the limited upside vs cost of splitting small folios.
+> >
+> > For a), I don't think there were any hard numbers showing this is a
+> > problem. If it would be helpful to have some benchmark numbers, I'm
+> > happy to run a synthetic one (patch 3 applied (which adds anon mTHP
+> > folios to the deferred split list), only order-2 enabled,
+> > max_ptes_none set low enough, all threads in one cgroup on one node so
+> > they contend on the same lock, each thread faulting in a large private
+> > anonymous mapping). I'm happy to run something else if anyone has a
+> > workload they would trust more. Johannes also mentioned batching as a
+> > mitigation. If the contention does turn out to be an issue, I'm happy
+> > to prototype that and measure it too.
+>
+> Right, I raised that. Johannes thinks it could be fixed with batching. I =
+was
+> concerned that it would become rather ugly. We'd have to see how that cou=
+ld look.
 
-Agree.
+I ran Barry's microbenchmark to get a sense of the contention (more of
+the details are in my previous reply to Barry [1]). With max_ptes_none
+set to 0 so that everything gets queued, and toggling shrink_underused
+0 vs 1 with patch 3 applied, I saw roughly a 15.8% and 11.5%
+performance hit on runtime at 16k and 32k, but only 1.1% at 64k and
+noisy above that.
 
-> (we don't really need that much space for temporary overflow; we could
-> have something like 0x8100'0000 as the boundary if that works out better)
+I didn't see the cost being from contention on the deferred list's
+lock though. Perf showed that it was coming from
+folio_lruvec_lock_irqsave, and I think that's from the free path where
+in folios_put_refs(), __page_cache_release() keeps the lruvec locked
+across the whole batch, and folio_unqueue_deferred_split() gets called
+from inside that loop with that lruvec lock held. I don't think
+batching the enqueues would help in that case, since the cost is
+coming from the unqueue side and on a path that's already batched. I
+think maybe we could move the unqueue out where the lruvec lock
+doesn't need to be held while the unqueueing happens, but I need to
+look more into that.
 
-Frozen state doesn't really need that much space either, so I guess the 
-boundary with the simplest check in page_ref_count wins.
->>   static inline bool __page_count_is_frozen(int count)
->>   {
->> -	return count == 0;
->> +	return count & PAGEREF_FROZEN_BIT;
-> 
-> This probably becomes '(unsigned)count >> 30 == 3'.  If we choose a
-> different boundary then something like (unsigned)count >> 24 >= 0x81.
-> 
->>   static inline int page_ref_count(const struct page *page)
->>   {
->> -	return atomic_read(&page->_refcount);
->> +	int val = atomic_read(&page->_refcount);
->> +
->> +	if (unlikely(val & PAGEREF_FROZEN_BIT))
->> +		return 0;
-> 
-> ... use __page_count_is_frozen() here?
+>
+> >
+> > For b), v1 unconditionally queued every folio of order >=3D 2. v2 added
+> > an optimization patch for skipping queueing entirely if max_ptes_none
+> > is at its default value, which would also carry over if we went with
+> > scaling. So I think with that patch added, for the objection to b), it
+> > depends on what max_ptes_none Android actually runs. At the default
+> > max_ptes_none, nothing would be queued at all, so a config that sees
+> > no benefit from splitting small folios would pay nothing for it.
+>
+> I would assume everybody except some special users that fine-tune underus=
+ed
+> shrinker run with the default. I did some digging in the past regarding p=
+ublic
+> documentation about how to set the parameter, and most of them just defau=
+lted to
+> 511.
+>
+> I would be surprised if Android even knows about this parameter ;)
+>
+> >
+> > Does that make scaling acceptable to you and Barry? If so, I'd prefer
+> > that as well because if/when intermediary values are supported for
+> > mTHP collapse, that support would have to be proportional, and it'd be
+> > easier to reconcile the two with split also scaled. If not, then what
+> > would be the suggestion for where to take v3?
+> My opinion is (open for discussion :) ) that scaling is likely the better
+> approach. With the following notes:
+>
+> (1) If we want to enable mTHP collapse with scaling as well, this needs v=
+ery
+> good documentation and also another thought on how to work around the pro=
+blem of
+> creep (e.g., refusing to collapse if creep would be possible according to=
+ the
+> max_ptes_non setting and warning).
 
-Missed that, thanks!
+Agreed. And if/when collapse gains proportional support later on,
+having split already scaled means one value governing both instead of
+two.
 
-> and you need to adjust folio_ref_zero_or_close_to_overflow().
-> try_get_page() can stay as it is.
+>
+> (2) Systems where the underused shrinker is effectively inactive should n=
+ot add
+> folios to the deferred list. Including PMD THPs, which we unconditionally=
+ add today.
 
-Agree.
+Agreed.
 
-> (Thanks to Pedro for asking me annoying questions about mapcount
-> overflow which prompted me to look at this again)
+>
+> (3) If we want to exclude certain small folio sizes from the underused sh=
+rinker
+> (e.g., order-2? order-3?) it might be better to just hard-code that in th=
+e
+> kernel instead of giving the admin a choice it cannot possibly make easil=
+y.
 
+Based off the benchmark results in [1] and [2], I think the cutoff
+needs to be at 64k where we exclude anything under that. On 4k base
+pages, this is order 4, but on 64k base pages, order 4 would mean 1M,
+which I think would be overly conservative. I think it makes more
+sense to express it as an absolute threshold value instead of by
+order. I'll try to find an arm64 machine to double-check this on.
+
+For v3, I'll go back to the scaling approach. I'll be traveling next
+week and then will be at LPC after that, so my timeline is to submit
+v3 after I come back from LPC.
+
+Thanks,
+Joanne
+
+[1] https://lore.kernel.org/linux-mm/CAJnrk1a2PpUGTsCgS7jct2KET4K2zAL+_h+te=
+8G1MaU9bXs99w@mail.gmail.com/
+[2] https://lore.kernel.org/linux-mm/CAGsJ_4x_Q1Ku9r6zfC-K-o87juQ9JNQ8=3DOS=
+Np+UZzW3MPtZXbQ@mail.gmail.com/
 
