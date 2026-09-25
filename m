@@ -4,93 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07428C98321
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 19:34:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 398B0C9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 19:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B96E56B0096; Fri, 25 Sep 2026 15:34:03 -0400 (EDT)
+	id 3AD316B0099; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B48746B0098; Fri, 25 Sep 2026 15:34:03 -0400 (EDT)
+	id 35E5A6B009B; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A37016B0099; Fri, 25 Sep 2026 15:34:03 -0400 (EDT)
+	id 274C36B009D; Fri, 25 Sep 2026 15:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83BCD6B0096
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:34:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 06736A6DFD
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:34:03 +0000 (UTC)
-X-FDA: 85253285166.30.F5CAF38
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5EA5510000F
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:34:01 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJcTgrQy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 000B76B0099
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 15:36:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 67BE7406D5
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:36:56 +0000 (UTC)
+X-FDA: 85253292432.23.6C381C9
+Received: from mta1.migadu.com (out-156.mta1.migadu.com [95.215.58.156])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 469CC40006
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 19:36:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXFF22su;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790364841;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1790365014;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vhgSzrfp/pMMNZb9pxFnuj0VXMHs0TjA//aVTOauAkw=;
-	b=q8CN1eO1ttYpWLEFRg8Hl43mDWROhguk9R9FAJeDwW+9GgPXu0YCoBgkLuIvQPLPzJ/CZQ
-	5sy/YAK4g6k2oc2UQe+VDwkSxScOwkcxO13Sehp8QJG5JIjLyrOeQ7+9yIECJ9KupA1Zl/
-	xMHnEkr3YIO9IWWDiEF08Nw9bTh+t9E=
+	bh=M4/lST7zD2Erdwe6/sNV3cFEsUbk898lwUHJrduDZXw=;
+	b=TYQL69WYGBhWgL8+TUNo95x5E74lk++8krsqstLOb/6p35sKM2fEeuYFTADv7jV0wMptO/
+	4B2pr1fkdByO8IHzHpFcWMk2SfKp3ipKFToFsiYVMqH7Ek4JpFi+1keA0zolnU3awC7C9x
+	QhKzrBDefTYMAZ9YRAMgR4cZbQIShdk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gJcTgrQy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VXFF22su;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.156 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790364841;
-	b=jVCBKysHNj6a6Ed+pIJ6fCufx7iaM8oU7dlgd+GPGPUD/d4ctgkP2Y9bXm/N7Pvv4mJBDM
-	rgV07qcFxxLyISsCQHkRZ9wfsyobdXBldGhYxTwG8nCOpwJvGLgVbtGloK/amhL1QtOxNH
-	QU9hR4NbgfvSrBNyu9oyOuTFIUI54RE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4DB6843DDB;
-	Fri, 25 Sep 2026 19:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC591F000FF;
-	Fri, 25 Sep 2026 19:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790364840;
-	bh=vhgSzrfp/pMMNZb9pxFnuj0VXMHs0TjA//aVTOauAkw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=gJcTgrQy4zKteYhB+2eS4JxXxiByQG6+6Ay4P6egHkQiQIBuIBS7gzHlibknm5l97
-	 hitC6GxzFuFpPe2DEbiiVpjy+vYvgrlX4yFojtBwMzywJ46zwuTWUs9NkBpvHAuNNG
-	 zOBL/sF8klXo7k/0X4MQjKpt4NiOYYxmjcX0/6aaOkqCkEOYsi2IRx+rQo9VK+T7cn
-	 fWo0ngx0AcN4K2VWv306HPC7mb0iP2A+4PSBs3HMU3MhUuF0zZMtunnJge1c0SS3wg
-	 K85c9Spcycj2xoEI70kiMhp7vQPBVpz2nrxFX8NOXE961jb2Q83OxfxggLQfV6ZUxw
-	 FmKd2NlR1y5vw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] kbuild: Mark usr_gen_init_cpio as
- no-dot-config-target
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Shuah Khan" <skhan@linuxfoundation.org>, "Nathan Chancellor" <nathan@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Maximilian
- Huber" <maximilian.huber@tngtech.com>, "Nicolas Schier" <nsc@kernel.org>, "Luis
- Augenstein" <luis.augenstein@tngtech.com>, "Jonathan Corbet" <corbet@lwn.net>, "Alexander
- Graf" <graf@amazon.com>, "Mike Rapoport" <rppt@kernel.org>,
- =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <linux@weissschuh.net>, "Willy Tarreau" <w@1wt.eu>, "Pratyush
- Yadav" <pratyush@kernel.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, "Askar
- Safin" <safinaskar@gmail.com>
-In-Reply-To: <20260925-move-gen_init_cpio-to-scripts-v3-1-99c493f76722@kernel.org>
-References: <20260925-move-gen_init_cpio-to-scripts-v3-0-99c493f76722@kernel.org>
- <20260925-move-gen_init_cpio-to-scripts-v3-1-99c493f76722@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 25 Sep 2026 19:33:58 +0000
-Message-Id: <20260925193359.3EC591F000FF@smtp.kernel.org>
-X-Stat-Signature: 9negy58f4sky61m14dbj77jtqwxezkph
+	t=1790365014;
+	b=yyvVF+npj276QMV1RBcd9jRuIAQRNAfv+nv95pJvE1TWSghN3+ikJQ1WC4GWNqSqqz/cxB
+	cv66fDY7aYrsEOCekX406VatGA9koErFL9gUvax9TSFHMUlbQMftEz4MxUPx5j9RWaTIhV
+	wzHNa3vmdb1AKyfhxiHv6/pFOEIkhIY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=M4/lST7zD2Erdwe6/sNV3cFEsUbk898lwUHJrduDZXw=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790365012; v=1; x=1790969812;
+ b=VXFF22sukklykt3cUSRvuT4kz/LqkM+UbDC67HTjRio2lWyy6fgve2LzsrwPa3zRWUwkUxNc
+ 51cJkWVz77angGhv+3RvLJUqlq8f+ZabcwGp3y7BCkoRi7o1OL4QvVCtu35K0O5WcCbeEybTHcS
+ osoWF2lWk6lPH3EBvClLbhqU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 9b23b1b9c141f10f;
+	Fri, 25 Sep 2026 19:36:52 +0000
+X-Mizu-Trace-ID: 9b23b1b9c141f10f
+X-Migadu-Flow: FLOW_OUT
+Date: Fri, 25 Sep 2026 12:36:46 -0700
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Rik van Riel <riel@surriel.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Yosry Ahmed <yosry@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Barry Song <baohua@kernel.org>, YoungJun Park <youngjun.park@lge.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren =?utf-8?B?QmFnaGRhc2FyeWFu77+8?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Gregory Price <gourry@gourry.net>, 
+	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Tejun Heo <tj@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+Message-ID: <arbGo3QTYlUD5cVW@linux.dev>
+References: <aqjcFb6MFNiA6n4V@fedora>
+ <aqjpYHbZ14A8xRtK@fedora>
+ <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+ <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
+ <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
+ <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
+ <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
+ <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
+ <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
+ <arUcil9kxUPiymXI@KASONG-MC4>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arUcil9kxUPiymXI@KASONG-MC4>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 469CC40006
+X-Stat-Signature: ysr18ziqzpcnxwqb11dpg4ha8cczkn8f
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5EA5510000F
-X-HE-Tag: 1790364841-872128
-X-HE-Meta: U2FsdGVkX19zx140LZRHNgrHA5K/V8o5/W4O6cnqGOtm4/UyS5chiLHrEZ39G4jkh4OUaS14WR71503T3a2kSRn6+9veWDTVXMAkcbHQ27DgH3JRBtxXU3U2VM/gURntPEEohkpFk2YBOwU478ftePbYv7CjmnG1E2nlSuO+rmv+y/ttSofgwCcWSd/MZcc9XUoQvSnD6akOAXaX4xdgFfhuW0yGHA2BrAb8yY+tvWGOuLtno/m1/nXUBPK+n9m2RB7DTBk+e3guAqrOkMOE7JQhM5ig6oNXlqHtcfsblaSjzRTvuibpUNVoEMnAW6vxJVsyBXiulWF39VeoKgx8vI8k4sialXTpv0P3yvSM+e+5qS4mHeIaQn1Ar1lpECt75lTNOzRoYAxw4ennawasCgC7cl66igIsbwo3hj8llNrC8v8ljLmuyLjmMu5SG5i7fKy/tTizb0V9/Nt+ONtnCrmNFTy0d6gBLbyD5zo/BAivleCLtI4AOQY+FbXJC/L6XiyjctSfxamex6gi8QHfGI1Kaz5tEQh4fjkGXcNiwRBX23a27zJNam34PBaXGSXNK2UOEqCGNmrPpPjgumK8plgWi4E96h8STuRKFlrgn1LNjzDlYRN1WXVq3DYg3mOBUNFJiCNtqr7eCnj63LidqmXZ3e7wj3ByRheIhbIzAOY53zHnNbXVXEBLHN06qOhHjRmm/97NbtgzQ73+QJqcC9BPZSOdDobvLIIzopYJVAWqK0s7TGZZ5OBqV3m+ptZLlbOccud3Vd2vWg+Sfhvcly5rAvr6YoEcqwoc5aZlHsgkxAnNve78pg2/88GmomgLZ+UWNK1697Pcwq9IXEuxqQ8ihCjthrdL7Rs56pFb4hNtooOwmPxDc4d7sn9I3ckpIvYl/exyfvdpLQ5wVYeADPNs/xwgdldIwOMQhF+gRV2X+rVd9gJ4IxPmUbcKmEAMq5gg9Whhm7wwf7UhYhm
- Jz1ljUZh
- mjURP6uBkNV/mmB5jmhTlwgSkGHZTOp1kyM4QKIf9jVnCKi0GC0Dg9Rf7fBPD3Q34pugAx/KyYjIOyZ80mJ8Hu/GsBML0g9b09kAoNkg7UtIntWNnz8w20UcL/WPj2mSBMI12LBBV/+cpHRKVFUha1UsJPZlNWTgU9IShYVBX9zAiMZF0x65i9kQlTZHZZdPpGHSRgmVVLeVZnYjblaruChUiE/pDHfNbDySt+TtwQYMAubx8VKS5SyyHejD1aHxDqFHbZ9rMWvFqmPpjCbxQPJKqnUSD4IZlUdmnq4qZTUFKuqGlnvmalJohMvfzJnaZHA6YckLlZlksiyEhhc0Rp19rgobmaKWMPnVCCdOgFbF2C5rt+WG6xXlVgbeFC1nvkOLUgCtX1EAuLK+8NApryxyy0f9kHnrRZ6MvYC3ZUGfh0yOO1DekN+Tfz1bebm0F9080YYeO9f/F+0rIZCVFrIq98Maw+ZO5x3vNhaLoDDonZjm/trTkm+b1lM5+71j0m1cWhAwkltJlvvVSrCGOAfRAgEt5ZLrlOSLvKNWAzP8G75f+QFCF/JfT7RFFd0mYPRC5rMILZKyJF9F2SLzXHZSThW2KNA8DbofxHb6UxKsFVpJPbBNed5cbh/TEAW7xeaySNp3HrAQlrgAyEfS7COSR7EVbIhiLWoIl
+X-HE-Tag: 1790365014-882620
+X-HE-Meta: U2FsdGVkX18jpv1HjT3fXvXLLc2kj96+cm2XH8mrgXFI+93qnsgdTgdL/+3quBz06QXIDNru0P+oXk5hVEmUY0Wu22lm/yZhpz/bufWVvHcwcHfH87JNex3XVxTZUitIZoOQ+wVkmJAAvb7QYGtRSEZdVrM4G4INmMv8CMi/0YqkscgnsIMLZmcIexogRyQUx+VG/jql1LYoM+oFZ20Lzh8DZTp7dCdGI/j9uutctJsnCns+BFNpc/ivPmL3TUmgGF+U48zK140kWPrGqsUjHxbjGvv3jldTtDDVh/65pFiTXR1lqlEi4YjawQTJ4EEYN1kdBqY7bXMtMQxeB7zu9ErsVxDtQJDgJhzLLn6HVOvkYTWZiSD7jeu5wMmEeqFa0jekj8kqpACf2gPj2JnHMLOtIhvvG6vDwxtJLztQMX9v79KuJfQPAfCYn9S+9gPIs6PKJa2XUYQiPQoGK2/num4C6ellpFwaPHBYnT9VI+Zl92BZ9IRZLzNf8f2H3FuY9glCbGj3NxIczRmQQK5KJdaNaGrZfMqcZvi92HhFbbC87O9cCvYiq8y2DjY07GE98da4Fci/QPwQHK8v9M2jvSuM2EShlMrJns1naheP7peHBqs+0+ld/EiiuhTf92pK9BuyjvcFHpNmQ5hfICqSLVD+kT/zUa9bQUcP927O6aHWYT5bXMZpc4XATYy9v5HlQxnFQZorGlbd61DFH+ifPbaVfmRMJ91EyPqmKxSo7P+M9jWuZJShgOfk9Kc1prCo1x4AU3AQABkOdclox9eLGz9L7Vj8umL2wzvHC5kLSn9eIgbRO/BsUYt42k198zpIgDzzx2pNakWsy8K3ryM9e6s/j1WbfL8q5IStRe3ZTHS4Ng/ARAsJY2EfkLrCebonxzuOu1zu+52WjWhprUxyuIPcASUDY6Jfm17AeOI0hz7WlJSDVdkdo5JwwUpiXa1y+cM1FX0nfs2sBM71Ufx
+ Ndfn0Qd/
+ TV8vKJTyIg+giaduI1uACv90YSBLQajNtXua/ffmx8+6eEf/eaY63uv/JH5nFE6xQ7tIGL0KK0VtFRFgOG+KAtqLBXvuCA5DWvCG5HyAj+wHFEFnqkwxDqbOVE5qPO+GRE7D+2iFeL72Oxbsyafa3FeQMc1BGq3it6Bg3J5rQJdfl0UGot8nDICYagyaRErpHg0J2+Bpz+nI0vRi7UDcFn992BLMmdefHO1yqABjvyZU/JCOUM1/hFaewxd1XdIq2ZdNKzl34plWP+M7bop5qBfJwPNKZ6kjqjefZypzoL201fYyJC9oxDCf9rF/TGUif1rvZF3/3dgNdxQH2CtqtZlApSX8b/mH4mZ24SDJIfQ2aCvq+wqvqXQwPihHF5dFYhxyer7pbrvMgxATi+KN1V1Auzv75e4y0xvIxsBsdXVQ+xK8P2zFSpi7Dag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,23 +115,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Let usr/gen_init_cpio be built also if there is no kernel configuration.
->=20
-> Askar Safin reported that gen_init_cpio may be of use before any kernel
-> configuration is available.  Add usr_gen_init_cpio to list of targets
-> that do not require a .config file.
->=20
-> Reported-by: Askar Safin <safinaskar@gmail.com>
-> Closes: https://lore.kernel.org/all/20260220191150.244006-1-safinaskar@gm=
-ail.com
-> Fixes: f8e05c10631e ("kbuild: Add top-level target for building gen_init_=
-cpio")
-> Signed-off-by: Nicolas Schier <nsc@kernel.org>
+On Fri, Sep 25, 2026 at 09:15:17PM +0800, Kairui Song wrote:
+[...]
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Thanks Kairui for very clear description of what you want and looking for.
+After reading your email, I think you want memsw support in v2. Currently you
+somehow are implementing memsw using memory.current and memory.swap.current.
+(I am assuming you need to subtract swapcache to avoid double counting.)
+To conclude, you want to use vswap (the aim is it to default) but you still want
+your way to implementing memsw keep working.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260925-move-gen_i=
-nit_cpio-to-scripts-v3-1-99c493f76722@kernel.org?part=3D1
+Please correct me if I missed something.
+
+I am wondering if you really want memsw, why not propose memsw. Someone from
+tencent proposed memsw [1] previously, so why not continue that effort? I am
+pretty sure folks from Google (people who actually work on prodkernel there)
+will be happy to collaborate with you on that.
+
+[1] https://lore.kernel.org/20250319064148.774406-1-jingxiangzeng.cas@gmail.com/
+
+Setting aside the memsw conversation, I think we should go back to the actual
+vswap conversation and list down what we agree on and where we still need
+discussion and decision. (I will take a stab at it and start a separate thread
+but still on this email and will use AI for the summary.)
 
 
