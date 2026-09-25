@@ -4,139 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7F5FC9830D
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 06:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF30DC98306
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 06:15:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED5F6B008A; Fri, 25 Sep 2026 02:14:39 -0400 (EDT)
+	id C4EA46B0092; Fri, 25 Sep 2026 02:15:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC5016B0092; Fri, 25 Sep 2026 02:14:39 -0400 (EDT)
+	id C265F6B0093; Fri, 25 Sep 2026 02:15:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DABC6B0093; Fri, 25 Sep 2026 02:14:39 -0400 (EDT)
+	id B3DFF6B0095; Fri, 25 Sep 2026 02:15:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 785E56B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:14:39 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D76CF14057F
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:14:38 +0000 (UTC)
-X-FDA: 85251270636.25.66F1FF8
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D3568140009
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:14:36 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="XPqv/agh";
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790316876;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 86DD16B0092
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 02:15:29 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 164BDA0592
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:15:29 +0000 (UTC)
+X-FDA: 85251272778.07.04E8D28
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 440B42000D
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:15:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NGG/6nEs";
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790316927;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dB9h9+O7xaQzApg35xo4jfP6YMn41G4cQ0NtyV8KjtE=;
-	b=5XPxnU0C9LueaGKpwGi7yKytZQqz7pY1BXqaoEQci1HjQrNWlOgKWaJfuHtdT5toeRxbIq
-	jSZLs4wcrD4OTRGZoa2Y9wqnwPpvnX0Ad5UR3pJqSJiKiUekPEsRavpZowyKB4ssIjVpIg
-	EwaPMP495ne8WqM2TmvDgkhRiPCwHNg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790316876;
-	b=USS21txKawFJNqqpGrXCF6CgP5hcW7UNAXHdCcxAq6NCSvkH3CVZZGbBPVIqpRIJVGchBy
-	YNreleq+yh6a57ne8wBR0qtq+cckgUvXnJidP61dRMrH75DDKfiRkkWHW9V+zIho5F6fAA
-	JR9587NgxALgLtwmoCEJouAl2RvpbyE=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="XPqv/agh";
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-52faa58bff5so179381cf.0
-        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 23:14:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790316876; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kvwt81AYFj9A7RtAdgRvmEtRCq8lJAfYCSftSlaqwa9YkGQnxVrzUs3CjCoiJtHRj8
-         jgaiB22P3NzQ8FEH69Nm+9UcmYlYMckrSSPbAljZeTyLvNwhVnF9fdXq4mu2NYyq+vGi
-         Yulf/MWiuba8+6b7fcFDNz/uCvizXi/n4Qh1S3MZzBKCvWTh2+vphLwpmzlOTkhJ5M8L
-         rFg5cmdJtLIFm6gnnj/YMq4CJH30xfF0iz5Uz70MmVWdOwh1xX7NO7GRYoEg+mf8ttpf
-         iqs8p9Y8EwJ7/INwuwlx1lkgM077aieIm5K3DoxBGdICPGkeIq22yYnRuU+u5uQIyACc
-         vnlw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dB9h9+O7xaQzApg35xo4jfP6YMn41G4cQ0NtyV8KjtE=;
-        fh=dFhRj6eAKo5xo5L0K4Ojow0PW5g5FCZdRlJ966EjFL4=;
-        b=Yf70U5AWCQ6Gz+Xvk0KzxAjLaAIo0woejes26bE60XOKjIylVGIxGAqyuQbZFXnRZY
-         LbcNgyOEkezydZK5ColbpQD5zhaqMUaRCSL+9PWlwi3LOGRJ5J9khZgohvb7KR3Qlk7W
-         WAAFaEBCr3dsMaQQPCD63wji62cusbQQOc7VFjSdWu8vxIr2JZLEZPvTxyLVCtHYi4sD
-         1FbvSyIXke9+nv7iUmMn6vtej7lYGfqduIRe6Q/LdMBE31OMoPvWuj2hk7THsc2oc0JU
-         oZ6Cl58bSUjaLP+1inMZP4wl5jFVudFitw8MQ0ZnYdbM8kJfDbq3WZkKWPs2ReGWguCU
-         16uA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790316876; x=1790921676; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dB9h9+O7xaQzApg35xo4jfP6YMn41G4cQ0NtyV8KjtE=;
-        b=XPqv/aghHxYSlTTm275xhZWFLMA8vnremcIlmja85iw6jhbdqaw8Np4K7M54RzoKWp
-         0I6gSHoiYHECrm0EqpTtqna2HY45iX8YP7DCvke3NTIw+0lID9+pN2W+TRGiWBZPx704
-         ercb1H2Wo1DxN7bZ0eGkDrYPT/hvwrEN4Ct6PEkZUuhem8eEgaugkjdNTl4vWS8Rh0u3
-         HR//+1zB0jhZEv+JPDhnr6q0xLu3gjLbN9MOIOZayEwQpjVbauYZKHuJX3zajl6GbbK4
-         7bztunFWZq7XRjJ4lV4v75HP6WqSvR5TLmLrEyeMgIvQRpREGYZ2xTK9FK1SLQbBEzLy
-         CReQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790316876; x=1790921676;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dB9h9+O7xaQzApg35xo4jfP6YMn41G4cQ0NtyV8KjtE=;
-        b=VAAoSN9c3oifz436xMMgGc/t+IlMJifQYP2ikJpYd+tDVjkteMRk/M9Bov0TuP0J/0
-         Nki8juYBSZJrFAbXo4ACx8TT1tx4xhiqPuZtJ/8GvvfXsaWN6R3QWXz0Jfa9ry64Zyxf
-         ghSXjO3TK9gmgWkiblmmX/V3YDhYj6IJwg0dIEKuwlVsi0xmdWxSXsUOx1XGceA+kxJI
-         zF509vwrZESM2I7Z0uqYmsLlyXuA5iTE4Za8/VXmGnE+3Bn7DhgyKk+0I+Kp5QvW0FL/
-         3di/N0/w8KFWcegSf3JhEs3PnuSn9yiBkiM0SeP0yb1yPOwTmjcZdNc/pJGur91xMERQ
-         dZVg==
-X-Forwarded-Encrypted: i=1; AKwUvBxv8L8SU5PU+CVBEpjvkm6vQhXdLfA8DDSKMUR2WCH7E9+KJ6p8fd12Wwt8K585tQpHqeEfi016pw==@kvack.org
-X-Gm-Message-State: AFuF++k7j4eaabtaCFeDwttuABnFxMIhMKFyYCjZhOJQOqKqdBbRu8qW
-	bktRPxmwoKr0G0JXj1d+W6hDA4USfyejB5GEF4A/YIXX+1VscamS3pvb/pPMZKGoFU/yVji6NqP
-	2rrLVtzP33tP97RjwC3bT0SydVVXIMtB72kSxPQYxR/EUoVgU1EjxpCyW84A=
-X-Gm-Gg: AYBFou2YZc2Fck9fuBQGWQyfzh1hc/MCM0QdRQxQv3qGcEXplW4h5WyHToa3pWI+gAW
-	6/KAA4hYfn05IQXEdY/TBgc7+YSm9AGLjNXJFgVhLTaiCY0tGkuhM6RvonAbh2af46PRUgSS2FL
-	z8Olssc4DBfhOIAsxiX3lYuZ0+6BpIh4S5sa8SQL6rfgw2cESB+nL/uAlxu1VDpXlYx6nuZMPR3
-	SoQileIcG/CNtd7tOH8/DD2C1ILIVt18nBFrL/fCScNRK4NSOWZAFedR0n+Cz7+yabEK1a6t37b
-	ut8wCPCC9O4GQ5eYpcWJWptRIDrXmTS7emVbM/Zua3m1cIH/p2/2LQ==
-X-Received: by 2002:a05:622a:53c5:b0:52f:9ed4:8d76 with SMTP id
- d75a77b69052e-5330c02f3fcmr4183701cf.14.1790316875026; Thu, 24 Sep 2026
- 23:14:35 -0700 (PDT)
+	bh=L5szWJ3MtFuMGqlN3CGWg6+ZdC7LPkFsOBEbQomKAD8=;
+	b=ZChRoL+mAOo5Vrvnw9NiHpGnv7HTAhDXWg4YxYcvPDomtFH4mWGLvLhgycFYCh94c33gGx
+	OZCCeNEiL/pAMXwY/ykqaKZJSvyCxx1yFZnz47jbOsyPra4s0IrS4r9dht5vcAM2VcL5ZG
+	LaRYtTxuj/TfMsm9hTJrvk+6A9l8WXE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790316927;
+	b=PX26xRqPF6TNr8/7q0gokU4B1cOPrawKwSY+8lzsSASGW6fUQn/3pllHuFGCn6HPu72dpY
+	DnXANq/OzzTv0VnILi09ziyUq1LPqzresyRfiJ51bGQ2OnjhunBPVX3UpMqXMFmBSLzVI+
+	Ipvq0+4wammhLrcbh5b/hpprZ/6XEho=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NGG/6nEs";
+	spf=pass (imf13.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7A0D860258
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:15:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8A81F00907
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 06:15:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790316926;
+	bh=L5szWJ3MtFuMGqlN3CGWg6+ZdC7LPkFsOBEbQomKAD8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NGG/6nEsgOlLQXHfxrimzB/y/1XtYoia78hFJZ4MADrggrfL4R91Vky9V4OivC6pY
+	 1asnho3iBIyikWzTU++ueE9xkNSQM5h7SOb6HEF76v+Gi6DPRgRXu7ZYkkPXMPtFSe
+	 pt/zwDPYFcNGqj4064aUMSO3JON7Q+V4DgCX4B95Ea1oATElGhDR5XzwsF9TYEh5+A
+	 da01CpPO5FxCi0+PQK2WIAUWpoUxt+dipTNi6PiHhyKOha6cuwQarkoj9aHKe/elUj
+	 EE+kp8YyReFs87TChHFPZeWKh8go27FEGTkHQsl8PRiFoGzaCtw7Y666nl9pQK52kc
+	 O8318EgYT3rlQ==
+Received: by mail-qk2-f13.google.com with SMTP id af79cd13be357-93910ad20d4so63109685a.3
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 23:15:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBz8cHmlQ6IYOAOQPpC2Htoin81n3uOzOkkyAReemQiI45pYv7szMAZUDSQNhIaUxyfNdqIzX9+IYg==@kvack.org
+X-Gm-Message-State: AFuF++keY6uwqv5yJSG1/Avt2Bpqm7Qhxo3xg0FEB7vw7Og8VwVrRE8W
+	TcB2JfSZnTODk3q4RnfszaeuVYHYwSGSxQhxN6E0G0RYWI/IlaUmtH6gme/23rCgrG5zElrn+RG
+	62Hk33NiLdXBCTah8zfp1p7alR9klLsE=
+X-Received: by 2002:a05:620a:7102:b0:939:13bf:e861 with SMTP id
+ af79cd13be357-93c474960a6mr173095285a.40.1790316925092; Thu, 24 Sep 2026
+ 23:15:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1790025465.git.abhishekbapat@google.com>
- <06c3a9b52785e6968ea15709a55365b2342c7a15.1790025465.git.abhishekbapat@google.com>
- <cb229e38-3e52-4309-9594-0d3947c1a81c@linux.dev>
-In-Reply-To: <cb229e38-3e52-4309-9594-0d3947c1a81c@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 24 Sep 2026 23:14:23 -0700
-X-Gm-Features: AclHuK_XhdtkT9XgGzeMyyHdkxgqp0XCio74QHugzN47Ep5XxbzMjuhNMUijqKE
-Message-ID: <CAJuCfpGZf+HDj8B2vV2WB68P2JMyqctF5CPvV0R6x=WU7+nwvQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] alloc_tag: Add trace events for tracing allocations
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Abhishek Bapat <abhishekbapat@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	Shuah Khan <shuah@kernel.org>
+References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-9-dev.jain@arm.com>
+In-Reply-To: <20260924131106.1730494-9-dev.jain@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 25 Sep 2026 14:15:13 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
+X-Gm-Features: AclHuK9jjlMe0ex91FLllPwWgrryVptw5UUfz3oUZuMUNZHj3oHU6V_c2FmEk5M
+Message-ID: <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
+Subject: Re: [PATCH v3 8/9] mm/rmap: batch unmap anonymous swap-backed large folios
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, kasong@tencent.com, davem@davemloft.net, 
+	andreas@gaisler.com, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, lance.yang@linux.dev, 
+	baolin.wang@linux.alibaba.com, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
+	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D3568140009
-X-Stat-Signature: bxhzmjwesctqidamoqpdwptipzmfs1u4
 X-Rspam-User: 
-X-HE-Tag: 1790316876-52120
-X-HE-Meta: U2FsdGVkX1/pvHVnjRRGP6W5m5V373eqvJP6RHi2omPu+7lTUzGseGjjyxpup4pkDCRUrKs0fIfapsJbZru8iagT+XrV/ms4P6nVyPk5g74xdwfrzv22PcZNlVHpYjTTOyWfuW3dv/TwafLfxJf1LsxKVo9rZBta1AClPH0SZM19LaowW+v4RGbfumsyLEUjX9V73qt72rCgY8jlSbGabq7NjkYQ4+AEBSpPIk2d1zyDJppJxN0JgTIuFYk1AIkEWTBuvbfyuln0Qm3I6ye1nKmppgQiwdyNvE8bG2Vn2J4a6xCaIYQ0h2Gmt8qCKKkhOl4hscvBFMy0y+DrzPfi7UjOeuFzQ17r+3+5qiI7n+5Eee7L7k5f6nx8E6S60pPxnIeiAPtaJk2xdowhbXkU8c+990PcqiR6rSoIs5r80ZOK5oGgk/e61f7P6JUaUsL6AyNA7TkqUzavOEFE9amwpSsT8txVuno1hiYO562l4Sn3uvsgQvnDiqTkt1v58FAqgZYXjVCTsN91+OSib8m4cfXm+PDN1kfoG6NfEoDrK78+86wcq1dL5rdV/m4iNSyDyu/yJwQjN4NHE0szUn4kJSgDjPlFh+GzHlJl+8eb9fB9lQ7qdtsIP7UtA3OPUjrpmab8BhXA3t9D/qchDX20qti9bFUC3L36fKuWc3BCFkXpNhksJKLzE7CAUSdeZJY01KyBCPf6z9Ntr8dUeuYxXlpUBlKQYZOKWflZ0IJRObjL2NEeaQnru7MsGAljBEEERZfk6z7NqEGza75MTwZ8rm0o8ADqLEECFb21z4lazWj7nDkst6UTBceWHH+geow2xxBqDQcPzrmHQOKmdaDRnsJjeVD9JqmvbP6ru81amD941ZYJaN1YLcuKrUNetWpCOGYSbAmxlrIZCfIcuy9Sg6IO2JZRLO+FtV5WSpf0057u9QgQqgrVFHcBf63miNTsHQ9rB/Oe+BM2rBVvkSw
- RANHH5AW
- hOmg0qtUiiEes2TP5zdyie4G6+67hun8Tac5QOPhLh4yOkUqFpyagUdJb8febA5pLPQR0lYYDQRQMT2VwnZnrLHkdjSLCZJ/ThZT8wP6r1+9sICYfhEZ9OM9XRh3EkkwyaKbWL6KcRfO/BmT+v2I0bw+wPSj4iSvN8MKudnh74Yf6mgAmdRlVDBLV3bd8Pz5y/0BUdkl28sOEXihJxxl01qUOSWhqLXONEAWu9OwVwPw5jWmuszt6CXzUdsC9V8JGoklIMLnsEE8OA18mDKUfC19lYtLvd90f60cn8BxbGksZHxCSKvz69x00AQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 440B42000D
+X-Stat-Signature: 76zwodmcwen9rn1eh9fym7hiks3iak3a
+X-HE-Tag: 1790316927-714371
+X-HE-Meta: U2FsdGVkX1+ZtREVsR9KndgjGoCgjrm4WoqBEUmIbZi6N5MqgF+jlYBfmFnx7GdVZFXNwl0kqt6V36bijiMT1AUvof5y/SrlOiC3+xqvgrehBMB+PLuQB5mLJ9oKNMgw4jhGXoeLPYbJNZU+wuDK1goBy4aJIHkoseES+AngtmAqIjkQc0vP01Xr7q4wCES9RBZ2b6Imc/9eDBLHCPNQq0t/kLp1wbNFBzzByHijmer+NV3zcvASNaf/jDoCuIowj/tYXyGAmfgCsMmSaNkAowB/RAq6PGaX1WVIXMEGBi7Yk1t0e3OvBnVBQFSX1/k6nL+sSRZWgaNY3tZz/emwfpUWU4C3cDHB2pIr38V4QCAplGKlsbbjhd3U3MYSm+sc6iRKwRkQ2PA30AJ3j7F/1ptZKpMDroknQWwZzm5SpoTqjtvn8xmgcyAnzKknykPVxL9e5MHy8FlR0NAjX5Y0uq8K3AnFNCDC7QsPgonE/V+qNVlrb/Esql2FPFw+hcCXddgTYBhM4znloASkHJLXj7vNakMvTjojfZ+ofNHbBWNMMU9DyhwtEtom26BRFUXbE0M4IPd/6VjwZcUD7ZxAJGUV4ENVtINUf+aoFiUn5rBcvtEuhJS0SEJ+WZXWd/qfjwSTDnRlF2wPON0N2OiIAXTtZi8ttoOcvhuTDg+fiO1DTPSqvdWisk/foW5wrejGG6PBRmIt5bbSa5vg8EByL+LR1ozLOF9GpD/wnIj3kSxWvZM9lPTpnJxk6CgNsy6nV5bvFFr+RPB26OxDxrXHCORvrwoIGK/7bIyiS2Pe7HUbsIzzlzTqs+9Z3/OcoDnc26PIycUVJsPLSzncPoaVYgqHGsBx/Mk/zE0qQRovoaMiDbkjKdLUh5epbYe5MwyZW/xBNbR+RVVCiqUNWGu6Ytrgp38qkjYD0/h+l13B3Yftirz7tTtjlkEMeKq1tBP4d1L45loimo3p7WQN4j5
+ ibGgZCO2
+ chs8phYFBZqpqyAt7Vm+0c5XfqUJLMXl41l+2RshlhkgQepr19DmjTzDUoeqvUReS6rUAbHFvo7bZ0bvD4RnzcAEhvLSkW8jg+0D2qk/L7DKiPm9MhbVWY+l9nmg24PkhlP02inr1qC2+rssKGkix+wjHYXjORLiSWwmpggU65TNchfWvQOhX/sTqq6YHnesf2+nphHqejBjMseLHIjBXfKAwd1sJGVnVFiEK8VLhX8zUzxLw9XswHQrJbHH3SuXTs1x0tP/t8gIxPN1nN9fSeJ5zVYgVKORIIKpzgOo6eIRp2cebHMqZFkdVaelk0RJzGCt0WF5D59ugjnkguO3Ntz5X7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,436 +109,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 12:21=E2=80=AFAM Hao Ge <hao.ge@linux.dev> wrote:
+On Thu, Sep 24, 2026 at 9:12=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
 >
-> Hi Abhishek
+> Enable batch clearing of PTEs and batch swap setting of PTEs for anon
+> swap-backed folio unmapping.
 >
-> Sorry, I merged and tested your patches today and found a few details,
-> so I've started a separate mail thread for this review.
->
-> On 2026/9/22 05:26, Abhishek Bapat wrote:
-> > The memory allocation profiling framework intercepts allocations across
-> > the core subsystems, but currently lacks runtime tracing hooks for
-> > standard observability tools to dynamically track the context (stack
-> > traces and lifecycles of the individual memory chunks) of the
-> > allocations made.
-> >
-> > Introduce three standard trace events to allow this tracking:
-> >
-> > 1. `alloc_tag_hit`: Fired at the exact call site. This allows userspace
-> >    tools to trigger and capture a call stack.
-> > 2. `alloc_tag_mem_alloced`: Fired in alloc_tag_add upon successful
-> >    allocation. It records the allocated size, the tag, and the uniquely
-> >    generated codetag_ref metadata pointer.
-> > 3. `alloc_tag_mem_freed`: Fired in alloc_tag_sub right before memory is
-> >    freed, yielding the same codetag_ref to allow tracing tools to find
-> >    the corresponding allocation.
-> >
-> > Because the introduced trace events occur at different stages in the
-> > call stack, userspace tracing tools must stitch them together to form a
-> > complete picture of a buffer's lifetime. Here's an example of how
-> > userspace correlates these three events:
-> >
-> > 1. On `alloc_tag_hit`: The tool captures the stack trace and caches it,
-> >    keyed by the combination of the current thread's PID and the `tag`.
-> > 2. On `alloc_tag_mem_alloced`: The tool extracts the PID and `tag` from
-> >    the event and looks up the stack trace cached in step 1. It creates =
-a
-> >    new active allocation record, mapping the new provided `codetag_ref`
-> >    to this cached stack trace and the newly returned allocation size.
-> > 3. On `alloc_tag_mem_freed`: When the memory is freed, the event yields
-> >    the same `codetag_ref`. The tool uses this reference to look up the
-> >    original allocation record, correlates the free, and safely retires
-> >    the tracking entry.
-> >
-> > Also, introduce `alloc_tag_trace_key` static key to minimize the
-> > overhead when no tags are being traced (the usual case). Once tracing
-> > for any tag is requested, the key is set, opening the path to check
-> > whether tracing is enabled for the current tag.
-> > Nore that the mechanism to enabl tag tracing is implemented in the next
-> > patch, therefore for now, `alloc_tag_trace_key` stays always unset.
-> >
-> > Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> > ---
-> >  MAINTAINERS                      |   1 +
-> >  include/linux/alloc_tag.h        |  57 ++++++++++++---
-> >  include/trace/events/alloc_tag.h | 122 +++++++++++++++++++++++++++++++
-> >  mm/alloc_tag.c                   |  28 +++++++
-> >  4 files changed, 196 insertions(+), 12 deletions(-)
-> >  create mode 100644 include/trace/events/alloc_tag.h
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 24420a8c06d0..29e1f7915cb9 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -17096,6 +17096,7 @@ S:    Maintained
-> >  F:   Documentation/mm/allocation-profiling.rst
-> >  F:   include/linux/alloc_tag.h
-> >  F:   include/linux/pgalloc_tag.h
-> > +F:   include/trace/events/alloc_tag.h
-> >  F:   include/uapi/linux/alloc_tag.h
-> >  F:   mm/alloc_tag.c
-> >  F:   tools/testing/selftests/alloc_tag/
-> > diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
-> > index 7f2d80a59792..2994934cf44a 100644
-> > --- a/include/linux/alloc_tag.h
-> > +++ b/include/linux/alloc_tag.h
-> > @@ -128,12 +128,33 @@ DECLARE_PER_CPU(struct alloc_tag_counters, _share=
-d_alloc_tag);
-> >  DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT=
+> Processing all PTEs of a large folio in one go helps us batch across
+> atomics (add_mm_counter() etc), barriers in __folio_try_share_anon_rmap()=
 ,
-> >                       mem_alloc_profiling_key);
-> >
-> > +DECLARE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> > +
-> >  static inline bool mem_alloc_profiling_enabled(void)
-> >  {
-> >       return static_branch_maybe(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_=
-DEFAULT,
-> >                                  &mem_alloc_profiling_key);
-> >  }
-> >
-> > +static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag=
-)
-> > +{
-> > +     return static_branch_unlikely(&alloc_tag_trace_key);
-> > +}
-> > +
-> > +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_ta=
-g *tag,
-> > +                           size_t bytes);
-> > +
-> > +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag=
- *tag,
-> > +                          size_t bytes);
-> > +
-> > +void __alloc_tag_trace_hit(struct alloc_tag *tag);
-> > +
-> > +static inline void alloc_tag_trace_hit(struct alloc_tag *tag)
-> > +{
-> > +     if (alloc_tag_trace_enabled(tag))
-> > +             __alloc_tag_trace_hit(tag);
-> > +}
-> > +
-> >  bool mem_alloc_profiling_permanently_disabled(void);
-> >
-> >  static inline struct alloc_tag_counters alloc_tag_read(struct alloc_ta=
-g *tag)
-> > @@ -200,8 +221,13 @@ static inline bool alloc_tag_ref_set(union codetag=
-_ref *ref, struct alloc_tag *t
-> >
-> >  static inline void alloc_tag_add(union codetag_ref *ref, struct alloc_=
-tag *tag, size_t bytes)
-> >  {
-> > -     if (likely(alloc_tag_ref_set(ref, tag)))
-> > +     if (likely(alloc_tag_ref_set(ref, tag))) {
-> >               this_cpu_add(tag->counters->bytes, bytes);
-> > +
-> > +             if (alloc_tag_trace_enabled(tag))
-> > +                     /* Trace successful allocs with their unique ref =
+> and repeated calls to page_vma_mapped_walk(). In general, batching helps
+> execute similar code together, making the path more memory and CPU
+> friendly.
+>
+> On arm64-contpte, batching also helps avoid redundant ptep_get() calls
+> and TLB flushes while breaking the contpte mapping.
+>
+> The handling of anon-exclusivity is very similar to commit cac1db8c3aad
+> ("mm: optimize mprotect() by PTE batching"). Since
+> folio_unmap_pte_batch() does not look at the bits of the underlying page,
+> process sub-batches of PTEs pointing to pages with the same exclusivity
+> state, and batch set only those PTEs to swap PTEs in one go.
+>
+> Disable batching for sparc (because of arch_unmap_one), we will batch thi=
+s
+> later.
+>
+> Rmap accounting and reference accounting must happen when anon folio unma=
+p
+> succeeds. If a large folio is only partially batched or a later sub-batch
+> fails, account only the pages that were actually unmapped. Put that
+> accounting in __ttu_anon_swapbacked_folio() itself instead of using goto
+> jumps at the try_to_unmap_one() callsite.
+>
+> Similarly, do the finish_folio_unmap_batch() in ttu_anon_folio() itself f=
+or the
+> non-swapbacked lazyfree case.
+>
+> If the batch length is less than the number of pages in the folio, skip
+> over this batch. page_vma_mapped_walk() handles this: check_pte() returns
+> true only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the
+> PTE. Swap PTEs have no underlying PFN, so check_pte() returns false until
+> the walk reaches the next present PTE to unmap.
+>
+> Remove the finish_unmap label since no goto callers are left now.
+>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/rmap.c | 109 +++++++++++++++++++++++++++++++++++++++---------------
+>  1 file changed, 80 insertions(+), 29 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index fa9fc8374fc26..cdda9efd80bc3 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -1966,12 +1966,13 @@ static inline unsigned int folio_unmap_pte_batch(=
+struct folio *folio,
+>         end_addr =3D pmd_addr_end(addr, vma->vm_end);
+>         max_nr =3D (end_addr - addr) >> PAGE_SHIFT;
+>
+> -       /* We only support lazyfree or file folios batching for now ... *=
+/
+> -       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+> +       if (pte_unused(pte))
+>                 return 1;
+>
+> -       if (pte_unused(pte))
+> +#ifdef __HAVE_ARCH_UNMAP_ONE
+> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>                 return 1;
+> +#endif
+>
+>         /*
+>          * If unmap fails, we need to restore the ptes. To avoid accident=
+ally
+> @@ -2141,16 +2142,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, p=
+te_t old_pte,
+>         return swp_pte;
+>  }
+>
+> -static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+> +static void finish_folio_unmap_batch(struct vm_area_struct *vma,
+> +               struct folio *folio, struct page *page, unsigned long nr_=
+pages)
+> +{
+> +       folio_remove_rmap_ptes(folio, page, nr_pages, vma);
+> +       if (vma->vm_flags & VM_LOCKED)
+> +               mlock_drain_local();
+> +       folio_put_refs(folio, nr_pages);
+> +}
+> +
+> +static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>                 struct folio *folio, struct page *page, unsigned long add=
+ress,
+> -               pte_t *ptep, pte_t pteval)
+> +               pte_t *ptep, pte_t pteval, unsigned long nr_pages,
+> +               bool anon_exclusive)
+>  {
+> -       const bool anon_exclusive =3D folio_test_anon(folio) &&
+> -                                   PageAnonExclusive(page);
+>         swp_entry_t entry =3D folio_page_swap_entry(folio, page);
+>         struct mm_struct *mm =3D vma->vm_mm;
+> +       pte_t swp_pte;
+>
+> -       if (folio_dup_swap_pages(folio, page, 1) < 0)
+> +       if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
+>                 return false;
+>
+>         /*
+> @@ -2159,21 +2169,57 @@ static bool ttu_anon_swapbacked_folio(struct vm_a=
+rea_struct *vma,
+>          * so we'll not check/care.
+>          */
+>         if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+> -               folio_put_swap_pages(folio, page, 1);
+> +               VM_WARN_ON(nr_pages !=3D 1);
+> +               folio_put_swap_pages(folio, page, nr_pages);
+>                 return false;
+>         }
+>
+>         /* See folio_try_share_anon_rmap(): clear PTE first. */
+> -       if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page))=
+ {
+> -               folio_put_swap_pages(folio, page, 1);
+> +       if (anon_exclusive &&
+> +           folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
+> +               folio_put_swap_pages(folio, page, nr_pages);
+>                 return false;
+>         }
+>
+>         mm_prepare_for_swap_entries(mm);
+> -       dec_mm_counter(mm, MM_ANONPAGES);
+> -       inc_mm_counter(mm, MM_SWAPENTS);
+> -       set_pte_at(mm, address, ptep,
+> -                  swp_pte_prepare(entry, pteval, anon_exclusive));
+> +       add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+> +       add_mm_counter(mm, MM_SWAPENTS, nr_pages);
+> +       swp_pte =3D swp_pte_prepare(entry, pteval, anon_exclusive);
+> +       set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
+> +       finish_folio_unmap_batch(vma, folio, page, nr_pages);
+> +       return true;
+> +}
+> +
+> +static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+> +               struct folio *folio, struct page *first_page,
+> +               unsigned long address, pte_t *ptep, pte_t pteval,
+> +               unsigned long nr_pages)
+> +{
+> +       unsigned long batch_idx =3D 0;
+> +
+> +       while (nr_pages) {
+> +               bool anon_exclusive =3D PageAnonExclusive(first_page + ba=
+tch_idx);
+> +               unsigned long len =3D page_anon_exclusive_batch(batch_idx=
+,
+> +                               nr_pages, first_page, anon_exclusive);
+> +
+> +               if (!__ttu_anon_swapbacked_folio(vma, folio,
+> +                               first_page + batch_idx, address, ptep, pt=
+eval,
+> +                               len, anon_exclusive)) {
+> +                       /* Restore the remaining PTEs that were cleared. =
 */
-> > +                     alloc_tag_trace_mem_alloc(ref, tag, bytes);
-> > +     }
-> >  }
-> >
-> >  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)
-> > @@ -222,6 +248,10 @@ static inline void alloc_tag_sub(union codetag_ref=
- *ref, size_t bytes)
-> >       this_cpu_sub(tag->counters->bytes, bytes);
-> >       this_cpu_dec(tag->counters->calls);
-> >
-> > +     if (alloc_tag_trace_enabled(tag))
-> > +             /* Trace frees with their unique ref */
-> > +             alloc_tag_trace_mem_free(ref, tag, bytes);
-> > +
-> >       ref->ct =3D NULL;
-> >  }
-> >
-> > @@ -247,21 +277,24 @@ static inline void alloc_tag_add(union codetag_re=
-f *ref, struct alloc_tag *tag,
-> >  static inline void alloc_tag_sub(union codetag_ref *ref, size_t bytes)=
- {}
-> >  static inline void alloc_tag_set_inaccurate(struct alloc_tag *tag) {}
-> >  static inline bool alloc_tag_is_inaccurate(struct alloc_tag *tag) { re=
-turn false; }
-> > +#define alloc_tag_trace_hit(_tag)    /* NOOP */
+> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pa=
+ges);
+> +                       return false;
+> +               }
+> +
+> +               nr_pages -=3D len;
+> +               if (!nr_pages)
+> +                       break;
+> +
+> +               pteval =3D pte_advance_pfn(pteval, len);
+> +               address +=3D len * PAGE_SIZE;
+> +               batch_idx +=3D len;
+> +               ptep +=3D len;
+> +       }
+> +
+>         return true;
+>  }
 >
-> I'd prefer we use `do {} while (0)` here, following the same pattern
-> as alloc_tag_record.
+> @@ -2186,15 +2232,22 @@ static bool ttu_anon_folio(struct vm_area_struct =
+*vma, struct folio *folio,
+>          * See handle_pte_fault() ...
+>          */
+>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=3D
+> -                        folio_test_swapcache(folio)))
+> +                        folio_test_swapcache(folio))) {
+> +               set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>                 return false;
+> +       }
 >
-> >  #define alloc_tag_record(p)  do {} while (0)
-> >
-> >  #endif /* CONFIG_MEM_ALLOC_PROFILING */
-> >
-> > -#define alloc_hooks_tag(_tag, _do_alloc)                             \
-> > -({                                                                   \
-> > -     typeof(_do_alloc) _res;                                         \
-> > -     if (mem_alloc_profiling_enabled()) {                            \
-> > -             struct alloc_tag * __maybe_unused _old;                 \
-> > -             _old =3D alloc_tag_save(_tag);                           =
- \
-> > -             _res =3D _do_alloc;                                      =
- \
-> > -             alloc_tag_restore(_tag, _old);                          \
-> > -     } else                                                          \
-> > -             _res =3D _do_alloc;                                      =
- \
-> > -     _res;                                                           \
-> > +#define alloc_hooks_tag(_tag, _do_alloc)                              =
-       \
-> > +({                                                                    =
-       \
-> > +     typeof(_do_alloc) _res;                                          =
-       \
-> > +     if (mem_alloc_profiling_enabled()) {                             =
-       \
-> > +             struct alloc_tag * __maybe_unused _old;                  =
-       \
-> > +             /* Fired here to cleanly capture the caller's stack trace=
- */    \
-> > +             alloc_tag_trace_hit(_tag);                               =
-       \
-> > +             _old =3D alloc_tag_save(_tag);                           =
-         \
-> > +             _res =3D _do_alloc;                                      =
-         \
-> > +             alloc_tag_restore(_tag, _old);                           =
-       \
-> > +     } else                                                           =
-       \
-> > +             _res =3D _do_alloc;                                      =
-         \
-> > +     _res;                                                            =
-       \
-> >  })
-> >
-> >  #define alloc_hooks(_do_alloc)                                        =
-       \
-> > diff --git a/include/trace/events/alloc_tag.h b/include/trace/events/al=
-loc_tag.h
-> > new file mode 100644
-> > index 000000000000..af2182501864
-> > --- /dev/null
-> > +++ b/include/trace/events/alloc_tag.h
-> > @@ -0,0 +1,122 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#undef TRACE_SYSTEM
-> > +#define TRACE_SYSTEM alloc_tag
-> > +
-> > +#if !defined(_TRACE_ALLOC_TAG_H) || defined(TRACE_HEADER_MULTI_READ)
-> > +#define _TRACE_ALLOC_TAG_H
-> > +
-> > +#include <linux/tracepoint.h>
-> > +
-> > +/*
-> > + * alloc_tag_hit is generated at the exact allocation call site and ca=
-n be
-> > + * used to capture a clean stack trace.
-> > + *
-> > + * To link this stack trace to the actual allocated memory chunk, tool=
-s must
-> > + * correlate this event with the resulting alloc_tag_mem_alloced event=
-. Since
-> > + * multiple threads can hit the same tag simultaneously, tools must ma=
-tch BOTH
-> > + * the `tag` field and the implicitly recorded PID provided by the cor=
-e
-> > + * tracing subsystem.
-> > + */
-> > +TRACE_EVENT(alloc_tag_hit,
-> > +
-> > +     TP_PROTO(struct alloc_tag *tag),
-> > +
-> > +     TP_ARGS(tag),
-> > +
-> > +     TP_STRUCT__entry(
-> > +             __field(struct alloc_tag *, tag)
-> > +             __string(modname, tag->ct.modname ? tag->ct.modname : "NO=
-NE")
-> > +             __string(filename, tag->ct.filename)
-> > +             __string(function, tag->ct.function)
-> > +             __field(unsigned int, lineno)
-> > +     ),
-> > +
-> > +     TP_fast_assign(
-> > +             __entry->tag =3D tag;
-> > +             __assign_str(modname);
-> > +             __assign_str(filename);
-> > +             __assign_str(function);
-> > +             __entry->lineno =3D tag->ct.lineno;
-> > +     ),
-> > +
-> > +     TP_printk("tag %p, module: %s, filename: %s, function %s, lineno =
-%u",
-> > +             __entry->tag,
-> > +             __get_str(modname),
-> > +             __get_str(filename),
-> > +             __get_str(function),
-> > +             __entry->lineno
-> > +     )
-> > +);
-> >
->
-> When I trace an interface provided by a kernel build-in such as shmem,
-> this is what I see in the trace:
->
-> trig-6838    [004] .....  1309.321906: alloc_tag_hit: tag 000000007874a2c=
-9, module: NONE, filename: mm/shmem.c, function shmem_alloc_folio, lineno 2=
-138
->
-> The module field shows NONE, which looks a bit odd.
->
-> > +/*
-> > + * alloc_tag_mem_alloced is generated after memory is successfully all=
-ocated.
-> > + * It captures the exact byte size.
-> > + *
-> > + * The `ref` pointer identifies the memory chunk for tracking its life=
-cycle
-> > + * (e.g., matching it with alloc_tag_mem_freed).
-> > + *
-> > + * Because the kernel isolates active allocations within the task stru=
-ct
-> > + * (current->alloc_tag), this even will always share the same implicit=
- PID as
-> > + * its corresponding alloc_tag_hit event. Tools should use the combina=
-tion
-> > + * PID + `tag` to correlate them.
-> > + */
-> > +TRACE_EVENT(alloc_tag_mem_alloced,
-> > +
-> > +     TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t by=
-tes),
-> > +
-> > +     TP_ARGS(ref, tag, bytes),
-> > +
-> > +     TP_STRUCT__entry(
-> > +             __field(union codetag_ref *, ref)
-> > +             __field(struct alloc_tag *, tag)
-> > +             __field(size_t, bytes)
-> > +     ),
-> > +
-> > +     TP_fast_assign(
-> > +             __entry->ref =3D ref;
-> > +             __entry->tag =3D tag;
-> > +             __entry->bytes =3D bytes;
-> > +     ),
-> > +
-> > +     TP_printk("reference %p, tag %p, bytes %zu",
-> > +             __entry->ref,
-> > +             __entry->tag,
-> > +             __entry->bytes
-> > +     )
-> > +);
-> > +
-> > +/*
-> > + * alloc_tag_mem_freed event is generated immediately before memory is
-> > + * freed. The `ref` pointer matches the one emitted during allocation,
-> > + * allowing tools to match it to it's corresponding allocation and
-> > + * call stack.
-> > + */
->
-> But the thread for allocation and free may not be the same.
-> For example, memory allocated in thread A could be freed by kswapd.
-> In this case, would the ref fail to match and falsely report a memory lea=
-k?
+> -       if (!folio_test_swapbacked(folio))
+> -               return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
+> +       if (!folio_test_swapbacked(folio)) {
+> +               if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pa=
+ges);
+> +                       return false;
+> +               }
+> +               finish_folio_unmap_batch(vma, folio, page, nr_pages);
+> +               return true;
+> +       }
 
-No, ref is unique within the system, so even if alloc and free happen
-in different threads it still can be used to match them. The
-thread+tag is used only when matching alloc_tag_hit with
-alloc_tag_mem_alloced because at the time of alloc_tag_hit we don't
-yet have the ref.
+Hi Dev,
+
+if we look at the whole `ttu_anon_folio()` code:
+
+static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+                struct page *page, unsigned long address, pte_t *ptep,
+                pte_t pteval, unsigned long nr_pages)
+{
+        /*
+         * Store the swap location in the pte.
+         * See handle_pte_fault() ...
+         */
+        if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=3D
+                         folio_test_swapcache(folio))) {
+                set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+                return false;
+        }
+
+        if (!folio_test_swapbacked(folio)) {
+                if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+                        set_ptes(vma->vm_mm, address, ptep, pteval, nr_page=
+s);
+                        return false;
+                }
+                finish_folio_unmap_batch(vma, folio, page, nr_pages);
+                return true;
+        }
+
+        return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+                                         pteval, nr_pages);
+}
+
+The comment "Store the swap location in the pte" is really out of
+place. Since we are already here, can we move it to the right place?
 
 >
-> Thanks
-> Best Regards
-> Hao
+> -       /* nr_pages > 1 not supported yet */
+>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+> -                                        pteval);
+> +                                        pteval, nr_pages);
+>  }
 >
-> > +TRACE_EVENT(alloc_tag_mem_freed,
-> > +
-> > +     TP_PROTO(union codetag_ref *ref, struct alloc_tag *tag, size_t by=
-tes),
-> > +
-> > +     TP_ARGS(ref, tag, bytes),
-> > +
-> > +     TP_STRUCT__entry(
-> > +             __field(union codetag_ref *, ref)
-> > +             __field(struct alloc_tag *, tag)
-> > +             __field(size_t, bytes)
-> > +     ),
-> > +
-> > +     TP_fast_assign(
-> > +             __entry->ref =3D ref;
-> > +             __entry->tag =3D tag;
-> > +             __entry->bytes =3D bytes;
-> > +     ),
-> > +
-> > +     TP_printk("reference %p, tag %p, bytes %zu",
-> > +             __entry->ref,
-> > +             __entry->tag,
-> > +             __entry->bytes
-> > +     )
-> > +);
-> > +
-> > +#endif /* _TRACE_ALLOC_TAG_H */
-> > +
-> > +/* This part must be outside protection */
-> > +#include <trace/define_trace.h>
-> > diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > index f30ef8dd24c7..a5339767efd5 100644
-> > --- a/mm/alloc_tag.c
-> > +++ b/mm/alloc_tag.c
-> > @@ -19,6 +19,9 @@
-> >  #include <linux/kmemleak.h>
-> >  #include <uapi/linux/alloc_tag.h>
-> >
-> > +#define CREATE_TRACE_POINTS
-> > +#include <trace/events/alloc_tag.h>
-> > +
-> >  #include "internal.h"
-> >  #include "page_alloc.h"
-> >
-> > @@ -55,6 +58,9 @@ EXPORT_SYMBOL(mem_alloc_profiling_key);
-> >
-> >  DEFINE_STATIC_KEY_FALSE(mem_profiling_compressed);
-> >
-> > +DEFINE_STATIC_KEY_FALSE(alloc_tag_trace_key);
-> > +EXPORT_SYMBOL(alloc_tag_trace_key);
-> > +
-> >  struct alloc_tag_kernel_section kernel_tags =3D { NULL, 0 };
-> >  unsigned long alloc_tag_ref_mask;
-> >  int alloc_tag_ref_offs;
-> > @@ -485,6 +491,28 @@ static const struct proc_ops allocinfo_proc_ops =
-=3D {
-> >  #endif
-> >  };
-> >
-> > +void __alloc_tag_trace_hit(struct alloc_tag *tag)
-> > +{
-> > +     if (unlikely(!tag))
-> > +             return;
-> > +     trace_alloc_tag_hit(tag);
-> > +}
-> > +EXPORT_SYMBOL(__alloc_tag_trace_hit);
-> > +
-> > +void alloc_tag_trace_mem_alloc(union codetag_ref *ref, struct alloc_ta=
-g *tag,
-> > +                           size_t bytes)
-> > +{
-> > +     trace_alloc_tag_mem_alloced(ref, tag, bytes);
-> > +}
-> > +EXPORT_SYMBOL(alloc_tag_trace_mem_alloc);
-> > +
-> > +void alloc_tag_trace_mem_free(union codetag_ref *ref, struct alloc_tag=
- *tag,
-> > +                          size_t bytes)
-> > +{
-> > +     trace_alloc_tag_mem_freed(ref, tag, bytes);
-> > +}
-> > +EXPORT_SYMBOL(alloc_tag_trace_mem_free);
-> > +
-> >  size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, b=
-ool can_sleep)
-> >  {
-> >       struct codetag_iterator iter;
+>  /*
+> @@ -2374,13 +2427,14 @@ static bool try_to_unmap_one(struct folio *folio,=
+ struct vm_area_struct *vma,
+>                          */
+>                         dec_mm_counter(mm, mm_counter(folio));
+>                 } else if (folio_test_anon(folio)) {
+> +                       /* finish_folio_unmap_batch handled internally */
+
+
+let me paste the final code here:
+
+                } else if (folio_test_anon(folio)) {
+                        /* finish_folio_unmap_batch handled internally */
+                        if (!ttu_anon_folio(vma, folio, page, address,
+                                            pvmw.pte, pteval, nr_pages))
+                                goto walk_abort;
+
+                        if (nr_pages =3D=3D folio_nr_pages(folio))
+                                goto walk_done;
+                        continue;
+                } else {
+                        ...
+                }
+
+                finish_folio_unmap_batch(vma, folio, page, nr_pages);
+
+                /*
+                 * If we are sure that we batched the entire folio and clea=
+red
+                 * all PTEs, we can just optimize and stop right here.
+                 */
+                if (nr_pages =3D=3D folio_nr_pages(folio))
+                        goto walk_done;
+                continue;
+
+I am really struggling to read the code here. For anon folios, we
+handle `finish_folio_unmap_batch()` internally, while for other folios
+we still do it outside. This feels a bit inconsistent.
+
+Also, we are duplicating the code below twice:
+
+                if (nr_pages =3D=3D folio_nr_pages(folio))
+                        goto walk_done;
+
+Can't we just do `finish_folio_unmap_batch()` like the other cases?
+
+That would also avoid the duplication.
+
+Best Regards
+Barry
 
