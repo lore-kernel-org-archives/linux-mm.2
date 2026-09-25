@@ -4,76 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 972E2C9830E
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 07:04:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5607FC9830E
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 07:06:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3C126B0096; Fri, 25 Sep 2026 03:04:50 -0400 (EDT)
+	id 5D1B36B0098; Fri, 25 Sep 2026 03:06:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13616B0098; Fri, 25 Sep 2026 03:04:50 -0400 (EDT)
+	id 5A9AD6B0099; Fri, 25 Sep 2026 03:06:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 929756B0099; Fri, 25 Sep 2026 03:04:50 -0400 (EDT)
+	id 4BFB16B009B; Fri, 25 Sep 2026 03:06:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD0D6B0096
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 03:04:50 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1C5C40541
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:04:49 +0000 (UTC)
-X-FDA: 85251397098.13.E14A905
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 16A686B0098
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 03:06:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9761E80529
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:06:34 +0000 (UTC)
+X-FDA: 85251401508.11.51398C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 13927100002
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:04:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V52F8MgQ;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id CD1B3160008
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 07:06:32 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WISsPPXZ;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790319888;
+	s=arc-20220608; t=1790319992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2R8jdNeSaYTQ16udVa5y7SwjDq151umXysfrxK7mNdI=;
-	b=C0Ylxu+nlGIfWqj0PAzXNeaR95tMDgzTI/++AQx+wEeXatlbz90GrzQQNlVafWkzNo3E4K
-	tIfMgYNFE2aAj9gFwd2cdb+I783AwJ8f1mYAep6VamET/RUEF2bBR1hoPsZNSDoN37VjjR
-	Jz7eCFoOhhvbwAetPNcWlHnn54PcvPs=
+	bh=Td8m9iIUt95nKIvnxCfVeaTTefgNaJwnXfzuIyCH6YA=;
+	b=TECjHWqGnfiT26pQONz7lmWwweMsjuYN5kAdd2gSX2BpstCaHYkMUnQmhBY52uvC9hZ7Gq
+	O63FsHVp/FnCbfM53anxbA4clMU2Nb0nqmEpYUl7CeaXCUYq2PaVelK8nsFg8fKul2wkQ7
+	9Dge4anw7QqNGIaY6mf9b+6YzKuJv7s=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V52F8MgQ;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WISsPPXZ;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790319888;
-	b=HdvndatshinBkqQJrlKTiWH+ZK3Z4bf88509EiYW0/mbhQH8LSY3cZPEdl0KoW95NmYXyq
-	ugcDgMZMPrzO9JrWyo8MmJt3ezI2IAjnPPpvnJIHKeX/5OjIPKCu2BgfGyNQKO2A0xMNqa
-	TIAHDXq/yeqImvj810klyg8+FNdH6R0=
+	t=1790319992;
+	b=KH1RSG3QeFtRfv2Pz9ud17tCtQaR9ECTxM8bkOPK+fMxcRqYFlx5zbLPSSYu1lfVl60QcQ
+	nDucQk4iFQMfiGbi44Y35I3y5D1pKz0F/Z3lqOT/See3Wh19gUXOk/cr+X1ammWDxxFVj5
+	J/a9fXwiULH1BAUwK1pUrZrpG7kdskM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5358043F63;
-	Fri, 25 Sep 2026 07:04:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7A01F00893;
-	Fri, 25 Sep 2026 07:04:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F369540DFA;
+	Fri, 25 Sep 2026 07:06:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9E91F000FF;
+	Fri, 25 Sep 2026 07:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790319887;
-	bh=2R8jdNeSaYTQ16udVa5y7SwjDq151umXysfrxK7mNdI=;
+	s=k20260515; t=1790319991;
+	bh=Td8m9iIUt95nKIvnxCfVeaTTefgNaJwnXfzuIyCH6YA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V52F8MgQ20KUBOmKrAhaGUJM9Z4YWg1Tl6VFjhczV6hH8DMfMdkF+KoS4ueEUUerw
-	 ufNTZhjdv92yy+ALpgu0sU0ryigCRt8Og+yRwxG8CMzjl3kqHPerkN7EJDEttUEY5A
-	 zPDDyqeglEIkcvX32JrWA2CBiX316hug4Efd+nVaRcRhULAgVtAq07dSjFdGD7JycT
-	 gXpy91I/RtYYjSx0vWE+RIGsAisvxkTt7IAXideVvb6oC1Qry2G3zsTiRYJdwVXqvD
-	 ncqlR+Pt2ptX7HYuxO/EM9smmCXxnDJ/3KarbavB3od8DfYBxV+l6/q8vy6nPzNTMU
-	 89sTcP+vWNSzw==
-Message-ID: <9f63d60c-913e-4e79-9d28-890dd48ef713@kernel.org>
-Date: Fri, 25 Sep 2026 09:04:41 +0200
+	b=WISsPPXZP8H+KWyPmwNcqB2cLI2ZXJEgwzx3oexLfVxNWsyzmmXvN4X8DRy2Vd+0I
+	 EbneXdraYBYE+MOoiR/pSsF+nWnDojcHw4a550rxBMavXoTTYjVpbThn2Esb1/mPa1
+	 ftTV+KJ2N0MN9DcXW9DRciHxSUVosh+k6tNP9jgVW7Ubnbifd096X4PfwCv2j6mhSb
+	 g7crbmDfyxCsEpRNoZ284TSxRaTLFPLQZENYhzOhI6bIQAAacSRaLhEQ2DFqzzFLYq
+	 swu2jtmpyrg+ODxhunThg21TqJvN6KmpYidVnI9akO+895qOLt3lG+1pA5Zt1norMc
+	 HXH6UxWptzoCQ==
+Message-ID: <30f58666-a798-4028-a2c3-9eb63612c4cc@kernel.org>
+Date: Fri, 25 Sep 2026 09:06:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-To: Lance Yang <lance.yang@linux.dev>, sj@kernel.org, mst@redhat.com
-Cc: damon@lists.linux.dev, linux-mm@kvack.org,
- virtualization@lists.linux.dev, ryncsn@gmail.com, kunwu.chan@gmail.com,
- lianux.mm@gmail.com, baohua@kernel.org, xueyuan.chen21@gmail.com
-References: <20260925054408.10431-1-lance.yang@linux.dev>
+Subject: Re: [PATCH v6 3/3] mm: implement page refcount locking via dedicated
+ bit
+To: Ilya Gladyshev <ilya.gladyshev@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: akpm@linux-foundation.org, andrew+netdev@lunn.ch, apopple@nvidia.com,
+ artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, edumazet@google.com, harry.yoo@oracle.com,
+ hramamurthy@google.com, ivgorbunov@me.com, joshwash@google.com,
+ kirill@shutemov.name, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ pfalcato@suse.de, rppt@kernel.org, surenb@google.com, vbabka@suse.cz,
+ willy@infradead.org, yuzhao@google.com
+References: <cover.1789239015.git.ilya.gladyshev@linux.dev>
+ <ebd6540ad89a4bb80e2a62d00901b5c827315b66.1789239015.git.ilya.gladyshev@linux.dev>
+ <DLFJL5U9DI6F.3QJP9YP0KX636@nvidia.com>
+ <56e036665dbeb0a8f51d697220d5ed84f210994c@linux.dev>
+ <570cf649-a8bf-4073-be71-207fbb2bef40@kernel.org>
+ <CAHk-=wh3LLDV2AMZn1PZcU1o3Na-BNcQtP=LPXouLKPZWaiRdQ@mail.gmail.com>
+ <DLO1WIACYFWF.3N01DXYFJLMD0@nvidia.com>
+ <a1d5881926dbf4b16dc796fb1da939f32dd42f18@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260925054408.10431-1-lance.yang@linux.dev>
+In-Reply-To: <a1d5881926dbf4b16dc796fb1da939f32dd42f18@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: msdqppzn9psahuibgd8q6k64np1kbjzi
-X-Rspamd-Queue-Id: 13927100002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: CD1B3160008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790319887-425329
-X-HE-Meta: U2FsdGVkX18EkTgJ0uzJqjVCUN1jN+S5x9HhbXWu2MUD7qfXR4drOq4ZQUfT1q4kRh1/q3daw5eSp3EWS9+CDYAptr/zRanN9S8Ek4mHX8/RPpWHu1F8XW41ILKt8YYTjgZqFDVOIPAipRzib0qgg94Pnf+OqJpcwFTaeq4d6BlPiCAnCmi3DNzoNPj8oPCO6REyBLrZuHXnxcd0VookuFue96CqY/QXr72432kcFsMQQmHuJkU+CmZNB12HCc90SGs/0VQplmcg6zhzJR6HUg0oFfmTMpanhbKMRoAudD0UgcP4kyvYTGYcpg6vo98r076ymtJG2XrIrxUZqf+Iu8ALjNbmfnysjdrSVfiv/9msEW5M2O88Ij7pdcD5U3SUKlTUMZxAQX3COMhbIfUiURc/by4uAPVEg4n9xtzGMzmztWU/igF4VKYJCAyOWfht5sOurOfTqrT74H9upqsLHFzFBnFLEHR7K4dU6Ql6d+ZNLTB7tW3omlufywojx/wOs3ojT0JQE70X5Hu7lhUFYONXsx9lviVEh9QmrVN5uXqUQ8YsG93nK/obP7agYtfX6G7NDApA9Ymqd5G64/XoYoV+eTsUkxbG0s2OTWtjNWitsHEzTQgGDIikGcSjjPuTgTjUHapYix8W4fp93bVW6g+KYR/MCLOoSS8jbQ4b7Trg8jZSI5UEWmiL+i+WS+58Qkrq1/f1mDs/zPkjsluIYihLyW/F31ZXpyE222fAC01dH5aviiWc0v2JF+cG4al7wrLL3aqpmzWrL7CqYfKB7HCnCgO/rSq6U2YW2dvAHh75d5AVqTeRd6+9aHSCkXPB3pNbygT6rFNy0kXI472Rukt22frRLg++fdzh1y9HkzpFRzGAI1uurXheYMyry7PKNpxGvDIThzICSAyLK+ENuJGSmpagbacYG/KHicgQtUJuFmN8jcTWjZ7uwn8hA15N3D2vdH/O1pQHLCx0Gub
- fU0ttX2Y
- Gnxy/8fgb8Wyz2AaeQyg3xeEbEQGK48l+RGeoCPl1eFFtDSb/ztZicdM/+rnj++xTJ+MwFDf5XOEr8yx/YTesy2q1mGkXMd0z922RuWpItUxjhW9W/VijcP2z15UQEVAmwmIc9Wc1kgGkVdCCmuGlbBrJxJaKjeTzq9snXpusH17yRhS9uq+RYsiOOj5/z/DfX5EViSDOUf33G3Kf44s6kCnUEk1ye7o4jxORzUYdw7Lc5OHfYZTGjqc/XnrmymO9rSCESMgq00LGwABV0BijKB/aAZxWd78l51i1xGVA0YuNoFE4wfeHlkNH3KnM3dP/TzXuRwStQIrnxt4=
+X-Stat-Signature: 1m84jsgp4n639kc6t9o1p4t6s11ymar7
+X-HE-Tag: 1790319992-650447
+X-HE-Meta: U2FsdGVkX19DhzqvTqDx2X8FsGTF3wNb3jIjtl/BBl+ZS84Eh+8BrWNbxrudQEtkbfSoWKG0mZczaJGim/80iwIzjeqWr/Jwbm5/do1mUVOxKavTrVirPNftbqpdXV6OkuizDdDyzAktRpzD8SwZSMe6iesJsm8LeeSM4ODCHpHQc+mRSx88uDiFknFvMg1ESvgj6ZnQQbnB3De77/7QcVV+1d4b7HIBVk4Iyk7TOvng30122tRy6DdsuRIStfme+XcTwnMJcVcNWJRsebbIQ37t/0o97unAl2yvoHVOeFgKnzA1pKuFrQIZHOw13L0mKVQD8CBrdp+uKA0/NeSARR+wPwLkmn5jqIDIG5NLdplh73u2IxWtLikqhdorLbSzXL3YMNWwWY3os7CrxnmjxtAwZx34deW1HQ+sQC0PPdV8MmcUW7A5X2Ydey7OzKi/5wP9riuKnjLxKVFEDGykutwwwvXE+3C0f7AsW9xB+5bTA9/iAyXEUcd0iV7Vm4LnYHUEwOilr95xcIhUNO1QLYuzGLKDkkJyrROmjeehSgoxZn6ILpZFesIUinXkUL7RyIOuZB94Kkkr8U6SizXCgD5A4emXgEqj4r1/4VtnBMrVbTMR89kOlI7MV79D4ekgcEFfKHbpwDobwkwCHFcA6sCybOXiGjvNi6R0PuDEMFToXhouCjgE3odzwSpA6h65ExUJG5KW8OoBzjJO0jS7iCoar7RkNCGBlkLKzQPSH73VoHYKqcALVVlAEW00mAd+mBsVORR5bFz+eeLqLBA77bpT+Ic9qaQ50YwCo7wzDeCJwtsoxMHu3uAY/tUuXAL+0W1iDdV2VM77o7jePwMlLMm8mWEeDPNjLicJn/gB5ONDmXkVC7vJDKIIOVUpYsLy+3CvMBDf+/OTCpf4lVVv0NP1jv03ZQiQUXeOZNpC5YLRaeYoAsvoy2i+/wjvq8CQPBEzY4OcO+AB3dVmrkn
+ c8Htn56r
+ UvsqFJ2jCY2rTsSrdRQvUyH2M+nT+umIMqa3wo23xBc6mK5r8iDuVTN6DvBIRUrJwP8+KzDFYRIpph3nVZb0K2hKKYtzkAZhM/LJ0OSX19buORmYGynNWpEsrdwxHeuIlSmioJnhlV0DMhETpqIDSPuIIgKMIJYc99A/QD7t83YRYfjSg52ejJIHjlY/K2iWc/Xxzw9N4SMjaAz/CW1C+xcXfy4E9CZaFjtzbFOR73umZe7qa9faZGs5XLaphc7ZFF7t8NUZcOOhWst15ltOPxJMQMzQmAN4/sYofuhyuWme96funZKuBD+1pqn2uhV6gl5hpc+edq2H9Z9xSwIafXYWyq5ZLhXVQLyVEy/8TT0yVPMBQRGZvpc7lflcXbqyxlkGkDphctMnJcv2HilDaEv4m7Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,30 +152,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/25/26 07:44, Lance Yang wrote:
-> Hi all,
+On 9/25/26 09:03, Ilya Gladyshev wrote:
+> September 25, 2026 at 5:44 AM, Zi Yan wrote:
+>>
+>> On Thu Sep 24, 2026 at 4:06 PM EDT, Linus Torvalds wrote:
+>>
+>>>
+>>>
+>>>  I think this all needs to be entirely generic to all pages. Agreed.
+>>>  Everybody needs to do it right.
+>>>
+>> It assumes all callers of page_ref_dec_and_test() are free page
+>> functions, but there are two exceptions:
+>>
+>> 1. compaction_free() uses folio_put_testzero(), which calls
+>> page_ref_dec_and_test() to put not used migration dst page back to
+>> isolated freelist instead of freeing them.
+>>
+>> 2. virtio_mem_fake_offline_going_offline() drops the last reference of
+>> fake-offline pages, so that they can be offline.
+>>
+>> They will need to be converted to not use page_ref_dec_and_test() in
+>> addition to a common page freeing function. And any such future use
+>> needs to be banned.
+>>
+>>>
+>>> But I think that in the scenario that Ilya mentioned:
+>>>
+>>>  Refcount operations as follows (FR = FROZEN):
+>>>
+>>>  A: DEC 1 -> 0 [ page_ref_dec_and_test() ]
+>>>  B: INC 0 -> 1 [ folio_try_get() ] => success
+>>>  B: DEC 1 -> 0 [ page_ref_dec_and_test() ]
+>>>  B: CAS 0 -> FR [ page_ref_dec_and_test() ]
+>>>  B: * deallocates via __folio_put() *
+>>>
+>>>  C: * re-allocates page *
+>>>  C: DEC 1 -> 0 [ page_ref_dec_and_test() ]
+>>>  A: CAS 0 -> FR [ page_ref_dec_and_test() ] => success
+>>>  A: * deallocates directly via free_frozen_pages() * => BUG
+>>>
+>>>  the big here is that the de-allocation was done not from the state of
+>>>  the *page*, but from the state of who finished it off.
+>>>
+>>>  So that
+>>>
+>>>  A: CAS 0 -> FR [ page_ref_dec_and_test() ] => success
+>>>
+>>>  is not a problem per se. It's a fine case of "we had one single unique
+>>>  final free".
+>>>
+>>>  The failure is that A then goes on to do that
+>>>
+>>>  "deallocates directly via free_frozen_pages"
+>>>
+>>>  because A mis-judged the page as having the old stale state that it
+>>>  had when *A* was using it.
+>>>
+>>>  IOW, I think the soluition is either:
+>>>
+>>>  (a) every user of put_page_testzero(page) agrees tro do exactly the
+>>>  same thing and there is no difference between how that final
+>>>  "0->FROZEN" is dealt with, so it doesn't matter that A is freeing a
+>>>  page that C allocated for something else
+>>>
+>>>  or
+>>>
+>>>  (b) the CAS 0 -> FR state sequence always looks at the *page* to
+>>>  decide what to do, never at the caller state (ie A will look at
+>>>  whatever C wrote when it allocated the page to know how to do that
+>>>  final free).
+>>>
+>>>  Hmm?
+>>>
+>> Just wonder if we could make 1 -> FROZEN atomic to get rid of the gap.
 > 
-> I was reading DeepSeek's new DSec paper[1] and found a nice use of DAMON
-> and virtio-balloon:
-> 
-> With this kind of workload, an agent may read a file once and never touch
-> it again, while those pages remain in the guest page cache. Without memory
-> pressure in the guest, they can stay cached even though the host would
-> like that memory back ...
-> 
-> The trick is DAMON + virtio-balloon free-page reporting :) DAMON reclaims
+> Hmmm, I’m afraid that since you need CAS for a safe 1->FR transition,
+> it will result in a CAS loop for the decrement itself (like in
+> atomic_sub_unless).
 
-Heh, I read "virtio-balloon" and thought "balloon inflation/deflation, what year
-is it?!". Free-page reporting makes much more sense.
-
-> cold file pages from the guest page cache; buddy gets a chance to coalesce
-> them into reportable blocks, and virtio-balloon passes those blocks to
-> Firecracker. Firecracker can then drop the host backing with MADV_DONTNEED.
-
-When I was at RH we were looking at this issue as well. virtio-pmem was one way
-of avoiding the page cache in VM entirely. But it has its own limitations.
-
-Thanks for sharing!
+I was playing with exact this idea when I was reviewing one of the earlier
+versions; didn't manage to make it fly in a nice way :)
 
 -- 
 Cheers,
