@@ -4,89 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC815C98306
-	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A30A0C9830D
+	for <linux-mm@archiver.kernel.org>; Fri, 25 Sep 2026 04:53:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03B9E6B008A; Fri, 25 Sep 2026 00:48:16 -0400 (EDT)
+	id 65FAA6B0088; Fri, 25 Sep 2026 00:53:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2E176B0093; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
+	id 5EAB26B008A; Fri, 25 Sep 2026 00:53:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6BBE6B0095; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
+	id 48ABC6B008C; Fri, 25 Sep 2026 00:53:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB71B6B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:48:15 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 43C0212052F
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:48:15 +0000 (UTC)
-X-FDA: 85251052950.06.8481764
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 793341C0007
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:48:13 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mBbJ0AG8;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 144046B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 00:53:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 828AFC03EC
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:53:40 +0000 (UTC)
+X-FDA: 85251066600.17.C88F541
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CBF68180003
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 04:53:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D5vuQXFN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790311693;
+	s=arc-20220608; t=1790312018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EAbfPfUo1z2sF6AlMVME2ig0vFfsexu9oO7eGK/q4T0=;
-	b=USvsnCBCjc66DLbJPBZwY3CDeAFIdfUZWt4nLLkk+KPO0Wo5tCgp7SMdGJkPdl3Fv7YnCE
-	NwHvR1oXFXnP7QmNrMItTfwdORLVVqyUwc1SGa5TZHE7dGgqe5E350UujWKMIpgSyMY73r
-	/C0LKE5MtPuDBDaN5lpWeq6vVjDEAFI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=REUbZZ1eN3AuH9mm9MMP7henzS05a7UB/qvCM8QAct8=;
+	b=eNxZfgp6wnbKctlzt+M+QSQjnZJPwsFW0+BAmzL1evxf530YoLs0ENvTm8aVvGErU1TwIa
+	DCu/lxB6DG+UUlUFgjerSKM0FtV60fvbIfYRua7HzUKqPO9L4RenKMX/ZkmXr9rLgxWhEO
+	mYUK+iiuX4cV3d4DEUZXoz3moGjyKaE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mBbJ0AG8;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=D5vuQXFN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.12 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790311693;
-	b=SFoskmwPJzlSdNC+JVaeJk7QX0dUH4DQ2bgF2e9KRb00maH358cezvF7PgQtDi++hZuli7
-	RmnrNKk4fCq3dy03BCnsg3FoHt/AjwiCbDBOhaKtSBGEAioMuUBXW5oBp5JiRqS6prhHyq
-	NbXhG31mEWfK5wE8TerzJTkWSpY5qtQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C9D216022E;
-	Fri, 25 Sep 2026 04:48:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139BB1F000FF;
-	Fri, 25 Sep 2026 04:48:12 +0000 (UTC)
+	t=1790312018;
+	b=2Nb3dzN/qPx2CJ6PFlSSx5I4Bl7rV6q+CfT1eGnNbWlmjk1zdoNZDQsDbI8PNWNQZFmpp5
+	w2EYiNyfxkhqXbr2Zlm/AYSrrUYOup3q6/j7GHLsWpghFiGLFnr4QuRYk6wF7UyEqOfSfR
+	5pdiH9iIolv1NU2VbI0ZKaN/ws1ARfI=
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc4aa0f1766so252302a12.0
+        for <linux-mm@kvack.org>; Thu, 24 Sep 2026 21:53:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790311692;
-	bh=EAbfPfUo1z2sF6AlMVME2ig0vFfsexu9oO7eGK/q4T0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mBbJ0AG85Go83iWFJVKJrU87L9CaAbCtMGm6NjiNKpqM7xtTKxKZvef54DAST8hdY
-	 +qge4H+e+pCaCp35Z1lQNebvY2P1qqK32vopKcRR0ex2koXo/Ox5iw650cODpaRjLs
-	 Dx4kTv+n0Xgy11j7vQIgkcBlXm0McLH6kDK8NYwc=
-Date: Thu, 24 Sep 2026 21:48:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Cc: rppt@kernel.org, peterx@redhat.com, surenb@google.com,
- aarcange@redhat.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, kirill@shutemov.name,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] userfaultfd: clear the inherited uffd bit in
- move_swap_pte()
-Message-Id: <20260924214811.19ef8af417d37071ed8338c4@linux-foundation.org>
-In-Reply-To: <20260925042907.2330519-2-donggeunyoo.kernel@gmail.com>
-References: <20260925042907.2330519-1-donggeunyoo.kernel@gmail.com>
-	<20260925042907.2330519-2-donggeunyoo.kernel@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1790312018; x=1790916818; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=REUbZZ1eN3AuH9mm9MMP7henzS05a7UB/qvCM8QAct8=;
+        b=D5vuQXFNTne5J6G5lKBQgxTyEQe6b7xNJ9sou9Lch7fMPR94EmcSPAqyZPerNoVn3f
+         VFWIQsLFQl4S3i5OGF00dVuDE9WtMk2CdeUPmKpKTLKku1VdqUp8IeXcb7vfINU0oyNY
+         4bBJGwo4qYqmHjUPTLzlZnvB3i9xquuPuZYaR1nM5WHp0QOWk+urAJmo8wQ0PGsBv9yo
+         pOI95wLypdxV3Fwu/z4uwfcsUU67n1GFlQwRWLO1ctwftgFlFdd5XxgoIffnIzS35zNM
+         e0KqKzh51r0Os9NZBRlwo0U4RXe3ogg7i5zaUX+/3Car+3g4nCgeJV4zjuRhUazMTW5A
+         Xhcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790312018; x=1790916818;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=REUbZZ1eN3AuH9mm9MMP7henzS05a7UB/qvCM8QAct8=;
+        b=m5RSV/lJoww5OyLX8mUlu7lxpUYLqOGRpSL/aRF8LVSoECsYuOeweK3M2psOLLFFyE
+         g7B6ENzsjl5mG7CmieJJfBafe7t0Ua2TyfeQCtmSuLl5diV50Gtt6cwxgJM8FGLXDGPq
+         cxPsHZKlfdMiFUkbRUfZb5qcsXEJZXDnPwB8qMfpNk+pbtljp2YtvPs8egST3g2RAizO
+         BIwtCWXgeBT/dTXUy9RPqamyg/tM+FxSOF2Tm5y3UeZ6V5OOQLZzFCLlNJ5Ep3zXp0bx
+         pDpeE+92ZQOqnFfV89LctnKHDG1CYPPJS50IzbRCPSVBK/sUDL/qetznwnu9uoC9qfuZ
+         ynvQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwDXnLp8JRjXdBvDLlpRUVglCgosaEmQmO/OmQVIxbCubA/RlVzR8la1r+yY4s3pJi9QzJwYrhi1A==@kvack.org
+X-Gm-Message-State: AFuF++kh3Or91HrFeBqSQ3WqyvS79unzjKuVOsbXqvCVmVebokxdXC+b
+	e4kj1Y41tzv7eR62B/mkANo766JD50jTAaXqk+jJh/SQWWOzRLeFT2BT
+X-Gm-Gg: AYBFou1n5jfWG1WCt2AuPBN3muUZVx5ci1bc4+j/5pYK7LA0D+3OJQVzd9fz0vkG06C
+	rBJw4v8MjhQWUGR0/1abDqy5OxfgYF+Palg+EjqT0TtUSdviPVf5vd14FVCtbwaG6xE10mBk9uC
+	lLdujGmSi/CFbHpsUBFSzsWqccED6DnwEBfTov5HYA3XRZbILJEx8ezcbrPtgWexojFaBnElCIq
+	0myCoGSbhgtHinykqKGsk4+xI5+RHE3+/hLT0BM4EEm/bFHGmcgmUyzK9ivswxAu6nfnArnDcl9
+	irvrsz+figwM4JFDTh4dfb9gq7cRdLnAguguJ+kmVpohaZduCng9jphvzUZ5ojTD4daK9fClzsJ
+	YpkD/MH9Dt/wIyBj/SDI3d6RvkA3Han7nkGXC9/oDobjpEbbTffy/Nx+rj7AWbsNaAOmFcCQdzr
+	HC4OsHKRzJlEEMF3VX4gAvNGwR4fL4bfOjNW/a1EO4Uyi8QAIfNP0Ahq8VA5RLDpzwtx5UhKFR
+X-Received: by 2002:a17:90b:1dcd:b0:39e:d36c:ee54 with SMTP id 98e67ed59e1d1-3a0bb55308cmr926280a91.5.1790312017647;
+        Thu, 24 Sep 2026 21:53:37 -0700 (PDT)
+Received: from celestia ([2402:1980:867:387a:70b:38f1:a1dd:9303])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9589bbfsm2053242a91.9.2026.09.24.21.53.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Sep 2026 21:53:37 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
+Date: Fri, 25 Sep 2026 12:53:35 +0800
+Message-ID: <20260925045350.66595-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ehihnko375iibk5td7wba1t8qx93nygr
 X-Rspam-User: 
-X-Stat-Signature: nygu87yqbiy9rcko9bda399q3xntxi3d
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 793341C0007
-X-HE-Tag: 1790311693-472215
-X-HE-Meta: U2FsdGVkX18IXijJKwaXNAdPWbo1McTbc9OFOmUnUmXFf44Hb3CjpCpmfwd2wToFE9K1tYaRI4mv/WxZ1j4GTY7fVEjolLl8S3dPmTwyYzbHaAdg0pj90GAQCp3kEDoP43HYx6lNqubfcLtKWQrRkXFGlzlMIPWY059gaonrCoRAD8+r6AekJhnNKxA/B6HOxvc+qTIQlWw/UpbSXHrIVpKDUV16gOUHQRqXZT/9IkHXpwS0LSmgFFFyFo2eMgbzkypcc7ygkbHBrJ8Yi+ZZF5Tv6uQR13TV3VTMQOfTQ69Cbyrk3NdmoGg+AwysgKZY8gIKW9apyiV5GQ2vYWZTERmXr+7lpUB9gTPsfk87JVHl2N9gU5h+xvSvDEtzRKj+sbP8t4FHctRGORuHAlsmpk6sitUENV7dNwSld/2T0mnOgv+m4jjf76rFAUHOoxuLOjrmcw5jrHxujTF7meRiCE2dwRJGzP//qCbJoi+LjG04VN/V22w5MehuMAJMl6rIojpCEfYd2n5/Qvo6qs6dunanmGo+eV6vUqufdPI5fjFZ8SAikDWRVSHGQfCY43DQFXUkXOIPNgE62Il7eqjt1EZr1JaTYewhbaAwfp0rpbOpfWsfkFb+q/82lc2DlpQO8KKTbn3xD9xBAlToYACg5YxMLtJ3fuDa0fKCDDBne7TyfA16WWu2vkgJv5Bzl/M9Kti1jDk3rd0vhTRPY/g0QfKIE8XTOZ/QhgkYOjE/SjIQpODZqg98b5uFbQ87nNydaOri3BmdlxT7+AgUk2GXKJ3t5k+ASGWSEoAYzZYvYtuqVHpLHg+zqfENElvcvY24rEZTLXjCKddJqnThRFgRbaMV2u3fxm92JZbPs9Q7eJpcSZNsoUr/TT3k87YL6VlfjNf4WtzXcv6X8ThxYzJDIAgbwwmIjFxVJ3j4zIz1amgWwV13py1Tj5sQjqgn84nhJHdx3mU7qKGQ6y5pFRb
- TJkyXSlR
- w0JXC/WgX1xUErFnXp3Pu4FscuQAz16RcWU+sjEIYuiMR/DWdC4XfHuITVcnM1Cf+d577ckaLjroLBgVKARaGPD7K4oLKCn7K2S7UIaFXKDqkOHtuK5MZDbh4PYWl3aJHQulWbX7WO2MPFW9piTZ9eJjXsUWk4DeAO6HLswN4nEXyCMTOkZm6oVsRHAZJHPQ0FbnTaGwJOFAr0IqKjJVKl+jKtjm5fi4K8H1S/D4240EDEMtmrUArrGNAMmocN8J8lcGHfyBB5YSrjG9Zp5cY8sinWUGbMPB3mBNPHZyR9AnS3FJlnXop9AWLJuHzndSSHz7Zk458Vqlo8iPeMTKZdBilNW/h+0DfXLxObbQDkA5w86NmkYM7cZNFbkMMxL9AMgNW+tnJQRsZ9WJp9cpWAuCm/dAfSD0KBT16
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CBF68180003
+X-HE-Tag: 1790312018-833276
+X-HE-Meta: U2FsdGVkX1859+ZwOrKYWJL/ltfEkmxoHeULx2Iz3m+//M5SEh/140skacU54p1p9H6k3HFtleoH+BAWE0v4hsrrXX6XYKlgxLAx9OXAlVJNDlcN75bILemZZCnQK5NdrfN7iMpzDX8sowmGJUWNQ6HcQGl+JApqUqDB5bQrYCJr12z3IpHBBPvChm9HFPbG0PTzzFBL3q9NardlpVTkSuSWcSmlMA4HG9RG8KjhPxwzviD2UxDkglAxfF8Cvpiv0SnRThJLxYkDofktm3BkZIS0UVUuumVM+oiQm2UjW675xbSQ0jC3pD+s1PxObWuD3rUHR++D/xrGePXRKpcpIaQ4wrDf1tjduPPEadECZhCWmoYMmKCTMg2GYf5nfhW4paKjh4PQvSwRHqhAoLfT1CCYJpkSA0iQTTvvXw03MleCG4dFuwGw9H63/FMNP0FQQYNOqPUK3XMbM70OMUTE2EIla0DoRBXDV62FNdrOwZ6yzlpNA+Pu/pRahnz4IuIPstuYF1k8xj7Nut8PV5scXCd6zBGy52sX9wNoHUnZE2Mu7nMBz+Ds4h8PSa+obRFNUEOqNDb54nKW0OolkQ8QcN7BYSGHnwnI9CSJJkx6REQkXg7J6x/cnBU+YR3cmG4+6OKXP1cBm+KTEm5vRsme6Adbb4zXYc/aYJoNUMz2Dw8of+XRzCnkX2orKPsN9/Dez1nxLipOqluIJfKJWNb3PZ8i/Z0W43jReEwtUEwqIbCLe10NuqsqmLWNttV29ZkVTF3IxydQkU61ebpvGddemXm7BDajw5FlatYdg2UzVNhCY0MQqIEpObZDB8+B60Om2eF8hbtypPq/pT7kVTVWyRSDoeeLmq8rIjU1hWmCU9n+0L3F8NxXM/Yh8cRATfurNYC2aQIxrEzrPXZMI24eoDYRD9bnSA6WBmC/haNg5ndQvGDrZU99MUiEFiQLSMR02woWgw/bh54Had8M5u9
+ RZaaMpVg
+ 2wK1+isF57vcos4tfWO3f/9xOkJJELUFmGYflGFojxnWv7zO/CYkrnJhNWjndeS1daocbmAh7GX/6EmAOfxK+VbQjH7+nAEf08CieKftczkzedFTbav/cKEzDO7Oqi34omwH549stmEyrBkt3YwJ4b+SMafeFt44iAkxL/fsYuWH/ZxGd4dPXkYdmcBrJ/1dBUn/O+jCxJ4lK5G+3u7DG+Hfe41bUUD/WwuKeLg9M+LFQTe5u58Y//6PVuquSKKwgw/JPsTeBKUjmk4J99wvpreYN4zzfMUN/yqnJj+to8woy2bYdtbQ0QTmajLi1cyARu5W1f220VEV1JqY7rXybq3ErXwTvafJFxH9Y1HneBj9Jg/8U7FglJnIIK6HY3n20keoAoa/PdSBYnJFJK2ee6e8M2Daxmw7y4I2NAoPQhY2FstjGZ7TfZc750rdDmPQUvLTo6Li89W3HkGvEgWziVw4B0g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,41 +117,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 25 Sep 2026 13:29:06 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
+Commit 50585192bc2e ("mm/damon/schemes: skip already charged targets and
+regions") introduced a minor issue that causes the last region to be
+skipped before it is processed.
 
-> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
-> destination unchanged, so a uffd bit set on the source lands in a
-> destination VMA that was never registered for write protection.  It
-> can't be unset there, and THP collapse can't happen either, because a
-> swap entry with the uffd bit set makes the scan bail.
-> 
-> I don't think it's intentional because for an unswapped page the bit
-> doesn't come along, and I don't see why being swapped out should change
-> that.
-> 
-> Clear the uffd bit on the moved swap entry unless the destination is
-> RWP-registered.
+Example:
 
-Thanks, but...
+    1. Target has 2 regions: R1 (0-100 bytes) and R2 (100-200 bytes).
+    2. Quota is configured to process only 100 bytes per window.
+    3. Window 1: Processes R1 (0-100).  Quota is full.  charge_{target,
+       addr}_from is saved at (Target, 100).
+    4. Window 2: The loop reaches R2.  Because R2 is
+       damon_last_region(t), the old code unconditionally returns true,
+       skipping R2 entirely and resetting the charge_{target,addr}_from.
 
-When fixing a bug, please always fully describe the userspace-visible
-effects of that bug.
+    Result: R2 is permanently skipped even though it has never been
+    processed.
 
-> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-> Cc: <stable@vger.kernel.org>
+Add a test to prevent this regression in the future.
 
-Especially when proposing a backport.
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
 
-Please review the first half-page of
-Documentation/process/stable-kernel-rules.rst
+Changes from v1 RESEND:
+- v1 RESEND: https://lore.kernel.org/damon/20260919080453.628679-1-aethernet65535@gmail.com
+- Drop braces for single line, as suggested [1] in coding-style.
+- Set min_region_sz initial value to power-of-2 value, '1'.
+- [1] https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
 
-I don't mean "be reluctant to backport".  I mean "when proposing a
-backport, explain *why*".
+Changes from v1:
+- v1: https://lore.kernel.org/damon/20260831113735.3349-1-aethernet65535@gmail.com
+- Resend since the dependent patch is merged into mm-new, that would
+  help us getting AI review help.
 
-> Assisted-by: LLM
+---
+ mm/damon/tests/core-kunit.h | 42 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-Great!  Please add a prompt to LLM's .md ensuring that future
-changelogs always provide this information.  Please also share that
-update with the rest of your organization.
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4a536d41cdb2..f4237436e1b4 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1632,6 +1632,47 @@ static void damon_test_rand(struct kunit *test)
+ 	}
+ }
+ 
++static void damon_test_last_region_quota_reset(struct kunit *test)
++{
++	struct damos s = {0};
++	struct damon_target *t;
++	struct damon_region *r1, *r2;
++	unsigned long min_region_sz = 1;
++	bool skipped;
++
++	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++
++	r1 = damon_new_region(0, 100);
++	if (!r1) {
++		damon_free_target(t);
++		kunit_skip(test, "region 1 alloc fail");
++	}
++	damon_add_region(r1, t);
++
++	r2 = damon_new_region(100, 200);
++	if (!r2) {
++		damon_free_target(t);
++		kunit_skip(test, "region 2 alloc fail");
++	}
++	damon_add_region(r2, t);
++
++	s.quota.charge_target_from = t;
++	s.quota.charge_addr_from = r1->ar.end;
++
++	skipped = damos_skip_charged_region(t, r2, &s, min_region_sz);
++
++	/* 'r2' is not processed, it should not skip */
++	KUNIT_EXPECT_EQ(test, skipped, false);
++
++	/* 'r2' is last region, it should reset charge_{target,addr}_from */
++	KUNIT_EXPECT_PTR_EQ(test, s.quota.charge_target_from, NULL);
++	KUNIT_EXPECT_EQ(test, s.quota.charge_addr_from, 0);
++
++	damon_free_target(t);
++}
++
+ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_target),
+ 	KUNIT_CASE(damon_test_regions),
+@@ -1664,6 +1705,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_is_last_region),
+ 	KUNIT_CASE(damon_test_walk_control_obsolete),
+ 	KUNIT_CASE(damon_test_rand),
++	KUNIT_CASE(damon_test_last_region_quota_reset),
+ 	{},
+ };
+ 
+-- 
+2.55.0
 
 
