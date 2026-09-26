@@ -4,124 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 505C1C9831E
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 03:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E66B3C9831E
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 04:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B19FB6B008C; Fri, 25 Sep 2026 23:49:36 -0400 (EDT)
+	id 617A06B0088; Sat, 26 Sep 2026 00:55:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACAEC6B0092; Fri, 25 Sep 2026 23:49:36 -0400 (EDT)
+	id 5C8CA6B008A; Sat, 26 Sep 2026 00:55:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E10B6B0093; Fri, 25 Sep 2026 23:49:36 -0400 (EDT)
+	id 490F86B008C; Sat, 26 Sep 2026 00:55:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 71E586B008C
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:49:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 145C8A686C
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:36 +0000 (UTC)
-X-FDA: 85254533952.05.90A08D2
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 3CADB40002
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RL5m8ftS;
-	spf=pass (imf04.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 123266B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:55:33 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D0CC140433
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 04:55:32 +0000 (UTC)
+X-FDA: 85254700104.11.DAAAB94
+Received: from mail-dl2-f16.google.com (mail-dl2-f16.google.com [74.125.229.144])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B1C3F120008
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 04:55:30 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ph8IRUoh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.229.144 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790394574;
+	s=arc-20220608; t=1790398530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5exqyQhzafqyOFiRdxT6ffSBUlENs1lok/PR/m34+0M=;
-	b=lcKTB17HQa2zUhLl6WXPqVOuPpMmPv9xJHF2XXaNmtAsf+PR5uDV4ErJ3oKAMuOf6kGo81
-	e6NQmtW6JyXXWjbwLi7FQ3MnUAmB9Ba1U4mT/selYuLlILhTCnZ8V1FgyYVh0ct7UWLCah
-	zuYK+ulPCFtBl4Fn1hnAuS+XClwUYUA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790394574;
-	b=Y9R9qorwLuHQEjmfW5Y2Z6CA0ZXO8V6HfYA9vQkA2sauYDZyOlleVP+qNVjOUjDURxliZ5
-	CTNEG0FmhcbPcUTFBS0T60n70XcjvclsLI2+pNwZ1yOuOYFinIOfSGGUqkJyq47fShgj+t
-	IiD1T/YPwOSreRgoi/up+KMePG3qJoA=
+	 in-reply-to:references:dkim-signature;
+	bh=lez8Lh9LK2IJV3Lg+4+qOHMKMvDRPEZgp+OMdBxRRpI=;
+	b=Sn8ElltbV1MY29EjvPIVu9r4ODNJ70XEldIc8WOuwhdTH+6yk4emS947xq242S83c1yeY+
+	cDfWFpuwch3IHpVj5h0PzAFifEu6X6NK190e3zDza+R2L1GRaYk8o2ld5Vw1NzekyDwlSN
+	ubIyOKjwlawuvCD7gzfmulHFln9uczo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RL5m8ftS;
-	spf=pass (imf04.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d391aso10448575e9.2
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:49:33 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ph8IRUoh;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of matthias.goergens@gmail.com designates 74.125.229.144 as permitted sender) smtp.mailfrom=matthias.goergens@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790398530;
+	b=jlgRd2wJxFVMepq0toXuMVrUJwStEz1PRAaUZKu51CgYxzReqDvQT1Hu6I+Elx2ivuddxD
+	23Ifa0RqbDQxeMrOic8c3Zw6BJBm/ovh1srNIlUysQLhdmMKAeVgQeukk2tJ/ALkXJs9Bv
+	dbRIYMaKCylgJm6rZKRtNUX+T3TcfiM=
+Received: by mail-dl2-f16.google.com with SMTP id a92af1059eb24-1473f265b82so78084c88.2
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790394573; x=1790999373; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5exqyQhzafqyOFiRdxT6ffSBUlENs1lok/PR/m34+0M=;
-        b=RL5m8ftS5/ll06mzWkqk2bbsuwlDltSZPmB5vdBUvd8kcFzkNlVm5uJTnnBJMO9fmk
-         sb4XoeHyNDarGIGZtkZCKNyrR8fNKtmdZRUncq+HWSS10bNrzEr5+KJJlhYGELehJPlC
-         qn4ZOBe8+b5G/MVQzheLJMHNaY7+RT6UATanDddqCVjY1O+HIG5YqO/Tr73PRqOfZvpT
-         rJs+jP9mv3bR7juCZhCv9oC9Oo8pcfTJ1ML+bAPyByznRPBX4ma2WJohxdHSPPmeM9X/
-         4sUpSbeyL+eeT+8A/MTARMNld1unfYlwgxU7cHSlIzJDdyg6bSIJE346Uqq4/NZwestj
-         f0/g==
+        d=gmail.com; s=20251104; t=1790398529; x=1791003329; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=lez8Lh9LK2IJV3Lg+4+qOHMKMvDRPEZgp+OMdBxRRpI=;
+        b=ph8IRUohH0PASadFBY6UtO497pbkxl55Vl/foXIcbh7lMKkSKbgtXdmyiL7/l6+Eg2
+         +ITSPjSRehzwPgvJmbK8EsYyG7izrXJjLIlhzrGeMWY7Y+PALm2zbD1+Bguwb5HsRkbI
+         /eMkAVLTX6ZmATyVFZ81PDhRalQCO0FX4L8fKul9TwklUELDLF1Db9kujLcePJ6V6L32
+         U4qqaKIjEP93dq0EoynoSzNuXiXn4UWKifs1ogtF9BvTAUx7m4qdOkbpbvAbX2dyWGvx
+         dj5C6BJKN4tZmwDELyNA7b10yTZ5LJ+0t8ddp/tfkm/YltDk+HqHKT3kwy07P1q9DSs5
+         VELQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790394573; x=1790999373;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5exqyQhzafqyOFiRdxT6ffSBUlENs1lok/PR/m34+0M=;
-        b=SpWzyIDePL9iB3NbgCBjrradKhp/nJXd96kuyOZKZsr/yTSg9aZjRpB3JT1af88TDG
-         NMgpXw4NyGrnMIBx4tksulUiWCsXjpgosSsYhoV4F0pAuLhdy17DkhMsb6A9H8sqFrNr
-         9g0sY9yJOHDWnDkkIj02XZDhQrhaxgKU+H6ahgKON24zT33I71EOiiFE83Gf7XLhRgV+
-         /s6aDr98WAczNmfI9xRuRMjRWmy3qYeRW6FxB9OBVM7Kbc6ilKrirBvHP17BsG3PEfZg
-         WKM6oho0oemMThsXFssMbepLL6OJXo3+ZQCtGDd1oKAumxo6JKUgFVnQ/pkwFFv2fc5Z
-         N/JQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz9rLQujRG2S7pCNgSkPprM7n6Z3P75oIozWvsb+xUByY9pFWkYVCH3loh/f6zq+FkxjuhpZZchzA==@kvack.org
-X-Gm-Message-State: AFuF++macyVD2rRHyyx4ZTMceYZCMDho4iRFPgY6DLt11m4Qo38ml6i3
-	fvs16ULa3TqEltu0pkuD1O8j3Sm+mm80FdoPTAna1sdiMqBRzhx0zZTe
-X-Gm-Gg: AYBFou1PFeDY08opDenGbUDPIXB8FCe4yAkx3Bijqv9Gns2lapdyB9i9H6MrxpqXqeZ
-	jUXLCBlFCHKUB3SSfc9BW+Y4zRMyBhR+DvSM1R0GPsxY1lZ26C+ZLc5Yl5QXvoFzKVn/zDHgRRk
-	IfuL7AcTfpU41avid7t9bArVosqintFvo9Uy0UWBG6zijF5WYlMSTu6iR0PU+xxLhLKopjzJF6W
-	dEsGZm7wbI0MShG97DT5+wkX9cdDUugDEoaBUG6hiiSnSaJbQ6IQGjrwfz29NWTlG6XzcVKoJlN
-	R6auBHlU5lIM1YKhlPXvNrpAHKt3z471+0F5RyfOz60tipsh7+Bdi09VtU9C6X3CBLnE+n+upOj
-	mNnOBwGDzj1J1hVz1Ej4h3fZFAedF0jmi73L//51yG/vxUJm1vzJ3eVnNvvxHzgcEcRmP3LI0hw
-	9hqb+BvYmVBGPpnYhy9VjBS/v+UJNjf82drdkQt5DitSZw9EfL3KliYbu4B7CKUfFtkKje8j5W/
-	eCRBBCoVufh1KGaGqBYic5YvSMykWrsI8iEZYgzTQKJ
-X-Received: by 2002:a05:600c:8b4c:b0:49e:8184:f63b with SMTP id 5b1f17b1804b1-49fe66f3a68mr132693255e9.16.1790394572642;
-        Fri, 25 Sep 2026 20:49:32 -0700 (PDT)
-Received: from localhost.suse.org ([37.109.167.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff43ad975sm116657205e9.13.2026.09.25.20.49.31
+        d=1e100.net; s=20260707; t=1790398529; x=1791003329;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=lez8Lh9LK2IJV3Lg+4+qOHMKMvDRPEZgp+OMdBxRRpI=;
+        b=y7uF/YfhuLYv+LZVGUeHBzTqJm0bMjtLXocKj79XYgsr5X+lrlxYoSE0D7Q6K08MQT
+         DlU8rNJ1UQHmv/BMH1r7vLnp5tMzBMBZzcHroBZtMByKV/8fZ/muiV93+RT2pWQGPzUh
+         I/jOzi6v99AFNEHlGwqKBsfjSezz+kZ388MG6Ru8mvY0httDboXnAE9oHsrhsKB//Xfs
+         s/Q44mRW/drFEmHZ6ooM+/exMkbObA+Vffvg/RSSMgVJ7dWsecqUBJPh/1nJjmrLdQir
+         kI1m4EezEqEpBWxcu8U/VYSQtcnxVElHgKXKDFMlMh41ylxzvI/xCAZSwVuJPV90FdyF
+         2E8g==
+X-Forwarded-Encrypted: i=1; AKwUvByZ/LHPIhGgxU+L9A9VDl66xSobV2m684PuLBte3uXeGqAdzACMkQxGBTzF2ksT2Bxa1I0xeFYKMQ==@kvack.org
+X-Gm-Message-State: AFuF++ldH8HxA8yQFVnhJ9mQWZRzyaWGrGllouO2xkUt36uWUYMC/nv9
+	w2RbAHFSp1smNJ2WNAWne6uJ1xSrmAsn3BgEfmYjcIJL8fI0qqW3gUTM
+X-Gm-Gg: AYBFou08FY1/j5IjMRBcYxeg/aUaZ6IcB8Z0KnzCSwX9SBdGrto8PxP+9UJ9+GS6Wdi
+	rlll9m5tKYJ8UOamf+Pj+edA6nNDCzR5XBqtACqnrDLK2Do09JLDqKzZ6NVQYkMtRMPnS+RghZu
+	8n1HYOd4q9iSsjd1d1v6rgF7v3dwlQNXRKXfg5A2vWhFaj95mDtKUGh79+CEqGUdTvOSUTcJhFR
+	KwpWgMsHYMLPPIz5ZVkvxDc58gM/C4TSE92AKbigWM8+cpJE0Zp3FpjpPSyxKgBoo6vDIp0ZZal
+	HGqXV6EPkR1JHhGRz8GmZ3hrlkL1/cocE0kwXFem9WUPSDCU0EuJAvuZKvdRkBMU/Lcbv1UP3Iw
+	XMIc7R2uL9EiVWIL6cRmNty3rukUS0jdaEBcN+dtEOEmw6KWybnl3n3p93tFS5uk0xQslOSj7OE
+	nAq25+8LBaFBLkHsfyDg7Jrk8CdamKa5pS5BW7m4hHstD/sNyqgvoEPYVZ+5iqUox9TG0Gx7th/
+	FUhSNL4BXsQyIi+KQvHhSxE8Sc0n7KcZDHTUkw7S+t2Pr67BDXtRQZqlYvcj6kASR3WiJPjWSO0
+	Z/SrBZlJ1lv9dTjE6eMJffTDyygUJuhsYfRRNb6Iuan83uKdw2lvkjsf/4s=
+X-Received: by 2002:a05:701b:4354:b0:143:8865:cca with SMTP id a92af1059eb24-146cfdcf390mr1703579c88.22.1790398527862;
+        Fri, 25 Sep 2026 21:55:27 -0700 (PDT)
+Received: from spider.bream-herring.ts.net ([103.6.151.236])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145adcc5b00sm9334211c88.15.2026.09.25.21.55.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 20:49:32 -0700 (PDT)
-From: Sebastian Chlad <sebastianchlad@gmail.com>
-X-Google-Original-From: Sebastian Chlad <sebastian.chlad@suse.com>
-To: Tejun Heo <tj@kernel.org>,
+        Fri, 25 Sep 2026 21:55:27 -0700 (PDT)
+From: Matthias Goergens <matthias.goergens@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthias Goergens <matthias.goergens@gmail.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Shuah Khan <shuah@kernel.org>
-Cc: Sebastian Chlad <sebastian.chlad@suse.com>,
+	David Hildenbrand <david@kernel.org>,
 	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	cgroups@vger.kernel.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] selftests: cgroup: Report memory.current shortfall in alloc_pagecache_50M_check
-Date: Sat, 26 Sep 2026 05:49:21 +0200
-Message-ID: <20260926034923.31718-3-sebastian.chlad@suse.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260926034923.31718-1-sebastian.chlad@suse.com>
-References: <20260926034923.31718-1-sebastian.chlad@suse.com>
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-api@vger.kernel.org,
+	Alejandro Colomar <alx@kernel.org>,
+	linux-man@vger.kernel.org,
+	Karel Zak <kzak@redhat.com>,
+	util-linux@vger.kernel.org,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	intel-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Pavel Machek <pavel@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kselftest@vger.kernel.org
+Subject: [RFC PATCH v2 0/4] mm/swap: reserve swap areas for deliberate offload
+Date: Sat, 26 Sep 2026 12:55:13 +0800
+Message-ID: <20260926045517.3458413-1-matthias.goergens@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B1C3F120008
 X-Rspam-User: 
-X-Stat-Signature: r6nm3i84ojwsekfkfdgtiz3u8e4uocyt
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3CADB40002
-X-HE-Tag: 1790394574-35414
-X-HE-Meta: U2FsdGVkX198KALC1F/d+eMxqzSoKd+uyhtlPm/7wN5fiK6dbP04SWQ1+ZefvIYKt+3tKBQDzGw2+OcMt7igImCBlRCRqu0Ssbth/PiUaQOSxSYucLkpQ9P2GsDrbMXEQ5dtDNoFZ1iukkK44Rqd1TS6Ol93I6TRLnmuzJsrP5kf7JzieooGbu7eJ+T9+XBWMpMfKnBk0+pE2aVRVmRkMUv9qfNOf316UqoVZjPPd8NNsq/VBWIuu2+D9TuVdT0WUumN/123Ee/k3QnMlukpNolIponHzIVc7hKxBhmmdcdGtgsCl5n03xZNuX7nNEBvI8sOlY9M0EqEG7Vod3MpIZKm67j9XBll7MOCJe3iUgwFzwihmPSQeU9SYLnxOjzfs8tCS9U30XpClB9OUn630J+zaOHHUo+YYqTSiNsqtzVkxU4lCIlMDXeRhnOM+B0JS7FB3NQTDBbM5rkqDTLYluCs00twD0D8Tq3ofjGRhPQXhMOZprH7GQFIuqQ1T61S0K0CkBjHRXzQfYXBs14rqsnjQJb+58gXRQPqn/HEOfu1l7p0BBQ8kh0WM8ZgOh5CmNZz09C0nn+kjUwF9/8r/aeMiDHfCsvlG0zUc4igY6Cb1MCJqQ4YaL/yWl6r0cXZyGlQKxM3mMJrvivdvMCC7Kd0A7FkCRlbFWiJKTy3XtIX78boYDs1brZfssg5xzf5OSycsv6ToHZgNsxIA6g9FmDG0WmAvwUB1oQDAY07uCkcwB/eRxHc65nfzTjemUDAndEqkuamPgoLGFSdYTqAgQIDsGZtnmF4hhd8V3JDPqw1GGhYI9pTraEE7Ym5TA0TmAhuuoOsordjdVFexY8+9An1ygXUEi3BqRe8Nw6CoEwg6TVvbgdtJQc6qt9J94Oy32eQToJr6c4WfgyYB06to5Z27TBwA3CUqjITMUCXBCbxo+Rq+IM8eCnwA8UT+Qu92MrlVDnJ7cpPmYpVgok
- 5fVMZqxl
- DHKSo4NOgzikwI8TsJlfyM37VFheWIkmMJGGRH3Ec+M0Y7lRtyzmpNeHIl3eiTGRp+iM09k61Uc8W0BF2/wxJeY8+LUc16nZYXQwTbdAckPriSmpXHGKUSUozmfjDwysbJM6TjYJ/jnTzXtPovenPbJivJt14dyqhb2YptIqc7VLrYbI5Htq3TV5Xd7NwjsP5iLFZYNzunpN8kqy0pD5Zk4aUaPGE2MtjMrUk1e1OMCSxSP+8F3tZ+60avDKsuxFWu1sOtw07KBK/6nlKu3DIrEbmt3uvhfnJWDkLyv/9JRfXaePjWhszqoJwZ1/PHe3cQAvm4ZLWXp8Mh+RWgZBx90Ucm2TL9f6jeD2Yj7ct0yUCe+aYSqge5189W3qECCMLhJKkpCJ+cnDVNewiF2Zeigm2fMG/iAK7yOPqiV7LSGy/SUk4zE8t0pz1k42XzpPc0ik9kQydQZa0XQs=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qtfp13gw8i7di4uy5gfdfetdpkhqnx66
+X-HE-Tag: 1790398530-645295
+X-HE-Meta: U2FsdGVkX19szmA+gqLqjKknt4CIG15XLPfcoNfu8unPt9a9+2as1G6YnJVk3HNN+F3H0UdOzmfPfy57ZMVIj22/uVxLfKQ/b8GkgaU+f02gt5vpuBasVkNZQW3fuPi5jiU1EVYHyhGOaRxIJlIfAfwgpdORK8dw9hWSMy291N1OTvdS3mYeOubBwNoGW58TyqiWXTcxHNnLny51PUfOzqhUblJK6libfKq9MbJSEaBpasxzIPWUL9huGP7J5y0qGmVnW78OdVMymEr0d8K05ZB8HGSgSBAd85grKeEIT5D++RbYfnLiMu6TJD7QeYo1XJh2zihSOVi2QpI+Z5C70N8NuQ/H8ddToTXnQ5W7F9UWN7juGSY2X84Fe+cN3gu0ykr3Q9RWO7fiwv0q/ZiIUBSvJmO+qSXRIlZb7zsq5bg4N6tHzmiOt8fiQSzk6Y5maX47ouUDIOYiLsgW+oH8SdYi0QLYsPZe50y2LywIvkspxKLuPrbnUVXG4+pb47Wa31Z7C/VFV/YnPBQSzSDlVPm1qWRRXZRCYRTlWq7NJGtG/MwqY1tSfrekxxZ+x6oswGEd2t6MgeL0hV7SM5gBSKBraZ8e7fLVVB7dPNzaLIESqbLzP3tjAQDgwBKFJwN1oialRBa97IU3ECfSqCMUe1okeYFWP9X7XHJmfloYHfSCi8ojxtZx810UaMbEU1+o6LgQDp3Dl5RSxuRLrU7n8tdhkEIuVnREbz+hnZeVDb1u+KmPY9n3I8fH6nrLD0veqtSe8lu3qpF+SKfbgg/fglpItMHjFtZMkUw2f6ArF2SyT5Qd+8YTqaOk684waWnU46tXAlLOrpumniI9XVaDnMhrBzKv6SFLM22r9bg8Kqj0w0u+Fqizc/mWyhNK8oN2aRl/G09ggFrn54+06x4RA2TaM9EvMc43DBSsCDRI49H9mJylneC0LcD7bcZX4bLnAA1eIjoND4DIE41uWFw
+ mqEZF+vs
+ IQPS5L8JdIQ05blarPriUDkcd3G33fdSDQ7wYAOm7bO33pNqEjpfgv7LZ0VR44zW0Rm2nalXZ+bLyUO8HhGffOadtVDYgDgu0k6NGHyVVzFfiofpQUTqur91r6pu1w+yvbIXRg/Idgd+JqvfuBBn4Z/zSy7jVe655ZyTurcxtyGRDd/wz/C3vO4NFD2Yqf1Po9NXGwonX6Cy+fYai3qgcd1yQlFvkwThlb7B364p8Hz3Er6T2yQcc29+oq9haoKlRPf3PhU+XEWy02OvdkWfxb9lyJRwbvuCpklXn8L6bvaYHafTUXE4+lA8nbzCLzjk+lDbkP1H/cqUVajZMWcvPn9eULVxfQ/O3mg6iAJsUTqvxY0vQA72J+hKSymrdzR5fhhnKMSzF7vLLjnJA2eKlr+IP18twBLYjgGBnJUqlEhDcHgVwgi5XfgEfCop6Ydnxj+1Kf36kb9b0KR+Lpf4jECRcR3mhOnT4Bstq+LKvxG3fEnwjltQAqU4jV0L9XHh8NFJEJ0Z+UZeY0Fk8Q6CEaA6UpOjJIXEi9OBtG6zewUZt+U561iBRavMoqx4bojn4FJ/ad+x2Kac9w68MISx3MDSPzR51bN46U3tSXitn38K/oicRq18OPI+EVQKw6Kpqf6w+smGXNXXV8zV12crJ7N6NisR/UmDhh5Z+PUXXmrCvXT3hMpAOBhgAdUeS0HAIxhBB6m6X+fv7ysO1ZEODRDO4rq9DjMJ6bBoySki/rtpxo49tduWwy9Yx5hwHcYtyUdVwgPdyo0m7t/J8gPDXVgUKRjTeqF/jINKoGhUGQCCq3RfGxROucNUdJMiWBE5NCyZyiV/CkSNm9KUKNApRHAAda1d1Fs2uKOZFMUCeVsvogUs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,89 +151,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-alloc_pagecache_50M_check() fails silently when memory.current is below
-the 50M that was just written to the page cache. This is the check that
-can trip when the page cache of the test cgroup is reclaimed under
-global memory pressure, so print the observed value.
+This RFC adds offload-only swap areas for deliberate cold-page offload to
+backends unsuitable for pressure reclaim. ZFS zvol swap has documented
+deadlocks under memory pressure [3]; compressed swap is another target
+because writes may need memory despite free logical slots.
 
-test_memcg_high() runs the same helper with memory.high set to 30M and
-expects it to fail, so reporting there would print a misleading failure
-message on every passing run. Split the body into
-__alloc_pagecache_50M_check() with a report flag, and give
-test_memcg_high() a quiet variant.
+Explicit proactive reclaim can use these areas alongside conventional
+swap, ordered by priority. Ordinary reclaim cannot initiate non-zero
+writes to them, including through retained swap entries. Conventional
+capacity is not reserved for emergencies. Operators choose the policy;
+the kernel does not measure headroom or make an allocating backend safe.
 
-Assisted-by: claude-opus-5-5
-Signed-off-by: Sebastian Chlad <sebastian.chlad@suse.com>
----
- .../selftests/cgroup/test_memcontrol.c        | 27 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 4 deletions(-)
+TMO/Senpai [4] and DAMON_RECLAIM [5] are related cold-page reclaim
+approaches. This RFC admits offload-only swap through memory.reclaim and
+per-node reclaim, but not DAMON. Other related work includes per-cgroup
+zswap writeback control [6], Virtual Swap Space v4 [1] and swap tiers v10
+[2].
 
-diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
-index 14c0bb608175..d3b9295aad75 100644
---- a/tools/testing/selftests/cgroup/test_memcontrol.c
-+++ b/tools/testing/selftests/cgroup/test_memcontrol.c
-@@ -222,7 +222,7 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
- 	return ret;
- }
- 
--static int alloc_pagecache_50M_check(const char *cgroup, void *arg)
-+static int __alloc_pagecache_50M_check(const char *cgroup, bool report)
- {
- 	size_t size = MB(50);
- 	int ret = -1;
-@@ -237,14 +237,19 @@ static int alloc_pagecache_50M_check(const char *cgroup, void *arg)
- 		goto cleanup;
- 
- 	current = cg_read_long(cgroup, "memory.current");
--	if (current < size)
-+	if (current < size) {
-+		if (report)
-+			fprintf(stderr, "memory.current %ld < expected %zu\n",
-+				current, size);
- 		goto cleanup;
-+	}
- 
- 	file = cg_read_key_long(cgroup, "memory.stat", "file ");
- 	if (file < 0)
- 		goto cleanup;
- 
--	if (!values_close_report(file, current, 10))
-+	if (report ? !values_close_report(file, current, 10) :
-+		     !values_close(file, current, 10))
- 		goto cleanup;
- 
- 	ret = 0;
-@@ -254,6 +259,20 @@ static int alloc_pagecache_50M_check(const char *cgroup, void *arg)
- 	return ret;
- }
- 
-+static int alloc_pagecache_50M_check(const char *cgroup, void *arg)
-+{
-+	return __alloc_pagecache_50M_check(cgroup, true);
-+}
-+
-+/*
-+ * Same as alloc_pagecache_50M_check(), but silent on failure, for callers
-+ * that expect the allocation to be held below 50M.
-+ */
-+static int alloc_pagecache_50M_check_quiet(const char *cgroup, void *arg)
-+{
-+	return __alloc_pagecache_50M_check(cgroup, false);
-+}
-+
- /*
-  * This test create a memory cgroup, allocates
-  * some anonymous memory and some pagecache
-@@ -735,7 +754,7 @@ static int test_memcg_high(const char *root)
- 	if (cg_run(memcg, alloc_anon, (void *)MB(31)))
- 		goto cleanup;
- 
--	if (!cg_run(memcg, alloc_pagecache_50M_check, NULL))
-+	if (!cg_run(memcg, alloc_pagecache_50M_check_quiet, NULL))
- 		goto cleanup;
- 
- 	if (cg_run(memcg, alloc_pagecache_max_30M, NULL))
+The util-linux companion [8] proposes swapon --offload-only and an fstab
+option. Older swapon silently ignores the fstab token, so persistent
+activation needs discussion. Apply the separate i915 fix [9] first to avoid
+a pre-existing folio-lock leak when shmem writeback is skipped.
+
+The series fixes zram selftest device tracking and error reporting, adds
+the swap policy with DRM eligibility checks, and tests routing, workingset
+activation and retained-entry write refusal. It is based on mm-new at
+995829088503.
+
+Feedback is particularly welcome on:
+
+- Activation-time eligibility versus backend placement or migration:
+  is retained-entry refusal, with possible reclaim churn or OOM,
+  acceptable without migration?
+- Eligible-capacity accounting, including overcommit limits and OOM
+  scoring; cache recovery, cluster invalidation and workingset activation.
+- Persistent activation and visibility: current swap listings do not
+  expose the policy.
+
+Validation includes x86 builds, affected arm64 MTE objects and builds
+without swap or memory cgroups. QEMU tests covered routing, retained-entry
+recovery, data integrity and cleanup, with negative controls for write
+refusal and teardown failure.
+
+I have also been using this policy on my own machine with experimental
+bcachefs swap support, with no problems observed so far. Deliberate stress
+testing is confined to VMs; I do not deliberately stress-test this machine.
+
+Changes since v1, incorporating Sashiko's public review [7]:
+
+- Improve selftest isolation, retained-swap measurement and memlock skips.
+- Track allocated zram devices, wait for udev probes and report cleanup
+  errors without deleting data through a mount that could not be released.
+- Clarify activation, capacity reporting and conventional fallback limits.
+
+[1] https://patchew.org/linux/20260825153238.2695446-1-nphamcs@gmail.com/
+[2] https://patchew.org/linux/20260713025644.170839-1-youngjun.park@lge.com/
+[3] https://openzfs.github.io/openzfs-docs/Project%20and%20Community/FAQ.html#using-a-zvol-for-a-swap-device-on-linux
+[4] https://engineering.fb.com/2022/06/20/data-infrastructure/transparent-memory-offloading-more-memory-at-a-fraction-of-the-cost-and-power/
+[5] https://www.kernel.org/doc/html/latest/admin-guide/mm/damon/reclaim.html
+[6] https://www.kernel.org/doc/html/latest/admin-guide/mm/zswap.html
+[7] https://sashiko.dev/#/patchset/20260914104501.3960616-1-matthias.goergens@gmail.com
+[8] https://github.com/util-linux/util-linux/pull/4633
+[9] https://lore.kernel.org/all/20260914105606.3997649-1-matthias.goergens@gmail.com/
+
+v1: https://lore.kernel.org/all/20260914104501.3960616-1-matthias.goergens@gmail.com/
+
+Matthias Goergens (4):
+  selftests: zram: track owned devices and report cleanup failures
+  mm: restrict offload-only swap to proactive reclaim
+  selftests: zram: cover offload-only swap policy
+  selftests: zram: cover retained offload-only entries
+
+ Documentation/mm/swap.rst                     | 105 ++++
+ drivers/gpu/drm/i915/gem/i915_gem_shrinker.c  |   2 +-
+ .../gpu/drm/i915/gem/selftests/huge_pages.c   |   6 +-
+ drivers/gpu/drm/msm/msm_gem_shrinker.c        |   2 +-
+ drivers/gpu/drm/panthor/panthor_gem.c         |   2 +-
+ drivers/gpu/drm/ttm/ttm_backup.c              |   2 +-
+ drivers/gpu/drm/xe/tests/xe_bo.c              |   2 +-
+ include/linux/swap.h                          |  29 +-
+ include/linux/vm_event_item.h                 |   1 +
+ mm/memcontrol.c                               |  20 +-
+ mm/page_io.c                                  |  24 +-
+ mm/swapfile.c                                 | 123 ++++-
+ mm/vmscan.c                                   |  31 +-
+ mm/vmstat.c                                   |   1 +
+ tools/testing/selftests/zram/.gitignore       |   2 +
+ tools/testing/selftests/zram/Makefile         |   4 +-
+ tools/testing/selftests/zram/README           |  20 +-
+ tools/testing/selftests/zram/config           |  10 +-
+ tools/testing/selftests/zram/settings         |   1 +
+ tools/testing/selftests/zram/swap_offload.c   | 425 +++++++++++++++++
+ .../selftests/zram/workingset_offload.c       | 207 ++++++++
+ tools/testing/selftests/zram/zram.sh          |   9 +
+ tools/testing/selftests/zram/zram01.sh        |   9 +-
+ tools/testing/selftests/zram/zram02.sh        |   9 +-
+ tools/testing/selftests/zram/zram03.sh        | 174 +++++++
+ tools/testing/selftests/zram/zram04.sh        | 164 +++++++
+ tools/testing/selftests/zram/zram05.sh        | 447 ++++++++++++++++++
+ tools/testing/selftests/zram/zram_lib.sh      | 189 ++++++--
+ 28 files changed, 1926 insertions(+), 94 deletions(-)
+ create mode 100644 tools/testing/selftests/zram/settings
+ create mode 100644 tools/testing/selftests/zram/swap_offload.c
+ create mode 100644 tools/testing/selftests/zram/workingset_offload.c
+ create mode 100755 tools/testing/selftests/zram/zram03.sh
+ create mode 100755 tools/testing/selftests/zram/zram04.sh
+ create mode 100755 tools/testing/selftests/zram/zram05.sh
+
 -- 
-2.51.0
+2.55.0
 
 
