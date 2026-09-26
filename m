@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 421F2C98318
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 10:41:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D0BC98332
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 10:41:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D7306B0099; Sat, 26 Sep 2026 06:41:49 -0400 (EDT)
+	id 1F0396B009D; Sat, 26 Sep 2026 06:41:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ABA76B009B; Sat, 26 Sep 2026 06:41:49 -0400 (EDT)
+	id 1A1B46B009E; Sat, 26 Sep 2026 06:41:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 376D26B009D; Sat, 26 Sep 2026 06:41:49 -0400 (EDT)
+	id 0B9166B009F; Sat, 26 Sep 2026 06:41:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 158CB6B0099
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:41:49 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 99BD54082D
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:41:48 +0000 (UTC)
-X-FDA: 85255572696.04.DA8EBC8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D5E8720004
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:41:46 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FOsVDr1l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790419306;
-	b=IRgkGfaCHc6XfAUfm2MRDpuAGoIJdGQXxLT/4ZnrjYz1rfM8Ig7RV0GQzmfaCAHszXTxvG
-	Lk/qjWU/N8ic9vb83dYGYTmINWncMQTodg6uIzM+D+RkpteubIGp39MC+R55+hg8SlEiId
-	qfftUhZ5QA0XW1Ak10UgG1RF8/vw3vo=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FOsVDr1l;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D10C96B009D
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:41:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 574AB160864
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:41:53 +0000 (UTC)
+X-FDA: 85255572906.23.E189867
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9ACFC100007
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:41:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IgB7NcLq;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790419306;
+	s=arc-20220608; t=1790419311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7INaOtP/gm2Q0CwFqGyhMMm+FXe4/enBYyOAMoEMKqg=;
-	b=7S7XXctTJTYqey2LHZ5itf+wJ0rIL+/9j15PCk6wOgnx+wBW6UMfdn8XtJgfeax3pctAwA
-	XwE5XnCpPNoNRN0FBIeLqjI9VAwbKzG0G3/NLs/SOIdJcKc6rND4hMsQ7dytmKTdhOeMyX
-	v0MuvVkVMkACGuLw51fBwcFV1z4W/4s=
+	bh=KhsTvKQ2fnSXkbWyS/YqLnoRwyxqzmWUbttn/FRcKWI=;
+	b=qMjc6gI+dutKcic7doBZjmxvEnF2AV/IopOxbR46uGvZqp5E2cIgOvChwm7QmOrabNnvAH
+	Ka7DpBCfoy8WzOc62n2HGTIIQlFY/hbuFdq5x/pCf8IxCp2dL/yalCSgQlFRep1UvuT5Pj
+	Sb5ntaWDJ+DJxMv7+UyEl+KzW+pcE14=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IgB7NcLq;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790419311;
+	b=JNkw3JgSLfP0/BNc8Uj2Z/3V6RKl69ZVLRtfAIwa/dP2VvxNetL219cAU1yzLI/BAfmZ0T
+	Dte3N0GAYEKSer57da5SqUb4yr2o1JPMD3BzZEvF8OTmig6yMnPnpIOBoeX0VAyHkMA+eO
+	tMrP0FUu41HMF/TkN+sZfZNJFBD3aGE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3126C405DA;
+	by tor.source.kernel.org (Postfix) with ESMTP id 42ACF6020C;
+	Sat, 26 Sep 2026 10:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E71F00898;
 	Sat, 26 Sep 2026 10:41:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFB01F000FF;
-	Sat, 26 Sep 2026 10:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790419306;
-	bh=7INaOtP/gm2Q0CwFqGyhMMm+FXe4/enBYyOAMoEMKqg=;
+	s=k20260515; t=1790419311;
+	bh=KhsTvKQ2fnSXkbWyS/YqLnoRwyxqzmWUbttn/FRcKWI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=FOsVDr1lPbdLbth/FdBj5KzXf0oIdA6hCu9mLssK1wFzaBK7SOzL2rFrbZQ8bHdFb
-	 +NRHHqxQudc2nRYJ1z6B2okgHcmH3Qa8RHn2nNuv+gzZORsamL5057k+nLTZvMks2H
-	 CQvk+OGjt0XOPqUwSaY/SaIaxC2RNRJyuugqLkgdUKOT1BZgeVZNC79AGrl60NU85U
-	 xozIGYhzxWRg56hAQEfbIaBWA8PZWVor0VpmS3L4B8+Dgbs2ThIn5DOPdbqsDUpJjy
-	 zWbmPHl6dHArcrZuIrxNf4gxZ1w0140QygSC+R/wcRCO2cVNCT7sZ/FMNZYhQh2lCs
-	 5YMpWKbsnVYSQ==
+	b=IgB7NcLqpIid5a7MCnUMmAaPtKTkayne8jLDSMRHZx1NqxEy28NQKIqqBrt0kwUsH
+	 b5E7ISJiho2wtth7t14TdP78Czhi0m2aaVU46ti3XZ2s9NiPIXuYIZqBI9IVeuFTAQ
+	 3B4P2xm6hgkmMtW2iPxKpO7XQPj0CPKepn2CxcLChKM8IfWc8/V43sabGia/2CONjN
+	 vXJmFU8Aa2uEMCUpSKmgh6j/AZY30D2+sEBUaGhTNIceeWCrK216ttRkZ+8Ahs2ssF
+	 T+WlcsrVxx9rA21TPxnmq+NDdoRaXN3nmOOgJMBEaNx73SJSFKP7jBJVqMVLoEWGGx
+	 dttV6cWAoZV7A==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Sat, 26 Sep 2026 11:41:10 +0100
-Subject: [PATCH v3 5/6] tools/testing/vma: add test to assert
- MAP_PRIVATE-/dev/zero is anon
+Date: Sat, 26 Sep 2026 11:41:11 +0100
+Subject: [PATCH v3 6/6] tools/testing/selftests/mm: add
+ MAP_PRIVATE-/dev/zero merge tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-map-private-dev-zero-v3-5-d4781e84ccfc@kernel.org>
+Message-Id: <20260926-map-private-dev-zero-v3-6-d4781e84ccfc@kernel.org>
 References: <20260926-map-private-dev-zero-v3-0-d4781e84ccfc@kernel.org>
 In-Reply-To: <20260926-map-private-dev-zero-v3-0-d4781e84ccfc@kernel.org>
 To: Arnd Bergmann <arnd@arndb.de>, 
@@ -88,22 +88,21 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1881; i=ljs@kernel.org;
- h=from:subject:message-id; bh=MuW0MgECKFqsgKYanDvHZ2zzAEiQ7iCtWQ9chN/jOZY=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK2L/ThnMwp/NdRf3l60KLN0u0+J8QnJbIkff2y9ehr/
- qNu7dLdHaUsDGJcDLJiiizPv4jvDxIJm9d5wd8NZg4rE8gQBi5OAZjIzXiG/9nudyI6qi5MLnc9
- UZecrdL263/01u7jldNfqDkUzHU8uIWR4WzMwkTmt7nexn/yZ6asiFzVbydhudHvRFBUX8SlTav
- FOQE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4165; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=1leVrHr0vQD42BeUriV2AqaMbiNFdZlxKm+PRWQ0Ih0=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLK2L/SREO95sLjfyzgrouFDrfeE3dqSro5pNZGzGZ9n+
+ FT4iJp0lLIwiHExyIopsjz/Ir4/SCRsXucFfzeYOaxMIEMYuDgFYCKKuxkZOiYvr8vK8imSqFlU
+ 8UpTYW9Zeu+KjWL9Qe51bNZezl6cjAyPA00aN+Xd1r+4LaIrQa/NWK/2fU96h8VzkaOvGUwSvRk B
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ybotapih9bi7z1gr88s95n1j9hjab5hn
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9ACFC100007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D5E8720004
-X-HE-Tag: 1790419306-984557
-X-HE-Meta: U2FsdGVkX19qhfNxOhbwe69aeElc6VQ8V8wohlbrPUFQJqZfcrGSulD8wkCrP6H5oupsE6Fb9pLbIi6JRnmgWxUxSOaX/HMiFoMom37vHFHJqtBvaBxD8wHqzjEGDaRsTgApqkG+nVyQcIL4sDLKporyeN2PbMMKtHfcZozL2sVMiXYGgc/odeH3elU1+PA44Ic+Uq9RhAItcsUdTbr6fBsqtwD89lKt7EUXWMNMKznQlqAsgvfEcg2UViuFlJFep5V0wK0BTfv/p+I3pv51QtLWuDEZyEr0Lrg8ilSniL5VDReXOkw49VPigXXMnk6P9Vtx6gYPDTA2TT76MPlkF8S7e2wCZdAtKTjjZJZ87FWR0YuZOQ7lZ1RONfzS3IWRY06YSBx2LJI3UfF+S17Z9W9aafSQbV/avbyQUlxXCZGDZNCGhMY+DfaKq94naTb7Dn9U3JyCcpq3pg/uhlYEAXPFTwNw9qYrflf4K8jUdCXf/gjpA9dfsjzWHxIhQmu9HPzb526m7x+EpNrmotVhwvjsSgFY2emO8DP0CXGkgTmcF0TuPuBBYcmqsGVA5xn44Tf2kitIuK8eXmthCLANnEdJa9DFdgBavYfNz/hgusA67rM2wG7K2CW/0NSMJJ5rr1j598zWOqBPj4VFTfp2c4iPPdRyxJ3OhozL9Vs1jQ/iS8KdB1QLx46PAXTvDrXUk97ulyZ9cLmexy3j9i/kqGCmkmk+j1fm/Jq0EJuucnPTlUKHgyXv+gSA5qLJgitjYL5WBJ3trLhoAr9XAJ2sREN6373oFw9bDLijiasBWPG7pxmKlASgsZzjxwgtfM4oZEweu8GD2E7FLrADMULHMTI8Q9/jsMbMhpjqr5tHRQqSTwGgFUVTEmGUiPZq4loXtrgdOpdq0kTi9qlnsjCKCB1SDUGyjr7rsN4EfeLHumdGZCGIlok+PLNc5vHzCNcVXG/O0J4sgt/H9DN7bBH
- L1kFNBqG
- 10x1Xc4ITlZwIMDmPeJdK5vZCWqaD2q4WP0NDYzfK2XVtD0XSIsd8hQVPrH+/nZjourZJIGL2x7sVk0HrdkX6ooVLQq19+dWIRwVWmWO3C+5Pj7dk5ldBOb0gCNaskagovPsRwH/TywmoNnX1eHcxmzMPlTyuSs1YhV+zLdtyQcFTXwNbUal92KNpwYee2c7S5tnBmUjfg/GUtx8YVu3rA33/gvQ2ExrDlKoSTbUX6I1yOIAYO6chabWN1t9Cgh2jskxOs72MTrj0/Mq10YQdUUQOYVb1wzFB6mSX
+X-Stat-Signature: u3f89gxikdt7tihig6ztw3ax8r9859z6
+X-HE-Tag: 1790419311-382984
+X-HE-Meta: U2FsdGVkX1/eRAQRlBcn2kOVDy3yoW6YHymVAojeyH/BuaU94CjLcxutSHhp6uQwdaBGyk4YE8dp7a1iiedc2K27Bw4q8QPZzgzP6OuTHOSAg1Pon7coEIs69DeA9ga+oOBfmfEw/1gfYecky0qi+0XWDAo2WCeswZ2AJ9DZI4NvXY+fKH7jmSsfLo6C3CqxaLafej01nKcDnzmnoFZhtG8jXFvXUdr4hRRXPPqLSfIGM7lAuzj7qJF//CeWAlYENnF5NqabdoEv1ZYMlliZX5NaoaYnL4FfmDIelNEjwCOsy0LJhS0esZ7RchzuMi7oLmW8UlodlVhYhr7Llk7R85rP//k9wHpA4MAkX4+SarW4NNfunyJb77VOF8ooRxLkNRIA1mUZTbIUDeszIO16ivLhFwDvUo+QRrflP1IQpcDxWjiIh82GLIUjR5KfRcyY322VNUyW9AavSHGZnDE7mjKFGSWnCYkVWOoU9zVkLQr/C2dDp/53CCR+Ie0QE8z9IZkArbVRnZ9mkzoB68GLCDStlf65byVYpd/6m5guqjOTcBPhkFN9GUpZFubex4ZLxMVhC2SoJHPaP4BtN7GBfedfE+SoCPrr6eXd1qGRRHhPQ8cf2qvdQ1IPVh4C6ABNpQFh62cjz8MB9RPGtfnDpXHE9qGwoq71qRESVfb17rCGvmG8+KysIZXRUtNhXjEtSBDzTwAr1orNBrQxCZVIqxnp4qu86DNOytizb2/ngh2AkuB1t95KYaZ0ngy1ezvCst1pC8LZvYANbLs1RtGh4lv92PVX44MdMnVoOjD6cjPLNo1ffNTk2AEpACZ84Yv0LKbQTWMMuFRloDGyQUlcPOjSTWq4/Od9CrvlnHtpIFtKpZUo+o2CElvGR4NRLL6jsaWuoT2dnoIzxk5mSo3pXeYR3pIZ1xFLU7Vs0mRxDclr81LVTTZgPSs2WEtKsp4ARj6TcHZd0PCIg0/IcrB
+ PkDe6aSj
+ V9xo2d9lijnfvn39PYzWy2gNr4SNGIYX3WPHnJZcrr3KGeoF+6dLytPeBTsD4XxuETvPMy0zoXx1jIuBh+Hw429EbaqSQZKcp4Ta6/16+AWUmmqWP4joX0tPXa1E27T8MignUstp49J1A97q1bkD2aiTHqUjmy1xH8iLZlk/w2Kp8eUrS0ALP7THBxOzbM7iqf8rzwzYIATAejq6CbUvyg+pwGkUJ/EJ9FJqAxNU9tNzycCXsMMY8/D3CmhlgGwgKABX00hcV7j8l9cBwnfjMDhDpW8e8UD476tgbGebxR1BZOLs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,65 +110,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now we've made MAP_PRIVATE-mapped /dev/zero mappings truly anonymous, add a
-VMA userland test to assert that this is the case and everything is as we
-would expect for an anonymous mapping.
+Assert that MAP_PRIVATE-mapped /dev/zero mappings behave like they are
+anonymous.
+
+Test both unfaulted and faulted/unfaulted merges with page offset 0 which
+would not merge if the mappings were treated as if they were file-backed.
+
+With the recent change that makes them behave as pure anonymous mappings,
+the merges should succeed as their page offsets are equal to their
+anonymous page offsets.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- tools/testing/vma/tests/mmap.c | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ tools/testing/selftests/mm/merge.c | 95 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 95 insertions(+)
 
-diff --git a/tools/testing/vma/tests/mmap.c b/tools/testing/vma/tests/mmap.c
-index c85bc000d1cb..fa73faff2262 100644
---- a/tools/testing/vma/tests/mmap.c
-+++ b/tools/testing/vma/tests/mmap.c
-@@ -45,7 +45,44 @@ static bool test_mmap_region_basic(void)
- 	return true;
+diff --git a/tools/testing/selftests/mm/merge.c b/tools/testing/selftests/mm/merge.c
+index 52b8727b6628..7dd2933417c1 100644
+--- a/tools/testing/selftests/mm/merge.c
++++ b/tools/testing/selftests/mm/merge.c
+@@ -1362,6 +1362,101 @@ TEST_F(merge, anon_and_page_offset_mismatch_memfd)
+ 	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 5 * page_size);
  }
  
-+static bool test_pure_anon_dev_zero(void)
++TEST_F(merge, merge_map_private_dev_zero_unfaulted)
 +{
-+	const vma_flags_t vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
-+			VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
-+	struct file file = {
-+		.f_op = &zero_fops,
-+	};
-+	struct mm_struct mm = {};
-+	struct vm_area_struct *vma;
-+	unsigned long addr;
-+	VMA_ITERATOR(vmi, &mm, 0);
++	struct procmap_fd *procmap = &self->procmap;
++	unsigned int page_size = self->page_size;
++	char *carveout = self->carveout;
++	char *ptr, *ptr2;
++	int fd_zero;
 +
-+	current->mm = &mm;
++	if (access("/dev/zero", F_OK))
++		SKIP(return, "No /dev/zero.");
++	fd_zero = open("/dev/zero", O_RDWR);
++	ASSERT_NE(fd_zero, -1);
 +
 +	/*
-+	 * Map a MAP_PRIVATE-/dev/zero mapping at address 0x300000 with a page
-+	 * offset of 0x10, which we expect to be reset to the anonymous page
-+	 * offset.
++	 * Map two MAP_PRIVATE-/dev/zero VMAs next to one another with offset 0
++	 * each.
++	 *
++	 * With these being made truly anonymous upon mapping, they will
++	 * merge. If they were file-backed VMAs the page offsets would prevent
++	 * the merge:
++	 *
++	 * |-----||------|    |-------------|
++	 * | ptr || ptr2 | -> |     ptr     |
++	 * |-----||------|    |-------------|
 +	 */
-+	addr = __mmap_region(&file, 0x300000, 0x3000, vma_flags, 0x10, NULL);
-+	ASSERT_EQ(addr, 0x300000);
++	ptr = mmap(carveout, 5 * page_size, PROT_READ | PROT_WRITE,
++		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
++	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
++		   PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
++	close(fd_zero);
++	ASSERT_NE(ptr, MAP_FAILED);
++	ASSERT_NE(ptr2, MAP_FAILED);
 +
-+	/* Assert that it truly is an anonymous mapping. */
-+	vma = vma_lookup(&mm, addr);
-+	ASSERT_NE(vma, NULL);
-+	ASSERT_TRUE(vma_is_anonymous(vma));
-+	ASSERT_EQ(vma->vm_file, NULL);
-+	ASSERT_EQ(vma->vm_private_data, NULL);
-+	/* Expect anonymous page offsets. */
-+	ASSERT_EQ(vma->vm_pgoff, 0x300);
-+	ASSERT_EQ(vma_start_anon_pgoff(vma), 0x300);
-+
-+	cleanup_mm(&mm, &vmi);
-+	return true;
++	/* Assert that they merged. */
++	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
++	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
++	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 10 * page_size);
 +}
 +
- static void run_mmap_tests(int *num_tests, int *num_fail)
++TEST_F(merge, merge_map_private_dev_zero_faulted_unfaulted)
++{
++	struct procmap_fd *procmap = &self->procmap;
++	unsigned int page_size = self->page_size;
++	char *carveout = self->carveout;
++	char *ptr, *ptr2;
++	int fd_zero;
++
++	if (access("/dev/zero", F_OK))
++		SKIP(return, "No /dev/zero.");
++	fd_zero = open("/dev/zero", O_RDWR);
++	ASSERT_NE(fd_zero, -1);
++
++	/*
++	 * Map a MAP_PRIVATE mapping of /dev/zero with page offset 0, then fault
++	 * it in:
++	 *
++	 * |-------------------------------|
++	 * |           faulted             |
++	 * |-------------------------------|
++	 */
++	ptr = mmap(carveout, 15 * page_size, PROT_READ | PROT_WRITE,
++		   MAP_FIXED | MAP_PRIVATE, fd_zero, 0);
++	ASSERT_NE(ptr, MAP_FAILED);
++	memset(ptr, 'x', 15 * page_size);
++
++	/*
++	 * Unmap the middle:
++	 *
++	 * |---------|           |---------|
++	 * | faulted |           | faulted |
++	 * |---------|           |---------|
++	 */
++	ASSERT_EQ(munmap(&ptr[5 * page_size], 5 * page_size), 0);
++
++	/*
++	 * Map in a new unfaulted mapping in the middle with page offset 0 -
++	 * this should merge and would not if it were treated as a file rather
++	 * than pure anon:
++	 *
++	 * |---------|-----------|---------|
++	 * | faulted | unfaulted | faulted |
++	 * |---------|-----------|---------|
++	 */
++	ptr2 = mmap(&carveout[5 * page_size], 5 * page_size,
++		    PROT_READ | PROT_WRITE, MAP_FIXED | MAP_PRIVATE,
++		    fd_zero, 0);
++	close(fd_zero);
++	ASSERT_NE(ptr2, MAP_FAILED);
++
++	/* Assert that they merged. */
++	ASSERT_TRUE(find_vma_procmap(procmap, ptr));
++	ASSERT_EQ(procmap->query.vma_start, (unsigned long)ptr);
++	ASSERT_EQ(procmap->query.vma_end, (unsigned long)ptr + 15 * page_size);
++}
++
+ TEST_F(merge_with_fork, mremap_faulted_to_unfaulted_prev)
  {
- 	TEST(mmap_region_basic);
-+	TEST(pure_anon_dev_zero);
- }
+ 	struct procmap_fd *procmap = &self->procmap;
 
 -- 
 2.55.0
