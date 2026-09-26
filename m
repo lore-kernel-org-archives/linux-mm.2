@@ -4,238 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 199EBC9832A
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 01:38:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3532BC9832A
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 02:07:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14C3B6B0088; Fri, 25 Sep 2026 21:38:18 -0400 (EDT)
+	id B94866B0088; Fri, 25 Sep 2026 22:07:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8746B008A; Fri, 25 Sep 2026 21:38:18 -0400 (EDT)
+	id B459B6B008A; Fri, 25 Sep 2026 22:07:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E93A26B008C; Fri, 25 Sep 2026 21:38:17 -0400 (EDT)
+	id A35B36B008C; Fri, 25 Sep 2026 22:07:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B261A6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:38:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2E6214024B
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:38:17 +0000 (UTC)
-X-FDA: 85254203034.07.23BBA77
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013051.outbound.protection.outlook.com [40.107.201.51])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5814C20003
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:38:14 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IlgmnWC0;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790386694;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D9D36B0088
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 22:07:50 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D067DC074A
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:07:49 +0000 (UTC)
+X-FDA: 85254277458.19.BA1BF8C
+Received: from mta0.migadu.com (out-216.mta0.migadu.com [91.218.175.216])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 86D9720006
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:07:47 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N0EnFYvP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790388468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JREHSo7U9IfHqKqetOS7hWZc9sDxByVpwPxnE1Mw09Q=;
-	b=b9twz44Wh2rQF4vXY6Gc/w06/aSywGmB9zrhkU60MnaPe+BFgH5NkZB6tVdrGpzk6IcKFl
-	Uv/Cy07sPCwRXwoTw+k0pZy2J7MSDI3CrJVYt41SCvV/6s2GSCbkSpi3VPWG5lTnv5Lzul
-	803Z2oTItAT0NxD2hxfes1O/Q8lAJEc=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=IlgmnWC0;
-	spf=pass (imf31.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.51 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790386694;
-	b=gzhykArny/O3+Jn0bMkwCXbrpFJRknRjohukvuyVd5hO4qYBkpto5+lMvftkPUGXsK8k0u
-	/5l6P5opTnoPaaJMdg3p3XLfGStbNXTp21AYb03MYb83j9V5y5l5GXNWTQ0LEyx6H4vb5i
-	53zy4L1YbW6I7ekJ6FHCQ6JdXzh0Hgw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nvoe+6KAlh9q4MhGIK0UDQg/EYvSIh2qF+dvQtLnaboA6F7xJf45zMPl4q4fHZU0OJUh8HSsJVmE+3Q/i7meFV3A0zxihk9GcXjL1IjsQaOdboX6Dce+eIlFc93YkfHXHKVo/5MYa5stBSjMCAOYLKpsLk0h2f2BGedQT6MezOF4pwePlBRHceI1sEvTRj8IEEdxP3T+E9mzhrZXnAAaMLLAJt3k/I/F4LJqcizZCxxqSYDh9f9k2Z8xDhPcNfvQT57QkUg5W1kZFE/Rlme4J8WpMIW/KloP5mHk3NKbHTA/DzZ3yz2c8vscKf+Ye47u1tRQaB8nC1isIjJKWEsOfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JREHSo7U9IfHqKqetOS7hWZc9sDxByVpwPxnE1Mw09Q=;
- b=Lyfs+cJXBtFi26dK2WzE1vLfJgTzu0rLEXIprhcRJEtkHEGB3btLmSrHNXF1N7sLQkC89iKPaiDFCn9ujAwXqTHa7ispVK3tEGbXSd3Gt8wHeSCFOG5CP1bA+YIcNg/PFVKw8jh6RynlifufJ18AbHnUwzqAqQJkKRCn3as50kXFz1ABQ4bKZtJ2CcWRc4SF7sAFHEW7993Q7bZ1ilUhGY0vcAfIvthpSWq5gM988ct10JOJGI5YIGfCLU7t+TfdYgntcgjU3rTxMACfI1oaEXlZyJ9Q2yQZxDfyVgrKts1cbtImiXfZIO4zayZKI0WjHAaC/nv7zSsb6vbdMbP1lA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JREHSo7U9IfHqKqetOS7hWZc9sDxByVpwPxnE1Mw09Q=;
- b=IlgmnWC0rE/hjKPkhzRPb5WBKdrd91VzGb7XPPYpP5meQ00MvavGEh4qjtsyoZP47yfHwesFTsYgyv6rAG7Fg9yAlaLmNQ59TqwjXR29YNzE1THb2BQVwxIHHaCS1hst/i0F4Wguk99xqh/n/K/6xO6icloPdsORyojdNMRxFcd33r4WTjqlHzIC6nA14gkuVNw0pLzhwGdW7DKvTw/lAYVAt0m+xNx8qyfIb30szdMOvYVHyEWp24RWz9knmUEGcWlvd3SwsOlVULHF/7bGWxqtZIugT12i4CjvfOdhDo9P6efBbf2kyfzXQU+9DyJxtO03gsFhkEm1AdMqLvqRXQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DM4PR12MB7502.namprd12.prod.outlook.com (2603:10b6:8:112::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Sat, 26 Sep
- 2026 01:37:58 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.014; Sat, 26 Sep 2026
- 01:37:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 25 Sep 2026 21:37:54 -0400
-Message-Id: <DLOV3VTNOBPL.193R3V124JURK@nvidia.com>
-Subject: Re: [PATCH v3 15/40] mm/vma: add vma[_flags]_is_kernel_owned()
- predicates
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, <selinux@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <bpf@vger.kernel.org>,
- <linux-scsi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux-perf-users@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <kvmarm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
- <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
- <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
- <sparclinux@vger.kernel.org>, <fuse-devel@lists.linux.dev>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>,
- "Pedro Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jonathan Corbet"
- <corbet@lwn.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "Stephen Smalley"
- <stephen.smalley.work@gmail.com>, "Jaroslav Kysela" <perex@perex.cz>,
- "Takashi Iwai" <tiwai@suse.com>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
- Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Doug
- Gilbert" <dgilbert@interlog.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <mkp@kernel.org>, "Jaya Kumar" <jayalk@intworks.biz>, "Simona Vetter"
- <simona@ffwll.ch>, "Helge Deller" <deller@gmx.de>, "Sebastian Reichel"
- <sre@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu"
- <peterx@redhat.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Oleg
- Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, <x86@kernel.org>, "Arnaldo Carvalho de Melo"
- <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Rik van Riel" <riel@surriel.com>, "Harry Yoo"
- <harry@kernel.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
- <vincent.guittot@linaro.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Will Deacon" <will@kernel.org>, "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, "Nick Piggin" <npiggin@gmail.com>, "Arnd
- Bergmann" <arnd@arndb.de>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
- Salvador" <osalvador@suse.de>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Marc Zyngier"
- <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Anup Patel" <anup@brainfault.org>, "Paul Walmsley" <pjw@kernel.org>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Janosch Frank"
- <frankja@linux.ibm.com>, "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer"
- <gerald.schaefer@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>, "David S. Miller"
- <davem@davemloft.net>, "Andreas Larsson" <andreas@gaisler.com>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
- <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
- <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Kemeng
- Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan
- He" <baoquan.he@linux.dev>, "Youngjun Park" <youngjun.park@lge.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Michal
- Hocko" <mhocko@kernel.org>, "Miklos Szeredi" <miklos@szeredi.hu>, "Xu Xin"
- <xu.xin@linux.dev>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org> <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
-In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-15-4583d8a23bca@kernel.org>
-X-ClientProxiedBy: IA1P220CA0010.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:461::7) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=f73+0wKUJ2fOOL/ZZmVe9VGvymR1fQ61WtLu5pJEqnY=;
+	b=RPaFq6F6OBS2Qh9AzOFHuVPRtgZEYzDBp8xcH6GvS8Q0rT2tY3MjwodvnN7X/rVEHm0Nj1
+	pcHgtgT+L5GufSD7QXA/jibasoKKwuUWVlGEgHYNVFZ433OYkhFIGBbbS4Q1wrVV5lD9c+
+	aiXuH/zxoYaEXTPqzgFyyZAilr7g8w0=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=N0EnFYvP;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf13.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.216 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790388468;
+	b=zoQ+sWssevX8xho24pY55T9bk/a100TH0GlXgiJD6dqJdjmDTFSlZW8ZmrQn1JspDQOB36
+	eKwgN4cYDfkS2FWUuWV1GgBUAdLClmzYk3A7G5g8oQiWF+12fl3em+Zl5/qJ+2h5/8yANM
+	l9/myMzBZdsxgzgHo/7l/02w2x7ZqDU=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=DdcObnhLvU3ls0cGmHLGHqKMExuQVY9LIWDky3y/b9w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790388466; v=1; x=1790993266;
+ b=N0EnFYvPbwJNqGGEs2snSOcK35y6DNSXTPG0DcUOdgu8uZos7L/pwK/pUI180f2T/ZwJVXUn
+ tPijOZOy/sffRVGQEvEuyy4YYE773vQYyf4ad6yW96fpAbtFHYfzc1lAmQMeF+t4zO+2gl86TTj
+ xQ06tnVLQN9sO9aAsB+ZGvOQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6f0838c226c85a64;
+	Sat, 26 Sep 2026 02:07:43 +0000
+X-Mizu-Trace-ID: 6f0838c226c85a64
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <064255ee-c8be-4a82-8be0-fa209eac8637@linux.dev>
+Date: Fri, 25 Sep 2026 19:07:35 -0700
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM4PR12MB7502:EE_
-X-MS-Office365-Filtering-Correlation-Id: 545be6ab-443e-42d1-8b0e-08df1b6ecb54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|921020|6133799003|10067099003|56012099006|11063799006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	eHTozzARUAPxautQc1g9RpS1Mb919g7GvHX3YmPnOtBZeaoLZ2ADMz+gWYvXqcBVfq/FUJK8gjMMH2y0ELwdrLt+g3ZaKBBKL2Aq6L91xZ/b8Z/T5lDVyXK1dpD2Pov8FrLNOeXQs+GYiqCX6OSOY6YCwg5dXXvudw7uPOkLjf8dCh/p6nKZ3dvvozUzcnGsoxrdd1dpdYuTc93yE/y+N5+D6RztFnm/J8jQw2FjjIrAd7FzboO6ea8fUMUExYKd2zdrcq/q6rXQ0vNqbK+BDfGXXojKaFHMZ/Ht64s1CmfYNlDHGgKumfO1ZmvrGqlTyme2BOsPiH4uksM1oDVZOgx69LGbUAZb/kmF0utEFkbjFBOl+uwUelfb54j+xpHwJbyaq5hE8fymtnL5lovlenfoRpXFqj6R7A6Zjjz5aUeC4uUVHjOFBWErnsUaX8QUj78oVnPDlb2FWFZaRY2oxlTG0Vt2r9czLLJip6jcjS9uLAONOZDvyJp79gbotv1T7g4nMpVCZNvu5Xc+OripRjMiQpS6kAI7rioDX/nvLESDj4jSXBmjy8hVDtFp1c477E/59qTwUfyMxhPPCdpTDFUCrfWUYFh3HNdaAfDnmZM0GSzhnOvIKXg4QhY7XRl87YD4E0Gf7XudDGBaDjOJLN61JB85VYqgNqTj8gVDEWrzjYP0XgbOOxT8KgOMnBUdiYItMPnw0O5m5YcY/q7eqA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(921020)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eXZjcnl1QlloWUJQWStML09WWWNZSG9pWHFXZ0lOR3lSUERERUVJZlk1SzVu?=
- =?utf-8?B?VTZDQ0dOaFJpL3BYWWNKc3FtT1RvS0kxcDdrdWpRTFZta2pxZTRJZ3R6RHhT?=
- =?utf-8?B?T29ZU1lvSEZpdFh3VGtFN1padUphVEZsZS85SS9SZS9TaTJMd2JHS3FvNDYx?=
- =?utf-8?B?TnVyQy95SFlnYytwb1ZZZFdXTm1mMitoUmNVYmNNcWpHZUt3NUlFMEZuVGJk?=
- =?utf-8?B?Q0VqMHNSa3JndVYrbGNUL2NrYjdkelV2d3U2bVBxR1RrbC9QWWtITnR6RGd3?=
- =?utf-8?B?UTk3K2N5azEwYUx5NytSU0poUnV2cys1NnJaUm1Bclkwd2kzcFBVbnRPVmNU?=
- =?utf-8?B?R291b2pVYzVEYVdsdUhVSmVVa3F3OXhrMm1yd0lXMFNKTzM3T0lZMmlnd2xE?=
- =?utf-8?B?RUY0K05IZVlkK3V1cStDdFJOU012RDNBSERJUDdQdmo5cVJnMlFMalJmYUY0?=
- =?utf-8?B?N29ockJXVWZLRkcwTVlNMXZzZlJwSmdJYWJrcFk2Uk9mWTdITGRmalRFYllw?=
- =?utf-8?B?dkRObXFCcHI3SGVpcm1Xd3hJb01xYXY3MjZTTVRPV0hyYlJDK2hGZzd5VC9r?=
- =?utf-8?B?aUR3OStZN1lIckdZaVk2aVRBTE5EZlVpcGFqRENPeHBVS0VPZmNiVUFra29n?=
- =?utf-8?B?ajRtaTYzb2sraUs2ek5KM2NvTktDOGt2NmY3Tnp4bGZSQ2lDRnEzbUkzRkYw?=
- =?utf-8?B?S0VBa3dnOEZYT0tQNzNRb2wwSGVYY3hTa083YkhsRmYrdlFiZjhhTmxTc2ho?=
- =?utf-8?B?SXU1UCswTWs5VDlEVTJjNHZpTy91Q2FUT3dnQ0l1Z2E1RWVpYUxOdjRUa1dN?=
- =?utf-8?B?R3FaeGNoM01xTFh0NVdvTVZiSXpEcUhmbEUrdXpJNUZTTmFDeit3Y3pQd3ox?=
- =?utf-8?B?VUtoZjVtcGN6MmN4ZlowcFFCaTlvVmtIWDA0YzlrUmpxQ2RXckxEdzJGanV4?=
- =?utf-8?B?Y1JMaUtqS0FKUFlwMWRSZkZhcVBJYWV6YTFXZ05HcnRWOStieWQvYkZmdXlx?=
- =?utf-8?B?dmhwL0ZUS2ZkdnRZcjNhb0M2cENFUzYvV005R2JqbUFXZWlwUmcyRFU0YnJJ?=
- =?utf-8?B?ZVl2LytselRKOUVCQS9IYUNCeDJ3aURTWEpnRW1kaktsdXluWmREc3JVYW04?=
- =?utf-8?B?cjlnM3FwK3d6cnkwa1YwMVFUbHF0VS94VVJNMytQNkkrSk5QQXhGZ1J6WWVi?=
- =?utf-8?B?eC9UUjhtaFpEbUJzVUx1SGJhMVR6aVZyVWJvQ3YvMXlaZW9IVW9JQ2pJUUZp?=
- =?utf-8?B?N3NYU0xCLzNiMkpxSDc1SndpLzlNenJnTVlCTGNPWXJzdnYrdGk0b2lxRENs?=
- =?utf-8?B?ZzM0NUQ4UEU0MFJoaDBxSVhjWmRkSW5oYmpEYldISzJRRXRHWmUrV05Fb1du?=
- =?utf-8?B?c3lCU1FqdXhIbkpWaDhMeFBNTm5WMnRHbXJhY1lwb3hIVktkMWhyUnZjRjhM?=
- =?utf-8?B?N2JWRWtPbXRjQWo1SVpwRzBSTldzREN3WFZSTDRJUlE1Wi9pNVhwcWRlVEd1?=
- =?utf-8?B?N1YwY0FNWmMrZjcxR0ZmWEVHbTNVeWs5R3NkNktYemRDL1ZVWUpqdmtLd3Ew?=
- =?utf-8?B?Mno2ekFjWEdpcmJHME4renB5cFFRMDlPa2VDbUNIdW50VUUvelJ1ZTY5UlB5?=
- =?utf-8?B?NGNOR3RZck9HWEh1YndsVTEzaVNaOURzUFFJVmY4RmRjRmx3ZXNpL2hTNUpq?=
- =?utf-8?B?MFltV2hJeXNDOVlWaEY5WTBhc2ZPd3dZd0l6UXdreTdNLytsZ2ZxZlRMbzhQ?=
- =?utf-8?B?UUlCUGVUYktwVzMyOGFwVlJKVlJlN1NKUy9zeFM5cDNvdG5aSUVReWxXVHFm?=
- =?utf-8?B?a0Y4OFMyUEVmVFQ5Tk0yeDQxeXQvQmFZaFN0U2ZObnRlMXlxNmJZdG12WldI?=
- =?utf-8?B?aWh6TlNFb0RsNjdlbmVjdVpXK3RTWnhtVTR2YUVLWHE0VFB4aldNS3dYWVBn?=
- =?utf-8?B?b0J3MlpTVUVzTFFNR3EzL25Ga1B3MzdFZlNoeWRGWTcyZ0N4SS9BSm05SFJV?=
- =?utf-8?B?YXUrSDNNTHFQbGJEQ2d5TFpKaVIwSVJPeWM2eGY4QlRxaEVXYTNUc0VOSDRO?=
- =?utf-8?B?Qk02djV0blVQOWJvWENoK21JYVRwUEI0UURKQ3BCTktaNFpxa3FFNDJ5RXU2?=
- =?utf-8?B?N1VwSVM2MDIxMzhhUE1xSC9wbU1vRTR2YVBRdDc5SGtFYTlRNHhwWUFqZWha?=
- =?utf-8?B?a21xTU8xaHF5Q0h2UnZ5cDBMN0cyUkpUS1lNYzlkVVJ0MUdiUGpvOFJEUXNv?=
- =?utf-8?B?dFVKckJMb3ZEeUlxcFNCRk1zeVpSMzdtb01lMERLSHVaWlBoMnBJbDF1aDZR?=
- =?utf-8?Q?8VYEs3y2DAyj0D4u5q?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 545be6ab-443e-42d1-8b0e-08df1b6ecb54
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2026 01:37:58.3051
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iG06bl6AsetwrGy8rU0jwt7ivW5xr1TeQD552YR9eamAkcxdA76zYOCom8MtghrX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7502
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 5814C20003
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/26] mm/fbatch: drain lru_add_drain() and _all()
+To: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Alexandre Ghiti <alex@ghiti.fr>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>,
+ Binbin Wu <binbin.wu@linux.intel.com>, Christian Brauner
+ <brauner@kernel.org>, Christoph Hellwig <hch@lst.de>,
+ Christoph Lameter <cl@gentwo.org>, Claudio Imbrenda
+ <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ Jan Kara <jack@suse.cz>, Jens Axboe <axboe@kernel.dk>,
+ Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Leonardo Bras <leobras.c@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Miaohe Lin <linmiaohe@huawei.com>,
+ Michal Hocko <mhocko@suse.com>, Minchan Kim <minchan@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Rik van Riel <riel@surriel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Suren Baghdasaryan
+ <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Yang Shi <yang@os.amperecomputing.com>, Yu Zhao <yuzhao@google.com>,
+ Zach O'Keefe <zokeefe@google.com>, Zi Yan <ziy@nvidia.com>,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+Content-Language: en-US
+From: JP Kobryn <jp.kobryn@linux.dev>
+In-Reply-To: <e28f9a94-4339-f8ac-8301-6be3c9b5b7ce@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 56zkpianfyft6zpypqhho6z9ntmugmrz
 X-Rspam-User: 
-X-Stat-Signature: 7y3p9w6z71ehg1fo4z5cud46z5s9sk4d
-X-HE-Tag: 1790386694-993180
-X-HE-Meta: U2FsdGVkX18LruAO07MbohtQONnpOfz4hGMd53ld1BBisQf4RKgwddgk4LqzQfzI4c80MwvptLBLLUJPdr/AOKeaOG7o46rWackdxeogp9nXZV7m1nvV2YmuUNq23pqShviOwLWFWsjwfx7PAFpCYe9HVXqweDDnrK1rKGdMI0dPBVoIA/otP4OwbmThn+qSuysBRSH2sVXeT3koQEOgm5OUUqivbwIlJzcMoMcEI9OgWi/WbRlbMqHWEku5NGrp+Fz1AthXOaHptbcAxOwUR/xbnc72XxU5s/KZgToKnINn0ADwjyDx4zW3E6nkv17JhwFXaZuU1fuuH5+UlMQ092a3Rdy1g4tqqmLR8v9Y5elFO6rgGbHIByZfw3XeiW//AY9hbD2b+3Rmk8+aj6DBGn3iIOa3U2SDrizqx+nF0nd5rdlsrrDR3LIIx+uCiut2Y54bTEmTOzgjxHuTi0zE2dC7U3yPa03ml5sWaQQ/Vay2/stgr7u2IrdHVNe0EicsWOOeOCJO4XHw8DIVZ/0G/5gc0wJ1zozrTxITHDeqFfDwtxXy1IdBQvSzLiZ51DUnBRwfkHsPVamWyEMVDPNNC7sHq78Z5Wo/no6a/8Uh2+tsozZH4uG0fE9v1kGuKJ9sVxyaGwMHoR9I55WpxF8a6p4pFgxwF0yvvKLhAFnYfPBCx3dCWPPN/Om2m5VB95R45iyzDJ2hxu4R7Q+z0Cc6w0sPkbfZzBfI0GvoX0zqI++GKypz0oO3B8LxqdhOag0JNbXTIFrQKaReWHDpQtGWGk+uVYHvdEhvm7wQ6iT/SV9X1KHu2EmglgWn9ePPfm+y8Mwnb9nqeL1Ga0oe9ROD1G9oGioSAUiEGdHcu5kjI67GumouWGvUjTnTbtigkw09AMIzv0uRvrkSlf0OXm3V/jYLwSi4xcOvdTsOthFtSfbmmYNzn4ZMHQV9696QXkiy8C+bgc0t8XBhq1ASp9h
- pD6aeK8Z
- ItAlrN0TYDAfcSXPrM0Pytwun9MSVIWeZA+W4l9UitIjeeBu3bO00GeigzU7Zq8woD1lz9SLQgsEKOX634jRhQYTVDTBJ+M6Cyp4fXY61dfSMOKexx0vVgnYfGr4VqLiEj58Oh8sjVSfnHMjPamHZOHMUy8NuejGX2AkVI9tQKLemuhHNZrQNyFxAMOwdIDKY+uPx6qNeo+J/8FCU3oRoFfWOs2ufer60A3qlqyU1hpZoUZ6BPDaJbexDtEqhgoF3t9Hc0tynBJCEuYnRvX+JbjB3rbeOVXUuWfLUwXCf1i76rlh889frL1Bc6+UdXujhM3/gHQguC9xO4aPYt93eAIj7E520Knz4QmNaitqgFAMdyjbvuLI09xMastHvodR6AiP6zuuJKGytvPdh/wHt7N1OlqcrLk8AdGqtnjwO2FxasflL2G/1CgR5NIuftn7P+TiVSwIj9Rw1V8pFwf/5wjWIFyYo3W1S3SQXZIH3hisK0ngg8E2xOQaDNnLiHDV15CVbTs5tr7ty8Tpd0YkLmsyqGq6+08qFFvH7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 86D9720006
+X-HE-Tag: 1790388467-716033
+X-HE-Meta: U2FsdGVkX1/jjPeNEApeEcXIVR/wQT/wHOXyhr8mzjGX5Z1B5Kx4CHJf8B5Ah4xMW5Fs0NiCHk6I0K1A/VoMZs7SWAuO2O6gBEiE9Z0+NgfQrtjpYo1KSg6/nzwehok4bBWEtr1wy7Bud6cXkUvDwRPOCwkzKPQwMIXSo9eSruwqRCxbs/0mFJaCi6znoqgSZlzjv12J//ibTKN+0+WWANwCDn7mzDTeFiCewNuDD1RHLCDNZHXmh7gGE+387n6FeTEfInU+cAmbX3c/R8MCOA2stNcMia+aTbrvvpQ9luzT1yoSc/AawzThyg9smD6SOoRNmsoyHuohCIQrU4JpJIJalTS29kKJQb3Vl0lZPdNDyBJ3K5/C+1ncoWoLUKXkWIfx85vqcGYWBizEprtGsM1mdT3JEvlqDkjzlegA1Ohytz9BJYLC6UL8mCPlY4LNMLHFrJMfBFO/dNPopzyrfRqL6OpGNyWFmhg/opxYaWnzGaFochJmtiBKmVCd2HrXBUOjrl4iQtHoqrIVoXRVch8ijGPh+zEJH43dwhg+y6hDxy8Q/GU5t/Kp4kXCQe1ZWmwpCqb7rN4Xbv8xna438MirXUDcGKRLeu5yyc93Agx7OkK20EQ1cCyyNQ2QObHQwhNtlqRHi4cpK7Y2ABj2UhOVKSSK3qteEwa2U/39Pc+w1ez6jEWydTDqUDNd0ARpSL3nWdqg098OS7O4yiWorLFWHKjt0YPK7s7yHaHrZToXplah94FoSwFEVSUCK808+GO98FbvJsZQ/dA25CRJJXeuxtdNWKbxbyfT/0kqa+cNJubLBdcGgLKxZAdZ62IGk8ePTzq3wiJXwq9iCX9lMn5pQ2xgySdCVe/CWqGkbrJ0KHZwPoA5AOpObWIlWNE0BWd75JgM/BmfVUeSnheT4TEP9rnjeQ042MSXSORKV/Ct/3S7wnuTwi3hG0QrGimL29bAU6StEQQ2IhGwbFR
+ 3J0Vl0LI
+ ytD/9UO0IfPVYrf7MqqUNaY0T+cUl7B5t30xNKD4qS4R2GHyTXnAJkgI2MQlVcbPmAdRZYNavUOk3YN41gL+lZpKHJHuJy1JgmZsqoPaRJeJO9fCERT+i24vy00UpVrf7H/6HyOh4BVUBf0VA496chOiQ3EPF+BGM5id1/yom/rZfVqV+bdkU5yJVg1oa+eHYG5bNbDGwa9gETQBUEvuq/c+FpFwXK80vmRDK9Tus641KEsd1FRHhtI0yNjSONKsByf241ZI2ObfvcZMWNyUADr36de50kcLOig+eRJ5Md+ye6Hmw48WL+BbyXFryAHfqOodV1D6js6y7g5JougjIWxX1e2o+urGgqtEmbVZkuscPFnQAt+Y1jESM2wsWrbRXoZreOao4hMc7FmRjadD7uaE3pnevGSO31/QgFhHgxAYgiqc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -243,49 +113,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
-> Rather than referring to VMA flags with uncertain meaning, add a new
-> predicate that explicitly describes what possession of the VMA_PFNMAP_BIT
-> or VMA_MIXEDMAP_BIT flags mean, and then refer to that function for
-> determining VMA mergeability.
->
-> Either flag means the contents of the mapping are owned by the kernel,
-> usually a driver, rather than by the core mm: the memory may be MMIO,
-> kernel-allocated pages or even ordinary pages the driver maps itself, but
-> the core must not populate, reclaim, migrate, copy-on-write or merge the
-> range on its own initiative.
->
-> We initially also include VMA_IO_BIT here, as by implication, these must =
-be
-> kernel-owned. (mlock() also sets VMA_IO_BIT transiently on ordinary VMAs
-> while locking them, which is addressed later in this series.)
->
-> However the intent is to in future remove this, as no mapping should be
-> marked as an I/O mapping without also being marked with VMA_PFNMAP_BIT.
->
-> This forms the basis of further work intended to improve how we express V=
-MA
-> properties such as this.
->
-> Also update the VMA userland tests to reflect the change.
->
-> No functional change intended.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  include/linux/mm.h              | 56 +++++++++++++++++++++++++++++++++++=
-+++++-
->  tools/testing/vma/include/dup.h | 29 ++++++++++++++++++++-
->  2 files changed, 83 insertions(+), 2 deletions(-)
->
+Hi Hugh,
 
-LGTM.
+On 9/9/26 2:39 AM, Hugh Dickins wrote:
+> [PATCH v2 00/26] mm/fbatch: drain lru_add_drain() and _all()
+> 
+> This series was prompted by lru_add_drain_all() appearing in watchdog
+> backtraces: not to blame, but blocked on an unresponsive CPU to run
+> its workqueue. lru_add_drain_all() is a heavyweight operation, which
+> we often hope to avoid by a much lighter lru_add_drain(); but even
+> those local drains can aggravate the lruvec lock contention which
+> per-cpu fbatches are intended to ease.
+> 
+> Now let the folios on the lru_add and other per-cpu fbatches remain
+> there, isolatable, with PG_lru set and refcount unraised, just like
+> when on an actual LRU. Then many calls to lru_add_drain() and _all()
+> can be removed.
+> 
+> It's something I've wanted to do for years, tried several times, but
+> only hit on a good way to do it a few weeks ago: now it's uncomfortable
+> to watch others wrestling with the drainage, while I'm sitting on this.
+> 
+> The key idea came from the "if (!folio_test_clear_lru(folio)) continue;".
+> If we don't mind missing to take an action on rare occasions, then maybe
+> we won't mind taking an action on the wrong folio on rare occasions, so
+> long as it is a folio consenting to PG_lru rules.
+> 
+> No new locking, but relies on folio_try_get() and folio_test_clear_lru()
+> even on the lru_add fbatch; with use of bits not set in aligned pointers,
+> and some try_cmpxchg()ing.  Speculative references to folios are already
+> accepted: this adds another source of them.
+> 
+> Performance? You (and the bots) tell me. I'm considering this as a
+> cleanup, to make life easier for developers. I expect that some loads
+> will show improvement, but also expect some disappointments (perhaps
+> I go too far against lru_cache_disable()? or not far enough).
+> 
+I found one source of regression but I think it's fixable.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+Using a test of 4 processes repeatedly write faulting anon pages then
+discarding with MADV_DONTNEED, the perf A/B below shows that the series
+(minus patch 27) spends more time in __page_cache_release due to new
+lru_lock traffic.
 
+baseline (7891fbb9512f):
+  0.03%  folio-churn  [kernel.kallsyms]  [k] queued_spin_lock_slowpath
+  0.26%  folio-churn  [kernel.kallsyms]  [k] _raw_spin_lock_irqsave
+  0.01%  folio-churn  [kernel.kallsyms]  [k] folio_lruvec_lock_irqsave
+  0.00%  folio-churn  [kernel.kallsyms]  [k] folio_lruvec_relock_irqsave
+  0.03%  folio-churn  [kernel.kallsyms]  [k] __page_cache_release
 
---=20
-Best Regards,
-Yan, Zi
+series (without patch 27):
+      6.97%  folio-churn  [kernel.kallsyms]  [k] _raw_spin_lock_irqsave
+             |
+             ---_raw_spin_lock_irqsave
+                |
+                 --6.96%--folio_lruvec_lock_irqsave
+                           folio_lruvec_relock_irqsave
+                           |
+                            --6.72%--__page_cache_release
+                                      folios_put_refs
+                                      free_pages_and_swap_cache
+                                      tlb_flush_mmu
+                                      tlb_finish_mmu
+                                      do_madvise
+                                      __x64_sys_madvise
+                                      do_syscall_64
+                                      entry_SYSCALL_64_after_hwframe
+                                      __madvise
 
+      6.62%  folio-churn  [kernel.kallsyms] [k] queued_spin_lock_slowpath
+             |
+             ---queued_spin_lock_slowpath
+                _raw_spin_lock_irqsave
+                folio_lruvec_lock_irqsave
+                folio_lruvec_relock_irqsave
+                |
+                 --6.43%--__page_cache_release
+                           folios_put_refs
+                           free_pages_and_swap_cache
+                           tlb_flush_mmu
+                           tlb_finish_mmu
+                           do_madvise
+                           __x64_sys_madvise
+                           do_syscall_64
+                           entry_SYSCALL_64_after_hwframe
+                           __madvise
+
+There was a pre-existing dead folio optimization [0] which allowed
+caller-released folios remaining on batches to be cleaned up at drain
+time without lru_lock acquisition. This series removes it which makes
+sense since the batch reference concept is gone. But now that callers
+effectively invoke the cleanup when refcounts go directly to zero,
+there's a point in which an lru_lock will be taken for pending folios
+that are dead (refcount zero but still on batch). That's seen in the
+call graphs above and is unnecessary since these folios haven't been
+inserted into the LRU. Luckily It looks like the new API call
+lru_add_del_folio() can be used to avoid this, since it returns true
+after cleaning up the pending LRU batch state. I applied this diff and
+re-ran the same benchmark. The new locking overhead was nearly all
+eliminated. The perf output afterward shows the fractional amount that
+remains.
+
+@@ -64,8 +64,10 @@ static void __page_cache_release(struct folio *folio, 
+struct lruvec **lruvecp,
+                 unsigned long *flagsp)
+  {
+         if (folio_test_lru(folio)) {
+-               folio_lruvec_relock_irqsave(folio, lruvecp, flagsp);
+-               lruvec_del_folio(*lruvecp, folio);
++               if (!lru_add_del_folio(folio)) {
++                       folio_lruvec_relock_irqsave(folio, lruvecp, flagsp);
++                       lruvec_del_folio(*lruvecp, folio);
++               }
+                 __folio_clear_lru_flags(folio);
+         }
+  }
+
+series modified with patch above (without patch 27):
+      0.77%  folio-churn  [kernel.kallsyms]  [k] queued_spin_lock_slowpath
+             |
+             ---queued_spin_lock_slowpath
+                _raw_spin_lock_irqsave
+                |
+                 --0.77%--folio_lruvec_lock_irqsave
+                           folio_lruvec_relock_irqsave
+                           |
+                            --0.52%--__page_cache_release
+                                      folios_put_refs
+                                      free_pages_and_swap_cache
+                                      tlb_flush_mmu
+                                      tlb_finish_mmu
+                                      do_madvise
+                                      __x64_sys_madvise
+                                      do_syscall_64
+                                      entry_SYSCALL_64_after_hwframe
+                                      __madvise
+
+      0.37% folio-churn [kernel.kallsyms] [k] _raw_spin_lock_irqsave
+      0.04% folio-churn [kernel.kallsyms] [k] folio_lruvec_lock_irqsave
+      0.01% folio-churn [kernel.kallsyms] [k] folio_lruvec_relock_irqsave
+
+[0] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/mm?id=9669b87065a6fe96198f3df2c3d125c5f5c1f210
 
