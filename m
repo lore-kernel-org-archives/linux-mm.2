@@ -4,89 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28D6EC98318
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 06:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A434C9831E
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 06:19:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B3736B0088; Sat, 26 Sep 2026 02:14:19 -0400 (EDT)
+	id E7CD16B0093; Sat, 26 Sep 2026 02:19:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 264A46B0092; Sat, 26 Sep 2026 02:14:19 -0400 (EDT)
+	id E2D5F6B0095; Sat, 26 Sep 2026 02:19:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 154966B0093; Sat, 26 Sep 2026 02:14:19 -0400 (EDT)
+	id D44096B0096; Sat, 26 Sep 2026 02:19:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6DE86B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:14:18 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8276E407DE
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:14:18 +0000 (UTC)
-X-FDA: 85254898596.10.0851D62
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A4EC06B0093
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:19:12 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2133CA07C0
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:19:12 +0000 (UTC)
+X-FDA: 85254910944.23.C992C48
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C3E76100002
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:14:16 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=R4SsfPN+;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf20.hostedemail.com (Postfix) with ESMTP id 47EF21C0002
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:19:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UTmCT6tM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790403256;
+	s=arc-20220608; t=1790403550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLKST/A5bmY6pU1AodPlaWRwJ8bQxj7G+3mVIWdaYDE=;
-	b=4bkV/TY0jM1pw9totOV0St51ksML9dDdKyhG+RAouAt482z1IzFtM49iX8XqauNImh419L
-	8J4EVn4HKu4SQRm4rBUxa0u4myvkLCGHIvyXkuKOXq08gTn6PDE869309TKqSqm9jsa5h6
-	52d5WZRuUmH89d7n+86W3ncNYuJa3/s=
+	bh=0d2FoQNgB7w5W4igVSjXZBz5vM5BFD2MZGCHDpY+/iY=;
+	b=BfTQTar/zTKvIyq71KFBGQ+gr4I9/9qI9pJ2UBtuRl+e6RbGRcgilkZ7YG1GalgASDep5P
+	oVURnkbidXwtEtz5PpbpTkXJ4RAM0/xysApztUZiPfFt+6RidvRDgGrKBfiyj4oAf20XC/
+	MyRqABWj8+ErPR21i1Hd8Ody6wWZnc4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=R4SsfPN+;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UTmCT6tM;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790403256;
-	b=np1AQGtogIlnrnALUgFw8VicjEgniyvr9hrOtnoj6qdzmSrA6LRWQKcF9LME/vZjljHfe8
-	RgQGurDvKLKdM10I21EM86+B7StysYYvLdkGf49d9Z7AAUVpgddHJVR1DBGCerz0XiI9ji
-	xFLLo3fA7mJRoP9jlW4A8ym27GfEK90=
+	t=1790403550;
+	b=mOqJYPlRbj54PRwdtQ7Sd1pk31oUM8iBa+WrqAQ3WGI176x3RoSmZcWkqTrk9EiC1FOuLz
+	ysq+ly9O7h3VuZJnibeuwl9BmLSipP4Jt+0AO22OcFaOG71aMd6COGxG1xm7bc3uocJ57p
+	z/a+wds8AndEPSqTBa/f2ZcMbQXY8iQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8BDF40145;
-	Sat, 26 Sep 2026 06:14:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8248D1F000FF;
-	Sat, 26 Sep 2026 06:14:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8CA29432E3;
+	Sat, 26 Sep 2026 06:19:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4691F000FF;
+	Sat, 26 Sep 2026 06:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790403255;
-	bh=NLKST/A5bmY6pU1AodPlaWRwJ8bQxj7G+3mVIWdaYDE=;
+	d=linux-foundation.org; s=korg; t=1790403549;
+	bh=0d2FoQNgB7w5W4igVSjXZBz5vM5BFD2MZGCHDpY+/iY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=R4SsfPN+BOCGJIw/tZn3wJe12obiZIpQBmdLhQNBcmKZIyyLSPdvsEcTxQpQBzb/N
-	 gD5sIxbPDK5gSOwncscqDKnj0sfN07vd5/tswOkbmjlnWgV+IgCFXuO7XWANCfwQQt
-	 pcaIbBxb2UQ+EfF8wohK5HjLftIlIiXSUy1o1SrQ=
-Date: Fri, 25 Sep 2026 23:14:15 -0700
+	b=UTmCT6tMUksCasct4m6WGBQGIIq91wboZ/ltaw9f0etfNs5HNBcuscWHiY4/AfSPL
+	 BF+Ryz+38xr+l3wstvnofOr0t+y/7Ozx6CN/DjlMRcwtAFe75KfAQ223AiHiIfEP6T
+	 E+hgCPcbvG4pQJpXrvNXHtGAGpJvfQ8GnCMNLriQ=
+Date: Fri, 25 Sep 2026 23:19:08 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Meijing Zhao <zhaomeijing100@gmail.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Meijing Zhao
- <zhaomeijing@lixiang.com>, Steven Rostedt <rostedt@goodmis.org>, Masami
- Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Wandun Chen <chenwandun@lixiang.com>,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] mm: trace: decode architecture-specific VMA
- flags
-Message-Id: <20260925231415.3d97401fe7746d82c6182060@linux-foundation.org>
-In-Reply-To: <cover.1788330432.git.zhaomeijing@lixiang.com>
-References: <cover.1788330432.git.zhaomeijing@lixiang.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
+ <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Dan Williams
+ <djbw@kernel.org>, Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang
+ <dave.jiang@intel.com>, Alison Schofield <alison.schofield@intel.com>, Ira
+ Weiny <iweiny@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ linux-mm@kvack.org, nvdimm@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH 1/2] mm/page-flags: Define HWPoison test-and-change
+ helpers unconditionally
+Message-Id: <20260925231908.25febf6c085f52be3a65d59b@linux-foundation.org>
+In-Reply-To: <6eb272c0-0cfa-4354-a92b-4fc270e3b1fc@kernel.org>
+References: <20260903053535.17611-1-kaitao.cheng@linux.dev>
+	<20260903053535.17611-2-kaitao.cheng@linux.dev>
+	<6eb272c0-0cfa-4354-a92b-4fc270e3b1fc@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C3E76100002
+X-Rspamd-Queue-Id: 47EF21C0002
 X-Rspam-User: 
-X-Stat-Signature: ubighzywomztdh1dqq8pkww4axdzzkcu
-X-HE-Tag: 1790403256-74416
-X-HE-Meta: U2FsdGVkX19pbrcd2UIKu0cPC6HRypScc4tlUqVkuLVywSxwqyHh6S08qTcz6190xMLnYepy8Bu9IG2WVzM+ByyuYPFs1R9koek7ddZOi+Q3H8AUTulYrb7FmIFRXIH8KiEqbGIMSwPOgpBrPKH+7s0qnj8PAYZi7D9wzKZegvxO094IHJlOCwtLCDjyXaKOKg2JwACQTQNtmBvnSCz4Ou6bk40vWloQJTe7xcSnDwQ6DRi78/wc0MVh0sWFwgmjSGJ0T4DlqNGco8ZxiCdxuw4lk4wdS3agwGcFJoMOId8UXE3YQB8/hp7ZYax8QqZAODJHeCuGercR2FgHaEVYoN5UBDTq9Y+k1v9+FrYH9p+lXEIt9iYMKvlaG3yS1LeJkQdhvsxL5tEynfqlFgNBFSA1h6eAT6vR5/uWqLFVq7G258Pq1eJZIhV/Uf2eS4CElmw92QyWEtaVanoVJv4cO/NQJ6wk5jzIVfEbRRPJM/Xft5W9BYE/BfBz9HpmtJnzFjl5bEGtQLdwpuMRIl7UXCkfrdHMuGvniXkL8GrGJlNUreRuEFbU7BA4qG0mMXxaehm5vpLjZZPKZ9IvIW+cc6OjJgaFAchjpBHZp4nphLZiRRZFM5hLHuu3au5bdot2xb1tsctlMQ5YDwcy+b3hz0g2KjG1/RhtPieIyO+TStZHM7qG11HmMqxKhR1Nv8jzNRF5IBrBO/IbISB1QpdrmXVQJfr8ydB02djftTCrRYQJBd/ebroyc5394qpkjyE+uIq7aU2sFfpN8VCH9xVnm/OGVv3AmGkDCtmXrkLUmpcOaY3EQFrsjp/43US7UnqRe06++AJPO+M+0OCsGM4WfW32k3b+e9IFiB6z1qBW5nRHaKqk03YasUchd4cAdH9vSJEyJ7t+5+rlg9081BbiqcGkDn5QqV0yf4x6AoeJ5H7b20yL+MEQcbCNeKaE4+iSclJrbK5catoefxnLk64
- UKPn6ofC
- 5U21I+sE7+dF7WIGHcyIJfOrenazoxg+nnPosEqA6zcgZM0VM2vtnmJf4m8PAtl2G0T1n7u4H/ZSxXmLHrmyZZHkLR7QULSjHC1jz28L1vp6FSPCYXPp+T0WEhwFRER4BlduTubr7pVTOl7Yp+50ufBEEtupv6+siYfw6rECxTzdm8b8CtjrhNHxJmQz7wAe8G/o9wJ9YPvINqFQ36f8Vzz47vO9WSbwhCkXOjuMpgN/UUQHzQVCVJTsA+NyW/Sn2T2E27Zhdp2yFV0+Jt6HvbfdAZQ==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3seyjnyf7eki35pb7xzqmpbshgzwmjwx
+X-HE-Tag: 1790403550-521473
+X-HE-Meta: U2FsdGVkX1/MlU/rnYIe93Ms9InPzh1IVz0+QC+D/8LtLtAzzyTeBkfQhnLnOuEjiU6ucOJWlfWlT3QL1C4aoWwCO3EGeULft55EeYvIL6BkQ9jsKQMXY1Ou2CZZTnkJ4VWeujC2qESxjq4OK/DB+BcKS7fSN//+q7iF7l5eLqOQ5DG4ibJppZEBUZ5jQkrq4Wd5af/PMjSRuNN2ayUqrjzZGnm3/r2E84iiEKFG2KKCJElrv1dT4DiT1XnnQ3RJQw7hIOVh/c6OioWeQGSQ6QWqhieg1Ygk46Ad47bAwgoH/sDMBulKrGE65OtkfSqu1b69Y/ig81P8eHhvANhUSnxom+oCOwTQqq27H3kfQ2yVax482v8J3FO2vExqKqpusEW8pksoQkuA+MxOFdG6hkdbYNXBliw2/4vo1wUYqvgQ4FvpyhFqZFJF/IYVJGdZWLVwHHSEaxGv4GG4rsnU5S1kpIC3K9kEDoDECcv3c17T0Eu4yKS6PgnwZHDjIeAovxST298sMXYW45C0vEO1gxfPqMRDTTjXPQrG9le0ocyIAz8RMqAUkvpRLVvf3tfFjq24OVcimlBqrHJ5FpGPnuLPeh6Qt95CG5xw5bYF++q2s2wp/ekoG6cY2tkoMYmpKV9CkMxPTHoVrr9mz3hRdxePqwnKIGrzYfZxFl8DlCp9qGZ76DBi7lEWFmjaCqMySmmMX93++VnPjecGd4abjnwD02ZfuV7joOn7463cdphgv/2sowbc77B1QvjwEzAG7b9EVW1nKnxbzIIIHoe64pJ+zifnw6l4lfDtl6yX1MnqfUvZQmkx9WLMmo2iSwPq7PGq8lgK6AbaTC66nlF1dtCLTPsu2zVnSMcYp4seTYF1BfnFeyHdDsFshhHUANDkp2OxqfScHjWKgrgyFEuMw0jT0Puml5gfPSQpFu4pAwqtEKWhUn4/bcCSQ3PR0JQSyM4dS9AP5rkQgYtePMu
+ VJvFMTMR
+ /UHcs3tNkufLQ8BrXgi50YjZ37QuNOV58YonSy3HfGIWLhaJcic561XyQC+z8M00nUvsSertEV+wumxAw4TUMYC8UlbEuK4opdUN98Tk/KdSdaGpc2hfw2lX3k8CcRqpci1OnNwbhyUIasMaRvP8XguITBYJpj6oNNDTmikT6i8LYghV3KE60hJzjOn/Efan9xQacJmno7T2iNWoZXHR+W0Ag+stNk4AblqJoDcMyVWIKBRpNpXqpS8KU+fZZGfXZ8U7kTnx/NNMpkrlJPTypCP4Z6W67mRGeGax44PkoRE86D1AzdNdFgBEicDVpnWQRkOPg/eEASwIPsnc3NxwMe4xvqpueolZfNUjOD6rHzL/ArPtD8yJhMF3R13qg8a4SLrlcsi+ItTQIpXCndaYiYJi033TV8AgIM7uhGurSYUzeX2LErVJ0WsNuPcVR+C3I5csUHa8ny84/nvmC7oOTIOC6m0JjQmmGpO5naySltaRTafPByTaMUWUDVQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,20 +99,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed,  2 Sep 2026 14:45:07 +0800 Meijing Zhao <zhaomeijing100@gmail.com> wrote:
+On Mon, 7 Sep 2026 17:42:11 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> show_vma_flags(), which is used by VMA tracepoints and %pGv, names
-> generic VM_* bits but does not fully decode architecture-specific flag
-> positions.  As a result, trace output and VMA dumps can show a generic
-> "arch_1" name or a raw hexadecimal value instead of the meaning assigned
-> by the target architecture.
+> On 9/3/26 07:35, Kaitao Cheng wrote:
+> > From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> > 
+> > Page flag helpers for configuration-dependent flags provide false or no-op
+> > variants so that their users can be independent of the configuration.
+> > 
+> > The HWPoison helpers do not fully follow this pattern. When
+> > CONFIG_MEMORY_FAILURE is enabled, PAGEFLAG() and TESTSCFLAG() provide the
+> > regular, test-and-set, and test-and-clear operations. When it is disabled,
+> > only PAGEFLAG_FALSE() is instantiated, leaving TestSetPageHWPoison() and
+> > TestClearPageHWPoison() undefined.
+> > 
+> > Use TESTSCFLAG_FALSE() to provide the missing accessors when memory failure
+> > handling is disabled. Both accessors return false, which is consistent with
+> > HWPoison state being unavailable, and makes the accessor interface
+> > consistent across configurations.
+> > 
+> > Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> > ---
+> >  include/linux/page-flags.h | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> > index 7a863572adce..a2315ab1dd3a 100644
+> > --- a/include/linux/page-flags.h
+> > +++ b/include/linux/page-flags.h
+> > @@ -656,6 +656,7 @@ TESTSCFLAG(HWPoison, hwpoison, PF_ANY)
+> >  #define __PG_HWPOISON (1UL << PG_hwpoison)
+> >  #else
+> >  PAGEFLAG_FALSE(HWPoison, hwpoison)
+> > +TESTSCFLAG_FALSE(HWPoison, hwpoison)
+> >  #define __PG_HWPOISON 0
+> >  #endif
+> >  
 > 
-> This series adds symbolic names for the arm64 and sparc64 meanings of
-> VM_ARCH_1, arm64 MTE flags, user shadow stack flags, and protection-key
-> encoding bits under their corresponding configuration guards.
+> Can we just squash this patch into #2 please?
 
-We're presently not showing any review of this series, if someone is up
-for it.
+I did that.
 
-Thanks.
+
+From: Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: mm/page-flags: define HWPoison test-and-change helpers unconditionally
+Date: Thu, 3 Sep 2026 13:35:34 +0800
+
+Page flag helpers for configuration-dependent flags provide false or no-op
+variants so that their users can be independent of the configuration.
+
+The HWPoison helpers do not fully follow this pattern.  When
+CONFIG_MEMORY_FAILURE is enabled, PAGEFLAG() and TESTSCFLAG() provide the
+regular, test-and-set, and test-and-clear operations.  When it is
+disabled, only PAGEFLAG_FALSE() is instantiated, leaving
+TestSetPageHWPoison() and TestClearPageHWPoison() undefined.
+
+Use TESTSCFLAG_FALSE() to provide the missing accessors when memory
+failure handling is disabled.  Both accessors return false, which is
+consistent with HWPoison state being unavailable, and makes the accessor
+interface consistent across configurations.
+
+Also remove now-unneeded test_and_clear_pmem_poison() from nvdimm/pmem.
+
+Link: https://lore.kernel.org/20260903053535.17611-1-kaitao.cheng@linux.dev
+Link: https://lore.kernel.org/20260903053535.17611-2-kaitao.cheng@linux.dev
+Link: https://lore.kernel.org/20260903053535.17611-3-kaitao.cheng@linux.dev
+Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Liam R. Howlett <liam@infradead.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Ira Weiny <iweiny@kernel.org>
+---
+
+ drivers/nvdimm/pmem.c      |    2 +-
+ drivers/nvdimm/pmem.h      |   12 ------------
+ include/linux/page-flags.h |    1 +
+ 3 files changed, 2 insertions(+), 13 deletions(-)
+
+--- a/include/linux/page-flags.h~mm-page-flags-define-hwpoison-test-and-change-helpers-unconditionally
++++ a/include/linux/page-flags.h
+@@ -655,6 +655,7 @@ TESTSCFLAG(HWPoison, hwpoison, PF_ANY)
+ #define __PG_HWPOISON (1UL << PG_hwpoison)
+ #else
+ PAGEFLAG_FALSE(HWPoison, hwpoison)
++TESTSCFLAG_FALSE(HWPoison, hwpoison)
+ #define __PG_HWPOISON 0
+ #endif
+ 
+--- a/drivers/nvdimm/pmem.c~mm-page-flags-define-hwpoison-test-and-change-helpers-unconditionally
++++ a/drivers/nvdimm/pmem.c
+@@ -80,7 +80,7 @@ static void pmem_mkpage_present(struct p
+ 		 * here since we're in the driver I/O path and
+ 		 * outstanding I/O requests pin the dev_pagemap.
+ 		 */
+-		if (test_and_clear_pmem_poison(page))
++		if (TestClearPageHWPoison(page))
+ 			clear_mce_nospec(pfn);
+ 	}
+ }
+--- a/drivers/nvdimm/pmem.h~mm-page-flags-define-hwpoison-test-and-change-helpers-unconditionally
++++ a/drivers/nvdimm/pmem.h
+@@ -1,7 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #ifndef __NVDIMM_PMEM_H__
+ #define __NVDIMM_PMEM_H__
+-#include <linux/page-flags.h>
+ #include <linux/badblocks.h>
+ #include <linux/memremap.h>
+ #include <linux/types.h>
+@@ -31,15 +30,4 @@ long __pmem_direct_access(struct pmem_de
+ 		long nr_pages, enum dax_access_mode mode, void **kaddr,
+ 		unsigned long *pfn);
+ 
+-#ifdef CONFIG_MEMORY_FAILURE
+-static inline bool test_and_clear_pmem_poison(struct page *page)
+-{
+-	return TestClearPageHWPoison(page);
+-}
+-#else
+-static inline bool test_and_clear_pmem_poison(struct page *page)
+-{
+-	return false;
+-}
+-#endif
+ #endif /* __NVDIMM_PMEM_H__ */
+_
+
 
