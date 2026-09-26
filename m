@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 123CAC9830E
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 00:51:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A9A5C9830E
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 00:51:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B1B46B009B; Fri, 25 Sep 2026 20:50:56 -0400 (EDT)
+	id 389A86B0093; Fri, 25 Sep 2026 20:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 162AB6B0099; Fri, 25 Sep 2026 20:50:56 -0400 (EDT)
+	id 3159A6B009D; Fri, 25 Sep 2026 20:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF98B6B009B; Fri, 25 Sep 2026 20:50:55 -0400 (EDT)
+	id 02BA66B0093; Fri, 25 Sep 2026 20:50:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB3F86B0092
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C3E596B0096
 	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:50:55 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F690160811
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5EEFF1A078C
 	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:50:55 +0000 (UTC)
-X-FDA: 85254083670.19.CE4C1A1
+X-FDA: 85254083670.28.F86C2CC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1E831180005
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:50:52 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlIbi7CG;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5BEEF80005
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:50:53 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4HQpCbZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790383853;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -35,46 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YC6qSpKIC1f8L6AZJWv/YkddRwRb4W4tDh9n2fP7InI=;
-	b=qtFX1qGI6AUOti00XdfjeTE9xi9Uxbtt7xBU8sSZiqVGtqohLnvJoOjd8lC7nQ5LqYaJQi
-	xjeypgKBLHHeHFQQtcuWAf5j2WTF86p4QH6vTWqW8byO9gV/Ozxf6PF940H7KKhHIu/WQI
-	P3P0jtCf3qHIQXHJIIP0mR75NLr/Glo=
+	bh=3JEyx0x/ijAm0RuFYhPOpYek+zeDnQi/CMz1ANm6DS4=;
+	b=sGyr//3rv50i8+MW1HfJyIlhagTD/QmwATKut/nn1e67m5OHa53nVYjYCATk4bryjj682W
+	fOsc6MYdzA/YV+6/0VW0GtHasX517Du2Bav6Dq8HdvdsfNwWhQug/zJ7LT6r35EQ1Et/ja
+	813WN+NBi05Z811KHIXrslCJO231vaw=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlIbi7CG;
-	spf=pass (imf06.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4HQpCbZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790383853;
-	b=k5VGGlKL7Z/2MVSY6YZxHvgf0vnrR+d0pVXBtOOFZGvoj7WckNeb0zyStWBgu65CJPKuuE
-	qDn0hXqazm2Gt1W4NrPV36nKQLPe9rc/mtvgX5A2XAc4bZAstczxAfVJ4LIax55WzgPw3n
-	gleIjnyrtphf9bvneb7h3KjWtebErUA=
+	b=P1UaKvltCLZRCp6f1qbfJugulo2w64XUXi/m/rybvzpTrxpPWVqlIL0WqVif3qjfhw1WM1
+	jy2Y0yeAu5+9Zy74VlsNfdOMUv43hYW6fRDF0GJXRR9LnmQkoBrCwCU6L/bqoYSa5DezHh
+	lsWD9mCXOmsB96cZcLcSFsxWie/4y80=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7F1B447B0;
+	by sea.source.kernel.org (Postfix) with ESMTP id DC9E8447BA;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 98520C2BCB8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AC027C4AF09;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790383851;
-	bh=scd7V/LVJivphFiPiDvRuz42sItWihE//ekPollR9ww=;
+	bh=WcDRsHkmlxq31EOsgijIocsiUREamnuasZXvE6eFUyI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VlIbi7CGBVC1DMNetWyfB8xLyeMaQt84miSWHEyYRFw2SrAcS1IRXzGZVD5kNFnZe
-	 Qfr6jxWfKyVOu48L8NI+6XNPbbhz8RVqxXXlnN5MebjdTS8FuQ5+V5vM3tb5XV7tFy
-	 AhAspGmk90sOGAvjNcOvafwN6KcwenYmLqgrVqW3ept76WgZB5Uq1aPlFBaRGWLm2y
-	 KpaDU6EMC4s3Q3Ff3NWr3Vs63iTil8M9KskZXA5AV7U4njaOlke/AB9jMUeo87fdub
-	 wXahmRd/iKQKGwuJMbdSWgMIX4PoED9dGX33IzOpkkKUJNrZW5LcSpqdVdZGSRrFJ+
-	 0eZKZbqdZ5A0A==
+	b=U4HQpCbZK5DG8EZSGPYthln3S1ikiBLlPTp/6Imauraia0pHu6XggYsoik1z4O5Vm
+	 G+bDso8dO019O5l7S2Ifzih21I+R5P+HgyJxOcMzfbK8xJQkyRO8j075vQeKAIoa6X
+	 5rPiWS70iViKpVTPTZeHbhZDJuSnHcWrd6+9qX0Q2833c+Sgp/+3VUfNC0UK1URzPf
+	 JlSvx0d+KYL7+e1XJD3No3C48qJjx6i0TVgunRaD52eCeSSlblhghvltTX9bawMoGa
+	 Nxdlv2Y4bpCRW2PgYEIAWTUcITy0umn4q/5NdqtoJnzZG4nDatp/O4na8zFng2S5tx
+	 rgYZN3potO+sg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80CC7C98326;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9175AC9832F;
 	Sat, 26 Sep 2026 00:50:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 25 Sep 2026 17:50:52 -0700
-Subject: [PATCH RFC 05/17] KVM: selftests: Add helper to create guest_memfd
- with a resource file
+Date: Fri, 25 Sep 2026 17:50:53 -0700
+Subject: [PATCH RFC 06/17] KVM: selftests: Test negative validation of
+ resource_fd argument
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260925-gmem-tmpfs-backend-v1-5-d36159822d18@google.com>
+Message-Id: <20260925-gmem-tmpfs-backend-v1-6-d36159822d18@google.com>
 References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
 To: Hugh Dickins <hughd@google.com>, 
@@ -97,25 +97,25 @@ Cc: kernel-team@android.com, kernel-team@meta.com,
  linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=2918;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790383850; l=2106;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=a/IEkQZJisftLh4S+E8BZovfShlWauj9NzlVULRnFLg=;
- b=7ARebru5UbY4aUsqapWdwIr6jjRLvLKYLPWf3bBzdcMmZAQ4uzWyZEWPEWNPpEI+RT7Pue/c9
- 2nchVurQunNCDcbczxcNhXiAZELx4OWz4fTcupDdwsNJ/jvk1VphSOc
+ bh=iBvHnSmUj0NiYI2gh2HdRSLcUfZMIscuYT1+68ta7ps=;
+ b=FmJHODI39gS8wDYTgZFvNQSKXaYtDDeUYWD/fb9mP0pf/vGXvL776WINNrhuTxNGtGgGFIwu3
+ kp54PCvz2vyAlH9LzU8o1bP2LMsgZu7zqGDgKG8+EizfmBgpVE+lM+U
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1E831180005
-X-Stat-Signature: 56xwandize8xpdsudjcs856bucqo88fn
+X-Rspamd-Queue-Id: 5BEEF80005
 X-Rspam-User: 
-X-HE-Tag: 1790383852-974561
-X-HE-Meta: U2FsdGVkX1/H9/LaPWwRXTfYUE3SC4S5TejwKmYZ1kx34CIywgVrOiG+KIA3PNsV8swDVUw7t8FstuyNawHa0qDJ6oiBMdipfKi5WLsV5m7rkpQ215w4n1uSQx6FMDG8bb1dj3iaNViTTWJ78uXEDsxlqEE85TfWuKBxkjPqfSu2ZkMQorFdUKO9q1r4mAHhK2WRt47PkroTRGInAz5/e5E+cGyBwru21GICiBKdSZQRBhTmclbwBHfu9pib8TXCv5mLuWYSx5zLlLF8F5QUgPqhuslUU3xkxE75MuW4Qyh9QuP1QyrE27DlwqCFKOuTf2DGpHuUs1HQIrsxeDRcdaxbN6dYpajGSGQIMhZ2kVPMuHvHfiRhvYuHC/f/ftt6KFUXpXUHvwEgGyU5HYtXqUNRwiyjxJuXQ33QWRDBdoRIosG6ogYjxQEDlSsmOufN7+cOEuvESwWGKN1FItvrHLri+St3ut18/J0dw0lFZcTnFnDrSyCiyfaxnvRL7fXpUhDd97FhR2EJiEGs7XUBVDGW9LSKP/ex6VolMtyESSUTIVaYHXPhP2zfhDk9yOjDWq+2ju+lnznlmbEf3mWET3803dWwG+agki7KkelunvKaZ+dCgkDbuu+zrhpXrwbFLapKMQ/mIRuJz5roWo3+PM8aoKO13d7IhNCYRaxu/LavtgC16WB9/WbNASC2e0cLsuzi4vwbimUyYi6eUxk4jhXYD7+aCF0lbdCRaHCEk+7Ff3DITFXqoX7doqX/tRfvGDt9PUN6RJGvTPhjr8ylW7NxNbILu5iQKduaAKQj4jQJ4p1SVpXC74fqazyEI5/DqVSyYX6thHmQ+zcOthq2l50XNixmiLSG9aW7wfc/nukkn2UsFsHzGy5ch53Wzk7jxkKIsHmy160uDMt9eUqAjy305xbJ3NgsXE/vWzN4/Yt34Fq8jTKCWdnAIOussVn8+raTLH1kYVDn9GVsyeP
- +2loU87F
- DrfSgH5nHlOhjLJTpqARF7yqcTyNP7frRJstqpsn3El66X7cTp7BDT/3eEwjHD9iEwlma80k3b4jb7UHgM1hoO8wHwWMX3SGq/sGhsvk6BqpGDFUU8v1joo+Y+92YqlqiET8AS+ATH9Y8/Juit/teyDu7Oqf6SiZJRdq+hZNbkKc+XLhSWYb9kL+qx1NxGbfMoJC7Y9GrAqJvr6GZ+nifhhngXnOpl7S5O8tYOXqwvfbRjlGn4/cADHCO/FddGq1u2uubC44UTnELhGXmc4+xC24s+T9AwWN2YYMbi0rzhu8nAoOCXhqkKaWiiqRNUCJ7e4ouiY6/BSQv/r61aOtz8bmerPEylUo3kZQMV6v4wYp1aUL6HZXmCRhVxbZ+14uTrqqPQN3kw72JILKIIJTvmQfGn5KxeV4gjXaGkh3OvRN5qE1sOvRLvqlr7MM5Zn+Av5d/SNqY6y/jOLddbMn0knC9rYpyvhSzhAb3+ajsqDG9Qx8uANnynbEdG2mnrCkjRDUJpLlBz3vN9YKhpJ620iQ4++9M7LEaovGU
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6his9bndzcrokzy6oxm5dicnca6zgp4h
+X-HE-Tag: 1790383853-365491
+X-HE-Meta: U2FsdGVkX1+db9jLEzPK7549T3qqrecB7LdEFNtmM3PgFaQ9CuwJbCCW8cMOGBMfzn75u0O+N6+o6qyV3YaNmzOw/I2wmZUwgF8ZCNDFqn6UE6OgQUF5rek9SPjDAwfmB7dmNJsF1yX8nfgADMAQ2xpAdgZdhq/MjhoQSqXfP7w7i4e9FDwkFTqrCSBFzhb1lz6RDiNx6j+tfuzub9GtqoWKVbtOQ6Do+ZpLCLNoYzMmuCdgsDB6jscto/bGK9b/QAEdhl6laZVPV85HMEjpHP3FAvHBVWUR0eQeg4MhlgXRV2jo2pkAKUqoC2e8cwxDiDiled6gtgjtYYcDiisMmqegaSIbmnmRSvTDzyZ2ACXox782GgJS0mIcddaWG0/vTKAzaR5G/CFPo+QyZTBMI0UYjlhSWWNrMMn+0lZdTdV4t5fHP+WZEYPEa0BnMQMIRLo6tAs1e6fU2l5OwrBRMbAV0SZ9fKoEOJs225jcQgrDBYg6SczsRH0i/+L+7c7+NCIWEwjEXtmMdwljYwVftzmXN8LbpN9XFq7vGac+oNhEWzXAHxgKkkakUUQtxp7hGsccA3ILOjxK9d8jQd2pXHalRA5HgjZF6jzjbvJSHY+pmRMnDR7DKTR5bEWaD0nCWUVQpFMGSUHfQAeEY2gP/IkHoK1r3waQxkHceqd0hYBFphVZeI+QndC3uBOwvC8zCg9dVyB5C+st01HiAMLe3qV8fzHuzGtZzq2PblWAM3oC6DeKPJPQf+1r67gkTwVBtuL891dH/IQccPBEKQhCgpMqQJnMZ5GAA33OpQGLRJXf4spSwT7xPPGUcE9yHJsDlbpm5R6fgoFFMddGbkiSPoXxiSfjO1+hi5yPQisClR15maZ3YnqMUDqX6xuNl0bN4Jqgw1djMDZvmCqbH5lRjeI9FWVOcfYY/OGnWnjaINGZOT+pQWwg/zq7IEKvjPrtY6XksA9/VodX1VqhLki
+ 7jvfkehG
+ DOR2U1x6HJKtNLBEBdvU+heo7T/Zzp0pw4vUbG5V6PIkWGvtG5ODnvrSnIvImflD/WIKBQFUeNnr5O56ti9tNJSGI8YFdwa36Q3jS4MnOY9YMonBWbPoqxw08cTOrxnp9QHy9PP4LXDOXM4UagHCA2DnWg/P5GnRmzyR16LC0VjomOA5NtwJCQ6QwM87ckDxKnffTFhN5dQccASB0FXBMZ9omNvxBfIFRTBEWJ+M0S+F8dLpGKpCLcKcyyTe7d4tu1fLRst/T5r1NjwvESxlY0d5X9K5buxj/qgxiG71qRsS8qVPd7odvXINLsDk/fgO4bchndl0dvyvv2sla5/aJel/NLRCyMAf/7cV/92DBOqDbXSnn3GMZOffTmOjZb9AQBKq+LIc11eE29rx7QrJiwOOelxEQbvr2iBrLo7uhegUs+fDGBVw/WhzMOGsd0QwqmVgEpxJOXy5Lz3pzR9SrfTDxPBBLiL1tmjE1TT1iJUtZdVGpEkH0xQSH/DJqfJTO1auY/qN9Ul1bi+HT1gkrTNZPUlfVofsnoN1J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,85 +125,61 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a helper to create guest_memfd instances with a resource file
-descriptor, and update the existing creation helper to pass a zero
-resource file descriptor.
+Add negative test coverage verifying that creating a guest_memfd
+instance with a non-zero resource_fd when GUEST_MEMFD_FLAG_USE_RESOURCE
+is clear fails with -EINVAL, and creating with an invalid resource_fd
+fails with -EBADF.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- tools/include/uapi/linux/kvm.h                 |  5 ++++-
- tools/testing/selftests/kvm/include/kvm_util.h | 23 ++++++++++++++++++-----
- 2 files changed, 22 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/guest_memfd_test.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/tools/include/uapi/linux/kvm.h b/tools/include/uapi/linux/kvm.h
-index 419011097fa8e..66c1f40b50c29 100644
---- a/tools/include/uapi/linux/kvm.h
-+++ b/tools/include/uapi/linux/kvm.h
-@@ -1654,11 +1654,14 @@ struct kvm_memory_attributes {
- #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
- #define GUEST_MEMFD_FLAG_MMAP		(1ULL << 0)
- #define GUEST_MEMFD_FLAG_INIT_SHARED	(1ULL << 1)
-+#define GUEST_MEMFD_FLAG_USE_RESOURCE	(1ULL << 2)
+diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+index 2233d871a38f4..84b958b9ef715 100644
+--- a/tools/testing/selftests/kvm/guest_memfd_test.c
++++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+@@ -404,6 +404,8 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	int fd;
  
- struct kvm_create_guest_memfd {
- 	__u64 size;
- 	__u64 flags;
--	__u64 reserved[6];
-+	__s32 resource_fd;
-+	__u32 pad;
-+	__u64 reserved[5];
- };
- 
- #define KVM_PRE_FAULT_MEMORY	_IOWR(KVMIO, 0xd5, struct kvm_pre_fault_memory)
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 777fa3dbf88d6..9eeaefe5a1839 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -767,26 +767,39 @@ static inline bool is_smt_on(void)
- 
- void vm_create_irqchip(struct kvm_vm *vm);
- 
--static inline int __vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
--					  u64 flags)
-+static inline int __vm_create_guest_memfd_resource(struct kvm_vm *vm, u64 size,
-+						   u64 flags, int resource_fd)
- {
- 	struct kvm_create_guest_memfd guest_memfd = {
- 		.size = size,
- 		.flags = flags,
-+		.resource_fd = resource_fd,
- 	};
- 
- 	return __vm_ioctl(vm, KVM_CREATE_GUEST_MEMFD, &guest_memfd);
+ 	for (flag = BIT(0); flag; flag <<= 1) {
++		if (flag == GUEST_MEMFD_FLAG_USE_RESOURCE)
++			continue;
+ 		fd = __vm_create_guest_memfd(vm, page_size, flag);
+ 		if (flag & valid_flags) {
+ 			TEST_ASSERT(fd >= 0,
+@@ -418,6 +420,22 @@ static void test_guest_memfd_flags(struct kvm_vm *vm)
+ 	}
  }
  
--static inline int vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
--					u64 flags)
-+static inline int __vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
-+					  u64 flags)
++static void test_resource_fd_invalid(struct kvm_vm *vm)
 +{
-+	return __vm_create_guest_memfd_resource(vm, size, flags, 0);
++	int fd;
++
++	/* Non-zero resource_fd without GUEST_MEMFD_FLAG_USE_RESOURCE fails */
++	fd = __vm_create_guest_memfd_resource(vm, page_size, 0, 1);
++	TEST_ASSERT(fd < 0, "guest_memfd with resource_fd but without flag should fail");
++	TEST_ASSERT_EQ(errno, EINVAL);
++
++	/* Bad file descriptor with GUEST_MEMFD_FLAG_USE_RESOURCE fails */
++	fd = __vm_create_guest_memfd_resource(vm, page_size,
++					      GUEST_MEMFD_FLAG_USE_RESOURCE, -1);
++	TEST_ASSERT(fd < 0, "guest_memfd with -1 resource_fd should fail");
++	TEST_ASSERT_EQ(errno, EBADF);
 +}
 +
-+static inline int vm_create_guest_memfd_resource(struct kvm_vm *vm, u64 size,
-+						 u64 flags, int resource_fd)
- {
--	int fd = __vm_create_guest_memfd(vm, size, flags);
-+	int fd = __vm_create_guest_memfd_resource(vm, size, flags, resource_fd);
+ #define ____gmem_test(__test, __vm, __flags, __gmem_size, args...)	\
+ do {									\
+ 	int fd = vm_create_guest_memfd(__vm, __gmem_size, __flags);	\
+@@ -476,6 +494,8 @@ static void test_guest_memfd(unsigned long vm_type)
  
- 	TEST_ASSERT(fd >= 0, KVM_IOCTL_ERROR(KVM_CREATE_GUEST_MEMFD, fd));
- 	return fd;
- }
+ 	test_guest_memfd_flags(vm);
  
-+static inline int vm_create_guest_memfd(struct kvm_vm *vm, u64 size,
-+					u64 flags)
-+{
-+	return vm_create_guest_memfd_resource(vm, size, flags, 0);
-+}
++	test_resource_fd_invalid(vm);
 +
- void vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
- 			       gpa_t gpa, u64 size, void *hva);
- int __vm_set_user_memory_region(struct kvm_vm *vm, u32 slot, u32 flags,
+ 	__test_guest_memfd(vm, 0);
+ 
+ 	flags = vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS);
 
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
