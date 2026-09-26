@@ -4,124 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB08C9832F
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 21:28:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAFE8C9832F
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 21:43:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CF46B0088; Sat, 26 Sep 2026 17:28:06 -0400 (EDT)
+	id 84CA56B0088; Sat, 26 Sep 2026 17:43:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 304B86B008A; Sat, 26 Sep 2026 17:28:06 -0400 (EDT)
+	id 7FCFB6B008A; Sat, 26 Sep 2026 17:43:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F02C6B008C; Sat, 26 Sep 2026 17:28:06 -0400 (EDT)
+	id 6EC096B008C; Sat, 26 Sep 2026 17:43:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E8DFD6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 17:28:05 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 566AA408DB
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:28:05 +0000 (UTC)
-X-FDA: 85257201330.23.0F999B6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5CD12120005
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:28:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="okJXFQa/";
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B1F6B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 17:43:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB2DE1204FE
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:43:30 +0000 (UTC)
+X-FDA: 85257240180.01.DFC8087
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0E08540007
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:43:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OY4ESFrU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790458083;
+	s=arc-20220608; t=1790459009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/b3/K9KEy+XA6wgbrrLssczCgmMTCJmP39vuys8Y1Dk=;
-	b=v1qCUJ95psQkEVIbrL6sSv2jauTtfQE6TX6NepkJlvcpShddKgLIpmFTz5S6jvdGO0We+t
-	hBm2uvp30wq04c4psJkDv7rrE2fBr1YJcbctXJ2YqLrmCna3NHqd+ZN8s9mCq9ykw7nb8e
-	/oIdylPpXFUCijb5s7U+GAl+W3m1xZs=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=NOH44JwH5Kn0cST/pI6Ly2X+L/2neQN1cWQMIsqwXb4=;
+	b=TvruvI1zCZssiqm4hX1Enqg7OUwq9Zl6iauUU7llvF1AabzAzPNu6mrcRoGlWgKz9LdiQN
+	6C3p/hK073eYLaqf4OriR5wwS8cEjjRucRpWDIufLduqPUvsohQ8BXNqCjhyWQ0t6UouQ8
+	0lX9Be6IoQB/G9ow3Dc7RgSUoSvZ0AI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="okJXFQa/";
-	spf=pass (imf29.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=OY4ESFrU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790458083;
-	b=imTsnAY6ihKtq5gpLTc1MF40qX2vys0PH0r2H7Y0cTPkqwQnQQMtZESHq6/hF1sNSeUllg
-	dWeGZpYQ7Hoe3z3lBSnZyLLaXvY920HhnBz6e5uUq4DwYpMTyBvIXCPMnghCfBzOwBmduI
-	i8OJuYEP7sZbhqhTySWbyJwxHJ0Mi9w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5790842E2F
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:28:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367A71F00898
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:28:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790458082;
-	bh=/b3/K9KEy+XA6wgbrrLssczCgmMTCJmP39vuys8Y1Dk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=okJXFQa/JOP9E2TY1YToC4tniZqkQ6d16bwQExXEK+y60b4jfqXpf+ocDe+ANtg/b
-	 cAcKljVfj/MCO3TvvWxnsDRY5VjhxeT6adSdlIhk0qil4lv/EwQ/7ILEeCQsfNJBR1
-	 zfyrHMvtwRXTbHbW5RP7V7V0iowA7Bhvgfp3uwwWkC7DwZXLSQub3RltohWVhvC57c
-	 R5qZkGoObba4dZK6DvHTjj+VvexWtOZ2iZniWAD7jy0+IWhr4Ak8/uQm/pvn/JS4/e
-	 BcemzB8Oh1sTu9hIgiKWAhFUCBRuf6U6HTcpG7qxpIL8R0B5bOWOa4GzhjinaSNGY8
-	 RgmMZ7oFxiIIw==
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2c570a3030so97542166b.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:28:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBz3JhN9kkz+4zD8eh4YyfaXy3Ugzgd7PdX86pnCxqkvzmAdswg+eN6EmfpxwuM+rTzK2Vjdwf0Qwg==@kvack.org
-X-Gm-Message-State: AFuF++mlx6yI8x16t3ez7dvUAv6nA3Q46K4MBf0DhNG1K21FzJYHSmfQ
-	S6sAO0t+eTa7bHHfGI8XImcpXV9Zg2jsm6rmNIkqZw0EJJTmVEj+JnfVUUad9DVl9nraDWvJcU2
-	BxqxsYxdHZbG+CA+SmqbfIT5xX6o42V1h6r39hRJvGQ==
-X-Received: by 2002:a17:907:97cd:b0:c25:5d2:acf0 with SMTP id
- a640c23a62f3a-c2ac241f82emr841881766b.8.1790458080847; Sat, 26 Sep 2026
- 14:28:00 -0700 (PDT)
+	t=1790459009;
+	b=5ynZ9pKvYw82XKUpV+0uLaVajwRJNupQHmpbvnqCMDUjpwLvNc4/vgZgfMEFl42iL95bXv
+	kevW/0Bd00PRpFWYFsKY+0cUsnm5XfALq23Z4Yoge3Hknd4KEmJ/HLF7Oow16uKAivA+t8
+	kuyIvLrLJ6V8+dP2ND6AcuQAarTcCqo=
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so31965ad.1
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790459008; x=1791063808; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=NOH44JwH5Kn0cST/pI6Ly2X+L/2neQN1cWQMIsqwXb4=;
+        b=OY4ESFrUXCnRr0cDuaXU+NPkQZyqY0ljbUY0Qlb+ehdYGSeKUDdT2Lesc1fyIdLtjU
+         lPI+JVTuW85OjRWWIG5B0ypTQHIzChcXwXaqQQkPsIJEyu6cD6Giva+OGEr6+WhjJaOg
+         sKss7vSN5LxJ6Bv3bL+RomrB/zDA5MFl3yDclAnqeT21rrfTRiDvu6l9zvXqlmUBHf5h
+         Gr60mQ5IWvX8M9MmNoUEiefAi9Y4j78O1ZpLCDD+nCLZ/U0L5FPwsJxidmjbD0lMQTwm
+         9qdJomQkGIWHzAb9Ixl68Yfv0ddNiwVFqXWZ6lL5TrLckS5To9qRLSDspIMraq8EZ1vG
+         6gUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790459008; x=1791063808;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=NOH44JwH5Kn0cST/pI6Ly2X+L/2neQN1cWQMIsqwXb4=;
+        b=n4PA5auJhPlLDq+e0DlKV9pywpTJMm56lFnKte9IN7rgnXuFHt8Ifj4IP5f5JPv/ZC
+         GNYR+XrQp2hIFcwZBPi70uar/an2PbbWF3efyafcv893TjmV/ciSRmDNSIgoiN4LlUko
+         tep1X0m84d0NPuUOuMt4omcfgWmnQ+bCm6eFy4zv464FZHUjzjz4o2H3hyahDL/IjV6i
+         3Cf9dYUrM5VjuuorX46W8rdvvGw99q4i1/MnXM4E4Ts/W7G5k0sFO/TGwKDRTqp7QR9g
+         cWVJsiep/8Toxoa42y4vQHQuS5ICpoM6c5r9v7rhvrNQVqwgun5Ylb9rdLt4FQtOTdHc
+         hiXQ==
+X-Gm-Message-State: AFq9FYKNCz/FTa8B18jD2wyluQqbCKLWpgezaaE0VZvZcfN7NLuppnx1
+	If60hj5ZV7sumwNdEmOoiULxsqrAI8R8xiD4Md76mHca+AMseQdVDwkh8FmutDvo8g==
+X-Gm-Gg: AYBFou1R2FhTuSI4dTngFTiISnxUhE2aqhTaBHvQ/xPxzTmp0rU7N44FlreF5Pv2/IY
+	PrfFAruaZf2OlAAOVF+MMYcHqTmbNwIRIMr5UYLtxKE9INhNyhmvKEG2LhTd0/HFWfHelV7J0iB
+	1XGQmGAqJBxsU4iKBzPS26Hf4vy0CJz+PJO3+nT4Z19ZNJEx3MmhS04jLw8+lk02fNfUymsaKEK
+	aUIjfexLQoG0rxmBj/EV/0qCsxrKnDAHfCRSOVt7AXZQ29BvE6X+7XwirEDhrOwJrBeflit+eZY
+	J6XMZRsA+xJ88mtljDCqtJGrksiuoL3PsLrrRjdAEVHdlHlqlH56kai14mZzlPL97I/rT0o1y1e
+	0YWZzvoVPArySb4PiiUaeNwVFjZdHy2sNyWIWL+uHDM+6qLV6ENBITlZ06IDE+FiRRMkrQcWzfp
+	8rxQuESWNLSHwE1Mp0WeE+Vi06UfTzuOe5JTkfb0ZH+4w53kSSOnZhDSOmRiAbAE8tcTe56VCaX
+	r5CCIssatrK6Yza8n0ASx9DScNhaPJ5VRql0HQAJpPIilS8SU5yAbTwmMPdVFA9Q8yQsmZHMMMG
+	ZGuesvEce083UIYY0R7x5LxxJfOocHWQQBtB7pJbFmS4eQ+ntMLTvd5bQHtmJN+OHGNnenHFI77
+	jpN5ktTE=
+X-Received: by 2002:a17:902:f601:b0:2d5:db38:8013 with SMTP id d9443c01a7336-2dfa62423aamr3923435ad.18.1790459005911;
+        Sat, 26 Sep 2026 14:43:25 -0700 (PDT)
+Received: from [2a00:79e0:2eb4:9:125b:13f7:c69d:3887] ([2a00:79e0:2eb4:9:125b:13f7:c69d:3887])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b898cabesm11736892a91.0.2026.09.26.14.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 14:43:24 -0700 (PDT)
+Date: Sat, 26 Sep 2026 14:43:23 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from September 24, 2026
+Message-ID: <0c8a7227-c7eb-bef1-7326-c7b04cde78a8@google.com>
 MIME-Version: 1.0
-References: <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
- <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
- <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
- <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
- <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
- <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
- <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
- <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
- <arUcil9kxUPiymXI@KASONG-MC4> <araWKyJ5MENBwXCL@cmpxchg.org>
-In-Reply-To: <araWKyJ5MENBwXCL@cmpxchg.org>
-From: Chris Li <chrisl@kernel.org>
-Date: Sat, 26 Sep 2026 11:27:48 -1000
-X-Gmail-Original-Message-ID: <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
-X-Gm-Features: AclHuK-pGdbWiVt-UuTNcQ1lUDuTYQAqi73TzSdqZqJN9ntFblbZL_BJbUvjbEg
-Message-ID: <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
-Subject: Re: Path forward for Virtualized Swap?
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Rik van Riel <riel@surriel.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5CD12120005
-X-Stat-Signature: xiwpriofo4c9hk8j4aomffk38eskz51o
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: tyb3zwcjow6ukzg761sf4ux3gt39cowb
 X-Rspam-User: 
-X-HE-Tag: 1790458083-171626
-X-HE-Meta: U2FsdGVkX183wkJ8/kO2lWVL6VisWsqsQApEH5D1s5raHRtCfIosHTEvNK59I3KoqnjYLpBCrslEtt9v9gMnBWkeM8GeYQV27qFsUgFDVqOOa0oILIYf9juXuqe6II/DJ6ei//9hfc5uviAJQFPC3ehLowVseuLDlhmgrMrKNMFBHr+/9Qf+NuIjQJ9pzld9P8/EcwhGxeb0JRK0W0JGDl/f/L5Uq598IAdS/jaWkUSBTAW+ndTDatDHUP4xS1HVaSup6lhBAG/X6gB9CO5emrLdbUXkhJMQJQtL0M5ksTOK3DFwPbI3qTeyjps3NZQckYa0+QKYFwMak0aofSsTCVPyb31emsBASvtOBD9pXxYptGJ+2r7z0CetFkH9sT9zTaaVx6WFxeI7lk96oaT35/MzGRpOZ+ihTEgA/xzzI7KmsYb+riboBHfNLNAeoBILnfFuf6/zR4FiEESE1jZJbxQct64fK3y/Pdh6HUfr4Sg2RD5SSsdfeor7oDhlxaWnqE46gMdCIJWMkAuwvooAIInwMQsR09jkCdZGmGRNhdZEgcyTW73xtQd2B90Ccg/h9WpSRMJvD6ZqzLbGL0PQR/PHBE7BniPJ4VjsWpJwQtQ8ZIOXq88utyrXoryxtMJOB+WrH8Um36ZjUM0be9IgMXMtdv/HqM+3h+a8LYWI0uRmHaGrPoA3anShMW95dZwk+issXZZGn/hFmwn3U3KHaiSafV84VryMqbmHYkheTZ3P0Y6bBBZIdi+GUqWMNWRoWzjWYUNVRvo6LH7bb6hJajjExKMnsjW4WIiK3KAHdEpZOHU0e3au8nftuZM19duR75SRvllt7IfIAtfrr5lre4a9O483HsnudeXCSUARoYRfEGMqEYJhC62quEkhFu9tQ91kCORPuGKhrL2ih2CoG1mueAzzkmHwGAqMAw8KoHyUhKxIBko0plAOjroCzKLonu0ZCFN9QG/jgFJBMxi
- tqYEAE2k
- B8bCjKmEmOFxvAbmNBlsBgC/9bKCJRIewf+RnC0myj0Io6uIwCbOMS9JSdyTa1i/whJKhRAaANgSiyVeLizw0+NbXk36Db7b4yHv7RszZsZmlXy7QlOKt+xmYMbmUQ10N1+Festchz0H/eiHxDL540F/2fE7AGynM+tGZyKNWIjDN8+GDlvlrBqcQ/IfSWn6KnJ3CKDu5cduH3RNz2BnJoRok/NKjjAwK15lLhDHl8j8hGuO2q1bLr6Cmog236r3DBYFT96GFdlrLRn0HUO64XUqzP9BdGvEah909blojZwVd5NT1b3bon6557938uKyqdo1R1qDQ5eeywiZYZt1XGcGRh8Aa+6wJFuzzCcLHiionqGqeccJ6z9smX6XKGINys7iVYLhlrrL16hCjmy6uGNWzPX/46Zt58wptPnfw/Qj+H3LFpT90X3YhM9symXs0ZKiguMuNRNtJHPWV7/aCeRlel6qNouaFvkeIA3RlcpILNtmijfElDD+CUkZKqHDEFucS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0E08540007
+X-HE-Tag: 1790459008-604615
+X-HE-Meta: U2FsdGVkX1/Mxen8VNNpx8qmUOJiQE1MRtNppW+DEMP7Qo6PK7oyL9gINXTQh4nigd3l5zH8gZsvJOq8Lktyc1W5UQ3q6VvJW0e4zmLc2t3w2H99d248ceIVPtZyjFonzjAwXFXe6xv8QK4qtdkDIrl0g2qRa8RlWNw2epkXVuiWgaqdyVDG9q5u061K1/0Adq/UYAVCTqGm9Av7nAM3OOrWE/KhM5CDWoeV75Ks1suYZNsePZdZxQAezjbj5lnhas9wGQkyiIMKUK51qznxVKfNADWvFgvi+DNhLvHRfat5wTAa+pxZ3KKv8uvkg9C97LeWdMgSi3KGGlK0SwNR9v2gMir/EvhSDyYaL9PXo5rqC0vjA5Vshfwi65vgBNpBCd8Uq+zPMZ7NOwkR3aEhDtunmC495xrP1ZQLzPg09k23wIpBDHDevEEI4R37WLMysEncnWAJA/hKApY1kHgBZqcUKPFf7TeyL40PB87+ukDhupsyyRdJwxwKcOZCYyhREsYy43c54jpW+ODl+vYJgOITUISbP/KX8YRwrRuoZfHZBXC4aQ22LqbtLaiZjvfdVY+Bg5Aq/PQMsjGnqEnEwrd9LlNQgYYBzkPQrtScakV7BxGIZIzsmrcqdhXmHoEbTnZ3fDoRY+djXxYjvsJ55/z7Fu0KGgUp9yzjNiLTM9v2JdhxdEmsOj0thSCwbg8tdv/HwaWuT7jBKhZvAN6mbm8fLfAvrk8B5hZQdkwrTI8QWE7ZnikYQTOlWTigyV0sO4UI+q+AcM853wVXl6AMqJPo5UDMU0EIyJqtlGyrZLjtIVVudYCrJ1gu16ChE6Uuax2TcXoDyR7LK7Xc0LAF/JewuwsiKlxcTkojiO9Shb+4IYTjcDc5n9uJR7WyVf0vj3ExIReBUOcO5VRwbi2n9J/eYaKUg/cPCLg6QU7EtTFLdq30f3t1f1nAPDsNm8ThmyxH2ixXw2p4r0Myfh0
+ +0c85Zzy
+ 5gg8BWBHeL3AISPNa5YcFVkhWDXbykYx+vT2hM4Wqyfuks+mbl+l+yK3ye6JgdcJR+TWU5UNgf4STjE55RBmBbezFeQpLVwd1sJOmc9eAVUkjiIeLmpJJV2iMw1UFqkyzIZZ0zuQ3BjTSJ5ledc0Exd2lZMBWqLJf/fj1uxSgD2vjUp857lyyfP8tTJ6UijKZ4U1ziPAdbsuE8njB5+7iPLtT73LnoyLeZGyYa5zgqVpQX4fkrn8DoHJ9UQdxwedF85HWKxdU3OkWcvCxN7tJsaRQval5IHkd80K2vZ+jEV6vKt+llT0L9GAJKb3KC21UWAOWnrTInes3PTFMwhOq0oMc9/GHrTZEfDZNlnjWQHfpoMJqSwdAumDQhxmKYXaTVPTaE9NNkfkxYyQmWwaJl97ff5Rq8UHj6JDWB8UvENzQTjO9iOTgkkZpI320FytmBqscKjGqfXaymPhkQNvbpXT86f41/G4fscSJvxhzvViROcg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,165 +119,128 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 5:41=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.org=
-> wrote:
->
-> On Fri, Sep 25, 2026 at 09:15:17PM +0800, Kairui Song wrote:
-> > On Tue, Sep 22, 2026 at 09:44:37PM +0100, Chris Li wrote:
-> > > It seems you are talking about a different topic: the vswap charging =
-issue.
-> > > There is a golden rule that we should follow: don't break existing
-> > > users. At least with the same persistence, this rule should apply
-> > > universally.
-> > > In the swap tiers discussion, the UAPI was such a big deal that we
-> > > couldn't implement new UAPI. On the other hand here we argue for
-> > > liberally changing user-space visible behavior.
-> > >
-> > > BTW, I already shared that changing swap counter charging will break
-> > > our and others' existing deployments.
-> >
-> > Hi all
-> >
-> > As I read the threads and try to clean up the requirement, just
-> > realized that I forgot and ignored something previously. I think I can
-> > share a few things here.
-> >
-> > I also see that Rik mentioning that:
-> >
-> > > It adds up anonymous, file, accounted slab, and
-> > > (after compression) zswap memory use for a cgroup,
-> > > and can be limited with all the usual cgroup
-> > > limits.
-> >
-> > That's very true, and that's also the one reason we can't
-> > migrate some workload to zswap easily (at least yet) :D
-> > See below.
-> >
-> > The discussion on this can be saw two years before (I know
-> > things are different for V2, so see below):
-> > https://lore.kernel.org/linux-mm/CAMgjq7AYA91f4g-bknUZOMg6hApTD-X5LqjcT=
-BN2u-Lu8pjs+w@mail.gmail.com/
-> >
-> > An minor update for that, memsw in V1 serves pretty well (we also
-> > modded that part and would try push to upstream if doable), and as
-> > memsw is missing in V2, we can still workaround that using
-> > memory.current and memory.swap.current. BUt missing the offloaded
-> > part in memory.swap seems a problem.
-> >
-> > First a little bit off topic, I'll be really happy if we can make
-> > both compressed memory and swap as separate counters (I even once
-> > tried to implement a zpool accounting to account compressed memory
-> > in some unified way, but, well, zpool got killed before I post
-> > that :P), or at least a way to do that, e.g. something like nokmem.
->
-> Thanks for your thoughtful email, Kairui.
->
-> > Due to our real usage:
-> >
-> > With compressed memory staying in a separate counter (which
-> > we manged to do that with ZRAM) the memory.current + memory.swap
-> > (or, memsw for cgv1) could be the exactly planned or sold size of a
-> > container, the scheduler (e.g. from k8s level) is fully aware of
-> > the packing rate of a host based on this reading. and can make
-> > scheduling decisions based on that. And can control it by
-> > adjusting the limit two combined.
-> >
-> > But with compression as a fixed part in memory.current, first the
-> > compression rate is totally uncontrollable, both the user and us
-> > will be fully *unaware* of how much memory they can *actually* use,
-> > that makes the planning really awkward. memory.max stops being the
-> > bound of what we planned or sold, anything compressed lets the raw
-> > footprint go past it by however much the compression ratio happens
-> > to give, so what we oversold is bounded by the workload's data and
-> > not by anything we configure. We can substract the zswap reading
-> > though with adaption, however it's hard to change the performance,
-> > OOM behavior or reclaim behavior:
-> >
-> > As you may considering compression is trading CPU time with memory,
-> > then two things here: the user could use more memory than we expected
-> > by burning the CPU. And, some users has a leaking application, the
-> > application could goes super slow or experiencing high CPU usage due
-> > to memory being compressed. They really just want to get OOM killed
-> > in time when ever the application leaks beyound a threshold (and
-> > yes that is a real and actually practical model for many applications).
-> > And, we can't simply disable memory compression for them.
-> >
-> > In many cases we just want a best effort compression to make space
-> > for low priority tasks, and do not want ordinary containers to use
-> > compression at the cost of lose of performance. While still has
-> > a fixed limit as usual. So simply disable memory compression is also
-> > not the plan, we do need compression to make place for other
-> > applications, we just don't want their real raw usage to exceed
-> > memory.max, and we can dynamically adjust memory.swap.max to
-> > control the oversold part, compression or physical.
-> >
-> > And this is not about residency, so memory.min/low don't help here:
-> > it's about overselling, and about not leaving a container thrashing in
-> > compress/decompress loops instead of being killed.
-> >
-> > And if the memory compression is really fully transparent (not
-> > doable by software), yeah, that's great as there is nothing to do
-> > with reclaim.  But, for now, we have to go through page fault / folio
-> > allocation / map it again. So For example, if we already have
-> > memory.max =3D=3D memory.current or under high pressure, then now
-> > doing any read from the compressed part would need to some
-> > require further eviction first to make place for the decompressed
-> > new data, this is not like any kind of "real" memory, something
-> > feels not right here.
-> >
-> > Another thing is that I think we has been assuming that physical
-> > swap is slower than compressed memory, which is not always true either.
-> > They all need to be read through page fault, the page fault could
-> > be the real blocker here rather than IO or de-compression.
-> >
-> > I also want to separate two things that I think got bundled together
-> > here: not requiring a physical slot behind a compressed entry, and not
-> > charging the raw size to the swap counter. The first one is great, yeah=
-,
-> > and it's exactly the part we want, it's what makes compression usable
-> > without provisioning disk. The second one is a policy change, maybe it'=
-s
-> > not needed for the first stage, charging a cgroup for the
-> > memories it has offloaded doesn't require any slot to exist behind them=
-.
-> > If someone wants to run memory compression with no disk at all,
-> > memory.swap.max defaults to max, so that still works fine, right?
->
-> I think what we found out over the course of this discussion is that
-> people have been using memory.swap.max in two ways. Regardless of what
-> we do, we will "break" one side.
->
-> (1) The usecase you're describing. Use memory.swap.max, combined with
-> memory.max, to set a "total", predictable footprint of in-use
-> application address space. You can mmap whatever you want, but the
-> number of unique pages you can touch is limited to this sum. And you
-> can control residency vs non-residency through the invididual values
-> of those settings. If compressed entries are not included, this
-> usecase will break.
+Hi everybody,
 
-Thanks for the very nice write-up; that is the exact usage case I have
-in mind. You put it up there much nicer than I can. Really appreciate
-that.
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, September 24.  Thanks to everybody who was 
+involved!
 
->
-> (2) The use case we have. Use memory.swap.max to divide a finite space
-> in storage. We only have so much space on disk, and we need to manage
-> fair access. Note that this isn't about speed. We have a mix of
-> containers where some use writeback and others do not. The ones who
-> write back to the swapfile need to be able to get their fair share -
-> not more, not less. Including something that doesn't actually consume
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-Just want to make sure I understand correctly. Do you mean the fair
-share of compressed memory used in the zswap case?
+----->o-----
+Bharata updated on the status of his work.  He posted pghot-hwhints for 
+the IBS Memory Profiler as a separate but dependent patch series as it is 
+x86 specific and the pghot patch series is becoming too big with multiple 
+sources of hotness information posted together.
 
-> this separate finite resource is also a behavioral change that would
-> break that usecase. And arguably it's a deviation from how the control
-> was intended and from the broader cgroup design philosophy.
->
-> I think we need to build tools to support both cases. But somebody
-> will have to change how they're doing things... :/
+Bharata noted that the benchmark numbers for pghot-hwhints so far looks 
+promising and that he is looking forward to discussing this topic at LPC 
+coming up.
 
-Agree.
+----->o-----
+Huan updated on the status of his work with Yiannis for non-temporal 
+stores in migrate_pages(), he prepared a patch series to send for feedback 
+to the group.  He looked into Shivank's feedback and work being done for 
+batching with 2MB pages.  Today, we need to do a loop for each 4KB page, 
+Shivank's work speeds this up but Huan has not yet integrated this since 
+Shivank's work is not yet upstream.  There are also mixed results posted 
+upstream.  Thus, for now this is being considered orthogonally until 
+Shivank's changes land upstream.
 
-Chris
+I asked if Meta was also going to be looking into these optimizations; 
+Gregory noted that they'll be waiting for it to land upstream.  They've 
+been looking at basic correctness of NUMA Balancing rather than 
+optimizations for now.  Per his discussion upstream, it turns out that 
+NUMA Balancing, at least for tiering, has been broken for the last four 
+years.
+
+Shivank updated on his patches[1] for non-temporal stores without 
+overloading migrate_mode.  Feedback on this would be useful.  He will also 
+be presenting at LPC including additional experiments that have been run.
+
+----->o-----
+Davidlohr expressed concern about the direction of pghot overall.  He 
+noted the upstream discussion has focused on not having any regressions, 
+but there isn't an obvious gain either.  It looks like Joshua had the same 
+conclusion although PSI may have improved.  Davidlohr has been working on 
+integrating CHMU into pghot and found the experience to be complicated so 
+he ended up bypassing most of it.  Whenever he got an interrupt from the 
+device, he would try to create as many contiguous HPA ranges as he could 
+to feed to pghot; once he got that, he decided to promote instead of doing 
+decay and got a 3x improvement over NUMA Balancing that he was expecting.  
+He suggested we may want to go back to the drawing board with regard to 
+the complexity and interfaces of pghot.
+
+Davidlohr suggested we may want to rely more on user-driven proactive 
+reclaim and can then tune CHMU as desired so there is some control over 
+freeing and promotion.  Another option would be to integrate this into 
+DAMON as well.  One concern is that if this is integrated into pghot then 
+we lose locality information.
+
+Gregory said that pghot provides value in doing this asynchronously, which 
+NUMA Balancing does not do, and that avoids lengthy stalled faults.  In 
+this case, Davidlohr suggested we may just punt it to a kthread that would 
+recheck if it's hot and promote.  Gregory thinks we're proposing 
+significant complexity in pghot that doesn't yet carry all its weight but 
+if we were to focus on the async part then this could be a start and we 
+could build incrementally on top.  Davidlohr said we're still losing 
+locality information; Gregory suggested this is a general limitation of 
+tiering in general.  Davidlohr said we could feed the locality information 
+to the kthread although this would include overhead for tracking.
+
+Davidlohr agreed with the value of the asynchronous promotion handling, 
+including for NUMA Balancing, but not with catering to IBS necessarily.  
+Gregory is a proponent of splitting out kpromoted from the rest of the 
+system.
+
+Wei agreed with Gregory's assessment although the data structures are up 
+for debate.  We could iterate on the data structures for this.  DAMON has 
+a ton of additional support and we need to discuss what all comes along 
+with it if this is a general tiering solution.  Gregory suggested the 
+asynchronous promotion work could also be used by DAMON.
+
+Joshua broke down the components of pghot: device drivers, kscand, 
+kmigrated, and pghot interface.  If they get separated, it would also be 
+useful for code reviews.  He was concerned that pghot may be heading in 
+the same direction as DAMON.  Davidlohr agreed with this.
+
+Bharata, have you thought about the possibility of only introducing the 
+asynchronous promotion support first, getting alignment from stakeholders 
+on that, and then extending pghot with additional enhancements later?
+
+----->o-----
+NOTE!!!  The next meeting will be canceled due to LPC 2026.
+
+Next meeting will be on Thursday, October 22 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - debrief discussions at LPC
+ - directional discussion for pghot and how to build it incrementally:
+   focus on async promotion mechanisms first and then add enhancements on
+   top of this separately
+ - update on combined patch series for supporting non-temporal stores in
+   migrate_pages() with memory error handling (series from Yiannis +
+   Huan) for 4KB, extensions for 2MB later from Shivank
+ - v6 of Shivank's series for enlightening migrate_pages() for hardware
+   assists and his rmap batch series as well as non-temporal stores 
+   without overloading migrate_mode
+ - Teja's update on SDXI page migration based on AMD patches and hardware
+   issues being encountered that do not result in page migration
+ - update on tier-aware memcg limits status and production testing based
+   on the latest major overhaul
+ - first class support for virtualization based memory tier support, how
+   to leverge memory tiers in the guest
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1]
+https://lore.kernel.org/linux-mm/20260902-migrate-refactor-shivank-v1-9-9dcca87669c4@amd.com/ 
 
