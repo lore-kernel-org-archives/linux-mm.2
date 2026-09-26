@@ -4,120 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51A94C98318
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 10:43:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A363C98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 10:44:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 689A46B009E; Sat, 26 Sep 2026 06:43:44 -0400 (EDT)
+	id 2B8976B00A0; Sat, 26 Sep 2026 06:44:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 638D56B009F; Sat, 26 Sep 2026 06:43:44 -0400 (EDT)
+	id 290536B00A1; Sat, 26 Sep 2026 06:44:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54ED36B00A0; Sat, 26 Sep 2026 06:43:44 -0400 (EDT)
+	id 1CDD36B00A2; Sat, 26 Sep 2026 06:44:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0106B009E
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:43:44 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB1A6A08A0
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:43:43 +0000 (UTC)
-X-FDA: 85255577526.03.D75E615
-Received: from mail-qv2-f42.google.com (mail-qv2-f42.google.com [74.125.230.170])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F0E0DC0002
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:43:41 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=R2+2KMsI;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 01B6C6B00A0
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 06:44:14 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 81678140628
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:44:14 +0000 (UTC)
+X-FDA: 85255578828.19.A0A1A48
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 47E6340005
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 10:44:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GDW48iZa;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790419422;
+	s=arc-20220608; t=1790419452;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z53uSMUq2W80HZiwGXPg4CfzzfvAXSACVLwfmhiGvRc=;
-	b=M7C2zaK0X4wFu7pQ83CVqfQEi0TnXxk8eNJMrO+4WSB6n81VT07lfbaovCbxvxUk+/ErIB
-	rWkG8rbtj7tnDjUdq8C79BKTboc1hjYlocUiME1GUcGT/qP/16Ebkf1e7M7Ks6xonnW5SU
-	zXom2KsJNPnC7UCdRqMr5G1txuX71VQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=R2+2KMsI;
-	spf=pass (imf28.hostedemail.com: domain of gourry@gourry.net designates 74.125.230.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	bh=OKcJVLyowqvGriiTBDZv6d3K/ixp7iuD3BjKXhPvX1A=;
+	b=DkdOXCqN3MSVrwEs66C0YFC0Dan4qFaVseph/Jj9r7XUtj9GXMnrpoF4Cuv6GU0KnogdXD
+	6RFFnNAHIRuI2JI4DCkvVLE1jXb/Hpx4acgmiLF9nDpNrI8g2mpt+ofGCKnH10KVavKQ+K
+	cXqTgDw7o346hnKuRxdMLuaFweFAIsg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790419422;
-	b=0ECmcBIekRpt8SVBTJyWJtvbc0TOd1KsNx4x71ChhqvRNj8afvTu4fims6vyyAt32sdB4i
-	OaxtTJbYkMADhCj0D6vY+EKnolULpYgG8RAiJEDft/GpCCDOff5PWUeZ9NWbZGjeh6OWkY
-	rhpF18+XZ2k9kLW3iZv+/k3/Ull4J80=
-Received: by mail-qv2-f42.google.com with SMTP id 6a1803df08f44-91447a0d24bso1487916d6.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1790419421; x=1791024221; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=z53uSMUq2W80HZiwGXPg4CfzzfvAXSACVLwfmhiGvRc=;
-        b=R2+2KMsIf9fJZ+Uh2rrCCtfoMkneEAGoTnPw4O1o91grVkoHJs2GEX4TrEcLTvDUyu
-         ElmUz0dcfUeOkisrgTfiUXXqXKadqAz82AeNCdhKwrrjCRrwyGnzTZLHIndWn8o3mud9
-         Qs15pp6D4/rlriUhIDmtE8qJ8QBIpw5K8c2r3DeLZ2wMTfSY7MhnEa6ggw5fwI3rqSUG
-         1zqAHXJ5V8pxqBQVw9SPxHirI18JxEMdJ3RGBSQuDaKFkWHZ/+bxZgfy1b+VK7dnp00w
-         0XJKZt7Kml7OoBOeBamYFOKZ0QWsnbIR0pssUViHyZ8HRKbJv6Y14lcYR46TMV9bH+lz
-         WGzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790419421; x=1791024221;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=z53uSMUq2W80HZiwGXPg4CfzzfvAXSACVLwfmhiGvRc=;
-        b=UD7URtQHSUaykzlNpzXf9/aMlzKdE/z08+ylqwLYTHgroVTdgZoAN4BV1+eqg9Vs9K
-         wyHYt+7nCi8VyHEl4rnck8coBCtyUYBZtSla32QYEEGxNbqyA7hseWbORVT0lOmSloOz
-         ieut/JMaJog/ee7JNTzehxTtKXTrcxk8fOBVHsmMZcK0HdEsRP+7Hi3yj/LFiY693Fly
-         9L9yBC8OdnckfsP6yedlz7sHL3JVuBYLNC6sL+owJwc9Vx0yWPoMu+swS0N16WfnsRMp
-         oa/sx30iMP0Iyj/ST7VQbXTkEpI3a2eNI/Z9pNcxMngdef2HWTUrAMgCeuk2dVVlM7t5
-         CrzA==
-X-Gm-Message-State: AFq9FYLkv0PKpK7T8XsaXgzkNc9bthW3XV0h9V1M1wsvLbRrPmQ1KBWu
-	mI//98ogjU7LE5GcGmfnmTnCN35b7QNy4SgT6NGCQQKHmWi2X6N/VKW0oJKRjql/biA=
-X-Gm-Gg: AYBFou2OCIvPNbIll5QY4A7Tv+iOxO2WZFk2xsHiKD2bySJTHx5yqSkWg8JEj77kWqn
-	U3gDbszb3an0/rSdj94cnI4nPyy7w8P513MJRCv2mzaN5Fc/HQz8untJtnVrRIHTKvjAN852Jrl
-	FfVUSxAGKkfTjFW7p7dpE8CAj03FwTaXTg4MTmHFZziaSM6tfXfo2MRQ8NU4HOkpoFK5lysZaNW
-	xOPTjr0xUrJMlDRlnv8savhfHktNm+ziMavlQPhOOGoGx1TzLrrMP3yFWhxdHG4W/GRvxyS7qIX
-	BE4N7IBuxUYL/GTM6PnK5oVfSoRjUTTbWKXg5cgSvpbqX5VITANtBbEfW8yYOz3kkNgJEP+eeC7
-	OWZRjsWZdx+vRwGMEdo9L0T+fevEQGAaScX4S9NQ8uI31q9qvXKyqId+ua3STSAF0OnW24kf74/
-	3+xftuCOSaDhUhKNpjnNfj0GydPt5/GSiybPE/UNVaM91I0nMcQU4ye9FncxJFKTjxhbh+XtGKn
-	fUmGhcrXRHTRN3wDezZN5DDQ9JhKmNMA+Ncu0iWwwQ9SVmqGgF9q8o=
-X-Received: by 2002:a05:6214:3b82:b0:914:48c8:6961 with SMTP id 6a1803df08f44-91448c86fb2mr22359076d6.17.1790419421191;
-        Sat, 26 Sep 2026 03:43:41 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e6ccfcsm36688496d6.40.2026.09.26.03.43.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 03:43:40 -0700 (PDT)
-Date: Sat, 26 Sep 2026 06:43:38 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	akpm@linux-foundation.org, liam@infradead.org, david@kernel.org, vbabka@kernel.org, 
-	jannh@google.com, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, ying.huang@linux.alibaba.com, 
-	apopple@nvidia.com, peterx@redhat.com, jgg@ziepe.ca, 
-	sashiko-bot <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/mempolicy: use vm_normal_folio_pmd() in
- queue_folios_pmd()
-Message-ID: <arehr1Z86Vp4gFPa@gourry-fedora-PF4VCD3F>
-References: <20260912034833.2952750-1-gourry@gourry.net>
- <20260912034833.2952750-2-gourry@gourry.net>
- <aqpyp7ouLyxGhJDK@gremlin>
+	t=1790419452;
+	b=qXSjnKqnV55DknanTmprZdVW9xYfFrnMp/YmGlA5M20iUGNix2EsMkbE+lqKRz0LZlflDc
+	QHoB1mVUW1G9LsjnKEERZ87ebFQMSS4sfY25HfT/CglX2fCB40IdufhanmqxM1rWvXogxt
+	z9j0RueYIu0OepqcWag/jMkiwhrDT8o=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GDW48iZa;
+	spf=pass (imf27.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4CE31596;
+	Sat, 26 Sep 2026 03:44:07 -0700 (PDT)
+Received: from [10.164.11.10] (unknown [10.164.11.10])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9193C3F632;
+	Sat, 26 Sep 2026 03:44:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790419451; bh=tdcDb7EMI5MXWG2z6HDtUpPG9NMnbPPbqLSL0Wmwbus=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GDW48iZarz1IDGWNkaFpOCVJkeWVdPlytnKkrMZ96NZl5ztLfc7ze3i6YbNCQ01l2
+	 EzJc5uaLXjC9xSpXDLmu/HhUNq5Xrx6tPgBvWNVl4ijNYCiABuSQ6svYKBFKxRG5/E
+	 iQaixhGKnBdce6wkr0My14Gj6yYbZK6pT3Muy+TE=
+Message-ID: <14e54610-ab62-472a-801f-d929171cde01@arm.com>
+Date: Sat, 26 Sep 2026 16:14:05 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqpyp7ouLyxGhJDK@gremlin>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: do not warn on -ENOMEM from va_clip() in
+ pcpu_get_vm_areas()
+To: Palla Raghunath <raghunathpalla.0209@gmail.com>,
+ linux-kernel@vger.kernel.org
+Cc: Shuah Khan <shuah@kernel.org>, Brigham Campbell <me@brighamcampbell.com>,
+ linux-kernel-mentees@lists.linux.dev,
+ syzbot+442828bb356b10813a47@syzkaller.appspotmail.com,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>, Baoquan He <baoquan.he@linux.dev>,
+ linux-mm@kvack.org
+References: <20260925205450.21262-1-raghunathpalla.0209@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260925205450.21262-1-raghunathpalla.0209@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: F0E0DC0002
-X-Stat-Signature: qpuu9i74m6fq4qbm4u1eziixosbwa5j4
-X-HE-Tag: 1790419421-540634
-X-HE-Meta: U2FsdGVkX1+NHLY6ZbYSSQII5M/MOX28rRSK8mtVr+bRROU1Ilj0Jp7DzTCGe4AagSLCRPEkTcPDGXS7IEsixd0ZVGZKuzshUdbSi3qe9pPnGAsleN2FGZ+RQnZLqhaH1vPoViAVxn2ROlGidOzh6P3lni3UVE7HzgMA/FzcSWNdk+hCzy/iyhCsss6qCZ/iCPRNB3Vjuwk1eA8JVxJh19yBP5LqOEhYgkAqxkvXowhjdUE+jxQ0Esj3tqiMNZsj4TFJ0+Wz8eXprR/k5eid2Ib7eSNRpo27s2rW1ZT7+c0z3TarnwfyjOCGcz9oWd5VQUBWDz2QqM+5LIyX6UYa2+fEg7Qmb01aUV49NsUuPE1Kc4p1O75rQL7EXt1AzwrJpU0jfG0wfhQDIGo91oduEWEbjRv3pmlZl2VE1lrfvAyHNEcVkLBRmb4kpRWv7x04FxG+G2k3VH4R0aYb29jvO8vqqaPitolI8Vni4mLzazhlChJ8Yn7eBKWbDXmLzHITckTmUbPDnsMSHydiNpUqn5tZbbW4EZc7e1i2/BppPXG/4B8CFgZM31xtEog+WEgNOwfMFVbrt1h+UnZdkKUtT73QeXAVFbL5ri83xg3ykZf9HflLr863zUNusyu0WsB4B5NVqK3HhMbZ77qsA2YeCuPsO/PRs1T3Eug4udEn1RcODe40LFHY3ZjKGjZkJYxfi/4b7jdMYV9xPpDgq3BBbKKxx9+bIWISTNk/MEgg31CKkifmBs4MXTFv7i2wh7KJCIx7CkMejOPUM1udUfUTtCJ3AWj+dfHWSCuWAvL8pZkjOvwfAeIELr8imCcFlna1jz4M6qZaS5XRo7K0LB+QvZU7nJvW0BBCGIEwYAg8mS3BMhh+WFRs/wQUwZ+0fmu/q4vE4odbRaz0xjTRTCWoBLbUVo5oEXGLcHjxokfbGqzzL9TEkc/qlyNiWu37KIbHSM2YCVEukHUOYdVveYJ
- d1IDWibn
- vo1abXuTgeZLvcKNIr08PYA/lE9VTzxTnk0KmaUPsSsgiGUDFlWs7GapsaTWcLIMOxEZ5Yx+3hUW6GzfJhxxrReC29gDqQ18BSOpu0FR61VGQJYd0a/yTg0yQpne99EIoiNawyls/O987tAbSA+RuWLu110PEtab2U9VOFeaTLrk8lf269a5RxoaLjDE2VK6hfxIhzmCHp+eQ1eP7rd2nDMHZW3OSUhw3AzHmHRxUbz8U4MIo31IQ6HBIcPQ26lmhzerTw5lhR/AOHdvYq+YT3IrqZ555q6XIKQ0CwbkvBxvKSV6F6Kqy3AeOiBuF5JdnDega6HSDGQQcpd63IyDoSrfikwThVxJvfnhsxj5aPrjqc8kXoCzVY2leAg0DfVoyJpMrjhNvz7ZPoUyeE6GycHaH3rRZEjwbmECNWvQgrck7E1BIYBzMv5WK1TCJ96dcI4Ar
+X-Stat-Signature: 5a8b65om76h1tes1amxuf7j1q8jb1o1p
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 47E6340005
+X-HE-Tag: 1790419452-682142
+X-HE-Meta: U2FsdGVkX18v6MDZ8rv321zU+1uYOIGR9nLHdjHv57gfmfSirLwDtXDr3nmtSy8oJmrl6hygeXl9gvmw4yOQreT2jaG5czKGvQWsUtyXz4RNe1LaSOihfMZCI/TTwTXKW4OyHI2/j8XOFtrn4+DmemMySHWbYQZDkJ+Wy+QXGIljTWuUcfoZKXJ7lDxJjHG74wzPknpQqJ+44UD+f9KedREKOcDMgmlJcYc197xV5APUR2JSY/RQNhMwlVW9EYr+lfvw/47EhfqjPMQCIw6wgRR6GIx5GYynEtKLeLQwhT3c3lS2Go5m4CkaEcZuSjBPbSNDuFqH/fgA+uVAtF3cQ4uChD/BIUKHW98zDYI9YKWzrfTeEYzMVVinUNcB8YeBAXzQsZF0rAZVRyIvWqFKUvz29x0MquTgKioRxgkv8qEx3OxdIVqBLMmse/l0LWIDzNjfNDAnem8slcSUkI3PfS9N6GymD66PTy4u2Jh493wjfE9Y4RORgKiSktR/Luvgu/r+jvbwSEB3YH/MfQpklQ+ElXUA5WKsvC8lI8gjRlGeAw0hxXcuCm4E20+8zS4jXX45eBNBjCrbNfsA/w4X5+8vK9oQ2Ax8CoE/jGkzETZDiEG5cAQvIIsYRXZGfloeLMXERdTcjakum7DKSmotQDsBkvK9Oewm7lMCWKeadP0pIOlyYzd9vgH0n4zkd1WwL62M3eQ1pyV/W5OqIXOutFSW3TWV14+LtfeajDKJXzUs16aKixbdY00351p7yNX6ZXqagB/z54moVU5ldtnjFqlb0eSCGmNrSbxLVS9l2ovOWCBrR0+fcr2sdv0vttt/C4oyQv2C+MBj8orapGJvZ1wQ3awhF09DrPGT4skWvKlkzfJPIJ8TeVCqTjSZ44YUW+3th40Fq6chSCbNPPHM8n4oQYEFwVP4AHo1W+AzfZl/Wa9K2pBhalYGLLjUW1hX07wUH6qSpnv2E86L5LS
+ 70Ssc+Zz
+ KGjx+eML6jfZV9UcVgzJKW9wH4HH0pCrDd/tdqNpp7LXOhdpovlf7nfqVpv5s3E4/32nBzqQHTIqQKCRa2qderxysspKYJtGUJBS/UuWVKLrCF2C+OQYr2rJ0+BfCAesACZKNgqJee0YdY6hdRApF5YAxgxF15c28bR6z+/CxzeUh9Zva/xP4t6XcSAZFpH0U09KyK4EKpiJTRTQGz3Jh73nudz5bw+jLUd3zqI64C2NED16uWbc37qe1j9CvFygN8rt+yZEtVYy5UVjoRkR4XZpqCMLvpuLIgAcZmNg5lqdsfDLQK9C9zFyBNxW0XNtAOAX+CVrG2GFWmIqnAvw3GS/yH3dQI/91z+R4aNSptoQ04NzgReOEliIncM0cZgU1iW795AhUxTadE+nC4wcSHizBBUHh1iYj5lVQxEm3bwHmWp1VLrXvYvpriGk5MstI5sMqoQqMDkRCSkDR5nITzznpWqRmgWR1tuCgmy6VkVICl+PxX0KpC3tw+FoY1jJdqiD0Kf+djpCzmsBnU4JMX8HKhfKmWZbDA5rJDg6gFbuVyZG3u/J61QLcOl2EcmRKoG4ExV0/ln51xyvFZh0EDiU6nAVaE6+enFiSq36WPm8o5Fw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,21 +96,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 11:53:58AM +0100, Lorenzo Stoakes (ARM) wrote:
-> It seems that setting ACTION_CONTINUE or not makes no difference.
-> 
-> This is really just a long way of saying maybe you could just do:
-> 
-> 	folio = vm_normal_folio_pmd(walk->vma, addr, pmdval);
-> 	if (!folio)
-> 		return;
-> 
-> ? :)
-> 
 
-You are correct, I will spin a quick v3
 
-although this will hurt to rebase the rewrite series on.
+On 26/09/26 2:24 am, Palla Raghunath wrote:
+> When pcpu_get_vm_areas() has to split a free vmap_area in the middle
+> (NE_FIT_TYPE), va_clip() needs an extra vmap_area object. It takes the
+> per-cpu ne_fit_preload_node if one is there, and otherwise falls back
+> to kmem_cache_alloc(GFP_NOWAIT), which may fail and return -ENOMEM.
+> pcpu_get_vm_areas() never preloads, and a single call can do more than
+> one such split: on a NUMA system it places one area per node group, so
+> the first split consumes the preloaded object and the next one depends
+> on the GFP_NOWAIT allocation.
+> 
+> That failure is expected and already handled: the recovery path returns
+> the areas clipped so far to the free tree, purges lazily freed areas and
+> retries. But the error is checked with WARN_ON_ONCE(), so a transient
+> allocation failure under memory pressure or fault injection triggers a
+> kernel warning, and a panic with panic_on_warn. syzbot hit this on a
+> two-node VM while creating a per-cpu BPF array map.
+> 
+> Keep the WARN_ON_ONCE() for errors other than -ENOMEM, which do indicate
+> a bug, and take the recovery path either way. This matches what commit
+> b9183788a2de ("mm/vmalloc: do not warn on -ENOMEM from va_alloc()") did
+> for the other va_clip() caller.
+> 
+> Fixes: 1b23ff80b399 ("mm/vmalloc: invoke classify_va_fit_type() in adjust_va_to_fit_type()")
+> Reported-by: syzbot+442828bb356b10813a47@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=442828bb356b10813a47
+> Signed-off-by: Palla Raghunath <raghunathpalla.0209@gmail.com>
+> ---
 
-~Gregory
+Makes sense:
+
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+
+>  mm/vmalloc.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index bea9f76ed7e7..24c7d0a5472e 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -5107,9 +5107,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+>  
+>  		ret = va_clip(&free_vmap_area_root,
+>  			&free_vmap_area_list, va, start, size);
+> -		if (WARN_ON_ONCE(unlikely(ret)))
+> -			/* It is a BUG(), but trigger recovery instead. */
+> +		if (unlikely(ret)) {
+> +			/*
+> +			 * -ENOMEM from the GFP_NOWAIT fallback is expected.
+> +			 * Anything else is a BUG(), but trigger recovery instead.
+> +			 */
+> +			WARN_ON_ONCE(ret != -ENOMEM);
+>  			goto recovery;
+> +		}
+>  
+>  		/* Allocated area. */
+>  		va = vas[area];
+
 
