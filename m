@@ -4,93 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 729DAC98328
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:27:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3680CC98328
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC33B6B009F; Sat, 26 Sep 2026 05:27:11 -0400 (EDT)
+	id 44D8B6B00A1; Sat, 26 Sep 2026 05:29:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B97E46B00A0; Sat, 26 Sep 2026 05:27:11 -0400 (EDT)
+	id 4259A6B00A2; Sat, 26 Sep 2026 05:29:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3BFB6B00A1; Sat, 26 Sep 2026 05:27:11 -0400 (EDT)
+	id 33B686B00A4; Sat, 26 Sep 2026 05:29:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 817D76B009F
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:27:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C7B5A088D
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:27:11 +0000 (UTC)
-X-FDA: 85255384662.09.F167148
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 64B81A0009
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:27:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLWp7dPv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0511D6B00A1
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:29:42 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 870F7A466B
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:29:42 +0000 (UTC)
+X-FDA: 85255391004.14.D27D967
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C4B2340002
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:29:40 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVJfHggA;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790414829;
+	s=arc-20220608; t=1790414980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2IB/emxkyHo2HX8WhbXxbTX5kHFJvnRUt1R1zJ5EJrY=;
-	b=pyVCIf1D2ShgSblan4Zeg/h2VP7GhXzBDNkiiMN6dhwcciAX6ku3K4cLfsd1jeIcuawy22
-	Ad+dbzvwJb/o+CWQhk6l7YuJ6dyrw1k5Wm6SXriN+XqyIqxE16iBvcUIC+gVIOYZWzTdKF
-	DLUo5Ruf2FRP+zJaJ68i4ky/KjXQRKM=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=N7ylrrzKtTxZesCwgLzmJsTSzlt/AFxbq6xRJZdXwHk=;
+	b=dasmcv7CEZKMGSkzwC7MOuLwEvMB1zaYvPYP3Ofa8Pw78f7bvIsP+g5ZqHsRrr2KvuPY2Q
+	jEw5qs/wqcUDqIJ6mml/iHPBukJyUyC0/uJuBbaIBBp6X+ofKiYhPTcSIWnoJssiJCXqcM
+	gAv3nS6+CkrzdUJPs6QR0o74Vt7Fq04=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bLWp7dPv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVJfHggA;
+	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790414829;
-	b=CfwGXYgWm1Q06Vq8XM93Pg+hb6Gw4eUEMbkaeYYNa+gYPmTxt3SCcpepOkfOlrfZuY89Bo
-	B1+gCfl1DEgW9Zy19izEXCZHlFYVK7/mQEIlUmpq5BCTYwIt8u7WU3aHlumd9xwF7+ns49
-	z6vLNweAbvM2+T+WbukRNLHvfcaCc4Q=
+	t=1790414980;
+	b=6vGnWTbIYw/dckKm+wYuZA8G9NZhR+juHHw+LcdiEQ6lEmzkZDWiVqvI1YaY9ILXAlZ2vv
+	U9Jo1U/buiVVFQvo8iOV7xmE7Do5neMZpuv5mcluuifRQxLe68mEIBiUDrYvLMaW/eVvTL
+	sYVQs1beC9QjegQvrHSliXTHkKlbwvA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB72742BA4;
-	Sat, 26 Sep 2026 09:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4E41F00893;
-	Sat, 26 Sep 2026 09:27:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 38F346020C;
+	Sat, 26 Sep 2026 09:29:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643421F000FF;
+	Sat, 26 Sep 2026 09:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790414828;
-	bh=2IB/emxkyHo2HX8WhbXxbTX5kHFJvnRUt1R1zJ5EJrY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bLWp7dPvvkC5iYRn7QCrP+n9zSTEV8wSmdq5FLV+7rYRGdMhh+tpPjxpnq+4hKK+J
-	 8BKlAXrHl9Cp9xDuPkaBrwHNg/in02IrPjosuTDhMQczYv27FfMLn8pJlJho48qLT6
-	 Z3IIFsrvAPo6O4v6WpPzfb4JBsmop7Jxbs44KA+6ugbrbZeEDkQHbs/bwwRe8TiGiZ
-	 nM20PIm1RDsbFfAV5pfG/hgppsIWZE13Hhthp4QxT9HNKxPadW2zjX5/pY/kFPJkxw
-	 hbWNIET7AKzXxDO8ucZep/LqAibyByxWc17RpEqLwaAQ6jgvO/L5N6tF6wNH9kSk12
-	 iHr1cJxNWeKzw==
+	s=k20260515; t=1790414979;
+	bh=N7ylrrzKtTxZesCwgLzmJsTSzlt/AFxbq6xRJZdXwHk=;
+	h=From:Date:Subject:To:Cc;
+	b=mVJfHggAmCM46o+nangsYzfpsZwCGGD3OxFQc8lToceUX6CrX6ndn94aZOFopnqg/
+	 E7BoOHr34BS3lOv2z2SPWYI/BRFIG2HM0fZhoBzeLVdQZMrjhIZ/v+mWULEBjFs0ro
+	 4exMNxjEvexTwXKMFyLT2lR3iiYZ/vvv25vkgsBn/oTxJppSVrd8aFi2UKKbTLuJ1E
+	 Lztk0Tcf7Zb/+0oSsWd+csGDkJRMyqCi6KXFeNd0o90wX7C2gyoOlvlheV/sWR7Hxw
+	 cjIxJnITYHycxrRYHREDy/GpYm4nMRLYHmGmJFT/9F6JEeiuqLxiMULsjrfREV0zFl
+	 3LYcqB60e7HBw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sat, 26 Sep 2026 12:26:34 +0300
-Subject: [PATCH v2 5/5] hibernation: make hibernation unavailable when
- debug_pagealloc is on
+Date: Sat, 26 Sep 2026 12:29:29 +0300
+Subject: [PATCH v2] arch, mm: promote DEBUG_WX to CHECK_WX
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-hibernation-v2-5-235f69f3ab2a@kernel.org>
-References: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org>
-In-Reply-To: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Alexander Potapenko <glider@google.com>, 
- David Hildenbrand <david@kernel.org>, Marco Elver <elver@google.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Pavel Machek <pavel@kernel.org>, 
- kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-pm@vger.kernel.org
+Message-Id: <20260926-direct-map-verify-wx-v2-1-efcd64a6b74a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WOTQ6CMBCFr0K6dpTWyI8r72FctHSAUWnNFFFDu
+ LstHsDlN/O+lzeLgEwYxDGbBeNEgbyLoDaZaHrtOgSykYXKVZHX6gCWGJsRBv2AKartB15vMJU
+ 0VldlXVZSRPXB2NJ7rT1ffhye5hrF1JUSRgcEw9o1fTp5po7cbtBhRE7/nsLo+bPummTq+TNhk
+ iChbK1qS1tYtTenG7LD+9ZzJy7LsnwBE2xmtesAAAA=
+X-Change-ID: 20260925-direct-map-verify-wx-b81bda879781
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, Alexandre Ghiti <alex@ghiti.fr>, 
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Hildenbrand <david@kernel.org>, 
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+ Heiko Carstens <hca@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Mark Rutland <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Paul Walmsley <pjw@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, 
+ Ritesh Harjani <ritesh.list@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Sven Schnelle <svens@linux.ibm.com>, 
+ Thomas Gleixner <tglx@kernel.org>, Vasily Gorbik <gor@linux.ibm.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: 5698kt4rm8np3ta3oq3sphqa8bpc74ci
+X-Stat-Signature: th9siwaphigso1afs9wnf85d5figpy73
+X-Rspamd-Queue-Id: C4B2340002
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 64B81A0009
-X-HE-Tag: 1790414829-143863
-X-HE-Meta: U2FsdGVkX1+y8jjjHpiRYO2R1zrFLszC8GQ2YMreKRqsOLV7ITAtwI+TdyoTUctuFanZbP1JQz44ieRcdyL31H2fNSmaOT0srUW4DdnGmTP+vPPQ7CXw6ZsILqhzBH+MOG675+qQd6W1lgYDI0RVDGfwHQgg6HnX9pH47AZWJzr0Czf6MSWZAdyaGY3HwdejRYHEkxU+8mpBwAQW0MV2BdZ0zBVa8S1Zoq9F6dVbUc6BJ0oHeae506lfZbIqYfVJLBikW3VFcJ9jcxneUT3Ocm3tyACtDkL3PhrDtqTfCggZXLqjp0yd0GYVJ/XpEZ3a7dghU7kKAmFmdGbnjyPxMoCOhi2HMI+522z1XM1j1bcIAcBrZCZbVZ28b3eQpy+bm3fElwrRWrdm5S0H3ZrnMifS3Ar/lO1qxuD5n4lJOk6rWyo5Z5VE4UoQzOfszVcatXrhqpkD6thRkrMRW17MgWT9/mPjgTAg227/WS9F2KmlZPgvqWlFEP+CwHR3n3bFOomO+WwyHEd/IOlIJR/iaHMyvoYcHqFriiNrEjPrp2tNNtoT3c9TDcyDoKpSTAuxWB3jDoeitV2YhQZ+zKtkPsy6IfnjF4m+/22AZGqWkdpetocppsfLNacnFudqzRn0pWu1qO1d0ga8tRqjx28qwDVoL8Z5nOWpDcrJyp9ymnJyGI++X7e/2vG+Utp25KC1BHmWhz3BbfbEqTIjwgOE20iP3Q5+25PS3MSJnGcjvQQROtuhSwJp7Z0sX2/rSr1DLnkhTdppmNC88XwIY84z7Uw9OfOYVJjVRUfgcGZ8T42BcabdJV2otl5fuva2cO4yEkydnDdKkYn2RXym0XHFGtcLOk5dsKJvgF6CMpscGvixdmduakK1p6bjFCnBQmRqzsiM+zeBOuHz/1QPEtNoXA2SIuswBOydsc0SjUOqdouyEzzYxg3qUz1emgl3NsCobTohFHMvnl0aJZTeadN
- TiSAiOGK
- lGnEe79HjtEG1naxGQcAhUSFpiBzBPF3RPa94z61MKrLfhbIi+i4+jlntOplHFQoAbG6SSpe1WM7DbEdAKcM7qvEHwOKonowvXOTTCLSDpYsJcHkEncRP0Mw8fSsmFPbv0e7efQrfqNGz8MC2JVkfJgFGFf3HNIUAm8Yo5ft+6bwjSq8xFmc1Dkandlt4NIF8DuIXRPGcNnPt2ty90M/NToJ8WWdHtMSA93kiYORiavnoDGwGZUGPC4CihbTmM3RU1YamYiCx+SoWtn+0Vw01XY4kGQbmoh1jXhA8nhfi26KqJhw=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790414980-89883
+X-HE-Meta: U2FsdGVkX1/Djs8fNm4ZwE7i89hQCSySTHxiIw+T7hE2lx+h1OLkPG55OSw4iJ2Y98dOmYeQLVc4LtwjIxYUtIE4pSvSIhoA0A9PtrlfXU8yTonpv78lzoFCfUh5fUFI6Ok8qLQDl/FNuUtkZ0/DNtzWpF0gm0Ek9XYIOy0rqICIdYvEfBQ3ENdSEQ4T0AxhvBYtjHBQbB7/H4ELJdjUDpqT6gCHhMwE7By5/DWY0ERntmf6MybyImPlNyfbxcgwy7neuE5+xHp3cmVMVnOqIMFqMV26TwVILkO/SRyepmb+CDyaZtM2HA/OXcKD+qRvD/hevKccjSwJlz4iwHy59w/K3/ijL/hcP5+HSTcYMldUjSYUmJgAs+9t2W2nIpnqBUKfXzE0aPg36aj6NF3r9ypCisLbt4TUhPDwp5Hg6mOTXFLqRGU3Xl8Jpn52bCteyR3mH4IyzaOdy08IM8APrzvybNwZQ+HapLJdWdInfDYBAiJ3g7tVKazr88SYFoy5gTI6A2GNR/yJEHE6p/6oyt9abcz90ENQhrGcaVrlzl+LIhy9JjHmcRWKIN49dor9EhoJVOPCinGvRK8J5EDpOQ0q94sAfkvtpUdPRXRT8tthIZb3h1+o8+qto2XtXunA7wCiBYYWUVkmF2FFnsgRkZSdD8KQ/8J4h6kG6//3gxKuUFOpNIOsvkxTmXeBuAUO6VdvLCafuU46wLNaCGaEUtj7Lfpta4E+WhcBeVZQkWhwu2GSUVQGdDH3wOQ9vTCxKyTJNBuZVI1VGu1JzXGEEEKbKXcE0B24hXEBLfJHANwp7QPNhRxfqtnBmAGMesXSqcjJXnuxDToeLQyzJeH+EkYUL7OcK7cckb/YA7lCEHeKe2cp5MZtTw5lJHNqM/IpA2HV5P4Ea4n+hOY7L71DFPqcfoilRdjXjV5pjUw75b25KW9XhYm1xturFYB6NcVeM439DhGVkDR0/ym2Mxc
+ x2PssZij
+ I1HvgKgeK5Jq4tviXbtH8G4ek6oBeCpO6RYWl0Q23vEupF242Z2kvOnh1/IdfEbeK38RcJjLwVS9PHbcS4tZMlNuWxSz7Fo8I+1RfnfLOKuK92bUBNQ7Tl8oPxT9qTwuHQmq9Hy1QhHUt/iT6fOlBs9kB0UsouHfeM+Y9WZfUtgk59+Tx+7VLdMRMk8hKgq7yWNjdKfQ4OFgHU2z1yfNwMY3UtjXx3vjYZkUf9FXFN0acuKuQSRAJGQsw6oZdTDbiA1sUKmzKBLbTbUrWqDkA2PhtLa32xvUxn/Ti0X4FP1SIySqguPR+3aYpZ2fTHBETF3CGGGuQOdUM7YKRYPQF7F7dt6yBEpjpTtS8LkRS3BL6hpxWODwrI1q9yFv4zbdPhhw6YmupfBEVs75Kaw6Sg81JWiEOa2vaxHVMSstvMcfsLXF3qk7TTzRdc9RZItDf5enHCUCEU+CzhUHQi8lDczs5szNuMIE1Hy9tYH6fSpAW1AKBt2cGEPBOxeS+2O6XieC7qwZJ+w6KbRK31BYZYm2LGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,163 +116,466 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Back in 2008 when commit 8a235efad548a ("Hibernation: Handle
-DEBUG_PAGEALLOC on x86") enabled coexistence of hibernation and
-DEBUG_PAGEALLOC, the world was simpler, the combination was only supported
-on x86 and a non-present page in the direct map meant that the page was
-free and debug_pagealloc removed its mapping.
+Verification that the kernel does not have writable + executable
+mappings is about detecting security risks rather than a pure debug
+feature.
 
-Nowadays there are more architectures with inconsistent views of how the
-direct map should be managed, there are more debug mechanisms in MM that
-can either drop a page from the direct map (e.g. KFENCE) or require that a
-page must be mapped immediately after resume (e.g. init_on_free).
+Major distribution configurations enable it in their kernels as well as
+defconfigs of most architectures that have ARCH_HAS_DEBUG_WX.
 
-The latter constraint is particularly nasty, because enabling
-debug_pagealloc and PAGE_POISON at the same time simply breaks resume:
+Rename relevant generic configuration options to use CHECK_WX and move
+their definitions from mm/Kconfig.debug to mm/Kconfig.
 
-  BUG: unable to handle page fault for address: ffff888000100000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  PGD 4f0c067 P4D 4f0c067 PUD 4f0d067 PMD 4f0e067 PTE 800fffffffeff020
-  Oops: Oops: 0002 [#1] SMP DEBUG_PAGEALLOC NOPTI
-  CPU: 0 UID: 0 PID: 477 Comm: bash Not tainted 7.3.0-rc3-00090-g4a613f1d9124 #1 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-  RIP: 0010:__kernel_poison_pages+0x45/0x70
-  Code: 89 fa 48 c1 e6 06 48 01 fe 48 89 d1 48 2b 0d 9a ed 87 01 48 83 c2 40 48 c1 f9 06 48 c1 e1 0c 48 03 0d 97 ed 87 01 48 8d 79 08 <48> 89 01 48 83 e7 f8 48 89 81 f8 0f 00 00 48 29 f9 81 c1 00 10 00
-  RSP: 0018:ffffc900017dfd78 EFLAGS: 00010086
-  RAX: aaaaaaaaaaaaaaaa RBX: 0000000000000000 RCX: ffff888000100000
-  RDX: ffffea0000004040 RSI: ffffea0000004040 RDI: ffff888000100008
-  RBP: 0000000000000000 R08: ffff888130fcada0 R09: 00000000723e0de4
-  R10: 0000000096ad9215 R11: 00000000db907bcf R12: 0000000000000005
-  R13: 0000000000000005 R14: 0000000000000000 R15: 0000000000000000
-  FS:  00007f8f2243e780(0000) GS:ffff8882e8e13000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff888000100000 CR3: 0000000140679000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   clear_or_poison_free_pages+0xd1/0xe0
-   hibernation_snapshot+0x548/0x5a0
-   hibernate.cold+0xcb/0x321
-   state_store+0xc3/0xd0
-   kernfs_fop_write_iter+0x163/0x240
-   vfs_write+0x21f/0x550
-   ksys_write+0x70/0xf0
-   do_syscall_64+0xb1/0x590
-   ? __irq_exit_rcu+0x40/0x110
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f8f224d0687
-  Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
-  RSP: 002b:00007ffe7bbe0910 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-  RAX: ffffffffffffffda RBX: 00007f8f2243e780 RCX: 00007f8f224d0687
-  RDX: 0000000000000005 RSI: 000055e3e53135d0 RDI: 0000000000000001
-  RBP: 000055e3e53135d0 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000005
-  R13: 00007f8f226295c0 R14: 00007f8f22626e80 R15: 0000000000000000
-   </TASK>
-  Modules linked in:
-  CR2: ffff888000100000
+Rename *debug_checkwx() funcitons and macros to *pgtable_checkwx().
 
-It's possible to build a complex infrastructure involving a new page flag
-and/or page_type to allow robust hibernation and restore with
-debug_pagealloc enabled.
+For arm that does not widely enable it, only rename its variants of the
+config options.
 
-This infrastructure requires a proper detection whether it is safe to
-temporarily remap a page to include it in the hibernation snapshot because
-relying on kernel_page_present() is too permissive and may include pages
-that were deliberately removed from the direct map for security reasons.
+Enabling CHECK_WX adds a few kilobytes to the kernel binary and while
+the added size can be slightly reduced with churny updates of
+architecture implementations of ptdump, the core functionality takes
+most of the added size. It cannot be moved to .init.text because the
+verification has to happen after init sections are freed.
 
-This complexity does not seem justified to deal with an esoteric use case
-of hibernating a system that runs with debug_pagealloc enabled.
+With this, make generic CHECK_WX default to STRICT_KERNEL_RWX while
+still leaving users targeting small kernels the possibility to opt-out.
 
-Make hibernation unavailable when debug_pagealloc is enabled and simplify
-hibernate_{map,unmap}_page() that don't need to deal with debug_pagealloc
-anymore.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- kernel/power/hibernate.c |  1 +
- kernel/power/snapshot.c  | 31 +++++--------------------------
- 2 files changed, 6 insertions(+), 26 deletions(-)
+Changes in v2:
+- add rename of *debug_checkwx() to *pgtable_checkwx()
+- Link to v1: https://patch.msgid.link/20260925-direct-map-verify-wx-v1-1-7fd2f7d6d23b@kernel.org
+---
+ arch/arm/Kconfig.debug               |  2 +-
+ arch/arm/configs/aspeed_g4_defconfig |  2 +-
+ arch/arm/configs/aspeed_g5_defconfig |  2 +-
+ arch/arm/configs/shmobile_defconfig  |  2 +-
+ arch/arm/include/asm/ptdump.h        |  6 +++---
+ arch/arm/mm/init.c                   |  2 +-
+ arch/arm64/Kconfig                   |  2 +-
+ arch/powerpc/Kconfig                 |  2 +-
+ arch/powerpc/configs/ppc64_defconfig |  2 +-
+ arch/powerpc/mm/ptdump/ptdump.c      |  2 +-
+ arch/riscv/Kconfig                   |  2 +-
+ arch/s390/Kconfig                    |  2 +-
+ arch/s390/configs/debug_defconfig    |  2 +-
+ arch/s390/configs/defconfig          |  2 +-
+ arch/s390/mm/dump_pagetables.c       |  2 +-
+ arch/x86/Kconfig                     |  2 +-
+ arch/x86/configs/x86_64_defconfig    |  2 +-
+ arch/x86/include/asm/pgtable.h       |  6 +++---
+ arch/x86/mm/pti.c                    |  2 +-
+ include/linux/ptdump.h               |  4 ++--
+ init/main.c                          |  2 +-
+ kernel/configs/debug.config          |  2 +-
+ mm/Kconfig                           | 41 ++++++++++++++++++++++++++++++++++++
+ mm/Kconfig.debug                     | 39 ----------------------------------
+ 24 files changed, 68 insertions(+), 66 deletions(-)
 
-diff --git a/kernel/power/hibernate.c b/kernel/power/hibernate.c
-index 97de677e360f..187ec6e87345 100644
---- a/kernel/power/hibernate.c
-+++ b/kernel/power/hibernate.c
-@@ -110,6 +110,7 @@ bool hibernation_available(void)
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index 366f162e147d..abcf14f10276 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -17,7 +17,7 @@ config ARM_PTDUMP_DEBUGFS
+ 	  kernel.
+ 	  If in doubt, say "N"
+ 
+-config ARM_DEBUG_WX
++config ARM_CHECK_WX
+ 	bool "Warn on W+X mappings at boot"
+ 	depends on MMU
+ 	select ARM_PTDUMP_CORE
+diff --git a/arch/arm/configs/aspeed_g4_defconfig b/arch/arm/configs/aspeed_g4_defconfig
+index f86dd4ce7d0d..2c9d5a644ae9 100644
+--- a/arch/arm/configs/aspeed_g4_defconfig
++++ b/arch/arm/configs/aspeed_g4_defconfig
+@@ -249,7 +249,7 @@ CONFIG_DEBUG_INFO_REDUCED=y
+ CONFIG_GDB_SCRIPTS=y
+ CONFIG_STRIP_ASM_SYMS=y
+ CONFIG_DEBUG_FS=y
+-CONFIG_ARM_DEBUG_WX=y
++CONFIG_ARM_CHECK_WX=y
+ CONFIG_SCHED_STACK_END_CHECK=y
+ CONFIG_PANIC_ON_OOPS=y
+ CONFIG_PANIC_TIMEOUT=-1
+diff --git a/arch/arm/configs/aspeed_g5_defconfig b/arch/arm/configs/aspeed_g5_defconfig
+index 45b937419dbd..1327a09e163a 100644
+--- a/arch/arm/configs/aspeed_g5_defconfig
++++ b/arch/arm/configs/aspeed_g5_defconfig
+@@ -300,7 +300,7 @@ CONFIG_DEBUG_INFO_REDUCED=y
+ CONFIG_GDB_SCRIPTS=y
+ CONFIG_STRIP_ASM_SYMS=y
+ CONFIG_DEBUG_FS=y
+-CONFIG_ARM_DEBUG_WX=y
++CONFIG_ARM_CHECK_WX=y
+ CONFIG_SCHED_STACK_END_CHECK=y
+ CONFIG_PANIC_ON_OOPS=y
+ CONFIG_PANIC_TIMEOUT=-1
+diff --git a/arch/arm/configs/shmobile_defconfig b/arch/arm/configs/shmobile_defconfig
+index 6f9696e9fe17..cc22e22b989e 100644
+--- a/arch/arm/configs/shmobile_defconfig
++++ b/arch/arm/configs/shmobile_defconfig
+@@ -225,4 +225,4 @@ CONFIG_CMA_SIZE_MBYTES=64
+ CONFIG_PRINTK_TIME=y
+ CONFIG_DEBUG_KERNEL=y
+ CONFIG_DEBUG_FS=y
+-CONFIG_ARM_DEBUG_WX=y
++CONFIG_ARM_CHECK_WX=y
+diff --git a/arch/arm/include/asm/ptdump.h b/arch/arm/include/asm/ptdump.h
+index 46a4575146ee..3c5245220ecf 100644
+--- a/arch/arm/include/asm/ptdump.h
++++ b/arch/arm/include/asm/ptdump.h
+@@ -32,10 +32,10 @@ void ptdump_check_wx(void);
+ 
+ #endif /* CONFIG_ARM_PTDUMP_CORE */
+ 
+-#ifdef CONFIG_ARM_DEBUG_WX
+-#define arm_debug_checkwx() ptdump_check_wx()
++#ifdef CONFIG_ARM_CHECK_WX
++#define arm_pgtable_checkwx() ptdump_check_wx()
+ #else
+-#define arm_debug_checkwx() do { } while (0)
++#define arm_pgtable_checkwx() do { } while (0)
+ #endif
+ 
+ #endif /* __ASM_PTDUMP_H */
+diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
+index 0cc1bf04686d..c515faf22eeb 100644
+--- a/arch/arm/mm/init.c
++++ b/arch/arm/mm/init.c
+@@ -403,7 +403,7 @@ static int __mark_rodata_ro(void *unused)
+ void mark_rodata_ro(void)
  {
- 	return nohibernate == 0 &&
- 		!security_locked_down(LOCKDOWN_HIBERNATION) &&
-+		!debug_pagealloc_enabled() &&
- 		!secretmem_active() && !cxl_mem_active();
+ 	stop_machine(__mark_rodata_ro, NULL, NULL);
+-	arm_debug_checkwx();
++	arm_pgtable_checkwx();
  }
  
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 6868d6155daa..17b7cbbfc441 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -85,12 +85,7 @@ static inline int hibernate_map_page(struct page *page)
- 	if (is_kfence_address(page_address(page)))
- 		return kfence_force_mapping(page) ? 0 : -EFAULT;
+ #else
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b5a51b0ef944..7e120fb21c58 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -11,7 +11,7 @@ config ARM64
+ 	select ACPI_MCFG if (ACPI && PCI)
+ 	select ACPI_SPCR_TABLE if ACPI
+ 	select ACPI_PPTT if ACPI
+-	select ARCH_HAS_DEBUG_WX
++	select ARCH_HAS_CHECK_WX
+ 	select ARCH_BINFMT_ELF_EXTRA_PHDRS
+ 	select ARCH_BINFMT_ELF_STATE
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2580e27e4328..7c1fe5b4cd41 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -130,7 +130,7 @@ config PPC
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+-	select ARCH_HAS_DEBUG_WX		if STRICT_KERNEL_RWX
++	select ARCH_HAS_CHECK_WX		if STRICT_KERNEL_RWX
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_DMA_MAP_DIRECT 		if PPC_PSERIES
+ 	select ARCH_HAS_DMA_OPS			if PPC64
+diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+index 1eb8e3457e8b..5c33f0bba0e3 100644
+--- a/arch/powerpc/configs/ppc64_defconfig
++++ b/arch/powerpc/configs/ppc64_defconfig
+@@ -393,7 +393,7 @@ CONFIG_MAGIC_SYSRQ=y
+ CONFIG_PAGE_OWNER=y
+ CONFIG_PAGE_POISONING=y
+ CONFIG_DEBUG_RODATA_TEST=y
+-CONFIG_DEBUG_WX=y
++CONFIG_CHECK_WX=y
+ CONFIG_DEBUG_STACK_USAGE=y
+ CONFIG_DEBUG_VM=y
+ # CONFIG_DEBUG_VM_PGTABLE is not set
+diff --git a/arch/powerpc/mm/ptdump/ptdump.c b/arch/powerpc/mm/ptdump/ptdump.c
+index 0d499aebee72..3451351b756b 100644
+--- a/arch/powerpc/mm/ptdump/ptdump.c
++++ b/arch/powerpc/mm/ptdump/ptdump.c
+@@ -191,7 +191,7 @@ static void note_prot_wx(struct pg_state *st, unsigned long addr)
+ 	if (!pte_write(pte) || !pte_exec(pte))
+ 		return;
  
--	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
--		return set_direct_map_default_noflush(page, 1);
--	} else {
--		debug_pagealloc_map_pages(page, 1);
--		return 0;
--	}
-+	return 0;
+-	WARN_ONCE(IS_ENABLED(CONFIG_DEBUG_WX),
++	WARN_ONCE(IS_ENABLED(CONFIG_CHECK_WX),
+ 		  "powerpc/mm: Found insecure W+X mapping at address %p/%pS\n",
+ 		  (void *)st->start_address, (void *)st->start_address);
+ 
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index d6c2dbf8455c..05e33d4d5efa 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -29,7 +29,7 @@ config RISCV
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL if MMU
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+-	select ARCH_HAS_DEBUG_WX
++	select ARCH_HAS_CHECK_WX
+ 	select ARCH_HAS_DELAY_TIMER
+ 	select ARCH_HAS_ELF_CORE_EFLAGS if BINFMT_ELF && ELF_CORE
+ 	select ARCH_HAS_FAST_MULTIPLIER
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 4b51bc6e8948..11b76f2b0f80 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -92,7 +92,7 @@ config S390
+ 	select ARCH_HAS_CURRENT_STACK_POINTER
+ 	select ARCH_HAS_DEBUG_VIRTUAL
+ 	select ARCH_HAS_DEBUG_VM_PGTABLE
+-	select ARCH_HAS_DEBUG_WX
++	select ARCH_HAS_CHECK_WX
+ 	select ARCH_HAS_DEVMEM_IS_ALLOWED
+ 	select ARCH_HAS_DMA_OPS if PCI
+ 	select ARCH_HAS_ELF_RANDOMIZE
+diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
+index 3dae71474333..68d53c0bc8db 100644
+--- a/arch/s390/configs/debug_defconfig
++++ b/arch/s390/configs/debug_defconfig
+@@ -841,7 +841,7 @@ CONFIG_DEBUG_PAGEALLOC=y
+ CONFIG_SLUB_DEBUG_ON=y
+ CONFIG_PAGE_OWNER=y
+ CONFIG_DEBUG_RODATA_TEST=y
+-CONFIG_DEBUG_WX=y
++CONFIG_CHECK_WX=y
+ CONFIG_PTDUMP_DEBUGFS=y
+ CONFIG_DEBUG_OBJECTS=y
+ CONFIG_DEBUG_OBJECTS_SELFTEST=y
+diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
+index 6f5722634b4d..8e5cfc695121 100644
+--- a/arch/s390/configs/defconfig
++++ b/arch/s390/configs/defconfig
+@@ -820,7 +820,7 @@ CONFIG_DEBUG_INFO_DWARF4=y
+ CONFIG_GDB_SCRIPTS=y
+ CONFIG_DEBUG_SECTION_MISMATCH=y
+ CONFIG_MAGIC_SYSRQ=y
+-CONFIG_DEBUG_WX=y
++CONFIG_CHECK_WX=y
+ CONFIG_PTDUMP_DEBUGFS=y
+ CONFIG_DEBUG_MEMORY_INIT=y
+ CONFIG_PANIC_ON_OOPS=y
+diff --git a/arch/s390/mm/dump_pagetables.c b/arch/s390/mm/dump_pagetables.c
+index 89badbe72ae7..a23a0bd4d8a8 100644
+--- a/arch/s390/mm/dump_pagetables.c
++++ b/arch/s390/mm/dump_pagetables.c
+@@ -86,7 +86,7 @@ static void note_prot_wx(struct pg_state *st, unsigned long addr)
+ 	 */
+ 	if (addr == PAGE_SIZE && (nospec_uses_trampoline() || !cpu_has_bear()))
+ 		return;
+-	WARN_ONCE(IS_ENABLED(CONFIG_DEBUG_WX),
++	WARN_ONCE(IS_ENABLED(CONFIG_CHECK_WX),
+ 		  "s390/mm: Found insecure W+X mapping at address %pS\n",
+ 		  (void *)st->start_address);
+ 	st->wx_pages += (addr - st->start_address) / PAGE_SIZE;
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 15fd9ec5ecac..170cfcb06174 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -110,7 +110,7 @@ config X86
+ 	select ARCH_HAS_SYNC_CORE_BEFORE_USERMODE
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_UBSAN
+-	select ARCH_HAS_DEBUG_WX
++	select ARCH_HAS_CHECK_WX
+ 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_HAVE_EXTRA_ELF_NOTES
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
+index 269f7d808be4..e6896aeb77d8 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -263,7 +263,7 @@ CONFIG_SECURITY_SELINUX_BOOTPARAM=y
+ CONFIG_PRINTK_TIME=y
+ CONFIG_DEBUG_KERNEL=y
+ CONFIG_MAGIC_SYSRQ=y
+-CONFIG_DEBUG_WX=y
++CONFIG_CHECK_WX=y
+ CONFIG_DEBUG_STACK_USAGE=y
+ CONFIG_SCHEDSTATS=y
+ CONFIG_BLK_DEV_IO_TRACE=y
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index d551120a7c88..ef0252a09c28 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -41,10 +41,10 @@ void ptdump_walk_user_pgd_level_checkwx(void);
+ #define pgprot_encrypted(prot)	__pgprot(cc_mkenc(pgprot_val(prot)))
+ #define pgprot_decrypted(prot)	__pgprot(cc_mkdec(pgprot_val(prot)))
+ 
+-#ifdef CONFIG_DEBUG_WX
+-#define debug_checkwx_user()	ptdump_walk_user_pgd_level_checkwx()
++#ifdef CONFIG_CHECK_WX
++#define pgtable_checkwx_user()	ptdump_walk_user_pgd_level_checkwx()
+ #else
+-#define debug_checkwx_user()	do { } while (0)
++#define pgtable_checkwx_user()	do { } while (0)
+ #endif
+ 
+ extern spinlock_t pgd_lock;
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 598f553cc871..31055ee6f1de 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -688,5 +688,5 @@ void pti_finalize(void)
+ 	pti_clone_entry_text(true);
+ 	pti_clone_kernel_text();
+ 
+-	debug_checkwx_user();
++	pgtable_checkwx_user();
  }
+diff --git a/include/linux/ptdump.h b/include/linux/ptdump.h
+index 240bd3bff18d..af18d1459b2f 100644
+--- a/include/linux/ptdump.h
++++ b/include/linux/ptdump.h
+@@ -31,9 +31,9 @@ bool ptdump_walk_pgd_level_core(struct seq_file *m,
+ void ptdump_walk_pgd(struct ptdump_state *st, struct mm_struct *mm, pgd_t *pgd);
+ bool ptdump_check_wx(void);
  
- static inline int hibernate_unmap_page(struct page *page)
-@@ -98,17 +93,6 @@ static inline int hibernate_unmap_page(struct page *page)
- 	if (is_kfence_address(page_address(page)))
- 		return kfence_reset_mapping(page) ? 0 : -EFAULT;
- 
--	if (IS_ENABLED(CONFIG_ARCH_HAS_SET_DIRECT_MAP)) {
--		unsigned long addr = (unsigned long)page_address(page);
--		int ret  = set_direct_map_invalid_noflush(page, 1);
--
--		if (ret)
--			return ret;
--
--		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--	} else {
--		debug_pagealloc_unmap_pages(page, 1);
--	}
- 	return 0;
- }
- 
-@@ -1446,10 +1430,10 @@ static inline bool do_copy_page(long *dst, long *src)
- /*
-  * safe_copy_page - Copy a page in a safe way.
-  *
-- * Check if the page we are going to copy is marked as present in the kernel
-- * page tables. This always is the case if CONFIG_DEBUG_PAGEALLOC or
-- * CONFIG_ARCH_HAS_SET_DIRECT_MAP is not set. In that case kernel_page_present()
-- * always returns 'true'.
-+ * Page could be not present in the kernel page tables. Try to map it before
-+ * copiyng and unmap back as needed.
-+ * If the kernel page table update fails, bail out with an error.
-+ *
-  * Sets @zeros_only to true if the page was entirely composed of zeros.
-  *
-  * Returns 0 on success, a negative error code on failure.
-@@ -1458,11 +1442,6 @@ static int safe_copy_page(void *dst, struct page *s_page, bool *zeros_only)
+-static inline void debug_checkwx(void)
++static inline void pgtable_checkwx(void)
  {
- 	int err;
+-	if (IS_ENABLED(CONFIG_DEBUG_WX))
++	if (IS_ENABLED(CONFIG_CHECK_WX))
+ 		ptdump_check_wx();
+ }
  
--	if (kernel_page_present(s_page)) {
--		*zeros_only = do_copy_page(dst, page_address(s_page));
--		return 0;
--	}
+diff --git a/init/main.c b/init/main.c
+index 31f2bf54976a..a87a3d52f3e2 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -1535,7 +1535,7 @@ static void mark_readonly(void)
+ 		flush_module_init_free_work();
+ 		jump_label_init_ro();
+ 		mark_rodata_ro();
+-		debug_checkwx();
++		pgtable_checkwx();
+ 		rodata_test();
+ 	} else if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX)) {
+ 		pr_info("Kernel memory protection disabled.\n");
+diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
+index 307c97ac5fa9..ac878669c193 100644
+--- a/kernel/configs/debug.config
++++ b/kernel/configs/debug.config
+@@ -50,7 +50,7 @@ CONFIG_DEBUG_NET=y
+ # CONFIG_DEBUG_PAGEALLOC is not set
+ # CONFIG_DEBUG_KMEMLEAK_DEFAULT_OFF is not set
+ # CONFIG_DEBUG_RODATA_TEST is not set
+-# CONFIG_DEBUG_WX is not set
++# CONFIG_CHECK_WX is not set
+ # CONFIG_KFENCE is not set
+ # CONFIG_PAGE_POISONING is not set
+ # CONFIG_SLUB_STATS is not set
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 604c58199acb..ffbc641cc31f 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1511,6 +1511,47 @@ config LAZY_MMU_MODE_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config ARCH_HAS_CHECK_WX
++	bool
++
++config CHECK_WX
++	bool "Warn on W+X mappings at boot"
++	default STRICT_KERNEL_RWX
++	depends on ARCH_HAS_CHECK_WX
++	depends on ARCH_HAS_PTDUMP
++	depends on MMU
++	select PTDUMP
++	help
++	  Generate a warning if any W+X mappings are found at boot.
++
++	  This is useful for discovering cases where the kernel is leaving W+X
++	  mappings after applying NX, as such mappings are a security risk.
++
++	  Look for a message in dmesg output like this:
++
++	    <arch>/mm: Checked W+X mappings: passed, no W+X pages found.
++
++	  or like this, if the check failed:
++
++	    <arch>/mm: Checked W+X mappings: failed, <N> W+X pages found.
++
++	  Note that even if the check fails, your kernel is possibly
++	  still fine, as W+X mappings are not a security hole in
++	  themselves, what they do is that they make the exploitation
++	  of other unfixed kernel bugs easier.
++
++	  There is no runtime or memory usage effect of this option
++	  once the kernel has booted up - it's a one time check.
++
++	  If in doubt, say "Y".
++
++config ARCH_HAS_PTDUMP
++	bool
++
++config PTDUMP
++	bool
++
++
+ source "mm/damon/Kconfig"
+ 
+ endmenu
+diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+index 15dca19dd07d..75b44e4a6e36 100644
+--- a/mm/Kconfig.debug
++++ b/mm/Kconfig.debug
+@@ -180,45 +180,6 @@ config DEBUG_RODATA_TEST
+ 	help
+ 	  This option enables a testcase for the setting rodata read-only.
+ 
+-config ARCH_HAS_DEBUG_WX
+-	bool
 -
- 	err = hibernate_map_page(s_page);
- 	if (err)
- 		return err;
+-config DEBUG_WX
+-	bool "Warn on W+X mappings at boot"
+-	depends on ARCH_HAS_DEBUG_WX
+-	depends on ARCH_HAS_PTDUMP
+-	depends on MMU
+-	select PTDUMP
+-	help
+-	  Generate a warning if any W+X mappings are found at boot.
+-
+-	  This is useful for discovering cases where the kernel is leaving W+X
+-	  mappings after applying NX, as such mappings are a security risk.
+-
+-	  Look for a message in dmesg output like this:
+-
+-	    <arch>/mm: Checked W+X mappings: passed, no W+X pages found.
+-
+-	  or like this, if the check failed:
+-
+-	    <arch>/mm: Checked W+X mappings: failed, <N> W+X pages found.
+-
+-	  Note that even if the check fails, your kernel is possibly
+-	  still fine, as W+X mappings are not a security hole in
+-	  themselves, what they do is that they make the exploitation
+-	  of other unfixed kernel bugs easier.
+-
+-	  There is no runtime or memory usage effect of this option
+-	  once the kernel has booted up - it's a one time check.
+-
+-	  If in doubt, say "Y".
+-
+-config ARCH_HAS_PTDUMP
+-	bool
+-
+-config PTDUMP
+-	bool
+-
+ config PTDUMP_DEBUGFS
+ 	bool "Export kernel pagetable layout to userspace via debugfs"
+ 	depends on DEBUG_KERNEL
 
--- 
-2.53.0
+---
+base-commit: 93f51579e7df248780214094418f205253383cc5
+change-id: 20260925-direct-map-verify-wx-b81bda879781
+
+--
+Sincerely yours,
+Mike.
 
 
