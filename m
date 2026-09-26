@@ -4,124 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53499C9832F
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 15:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7284C9832F
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 16:02:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5BAD96B0088; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
+	id 86BEB6B0088; Sat, 26 Sep 2026 12:02:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 593906B008A; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
+	id 81C3D6B008A; Sat, 26 Sep 2026 12:02:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A8C66B008C; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
+	id 70C256B008C; Sat, 26 Sep 2026 12:02:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 222176B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83F6F808EE
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:49:47 +0000 (UTC)
-X-FDA: 85256348814.23.CDEC101
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C0261140006
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:49:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sz+wuXrK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790437785;
-	b=RrU5vN8eYZ18D3oGfAZ80jMteqtut3/EJwpSxoCEUTde0nAj1NJgTM1XXFYTwTFDPCIKpN
-	Ss8Oq4T1JWVrvG23qEf5cGFDaKz2WWqGkxZu2rKZGzW4J0ssAIv32DhsBHXsi862ztAJTR
-	lZdHFMPyiOOo+Ixuaq9/mCk2h6FLet8=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=sz+wuXrK;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C956B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:02:32 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A561D1C3810
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:02:31 +0000 (UTC)
+X-FDA: 85256380902.17.13F855B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1C28814000D
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:02:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYHApItN;
+	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790437785;
+	s=arc-20220608; t=1790438549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
-	b=dG74ICeq91EmoB986n1BGWdCoJuiIr8V+WQ5I7lzanPqNlUxMM1mqo9WItddjM+cvoPdbI
-	60BVloIBrPQL/Cc8CGzg71Lg0LIVsyrGbyubBRoYziTE2MepdOVYa7izeqaBRB9gv1cVXa
-	7KRz+e5/IxtozbRO8ZyWOSUEktOeYhI=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d3931so14075245e9.3
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:49:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790437784; x=1791042584; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
-        b=sz+wuXrKFJFkxUNTc/MHLSznCeLk1VeYFardi5o8lMKizMYC+we0cTdFmUSMbSR4ha
-         ys/sUBk99Kq+CClBJc3emFUxgBIdB4bmGyG2Z53AxHzzUBlsnRXNDhcdkgnz23v4AAaG
-         0Xp7hEgDabDlpQr7CmNiKCsJ9DpQ76jcO1cxNKDfoSapyrquomhzls4xgeVMQU28eYMW
-         qPz8FHJStjX1RFxj8iKMSgyg4vmgUZCm+jE3ocqHBwueeksNSQWuUwfiMtt3f7UT6kg2
-         hJXBrNspUQyr86W1otpC26PpwNZF5ZOuunrTCi8YoGV/I4rAuN3MRFCMLSXp2nwTYs5C
-         Br9Q==
+	bh=sYsPa3ZkL4yz8PlqPdoc7ZdbfBh/s71jk6phvT+rCKY=;
+	b=PL2C1/G4p1QOAzG6HCCPGgZDc5IS4Bzpp7qRyjEbx6PEeDOHH4rp6LCYv5dToR/bYjB8FC
+	EE4P+WzrBG2geLiPBqNYFMrT1d99+1dHe9XtBxqlaDWFrEIK8xoTutZg4Lbm912D/AONor
+	LA9hiTYcszE6/NPDMdzNuBxgxlQ+kds=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=XYHApItN;
+	spf=pass (imf26.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790438549;
+	b=0Fj2u+s89K0tI4krNsPsqryl6S1OWqqcz6FXtTRSR0gi6v2W/JjTHuHhMOE1B4kuRh7DqJ
+	OIJbrDuFpLRatrag7Dt02Q80SYDaXOFMVMfYIH+a97errlUqPs/52t2uJdD78oqvUCW4vH
+	NZmzRfY5/IFj18DegtZlPItHTAV1AC8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790438548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sYsPa3ZkL4yz8PlqPdoc7ZdbfBh/s71jk6phvT+rCKY=;
+	b=XYHApItNHS/EDL8HNIp1Ho6iQ4UCNAcznL/1GvcLx06VUfmvGY7okivYO9LUC5l71ee5q2
+	io1J4eg85X5hBiSYMt3gkG4tSkHIP8Zku1x6RgAAPNwW4ZR/GbstD0ifM9unZln+Qn7/bY
+	7Iqbdj6+b/cIGXXmIYdBg7AGU5Nk7d0=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-338-nHocsf2VMNqRP_hhe6P7_g-1; Sat, 26 Sep 2026 12:02:27 -0400
+X-MC-Unique: nHocsf2VMNqRP_hhe6P7_g-1
+X-Mimecast-MFC-AGG-ID: nHocsf2VMNqRP_hhe6P7_g_1790438547
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-532c2cac078so29239601cf.0
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:02:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790437784; x=1791042584;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
-        b=MQixgUEyfvBX4L33XrIPJwbV0Vnnt130TXBgQkvnlqn5nrg2XBCxZE3Bth9S69ZrH5
-         4UVkBX/V9/GmYn46BNyHAxoTU134MtWv9JONNiQyw7w9vzHY8PsCdxPQlN7dNR8ncVmL
-         0FpZ3vlTlCSjB9QW4UItN7aW1CkYI6FmmUyUPeZc2qGqe2RBum2KxkG8eDsukyFhLoLN
-         lEFrCC9YNiMmIM2Qb8xTCEQv7LDIdJ4+Na322MffQNKn/0VxGS0ZAR2TLKHwiRdMR0Z3
-         RyBLRQKYL4h3dJOI82XVuoA/AjWvesvj/X4MAVSs5QLUVc2O+szN6m+vZYleEHuWbnyw
-         ekyA==
-X-Forwarded-Encrypted: i=1; AKwUvBzxOAfwldLQtwxd5t/C4M9bFpYTr+hGLgN+vbPQm5VW5dhR60ggXrdNEBpZcGSUrUw3fgqTZdJ42A==@kvack.org
-X-Gm-Message-State: AFuF++kmwZ+NdlQUVS33jTwgSjnZI3f+oki8Tn7Fee0L4uYcdEF8JFJZ
-	/P5H0MCUEXj2UDTGxBKruRsJzDNfB1oHSwRCcur57q3tlA0ee3Bc+pr2
-X-Gm-Gg: AYBFou1KSk4ANFRgjBWS6SadpAzcFQAP9sSJ/VczO3tzZ9ZrCVXoZg/lTZ24jdwf3hh
-	cLux1AeYq9TdBUUrYYSBnDmp3V79B+qrvZLsLR7aQGfCtXOtu/Zs0V62fju/NXyp/s5QIGahHqG
-	NW0YYYyQQbRzMYRWIjLrxGxnYdNogaAdeZdR3VAvzHWAHnXgWGVYmxWBCosy9n5afPiaodbUrHB
-	zuH8TsgJXSg1beK261JEfo2xqdN+G/fHOPBIiuzZorzpxHp+HD/hhMmNfLQ+tWGN/YMNPvKsjNL
-	qpWjHEwUHAJHzykkvMlIeK7J+nBypZMtMBTibV7jzh1K4MtnsATRth1695JPh/hgHkAGQIdfPol
-	Riw7zBT43ZQ1zTHLPSeQxxw2fd8Udyy8fVanihEJkSZKLUQ2VD2uyat3mkcwu4yYRXXyrXO9AXx
-	fhtp5LWRfbr28mLmCAqR49XTAt0rk2Kdf/DoGDzZ3tPR9BDAfQsUCygCyD3qnO7h6MovJIxjcnS
-	64QKL0AT9voY+8bt0qjm5NGRJ1T6u9f6hN/zXnDJ89h
-X-Received: by 2002:a05:600c:46c6:b0:49f:fe88:e7d1 with SMTP id 5b1f17b1804b1-49ffe88e87dmr20467445e9.15.1790437784212;
-        Sat, 26 Sep 2026 08:49:44 -0700 (PDT)
-Received: from gmail.com ([188.250.243.225])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff065873csm136947835e9.2.2026.09.26.08.49.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 08:49:43 -0700 (PDT)
-Date: Sun, 27 Sep 2026 00:49:40 +0900
-From: Youngjun Park <her0gyugyu@gmail.com>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
-	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com, mhocko@kernel.org,
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, shikemeng@huaweicloud.com,
-	baoquan.he@linux.dev, baohua@kernel.org, yosry@kernel.org,
-	joshua.hahnjy@gmail.com, taejoon.song@lge.com
-Subject: Re: [RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with
- per-cgroup selection
-Message-ID: <arfplImR24PFlk5H@gmail.com>
-References: <20260916183437.2946306-1-youngjun.park@lge.com>
- <20260916200434.GA5784@cmpxchg.org>
- <arAHu_BD5oqpZJER@gmail.com>
- <arQJIjzE0BlUg0CV@cmpxchg.org>
- <20260925065521.36340-1-lianux.mm@gmail.com>
+        d=1e100.net; s=20260707; t=1790438547; x=1791043347;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=sYsPa3ZkL4yz8PlqPdoc7ZdbfBh/s71jk6phvT+rCKY=;
+        b=H1epmOXxinZa4gkS684BuwNFqekds7L54USQXS+GJ+RtQFMu/UVnVWdNCAO0PAMels
+         3IVfTp6A74KAA5FKBwwu4zARCFd9640hbjOGYrW1AqvEGFT7A4eaEAm7saYjojEajyKH
+         1gv4e085b92rAhE95WjuMne3DzXXqMDnW2ePRyAeqgcNSun0jZPOJs/cB2d6Oz+zQhDH
+         mF3Zb12WjcvID39bDYpitG4ZwLn6gP2jsN9kFx7SQntd1AjDmMr0fYM64lN/v4eyXJ1a
+         qtJdf7bfNO0fzoKFr9YR+KiHMJ0x29gqs2XPZEfyVFY0WlJg7uPENwmItIHIE8aNCfdh
+         3EIg==
+X-Forwarded-Encrypted: i=1; AKwUvBzeogAXOiQK8wVJ6mnyULlja2/QHFiYopfYvENX1SP1IZ2D3wkfIHu4z41pW9tZ7tqq+C+F3hxdlw==@kvack.org
+X-Gm-Message-State: AFuF++kokjgtLBtGWEuijCHXLk6nRAGx/EQ9jRlMmxulUKzjnHRSt670
+	V1bIQ8iQsjwENEWmOVis93z7Q7cGm4Ml6QOwynh9RsWFbz5Z1NzdWjUC6st0zgegbCCgvI3+mWw
+	MsfTKHdBiUXB3/9aG9kzX2Q110MWUFSaSqUkce+sRxYBTRUqcwI+8
+X-Gm-Gg: AYBFou2XCqCZxSKVp7+e7oOh67P0z9XhMbF0CdoPOxyOyNZ2iWSbQcPA1qmvNBerVLl
+	OAnsztFruPUItUkVR03CTA+Gfy0qQ+2/h6rFWSH4dDzbZgdXA7fFJ6unuOlaiw7QvNyytlKo3cl
+	DJT50zHCk2V/aBxsyRjBrPY7wyEr/3EnyMPL5NeycPOoxrJybm8zwkn4U+8nZY4KFRJAbvZFof2
+	V59kkcczGK6Q3S3TQRZSYURuyGXd8C2RkBSxg/GbXeRRw99IoPjIkAVygfFVCmiyBAiEiDq07a0
+	kCsHs6uYQcgzJ5P2XRRgZZYsDhK9HaxorPPhrnZF4zVzw1vjzciMyHPaGKA0WTUydEkvpS7qKlJ
+	X34A=
+X-Received: by 2002:a05:622a:15c4:b0:530:178a:9dd8 with SMTP id d75a77b69052e-5330b556ae7mr109262151cf.8.1790438546507;
+        Sat, 26 Sep 2026 09:02:26 -0700 (PDT)
+X-Received: by 2002:a05:622a:15c4:b0:530:178a:9dd8 with SMTP id d75a77b69052e-5330b556ae7mr109259531cf.8.1790438543973;
+        Sat, 26 Sep 2026 09:02:23 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-533222585a1sm20528971cf.11.2026.09.26.09.02.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Sep 2026 09:02:23 -0700 (PDT)
+Message-ID: <1a511636-7a55-4c98-a0b3-1ea0c301d749@redhat.com>
+Date: Sat, 26 Sep 2026 12:02:22 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925065521.36340-1-lianux.mm@gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: f9kk9cm8gjh3na1qmarsrgr9jtwfx6wp
+User-Agent: Mozilla Thunderbird
+Subject: Re: hunting memory corruption bug in 6.18.x
+To: Nikola Ciprich <nikola.ciprich@linuxbox.cz>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ david@kernel.org, ljs@kernel.org
+References: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <arY1Wq6R9OY20ans@pcnci.linuxbox.cz>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Ed6_mZQpxAFMnWuFHtmXKKwFzIXeGYPukczWrun_dgY_1790438547
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1C28814000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C0261140006
-X-HE-Tag: 1790437785-614409
-X-HE-Meta: U2FsdGVkX1+zvvAYLRiZGbYj8Ucnouj+Z+NnJbVOgboWtFl0G1sN71nrCyol6xfINyVhulhWQTNG26QrAm/PFt0h89UnrKiZNR7wxu1T1U+vJleYWWsbV/q4npNI2RTF15WLAsrF54yY4/UIhaVDFY8CJY//8KB8HyA4O1g+YVHzZnkdGOFFuWBTehFKQA+Cae9A/INZrszeZKOJpw4HIua7RNxX/Y4dm3/aPYAgg8MaLZ0MPTd6+sJyq0EWMmGoJ7IduuccRaQxwEANgg2OIBrtRwJHMh3VV7710719K/9MTkO/WYGVTvMBDBvQvFAKnL20pgSTjNXXktZwKPJG9Ul2mZSCIK8Fv9+n0mUbaVHl4j93Ho70VjFyVzNM3YVtvlLVHZ1pGf2PkU35t9oHZTrjq3Mjkp2lit9laVIy8RIG8DZoJlxEFkrFZhSp5MZXTjdws+UmBRh+0tEKXr7gs93MDgsd9K4eCNeIkwF4z0qT2ELjwxZb628XzMUy3NZ6ROGTuYfbcs6zfWrwrqftkM82RojGX3vEBv2lc1bEE6wiCCMdqrj32GpIDog361Oo+HRTnK0adtGq5ESy1UULP56vjfr6p6Y+6dsA89CpQmtn1QRAb3gNufkt54UiAhF912fJs/ZRku8QhOUzEVroWn/VwJNym6BXnA8Lavfqv2m4psAl4E+J3sVCmSV9aHsxea5pZP26yEJ7jIxOGW769bu8SluZC16k1ER87GM4WbtpFIBs8ZAAPhCpbPtYNaC4TfdWrlttRWduONube5Cc0FDe/Mv78o0cQoAh7Osbu68PtHhc3ANVMJjr87hbjUBSEDwE2bn7F1mF6Gb5tVgGMMQNk33W2e+IjC0Z/ObzMcEygOLn2aUaFb3oAJOctxSpHUvZESlG5PJxdCFrG/uknYRVDJic4nIC3XdwJcFq3gJj9p6dS+6ZU4tpd9UR3Rpqcrq+2LYVRMzQzGHPPT9
- gVaYEwCu
- 67mBzAAxmE0UjOdm4YW76kj5eDAsGAPLlg96+wdK0VHDmN4+9JZsHhag419jiW9xpHsBscpzR0X9+1KUdr/z9q4EGCqYywq7FzUxT57YAsIpxIDWGXGJeNi0QiQbJqrPrKP0/A0BTUQ/kWKNrit+5G97adMezWl8vR9qDE6op9m4Dgxfh5Tvlgojq1GtICVvPsFYrHsiNugPS1rhq4Z3ZZyJkwy2HZ9Y3cfQUvcJB9paDr7cU0Ry/SJwa/7I/SZQRQebY5Zcudc/oWHjv4L8C1/UMlwlxXxgki7k3KozXPkXLe0MV/Bpa91jSsRH5d6ulKvj+tsR0aH7oR5eBX0JbTnBKlzv0EtpxuUGpaARFMk0gvLnR02RTPgmf0TkTjbX/bBh/e9jSCJ9CuPWfatwR8kKzJanAp1JPnapklk94lGjZWirl0a4ogmDklLJwty8kBefrmq3nI/TDMsuI8oLCn/03xw==
+X-Stat-Signature: zqaxpkrhk5sm96buyoj5gk143u3j1d49
+X-HE-Tag: 1790438548-712453
+X-HE-Meta: U2FsdGVkX1/qvJ61nckh8Y6gR378ztJClmP6ExLFUYRsTGxMj8M/TPD9EV8RBeYGS4MsFT8pHgRcPA9i2UvTXZ+2dNShG+DsEhlet/fm4Y7ziT9NWWKJCAQki6sC6Q/SMosnUJrB3leEYzAhuHNNHxb9uibvYUk7SCPZR5AfEsjdLoIhMDI1dr2d53MqQwN5L1pLpvkpDAZErSd7OfxN8a7Cyc1APWeDSgGn+0y+awmVXyYcvIPVBKlbGVhb/hEuy1NfBIxBMa49GTFI7zZlhkoAPjnkiDGSnz1PWZZWyieCiS7jfvA3EEjPbUSutgJbGUdiPgL4izU9VjnO5HQQuCAMb5M4YwP76mU+L2soewFfawHvuLqMPB+pFNuVStFQdMhZkjgW2gtF8+Bh3F02PpId8dIYEH9ORolLGPHI6ddJ0N2TIfHBxXMWuP0FGIckoaS2Gh6zm6U9t8FxuKUPGAJp87C5NgkAMKvPcqb1r+NHVQXguN3PDoLDyDjnSaGuwfVU/EQtbSH7PbfmhjXE2o9DPEHJ4fhrlO7FJI6YHEoEsAYwLMeLplGXm/4M86V0NIDqGdRUy0ViBKt+katWHu+Bw+vFShKvI/PW8ysSg2GYEhMZKxgFlUuK22K6blJrzFhdN5iAq+CgVf1+5cgQ+4sKMyV0676SVRcOaTR9EDQmeJpwWPaIloCaKkeCJWkQd6YXRDlaffWzF6vx8fl4B9giEhktmlyb+iWW3hEPdJVCZtq3dkS+MEHnaCbi+u7ug5qJWjpOOZ2igVb8qgWnKkziyLFqySYKsdn/TsELxxW44JvMPdeqgdPk/NmN2H9J9X3u3tXIYLfx+PGBEXf0hRU5zIry14hCdKwYLES01+zgAH1r/oTanrk+hxDh31K5MtX0/zzkqd/BZV36KTwjBuIpmkIfiRSnaOkaK3kLZbYNdBvZd9ecoThZ6zv/ZEb7ueKSSYUZpFkXkTzJUXA
+ rgu/EQ2r
+ o3RmqU6clSSYbwciRF7VjRdeM48RkBc5TpMGSJuKapQRcKD+KPPRz4G4HUy9aUNoQPmmh4X1bm8YWfUu9dddeARNdMHYI5bwcTqxHGsyQK3i2knZOkArKROS1q3KU22vzYB85dvY3ZBwv8X6+HviSNvGlFqCmLUtQSGifOHBrIpTv8gXwX1uIPH1pnViTOF1G2b6/gZDpC5TD3puSA13GY7vIoms71nUrsjc3Pfn0d9cJFy76UcGs0LBPdMVUdAxsbVpMNPS6k1F+AWF7Hx1IsADBKYEtf3y77qJ9ZIkOIw6TsUSw0lPfeoX1SSdlTklgBgvA7q1nxr3CPZFiyhPTfBVeHw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,47 +130,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lian!
 
-> zram integration test, not yet a real multi-SSD performance test.
->
-> One result seems relevant to this discussion: with a restricted parent
-> and an unconfigured child, the child could still use the faster tier. I
 
-I intentionally left out the parent/child hierarchy handling in this
-version, since I thought it would be needed only at memcg integration
-time. At this point, though, I think it is better to keep the
-hierarchy even in the debugfs interface, 
-so after reconsideration. I'll do that in v12!
+On 9/25/26 4:48 AM, Nikola Ciprich wrote:
+> Hi,
+> 
+> I've been hunting a weird memory corruption bug for the last few weeks,
+> without success so far, so I'd like to report it and kindly ask for help.
+> 
+> We first hit it after a live VM migration between two KVM hosts:
+> suddenly some dynamic libraries in the host appeared to be corrupted:
+> 
+> Inconsistency detected by ld.so: ../sysdeps/x86_64/dl-machine.h: 548: elf_machine_rela_relative: Assertion `ELFW(R_TYPE) (reloc->r_info) == R_X86_64_RELATIVE' failed!
+> 
+> (Later we also hit this with libcrypto.so.3 etc.) The files on disk
+> were OK; the problem seemed to exist only in RAM.
+> 
+> I'm fairly sure this is not hardware related: there were no ECC errors,
+> and we have since hit this (and similar issues, more on that below) on
+> multiple machines.
+> 
+> The problems started after we moved from 5.15.x to 6.18.x kernels.
 
-> therefore agree that an inheritable memory.swap.prio.max looks like the
-> cleaner first cgroup interface. A hole in the mask worked mechanically,
-> but I do not yet have a convincing hierarchical use case for it; it felt
-> more like per-cgroup swap-pool membership.
+How long does it take to reproduce? Can you reliably distinguish good
+from bad?
 
-I plan to proceed with v12 as Johannes suggested. (I've replied
-with my thoughts in the thread.)
+I know that Lorenzo jumped in and gave some good suggestions already,
+but in case you still find yourself without any further options you
+could consider if bisection is feasible: start with manual bisection
+to identify the first bad kernel between v5.15 and v6.18 and then the
+first bad -rc. You could go to git bisect from here, but it may take
+several weeks depending on how long it takes to reproduce.
 
-> For the queue integration, one possible boundary is for the tier to own
-> the queue/reader and for the swap queue to become the default per-tier
-> device allocation policy. I would like to align this with both of you
-> before changing v2. I will also continue the real multi-SSD tests.
+Another option is to try latest Linus tree to see if the issue is there.
+If it's not there then it might have been fixed, in this case you could
+bisect for the fix (if feasible, of course).
 
-I'd like to hear what Kairui and Chris think as well. If they agree,
-this is the direction I prefer. Honestly, beyond preference, I think
-it is the right one :) instead of allocating a separate swap queue
-structure, the swap tier itself can be used for it!
+> 
+> Since then I've spent a lot of time trying to reproduce it on a lab
+> cluster, and we were able to trigger some corruption after days of
+> migrating VMs back and forth. At first I suspected the Intel ice driver,
+> for which I found similar reports, but we saw new problems even after
+> backporting fixes (and also with Mellanox cards).
+> 
+> So far we've hit three different kinds of problems, which may or may
+> not be related:
+> 
+> - .so library corruption right after VM migration
+> - VM crashes (or process crashes inside VMs), possibly related to
+>    migration (those always happened during migration)
+> - host crashes due to kernel structure corruption (these happened
+>    without any VM migration)
+> 
+> We first hit these problems with 6.18.31; the last crash I saw was
+> with 6.18.44.
+> 
+> All affected machines use AMD EPYC CPUs and act as KVM hosts; the OS
+> is AlmaLinux 9.
+> 
+> I suspect two subsystems that have seen a lot of changes:
+> 
+> - transparent hugepages
+> - NUMA balancing
+> 
+> (but those are just my guesses)
+> 
+> As a safety measure, we've disabled THP and NUMA balancing on all hosts.
+> 
+> I'm aware this is still a very vague report with a lot of guessing,
+> but my question is: has anybody hit similar problems with 6.18 or
+> newer kernels?
+> 
+> I see a lot of patches in every stable release, but simply trying
+> newer kernels doesn't seem efficient here. Deploying them is also
+> risky, since the hosts have to be emptied by migrating VMs off them
+> before reboot, and that migration itself may trigger more crashes.
+> None of the released or queued fixes for 6.18 seem to be directly
+> related.
+> 
+> I tried running my migration tests on hosts with KASAN enabled, and
+> also with SLUB debugging, but was never able to reproduce the problem
+> with those enabled (without them, I was able to hit issues within
+> days).
+> 
+> I'll start another round of migration tests in the lab, now with
+> 6.18.54-rc1, but I still thought it would be good to report this and
+> ask here.
+> 
+> last but not least, here's kdump from last crash (this was not related
+> to any VM migration, but is very similar to another few crashes
+> we got):
+> 
+> [1924553.414736] Oops: general protection fault, probably for non-canonical address 0xfffffff0c930038: 0000 [#1] SMP NOPTI
+> [1924553.434800] CPU: 23 UID: 189 PID: 7538 Comm: pacemaker-contr Kdump: loaded Tainted: G            E       6.18.44lb9.01 #1 PREEMPT(voluntary)
+> [1924553.456934] Tainted: [E]=UNSIGNED_MODULE
+> [1924553.465551] Hardware name: ASUSTeK COMPUTER INC. RS720A-E12-RS12/K14PP-D24 Series, BIOS 2305 11/21/2025
+> [1924553.484152] RIP: 0010:__d_lookup+0x4a/0xc0
+> [1924553.492878] Code: ff 48 89 c5 c1 e8 07 48 8d 1c c2 e8 60 8f d1 ff 48 8b 03 48 89 c3 48 83 e3 fe 48 83 f8 01 77 0a eb 2f 48 8b 1b 48 85 db 74 27 <39> 6b 18 75 f3 4c 8d 63 78 4c 89 e7 e8
+> d5 e1 7c 00 4c 39 6b 10 74
+> [1924553.525191] RSP: 0018:ff7532a13699fda0 EFLAGS: 00010212
+> [1924553.534986] RAX: 0fffffff0c930020 RBX: 0fffffff0c930020 RCX: 0000000000000000
+> [1924553.546679] RDX: ff2e6dbe0d9b6000 RSI: ff7532a13699fe60 RDI: ff2e6d1e4e630d80
+> [1924553.558367] RBP: 000000000b654440 R08: 0000000000002403 R09: 0000000000000179
+> [1924553.570026] R10: 000000000000000d R11: 0000000000000000 R12: 0000000001876e5c
+> [1924553.581601] R13: ff2e6d1e4e630d80 R14: ff7532a13699fe60 R15: 0000000000000000
+> [1924553.593115] FS:  00007ff8743aaa80(0000) GS:ff2e6e5e94c45000(0000) knlGS:0000000000000000
+> [1924553.605576] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [1924553.615611] CR2: 00007ffcd63a5000 CR3: 00000003ee840001 CR4: 0000000000771ef0
+> [1924553.627022] PKRU: 55555554
+> [1924553.633869] Call Trace:
+> [1924553.640353]  <TASK>
+> [1924553.646369]  d_lookup+0x27/0x50
+> [1924553.653366]  lookup_dcache+0x1f/0x80
+> [1924553.660713]  lookup_one_qstr_excl+0x1e/0xe0
+> [1924553.668589]  ? preempt_schedule_common+0x2c/0x70
+> [1924553.676837]  filename_create+0xc4/0x160
+> [1924553.684209]  do_mkdirat+0x5a/0x190
+> [1924553.691050]  __x64_sys_mkdir+0x42/0x60
+> [1924553.698163]  do_syscall_64+0x64/0xbf0
+> [1924553.705145]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [1924553.713533] RIP: 0033:0x7ff8754ff08b
+> [1924553.720358] Code: 8b 05 91 bd 0f 00 41 bc ff ff ff ff 64 c7 00 16 00 00 00 e9 4f ff ff ff e8 12 f7 01 00 66 90 f3 0f 1e fa b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 5d
+> bd 0f 00 f7 d8 64 89 01 48
+> [1924553.748552] RSP: 002b:00007ffc05e5c148 EFLAGS: 00000246 ORIG_RAX: 0000000000000053
+> [1924553.759401] RAX: ffffffffffffffda RBX: 00005623cc0bd513 RCX: 00007ff8754ff08b
+> [1924553.769760] RDX: 000000000fde421b RSI: 00000000000001c0 RDI: 00005623cc0bd4f4
+> [1924553.780083] RBP: f49998db0aa753ff R08: 0000000000000004 R09: 0000000000000001
+> [1924553.790348] R10: 00007ff87587d000 R11: 0000000000000246 R12: 8421084210842109
+> [1924553.800604] R13: 00005623cc0bd513 R14: 00007ff8755bd740 R15: 000000000fde421b
+> [1924553.810819]  </TASK>
+> 
+> I'll be very very gratefull for any hints here..
+> 
+> with best regards
+> 
+> nikola ciprich
+> 
+> PS: I tried to CC maintainers of suspected subsystems, but those are just my guesses,
+> so I hope I won't offend anyone.
 
-> If either of you has suggestions or specific test cases you would like
-> to see, please let me know. I have a few test setups available and should
-> be able to try some of them. I am still getting up to speed on this part
-> of MM, so please correct me if I missed some context or got any detail
-> wrong.
-
-When I send v12, I'll spell out more clearly the parts where we can
-collaborate and what I'd like to propose to you. If anything comes up
-before then, I'll reply on the v2 thread.
-
-Thanks,
-Youngjun
 
