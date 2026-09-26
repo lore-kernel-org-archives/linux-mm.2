@@ -4,151 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C09C9832A
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 22:43:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4E5C9832A
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 23:32:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D2666B008C; Sat, 26 Sep 2026 18:42:57 -0400 (EDT)
+	id 1C3806B0088; Sat, 26 Sep 2026 19:32:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75C596B0092; Sat, 26 Sep 2026 18:42:57 -0400 (EDT)
+	id 175CE6B008A; Sat, 26 Sep 2026 19:32:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D7C56B0093; Sat, 26 Sep 2026 18:42:57 -0400 (EDT)
+	id 062FB6B008C; Sat, 26 Sep 2026 19:32:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1336B008C
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:42:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3FF78407AA
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 22:42:54 +0000 (UTC)
-X-FDA: 85257389868.22.162D8CC
-Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4ABE3140002
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 22:42:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ST8alUZ+;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.171 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790462572;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D1FBF6B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 19:32:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BC54D16096C
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:32:23 +0000 (UTC)
+X-FDA: 85257514566.16.8D40443
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C39CE100003
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:32:21 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSnJHM4f;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790465541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oPvBitOMBlhp8Hdy1YMUl7WEgUJJU4NLUnrbTGzbCOM=;
-	b=sC7fkc8H6IPcN8dGYZqVK/8j2NfwEu8/PSARQzKnGdUTpzkPf/1rB+G/BcC7Lm+qGbX19j
-	YBPllU/N4HxDCt2iKTWiB7tYoGvHOQr2jrE1KmJ1555+TNEUb/lu0kCK73lzvvLNI1MdBD
-	emfnrTQMvo4FG8f0Z/TOrfzzJTpZHGc=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ST8alUZ+;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf23.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.171 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790462572;
-	b=bSZRDtY4otcZMzDKFmAiUMstfKpvQd+I1r69hlDjmbzHC+qX1UAVjQ5Mq6L88Orh3k1X3d
-	pW9a7KQVq8/yjA5kae5rAx2FpygOGYvj7g1UGvs4/6C/iBsWLANdLPu2cJwh4L0dCK4VI5
-	vxA/EPDS7wi+UxS3OD0VXqx7F06Z6Ag=
-Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-91434eba57fso14098016d6.2
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:42:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790462571; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cJK1KS0hD+nwTZY5FSamAJ8aoZ+AmhC1+V+gtTOPUatqPBaASuxeDtOcmOmbbgbDc+
-         qO8CB0GkHRxpblBm/tr7zdcDd9y7iSTE73awX76WfX1dl8mgtf6pRiSlgi1HiqSAVWD/
-         IpCEgk1gEY4FsuG+hts5GQmtEJnVAK0y4e4nENTY5INEuYRETfuDBcF5lZ5K2kBwho5Y
-         t32MG6ETuGHnqAPt85UuYrWUy/CVNpC89FzN97gksLDJIvO/Ak/oofSdeRabPb2m/w0N
-         1yeTvL3Bwy8CFWezKBJEe78dLpOBjBLBWn2yPmYQP7QEiIU6ok2GJ3ga3p6xEdLXLMBy
-         vTKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=oPvBitOMBlhp8Hdy1YMUl7WEgUJJU4NLUnrbTGzbCOM=;
-        fh=ugsJC/Q1Ecpp4qotXHvAvE9viuojWnSRGAADEoEogLM=;
-        b=n+/9YYNLVqzULzQthelZ79KoBUjQpUVBhw9g3JL7X1yxmd0cpFE6ThydgkbcdB0Qtj
-         3noX2NcDPW3c1MZua6hrwprVQpqu6SE3o8HmXsQUWpWlNwyxlotPTR9YtPa4Qjg8CDgN
-         rr0Ev3wJG/tXRHUumY4gidp8CY3WgdAhJvkmkLCYdsjBTvcIERdP+c9/PEYXsy/T8Dp4
-         5FwVz/4a5+5JJwIO4ZdWQ/NOBqGHnj+Wi1tNs1HIlxhmxZNjhIs5GP9pZndOP47BdaWh
-         uzS5fKGkvuz/xbCFmllCnOb9XfE0Hrohs3MPKIXPqwwtvo4TDOCNjTc5mp88DnKMweDI
-         OtXw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790462571; x=1791067371; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oPvBitOMBlhp8Hdy1YMUl7WEgUJJU4NLUnrbTGzbCOM=;
-        b=ST8alUZ+F2zzKKwpIHEt80Zvp5RUCf6GsAMT3/GlS4EOlv53tQrAwT0zvMA8VVt3f5
-         jJIED87+2Vf2lB28cTAnXUhRctcaeVdoiQOhhZo/bjiLuMmwT96nZhl9JIVgZLbW2z2q
-         /tgZxir/sA8Nc+r3N84Iwz969UgubDg/GcEshPnhFZvPt5JUAKj8zkX+v607XvyvAnkt
-         KfwncvZpkNVKI4Z2d7DOts3EL9fTVZIfqNLryHQxu1FBPzkpL0hIWADX2flDE7jt1Qze
-         zk7XxGgBlP338wWe1cqmW4gnpGVky+33YL8rxsvGWs+XbL2N/x9EfMLJREcIDCP8rnyH
-         KeSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790462571; x=1791067371;
-        h=content-type:cc:to:subject:message-id:date:mime-version:references
-         :in-reply-to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oPvBitOMBlhp8Hdy1YMUl7WEgUJJU4NLUnrbTGzbCOM=;
-        b=CNUaaG9AKSB/qr5pN+4HfTye3HnGayV2Z3qkx5lMlQLYN+EytZpTImJEbkarWj/BrL
-         Cg2IGKJ/Rw7JW6qReDVsbjeGukrUys7Jjcrf2Qt9Jd45SXK69Qvx16h9GGoWqQP4398/
-         oDLOf0UiD0rGeVg0Cn6bTvhUwgPVVp+5/vGCYAAB3hsNme/8UwrqnmrahtLeHrFvqaZm
-         GFBue4jxAmzZBWSrLLpOTnFL/t9OSXaqPx+EbeYozZjKRoCrC/v8PBKAkvOXba8bZTF0
-         heklqatx4Kptv7PPSJPL3dVHdY84VbO7o6toH30LJ2jXqo97pi/KMlFLvsM4nxRoMuz3
-         Ah4w==
-X-Forwarded-Encrypted: i=1; AKwUvBzc4n12vjmb5GqyoCwUviHXgLJ9HSCdBWfjXUIiOidKEtq90j5iT+uSUnBY949yXveTMXoQ6TzcQw==@kvack.org
-X-Gm-Message-State: AFuF++nowTE/+udwyGnbVqxLJRL6zlAP8D+x8C6XnD6npLLPZHY0OX4q
-	JBfxEhmbhc39eqIflS/4KXhd2qYPctt7n+q4vZw6w8TorBHURn+mGz75hUHvGrmpeb7f6e0ObM+
-	CUzcvi0ofj+io1aBISHeXbt2zq/+pluS/P+YMKznI
-X-Gm-Gg: AYBFou2pptctG7WdbGmg+pZXtH7Pnk6PkrDsZxbLyrsPiltURSBWxBJwj/+kLUV8vhj
-	s/3c3uV+9UEKcp6mskHrfsTvvt1aDRbREc4JdRbOOAvN7ekjCQavUGuWKqNGv6N+oF4xJ9wygZv
-	uXUgptFlqCdFVq+jboTOt8N3XwrAL1aqoVJ+HvWNiom2TgO6XOjzcAL99sIOPiYZaYHNDKy/5va
-	zfoTAkBG0zzN8zdleZ/zCKJuHzNy5H5ILU3FdAXCaAiMqomS/EAEuBXZsok5WDI7SoSVSWLrJun
-	vYQXiXPbZ9DdAavMa9EgnF3KHjISUri0yrYZQ8SnyrOyOousxfBokkhrE2dCeWQkEH1h/SC3paz
-	oMS2SqgTLS+exQbKsMZcP
-X-Received: by 2002:a05:6214:419c:b0:914:4464:41ba with SMTP id
- 6a1803df08f44-91444646dc8mr70530596d6.26.1790462570563; Sat, 26 Sep 2026
- 15:42:50 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 26 Sep 2026 15:42:49 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sat, 26 Sep 2026 15:42:49 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgHZTYUuFBXS3sGyyjiveQOeLHuPxvud8o+R3NCCwM6Ukw@mail.gmail.com>
-References: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
- <20260916201307.5618114cbac4af52d98aecfa@linux-foundation.org>
- <20260923220912.46905-1-kmehltretter@gmail.com> <CAEvNRgHZTYUuFBXS3sGyyjiveQOeLHuPxvud8o+R3NCCwM6Ukw@mail.gmail.com>
+	bh=nw4tcFFem5fMw8F25atJ8BPsyQyyVvwGckLrZIYusgw=;
+	b=x9Ef+OOBd1ClzTeQYfK9PsgiuDAyBMnwDaXrRSsehQYOE+tsplXl+GhyhcMjSoile8JMr1
+	zkv0Do6bvejQWrNSg/pD4fiuCKKoUm/apQIvqM8bulDiTBI/2oPd9bQfjuqBuC2UzTWvUL
+	jVbXGeUpysBIeE6ygj19SmSDTH9JMCE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790465541;
+	b=KaXm8xTdQ4ltXrT6QEkypt3JXe0M2fZvak9a/oBReILrdHcwi3zTjK+6M3JxW+j2b2yjSt
+	ut9PgRaqpCpQTyCQjZ4y6oOMO2Qzk0gfNGmSL//9uPh0whpxZR5QJIWtg3Fa/1WwlFZwIN
+	v23qVjYWlbbNMUnWuFCazePffPlYeJg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oSnJHM4f;
+	spf=pass (imf14.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C2C1447A5
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:32:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682061F0089C
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:32:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790465540;
+	bh=nw4tcFFem5fMw8F25atJ8BPsyQyyVvwGckLrZIYusgw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=oSnJHM4fiIR4Plle97onn98lQr1SN73bzdns9EL1QaFpA7ed7Bv7G+i4AwQjeAk5X
+	 ahnnWEVu2auJn98A77tjx+275Wbm1eZd50oOB6t09S7M8SylVeLUixL592bazL8Zqf
+	 e4vNFsSd0UdTzN0DLRcbBKv+p6c0uI+9Hw5aTb/qiO97oiAWWnfazRwbOw87MMz0iB
+	 YEzQjTRI+LN9rd9RCAlj7Z15cbFCTj3hnHtICBXfmcpZ6V6aGLqUvIOsqZPHckemAk
+	 qo8cYFUza6+6p8qMjFYS+Nj9tRx1GOM24WU6lCk/y5Q2t6vpPxTNcZLY7+DyV7FYWL
+	 /bsGZjS+YLX6A==
+Received: by mail-ed2-f35.google.com with SMTP id 4fb4d7f45d1cf-6a60591ae54so3082560a12.3
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:32:20 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvByKGIeHBsyJ+vpGClWC3IsC2zMLcu8yLoDMDPnymosphvDKI+FlTQBM0I1nQ6sK8VIWaboNqj/uaw==@kvack.org
+X-Gm-Message-State: AFuF++mEAGpNjCt4dzanIFTXAcT5ImjMfKzt//i7mC+XVB3/IOejIYBG
+	LZ9bTg0SDUnlCW+DndlT6gyugEd0W/NE6GAIY8pRaXzYtw5gAXiPwXDqpdsVOedFYt+heAScsDo
+	jcrruLj72E0f5nlweQV8Mwxw0HS6D05cpPx8JNDedvQ==
+X-Received: by 2002:a17:907:962a:b0:c2d:ca32:2176 with SMTP id
+ a640c23a62f3a-c2dca3235abmr54019966b.8.1790465537433; Sat, 26 Sep 2026
+ 16:32:17 -0700 (PDT)
 MIME-Version: 1.0
-Date: Sat, 26 Sep 2026 15:42:49 -0700
-X-Gm-Features: AclHuK8P2H5EpMJy1YvK3gvIP-rpUihsCxDjwpAZl1LdwcYKlVTgraMVSJkaNkw
-Message-ID: <CAEvNRgFPpigP6zq+6+dvC7nubFBjeYNZYPj4RHB1uXd6c26H2g@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Fix HugeTLB subpool used_hpages tracking
-To: Karl Mehltretter <kmehltretter@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Zhao Li <enderaoelyther@gmail.com>, Jinmeng Zhou <zhoujinmeng@bytedance.com>, 
-	Alex Shi <alexs@kernel.org>, David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
-	Hongxiang Lou <louhongxiang@huawei.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Michal Hocko <mhocko@kernel.org>, Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
-	Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
-	Randy Dunlap <rdunlap@infradead.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
-	Yanteng Si <si.yanteng@linux.dev>, Naoya Horiguchi <nao.horiguchi@gmail.com>, fvdl@google.com, 
-	jthoughton@google.com, rientjes@google.com, vannapurve@google.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	stable@vger.kernel.org
+References: <20260926045517.3458413-1-matthias.goergens@gmail.com>
+In-Reply-To: <20260926045517.3458413-1-matthias.goergens@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 26 Sep 2026 13:32:06 -1000
+X-Gmail-Original-Message-ID: <CACePvbWPLegjMtF4jYN4+_1ZeoEuBHwZuwNyMpYwPZaA0edO5A@mail.gmail.com>
+X-Gm-Features: AclHuK9AxoX5x-gecpb2ks2aU57CnhQ2g3FIIpOxpjBk-hgB0LOGfyaEJiKPKFM
+Message-ID: <CACePvbWPLegjMtF4jYN4+_1ZeoEuBHwZuwNyMpYwPZaA0edO5A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/4] mm/swap: reserve swap areas for deliberate offload
+To: Matthias Goergens <matthias.goergens@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-api@vger.kernel.org, 
+	Alejandro Colomar <alx@kernel.org>, linux-man@vger.kernel.org, Karel Zak <kzak@redhat.com>, 
+	util-linux@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Shuah Khan <shuah@kernel.org>, 
+	linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4ABE3140002
-X-Stat-Signature: z1e61r7et7hjjyb714f3iqkztt1godha
-X-HE-Tag: 1790462572-995226
-X-HE-Meta: U2FsdGVkX1+FrDt+kFuSpi+eskPkdgSxMfOeRaSZZmCx8tRY2jHOWL9tgSAWEDFW+X0Bu9gLqtbl1NrsyE7NTIM2oc1jwP7kJKHCnXes8p1Zr3hzj2Ljq13YgFqQ5z1p4AjmZAaidF6ZdCLyNJ3FRjEEfscm4/Lzjw69nFEfUufP0r6ZgidKrbe0No6nLiWG8KzShIsFUcRa47TSpc+C7TU4LvU9t/oe9dVegcYf2gL8Grlgo+ZhULKnqjH0iwaeU6BNbsEE1mxklCEp6nVy/XW8OSMMTz0OR7UW/D77CQIpok/Ohg6Qpgp21CFBPiHXsuVTB41fqloYcdXj4Vgxtve4vGU9CE/B2fllV0ANT5fyQJT1Jxj3YdbiOxyMeBehQMR856wLnxSZaLmt2rUd1+ZE3Ifr8MaaoE8wPempCZyb01Qn7vRbordZqOlem2eHd8BBPRxRr6J38QQCqdhwx/mG59W0eNcgMRR6lxEF/HYAPkn010Wza9qQRY1IvqAvzONNn7+yVKxMa3o16qGG6jWVMTf5OAxZtm+BHNhwKpN1AnelaCtu5SnQoL4U4hrti3KlKwqJKZWzivYJvqVeIy7t4t3lgwiDeiDk/DKMNLSRK/bRBXv0Sp2MZtOMfX9uoW7spu5yk6V2H29fK0FqBnSCpoh0XM9t1c94zFmsGhCNzL5bfZ7uMIi5pTI9hgZTAHlrz1rIaLiyO2OB1TOKlLVx8Kx8fjUXBAeW/2vHkQbvjvbEImB+zSBzFItTKuMRDECRtSPbwXsR0nmuWCLvOZlg55MXZBmcaisa5QURRlwV6wNyxkXPYg4RqNaZlCixZz+Jw7JMAX2CcqiEw0bHZ2T5w630TeVDlRXQ/XTLEfOdoPGMVM2S/ygTWvP90+m62B4q/ZIVMOLGjtgrEgyR2PB2sFMcIDn8AYJ+v53oSdkuW7J+1pQReoGrpcwP1Qk5ZqQnbvgfRETEkIrLJ5a
- hnLyk9Wv
- 5WdnxfQikRKdrgRfZDpMFrRLxFa9HYm09EiA3v6TOuD0anJblzTCUQheg/tq5XPSTQHTbvuiMJUUXRYcEYbyWs5ZS1h4FmkxdL6gxlfbrTwkaGVULCQ2I/LCby2tUOoTYY2RpJpxwKbcnVapAL9WyytPObHCk2TYjeuMaCL55+MN4TVrWDUN/4VX+z2bCrqfZyIME0or1/UtSqM8QxTHoYt6e9aOJSlThjwBKGv+0Yggv3GvUwhUNyke34ClSEYITRCDDoHlsiCIGoayLOVTL17HSdfmMjqo6FgXZcgZDYx9ZbjRrd7rOR72q1k85zg7gCrZdTHqtN2zdf4HasEOTCZIXbw7CZ8sEJOhIwColS5G1ndrCwx4SRx6y5wiT7qbL8UviJmPHbaZLDmDjvp1d6rCAA0XhkrIB7U9HAA/7gZshUC4kJoPf4gMdd0BUJhwTM8FV
+X-Stat-Signature: j6ax8r5hpurdffyd3tf7f7ha75sofwrc
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C39CE100003
+X-HE-Tag: 1790465541-884560
+X-HE-Meta: U2FsdGVkX18JjV+NYXlbkXQO//PnwolCbPJjRG7RJnsysMO+BUI+WJZlU5t2IU9w7MzjW/yFLeQSkUpyuKRbsXfvZiqAf+dxaTulkfF4hYypqD8OZOYMFmewJrsUW83L00bqqCCLaL7fmOqDHmI1k1tf7aabBGSNGy5+8LnvFH/+qwYOukTPz0G/mmfbd3t8CJkq136SmeZzNwWTzO2mctcquQhjXQWu/4Voa/C2++eSJ+FuqYNdGT9QXaMgbUDvUZrAV+PgIMmNbThGjS6yslC5BurBWWzDs+wrkHR9n+cjao+Qvj7+71OTMFwstUHyy4bmwvB9YjkftZM25nvR3HvPYfuM/Y56wh94sJDgO0uQi+PdTtmroB75grnvTRR9TUU79aIlO5rtfjP3+IuEfOptZDYYVQHPw20tzqM7xrwW8Qj7zi2AGNnTV/hEd8k61KCmcshv2wlgcYVOrq3f6L3aHAnN3RAaSct6X4NEG/WPQPc1sHkGZvThcsANX9SbjfARU3e4SQFCmIReALcSuFM+a+O211w0E50KNZxJwqOK/rb3pXKNmju2LaKalxEAQvXSKqUgMxbP5TQudXs4WmccNHiHb3DG4g3Yw/qyt5tilhDirVVEJbJpyrVIU3ofZo6jrLqeOaLSdNB9dw2ZM0C9kHGxCU2xgW4pUN62SUCeoJwomo8iu+71ZtSWVoIB40ILjwAFfGR35+vkmeMx7yng/7US4vzZOHCvAIUtO1DOGXt4PMSK6plJHGtEC4uMABEBeQUCS8hHs5m9+BHJppvngApSAOLQ3VVtlpOrXotbNc8rVVelOBYuHS7t66rDoemrE3leVDY+66CXCfxWq0EoUEk6kQEeATFxMAMD44JMnlpvJq95f6JBgoSReGWAOeRlCTZXGv4nld5b6abLLWpNiKDqcnS2n/mXxH8qTLjy1r9gRzzk7kbG5VG43crhKwl/o4hi3JLL19DT8CV
+ mkxd0sW+
+ uWIuUmlda3FJmbSQtFXr0o6LleqS4aHbcERuAl6mWGb5HPC6v87USkx4QQdXccB/GkQLyutk86Z16gj9rr8GQsRrlWK5lnGz02EiaZc7smWhIBeZ5RS2Ibebw9muQn5sgGhOjjHnwxjVSCvg7AKhd7bDiLtE7r1U2WDsOk7edNcPzvhnC33KZ/eTJIyWx4DsKJUY47iJgpkXTjmfLdCbdxNXyYhEBXHTeqO7u0BuB1WYS8skyDQj/HYVfQQEHIqMjQd5JuCR7ncswl3DC3GEGmoAJsstA/TXAITXzl65b+3SZrWKX0COmUwbKfXzW+KBIQ9nK97gE3lNk6JH9jyW4emtDDgLAYAWLCHYNVgyy1cgJEOG/1X209rJw5OKL8uQwnY23PIynOc+MMlgNVIcTGFXcVx3iLrZZ+bGm59QkYeAxaLWbN2VbvPbx3DRIKq0Rj+YAe635LL1c1zFboXrPG58FBnYPzY2TCaCRi8Kur3A/Wio12T/ugBJYLlVohYmUC0PTHTFusJ/WZCRbphdfj6gQ0IAAaV8zdi0b5k22NPXkCrZX4GqOhLP+yYH9G4s6QM3ns5U0mUZ8OXCXMrNr2Ngy2Wgj5yKYdDnKNEjfjFygULZX9TfBvq3OTXD04WjZRZ/WeqtXkr3UB2YaM3vKnWX22RVfL+jSVEDbmix7vUT+GK+4chHBnOUysQdTCmfo8+mZ1VzQlW4IZQslZ+aUjV8gY8GLuvHMtctu0b7uH4BodWOoPpezmGNMMcUBrc3OQ2fmckOfU9/z/2m1hmPHRFsSXGvASyo3UXwst8j0AMIs/38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,47 +117,126 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On Fri, Sep 25, 2026 at 6:55=E2=80=AFPM Matthias Goergens
+<matthias.goergens@gmail.com> wrote:
+> The series fixes zram selftest device tracking and error reporting, adds
+> the swap policy with DRM eligibility checks, and tests routing, workingse=
+t
+> activation and retained-entry write refusal. It is based on mm-new at
+> 995829088503.
+
+Hi Matthias,
+
+I can't find mm-new 995829088503 anymore.
+
+Your patch does not apply cleanly to the current tip of mm-new
+mm-unstable, or mm-stable branches.
+Do you have a git repo with your patch applied?
+
+mm-new is whatever Andrew can find on the mailing list, regardless of
+whether it has been reviewed. That mm-new branch is very unstable,
+even more so than mm-unstable, which should at least have some review
+already. Maybe consider using mm-stable or mm-unstable as base next
+time.
+
+Chris
 
 >
-> [...snip...]
+> Feedback is particularly welcome on:
 >
->> 2. On splitting: 1/4 applies cleanly on top of both queued fixes, but
->>    in my tests it made min_size-only mounts worse on its own. As far
->>    as I can tell, that's because it starts tracking used_hpages on
->>    those mounts, while the two error paths only release it after 2/4
->>    and 3/4.
->>
->>    HugePages_Rsvd, expected value in parentheses. Q = the two queued
->>    fixes, wrap = 18446744073709551615:
->>
->>                                    rc3   +Q  +1/4  +Q+1/4  +1/4..4/4
->>    min_size=4M only:
->>      SIGBUS faults [1], no files (2)  2    2     0      0      2
->>    min_size=8M only:
->>      failed mmap [2], umounted (0)    0    0     3      3      0
->>    size=8M,min_size=4M:
->>      SIGBUS faults [1], no files (2)  0    0     0      0      2
->>    size=10M,min_size=8M:
->>      failed mmap [2], umounted (0)  wrap   0  wrap      0      0
->>
->>    With 1/4 alone, the min_size-only mount loses its reservation, and
->>    in the failed-mmap case three huge pages stay reserved after umount,
->>    presumably because the subpool is never freed.
->>
->> So it looks to me like 1/4 shouldn't go anywhere without 2/4 and 3/4.
+> - Activation-time eligibility versus backend placement or migration:
+>   is retained-entry refusal, with possible reclaim churn or OOM,
+>   acceptable without migration?
+> - Eligible-capacity accounting, including overcommit limits and OOM
+>   scoring; cache recovery, cluster invalidation and workingset activation=
+.
+> - Persistent activation and visibility: current swap listings do not
+>   expose the policy.
 >
-> Thanks for testing this! IIUC from your table, 1/4 introduces
-> regressions.
+> Validation includes x86 builds, affected arm64 MTE objects and builds
+> without swap or memory cgroups. QEMU tests covered routing, retained-entr=
+y
+> recovery, data integrity and cleanup, with negative controls for write
+> refusal and teardown failure.
 >
-> How do we handle this, should I squash patches 1/2/3 together, or is
-> there some way to use the Fixes: tags to require those 3 to go together?
+> I have also been using this policy on my own machine with experimental
+> bcachefs swap support, with no problems observed so far. Deliberate stres=
+s
+> testing is confined to VMs; I do not deliberately stress-test this machin=
+e.
 >
-
-I think I have a better way to organize the 4 patches and the two
-already queued. Will work on this.
-
+> Changes since v1, incorporating Sashiko's public review [7]:
 >
-> [...snip...]
+> - Improve selftest isolation, retained-swap measurement and memlock skips=
+.
+> - Track allocated zram devices, wait for udev probes and report cleanup
+>   errors without deleting data through a mount that could not be released=
+.
+> - Clarify activation, capacity reporting and conventional fallback limits=
+.
+>
+> [1] https://patchew.org/linux/20260825153238.2695446-1-nphamcs@gmail.com/
+> [2] https://patchew.org/linux/20260713025644.170839-1-youngjun.park@lge.c=
+om/
+> [3] https://openzfs.github.io/openzfs-docs/Project%20and%20Community/FAQ.=
+html#using-a-zvol-for-a-swap-device-on-linux
+> [4] https://engineering.fb.com/2022/06/20/data-infrastructure/transparent=
+-memory-offloading-more-memory-at-a-fraction-of-the-cost-and-power/
+> [5] https://www.kernel.org/doc/html/latest/admin-guide/mm/damon/reclaim.h=
+tml
+> [6] https://www.kernel.org/doc/html/latest/admin-guide/mm/zswap.html
+> [7] https://sashiko.dev/#/patchset/20260914104501.3960616-1-matthias.goer=
+gens@gmail.com
+> [8] https://github.com/util-linux/util-linux/pull/4633
+> [9] https://lore.kernel.org/all/20260914105606.3997649-1-matthias.goergen=
+s@gmail.com/
+>
+> v1: https://lore.kernel.org/all/20260914104501.3960616-1-matthias.goergen=
+s@gmail.com/
+>
+> Matthias Goergens (4):
+>   selftests: zram: track owned devices and report cleanup failures
+>   mm: restrict offload-only swap to proactive reclaim
+>   selftests: zram: cover offload-only swap policy
+>   selftests: zram: cover retained offload-only entries
+>
+>  Documentation/mm/swap.rst                     | 105 ++++
+>  drivers/gpu/drm/i915/gem/i915_gem_shrinker.c  |   2 +-
+>  .../gpu/drm/i915/gem/selftests/huge_pages.c   |   6 +-
+>  drivers/gpu/drm/msm/msm_gem_shrinker.c        |   2 +-
+>  drivers/gpu/drm/panthor/panthor_gem.c         |   2 +-
+>  drivers/gpu/drm/ttm/ttm_backup.c              |   2 +-
+>  drivers/gpu/drm/xe/tests/xe_bo.c              |   2 +-
+>  include/linux/swap.h                          |  29 +-
+>  include/linux/vm_event_item.h                 |   1 +
+>  mm/memcontrol.c                               |  20 +-
+>  mm/page_io.c                                  |  24 +-
+>  mm/swapfile.c                                 | 123 ++++-
+>  mm/vmscan.c                                   |  31 +-
+>  mm/vmstat.c                                   |   1 +
+>  tools/testing/selftests/zram/.gitignore       |   2 +
+>  tools/testing/selftests/zram/Makefile         |   4 +-
+>  tools/testing/selftests/zram/README           |  20 +-
+>  tools/testing/selftests/zram/config           |  10 +-
+>  tools/testing/selftests/zram/settings         |   1 +
+>  tools/testing/selftests/zram/swap_offload.c   | 425 +++++++++++++++++
+>  .../selftests/zram/workingset_offload.c       | 207 ++++++++
+>  tools/testing/selftests/zram/zram.sh          |   9 +
+>  tools/testing/selftests/zram/zram01.sh        |   9 +-
+>  tools/testing/selftests/zram/zram02.sh        |   9 +-
+>  tools/testing/selftests/zram/zram03.sh        | 174 +++++++
+>  tools/testing/selftests/zram/zram04.sh        | 164 +++++++
+>  tools/testing/selftests/zram/zram05.sh        | 447 ++++++++++++++++++
+>  tools/testing/selftests/zram/zram_lib.sh      | 189 ++++++--
+>  28 files changed, 1926 insertions(+), 94 deletions(-)
+>  create mode 100644 tools/testing/selftests/zram/settings
+>  create mode 100644 tools/testing/selftests/zram/swap_offload.c
+>  create mode 100644 tools/testing/selftests/zram/workingset_offload.c
+>  create mode 100755 tools/testing/selftests/zram/zram03.sh
+>  create mode 100755 tools/testing/selftests/zram/zram04.sh
+>  create mode 100755 tools/testing/selftests/zram/zram05.sh
+>
+> --
+> 2.55.0
 >
 
