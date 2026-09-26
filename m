@@ -4,100 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3B04C98332
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 12:13:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 738B6C98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 12:37:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9ED436B0088; Sat, 26 Sep 2026 08:13:21 -0400 (EDT)
+	id 38B186B0088; Sat, 26 Sep 2026 08:37:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9770B6B008A; Sat, 26 Sep 2026 08:13:21 -0400 (EDT)
+	id 33C356B008A; Sat, 26 Sep 2026 08:37:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83F406B008C; Sat, 26 Sep 2026 08:13:21 -0400 (EDT)
+	id 20A0F6B008C; Sat, 26 Sep 2026 08:37:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C45F6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:13:21 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D0EEFC0872
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:13:20 +0000 (UTC)
-X-FDA: 85255803360.08.5D5BD3D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 188114000D
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:13:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dqVt/WH/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sumit.garg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790424799;
-	b=4WluYfqcfNsm8gAwWkGLoLjOOcaAMPTuV9bH0Tvos699jlJyN8zvt7t5yJ9/Q3vVbl1+IC
-	9oZwUZhUSnq1d9e84TEQ9gjmWR/ZHhq3GsCoH+khn8xckxZN+WJAlQ7eZpjaSX2ctGYtx3
-	ATL8QpRkIGLRYt6s4YsjJTFEFCAr25c=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dqVt/WH/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sumit.garg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sumit.garg@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EC3E96B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:37:16 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5A4E1C37F0
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:37:14 +0000 (UTC)
+X-FDA: 85255863588.12.FEEB05A
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CBA5BA0009
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:37:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lU+wYF8y;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790424799;
+	s=arc-20220608; t=1790426233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1iBLZkIxA8ap1qqaUdvl37Rh8tiElL4QP7IPYChkI5I=;
-	b=nWfnT3Pvxl4qtmj5rF2STdE0grDBTuV2OKu0pSOuVoFnuaih/tVMHfb1TGcuFffSoU2kn1
-	NcHrSkkHP/JZua9V389awwb7hAHGhDfeRssEQCbCuqZYuRC90aNfxJDKaRypUjMG+RBMmY
-	HMVErYg5AQpWoCWenEEg364iXFAjYXs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F2F1A43EA1;
-	Sat, 26 Sep 2026 12:13:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308001F000FF;
-	Sat, 26 Sep 2026 12:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790424797;
-	bh=1iBLZkIxA8ap1qqaUdvl37Rh8tiElL4QP7IPYChkI5I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dqVt/WH/30yxap89q3hdsyv/l61o3KLu/CiWmh2GBWsGOMCAyDd4oeItuV0KhN+p0
-	 8X1zpWVayYa47zet2Ur/sfY1kFJQbab8BoOoxfXHV/YQI1RJpJcGzgkU0qRjc535uU
-	 dggfLeW1RAGQ6iAvuoLIhb9T4V0FhhXIBy9i/I8pCdGeLVYzIySIXLMOZwMi3YRe/f
-	 zKl3WL7aj0w8pTnJ2Nyfs5DX0DqPx3wVLkn3TmGkc+E39Db2pmRZ/OB9D3wxZRvvWf
-	 SDM2RCWwifBB//vbUuDdgvoBbZaeCV/2vJDbDTyZiZ4mMxvo0MoVSBtV+WGkAlY0zm
-	 09Lh/Q+rpzwkA==
-Date: Sat, 26 Sep 2026 17:43:08 +0530
-From: Sumit Garg <sumit.garg@kernel.org>
-To: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev
-Cc: Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com,
-	rppt@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org,
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <are21BjeS1O3RYE3@sumit-xelite>
-Mail-Followup-To: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev,
-	Vincent Donnefort <vdonnefort@google.com>, catalin.marinas@arm.com,
-	rppt@kernel.org, akpm@linux-foundation.org, sudeep.holla@kernel.org,
-	jenswi@kernel.org, robh@kernel.org, mark.rutland@arm.com,
-	ardb@kernel.org, thierry.reding@kernel.org, david@kernel.org,
-	danielmentz@google.com, linux-arm-kernel@lists.infradead.org,
-	linux-mm@kvack.org, op-tee@lists.trustedfirmware.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
- <arKW_91EeKA-w96m@willie-the-truck>
+	bh=m3kUkBhJmhr2Ei/JFKdlVabOX14WHBapnQSt+gsL+Qk=;
+	b=7v9Tq6jPQlPsRmIbdgN83fNja9kCtSCqYt7/LglxOCYndCMSQm5KanuxL1jqWYA7AoAxO+
+	unv/Rk1Ry1Kg9XfjpbD3tVc4SeQmSs6oswUe6wn25orMnfNWM4KU7FeyrfbUHHhBoNHbqE
+	t80liGkHznIZSMhzMrG/ntAzhggGN5Q=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lU+wYF8y;
+	spf=pass (imf25.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790426233;
+	b=K5JHJJ5UKj6q/3LGmgUt5DNIf7+cKj3HtRRlI+5xfw/MxBPpqGnqkW8Xtbey00S5UbT3o2
+	UZ4HrBrq7Bpa0Entk1utsXd8QaLxzR/M5FhSgsVi2mU9AOwtk5XbN+t68yxxSwiXDwRXxo
+	90ThHFEX28tT3NvNTT74D5c2mqFNuiU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2623D1570;
+	Sat, 26 Sep 2026 05:37:08 -0700 (PDT)
+Received: from [10.164.11.10] (unknown [10.164.11.10])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DC5E53F632;
+	Sat, 26 Sep 2026 05:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790426231; bh=fqT9PsOPp+2UAi28FvcReu9QnVXrk/rtw2WCU8QbKrg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=lU+wYF8yFaTlGPXksx5u+jeRufLOFvI4NZk4d8f9t+ppVkYT/y/nC0a2E9bNnmNeY
+	 EE+7xQcofWP/XBFcEpj22pkNwua73qXM9jRJKp+vUXSisFPSTUb2jnWpXutJHggSXq
+	 hQjxxzj6WpGYg4R+vkhUz7wyEE8akuAYyOGrjc+4=
+Message-ID: <7a2445ed-0e56-4a87-b4ba-6cf1dabd07d2@arm.com>
+Date: Sat, 26 Sep 2026 18:07:01 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <arKW_91EeKA-w96m@willie-the-truck>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 6i3t38rpqo568cmgs7kiu6i7fsz7ksth
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 8/9] mm/rmap: batch unmap anonymous swap-backed large
+ folios
+From: Dev Jain <dev.jain@arm.com>
+To: Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ hughd@google.com, chrisl@kernel.org, kasong@tencent.com,
+ davem@davemloft.net, andreas@gaisler.com, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, baolin.wang@linux.alibaba.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ youngjun.park@lge.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, pfalcato@suse.de,
+ jgg@ziepe.ca, thuth@redhat.com, sparclinux@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <20260924131106.1730494-1-dev.jain@arm.com>
+ <20260924131106.1730494-9-dev.jain@arm.com>
+ <CAGsJ_4xhGwxQCH4sG4=dyomRkN_PGHeW7e0uz1MsQHFW-Gs6VA@mail.gmail.com>
+ <f61fa70f-882a-4787-918e-4b6959062c9c@arm.com>
+Content-Language: en-US
+In-Reply-To: <f61fa70f-882a-4787-918e-4b6959062c9c@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 188114000D
-X-HE-Tag: 1790424798-264899
-X-HE-Meta: U2FsdGVkX1+PiSd7rrkF4YhxuBi1DFjYqKn4Ua0hh8SWEa/cA2+irhGyyvV04i3UfHbKmb7uwZ8sovSInMuU2ouxBeE7pRMjSgAH5SGkd6/WRNv5M9u8go4LkQFtgiRMJGxQ9DzAW7S8TVbG4FvjYzYPOU0rbdzDoxexy45svINLHiqv9JGqXcOiCTbIFI9pNn363obUz8Q3Qv1Eijbj0CBH3CWy6t+DTgPoaOgb9oPQ2m/jptwdCopr42D6VUAr2nr126qq4hPqBKbeDeI5UiFuzoqxQeLsOiypsLYzA2F3DX7PQ4EoQWO3VZEwLPcVQlDBr7fJZldLuikJApAlQVe8j8IQ/zes/XspK+uo4Jm20lcQJ72J2FrbYf92e+GNLfF4b/x4zAtGNStQyOMM1bUmIbIaUomYCiVZrTOIOyocw6RDAwJO+wYE91ghEDP2uEiXVQOXsZmjOcNZG5dMrwn4MtPWoUSJn0nNcUK7BjsgqmJ1ODIVR6vd9a8wdXsEmjWrRYlYpNF3ht//IB5FXtw2/NNSafaxnjLit1/99mZYKuGKFRt1T0tJNp7YixD5T2MXLmT+xWaEN+S+uuW/iou2f0Xf6FXSYoCA0tHLT374NUz38GNMib+KkJAMRANk9S3genBFgg/BIouFRsQEBEXRrcQsD47Xk+RSbzecRHmXmfk5vBAZC/2C9JI7Re5V+yJxmytQPa6oSsGvLDRgsd6SjxCn0IeTmP7IUm9UK0yb4MBnmrKjdfX+LCIAmW3qGelUNu385SKDQbw7q9mRN2e6UGwvbgw+zssEqR2hteUyePJeR3WHV/MBet1xF7GWVX0n+x0M+cjwwrkQ9KI3WARuTz3SM1XhZGbKBqzrSCQrJjXBvlTV3cTF8vWSXqGgfk3L5t+Dvq5S9hYm/+2TXI3bgfyOaAcw0/byQNX/WdXz5Pi14CkpsA668pOjZGty/lNto5SXT6FEXx9mQXV
- iZyXs6CI
- G6+1+wb6hwe6tHpw3pSUFRd9d72J0qCLCz5A0q0nuO8uEPTbL5GVHwRstZAWxVpEyGyxOMvvg9yZbtMWeyhP1D0lLfUfjDTJpALi+s3aDDQVBWrwqFitQGbrSluCIddVdrilBW1nmMKYeYe9cc3UJawYH+djsGKOKj/cXYvgoDnglRLt21AwfmRYQRM8worDn/CJxbjWS0jxsxx4KI0CipCbMKydN2iPxUdWVCG11TWFqRx0d7N0Tv3f4NYtiNg0zK+DSbZCdSNwocgPk1FiRrUq+BrAL3Do3EAQ6BPhXyya6F3I=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: CBA5BA0009
+X-Stat-Signature: 8ktwiuydsce6319m9hb1nxij3gty59ch
+X-HE-Tag: 1790426232-503437
+X-HE-Meta: U2FsdGVkX19vbRxNNspM19WUxlEIaEhsIeC3jpPFu1T8iE4LL9C3/7RfdKx60ewZtyvPUX+wN8yigaii0x8x3BBejy1hiT0PvKD0pZQbbhgny/KbWFq2hMDWarRM8paly8aBnyfJoVB4G8/xuFAN7Txi6OY3wbmUTV8li+ys7LdovWZS0LLFq9IC6HQnX6pPOeM/qV2c0y6vjgU4Owxha7HPWXgogm6wGTrT2fvGJQZY+hvqGC3VYGp+qpo6BYXxbxgXv+n3LQkBMcZnSkZ4dZEYEoeWhRXB9bXeM88zTHJH8gEEJGEq3kGn1+g/pdm1eWXbmYuGMnM+di1N2iGK657puaPv5KDw93VdiNA7F7BjgeL7o7GQ0NLVNLSf3qZV1gyI89hYp6BvPIIwrfZ61BgIp6dueYijgDEcSs3OlCmUq6Y8D8oHuapd2wc5Tf/Od+QzRjeqOSvoKqsRkjIRgldf+IKkTLK/4GEShvHyeyqXtP4gyNUXoixKGMYG0LsxeGpIL0Cn5aYwdddfYyk1s9IW0vjTltew/MnlfoO6geAY3yCoUk/mtelfMliKY0Vs8K17BikH9og+ShdNjssv96LCEG4hw+WEqtRf4B+BxkaySXVLSoGvbXjHDeDu3AVsDSaJgdepKHOK4VrVnQansSxXkCwkeNM3jUdYOisn4wXmVskNy8xGQyXZH+sdYf49HIelyGQ2K88sZY01WrkVyHWyuwpdRZ/NU5Wc5gfaGePflMyRi2jreHJPyPbsndNGVy0ThMkXZL5r06YWtallgvRGaDSSfCjd+ab5mMN4MidEw+6sbsrD/PykRpDbsW6uAa7vTnUIVF7IH1XAeuyULyiIApdCTkLmzOMiFzIZf91rMrlxv5HMa/L90LJIFfsVbO4vlWKPWQcfCtgGveaA90gmjdMCOy+9xIeyxd0ZQ8tmTrylM5HNFo14ZECaQDKaCNINMsF3dkXun47yda+
+ VteUi0ZB
+ B2nm/zvuOUzLVRJOT1eooeK72W3YStyuWAKpf3X4FUMYWglbA0v7hZV1zJmlYsuBHOYzfcCUOVR2SaGQ9Uyu/AdUWw3mqjr8ya4PyQARMcz1ldgk9eLIRYSEJoiv+eZwhT4DqBaBeveP/aHWd+GpealjyjkylBjaQfu1ovYgh1NXkifTilaMFfk4MvBZc06Io/oN5OvNcVrN1tiGSywlh6Bf28NmBCA5toA/9ufNlqiG42xG0G5YKxeQjZyPKQXHVC6TkUHbZ4aAGE6kbNlK1iLDxqM/R5RHDrWqGiYSlGGJAdJfmXBMHLdCnxM3UY6G3Je9U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,102 +102,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Adding Brendan to this thread.
 
-Will,
 
-Looks like you dropped me from your reply.
-
-On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
->On Tue, Sep 22, 2026 at 11:27:10AM +0530, Sumit Garg wrote:
->> On Mon, 21 Sep 2026 at 12:00:42 +0100, Vincent Donnefort wrote:
->> > This series is a follow-up to the discussion that has started here [1].
->> >
->> > When memory is lent to the Secure world via FF-A, CPU speculative
->> > accesses from NS to the lent pages can still occur as long as it retains
->> > a cacheable mapping to it.
->> >
->> > Ideally, lent memory would be "no-map" but that would mean giving up
->> > MiBs of useful memory, so let's try to do better with the help of a CMA
->> > pool.
->> >
->> > On arm64, modifying the direct map at runtime is generally restricted
->> > because the linear map defaults to block mapping and splitting blocks at
->> > runtime may trigger fatal page fault, unless the CPU implements BBML3
->> > or the entire direct map was mapped at page granularity from boot.
->> > Forcing last-level mappings system-wide incurs a severe penalty we want
->> > to avoid. Instead, this series introduces targeted last-level mappings
->> > for designated memory regions, along with the "arm,ffa-lend-pool" CMA
->> > driver to manage unmapping and remapping on lend/reclaim transitions:
->> >
->> > 1. memblock:
->> >   - Introduce MEMBLOCK_PTEMAP to force PTE mappings only for a specific region.
->> >
->> > 2. set_memory infrastructure:
->> >   - Introduce can_set_direct_map_range() to check if a specific address
->> >     range is mapped with last-level entries and can be modified safely.
->> >   - Introduce __set_direct_map_*() variants that bypass redundant checks
->> >     when the caller has already validated the range.
->> >
->> > 3. "arm,ffa-lend-pool" driver
->> >   - Introduce the "arm,ffa-lend-pool" CMA reserved-memory driver, which
->> >     unmaps pages prior to lending (ffa_prepare_lend()) and restores them
->> >     when reclaimed (ffa_lend_reclaimed()).
->> >
->> > 4. Optee support
->> >   - Hook OP-TEE dynamic protected memory pools to "arm,ffa-lend-pool" for
->> >     both SMC (via DT memory-region phandle) and FF-A (via
->> >     ffa_lend_pool_attach()) transports.
+On 25/09/26 4:55 pm, Dev Jain wrote:
+> 
+> 
+> On 25/09/26 11:45 am, Barry Song wrote:
+>> On Thu, Sep 24, 2026 at 9:12 PM Dev Jain <dev.jain@arm.com> wrote:
+>>>
+>>> Enable batch clearing of PTEs and batch swap setting of PTEs for anon
+>>> swap-backed folio unmapping.
+>>>
+>>> Processing all PTEs of a large folio in one go helps us batch across
+>>> atomics (add_mm_counter() etc), barriers in __folio_try_share_anon_rmap(),
+>>> and repeated calls to page_vma_mapped_walk(). In general, batching helps
+>>> execute similar code together, making the path more memory and CPU
+>>> friendly.
+>>>
+>>> On arm64-contpte, batching also helps avoid redundant ptep_get() calls
+>>> and TLB flushes while breaking the contpte mapping.
+>>>
+>>> The handling of anon-exclusivity is very similar to commit cac1db8c3aad
+>>> ("mm: optimize mprotect() by PTE batching"). Since
+>>> folio_unmap_pte_batch() does not look at the bits of the underlying page,
+>>> process sub-batches of PTEs pointing to pages with the same exclusivity
+>>> state, and batch set only those PTEs to swap PTEs in one go.
+>>>
+>>> Disable batching for sparc (because of arch_unmap_one), we will batch this
+>>> later.
+>>>
+>>> Rmap accounting and reference accounting must happen when anon folio unmap
+>>> succeeds. If a large folio is only partially batched or a later sub-batch
+>>> fails, account only the pages that were actually unmapped. Put that
+>>> accounting in __ttu_anon_swapbacked_folio() itself instead of using goto
+>>> jumps at the try_to_unmap_one() callsite.
+>>>
+>>> Similarly, do the finish_folio_unmap_batch() in ttu_anon_folio() itself for the
+>>> non-swapbacked lazyfree case.
+>>>
+>>> If the batch length is less than the number of pages in the folio, skip
+>>> over this batch. page_vma_mapped_walk() handles this: check_pte() returns
+>>> true only if any of [pvmw->pfn, pvmw->pfn + nr_pages) is mapped by the
+>>> PTE. Swap PTEs have no underlying PFN, so check_pte() returns false until
+>>> the walk reaches the next present PTE to unmap.
+>>>
+>>> Remove the finish_unmap label since no goto callers are left now.
+>>>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>>  mm/rmap.c | 109 +++++++++++++++++++++++++++++++++++++++---------------
+>>>  1 file changed, 80 insertions(+), 29 deletions(-)
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index fa9fc8374fc26..cdda9efd80bc3 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -1966,12 +1966,13 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
+>>>         end_addr = pmd_addr_end(addr, vma->vm_end);
+>>>         max_nr = (end_addr - addr) >> PAGE_SHIFT;
+>>>
+>>> -       /* We only support lazyfree or file folios batching for now ... */
+>>> -       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>> +       if (pte_unused(pte))
+>>>                 return 1;
+>>>
+>>> -       if (pte_unused(pte))
+>>> +#ifdef __HAVE_ARCH_UNMAP_ONE
+>>> +       if (folio_test_anon(folio) && folio_test_swapbacked(folio))
+>>>                 return 1;
+>>> +#endif
+>>>
+>>>         /*
+>>>          * If unmap fails, we need to restore the ptes. To avoid accidentally
+>>> @@ -2141,16 +2142,25 @@ static pte_t swp_pte_prepare(swp_entry_t entry, pte_t old_pte,
+>>>         return swp_pte;
+>>>  }
+>>>
+>>> -static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>> +static void finish_folio_unmap_batch(struct vm_area_struct *vma,
+>>> +               struct folio *folio, struct page *page, unsigned long nr_pages)
+>>> +{
+>>> +       folio_remove_rmap_ptes(folio, page, nr_pages, vma);
+>>> +       if (vma->vm_flags & VM_LOCKED)
+>>> +               mlock_drain_local();
+>>> +       folio_put_refs(folio, nr_pages);
+>>> +}
+>>> +
+>>> +static bool __ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>>                 struct folio *folio, struct page *page, unsigned long address,
+>>> -               pte_t *ptep, pte_t pteval)
+>>> +               pte_t *ptep, pte_t pteval, unsigned long nr_pages,
+>>> +               bool anon_exclusive)
+>>>  {
+>>> -       const bool anon_exclusive = folio_test_anon(folio) &&
+>>> -                                   PageAnonExclusive(page);
+>>>         swp_entry_t entry = folio_page_swap_entry(folio, page);
+>>>         struct mm_struct *mm = vma->vm_mm;
+>>> +       pte_t swp_pte;
+>>>
+>>> -       if (folio_dup_swap_pages(folio, page, 1) < 0)
+>>> +       if (folio_dup_swap_pages(folio, page, nr_pages) < 0)
+>>>                 return false;
+>>>
+>>>         /*
+>>> @@ -2159,21 +2169,57 @@ static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>>          * so we'll not check/care.
+>>>          */
+>>>         if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>>> -               folio_put_swap_pages(folio, page, 1);
+>>> +               VM_WARN_ON(nr_pages != 1);
+>>> +               folio_put_swap_pages(folio, page, nr_pages);
+>>>                 return false;
+>>>         }
+>>>
+>>>         /* See folio_try_share_anon_rmap(): clear PTE first. */
+>>> -       if (anon_exclusive && folio_try_share_anon_rmap_pte(folio, page)) {
+>>> -               folio_put_swap_pages(folio, page, 1);
+>>> +       if (anon_exclusive &&
+>>> +           folio_try_share_anon_rmap_ptes(folio, page, nr_pages)) {
+>>> +               folio_put_swap_pages(folio, page, nr_pages);
+>>>                 return false;
+>>>         }
+>>>
+>>>         mm_prepare_for_swap_entries(mm);
+>>> -       dec_mm_counter(mm, MM_ANONPAGES);
+>>> -       inc_mm_counter(mm, MM_SWAPENTS);
+>>> -       set_pte_at(mm, address, ptep,
+>>> -                  swp_pte_prepare(entry, pteval, anon_exclusive));
+>>> +       add_mm_counter(mm, MM_ANONPAGES, -nr_pages);
+>>> +       add_mm_counter(mm, MM_SWAPENTS, nr_pages);
+>>> +       swp_pte = swp_pte_prepare(entry, pteval, anon_exclusive);
+>>> +       set_softleaf_ptes(mm, address, ptep, swp_pte, nr_pages);
+>>> +       finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>>> +       return true;
+>>> +}
+>>> +
+>>> +static bool ttu_anon_swapbacked_folio(struct vm_area_struct *vma,
+>>> +               struct folio *folio, struct page *first_page,
+>>> +               unsigned long address, pte_t *ptep, pte_t pteval,
+>>> +               unsigned long nr_pages)
+>>> +{
+>>> +       unsigned long batch_idx = 0;
+>>> +
+>>> +       while (nr_pages) {
+>>> +               bool anon_exclusive = PageAnonExclusive(first_page + batch_idx);
+>>> +               unsigned long len = page_anon_exclusive_batch(batch_idx,
+>>> +                               nr_pages, first_page, anon_exclusive);
+>>> +
+>>> +               if (!__ttu_anon_swapbacked_folio(vma, folio,
+>>> +                               first_page + batch_idx, address, ptep, pteval,
+>>> +                               len, anon_exclusive)) {
+>>> +                       /* Restore the remaining PTEs that were cleared. */
+>>> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>> +                       return false;
+>>> +               }
+>>> +
+>>> +               nr_pages -= len;
+>>> +               if (!nr_pages)
+>>> +                       break;
+>>> +
+>>> +               pteval = pte_advance_pfn(pteval, len);
+>>> +               address += len * PAGE_SIZE;
+>>> +               batch_idx += len;
+>>> +               ptep += len;
+>>> +       }
+>>> +
+>>>         return true;
+>>>  }
+>>>
+>>> @@ -2186,15 +2232,22 @@ static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>>>          * See handle_pte_fault() ...
+>>>          */
+>>>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
+>>> -                        folio_test_swapcache(folio)))
+>>> +                        folio_test_swapcache(folio))) {
+>>> +               set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>>                 return false;
+>>> +       }
+>>>
+>>> -       if (!folio_test_swapbacked(folio))
+>>> -               return ttu_anon_lazyfree_folio(vma, folio, nr_pages);
+>>> +       if (!folio_test_swapbacked(folio)) {
+>>> +               if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+>>> +                       set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>> +                       return false;
+>>> +               }
+>>> +               finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>>> +               return true;
+>>> +       }
+>>
+>> Hi Dev,
+>>
+>> if we look at the whole `ttu_anon_folio()` code:
+>>
+>> static bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>>                 struct page *page, unsigned long address, pte_t *ptep,
+>>                 pte_t pteval, unsigned long nr_pages)
+>> {
+>>         /*
+>>          * Store the swap location in the pte.
+>>          * See handle_pte_fault() ...
+>>          */
+>>         if (WARN_ON_ONCE(folio_test_swapbacked(folio) !=
+>>                          folio_test_swapcache(folio))) {
+>>                 set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>                 return false;
+>>         }
+>>
+>>         if (!folio_test_swapbacked(folio)) {
+>>                 if (!ttu_anon_lazyfree_folio(vma, folio, nr_pages)) {
+>>                         set_ptes(vma->vm_mm, address, ptep, pteval, nr_pages);
+>>                         return false;
+>>                 }
+>>                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
+>>                 return true;
+>>         }
+>>
+>>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+>>                                          pteval, nr_pages);
+>> }
+>>
+>> The comment "Store the swap location in the pte" is really out of
+>> place. Since we are already here, can we move it to the right place?
+> 
+> I am not sure what is the "right place" you are referring to : ) More
+> than that, this comments feels very out of date - it is well-know that
+> the "swap location" is stored in the pte.
+> 
+> In fact, this comment starts on top of the wrong block, which is a
+> debug assertion for "when we are here, swapbacked if and only if swapcache".
+> So I'd rather just remove it.
+> 
+>>
+>>>
+>>> -       /* nr_pages > 1 not supported yet */
+>>>         return ttu_anon_swapbacked_folio(vma, folio, page, address, ptep,
+>>> -                                        pteval);
+>>> +                                        pteval, nr_pages);
+>>>  }
+>>>
+>>>  /*
+>>> @@ -2374,13 +2427,14 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>                          */
+>>>                         dec_mm_counter(mm, mm_counter(folio));
+>>>                 } else if (folio_test_anon(folio)) {
+>>> +                       /* finish_folio_unmap_batch handled internally */
 >>
 >>
->> Thanks for your proposal in trying to solve this hard problem of
->> unmapping pages from kernel linear map. I remember discussing this
->> problem last year at LPC too.
+>> let me paste the final code here:
 >>
->> Have you had a chance to look at a more generic MM proposal around this
->> issue here [1]?
+>>                 } else if (folio_test_anon(folio)) {
+>>                         /* finish_folio_unmap_batch handled internally */
+>>                         if (!ttu_anon_folio(vma, folio, page, address,
+>>                                             pvmw.pte, pteval, nr_pages))
+>>                                 goto walk_abort;
 >>
->> One of the major concern for me with your proposal is tying the
->> protected memory allocation to fixed sized platform specific pool size
->> based on DT. Then the cost of granular mappings/unmapping if the
->> platforms choose to enlarge these pools.
+>>                         if (nr_pages == folio_nr_pages(folio))
+>>                                 goto walk_done;
+>>                         continue;
+>>                 } else {
+>>                         ...
+>>                 }
 >>
->> As you maybe aware one of the major use-cases here for protected DMAbufs
->> is the secure media pipeline use-case which is memory intensive
->> workload. IMO, the solution proposed at [1] seems to address it although
->> people have flagged rough edges there but should be addressable.
+>>                 finish_folio_unmap_batch(vma, folio, page, nr_pages);
 >>
->> Can you try a port of [1] for arm64 since the author did all the work
->> with x86 as reference?
+>>                 /*
+>>                  * If we are sure that we batched the entire folio and cleared
+>>                  * all PTEs, we can just optimize and stop right here.
+>>                  */
+>>                 if (nr_pages == folio_nr_pages(folio))
+>>                         goto walk_done;
+>>                 continue;
 >>
->> [1] https://lore.kernel.org/all/20260726-page_alloc-unmapped-v3-0-6f5729aa9832@google.com/
->
->I spoke to Brendan at LPC (?) last year but this doesn't really work
->for arm64 because it relies on being able to unmap arbitrary parts of
->the linear map, which isn't generally possible unless you force pte-level
->mappings for everything, which is prohibitive for perf/power.
+>> I am really struggling to read the code here. For anon folios, we
+>> handle `finish_folio_unmap_batch()` internally, while for other folios
+>> we still do it outside. This feels a bit inconsistent.
+>>
+>> Also, we are duplicating the code below twice:
+>>
+>>                 if (nr_pages == folio_nr_pages(folio))
+>>                         goto walk_done;
+>>
+>> Can't we just do `finish_folio_unmap_batch()` like the other cases?
+> 
+> The core problem is that we may succeed on a partial range.
+> 
+> ttu_anon_swapbacked_folio can succeed on x < nr_pages. So for x, we
+> should call finish_folio_unmap_batch. Either we do it my way, or,
+> ttu_anon_folio returns the number of pages successfully unmapped = x,
+> and then even in case of "failure" (we should now jump to
+> walk_abort since we failed to unmap 'nr_pages - x' pages) we call
+> finish_folio_unmap_batch for x pages.
+> 
+> IMHO that is uglier. I wanted to avoid this label jumping. I would
+> be interested in hearing a better alternate : )
 
-As per the cover letter it's about allocating pages that are not present
-in the direct map. This essentially fits the protected DMABufs use-case
-where we don't want any kernel mapping to exist at any time. Bufers
-allocated from protected DMABufs are only meant to be accessed by the
-TEE implementation or HW accelerators like in the secure media pipeline.
+I did try this and it looks nicer actually. Will shift to this in v4,
+thanks!
 
->
->Vincent's series tackles that by using a pool so that only that part of
->memory requires the pte-level mappings in the linear map. That's the
->whole point of it, so I don't think it makes sense to drop it in favour
->of Brendan's approach (which doesn't work).
->
 
-For protected DMABufs, we even don't require any pte-level mappings in
-linear map. The whole idea of mapping and unmapping is just a bottleneck
-for performance sensitive secure media pipeline use-cases. That's why if
-we can support __GFP_UNMAPPED with the memory allocator on arm64 would
-be the best fit for this use-case.
+>>
+>> That would also avoid the duplication.
+>>
+>> Best Regards
+>> Barry
+> 
 
-Now the question is why arm64 can't support __GFP_UNMAPPED similar to
-how Brendan is doing it for x86?
-
--Sumit
 
