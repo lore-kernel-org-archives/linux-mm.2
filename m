@@ -4,123 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25EEFC9832F
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 15:41:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53499C9832F
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 15:49:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92C3F6B0088; Sat, 26 Sep 2026 11:41:12 -0400 (EDT)
+	id 5BAD96B0088; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88F1E6B008A; Sat, 26 Sep 2026 11:41:12 -0400 (EDT)
+	id 593906B008A; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7567B6B008C; Sat, 26 Sep 2026 11:41:12 -0400 (EDT)
+	id 4A8C66B008C; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E3CD6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:41:12 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DD5AA160931
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:41:11 +0000 (UTC)
-X-FDA: 85256327142.20.08014A6
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 16F454000A
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:41:09 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dy0skOWi;
-	spf=pass (imf11.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 222176B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:49:48 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 83F6F808EE
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:49:47 +0000 (UTC)
+X-FDA: 85256348814.23.CDEC101
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C0261140006
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 15:49:45 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sz+wuXrK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790437785;
+	b=RrU5vN8eYZ18D3oGfAZ80jMteqtut3/EJwpSxoCEUTde0nAj1NJgTM1XXFYTwTFDPCIKpN
+	Ss8Oq4T1JWVrvG23qEf5cGFDaKz2WWqGkxZu2rKZGzW4J0ssAIv32DhsBHXsi862ztAJTR
+	lZdHFMPyiOOo+Ixuaq9/mCk2h6FLet8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sz+wuXrK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790437270;
+	s=arc-20220608; t=1790437785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7iYAmkmIlPG9rrJ0GDs88tEbSInUH1AqiZDcZFT6as8=;
-	b=vxRiddkxhsGxvQq834ch6Dg75RgXiWpyRnOFIl9Dr+g+raUsyjzKEzOOKejp7Xr3EoVMge
-	n5R5Bwh5h3GfTxmkn6vhVLvrqTIy7o0c0cV5S6p4T5uoq6MdYBX26MVuB2fYzzg+QhOZnW
-	hKkc7oY0IPRxYFTj/I2Gz51828DNXoU=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Dy0skOWi;
-	spf=pass (imf11.hostedemail.com: domain of her0gyugyu@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790437270;
-	b=SBiKecmQ3qXtmzijxBEtiBXMLFW8elbu/hqXnJ7J/7JGjnYOq9kgiQqXWPDYwlq8Nk0wYK
-	7iNm/6QKyaltkdfOy93SJLjb57sA7A4emuJvm+eSkN0vFvluNn/siW/o2naUfUzQjhVyTc
-	IYF8Fk+e8LUu+sg3z2/0rjQK7+cJ9Fc=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843796e373so1019089f8f.1
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:41:09 -0700 (PDT)
+	bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
+	b=dG74ICeq91EmoB986n1BGWdCoJuiIr8V+WQ5I7lzanPqNlUxMM1mqo9WItddjM+cvoPdbI
+	60BVloIBrPQL/Cc8CGzg71Lg0LIVsyrGbyubBRoYziTE2MepdOVYa7izeqaBRB9gv1cVXa
+	7KRz+e5/IxtozbRO8ZyWOSUEktOeYhI=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d3931so14075245e9.3
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:49:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790437268; x=1791042068; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790437784; x=1791042584; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7iYAmkmIlPG9rrJ0GDs88tEbSInUH1AqiZDcZFT6as8=;
-        b=Dy0skOWiAZyzoYJ5LPRFsMwwm3Zj75IuLaUpZBqoPUwtxcS4BrrpNOzc4qvUEopRAB
-         bLRZoligPwQlpT+rjokF5QM9M7cDhYNN7vtlY35o6jrjwKSS3O7b76Bd2ZCXP/kaWwjI
-         WzYVOGUYiMxBZsxctmNfyc7B4FzoZam8b6/h1DXJllPyUn5DPkJ9ctNLyyguofoczlB0
-         +GHeOw6HgG4VkmcPF7Nsg8aeNtmrMu72ihkaZ/x7DOtovZ6x6vqRFSpt1SFHX9+l7I8k
-         o7Bn5Vcf/QQhELARBZsIGFgpKIoUxDjMmVO6K2XEXu7kZSGYg1i7PHMXx+0SU4w5aTiQ
-         ObUg==
+        bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
+        b=sz+wuXrKFJFkxUNTc/MHLSznCeLk1VeYFardi5o8lMKizMYC+we0cTdFmUSMbSR4ha
+         ys/sUBk99Kq+CClBJc3emFUxgBIdB4bmGyG2Z53AxHzzUBlsnRXNDhcdkgnz23v4AAaG
+         0Xp7hEgDabDlpQr7CmNiKCsJ9DpQ76jcO1cxNKDfoSapyrquomhzls4xgeVMQU28eYMW
+         qPz8FHJStjX1RFxj8iKMSgyg4vmgUZCm+jE3ocqHBwueeksNSQWuUwfiMtt3f7UT6kg2
+         hJXBrNspUQyr86W1otpC26PpwNZF5ZOuunrTCi8YoGV/I4rAuN3MRFCMLSXp2nwTYs5C
+         Br9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790437268; x=1791042068;
+        d=1e100.net; s=20260707; t=1790437784; x=1791042584;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7iYAmkmIlPG9rrJ0GDs88tEbSInUH1AqiZDcZFT6as8=;
-        b=Z+sdRG2EgbZcZIMydyoUfG/YCivBoL0w0d+1Zk4Ikvd8s5p3u4CCkqC1bLbxpJj0ub
-         uhD7hH6caEuxdEB9e/9vzHiEDmUPnzloLwXgAvcyzggQbQypDRdV/D8Wc0tXNTp13zZg
-         YADceCfT/AjfTQnD0YbMRIwd41HihAomOdHIon/sjju5+EbIsiKM1vFAvM7yIen4WxdG
-         ZRNb8xd0FdAk4URluc9YgSs+nSB6EsPCn4X0pQ0eKscuTNoLeZ6RRM+d72xGK/y6n/rO
-         V1nrhmg97ybyp3kph6QPF46D8thwGIoCe2qTDPz6YuJ3yla+av136OJ27LpeemzF/bJM
-         X/ow==
-X-Forwarded-Encrypted: i=1; AKwUvBzSaCAO1jLQnqRCQfDVKotMOdjGCCnibXULwvin+zR+0mei3FDiP8OY55o4B/TDSZKII7jFBhdyNw==@kvack.org
-X-Gm-Message-State: AFq9FYJqePifnz7ZMzjdGuooOnJ9MnhFIEVDRF70rVXQD9A0f6jIiyxT
-	CfuyJWZzOgjlzQv/NtkJ0kTPiK76Z15kvIrp0GUFmwROCQOrj6JJs2XI
-X-Gm-Gg: AYBFou1ASCX/FCKcZMVgEBxzGjEPWmajHSXWk/ZS26ZEdvgrMsHKkl4FEvkV4Xajb/E
-	Z8xi27+iHWNQjxZFuq8miNq7e6Ug60ag1gYmMl7U+szUwOHQqHJAQqRig3H/nGWUcEN7I4SA0iX
-	mTeZL09fwac1brm79j8Q+6tRIzIvUAGQ8GHGkDv05LyNsxadb7wIxSFzxjbJUyj5oXIB7m9tm1v
-	WoqmdB38FrWFGI+QScawG+6i5XesWHfTnn6gdvzbUGOVqD0oQStGyN4w6kQUIf1HKCtH3dWtwj6
-	zKWywr7tZDNLwv2N1iKZuZV1BwnJAaWmJTMmongTJm2cYGgSZ5HNIUdcS9EoO0PvXdWPnIMlVJf
-	PUH3Az6gLeT0g1eN3SZZzdWPpRRpz8sty0AWK4+70Eddz/nEINffwRlZYlwW7YATovCBSC3H3Kf
-	ZBPhTGZ9vTBctS3g+1avtlNqguS1uAn9UcOs8c3zbP6QsnSum4iRoS0LR55mJHQd2kXl3ssa9/6
-	+fpDu4XyPGGSoTwO8s9Fm99qlTQI4wmvFuVorx3mmJ3
-X-Received: by 2002:a05:6000:288e:b0:488:820b:7e24 with SMTP id ffacd0b85a97d-488820b7fedmr8759522f8f.28.1790437268482;
-        Sat, 26 Sep 2026 08:41:08 -0700 (PDT)
+        bh=led8hfaOrEtmmOiSO1x3wL7AB5T4FRzeMXFG3N+Q9Cs=;
+        b=MQixgUEyfvBX4L33XrIPJwbV0Vnnt130TXBgQkvnlqn5nrg2XBCxZE3Bth9S69ZrH5
+         4UVkBX/V9/GmYn46BNyHAxoTU134MtWv9JONNiQyw7w9vzHY8PsCdxPQlN7dNR8ncVmL
+         0FpZ3vlTlCSjB9QW4UItN7aW1CkYI6FmmUyUPeZc2qGqe2RBum2KxkG8eDsukyFhLoLN
+         lEFrCC9YNiMmIM2Qb8xTCEQv7LDIdJ4+Na322MffQNKn/0VxGS0ZAR2TLKHwiRdMR0Z3
+         RyBLRQKYL4h3dJOI82XVuoA/AjWvesvj/X4MAVSs5QLUVc2O+szN6m+vZYleEHuWbnyw
+         ekyA==
+X-Forwarded-Encrypted: i=1; AKwUvBzxOAfwldLQtwxd5t/C4M9bFpYTr+hGLgN+vbPQm5VW5dhR60ggXrdNEBpZcGSUrUw3fgqTZdJ42A==@kvack.org
+X-Gm-Message-State: AFuF++kmwZ+NdlQUVS33jTwgSjnZI3f+oki8Tn7Fee0L4uYcdEF8JFJZ
+	/P5H0MCUEXj2UDTGxBKruRsJzDNfB1oHSwRCcur57q3tlA0ee3Bc+pr2
+X-Gm-Gg: AYBFou1KSk4ANFRgjBWS6SadpAzcFQAP9sSJ/VczO3tzZ9ZrCVXoZg/lTZ24jdwf3hh
+	cLux1AeYq9TdBUUrYYSBnDmp3V79B+qrvZLsLR7aQGfCtXOtu/Zs0V62fju/NXyp/s5QIGahHqG
+	NW0YYYyQQbRzMYRWIjLrxGxnYdNogaAdeZdR3VAvzHWAHnXgWGVYmxWBCosy9n5afPiaodbUrHB
+	zuH8TsgJXSg1beK261JEfo2xqdN+G/fHOPBIiuzZorzpxHp+HD/hhMmNfLQ+tWGN/YMNPvKsjNL
+	qpWjHEwUHAJHzykkvMlIeK7J+nBypZMtMBTibV7jzh1K4MtnsATRth1695JPh/hgHkAGQIdfPol
+	Riw7zBT43ZQ1zTHLPSeQxxw2fd8Udyy8fVanihEJkSZKLUQ2VD2uyat3mkcwu4yYRXXyrXO9AXx
+	fhtp5LWRfbr28mLmCAqR49XTAt0rk2Kdf/DoGDzZ3tPR9BDAfQsUCygCyD3qnO7h6MovJIxjcnS
+	64QKL0AT9voY+8bt0qjm5NGRJ1T6u9f6hN/zXnDJ89h
+X-Received: by 2002:a05:600c:46c6:b0:49f:fe88:e7d1 with SMTP id 5b1f17b1804b1-49ffe88e87dmr20467445e9.15.1790437784212;
+        Sat, 26 Sep 2026 08:49:44 -0700 (PDT)
 Received: from gmail.com ([188.250.243.225])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm14236008f8f.9.2026.09.26.08.41.06
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff065873csm136947835e9.2.2026.09.26.08.49.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 08:41:07 -0700 (PDT)
-Date: Sun, 27 Sep 2026 00:41:04 +0900
+        Sat, 26 Sep 2026 08:49:43 -0700 (PDT)
+Date: Sun, 27 Sep 2026 00:49:40 +0900
 From: Youngjun Park <her0gyugyu@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kasong@tencent.com, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org,
-	yosry@kernel.org, joshua.hahnjy@gmail.com, taejoon.song@lge.com,
-	lianux.mm@gmail.com
+To: Lian Wang <lianux.mm@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, akpm@linux-foundation.org,
+	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, shikemeng@huaweicloud.com,
+	baoquan.he@linux.dev, baohua@kernel.org, yosry@kernel.org,
+	joshua.hahnjy@gmail.com, taejoon.song@lge.com
 Subject: Re: [RFC PATCH v11 0/4] mm/swap: priority-based swap tiers with
  per-cgroup selection
-Message-ID: <arfnkNBANl0fwrKb@gmail.com>
+Message-ID: <arfplImR24PFlk5H@gmail.com>
 References: <20260916183437.2946306-1-youngjun.park@lge.com>
  <20260916200434.GA5784@cmpxchg.org>
  <arAHu_BD5oqpZJER@gmail.com>
  <arQJIjzE0BlUg0CV@cmpxchg.org>
+ <20260925065521.36340-1-lianux.mm@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <arQJIjzE0BlUg0CV@cmpxchg.org>
+In-Reply-To: <20260925065521.36340-1-lianux.mm@gmail.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: f9kk9cm8gjh3na1qmarsrgr9jtwfx6wp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 16F454000A
-X-Stat-Signature: 5ydtb3xyc4594dq7u95p7jq8qn5oa8z9
-X-HE-Tag: 1790437269-153697
-X-HE-Meta: U2FsdGVkX18ssbA/F7R47AoPLDlioL2WBKn6ZeJJzmepgA1Gtk8fWguBTuJTlzPa7m6uywvHg1A0OdUgBrqN3+pFb4niRCuVBTVTxhEdqnSK/8AD2E4SraOrVti83eAANIaM2Oh/SKMt2/nA+oWktYeQ5n94dC0ca8lpZBEUGvJ/oawb7dFUta5ZJ6bLQJg08D1SMtkEjaFUYKKZ97TlU3xomvUkuAd/fklDiKvW3VZqAUK2UoM5C3Q+yPAQyp1UEHgyRE021D1MdCBUIMitcN1u8IbvWt5R9Sxzg7eHREEMKXICEGr5ef2C4V4LvXA93nhPq/h9xgmTT7eNDcYWPwhjEhiyK95h+/SDrKV/lmBlz/YJ09povQWjHCqTpHUFG4kYYZNt2yoqHF8wsrqONo9tKfZne1Rl6CJXYEbYNEPqRq66wm+e2Csq/J+iEuOjeyYMPukZ7EP/IG8Nt+/ptLBB/jThcZGU9cIL1910zF2Bkx/WJ1vMYBxQQTTJHJtVzen8CuyY7bEjEkGoEVtQBHghC3alg1TCmCb4aTF5TOFK8DawuTD/6AX1ADLKsc5L6ifuRrlo7Qz07Tv6jaF/U9d9UrSp2xDkA8GsPcrxv2BUY1D2hKjNdJJoQHo5pLgbA4SwCuVkIqrJq3JIp8fSwYPQLhC9XfTP2ilP2Ih+VrnjpZkdlGjmMZqIhhTQfVGy9xnCJAIHsM7EiN0uSllWzUcRF7B5oo9FlEIXfT+ytZzKZY856QX+oT4sBmzW5vjjTsoOIePPjRqVlaeGHfdd5x0vFqAdAskhFmkYt1JbFSPK3JAH2+p9EdhAkAvuhKC8ui7Dbbq3wIgexzLnjQgZMd2wvmqYDmhSt1CqiB7zv8kyyOcpNk4mxWfXwJQN6NMH6+lp6R+3z54U2C9mnuYdYnsq9m3O+LhRQLfWqNy4IbgwdLmMya2oM6rhZbQarnsSAtN4Y7y2U89ZRAQzaiS
- mbQYy+sO
- zHMmu9h8FDoge+p0XVVsjnESS76ivM55gAU81eO3PYP+zEhLyVqw6qoUr3eMWkoFrzrJHzkugLI8QiOznK/it4HeziWX6erQGXXlqVNn2nhh5q27HXlqkoVWMU5vuRCqZRQZ6bbC7CuGvRn9beVhmUqQjXFEwwMtvsuOfGPwJEGzwQ2Vj9310nNX0JjQmO+5Jt2kJ3oTtwLbwFaMaJDNtJ1SdKKN6eSGTZVLbMDpmyxF8Toh0G4Yy04/kBxJcDMefNMIslc1HylBl5M2GAQ1OyQi1zZXnivC7ommwGFpHF9eklXg3Xoado8aOQM2fu8nDemg6JFyBLTmo/UP+dl5k+e5D4bk/6UIJoMvITc2cro8/vsEGmWSpuuYckJoG+fP9w07+KOc/q01LBs5OfiYVCdZcwInm6D+H4Yq4hKfEZoWF8UaUA5GGNs7ARXu3FOZVELcTD6oMnfO751iul76zaucazQ==
+X-Rspamd-Queue-Id: C0261140006
+X-HE-Tag: 1790437785-614409
+X-HE-Meta: U2FsdGVkX1+zvvAYLRiZGbYj8Ucnouj+Z+NnJbVOgboWtFl0G1sN71nrCyol6xfINyVhulhWQTNG26QrAm/PFt0h89UnrKiZNR7wxu1T1U+vJleYWWsbV/q4npNI2RTF15WLAsrF54yY4/UIhaVDFY8CJY//8KB8HyA4O1g+YVHzZnkdGOFFuWBTehFKQA+Cae9A/INZrszeZKOJpw4HIua7RNxX/Y4dm3/aPYAgg8MaLZ0MPTd6+sJyq0EWMmGoJ7IduuccRaQxwEANgg2OIBrtRwJHMh3VV7710719K/9MTkO/WYGVTvMBDBvQvFAKnL20pgSTjNXXktZwKPJG9Ul2mZSCIK8Fv9+n0mUbaVHl4j93Ho70VjFyVzNM3YVtvlLVHZ1pGf2PkU35t9oHZTrjq3Mjkp2lit9laVIy8RIG8DZoJlxEFkrFZhSp5MZXTjdws+UmBRh+0tEKXr7gs93MDgsd9K4eCNeIkwF4z0qT2ELjwxZb628XzMUy3NZ6ROGTuYfbcs6zfWrwrqftkM82RojGX3vEBv2lc1bEE6wiCCMdqrj32GpIDog361Oo+HRTnK0adtGq5ESy1UULP56vjfr6p6Y+6dsA89CpQmtn1QRAb3gNufkt54UiAhF912fJs/ZRku8QhOUzEVroWn/VwJNym6BXnA8Lavfqv2m4psAl4E+J3sVCmSV9aHsxea5pZP26yEJ7jIxOGW769bu8SluZC16k1ER87GM4WbtpFIBs8ZAAPhCpbPtYNaC4TfdWrlttRWduONube5Cc0FDe/Mv78o0cQoAh7Osbu68PtHhc3ANVMJjr87hbjUBSEDwE2bn7F1mF6Gb5tVgGMMQNk33W2e+IjC0Z/ObzMcEygOLn2aUaFb3oAJOctxSpHUvZESlG5PJxdCFrG/uknYRVDJic4nIC3XdwJcFq3gJj9p6dS+6ZU4tpd9UR3Rpqcrq+2LYVRMzQzGHPPT9
+ gVaYEwCu
+ 67mBzAAxmE0UjOdm4YW76kj5eDAsGAPLlg96+wdK0VHDmN4+9JZsHhag419jiW9xpHsBscpzR0X9+1KUdr/z9q4EGCqYywq7FzUxT57YAsIpxIDWGXGJeNi0QiQbJqrPrKP0/A0BTUQ/kWKNrit+5G97adMezWl8vR9qDE6op9m4Dgxfh5Tvlgojq1GtICVvPsFYrHsiNugPS1rhq4Z3ZZyJkwy2HZ9Y3cfQUvcJB9paDr7cU0Ry/SJwa/7I/SZQRQebY5Zcudc/oWHjv4L8C1/UMlwlxXxgki7k3KozXPkXLe0MV/Bpa91jSsRH5d6ulKvj+tsR0aH7oR5eBX0JbTnBKlzv0EtpxuUGpaARFMk0gvLnR02RTPgmf0TkTjbX/bBh/e9jSCJ9CuPWfatwR8kKzJanAp1JPnapklk94lGjZWirl0a4ogmDklLJwty8kBefrmq3nI/TDMsuI8oLCn/03xw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,118 +129,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-09-23 13:15, Johannes Weiner wrote:
-> On Mon, Sep 21, 2026 at 01:20:11AM +0900, Youngjun Park wrote:
-> > On 2026-09-16 16:04, Johannes Weiner wrote:
-> > > On Thu, Sep 17, 2026 at 03:34:33AM +0900, Youngjun Park wrote:
-> > > > Per-cgroup swap in debugfs
-> > > > ==========================
-> > > > 
-> > > > Patches 3 and 4 let a memory cgroup choose its tiers through debugfs.
-> > > > 
-> > > >   # swapon -p 100 /dev/nvme0n1p2
-> > > >   # swapon -p 50 /dev/sdb2
-> > > >   # cat /sys/kernel/debug/swap/tiers
-> > > >   Idx   Prio
-> > > >   0     100
-> > > >   1     50
-> > > >   # echo "/batch 0x2" > /sys/kernel/debug/swap/memcg_tiers
-> > > > 
-> > > > Bit i of the mask is tier i, so /batch swaps only to sdb2. A tier keeps
-> > > > its index for its lifetime, so the mask keeps selecting the same tier
-> > > > across swapon and swapoff.
-> > >
-> > 
-> > Hello Johannes,
-> > 
-> > Sorry for the late reply on a good suggestion :)
-> 
-> No worries, and same ^_^
-> 
-> > > Can the cgroup be given a priority limit? That would have pretty
-> > > obvious inheritance semantics:
-> > > root
-> > > `- batch (memory.swap.prio.max = 20)
-> > >    `- task (memory.swap.prio.max = max)
-> > >    `- logs (memory.swap.prio.max = 10)
-> > > `- interactive (memory.swap.prio.max = max)
-> > >    `- task (memory.swap.prio.max)
-> > 
-> > Right, the inheritance is clear and easy to understand, and with this I
-> > can pre-define the limit without knowing the mask value.
-> >
-> > But first, let me check the intent. Is the point that capping batch keeps
-> > it from taking the faster tiers, so they are left for interactive?
-> 
-> Yes, basically, that's what I tried to express. Interactive has access
-> to all available capacity. Batch only has access to lower tiers.
-> 
-> > If so, that matches our use case. Latency sensitive workloads get the
-> > fast tiers, non-latency sensitive ones get the slow tiers. But...
-> > 
-> > Even then, the reverse cannot be expressed. A cap only cuts from the top,
-> > so a latency sensitive workload given max can still fall back to the slow
-> > tiers once the fast ones fill up. For example,
-> > 
-> >   tier0  tier1  tier2  tier3
-> >     0     10     20     30
-> > 
-> > there is no way to say "use tier0 and tier1, but never fall back to tier2
-> > or tier3". To cover that, the interface would also need a min value, or
-> > some way to express a range.
-> 
-> Correct, this isn't covered by the above.
-> > And even a range is not enough. Excluding only tier2 leaves a hole in the
-> > middle, which no min/max pair can express. That needs per-tier selection,
-> > which is what the mask,  and what I'd carry over to the memcg
-> > interface later (Currently memcg.swap.tiers.max).
-> > 
-> > How do you think?
-> 
-> I think it could help to aggregate the usecases in the cover
-> letter. Your cover letter describes how it works, which is great, but
-> it would be good to understand better what the constraints are, how it
-> fits in with other existing control surface and broader usage models.
-> 
-> With the above, yes, you can restrict who gets access to the
-> privileged tiers top down, but not bottom up. Is that an issue? Keep
-> in mind the alternative is cutting privileged groups OFF from certain
-> available capacity. This seems somewhat counter-intuitive to me, and
-> doesn't reflect a clean privilege hierarchy anymore.
+Hi Lian!
 
-Thanks for the explanation.
+> zram integration test, not yet a real multi-SSD performance test.
+>
+> One result seems relevant to this discussion: with a restricted parent
+> and an unconfigured child, the child could still use the faster tier. I
 
-I thought about it many times and concluded you are right.
-The reason is simple. the two cases the mask can express but prio.max
-cannot (holes and bottom-up restriction) are possible with the mask,
-but there is no real use case that needs them.
+I intentionally left out the parent/child hierarchy handling in this
+version, since I thought it would be needed only at memcg integration
+time. At this point, though, I think it is better to keep the
+hierarchy even in the debugfs interface, 
+so after reconsideration. I'll do that in v12!
 
-Therefore I see no reason to keep the
-mask interface I proposed. prio.max can be extended naturally when needed.
+> therefore agree that an inheritable memory.swap.prio.max looks like the
+> cleaner first cgroup interface. A hole in the mask worked mechanically,
+> but I do not yet have a convincing hierarchical use case for it; it felt
+> more like per-cgroup swap-pool membership.
 
-For the record, the interface semantics have evolved as below, and
-this discussion changes them once more.
+I plan to proceed with v12 as Johannes suggested. (I've replied
+with my thoughts in the thread.)
 
-  1. Per-cgroup swap priority for our usecase (initial proposal)
-  2. Fixed ordering across cgroups (swap tier concept introduced)
-  3. Child tiers as a subset of the parent's (after LPC)
-  4. Switch to the memory.swap.tier.max interface
-  5. Agreement to add the memcg interface after virtual swap lands
-  6. Express tiers by swap priority, proposed as a debugfs interface
-     until the memcg interface is added
-  7. memory.swap.prio.max: cap the fastest tier a cgroup may use,
-     i.e. top-down restriction (this discussion)
+> For the queue integration, one possible boundary is for the tier to own
+> the queue/reader and for the swap queue to become the default per-tier
+> device allocation policy. I would like to align this with both of you
+> before changing v2. I will also continue the real multi-SSD tests.
 
-I agree with this direction. I'll describe the discussion history and
-the resulting constraints more clearly in the cover letter.
+I'd like to hear what Kairui and Chris think as well. If they agree,
+this is the direction I prefer. Honestly, beyond preference, I think
+it is the right one :) instead of allocating a separate swap queue
+structure, the swap tier itself can be used for it!
 
-Here are the next steps.
+> If either of you has suggestions or specific test cases you would like
+> to see, please let me know. I have a few test setups available and should
+> be able to try some of them. I am still getting up to speed on this part
+> of MM, so please correct me if I missed some context or got any detail
+> wrong.
 
-  - Change the debugfs interface to take a maximum priority instead
-    of a tier mask.
-  - Introduce memory.swap.prio.max after virtual swap lands.
-
-Please let me know if you have further comments.
+When I send v12, I'll spell out more clearly the parts where we can
+collaborate and what I'd like to propose to you. If anything comes up
+before then, I'll reply on the v2 thread.
 
 Thanks,
 Youngjun
