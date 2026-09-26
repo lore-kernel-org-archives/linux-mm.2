@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0ABC9832A
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 18:39:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A73BC98332
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 18:39:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2865A6B0095; Sat, 26 Sep 2026 14:39:39 -0400 (EDT)
+	id 0D9666B0098; Sat, 26 Sep 2026 14:39:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 237296B0096; Sat, 26 Sep 2026 14:39:39 -0400 (EDT)
+	id 0B1156B0099; Sat, 26 Sep 2026 14:39:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 126676B0098; Sat, 26 Sep 2026 14:39:39 -0400 (EDT)
+	id EE21D6B009B; Sat, 26 Sep 2026 14:39:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D691A6B0095
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:39:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B6D2408D1
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:38 +0000 (UTC)
-X-FDA: 85256776836.29.CF8766B
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A6E6D180002
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Prl7x92i;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C117B6B0098
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:39:41 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A937A4126
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:41 +0000 (UTC)
+X-FDA: 85256776962.04.1A6237E
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5951320006
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VqnknOC4;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790447976;
+	s=arc-20220608; t=1790447979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h0enCh2MRlgPpYIWKl5Sr13FnH5bGjxfJsgRmd5nwro=;
-	b=BSJtUKrbfBNEeBRKcAmpo3RjseOa6BmgnWA7BwXpxAkWEZOEHnRn2fZkQwNHFlRt/ai+mV
-	+LNYq4iWN2I5FrvxvOePEtxdjt2te7XkZSqiEWtv0k3RBEN9VJ9+7aNo4lK3t0GfTxKjYt
-	hdd4Qx0zboOEuxOxES0AE08+0sGKStQ=
+	bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
+	b=pu9JiKU/svC0blcn9/PEWO5kXT8Yr004IqYgVn8DE8bOo+UNgauxVCJ199hOjIz2+vGfwh
+	xV1i/byw9YFuGXamvd/IyXN8QXgpvFCFzpoVVqGDloRlJEh2PFtpcFIYdnBuDOYh/qy4yb
+	mkEg1KQtTm3B51YkTXwdMxFpOZSakdc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Prl7x92i;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VqnknOC4;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790447976;
-	b=jQezin+aYfLNvmjLuz+sSms2VfP5att/RbC43Gdv1irj18ROLIJWfw0OSNeq+Co/Qt7vTA
-	2Ge2egppFjGiHVcT3TDRF39vgwg++jfrXJzzA3CSeGnvAW0rSYbgiQ7VErHBGhZXQT1UBq
-	kbwiwCeDXHLQ43Bd+rMpldyFxSa00So=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49ffbd83a92so4153485e9.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:39:36 -0700 (PDT)
+	t=1790447979;
+	b=wYi+3YjtZIOFZw3NH9wYrR+cx/ddfqph1NPN6RMO2IV1ndBQ8Yh9rqfAJlrGNBkZ0NDMCO
+	LTJdBgPhvqZpiVJ2/P5ipgYqkLAc5+wYAGFhZXET2j/FVxh2Qi4FX4pSHifMTw7f46/ISv
+	CbUEbUnucRbm2sh+6MF49NXruoM3DPk=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so1529036f8f.3
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:39:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790447975; x=1791052775; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790447978; x=1791052778; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=h0enCh2MRlgPpYIWKl5Sr13FnH5bGjxfJsgRmd5nwro=;
-        b=Prl7x92iaCiW3wQ5VHQhTE9rkmfwKnMoIPqgFrC3kMAdYymP5fNGVkliPImjoNx9Pr
-         fu2d/nzImbLa+KkSXLrPhq7xCNC43MF3PHtikN2CvyS05TwX1pO91Lq9319RCXH1eqk8
-         +ZuCMV9JnUcURcSu+Ld43e5y5G843IGH8/8Jlb2OPKjjVyjmd93nfKq6UIe2sr+YGVs1
-         6qEV4Wh7ShQUuUf5Xqf+zWTjxWOjfsUbJAchtFu4iG7J9lfFp3h1rY0edIhVmwrPMyZd
-         7JRWB/u1JwCtdGDKDScggF/bZyDB2i9ICsqcY+Wiv/NHlNUqZgOF4tj4H+Kzxywcd9hH
-         f1Pg==
+        bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
+        b=VqnknOC4yWrlrFQotz6icfXRScjixeYrXTW0XdJVu+nNzpVbI101VYojFUGZz5phrh
+         GMK1MrmN3i6XCiZuuRVv7l1ubKqLpPQ9ea9ah65RvmUPfP4P+D0u1pl5QX7yzZeBszbx
+         zgq9ldITtcMggFdsPTxB6DtDijfNmu1LTtn7XZw0ph67dYE68739lwtabOj8ODYYe6oP
+         tiqcCmxBW7qnMs+HobDh1X3wCdMe5+GgFqePI6lbQRXL30uGuzZazRsQIW3chVuoZ7Qa
+         MEdTTP8Li+ENeB1zgOuTaoqIixJXs7crOnKMvhlxrDf/PvtOZcqOy0UO6lU5hzHalk6N
+         tjeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790447975; x=1791052775;
+        d=1e100.net; s=20260707; t=1790447978; x=1791052778;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=h0enCh2MRlgPpYIWKl5Sr13FnH5bGjxfJsgRmd5nwro=;
-        b=h2nG+BKnx341crG03veJ37yAfUvSPyfh5rfeTwug6GsUu8BpjAc3Iwv+eDS1u4eOWC
-         6yb63Buv2jgcu0TenRCnz0Jj4v3LgMISanDcDDdOlHp7fPgOos7GyGl0DOhteLZhNQLY
-         Och7M1mHENjGfL10J4M7YEWyPUX88jkE3erJuOWiAyy47ypptEqOJ6IQspbg084wGE7L
-         tiF3TulkOrowlkC7hWDzrqX0TsyvvSBxDyply/x1b88TTIqQq4PABNig+zpzx53nrQkN
-         RDvn+komp/G0nYxVDGy8mb67WxgEZaHk9plJ2ZMAA+sJ/P8beNrGuVHLYlE6dqKRn9qB
-         H/sQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzcVauK6fQ1TjTtuG2hBHCGbRmNlb04yJ2eUhhOE3SOxJpXw3WiZId9OnlhYsJj7aKA2fdgomrD+w==@kvack.org
-X-Gm-Message-State: AFuF++m43lZmNjvQCmB+qhqHb+VfDnEa0As2ySa6mL19XpLQURgLo1rt
-	PsQYDOTPlgF+9X5EsTCWvtDdbPckkK5pBGX+fd8D40lAdCWCBQymE7jA
-X-Gm-Gg: AYBFou1jtqxRFPsMOuJDvU9jhh/OXc+hHfAL9yenB3KJFIFt522pyvQjty39uHOcSCg
-	za/KemfeTsbVl2ngr5prfAzppzjzxwSo6VJmu4texy9dPBKYqUlmrMkgMdY86Uw0af5o4J1fp1w
-	Y0g/svat1NVA/S+lEsTYJnuyizevQ0k6ODDSTJXI65haoX/ZAjUQzx4+OJKVIOUenbQmkUKQz5n
-	M0OJTW9SrPGLC7l/KEhGyyWcEN3p4jF4ReUEu0SPLYxnJmy7iydH/OiWaHIaU2O01gwgjw3nvDe
-	MH/MxCYkn2JDke9rIr5uwKwSsBClkxhFtzeTTCI58D88Ick88kLzMavZMzw6lzSOtcZ9OYqSM/8
-	bMfT2P4ODtzyFb1sDyyT6Sl7AkjVfRoYDjQADExZXzQgvzkixKGmFDNSsGSOZYtmTEKXkfdy/N0
-	Cz3SqHxKXT1VLww2nkiLG+bLM9Z9QP6A3w1tRcMvIGQfHKtoWSHHCiyFwkSP5gtd/j2/g3PFIdV
-	2JDTlMSNJDGzDcG4NHZTLt1eoZODauhkI2M/g+a+88k6hBOUgaDqiMO12JOr/AqH1f9nebjRznl
-	+g8EG8r99FQyKZRSkc9XA1KBU9KCwMdyORPus+SGqMnjXpZMP4Tq1IkEXuk5G83NHYYYzcgg84Z
-	5hHd7JIc9d+op
-X-Received: by 2002:a05:600c:4754:b0:49d:1e09:694a with SMTP id 5b1f17b1804b1-49fe66d2ce2mr162026765e9.11.1790447974930;
-        Sat, 26 Sep 2026 11:39:34 -0700 (PDT)
+        bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
+        b=nsNKc5jUXZCRQDBqndm+Xtv3mijI/FNQBIq8n2ITydDiJSPe0hkWQFW/4rTkLk4YP1
+         DRTgWNcWQ2hOxPNh4mVc3JRROMJASL5rexxnUgoUPKOFfLRxR45vckBK9FPTa1uCt6Kg
+         pcG2kEYTlhCWBRp7Si610PQZ9YRwoSkBu4g+9F3rMaHEmcYpCDmzM/iq85JSNghKmIrT
+         2LQgMTaYZo97Z/l9R4p73mh6GyHnbbJ0VURn73cu043EfAL5r5LzGPq7GexiqsBo5Eq+
+         pfsWV9gXXCFA4tVHhTm8hkhUg+2x2OAwRVMsBFK7harjaoSoWuOZw1zMjleOtEZR1hnr
+         kVTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBy585Qv8zoWHFVP83gnono0WE7RcdgC6NUgAv9H3a65GuSMeZOz+Eaqqq1Yk36IRBCLO62JXTJyog==@kvack.org
+X-Gm-Message-State: AFq9FYKZ/MH2G5kNBXl6ZxWHFu9MnyqjTR5MtgOzbWkXxqJmwXd7Sml6
+	KpUpOs2aFgbPHIdSKKb+yyupuVawpchifsBXozCl9qgK2vfdwN3Gp9qg
+X-Gm-Gg: AYBFou19joLlh+qiULk+JG29wWpCAenyn4NJytKmRkG4mVeN9HlMi3nbmOwrtrx6F8v
+	YkKBiLG22G9FRVEJXQ8ajWGqmVOBB3QzPkrTzPkv2lX8/zbz7b3nOmefEmdfZnnCrZ+qenRTe5K
+	DKpV4HyeXCsQWM+Brky3DPfWMn86U4ThQPQl5767GAMM0oPgDHEa8okN6Ca6jc4UkLJsi/8uWt3
+	b7etdbvPPB9G9aUSbmtO8wfDToTMF0RCY7h4u/9lLj/f9QuABxz31BfUYTzyiX812COrexQj0aq
+	6+q4rURiXAaPAnAVqjC6Y+vbOh06E28lPzTEiM8VCFW9RKI34doR/RzMVMFn4cK2Xi/aZjh1L9u
+	D7HGxDOPNJaIY2QoOcQwujDmd6Yc11oFolBQPya4/95b+DtTr6F0JfuKR+TACxSMA8nFyllmoNV
+	HuS9vuo3aE/C5T2HkCrcz4ETUIVuh1DVdVXcv5pxzmCatq4i/53hRF4plocd12eppmdQidS++Ls
+	kxNVGhxl+o9pq0dZGpRBIEWZwVU2HF02KMBNSaojE+VJVtLTYj41X4dyr5wCqqVRaRbeCUuD4Xg
+	rbrFhVCPbdy+Vsm2sw3Dv23C1bcb5edo5avCrxHdJLeV26LsyR1aGZPaBbRq2ZiuQ/6TjiAHo7H
+	+5+s=
+X-Received: by 2002:a05:6000:420d:b0:487:14b6:b1be with SMTP id ffacd0b85a97d-4887172e3ffmr17724486f8f.25.1790447977972;
+        Sat, 26 Sep 2026 11:39:37 -0700 (PDT)
 Received: from localhost.localdomain (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a648895sm15430376f8f.28.2026.09.26.11.39.32
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a648895sm15430376f8f.28.2026.09.26.11.39.36
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 26 Sep 2026 11:39:33 -0700 (PDT)
+        Sat, 26 Sep 2026 11:39:36 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
 To: Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Rich Felker <dalias@libc.org>,
@@ -105,22 +105,22 @@ Cc: linux-sh@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: [PATCH 1/2] sh: mm: replace the page size bits in pte_mkhuge()
-Date: Sat, 26 Sep 2026 20:39:03 +0200
-Message-Id: <20260926183904.76186-2-kmehltretter@gmail.com>
+Subject: [PATCH 2/2] sh: mm: align hugetlb mappings to the huge page size
+Date: Sat, 26 Sep 2026 20:39:04 +0200
+Message-Id: <20260926183904.76186-3-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 In-Reply-To: <20260926183904.76186-1-kmehltretter@gmail.com>
 References: <20260926183904.76186-1-kmehltretter@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5951320006
 X-Rspam-User: 
-X-Stat-Signature: 6uwbmpibsg5q6imzdd8m8und6pb4sn9c
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A6E6D180002
-X-HE-Tag: 1790447976-714526
-X-HE-Meta: U2FsdGVkX1/Y4+oZP+GgRMCx36YQIHTbKbTYvJtJsNYMycpmOnbrbPfeYAHucoDyUdPXS/oU6RYR0Pt6FEECMjecjjGyREwEWU2eixZ2esztjwgR2tz/N6k+WihW+tly8TJ7cRQS+AUsxoetqG9mh00yjprIMa2v7nBJKRnBOhuN+1Pm75JRGcX1ISj980+eVFv/WJNtzRp/GJ+XLbxklYIWTe5QY49fgldT52C3KX8kH1PFBjvzt/osQ5X8RashkHcwXIoRVva3WvDxYVklbINt2gpW7cqUwxrLAT6jyob7RJKlilSBT6tRUrXERI5TPJv6OuJWlZSlyXt/WHN3TtEceoAceJC7hQlNM4IRHj0bBZ6zb+fWKhIrAuKdluITXrsuN/MIwvyWheqZbMn0RxDMZdpubvzHNjY7kHF3tuvvD0atiCIT+f/3Ifl11tistGkCI6KZ6RCNGUjvihpz5woVEILN3B2H6JnHtuGx+2Mc0Wz/BPVpsiUeyoupcvHZItmO+C6XJwzZUC8T9zAcAqaZwn0VCMpcdwOjJNxKGXK8Z312AFRUZlKOljAnvp4ygHkreG/eOrbrfwws9sHtyHs4has8A11S231i06+UEg4vGT7P82172n8PRds/P4VLQlFhxMqZzHcTYH9bkBXDm4KrNNlgb3rCzF1oq2j9rEZCCEsk0gUoWZXnD6TzoyOcTeFkq/L/z7aaB4CVd5CMLLKbCxpXpa/QNOF0CZeApvIRBzepzBJS3JsCMQLi9QSULw/sJZ1abTGNClDRzQhcRXh1ocNilNIWD7irHRJwaxACTISVxzITuitIxTBeuP5TYEfji2tH0IZs6C8fBpVgRquiz+hp25C0YfSRt/rxYZtlHIBoPiA0c8kYZ4HRpY+QKOtfxsWefXuLXk73R5vTb5qWMSBMIEbBNoQ0V7ONJ7U7svoqWiiYX1qgtCu223iRnlYRfAVU3IfxUB9FZgx
- geRtOMUI
- BDAMtJ0L93cob0P/jIV8Mid9e4yzUyuD1czRJzfnjHIgviqIyw5klH1qv1X1yUBgG1Yq9el47kIvfhdPizsexoaWdqL1aMWRK6X6uqAUeSE59ZeOaqFUEgD6WI2oOnuxpRYpoesKtCzBkUW0w7vGHKy8btgBNP8SZkZWA/DxYojg9trL7fHr1mwLFb2voyUqs5wpFzmxhA1tpkNnCkcJoNzKhVBqo3xGxRnwTDIqhcnmfSJ+bJXoPwARXcxDcy1ifmE/dkiN4fiHHZdXkN1VuD/cfV1gY3PPFo3s67Vz17KHXT96UNZoR5+i5zOk4ICBLa9ZlO3xJ1cNFBLwJr8rkzT/L5CrRrps2PlFWbtxApzRrNyBd0v462jaWfAKxRDts4+e0ihiFTQ+WSO5fr2JM8X0T4bksHi/WQW5LnBCljzyP9k4LQiYNCy7+1MrYfYmrdZMM2d/kDpHRLhCDGN0cZ5iWWNkE/Xv1d1AMeCO46punEgs=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6it9y6zeyen85wkn7aj5nceypfwhmru3
+X-HE-Tag: 1790447979-706070
+X-HE-Meta: U2FsdGVkX1+0p108fswUDS07WiW+jePeLIPBJ0o/6j74zuLVr521Mt40Fv4xrb2S3VxfOF3CT/ThWVHBgUQE6usIGUqCzU5qogqTnJ+k8+YYxaJ4LMLcbAz3xM+BYTImrg4U+OMC6++zj2LLX7N0MwcYVvomiwpWZKzns2ZKzeUQmEolBLUI9omLb9VPogGSXX9mnXiItmW6tUnOdjNzaq0NyQizF19KCREGmNkefGcmVdjeBzL8t5vDiQvxgvZo6BcHw6rbueFRhUxA2alZlmvWASUZPpS73ynatmEvPskgUYTZuYF/qgzSUM0kJjC/BWph6YiQVRXfmh3DNjBFv3CN5E1PVfEkBsac1vIz78piB0zXlVtT1yrMkEAZlj5ZdAu5ZkKNHJC65Ettyo51sJPsPeBesmliWoYAgdHW6nmaa5lEpLvLKGJ/SEN7xvlo4JJl73cdMJG1FANDRZ+QMcel5Suffl42kt02asTj1o9qp02szG8xfx+xZt5dOnmwDHtNEIlYymOdQWZ2+NFxtHlAbrRyq3iQF2tG9LuF+Oa5yn2WMWouMiaWj9+Nn4J3wgajDy6uqhxuY1akTP1gEwTvefd7okD+oMLo9lpJhiFaMV/9UR8Zj/oa0cvA+bgRmCebw96SFcGCMujrrk4z/betreesTmXmmqJGf9PGI6unPdJW9Cegx/yRlki0RUz/GNT/IB+8m5MbszCTtd3MMXbI0LiP1XxLuCJxEe4FLKWX18aCD2LPEWO/Of+rpIe5U4/J2I9L/bPP4At8jC4zs0AwJmwFyMOwp8uDC6MNm3f3hwNLl163A0zLGECaxGC6dNa/enlb6r/uijPXU0mhWLFYKTtwAaPNQJdyYHET/f7RYRmEFcVrokGyWpxMDVB1Lrv6YkLsu10+dZ3i1dit54HtMK7XwRmeVLQA7p80IXjGdLeZCVL4DZCSPsml4CMfC1Skgmi10g8ZKnO5XH6
+ 7e+5Na+9
+ ZZCAlivjF85CQ+mh7Slit606ryNW+YlAYQ3XupvXVNOiOkKi5mtj3SQOfnrVRapdRf8OSqfi7NxJIdaqauClOlNH88C/cjuBs8B+MppFbHLGUlcA9c6aYFvNVKYpfHQnMzB8vLPEF7PWc98VUwEHny2VfxWD0sRri8nBFYKtSxI//5H2QUug7jDdLnaREHur9JSFXJv/g1+HRnl3hCnYVElWFdISxFD5uW4QUB0hkFCip4RWY8Lx38DWY7Z6D2/EuWN6AweYt6yprjZaakTkmaONp5hAhbDkS4fCz5/Cg/lse/xVZv6mDOY21hkFpUzM4aPfcNEONHGuOCSRjrUmL+59zr+24bpWdBMJONmbiRk++ACsJAYf4MWrBQrP5UIFfInJ3UIiB5eW27yB6eCM6OfaRh4XsM8FGNxETWTkI1f3zoj7Bbj1sqvdtIL6tQy0Cqka7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,86 +128,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pte_mkhuge() ORs _PAGE_SZHUGE into a PTE that already carries the base
-page size from _PAGE_FLAGS_HARD, which every PAGE_* protection
-includes. The PTEL size field is an encoding, not a set of flags: on
-SH-4 with 4 KiB pages and 64 KiB huge pages, _PAGE_SZ0 | _PAGE_SZ1
-selects a 1 MiB page. Every hugetlb mapping is therefore loaded into
-the UTLB as a 1 MiB page whose physical base is the huge page's address
-rounded down to 1 MiB, so user accesses land in unrelated kernel
-memory.
+mmap(MAP_HUGETLB) on SH4 can return an address which is not aligned to
+the huge page size. In a QEMU r2d guest with 64 KiB huge pages, a
+two-page mapping placed after a single 4 KiB mapping lands at
+0x29558000, and process exit then hits the alignment check in
+__unmap_hugepage_range():
 
-In a QEMU r2d guest, after touching a MAP_HUGETLB mapping at
-0x30000000, QEMU's "info tlb" shows
+  kernel BUG at mm/hugetlb.c:5215!
+  Kernel BUG: 003e [#1]
+  PC is at __unmap_hugepage_range+0x3a4/0x424
+  PR is at __zap_vma_range+0xa28/0xa80
 
-  vpn=c0000 ppn=32e00 sz=3 size=1048576
+Commit 7bd3f1e1a9ae ("mm: make hugetlb mappings go through
+mm_get_unmapped_area_vmflags") made hugetlb mappings use the
+architecture's arch_get_unmapped_area(). The generic implementations
+handle hugetlb alignment, but the SH implementations only account for
+the cache-colouring constraint in shm_align_mask, so the mapping ends
+up aligned to at most the D-cache alias size.
 
-and writing the two huge pages overwrites kernel data, for example
-page tables ("bad pgd 5a5a5a5a" on munmap) or a struct file:
+Set the alignment mask from the file's hstate for hugetlb mappings in
+both SH implementations, as LoongArch did in commit 3109d5ff484b
+("LoongArch: Set hugetlb mmap base address aligned with pmd size").
+Huge-page alignment also satisfies the colouring constraint. SH only
+uses the bottom-up layout today, but the top-down variant gets the same
+change so the two stay in sync.
 
-  Fault in unaligned fixup: 0000 [#1]
-  PC is at file_tty_write.isra.0+0x24/0x220
-  R1  : 5a5a5a5a
-
-The SH-X2 extended size field has the same problem: a 4 KiB base page
-(ESZ0) combined with 64 KiB huge pages (ESZ2) encodes 256 KiB. Only the
-configurations whose huge size encoding happens to contain the base
-encoding, such as 1 MiB over 4 KiB on SH-4, have worked.
-
-Clear the size field before setting the huge page size. All hugetlb
-PTE constructors, including huge_pte_modify() on mprotect() and the
-fork/COW paths, go through arch_make_huge_pte() and so pte_mkhuge().
-With this change the same entry is loaded as
-
-  vpn=c0000 ppn=32e00 sz=2 size=65536
-
-and the mappings read back correctly after mprotect() and fork()/COW.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
 Cc: stable@vger.kernel.org
 Assisted-by: LLM
 Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- arch/sh/include/asm/pgtable_32.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/sh/mm/mmap.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/sh/include/asm/pgtable_32.h b/arch/sh/include/asm/pgtable_32.h
-index 5f51af18997b..1e6821a23eac 100644
---- a/arch/sh/include/asm/pgtable_32.h
-+++ b/arch/sh/include/asm/pgtable_32.h
-@@ -145,6 +145,8 @@ static inline unsigned long copy_ptea_attributes(unsigned long x)
- # elif defined(CONFIG_HUGETLB_PAGE_SIZE_64MB)
- #  define _PAGE_SZHUGE	(_PAGE_EXT_ESZ2 | _PAGE_EXT_ESZ3)
- # endif
-+# define _PAGE_SZHUGE_MASK	(_PAGE_EXT_ESZ0 | _PAGE_EXT_ESZ1 | \
-+				 _PAGE_EXT_ESZ2 | _PAGE_EXT_ESZ3)
- # define _PAGE_WIRED	(_PAGE_EXT(_PAGE_EXT_WIRED))
- #else
- # if defined(CONFIG_HUGETLB_PAGE_SIZE_64K)
-@@ -152,6 +154,7 @@ static inline unsigned long copy_ptea_attributes(unsigned long x)
- # elif defined(CONFIG_HUGETLB_PAGE_SIZE_1MB)
- #  define _PAGE_SZHUGE	(_PAGE_SZ0 | _PAGE_SZ1)
- # endif
-+# define _PAGE_SZHUGE_MASK	(_PAGE_SZ_MASK)
- # define _PAGE_WIRED	(0)
- #endif
- 
-@@ -359,11 +362,11 @@ static inline pte_t pte_##fn(pte_t pte) { pte.pte_##h op; return pte; }
+diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
+index c442734d9b0c..4df807e0df36 100644
+--- a/arch/sh/mm/mmap.c
++++ b/arch/sh/mm/mmap.c
+@@ -7,6 +7,7 @@
+  * License.  See the file "COPYING" in the main directory of this archive
+  * for more details.
   */
- PTE_BIT_FUNC(high, wrprotect, &= ~(_PAGE_EXT_USER_WRITE | _PAGE_EXT_KERN_WRITE));
- PTE_BIT_FUNC(high, mkwrite_novma, |= _PAGE_EXT_USER_WRITE | _PAGE_EXT_KERN_WRITE);
--PTE_BIT_FUNC(high, mkhuge, |= _PAGE_SZHUGE);
-+PTE_BIT_FUNC(high, mkhuge, = (pte.pte_high & ~_PAGE_SZHUGE_MASK) | _PAGE_SZHUGE);
- #else
- PTE_BIT_FUNC(low, wrprotect, &= ~_PAGE_RW);
- PTE_BIT_FUNC(low, mkwrite_novma, |= _PAGE_RW);
--PTE_BIT_FUNC(low, mkhuge, |= _PAGE_SZHUGE);
-+PTE_BIT_FUNC(low, mkhuge, = (pte.pte_low & ~_PAGE_SZHUGE_MASK) | _PAGE_SZHUGE);
- #endif
++#include <linux/hugetlb.h>
+ #include <linux/io.h>
+ #include <linux/mm.h>
+ #include <linux/sched/mm.h>
+@@ -92,7 +93,10 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = TASK_UNMAPPED_BASE;
+ 	info.high_limit = TASK_SIZE;
+-	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
++	if (filp && is_file_hugepages(filp))
++		info.align_mask = huge_page_mask_align(filp);
++	else
++		info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+ 	return vm_unmapped_area(&info);
+ }
+@@ -142,7 +146,10 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
+ 	info.length = len;
+ 	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = mm->mmap_base;
+-	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
++	if (filp && is_file_hugepages(filp))
++		info.align_mask = huge_page_mask_align(filp);
++	else
++		info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
+ 	info.align_offset = pgoff << PAGE_SHIFT;
+ 	addr = vm_unmapped_area(&info);
  
- PTE_BIT_FUNC(low, mkclean, &= ~_PAGE_DIRTY);
-
-base-commit: fddfc3ec31799a932bb92f1b8a84cb3d1f963be9
 -- 
 2.39.5 (Apple Git-154)
 
