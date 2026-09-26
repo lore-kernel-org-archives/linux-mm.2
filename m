@@ -4,78 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69921C98318
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:26:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9E31C98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:26:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6F76B0096; Sat, 26 Sep 2026 05:26:55 -0400 (EDT)
+	id 92A476B0098; Sat, 26 Sep 2026 05:26:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 557DC6B0098; Sat, 26 Sep 2026 05:26:55 -0400 (EDT)
+	id 88C906B0099; Sat, 26 Sep 2026 05:26:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46DD26B0099; Sat, 26 Sep 2026 05:26:55 -0400 (EDT)
+	id 7A2696B009B; Sat, 26 Sep 2026 05:26:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2501D6B0096
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:26:55 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A635B16087C
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:26:54 +0000 (UTC)
-X-FDA: 85255383948.20.FC000AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id F262340008
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:26:52 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FOuRxBEY;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 5D4916B0098
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:26:58 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E3EDF16087E
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:26:57 +0000 (UTC)
+X-FDA: 85255384074.25.841EDF8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4B03F20002
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:26:56 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ot1JG7uA;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790414813;
+	s=arc-20220608; t=1790414816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ESmr6c9B3f3nPHgJ9uIGzyifAGO5yB3Lw2nHs6HrCGI=;
-	b=D9q/QCwauHaqwSpLqFqPXuuZ7U4ez3SpSZK32dltQVhOFoZ+J+2GOtAupvGYKekjpzhsRy
-	ye6y7649msq66h4W+u0ZL7exw2dW3Av6w/kdzz35fLLqz5c9bxnNvxZgHtfvc5qtfmNYvu
-	QL4EoD0/quhISv4Ej5X/38Ae2PqD7u0=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eV84FIWl/nzRxlwPhoVqnWJO2Z3uN9aWosu8vZ1OKII=;
+	b=lDxwEzYRKfAcqy76Vo/Bilc8ndkCMZpjzjauWg55VZiCVvOSHCfenMaRawRRcMreOFzP6A
+	74ZD+4t403SPLVX0b8CJ5VQ4qd2xdm/HBfc3k9t+9AaVg993zeuTJV4/lgURH+f34o7IAY
+	7dhYmyzeC/Td0OzRs5b2IqTAJDJwdAM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FOuRxBEY;
-	spf=pass (imf11.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ot1JG7uA;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790414813;
-	b=faE+FSSsyxA/ZDPuV1E3e7/eNh+jQycmrW4f5mVsPCUL/YTvPaD4GHs1NZ9UwfQ+1s3SpN
-	FbVfd4PU5jOEtbY4yz82E7hZhFSEuNqZr5xyblFSgy6v/XdA41OHfiEctqpxeZ0gPwsLS4
-	nLpnzG/pPVtJF8Q5Oaiw9AH8oxF4QMc=
+	t=1790414816;
+	b=7rNkD/WEjSs17Atd+9iLVagQPD1SA/HaWus7GY9CtxvjmSTXboEZb+4aVE8frRldgLhCE1
+	ryjS2m3LZGXQGudXa+2kyX7ndewEpNzBXSAd/sB6i1DLAv5zp/AX082FnTeHr1cVMAuOPj
+	8204S9NRg3ZmoqnCrUFeA8rE7hcIwAA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 285B743E27;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9DA18601E4;
+	Sat, 26 Sep 2026 09:26:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CA21F00893;
 	Sat, 26 Sep 2026 09:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340D41F000FF;
-	Sat, 26 Sep 2026 09:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790414812;
-	bh=ESmr6c9B3f3nPHgJ9uIGzyifAGO5yB3Lw2nHs6HrCGI=;
-	h=From:Subject:Date:To:Cc;
-	b=FOuRxBEYB8jZsQc86a0abbiPSCGuVnZ3dl/ZVCDQpDGwhDchPhx1mx2qZmuVIUza7
-	 dGG6SHxZJAcUWQ+27tgUyQVZXe6sK7yxODc3PctEl0fhb5ElOINWn4LjJD0z78SoNC
-	 GHvsSvYyUrAoArg5BT4dn7DNtFKaN5/By8CPJflPSPVlDbomVkiTgdjzEl4orM+q9Q
-	 OU+vdQCb1BQl+r30ju34Nr3McD6Wp4PLcAGmlxgTl2z6gkUDfuPflHTHpTuTETX7pX
-	 1w0bJrCQKiurLmCqfhaRxZpLR9J33Kslw+R5p2cvobTUR3PQ33Mz1eLKm4Rm7K6+EE
-	 t9fa0m2bP+kEw==
+	s=k20260515; t=1790414815;
+	bh=eV84FIWl/nzRxlwPhoVqnWJO2Z3uN9aWosu8vZ1OKII=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ot1JG7uAEJRhW6v2Qwk04AMXnxVxrYCaSmAMfXnv2bKPpKm8Ip2GpOBFlvKsGloxO
+	 ND1XdE8rL2JgosT/JamxHnT+bk/YGYjMaW9BnwhqPMinJ0D5hyMjLB3HYjgoTezdd4
+	 6DlKAcy16ogcTPjAYFxIJXE3vC4ar5EprlmAqQn2i286DzXlgCIQ+b7wdPcHqZZA3m
+	 3BwgD0FdiJLSJzMIHWuRpNyC/hkoFDqMens1SU2HJo+wQ0o0EYnxCbhH+Ci4M9IdUJ
+	 m3LWSxCck6QkYxxTVuE6mB3tqB4LX+cFF3tqc+PI8gkxSVsNhDX0HDTe5CDkkqmCpZ
+	 fxmEGNwG2Lv0Q==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH v2 0/5] hibernation: make safe_copy_page more robust and
- remove debug_pagealloc support
-Date: Sat, 26 Sep 2026 12:26:29 +0300
-Message-Id: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org>
+Date: Sat, 26 Sep 2026 12:26:30 +0300
+Subject: [PATCH v2 1/5] hibernation: make swsusp_page helpers static
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WOQQ7CIBBFr9KwFoU2oa0r72G6YNppQQUM0EbT9
- O5CjQuXb+bN/7OSgF5jIOdiJR4XHbSzCcpDQXol7YRUD4lJyUrBWi6o0oDeypg8WgtWQSMQ2oa
- TdPH0OOrXnnbtvhxmuGEfc0Q2QAak4KXtVR4Z46I5GUNnG6KEB2ZH6RCdf+8vLTxn/drrv/aFU
- 0brsR5GidUAyC73tMPH0fmJdNu2fQD97zla3QAAAA==
-X-Change-ID: 20260916-hibernation-7603b86eb981
+Message-Id: <20260926-hibernation-v2-1-235f69f3ab2a@kernel.org>
+References: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org>
+In-Reply-To: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Alexander Potapenko <glider@google.com>, 
  David Hildenbrand <david@kernel.org>, Marco Elver <elver@google.com>, 
@@ -85,14 +82,14 @@ Cc: Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>,
  kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-pm@vger.kernel.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F262340008
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 4B03F20002
+X-Stat-Signature: z5eihx3uji4khcjear63kchpzp91d6th
 X-Rspam-User: 
-X-Stat-Signature: 8x74yewfnc6ofpgeo5jubkcra1m6j38a
-X-HE-Tag: 1790414812-699526
-X-HE-Meta: U2FsdGVkX18f7Wdhi6Xwg0JY6oUMKCXVjELXT4zAfFu4ly6hYwWowc+4Km1o+2eWffKJC3PkGT64t2mrWo5lpnx8bsGD7xtKFZI53hODJ8R/k76z/pp8en2m3csbpl2w3+enIMBGk5N+ZCZmfOkFliSrnaZeh0h/p545WKJ340uT4D0CRQMhGjwGv5qHUL89yUE/v9r+zwGEs4PZmiEWTRPw2am62ieprY214wzBeTV+yJW4grVXnk3iZMic0ysELX2jJJ5iLBAOzb9mC4Igln1lU4SME7TwuwcDwmtSfiUyPkQ3CKsDlTr9Z6i2z86OUFLXz6MrAMSasYOVex7u3e3inAVuJH99ZzDA56f6vry5IIBby6XlsMvMhm52BvVFpYXCPRvBVn822S62lZj8TDU3ZnAL4ktsYRbXfhBQHblBU7xSSgKRKt5H741xSZqSTKNsz1zD70NQ7OpO4nm8akrFNKrlw39tpeJPy+6mtCsKbeSoUvEQCmWAP2ew5wka2M52TjfYs4SNOqYnYGlt1NnTGhXR30psYRGoAVA5b/y7c2U2IqYwUqCEDSG1JDNTlRvaspu/Cpu3PbMfJ7w+eCCxda9J7kWAmVmgq9Fv7MGS2tXN0lzbxX7M9c/e6Hn7z9FTH3e/OOSVZpbRz3gAcw2k9LsUDf5NTwJmHdlPfdR3BO6uqfcyd2bF72qMYRKkJwWibJyQRdZQ0cMaGxTlGTVvVUGYAfU2CJJ3kaJAP39ke+VjEJV1kIEbCaFKZyc6tNDt+SRokUyfQKo6qHTkyqTXfyHd947/wHbWLeiC0QQL4fGfZK5/7XPRkE4ysa8Ur7q7UY/rmINlI8gQTLg4sP0+XbaINVclBWPpfLSXXH9dFX0xsB9TqrJ/0q8NZ4Oa4TXWntJYpVK4a94zxazyv7Q49XefMtx7n73OQsSigZYGaB8FeCPDRxKKHIGjHLa1Yd34xOnt0ZqtfKcq1Rm
- A74JIdas
- RG4mTElhJ0pSQI805XYpP1409FilG5aCSpQd5f+oMQ6dKt/lYtHymhinBvXtt0YHDaoyKh5cEuXmxyV1qibMmndFV1P0HIb6YhW94W8u0gPaS8CRqSZWxGWg8vFCeR4EKxPSpVUImC9Uo4qaDauIA1VXw9zntxEEL4JIswHSkr8rIdff7HqtOBuVldIniOlP1POpRtQcqMzeygQGCP2bktss35HB/PBiNqF1eA8nZrkJ0IBelsKLSov0aNmykb30bX331/Oc1g6Ps383MOsZ//jEz4tTtdXzi//CiCprNyCet/oOiCrYCb+ZB0wVlVyxtutUK9WCAyj3ZcKFPGkq/Z25kW29+QdscR5txQLXAy+sVlK+8mlkUuiU2EA==
+X-HE-Tag: 1790414816-909345
+X-HE-Meta: U2FsdGVkX1/IleiPBsSNWBD5WUWbWE5JfqVrVN12EZC/uwqtdtMkmxlEQkut12bISdHlB8qYymEONJS5AD+EztyXrZt5apn5uMV0maKKDfSNvx8/MD7CQ2m6o0xGUdjIVvC+FMiXWxV+vjhJe+80iSG9yV9MnqqhBOlAWynWst9GOP17OwlfYqXg3fGRDNFj6JV7xVNK/cpM/dE0JxvjrGeSSRfNlds0vJPqbOAX0oIEqG0Ww4gs1RajM96RwjKwDcnMlOfDCKlJLiLLR76ZpaA7Q0jSTZu9BLZo9HxPZDfLZKfn9hIMpaJycYAmhkPHnUcrct/KgQIk1hF9dTaFHxN/JfaUBHqJ9fnUy17h9RtQ7F55zUdlTm91VrmYebzTpNaTbpZIP819Hos0ffzi5m036HItgzv/l1tFiV0C57eGmW8lVIK0CCy2+BUhD7gFIRO8LBQf+udM07PEzJ6hLhAjvumT9gccEHligBAQ333Mx1sVC8264UO9AQX4UJlgbS9SWv7wImlC+6n/pMEHH1XjsBAhCBA5hUZUXU74Eoitd0Psf+2tRYej+YueXhj/V6HhLiNRG/nAxBb2u8wd5Di14ykCur1/StT+6Nz8INx+diq5kVrrrkQSdXDVZWjdfwRpM88v1DtD2IPb1eFxC0Hy1rSJrPCBgtnshyKFH84wL8n+LCyZ1yIfwqwykicNg4eWEKCEMjgdeBVL/6iw1Vy9uyDMef5rcITTKOZbpJV9PyzxkU04hF2w7mloQzY1pVf5/S/eHK0G4/KdfmlwBSxfO1xmx4uhe+e2PRqXrOrXTnOq4VN+Tn+yHjgrfeS/ue9stgLlt/UpjgLgpmo+9rlZXYeWU7d3KQANHdb+PX8pGkA26C9Oy84qRbxYQ26D79B5oTyCXf73aEtECnpoNoSqRgekdySZ0ejnAUXL0uq4GpGQ48MRzkQW7iSojon9bnKIkKxIjjYrQG0x+12
+ TG8LJpB7
+ T6ElmKaRJWQ7LG8I/M4lmsxYQLGVzLkzcDHN7tUP1dVUhEK6VAmF8naae/Zxpkjs2wUbpPxemoiGg3o6NWshQTG+T96wWoubNjaFBLn7ihDkMGoUwPlbCNgLXjHdP3HHdZ2Rc7Dxe+901aJlEvFQwDDubzXL4WbeZb8B5thHkrcxYQ+kI9Et0CnBW+rPTHtmQVZ0F2iCr26PvhuTjc59efOyQKQvYQIlQxEMwUEp3RysfZbT4TvesJnnt5nYqOBcnVgy5o7+yawb8bi+c/iURjVHezpWf2QCb1xC2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,65 +97,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When hibernation creates a memory image, it uses set_direct_map() APIs to
-temporarily map pages that are marked as not present in the kernel page
-tables.
+Since commit 31a1b9d7fe768 ("mm: page_alloc: move mark_free_page() into
+snapshot.c") several helpers that set, clear and query free and forbidden
+page status are only used inside kernel/power/snapshot.c
 
-Initially, this was intended to support debug_pagealloc along with
-hibernation on x86.
+Make them static and add necessary forward declarations near the existing
+declarations of similar helpers.
 
-With the increasing desire to use set_direct_map APIs for hardening
-features and with their inconsistent implementations across architectures,
-using kernel_page_present() + set_direct_map_valid_noflush() to save
-non-present pages in the hibernation image is not very safe, to say the
-least.
-
-Worse, some combinations of debug features, such as debug_pagealloc and
-PAGE_POISON cause a crash during restore.
-
-Keeping debug_pagealloc compatible with hibernation requires a complex
-infrastructure for tracking free unmapped pages with a page flag/page type,
-verifying that it is actually a free page that hibernate_map_page() tries
-to remap and making sure there are no stale or failed page table updates.
-With init_on_{alloc,free} and/or PAGE_POISON on top, this also requires the
-ability to map and initialize these free pages on restore.
-
-This complexity does not seem justified for a somewhat niche debugging
-scenario.
-
-Instead of a complex fix to support hibernation with debug_pagealloc, make
-sure that copy_data_pages() and its helpers properly handle errors that may
-happen during page table updates, explicitly enable saving of KFENCE pages
-and disallow hibernation when debug_pagealloc is enabled.
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
-Changes in v2:
-- use hibernation_available() to close secretmem race
-- rename kfence_restore_mapping() to kfence_reset_mapping() for better
-  symmetry with kfence_force_mapping()
+ include/linux/suspend.h |  6 ------
+ kernel/power/snapshot.c | 15 +++++++++------
+ 2 files changed, 9 insertions(+), 12 deletions(-)
 
-- Link to v1: https://patch.msgid.link/20260917-hibernation-v1-0-7f7dfae3dbe0@kernel.org
+diff --git a/include/linux/suspend.h b/include/linux/suspend.h
+index b02876f1ae38..b3435c5ef63f 100644
+--- a/include/linux/suspend.h
++++ b/include/linux/suspend.h
+@@ -381,9 +381,6 @@ struct platform_hibernation_ops {
+ #ifdef CONFIG_HIBERNATION
+ /* kernel/power/snapshot.c */
+ extern void register_nosave_region(unsigned long b, unsigned long e);
+-extern int swsusp_page_is_forbidden(struct page *);
+-extern void swsusp_set_page_free(struct page *);
+-extern void swsusp_unset_page_free(struct page *);
+ extern unsigned long get_safe_page(gfp_t gfp_mask);
+ extern asmlinkage int swsusp_arch_suspend(void);
+ extern asmlinkage int swsusp_arch_resume(void);
+@@ -404,9 +401,6 @@ int arch_hibernation_header_restore(void *addr);
+ 
+ #else /* CONFIG_HIBERNATION */
+ static inline void register_nosave_region(unsigned long b, unsigned long e) {}
+-static inline int swsusp_page_is_forbidden(struct page *p) { return 0; }
+-static inline void swsusp_set_page_free(struct page *p) {}
+-static inline void swsusp_unset_page_free(struct page *p) {}
+ 
+ static inline void hibernation_set_ops(const struct platform_hibernation_ops *ops) {}
+ static inline int hibernate(void) { return -ENOSYS; }
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index d5dba0e50b2e..e732bf6389e4 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -112,9 +112,12 @@ static inline void hibernate_unmap_page(struct page *page)
+ 	}
+ }
+ 
+-static int swsusp_page_is_free(struct page *);
+-static void swsusp_set_page_forbidden(struct page *);
+-static void swsusp_unset_page_forbidden(struct page *);
++static int swsusp_page_is_free(struct page *page);
++static void swsusp_set_page_free(struct page *page);
++static void swsusp_unset_page_free(struct page *page);
++static int swsusp_page_is_forbidden(struct page *page);
++static void swsusp_set_page_forbidden(struct page *page);
++static void swsusp_unset_page_forbidden(struct page *page);
+ 
+ /*
+  * Number of bytes to reserve for memory allocations made by device drivers
+@@ -1036,7 +1039,7 @@ static struct memory_bitmap *free_pages_map;
+  * corresponding bits in forbidden_pages_map and free_pages_map simultaneously
+  */
+ 
+-void swsusp_set_page_free(struct page *page)
++static void swsusp_set_page_free(struct page *page)
+ {
+ 	if (free_pages_map)
+ 		memory_bm_set_bit(free_pages_map, page_to_pfn(page));
+@@ -1048,7 +1051,7 @@ static int swsusp_page_is_free(struct page *page)
+ 		memory_bm_test_bit(free_pages_map, page_to_pfn(page)) : 0;
+ }
+ 
+-void swsusp_unset_page_free(struct page *page)
++static void swsusp_unset_page_free(struct page *page)
+ {
+ 	if (free_pages_map)
+ 		memory_bm_clear_bit(free_pages_map, page_to_pfn(page));
+@@ -1060,7 +1063,7 @@ static void swsusp_set_page_forbidden(struct page *page)
+ 		memory_bm_set_bit(forbidden_pages_map, page_to_pfn(page));
+ }
+ 
+-int swsusp_page_is_forbidden(struct page *page)
++static int swsusp_page_is_forbidden(struct page *page)
+ {
+ 	return forbidden_pages_map ?
+ 		memory_bm_test_bit(forbidden_pages_map, page_to_pfn(page)) : 0;
 
----
-Mike Rapoport (Microsoft) (5):
-      hibernation: make swsusp_page helpers static
-      hibernation: ensure secretmem pages don't reach a snapshot
-      hibernate: handle potential errors in hibernate_{map,unmap}_page()
-      hibernation, KFENCE: explicitly map/unmap KFENCE pages
-      hibernation: make hibernation unavailable when debug_pagealloc is on
-
- include/linux/kfence.h   |  29 ++++++++++
- include/linux/suspend.h  |   6 ---
- kernel/power/hibernate.c |   6 +++
- kernel/power/snapshot.c  | 137 +++++++++++++++++++++++++----------------------
- mm/kfence/core.c         |  52 +++++++++++++++++-
- 5 files changed, 159 insertions(+), 71 deletions(-)
----
-base-commit: 99d08cb94abb5aeefbda36dc8bd15677c6f76f45
-change-id: 20260916-hibernation-7603b86eb981
-
---
-Sincerely yours,
-Mike.
+-- 
+2.53.0
 
 
