@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F9CC9830E
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 01:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6CD6C9832A
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 01:08:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD7756B008A; Fri, 25 Sep 2026 21:08:27 -0400 (EDT)
+	id 7C9EC6B008C; Fri, 25 Sep 2026 21:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAE986B008C; Fri, 25 Sep 2026 21:08:27 -0400 (EDT)
+	id 7A0C26B0096; Fri, 25 Sep 2026 21:08:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5436B0096; Fri, 25 Sep 2026 21:08:27 -0400 (EDT)
+	id 5A75F6B0098; Fri, 25 Sep 2026 21:08:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 777436B008A
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:08:27 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0BF1E1C3676
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:08:27 +0000 (UTC)
-X-FDA: 85254127854.22.3590E9A
-Received: from mail-pj2-f42.google.com (mail-pj2-f42.google.com [74.125.227.170])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 572EF180009
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:08:25 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D0Tzpi8r;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of thehajime@gmail.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 30B456B008C
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 21:08:29 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2740C078D
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:08:28 +0000 (UTC)
+X-FDA: 85254127896.08.7E7637C
+Received: from mail-pz2-f39.google.com (mail-pz2-f39.google.com [74.125.228.39])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D9A1940008
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 01:08:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="V7tPP/vq";
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 74.125.228.39 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790384905;
+	s=arc-20220608; t=1790384906;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8o3YWWPI331T0WI+WVvTTsIk9M0avmYjoyCPD/hirYQ=;
-	b=HMtjRav26UaCFbYNcEUIQffQgTaP07KT4QRzsWjnWINwKWkT3kGVx6lO5HD5I+qAEeGuDa
-	O9PbU2YXLtQQFNE2UgJG8IaFw6aQqlzhfc/mqkWmv7xn6WtubwJHHGZxs6KgiiHQATs062
-	qeyGfyHInZZpf6pG/e/WP4pneOOlKeA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D0Tzpi8r;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of thehajime@gmail.com designates 74.125.227.170 as permitted sender) smtp.mailfrom=thehajime@gmail.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wGJLJUYX098b2C/p5zUf0et0pH8c8hAZraf8w7dpmdQ=;
+	b=A2veZ0LS96k0UJJv8a5q3yonhw0XPONYIvPgg8x8Sk2c5HpBtuUd1sKQYTxl2RGBkIGgzt
+	vKe2o1XhbWhJO/UAp3I/rypWP4X7MDUPYTuNk947LOhqRkVMkcvfC0WMLrvFcvyljRbkNr
+	q4RkXGIEwZStlmY27/5+CzQczjoBtK0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790384905;
-	b=PEr9H4igVXd6A/A8DPx7KVRwF/SzIQVkoD2A2bBQDYGTLLVAAUSrvgh5bNACzlkZl+acmD
-	t+dIMgl/pi+bl67T1XZJrjTOwn0+u50Vfr1YBaBPM9P/Aw879aEo2OHlFOwMf+2eNYZ9n1
-	HpxaUnHabQISLrLCTa2IUr+HQNA1ujQ=
-Received: by mail-pj2-f42.google.com with SMTP id 98e67ed59e1d1-396ccc09d65so936711a91.3
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:08:25 -0700 (PDT)
+	t=1790384906;
+	b=Cd929mBz05sOKUlQlHqi18TjMwoldY3OtWDXaV5xiFe/234eEUQqIpvUWd2vfAZ55saEAz
+	seDNtNrDXde68f7u6r/8rd5mxcVEmOkEyTfbDB/19BOq2Iwvo6LUVUS0b4gHbR2sFdsNRN
+	NgKe5FDolyhM3PK/iBisWHbQfqB4RmU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="V7tPP/vq";
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 74.125.228.39 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pz2-f39.google.com with SMTP id 41be03b00d2f7-cc78e1a94b8so686609a12.0
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 18:08:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790384904; x=1790989704; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=8o3YWWPI331T0WI+WVvTTsIk9M0avmYjoyCPD/hirYQ=;
-        b=D0Tzpi8rWpVKjlnuB7pqovyhzgDT4jU6/EYc/So7+0emnqm3KgEerbzHu6tA+gLNDI
-         rq0Fb7rRwy9s9P/BmC3yavsDYchS7zyjeAliFo1YY9jUxWDr1rwAt/2WMfXtYoD1Uj+N
-         lIWMp3cC/nAzyTW+2HPbMCsazNroDqnAIlkEAiVgci4hv08J/v7X/+jNBjTfuOW3JYqZ
-         gSIuijG9WjfKO4IpEvc9hJBqlRsJeNN9cGYbeWiHRYzJ7QWJVHfkj3FllFfh455pvkej
-         ejznQ8eC7/vvw3FqPC1v35OmdL4xHHff8IL+/Pfwj0eOmt7YFf3CW15WsfA82+WZp/WZ
-         PALQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790384904; x=1790989704;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790384906; x=1790989706; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=8o3YWWPI331T0WI+WVvTTsIk9M0avmYjoyCPD/hirYQ=;
-        b=0CGzefRiTo71keiRMbrLNT3RQNN9MwMmvtq5II3HjpRjb+uddeJWRznnK+X9Sdxg4F
-         lf71s7kh5X+zefMduoTRCFGhKii0/qczfS+WizomExIZHmKu7tS+yAQ+mHWQ/7pz3bHy
-         h4u9Uj+EwFhx+u4zYgc0aiHJs5gtcZ3ccdCg7ZKjTDRr1RVjpcRQOtZPC5EcacB3B7sb
-         2tzWZWQrdm1UUCLvffwDtRpLhkcu1Pu/MK/Yv0ru2WIxCZD/QSyiBNBvOY8ZESvVDohj
-         V//WsjpAwOEkHEI7NYWg0/pvsWD9R9GxNAuSorUvZerh/rq+J+TzXBAqZjgURdXrue52
-         /S0Q==
-X-Gm-Message-State: AFuF++kUpxoe58ERkDMAEF2EoMuE6G7dbEBNjWhY0E+XHn0/89L92gfY
-	/17DrPoKG4bFueI7lLGPCJzFhV1YZyRwfwNmfDkhLzp+OKlDfH4h7JAr
-X-Gm-Gg: AYBFou043TCN6s4COlfPdHoLCfDTarpeSYaImu4bFzKT8d58sreX2xWzpwVQkv1aGJe
-	zOun+PhTSP1w4gLZHo72tmUJJqeQ0pZfJJzGK2uKzhy8aMaiJZtkP0suZoNtWOCNN+V4VcJseym
-	R1SWFerxiXW5BuiZSFgYktjSmtsxTKvDnXeY9q50uRtbB7t0+rK4rctJlGo+l2SSVQ711tsNK20
-	p2HF//LIWI2g/XI6Ftj+vpeVUrMmqwSVRsCEREWRh+vwNcT2PpeyTJiVbw2VsqSS+m/ZzJ7bNOc
-	VLoK3eoivEr4Tc1rPfu0aT6+euuOINLKdTFxdrlfLvK7fqm8oBtcLcWwNSm5RoxrpFUK2iAZtH9
-	fGCceu+BFulYGQH3NM5izMVvNuCLN1SB3W9uerwBYCZYi1Bm8uQSkZzkoVVRtas7s1rE6+lx8XL
-	ow31ttNaVJkLUPdDi/e07XojTvRbZv3eUQs7OjD2OdDSsuW7lZ+it8cQwxM+5GqU9pCdBhxNfz+
-	Y1wpaXqyiamGVaAJjRIootZYsTRmjGqZzmvVmyGI1ly/6p3y79ERh4UypxHgMABsVlgFdOW8Rjc
-	oU9thBszXxw3zwhkoITbX6Ldpf0b7sNP6qiqrmgftNOt68r131mZo5GDUsiu
-X-Received: by 2002:a17:90b:2604:b0:3a0:d9ee:a2e9 with SMTP id 98e67ed59e1d1-3a0d9eeb955mr765639a91.45.1790384904050;
-        Fri, 25 Sep 2026 18:08:24 -0700 (PDT)
+        bh=wGJLJUYX098b2C/p5zUf0et0pH8c8hAZraf8w7dpmdQ=;
+        b=V7tPP/vqFHnnGUaaPbuNqW8+SfaN0tWLgBPqpWnWJvS79ETZuw5X3vHv8OHPC9oegE
+         tgkNqvBO5ros4CB76YN5XYArbDwlR5Byfm6xt/VWoPtZU+xJrbIRsOU0Ucn4vvEExf53
+         rfiQHkchk3N1LNVswj2mdYWbwHYInszlBQVT/3vKHxghQcILoy1vAk6ikRYDTToRz+Gr
+         haMyJtj+VBlgzzTOK4DhUet1E83rfOiYO5ZJsI2SKwJ4tUpDlwrETGW8aVzp9klUihVO
+         ge4XZhdE41Oq/PVHS7sL7JjyUT0jYKU0B+yY7LdaSTfGGsKM+tZ7bDwcYm0dFHvoq9Gq
+         hxMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790384906; x=1790989706;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wGJLJUYX098b2C/p5zUf0et0pH8c8hAZraf8w7dpmdQ=;
+        b=gBSL36Oa04oJOOz+h3sgNwze40TrO2p5WS9/2nfkvxrbyLpfKddfmMmtvGR/qiPpQJ
+         An+PkripADisgqtlmbIcDBngZc/labRJYVLlclgiWEjuAlgZW6/JjcB+8wDaRn6rqaRf
+         IChZBVDzywbVg9br0bTpKGPICODPhFHPqxXEx8Zvt5B0CeLo6XElocfVIVEOB80C4hwO
+         HZI/QFiGvvQAMS3nE7qCSogqxbk5GfWVvFqnZsvCtgLURAU6DFvmCLF20PYEEXOWqOAh
+         /VspA0lGxORQPXWPCT+sArmudUUsvLdaZMEdagfXPTX/zfIFAxWgNqvYywIQOBGiL7/J
+         4kpw==
+X-Gm-Message-State: AFuF++mt0NsSeI7dQC8Gzp8svpfSOCNVgU2Imujs0fqvLwnbECnz7r7F
+	z0J96j2lkxhVFPGYXsJL0U6wU29MMvsBf7T/RyPAlzJWQbPMUC+VHpyT
+X-Gm-Gg: AYBFou250mtYA1wEFjwraBW+UiO2vZRAIrjJFAoQG/uWW+xBss48FeV96A3IR6wKViW
+	8dP7SNg71jC+9dZIYYomTbklLzfl+DoqOUDVEKCW2fT7LOGkhdhR3rp57Zt8Nh6H2nLusBZUgVX
+	WWhnJPfNKN8Agluu+qcbsuKbBatYafYfgcgTFZzcVaoZVpFw8+YcJU7HrZN4jmKxWIAAQ5uExif
+	GKAp0pNPn68PXr6+/ZiTTQES7s+ug1I4eiLzZ6XdNet/9KCIcxddMzmA5jkmc2/n/pP52eLmEbR
+	e9n9ne7JSx5i2zHrfLldAg7U3Fa8iO8FLOqzDu2aWGoV0Chl9YJz/twtovDtYtdEygCMPkgEdxH
+	JAWJYhVUBrf75yIApbYcVGncJDxMK5X2gHyVE5tHc/F33X1PPYtu5BkBNPyKoB30xjgd7OwVaqQ
+	QUr8KXTlHldu/muo9c1cjPTjbcAXL2Hy13dFIwQmlPAbJg0vjpwkp2JC8NT3vs+gIF5pm6RgglR
+	t1MQ+3bUiiGAC0z7xpSstYHFbAncRqgM+vPMI2DJrhqa5HjfDX7eX2jars/df2hrj20jwa7UUgx
+	Ulzt8T0HuIodkeUGBZfZ5cdAGMRSCoQ0K8Hmmi5Ytrnp5gfsfkBigDvD+JxXnA==
+X-Received: by 2002:a17:90a:10cf:b0:3a0:b7b4:b649 with SMTP id 98e67ed59e1d1-3a0b7b4ba36mr2433638a91.52.1790384905575;
+        Fri, 25 Sep 2026 18:08:25 -0700 (PDT)
 Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9356f48sm7032117a91.6.2026.09.25.18.08.23
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0974ec5dfsm13169486a91.3.2026.09.25.18.08.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 18:08:23 -0700 (PDT)
+        Fri, 25 Sep 2026 18:08:24 -0700 (PDT)
 Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
-	id 5950016C9C94; Sat, 26 Sep 2026 10:08:21 +0900 (JST)
+	id 99D8516C9C96; Sat, 26 Sep 2026 10:08:23 +0900 (JST)
 From: Hajime Tazaki <thehajime@gmail.com>
 To: linux-mm@kvack.org,
 	liam@infradead.org,
@@ -117,20 +118,22 @@ To: linux-mm@kvack.org,
 Cc: geert@linux-m68k.org,
 	daniel@thingy.jp,
 	Hajime Tazaki <thehajime@gmail.com>
-Subject: [PATCH v3 0/3] support kselftest on nommu platform
-Date: Sat, 26 Sep 2026 10:08:16 +0900
-Message-ID: <20260926010819.604346-1-thehajime@gmail.com>
+Subject: [PATCH v3 1/3] selftests: kselftest: avoid cd - in runner
+Date: Sat, 26 Sep 2026 10:08:17 +0900
+Message-ID: <20260926010819.604346-2-thehajime@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260926010819.604346-1-thehajime@gmail.com>
+References: <20260926010819.604346-1-thehajime@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4r9976xmeyz5smmuzdszpdc6znhkmq6u
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 572EF180009
-X-HE-Tag: 1790384905-553161
-X-HE-Meta: U2FsdGVkX19JaUBn+d2kiVT7uLfdJ4HqV8827MrDVQf4/b+NPrlnwT2V9fJ+qR25hRmDzTnecUF1ay3Ht9LJzrF91NRYjCZtZqiqpet3FXx9bntmXfu1ybb4rID20wlWr3ffUgruXJ5TS6lVStsmVSCyP7eK1aKLBm3LRlLQEvgchwN4izakpHEobGFZrlCsgX3Y2E0/s82BwoI57RdxTS+t3Aij3gbgnP9au1wWr4Iv3GEg+lJl1PFTI5rA7V8AgdxuOff38QQMfN2DzaylTDNiwfUqIm1QAtD19F0ViLOruhPFEXwcafE+c1THV0BqMQNRsbjUyFLfi04Cg8uAYM8MocULax1fGEtdSuHExJhDkjxz/kWoqFzznwmW+sd65ORkrJU14xcGCkepem0jWjEJFuHo2W+7aO9k/CPPkH+hE3VcAYdJX/Xyska7k09B/7/jEUeu0RvbEaA/Xh/UcfcCA91fYxQTPUJWOSIOjYzRWgAU/Hllu5DsNa18KocSG6fL+8y4WR2yU8B5fEadR2iplee60OAJ9NMQ4Z67dyhFkt+z7SjyqMlW4OASTU9M7HQzlW0jWBaeUkGtRWjDSMQN33QQ8hTVg7tarfqK8dqe9yiEQy2CcEHg+z0JOc/qTCBZjtzrQ38os8EP/r//DM9DYgJ3+mOhNyhHUybcmW0BzhcaRHv06rwgeb5FylG6Wmf/KbNfnkhkAS/2mqNkfh2bKJ52bfvniLo7TwIkDl2M79tKeCVGGL5KvYZ+DJoFgwjndbjX6dT5tVhhEiHxsmzzPBO2eHi+MF1rqKq8nqys3NAzqxpQ74k2XmDDLXO+LBfmkyvkx3YMD/SIw7QDuYE48xsV/PGKX0UwG4zGvi8/Lenq6x/W1/Q53Qou1CdJ8qRpyMa+MDnGEWb1K9WGb5g7P92MNxhQSca7YP/6Ci63iE0JUHGoNNvfvrDXwTc9JicAkDZYNLJjmGPg5jO
- dgmBurGz
- WjXOs3tcljK7MpoHQZwwWkUvSLHmEWblCwNcSSQKKnA5f5I6wqf2u9ffEiAClJv4APwwF1kl7DnsXoTyq7LHaNj+WNYdn3TrdEhyMC2RJ9a/WrGHzBhoWh0oiH9SN3WrZRhKx5l5t/jTLMsmBA4kppZcVq5vUGkewV1S2/drbWVzNHH3kpE1c4mXg0CRoYEmeNgUW2lSTtomjagR2py83AU4i25WdUJ27X7llyUl5M6zhxI6yEFojRhMBuhUpwAaKdSsSliG3vFu2ydxDxC6Ks4ocpzMePEt6yISxqMKEMhhdx3F7Bx9xMsl0q45gs2XMcarZOgBQYUD8pYk8BzzxTCvMbeFqinST0Vwe4fJQ2sUHj5zcTHfFbaCcS4aFCGZonIQpfIpp0whlCcgIR3SECKTaY8WirKLZWOjsBy869UAgyGr+cIOOjCdCRA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D9A1940008
+X-Stat-Signature: 49bxqmamzwp78yqgppq7hzyb3mumn3hp
+X-HE-Tag: 1790384906-505183
+X-HE-Meta: U2FsdGVkX19IZqKs253VtBNVi3vuc5+2SEwDNgesGZUcxzKVesxHNtkQQVIbnPTzSJMY7JVlwdEU2Cn/+XW0lDRFMGLZHy4PitJgFsJhwX2md+iEB8Ty8rilgNfPWvfH34fAdbtE3EexCIS7JQ/0eqvDaUYYo5XLgjAK3iyaeGdT+fpuwCBjGiMxXUJNNZ1cKjB5m7xfsZ8UYjHqWdV5ag2fqWoRhYfA90DGirgab2i/zPT+tIWQyBdkJBtGDT/q7XAiQEfFuymGRs80l9dcEj5eWXwNXKdYXYC1wWPe3ISEzgEsK2qVJUnzCOL90vze5ef00M3napQo1bYDizFCOnYAx0vHMM1Mv1cGAhkdph9stuXdIwhpVE//JigmHX80ayytN1+z9CtixYsBsdag/H5C0RPiARgQaWzfLTYWjTRt6NY7WNfqvydqjB8X2PB2bW9IKwRChD8FQkp5klhMXscZn5GoqlAvlVzpTcJTTex1fm0W2hFAr/QyzNmREOm6Lc4tDCPLvaRyIZwpHtWBqtHw50PfhQOtU3wSeQz8eHrYXJwnTMrK5S3Wz/Dq0ZHRjuBLfx9LcCgkTlZ/D0lzDZxOYeed/Jjq53wXP9jEKgQETrinN7DdOXqdudqrGvB5D8H6p4kIJ9Kb9PJHbMB+7hFwF4vYSDwfe4z8gQleKwjrFD5PeK81P1shwQ2std4bii+0VGM+k6gJluZgDtY3Msba9ID89hNCiYYWdyTeND/LUfdJdoyInsMkRMcW6qLxr2BUZ/xaHlj41N6fHhXw2FRzNGvzN/D775BpHFBQbNRl7jwQbB2v+pIpI4DI5ybswCdybUghj3+LWgAl+tnqZQom1OnYvWjxp2i+RVK/jN5pY0nmoxu9c7ByZt8Z4yN/lxu8cNz+qs9WQFT48J7nDMv2Nlg3CL99gAtj0RZsiCuwtOWLxXrY/BR2yR7k8gM7N8A/H2hrYifKC9gkUvr
+ rCn24REd
+ n3iD2l/il0S+V8Tm82uAKC+YwIEGwapwWyf1JdtQcFGoh+GMI5d1bFvDjHpNSXLDC41XKYxO883HnsWVM4WRz39+IEuhaVoKbColl664VGC74qJgscyYTuY30SBJ85kZqOnZnCkoFZNlgxmTsg8vm1EcMICAJWVpVU/GU1oPXXZpqI1vXWQwWetxVyJdqoSFXNaWM+0UBt0EYdj/ECnWewq/weOqC/vvoXdoAjI0ipJBPaK+BOO6f/06XiSZoW1z3AzrdvgbezOPkur7ebhjEgeP8GgwiF0NtOodXhI73AaIyMYaWydrzb+0PdCdkFp1IUm+yynazX0XSkcuBxwrVIHbo8ecPTRSUTRD5yEaeJRxhAx6Z/E8HrWW7pOysce9J8bQEHWDOqqUc/W1N91fKWSxLezuHGYM0G39a2dppaKnx181h1DJ1onTXgnXMF+pJ3ljU2E9+QFbiA+J8ue/Uvb7KlVMT704RMdxp35NHBfR1coduqvkoVlFf6wAmw2UoXwgm3Ubw51TmK4FzfNvNBpdn0DkGYhwJOI1Y/Qde/vADaBL7y5qPaaLsRE/YLLmh2aX2GE9bWT3D1mT3uoj+mkahdpvjQ4oTYX92+VJib2REFaUY27wPjmXi/BkBhG2lwmwhgNwrc8jA3quOWeUMpjuPSENGxZ768RMjzNO8Km/NO3o2cAPZYRTxuu67JDhlJU72
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,60 +141,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patchset adds an ability to execute kselftest on nommu platforms.
+The kselftest runner currently uses `cd -` to restore its working
+directory after running a test.
 
-Currently there are several issues if we wish to run kselftests on nommu
-targets:
+This is not supported by the minimal BusyBox hush shell used by some
+NOMMU targets. Store the original directory explicitly and restore it
+with a quoted path instead.
 
-- it cannot compile/build test binaries because the current files mainly
-  assume to build with glibc,
-- some of the tests are not able to run on nommu targets as there are no
-  fork(2) syscall.
+This also avoids printing the directory change performed by `cd -` and
+handles paths containing whitespace correctly.
 
-The first issue can be avoided if we can build static PIE binaries (if
-targets support it), but in our case (build on ubuntu/glibc and run on
-alpine/musl-libc), it fails to invoke due to lack of the GNU ifunc
-mechanism.  Thus, we need to cross-compile with musl toolchain, which
-needs to be solved the first issue.
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Will Drewry <wad@chromium.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: "Ricardo B. Marliere" <rbm@suse.com>
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+---
+ tools/testing/selftests/kselftest/runner.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The second issue is the lack of fork(2) syscall on those platforms.
-Especially the test harness helper (kselftest_harness.h) uses the
-syscall, which cannot be simply with vfork(2).  `timeout` command used
-in `runner.sh` never works for nommu platform as it uses fork(2).
-
-nommu component in the mm subsystem has several known issues and having
-test cases should help this situation, thus this patchset is very first
-step toward enriching test environment which has not been well tested
-for a while.  The test cases is implemented based on the document
-(Documentation/admin-guide/mm/nommu-mmap.rst).
-
-Initial shape for this patches is implemented as an opt-in TARGET, not
-built/invoked automatically if users don't specify this nommu target.
-
-- v2:
-https://lore.kernel.org/linux-mm/20260825015945.141739-1-thehajime@gmail.com/
-- rfc:
-https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
-
-Hajime Tazaki (3):
-  selftests: kselftest: avoid cd - in runner
-  selftests: run tests on nommu architecture
-  selftests/nommu: add nommu mmap and mremap behavior tests
-
- Documentation/dev-tools/kselftest.rst         |  14 +
- tools/testing/selftests/kselftest/runner.sh   |   9 +-
- tools/testing/selftests/nommu/Makefile        |   8 +
- tools/testing/selftests/nommu/local.mk        |   7 +
- .../testing/selftests/nommu/nommu_mmap_test.c | 258 +++++++++++++
- .../selftests/nommu/nommu_mremap_test.c       | 362 ++++++++++++++++++
- 6 files changed, 656 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/nommu/Makefile
- create mode 100644 tools/testing/selftests/nommu/local.mk
- create mode 100644 tools/testing/selftests/nommu/nommu_mmap_test.c
- create mode 100644 tools/testing/selftests/nommu/nommu_mremap_test.c
-
-
-base-commit: e8d0f6a1b2a447d02845984fa6288787543cb03c
+diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+index 311811dc55a0..8fc1018d6fec 100644
+--- a/tools/testing/selftests/kselftest/runner.sh
++++ b/tools/testing/selftests/kselftest/runner.sh
+@@ -130,6 +130,7 @@ run_one()
+ 				return $KSFT_FAIL
+ 			fi
+ 		fi
++		OLDDIR=$(pwd)
+ 		cd `dirname $TEST` > /dev/null
+ 		(((( tap_timeout "$cmd" 2>&1; echo $? >&3) |
+ 			tap_prefix >&4) 3>&1) |
+@@ -147,7 +148,7 @@ run_one()
+ 		*)
+ 			ktap_test_fail "$TEST_HDR_MSG # exit=$rc";;
+ 		esac
+-		cd - >/dev/null
++		cd "$OLDDIR" >/dev/null
+ 	fi
+ 
+ 	return $rc
 -- 
 2.43.0
 
