@@ -4,126 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 991A4C98328
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 07:21:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 403D0C98328
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 07:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A125A6B0088; Sat, 26 Sep 2026 03:21:36 -0400 (EDT)
+	id 056706B0088; Sat, 26 Sep 2026 03:44:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E9896B008A; Sat, 26 Sep 2026 03:21:36 -0400 (EDT)
+	id 0072B6B008A; Sat, 26 Sep 2026 03:44:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9001B6B008C; Sat, 26 Sep 2026 03:21:36 -0400 (EDT)
+	id E11756B008C; Sat, 26 Sep 2026 03:44:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DAA66B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:21:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC72F1C3676
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 07:21:35 +0000 (UTC)
-X-FDA: 85255068150.17.E3BBD33
-Received: from mail-pz2-f40.google.com (mail-pz2-f40.google.com [74.125.228.40])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 25B3D140003
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 07:21:34 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l3ayqn8d;
-	spf=pass (imf23.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.228.40 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id AF0456B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:44:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BECF16083B
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 07:39:31 +0000 (UTC)
+X-FDA: 85255113342.15.6CDB225
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf28.hostedemail.com (Postfix) with ESMTP id B0980C0007
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 07:39:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GZB9qXz8;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790407294;
+	s=arc-20220608; t=1790408369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/ldK4ouh20PCbYhMUe4lvWnC4R67j5o9JpGKQtocEA=;
-	b=fIkV/YALQRwEMLo3qZXiiIHlh1IOAWaH+VQmTGkWE0tF5o5Ap2fV/g5FoQrjYZJdmbfnjU
-	+rZFk8CSR8ukKlaTP8Zn8u4BAW22Qnh5/stF3hwPLNusjvuoz6k+FkL16U0UlEMOjV0ZTv
-	mHqQ7bt9L8xJPFcK8TmmQgkv3U6KoXg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790407294;
-	b=EpNp6vmMPhWQvaXl82IpXf2WuD7d+XLdLLDPDAoctTm7R9O2k1CMxQwbAWLbVjJCKhYkDh
-	Wq29eSg0kA4SNQ1eM6aMxC09ikZPqzSkM0r2urI1sn8ZBlmTE1wK0j812SAxGsbPv19PNh
-	Ax85ab2hqw6+YN2bS3kZNTOVX7Huub0=
+	bh=UzNu4qsML/vUrmG56fm/uRslLdrHhJ56SN3Sn3YDpZg=;
+	b=SV2rT0JwPuzzBP2PSLAy7aVMMatcUQQy5iLSpTu714tbIgcaH7DPlkDg/HN78noYoPMHry
+	cPtZ2kC/mTwyxNai2yUQP7j/xfj3ABbRs/CaXCO7dJkD4pVX+ObHf260od5g2IZnM95bvQ
+	6NlVMN8E0mRlg3cu9KHimMZHG0h2Qkw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=l3ayqn8d;
-	spf=pass (imf23.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.228.40 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=GZB9qXz8;
+	spf=pass (imf28.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pz2-f40.google.com with SMTP id d2e1a72fcca58-8804b59404aso620269b3a.3
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:21:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790408369;
+	b=aIJnDyqOVlW56zOQOvw297+F2bcsVJNKmhqvbWjUkOX15HXtxcvRvR7nIPqlX9SEhVrSHP
+	uWCOMdK4HobsZ7dMGxI+yzLlSX7vO6Xx8m0BiYsmSdldTaGViuFjsbfd0OekOCDaq2BaRC
+	WVaaN5cqmw8rdChGEZwUFlnSkpF4QNk=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d822dso11406975e9.2
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 00:39:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790407293; x=1791012093; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790408368; x=1791013168; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Z/ldK4ouh20PCbYhMUe4lvWnC4R67j5o9JpGKQtocEA=;
-        b=l3ayqn8dGDgp5UZxp3H3Jbt/4VqVxk/b3ZAx0niTAqoMPmxjGBhJVOhVmOZMnxWlJh
-         jGodU3xHIuC7HgPfwRhFhxWaR23rgItzBm0YvyvyqBrYpkuGDzht6Mj5QVw0gLdU/o9b
-         8C60dDBumtTTvVkezjiNS1T64u56TzpfQXMQkzogk6MgfHPkjspglIaf0c3vChurM9Gi
-         lO3famNduzQFu+J4gouV5nMHKxBXhA2Q61+od/BXXGwM5cafiARzLuxsGcIwRmZ6f5YJ
-         zpUje+fzaIoLYN2ai+AccmsWpwVaLZNxH7d/RtEniP79EdSNbLk4XuOAlkOCwNhCn/Jj
-         CzZQ==
+        bh=UzNu4qsML/vUrmG56fm/uRslLdrHhJ56SN3Sn3YDpZg=;
+        b=GZB9qXz8zGzgTjP2nQ8JxlkoDffpEKKnN9+L7RBTSUFqZWzN8xrTdrkj8Vy+fy+yaJ
+         qErMkgnLuYgBGbt0fSMT/Xv0vnzi/snGzUPmk0Bi//S2k3CQB1F2pQiLWB1sfGcj01v5
+         ymij7LA+m0hm2oUBO+91k7SU37TMsUtXog78529COaWbDpdoMEg7Eb8Pcd6LzBycgvAP
+         YznmG2sRP+yQ1F1AHcrpIX3w2mOIBI1aO3fPM9mVYyrf0mm6HYxcA7EdiiftHC4zBGUD
+         iQ+689fNwQ3S0UpXKd0oo8TIu1C3OKHDyU0Q6Wp9xgkN8bAnrdOzslNVk3kh2ywgvllK
+         koLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790407293; x=1791012093;
+        d=1e100.net; s=20260707; t=1790408368; x=1791013168;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z/ldK4ouh20PCbYhMUe4lvWnC4R67j5o9JpGKQtocEA=;
-        b=2lrJZ2WhtQ9yJYqHpEbhW0xV4v7gc1wbpDi4O4F81G8pPRiKlUhyd6UMiDi+NYs9m/
-         oTWuBH4XYgvNpf/iizN1BnJMudcPAW9lltRJjSurrAtj9SOdlpz1u9c0gTEktUDNEPgf
-         tEIs0WXNhFvABfgopOiN5Eb/e4hx5H0HZIAZR/r7aGuLD4z8vuV7+/3BZUaqLPQrg0aU
-         zCMlCuKj4+qSupFQf5Ldm7gEpccvzT8jfGZIA7EEv4qFr8OBtvDadCXDkxMx88DsfegH
-         WOw8L/TmhNw/eBhcpbtIo7QSRqxDo+QtVPmTSwvhnCRxpBbPFenuoLV9CYd28wHI4AUl
-         TJbg==
-X-Forwarded-Encrypted: i=1; AKwUvBy1f1Bjm3D6jOOnqbci5uhoFCdJpuuVF0t+xTntbzztYAgv1u4rFmPu6MlOv8tK3ft+MDhVFfmq9w==@kvack.org
-X-Gm-Message-State: AFuF++l4ehmfIrj2H2O4HWMCM0SJ5UZZjMuFKAKeWTK4syHEmuT0Qff0
-	D3svd0qyq3eUHeHpF0iYdqUTnQaOqQ++eYydMp0QyL4T2Qcfnzazapw=
-X-Gm-Gg: AYBFou3GXGJNdP9vrsXKJZxehq77ANLST3a4etDD0eKllIebrCS2ZlwOfsedzBIsPML
-	YzN0DqOUcWt/Y3VnuImX7kOQpZdzJUx/Kg+Tz+vMOlbkRYDflxc11Rwahp2XuC6mb+CCbZmUY7l
-	F754y7DgPo9QRp/+tKftYgS4i9fGvFpnCwBZUrPDVfs7XXUIbyq3sZgXvvmTgoiQrQmQyY1mcu8
-	Jr8elBEQ4lOND+u2DzLvJ8mxM53wJzbadjRZJdFhj/M3XVY62ym0+Sq1xbjgZ8L1NtNIOAIJPxn
-	agkbXITHzrmHQ1bxnci1mMvpYKd0I7LCZKAB9BZhrccsNOutxNM0upHjGpu4NUHFQ+bPO3z1MF1
-	r+zfnuY/MmgYZh2ecfcdkG6rFLhRIDz/7A7Jq4kH7pvc83ZZd/1d7H0nr5/9B9TFUXIBnClLZu8
-	eI5BHTWY23Pzq5MLEw1eBvGvl0kJbuxIfm4IpfeYu41OSpbNf5qOUJUwKfiEL6fo1ePl69pETDy
-	nZUdTGQHlGWivJjxyZ/7firqQ==
-X-Received: by 2002:a05:6a00:7585:b0:87f:dcc3:62f with SMTP id d2e1a72fcca58-87fdcc35542mr3183334b3a.60.1790407292877;
-        Sat, 26 Sep 2026 00:21:32 -0700 (PDT)
-Received: from ydg-Zenbook-14-UM3406GA ([211.230.25.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-87fea8894d7sm2002115b3a.26.2026.09.26.00.21.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 00:21:32 -0700 (PDT)
-From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Donggeun Yoo <donggeunyoo.kernel@gmail.com>,
-	akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	surenb@google.com,
-	aarcange@redhat.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	kirill@shutemov.name,
+        bh=UzNu4qsML/vUrmG56fm/uRslLdrHhJ56SN3Sn3YDpZg=;
+        b=B2yQBOGfg7meCqVJjUcXPH7lgIVxGr88yzF/SeimYZXPSTuJStn8pnuepILfbuTeuB
+         zFUzVQoiGo8HFmxtKmBgvmxkUortdQGqXA9l0PVifLv0aFGqRDLeYTsYaUyGncYKOw8K
+         FgXQAkTdZAuq4uafhTIfVH19DM4NNLxvqXveID/S5jp8ytDXKVN2De9FF+8Cg29Lvhn0
+         6bDcEzaiqdrPWfYlULbmvWkma1xcd5k3M+I06glJ4dSCG/m4KvdWLfT2nVloBKsA3zLe
+         RrVf+A+g0vpktUDEcpOzGGEajYFa7cc0NOADp8o3IXsxUcuLeB4LlQpW3qf6Plab/wO/
+         wPhg==
+X-Forwarded-Encrypted: i=1; AKwUvBzRRncXex793oA7npYMV8kIe897zEK2DkijLAuuzSMp9MW6oPK7qLo0E5OJ8JzHO/YmrGaWF9wuow==@kvack.org
+X-Gm-Message-State: AFuF++mKG12CsMcyTmPCHvVKf2eyYSyQ8+cCJFk6b10yl1dHjdOpmlGO
+	LCFmdaO0/+yWvErbRxPb7Pi1m9LOkMUGNOzWO5g8cBe1AGKMcKccZLm1
+X-Gm-Gg: AYBFou3ctzt3W0jfd6wDK6EPXBqRdmd+YaV4jq6eWYmHtE3SIIEJBqw6nqSHB+HM8nz
+	NfKPeLfuRJWFWoejlqiyHcbYtTB/0zdcbtC5n+Zh069UVSw1DWCBKe6r8AlhJzki5EWZcMQdCrw
+	hf67Z3t1ZPEFewv3pkXJ66BRK7+ZJsgAnoW+Eu4BJnnC39vqdEkkVELjTyCla09of/1HQlqd/mO
+	ZQQulegyz0rN1ojJANDNam4zQc2rzkyy9/Gt1p7Lg18tr5eY7GxE8r6CVbepZpRW9L+ZmElYedo
+	PVDu/BWSnbR53MCjiaVMQS2UX4mxsXJAohWFLhzhud3p2FDJZDgKDTS3/xklzQ3/Kr91wwThiuA
+	GiK+b4oM9Inf1WdtByRTkFwYLDKwTthjAORcysTzCDROrJufKQwiyY16vpVTSnO+ZvmH4XD5rJX
+	aFA6Az2qZmr70+MtrgdPJU9K4BXp0WkI6EUrWQPwZQ2T0XHAoVcxAyzyRl6JtzRxNfEs/xCAMaZ
+	/CKyy6UppOqNySGnSfdtsUZFvXWGaVHYnu7j4DDQ9aaxJU0JY9sbd0QpgWIG4YZ00BZtngMwCpo
+	YcK/uJCjswkFXDVNGuMOLVrvEhDGhHbJPKFjqUxRPF9FT/RC8/S+FS4xeRGcE1aFETY0GdwyWl1
+	v9zRYT18=
+X-Received: by 2002:a05:600c:6990:b0:493:c47f:3c55 with SMTP id 5b1f17b1804b1-49fe7b52fd1mr130966035e9.5.1790408367344;
+        Sat, 26 Sep 2026 00:39:27 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff06b4d45sm118038915e9.7.2026.09.26.00.39.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 26 Sep 2026 00:39:26 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Breno Leitao <leitao@debian.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Rik van Riel <riel@surriel.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] selftests/mm: add a test for UFFDIO_MOVE of a write-protected swap entry
-Date: Sat, 26 Sep 2026 16:21:26 +0900
-Message-ID: <20260926072126.2870142-1-donggeunyoo.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <226ec797-ff8c-4465-a682-21c684a25021@kernel.org>
-References: <20260925042907.2330519-1-donggeunyoo.kernel@gmail.com> <20260925042907.2330519-3-donggeunyoo.kernel@gmail.com> <226ec797-ff8c-4465-a682-21c684a25021@kernel.org>
+	stable@vger.kernel.org
+Subject: [PATCH 5.15.y] mm/hugetlb: fix avoid_reserve to allow taking folio from subpool
+Date: Sat, 26 Sep 2026 09:39:16 +0200
+Message-Id: <20260926073916.78450-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <2025021025-deflector-judge-df07@gregkh>
+References: <2025021025-deflector-judge-df07@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 25B3D140003
-X-Stat-Signature: 763cptpk55sxz16pyqb1pm3gea6csb8k
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B0980C0007
 X-Rspam-User: 
-X-HE-Tag: 1790407294-42563
-X-HE-Meta: U2FsdGVkX18aRd+FtugMOZE8k/vyudWfqr/2A8KE0NxoCnzJFFKQGevuFNqXb+3xZpHliUdG6SsCAChuC9iLjPoJCQqeGDTxBVUKCfdK+y1JOPgCZSXcb6Y1RuRJMsl3orgEPWEgmF4AVcDgD1Sz5U6zMzPkVQVJ576itgRhN7k7ZGYVFyAB33abyDDOdkyVBAsKBBSfDvvXUbNuA8M+Zxzgrdgd0vQ0nIhf8PYkJEWI/ugjRyU3LajuO/wVnYgcDfnav97rQY71t5+OivvNZqFifKk29Ry9laiyiUowwyYGGaUU6WBu06chSWQj3wfPBETjOoNJ4Syiw9v4so1pC1vm9U0Xaa2A4XJKHU3e86Vhg9GJHCeHN6fbZ1BgCn6oHO/hQdsDLoNeF/DL9KducGVjOIBYKtVmni6pKrajYM/Bh+Fz1EHCnRcSoaijWQqZ4J7dzsaSyKUPOybGNpTihv2EjoZZ/qfU/yUWW1uIn6yXh/HU6M+P1ODfbWdFXPYPQ1Zr5+1Q3rsaBS7qOmZDflUiOph1AN9lKbTL0K3c6ZXAZUFN5oUheyjL+N/3Jjls7w4XT8wajX4+PFwJM6ZZslp1HXXQj/ZHiLu0NOiUEPTGH3aM15rQkaUzqFSAV9vF/eyNMvq/HVQlpSlsKjjwRpTZaLXNuT50iwx8F+ce7RBcueCOsnV9D5z9IDJdfw60aISOdtpNkPsTehiXbkHFRTxaVNAvUqaH5QD9+75YIrTyGuxQ2kNrtpoKuq+C1mAuYTbshswBj7RojXdaMzt2aKPtkl6jl6XonnL1vk7Ypuuz6uNRDE3OUIQu3c/rUrxf5v0aS4GgowV6j7W44a9ZOis6WZzA+mtL60w8VMG5C5sxScgNwuhGjnxGF1P8DlnuG9Iejty3EuJYUFRzuWsCcLt/lVn8tAGz/O2R9e6kqjcfY+YC50/Pb7eEy16iNYvnFHYvY9Yh51goBRwUp3O
- wKuPHZWT
- ZS9gMC0vqaF4KLqsL1VYnWp4DcWjblhkYLWHVtwLDYqDtdYap1LegU0HoeqxAzdIqvC37LjzEFBzhevs53HdN6nCeviPir/pMEP8dAGcWEj3VW3OMHcAkRzEAMkIWE5jRbLJTm8O1iPRsiuSLwD4DwqhtRO1SWMBIkQJMhTUuaMUByZq9DHBvbAyRSo00ZNVP5Dg/MVYX9vy4jIUseXlq3p208O5DaXGDthiE8ec0YfohOUjCLwis9XjLC8tqEB7aaYp7VnIm1t26QtH0rxyoOF+q5M20JQvjYcbHDxmUZ3+MG09lfxEqR553cbW3VoXa4KKIjMeRYpKc4y75oYTgPtBLffecSAqK1G9QAZqyT0zDviWQKS2BGoMAmM+lO0GjtNvnjfBmSxuyIH2F4enaXyds0Rxi2Iy/kWp+1ELdjkgH1RSfvi8fGkTl9zfgSScfeV3dMf/xEB74DXuOjH5qda8BBc7wBXhKgpa6mvWD7NW3kulpLEldewzbwz/O5eBy9/v0iimRtKhy13ig7LRqbyaZ1dSpTR47IHaZ
+X-Stat-Signature: dc6kxp43cfmu5f86jedgokdtn7eybsra
+X-HE-Tag: 1790408369-912286
+X-HE-Meta: U2FsdGVkX1/H+XBBBkdnYzZEf/7eypioZKfRkkWkXR9pvwHZiphf1VL0oYt68vV5bFFjBS/PyMqvKxdnLAVcXaWcBBMWNUEYXZBbjmJUmfIz3asr4vz8LAXe1T+mApnBahCrNouWTTWimp0nHC2ZQiINVgsW2DGmiv/77Z3ce4WMtZA153lexM8cmDcYfhLtgWFR/obx/0+TaPZCpaFw3WS5Wolkn8r0InOEUOuf4+iMxXB9sxCNgRoye1KsE5jJqIrVMCW/A/wUJjj5wtvqIoJqlbCpoZGtBc1MSMmWw6mkjiGIMrzGU++voG+8vw9xqSE3xDLnXZ16kfnBpMjf80i+Cv/5HKKz7uYGPoYirAuxjaZct+zoq30N5DbN+5ME3EHPqRzG7Wh7y+8tHkHRo8RFD+1sIQNLGeeu9XJnj6aq/zDsPDtmFkLrM8CcjSBwqCfzf+JN4SpR+rnRVo5VwXrVS7bdmqAxCy7r50jcSKxj+J5LZc7bEL/b7ZMVN88YqM/xUojzaq4YKmKO1B21UJa+KwYwpDZVYEgF6ojDFpAVvz88kcLdJIJfE8/GbY8m+gU0sMDMNOhT11pqEKTf7DdLnsfarIxTRrRRvKVOVpKqo0smvZxbCbHRA4vTrSy7O4Op9md9Pwbdwsqp/i1lSdPfOFZM31Z1eM2QYmyr2aejH1NbDMXYJa07RqQIm2xGt2kF1CFlkLS+ZRbniG7Yy3i0+9BINcOigNvrNi5LEG96HsCnE3DPW1u2zoBqS7E293r3lkSYB4zkhe42OB9uJ5Yk8gLqxVd2HXlHy3HuXnShQy02zput2+BLtGE/UNu2DGuGLrnyiZC3f6cd5Uizfodtho/NVX/rKIRwfjVxhWxReOLcjqYydTnzITngIqeF/J7LidBQjAWPddECsGVBQtQdEuRNLs7wsFs4xmlX0YbzCd31ylJUADTRdOWtwd/XjcbxWYVAyFT4zmsfWD7
+ VO9aFqse
+ ++IGP2lhGu923k9B7B+PyiNHkjjqFiO/vNjygLcREVZ5XAUgqQB8IUcdAZkSnB4i7aao9QU0Qw+Ng3AOTESghQu68SpMQ8He37Tj7d44ymwCgVTnWT4rFFR63vSU+ZnK/jPlQ/a5EAvw988m97FTsYp+AtUzeernGSDSVpQoMqD2kMzPfXPdSJbZW7guzU+yFMm29PrHPRhML9TiejgT96aT666M4SEqBzu/hVK2C8+uAu9D8DG/oCMyGYHTNwbPXqwGtPiecrWaWRG+dg/sKmEDbrp1YwFUPefiRp4Pe55XqLCg4Mx+LW6fN+gNyIBkEWV0hCAYoB7mwh5lLRr5hrhW1qtSD9lrD21DT3eoJaGftbRv9Q1Zlk0RMdu7eqgZ7YwvpFMTaOKNMsW7jHG8idOJv3NXU4WHL55hP+/ZwlE/TInBb1aeAuY4xGO/PaMBjo40KvaouY5w5tsOUHYsLiwFrnxCFlXjcLPFi3Fa5OTwCwnmZJah9EQehM/OX2BYK8axbrgwm4QpltYrejFpprarsqsN9NTuuGt/86gJZ3xkgUZk1JFoIB4mZU2qKNc//qdCFBfjGeXRnSTGdfGu6RMvYd90Kl0LXJNpfMAFSWqRRyrEUVkw1/8U1GoO8JO5iMaH+s2WzxZkfddZ9LSCGJugRPCDGnFMQAFgso61jaArCTpbadhZp3NbS8esi1flyEHUcH3MbRRyipoyeYYMMMYny1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,20 +131,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 25 Sep 2026 09:41:24 +0200, David Hildenbrand (Arm) wrote:
-> Is this loop really required? I thought the page should just be unmapped from
-> the page table. It might still be in the swapcache and under writeback, but
-> that's irrelevant.
+From: Peter Xu <peterx@redhat.com>
 
-No, one call was enough in every run I did.  v3 calls it once and skips if
-the page isn't swapped out.
+commit 58db7c5fbe7daa42098d4965133a864f98ba90ba upstream.
 
-> Do we also want to check wrp? I'd assume it suffers from the same problem (did
-> not check carefully though)
+Patch series "mm/hugetlb: Refactor hugetlb allocation resv accounting",
+v2.
 
-Yes, it does.  v3 adds a move-swap-rwp case, which fails without patch 1
-and passes with it.
+This is a follow up on Ackerley's series here as replacement:
 
-Thanks,
-Donggeun
+https://lore.kernel.org/r/cover.1728684491.git.ackerleytng@google.com
+
+The goal of this series is to cleanup hugetlb resv accounting, especially
+during folio allocation, to decouple a few things:
+
+  - Hugetlb folios v.s. Hugetlbfs: IOW, the hope is in the future hugetlb
+    folios can be allocated completely without hugetlbfs.
+
+  - Decouple VMA v.s. hugetlb folio allocations: allocating a hugetlb folio
+    should not always require a hugetlbfs VMA.  For example, either it got
+    allocated from the inode level (see hugetlbfs_fallocate() where it used
+    a pesudo VMA for allocation), or it can be allocated by other kernel
+    subsystems.
+
+It paves way for other users to allocate hugetlb folios out of either
+system reservations, or subpools (instead of hugetlbfs, as a file system).
+For longer term, this prepares hugetlb as a separate concept versus
+hugetlbfs, so that hugetlb folios can be allocated by not only hugetlbfs
+and other things.
+
+Tests I've done:
+
+- I had a reproducer in patch 1 for the bug I found, this will start to
+  work after patch 1 or the whole set applied.
+
+- Hugetlb regression tests (on x86_64 2MBs), includes:
+
+  - All vmtests on hugetlbfs
+
+  - libhugetlbfs test suite (which may fail some tests, but no new failures
+    will be introduced by this series, so all such failures happen before
+    this series so shouldn't be relevant).
+
+This patch (of 7):
+
+Since commit 04f2cbe35699 ("hugetlb: guarantee that COW faults for a
+process that called mmap(MAP_PRIVATE) on hugetlbfs will succeed"),
+avoid_reserve was introduced for a special case of CoW on hugetlb private
+mappings, and only if the owner VMA is trying to allocate yet another
+hugetlb folio that is not reserved within the private vma reserved map.
+
+Later on, in commit d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle
+areas hole punched by fallocate"), alloc_huge_page() enforced to not
+consume any global reservation as long as avoid_reserve=true.  This
+operation doesn't look correct, because even if it will enforce the
+allocation to not use global reservation at all, it will still try to take
+one reservation from the spool (if the subpool existed).  Then since the
+spool reserved pages take from global reservation, it'll also take one
+reservation globally.
+
+Logically it can cause global reservation to go wrong.
+
+I wrote a reproducer below, trigger this special path, and every run of
+such program will cause global reservation count to increment by one, until
+it hits the number of free pages:
+
+  #define _GNU_SOURCE             /* See feature_test_macros(7) */
+  #include <stdio.h>
+  #include <fcntl.h>
+  #include <errno.h>
+  #include <unistd.h>
+  #include <stdlib.h>
+  #include <sys/mman.h>
+
+  #define  MSIZE  (2UL << 20)
+
+  int main(int argc, char *argv[])
+  {
+      const char *path;
+      int *buf;
+      int fd, ret;
+      pid_t child;
+
+      if (argc < 2) {
+          printf("usage: %s <hugetlb_file>\n", argv[0]);
+          return -1;
+      }
+
+      path = argv[1];
+
+      fd = open(path, O_RDWR | O_CREAT, 0666);
+      if (fd < 0) {
+          perror("open failed");
+          return -1;
+      }
+
+      ret = fallocate(fd, 0, 0, MSIZE);
+      if (ret != 0) {
+          perror("fallocate");
+          return -1;
+      }
+
+      buf = mmap(NULL, MSIZE, PROT_READ|PROT_WRITE,
+                 MAP_PRIVATE, fd, 0);
+
+      if (buf == MAP_FAILED) {
+          perror("mmap() failed");
+          return -1;
+      }
+
+      /* Allocate a page */
+      *buf = 1;
+
+      child = fork();
+      if (child == 0) {
+          /* child doesn't need to do anything */
+          exit(0);
+      }
+
+      /* Trigger CoW from owner */
+      *buf = 2;
+
+      munmap(buf, MSIZE);
+      close(fd);
+      unlink(path);
+
+      return 0;
+  }
+
+It can only reproduce with a sub-mount when there're reserved pages on the
+spool, like:
+
+  # sysctl vm.nr_hugepages=128
+  # mkdir ./hugetlb-pool
+  # mount -t hugetlbfs -o min_size=8M,pagesize=2M none ./hugetlb-pool
+
+Then run the reproducer on the mountpoint:
+
+  # ./reproducer ./hugetlb-pool/test
+
+Fix it by taking the reservation from spool if available.  In general,
+avoid_reserve is IMHO more about "avoid vma resv map", not spool's.
+
+I copied stable, however I have no intention for backporting if it's not a
+clean cherry-pick, because private hugetlb mapping, and then fork() on top
+is too rare to hit.
+
+Link: https://lkml.kernel.org/r/20250107204002.2683356-1-peterx@redhat.com
+Link: https://lkml.kernel.org/r/20250107204002.2683356-2-peterx@redhat.com
+Fixes: d85f69b0b533 ("mm/hugetlb: alloc_huge_page handle areas hole punched by fallocate")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
+Tested-by: Ackerley Tng <ackerleytng@google.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Karl Mehltretter: The upstream changes map directly to this stable tree's
+  page-based HugeTLB API. The backport retains this stable tree's inline
+  free-minus-reserved calculation and direct -ENOSPC return; the functional
+  changes otherwise match upstream. ]
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
+Tested against the current linux-5.15.y tip, 5.15.221:
+
+- x86-64 QEMU, 2 MiB HugeTLB pages, at 1 and 4 vCPUs
+- compared with the unpatched kernel, an extended version of the commit's
+  fork/COW reproducer kept the child mapping alive during the parent write
+  and changed HugePages_Rsvd after program cleanup from 5 to 4 and after
+  unmount from 1 to 0
+- parent/child data isolation passed and no kernel diagnostic was observed
+
+ mm/hugetlb.c | 22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index e0908e491065d..947610e37a33c 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1144,8 +1144,7 @@ static struct page *dequeue_huge_page_nodemask(struct hstate *h, gfp_t gfp_mask,
+ 
+ static struct page *dequeue_huge_page_vma(struct hstate *h,
+ 				struct vm_area_struct *vma,
+-				unsigned long address, int avoid_reserve,
+-				long chg)
++				unsigned long address, long chg)
+ {
+ 	struct page *page = NULL;
+ 	struct mempolicy *mpol;
+@@ -1162,10 +1161,6 @@ static struct page *dequeue_huge_page_vma(struct hstate *h,
+ 			h->free_huge_pages - h->resv_huge_pages == 0)
+ 		goto err;
+ 
+-	/* If reserves cannot be used, ensure enough pages are in the pool */
+-	if (avoid_reserve && h->free_huge_pages - h->resv_huge_pages == 0)
+-		goto err;
+-
+ 	gfp_mask = htlb_alloc_mask(h);
+ 	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
+ 
+@@ -1179,7 +1174,7 @@ static struct page *dequeue_huge_page_vma(struct hstate *h,
+ 	if (!page)
+ 		page = dequeue_huge_page_nodemask(h, gfp_mask, nid, nodemask);
+ 
+-	if (page && !avoid_reserve && vma_has_reserves(vma, chg)) {
++	if (page && vma_has_reserves(vma, chg)) {
+ 		SetHPageRestoreReserve(page);
+ 		h->resv_huge_pages--;
+ 	}
+@@ -2775,17 +2770,6 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
+ 			vma_end_reservation(h, vma, addr);
+ 			return ERR_PTR(-ENOSPC);
+ 		}
+-
+-		/*
+-		 * Even though there was no reservation in the region/reserve
+-		 * map, there could be reservations associated with the
+-		 * subpool that can be used.  This would be indicated if the
+-		 * return value of hugepage_subpool_get_pages() is zero.
+-		 * However, if avoid_reserve is specified we still avoid even
+-		 * the subpool reservations.
+-		 */
+-		if (avoid_reserve)
+-			gbl_chg = 1;
+ 	}
+ 
+ 	/* If this allocation is not consuming a reservation, charge it now.
+@@ -2808,7 +2792,7 @@ struct page *alloc_huge_page(struct vm_area_struct *vma,
+ 	 * from the global free pool (global change).  gbl_chg == 0 indicates
+ 	 * a reservation exists for the allocation.
+ 	 */
+-	page = dequeue_huge_page_vma(h, vma, addr, avoid_reserve, gbl_chg);
++	page = dequeue_huge_page_vma(h, vma, addr, gbl_chg);
+ 	if (!page) {
+ 		spin_unlock_irq(&hugetlb_lock);
+ 		page = alloc_buddy_huge_page_with_mpol(h, vma, addr);
+-- 
+2.53.0
 
