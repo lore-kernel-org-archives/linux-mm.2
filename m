@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E58C9831E
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 03:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4A67C98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 03:49:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43C686B0088; Fri, 25 Sep 2026 23:49:33 -0400 (EDT)
+	id 06BEA6B008A; Fri, 25 Sep 2026 23:49:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EC6D6B008A; Fri, 25 Sep 2026 23:49:33 -0400 (EDT)
+	id F374A6B008C; Fri, 25 Sep 2026 23:49:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2DBAA6B008C; Fri, 25 Sep 2026 23:49:33 -0400 (EDT)
+	id E263A6B0092; Fri, 25 Sep 2026 23:49:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0515F6B0088
-	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:49:32 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4E3614080C
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:30 +0000 (UTC)
-X-FDA: 85254533700.13.954899A
-Received: from mail-wr2-f34.google.com (mail-wr2-f34.google.com [74.125.225.98])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 385A7100003
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:29 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JfPckEvX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id BC4E66B008A
+	for <linux-mm@kvack.org>; Fri, 25 Sep 2026 23:49:34 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C2CCF807CE
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:33 +0000 (UTC)
+X-FDA: 85254533826.08.02DAA1E
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf02.hostedemail.com (Postfix) with ESMTP id E007C80005
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 03:49:31 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fvy2TO0i;
+	spf=pass (imf02.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790394569;
+	s=arc-20220608; t=1790394571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mH8RpPDrFr6HJQvoLRU0PIhxtXNYo241XhZA1klSUjY=;
-	b=sZJYFsDJMGin2D5nQbylV+Uc8xOR0osSwZTXkrSOndUTPdBLnRY/Sy0g/CkVUEy5gfXfvG
-	9DKDOtqSO2fiziVl3TQDm6uBHpgF/CsetY+ciKEA8D0jgkpzcYMGwztoVPZIAT9K0QtMH8
-	MT04jD/3X7iG+64DmRaX9nuwWmAcxqQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qI8gzoG27aGncFin1uBlOK6ZBd9hIaPKhApyur6iKoc=;
+	b=lLl3qtrauEZQlsOWSnaHes/1dIpyykX+Oqg8TKdtZ2azDGfbG5jGkzdXKvL8S1Xuppb37D
+	8fc727rCZJVFpIHdPLNYoGvn1RIqCzzO4Uy5eqzdeHncOLEgLvpLnzoKH35QZVBDpdcwpL
+	WCuvsMrOWZjDuHI1sWQTApa8zdWnc6Y=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JfPckEvX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.98 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Fvy2TO0i;
+	spf=pass (imf02.hostedemail.com: domain of sebastianchlad@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=sebastianchlad@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790394569;
-	b=iJ9AW2dOpiEa3flfCVQD+K5sFFymZnIoOgmYCgSI+pIKIb3YoHGTKdprud04H8J/36bctN
-	tBprmtAzfY54aGQOUHPeSyq3vljm4a0msVFPSMo5YaLb5bwZE6x/6yYy50xEiZFf3w2Ui0
-	tXKpjrf/0vFppWhbx/TYXCqhvuCui9E=
-Received: by mail-wr2-f34.google.com with SMTP id ffacd0b85a97d-48884b0219bso296514f8f.2
-        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:49:29 -0700 (PDT)
+	t=1790394571;
+	b=f9UpFKszMHa005lk0BjCjaIOLRrhgaCF5NKIWw5tLLP9F3bN5vsxwIyOzM+EDL29RpHhSi
+	oSsOpyEzvVDHKDuRm0t7Hj06dvzqFE62ULNslh+eg0bs9rDSTQLQjn2fch80RBDMqpHqwA
+	WhyMAeshUdMkRBnWTsdfj9cHROFWlxI=
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f6351831so806736f8f.1
+        for <linux-mm@kvack.org>; Fri, 25 Sep 2026 20:49:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790394567; x=1790999367; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=mH8RpPDrFr6HJQvoLRU0PIhxtXNYo241XhZA1klSUjY=;
-        b=JfPckEvX+lAFNl9C72G7+Z4VKB6N6JgnBBEuyZxOLPQ1kX1BYh5I4WBxqNOFI9d1e9
-         1oGZ28kUhuH5TvH/96jVXbGLj5ejKedr5pPxV+PyJRoQFVbV1YALX4gGQLMuQyJWutGR
-         SZjm5JvqEhrd3FeyBqPOarO5kb5HfCRX9B8AkG6iUOvoB5U8j184UG1eWHxdRj5H7xPu
-         fh1eVDUXYTPMa+gxveYnmlbC5K3ClriSPLHyLes2jHKthIO3l4V6Qv5NbLDoICBY9hhb
-         tJMB+mwOQM2hbyg6ZFtosG9TBRrw4q1f7SveOM1A5s58FktdsRRlbxw+2LdTAYqBl4f2
-         kuZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790394567; x=1790999367;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790394570; x=1790999370; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=mH8RpPDrFr6HJQvoLRU0PIhxtXNYo241XhZA1klSUjY=;
-        b=mvXRGMf7HK8/A9KXigzU7aiFze72l/FCVZGtRaxEMNOb+hYhoLgD62EtxF09nwK65r
-         FheIvTqH+Ak7ub5u5aEW63iJvBpy0uY+/395xvJs4muIHsIQz6/PSthq52v4powo7q1B
-         OPsulNfXJuigcBddix+HT8bykE+wCgxrKrcWC82B9Ycx/0GIrFz0j4wccH9ttoT9gCCa
-         EEQ1Wo83h0e4Dni140kpGkpvVNnKL5HiSO2vb+PYqAUdDOHoY0f2cTw0g7eh3f/tgYZS
-         wN8/0KGIXiZjjHut2wHDATKGxifTxBg2Ht/n/S53SLSseoLJ8aq3DtZPqW1EbRr7y/BQ
-         dHDA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqkID8Wwc5ZBLVF/xe0E7EJ/orGiTAh869+mltPBxxZ3VAAZMkkl2d9iQf459+GA/4Z/7ajHtyNA==@kvack.org
-X-Gm-Message-State: AFuF++mRjVjpH4/AWLNVr1doGWA0Loa5r53JJUPlalFPHgpjiIK3aiUF
-	EN1od9Jy+Xw0zW8YJv3DPGWbS82STl+z4+FiNKtDQLKVdVWefmMlwFqU
-X-Gm-Gg: AYBFou3bJ7gODTIjZew0ALkKp4K4+KMgUibQmls86ecdfq8p9WNN7Z4xxf/uBIxQQDh
-	ipxn+Hq1hwGFrKkta1kexOt0OicVbaAb+sOr9hUw8tQzPCrcD+tl9j2N7hrxj08GiSqFRjn8co1
-	myQRRKRTGLd8p9HTBU5RHhprALMYqU/xnwh4Oz50yprdjSdg5mQkoUbNyOsSnesOEon1t4jSFPy
-	xVjtyxJbOpTBXFoTOU5fzoB1mglZvRTURafod/kuasfW80+MDgaZiC2sGR4IeQUXs9jtDBzlhTA
-	2uL/eHkcfn2f0pKYK/GvSe+vfdElfT4k318HRNwdWqhGecIB1kmQKj5yXoO1n1E9bF/BnVnjy6g
-	u3Q+e8RucpgEqjBX9sulQnqz1Qk3DhAuTqlC1Xy3s/2zJlTscrX1O7fZyIJFOQYvKZhbeiqQ+6/
-	GLvo4HcT/j9To11DCnGaBIaJQAChp75Vh8RHPC9iy/ulVnlQ1abeAzOfBsOwwinFF6cZGCXgECK
-	Zf+7RgAvWbQSQ6OjlUSAt/OZCS3C9FrkqFESUdtD2Ow
-X-Received: by 2002:a05:600c:1907:b0:49e:63cd:31fb with SMTP id 5b1f17b1804b1-49ff06bcd54mr73179155e9.9.1790394567317;
-        Fri, 25 Sep 2026 20:49:27 -0700 (PDT)
+        bh=qI8gzoG27aGncFin1uBlOK6ZBd9hIaPKhApyur6iKoc=;
+        b=Fvy2TO0iQy3SvXcyv0nICUP3Let3i7kXjUG7ECxBBVvCWkT3a07CXhFqD/WZzdy53I
+         lTHIo315fT2IofJGqMkwGSoFFZBzi8E2VCpEaaxhGU5aJMgSUXff7p9zzQeUsqh6mbBX
+         75jPkkvDngJvsk6dApAE8HnPV8GAJeAXwEHHZuNUxnD8glD6JqNlFz0tRe5K6zjFBZUq
+         /obrRcUCMMzCha7hTGDk9UxZY6+T35cpeeluP/uAKEbbge5CBb1DNdxYZK9Os9cEAjMv
+         1nazntnaW9PRHTb9v8IWGNzehlV2tYjH401Ks0+AIvwvRslQsDZtKQ3g9/QD026487Ma
+         E7aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790394570; x=1790999370;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=qI8gzoG27aGncFin1uBlOK6ZBd9hIaPKhApyur6iKoc=;
+        b=u8oG4Br7QVrwuQcA8hrqIULy9wOHVeLS7/l+61epoAe8jQ9GR4+PyKimCc1l0rQiZ5
+         QA67c/Ix6iJoOF1jqZ7D7f0/6EyJ0jyX2vwetLGElMJeoHhtvi5d3TFxKVXSwSPzGxQC
+         +BK2UCKnrkT58Wrr+LhL5/s1O0SDJ5K83AkA/pUt18VTPwZqKN8/tGVGkG0Uv9p2HGxl
+         pHfu7Mutcyj0cfx/cn0/X3C5th2FTYXgfOxKaqgbRFSGDL6ECM3JwgtxJY12PWv7DJxB
+         IQveA6BEBZE1WwNa9sOYoBauydimiqKz2o1P+1E5rjR/Q26zMbiQgKuK89XbQY+KFMP1
+         fbng==
+X-Forwarded-Encrypted: i=1; AKwUvBydSFlr6SnRIyKtrT8SvYZZUvgXTklF1o2PJsQuySvOaNdO9uGu8n71jdrY9/8PJL5deOatGDdV7Q==@kvack.org
+X-Gm-Message-State: AFuF++kmXCLcaOnpRFSfVuq/1K4cdjzmYXu6hphZtK+0KtsALBlu9NMa
+	MKH+zfI/AcB8IbzIr9iOpe7Wi7Oam5q7e92bC/zN5TZXAQ18J/jSR29DSCHJn2ve
+X-Gm-Gg: AYBFou3rq5QzZPssAkPGJo4Iv0eCbgTVj1DC+TF2ux9lKcDrwfVlfaZ4QyAK8vZl9nS
+	tGRcWaUIOZ66ohXJq7AsaRnyao0Zpm1ubOV2e5WW/tPZjTaEgmepEvkq6FgR2HyJdfjJmNeggCO
+	fR8AjS8xYd3nvivohEhaJkspURZMNgE5l98hSmHHDG8LSVQRZLaqWLvhsIRJSL2yump9QM3+tX1
+	ZXYbEMrJ7uiYmGUQB3W+ABR/xwuz0JVYZy6w4sc9wullls365Z6w6gOk+f3QpGiUoC0oCFePiWn
+	+1L2c6Qjc0KxAyvVsoxfJS1gCMhMVCPwy/+DZ6b5O8rmdT08ue0WXYy9HudnSE73InyMLNyxHVY
+	YJYZ4hf2e7517atRgvQghQvmFrZ7s18JiSl9M333PemM/EhktOlaM8tQSNeuSQ2WdxozBA+cYZW
+	8XQ9w6lw0k4db83JOpjeKBpb9PUITNAZ0u2+E1maYZDF8mRl79coCQJLvox2fqApNLS6D54EcWL
+	L8H8Yc5pQfMm5cOK/YgKdUkuGDPviLptsNYoxgyFx49
+X-Received: by 2002:a05:600c:3b1b:b0:49c:de80:b833 with SMTP id 5b1f17b1804b1-49fe66c8a1emr145611675e9.2.1790394570582;
+        Fri, 25 Sep 2026 20:49:30 -0700 (PDT)
 Received: from localhost.suse.org ([37.109.167.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff43ad975sm116657205e9.13.2026.09.25.20.49.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ff43ad975sm116657205e9.13.2026.09.25.20.49.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 20:49:26 -0700 (PDT)
+        Fri, 25 Sep 2026 20:49:30 -0700 (PDT)
 From: Sebastian Chlad <sebastianchlad@gmail.com>
 X-Google-Original-From: Sebastian Chlad <sebastian.chlad@suse.com>
 To: Tejun Heo <tj@kernel.org>,
@@ -105,20 +106,22 @@ Cc: Sebastian Chlad <sebastian.chlad@suse.com>,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] selftests: cgroup: Report failed checks in test_memcontrol
-Date: Sat, 26 Sep 2026 05:49:19 +0200
-Message-ID: <20260926034923.31718-1-sebastian.chlad@suse.com>
+Subject: [PATCH 1/2] selftests: cgroup: Use values_close_report in test_memcontrol
+Date: Sat, 26 Sep 2026 05:49:20 +0200
+Message-ID: <20260926034923.31718-2-sebastian.chlad@suse.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260926034923.31718-1-sebastian.chlad@suse.com>
+References: <20260926034923.31718-1-sebastian.chlad@suse.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 9mcera57r5x1bw9axa1kityaziq54cqw
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 385A7100003
-X-HE-Tag: 1790394569-966030
-X-HE-Meta: U2FsdGVkX1/pWqD51I/laCrC6v9XFaolRTZhQj2AVJx5/kZRSHjWE0KthbiIF83eNVDV4v7PIJbhlX4/SO1gtM6TUFCps+bYkJKKs/2YOQLT93FsR6g0viiLfWpuS0u8/U7pGZt+aDeIFlSPScZ7KTvuoXLlVOULeXNeyZ0TJqzffTM37OqnKZhRE1XujAg2DrsgiMhdixW/C7MNNutCpZCkK0xQ8+ZNgyZ2vAHXav1X04hDV+s/qRtIfzixtl/WF4WIbj/wsBbF1mG1z5sLXXWnwT2ddBtDWL6rVebeSCs7lUCiua/TQQFMaF1BA11tZ+vNhfJZ7HhDQ+KQFmOQfAxElntOibEiCURtg8TVAWwNzCTn9/L0WNbVeRvRPYZtisuo+Zvcs+udUAdxPYb39ZAtxuiL6SzllRJpJ8ONB68jFhQyVk+ZButHeMGLj2x+6Cuqyunkp5m+CYyEJtuDcy6NrnHNqxfgwpZEPafj6MMjiuqmv4VKxkUgEilFsAf3u4LWEjzqQlpcFDUZHPOP+4kmSwtC0P+Yu1RUypDlG+NonQzZQ1r1/Om8BusdweBBH64w192soq9ZdTndig60KfEH3B5IyJSzUp7lbjADmTavnNBJTxrTMr03Pdk2pazzpi3LFz5KDhIvhTgPlwEZlonWt0umdgDmQYpWDwXHr9Wi55QgZMiQYC79dMScAVBmMlLjRC0ufC3IloRgbw4IR1bhBB+YmcNaZVRFjstysCU1O+94qDMiYgzmbTe0anTQ4iohGglqyt8UELTXbUX/4ovtf06MXSVSD4fwHf9iKNpOeg1gWrHMv/Gq9WtFEdCgyHwFv4Y761QNtRj/buyhPmSXCg3LKGyuPNUqS3oeZW1NS1eW6zJhzNO8Yx7j62fIuv7TJtHNUaPE3+K78tptR0fScBKabV3U752m+4nv0LeCf5nZ3M9gJ/PzwZeh+b5X66HQeAERsdVmZVM66sA
- KPlu9rRp
- jlZBeAF41OsO8zaFuIoP4L3Y8IqdqgM0dj4/eteMzXnLTxUH97HkfDXY1d6p1QBTmJoUTV1GIl+9Vq06OgDc90x6XUvTP7WYLFZwryqa2EE/CGBeG2DXmFXKNRSy/jZH83pX4pPGq+b7J1uj8ccVp6iXmdno52BU5IpBtz0xmNm2TzkEH+f71ZSP6Z4Htgi2q+RxBig+1YbtFgELCmfI5Avfjl7LmSfRU1dinKc7Zt5F7Scu2R9Ss8VWfoJlwGzVVNHNHmW4dZpjYK7BKg/3ub5euItrG0Ji7rIRSrCqcANYqf4RDtl/NiV+jPCoVhLMIqNWdA9KLUIpxQtJ6MvbpVaSj+xeRNSoH7rfylXvQ1aZ/1vHu9dNWgyx9XvSe2+FeSmDZa1d4JYfnxYE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E007C80005
+X-Stat-Signature: 3yngtni4ta3geq6wfumgm6ur6smgf46z
+X-HE-Tag: 1790394571-374370
+X-HE-Meta: U2FsdGVkX18HNYL2M9vCERAM1PzLt6+xxeuX9FSlFAp3k6v5nzcraWbJ30mRJ82Jb4+bAkqcWDNUZi+hewqembGqRu4zF0h3sIuuPwyMSSLcxN3j+HxyU+5yQMwWNE1Zl7Wv6OgLAWrCZxcgRL3/jLGzPxtBCjeaFIYsXqqDlhbKNo3Mms3p1eA2RxM3iPnVScnzKbEpNaNp+urGp/L9jTwDjewd6za5fT5s+BbI1IsD15uIPg9gmuREPycPZQH0peNYqNrTwcawOt6Fz2BXZGTjLnF6Ts93RmQCXgChHdA5C7NRKl/xOTl0s9lUbhBKJ5DkvU0I0bVHfgkpfjhIyjG09zXyeZmHQpyf6KaZ0rX7QOAJ/PlwZGZrintir4H/fhnnPJCZNe1SY5gCjKUdhk+C6u3bLBWLkxGwR9+O3PxQ9yRBmdivSkNVLxGjWjhpTr8jI2+BOiAx49fAeinNNfQkIS1vS6XaxmOLZSRi+f0ncxZQdINcnHrqr3nz1XJJFNYxrVHmkyTU7Y7syyOSbZCAA4LxWesD8Ls27spL+XSMEjSEYhwMgJCo5tMUlEpN6JxHNPOT95LZe6bBNcGUWrMQU99ZOGNTYMBcmfvVblXPXkQ0eCKkL76JJm1tbSEbkoO6D2Lq0i4xdNku7p62I07aI2tOsa/trQyL0CzPWGRO0EPtfB20vmdcIsA/HBYfl0ws8Xf1Hz2VMUAjctRrAHW9uQgvkJXHEnEshyWFTd93tp8aFOT3oPF7gyje7ZD988MbXED3CcgKfMuYjGXReybtk4s+1Uvp45dgoc7rnHE6s/cWxGsqgUz7jKIeWeuLDjTgydYcU4QFz9/+sK29L1GViRUCSDrC+d/XE86qgLcPcu+3bZ1omZ1VFsqZlyb4Mbn/Vuc9QNmR+bA20QiUgqK0vG8dlyNYyAH0pYWN3L2hQVX8oQpELOmt1b7OQpYf6QS525G3ZJULzl7e3Vh
+ ywqrCaxZ
+ Qj7yQRS5x2g/l0M3AY0cgcnPJ67hYGSU48lVsWmPZMCOQ/1fAUxlzUyOZ3g50JsbBjN40cESwFcqBzdt3AoztvVMFG3rRMjK8r4vGbHm2CaCdqMB1ThgkuwWWtk59OIn3cwwCabt1peczvlbGFL4y/Yjh8JTGmnujVrRWupdoATByBXzaWQqLsYvhgWiGTlpMl5Wj+utVjqrnqsp97IzfXGl+kBKlQAKyltPdT0//54DxUIi6GQ4esVbMaYg9zXdnHVZo8eBirJjMs2iSPxyXX4jYTzWFpun7mS1UJLilykFz2qo8D6qGk9jBf13UsZC8IrPVfyhkWj5rGfO+ILe1tQcnGhvzhzuiHXrX9W2VhgYVm8sHHuzFiABgD6Vu+vf4DwWY16HwbnE+iKCx+A4S6rmfcNZmIHfK4W71iHZ4UBkwU3dnIq7mMQcTijl0sjaqpUmdtmDguuGcPIY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,51 +129,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-test_memcontrol fails intermittently, but most of its checks fail
-silently, so a "not ok" line gives no indication of how far off the
-measured value was. This series makes those failures print the observed
-and expected values. It does not change any threshold or pass/fail
-behaviour.
+Convert the terminal tolerance checks in test_memcontrol to
+values_close_report() so that a failure prints the observed and
+expected values instead of failing silently. Also report the
+"memory.current < size" check in alloc_anon_50M_check().
 
-Patch 1 converts the terminal tolerance checks to values_close_report(),
-as was done for test_cpu in commit 4cdde87d723a ("selftests: cgroup: Use
-values_close_report in test_cpu"). values_close() is kept where it is a
-loop or retry condition, where a mismatch is expected.
+values_close() is kept where it is used as a loop or retry condition
+(waiting for usage to settle in test_memcg_protection(), reclaim_until(),
+the reclaim retry loop and the socket test), since a mismatch there is
+expected and reporting it would print spurious failures.
 
-Patch 2 reports the "memory.current < 50M" check in
-alloc_pagecache_50M_check(). Because test_memcg_high() calls the same
-helper expecting it to fail, it gets a quiet variant. An alternative
-would be to pass the flag through the currently unused void *arg of
-the cg_run() callback; I am happy to switch to that if preferred.
+Assisted-by: claude-opus-5-5
+Signed-off-by: Sebastian Chlad <sebastian.chlad@suse.com>
+---
+ .../selftests/cgroup/test_memcontrol.c        | 25 +++++++++++--------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-With patch 1 applied, we observe at times failures like these:
-
-  not ok 3 test_memcg_min
-  [FAIL] actual=18722816 expected=30408704 | diff=11685888 | limit=7369725 | tolerance=15% | actual_error=23.78%
-
-  not ok 4 test_memcg_low
-  [FAIL] actual=20852736 expected=30408704 | diff=9555968 | limit=7689210 | tolerance=15% | actual_error=18.64%
-
-  not ok 4 test_memcg_low
-  [FAIL] actual=14364672 expected=22020096 | diff=7655424 | limit=7276940 | tolerance=20% | actual_error=21.04%
-
-These are the child memory.current checks in test_memcg_protection()
-(expected ~29M and ~21M). Their tolerances were already raised in commit
-d2def68ae06a ("selftests: memcg: increase error tolerance of child
-memory.current check in test_memcg_protection()"), and the values above
-still fall outside them. In the first case the child is about 38% below
-the expected 29M. This series only makes such failures visible; whether
-the expectations or the tolerances should change is left for a separate
-discussion.
-
-Sebastian Chlad (2):
-  selftests: cgroup: Use values_close_report in test_memcontrol
-  selftests: cgroup: Report memory.current shortfall in
-    alloc_pagecache_50M_check
-
- .../selftests/cgroup/test_memcontrol.c        | 50 +++++++++++++------
- 1 file changed, 36 insertions(+), 14 deletions(-)
-
+diff --git a/tools/testing/selftests/cgroup/test_memcontrol.c b/tools/testing/selftests/cgroup/test_memcontrol.c
+index 0ed82347044e..14c0bb608175 100644
+--- a/tools/testing/selftests/cgroup/test_memcontrol.c
++++ b/tools/testing/selftests/cgroup/test_memcontrol.c
+@@ -200,17 +200,20 @@ static int alloc_anon_50M_check(const char *cgroup, void *arg)
+ 		return -1;
+ 
+ 	current = cg_read_long(cgroup, "memory.current");
+-	if (current < size)
++	if (current < size) {
++		fprintf(stderr, "memory.current %ld < expected %zu\n",
++			current, size);
+ 		goto cleanup;
++	}
+ 
+-	if (!values_close(size, current, 3))
++	if (!values_close_report(size, current, 3))
+ 		goto cleanup;
+ 
+ 	anon = cg_read_key_long(cgroup, "memory.stat", "anon ");
+ 	if (anon < 0)
+ 		goto cleanup;
+ 
+-	if (!values_close(anon, current, 3))
++	if (!values_close_report(anon, current, 3))
+ 		goto cleanup;
+ 
+ 	ret = 0;
+@@ -241,7 +244,7 @@ static int alloc_pagecache_50M_check(const char *cgroup, void *arg)
+ 	if (file < 0)
+ 		goto cleanup;
+ 
+-	if (!values_close(file, current, 10))
++	if (!values_close_report(file, current, 10))
+ 		goto cleanup;
+ 
+ 	ret = 0;
+@@ -578,16 +581,16 @@ static int test_memcg_protection(const char *root, bool min)
+ 	if (cg_run(parent[2], alloc_anon, (void *)MB(148)))
+ 		goto cleanup;
+ 
+-	if (!values_close(cg_read_long(parent[1], "memory.current"), MB(50), 3))
++	if (!values_close_report(cg_read_long(parent[1], "memory.current"), MB(50), 3))
+ 		goto cleanup;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(children); i++)
+ 		c[i] = cg_read_long(children[i], "memory.current");
+ 
+-	if (!values_close(c[0], MB(29), 15))
++	if (!values_close_report(c[0], MB(29), 15))
+ 		goto cleanup;
+ 
+-	if (!values_close(c[1], MB(21), 20))
++	if (!values_close_report(c[1], MB(21), 20))
+ 		goto cleanup;
+ 
+ 	if (c[3] != 0)
+@@ -603,7 +606,7 @@ static int test_memcg_protection(const char *root, bool min)
+ 	}
+ 
+ 	current = min ? MB(50) : MB(30);
+-	if (!values_close(cg_read_long(parent[1], "memory.current"), current, 3))
++	if (!values_close_report(cg_read_long(parent[1], "memory.current"), current, 3))
+ 		goto cleanup;
+ 
+ 	if (!reclaim_until(children[0], MB(10)))
+@@ -691,7 +694,7 @@ static int alloc_pagecache_max_30M(const char *cgroup, void *arg)
+ 		goto cleanup;
+ 
+ 	current = cg_read_long(cgroup, "memory.current");
+-	if (!values_close(current, MB(30), 5))
++	if (!values_close_report(current, MB(30), 5))
+ 		goto cleanup;
+ 
+ 	ret = 0;
+@@ -1006,12 +1009,12 @@ static int alloc_anon_50M_check_swap(const char *cgroup, void *arg)
+ 		return -1;
+ 
+ 	mem_current = cg_read_long(cgroup, "memory.current");
+-	if (!mem_current || !values_close(mem_current, mem_max, 3))
++	if (!mem_current || !values_close_report(mem_current, mem_max, 3))
+ 		goto cleanup;
+ 
+ 	swap_current = cg_read_long(cgroup, "memory.swap.current");
+ 	if (!swap_current ||
+-	    !values_close(mem_current + swap_current, size, 3))
++	    !values_close_report(mem_current + swap_current, size, 3))
+ 		goto cleanup;
+ 
+ 	ret = 0;
 -- 
 2.51.0
 
