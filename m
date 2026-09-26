@@ -4,121 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B52C9832A
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 16:20:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 548A1C9832F
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 16:33:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C0816B0088; Sat, 26 Sep 2026 12:20:01 -0400 (EDT)
+	id 327C16B0088; Sat, 26 Sep 2026 12:33:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 271386B008A; Sat, 26 Sep 2026 12:20:01 -0400 (EDT)
+	id 2FEE96B008A; Sat, 26 Sep 2026 12:33:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1875F6B008C; Sat, 26 Sep 2026 12:20:01 -0400 (EDT)
+	id 216356B008C; Sat, 26 Sep 2026 12:33:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E0CFF6B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:20:00 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6852E40880
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:20:00 +0000 (UTC)
-X-FDA: 85256424960.10.F7BF829
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8E58CA000B
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:19:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MSwWLwFr;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 00D456B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:33:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8CA671A06B2
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:33:29 +0000 (UTC)
+X-FDA: 85256458938.12.C9A2C5F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8C749140002
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 16:33:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KlVRrCLR;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790439598;
+	s=arc-20220608; t=1790440407;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eRtKYg0sOGgBmCELm1fPJpD8C1O0ubIGfHJNiovVGiE=;
-	b=I5Q5INSH/8VyPh54w1a+4t0mXPd92nYNHZxtadZIP5bNlr9ul9Xsfakw3hM3HszQMbcu7G
-	69LV3w8dsP9Ew7O5KbC/bxsREKx7lG3LmCJjMzk79sIqHmtshVjJP4PlIJpHcAWtflC5Cd
-	RDkEzr62m5KT9GEL1h5FXvVqLylZMFs=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=o9MXbZTpH7A14+YS2X7BOUiXMRcP5EMQ4evfdQo12B0=;
+	b=ItsVuj/4l/TyZxaTy9SX5auWIYX9rPG5A6gPZC9D56nBisL13D0FBJxo7lzty6KwH5u9J7
+	B+wO83mlEu2HH+JrRsBWgWbTy609P2YFO9LJaAtGjRTI4plGV1zvEPhBI770lUbDlGgMlR
+	yFR0/DDSpsdZS3kEGch7f1XPeBmjyyQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MSwWLwFr;
-	spf=pass (imf25.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KlVRrCLR;
+	spf=pass (imf23.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790439598;
-	b=haHzXOqeu5+OwbLitNBjjGVhwk46UEH2axhIoNoIEXY7QqNohnMmUTZY2PFFUvUcfe974K
-	mPOSpWBLXh7iSewt62jrK5ttP9u92H8nJssGaq71kvKRA1OYDB9QjpqIjt7iaIf8zuxEe9
-	ocYU1UYiFVO2j7h5+8a80GJYo/jSVEE=
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49b91369d18so11156325e9.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790439597; x=1791044397; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=eRtKYg0sOGgBmCELm1fPJpD8C1O0ubIGfHJNiovVGiE=;
-        b=MSwWLwFrO6DqxZybiBdtzcU1P0w2+wXR3RjEicYPW1hv47tb+uGNmD0OMC67Sj8xI1
-         DilabYwDJs06kyalz2K5iD4w6bn+bXvDSafhB9mSrQL2h3rapJsU6EXAi3582ZcM15n7
-         4U0DjLzy1/ukD/786VTjsfPwL/vXTfPIc52I99DFYga19a7R9RTUF5AYjv/+B8pAn2UO
-         czNWkIcgi4f7ctmtfXwda+xUXQOECsuZ2kDSyLuDiu0XsJoI1RwaX6I1Le3k3MoUG6hh
-         ylfCpvyG86NuthT5ps/v19K2pUnXs6i9Gu2ehlIE432lEJJ9B/ZIfy18NUx8r5yZ8e7+
-         2aIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790439597; x=1791044397;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=eRtKYg0sOGgBmCELm1fPJpD8C1O0ubIGfHJNiovVGiE=;
-        b=wTjIn71FCuAhK33GNmLITQjxTL+OOQj8dzARmB5OyJ4qYX/KPB6E2VktXTrLkwcRgB
-         aIV90+6SLMCFNPT+HUjKGZvWjD2fILZyEVsdkOv47QALG9pVWo+0vXY6c3qUocIJVm33
-         EXAoOQR1trptOjExTSymTh+QpuOBymQxPAb7HJABTyBVH+gutyWZikk0zd1CdPCe8Ssg
-         N8SRh2RIW3lYhgkJf59EDoc50DocTfCcEDBy23Gbf4JfmZVJo7/+TJN6FH8vyzbP9KRI
-         1d/JyEJodnJWRnkRwBvI4z3LMi7ycLy/vFXvzhAgp5qfuCmbzhJzw6hAAIyZYtLRzCvp
-         VTAA==
-X-Forwarded-Encrypted: i=1; AKwUvBxjMsJ1esmfUOBZp6lmhKJnr1i3FpJSoBAJFSylsPBXtMA18L/OCJdvx8nn6mrVlCfs9iwtU+qT5w==@kvack.org
-X-Gm-Message-State: AFuF++lr8GolnL7s/NH8x2/QtMoYdwdQdv9yfcsLMQflFwNpFbVskCqD
-	iNBs8H/Lplf4l9MwKz6kLqtD4WUWKFzPKlBScUkCWWE5ck4nIbcmLGFM
-X-Gm-Gg: AYBFou0L5ioh3w17cS7ZCWIgkgU3VxNxHEZG0fzrMOTK6tR6/C9alQ82iaVD8VH70oW
-	U9/CJUiygLGG31c0bOeSoWfNbD+1zcxIdJSyscl/ON8v3A+wDe8Ay0c23RBqpVKAOaFD+L916C3
-	ADvgrlqaocLRtXBROV7YlatfKGLwcRzea2UwpYvjXcE2R3yvb2x9pW6Wssfo6YyikekTiExz3gx
-	r9I6y8r5qI/HjV90YfftfUlCsEX+FTe7K9HR+d2//P3VQfqHUxemTwgZ5TiaMcFEMV7JivOIQbm
-	D6tLpGTorZkoQc4KNh8BQo1PTcF9CR9MT4dkl0QkVZAg+aOkF7jTcDStGdFlsDPMQKolCB/0+Ah
-	smvIOGX+Wy5AtriblGQgqqIwemCkjhhmTT4VYtDoi7mcKEOhjbLRsvTYmKOeb16XUPL8fxlLOwy
-	1uGkLzsr9I/hiMO8FL9B0zGYnIMbFzu970cq13+dFQIYen/rHSlmNldV1SWU2KPcrhr0/D5bHVE
-	sxdtd1kRNmStuEMgjig/il9dNikVtSkkesYh0lC2DXmmN4Q5Ny89yzqvwU/bijYNJzkFLT6Dx+t
-	c3wTrfIt0TREjBcWO7qogQRjxLxNVK4WmmECkD4sNjrzLLBK5YD1+IxoLq3uALQR96kpC29V1rp
-	StQj1
-X-Received: by 2002:a05:600c:4703:b0:49c:fc6e:a3e1 with SMTP id 5b1f17b1804b1-49fe66fd374mr152026325e9.32.1790439597094;
-        Sat, 26 Sep 2026 09:19:57 -0700 (PDT)
-Received: from unknown748F3CBA5068 (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49fef60da94sm102924275e9.4.2026.09.26.09.19.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 09:19:56 -0700 (PDT)
-Date: Sat, 26 Sep 2026 18:19:54 +0200
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Russell King <linux@armlinux.org.uk>, 
-	linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ARM: mm: align hugetlb mappings to the huge page size
-Message-ID: <arfwK6XInu-S9COc@gmail.com>
-References: <20260901085740.66283-1-kmehltretter@gmail.com>
- <5AB6FE85-4CB9-41EF-A700-BC5E071F29F5@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5AB6FE85-4CB9-41EF-A700-BC5E071F29F5@linux.dev>
-X-Stat-Signature: xb5tqq5d5sy58agdesg9y9n5j8xnyx4y
-X-Rspamd-Queue-Id: 8E58CA000B
+	t=1790440407;
+	b=3rcODP9aOlziQU8YQa8x43Y2YSgbShaHc3Ah47VVyE2YjnX0QDT5pN3LIVackoC97UZ5iG
+	6hibuHrSATyOGtJxltMxoOZzoCC+pV0RLCAeuh5pDKIHCsXU4HoXy+4dd/T4fuDu8vsVMS
+	1YuyuWTVRAxoniA7A32KWE5PC6Xo9M8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790440406; x=1821976406;
+  h=date:from:to:cc:subject:message-id;
+  bh=Xc4mqmXyIdGRF00RAE0TbL9TU95xsagceJS/KQl6m7w=;
+  b=KlVRrCLRrUHok++OSoGVzATZFNQJcIg2MlGe0Ez/5xTJlJUmlS2edapK
+   jcC7SQeqBJX9rIfsuw2/RfO5eGJSiNMq6C4lnCP6EJt6M0QZejvgQkehp
+   FCrHRSW4S7S04p/pTAZjF0BpSx6d+Bk67u3KwoHcWpWvHCXkWVGAZSLCC
+   WP/bDGy/ypYp6mV5or5Pxp5pGF5vt50dG/di/1B/OX5gjKcDycf88T+EC
+   G+7XiF/WuoXNFbKEVeB6ZW701o9eIYw6WnZSrqNGGLtAxn4HbbT/1PHxV
+   IZIvm0tdAhcAXIXGAWQtAOlc4VrxnkTJJnePobamTDWZIMcibcn307JGa
+   w==;
+X-CSE-ConnectionGUID: tQWU36dsQAS8L1tVTARC9A==
+X-CSE-MsgGUID: XdNDnjtUSAiXhIjMa4m+9w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11917"; a="101725532"
+X-IronPort-AV: E=Sophos;i="6.27,124,1787036400"; 
+   d="scan'208";a="101725532"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2026 09:33:25 -0700
+X-CSE-ConnectionGUID: P0AEcz5PT6ifZ56d6jHhWg==
+X-CSE-MsgGUID: EcmS14TASEy6+k7KPaQxJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,124,1787036400"; 
+   d="scan'208";a="273852166"
+Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 26 Sep 2026 09:33:22 -0700
+Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xAVKy-00000000LzN-09W0;
+	Sat, 26 Sep 2026 16:33:20 +0000
+Date: Sun, 27 Sep 2026 00:32:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>
+Subject: [akpm-mm:mm-new 661/679] mmu.c:undefined reference to
+ `__check_safe_pte_update'
+Message-ID: <202609270030.Y0QVBPmK-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8C749140002
+X-Stat-Signature: kzirr47m9dmcot7m1yi7omkk3o35tyxw
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790439598-439847
-X-HE-Meta: U2FsdGVkX18Gj7P73q6ylkCbunkDDCPw3F8jjIHyw5rH6hk5pG5BIUPzYCmvpQaypaqEj0wWOuZTl924KbEwucGVMIP1N8KZN57kwjxvNyimxsGC+X4Fgv8EdTpPxPsUNPmSEQ/XS4/XCVpPjB6FsUh+iQIbpJ1s/HaghN7pietwuLlZXYyEKjWrXwrM5d1nhqOBG7UAGXx60yndIpEjrmRzxwOz54UlwhZ1zCBKDrnZVTBN9YwUHe2U8B4pDS4VSv3dXFDpjMFUAeVjMtYpqJyKODm7cgVPbhbnzixFcFu7El4qQDtvaDb2ucy0hK7KuneEQmBytki8iKxVxHV6YbFJiPN/f4PbbsIDIR7P9Sft5TEljQfRfFARQEJy6QufCW82+QSAPSjzFO8k9AkoJ2dI9NG8sllLcMDCR2IINtAPdN4Gkfin6URUy1aTFpSLkNuAmEpsMMRtYAnS0wUbbQdf5fjGt4qtoeRTF0QqQQbeApUsa2hbP/pzyrdvbsM467QtLHc/JwEgJA28CuEvdizcfpFa7FoCltF/IQbBUJpI+HuEFNLI2xV3/zsaJf2L1npNZY37ih1Hm8CHIbSJ4rEWFHOc3FFRYvmsj6ZbJ6pFS1W9CSZFXWH5RYC34pV8C85Q8d2tHJs4hEZyrM/vY0DbHjqYg2Hg37DiaSRQ0lHrvXPDlpvHtJb6STb/ddvnQP7Vx3+n1lH7cIERpVFUAx/AhZKpKnupxgZ/gd7kNnRRDOYU8IxhicHL2g04NLIthXdtgWgGLeLi9Lx3BO4+nF+/uvhXEsGEHIQ62EQdar9YQ8Cx5VW4gvlNhddJOzMfGXnqztIVKbecA2wpuZ4CJrutiPV6ckHQYCocvzmn8rAXdfz18d1srC1mcQyqyduyS1AK/jhQEyGvawuOF3dZ9wJnw/q5psVp4rVKorgCFWoEH+7pc/K6TlSOvzTkKRQiXc6bMJS9zQVfrnZdnUp
- rLI3qUrN
- 0Xv5KWm89ahocLBF4X+inonnStGpyvvx6S5j212GMglf08IPY9csuzEdoLJyppexAfTP6bPHYQARDDDI1l5gSEuryFlaE4RLvPJ8Tdpgbb/s/EGmrpr14tHa/1/Hj61k3bJ1uzbt2dPH0OtWx/F5lPCPqAjTkkPC2uDKo47Pj881ZqQVn7+6BJ4vCCqFjwhtrTxWX0iAaXbT9P/YgmDZ+o+PkoO6DM4KWfi7Zo6cE+BV1WQxDeO02PU7d1hkn/ckqgpYczpavVotSMFdHH9HWgK1j6VYbqObifZKyYMhOV8iuE/1EkFWQ6SV0YbO7ZfhETY9Xqqn3Yq1pnmQahC7d/u+KoxKX9xcQGswkeiXPbiV2JOWTzE2KqrjDPmwMOM0dqF5aU3G7AwZY+bkbZpm1/0tXk+1A3R0qnZqOGHz/aevQP6vkM4Vc5QxP9E+o+VWcQ+98OOWxNYfy1mweLFlD5JqD74KsGFVWYQpNxcZVkuwUkiJJ3o0xKd8nFzo28j4eYGInIptvRl/JQd7YzUEp9G4w1U3ziiAxBJfPXe1pjRkv+K/oHRSJZR16OtWlf5jwFNoybTnZ1+r2+iXdz0nNQl259g==
+X-HE-Tag: 1790440406-549442
+X-HE-Meta: U2FsdGVkX19b8FFYKPiaWEZy0ym9tUG6rdGRwLRyARgYON1Z/i7xdT3MA1BmRpkMOZANqhu3iY/4pSiZKV8pO2AaUimGz4dRWdg5vHQrpegVTOVYAZ6DZaeDD+7oU8XsMD8MRB7jxRxvo8r2StL/XdpmTCoSXguwHoI02CsJ7UiRu5rLfeqEJpXKmVFwN+34krBALYHIfaxXZmZzDOVy18Q7owAhpGWdFjw/7x2dvtd76boJjDI9Yo9xygPXkBt4MI29MyJ7WPgelohMdYbkKWtb/yGmMa0Alzk3i3r0OKqriA42wV1xSD5HCtB+bcqedHTnRT/ocUeQXO6BU6Tbdc1zhsXsCBW6q8OeAJKYzqEuwaTzbAjCMqErATrn84800D3Y3E5ceOLhRkBIDX9ymR18/Zo+pbTd+yMDiVbsOiKPr4Ed9u+rvSnjekb5Lk7Fk82cXjbRYTisqCqRZw7ZH+TB9eowRukxk037Blh6mlixeTA2aQaXeuhPMpNMmwspspr2cmED/gUDxh4tL5+jd1wchDOg4Q+tZPqP+1ICalXXuhXK6icJBgkYKXPL+6VEeDhsYau2llco+5HNs+MyYJKgiBjf5aOQl/wHKyjwZkHGCYXM+yCigb3tCCl0ZWCVyTbHRQK2UIz8Qpl/oj3TlTHESF8QcBwUqUsSl0LxiCjxAd9zM3+WFq4aGLB+YfoUV1drF17sOF7yeeI45ybSIY4HI4KN64osQA374TqC7CrVIvAz11SEdlNdgVtFxmwcKODJ2KDOS3ZJ/Zue59NjmInwRggfumZF6hRsGntl4iIDUEN2qep7bdtYiQE7PCdJNqHlYAwD9p7FqTJQ6sSm5ZeLhWQ6Q9FE0uTpIwHa/UH8e3mMZJLXlA9aGgouJiNTZzNnmh0wsbIhY4W5sSwmQU1aoRDi/3hcjCOxreRln4teCIOSm3EFXzwlH2hyX/C9rfUokG22zcWk0JaMKG/
+ tDM14we9
+ Bam6bs7Qk8VdvvskdguOmQ3K0o0HY3wIKkcDkV8jBazINp9ZT/ACknjSgn0CtO7nmOWw4zXc1DQgbekAp09z9wAHQzX/KFtMNh0RQYH6TjLuRJRlTf7kQyXcYUYGQEdJgfbGQ8C9K6jMZ/xOub3Mjz5rFiZjSIcI6lFYRcihzXe9jbBidJGmMOfLItMHoVI4vvAz5/KgPRZCIFPFr/GwhZ//1ZB4r7o7WexXVqS4CsUPSrz4iFEcVHmYOKHnw4A7AqS48nVXVe24IvsaHtql2wBwW6lbmj26vXLL2QyAq3t8vdrvQHjNWG2pwG+jPfh2Z4p3bhWND5AAYBKc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,27 +103,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 04:41:30PM +0100, Muchun Song wrote:
-> > Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
-> > Cc: stable@vger.kernel.org
-> > Assisted-by: LLM
-> > Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-> 
-> Besides 32-bit Arm, the same regression appears to affect MIPS and
-> SuperH: both support HugeTLB and provide custom arch_get_unmapped_area*()
-> implementations that only enforce cache-colouring alignment, not the
-> hstate’s huge-page alignment.
-> 
-> Acked-by: Muchun Song <muchun.song@linux.dev>
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   b4fc90c82982d98959af08b4320420bcfc01303b
+commit: 2862bcaf1aca55e0b43a5692a4595281ab780f05 [661/679] arm64/mm: move __check_safe_pte_update()
+config: arm64-randconfig-1002-20260926 (https://download.01.org/0day-ci/archive/20260927/202609270030.Y0QVBPmK-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260927/202609270030.Y0QVBPmK-lkp@intel.com/reproduce)
 
-Hi Muchun,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609270030.Y0QVBPmK-lkp@intel.com/
 
-Thanks for the ack. I've now submitted the patch to Russell's
-patch tracker:
+All errors (new ones prefixed by >>):
 
-https://www.armlinux.org.uk/developer/patches/viewpatch.php?id=9524/1
+>> aarch64-linux-ld: Unexpected GOT/PLT entries detected!
+>> aarch64-linux-ld: Unexpected run-time procedure linkages detected!
+   aarch64-linux-ld: arch/arm64/mm/mmu.o: in function `__set_ptes_anysz.isra.40.constprop.47':
+>> mmu.c:(.text+0x9a8): undefined reference to `__check_safe_pte_update'
+   aarch64-linux-ld: arch/arm64/mm/hugetlbpage.o: in function `__set_ptes_anysz.isra.32':
+>> hugetlbpage.c:(.text+0x1a8): undefined reference to `__check_safe_pte_update'
+   aarch64-linux-ld: kernel/bpf/arena.o: in function `apply_range_set_cb':
+>> arena.c:(.text+0x11fc): undefined reference to `__check_safe_pte_update'
+   aarch64-linux-ld: mm/gup.o: in function `follow_page_pte':
+>> gup.c:(.text+0x2b48): undefined reference to `__check_safe_pte_update'
+   aarch64-linux-ld: mm/memory.o: in function `__set_ptes.isra.207':
+>> memory.c:(.text+0x3418): undefined reference to `__check_safe_pte_update'
+   aarch64-linux-ld: mm/mprotect.o:mprotect.c:(.text+0x1080): more undefined references to `__check_safe_pte_update' follow
 
-I'll also take a look at the MIPS and SuperH cases you mentioned.
-
-Karl
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
