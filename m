@@ -4,98 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9411DC98328
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 08:35:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B4E2C98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:05:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D3B46B0088; Sat, 26 Sep 2026 04:35:05 -0400 (EDT)
+	id B4C7D6B0088; Sat, 26 Sep 2026 05:05:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484146B008A; Sat, 26 Sep 2026 04:35:05 -0400 (EDT)
+	id AFE7E6B008A; Sat, 26 Sep 2026 05:05:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 372816B008C; Sat, 26 Sep 2026 04:35:05 -0400 (EDT)
+	id 9ECD16B008C; Sat, 26 Sep 2026 05:05:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 19BC06B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 04:35:05 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 73E7B6B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:05:53 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77EEBA070B
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:35:04 +0000 (UTC)
-X-FDA: 85255253328.02.6CDE16E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id B7641100003
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:35:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKI4YSoI;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6BE61C3751
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:05:52 +0000 (UTC)
+X-FDA: 85255330944.02.B12D524
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0954F40002
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:05:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FxfMuLdu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790411702;
+	s=arc-20220608; t=1790413551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/oS5cGci8QiKs9/+vr+9VzvkfNfCYGybORMZp8o7zYk=;
-	b=QV0MCDZtwxYdwMyVIhrtRsg0Wo8v17pu6WDBOqf9wagzXrwUH/u8vsOCye7jUkUNrFfNA0
-	sYPlGsclHSCu8one/Pn0Ecw2uSx0TyjVyH5Ysl2wNtptGMV4UYKeWeyXxbR5VT9gHVFhEr
-	uXQCfghNTmh06bkRPSG9/gNCssnNpEU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790411702;
-	b=pU8vWNQUh1Vfxh8sfuyRCyA/cP3lQa+d39NMUZ0IvsiXfilymi7bH4+HlDKOhqbSt0DzEU
-	dFPcdxezJijDZW85ecViRsAsfjkutFfIw7K/DSAeOy4rCoE2jsKeXnic9Dhb8DJhHIMc00
-	n3iU9yMo5a7bwNhlZL0r/wo42XYfhG8=
+	bh=aeAHyC+9N6Co7JC4GWq1L6y5uc5GROrj5CA6iuWEnjE=;
+	b=AZ9hN2zikDOkPjxPqmQno04t00VMhanaTNWAgBCb33MYPma30Z0a5P/h5ZN5I6co4NyLC9
+	CYipLXfOj+z/bkRBOrT0Aqd12dXArGP5mJODV9n1LaWAqiw10MaivionS635y6lSVEXFXx
+	CMQBRm8MS1kgoQWqs/tUuSVbc/FrFZw=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKI4YSoI;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3119143F86;
-	Sat, 26 Sep 2026 08:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1282F1F000FF;
-	Sat, 26 Sep 2026 08:34:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790411701;
-	bh=/oS5cGci8QiKs9/+vr+9VzvkfNfCYGybORMZp8o7zYk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EKI4YSoIet132l4ifkQSXpJ5S/HAo847RXSPWXlIA//sS1T6DGjDQTSrpmN9w+Kk8
-	 js4BixlSkmCw0FEiWLxPcvGxE+3BW6mUpaVXp7XnIRL7QdFfavBtgd1//5Iee5neNs
-	 RbienQhHQWLrliSen8LuKxiRtjLuTujrUWtILEs7n/v8uXZzy1skEP7wNx/NpddT7Z
-	 GKDAu4WaRdM8Gb/v3pq+XXSFKIL8eKYWfrSN8F+Oz6PgY1dZcpz94w2o4EId72TGE1
-	 eqRFZeQmkE1AufPSMNNHLAa7nmcdoN/3AKwfCX7m1232ogKRodq5xYHa7hRr5g9vD9
-	 B4sDgFN4Tljag==
-Date: Sat, 26 Sep 2026 11:34:51 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Nicolas Schier <nsc@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Luis Augenstein <luis.augenstein@tngtech.com>,
-	Maximilian Huber <maximilian.huber@tngtech.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Alexander Graf <graf@amazon.com>, Willy Tarreau <w@1wt.eu>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Askar Safin <safinaskar@gmail.com>, linux-doc@vger.kernel.org,
-	kexec@lists.infradead.org, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
-Subject: Re: [PATCH v3 0/2] Move tool for generating initramfs cpio to
- scripts/
-Message-ID: <areDq-1iFZUViDgS@kernel.org>
-References: <20260925-move-gen_init_cpio-to-scripts-v3-0-99c493f76722@kernel.org>
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=FxfMuLdu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790413551;
+	b=HGRC9LkbJhyWrPz0eix3GX8kDYk6chF/8w5hmrEv9L+DmzxuJOBHijm1TSp6uzK4YXp/+j
+	jBeL8JwdO72+ctAaNnOkq2T8BCQtRhmGIMhN3YynpU15wj34/hrUN0B+msWfkeQ1aR0UH4
+	DbigqLy0xN1sWXdmT5+RCv3o/LnvcBQ=
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c254fa663bfso253906466b.1
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790413549; x=1791018349; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=aeAHyC+9N6Co7JC4GWq1L6y5uc5GROrj5CA6iuWEnjE=;
+        b=FxfMuLduWknxEZHPiCgkYnRlVcxDdy3v3UhNzNF2rvkFlkBPama5lEDvliwjbiTl8f
+         IOnEGG4mCo+gDWN7kFSSaAcmcZ0jy6IcAMO7KFgZFZN8lBXeFg90FTV+8/CByPLk4awo
+         TkKZeJidrDfCb5lViJzvvOWXQ5D1Hmvcna+QxkB9OEsiOq756qleX3vGlbzx2fwEyHvD
+         9mr+ZPXBE85jolye0G7xXiBMJsfBp1jDYFn32eDWH/ha/iud9FAGEfAhO2CkvMwuSNK0
+         y1slZZepEzw2F5atzPNnHhwmu/d0YqdcKFgT3B92nBIzipRL7m5U4Y3HadXRjgg/suWH
+         /9qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790413549; x=1791018349;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=aeAHyC+9N6Co7JC4GWq1L6y5uc5GROrj5CA6iuWEnjE=;
+        b=uAKCMnNfxHon8tcszTHXOx7Hmn3vceRPZ/zx2VK0RL5TkyE0dLmTPZy/yq6wgvRHb3
+         7k+jzyeNmctIE6TPGCezRK0F2CHEznNvNDYpUYVHVAJBG13IxJ3zCTGXRZ7ox+XOldVP
+         peH4vfqEIfr+MsOOwboXljcF1jw8ZYRpNRSe5NmUegLSnzF/an7e6wiS11ahRUMgyhWC
+         7YlkselKNSwP17Pv15GuhC5pbkQu/XolxU6rHZZOrkP/m+TppuAaiEj0HmSu1FfP/4aM
+         oKo41Ap+Oh8VVu6qGvdBPnPdYycxh17w347z5/jON/j3Tcv/+KNlQY2r85N2vd67/bVC
+         r99A==
+X-Forwarded-Encrypted: i=1; AKwUvByPc4+aMvuC43ox69Rq15nmtXSp7c3J2Yoz2dRtPRpHzgzfGULLfJN1jE3CEwhcRCOypOD2F8Wi7Q==@kvack.org
+X-Gm-Message-State: AFuF++nZdCsZpjaM0n+exVSKRso3+gvexV43QF2qrd7o4QfwA2LbJ2ma
+	tLwUNgqbsstJRvC8R3OUU6KUzM+21RO/vTCp6XaNQBKCwZqmX2PjuyG4
+X-Gm-Gg: AYBFou18+CDvJCxcomCNnDlQ1+l2Bb3CePrJgRCyFeiEKstfZcQ4qjygYw/kI1I3Qml
+	QAAxC8cuAabJAAN0MsReo6OQZfaM1Z3v0DTcAXfADwjI+x9UHJB6z0+pufBrsGnhcBQz3k/kv0W
+	w3M4s27kVcWfyJX2MvIQEbVCDP2vbW0N0rg3QitfjGMHp/3YMgIVt8I0ZPdKTfnHV+GZNpNhfBa
+	dNvzB0/QmaMsN/4tLT2rtfJCYATuVonieVSUFoPBx0KqFCMRcry2Zq+Mu1bjXcK1ne7n7xdvDNg
+	cP59s1dNvO7bWrgCjAiuI0n8dg42XuSyv/4JrLDMsnyMdsczS5GBmVT0aWReBeVppdwEqLpU58t
+	gf/yTe0bXnMuhsvzuUaNQ68WjyZeY1yTytkDjnBNcQJ/msEROnNNaq8EEyMHsdyIJfSX9SN1tts
+	XegIUQC5GwKT7kM8jso0sgabB4s20aPwpZs1g=
+X-Received: by 2002:a17:907:da1:b0:c2d:bc33:7be3 with SMTP id a640c23a62f3a-c2dbc33c16dmr67023066b.47.1790413549220;
+        Sat, 26 Sep 2026 02:05:49 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae7357cf3sm224612366b.17.2026.09.26.02.05.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Sep 2026 02:05:48 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Sat, 26 Sep 2026 11:05:45 +0200
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Palla Raghunath <raghunathpalla.0209@gmail.com>,
+	linux-kernel@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+	Brigham Campbell <me@brighamcampbell.com>,
+	linux-kernel-mentees@lists.linux.dev,
+	syzbot+442828bb356b10813a47@syzkaller.appspotmail.com,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/vmalloc: do not warn on -ENOMEM from va_clip() in
+ pcpu_get_vm_areas()
+Message-ID: <areK6Z34m3gP7qe5@milan>
+References: <20260925205450.21262-1-raghunathpalla.0209@gmail.com>
+ <20260925151500.75fcb001ef8cd7f4842e62aa@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260925-move-gen_init_cpio-to-scripts-v3-0-99c493f76722@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B7641100003
-X-Stat-Signature: 68fa3ajmhut84fac13jet86xqhfdezad
+In-Reply-To: <20260925151500.75fcb001ef8cd7f4842e62aa@linux-foundation.org>
+X-Stat-Signature: goa48ptqrs7ju8gx7qbm1o67q3tbf843
 X-Rspam-User: 
-X-HE-Tag: 1790411702-336171
-X-HE-Meta: U2FsdGVkX1/EBw15W4O5UXq0obN6SUxgwem8Rlc15JB1YQkpX72X2jE9A3SnnrfvIj6qS5F/MNUll55Oeefia9GLl+0KdkKgG2iTvjI2OmoCO8fWPZhETr7UZ4LFTcqjW1SpTy1oIgrfP97kAyMPBT7N/6m8AohBrqu3JpgIlbiGmF/nvL9SybDFu9yzAwO2DuPTOS/NSn9Ww/ERQ43ozoYADrSGpt6DfAEZZ1ITLMbhYC+NLR6bygoKdC3lPEjTOv4LO4XVAvV2908UkOeza/Tr/pAowpj29yIsLyrKGBXWHNcITughCqBWl1ItJ6baBRfhf97Zs46fYxHnlqaze+ZK5/pFH6lDv9StvvP62s6z+G5Wfk6vY0JtBc5Vk2wCIpa0h71BGBTirN2jMhRhBTtPqt4nlOZcLKKV3700OghKJolwbY/9hNZapUqLsFzUVKor+UfIOEzyl12r1y0Mfu/k05O4hbc/krqVHzQQrCDI4+XoZcbUI0SnLsBQlS4rU1IBtgKFCSbPhQ/Cbbpk3+o9Y4XxFWy5eTYJyagBEr2UvziZwQDH8IJeencBaY0Rj3rjCcCC/nbBOpZ//fzG26rYEBzbPmSywrrXRPVcEbtaVnF49+Bl+41Hsy3OYxF7IhE41UFRQAtUayNZTIgG3Dyz8Sg8FKXJaFkb4SpRmf728tKx4K+asW7secRF5PNTclbDOYNNU49wrTUK6jWXwwUdtLtmpGW4z1lNegyp5tDqj3rq9h6WQHKoIK/PytqYt56n4XMbk/K5/coaKrCC0FV+aWIfLEioBPEYR9vsGtG5gJUYGuaXvJTC4TQ6SnzF6MIWgQyxK0E3MENtH92ZHj/Uv4rgbOsnMwAPpsCG4kDomLfEFLpurvT5YOzoKZ1xejU02eygLM+AwX/9dWcX3ikbR9SXps6r6cxnRyHunE0C0/NMTJMAFKxaxgFb7jYEMjRlTszaA6gYoNXVmUq
- LLBYa4mD
- L2VWGLkU7NN+991uDrduBIxA9V0O3jMRs+FbgpO1NmIhkQpRhxYeHlTjX3Ll4Lz76U/63yXTWqXiH2QzJY1glOpmtwIOgMjdneEyYvMPh3mUcN+rl4loftnXTwPF5fbtm18RfhjCi2lmbMdZtZAMdytg4znltD0/hVeQ5uCGDdjsF83q/ilkhOiUSu+FjpYwFCmOqRxX08wwqv49e6SHMljhpJSubSmn5a43rShvoSMRcRp++dyL1nuJxNTG3BwbgUI4WwaMKNYkB27RIBkD6qxa1nuLPQC6If2m+wy7e9uqu5+u34mGZREp4iELzcI/DDX0y9QGI8rZMgWD7Wq3kHj8aiP8hYsrpNS6JEb+N5YyvX47oVbMhmPz1X8gNUAHEw+GK
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0954F40002
+X-HE-Tag: 1790413550-232392
+X-HE-Meta: U2FsdGVkX1/O3u8lg27nzErrqCI29mdVE6jiNdtroOW3R4SaE2jG1R+gxNEpsOu/9P1ALxdxYkgH2oSbOpaqdTx8OlAhx4eIdwNtue0+GXdIP/JpMDTK1RKAkypbiQaRkOElaUgjG00CvKiGWXsttfbjp8ajz5OSohM0a4MEFsqQ38YRNEV2p9wKG/UDLBwWN4EEQI/oOuujJHlkOnXZcAVJSCQUqOLwoGmTlINiEEYxQCdpy3IYr3EB7ufROa5pKld2SaiMf8SZex0tqdHryxE08EZaadBT7p/g5sM2RS7nGLn9FUIp6q6g8UA3gmwDOg1k5vPEJXuwZnD9kgtWbvTeumWtESPIscARpXzIAPuZe99hfwST2axz40PqVR/72PhM6z2f58WDjGcLKua3fz9hnepPgIxXd33fs7RbDUx4h8eJjQyO+6XAmKQVkUTOVgtWbKI5dJlbUua3+0dSZZRTX2926i4hfzNFJkY0X/crSLDPcJ7CjPjPFK0fkC73SBXTufVnSdWT2dlD5vD+SB0V3yh/lnEoFZGV8YnbeFSO+OSoJ0CfA1qvP8044vnqEpvDBFxtCgcCEZ3MtQyvPKvIdWZjCUsSy3GtFssUXTBElj0aTOigl4wAIA0/uLVuYJvumQ9HsUFc49gbygQil2a9oyaXQS878a1/a+38Eg/p1ra7rDuG3URfocwlg0DUSg99WLN+rFLacNyz6H2nikManZ1G1gJOKqVVGHH0VDQPz2fJd2KGZ6k7N3irum4rQ1KN8eHXRwx6tAb2TpZpAe6sz3jJESfxIy3JDTWZLZNinqYnI/LG45QKpLVA+tjb8fAeNeFSiPzyhGsId6uYW2tV1mPas6ur3yWNa10mPHKZNaEpe4xsy3jI1ON1iB3SMrtMGvkXdWDvscakkzOaeMExJjL8zAGe6XXQREcYy7Yw4M0JOJCLd0zDNIWA0v/JFtH5abR071GPUYu5bgD
+ 9rFhpH5E
+ 4ZO/CkTzswbGcE5M1B4syxTLhr+7Mpt4IFR622e1UiDrLL5QNpXOWeuF6nd4iyDCxPpzODfF4WKcI+te+t2qWvYxEzR/x2d0NfeDUkyLaVFeVIN8UOLKsCGIVN+Owqdvs+U/mHpYiRyQjpyGfPxaoxITfZiylhg9uCZw0XSFttwZycmGglBi61Frk3+s/c+RgP81aFOWle5tG9xArFgdZCrFnj8rSwp55XMagL1/VH1Nmp2Q//2Phk3czbtvnH8qVD+BTgY8mIx8vndQz7rJwPt4nsZxo7OH0LnywfMaEvYXR7IwEWNdbEivuGB8UQFj5md5/XxoBzIrEZALRA+it3jYmzhyx+Py0fQm9Ppz55RQ+mXl9r0/rEVC0GwwdZUMlhGmBtNFgCHDFC6g9ZhqcFttA0M8N5cUa98Ft5j5YSfWmiOhRxvJ8T4GjP6vFX4Thrl5sS+BfCEJk9vmgO/JAsoBuN2fxqFeMpF/zi9Fg8Juyn71QlrFQauqSAjnZ1a/GHnWG9BA/qufHD4Hu85JbThi/KXDXelYwf1hYbVvOW+rG59pSMOeSg09/lm6ySxcqhCXmO6Xv9FuSGItkIxLTz1bKV9OThSBbuMrcI3qdbcnYNMsiVdahtSdUJrR/hsMdVL6lQ2hxuvtpHuwp6sy99AnjH5/dJ8vsVbzcWCiRJpaTAp5p4vTt+nP64/8VQVAz4BR897roXh0DDzVQi2M4G1MsxrnfU+dv+xEte8pGpHjx1LCJsvNLvTj//d0SQeWakN4k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,64 +126,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nicolas,
+On Fri, Sep 25, 2026 at 03:15:00PM -0700, Andrew Morton wrote:
+> On Fri, 25 Sep 2026 21:54:49 +0100 Palla Raghunath <raghunathpalla.0209@gmail.com> wrote:
+> 
+> > When pcpu_get_vm_areas() has to split a free vmap_area in the middle
+> > (NE_FIT_TYPE), va_clip() needs an extra vmap_area object. It takes the
+> > per-cpu ne_fit_preload_node if one is there, and otherwise falls back
+> > to kmem_cache_alloc(GFP_NOWAIT), which may fail and return -ENOMEM.
+> > pcpu_get_vm_areas() never preloads, and a single call can do more than
+> > one such split: on a NUMA system it places one area per node group, so
+> > the first split consumes the preloaded object and the next one depends
+> > on the GFP_NOWAIT allocation.
+> > 
+> > That failure is expected and already handled: the recovery path returns
+> > the areas clipped so far to the free tree, purges lazily freed areas and
+> > retries. But the error is checked with WARN_ON_ONCE(), so a transient
+> > allocation failure under memory pressure or fault injection triggers a
+> > kernel warning, and a panic with panic_on_warn. syzbot hit this on a
+> > two-node VM while creating a per-cpu BPF array map.
+> > 
+> > Keep the WARN_ON_ONCE() for errors other than -ENOMEM, which do indicate
+> > a bug, and take the recovery path either way. This matches what commit
+> > b9183788a2de ("mm/vmalloc: do not warn on -ENOMEM from va_alloc()") did
+> > for the other va_clip() caller.
+> > 
+> > Fixes: 1b23ff80b399 ("mm/vmalloc: invoke classify_va_fit_type() in adjust_va_to_fit_type()")
+> > Reported-by: syzbot+442828bb356b10813a47@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=442828bb356b10813a47
+> 
+> I assume sysbot hit this via fault injection.    The report doesn't make this
+> info easily available.  Or maybe it wasn't fault injection.
+> 
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -5107,9 +5107,14 @@ struct vm_struct **pcpu_get_vm_areas(const unsigned long *offsets,
+> >  
+> >  		ret = va_clip(&free_vmap_area_root,
+> >  			&free_vmap_area_list, va, start, size);
+> > -		if (WARN_ON_ONCE(unlikely(ret)))
+> > -			/* It is a BUG(), but trigger recovery instead. */
+> > +		if (unlikely(ret)) {
+> > +			/*
+> > +			 * -ENOMEM from the GFP_NOWAIT fallback is expected.
+> > +			 * Anything else is a BUG(), but trigger recovery instead.
+> > +			 */
+> > +			WARN_ON_ONCE(ret != -ENOMEM);
+> 
+> Look good.
+> 
+> The WARN_ON_ONCE() is potentially redundant.  We could make va_clip()
+> remove __GFP_NOWARN from its kmem_cache_alloc() and let the page
+> allocator do the warn for us.  Doesn't matter.
+> 
+The patch looks good to me also:
 
-On Fri, Sep 25, 2026 at 09:29:29PM +0200, Nicolas Schier wrote:
-> initramfs cpio tools had been subject of several recent discussions on
-> linux-kbuild.  Let's get two minor steps forward by enabling a
-> top-level target for building gen_init_cpio w/o the need of a valid
-> kbuild configuration [1] and move the tools for generating the built-in
-> initramfs from usr/ to scripts/ [2].
-> 
-> Link: https://lore.kernel.org/all/20260220191150.244006-1-safinaskar@gmail.com # [1]
-> Link: https://lore.kernel.org/all/aSdrCFkUQup3qb-q@derry.ads.avm.de/ # [2]
-> ---
-> Changes in v3:
->   * Update various remaining usr/gen_init* references treewide (Nathan)
->   * Link to v2: https://patch.msgid.link/20260720-move-gen_init_cpio-to-scripts-v2-0-26b7e15c7133@kernel.org
-> 
-> Changes in v2:
->   * Build gen_init_cpio only if CONFIG_BLK_DEV_INITRD (Thomas)
->   * Keep underscore top-level target name (scripts_gen_init_cpio)
->     (Thomas)
->   * Link to v1: https://patch.msgid.link/20260309-move-gen_init_cpio-to-scripts-v1-0-0c5059b1ec5b@kernel.org
-> 
-> ---
-> Nicolas Schier (2):
->       kbuild: Mark usr_gen_init_cpio as no-dot-config-target
->       kbuild: Move gen_init_cpio and gen_initramfs.sh to scripts/
-> 
->  .../early-userspace/early_userspace_support.rst          | 16 ++++++++--------
->  Documentation/filesystems/ramfs-rootfs-initramfs.rst     | 10 +++++-----
->  MAINTAINERS                                              |  1 +
->  Makefile                                                 |  9 +++++----
->  scripts/.gitignore                                       |  1 +
->  scripts/Makefile                                         |  3 +++
->  scripts/Makefile.package                                 |  2 +-
->  {usr => scripts}/gen_init_cpio.c                         |  0
->  {usr => scripts}/gen_initramfs.sh                        |  2 +-
->  scripts/remove-stale-files                               |  2 ++
->  scripts/sbom/tests/cmd_graph/test_savedcmd_parser.py     |  2 +-
->  tools/testing/selftests/kho/vmtest.sh                    |  2 +-
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-There's also tools/testing/selftests/liveupdate/vmtest.sh I know of, didn't
-check for other users in tools/testing
-
->  tools/testing/selftests/nolibc/Makefile.nolibc           |  2 +-
->  usr/.gitignore                                           |  4 +++-
->  usr/Kconfig                                              |  2 +-
->  usr/Makefile                                             |  4 +---
->  16 files changed, 35 insertions(+), 27 deletions(-)
-> ---
-> base-commit: 93f51579e7df248780214094418f205253383cc5
-> change-id: 20260225-move-gen_init_cpio-to-scripts-9e89ef99e51a
-> 
-> Best regards,
-> --  
-> Nicolas
-> 
-
--- 
-Sincerely yours,
-Mike.
+--
+Uladzislau Rezki
 
