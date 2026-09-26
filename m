@@ -4,123 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A73BC98332
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 18:39:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C16C9832A
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 18:46:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D9666B0098; Sat, 26 Sep 2026 14:39:42 -0400 (EDT)
+	id 7C3E36B0088; Sat, 26 Sep 2026 14:46:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B1156B0099; Sat, 26 Sep 2026 14:39:42 -0400 (EDT)
+	id 79B716B008A; Sat, 26 Sep 2026 14:46:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE21D6B009B; Sat, 26 Sep 2026 14:39:41 -0400 (EDT)
+	id 6B20F6B0093; Sat, 26 Sep 2026 14:46:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C117B6B0098
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:39:41 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A937A4126
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:41 +0000 (UTC)
-X-FDA: 85256776962.04.1A6237E
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5951320006
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:39:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VqnknOC4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46BAB6B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 14:46:03 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABA021C38C5
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:46:02 +0000 (UTC)
+X-FDA: 85256792964.09.321A8C6
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7D59B20004
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 18:46:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b="JuvPARc/";
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf13.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790447979;
+	s=arc-20220608; t=1790448361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
-	b=pu9JiKU/svC0blcn9/PEWO5kXT8Yr004IqYgVn8DE8bOo+UNgauxVCJ199hOjIz2+vGfwh
-	xV1i/byw9YFuGXamvd/IyXN8QXgpvFCFzpoVVqGDloRlJEh2PFtpcFIYdnBuDOYh/qy4yb
-	mkEg1KQtTm3B51YkTXwdMxFpOZSakdc=
+	bh=ZRqdnQVYOWo/r4+FEgARvCAFTE8PSP6/Q+C1nHisg48=;
+	b=POq+43CJC38fBTmhkRLdQoFx8CJwr4K86iQn9a4g9Wt+pOjbGqsTkS4JhW1VHb6MCG6Qkd
+	ghRS+UaUr9aP5Aqm6lWcllQHSfJVVVAc+NqIsNsjL5+XfHv85gxMciKTqvhj0sr2CZYsWh
+	sME+QLCxUYj1vFke1IhWlGQZz8zKCSQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VqnknOC4;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf03.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=fu-berlin.de header.s=fub01 header.b="JuvPARc/";
+	dmarc=pass (policy=none) header.from=fu-berlin.de;
+	spf=pass (imf13.hostedemail.com: domain of glaubitz@zedat.fu-berlin.de designates 130.133.4.66 as permitted sender) smtp.mailfrom=glaubitz@zedat.fu-berlin.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790447979;
-	b=wYi+3YjtZIOFZw3NH9wYrR+cx/ddfqph1NPN6RMO2IV1ndBQ8Yh9rqfAJlrGNBkZ0NDMCO
-	LTJdBgPhvqZpiVJ2/P5ipgYqkLAc5+wYAGFhZXET2j/FVxh2Qi4FX4pSHifMTw7f46/ISv
-	CbUEbUnucRbm2sh+6MF49NXruoM3DPk=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so1529036f8f.3
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 11:39:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790447978; x=1791052778; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
-        b=VqnknOC4yWrlrFQotz6icfXRScjixeYrXTW0XdJVu+nNzpVbI101VYojFUGZz5phrh
-         GMK1MrmN3i6XCiZuuRVv7l1ubKqLpPQ9ea9ah65RvmUPfP4P+D0u1pl5QX7yzZeBszbx
-         zgq9ldITtcMggFdsPTxB6DtDijfNmu1LTtn7XZw0ph67dYE68739lwtabOj8ODYYe6oP
-         tiqcCmxBW7qnMs+HobDh1X3wCdMe5+GgFqePI6lbQRXL30uGuzZazRsQIW3chVuoZ7Qa
-         MEdTTP8Li+ENeB1zgOuTaoqIixJXs7crOnKMvhlxrDf/PvtOZcqOy0UO6lU5hzHalk6N
-         tjeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790447978; x=1791052778;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=l6Ei7iaMC8FezBDOc40UN+3dnzVcKepmpa+3tte5LhY=;
-        b=nsNKc5jUXZCRQDBqndm+Xtv3mijI/FNQBIq8n2ITydDiJSPe0hkWQFW/4rTkLk4YP1
-         DRTgWNcWQ2hOxPNh4mVc3JRROMJASL5rexxnUgoUPKOFfLRxR45vckBK9FPTa1uCt6Kg
-         pcG2kEYTlhCWBRp7Si610PQZ9YRwoSkBu4g+9F3rMaHEmcYpCDmzM/iq85JSNghKmIrT
-         2LQgMTaYZo97Z/l9R4p73mh6GyHnbbJ0VURn73cu043EfAL5r5LzGPq7GexiqsBo5Eq+
-         pfsWV9gXXCFA4tVHhTm8hkhUg+2x2OAwRVMsBFK7harjaoSoWuOZw1zMjleOtEZR1hnr
-         kVTQ==
-X-Forwarded-Encrypted: i=1; AKwUvBy585Qv8zoWHFVP83gnono0WE7RcdgC6NUgAv9H3a65GuSMeZOz+Eaqqq1Yk36IRBCLO62JXTJyog==@kvack.org
-X-Gm-Message-State: AFq9FYKZ/MH2G5kNBXl6ZxWHFu9MnyqjTR5MtgOzbWkXxqJmwXd7Sml6
-	KpUpOs2aFgbPHIdSKKb+yyupuVawpchifsBXozCl9qgK2vfdwN3Gp9qg
-X-Gm-Gg: AYBFou19joLlh+qiULk+JG29wWpCAenyn4NJytKmRkG4mVeN9HlMi3nbmOwrtrx6F8v
-	YkKBiLG22G9FRVEJXQ8ajWGqmVOBB3QzPkrTzPkv2lX8/zbz7b3nOmefEmdfZnnCrZ+qenRTe5K
-	DKpV4HyeXCsQWM+Brky3DPfWMn86U4ThQPQl5767GAMM0oPgDHEa8okN6Ca6jc4UkLJsi/8uWt3
-	b7etdbvPPB9G9aUSbmtO8wfDToTMF0RCY7h4u/9lLj/f9QuABxz31BfUYTzyiX812COrexQj0aq
-	6+q4rURiXAaPAnAVqjC6Y+vbOh06E28lPzTEiM8VCFW9RKI34doR/RzMVMFn4cK2Xi/aZjh1L9u
-	D7HGxDOPNJaIY2QoOcQwujDmd6Yc11oFolBQPya4/95b+DtTr6F0JfuKR+TACxSMA8nFyllmoNV
-	HuS9vuo3aE/C5T2HkCrcz4ETUIVuh1DVdVXcv5pxzmCatq4i/53hRF4plocd12eppmdQidS++Ls
-	kxNVGhxl+o9pq0dZGpRBIEWZwVU2HF02KMBNSaojE+VJVtLTYj41X4dyr5wCqqVRaRbeCUuD4Xg
-	rbrFhVCPbdy+Vsm2sw3Dv23C1bcb5edo5avCrxHdJLeV26LsyR1aGZPaBbRq2ZiuQ/6TjiAHo7H
-	+5+s=
-X-Received: by 2002:a05:6000:420d:b0:487:14b6:b1be with SMTP id ffacd0b85a97d-4887172e3ffmr17724486f8f.25.1790447977972;
-        Sat, 26 Sep 2026 11:39:37 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-b162-c701-4960-a998-3de8-2fce.310.pool.telefonica.de. [2a02:3100:b162:c701:4960:a998:3de8:2fce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a648895sm15430376f8f.28.2026.09.26.11.39.36
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 26 Sep 2026 11:39:36 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: linux-sh@vger.kernel.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: [PATCH 2/2] sh: mm: align hugetlb mappings to the huge page size
-Date: Sat, 26 Sep 2026 20:39:04 +0200
-Message-Id: <20260926183904.76186-3-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	t=1790448361;
+	b=aAvHEYehbPdz7gqy9semVE8RY7u6DY9I3H2xN6CXJQuiKKQzrGNflRT6U1vTTvKfnnwG0+
+	RDKMMv++NKj0gQSWgZ/DWwHWQWKv8C1Yx16LKGUXbOuHKx2ER41g3vm3m+LTdtvOpzZw0t
+	GnuKHNCafUS12QP5b9BflJ5eAFpTUO4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:From:
+	Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=ZRqdnQVYOWo/r4+FEgARvCAFTE8PSP6/Q+C1nHisg48=; t=1790448360;
+	x=1791053160; b=JuvPARc/zeT7q5Y07XX36q6HOXsoUA9bJMHdlRZgsnIiLmWrJi+ZRrnrlTMBY
+	VMRkeQ14zWvlXlWvGAFKmdMGTq3QnX4v2B3oQ1pt6wRSqSLWST0YsmqyJDyMUfiryFtOYwlzg5X2Y
+	z72iykdmz+KjtBFP7HUT4dDbFYhNx4erUqFbi26YKiHTXxoxQF7jprt8+0DmGC7UrltxUQh7/4hyY
+	9PH6JBcRDz7hNqDzbXB10Ge6MqrtcxdLkKjg2IoCW7taMILv9HvQIDV3hkHRW/y10Lp+2cVIPlyW4
+	dndTv3kxMMBh7piiluxrHz3oc2FwDqGs9Iz0TfBrBBt7tkqNHg==;
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.100)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1xAXNC-00000000zck-2x3m; Sat, 26 Sep 2026 20:43:46 +0200
+Received: from dynamic-002-245-050-003.2.245.pool.telefonica.de ([2.245.50.3] helo=suse-laptop.fritz.box)
+          by inpost2.zedat.fu-berlin.de (Exim 4.100)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1xAXNC-000000022yM-1ytU; Sat, 26 Sep 2026 20:43:46 +0200
+Message-ID: <9b75aa51e19f9c0f5c97ac02cfc0948ab5bbf279.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH 0/2] sh: mm: fix hugetlb on SH-4
+From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To: Karl Mehltretter <kmehltretter@gmail.com>, Yoshinori Sato
+	 <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>
+Cc: linux-sh@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, Oscar
+ Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Andrew
+ Morton	 <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 26 Sep 2026 20:43:45 +0200
 In-Reply-To: <20260926183904.76186-1-kmehltretter@gmail.com>
 References: <20260926183904.76186-1-kmehltretter@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5951320006
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 2.245.50.3
+X-ZEDAT-Hint: PO
+X-Stat-Signature: ao9mi8h4t9o15x7ffduhz8jkxjdgj4b4
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6it9y6zeyen85wkn7aj5nceypfwhmru3
-X-HE-Tag: 1790447979-706070
-X-HE-Meta: U2FsdGVkX1+0p108fswUDS07WiW+jePeLIPBJ0o/6j74zuLVr521Mt40Fv4xrb2S3VxfOF3CT/ThWVHBgUQE6usIGUqCzU5qogqTnJ+k8+YYxaJ4LMLcbAz3xM+BYTImrg4U+OMC6++zj2LLX7N0MwcYVvomiwpWZKzns2ZKzeUQmEolBLUI9omLb9VPogGSXX9mnXiItmW6tUnOdjNzaq0NyQizF19KCREGmNkefGcmVdjeBzL8t5vDiQvxgvZo6BcHw6rbueFRhUxA2alZlmvWASUZPpS73ynatmEvPskgUYTZuYF/qgzSUM0kJjC/BWph6YiQVRXfmh3DNjBFv3CN5E1PVfEkBsac1vIz78piB0zXlVtT1yrMkEAZlj5ZdAu5ZkKNHJC65Ettyo51sJPsPeBesmliWoYAgdHW6nmaa5lEpLvLKGJ/SEN7xvlo4JJl73cdMJG1FANDRZ+QMcel5Suffl42kt02asTj1o9qp02szG8xfx+xZt5dOnmwDHtNEIlYymOdQWZ2+NFxtHlAbrRyq3iQF2tG9LuF+Oa5yn2WMWouMiaWj9+Nn4J3wgajDy6uqhxuY1akTP1gEwTvefd7okD+oMLo9lpJhiFaMV/9UR8Zj/oa0cvA+bgRmCebw96SFcGCMujrrk4z/betreesTmXmmqJGf9PGI6unPdJW9Cegx/yRlki0RUz/GNT/IB+8m5MbszCTtd3MMXbI0LiP1XxLuCJxEe4FLKWX18aCD2LPEWO/Of+rpIe5U4/J2I9L/bPP4At8jC4zs0AwJmwFyMOwp8uDC6MNm3f3hwNLl163A0zLGECaxGC6dNa/enlb6r/uijPXU0mhWLFYKTtwAaPNQJdyYHET/f7RYRmEFcVrokGyWpxMDVB1Lrv6YkLsu10+dZ3i1dit54HtMK7XwRmeVLQA7p80IXjGdLeZCVL4DZCSPsml4CMfC1Skgmi10g8ZKnO5XH6
- 7e+5Na+9
- ZZCAlivjF85CQ+mh7Slit606ryNW+YlAYQ3XupvXVNOiOkKi5mtj3SQOfnrVRapdRf8OSqfi7NxJIdaqauClOlNH88C/cjuBs8B+MppFbHLGUlcA9c6aYFvNVKYpfHQnMzB8vLPEF7PWc98VUwEHny2VfxWD0sRri8nBFYKtSxI//5H2QUug7jDdLnaREHur9JSFXJv/g1+HRnl3hCnYVElWFdISxFD5uW4QUB0hkFCip4RWY8Lx38DWY7Z6D2/EuWN6AweYt6yprjZaakTkmaONp5hAhbDkS4fCz5/Cg/lse/xVZv6mDOY21hkFpUzM4aPfcNEONHGuOCSRjrUmL+59zr+24bpWdBMJONmbiRk++ACsJAYf4MWrBQrP5UIFfInJ3UIiB5eW27yB6eCM6OfaRh4XsM8FGNxETWTkI1f3zoj7Bbj1sqvdtIL6tQy0Cqka7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7D59B20004
+X-HE-Tag: 1790448360-345531
+X-HE-Meta: U2FsdGVkX18TUdPmeoFGpRSzy2NOpR+oycCfT3jkHrHaU51EreQ/9bDhmTezWrb7NAGAVXD7khJPbpscY6MN8zoMg8+MQEhyDuHYhOMIZbOzv6lCzWonPrTbME9NWi1vaFE3GbA5c1BhiWf65L5+D2KFmSP4jpavPjYNDWZtu1q8/j2KbVl7HnSZtSzuF26qJNhqFwVpL2mepaqddq3NfjzyLVjjfewia1uA/hTTks1sZkAgGS+8gFBEk82bXcK7ZHVlcHZbJe/6hC15EpR/6d2gEvViD3aZde2z1i+Ak7RloGZIm0rvvd17qFKXxmtDV75kRjSW2g9zXddzXlQvfx+mMCjunmEwGcGzU/ZaPUe1z2gBBkzfB3v0sRxKhG7OAjQl3BVfmHdzFRhaoudW1F1MZZ6yHHO0TO/pP2f6OUGqEzsrF7ZdE1MeVlOfE9I+L7t0+2UmWdOJyGHNfpwPJ7+J+KcSnkk+ePII6ro/BwJhsJgbxeyyXHMW/Y0zTyomF2Tl08YRs4jfhFbZnM+pa7LbqoeWxiGx7EG3mAsDHEVHx7YCqK4j46hQ1cZxJyM6hO0ed2v7HvRKLlHgPT/NUHCxkdhJQZwHUUQ0l9xl9BSxzMTMqC7d90aHbjLuXVFSr7jbvIUBywvCBMVhQLD6YLFny0zbPwrIaNWbC888umBy383gr9RKk3ZoAK40eHygULmhVle3W6rVAdNW2l4ci/zI1QbQDZUc1BV3+cc1z625E0yTSFUnX7TPXXUw1rCinvs1WEhF1nRH7VVcVwUwjSgb/t8GOMXGmF2RltcNCAIX820ub3Anbd6TF5FAcL1s1JaCmINGetlRH7WtJlgaWNxOaIbYVXriGJ5e31bU9WYJuaFF6pDt02HHB9yC0R+RN27J4HaOHmvsaVqOGDODM8quV/D3W75A18LGSjfQz9X4Z0P1DwlAbPjYJCMlae152IcOOFPcCyay96tkJK7
+ 6sfQJebA
+ 3CZaNRj9dguObC15sYXAYHFgtwv2XHA/e4CJ13Chc6uArrki7+8bL13LkiywOMRbSJiP8u2+kSxKcI2w4cDkgZKY9DVvA50EBiOx3rjP5ZrsFNZOubW/tV3FANnVX69ONg2yEayvENh8vqDNIvKj3YlUBvsuzKT2haVzWig53W77mh06zcU8lscyUWveGzPHTN1amAL5gbKq5+0Afbe4ao8pnU2Ysv/rkJbM+W/xzT+iDXvAZTJfQMgqo7Evsu0Kv9JRf6tT8tUI56HDphjL6LVdHgeiucsI3q4ULVpZedngL6kC/ZQjmwqdxtUBBQR2Yc1E2IfyZNU+yB/aSqW1AJEc8CoeESQNoBJqy9VK9V+l2QsIiRdcqTiYHTyxl7O3i1NzJSrn59agGOpEhOh82+00P9Gnp+ntyxVj3XAQGBGI/FrFm3MgegVggog9JiLjmk17x8XO0OrdNmLcWORHcmh1GZeST0Jw/adCsdZjv4NnHS6fvGdgw+GVD2UCcYK1c61b2/20HSKZZWLqJYRDKCXJu8/7Yry8rarwWKBrlXc09n0Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,76 +106,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mmap(MAP_HUGETLB) on SH4 can return an address which is not aligned to
-the huge page size. In a QEMU r2d guest with 64 KiB huge pages, a
-two-page mapping placed after a single 4 KiB mapping lands at
-0x29558000, and process exit then hits the alignment check in
-__unmap_hugepage_range():
+Hi Karl,
 
-  kernel BUG at mm/hugetlb.c:5215!
-  Kernel BUG: 003e [#1]
-  PC is at __unmap_hugepage_range+0x3a4/0x424
-  PR is at __zap_vma_range+0xa28/0xa80
+On Sat, 2026-09-26 at 20:39 +0200, Karl Mehltretter wrote:
+> Muchun Song noted in the review of the Arm hugetlb alignment fix [1]
+> that SuperH has the same arch_get_unmapped_area() gap. Reproducing it
+> in QEMU turned up a second, older bug that corrupts memory once the
+> mappings are aligned.
+>=20
+> Patch 1 fixes the page size in hugetlb PTEs. pte_mkhuge() ORs the huge
+> size into the base page size bits, so 64 KiB huge pages over 4 KiB
+> pages are loaded into the TLB as 1 MiB pages. User writes then land in
+> unrelated kernel memory. This dates back to the start of git history.
+>=20
+> Patch 2 aligns hugetlb mappings to the huge page size. Without it
+> mmap(MAP_HUGETLB) can return an address that is not aligned to the huge
+> page size, and process exit hits the BUG_ON() in
+> __unmap_hugepage_range(). This is a 6.13
+> regression.
+>=20
+> Patch 1 goes first because patch 2 alone makes the corruption reachable
+> through a plain mmap(). Both are marked for stable.
+>=20
+> Tested on QEMU r2d (SH7751R, rts7751r2dplus_defconfig plus HUGETLBFS
+> with 64 KiB huge pages, gcc 15.2) on top of fddfc3ec3179. A test init
+> maps two huge pages with the default and legacy layouts and with
+> MAP_FIXED, writes and reads back every 4 KiB, mprotect()s the mapping
+> read-only and back, and checks a COW write in a forked child:
+>=20
+>   kernel          MAP_FIXED       default/legacy mmap
+>   base            memory corrupt  misaligned, BUG at mm/hugetlb.c:5215
+>   patch 1         pass            misaligned, BUG
+>   patches 1+2     pass            pass
+>=20
+> SH-X2 (X2TLB) is only build tested (r7785rp_defconfig with 64 KiB huge
+> pages).
+>=20
+> QEMU's SH-4 TLB emulation flushes only the first 4 KiB of a 64 KiB or
+> 1 MiB entry when the entry is dropped [2]. Keep that in mind when
+> testing hugetlb on QEMU.
+>=20
+> [1] https://lore.kernel.org/r/5AB6FE85-4CB9-41EF-A700-BC5E071F29F5@linux.=
+dev
+> [2] https://gitlab.com/qemu-project/qemu/-/issues/4598
+>=20
+> Karl Mehltretter (2):
+>   sh: mm: replace the page size bits in pte_mkhuge()
+>   sh: mm: align hugetlb mappings to the huge page size
+>=20
+>  arch/sh/include/asm/pgtable_32.h |  7 +++++--
+>  arch/sh/mm/mmap.c                | 11 +++++++++--
+>  2 files changed, 14 insertions(+), 4 deletions(-)
 
-Commit 7bd3f1e1a9ae ("mm: make hugetlb mappings go through
-mm_get_unmapped_area_vmflags") made hugetlb mappings use the
-architecture's arch_get_unmapped_area(). The generic implementations
-handle hugetlb alignment, but the SH implementations only account for
-the cache-colouring constraint in shm_align_mask, so the mapping ends
-up aligned to at most the D-cache alias size.
+Thanks for the patch! This should definitely be tested on real hardware
+and I think it's a good reason to test this on my SH7785LCR which wouldn't
+boot on anything newer than 6.5.0.
 
-Set the alignment mask from the file's hstate for hugetlb mappings in
-both SH implementations, as LoongArch did in commit 3109d5ff484b
-("LoongArch: Set hugetlb mmap base address aligned with pmd size").
-Huge-page alignment also satisfies the colouring constraint. SH only
-uses the bottom-up layout today, but the top-down variant gets the same
-change so the two stay in sync.
+Adrian
 
-Fixes: 7bd3f1e1a9ae ("mm: make hugetlb mappings go through mm_get_unmapped_area_vmflags")
-Cc: stable@vger.kernel.org
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- arch/sh/mm/mmap.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/arch/sh/mm/mmap.c b/arch/sh/mm/mmap.c
-index c442734d9b0c..4df807e0df36 100644
---- a/arch/sh/mm/mmap.c
-+++ b/arch/sh/mm/mmap.c
-@@ -7,6 +7,7 @@
-  * License.  See the file "COPYING" in the main directory of this archive
-  * for more details.
-  */
-+#include <linux/hugetlb.h>
- #include <linux/io.h>
- #include <linux/mm.h>
- #include <linux/sched/mm.h>
-@@ -92,7 +93,10 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 	info.length = len;
- 	info.low_limit = TASK_UNMAPPED_BASE;
- 	info.high_limit = TASK_SIZE;
--	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
-+	if (filp && is_file_hugepages(filp))
-+		info.align_mask = huge_page_mask_align(filp);
-+	else
-+		info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
- 	info.align_offset = pgoff << PAGE_SHIFT;
- 	return vm_unmapped_area(&info);
- }
-@@ -142,7 +146,10 @@ arch_get_unmapped_area_topdown(struct file *filp, const unsigned long addr0,
- 	info.length = len;
- 	info.low_limit = PAGE_SIZE;
- 	info.high_limit = mm->mmap_base;
--	info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
-+	if (filp && is_file_hugepages(filp))
-+		info.align_mask = huge_page_mask_align(filp);
-+	else
-+		info.align_mask = do_colour_align ? (PAGE_MASK & shm_align_mask) : 0;
- 	info.align_offset = pgoff << PAGE_SHIFT;
- 	addr = vm_unmapped_area(&info);
- 
--- 
-2.39.5 (Apple Git-154)
-
+--=20
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
