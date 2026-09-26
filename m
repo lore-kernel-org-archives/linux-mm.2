@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BF36C98332
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 12:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EB8C98328
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 12:42:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE3C76B008A; Sat, 26 Sep 2026 08:41:55 -0400 (EDT)
+	id D5E936B008C; Sat, 26 Sep 2026 08:42:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C943C6B008C; Sat, 26 Sep 2026 08:41:55 -0400 (EDT)
+	id D08D86B0092; Sat, 26 Sep 2026 08:42:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B84F86B0092; Sat, 26 Sep 2026 08:41:55 -0400 (EDT)
+	id C1E256B0093; Sat, 26 Sep 2026 08:42:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DCF76B008A
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:41:55 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0AE971C33E6
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:41:55 +0000 (UTC)
-X-FDA: 85255875390.12.E1FAB5D
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5832F40005
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:41:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCleUSOB;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D6986B008C
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 08:42:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1EE25120899
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:42:00 +0000 (UTC)
+X-FDA: 85255875600.26.872BA87
+Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5BCE8120005
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 12:41:58 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGCd3kyC;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790426513;
-	b=nyg8CmS+vEjwKb7TPo/w1nH0irqPHT8S4xKcVh5I59er50TY2Igt2l5M8ZNTsF/kRamVfQ
-	HDE7pi5fkCJOCxLu0eMJRvXG/mAdoD9jwMlfgPStVeUwshKgiNzFGXgjNqIfGRXag0gxjn
-	jklkFzf6Gt0dvegcetcrHcgXuthyj40=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JCleUSOB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
+	spf=pass (imf29.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790426513;
+	s=arc-20220608; t=1790426518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=W2zTAQUGUmuhZJVF/v4ua+yizjtFuipihK2DMp9YoGo=;
-	b=ObgFoh2wi6Mg1sP72QMTY4Ss0m98d0gZzIzl0XuELOaX+g+5oxj7pMs2dIF22AxHbLNcqE
-	YzTjLR3d4OvWuBNLifqje7pCcC4FXA4FdWocQdldfm+NAUSXhySmFMXA/jgH70ZppzwAQ8
-	eW5eamMXE2NE6SAotQwwrFa3w6cnLHw=
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccb1a98dso1051143a91.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:41:53 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YxUX0NroNmM2djP5qsrTpM2pYvDo5f/LrOtTkWteY6U=;
+	b=0ajzLbAcgf8jfAgJfywFUHXIskjJ/0pAb4QJiRVWy4/SNeECAVESJnXAffCI1DX7Jh1A0Y
+	vE7bzTQlJ07wKcqXOLRtpJrA5hZ1BUj+NSxFK/Ps5L7440uAnoEc+o1Mp6vDYH4bckwdX6
+	DVc8oNP9I2b0IKISOrFTFjDD0iTyv0Y=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=OGCd3kyC;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of donggeunyoo.kernel@gmail.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=donggeunyoo.kernel@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790426518;
+	b=GaFOScQTwoPnnk2QyAMJ9yaJbFMX0+r2aYQlHBmqYW+1HcletKJdGa3TkXOUtB1OHc3pvb
+	Og9uxfpFyVotGXyUnCfbtSQliRIW1oaTZUI13bfHij5jMn4LjjIrXE7Fa/HEXWAe5/cb9E
+	eN3FSpn2l9FAFC9le5Txe5ip74CxmJw=
+Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0dc47fee0so230620a91.1
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790426512; x=1791031312; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=W2zTAQUGUmuhZJVF/v4ua+yizjtFuipihK2DMp9YoGo=;
-        b=JCleUSOBoHDnKmm5zEY1HVdepIL1EpXgHmfArZO9BvhNV5eloNyhAfkF7WLy0g1mj5
-         sQ0QdIzDXItPfwU2htvmT9siWjqBuxco6T0Y/fR21Hh0bE2/WMCgvKzzLbX8ahfSq0kh
-         UB9QJnVJ/69Lf6zADPw3Y0jQH4ae5qawT8dUBMJE7FdyorZhhXodnFjKNXMpLZvHewlB
-         MP+NrykbuNhPHV8RhusWoP9VTOra+XdwbLC61cK7hxS8sHPAhHXBKvriRP+9PUuE5w3y
-         4HCoWcXrK96B9aC6c76gbGkcawK/qwF7vKoS9kmCXq1RYVW3ml8cpbxVAY5PmdSDvh+F
-         m/jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790426512; x=1791031312;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1790426517; x=1791031317; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=W2zTAQUGUmuhZJVF/v4ua+yizjtFuipihK2DMp9YoGo=;
-        b=LdTmEEQixAhVA74eEEdGV58oPdJclJTyLYO8wgHLmH6tchwkf9dZ92shWrMPhQ21uz
-         U0F5KVJzAPyioL5BBZN07jL8OfrKGzQunUMBHzzBrJA/P/B3gpR/WgO/Tj/DqxcSWhFv
-         HZeyPka2IhAShdRJTHUEcCj4IHtCuiFj9/z12qD7/eI/HxxeFfSFuS1RGLDevqfU/K5r
-         NsG+hxwHF/Tp8QyYnT4QQj/ctE8kRszNqc05mStxC8nafk6Ir/cxvaPBfh+zLZ6zvvrl
-         GSYnWe9hzGcJ2iFvnBG3BI3Q9SIh7dKnzyRwelCHIysoUkF7brO3jKzKFwW5OJjE1NtA
-         AACg==
-X-Forwarded-Encrypted: i=1; AKwUvBzc2BjT/3eqh4UJzo6vCawP7vKaTxXRXEER08hwm5136XhuQ9eIwZ2mvUoNfsP8s0jbvNLKwoHvyg==@kvack.org
-X-Gm-Message-State: AFq9FYJVp98dLq4ysxhgrPVBVDc00tkdxD++v4ONaurqEA9rDD6Ssv2k
-	VTCDCdRmMatCA6Wwkrbp4pgi4VVYmTzTprDh5sTF3wNu/1UAm7ODsMI=
-X-Gm-Gg: AYBFou2ngDd7Ys8MxyU4++F/TiEI/ajySP4UsgSZx8vxWmU/9mTz3AqoO6tHLN0h2bF
-	FhpkEeXKkBz6J3yjLfAkvB6uzAv5buW7FFN9a2LzQSKoRb/naCeTw8Y5+qI3606D/nYt5fjmtHt
-	kMLlElFtKu9cp+lGIEJil/N9xwXgeNcZcfnXs2Bq3pRx600sQTvAKkwagrwcRzU+em9jZpIF2wR
-	ndzM8dIyPdIJdc5Z4rxS5+dTEWs24ebxGW+aZnEgO6wnFggFvDR64Nt8dVNQmOVahsXI5IOdW9U
-	uGggnPsw5kC5cVRgoT1EN31togXDfI7pyo5wCbug24/XYNS7MpJ+yAd/Y0NaNOWldf1jg5Kjds7
-	JzDw6l1AxyI98glEyWv6+0DL7BfVuiJsg+aru6zTvBVcqfUwiQxGkCjne1Z9e0viwu4Voq25pFA
-	MveW0OSS1TwLpmSc9QFsYWw61wN9ZWnxgsP/TnZSxSYndaEsn9mD0Llma8ixjkfa39prKhF4hES
-	yjT62D6HUEaRHMpRfaTcyYbZg==
-X-Received: by 2002:a17:90b:4a87:b0:3a0:a18e:bca0 with SMTP id 98e67ed59e1d1-3a0bb60e052mr3893421a91.31.1790426512107;
-        Sat, 26 Sep 2026 05:41:52 -0700 (PDT)
+        bh=YxUX0NroNmM2djP5qsrTpM2pYvDo5f/LrOtTkWteY6U=;
+        b=OGCd3kyCj/xQYf8BpwNiBx6FD1lNkihNaxC7R8P37xX4AiH1+A9m6Hg6UjVVgfQlEr
+         kOPI+pMVRVPH1zpyiGpvO4u/CYT6uh+3UgKxK7jVG/boLW5cgmYS3j2YWVhagK6BCnaH
+         oDyAofIkAQ9kB4bS/kifgCNRZi69NMf3CS69xMn/0XUo89bDHJhM1OHKk7O8VPRbGQut
+         O2wOBEg/UoOkXCq6MnVG05gqk4lnRnSaao1XdVHRvve1jK0b5mszmmbgFiRUYM4hZi+l
+         Js5VPvoDZjnnOwQiyIdy9UprAEJgWDQMIpi4ynnaaxg1M003GPLIYPLo1VOJekjzarWk
+         Hn+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790426517; x=1791031317;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YxUX0NroNmM2djP5qsrTpM2pYvDo5f/LrOtTkWteY6U=;
+        b=BletsfLd8iYXjdZAwVF7s3EjqceUTeCsL+LmVV9behhMUG7eClQ/o/qC3uVOiCfjYC
+         6JUIY+lCxNQ46J2Gppm1D7QBpQqrg/O0BOdttRymi5WN9h+wRlS4W4K3jhjGGHZaKVgV
+         mELRBtgYScNM88nj/W3TJNImHxLkKAjNA/1uK+jLIE5f3dQTLiek6eFL6fNDtwf5lDYL
+         KkGRVI0XlVTHk7QXuL4PW0shzom59d5ik0r6K8zuDC0m93gScUEFto713wC5T0MmiuDN
+         uYXPYJReaARwYkMiQ1vpZPmzc9y8/ws+z6mqHGEDiTldoA1pZsOMejxLgqCde09j3Uyg
+         BIIQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxcgc7GCPXt0JpoeEjF8Wrj2tR9t5dOUby+cxB4AjI0twKPidowTFBwezpkD4fnjnlAitYWcrCZ8A==@kvack.org
+X-Gm-Message-State: AFq9FYLb4fDwVI7wnwvOQeakn0dmxysdqz8yWIs7n5IqHWVSvDoScZzJ
+	31wmEfsXQCOy4iGtcL4vL+lkwXbkrLjQC79BofhRIpVMXJKJ4nfoW/rRIu1CrEEPKA==
+X-Gm-Gg: AYBFou2QGqZVEl8C64tZKIvOlAUAjnomFVESC7yI6sM3rexhP0fiaYr4GpVvAbm1olI
+	tWeyncvYCf9eD8Pzp0o6Tfh3ey+6RtabsQGKZZh7nUT9DGHbnsDaJmVrTXcRb1zzZ4nqdPLjh/j
+	z6kggDE2EOvjo/OsHhc5Xr3P2sFpoauQly5b3rWrTpcsjy5Bms0Um1cwsh5A9fBN509NbPZTCsh
+	MAbPY0y9GFIjIoCgbYAHekmqljjpTOllfwakwyTRymC+zyjotEken3zICZycJdPnqFvt48UI/Mc
+	n+1irvHEyeMdScLjJNJTxA1BBkB7X4giuMge3yfg5PSzp29V1QWDODe5NSeFu+IVx3aTenE8uyL
+	f1J49ern7jXXcyhEXTvSYqgUl8Xb4EXpZbxz8P4CctocRiPqucz+tYxv/+Elf9qVo4QDzhUAvXe
+	W/AZuUoPztSnpGpqEc9KvTKj8R3ngcnmRCSClxF5ubJDCfOR4qPNoelkcnxah0Ea02JJBFkDzfp
+	Q2zkBxZL6Zq/CkbO3klPhkF3RqTJ7wTs4k=
+X-Received: by 2002:a17:90b:1a8a:b0:3a0:cb48:df68 with SMTP id 98e67ed59e1d1-3a0cb48e2afmr3146943a91.13.1790426517221;
+        Sat, 26 Sep 2026 05:41:57 -0700 (PDT)
 Received: from ydg-Zenbook-14-UM3406GA ([211.230.25.193])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0cd1c4ec9sm5965212a91.16.2026.09.26.05.41.47
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0cd1c4ec9sm5965212a91.16.2026.09.26.05.41.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 05:41:51 -0700 (PDT)
+        Sat, 26 Sep 2026 05:41:56 -0700 (PDT)
 From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org
@@ -106,21 +107,24 @@ Cc: peterx@redhat.com,
 	linux-mm@kvack.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	donggeunyoo.kernel@gmail.com
-Subject: [PATCH v3 0/2] userfaultfd: clear the inherited uffd bit in move_swap_pte()
-Date: Sat, 26 Sep 2026 21:41:43 +0900
-Message-ID: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
+	donggeunyoo.kernel@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/2] userfaultfd: clear the inherited uffd bit in move_swap_pte()
+Date: Sat, 26 Sep 2026 21:41:44 +0900
+Message-ID: <20260926124145.2878520-2-donggeunyoo.kernel@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
+References: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: k3a19scncsf517ewf1yzt1yepyyiwezh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5832F40005
-X-HE-Tag: 1790426513-890591
-X-HE-Meta: U2FsdGVkX1/UnDe7C0d7ZvHkBdJkcIk47GX/giAoTID1AFpVi4WyhGk3pkJWBdlqhWXQZ07Wv3ZAAhdC+EUfNcaAVewA+COeQKzEpciVEXOIuYdR6TcMiEKvEcp83rOQu01grLXQcQcC6JqEA7anXNXGx5SW3ElGKqzhlJglPCg/6+PSqKp+AcW0xDTkFaQ5NmVVzWUQWKGS5XcHi8R57NR9UQYZoTteFKAcWCbixULFgUxSqrnvfqOoWFrVIv0D7g5SBq8DSLadzg1c08a6TtsDo6VWsuQn82IxpQs6Zp9UIH8gew8YXM8X499VqahKJIEg4I2pIs+4k0KctU+A2VbkJpFm/8pjyuZeXW3bAL7uz5asOZ4yyTpGaghIR7gM8JgnR9glvyXZz+VwbS1OnJMpCxtEzEm0jjldlJtVV6Ave52mncgPkPzbZM/9hbMTTQKVVSFAiQg06OztjdgkNO7QLT45mg9xpLdv+O1FHqPFRIsSaRt7U9CaaDdWmqbMcQZIjQ0OpZU0qAq6hBbWkoszqQmxQFWByPurt3GO8RKPAQnsdpA9ryNZFaNoUNsR5ylU4voPCoUdpwBArvJkEz6uk9o1e9QDNlPKycA4NveKCSrJQ/OKH97SPVYVCQhn9IGU4bq7V+XtAicdLwIXf3oBM2Nswp6RCs2uj29CLtk9NSMmVGPvG2OcC+Mqyi5r1XHIhzf3UqGSfxY/qsavXY0/rddJp57bZ07ZyhBaI2r4vrHi5jYnQA5GL2F4Or3ruWcihd4rRiC27fgWWPy70dtxgkOXgNxJHJnVaTl8CdzO+nh9DD5XPXSXQBZ19XejacYXQsrcUfdbLKc8gyNJXt08x3R5dVAkkq3hVRoIuyxYq7MWFhlDnhL4mFBlLGeYSVm8DpDWt10OWUUJNZ3nAsR5Y0e3mNFypogCAL9UfmlDeSyaVUpRwaLZexD5TeRHGUv2Dj/FXdISoiqz44o
- MCTyBkw9
- pJr0u0aQBjAxpGtKmVrpCe++yrfdq1APN25Kii6iPCJd9CxprAxooXm74pMwEtQSk/4mwxkIQxqjexViiuT5F2yU9A7xHSa+eZ4wsWnFzS+JPR0SfhSrW+dVaRECJgyz9fZqdpZ+t2DXKuH8n4+J3ci+0u5Zgh1PKdcYc9iLAKWVFnRy+VMrFtDi+zc/ynRzgkaSm0EsJH+j4Z4xn1b1qRSrilZUyu8jdEBWNE8hHWrdL04Q1Yj8TLyKT84S2wJhdngSsfNkW6+xUSx8D65rMQNgnEt6Sc40sNPbgRfYbDs52OrA8JHcYvzrfl7bQzxAMp10i6rHzalrnUdfLE3keIDoZFuP0Bkm4HYQPiF9BZCv3YwZ07FS6mc5I2tDE2FQmb0nXnWmsGz2dTAm9CNqYakYmNZgLUF00agMzz40tI8+WyAH3sbuxsVfFwgNLiyeF0VFyX7LgVsyWJHBXakyoOXFrbfSBbCLXJ5xBIkVtU7OvKaJG3hKAmf23NPc9Nd2ow0Nt+2Ux5kkd6PI=
+X-Stat-Signature: zdnetnyxmcmarcb1ta4dp9srd93a5fef
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5BCE8120005
+X-HE-Tag: 1790426518-439938
+X-HE-Meta: U2FsdGVkX1++ROcGm4xMqKOGt4q6dhEreZKO6qCZ/GCtb9AB0bp/RRn0kmF1zsELS9LbE8X4UryQQvrxuN12WiLgW+s95yF4KlwDIL+kt2iMv0N67ST2pdGN3tDskg6wavEB67rQORogOsNE1i0MYpL/vSnbn4cRDrsb0DInjZA+lqH+Git0dhfrr8tNdz2RZkB0qzibSTZJ0oZ/VcPiaaq3gFDVD8eIJYFXabOrH10HkH0sCsPn0MzKgiyo2X4gTmTOuEIMaxYMywbAKRyaaYS3DSJpsjAGe7I0JS6npuykbBehxrQsdJdzmR0psCAB2wZ2mNpFBIRYQ9VlanTZikveUKP8UnSytpBJxt0XZLQlnhxdlXQvC+cGUbOK0nTpoONZyyCeThdkLdhlFPPPSi3m8K8OOjG2ts26JG1F7vq9TSP/NPL19RS5ZvqTuqbiZI27oySaMmVL1RtgypvrJTHo5fCyzHvTqw3ZuD7YMMETSUIkPTzAswzyq+ZHotHG58W9XwYF1bTzAhdB1khIZn7AFKw4CGPQtG/hveZjmvQ3Eaol2yRRVXc3XgXaBx9W6goF0/YlUIwmK/hwmw9kuhWmTnyBqGngi+185LivwRggtauNsB7ChW7l7lrZWekWy0ml5deufTGgLsiueBVleswZa71V51b8+QmHIppMCow6JLioI6p+8M8aIooC2h6pladVsi1WB5gFYxZvxV28aWjtfAQYvQtPAOQH7Sp6NPSGhiRG0RT6S0GpKzoEZCI56SSmz8oKLnUqYrQBWdEnQFfTR77pknnFLPPJelqNW2SN1libP39a/O2uH/gMVsaqDlvpGaHHcE4iGDq0diZM5cmo0aDRUadaMsOlC3TeTlzJjla9gg1ZhL6IzLSOTLMhXfOJcWZ0KSpTuaCrzxwxR9TPtboQWyWkPcYcn2UZBq39Sd+y2iFc+Au2XpdSSJdYsFKl+R/J9xTy55Ds5kQ
+ A9a5hIdG
+ ESda0R+QV69Qo6nmb8GjitlqwblfCElBHL/gaeVGE2X5qTrC5PBbxc7vPrZjmt5gXVAXJNoD+EbFXAJ2e+ePtNWko5yy5HXczxt39oattmRCzyNKVD3AHjv9xNvCeDzbe4WMZ/YBdxohRFjhDMHUKqoc10bUjfm2AFzOTtgpJjDeEWiy7D3xjO3gqH+sxRJtUs0Mi4CqaSalXk8w2Z2bYZSRCyhchLCJeo8Ttjki6u1l82M0FYFfwTgot0uHGMUKoOpBn4W6hqW7PRg+Qsr4m9YP5tM1DShGe8fFEFlrVq33vAzSb4PoPj1uwGmim92BnGQnncI66RDJuqqpOrf36aF6N9l2aTzDlWZftky7hMuGVEechOjjhJT5D+aO5QrtMZ5TVaP7C05r8B7f7dTJQ4U2ZAqKAL3e5VMyTAfWtKmw+HB0n7E8/PhI/hDQiLGRz179wZzZNAaaVMXGrWuQtBP8apg9WYsk6BBzDgPam75vNViqQ7jBp7rvyA4AwG4HSodeXjNNlac+DFULkHUe3jeAOxrtOPjLB0WNpe0rZVrRBioXGbJI0qFLJGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,53 +135,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 UFFDIO_MOVE on a swapped-out page installs the source PTE at the
 destination unchanged, so a uffd bit set on a write-protected or
 RWP-protected source lands in a destination VMA that was never
-registered for either, and nothing clears it afterwards.  Patch 1 clears the bit, then re-arms it if
-the destination is RWP-registered, which is what the present-page and
-zeropage move paths already do.  Patch 2 adds the tests that catch it.
+registered for either.  Nothing clears it there, and userspace sees:
 
-v1: https://lore.kernel.org/all/20260919004630.1159895-1-donggeunyoo.kernel@gmail.com/
-v2: https://lore.kernel.org/all/20260925042907.2330519-1-donggeunyoo.kernel@gmail.com/
+ - /proc/<pid>/pagemap reports the page as uffd-tracked (bit 57), both
+   while it is swapped out and after it is faulted back in.
+ - MADV_COLLAPSE fails with EINVAL on a range containing it, because the
+   collapse scan bails on a swap entry with the uffd bit set.
+ - With CONFIG_PAGE_TABLE_CHECK, faulting the page in warns.
+   do_swap_page() carries the bit into the present PTE and, since the
+   destination isn't WP-registered, also makes it writable:
 
-Changes in v3:
- - patch 1: describe the userspace-visible effects and the backport
-   (Andrew Morton, David Hildenbrand)
- - patch 2: drop the MADV_PAGEOUT retry loop (David Hildenbrand)
- - patch 2: add an RWP case (David Hildenbrand)
+   WARNING: mm/page_table_check.c:202 at __page_table_check_ptes_set+0x185/0x1e0
+   Call Trace:
+    set_ptes+0x67/0xc0
+    do_swap_page+0x990/0xfe0
+    __handle_mm_fault+0x7d0/0xeb0
+    handle_mm_fault+0x9c/0x250
+    do_user_addr_fault+0x207/0x650
+    exc_page_fault+0x65/0x150
+    asm_exc_page_fault+0x26/0x30
 
-Changes in v2:
- - patch 1: clear the bit unconditionally (Kiryl Shutsemau)
- - patch 1: rewrite the changelog for readability (Mike Rapoport)
- - add Assisted-by: LLM (Mike Rapoport)
+Reaching it takes UFFDIO_MOVE out of a WP- or RWP-protected area into
+one that isn't, on a page that is swapped out at the time.  It hasn't
+been seen in practice.
 
-x86_64 defconfig plus USERFAULTFD, TRANSPARENT_HUGEPAGE,
-PAGE_TABLE_CHECK_ENFORCED and a swap device, under QEMU, on
-6812ce4e4379:
+A resident page doesn't carry the bit, because move_present_ptes() builds
+the destination PTE from dst_vma->vm_page_prot.  Clear it on the moved
+swap entry as well, then re-arm it if the destination is RWP-registered.
 
-  uffd-unit-tests                    before   after
-  move-swap-wp on anon               not ok   ok
-  move-swap-rwp on anon              not ok   ok
-  the other 103 unit tests           ok       ok
-  uffd-wp-mremap, 38 tests           ok       ok
+The WP case has been there since v6.8, where UFFDIO_MOVE was added.
 
-  11 unit tests skip on both, as CONFIG_GUP_TEST is not set.
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Cc: <stable@vger.kernel.org>
+Assisted-by: LLM
+Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+---
+ mm/userfaultfd.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-  pagemap bit 57 at the destination  before   after
-  swapped page, dst not armed        set      clear
-  swapped page, dst WP-armed         set      clear
-  swapped page, dst RWP-armed        set      set
-  resident page, dst WP-armed        clear    clear
-
-  MADV_COLLAPSE over 2 MB at dst     EINVAL   0
-  fault on the moved page at dst     WARNING  none
-
-Donggeun Yoo (2):
-  userfaultfd: clear the inherited uffd bit in move_swap_pte()
-  selftests/mm: add tests for UFFDIO_MOVE of a uffd-protected swap entry
-
- mm/userfaultfd.c                             |  1 +
- tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
- 2 files changed, 85 insertions(+)
-
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 74f04c323c50f..f39f109f17989 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1449,6 +1449,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
+ 	if (pgtable_supports_soft_dirty())
+ 		orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
++	orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+ 	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+ 	if (userfaultfd_rwp(dst_vma))
+ 		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
 -- 
 2.53.0
 
