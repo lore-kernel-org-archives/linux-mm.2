@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38888C98332
-	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D689FC98318
+	for <linux-mm@archiver.kernel.org>; Sat, 26 Sep 2026 09:31:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C37F6B00A2; Sat, 26 Sep 2026 05:29:52 -0400 (EDT)
+	id 032266B00A4; Sat, 26 Sep 2026 05:31:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 473836B00A4; Sat, 26 Sep 2026 05:29:52 -0400 (EDT)
+	id F24DE6B00A5; Sat, 26 Sep 2026 05:30:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B01E6B00A5; Sat, 26 Sep 2026 05:29:52 -0400 (EDT)
+	id E62036B00A6; Sat, 26 Sep 2026 05:30:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1824F6B00A2
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:29:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8F8F1160625
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:29:51 +0000 (UTC)
-X-FDA: 85255391382.07.84ACDA7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 07984140003
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:29:49 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MkJMrAH6;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B051C6B00A4
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 05:30:59 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A4F81206E2
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:30:59 +0000 (UTC)
+X-FDA: 85255394238.27.9570A42
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 879561C0004
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 09:30:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kzL1QS5E;
+	spf=pass (imf20.hostedemail.com: domain of 3z5C3agkKCCwbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3z5C3agkKCCwbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790414990;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1790415057;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=crboOxvrJ8lPbqxWIICzX00men9f9+ZB4s2xBH/JEm0=;
-	b=1eDXP8+01zMdTO0oKOchCETb9S5WpxFA/EBI1MmoxEguV55ttkD5ENO1mz6MfD2wrG66pF
-	fH0bv7b/APsfvi2HrZecg9QSGoeVsgE/PBVHnr4weKVZiH4hyZ9ll85L9uDOTSZ1g8Z09Z
-	tL7Or8uSwM3ES6Q9XxdbjJnGMI9KQlc=
+	bh=qPPM7SXCBhuzMJBn4w/Iue6D6iAI4Dgq9juqp97Dizc=;
+	b=tsIYD09DDhBBmXk+qgSMpbjo+VK3Wcd4BX1ZV+dTLMQsqS4Spydqbm9L+2X6nfzAkF8aT5
+	wQsaHKGmDMHY0y9NuvoXOw/FgEwzTgM7xPYViMPlOfbjF3TPT3ectRicPWIXnbDEexd4S8
+	Rd6dcssvalC0HNygVxsLh7CaiXkxyVQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MkJMrAH6;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=kzL1QS5E;
+	spf=pass (imf20.hostedemail.com: domain of 3z5C3agkKCCwbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3z5C3agkKCCwbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790414990;
-	b=qTapS6T+miYpVYL4CXYHxZGSkaeKyD47LgmZ7AkXsytUPBZ9K809Eco7QIdyiggUG5zo/h
-	huO7LMdAIeDBg8AbrU4v/nrkA7zfGnc02EnhNuh8tL3mgzUSQv525DRXUc+9oV7ciQDGoX
-	4zu9HpsCYGFW/4Hqe04CbKn6YohRpu4=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3339C43E30;
-	Sat, 26 Sep 2026 09:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D311F000FF;
-	Sat, 26 Sep 2026 09:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790414989;
-	bh=crboOxvrJ8lPbqxWIICzX00men9f9+ZB4s2xBH/JEm0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MkJMrAH6xEt8MuQePzaeyrvnwAl+wKF6FcLv8A20eC9plGEce3O1epmIsMmNDn5HW
-	 mOCiZkCvwX7EmXeMmedV/azMVpo1Z0VBupX+HLvk/cM9uCAKqndOI26sexDbR3z94W
-	 t6B0UgcrCzFGrohptYFe+0OHcoCrqwN7sUdjO/pVmIsU5tLRJpx4CHVOhx3cDZZOqs
-	 t3SuWXug9kvVE5w30nBv0l789F6wATP1/VMYOwOsnL8Uaw3KWAVhAnV8OjsoBEBDZu
-	 Ktu6dTqAxchupgFxxkLjpzTWIh909uR32z5iQm9JCxn+0Ux3PErPF/OiefFzYOmSN6
-	 3uaHrPk7EsRtw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 1/2] memblock: drop for_each_memblock_type() and open
+	t=1790415057;
+	b=TZQM9qEgj4lmd8LKwPptN6yDbU/5VUfXhpG29E4AbVI7WEQaJwE/awCztmyWj9XA5LVJTP
+	By5SBTHHT2dj9b/9Czi/BAWInglcooNpyD1BRqIugzcZg1Sm2Y39nalCFauqGD7pqiCOge
+	3c/N+CRyG8ErpGoebJ47DXG3mUzTWK0=
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c294442d71dso185339566b.2
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 02:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790415056; x=1791019856; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qPPM7SXCBhuzMJBn4w/Iue6D6iAI4Dgq9juqp97Dizc=;
+        b=kzL1QS5EA/wKbNwM+WZbuy9LP02wDNP4FvDX9uZpJ3zhySrD15dd7ZVoElorNEmyaF
+         4bOfBurQmLc2wd1R7lqyGRKSgDHCBUtCBluJ6UYVWgLvAbMCWcNof8n+oeF/ojj6Etjo
+         IcVfyJEphUEMtxQVoFViq6ZC9LvYCOnW0l3h0a6p9DyKChv56ulYsKu1uq459FHvxBrL
+         xWumpLzEKo/36P9P/gLhwGjkwR9iYX23pIUqIU3wYJ235+bFFmgY1BMguPLyq+galoCH
+         hpYbzdM5MUqNc5ohk3uU8kXHh3vjf8hdgcyGrC5lo/pWUX2DIQqhwOpYMll4tCKsThVP
+         W9wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790415056; x=1791019856;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=qPPM7SXCBhuzMJBn4w/Iue6D6iAI4Dgq9juqp97Dizc=;
+        b=rUFmcoWbFl2GIxLs16B+L86LKjsg6Zqj81HHd1x03Waj4HjNJfLqAszJ9nyHwKrzXU
+         XeyWQBQdpuIYKcCYpMf0U8x1H7Y5ikbQHv51xm0hPwmbPABaJA3mVatO2IooY7QLHavu
+         jImr1HNni7ExrF8qgQAWxzhmV+ki2ABDsy+QLfVNGQGetep0Smjc2XpgRu3ZbQBgerF7
+         2nEtrs7j8uDFYIt1WONgSxWPvJzUFzq8XkNtWGr9bWkyqZmJEtSzyuyWVVEQfhVuo3fk
+         N3tFI7MxzZSGZKUftJHwwOFrrRvV6ANbLf20GwEqIs5uPp3wmbxgl0cyanhotAFaNqZw
+         0+6Q==
+X-Forwarded-Encrypted: i=1; AKwUvByU7sN62l1kVjjPDJrnp8+6XXqI9c4Z18WZz10uiIpzajxbGWgs23gVa4svyOYTj88STcz+kUzRwQ==@kvack.org
+X-Gm-Message-State: AFuF++m708QBT0U5Ohve+7SbBWlI+INbyihaX7oUKOUbgRj8+OywXcBL
+	hyQTVCHcXvBTrZVA73lbyUpa1ZnAhdwGci82M/0ruAW9y+qMGofD6zsnxn/JK4EEFTrqY17IK3J
+	UjgtYVlmiOzx6ypcoFA==
+X-Received: from ejiv7.prod.google.com ([2002:a17:906:2f07:b0:c2a:bb40:5656])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:3f19:b0:c29:3c21:ee69 with SMTP id a640c23a62f3a-c2ae9f3157dmr395838166b.23.1790415055784;
+ Sat, 26 Sep 2026 02:30:55 -0700 (PDT)
+Date: Sat, 26 Sep 2026 09:30:55 +0000
+In-Reply-To: <2vxzwlsj5r83.fsf@kernel.org>
+Mime-Version: 1.0
+References: <20260918002239.4024231-1-tarunsahu@google.com> <2vxzwlsj5r83.fsf@kernel.org>
+Message-ID: <9huzh5jcnyuo.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v2 1/2] memblock: drop for_each_memblock_type() and open
  code its users
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Tarun Sahu" <tarunsahu@google.com>, "Andrew Morton" <akpm@linux-foundation.org>, dmatlack@google.com, "Mike
- Rapoport" <rppt@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>
-Cc: kexec@lists.infradead.org, dev.jain@arm.com, "Pratyush Yadav" <pratyush@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260926092448.4090401-1-tarunsahu@google.com>
-References: <20260926092448.4090401-1-tarunsahu@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 26 Sep 2026 09:29:48 +0000
-Message-Id: <20260926092948.90D311F000FF@smtp.kernel.org>
+From: tarunsahu@google.com
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	dmatlack@google.com, Mike Rapoport <rppt@kernel.org>, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, dev.jain@arm.com, 
+	Pratyush Yadav <pratyush@kernel.org>, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 07984140003
-X-Stat-Signature: kjod41g1uo6fizkn8k7o7o644uj1fhfj
-X-HE-Tag: 1790414989-594525
-X-HE-Meta: U2FsdGVkX19m05ToYC2tah9grPQFUGURkTSlXEznIj49Cilf3iL+icyuffEXI2od4LBSX8F84/QyBKda+ibPQlvAHrLhsInpbfsDhBzTUm3OlXoRGApLWngasPtlvIfM4A71W2CdUpLCiJvdwPaRNXjMDKwvlcw/OXSvZpvzMevO2QnQfxcCHl1gnzG/pXSUkaNv0zJ/ARPB2+CaajX4wHINY3Cmxkv2dSR0Is87QhBJZrY+lnW0pteFbGCu096F+yJ6UT69B9RCBOR3mYSMBQdpNhKrUmX7ayB+bsuBe3BkQQA5hLCpSIgXhVW5clenE/xvYVyKzXdfIUOD8iWbjBJAf8563L4C4KdqhR1B+RyEZcHUrIxqZeO6QeUPBk4b6hcEtOMpXKfUJGxBON70LzKK0a6O5OQn3tGsaebwmv231Dur7XNYyxeMYoUj1+0CfUFevlr1LOh8Pf8DAT1axQaCyEq3fW4+QqBhmi7KYMwWVFxWK+Lf44PWqh/7BZKCJmfIizbfu+IXk3vehmHRX6Zch9JF5MdCp+OTbH1EGbeBeIFhO00dgNHsdt7QoG3m0AsFeJCO+g4jFKIp6f7jJYO7HmqVYEo+41rQtm+yXg+cDsoUys5PC3d8pkm6ZaJ/eXw980pihde6b8m8aXFQJtHV74wajfpxsiS7CZj3nUj/0lU9nTRotz3RsG8tXo0gBjXGDq1qxTyavW1hOGd5jXGPqMHDUjm0JCzdru03uwlFZbIVQ8jhKGjpIePXUkkhnfkj96rcGI9IziMWSF6uM0OhQQg71+cXOn4kHnOrwLty+EbKRJbkcVgs1ErZG32yb2BMcpwYZW/6IJ9mf0zdWlG+/euQys8vJ3NmV0CuVLAmyG/IjyK/1unSJjCUyyvWzSwxdpIqg2ssJJYZiOWneRDCSXG3Pg+ax+ZW5Gs5HQHQE1/oztH+l+wuEB7yS1NSO49OugBPcLqz6w+wUIa
- lNxVi4O7
- tJ8NaF6hqoiMVcoauBwTfgeWx8eWVEOQbtWKwFTS4UQc13DELpbrCh7LZrGmPMf6SZY2mU0/CjHxOyiyNXk5V2obtvYyi9ajkLr03X2pQrfql2yB7S0l3P/seZ5kDuPSqFWwVySlQMYO4fuFwbEsdcoWWM+6EmfCzIn2WbY+N5D2g1p985pYA1l4AV5oNxATh5GcvKsFZBW0f3MDh7Hp44ZYZ7eSQnz6yGlsoYe3sBquaXwRQni6v0aAPFSXfq3O8S+vm1xM7R0trDtxd45DtWZZI45M7T3m/UuutsNcFJL48B4AIV8dMJ/prtN6SwvNAjat1yjpS4R493q+fx+vUMbpX4YMYAvdYf7BKRHk91NONTNPug6Vc9CG8TvMAFOTf4ZAyEACoDEvXnbcmYV4XDOJmcU11NKGBTL3PSH1QjiEMm/uFATIUY0fFtvs81pEUJ0VBzdhnz+JHEuGSd8eFLNrXTOc/802oBDoqAIxom8OBl1dkakp0Zc15eg/7NIOxTwW7k75TZQRqby58/3duTtguAyoZ+BsAvZ8wUngftIC001V1lj41fs9+uimXgzh8Ka5p9AJAjpaBoG3Zp2skjpi6Qt57cd2uuIRp/HfqAybCgyeOvdQsMl0w8vmh8kBmPiS2MypogP8b8AyFiyqz1ND75wlABHwHyCLe
+X-Rspamd-Queue-Id: 879561C0004
+X-Stat-Signature: qtmy8ipqz7zifdu66owr54fdqy9kfpbg
+X-HE-Tag: 1790415057-287199
+X-HE-Meta: U2FsdGVkX19YBeLn58TRDF7MBC9oEJZTCr9G0pGJwjZjC2ZaKeLb/Q1zW2l2OrqblvlEUjd0RShO9C1ybdin8qh1vIvGFKb9t+3OQoTcbgDCS83UFBxggAzLiOz6b/QUKTyD2EKy60UjqldBeEwc9LOk2a1m5cgwNx9u+B4Rigrb+pfeBQoc7g9Lr/0PNxARnflDQIkpTbQZyqux9OUBHARd4uCLcakty07cmUOYU+Ce5vt+XcfnvlBY6UxSjgFhFDH68391G7SokfrNLMv7OgCaEXm80JLF/S/EGR9Vr/wg747ma0UiSFM8N0k30IV/OaC0lkR7IGyxo/5NhjjB5bTFf+ckL2lV8pD9/Kf07WJw9TbRwPVyCHWaUNBgPJkuyL8FKcdlW+gXc8u0hYvPXoSZAeNe6qZ1KzAYo8KzfZYcI+3W1a1ESKC4W0wC4BzwhMDGjJl0KW4JnM4U+ZJHjWP4rntrthAV+YcsqtgLUFjW6TCojqgsnwzKLQZIuAWMIfL18nSkDQTKDGXs3c1anPk073Ib4J7wLvDFUkMyHdHpB5ewKxGXxxoNMa5eEc/8uoFCidHgB/AfUagYCCYbRZeB+W0bH5TI482Y8fbfnIjN4yp8qKCxRyqsaJm3w/wA5Z05Jf5pBfu6G+KWErCaqRmjicOBcGCrJSL+KbMT7oIwcuG2ePJZ2YmmflEPoQVuL1S9m5cPijw7UpP5l1wm2c0DhFA9m5wBkmmQgHznydJ+xy8IsR4HZobaYhIs70fzEXy9wPYZS/lloKCIljjxsltexAKqdyX+K0HgVBynlfeacWZN1ivtjCS9ji2ZlkFqeEPPG+QJ3Q2q1RJSXmqHqZcc5531OLYoD0QFcTo1NvhvOvSlFZSmeRKCwGOVJYifxoxDj9nZ5DIMowbScqZrXswz12RS8/VCC67kjGtrEfjqxxeye+Kaefb+o4QnoCegA4AkhboxOveH91bWiOE
+ tHkeLZS+
+ uHjhZ/BKqYWnZC6o1TjeFO1aIfg/KPH5FQABp6EkcHItmTPMeprytzpiPXLBzVV6uQf4ZsBr4MPe5/f9fRyi7olaRnRKjjGpnqC+QZvn8QZhxWcdmk21z+gDXM2RGI/3G3oO3OfoivoZuJ4UFB34sxr3IIcTZhwl0QtF5FUrQWbdhJP5nZyNAQVDRVFwbkfV+b3RVfi+JaQwXv2BybH061j60aNnS+SP+ion9yxk5KFHMOSOw9iuiWrVMC+2Y30K48jJcqj7yxsCssataic0zuBoob57sctbJNk55atSQuxYh96anjs8a4plEu4Y61Ysf9LSS0u7sBI4rtc3Zy11pTu1GCYfiIeqIdb7Cxxm3vmSquwMr7wXAAr13liLVMy8ZwUjA3SdtIcuvj0c+PEnPT1fbJy7g2d5RFW2AAuXz8coGq3WiKky0ziy+kyrPd3PlyXJCO2AcMAaP+IJtn2U39aTSWw0uJdGicrpNQyRzZ/I9ybtIw30K644tZDVJZDND855o960pzKJEZgxuAZ1P7D0YJe/hW8EcMpunSn10hMnDk8IXw6SMl6tywzDmR+ymgzLVJh14sZUtU0Nk33X84qkQfhWnMq3OU+G222T+3aVi5y898Y6Ym2voYbpH6qddqS5O+epgQ5WrBsxxvA10rfc48A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,24 +111,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> for_each_memblock_type() always starts the iteration at index 0 and its
-> body is a trivial 'for' loop, so it hides very little. It also gets in
-> the way of iterating from an arbitrary index, which the next patch
-> needs.
->=20
-> Remove the macro and open code its three users: memblock_add_range(),
-> memblock_isolate_range() and memblock_dump(). While at it, move the
-> region pointer into the loop body scope.
->=20
-> No functional change.
->=20
+Pratyush Yadav <pratyush@kernel.org> writes:
+
+> On Fri, Sep 18 2026, Tarun Sahu wrote:
+>
+>> for_each_memblock_type() always starts the iteration at index 0 and its
+>> body is a trivial 'for' loop, so it hides very little. It also gets in
+>> the way of iterating from an arbitrary index, which the next patch
+>> needs.
+>>
+>> Remove the macro and open code its three users: memblock_add_range(),
+>> memblock_isolate_range() and memblock_dump(). While at it, move the
+>> region pointer into the loop body scope.
+>>
+>> No functional change.
+>>
+>> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+>> ---
+>>  mm/memblock.c | 14 ++++++--------
+>>  1 file changed, 6 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/mm/memblock.c b/mm/memblock.c
+>> index 9ce86349a29f..5aae75d34dec 100644
+>> --- a/mm/memblock.c
+>> +++ b/mm/memblock.c
+>> @@ -155,11 +155,6 @@ struct memblock_type physmem = {
+>>   */
+>>  static __refdata struct memblock_type *memblock_memory = &memblock.memory;
+>>  
+>> -#define for_each_memblock_type(i, memblock_type, rgn)			\
+>> -	for (i = 0, rgn = &memblock_type->regions[0];			\
+>> -	     i < memblock_type->cnt;					\
+>> -	     i++, rgn = &memblock_type->regions[i])
+>> -
+>>  #define memblock_dbg(fmt, ...)						\
+>>  	do {								\
+>>  		if (memblock_debug)					\
+>> @@ -651,7 +646,8 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
+>>  	base = obase;
+>>  	nr_new = 0;
+>>  
+>> -	for_each_memblock_type(idx, type, rgn) {
+>> +	for (idx = 0; idx < type->cnt; idx++) {
+>> +		rgn = &type->regions[idx];
+>
+> Nit: this is really odd to read. You assign rgn and then declare rbase
+> and rend. Doesn't checkpatch complain?
+
+I kept it there to minimize the changes in the patch as the variable was
+already defined there. and unfortunately, checkpatch did not throw any error.
+
+Regrardless, Good idea. I updated in v3 here:
+https://lore.kernel.org/all/20260926092448.4090401-1-tarunsahu@google.com/
+
+>
+> Regardless, I reckon it would be a lot nicer to read of you move the
+> declaration of rgn into the loop. Same for the others below.
+>
+> LGTM otherwise, so after fixing this up, feel free to add:
+>
 > Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 
-Sashiko has reviewed this patch and found no issues. It looks great!
+Done! Thanks for reviewing it.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260926092448.4090=
-401-1-tarunsahu@google.com?part=3D1
-
+>
+>>  		phys_addr_t rbase = rgn->base;
+>>  		phys_addr_t rend = rbase + rgn->size;
+>>  
+>> @@ -827,7 +823,8 @@ static int __init_memblock memblock_isolate_range(struct memblock_type *type,
+>>  		if (memblock_double_array(type, base, size) < 0)
+>>  			return -ENOMEM;
+>>  
+>> -	for_each_memblock_type(idx, type, rgn) {
+>> +	for (idx = 0; idx < type->cnt; idx++) {
+>> +		rgn = &type->regions[idx];
+>>  		phys_addr_t rbase = rgn->base;
+>>  		phys_addr_t rend = rbase + rgn->size;
+>>  
+>> @@ -2198,7 +2195,8 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
+>>  
+>>  	pr_info(" %s.cnt  = 0x%lx\n", type->name, type->cnt);
+>>  
+>> -	for_each_memblock_type(idx, type, rgn) {
+>> +	for (idx = 0; idx < type->cnt; idx++) {
+>> +		rgn = &type->regions[idx];
+>>  		char nid_buf[32] = "";
+>>  
+>>  		base = rgn->base;
+>
+> -- 
+> Regards,
+> Pratyush Yadav
 
