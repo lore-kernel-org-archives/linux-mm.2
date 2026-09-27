@@ -4,143 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A27C98328
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 01:00:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9E2C9832A
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 01:18:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DE426B0088; Sat, 26 Sep 2026 21:00:26 -0400 (EDT)
+	id 635B16B0088; Sat, 26 Sep 2026 21:18:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28F1C6B008A; Sat, 26 Sep 2026 21:00:26 -0400 (EDT)
+	id 60D1E6B008A; Sat, 26 Sep 2026 21:18:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17E476B008C; Sat, 26 Sep 2026 21:00:26 -0400 (EDT)
+	id 54BD16B008C; Sat, 26 Sep 2026 21:18:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBA606B0088
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:00:25 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CA6E40948
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:00:25 +0000 (UTC)
-X-FDA: 85257736410.29.D6E1CF4
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8C7768000D
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:00:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="mdL7B7 C";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 307E56B0088
+	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 21:18:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87B6340948
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:18:51 +0000 (UTC)
+X-FDA: 85257782862.25.4CED964
+Received: from mta1.migadu.com (out-53.mta1.migadu.com [95.215.58.53])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5E648A0005
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:18:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ruA78NxH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790470823;
+	s=arc-20220608; t=1790471929;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JtRF9MD3P2Hs0hSXn7s/JaY4f07p7uwsfCVagJl5fsA=;
-	b=yWnONobHDB2/ltF6RGC+9F+4cnsDXATiAOWTbtHRtD8jjnobUPpy9DO3A7KeFNKvRZ0Wjp
-	lyAjNUBzZo9kEOxbcLcWPf/MmymNNJvFWp0EMdzIifhvsjurGFt546O/jec88Z5kcvF5wb
-	iLY6F0Lb2gamomkKSB0ySEXlWLRuQE8=
+	bh=3daKNzbFfU99oulv3P4W3Zmgy6p1JMx7jYCPai58f8k=;
+	b=jaerBbeJheOPWMCKlmKZz4p3E/CYQ//olCLE91xno0Zf7JorzdrwKKv4k7dzxnnO8PLl04
+	JY+iKs4gWh1Nb2nY6BfTNGnN132wodLd4dOILgDUQShX3wt5QBSX7ZSQkb/eph03jDO3Ld
+	A6G7gcpzUouAVIM8GTi9Or+ygva9eZQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="mdL7B7 C";
-	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ruA78NxH;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf15.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.53 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790470823;
-	b=pN5qylNafKbKkbKmXmlvt3aSc/TDIZlDKSLR946gF5QKm9nqnkPJQl7XjAJCL+AiWJKxoV
-	r9eSkolCbr5XBPFuBGrgDOPLK77LqjKhNcmPqHBnOl2ODrU7qwG3l3iZEr0jtoS7Z6te6p
-	LGy+gKbiQkx7nj4r24/C4b2TmqdQx04=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=JtRF9MD3P2Hs0hSXn7s/JaY4f07p7uwsfCVagJl5fsA=; b=mdL7B7
-	C1hqqpjU58HGllGA3MLoruebFtyD5610lcHcyyTa2i1JNQxXzLqbeGvXEUSrr3/9Zp6FSXB3WvGsy
-	xhgCFMdO78xx7jwTEee9N/xpFpEz69hmFt8bcNXx/AGv/0diHdfLZvaclqXxiQ2wp1O1N9Tgj0q2B
-	NCYeOkwXrr1Cih8CSuAYigsLqJrwNMzxWIzdhjwOb3TM6W71xbZJ53OpdhRQfxwQhB4cuG46lCTo3
-	woM4mw7c3QGPyxNlsMDyFv2CDAOXSmXvdHldYwzgc97XHbGsW0nfdjfviiSSdR474je0WdXnzlLV2
-	WrQ+HGD5PdRa5D6t2QPcP/E3tObA==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xAdE5-00000007UmZ-3HPN;
-	Sun, 27 Sep 2026 00:58:45 +0000
-Message-ID: <9499bc084e30df4d10bc069ed26d576e4dd3de80.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan
- He	 <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kairui
- Song	 <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, Roman
- Gushchin	 <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, David
- Hildenbrand	 <david@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Kemeng Shi	 <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>,
- YoungJun Park	 <youngjun.park@lge.com>, Chengming Zhou
- <chengming.zhou@linux.dev>, "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka (SUSE)"
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
- =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	 <surenb@google.com>, Qi Zheng
- <qi.zheng@linux.dev>, Axel Rasmussen	 <axelrasmussen@google.com>, Yuanchu
- Xie <yuanchu@google.com>, Wei Xu	 <weixugc@google.com>, Gregory Price
- <gourry@gourry.net>, Wenchao Hao	 <haowenchao22@gmail.com>, Jonathan Corbet
- <corbet@lwn.net>, Hugh Dickins	 <hughd@google.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Tejun Heo	 <tj@kernel.org>, Michal
- =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, Meta kernel
- team	 <kernel-team@meta.com>, Linux Memory Management List
- <linux-mm@kvack.org>,  Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn	 <joshua.hahnjy@gmail.com>
-Date: Sat, 26 Sep 2026 20:58:44 -0400
-In-Reply-To: <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
-References: <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
-	 <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
-	 <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
-	 <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
-	 <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
-	 <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
-	 <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
-	 <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
-	 <arUcil9kxUPiymXI@KASONG-MC4> <araWKyJ5MENBwXCL@cmpxchg.org>
-	 <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
-MIME-Version: 1.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8C7768000D
-X-Stat-Signature: akzc3kn9fumagzaztej3sfe1sqmtpuk1
+	t=1790471929;
+	b=qsjnRmenFJh2oRmr77F2XBFjN3xIgCYXJXrvhzf4vxphKgiOtmQAZqtbx3B5H6uqirhLcz
+	hg4s/mdmLRYM8kf3ax3gD2gMDRt8fQbTMki5rrNrPFZDkG2GVjbTQdBH4tb1txfnR/6xJB
+	u7yKV0YXw4HdB2thoeVB0KMQpXlMwFY=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=BxUPSzZDS3MMZBdygGN7lGzobedNX+2vAOdH6yZV9HQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790471927; v=1; x=1791076727;
+ b=ruA78NxHZghH/CS8b4IZTk3u92vY78GLlbeP2q+V+oY2f0rLYCMkzg+mw/U14VljTaa4PUjQ
+ JZkBvhM5D1jCH0jZF9kLvoHZHBlLM5u8lrLPTzZxe/15Hv71cR9iG7tzX1zk7g6E2C0Po3sEgas
+ pqEYe5W/QQQfBXlBk4Eddigw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 685dda7770d68273;
+	Sun, 27 Sep 2026 01:18:47 +0000
+X-Mizu-Trace-ID: 685dda7770d68273
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
+Subject: Re: [PATCH] mm/hugetlb: fix subpool minimum reservation rollback
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260907132055.26696-1-zhoujinmeng@bytedance.com>
+Date: Sun, 27 Sep 2026 09:18:29 +0800
+Cc: Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Wupeng Ma <mawupeng1@huawei.com>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Jinmeng Zhou <zhoujinmeng@bytedance.com>,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <EA8A5B8F-CF1B-45B2-9E2D-CF59A67050DE@linux.dev>
+References: <20260907132055.26696-1-zhoujinmeng@bytedance.com>
+To: Jinmeng Zhou <jinmengzhou22@gmail.com>
+X-Mailer: Apple Mail (2.3864.700.51.1.1)
+X-Rspamd-Queue-Id: 5E648A0005
 X-Rspam-User: 
-X-HE-Tag: 1790470822-880713
-X-HE-Meta: U2FsdGVkX19e3aBS4wBOHb5XaYhifgGhWGe+nvFuV7ZyZkDv99DGbBHPia3GXCm7EpdBFkm6X0FwuYQw1xUEGv+ElTiyD6oaw85etT0ckqPWYE4uCbUJm7owb1Qj7MNbi0HnquulbSf+riTGLhFTShITXxXdrK7DEAivwSe1ZYO0FSsx/0EF18falfd/ze1Mdzyx3fD+CxLe7EoAuK9jQ/FCQKD0qfxOJN2H5HhrbBVBlPEPAx/FW44XM0ZNHpZLkErjVCh27XTpVNjnPDIQEEO0Rau5QVZvoTouwTJ6/fUJ3QLQsdq8nl9YPQjxqyaQVQ2wqNg9UPcx7xBLPyrR1EHgoUXZOshuJPQO0YbIGQvuAszcyz3Q97lewPahCPkmBPZS5b0fjC7HXNLg5ZwcfQXuz02AZwcWOECTbvWTmr5unFWa3lr7dttY0dk9cIJ5K3Jt0sC/B97GwrtOIm4giFwRT6PWt95xsjwgOnOUhJOnAs9Rg9A+O4Jp0bCAoDtsDBzkrGpHPk3Wo9hD/oPWtLFMCH4Db3yjdLc3Aluz3i6D6BEA9rlMve5f6TN+OF8jdn3Pcd5PprXelxpsmAjsIMvfKXt2MH4dHrDXWMtO3OU4rrhCSW77C2aHlBLNOTQWIZXAD6R7n2y8rHHblq4Lkeyf2pwusAdBYnbURNGOPTtMnNYOSMraQc4eHXOvEk8NZrcPRnLPwqIT0gK+hknvL8YPwueoNqL+EFX1P+Ar9BMtl1QmGCUd4APk9ytGXLBBJEqJGXO5lpn5RchfU3B2Rlqf9TUJgzA1/l4dBuNg4AFzG4pES1x76oRx2L/Ki/lsAZEAUtqdlfIUDCXgaWtc8dtzveAOSVIDBXC79ysYj9eGvbv+dK9B1+fNsBNgCoGbR8EWJTii5aYdOdVW3FNd2hj/F4S2FbOxctodZSz2ig3blTCAFonRumvBAS1f9jZLAhZpc8mWrVzRAYrulpZ
- ZUHqFexv
- zfgUXcpHTQHP7+6dsh1ELTiRgch0sAZ+8/xQu1gIxBV5s0n4cwf3ybSoyEFZKf6Xiw2fu6jEbjFMn2yJP7jeiGdLvoiV4SY+EZ2W9EamwckT3IO8pFSNrkSvEAIDoiGvEaPMN1nVDQwsmTJhr1jtWMB7lir/tSedKaw0shJE19Osf2lgrrxGPyk2iBrBWfXlX9YY7E6HWvtcxw+AJEeWORb/y94PMaPpl8jTOeG1jRuYzuM2+4QjSUtl3z5znS710vWoBZHyDdtB8lYlWztoqI4Hpe/rySzMzkQEqVCHTo6LWoZdxQHUnDpMvdtDy9F4Bex9LCqjwhls9OSRS+HC39/uV8ulsA+/MPutwhdeGliydVfP7GQi7ek5Wpx4oK2OsP/bnz8SP7An7SszOZT3bJAhBaLy/DtNOvLmGABv1t28d3PzsA0W009em9iY6yT9WPeU0i7a6JYkmoGY=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: nbb7tzajtpucrfbr6ich3whihtychruu
+X-HE-Tag: 1790471929-710608
+X-HE-Meta: U2FsdGVkX1/rCPiwZzoxK/KX3fyEAlANt/he77sTNphrxLzqsl1vUUfqisZVB0nAMrwRR+/ZQVk36ulofN5dDFvOEIn8kI9TNAJek2C06rSAFSrH5bJ9iIsgti3WU/0usH6ldYwsYs3vHvk4zKsLrI4bA5nlAEejmpuzL4MRwSquz55Xtm1aFcctmGGHiDu5rK90x+UebCUNbI6xlxuPGp1fBaompviXFhkxLU7EGy72VpnIjmjWGvzMHMghDlh1FRi2aKbU7s74lQ6BQDhizGAtc8kBoBPjz2HEcw7sJcsV1GYBXZh0yMFAyRY3Qmk9u77Q+jifC3QqCEemM/S8UA9AaSrK4ZxxEsZO/i59vMkSUl9Ds/ucfjoLxM2t108gMHwE7KyXa5yui/DHaqLcXJwawVfks9AE7LPmv0mp3PJ9T+q/F5v2z7STMgxcf5yo3XFIjNKEdEhModP93aniBpNluOwwvgKfAzSUDL1wgAovgMLJSR/yx+ZON6JYmZDbW/GPMeYnOLRdhLy7Wo0Z/9drNxkMWffDmgAg+dMQSb2VxPpQrQKoJwcsgB26qUKpXG1UVDSSpfNdaRRzxPq6EIoFbRXlXGdgJ0pqoqEmW10J69wyv6EkWNl50ZNYld0/mZ3dW/Jk4x/i5yGAu1QB4zWzQxjDANeY+5KIPHMEGxnu1RgnpIDZa4zX/7GFyYKaRjnnElw4AUmoQCYOORlDnP5iaATz5pKSxkODbaN8tIpwytQrOUpqpo6ABA5DsAQupGmbh/9+VQ1SpJwMlwnVcOHAWBrsWvyncD6XkY3wm/COoM6Cp4wAt8Os0h4iReWWMAa+fvDhU5tNix84nzOJ0DlWG1lJvDaVqzAeZs00eCaPFOz9GxFb5iwNilGpLan3p2tr2/RCbgt5y4To65ZevDGWMKSqysohl9p3ecVay0aZzvL2BmN/wi/nHBd3wRRyuNrFf8kZX2lvshctLyj
+ 1Tx+yvGC
+ lhPW7uhfQXBL0tjQHDWnCSY1PLC1y3n4ljy6TiKMlm+38WmqstDdLn/5N+kv1NXh/Z4/faca6ju0DFXH0YUPJrZVMJbWbuGhmE7zHUN1mwwJ9i311RUup1HX4WNiE8CK2Q99Ob1Yz4/W4OcNAUdwea/vxPjeChk4JkPbPnqdSTB4QCWJ9ZC4u2pKBzTIcN0NKU5y4Aqzpfl1NWKnJcHGfDfNY0RO4sVTqz4xdyvkS7whxExjXFDDv6FFMrCEKXGhCSe+3XfxQOvgaIJh0hsegzd9XNRUxpwiSyxtXb9lpOuy64iERCxfzQ7a/pu8+yQt6Lr/UiAM9ahxdkFk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,40 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 2026-09-26 at 11:27 -1000, Chris Li wrote:
-> On Fri, Sep 25, 2026 at 5:41=E2=80=AFAM Johannes Weiner <hannes@cmpxchg.o=
-rg>
-> wrote:
->=20
-> >=20
-> > (2) The use case we have. Use memory.swap.max to divide a finite
-> > space
-> > in storage. We only have so much space on disk, and we need to
-> > manage
-> > fair access. Note that this isn't about speed. We have a mix of
-> > containers where some use writeback and others do not. The ones who
-> > write back to the swapfile need to be able to get their fair share
-> > -
-> > not more, not less. Including something that doesn't actually
-> > consume
->=20
-> Just want to make sure I understand correctly. Do you mean the fair
-> share of compressed memory used in the zswap case?
->=20
-Compressed zswap memory is already accounted for
-under cgroup.memory.max.
 
-Compressed zswap memory sits under memory.max
-together with anonymous, file, and slab cache
-memory.
 
-We do not need or want another limit there,=C2=A0
-though I understand other people do.
+> On Sep 7, 2026, at 21:20, Jinmeng Zhou <jinmengzhou22@gmail.com> wrote:
+> 
+> When a reservation request is partially covered by a subpool minimum and
+> the remaining global reservation fails, the error path first calls
+> hugepage_subpool_put_pages() for the subpool-backed portion. It removes the
+> failed global portion from used_hpages only afterwards.
+> 
+> hugepage_subpool_put_pages() uses used_hpages to decide whether rsv_hpages
+> should be restored. Since used_hpages still includes the global portion, it
+> can remain at or above min_hpages and prevent that restoration. It then
+> reports the subpool reservation as releasable, causing
+> hugetlb_acct_memory() to incorrectly decrement h->resv_huge_pages.
+> 
+> This was reproduced with four 2 MB huge pages and a hugetlbfs mount with
+> size=10M,min_size=8M. After a successful three-page reservation, a two-page
+> reservation which needed one subpool page and one global page failed with
+> -ENOMEM. HugePages_Rsvd incorrectly dropped from four to three even though
+> the subpool minimum was still four pages.
+> 
+> Roll back the failed global portion from used_hpages first, so that
+> hugepage_subpool_put_pages() evaluates the minimum reservation against the
+> current usage and returns the correct global adjustment.
+> 
+> Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinmeng Zhou <zhoujinmeng@bytedance.com>
 
-The fair resource use from memory.swap.max
-is to control how much of the fixed swap file
-(or swap partition) space each cgroup gets.
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
---=20
-All Rights Reversed.
+Thanks.
+
 
