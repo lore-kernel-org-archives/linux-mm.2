@@ -4,121 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D9CEC98324
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 06:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4428AC98324
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 06:23:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 082C46B0096; Sun, 27 Sep 2026 02:02:37 -0400 (EDT)
+	id F22E06B0088; Sun, 27 Sep 2026 02:23:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 034106B0098; Sun, 27 Sep 2026 02:02:36 -0400 (EDT)
+	id ED34C6B008A; Sun, 27 Sep 2026 02:23:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8BAD6B0099; Sun, 27 Sep 2026 02:02:36 -0400 (EDT)
+	id DE88B6B008C; Sun, 27 Sep 2026 02:23:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C92736B0096
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 02:02:36 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 593FF40984
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:02:36 +0000 (UTC)
-X-FDA: 85258497912.03.0A4A0B4
-Received: from mail-qk2-f38.google.com (mail-qk2-f38.google.com [74.125.230.230])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8918140007
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:02:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gdp5UK3m;
-	spf=pass (imf17.hostedemail.com: domain of danielzgtg.opensource@gmail.com designates 74.125.230.230 as permitted sender) smtp.mailfrom=danielzgtg.opensource@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A9ABC6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 02:23:29 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0F7E3C09D5
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:23:29 +0000 (UTC)
+X-FDA: 85258550538.17.4C7A1DB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1A38040005
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:23:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgjDRlH+;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790488954;
+	s=arc-20220608; t=1790490207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=1jCjtYoS8P7He0eHB/co+eUvc5U6jhinCxysS9BksKw=;
-	b=tJcD1fgHCEaUpZHmhp+qNzByaO41FQIh2S+wGL2EyR8EkYhYAzxzswTOhAASkvWBa+sX7Q
-	i0ZEYKVkaI5d8afejPNxqFOBJ/eK/kgGeCMBOp7Crs83v3rVLp5l3HzIqafIHvJrHOdDmJ
-	JZiP0Oc+DypMA0RFrHsFutZ0IyqG6Sc=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=abQ20sTrkthDKubL8xH9f1qWTFEmLog2Xb7FTeV5HhQ=;
+	b=4o7G/GWrzGvFvSfZ6QHZX5MywkmjiNzVYYp9MV/2soYrYq5+TwQ+mQcBXPCFueBRGSlx3x
+	PPdT6GkZ/8bcSohS2ul508iJI0DpnakMPIDYOYVElb78v+t8Kfg4SL9t5n1pOVkfoBxhMM
+	tDda4CjqSzS5QzP5a2STJ223x5nbAsg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=gdp5UK3m;
-	spf=pass (imf17.hostedemail.com: domain of danielzgtg.opensource@gmail.com designates 74.125.230.230 as permitted sender) smtp.mailfrom=danielzgtg.opensource@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MgjDRlH+;
+	spf=pass (imf11.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790488954;
-	b=LnIHrDAfPlv2w4xzc6PYM4R4VWAXYIK+sbfT5poh95E0OCW0+g42+KSpUsJtBgS9+bG/H9
-	wKYhjYZvbWyOWWdM1NtBrlLKcvgiX0B1q00AI/uJyUW+Gp3QMsXO4LdWrgmKZULqjK1/Hl
-	Mr2jN2BJ+3nZYgo5n6DrqkHtWuRDAao=
-Received: by mail-qk2-f38.google.com with SMTP id d75a77b69052e-5333a59e20cso1342791cf.0
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:02:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790488954; x=1791093754; darn=kvack.org;
-        h=content-type:content-transfer-encoding:mime-version:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1jCjtYoS8P7He0eHB/co+eUvc5U6jhinCxysS9BksKw=;
-        b=gdp5UK3mg48hxMjkI2Q8aPeie3MY7vDKWxRkNNyP4+N88moTyK9sOFzBqwRhZEM7Sy
-         tkSCC4yKcPdFypJmc3DNfvvOaYFiE2CwBO/9cKBXc74zuwhROkM+UHDNNMemuqq/gSNO
-         dMeV+wCUmLumTLeWPFe3WEA+/hh8h60t6tH2jzr8rT/8IYqSY/3XHBHaAyZlepqT4obL
-         sq3P1/X8ViZmU2Wqlsu4j5NPItMSmCSvvBDono3bzRzzlzclR45Q9kuieSk7p9e6yy4K
-         NklNdkkq0peHb6KMe1/P1RrRMPjkvg794sMXfFN+bQXb/4vPKjN40PsXxw538pdDqhuV
-         12JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790488954; x=1791093754;
-        h=content-type:content-transfer-encoding:mime-version:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1jCjtYoS8P7He0eHB/co+eUvc5U6jhinCxysS9BksKw=;
-        b=PMnbSuyssukTvx2Yn5U/f4g3Nfz+eXmhBgvZF5TfKBj4K3gYLfgknN08Bhw+5V4DjR
-         1yh18Fs+Xy92aDY6ksQ+9H6nZaQQ/0aMI2/V2FT7YwD9B5hQibucZL1CAfh0YUWTEpok
-         CG9l/9ZZfuh7Bh3mastNl9VPioYrBKQVD2uJ1l9dCMA0EUwiusD33PBUeFza5vAak0ZN
-         fpqU32ap7UJjqis0Ah164OKtlNxZKvNBhEWqurzF+1rBeWa6MjO3gKgV6Jq1vXAK85zg
-         ynw8jkCUUjQoXx9IkyA8PGLklwSy95YtQksEzms3CJwKUNMjoiTEaTTvA3yhyp2ZHK50
-         qlMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBya+auppU70VYjykjm3FujVS8Fuu8MqexwQKYxsLUZgOowPAW2iYa1bKCmm/ttQ+Wmi7ZahoJ173A==@kvack.org
-X-Gm-Message-State: AFuF++mh3AHvsAAMHmIISegOpyQDEh/c3eIvuWmYrTKJ9uwC4u56O1jL
-	zZ6GdsXcXhGdPbt040S8Cj0ErwVK3KcMJlk+ap48I8OVchC9wLMjlZ16
-X-Gm-Gg: AYBFou1OmMuwlrYDxdUX28HR6OmP43fY2HA9zMtomdFk+lT8zTQtFsl+Gh2DsJPTbcG
-	VZ5nt5fBvob+qUF2XhXKjQWpJhqgnXzfA4Yv9C0ZVyyrSc0UzivMSVi3ThRoozn88LFwm18vnR6
-	v1+qt/Ygh0XRrGsOJwKTE0R4YIvvsvPjBW3LhY7jozZm59/8382qHox3thaNK7P5c8jDP28DupA
-	3cdC5/RN+lpFZjNiUjet8UUnvCAXlkbZzIrgrfGaieIMTQJemDtUS7fX6Mm1BBldSFywdp5WzBv
-	s4pJD3qQpPM3IfJib8R4kP9V1NJD/lYrD6c/GOQARLrvqrEc6/EPAODeWt+z2VwA0jN+8CtA09A
-	xiFbuheHtfT5o8QtmrN9zg6aur0sj3VE31HmUdtk4RmaqP7pdJ8GoGRq16tVed3NnAW/ZQixmKW
-	CnAf14eapBS5TUe5mL1k1qZHjbXvPDS0SRaLip3UDTSmM0XZzwrQ7DrrlAOB90Slqxxb51V4B1G
-	fLO66OE5tY0SAlj2TSVBhzsXsqU
-X-Received: by 2002:a05:622a:13c8:b0:530:e52a:8ef1 with SMTP id d75a77b69052e-5330b5dff3dmr142397731cf.26.1790488953719;
-        Sat, 26 Sep 2026 23:02:33 -0700 (PDT)
-Received: from daniel-desktop3.localnet ([204.48.76.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5332238c585sm34613801cf.20.2026.09.26.23.02.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 23:02:31 -0700 (PDT)
-From: Daniel Tang <danielzgtg.opensource@gmail.com>
-To: =?UTF-8?B?QW5kcsOp?= Almeida <andrealmeid@igalia.com>,
- Gabriel Krisman Bertazi <gabriel@krisman.be>,
- Gabriel Krisman Bertazi <krisman@suse.de>,
- Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: Gabriel Krisman Bertazi <krisman@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
- Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, smcv@collabora.com, kernel-dev@igalia.com,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-mm@kvack.org,
- linux-doc@vger.kernel.org
-Subject: [BUG] Is casefold unreported in /proc/mounts?
-Date: Sun, 27 Sep 2026 02:02:29 -0400
-Message-ID: <5193732.31r3eYUQgx@daniel-desktop3>
-In-Reply-To: <20241021-tonyk-tmpfs-v8-6-f443d5814194@igalia.com>
+	t=1790490207;
+	b=M/RMyweI+kHDKLeKSTris+StxzgW/mmWT0plQAuUvdfiH/HQfaTKEY+IuQjxvN6QzEd+S0
+	PHj3dxa8lU0j9XHePftRpEj7/FTJpiqVujbWgGwVAuqtgbuIhK4LiVJYk3gCIlcbj5r825
+	jSmRRT/B+XesX6Y1CsG3gBJSGuEhc/k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C02043E9E
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:23:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDAB1F0089A
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 06:23:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790490206;
+	bh=abQ20sTrkthDKubL8xH9f1qWTFEmLog2Xb7FTeV5HhQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MgjDRlH+sYmzPaCjMSbcE3B7aimF1q17Fn2czcyRyuRVJvOzNSF8TW+yv5wT+RqVw
+	 +as3k2Liyt0WODzu2xA+ywYIuPUStXP1ftIHnpEO1ihWgyMUvRrTaDEy83uwIWflSE
+	 yazikBOTHeYgknkYOEjPgxXexwFhLUtOFJiSQRg1QmO6RDSWDco07eJ6BtSvuapDfP
+	 ZTSKUxftQ5D/UMB4DkBvI0EEoXYn0mvU2SQpYmZgggkdd+IQcjPDDHKhwkVKv2RgNY
+	 PLcnJUUbx+/g9aIvUufLV3c0kyfnzvA/9tirNo/F0zZ1+IdGDBo/f9wnneb7cwi0Pu
+	 ErqEqM5pQjFlg==
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af7721e4aso217991666b.1
+        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 23:23:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxb73yXRSaV57tRvA1MyDde6P88yrLvmU0JfJ/tycw7Im+DIoFTygz2pJEWy9fNdKYId9vWynnkDg==@kvack.org
+X-Gm-Message-State: AFuF++kikhriry65UWU+CeFHk+6jHYV9dscwHwZGEmFbMHNqllLRqcNn
+	4N8fRzQ3F7QINTIeBH24re8ubnR5YjMnqBZmLrKHw3+OGEF0uKWcJFTuwTA36FGkC7IxNWQdMxp
+	d8gMBbgxlLktGvXMN69Io4mOluK5mX3tiVOF0XPlQww==
+X-Received: by 2002:a17:907:d408:b0:c29:3821:ae6c with SMTP id
+ a640c23a62f3a-c2ac2606943mr866958866b.37.1790490204956; Sat, 26 Sep 2026
+ 23:23:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8918140007
+References: <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
+ <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+ <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
+ <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
+ <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
+ <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
+ <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
+ <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
+ <arUcil9kxUPiymXI@KASONG-MC4> <araWKyJ5MENBwXCL@cmpxchg.org>
+ <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com> <9499bc084e30df4d10bc069ed26d576e4dd3de80.camel@surriel.com>
+In-Reply-To: <9499bc084e30df4d10bc069ed26d576e4dd3de80.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 26 Sep 2026 20:23:13 -1000
+X-Gmail-Original-Message-ID: <CACePvbWdJSUDuEbR2FXczbeWwvxP86WDGHTL-eO0A8WwMDoNRQ@mail.gmail.com>
+X-Gm-Features: AclHuK9XVPbdEdRuFYnT3RhuHd6CxK6iuGG39DZDVhwy7Jj_A42gkqdamTqXRIk
+Message-ID: <CACePvbWdJSUDuEbR2FXczbeWwvxP86WDGHTL-eO0A8WwMDoNRQ@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1A38040005
+X-Stat-Signature: nxuwctpga36em6csqcbzhe6ody75gygq
 X-Rspam-User: 
-X-Stat-Signature: uc55s9ko6kwo6wjrqhbyet3umoqstys6
-X-HE-Tag: 1790488954-809348
-X-HE-Meta: U2FsdGVkX1+sGTd+uLSxyDMPT5e1Pv8MGltX8R4VIptrYuuYwrRKs5gorlhJrtA5Y02q00pDlI/EWaw9nYx8kAiMECQKE2HsacBdWmWXFr2IDkBzHtLK4z2cRSKMp8xAEokefpS7qHDYfmga/dhtQgku/owLvgcYoTJa5DyShP7/7ddXNOHO6jCSXJGFAXWuPV/dJk8n5YiSL3vafH4LGVX1mKjHq2HB7IrYOJzU5W/Jj9jap1Z0Gyb6qXHna/3gCKomzq1c2X021i+p1cDtc/nPgjc054z1oPEp69W1uCcxHOmqOe8jNjjBcmzvvBjPMn5/1z5z3AhO/VCpUBz0jy3xgSDOg1gURtZSXnVADVTjmMlm2U8L7Z6DNLjRA4pk0bQuRTK4qQg6hEf4ue2TZi1tgxH62fcB6IF3DByQjfB0z/nCN1mJ/rjXrRtpEzpdJCb+TKdTf4flEmtVfgvyaymiqqrsM3Q4bE2GiFVYC5T8OORvM0dQDzNG+OvVY3fdLMnMWU57iLE31E3rWyoudapvJDwMNvXUXttp/bsGA1CKMwNKJXu/QC4/Hhu6oOi3i9U5ZFIIT67qHy6SQYAcTXPO0rm5aoRgdtFhJP3jIsgY+J6LU3sF/B49/DUcdj8dgu6r3YXNAJtpQMeSMe1sRfvdf9avJ4h+R9WLESf7UFUk6pFUMwKgFfCsR1CXpY7LtQJyYoEZTab0nnaV7SucN2/Ml3amp5+B+6qw9BYHSOkEd9H/eKq21jEHN4+fU8he6bA6VMaj/vfxTPbGk3OnlbGmgMGp2wGzWB411EIxokr+z4UrCDPZVJZd4IyNFOXLWomIrtif8O0tI7ku7/NrLZGT+EIR5wVqcZxrPz6m6LpGyDEzc+Lt2DSAusXDpKptM0//SdonoMY3PETUEUa7il+JuLQKHuOwqH7cUYOtuUvWzhQGyV/J3J5rNRljg5Beucu4cqAOrXdZATra/UP
- S2reoT6/
- UKLdGMa36FCJv8hJXcV7YFIUKGhABAq7VcNPwKvso0NwnTViHaXROcwLRyAZrOlfTwZu+ywM6LbPqiW10L16UiI+4x6kuFcu3/O9zs6oyi4v1IrQRlGmD5A/4MRbuTdmo7+JFyR/52Xzd9kVqLLANBSC/u8V13exJdpzwPfn5dq65jOox+A/KyITTvZQUn+LLOGgWO00MWPu+ZFf4Z4ExBZdN/AnLPceMVT7CSVRBrq/TCeLQM6vWpAsTOjofmqO02GODu1E889B19hGbFWTMx+CGdC0w6IykHXbTPweEKx/H4ub7+RKOTp4nL3oXnADEI+iYfeMHAdG/jazd/eToR4TGo7tsB6gXxFclYrqxbX6EMfoTb9mX0ECKBmV+avQ+Pitw/LXBTyKbiceqri1q4vZ2ODY0DgPxr322ls7HHqLS9pNpBLC5UIFu+c1HKYjfra1XGQkmfbRgDU72TPFgL0SOxr5nciV+Y1oSaTSxbyfVrf5MB0hcpMkg471caxGftvVwsQe5URqusVdhdILPsNPmNaO94tqVeXO2mwJrMAGCVhxuDCNN8WhU054LhOctooFVoUmuzxZHmCXXLBU0xk5QntXrHbDCmx/dQISSPW5L+tHSsD8G4XWw1LbXZc3s7TpRHfh/wbPtap0=
+X-HE-Tag: 1790490206-352640
+X-HE-Meta: U2FsdGVkX18hIyFpJLQ2suUPI+p6JD5jKIkPym1v6EM+5lUufXrs79TPS6U+A22iJ4K6uENhANFMe7+gwOuv94r/soS8Mb9mZ5RoPVpYqaLnNxilX+ZIL7fd1jd3Ead60+NBUCFU3ugAu3eUj5RuebrRCpXiPknWzQiNNtzLgJehtZf0oo2PjUxbCGE/eMPDy7FBiVxlIwlA0e4ZKk6VS5J+VafOln3Al+PhgE3228kPgd32n8sycus1gGVCe5TEO0Vo7szPxOuNQOtFn2C2nR1BrfMVQ10hQBEYU7PKJNb3cc1QLcQeHOjgieJGGsSS/XrWcXWcQMk1EQxNuiqURFy9bn8l8f/ZfrE02w75VF/fWEEWqyyxuavsbVdBYYee0lZbVosSOd/IL1Upk8sysW/+hp1VCj8d465LKORG6nHvGcsA2nzxc5nPpa32byYwUrA/oFfHesMI9MFi7ci1qD9npI041t7fxCDQQO8y3O+pIG5jS7X/f9ZC+TAcWWySzFL7G2BHiSi+modk3IwXJL2VBuCet3rUc4mf1gKzS9Gb7hgxxkv7F/yKBdEjzR22yvGQ5VnlL5Mrx/RdySpZgNqqk05IYN8kTBDcB7CF+hJmN4xDjnd9Pe1BoiaWPnAv1Wc57bUd5/1oI08dgDY1l283ib+ylbLZSheRasN/NNzrFs+iFCjMc7dil2Q75Z0Z2X6hT7yJjbzV6py2Vv/sZZ40FsnS+ngPmLzcSz0PXaDWv4qnVtf5WvpW9CUnz9T1tiicxdKxeobZE9UuvL/ibnstRIFq2BlMUf35e8p1v99UvAeDDxkvwY+/W/U1ZsZobFQMCA+qBHq6p+hk3I6j1F9PIxdKW+kx3lgKtQZT7bSr/8evetc9Y4v7JPv378ub64hGmnZubzP1QFSSPLjl9EBSo6tQONWVj7E/UndLwKyg+c6ir0SXhME4fFtx0BkO+kk6YALp0peYhk7YmKO
+ 0CzH5dwR
+ Ql3sZKRjSAr3ZKuPqPOoxEm1N1Z/p0PPwB0EGa3D0ogWjDEoYatI785nUzDFBJed2uHF4IYnbHilK42ioDqApQNJmCDjRBZUnQj27R3jmDI0kZqdmRn9w1q9G8unv4daeCe/hScZB2DL2lxoiqWkix1kILDIzX4qMeYxFu3i8Jqqih+UPMBpkKWTkbtMzYLX4ikxJuMq8o7lajy6e6OZJmPX1wJG422eIQ7D1DEvC+nDQ50371KgyEq8huEBmbK8RU4f85iwFlBgImJqIbvj/79W1XJ+2zM2rTLvg6PI39vatmd/VRBUqjRoeDtViPw0KAxyQgv9nA00NmeogLtJTPi/hgui7nXW0aLABNRdp3E4by+yayzxrgNCfAy72cuR6LeR1X+bn+vD46yGuNK4x6eR/UVey0ydpwbNj7kD4xjVcpIUUm2Z5xKCca+A2IOgwgQrx6RLEzoGeLNlPsA8NOvqVargrrXSko/mZUVOsCXmaxjWSKENBfYiSb2jjzt2BUsd87hkdEbL2KvE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,17 +130,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Upon successfully mounting via `sudo mount -t tmpfs -o casefold test /mnt`, I
-cannot find a read-only way to determine whether this option is enabled.
-`mount`, `cat /proc/mounts`, and `cat /proc/mountinfo` only display "rw",
-"relatime", and "inode64", never "casefold" for both with and without
-`-o casefold`. The only way on 7.0.0-34-generic to test I found is
-`mkdir test ; chattr +F test ; echo $?`, but that isn't atomic. Which command
-can determine, without writing anything, whether someone or some program
-specified `-o casefold`? If absent, I suggest adding the missing info to
-`/proc/mounts`, likely `mm/shmem.c:shmem_show_options`.
+On Sat, Sep 26, 2026 at 2:59=E2=80=AFPM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> On Sat, 2026-09-26 at 11:27 -1000, Chris Li wrote:
+> > On Fri, Sep 25, 2026 at 5:41=E2=80=AFAM Johannes Weiner <hannes@cmpxchg=
+.org>
+> > wrote:
+> >
+> > >
+> > > (2) The use case we have. Use memory.swap.max to divide a finite
+> > > space
+> > > in storage. We only have so much space on disk, and we need to
+> > > manage
+> > > fair access. Note that this isn't about speed. We have a mix of
+> > > containers where some use writeback and others do not. The ones who
+> > > write back to the swapfile need to be able to get their fair share
+> > > -
+> > > not more, not less. Including something that doesn't actually
+> > > consume
+> >
+> > Just want to make sure I understand correctly. Do you mean the fair
+> > share of compressed memory used in the zswap case?
+> >
+> Compressed zswap memory is already accounted for
+> under cgroup.memory.max.
 
-Link: https://lore.kernel.org/r/20241021-tonyk-tmpfs-v8-6-f443d5814194@igalia.com
+Ack.
+
+>
+> Compressed zswap memory sits under memory.max
+> together with anonymous, file, and slab cache
+> memory.
+
+I understand that.
 
 
+> We do not need or want another limit there,
+> though I understand other people do.
+
+Ack.
+
+> The fair resource use from memory.swap.max
+> is to control how much of the fixed swap file
+> (or swap partition) space each cgroup gets.
+
+That is the part I am not sure I understand correctly. Fair in what
+sense? Using the swap file proportional to the memory limit of the
+cgroup? Do you have an example of perfectly fair swap file usage for a
+cgroup with an 8G memory limit versus one with a 1G limit?
+
+Sorry I am a bit slow grasping what exactly the fair behavior is.
+
+Chris
 
