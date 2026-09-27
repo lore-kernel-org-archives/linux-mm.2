@@ -4,147 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FBA5C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 18:13:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85456C98338
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 18:35:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 714986B0088; Sun, 27 Sep 2026 14:13:39 -0400 (EDT)
+	id 280FA6B0088; Sun, 27 Sep 2026 14:35:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C5376B008A; Sun, 27 Sep 2026 14:13:39 -0400 (EDT)
+	id 2320A6B008A; Sun, 27 Sep 2026 14:35:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7D96B008C; Sun, 27 Sep 2026 14:13:39 -0400 (EDT)
+	id 1229D6B008C; Sun, 27 Sep 2026 14:35:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5926B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 14:13:39 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88BD8140A65
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:13:38 +0000 (UTC)
-X-FDA: 85260340116.15.3CDD58E
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5143040004
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:13:35 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="PdcFTX w";
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E0DDD6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 14:35:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55735120A9D
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:35:22 +0000 (UTC)
+X-FDA: 85260394884.29.33CAABA
+Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 89074180003
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:35:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FH/G9r7c";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790532816;
+	s=arc-20220608; t=1790534120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0P7tqyZTwzBwbJvaiPJZX0pDFmwUCv9lhS7oxqr+H94=;
-	b=mgjL9egmCXG70FVgfVaYP5h1qYtInXecBpu5eGpij/PbsypQuOVgrKvrHqFHtCWAJbj7y0
-	4hxcIQwYXgdRcRVAohJMgyPFFQehj6N2GOF77zUaah6719xuemBXcQ30vWAnfMebCqv6X4
-	KmD6JgiLrbyRFHjIsFEI+aSdhmPsdGA=
+	bh=d3btJEsbUCZDnVE9CRXhr6o73+2IGPLa/zULNpIdkJ4=;
+	b=wBnNF14i3gvVdqniNHyI5Ne/Pl9y1kQlpvINNYKwwCvmmIb0YNUCs2FX4mt2UT89Z5wnDk
+	ytqml/Cqf9/ZkMzA1zyZTL0jDYQLyG+xwJynLlOOqNnKfwW0mVPOn3erKsvjrM3RDpWqLJ
+	8aWuPaC/eYHzKc5SFJ9t8zMltDoENYg=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b="PdcFTX w";
-	spf=pass (imf07.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=pass (policy=quarantine) header.from=surriel.com
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="FH/G9r7c";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790532816;
-	b=jOiEcx9BJXLZDtc+Gvzlyk5x+ZhyIGqOqEVigL4GU9wNDWXtlMIdl8CkeS5Lx3LrQKNSxC
-	kzFHHViZ4S5KUME6ELLtJdPHx2OoahjkDfxZGXHxk2XSPUO5DtyxcpQNUef/5Kg9vZxlx6
-	PhPNSxD1DHX4505jqNcmkkZeVxmbUQM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=0P7tqyZTwzBwbJvaiPJZX0pDFmwUCv9lhS7oxqr+H94=; b=PdcFTX
-	wtM8Csj5/XVIZsrFPtA4zd1u+xYyJHfmIQC/uIRk6E0k0jIBe6GvUDGczEER32hmLzbPxNu3jnzgh
-	lET5XamdnQ2iNW1x32dwQKM3W1G419i/YjEy17UQ7/VhUmRlxn3mGUUQu5MrvQM1mJzyo0EewUfFo
-	AvzDic+FDT22YdHnN2iy7rhbE7TeSJ2x0DilMe9DDOSrEEqISYiuje9ZgS8MmXwJ9dWpayLgIP/qb
-	nd17GKQbn2xQVNwLFhmmtPY6L+gUh94Qe654vFjeBreAnefoqaC+8r+2UeLDsYLbBukf/Y016IQHP
-	f1jBwy1IlQVgGqzs+OMu1vr4pBmQ==;
-Received: from [2601:18c:8100:a0e0:5a47:caff:fe78:8708]
-	by shelob.surriel.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.99.5)
-	(envelope-from <riel@surriel.com>)
-	id 1xAtMD-00000009nLA-2XiP;
-	Sun, 27 Sep 2026 18:12:13 +0000
-Message-ID: <1739d52dcdebdc589826990ef2938b58b1055e18.camel@surriel.com>
-Subject: Re: Path forward for Virtualized Swap?
-From: Rik van Riel <riel@surriel.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Shakeel
- Butt <shakeel.butt@linux.dev>,  Kairui Song <kasong@tencent.com>, Michal
- Hocko <mhocko@kernel.org>, Roman Gushchin	 <roman.gushchin@linux.dev>,
- Yosry Ahmed <yosry@kernel.org>, David Hildenbrand	 <david@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Kemeng Shi	
- <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, YoungJun Park	
- <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>,
- "Lorenzo Stoakes (Oracle)"	 <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren =?UTF-8?Q?Baghdasaryan=EF=BF=BC?=	
- <surenb@google.com>, Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen	
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu	
- <weixugc@google.com>, Gregory Price <gourry@gourry.net>, Wenchao Hao	
- <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins	
- <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo	
- <tj@kernel.org>, Michal =?ISO-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>, Shuah
- Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, Meta
- kernel team	 <kernel-team@meta.com>, Linux Memory Management List
- <linux-mm@kvack.org>,  Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, "open
- list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)"
- <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Joshua Hahn	 <joshua.hahnjy@gmail.com>
-Date: Sun, 27 Sep 2026 14:12:13 -0400
-In-Reply-To: <CACePvbWf8ocrfTpEpQ6==cr1=KTzo4Ar+-Zxt89=sxt02Z8uBg@mail.gmail.com>
-References: <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
-	 <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
-	 <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
-	 <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
-	 <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
-	 <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
-	 <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
-	 <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
-	 <arUcil9kxUPiymXI@KASONG-MC4> <araWKyJ5MENBwXCL@cmpxchg.org>
-	 <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
-	 <9499bc084e30df4d10bc069ed26d576e4dd3de80.camel@surriel.com>
-	 <CACePvbWdJSUDuEbR2FXczbeWwvxP86WDGHTL-eO0A8WwMDoNRQ@mail.gmail.com>
-	 <b792823cce613ce756227a3b60cc245b0316a800.camel@surriel.com>
-	 <CACePvbWf8ocrfTpEpQ6==cr1=KTzo4Ar+-Zxt89=sxt02Z8uBg@mail.gmail.com>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	t=1790534120;
+	b=hneAHj5a8GOb7UlF4PWEh+GSYAns+Ylvfh41VjfOcebC3dx9fplZnOZF/EwJp3Cw+yPa8Z
+	+sqtkiqBs12RSAN/22qQ0S4XOV/0SnhEEjVSZrArwm+bb7SUHw8//Z/B01jnO7Ax292R+F
+	rUWkNZ9JxwXyddib9wKsWyLAirErTiY=
+Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-48879d4fd8aso1302193f8f.2
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 11:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790534119; x=1791138919; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=d3btJEsbUCZDnVE9CRXhr6o73+2IGPLa/zULNpIdkJ4=;
+        b=FH/G9r7cwCwmFZU2oY5duf7xVY6g0Ou2j9CSloqIk3b6lyO74oUGhcFYVdH5Y61sC9
+         O3caWuUCuuLxvAZxH+IKTR5kJWrY2psV9bobzCt2DYMEi9d9ZcXueQTJiM+T4RlJ/lyl
+         rwvmyq1hhxLG35SuagKOkl6wcTHZQQfJbNmzXef20VMWBXmfMF3MupHfykxkPnNclQ/v
+         xx3UXPSycJNa+kVnhGJOtolRkltNCyUR+YYh23ypcQ8vfVSp6c5PrY5D1c/v9fSCe9Sf
+         1uzOG6woiMEn3UUB2+fZPe1oFY9oVu++VzTRuIwR9kgEx8lbKi8jk0QAjXDDG8QpOZ8s
+         XuhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790534119; x=1791138919;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d3btJEsbUCZDnVE9CRXhr6o73+2IGPLa/zULNpIdkJ4=;
+        b=TXhs6C9+9F1vwvAlv+VOLONHgt08p9C2BvXBAJGzYtaxDU4ijzputruvX2WAkOGBg4
+         LgdKbuf5F08B4anMWskJZ9uj8s19sBkvTjsqhYBx7QX35AUzTD0XTDMClnR/pNH3mE2+
+         lYbCShVPtGgCp0ZDLSqLTxsZ2zfIXHKoLNOepn4z+R1ptlmzal0VofF35Gun9GNzqjsB
+         zdnmh9uJExh1A11W9wKOcf1V8zaCwcN/ti3VOZsSGOTfdQULI4Uvzimmn8Z9bg6Ut2VN
+         EaOSIh5gM3HSlGCXCfCyIdIVSdwxwsLfr9oXzLg/1Q8GCvDi1Mw9uey6xtk3nCk6SHA9
+         Ah4w==
+X-Forwarded-Encrypted: i=1; AKwUvBwpOaCp3vRRITwcpKV2DU1GqS146JmSCzgmCn1jkPnSNAwdelgnXW7EMVLGnJqdlvilzLLXWz1EjQ==@kvack.org
+X-Gm-Message-State: AFq9FYIaAQezwDZIZ99iy5jeRoUxl1uA2rxH0hOFxU7XGelyC6eE19JM
+	JoUk894y5RI9MEOShzYsjDaSHbJs8J3EiRFAktf4duOoqLoEItzSn7au
+X-Gm-Gg: AYBFou0XPmeB+Uc2LFVCXOivh84tN1Mdyjf7ic26306iSItqtfcr31aIxxSCDK4qwMo
+	liGhulkCHQVAMm07NXYst6UgG3p/DWJpDB/3WgBcXGqHh4Iux9/TRWwd7G3l5rOk0Gjf4jzx/aH
+	6BzjRxf+VgQVMdUMDSkgBONZGFvtmucPEl+x339nkzgPBCA+QT98ugpVYgnjyCSZFPsUlHdwet/
+	DdV6Nmzv1TmVCq1KyObCY2qOWlmFAgYdxl4bEOgx9w4HNAO1sp7qp7VvkGsUdcSO3aL8jt+xVb2
+	AL9LNMsN3c7YsOSL82rdVF9UYsAx0jSdBVFBcDN8x2F61opBHXmJ9JUEqMur8Lsu09maVXZiCnv
+	SMud2/xg+Or5NPFVtrEz9rju0A6AZeufrXpqyckBGKqQLcXQsX13XJidIYFKPvR/JaLpU7YY7xy
+	napWbSkJA9682wxpuDtfGPjnmsz0qRwjcPu/rIaKyrx38Q/ET/foGbcCXXYUJQjeaXThbV5vOlF
+	1x/1Vv88OXyLmgDxyOpExgYhOZYPA/65XAkyfpymhGMpg9yxW73wH5lOD4IQXRfdflpm6AiNPA3
+	rYbQH7LJTk2blkzjhMAqT/eM5W3PUXm11VKRtL388yTYN2CUJqqESTRsHdVYQ1srsdstZ3QwWtD
+	yFwM=
+X-Received: by 2002:a05:6000:490b:b0:487:27f6:a4ce with SMTP id ffacd0b85a97d-488828c8ad6mr10111964f8f.30.1790534118745;
+        Sun, 27 Sep 2026 11:35:18 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-b2e6-5301-2072-0420-f831-ed4e.310.pool.telefonica.de. [2a02:3100:b2e6:5301:2072:420:f831:ed4e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-489bd7b1df0sm1001928f8f.31.2026.09.27.11.35.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 11:35:18 -0700 (PDT)
+Date: Sun, 27 Sep 2026 20:35:16 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] sh: mm: fix hugetlb on SH-4
+Message-ID: <arlhcX870kV0DBO2@gmail.com>
+References: <20260926183904.76186-1-kmehltretter@gmail.com>
+ <9b75aa51e19f9c0f5c97ac02cfc0948ab5bbf279.camel@physik.fu-berlin.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b75aa51e19f9c0f5c97ac02cfc0948ab5bbf279.camel@physik.fu-berlin.de>
+X-Stat-Signature: ynd54pnmkhattip9jhcsoyzi3cfb9qjg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5143040004
-X-Stat-Signature: o74xt4zputycpb8dkdos9auxsyh47art
-X-HE-Tag: 1790532815-516276
-X-HE-Meta: U2FsdGVkX1+mep/HmMaSUYIvngrdHJN7FniGE4QCC05rgX/gXmV60+8JuDhEjCtyMxZZhmwyAPiQ596buoXghY7L88MfFbklAAzXLjwbgneQ4W4+11JRJokj4FLf+MhONU7wlFKxh/edRqaAY5HaKwAyg6KGWzL/BGqvnGOU1FnSPTM0VsZdsjiRqAxhp2fQBKQlE0AizxeyGA6YPQWD7ou+otz2r+G7DwL6IQAe7O3pSrFtN1SFtBiK/4CXD9mOLL8G6NIW7IzuZUr9tIRbAXDS68IvJH8LPEn83air3s7w54fhkO82NoCvdyXIC00hSzQcuTTaeUSFU9NZU0Ge2PTlhe/WDM46rnC91CfoMSDRzyA6OnSRlTkugsq80nADknNRAMZN/LLtDsTyCxFTstF+GC3qaH0IoIt6uYWkjsNCBUg0nRll2dOnpaNPPTtKiEvgYkxjvaofkrgQDCaSgfs0Sd/d8MYXBdPUWK3gNf625Z1qyo+onzEjO26sOX+OZgJhkkL0KiEdHHxgw85w8nabxFOuXVjM4OWAjwRhp+nRpSz1e4bKrtMd+jm0P74+bvj7blsDpmmPAIcXNUs3++5mbC86bzjQBI/3kcH9fQ9BAjXHKgfIYq/Gw5ecLukxAmfnAwNLQ14HXh655dUuTkU1MdVjoTiSDx5JxGPBMfMEOIsC1O5XZfqMOfCxbPURpEcc7l7PCWwl6W/8qcy6UmAbWvjRbj3NVAbLpWYyO8UyHSQcezbzstB/4X7uy8E5BbcnvilUi8J8pf31xe0tUL9zAExunxoqR57ghrX+FkMN2tR8v/0PjMWqpYyzQgzaIIliwtv4naKejFagbLHOQAcmg0V6aVxGZ7XOuDkuM3UAJd5mJf4smhoNjlxKJpykmfUcDd0NcnjmyCXLDh1aSDNHzxiavigr8sIOuT7IhP9LDqNPn/shKZjYXY1TeiUBYFWj/UqMKsEdTP9xv1j
- mfXslBlF
- /6o9XZMLfzt04Rn6oWTV0XSv+57VqoysPwM2VLxSxfFq5+Jn3cZLRho/uuTnL1Inq1cYgQR5/678Jqh0e09oWz+F4KeHMEJZ/oWrhmuep5b9MuU3e3aQz19eE/BPlA8p8Mtdzj6UXDAIezWuUJVD+Zfm4H0JyoBvmB8rBhMa7zY2rzlD+oYVuQVSqoQaY5ijOeV5uw7WXjdCv1OPPTzv5S5KyeXl/jqaFGJfvz1RXm8u18uFfEDiCGId08RdxxsLYsxu/YodBfUDnLIMOxhdLjfAluteb1ZZ+4rZRgBMSNqpRYQuzct65Aiva8VgeetOOa7fmZMq6/PzLM0oGr16lau48ugjWN8n3QMQfpgb58UY5WIbZm1Ch6VU8f9fBmZ6dCwx7kc9/xhZ1szuwR531VOHXcDTdnVlR1G3Qoylv4OlkntAV9qkixBtDA+e0U7wJ/tveROPqTRu342o=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 89074180003
+X-HE-Tag: 1790534120-390826
+X-HE-Meta: U2FsdGVkX19+loZ16fMBFGC/UTdKB4QgaxhKyp7LaPmG3M8jwjlAKuwrQb0BrUnaUvrkeoJ7WYzXepI5qpVIAuB5j7CXn84lVzSLQDlEAyXRLTmI20xelMSaE7pcq+XXYFoGI2JmWbfliqPJZu2M3OrrJFog1qrD7eT5DRj4B837o4HmRchoD6XWFoBhMxJZKrBInSi28SAvVZsUBm7MaSZRar2anDywkwaMK8Zlb0nF9m63ZxgqNCwXRHEGg24FKUcmCaCBT3vkft/KFu2JOXL8Qhx71HGU088IbXoqdK7POU7I68DpyIBE4moTk9ePSPo1pi1gZhpG+Kwcqi7kmIcJbU83O/3ZUFxC1UHQeT5BwjOyRqPBLI4PD8HWv9AQEsh9Ql8jMe2gSThsCyU9KBN+QDLc5LCGf2Jy9qpcvCZ6enPa4HV+wY7EsO0jhVOrCfi8/HZmDe8swJDaBfCw40BL0ieGePEXA/4+TqIIvPvDvPGi/JhpAEg+Mh6lsOJpjavub6DtVlgiSAni9czEMy5xqkQ5clQbtjXXTkU+R/ChxjQAnAWqTNqT4AjYuKtjqGKAZBc32OFbzKjGLbXrSeR3KKjY7MatO4NlvJ2pKwsWEm6WHDhId0+Hm4Lg/KqRCcoC6Mg2XbKw18dZO00xcvzGWTHcE2IgOLsNFDVx+pije5OGpJMH8GU3ySycTdnXi6Yi+bmEdxaPve4FaCraQtSTa0Orb1MJWpswDnLhL4AiLL5NTFNqczL6R7DT82u+MBymdb+Qy++OS8ooIfTyAmne9JalHBCLz4R9GWyPK5bQt4hAqDQIhE9R6VJUI19YAS4+HGLUTgQ2JAsKYggH4EYMZ7q1AJ+5LcUmH9EyfHCjHgGp/OOP0nZgC9H/VRca7GhB0tl2U+t+bXFgoWymYITEwgeC3LhxdKT6NQXhdhwpfM2oEJLafa2IeQkDTvSrgxCD2IVzxenwdM240aO
+ 75wVoH0i
+ 2L2P4NmHRb7bCpYLoAE+uffNzQ3lVa9xFwr4jI9wobfr7k85OUEW9zFohmg59XPj6iXppVd/4+BN77Jg82mkG4p6AfAMIdSziTtMku90V/LVzpI/kAtMHINoxZvsO57fNGkfyZg9UHqt4eMHjWbqKc6ZvFXJo3OfTpWGKHQ0IDvUX6wbiBgp5Nc2+pPQVDlTW97kTajnf1q8I7od2KrrfkewRzNXzKx5MZ+cTglJ+PkzHKl8YPYMGP5uUAn8O/V9t/wuLzCEn36Tfk9Q7U5hvDNNUIBZDEEJ7NwV/F6zjnIkIf9bTPmlMYPokbvcklsmY7i4mclpUXCkV/igcdRPDp5mpwZYeQkMevIJ38sRLPgs7bNS/p53PkL7IedzoUBAbQloBnPIaQPDIKVV4caffz6u7bDLUTSEx+pSlahnIhAXSE0XqhaaDBo775zat+4hUCfDrVnvq1ELk4T6gM8IN7eFp2d+A7gQCIqtB6KXc7unWewuP3ph+5B4G7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,53 +124,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2026-09-27 at 06:17 -1000, Chris Li wrote:
-> On Sun, Sep 27, 2026 at 2:29=E2=80=AFAM Rik van Riel <riel@surriel.com>
-> wrote:
-> >=20
-> > On Sat, 2026-09-26 at 20:23 -1000, Chris Li wrote:
-> > >=20
-> > > That is the part I am not sure I understand correctly. Fair in
-> > > what
-> > > sense? Using the swap file proportional to the memory limit of
-> > > the
-> > > cgroup? Do you have an example of perfectly fair swap file usage
-> > > for
-> > > a
-> > > cgroup with an 8G memory limit versus one with a 1G limit?
-> > >=20
-> > > Sorry I am a bit slow grasping what exactly the fair behavior is.
-> >=20
-> > Say we have a 64GB swap file, and several
-> > cgroups on the system, applications A & B,
-> > and system.slice.
-> >=20
-> > We might give system.slice a 10GB memory.swap.max,
-> > and each application a 25GB memory.swap.max.
-> >=20
-> > This way a memory leak in application B
-> > does not result in application A being
-> > unable to run.
->=20
-> Thanks for the explanation. To me, this is just standard
-> memory.swap.max limit behavior. I was thinking there was some new
-> concept of the fairness I haven't grasp..Thanks for the=C2=A0
-> clarification
-> anyway.
->=20
-The only real change we are looking for is
-that once zswap no longer automatically takes
-up real swap space, the zswap use is no longer
-counted under memory.swap.max
+On Sat, Sep 26, 2026 at 08:43:45PM +0100, John Paul Adrian Glaubitz wrote:
+> Thanks for the patch! This should definitely be tested on real hardware
+> and I think it's a good reason to test this on my SH7785LCR which wouldn't
+> boot on anything newer than 6.5.0.
+> 
 
-Only the data written out from zswap to
-physical swap would count toward memory.swap.max.
+Hi Adrian,
 
-That way both of the fixed size resources are
-counted according to their own limits:
-- memory.swap.max limits physical swap use
-- memory.max limits anon + file + slab + zswap
+Testing with real hardware is very cool! Maybe I will get some SH
+hardware myself one day. For now you've motivated me to do a QEMU SuperH
+fork with more features, with a lot of help from my LLM agent:
 
---=20
-All Rights Reversed.
+https://github.com/kmehltretter82/qemu-superh
+
+I will send some bug fix patches based on it soon, hopefully also fixing
+your 6.5 problem. I believe it is an old heap overflow in the SH intc
+code that only started to crash when sh7785lcr_defconfig switched from
+SLAB to SLUB in 6.5.
+
+Karl
 
