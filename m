@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CBBBC9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 20:12:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B46AC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 20:26:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BC2836B0088; Sun, 27 Sep 2026 16:12:05 -0400 (EDT)
+	id EEA3F6B0088; Sun, 27 Sep 2026 16:26:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4AD06B008A; Sun, 27 Sep 2026 16:12:05 -0400 (EDT)
+	id E9AE96B008A; Sun, 27 Sep 2026 16:26:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A399A6B008C; Sun, 27 Sep 2026 16:12:05 -0400 (EDT)
+	id D89F26B008C; Sun, 27 Sep 2026 16:26:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E95C6B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:12:05 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F110E140A07
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:12:04 +0000 (UTC)
-X-FDA: 85260638568.08.8E75CA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2D007140004
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:12:03 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dBpbPeGS;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BB1776B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:26:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2EC0DC0A6B
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:26:34 +0000 (UTC)
+X-FDA: 85260675108.28.0D9BB68
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7402520002
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:26:32 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fKhzG8Id;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790539923;
+	s=arc-20220608; t=1790540792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zw6LphimU2j7rCWjyCWC5xM3gVDLoCW+f86+35F4nME=;
-	b=GHvkwc1rIrocVLAp5lOXih59SxYnCUXgJIoP3QTDc9nU7+Zky+XDD7XJYgCpJ4wDosnIUX
-	kAWUCgU2kj0V77vuF0jhycXJOR8vrDNQgquMPbmr8lbIrH+a334yDpZcyKvd3rw6TzxE32
-	L/wezmJEV/Tu/0g7ONkQWPOq+tKNlAs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790539923;
-	b=aMuqOUhCooWV8C4b/+VMIQbw8ZuIjJMQlkAXHh6KgY1RRi64Gg0Vz79cVO3mEXQo3oF3Bx
-	QKuYaKKP4hfMw75kyfU4N5pIiwNCXQtFRL1mF/UWKOFHFmoRBJdNKVmdsDzxIH/z/BxcD3
-	v5r2eWDGGfYyB7TMplHCAr355WXmYPs=
+	bh=Wtc36Zd26DF0UV6qt4ILyxcIdl7ocFhXmsZv9Dy+w+Y=;
+	b=SDfDxXwUioFiVyXiQOkwo4cvmJavwhoK6RQ++LfqtayJMCB/jMstJ12ZHu6PjEfsds9wDe
+	wNENVgCst48u+wAzII0n7fjIYSk5GEIKAjYYi5DNNnV+j89ZhJyMeM24uYJeI5BVijKmNA
+	QFSSiL+qalSVZ0MnjPjUgzTIhodezy4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dBpbPeGS;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fKhzG8Id;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790540792;
+	b=sZVZ+dP1QM8z7FIKA/4LSHCp/w5DmgM9v7OVFkhq5Y+cMY7IYeQrYoTiBhcaDoiADuRA+1
+	alRUZHCeBW265z1Yn1NDNVqNo/z2wFFZ4bmS+JNiX/5nTYVwdAEbKI9nCuvYdXwMh7VbV/
+	kUm7CfO1XW9cHidDuYMM4CCCVYbF56c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5B03642D55;
-	Sun, 27 Sep 2026 20:12:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D145A1F000FF;
-	Sun, 27 Sep 2026 20:12:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A4BEA60052;
+	Sun, 27 Sep 2026 20:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D446D1F000FF;
+	Sun, 27 Sep 2026 20:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790539922;
-	bh=zw6LphimU2j7rCWjyCWC5xM3gVDLoCW+f86+35F4nME=;
+	d=linux-foundation.org; s=korg; t=1790540791;
+	bh=Wtc36Zd26DF0UV6qt4ILyxcIdl7ocFhXmsZv9Dy+w+Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dBpbPeGSTDE2LuiAUazsZ/tDuOBNiiEpN43Jy1m3MTjNiOKGPVgE71zF+8OPv0BTZ
-	 nITFr2+WuzZvnTCyi5MO5ay+FthcZpnR3ha0cVrvtSDBkJvuDBx+sSl7aR8NHYDv6D
-	 I3okQEEKN3W3jDjlb2CahR9TUccyAPgnEo53J8Y0=
-Date: Sun, 27 Sep 2026 13:12:01 -0700
+	b=fKhzG8IdBSyYx4WwzMQqnpwOPZCr3ooh55LHrwrwCvxbLPkvxBO5t+3+ccAfMHSzE
+	 gjHo4hWgMwEazfMjspTgDHCK6Rt8WL8Jiop6CSr+TZqw73IJUiiQm93mcCE9E0f5Ei
+	 a0w+rkZtrFS+ecXZrAa+HYyVW7xszMLOpwQAwMzE=
+Date: Sun, 27 Sep 2026 13:26:30 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, kernel-team@android.com, linux-kernel@vger.kernel.org,
- "open list:MEMORY MANAGEMENT - MISC" <linux-mm@kvack.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] selftests/mm: cleanup -Wformat issues in hugetlb-mmap
-Message-Id: <20260927131201.dfeeade5504b9fb707ad1e54@linux-foundation.org>
-In-Reply-To: <20260927162419.820609-1-cmllamas@google.com>
-References: <20260927162419.820609-1-cmllamas@google.com>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: linux-block@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, axboe@kernel.dk,
+ hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, muchun.song@linux.dev, willy@infradead.org,
+ jack@suse.cz, tj@kernel.org
+Subject: Re: [PATCH v8 0/3] memcg,writeback: flush foreign bdev mappings
+ separately
+Message-Id: <20260927132630.eef2d0f1704534c7bde8e538@linux-foundation.org>
+In-Reply-To: <b5da5c30-7c8b-4c60-aa3b-d2e3603e82c1@bytedance.com>
+References: <20260922125015.3435215-1-sunjunchao@bytedance.com>
+	<b5da5c30-7c8b-4c60-aa3b-d2e3603e82c1@bytedance.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hfwcikzayhbqgpftg7jbeqiyaciodox5
 X-Rspam-User: 
-X-Stat-Signature: wx585zda6s4pqek7fy6u3ztgmx15q6iq
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2D007140004
-X-HE-Tag: 1790539923-462924
-X-HE-Meta: U2FsdGVkX1/l6wOnybdwZL9hdVdO027+2Dn2Y2qg9XO9c+70uuULqUcQNKrmbbeEWxDrNFKRwq4hB2bCfOL56XOSlXT2zAxjKREN5G6jNM3jGd9qy6nKZgZAdTjHAusWAmIWqYzQftD9uYn1dcR86voflEAun7EO1aD73eujNwl4U+SH3nVgpYLoeJMcpYB8ebaUR8bWsdJf3VJdzNyUm4zwpd0nN8qgyvSKhe1ql0WMWmZhWFSopCDiVT7uNlQFYTI5CYML27ZAFeWuaGRU0+qYt7OyIFzZd3vO9AARrCAcOBN0zODemD3Jx0BGV2mS2AQVFRs2XO4HbLXKAmJnh4SuS5oMMoppTfzosnK4BQyvrfG4aZecgLmSZhVbhxs2b0sVlTI6a3ar5P4wmvw4Skre9/MluzgcadlTiPFebHZr3rXI9s/+/hIwAinYUXu7JqKTnzaBEh5PIpkV2RuSNwqHBcUsAGXtGdlfwZopJh+L2UwXLzMB4qHMwcDfaZ6PVxAlnlt5juz8n/+Eauhi4Ca/VRyp+Y0SQoJN7bFruGCKdUbDByCWf8bhvLTnNjkXOJSgrJhuFSG6xulsaortHuc/bxVBpWWHUVf8YnNF630vYfw94+ir2AfbSPxSVSaTdXyTuuAO62/NXgbQTZtN2aVlArd08pD9fZrv7iMeDzeLl6k6Bo47nou+iA96oc9Y5xM8J+pkNsnQ3hl9MNFjM8hJEXLrMGBL6TBCJOCTRP0UjTPa+sukd5M5iIQWDYB+U7Fs2xrJ1NQzgEwRNtzSc0KYsqlwoYNiA3BbuIxdmJVRsWbYyygvO7EzbN953Sg1E9GclX47E8SjXJ1aLKRmy1CAwvzRTiBYWHESVEkNfGRKL1Ljqu9MEbllxPkvLPsMSOGdD1ibyzFcK3cV2YNT1yyrILkj+hX/5t/huBRg7k7Ic9ww9dtSx3HM3RKnRo4a2MlAJBn5lj+UCfEP1ba
- /jTHMnpr
- n/I7wXk+F7meKXe4mevCX6KG2XOCJeCne/PDGSBJ0qnbutr/61ddvYX/JpNhXxy8sJB+Nam4Xsrrv6GbPSSd2Cl25D+0Cy9Wy3pgmHujk3MmXNn1Jn42sSFPaKzt2H26oZMMy+kJvpCoiz0ETLvez91RUb3S5Ym7UGiYJVH2hJl2nQpl0h2nK3F57YhdGQHUqbFauZPNQmyg6V0/jQH2b8n7O+uK2zEOHlkh8QpcSlbs4yvAk9Z8OZGRytiPiuI9eTJB478+h/JpPZR1PlDz6zBIk/Q==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7402520002
+X-HE-Tag: 1790540792-239539
+X-HE-Meta: U2FsdGVkX181JiLRtMG1MngCA4iUiy3EVXpQQd+RNj7xb+J1zzJ525AEdvtNJW3/SJkR5+jh8hrOOAkLLWiDkHgIM+sC42CQajG68TxXl8V+GQw5P3ZegC5Xm8wfEZ8XSPbKzVYoTTaWZoddRPS8aeeFS1QlrhaM+FqiVf/jUzvcC/UbWZbBmZ0r620ePlbn+HnbSWt3EsqRgL9viewMPMJWy/p8o+rOnAQ6iWcNTa8wJSH3NtXAh8Ba/DjA/K5hmNCq99a2RVMRfpSHa4C690Xn+IgaZ+UTY5vnchYfqgmibGHZabLwoyyrbbAvj4DBQC1Yr8RZTJg8Vo0UJGYD5ErP8tFf0MLhtA7BQAXJGcpk1aVhdPTAkcSYqN10/OvjqnfaZcZV7ZdqvLe2aR2MdDlJ3ChGyng6GtHseRUfsN6/JBmp+mO7wHcEZyTO9/ZuN2kBb1ZKdSnQ/F5Kzz8uqysGLxXzCXsi5W3AWomllWH0MYNzcNZfGBYBMMuUJD+3jSivpTyWhzoUidYr+sb1ayVA/I2omI8XNH12UwjPzEPjH86EBXZ934Dh0nAQYrN4AGvvkkCQOmY0ut9FRkVCgNx/OzMPkCidftQO8Lqb5BYkiE1HdD3lv4Xhu7WWx/T7a5Iag1yIOWa5AQXqGWHnqyAouQCgMWKSi/FpYZytpfoQgyByZIysnIsr+1hOgRh+PICgCFqHIp12vmJ+Zf/T9KMPbBaPr5tQezRoUbEUBZAXM6j18BZfSLzdNI4/rFaHvMI/50MqKrj8nIbGDLhM8F6TGUpt8BG0pYnoQ6J9XjP13y3HM3R7uRuHPvYVeznuo80MIDHsTNMiGOREQ0rMWHXEkAWb+/tiLh8xhbPkwBUKiHqgfgA3mUSG2flx+p3LaMkL5q1hm8PFP61EHQX74ca7O30Gy1umbwfZ1LTgBgfCyDqbVDGTDWL1LfxHxkJs9TQS4c5GWFnBGPhFPcz
+ hPEAekk2
+ 53/pdkzPaCUeVpwUJnjiQovuW/pR2F4FIK92d/iy6/jbbJc/DumBqpuSsMQeibUCHlkwHo45YyOav73t2jWAtAM5J9azWmTs4dPObUOSMgtU6+fH2fMbxPxFverpQWWaKYfrVGtGnei+H2kvG7ztRpvG5udTisDx4Iqmp/eMxukWjqo8zS3eMdn9ORdgptQzsI+rQ2gdFiBdORg95J+8nqdD23bkFGB+IN0SwKThTy4gRx+DWppSwmfpHiXIyTnCgNY3MiCs4UElZp+MrM9upRcB2UQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,37 +94,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 27 Sep 2026 16:24:18 +0000 Carlos Llamas <cmllamas@google.com> wrote:
+On Sun, 27 Sep 2026 19:48:26 +0800 Julian Sun <sunjunchao@bytedance.com> wrote:
 
-> Commit ae571cd6015c ("selftests/mm: hugetlb-mmap: add setup of HugeTLB
-> pages") and commit 9c5a65f374f8 ("selftests/mm: merge map_hugetlb into
-> hugepage-mmap") added logs of 'hugepage_size' which has a size_t type.
-> However, the incorrect format specifier '%lu' was used which triggers
-> -Wformat warnings when building for 32-bit:
-> 
->   hugetlb-mmap.c:125:55: warning: format specifies type 'unsigned long'
->   but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
->     125 | ksft_print_msg("Default size hugepages (%lu kB)\n", hugepage_size >> 10);
->         |                                         ~~~         ^~~~~~~~~~~~~~~~~~~
->         |                                         %zu
-> 
->   hugetlb-mmap.c:134:47: warning: format specifies type 'unsigned long'
->   but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
->     134 | ksft_exit_skip("Not enough %lu Kb pages\n", hugepage_size >> 10);
->         |                            ~~~              ^~~~~~~~~~~~~~~~~~~
->         |                            %zu
-> 
-> Fix this by switching to the expected '%zu' format specifier.
+> Do you have any further thoughts on this series?
 
-Thanks.
+I'd like to see some feedback from memcg maintainers, please.
 
-> 
-> Note that I intentionally skipped the 'Fixes:' tag as I've been
-> previously suggested _not_ to use it for kselftest patches. However, I
-> can certainly add one if someone prefers it that way. Thanks!
+> Should I rename bdev_flush_by_dev() to bdev_writeback_by_dev()
+> and send the next revision?
 
-I added cc:stable.  It's not good and it's worse with -Werror.  mm
-selftests don't presently use -Werror, but quite a few other parts of
-selftests do this.
+Yes please.  "flush" is a pet peeve of mine.  It's used to mean either
+"writeback" or "invalidate" in various places.  Or both.  Annoying!
+
+Also, I agree with the "dont check alloc succeeded in __init code". 
+Both places.  Maybe save this little cleanup for the next development
+cycle.
 
 
