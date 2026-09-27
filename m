@@ -4,135 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89B6C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 17:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B253C9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 17:52:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C8096B0088; Sun, 27 Sep 2026 13:34:12 -0400 (EDT)
+	id 1E40F6B008C; Sun, 27 Sep 2026 13:51:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89F7F6B008A; Sun, 27 Sep 2026 13:34:12 -0400 (EDT)
+	id 194C86B0092; Sun, 27 Sep 2026 13:51:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B55A6B008C; Sun, 27 Sep 2026 13:34:12 -0400 (EDT)
+	id 087C76B0093; Sun, 27 Sep 2026 13:51:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 486D66B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 13:34:12 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8C57240A5C
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 17:34:11 +0000 (UTC)
-X-FDA: 85260240702.16.6A71807
-Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 94FA6100003
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 17:34:09 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=GbfCDKw2;
-	spf=pass (imf14.hostedemail.com: domain of luto@amacapital.net designates 74.125.231.166 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D88846B008C
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 13:51:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6A9361C3A61
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 17:51:58 +0000 (UTC)
+X-FDA: 85260285516.14.9AEF266
+Received: from mail-pj2-f13.google.com (mail-pj2-f13.google.com [74.125.227.141])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B26EE140006
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 17:51:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ctaeZ2V0;
+	spf=pass (imf23.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790530449;
+	s=arc-20220608; t=1790531516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MuL0v1f3+J9yyQw0yqK0TvcdFgWSs593LTmvyHRza0g=;
-	b=0s84JASt4k1NdawM78bzDQUSI+lw7Jmu1BgYIX6fveDfl2GTU1m4kCWzWK9A/IwD9c9mKO
-	YJmSveOal924eXEuJ6NryU3hBh+2L/vddUPrW4NwHKbSU5rEIZFAfPvqqTDqyalQAtpWrI
-	Yu+Re4u4tLGq6YAtqHHzoo4GoCpTj+s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kwmzHbcrjIY/XcCe6sCdMKV/UzCFAPbJtQGnBjUsEZY=;
+	b=i0Ph0aJFky28SZzUZXydGv2FM89gglebYTrkZcbMnVVXljmzhSKTkJwgfha2IAwZQoh98q
+	5bxSl3LMiEewJtfg09otXBjetYGikMAItCAKVewxQ2ASxhYCpJJvSU4wrYz+7EOl1E5dio
+	e2iuqFKWU28WlQ1BArhsQMz3PICuh3Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790530449;
-	b=x9zmI+orEYzEazcQRmrLYcdNsI3MHogApotpUK8BElpr0cn2uUeIOBmhIc5KovHiamYJBz
-	J7gSYLsRNJOVtz8/cerRzR2dUlCuhzcvBLuY2ayczd1Q0LTB5lyB1kJTBkopI7oTx3YRqe
-	HLgVpX18Y0qD3pqpFcfD+dKQNGKn/co=
+	t=1790531516;
+	b=ZD39vxP8RMuVDMGsMnKpa0MA9+23HHG6gEQhkHPgzEkCeeKcrxqL+5LgZj/KWx6q7gzlfU
+	GxoBpYliD+W6RCjRaPKtRV+qiFemrjBAqloPNy/r2PE7AgSwhUEUafWNTH/hJ1NwjwOHpp
+	kiXtvfFidz3Q7an20v1vOShaqRdUfNc=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=amacapital-net.20251104.gappssmtp.com header.s=20251104 header.b=GbfCDKw2;
-	spf=pass (imf14.hostedemail.com: domain of luto@amacapital.net designates 74.125.231.166 as permitted sender) smtp.mailfrom=luto@amacapital.net;
-	dmarc=none
-Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-81be5042c56so356207a34.0
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 10:34:09 -0700 (PDT)
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ctaeZ2V0;
+	spf=pass (imf23.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.227.141 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj2-f13.google.com with SMTP id 98e67ed59e1d1-396ccb652d7so1493254a91.0
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 10:51:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amacapital-net.20251104.gappssmtp.com; s=20251104; t=1790530448; x=1791135248; darn=kvack.org;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:content-type:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MuL0v1f3+J9yyQw0yqK0TvcdFgWSs593LTmvyHRza0g=;
-        b=GbfCDKw2WpWwQm55M85fQSol0p8tfPWZQN6mFgVz3Z0H0bf03XZ6Lm/LQZH0ROnhQ2
-         oR8FXyyS3EQCJoqM7CRXBNjr+GMsTUWrdQism4vk3gS/OaYxKBxamcOURlX/PfM7J3XQ
-         2fO15lDqZCLxpUHPNajqNyzwMg3fuPScyuYJgx1oS59ee0G/zXN4dhl0nmTdvGA5rOO3
-         q2rTbza/8yys0V37dWMj5aGEyHQO6iC/4jcBEwRC3pEWhRbskBpHHaMYq8qkvhV+B3Pf
-         1MVer7oeuImAASAzO/B6bk+NRuWq1em4vEW8cN0rFB4JxvVjw+9aIvptG8CBXampiuI8
-         zXJQ==
+        d=gmail.com; s=20251104; t=1790531515; x=1791136315; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kwmzHbcrjIY/XcCe6sCdMKV/UzCFAPbJtQGnBjUsEZY=;
+        b=ctaeZ2V00gGYgiL9czfH5mE+fRcEPEqus4n3EF1cIczxu5E9ictuJ435ua5KyeIZVF
+         P5p6YESf6deH0JuDfz1ik+YQgbISYn0guZUnheRZJtWxZuA698f27kWwrfgZl0G2x8tY
+         KwJmgt5QatNFkSnn0Bojwxx32h2NsXEFaLfduD0+A8n6ASwJoTUcIjknlj3oU0ZGBrib
+         9K1diL9pAE2baZmb2hqotfhC8/xA+2F+h9EE1u6F3OUdswW74uOPRzb26ociZ0kOSTY7
+         uaPKFU1Ag435JYxUr4NU8gRIsa/e7DsdDXhncAIe4oqFhRMDJfKcKI/iaP4X+fLaccLk
+         FlPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790530448; x=1791135248;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:content-type:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=MuL0v1f3+J9yyQw0yqK0TvcdFgWSs593LTmvyHRza0g=;
-        b=Yneug7gifVJAk2wNX/+Hqa5WGkKA7vQ4AxehSU6QgNv6mLD8R/lbnQrWU81PvtgGA/
-         zUTGf+1HHcCl+BpqmVN4S+gGQ99B1jkhrf8661KPZK0SKkXHn0WSrRoh6RRbTsThii72
-         ePKHHKp9VmR0ZjQMFZqM06+1DKwkmGoBB4mx2N5Shs8+dL2ApwS8+jQcHdbOxflf8qPL
-         nRZT+Voza9f6soQEmC/8afS4DzkhIPp2qLH9bZxhzc05zPyIx2p3rqigUAGyo136CFBe
-         tZcS74AHVan7FlU3c/7gy1TeSRQajqGwk6qS+ulRwHN60yKKxNez3XRL1WFJsLKaRzbZ
-         Akiw==
-X-Forwarded-Encrypted: i=1; AKwUvBwjT1NRlojBa6YfIUzpOT+7NHrM14W8V7H5qEX4jPdfoWS2TcrRXdFOjiNrbHIoRVXAV9kr1tInZQ==@kvack.org
-X-Gm-Message-State: AFuF++lV9dZ+raeLn6oIwDLKoYw6y7u9p2qVKKkax//9kg2S3UQeMuOc
-	L7tH45HtASusiHhHrGPRGf8/A4IbQhKEssR4vy64dtzPlhW7ubuKhoQkPl1bI8Wg2w==
-X-Gm-Gg: AYBFou3TUxuf/1AOUoz3Fs22SMjOPQ4R3Fyzs0t7EQCi478ZCaOvBVT5WqxKWIZRym0
-	MX526m6gGhL6N8vciW3TPGIGAF9lj7DTGmYpwM5yVKjjzhPKZDYPWwrzNzpnDNpLc8Z9OOoO6Vr
-	tB8lRr0t3sXWAPJzbs5+fXXg/9DvkF19ItciSHL5eK6U3weCYRuoeuP5N6F93/HOwlB7Tw+AWeD
-	N4foqFL8CymoUzHGL4HaEx3FETVcpfS7g1qNGmo9WDyyhh+G/Dqe84o7y0qHXMn9o/A1J99uXe/
-	KJ/q7FKp6zSgY8ynNr4ndy/iFKFsQpglgTNiTmXJVA53S6NnwZZPzivcZ8wtaVfTuswk+uGjtoz
-	Mth3X6DtTSICd2rTavNa2QGOlTj3PfRJvFNtqNmdRXkFtkpbcgHr5vq36+kqIhtuMQdlgi8dFaY
-	sySp1YVdzYg/NexKva0m6S+GilTIotyrQUjHer/C6rk9GaAJQWN/OdtclfrP/5OlFaxDgd+kpdv
-	kfrhopgYWG4hkVUTtiBtni9Fi/qGQ==
-X-Received: by 2002:a05:6820:820:b0:6cd:3ffc:64d2 with SMTP id 006d021491bc7-6d5bac3e146mr7371645eaf.77.1790530448403;
-        Sun, 27 Sep 2026 10:34:08 -0700 (PDT)
-Received: from smtpclient.apple ([2600:381:5ba1:a8b2:19d5:7f67:de2b:c3a5])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6d883394af1sm2755239eaf.13.2026.09.27.10.34.05
+        d=1e100.net; s=20260707; t=1790531515; x=1791136315;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=kwmzHbcrjIY/XcCe6sCdMKV/UzCFAPbJtQGnBjUsEZY=;
+        b=v/wpriSQAg9ND5kT7sRxF9/MljLxbBYfpdt4BXLFBl6ob7Lzcbey8Rb8cGC7ZFLbwl
+         tsfVau0IHoiUq4f4peCZxwe4aF5TWQP/MiAdFGqiXWvmz3VXl07mmZvCOi/RIOk/PFt9
+         jYatLEYkgZMJUeBQ2wVswBbbyxavly4r2riCc1QVmClSO6o1u6mg4zzYVifzQLgdByEz
+         ThaDkhHaSpiFZne+3V9XD2qIZ/mXvC6Xo8mUtx42cgWszpKZROR998FLcUumiMX6xFFf
+         wVXHDieFKQx9NCf513y8+aIhsRb2zgXzDHYxqDJNYknHkr3qTVwpy/05Gz2w47dUi2C4
+         Jz3w==
+X-Forwarded-Encrypted: i=1; AKwUvBwtpzBdRuc53D6t7VkaORPgTvw5CPNOubGjoTtxc86uIbiAlG3OJta2KIU3kav4hoDS1S/3fm8+6g==@kvack.org
+X-Gm-Message-State: AFq9FYKOMMmombSkN3maIif8iTRdB4NigjcBO4yYfxs8Zoz2FaWxeM0R
+	HqbE0zxdXNyPwA7jGqFFriEmQjnRTESXhCDJrjAcUhVtTcecmxJiZeHjx8vs3g==
+X-Gm-Gg: AYBFou1i3ChwZX9rnmCEy2YZENok5zSJFNxcAtaPnR9cvpQWqqtQHYupBpZZGpdf2J/
+	VOxkGeGOcRIePrwC6YjbSbZwUldtosDJijK/F535D9uya+xO0FsIHJXBOfgDg5dAVqEWDCs1BNv
+	NtH5yHt2tZAoJ3AlLgdLzT4vmEYZLJYSJuaTHdkNESBrqtP23zw+S8m/OTBN3iPRZ6kopdEgHBQ
+	6Y3orzoLWur4+T9qjGI3bSQajL31WeN0KsIIcZJs48Qn4LVEqp+tkTO5IjI+q9W7XAxic/n2hwB
+	2iNdG1lU/BISNizRdIN9hpWuEg6k1JwTVGWMznPbQaKbepWod71pi6jVwMLoY7ZI6EfsoIVtmvw
+	7E3cxTxebVZsZQhZXUBo2C12BEtYSgiy4AuY7Tf2/5ERmFnLaLEpUolvLxF3FOHGwYCyL4v5sbv
+	WfQemhbi3Rk9Ze3++AqsCk1SFVle34McrcTzw7yHwoQHVK06yW1ksVUxTUU6N2vLcIG2p0Pf5xz
+	AnAJ8oek5c=
+X-Received: by 2002:a17:90b:440c:b0:3a0:c8e6:ab30 with SMTP id 98e67ed59e1d1-3a0c8e6b9b6mr5659510a91.59.1790531515391;
+        Sun, 27 Sep 2026 10:51:55 -0700 (PDT)
+Received: from celestia ([2402:1980:867:387a:70b:38f1:a1dd:9303])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b9355e54sm15597784a91.5.2026.09.27.10.51.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 10:34:06 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Andy Lutomirski <luto@amacapital.net>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [RFC PATCH v2 0/4] mm/swap: reserve swap areas for deliberate offload
-Date: Sun, 27 Sep 2026 10:33:53 -0700
-Message-Id: <3FDF3191-94A5-42B3-A33E-12021344D7BD@amacapital.net>
-References: <20260926045517.3458413-1-matthias.goergens@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
- Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>,
- Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Yosry Ahmed <yosry@kernel.org>, Youngjun Park <youngjun.park@lge.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- linux-api@vger.kernel.org, Alejandro Colomar <alx@kernel.org>,
- linux-man@vger.kernel.org, Karel Zak <kzak@redhat.com>,
- util-linux@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Vivi Rodrigo <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, Rafael J Wysocki <rafael@kernel.org>,
- Pavel Machek <pavel@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org,
- Matthias Goergens <matthias.goergens@gmail.com>
-In-Reply-To: <20260926045517.3458413-1-matthias.goergens@gmail.com>
-To: Matthias Goergens <matthias.goergens@gmail.com>
-X-Mailer: iPhone Mail (23G90)
+        Sun, 27 Sep 2026 10:51:54 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Liew Rui Yan <aethernet65535@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/damon/tests/core-kunit: add test for unconditionally skipping the last region
+Date: Mon, 28 Sep 2026 01:51:43 +0800
+Message-ID: <20260927175159.60703-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 94FA6100003
-X-Stat-Signature: yf3g6xhwk9tk1c56zajsd6d53h61tcfy
+X-Rspamd-Queue-Id: B26EE140006
+X-Stat-Signature: ja5c6nnbftptph8br6skhzey6f1c38b3
 X-Rspam-User: 
-X-HE-Tag: 1790530449-111740
-X-HE-Meta: U2FsdGVkX1/P8XQhJdTyXzaJkBsC3BV5ju0hP5/S7y6IUsDOGblcvCtBgx+rly/Wj+/53nFChNyxlYy1GWB115SzmNzxidaeiW5kp9FAVVckCZE/LnIRNrlxsEG+/AAlsJP0Kv3nGsaIsx9UfI80vNgA5fFqSFzy8QYXW5JGinuWhfQsAELdsNyluhhuiAkvVL1EwIc0FsO4DE9zj6y2iTU8suPSp9YP78T1jRij1j9FBYDmtnKn84Atrwdjoky8pjTEZbzAn3yqCmTrbduTWZ/pEJ3nhk9tnzSkGjlKHNqKeZgGcVrltz59mRGCvIdxO1RvrhamrZ5kI9PILFnaWRovPRcEzJxC579zB1IZ953lxDo42c1KOSkYPsQacmbHngCif7a8mS2bVNH1dk4bV2v3wjo5PsYvGypnCR50p0d9JWI1xzoXZoyrBQflngTqDTe57/bgwW+/BgXxlhq7ehzQWfXJ6TbL2MisXDyipFeFI+0/srS06mwViJZu2znjdPKOHOHR4oa54oi2Rxu2oZfNo5Pwk8uHTbpQkrhbKVD1/o/aJGSaZYL7ZXoFnWO3y1RFGlj35uM/o+M9zoLWdRxg26mM47sHuYGmLm7RdEUKJc+QKjVsKxjuRtqRRlzyBxFnhOtKSxsFS3bnDo9sPIrNZ4IotYjQ0uu3PuNh7s28gfxlOVOtQVn00/vkKRU+8Mm1qsnES6M/4u4VYbfL9xJ6plkc8yeyO7npS4dzgd8K0Qm+PUNU6To+MwKopfKhhAewuzsx68DLkM3DLssfyqxvbweMNaZOhBAiwL07DTxdb2TwWquaMUzPN1zPUimJ7BRQX5inc0BGpFrZfZjU7aRwR/twC7m7AKtV9tg3+QV2MNxEWt2ddttgQPVQ9Av/Qu18B7m0aLbbWjxUuWSBGVozJYnlhQWkrpRqsGdCzyqyXUQlBsnXFMGqmmFjw7F5mT/9KhkjOC23FVZ9pS5
- DvuQphIu
- V+ywFWtxW/Pm9VodtCV7f8kLoXUl+8crZ72USGz6QhupF+xeb1+3u6sHHEwWYgCHIvkwG9RtYu0pQuR5bHSjYNZRWfvurDRe1l6ddfzzqYWGRJ/82PQgoAnVmNPUc4nuklzPhGbJHMT0RuyehehO2XJ8g7fZDwmlxEmhevkAmzGzCIeRnvrTsYVu8hCNZdDa84qg3laoImB8VON/sU5MwA5k0sOnFeNHVH5c6XFEHDLxwpGb+TBk++IlZ4hkmukDfCLP+I5WthMs/K+y9A48venWCS5qcR05klsDr8SbyntIpdw4zG8llNOCl5q6gEhxJJRtzliXAXmGNXo+sZZqgIHWM9LziHHBJmaOhJXQ+98FMU6Or/IwVi6H2wSRs8E7ojz662OzCAW/bo6emF5kunkjhbRds2M/1EQ1RVuk0bnmSzDQkWS96DUO37e/fP/q13WND3oEL1zUx6IsGmi6Obn+rTR5TrbWaRQGVZL5fcQhEMRbcH0zDjNbnqb0wpb9CTtKT/W4R1uFJlbxaxj71psX/l0Dau7Z4VBYdZgpH60ndCM0vZ21ZNEZ2k0UtBj5/TvCz0jSrN+DNLE9QlzKVdSasEg==
+X-HE-Tag: 1790531516-960824
+X-HE-Meta: U2FsdGVkX1/dbsZBOumByqOuu7YK+MCn4pog+0mZ2TEYlyc8rvB7vRmdoKUKjSv4AfzxW7oKStKw7bVKpiQI+6JP6QoYHQqKwcXSBfI6q4zydBb7cO+flnDwi7s+Um93442imqY2hWijPbhQN8e59ItaCcACwhafSXrz/fvJ+eCFjTWFdqx+QlsfQZ4gXMyMWm8XCt1B9oxc5akhPs5o2S74Y+R+WtdQhlD+Dqj5WPoy6xKDsqx1cJC/EW5hxcd1Bq9LbppesLNZ2u4m9ghydvSKSacBpV++OsKYDbJfSMIDWR6je36h2ImFqabWamSqPM7VprrxatslPbwUAAU14Dmaxw33lK3i0YVg6zBflveBwn9mqduUZzogtGY6jeN/q/IIe++rT+K+ALK37xZ666pz2g8G/FJKNh6INCG88TvxHKmd83CoFE2gJRtVhA+hmRi+LsS4nK/ebCf5qwwomhVMQ0ouekmt4Dt5cvmUwktAfWM+ehHJcHioTytwnVQuvKtYEBzHeSwGBYnGzN+qPn0qcKId4j0ugY4AkLKYniCAXY/W/RpHCmVo4RekFP0lN0J9Jnc+DolRTh3qNOhW6C0hbrtp1KgC/7CqPN2ipEjB7sJYv4xL+36l2d5gg4paw8L2MYjnf66zMp7SIs0zwQpS1HZDtI8xWXKVxe6/21VSxd1xtv3pZ138HPv3oBpqFVlKX443RJEHra1LsG6dEuFgiJ6nT3USiz6gB4efR59ITHfpjpfZfoEiGanDb8zngQHv9oYjsjbryZQ+U+Rc1v74wbLnaKrOMpkRpwSu91MP9ZYL6KM5G7si4d63EKlt6Cbbd8KQisBG04zg+edQVbDDT1c40W3eoyTRFKSsi75yFnwVlYvTq0Q9QnZFXqAljViEkEuyDmMFbAQpexmVlKOJMbGOmghbx6xL2RxWuzrAMlCUko5JBNTjiNv+VunMY38rWXRjDwQVc5f3w/A
+ Ly/hlaB0
+ GkvP4dDrBGFk6dglEBoFwFRFtDEyy+7xsNIfbr4BSnW/w11eAFL7bAOd8HRGuvY1N6tViindYnrGQbMepXJgROLeVj6oVGnE6fY2FZ/M8cynMaWo6l4F028h8aatZunmG15M3WEr5lhFZAsDpS1NXoKvdb0pRPqA13/8+tqNRPLW/vIb5W9DofZ7ZK3lYdumj6Tk0CFdszPeDaneuiLj+Q+kgDkaVEHP8jKVbaske8RJ8QaKfRWsc/n34qmtOHZ3+gWAfOjTTKdtaegZWtL9QWa2RXaEoOt1oDNPf+jdyXNpy07nlMUkU30QpJIdeGS8DnaJLbnTpeF7oLQW/2TlTyhZFQT8UbIIpRfOqFAJ3ysVR7GjGTYm8VPUej8N1mclMmYbpH0GdyLvfUWrXsJFl47lGxwnG1Yv/wSYdkxk6SuoA2q6+Xxabeq9lhksgljjml9wqksxWYc4HtarA/YFYBZ1jyQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,46 +118,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Commit b3723b596b54 ("mm/damon/core: fix unconditionally skip last
+region") fixed a minor bug.
 
+Add a KUnit test case to cover this behavior and prevent regressions in
+the future.
 
-> On Sep 25, 2026, at 9:55=E2=80=AFPM, Matthias Goergens <matthias.goergens@=
-gmail.com> wrote:
->=20
-> =EF=BB=BFThis RFC adds offload-only swap areas for deliberate cold-page of=
-fload to
-> backends unsuitable for pressure reclaim. ZFS zvol swap has documented
-> deadlocks under memory pressure [3]; compressed swap is another target
-> because writes may need memory despite free logical slots.
+Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
+---
 
-This seems unnecessarily annoying to configure. It seems to me that you=E2=80=
-=99re creating a bizarrely named administrative flag that means, roughly, =E2=
-=80=9Cswapping to this location may allocate memory=E2=80=9D.  Why can=E2=80=
-=99t the kernel figure this out itself?
+Changes from v2:
+- v2: https://lore.kernel.org/damon/20260925045350.66595-1-aethernet65535@gmail.com
+- Change the commit message, mention the fix rather than the original
+  bug.
 
+Changes from v1 RESEND:
+- v1 RESEND: https://lore.kernel.org/damon/20260919080453.628679-1-aethernet65535@gmail.com
+- Drop braces for single line, as suggested [1] in coding-style.
+- Set min_region_sz initial value to power-of-2 value, '1'.
+- [1] https://docs.kernel.org/process/coding-style.html#placing-braces-and-spaces
 
-For that matter, how well does this even work in practice?  If I configure t=
-wo swap devices, one =E2=80=9Coffload-only=E2=80=9D and one conventional, it=
- seems like the relative fullness of the devices will be mostly an accident o=
-f what triggers swap as the system is running. If the conventional swap fill=
-s up, is there a means to proactively empty it?  Under OOM conditions, will a=
-nything preferentially kill tasks that reference memory in conventional swap=
-?
+Changes from v1:
+- v1: https://lore.kernel.org/damon/20260831113735.3349-1-aethernet65535@gmail.com
+- Resend since the dependent patch is merged into mm-new, that would
+  help us getting AI review help.
 
-Is the locking and recursion structure of the mm code such that we won=E2=80=
-=99t have deadlocks where cgroup triggers swap to an =E2=80=9Coffload-only=E2=
-=80=9D device, which allocates, which causes memory pressure, which then tri=
-es to swap more to conventional swap?  (Maybe this works fine.)
+---
+ mm/damon/tests/core-kunit.h | 42 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-For that matter, if the system is under overall memory pressure, why do you c=
-are what triggered the particular swap operation that is being processed?
-
-
-
-The remainder of the writeup is IMO somewhat incoherent.  To the extent that=
- AI was used, can you read it and make sure it makes sense?
-
-And the first few hundred lines of patch I skimmed seem like incomprehensibl=
-e churn.  Adding =E2=80=9Celigible=E2=80=9D to a bunch of calls does nothing=
- to explain what=E2=80=99s going on.
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4a536d41cdb2..f4237436e1b4 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1632,6 +1632,47 @@ static void damon_test_rand(struct kunit *test)
+ 	}
+ }
+ 
++static void damon_test_last_region_quota_reset(struct kunit *test)
++{
++	struct damos s = {0};
++	struct damon_target *t;
++	struct damon_region *r1, *r2;
++	unsigned long min_region_sz = 1;
++	bool skipped;
++
++	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++
++	r1 = damon_new_region(0, 100);
++	if (!r1) {
++		damon_free_target(t);
++		kunit_skip(test, "region 1 alloc fail");
++	}
++	damon_add_region(r1, t);
++
++	r2 = damon_new_region(100, 200);
++	if (!r2) {
++		damon_free_target(t);
++		kunit_skip(test, "region 2 alloc fail");
++	}
++	damon_add_region(r2, t);
++
++	s.quota.charge_target_from = t;
++	s.quota.charge_addr_from = r1->ar.end;
++
++	skipped = damos_skip_charged_region(t, r2, &s, min_region_sz);
++
++	/* 'r2' is not processed, it should not skip */
++	KUNIT_EXPECT_EQ(test, skipped, false);
++
++	/* 'r2' is last region, it should reset charge_{target,addr}_from */
++	KUNIT_EXPECT_PTR_EQ(test, s.quota.charge_target_from, NULL);
++	KUNIT_EXPECT_EQ(test, s.quota.charge_addr_from, 0);
++
++	damon_free_target(t);
++}
++
+ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_target),
+ 	KUNIT_CASE(damon_test_regions),
+@@ -1664,6 +1705,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_is_last_region),
+ 	KUNIT_CASE(damon_test_walk_control_obsolete),
+ 	KUNIT_CASE(damon_test_rand),
++	KUNIT_CASE(damon_test_last_region_quota_reset),
+ 	{},
+ };
+ 
+-- 
+2.55.0
 
 
