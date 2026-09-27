@@ -4,143 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7446C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 19:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38C8DC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 19:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 064766B0088; Sun, 27 Sep 2026 15:20:24 -0400 (EDT)
+	id 930996B0088; Sun, 27 Sep 2026 15:54:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0155F6B008A; Sun, 27 Sep 2026 15:20:23 -0400 (EDT)
+	id 8E0F36B008A; Sun, 27 Sep 2026 15:54:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E6EEE6B008C; Sun, 27 Sep 2026 15:20:23 -0400 (EDT)
+	id 7F78C6B008C; Sun, 27 Sep 2026 15:54:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B7A276B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:20:23 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96936A0A9B
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:20:21 +0000 (UTC)
-X-FDA: 85260508242.30.E00D8C4
-Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CD781160006
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:20:19 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qc2zporw;
-	spf=pass (imf08.hostedemail.com: domain of devnexen@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5824D6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:54:58 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5BEB140AA8
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:54:56 +0000 (UTC)
+X-FDA: 85260595392.12.95FA25E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E9124140006
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:54:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yX64huLr;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790536819;
+	s=arc-20220608; t=1790538895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MCahJ3O+tXX0CfGzclDhULcHGoByJJvACQgWnDRt+Os=;
-	b=DYRwIuF5wsz6barke9rO1j+00ltSWjFr8Ltc8NsnefMfWtCSjBzi/vdH6GsptP85aIHm/c
-	dZpsguy/l7elQS2LY72ypT5r643t3lzvMdhwrLR1EiFHcdshcdTp5sIzoJ+L6Tgj0BGwau
-	XABasWpv6ztQvRQf0A29PbbdC+NTJ9U=
+	bh=syrXrC34qOwYKtXT+0y34VtSNtk9nNOuE8xaaaEO4v8=;
+	b=HEWKK1Cq7WAorn0Gx8/bnjIwsEIlvMA7UuaJofXZJnaHXH4pLlh3qVMxta+R7Ad9Kp4seW
+	cfslzAplSptR51gOgPBM4qiXhiWtwNJGogw41LOamqbFjlU6p8g5pvDEGE7cBTbjRqyvht
+	ReiLz+K3g+LO/QE+JYTJvuj1t2yQ9uc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790536819;
-	b=2QKCDP3LzDXxC8DCpWfIwXIT2uLg4it3MjRJDMRdFo/pasWkOvKXFtWHjgwpHOEL4gmLK9
-	ExmCb923VE0A1b2pen7+gjnYQTXAnGMVTaZ7h8P7sOBgajDA5HbI7G0w8l3nfSKdqCbNhf
-	Tq373BPGu99C4BOevVZL8kfAu2Yf0OU=
+	t=1790538895;
+	b=CdF3uQH2GTbDY1CpSkjRw3AfuDe/DXXFd4RLKVxD/aRUDMYNIT0NIy7uBXM9Qu9GTq/IIy
+	jFVGjng9MOxQjg6l/6bTAtnqdPFkcJ49BpJGC5Kb0iFt+qMjf5GWRYChVCx5ftX22yLDNw
+	6MGhVHpZ7V/I93O8eLyPd5CFHw76cOQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qc2zporw;
-	spf=pass (imf08.hostedemail.com: domain of devnexen@gmail.com designates 74.125.225.141 as permitted sender) smtp.mailfrom=devnexen@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49e7d2bb404so7760185e9.1
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:20:19 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yX64huLr;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A246140F00;
+	Sun, 27 Sep 2026 19:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAEC1F000FF;
+	Sun, 27 Sep 2026 19:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790536818; x=1791141618; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=MCahJ3O+tXX0CfGzclDhULcHGoByJJvACQgWnDRt+Os=;
-        b=Qc2zporwAREjF6Sx2lChAjWb+BeDGnlU+zPj2xhRpmv70OFHwGTKkESQqT9IFX5pmy
-         NdvDbzsFgZsRqCJmzlYuZk2/WUfkMAa0axppT6nyXd9uvgI/6YzKRmj+0Ov0CXp6eIQA
-         T7O166IC9vFUtVRmOlRIwwXVvOg5dYMjsHBq2CqZBks93bBS0+PjyAF34TkhqGAC3OAh
-         +yuzbDvKLHbgyoJgcP2xfElF1ZVJiy+HcBIn4RQNwAd24W7zg+rcMZ/Rss6ZDXPfah8t
-         C28Tadwwznlc69U44S57tOcmj7BKCMWziTGpSJYeJjxmB6ODxdwHELEbpsZnmo8rAEWJ
-         R09w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790536818; x=1791141618;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=MCahJ3O+tXX0CfGzclDhULcHGoByJJvACQgWnDRt+Os=;
-        b=EMaPv3YIeDEOkid7eSOk0DLqnuudmzl9E+O173IHe0J6baZgKfq+fKzryMVllgWjfd
-         TxHfXb87RonFcJiWoxYIE/plQ4WRclGFteOyqnBDdWNEjgwg6FaQdpK8pLq4rlPB4MIi
-         0r+Ij9glu+8ZUE2BIWp7KQ42g4MSsOIA45csenjro6pjuRrOPhNgdeDypDtjdk/zUbJD
-         xXTi1yc/K4YpCyQtxJsnfQ8alQDQMvJOEvYZYw0mdnkKtQ9ONFB4OM5g2XnR6qsxa0HT
-         P6PFxeLNZjhgYwQBQldhlp3MnbEtWfsLP1qluLRlOyj6iqVcXx26ej4534JZaHo8uIBn
-         ZgGg==
-X-Forwarded-Encrypted: i=1; AKwUvBzKLWZ8X8nmWeKO1Rc06bB8Rr407JNaJcCg+QDQzldlZnbyTAHm//n/lAmlHwrIADKBjuceBl2yUQ==@kvack.org
-X-Gm-Message-State: AFuF++nywsyqmwLxFcTVuJkQtio3UtPYKaLMIveF69rIGy4/jtfTJa06
-	HJhNR5Jsc4bdPMzOypUdJyWJ9tj737bz4yFaK+xJxJFoj6IsQxAjm6bU
-X-Gm-Gg: AYBFou2lW1lV4/X0VAFmq5NuO3G1Lflwkx+IDitTCEJ8GZPPxYFrJnWNyya9tMMMkEp
-	EWo9Wf1+ngZRGViiPGsrC2pDIGzJIk1KVzmAx5q3LZiB2Qss/k7DPuQe+uK1I9a4U945vraoOtH
-	GffhsdyeUlJFHUruK9Ct3482kNZ2bloctuNMhJsCrP90Uwi2LxYobqMiam4tml0UaimvwMR3QbD
-	1H6R/JSbMOmg35cMthNNa1XJT/Gjw2MrRVUlqq3AZ9lRnrK2Cot769ronMnKqKcpdA+XSX4XfPP
-	5HLOjR+Eow6/nVD1De+55plpWHfypDHBDCtqYnGwH4axKxv4AogeDgUt2YSZfcTz8S531jd6NfS
-	o9JLu5V5TTfk8pDSDAQNZ97BMEyKg7Pmvc6Yfz5kikzWAWLiMKhfuhTekhhsLSTCxrVeFjsvxZK
-	JJXtv3Xf5vLCLGIDy+1jCeSuQyDrIIbeUO2PUKH2wFsdQS/1lNXjmkSJpbV9STCru9V+R9oLUdN
-	SxTvV8gJCkRNUl3R+40JKg+hr4ejub1CnXanq8z6Q0EVEbWfH7LvBnL66E=
-X-Received: by 2002:a05:600c:4f89:b0:49e:6581:7baf with SMTP id 5b1f17b1804b1-49fe66c80c8mr198488725e9.2.1790536818014;
-        Sun, 27 Sep 2026 12:20:18 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0017998dbsm117774805e9.14.2026.09.27.12.20.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 12:20:17 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	baoquan.he@linux.dev,
-	brendan.jackman@linux.dev,
-	dakr@kernel.org,
-	driver-core@lists.linux.dev,
-	gregkh@linuxfoundation.org,
-	hannes@cmpxchg.org,
-	jan.kiszka@siemens.com,
-	kasong@tencent.com,
-	kbingham@kernel.org,
-	liam@infradead.org,
-	linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	osalvador@suse.de,
-	qi.zheng@linux.dev,
-	rafael@kernel.org,
-	rppt@kernel.org,
-	shakeel.butt@linux.dev,
-	surenb@google.com,
-	vbabka@kernel.org,
-	weixugc@google.com,
-	yuanchu@google.com,
-	ziy@nvidia.com,
-	David Carlier <devnexen@gmail.com>,
-	devel@lists.crash-utility.osci.io
-Subject: Re: [PATCH v2 10/13] mm/sparse: remove SECTION_MARKED_PRESENT
-Date: Sun, 27 Sep 2026 20:20:13 +0100
-Message-ID: <20260927192013.144672-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260921-b4-sparsemem_cleanups-v2-10-54d81d65e125@kernel.org>
-References: <20260921-b4-sparsemem_cleanups-v2-10-54d81d65e125@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CD781160006
-X-Stat-Signature: gopj3dm1y6uu34p4qyycs8gfqwqugjco
+	d=linux-foundation.org; s=korg; t=1790538893;
+	bh=syrXrC34qOwYKtXT+0y34VtSNtk9nNOuE8xaaaEO4v8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=yX64huLrYBvawjHjNMziGPcDF408jVy97eCQhDGEdK9ruUIWtHuIYsE+mhNMfqt18
+	 Nqxac4sU4f16KAf+zoUW04JYqXg33sc2tfOTTb0EWu8wdgVWka3mOOBCFT22odBp06
+	 Fd3pMy/8/YX3DJSXlv/le88Lqf3alNmdUMlUep3Y=
+Date: Sun, 27 Sep 2026 12:54:52 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>, David Hildenbrand
+ <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Jonathan
+ Corbet <corbet@lwn.net>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, Lorenzo Stoakes
+ <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng
+ <qi.zheng@linux.dev>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, Lance Yang
+ <lance.yang@linux.dev>
+Subject: Re: [PATCH v5 00/12] mm: Switch device DAX to section-based vmemmap
+ optimization
+Message-Id: <20260927125452.0c1ec382905482841a4faef7@linux-foundation.org>
+In-Reply-To: <FB00943F-8DB1-4BEE-BF37-701785DE2DDE@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+	<20260926225105.a56f29d76b2f496c8dc2dac0@linux-foundation.org>
+	<FB00943F-8DB1-4BEE-BF37-701785DE2DDE@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1790536819-803654
-X-HE-Meta: U2FsdGVkX19tauerzQOQKnWOwq3esLzjsSTdK1mMpra+HWXMvZNcLvfAU1WjYa+mpbgFKR+UCCouHbMkhfr8nHDz6kjX+y+w6DjOVlvzMVq0AT1E+IPNkauYcZJ2Pt1DBeAl+CO2jzGuyf2z6whCpPdbZe4VNhtDMyoGP2HHm6ZTWRGpDSRj0G97jykfFTWt7CW3YuFnG+jbaj1jscbpKR3EGOzD3rH2mDA2I1d1+ehkx7VY/n1O+U3oIIg+qDxDVbsL2bjvR+UBUW3TEj3xReCNruhEoSX3oP87dfuFrd9BkJPStR/D97UKCFouWsGe6+QVsbKzKhnwoaX23kv81ktZQsW86EWIcTBgp2ENj7NN3fxF5Ve4vkSrmvXD6tyUnX+s76LiGX0r8rhtpBb0jvYh7geTSx6n9BPzbFGbuyGXstvrBu6qljNCjKwIR0rC/tMBkWCtuIuY/znvrSHk/SpuHm0Pol9DM26/WbhPtvWe6W6OOBJvIpdqEOGZmoJZqXSUPa/YbdY0KpnYHYAgDzPANKHzxCPVyouK+PimmBXC9kATMaFEAvSzPcytMVy2m3ZcqDZFUyMHjVXnyzbxuQusbqa9BumNA4YPhnK5Ukinwhu5BG6lia5NZChnOfeQPN/OeQHqTf02AfqeVS0hKYM5/AUxZw7KxTkOIokHFN64rwDez84q5Rlx95OCgn/rp4ib86PxjUlHZkdd/0/ac8Ig42cUQfy5NcpfDmWdjaLFOJig7tclR64ESsSkMU2m/a5CPc9b4BPzPcWXFLtl7qmX7U9eNRyJyx4pkapMmGUe+00CG7uBktZcNwLBnyvZ7FKy6zY+UXIL6fubF8IYLbFlL47TBJEu3lLYV+9kusPn4NSJGyS60riJsiexI8cPADicQSjTEE1BNz78RCFmQfivOTu9PVpOi7qw/8VU7EbuRTMUy0h5bAAkHO/vH7Beoom+1KV2/i1Bo0COTkw
- /VWscniZ
- yIQxmLDuQrwsMZUNxNdQUrwjzQN1s0kD5MOx9fx/Bxv0QWjVBTimleTX20kwsq3CoETSdFx1K4P3K/gLynfUU9zfgjYwS8Fu9cjcSQ1gGd9qGuXtSkXyPz7hvZIlcdvgCQjt/mBI0anJkxDm6rrgQNtVBX3yMgu+CtpXbC1dJYGN6lrue3KxfWfGkyPgOpMdiDDL8UCYuPiWfrwAH/vYR9zu6VlBL8b/jcBpMiXZBZefqVXSULA2RsPZjaniulfBf8pR5UwkQOStXR2wYeHsGjSFfAib2/8GUNq6mcCrUGfHfECQ0UYl/pllYcvMxCxq1Hr8OGdJuiQuVMbgPKfzLh4O6TlWt+xpqmsqEYw4zO9Y5/lggPYB02fGI8aLSc+NEsq9EE0B9SL7ELHF/sN8ZOcq8VSJ0sAsI+/UW6y6fcRY6P/FfmpnzhKJrJw==
+X-Stat-Signature: 8utwuhxorwa1hnd6g8zs8jz81b8bcrsi
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E9124140006
+X-HE-Tag: 1790538894-960188
+X-HE-Meta: U2FsdGVkX19Azlw1SIU1CEs6qPLe7BPS6auzI25NAuLoQ2+JeWkR+zSZFaLrI8QYZBizsYL3zRA4pcbiL+in/PoQG7z5tYrhC4JO3XZCFSIbdp2zr03UIefgjEg72HzdmDqD+wDCqjnUoMTKCBDL+u7lMmzfO34mIvl1iH7szYRU9rLiMUlklt0QLEEidopUbgQhZqVgTu/0DO+yDdelHRaExkaG9bmGmidpz1V+aIAtbuCiUZHmlmP0ZeJH3uUMy2gMy7z72h3v2E8H+UVdtCSNnnbuJNvjvXGu6el0pL7khHA1hd4J7X9BZyKA5uuVwimo8VgM3FV31oBbx4JOvp9fvxJ9Xaj56E+4vksVWLFvsuhuwzqAbRef90vCVZ1Svj849qD3I6dy+imKHeZieoR5URNzQVzHuZzcisw59nCaoFcLvXWzubJ2yaJK9AQUVlZIb+kFRretl5WfNbPJWAJl3kYgmxj3PsEsjML7aVw0W6VfB8nTLYDtpdf+Ep0I+031B0NQC8NMtbo6hqsoQtFUjr8Dv++DlFSvTQLBO/bxIo/6SHR3DwMwek1suMUIvW9l792tEnXW98cLJx54rvgqpTkPS4K/ucf804c8j2npGRglAwHdns9d5CPMC8E75btSpMJXcmMYOG9zipy2p35nBr9D5tFjr1av+Sr4X0+cyN5fiZS7mkjD1vjnWdSG+AIddeAxeboAXfcDGPz3uQl5LgZZaEac957j77sJbMxeueWBsvrXMrqYqT1E2aWUybCeZjUuddEhVojOrHuAz66/zKVG48zR3Ua4/6bCf/JCm/YljFZX/WU7c/oyFYWS6NVCWnX8MaUThJMInolfh5/ipLp2mo9DnJ6NVqpWyxC4tnYOqXGMGut+rT6LCo5z26KPNQ+WadLX5eMs04y0XuJbKx+b3QKwobiZjvKhIrUvAamEto1LliM1F/Qvu90WgxV650H/CtTieQChyak
+ QXoVwPho
+ B3KtpyykFo4LXhsOvjHprj/ZzYkd3fDR9lm1kTQC6eSCjV/mPh5xzGEuHfsHsg6QxiZhekH6ZiENetNrDrhpdMQ9ds17zYOwpXCkCIqnzWjckkEOdfFMdgReoQl+KSi0u2VAhTTj6I41t1bEixWeioL8wziyi1GfWAJLXQJIkw6tzTdNQhzEjFLkO8rAxzn56G6G/CcOjCwfb/mSKY4X6c2C51w/BpE1W687MmDmAYjwZkGF41uyzSJ5VeriZTCEyWrQ6lTzYZAJklbkPFB0o/G5RgAqtOfzohkenyDNpeavGSGxuokGv37v4+lRxkR938Bl+tB2vTrH7oKP7+JmVoW1BwXaSAZaDS2ce1lV64BvgCGcBZ9FKf1ys7kIg1TAMM07UGSv24B8fcY0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,22 +99,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 21, 2026 at 09:59:02PM +0200, David Hildenbrand (Arm) wrote:
->  enum {
-> -	SECTION_MARKED_PRESENT_BIT,
->  	SECTION_HAS_MEM_MAP_BIT,
->  	SECTION_IS_ONLINE_BIT,
->  	SECTION_IS_EARLY_BIT,
+On Sun, 27 Sep 2026 18:51:15 +0800 Muchun Song <muchun.song@linux.dev> wrote:
 
-Hi David,
+> 
+> 
+> > On Sep 27, 2026, at 13:51, Andrew Morton <akpm@linux-foundation.org> wrote:
+> > 
+> > On Sun, 27 Sep 2026 10:54:29 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+> > 
+> >> After the HugeTLB conversion, optimized vmemmap state is described by
+> >> the memory section and the sparse-vmemmap population path can allocate or
+> >> reuse shared tail vmemmap pages based on that metadata. Device DAX still
+> >> uses the older DAX-specific population model, including a separate tail
+> >> vmemmap page reservation and architecture-specific logic to locate or
+> >> populate reusable tail pages.
+> >> 
+> >> This series makes device DAX use the same section-based model. Device DAX
+> >> records the compound page order from pgmap->vmemmap_shift in section
+> >> metadata before vmemmap population, uses the common per-zone shared tail
+> >> vmemmap page, and drops the extra reserved tail page. The powerpc radix
+> >> path is updated to use the same shared tail-page helper, so the generic
+> >> and powerpc DAX paths follow the same reservation model.
+> > 
+> > Thanks, I've updated mm-unstable to this version.
+> 
+> Thanks.
+> 
+> > 
+> > Sashiko asked a thing:
+> > https://sashiko.dev/#/patchset/20260927025441.741633-1-songmuchun@bytedance.com
+> 
+> Sashiko said page->refcount can overflow by incrementing it over 2.14 billion
+> times when mapping more than **524 TB** of DEV-DAX memory on a single NUMA
+> node, where the pages share the same node, order, and zone.
+> 
+> I am not aware of any practical hardware configuration approaching this
+> topology today.
+> 
+> Handling that theoretical limit would add non-trivial lifetime or
+> architecture-specific teardown complexity. Without a concrete hardware
+> requirement, I prefer not to over-engineer the current series. We can revisit
+> it when such a system or use case becomes realistic.
 
-It seems dropping SECTION_MARKED_PRESENT_BIT shifts the other section flags down
-one bit. crash hardcodes SECTION_HAS_MEM_MAP as (1UL << 1) in
-pfn_to_map(), so it now tests SECTION_IS_ONLINE: offline and
-ZONE_DEVICE sections no longer resolve to a struct page. makedumpfile
-only checks bit 0 and is fine.
-
-Keep bit 0 reserved, or export the bits via vmcoreinfo?
-
-Cheers.
+OK.  Presumably it would be cheap to add a check for this craziness and
+return ENOSOMETHING?
 
