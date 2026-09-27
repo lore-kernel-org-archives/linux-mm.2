@@ -4,119 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB60C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 15:07:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4299EC98332
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 15:51:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8FA86B0088; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
+	id 0DF046B008A; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E40746B008A; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
+	id 03D496B008C; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2F286B008C; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
+	id E94446B0092; Sun, 27 Sep 2026 11:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A9D026B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 195A640A1F
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:07:00 +0000 (UTC)
-X-FDA: 85259869800.18.13D7324
-Received: from mail-wr2-f26.google.com (mail-wr2-f26.google.com [74.125.225.90])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 39301C0002
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:06:58 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ehNLbuy/";
-	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.90 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id B67F26B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 11:51:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 365BB40A35
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:51:52 +0000 (UTC)
+X-FDA: 85259982864.17.CB5B1E7
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8419B160009
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:51:50 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="Kqoo/x0g";
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790521618;
+	s=arc-20220608; t=1790524310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
-	b=4a3kzGPlB+735rlHAo01jJLKa7sVg/SGo/TWDGoKN7vCQD6bafyk7XQAS+KvFhle0+bQ60
-	UzhjsDpHmkm71wi3Zgz7aJx3+yoBCFEvUeaL385SWuwfCJWic4R5Jtwc0HISTKjxXqL1Q1
-	bbrNjR1sDtMK8Tun97X/oeH/ea080zM=
+	bh=XJZtRM91aHOzDwlGhUn7K80dltrSbiTp//FJp6Ow9Ys=;
+	b=k3RjSoEipb56Z365YPmuNX1XpieyQrd1M6A88O9rSOv1WcdRzCoSMaBAzpy/nate7lwm2o
+	uM7/eNaI9EUJcxDeomHX6oZWhtA1jJ6LlqNGaYxF9dOUeB1J61qVGd8PocmOvzfNSnIg90
+	K4/VwJ+tIntKPMKEQo02X75ZOSC4dn4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790521618;
-	b=azYvQgpW3U0Fbp3nwTEuwjorDqJ8BfkQSOGVKfl5cWNAVnxVR/hUGReF8pHV74p9gmhPrL
-	ZYnZ5vtc4OTTzMnEKoJSE2SpCzKOSo7PR9DhDj3OF/MsgNCylMOX7j2gtXP3+2lAZXKtya
-	h1xJQhrDgXewlIVZmaxA2dmC5L1Dizk=
+	t=1790524310;
+	b=GeGtQNbW9aD/jxlQ8t/HGdhEiBnRRTYzr14JKISXyw9vUxZKmeRktriV5yElH22Af1GOaG
+	yat8887q9WeFdVA0ZFBhEf7mkIDyOmyO0C2Z4qk6ftRMhfeAfk7SuXMK/8axAHzOzvR3Mi
+	4tdD3lFIpuocsThRn/HNIrUa5cm3Hr8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="ehNLbuy/";
-	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.90 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr2-f26.google.com with SMTP id ffacd0b85a97d-4843f22dc83so1881410f8f.1
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 08:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790521616; x=1791126416; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
-        b=ehNLbuy/TJ2bqsKZ+LWmkM/GPOONiy4xpcaXsokAImRGRRJZvqs4437/Vr7cwYRTFp
-         fF1sDhjfcQ6HowxIxv+MKE15GOyMBdwb07O1UDVLJ3vqVVnyRf1wOHV+aJxXjrboduGs
-         ALllwTs9k53NgAVx2dG+CRBZsCxvlxrfG4meMuztM8GkxkPlv1I9CEfl+tvrFl0jfJDu
-         uev+2V0mPE52/pg+XKUI7wcnp+gEwZXPLfc1Lgh+SFZEMwLjFeYq+YbxHLn7dJ8MKrgf
-         H9qCSrkNoGVd5Rka0222hcRa7yl1wVJiAVbQ43q1Kl+fFpDj8LAL8j/lmiJXqOGpULvw
-         2iTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790521616; x=1791126416;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
-        b=XrCjT1NL1E3g0qDfL7QE5Er2jgi2WzimpZB5Rw5w4USLbIdfIEBrCZJydU1o0EPdx9
-         g72eFRc02RcXPPBR0TGWdHfAHU+79HFLZ46W0I1BTjJ9wYHii3EFglkT68TwhdkBSXXb
-         UziqVooZIcvmDUI3O9OsmNK1YJYUqE84kyKwSFGIPQhHr4ionxdUerN7o1lXK/WjWxdv
-         fKo0SfQWBnGM8wmQEwHtPb7U7OuabL7AOuLW3vIZZX7/j6X4FAxu6pZKHjgJ7RyDheMO
-         qOM6wrKnHhRfetxYZgPt6QbD8XPmR4bIp0ygPPQ76WtGJDMV+xKJQFgEd77x0s9GztDz
-         z5pw==
-X-Forwarded-Encrypted: i=1; AKwUvBzEK2FyZzQhtAoXH+TltPyXB9COBKMME+rXB0jzUMH6/ulXjScN9Y/HLFX0GxCB7aGXsjHAxaTZqw==@kvack.org
-X-Gm-Message-State: AFq9FYIjQt1nizwDaB6654ggGP3yBpWks7PChRBs0t5zOGEpxAeFCmBh
-	ObERxbAKffwM+waqOxFK0k5BUy4oJWzr7lEiQlNj+zLCMbKoVMMg7OtF
-X-Gm-Gg: AYBFou0J2g6KvYGjrIFXhQpx7lDVhhsFVgU/BcuXrZXR510xHVJP+vz46dvj8jnbYh7
-	06eWIK8N4OxK1dsYmxV06q13jbrxWMGjbb2ips8R+o3uhwvC24BEQ9xWxVFZ9SjEEo10k/1dvNE
-	c1mVFBIfeAOwPOLx44ung7P5/2gpy55WxAjZDD/GKHwqWhs8z40JzjHb2C0SdM/+ActJwImBrEQ
-	t+d7ggNUs2RV6Wnbq2pIEcGasscVsDji2A9iMzTsZU/QfVXvdAfk7yR792DiSQ9CEKAm7HNBJT8
-	M5lFDgYp8Md5bwWVMJB9EHs683uOTsSc9m+eAPNVAUqXKShpl3SbXjqlBFqoXq6o/GJ6RU2GcrK
-	DRd7A0wEmzQokptri22aqxGEoQXkejLkJoAKG4+zf0tQi62GVS5mt/K/ga2ctyYU2XTrO2xrEzu
-	zvIr+epLIfqf26NDt+t4iXB72nFQPPdyD1sJ1hNoUPgCkDlYahP25XnwJZLRtQDeq6EXEDPw==
-X-Received: by 2002:a5d:5f45:0:b0:487:2347:817 with SMTP id ffacd0b85a97d-48872abc804mr19369239f8f.33.1790521616280;
-        Sun, 27 Sep 2026 08:06:56 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm20467465f8f.9.2026.09.27.08.06.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 08:06:54 -0700 (PDT)
-Date: Sun, 27 Sep 2026 17:06:52 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/mremap: fix locked_vm leak by splitting VMA for
- MREMAP_DONTUNMAP
-Message-ID: <arkuBw_l6iL-VLuC@gmail.com>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
+	imf08.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="Kqoo/x0g";
+	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1790524309;
+	bh=XJZtRM91aHOzDwlGhUn7K80dltrSbiTp//FJp6Ow9Ys=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Kqoo/x0gU6cfO/dozoCRndXnjMUQnvEWJJqFnRL1KdacbB59t9bFJQG+UrLMt9tht
+	 JQanVvci7golgHlE/4H1F11J8dkXRmYG4XDEpC1otXSWcNaErQEtJwaeBd6mhKlUYd
+	 U/cut1gZY/CaDNZMmfIj/C7f35+t0E3/qeiRiCfMAjr0BI3Tx2YDfBIcxJbgyXCXka
+	 U44m3Z5cb2VK15CWDdBSrLC2egudDHuOJlGE3cGylihTjJkXeWL9eQA0PIT2kaYuoa
+	 9A/Nr9p9y0kIJk+Lb3Xo4zcgkUaj854GniG3SpgzjdfY+H/E31k0oQfKD+WEU7QrFE
+	 UB7zoVT5J5Yzw==
+Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4ht87n48FjzhGy;
+	Sun, 27 Sep 2026 11:51:49 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: "Paul E . McKenney" <paulmck@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Stultz <jstultz@google.com>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Waiman Long <longman@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	maged.michael@gmail.com,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+	rcu@vger.kernel.org,
+	linux-mm@kvack.org,
+	lkmm@lists.linux.dev,
+	Nikita Popov <github@npopov.com>,
+	llvm@lists.linux.dev
+Subject: [PATCH hazptr 2/4] compiler.h: Introduce ptr_eq() to preserve address dependency
+Date: Sun, 27 Sep 2026 11:51:29 -0400
+Message-ID: <20260927155134.4740-3-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260927155134.4740-1-mathieu.desnoyers@efficios.com>
+References: <20260927155134.4740-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 8419B160009
+X-Stat-Signature: pf4tzff9wwzbfz9hfw9534m9jz8o3szh
 X-Rspam-User: 
-X-Stat-Signature: j7hfcueixoqg5amcx9fsu8ztcg1j9yqx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 39301C0002
-X-HE-Tag: 1790521618-6547
-X-HE-Meta: U2FsdGVkX1/AWaPp19ULNa2G+pQ0Vnkb3TxqGRCaDdBU11gRzls26QghLpHs+ViPp1UtnHk1Lc1g4Ncm4Vg0aqQRUAcCS/S7tipUcxjzDA/2gPo1D7iP0rNs3PTNaIWaoZiLNF8pNvYH2rXnfQG6spdZHH4rZQJSGfuLPVQzZ97gXYleiD6pHfOh9TOCv9+BnspceHZVs4/P/IlVCOVZBK/vK/wgyaIivWZJ5usqDjc11+ceLUiql6yyhOyYoY/6b1vUWsruGOOkJ1HnHibaKVWF0J+63QgEr3R2ie43cCNDFSz+G2TqmFYPG3mqS7eoJVTuViaNLKDerEM9M0jhiOBOQFuBE79Z+4DTX6p/73nNNPAazZeZEk7gXbyZejdwRQAmcZ+VptihYTD4MXDe3Mk1n7ylzWotjMrE4DO2Kdqw4O9D6C0X7hi3F/uMOkjBUbxFx5QnMeTfuydSkPYQrqx4vEooStnLtd30ltO7nrp1JRi1Y5q1XemBnM/jec7yW47itHeir055Xh+Ur4jbs7pjm7spQgjz17gBa5SQ9N1/A1fqkqqj0cP2YG4+VAPm69r48o4lE13rZlEbtCHPhJC0AoTtBGJhf/93u5+DgDG7rvdPZkMwPmDk2qD3d/W3P77iDEfnCOfO9pn7+Ja4ZkUkpYnQfZy35GbvLVHKspyzOmtHwnkD+EPo3objZxBHTpVV4fIQ8PdEVYs5XwFCHX5y3qdk+9pwT4Ve6yHhWQftcjWmpdmEvYB5d1z4LXYC0YbYv4kpQTGzwCMvu8kx/H5Al2x/JuoRwJWCxlQbUtuin65aRzaDM5BF5ebHYEhDZ/Midhir5gL4WRkh88yMaQ2Z5SUq328imWqQ6zRWxMDTiE/jeyZj3eelQJFC+nxTVWEzp9tD1j1l3NY72cNr/Zmp2ENxTH3lYfgD+BdLlqcOMt/jif0mzyTT9BQ99m4Hxcji634vOUxowC9eXfY
- RfTCkM4d
- QgMAfkianIGXU24TUWdcmQURmPK6dKXEsmZTXAOplZzl6wWncKaJ9b0lC4n/NEebyx0/24EaW7wkTDXWVxpI0HBe/iyIxrHSBRhPu/v8hS0LNFpjbKJ/HK0YoOZ8cTEn3Sn6EQca5eXAilvbBVVaKij+4IHzyaTUWngHbkzJafPBDi5qANiVlY/XG95uVH3zVJ+ppII/fIMhu4U+Paelz+ArYZRo3hQoY37L+6MlsKBQU36XZqN0yXQbbZJ29cuQx5Z0eCplYw6IR9Lznm5+yz6RN3b4lqC2NH4S4q4EHcryk+CQpyiKHPCTWxwmSUXLb383q6RddPsYiw2gBe/DjOcgXtfzhWXB7rUNWAdwH81Stec0GGgdMt1I3ITdCdYEoqRY0BRVuqSbSxxhErmwLN+fRZR2rGP7mXgahcvFR20Yz78e6Hr049wJEgNyxSICWCWuQs95iMFmk805qtF31Eh7gCg==
+X-HE-Tag: 1790524310-293855
+X-HE-Meta: U2FsdGVkX18vudPx89jSJNphji4YcHwTKEALx9OShqNBue8NgZ7UGLs9+OIpmHdog54AGMUY5uhHCyL8A/FZbgR2gJRtqXAjjFIcyUgvkpCXDiWqfJ0vDiVJjIOesv/Guax3iaS4lXG73qTczbpgp8MAcD9mmLZ1PbCiY+dP8aaWDcoTeLfIeGIgcLMZPYwfHkA0jaAECw2rbbXAo9xSERGUS4BwHIUP1tnzGhWASAKZy2+9G+GY2z6sQelp97S0ol+HLEBRSbJ3V38Np7E8p7YDz84s93/sjURFe7QLwWegj8M5imCKgNoFBHoxr8dXqCsOeJ30uhlm47SOJ0MyA76SOjJfdOOwP+ylN5y4g6CE2/MqrBQ3dfTtprT0JgPBVz+5Zisn1/s5b0Vg6nfPAy196RxB6ErxW1GOncR0nOfwI2Pl+z1vxngKFa+anQty2VHsof7SJiFzni15rMnhMuhVsg1bRLx95iMiyfVZr6r2MMCTro/uzrhyrYLe2DtTO48FHO1PJ5Ay5CCXwZFDKZ4BsGzjp3eL6WkNLV3Oe0zISbUdpsACLCQGZeSZdx5I5u5qC/UyLmE6Ux70oQ1XIIJLhoQBi1S0uvJxsc/3Y7F9+LP9QU5KeZMoDw7tB2/9cAEbeBFNwmGGFRZhDZFWihHEumiNU7FMUwntQNcaJGzWDUBJJaJJnMV99ym4lV2StXr9a8OxPEzEb41x2wJ+IDZ7P/xh9Dsb3+OR4lTJ2uyo/jAdmEOc0Z4nfoMib6AupWUMW0NhLMSX40+iCOIW5DI6zKGk8ttqIh5aPDwi7zm1I2cgvKm19RtblT2VTPcwYrkqKKcDI+J0W4xAp4M87bCWuqr4+N6dKzLll8EvVR3ysHzxvnlZ2RGSLVea5XMHNeP5WJcWv/q9Q4Kz5J44/5WHa5SbtdMewFgbPmoCHJMR9BwMceS4hI6rEM+FH1AqD7CdWT1hwcnKIvXDrTo
+ XKH9oxvZ
+ lgmK6ndUGi1ueH1zVJndLFPdHQAMluoqd7KacDBvv3cS/0VP1mnyW0iPLyjI3LXBp0/qt98T63zDIRE7KC5NnamGxGRbV7qK2w+yosDvSYOPqoVExTceY0b8nfFoc7/dzqN70iVwoxN2VYU+KTGSDQYNYWQdEnY3Wbx8JtCufsHhmxk/g0KJ/B/Je1TEugiN8mjmgAbVq56+fxbZ17a4olT1hfG+a56n0bQhwF55e+FqXBXJ2c3GDOwjn40eE2qZlRKzeOl/ku5oDa8xfLVtMEVUFWYPBYxe790JLxjaFJBGU14/jaqvWL96E1V0HWCIs6yhPfoTv4FZW+gx0GC30/qrBmnwUkd6VTwoQNrd/kxsr1iC5Ecw4K1i08aAXxO0Kh3kTvLWRZsJSjpx9VuKeprra7hxz4RvhecEhrCESn6Gymzf3LpIwdn58imRYvGt0jKxLRofOOaO5AZPMv8lHqBSvB97EF/ZKDgMeEB1ZTUtIREZZX5Lh1al10vwQHhP9rhZB9vXt4orNa9jhmUAPv7c9jDxs1CT/O7tgS1SCVFmH/XGtXDaPGi6R0PgyYoY8X7/dC+OyabI07aA8ofiH3lSWreZc4QZRnxDOKkBKeUlCjot+BfVliEl4ld3dveuwQtw8OXSxjU8NGa1Qbu9P6N3rTWAi3K0rCMeSfTDOSMJRiysWSeCEG36PzigwscwCbuHGp7h7ZWkAb4hbi7N5gG8jGxv8Lnr3hTiVrBxRzgk779b7022hLMVwXj//OgLRUGGt7O7Fp6QNBNBqpBVP0l5Md8TpqdhIq6s5aJeK+sLOUoE6r5pBWxfa2N/4CMfHzGd2MOj9eGB9CKbSQ/CdlfbTSiltwbkxOyF4lVgYA+NA2CcLPs5G+vsCcBYwG8fEPOocKeGUviwhy9n3CZPbl52KYRG1T8xj1M/a31FGms1hfc2rwVrSIozHrhrJK8US0D07bnkfvkPG/kGhElPnZioYttnK
+ gA0ku0XC
+ k0mOKR165n9KwEHfnIRbDeXc0gZOFQ3kf/k89sDGSGw6L7IMIHLQcC4TEC2FtCfsP9J2myB2iXEU+U57VQsFScuKmFphWNrOAQEwhjXewAoZTvQTgdE3+j3N9lpLUN7jqjqyA5A1mkzicstGOdtZ1Hh0oZdqOOjHMP8XbnqbmxCDSyfZl3Vsrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,71 +120,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 03:13:11PM +0100, Lorenzo Stoakes (ARM) wrote:
-> The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
-> operations that keep the original VMA in place.
->
-> Historically this has led to a lot of bugs where non-obvious interactions
-> occur between existing mremap() operations and the original VMA.
->
-> Fix another of these - partial copies.
->
-> The long-standing mremap() partial VMA logic has the baked-in assumption
-> that the originating VMA is unmapped and thus moved.
->
-> However MREMAP_DONTUNMAP defeats this by performing a partial copy
-> instead since it keeps the source VMA around.
->
-> An mremap(..., MREMAP_DONTUNMAP) operation disallows resizing of the VMA,
-> but the operation can be performed partially:
->
->                            |-----------------|
->                            |                 |
->                            |                 v
->                         <------>          <------>
->                         .new_sz.           new_sz
->                      |--.------.--|       |------|
->                      |  .source.  |       | dest |
->                      |--.------.--|       |------|
->                      <------------>
->                          old_sz
->
-> The page tables in the specified range are moved, but the original VMA is
-> kept intact.
->
-> This interacts poorly with mlock()'d VMAs, as the VMA_LOCKED_BIT flag is
-> cleared for the entire source VMA and set for the entire destination VMA.
->
-> This results in an mm->locked_vm leak as the change is therefore not
-> accounted correctly.
->
-> The clear solution here is to make the portion of the source VMA which is
-> mremap()'d distinct from the rest of it, a.k.a. split it.
->
-> Therefore resolve this issue by splitting it ahead of the rest of the
-> mremap() operation.
->
-> In order to make this change re-expose split_vma() in vma.h for
-> CONFIG_MMU (nommu doesn't compile mremap.c and uses a static helper
-> instead).
->
-> A quick search of how MREMAP_DONTUNMAP is used in the wild suggests that
-> the partial case is either unused or rarely used, so this should not result
-> in unreasonable VMA proliferation.
->
-> Since this makes every mremap() MREMAP_DONTUNMAP operation operate across
-> an entire, distinct, VMA, also eliminate now-redundant code checking for
-> this in dontunmap_complete().
->
-> Finally, update the sys_map_count check to account for this case.
->
+Compiler CSE and SSA GVN optimizations can cause the address dependency
+of addresses returned by rcu_dereference to be lost when comparing those
+pointers with either constants or previously loaded pointers.
 
-this also LGTM.
+Introduce ptr_eq() to compare two addresses while preserving the address
+dependencies for later use of the address. It should be used when
+comparing an address returned by rcu_dereference().
 
+This is needed to prevent the compiler CSE and SSA GVN optimizations
+from using @a (or @b) in places where the source refers to @b (or @a)
+based on the fact that after the comparison, the two are known to be
+equal, which does not preserve address dependencies and allows the
+following misordering speculations:
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+- If @b is a constant, the compiler can issue the loads which depend
+  on @a before loading @a.
+- If @b is a register populated by a prior load, weakly-ordered
+  CPUs can speculate loads which depend on @a before loading @a.
 
---
-cheers,
-jose a. p-a
+The same logic applies with @a and @b swapped.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Tested-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Acked-by: "Paul E. McKenney" <paulmck@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: John Stultz <jstultz@google.com>
+Cc: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Waiman Long <longman@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: maged.michael@gmail.com
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>
+Cc: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
+Cc: rcu@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: lkmm@lists.linux.dev
+Cc: Nikita Popov <github@npopov.com>
+Cc: llvm@lists.linux.dev
+---
+Changes since v0:
+- Include feedback from Alan Stern.
+---
+ include/linux/compiler.h | 63 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
+
+diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+index 70cb31d60538..0a8c8e53cdad 100644
+--- a/include/linux/compiler.h
++++ b/include/linux/compiler.h
+@@ -166,6 +166,69 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+ 	__PASTE(name,						\
+ 	__PASTE(_, __COUNTER__)))
+ 
++/*
++ * Compare two addresses while preserving the address dependencies for
++ * later use of the address. It should be used when comparing an address
++ * returned by rcu_dereference().
++ *
++ * This is needed to prevent the compiler CSE and SSA GVN optimizations
++ * from using @a (or @b) in places where the source refers to @b (or @a)
++ * based on the fact that after the comparison, the two are known to be
++ * equal, which does not preserve address dependencies and allows the
++ * following misordering speculations:
++ *
++ * - If @b is a constant, the compiler can issue the loads which depend
++ *   on @a before loading @a.
++ * - If @b is a register populated by a prior load, weakly-ordered
++ *   CPUs can speculate loads which depend on @a before loading @a.
++ *
++ * The same logic applies with @a and @b swapped.
++ *
++ * Return value: true if pointers are equal, false otherwise.
++ *
++ * The compiler barrier() is ineffective at fixing this issue. It does
++ * not prevent the compiler CSE from losing the address dependency:
++ *
++ * int fct_2_volatile_barriers(void)
++ * {
++ *     int *a, *b;
++ *
++ *     do {
++ *         a = READ_ONCE(p);
++ *         asm volatile ("" : : : "memory");
++ *         b = READ_ONCE(p);
++ *     } while (a != b);
++ *     asm volatile ("" : : : "memory");  <-- barrier()
++ *     return *b;
++ * }
++ *
++ * With gcc 14.2 (arm64):
++ *
++ * fct_2_volatile_barriers:
++ *         adrp    x0, .LANCHOR0
++ *         add     x0, x0, :lo12:.LANCHOR0
++ * .L2:
++ *         ldr     x1, [x0]  <-- x1 populated by first load.
++ *         ldr     x2, [x0]
++ *         cmp     x1, x2
++ *         bne     .L2
++ *         ldr     w0, [x1]  <-- x1 is used for access which should depend on b.
++ *         ret
++ *
++ * On weakly-ordered architectures, this lets CPU speculation use the
++ * result from the first load to speculate "ldr w0, [x1]" before
++ * "ldr x2, [x0]".
++ * Based on the RCU documentation, the control dependency does not
++ * prevent the CPU from speculating loads.
++ */
++static __always_inline
++int ptr_eq(const volatile void *a, const volatile void *b)
++{
++	OPTIMIZER_HIDE_VAR(a);
++	OPTIMIZER_HIDE_VAR(b);
++	return a == b;
++}
++
+ /**
+  * data_race - mark an expression as containing intentional data races
+  *
+-- 
+2.43.0
+
 
