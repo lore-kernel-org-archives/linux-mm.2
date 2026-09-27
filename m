@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E3BDC9830E
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 12:06:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A9EC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 12:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00DE6B0098; Sun, 27 Sep 2026 08:06:00 -0400 (EDT)
+	id 1E9C66B0099; Sun, 27 Sep 2026 08:06:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B0BD6B0099; Sun, 27 Sep 2026 08:06:00 -0400 (EDT)
+	id 14C786B009B; Sun, 27 Sep 2026 08:06:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 878E66B009B; Sun, 27 Sep 2026 08:06:00 -0400 (EDT)
+	id F2F696B009D; Sun, 27 Sep 2026 08:06:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 60D2C6B0098
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 08:06:00 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id CFFCB6B0099
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 08:06:03 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73FFD1A0A0F
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:05:59 +0000 (UTC)
-X-FDA: 85259413638.22.50BAD00
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C55EA18000B
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:05:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NoV1T2/k";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4E219409ED
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:06:03 +0000 (UTC)
+X-FDA: 85259413806.22.F108C77
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AEF2C4000A
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:06:01 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0GqcVCk;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790510757;
+	s=arc-20220608; t=1790510761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s7JRcQFcD/nLSCcRzyB24nV92nZBWi01kt7jJ+1f3Ug=;
-	b=RQPm98xdP+l/qUemjk5p0Q3AEYNFN90NoJL0R9GEUnc5wIJ/vK7S3BuIeHLqX9+qBbtgvB
-	2lvGyvaSAm0nBol8WMTZbjqWEDq2v1dJPNxfwTh+3nQgEOn5H2zQ6aM1BFSen2gQRaE9wD
-	KfI67U5cvZ5IKxj+QSUAX3nsAxJQPrc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="NoV1T2/k";
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=E1gVvDIreHP8ao0G8tKQqDlYq/j2WrsMakNo62d+qXY=;
+	b=Z9Cj90nQZU99EiAqLqNXbRYxvmdPjrZrXuLwPq7cDTmJqrGRlV9BFM+4lsoEyfHvnbjCJk
+	DQPBeBdEJsHqDY0OD2T32I0btm573Db4chVHxeFLUzU9lcTSZlaCwGuMv41ycFrwwqy5fX
+	wDTOWznsaXON1JCUUehBGi7E+WUSrmo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790510757;
-	b=IxJcPTuI5RDvZ8IpW8CbNd3UhBjfVlDAw1ndd/vm7+/kc/GGJEtzSrwYzTQdCtGDVG6qmL
-	fwZoivlv75C+c2ab2qGB99vooWIBOm8gKC5hJ/yoXilW+zpGeM9PQDDA5ZvVSzeOl4B4Yv
-	BDpg1R14k9oXLoKYwiqtA398sLD7A48=
+	t=1790510761;
+	b=o53xVZwVHjhHzK8BKtnVVwCCtgd7BjJTBMnlZWsH7BH3ydIX/LtgX8hlmis+Xnp9VM47Ax
+	FwEgy8VV1pj68k4wWzWRiw3bvmahv7ONl9VHwk0VO/39Tv+pvCXHBYysaVpfbT4FJX1bxc
+	ETi6XKDB+Mgqnbpj8ZpvhZENQST8aWU=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0GqcVCk;
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1B47443C8B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B66E60D78;
+	Sun, 27 Sep 2026 12:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7628E1F000FF;
 	Sun, 27 Sep 2026 12:05:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DF41F0089B;
-	Sun, 27 Sep 2026 12:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790510757;
-	bh=s7JRcQFcD/nLSCcRzyB24nV92nZBWi01kt7jJ+1f3Ug=;
+	s=k20260515; t=1790510761;
+	bh=E1gVvDIreHP8ao0G8tKQqDlYq/j2WrsMakNo62d+qXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NoV1T2/kpMtR6i5MRGmMyCsemTbSIZ8giQ7lc6UOEqNw99Ur0/hgciBBApfxySnOU
-	 Ya4FlAUg5YWUPQBEFMOmmOO+cvi1gHWaIMBrxTUnx+ut0BN5Z9Rv+CSw2z/3rWWrng
-	 vd+vo32WAVAssZyl5kPAtczL+Vgun269nM/cne6xN5Jm61ahQxntV2WVxcAXZmQOv+
-	 FQ5M6HTHNyvW2LoEH45McbaY7ULV1iUE8eha4mzyNdZfgdpNCuOUG3AAN2077yVwHd
-	 QKnLHSkC+Jo1GdB5LBFNl7sYA+w+Y/j6f+EG2csW/UvJky/V1UlAizEJ+/jacMUsrj
-	 45gjVRsF+p6aQ==
+	b=H0GqcVCk2VyB18B47rOkzjOJvAqWtuVDdR65tyOxAUPOMYP5cfuu8IALwgPhgxgPO
+	 oVe50yWpdaKZowdTvhm08iLQBtG9o0klkSwjJKDC8+yeD7CdFWSsF9SAsC9slH+ZBm
+	 OYe6Xfis1fjBqg1htJK1i3PmtA4rU6HyNuDPfx1HPq+RoTlZDEkCM3GU4Tq1QCMa+/
+	 l/W+2PxZPROPb6JmO1bwfggGRUvz+ZOO13akfFj+O2g1E3K1O51GfwsUx4snuHxvk0
+	 VLgbjto0imKQSpah8qRVbx/HYhRN4lxkuNnSoK4y0dl13Sk4TtMbgEE6SG7o+wqerK
+	 TFSvCtiwI30Ag==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -81,22 +82,23 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v4 5/7] Docs/mm/damon/design: document damos quota goal complement flag
-Date: Sun, 27 Sep 2026 05:05:29 -0700
-Message-ID: <20260927120533.50484-6-sj@kernel.org>
+Subject: [RFC PATCH v4 6/7] Docs/admin-guide/mm/damon/usage: update for quota goal complement file
+Date: Sun, 27 Sep 2026 05:05:30 -0700
+Message-ID: <20260927120533.50484-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260927120533.50484-1-sj@kernel.org>
 References: <20260927120533.50484-1-sj@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C55EA18000B
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AEF2C4000A
+X-Stat-Signature: 73ebmptgfm6ujh1dax6o3ohgekr8y1up
 X-Rspam-User: 
-X-Stat-Signature: hbnxz6tj17sd1x4fcp58kp8jemi1bpcs
-X-HE-Tag: 1790510757-634068
-X-HE-Meta: U2FsdGVkX1+vWPq2W8ICqV7ko3kBXmlKKbD78tbdWfRv6ZJGSQVK/F3Sm1BCS/MJRsxQ6EQmMmv/mDrYUCJ1oteyKTxuJNYg9gZCEmoSs3/eY6PUUyhGy8KKGNEKPpgDzz/ty7c1993iUPJ0Dlc5HGsqrReakHggPyVi0NFGcZMFwFhZNoVVDGnlNmn2KF6ghBaXoN2IcqFlTnsTu35Af+RaOqOrZus+Wx125ps8qVad/LKYUdH2lvUsKrA7ioVavaI1BH/dtbBndk2zmSDHVRh8y+dTKU9BolYFGA2umn5xA8Uvs3MAQyB9SPFw4T2/aqoWmFbjyXdFeb3yF47S1RdQ0iSMUZUq9pUZrt7x9oCB+oGtrLkBMAnFmEp4JBGm8qqyKY1z1ZVOgM/04AmbNGeIrtKzJGWRAC4EQ5baLaCYlt3A4UtYHRBiWWOZtmNzGn69SUW5MfMbZbEG/z9AfW6/bCt3eFKWlTnJP3e0F7piLWukd9LyzRvbo3hPqzO959OkAkjz25kmBR5N1OEbZbxeJJnFhZ4DRS4GIfNZ+mMeV8HixU0R0HoCRmj/5kUvZ+67vkmA0ElpSUf+LGeemkkn9rGHgXo2LzuiLuUNqSJ8ToS+CFGr/Dv/A80I8yMtSY+ESd6TUbp0Mz6bcwdMrsR8JPM+f8SOcou+l97Xm2jodf+yhTFLA2BpnjHmb2TLhbWvQFjBnltDlb+gwzbnEbBEuZX3uqOHeUfrleGT8h/EYwHWfYRMX6W2w4gh14pPHezKzMrw+pqKKyXsC1s4ewNav2Y8VgStre4AJej+IpaI6xQmmYIEGrDSJwR869g21aMClDOUsSUcUNxJrjVLx5dVA5HX/wrxzeRER4b383GMmWKWAkXK0iBE49r/gsc7mYTejChMkpFtXhjBnB8d+J/esgV7BZY/JQUH7e6ZdeAX3oNVtEx8NEmFXZ8YQ3nsvAgFm1xXRK1O+EfYxhs
- HJzyKzWB
- rzlzDyEpmN/ApnKt5BtjMMHvG5e3XrkTQD9x/e2bJKaUORNxBrusquFoTqa2H7UAAWKz0em3XaLlmnkVmhShOyHdPHemhm9PMnl/KfJhjVFEJyDMnjWU/AgIA9V/bs1PPihbwSUiTmeR1ICOx5BgpOf27zQ8kbsLIWk6tH5YpBauvpa8jR3bDve5xLQlGsxbN3Vl+FG1KZdTZ9FK6QZbezck/pDUZhDhA5ALGicig+LT5LrI=
+X-HE-Tag: 1790510761-389197
+X-HE-Meta: U2FsdGVkX1+L06fM+aE72dRiAK/gZ2V7fgsJQD505874hSbDvGpgojb2A+rvdUvCXqtqTOjFqb/GvtrcFO+WPvVfik7UwZ9EYjw8IFFIMQwzme1dUsxOhgYxRP0Jnbzu5PSJnuhv24Ks7FDw5IgwsvfA7a6wcEy2woSWaZIsAfQIcf6ijDKRHRJy3ANN9XJ2OVd1VTGBYBPNcIMuHV+VtAhMkmzNMeMbTnmie9GuNoHiffg5wxA6/MFWCgReqn7/jdW7APg/ko/c+2+MGGlHyFjsOtK+jZSBEGp3u2pQiMX20jmK9ziXEh73SVjyHf2jaddcWgWU137GP6bTpxBNSFtboBgcxgLR+wSkuFN26EWuZHGsEzfxpFkQrrYr2q2b/H5KvHbo3+7t+5xPeFKzzH1Sf7ynjKSyWgnur3dZbxwk9TsoT3wnkLwBslcgMwbHOj7o8deSDpbtDnEvKoK6RsHaqvkcfKvp1IdJOTpEiVuc6/7d0A2AOqIZJkhli7eoy/4/hgueDLdt2uSD0xHZYNfwM0A3qKnO38mm18kVdwlaYeepxhlUtTfVrE+FmqGzHDa5CiRtOM9ShnX6gTyqdNbZUDkuhE3naxIxjLlImyBTXV8i7DOX4mcQuaOQ75KUi4CLQeL0q1tmFcCC+KW6U5dZ9Et9Vx5IKsTviiM2YopXr60YiaNaDQvpa5fjLj7fiuqIfMxMXr55LmSYeqMV6y4sPOkyQdSF6cqIGKTaPl5Jq4vcAZ1Ka+d3e2dF/7zD1X3tNC8Y36wG5e4Ddmk/X+0ABgVvooOY2oOJHD9uyX7y1XQCJUQyiUTZJC7OLeGnkBqTLxPbO9wfXysvPis9WEY+rDlRhHD4dBOmTAxvwXniib36HDJBL/Nbnxc/VV2wU9GNh2a1Lx7Z927jDp+M6IsyoDEhMGN27ud5AplCVQUyyygCg/CJ3oBXZi0lsUYnBEvMPJW3lty1E69P3Xq
+ ztcqNXNV
+ /Lo4uL5F72J9B25Vienr2lqEeKdJi7HutwS8zSU1OelpV/yTTKNW+27bbfgLxF4cufDDDndc4mkn2Qp+lPBFTZewPnhrctkZFNrVfUsaHarotZR8tilXIrXqmqOF+Y1Zd6eHSIAVfiPmUO0Vtew/carnyDGs3uuP/4QvAK8+5r6FoeVyCibi4TbULVHZSzKMyrW9CUhX6HRNylbmRH/Q10B+kTJrdLesL1D65UwRdCcp4y4ts3ghSmv7l5LHPNFsxAKt2QAAPgPzDmLrpBK9zsv6AeJKmKHZADGfWIdH2hm7VMoGUwjYOPyHj5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,47 +106,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON design document for the newly added damos quota goal metric
-value complement flag.
+Update DAMON usage document for the newly added quota goal metric
+complement sysfs file.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ Documentation/admin-guide/mm/damon/usage.rst | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index e82390e77a70..5cd651b1b7aa 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -702,10 +702,10 @@ There are two such tuning algorithms that users can select as they need.
-   that the zero quota is a valid quota, and therefore ``qt_exceeds`` :ref:`stat
-   <damon_design_damos_stat>` will keep increasing in this case.
+diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
+index ba4725544856..3d43954c7046 100644
+--- a/Documentation/admin-guide/mm/damon/usage.rst
++++ b/Documentation/admin-guide/mm/damon/usage.rst
+@@ -98,7 +98,8 @@ comma (",").
+     │ │ │ │ │ │ │     fail_charge_num,fail_charge_denom
+     │ │ │ │ │ │ │ │ weights/sz_permil,nr_accesses_permil,age_permil
+     │ │ │ │ │ │ │ │ :ref:`goals <sysfs_schemes_quota_goals>`/nr_goals
+-    │ │ │ │ │ │ │ │ │ 0/target_metric,target_value,current_value,nid,path
++    │ │ │ │ │ │ │ │ │ 0/target_metric,complement,target_value,
++    │ │ │ │ │ │ │ │ │  current_value,nid,path
+     │ │ │ │ │ │ │ :ref:`watermarks <sysfs_watermarks>`/metric,interval_us,high,mid,low
+     │ │ │ │ │ │ │ :ref:`{core_,ops_,}filters <sysfs_filters>`/nr_filters
+     │ │ │ │ │ │ │ │ 0/type,matching,allow,memcg_path,addr_start,addr_end,damon_target_idx,min,max
+@@ -492,12 +493,12 @@ number (``N``) to the file creates the number of child directories named ``0``
+ to ``N-1``.  Each directory represents each goal and current achievement.
+ Among the multiple feedback, the best one is used.
  
--The goal can be specified with five parameters, namely ``target_metric``,
--``target_value``, ``current_value``, ``nid`` and ``path``.  The auto-tuning
--mechanism tries to make ``current_value`` of ``target_metric`` be same to
--``target_value``.
-+The goal can be specified with six parameters, namely ``target_metric``,
-+``complement``, ``target_value``, ``current_value``, ``nid`` and ``path``.  The
-+auto-tuning mechanism tries to make ``current_value`` of ``complement``-ed
-+``target_metric`` be same to ``target_value``.
- 
- - ``user_input``: User-provided value.  Users could use any metric that they
-   has interest in for the value.  Use space main workload's latency or
-@@ -733,6 +733,13 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
- - ``hugepage_mem_bp``: Total huge page to total used memory ratio in bp
-   (1/10,000).
- 
-+``complement`` is a boolean parameter that determines whether to use
-+complemented value of the target metric.  For example, if ``complement`` is set
-+and target metric is ``active_mem_bp``, it is effectively same to
-+``inactive_mem_bp``.  ``complement`` is no-op when the target metric type is
-+``user_input``.  For the metric type, the user should be able to emit
-+complemented metric values on their own.
-+
- ``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
- ``node_memcg_used_bp``, ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
- point the specific NUMA node.
+-Each goal directory contains five files, namely ``target_metric``,
+-``target_value``, ``current_value``, ``nid``, and ``path``.  Users can set and
+-get the five parameters for the quota auto-tuning goals that specified on the
+-:ref:`design doc <damon_design_damos_quotas_auto_tuning>` by writing to and
+-reading from each of the files.  Because the kernel does not update
+-``current_value``, reading it only makes sense when ``target_metric`` is
++Each goal directory contains six files, namely ``target_metric``,
++``complement``, ``target_value``, ``current_value``, ``nid``, and ``path``.
++Users can set and get the six parameters for the quota auto-tuning goals that
++specified on the :ref:`design doc <damon_design_damos_quotas_auto_tuning>` by
++writing to and reading from each of the files.  Because the kernel does not
++update ``current_value``, reading it only makes sense when ``target_metric`` is
+ ``user_input``.  Note that users should further write
+ ``commit_schemes_quota_goals`` to the ``state`` file of the :ref:`kdamond
+ directory <sysfs_kdamond>` to pass the feedback to DAMON.
 -- 
 2.47.3
 
