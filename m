@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3AEEC9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 14:54:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB60C9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 15:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1593C6B0088; Sun, 27 Sep 2026 10:53:59 -0400 (EDT)
+	id E8FA86B0088; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BB816B008A; Sun, 27 Sep 2026 10:53:59 -0400 (EDT)
+	id E40746B008A; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEC4B6B008C; Sun, 27 Sep 2026 10:53:58 -0400 (EDT)
+	id D2F286B008C; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C4F976B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 10:53:58 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 41B83C0A57
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 14:53:58 +0000 (UTC)
-X-FDA: 85259836956.10.54C2546
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7D489180002
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 14:53:56 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M4DEyHX9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A9D026B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 11:07:00 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 195A640A1F
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:07:00 +0000 (UTC)
+X-FDA: 85259869800.18.13D7324
+Received: from mail-wr2-f26.google.com (mail-wr2-f26.google.com [74.125.225.90])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 39301C0002
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:06:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ehNLbuy/";
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.90 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790520836;
+	s=arc-20220608; t=1790521618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=47QCiiWBjYaD7BMaolGfIqq4ppH5IxXyHRYQ4qkMx6Q=;
-	b=BL7HNVX6F+oa59tl0FB4tgA/ROimHc88SJj2DxTlSnn2givHSJ59TjDOOhFAcdqmIizRB1
-	hzX4Ujqv+eyCdZne+Q/T21v2KeqA1UEQpWruWhe9b1xxx4Glq9zrIV7naG55jRZatLdEyU
-	uy2GbEIWwJtjhA6XC8cjffWBWqnTf+U=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=M4DEyHX9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
+	b=4a3kzGPlB+735rlHAo01jJLKa7sVg/SGo/TWDGoKN7vCQD6bafyk7XQAS+KvFhle0+bQ60
+	UzhjsDpHmkm71wi3Zgz7aJx3+yoBCFEvUeaL385SWuwfCJWic4R5Jtwc0HISTKjxXqL1Q1
+	bbrNjR1sDtMK8Tun97X/oeH/ea080zM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790520836;
-	b=XTxoNxotO4PQNAMKY4KY6u3z1x5yH5pPzZswoeOy14oM9NufNl7F/YIGF+geHTaXLeOnXp
-	puEnZQu5WX+gIowyS0EX3d7YYYbLl88yb8HNPVrbsKptao3Q2S9Hea2X4ZZf8mxYVrriho
-	sugviANfjNKHk7H8vnXAmn1V7oy3bcI=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ff9621c5dso7481155e9.0
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 07:53:56 -0700 (PDT)
+	t=1790521618;
+	b=azYvQgpW3U0Fbp3nwTEuwjorDqJ8BfkQSOGVKfl5cWNAVnxVR/hUGReF8pHV74p9gmhPrL
+	ZYnZ5vtc4OTTzMnEKoJSE2SpCzKOSo7PR9DhDj3OF/MsgNCylMOX7j2gtXP3+2lAZXKtya
+	h1xJQhrDgXewlIVZmaxA2dmC5L1Dizk=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="ehNLbuy/";
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.90 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr2-f26.google.com with SMTP id ffacd0b85a97d-4843f22dc83so1881410f8f.1
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 08:06:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790520835; x=1791125635; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790521616; x=1791126416; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=47QCiiWBjYaD7BMaolGfIqq4ppH5IxXyHRYQ4qkMx6Q=;
-        b=M4DEyHX9oDnO+jt7cfvyCpnOBYApok4tyKoBIJYHLbqbenjWBdb+drs1f1vzQYnGUD
-         rne1hPXylCxQGOfQ9IFExjHfSZ6Hp7kSMW1ikF7ShtmX+O/DgNeEiUNrgpgDxF7CbpWZ
-         Xy2zMNL459jVOLMbl4gZzqB8mKoJeI3YVuSPKgUq15eAf1mtwAF2zqPwCvZ39MwB+z0D
-         0aKvOpYWXKzWDKrTnkrQXgVqsk7bJaUCSYkhK7+dXluRCgoQVAr+DCsCiQ7gLIzBX33V
-         496Wt5wsz1lNKlJGr4EOjTLcdDu/XmUr0wWtesDRA6o5pOhBNNEAtfOogXn/w9ed9+se
-         opwg==
+        bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
+        b=ehNLbuy/TJ2bqsKZ+LWmkM/GPOONiy4xpcaXsokAImRGRRJZvqs4437/Vr7cwYRTFp
+         fF1sDhjfcQ6HowxIxv+MKE15GOyMBdwb07O1UDVLJ3vqVVnyRf1wOHV+aJxXjrboduGs
+         ALllwTs9k53NgAVx2dG+CRBZsCxvlxrfG4meMuztM8GkxkPlv1I9CEfl+tvrFl0jfJDu
+         uev+2V0mPE52/pg+XKUI7wcnp+gEwZXPLfc1Lgh+SFZEMwLjFeYq+YbxHLn7dJ8MKrgf
+         H9qCSrkNoGVd5Rka0222hcRa7yl1wVJiAVbQ43q1Kl+fFpDj8LAL8j/lmiJXqOGpULvw
+         2iTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790520835; x=1791125635;
+        d=1e100.net; s=20260707; t=1790521616; x=1791126416;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=47QCiiWBjYaD7BMaolGfIqq4ppH5IxXyHRYQ4qkMx6Q=;
-        b=y8+2kDCzzeDF3sqrdpMNebYyzQ+r7VYTCU4COuZKUA/dGwLQHrV/z8+cOtFBZk696s
-         oAYZ4QeEgYwezogzk6tH++9HGZ2m9c2arKJCu57JXZ8KI4eGFIa/HfIYPZjJeW7s9Dnn
-         6eRaRZMlRk4eWgxvTAlFlD5pPfDPun9GcwsT5YahlSxgPdUpLS1jUy/FXH3K4lUzOQUu
-         qNVwhBY9mo9JpXBkDMxbBxCp4u9gNHDdSI/L5vn9jBUgpVbH9tPLRjIS74kidtdgtnBD
-         T+KcvHsDGl5ll2m+JFYQUNufj3kbMx8kjAxWgiPke8XUcwB0tZX0eD2ilqB4mnrVjYUH
-         3FSA==
-X-Forwarded-Encrypted: i=1; AKwUvBwV0xDqmI/zb6iuWrbmsDIxtyzpVEmnahaAHZ7Q7n07Wk8SiF7lrrt36fwsZKobH0i2uE4xtKiQtw==@kvack.org
-X-Gm-Message-State: AFuF++miS2FZm6tFfDYhtsgGJJraoQ4gxu9Mg0K2AyBPDSSHId2+Lt6c
-	SZ/leNDvZVx6993D5mt/AjoA6ZYUpSumdk2Ba9kx7vUxrRWzBGNeaiUO
-X-Gm-Gg: AYBFou1kkkVWMXbiek6TvGmM8VFANxXcviXMUhT/wEmUEckGy8YJytWIrvYmpsF4PPo
-	ozb2pfuoYUhSa/F1a8PFtscpSLw94MUrH3gFbdwwL7leE6pSs1g6S3Q2/oyvHSuH6W5PEJ1C4K3
-	1roDs2NMgwVl0XOi0kbQLo/eXDzgVByz70QpdjmzHKkncro+GYXYcmHElwOK51i6kYkEZTIdngV
-	OxkcaPf8ubrk1CxPw9ztqNHFrdmETYgsQjwv9v5NfiKtRVp5UD5VsHCfPH+Cxnzu9EgNoD5rf8E
-	mxVPB9UT0FGXn/xBXpIBGUy71oj3XD4k7XA4YkZuM/wqNP4eBLYieLEXI8p0ljIjbMKBEzrtT6X
-	ZuxSQ4U6O7RTe6DUbcQY4vfdc6xJOJ8v6lZK+5zgxhX1kMaOsJfye6JNNrVmm0sTWFAbiNnnuY0
-	QMaXRKYfrbfHFx95pCWF5lBEnT/+Mc3LSn1dheVzzfFRCGPvwrv1ph8OYnYQgCkJKzRSM7qQ==
-X-Received: by 2002:a05:600c:1912:b0:49c:fc6e:8cb1 with SMTP id 5b1f17b1804b1-49fe66d811dmr186291185e9.21.1790520834817;
-        Sun, 27 Sep 2026 07:53:54 -0700 (PDT)
+        bh=CrMFIXOrRMNN8CamXouNMnZGLVuoBTeO83yFUevJuik=;
+        b=XrCjT1NL1E3g0qDfL7QE5Er2jgi2WzimpZB5Rw5w4USLbIdfIEBrCZJydU1o0EPdx9
+         g72eFRc02RcXPPBR0TGWdHfAHU+79HFLZ46W0I1BTjJ9wYHii3EFglkT68TwhdkBSXXb
+         UziqVooZIcvmDUI3O9OsmNK1YJYUqE84kyKwSFGIPQhHr4ionxdUerN7o1lXK/WjWxdv
+         fKo0SfQWBnGM8wmQEwHtPb7U7OuabL7AOuLW3vIZZX7/j6X4FAxu6pZKHjgJ7RyDheMO
+         qOM6wrKnHhRfetxYZgPt6QbD8XPmR4bIp0ygPPQ76WtGJDMV+xKJQFgEd77x0s9GztDz
+         z5pw==
+X-Forwarded-Encrypted: i=1; AKwUvBzEK2FyZzQhtAoXH+TltPyXB9COBKMME+rXB0jzUMH6/ulXjScN9Y/HLFX0GxCB7aGXsjHAxaTZqw==@kvack.org
+X-Gm-Message-State: AFq9FYIjQt1nizwDaB6654ggGP3yBpWks7PChRBs0t5zOGEpxAeFCmBh
+	ObERxbAKffwM+waqOxFK0k5BUy4oJWzr7lEiQlNj+zLCMbKoVMMg7OtF
+X-Gm-Gg: AYBFou0J2g6KvYGjrIFXhQpx7lDVhhsFVgU/BcuXrZXR510xHVJP+vz46dvj8jnbYh7
+	06eWIK8N4OxK1dsYmxV06q13jbrxWMGjbb2ips8R+o3uhwvC24BEQ9xWxVFZ9SjEEo10k/1dvNE
+	c1mVFBIfeAOwPOLx44ung7P5/2gpy55WxAjZDD/GKHwqWhs8z40JzjHb2C0SdM/+ActJwImBrEQ
+	t+d7ggNUs2RV6Wnbq2pIEcGasscVsDji2A9iMzTsZU/QfVXvdAfk7yR792DiSQ9CEKAm7HNBJT8
+	M5lFDgYp8Md5bwWVMJB9EHs683uOTsSc9m+eAPNVAUqXKShpl3SbXjqlBFqoXq6o/GJ6RU2GcrK
+	DRd7A0wEmzQokptri22aqxGEoQXkejLkJoAKG4+zf0tQi62GVS5mt/K/ga2ctyYU2XTrO2xrEzu
+	zvIr+epLIfqf26NDt+t4iXB72nFQPPdyD1sJ1hNoUPgCkDlYahP25XnwJZLRtQDeq6EXEDPw==
+X-Received: by 2002:a5d:5f45:0:b0:487:2347:817 with SMTP id ffacd0b85a97d-48872abc804mr19369239f8f.33.1790521616280;
+        Sun, 27 Sep 2026 08:06:56 -0700 (PDT)
 Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a0017656cesm60949975e9.3.2026.09.27.07.53.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a34a638sm20467465f8f.9.2026.09.27.08.06.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Sep 2026 07:53:54 -0700 (PDT)
-Date: Sun, 27 Sep 2026 16:53:51 +0200
+        Sun, 27 Sep 2026 08:06:54 -0700 (PDT)
+Date: Sun, 27 Sep 2026 17:06:52 +0200
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -100,23 +100,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
 	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP
- self-merge
-Message-ID: <arktxLzohm0cb1ch@gmail.com>
+Subject: Re: [PATCH 2/2] mm/mremap: fix locked_vm leak by splitting VMA for
+ MREMAP_DONTUNMAP
+Message-ID: <arkuBw_l6iL-VLuC@gmail.com>
 References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <20260920-fix-dontunmap-partial-self-merge-v1-1-6ffb556f8f8b@kernel.org>
+ <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-1-6ffb556f8f8b@kernel.org>
-X-Stat-Signature: hwu5s8cek5dxn3weqsnrczj31gejteks
+In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7D489180002
-X-HE-Tag: 1790520836-459846
-X-HE-Meta: U2FsdGVkX1/G8M8wdAMzm4QkDjZUEZkzmv7djNdjUV1wyURSIW4Yvqtdk34KtL4t97mZsccuLzWZjqwZwY1Qvsq8nKUBvxMrNtLlYUkWwM3OL9sDTJNxcuHZOJeOTobDr+z/U68ZhmTX2y8gVOTLStXlHQQvOdyr+APvWyquJ4G2DqWU3QgGkAbRsoTOd42gD3h3+WPRoHtzqHPDo3+l+IzsvrRhRB7B9AVEgZpij4+mUWUsFoagKmmmEYKVGoSa9t2zcoOVUjl4wYUsgZ+U871ah5QLIryqotDxl8/BuUz1+Ld2lP1lUriopDCosHaXgmf8f3cJqkiVCmH06UlFPAKn9jr+Z75OO/Ifn2XYv73jJE0tSnLMXwP5iMNCpQMaTu21XGxSS+2t6zzMyorNEoW6tKXSdDpE6BRN2+9kIlGTDbYlh+DDeOVoaZzrBR6H1LUauTNXgZSTUoZb/kWn5VfAixM9B3oHrR4uqMLhgdaR/Grx6JZ9cO3D/i1/lpx7nSCwE2xZeJgP/2YZcT80oiIMVyn+hJCmUTRqFSgF93Gla5/z4X1LcVD4VxvW/v4zRZD1KmrPNe6Cvzpfn8x+WpqOuZl46wvK5nn7rDVK7Lnf8Pc3IPVsSYJKaUXtwYSvKmKU+ISipzi4B12brY11nBdRY0UL8N+qPhgVadzHeFS98MoSBZ1ewpujqpJJ59ncBkE98Xi5PgIwZT+ILot2jBMfYtTq21DevXgHEukoxJ48FdqD5/RAUpTxNWoymk7VGgjH4l/wX+tS4EOj/U/+eMzDqz8t2CtZFjvjSKkjWq405tXRHx3fgHsFrrWjtkep8aS3lDVWfsb69e+6N/0w30/PyjFugtp06f34rCX0N28rWWDIFZ4iRaOOEJxISramk719OGZQJitgKouOt/wzCH4skKqompK+KgdIAHEce0Cm+w2FQ7OFzrWta5zQUmavCBQJ9OhkAk8IND2xVoF
- GSMwT6c+
- Y3Ctxch3DD04x+alzC2jysazu5wn3I8aCsI7ZZjFzm0/rMqcaDJwL3OvP3HmJRo3ZZwfAPqvWmXcFuno1Z+/W6FQQKvv1YZu28OQv38RLO9KI35w1pzwF9sPJ2vNQJvEQyH9MooWrJFu1L/j9NsjTuYIYQhN7zZv4cazIQRd64Pb9CzsAn9X1JP51hai9qgdADor7pOEFYp+G+uOyyn8Wps4p8hrwL7u0Tx1g5wO1MPXuWBB+FZmBgRvXVtituJFtIwqgheN/2/xhpAyXW72FSJFi3G44Ur9ghEIiV2XMbutJBr3BPZvxT7sZo/HtHhJs7P2zTATZDnQZXysTd30uhUvkK0+FKZ3UcS4FqjxHsoXw3GBqtK1hmG0zQjugCQMKrWbi/Y4bNtnITlZvwqBMnCdGk+8Lv66q6pg+mm467TurBZcD6fkzWdEuSrESF6nbYrm/6RTV/r2V3ez/1qQ2SQ5jTg==
+X-Stat-Signature: j7hfcueixoqg5amcx9fsu8ztcg1j9yqx
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 39301C0002
+X-HE-Tag: 1790521618-6547
+X-HE-Meta: U2FsdGVkX1/AWaPp19ULNa2G+pQ0Vnkb3TxqGRCaDdBU11gRzls26QghLpHs+ViPp1UtnHk1Lc1g4Ncm4Vg0aqQRUAcCS/S7tipUcxjzDA/2gPo1D7iP0rNs3PTNaIWaoZiLNF8pNvYH2rXnfQG6spdZHH4rZQJSGfuLPVQzZ97gXYleiD6pHfOh9TOCv9+BnspceHZVs4/P/IlVCOVZBK/vK/wgyaIivWZJ5usqDjc11+ceLUiql6yyhOyYoY/6b1vUWsruGOOkJ1HnHibaKVWF0J+63QgEr3R2ie43cCNDFSz+G2TqmFYPG3mqS7eoJVTuViaNLKDerEM9M0jhiOBOQFuBE79Z+4DTX6p/73nNNPAazZeZEk7gXbyZejdwRQAmcZ+VptihYTD4MXDe3Mk1n7ylzWotjMrE4DO2Kdqw4O9D6C0X7hi3F/uMOkjBUbxFx5QnMeTfuydSkPYQrqx4vEooStnLtd30ltO7nrp1JRi1Y5q1XemBnM/jec7yW47itHeir055Xh+Ur4jbs7pjm7spQgjz17gBa5SQ9N1/A1fqkqqj0cP2YG4+VAPm69r48o4lE13rZlEbtCHPhJC0AoTtBGJhf/93u5+DgDG7rvdPZkMwPmDk2qD3d/W3P77iDEfnCOfO9pn7+Ja4ZkUkpYnQfZy35GbvLVHKspyzOmtHwnkD+EPo3objZxBHTpVV4fIQ8PdEVYs5XwFCHX5y3qdk+9pwT4Ve6yHhWQftcjWmpdmEvYB5d1z4LXYC0YbYv4kpQTGzwCMvu8kx/H5Al2x/JuoRwJWCxlQbUtuin65aRzaDM5BF5ebHYEhDZ/Midhir5gL4WRkh88yMaQ2Z5SUq328imWqQ6zRWxMDTiE/jeyZj3eelQJFC+nxTVWEzp9tD1j1l3NY72cNr/Zmp2ENxTH3lYfgD+BdLlqcOMt/jif0mzyTT9BQ99m4Hxcji634vOUxowC9eXfY
+ RfTCkM4d
+ QgMAfkianIGXU24TUWdcmQURmPK6dKXEsmZTXAOplZzl6wWncKaJ9b0lC4n/NEebyx0/24EaW7wkTDXWVxpI0HBe/iyIxrHSBRhPu/v8hS0LNFpjbKJ/HK0YoOZ8cTEn3Sn6EQca5eXAilvbBVVaKij+4IHzyaTUWngHbkzJafPBDi5qANiVlY/XG95uVH3zVJ+ppII/fIMhu4U+Paelz+ArYZRo3hQoY37L+6MlsKBQU36XZqN0yXQbbZJ29cuQx5Z0eCplYw6IR9Lznm5+yz6RN3b4lqC2NH4S4q4EHcryk+CQpyiKHPCTWxwmSUXLb383q6RddPsYiw2gBe/DjOcgXtfzhWXB7rUNWAdwH81Stec0GGgdMt1I3ITdCdYEoqRY0BRVuqSbSxxhErmwLN+fRZR2rGP7mXgahcvFR20Yz78e6Hr049wJEgNyxSICWCWuQs95iMFmk805qtF31Eh7gCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,56 +124,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 03:13:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+On Sun, Sep 20, 2026 at 03:13:11PM +0100, Lorenzo Stoakes (ARM) wrote:
 > The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
 > operations that keep the original VMA in place.
 >
 > Historically this has led to a lot of bugs where non-obvious interactions
 > occur between existing mremap() operations and the original VMA.
 >
-> Fix another of these - self-merge.
+> Fix another of these - partial copies.
 >
-> Self-merge occurs when a VMA is moved in front of or behind itself and the
-> attributes of the VMA permit such a merge.
+> The long-standing mremap() partial VMA logic has the baked-in assumption
+> that the originating VMA is unmapped and thus moved.
 >
-> Practically this can only happen for unfaulted anonymous VMAs due to the
-> page offset equality requirement for merge:
+> However MREMAP_DONTUNMAP defeats this by performing a partial copy
+> instead since it keeps the source VMA around.
 >
->                            |------------|
->                            |            |
->                            |            v
->         |...........||-----------||...........|
->         |           || unfaulted ||           |
->         |...........||-----------||...........|
->               ^            |
->               |            |
->               |------------|
+> An mremap(..., MREMAP_DONTUNMAP) operation disallows resizing of the VMA,
+> but the operation can be performed partially:
 >
-> This becomes problematic if the VMA is configured by the user to
-> mlock-on-fault, i.e. the VMA_LOCKED_BIT, VMA_LOCKONFAULT_BIT VMA flags are
-> set.
+>                            |-----------------|
+>                            |                 |
+>                            |                 v
+>                         <------>          <------>
+>                         .new_sz.           new_sz
+>                      |--.------.--|       |------|
+>                      |  .source.  |       | dest |
+>                      |--.------.--|       |------|
+>                      <------------>
+>                          old_sz
 >
-> MREMAP_DONTUNMAP clears mlock flags for the source VMA and maintains them
-> for the destination VMA.
+> The page tables in the specified range are moved, but the original VMA is
+> kept intact.
 >
-> Self-merge makes this impossible (there is only one VMA) and incorrectly
-> clears the destination VMA's mlock flags.
+> This interacts poorly with mlock()'d VMAs, as the VMA_LOCKED_BIT flag is
+> cleared for the entire source VMA and set for the entire destination VMA.
 >
-> This causes a leak in mm->locked_vm as clearing this flag does not
-> decrement the counter and the VMA no longer has VMA_LOCKED_BIT set so it
-> is not decremented on unmap.
+> This results in an mm->locked_vm leak as the change is therefore not
+> accounted correctly.
 >
-> Resolve this by simply disallowing a self-merge in this case - the source
-> and destination VMAs are kept distinct and then are able to have distinct
-> mlock() flags.
+> The clear solution here is to make the portion of the source VMA which is
+> mremap()'d distinct from the rest of it, a.k.a. split it.
 >
-> Update dontunmap_complete() to make the now-redundant self-merge check a
-> VM_WARN_ON_ONCE() instead to guard against future regressions.
+> Therefore resolve this issue by splitting it ahead of the rest of the
+> mremap() operation.
 >
-> Also update the VMA userland tests to reflect the change.
+> In order to make this change re-expose split_vma() in vma.h for
+> CONFIG_MMU (nommu doesn't compile mremap.c and uses a static helper
+> instead).
+>
+> A quick search of how MREMAP_DONTUNMAP is used in the wild suggests that
+> the partial case is either unused or rarely used, so this should not result
+> in unreasonable VMA proliferation.
+>
+> Since this makes every mremap() MREMAP_DONTUNMAP operation operate across
+> an entire, distinct, VMA, also eliminate now-redundant code checking for
+> this in dontunmap_complete().
+>
+> Finally, update the sys_map_count check to account for this case.
 >
 
-LGTM.
+this also LGTM.
+
 
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
