@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4299EC98332
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 15:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723C0C9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 15:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DF046B008A; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
+	id 2D5386B0088; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03D496B008C; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
+	id 287A86B0092; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94446B0092; Sun, 27 Sep 2026 11:51:52 -0400 (EDT)
+	id 0D8A56B0088; Sun, 27 Sep 2026 11:51:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B67F26B0088
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CEF5C6B008A
 	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 11:51:52 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 365BB40A35
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4A0F2A7296
 	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:51:52 +0000 (UTC)
-X-FDA: 85259982864.17.CB5B1E7
+X-FDA: 85259982864.02.DF189CD
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8419B160009
+	by imf21.hostedemail.com (Postfix) with ESMTP id A2BD01C0002
 	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 15:51:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="Kqoo/x0g";
-	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=wCEMVHDl;
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790524310;
@@ -34,47 +34,47 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XJZtRM91aHOzDwlGhUn7K80dltrSbiTp//FJp6Ow9Ys=;
-	b=k3RjSoEipb56Z365YPmuNX1XpieyQrd1M6A88O9rSOv1WcdRzCoSMaBAzpy/nate7lwm2o
-	uM7/eNaI9EUJcxDeomHX6oZWhtA1jJ6LlqNGaYxF9dOUeB1J61qVGd8PocmOvzfNSnIg90
-	K4/VwJ+tIntKPMKEQo02X75ZOSC4dn4=
+	bh=LbCPjRPiehEgYsY0LkPAes0gDEo2YYOkyfyk4XJZWkk=;
+	b=sn3ZdI/ldN7x6B41WdJytOInv0YNTp5zPrl9o23L25QSmku0BjiuXvRd3ENd8YfN+deD0z
+	zy8mCHpL7iNbLYmZLwZWmlj6z5PWILZXLILyiCWZBHWPTHQcspIhU9qVsE1WTbzqAPC1vJ
+	1kq20N9HrtSZkHEgARcOVTN4lPGNG1s=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=wCEMVHDl;
+	spf=pass (imf21.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790524310;
-	b=GeGtQNbW9aD/jxlQ8t/HGdhEiBnRRTYzr14JKISXyw9vUxZKmeRktriV5yElH22Af1GOaG
-	yat8887q9WeFdVA0ZFBhEf7mkIDyOmyO0C2Z4qk6ftRMhfeAfk7SuXMK/8axAHzOzvR3Mi
-	4tdD3lFIpuocsThRn/HNIrUa5cm3Hr8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="Kqoo/x0g";
-	spf=pass (imf08.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	b=x1vH+fmGcLk9l2duCZz+i8MrNhwlgleS9Tax7s4g2afJjLwMeNrnCrBcEfi8ZJmXJXnoCQ
+	p/FhtjaiDeMOgHDkZe58Ar3rjoENheUmMMPxAfjkQiArwTj5cOlyFhCqMkO4FhPQwgTeMI
+	H7FCR7cGHXPzCTkjR1qoWaeFGakDQBI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
 	s=smtpout1; t=1790524309;
-	bh=XJZtRM91aHOzDwlGhUn7K80dltrSbiTp//FJp6Ow9Ys=;
+	bh=LbCPjRPiehEgYsY0LkPAes0gDEo2YYOkyfyk4XJZWkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kqoo/x0gU6cfO/dozoCRndXnjMUQnvEWJJqFnRL1KdacbB59t9bFJQG+UrLMt9tht
-	 JQanVvci7golgHlE/4H1F11J8dkXRmYG4XDEpC1otXSWcNaErQEtJwaeBd6mhKlUYd
-	 U/cut1gZY/CaDNZMmfIj/C7f35+t0E3/qeiRiCfMAjr0BI3Tx2YDfBIcxJbgyXCXka
-	 U44m3Z5cb2VK15CWDdBSrLC2egudDHuOJlGE3cGylihTjJkXeWL9eQA0PIT2kaYuoa
-	 9A/Nr9p9y0kIJk+Lb3Xo4zcgkUaj854GniG3SpgzjdfY+H/E31k0oQfKD+WEU7QrFE
-	 UB7zoVT5J5Yzw==
+	b=wCEMVHDlweoSmmOHKAQYYmzKsJiAUEPYfaQlVtcVzqs6FqO1kpxtsyI0zyw557FQK
+	 Qmd2ExybNHV8uZqs4X/OV9IIQZquC0TxowYydwZGp1vHpsNcY9AHjhjXn9kdfp83Ma
+	 SCLl2inf69bbqXHH7JUDxmO/EfNS9TiRwElm/8eBN7lGltxPLRlF5iLsgGuFb35qF4
+	 XsNKhQicROmq2Pyigp4oDddRQbGB0tCgTj7nypCoBW+1J7NolaXV7SKU1fNwk98f+f
+	 LBXEV+vUyhyZL1FFF5i1ayu4FaN+NsNLwqH8ddFfJjwrNuyx3W90FyYoyOi4XkDJWf
+	 t5p4u9vGpuoTw==
 Received: from compudjdev.. (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4ht87n48FjzhGy;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4ht87n5L08zhH0;
 	Sun, 27 Sep 2026 11:51:49 -0400 (EDT)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: "Paul E . McKenney" <paulmck@kernel.org>
 Cc: linux-kernel@vger.kernel.org,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
 	Alan Stern <stern@rowland.harvard.edu>,
+	Joel Fernandes <joel@joelfernandes.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Will Deacon <will@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	John Stultz <jstultz@google.com>,
 	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Frederic Weisbecker <frederic@kernel.org>,
 	Josh Triplett <josh@joshtriplett.org>,
 	Uladzislau Rezki <urezki@gmail.com>,
@@ -95,24 +95,24 @@ Cc: linux-kernel@vger.kernel.org,
 	lkmm@lists.linux.dev,
 	Nikita Popov <github@npopov.com>,
 	llvm@lists.linux.dev
-Subject: [PATCH hazptr 2/4] compiler.h: Introduce ptr_eq() to preserve address dependency
-Date: Sun, 27 Sep 2026 11:51:29 -0400
-Message-ID: <20260927155134.4740-3-mathieu.desnoyers@efficios.com>
+Subject: [PATCH hazptr 3/4] Documentation: RCU: Refer to ptr_eq()
+Date: Sun, 27 Sep 2026 11:51:30 -0400
+Message-ID: <20260927155134.4740-4-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260927155134.4740-1-mathieu.desnoyers@efficios.com>
 References: <20260927155134.4740-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8419B160009
-X-Stat-Signature: pf4tzff9wwzbfz9hfw9534m9jz8o3szh
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A2BD01C0002
+X-Stat-Signature: 95zyy5ef6gzhppg51ci69stfjrumstmn
 X-Rspam-User: 
-X-HE-Tag: 1790524310-293855
-X-HE-Meta: U2FsdGVkX18vudPx89jSJNphji4YcHwTKEALx9OShqNBue8NgZ7UGLs9+OIpmHdog54AGMUY5uhHCyL8A/FZbgR2gJRtqXAjjFIcyUgvkpCXDiWqfJ0vDiVJjIOesv/Guax3iaS4lXG73qTczbpgp8MAcD9mmLZ1PbCiY+dP8aaWDcoTeLfIeGIgcLMZPYwfHkA0jaAECw2rbbXAo9xSERGUS4BwHIUP1tnzGhWASAKZy2+9G+GY2z6sQelp97S0ol+HLEBRSbJ3V38Np7E8p7YDz84s93/sjURFe7QLwWegj8M5imCKgNoFBHoxr8dXqCsOeJ30uhlm47SOJ0MyA76SOjJfdOOwP+ylN5y4g6CE2/MqrBQ3dfTtprT0JgPBVz+5Zisn1/s5b0Vg6nfPAy196RxB6ErxW1GOncR0nOfwI2Pl+z1vxngKFa+anQty2VHsof7SJiFzni15rMnhMuhVsg1bRLx95iMiyfVZr6r2MMCTro/uzrhyrYLe2DtTO48FHO1PJ5Ay5CCXwZFDKZ4BsGzjp3eL6WkNLV3Oe0zISbUdpsACLCQGZeSZdx5I5u5qC/UyLmE6Ux70oQ1XIIJLhoQBi1S0uvJxsc/3Y7F9+LP9QU5KeZMoDw7tB2/9cAEbeBFNwmGGFRZhDZFWihHEumiNU7FMUwntQNcaJGzWDUBJJaJJnMV99ym4lV2StXr9a8OxPEzEb41x2wJ+IDZ7P/xh9Dsb3+OR4lTJ2uyo/jAdmEOc0Z4nfoMib6AupWUMW0NhLMSX40+iCOIW5DI6zKGk8ttqIh5aPDwi7zm1I2cgvKm19RtblT2VTPcwYrkqKKcDI+J0W4xAp4M87bCWuqr4+N6dKzLll8EvVR3ysHzxvnlZ2RGSLVea5XMHNeP5WJcWv/q9Q4Kz5J44/5WHa5SbtdMewFgbPmoCHJMR9BwMceS4hI6rEM+FH1AqD7CdWT1hwcnKIvXDrTo
- XKH9oxvZ
- lgmK6ndUGi1ueH1zVJndLFPdHQAMluoqd7KacDBvv3cS/0VP1mnyW0iPLyjI3LXBp0/qt98T63zDIRE7KC5NnamGxGRbV7qK2w+yosDvSYOPqoVExTceY0b8nfFoc7/dzqN70iVwoxN2VYU+KTGSDQYNYWQdEnY3Wbx8JtCufsHhmxk/g0KJ/B/Je1TEugiN8mjmgAbVq56+fxbZ17a4olT1hfG+a56n0bQhwF55e+FqXBXJ2c3GDOwjn40eE2qZlRKzeOl/ku5oDa8xfLVtMEVUFWYPBYxe790JLxjaFJBGU14/jaqvWL96E1V0HWCIs6yhPfoTv4FZW+gx0GC30/qrBmnwUkd6VTwoQNrd/kxsr1iC5Ecw4K1i08aAXxO0Kh3kTvLWRZsJSjpx9VuKeprra7hxz4RvhecEhrCESn6Gymzf3LpIwdn58imRYvGt0jKxLRofOOaO5AZPMv8lHqBSvB97EF/ZKDgMeEB1ZTUtIREZZX5Lh1al10vwQHhP9rhZB9vXt4orNa9jhmUAPv7c9jDxs1CT/O7tgS1SCVFmH/XGtXDaPGi6R0PgyYoY8X7/dC+OyabI07aA8ofiH3lSWreZc4QZRnxDOKkBKeUlCjot+BfVliEl4ld3dveuwQtw8OXSxjU8NGa1Qbu9P6N3rTWAi3K0rCMeSfTDOSMJRiysWSeCEG36PzigwscwCbuHGp7h7ZWkAb4hbi7N5gG8jGxv8Lnr3hTiVrBxRzgk779b7022hLMVwXj//OgLRUGGt7O7Fp6QNBNBqpBVP0l5Md8TpqdhIq6s5aJeK+sLOUoE6r5pBWxfa2N/4CMfHzGd2MOj9eGB9CKbSQ/CdlfbTSiltwbkxOyF4lVgYA+NA2CcLPs5G+vsCcBYwG8fEPOocKeGUviwhy9n3CZPbl52KYRG1T8xj1M/a31FGms1hfc2rwVrSIozHrhrJK8US0D07bnkfvkPG/kGhElPnZioYttnK
- gA0ku0XC
- k0mOKR165n9KwEHfnIRbDeXc0gZOFQ3kf/k89sDGSGw6L7IMIHLQcC4TEC2FtCfsP9J2myB2iXEU+U57VQsFScuKmFphWNrOAQEwhjXewAoZTvQTgdE3+j3N9lpLUN7jqjqyA5A1mkzicstGOdtZ1Hh0oZdqOOjHMP8XbnqbmxCDSyfZl3Vsrw==
+X-HE-Tag: 1790524310-205023
+X-HE-Meta: U2FsdGVkX1+UEOHI5F7JSYscgymtz1Ulmq1vbBtm+xM3sIBeg+fgzk+fqSlpgn0r66wRhHNvU0OneqCEZth8e0nAyBh+V0gqlk+v7LBf0FtsCj+qdGi/8jXh3idH5NOTNfNlD9q1ckof5/VdEUd9CiMGSvCAWiAqHkzRFGkjfSXbFya4IbyE2ttQYpX6NIVTssNVc3IaLkZUOLm033mDgGVihHotsIeO7bDiIBv+oJ+MCjsDE9GFGdVWWsyD+KDUYgkBKg/Je8hLvC7h1/sM83WRlWjW3iuDNbsl8S+ItD8mlvx4ruf2W7o6dQGYtyY//+mmleM42iQsaxs3+bZxRe67h19iPG4i62cNwX23R3vIQCATTpNcS5UE1vDkBgH/1Zye1qaNePdKMq62S211C6guSsErzrr9BxlFFg2yQQKM/Duu0Q6yVOoPldVz1/odO4DnnD/vkxZ0yKj746sHec9BOVGUlk9k2/j74O+1yQpaUtI6wqLZ+znHqVLaeqaIsBBS/lOpy1tVOtTiD/qzcQ+m7rPMLl81tv30jOKY4yl00f77i4hKcDFSEBUcOiDx4tg2d5LX3V28JOrjxHMQL8bRipIHMbMIjxCZZxW87+Z1ElE93vIxCAWtNzLeDYqAnJUvN5TUL4rT+0HNoTGODFXORFpzGPafrIrAbQGfQLiXOt0P7E/W0KIcPQ5Bp8/ZlpaO+nBT8mXfg9e00JGHHnbSqV1qWujgO2EJ5VQ3geSaZua6147mPZM4o5c1ebb0S0DN8XEkMZQxNk12RsRu2z4wAg5ZH7jHlneDtuLqfe3mQPROVCXanZXf9eAntoIkgFi2wamDn8CVy/ykTLMwiCR6NV4g6lGEywD5w0/Syusm/76Gxsh/7hVdPEO7oG4BVfqSSoX8kcjNPdHOGZFI+J5n3+JRIf5A643ajLWyi7+Y9a1r7H15hmGwZnf8Yoi80rt5cKLpahCzp5ac274
+ jGc2/Cwo
+ IGVrmm1XZrRct8xD9A5auP1jlfioygv1v9YwpivuIrcudYUWUK83bTV1MObFB+aBsHSjhchTqBLUjByRpJLA0jACCvOO2MEXift7qZPZokYueS/wos3sWLLqvBRDROFPhBqmEpKttgyY4d/nOvi0ka1ux8xHwsBXahPG9v+YpU4cIVfTRHdr/sgWyqoey5PVKZxbVnWW6nTvwVBiWBecsvU+aNrR0Wh+TUmdecJvY9/bek97aFdUHE1esvLFUArNX7SuVDcWHj48evqWvvNrh985CmON3+FrcWuKNwsUPz/TnnYua4Ux1bjL51K0C0+kdob6KAwz1UzuW0F+FENqvuhTsbFi5W6PD7ssRHc4bEMPJA9Qs7KXSyqoAMXDtKBEI6UuqACy+YIG7Aa54n7VzUbHg1vSYiJ9TYto9sCyVk1+uUi0v07THgdbauLUVCMO+pZFiA6CnI/xIbw2Yuuytvqa5dJjgERkdIyl69OMm8xS0YDWJMSfY5kFr/RG7RfksId2C8Rmzj3gpI7fQSJP+hW3ktQucuZLESPGBBC/m7GLoPjsm5BU+69qhk6UvaomcBuiejT4ORJI8x/YbUE48z5Ng43C+1/WajY/n+KKdTQFJd1DwRGIyg2o8gtG5kijJrARC0wFEgBZzhSMgF8b0tUao4JlpjpT6DS2bdDkfPHLsKvc5aRsjpRaiJN/RiRL/AodFvQtbHbRbmxjHacU7Wmt4TGKq9CjIAWB0lSFzxlCucx+XKnSLaQKrOzPvlOHl6a22hn/qnoaxJuEIzvRKnRyS/ZaoV3eUh1fCpw2+WNjSUCeZsHYj+UZ77CDBeijCn8BReU/j+1CkclYrQoIDuW1fgPUbx8opxmyHRLSRO0UdBCr4p0rkcYUYSALcyAUoJXplHhvUiOXcI1c675TpoXAOJktnLlrdJrma7Y4IQ9MPeQTJeK0NwWg7T17jwE3jYgX8HUMOIk1/WrpDQB0ekRipKmfd
+ E9TyzfIS
+ EDO7EKYmIf8wAOztvuY65b2YSW03wBRcx88uqYDdv6+woqkVU7uHwwaMqB9hQg8U6Apde3ZAtvsweIyRIlBvbhlCpVbeWUhn70xCRemTXSiPBWeZkB8R9iR1BspkM/suyFDfweLVAqqVQYZ3X5LFVQ25KGZDOmj4HgF5xU7LJ7kcCJRq//LvPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,35 +120,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Compiler CSE and SSA GVN optimizations can cause the address dependency
-of addresses returned by rcu_dereference to be lost when comparing those
-pointers with either constants or previously loaded pointers.
+Refer to ptr_eq() in the rcu_dereference() documentation.
 
-Introduce ptr_eq() to compare two addresses while preserving the address
-dependencies for later use of the address. It should be used when
-comparing an address returned by rcu_dereference().
+ptr_eq() is a mechanism that preserves address dependencies when
+comparing pointers, and should be favored when comparing a pointer
+obtained from rcu_dereference() against another pointer.
 
-This is needed to prevent the compiler CSE and SSA GVN optimizations
-from using @a (or @b) in places where the source refers to @b (or @a)
-based on the fact that after the comparison, the two are known to be
-equal, which does not preserve address dependencies and allows the
-following misordering speculations:
-
-- If @b is a constant, the compiler can issue the loads which depend
-  on @a before loading @a.
-- If @b is a register populated by a prior load, weakly-ordered
-  CPUs can speculate loads which depend on @a before loading @a.
-
-The same logic applies with @a and @b swapped.
-
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Tested-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Acked-by: "Paul E. McKenney" <paulmck@kernel.org>
 Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Acked-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: "Paul E. McKenney" <paulmck@kernel.org>
@@ -182,86 +163,78 @@ Cc: lkmm@lists.linux.dev
 Cc: Nikita Popov <github@npopov.com>
 Cc: llvm@lists.linux.dev
 ---
+Changes since v1:
+- Include feedback from Paul E. McKenney.
+
 Changes since v0:
 - Include feedback from Alan Stern.
 ---
- include/linux/compiler.h | 63 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ Documentation/RCU/rcu_dereference.rst | 38 +++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/compiler.h b/include/linux/compiler.h
-index 70cb31d60538..0a8c8e53cdad 100644
---- a/include/linux/compiler.h
-+++ b/include/linux/compiler.h
-@@ -166,6 +166,69 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
- 	__PASTE(name,						\
- 	__PASTE(_, __COUNTER__)))
+diff --git a/Documentation/RCU/rcu_dereference.rst b/Documentation/RCU/rcu_dereference.rst
+index 5bc3785ebfc2..85b5f79ebf14 100644
+--- a/Documentation/RCU/rcu_dereference.rst
++++ b/Documentation/RCU/rcu_dereference.rst
+@@ -104,11 +104,12 @@ readers working properly:
+ 	after such branches, but can speculate loads, which can again
+ 	result in misordering bugs.
  
-+/*
-+ * Compare two addresses while preserving the address dependencies for
-+ * later use of the address. It should be used when comparing an address
-+ * returned by rcu_dereference().
-+ *
-+ * This is needed to prevent the compiler CSE and SSA GVN optimizations
-+ * from using @a (or @b) in places where the source refers to @b (or @a)
-+ * based on the fact that after the comparison, the two are known to be
-+ * equal, which does not preserve address dependencies and allows the
-+ * following misordering speculations:
-+ *
-+ * - If @b is a constant, the compiler can issue the loads which depend
-+ *   on @a before loading @a.
-+ * - If @b is a register populated by a prior load, weakly-ordered
-+ *   CPUs can speculate loads which depend on @a before loading @a.
-+ *
-+ * The same logic applies with @a and @b swapped.
-+ *
-+ * Return value: true if pointers are equal, false otherwise.
-+ *
-+ * The compiler barrier() is ineffective at fixing this issue. It does
-+ * not prevent the compiler CSE from losing the address dependency:
-+ *
-+ * int fct_2_volatile_barriers(void)
-+ * {
-+ *     int *a, *b;
-+ *
-+ *     do {
-+ *         a = READ_ONCE(p);
-+ *         asm volatile ("" : : : "memory");
-+ *         b = READ_ONCE(p);
-+ *     } while (a != b);
-+ *     asm volatile ("" : : : "memory");  <-- barrier()
-+ *     return *b;
-+ * }
-+ *
-+ * With gcc 14.2 (arm64):
-+ *
-+ * fct_2_volatile_barriers:
-+ *         adrp    x0, .LANCHOR0
-+ *         add     x0, x0, :lo12:.LANCHOR0
-+ * .L2:
-+ *         ldr     x1, [x0]  <-- x1 populated by first load.
-+ *         ldr     x2, [x0]
-+ *         cmp     x1, x2
-+ *         bne     .L2
-+ *         ldr     w0, [x1]  <-- x1 is used for access which should depend on b.
-+ *         ret
-+ *
-+ * On weakly-ordered architectures, this lets CPU speculation use the
-+ * result from the first load to speculate "ldr w0, [x1]" before
-+ * "ldr x2, [x0]".
-+ * Based on the RCU documentation, the control dependency does not
-+ * prevent the CPU from speculating loads.
-+ */
-+static __always_inline
-+int ptr_eq(const volatile void *a, const volatile void *b)
-+{
-+	OPTIMIZER_HIDE_VAR(a);
-+	OPTIMIZER_HIDE_VAR(b);
-+	return a == b;
-+}
+--	Be very careful about comparing pointers obtained from
+-	rcu_dereference() against non-NULL values.  As Linus Torvalds
+-	explained, if the two pointers are equal, the compiler could
+-	substitute the pointer you are comparing against for the pointer
+-	obtained from rcu_dereference().  For example::
++-	Use operations that preserve address dependencies (such as
++	"ptr_eq()") to compare pointers obtained from rcu_dereference()
++	against non-NULL pointers. As Linus Torvalds explained, if the
++	two pointers are equal, the compiler could substitute the
++	pointer you are comparing against for the pointer obtained from
++	rcu_dereference().  For example::
+ 
+ 		p = rcu_dereference(gp);
+ 		if (p == &default_struct)
+@@ -125,6 +126,29 @@ readers working properly:
+ 	On ARM and Power hardware, the load from "default_struct.a"
+ 	can now be speculated, such that it might happen before the
+ 	rcu_dereference().  This could result in bugs due to misordering.
++	Performing the comparison with "ptr_eq()" ensures the compiler
++	does not perform such transformation.
 +
- /**
-  * data_race - mark an expression as containing intentional data races
-  *
++	If the comparison is against another pointer, the compiler is
++	allowed to use either pointer for the following accesses, which
++	loses the address dependency and allows weakly-ordered
++	architectures such as ARM and PowerPC to speculate the
++	address-dependent load before rcu_dereference().  For example::
++
++		p1 = READ_ONCE(gp);
++		p2 = rcu_dereference(gp);
++		if (p1 == p2)  /* BUGGY!!! */
++			do_default(p2->a);
++
++	The compiler can use p1->a rather than p2->a, destroying the
++	address dependency.  Performing the comparison with "ptr_eq()"
++	ensures the compiler preserves the address dependencies.
++	Corrected code::
++
++		p1 = READ_ONCE(gp);
++		p2 = rcu_dereference(gp);
++		if (ptr_eq(p1, p2))
++			do_default(p2->a);
+ 
+ 	However, comparisons are OK in the following cases:
+ 
+@@ -204,6 +228,10 @@ readers working properly:
+ 		comparison will provide exactly the information that the
+ 		compiler needs to deduce the value of the pointer.
+ 
++	When in doubt, use operations that preserve address dependencies
++	(such as "ptr_eq()") to compare pointers obtained from
++	rcu_dereference() against non-NULL pointers.
++
+ -	Disable any value-speculation optimizations that your compiler
+ 	might provide, especially if you are making use of feedback-based
+ 	optimizations that take data collected from prior runs.  Such
 -- 
 2.43.0
 
