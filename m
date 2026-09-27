@@ -4,115 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80C38C9830E
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 05:04:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DE9C98324
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 05:51:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F07A06B0088; Sun, 27 Sep 2026 01:04:43 -0400 (EDT)
+	id 093806B0088; Sun, 27 Sep 2026 01:51:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E912B6B008A; Sun, 27 Sep 2026 01:04:43 -0400 (EDT)
+	id 044BE6B008A; Sun, 27 Sep 2026 01:51:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D58CD6B008C; Sun, 27 Sep 2026 01:04:43 -0400 (EDT)
+	id E752D6B008C; Sun, 27 Sep 2026 01:51:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2B96B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:04:43 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1ABCB1A0998
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 05:04:43 +0000 (UTC)
-X-FDA: 85258352046.21.CE75403
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 10F3A40002
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 05:04:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=kknxETGX;
-	spf=pass (imf27.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B87C56B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 01:51:10 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3059C1C39CB
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 05:51:10 +0000 (UTC)
+X-FDA: 85258469100.12.D289019
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4B30740004
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 05:51:08 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zJtyTOLx;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790485481;
+	s=arc-20220608; t=1790488268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=+4jro1MTzUF06io04gLz+PFvy0PpidJfPQA84CrpgNI=;
-	b=zA+T6cmn7gwitNA+NMrF/2b+U2rSzpymD7QD99Z9/EAzog3RjiiRd9flxmxgZS2iHJBFH8
-	r6QzqwDBKHF+3ndhg8pbRJKkdSToQKrv/wsa8NgrlZdm9eQZTaNA2UTP2oHGfDaVSbEgpJ
-	Z+85xyOCODKltgLXa3qRtiwYXomt2/U=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UHrAQJDjpZkXol5VEY6/BSqUifaqAPBbX8o+2SqFxC4=;
+	b=VZRV/pdZlyf/iK1ACKA7wnHZUkCWF2JP3Lp4VhzUi8H+gvPwcloyM/o1sMcTNbPmgVA3/x
+	Y7SU1HDhqJhx8ukfBYDTEV2AvLriPu7okPHH68U2TGeS86dv9Y9QW6mQD00LNyaOpQ6tPC
+	8BTsVNzLreWy6ablN0acq88ccmmNAKY=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=kknxETGX;
-	spf=pass (imf27.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zJtyTOLx;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790485481;
-	b=lo/3s3td+zrigUEBjAk8zIbEDjuQHne1hrjH0gg85jFFGVTLCzUlrxW5aW0NpbGCKV9j7R
-	1tT5cDU+YDWvSsOmDqdMj+1mBtZDMYF1AfLf4+4QO26U75n5B5iCsYtQRiGFSurqIUVYSo
-	A81JyQJO35AVBp8y1rPSPg6LjFlF0e0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:date:subject:mime-version:content-type:content-transfer-encoding:
-	to:cc:cc:content-type:date:from:subject:to;
-	s=s1; t=1790485479;
-	bh=+4jro1MTzUF06io04gLz+PFvy0PpidJfPQA84CrpgNI=;
-	b=kknxETGXBLiN+fC0CeXE1ukNhZOsuMLR5UzCAlEaXRQeDgkRzLcNF0OOkTfPgNQWiICR
-	3AUVExFJIvOhYg/aoVp3N7mjOGkoFtcXAMSIy+UiilUxqSuFbn4T/fxxwYuap5EVqd9pxA
-	3LJk4TGrz8g5yBaYzJwiFmFMU6mBsODIiSEHZmtFv78lXQ7Qcr1MF8FXuwRdNesa9fUy0y
-	XrndeTaWyntZUDlINYJGdOWidPHEmmQOJeSdd7AcA4bkeZXrfnycHeWqYK5Mr/udkFgw7U
-	x2ssd1dkBi2d5Xfd3XGrjdzwZe6kSRxSc2AhR7FzcyrLEldwwSgBSOKwSvEfOE8w==
-Received: by recvd-859f4b9877-dwngx with SMTP id recvd-859f4b9877-dwngx-1-6AB8A3E7-47
-	2026-09-27 05:04:39.464940507 +0000 UTC m=+206322.744621825
-Received: from [127.0.1.1] (unknown)
-	by geopod-ismtpd-20 (SG) with ESMTP
-	id CwOn27KUQ7m8N7Fcb1r4_Q
-	Sun, 27 Sep 2026 05:04:39.406 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Date: Sun, 27 Sep 2026 05:04:39 +0000 (UTC)
-Subject: [PATCH] writeback: let foreign flushes reach dying cgwbs
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	t=1790488268;
+	b=7erMRncgy3l5l2tfgsfUy9Tr2G01/aNdalMXHg5yKpO/aiTyYSlVNA2hPMSbTj40UikHVv
+	NUaXpUYUDgaEY7TMdnfiri92nERMoNz3IzfJ8kBuv2jNJAf7gLIJ2WmIocNQTRvUQy2EbZ
+	77Uln9l5AYrvO8T4j1Fa5yoNTO1qdUI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 98A77414C9;
+	Sun, 27 Sep 2026 05:51:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AE51F000FF;
+	Sun, 27 Sep 2026 05:51:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790488266;
+	bh=UHrAQJDjpZkXol5VEY6/BSqUifaqAPBbX8o+2SqFxC4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=zJtyTOLx9AzZW4ceULP1f5wpwRT2S4P6gkxVsut8kjkqSTxNh5x6hLRAGKDAfxlbL
+	 DIR4BCawrmMPx/OsYsTVZ+OhvOXxWeI5Rji1wbVfkcaxxSh1vASsLh9BiwnfIegVs+
+	 MySOGQKlazDuj2QhwomrLRpDzb1lF597f+vI6jUw=
+Date: Sat, 26 Sep 2026 22:51:05 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>, Oscar Salvador
+ <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, Muchun Song
+ <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, Nicholas Piggin
+ <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH v5 00/12] mm: Switch device DAX to section-based vmemmap
+ optimization
+Message-Id: <20260926225105.a56f29d76b2f496c8dc2dac0@linux-foundation.org>
+In-Reply-To: <20260927025441.741633-1-songmuchun@bytedance.com>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMywqDMBBFf0Vm3YE0i4D+inSRxxhHJC2ZWlvEf
- 3esu3u4nLOBUGUS6JoNKn1Y+FkU7rcG4uhLJuSkDNZYZ1rrcA2YflwyxqxzmBcZ0TjSl6wPPoG
- ar0oDf//V/nGxLGGi+D5TsO8HW4+owXcAAAA=
-X-Change-ID: 20260926-wb-dying-cgwb-flush-06e260e2abad
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8522; i=lizf@honeycomb.io;
- s=gpg; h=from:subject:message-id;
- bh=TvjgwKfxRWoop+S5G5ZIakPAQZmM9hjcQdoUj56GMq0=;
- b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBquKPn1sNIzpCLby9DFncuje+MLA0Jh6n64I/7x
- T0INynFIhiJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCarij5wAKCRClztTjl62v
- wgqtB/9JY2u8FDB4jdu0zx08IpYZbBst2X/t92lMZU/EhRadpIbqbAcbQhiTHD48+MH6n3ERy24
- tsVF1Vr+QV3T2zpzzxgarSuCPtGS/ZRPmWY0G3Fa+KQC8pDqJ1+LohkTEUZ1JxzKavSeOGbelC3
- r3pPpQqhEaZXeZeTMxhqLKDhBX+ei6plsi5qAmvLRh+N/sF0eg4qLWJt9z47Btll94kTwD6FT0H
- ZVsAi4tFOGbUPxG7CDcv7PQARoNdQh7LTkv1QrBtQy1Ba4HqUoiAK8EBnugu58XeesHkWZ2loLs
- 1YxiVg8idpW15lSEMAL4gLK4AEnVs8ITAXJ+Cd0gmhKn3Syn
-X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
- fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmeUj22rDtwFPn?=
- =?us-ascii?Q?6t5WoqjriadbwirARoiyHWAvFOS2kX70JYRV+VB?=
- =?us-ascii?Q?yTo5789UNL2v4=2FqF1gmk28QYLOV8QYCFeeMV73V?=
- =?us-ascii?Q?e08iCZSFUKgzq0PLHnql1vzdLJa5WZGTs4zMtUK?=
- =?us-ascii?Q?iwsIo53vKAp8bnQcxSrJeOt8o4bXxMZqcSSIxKW?= =?us-ascii?Q?Ekfh?=
-To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
-	<tj@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io, stable@vger.kernel.org,
-	Liz Fong-Jones <lizf@honeycomb.io>
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 10F3A40002
+X-Stat-Signature: 4c54yihf7hhsyiucdciwu1kem5ci5pb8
 X-Rspam-User: 
-X-Stat-Signature: we15crn9x9jt3ajfocgy85z8nekuaof3
-X-HE-Tag: 1790485480-381046
-X-HE-Meta: U2FsdGVkX1+hXuOcLJY9Y4wXn7dk5aIeauk9hLbyuyuSH0uTyneuYnNPoZQCArPa8UtTk1f0c4TBnhHGmBqtW/QBQsLz75sMSfSFUTOZ3HG5mgwnlYbrkBDC7H3+G0j6cV8IBjvO4pd93Xsa4yF/MN9e7l5UrHbSP1YVnWWfBScBxO2NDBFJ76bAa3bZUgn5aGFtStig5p0fjlIeoOiELk5LGe0oSHJLS7k/yXAlCQLpdQeLZikL3VNGtKv81Vpw/We83oWQTHS/D0LZAChTV9NTcuyhpvyZNsq/yydIDOE0zhd96Gb7ZYqpo7dsu/HuVpf+iA3ZhS3gKs7sf+3KhfUebWhkVXqBg79k/2IJ3WEsQe2/Q6hdqZejuM7dJAdEqT78ovlJnAKYG1luXQntBi7rNgxT3B51XBM7TIVuAZ0wxeDP7XXpv5p+NZ5i8a7zDFWaPmTDH0Y9EzCSdOKUGIkBY5N0qLg5qxTowJ7CWiA5lgYfOtwUetfwRIje/2ndNnjuFA+71oAhyQAQytQU8RjckhZ1q5P2ua6fc4v9yLOQMBFI9TtpyjPiEuxJ7bmgmIbDcUaxSRNCJ1Gp/ltF3NUtjOVffLVyd/nRkJYoPtHUrkXfSDPQIQIQwv+WRPd+SyR4Ee+gJBUr9rWaGYAkOqAFnkNqKkNY96EujKdeAHpsSa8hyIc+r7JASZSiY/eYfyUl2jLyjahnwpXcOQgPopp+wvBkCQlTqX29OPpgwhW/HiJ03PAcY/BSLgdA8wEqLMArxlyXfgqxUwGkQHUzYvIoimsiZhrRmUp5Bp9G+MTRETw9ZpMHOfBviumglsXWUG9oVhC3nO25+SPMM7vOBcLoKQpyXXpclXwQAo/TZh+2kbV9lZh+fo+4RW7g21PCbYNgQx1pdi1K9chL8IfxroHoJeeWYWzLjaZwPY5jQv0VUbtSKbhh7PGj75Y03GVQUuqYKOAFwjdkxXXcc0B
- OXkWaRFY
- qIe36OsY+xYPSoK5rLHW1+kQJ4c2maSYFx+U8q1ixQuNEjVtV6UtP7ptEy9lujpBI07btyiu2LOwjW3JfM6oHLHQjMJGV23OsNIvLZXOdB1nBCQPp2SBKWeTgaUkw+SzAn1pqjvoHqF25e8wLg6w3rPXhiuQMLssVriKZbamsqFlCGhv0gMpTMvaVCdIHF85zeyFb7cXzRcHGfXxh6MWVABtXm05hhNleeTrr3TYHFjdTzqstfQkWUztFOmghQi+0BBBx3zomuUHo4vyrFhjFOfCDgcZWisLJcfkkRBkXq37UHlxaqZkRFEwZc91tMq0HXUs1yyju3DboCK/17zFfiWq0zGnbYqdjxnZVFXLgHemISHS/ZzL6YY2nNyuVhC1CwOUGMBCaP0+gL79mM+ROhXSS2teszZfynnxVBuCXtWvI6h4HG9MubBZrZUMrXUVkre6afdKa3EKhuFrnKuJ986F8of+rjpyhStANj1/FTePKN33DbnAiIHsy0vkyx2+kLy31DHygcnNEonYh2X9svD6/rfIISfgNqdH3B/sfMD72iHGh8stSdYKJ4Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4B30740004
+X-HE-Tag: 1790488268-62389
+X-HE-Meta: U2FsdGVkX1+XiTW387QoU0vRyaMnggTFcMiBFCNeKMZUyb6ya7F5AUhPzIA9DFj5AHY7O6jEhayywHpfPDyxIPpcCj6iE7urG+uVMrJyU5978BF+dYYInHsmloUlg5Zz+uAw6njLc92VrAa4GtRMcuOl0NIT1yiIANlCF5lrzgQB4v0TOwwlKWT6iubVEDg2fCps4T1vCbHNY9T/PdOJ3yo3b3Bifd5g4aPihrMlTDtw03YTyl5AvWpG3N7YWlpAlS9Eo2IA1m5fS52zsmOTvpg9w6PaAiZcjfemxbUkokC581dLZMOMJrcINyCWDlBzK+ywzreqPSdbd+bEC5id4oTl+itrZ9JJrXfvZJSGmTCjsD9BdFY+oTcJlmll4Zf9FPpCGF6uXiQ2APd3izrrD44BvCjCTN+lLChWphlTF580WcvQ75xfz8zkBt2EqXy6v6erAUirK7Uw0qWUZvkQqthnTx7gmR/N5w5GQv0tm/D0QkP4hSJBNMHfDBX+tkOHH6xGfopcF7VzwjRLLmA6I2jcWYNWfJWMhbf25B2uwGW7qXAJmOiWyaCayXUDBRtvZquhbUQdYP81zW1n9bubfhBV7+ulHJCMtvCqUDvWTh/oPz30/pltRrV/tZQcE0mqYdjc/rpQaekuuQCxpD9dfedHxBp1BCuvVqtiMJIO9+8YyZG1GOEZjrNSxVRHM9SUXNaG4BsvNIni7wnSNRtZn5MeqiOgj0gAMPmLyesxgz6d982b6aRffNuook8NdzvmfXZvEYmPWSMSY2K3gqUHOxc4t/E5sCWeXXo+Ad/VfR91tCPDlBRUzv564UQ/Bi9UBdfng8AaMmGFMYe3OEhDP2NNmrFfYbP9yL5jCMJbegvp+0SB2sRWQcYP1lpGKOE4BDX7bYk80tN6dl2dA1dCyTzD/X+WSmEIiLxRLowpNqWIUNPfdHpms2s95sF7WKz40vpk+Hw77i9+NBCTtAW
+ X8616f2O
+ ITXG4hMvsXkOOgBXtiodhXMVruxold9BGj1fEIxGVVAVNEuJk85S67oeY9TmuRNSUovJBp/t/60BONOJvD0nda+fU72QXncJx/eWQPobwIz25TSp1jpiRIEenFVCg7hsv8aiW1XrcL0iXxi57JyUlkMPEYinamRAiOq3A5/bYGKL+MEkUEf6CtWTAxtdtvwGTbXWC2QaTSbMsSfOAijRU/2im9zrWTwjxXu1hlh+6LUivfEb5BgbvHNaGtz2q2kwAgmNlmsJOb4r4I89RcfWQaQo1KsCNnJmBT25UpH1KP17HVX4K4KMaIs1+3FD/rA8Jgiuv4OXswn5ZA4/aMRxjOYUKKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,203 +97,261 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-cgwb_kill() takes an offline memcg's wbs out of bdi->cgwb_tree, but
-inodes that are still being dirtied stay attached to them. When a
-replacement container keeps appending to those files, its foreign
-flushes fail with -ENOENT in wb_get_lookup(), and it sleeps in
-balance_dirty_pages() for seconds to minutes.
+On Sun, 27 Sep 2026 10:54:29 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-Fall back to searching bdi->wb_list, where killed wbs stay until they
-are released. With commit 168a8c13159c ("writeback: size foreign
-flushes by target wb dirty pages"), the flush is then sized from the
-wb's own dirty pages and writes out what the replacement dirtied.
+> After the HugeTLB conversion, optimized vmemmap state is described by
+> the memory section and the sparse-vmemmap population path can allocate or
+> reuse shared tail vmemmap pages based on that metadata. Device DAX still
+> uses the older DAX-specific population model, including a separate tail
+> vmemmap page reservation and architecture-specific logic to locate or
+> populate reusable tail pages.
+> 
+> This series makes device DAX use the same section-based model. Device DAX
+> records the compound page order from pgmap->vmemmap_shift in section
+> metadata before vmemmap population, uses the common per-zone shared tail
+> vmemmap page, and drops the extra reserved tail page. The powerpc radix
+> path is updated to use the same shared tail-page helper, so the generic
+> and powerpc DAX paths follow the same reservation model.
 
-Test, on top of that commit: a cgroup appends to 1000 files at
-250MiB/s and is removed, then a second cgroup keeps appending to the
-same files under a 4G parent limit. Worst lag of the second writer
-behind schedule over 120s, in three runs:
+Thanks, I've updated mm-unstable to this version.
 
-  without this patch   85.3s  46.9s  52.1s
-  with this patch       1.0s   1.0s   1.1s
+Sashiko asked a thing:
+	https://sashiko.dev/#/patchset/20260927025441.741633-1-songmuchun@bytedance.com
 
-Fixes: d62241c7a406 ("writeback, memcg: Implement cgroup_writeback_by_id()")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
-Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
----
-At Honeycomb, a container that reads from Kafka and writes columnar
-files to a host volume stalls for 30-60s after each deploy replaces it
-(v6.18). This is likely the cause: the stall looks the same as in the
-reproducer (little CPU use, lag growing linearly and then recovering),
-though we haven't traced it in production yet.
+> v5:
+> - Move the shared tail-page factoring before introducing
+>   CONFIG_VMEMMAP_OPTIMIZATION
+> - Add a new patch to allocate the per-zone shared tail-page array
+>   dynamically and fix the RISC-V build failure reported by the kernel
+>   test robot
+> - Select VMEMMAP_OPTIMIZATION from ZONE_DEVICE instead of DEV_DAX so
+>   MSHV_VTL cannot set vmemmap_shift while leaving the optimization
+>   disabled (reported by Sashiko)
+> - Move the vmemmap optimization macros and MAX_FOLIO_VMEMMAP_ALIGN from
+>   mmzone.h to vmemmap-optimization.h
 
-Based on vfs-7.4.misc, next to Xin Yin's 168a8c13159c, which fixes the
-sizing but not the lookup of a removed cgroup's wb. Each helps without
-the other; this one also applies cleanly to mainline. On mainline
-(fd179f8a05be), without 168a8c13159c, the test from the changelog gave
-52.8s, 73.3s and 5.2s worst lag before this patch and 1.0s, 1.0s and
-1.0s after.
+Here's how v5 altered mm.git:
 
-Trigger: a cgroup dirties files and is removed while they are still
-dirty; a sibling keeps appending to the same files under a parent memory
-limit. Symptom: cgroup_writeback_by_id() returns -ENOENT and the sibling
-stalls in balance_dirty_pages(). Minimal recipe below; the harness that
-produced the numbers (paced writer, lag per second, MODE=alive control)
-is at https://gist.github.com/lizthegrey/2209d831930588f63076bdc0ac7b78e2.
 
-On ext4, syncing before the removal doesn't reliably help: writeback can
-leave inodes I_DIRTY_SYNC after syncfs, and cleanup_offline_cgwbs_workfn()
-then skips the dying wb entirely (2 of 3 runs at 5000 files; a second
-syncfs avoided it in 5 of 5). On XFS one syncfs left the wb clean in 5
-of 5 runs.
+ arch/loongarch/include/asm/pgtable.h |    1 
+ arch/riscv/mm/init.c                 |    1 
+ include/linux/mm.h                   |    1 
+ include/linux/mmzone.h               |   27 +----------------
+ include/linux/vmemmap-optimization.h |   29 ++++++++++++++++--
+ mm/hugetlb_vmemmap.c                 |    1 
+ mm/sparse-vmemmap.c                  |   39 +++++++++++++++++++++----
+ 7 files changed, 64 insertions(+), 35 deletions(-)
 
-Harness settings for all numbers: MEM_MAX=max POD_MAX=4G RATE_MBPS=250,
-plus NFILES=5000 SYNC_OLD=1 (or 2) for the syncfs runs and
-NFILES=500000 OLD_SECS=120 SYNC_OLD=1 POD_HOP=10 for the 500k-file runs.
-
-Also reproduced unpatched on bare-metal arm64 with Ubuntu's 7.0 kernel
-(ext4 on a loop device): 12.9s worst lag with the old cgroup removed,
-2.5s with it kept.
-
-Tested: arm64 KVM guests (virtme-ng), ext4 and XFS on virtio. No lockdep,
-PROVE_RCU, DEBUG_ATOMIC_SLEEP or DEBUG_PAGEALLOC reports. W=1, sparse
-and checkpatch --strict clean.
-No new warnings building arm64 defconfig with and without
-CGROUP_WRITEBACK, allnoconfig, arm multi_v7_defconfig with
-CGROUP_WRITEBACK, and the touched files (W=1) under arm64 allmodconfig
-and x86_64 defconfig with CGROUP_WRITEBACK.
-
-Not tested: x86, production, linux-next.
-
-Workaround until this lands: lowering vm.dirty_expire_centisecs from
-3000 to 500 cut the worst lag on unpatched mainline to 4.8s, 4.6s and
-14.3s, but did not remove the stall.
-
-Stable: please take 168a8c13159c too. Without it the flush is sized from
-the dead memcg's own dirty pages, so this only helps while it has some.
-f6988c90671e (already in mainline and tagged for stable) also matters:
-on XFS with 500k synced inodes and the pod cgroup removed 10s later, the
-handover was slow enough without it that the replacement fell 21-22s
-behind (vfs-7.4.misc), against 1.0-1.2s with it (mainline).
-Before 5.14 there is no offline_cgwbs cleanup, but the bdi->wb_list walk
-should still apply.
-
-Not covered: after a blkcg association change, wb_get_lookup() finds the
-new clean wb, so the fallback doesn't run.
-
-Developed with Claude Opus 5.5, which wrote the code, the reproducers
-and first drafts of this text, and ran the builds and VM tests. I drove
-the investigation from the production symptoms, designed the
-experiments and controls (repeated runs, parent-commit baselines,
-testing this patch on its own), and reviewed the analysis, code and
-results.
-
-Minimal recipe:
-	#!/bin/bash
-	# As root, cgroup v2, in a directory on ext4/xfs/btrfs ($DIR).
-	cg=/sys/fs/cgroup/wbmini
-	mkdir $cg && echo +memory > $cg/cgroup.subtree_control
-	echo 4G > $cg/memory.max
-	mkdir $cg/old $cg/new
-	append() {  # append $1 blocks of $2 to each of 1000 files
-		for i in $(seq 1000); do
-			dd if=/dev/zero of=$DIR/f$i bs=$2 count=$1 \
-			   oflag=append conv=notrunc status=none
-		done
-	}
-	(echo $BASHPID > $cg/old/cgroup.procs
-	 append 8 1M            # old owner writes the files...
-	 append 1 64k)          # ...and exits with all of them dirty
-	rmdir $cg/old           # its cgroup goes away while they are dirty
-	bpftrace -e 'kretprobe:cgroup_writeback_by_id { @ret[(int32)retval] = count(); }' &
-	sleep 3
-	time (echo $BASHPID > $cg/new/cgroup.procs
-	      append 4 1M)      # replacement keeps appending to the same files
-	kill -INT $!; wait
-	rmdir $cg/new $cg
-	# Unpatched: many @ret[-2] (-ENOENT) and the append stalls.
-	# Patched: @ret[0] only.
----
- fs/fs-writeback.c           |  2 ++
- include/linux/backing-dev.h |  2 ++
- mm/backing-dev.c            | 31 +++++++++++++++++++++++++++++++
- 3 files changed, 35 insertions(+)
-
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index d26b2cf05283..5fb70c16488d 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -1189,6 +1189,8 @@ int cgroup_writeback_by_id(u64 bdi_id, int memcg_id,
- 	 * there's nothing to flush, don't create one.
- 	 */
- 	wb = wb_get_lookup(bdi, memcg_css);
-+	if (!wb)
-+		wb = wb_get_lookup_dying(bdi, memcg_css);
- 	if (!wb) {
- 		ret = -ENOENT;
- 		goto out_css_put;
-diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
-index c2284466e7aa..2bbc74b3b180 100644
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -151,6 +151,8 @@ static inline void bdi_wb_stat_mod(struct inode *inode, enum wb_stat_item item,
+--- a/arch/loongarch/include/asm/pgtable.h~b
++++ a/arch/loongarch/include/asm/pgtable.h
+@@ -72,6 +72,7 @@
  
- struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
- 				    struct cgroup_subsys_state *memcg_css);
-+struct bdi_writeback *wb_get_lookup_dying(struct backing_dev_info *bdi,
-+					  struct cgroup_subsys_state *memcg_css);
- struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
- 				    struct cgroup_subsys_state *memcg_css,
- 				    gfp_t gfp);
-diff --git a/mm/backing-dev.c b/mm/backing-dev.c
-index cecbcf9060a6..1437f80ed7e3 100644
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -807,6 +807,37 @@ struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
- 	return wb;
- }
+ #include <linux/mm_types.h>
+ #include <linux/mmzone.h>
++#include <linux/vmemmap-optimization.h>
+ #include <asm/fixmap.h>
+ #include <asm/sparsemem.h>
  
-+/**
-+ * wb_get_lookup_dying - get a killed wb for a given memcg
-+ * @bdi: target bdi
-+ * @memcg_css: cgroup_subsys_state of the target memcg (must have positive ref)
+--- a/arch/riscv/mm/init.c~b
++++ a/arch/riscv/mm/init.c
+@@ -22,6 +22,7 @@
+ #include <linux/hugetlb.h>
+ #include <linux/kfence.h>
+ #include <linux/execmem.h>
++#include <linux/vmemmap-optimization.h>
+ 
+ #include <asm/alternative.h>
+ #include <asm/fixmap.h>
+--- a/include/linux/mm.h~b
++++ a/include/linux/mm.h
+@@ -38,6 +38,7 @@
+ #include <linux/bitops.h>
+ #include <linux/iommu-debug-pagealloc.h>
+ #include <linux/kcsan-checks.h>
++#include <linux/vmemmap-optimization.h>
+ 
+ struct mempolicy;
+ struct anon_vma;
+--- a/include/linux/mmzone.h~b
++++ a/include/linux/mmzone.h
+@@ -96,29 +96,6 @@
+ 
+ #define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
+ 
+-/*
+- * HugeTLB Vmemmap Optimization (HVO) requires struct pages of the head page to
+- * be naturally aligned with regard to the folio size.
+- *
+- * HVO which is only active if the size of struct page is a power of 2.
+- */
+-#define MAX_FOLIO_VMEMMAP_ALIGN					\
+-	(IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION) &&		\
+-	 is_power_of_2(sizeof(struct page)) ?			\
+-	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
+-
+-/* The number of retained vmemmap pages with HVO enabled. */
+-#define VMEMMAP_OPTIMIZATION_PAGES		1
+-#define VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES	\
+-	(VMEMMAP_OPTIMIZATION_PAGES * PAGE_SIZE / sizeof(struct page))
+-#define VMEMMAP_OPTIMIZATION_MIN_ORDER		(ilog2(VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) + 1)
+-
+-#define __VMEMMAP_OPTIMIZATION_NR_ORDERS	\
+-	(MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
+-#define VMEMMAP_OPTIMIZATION_NR_ORDERS		\
+-	((__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 &&	\
+-	  IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION)) ? __VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
+-
+ enum migratetype {
+ 	MIGRATE_UNMOVABLE,
+ 	MIGRATE_MOVABLE,
+@@ -1156,8 +1133,8 @@ struct zone {
+ 	/* Zone statistics */
+ 	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+ 	atomic_long_t		vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+-	struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
++#ifdef CONFIG_VMEMMAP_OPTIMIZATION
++	struct page **vmemmap_tails;
+ #endif
+ } ____cacheline_internodealigned_in_smp;
+ 
+--- a/include/linux/vmemmap-optimization.h~b
++++ a/include/linux/vmemmap-optimization.h
+@@ -14,6 +14,23 @@
+ #include <linux/mmdebug.h>
+ #include <linux/mmzone.h>
+ 
++/*
++ * HugeTLB Vmemmap Optimization (HVO) requires struct pages of the head page to
++ * be naturally aligned with regard to the folio size.
 + *
-+ * wb_get_lookup() only finds wbs that are still in @bdi->cgwb_tree.  A
-+ * killed wb leaves the tree but stays on @bdi->wb_list until it is
-+ * released, and inodes attached to it can keep collecting dirty pages from
-+ * other memcgs until they are written back and switched away, so foreign
-+ * flushes still need to reach it.  Returns a wb of @memcg_css on @bdi which
-+ * has dirty IO, with a reference held, or %NULL.  If there are several,
-+ * the first one found is returned; this is best effort.
++ * HVO which is only active if the size of struct page is a power of 2.
 + */
-+struct bdi_writeback *wb_get_lookup_dying(struct backing_dev_info *bdi,
-+					  struct cgroup_subsys_state *memcg_css)
++#define MAX_FOLIO_VMEMMAP_ALIGN					\
++	(IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION) &&		\
++	 is_power_of_2(sizeof(struct page)) ?			\
++	 MAX_FOLIO_NR_PAGES * sizeof(struct page) : 0)
++
++/* The number of retained vmemmap pages with HVO enabled. */
++#define VMEMMAP_OPTIMIZATION_PAGES		1
++#define VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES	\
++	(VMEMMAP_OPTIMIZATION_PAGES * PAGE_SIZE / sizeof(struct page))
++#define VMEMMAP_OPTIMIZATION_MIN_ORDER		(ilog2(VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) + 1)
++
+ #ifdef CONFIG_VMEMMAP_OPTIMIZATION
+ static inline unsigned int section_compound_order(const struct mem_section *section)
+ {
+@@ -44,6 +61,8 @@ static inline unsigned int pfn_to_sectio
+ {
+ 	return section_compound_order(__pfn_to_section(pfn));
+ }
++
++struct page *vmemmap_shared_tail_page(unsigned int order, struct zone *zone);
+ #else
+ static inline unsigned int section_compound_order(const struct mem_section *section)
+ {
+@@ -64,6 +83,12 @@ static inline unsigned int pfn_to_sectio
+ {
+ 	return 0;
+ }
++
++static inline struct page *vmemmap_shared_tail_page(unsigned int order,
++						    struct zone *zone)
 +{
-+	struct bdi_writeback *wb;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(wb, &bdi->wb_list, bdi_node) {
-+		if (wb->memcg_css == memcg_css && wb_has_dirty_io(wb) &&
-+		    wb_tryget(wb)) {
-+			rcu_read_unlock();
-+			return wb;
-+		}
-+	}
-+	rcu_read_unlock();
-+
 +	return NULL;
 +}
-+
+ #endif /* CONFIG_VMEMMAP_OPTIMIZATION */
+ 
+ static inline bool vmemmap_optimizable_pfn(unsigned long pfn)
+@@ -87,8 +112,4 @@ static inline bool vmemmap_optimizable_o
+ 
+ 	return order >= VMEMMAP_OPTIMIZATION_MIN_ORDER;
+ }
+-
+-#ifdef CONFIG_SPARSEMEM_VMEMMAP
+-struct page *vmemmap_shared_tail_page(unsigned int order, struct zone *zone);
+-#endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ #endif /* _LINUX_VMEMMAP_OPTIMIZATION_H */
+--- a/mm/hugetlb_vmemmap.c~b
++++ a/mm/hugetlb_vmemmap.c
+@@ -19,7 +19,6 @@
+ 
+ #include <asm/tlbflush.h>
+ #include "hugetlb_vmemmap.h"
+-#include "internal.h"
+ 
  /**
-  * wb_get_create - get wb for a given memcg, create if necessary
-  * @bdi: target bdi
-
----
-base-commit: 168a8c13159c6e3f0f08da6f8fa2f633a91ba9fd
-change-id: 20260926-wb-dying-cgwb-flush-06e260e2abad
-
-Best regards,
---  
-Liz Fong-Jones <lizf@honeycomb.io>
+  * struct vmemmap_remap_walk - walk vmemmap page table
+--- a/mm/sparse-vmemmap.c~b
++++ a/mm/sparse-vmemmap.c
+@@ -167,16 +167,44 @@ static void * __meminit vmemmap_alloc_bl
+ 	return p;
+ }
+ 
++#ifdef CONFIG_VMEMMAP_OPTIMIZATION
++#define VMEMMAP_OPTIMIZATION_NR_ORDERS	(MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
++
++static __ref struct page **vmemmap_tails_alloc(struct zone *zone)
++{
++	struct page **pages;
++	const size_t size = array_size(VMEMMAP_OPTIMIZATION_NR_ORDERS, sizeof(*pages));
++
++	pages = slab_is_available() ? kzalloc_objs(*pages, VMEMMAP_OPTIMIZATION_NR_ORDERS) :
++		memblock_alloc(size, __alignof__(*pages));
++	if (!pages)
++		return NULL;
++
++	if (cmpxchg(&zone->vmemmap_tails, NULL, pages) != NULL) {
++		if (slab_is_available())
++			kfree(pages);
++		else
++			memblock_free(pages, size);
++		pages = READ_ONCE(zone->vmemmap_tails);
++	}
++
++	return pages;
++}
++
+ struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zone)
+ {
+ 	void *addr;
+-	struct page *page;
++	struct page *page, **pages;
+ 	const unsigned int idx = order - VMEMMAP_OPTIMIZATION_MIN_ORDER;
+ 
+-	if (WARN_ON_ONCE(idx >= ARRAY_SIZE(zone->vmemmap_tails)))
++	if (WARN_ON_ONCE(idx >= VMEMMAP_OPTIMIZATION_NR_ORDERS))
++		return NULL;
++
++	pages = READ_ONCE(zone->vmemmap_tails) ? : vmemmap_tails_alloc(zone);
++	if (!pages)
+ 		return NULL;
+ 
+-	page = READ_ONCE(zone->vmemmap_tails[idx]);
++	page = READ_ONCE(pages[idx]);
+ 	if (likely(page))
+ 		return page;
+ 
+@@ -196,16 +224,17 @@ struct page __ref *vmemmap_shared_tail_p
+ 	}
+ 
+ 	page = virt_to_page(addr);
+-	if (cmpxchg(&zone->vmemmap_tails[idx], NULL, page) != NULL) {
++	if (cmpxchg(&pages[idx], NULL, page) != NULL) {
+ 		if (slab_is_available())
+ 			__free_page(page);
+ 		else
+ 			memblock_free(addr, PAGE_SIZE);
+-		page = READ_ONCE(zone->vmemmap_tails[idx]);
++		page = READ_ONCE(pages[idx]);
+ 	}
+ 
+ 	return page;
+ }
++#endif
+ 
+ static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
+ 		struct vmem_altmap *altmap, unsigned long flags)
+_
 
 
