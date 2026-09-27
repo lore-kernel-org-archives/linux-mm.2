@@ -4,118 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24EFC9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 23:26:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93D2BC9832F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 23:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C9F16B008A; Sun, 27 Sep 2026 19:26:07 -0400 (EDT)
+	id 488736B0088; Sun, 27 Sep 2026 19:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A1156B008C; Sun, 27 Sep 2026 19:26:07 -0400 (EDT)
+	id 4394B6B008A; Sun, 27 Sep 2026 19:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B69D6B0092; Sun, 27 Sep 2026 19:26:07 -0400 (EDT)
+	id 329586B008C; Sun, 27 Sep 2026 19:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35BAD6B008A
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:26:07 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 25B51160898
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:26:05 +0000 (UTC)
-X-FDA: 85261127490.21.3B69EF6
-Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D9D2520004
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:26:02 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=E+D62Z35;
-	dmarc=none;
-	spf=softfail (imf31.hostedemail.com: 23.83.218.24 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CE4C6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:50:58 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87AFE40AAC
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:50:57 +0000 (UTC)
+X-FDA: 85261190154.08.1A689FC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 92FBD80002
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:50:55 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGzlXZHz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790551563;
+	s=arc-20220608; t=1790553055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2aSMKRCkja4n/VQgEqybQKvbi5xmjbGNpO1qSHqKYOE=;
-	b=OKKnZvVeF30w483Mbtm0i5pdEQtrmbKFrfQbkwbir2nkrZ3TTl/zYYOB0MV/Ejkl2qXAjf
-	Fd2Q8nOucvySq4eHRhvkHXkvXTKSuOcC5kEWy03vYnfG2yOhi2lCXveh6A/y2/uPDrdjHq
-	ToFvSvQ3EHPwiAS4joJwPdYXWBxO/Kk=
+	bh=QExukZIjY2AejkBgnmymsglzpWFxW7LnbDXCoL9d84g=;
+	b=H77A8GwYN9qp5pa7MV/+dksoQbvBlm8t7OKSxlMZAQeQsckor/ocWJKWMGSPqIXbIngXcY
+	SORWDASLDoIEiF6JRMEruclfNem18ruyQlupYFoCTwevEHsIZs7zrdN1NwREP6zCMrlSaA
+	2JjotE950tVToY43WmZM9L1dXcQofuE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=E+D62Z35;
-	dmarc=none;
-	spf=softfail (imf31.hostedemail.com: 23.83.218.24 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGzlXZHz;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790551563;
-	b=DOV3/KQmoSeX1ccAobjC3FCFiy4SLgaYWE3wE4sKrceOQGMujW3xwqFjb3Mjw7cyDDQqIy
-	3GuLNRM9aNV2+u2NolqONjmxxC2N2OUpnPYHIYzJ0cxGOrhNALQr3RK3vGOLsROS4MaSn3
-	L4r5+lOaKDRx+Ig3CCOdv7AZpgAVJ0s=
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id BAD564E1538;
-	Sun, 27 Sep 2026 23:26:01 +0000 (UTC)
-Received: from pdx1-sub0-mail-a257.dreamhost.com (trex-green-8.trex.outbound.svc.cluster.local [100.96.22.229])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 70CF34E1345;
-	Sun, 27 Sep 2026 23:25:59 +0000 (UTC)
-X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
-X-MailChannels-Auth-Id: dreamhost
-X-Bottle-Dime: 1c4e2ddf2127d7f1_1790551561597_4283029918
-X-MC-Loop-Signature: 1790551561597:956768281
-X-MC-Ingress-Time: 1790551561597
-Received: from pdx1-sub0-mail-a257.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.96.22.229 (trex/8.0.2);
-	Sun, 27 Sep 2026 23:26:01 +0000
-Received: from offworld (unknown [172.58.116.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: dave@stgolabs.net)
-	by pdx1-sub0-mail-a257.dreamhost.com (Postfix) with ESMTPSA id 4htLCm1y6Zz103W;
-	Sun, 27 Sep 2026 16:25:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
-	s=dreamhost; t=1790551559;
-	bh=2aSMKRCkja4n/VQgEqybQKvbi5xmjbGNpO1qSHqKYOE=;
-	h=Date:From:To:Cc:Subject:Content-Type;
-	b=E+D62Z35SRdU9cbMZcyXmBaunm2mvKP6J/oet/VsA6QZtvpQwYiEdMZMRoUyLl9Pz
-	 uGITOgk2tDjNSsp9tdRkBGg4y2L7K+YFz1cXx3R0R9pMihP53UfFaKg3JZ9g/WjnXY
-	 bcTgNtyFfYThp8vCi3wl7ZJVW/h4izJx6J0VkjOEFQz7dopOc4zhI+v6skKcKCaXDS
-	 RyKMidAKbn/kGxoRSsNIEfysltrVy52mlJg/87pJOEKLXJbqVrGOiBRj0uIyPfsowV
-	 MjgaZdMkHoRckeINWirahjclE9pC4kxzb+4eiVSZc0QEEgVNK4fFw9risHFiKtRpR7
-	 77xkxd7s/yiyw==
-Date: Sun, 27 Sep 2026 16:25:52 -0700
-From: Davidlohr Bueso <dave@stgolabs.net>
-To: Bharata B Rao <bharata@amd.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
-	gourry@gourry.net, mgorman@techsingularity.net, mingo@redhat.com,
-	peterz@infradead.org, raghavendra.kt@amd.com, riel@surriel.com,
-	rientjes@google.com, sj@kernel.org, weixugc@google.com,
-	willy@infradead.org, ying.huang@linux.alibaba.com, ziy@nvidia.com,
-	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
-	akpm@linux-foundation.org, david@kernel.org, byungchul@sk.com,
-	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
-	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com,
-	donettom@linux.ibm.com
-Subject: Re: [PATCH v8 3/8] mm: Hot page tracking and promotion - pghot
-Message-ID: <20260927232552.u6iypdeadjf4nyla@offworld>
-References: <20260728054356.291998-1-bharata@amd.com>
- <20260728054356.291998-4-bharata@amd.com>
+	t=1790553055;
+	b=qA/7x38kaVWiUyuIBYxhLUvJqVyLRV9gMKOw3uMr15h45MpzLz4LjJTKf0KQJ9RogU7PWA
+	dF+ydrGjKuf8aewBsezlGk6ksqbaVvPIen2yYrLvAPlY8VA7VeRzsJrffuCX/A1x4XRzya
+	jGKAQHrIL4fUPSrcJ/6p8MDBz4aMe2s=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E21C3447F2
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:50:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486F1F008A0
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:50:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790553053;
+	bh=QExukZIjY2AejkBgnmymsglzpWFxW7LnbDXCoL9d84g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=IGzlXZHzPr/8ECiAyHaT53ppe9Pa4uTrD1ifyleS430p+CIoNxFgspLA9FOAsgoDC
+	 Y1V2LIBTT8FgrqI2FugbvCuJIkj4gsoUXcAtu8rVO7ZOgbj1sQNUPRR3RnLIuMpYhX
+	 S9T/NVpEF/tX8lEFHOZdVDoddxYAgHUtn5lwnQ8QDRBmrzAq9iivyjVkw3DBjmOBfW
+	 pFvQyFnYj3ndeu4drCcgFX4gCigXcUi4deAJQJcJ+ithjTcdzZIJ81UfavdwngKQiD
+	 Tyss9VhZN9MePsdYqjBBMuGI01wvOBZ9B9NkXWGLVyWIFT8aCuACQIWAfnJJLhl4M2
+	 IhhraGasAMuPA==
+Received: by mail-ed2-f27.google.com with SMTP id 4fb4d7f45d1cf-6aa135d6e97so3834594a12.2
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:50:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy6amp7aZrfw+u3r6qawJpRJKI9uRIiHBFuT/SeDMSJqQnu9FYQ9hR/AqXuqSCATxajfhCYUMxTMA==@kvack.org
+X-Gm-Message-State: AFq9FYICXLHEmaLVGvdFCVhUd1KHK2kp4es+E5FTHwFXwEqYpwkx+ghn
+	VOThRd3ywxtDeFtzjhaCbfPiC0UXiuHeqahzd7ywPM6/t/9AWW5rEVrQy5U0P0q93Zs5T9tRwQ9
+	cPNHSSmaFhCMx6CYP1b+qUEOS3RNUfRqk9vFD19u2yQ==
+X-Received: by 2002:a05:6402:3226:b0:6aa:e8d9:7d12 with SMTP id
+ 4fb4d7f45d1cf-6aae8d98044mr6856124a12.6.1790553052488; Sun, 27 Sep 2026
+ 16:50:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260728054356.291998-4-bharata@amd.com>
-User-Agent: NeoMutt/20220429
+References: <aqjcFb6MFNiA6n4V@fedora> <aqjpYHbZ14A8xRtK@fedora>
+ <CACePvbUwTxcMPVK_1GAz5gPDdh0BV9JZSnKXaUFLqDHBzBmPQg@mail.gmail.com>
+ <7ee199ddee81bf8026688def82f78ad9db09be9e.camel@surriel.com>
+ <CACePvbVA+DnDJprMx3qOrGb98y1ORQ-LfaENy_Btfx3uW=E4eQ@mail.gmail.com>
+ <f3ca71f1c561f28a341de0e5a1b3f24bd4da3201.camel@surriel.com>
+ <CACePvbX5Oy98DygLZjC=Z03Lqb0nk50_OEKQCT9svbQOOwwDew@mail.gmail.com>
+ <CAKEwX=Mv+tnL8K4rfPuof6mKaLQp=tqR_qjtKrtY0-5L85FLfw@mail.gmail.com>
+ <CACePvbUF2QQMh_GiCNQn-RTmZNkkLWkmaHSYzdQwv2fupjNQiw@mail.gmail.com>
+ <arUcil9kxUPiymXI@KASONG-MC4> <araWKyJ5MENBwXCL@cmpxchg.org>
+ <CACePvbV0Z3OhxkEn-MiMrxpSmtbt1YwCt2N2_ZW3jbdh87jgFA@mail.gmail.com>
+ <9499bc084e30df4d10bc069ed26d576e4dd3de80.camel@surriel.com>
+ <CACePvbWdJSUDuEbR2FXczbeWwvxP86WDGHTL-eO0A8WwMDoNRQ@mail.gmail.com>
+ <b792823cce613ce756227a3b60cc245b0316a800.camel@surriel.com>
+ <CACePvbWf8ocrfTpEpQ6==cr1=KTzo4Ar+-Zxt89=sxt02Z8uBg@mail.gmail.com> <1739d52dcdebdc589826990ef2938b58b1055e18.camel@surriel.com>
+In-Reply-To: <1739d52dcdebdc589826990ef2938b58b1055e18.camel@surriel.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sun, 27 Sep 2026 13:50:41 -1000
+X-Gmail-Original-Message-ID: <CACePvbUjr2kW67r0Baz748p-WLk4rPww7V=sS2s87U=R2L7N+w@mail.gmail.com>
+X-Gm-Features: AclHuK8wcEl0AbVxEBkinaGVysym0CjC226qO7EjIvxWHxxkRi6EAgi7L-b2h2U
+Message-ID: <CACePvbUjr2kW67r0Baz748p-WLk4rPww7V=sS2s87U=R2L7N+w@mail.gmail.com>
+Subject: Re: Path forward for Virtualized Swap?
+To: Rik van Riel <riel@surriel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Kairui Song <ryncsn@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Yosry Ahmed <yosry@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
+	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Gregory Price <gourry@gourry.net>, Wenchao Hao <haowenchao22@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
+	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
+	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, 
+	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: riq6wge1muia35a68eor1mrzxsxf589x
 X-Rspam-User: 
-X-Stat-Signature: nrysxix7ajooaekjso4gm53jogpe7fb7
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D9D2520004
-X-HE-Tag: 1790551562-552244
-X-HE-Meta: U2FsdGVkX1+acUS6V3XK/d6p5YVR/IZJmcPd3885z14yXt1M5iEK5yaCkaFRoCyLswl+/K18DrbdPHoAvL1ckXreaqAUpQ34NyKBj6AgbPqCpXDqB7EJnIL31aN94DHnlOBPA+p4tBCNJySY9AsDiT2XIUdcUiq84QiX+nY9KSMsYut7dfzJae8mKbJPlNMe8cnvs35DOQDezRWDSRj/ru3BCca8qo6T5JEFGqBCDs0M2qALg0L7lq1l4XHKUnA+S79i62qXnjaUyqsb17qAwS5aUl0MzwhqXkBb84UQ/SFV9Yoo8pw5d6fnrZ1CSABOgC9gZNoYmiki7bosqjJoxJ2QQYUPJs/U579GoVNbMo0zgQRJwkpG8bY7L0E5s7UGkXRFv4iJIddcQUtjlfgJRhC1YR6dNb42MtSw6Xlxnhrx7nUGWJkDV6lwr/RP+E/t5CQ2+8W+tW52OCejXnwQauyQbtNOk3fQbAbxEXrg46/+ExoJrcAnKQ0R+Vw1Q2tMs2110ssBo9fCclweSVfHoUc0sVlkYSBR/LtuLsrHtUqR7WyJQ8KxyLMKWGhJtmLF4e2hxJFm7yIM+2m14ifgAFSI3YVUlzTN8ydF+ytLoJPB5XyUV0JGlhoNvxhC26hcgfE7LKbYDK3djkEGB2R6/qJQtC+03cwLMLvcYF0qflQ6e0ChST+Mgcy4UmxKOPeyBbTMBJ5l9irRCVimcCZszh22rw5DhYBh+kn2xoY6cT1xZVop6ts9NRrsF0nejlGyxmZXCyHAwRZxrrSZM0t0pQODhRaMExZEjLjahlR4vzanLBc0z+7Ukj5iDC2ifoBCgNnu+ezoh/2dcPXtR7cgxbcHive+uLf7tn1TFeEQX+aPPsheXUIL65k8HBBXyq/WVLfvCbBpHpavnjYAjHi0hVBmCdt6ruxYlJBiGXp5Rd/nhGmuWU6BRBfDyUGMailXjlzxsfNMjdfo+zhkwUT
- IVGIWnbv
- FRddHY1q46UdmWckoJQfxy2AOlwNT5bsPjT9OEqv+fVK/83GRfJKg7na77EFtFmrN2nEWSamCJJM+Vp8zUWvpwFT6s79pz1v5QonxbKjql6LNGJhrsYktqSSxsm3DIzM1axgCwMW5KyltuBNWhrkHTWvsJ0Pl5D/90hZAKVvUEVlO+ekctNSBZCmnbNz5AuCn9NvIqj3un1rcuWXFKUgMWlIk2CHIYCVEwrDPO0yUzmRSGZ0TElHoQIsls7HoCmQpfak9N6Y2FzBlqMTt+/BwMDrV0tstTBRvM0GIE7VqpeDr/O5XjR9MTR+GLiSUDfpzvrVwY1MGbt1mt5CDa9GgpE+/IlqbwTqfBgPVFIbZMqr4ZNojRswSJoIEyg==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 92FBD80002
+X-HE-Tag: 1790553055-560181
+X-HE-Meta: U2FsdGVkX18G4yke+ZxTDZ4tmXyllppGQ2bmJ1ZHuSosurd+RrKjfiVKcvP7UwMD2rM2WuWNF51Cjk9Z3oPe3NNxeuD0TnWsgAvMtrzInyRPmp05P5SUAOYirbRHjc1Mf27K9Xi/FWrEEJYeqXNLObNjzjZqITS9cX1XxSri+iK2ufTp2XEnKIBvWPhONN9xumSL4MP2CklQEm7O+BVtFQJfosGp7GsW1W6U0iTpuhr7ICRArHE9DVLMAY56Im43bYPJHOsiFovXoi7tTyhgdRFIpQAC8KbhtFZT7Hxq5sq+DGDe8Jr06DoUyCZqGakrv65APoEIBo62h/MujtfZxqFFRDk1gd/TsM36qLPAzGcb0NXKDdbxldJctr2lC43fk4l6X3YLOnEpRlUyXUNBRaVK/fk4YvkPFABG0zGqVuuwhPbp6seCn5raEuQPUX5WFkzONkWAmcMbwvvrn4GXzsF2dU+bIvSNGQO8YkTUaN0eSCQw3qmgE0sL5fRxv8xbzXcakxFGhfMeC1kspn4gRwR+RfrsvvnwBtpYcg4mU+vSXSxSh5e14EHJMVxyC2jYLHpRHWd/x0AHuUWsDgm562eGFBoWY+JJEXIYaMwgkzxxiUR+EAX8NauoW8OIznEnwVwxcZXov8KmmXWvBGsnpCbH/xq33oHS8xD06H5Mau1CYB/3fM3rwS2MyE7hmXSSO0bj4G0Vqzz5dAgIMAsmQd+qJ7wlfx1L/rIR19+m941AOeGkiprcZVq116bAc0yJRc0N2XHCTZ/R9w20/DOkj0x3NKYkHRYBh/m9Lkds1PTFYCRVB8pzBA9BP4k+HcNFE9CE7FumXdoVKiwO1uuDhVFzD6DSXYbzNqnePpbH/bLbpKT23sTSg6/btSon/XyhTp8U4DffiPDi9ygMk7w3P9sAoJtYUysdsq1UwWZp72lSVUzKqG2aCf3RQht9lPe0nsb4Z/muD0cbXNZukWL
+ LuHMmcS/
+ J6uUrdm4i+o9tKqZ/Qo4/SRvxGV0R6SIkyCl60w9fSIxBQnvDYVCHDlyWIvgwJ80Y+1mU9rheotWk4B1m+3YBTeX37+7nO/kX+WltcESjn9KJ49NLboEEvqtlOfcbgfC8iXuUjwECONRoNKCs3oZKDRBB9Qxn0KGI0FmahvPfKSYRdAnMRRkNmfxJ1gchZye1XWe1+EXNapAWOs05p6EP+EERZAOMnr2jkmy2SePHxKTZawTAvyeqRWpQPGMsEtHjA3D0ZkX1H65dKRu6259XZ27GBlUgzTftGEjvok154SS/XsCPmjn0ZGxwVbQGs+wd6Xk4ylDMSwziYlGxCnLLwDBjq2slkLvq64FU7fT9+kLozm3hmz1e6/PBiiSKo6CcTpNg4/tB2ac0ceO0mvaReM1JId7+4nnIWGwxFUk9Kk5MKKzHlCH0KWZPoc2+viFeoeCj6F8TizJHd2UfEKIGzpgQcUJVmWP8HuAC7SeUWiWxPYlkJbjUfQh7RQDmyUD+3hH5oGZbT9tUEaIpXudkomKKZlRZapNrJR3B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,31 +134,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 28 Jul 2026, Bharata B Rao wrote:
+On Sun, Sep 27, 2026 at 8:12=E2=80=AFAM Rik van Riel <riel@surriel.com> wro=
+te:
+>
+> The only real change we are looking for is
+> that once zswap no longer automatically takes
+> up real swap space, the zswap use is no longer
+> counted under memory.swap.max
+>
+> Only the data written out from zswap to
+> physical swap would count toward memory.swap.max.
 
->+/**
->+ * pghot_record_access() - Record page accesses from lower tier memory
->+ * for the purpose of tracking page hotness and subsequent promotion.
->+ *
->+ * @pfn: PFN of the page
->+ * @nid: Unused
->+ * @src: The identifier of the sub-system that reports the access
->+ * @now: Access time in jiffies
->+ *
->+ * Updates the frequency and time of access and marks the page as
->+ * ready for migration if the frequency crosses a threshold. The pages
->+ * marked for migration are migrated by kmigrated kernel thread.
->+ *
->+ * Return: 0 on success and -EINVAL on failure to record the access.
->+ */
->+int pghot_record_access(unsigned long pfn, int nid, int src, unsigned long now)
->+{
-[...]
->+}
+Johannes has a nice write up in this email thread that talks about the
+two usage cases:
+https://lore.kernel.org/all/araWKyJ5MENBwXCL@cmpxchg.org/
 
-This needs a EXPORT_SYMBOL_GPL(pghot_record_access) for any module based
-sources.
+I think what you describe is the usage 2)
 
-Thanks,
-Davidlohr
+I think we need to respect both usage cases. 1) is the established
+one, which I'm more familar. Currently, zswap charges to memory.swap.
+It is the status quo. Breaking this requires figuring out an
+alternative and implementing it in phases.
+
+I recall some proposal has been raise, give the usage case 2) a
+different set of counters and limits. e.g. memory.pswap.max. I also
+recall there were voices against it, arguing it was too complicated
+etc. I haven't fully understood all the details. It would be better if
+we don't have to break usage case 1) at all.
+
+Chris
+
+>
+> That way both of the fixed size resources are
+> counted according to their own limits:
+> - memory.swap.max limits physical swap use
+> - memory.max limits anon + file + slab + zswap
+>
+> --
+> All Rights Reversed.
 
