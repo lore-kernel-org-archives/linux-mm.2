@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C309C98338
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 20:31:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8BD3C9833F
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 20:54:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1120F6B008A; Sun, 27 Sep 2026 16:31:04 -0400 (EDT)
+	id 7807E6B0088; Sun, 27 Sep 2026 16:54:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C2876B008C; Sun, 27 Sep 2026 16:31:04 -0400 (EDT)
+	id 709236B008A; Sun, 27 Sep 2026 16:54:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECBEE6B0092; Sun, 27 Sep 2026 16:31:03 -0400 (EDT)
+	id 5F8466B008C; Sun, 27 Sep 2026 16:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C890A6B008A
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:31:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4F4D640A71
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:31:03 +0000 (UTC)
-X-FDA: 85260686406.17.0163B2C
+	by kanga.kvack.org (Postfix) with ESMTP id 32A6A6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:54:45 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1922C40A86
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:54:43 +0000 (UTC)
+X-FDA: 85260746046.07.3D7A770
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 936D6C0002
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:31:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bZCFoArE;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id 7238E180005
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:54:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i6dKcdAM;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790541061;
+	s=arc-20220608; t=1790542481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eO1GbP2uuZa4hrp2kTCOpYiuFc7Q8kusK/y74limaec=;
-	b=1orj6w+QytFQTx2OwG2XIodYpj61zqdGRkBsu7nzQgyoFoMl95nMuhWPlOY0/0b5mEz0mF
-	ipchExVcjb2wKOd6as8RsgIgga25IJM/4uu+NbU6OWcr2DqVYDO3my6viMYhDZh+wO8dPe
-	HuO+FcJmOGyfkwLR1E8Y0u/0923NE9s=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bZCFoArE;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=wezweqQqot1s/EhJa+Q8aOJlMWPiVKjcS+oT7p1UAYs=;
+	b=N3IpD8mjwUF0CBdErOTB/hOSTGtdwNEJ5eTrenI8havB1RzJhV2Nfuib8Pq7W7E8AQAcmS
+	bkncSjux58i+GuhIo1Y09lqgz5/zU2OOV4/RtAtSLWi6asoLVM2ukXgsTdvVL8/SDZNIfZ
+	GgWGRvyQjJHO/ipQADq3CahkgcBDFMI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790541061;
-	b=teLkN+mk/Wud7ifAF3dHTXCUregYth6d4vkzNuOvMLb+YXzksbzxnZuIPZDkFyvCjnpBqV
-	jsRmaTZ4yACT2Uvii9VVBuSncRdFDj4bwZQ4V6GCQpaAu5xKEATLRQr69DdIP4bujcyUPX
-	T9BhwsNylHWVVDIqAszjjyI0801uUWo=
+	t=1790542481;
+	b=2dRbCc5V/FVobTnfR01Rha3MuEZm2Fb7vN+hf2ZneZEfTrq1PK5udvly8dqQABUO0RJLtJ
+	Pmoy2xlw8XyMccxqVWZobtgZyVHLpGmiBGoJDiMr5oo7jGcPTQLcDsZXW8aCizOLtDf/fH
+	J67w0xpYQoMJ8HmmxTq8sqDyG9sdVjU=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=i6dKcdAM;
+	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 05B7460052;
-	Sun, 27 Sep 2026 20:31:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B591F000FF;
-	Sun, 27 Sep 2026 20:31:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7B51600E2;
+	Sun, 27 Sep 2026 20:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 112A81F000FF;
+	Sun, 27 Sep 2026 20:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790541060;
-	bh=eO1GbP2uuZa4hrp2kTCOpYiuFc7Q8kusK/y74limaec=;
+	d=linux-foundation.org; s=korg; t=1790542480;
+	bh=wezweqQqot1s/EhJa+Q8aOJlMWPiVKjcS+oT7p1UAYs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bZCFoArExGIZS0u/zlqwhpNYP3EhjQ6VjHC3TDViHMWIi14nyx1LJjiqOzHBWx+/f
-	 kkKiUa9YyEqhCSs+ddVuXJpQLrknpYA5av9fRlCWCjHW4ecvys5Zl2f8S8OM46Ji2m
-	 MkmUEqR6W5oGGtF8GihVH2w+zfJh7emXltzcHys8=
-Date: Sun, 27 Sep 2026 13:31:00 -0700
+	b=i6dKcdAMiqAgmpOl0EbfWmlKPvQQ/8TRbP8UEKnJN4TGjxlCgajWk7053GgOcx/Fu
+	 IMdCKOG7soO6PIDFHc79lxiu0GVPJ8hlOBUzRUtQ8ArJu4Js62nF6CY+lxUQXQPGbs
+	 fbbAW0/NLNvVPW5GDG5BEkcqH+Djx8Ji/1m+Wwng=
+Date: Sun, 27 Sep 2026 13:54:39 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
- oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>, Linux
- Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: [akpm-mm:mm-new 661/679] mmu.c:undefined reference to
- `__check_safe_pte_update'
-Message-Id: <20260927133100.46a4f7067c79280dcf83731b@linux-foundation.org>
-In-Reply-To: <202609270030.Y0QVBPmK-lkp@intel.com>
-References: <202609270030.Y0QVBPmK-lkp@intel.com>
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+Cc: rppt@kernel.org, peterx@redhat.com, surenb@google.com,
+ aarcange@redhat.com, david@kernel.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, mhocko@suse.com, shuah@kernel.org, kirill@shutemov.name,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] userfaultfd: clear the inherited uffd bit in
+ move_swap_pte()
+Message-Id: <20260927135439.094d75bc42414879a6e21c79@linux-foundation.org>
+In-Reply-To: <20260926124145.2878520-2-donggeunyoo.kernel@gmail.com>
+References: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
+	<20260926124145.2878520-2-donggeunyoo.kernel@gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3oqr5gqgaujhy3gywrtwg83m3yru8ad7
-X-Rspamd-Queue-Id: 936D6C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790541061-968743
-X-HE-Meta: U2FsdGVkX1+bLbFMAqysmsEJ6jZYfs5NktTpxc6euX3VmO9SyHZvSzk1yMg1chk4jGSYc14DfCPcv2OU5NRX4aleNN7m1dNePltLncPGD0YS/fLHdzMhNrzZQjf0i7b8LrvE4ModzWJXn1FGZzbqTcu3+mu9W4SdzJuRBk+Y3Hk2/khSIIFiO0/o80vGp3fJ1Quk7Ya6DMbPVtEf0piZ0i82aNn1uPik6wga7sQ3PGN63hFeVqqwNmXql0IxY/+xvJQ34h17iHzgMKicyuqkkHa+E6/rqSjfWaLjfvGUDcfm7Lt0PiCMETYUi4QhKcdxmxueIr9qRpePdntOcLl5+qFrxJWd9WAhvxYO0y1eYUel7eOcbGqE7Hes6lESU0oCZvSbiL/7I9uq69RVzYT8a4SSmQ7OQ8swyzPgvVdUig698PLBY95BgyaJZal1B220XiMmkPOOaF0WSIdoCC3hsRa5Ct7F8P7BhRZl36AfbNY4cWIDp/0WhWLS0XZ5GBsGnxykFUwxy+5xwGSdql4u5E1xOfogAELKKB/4GbG2Bofn9Gc7caNeltH29U3tce/fZa5zwEdwBZ+1kOzl4NN1EcFYuSAiwSzjE3Gh38KvUpS7F2ioxEz+EybtNpH5MqErF0cqcgFgMOEvGM+wIp/lY4axgZaylhy0dcVKMyydJATVPLjymlo2Sniqc3bmilOrA/FhGE4N7kp99Xn5JMguaA5XMxJYnHl8Xyr8qffJKxQYCP/U/5ktNXUdqufA9w1Is8n3+5bMbKstlHTj4/z2M4CfD1V9O8tedJsI6TfqEpfzGnSNOuaI6SNiFcoLI+fP1nwaJS5I9hoUWJIA6IIYD+pmUnktWSfda+Ch3einT6UlxvznOG20yxeqGu/M5oPx2vIa1LWOcUQ5B5CgOdtSjbK1E4fCGd/WHv8v+3VkNVjJX/fGW4arCaU+x6aPgBLhhmS02TKsJ4eSl5X49NO
- +TevNXK3
- 3tG+1kDK1xn7YZElapDnSM11+73xj/g5+1QgruaVd/kGe3k1cJFbm3aZ3gQ5NVbCGOMAXPW1GKno6v4KySHuvdRqCzypPFGshAdokUMItMdTEFi0EnTzRwB6NGl0qUs6cU+tcLbxy0awJeW/IjipCUIHlLG7IEhiAEkx8S6jGuNTNtBo8I9K76/6HKbW7joPKfimhKTWb/peRBgbpxtf6fv2OBwMQMiEZMtkMoGMF+1WnWwG8iVKGGoYBsKuB/w/Ml2WGeo8O/t97lqHJPV3qwcM4B0VYdif7oyN+twHjp/lp6DWbuO7bL5byv2Xnct0C/59ueQrpNHXEhxZULtDxLToASQ0ace+MLecHRu6SChPTCJkNPAwprhnUSzia52n2F9N7X4nGJ+aMtNTSA/YV1CC8eQ==
+X-Stat-Signature: 63f5k6bhexc9ofukzroww1wicypeiqeh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7238E180005
+X-HE-Tag: 1790542481-810680
+X-HE-Meta: U2FsdGVkX19bC2zzyFrseO7W4DgWDmE9eX0A08PJeMvjqenpPLGTricqSUULH0iX/Qua4IxdvHYOv+TQUi8tOfV7XSWuamGSRoDqg6e6w/oIpviJXxRmst15cJ1EKCqg6Q/2H2Th2l74yJIwXOSQQ6ZWpGEXJFTOSf+aFv0Mv4eUaNvMfUwdk2US+4My2LtoO7rT4KSo0b/uXhsq7+lWW3xP3CRP7/Gt6/U/TbMYyJbQbdwjsvL2vG86Elnq/CJTSyovyDNqT/4uHADw2gNO7h1hip6Z9jPT3lXKkSoqcWKyB822dHBjNskMHj1kyropT1np5m3xWMnUF+EW+PaWcLt9QE8395het4U3hQGvHHVGORhA8Zi2QObF9FZ3Qh8iyDXOHzkcvrjYAkoMcHhdZzeK7KjrIsdYeNgNQlRd/QWg+FIS6rG2Rqteed9qClh5VEjaqVbDp7qB9ZvoWKK7aYvPmH7VCTyXbHVFTjaNmVLi+b7KON+w3Y+69xAY53u1uJBiGUFW80eMRCzJZoaPap0+c5lLJAKc9nmYD43WUfCUvHgdCLJelrcl4cqoKiHhcAVzIg6blH3ZjzuDeqKxj162xv3lHdAyPKD0htvRjTjtbwhfq5bjXpdRB2iU/44pYNGmPC0uDGI1C9w4OMogPjRCxoLYVEJ5yLoVnD8QhpWKX+cI7Q1lEBrAnJEEE/mKnAnfxrATaSnBP05/gqb2bQi6pVhW9BZgy8eejeGcCAFa19AtTXCC8yzZlJ2KYJuuQLfmqyivl+boIj9yEAyrZMzKliHrQxzovLxWTI5gCHeVF7uBa/6nMgJoLcjTtl0Uy3tL+gjmM0VkIlYQQmmwiE+Y4AZ2G+wa7sndMJjARiXZ0B69QGvJBkkHx29ecqeZFEltrcLpylEzpAA7W+WkEOa4PM3G7yO7sTNF8uc19/2SjcKiyK/S1mSV7GB+yKhOa6OYT7Pf909jvXRDkju
+ DTyJLPwM
+ pHHZu7wmDztBmgdLyjlqZ4sY4b+Zj1pLarHjOE6pjBi6HC58lEX6lhbxzjxQ3BAZCZWCq0gIXX7FYZhHLbydW+6eaPKYhilqsb85HLmXXcCEgu+FLzVPWIYqHI/Lt1iqsA6+tz21v6wyj2FifFRSvrwWtRNHxuUskB01m9C3t+VhYDeAbCk7DeU9MMRcnInAEc0r9JgRtxDwU2yHKdgh4uy1VzcU1kG7WY5Z0A9WLkXOZNsjUWLbszMoaUaDvEy0Q2Ph4gM6LKvzmQbQvykEoZAjIPimZov151QFyDXHMcp4FNG7I5lzvV9pBXzv4msFDtHKvoCKHZm7N47xeo35DqUU8I7743JpwJqzwvdG7e1SO4aT2mkS0IABPp8+q7NWLoyZum5eVZIZC2ABkCWdNSszvtoZtXWucIcOT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,38 +94,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 27 Sep 2026 00:32:54 +0800 kernel test robot <lkp@intel.com> wrote:
+On Sat, 26 Sep 2026 21:41:44 +0900 Donggeun Yoo <donggeunyoo.kernel@gmail.com> wrote:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   b4fc90c82982d98959af08b4320420bcfc01303b
-> commit: 2862bcaf1aca55e0b43a5692a4595281ab780f05 [661/679] arm64/mm: move __check_safe_pte_update()
-> config: arm64-randconfig-1002-20260926 (https://download.01.org/0day-ci/archive/20260927/202609270030.Y0QVBPmK-lkp@intel.com/config)
-> compiler: aarch64-linux-gcc (GCC) 8.5.0
+> UFFDIO_MOVE on a swapped-out page installs the source PTE at the
+> destination unchanged, so a uffd bit set on a write-protected or
+> RWP-protected source lands in a destination VMA that was never
+> registered for either.  Nothing clears it there, and userspace sees:
+> 
+>  - /proc/<pid>/pagemap reports the page as uffd-tracked (bit 57), both
+>    while it is swapped out and after it is faulted back in.
+>  - MADV_COLLAPSE fails with EINVAL on a range containing it, because the
+>    collapse scan bails on a swap entry with the uffd bit set.
+>  - With CONFIG_PAGE_TABLE_CHECK, faulting the page in warns.
+>    do_swap_page() carries the bit into the present PTE and, since the
+>    destination isn't WP-registered, also makes it writable:
+> 
+>    WARNING: mm/page_table_check.c:202 at __page_table_check_ptes_set+0x185/0x1e0
+>    Call Trace:
+>     set_ptes+0x67/0xc0
+>     do_swap_page+0x990/0xfe0
+>     __handle_mm_fault+0x7d0/0xeb0
+>     handle_mm_fault+0x9c/0x250
+>     do_user_addr_fault+0x207/0x650
+>     exc_page_fault+0x65/0x150
+>     asm_exc_page_fault+0x26/0x30
+> 
+> Reaching it takes UFFDIO_MOVE out of a WP- or RWP-protected area into
+> one that isn't, on a page that is swapped out at the time.  It hasn't
+> been seen in practice.
+> 
+> A resident page doesn't carry the bit, because move_present_ptes() builds
+> the destination PTE from dst_vma->vm_page_prot.  Clear it on the moved
+> swap entry as well, then re-arm it if the destination is RWP-registered.
+> 
+> The WP case has been there since v6.8, where UFFDIO_MOVE was added.
 
-Thanks.  It works for me, but I'm using gcc-15.2.0.
+Thanks.  This is triggerable by unprivileged userspace, so can
+reviewers please prioritize.
 
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260927/202609270030.Y0QVBPmK-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202609270030.Y0QVBPmK-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
-> >> aarch64-linux-ld: Unexpected GOT/PLT entries detected!
-> >> aarch64-linux-ld: Unexpected run-time procedure linkages detected!
->    aarch64-linux-ld: arch/arm64/mm/mmu.o: in function `__set_ptes_anysz.isra.40.constprop.47':
-> >> mmu.c:(.text+0x9a8): undefined reference to `__check_safe_pte_update'
->    aarch64-linux-ld: arch/arm64/mm/hugetlbpage.o: in function `__set_ptes_anysz.isra.32':
-> >> hugetlbpage.c:(.text+0x1a8): undefined reference to `__check_safe_pte_update'
->    aarch64-linux-ld: kernel/bpf/arena.o: in function `apply_range_set_cb':
-> >> arena.c:(.text+0x11fc): undefined reference to `__check_safe_pte_update'
->    aarch64-linux-ld: mm/gup.o: in function `follow_page_pte':
-> >> gup.c:(.text+0x2b48): undefined reference to `__check_safe_pte_update'
->    aarch64-linux-ld: mm/memory.o: in function `__set_ptes.isra.207':
-> >> memory.c:(.text+0x3418): undefined reference to `__check_safe_pte_update'
->    aarch64-linux-ld: mm/mprotect.o:mprotect.c:(.text+0x1080): more undefined references to `__check_safe_pte_update' follow
-> 
+> Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+> Cc: <stable@vger.kernel.org>
 
+This should be whizzed into 7.3-rcX pretty promptly.
+
+It's not really appropriate to give the selftest such treatment - I'm
+never really sure how to handle that.  I guess I'll keep things as you
+presented them - both for current -rc, [1/2] gets backported, [2/2]
+does not.
+
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1449,6 +1449,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+>  	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
+>  	if (pgtable_supports_soft_dirty())
+>  		orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
+> +	orig_src_pte = pte_swp_clear_uffd(orig_src_pte);
+>  	/* Re-arm RWP on the moved swap entry if dst_vma is RWP-registered. */
+>  	if (userfaultfd_rwp(dst_vma))
+>  		orig_src_pte = pte_swp_mkuffd(orig_src_pte);
+> -- 
+> 2.53.0
 
