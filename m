@@ -4,128 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F8C8C9832A
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 02:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 071D0C98324
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 04:36:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ACB76B00A7; Sat, 26 Sep 2026 22:55:55 -0400 (EDT)
+	id A8BE86B0088; Sun, 27 Sep 2026 00:36:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D896B00A9; Sat, 26 Sep 2026 22:55:55 -0400 (EDT)
+	id A3E336B008A; Sun, 27 Sep 2026 00:36:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49A696B00AA; Sat, 26 Sep 2026 22:55:55 -0400 (EDT)
+	id 953996B008C; Sun, 27 Sep 2026 00:36:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2251B6B00A7
-	for <linux-mm@kvack.org>; Sat, 26 Sep 2026 22:55:55 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9571B4036E
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 02:55:54 +0000 (UTC)
-X-FDA: 85258027428.03.D0B7400
-Received: from mail-pj2-f40.google.com (mail-pj2-f40.google.com [74.125.227.168])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D71EDC0005
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 02:55:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=F8+vSrGl;
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F52A6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 00:36:57 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE294A09F5
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 04:36:56 +0000 (UTC)
+X-FDA: 85258282032.10.C15ECDA
+Received: from mta0.migadu.com (out-102.mta0.migadu.com [91.218.175.102])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8FB0B180002
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 04:36:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QBRVzqxH;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790477752;
+	s=arc-20220608; t=1790483815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUhtpwjDYsFhZVHLtQ8dC1wt8tqWIMzZ7omgfR51vXw=;
-	b=qwN6H33tdwOm1rq8cq9kS0qT2oI1158r/ssxQFIg0IWL0DDxXQKzQev6PaOD3Npw0pLoYG
-	9q0JZK+D5jDPchCWQIdBRPFtbLibA5xnL4PQn3s/sPSSu/4mTpA7GCqpIOPbeBDK3Ue6qB
-	I93qKwArSdtsybvM/VKW+6NNlCcC43A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790477752;
-	b=DT/raRa9dztEK7H07LuWLDTx4gbXCTO3DfZaTlI7GNd3b0FqANcW19U0kVBWPUMN1LuanY
-	rgAndkqU97sqwRVyLXtO20bzZTjxsToa3B/86lFLiFN0ut4vPcXP/J67nhK166Bvaqc9Og
-	xg26sagTsjyFUMGo0gojLhOWEPLKUAc=
+	bh=dWYY41y+TIjqcwweYzZvn+Hoo22jk67SO0H7HNpMlbA=;
+	b=z0UG/bE+1KpfjrE1hdjG15LwiL3eAitzqQ6HMpUpp2IVmVdU4uQw6CkrPqXBSgtJVRM1zx
+	4xE7cq/oj1wXh++AVO1QEOa7IfAAeiA1kNqRMLAIM2qYe0EK8o70zkR9MpAeInjyUHetHB
+	apoeVPy22KWMDGrJIzIDOGlkH30NV0o=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=F8+vSrGl;
-	spf=pass (imf22.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.168 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-Received: by mail-pj2-f40.google.com with SMTP id 98e67ed59e1d1-3a0dc47fee0so392337a91.1
-        for <linux-mm@kvack.org>; Sat, 26 Sep 2026 19:55:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1790477751; x=1791082551; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zUhtpwjDYsFhZVHLtQ8dC1wt8tqWIMzZ7omgfR51vXw=;
-        b=F8+vSrGlfQvdWGaKoX082Z1TxnDMLJBTR6ONDBhd75wOt3DiTE7Qm4Q5eZCB9Yp3vu
-         WvJ27+FTeow5MP781V+8NWewoPjFmxzyRnuKpIufEi3Xk0qNU6dy16fTQoQjrPimHN01
-         fL2ZSbAb6Q7oumBqOtddmU7ASyLlgRttH43aJrP3Loyo+/xqWGpJxZjfHWpqwcqIvKWo
-         xdDOYUqUAx1pADjlFVNd/ulLzuoqc88TjWfaG6Izjms8eiqemzXy6/Bkq2pzYeCjyy4t
-         Ve3DAa8Hv3QqeVHZiWjM1Jv1pwIaACDYg8YhGcr+hDJwXfqCUXFmQMzptaCnvz2aylKW
-         MT7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790477751; x=1791082551;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zUhtpwjDYsFhZVHLtQ8dC1wt8tqWIMzZ7omgfR51vXw=;
-        b=GxC0p22GMXV0uRYEyPN7TA3uOtV6kmmB6K6jSD9jDxvVqNWvdTS5ytm4s2R88G6lZv
-         40AgU2lVwS0mDHT/pfNHh1s3jCoDuUOoqMwlOGZB8azfdd42jagEaSi7F3ioO8Zd1KNZ
-         7aryBnf3c9reJ+Z+c/8de9YJp8k1cwj2u3JVtPV9jsaG0CCWtfmQXC1jQLIcE2HQzMDt
-         YteIXSLxe9uqi0mmYhzEsXxp67qJBBhkIafxsPC37VJLIS2rsyJXQE2fq+qfYblql+iq
-         3gzWhQH+/az8MLYCoUnWNA5wXtd8m5aQHtpwL4Qh66KlGPYqvXh2GgF2gv3FjaGMYGI6
-         sG4Q==
-X-Gm-Message-State: AFq9FYKdhEO/nHArGu6e225mJwml+B4J+cT1aQcpjftG9Cwj+GSHEQzL
-	NaTitNMiw8ZixmnyoICI1HezKVp2xeB3328gNWjSlUqT6mjBcvw2ygw9/n3CQOl0cas=
-X-Gm-Gg: AYBFou0I6jIMjPvTjVf6XBUII9lw12PkYKpJE+fLkxL7gXZtZhYDt/xj7fQiLRrxwua
-	1EbtoPiIgGershWPpg+7O1gUP2sXbJknb7+GRjb1Wjp5CS7GlU/csi4t7UxhwdoSzUTc/oBP/XQ
-	jbOTi3kSaA0oUFUp0wEuJwdSzypS1QYP5k00mLoAZyzEWoQ5PNFwVvg6nyLIXwRYl+SW9JpRKda
-	28RyuUlb+znzTB0f+2yNntzZFCT9oYKDwtiBD2F0tUpwd1vrThSo1IyfmNf1RFaH6G6xbgqoUR9
-	BchbKW21LNjTN28O6VhxAuxza4j362QeOSM4pnE9At8qe1zYCCP4MOlnecdy2JBh0ASOWMD0SOL
-	B/kJ9JAjO8xtAgASnxfikHhLFyJ4hUDvL83dtu9j3MBf/ctVrscRbbiN9u80ZI/Y41z4uEO/Hj2
-	q6FIVeWVi+4HuH1uMYHTO26COOJUIOe8Cqr0GXH5lmBJ0VfHJHT5FqKKOYQwZxyloHVz2eOZmMW
-	SQvagIEfElRnBOryd/H
-X-Received: by 2002:a17:90b:580d:b0:39e:6c69:f47e with SMTP id 98e67ed59e1d1-3a098d4ec7amr8377687a91.61.1790477751333;
-        Sat, 26 Sep 2026 19:55:51 -0700 (PDT)
-Received: from n232-176-004.byted.org ([36.110.163.102])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a0b8efb156sm13461377a91.1.2026.09.26.19.55.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Sep 2026 19:55:50 -0700 (PDT)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-doc@vger.kernel.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v5 12/12] Documentation/mm: update DAX vmemmap deduplication docs
-Date: Sun, 27 Sep 2026 10:54:41 +0800
-Message-ID: <20260927025441.741633-13-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260927025441.741633-1-songmuchun@bytedance.com>
-References: <20260927025441.741633-1-songmuchun@bytedance.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D71EDC0005
-X-Stat-Signature: rshq54j4y6uzictotez81j59agzrszip
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QBRVzqxH;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.102 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790483815;
+	b=QycsLU51P1KakNG2kzGyEvNnyI9/iI5XrkJw4+ATsIEjWqjFcMLT1PdRSVJ16dwrbfEhBc
+	1/6t24zquFJ8G3GfM/04PhVq6yctP/VPIlgUX3T5iVcmZcZk7q7vz3dlT8WqYYkfb3h+yh
+	L5RdxQa4SxrgfNDtKkz1GCpMTzchQTg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=IceE4e/RLvwU0VGaJlE66jbhYKSpqTO1ckygmdlKcrE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790483812; v=1; x=1791088612;
+ b=QBRVzqxHLh8BFjRVPlNnXTPSs9MopLL0sYT3b2GMKDdIQUb43NA7Cuiv6HNDAm5Z30o8Dhug
+ Izbh6l8PiMHgSQGGzVJjXnvcYYScziszMLShd2vflN1uSegQs7kVk04d0pUMLLvClw9kVjhkv8i
+ FvBGO9/sBDS83XreDqbCmSC4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 232d4b177b281d97;
+	Sun, 27 Sep 2026 04:36:52 +0000
+X-Mizu-Trace-ID: 232d4b177b281d97
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v3] mm/hugetlb: fix overbroad MMU notifiers for unshared
+ PMDs
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <83eefc56-cdb3-4e9b-9a2c-13819493afaa@bytedance.com>
+Date: Sun, 27 Sep 2026 12:36:36 +0800
+Cc: linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org,
+ aiqi.i7@bytedance.com,
+ akpm@linux-foundation.org,
+ david@kernel.org,
+ osalvador@suse.de
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <34FA9F7E-F38A-4CF6-B994-83B75E6E4CBF@linux.dev>
+References: <20260924082004.82450-1-lizhe.67@bytedance.com>
+ <76ee3d7a-cee9-4ff3-9d4c-068a46883e30@linux.dev>
+ <83eefc56-cdb3-4e9b-9a2c-13819493afaa@bytedance.com>
+To: Li Zhe <lizhe.67@bytedance.com>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Stat-Signature: acw53byiqe6fsedapqc3juq9jffqaf3a
+X-Rspamd-Queue-Id: 8FB0B180002
 X-Rspam-User: 
-X-HE-Tag: 1790477752-639777
-X-HE-Meta: U2FsdGVkX1+1K6KSxLdbB1NbLuLJ2AiFcL8TAm32CkSMr/f0Qi8GEug+BQIvC8SDGk/2M4LtUY9b0caGmIFJ1c/vvubs1h4JB1rW7akhE1X9US3INFwAf0vgB9+ycox9pRKT5+ofDiQEiUeDVfyXIludzWSAU2ZRrClmigcvuExmxYRuQZaoX4TtgEpkI5bCRgIGtGdM793sqMBbHqXp5vx3VJMJyx5jyS/dPREpm5PYXM8VA2v2d75Q55Hnto8qX8TM42Ig2/QMUrwofHdVThw+wpAfhZH03VApVOMBXlY/1TJERLvRCgXxczXFjiyFbBmBIf0xjj0elfrsYIn5ZIZa+YrtExOs0cid3uWftykg6HUeqFjE7Yf3t38PqtJnV6GCL99Qv+lkFH4yeVw9ZjPFatMOUiaESTopnWgZYXSlLTPK4Ig2EvWx/f7q8MjUkbpqCP3XZWSn33+fdqnhaENro2uBvR9IGht/Gzt0hD1OCk4h2NsS5BVykb5dAmL8kbYw/bGCW0DZ/d7EMLNhhRLFjDRCG29ox9NJJlKJ489vwCDYSBRNFqIlzWG1f265Ils6aYv2DcI1A/vZzM0Uxz3tDvIToTtftSOGCLRdsHBRUeQGUA4JQCBWGcVyzb3aCpLJVk8dGAM1GDhQFosX+PRa0guSWJTBPOnIB91xdB0Gno9Us73FdjfY6Ob72LSjvwlSd5V0P5XOFBJwUcUk3zEYxtAdWJ/gwYzy85YpnJISdx2/NWI26cb5omz2GymBrOx1kZ2Z4Oq8B0fA1glAxk9wVstdQ/pzVbF/1l/humXm6jcHSVEYOkyNUJe2fpzZxCo97QXI/ooCMi4lfi4yNEL+ipkWOR45xr9hquqRc1Cv1NymuHDDG2gbxjww0O6V+WJSbqxoZD/TMbF6PAeu8F71sqnttwBci/SomFMjtGaYsTXZe2KLc0Tx+zm22HzHMfHtfmR9lsXjRXYWf9n
- 6n7+pvgN
- lDBrOqKR2mjFvndTkGftAZAE8qmc78pX5VaBCnq6M9QuEuOGQgucRUGyL0ml1yk6ostL0m2CUonDtgKk2rKcZAkXrcfR5axiwgEvtpKq+Jd3FbA9LJBCSjRaY3vT2Evfqoz7G8rshUqna+8BHi9TF5T9Koo/hTulpYRrbY86kJO2qujSpDW1jbCDWNhZ0732Qmc7/KNcs0R3B6qU8UYAaYOPP13BIqJraFeryGbAWEYlHXU9oVk6PoxiC3CzXSTgUPQ4Z+H70pKgVXgFpFjURKNEynGVd+4Ln9M68WJ+R2iVV2/yN8Vn2eN1CQA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790483814-236471
+X-HE-Meta: U2FsdGVkX1/O4e7OMt/oaNgtgyRF7C7p7L+WbnUoxLIPX56/XkTpHQ29Q0GV9RcGxCIWb/j0oOvAiCCZzyvxq8qQxGYLU66jLc8LkAdtN4xSPsSPPetG5Y95CiS4xnYd48LlO9Uq/y6GWFvypZdKxvw95gLM/U3YwWv3RXpjYrpH4D0bOyHUb++bcnNFJ+e7yy/t9/0Z6dqbAQk7dgWQ2HTFl6zZuTeTETlVpAp/7RbZ6z6x0wjFUDmy/9OWRtGgOLBpkZaZdpgq+NFHPQlAHzFW+vedGTfiZCKLziHb4xcFU7VbL0nBq+mJZyBWxl2+h/tsLILy3ttDtjRrgLakW1+ogOhbtx2m8ipHQzSyuK1c+1OGJhS6U4FiYbZl5BuBKurytho5DZpmZgQK1vS9M1zVp2HWuXJouFJuwcxyJnhnqxMva99gJSnuvtZ1pnTomyZZ7emBYjZmI2w1AMmKTYhCKcNlnaXiIoLKa/uwUM8XypGDWhcKXFh19nWqDbbUqmgyMhrUFJOZ4/riMYbC6UwIaPL64AoluKlXqtYpFDXsgSIv8zzbXmYBs8YQJR0Gn6pXnOELoBbUaCC5HcViH+dSiv5sDNVLQXjHEurT0m7n7jlx3pYmKDdLMiLgpyhckkjP81obsNueLmB6hhwaz2cgPVm+yvZmBE+xpevN8v3YvmJK49T1UCor1901uSBNHKXWw4WLSVT7o8z4x6x4cfOQrFxZpqniNGGKRBSUL4vYJ/Bdss9hXaw8vCs5gif+4ATPOIpn3Q0u2RcTJNQ1EcWMs/LSBbtLulrXcSW4IGNnXbmdm7wd+Ximr2OZLV+iZWtJrRXN/plxqDP0zOOspeAc3GP/biNSyWwsmX3ENvH+CPCGXy86xncQFFGZeTJRXvz0a3jKCvPjWQs+aE7BHguaE4yEhmLP0J1Xmj0JaNQLEsy+DGaVR+2zBAja532ZJ4F509r/AzkHVf+6uSr
+ 2nlHfZuJ
+ Ejpt20USB/ORtC0+a0fjJh1C1vnrBnoSYTWFaXVNpjIss/3Obi8Wx8oVnNgEOfGvs5QOlEmvGZFGVbx4wjV9JNWAz8NP44CZx9lXbMrecywtFWNOfw43ga3WupPde5jk4chLQzk9lHW7sVGaUvZWIE2eBxkSNp98RB4QYySrC8V1wUGLgSaXb2lVhucZZv/V0RUD7JXuvaihCQZv4xYEUBle8vEmrhuYCzONxvCnkWEIPD8vNQxhkaZ6GmhEjHE/3vhIk4PoC21hQ4JJNu3p3A+8KACXRMQnMLFzUcIS/bUV9ukQHWbwJw9iQbw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,181 +98,274 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Device DAX now uses the common per-zone shared tail page for vmemmap
-deduplication. The old documentation still described a DAX-specific
-layout with a separately populated tail vmemmap page and half the HugeTLB
-savings.
 
-Update the generic and powerpc documentation to describe the shared layout.
-In the powerpc document, keep the radix and 64K-specific details, drop the
-duplicated 4K PUD arithmetic, and replace the repeated device-dax diagrams
-with a single parameterized PMD/PUD diagram.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
----
-v3:
-- Collect Acked-by from Qi Zheng
+> On Sep 24, 2026, at 19:20, Li Zhe <lizhe.67@bytedance.com> wrote:
+>=20
+> On 9/24/26 5:51 PM, Muchun Song wrote:
+>>=20
+>>=20
+>> On 2026/9/24 16:20, Li Zhe wrote:
+>>> Hugetlb currently expands MMU notifier ranges to PUD boundaries =
+whenever
+>>> PMD sharing is possible. That is only needed when huge_pmd_unshare()
+>>> actually detaches a shared PMD page table, because clearing the PUD
+>>> invalidates the whole PUD-sized virtual address range.
+>>>=20
+>>> For hugetlbfs hole punch, and similarly for other hugetlb unmap =
+paths,
+>>> a shared mapping can pass the "PMD sharing is possible" range test =
+in
+>>> adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file =
+does
+>>> not currently have any shared PMD page tables. KVM then receives a =
+1G
+>>> invalidation for a 2M operation and zaps unrelated secondary =
+mappings,
+>>> so the guest has to fault them back in.
+>>>=20
+>>> Avoid this by tracking active PMD-sharing attachments per hugetlbfs
+>>> inode. The count is incremented only after huge_pmd_share() =
+successfully
+>>> installs a shared PMD table, and decremented when =
+__huge_pmd_unshare()
+>>> actually detaches one. Since huge_pmd_share() can run concurrently =
+under
+>>> i_mmap_lock_read(), use atomic operations for the count. A zero =
+count is
+>>> used to skip the conservative notifier range expansion only after
+>>> excluding concurrent PMD sharing with the mapping write lock.
+>>>=20
+>>> On a Redis-in-VM workload that punches cold 2M hugetlb pages, this =
+patch
+>>> improves P99 QPS stability while punching pages, reducing the QPS
+>>> degradation ratio from 7.09% to 1.45%.
+>>>=20
+>>> Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
+>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>> ---
+>>> v2:=20
+>>> =
+https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.com/=
 
-v2:
-- Clarify the commit message to state that the 4K PUD arithmetic is
-  intentionally dropped reported by Sashiko.
----
- Documentation/arch/powerpc/vmemmap_dedup.rst | 90 ++++----------------
- Documentation/mm/vmemmap_dedup.rst           | 32 +------
- 2 files changed, 21 insertions(+), 101 deletions(-)
+>>> v1:=20
+>>> =
+https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.com/=
 
-diff --git a/Documentation/arch/powerpc/vmemmap_dedup.rst b/Documentation/arch/powerpc/vmemmap_dedup.rst
-index dc4db59fdf87..8286acbca9bc 100644
---- a/Documentation/arch/powerpc/vmemmap_dedup.rst
-+++ b/Documentation/arch/powerpc/vmemmap_dedup.rst
-@@ -19,82 +19,28 @@ With 1G PUD level mapping, we require 16384 struct pages and a single 64K
- vmemmap page can contain 1024 struct pages (64K/sizeof(struct page)). Hence we
- require 16 64K pages in vmemmap to map the struct page for 1G PUD level mapping.
- 
--Here's how things look like on device-dax after the sections are populated::
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | -------------> |     1     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     2     | ----------------^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                   | | | | |
-- |           |                     |     3     | ------------------+ | | | |
-- |           |                     +-----------+                     | | | |
-- |           |                     |     4     | --------------------+ | | |
-- |    PUD    |                     +-----------+                       | | |
-- |   level   |                     |     .     | ----------------------+ | |
-- |  mapping  |                     +-----------+                         | |
-- |           |                     |     .     | ------------------------+ |
-- |           |                     +-----------+                           |
-- |           |                     |     15    | --------------------------+
-- |           |                     +-----------+
-- |           |
-- |           |
-- |           |
-- +-----------+
--
--
- With 4K page size, 2M PMD level mapping requires 512 struct pages and a single
- 4K vmemmap page contains 64 struct pages(4K/sizeof(struct page)). Hence we
- require 8 4K pages in vmemmap to map the struct page for 2M pmd level mapping.
- 
--Here's how things look like on device-dax after the sections are populated::
--
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | -------------> |     1     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     2     | ----------------^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                   | | | | |
-- |           |                     |     3     | ------------------+ | | | |
-- |           |                     +-----------+                     | | | |
-- |           |                     |     4     | --------------------+ | | |
-- |    PMD    |                     +-----------+                       | | |
-- |   level   |                     |     5     | ----------------------+ | |
-- |  mapping  |                     +-----------+                         | |
-- |           |                     |     6     | ------------------------+ |
-- |           |                     +-----------+                           |
-- |           |                     |     7     | --------------------------+
-- |           |                     +-----------+
-- |           |
-- |           |
-- |           |
-- +-----------+
--
--With 1G PUD level mapping, we require 262144 struct pages and a single 4K
--vmemmap page can contain 64 struct pages (4K/sizeof(struct page)). Hence we
--require 4096 4K pages in vmemmap to map the struct pages for 1G PUD level
--mapping.
--
--Here's how things look like on device-dax after the sections are populated::
--
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | -------------> |     1     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     2     | ----------------^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                   | | | | |
-- |           |                     |     3     | ------------------+ | | | |
-- |           |                     +-----------+                     | | | |
-- |           |                     |     4     | --------------------+ | | |
-- |    PUD    |                     +-----------+                       | | |
-- |   level   |                     |     .     | ----------------------+ | |
-- |  mapping  |                     +-----------+                         | |
-- |           |                     |     .     | ------------------------+ |
-- |           |                     +-----------+                           |
-- |           |                     |   4095    | --------------------------+
-- |           |                     +-----------+
-+Here's how things look on device-dax after vmemmap-optimized sections are
-+populated. ``N`` is the number of vmemmap pages required by the DAX mapping
-+above::
-+
-+  Device DAX                  vmemmap pages (N pages)         backing page frames
-+ +-----------+ ---virt_to_page---> +-----------+   mapping to   +-------------+
-+ |           |                     |     0     | -------------> |      0      |
-+ |           |                     +-----------+                +-------------+
-+ |           |                     |     1     | ------+
-+ |           |                     +-----------+       |
-+ |           |                     |     2     | ------+
-+ |           |                     +-----------+       |
-+ |           |                     |     .     | ------+        +-------------+
-+ |  PMD/PUD  |                     +-----------+       |        | A single,   |
-+ |   level   |                     |     .     | ------+------> | per-zone    |
-+ |  mapping  |                     +-----------+       |        | shared tail |
-+ |           |                     |   N - 1   | ------+        | page        |
-+ |           |                     +-----------+                +-------------+
-  |           |
-  |           |
-  |           |
-diff --git a/Documentation/mm/vmemmap_dedup.rst b/Documentation/mm/vmemmap_dedup.rst
-index 9fa8642ded48..8c287ae3f86c 100644
---- a/Documentation/mm/vmemmap_dedup.rst
-+++ b/Documentation/mm/vmemmap_dedup.rst
-@@ -1,4 +1,3 @@
--
- .. SPDX-License-Identifier: GPL-2.0
- 
- =========================================
-@@ -192,32 +191,7 @@ to 4 on HugeTLB pages.
- 
- There's no remapping of vmemmap given that device-dax memory is not part of
- System RAM ranges initialized at boot. Thus the tail page deduplication
--happens at a later stage when we populate the sections. HugeTLB reuses the
--the head vmemmap page representing, whereas device-dax reuses the tail
--vmemmap page. This results in only half of the savings compared to HugeTLB.
--
--Deduplicated tail pages are not mapped read-only.
-+happens at a later stage when we populate the sections.
- 
--Here's how things look like on device-dax after the sections are populated::
--
-- +-----------+ ---virt_to_page---> +-----------+   mapping to   +-----------+
-- |           |                     |     0     | -------------> |     0     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     1     | -------------> |     1     |
-- |           |                     +-----------+                +-----------+
-- |           |                     |     2     | ----------------^ ^ ^ ^ ^ ^
-- |           |                     +-----------+                   | | | | |
-- |           |                     |     3     | ------------------+ | | | |
-- |           |                     +-----------+                     | | | |
-- |           |                     |     4     | --------------------+ | | |
-- |    PMD    |                     +-----------+                       | | |
-- |   level   |                     |     5     | ----------------------+ | |
-- |  mapping  |                     +-----------+                         | |
-- |           |                     |     6     | ------------------------+ |
-- |           |                     +-----------+                           |
-- |           |                     |     7     | --------------------------+
-- |           |                     +-----------+
-- |           |
-- |           |
-- |           |
-- +-----------+
-+Deduplicated tail pages are not mapped read-only. The mapping layout is the same
-+as HugeTLB.
--- 
-2.54.0
+>>>=20
+>>> ChangeLogs:
+>>> v2->v3:
+>>> - Rework the sticky state based on Andrew's feedback: use a =
+per-inode
+>>>    counter of active PMD-sharing attachments, so files can return to =
+the
+>>>    no-active-sharing state after PMD sharing ends.
+>>>=20
+>>> v1->v2:
+>>> - Rework the implementation based on David's suggestion: remember
+>>>    whether PMD sharing ever happened for a hugetlbfs file, and skip =
+the
+>>>    conservative notifier range expansion while it has not. This =
+avoids
+>>>    the per-unmap page-table walk.
+>>>=20
+>>>   fs/hugetlbfs/inode.c    |  1 +
+>>>   include/linux/hugetlb.h | 43 =
++++++++++++++++++++++++++++++++++++++++++
+>>>   mm/hugetlb.c            | 13 ++++++++++---
+>>>   3 files changed, 54 insertions(+), 3 deletions(-)
+>>>=20
+>>> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+>>> index 7611a8470ea26..78e27ce0a6f63 100644
+>>> --- a/fs/hugetlbfs/inode.c
+>>> +++ b/fs/hugetlbfs/inode.c
+>>> @@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct=20=
+
+>>> super_block *sb,
+>>>           simple_inode_init_ts(inode);
+>>>           info->resv_map =3D resv_map;
+>>>           info->seals =3D F_SEAL_SEAL;
+>>> +        hugetlbfs_pmd_sharing_init(inode);
+>>>           switch (mode & S_IFMT) {
+>>>           default:
+>>>               init_special_inode(inode, mode, dev);
+>>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>>> index 16c4c4caa126c..6b4f92b7f7ae4 100644
+>>> --- a/include/linux/hugetlb.h
+>>> +++ b/include/linux/hugetlb.h
+>>> @@ -12,6 +12,7 @@
+>>>   #include <linux/page_ref.h>
+>>>   #include <linux/list.h>
+>>>   #include <linux/kref.h>
+>>> +#include <linux/atomic.h>
+>>>   #include <linux/pgtable.h>
+>>>   #include <linux/gfp.h>
+>>>   #include <linux/userfaultfd_k.h>
+>>> @@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
+>>>       struct inode vfs_inode;
+>>>       struct resv_map *resv_map;
+>>>       unsigned int seals;
+>>> +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>>> +    atomic_t pmd_sharing_count;
+>>> +#endif
+>>>   };
+>>>     static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct=20
+>>> inode *inode)
+>>> @@ -516,6 +520,45 @@ static inline struct hugetlbfs_inode_info=20
+>>> *HUGETLBFS_I(struct inode *inode)
+>>>       return container_of(inode, struct hugetlbfs_inode_info,=20
+>>> vfs_inode);
+>>>   }
+>>>   +#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+>>> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
+>>> +{
+>>> +    atomic_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0);
+>>> +}
+>>> +
+>>> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
+>>> +{
+>>> +    atomic_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
+>>> +}
+>>> +
+>>> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
+>>> +{
+>>> +    atomic_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
+>>> +}
+>>> +
+>>> +/*
+>>> + * A 32-bit counter can theoretically wrap, but doing so would =
+require
+>>> + * billions of active PMD-sharing attachments to the same inode and=20=
+
+>>> is not
+>>> + * expected in practice. Treat any non-zero value as active so a=20
+>>> wrapped
+>>> + * negative value still takes the conservative notifier range.
+>>> + */
+>>> +static inline bool hugetlbfs_pmd_sharing_active(struct inode =
+*inode)
+>>> +{
+>>> +    return atomic_read(&HUGETLBFS_I(inode)->pmd_sharing_count) !=3D =
+0;
+>>=20
+>> Testing for non zero covers the negative half of the cycle,
+>> but the 2^32nd increment changes the value back to zero.
+>>=20
+>> The inode-wide total is not bounded by PID_MAX_LIMIT because
+>> one mm can have an attachment in every PUD-sized part of a
+>> large mapping.  For example, a 4-level x86 mm has about
+>> 131,000 user PUD slots.  Roughly 32,769 child mms can therefore
+>> create more than 2^32 attachments by faulting one address in
+>> each PUD of a single large inherited MAP_SHARED hugetlb VMA.
+>> This also does not require one backing huge page per
+>> attachment: huge_pte_alloc() installs or shares the PMD table
+>> before hugetlb_no_page() attempts to obtain the huge page.
+>>=20
+>> At the zero value, an unmap can take i_mmap_rwsem for write,
+>> observe no active sharing, and issue only the original narrow
+>> notifier.  Its subsequent __huge_pmd_unshare() can still
+>> clear a PUD and decrement the counter from zero to -1, leaving
+>> the rest of the PUD-sized invalidation unreported.
+>>=20
+>> Could this use a 64-bit or saturating counter so an active
+>> count can never be mistaken for zero?
+>>=20
+>> Therefore, I recommend using atomic64_t.
+>>=20
+>> Thanks,
+>> Muchun
+>=20
+>=20
+> Thanks for the detailed explanation.
+>=20
+> I did consider that such an extreme case could theoretically cause a
+> problem, but I expected it to be practically unreachable. But since we
+> can cover this corner case simply by using atomic64_t, that is =
+definitely
+> better.
+>=20
+> I will switch the counter to atomic64_t in v4 and drop the 32-bit wrap
+> comment.
+
+Another option would be use refcount infrastructure since it already
+consider the 32-bit wrap issue itself.
+
+>=20
+> Thanks,
+> Zhe
+>=20
+>>=20
+>>> +}
+>>> +#else
+>>> +static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) =
+{}
+>>> +
+>>> +static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) =
+{}
+>>> +
+>>> +static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) =
+{}
+>>> +
+>>> +static inline bool hugetlbfs_pmd_sharing_active(struct inode =
+*inode)
+>>> +{
+>>> +    return false;
+>>> +}
+>>> +#endif
+>>> +
+>>>   extern const struct vm_operations_struct hugetlb_vm_ops;
+>>>   struct file *hugetlb_file_setup(const char *name, size_t size,=20
+>>> vma_flags_t acct,
+>>>                   int creat_flags, int page_size_log);
+>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>> index 4f6f58bf3db6c..cb27c06d1f7a7 100644
+>>> --- a/mm/hugetlb.c
+>>> +++ b/mm/hugetlb.c
+>>> @@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct=20
+>>> vm_area_struct *vma,
+>>>       if (!vma->vm_file)    /* hugetlbfs_file_mmap error */
+>>>           return;
+>>>   -    adjust_range_if_pmd_sharing_possible(vma, start, end);
+>>>       hugetlb_vma_lock_write(vma);
+>>> -    if (vma->vm_file)
+>>> +    if (vma->vm_file) {
+>>>           i_mmap_lock_write(vma->vm_file->f_mapping);
+>>> +        if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
+>>> +            adjust_range_if_pmd_sharing_possible(vma, start, end);
+>>> +    }
+>>>   }
+>>>     void __hugetlb_zap_end(struct vm_area_struct *vma,
+>>> @@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct=20
+>>> vm_area_struct *vma, unsigned long start,
+>>>         mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, =
+vma->vm_mm,
+>>>                   start, end);
+>>> -    adjust_range_if_pmd_sharing_possible(vma, &range.start,=20
+>>> &range.end);
+>>> +    i_mmap_assert_write_locked(vma->vm_file->f_mapping);
+>>> +    if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
+>>> +        adjust_range_if_pmd_sharing_possible(vma, &range.start,
+>>> +                             &range.end);
+>>>       mmu_notifier_invalidate_range_start(&range);
+>>>       tlb_gather_mmu(&tlb, vma->vm_mm);
+>>>   @@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm,=20=
+
+>>> struct vm_area_struct *vma,
+>>>       if (pud_none(*pud)) {
+>>>           pud_populate(mm, pud,
+>>>                   (pmd_t *)((unsigned long)spte & PAGE_MASK));
+>>> +        hugetlbfs_pmd_sharing_inc(file_inode(vma->vm_file));
+>>>           mm_inc_nr_pmds(mm);
+>>>       } else {
+>>>           ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
+>>> @@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct =
+mmu_gather=20
+>>> *tlb,
+>>>       pud_clear(pud);
+>>>         tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
+>>> +    hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
+>>>         mm_dec_nr_pmds(mm);
+>>>       return 1;
+
 
 
