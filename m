@@ -4,105 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985E5C9832F
-	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 16:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4C59C98338
+	for <linux-mm@archiver.kernel.org>; Sun, 27 Sep 2026 16:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F5AD6B008C; Sun, 27 Sep 2026 12:24:42 -0400 (EDT)
+	id 92CA16B0088; Sun, 27 Sep 2026 12:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A6AF6B0092; Sun, 27 Sep 2026 12:24:42 -0400 (EDT)
+	id 8DDBB6B008A; Sun, 27 Sep 2026 12:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 695566B0093; Sun, 27 Sep 2026 12:24:42 -0400 (EDT)
+	id 7F2F96B008C; Sun, 27 Sep 2026 12:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F1AC6B008C
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:24:42 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 992D9A0AA9
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:24:41 +0000 (UTC)
-X-FDA: 85260065562.11.DA6B6AD
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 01BB41C0003
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:24:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nua1+mH4;
-	spf=pass (imf21.hostedemail.com: domain of 3RUO5aggKCA4q0zzo0o6u22uzs.q20zw18B-00y9oqy.25u@flex--cmllamas.bounces.google.com designates 74.125.82.198 as permitted sender) smtp.mailfrom=3RUO5aggKCA4q0zzo0o6u22uzs.q20zw18B-00y9oqy.25u@flex--cmllamas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 55FB16B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 12:44:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFBD0A72B7
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:44:09 +0000 (UTC)
+X-FDA: 85260114618.18.67D53DE
+Received: from a3-30.smtp-out.eu-west-1.amazonses.com (a3-30.smtp-out.eu-west-1.amazonses.com [54.240.3.30])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2269E1A0003
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 16:44:07 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=changizipub.com header.s=resend header.b=Wh8t5z2j;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=HJ6Uvl2+;
+	spf=pass (imf19.hostedemail.com: domain of 010201a0e3c09d6b-89bbc9a3-3cb9-476d-9dea-fe46e11ab036-000000@send.changizipub.com designates 54.240.3.30 as permitted sender) smtp.mailfrom=010201a0e3c09d6b-89bbc9a3-3cb9-476d-9dea-fe46e11ab036-000000@send.changizipub.com;
+	dmarc=pass (policy=none) header.from=changizipub.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790526280;
+	s=arc-20220608; t=1790527448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Z4e89CZ9LoTsSmrLA9c8CquQRkeB41VAKqizkd8WFos=;
-	b=Syb3YcJgxl2tSsTExHeNkKzRp14x0ug9maJGneHVAm/EwWRPg8xKxE3WXxykPc1j9XXc18
-	HbEHkUvmlY0LslQKV85ITdQ8ilJtHNP1iW+bs73tm+HTVgTVJ5NbmT0aZT+2EPitM13/DA
-	xz/+s6mbNbSmnKJKxZHAGn6EA+BXHVc=
+	 references:dkim-signature; bh=hONCn1Gbo3YvHkUm060hwc0xdim6iO+1ABtSp/RxkP8=;
+	b=HpJdyU/wbjdQ6b/2CzyRb02GTL+qclqgU4fv43wvR/gsSPH7cQAPZ+UZ4GpMFImv1cV8wJ
+	0CLgPXQJ9KIvtw1dMuJlxJYKY4XkWKN3s1cSYF7TExrLzcrDCzh6o5en4yYRfO5Eue5taX
+	MQXZ/7UhoHV2eiEZOYtRAvXEXpsPcK0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790526280;
-	b=8LGgZEphOWT4O8KpySjYIeYyWrphKAEpWxH+VKmGqtzXd/ZgQNH7sBP/89VwdDvZQk3UnO
-	i5AJvMyyRqRc+nMUgllpcLyLXu7xojfKsx9B0xGPR+3BO/xorZFKKl3bNv/Ug+mCt2/Hvw
-	27H6jKIAUvLeYgO1LGNkVMfUQ/cb5I4=
+	t=1790527448;
+	b=tVvopcQvXbjlZEZwa1Lc1kfAgRMA5EucBP4XKasUL/wNo/w5az+dtARmzgAOaV8a2EULnq
+	Q2V92pxvw7YSHanAbBi51cR+HQlQqzzDV9skyam7R43MCWNtkXhciRvsVGfJEngnNvfVjM
+	BGKiWhx+jLDd5Os9KeLcwYLCFijIZqI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nua1+mH4;
-	spf=pass (imf21.hostedemail.com: domain of 3RUO5aggKCA4q0zzo0o6u22uzs.q20zw18B-00y9oqy.25u@flex--cmllamas.bounces.google.com designates 74.125.82.198 as permitted sender) smtp.mailfrom=3RUO5aggKCA4q0zzo0o6u22uzs.q20zw18B-00y9oqy.25u@flex--cmllamas.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-342a0e1d8c4so2103237eec.1
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 09:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790526279; x=1791131079; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Z4e89CZ9LoTsSmrLA9c8CquQRkeB41VAKqizkd8WFos=;
-        b=nua1+mH4YJQ79veYi6knPtWsYyfzSjokZdcDxakdSv2z4OvdjLzCsmN5r5FmoN8IVg
-         oKY7YxD/8ouIaGsZAVM3wUoN47EZ0vkDkmXWL+41TKbjQDZS2jMrxttLlg+1uvVNPeeJ
-         DGYqCyW3pP427TXFhXkeOCzojUmup+X0VtmnQn4Lqia3TirLy/BCmp0h4gFGY3rVI/0T
-         tv9QPlQwcPdLH5UpgPS6wZlDl+QhP2/4orXkelQ6O50kkRsMr6+Y4rhFZ/gH6IzCsvKv
-         0zDms//acppaIVVdtmMccL6TjSR0VrV2ELqfnYst7cYRDutS4CVkShnrwYNPpJQ05GCy
-         n70Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790526279; x=1791131079;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Z4e89CZ9LoTsSmrLA9c8CquQRkeB41VAKqizkd8WFos=;
-        b=IX60e/e1rgaFW2hT6k9ApgwRBRaBkMKiVhxryKAZGkG/Au5co64lpQZROmIb7Zj5la
-         HAAOuoy3QoHza0Szar+RCM7N/kg8J6ltj47r7OjStZPsfH+DD1a1xJJ5ju21BtdT9U34
-         S0RgSSaiRzw2ymSF9maETuGySiir8hgyENWP+RZqgXQo320FZHceekMY8JDDtIiwdFcT
-         LS4TWWvjA1g78oYRcqYRYN8mr8Z+z9VFKcO7M+31dpSIFEpU+0/WIK6hgVXjdj+8OKv3
-         czSS79c0wTLa+7iV2DuA0JjoRlGfiwZPFUwRKrNIeBPi0BpBndAQOZSUf20xlGCs12g7
-         GU8w==
-X-Forwarded-Encrypted: i=1; AKwUvBwnW7WxkFa46LLhP5MZMaXwi1If96qwIRcWN9TSwR59swX06zPFzHhx0EcppXtntt2dPjGyCuZbjA==@kvack.org
-X-Gm-Message-State: AFq9FYICtfLCfliWtJ6fzOpFAqBx/5K5Dbx1HGV+6OmNo/KZSPe88dlo
-	ZQf6/2Anuy8IBwE2YFthFvYbma3dVk2zdT0IoTPYeq1Otr1Df3LykbJsPh0d8/rE7s7E3hfK528
-	bf8eV/Q9y802p8g==
-X-Received: from dybgi42.prod.google.com ([2002:a05:7301:aa:b0:33e:6278:a7ac])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:693c:65cd:b0:33f:3878:8e18 with SMTP id 5a478bee46e88-3426c6f4d95mr6381557eec.0.1790526277984;
- Sun, 27 Sep 2026 09:24:37 -0700 (PDT)
-Date: Sun, 27 Sep 2026 16:24:18 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260927162419.820609-1-cmllamas@google.com>
-Subject: [PATCH] selftests/mm: cleanup -Wformat issues in hugetlb-mmap
-From: Carlos Llamas <cmllamas@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Shuah Khan <shuah@kernel.org>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	Carlos Llamas <cmllamas@google.com>, 
-	"open list:MEMORY MANAGEMENT - MISC" <linux-mm@kvack.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+	imf19.hostedemail.com;
+	dkim=pass header.d=changizipub.com header.s=resend header.b=Wh8t5z2j;
+	dkim=pass header.d=amazonses.com header.s=shh3fegwg5fppqsuzphvschd53n6ihuv header.b=HJ6Uvl2+;
+	spf=pass (imf19.hostedemail.com: domain of 010201a0e3c09d6b-89bbc9a3-3cb9-476d-9dea-fe46e11ab036-000000@send.changizipub.com designates 54.240.3.30 as permitted sender) smtp.mailfrom=010201a0e3c09d6b-89bbc9a3-3cb9-476d-9dea-fe46e11ab036-000000@send.changizipub.com;
+	dmarc=pass (policy=none) header.from=changizipub.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple; s=resend;
+	d=changizipub.com; t=1790527446;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type;
+	bh=KMKX4Zqazq4PtmoZkovCIIU5Cc9ED8souw/F4zgRACk=;
+	b=Wh8t5z2j3LNezTrQ03vCdFOF/oY12k2XK8CeZjiNza2M8t6TnIAXmbYK53/XyLYX
+	3sFUmuzsYfOytqYcYCcJhCNk896+olGUyvmBdAw+OXynk762UHK3TEWyyxoRe84haKj
+	/NETOiTEOr84F6HtqaQYiEky2Ka71J8Kt8hZAUdU=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=shh3fegwg5fppqsuzphvschd53n6ihuv; d=amazonses.com; t=1790527446;
+	h=From:To:Subject:Message-ID:Date:MIME-Version:Content-Type:Feedback-ID;
+	bh=KMKX4Zqazq4PtmoZkovCIIU5Cc9ED8souw/F4zgRACk=;
+	b=HJ6Uvl2+s5FUqBvMDh46lRuDtnX6qGJlCLa8d/kucXKeQVPEDA4Tr4XWkYmoueud
+	SOHXTklAIjpkBcDAUQDLZpEe4O60P2mtlC9IfKl0xXZThbHxTbBvyAoprwibsaxCa/0
+	8AgLV8PKIhS1JHNKjU2GuxwP4PyuD2oB9UPUUxik=
+From: Stephanie Tanguy <contact@changizipub.com>
+To: linux-mm@kvack.org
+Subject: =?UTF-8?Q?Liquidation_de_ROLLIN_JEAN_PIERRE_=3A_z?=
+ =?UTF-8?Q?=C3=A9ro_risque=2C_z=C3=A9ro_paiement=2C?=
+ =?UTF-8?Q?_z=C3=A9ro_contr=C3=B4le?=
+Message-ID: <010201a0e3c09d6b-89bbc9a3-3cb9-476d-9dea-fe46e11ab036-000000@eu-west-1.amazonses.com>
+Date: Sun, 27 Sep 2026 16:44:06 +0000
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+ boundary="--_NmP-f27e2a0c293619c0-Part_1"
+Feedback-ID: :1.eu-west-1.2evu9xLlcsNVeYJu8OfCScBDp5j10z3/zs4XwrK1MIwg1DnGrufoLvwv+jPmoOqAq6fcKlVXUXY4QV2DRK95LI4oKwRyrgzeRRJJUyQXdqb5Fbg/XM720WcaEGFVQfDnEOlYizuyN+VoA2ljWvT19Coq8TckZIMvFRyzW57FGB4=:1.eu-west-1.KEYBhYy5skZtLAf2ooWkoQwfhj0g1VAvm2T4fzvEpSk=:AmazonSES
+X-SES-Outgoing: 2026.09.27-54.240.3.30
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 01BB41C0003
-X-Stat-Signature: 3ug55533i5tp8q8xrhfmmqzj8qimzcxw
-X-HE-Tag: 1790526279-687280
-X-HE-Meta: U2FsdGVkX1/Ijv3+9+8njPChW4mTy9QVH0GPMtpV85ArHI4iHXxXkX3CwnIj8hDzJfuAF1plliE5bxhv8a8T1sriu0ansE1Elkbtg7dZ/vT86C/cjCnTex9aAbKwHuQIx/fp/szQsi26cRKwvV4Eekwl/1eaOTuvH2K7s2zSu0j2NAhG6QcrZzUrsnzwbz2sSuhbBamEhOhlnARZt1Z/2rgaIpZsD6yeHzjso7OdjpYboaBD/am9tkTrGD7yY9Um4ct5Q9W2YK82rpTu8aOytWc7jM5y3EjOkfBgLWUlZjm4LVvwG/eaN+N0B1DexT8RmmTNWilsr08psCEn55rOi+JTGMSXmqZPrp8ssjcmG/WdxpaOoy6UgOzJzgy2AXCDpVTIzJWkSLrqJM4eZxf5HKa12yoDEQfXnE/iFvESgJIH5ibQkBlnyqxuGtPEVqTUwid0aivzdtA9ITePH2+lAGIRVLhLA/AzrRqFGcROhhqH78AoQtUTcGq7N21cS1DJT3hD50cLDfNZR4x/pA0gFkXR5SoSyNotEgrI8O5JGIfPC2R+cYQh4/IK33DgKS6QpDLsuzTT/KL/b9/1ygWlf3mEvZ62bq7w/PUf88xLaK/1Ov7pVQAIeZwhkxUEbnclvTtdqn9rfhaTHoe5WwjrOmGqBjihweQQKRUQJHzDF0U2ebXZcvqz0u3PcVNdjUN4OZIrQxjqJq9jkdJ1VmXaVZQQqF+cMhT4lpNK6OdvvWs0xmyvjQN9+xP7at94tNXNlNxsiGNNL2dLDkkOJy1lt6TNmjS62WTr/+XhDI4i3wKh3IpLXeOjJ9nbxJZUKGe9QZfQxF5DXBTmM3Xv3iBWR1d3EEgzqjCK4Y5Hi9fIIXOFIMq+1Pntgal9Snirn7JPMmy1OOkiT6nEU2tEuwhQjlynmzeeB5+giaOtWPfWjyf4arxEmrRyHd1I8Vz4hcxMRig9m8b6Q3was79DpG+
- /MSzru7l
- Lcsgc1cBM87NljGXfTB53X0g68SPQJypC/KUhbef0itl0PZ9d8i79k1KBqPvzxuWg2QGi63P3FgawWyK8pAJeHyZDT/X3nCx0dFpEHlGuAPTxA7bUf7DR8qoptn2VgMXOWNuFA1LpW19aqqQTAsHeflQkYcoaqxbekHuCYWoHUlwiw1CRhH98QwYL4q01s76Fh93Kjm3eEN1OXm6WzWffDuTZ+QJl2U27WhfHzqjjC9YeV50k0dtxyICxBa6oLZduror3SWUzwsAk/E3yyZciFLEHzTxKYhc5Yyz20aVCPRsUexaYqN9oQ6MqZGJnZqQvYMPlXIzpm7vgcwfMFQBdQLzbxH8NyL1/FkoZAQ2fFo10PWRMBUVodCu/TUTYHOLsjHsuwhVk6IDKt4bJFZJLemg5FbpnhNid5d/PWKjkvaf7FLZHgJ4nnY6s0BC/NUtiPVx2lYGhNFJ/D2p20OW2QpTqZDsoeiBr74brIOKXOKynzTNWUTw8stWtzo6x7uXHzl0DUlCYsr2DmZHQY2cVdHyuLcPJ2lR7p4iOs4obpEZTU2Dscz7vmziadar9i3s1o3JDUQrOvam7gy1nd93mfGFMcokePWJe2GG/SCZQ++lDtUg=
+X-Stat-Signature: dwphrybuxi6kniow8uqmcz4hgjxemx1s
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2269E1A0003
+X-HE-Tag: 1790527447-600128
+X-HE-Meta: U2FsdGVkX18IAlzwpc4wuFDvzj66FM7QtWdYxV2Ea7308hNZ4Ra54IL9HvImr1feHQ1f1bZGnHweh1lFlp5502B2rxgoRCcWLqCUsGVv8xDSpBa4mLCKUQc6MZ4zrRyzTlzCX66gSSNy/DcrwjXxjbF2bnCqcmgWFWmJvipBe+0mFo93kjDWaaoZkNWcmm7Bwio5kK3eHNNtBCDiBYxcd1WXZlO5s7KBHSyVTiTzoHZ04vsI3Crbq9JV0pcHnilSxJzf+8jVmE6dN8j93b28WobzrPKb3PzvTsMUmc2gsvIK2/AGLNyjQ+spEohZVT2IXhZIlPqTKT6swDkWSbDPS+IymfHbpDmlr6IdnqPXX8JCrVoNsIIOo0+gq0PKsHNT+vzqvQPl2yrkgHz/im+bQNiBwP8mLZvI8bsKvexNyUClhyUuhaDUDMRs9nFBJKAOS2exTklyVZBTaxVP7Zs9oVi1aJpqPyJ84OhHHv+29QbbTV1P9VrbGvsC1kFTLlWubCGmohTBwDThv3smCmZXapeVPoowMWgZzYrxQMO0n1aJO5deC+soRTy1gIi1DVADBb1MhYWONH87a1sqAyeoaH83jWVJLiQBhiIbnYZ2u2r7jSYSqKeN7zaDLvn/yX7xzryiL5dKHqIiHJseEVeMeDu3vMuuhok/0vVGyQr0b7VpFwQlgprqSNgNAuVQSIfadqGs6GZQL9fIp2lI30xgNmGduKrqJSZNBJDXBi8GNfmQpKGz4D1sSdihBLitz1p05JY7nroluRwDc6FF7PhDVzNbOXNLHGvvUNtX/38NrOR25QZR0CQiBbQrPSm+6As7m5KByKw3bWUmQjB1H4CyHYHeeiYTwFb9SuG1mrWJi/qs5VCTy5QUMnybaR6D4P6we9UgPPUvzO+agTwvIIjeGKdGT6J0xHOyGo5CG0YsLzQhjEOUnpRfKPNciW9Wh8ZC/lVEKqmy6o0wnDggo6X
+ VcJ/zeyj
+ /UdIYEH7vfd660Ydhot/cWXHSHu12cGdQToRWo3Ru7RmJsaADfuMXmf4rsni5CqL+LHqImCsJE5PNGjK4OnHIko+hxOqkU06KhJemhLfQEqKv9npR48qd8I7UiXpNPGIKPt9SSX4Sw9Q6g2b+waJxzoEGHJ5qP+cMzWmvS7508TFmJVWb0p7EoU2BH6vDkBKrPvaGdjZJR1iWhwgIIrJJWkfZ/J/RsHPcTQ9eDVqDRINMEM3+NL47f8x+ct2+L947aywUX3cG/2qGRBIIQcNMpDZRLmpK88gh3YeF6RnrgGfCLmDhVzgdNSzsAv8jCANNjnOZrnezUCxv2yN4/Lr9zsrClrBRAst9rEbs2hIwCGHHW9toZb16DDEJLQSv1oQuVU1tC4qhf6ruj9+uhTOawQSWEfQJSnyVU0nqIeXc6YXnV0HTs5VM9O7lO+vMpfLfR/w4jcAxGicAPjgb0Fg42l31fSEGUJ1wdDG5FzfgHsE6STl56CdRKoFhdxZUuartYga3myq7eNqynbbqQ4Vg4am7WHEjsegf4fv+4og7aDO1glxpYGOEUNvHFbxNqmL/QS6NonJZFa9N52uOUR8ezGLbjwbPrNPHJDoEoYyZtroY2qhv59ByPyLJsdsL/7xhCixtps56g8MBqZ6TYOJQlOcpvN32yiKh2og7DI1fe6TlvhRaxOmabmtCfMG7CuiJyLyL5TjOaT5Wu0gKc822vOIgYk3aaiEIZ+iXB5WgxgRMhAyuRosqVuYmt7fqTgyTzxosqr7ETkcf4jOwK1iAyLSXda6igjqjfjZbfMq70HDp4vFfTJze6ols2sX/G/kmwv0fY0NNKES3roZfxX6ukiiywsGa5ywqm2fgD97bWDf3IGwTWTkKlW/0vOfCGTMlQjuNwNt7K1ELtx0/z0sCZ00p/K59DnhBVLKdO2IMuBygJAHuxcvcYPV6u4fnFWIj8LoPmah+wX0dKtRiYOY9MnFme334
+ cuka4Qrh
+ W3oocyRa3CLC/9hype0CACoIsBVLCcslCmyHMOcXC1bFrfQw47c/gws9zhK4QAxEQNW65ZqLq46fMwk/hxz6MLNyzp45JLSs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,60 +92,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit ae571cd6015c ("selftests/mm: hugetlb-mmap: add setup of HugeTLB
-pages") and commit 9c5a65f374f8 ("selftests/mm: merge map_hugetlb into
-hugepage-mmap") added logs of 'hugepage_size' which has a size_t type.
-However, the incorrect format specifier '%lu' was used which triggers
--Wformat warnings when building for 32-bit:
+----_NmP-f27e2a0c293619c0-Part_1
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-  hugetlb-mmap.c:125:55: warning: format specifies type 'unsigned long'
-  but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
-    125 | ksft_print_msg("Default size hugepages (%lu kB)\n", hugepage_size >> 10);
-        |                                         ~~~         ^~~~~~~~~~~~~~~~~~~
-        |                                         %zu
+Bonjour,
 
-  hugetlb-mmap.c:134:47: warning: format specifies type 'unsigned long'
-  but the argument has type 'size_t' (aka 'unsigned int') [-Wformat]
-    134 | ksft_exit_skip("Not enough %lu Kb pages\n", hugepage_size >> 10);
-        |                            ~~~              ^~~~~~~~~~~~~~~~~~~
-        |                            %zu
+Vous envisagez de liquider ROLLIN JEAN PIERRE =C3=A0 HAREVILLE ?
+Vous imaginez que =C3=A7a va =C3=AAtre long, cher, et que ROLLIN JEAN =
+PIERRE va se retrouver avec des dettes, des imp=C3=B4ts, et peut-=C3=AAtre =
+un contr=C3=B4le fiscal sur le dos ?
 
-Fix this by switching to the expected '%zu' format specifier.
+Et si je vous disais qu'il existe une=
+ autre solution, l=C3=A9gale, qui vous permet de fermer ROLLIN JEAN PIERRE =
+sans aucun de ces inconv=C3=A9nients ?
 
-Cc: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Notre m=C3=A9thode est simple :
+
+Aucun risque : pas d'interdiction de g=C3=A9rance, pas de comblement de =
+passif, pas de faute de gestion.
+
+Z=C3=A9ro paiement : vous cl=C3=B4turez =
+ROLLIN JEAN PIERRE en d=C3=A9pit des dettes, sans n=C3=A9gocier, sans =
+tribunal.
+
+Z=C3=A9ro contr=C3=B4le : ni le fisc, ni l'URSSAF ne se =
+retournent contre vous ni contre ROLLIN JEAN PIERRE.
+
+Aucun d=C3=A9lai : en quelques semaines, c'est pli=C3=A9, vous tournez la =
+page.
+
+Nous n'appliquons pas une liquidation au sens habituel du terme pour=
+ ROLLIN JEAN PIERRE.
+On utilise un processus juridique m=C3=A9connu qui =
+neutralise tout : dettes, URSSAF, imp=C3=B4ts, contr=C3=B4les.
+
+Notre =C3=A9quipe a d=C3=A9j=C3=A0 sorti des centaines de patrons de =
+situations bloqu=C3=A9es.
+
+On peut vous expliquer comment en 15 minutes =
+chrono, sans engagement.
+On s'appelle cette semaine pour en discuter ?
+
+Oui, je veux qu'on en discute : mailto:info@agence-onp.com?=
+subject=3DDemande%20d%27informations%20-%20ROLLIN JEAN =
+PIERRE&body=3DBonjour%2C%0A%0AJe%20souhaite%20en%20savoir%20plus%20sur%20le=
+%20fonctionnement%20pour%20l%27entreprise%20%3A%20ROLLIN JEAN PIERRE.=
+%0A%0AVous%20pouvez%20me%20joindre%20au%20num%C3%A9ro%20%3A%20%5B%20num%C3%=
+A9ro%20mobile%20%5D%0A%0ACordialement
+
+Tr=C3=A8s cordialement,
+
+Stephanie Tanguy
+Sp=C3=A9cialiste en liquidation d'entreprise - HAREVILLE =
+(88800)
+
 ---
 
-Note that I intentionally skipped the 'Fixes:' tag as I've been
-previously suggested _not_ to use it for kselftest patches. However, I
-can certainly add one if someone prefers it that way. Thanks!
+Le pr=C3=A9sent e-mail est adress=C3=A9 =C3=A0 linux-mm@kvack=
+.org dans le cadre d'une prospection commerciale pour des services de =
+liquidation. Conform=C3=A9ment au R=C3=A8glement G=C3=A9n=C3=A9ral sur la =
+Protection des Donn=C3=A9es (RGPD - R=C3=A8glement UE 2016/679) et =C3=A0 =
+la loi Informatique et Libert=C3=A9s du 6 janvier 1978 modifi=C3=A9e, vous =
+disposez de droits d'acc=C3=A8s, de rectification, d'effacement, =
+d'opposition et de portabilit=C3=A9 concernant vos donn=C3=A9es =
+personnelles. Les informations transmises sont confidentielles et =
+destin=C3=A9es uniquement au destinataire. Si vous l'avez re=C3=A7u par =
+erreur, merci d'en informer l'exp=C3=A9diteur et de proc=C3=A9der =C3=A0 sa=
+ suppression.
 
- tools/testing/selftests/mm/hugetlb-mmap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Si vous souhaitez vous d=C3=A9sinscrire, =
+mailto:desinscription@agence-onp.com?subject=3DDemande%20de%20d%C3%A9sinscr=
+iption&body=3DBonjour%2C%0A%0AJe%20souhaite%20me%20d%C3%A9sinscrire%20de%20=
+vos%20communications.%0A%0AMerci%20de%20bien%20vouloir%20supprimer%20mon%20=
+adresse%20e-mail%20%28linux-mm@kvack.org%29%20de%20votre%20liste%20de%20dif=
+fusion.%0A%0ACordialement.. Pour signaler un dysfonctionnement ou nous =
+=C3=A9crire, mailto:abuse@agence-onp.com?subject=3DSignalement%20%2F%20Cont=
+act&body=3DBonjour%2C%0A%0AJe%20vous%20contacte%20concernant%20le%20message=
+%20re%C3%A7u%20%C3%A0%20l%27adresse%20linux-mm@kvack.org.=
+%0A%0AMotif%20de%20mon%20message%20%3A%0A%0A%28pr%C3%A9cisez%20ici%20votre%=
+20demande%20ou%20signalement%29%0A%0ACordialement..
+----_NmP-f27e2a0c293619c0-Part_1
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tools/testing/selftests/mm/hugetlb-mmap.c b/tools/testing/selftests/mm/hugetlb-mmap.c
-index 0f2aad1b7dbd..2edbc992e6bc 100644
---- a/tools/testing/selftests/mm/hugetlb-mmap.c
-+++ b/tools/testing/selftests/mm/hugetlb-mmap.c
-@@ -122,7 +122,7 @@ int main(int argc, char **argv)
- 		hugepage_size = default_huge_page_size();
- 		if (!hugepage_size)
- 			ksft_exit_skip("Could not detect default hugetlb page size.");
--		ksft_print_msg("Default size hugepages (%lu kB)\n", hugepage_size >> 10);
-+		ksft_print_msg("Default size hugepages (%zu kB)\n", hugepage_size >> 10);
- 	}
- 
- 	/* munmap will fail if the length is not page aligned */
-@@ -131,7 +131,7 @@ int main(int argc, char **argv)
- 
- 	hugetlb_set_nr_pages(hugepage_size, nr);
- 	if (hugetlb_free_pages(hugepage_size) < nr)
--		ksft_exit_skip("Not enough %lu Kb pages\n", hugepage_size >> 10);
-+		ksft_exit_skip("Not enough %zu Kb pages\n", hugepage_size >> 10);
- 
- 	ksft_set_plan(2);
- 	ksft_print_msg("Mapping %lu Mbytes\n", (unsigned long)length >> 20);
--- 
-2.56.0.rc1.315.gc6ed9934b7-goog
+<!DOCTYPE html>
+<html lang=3D"fr">
+<head>
+  <meta name=3D"viewport" =
+content=3D"width=3Ddevice-width, initial-scale=3D1.0">
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DUTF-8">
+  <title>Liquidation de ROLLIN JEAN PIERRE : z=C3=A9ro risque, z=C3=A9ro =
+paiement, z=C3=A9ro contr=C3=B4le</title>
+</head>
 
+<body =
+style=3D"font-family:Arial, Helvetica, sans-serif;font-size:14px;color:#222=
+;line-height:1.5;">
+
+  <!-- Pr=C3=A9header masqu=C3=A9 -->
+  <span style=3D"display:none;visibility:hidden;opacity:0;height:0;width:0;=
+overflow:hidden;">
+    Liquider ROLLIN JEAN PIERRE sans dettes ni =
+contr=C3=B4le fiscal
+  </span>
+
+  <p>Bonjour,</p>
+
+  <!-- Phrase =
+d'introduction -->
+  <p><b>Vous envisagez de liquider ROLLIN JEAN PIERRE =
+=C3=A0 HAREVILLE ?</b><br>
+  Vous imaginez que =C3=A7a va =C3=AAtre long, =
+cher, et que ROLLIN JEAN PIERRE va se retrouver avec des dettes, des =
+imp=C3=B4ts, et peut-=C3=AAtre un contr=C3=B4le fiscal sur le dos ?</p>
+
+  <!-- Question sur la m=C3=A9thode -->
+  <p><b>Et si je vous disais qu'il =
+existe une autre solution, l=C3=A9gale, qui vous permet de fermer ROLLIN =
+JEAN PIERRE sans aucun de ces inconv=C3=A9nients ?</b></p>
+
+  <!-- Annonce m=C3=A9thode -->
+  <p>Notre m=C3=A9thode est simple :</p>
+
+  <!-- Liste des 4 points Z=C3=A9ro -->
+  <ul style=3D"margin:10px 0 10px =
+20px;padding:0;">
+    <li style=3D"margin-bottom:6px;"><b>Aucun risque =
+:</b> pas d'interdiction de g=C3=A9rance, pas de comblement de passif, pas =
+de faute de gestion.</li>
+    <li style=3D"margin-bottom:6px;"><b>Z=C3=A9ro=
+ paiement :</b> vous cl=C3=B4turez ROLLIN JEAN PIERRE en d=C3=A9pit des =
+dettes, sans n=C3=A9gocier, sans tribunal.</li>
+    <li =
+style=3D"margin-bottom:6px;"><b>Z=C3=A9ro contr=C3=B4le :</b> ni le fisc, =
+ni l'URSSAF ne se retournent contre vous ni contre ROLLIN JEAN PIERRE.</li>
+    <li style=3D"margin-bottom:6px;"><b>Aucun d=C3=A9lai :</b> en quelques =
+semaines, c'est pli=C3=A9, vous tournez la page.</li>
+  </ul>
+
+  <!-- Explication processus -->
+  <p>Nous n'appliquons pas une liquidation=
+ au sens habituel du terme pour ROLLIN JEAN PIERRE.
+
+  <!-- Preuve sociale -->
+  <br>On utilise un processus juridique =
+m=C3=A9connu qui neutralise tout : dettes, URSSAF, imp=C3=B4ts, =
+contr=C3=B4les.</p>
+
+  <!-- Preuve sociale 2 -->
+  <p><b>Notre =C3=A9quipe =
+a d=C3=A9j=C3=A0 sorti des centaines de patrons de situations bloqu=C3=A9es=
+.</b></p>
+
+  <!-- Proposition d'appel -->
+  <p>On peut vous expliquer =
+comment en 15 minutes chrono, sans engagement.
+
+  <!-- Question finale -->
+  <br>On s'appelle cette semaine pour en discuter ?</p>
+
+<!-- CTA -->
+<table role=3D"presentation" cellspacing=3D"0" cellpadding=3D"0" =
+border=3D"0" style=3D"margin:20px 0;">
+  <tr>
+    <td>
+      <a href=3D"mailto:info@agence-onp.com?subject=3DDemande%20d%27informa=
+tions%20-%20ROLLIN JEAN PIERRE&body=3DBonjour%2C%0A%0AJe%20souhaite%20en%20=
+savoir%20plus%20sur%20le%20fonctionnement%20pour%20l%27entreprise%20%3A%20R=
+OLLIN JEAN PIERRE.%0A%0AVous%20pouvez%20me%20joindre%20au%20num%C3%A9ro%20%=
+3A%20%5B%20num%C3%A9ro%20mobile%20%5D%0A%0ACordialement"
+         style=3D"display:inline-block;padding:14px =
+40px;background:#2e7d32;color:#ffffff;text-decoration:none;border-radius:6p=
+x;font-weight:bold;font-size:15px;">
+         Oui, je veux qu'on en discute
+      </a>
+    </td>
+  </tr>
+</table>
+
+  <!-- Signature -->
+  <p>
+    Tr=C3=A8s cordialement,<br><br>
+    <strong>Stephanie =
+Tanguy</strong><br>
+    Sp=C3=A9cialiste en liquidation d'entreprise - =
+HAREVILLE (88800)
+  </p>
+
+  <br>
+
+  <!-- Mentions et d=C3=A9sinscription =
+-->
+  <footer>
+    <p style=3D"font-size:12px;color:#888;text-align:left;li=
+ne-height:1.5;">
+      Le pr=C3=A9sent e-mail est adress=C3=A9 =C3=A0 =
+linux-mm@kvack.org dans le cadre d'une prospection commerciale pour des =
+services de liquidation. Conform=C3=A9ment au R=C3=A8glement =
+G=C3=A9n=C3=A9ral sur la Protection des Donn=C3=A9es (RGPD - R=C3=A8glement=
+ UE 2016/679) et =C3=A0 la loi Informatique et Libert=C3=A9s du 6 janvier =
+1978 modifi=C3=A9e, vous disposez de droits d'acc=C3=A8s, de rectification,=
+ d'effacement, d'opposition et de portabilit=C3=A9 concernant vos =
+donn=C3=A9es personnelles. Les informations transmises sont confidentielles=
+ et destin=C3=A9es uniquement au destinataire. Si vous l'avez re=C3=A7u par=
+ erreur, merci d'en informer l'exp=C3=A9diteur et de proc=C3=A9der =C3=A0 =
+sa suppression.
+      <br><br>
+
+      Si vous souhaitez vous =
+d=C3=A9sinscrire,
+      <a href=3D"mailto:desinscription@agence-onp.com?=
+subject=3DDemande%20de%20d%C3%A9sinscription&body=3DBonjour%2C%0A%0AJe%20so=
+uhaite%20me%20d%C3%A9sinscrire%20de%20vos%20communications.=
+%0A%0AMerci%20de%20bien%20vouloir%20supprimer%20mon%20adresse%20e-mail%20%2=
+8linux-mm@kvack.org%29%20de%20votre%20liste%20de%20diffusion.=
+%0A%0ACordialement."
+         style=3D"color:#888;">
+        cliquez ici
+      </a>.
+
+      Pour signaler un dysfonctionnement ou nous =C3=A9crire,
+      <a href=3D"mailto:abuse@agence-onp.com?subject=3DSignalement%20%2F%20=
+Contact&body=3DBonjour%2C%0A%0AJe%20vous%20contacte%20concernant%20le%20mes=
+sage%20re%C3%A7u%20%C3%A0%20l%27adresse%20linux-mm@kvack.org.=
+%0A%0AMotif%20de%20mon%20message%20%3A%0A%0A%28pr%C3%A9cisez%20ici%20votre%=
+20demande%20ou%20signalement%29%0A%0ACordialement."
+         style=3D"color:#888;">
+        cliquez ici
+      </a>.
+    </p>
+  </footer>
+
+</body>
+</html>
+----_NmP-f27e2a0c293619c0-Part_1--
 
