@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 851D7CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:20:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608DECA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 966B56B00A5; Mon, 28 Sep 2026 13:20:50 -0400 (EDT)
+	id E20B36B00A7; Mon, 28 Sep 2026 13:21:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 916AC6B00A6; Mon, 28 Sep 2026 13:20:50 -0400 (EDT)
+	id DD33C6B00A9; Mon, 28 Sep 2026 13:21:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DEAD6B00A7; Mon, 28 Sep 2026 13:20:50 -0400 (EDT)
+	id C9A706B00AA; Mon, 28 Sep 2026 13:21:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 57A136B00A5
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:20:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DB36A1A02A5
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:49 +0000 (UTC)
-X-FDA: 85263835818.09.515D663
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A28616B00A7
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:21:10 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F67FC0273
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:21:10 +0000 (UTC)
+X-FDA: 85263836700.04.83EE709
 Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EE1171A000D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:47 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=f4Jdeeeb;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="O NnaoMW";
-	spf=pass (imf19.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 40F331C0011
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:21:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=qABfvtLV;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i pmZ6q7";
+	spf=pass (imf20.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790616048;
+	s=arc-20220608; t=1790616068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fJz8EQpPkK5dirGHjixLblXPE0Wssy9Pl4MCLZ0+6fQ=;
-	b=6QXFJlZtz+PsknN+54p2meEqtK4yn0jEgluZI5d+T6U3sOh+L/BaZN51UPVgDaBP8edyer
-	1To/VU8v23+EODzyvFuoOALYY043hrlnf4N0SQ1K0mz8/KpwIqJhAtHzd4qkNu0IgfIve8
-	Pf5psn3JOOLiwIteeEUnoqvu3qDyCLg=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=f4Jdeeeb;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="O NnaoMW";
-	spf=pass (imf19.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+	bh=DSkum+x883OTq00st7eT1eBmqnsmeRjmxXUWAqbPki4=;
+	b=aH8VwDNrrnsPUBQ+H7ofMtQ8s76KO3tB5COjbOr6W/LH0vLvovk9NpVUKl0qhn2fuA4Vzx
+	C/upTYFEnNfBQehQSDrHb+CTrZY3GYEVA2wcE2GEhCn5/kWdCMO3zEdtztIhTMGBVQQoNl
+	Kz5GDASyTINUD6MTQE2aQYYBG89P3Wk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790616048;
-	b=cSeFxX2xgxL6CJdfrqBqlsgm+2DWSa17f6r7s8cYR3rhr52uomSfhVsU3MkGMJzFX209C0
-	z1RwmYKInUTEDm3VOSmBvaDDkr6HerzW/ILL/8ObT5v+HQjAJBeyE/are+rSLQpNb5VS8Q
-	0qOQP2z7zIMgYqGKpRlKEjVpwrdi6cY=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailflow.phl.internal (Postfix) with ESMTP id 7E12213804E6;
-	Mon, 28 Sep 2026 13:20:47 -0400 (EDT)
+	t=1790616068;
+	b=z/mRWbsGwPseEBlYjkRiew2y52nI7owBBnXY26bfrJ8RnzZ93vm2mbnwRHskGtpeuy/RN5
+	Bodu2OF/V+H+qa7OCeZpKl9UfsCf739Ai6C41ZFd+a9AHMYfBrd9XxyTpqBYV8CMa0uNVI
+	k+xUQBbZSjmWrH3QqTcJfR/Se0l1cQk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=qABfvtLV;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="i pmZ6q7";
+	spf=pass (imf20.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id B734D1380505;
+	Mon, 28 Sep 2026 13:21:07 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 28 Sep 2026 13:20:47 -0400
+  by phl-compute-04.internal (MEProxy); Mon, 28 Sep 2026 13:21:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790616047;
-	 x=1790623247; bh=fJz8EQpPkK5dirGHjixLblXPE0Wssy9Pl4MCLZ0+6fQ=; b=
-	f4JdeeebjueKH7ptVPXg9yoUidMKxSR/xbTUV13BYJMixzn8a+agIvN137gLDxLc
-	aS7eid66bSbZF7zEHELRYf+urBf6MNb2yAOgQBSIbBbolGwcll0fD4tHkcg3rYlh
-	ccXaOfBLATfQa3dl+UKKfKooBH5Bl2Zwn1PKnY2YgqYHFeom9gl/oCCZL9FJyTcD
-	3nkjCUYtFgNJbkrT1P97vJZpKPJ6oQeKNSRRFPnrmj/7doWJ2nna1dCBUMyNL72H
-	iyrEnXb/8nJfzszJaKuC0w5AuMYhBPBUzb7IL5RbDjxkwgpv70sh37AsVQY6dAzL
-	rduPcc0zVv2nD3l4EZKwAg==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790616067;
+	 x=1790623267; bh=DSkum+x883OTq00st7eT1eBmqnsmeRjmxXUWAqbPki4=; b=
+	qABfvtLVTAv8QwI+jBWU6wqRiPsnNYgQhwrHOTKtV+Vn/VkwlwKXnf0QxLiw+Gj7
+	DVnlLgauwWV3qecXMWYFr147+JPN/Y0/qJ7D1vvHBlk7PtddYnwoKl0051UlSEhd
+	m/EIsgrkR52yAjRROuaPP4GOVp0kA4vuSPfoEmAWJ4LD0TevsWCrgTSa08yVst4p
+	5Ft0KJnrBAExwCm3lafE5fiLekTrtAHMEn1+N7XlnFv4U4s5Wmj5aao6nWewHQR8
+	nXAdTvBFZr5nrTNhag0AoIYkzZZ14DW6NhJVrE0ZQ461iz5ZPHET7lhWRk7G0J+K
+	feFQFFXApIRlmuzzxz5x3g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790616047; x=
-	1790623247; bh=fJz8EQpPkK5dirGHjixLblXPE0Wssy9Pl4MCLZ0+6fQ=; b=O
-	NnaoMW+2zQHkNDVwNrITLkagrR029Br1BAO9nUFTX8lCbpYaC2qU2F4Vcjip+Ula
-	Mupx+52KG+ol62sbiSxJTkszHne9+BISMFpSXsNsq6ZRJkWX5A+C9u/IUTi6mYok
-	uAi5FcXSUpOWFlXZWQa8423AX1So7GAW72/j7JqKOlp38FvLIsw1JfBKG2wp0mw5
-	PU2tWUasXduwhMNiqF63JBuIkN4NirumVvhihC75UcFl7C3Ap9Kued6Kl4zzQ7an
-	meBZDjTlFwyl0rwOVBJqxe04FslcT9kI6/1OkBaS+XP1IeYA8S/zBTGM8c79Q4Gm
-	s56EnFvtre8X7v2+BKPAw==
-X-ME-Sender: <xms:7qG6alzE978dBNRLukxM_mVEgrVOXFiXtAyWffYzCpjwNgnV30TgnQ>
-    <xme:7qG6aouhmlgq-mVGa6ghryYHxEfwf8ulLvPjFUDo33_3OkjN5mCfCWur9c7i_TK6m
-    oaBTC_RxI5MJVn8bX7Vlq80fgLR3qkEyBUOd4D2TWuL62HsPgu7CA8>
-X-ME-Received: <xmr:7qG6armG8LrOEqbbWuGrL9ytqTnHnyy1rsNQCZYPaW9VAPtgwzxkWVBcH9VBJQwa>
-X-ME-Proxy-Cause: dmFkZTE3Dtw6IjhE/poi/CDPb5VXEYPNUPEe3rZRr1/3vnluvSNGZwYnc7Od0VEEqw6V8C
-    kWRAMYAJAJV5aq+CNT4OFQyy1fVW8k3upxKlO9V7Rt5yUqYEIYE/wijeDPsE7H4gglp/5v
-    F6D384IbY5FCBCgoXmGheBdMQQxOBU4ICiAnYejBlRLhJ/CKeqEcgPSAZh68CS/pdW/x+j
-    oysMrjjAyGFH6oDZSV+ReHQBDpEH3XjCRs+r4WEsyv+LCLa1ZQRyjrSR6cKgS0Pi5Ve0FP
-    CSaf3rI2+ul2/rPFwdCO88CC3NXOaOC07b4Jq2/gPXxONS3ydc229KCVcj4zNvzLHbXFfR
-    eF4x0mLD+Fcfbzuser4/iLJZt8Fbokzu1nzs2ppJ4QnO/tS8WSt8700vWuD+S0oklObrCZ
-    eYUJXuXrVgCNBCBdaN07KqmODR19hbi8nuGl2UeTd1BMVfWD0zHPP2oNak6KLD0VPoNxRA
-    3Ak2HOrZ1IVBIqFUI0Ae4j33l6nDbJZlRWS9P1AeDiwcepSkX4qgDOR1DzF3eI0JfDzXGb
-    llEZJrMALOTu1I8Ke0lJQ99N1YvgfXf1A2PRoxOzk4hanz1XgNFkkehoH+rc6/TY1L0mx6
-    aNLkbSjOj7d4l8vP88bPuGlxta3VDopv7l8wJZXPSTS1TxgdetOYLw9Gr3OQ
-X-ME-Proxy: <xmx:7qG6aghCTTcvhFpjk8LCnNnfEzxbJxFnnuuWYAeYa-YLH4YUzHbUvQ>
-    <xmx:7qG6ahHzIjRNQA6Z0Bccd6_bi4pkkyrffh9120ESI4juzY9MmRMgGg>
-    <xmx:7qG6atN5TbDRD3GLUL4DjcKB-z281sLaNyhV79ElVGm-UARn8iTyRA>
-    <xmx:7qG6as0CG56dy-xqVJHMlukxHoSqQ2SjzGkRNQhFIaTJCurJkhaKbQ>
-    <xmx:76G6avDdeuSydoAaX6v9kdMCGrc0KNeoZfiEobVCpMGbamPVv-bmn3LI>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790616067; x=
+	1790623267; bh=DSkum+x883OTq00st7eT1eBmqnsmeRjmxXUWAqbPki4=; b=i
+	pmZ6q7XKgqJQ1C06s/7NzbYxQlXX3Fl0zHeReIYK4wWqQfMeYbGzrkTgwwtIGvKt
+	TEKfHKMSZnD/pomXRk1KCIiUlOEjAmFpoartLDrwrseadgb38+xExzW5iNH7ENiw
+	hS+QyIZUY1Nt6ibFu928VXML3e7u2IndEuBAGCnn94fmNFqr169LzH+8aiapioV4
+	FWJtWEZQfbdHm39p8XuiDsaBYHc/bFljyFEIxTvUO7tOiZoQPCvocVEmLe4Y2uvj
+	glelolt5XX2gdWxuN8wV1+bHhDc8uctp7hsLZqwdTqeIUMlAtjImE3UyGoSIs8zx
+	0mGJk6e0D9TY7gnZf30bQ==
+X-ME-Sender: <xms:AqK6aiJdyvWbA3q5ZdT0g_VOL9ARQ3_xZEtQiFkinFA7XrkuVtRrEg>
+    <xme:AqK6atmRDwMh_jjx2wQzY4gknAii5LAXTeDVRNef1H8859q3c4_pN7I8lP7x_LZlD
+    NJ7oKH8nKMqk0321ikXSIEM5JOJdbpY7l98QcALj6Lg_MaYvdymkg>
+X-ME-Received: <xmr:AqK6au_riIrusCDiDYS7LlcLDAyMAzKRe9E4-p_ejZ3tPGQkzTjZLv2o381k19xa>
+X-ME-Proxy-Cause: dmFkZTFVchM+bTT1PKuZ7CN10fxXJIikNoVdUVFHA1eqyKMgAAVr8P6ONf1Qg916JwGLA/
+    UIAM5uyklkVrDRDmXBCinnisDlXug/Uvz0CnXEuy4xZlY+Q3iKI5V68dUZbqn8FCfsIN95
+    6KfV8L2bBYYMAysjIpjjTtDvr59SlVXR0rT3rsZ8OOWBdCzi2fs/qRsgGZhcNemn8sEAcR
+    7gOuIxy/+2FBe7o4KglohLGCDym2m4zsXZ2bZO1r7mHjauIXUwmWu2ruzm3DMO6W6IP24K
+    Wr2E/Zfjs4QhZp1KylseoV5Uqh0JkwjuRMQihg5e/hXKn9gV8Cjo7+1dG47k97NaaXBvtc
+    6TosNN9zLhtvcoQ3r7SWS1Frb2Qorac1G8xePLtKHSGJmGxR8MUFy+I94uu8hg8RIumbG8
+    SY0uTRLUL7ZXAHGIFzGJTRUWIX2hNbfVOEldVBvHg8V9/AF2MJIwhJ0f+kFlJnVpV4ycHp
+    mKM9/zNsIiMMIH7wuKU4HfRltaRNhlV0YkDylvsKrut+Wh+XvvoJFU4M5SCC/C2VqifXrO
+    OYHBvAhipyvrLi8l7az1rLG97YIm4jdRN+vuK6gHN5DJGuaUqTQKM+EHzM0pq6gs1lcqla
+    bqJpdS7RiPDgdLUNPkCZqwhc2Uvf2IlXv/5+KTDtuT1Wp+YQPP7SNpjrYBnA
+X-ME-Proxy: <xmx:AqK6agbe5qel0Zvetr1je2exn-rTW0Xq6Q3HISCHxyeI98zoCcy_ZA>
+    <xmx:AqK6ajeS2DkKjha4qtyiFz8pYaVBZoLsCK2WMI_lnTuJ8al5s87WFg>
+    <xmx:AqK6agFhpvYnTNdvu-UzjllEirRVmBdKqpZtG7UTJpuighG5Qeag5A>
+    <xmx:AqK6amPFEHR90eeZStkd-dIzsg-ZIVPXILeuDuO1FZccV0GOwpB2sQ>
+    <xmx:A6K6aqZzes1EOOPDG3S3_LbCYWNwv6cGFWazqN91PQemXmsFOH7EyBO9>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 13:20:26 -0400 (EDT)
+ 28 Sep 2026 13:20:47 -0400 (EDT)
 From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Mon, 28 Sep 2026 19:17:56 +0200
-Subject: [PATCH v3 08/12] mm: Add VM_CRASH_MARK
+Date: Mon, 28 Sep 2026 19:17:57 +0200
+Subject: [PATCH v3 09/12] mm/rmap: Mark folios mapped into
+ crash_memaction-marked VMAs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260928-crash-memaction-upstream-20260921-v3-8-e511e9ee2329@jaseg.de>
+Message-Id: <20260928-crash-memaction-upstream-20260921-v3-9-e511e9ee2329@jaseg.de>
 References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
 In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -164,13 +165,13 @@ Cc: Eric Biggers <ebiggers@kernel.org>, linux-doc@vger.kernel.org,
  =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: EE1171A000D
-X-Stat-Signature: 33j4oduh7fxfi6igcaznm1hkt61pox8u
-X-HE-Tag: 1790616047-336284
-X-HE-Meta: U2FsdGVkX1/6aZOcZ2ppwaGnIizh5AdRVtYXbpr53NJmDK6jmbQYKbGzRLGb4n2iJPorMYlBBxThGa7vn+C83vaj9EhcGIw4Wzr+SfYbRh1a2jNwRaNsHEwwreVZLTlxjXjLaVRYWuH3sl9Qco9/GiTi8Yo4D5otM236pKzhBDaf8w3UJ3lT3AQg69JW9UKyZkKxHqijMadqatCh16KwF9phbrAGspH2qoKDb2F235oZOsfh+Z+zyEBM/oD4ev7VaFKYQJeUSh3t+RQ50vdMu4zn0w9NWAguOx/6AQtvl953EqkcWcqIijkFPBUsXlJRtCBEycYNMidhoUrt5yGzgO8Sj7gNdvoAuQ2BLamAj1HOKKfeK7KAeNwGCTDTaBa6jwRWpf+LrYII4FkN7KMMkTHQj9pMUC75k2PKhak0PVXNWr5/HfKibvFxypyQ1FadYQ/uUUot9YM/bLCVcqEKXmC+/3Dg9w6WkhwUO7NYxPcUCMVoIyNRj5Jg65FegRfXolHo1Uh0NxVOl9ImDln18bQuxiHBClRNLWlH/wWCBHrimbJWLFGWXQPjy1ttqx+odnCevTdKbAmtONv3SV0F13ADAJlexu7edVa8N7s7CSwZb7U5Cj6tmhPA39395KOII3stYBsdetKcm3IvQk1YRac+DQLXx/4t1vIyLsAx5ESouTzBophFUFJDAkLXA95yOGQMeHIo5NPGHbXVAkw+N2zTpH8j0P2qTmQFcRbmwU4V12bn6Gct447/sgo41foRMErRSsk8wROetzb2r1fuG2lqXKFEioTyw77ZAaaJDVEvkckhaGu56p8tTZDUXvO8RE+6lOBKGSi7MMhIxRQF2fKsWKyne2w8tC6rnQ9p7juj4pS+J0zRoOLQQbbaSdIasDbbalHKRX2fY/t0B5mTICAKqi5Lwmo18lBqdfk6NhX5y+/EIiSP6UNxi17zIzAsSrmrFgOxsG4PKlYmqQN
- lf1UMF2E
- OQcHhRNweoe4sir70z7pFViiKIdQp4uF83BiKOVq9nMclpLzhVqp8U3JEH0uVHeORGcUExjJpIC5cuQyW6he7sJzM5yNkEjyCe93m81aIFGwzmdxHXvFApz31IPGuUivknKo4WBfRU4wNJR/RbPRwouTvp9fvC8uN+Z+o7KZQwsf2ScBk+MiikcbGHJ1xxN62HzDtxpTF1ZQAHltvJLQVC0FpqMI/PLae5uMZ/9iw6/2DTwGZWntzxq7vumlb659Ez+mioOb+8uEAJLrfk1BV5S9Q3NxDFdmulXCplk6BndUf5BKLZEcQHKqKQuQlteX6a1PsSZwCwv69RmLc6hQlW/5EM8u/7fJI4Spz6bwS0ycInvUO9G/H4tbS9xGaw5u0FBg87ipH4tLhJFCb+Wt9F9zascBoFtpyCA88/vSOGuVeJ8fNEEmT6qmch4q+n3SWnOyv4IMQxh6kgWxhOLMx+7xT19YGSqPJar3ZTNz36uUGNfXX7d+qABir3v0vPdlblZrG9ZV4b1blKA3udFRghitm+w==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 40F331C0011
+X-Stat-Signature: r51g1dopq85tpiery7soykg9tk5e7yaw
+X-HE-Tag: 1790616068-484760
+X-HE-Meta: U2FsdGVkX19UIhvG68WP2s/3ZarEc54njm2Lh4Ib8D1L+dWTg69ojjUVpirqYM9QvKqHWuYvSNY7Vv49n7QcF1pzEmIrAx1mDLGVu6bSZ2yh7+tP5gGxF/gC7QMv9OeMZUavCK8vMQxJKO78T9faGtlb56UYPIe7zQVyTGsD73Yc0OPD70WbTCbCvHcRPHGTkbmLdZkV3oXAWk4khi+9EbtAGQCat6KvRM/nHwy+w0jTVS1bOBPGlMWQg2q/mC6M/wqIWMxJUFkZy7USi/L/HcPrUbnOegg4DrpZYRVoYg/9BzTGcUy39XhCb2cS9RHhoV34pgIMD07kKQsalGY9dTsTBGoMUoT1cgNi3iHXNv7tfzlKglkVSFye8evodNYjiRDnTRmlcJzjqK1lResVoxIQEyuvw7bVUCnweP1UyBj0PVhR6lecJ1Y50fRKLXE8NMlt22XfQESFiGykhz25+bbGPOKFq4jdNoNyi4lQ3Pyr3Oxj533i7bwsJAorQtMqDjvo3xUiQ4obUOM5KD3dr4c5/1Rl6lCsqawc+IFupk0DkpjNdl4fyF3x70kRPvCV9apEWXpAPL1AaYfwcmbEOey0fQ2aDt04iuLrnWYqtKYqj067zC+F5wNWrnQc14dF3eVkpjnN1/bsJ+1ySBmjo0iQwVBSFlIL2Xk6vm0ke3vpX70gZmbv7+OfDIHvZp52L4gmazQ2Mkk6Q1jDV6eSTh8jLZ8hTLDjWvESarjM5NYqsx8xxb1sd9ZKEC8YnLFHzg0kaXpswMybjTPQCDyfCG1Ua7rT3JxNhmwvRIbOtLqUXYcDGE+6b/ce/+Z0i3Q1raRR3Ixp6PMECuLU09h1+/DNv2PDzg+0qx/yIwCeJTq/pd9CG6D0/BELR2QeMlqc/2BqX7CkNuKGYLZ7Gx3GVDMHlHvCAdHhujL6gtm6zBwMj8S9jLi3vABrRgm5Q9X1jykKycQMNkW/177R/Zr
+ S1iX7383
+ C+tG2s8UklCRClGfvInsvV5RjNxQbRJXn/NZ/W2X9vnDqyeS/PbNOcTVEsPkah1ei62C9PBHWqsan2fwl50DStsr+czgfbt2TMcid5JZEXyWCoU63b3QNDAK0X79K66KAxeMEI9Me+82HgFKqOWw2VXLCm9ppjndvJL7vDahfMBLuBcRj9l2nkV6N7GL7KJLNJOnrgugVtREyQlo9eoFWKk3SSUPRUW01/qH9ksRRz0v1fqDseWUBxwuLM/EZ7BDpTRfRJ1LNL/1Emd5i7bYij6ZLLEDSPnR3WU+GzbWjKq1SeRiEEtYw040JvEfKZ+9yhv3HwZmBt2G6UVnzVMGprGinGaTxkxa/qXVstS7PumTO8Nu8luaDvPCcGqeh09irU6W4xgUnAqdtywqAK4uSSTzbucRRW/+agoAHYzM0JqKwPM3iZMJRII1TRiIsGp14iYhWFso+puYAnjXAkl7pgNn5O5t6X7SLk5lcTO0tf0HINI4S8qbdizfJDXyxfuPLPMjKLHAPWW3PuydKQhXhVNEa4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,81 +179,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a VMA flag saying that the folios mapped into a VMA should be
-described to the kdump kernel through crash_memaction. The flag
-indicates "marked" pages. The specific meaning of what pages are marked
-is set through the crash_memaction= cmdline param, which currently
-supports marking "secret" or "cache" pages.
+Propagate crash_memaction marks set through madvise() to the
+crash_memaction registry. Register the folios of a VMA carrying
+VM_CRASH_MARK with the crash memaction registry as they are mapped, and
+update the registry when a folio moves.
 
-The flag is an ordinary VMA flag, so splitting, merging, mremap() and
-inheritance across fork() all behave the way they do for MADV_DONTFORK
-and friends.
+Marks are processed in rmap since the fault paths, CoW, swapin,
+migration and khugepaged collapse all converge here. The marks don't
+affect pinning, reclaim, compaction or hot-unplug. De-regsitering free'd
+marked pages is done in post_alloc_hook() and the hugetlb pool to
+account for stale data in free'd pages.
 
-To allocate the flag, CONFIG_CRASH_MEMACTION gains a dependency on
-64BIT. Both architectures that support the config are 64-bit already.
+The marking code is gated behind a static key that is only enabled when
+the crash_memaction registry is explicitly enabled by a cmdline
+argument, so there should be no performance impact unless the feature is
+actually used.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 Assisted-by: Claude Opus 5 <noreply@anthropic.com>
 ---
- fs/proc/task_mmu.c   | 3 +++
- include/linux/mm.h   | 9 +++++++++
- kernel/Kconfig.kexec | 2 ++
- 3 files changed, 14 insertions(+)
+ include/linux/crash_memaction.h | 15 +++++++++++++++
+ include/linux/rmap.h            |  5 ++++-
+ mm/huge_memory.c                |  2 ++
+ mm/hugetlb.c                    |  6 +++---
+ mm/migrate.c                    |  2 +-
+ mm/rmap.c                       |  8 ++++++++
+ mm/userfaultfd.c                |  1 +
+ 7 files changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index c0d228036b8a..880946edf4df 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1161,6 +1161,9 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
- #endif
- #ifdef CONFIG_64BIT
- 		[ilog2(VM_SEALED)] = "sl",
-+#endif
-+#ifdef CONFIG_CRASH_MEMACTION
-+		[ilog2(VM_CRASH_MARK)] = "cm",
- #endif
- 	};
- 	size_t i;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index b9ed4f569b75..4ffe6350f865 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -345,6 +345,10 @@ enum {
- 	DECLARE_VMA_BIT(UFFD_MINOR, 41),
- 	DECLARE_VMA_BIT(SEALED, 42),
- 	DECLARE_VMA_BIT(UFFD_RWP, 43),
-+#if defined(CONFIG_CRASH_MEMACTION)
-+	/* Describe this VMA's folios to the kdump kernel; carries no type. */
-+	DECLARE_VMA_BIT(CRASH_MARK, 44),
-+#endif
- 	/* Flags that reuse flags above. */
- 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
- 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
-@@ -526,6 +530,11 @@ enum {
- #define VM_ALLOW_ANY_UNCACHED	VM_NONE
- #define VM_SEALED		VM_NONE
- #endif
-+#ifdef CONFIG_CRASH_MEMACTION
-+#define VM_CRASH_MARK		INIT_VM_FLAG(CRASH_MARK)
-+#else
-+#define VM_CRASH_MARK		VM_NONE
-+#endif
- #if defined(CONFIG_64BIT) || defined(CONFIG_PPC32)
- #define VM_DROPPABLE		INIT_VM_FLAG(DROPPABLE)
- #define VMA_DROPPABLE		mk_vma_flags(VMA_DROPPABLE_BIT)
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index 890c35199bea..3cdc8d459ac0 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -189,6 +189,8 @@ config CRASH_MEMACTION
- 	depends on !SLUB_TINY
- 	select SLAB_BUCKETS
- 	depends on ARCH_SUPPORTS_CRASH_MEMACTION
-+	# VM_CRASH_MARK needs a bit from the 64-bit-only half of vm_flags.
-+	depends on 64BIT
- 	help
- 	  Track pages that may require special handling by the kdump kernel:
- 	  pages holding secrets such as crypto keys, which it can wipe before
+diff --git a/include/linux/crash_memaction.h b/include/linux/crash_memaction.h
+index 5f3e114c60ad..2de60bc12dd9 100644
+--- a/include/linux/crash_memaction.h
++++ b/include/linux/crash_memaction.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/init.h>
+ #include <linux/jump_label.h>
++#include <linux/mm.h>
+ #include <linux/types.h>
+ 
+ struct kimage;
+@@ -50,6 +51,18 @@ static inline void crash_memaction_unmark_pfns(unsigned long pfn,
+ 		__crash_memaction_unmark_pfns(pfn, nr_pages);
+ }
+ 
++static inline void crash_mark_pages(struct page *page, int nr_pages,
++		struct vm_area_struct *vma)
++{
++	if (!static_branch_unlikely(&crash_memaction_active))
++		return;
++
++	if (likely(!(vma->vm_flags & VM_CRASH_MARK)))
++		return;
++
++	__crash_memaction_mark_pfns(page_to_pfn(page), nr_pages);
++}
++
+ void crash_memaction_mark(void *addr, size_t size, int types);
+ void crash_memaction_unmark(void *addr, size_t size);
+ 
+@@ -62,6 +75,8 @@ void crash_memaction_unload(struct kimage *image);
+ static inline void crash_memaction_init(void) { }
+ static inline void crash_memaction_unmark_pfns(unsigned long pfn,
+ 		unsigned long nr_pages) { }
++static inline void crash_mark_pages(struct page *page, int nr_pages,
++		struct vm_area_struct *vma) { }
+ static inline void crash_memaction_mark(void *addr, size_t size, int types) { }
+ static inline void crash_memaction_unmark(void *addr, size_t size) { }
+ static inline int crash_memaction_types(void) { return 0; }
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 74cca0e3c726..1eeb7762b4a3 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -9,6 +9,7 @@
+ #include <linux/slab.h>
+ #include <linux/mm.h>
+ #include <linux/rwsem.h>
++#include <linux/crash_memaction.h>
+ #include <linux/memcontrol.h>
+ #include <linux/highmem.h>
+ #include <linux/pagemap.h>
+@@ -472,13 +473,15 @@ static inline int hugetlb_try_share_anon_rmap(struct folio *folio)
+ 	return 0;
+ }
+ 
+-static inline void hugetlb_add_file_rmap(struct folio *folio)
++static inline void hugetlb_add_file_rmap(struct folio *folio,
++		struct vm_area_struct *vma)
+ {
+ 	VM_WARN_ON_FOLIO(!folio_test_hugetlb(folio), folio);
+ 	VM_WARN_ON_FOLIO(folio_test_anon(folio), folio);
+ 
+ 	atomic_inc(&folio->_entire_mapcount);
+ 	atomic_inc(&folio->_large_mapcount);
++	crash_mark_pages(&folio->page, folio_nr_pages(folio), vma);
+ }
+ 
+ static inline void hugetlb_remove_rmap(struct folio *folio)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 3fb9504dff7a..adbda968d58e 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2966,6 +2966,8 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
+ 
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+ 		src_folio->index = linear_anon_page_index(dst_vma, dst_addr);
++		/* No rmap add, and the two VMAs need not agree on the flag. */
++		crash_mark_pages(&src_folio->page, HPAGE_PMD_NR, dst_vma);
+ 
+ 		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+ 		/* Follow mremap() behavior and treat the entry dirty after the move */
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 36f0c0d8f5f1..309be0b301ca 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5063,7 +5063,7 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+ 			 * sleep during the process.
+ 			 */
+ 			if (!folio_test_anon(pte_folio)) {
+-				hugetlb_add_file_rmap(pte_folio);
++				hugetlb_add_file_rmap(pte_folio, dst_vma);
+ 			} else if (hugetlb_try_dup_anon_rmap(pte_folio, src_vma)) {
+ 				pte_t src_pte_old = entry;
+ 				struct folio *new_folio;
+@@ -5982,7 +5982,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+ 	if (new_anon_folio)
+ 		hugetlb_add_new_anon_rmap(folio, vma, vmf->address);
+ 	else
+-		hugetlb_add_file_rmap(folio);
++		hugetlb_add_file_rmap(folio, vma);
+ 	new_pte = make_huge_pte(vma, folio, vma->vm_flags & VM_SHARED);
+ 	/*
+ 	 * If this pte was previously wr-protected, keep it wr-protected even
+@@ -6502,7 +6502,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+ 		goto out_release_unlock;
+ 
+ 	if (folio_in_pagecache)
+-		hugetlb_add_file_rmap(folio);
++		hugetlb_add_file_rmap(folio, dst_vma);
+ 	else
+ 		hugetlb_add_new_anon_rmap(folio, dst_vma, dst_addr);
+ 
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 7bdcdb57652f..467b695e6dd6 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -434,7 +434,7 @@ static bool remove_migration_pte(struct folio *folio,
+ 				hugetlb_add_anon_rmap(folio, vma, pvmw.address,
+ 						      rmap_flags);
+ 			else
+-				hugetlb_add_file_rmap(folio);
++				hugetlb_add_file_rmap(folio, vma);
+ 			set_huge_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte,
+ 					psize);
+ 		} else
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fbd66a2823b7..21183478f606 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1582,6 +1582,8 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+ 	 */
+ 	if (folio_nr_pages(folio) == nr_pages)
+ 		mlock_vma_folio(folio, vma);
++
++	crash_mark_pages(page, nr_pages, vma);
+ }
+ 
+ /**
+@@ -1703,6 +1705,8 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 
+ 	__folio_mod_stat(folio, nr, nr_pmdmapped);
+ 	mod_mthp_stat(folio_order(folio), MTHP_STAT_NR_ANON, 1);
++
++	crash_mark_pages(&folio->page, nr, vma);
+ }
+ 
+ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+@@ -1721,6 +1725,8 @@ static __always_inline void __folio_add_file_rmap(struct folio *folio,
+ 	 */
+ 	if (folio_nr_pages(folio) == nr_pages)
+ 		mlock_vma_folio(folio, vma);
++
++	crash_mark_pages(page, nr_pages, vma);
+ }
+ 
+ /**
+@@ -3190,6 +3196,7 @@ void hugetlb_add_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 		SetPageAnonExclusive(&folio->page);
+ 	VM_WARN_ON_FOLIO(folio_entire_mapcount(folio) > 1 &&
+ 			 PageAnonExclusive(&folio->page), folio);
++	crash_mark_pages(&folio->page, folio_nr_pages(folio), vma);
+ }
+ 
+ void hugetlb_add_new_anon_rmap(struct folio *folio,
+@@ -3204,5 +3211,6 @@ void hugetlb_add_new_anon_rmap(struct folio *folio,
+ 	folio_clear_hugetlb_restore_reserve(folio);
+ 	__folio_set_anon(folio, vma, address, true);
+ 	SetPageAnonExclusive(&folio->page);
++	crash_mark_pages(&folio->page, folio_nr_pages(folio), vma);
+ }
+ #endif /* CONFIG_HUGETLB_PAGE */
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index b242fa8b22c8..bb0a35d59daa 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1326,6 +1326,7 @@ static long move_present_ptes(struct mm_struct *mm,
+ 
+ 		folio_move_anon_rmap(src_folio, dst_vma);
+ 		src_folio->index = linear_anon_page_index(dst_vma, dst_addr);
++		crash_mark_pages(&src_folio->page, 1, dst_vma);
+ 
+ 		orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+ 		/* Set soft dirty bit so userspace can notice the pte was moved */
 
 -- 
 2.55.0
