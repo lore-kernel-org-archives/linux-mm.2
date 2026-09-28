@@ -4,115 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A67BCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:38:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6CCCA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:38:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DE396B008A; Mon, 28 Sep 2026 13:38:32 -0400 (EDT)
+	id CE2BC6B0093; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58DE76B0093; Mon, 28 Sep 2026 13:38:32 -0400 (EDT)
+	id C92E66B0096; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480706B0096; Mon, 28 Sep 2026 13:38:32 -0400 (EDT)
+	id B818F6B00A0; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A5226B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:38:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F2641C21D1
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:31 +0000 (UTC)
-X-FDA: 85263880422.24.B2BE0F0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 056A48000B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq48WQDi;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F8306B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA3C01A02A4
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:34 +0000 (UTC)
+X-FDA: 85263880548.21.86D175C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 407B0C0002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:33 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3XNkJUM;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790617110;
+	s=arc-20220608; t=1790617113;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XQwrxz5DxAOSOS9tl6JASwUQOclPkIJdyJDy+q6eIS8=;
-	b=Ss5m1RiPHU2B/y6dJoyUMF2G2aROLxoUDgw1TUkmUOu3w1JdM/9aVuR3T7BKMdmQI1cXza
-	HOQ5g/rrt+PnvHbM/9mJ9qJzUKTCorGQsHAoZPq9G4iVjmstZQKHUVLYJ+ofQ70SlCgtuw
-	twTH+TVrwNuHLX7nQ4T8Z3X3v6VqUdo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790617110;
-	b=sawVr8fKjXnHUuV3USlTUj4yIhSBON/Buxjr+OIzWeDlVZmWYxxj6WbffQCcF76m6SfVm6
-	wWrSOgu1eYBnrDgkpQ/04hv9QTP2vxUJ/uIZGGLEUgtfh/+9glXiIQtueTkonMeVbnWAGt
-	7yGt+UUaCbfedY2dtuilcq53B5PnEng=
+	bh=nU2fH54lTM/XVwJXQyjGLBeD3ZciwzAWp4eXcqDvdbM=;
+	b=Y6+oNUjFdJDs2Ta7PIxS20VXLqAQCL88eHMy6NfvhQBa/w4g6qchl71u7Djeno5hRKEU0s
+	/KPEx6otgVzEJeqZsbW3C229LvzxFMkdhrAkSAYo6ni6PiVnbwQlSST84ITgFOverKopdj
+	gRVMrO0Dz11nB2/TfW84TP/s6m0N/Tk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq48WQDi;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3XNkJUM;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790617113;
+	b=S1sKlGhDkVC/NZy8Oj5eTpEV3Asft8A9Eue+SYcVzKAL/hKK9BVSaI45AT44NZNJicfcLU
+	n23/MYi07W6tqu/sUU0jXrtswOWTZePw42s6qXDAyXjmkHT25V2BcQjPHW6IP3xwuJxjSW
+	NoB8+Lg4fvkGudLVMlXi2K+Qu2X7A1E=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7F2B7601EF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 52E5B436EE;
+	Mon, 28 Sep 2026 17:38:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9521F00893;
 	Mon, 28 Sep 2026 17:38:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D2B1F000FF;
-	Mon, 28 Sep 2026 17:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790617109;
-	bh=XQwrxz5DxAOSOS9tl6JASwUQOclPkIJdyJDy+q6eIS8=;
+	s=k20260515; t=1790617112;
+	bh=nU2fH54lTM/XVwJXQyjGLBeD3ZciwzAWp4eXcqDvdbM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Gq48WQDii6Y2wXwqk2Dl5BFMHy7xKx8TTGraKfDWphG9muDmzzP3BKh9CjmfaLF3b
-	 OGISBa4ZzYAkBhG9XfSWCUruhzX8uzuilGXlekZydznqvNfrHD6aMMPjaFLjnJiqvv
-	 RS0BJPSDgMDpCXRjmHgUqyuIVax/AU7gXUFbYIKly2dx7CBfFuJMxfvmYz+ffoS2uo
-	 iQcT5DQH44SZc0420Lhot1F8XmVL3de4jo5/eFDKxyEydTB6dleUSgAgMjplshTKNs
-	 z7HPMxwt4Jj4/m6ojc0dHEtXTm0zh80Jt2ohM7T5bFSATpMbyO4Q9pIhcs2aP1aCif
-	 ZFYMCktn4VFEw==
+	b=S3XNkJUMsfb4UVOiI5bqkQdMQxSrtSwJSk+zko+Kb8nyx1/fqNP+w7Q7XMX4d9LFS
+	 UpCy7pFlCeLa40OP6BXCxLJAzMBOd9S9sxWq8L8Jtt8orYI0l5uqfdJZROyth2vfib
+	 5uQjGgfd2Z1mVJgCwOGmsJxkE0gLFEG3SX22xLC77eFkOJMnQzLdB37T2NqjWpNoyp
+	 FTppfoE54PLRaqkGfhCai4quB2BGHu9vVrE9Ttd2f5wdvTQz58p7klVEjZDYk8ILzq
+	 0uWbZHan00HjovXjqsXB+ZjTvra2/JJk7Xr6L34CRAqtG/8M4oLEVkPLj0ZgwqrtyI
+	 1xxzJXt9dk+iA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 03/12] mm: Wire up the crash memaction registry
+Subject: Re: [PATCH v3 12/12] kexec: Expose the crash memaction bitmap in
+ debugfs
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jann Horn" <jannh@google.com>, "Nico Pache" <nico.pache@linux.dev>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "Lance Yang" <lance.yang@linux.dev>, "Baoquan
- He" <baoquan.he@linux.dev>, "Harry Yoo" <harry@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Usama Arif" <usama.arif@linux.dev>, "Kiryl
- Shutsemau" <kas@kernel.org>, "Gregory Price" <gourry@gourry.net>, "Arnd
- Bergmann" <arnd@arndb.de>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Serge
- E. Hallyn" <serge@hallyn.com>, =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Muchun
- Song" <muchun.song@linux.dev>, "Pedro Falcato" <pfalcato@suse.de>, "Barry
- Song" <baohua@kernel.org>, "Peter Xu" <peterx@redhat.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Liam
- R. Howlett" <liam@infradead.org>, "Matthew Brost" <matthew.brost@intel.com>, "Alistair
- Popple" <apopple@nvidia.com>, "Alasdair Kergon" <agk@redhat.com>, "Rob
- Herring" <robh@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>, "Oscar
- Salvador" <osalvador@suse.de>, "Benjamin Marzinski" <bmarzins@redhat.com>, "Suren
- Baghdasaryan" <surenb@google.com>, "Jarkko Sakkinen" <jarkko@kernel.org>, "Rik
- van Riel" <riel@surriel.com>, "Rafael J. Wysocki" <rafael@kernel.org>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Dave Young" <ruirui.yang@linux.dev>, "Mikulas
- Patocka" <mpatocka@redhat.com>, "Byungchul Park" <byungchul@sk.com>, "David
- S. Miller" <davem@davemloft.net>, "Saravana Kannan" <saravanak@kernel.org>, "Danilo
- Krummrich" <dakr@kernel.org>, "Mike Snitzer" <snitzer@kernel.org>, "Michal
- Hocko" <mhocko@suse.com>, "Mimi Zohar" <zohar@linux.ibm.com>, "Paul Moore" <paul@paul-moore.com>, "James
- Morris" <jmorris@namei.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Will
- Deacon" <will@kernel.org>, "James Bottomley" <James.Bottomley@HansenPartnership.com>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Joshua
- Hahn" <joshua.hahnjy@gmail.com>, "Andrew Morton" <akpm@linux-foundation.org>, "Brendan
- Jackman" <brendan.jackman@linux.dev>, "Vlastimil Babka" <vbabka@kernel.org>, "David
- Howells" <dhowells@redhat.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "Jonathan
- Corbet" <corbet@lwn.net>
-Cc: linux-security-module@vger.kernel.org, linux-doc@vger.kernel.org, linux-integrity@vger.kernel.org, "Eric
- Biggers" <ebiggers@kernel.org>, linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, devicetree@vger.kernel.org, linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, driver-core@lists.linux.dev, linux-mm@kvack.org, linux-arch@vger.kernel.org, kexec@lists.infradead.org, robh@kernel.org, dm-devel@lists.linux.dev, conor+dt@kernel.org
-In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-3-e511e9ee2329@jaseg.de>
+To: "David Hildenbrand" <david@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Joshua
+ Hahn" <joshua.hahnjy@gmail.com>, "Jann Horn" <jannh@google.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Will
+ Deacon" <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Harry
+ Yoo" <harry@kernel.org>, "Nico Pache" <nico.pache@linux.dev>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Peter
+ Xu" <peterx@redhat.com>, "Mark Rutland" <mark.rutland@arm.com>, "Usama Arif" <usama.arif@linux.dev>, "Rik
+ van Riel" <riel@surriel.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "James
+ Morris" <jmorris@namei.org>, "Dev Jain" <dev.jain@arm.com>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Paul Moore" <paul@paul-moore.com>, "Jarkko
+ Sakkinen" <jarkko@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Ryan Roberts" <ryan.roberts@arm.com>, "Alasdair
+ Kergon" <agk@redhat.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "Rob Herring" <robh@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "Mikulas
+ Patocka" <mpatocka@redhat.com>, "Barry Song" <baohua@kernel.org>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Muchun
+ Song" <muchun.song@linux.dev>, "Randy Dunlap" <rdunlap@infradead.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "David
+ Howells" <dhowells@redhat.com>, "Saravana Kannan" <saravanak@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Benjamin Marzinski" <bmarzins@redhat.com>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, "Baoquan He" <baoquan.he@linux.dev>, "Dave
+ Young" <ruirui.yang@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "Byungchul
+ Park" <byungchul@sk.com>, "Alistair Popple" <apopple@nvidia.com>, "Lance
+ Yang" <lance.yang@linux.dev>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Suren Baghdasaryan" <surenb@google.com>, "Ying
+ Huang" <ying.huang@linux.alibaba.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Mimi Zohar" <zohar@linux.ibm.com>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Gregory Price" <gourry@gourry.net>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Mike Snitzer" <snitzer@kernel.org>,
+ =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>
+Cc: linux-arm-kernel@lists.infradead.org, dm-devel@lists.linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, "Eric
+ Biggers" <ebiggers@kernel.org>, devicetree@vger.kernel.org, linux-security-module@vger.kernel.org, kexec@lists.infradead.org, driver-core@lists.linux.dev, keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, conor+dt@kernel.org, linux-crypto@vger.kernel.org, robh@kernel.org
+In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
 References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
- <20260928-crash-memaction-upstream-20260921-v3-3-e511e9ee2329@jaseg.de>
+ <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 17:38:25 +0000
-Message-Id: <20260928173825.79D2B1F000FF@smtp.kernel.org>
+Date: Mon, 28 Sep 2026 17:38:29 +0000
+Message-Id: <20260928173829.9E9521F00893@smtp.kernel.org>
+X-Stat-Signature: ceu7iqznszmq11dytq45q9xxcfedncpq
+X-Rspamd-Queue-Id: 407B0C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 056A48000B
-X-Stat-Signature: 89qw9jsc8y9wgnqq5z68pawufed8t9d9
-X-HE-Tag: 1790617109-760556
-X-HE-Meta: U2FsdGVkX1/XvDrR2fF16AlQuq/MpGFwYH0zanruI0NZ80dv+30teDN4eDWINZxXxg68y7PUzuTfBz8WdHfKl8/bDDSDVdsynn0uh+ua0qxlW1MclaaicBN3qp9RqGGNxKFkeq2QqVKktzR515SludkDguoQmP3FIeq62lLhuDWNKODNmR391JyGKyP6mRKo2DUYjZLuUSX18DiXiAB6BzIXGTKjlMEX5fGyru4MsEJPEKx1WjGTzAkP0MgPEJT8fi+Z4McbrfmuJV52T+7gGyWCw1CjuQ5e27E6NOG7gwQ0V4oYkJry3Tpaye0KqjKBGJMBvjzMcypX4wOyi5JVceCsuoxUamWusETlZDOgMq4d5qUb9idOj6A4JgwSjIYkE/OINWzEkteVuF58kCCwV8Gkv2qAyK8o6fgikeE2DcYDR2A8S2Ix6R6JG/ygzOPJuNZ2ETBFcI/cga4XVUWdLiH+94hL4kttmL/qms6o6soybUnwKLPBj/WwJxMAfOfZNzRYIN7yKXHToiupqOy3+hsXx41iThMPQFqKTI104VOtuUsqJDrhlnYHW9RjNdETBfMFknOmSxn9JUfn4vBcJUnvvANJOffUATRg1ocFnxuftQEYYhtx0GoRvHjLtMYunCmf0O4t1DjGDqoRGM1JEgTuHuyKqtooDFqWZCMKp0nKpmj9b+KahwnXFssx+9z/Efeu/wWc4aTejHq5D+edThoNAuTy2Ocz5fwPKJgykB68lK40VVsu9uJC+tnejJNfJ9GPnL8XMYAPvOxUh1oH8esTrJENducKsJ1ZO/TDERdgadz1lnuUbw3g8Dgj5Jhr+MjPlBZ+DYSmE7aJ2QeOi7a2GfqLMROP5pAQqrp5wwKjmf12h84YdbCrv6zKI8CUxwkNjkx+HHOHA9AxKgV+Beit8c3dIZtm38iTPxVZ9DLM41RKP0SPpUhkqOZ7gcU/5qmaZ1xNUjjdqbAksK1
- xZN2VXV8
- ZNQS4d1eQ1WWCGlOt3saspXKif3p3Pvn/Eb0xgIPJClimGjlbSjVqPPEcKbGJN0Wra8z+sYQLcwnFBK7aqDO8ATzX4ysihS+ZB64jEK2GunUdMzbDngmCGYHhFGBp1/Zb9WEwYknOw6XmMq6MZ1MfWE2bA5ZGwC3OXaPi3Iz4y+apx/faY2XomycMNaU7Mzl+HipCPV2EvrgYo9RuN1ffitJP1IgEpGD7/h6eOD4eFl3x+akFZPKE7yiHJRPkjLzEDGtXF8m2CiJJKjctQwW2iJXN6uB7y+vPv5s8tXuaNM2lDmfzSt7tqQoMuQAFiOXxIfC4H/85NfCX7BC4pI0vkUxi7niDTPgIroZT8IWfIYeB37jdK1j6vDcVRqgvH8U8vPGzLbC63ZJHTtyo+omWZRvHVUdavKhC4zRM4U3e+IgjbtPdNddP2MkvO9YZIvV2yOVRGsnCPqCSierNAw+f5vzGahWvVH8ddq/6+++BJfvgCHIsXYdl4MUOBJJJyzkUd045zfm5GQ/BmuxPSok9VWCHy44PyCqh7/T+boO4RKg0sZD06dJtZQ1WXtycRCyFnGENY/j4tFEGeBgXcMdxOl8HcL2xYoZPkKtj023n2+K0OmPdUanNAhtptP4PZ7Fu7z+NdFVShDGqR3/3HISf2oKHmw9W76Th/w6dbbJTZMaMg/M=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790617113-536904
+X-HE-Meta: U2FsdGVkX18FYMAZtkorgkd9PNbIWbTYcbFL1fnSDiPrJyS08CqiJAsWYqpskFsZCe7bLFAPaGmcY0PvvsvDbz8SumXariJCBlzDaM5sEfFcwyWv4BPndO8mv+zKtaIgUMEGLu5B8W7w36fLV1iV0F0kB7IC85GhSV7PMfIQVK2Bm8nI3Y/ifO2guSb9LNo60m84XLYlHVdfu+PHySPRdb6exfAZgPw1GrQuadHFEmnC+aQZvkP475xmZ5jL99BoSA2o/6HHTEo0NQsMVgjIcecKxZ4AHBhp0ZpA1x8SAWWAYi2nzwQcIHpfLdsL+OMGlfTT8yEDhZjSCoXZX1h/4v5vmNlkVHP3V4Ptdm1SdYSZrm4tTZvMtRrBPtgtrSkQvtPo6WU2NQx75WuGy9QaefVD4X9K11rBe8+TVTSYBIGHdmY4UaVtpnbi66FZIoI0m5xga7xmNVXjxEkz3BNctEJzEuzTEizQ4zf1BCoYDAS3C2zf/CXIeLUOxGpZOwO4par/aO0YzrvvhzpyboOXz8rhcoxn8xVNRC2qVPz6xmxoSAiGQY42nq7l8F/Zmhm7jPRbe21PYXSrOUotFvSpB8aUaw8aeT3rVrbYyurBDQkutNLQjwKajlHep7gtEz8999JJ2n1E+Hwhvgsj06UjSFhg42SvonMG8k+/mkqbs9z6cpKo008S5jckZ/kc4xHGbmizNatMn4Jsl7FMMCmiWDTHFXAOLe1tmaYXeEx3rdfvG67zGXaKeFPHySXxc9uJDSSpchcp7OjBXvfx7O4IRBPsxr3xy/kAdrZ8VFyymYRpWuw1IvYTyW4u9WmsGZJzlcy6W8x+TojNsDTtS0oA6PPZP3niwtZDyYshh7KKLm6xev0A5Hnv4IiaaJLkuNnJ+Vj86rZOVLFfz2Bi6srdisaYK7tD7kwkqAPXoJ13Uq6wIHdoAvQ9exMqbiccXx8vjRSuVy8XhkTqPmA32y3
+ Avh6dKCo
+ 3JkX7L7MM7kfBvpJeBiwDnAVFqwenhDo3ZVyX1BYgO6mNOqnp6MhGssqpnpEJf9BK4KikP28UNKX/jeiCSTR6NTrHrqhIxjJ10b9WauwSoCQn+mzch/qHnYNEvX8vsCadJEBSVPSeR1qFv5/p7WM18En3TYZB17dipnptCcIkPdy8L+WKr7qYYJXkVbwfffACc92NihIfYQb/wpQJ3oZdyI7XlG2cHsF62Aq+qk+JDCKROaBI7PaPkw/nw09Bstzt2yIy/TDCNGPipLQvTCdi3Bm3Qo98K/pleCVQP2g8MSbu7Gst17FpR4cwmOZP7lgkyp+oHH8W9NkkpEyZtRlS77nYd4gryf4wI5boSdA2O+v+TWmA9jmrLk3xcN8DJXDsViRo9fR1oKcB/n4wNpxpHifHBbP/S5I4YjoAw7SemC6y7N3gWyuyGlWKKJ5xIKcgOkBqDswBBCJWE+RKWEuQnnTrwrDf1fhMK7eHhWheCF4vxBJPn4xwCkcMPgcGXZ9+W/Zh6XaELkuBRxwKSYLZIT1Vm0tAP02Elzu7LJpu+P7Xe9KRa30u7FtS9c1HbCr37GKD9PA8u7VAYOg0rVJLwwvY4rChlMYYkl3MS4WBRagUMroUq+zM7MwaFC3L4uLi3MDST2qa30kY9K6XUvBCx3A4kJTe0X/pw9NlKDRPBlu9hmo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,59 +123,58 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] mm: Stale secret data exposed due to premature unmarking of hugetl=
-b folios
+- [Low] kconfig: syntax error due to insufficient indentation in help text
 --
 
-commit 62d401cf60aea442c3fea654492895fe956cadd9
+commit d0f9200d03ebaf0ef39b9f78a15ab259102ed7e8
 Author: Jan Sebastian G=C3=B6tte <linux@jaseg.de>
 
-mm: Wire up the crash memaction registry
+kexec: Expose the crash memaction bitmap in debugfs
 
-This commit allocates the crash memaction registry bitmap during boot and
-syncs marked pages to it. It introduces hooks to unmark pages when they are
-handed out, placing the unmark after zeroing for page allocator folios, and
-in dequeue_hugetlb_folio_node_exact for hugetlb folios.
+This commit adds debugfs support to expose the crash memaction bitmap by
+creating "regions" and "bitmap" files under /sys/kernel/debug/crash_memacti=
+on/.
+The feature is guarded by the new CONFIG_CRASH_MEMACTION_DEBUGFS option.
 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index da980377d3533..36f0c0d8f5f14 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> index 3cdc8d459ac05..b5380e16bfafb 100644
+> --- a/kernel/Kconfig.kexec
+> +++ b/kernel/Kconfig.kexec
+> @@ -204,4 +204,18 @@ config CRASH_MEMACTION
 
 [ ... ]
 
-> @@ -1281,6 +1282,9 @@ static struct folio *dequeue_hugetlb_folio_node_exa=
-ct(struct hstate *h,
->  		folio_clear_hugetlb_freed(folio);
->  		h->free_huge_pages--;
->  		h->free_huge_pages_node[nid]--;
+> +config CRASH_MEMACTION_DEBUGFS
+> +	bool "Expose the crash memaction bitmap in debugfs"
+> +	depends on CRASH_MEMACTION && DEBUG_FS
+> +	help
+> +	  Allow reading the live crash_memaction bitmap through
+> +      /sys/kernel/debug/crash_memaction/. The bitmap is used when
+
+[Severity: Low]
+Does this indentation break the Kconfig help block?
+
+The first line of the help text is indented with 1 tab and 2 spaces (which
+is equivalent to 10 spaces in Kconfig), but this line starts with only 6
+spaces. The Kconfig lexer terminates a help block when it encounters an
+indentation level lower than the block's first line. This could cause the
+parser to interpret the rest of the text as an invalid Kconfig directive,
+potentially resulting in a syntax error and build failure during make confi=
+g.
+
+> +      CRASH_MEMACTION is set and when a crash_memaction cmdline param is=
+ present
+> +      to tell an eventual kdump kernel about the use of certain memory p=
+ages.
 > +
-> +		crash_memaction_unmark_pfns(folio_pfn(folio),
-> +					    folio_nr_pages(folio));
-
-[Severity: High]
-Can this expose stale secret data to a crash dump if a crash occurs before
-the folio is zeroed?
-
-When a hugetlb folio containing secret data is freed to the hugetlb pool, it
-retains its crash_memaction mark. When dequeued here in
-dequeue_hugetlb_folio_node_exact(), it is unconditionally unmarked before
-being returned.
-
-Because the caller is responsible for zeroing the folio later via
-folio_zero_user(), a window exists where the kdump kernel could observe an
-unmarked folio and include its unzeroed secret data in the dump.
-
-(Note: A similar window appears to exist for THP allocations when
-init_on_alloc=3D0 because THP is allocated without __GFP_ZERO, causing
-post_alloc_hook() to unmark it before the fault handler zeroes it.)
-
-Could this unmarking be delayed until after the folio is zeroed?
-
->  		return folio;
->  	}
+> +      Note that this is a debug interface only that gives no guarantees
+> +      whatsoever on memory consistency.
+> +
+> +	  If unsure, say N.
+> +
+>  endmenu
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-crash-mema=
-ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D3
+ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D12
 
