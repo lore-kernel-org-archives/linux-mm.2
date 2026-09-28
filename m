@@ -4,97 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95712CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:19:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06733CA5FA3
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 672B46B0088; Mon, 28 Sep 2026 15:19:41 -0400 (EDT)
+	id E3C686B0093; Mon, 28 Sep 2026 15:20:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A6A6B008A; Mon, 28 Sep 2026 15:19:41 -0400 (EDT)
+	id E13BB6B0095; Mon, 28 Sep 2026 15:20:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 587D96B0093; Mon, 28 Sep 2026 15:19:41 -0400 (EDT)
+	id D2AC56B0096; Mon, 28 Sep 2026 15:20:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E2436B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:19:41 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C091280316
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:19:40 +0000 (UTC)
-X-FDA: 85264135320.17.AE2C1B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3D3781C0008
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:19:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WAYnUTXM;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AB1646B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:20:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 461FD1C0CA4
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:20:28 +0000 (UTC)
+X-FDA: 85264137336.12.EA8CC63
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9DB2420006
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:20:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RqFymikj;
+	spf=pass (imf03.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790623179;
+	s=arc-20220608; t=1790623226;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3OTxVK/IdLEHqgZUY95Y42pkKEW+PjtSBC6ONnLsZ9Y=;
-	b=VUyiXgHkXEWdItoe5cAq/mjRKf1PnurQRmrcyW2Nr5471KFdjwYNjPsFIupNi0IhhZmtT5
-	b011bYIw816fDNy3f+invGl4Y9g0SHi8RprbfM0xzFLAiC8AbbO/n2R2969EsE1Lx9x/np
-	P24Od8qFb22Qca/so2CCfQfbA8+op8U=
+	bh=XBqyVMo6pWKAr13NYV/9DY4DwxVan3yzu41fmE1Qx6w=;
+	b=f6M7cjQVe4Q1UHo3Uac9vQxNow/wvUDHKwNGwYspwd5hTOtlp9rjNLLuSP60yjM/zwN0Eq
+	R12kTOzryn7NPqOV0sbH6VdVzglUYnK3KzlJSFT3/4/IBTw7COXCV/Ab+v4PePwNOS6awH
+	T2nC62DU1j4rtpaE36j9pqhWzjqICIY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790623179;
-	b=8f7d1ENTh4+oCPmGpbZke1OQs0gIycRmmpHSG/amMxx5TwFKNTIl0FaWMZBtTUDgW1VTKE
-	KeETfbKnog7CtdWvPG27C+zzI003ixP3k7S2tBUWUM1Mo1L3QMac62KW7dwY358a+8G22d
-	It3RPdXK606cEtogDwHQPUWe48FbVLA=
+	t=1790623226;
+	b=ruaDNOGto14IxX3iHHrSNuPPksm57I907zjqOH/+pa5FBk6oIX6MFfefFnjwSVg6qyf8ON
+	7kYMtvRtCjv4YdsojzXm+YVPM1uUHu6Q4Qi/Rj/AwSTEIIvDqH564iU+L5UNxwZpJXDDBi
+	nEeZT1kS4mHxe+UPtWLO2B2D7s0DrTs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WAYnUTXM;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9547600D1;
-	Mon, 28 Sep 2026 19:19:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BAA1F000FF;
-	Mon, 28 Sep 2026 19:19:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790623178;
-	bh=3OTxVK/IdLEHqgZUY95Y42pkKEW+PjtSBC6ONnLsZ9Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WAYnUTXMTXFJKySbFuqmzPeYKgqYlqqRd7oCs3fqws60PvxNF/9klFq7Oc0tur97v
-	 v2klAFQ0UtKjB23cHitm4X8qmLcY0tql6Sfay8DLht6bG41WBKFxrtPijuj5XzIKyW
-	 /RENMf0MhvCZ9/bNd/7Hx1ljqhzWXqJnaUN1Whoi1WK1/tJWt9JF4rWiswaTBi48Dg
-	 EbzImNa1nN+ucQhgWHRlTi0W0x8A6k1dQsXIM67gUPzMXzz75Yg0TfwpDSAqw87viy
-	 WUf82vC80QtmXOSQSNGU+hi75dVP8dHJ6WHuEq5Ix6PFeyY0nQ9kBSmTehgred27gu
-	 znOwWLZdQ1T7Q==
-Date: Mon, 28 Sep 2026 09:19:37 -1000
-Message-ID: <ee85445f60194cfbc78897cb6fe744c7@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Xin Yin <yinxin.x@bytedance.com>,
- linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- ian@honeycomb.io,
- stable@vger.kernel.org
-Subject: Re: [PATCH] writeback: let foreign flushes reach dying cgwbs
-In-Reply-To: <20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io>
-References: <20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io>
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=RqFymikj;
+	spf=pass (imf03.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=XBqyVMo6pWKAr13NYV/9DY4DwxVan3yzu41fmE1Qx6w=; b=RqFymikjtUZjzYg7puqAnn+sg3
+	61FRddqIeawfj9uM+vYWtCfo1ylwmmINy9FVZ/tC3YoBr4aJbIxEXtzk8tGX7VF962W5/ko1IE4pH
+	KonoVPFwRYCXr6IMzmkpDCSMyDSAZY/zqDxV/mCwdoNoAM5tXfSzkQUN3apsLc04f+dO2/wr/GN47
+	fslxlNodhFwrFldD91LdDL0Shf4oAvq9/kpLqsB1DAq9kpr0v0pi54xZnCxJ165Dj5JiEfHoGb14+
+	XqJsHdq9vLDUgWcjCxT3dZasZuSlJQzWrvwEoI6aKbB3bzok+wGAUIx0NeBWwrnl2M9jV0GUdDAJm
+	b5C3yInA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBGt9-00000001Pqt-0G3I;
+	Mon, 28 Sep 2026 19:19:47 +0000
+Message-ID: <99217c46-6ec4-4af6-ac14-18f814f86ba1@infradead.org>
+Date: Mon, 28 Sep 2026 12:19:44 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 12/12] kexec: Expose the crash memaction bitmap in
+ debugfs
+To: =?UTF-8?Q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He
+ <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Alasdair Kergon <agk@redhat.com>,
+ Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>,
+ Benjamin Marzinski <bmarzins@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>, Mimi Zohar <zohar@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Arnd Bergmann <arnd@arndb.de>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ kexec@lists.infradead.org, driver-core@lists.linux.dev, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, dm-devel@lists.linux.dev,
+ linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org
+References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
+ <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3D3781C0008
-X-Stat-Signature: g56wmghoc3o563jnw7og6o739dke8pf7
-X-HE-Tag: 1790623179-439125
-X-HE-Meta: U2FsdGVkX1+aQh/V3oW1Iq7SGPvlS2lsU4IlxdkwG+OF5CbeCnHxJ5m+W4Mxyv/T65FpirUpysX5WyhqJuZQnn9zMjVzAU96Gz7/xQ4eKbTXqwU+YLU7R0oqIr7+OXKipJDhCNs6jms0PkOgxPp1vPoXwciNfHdDr6oY9trIQON1G/EuM3lXcNzIJozcBBW9Jxj3S/oAqlZfE1Zuk8uGHuR3nEvcQ/WTRLoE86HpmPMU52Ro3F7UVkeueA3CBvYMXk94k34TPmQB0YUdVGal0ZtQbw3tgkBGo1Rj3J4mbg1ZbP7jT4S4aKnxrcYjdJSKdefT6ptgsYPRQ8m4meKx6qtawSCADvVzk6gs6TihpLGzt7zqtuIIxESXZs8M2WRYkBRKNFULRLVyjYPf03bUs51qFmUMM8UgkfS9Zu/8rAbhSKGpQn2UMBO8JciwPX06t8xywjf4csSXKj5UPQWG9HcZ0HRU+7Ck4N3TIftAqilr0JjxsclKe3BgtCAjtlhP0kz2bUu6XmSJAjKizCmXZIOF3sOPF/2LOqE9YKHjXk5Lcvi3Cmd4C/On1BDI5gytptTwIPpfcnKR2mm3aWxF7bgMlEoZKzysAdFGB6zWN1n5YXhAAVDmfmxCy9vxf24aTXjNXAwT0JND/CKQBMcC3I5NsS2G5ApbczqUvL4cKNJRaWNNQNIFzxFLCb5HAlkKXRpOXMaekwTHyz3VUTAixRTFWfN4yNwhheiQEP6VTTjpH9OOhGajXHw7+zIWAkc/lFd6k6iEMARR5olV1DV57dl1SZXEK4eIXbUdL5Laf8D8TOP7ZYQNk/lxrFHL45iabHT5xKuyJZk7CakmCyhKWz37TrdzTwc3UwvLZn2ck+2pOV+LQPLcGowrjFi1c6JegFRMHNE1aAp4OomayeP7cdKhgAPsNXW88xaJDwaR03oNRPwrJWZQrY8PNq7a3SZ5AglMVwfTMcYnywxGG6q
- Al3+Gbgh
- x2k1LwzjLd+IfU8CeY5JvShpWtGyd/w5l7QK73PI/yZfQRJbOq7k/eq6F0loYwdEbM252cwtEhmi4/61xKBKmeXEE54W3SOWnfSbrWHuSMA7tfiEKGzEOcjJ1Htu++sKOYT9N8rrVeSNn7IwcuD0Ge6DVVxFAnOI1Qm/8L9IxH2otKlAGyRUUseLkzvzkJjkFyP7l6wEmqFlnIzojTgDCEFcLB0VHgiut17gf3n8v5NDfoQGe/rB+IMZm1oqpGC9CLa7SZ6gCjY8Xpyp0/yM/H5V0nQ==
+X-Stat-Signature: 1frpn4g7s71bb3yjdg6uxqthynhizri6
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9DB2420006
+X-HE-Tag: 1790623225-533238
+X-HE-Meta: U2FsdGVkX1/ByJf1oylA3U1+r7rKlwQKxWC4JRSkZzki8vKjK3A3d+gX5NUE0NCKdUWAFo/HKMu1jQdM4UpQD19fMF3paUUmz0kISwiVh5/HKvpY49Z8LPvu+MtKXEGlPXpAF2OtFNCipYWD0pTRbkeyohUXg/0IAeWXLw7NVnWFp6s1OhNJ5qXWzYz7Wf3vVgwIH0qpiW1FToLk9bK3mssWPBDRKX3AhbixhAsuo20dGutpYT3Ky7XQlz51Fqlrob/aDoFDRXDFB1mXiHxIvJL4F/AJUhuR9kRLsB4ou51qu5gn67q3TJnddezvQnUwPpky27sYNPlY0IOslRqkb7FqszJY9jk1cOXp8TGO7y9vc9Fx/zC8dBmBGqYUHgJ8s5WSl4+X3/6ggMwdQ8jH8RL1aA4wqjQna2YwQFxxUbz4vQSCOC3qxae81534YXn7UQo5D23uC1BOqhzWC5S22bks5/Xwt0kZ2W8WXhXZ5Amv3dzHp+XtTFN5z0CUG3diEn/xo/WR3XHsza//IZb1oKkriXz4yzezaclzadQfjdMzPB8uM3TsXZ4rnZAvN8zYUOIs3gPQ/ep8PM9AAbP895LF+NP9wYjk8OP6BfaragpyRTTZkjtct2nLuI5641rI4fNNgifd44mniZHrOkZTluzG4Rgb+zmKFSAtk5+XFLbOLvtpA7JL+SOYVbUzfYJpinCZswBuNUy+fphctto250A3g4W/x/uvVW2y84JXFDwIUnvM9NCb5mSGfBM5QieT8oJl49Abb1KRpHfZ3g96y6oIJcXM6gsF7IBxZ1jGcULOVH+QBYbafS2vx3gNSpU3sN/PaZuGenTU89nlfETGwKWo9M9nNs8T7J45i1gXuNsY5C2RXfGrBSCsOAiv8Yha3y06WQr7Ndrv/x8u6s3OK23S6OdemUfLLAsrn8WMDsHiT20jjHu7dto0tou1/Qq0a1kz6kUXBE37DKCGDux
+ UF+X+9TI
+ V803uYee8CW8N3FvVVbnKJUEJZAq3C0CP85DyWb4CgKWFaunfVGUwIY+eRiZil2v2U/nKhfzLdbGVMf7P7xEeHDQrkfjwuD1zCwrBNOaiLxMzdSpndOkzY1dNyiyOLh9ZMMG/O333AoojqTGkxSUo9ZUXaF/aSJBoboIch1ay1Oq19dHVtSF+U+oaJWLWa8CoY7Gb2w6gqrVR7D1Y4y/ZPVr7Ah/XV7NVs1l/phW5sdq8b5MQNCfvzJdy+O2r1HJxHRULHp3sKkjlVFjJ5Q2nUsid4OY3FePRKBQGXHDT28kO31duTBfOdYQ3B6Y7js5njNUbqgIOmdm1PjF2l6uJeUSFNS3jUU5nmq231VuhNuvbq24mRo37v7JvWHElzkSE56tW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,33 +135,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Liz.
 
-On Sun, Sep 27, 2026 at 05:04:39AM +0000, Liz Fong-Jones wrote:
-> Fall back to searching bdi->wb_list, where killed wbs stay until they
-> are released. With commit 168a8c13159c ("writeback: size foreign
-> flushes by target wb dirty pages"), the flush is then sized from the
-> wb's own dirty pages and writes out what the replacement dirtied.
 
-Instead of walking bdi->wb_list, can't we update the lifetime rule so that
-a wb stays on bdi->cgwb_tree until it's actually released? That is, remove
-it from the tree in cgwb_release_workfn() instead of cgwb_kill() and have
-the creation paths skip dying wbs. cgroup_writeback_by_id() would then
-find the dying wb through the regular lookup.
+On 9/28/26 10:18 AM, Jan Sebastian Götte wrote:
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> index 3cdc8d459ac0..b5380e16bfaf 100644
+> --- a/kernel/Kconfig.kexec
+> +++ b/kernel/Kconfig.kexec
+> @@ -204,4 +204,18 @@ config CRASH_MEMACTION
+>  
+>  	  If unsure, say N.
+>  
+> +config CRASH_MEMACTION_DEBUGFS
+> +	bool "Expose the crash memaction bitmap in debugfs"
+> +	depends on CRASH_MEMACTION && DEBUG_FS
+> +	help
+> +	  Allow reading the live crash_memaction bitmap through
+> +      /sys/kernel/debug/crash_memaction/. The bitmap is used when
+> +      CRASH_MEMACTION is set and when a crash_memaction cmdline param is present
+> +      to tell an eventual kdump kernel about the use of certain memory pages.
+> +
+> +      Note that this is a debug interface only that gives no guarantees
+> +      whatsoever on memory consistency.
+> +
+> +	  If unsure, say N.
+> +
+>  endmenu
 
-Note that the blkcg association check in wb_get_lookup() would have to
-move to the creation side. If io is enabled on the removed cgroup,
-cgroup_get_e_css() returns an ancestor's io css and a dying wb would never
-match.
+Please adhere to kernel coding style for Kconfig files:
 
-> Fixes: d62241c7a406 ("writeback, memcg: Implement cgroup_writeback_by_id()")
-> Cc: stable@vger.kernel.org
+10) Kconfig configuration files
+-------------------------------
 
-I don't think this qualifies as a fix. Can you drop the Fixes: and stable
-tags?
-
-Thanks.
+For all of the Kconfig* configuration files throughout the source tree,
+the indentation is somewhat different.  Lines under a ``config`` definition
+are indented with one tab, while help text is indented an additional two
+spaces.
 
 -- 
-tejun
+~Randy
+
 
