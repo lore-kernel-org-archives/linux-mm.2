@@ -4,97 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B00D2C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:03:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 766A7C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:03:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8B546B008A; Mon, 28 Sep 2026 04:03:15 -0400 (EDT)
+	id 275C16B008C; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3C636B008C; Mon, 28 Sep 2026 04:03:15 -0400 (EDT)
+	id 24D7E6B0092; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92B1A6B0092; Mon, 28 Sep 2026 04:03:15 -0400 (EDT)
+	id 18A7C6B0093; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B92E6B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:03:15 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8CBAA0129
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:14 +0000 (UTC)
-X-FDA: 85262430708.16.E52C361
-Received: from mta1.migadu.com (out-233.mta1.migadu.com [95.215.58.233])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C0F3E40011
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:12 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C+V5Fg7y;
-	spf=pass (imf04.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.233 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EBCF46B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:03:25 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66603C0119
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:25 +0000 (UTC)
+X-FDA: 85262431170.17.68B95A8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8C72D20004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kiLKu/n2";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790582603;
+	b=Nn57YHl7apGx6YTvC1yz6Wb1mRJX3fh2G2L8UhCY45Pbtk4P4Euw7HlTBHOP46cxak0f9P
+	+7PVlRcW7fPCrjGMVeApvXhnOY+fyTYiRPv1H1nLwKuBWxEdjvf7Kq7z3uyybDT8h5Zavh
+	K9V1vhhB/5Il9TWT5w5SdPbMJ5suiwQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kiLKu/n2";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790582593;
+	s=arc-20220608; t=1790582603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6oX7WoY9qy+38lv9uTWDEFP6iRKHKXco4d1bWNWC4k=;
-	b=vx0rD127nsKni/FOO29LDpVo1zIYsSHiSuj6EN5a3LDUnmtARaPsPa4sm94oFROkEYPZYX
-	ndE7wDBI/S8GSdfJjsgGcDOAlj/J+OsQ9OHsuWfDgE+dFfW8MzU6j7l24Jzk1uiyzibyuH
-	+aNuTo3ayPQ/tTkOAYrSm06LQY6qb44=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=C+V5Fg7y;
-	spf=pass (imf04.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.233 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790582593;
-	b=Z0/Cyh2VSoQQnHO1VtTgInd6rkfaFzkboFSKPoCbGTuuRCiet5zJnsZRLsRMCgQNuNdIHw
-	ARtdqAyfHz8qtYjzxqBi80kMRqj4YLf/HXofX3FDc1p2+NAv0ziX/qIuVrcAZ1aH7VhUEF
-	gFdnxMXVL8YOjHHlUfJQpnGNMapJMmk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=u6pM4Q2lirOQrXvVOmhw6eCdvf86YRNbjnR3yNkFQzk=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790582588; v=1; x=1791187388;
- b=C+V5Fg7yUDtnG95PdYyQlpKrqN/I0S/X42BAIMYGwTLCGzp4vAUZid0wtjsNCaEZFEsjqFB+
- y46+C0Knmw9IqwGouFl4z0q9eUZEllrBPQRgyYhcIQKi9YaOwn5MwUkGYSVRKEaW8FzJnOV8jZZ
- PolBC5842VTOJPZssiW6x/6g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 6cea94b206c11561;
-	Mon, 28 Sep 2026 08:03:07 +0000
-X-Mizu-Trace-ID: 6cea94b206c11561
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 28 Sep 2026 16:01:16 +0800
-From: Dave Young <ruirui.yang@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: David Carlier <devnexen@gmail.com>, akpm@linux-foundation.org,
-	axelrasmussen@google.com, baohua@kernel.org,
-	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev,
-	brendan.jackman@linux.dev, dakr@kernel.org,
-	driver-core@lists.linux.dev, gregkh@linuxfoundation.org,
-	hannes@cmpxchg.org, jan.kiszka@siemens.com, kasong@tencent.com,
-	kbingham@kernel.org, liam@infradead.org, linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com,
-	osalvador@suse.de, qi.zheng@linux.dev, rafael@kernel.org,
-	rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
-	vbabka@kernel.org, weixugc@google.com, yuanchu@google.com,
-	ziy@nvidia.com, devel@lists.crash-utility.osci.io,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH v2 10/13] mm/sparse: remove SECTION_MARKED_PRESENT
-Message-ID: <aroezLexo1WoeYI7@darkstar>
-References: <20260921-b4-sparsemem_cleanups-v2-10-54d81d65e125@kernel.org>
- <20260927192013.144672-1-devnexen@gmail.com>
- <655c509e-318f-48bc-8183-2b1274dd05ac@kernel.org>
+	bh=uLtk5iYtDPMtIjf5WTw5JxqxgyZJ3TAaIpJ0Mr6L5tk=;
+	b=NiznlNL3yOzdXXskn4HS5DrNGqVSl0KSPKds4jag5Pq7sg3ZY1c+2IpeAxJkkmPnfUoaqT
+	4hh/sGn3WgDFfCuh0JueW+kqke7p9eP7DLXDpUh+6n7tsteBxQlfeKuegt7eLBnfDpQShQ
+	Ghx/Mub9Hh5k06mWi4espZvzWgxni0E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C9626025A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C160B1F0089F
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790582602;
+	bh=uLtk5iYtDPMtIjf5WTw5JxqxgyZJ3TAaIpJ0Mr6L5tk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=kiLKu/n2P9LKVxauyh78A62Apzf18L164SCB+JFa4nsaAUf+aQJ1FcBfxROio1Clg
+	 QoaLgcPH30j6Je61dwa8YwhsSwIs2NPoZtThsfcPZNUhPe7SHvCsNjQM/aq485mpzj
+	 Ein3QGww/zTl6PUYojYsUsRqUJeTw5dvqzlhGfzaG8+mPuHPwKlw8UDP5FlOCWzIJ5
+	 Gb7sBn7SIJEvuPaWkiBhpxHspoQ3iJb0QD8yJY9EtesZNfj4vqwiC+QVYSd0kplQaS
+	 Q6RdnGv294OUs1dZ0NDP3fOibhYgDrH/eqNOZuDJEcmz18mIzyXJeKDcT6rkqsaPGE
+	 VmyzhcL44fLaA==
+Received: by mail-qk2-f22.google.com with SMTP id af79cd13be357-93bef17c191so245355685a.2
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:03:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBx6uwGQEElfPOb7Gj5ZZPv+Ypk1NefombO3UgPB+SUhXP72zDmzD3Y+XFF0lV3ubCvdeW73WmwQuA==@kvack.org
+X-Gm-Message-State: AFuF++nkeEePpdZeaiY/YMc0D3HVXSJ6NkWmCuIf/yu2tx0CTU/z0VB0
+	QrD4Ot0ZysckXmMwn+EGPnMZ0T2P/3mdaGTRWugpwUYVW1kkPsn2sQIRkn9AvA0dq+QCsz15pXe
+	Ze62X374bwmd7eZvVYNTjjWaeqJFR1G8=
+X-Received: by 2002:a05:620a:690d:b0:93b:eb9a:ca47 with SMTP id
+ af79cd13be357-93c43cb6afbmr1943937785a.31.1790582602049; Mon, 28 Sep 2026
+ 01:03:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <655c509e-318f-48bc-8183-2b1274dd05ac@kernel.org>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: C0F3E40011
+References: <20260916224437.1164512-1-joannelkoong@gmail.com>
+ <20260920162014.4479-1-lance.yang@linux.dev> <e22eb6f7-7eb4-4f50-af2b-13a2e3952cac@kernel.org>
+ <CAJnrk1Zk_4awd5OfbvsCLts1YPsB6JjjOF2hiSmg-wAp+_KUDw@mail.gmail.com>
+ <00d07f4a-f679-486f-9413-6917b5213854@kernel.org> <CAJnrk1bD+4tndrOWuSENvEb7ody47HL2aNv2n+RzUqDE8mpkrQ@mail.gmail.com>
+In-Reply-To: <CAJnrk1bD+4tndrOWuSENvEb7ody47HL2aNv2n+RzUqDE8mpkrQ@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 28 Sep 2026 16:03:09 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xWC4hg_-MLoDn3Zav7NUM709gu1jPeQpRuODdt8OUpZQ@mail.gmail.com>
+X-Gm-Features: AclHuK9L9DVPffHQzXWLpUjv_VnN92J2qaEuVoIHuFVp342S5196rZaalz-1W7c
+Message-ID: <CAGsJ_4xWC4hg_-MLoDn3Zav7NUM709gu1jPeQpRuODdt8OUpZQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
+	ljs@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, alex@ghiti.fr, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: uuwif3yfxa8w4sf48s9x379zkrgcifja
 X-Rspam-User: 
-X-Stat-Signature: wfcoyfziczjsufimkwdp8hyhkye8de1e
-X-HE-Tag: 1790582592-952298
-X-HE-Meta: U2FsdGVkX19+1K60TfWbTKWHm6qI5oWit32mpGndNpVsUun3eMgkCqcWdoc2t8C04nYnz7PbUo3rTxnZR3K2ZOxtYvdClPYKJoR2XjCOFdgxBacYB9KSFn/6t6ExddDefbYuiR24s2Cy0QtCqIffemG2axPheHMQUTIBZOMNZ7/22Al/RN8OZw8QPCVBm1lhgK901BulBr7evjKlj0PkF6EVYykFlh5Cz3gwmR9U0WGGOhgHApuytplzGHo9Bz9Van1CX3JlOHq21juORJCB5QLoBiaZ3ZPhvg8CFlk3ZnC8ewK2l9NSD+tckQf9Cp0BhGnaBh/Sq8Zf6LQQBMscMZ2Me7BiVr+J1czsnowYF7AAbKDVneWcbYVSDH7cGWrWFudGkjFHoIE8WAK2EOKI+MZAIc5rQltD5DZGyPihzExcbYzYJcHvD8KcEs+A1Px0rjd84b6z9LAjL40Va6goKL5UddR6jkVeg9hSAayd4jCoXaqqWg737mqotI+Tg5ArJLspkZCxAkSAzUqWpMLNRRMa1UcOPLEOGplF68KfeQ1lGleAfxCYQsWzCpu63FPLtLYTSZ7DpRal+BYtWAawWIq7I6aF9vexwOC/WUehMkKYPyOwIr5ntpekQLBy0waV0eFQCcpuQGqxkBFMiuUWJq8u6i6xQpaFw6mnpGnKLklm5FF7zWct1wOkqJHi4qgu2RPoldTKaP3EjKYdBzK1cqoCDt8dPEUWp2KYIbfnZHXCGeyeLtYEjJ3sqTr88r4XsUjIZjRA8t4wqRNT8CFY0HqDTQ4kCRcKYRTsPDh8b2m4tpkpUe7B2njDYGJJjP1Cw5Ep7glfVHLKDqWgq6YhDgyyBuQFn7WT98tHu3x6wlg2BDH/E+Y/4aWdJ/k2tB4OerwbcZCd+0B+RKpYl366D58rVOM6YNf6dwgzSuhOEY0DHU0vet/2V4NIbRmnEoH/wlhmNjYcF8mDLl9h2Jv
- hdwWDp2I
- f47McvAGULJ2dJSDTf+0fInRL+XJdjbS1BN9rJwKBH5vsVzu3yjAKkdjQiOzid7EGVr2MUins9RoI4zzL7mRZ+feCF0li2DYIiFBLNG8h5jilumHsNZzlj5d1dPfAi2yNxUbDzGwOeb53dSxyGdfVCPOnm/iNeIuLY3JCRMOUOq/EfTKyCKHqptbytLotgupg5YtTGCBfDmliiu8dsLo/vlCiCVp2eubnZ2GPZBcy78O0jt8sbGFOQeinLy5MWDZb813nyF26dN6VfwJ7kZGTMGRATnTbSELoVtfFwRUdB7V89qUx8RGvYZOjUiglZ7EHiqAHdccZePscxa4LIX8TTi+0sQ==
+X-Rspamd-Queue-Id: 8C72D20004
+X-HE-Tag: 1790582603-618633
+X-HE-Meta: U2FsdGVkX19CcRnucqcO+GfCU0YJUteV8f0z6HJ1D3Vmf/wBrk0gNWpehgkMBj1IP4HJFXBXtDkDCBURtyJYMHKwKl+F8Mxl986gzP/O6vuIFtDn6ZkSFUfXRXNY9Rb/agqMs+bdzN8Mx3VJd+1Xq09AiU/fBjGoQVFODs1xGKjPR3EowvGq6eB3SsQ5tYHGJ/e770xHEi8SVITOPGh72EgNeMVOiJzs8Mz8fcVBtiSSVFpTdPDFQRe+mRCR5MpgSr/MEOmJqOEcHkczmpg8iBsfWZDuXXkmzX6CArIB1IHqk06FJIiyOE+5DoGV5fIHtg7oDrFgZsdWMzcHz7TRBoimpBxIdxp2b5ga8BtyQhK+lGrlEVqmngwbGoIfo9zycaP/yKzAPgndaSaznQ/ENdldknVb/0HSILOp90+Sl6gu82IpRHzVMq7NTFKjhw/NI5HnI04++G6SxQmJpmxZz1ervFQhR8WUK0nCeVpogm+zv3Kj2gO8D8yduAnkX1m8lB5mfRUp4s2U43OTiWfj4NI7Qo535tWLO6fZrzfnHJPumuNxigq7vX3AdStH2RHBfz54fK4ogu24rki/VWc3MODvsNMyH/9z4HRVJB9bOAv0ohmcnUFeoW/DfPiOWiVe8goy5jsLNgAr2Ns8ReA7QU2EIDPRiEVmqltrDgHiMgJZWG2GuWxun4RTt8Pf2S33FBTTc/pdqmTfaEgjGliZRpr6cR3Vg7/XjDxY8si48bkfu4VEXKQCPMSJJZykYbcRgnHHhBPLFATNLyVe0gWK0NGGXjr2zjGc/xGkkx71VejYSOVv6mjEV8p2cXUsVrL6FanfZMvrXHxMJ1Q2ZxvqHTVf4XAg48zZaLDUCR+QYUSc4sEDKGDDA3WMfLiUY6JXjGTEaNUm5TjzRNZt/I3epYH9YqbNw6Uy6mnhy8xmpvsDVBA533in8QZgEaObWaXUQ3H5maeq5TQSi4bzpC/
+ tgdECAMC
+ YMPP6q7bZRt+NC/GnQaSgS2qDyVjHj9FPsS9UtWu9q9yinEDWaCq5PI4fBQbbK5EQ68rhtpozLD9VMcmsRctCHxpGk0Erk3tuuS1TSYNe6E0OUJ3zwUjXY84NBf0Sue1IEGMOj7g78zkoF+cpgkJAS5gageVMVw+1jrRaANOrd/iwdeFbpILc8wo4hZo4Bgv2lG8XulTPIrK8j9FuWy+BiME25iOKuR7MaLs+FxkCrg62eXA6GlCNOKWBsdUO/klw/FRCrynPrtJlPdrxYhEho/RyYd9pcQbpLhLdup0SUiDUxa90sFjX4UBIBOGH+bBHpaekjQROUDp80G8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,47 +109,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Cced kexec list.
+On Sat, Sep 26, 2026 at 7:47=E2=80=AFAM Joanne Koong <joannelkoong@gmail.co=
+m> wrote:
+[...]
+>
+> Based off the benchmark results in [1] and [2], I think the cutoff
+> needs to be at 64k where we exclude anything under that. On 4k base
+> pages, this is order 4, but on 64k base pages, order 4 would mean 1M,
+> which I think would be overly conservative. I think it makes more
+> sense to express it as an absolute threshold value instead of by
+> order. I'll try to find an arm64 machine to double-check this on.
 
-On Mon, Sep 28, 2026 at 09:28:08AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/27/26 21:20, David Carlier wrote:
-> > On Mon, Sep 21, 2026 at 09:59:02PM +0200, David Hildenbrand (Arm) wrote:
-> >>  enum {
-> >> -	SECTION_MARKED_PRESENT_BIT,
-> >>  	SECTION_HAS_MEM_MAP_BIT,
-> >>  	SECTION_IS_ONLINE_BIT,
-> >>  	SECTION_IS_EARLY_BIT,
-> > 
-> > Hi David,
-> 
-> Hi!
-> 
-> > 
-> > It seems dropping SECTION_MARKED_PRESENT_BIT shifts the other section flags down
-> > one bit. crash hardcodes SECTION_HAS_MEM_MAP as (1UL << 1) in
-> > pfn_to_map(), so it now tests SECTION_IS_ONLINE: offline and
-> > ZONE_DEVICE sections no longer resolve to a struct page. makedumpfile
-> > only checks bit 0 and is fine.
-> 
-> Thanks. To be expected when relying on kernel internals.
-> 
-> Which makes me wonder why makedumpfile
-> (https://github.com/makedumpfile/makedumpfile) not require any such information.
-> 
-> > 
-> > Keep bit 0 reserved, or export the bits via vmcoreinfo?
-> We could export it, or crash can simply detect the change based on the kernel
-> version. I remember the latter was done in makedumpfile in the past (although we
-> export it).
-> 
-> I can send a separate patch to export it.
+Hi Joanne,
 
-Thanks David.   Checking kernel internals via kernel version is not a good idea
-due to the downstream kernels.
+I once recommended a hard-coded value such as 2 MB[1]. Would that work?
 
-> 
-> -- 
-> Cheers,
-> 
-> David
+Maybe 1 MB or 512 KB would also be fine. I=E2=80=99m still worried that 64 =
+KB
+is too small, especially on machines with 64 KB or 16 KB page sizes.
+
+Also, we could have more contention between lru_lock and the deferred
+split lock, since, as you mentioned, folio_unqueue_deferred_split()
+is called under lru_lock in many cases.
+
+smaller folio sizes make mTHP collapse and the underused shrinker
+more likely to ping-pong?
+
+Just my two cents. I'd also like to hear what David thinks.
+
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1Ru=
+ZoBeUBR1iFqOA@mail.gmail.com/
+
+Best Regards
+Barry
 
