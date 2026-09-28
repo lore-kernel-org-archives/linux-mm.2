@@ -4,91 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB48ECA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8EDDCA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91B736B009F; Mon, 28 Sep 2026 07:04:09 -0400 (EDT)
+	id E06026B0088; Mon, 28 Sep 2026 07:08:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F2A86B00A0; Mon, 28 Sep 2026 07:04:09 -0400 (EDT)
+	id D8FD16B008A; Mon, 28 Sep 2026 07:08:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80B686B00A1; Mon, 28 Sep 2026 07:04:09 -0400 (EDT)
+	id C57826B0092; Mon, 28 Sep 2026 07:08:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 543986B009F
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:04:09 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFF0980198
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:04:08 +0000 (UTC)
-X-FDA: 85262886576.19.BD8E3B2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 294291C000D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:04:07 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJaay7PG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A07CE6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:08:43 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35909A015F
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:08:43 +0000 (UTC)
+X-FDA: 85262898126.23.C7F6900
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 30AD0140004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:08:41 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jS6qZvYu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=M9IUB5D0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=H3MMkU2+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=11HPE9PE;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790593447;
+	s=arc-20220608; t=1790593721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iKzxJQmNYQsUt2PEmdmsZav4S/mmfjAvnn3I6ZHTKf4=;
-	b=c3iNKMhvx8aFBtyb6hEuQSqdgGH9MNr65Uozn4AFGbOB4mXhwTYDsfc8bLXj+rawWNz33v
-	4oGwtw9k6xZ8lwoMvs3JY3sJzlW6JmMqAtlbfyJkyuSke2HyQjQY1fhImM3cQtLXZsaTsN
-	3JEQMqbmwx/PVhiF7/poOGUPq+kxT0M=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJaay7PG;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=xr/xZeQ5cyTZWsRIm6/m0DTTQKyIaa+hduhVvGYFDMQ=;
+	b=LKUn/6ky6/YARY/x3+yxf3ifs3CdQUGZkbvYpHrXL3BpO0nsi2/NNMuX/nxWVnl8UqRqiC
+	Xx8FPQ60vF3fPMTuWX1ubODMz6+vcpEGbcQi9t9OWCPhEix1UeqHFKW4AFRmCn0ldJJKKF
+	YKB7DYIMtQTXYRi5zhBYX/lxawZix8w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790593447;
-	b=pIbVZQ6N/oAqG+pvcBc44Mmp3NjYob5AqJ1UPDVUpDAZQM/9Ts5ROolQH6EqjklJmfhwAB
-	6ly3TS9hdcmI3EjxZlW8Ixe1At3KhhQRPlMsgr4H8nZU6p5Yft/0AAXDE+E0lTAvfpOBsK
-	fPSlkw7BPSCpH/Iilstc7KJ3bQEXdGY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 99ED860052;
-	Mon, 28 Sep 2026 11:04:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15191F000FF;
-	Mon, 28 Sep 2026 11:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790593446;
-	bh=iKzxJQmNYQsUt2PEmdmsZav4S/mmfjAvnn3I6ZHTKf4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DJaay7PGP72R0tGkgyP+Oia4imEuYm8t8qR2pXFgrg9WILqzSl7Vjhp2rqDjHKhux
-	 uDvrW2JpIyiASNUHIEFPZCnwPdOnC86ajBo8MeUmgKWcO1RGq3jtrAcpsqaC2H/gSN
-	 YN8/cyXRUqo+vKyymEyDaWP/qu79jZshTmfGQWuhHsZgZlrxlBA4TpI5fBeUFX/zP9
-	 Q5IWXT00yBQBnN09zoLUi1pomgDek0CrQ7diRBg3IxLLnE22BgtzKyel6+XVNdLMUg
-	 BUbrKXD6vrPDCndd/xW8t3MDQHdtA92TFc5Ucd4FjBjsCfi2hMUSQGyF4YZtKTsPIl
-	 GRMJ5Vp+/rHuA==
-Date: Mon, 28 Sep 2026 12:03:58 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Hajime Tazaki <thehajime@gmail.com>
-Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
-	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
-	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, broonie@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
-	daniel@thingy.jp
-Subject: Re: [PATCH v3 2/3] selftests: run tests on nommu architecture
-Message-ID: <arpJSAGhxSRtgPyr@gremlin>
-References: <20260926010819.604346-1-thehajime@gmail.com>
- <20260926010819.604346-3-thehajime@gmail.com>
+	t=1790593721;
+	b=Qbb0wfB4va1Us53b09iEJ7QYkRWp+WLCnrqK17XLaftugpgK2KXQLRScG0RnUg/4oUj1xv
+	SgjeJRWTT933tHoUHaXRyR9kpM94jG7bGcJDXOdLsP7aESFlmgqcVszTaaBJUAngCYBXDO
+	6idxO7cmno+cd7ttnVNeIZJdNm8+fTE=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jS6qZvYu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=M9IUB5D0;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=H3MMkU2+;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=11HPE9PE;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C1AE5226EE;
+	Mon, 28 Sep 2026 11:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790593715; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xr/xZeQ5cyTZWsRIm6/m0DTTQKyIaa+hduhVvGYFDMQ=;
+	b=jS6qZvYuUdVoFCHgSQD3wfwWuVjA9pM7IBFXDniP5kK2hL2ZV7cZU7wjQ5jq7H80h+U5nz
+	KVf8ICPoBUiTz3lS3dVAWNc0wFZCuQnoHwc5IWi9srDY99HUbUFcoZda6ebNexAutFL7Mz
+	p0eeJsH4UTA0o7Ged9CmW14t8mUY3Z0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790593715;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xr/xZeQ5cyTZWsRIm6/m0DTTQKyIaa+hduhVvGYFDMQ=;
+	b=M9IUB5D0aR/HJvrf+SIjJJ1gwywQ/SEbpmuDNmR8r8JMAnlN3CussjXHb1nsd7+UNSB4ab
+	UIE9Xwrl3azubIBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790593711; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xr/xZeQ5cyTZWsRIm6/m0DTTQKyIaa+hduhVvGYFDMQ=;
+	b=H3MMkU2+A3/+lLbBXPjkbi5Cn+IhbY1t86KvifnhoRJoLnfAyNvuZdUWQ2M1nCyeQqx7JY
+	5zRyTWchzbHh957YCU/Z9VOksrh7v2aaMwOtznZ8xTt1MdyNSS+dTkYa+gBfycZ+qGBUCg
+	ddQsVoZtJ+KATSQ8m6xYQI9PEdg95L0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790593711;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xr/xZeQ5cyTZWsRIm6/m0DTTQKyIaa+hduhVvGYFDMQ=;
+	b=11HPE9PE8eprCrSLd3OCEMcP7Fx7Kjvy8inGLHzBoK/bavI0aVo0H8OTN08XspznyT74cN
+	CKAcc4GqhTWoZsCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9B39133F1;
+	Mon, 28 Sep 2026 11:08:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zG3UIa5KumqhKAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 28 Sep 2026 11:08:30 +0000
+Date: Mon, 28 Sep 2026 12:08:28 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/mremap: fix locked_vm leak by splitting VMA for
+ MREMAP_DONTUNMAP
+Message-ID: <arpJfa2ssGZYduRJ@pedro-suse.tail5790ac.ts.net>
+References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
+ <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260926010819.604346-3-thehajime@gmail.com>
-X-Stat-Signature: a5haowxywz39kf6zhefmbxo46yddimkh
+In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 294291C000D
-X-HE-Tag: 1790593447-129854
-X-HE-Meta: U2FsdGVkX19GV3724IWRmDIxenPNitAqubqrzN/hvykunjAhwa3TekDAYSSv8mYY5xY9t57hGJw7Yjs6RPskQfvSvxccJQF/1Cr0ufB/s+5qmYHhgvFanCPE5cNOo9Cp6qi5lU3DlVc4DyvyOaGxlM/+AvnIZ8XNoSucTsys2gnuvwGsy0OWXpQIgIqTYBjh1RV2EL1hCoSGaZiAW8zA0Ivy699Md7OZIX+YTAk+zL2FboDvkpgGbxnDlVmOl9yHkAsv1ujJFpB08H36YoO5Go8pRR7fsvSUWSRG1lgWeMPb0u6V9GKmcvdLkIMRM5QhP2rBFkRA2p212aU56MbNuLuNQAGipmoc+RibDoygcawsTSm7yj/2XnYcAYs06FrUDm0wOz/n4e7pb1ELJi2BZtWmjn/vfHPpse1f1dPGeW1pkn1Zj8x468QskOayYSOvDxxawP1UbHGzos3sZUCkxmDrOrDm7P1+DUQj1IM3CwlJE502lgrKfhN0RciF9ZXothPfic629JIw3df5Kx+39HigKIlwg47PJs16W2WxKT6awpRbAL+9mqiuP6ZvSYjWDsvj2KMU0ARYp6NVJEEOwlb8ytG8QuEb1O5HfdNtIk356Wof0K47LxubXrnNNaawWiL4IuVgDWXItFYqsyb5XoTIkcTvMeIYKhpgKafpbejr790VSsc0/dI3u7lrVI/pV6pyWbZbuhB43LhJ4VV6ws8/b9iqDh2fe3DUsDH9MC/OoQwEpJXlL2Mb8HZHF8Lj5gFxWFbunZHg0BwphxWo3g+vGtSIU9ZOTT4zxHi7KcHhFAuHk4akWuMqdeE9GCS6sLowPbb7G+CtAqhKzd/EgLEGyjIkCGoF7JwI7t8ta/7XtEyo/vGIWbl4Lrtkag5J/+46qYN0TCE+JlT5SxzxnO1fA6tK/rp5++31tA0dZVA3pUK5xjmwZFy6c4wLN6gBt/kz5YeK4kUy2oe7FtG
- 9ikFVRvj
- d4IVBTjyE5Cm5at+NPV34xI9VywI0Wo4sGbcpG4rRFomjT0hn8V8k0d15dib9Nmb4obSABO8uqJUxcYpVnVpibWmkX7YxpJ0l4rdW0z42lCLE9fWigZpOsfs6++G1CV73oZNLrW2ZBf5SiEF2N05gQBYAO3r1qY+C7QaOAulGMbkDNCGGNgil2+sv7yf9toXJXkmSVhp2OJ2oDEO1A4XlaYEMHEuPyjOMEp1KlrUyWUJFUkn2NG3esSRJEwMgmycV6FLoXVDj06aC2Tlmw2D8QXDs2jmNzYEg//Di8PGrpFIycVRHjnn79i6XH/gGp3TIzlfBoK5RA04gZqU/k0U3LQjhfcPQLfYzg78KALD/ULfGc0XktthkmCW9xHXFtP/m0Ss4v7swhmJWpgQALRABRH6E81gYpVXuRzw0zdB9UhI+yiP6I2utnaBL72WHEFSRosn+i1NSvdi3vlQzZws2R04YA3IFZiDoYCC+A4bVMqk+btNMjZIxekCPSv9yGYTHpEzKkjY90QwMSfkAQ7AqXdMB6mMLfUcFYN0bZe8cNhOXPQXStj6CZ+dHxpQ9nVna15AQWSL5g8W5P5L9wL3LQs/NTNRuapFyYyWKsd0ycLnh2VHfjccBccwxFPXXXNcHP8ERXd4wQGgosEX5TsAgmdKRghHZHei5brdvOg0P8A3xVA01sejQ7GiAO15Sp8S9eYk/GwXtX1uOdqUwKIhxMg1bws1sg18D2IkC10tGuB/xBS7d0kQjwkrFaw==
+X-Stat-Signature: wmogfqwdtgxrzn5neyysjniu8sb196hb
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 30AD0140004
+X-HE-Tag: 1790593721-258118
+X-HE-Meta: U2FsdGVkX18Ib2fdRkkFy+hgWFLFaL8J2iNwszdFg1/B2IlvbY68RnNLbXdriTZ0PIQlL7RkcJj3SUCXoUBtat2u5D+WlMlzJZBB43dH3IxBjQ8FHs0aIo5/q6pRI9tUwuyxGQ+/NjxUkuwz7k0qhKYev7z/+cYXcxWGW1y4SDAnU3FKCHnJRULegrxbLYj6lUCJgFWjsXxeH29xN+M4z+EFHtXpj+boGNlbhMM7QE93PvUIuuHMGxYG9HJ0QWjOnmP5WUMY7mLeWV2RjcvBiFYjkTW3WUf8jF+mmzOf5nexyCXNXglNOYZOuFvJ+NvpFbygzB+RCQUcr3jqMAJq9PaWdsexmkRtF7bXDasFK5A2IYo2d0k3fVT9Pma6h+ClJ6geJfvwapid9cfJYzmFs9TLNHbQBubBRBOklDkOPjfH4/umfC8RHgcp8NwEC88QGkOqMhPx6XcH4gwh+aaRxWvhYCwheruhp+6dZXf6m3CdrAarhvPDQWGVlRejlgburBi7KvCbljKDdghCVzCASBzyGy4N6wd0uI9DZqTkHNJsyN4BmqqsDkUM6x6K0DAm/ASQRn9CMoPmNVnxg3KVJ8+pgbSNlMci3IIeYhJ9S+BlI7PNnm0JU+j1BI4xPfBDk11PdN8f0fs8C9NpdNzb8wgVrUHbpTgal1m2ksm7GYS4GaJglvulD9b7+AvDr8LLt+HdmwxakUv2uDIV9WQXbcLdsdGufbZ6bi+wwjeR1xsVJbiQvdVMG5nFjXhrlTM/a1y8zKYcWRcfHvxU2MiAYlGQDvtaFkfURlGebGlfrb0TEStxj8DDvNtbgjIdNHIuPOucuqG9cqYY9Y+6U9CG0SshaVvPaLPLgPmaaC+1cKVFwgHJoQ3+945RE32R0Z3s27eQa1J8A5Sq6f+Bt488yTF2A751bEbUAmqhau1HnDcWxURm3sFFjNgzSVIVZQ1w7yGQgUhpsR97Q/RCEiK
+ FzZNJ5Ws
+ Va1zjb8Su41cbf2vBguPTvnn7d7FfE/HujYVhhmW4cVwZ9y8KMgA4zghUguPz9pzDFb0/Kou8bIm8asM+LNF8ZzuxHdainOXRPOkBxzQpcO2trMuEKUwwUaM5Wn2b0qcZ1cFW2k2gJ7+TpzqJbmQ5AX3QcOVfT5ukCLVmlikWFQsM5AC+Eo31T77liyWJdwG0Xyt6ib02WGrqEzZEw8POeVCfPeiSqmt9I5a/DRRUyN8PfiTlb3I+sGanDIcwQ8J+KGEy9j5NHsojdCoSs1nz+Yv7xNERsW4XobEVHs6XBdm9ZfA0fXbZ6fQNki7pvs5uppwzY3rQXBFUPYQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,110 +134,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 26, 2026 at 10:08:18AM +0900, Hajime Tazaki wrote:
-> Architectures lacks MMU doesn't support fork(2) syscall and only
-> vfork(2) is available with limitations.  Thus, we cannot run kselftest
-> on nommu architecture as is.
->
-> This commit addresses this issue with the following changes:
->
-> - on test run stage, avoid calling timeout command when NOMMU=1 variable
->   added to environmental variable, since timeout command uses fork
->   syscall which nommu platform doesn't support.
-> - describe the difference of nommu tests in the document.
->
-> So command line to build/execute tests for nommu should be like below:
->
->  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=nommu
->  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=nommu
->  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p \
->    -c nommu
->
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Andy Lutomirski <luto@amacapital.net>
-> Cc: Will Drewry <wad@chromium.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Brendan Jackman <brendan.jackman@linux.dev>
-> Cc: Hangbin Liu <liuhangbin@gmail.com>
-> Cc: "Ricardo B. Marliere" <rbm@suse.com>
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-doc@vger.kernel.org
-> Closes: https://sashiko.dev/#/patchset/20260813063401.1786548-1-thehajime%40gmail.com
-> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+On Sun, Sep 20, 2026 at 03:13:11PM +0100, Lorenzo Stoakes (ARM) wrote:
+> The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
+> operations that keep the original VMA in place.
+> 
+> Historically this has led to a lot of bugs where non-obvious interactions
+> occur between existing mremap() operations and the original VMA.
+> 
+> Fix another of these - partial copies.
+> 
+> The long-standing mremap() partial VMA logic has the baked-in assumption
+> that the originating VMA is unmapped and thus moved.
+> 
+> However MREMAP_DONTUNMAP defeats this by performing a partial copy
+> instead since it keeps the source VMA around.
+> 
+> An mremap(..., MREMAP_DONTUNMAP) operation disallows resizing of the VMA,
+> but the operation can be performed partially:
+> 
+>                            |-----------------|
+>                            |                 |
+>                            |                 v
+>                         <------>          <------>
+>                         .new_sz.           new_sz
+>                      |--.------.--|       |------|
+>                      |  .source.  |       | dest |
+>                      |--.------.--|       |------|
+>                      <------------>
+>                          old_sz
+> 
+> The page tables in the specified range are moved, but the original VMA is
+> kept intact.
+> 
+> This interacts poorly with mlock()'d VMAs, as the VMA_LOCKED_BIT flag is
+> cleared for the entire source VMA and set for the entire destination VMA.
+> 
+> This results in an mm->locked_vm leak as the change is therefore not
+> accounted correctly.
+> 
+> The clear solution here is to make the portion of the source VMA which is
+> mremap()'d distinct from the rest of it, a.k.a. split it.
+> 
+> Therefore resolve this issue by splitting it ahead of the rest of the
+> mremap() operation.
+> 
+> In order to make this change re-expose split_vma() in vma.h for
+> CONFIG_MMU (nommu doesn't compile mremap.c and uses a static helper
+> instead).
+> 
+> A quick search of how MREMAP_DONTUNMAP is used in the wild suggests that
+> the partial case is either unused or rarely used, so this should not result
+> in unreasonable VMA proliferation.
+> 
+> Since this makes every mremap() MREMAP_DONTUNMAP operation operate across
+> an entire, distinct, VMA, also eliminate now-redundant code checking for
+> this in dontunmap_complete().
+> 
+> Finally, update the sys_map_count check to account for this case.
+> 
+> Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-LGTM so:
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-
->
-> --
->
-> v2 => v3
-> - remove unnecessary modification
-> - new target is moved from TARGETS=mm/nommu to TARGETS=nommu
-> - rename CONFIG_NOMMU to NOMMU to avoid confusion to kernel config
->
-> rfc => v2
-> - reformat ktap header, reported by Sashiko review
-> - https://lore.kernel.org/linux-mm/20260825015945.141739-2-thehajime@gmail.com/
->
-> rfc: https://lore.kernel.org/linux-mm/20260813063401.1786548-1-thehajime@gmail.com/
-> ---
->  Documentation/dev-tools/kselftest.rst       | 14 ++++++++++++++
->  tools/testing/selftests/kselftest/runner.sh |  6 +++++-
->  2 files changed, 19 insertions(+), 1 deletion(-)
->
-> diff --git a/Documentation/dev-tools/kselftest.rst b/Documentation/dev-tools/kselftest.rst
-> index 64c0ec7428a2..c35b819947b7 100644
-> --- a/Documentation/dev-tools/kselftest.rst
-> +++ b/Documentation/dev-tools/kselftest.rst
-> @@ -230,6 +230,20 @@ section::
->
->  .. _tar's auto-compress: https://www.gnu.org/software/tar/manual/html_node/gzip.html#auto_002dcompress
->
-> +Build and test on nommu target
-> +==============================
-> +
-> +If you (cross-)build kselftests for nommu targets, or run tests on nommu targets, use
-> +``NOMMU=1`` as a make variable/environment setting to tell build system to do the additional
-> +checks.  These nommu targets may differ in several ways, such as not supporting fork(2) or
-> +using musl or another libc.  Set this variable to apply the necessary build and test adjustments.
-> +
-> +::
-> +
-> +  $ make ARCH=um NOMMU=1 O=build kselftest-all TARGETS=nommu  # <= build-only
-> +  $ make ARCH=um NOMMU=1 O=build kselftest-install TARGETS=nommu
-> +  $ NOMMU=1 ./build/kselftest/kselftest_install/run_kselftest.sh -p -c nommu
-> +
->  Contributing new tests
->  ======================
->
-> diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
-> index 8fc1018d6fec..95b5ebb8bbb9 100644
-> --- a/tools/testing/selftests/kselftest/runner.sh
-> +++ b/tools/testing/selftests/kselftest/runner.sh
-> @@ -38,8 +38,12 @@ tap_prefix()
->
->  tap_timeout()
->  {
-> +	# nommu doesn't support timeout command (missing fork(2))
-> +	if [ "$NOMMU" = "1" ] ; then
-> +		echo "timeout isn't supported for NOMMU"
-> +		$1
->  	# Make sure tests will time out if utility is available.
-> -	if [ -x /usr/bin/timeout ] ; then
-> +	elif [ -x /usr/bin/timeout ] ; then
->  		/usr/bin/timeout --foreground "$kselftest_timeout" \
->  			/usr/bin/timeout "$kselftest_timeout" $1
->  	else
-> --
-> 2.43.0
->
-
---
-Cheers, Lorenzo
+-- 
+Pedro
 
