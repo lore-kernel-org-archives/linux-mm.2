@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4885CCA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734ECC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 393F36B008A; Mon, 28 Sep 2026 05:33:56 -0400 (EDT)
+	id 1E5EE6B0092; Mon, 28 Sep 2026 05:33:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 31D736B008C; Mon, 28 Sep 2026 05:33:56 -0400 (EDT)
+	id 16FC56B0093; Mon, 28 Sep 2026 05:33:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1986F6B0092; Mon, 28 Sep 2026 05:33:56 -0400 (EDT)
+	id F2CD56B0095; Mon, 28 Sep 2026 05:33:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E7D556B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:33:55 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AAF8C012C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:33:55 +0000 (UTC)
-X-FDA: 85262659230.04.6EF15CF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C48AA6B0092
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:33:57 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37425120136
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:33:57 +0000 (UTC)
+X-FDA: 85262659314.26.AED8D70
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A529B20005
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:33:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WW004KwN;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 90599A0005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:33:55 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okilBTTT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790588033;
+	s=arc-20220608; t=1790588035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nCUk6L1aWaPzrTTzvJ81KlDjiL0II5tx/S//2fpxpwM=;
-	b=K2tQcitraZkWV2vU0olKinhj3Gfb92qZ/y9jpSjC66JuTECNLVdYvPEBAUP6RGV+6WHIcq
-	wZSQ29hXwwjb6JPCNHULQeKDPQ97hrimvbbtbvIE83SK0ol1CUowfMeed6dxlbXzai2AST
-	PCv5Tfyb5MRiVo4v2FI01zfL93XOlnU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790588033;
-	b=X3GMSZ6khorrhisATvJS06PPBFn7jx/Psh/T0lVJcE2jEDwKGkWlvefiJv7pmW9t5hjfMr
-	WLffAuAr1nnJBGkmdMNWroMJoqSWxIrm9beG2YQNQReFJ6VZ7EmszJ06n9yt2nMZnV6tLK
-	84i4jFUqTnH5FfHpMh0QvdigpxRA5sI=
+	bh=2NpMGCOOM925wo0xqKha1bWNA/zDBBFGTTeCY9T1jWc=;
+	b=272LBccvXmySLni3dbPy946bC7Wo/5K0JrSEoayDg4gJwcq0Uky3+QiEiVNo4hUqzeoa5r
+	mgFoHpQ1YUfeVNZx4jlbRKyNr5hA6fQaKoAJN6ja+byJS8bavX2xJSOLOklmCIMM5+UGFi
+	BoFePzOD5EaZIw+aFhQGoDLq1u8yr6w=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WW004KwN;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=okilBTTT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790588035;
+	b=oeI1QehE556vhiHU0K9gbTVgJsntH2CsgtmXmW7fpZQ8R5PScZOFXef7ISCMpQJrA0Te8g
+	q2AwTyetb8mzovs0q7xu7OQTffj2/OT5pRS3E1VHd4xt5n+3Z70UQbKTD8Rur5CYvm4BF2
+	SltNExEHw2VTqWgmo57N+xpYbZRByzY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E569C41830;
-	Mon, 28 Sep 2026 09:33:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF9C1F00893;
-	Mon, 28 Sep 2026 09:33:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E49DC43E86;
+	Mon, 28 Sep 2026 09:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628891F00898;
+	Mon, 28 Sep 2026 09:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790588032;
-	bh=nCUk6L1aWaPzrTTzvJ81KlDjiL0II5tx/S//2fpxpwM=;
+	s=k20260515; t=1790588034;
+	bh=2NpMGCOOM925wo0xqKha1bWNA/zDBBFGTTeCY9T1jWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WW004KwNVIYEXrtmQWam0faQScc8OeqZS7bPF9E74Zy09MhziQYJ4gsX1jnNF6y2s
-	 w9YqHiKaVWMJdHqULM8+anbdnlj2cpSaUBwZNlBl3dZuIPs27e4q1V0hwqGrTC/95K
-	 bisOlITQDUpuHABxhq1qfK+A/X+Srpmcj5OrgfyB6sO5dXykjqWFi3p3fTS0O7TWZa
-	 JPx9sRR0oQPXScUWMz0xk3aPxgzBnQHawHJXNZ8HmWST0CBcWZOcwQtElllwYeasTw
-	 twssCp4r4IsR9NlNU5tma9iR8CLez0iywCIxU+uJYRVC7Pxx5hxxdhg9uTuPQ75jN0
-	 zjfJS1LdXQPJA==
+	b=okilBTTTlyeMkcAeyZsb82XvRio2JEg+ow7QSFIa7rQXced2fGDORyZP3V1/oKHDx
+	 +rA8MtPGBU7pIX2Aojm8BAh/0kSfgFzwMO4CeJqwPgAppWoH16DSCawz3O2yr8Dfi/
+	 rr8H9mq4l6NWTQjG5FWc04lrI+Od4P30c32ah1prxTKzkncdiARbMiwRemRIYi7PL4
+	 X2gt4usaC94YM9b0No5O7iDqHek0RXtWtkWKqxpYfngixFd5z8JoBu9pHoJYc+rJPH
+	 BWLrcD1sMx2ksWrlt/UYyQ2W20UVFhgBT914BEM52gE0Rza6Zs3HOh2AcsiD3AOXYc
+	 gpDzGuUeUHNjg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5 1/8] mm/damon/core: introduce damos_quota_goal->complement
-Date: Mon, 28 Sep 2026 02:33:33 -0700
-Message-ID: <20260928093342.16584-2-sj@kernel.org>
+Subject: [RFC PATCH v5 2/8] mm/damon/core: add complement argument to damos_new_quota_goal()
+Date: Mon, 28 Sep 2026 02:33:34 -0700
+Message-ID: <20260928093342.16584-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260928093342.16584-1-sj@kernel.org>
 References: <20260928093342.16584-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mei67de1xcjj83yipwt3kypmi9pf5eg9
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A529B20005
-X-Stat-Signature: itparkbb66no1gqqpqa468nhudt6qa6c
-X-HE-Tag: 1790588033-856386
-X-HE-Meta: U2FsdGVkX19P++yJVfufz4ADKR8T1xQKL+toS60dFcNOrE8U4ktCPMjwm59SzEVXM4hwGxTj60ehYN10ZjagFElyTGQ51fPc+cig/FFq/s7HKBbTzkBdugPnUV0gl2/12oUUyNolV9m19kAtcx6uZq5ou6kIivfFS+UjY5QMoNbPdpafMV3gmqcj5pWqFSD/oT+1/YlQfXLe1baYehmN+EsPuZB1CVwpWaRDYRyHuPgekwrPkyPQSgEssZAvoXPZ7RIppqra5wi7NjRKUHJadCqV09KE5V1jxdGma2n9AeCsymaepDOpFRkkc7jVZfOavdFIn4FQ+0yF8mrOLbLx5/fR8nw5y/uwd8ejoR2aB4O5sRbMyLKlOEDZvCGEQcvEoNzwNHewJF1tkuVKPtSHjNSNhDaO+MrpAhDXkiFlgy88LpA9M1S7tJTbFFQEMZ74SbkcOZ5QGqrxXU4ASeKr5QCUZymNIfz0j/NgmZ1eY9ibzRvd4LriCWSPcNpG/h2zFZbgS6dkd1Fzsnn9s50LHZIh9/CCm9rLeU33jFBw9DuBzxEgTd91hCQnMSBbkwrsBP2VHZZq4aiobKqap3IJuuUQDnBswbtMasaEh2TJhtIw3ZTMOf+OHNZODy3BG61yoxkLMQWQJvdSGWa7L3Mxqvf79Izic724IK8flbXb8MWJnBEaHzDa6gYNrI0VOPvI0/Ev7y6l1d1UnDqtPXOzwwRVqOKtSxsEM3RfsqOolGU3N8W0Df7OSR9s3IFvZZEK35mR5RcbY2wAS2LgcYxu8eYtsopkIk2LgWWudHNUOycsT+B5SGaSeysF559ZBrGCIYZ4BvgkjemfzvkDZF00IfUtzJXJVCh0UlNSyP7kf+gCb6ibEtM0ctGRAW8LxZ2CZWn27e0hMs+p7Kgb3ZDWx212+4lMBS6KjJrlD13278VSJx+EtEyfKPzyU2XoWpj9xdxvnly5xkHRUYUbA69
- 6jcn8oXN
- pVvat3N9JPYaq2JMPPz8s150uhFf9Cjm1ABiuEsPRjkebvMewtXn5RkAEZdvwZvgdr8OkfgFQGPQDaka1upMgDyK20zcPMJmEblV5k+GllL0W0/aHcYrFL3MPpoS++Yn+Q6PkyNZsZxfLWG3T7O/odQW8vkGpcYX7lFTVMNeb39DFbUIX8Dl3QcV2YgCF5I+2FYjDQtNQ7xegJAlnzJ2YuV2L/w/yeQ6HQ3e7kMpafe0g8GFcpRGXVPEC4lsxlzV0agNGs4ntXEHNEaYFFqpqlSh0yw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 90599A0005
+X-HE-Tag: 1790588035-416496
+X-HE-Meta: U2FsdGVkX18By462RkpWPZesQzuTTNyxIphbabSSh9cIxHHR6vUl6WXMhiYDTkA8PAnrf98KbxwiUkcjzrE3W5UjpV6lEmkcsA58NsIW+rhNN8LWyzwjsHd6pcJi9aNsHaLe83/5lR81Jsk6gLoNGZ5I0+Sr5IgNuKi16f8pX1zi5ioiJTx8nJFSoliWMqrcxV6tBNX2YQoUdkY/3xOXSwBrquguDvIyXTEwRT6b12psW2/vijnPyArRfZ3ODSDX5LxVTrOK3ZV7XOsUa2LCMWaaNzZdZi8c+Ex8Phs+mSzAWGf9Oo6z3Z+0XcJoeVzecGpi2XrdsGMs/yT8oOInbR9lkajf5qz424cg9AqTudnWc7qlkdquV4H/B6rBVGqL+OMlWwrrXQEETn9TtWQ+Nr+hPfW14XnBXzA6Cl7udd05uzzQwZAkAmDpMqkQauLoqKIM2q4JIMqZRFzcUB3igeLgG1TtSDmXkPKaYR4kpja7JVkseUasa8ZHA/InmvCBYzYsvfOCY3naHxF1jLjq0QsDqE7uygMqOxMG2AW89V6C+iaLWXEzunhlQ4q0KfDaqihrrEV7BG2EizmUteh8u1u8661cBCCFCaAieXjVBrjf3zmDMs7vBIAr+ZYP1iMlInZALLKDMTgWmCArS1wIkw2g0I4oZDEmMk0QlkdxmFCg8tla8uUKRss3uxReUnpDUHZ4fWCXBZYopahJdLQ2rYjmXK2I1oLMO7ECLp/vbDztYgHpBpMtM+pezeKnW8hVACrVWyELywLVaLT7vKpbyUMWYY3ReGQt5nUje0IhQif9E8A6L+/KSezEhr2kOQbw3FQ6dP4wlsTF/fYleXvp/wkbILXcrs0Y5XHwtH8sSYv92ts8Y1ItY8ycYbm+3N/EgxWhfUdZnnugNoSHz4Ml0Jpw67IWvhCnSdvYCn7pxmfNNQpzihDDCbB1dPTmEvo51kRLYmlG9op62Y8NodA
+ uDlkqVoL
+ TxT/3smP/0LYr6x/uSj8mlh/VlkRfkbAiq9hc4IIGSDmegUHS53LATe7bOz3FD+Y7dHOWy4Vs+4r8WDVrL6uSNDQqJgIwBADHrEqgR9vAoXnUEBKzJHK70QybT/9HUvLlHHxNI8Z3XpAC2Ztl7v4hpq826IImqXpg9YL+33iyc6edRnPRf88b6LxfmuHtozmmBy53WDQGBX8SBERZFipa7AIBD2Te8M24/CndJh1nnKpBx/44Y0GSs3rBnUez1Loy6sV3eKINSal4eE3ZFNtu/i+jpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,92 +93,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce damos_quota_goal->complement for specifying whether to use a
-complemented value of the given goal target metric.  Add the field to
-the data structure and implement essential core support.  Handle the
-flag in the quota goal commit and current quota goal metric value
-retrieval.
+damos_quota_goal->complement needs to be manually set by each API
+callers.  It is easy to make mistakes.  Extend the quota goal
+constructor, damos_new_quota_goal() to receive and set the complement
+flag value. Also update all callers to use the new signature.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 26 +++++++++++++++++++++++++-
- 2 files changed, 27 insertions(+), 1 deletion(-)
+ include/linux/damon.h       | 2 +-
+ mm/damon/core.c             | 7 ++++---
+ mm/damon/lru_sort.c         | 5 +++--
+ mm/damon/reclaim.c          | 5 +++--
+ mm/damon/sysfs-schemes.c    | 2 +-
+ mm/damon/tests/core-kunit.h | 1 +
+ samples/damon/mtier.c       | 2 +-
+ 7 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 844b175120f0..78b227875287 100644
+index 78b227875287..b310c40d6ceb 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -175,6 +175,7 @@ enum damos_quota_goal_metric {
- /**
-  * struct damos_quota_goal - DAMOS scheme quota auto-tuning goal.
-  * @metric:		Metric to be used for representing the goal.
-+ * @complement:		Use the complement of the metric.
-  * @target_value:	Target value of @metric to achieve with the tuning.
-  * @current_value:	Current value of @metric.
-  * @nid:		Node id.
-@@ -197,6 +198,7 @@ enum damos_quota_goal_metric {
-  */
- struct damos_quota_goal {
- 	enum damos_quota_goal_metric metric;
-+	bool complement;
- 	unsigned long target_value;
- 	unsigned long current_value;
- 	/* metric-dependent fields */
+@@ -1098,7 +1098,7 @@ bool damos_filter_for_ops(enum damos_filter_type type);
+ void damos_destroy_filter(struct damos_filter *f);
+ 
+ struct damos_quota_goal *damos_new_quota_goal(
+-		enum damos_quota_goal_metric metric,
++		enum damos_quota_goal_metric metric, bool complement,
+ 		unsigned long target_value);
+ void damos_add_quota_goal(struct damos_quota *q, struct damos_quota_goal *g);
+ void damos_destroy_quota_goal(struct damos_quota_goal *goal);
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 733025b36745..270ce9c85a2c 100644
+index 270ce9c85a2c..86f13411b91f 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1224,6 +1224,7 @@ static int damos_commit_quota_goal(
- 	if (!src->target_value)
- 		return  -EINVAL;
- 	dst->metric = src->metric;
-+	dst->complement = src->complement;
- 	dst->target_value = src->target_value;
- 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
- 		dst->current_value = src->current_value;
-@@ -2960,10 +2961,18 @@ static void damos_set_psi_current_val(u64 now_psi_total,
- 		struct damos_quota_goal *goal, struct damos *s)
- {
- 	u64 last_psi_total = goal->last_psi_total;
-+	unsigned long val;
- 
- 	goal->last_psi_total = now_psi_total;
- 	if (last_psi_total != U64_MAX) {
--		goal->current_value = now_psi_total - last_psi_total;
-+		val = now_psi_total - last_psi_total;
-+		if (goal->complement) {
-+			if (val < s->quota.reset_interval * 1000)
-+				val = s->quota.reset_interval * 1000 - val;
-+			else
-+				val = 0;
-+		}
-+		goal->current_value = val;
- 		return;
- 	}
- 	/* uninitialized last_psi_total; make no effect this round */
-@@ -3255,6 +3264,21 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
- 	default:
- 		break;
- 	}
-+	if (!goal->complement)
-+		return;
-+
-+	/* updte current_value to complemented value */
-+
-+	/* for user_input, users set complemented value on their own */
-+	if (goal->metric == DAMOS_QUOTA_USER_INPUT)
-+		return;
-+	/* damos_set_psi_current_val() handles complement flag itself */
-+	if (goal->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
-+		return;
-+	if (goal->current_value < 10000)
-+		goal->current_value = 10000 - goal->current_value;
-+	else
-+		goal->current_value = 0;
+@@ -691,7 +691,7 @@ void damos_destroy_filter(struct damos_filter *f)
  }
  
- /* Return the highest score since it makes schemes least aggressive */
+ struct damos_quota_goal *damos_new_quota_goal(
+-		enum damos_quota_goal_metric metric,
++		enum damos_quota_goal_metric metric, bool complement,
+ 		unsigned long target_value)
+ {
+ 	struct damos_quota_goal *goal;
+@@ -700,6 +700,7 @@ struct damos_quota_goal *damos_new_quota_goal(
+ 	if (!goal)
+ 		return NULL;
+ 	goal->metric = metric;
++	goal->complement = complement;
+ 	goal->target_value = target_value;
+ 	if (metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
+ 		goal->last_psi_total = U64_MAX;
+@@ -1262,8 +1263,8 @@ int damos_commit_quota_goals(struct damos_quota *dst, struct damos_quota *src)
+ 	damos_for_each_quota_goal_safe(src_goal, next, src) {
+ 		if (j++ < i)
+ 			continue;
+-		new_goal = damos_new_quota_goal(
+-				src_goal->metric, src_goal->target_value);
++		new_goal = damos_new_quota_goal(src_goal->metric,
++				src_goal->complement, src_goal->target_value);
+ 		if (!new_goal)
+ 			return -ENOMEM;
+ 		err = damos_commit_quota_goal(new_goal, src_goal);
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 273efa3c913e..64e086985eb5 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -233,12 +233,13 @@ static int damon_lru_sort_add_quota_goals(struct damos *hot_scheme,
+ 
+ 	if (!active_mem_bp)
+ 		return 0;
+-	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, active_mem_bp);
++	goal = damos_new_quota_goal(DAMOS_QUOTA_ACTIVE_MEM_BP, false,
++			active_mem_bp);
+ 	if (!goal)
+ 		return -ENOMEM;
+ 	damos_add_quota_goal(&hot_scheme->quota, goal);
+ 	/* aim 0.2 % goal conflict, to keep little ping pong */
+-	goal = damos_new_quota_goal(DAMOS_QUOTA_INACTIVE_MEM_BP,
++	goal = damos_new_quota_goal(DAMOS_QUOTA_INACTIVE_MEM_BP, false,
+ 			10000 - active_mem_bp + 2);
+ 	if (!goal)
+ 		return -ENOMEM;
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 42a2c9cb1343..014b0779ea6d 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -233,7 +233,7 @@ static int damon_reclaim_apply_parameters(void)
+ 	damon_set_schemes(param_ctx, &scheme, 1);
+ 
+ 	if (quota_mem_pressure_us) {
+-		goal = damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US,
++		goal = damos_new_quota_goal(DAMOS_QUOTA_SOME_MEM_PSI_US, false,
+ 				quota_mem_pressure_us);
+ 		if (!goal)
+ 			goto out;
+@@ -241,7 +241,8 @@ static int damon_reclaim_apply_parameters(void)
+ 	}
+ 
+ 	if (quota_autotune_feedback) {
+-		goal = damos_new_quota_goal(DAMOS_QUOTA_USER_INPUT, 10000);
++		goal = damos_new_quota_goal(DAMOS_QUOTA_USER_INPUT, false,
++				10000);
+ 		if (!goal)
+ 			goto out;
+ 		goal->current_value = quota_autotune_feedback;
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index bfb6f0bc3f21..06af417bc9a2 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2869,7 +2869,7 @@ static int damos_sysfs_add_quota_score(
+ 		if (!sysfs_goal->target_value)
+ 			continue;
+ 
+-		goal = damos_new_quota_goal(sysfs_goal->metric,
++		goal = damos_new_quota_goal(sysfs_goal->metric, false,
+ 				sysfs_goal->target_value);
+ 		if (!goal)
+ 			return -ENOMEM;
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index df84d9cc7d20..945037fe4be9 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -930,6 +930,7 @@ static void damos_test_commit_quota_goals_for(struct kunit *test,
+ 		 * Make it kfree()-able.
+ 		 */
+ 		goal = damos_new_quota_goal(dst_goals[i].metric,
++				dst_goals[i].complement,
+ 				dst_goals[i].target_value);
+ 		if (!goal)
+ 			goto out;
+diff --git a/samples/damon/mtier.c b/samples/damon/mtier.c
+index 27dc88bdf7a0..a2e311082cd4 100644
+--- a/samples/damon/mtier.c
++++ b/samples/damon/mtier.c
+@@ -163,7 +163,7 @@ static struct damon_ctx *damon_sample_mtier_build_ctx(bool promote)
+ 	damon_set_schemes(ctx, &scheme, 1);
+ 	quota_goal = damos_new_quota_goal(
+ 			promote ? DAMOS_QUOTA_NODE_MEM_USED_BP :
+-			DAMOS_QUOTA_NODE_MEM_FREE_BP,
++			DAMOS_QUOTA_NODE_MEM_FREE_BP, false,
+ 			promote ? node0_mem_used_bp : node0_mem_free_bp);
+ 	if (!quota_goal)
+ 		goto free_out;
 -- 
 2.47.3
 
