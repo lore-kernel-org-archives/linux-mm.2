@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 267F2C9833F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 13:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B4B2C9833F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 13:11:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 23B476B0092; Mon, 28 Sep 2026 09:09:44 -0400 (EDT)
+	id 6FA956B0096; Mon, 28 Sep 2026 09:11:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1EBCD6B0093; Mon, 28 Sep 2026 09:09:44 -0400 (EDT)
+	id 6AB8E6B0098; Mon, 28 Sep 2026 09:11:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1293C6B0095; Mon, 28 Sep 2026 09:09:44 -0400 (EDT)
+	id 5C31A6B0099; Mon, 28 Sep 2026 09:11:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E15AA6B0092
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:09:43 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78403A4E3B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:09:43 +0000 (UTC)
-X-FDA: 85263203046.12.B2AFF46
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D3816B0096
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:11:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACF521C1DC8
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:11:36 +0000 (UTC)
+X-FDA: 85263207792.17.544E0A8
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8C70AA000F
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:09:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fIyL2Ks9;
-	spf=pass (imf15.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 807DD40010
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:11:34 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z/86+DIc";
+	spf=pass (imf01.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790600981;
+	s=arc-20220608; t=1790601094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Yjx5Iw05PKfzTcktcgSYhYGCQtJxiGcu7fODO6nG0w8=;
-	b=l6zZJKSG2pl0OP3pIQdluu9zqduozcM1qyCkUalaAs3JPZNxxFEmpDCrBRtLgJq85MwY7v
-	PTKBVmhyrZ8IYzbaR9n+FjFen1kC11Sg83u13LQQLJ9Edz67e05k0Etiwj9EeByyewgv/S
-	2tYKRSAH09BDWUtQqKKVtLMAJ1K/JLs=
+	 references:dkim-signature; bh=U1oksysxdIEOFzBPfANmMTd4+i/t9FKmSwmS/c9F7Hk=;
+	b=tErkaQEnx2gdEFPDVtCpUmDYZmJ0ZUWFu/0nnvsNRowgNB0vn7eogBg5tdAmpcKDz4zjzV
+	JvpjE7oOIeyXa6t59KSFfreNJ9bQsW7SSPQuyxHqtJ9j7krFDO7bdfXojo/fgdW6q8I4YC
+	r1scP5Awp9/fzNMiFPpt2GZYYBEdHzU=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fIyL2Ks9;
-	spf=pass (imf15.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="Z/86+DIc";
+	spf=pass (imf01.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790600981;
-	b=6ciLclqXfRfPK/Woi9bkx0r2iromC5pLNbSclGWvxNParaSX8ZiFUQqcmue6y5APTE3qIz
-	WRJFv5J/dMiVGHCkrNQSXC7aU4adTvufVbGLXjoTBXA5lAHVa69NPc0l0neh6nGII0GmAq
-	SIN8oIqR33GejoaDM86KJcZAKPStHk8=
+	t=1790601094;
+	b=ot7M0GjSn278OFNh2JYN4VJsgXeDFSo4MhtYl+9zc4XJ0t5coXKUNh8S1ob5BtNMtmnUUn
+	moTxwVl4SMm2k9pJx7GRmT5NDkjA2bJSNSR3c6THaH1EKwGzoyejcDx+YaKUJLxLVT1m+e
+	pVmTIR0ah88+rKQChryOuAsGBjugAtE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790600980;
+	s=mimecast20190719; t=1790601093;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=Yjx5Iw05PKfzTcktcgSYhYGCQtJxiGcu7fODO6nG0w8=;
-	b=fIyL2Ks9pYorUIAHaialDzlCxNtupAXv90oaeAojYhNNa4NyunTesJjWuHqwDlFFqIYfXf
-	YZOvt+MW99mSrq+p/wss2ywDZOdrLhUZE7KWeId6TK7zWEdLOFLHqYmiAu9E/w2A6XzLfk
-	OPlnUOVhwg+vZBVDtWyU7PpIiPydkPk=
+	bh=U1oksysxdIEOFzBPfANmMTd4+i/t9FKmSwmS/c9F7Hk=;
+	b=Z/86+DIcO4VXE4GO80gPSlhirLrUiPcDSoqKZg/TegwIBGHUzX/ChE5uuUyUrRqQy7GDY3
+	xreYnpMYGNh1ZRvWZ9Bq7d8+6DNc11hiHg9PKFnCbdT/Rm+Mmj983iudIz8H8HWTBgEUHb
+	wrkPiiBRxO4OvUGHTQlrU5lOyzGDoFU=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-Hqf7Mu5fOTSULuafHwoTDw-1; Mon,
- 28 Sep 2026 09:09:39 -0400
-X-MC-Unique: Hqf7Mu5fOTSULuafHwoTDw-1
-X-Mimecast-MFC-AGG-ID: Hqf7Mu5fOTSULuafHwoTDw_1790600978
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-nhfxfn3VNHmacMGaCHo8xA-1; Mon,
+ 28 Sep 2026 09:11:30 -0400
+X-MC-Unique: nhfxfn3VNHmacMGaCHo8xA-1
+X-Mimecast-MFC-AGG-ID: nhfxfn3VNHmacMGaCHo8xA_1790601089
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DDF04191DFEE;
-	Mon, 28 Sep 2026 13:09:37 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3EFFB190F985;
+	Mon, 28 Sep 2026 13:11:29 +0000 (UTC)
 Received: from lcapitul-thinkpadt14gen3.rmtcaqc.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C3D651800361;
-	Mon, 28 Sep 2026 13:09:36 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 124F91800473;
+	Mon, 28 Sep 2026 13:11:27 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
-To: stable@vger.kernel.org,
-	sashal@kernel.org
+To: sashal@kernel.org,
+	stable@vger.kernel.org
 Cc: rppt@kernel.org,
 	sayalip@linux.ibm.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v6.18.y v2] selftests/mm: hugepage-mremap: fix mapping alignment
-Date: Mon, 28 Sep 2026 09:09:16 -0400
-Message-ID: <20260928130916.231112-1-luizcap@redhat.com>
+Subject: [PATCH v6.12.y] selftests/mm: hugepage-mremap: fix mapping alignment
+Date: Mon, 28 Sep 2026 09:11:17 -0400
+Message-ID: <20260928131117.231700-1-luizcap@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: Jczol2KscIrUy4AsswyRzx9_iaSIrxg-i_VKbhyo4Dk_1790600978
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: Tc_tXTJNOkVzuzhFpory0-GoGsNMB8Af6RcbbWI_h3A_1790601089
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8C70AA000F
+X-Rspamd-Queue-Id: 807DD40010
 X-Rspam-User: 
-X-Stat-Signature: nx58pi1qsouia4jra5p3sgqhydbwdqxg
-X-HE-Tag: 1790600981-744651
-X-HE-Meta: U2FsdGVkX196gji2vKxVSW++jfVkJz870TlBvvp26G3hLajKjjUcnKb/91Rd4cnClgjLl1S81Kox+8cBsuBcwSypTKEc6lUiELq9oQl7fskXk8SRWPydBXi668JV9jKggMkRZtgJjSx+7fBOwClWzNKBe3jkhuFeIjMplDXmXHXFdRS8yvE/oQDib7N5gGz6EjON3OEKGFdJfXenwdS+mqAceJFqM23ITrxgxAThPqCEP52ZNeQFygXi6Tz2dgd/+VUf7DGZAXz7sh9KqZxvmElcw4rISV/dYINZgcdkmgE1TVU4IwCMYUFzbV51ehpGTH0mCJm/wetcjGCwlFBH/+5qRLtWftUg2XapH4gkaTP+JzxumAfzZrIBjoDgETeFaGcGV0HhQCmrve/m+UcP4M0o8C2GTo+lq2g0x66u0mEESxhEWDy2y1Jn9KvUXcj6vQgodMJBbXtFwfOCi+PhLmS/MI6gzH7wdHuMgMzCAiEJJS7G/dXmpJQOReQRMdHsNnnrXNm7cMUPWa/aXzuRZ1VdX/b2WKqOzdJNuq8/AztQTNfa8fQQXWouVOBpvmwzbXFIkeXKcnibLA+H8pD8mtdCJ6+8C9EfvgrZm+bK6aC9H/WeaSC+spmSDo7/vFch2XkYqxJYthkU+I45xld3X/h6DRCLTy1U8MKN+uQFMeWKye9a1sWW5OaVSJh9fpm7KMD1HKWBcvteAphqXavoG1QBpVJkUx4G+EzHMOaLtBoJA3S7koib5T7YnCwuqbxrSQWT0pMrQA3EkpPw8C5KHkQzPSrbpDHTbwBquIWJnXzHJ9IkOidSTSuMq7hY6t/6r9OQWkdPA5ntUKi/DGpkwPRE1z0nUPsIKrarKgrlTXZsJ/0YsPtf7v2bJ5ui+LDumtpwjWv+IFt8odNxwMsFuby4Bm3L/7nr4DtIh5J3Lt3nQZEsWXsTQc5Msx9ZfnyAP6ApqBMQqGQXhKp35ff
- jFAtCvbM
- JU26FNST3NHRq1pwkZMiC2jovupSF25DX47X7dffVbLQdUcoDcXgaLqN+AbfN9GsjhriH4WOUNhvuyjmoigIBntlVE5HNgzIypcEJEZE7NeX0VKv4PNA13Yi4y80zkGLGUhIje+6vNU0ZhI8d3xJxnpHtUAJryG8h0ubSE9q48GMAvZpBbu35PSSkn17TJ8Xt1xVRQhGuqme3wByUher3X8B8kMaPfG4K9ZqV2LcQ9RicVoSpoODWnQxhh5xJQBJ242DRordiC3Q2PmNVH7fhv5bAHyty+ZUEkMNIwz3iLP8+i8fdoQXuglbzmWTQ+nkwn1U89WhWU4TC5g/t1miFxTeTTIAxI6qaVXZ56vyrv8jCKX0=
+X-Stat-Signature: 14aecttgng33wr8s3poq7oq9mhy9h4jg
+X-HE-Tag: 1790601094-338139
+X-HE-Meta: U2FsdGVkX1+D03hmpmtUghR/yGxf+yOSxL5+GpfX/IaUSbA5IxUC5Es4ZxmAuCnKCmb0iRvJxaIfnaTwHhvbxQ44yDROVhMqlf6EDtYTizNe3FzoZL/QQeCweB2nvaVKGoYnUzpwqFDAVtrTiXfqPJbaFccgm3v2FTjqjonFL11P82c+2Pvws7Y29e9YejZnGdQDwSEmv94f2bhEpbBqJSt9LZuI/2OFL24Vz4SelY6pvf3x6xxMz8h3Ve7t3ntvqHLTAkFhhf4HRUWfJXH7zr9esQ9k2b8OEUHWtiJVlcbTFjXnQud8DV2ysye3DbxZ2L1rg21aC0wQQHfGUP/HnY3K4dvf4/3lT33OmjKd6ks8lxMRpGnrcyyYmFXxhiOXx3AlwMFWH0ebA4d5Ji49d/in8IfGpVLfWyVk8gcrQvUwc3zK9hhmWI/C2q/timT8cR8p9DdWc5v4Fz+WS4rcTmw3/DndsdZUKRUgw/4Fg8B5SWicU75oalQsMrOWwfthsnWDczFsbYCRAxS5MLNGDREMXtbspcRmaQrUZ1xvh3zS7BBHc/35Pk1BsyqxJ0ecIVqkmFzcCxO9sUCCsry8tu83c7XbW/FUmuh0Wgz0UiVoymwgYXiQ7q0+g/pic0J1fdoLlP0DV9usYMXuIFoP+mAgJnMvfJihHlhyrR0u7b5iVmYYb2RPH7d6YPTzmZrWdL+WNjipVLCp1tmBAWp1idu2vg3WJCumQBJDON1AyfGJ6AV0GyuV5px/unHqPFlOXzo0cVVj1MGfCGjJV2xR0vXmHAlqGCrRkr+tV3Sjo65LzByt3B2b/2i0zgocTabIMspW00AqMGtedHHdFt+rktBUopCuHratVZnZwPlYKv9Ejn6itmeRfOHZP7V0oErGLsK/60UZSl18ZN9eOdyQzFwKxAHuhzBgvMA9FVWNwCCK4aB6fdjs0tTU8gZjEe4yHlj/uP65prhpgTYZF7L
+ lsEpBseD
+ EwnSoqf2U/qc3rTL25biQfMjMYgJ40f7WU6hG1o0zqM5i4j31BU3IvBHke3oipiC4+g2GeUIw1PkTxnitzqu4dNdYGEfD+GkVj7WKe1oHjR1naxHP9nYXX9f5DRdOTRLtxb8q8Jqo06UHCKW50zekyQ7zaezluhPhJKhVtCjLMDdlOFCv5eCriSdPbC69SMCnLaUHWzudzzH/vUpz3mfeo1uJFwpNZHyCetYGSA8TTsyByNqXaRdUV/m3YQlhS4hekikSe0DHiSNruA4wpCevoutdKFQvWYfLd0NqTbB8IhHHgXGt3FBIfUf0W/D2MzsBCLR7ZfFMqVvcmu4wOZZhHnJgnwxTeK/7OSPDzlaikYMahH0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,10 +144,10 @@ Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/hugepage-mremap.c b/tools/testing/selftests/mm/hugepage-mremap.c
-index 928c1045e295..0d4e1a5b185d 100644
+index 3070484f9ed0..42dd4eeba52b 100644
 --- a/tools/testing/selftests/mm/hugepage-mremap.c
 +++ b/tools/testing/selftests/mm/hugepage-mremap.c
-@@ -97,6 +97,7 @@ static void register_region_with_uffd(char *addr, size_t len)
+@@ -87,6 +87,7 @@ static void register_region_with_uffd(char *addr, size_t len)
  
  int main(int argc, char *argv[])
  {
@@ -155,7 +155,7 @@ index 928c1045e295..0d4e1a5b185d 100644
  	size_t length = 0;
  	int ret = 0, fd;
  
-@@ -114,7 +115,12 @@ int main(int argc, char *argv[])
+@@ -104,7 +105,12 @@ int main(int argc, char *argv[])
  	else
  		length = DEFAULT_LENGTH_MB;
  
