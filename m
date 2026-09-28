@@ -4,132 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC053CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51138CA5FA3
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:26:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F8276B009E; Mon, 28 Sep 2026 15:24:00 -0400 (EDT)
+	id 7B6B86B00A0; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 281ED6B00A0; Mon, 28 Sep 2026 15:24:00 -0400 (EDT)
+	id 767946B00A1; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 122846B00A1; Mon, 28 Sep 2026 15:24:00 -0400 (EDT)
+	id 656A66B00A2; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC7A96B009E
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:23:59 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6072DA01D3
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:59 +0000 (UTC)
-X-FDA: 85264146198.22.8D93393
-Received: from mail-oa2-f18.google.com (mail-oa2-f18.google.com [74.125.231.82])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 89C0B1A0009
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RxZdfpfp;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.82 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 3EBAE6B00A0
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7D4DA02F0
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:26:11 +0000 (UTC)
+X-FDA: 85264151742.15.ABD1364
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E98EBA0004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:26:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wcp7cHX6;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790623437;
+	s=arc-20220608; t=1790623570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=90m4D/TpGSCtcBQnKW4O2iMu0JtOyx2FA0RhV3nyqiY=;
-	b=iJX4DMj7r6Y7/G5nKgo/kP4rCu8LtRzfqaNmF+rXvWQOFPKJX++prHH37nGh2TdxbMy1fZ
-	x2vRYMO4A50DpIikoZgRhn6+Qn0+ugkI5d8nrijyDQ5p1KcIdg4hdRb7ZdCwXNC/Dp+Wyv
-	GLSj/yEnE0PfnbyKi9cdNjbkk0uzHkw=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=RxZdfpfp;
-	spf=pass (imf19.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.82 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=0Y8OPyB+lH5YUHprZNR3SaW3cfSHre/dvyOuPKtpY6o=;
+	b=qdhsMpm0Nbawz308RrlxvQJGXdScjOxr+OBTcTcsG9JZnvJOXewoyb6qkNxda4Tk0VBZll
+	o85DJ0LVJ1PRQtnyJLjSsgR0/uPjcyouvUFxRaEIZq3FuhRyR4tSU5pM9nWUNCts8ZeY+Q
+	86D+FDmEjtnUVmH95RlOFwljmxG/Y4A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790623437;
-	b=SAXyhBl2vTYahNfvwcXhhRoXho0pufQYhjGKJFKlzXZWrzIppsYkSQ0T+UpQ2+x6boHTd5
-	AxkfTfqYzf7yRqYHitSBvNH6RtHKDRk6ylGvaXBTXU9RBuSjOPiicOsu7kt3RzhmoxMz+N
-	6wfTmouiUSJicQTopvLxITUpBCRCgyU=
-Received: by mail-oa2-f18.google.com with SMTP id 586e51a60fabf-466ccde2ad8so2163468fac.2
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790623436; x=1791228236; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=90m4D/TpGSCtcBQnKW4O2iMu0JtOyx2FA0RhV3nyqiY=;
-        b=RxZdfpfpIXH6oPDN7j635ASKna1oFp+tac2xYJCSmIbNmNVmzaQ2YSzSfucpM/541H
-         d7+cULqKXrv1LLN2FfVTYMosd3UOs/qLUefknLFHHooqPpAqB5oAW7KvT9WoDE3gsXM2
-         L1Op2O1wt5yjQpblOZ8J47yrKK1vUdRhUc6Kwfx6jXSvy33XXYAmlLq643IBE3WgATSZ
-         7sGfl94WZV2++/ceGeDMQX9on2VGfj85g7Az0x/j4dg+3yAHdyjF3w5BoLzY6AslWhye
-         kYBttt+Ig0G/ZtniZRHpliRD0NjnGKPlpQuReR2Uy6XEuUOAEyVe31d+Nb8ZWTlf10LR
-         4QGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790623436; x=1791228236;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=90m4D/TpGSCtcBQnKW4O2iMu0JtOyx2FA0RhV3nyqiY=;
-        b=UA6MtmFfWhjZNIGp3QOzlPqWAPLtXaxPFogAyFyUcVdjR/P9MJBvw0ORJF01u3WBbs
-         V/E0D33WDzOB6kONe29w3r8lVOM+kWqgGwDsoQ8HTa125fH1eFF5DlozJhVm9a0VyMy+
-         R7WnkeRNrShyOCRqRmRumP/RgQQrlbzwpnau0uP5JrRzrIYzkQfRXg18JS5bOWlKhi/k
-         433x5n7R0cJ6UyhvxIP4VBqsItkoIKkQHD+7z6Swi0wHnLK3mPZRHp+LKSDBJhDBKoy9
-         6zFVxViZOJGX0aUB0Z7qQXVFTrT+sjQ8CUEUa9uJxvN6D2VR8gfFEvF8tZG3wgNFiNf4
-         z80g==
-X-Forwarded-Encrypted: i=1; AKwUvBwS5TwouxeJV3MlZ7jPGy1C+0GSvwUs0W6pdQehZ4wj68Q7lEGkV82B2CIbD25RQoimS0mznGfr2g==@kvack.org
-X-Gm-Message-State: AFuF++nHKsWVuZ8vzAUiKkaWQRrb9ewgFBM9yOA8l5ZQFHGS0b3Plh4c
-	M3wKZkxmKnnTJpUVBBFdlSqsg1t9zWn2sFQ/WW/EOqHStC2Tk+1zJ5Ef
-X-Gm-Gg: AYBFou1J2Qe/u1aHucupMjaj/iHrGCyCeNC8HomlnVHkoFz++UbyZzT1YV2BcyyfkWM
-	XMPkj1MF05cBDXckFkxbae4/jLP1lzSEY1QFzm+8SFniV78cPtIT/hLiuQiqhQA4NzweMqyAsFX
-	YB6N6yF81dC7MJt9854VUcLVHO9+BFEm6h40n26jjI1sf26XldOVJdhGki+x0TiXzAMKYTpPDbm
-	35rRwTkxSivHZTKyelhx3I/uEO/haS+IjfeW99J92v5AYWSIUek4f21zBuZ8ykk00EQ2/5Sfz90
-	caRkpA73eTp1ijsb5h99FBFtwYnJHHPJOY1a0sgyky3PkzcxQPmvn6KP13nDxO8UVqAMD21Zo4L
-	fZXeS6CsUW+f8/ZX+Y+LIfuWCIeVUpVyQxwKVvfZRG7Dx+AkXY75PicQahJz+U8VKamNBB8MmsN
-	NbBrwQs4TlnaO7rjlDxnHxcaFp59IQh65sqFy/EecZoMsxkHEmSZgt3xFEPXI6UQvIWcTNKctDM
-	yKanEKnU7LT6aJcAqgkklDGZfun8Q==
-X-Received: by 2002:a05:6808:aaa:b0:4e6:1356:c72e with SMTP id 5614622812f47-4e61356ccc2mr4802789b6e.51.1790623436516;
-        Mon, 28 Sep 2026 12:23:56 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:45::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4ebbd25cf71sm2396331b6e.16.2026.09.28.12.23.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 12:23:56 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Natalie Vock <nat@pixelcluster.dev>,
-	Tejun Heo <tj@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v6 RESEND 5/5] mm/memcontrol: add stock to the memsw page counter
-Date: Mon, 28 Sep 2026 12:23:48 -0700
-Message-ID: <20260928192349.3432886-6-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260928192349.3432886-1-joshua.hahnjy@gmail.com>
-References: <20260928192349.3432886-1-joshua.hahnjy@gmail.com>
+	t=1790623570;
+	b=EaKY0e7SZvarONnNM7v1/C5BUSK9FeVEifjQmppSBWmuZWxxPAgjxO2ytCvJqzul3GNG1L
+	6ADFohiSppaCFfVJU2c6FtfjJJc9r9+cJuyJXaU9bZcy4qTGzXvL+BE8SH44cB5eB4ENET
+	tOHzW5eWIuMPyqPGvH+npJ8L0BRYZCY=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wcp7cHX6;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C7E1C41831;
+	Mon, 28 Sep 2026 19:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0613A1F000FF;
+	Mon, 28 Sep 2026 19:26:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790623568;
+	bh=0Y8OPyB+lH5YUHprZNR3SaW3cfSHre/dvyOuPKtpY6o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Wcp7cHX6LWHGsQaR9T/tCd3pP+3Nwpky2kHzT10MTDkKhmA8MW27LMPfnHJWAK8YC
+	 +vXO4EQfwcr3lSIQ1GPZZy2+hy6VH23tqE8KfCjhgZAJ0QKIAdiG5J+t4BFI0+uLg9
+	 KO7aGLZ8hdbZ+QSsWx3hYZrL8/r5YM6CN+AB2mwngYdlvTUXfd15BksKOrruq9yvvZ
+	 TIefRcYgE8qu3JEYFQgUw57Mn63WPUXYwIrFppx3c6UIyOl7JZWzlGzLWob3PCk/+O
+	 EPLWWcNcONNuYqNUSC7tCX5D4iB/ual9oq/UXdC2DfBrj+FyQTBM1hX24JImxBGYY6
+	 wVpQ6xWYlCFPA==
+Message-ID: <335f5274-7174-4fe7-8d29-37a1ed26147b@kernel.org>
+Date: Mon, 28 Sep 2026 21:26:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 89C0B1A0009
-X-Stat-Signature: 9hd5p7kodxayqzb7oukrjw5ybrjybao1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 05/13] mm/collapse: state what a collapse may do in the
+ policy
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <20260928100630.21870-1-kirill@shutemov.name>
+ <20260928100630.21870-6-kirill@shutemov.name>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260928100630.21870-6-kirill@shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E98EBA0004
+X-Stat-Signature: y5d8pxs6mtfixt7i454rfzea8e68hgy6
 X-Rspam-User: 
-X-HE-Tag: 1790623437-62763
-X-HE-Meta: U2FsdGVkX1/BUp3y04vTH+QjsMwKeHRlxAdPDNpTE5t8iQGqKKRXg5nb/uxDKo1sMgr3tBN/07odcPpCYI+ls6yBUjEqNw4ledTjqNwzrz6tCdp2s1tywSy1W8ENe9zLgXVv7uhRxHWnBRdNAG4Y6t5lIObmqTCyVG4s2Zr3JPc5XlELCJqqMtFExF1eVwuLgM0f9rba/Hs9Y5+zgCu4lK/lbPYGFufYE7XxRmcnGP4d2VCRJKNrlc+ah2OP+J3uYvqaFdrjFGL36ea663tRZH3BAHWLXFjuhilGIHCOQ8gT3xMAESV+yUwsnXpjvVcjfT5c/Dm7yoSnywGbBi4Ie59pwqKDdw8WUhTBBZRSp+Yp52t0ZUoebFLLdlPpk9EH15Ro0m7onu+SRYC2mFo8erpfbktcueHUi+YoAaZNnlvaoH3KP1uKWxj3YZIVv+KE9mfTWb9bu7BHzeKdSMnKB12e2dSah8om5froaYQGSw8/BX/nQNO8l6KVExphpwu/RJUvfILpdRj8X/7l/fe2yTMEqFBsz2pa+qXbglSXvgJrkgIySCGh6vivZPLsAbAblcEEB3HoYh1qDBYfMvX4LzuepfzUiTA5TzaWujm86bTREQKfHtlttYbaLwJSJC43AuPIcFYeohyFldaS5nyjTIXfCHhOCfee5Olq3kYDGntuEZAE3lOC7j/pF6gRVEi0sqXMRd83DhBjBMv/Zn0SrJDA4BwsU33jS3YgP9R5oIbbN1vvyK/BMRj7g8KSpzP5gjTKKD2uo9RqDbZ9ID6TSajbi9I34fo02Jr8f+WKNTorg04onlwYSbyF39uQbwVFV4+huGESMNQFYr//794ph7/aiHwNIVKKeIxYsu2FSVQVemxDlzxsdEV7U9wPwqphqqszX2C9rfPIKTUIGOf+BoeJnWZrN9yeG6eRWqCw2tgr+/mmT+bkF8tgYsCXLEBdMBKodEqtnp+qm81Ltk1
- zzjYdze6
- 3YXoPd1f3wqSyrV0dzlz8ttOgl33nOHC/Ig5kYTOl9+BK2ir1pJXQcNepOiIPXYtFkLRXrAgouxBELdYAE4HrqIzTlQ31XcyA8TNOGA/H+UHAduHMrD3rA3BfCaUnhjYccilMNZ+ZLe5OKPB+vW4Fmen6oRp7+ZqD1dGsj/vWkf0WwkH3lUK/8NUJbVo52kyHHZ6ObgwwTbDULK8VnZlhVO5gnjAhe0tYftyO5KwKxi1Xb3jvEfxuBgMXx6IpwNggHn8/TL8YQhPE2689dCzGEHruYQW8KS5z4dtlDybeLgNOSutDjP0lCuCthL14dyywCCcRehJuynypk3+cUEw/2cV4LiST4nk7p7HMN88eGGhDtUIDuCuUk0HHTo3QIl4s0YH0urEvfsickanGgjSEpVHaA/fibL7vp12oDawuuHhvj6ZMqY1b7hY5cIjiYPnjD2spn2MLu2XdncuQtYoUZRuKcOPHF8BQ9pbBECifH25S5dcQiSzWW7bDEw==
+X-HE-Tag: 1790623569-870604
+X-HE-Meta: U2FsdGVkX1+PT+elfjG4IGdQQgtvokdfQEvqvk5SsvD3Q02/7kR5FiJ6tZ+cmaAK+mSiSj/E/lB1lsK1YHtGxlUrPi7fZZd/4I2JnatmqN7GWhDYnbnCWYmmUWqYVgBBrUVj1lj47fFCrySDp05KN0ymfuiGf25MH0j754b6C+Flbmz8FHnJ8E1ZB5h5VeUzRhs7BrxjHLF3XJ7Y9cv4kLxAovkTja52K37HjTyN52NcOpK6smOXAOWUBiewsK1AaBhBqyDINZKdL2a/GG9mk2HZLMHGWgoUiAJzjXHvrHSqpGrruCYL39LsRHCREupYKPTuaoU1NTfIET3ETB9qNH20jlEcVBLfE18iDEEm3g40DhpG7P/zS/cn+qRkOXqFCeu3j4QOLBBsoLDDhvkVl9BlaGHtoQFk7E0vfjRTosvf7N+ApHMY2fD3BgvWQttBSpi2BXRtyA0NIhAHX96MYdSn4Fqbk5ZlxeisvsS15UlxGn/Qyv/BLFE4L55U5lakoyCgvgHYzxlr/HIkIqETqmZbcO9s68j8Muri0+ctF7t1uR3/pyxldcR7pnR1EzR0H6IjuCTMDp4ywueThjFYzWcCrQ7E1p2RofX3yADIuFRI6oR6D84H6yvSTpQzLvAaTg650AamLJU3VLFjFAm/PnyViFMHiqlpENxduoFsc18e+pcK68sFYoJ0rAiM5jcq6sHs3swac1fmdzGIALcq9J3vWzG+AgtEvqJajj+3F/Z2iJJkHZND2FT4ShnHsR348hH2yljRXIrBTq/4OXugYXETcExoFLJIItY1zzBeXSAhQO/+O2xmOVG9yivt9mC8WiiMrt3IkOc9hJVYP5laWzV2nt2Q8rbWtwymOQL8lZanuIOrOgzJi3vevXrwkVvr8p+00c1i8NK5yBp/47Fo1RFMZmibJZ3JWrt8swZsVJ0DVS0/LCWvpj4x6KEy9QftEHJLIDrPFpTzIpQQoI6
+ qLMwjSBH
+ BCcHgqJQ9MMI7i6E95m8wjNxhrYuIarmsZ+SC0MXLbzcSzfjD5zbPwRUCHuFPcnfwmRbNvDFMolCFdo9EPfHb3GkGxQdeGmHduS8EM8XVhcb05j7eb2hdoceoie2q9S6Sd3vg/ggk/DThGU5f8gKNOQmYkSbrhzezKUWKEU0ckGPYhH1VflzB347TKPy/pxEFAmFfMdnc4WaOodvhR+HkxvXDVVq/bDlAdjwtKZBeng1yvJMx8RIdjY0WDLT3DutlfaOIw4ZZHfdHDZJbzUyUET6cS8vwyMxaoRyB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,158 +146,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Attach legacy memsw page counters to their own seven-slot per-CPU
-stock. Charge, refill, drain, and hotplug handling now operate on the
-memory and memsw banks independently.
+On 9/28/26 12:06, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Tests scattered through the collapse path decide what a collapse is
+> allowed to do by asking whether khugepaged started it.  Between them they
+> settle:
+> 
+>  - which VMAs are eligible, and how hard to try for a folio;
+>  - how many empty, swapped-out or shared PTEs a window may contain, and
+>    whether a sub-PMD window is held to a stricter rule than a PMD;
+>  - whether a range has to look used, and whether a MADV_FREE'd page is
+>    left alone;
+>  - whether the PMD is mapped as part of the request, and whether dirty
+>    pages are worth writing back and retrying.
+> 
+> None of those is a fact about khugepaged.  Each is something the caller
+> decided before asking, and the collapse code should not have to look up
+> who called to find out.
+> 
+> Add struct collapse_policy for the caller to fill: khugepaged from its
+> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
+> Every test becomes a read of a field, and cc->is_khugepaged goes, having
+> no reader left.
+> 
+> The PTE limits come as two sets, one for a PMD-sized window and one for
+> anything smaller, so that the helpers pick a set for the order and read
+> it.  khugepaged takes no swapped-out or shared PTE into a sub-PMD window,
+> and empty PTEs only when the knob says all or nothing; the warning for a
+> knob value in between moves to where khugepaged fills its policy.  The
+> fields only one side reads say which: anon_ or file_.  David Hildenbrand
+> asked for both.
+> 
+> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
+> call.  That is the one change in behaviour.  The max_ptes_* limits and the
+> defrag setting behind the allocation mask are sampled once per pass rather
+> than on every table.  A table scanned early in a pass and one scanned late
+> are then treated alike.
+> 
+> collapse_file() also drops a NULL check on the collapse_control.  It has
+> one call site, reached only from collapse_single_pmd(), which dereferences
+> cc unconditionally, so the check was already dead.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/collapse.h   |  41 +++++++++++++-
+>  mm/khugepaged.c | 147 +++++++++++++++++++++++++-----------------------
+>  2 files changed, 118 insertions(+), 70 deletions(-)
+> 
+> diff --git a/mm/collapse.h b/mm/collapse.h
+> index b115034d9018..dcd117071955 100644
+> --- a/mm/collapse.h
+> +++ b/mm/collapse.h
+> @@ -45,8 +45,47 @@ enum scan_result {
+>  	SCAN_PAGE_DIRTY_OR_WRITEBACK,
+>  };
+>  
+> +/* How many PTEs of a window may be missing, swapped out or shared */
+> +struct collapse_limits {
+> +	/* Counted over a PMD-sized window; HPAGE_PMD_NR means "no limit" */
+> +	unsigned int max_ptes_none;
+> +	unsigned int max_ptes_swap;
+> +	unsigned int max_ptes_shared;
+> +};
+> +
+> +/* What a collapse is allowed to do, decided by the caller that asks for it */
+> +struct collapse_policy {
+> +	/* Limits for a PMD-sized window */
+> +	struct collapse_limits pmd;
+> +
+> +	/*
+> +	 * Limits for a smaller window.  Its max_ptes_none is either 0 or
+> +	 * COLLAPSE_MAX_PTES_LIMIT, the latter meaning all but one PTE of the
+> +	 * window whatever its order; any other value counts as 0.
+> +	 */
+> +	struct collapse_limits sub_pmd;
+> +
 
-Factor the common drain scheduling into schedule_stock_drain() now
-that both stocks use it.
+Yeah, this is cleaner.
 
-Keep the existing direct memsw rollback when the memory charge fails,
-ensuring that failed allocations do not replenish the newly
-attached memsw stock.
+Skimmed over the remaining stuff and nothing jumped at me
 
-The separate banks can hit, contend, evict, and drain independently,
-so their raw counters can temporarily drift by their cached amounts.
-The previous patch preserves the user-visible cgroup-v1 invariant by
-reporting memory.memsw.usage_in_bytes as the larger raw value.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- mm/memcontrol.c | 62 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 46 insertions(+), 16 deletions(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index e666572a7c7cb..6cae2d84f37c0 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2070,6 +2070,13 @@ static DEFINE_PER_CPU_ALIGNED(struct page_counter_stock_pcp, memory_stock) = {
- 	.base = &memory_stock,
- };
- 
-+#ifdef CONFIG_MEMCG_V1
-+static DEFINE_PER_CPU_ALIGNED(struct page_counter_stock_pcp, memsw_stock) = {
-+	.lock = INIT_LOCAL_TRYLOCK(lock),
-+	.base = &memsw_stock,
-+};
-+#endif
-+
- /*
-  * NR_OBJ_STOCK is sized so the entire hot path of obj_stock_pcp
-  * (lock, accounting metadata, nr_bytes[] and cached[]) fits within a
-@@ -2174,12 +2181,30 @@ static bool schedule_drain_work(int cpu, struct work_struct *work)
- 	return true;
- }
- 
-+static void schedule_stock_drain(struct page_counter_stock_pcp __percpu *stock,
-+				 struct cgroup_subsys_state *root_css,
-+				 int cpu, int curcpu)
-+{
-+	struct page_counter_stock_pcp *pcp_stock = per_cpu_ptr(stock, cpu);
-+
-+	if (test_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags) ||
-+	    !page_counter_stock_flush_required(pcp_stock, root_css) ||
-+	    test_and_set_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags))
-+		return;
-+
-+	if (cpu == curcpu)
-+		drain_local_stock(&pcp_stock->work);
-+	else if (!schedule_drain_work(cpu, &pcp_stock->work))
-+		clear_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags);
-+}
-+
- /*
-  * Drains all per-CPU charge caches for given root_memcg resp. subtree
-  * of the hierarchy under it.
-  */
- void drain_all_stock(struct mem_cgroup *root_memcg)
- {
-+	struct cgroup_subsys_state *root_css = &root_memcg->css;
- 	int cpu, curcpu;
- 
- 	/* If someone's already draining, avoid adding running more workers. */
-@@ -2194,21 +2219,13 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 	migrate_disable();
- 	curcpu = smp_processor_id();
- 	for_each_online_cpu(cpu) {
--		struct page_counter_stock_pcp *memory_st =
--			per_cpu_ptr(&memory_stock, cpu);
- 		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
- 
--		if (!test_bit(FLUSHING_CACHED_CHARGE, &memory_st->flags) &&
--		    page_counter_stock_flush_required(memory_st,
--						      &root_memcg->css) &&
--		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
--				      &memory_st->flags)) {
--			if (cpu == curcpu)
--				drain_local_stock(&memory_st->work);
--			else if (!schedule_drain_work(cpu, &memory_st->work))
--				clear_bit(FLUSHING_CACHED_CHARGE,
--					  &memory_st->flags);
--		}
-+		schedule_stock_drain(&memory_stock, root_css, cpu, curcpu);
-+#ifdef CONFIG_MEMCG_V1
-+		if (do_memsw_account())
-+			schedule_stock_drain(&memsw_stock, root_css, cpu, curcpu);
-+#endif
- 
- 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
- 		    obj_stock_flush_required(obj_st, root_memcg) &&
-@@ -2235,6 +2252,11 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
- 	stock = per_cpu_ptr(&memory_stock, cpu);
- 	page_counter_drain_stock_fully(stock);
- 	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
-+#ifdef CONFIG_MEMCG_V1
-+	stock = per_cpu_ptr(&memsw_stock, cpu);
-+	page_counter_drain_stock_fully(stock);
-+	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
-+#endif
- 
- 	/*
- 	 * A drain work queued before the CPU went away is executed by an
-@@ -2538,8 +2560,8 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
- retry:
- 	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
- 	if (do_memsw_account() &&
--	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter, false,
--				     NULL)) {
-+	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter,
-+				     may_batch, NULL)) {
- 		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
- 		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
- 		goto reclaim;
-@@ -3018,7 +3040,7 @@ static void obj_cgroup_uncharge_pages(struct obj_cgroup *objcg,
- 	if (!mem_cgroup_is_root(memcg)) {
- 		page_counter_refill_stock(&memcg->memory, nr_pages);
- 		if (do_memsw_account())
--			page_counter_uncharge(&memcg->memsw, nr_pages);
-+			page_counter_refill_stock(&memcg->memsw, nr_pages);
- 	}
- 
- 	css_put(&memcg->css);
-@@ -4170,6 +4192,10 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 		memcg->memory.stock_css = &memcg->css;
- 		page_counter_init(&memcg->swap, &parent->swap, false);
- #ifdef CONFIG_MEMCG_V1
-+		if (!memcg_on_dfl) {
-+			memcg->memsw.stock = &memsw_stock;
-+			memcg->memsw.stock_css = &memcg->css;
-+		}
- 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
- 		memcg->memory.track_failcnt = !memcg_on_dfl;
- 		memcg->memsw.track_failcnt = !memcg_on_dfl;
-@@ -5798,6 +5824,10 @@ int __init mem_cgroup_init(void)
- 	for_each_possible_cpu(cpu) {
- 		INIT_WORK(&per_cpu_ptr(&memory_stock, cpu)->work,
- 			  drain_local_stock);
-+#ifdef CONFIG_MEMCG_V1
-+		INIT_WORK(&per_cpu_ptr(&memsw_stock, cpu)->work,
-+			  drain_local_stock);
-+#endif
- 		INIT_WORK(&per_cpu_ptr(&obj_stock, cpu)->work,
- 			  drain_local_obj_stock);
- 	}
 -- 
-2.53.0-Meta
+Cheers,
 
+David
 
