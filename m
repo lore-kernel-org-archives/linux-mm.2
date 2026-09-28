@@ -4,92 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF9DC9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:34:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC669C9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5438A6B0096; Mon, 28 Sep 2026 05:34:02 -0400 (EDT)
+	id B357F6B0099; Mon, 28 Sep 2026 05:34:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47DF76B0098; Mon, 28 Sep 2026 05:34:02 -0400 (EDT)
+	id AE5F16B009B; Mon, 28 Sep 2026 05:34:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 344DA6B0099; Mon, 28 Sep 2026 05:34:02 -0400 (EDT)
+	id 986C86B009D; Mon, 28 Sep 2026 05:34:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AA336B0096
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:34:02 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96DCA80156
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:34:01 +0000 (UTC)
-X-FDA: 85262659482.17.B79D0BB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B70A20006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:33:59 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hBYTnntk;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6FFE66B0099
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:34:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01362A38DD
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:34:03 +0000 (UTC)
+X-FDA: 85262659608.04.EFF35E8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5975240008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:34:02 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9E6n9xV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790588040;
+	s=arc-20220608; t=1790588042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bvxZAPrh873tByEC/VSENyOCS06X7bQblLdWzpYhHiM=;
-	b=DB7KpKIsdUJgC/wCA9nPeolL1h+JjLTIcJI+xP4uI5fFHKkZjWvCTBte91Dwk5DofFXk5v
-	VQPkwgStvpwXlcKdQW9hi/5U9T96179joF9dWjVsu12GttEUC7rpvRfdntMUxovhL8Xak1
-	ulLfjjRq2/ZNhFcl+PGX+ue1TurXP3E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790588040;
-	b=vB8h8lHA9wxlmtk2lYW24fRuQrfqn08WTBDPK9vnizaGO3THDNDyubTH2OvPRpGdwPVdiT
-	p2OgEoeVG+Z0hZVIvQFd/AVqOV8x9n8AvFXm7gMO1ik8ip6kUv2NOgZgiE7R0cvAOWjBFX
-	oGK+tiJOVWeU1DoN2sh2maH3LY8S8io=
+	bh=p5MTFE9QQQXmql1Ff0uVbm3O82yXZG24baiyBpjdw2E=;
+	b=GNclV9JvYOXmZOTeZAMRJKuYjq5sN1HDFJdZbbkr82iSA0atK/wbgxvocHyZaaGaA+M8kf
+	iWYpqhKI+4FPMsEMs7iyw7TnIP2UzHb59tEXhwv3Q7XbrGXtaAxexwcAUuuQAfC+bbl8Fe
+	m2DhgzH+fWgPzpzXTwQSnGOmy8a234M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hBYTnntk;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O9E6n9xV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790588042;
+	b=h6bZ0MpcWXp+owBMxlUad/SBO4QJOP2bgmYkJSPEqcvE9mL/SLbKdg7RUIsLU6oRj5Iogs
+	+j+fC1e5oyexqkH4Vud3qUBCRBek9BXInZDKVOxmy1sTmZV3bziuowcvSXTg1rrR4WmGG4
+	cbSAQaVzEdzPFYacmI5cf1L9nZulf8c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A2944600D1;
+	by sea.source.kernel.org (Postfix) with ESMTP id A545343D14
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:34:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01941F000FF;
 	Mon, 28 Sep 2026 09:33:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C291F00893;
-	Mon, 28 Sep 2026 09:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790588039;
-	bh=bvxZAPrh873tByEC/VSENyOCS06X7bQblLdWzpYhHiM=;
+	s=k20260515; t=1790588041;
+	bh=p5MTFE9QQQXmql1Ff0uVbm3O82yXZG24baiyBpjdw2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hBYTnntkncMsChVyMJu37KR6cC45yYnLGJ16rQWkS0H11rc7ApcXxyQeC1g05Vm4h
-	 2O8AOpqSLg3yXcuThqKfymMbpru2pSBdnlfZZhOh/LciGiFE/urZErF2O6Xiba3Ob4
-	 hOrF5btSePr+E2Us3ViLVWgUCYR1bFxessGdeAIbQsxsWEC0Ow/SIxNU3bZPUJ627M
-	 mgIiCflTx8vx8jPKM4WFBjfSX9N7EAlR5WXYywdonfWJj7Z/aDb96nwf+bbohPLI6K
-	 spm2IHi1ncYXUEi6DmeR88Sxrp5ZWgyLhiSgOMUwLU/DEHDq6rytfaZqySrlaXGpuK
-	 N3eVpkMPvZR9Q==
+	b=O9E6n9xVHmI4qghgOJVq+/aVaJ3uVPG9P8GSDc9kmo9JcGqxlY1Qe7rFkowHkSL5D
+	 jzFIwR0AdtIvjcA/8qaEyXmibfWE5wV0EKbEiv3CNFXa4W7nXpaO0Kh7Oor3ZFXU1c
+	 elEye2koBx7wgPTiv65iQVyvam9fL187swWSNO9E3G3fY6l01uckAB8gTy8Dp7TY/X
+	 wzGFDybTjwSC8Y5K++v5AXq5078d6oGGsbiRQFE3oM0XM8wZEWXk12JUQ9bW2LKN94
+	 Uhmc7spOd/9CQ5WwC3M+XjuBGGX97+FYuoHn1XGgBUJ5Zp/TL2iGjHuQgsp7H9FTmH
+	 MLZjSlb5byjhg==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v5 4/8] mm/damon/tests/core-kunit: test quota_goal->complement commit
-Date: Mon, 28 Sep 2026 02:33:36 -0700
-Message-ID: <20260928093342.16584-5-sj@kernel.org>
+Subject: [RFC PATCH v5 5/8] selftests/damon/sysfs.sh: test quota goal complement flag file
+Date: Mon, 28 Sep 2026 02:33:37 -0700
+Message-ID: <20260928093342.16584-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260928093342.16584-1-sj@kernel.org>
 References: <20260928093342.16584-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0B70A20006
-X-Stat-Signature: kd3npj3t4g6rggbnbiqccz7nzycxgqfb
+X-Rspamd-Queue-Id: 5975240008
 X-Rspam-User: 
-X-HE-Tag: 1790588039-697121
-X-HE-Meta: U2FsdGVkX1+hOE8U5ZoBDbEKveST5UGKyIgen/pXlY9ZVqxM8+gfA6rRGI7NX3grQJI3IfXbxUUhAKY9689+imRicHN5hWY3+Iz3SrMUab8USDxekiEekodV8CQ7N1JJ7+/suVvYOVde4jx2nDWglOpsbe7BEgukY5+a5B9xhEHQFNO+1U1X87TwEUQsBXWjgLqEcndo7VgzJJJGMrlpuXjFLO9g55bdKVHxMGMr3XgNiHyOrsaMaNZsMpCn0NeKnh9+v2oGF0Cfnut8GeSs9sy1xzod1tq7pSnSX7qWODkvMaBpRiy4ykGqpQuhAQTaYSVNE+ZbrJRZTuEMTSz1whhYmqkLc8SefufU7rDTZL1zzPwkvR5ZT65gIzjMRQEO6qwg3QKDvPBTLgkYDG0u0I54g5SYlBKCNMtxSSQisElxHXqe/9xOgvvWsvLG0xeSAYOwSZ+6tZNPnjMGIGQdymkUYFVuEm15QOrLG9HbNIe2OlvjwFP7XxcRDRV6h1crLoVNcRvSKm8lGadKct0kMac8g/XiC1bLZgj27Ses1VxcCxDzxce5j9lZU0NZ03JLWBvkYk0ulRoKZyQxQFjkg/eyjX/7ac8gSA/5WezSNpuXem6sf5NgiUg6q2bXeQtQRvUkPs0pHRoNaqA7hKK2r7oF31sz8MtbBCZoaUw++EzaF4wyNRZidjUGqKKAhG26McKMs9ZzkhSENcVz7TKHaqE2+Bgvdp6BNwXZWfKKTw/eYRr4e8aMkqD7lCYvnAI35qycrJ5ulQjaRhRQsyqUNHmIapJfynTIl0skq3F+bVyIunGeeEiC9T9Qimc0i2DMaBbZkW89RROzCQhy2XLoLGh8RucyOUYd5EngNboM26QRFiAVLbX/eurEU8cnst8ze/KeovhkF2S6O0Ivq2ghqINPob8WqO4B/tzPNK0OJ/LqN1c4Q92lxiSOluZzhcUubva+BAJW5uCq7hHiNR0
- Eld886b6
- W9ROw7e1dnChCY3TrcNKNoOLondHFSmPQg/1dUGM+b0GnjTelZat7KMA8sR4H3HeuXJ3qC6leolD9vpgKi5CVrWOi9AK7U+A8W+UZDnObbuHMmwFNtTEiYrpMtMZ7etkUIE5jSsXkM0P2AzDPOboM/7+5JNYOYr+f4jzcWpcx2Yov4BfawrxO97+go5dtRgTc/K+1B6GI6h8OdyHET+nct4yt7cg5aeMGx1IxA99UDcn7+LsV5dgbOAHkS55ifTDI8hIpAkPni7x3G1k9/IGL2AR/QA==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: z1gx8ookpn8kf7nopuoyffw4dko1qom8
+X-HE-Tag: 1790588042-607560
+X-HE-Meta: U2FsdGVkX19LYesCNs7H9XTGABGfxwVeuX1rFk5EQ1/QX3+K9m7RUW2X5MVwnRKhSE6EmzPTTYT5/b52fsdjeMJdY7eAGGKkiZbkZvPNB75KTJl7kahefzpX/rV3wwewRyE8c1KzC99qNMokxdhG9EZCjiW/7Gyj5c6gV2nSewvxOLS8c5YPtAhGLhv2UoGRn7yYDVFl9qSCucioZfGK08GCqZDYFjhErUdi7G0wBuOFpX6jgRwAyt92PkBlMJZTbv3xZKPocKjHfbePGvdzlzww2EDp0CDheXXzDSPgaHPVQnjopa1/KkBD12R9o8YLs9HEtF7uU5BAEyJ7OZUS2W/kwXq7rqtBG2/gZUr/tJ7HWCcNgvYrhwl9YICIC1ceDEqMSkPFRiAmxs8gtYj6CYF5UhV6UIKCBHKyYf1lb1d+LREBQ+35rJ75Rdti+VEf/1h0sYi4o/0viatVmnCshi7WMDbsNcQeI+61SPH0QuMoVnnqSQdUrPX9B+rcMmUkQ6sf+E42Mp0CxpitlSKkFEXmThsLvOoQ9CHERws+qN5/uEu9Zho73N4QVvbAnx8XBYNm0TehCI3+hCm3PiGYp+821NvaE2f6IScqyw0+UxwByQ2uDT6WMMim8gy5PF5Os9n+g1x2Z9NmanWdYgiPMobka8YoIx43pRCDGQdzFY50CH4Rca3fRcxNvWiwwrgYOOV8H5Ff8bKZevuRAKOW9OtBYcOb79TQfAGYqjyFCtldUIXheqDw+Z0oPYHYH6fksq7iQa2yQsTqBb1YUhtZ6hzYIJQ9l3HTqMX43mJC4BWrKJ02T5BNqkAmMcWnFcsXvSLSiS7OPPhDVh+2MP+nftx+pf//4EoDhcGZocr7GGXCAMiKPIxrACiIpX3R/cxfbOt39tuh40xCYvZ2ZY58SsgCT/rtkGS6cuEvnULLJ2I8T3gkbXDCEffcYzsyFDQZsYuLduEwlZAD4giC/O1
+ gu3I/GyC
+ Fnm+b2co/bN8DhGEthHiYL1c8eGhlWQDfYallJUaTNOc847+cNsCI+zc2jT3O63Zp1dNM/ZPb2TLOKsCQgMF5naK+0445rp+08CMb+g0paUr005oE10wnxjeZ7gRuTCEybMdzNrsjn4k/QKAakkzm07pJgABbJcudXT2gu0JpZKwj0faQ3MZXEajcdnqK2jT2NHSW5ztwsVMeRuEQXnV91857XeO8fzApUyU2ggFXcMq35wW4Z38xqcI0WOKZledNL+BxQb6UDeTwPSoGGJtr6LNlnWZaFPzTFhUdKcezLqpl1Pw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,35 +94,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Extend existing DAMOS quota goal commit unit test to test the complement
-flag.  Set the source complement flag and confirm the destination is
-updated to the given input.
+Test the existence and the valid input acceptance of the newly added
+quota goal complement flag sysfs file.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 945037fe4be9..251b300eaa50 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -819,6 +819,7 @@ static void damos_test_commit_quota_goal_for(struct kunit *test,
- 	damos_commit_quota_goal(dst, src);
- 
- 	KUNIT_EXPECT_EQ(test, dst->metric, src->metric);
-+	KUNIT_EXPECT_EQ(test, dst->complement, src->complement);
- 	KUNIT_EXPECT_EQ(test, dst->target_value, src->target_value);
- 	if (src->metric == DAMOS_QUOTA_USER_INPUT)
- 		KUNIT_EXPECT_EQ(test, dst->current_value, src->current_value);
-@@ -862,6 +863,7 @@ static void damos_test_commit_quota_goal(struct kunit *test)
- 	damos_test_commit_quota_goal_for(test, &dst,
- 			&(struct damos_quota_goal){
- 			.metric = DAMOS_QUOTA_USER_INPUT,
-+			.complement = true,
- 			.target_value = 789,
- 			.current_value = 12});
- 	damos_test_commit_quota_goal_for(test, &dst,
+diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
+index b66593c9ac47..1cc7ab2d7e22 100755
+--- a/tools/testing/selftests/damon/sysfs.sh
++++ b/tools/testing/selftests/damon/sysfs.sh
+@@ -212,6 +212,9 @@ test_goal()
+ 	ensure_write_succ "$fpath" "node_eligible_mem_bp" "valid input"
+ 	ensure_write_succ "$fpath" "hugepage_mem_bp" "valid input"
+ 	ensure_write_fail "$fpath" "foo" "invalid input"
++	ensure_file "$goal_dir/complement" "exist" "600"
++	ensure_write_succ "$goal_dir/complement" "Y" "valid input"
++	ensure_write_succ "$goal_dir/complement" "N" "valid input"
+ 	ensure_file "$goal_dir/nid" "exist" "600"
+ 	ensure_file "$goal_dir/path" "exist" "600"
+ }
 -- 
 2.47.3
 
