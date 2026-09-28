@@ -4,98 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F489CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10116CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 10:06:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0D346B008A; Mon, 28 Sep 2026 05:57:56 -0400 (EDT)
+	id 26EC16B0092; Mon, 28 Sep 2026 06:06:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE5106B0092; Mon, 28 Sep 2026 05:57:56 -0400 (EDT)
+	id 2442D6B0093; Mon, 28 Sep 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C21F96B0095; Mon, 28 Sep 2026 05:57:56 -0400 (EDT)
+	id 135696B0095; Mon, 28 Sep 2026 06:06:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 990F26B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:57:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 21067A42FA
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:57:56 +0000 (UTC)
-X-FDA: 85262719752.23.62AC83E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 8C3C520004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:57:54 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZhBP8ZQ7;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B14086B0092
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:06:39 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0B976A0173
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:06:39 +0000 (UTC)
+X-FDA: 85262741718.05.068501F
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 149871A0007
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:06:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="T /LZi2s";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="J/jYptmh";
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790589474;
+	s=arc-20220608; t=1790589997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gahcTOLE0N8cyBxKfVjqf2G88KQ6EJwfzOvB67dQrv8=;
-	b=tO9fPOYnrl7YhJmLElFqHUSn7YyslbgV6M1UDXlzcuQuDizdJX6sGoEiCddeZ9siNlbVwq
-	tL/EmnNe1eb0jR4Ezc/qdhaK3VCgr5f7W4utDudJvllwJl8Q90SdCydcfGtrzvK8mbGjlp
-	Io0IMBFklvJp7Nfj3wfiBzSgxYEO9h4=
+	bh=kcUsOL3101xiV9NL11+6UCDVa/c8zCTvs2ZvNLpRaUs=;
+	b=WFvW8grlg3kGNeo9g4L+5klpVlNNYFlc9445hvaoeWGk4BwxPUsLMzerjBVg4f9aTJE1Nr
+	W3zWgBLlgZM6DftSZQ4Fasrlb4t/b87lG7hO+e2Ag5koQpL3cOSo3GZILwtU7Fs0lEjnkh
+	V/+mF23SiXgHwLQJ158iXK0bkCzeJKQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZhBP8ZQ7;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="T /LZi2s";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="J/jYptmh";
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790589474;
-	b=Y+CI2gBkffR9CofQea7nTB260XQf1q/4jgAFHXj4X+La2UATsLymgYteY+fbYtsYdUuTnb
-	qESIKq4mR4y9bZ0MDs6T0tnoxqlANk/D2oq10kNSyrsv73UlnXgiPfgZecqdUyTNE22ouX
-	BGB5/F3a2GyBm3B9gOfs+hjX3+UE66g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C0AE43741;
-	Mon, 28 Sep 2026 09:57:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DEE1F00893;
-	Mon, 28 Sep 2026 09:57:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790589473;
-	bh=gahcTOLE0N8cyBxKfVjqf2G88KQ6EJwfzOvB67dQrv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ZhBP8ZQ7bV12wp22rpbYfnlD1HVau+UWZu8/dgQBY6zOsChjmQkcEWj/u7b+8W1Yu
-	 8ZD2XM4g2irbOb0k7JpUHTxoNfwS+CqQjvhUDW6cdvsrsy8H9DbOGUWPWreMsFH21c
-	 QN/dIes4q2CaXdIsQXBETt3JUUuMvit/pEiwHp6Y8e72LqVHLiH8wtLaEaoR214y5L
-	 19D/Wfv+SNxNo92bJ5CzE2H1SO8sQWWoEyFxLelUc9MzDCjmkccV+iYRHQFAJ3blgq
-	 dF25608NJaGJFrUNb09PsQtW5dUI6k11I9Ijk90qLW36hpCLqpH5rNxIzQQ3n6WgY0
-	 FB+lguVG3lIfw==
-Date: Mon, 28 Sep 2026 10:57:47 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
-	Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
-Message-ID: <aro6APF7jwSAvohf@gremlin>
-References: <20260915070001.113559-1-hao.ge@linux.dev>
- <20260915070001.113559-3-hao.ge@linux.dev>
- <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
- <60642a7f-2949-428a-8290-40d69c989a77@linux.dev>
- <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
- <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
- <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev>
- <b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev>
- <aq1noAdz9U3tXH_Y@gremlin>
- <aro5L-W-439tTICi@milan>
+	t=1790589997;
+	b=fuKnr+8MQfg9nhsl+hXd4gm3FlhkDOV2sbinRgP05HxZMEgoYdLDhiyXqlWRBgPDR9iz1c
+	F9eM5Hru/2EC1zqBEIyrZEMPRd8TuR9qFLOm2I2VWCqgNziyTAAwnSpvhD0vU2q2DshU5+
+	+F/X1uzWV+ohrtgiTXliTxs069UKPEo=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 8823B14000DE;
+	Mon, 28 Sep 2026 06:06:36 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 28 Sep 2026 06:06:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1790589996; x=
+	1790676396; bh=kcUsOL3101xiV9NL11+6UCDVa/c8zCTvs2ZvNLpRaUs=; b=T
+	/LZi2sg4uuBWkOjTyNhCVObsn/DS+ZLuyww5KBI+VR+LMoYmLG5qVxFC8DPJEMLU
+	zCg5ZSDx3XZnBf3o6tAnnlv9XjbZ27plLqBnQQ4Mf9bf/RTnwlOyTlirAwLicNJH
+	ePapL++6HhWEQYA6ODwWZ2qunWJXbRbqe9q1h4pnYckOItqJGJRcnEtxUNp1KCwW
+	ng3U62MKI0mjf9QOVsQ6ScOnc9E5V2qKhfZUFNmWG4t1FqvXrs3rpeLNEsl3mPdx
+	uhLSsX8vzlC6jH19/lOWaiB4CwHgI6a5andWwG1p5iLbKLnwaKa8GqyNjcD8BpWJ
+	C8TSvDDX/Y1tNE8OksbEw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790589996; x=1790676396; bh=k
+	cUsOL3101xiV9NL11+6UCDVa/c8zCTvs2ZvNLpRaUs=; b=J/jYptmhWRqiG/+5q
+	n4x+RmHp8dmJolILwLSCJFzPxbbLZHmFZVtponmj5hc8UQTP0VLUkdU9pxIRDLNF
+	xQS6u/I+0mw5hl6/sojXitXHjxVRzuv/DZzEHaWj7SxIeze+7dQGpX5Xv5VwLKic
+	C/usFjS4+GJXlZwkmwwvjJZM14uYEzJZxcBnl8ZF86OURQ5vtPhXPQ05PilZMhMb
+	I/jPBg/iMbNdn3o1dDrD9DpQqYiZRah4p0dIO/a9dTseCpjAr2JO7ARtUgslG52k
+	nkIA9oMCp2c6yY14BBU89d8y6nZhiZF+LUGovG5H6hrRHgFe3tKBLaV96AupCDxA
+	EvRQQ==
+X-ME-Sender: <xms:LDy6avLfqQjp-yK0TWiT6j8SaqKTBPrw8E1x9Zyks8_ardtQEHUk5A>
+    <xme:LDy6avGE5OeXHQCNGYG4qlWpol2lQ4D67uknTFgXTo66JeLXVQ_kJBTDNWto9tFHE
+    w7HyLqawVtAespFnRNSmdkgY7VqMQMnHF3Roq4N0QqMdMi5dbfYcdkp>
+X-ME-Received: <xmr:LDy6at28ylqVdclOEQ5rV8U0eF5QTex3Bt0oWVwx9Uyg5qbdBWDL5lnTxzo>
+X-ME-Proxy-Cause: dmFkZTF8+FzWl2kPFFw+2+MUnNndpG3Es29zlM3W8MqBD0QW9993JqL27RjsdWHL5iQTuv
+    8LHkef+10EFcRNyu6aMfBJblGtUMhigK1wvWUg5pa/T2F4HZOycwBRl+2S+z7tqw2cJfHU
+    gdsF/P6BOMqpKS9LZRm0d8oBtyKEEqCXwj8zji6pXjSixGW9yMDmevXCSXRhMug+RBOuj6
+    H/TPGEbj0UBxBpkklI8Q2dk1KPN1FfxQ05T6kAzB+fcPQyWzSSafNh6004OlOqdREfhbRG
+    BHI+j7BDMASDclZuapGmxVrXolh8JlQnm8Hn+THchpsYHB/1yAmWKg/yew9Ltzw86nEqaa
+    nkU2cSQL8qRENKHB4iLNlXxdqgyOVujeFZPY74aW8lk80wFKRFo5VNSaZ7AT7QmlDWD9LR
+    0yipAeB93S3lT7SuNh0By8tlp0OfFp2H8zgTSrQFo0KHX5n2NESmCyvNsDjZk8XaZbHIST
+    ZPBWSoO1tX2inUBxZBeekbSe37r41xaOOV2PulMgtKG58RnGeLhAV0T8OH5yiRIoqbrmVd
+    rE1verYunpxGQv9dp7hI2EwK8yDFx2fJJ/dWIgZxWZ5d1F2VtlbOGwI8/VX8tKwzmSYfE8
+    kXoTXNVhISb8KqFylRnZAVVbp+5Vyeo83tcqBZaBffEQeZold3dtspwRSUrw
+X-ME-Proxy: <xmx:LDy6auzQYrJrdyET1-xzeeFunAEG-S3GcTZMqTsqB-KXcARhxMbT-g>
+    <xmx:LDy6akivFgq_rF-Vc7qOEEZSnw63Q7QrUHYqFgykkCRvZuoyuPEUZQ>
+    <xmx:LDy6alztq1DqoAh5tn1TFl_P6zwpsHZQAmmCyfAe8Golq_2GdqNb6w>
+    <xmx:LDy6aqzX47Mg6uhRuYWVCKAF0FOCEOP03LYWqiKdFgAiKqzXOuM8kQ>
+    <xmx:LDy6auZLLy71yC652L2PG6mBw9wnLrjjhpSNO7UbUrJzrCQs6GPAUUsB>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Sep 2026 06:06:35 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH v4 01/13] mm/khugepaged: drop redundant mm_struct pin in madvise_collapse()
+Date: Mon, 28 Sep 2026 11:06:15 +0100
+Message-ID: <20260928100630.21870-2-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260928100630.21870-1-kirill@shutemov.name>
+References: <20260928100630.21870-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aro5L-W-439tTICi@milan>
-X-Stat-Signature: rzsqdc9qdaxf9n1mfaurypzafbntwanr
-X-Rspamd-Queue-Id: 8C3C520004
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790589474-182607
-X-HE-Meta: U2FsdGVkX1/Gpz6hnb2wdL5NfJ4CmRgb8ykjbKzCMMqzuOtcQVr+XUv4NN2JbgVJxpz3nwtyldRz3wXxfWvKZWvvjjyE1BV5oKCDh2tbwCcC6oFWJ4zvj8XATVxDSpXjQZXza3UpkBxPEADQcFl+FR8Gpz1PH05RjDFvGhfWoCsMwnTcJF7tTxAuQFOlkIOMUAl9aavE2BhngdoY7o93Tzpj1h6vMVqods+HVCEgUzi9x7sTbW1EcIm2LNN07LvA32XHmL89QXs1mecH+gqa5O/MlLFS434goXYbyWL8pAsXTZXyafG7SsIruWw7BMjG3+QJ1PGD6AZu7HSS0CvDhhRjXlYd68VaFxbBCq4Is1887mfGaRhYKYC5YhaDDfhKRzvB0z2OnwZV7U5hD368XFbY/Q3gi/tt3cQ6hQ9GRMVCoO5YfFKBDfq8Jl4CzpK54m1IFNa4OCQHhb1fYT2FGWK2brd+PipBIMxHk55fGiUsg2ZNkmzSmrff/+I8KUHbFQtClT/9MKuEEk8xzJDGiAu70Kxr51WqsXad0mm3WmxddIilVnn3rZVjncnqTOPRqpoquh0fXIj9rxh34BhxgYRPhQrM1UCujUK6XMmadB2CYRo8R0TrQTZlo6e1Kr1SkUh9bbAFrQpzX3DDOlvfa0YsMN/WFs18P1pbV1JIhgF6HThx6xWs+n+2v+BvDrw5IJgEeaw4CXdIxvTWlLSmRGJIuHt9vk5tTS5xUw9lxVaPR3gEZaMeNoQJAgYTXG6IRBiIO4atPAX1hGeeVrW6dmvA0REprzGBPbzaHOH+XSRBoJKIZEvY7hOzWYjBgabZUXOIeFFWARDYFGrIFkVRmf0epphJQbjo+jyKWnfTheQrrQStS4YDd347QRoZ20+uiLZ7vdgZ3ribLWsolEAZEmtA45Iy7KmJ/KKk6L8IMMpaPtxThdbm89P4I9bh2K6nuDk0G66/h3yODKPH+yr
- w9Zz4OJJ
- zuVRtn4MC1Efwx6NDAFJgo5ZDDUYwlHqHUr5IOEvIifyGiuDZx3ER7gmFNxFobJD/I+i6gYVTk4Fo2wEfhAEFpjzhcrM5bfMJlNBSKVWTutuwYTBFc1jrCnM47aTH/Bsj/VSSv2WVPo99XQNM9sr2Cwfuo45Z1caeayTHMIDElD1ohvoHq+UK0GeyL2RnM0ZBn+5+r7Pe5YttLTKEHjbTa2sMWTbvvFtCrHHSO1Lp5n0NbjSJKIAMc3E62gFr9AOGfbQ8padYjNV0DWm0NAC0qHQloUFSEDnSSuLXjLCQa4mCZqW8XGCPWQAMtyXG1dKIKrMK
+X-Stat-Signature: 96um9smgau4s9e4b8xq6s57gmmofg6b9
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 149871A0007
+X-HE-Tag: 1790589996-862754
+X-HE-Meta: U2FsdGVkX18Zw4F0mqOitMj90qrLxmhkQxgPF23IWMC7y/S6onvAhGFnaEM3zyS39HQbVtb4CmLrqm2hAWLZ+oQZ0a3jERn9BLeJN/REzBzPMcKgCb5RdM/qltnirULfsbZ4slWiaknJ3Yyl/zXAcH7aJpl1HgAjvls7032Iqj5C4ITiq7OX1PMMVqG95FfTz+FczjjRczvu8BN8I0UswnWeRzGtqEkytpp1TIEDz1WDg/8b0CbLn65vDD+mBrXmdE0x4Jw1A2LPSNQiJtvLrV2nThCMsPpNZatsExfXB0NHrpjACchF4kkfi8wyMcH0IeKURcUT5Ob8bHrkVQqArWsdwC/53WGpfhtKZLTTwkgaXQR8O1YQuQgUE4TqYPmf/mhD+Qd1duWs1a8jnYyrnGBYhmqsYA7f6rjcYlDuP4xKnu5Z6+j1886cfs2u+oVJeZA6FMj4s2D0xRrMylCXX+y9LtVFV/kb5aBJSkwAklVRyCeV67D72+GPmpeM3/CGRPGxpn2cT/OJhJh16Ho+1NbPSbaRMt1w+EgakJRDJScuSRXITwMlQteu23yAKZm+giIsMsQTTjr9kER5VXQrvyIjdvH3NLMR8vUQ1k1PhsdyAzYJukddb+y88VI4e0XLMMc8WVDNuSRiuoEUGkulVzc/mclX3QtwublmXnKSOF7kfDW+vYHA6e4bcbhK8B0OPLlxoWZ44VwQQwWckIXd0nmqWRJD54KlL9jVXMEqgiqk3Fg/eAClVL2PbSuu8POiEdFgWrPTr4bMyr2ZA4xbyoZjoNjasfeZTiKUBWpjKSSuQBop7SqpZ5s+UwZ62On5n2Jk0TcoGLRQ8zFVUXc219c+aMZe2v3XpDJ/oVMHmKpFIlJ7qKsKQLu0EUW/gGXaFaYtXFLgW4ZdIhc3/BgkflhoyjFr55Nz4brG4E1J/E93L4t/dnPQZFFfchgC4krBxL5EdipObV/Uh6lZviR
+ ZDBbMBNX
+ rbCFR3xN7v23IC9h8nt1k7JH3k29SclshYHC3HilOHl5iZRABDn4O9KYqVcXeFt3+3U63zuLGS8OmjBUcU5eXsPZtmvajMo+v8vk12oqjs/bqNDA2ugnTbfAYHzfECq5T95xxpQ/QA3cj6+YC7XqRRJtpc71WyszesHez6eSKritpHT4exmYD+9oeJJieLRIWKok8D8wQDOsWsSbdnmpsX0fwyG0zqTIBEn0c8EWffq+8u7Vi9ieRP5fBPymhxebZJmFg1QHC/ckz2eUswUCq87gRNow/kQddBtQlERe9x+s6qKdOy3Qn85YaVJ2K+yimFjOLfdtm2uJEtQi1Bh/pp/VPQvDA3y5aRYknV71AfQHAbs5gwff6fGU8RHReyC6LnCwTDZNw6vze7sKPSbxh1RqU8RmVIlsTv6ugLB6Bdm9fHl5AaJJEPW1iZ7Yq70JxovvyZ0/Zr4lvekYd1UnLF2YO1S+vppN+UaaNUWYIgHwlmjSt/Rr1wDYz3WoQnGOMtrPZlPaNbnR/yzaH/HoeuMKnGEugcUj5/QgO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,28 +143,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 11:53:51AM +0200, Uladzislau Rezki wrote:
-> On Fri, Sep 18, 2026 at 05:35:02PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > Looping in Ulad who is best placed to respond on this.
-> >
-> > Ulad could you look at the below? Thanks! :)
-...
-> > I think best person to look at this is Ulad as vmalloc is his baby :)
-> >
-> > Ulad, what do you think?
-> >
-> > Thread is at
-> > https://lore.kernel.org/all/20260915070001.113559-3-hao.ge@linux.dev/ for
-> > context.
-> >
-> Uh.. I missed this. Let me check!
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Thanks! :)
+madvise_collapse() holds an mmgrab() reference across its work. It is
+redundant. Every caller already holds mm_users:
 
->
-> --
-> Uladzislau Rezki
+ - madvise(2) works on current->mm, which lives as long as the task is in
+   the syscall;
+ - process_madvise(2) reaches a remote mm through mm_access(), which takes
+   an mm_users reference and holds it until the syscall returns;
+ - io_uring passes current->mm;
+ - DAMON takes one with get_task_mm() and drops it after the call.
 
---
-Cheers, Lorenzo
+Drop the mmgrab()/mmdrop() pair.
+
+Assisted-by: LLM
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/khugepaged.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index e13d233b9967..75c876acf527 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -3229,7 +3229,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	cc->is_khugepaged = false;
+ 	cc->progress = 0;
+ 
+-	mmgrab(mm);
+ 	lru_add_drain_all();
+ 
+ 	for (addr = hstart; addr < hend; addr += HPAGE_PMD_SIZE) {
+@@ -3285,7 +3284,6 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+ 	}
+ out_nolock:
+ 	mmap_assert_locked(mm);
+-	mmdrop(mm);
+ 	kfree(cc);
+ 
+ 	return thps == ((hend - hstart) >> HPAGE_PMD_SHIFT) ? 0
+-- 
+2.54.0
+
 
