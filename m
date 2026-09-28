@@ -4,99 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA06ACA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 20:37:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97529CA5FA3
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 20:40:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EDFE6B0088; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
+	id 02AB76B008C; Mon, 28 Sep 2026 16:40:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79DA06B008A; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
+	id F1D506B0092; Mon, 28 Sep 2026 16:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6902F6B008C; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
+	id E34326B0093; Mon, 28 Sep 2026 16:40:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 460656B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9FC491202E3
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:37:43 +0000 (UTC)
-X-FDA: 85264332006.30.1523D14
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4A7D1140007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:37:41 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wgwhPxy8;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf09.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790627861;
-	b=u1+6La6QVgmJwpX7/9HLNzE3mBE5u6CXp2Dt1O+rF0G4NhboRXMFU8m8GzMG1r+GpYbMZ6
-	WryHaoUaafvOCM7UEU1s7HdC37jS12LCwzxdgxFyTubxIw2uY1OoUvrU8OItzoqeOcWdQM
-	eAa/PywLBtHykrtPUDA7cXaU8CSOhw0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wgwhPxy8;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf09.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B663F6B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:40:24 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 316CD1A0309
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:40:24 +0000 (UTC)
+X-FDA: 85264338768.14.247EFE8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id ACDAD160006
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:40:22 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GwpH/rQq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790627861;
+	s=arc-20220608; t=1790628022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tAW3SlP431F7bjWdI4ygJqmG7YuYjWhSnR8WVAPb5Q=;
-	b=1HbR4zfNXXEnbnx+tU0d4q2B2W5K+aEiVYZ++5LS+5voHBJWAPITvaz7ZpvkNHWdL0uOe+
-	l6zkhwKhjXz4ar0hajd+JMDaByX8nMjnWuHa+O+GsNq71m/xJdMwLB6Zb3byRrgVYFdbLP
-	vYBbaE6aOLXob45dFh/PbtBHc9PpvFM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=4tAW3SlP431F7bjWdI4ygJqmG7YuYjWhSnR8WVAPb5Q=; b=wgwhPxy8Tk1YMJ1hy/Ypbhb4r1
-	xWswkSfytQMmBcdva/7O7JMfMNnKn4BMxHBGxKnDVBVaN6inyuo4O8W9t7K/emQ3H4FVgQvx47BeK
-	45m1cOLuYsZgllZRJogqRAsj1o8/kgw4f3p/kD/EkenWTlvSFbsEszvw8116pQrZbPpQUSto3TKzW
-	3DI53KR9Qznor5mfThIGGEwofi/PY1e5r2cuf9fb3mnv+mB3a4cXwisUnbN6DzLGbdGJZ2wsEFKiR
-	22UxwFKn/640pqKtmcR4GNZBvePNE78jqGV67ciq2cm/YHQY+80D2ZarNCPc1Inv+GEayJEt1La9H
-	FMfMCs2g==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBI6U-00000001aN3-2nto;
-	Mon, 28 Sep 2026 20:37:38 +0000
-Message-ID: <5c6edcfe-8332-4db6-b0fa-ca5d137a2075@infradead.org>
-Date: Mon, 28 Sep 2026 13:37:37 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 12/15] sched/task_stack: Introduce
- ARCH_HAS_VARIABLE_STACK_SIZE
-To: Mostafa Saleh <smostafa@google.com>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, linux-hardening@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, catalin.marinas@arm.com,
- will@kernel.org, mark.rutland@arm.com, akpm@linux-foundation.org,
- urezki@gmail.com, mingo@redhat.com, peterz@infradead.org,
- juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
- rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
- vschneid@redhat.com, kprateek.nayak@amd.com, kees@kernel.org,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, gustavoars@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org
-References: <20260928174122.3380703-1-smostafa@google.com>
- <20260928174122.3380703-13-smostafa@google.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260928174122.3380703-13-smostafa@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: cer5ya9pqfx5hd3qzryqy1beuxqfsjai
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=m8gNHGeN9x3rygoOMPou+J30yRI3f3dCJdb5tsXJA8o=;
+	b=YopNzTfkForGDczDbXcT7qgJUeAkba021/4vGWPU+209UoI9RdPUE8/v0TIry1GnyaXAO7
+	tP0KNIsq+gcXl7fIyuAvL7251nRbdP7qhJK7ZdkU/9W0I5aIemYOl44xhsneUT5ekiL1O+
+	5JnJ+GqJ0clT/RfaTmeephpds9ST3vY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="GwpH/rQq";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790628022;
+	b=XGvOPNmgMHDJHUmJDth928jc1NZzm3GNzNpT64TxmuDbCnGahwpZmIEzMFYZfQnS5zSz6K
+	Has6/D2NbPmoSk9Y838q49yXVCDEFRq28X6NrqhzW3oj6WM3mkQ8dP5GuMVYY1A0XRNzOc
+	Yz+j4U2A7DjKpzII9u6u0gaiFDZ+L30=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 462E2600D1;
+	Mon, 28 Sep 2026 20:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0621F000FF;
+	Mon, 28 Sep 2026 20:40:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790628021;
+	bh=m8gNHGeN9x3rygoOMPou+J30yRI3f3dCJdb5tsXJA8o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=GwpH/rQqVv024QcgJ6u3+OLqasWshPI5N2UHnxjNm/VTJaZ5eseSEUd7CIaE1i3i6
+	 opCPfoiVnbc0CRgpybqTMVFg/t4qbQwgFsGNMa7sPUQCgf8rjhmuFCg6wnWW3qahi6
+	 0dg4qW44ZgyNlBqrHCoGiNOqtTAtwUN0ex+qMG/LkEmSebCBiLp3Bm0iwB1PJHYuZx
+	 zK0qcQn+9qJ5Zk9zA+Yr03TNNmYKenX+OVMA6xHKilAq9+bV/deI2pILyTX5b340GF
+	 2GU8Mq6lZDmRRG3+Roaam4mTC4PXjouQQFDQC4NOPa4yxx6X+RIh50zw9BSScy1TED
+	 aI2x/noyxexCA==
+Date: Mon, 28 Sep 2026 10:40:20 -1000
+Message-ID: <bda525506b3fb3e61da28a112f28abba@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Emil Tsalapatis <emil@etsalapatis.com>, Jiri Olsa <jolsa@kernel.org>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev,
+	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	bpf@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
+ struct_ops
+In-Reply-To: <20260921192559.2619635-1-shakeel.butt@linux.dev>
+References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
+X-Stat-Signature: ea1ds7kdnp4yymec8p8z9dfcuu7tq7zm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A7D1140007
-X-HE-Tag: 1790627861-902030
-X-HE-Meta: U2FsdGVkX18l7m0sTgkg/VNisPMlZ5pElITm2XAHDIgbHWPCrbMBm2W2U1Vbp0u65RjSxHqQGwsIuIFqzWPbYDftjbc0nyzeUOcrTqG7BSpN2Et5J5EIX0lSWXqJa+qPhy1cDPvzqD7reGScrZFaBdlaB2IVR4O/5WO67tTKrtsK0jQ08f3cn2GwjbhlxKeoBZVpNikC86laU3sgyWUp3Pv17Ew5BU3m2ndCBbV1GMJTVbHUfOWkBJLgx09J59l6tuLanLVxDyD8qeRuSOKQsg4Ppf01aDWK/pc1WWarZLNVWPclv/yiuScH8nW/fb4VOZ3spgAodnr+48+KoOgq7yghUX3hsMIGT9iQoAymLML7bLy7Ur4geXt0f8V6yUL7KiUzQjyzeon9VPuTMNnejfr8kUAp/t8OxKJWEgVdcXRMnpOrfvKd+JuspVTRWdAvwI1VJcWilBc0XVYjCjRnkXRKWjTKWV1ELVuJZc6FW7WO6Dgdjs5CZeW2STkYmyD/8EBLZV9BD/XtIEPCVM1b5Fsitm0Lfw3EQWoOmnChk/liP+NkOP4U/lR5MApzMPgQbKmyDalyt+6XcLLFH1rjBWPr15JcKXEFxIAONIhT9/iCbf3yR4lUHxU4UHdkbVp5MwIjXkKOG/tBR0zO/FZ0kDuMPMYjWy0b7K/iZU9E8QIADIcXCiWyBSGkY4MDPhFM2Zb7i5hRAxWE7e0qs2283o7M1wGtf4N7atmIOuqBqN3DMDMNl01oSu/oKac65yIro8OMgWHHI1ws4vXGq5VmHxqxPfMVs5pFX2J376ryzoqUNTg8h/tEwJw5Pa++hjW/DjMDOZ8jbGzWMyCxI30RiPpj98UHjZ4B5YRIBeU5ARK8/cS4bgKu+s72P1lxCr+OuB7Y75eOC7yKEpGFqBWbC1TkW5q3SejFurPWErWjEXPkU7e+kH4KfQUADbpi2H1KZG/l29dWCrlJ2yy1jE6
- xzs4oGAo
- xAgos6e7jKgS90GTTb8czthut/vVRov/S3ziqRh23HQFUyo5EnR6jSTTi4YD84/bVXlui4X92dUHT99WUoK4Qk22LGAHkWuyomFT34kJMXj9tQa/fWHGg7AuaTvbEmfyRLhFdGwd3VqeqqmjvI3R/Mwp1udHGbaYHjUUeSElya7R6iVkQ/ydSjdWG9SntXTOMFBmp6ehUw9k4eaaGoN6bLK/nVhLRDXpwlzt5qS5lWd0sNXVgIWFv7QP8c4K4PEU63PJ1b/OcQXsNKsww207aQPgnmmpx6P++F20cNMaoQfWzbiotrSgtZPoVdnYOOnnzD6kPtHE87iUJJrkXjpGhmOQiMunBHj3rDntB/cYBcUYhLpK9ws2uJdQXDoBTZ4eWajlQkXvzZ5jTTXA=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ACDAD160006
+X-HE-Tag: 1790628022-38274
+X-HE-Meta: U2FsdGVkX18nty622axnc4m/IM0zwLSiIzWspQwKtIGVZcf/ifleEd8CvaOjqrHGgzT1PfJZPKierQPyBio+XCRMpESML8ILF8/LumXOlTTXO5TZ3A1JNKYWUjjGl1r8RyG1x/4c99tRqgUffAhlyypwZAQpGT5s9/J4Dmu2dhFU0b5gbKreZgS+4t/zetT8kt5seD6ZE4fgpwUoTPWu2a/0e2h4mNQnMr4a31acSlJgOScPrbDe4Q2AS3lmLW3gA6DjT548Qn/fYFDY5q7cFk0/xD5sHyfXNxDCKS/ShAdYn6LjG6mEsY49vUx07B+OIwUgDRNmONsY0/RKsoY/4dSHSeK+EsUgji8z7adW3KofdZkhPwXCdf97GupLmEgPQLfm6ZEp7hMsGh96Xpi6uUQMCwlm8mI3QEs7pVuYXQLWwLXEwQnYr+a6hmZL9EIK1Dx0+naFZ/lOBfOLsSjJsHoY7LjVVbqMHQTI2AbbZccUW10txwEIo3EAC/5HjOlcS6F4JmdR7ALSWaFNajOJxMQvJ5qTBf2UlqisV8zdyNlWblK41EmoYu3VDZwklbZg479wDcOyGbn/vkgmrXV56CELGLabA87ETRtuU4VraP8I6Yp+We/VtnaHDepMHqCv5wIX6ruFigNANXesaZBIARvuLXpP+ZDQQeNj05NeX29qVI5vB/57oOFobnYm/vvGdywoile7VrsNjJzgYFAwXOcInEvg0Y8ejHeCkyMlfggmtTo8zWeNUo7SwgIWctTVOZAbAqmUsV6/GszYX81MW1c1jH01DBRbD9W/TTJqGrH/C+AV1wqf1X9vNBaHdcaYZFBzYbmE+aWoNL72KKbJ2UUB3cWhsEAy6LzXcso5+8YTejS+5ol1PyOWm2luUFENlnlefFzJpWj+6bZUCf6il4/j2CxiYTP/8AOGaFu87VGFPRIZGDlCLMEV+WYd2YXFNEjEIkW4inFbUzqIdU2
+ ZpW1Ju/f
+ CPf5yZHgdNa4t20F0QtDsiHRuBWmfTi4cxXFK7Qs41241MqCpkgQpi2iNSuoBqdYV2rY+dZ7rbJR9W7ElPM8LZbq6YugHC8SeMKzduyCSrHPMoLfvupk4Gg0/LLSPf8HAoJKiZU3Fc0O2LMhNg3ou3rlhjzgstqGmZwv79kl1L4iVPhZx4F+5TqfnLuhffpLdsBfp1F52mzde4qTuc6GsQJ4CkIuH+Jkw2X9UHEjsbh1t5pYmwFyz5540mUoD8CQP5jnEoYJrNW5uy7B5a2MU23F3XUovcOOUGZlSt6+PMzO1foLyuYT9141wjO9PJm8dmVFvcBtnsYRru+5Tyz8Ge3nl/55r680TBEKtBKYTQ68uIV4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,76 +106,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello, Shakeel.
 
+On Mon, Sep 21, 2026 at 12:25:55PM -0700, Shakeel Butt wrote:
+> try_charge_memcg() calls __mem_cgroup_handle_over_high() before it returns,
+> which reclaims and can throttle the task.  That happens wherever the charge
+> happens, so a task holding a kernel lock can be stuck there, and everything
+> waiting on that lock is stuck behind it.
 
-On 9/28/26 10:41 AM, Mostafa Saleh wrote:
-> When CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE is enabled, the kernel stack
-> may not be fully populated with the THREAD_SIZE virtual area.
-> 
-> Teach task_stack_size() to return the size of the vm area and not a
-> fixed size.
-> 
-> This propagates to end_of_stack() which makes functions like
-> stack_not_used() and set_task_stack_end_magic() to use the lowest
-> valid stack address instead of THREAD_SIZE which would cause data
-> aborts.
-> 
-> Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> ---
->  arch/Kconfig                     | 10 ++++++++++
->  include/linux/sched/task_stack.h |  5 +++++
->  2 files changed, 15 insertions(+)
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index 45c657772362..d6fa2ccb0599 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -431,6 +431,16 @@ config HAVE_ASM_MODVERSIONS
->  	  <asm/asm-prototypes.h> to support the module versioning for symbols
->  	  exported from assembly code.
->  
-> +config ARCH_HAS_VARIABLE_STACK_SIZE
-> +	bool
-> +	depends on VMAP_STACK
-> +	depends on !STACK_GROWSUP
-> +	depends on THREAD_INFO_IN_TASK
-> +	help
-> +	  An arch should select this if it supports dynamically configuring the
-> +	  kernel stack size.
-> +	  For example the kernel stack size can be from the command line.
+Why not just raise the lazy bound high enough that most charges never
+enforce inline, and maybe annotate the specific paths that can allocate a
+lot so that they do? Inline enforcement should be the exception, not the
+rule. Flipping that and then trying to reverse it with custom BPF policies
+doesn't make a lot of sense.
 
-	                                    can be set from the command line.
-?
+> One concrete scenario which can be resolved by this new feature is the
+> kernfs notify worker. It delivers notifications with the cgroup2
+> kernfs_rwsem held for read, and the charge for the delivery allocation goes
+> to the cgroup that set the watch, usually one already under pressure. So
+> the worker reclaims while holding the lock, a waiting writer blocks every
+> later reader, and anything touching cgroupfs stalls for seconds.
 
-> +
->  config HAVE_REGS_AND_STACK_ACCESS_API
->  	bool
->  	help
-> diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-> index 4a808f9c4631..07d73adaecd1 100644
-> --- a/include/linux/sched/task_stack.h
-> +++ b/include/linux/sched/task_stack.h
-> @@ -10,6 +10,7 @@
->  #include <linux/magic.h>
->  #include <linux/refcount.h>
->  #include <linux/kasan.h>
-> +#include <linux/vmalloc.h>
->  
->  #ifdef CONFIG_THREAD_INFO_IN_TASK
->  
-> @@ -96,6 +97,10 @@ static inline unsigned long *end_of_stack(const struct task_struct *p)
->   */
->  static __always_inline unsigned long task_stack_size(const struct task_struct *task)
->  {
-> +#ifdef CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE
-> +	if (task->stack_vm_area)
-> +		return task->stack_vm_area->nr_pages * PAGE_SIZE;
-> +#endif
->  	return THREAD_SIZE;
->  }
->  
+Slowing down the kworker inline doesn't make sense. It's charging on behalf
+of the watcher through set_active_memcg(), which already tells us whose debt
+it is. Wouldn't it make more sense to defer the debt to that cgroup instead
+of slowing down the kernel thread?
 
--- 
-~Randy
+Thanks.
 
+--
+tejun
 
