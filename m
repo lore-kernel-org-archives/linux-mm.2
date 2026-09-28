@@ -4,102 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5869ACA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 12:46:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 782CAC9833F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 12:46:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4590E6B008A; Mon, 28 Sep 2026 08:46:41 -0400 (EDT)
+	id 656666B008C; Mon, 28 Sep 2026 08:46:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40A816B008C; Mon, 28 Sep 2026 08:46:41 -0400 (EDT)
+	id 60A716B0092; Mon, 28 Sep 2026 08:46:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31FC56B0092; Mon, 28 Sep 2026 08:46:41 -0400 (EDT)
+	id 4F5936B0093; Mon, 28 Sep 2026 08:46:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 13D616B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:46:41 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 86C671C1818
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:46:40 +0000 (UTC)
-X-FDA: 85263144960.06.7F666BE
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 36D701C000C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:46:35 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1FCD46B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:46:53 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 924D41601C6
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:46:52 +0000 (UTC)
+X-FDA: 85263145464.26.548CC63
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D5CAFC0009
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:46:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLO2FB68;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790599598;
+	s=arc-20220608; t=1790599610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yVjf+WYlCJq+v0GvpD9rC5HT3aeTPOw9K3/eS4qrjBo=;
-	b=Y6u7PkIra9IIrb0F7KaX9iNP6kpYyQCzkLtw7OtL9zNS+YNcyL7B69h+lDkvbmEXaHPWeq
-	7mbzKLXS1ySHa8+JjlDqV2KEXFq1+Qj4DHX4ooCp6rFgB7YhZ2W7TnnFcsgLkZbkLhaMrA
-	GiQ0Pw/bfXcWXwEm1LoLgFS9ihQzL4A=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=sPyOk5nBUF/LDpjxx5RQ1YM9nnmqTs1Y+tPLkniResQ=;
+	b=Sy1nE5H7tfBEC1Q/h2e1wq663LrwuncFIL48UKo1W3339rt1cSUxG97ED7NjjNwbtxoIcp
+	E3lY02RjzrIX6wmK3ChCyNp4xReKbA6UDk7+kGRjPG3LB8rZzM1+GVkF3wYkuUsL6DkVBR
+	GreDvhFuZ193ppCHd4jh4jBomSM8v5k=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CLO2FB68;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790599598;
-	b=f983mwBRio8DvZ2HDoXb96rwxaEpcVDe6gNPPLm+YwSu6jrFaaYKelD49gk2mqjziDpULb
-	xh679LgBBHC801Utb4k/s87IYCQ9AO6kqoXNqUVlon84XqbRbgRZPE8Qgz+8lgep+Ga27W
-	CXvU3Y+6wFVl1y7JD/9T0iMdBeeMcI4=
-Received: from mail.maildlp.com (unknown [172.19.163.170])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4htgyr2445zKHMS0
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:45:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 544FD4056B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:46:30 +0800 (CST)
-Received: from [10.174.178.176] (unknown [10.174.178.176])
-	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgBXdCekYbpqBR0ACA--.8279S3;
-	Mon, 28 Sep 2026 20:46:30 +0800 (CST)
-Message-ID: <168ab288-39d2-48e5-9b2d-59441102c728@huaweicloud.com>
-Date: Mon, 28 Sep 2026 20:46:28 +0800
+	t=1790599610;
+	b=Q1IAHmmriErfRCLS07P13i1GPJW0+OzNTdrk2W/rohST2bKundIB15fKeu3Cof18sUkc55
+	haf1ijfylWWe4+nVbzu08h9DlZX40jGx95zhApZtw31/2dk6c2xUTpz9vk5FiSmMYlXAmY
+	lWA7qRfuyIE0HM3me5TkWZffmOYyFuc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F31860052;
+	Mon, 28 Sep 2026 12:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FADD1F000FF;
+	Mon, 28 Sep 2026 12:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790599610;
+	bh=sPyOk5nBUF/LDpjxx5RQ1YM9nnmqTs1Y+tPLkniResQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CLO2FB68h13oONS0tCxT3nzpBarQ0IMXTNE8i/vtr+wdvHrdlshJxeAaSf2Vy7ANY
+	 vO23AracXVaObH4KAm+tkNctqZOp8360QJq2izxto2xDz2CkjdzYaoaINh/58bZ4WS
+	 p7DJh28paTWK/aQpKNmO3Zp+zCa4+mtkgDnnoiG9hWxIRcRRa40VkhWbl+T5Lih4Qp
+	 dfuZT0UdAhUvgQCCSCNpjgzIdT5lS0QZHkHkFkF+buuW711LVx6MRCCVEKzG1jjE3s
+	 CQ/HDjkO/BlH3+9QMoMpKI2A8plwtDPG6LYLf+bHNHmHUNoBy6mN+Y3J6uXoV+EwYS
+	 JZExNChDtc8vA==
+Message-ID: <8c4ffa3e-4ce6-4b0b-a2e0-08d710c54522@kernel.org>
+Date: Mon, 28 Sep 2026 14:46:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/4] mm/truncate: align truncation boundaries to
- mapping minimum folio order
-To: sashiko-reviews@lists.linux.dev, linux-mm@kvack.org
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- linux-ext4@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20260928120833.3440834-1-yi.zhang@huaweicloud.com>
- <20260928120833.3440834-2-yi.zhang@huaweicloud.com>
- <20260928123136.2D6891F000FF@smtp.kernel.org>
+Subject: Re: [PATCH v8 2/4] kselftest: mm: replace usage of /proc/self/smaps
+ for __check_pmd_huge()
+To: Yeoreum Yun <yeoreum.yun@arm.com>, Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+ <bde32459-31ce-4b15-a129-4641ef1c6337@arm.com>
+ <araDzcqZMmne_w4Z@e129823.arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <20260928123136.2D6891F000FF@smtp.kernel.org>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <araDzcqZMmne_w4Z@e129823.arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgBXdCekYbpqBR0ACA--.8279S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFy3CFykKrWUGr1UZFy7Wrg_yoW5JF1UpF
-	WDXFWruw48Ww4xuFy093WDAr1fWa48Kay5AF1xK393Jwn3WwnF9r4Utay0gw4Iqr4xAF10
-	yF1jyr9rWr4jvFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7
-	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0E
-	wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFIxCjY7AvzIIF6xkI1cIj4wC20s026c02F4
-	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
-	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUIl
-	1vDUUUU
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 36D701C000C
-X-Stat-Signature: dggb7e3186kof31cc8u58n3igw333dyu
-X-HE-Tag: 1790599595-961281
-X-HE-Meta: U2FsdGVkX1//GZReSh+W2xvh+B7PNCwz+LcIxarU9w6Tec1StQj3cf1LBUFRFWQ2bcGkvErPVqqRjXvnAt8PUuWI/t4yRw/Q3HyOygkcxeEf2UlNIXR6ujAxDJz//hIMh1X4kmcmJ6g+ocYiCKBeaN3HHpqc5gbs0g5iuaryz8eOmegBXUBu7XiMMoC8lxaHHjSZpgiQKt6EbUjs8EnvYttu2ZGSbGzI9o7Kq5E2ghDcBc7K7B3Lwq3RJg3pSollr7cgp+fG7CCsVanGrZDxn9e5OiQtbuk4FPY7lFDTDs9rPJGL7iARkgjbA6H240kTsOYYSyUrA9HFcKScD3ykwuL+i21n77xiGVllZl0OOPouVTdFpXbXDrXeYNDcvwEDLggKxgE+EJHn/LGSrQPhpia0lmiVFqmSkcHyz33terLdMdBztsyIQrXUReh3AliPFaVkrF9cBTHtjxj2P4TPODYThbMHERM3MIWawHo0Sdd2s+JYMLr6ceirazJrsQgyxXEwFxlzrnCJ9Amj5zyJ7xCl5adDM3cAABxH87gdYC0E8qcSygCXeQ2DuN9z0cTklKohKVqKNZjwmZQUnxdYTKbk0Odovh37GrHnAxOiKAZEuEv718i241hRuZ3hkj5eG5IpCQXeutw3rRwOxox0ujvIW9UuXH/VtggvkJck/YioioWdMMDR6tK8ilZL75/y8ZVbltuzFkjmF0rkH7Z/vyahdp9bgPejQbVN89Ulpk8o2Rv4AX8hUEJAttASTD1K9wYMcrnKSl3cWl8jAqHO/vqSLAkGVeuGL00nWusdE2VnnH4QvVY7bk726bD45g8Iudcp1K1dgarXIB7Q8DAmmZsXKTDzH8gD1PFzivtpAKKyDKic2cOyNuprp4GuB3NSyZR3jECT1Iy2+7fS26/9JLygd9piMSRoWUfJZVG9FTYOe6PjMGGPuYxowTuvhEmjWtMfXQ+ktuFp0N45hUx
- KlWrkAOd
- /3KO1C0wdjvgeP7hDnOZNot+5aHSuerYGKEJtWJfAHESFXxZyl7FzjYMjgoXu3BoqvWSKU7TLSRxvi94LXzb1JrDFU/cu032tdWIsJRMxhdbxCiskxYZybWbrvihWipRJZofVpNSV9uFDO7fLmWlIQhJd0oBS3llvKpJKKWHlh/zXbuwhvxYX/Fz7zewpbipFyyap
+X-Stat-Signature: 5hx5hacsqatwuugmrnpqjizek1xhdf5x
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D5CAFC0009
+X-HE-Tag: 1790599610-845501
+X-HE-Meta: U2FsdGVkX1+wy1WpK34paq3YB5HPfa5fT5MbYY9pJcXqNqNCBzyIduh8WKxwPgrEOTKWfPBJhH82SndqFYU6eBuH/OVG+ZJyXHkFwbNtjP9ucMHgNbq/yyA0L1xRPRzy93BQ9QQcpsa1Fzsau3xp0OPULuVQrKXrbD3zTEIPgN1O0glKO72KHpNHq7K7Fg9DUgJO0LwOrvaRfxujvyW9KfmjC0Ip1DAhFTrdMhajIbA7tiuUBfmQciz4N7SzX/xoV6M5pTSMtI84uA44cuGcmOuNgdffvVTHSKLjBHS9TpidJIYpHas8qDLKb6KYXv0IGbAeE9I2abgPIFh48159tPDrU+QdudlGfAm3tZ3MDygWFTyI4ulrIBqSwWtbAb+Hko/cDhRRFiA+amCQHpBgxiqjjJEYH8sWieX4bLcz/5eMXvf1TONK5gmWOoJkvn5aXr9A0mm+woKmxtL9Ilxqge43HhE7QS4qdXNvWpKGDUxynbHgncf4+FmASwxZLstKIrsGviB7vusRSiEdQUgaYCq1nSMDRZrbw+JHd6Yz+zy2nnN4hg5nlL7fzBlAEyA9UBi0SyYVYtD1q/VBvVfz6+HpemBWUc6sIiRZwb1n1wP46pL/AzfUGIumBdL+nB4NvOHuZOuGgSIkTrTEdYcIpjqW58ZaYNCYm7thBBgsfqtAaYOLJF3sBtAA4hNYHq4XNxsqQ8U+EINnqxdrHSjhjokj+5ID7H0QM8a5NbTOXXHlpfjVRJI5wMC6ZhxFJe9QMdaJv03b2m6dnskr68++7J06PJqO6ngVd2HGbm4AuS3k4imdhbeBm+fWnBufUUyrP1h+pgMwqTDFH++OmWDjt5S8OciSfRGgZQ1TrvY7nrK5qJexj2EQAtkHzzcvY6k0XcirGM2ecMBEtkDp5mmOY8hNtZn1K3xkqnTLdropk62wNw7TmuU5rqTJEJTUSVhu2TjHsHuY0QEvnyyqILa
+ j22Txnkc
+ MsOP5QjjinK5uyNbOonz2E+GtShoWCH/nevjrssXPq5DXErguWa/6lMQYSj3tooeKvgSEFMGXdQ27g4UpC9dPBp4P3fetvIIkzY0LvIEMWPxUnteBC+IBDqFQ7+RE2Y2aVjXkR0HxNhyR/5I7n1YJ8x1WBLJDZTfA9M+gXhRiB4Q6B0f7yGmkGvl1ci/pjfi9P3+S/latFANja9E07as1Ff1Vb02aQE7ATnwfx3f47EQoDz9tO9QfOobPO2yob91ktB7zK2LJryf1RYbY8iicz8bAPToHaAYPmkugDeUrwJC0lL1FqpitrtDdGZ4+tdtnF5pkTCCNUPyBkf4OxRrqkz+35jL0+LM/oCqAJcm6VNivksn4WGTCV1OzkU2Z+CpAfY0XF/8WLqYiVY/Rq+8Y63Am7uWa8LA1ym5C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,65 +150,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/2026 8:31 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Critical] mm: integer overflow in round_up() during truncation causes complete file data loss
-> --
+On 9/25/26 16:23, Yeoreum Yun wrote:
+> On Fri, Sep 25, 2026 at 06:08:44PM +0530, Sarthak Sharma wrote:
+>>
+>>
+>> On 9/25/26 12:41 AM, Yeoreum Yun wrote:
+>>> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+>>> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+>>> made by memalign().
+>>>
+>>> The underlying VMA may start at a different address from the aligned
+>>> address returned by memalign(). Furthermore, a subsequent
+>>> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
+>>> already set.
+>>>
+>>> This causes split_huge_page_test to fail because the check_pmd_huge()
+>>> helpers incorrectly require the address returned by memalign() to
+>>> match the VMA start address reported in /proc/self/smaps.
+>>>
+>>> Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
+>>> /proc/kpageflags to detect huge-page mappings checking PAGE_IS_HUGE
+>>> and PAGE_IS_FILE accroding to type of huge page.
+>>
+>> s/accroding/according
+> 
+> Okay.
+> 
+>>
+>>>
+>>> Since shmem pages are also file-backed, simply check whether the page
+>>> is file-backed.
+>>>
+>>> Fixes: 642bc52aed9 ("selftests: vm: bring common functions to a new file")
+>>
+>> Checkpatch gives a warning saying it requires atleast 12 characters of
+>> commit SHA.
+> 
+> Oops. I'll update.
+> 
+>>
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+>>> ---
+>>
+>> [...]
+>>
+>>> +static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
+>>> +		  uint64_t hpage_size, enum check_huge_type type)
+>>> +{
+>>> +	int pagemap_fd;
+>>> +	int nr_pmd_mappings = 0;
+>>> +	uint64_t categories;
+>>> +	char *start = addr;
+>>> +	char *end = start + len;
+>>> +
+>>> +	pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
+>>> +	if (pagemap_fd < 0)
+>>> +		ksft_exit_fail_msg("open pagemap fail\n");
+>>
+>> Can we use ksft_exit_fail_perror("open pagemap") here? Will help in
+>> diagnosing failures as well.
+> 
+> I see thanks!
+> 
+> 
+>>
+>> Apart from these nits, rest looks good.
+>>
+>> Reviewed-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> 
 
-As mentioned in the cover litter,  this is a pre-existing issue related
-to the file system that needs to be addressed separately.
+With these things
 
-Thanks,
-Yi.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> 
-> commit 583804d300760dcf60e3ec5aab6503a560ad3e7e
-> Author: Zhang Yi <yi.zhang@huawei.com>
-> 
-> mm/truncate: align truncation boundaries to mapping minimum folio order
-> 
-> When the mapping has a non-zero minimum folio order, this patch changes
-> folio_split() in truncate_inode_partial_folio() to stop at min_order instead
-> of order 0. It also aligns both start and end to the mapping minimum folio
-> order so they always fall on a folio boundary, preventing valid out-of-range
-> tails from being dropped.
-> 
-> Link: https://lore.kernel.org/linux-mm/CAJnrk1bQYUe6+1ryyJur5EEnZYrC+_5AYsy=OWzVRgD4202y1g@mail.gmail.com/
-> 
->> diff --git a/mm/truncate.c b/mm/truncate.c
->> index b58ba940be474..8a28f4a212677 100644
->> --- a/mm/truncate.c
->> +++ b/mm/truncate.c
-> [ ... ]
->> @@ -395,6 +397,10 @@ void truncate_inode_pages_range(struct address_space *mapping,
->>  	else
->>  		end = (lend + 1) >> PAGE_SHIFT;
->>  
->> +	start = round_up(start, min_nrpages);
-> 
-> [Severity: Critical]
-> Could this round_up() result in an integer overflow that changes a very large
-> start index to 0 on 32-bit architectures?
-> 
-> When an unprivileged user issues fallocate(PUNCH_HOLE) or truncate at an offset
-> near ULONG_MAX << PAGE_SHIFT (e.g., 16TB on 32-bit systems) on a filesystem with
-> min_nrpages > 1 (like ext4 with large folio/iomap), start approaches
-> ULONG_MAX (e.g., 0xFFFFFFFF on 32-bit x86).
-> 
-> The macro round_up(start, min_nrpages) performs 32-bit arithmetic. With
-> start approaching 0xFFFFFFFF, start + min_nrpages - 1 can overflow to a value
-> less than min_nrpages, causing round_up to evaluate to 0.
-> 
-> This would corrupt the start index to 0 in truncate_inode_pages_range(), and
-> the subsequent loop would unintentionally truncate the entire page cache from
-> index 0 to end, causing complete data loss of unwritten data.
-> 
->> +	if (end != (pgoff_t)-1)
->> +		end = round_down(end, min_nrpages);
->> +
->>  	folio_batch_init(&fbatch);
->>  	index = start;
->>  	while (index < end && find_lock_entries(mapping, &index, end - 1,
-> 
+Thanks Sarthak for the review!
 
+-- 
+Cheers,
+
+David
 
