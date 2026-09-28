@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CD5CA5FA3
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB471CA5FA3
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:24:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4B626B009B; Mon, 28 Sep 2026 15:23:57 -0400 (EDT)
+	id DA6456B009D; Mon, 28 Sep 2026 15:23:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD6B6B009D; Mon, 28 Sep 2026 15:23:57 -0400 (EDT)
+	id D56846B009E; Mon, 28 Sep 2026 15:23:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 800316B009E; Mon, 28 Sep 2026 15:23:57 -0400 (EDT)
+	id BF7E66B009F; Mon, 28 Sep 2026 15:23:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 554FD6B009B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:23:57 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C927F802E9
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:56 +0000 (UTC)
-X-FDA: 85264146072.24.D7AD3D9
+	by kanga.kvack.org (Postfix) with ESMTP id 93CD46B009D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:23:58 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 222DD8030D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:58 +0000 (UTC)
+X-FDA: 85264146156.11.700D089
 Received: from mail-oo2-f38.google.com (mail-oo2-f38.google.com [74.125.231.166])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EEEAC40007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jr3dg4oq;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.166 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 52DB3160005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:23:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jMz0AIj6;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.166 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790623435;
+	s=arc-20220608; t=1790623436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tK8/WIiTpcUHPrQYJYKTFLDFb/7dqUCiogR273O7EAg=;
-	b=DotMlU807z/ZkOfBD9kVgGGhEWxNLmIXpW6Xb28Ee5v9QCCQ++p1hByMXA2bu0X4+L2u0R
-	pq57gZHDTLpkNE1pQKtKLeQcK32Ly25pAYL5KC8uSjZKtjA5TQicl/yrCaKeD1m7KxC16D
-	Twk6c8I16OKhQX/9bIb2B9a30x9uf/g=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=jr3dg4oq;
-	spf=pass (imf01.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.166 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=mLlbCWMV3nJ6yAKcvozTfTelkpuj4O0zQsMvz607NIc=;
+	b=2KJJfxvlVXtsuUJPiABLkwJuEXmhFiVepcPgE8HqBoO3SaKV0kTCVvSXD56dQVU+pnFlOi
+	MmmpzOYxQTSqwACm2wd+HuqZeHX0BmeHva6VT9JV/VSP5ygq4naxA0YoOnBnzkAGiD3JGP
+	jg1B5V6Bq5112USu1aR5eGnwmLUIyeg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790623435;
-	b=uIHWzvHgZW9rkrmpKY49+HNDCkUZmo7KpJggmnq+wdk1hKAFbbyHC9tAzlV0qqtVRlexPG
-	2ygP2uVJ1zsk807f6yHYdeWYQyOJAnXjOk1/6vf0ZN5ThTjgZwJAqjAym33oy+ko/xnzKq
-	u0pUGNehtZoVgfYH5R6V7PuMN+Xeeu0=
-Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-81be5042c56so1269204a34.0
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:23:54 -0700 (PDT)
+	t=1790623436;
+	b=svtfDwU2tu3J+HQjSdgrkowVLz4W5Xtd3/QhOzW0/QNIj3dC1tuL6mDHLU8WZWxTmYpOjS
+	B+4RPy5/RhcZu0h6LuBDceaAyQL3nHjO8Nc24GQ3iB/LAsJ6/faxOZb1NYoFAb3dkwvkxj
+	bx1nTNN0ijE5vWIi7oyHGV1AmU9gunY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=jMz0AIj6;
+	spf=pass (imf08.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.166 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo2-f38.google.com with SMTP id 46e09a7af769-80a71781323so2055929a34.1
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:23:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790623434; x=1791228234; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790623435; x=1791228235; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=tK8/WIiTpcUHPrQYJYKTFLDFb/7dqUCiogR273O7EAg=;
-        b=jr3dg4oqAjCmjqzNUQRCPRjG33FsfnnG9pqJ4onE2VTO+9e+38h6jdATR6bLT56eii
-         /V8lTk5d8sS8KQCQ/LthaQRfG7LzSy33EiPhnj7LDsf8m/tMMP9tGbvhZnlTqtQWIMMB
-         g6lTlqn7yR7Vm//zaVUdNBJuD0tJzzNoJq6GS68WiBQ0qTOfEEA4qBsBVV25BkJcyrpB
-         LkrX/qK24g2dGOoy8EHiAbfEegCH7vpygzvZc+EMGGXYtmzXbQwgOQnsrDysRt0x77Vv
-         Y4ADpIFcqEgmm09GzOHGiQ17IEuiTOG4uc3HEzKiaPHiq0Ufip974S7lhlcSDjiYrrC7
-         0JVw==
+        bh=mLlbCWMV3nJ6yAKcvozTfTelkpuj4O0zQsMvz607NIc=;
+        b=jMz0AIj6vraG8d8QLF3bEt0ER/97h3k84nYh0Vg2hh7aEjcPhjK8ruxgtJjCUuxzsG
+         RIQd9OiOQMIFy5lthD44e63tHsnW6NxfdSTlmYsPLJswoKghmLSjzTOlrKKcALD6uCfR
+         zoeg3mi8lyjEfDYNvHUTa+ufV2T4SyrJmWykk3ikwm8wyTNayEhfpm6aAIcAJsijldic
+         V/i7XkC1m+lGgAeLoSP+AgSBqsdJ6l28HN9hukRkV4FyDA1shVzb6t/r3g3rdDwyk5tX
+         BAIB1jPOLNpEnVY/3a4IyjzrkqTYALo0cHsmhAAAo3CuKwIdecFrxf4WGyg2hVrLWKpL
+         7lzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790623434; x=1791228234;
+        d=1e100.net; s=20260707; t=1790623435; x=1791228235;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=tK8/WIiTpcUHPrQYJYKTFLDFb/7dqUCiogR273O7EAg=;
-        b=Zce+hANntGmITYxJhEN88tumAVVLaGtp/XyUQPTAKYsU/7L5ff7ahhf5h15EnObLZk
-         UM2Ic72efGVxgdAmhrPgbZbeFR9sB77cLBbdyxTNHEtARlD1ETMLpE4b63+ledB7i1Ie
-         BfEaIe+H0EVG0ALWp6IjsISxl2+YbU5rEbO0KHsLzpq6iT4vDlxhQzUjvhXmNleMnzUV
-         EGrF70sZULf2lo8nOWL20/KK3UYhklCg8/ltXMImWEY0N/h4oep6XyfujIRzg/OomIv+
-         +8pmtpgtGshCXo7Yz9x1oRenvCT9fy/IksQWETUBU6lGihI0rFu9021mBjyHtblAHdNu
-         xceg==
-X-Forwarded-Encrypted: i=1; AKwUvBxLZWPMQ9IFvy47/OuqxILzR+rD0aj6x0lHzulvHTCPN/6JSkAMq5ACMqb8xvmDqpO6B/fTtmbghA==@kvack.org
-X-Gm-Message-State: AFuF++kasgaGatubJndrgVgmjD0+31S8fVcg2eg50U05MzXGSVdKbzUX
-	7UOmKp3BeFklEvvi28BFd0kXZI3a77n0IyU+qfoEcoNylUBAadlmbNqn
-X-Gm-Gg: AYBFou1+e2hZa+3Ax6D3ABfEhxhTlc0HGO7RUghow8yQ2QO9OihOAEWX01Ez4HcrH2Z
-	RjscwKoBdxnlGPs7H4rj3H5fEm/CTAGz6/BrrCOu3VczO9dhDepdmOy1r/GyrEtyBJw6QuZ1r+0
-	pKtEyWC/Zk/IVieVwPj3JnA1KyEUyp0ZhojNbsfhK844DT4BVX4qLPoEGqDf42C4x6JiPW3ePl1
-	LTR/xfP2PFwHz8cBtxDphrn2333lpTTiPju/6daKXg3e5aKHO4pRk8VMd4F78AscO2t+82/aeJJ
-	wqfLhliqXWNlgL5jV8A4gakl4Kle0bvKx3oUXCGXg1qRhn3tUeWyV/9zfqBc1Mmq+rowMyBgo3a
-	csD1L58pGIpM2nDwFwHOtWyRxgM34uj6hyGdPCMhUAGpeIsEAoJ20IqZXzPFxsRbgsG6IrrwmA+
-	ifyXx/V1fuxlCmqA5ZkrOkhcQleiDtVnwWdtqDmtPTtg1EFdraeJTxVZ+x2ssVFeuFVde6wwbLB
-	XeiaSApvvRXvjavOPFMQyA5EIIkrw==
-X-Received: by 2002:a05:6830:2406:b0:7fa:ab72:9e01 with SMTP id 46e09a7af769-81917a258demr11321224a34.25.1790623433738;
-        Mon, 28 Sep 2026 12:23:53 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4b::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-81d5901ac3esm2430499a34.26.2026.09.28.12.23.53
+        bh=mLlbCWMV3nJ6yAKcvozTfTelkpuj4O0zQsMvz607NIc=;
+        b=d+rFFH8JI18mnXdzdMlcu57C5W4Dv2kxJ17U1taYF5hFILVr5PKIGEQB8x+0Vy30l1
+         8IckI5rGw14xcmLoIyUKxur9gSwo1YnEkdcguc+eDOFeO7qyX31S/nMJZJZiL31gO6sA
+         BoPrDruxkvg0gi8PUNX3VZjh/2VmN/P5wAF2EUFyaW6bLXYqjcMbGrKZsQdVpr4wbX4C
+         ITHxEL9V16rDUncBKWvf/b7VMgr/amCfQaPt4F6ler6BnFLmAxk2Z4LIg+96wQVKRFl3
+         TmPIWTNrXGS48j5PW0sjWG3WNvAlSXH1jC7tnxTzcte+oq+uwY8bfCUaOi08piiEHfpr
+         +MgA==
+X-Forwarded-Encrypted: i=1; AKwUvBz3QpJLJbEF7et2jSNJKcvfw+0c+rO7hYVO5u31sloz4vyyrqHKQt7U12+atV+4GuPdaUPsPaQcEQ==@kvack.org
+X-Gm-Message-State: AFuF++kHpXQOWjea6zMI53rnqSPl3dtuFEZMu0E83qVtlV++jida3y2t
+	TI+vktVDYRfpET4kJv5188hXjNr1UriLBvZYrW4TDoGZKWqvRXqn1BX7
+X-Gm-Gg: AYBFou2JOG5s1jKgnYgFUAFKwqycCr0WMcC5LlP3elof1/0DdI76+mUKNBtBoCHsYIm
+	uHnfdhSy7mZixPUggw2+PRbk1YKT14IgFnPlDzj/c85Pr1T8X9QJXybIndjjwTrLWzKxH/ozaLN
+	y+9uvuAMmnrUnTemEgTD//mGW7nf9FOb3/4iCWLD4hkKwx5FG97GBioFDhlG3DCEH7/reclFna2
+	pXGyLFjt3rXKg1XzLSa56GLsKhG4QV83cpSQfHkeHfczZN33sr2izF44xRnaRjgzjuV6TrRGVvT
+	APbkvobsi2BWNhD8WXfCSDAIAsUJCgiq0Osl4Gxe3UdYIt5eIi2aW5IIjzMUL+8cow+owTMiQ6G
+	XLCpZ0VFJ9jrXdFyRw4GeA7WTwchLybdpr7agYbEUzvwWSnOS+MIBPpw3a5A29UYjeo7vjzKNyM
+	9R0aZwV5Omf/mUfK3kP8NfmiFTuXB+vaqcN1E4EU7jWVEacjgUkEzPEJLEQfXF0HtlkD8M48FFz
+	aPdA3IDEnsDOqmG/69k8QYQYK3FGtzjt6p1ITlb
+X-Received: by 2002:a05:6820:a0e:b0:6da:9097:c3d6 with SMTP id 006d021491bc7-6da9097e034mr1246593eaf.43.1790623435198;
+        Mon, 28 Sep 2026 12:23:55 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:49::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4933094a74asm10553089fac.0.2026.09.28.12.23.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 12:23:53 -0700 (PDT)
+        Mon, 28 Sep 2026 12:23:54 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -114,22 +114,22 @@ Cc: Roman Gushchin <roman.gushchin@linux.dev>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH v6 RESEND 3/5] mm/page_counter: make page_counter_try_charge() stock-aware
-Date: Mon, 28 Sep 2026 12:23:46 -0700
-Message-ID: <20260928192349.3432886-4-joshua.hahnjy@gmail.com>
+Subject: [PATCH v6 RESEND 4/5] mm/memcontrol: move memory stock to page counters
+Date: Mon, 28 Sep 2026 12:23:47 -0700
+Message-ID: <20260928192349.3432886-5-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260928192349.3432886-1-joshua.hahnjy@gmail.com>
 References: <20260928192349.3432886-1-joshua.hahnjy@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6hk8aip1tzwookuphmukxff67o9s5ewb
-X-Rspamd-Queue-Id: EEEAC40007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790623434-129477
-X-HE-Meta: U2FsdGVkX186rjTZcux/Uikqbs8ruso4eZenrsuU4d/JKUtU+WWdRlnfmyrouf7aAj0StdoDQCuvPezPoCnbd2gasJYHrymmjDbmPca60Behj6F5u3LtPvgzeEL2ThhSSKvzmiL467Ocz0Z8P+/hUoQbCjg2gBaCw5XT8EdQFKN/ALMXnbyIezRwJ/lcSubkdf04zZ+o54rtSpEHz5UKV9GoF81a3pZOwwwc+tS1O9OcwcM95BmOYIux7Svq13CUSTefDR6/WpuvuIgrBrwfk7yirKbLZwOgJ2vNC5lcguc2kS2XT3iXF3shu3a/ycjT7fMh6N2dVswoaD4ed2kMOvDe7MTXLj/ih1SFcM/suRJ5ke1U/4sJMqfyJkH94fxIor9JKuO4nsFWTNpfU22VeGuTiicT6wztYNwLPuWAltHa1uyntI1XB6tJB2wSrkrC+lpusswWVL47a16Czgv3Pvs8dgKft/RsEtZriYCW0Yjr9pyaf59BEg+DJsv7hL13MYhXWOjfuqoWIYBo7il3uf8akM3UY/BSbKtlGb96EBST0BUnYVbck137QkTLamlvlSAnq4r69V9JVpUmCdoXGTNtUYIjH0W9j4H885IZbVdOF/+zjbxyU30S5Xj5rY3MV0SPWPGlWUKb13wo//X0hNZD45On7UG5uXEQk/4PPKaUTCcKYoxlpNVlkK+GEhExUWfUX13lkSl7XOJQ6VwfB83AlTt7K+QzIJfqbx5lu7yjxihwbTpSZakvNvdm/HZybMkPrPqk+vPgcVcmfCf7xnxy5HsCXwzOLZVz9FwVCSaYP4qEwlDlFN001U1/xmakIR949PjayIPh50H2Bfegq/PLbWwdZ5Pu/cYLEe9tlIMV7M9HekRTkc/24x79egTWyRZZv8T+LVYqyUWfzXaeEQyj5q9cc9lltjiFIlgf8i5CH7bftA/q/ZlcCXDqV4tQ+EVolopWAj+3qj4qA/U
- zpkgRYqf
- 8tgf47YG/C3GQJ82AqBsxW8sNk5q95Ta5w9I8EdYl/gwaj1sYL+rYYX35c81OgG/pLpnJ6Uu7oRDfAXLLlZLM6IZ3d/4SXvrrXXCU7g+O/Z40dE9hLpa6QCuYXqUUy5uu9SbHIP7nEo4rPAzJcuTNg+eClF7Lx8d1XEEyZ2rpC5dQr67tBWHnsuelhVa/rmnlJCPGBjS9fidnTp5szsu+UVpMD8uDezNeHusGgHS1iYWvB9EyFAM+lqLjWTKpFAfFS7ffiUNhwgy453c8bC9MLUdwqMbXWe7yxQ4H4TmbDJ6yGX6JwHhZS6vXg1phZF64dXBHoMOGSAFgwXsNEFApFBHvzCU5ixVInVQCcd4omIeNnW5+xUx04gJLQsQjeDNh2MlVimXMeV/AM+M/pUPpb4uLue0B8H6mDCuRBGEvyUw1/Bb8GCXN20Gx8mwN4QgXe5JTD8c0Sw77QtXMXlnlFlx7aSLuHaEV5X4zFNb2P0KzSksYjCSxWNk7uhXLH5n5FR/gnHX3utBhNonCZxX2GzJXGENGSEDdu6+LZh92imqjcns=
+X-Stat-Signature: cq7y31nmhfaxxogxgft11mt19rxrnxnx
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 52DB3160005
+X-HE-Tag: 1790623436-520939
+X-HE-Meta: U2FsdGVkX19Iz1LVPJucIowM5jfVWIeUI7VQawte0hOXTKEfhUEkberT7nk7SGrh8xZWanlz/yOisBGAbOudyYJIaGFeO5N1wWxX4UGoxg2tgkYQd56Soz70kFwZgZraYT9ejnjRJHJt3kgLevLNKeC50ILEuth2nSqb3VxMzfbhMs9it3bJX8NWi0S7ZqfawiwIVJz0wBYM6I9gw5KALAsZFnYspYxH62OzhI94CNllt9QINgK5jA7XJ5gGCLHJHa/3tLzvZDusfAcvXSSoZvKCvSKlck+Q9bz2Lf633a7wQW3BJqyb7jiD1VHFbuMKl3sKuYQYg+t0DExphEa450l7ZcUwYSZ7nSzIcXZh4T9+84KriumxZVzQDWlHJBOBLi6B2xWNGV39Ft1s43b9Fmns8MFxannw6kWBe0MmonKg7WZWoTFhIUgTZO2chj9okxwbvOSiaAEmA226swCFHWBbnPa8xpNRCxkmZhjt7BZv4pC+qaywLinkv4tBZXL4G0x6PUjYOFoPXpGT70Aq0Wuc9n9CIHWbpKs2j0wePY0F37yn/zjRonAihhFhpAuu3cj0AEg+QTp5y3WQ/mWhvtZ9Qp+Qk3g6KnQ6z3nHSyVmnrbNNCY8fbH2abG2FW0dpTUvd9zGi4VymaB9xnZ4kasQDp8eFEoMucf7pzhK0NHJqfmRNwkz+0qMgYIhw6rzBpILN7UTowfmz8ONvNXnykrxnoYYJ+RawoWgcWmjdALB50nFE6Yfn5Opg6vJj8POk0s8Up5gESJtILqUkuJMoKCfysHLmslc9/bS0Plnr1GNrIyNs08k/57RvA+0uHod6Pb5INZM0i8g5yqN/RES3dv9h/uz4u7b0JszF6wDp9w8HXudcnqIbwIOwUrZNOLpxXpxDWpTyQm6QYjPyOYXkS8IMfQmp02lJHRjTJ2Msy5Xgm61T4ap6AkX74g0sgyMhpJB0xuVRXKI/SHpOEo
+ m23fP0TJ
+ 2a9yYpCVzS8BBUXFYJ5zQcBqGlT97q9heoSC5DbNQA6ef1hHTfRuaF6N8+GKRbCEaSqb/Qaic6H7gqOYwUl/Q5hYxkZVKBkb3mzCeFQhQ7XkXdk+fbTioIO1hnkm26SfUHd7boFxY8l3J/nKB9DhCaljFH1PhDsl8pvPxINoj8kvCMvZyPfnzfFdnQnF4UShMYPbytQ+wCMsx6pLeJHtp0gpaQtTd/Af0JAE3isrM86GTgWCcj2xYK8uiVHbUmtvepcUBZmrvt5WA5DssqtVunf7nNhTy+tRWakcoFbES7tU6gXK4fVBzCbh+Udo0+H/APS5KSDxm09KMC6CJ3n0l/I0AkIORQBLkmdEE0/kAZ6gBvuVy0M3BCxWoBQWm+rORLbIh2cH+/Gj2Cip370fO7JQV24Kc8fPpPdOUmYboPnWQYv9RF6X20caAa7Fac8cRi6gE7Y8FSowxiLJOLCIAs4hzfFSumXiSukH42NQVO/ShbNx3ipMXzbPhtqs6WjLVq97XF9A5mc6HO1O1mrtLqvYITcWokIS2qdCltlyuCZum4LNIkk9W1DE4yA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,247 +137,506 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make page_counter_try_charge() consume stock transparently to callers
-while preserving the same semantics as try_charge_memcg's greedy
-charge attempt, refill, and !allow_spinning special case.
+Transition memcg to use the page_counter_stock for the memory
+page_counter instead of relying on a memcg-wide stock.
 
-page_counter_try_charge gets two new parameters, may_batch and
-nr_charged.
+One aspect that remains non-transparent to memcg is the uncharge path.
+This is intentional, as the caller is responsible for managing the
+batching. Cacheable releases refill the stock, while already-batched
+frees (i.e. uncharge_gather), rollbacks, and accounting transfers
+uncharge the hierarchy directly. The refill helper itself already falls
+back to a raw uncharge when the stock cannot accept the pages anyways.
 
-may_batch is intended to preserve the behavior of !allow_spinning
-scenarios in try_charge_memcg, where the goal is to charge as quickly
-as possible, without evicting other stock slots or making a greedy
-charge to refill the stock.
+Because the memory and memsw counters no longer share one stock, their
+raw values can temporarily diverge. Preserve the legacy user-visible
+memory <= memory+swap invariant by reporting the larger raw value for
+memory.memsw.usage_in_bytes. This masks the temporary inversions
+caused by the decoupling of the single memcg stock.
 
-nr_charged is used to reflect the size of the successful hierarchy
-charge, preserving the existing batch-based memory.high accounting
-for current->memcg_nr_pages_over_high. As with refill_stock() today,
-the full charge is reported even if the excess is later uncharged
-because the stock could not accept it. This only affects memory.high
-throttling heuristics and never fails a charge. This behavior may be
-fixed to properly account the net charge in a future follow-up.
+Note that this remains a bounded stock-related overestimate, consistent
+with the existing fuzzy usage reporting for usage.
 
-As of this patch, no page_counter has stock yet, so there are no
-functional changes intended.
+With this transition, remove all memcg code that is no longer used.
+After all of this, there should be no functional change for cgroup v2
+users. All v2 behaviors from memcg are preserved, just moved from
+memcg to page_counter code, so that future work can introduce
+additional page_counters without removing the fast path.
+Explicitly, the preserved behaviors are:
+ - 7-slot stock
+ - drain policy works locally and remotely through the memcg_wq
+ - check whether a stock requires flushing before taking action
+ - exact charging for non-spinning callers
+ - report hierarchy growth for memory.high overage accounting
 
+As of this patch, this leaves memsw un-stocked and always taking the
+slow path (raw hierarchy charge). The next patch will make memsw
+stocked, which will close the fast path gap for legacy cgroup users.
+
+Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
 ---
- include/linux/page_counter.h |  4 +-
- kernel/cgroup/dmem.c         |  2 +-
- mm/hugetlb_cgroup.c          |  2 +-
- mm/memcontrol-v1.c           |  3 +-
- mm/memcontrol.c              |  8 ++--
- mm/page_counter.c            | 82 +++++++++++++++++++++++++++++++-----
- 6 files changed, 83 insertions(+), 18 deletions(-)
+ mm/memcontrol-v1.c |   9 +-
+ mm/memcontrol.c    | 279 ++++++++-------------------------------------
+ 2 files changed, 56 insertions(+), 232 deletions(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index cf627c5090093..58532259e7f59 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -98,8 +98,8 @@ long page_counter_margin(const struct page_counter *counter);
- void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_charge(struct page_counter *counter, unsigned long nr_pages);
- bool page_counter_try_charge(struct page_counter *counter,
--			     unsigned long nr_pages,
--			     struct page_counter **fail);
-+			     unsigned long nr_pages, struct page_counter **fail,
-+			     bool may_batch, unsigned long *nr_charged);
- void page_counter_refill_stock(struct page_counter *counter,
- 			       unsigned long nr_pages);
- void page_counter_drain_stock_fully(struct page_counter_stock_pcp *stock);
-diff --git a/kernel/cgroup/dmem.c b/kernel/cgroup/dmem.c
-index 4683f3d680226..569307aa4bd62 100644
---- a/kernel/cgroup/dmem.c
-+++ b/kernel/cgroup/dmem.c
-@@ -736,7 +736,7 @@ int dmem_cgroup_try_charge(struct dmem_cgroup_region *region, u64 size,
- 		goto err;
- 	}
- 
--	if (!page_counter_try_charge(&pool->cnt, size, &fail)) {
-+	if (!page_counter_try_charge(&pool->cnt, size, &fail, false, NULL)) {
- 		if (ret_limit_pool) {
- 			*ret_limit_pool = container_of(fail, struct dmem_cgroup_pool_state, cnt);
- 			css_get(&(*ret_limit_pool)->cs->css);
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 3fb41311e4c7d..bbc2dd3fa3c97 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -304,7 +304,7 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
- 
- 	if (!page_counter_try_charge(
- 		    __hugetlb_cgroup_counter_from_cgroup(h_cg, idx, rsvd),
--		    nr_pages, &counter)) {
-+		    nr_pages, &counter, false, NULL)) {
- 		ret = -ENOMEM;
- 		hugetlb_event(h_cg, idx, HUGETLB_MAX);
- 		css_put(&h_cg->css);
 diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-index b7f2868885071..a146e54c6f9f7 100644
+index a146e54c6f9f7..5660ba4597db2 100644
 --- a/mm/memcontrol-v1.c
 +++ b/mm/memcontrol-v1.c
-@@ -2193,7 +2193,8 @@ bool memcg1_charge_skmem(struct mem_cgroup *memcg, unsigned int nr_pages,
- {
- 	struct page_counter *fail;
- 
--	if (page_counter_try_charge(&memcg->tcpmem, nr_pages, &fail)) {
-+	if (page_counter_try_charge(&memcg->tcpmem, nr_pages, &fail,
-+				    false, NULL)) {
- 		memcg->tcpmem_pressure = 0;
- 		return true;
+@@ -122,10 +122,13 @@ static unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap)
+ 		if (swap)
+ 			val += total_swap_pages - get_nr_swap_pages();
+ 	} else {
+-		if (!swap)
++		if (!swap) {
+ 			val = page_counter_read(&memcg->memory);
+-		else
+-			val = page_counter_read(&memcg->memsw);
++		} else {
++			/* Preserve the user-visible memory <= memsw invariant. */
++			val = max(page_counter_read(&memcg->memory),
++				  page_counter_read(&memcg->memsw));
++		}
  	}
+ 	return val;
+ }
 diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index edb2da5a326c5..53be4365e2c9e 100644
+index 53be4365e2c9e..e666572a7c7cb 100644
 --- a/mm/memcontrol.c
 +++ b/mm/memcontrol.c
-@@ -2722,13 +2722,14 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+@@ -2063,33 +2063,11 @@ void mem_cgroup_print_oom_group(struct mem_cgroup *memcg)
+ 	pr_cont(" are going to be killed due to memory.oom.group set\n");
+ }
  
+-/*
+- * The value of NR_MEMCG_STOCK is selected to keep the cached memcgs and their
+- * nr_pages in a single cacheline. This may change in future.
+- */
+-#define NR_MEMCG_STOCK 7
+-
+-/*
+- * Watermarks for a charge stock slot, in the spirit of pcp->high and
+- * pcp->batch: MEMCG_STOCK_HIGH is the high watermark at which a slot is
+- * trimmed, and it is trimmed down to MEMCG_STOCK_LOW rather than emptied.
+- */
+-#define MEMCG_STOCK_LOW		(MEMCG_CHARGE_BATCH / 2)
+-#define MEMCG_STOCK_HIGH	(MEMCG_CHARGE_BATCH)
+-
+ #define FLUSHING_CACHED_CHARGE	0
+-struct memcg_stock_pcp {
+-	local_trylock_t lock;
+-	uint8_t nr_pages[NR_MEMCG_STOCK];
+-	struct mem_cgroup *cached[NR_MEMCG_STOCK];
+ 
+-	struct work_struct work;
+-	unsigned long flags;
+-	uint8_t drain_idx;
+-};
+-
+-static DEFINE_PER_CPU_ALIGNED(struct memcg_stock_pcp, memcg_stock) = {
++static DEFINE_PER_CPU_ALIGNED(struct page_counter_stock_pcp, memory_stock) = {
+ 	.lock = INIT_LOCAL_TRYLOCK(lock),
++	.base = &memory_stock,
+ };
+ 
+ /*
+@@ -2139,52 +2117,6 @@ static void drain_obj_stock(struct obj_stock_pcp *stock);
+ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+ 				     struct mem_cgroup *root_memcg);
+ 
+-/**
+- * consume_stock: Try to consume stocked charge on this cpu.
+- * @memcg: memcg to consume from.
+- * @nr_pages: how many pages to charge.
+- *
+- * Consume the cached charge if enough nr_pages are present otherwise return
+- * failure. Also return failure for charge request larger than
+- * MEMCG_CHARGE_BATCH or if the local lock is already taken.
+- *
+- * returns true if successful, false otherwise.
+- */
+-static bool consume_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+-{
+-	struct memcg_stock_pcp *stock;
+-	uint8_t stock_pages;
+-	bool ret = false;
+-	int i;
+-
+-	if (nr_pages > MEMCG_CHARGE_BATCH ||
+-	    !local_trylock(&memcg_stock.lock))
+-		return ret;
+-
+-	stock = this_cpu_ptr(&memcg_stock);
+-
+-	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
+-		if (memcg != READ_ONCE(stock->cached[i]))
+-			continue;
+-
+-		stock_pages = READ_ONCE(stock->nr_pages[i]);
+-		if (stock_pages >= nr_pages) {
+-			stock_pages -= nr_pages;
+-			WRITE_ONCE(stock->nr_pages[i], stock_pages);
+-			if (!stock_pages) {
+-				css_put(&memcg->css);
+-				WRITE_ONCE(stock->cached[i], NULL);
+-			}
+-			ret = true;
+-		}
+-		break;
+-	}
+-
+-	local_unlock(&memcg_stock.lock);
+-
+-	return ret;
+-}
+-
+ static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
+ {
+ 	page_counter_uncharge(&memcg->memory, nr_pages);
+@@ -2192,49 +2124,22 @@ static void memcg_uncharge(struct mem_cgroup *memcg, unsigned int nr_pages)
+ 		page_counter_uncharge(&memcg->memsw, nr_pages);
+ }
+ 
+-/*
+- * Returns stocks cached in percpu and reset cached information.
+- */
+-static void drain_stock(struct memcg_stock_pcp *stock, int i)
+-{
+-	struct mem_cgroup *old = READ_ONCE(stock->cached[i]);
+-	uint8_t stock_pages;
+-
+-	if (!old)
+-		return;
+-
+-	stock_pages = READ_ONCE(stock->nr_pages[i]);
+-	if (stock_pages) {
+-		memcg_uncharge(old, stock_pages);
+-		WRITE_ONCE(stock->nr_pages[i], 0);
+-	}
+-
+-	css_put(&old->css);
+-	WRITE_ONCE(stock->cached[i], NULL);
+-}
+-
+-static void drain_stock_fully(struct memcg_stock_pcp *stock)
++static void drain_local_stock(struct work_struct *work)
+ {
+-	int i;
+-
+-	for (i = 0; i < NR_MEMCG_STOCK; ++i)
+-		drain_stock(stock, i);
+-}
+-
+-static void drain_local_memcg_stock(struct work_struct *dummy)
+-{
+-	struct memcg_stock_pcp *stock;
++	struct page_counter_stock_pcp *pcp_stock;
++	struct page_counter_stock_pcp __percpu *stock;
+ 
+ 	if (WARN_ONCE(!in_task(), "drain in non-task context"))
+ 		return;
+ 
+-	local_lock(&memcg_stock.lock);
++	stock = container_of(work, struct page_counter_stock_pcp, work)->base;
++	local_lock(&stock->lock);
+ 
+-	stock = this_cpu_ptr(&memcg_stock);
+-	drain_stock_fully(stock);
+-	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
++	pcp_stock = this_cpu_ptr(stock);
++	page_counter_drain_stock_fully(pcp_stock);
++	clear_bit(FLUSHING_CACHED_CHARGE, &pcp_stock->flags);
+ 
+-	local_unlock(&memcg_stock.lock);
++	local_unlock(&stock->lock);
+ }
+ 
+ static void drain_local_obj_stock(struct work_struct *dummy)
+@@ -2253,92 +2158,6 @@ static void drain_local_obj_stock(struct work_struct *dummy)
+ 	local_unlock(&obj_stock.lock);
+ }
+ 
+-static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
+-{
+-	struct memcg_stock_pcp *stock;
+-	struct mem_cgroup *cached;
+-	unsigned int stock_pages;
+-	bool success = false;
+-	int empty_slot = -1;
+-	int i;
+-
+-	/*
+-	 * nr_pages[] is a uint8_t and a slot's count is capped at
+-	 * MEMCG_STOCK_HIGH. Raising MEMCG_CHARGE_BATCH beyond 127 would need
+-	 * more careful handling of nr_pages[] in struct memcg_stock_pcp.
+-	 */
+-	BUILD_BUG_ON(MEMCG_CHARGE_BATCH > S8_MAX);
+-	BUILD_BUG_ON(MEMCG_STOCK_HIGH > U8_MAX);
+-
+-	VM_WARN_ON_ONCE(mem_cgroup_is_root(memcg));
+-
+-	if (nr_pages > MEMCG_CHARGE_BATCH ||
+-	    !local_trylock(&memcg_stock.lock)) {
+-		/*
+-		 * In case of larger than batch refill or unlikely failure to
+-		 * lock the percpu memcg_stock.lock, uncharge memcg directly.
+-		 */
+-		memcg_uncharge(memcg, nr_pages);
+-		return;
+-	}
+-
+-	stock = this_cpu_ptr(&memcg_stock);
+-	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
+-		cached = READ_ONCE(stock->cached[i]);
+-		if (!cached && empty_slot == -1)
+-			empty_slot = i;
+-		if (memcg == READ_ONCE(stock->cached[i])) {
+-			stock_pages = READ_ONCE(stock->nr_pages[i]) + nr_pages;
+-			if (stock_pages > MEMCG_STOCK_HIGH) {
+-				memcg_uncharge(memcg,
+-					       stock_pages - MEMCG_STOCK_LOW);
+-				stock_pages = MEMCG_STOCK_LOW;
+-			}
+-			WRITE_ONCE(stock->nr_pages[i], stock_pages);
+-			success = true;
+-			break;
+-		}
+-	}
+-
+-	if (!success) {
+-		i = empty_slot;
+-		if (i == -1) {
+-			i = stock->drain_idx++;
+-			if (stock->drain_idx == NR_MEMCG_STOCK)
+-				stock->drain_idx = 0;
+-			drain_stock(stock, i);
+-		}
+-		css_get(&memcg->css);
+-		WRITE_ONCE(stock->cached[i], memcg);
+-		WRITE_ONCE(stock->nr_pages[i], nr_pages);
+-	}
+-
+-	local_unlock(&memcg_stock.lock);
+-}
+-
+-static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+-				  struct mem_cgroup *root_memcg)
+-{
+-	struct mem_cgroup *memcg;
+-	bool flush = false;
+-	int i;
+-
+-	rcu_read_lock();
+-	for (i = 0; i < NR_MEMCG_STOCK; ++i) {
+-		memcg = READ_ONCE(stock->cached[i]);
+-		if (!memcg)
+-			continue;
+-
+-		if (READ_ONCE(stock->nr_pages[i]) &&
+-		    mem_cgroup_is_descendant(memcg, root_memcg)) {
+-			flush = true;
+-			break;
+-		}
+-	}
+-	rcu_read_unlock();
+-	return flush;
+-}
+-
+ static bool schedule_drain_work(int cpu, struct work_struct *work)
+ {
+ 	/*
+@@ -2370,23 +2189,25 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 	 * Notify other cpus that system-wide "drain" is running
+ 	 * We do not care about races with the cpu hotplug because cpu down
+ 	 * as well as workers from this path always operate on the local
+-	 * per-cpu data. CPU up doesn't touch memcg_stock at all.
++	 * per-cpu data. CPU up doesn't touch the stocks at all.
+ 	 */
+ 	migrate_disable();
+ 	curcpu = smp_processor_id();
+ 	for_each_online_cpu(cpu) {
+-		struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
++		struct page_counter_stock_pcp *memory_st =
++			per_cpu_ptr(&memory_stock, cpu);
+ 		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
+ 
+-		if (!test_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags) &&
+-		    is_memcg_drain_needed(memcg_st, root_memcg) &&
++		if (!test_bit(FLUSHING_CACHED_CHARGE, &memory_st->flags) &&
++		    page_counter_stock_flush_required(memory_st,
++						      &root_memcg->css) &&
+ 		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
+-				      &memcg_st->flags)) {
++				      &memory_st->flags)) {
+ 			if (cpu == curcpu)
+-				drain_local_memcg_stock(&memcg_st->work);
+-			else if (!schedule_drain_work(cpu, &memcg_st->work))
++				drain_local_stock(&memory_st->work);
++			else if (!schedule_drain_work(cpu, &memory_st->work))
+ 				clear_bit(FLUSHING_CACHED_CHARGE,
+-					  &memcg_st->flags);
++					  &memory_st->flags);
+ 		}
+ 
+ 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+@@ -2406,12 +2227,14 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+ 
+ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ {
+-	struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
++	struct page_counter_stock_pcp *stock;
+ 	struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
+ 
+ 	/* no need for the local lock */
+ 	drain_obj_stock(obj_st);
+-	drain_stock_fully(memcg_st);
++	stock = per_cpu_ptr(&memory_stock, cpu);
++	page_counter_drain_stock_fully(stock);
++	clear_bit(FLUSHING_CACHED_CHARGE, &stock->flags);
+ 
+ 	/*
+ 	 * A drain work queued before the CPU went away is executed by an
+@@ -2419,7 +2242,6 @@ static int memcg_hotplug_cpu_dead(unsigned int cpu)
+ 	 * clear the flags here to make these stocks drainable again once
+ 	 * the CPU comes back online.
+ 	 */
+-	clear_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags);
+ 	clear_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags);
+ 
+ 	return 0;
+@@ -2699,10 +2521,10 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 			    unsigned int nr_pages)
+ {
+-	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
+ 	int nr_retries = MAX_RECLAIM_RETRIES;
+ 	struct mem_cgroup *mem_over_limit;
+ 	struct page_counter *counter;
++	unsigned long nr_charged;
+ 	unsigned long nr_reclaimed;
+ 	bool passed_oom = false;
+ 	unsigned int reclaim_options;
+@@ -2710,37 +2532,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	bool raised_max_event = false;
+ 	unsigned long pflags;
+ 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
++	bool may_batch = allow_spinning;
+ 	int ret = 0;
+ 
+ retry:
+-	if (consume_stock(memcg, nr_pages))
+-		return ret;
+-
+-	if (!allow_spinning)
+-		/* Avoid the refill and flush of the older stock */
+-		batch = nr_pages;
+-
  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
  	if (do_memsw_account() &&
--	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-+	    !page_counter_try_charge(&memcg->memsw, batch, &counter, false,
-+				     NULL)) {
+-	    !page_counter_try_charge(&memcg->memsw, batch, &counter, false,
++	    !page_counter_try_charge(&memcg->memsw, nr_pages, &counter, false,
+ 				     NULL)) {
  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
  		goto reclaim;
  	}
  
--	if (page_counter_try_charge(&memcg->memory, batch, &counter))
-+	if (page_counter_try_charge(&memcg->memory, batch, &counter, false, NULL))
- 		goto done_restock;
+-	if (page_counter_try_charge(&memcg->memory, batch, &counter, false, NULL))
+-		goto done_restock;
++	if (page_counter_try_charge(&memcg->memory, nr_pages, &counter,
++				    may_batch, &nr_charged))
++		goto check_high;
  
  	if (do_memsw_account())
-@@ -6026,7 +6027,8 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
- 		private_id = mem_cgroup_private_id_get(memcg, nr_pages);
+-		page_counter_uncharge(&memcg->memsw, batch);
++		page_counter_uncharge(&memcg->memsw, nr_pages);
+ 	mem_over_limit = mem_cgroup_from_counter(counter, memory);
  
- 		if (!mem_cgroup_private_id_is_root(private_id) &&
--		    !page_counter_try_charge(&memcg->swap, nr_pages, &counter)) {
-+		    !page_counter_try_charge(&memcg->swap, nr_pages, &counter,
-+					     false, NULL)) {
- 			memcg_memory_event(memcg, MEMCG_SWAP_MAX);
- 			memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
- 			mem_cgroup_private_id_put(private_id, nr_pages);
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 77624b00b5f94..e48ef37016c50 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -136,23 +136,76 @@ void page_counter_charge(struct page_counter *counter, unsigned long nr_pages)
- 	}
- }
+ reclaim:
+-	if (batch > nr_pages) {
+-		batch = nr_pages;
+-		goto retry;
+-	}
++	/* Do not retry speculative batch charges after the first miss. */
++	may_batch = false;
  
-+/*
-+ * Consume the cached charge if enough nr_pages are present, otherwise return
-+ * failure. Also return failure for charge requests larger than
-+ * PAGE_COUNTER_STOCK_BATCH or if the local lock is already taken.
-+ */
-+static bool page_counter_consume_stock(struct page_counter *counter,
-+				       unsigned long nr_pages)
-+{
-+	struct page_counter_stock_pcp __percpu *stock = counter->stock;
-+	struct page_counter_stock_pcp *pcp_stock;
-+	u8 stock_pages;
-+	bool ret = false;
-+	int i;
-+
-+	if (nr_pages > PAGE_COUNTER_STOCK_BATCH ||
-+	    !local_trylock(&stock->lock))
-+		return false;
-+
-+	pcp_stock = this_cpu_ptr(stock);
-+	for (i = 0; i < NR_PAGE_COUNTER_STOCK; i++) {
-+		if (counter != READ_ONCE(pcp_stock->cached[i]))
-+			continue;
-+
-+		stock_pages = READ_ONCE(pcp_stock->nr_pages[i]);
-+		if (stock_pages >= nr_pages) {
-+			stock_pages -= nr_pages;
-+			WRITE_ONCE(pcp_stock->nr_pages[i], stock_pages);
-+			if (!stock_pages) {
-+				css_put(counter->stock_css);
-+				WRITE_ONCE(pcp_stock->cached[i], NULL);
-+			}
-+			ret = true;
-+		}
-+		break;
-+	}
-+	local_unlock(&stock->lock);
-+
-+	return ret;
-+}
-+
- /**
-- * page_counter_try_charge - try to hierarchically charge pages
-+ * page_counter_try_charge - try to hierarchically charge pages using stock
-  * @counter: counter
-- * @nr_pages: number of pages to charge
-- * @fail: points first counter to hit its limit, if any
-+ * @nr_pages: number of pages requested
-+ * @fail: points to the first counter to hit its limit, if any
-+ * @may_batch: whether a stock miss may trigger a batch charge
-+ * @nr_charged: optional; set to the hierarchy charge size on success
-  *
-- * Returns %true on success, or %false and @fail if the counter or one
-- * of its ancestors has hit its configured limit.
-+ * Return: %true if the request was satisfied. A failed batch charge may update
-+ * @fail before an exact retry succeeds.
-  */
- bool page_counter_try_charge(struct page_counter *counter,
--			     unsigned long nr_pages,
--			     struct page_counter **fail)
-+			     unsigned long nr_pages, struct page_counter **fail,
-+			     bool may_batch, unsigned long *nr_charged)
- {
-+	unsigned long charge = nr_pages;
- 	struct page_counter *c;
- 	bool protection = track_protection(counter);
- 	bool track_failcnt = counter->track_failcnt;
+ 	/*
+ 	 * Prevent unbounded recursion when reclaim operations need to
+@@ -2853,10 +2668,9 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
  
-+	if (counter->stock && may_batch)
-+		charge = max(nr_pages, PAGE_COUNTER_STOCK_BATCH);
-+
-+retry:
-+	if (counter->stock && page_counter_consume_stock(counter, nr_pages)) {
-+		if (nr_charged)
-+			*nr_charged = 0;
-+		return true;
-+	}
-+
- 	for (c = counter; c; c = c->parent) {
- 		long new;
- 		/*
-@@ -169,9 +222,9 @@ bool page_counter_try_charge(struct page_counter *counter,
- 		 * we either see the new limit or the setter sees the
- 		 * counter has changed and retries.
- 		 */
--		new = atomic_long_add_return(nr_pages, &c->usage);
-+		new = atomic_long_add_return(charge, &c->usage);
- 		if (new > c->max) {
--			atomic_long_sub(nr_pages, &c->usage);
-+			atomic_long_sub(charge, &c->usage);
- 			/*
- 			 * This is racy, but we can live with some
- 			 * inaccuracy in the failcnt which is only used
-@@ -192,11 +245,20 @@ bool page_counter_try_charge(struct page_counter *counter,
- 				WRITE_ONCE(c->watermark, new);
+ 	return ret;
+ 
+-done_restock:
+-	if (batch > nr_pages)
+-		refill_stock(memcg, batch - nr_pages);
+-
++check_high:
++	if (!nr_charged)
++		return ret;
+ 	/*
+ 	 * If the hierarchy is above the normal consumption range, schedule
+ 	 * reclaim on returning to userland.  We can perform reclaim here
+@@ -2896,7 +2710,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 			 * and distribute reclaim work and delay penalties
+ 			 * based on how much each task is actually allocating.
+ 			 */
+-			current->memcg_nr_pages_over_high += batch;
++			current->memcg_nr_pages_over_high += nr_charged;
+ 			set_notify_resume(current);
+ 			break;
  		}
- 	}
-+	if (charge > nr_pages)
-+		page_counter_refill_stock(counter, charge - nr_pages);
-+	if (nr_charged)
-+		*nr_charged = charge;
- 	return true;
+@@ -3201,8 +3015,11 @@ static void obj_cgroup_uncharge_pages(struct obj_cgroup *objcg,
  
- failed:
- 	for (c = counter; c != *fail; c = c->parent)
--		page_counter_cancel(c, nr_pages);
-+		page_counter_cancel(c, charge);
-+
-+	if (charge > nr_pages) {
-+		charge = nr_pages;
-+		goto retry;
+ 	account_kmem_nmi_safe(memcg, -nr_pages);
+ 	memcg1_account_kmem(memcg, -nr_pages);
+-	if (!mem_cgroup_is_root(memcg))
+-		refill_stock(memcg, nr_pages);
++	if (!mem_cgroup_is_root(memcg)) {
++		page_counter_refill_stock(&memcg->memory, nr_pages);
++		if (do_memsw_account())
++			page_counter_uncharge(&memcg->memsw, nr_pages);
 +	}
  
- 	return false;
+ 	css_put(&memcg->css);
  }
+@@ -4349,6 +4166,8 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ 	if (parent) {
+ 		page_counter_init(&memcg->memory, &parent->memory, memcg_on_dfl);
++		memcg->memory.stock = &memory_stock;
++		memcg->memory.stock_css = &memcg->css;
+ 		page_counter_init(&memcg->swap, &parent->swap, false);
+ #ifdef CONFIG_MEMCG_V1
+ 		WRITE_ONCE(memcg->swappiness, mem_cgroup_swappiness(parent));
+@@ -5817,7 +5636,7 @@ void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages)
+ 
+ 	mod_memcg_state(memcg, MEMCG_SOCK, -nr_pages);
+ 
+-	refill_stock(memcg, nr_pages);
++	page_counter_refill_stock(&memcg->memory, nr_pages);
+ }
+ 
+ void mem_cgroup_flush_workqueue(void)
+@@ -5965,6 +5784,8 @@ int __init mem_cgroup_init(void)
+ 	 * exceed S32_MAX / PAGE_SIZE.
+ 	 */
+ 	BUILD_BUG_ON(MEMCG_CHARGE_BATCH > S32_MAX / PAGE_SIZE);
++	/* Batched page-counter charges feed memcg's memory.high accounting. */
++	BUILD_BUG_ON(MEMCG_CHARGE_BATCH != PAGE_COUNTER_STOCK_BATCH);
+ 
+ 	memcg_struct_check();
+ 
+@@ -5975,8 +5796,8 @@ int __init mem_cgroup_init(void)
+ 	WARN_ON(!memcg_wq);
+ 
+ 	for_each_possible_cpu(cpu) {
+-		INIT_WORK(&per_cpu_ptr(&memcg_stock, cpu)->work,
+-			  drain_local_memcg_stock);
++		INIT_WORK(&per_cpu_ptr(&memory_stock, cpu)->work,
++			  drain_local_stock);
+ 		INIT_WORK(&per_cpu_ptr(&obj_stock, cpu)->work,
+ 			  drain_local_obj_stock);
+ 	}
 -- 
 2.53.0-Meta
 
