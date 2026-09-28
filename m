@@ -4,112 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2B9FC9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 00:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B25EC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 01:14:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72B9A6B0088; Sun, 27 Sep 2026 20:19:35 -0400 (EDT)
+	id 82B876B0088; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DC856B008A; Sun, 27 Sep 2026 20:19:35 -0400 (EDT)
+	id 7B5546B008A; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F3516B008C; Sun, 27 Sep 2026 20:19:35 -0400 (EDT)
+	id 656A66B008C; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 302E86B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:19:35 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C737C0AEA
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:19:34 +0000 (UTC)
-X-FDA: 85261262268.27.3E9C6E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7201E20004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:19:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q8TZD+Kc;
-	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3371A6B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 842EE160B12
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:33 +0000 (UTC)
+X-FDA: 85261400826.17.3C9AEB9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 996DCA0004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QLCw3fgG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790554772;
+	s=arc-20220608; t=1790558071;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QP6xyVeWK0fjKYOX13CdCHacAmA58q94pWWFU7WezpA=;
-	b=rLSum1w1kfhuNChNaup/LvQ5yOOJjrmc6gwIHKiaS1YJwaFu2sVxE5lKLBGYrSB9lY/4Po
-	mP9Vfv6qJM8YYxeeH+S8SSihShqyKjZ1s06IlYsPvANXWPuWbTNh+UMsK5zcF3a1GV5VUu
-	ll7S1wL8zRRrK6kGOVNJayptbbmkxQw=
+	bh=EyC72KWxqDJlbXy+hKU7j6uBzgNXP3yzZ3b3YBNMi7A=;
+	b=QXXQJxtxxuwH250K0LbScqtHmFrAxQiVIHEI9ddgrLLsegcPKE/pWkSI/toDSQsBKmigNU
+	YTZ7q6ANDjnLU+RoVDfdrutQxPe0LDTMbFoHVSr+KmIl3fqC9cgHQnTVNTgN5HGUNEWDyF
+	kF+KDmVBiJJOWsvGRnEh3lK6jrGAWw0=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q8TZD+Kc;
-	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QLCw3fgG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790554772;
-	b=osshPlwt++aFfNC5RIHL5gyR8lezmRvQ2T10kWZVRbLhuoejm8FsOIDs2tq54UgvJmNg9q
-	00wUEfN8ZW0hEzZ1FijSINWUmIPeasg7NjEExmdUddaWy7dFBhhUopDepY7P6VPqqJZs5y
-	Eo90G5xMgaBRzzp20hC+/Ago5eg2BAU=
+	t=1790558071;
+	b=oWWaOZvreswjjMZ96Lu1RipJqV6KivCCEWw+JSTNyOeuUTn1Vnw0J972zqCuy9dUpizDN0
+	NmKggi2dn9IztnrPW/cUFSU8l8+m8iRicV9r7Tk8tdE/damM/c1YLXK+gt86GBfoMxruDY
+	4pk+1YwzFGA8Of+ENDkXTMFuQFnTpCA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE8AE60052
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:19:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FC31F000FF
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:19:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8AF6F4478B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709A51F008A3
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790554771;
-	bh=QP6xyVeWK0fjKYOX13CdCHacAmA58q94pWWFU7WezpA=;
+	s=k20260515; t=1790558070;
+	bh=EyC72KWxqDJlbXy+hKU7j6uBzgNXP3yzZ3b3YBNMi7A=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Q8TZD+KcqH7MAX6dUpS/JSAVMhLxLCz/zKjss7NWuWteWhn4UPDXrNDTw4/3wJkzu
-	 s0A7Sjr9iUneoZmNMS6n41xk58hMloD6szVNGTpPcNlvLwtWtHe1zI1SpzYUY71fs0
-	 euQ8yCgYZj0M5Pn++1NUZ+XhF4WZhkFhpQxcN3QLWTc78ucAx0zfGa9u1CwhoSql9K
-	 MMJlEK18oXfl81axHE7227Mf2OPzIvDCuz0iKyckAoqhel+s+dk+sHdJIY8Yzng8LM
-	 4ct4VucEoZlYQzCkk6Ywu0aMBNgxbDnfAC8Wi+uM/UaM0qE8+qPddtXDjHc6Y7OXR+
-	 CnAKxfVBpSEAw==
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c293c683202so348477766b.3
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 17:19:31 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBwo6ZX0FlpvtmCZOU2IxvQhQC7NhbYF90fTbPov0yEE2FpdFElc/hzJIh11/joSWwf+ZfZkae7/aw==@kvack.org
-X-Gm-Message-State: AFuF++mSDvjJEx/7W1tmv84hp8hssnUu85ZVJeIMxFcmIduvtAVYdmp8
-	xc+gwDPDADhmpKWez4g8x/cWHDlHEzzmrqy0PRZ0cMFKkKoOzUR0d1xrNtdumhZl2hVL+y+P4Ar
-	HgSKAPYa5/wd66SKaO2vvkCTsUzkfcQ37uD2SDAySsg==
-X-Received: by 2002:a17:907:3f91:b0:c21:450d:cd88 with SMTP id
- a640c23a62f3a-c2ae979e5eamr638636266b.6.1790554770310; Sun, 27 Sep 2026
- 17:19:30 -0700 (PDT)
+	b=QLCw3fgG6q/kDHGYx4lHt+MrSUfstHkF0ztBYLEPnlZPSGbxTDekAXN+eXBnndUJL
+	 oW6HhlSsSNs5WiJPbnRCTizdTReW+4jgqebmckTMndCBIRpJu5laZ0bcH5q7h2FBIF
+	 Ae5gIHNxsZwYPAss4VjubqamHU4r+63w7W3OcvVi/fqEfLmtBkHVjVBJQSEJ7oqnj5
+	 BWLKlnf+jX6VhDxGWeTNO9A6mjGue66KL9IRwruaTm9itXuVoqwGddt6PjQFoEfroA
+	 A27kxghPj9WL1YYgjtZzrWYfYDVc5LL7MN+rk1uYi3DBf0fHCXuvH/qZsGS3ZyvLU9
+	 zG3qbj4jsWTLA==
+Received: by mail-ed2-f34.google.com with SMTP id 4fb4d7f45d1cf-6aaf688ebb0so2452375a12.0
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:14:30 -0700 (PDT)
+X-Gm-Message-State: AFq9FYI4NjrWLeF+NPv5gz0JrRe8WYbMY4msAh9VA8BaFyAGyQOYXmhE
+	xsxvpJ6NlFQvQwbAOo3p0yYyFu5E12ZZsQgHUKgVG6dV4mMOIKBLEfpuWRGLbyGVUrl1t7f59pT
+	4/Rr7IoGoRl9JK74IgzJHpA/VKMMhfdWym2z2L1ruoQ==
+X-Received: by 2002:a05:6402:a0ca:b0:6aa:9f93:e991 with SMTP id
+ 4fb4d7f45d1cf-6aac8f40750mr7984598a12.3.1790558069240; Sun, 27 Sep 2026
+ 18:14:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260926045517.3458413-1-matthias.goergens@gmail.com>
-In-Reply-To: <20260926045517.3458413-1-matthias.goergens@gmail.com>
+References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-2-hebaoquan@kylinos.cn>
+In-Reply-To: <20260916101929.149106-2-hebaoquan@kylinos.cn>
 From: Chris Li <chrisl@kernel.org>
-Date: Sun, 27 Sep 2026 14:19:18 -1000
-X-Gmail-Original-Message-ID: <CACePvbWM8kMjtJbH4vc6Qt=TBZQ-0d-Yj9NOtkepZmtNN3wd9w@mail.gmail.com>
-X-Gm-Features: AclHuK_Emqiw5PPDnEui2wzXu2lByLHdjYDOsTY-4bLEBoChvn9DrfIUdVmpewI
-Message-ID: <CACePvbWM8kMjtJbH4vc6Qt=TBZQ-0d-Yj9NOtkepZmtNN3wd9w@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 0/4] mm/swap: reserve swap areas for deliberate offload
-To: Matthias Goergens <matthias.goergens@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-api@vger.kernel.org, 
-	Alejandro Colomar <alx@kernel.org>, linux-man@vger.kernel.org, Karel Zak <kzak@redhat.com>, 
-	util-linux@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, Shuah Khan <shuah@kernel.org>, 
-	linux-kselftest@vger.kernel.org
+Date: Sun, 27 Sep 2026 15:14:18 -1000
+X-Gmail-Original-Message-ID: <CACePvbVrd+e6FAK6m8PuoD_Lcen13SeYus=gbQxXCm10AZm1ZA@mail.gmail.com>
+X-Gm-Features: AclHuK-AO377KDisb_ZyQ54ljtndVAy04GqfAKOJ8KfE0jbtV5rzs_avyITVamQ
+Message-ID: <CACePvbVrd+e6FAK6m8PuoD_Lcen13SeYus=gbQxXCm10AZm1ZA@mail.gmail.com>
+Subject: Re: [PATCH v3 01/14] mm: xswap support for zswap
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, 
+	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
+	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
+	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7201E20004
+X-Stat-Signature: d16jrw47qnj7sn46pq8i1e356ppfyn5o
 X-Rspam-User: 
-X-Stat-Signature: ou1cqru8wioqzz4busjq3wzwg9jnbhef
-X-HE-Tag: 1790554772-538589
-X-HE-Meta: U2FsdGVkX1/7HtPuJ7tT9mKksD/XXvMI8hDcq5hH2KKXoX/b9mo3CJ2G54AGH6aM4Mi8fHM2VjLKiy5iv7ZFlaqy+PgaxSx3NZ0C6jMOND/suyAS/BCqUshzYTYJZ77Q5dEHvaInS5RJQFNOVHrkfobxd8L13Eswf0fNU2Qcvi0+HD4ThK8Lv3RgJVMHrmLKAS5M7LyyRFxlEAyVeeht36I3L5CfMQDJODHg/MT6E6NHnZmdba7Vxm4SnRDfM7imYDP2R+XFd71NI62V1DHK5r7ZVkhpZJj6SCxGuSn8hcLlgfIoqIlZgEVNCNlBF1Hrg5HXXv5O683E1qmaLic9o2vTZ1w6LXTlPrwiGbBTTkNxi57Z2LitYOZWOa1CSRc/refMnD7cdHEgaAHCvXIA39HAZAqJ6ad1R8KEMVEKI3viqwQw9mXExetcU1qqSV3jB83qglKe2/a0u6/oNaltLF20arp00O0b0p58O/0GKLykZ3uRLZoH25FJIsQnriaH0DxrzYY/VLo8euu0Y2izNyB9FGrc/MOo7CSe2B0cvRw5NedHM1/FNbVf56NVRPXqszvEvSsJUG+Y2oLgFZnd+joZsHvnVaDFZdDcsiEqewhxPTG5TczUB0sMz+TSDMuCMmDeWM7nEpD6I1BxfBQzK65HbByaB4FC1tU+YCk+GIlxnfwi2m2F1iLq40C1GMeV/rSIeDaSnaeyw4o2rb9IWLqfWKiDK+4GX+X/E2wpwmaF+CtgniX6G4JzODPKhNHqSHksPZKXyw8RPXMYnTNIAZRYnHBpxEfyU11HyVzpOY76+FOXCVx6fghzTc93hzhhdH99j/AisruSbd4mur+tt2rC/KMaqh3SylYqfd1MqsglNpN5sW14AygUK7nDjgf+17PijwDKZOBbW1hfU0L6oj4ESYwWIcbb8pcHLqg5p4iZA9NWWgurXQBX4dysZStn3qvAob0JHl6U3ZesRMT
- bXSHXn8T
- fgMoObwdfHXkvZiSY3Nn6qzB8Rdv+JAH+mLrdkoiJhPJiqIFWlt5lZF2Xkq6u/7YmSxfthiq5JigMxHzr9wvOtQFqr73bMdoMU/Oy5bz2T4FrKgnCwcNq6qPEhDakhVnz0/EKZw7AA6jMpF7wVLd56FmoVFztlokcxFJQgNzNROe803Om+afwwoGDUvIQRr+BTodYF14H7QLKLp8B2I8xCntA8K+fyK20FKyau53m3MB2j2HmU6UCwM9OeuUtj5yRwaRBHPZKBUkXRwPKUmhxfYll29kQKVrXdJOrjTdZFQfmgOtb2VHHqusoLWaLkFoemLGSQ+3Lu0cJmPdQxPyj7RrERajwAKJe0j3V+nQK3ZQsTrHIqYGGi3UkoAvvTjOJfLmyqWjfXGawBUCEwiQPgMI0ZiinJU1OGuW/oToupP07x2oDRLnGR8b8Hu8OAx24IgtKN94IdbeYZgolQYWaUYlJFzhnuW33bxYevg4ZPP+Qid6/jIyqxEz/92ukmH4CWcNJcpyO3rJex3AOhYTYXVveVpCgzNRCozScZBGQla9NtSAWyJpsLH99dfQbc/tlVb2sM6bB17Z8JIj1NJzb6wN5Q3npyp2McObkwBHkUSsOkIOPpmY4vKYT8p9Ea6Jh+bKnsuwuf+1tbiYYbRBeNI5rmDb1iyYSLGTkoRfhJ6TN/DNKJgtfrLayua2f4y1/I7iJNpd991xrmz+voCxnulYVUknzoE06ci7PUg9gwJfSi8BnYUmYadHej4bL6KZDiYPwrNo9klAogpRTG7/2hdUTIXTftV820F7evPwx1FsK8SU=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 996DCA0004
+X-HE-Tag: 1790558071-915491
+X-HE-Meta: U2FsdGVkX1/lk5LF1X204mt+uCNoOpOMCZ5VE3QTAnr5jxtzqykNbNPf/MZKQnFI3NOlYmPTJ48ovIo5GY16nK5eT8vgX8vyFwPR7t233WtetWeLkywxaKmpObx5rkq2iKEI/3CkQV6HbQ7wRuskeWNezz27XLRXrsn6VuUCT1ubqJEYW4a0MeiPGMp992gsFy7/Sy0Kcu2RWHxOpsIRR3EQ5j62ZL2qok0mAuH3y4JrKOY2tq43hsahSagfUboASKJAxtuWfm/YMoveGq6FV0wIcRDBclqzrNIPVdfSN3eghbLZNui5tk/0EH4yLCZep5iyCfblm8GIaJ+2hVGwUc5hCBWkogU6Iq8i1zKGYTNlgHFUzXOKqyeTlEwrmaCEKMJLavDg6fXZWnW63FBvWi9IXo+tXkUqA/KY99E2g4W/l5xQxNN70Mu3oRSsp/h4pqPfXh/EFJEmYFSVrgV8QeR44ZROYrnBMYWZGZzRWnRPfuPtPKGiidnFuXI/owVBdEErQdBpY/cgzCOJ/plTCVYa943g4mEvrZzyJN9/kIaofLuz3M+4jZFZSgZTxAE2Se3uJqS/ER5u84aQlODI0EgVo1Ys2dXJKpyKVYvytmh72tZEUz81HvbTzcpt5y7O5kzU7QNrC2dB9/TIEXgjpAsBielC2/2Zn2MDR3m0J/kXQYSEWSddenGvnSNUh2PnahYLMjVE72II6Jcm+Bgm+FOyIQZoDN3QJfXLjj8WKjOSQ/tRXCg+LSu6LtOvodLtCm5/Arbq3OKDqr8uqnLeyorn1seeouTCOFTysz1Y5ZSPGHitkJ3ECm0iEXdridgk7zcXncjDlCp08wAJVUtPgmuhUpEkak8Q9bceFCS3p6P8K3McdbaQu+QnlTfncULTHCDzW64BIwUIOnhoNR26pa36gehunBwaoZNCujQibXBmq8UaygbyzLWw59pNsfO4frkZUtEOKcNAYHmiBf1
+ E4HmOQd3
+ XUaQpLSmfu07VArk/sMUEvuf0rRYhYeTMrnuYt/x+EhjFPUaCERXlE2bIDHeiX6wvZfx7rmpfSRwbJZrWYyLHa82ZSLd3VVJf22xuSruuSSDWRYzgEfbyCPpndyZH4aEsC3D7mgMjlGo3U7ueLgrN4LmV6sgL7G33cCNZ7nf/v6awjBuQoU/5WjZvSrkXqmXBZ6r/z5cJg2aKPKnFad41lZBDwYMBQ44zvgBqx5PtUiTkumdpJD9xSwGDZ7DBPP0juwiaa2a0hc4SiHKYZzTEt1mVHxE2YrErRnx0OJDqccjGladX7MNZOB/jdXz/dCy6rNx14G4IVu9EgydLq0hqrHlsqPV87asHkIRELFY0VGa0DOpNiM2VDB860zWOfss8BhlPtrJDPaK2Bd1al0+Udt4AkTu+5HtIlRb5a7TSDswDxC/EJmyhNCajcXZjaxcCVIfw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,153 +104,239 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 6:55=E2=80=AFPM Matthias Goergens
-<matthias.goergens@gmail.com> wrote:
+On Wed, Sep 16, 2026 at 12:19=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> =
+wrote:
 >
-> This RFC adds offload-only swap areas for deliberate cold-page offload to
-> backends unsuitable for pressure reclaim. ZFS zvol swap has documented
-> deadlocks under memory pressure [3]; compressed swap is another target
-> because writes may need memory despite free logical slots.
+> From: Chris Li <chrisl@kernel.org>
+>
+> Introduce extendable swap device support - xswap.
+>
+> An xswap device has no backing storage and no swap data section, so
+> it wastes no disk space. Creation is via a sysfs interface added in a
+> later patch.
+>
+> Zswap writeback is gated on whether a real (non-xswap) swap device is
+> active. nr_real_swapfiles counts such devices and is maintained at
+> swapon/swapoff only, so the gate reflects "a device exists to write
+> back to" rather than "a device currently has free slots". This keeps
+> writeback working even when the real swap device is full, and avoids
+> a double decrement when a full device is swapped off.
+>
+> Co-developed-by: Baoquan He <hebaoquan@kylinos.cn>
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
+> Signed-off-by: Chris Li <chrisl@kernel.org>
 
-What is the high-level user-visible impact of this series?
-
-I am curious: if we never run out of swap file space on the
-non-offload swap area, does that mean we don't need this patch series?
-
-The series discusses proactive reclaim and direct reclaim. The
-offload-only swap area is for proactive reclaim. However, direct
-reclaim can use both types of swap areas. Wouldn't using the
-non-offload case cause memory allocation which you want to avoid?
-
-I was wondering if we should actually flip things around. Mark the
-type of swap device that avoids memory allocation during swap out.
-Then direct reclaim prioritizes using those.That would make the happy
-path allocate less memory during direct reclaim. Right now this series
-does not seem to guarantee that direct reclaim stays away from the
-area that allocates memory.
+Reviewed-by: Chris Li <chrisl@chrisli.org>
 
 Chris
 
+> ---
+>  include/linux/swap.h |  2 ++
+>  mm/page_io.c         | 19 +++++++++++++++++++
+>  mm/swap_state.c      |  4 ++++
+>  mm/swapfile.c        | 28 ++++++++++++++++++++++++----
+>  mm/zswap.c           |  7 ++++++-
+>  5 files changed, 55 insertions(+), 5 deletions(-)
 >
-> Explicit proactive reclaim can use these areas alongside conventional
-> swap, ordered by priority. Ordinary reclaim cannot initiate non-zero
-> writes to them, including through retained swap entries. Conventional
-> capacity is not reserved for emergencies. Operators choose the policy;
-> the kernel does not measure headroom or make an allocating backend safe.
+> diff --git a/include/linux/swap.h b/include/linux/swap.h
+> index 43155e122b5c..b4331ca4759a 100644
+> --- a/include/linux/swap.h
+> +++ b/include/linux/swap.h
+> @@ -201,6 +201,7 @@ enum {
+>         SWP_STABLE_WRITES =3D (1 << 11),  /* no overwrite PG_writeback pa=
+ges */
+>         SWP_SYNCHRONOUS_IO =3D (1 << 12), /* synchronous IO is efficient =
+*/
+>         SWP_HIBERNATION =3D (1 << 13),    /* pinned for hibernation */
+> +       SWP_XSWAP       =3D (1 << 14),    /* extendable swap device */
+>                                         /* add others here before... */
+>  };
 >
-> TMO/Senpai [4] and DAMON_RECLAIM [5] are related cold-page reclaim
-> approaches. This RFC admits offload-only swap through memory.reclaim and
-> per-node reclaim, but not DAMON. Other related work includes per-cgroup
-> zswap writeback control [6], Virtual Swap Space v4 [1] and swap tiers v10
-> [2].
+> @@ -375,6 +376,7 @@ void free_folio_and_swap_cache(struct folio *folio);
+>  void free_pages_and_swap_cache(struct encoded_page **, int);
+>  /* linux/mm/swapfile.c */
+>  extern atomic_long_t nr_swap_pages;
+> +extern atomic_t nr_real_swapfiles;
+>  extern long total_swap_pages;
+>  extern atomic_t nr_rotate_swap;
 >
-> The util-linux companion [8] proposes swapon --offload-only and an fstab
-> option. Older swapon silently ignores the fstab token, so persistent
-> activation needs discussion. Apply the separate i915 fix [9] first to avo=
-id
-> a pre-existing folio-lock leak when shmem writeback is skipped.
+> diff --git a/mm/page_io.c b/mm/page_io.c
+> index 1da4ff484f09..d685c2e2429a 100644
+> --- a/mm/page_io.c
+> +++ b/mm/page_io.c
+> @@ -248,6 +248,15 @@ int swap_writeout(struct swap_io_ctx *ctx, struct fo=
+lio *folio)
+>         }
+>         rcu_read_unlock();
 >
-> The series fixes zram selftest device tracking and error reporting, adds
-> the swap policy with DRM eligibility checks, and tests routing, workingse=
-t
-> activation and retained-entry write refusal. It is based on mm-new at
-> 995829088503.
+> +       /*
+> +        * xswap has no backing store: keep the folio.  ctx->sis is not s=
+et
+> +        * yet, so look the device up from the entry.
+> +        */
+> +       if (unlikely(__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP=
+)) {
+> +               folio_mark_dirty(folio);
+> +               return AOP_WRITEPAGE_ACTIVATE;
+> +       }
+> +
+>         __swap_writeout(ctx, folio);
+>         return 0;
+>  out_unlock:
+> @@ -482,6 +491,16 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct=
+ folio *folio)
+>         if (zswap_load(folio) !=3D -ENOENT)
+>                 goto finish;
 >
-> Feedback is particularly welcome on:
+> +       if (unlikely(sis->flags & SWP_XSWAP)) {
+> +               /*
+> +                * An xswap entry only ever lives in zswap, so zswap_load=
+()
+> +                * must have found it.  Unlock and let the caller retry.
+> +                */
+> +               WARN_ON_ONCE(1);
+> +               folio_unlock(folio);
+> +               goto finish;
+> +       }
+> +
+>         /* We have to read from slower devices. Increase zswap protection=
+. */
+>         zswap_folio_swapin(folio);
+>         swap_add_folio(ctx, folio, READ);
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index 625c185a1ca4..8bba3e533b28 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -837,6 +837,10 @@ struct folio *swap_cluster_readahead(swp_entry_t ent=
+ry, gfp_t gfp_mask,
+>         struct blk_plug plug;
+>         swp_entry_t ra_entry;
 >
-> - Activation-time eligibility versus backend placement or migration:
->   is retained-entry refusal, with possible reclaim churn or OOM,
->   acceptable without migration?
-> - Eligible-capacity accounting, including overcommit limits and OOM
->   scoring; cache recovery, cluster invalidation and workingset activation=
-.
-> - Persistent activation and visibility: current swap listings do not
->   expose the policy.
+> +       /* xswap entries live only in zswap; readahead does not help. */
+> +       if (si->flags & SWP_XSWAP)
+> +               goto skip;
+> +
+>         mask =3D swapin_nr_pages(offset) - 1;
+>         if (!mask)
+>                 goto skip;
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 280dd906eb18..13ae681acf07 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -66,6 +66,7 @@ static void move_cluster(struct swap_info_struct *si,
+>  static DEFINE_SPINLOCK(swap_lock);
+>  static unsigned int nr_swapfiles;
+>  atomic_long_t nr_swap_pages;
+> +atomic_t nr_real_swapfiles;
+>  /*
+>   * Some modules use swappable objects and may try to swap them out under
+>   * memory pressure (via the shrinker). Before doing so, they may wish to
+> @@ -733,7 +734,8 @@ static void free_cluster(struct swap_info_struct *si,=
+ struct swap_cluster_info *
+>         /*
+>          * If the swap is discardable, prepare discard the cluster
+>          * instead of free it immediately. The cluster will be freed
+> -        * after discard.
+> +        * after discard.  xswap has no bdev and never sets
+> +        * SWP_PAGE_DISCARD, so it always takes the free path below.
+>          */
+>         if ((si->flags & (SWP_WRITEOK | SWP_PAGE_DISCARD)) =3D=3D
+>             (SWP_WRITEOK | SWP_PAGE_DISCARD)) {
+> @@ -1216,6 +1218,9 @@ static void del_from_avail_list(struct swap_info_st=
+ruct *si, bool swapoff)
+>                  */
+>                 lockdep_assert_held(&si->lock);
+>                 si->flags &=3D ~SWP_WRITEOK;
+> +               /* Count active devices, not merely those on the avail li=
+st. */
+> +               if (!(si->flags & SWP_XSWAP))
+> +                       atomic_sub(1, &nr_real_swapfiles);
+>                 atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
+>         } else {
+>                 /*
+> @@ -1273,6 +1278,8 @@ static void add_to_avail_list(struct swap_info_stru=
+ct *si, bool swapon)
+>         }
 >
-> Validation includes x86 builds, affected arm64 MTE objects and builds
-> without swap or memory cgroups. QEMU tests covered routing, retained-entr=
-y
-> recovery, data integrity and cleanup, with negative controls for write
-> refusal and teardown failure.
+>         plist_add(&si->avail_list, &swap_avail_head);
+> +       if (swapon && !(si->flags & SWP_XSWAP))
+> +               atomic_add(1, &nr_real_swapfiles);
 >
-> I have also been using this policy on my own machine with experimental
-> bcachefs swap support, with no problems observed so far. Deliberate stres=
-s
-> testing is confined to VMs; I do not deliberately stress-test this machin=
-e.
+>  skip:
+>         spin_unlock(&swap_avail_lock);
+> @@ -3266,7 +3273,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
 >
-> Changes since v1, incorporating Sashiko's public review [7]:
+>         destroy_swap_extents(p, p->swap_file);
 >
-> - Improve selftest isolation, retained-swap measurement and memlock skips=
-.
-> - Track allocated zram devices, wait for udev probes and report cleanup
->   errors without deleting data through a mount that could not be released=
-.
-> - Clarify activation, capacity reporting and conventional fallback limits=
-.
+> -       if (!(p->flags & SWP_SOLIDSTATE))
+> +       if (!(p->flags & SWP_XSWAP) &&
+> +           !(p->flags & SWP_SOLIDSTATE))
+>                 atomic_dec(&nr_rotate_swap);
 >
-> [1] https://patchew.org/linux/20260825153238.2695446-1-nphamcs@gmail.com/
-> [2] https://patchew.org/linux/20260713025644.170839-1-youngjun.park@lge.c=
-om/
-> [3] https://openzfs.github.io/openzfs-docs/Project%20and%20Community/FAQ.=
-html#using-a-zvol-for-a-swap-device-on-linux
-> [4] https://engineering.fb.com/2022/06/20/data-infrastructure/transparent=
--memory-offloading-more-memory-at-a-fraction-of-the-cost-and-power/
-> [5] https://www.kernel.org/doc/html/latest/admin-guide/mm/damon/reclaim.h=
-tml
-> [6] https://www.kernel.org/doc/html/latest/admin-guide/mm/zswap.html
-> [7] https://sashiko.dev/#/patchset/20260914104501.3960616-1-matthias.goer=
-gens@gmail.com
-> [8] https://github.com/util-linux/util-linux/pull/4633
-> [9] https://lore.kernel.org/all/20260914105606.3997649-1-matthias.goergen=
-s@gmail.com/
+>         mutex_lock(&swapon_mutex);
+> @@ -3376,6 +3384,19 @@ static void swap_stop(struct seq_file *swap, void =
+*v)
+>         mutex_unlock(&swapon_mutex);
+>  }
 >
-> v1: https://lore.kernel.org/all/20260914104501.3960616-1-matthias.goergen=
-s@gmail.com/
+> +static const char *swap_type_str(struct swap_info_struct *si)
+> +{
+> +       struct file *file =3D si->swap_file;
+> +
+> +       if (si->flags & SWP_XSWAP)
+> +               return "xswap\t";
+> +
+> +       if (S_ISBLK(file_inode(file)->i_mode))
+> +               return "partition";
+> +
+> +       return "file\t";
+> +}
+> +
+>  static int swap_show(struct seq_file *swap, void *v)
+>  {
+>         struct swap_info_struct *si =3D v;
+> @@ -3395,8 +3416,7 @@ static int swap_show(struct seq_file *swap, void *v=
+)
+>         len =3D seq_file_path(swap, file, " \t\n\\");
+>         seq_printf(swap, "%*s%s\t%lu\t%s%lu\t%s%d\n",
+>                         len < 40 ? 40 - len : 1, " ",
+> -                       S_ISBLK(file_inode(file)->i_mode) ?
+> -                               "partition" : "file\t",
+> +                       swap_type_str(si),
+>                         bytes, bytes < 10000000 ? "\t" : "",
+>                         inuse, inuse < 10000000 ? "\t" : "",
+>                         si->prio);
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 507f2d19fd2a..96fb993d18cb 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1018,6 +1018,11 @@ static int zswap_writeback_entry(struct zswap_entr=
+y *entry,
+>         if (IS_ERR_OR_NULL(si))
+>                 return -ENOENT;
 >
-> Matthias Goergens (4):
->   selftests: zram: track owned devices and report cleanup failures
->   mm: restrict offload-only swap to proactive reclaim
->   selftests: zram: cover offload-only swap policy
->   selftests: zram: cover retained offload-only entries
->
->  Documentation/mm/swap.rst                     | 105 ++++
->  drivers/gpu/drm/i915/gem/i915_gem_shrinker.c  |   2 +-
->  .../gpu/drm/i915/gem/selftests/huge_pages.c   |   6 +-
->  drivers/gpu/drm/msm/msm_gem_shrinker.c        |   2 +-
->  drivers/gpu/drm/panthor/panthor_gem.c         |   2 +-
->  drivers/gpu/drm/ttm/ttm_backup.c              |   2 +-
->  drivers/gpu/drm/xe/tests/xe_bo.c              |   2 +-
->  include/linux/swap.h                          |  29 +-
->  include/linux/vm_event_item.h                 |   1 +
->  mm/memcontrol.c                               |  20 +-
->  mm/page_io.c                                  |  24 +-
->  mm/swapfile.c                                 | 123 ++++-
->  mm/vmscan.c                                   |  31 +-
->  mm/vmstat.c                                   |   1 +
->  tools/testing/selftests/zram/.gitignore       |   2 +
->  tools/testing/selftests/zram/Makefile         |   4 +-
->  tools/testing/selftests/zram/README           |  20 +-
->  tools/testing/selftests/zram/config           |  10 +-
->  tools/testing/selftests/zram/settings         |   1 +
->  tools/testing/selftests/zram/swap_offload.c   | 425 +++++++++++++++++
->  .../selftests/zram/workingset_offload.c       | 207 ++++++++
->  tools/testing/selftests/zram/zram.sh          |   9 +
->  tools/testing/selftests/zram/zram01.sh        |   9 +-
->  tools/testing/selftests/zram/zram02.sh        |   9 +-
->  tools/testing/selftests/zram/zram03.sh        | 174 +++++++
->  tools/testing/selftests/zram/zram04.sh        | 164 +++++++
->  tools/testing/selftests/zram/zram05.sh        | 447 ++++++++++++++++++
->  tools/testing/selftests/zram/zram_lib.sh      | 189 ++++++--
->  28 files changed, 1926 insertions(+), 94 deletions(-)
->  create mode 100644 tools/testing/selftests/zram/settings
->  create mode 100644 tools/testing/selftests/zram/swap_offload.c
->  create mode 100644 tools/testing/selftests/zram/workingset_offload.c
->  create mode 100755 tools/testing/selftests/zram/zram03.sh
->  create mode 100755 tools/testing/selftests/zram/zram04.sh
->  create mode 100755 tools/testing/selftests/zram/zram05.sh
->
+> +       if (si->flags & SWP_XSWAP) {
+> +               put_swap_device(si);
+> +               return -EINVAL;
+> +       }
+> +
+>         mpol =3D get_task_policy(current);
+>         folio =3D swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NU=
+LL, mpol,
+>                                        NO_INTERLEAVE_INDEX);
+> @@ -1567,7 +1572,7 @@ bool zswap_store(struct folio *folio)
+>         zswap_pool_put(pool);
+>  put_objcg:
+>         obj_cgroup_put(objcg);
+> -       if (!ret && zswap_pool_reached_full)
+> +       if (!ret && zswap_pool_reached_full && atomic_read(&nr_real_swapf=
+iles))
+>                 queue_work(shrink_wq, &zswap_shrink_work);
+>  check_old:
+>         /*
 > --
-> 2.55.0
+> 2.54.0
+>
 >
 
