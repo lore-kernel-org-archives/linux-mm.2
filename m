@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04998C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 10:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D30D8C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 10:58:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0978C6B008C; Mon, 28 Sep 2026 06:47:29 -0400 (EDT)
+	id AE4E16B0088; Mon, 28 Sep 2026 06:58:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06F526B0092; Mon, 28 Sep 2026 06:47:29 -0400 (EDT)
+	id A6E6D6B008A; Mon, 28 Sep 2026 06:58:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEE486B0093; Mon, 28 Sep 2026 06:47:28 -0400 (EDT)
+	id 93C316B008C; Mon, 28 Sep 2026 06:58:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D1DAF6B008C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:47:28 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51807A0166
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:47:28 +0000 (UTC)
-X-FDA: 85262844576.07.65A1AE1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BAB4BC0006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:47:26 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dcWfISmX;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6984C6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:58:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA569C0177
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:58:27 +0000 (UTC)
+X-FDA: 85262872254.28.667CD75
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0658240005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:58:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XA6vREtY;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790593106;
+	b=PxEbd/IdzBfl+ZMaLjuMIYQX+5eawiMh0SR6LpCAuzC/AGaD9yaCEEcVsY/McIh23ArALZ
+	zL4ZH++VuzrlASpEyGLhS7kV3i7F6PEwv0zFK7NoQ+cmJmDkSKNuG7nPsRtYC5E7NheZ6c
+	5WFfIj1PFDveY+FnAID9pe0Un4hQXG0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XA6vREtY;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of xiangzao@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=xiangzao@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790592446;
+	s=arc-20220608; t=1790593106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N+3YGhIQVuikjEH9Od/2nlarFIyWr94t0RF73DpWKTk=;
-	b=GgIzfGuBvRv8wQzzlqoeJ+ipS4OLoyVjKsE3/EafQpSQpI9vUtAu1QPqV9hepXSZQKLM/X
-	FXRPccP9H21rZ40AITdYG6mNTH3T3UMSif7TLfdMFDB3WheW9mbPVGmBC7a4NMVo1rIe5S
-	GH2T3MO0rm9vqeXqi1K3Un/po20/hlY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790592446;
-	b=4Z/d0xVZzvEmXSYLRH1/trvYPvrbbNLmsv9T4798GwnaGFyxJQ8MsiRMi0MBJWnvwKWJju
-	Yg79O2ry453c2uuxjTJgJnyqAY2MOUfjGP8A/RPtUETZPtCyPOji4gOYaRzjyO7vhsPpKw
-	XYHpmzqtF7Qs8iuahMP/8xTOkp/z/d0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dcWfISmX;
-	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2E87860052;
-	Mon, 28 Sep 2026 10:47:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BDE1F000FF;
-	Mon, 28 Sep 2026 10:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790592445;
-	bh=N+3YGhIQVuikjEH9Od/2nlarFIyWr94t0RF73DpWKTk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dcWfISmXrUEC34CHJtUG268tGTaBmUg7RjiPPaT9yNIHownVE9Y8Zc+m8R91JP3wR
-	 /+crlSXdh970zzraM+GQ0kgNqkaRu51M0SdYPzcEFONLuut3jAfVTtZVi3d365QBCH
-	 d3Uu/tzl9St+6ODsx0yRoswGrHaT4dtPGt7FiCidzPcfH2WxKYf9w8zrF8BIf2Yw4s
-	 LvPmL0nNgk9Sb9228wVg+e7qJoiqvHKbGU+m0wx3mSADSObtAamMLFsgA60PIYzhXf
-	 I1I5i9PXfQx/6ZyM6879ZhAj3h+H8eGdUDvGezz8yNDRK0GK02zfRDoOM1MwCygZOa
-	 SQuIZivFL6Zog==
-Date: Mon, 28 Sep 2026 11:47:20 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP
- self-merge
-Message-ID: <arpFclevdjhgJGtL@gremlin>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <20260920-fix-dontunmap-partial-self-merge-v1-1-6ffb556f8f8b@kernel.org>
- <arpEHIwTy8QxUjI2@thinkstation>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=9Fw1B6BieJW+4LuX2pRl8ceJtWx5V06DmaPfx5oJeIA=;
+	b=LeJ+KvVuM73cDzY8N7mFy5GDZ0shhtWM3q4hc0pziupl8dE6V10SPNtUx3GI+03WGaxnyT
+	WUAEOVOjc2LWpRz5STjOfjgTRJCLd1nBwjcKSv5zfnknH+O5D55y5Y778UZ47R82rKWZvk
+	ehNZXhXMuR1UsGUrIwRVbWa7JaEOeCo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1790593101; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=9Fw1B6BieJW+4LuX2pRl8ceJtWx5V06DmaPfx5oJeIA=;
+	b=XA6vREtY4U10OJh16EVIt3y34ydTdxqDn35a0gGKwGvtu77ihyWvvE33ygzTarMAqL5G7iPb4ZzjJRijGKPmyuLvRHfTP6UOyefFiXplGEp1mxsjuLTemTfkjOp6rEPZA7chTKmYrVxTqqp6Fx7AgBNNHSG3vM1DvsHflfmmABo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=16;SR=0;TI=SMTPD_---0XBma1yU_1790593086;
+Received: from banye.tbsite.net(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0XBma1yU_1790593086 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 28 Sep 2026 18:58:20 +0800
+From: Yuanhe Shu <xiangzao@linux.alibaba.com>
+To: akpm@linux-foundation.org
+Cc: xiangzao@linux.alibaba.com,
+	david@kernel.org,
+	vbabka@kernel.org,
+	linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com,
+	ziy@nvidia.com,
+	ying.huang@linux.alibaba.com,
+	wangkefeng.wang@huawei.com,
+	tujinjiang@huawei.com,
+	mgorman@techsingularity.net,
+	kaitao.cheng@linux.dev,
+	chengkaitao@kylinos.cn,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm: don't migrate folios containing hwpoisoned pages
+Date: Mon, 28 Sep 2026 18:58:03 +0800
+Message-ID: <20260928105805.1215770-1-xiangzao@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <arpEHIwTy8QxUjI2@thinkstation>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BAB4BC0006
-X-Stat-Signature: 3s4oarx9bnqdsnnyugiu7a86jdapspzf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jx1iyiimrngt195fx5y96dxzstw6artr
 X-Rspam-User: 
-X-HE-Tag: 1790592446-287564
-X-HE-Meta: U2FsdGVkX1/UwaJN4Vu+opPrlfErBvd9L3FJNGvJXcJcSa/3jDO5izcl6bXqm/9DygUXEN7bD10mrt2TPYuWh/mxjIKSl0kgm8YX0DqSAY0JQbLq8Edp3sHUpG/gNpAiRies4cI8G9Jsqqe3OWzUh6zci4nN5olqw62WQG9DGrz5jqly8IyikY76r2cBYDsEku9M/swiLvrFeRffTXIRJuuNXV9qBj+AwjxamglIi3a62yA+mudeNB82KyhL2ULiSx71i17cWU9mFPHkr7nUkyyGJ/AzIy/ns87vceLYb5RnOQp/7Cer1Fl92hpi0/rQCs4D/E4vP2kXCijO2koZLUwSnqPE1seorDRA9QpIPj0Kjr9Tr+ZUrba3dVKsJLsZqtWbakRSpexPEkWfkwMlCLx7ZdOv6f3/ZazTRWaLLxe8tbOH3NX70m2osMfesXcmUaE5KCh7FRrW/Mz3ib0vPNxY+FQ1eAAmlZSZVrRMSDX09aid4U2frlsrC1ZUus6Ioz0YXfDGhoDsQkQTdy9ZnmZ17hifyNF/KjzCP6dU407xXiJg9TM5bTAfUuZEkYGZTywkpSwu5CxMDnqrKWLwFEYTBXisXX/FJaOwpIVYDxAS23PSGCxbepFZQpcuofqQUKSAL2e/BCKwoiPBVYeD3ZT5sL02benMNn60o8riPwzX9kstr3qsOxJVR16IDTtfo9Exp714kIfcSQs7+ljRGzh2lv7uKvzSqbGxRUwfphxzCdKllllW22HY3mGyUeJ3w0qex8vSvw83IVPf2+As60e31+kisc9Sh5DJlh1wLXv/nm+4n2IMyy/BTrTbkRiWfvt6M1MW9OuEH0nJnWFennkDKgsIqj3xkE81jU1vDNnohmA2bmLwLwu68tX1c6AFooNvV9uRpNow7ve66wq1nu7jeA76WsBbY0chBz23WEokI9cjoJn+vHiGpWWLl4WP0lDTXy6gqyR4tA8AB3d
- vIBayN2x
- /90wa++THE5B/aNJrbejdtHJOG4QbtVeMb2J6uGuSR6T9zq+Pp5JECM4P09Zj30NTyW6GX2NB9/bF6WOILfw12GwEgk6e1ASdIPJPnCfni7kI80/dDl8oFG1eZaNtBP1YJZCbZTorUwo8etYCYxNfYBfuPFVT8st4uY1h3jm+/52EOdhvY13lAnTdYhP4TZClSkqoHvG0iuwTumxGl4OENEVSPj6r0vcOlCmA1N1kjFOI//C71KGseCZtDYmEtrZtTRt2JeKyMqkNdZ6i3sVSB8N++ymeVwyPgysqGMONxQfczIceSecEXofC8+6w23Mdn5mK
+X-Rspamd-Queue-Id: 0658240005
+X-HE-Tag: 1790593104-184957
+X-HE-Meta: U2FsdGVkX1+vakpuRFpY/5clhhEhI8KX9T5UBfpzlLYYPoiJu0LX2rAyBb3QMTufF0UdCjAEpKUKip5O1Nk160SEdBU5LPyO6y5R52JmVO6TJS17+JjH36OSPCVAcH+G8z/Tpgy0Uuvssri1uRIUs+7EZSspT3pE0Nxz18bGTBWX+26zA9lW+U+284jImVFHOx5RlI5WeaeXjTvDAnJPxXtHz090jXb4woUD9GZ1s0jXsrJtWd9tSjdFYTdS5ZfuWJkZTsU01zfGZDqpgd+/15Tig8gEewmtKyZP9eIRayDV8BONQIinUTD8vbLabbOtbxVhHB0wKQ+PR9SVGgEgSWZHUu96xYyHWIJcDObVU98I/UbvjJ8Sdd4SISM9AIDuJ3F84m1fPmJY1x/Gy9LYaszhnblSgZOzD3bQYKTK3DLNYxV9aBKo5AXAq8tsHuhd5pD8owoI16DwYDB3IqcC4iq03aS8dp44mMt8mmZ61rGMGVhD47T1dXR7IVhcF6TTdvZXF9bBqXCCmq8HI6KVwBCYkHxNxiRN4aM+XSLfj40EIYt2g30DlbotYP5M/32otsVTHyTqQ7S310aqHtDDa+DObtiRAT61xbQHfw59433HXCJIRK6vjktp14Kp+fbpCxuq2XQyMqXV03GGfzUQ7t7iuVThw0S+CO9JI3Y8jKNSWmDpTkNfrJYaFiSuF4CDoClIAdPVTw5tkr3O9vnmqdOPZGkjd95lknSUwCwuZo4p83+apuaHXOHk07rB8udp71pzTczu9saGVWMD98WadlvkX6DEIQ29pzQprL2Y9iRBVUHf9F6c0IdccDRme+uLb/lWTeFtmuo+SoymRTWxYyM9r9/LRFWfXbqCMe2y0E8TypXPuZitkQBOO9EDeDjt9dy/EPzky60YedbRRjqeMVwQ6NkwSBM6FoMyYcQTKvxV3OrFCWwuHD0r/OSJS4cR3W0GrTEOiSwUYsU7HCS
+ KQwC72aC
+ XnOZTs8ZgvcE8+QEUqPreSTZICbet7DNHIJDPrWJxH2/YOx9aQ+/CfkJtKPLktyG3OF380Pfi20KtLpaTxJF8UNBRoA3pqiUm4JPjJhWqEisId1VJXEBc7xPmX6E6Z+JyeKv++rk8djeWUNagof4W4QzzjSDQvNdm35f5w7ZqIiSHActQqT2z1YHuTAOHEjgSZjtexlmpv644ZS3tWA+Kj7QydxpRx2TjLmpuLUAgnwUkPxq2A9aGktH/FAnNErKkB/dFPO5ph+r1hItzchUU3S0EbpVKyglEyIW1IaKJ+ZHoydR8QYeYAdsCTxTXoS7CNfBnkW9GZeCT6tTJY88MJfnJkWyjIRex+peahpmfkLADnXSJdPyC3dYtWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,78 +95,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 11:45:21AM +0100, Kiryl Shutsemau wrote:
-> On Sun, Sep 20, 2026 at 03:13:10PM +0100, Lorenzo Stoakes (ARM) wrote:
-> > The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
-> > operations that keep the original VMA in place.
-> >
-> > Historically this has led to a lot of bugs where non-obvious interactions
-> > occur between existing mremap() operations and the original VMA.
-> >
-> > Fix another of these - self-merge.
-> >
-> > Self-merge occurs when a VMA is moved in front of or behind itself and the
-> > attributes of the VMA permit such a merge.
-> >
-> > Practically this can only happen for unfaulted anonymous VMAs due to the
-> > page offset equality requirement for merge:
-> >
-> >                            |------------|
-> >                            |            |
-> >                            |            v
-> >         |...........||-----------||...........|
-> >         |           || unfaulted ||           |
-> >         |...........||-----------||...........|
-> >               ^            |
-> >               |            |
-> >               |------------|
-> >
-> > This becomes problematic if the VMA is configured by the user to
-> > mlock-on-fault, i.e. the VMA_LOCKED_BIT, VMA_LOCKONFAULT_BIT VMA flags are
-> > set.
-> >
-> > MREMAP_DONTUNMAP clears mlock flags for the source VMA and maintains them
-> > for the destination VMA.
-> >
-> > Self-merge makes this impossible (there is only one VMA) and incorrectly
-> > clears the destination VMA's mlock flags.
-> >
-> > This causes a leak in mm->locked_vm as clearing this flag does not
-> > decrement the counter and the VMA no longer has VMA_LOCKED_BIT set so it
-> > is not decremented on unmap.
-> >
-> > Resolve this by simply disallowing a self-merge in this case - the source
-> > and destination VMAs are kept distinct and then are able to have distinct
-> > mlock() flags.
-> >
-> > Update dontunmap_complete() to make the now-redundant self-merge check a
-> > VM_WARN_ON_ONCE() instead to guard against future regressions.
-> >
-> > Also update the VMA userland tests to reflect the change.
-> >
-> > Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
-> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Hello,
 
-Thanks!
+memory_failure() can end up abandoning a folio while PG_hwpoison is
+already set on it.  Two ways to get there:
 
->
-> One thing: mlock semantics of MREMAP_DONTUNMAP are not documented in the
-> man pages, only in the commit that added the flag. It can be surprising
-> that the source gets munlocked. I am not even sure it is the right thing
-> to do.
+  1. Race: any isolator (compaction, NUMA balancing, move_pages(),
+     mbind(), CMA, long-term GUP) clears PG_lru from under
+     memory_failure(), which then fails the HWPoisonHandlable()
+     check, exhausts the get_any_page() retries and bails out with
+     MF_IGNORED - without holding any reference, but with the flag
+     set.
+  2. No race at all: the THP-split-failure path
+     (kill_procs_now() + MF_MSG_UNSPLIT_THP) leaves a large folio
+     on the LRU with a PG_hwpoisoned subpage by design.
 
-It's unavoidable as the source no longer has anything mapped (page tables moved)
-and it's not correct for it to be marked as mlock()'d in that case.
+In both cases the migrator still holds the folio on its migration
+list and migrates it like any other: the corrupted data is copied
+into a fresh folio with no poison marker, and no hwpoison PTE entry
+is installed on the way back, so the userspace mapping is silently
+redirected to the corrupted copy - no SIGBUS is ever delivered.
 
-Ack on man page update, I'll add to my TODO!
+This was reproduced on v7.3-rc4-75-g62f4c998b297 (the base of
+this series): an order-0 stress workload (madvise(MADV_HWPOISON)
+racing move_pages()) left the poison flag set on 8426 abandoned
+folios in a 180-second run; 698 of them were subsequently
+migrated, and in every case the address then served the copied
+corrupted data with no SIGBUS.
 
->
-> --
->   Kiryl Shutsemau / Kirill A. Shutemov
+folio_mc_copy() only catches the corruption at copy time, and only
+where ARCH_HAS_COPY_MC is implemented (x86_64, PPC64; elsewhere
+copy_mc_highpage() degrades to a plain copy).  Software-injected
+poison - what MADV_HWPOISON and hwpoison-inject produce, and what
+tests and fuzzers exercise - never traps during the copy on any
+architecture.  Checking before the copy avoids the migration
+entirely, on all architectures, for real and simulated poison
+alike.
 
---
-Cheers, Lorenzo
+Consumers of such a folio already refuse it elsewhere,
+through the folio_contain_hwpoisoned_page() helper introduced by
+commit 5f5ee52d4f58 ("mm/hwpoison: introduce folio_contain_hwpoisoned_page() helper"):
+shmem fails writes to a poisoned folio; reclaim unmaps the
+order-0 poisoned page and skips the hwpoisoned large folios it
+cannot safely unmap
+commit 1b0449544c64 ("mm/vmscan: don't try to reclaim hwpoison folio")
+commit 9f1e8cd0b7c4 ("mm/vmscan: fix hwpoisoned large folio handling in shrink_folio_list")
+(skipping, not unmapping, after the unmap variant turned out to
+crash on large folios); memory hotplug refuses to migrate it in
+do_migrate_range(); and the THP split path refuses to read
+poisoned subpages
+commit 841a8bfcbad9 ("mm: prevent poison consumption when splitting THP").
+This series gives the remaining migrators
+the same protection - skipping and refusing only, never unmapping:
+
+  patch 1: compaction, checked at the isolation point, failing
+           fast - patch 2's core check would also stop compaction's
+           migrations at migrate_pages() time, but only after the
+           avoidable isolation work
+
+  patch 2: the migration core, covering move_pages(2), mbind(),
+           NUMA balancing, alloc_contig_range() (CMA) and long-term
+           GUP - a check at the entry of migrate_folio_unmap() (fail
+           fast, before allocating the destination) plus a second
+           check in migrate_folio_move() immediately before the
+           copy.  The pre-copy check catches poison that lands
+           between the two checks: a GUP-based injection path
+           takes its reference before the unmap, and
+           memory_failure() sets PG_hwpoison before releasing it,
+           so a racing software poison is visible by the time
+           migration is about to copy.
+
+This series was developed independently; while preparing to
+send it, we noticed that Kaitao Cheng had already proposed the
+same check for the hugetlb migration path, and in v2 for
+move_to_new_folio() [1].  That discussion stalled over the
+concern that a check can still race with memory_failure().
+Two points complete it here: the unsplit-THP state above is not
+a race at all - the entry check catches it deterministically -
+and for the race itself, the pre-copy check shrinks the window
+to the final instructions before the copy; the measurement
+below found zero leaks under adversarial load, and on copy_mc
+architectures folio_mc_copy() catches real-DRAM corruption even
+there.  The reproducer and the userspace-visible effects are
+what that thread's review asked for.
+
+[1] https://lore.kernel.org/r/20260707090136.52904-1-kaitao.cheng@linux.dev/
+
+Measured results:
+
+  - order-0 race against move_pages(): the unpatched kernel
+    propagated 698 of 8426 abandoned folios; with patch 2, 0 of
+    9711 (the abandoned-folio count varies between runs with the
+    race rate).
+
+  - deterministic compaction A/B (order-4 mTHP folios brought into
+    the stable unsplit state, clean neighbors as controls): the
+    unpatched kernel migrated 16/16 poisoned folios and 16/16
+    controls; with patch 1, 0/16 poisoned folios were migrated
+    while the controls still migrated 16/16.
+
+The two patches touch different files, have no build dependency,
+and each stands on its own.
+
+No single Fixes: tag applies: the race path is as old as the
+memory_failure() retry logic meeting page isolation, and the
+unsplit-THP path has existed since commit
+5d1fd5dc877b ("mm,hwpoison: introduce MF_MSG_UNSPLIT_THP")
+(2020) - this series closes a long-standing gap rather than fixing
+a regression.  No cc:stable is proposed for the same reason;
+backports can be prepared on request if wanted.
+
+Soft offline is unaffected by both patches: it sets the poison
+marker only after its own migration has succeeded.  Out of reach
+of any check is poison landing in the final instructions before a
+copy - natively for paths that take no reference, such as a
+hardware MCE or debugfs corrupt-pfn; for a GUP-based path only if
+its injecting thread is delayed between taking the reference and
+setting the flag - or after the copy has already happened, which
+is a lost race regardless; on x86_64 folio_mc_copy()
+additionally catches real-DRAM corruption at copy time.
+
+A deterministic reproducer exists for the compaction part: fault
+order-4 mTHP folios, pin a sibling subpage of each with vmsplice,
+and inject MADV_HWPOISON on another subpage, so memory_failure()
+takes the THP-split-failure path and leaves the folio on the LRU
+with a poisoned subpage; then trigger compaction and check
+/proc/kpageflags for whether each poisoned folio moved.  It needs
+a boot configuration where order-4, not PMD-sized, folios are
+what compaction migrates.  Both this and the race workload above
+can be shared on request.
+
+Yuanhe Shu (2):
+  mm/compaction: skip folios containing hwpoisoned pages
+  mm/migrate: refuse to migrate folios containing hwpoisoned pages
+
+ mm/compaction.c |  8 ++++++++
+ mm/migrate.c    | 41 +++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 2 deletions(-)
+
+-- 
+2.43.7
+
 
