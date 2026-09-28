@@ -4,82 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96B6BC9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:05:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70482C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:06:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B92E6B009D; Mon, 28 Sep 2026 05:05:56 -0400 (EDT)
+	id 733BD6B00A6; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 869F06B009F; Mon, 28 Sep 2026 05:05:56 -0400 (EDT)
+	id 6E4226B00A7; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A7A96B00A5; Mon, 28 Sep 2026 05:05:56 -0400 (EDT)
+	id 5D42F6B00A9; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 547B06B009D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:05:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4A281A015B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:05:55 +0000 (UTC)
-X-FDA: 85262588670.14.1913EAD
-Received: from mail.hasspetorleum.com (mail.hasspetorleum.com [45.131.66.38])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2A95520007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:05:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=hasspetorleum.com header.s=default header.b="DuTE/A/D";
-	dmarc=pass (policy=quarantine) header.from=hasspetorleum.com;
-	spf=pass (imf13.hostedemail.com: domain of vashoopar@hasspetorleum.com designates 45.131.66.38 as permitted sender) smtp.mailfrom=vashoopar@hasspetorleum.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 333456B00A6
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A90A3A0154
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:06:11 +0000 (UTC)
+X-FDA: 85262589342.02.BEC35E4
+Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C594F160009
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:06:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EBLPgoDC;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790586354;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=KNXPqlQY/CN8csacq2qcl46brPagnI6fYse3tRtIQDY=;
-	b=fg9L6UyiiAxQskBqQ80l7eL50KiD0scBetqyUubTbq0WbW5N0Rl93NULZvEzMYpmuUKu3z
-	VntaR38jq+cITnItIwjBsOHyFVDTFX53uAiRgtB/Qtse5nryz0Vaqv7UJAqHLgxz5m848B
-	XJscyWCjGuFoamZFla9kTU7+NrzFvlA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=hasspetorleum.com header.s=default header.b="DuTE/A/D";
-	dmarc=pass (policy=quarantine) header.from=hasspetorleum.com;
-	spf=pass (imf13.hostedemail.com: domain of vashoopar@hasspetorleum.com designates 45.131.66.38 as permitted sender) smtp.mailfrom=vashoopar@hasspetorleum.com
+	s=arc-20220608; t=1790586369;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
+	b=rRgxD+mtR/hEERuG76qC3/WHg8oNiTJOZwzrZerZy0+lOaCMYzz9zBup72PwPTUcuVHbn/
+	lWxHYn7cOYWXGTWwKYNhDZjGAacXBX9OMhCph7xcTuL6y0+uWBmO+k6yp+sZjxFV9nbWqN
+	mn7iYBeN4X3PUeVxD0aSc2bdWqsMGwU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790586354;
-	b=1ngkl5lDvCRApIoCmQ5XAXTmuB9oR1Sh14ZBc3oRxq/SGElIp56RNGGcBXVS32WJrt8sdi
-	g1ccVWHnLLrbvIyYZDJ2qH2sZLMllQ1m09qbE/sRJT6tKFbk4MZf1OXf0ctontyWTHx+eE
-	wwAiAxBKT+Fglh7HXaxYgGZ/UBIcL68=
-Received: from SEALORDS (unknown [67.21.33.64])
-	by mail.hasspetorleum.com (Postfix) with ESMTPSA id 71F7DC7184
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:05:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hasspetorleum.com;
-	s=default; t=1790586330;
-	bh=KNXPqlQY/CN8csacq2qcl46brPagnI6fYse3tRtIQDY=; h=From:Subject:To;
-	b=DuTE/A/Dtp3WSK+lrx24adVHwqoVOPd49fZGHWbrQAEUt3UKd24LNP7oeA81P0TlU
-	 ggbMRN/tgn+H9EGgXxcsvqi+X37TJ+6si82vWeEh3i6UzRauXM0+WwokaJAtSoVhJP
-	 BSYFl4UfNJ3sH9j/RAupyeN9qXxPG8kkM/Qw/+sw6B1HprogUchOW9aUYXVxFcPvAv
-	 BGA0BdbVPTTfylkNht/XG1eG5SO1LztLjTEjNMP8mM2ytITq4nFyxux86cEMibJpSy
-	 q5ga+GbvpXxBfXQ6XlPhO4cLe2Ib1ojjUGL1afiMG+epDhPMuKzIBT4IO7CRhZTIfG
-	 rmv/EzaYk2nEA==
-Received-SPF: pass (mail.hasspetorleum.com: connection is authenticated)
-From: "David Bajada" <vashoopar@hasspetorleum.com>
-Subject: Private Investment & Strategic Financing Opportunities
-To: <linux-mm@kvack.org>
-Content-Type: multipart/alternative;
- boundary="rVC=_E5ozLyW9lBTNKh5urDoZ4dSXsizRh"
+	t=1790586369;
+	b=nYJTbs+p9AWl8JB6Z2EMQPWHdvCDo6RFleN2Calo/Jq872Z72qOlx430mBZutqyMz29mCs
+	gZCDkI7bai9R/kXJhyNGPqsEapkr6fThEL+vs43SEP4OYcZBufdtlEUTk5KhcBhLXWFD5d
+	FcH4vFsJOIMKNTs3eSnZAh3fxOpkhWc=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EBLPgoDC;
+	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dca989afcso146754666b.2
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:06:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790586368; x=1791191168; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
+        b=EBLPgoDCq87EIj24H1ZL1UqfrCQ2Pmtj45D1hL8AM009QdiwRTqtGzQCD5NLEsM+GG
+         qCxaRuPnF35uU5AGZOTREajuDu+VB8ol70sphuxbMymCUpg593XZIfzBv4N7JUjl05TG
+         aYUcDJgD4mpM1zQ96AzhnJkFm+5hzRFlIe/rbjMA0xuTu03LyaTAORav7EtmRaSc1VVe
+         dvefSHW9uNhRewgtrLg3ygk727e0SkJnNuMG+OsqS4HbHjSmRjzzCFjxjOZAS7dZuXFw
+         YNjq+3x62fthwClL88O5K/UmigvR3Hr+7I2DHHauo+6YqTqBLGhW0Y857mWXM3OM0XFv
+         yueA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790586368; x=1791191168;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
+        b=xDFo6J22W6Ivfw1Q1gALd/z7R06dkmKoGhIw1FuAT1PwmdCvgXUVFDgVdVGR1P7bxM
+         NqnmttNxDd6xAvv9zKbu9NuBqcoc3YCpSRqQQuez7lIDLh03TzbqzJUrWRjKkh/XZMhL
+         zJiDvetf2GpgSVJd7cNH1lOYeR7fq1ktU0fWEtX+feMp0H0uceweU2xVUaunJGlr0wU1
+         +fr3J5z7itJBQYE+h7qfE4ssfkoUMob0ojJcYzhbKSepVOeVtfyayvmvZaSeAdd50pm8
+         iX5r8qYm0J9CP2/rcJjVdQAYlTMz8TUxBlNldgObAbS4JZbkx6XTykSDUWTU34ypaFSJ
+         ftng==
+X-Forwarded-Encrypted: i=1; AKwUvBy2DmaL1NyQfxuk1I36bC8GSFJKwOVJV6R9N646jICV5/lchUgpplibxYEwGjBO1vlNEdAzXQSuYg==@kvack.org
+X-Gm-Message-State: AFuF++ldzmbD0fLw+BFEK3VuhG+3kqxU4FpgUcw3daJljm+ILf4mZ+Jm
+	gk/K7kdY16znmPNwKWFRuMnHc2Of+C+52gzYK4ofdnL9uJQY1sDWHRIt
+X-Gm-Gg: AYBFou1q24UeOIewHWwVU8ImtmaaOhDW9eHIhV8YGBqU44VqFmrgeR7yqwMH83PZx/w
+	LJ6qf4x/GxolLIERd7KrCukink2A/s1G3yvdVp0QVgD2aOXW/mO4h5SJPAVsnGcOEwmU2Pdzra6
+	YRsJW2Li2w6jpWgrenYY4IZDIvijMQqpCxPo71AV9EGdT8s0Gm96MhtAZ/eKOJ1iIyBxGpBzn7y
+	7jLlpVJ32oN+IeKMZ6fLGJjfgMU/TsdIiadJ1mSi4KR82aSUh8jSct+/k94UKPzHX7u28oYLr44
+	Qe/6wd5WeQNYX1ZDnBx8odhANYMaw+bmVwPOQrwPOfltVQMNPvDQvrl8wcgIGaE0kWvnk45Unsy
+	10/KYpTAAB++LCI5UNJHLPAr6yclBunnEKl9fevbeiz5q/STXRs80dUxn9pWfvrJSm9JgMj885m
+	we1x5rCQW2NXaPVWpKrzBg96xJeQhh8mp68+g=
+X-Received: by 2002:a17:907:9447:b0:c26:2eee:ffc7 with SMTP id a640c23a62f3a-c2ac250ec3emr1002093866b.35.1790586367856;
+        Mon, 28 Sep 2026 02:06:07 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae7356d1csm441929866b.18.2026.09.28.02.06.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 02:06:07 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 28 Sep 2026 11:06:04 +0200
+To: Ye Liu <ye.liu@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
+Subject: Re: [PATCH v4 2/2] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
+ lookup
+Message-ID: <arot_MLB2tWwR7ue@milan>
+References: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
+ <20260928-vmalloc_dump_obj-v4-2-6f288a431edc@linux.dev>
 MIME-Version: 1.0
-Reply-To: "David Bajada" <david.bajada@schr0ders.com>
-Date: Mon, 28 Sep 2026 02:05:29 -0700
-Message-Id: <20262809020529D67096A149$6B4F2E1906@hasspetorleum.com>
-X-PPP-Message-ID: 
- <179058633007.1723530.12144656654383449852@mail.hasspetorleum.com>
-X-PPP-Vhost: hasspetorleum.com
-X-Rspamd-Queue-Id: 2A95520007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260928-vmalloc_dump_obj-v4-2-6f288a431edc@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: gdpzfa8dr9fu6fg4buxqihtx8sehp5kn
-X-HE-Tag: 1790586353-624663
-X-HE-Meta: U2FsdGVkX1/RDZWPUrwsxy/XoHDVu7CfFLEdqLCNnXZ4YDa1PMLZriyx3I+wxbWpbwWcTkZ55KEF3fqDxXGG21hl3ETJPFPvUI6Ah5jWdNGNZMrfNZPxDmo7n1EE7Jzr5EBaP+cnHVoOw+pHabrpcF27NfkOnQ4SLXOic/qLflWLdw77HVmN5hm7KtZN+b3tf/2J2oPI4kLaP8cSO2eapY1Pr2YJu1z/cfcOwHPiXcZeiefY5QoTXbrhGnj/6FyEZuV5n57F7iXZbAQ589a2UfSlaU5Rfv7lRgwrJhiyN4y0gcMXFDohnc37h0DV8J8vmSX5yPKuy33cUjqmxZGcj9i14y3l1rRRkiihed4KwOvlDzoGnncj5NhC+qThe58L0Qys4H9+LAoRJSAYWGNil65uYulPACqcwEf4SFGujxeBpOVbZP/EMaTtQnhC/hfen8mULvb/QHjwQQQxVFaYatuylRdm1a7iIcDMtOUeFp57wubCsXVXURCa5l7Klv3/Ef9NrAlrPGfH3Xpid+uo+YixqDzInYvmNqT+DsZKElG8fekF0X/76c1BwZYL0H97trm2YPJaZbKhAUh+UhaAoCDObgINBGvDvyb2r3YjP+lzYm0N+3m76fcx/f/HGiqKG5ErzaxIu3VcCePbj/xj+U5panqpizy6awtHxTgntiVPiJhpSZbOqlKYGcP72fFsFoDV1DNTubcVD+/aAfvQKGsG7YLbQULOVjJg1AGb5V7HaYIcwtVU12YTDIdxqgXMpoQQlQMPKcwG8MZ8KUVYNAES+xAigSidn0OVNq92QWnoytT2Od20f9BrYPChwqMo4crxixmZtFpYJy/ssgsq+HDxp91+WCdlvZxGIGLYWMmXHATr0KGiqqR3nkQAv9yjf9xPdp75s1dtdGMlCFGmhjtFML8RnlcPXkrFWJ91VcGcUDcXqeRTzNirtA3smmyvRsKgc1tEEyZT68w+pyk
- b5ZrtiJX
- MeFRWQpvxkF/baqQFZzZIN2+yMwfs6fYH3VaCW3/zkb4csT6TVYYkCq8mHVCVtXSgE4ZHU3YJNhor90LN5GPNxBnS8fMiAE/z0fB9z2fIO/g+0WTQbtW+oKJjIqtZgw3WHaEVEUUfs0larP/usNoh7UoKGSh1kTnGcmeEKuHqKy9d/EqrDnEDoxUxPFPE13mXNULRc3xMnzuesBLseU+l16Gd7nAlOWBNkWiDsCcp4f+5hfFOZHStbfrm0wWycY7ca48ge18ZF77zd0Ki3uFqVrpQQ3avM5Pbhr4VCSolqbHdhthOWAumf8sVqK3URddo8PW05XnQ7TdINwpahqhix2m+cbtluvkaXlYG8DKGt3cu+UOThyKZ3MeVsmjLjmk316hZTIcmwrF/ybD7Ymap/AH2D1eAzGc6M1Rqp12LVwDK6rgPcOFdS7ML7rAAHwzwSQ6CCgPO0a/WnA6i4bjc2aoJUc0bJA53DP2SM8/kjmDc6OFRJ6ktoWEEWC8tw+mdHg63uSJ9NTfGGq7yO3Nh9UosMQ8C0ZyMFnHb0DvuJv2YB6o+V38ns+7Uixb/SPAhJoSGQipqtI4t2QEvN67Kt5crDFTmu+1oNcyrvVcBvT9gm41g8l8UJS2+4ACERaQSl7/97yHYRZP5p7RfX7ecT+RJq3XOyL5ZpOaoRsjkIPM3pEpb4ATeZdQkZM8trpoHgzCOHk0+xIfarih6cnXhLbfjkQt4zDBczcNhF4YzHoJo5Rr1hJviD/PfjmvNA+ZlK+FizJyOh8aHg6bN+uuRdTp5VHl4le183Ctj
+X-Stat-Signature: xgrjxmxe3ua3chknknfkac44yfi84jw9
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C594F160009
+X-HE-Tag: 1790586369-315277
+X-HE-Meta: U2FsdGVkX1+OhX9/Q9GkhebKrzhbM3cOHiL9mT2h6QTV6ywbMYZVIW7lkBr43fx/quwLX82Wib1+5pn82hnUxRezql+nZugCjsMNpmqg66U7gOo7kvd+MWPUUYL9Nc90t+wN9qlldxeVyZAbevafeu3pBhqD6lmX0qYkrg8l4+GqcXihQBhLPkFCosNG246xMWmSN3QIHsb3EqLBHwn4O6Yjeo6igCFuIJ61i8o92OiUN/lk+N1FCYka7XxMXzAiQ1I2PIVgJtmoFYK0VSgrs0A6uj+I0Zk7A5ArlaqJ79G71B8By8zJJ6qUJ9TEnFRm7EDw1+N2uCA6IVlpz9ZsUbN+7Ie/tI8x5pzxonbQ5j9d/QBxe3UuPrTxyUYujKmdkMh6tnzaJ3RRDNKaAH6G/YeqrHS/5PptP5yXaRNzSg3iNDNNaPTk0rwVAp7cypnwJPmkbjchDN8lMDo56WT1LXSnm4U+mwH/iyB72r6gfSoltirpE1RoWV/ycQkMF3Zk5wicoeonJ4qRLNyoK+yKfUceeeeyZFItibPXr/uORQuQrazNzUE91WU7XfenVCIfuAv4J0P+KvEfw88E4s12qPEku/BPLC02mdVUkgimRhWlQcCat4Y08ISrC5v/OwnHFXxJFEfPuQ7n+EbL0MjxY1XvA/D7ob8mPLf5vDcer6NNrPx16/OFGViO96TwBNnuOMAhhM8RRWrm5Tg8AePFphAOIMMPNIkFbvwsQLLb2fQtrgw6+KxUOXvGgjlCoCQ+OCTElpnEtv2bK8DK8GhZrvq+nLOnlqRt6BxtbZ0i+HGHH9xqvbPevXi8zQfdCGIbgC5ouobepJn+RiMFjNHi9CYcaJ7QelYQ9Wzc13+ioaw7oILXYfKUeM8u0Pn+CPk4T700XwEEJKhFPhlROwEoe5kQ7U5y2FbKk74ILyHjFcGupl5rAJYsuW27mA2Fb97IVwltlSmgC1rk7Nk1Zye
+ Dtro6F0q
+ hTJWh+dQjrH51lKejesw4WlU4u2aXwM27PHhe3hlArwa4xsBPmnRowH9MXuFyRXaiyLCnfKMAH4AqrSws5VcOuh7IvxBKsUnudoFXodqNosmAZQ3i0Bcn+uh/cwz9Is8lmACMyB2KPQy577FONldfqRj+HOXWWJuEiUx2+Zi/UP2JpUa2fnnfH8xWVTzL1OAmHpirmSalWTqeT1SDeoKNcaAkaTkGHO1T8tL4+kbutvsq3muW5JDT6ZgJsFp/3AKeZi+tt2usv1f67tHHW4G/HfuCKhe/C4lYLFrBa2AFY4W2fYaOlPod+r5xxe89x7jbEzFV0NV7WXvFFPOmVlfxfbTgJsELoE4cC7Rb0BXQosG38FjYUm8hiNBKAbGksokImr5rHyPlbi0RZTX8quJYz1qk56bzrHEMaMJ5nhEsXgKOtIx/6FuwPbNJHDf4VofZx+N6cyhtNMzk2pcvbi2X7+DBFKbM59RfisCw+ShFi04b77HAw8SUMrZbz+qc4kDzwDqI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,185 +125,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format
+On Mon, Sep 28, 2026 at 04:15:55PM +0800, Ye Liu wrote:
+> From: Ye Liu <liuye@kylinos.cn>
+> 
+> vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
+> but a vmalloc allocation may span multiple vmap zones.  The VA is
+> stored in only one node's rb-tree (addr_to_node(va_start)), so an
+> object pointer in a different zone than va_start maps to a different
+> node and the search misses.  This affects any allocation larger than
+> vmap_zone_size (64 KiB) on multi-CPU systems.
+> 
+> Extract find_vmap_area_lock() from find_vmap_area() to share the
+> cross-node iteration logic.  The helper supports both spin_lock and
+> spin_trylock, the latter for atomic dump contexts (OOM, KASAN, RCU).
+> 
+> Signed-off-by: Ye Liu <liuye@kylinos.cn>
+> ---
+>  mm/vmalloc.c | 108 ++++++++++++++++++++++++++++++++++++-----------------------
+>  1 file changed, 66 insertions(+), 42 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index df42d8a6f058..4f4d7453962f 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -2517,67 +2517,94 @@ static void free_unmap_vmap_area(struct vmap_area *va)
+>  	free_vmap_area_noflush(va);
+>  }
+>  
+> -struct vmap_area *find_vmap_area(unsigned long addr)
+> +static inline int next_vmap_node_id(int i)
+> +{
+> +	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
+> +}
+> +
+> +enum vmap_lock_mode {
+> +	VMAP_LOCK,
+> +	VMAP_TRYLOCK,
+> +};
+> +
+> +/*
+> + * Search for a vmap_area at @addr across all vmap nodes.  An
+> + * addr_to_node_id(addr) converts an address to a node index where
+> + * a VA is located. If VA spans several zones and passed addr is not
+> + * the same as va->va_start, what is not common, we may need to scan
+> + * extra nodes. See an example:
+> + *
+> + *      <----va---->
+> + * -|-----|-----|-----|-----|-
+> + *     1     2     0     1
+> + *
+> + * VA resides in node 1 whereas it spans 1, 2 an 0. If passed addr
+> + * is within 2 or 0 nodes we should do extra work.
+> + *
+> + * Returns the VA with @locked_vn->busy.lock held; the caller must
+> + * release it. If @mode is VMAP_TRYLOCK, nodes that cannot be locked
+> + * are skipped.
+> + */
+> +static struct vmap_area *
+> +find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
+> +		enum vmap_lock_mode mode)
+>  {
+>  	struct vmap_node *vn;
+>  	struct vmap_area *va;
+>  	int i, j;
+>  
+> +	*locked_vn = NULL;
+> +
+>  	if (unlikely(!vmap_initialized))
+>  		return NULL;
+>  
+> -	/*
+> -	 * An addr_to_node_id(addr) converts an address to a node index
+> -	 * where a VA is located. If VA spans several zones and passed
+> -	 * addr is not the same as va->va_start, what is not common, we
+> -	 * may need to scan extra nodes. See an example:
+> -	 *
+> -	 *      <----va---->
+> -	 * -|-----|-----|-----|-----|-
+> -	 *     1     2     0     1
+> -	 *
+> -	 * VA resides in node 1 whereas it spans 1, 2 an 0. If passed
+> -	 * addr is within 2 or 0 nodes we should do extra work.
+> -	 */
+>  	i = j = addr_to_node_id(addr);
+>  	do {
+>  		vn = &vmap_nodes[i];
+>  
+> -		spin_lock(&vn->busy.lock);
+> -		va = __find_vmap_area(addr, &vn->busy.root);
+> -		spin_unlock(&vn->busy.lock);
+> +		if (mode == VMAP_LOCK) {
+> +			spin_lock(&vn->busy.lock);
+> +		} else {
+> +			if (!spin_trylock(&vn->busy.lock))
+> +				continue;
+> +		}
+>  
+> -		if (va)
+> +		va = __find_vmap_area(addr, &vn->busy.root);
+> +		if (va) {
+> +			*locked_vn = vn;
+>  			return va;
+> -	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
+> +		}
+> +
+> +		spin_unlock(&vn->busy.lock);
+> +	} while ((i = next_vmap_node_id(i)) != j);
+>  
+>  	return NULL;
+>  }
+>  
+> -static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
+> +struct vmap_area *find_vmap_area(unsigned long addr)
+>  {
+>  	struct vmap_node *vn;
+>  	struct vmap_area *va;
+> -	int i, j;
+> -
+> -	/*
+> -	 * Check the comment in the find_vmap_area() about the loop.
+> -	 */
+> -	i = j = addr_to_node_id(addr);
+> -	do {
+> -		vn = &vmap_nodes[i];
+>  
+> -		spin_lock(&vn->busy.lock);
+> -		va = __find_vmap_area(addr, &vn->busy.root);
+> -		if (va)
+> -			unlink_va(va, &vn->busy.root);
+> +	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
+> +	if (va)
+>  		spin_unlock(&vn->busy.lock);
+>  
+> -		if (va)
+> -			return va;
+> -	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
+> +	return va;
+> +}
+>  
+> -	return NULL;
+> +static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
+> +{
+> +	struct vmap_node *vn;
+> +	struct vmap_area *va;
+> +
+> +	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
+> +	if (va) {
+> +		unlink_va(va, &vn->busy.root);
+> +		spin_unlock(&vn->busy.lock);
+> +	}
+> +
+> +	return va;
+>  }
+>  
+>  /*** Per cpu kva allocator ***/
+> @@ -5278,14 +5305,11 @@ bool vmalloc_dump_obj(void *object)
+>  	unsigned long nr_pages;
+>  
+>  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
+> -	vn = addr_to_node(addr);
+> -
+> -	if (!spin_trylock(&vn->busy.lock))
+> -		return false;
+>  
+> -	va = __find_vmap_area(addr, &vn->busy.root);
+> +	va = find_vmap_area_lock(addr, &vn, VMAP_TRYLOCK);
+>  	if (!va || !va->vm) {
+> -		spin_unlock(&vn->busy.lock);
+> +		if (va)
+> +			spin_unlock(&vn->busy.lock);
+>  		return false;
+>  	}
+>  
+> 
+> -- 
+> 2.25.1
+> 
+LGTM:
 
---rVC=_E5ozLyW9lBTNKh5urDoZ4dSXsizRh
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-
-Dear Sir/Madam,
-
-I hope you are well.
-
-We are a private investment firm seeking strategic partnerships with r=
-eputable businesses, project owners, and established organisations wit=
-h commercially viable investment opportunities.
-
-As part of our 2026 investment programme, we are expanding our global =
-portfolio and are open to opportunities across a broad range of sector=
-s, including infrastructure, energy, real estate, manufacturing, techn=
-ology, healthcare, agriculture, finance, transportation, aviation, hos=
-pitality, and other growth industries.
-
-Our investment partners are prepared to consider legitimate, well-stru=
-ctured, and scalable projects with strong commercial fundamentals. Dep=
-ending on the requirements of each opportunity, we can consider debt f=
-inancing, equity investment, or joint-venture structures, with a focus=
- on transparent terms and sustainable long-term partnerships.
-
-If you are currently seeking funding for an existing project, expansio=
-n, acquisition, or upcoming development, we would be pleased to conduc=
-t an initial review.
-
-For an initial assessment, please provide a brief overview of the proj=
-ect, including:
-
-*=20
-
-Project description and objectives
-
-*=20
-
-Funding requirement and proposed structure
-
-*=20
-
-Key financial information and projections
-
-*=20
-
-Current stage of development
-
-*=20
-
-Relevant company or project documentation
-
-Following our preliminary review, and where there is a potential strat=
-egic fit, our team will contact you to discuss the opportunity and pot=
-ential next steps.
-
-We appreciate your consideration and look forward to exploring mutuall=
-y beneficial investment opportunities.
-
-Yours sincerely,
-
-David Bajada
-Co-Head, Private Equity Investments
-Private Investment & Strategic Partnerships
-
-Confidentiality Notice:
-This communication is confidential and intended solely for the named r=
-ecipient. If you have received it in error, please notify the sender a=
-nd permanently delete the message and any copies. Any unauthorised dis=
-closure, reproduction, or distribution of this communication is prohib=
-ited.
-
---rVC=_E5ozLyW9lBTNKh5urDoZ4dSXsizRh
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-
-<html lang=3Den><head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-=
-8">
-  <META name=3Dviewport content=3D"width=3Ddevice-width, initial-scale=
-=3D1.0"><title>Private Investment & Strategic Financing Opportunities<=
-/title>
- </head>
- <body style=3D"FONT-FAMILY: Arial, Helvetica, sans-serif; COLOR: #222=
-222; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; PADDING-LEFT: 0px; MARGIN:=
- 0px; PADDING-RIGHT: 0px; BACKGROUND-COLOR: #f4f6f8"> <P class=3D"x1yc=
-453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qj=
-w xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm=
- xrxpjvj" dir=3Dltr>Dear Sir/Madam,</p><p class=3D"x1yc453h xma8rkl xg=
-oqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4=
-adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3D=
-ltr>I hope you are well.</p><p class=3D"x1yc453h xma8rkl xgoqxah xutxf=
-r x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns=
- x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>We are=
- a private investment firm seeking strategic partnerships with reputab=
-le businesses, project owners, and established organisations with comm=
-ercially viable investment opportunities.</p><p class=3D"x1yc453h xma8=
-rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr=
- x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj"=
- dir=3Dltr>As part of our 2026 investment programme, we are expanding =
-our global portfolio and are open to opportunities across a broad rang=
-e of sectors, including infrastructure, energy, real estate, manufactu=
-ring, technology, healthcare, agriculture, finance, transportation, av=
-iation, hospitality, and other growth industries.</p><p class=3D"x1yc4=
-53h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw=
- xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm =
-xrxpjvj" dir=3Dltr>Our investment partners are prepared to consider le=
-gitimate, well-structured, and scalable projects with strong commercia=
-l fundamentals. Depending on the requirements of each opportunity, we =
-can consider <STRONG class=3Dx7amdea>debt financing, equity investment=
-, or joint-venture structures</STRONG>, with a focus on transparent te=
-rms and sustainable long-term partnerships.</p><p class=3D"x1yc453h xm=
-a8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5t=
-zr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjv=
-j" dir=3Dltr>If you are currently seeking funding for an existing proj=
-ect, expansion, acquisition, or upcoming development, we would be plea=
-sed to conduct an initial review.</p><p class=3D"x1yc453h xma8rkl xgoq=
-xah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4ad=
-c xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dl=
-tr>For an initial assessment, please provide a brief overview of the p=
-roject, including:</P> <UL class=3D"xonam98 x1epdd7z xemmon1 xn020vs x=
-fl32do xluzp7q x1yc453h x38giro xat24cr x1xobyvs x1fv8qjw xdj266r xrxp=
-jvj x1bxe5rh"> <LI class=3D"x1datfip xp5n6w9 x2xbuc6"> <P class=3D"x1y=
-c453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8q=
-jw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6z=
-m xrxpjvj" dir=3Dltr>Project description and objectives</P></LI> <LI c=
-lass=3D"x1datfip xp5n6w9 x2xbuc6"> <P class=3D"x1yc453h xma8rkl xgoqxa=
-h xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc =
-xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr=
->Funding requirement and proposed structure</P></LI> <LI class=3D"x1da=
-tfip xp5n6w9 x2xbuc6"> <P class=3D"x1yc453h xma8rkl xgoqxah xutxfr x1f=
-ie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2=
-l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>Key financi=
-al information and projections</P></LI> <LI class=3D"x1datfip xp5n6w9 =
-x2xbuc6"> <P class=3D"x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25=
- x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5=
- xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>Current stage of develop=
-ment</P></LI> <LI class=3D"x1datfip xp5n6w9 x2xbuc6"> <P class=3D"x1yc=
-453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qj=
-w xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm=
- xrxpjvj" dir=3Dltr>Relevant company or project documentation</P></LI>=
-</UL> <P class=3D"x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1x=
-obyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw=
-7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>Following our preliminary re=
-view, and where there is a potential strategic fit, our team will cont=
-act you to discuss the opportunity and potential next steps.</p><p cla=
-ss=3D"x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs=
-31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2r=
-x x160d6zm xrxpjvj" dir=3Dltr>We appreciate your consideration and loo=
-k forward to exploring mutually beneficial investment opportunities.</=
-p><p class=3D"x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyv=
-s x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688=
- x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>Yours sincerely,</p><p class=3D"=
-x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1f=
-v8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160=
-d6zm xrxpjvj" dir=3Dltr><STRONG class=3Dx7amdea>David Bajada</STRONG><=
-BR><STRONG class=3Dx7amdea>Co-Head, Private Equity Investments</STRONG=
-><BR>Private Investment &amp; Strategic Partnerships</p><p class=3D"x1=
-yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8=
-qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6=
-zm xrxpjvj" dir=3Dltr>&nbsp;</p><p class=3D"x1yc453h xma8rkl xgoqxah x=
-utxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnv=
-auns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>&n=
-bsp;</p><p class=3D"x1yc453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x=
-1xobyvs x1elgs31 x1fv8qjw xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 x=
-uw7688 x1pjt2rx x160d6zm xrxpjvj" dir=3Dltr>&nbsp;</p><p class=3D"x1yc=
-453h xma8rkl xgoqxah xutxfr x1fie51u xgyxj25 x1xobyvs x1elgs31 x1fv8qj=
-w xcy5tzr x1ht4adc xnvauns x1c2l018 x14l7nz5 xuw7688 x1pjt2rx x160d6zm=
- xrxpjvj" dir=3Dltr><STRONG class=3Dx7amdea>Confidentiality Notice:</S=
-TRONG><BR>This communication is confidential and intended solely for t=
-he named recipient. If you have received it in error, please notify th=
-e sender and permanently delete the message and any copies. Any unauth=
-orised disclosure, reproduction, or distribution of this communication=
- is prohibited.</P></body>
- </html>
-
---rVC=_E5ozLyW9lBTNKh5urDoZ4dSXsizRh--
-
+--
+Uladzislau Rezki
 
