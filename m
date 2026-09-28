@@ -4,131 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58417CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DE08CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7283B6B0099; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
+	id 9070E6B009D; Mon, 28 Sep 2026 13:31:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D9E06B009E; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
+	id 8DCB56B009F; Mon, 28 Sep 2026 13:31:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F07C6B009F; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
+	id 8194E6B00A1; Mon, 28 Sep 2026 13:31:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 37D746B0099
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BF9F1C22D7
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:54 +0000 (UTC)
-X-FDA: 85263853668.14.6580D52
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 56B0510000D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:52 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W5ZR3y/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCI6kHOT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XzOmBuHn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rixRATj3;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 6485E6B009D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:31:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 017BF1C23C7
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:31:51 +0000 (UTC)
+X-FDA: 85263863664.21.F474EE5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5F3EC2000B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:31:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaaRP7xu;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790616472;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1790616710;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
-	b=Stb/7WtiLAqTT2mbGTNz0WHn2vz+6O3l1TdCJ3MQujvVKuLCX6KH1/pp8HkIlBLG6YwjD+
-	u+K5s2VLLNAr9z8rELNLSNLUKMgKY0n2AjefrzEATy4UBgf72q7/i9q1AcP4CXpUqV2/oB
-	mQtj0+1pKDi3wuwJPkmxfVT/fqJ2fwk=
+	bh=YUNsQKbdoNdkmOn7hVMkhLGJNjStR4GPA47+J2XShC8=;
+	b=IquPvcVnhIFhd55BgrSStWSh35QzmlAbxVNofwaIBfiUmjAbwLJ8lisdBztdpc8CPWdYBG
+	Ij/34wl65P7ZD/WynPJKQ8MgtfOqp8aiEQL3si9sPi4RFYQWtf/IVgBZn/AUOi3lKcaXfM
+	YGy7g8Ef12tT8EPm0a2MYfGxJGAvJWM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W5ZR3y/U";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCI6kHOT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XzOmBuHn;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rixRATj3;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aaaRP7xu;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790616472;
-	b=aXzPZVhPrFFSYbkqpS/56+poJenE6gQScc0Xx7wK7VTSb3DmLgfNc/8F/b3JKV4XOYcMlf
-	9aph6Dsu+cLsgCwt2wk0fUt0G3JGGbNQKK/zmBu1QUv6Ec/xkfGzFB0FKKkRK/y7pCQWTT
-	tVgB6LmL/huDHNzRrL+rjxFlkuxGxEk=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 875281F395;
-	Mon, 28 Sep 2026 17:27:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790616466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
-	b=W5ZR3y/UdcRpQS0PZCZkghVkuVElx097d0aBev8USfGNMFEOF1irnZ3mpys7Jpy+ua6u46
-	fFiwPlP1+UmFrv1VNWUFtrmJEZe+DUm9Z0mtWEy+Ro0PFpACmPpEjaZ76lifgX3MqDgSbM
-	j0aAALaaVB1Bb7UPeijkYMSosi+06Vs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790616466;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
-	b=oCI6kHOTjkdfX5dInGF9/hhrbb52rZEnpDE/YdrUihhwn2jmvkDZhCvK22BTpmyrJgyCc2
-	nhA8BGCzFI7ie7BA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790616462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
-	b=XzOmBuHnz1Ot5O5sEILn+MWugqpyAKKA/PCh+EhcwYncrpZBRTmTLjZC5OQgF/1Ev3/Gso
-	+/PeGzxhdsQ2KG3N4y/CBO2u98VcOxUU70gWnUDbvR6kCt25UO5W3EZ+KnQrfX6zwMDTVB
-	R7x6Ugt8TMIJYoLCqBYnZfs8JfefT5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790616462;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
-	b=rixRATj3Rna+JImNWmorIAkHsvgLdkUUJALiBEPJGYOCI0ojzzukqp+GnrKpBOBDwJuYu8
-	Y3WUojCV7JVeMmCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0DA1133F1;
-	Mon, 28 Sep 2026 17:27:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nfsNJoyjumpmOQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 28 Sep 2026 17:27:40 +0000
-Date: Mon, 28 Sep 2026 18:27:39 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Hajime Tazaki <thehajime@gmail.com>
-Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
-	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
-	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, ljs@kernel.org, 
-	broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, 
-	surenb@google.com, vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
-	daniel@thingy.jp
-Subject: Re: [PATCH v3 1/3] selftests: kselftest: avoid cd - in runner
-Message-ID: <arqi6iwLDDBlk6Tm@pedro-suse.tail5790ac.ts.net>
-References: <20260926010819.604346-1-thehajime@gmail.com>
- <20260926010819.604346-2-thehajime@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260926010819.604346-2-thehajime@gmail.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 56B0510000D
+	t=1790616710;
+	b=pXOh7abtnouTlJLfaJgbiKx7SPYCJvTpjMx2+QnIKMI6qBxUbCPh5jX7pPTL5FdO88+Hh0
+	TsWV9PEQeTX/WbA7RymVuKrz1LGliqmdK44trTyT2cpE2btE73ToRJaxeypmCUWQ6QEVzn
+	svuPhZmlBgupzUv51IPT4ZoWrp7OL3U=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C98F6600D1;
+	Mon, 28 Sep 2026 17:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E5F1F000FF;
+	Mon, 28 Sep 2026 17:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790616709;
+	bh=YUNsQKbdoNdkmOn7hVMkhLGJNjStR4GPA47+J2XShC8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=aaaRP7xu4vYzsbzzIB1ARh5jRF/4XJXKwPf+eveA2AT8Jqgpt1Dnjgyzvhb6dw3MN
+	 s5SsekoSkivHHuRMmjC8WK+SNNa6oKFRebBMX+pN+jDJMgAGxCCLmBp3y5icFGCyhq
+	 koLG98wagBmCJ91hpHOfudtH6lk7UG6sxDevYDhmrwIL+e6sTydtzOC05AhgMH5nAw
+	 VhsKAc6sD+RdhsMIBV2DVLUmCWQ+TBtLqTSr+vRei2d6ksq1uQcIEXUBbTV1E41N5c
+	 FPQgqNF2AvWgUTJmSpxqa1beS5wNqni9CREmTJ+4t9aZH1Me00wySFaMVs7FJ3kIdV
+	 Gx2ByASjD6MFg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 11/12] Documentation/mm: Document the crash memaction
+ registry
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Mikulas Patocka" <mpatocka@redhat.com>, "David Hildenbrand" <david@kernel.org>, "David
+ Howells" <dhowells@redhat.com>, "Michal Hocko" <mhocko@suse.com>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Rafael J. Wysocki" <rafael@kernel.org>, "Peter
+ Xu" <peterx@redhat.com>, "Danilo Krummrich" <dakr@kernel.org>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Jann
+ Horn" <jannh@google.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Saravana
+ Kannan" <saravanak@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Gregory
+ Price" <gourry@gourry.net>, "Catalin Marinas" <catalin.marinas@arm.com>, "Mike
+ Snitzer" <snitzer@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Harry
+ Yoo" <harry@kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>, "Matthew Brost" <matthew.brost@intel.com>,
+ =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>, "Paul Moore" <paul@paul-moore.com>, "Rob
+ Herring" <robh@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Nico
+ Pache" <nico.pache@linux.dev>, "Baoquan He" <baoquan.he@linux.dev>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Muchun Song" <muchun.song@linux.dev>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Dev Jain" <dev.jain@arm.com>, "Arnd Bergmann" <arnd@arndb.de>, "David
+ S. Miller" <davem@davemloft.net>, "Suren Baghdasaryan" <surenb@google.com>, "Serge
+ E. Hallyn" <serge@hallyn.com>, "Will Deacon" <will@kernel.org>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Mike Rapoport" <rppt@kernel.org>, "Benjamin
+ Marzinski" <bmarzins@redhat.com>, "Jarkko Sakkinen" <jarkko@kernel.org>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>, "Byungchul
+ Park" <byungchul@sk.com>, "Lance Yang" <lance.yang@linux.dev>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Dave
+ Young" <ruirui.yang@linux.dev>, "Zi Yan" <ziy@nvidia.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Barry
+ Song" <baohua@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>, "Mark
+ Rutland" <mark.rutland@arm.com>, "Pedro Falcato" <pfalcato@suse.de>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Vlastimil Babka" <vbabka@kernel.org>, "James
+ Morris" <jmorris@namei.org>, "Oscar Salvador" <osalvador@suse.de>, "Rik van
+ Riel" <riel@surriel.com>, "Usama Arif" <usama.arif@linux.dev>, "Alasdair
+ Kergon" <agk@redhat.com>
+Cc: robh@kernel.org, devicetree@vger.kernel.org, "Eric Biggers" <ebiggers@kernel.org>, linux-security-module@vger.kernel.org, conor+dt@kernel.org, linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, kexec@lists.infradead.org, dm-devel@lists.linux.dev, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, keyrings@vger.kernel.org, driver-core@lists.linux.dev, linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org, linux-arch@vger.kernel.org
+In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-11-e511e9ee2329@jaseg.de>
+References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
+ <20260928-crash-memaction-upstream-20260921-v3-11-e511e9ee2329@jaseg.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 28 Sep 2026 17:31:44 +0000
+Message-Id: <20260928173144.96E5F1F000FF@smtp.kernel.org>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5F3EC2000B
+X-Stat-Signature: pu3fkpanf8qyrkgjh8pekj4fz1q8umgq
 X-Rspam-User: 
-X-Stat-Signature: 8zz5i85fky8zhru759y8ha9cu9fmfqt1
-X-HE-Tag: 1790616472-123705
-X-HE-Meta: U2FsdGVkX1/SYTsI9/uLCP604D/akg3DyaFy9tCfjAo7RW6beSYTXsf6X5IZ9QMTNr7220LdkFhqOzc9YQmvMLcXCD1O9eLAIooYpmZewujy7rbYPSrtVAP+69jQ6BsFO+VO4SyLg0ZR2TdvHlqH5FGrfu6igpqLBDV89cO36b3sgYuYEHo+uDfyt5vVBYfaLKjhivdLqAboosRh6yV1vBbtZbIbd3LinKAAI8W1fr5xV4+45JIKSywLKvBCwnmmx3Ro7Qx+xEh12cctkPP2M/1vxv6D0RmuDNg+/A1LlCc/JWntf2lRMrQxuKGNOtLAe60UbCOepRMO1c/Ikx26AbWZpG5s0fXIqL3Mai1yxlQ6HW4jU/Rm22a/wZK7ZBfQRbQZ9PxTUBQ3Z5rz1FEHuVl3RWO+lfWsEkOdymRl+gMqv55Z4LHa/C4YVsd8RvPGLOal52l6w3q8FZ+TRzto7vp2hyEKkRFSGKO8UbalONsx6xy+5Q9h8s/KBQz37kZxwPMSClq5PSzlXY3a7OoiuJOgbEMqpBlwoQK7MkXYwoZozBtDOejY1ONZUc6f27TWLX9Qg6LxUb4m2jsi7G6xIiwrbL7WoNq6lSvRK/+hoiLhI1MIxaqWjXMBss0XPsmdfqkNkTHpthsoIoo0FEvvx9aNgDyWsKO60lGMujydwxHc611BQ/ZP8Dnv2OI/r09RjOoMWBSNmPBQn3eT+gHLgQDCvEfSeAuQIgGgMFsIWU4a1p21fE7Onfofj+9HbjwRCesJCYEJlm+11cOL2J3gARj9XW9/3MEyIfIPtYeW7Q+fKoXM8V/Gy0YFR4Cb6gTNPNl+O/EiBF9whZ3t8XCbTfgGLwNYJVPz/Pk+t0WWWSXjp0/ldh1+BmJnbZM9h1EL3Czhta+jwYczNp7JTLIeblSdrLZ8meqxLNmdrdGHsNSQ/PLakt2aKQ6jSkRgiU4X31AAKW6jrclCJN1r/ru
- pMmOAUZE
- Ok5xZpl7v6klQcjm503uWJsF5goYMZMpMH5fi4ZvHS+uyW8XFwlbw3uFWgIFYGchzP7l/WIaaDJY8kTw952OOCwymhvfgNiPdtOh58XCw+VvzAj4Sq1fqfnWT7oe5k4s5n/+gxLpvvtgtnypMPRHYCiwh34ffyDuFLqp5r2IfPHul8AJur8+TlJXONIz5NeUWn/z60CGstIO1IV5d2fM3sdvkG4PjZS5kKT/wR7CgKBl/col6bTmREqDpDOh4UBYBWKATCP7qqIoFU+CsGMCPnY9Q+c0XNuLpStmp9IjrFV/ZoWnlci0kt4txsA2fuovlwRWEnQk6Zn1VOvGbZG3MdnpcVr5EADb1UmooBcp+T65VdSlgBQOWMoUZ9gx4FI2SSxVUWZbX8z1/vffPxGQig+eOunDmSzpL4EVbIqjLRZmOmnl1LJn3pKGQknEv0tchnuu98Jujn4Q0dTwHp81BVhzFWadPleMVLBQ9deW3tGMTEisD/8bo/yq1LS4/89OdKFo2LqszV858hJFf1HUiirk8JP+F6zozh6PkLyheH15Sj7V8E4eCJ2DWvl19fJvOEoNMsDMb2RMmc1NlQPzhZJjZO9qCTnL1EUgJFPsdiWs6pXSfwAZaKSVse0o7Anju4lDF6aSMrdF0rssyrRBTYsKnXA==
+X-HE-Tag: 1790616710-559861
+X-HE-Meta: U2FsdGVkX1/MtrG8a6rhsBaLaySgwV0KUw8YGpsXIvuLqJ2pQ9QHyT4ifSEyhBE4x1JHfPOrUOZHuph1Hwmkn7+e79+7Ff4kHdPgmmoWusIctsTH0ZM9v5Md3j6DOuj+WKxn6hvpfWV/UMiHD6SuGxTirzwU1T2qMxNz2xCMadnPyuwc27tll9/6txHwTFcEupcPeoO2TN0UAA+EFuF0WjRPWRTIok5itJBaaHJnY/zCTFoQqb2J4mbAyMYnGwemoK18CeRL/PlX5J4v81DHGAVq68pou05KEmdv2QKkhMAZ1k2/nHCd9tgBNRvsvcofCEyLc+LYPKaIxuYAmMRCBu5RD89BLCkvGnOipg6N7R42c5T9VtFGUkIk0Ho5j2+y87c52gIz049mjTQElSA9SqkGs/sEDvfXPkQyfsXDt9+9e2Xxb3tzo9jA8/i65NwxZXI2m/GoL7/szG4y7DkcRc8GoMO26sixlJOjd9Rg8zoTuAId5GFYzz61IL1PLF+FFS0cT677W/izye5Y91sYLs2Ex5okuYuholuPoRrIYwl9AO+ttaCS0XH+7WSINb9NRwH+EIVwCEfBf/1NjzIkJBs/YI4BlNyRc6FjXyBxfIFwIqrzpe099rdMD30jyIqsO6OM9x74mj/rZHI1f07B2uYDnmmWYWGUgYfDeitYsaIBiOUuUm7S6IT68Wob4zVlXd+LTeaKlVdc+/wXFt/2UqzPgvsfaXs1ppEUevPiauU64wALCmlQp83QYoVZBOrQ/ty/ztRAzW1N7nPmucf/X7V5gUtKBlQSW1ZGn/L774x6nWdbaYdkRHURO2n2c0zK5LTa3ec05CykHNMzaA25YiYVzqGTmT6Uv/QvxlbpctD4KYzSHpYdGyZH3s6qKglAJvZYIMfCiDFv3OpzGFjQiy/exPrPiuTO+XRxjSAXBXUqzbWAIC4KCmYaBi5lgoq1HOSPa0qo81n9vqVhXQb
+ vv7rNY9o
+ RiGbdVN8CVi6LZYlqS6/KlXPyk+GOqN4nCD7T4XdnlYCuIMQJn5h7cmKO7WfO0qFX99lL1rj2TlFqNN7+d+1/oq/K/DXdoS4l8JGsb8QcXP3DfCLXmgErClDBHmY4p+lzQoRejq60sr/7h0+LC1ioqiaB/2L0PQFO6FgbkOodCs90mDTSjEEAEuPal9zteqpuKtmhzRFDPTlEoC42tl9aBULhmfiZwcTnT41U2HiEi1350Cwxy8qMex5loHRIukJ39oVfZOBumiC5jZ+ZS1SrWTLgssK1GmUZwUnitGuDm1h/mJaQTr8NaCO7fNGKg4oXCzXCxYZNMFj87TbkUTRtYYBS/za+a7zhrItadZvQQzGkAC3WSVq+KEuTOKrGXlIHUewlpU8MF77joqBLjU+lcaDKv7fyHzlizTRxqJRl9SDF1Kf72PmMoxf4C6rQNI3jA61gIpjThlNTGUBOVsfp8MUXMXLzaCL6Qi0R6Y/y0/In9azct7Ky9ORIGU0PS+oJHy6RxZ45ZQVHneQY4j1/mwVW9dum2icD4Kgic+Rag0xqg7zfg+UmOJHfv25Xeldg8QzisK0ZZmqfC33XC4qePT573pLN7I1NlgdWgctRu++kL6Lg3wzFkE7B4RlMBwwGeVZIRhhpzIDCvcLGf2uPN3bV+HOwRlJWS0o/iKoFMMIhnM0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,45 +120,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 26, 2026 at 10:08:17AM +0900, Hajime Tazaki wrote:
-> The kselftest runner currently uses `cd -` to restore its working
-> directory after running a test.
-> 
-> This is not supported by the minimal BusyBox hush shell used by some
-> NOMMU targets. Store the original directory explicitly and restore it
-> with a quoted path instead.
-> 
-> This also avoids printing the directory change performed by `cd -` and
-> handles paths containing whitespace correctly.
-> 
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Andy Lutomirski <luto@amacapital.net>
-> Cc: Will Drewry <wad@chromium.org>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Brendan Jackman <brendan.jackman@linux.dev>
-> Cc: Hangbin Liu <liuhangbin@gmail.com>
-> Cc: "Ricardo B. Marliere" <rbm@suse.com>
-> Cc: linux-kselftest@vger.kernel.org
-> Cc: linux-um@lists.infradead.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+> Describe the crash memaction registry, including its kernel and userspace
+> interfaces, allocation lifetime rules, and current limitations.
+>=20
+> Signed-off-by: Jan Sebastian G=C3=B6tte <linux@jaseg.de>
 
-NACK.
+Sashiko has reviewed this patch and found no issues. It looks great!
 
-https://pubs.opengroup.org/onlinepubs/009695099/utilities/cd.html
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-crash-mema=
+ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D11
 
--
-When a hyphen is used as the operand, this shall be equivalent to the command:
-cd "$OLDPWD" && pwd
-
-which changes to the previous working directory and then writes its name.
-
-
-If you're running selftests on !POSIX compliant shells, that's a
-you-issue. Fix the shell, or use something decent.
-
-
--- 
-Pedro
 
