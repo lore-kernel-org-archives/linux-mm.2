@@ -4,117 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09FD3C9833F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43291CA5FA6
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:02:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C997B6B009D; Mon, 28 Sep 2026 07:02:01 -0400 (EDT)
+	id 5BCA96B009E; Mon, 28 Sep 2026 07:02:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70DA6B009E; Mon, 28 Sep 2026 07:02:01 -0400 (EDT)
+	id 594496B009F; Mon, 28 Sep 2026 07:02:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B604D6B009F; Mon, 28 Sep 2026 07:02:01 -0400 (EDT)
+	id 4D12B6B00A0; Mon, 28 Sep 2026 07:02:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 934EE6B009D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:02:01 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1815D1401A0
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:02:01 +0000 (UTC)
-X-FDA: 85262881242.29.FD7AA9F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0F7FA180015
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:01:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ndx/x6nw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2DBF16B009E
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:02:31 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C0B0AA495F
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:02:30 +0000 (UTC)
+X-FDA: 85262882460.18.B678796
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2C39C80005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:02:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K5xX1lSh;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790593319;
+	s=arc-20220608; t=1790593349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkSQyWzu7T/0A3a31XNu8vpxdHKsJ4rnNLYcnd0bezA=;
-	b=LnkouH82iDRbAFAk/BZ2JwwUkjrQwQxxiCuKvh208aQ12ZdSK2OY/xhS3CrKR1ZwK29oU1
-	YHzU1RCj5FdMGxcUucwfLq7dskzA8dA0lOja7BdXI4CIILiByN3f2nW64uHKeniOGgdxlX
-	6+tyLhb9c1lah6aJqf4BTtmtROgOb2o=
+	bh=1W7l83jUfjOncW8PpsfsUeV8UefI+hmLcibr0Kwb2lA=;
+	b=ZNW9ZVLXtOgv50RRcX4NJXdaj8yn23r2i0Z3DerThSmSFRzz8XEVZR4UQ5x81R9X9vb98U
+	AnqEUAX7spVc5EDSqZgqR74QW62Z1GTnLlHKYGlyCOndaLr0otPwlEGX+37BY2EjtHBnh7
+	5xUccBxaylhG/xERXDpthmI/PUTUW38=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ndx/x6nw";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K5xX1lSh;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790593319;
-	b=RVDkdhf5FACT4eEsYh+1yamdF8msdCb0jFUFHVuoz8zx0c96yc/d+5EbR6zYkw5Yk5P3yI
-	XZ+D8nBV21yLPJFoum3MzJS4Tt+jn8n8oeI8cRW+Quv35YVe8xi7zlGAoVwcNHpu6B44bR
-	Iafmo4wfJlUd9RxacFDiAfXwYx91BqI=
+	t=1790593349;
+	b=S/ELDAxXzleMiSC3OAkox/T3WAbHpbLYcg6FRuoWWI7CrC3j+ekom5/gC1Jn+bSkZo/Kie
+	vLR48o2SB1aam7Ka5HSXSKG9i6IDHSkfW/Q2PuEkZY6/pbOsXnFYVDqBSXF08M4S1D6DYO
+	QqdwQIbhfwnohKdxoxa/SY+elJCrE9U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 834F9600E2;
-	Mon, 28 Sep 2026 11:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819E21F00898;
-	Mon, 28 Sep 2026 11:01:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1AFD6436B3;
+	Mon, 28 Sep 2026 11:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFDF1F000FF;
+	Mon, 28 Sep 2026 11:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790593318;
-	bh=ZkSQyWzu7T/0A3a31XNu8vpxdHKsJ4rnNLYcnd0bezA=;
+	s=k20260515; t=1790593348;
+	bh=1W7l83jUfjOncW8PpsfsUeV8UefI+hmLcibr0Kwb2lA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ndx/x6nwMj46Es9rYHZ9z5o5JqF6jxdKphwEJZh+flA2ah0VkSrN1HPEkvBpTZ55l
-	 Ec140TtlDd00Tm8VtLGdh+OYVKZXZ0cixKbTgzq/h0Jrs+rr0ZvEOC8OG3Xkgg9QsN
-	 sPsYC2pc+Yqt/UI424ddW2XK70/rrvc1WMUH306WX7q6ii+DiFZaGC8+1oeExOv1le
-	 IyMP4ppESpTjASvi8x0OInxnclTaAPXeNrazQgAAnd2ENyXioV7QTp6iRQKOApdZwH
-	 WNYK0ElfQrsxviktM5lH9ifaxdewsw+Ij7RF58oCxfzkZWcVw9CfQgdsm+NISW6BNW
-	 XNEDMAFhYc2gw==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 51887198003A;
-	Mon, 28 Sep 2026 07:01:53 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Mon, 28 Sep 2026 07:01:56 -0400
-X-ME-Sender: <xms:IUm6amGRh7ivfHDvq4z-E4J238NnRqeDSKn55_llFW07u2nvIC12gw>
-    <xme:IUm6anzTLp0eOfCljLLN7gd438Ibx6XI9YP_osT2WClEWug6PWQZEYIJVekIUzG5l
-    Tr-0rptENVwcMoqN7WMkBrhNoGTT2U18ORsCPfW-OmiEc3ZRh8KTZ_i>
-X-ME-Received: <xmr:IUm6alm3_1G1yWMrJZAP6YyyEhFHpAW59SEB6sArwbs_1HFnH1XDQTTvpZs>
-X-ME-Proxy-Cause: dmFkZTF0aXYM8k99TJSKePzPlV0De8TMZ2NIzeehRzclNPyyK+ntmJJe9xCW5IfIQqBvZb
-    4B//Q8aA+dg+pkoM/Hu4RNB1DMHP9RcAheVWJjNEUWscLZxr0DKXN45dL8/VHoXCApqgdv
-    9kyt5mrKg/Qv0CHkIWHqHnTGVENgrqiQhzXgV4SFDHQCtMPP0dbQrKV7Ld27CUqdi/llIg
-    RPOyyKS2epukrnxpRUIDWnbAA6KMEqtKVW7p8XcJ5GCOI0cRyClu1cuGLZi8XLbNZuRw22
-    4LFnKw9fd81HwwydQsLTyoqMNRUkKJLfz8JqZMNAwQBJE82qW8VZnUdBtFke/U1qNBefWu
-    WHCWENgAaAF7ORaIKprhr7jnkKBAHlQytYXZ4nF9v7PeatMRQz3kA9MLoHMo1ubFNX0htR
-    ZZnUVdeBxwHVo2Q9B2+N3Eh6miyohAYEhBv+2AdOVJT3RUAG90m8Ht+cdygxtl1HsmeT1u
-    dMRCTmtfi2+cS/qJp0ga1/cmugkZ3GHpjh0iUJnBpTvAIMXsHbLE0TciO9UV6aYwEnsIC7
-    A51LzFfDGTFIHQMkDkOfmf1YIk0tochZfIOTFQ97CEiVXCYXjRhwr3QG4FQYMxJPb2BhM2
-    tLlFSoqklbLoC9YaXpInfuYnQIKOYnUc28/ozsBsi8pb+OVTDGPgFXtN/eWw
-X-ME-Proxy: <xmx:IUm6auBd3_IhSHMMW3j4FKZja0Mq6HFnH8XR7kq3VggHYchzikfyFg>
-    <xmx:IUm6agKxqdn9FF9woV3mgkBZEhkETPfU_LNFx8CsGvUEeAGGUsoXpQ>
-    <xmx:IUm6ahwx6SH2NL2nvBSCuoCYvtrA-MntLblDciCkdhYYgjLUBxGdoA>
-    <xmx:IUm6akz2-uaDiSQsTbDgrPDCV3AZqJhHwdzK44hNCNp5pwAqq_41GA>
-    <xmx:IUm6aj3NRI4ihvxFUzsqZuJuC6btbpULou_EwtGCUY2EM-zl6oWB9zOE>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 07:01:52 -0400 (EDT)
-Date: Mon, 28 Sep 2026 12:01:51 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/mremap: fix locked_vm leak by splitting VMA for
- MREMAP_DONTUNMAP
-Message-ID: <arpI-wmzRXU5aSOG@thinkstation>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
+	b=K5xX1lShmpX9gshtl6gLw77w8dT+LjbmwtZFY8t5Dl/buHBhU/6Ohi9vnSWJUOUPd
+	 rCqX9TY3Zmx1/wY2RCywDM0Pjei19fgcvxg34JLGGf4OoRIlLYf1hT73Kc9CYEijJK
+	 Wedf80nHwYuvXCL/VQzZYhsTXtN/OMeqGSTMdKVFh4W6l7HhcNBXSatsIUky8RloVn
+	 lPFmOTL5wdGQFLdnStZ3WYujaZ5UVqzPH/dTMPSLP1R2G9bNW3wJ3KwpbVkQoFHTn4
+	 LKGsMN2V/v8UOC+lI0aouU6ethezKEqKSOEkwQkmxJx05H/r7S9WnAoQ+0LS/lZUYc
+	 8VxYaWsBFWDQQ==
+Date: Mon, 28 Sep 2026 12:02:19 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
+	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
+	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, broonie@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
+	daniel@thingy.jp
+Subject: Re: [PATCH v3 1/3] selftests: kselftest: avoid cd - in runner
+Message-ID: <arpJBaUzzsLEZgDy@gremlin>
+References: <20260926010819.604346-1-thehajime@gmail.com>
+ <20260926010819.604346-2-thehajime@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-2-6ffb556f8f8b@kernel.org>
-X-Stat-Signature: wpks5a34nikfx4axe3nqygr4xsmg1uae
+In-Reply-To: <20260926010819.604346-2-thehajime@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2C39C80005
+X-Stat-Signature: 5e4k5rdipfobp3j155dgbjbx9nzbdn7a
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0F7FA180015
-X-HE-Tag: 1790593318-419452
-X-HE-Meta: U2FsdGVkX19HqDFfRTMV9s+V2HA0ByrxtP7hwtsjKnplES1e5Xm0NueahSmbQtyfz4jGKbKsuxxQmdJVJSaDqvkm0RrA2mDzWDCInkH6awZ15WqYHuXxaM5vx505lnHn2vWf3iv4wJagCaa6CLNaRPeQnRMwlZ2LmsHCeyBmnDJMT1Nv9cFOgAQlqS/VfquduWsOhO2xFH8ctLyiXy+UIPdC9sh7aF9vPpdEB3k+Gmyx338qj40IWxm0wL6Xbng0W0at7aFUDixdx+M5kSwI+B3YlORvxb9d6JF9HDMlO9RjzlTipe5ne46yPmQKc0QfVBujANLZCMe2oBgVXIRz2uIgT6TiZNUC0quStj0//QAPp/qe2zKcM2T0vb1RSCmZkEaCcTyOl/78DZwNBiMRJYuUpwJhpVgxl7hfnckvwFCsvLbgGaKt9YkvvQ6Yl+XW28+uUTWvVZeqzq3SRht4v5+0beVqHaTAYpgI/da1l12EkV8hqRIQa9/twGimNnTcuq8YhnRKuEigORUiKn2tuClF2Q1zoB0odtpsDhR8zfJFktNgm8yjNw2edE9SGl3ZMxYg39TR7qhMlpyJUDr3bojawZfn0QFpjkGQiZwpVuioSlobRPtG7npCS/uCp8d50vdGHYw1STgCkOI9PMeWDTDD1v5l+BNd6lpSAtVQFxtKaIO/asc2c2vpceYLwLzmnw7EmjUHyqXdjwuTO4VYWWwdTjxNsRBrR0LKkSMw03t5qgGP993AzYw+voV5ioiTD3rD1HxRZZjsYdYuDGJphommI8XhSY2iWUuQLilZLlO8msW2MhDkWoo40ahicyC9gEVX9ea3gyf9JuoCxaBQMTD9uFYsVMToa+mUya7bNWF3H48+PIpiwG1UOI7841roznHXevUr075dKtTJe3Gt/n9xsgVOHPoDuzXioOzpTgLydr9UGY/l6yj6gai2xyz6cM5QqEtREw1YnIm7Fso
- UiMBtnhX
- tT+iNwLcunkjiV0pDZS+EysSLO0Lhw2lzOIeAUe1TTbrVqUZuFBVAwkRrZ2dqrMenRb9JfsMfvoU5XMbOoYO6mPPepkOHDV14bZUhN6H2yOwjJo1wnDO/a6BVWAfTOo9KBgRjYZeRnQpbOwKdt2S4JnAK2p8rjCdjcpoaRrRwX59uorCAATzew1RpcHJfPHxEx1AiwC4HK7O1mu3k1GyR2cDmibJ/3YAxrEfDgb7V5qxXAk9MKUwTEDuJtowsxWNgN3ffUOFjUnFIiI8RbuhR8PQ0FuVxXIqcT/jndO3PrFYChuzK4JzY7Do4zdhUpem75kJhGjMcfTwI+efeppDf2BqW7riI51gnKiiA
+X-HE-Tag: 1790593349-772556
+X-HE-Meta: U2FsdGVkX18nTEO79Rbl33oWF1GHkmPQwJO2G/cLJrAmPUGhNfFGWpXK6Zk4M/PvChjQMBdvYG/jzMrc/9sdvMsJDH/eMp6YqD+XXoJFJVITrc6li2LATH9qsVyx7KSfJOrqKDFONrYRJP4sSTn3LHYWdmue2lR4yRFjME2l4J/30ZG5CljJZCFUrk2ETUUMusW47rcINSWJZFvhjOrRiefiTsSxYDL4zQJQCM6pjNW3bvCJYVmcjd8qpN/fj+KfKN6QJHCf0w5/9/QWfsH8xO8kCQIOmJuAcwyP8hx++EbM0JKo9gibYmI2POV97FYZzTvdSyRTtm/enJVOpn5eWnXI99xFgwWAAPSeJxFv1GrvAyRfysvwcnGzAJGZ6JRfu36Ug5XvxR0gc3Kwet8oMmuchle6V+axEsPID/JINsjYIqiLX7gvd6AYnQ3l75HXdM8v8vlMkhi6GsyY/ob9QqvH8YI35yObtlpeKolGsW8zHs6KJy6ROIakFNhqwR5NQOJymHWsl77vZs2F/mC+mvKBfPmFcxo/wYDdM5a8Mnu3pK3inFPE1c3O/ESbTuRn9wQpSUV7PiApW90qa+a6Alf5JsFJ9e+e8BtbuMNTrojNnuncZQ+uOicTCdGo5c3/yRlRYI15en/tXHfEWRyQYa49c4ewFiwg0gbLywBI7+WEvUP00oHBst8JpAOR8oRXdcwO+Be2osTQwZ1m5bcPZDJRwXag6hkrDtIUUoozeRLiFo5JyuX/FEPQXec8VaFhxUOutci855dwxiYBledJwlN0brmr4xCrxcwjYwh0xJ4iPCcfLX6RtjnjvJtKIXXsHbxOA7/9Nl5mc94I1wpYkoKGnM4Apmr2yKfLVLxC7k+i4XBqDecgosDLqEpfxq4ZYIamWBttGbDM+ctaSH/HH01A/aWoT3jKff3EYmOOLV5p+gpF4VVfd3ZkUH8BH22Ccp3em1ALw5bEKfMi/Zm
+ 0BnNbtcz
+ S5i1tZqr+SI1XhB+DKsYshESWxLkurD7KTT60nZHiPd6yn7CX3EEfyL/AyHClVf7hs4wXvkGOsHzI7lXFdlhBvThalk5Ix7Io627qDiZFMH5kxc02QEpqsmVY2hxZlothrYosCvVP5MqI2uon4cFVuD7MXG1ovKTDfuTstsroGZNMayfpr4xNz38aAtloHm25ZzpFvxPr1fkNhoyETwa3J53F4qu1bs3mYhcqH+p2zRDEmNYo76fnXx9QnY81ash/Ii4/BCmDL/31Ev8bua8I3h5Aq/SGeVnbn7OyUlLkaw2YjB5N/G0KTPcrrBP2Ugzacyw6tGaBiqNLJYBJxT4TqhLtx5PLu+NYdmtcF/D26KTkxxxBy7h8XN4/jXmj5++1B9p2dkGGh5G2A1ZqWczf5yH2oaUDAsC/dkYF2eK1PCj+9LnVCjkEp7jgmGccLrnSwE/lcMphWjYKyjJYi3wb/izEMdJNKfgDIP9sRcf6p6zqsT6qmZ7UwRRx+mJPky2rXszbq+rerujslj4Yiep8ACLKKC+CZ+c9cnTcQNcOc9jN3thR5XdCQNnKhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,72 +96,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Sep 20, 2026 at 03:13:11PM +0100, Lorenzo Stoakes (ARM) wrote:
-> The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
-> operations that keep the original VMA in place.
-> 
-> Historically this has led to a lot of bugs where non-obvious interactions
-> occur between existing mremap() operations and the original VMA.
-> 
-> Fix another of these - partial copies.
-> 
-> The long-standing mremap() partial VMA logic has the baked-in assumption
-> that the originating VMA is unmapped and thus moved.
-> 
-> However MREMAP_DONTUNMAP defeats this by performing a partial copy
-> instead since it keeps the source VMA around.
-> 
-> An mremap(..., MREMAP_DONTUNMAP) operation disallows resizing of the VMA,
-> but the operation can be performed partially:
-> 
->                            |-----------------|
->                            |                 |
->                            |                 v
->                         <------>          <------>
->                         .new_sz.           new_sz
->                      |--.------.--|       |------|
->                      |  .source.  |       | dest |
->                      |--.------.--|       |------|
->                      <------------>
->                          old_sz
-> 
-> The page tables in the specified range are moved, but the original VMA is
-> kept intact.
-> 
-> This interacts poorly with mlock()'d VMAs, as the VMA_LOCKED_BIT flag is
-> cleared for the entire source VMA and set for the entire destination VMA.
-> 
-> This results in an mm->locked_vm leak as the change is therefore not
-> accounted correctly.
-> 
-> The clear solution here is to make the portion of the source VMA which is
-> mremap()'d distinct from the rest of it, a.k.a. split it.
-> 
-> Therefore resolve this issue by splitting it ahead of the rest of the
-> mremap() operation.
-> 
-> In order to make this change re-expose split_vma() in vma.h for
-> CONFIG_MMU (nommu doesn't compile mremap.c and uses a static helper
-> instead).
-> 
-> A quick search of how MREMAP_DONTUNMAP is used in the wild suggests that
-> the partial case is either unused or rarely used, so this should not result
-> in unreasonable VMA proliferation.
-> 
-> Since this makes every mremap() MREMAP_DONTUNMAP operation operate across
-> an entire, distinct, VMA, also eliminate now-redundant code checking for
-> this in dontunmap_complete().
-> 
-> Finally, update the sys_map_count check to account for this case.
-> 
-> Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+On Sat, Sep 26, 2026 at 10:08:17AM +0900, Hajime Tazaki wrote:
+> The kselftest runner currently uses `cd -` to restore its working
+> directory after running a test.
+>
+> This is not supported by the minimal BusyBox hush shell used by some
+> NOMMU targets. Store the original directory explicitly and restore it
+> with a quoted path instead.
+>
+> This also avoids printing the directory change performed by `cd -` and
+> handles paths containing whitespace correctly.
+>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Andy Lutomirski <luto@amacapital.net>
+> Cc: Will Drewry <wad@chromium.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Brendan Jackman <brendan.jackman@linux.dev>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: "Ricardo B. Marliere" <rbm@suse.com>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
-Makes sense:
+Looks fine to me so:
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> ---
+>  tools/testing/selftests/kselftest/runner.sh | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/kselftest/runner.sh b/tools/testing/selftests/kselftest/runner.sh
+> index 311811dc55a0..8fc1018d6fec 100644
+> --- a/tools/testing/selftests/kselftest/runner.sh
+> +++ b/tools/testing/selftests/kselftest/runner.sh
+> @@ -130,6 +130,7 @@ run_one()
+>  				return $KSFT_FAIL
+>  			fi
+>  		fi
+> +		OLDDIR=$(pwd)
+>  		cd `dirname $TEST` > /dev/null
+>  		(((( tap_timeout "$cmd" 2>&1; echo $? >&3) |
+>  			tap_prefix >&4) 3>&1) |
+> @@ -147,7 +148,7 @@ run_one()
+>  		*)
+>  			ktap_test_fail "$TEST_HDR_MSG # exit=$rc";;
+>  		esac
+> -		cd - >/dev/null
+> +		cd "$OLDDIR" >/dev/null
+>  	fi
+>
+>  	return $rc
+> --
+> 2.43.0
+>
+
+--
+Cheers, Lorenzo
 
