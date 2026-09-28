@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9BBFC98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 03:27:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 923DFC98328
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 03:31:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 976F06B008C; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
+	id 6713F6B0093; Sun, 27 Sep 2026 23:31:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 926C46B0092; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
+	id 622076B0095; Sun, 27 Sep 2026 23:31:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83E346B0093; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
+	id 537546B0096; Sun, 27 Sep 2026 23:31:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5672A6B008C
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CCE921A0AD8
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:27:10 +0000 (UTC)
-X-FDA: 85261735020.02.E2910FD
-Received: from knight.cons.org (knight.cons.org [212.12.50.241])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CB73D140004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:27:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=cons.org header.s=default header.b=GxdBFs0+;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of cracauer@cons.org designates 212.12.50.241 as permitted sender) smtp.mailfrom=cracauer@cons.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30AB76B0093
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:31:07 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA93680ADD
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:31:06 +0000 (UTC)
+X-FDA: 85261744932.18.2F8FA44
+Received: from mta0.migadu.com (out-196.mta0.migadu.com [91.218.175.196])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 838D980008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:31:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oM2bDbos;
+	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790566029;
+	s=arc-20220608; t=1790566265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=N0J5HDZxc76uDFcd7IU9j6Jt+sdQub9jiX5ZAdngrhY=;
-	b=18asbmN3NGvAb8OJRV5joGQ/sOprMlHiaJ31vO2Myz4bVLNwIyT+a6Zr/EWKzqEQvYbgkL
-	nMa2h3toi7JA2dYsB+lKdbhh4LaRgeL5zxEqAjzU4wN1QcYACwUuIInoKiwjcsbhpVn28F
-	Y8fwiUApeoN6uYuq5Ii/Ekevm5c76ug=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=K0VIYU3Cq5jFyRUvJtc69wYSWkNJMMgIPzKtoX5wGoA=;
+	b=pYy+vyNDiPR2/tHJo4Tzht1jyLEjFfxRm6eFGab23rEP2Pdqbi810F8g1V1qgA8DfbwB5f
+	fYSoP+85xK9YTGii8iZHJHkzRXhZ1BQ64W18Yir0HEuGN34+0BDJ/zc3UYGU720Sq76qes
+	1+cFvWhv4Q1NUlel0q+GUhPutPs2sug=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=cons.org header.s=default header.b=GxdBFs0+;
-	dmarc=none;
-	spf=pass (imf26.hostedemail.com: domain of cracauer@cons.org designates 212.12.50.241 as permitted sender) smtp.mailfrom=cracauer@cons.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oM2bDbos;
+	spf=pass (imf02.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.196 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790566029;
-	b=2WioFZUpOJ2pbgVacbMUacx0ec6z74FykF/e/MZWjErYhwxhjjMIKIYtL+GFewqZ1Q0104
-	Bf+KaceqmGZRrI4lRCS5Kl+SlWOrIhpANwfFUcBtSgJ0yL6L7XobfgGCFXZ3N3Xm5/0ouj
-	YVDwGaN+gowS2yPPyJNf4t8iWlmr9tc=
-Received: from knight.cons.org (localhost [127.0.0.1])
-	by 0ons.org (8.18.2/8.18.1) with ESMTP id 68S3QVTQ061396;
-	Mon, 28 Sep 2026 05:26:31 +0200 (CEST)
-	(envelope-from cracauer@knight.cons.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cons.org; s=default;
-	t=1790565992; bh=N0J5HDZxc76uDFcd7IU9j6Jt+sdQub9jiX5ZAdngrhY=;
-	h=Date:From:To:Cc:Subject;
-	b=GxdBFs0+wusUQ3Mpq7WQtNmwYoPco06mgQdglw2+7SctYTSxgPdZsnLcqIpeHFtTn
-	 dB0C5Bglmr8DORW8FrGI/0Ge8zx/LC9LnMY+3FmuzKidnsLb4QJ2dNyz2Lw4orNEZa
-	 GfBuphi3G5WNJHKaypNHFQ+hUK7PZbjeEOTdxB1w5kvEoiEXbUqQVTmJtACqqoFtnu
-	 QKXDNg2p61z7zfhMvSK84y/gUEFtAOHpNDYNT5Az1m5+wED7Nmmof6EPsOXU/8tWcC
-	 wgyHG399Qv+yy8cxJDkeK0MqtqaIjefNhiabfwrih2ymh+NNxxDVttwFE4yOaXAuN4
-	 dm11RdsTurTGA==
-Received: (from cracauer@localhost)
-	by knight.cons.org (8.18.2/8.18.1/Submit) id 68S3QVVe061395;
-	Sun, 27 Sep 2026 23:26:31 -0400 (EDT)
-	(envelope-from cracauer)
-Date: Sun, 27 Sep 2026 23:26:31 -0400
-From: Martin Cracauer <cracauer@cons.org>
-To: akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-        rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
-        peterx@redhat.com, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Subject: [PATCH] selftests/mm: uffd-missing-wp: add GC related functionality
- test
-Message-ID: <arneZ-KkRWUNI0Ho@cons.org>
+	t=1790566265;
+	b=OBRhlawyz7jGElABdISf1tMbMS7RzcxyXWa1NptcU7PV1zVDL7yQQIERYEFoOrh+uYeSYX
+	69UvF7BFj7eRS+ZvjeH1Nv51+7YvwWjBft4vWIm6izjpVMvcPretyRhPRHqScZ7nwSy19P
+	LtGOBfTgwtCUvNL+q/7XxJXSx/oq9x8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=uv9M24Qa5k6EVTqz01RkycmxxgZEZ2RP0htT0pOwIY0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790566262; v=1; x=1791171062;
+ b=oM2bDboskrZ25NEG56HQUSEOQYCeXXsSYoLqGZvhJd3j496HdzmAcPuk6VxfK3A8Mm07Zrzr
+ ZtXqslzrVTBwJqY5lAHJ6fJffU4KIcoGp7HLv+N0thMDLYlcNPum4ZKFXRNlNNREXFStcXuaHBM
+ IuVGyih9M+RgAjNj/t4guFQg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id a5420bbe46061314;
+	Mon, 28 Sep 2026 03:31:02 +0000
+X-Mizu-Trace-ID: a5420bbe46061314
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 28 Sep 2026 11:30:59 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: Klara Modin <klarasmodin@gmail.com>
+Cc: Baoquan He <hebaoquan@kylinos.cn>, linux-mm@kvack.org,
+	akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, nphamcs@gmail.com, baohua@kernel.org,
+	youngjun.park@lge.com, david@kernel.org, kunwu.chan@gmail.com,
+	gourry@gourry.net, riel@surriel.com, mhocko@kernel.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev
+Subject: Re: [RFC PATCH 00/17] mm, swap: xswap writeback to a physical backend
+Message-ID: <arnfc8oXEdCJrWEw@MiWiFi-R3L-srv>
+References: <20260920072043.430390-1-hebaoquan@kylinos.cn>
+ <arUKSOVFzPF-iHxU@parmesan.int.kasm.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <arUKSOVFzPF-iHxU@parmesan.int.kasm.eu>
+X-Stat-Signature: 3bgnxok4fzkw8e68kanmckwrquzwd9sk
+X-Rspamd-Queue-Id: 838D980008
 X-Rspam-User: 
-X-Stat-Signature: yaozizop98c34c9nriqzfg38pnusnjye
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CB73D140004
-X-HE-Tag: 1790566028-244324
-X-HE-Meta: U2FsdGVkX18xcalrnJ8WNxObC6EmVptbK+F+w9iNAx32c1RfJ31oRT3dO7BJwOCeGDRitDUlZyyTTv3K/OVPFZYAw4fLL/2jC72rl4QPyQ7OfnmoRLm/LuKA3iz67KNjRQvQX5Nz5PMSFvXPJ5TMakn0NlODopdI5IVrW8XgrlWjRKkTfgPMWi+zobpxxxo/ro7sqDIHGISCI/Bv/3kF0mEUDuV9m/odz0PhMR8ZoAKNn2jzwZ7gV8IvsK3v9oqWjakNmYAybB9a9g+yKJLMR0dByxVdv+1RSrR8uVnNkxCUXvTFKKXLQ75MVm87P+aETJj61r7Y5xNwxuBXTwhl08lA35u6OefwOEPvJQpQyVPqhGHirBULIxMObkrKonD3SXV5ypbnaCd2RWGpS/ljhoKG8khHtY8++UN9BvBIKtqVR5UPwPlK5XnbGLOOPVohByWArU93lIXU/s3nNBUQqlcAeVAhkch6QZ3GWvX03NWitKe1sHZMp2gThQCC2waP/8ZWcquG/ADFw86TIswN2bI9+OFPDitSR/fLB287djxCDfpUci/uiUmQkmATZcMPVhmy6N/6t83fMBmvxGu3T6qERqJcAO722SLBac31/qaeMaTjSdYZF+ayvBEP77NsIdGfzPzuYCcCd/zgFuouHS+oUsiz5ZkqmeymcMDO5sy8OezDneMrbpjve5NPPWGAw7m1rzLHw+KYsQC/MFbo1vmtuwQApoj3U9Kqu0RMqj56PrDu6lvKWCCNmsyLkziU/wk8mqwWLpPiUEHsZ2XBMCAqGBrsrgnUYQudVx/Ny0AVnzi1BiddjxU8cnpDfxOax/Krq2l+U6BQI/ziHpaKY4ts4twXfqzqLkNYNNsVG2lLRhDAaZFz7eD36+6iHwpG67qhhtOUkObeTdHBrGso4r6o39poFy0xe50/9USq+5MJ3rHeJixf8aqIOsOGP+fMiUV1vLUBPlkg48p1qpD
- ecTjV2cU
- +ACgyZRh5t6Nv4Fen0Nn9oii2IpzzqnyoI5xMrkPGbKWGC3BJk+lK4mhugqzN2Zfitt92z7zbd40004wBESBcsazVSiAcgruEINj043r3teQWUp0UGrbDhkv0AuGtgNTyCFDK5IWqKgbAh+GDjTFfICxnilm8vfJL3alPlixcrheoman/sevqf8ANiZ5C4iU4fzpg+KyLj7OTu/GNwnvQTGx6qA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790566264-469246
+X-HE-Meta: U2FsdGVkX1+S1S+8jCrHvXVJgi1oxOu7t0KQJwGrcx35Lpfiz1uiHhb+66xMEfRmJwayfHvSc0UYVNrdr2jW7Ej9pxGwV/1isELpyRgslcxTM9KqHwtQmfymiWNZ85rC9YkrJeLpDMi25rCGbxmzjLSVHGezgrZ0wehi6LCNwB3GxpOaXov5p5LTMW1MZay7a6dIZX4FHJt4CCrhTmYSaWOlOqsx1oTFs44T+Ez0f2vl31zFgICj1g6U3WIHadGWNPIq1DiMnNZNFe1Bt9LxToTtAfmdYjhxRS5O55v4H3u2yMPD1zjgChcSxqis0vtH3wlA1v4WMNzvq6j0M3a6kGqM9L4iWerrk10S7BdvCGqfuP3OiiGYMx1klS1xxDKwx12Wsa9ddFLKYHWN1YsdZU+GMFjB5uk7amRAerEEvV5m6jdsEmhIXqHanvFbpm75ceQrGu7Idn+/BuMMZX4RMuw9KxBTvFJhbecW9msPYUU5jv58v860W/W+/aTARnLwaTMMePVGA9GsBXxlArJ/VR4UJFV2SAsm3aKmRLOMplj+QP8cTYl0d1iZijiO1p5emM9RJe2eIAwnZhoWVubTD2ENEtGjR1HrWe5q8MPXDqkq+++YCoflrQBFi4yIr4jaUKq23DmzoFouIrzLSyC8ZycQsWO8KwfohLQUIPk5zWjcRFycn8y+oCVEjAFToqIwwhGW3XulXnZqZEIwm1/IDc6nm+RNHYZHjpejQTTXqMUQv1WredKIeDgB0EGqEgsETclMPXC3oAdJC6QBZLEp/fIXh8mIJ+1pgzWwmLI5coF4pNzhiLkapFQ9tZi5vD1kPEfSxjkG8X9XqaLshT5iR1EeLhugb8GiBT+N1MvvC27sSBo+lcXq3wvVtun2ZTd1eys8MVxNGwZGmCIUq6NHEt3MTV5bfymI5ewLq8y6NfRoDEQ7gv+avToHCIa5AN1+D/SCols076LxRgxaa5V
+ Fs61B6oT
+ XKJYDQdBhgmAajm2x1ZQMIjEe6NGF0Tor6EFfhRhNk7k4eD2quEk+EjvgyrrbGHzWpchK65yYIZwQ32NfsKO2qtzcvpyRPtxXY2QDZ+EXCTdAn8aimbkQvtYY+OS4vlQzlUuvzdZuKgA2iiyP8p6Wo386gNucoAiRs2fAt4XQ3tfyXYlaSjrrr+9AoCJ9jel9AXDjqE4Ie/E2vQRuUNUh+tHTgm5fnipoo2YWpeQ+WLWiOJQkhSTOcoW1zlhqOINtlTcKYwtTx24wRjlZ6wIerlL2s4C0lj7MGGKTUw1wOFpmQbOVtp/tIvPC9gEYVdOVYYVPQB29x8P2LCPcTCNmMl4/ngfXgJO/v7HQKj+Qxe0tzQCKWNbX4mL7GmTYlXlNeMaA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,459 +93,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that asserts that functionality needed for generational
-garbage collection works.  Namely to implement a write barrier using
-userfaultfd instead of using segmentation faults.  The planned target
-is the GC in SBCL.
+On 09/24/26 at 02:17pm, Klara Modin wrote:
+> On 2026-09-20 15:20:26 +0800, Baoquan He wrote:
+> > This is the writeback layer for xswap, on top of the base series. Post it
+> > as RFC for discussion.
+> > 
+> > The base series keeps every swapped-out page in zswap. So the pool must
+> > refuse new pages once it's full. This series gives an xswap slot a
+> > backend to go, and charge it only when it really goes to real disk
+> > space.
+> 
+> There is some weird trailing whitespace in this email for some sections.
 
-The real GC will initially fill heap pages by using on-demand loading
-of pages from an image file, either via mmap(2) or using userfaultfd
-to decompress a page read from an image file made from individually
-compressed blocks.  This test doesn't do that so that it needs no disk
-I/O and no decompression library.  Instead, a fault will be filled by
-copying page content from prepared pages in the heap.
+Thanks for careful checking, will clean this up before sending out.
 
-Assisted-by: Anthropic:Opus-5.5
-Signed-off-by: Martin Cracauer <cracauer@cons.org>
----
- tools/testing/selftests/mm/Makefile          |   1 +
- tools/testing/selftests/mm/uffd-missing-wp.c | 413 +++++++++++++++++++
- 2 files changed, 414 insertions(+)
- create mode 100644 tools/testing/selftests/mm/uffd-missing-wp.c
+...snip... 
+> > Testing
+> > -------
+> > qemu KVM guest, 8G RAM.    
+> >    
+> > A 4G swap disk /dev/vdb is added as the physical backend, and zswap is
+> > turned off so that every page has to reach a backend slot. Note that it
+> > need create xswap device firstly then disable zswap, so every page has
+> > to reach backend slot.
+> > 
+> > The workload is memhog, as in the base series. Every page is filled with
+> > a fixed pattern, so the data can be checked after a readback.
+> > 
+> >   # echo 1 > /sys/module/zswap/parameters/enabled                                                     
+> >   # echo 100 > /sys/kernel/mm/xswap/create                                                            
+> >   # mkswap /dev/vdb && swapon -p 0 /dev/vdb                                                           
+> >   # echo 0 > /sys/module/zswap/parameters/enabled                                                     
+> >   # mkdir -p /sys/fs/cgroup/xswap_limit                                                               
+> >   # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max                                             
+> >   # MEMHOG_FILL=pattern numactl --cpunodebind=0 --membind=0 ./memhog
+> 
+> You did not include e.g. cgexec here, so is memhog really running in the
+> cgroup you created?
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index d3e9bd67904a..76176d62b3b3 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -92,6 +92,7 @@ TEST_GEN_FILES += transhuge-stress
- TEST_GEN_FILES += uffd-stress
- TEST_GEN_FILES += uffd-unit-tests
- TEST_GEN_FILES += uffd-wp-mremap
-+TEST_GEN_FILES += uffd-missing-wp
- TEST_GEN_FILES += split_huge_page_test
- TEST_GEN_FILES += ksm_tests
- TEST_GEN_FILES += ksm_functional_tests
-diff --git a/tools/testing/selftests/mm/uffd-missing-wp.c b/tools/testing/selftests/mm/uffd-missing-wp.c
-new file mode 100644
-index 000000000000..481e7056cebd
---- /dev/null
-+++ b/tools/testing/selftests/mm/uffd-missing-wp.c
-@@ -0,0 +1,413 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * userfaultfd MISSING + WP test, modelled on a garbage collector.
-+ *
-+ * An anonymous region is registered with userfaultfd in both MISSING and
-+ * WP modes.  A handler thread plays the part of the GC runtime:
-+ *
-+ *  - On a missing fault it fills the page from a backing store with
-+ *    UFFDIO_COPY.  (A real GC might keep evicted pages compressed on disk;
-+ *    here the backing store is an in-memory buffer with distinct contents
-+ *    per page, so a page filled with the wrong data is detected.)
-+ *
-+ *  - On a write-protect fault it records the page as dirty and removes
-+ *    write protection from that page only.  This is the userfaultfd
-+ *    equivalent of mprotect(PROT_READ) plus bookkeeping in a SIGSEGV
-+ *    handler, as used for GC write barriers.
-+ *
-+ * The main thread checks that:
-+ *  - reads of missing pages are resolved with the right contents,
-+ *  - a write to a missing page is resolved before the write lands,
-+ *  - a write to a write-protected page is reported with the WP flag and
-+ *    then completes,
-+ *  - write protection is tracked and resolved per page,
-+ *  - UFFDIO_UNREGISTER leaves populated contents intact and stops
-+ *    delivering faults for the range.
-+ *
-+ * Like the GC it models, the handler assumes pages are only write-protected
-+ * after they have been populated.
-+ */
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/eventfd.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
-+#include <linux/userfaultfd.h>
-+
-+#include "../kselftest.h"
-+
-+#define NR_PAGES 4
-+#define NR_TESTS 7
-+
-+/* GC bookkeeping, updated by the handler thread. */
-+struct page_stats {
-+	unsigned int missing_faults;
-+	unsigned int wp_faults;
-+	uint64_t last_flags;
-+};
-+
-+static size_t page_size;
-+static size_t area_len;
-+static int uffd;
-+static int stop_fd;
-+static char *area;
-+static char *backing;/* what the handler fills missing pages from */
-+static char *expected;/* what each page should contain right now */
-+static struct page_stats stats[NR_PAGES];
-+
-+#define LOAD(x)__atomic_load_n(&(x), __ATOMIC_ACQUIRE)
-+#define STORE(x, v)__atomic_store_n(&(x), (v), __ATOMIC_RELEASE)
-+#define INC(x)__atomic_add_fetch(&(x), 1, __ATOMIC_RELEASE)
-+
-+static uint64_t pattern(unsigned long page, unsigned long word)
-+{
-+	return 0xdeadbeef00000000ULL | (page << 16) | word;
-+}
-+
-+static uint64_t *page_ptr(unsigned long page)
-+{
-+	return (uint64_t *)(area + page * page_size);
-+}
-+
-+/* Write a word in the region and record it in the expected image. */
-+static void store(unsigned long page, unsigned long word, uint64_t val)
-+{
-+	page_ptr(page)[word] = val;
-+	((uint64_t *)(expected + page * page_size))[word] = val;
-+}
-+
-+static void handle_missing(unsigned long page)
-+{
-+	struct uffdio_copy copy = {
-+		.dst = (unsigned long)area + page * page_size,
-+		.src = (unsigned long)backing + page * page_size,
-+		.len = page_size,
-+		.mode = 0,
-+	};
-+	struct uffdio_range range = {
-+		.start = copy.dst,
-+		.len = page_size,
-+	};
-+
-+	if (!ioctl(uffd, UFFDIO_COPY, &copy))
-+		return;
-+	if (errno != EEXIST)
-+		ksft_exit_fail_msg("UFFDIO_COPY page %lu: %s\n",
-+				   page, strerror(errno));
-+	/* Populated concurrently; the faulting thread still needs a wake. */
-+	if (ioctl(uffd, UFFDIO_WAKE, &range))
-+		ksft_exit_fail_msg("UFFDIO_WAKE page %lu: %s\n",
-+				   page, strerror(errno));
-+}
-+
-+static void handle_wp(unsigned long page)
-+{
-+	struct uffdio_writeprotect wp = {
-+		.range = {
-+			.start = (unsigned long)area + page * page_size,
-+			.len = page_size,
-+		},
-+		.mode = 0,/* clear WP; also wakes the faulting thread */
-+	};
-+
-+	if (ioctl(uffd, UFFDIO_WRITEPROTECT, &wp))
-+		ksft_exit_fail_msg("UFFDIO_WRITEPROTECT clear page %lu: %s\n",
-+				   page, strerror(errno));
-+}
-+
-+static void *fault_handler(void *arg)
-+{
-+	struct pollfd pfd[2] = {
-+		{ .fd = uffd, .events = POLLIN },
-+		{ .fd = stop_fd, .events = POLLIN },
-+	};
-+	struct uffd_msg msg;
-+	unsigned long addr, page;
-+	uint64_t flags;
-+	ssize_t ret;
-+
-+	for (;;) {
-+		if (poll(pfd, 2, -1) < 0) {
-+			if (errno == EINTR)
-+				continue;
-+			ksft_exit_fail_msg("poll: %s\n", strerror(errno));
-+		}
-+		if (pfd[1].revents & POLLIN)
-+			return NULL;
-+		if (pfd[0].revents & POLLERR)
-+			ksft_exit_fail_msg("POLLERR on userfaultfd\n");
-+		if (!(pfd[0].revents & POLLIN))
-+			continue;
-+
-+		ret = read(uffd, &msg, sizeof(msg));
-+		if (ret < 0) {
-+			if (errno == EAGAIN)
-+				continue;
-+			ksft_exit_fail_msg("read userfaultfd: %s\n",
-+					   strerror(errno));
-+		}
-+		if (ret != sizeof(msg))
-+			ksft_exit_fail_msg("short read from userfaultfd: %zd\n",
-+					   ret);
-+		if (msg.event != UFFD_EVENT_PAGEFAULT)
-+			ksft_exit_fail_msg("unexpected userfaultfd event %u\n",
-+					   msg.event);
-+
-+		addr = msg.arg.pagefault.address & ~(page_size - 1);
-+		if (addr < (unsigned long)area ||
-+		    addr >= (unsigned long)area + area_len)
-+			ksft_exit_fail_msg("fault at %#lx outside region\n",
-+					   addr);
-+		page = (addr - (unsigned long)area) / page_size;
-+		flags = msg.arg.pagefault.flags;
-+
-+		/* Record before resolving, so the faulter sees it on wake. */
-+		STORE(stats[page].last_flags, flags);
-+		if (flags & UFFD_PAGEFAULT_FLAG_WP) {
-+			INC(stats[page].wp_faults);
-+			handle_wp(page);
-+		} else {
-+			INC(stats[page].missing_faults);
-+			handle_missing(page);
-+		}
-+	}
-+}
-+
-+static bool check_stats(unsigned long page, unsigned int missing,
-+			unsigned int wp)
-+{
-+	unsigned int m = LOAD(stats[page].missing_faults);
-+	unsigned int w = LOAD(stats[page].wp_faults);
-+
-+	if (m == missing && w == wp)
-+		return true;
-+	ksft_print_msg("page %lu: %u missing / %u wp faults, expected %u / %u\n",
-+		       page, m, w, missing, wp);
-+	return false;
-+}
-+
-+static bool check_flags(unsigned long page, uint64_t want)
-+{
-+	uint64_t mask = UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP;
-+	uint64_t got = LOAD(stats[page].last_flags) & mask;
-+
-+	if (got == want)
-+		return true;
-+	ksft_print_msg("page %lu: fault flags %#llx, expected %#llx\n", page,
-+		       (unsigned long long)got, (unsigned long long)want);
-+	return false;
-+}
-+
-+static bool check_page(unsigned long page)
-+{
-+	const uint64_t *want = (uint64_t *)(expected + page * page_size);
-+	unsigned long i;
-+	uint64_t got;
-+
-+	for (i = 0; i < page_size / sizeof(uint64_t); i++) {
-+		got = page_ptr(page)[i];
-+		if (got != want[i]) {
-+			ksft_print_msg("page %lu word %lu: %#llx, expected %#llx\n",
-+				       page, i, (unsigned long long)got,
-+				       (unsigned long long)want[i]);
-+			return false;
-+		}
-+	}
-+	return true;
-+}
-+
-+static void test_read_missing(unsigned long page)
-+{
-+	bool ok;
-+
-+	(void)page_ptr(page)[0];
-+	ok = check_stats(page, 1, 0);
-+	ok &= check_flags(page, 0);
-+	ok &= check_page(page);
-+	ksft_test_result(ok, "read fault fills missing page %lu\n", page);
-+}
-+
-+static void test_write_missing(void)
-+{
-+	bool ok;
-+
-+	store(1, 0, 0x42);
-+	ok = check_stats(1, 1, 0);
-+	ok &= check_flags(1, UFFD_PAGEFAULT_FLAG_WRITE);
-+	ok &= check_page(1);
-+	ksft_test_result(ok, "write fault fills missing page 1 before the write\n");
-+}
-+
-+static void test_write_protected(void)
-+{
-+	struct uffdio_writeprotect wp = {
-+		.range = { .start = (unsigned long)area, .len = area_len },
-+		.mode = UFFDIO_WRITEPROTECT_MODE_WP,
-+	};
-+	bool ok;
-+
-+	if (ioctl(uffd, UFFDIO_WRITEPROTECT, &wp))
-+		ksft_exit_fail_msg("UFFDIO_WRITEPROTECT: %s\n", strerror(errno));
-+
-+	store(0, 0, 0x43);
-+	ok = check_stats(0, 1, 1);
-+	ok &= check_flags(0, UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP);
-+	ok &= check_page(0);
-+	ksft_test_result(ok, "write to write-protected page 0 is reported, then completes\n");
-+}
-+
-+static void test_wp_per_page(void)
-+{
-+	bool ok;
-+
-+	store(0, 1, 0x45);/* page 0 already unprotected: no new fault */
-+	store(1, 2, 0x44);/* page 1 still protected: its own fault */
-+	ok = check_stats(0, 1, 1);
-+	ok &= check_stats(1, 1, 1);
-+	ok &= check_flags(1, UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP);
-+	ok &= check_stats(2, 1, 0);/* never written: not dirty */
-+	ok &= check_page(0);
-+	ok &= check_page(1);
-+	ksft_test_result(ok, "write protection is tracked and resolved per page\n");
-+}
-+
-+static void test_unregister(void)
-+{
-+	struct uffdio_range range = {
-+		.start = (unsigned long)area,
-+		.len = area_len,
-+	};
-+	unsigned long page;
-+	bool ok = true;
-+
-+	if (ioctl(uffd, UFFDIO_UNREGISTER, &range))
-+		ksft_exit_fail_msg("UFFDIO_UNREGISTER: %s\n", strerror(errno));
-+
-+	for (page = 0; page < 3; page++)
-+		ok &= check_page(page);
-+	ksft_test_result(ok, "populated contents survive UFFDIO_UNREGISTER\n");
-+}
-+
-+static void test_after_unregister(void)
-+{
-+	bool ok;
-+
-+	/*
-+	 * Page 3 was never touched.  If the fault were still routed to us,
-+	 * the handler would fill it from the backing store.
-+	 */
-+	ok = check_page(3);
-+	ok &= check_stats(3, 0, 0);
-+	ksft_test_result(ok, "untouched page is zero-filled after unregister\n");
-+}
-+
-+static int uffd_open(uint64_t features, uint64_t *supported)
-+{
-+	struct uffdio_api api = { .api = UFFD_API, .features = features };
-+	int fd;
-+
-+	fd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+#ifdef UFFD_USER_MODE_ONLY
-+	if (fd < 0 && errno == EPERM)
-+		fd = syscall(__NR_userfaultfd,
-+			     O_CLOEXEC | O_NONBLOCK | UFFD_USER_MODE_ONLY);
-+#endif
-+	if (fd < 0) {
-+		if (errno == ENOSYS || errno == EPERM)
-+			ksft_exit_skip("userfaultfd unavailable: %s\n",
-+				       strerror(errno));
-+		ksft_exit_fail_msg("userfaultfd: %s\n", strerror(errno));
-+	}
-+	if (ioctl(fd, UFFDIO_API, &api))
-+		ksft_exit_fail_msg("UFFDIO_API: %s\n", strerror(errno));
-+	if (supported)
-+		*supported = api.features;
-+	return fd;
-+}
-+
-+int main(void)
-+{
-+	uint64_t required = (1ULL << _UFFDIO_COPY) | (1ULL << _UFFDIO_WAKE) |
-+		(1ULL << _UFFDIO_WRITEPROTECT);
-+	struct uffdio_register reg;
-+	unsigned long page, i;
-+	uint64_t features;
-+	pthread_t thread;
-+	int ret;
-+
-+	ksft_print_header();
-+
-+	page_size = sysconf(_SC_PAGESIZE);
-+	area_len = NR_PAGES * page_size;
-+
-+	/* UFFDIO_API can only be issued once per fd: probe on a throwaway. */
-+	close(uffd_open(0, &features));
-+	if (!(features & UFFD_FEATURE_PAGEFAULT_FLAG_WP))
-+		ksft_exit_skip("userfaultfd write-protect not supported\n");
-+	uffd = uffd_open(UFFD_FEATURE_PAGEFAULT_FLAG_WP, NULL);
-+
-+	area = mmap(NULL, area_len, PROT_READ | PROT_WRITE,
-+		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (area == MAP_FAILED)
-+		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
-+
-+	backing = malloc(area_len);
-+	expected = malloc(area_len);
-+	if (!backing || !expected)
-+		ksft_exit_fail_msg("malloc failed\n");
-+	for (page = 0; page < NR_PAGES; page++)
-+		for (i = 0; i < page_size / sizeof(uint64_t); i++)
-+			((uint64_t *)(backing + page * page_size))[i] =
-+				pattern(page, i);
-+	memcpy(expected, backing, area_len);
-+	/* Page 3 is only read after unregister: expect a fresh zero page. */
-+	memset(expected + 3 * page_size, 0, page_size);
-+
-+	reg.range.start = (unsigned long)area;
-+	reg.range.len = area_len;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING | UFFDIO_REGISTER_MODE_WP;
-+	if (ioctl(uffd, UFFDIO_REGISTER, &reg))
-+		ksft_exit_fail_msg("UFFDIO_REGISTER: %s\n", strerror(errno));
-+	if ((reg.ioctls & required) != required)
-+		ksft_exit_fail_msg("missing range ioctls: have %#llx, need %#llx\n",
-+				   (unsigned long long)reg.ioctls,
-+				   (unsigned long long)required);
-+
-+	stop_fd = eventfd(0, EFD_CLOEXEC);
-+	if (stop_fd < 0)
-+		ksft_exit_fail_msg("eventfd: %s\n", strerror(errno));
-+	ret = pthread_create(&thread, NULL, fault_handler, NULL);
-+	if (ret)
-+		ksft_exit_fail_msg("pthread_create: %s\n", strerror(ret));
-+
-+	ksft_set_plan(NR_TESTS);
-+
-+	test_read_missing(0);
-+	test_read_missing(2);
-+	test_write_missing();
-+	test_write_protected();
-+	test_wp_per_page();
-+	test_unregister();
-+	test_after_unregister();
-+
-+	if (eventfd_write(stop_fd, 1))
-+		ksft_exit_fail_msg("eventfd_write: %s\n", strerror(errno));
-+	pthread_join(thread, NULL);
-+
-+	close(stop_fd);
-+	close(uffd);
-+	munmap(area, area_len);
-+	free(backing);
-+	free(expected);
-+
-+	ksft_finished();
-+}
--- 
-2.47.3
+You are right, I didn't write out the full command, just list the steps.
+And here memhog is not a standard one from installed rpm package
+numactl, it's a small local helper. It faults <total_GB> of anon, holds
+it, and can drop the mapping or read it back. And the helper keep a known
+byte pattern, so the data can be checked byte for byte after it is read
+back.
 
+# echo 1 > /sys/module/zswap/parameters/enabled
+# echo 100 > /sys/kernel/mm/xswap/create
+# mkswap /dev/vdb && swapon -p 0 /dev/vdb
+# echo 0 > /sys/module/zswap/parameters/enabled
+# mkdir -p /sys/fs/cgroup/xswap_limit
+# echo 4G > /sys/fs/cgroup/xswap_limit/memory.max
+# echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
+# ( echo $BASHPID > /sys/fs/cgroup/xswap_limit/cgroup.procs
+#   exec env MEMHOG_FILL=pattern numactl --cpunodebind=0 --membind=0 \
+#       /mnt/kernel_src/testing_kernel_hebq/xswap/memhog 5 600 ) &
 
+I will add the complete block in next version, sorry for the
+inconvenience.
+
+> 
+> > 
+> > 1. Swapout to the backend
+> > 
+> >    Run the workload with 5G of memory in a cgroup capped at 4G:
+> > 
+> >    # awk 'NR == 1 || $1 ~ /xswap|vdb/' /proc/swaps
+> >    Filename                Type        Size      Used      Priority
+> >    xswap0                  xswap       8155132   2392176   100
+> >    /dev/vdb                partition   4194300   2392176   0
+> > 
+> >    The two Used values are equal, so the pages reached the backend and
+> >    the xswap side accounted for them.
+> 
+> This is a bit confusing to me. If I now run free, the written back data
+> will be represented twice in the sum? Since the written back data is
+> still presented as used in the xswap device, does it still consume space
+> there, i.e. does it prevent that amount of new data being stored in the
+> xswap device? If this is the case, it would make it even harder to
+> dimension the xswap size since one would also have to take into account
+> all the other swap devices which are present in the system.
+
+I have to admit you found out an issue, thanks. I noticed it too while
+I havne't thought of a satisfying way to fix it. What I can think of
+is to mark the usage size of writeback on disk and list it separately. 
+
+# awk 'NR == 1 || $1 ~ /xswap|vdb/' /proc/swaps
+Filename                Type        Size      Used            Priority
+xswap0                  xswap       8155132   2392176         100
+/dev/vdb                partition   4194300   2392176         0
+                                              2392176 (xswap) 
+
+If xswap is disabled and full, /dev/vdb got swapped out data by its own,
+then the amount of used slot will be reflected as before.
+
+# awk 'NR == 1 || $1 ~ /xswap|vdb/' /proc/swaps
+Filename                Type        Size      Used            Priority
+xswap0                  xswap       8155132   2392176         100
+/dev/vdb                partition   4194300   3000000         0
+                                              2392176 (xswap) 
+I think this can be fixed later, I see it as a non-blocker for now.
+	
+> 
+> > 
+> > 2. Pages are read back from the device
+> > 
+> >    Lifting memory.max and touching the pages again reads them back. The
+> >    pages-swapped-in counter went up by 265642, so the read did reach the
+> >    device. 1010 of the folios read back were 1M, each read with one IO:
+> > 
+> >    # echo max > /sys/fs/cgroup/xswap_limit/memory.max
+> >    # cat /sys/kernel/mm/transparent_hugepage/hugepages-1024kB/stats/swpin
+> >    1010
+> > 
+> >    hugepages-2048kB/stats/swpin stays at 0, because the swapin order is
+> >    capped below the PMD order.
+> > 
+> > 3. verifies data correctness
+> > 
+> >    After the readback the data is compared byte for byte against the
+> >    pattern, one time with zswap on and one time with zswap off, so the
+> >    pages come from zswap in one time and from the backend in the other
+> >    time.  All bytes matched.
+> > 
+> > 4. Destroying a device returns its backend slots
+> > 
+> >    The device was filled, then destroyed with no readback first:
+> > 
+> >    # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
+> >    3157220
+> >    # echo 0 > /sys/kernel/mm/xswap/destroy
+> >    # awk '$1 == "/dev/vdb" { print $4 }' /proc/swaps
+> >    0
+> > 
+> > 5. verifies the charge is correct
+> > 
+> >    An xswap entry is charged only when it holds a backend slot, so the
+> >    two counters have to show the same number of pages:
+> > 
+> >    # echo $(( $(cat /sys/fs/cgroup/xswap_limit/memory.swap.current) / 4096 ))
+> >    526852
+> >    # awk '$1 == "/dev/vdb" { print $4 / 4 }' /proc/swaps
+> >    526852
+> > 
+> >    Nothing is charged while the pages stay in zswap: with the pool holding
+> >    them and the backend untouched, memory.swap.current stays 0.
+> > 
+> > 6. A cgroup with no swap room can still reclaim its anon memory
+> > 
+> >    With memory.swap.max at 0 and no xswap device, the cgroup ran out of
+> >    room and the workload was killed. With an xswap device and zswap on,
+> >    it swapped out through zswap, was charged nothing, and was not killed.
+> > 
+> >    E.g if memory.swap.max is set at 100M, the cgroup will be killed when
+> >    the cap was reached.
+> 
+> Disregarding my comments and opinons on the interface, it seems to be
+> working so far and I can see writeback happen during a GCC 17 build on
+> my BPI-F3, but the entire thing takes roughly 18 hours and is not done
+> yet.
+
+Thanks again for your careful checking, testing.
+
+Thanks
+Baoquan
+
+> 
+> > 
+> > Baoquan He (12):
+> >   mm, swap: tag a swap table entry with its owning xswap entry
+> >   mm, swap: prepare the folio-less allocation path for xswap
+> >   mm, swap: add a physical backend for xswap slots
+> >   mm, swap: use the xswap physical backend
+> >   mm, swap: fall back to disk when zswap refuses an xswap page
+> >   mm, swap: support swapoff of an xswap physical backend
+> >   mm, swap: reclaim physical slots backing cache-only xswap entries
+> >   mm, swap: back a large xswap folio with a contiguous physical run
+> >   mm, swap: enable THP swapin for xswap entries
+> >   mm, swap: drop swap_folio_sector()
+> >   mm, swap: do not retake the cluster lock when uncharging an xswap slot
+> >   mm, swap: drop a refused xswap backend run directly
+> > 
+> > Nhat Pham (5):
+> >   mm, swap: prepare the swap IO path for xswap backends
+> >   mm, swap: split the swap memcg charge helpers
+> >   mm, swap: do not charge zswap-backed xswap entries
+> >   mm, swap: charge an xswap entry when it gets physical backing
+> >   mm, swap: don't gate xswap on the physical swap free count
+> > 
+> >  .../admin-guide/cgroup-v1/memcg_test.rst      |   2 +-
+> >  include/linux/memcontrol.h                    |   6 +
+> >  include/linux/swap.h                          |  69 +-
+> >  include/linux/swap_ops.h                      |   9 +-
+> >  mm/memcontrol-v1.c                            |  10 +-
+> >  mm/memcontrol.c                               | 147 ++--
+> >  mm/memory.c                                   |   7 +-
+> >  mm/page_io.c                                  |  95 ++-
+> >  mm/swap.h                                     |  35 +-
+> >  mm/swap_state.c                               |  12 +-
+> >  mm/swap_table.h                               |  53 ++
+> >  mm/swapfile.c                                 | 742 ++++++++++++++++--
+> >  mm/zswap.c                                    |  20 +-
+> >  13 files changed, 1026 insertions(+), 181 deletions(-)
+> > 
+> > -- 
+> > 2.54.0
+> > 
+> > 
 
