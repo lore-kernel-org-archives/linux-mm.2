@@ -4,104 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 766A7C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:03:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DD7C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:04:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 275C16B008C; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
+	id 5AD136B0088; Mon, 28 Sep 2026 04:04:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24D7E6B0092; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
+	id 55E836B0093; Mon, 28 Sep 2026 04:04:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A7C6B0093; Mon, 28 Sep 2026 04:03:26 -0400 (EDT)
+	id 49A466B0095; Mon, 28 Sep 2026 04:04:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EBCF46B008C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:03:25 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66603C0119
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:25 +0000 (UTC)
-X-FDA: 85262431170.17.68B95A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8C72D20004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kiLKu/n2";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790582603;
-	b=Nn57YHl7apGx6YTvC1yz6Wb1mRJX3fh2G2L8UhCY45Pbtk4P4Euw7HlTBHOP46cxak0f9P
-	+7PVlRcW7fPCrjGMVeApvXhnOY+fyTYiRPv1H1nLwKuBWxEdjvf7Kq7z3uyybDT8h5Zavh
-	K9V1vhhB/5Il9TWT5w5SdPbMJ5suiwQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="kiLKu/n2";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 188966B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:04:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8BC2B120131
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:04:56 +0000 (UTC)
+X-FDA: 85262434992.09.106C17D
+Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DAA1540002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:04:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=NPA53JfC;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf07.hostedemail.com: domain of clkernel@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=clkernel@pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790582603;
+	s=arc-20220608; t=1790582695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uLtk5iYtDPMtIjf5WTw5JxqxgyZJ3TAaIpJ0Mr6L5tk=;
-	b=NiznlNL3yOzdXXskn4HS5DrNGqVSl0KSPKds4jag5Pq7sg3ZY1c+2IpeAxJkkmPnfUoaqT
-	4hh/sGn3WgDFfCuh0JueW+kqke7p9eP7DLXDpUh+6n7tsteBxQlfeKuegt7eLBnfDpQShQ
-	Ghx/Mub9Hh5k06mWi4espZvzWgxni0E=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C9626025A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C160B1F0089F
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790582602;
-	bh=uLtk5iYtDPMtIjf5WTw5JxqxgyZJ3TAaIpJ0Mr6L5tk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=kiLKu/n2P9LKVxauyh78A62Apzf18L164SCB+JFa4nsaAUf+aQJ1FcBfxROio1Clg
-	 QoaLgcPH30j6Je61dwa8YwhsSwIs2NPoZtThsfcPZNUhPe7SHvCsNjQM/aq485mpzj
-	 Ein3QGww/zTl6PUYojYsUsRqUJeTw5dvqzlhGfzaG8+mPuHPwKlw8UDP5FlOCWzIJ5
-	 Gb7sBn7SIJEvuPaWkiBhpxHspoQ3iJb0QD8yJY9EtesZNfj4vqwiC+QVYSd0kplQaS
-	 Q6RdnGv294OUs1dZ0NDP3fOibhYgDrH/eqNOZuDJEcmz18mIzyXJeKDcT6rkqsaPGE
-	 VmyzhcL44fLaA==
-Received: by mail-qk2-f22.google.com with SMTP id af79cd13be357-93bef17c191so245355685a.2
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:03:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBx6uwGQEElfPOb7Gj5ZZPv+Ypk1NefombO3UgPB+SUhXP72zDmzD3Y+XFF0lV3ubCvdeW73WmwQuA==@kvack.org
-X-Gm-Message-State: AFuF++nkeEePpdZeaiY/YMc0D3HVXSJ6NkWmCuIf/yu2tx0CTU/z0VB0
-	QrD4Ot0ZysckXmMwn+EGPnMZ0T2P/3mdaGTRWugpwUYVW1kkPsn2sQIRkn9AvA0dq+QCsz15pXe
-	Ze62X374bwmd7eZvVYNTjjWaeqJFR1G8=
-X-Received: by 2002:a05:620a:690d:b0:93b:eb9a:ca47 with SMTP id
- af79cd13be357-93c43cb6afbmr1943937785a.31.1790582602049; Mon, 28 Sep 2026
- 01:03:22 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=iA8KWlTOkdC/SiapUciFxb0KSa4O1WHpeMzrlBAya+8=;
+	b=K6Q+XReuvuGUEq4isnBiILur1voJv+LX2PX2EMJ0bSs3CqYW9YkGUfoPpoVQU4vpubH7Qi
+	1Eu5qWz0DEgwIRHXLtIYM8mTNbLnyCAwjfpHUj+MTqWYZpz95k7idMir7NC701a4yA9tWw
+	p6eLM8tR1yYuvnVMLHDmuEK4jwX9Zj0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=NPA53JfC;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf07.hostedemail.com: domain of clkernel@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=clkernel@pm.me
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790582695;
+	b=VmyWUcGwURdyng5xn0H6XWTDZoIaMgae0jdgD+ZROnFlCidjTr9kWsmxxJfLsLQGkTsxdZ
+	5TMJYjMZeSjU8nwt131kpCmB+MiJgVT8yGd4Jxt9nzAdD8g+6cSdiZFep0EH6W/UU0zd0Z
+	nKzEEANzvYwWYJj+yUH2UnU0kTacJHA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1790582691; x=1790841891;
+	bh=iA8KWlTOkdC/SiapUciFxb0KSa4O1WHpeMzrlBAya+8=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=NPA53JfCfJRyyScGmdroi6z9zp6Tk64L/aSjv67CGQh45ht7pgGvdQOmE613ToaBe
+	 t1EOaAC4HNRAFiU/wZUAMosyVBRotTFWS1ctWq5zmXZFke7lUlMhy4Mqsv0Y7S9bam
+	 SdvhylTe9doWnFyUsp9irltJNfjpVv75993jrs3KqWmHwh71PpEby/mAbb6PZ3v9L+
+	 N7aFCvwV6+YISLVo95bH/r0sDHN7UQIVDWVgRBiZUuNbUNkN5B5D+iQJ31V1zkG3uz
+	 hmTXLhW3wIzLgIZY5nU1Se5lPtLbgeay6R5dB/alHoZxH5v2sZ0lLHBz/442rHjY3u
+	 JqqD0j5QoSFdg==
+Date: Mon, 28 Sep 2026 08:04:45 +0000
+To: linux-mm@kvack.org
+From: clkernel@pm.me
+Cc: axboe@kernel.dk
+Subject: Re: [syzbot] [block?] INFO: task hung in read_cache_folio (6) (extid 9db0864859224b833108)
+Message-ID: <731bdd5c-2835-43e6-9563-7ab7897d6810@pm.me>
+Feedback-ID: 224698563:user:proton
+X-Pm-Message-ID: 9b7e736b8bbaeacfed09246dfe019774754cc6ad
 MIME-Version: 1.0
-References: <20260916224437.1164512-1-joannelkoong@gmail.com>
- <20260920162014.4479-1-lance.yang@linux.dev> <e22eb6f7-7eb4-4f50-af2b-13a2e3952cac@kernel.org>
- <CAJnrk1Zk_4awd5OfbvsCLts1YPsB6JjjOF2hiSmg-wAp+_KUDw@mail.gmail.com>
- <00d07f4a-f679-486f-9413-6917b5213854@kernel.org> <CAJnrk1bD+4tndrOWuSENvEb7ody47HL2aNv2n+RzUqDE8mpkrQ@mail.gmail.com>
-In-Reply-To: <CAJnrk1bD+4tndrOWuSENvEb7ody47HL2aNv2n+RzUqDE8mpkrQ@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 28 Sep 2026 16:03:09 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xWC4hg_-MLoDn3Zav7NUM709gu1jPeQpRuODdt8OUpZQ@mail.gmail.com>
-X-Gm-Features: AclHuK9L9DVPffHQzXWLpUjv_VnN92J2qaEuVoIHuFVp342S5196rZaalz-1W7c
-Message-ID: <CAGsJ_4xWC4hg_-MLoDn3Zav7NUM709gu1jPeQpRuODdt8OUpZQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] mm: split underused anonymous mTHP folios
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, 
-	ljs@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, alex@ghiti.fr, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, willy@infradead.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: uuwif3yfxa8w4sf48s9x379zkrgcifja
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8C72D20004
-X-HE-Tag: 1790582603-618633
-X-HE-Meta: U2FsdGVkX19CcRnucqcO+GfCU0YJUteV8f0z6HJ1D3Vmf/wBrk0gNWpehgkMBj1IP4HJFXBXtDkDCBURtyJYMHKwKl+F8Mxl986gzP/O6vuIFtDn6ZkSFUfXRXNY9Rb/agqMs+bdzN8Mx3VJd+1Xq09AiU/fBjGoQVFODs1xGKjPR3EowvGq6eB3SsQ5tYHGJ/e770xHEi8SVITOPGh72EgNeMVOiJzs8Mz8fcVBtiSSVFpTdPDFQRe+mRCR5MpgSr/MEOmJqOEcHkczmpg8iBsfWZDuXXkmzX6CArIB1IHqk06FJIiyOE+5DoGV5fIHtg7oDrFgZsdWMzcHz7TRBoimpBxIdxp2b5ga8BtyQhK+lGrlEVqmngwbGoIfo9zycaP/yKzAPgndaSaznQ/ENdldknVb/0HSILOp90+Sl6gu82IpRHzVMq7NTFKjhw/NI5HnI04++G6SxQmJpmxZz1ervFQhR8WUK0nCeVpogm+zv3Kj2gO8D8yduAnkX1m8lB5mfRUp4s2U43OTiWfj4NI7Qo535tWLO6fZrzfnHJPumuNxigq7vX3AdStH2RHBfz54fK4ogu24rki/VWc3MODvsNMyH/9z4HRVJB9bOAv0ohmcnUFeoW/DfPiOWiVe8goy5jsLNgAr2Ns8ReA7QU2EIDPRiEVmqltrDgHiMgJZWG2GuWxun4RTt8Pf2S33FBTTc/pdqmTfaEgjGliZRpr6cR3Vg7/XjDxY8si48bkfu4VEXKQCPMSJJZykYbcRgnHHhBPLFATNLyVe0gWK0NGGXjr2zjGc/xGkkx71VejYSOVv6mjEV8p2cXUsVrL6FanfZMvrXHxMJ1Q2ZxvqHTVf4XAg48zZaLDUCR+QYUSc4sEDKGDDA3WMfLiUY6JXjGTEaNUm5TjzRNZt/I3epYH9YqbNw6Uy6mnhy8xmpvsDVBA533in8QZgEaObWaXUQ3H5maeq5TQSi4bzpC/
- tgdECAMC
- YMPP6q7bZRt+NC/GnQaSgS2qDyVjHj9FPsS9UtWu9q9yinEDWaCq5PI4fBQbbK5EQ68rhtpozLD9VMcmsRctCHxpGk0Erk3tuuS1TSYNe6E0OUJ3zwUjXY84NBf0Sue1IEGMOj7g78zkoF+cpgkJAS5gageVMVw+1jrRaANOrd/iwdeFbpILc8wo4hZo4Bgv2lG8XulTPIrK8j9FuWy+BiME25iOKuR7MaLs+FxkCrg62eXA6GlCNOKWBsdUO/klw/FRCrynPrtJlPdrxYhEho/RyYd9pcQbpLhLdup0SUiDUxa90sFjX4UBIBOGH+bBHpaekjQROUDp80G8=
+X-Stat-Signature: d9fumqh5no648o7ftkbebadqemm6wyrr
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DAA1540002
+X-HE-Tag: 1790582694-81032
+X-HE-Meta: U2FsdGVkX184vRCv3eZFxvbmLZ/VBIsAGJXU0yVjzdZR1k6/Xm34z6tKIR49O5o3W5a8A8QR2388OHgPucTevY8fK2WZkocZlIvqNBwTd/d2XrXFiy88D5Qvm/DLAILBh759p9YGeQR9kUWLnMaPHcrEME1irZWPdXDfvcLd0bQLNcMh+TprwshVvSGswldpfz2FjIpn1Z+x70BfASjfEMA+SEYD72Fg32KFe2lGk6lIp4QTEFYQwcZHpjUY2a3n07teHqbbhWz54Zg0PBhr72bHwub2fuJvuxczdZ31Sf9i40Ox72EvV7Lw26mvao07jWav3mVcG/cW6V7V/DulFkekPhOuD9TNaGESUdGkaIa/WiN+4Uq9TMaJBl1asGQdd0jcPHNI0WwsND2JtN2Lcq94nPgMZOVojXJ+2xUewcoYMX4bmltABGzIHDeb9SAR6X9wM/aGQGEOHrHkUF5adsuSJs0kKd2RnWQ9iRDjNIag2uqHH7o+LwozR2zCTRUCAZH5xWaZn/1qRezMEgMVOEn3VFrwtZrz8qClOlZ0Qt7y3AG0DRYHzYW8MGmjUPmigjYQ6AKxnIh3y6qEB+KjaSpS+aeLi5oDbsmP4oukziOffapafYDXuzhn6NH42usLMI3Er/jJqJO7oFHrH/j8IemP6iIBEt1aFAe4Jwni5NNfMB+0InBrV110vD1dVnTO8NyxUKxPuVfWryKF7iSby4LBRgJdX9oS8fiXJNuPqprmLcFlw7Efc9kxcTh7/qyEMbHrT6lLNwAaMz6//8XEg6NGbx9+4KVViL6cn61llZXlB3/t/amfAG7p93B0cTOPxlAcjbFziEKuzoMKiuc8uY4E4nVAbKlDWCEy4k83nmeowDUA2ZHVnW8MmpfNX+UToEU5RNhbwjulOkCl3e8g55cvzIJocHxLT6SX26zio6z9T9DqYezElym+5G8DanKA7yD3cqDAITzyTNVh8Ch
+ qHumjnoF
+ jn8D8U6Ty3xAZEJoepXBoYT3jyCvBod9J0/Nrgp71i65caCoarb3npGFi0MOzAWAz0XhS1lkjhffPq1oPpNFbwGW8imi4GO+OzM0BivofR5k0/O3lUecGYJ8g6psGxaLZM3pMHKb46DswZPwAEZpSJ2gJ7tfxDxqwMLxSv1eGzfkzUdRLj2lDtJzR3nauvMz56pnWVYmA+/fLYzRW664YDjhMomGxFwDiofbuyNRGkHqkAhTY6qFlrGUnIwIggeTMnxEEq51+36aNj+uBPR9RS3UADLCqMVlwJw5l8jpnVypcAsfR5F9C6CMwNWTyWvFCzrBXd3INXQDn5HY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,37 +85,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 26, 2026 at 7:47=E2=80=AFAM Joanne Koong <joannelkoong@gmail.co=
-m> wrote:
-[...]
->
-> Based off the benchmark results in [1] and [2], I think the cutoff
-> needs to be at 64k where we exclude anything under that. On 4k base
-> pages, this is order 4, but on 64k base pages, order 4 would mean 1M,
-> which I think would be overly conservative. I think it makes more
-> sense to express it as an absolute threshold value instead of by
-> order. I'll try to find an arm64 machine to double-check this on.
+On Fri, 03 Jul 2026, syzbot wrote:
+> syzbot found the following issue on:
+> ...
+> folio_wait_bit_common+0x6b8/0xa30 mm/filemap.c:1324
+> folio_put_wait_locked mm/filemap.c:1493 [inline]
+> do_read_cache_folio+0x23c/0x5a8 mm/filemap.c:4089
+> read_cache_folio+0x68/0x88 mm/filemap.c:4139
+> read_part_sector+0xcc/0x708 block/partitions/core.c:724
 
-Hi Joanne,
+A second observation of the same wait site: on x86-64 servers we see=20
+reader threads (a database reader in a busy server workload) parked=20
+D-state in folio_wait_bit_common's io_schedule, entered through the same=20
+folio_put_wait_locked -> do_read_cache_folio -> read_cache_folio path=20
+this report shows. Observed on 7.0.0-30, 7.0.0-31 and 7.2.5, reproduced N=
+=3D3.
 
-I once recommended a hard-coded value such as 2 MB[1]. Would that work?
+Three measurements, per repro:
 
-Maybe 1 MB or 512 KB would also be fine. I=E2=80=99m still worried that 64 =
-KB
-is too small, especially on machines with 64 KB or 16 KB page sizes.
+1. the pinned folio's lock is FREE while the waiter sleeps: a fresh read=20
+of the exact pinned pages answers in 4-108 ms while the thread stays D=20
+in the same wait;
+2. each later lock/unlock of that folio wakes the waiter for one ~4KB=20
+read: the blocked read's offsets crawl one page per unlock cycle (~one=20
+page per 10 s under churn), so the syscall can sit in the same wait for=20
+minutes to days;
+3. the discriminator: read /proc/<tid>/syscall while the waiter sits=20
+inside the wait, then dd the same page range fresh. The dd returns=20
+immediately; the waiter does not move.
 
-Also, we could have more contention between lru_lock and the deferred
-split lock, since, as you mentioned, folio_unqueue_deferred_split()
-is called under lru_lock in many cases.
+Root cause (established from source, then observed directly on a local=20
+build; measured): folio_wake_bit() wakes the hashed folio waitqueue=20
+through __wake_up_locked_key(), i.e. __wake_up_common(...,=20
+nr_exclusive=3D1). The walk in kernel/sched/wait.c stops at the first=20
+WQ_FLAG_EXCLUSIVE entry it wakes:
 
-smaller folio sizes make mTHP collapse and the underused shrinker
-more likely to ping-pong?
+=09if (ret && (flags & WQ_FLAG_EXCLUSIVE) && !--nr_exclusive)
+=09=09break;
 
-Just my two cents. I'd also like to hear what David thinks.
+folio_wait_bit_common() queued every waiter with=20
+__add_wait_queue_entry_tail(), so a non-exclusive waiter could sit=20
+behind an exclusive folio_lock() waiter on the same folio. When the fill=20
+completed, folio_end_read()'s wake woke the exclusive waiter and=20
+stopped. The shared/DROP waiter behind it was never visited:=20
+WQ_FLAG_WOKEN never set, although the wake itself ran. PG_locked was=20
+already clear and the folio uptodate (so a fresh read of that page=20
+answers through the uptodate fast path, measurement 1), and PG_waiters=20
+stayed set, so the sleeper only ran when some later lock/unlock of the=20
+same folio address reached the queue (measurement 2: one page per wake,=20
+crawling until traffic arrived).
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4x86EYsMz_n2NKDwTqeiv2pi4AcZb1Ru=
-ZoBeUBR1iFqOA@mail.gmail.com/
+Same mechanism explains this report's hang: the waiters are the DROP=20
+ones (folio_put_wait_locked), which drop their folio reference before=20
+sleeping and re-lookup only after a wake that arrives late or never.
 
-Best Regards
-Barry
+Observation on a debug build, same queue after folio_wake_bit() returned=20
+(a read-only walk counting matching non-exclusive entries left=20
+unvisited): 363 events per 10-minute run of readers racing=20
+punch/fault/truncate churn under reclaim pressure on an unmodified=20
+queue; 1 per run after queueing non-exclusive waiters at the head side=20
+only; 0 after the same change at softleaf_entry_wait_on_locked (the=20
+other non-exclusive enqueue on this queue).
+
+The fix (mm/filemap.c, attached): queue non-exclusive waiters with=20
+__add_wait_queue() (wait.h's own default head-side insert) and keep=20
+exclusive folio_lock waiters on __add_wait_queue_entry_tail(). With that=20
+order every non-exclusive full-match waiter is visited before any walk=20
+break can fire, which restores the "wake all shared waiters, then one=20
+exclusive" contract of nr_exclusive=3D1; exclusive waiters keep their FIFO=
+=20
+tail and their one-at-a-time wake. Same change at both non-exclusive=20
+enqueue sites (folio_wait_bit_common and softleaf_entry_wait_on_locked).
+
+One known sibling waits on a follow-up: __folio_lock_async's entry=20
+(io_uring buffered reads with ki_waitq) enqueues non-exclusive at the=20
+tail. Same class, unreachable from the workloads above.
+
+Reproducer shape: threads pread a file while others block in folio_lock=20
+on the same pages (hole punch, truncate, or mmap faults) under reclaim=20
+churn. On an unmodified queue the waitqueue walk above counts the=20
+skipped waiters within seconds. The harness, traces or configs are yours=20
+on request.
+
+The same change cherry-picks clean onto v7.2.6 (mm/filemap.o builds=20
+there). Happy to send a [PATCH] for stable@ if the fix is wanted on the=20
+7.2.x queue.
+
+---
+  mm/filemap.c | 16 +++++++++++++---
+  1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 00fd89cf6f55..383701407843 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1294,8 +1294,18 @@ static inline int folio_wait_bit_common(struct=20
+folio *folio, int bit_nr,
+  =09 */
+  =09spin_lock_irq(&q->lock);
+  =09folio_set_waiters(folio);
+-=09if (!folio_trylock_flag(folio, bit_nr, wait))
+-=09=09__add_wait_queue_entry_tail(q, wait);
++=09if (!folio_trylock_flag(folio, bit_nr, wait)) {
++=09=09/*
++=09=09 * A non-exclusive (shared/DROP) waiter must queue ahead of
++=09=09 * exclusive folio_lock waiters: the nr_exclusive=3D1 wake walk
++=09=09 * stops at the first exclusive match, so a non-exclusive
++=09=09 * waiter behind one is never visited and never woken.
++=09=09 */
++=09=09if (behavior =3D=3D EXCLUSIVE)
++=09=09=09__add_wait_queue_entry_tail(q, wait);
++=09=09else
++=09=09=09__add_wait_queue(q, wait);
++=09}
+  =09spin_unlock_irq(&q->lock);
+   =09/*
+@@ -1429,7 +1439,7 @@ void softleaf_entry_wait_on_locked(softleaf_t=20
+entry, spinlock_t *ptl)
+  =09spin_lock_irq(&q->lock);
+  =09folio_set_waiters(folio);
+  =09if (!folio_trylock_flag(folio, PG_locked, wait))
+-=09=09__add_wait_queue_entry_tail(q, wait);
++=09=09__add_wait_queue(q, wait);
+  =09spin_unlock_irq(&q->lock);
+   =09/*
+
 
