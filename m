@@ -4,87 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A488C98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 03:38:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12EECC98328
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 04:13:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 436006B0088; Sun, 27 Sep 2026 23:38:23 -0400 (EDT)
+	id ED8176B0088; Mon, 28 Sep 2026 00:13:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6C36B008A; Sun, 27 Sep 2026 23:38:23 -0400 (EDT)
+	id E89816B008A; Mon, 28 Sep 2026 00:13:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 300706B008C; Sun, 27 Sep 2026 23:38:23 -0400 (EDT)
+	id D7AF56B008C; Mon, 28 Sep 2026 00:13:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 01BA06B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:38:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 818EF40AEE
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:38:22 +0000 (UTC)
-X-FDA: 85261763244.11.A106B03
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id BFAAB40002
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:38:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M8jfexNR;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790566700;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B257D6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:13:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B05991C3795
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:13:39 +0000 (UTC)
+X-FDA: 85261852158.15.5C5B2AC
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012013.outbound.protection.outlook.com [40.93.195.13])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 31D7A8000A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:13:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=GwxzdWkg;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.195.13 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790568814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rqd+kxmYgnmYy9//PxWDP0AuMpqwxlp40X1NB7XfM3U=;
-	b=DySSRWNxdewi7VzhNqbgfuuXazb5KFyracMF5uakRWqGPB+HHaebd4ivrbvAYgFi5v+i+D
-	1cJ6AwnMbZYT5MBXuX2MVynZkTfFHjWTgMgALnyY7Uv4NjVz8+SQIHhlGXa1gv3brvM4qF
-	GwEfgh0CrCCiP3ovS+wHEAuWlhsa1uw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=M8jfexNR;
-	spf=pass (imf27.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790566700;
-	b=Rg5CphZWgDaxj3VB/JtpHJMVtR4sedwv8U0o6u1BTUY+R5IS/YirHNxbJtyNR2fLQlHXko
-	6e7/JQC7lyx5CH8otQOF2b5UfPZ2Rnmg+/JT7mVMIsMUSXkitR5eE2q9ifJ4w+AS4ogxIp
-	tUsKJ9yjlUnrrSaQkqC9RBh1w02Ikec=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B58FF406C1;
-	Mon, 28 Sep 2026 03:38:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388F51F000FF;
-	Mon, 28 Sep 2026 03:38:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790566699;
-	bh=Rqd+kxmYgnmYy9//PxWDP0AuMpqwxlp40X1NB7XfM3U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=M8jfexNRiMmn5SqJpBK6o3SBKOT0HgRRk9cgWxXQbDn6pmXiFaiW2OMkxLHbUwS5d
-	 AWY3tunpj+e3LTLNE6nOknZGSZu/zBOT4QQRUMfbIxV40WhmGPFoIfks2bG9gJwIco
-	 iAgzaVlcT+BSLLgdxPzrtPNJcORV+bgYVOmdu5jY=
-Date: Sun, 27 Sep 2026 20:38:18 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Martin Cracauer <cracauer@cons.org>
-Cc: linux-mm@kvack.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, peterx@redhat.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: uffd-missing-wp: add GC related
- functionality test
-Message-Id: <20260927203818.2f4b34b37f4a6e1685c3d142@linux-foundation.org>
-In-Reply-To: <arneZ-KkRWUNI0Ho@cons.org>
-References: <arneZ-KkRWUNI0Ho@cons.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	bh=7tzOgc3YtTp2JfO39g/6gr3vfVVI984nTSoG28FHy98=;
+	b=Ntn7ICZ3sjtOVMQ9FpOIycGfasrO8IVTK83/fR8ZVlQ1rFV+0CqRtNPw1nyhFnf5Z+nqK9
+	IOW/2Vg/PjJqBmp+W81p22sr7WLCUrh4aHvr70dmCWoWFUwPJiH62nBmbWZMV2imeTOign
+	IbyHmhZ7e9ZGu0kjYzJcm3eNyu2y9bo=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=GwxzdWkg;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf02.hostedemail.com: domain of bharata@amd.com designates 40.93.195.13 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790568814;
+	b=wpUusi13SyaZ5MyvjhdfPBoJwqHLM5krPt2RNMp2V5W1xtfu2UGrfXGigl1NEu3cbnSnnz
+	EacDJhcAgcul6WZSe9MFtECem9OxU5Hs5nawSyT2d1A/N+dw+WJAlodyUnBQrXsksCw1Mf
+	kufWKd/JkL3DJAGxAXttne/omRE8pKE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Q0/cu8CTn9Cv3ES7fx0vzDm1xcimpc979hgCqeTvqiWg5taBcc3Jk8cB2NNTDU8V2rLcif3OeF1orq0Xs4WS4TFpe71bkz/fuXAlgZrK5JPfql69Xo/6Wm7wDw2NM+tNNJUjrxRHdpkhYk8U6F0NDn/JPRSPrcJ0of8DYBNG6SCkWmAmgre0xWcFBCvqROqBetuckVY721dsiubBUzOdLawuAmBemfo5FgUACy6BM/U1yKFsCVc2JvLosN31/iQ6DVuovQxA6612EO50ojH1Hp+0vBVYCyGeBzyAkUn3kvLjtnyPZnpYmW55NVtGucdiGzZ7rJha9DoqFG/dIFZWwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7tzOgc3YtTp2JfO39g/6gr3vfVVI984nTSoG28FHy98=;
+ b=tlrpr5Yt14qtrEZYw2OmIngOsjYWw6GrwswHmPWwjdRPphN/137gB+f9M00IPURgMaiamSUY0bxGPQfanDx9pOxAq3G/NSnfTwzWnREEAnQFWU4cI5F8CtVg56fguQJlGuU97PsJEvB6z/rLL5u54c2SAchQXoe1cxC9xjO9F2K2LoXPc3oHIWOxk4BRLrrBG+iqE44b5CjDsvtlm8aOqZjjR8A5h/SjYqkDEiW98Q4t+d1KviOMdg5fFQ1mpIqAH9ZgDvn+SDuymiL0tYVzmstDzzLQ6fwuonUlEnNdWBG63i7+ilIm5pYJTm8Xuxwjq+cW0OLhws4o4imcIwXucQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=stgolabs.net smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7tzOgc3YtTp2JfO39g/6gr3vfVVI984nTSoG28FHy98=;
+ b=GwxzdWkg9uVvvuTQvjo163MY47QqE3YAcXUbHGPEp9qog5MA/wHf7Yvr7IUOuDBFpc5DzoSNj2spLszHZq6DDRArCxXd9eL+qgnYkMewRfUSCAd1mfwk9v0hCOC0P9t/ArT57RYl+LvMpxVSKN7sQlOFxooojJ2+kJrnHibVUHg=
+Received: from SJ0PR13CA0219.namprd13.prod.outlook.com (2603:10b6:a03:2c1::14)
+ by DM4PR12MB7672.namprd12.prod.outlook.com (2603:10b6:8:103::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
+ 2026 04:13:25 +0000
+Received: from SJ5PEPF000001EA.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c1:cafe::34) by SJ0PR13CA0219.outlook.office365.com
+ (2603:10b6:a03:2c1::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.14 via Frontend Transport; Mon,
+ 28 Sep 2026 04:13:25 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001EA.mail.protection.outlook.com (10.167.242.198) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Mon, 28 Sep 2026 04:13:24 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 27 Sep
+ 2026 23:13:23 -0500
+Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
+ Transport; Sun, 27 Sep 2026 23:13:15 -0500
+Message-ID: <e0526c63-f6aa-4b4f-b5eb-1c76434a0857@amd.com>
+Date: Mon, 28 Sep 2026 09:43:14 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/8] mm: Hot page tracking and promotion infrastructure
+To: Davidlohr Bueso <dave@stgolabs.net>
+CC: Joshua Hahn <joshua.hahnjy@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
+	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
+	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
+	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
+	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
+	<nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <byungchul@sk.com>,
+	<kinseyho@google.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
+	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
+References: <20260911210859.1359875-1-joshua.hahnjy@gmail.com>
+ <f871efd2-06b4-493f-87cc-919b6e0945c0@amd.com>
+ <20260927232130.smxstw7f474k2qcl@offworld>
+Content-Language: en-US
+From: Bharata B Rao <bharata@amd.com>
+In-Reply-To: <20260927232130.smxstw7f474k2qcl@offworld>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EA:EE_|DM4PR12MB7672:EE_
+X-MS-Office365-Filtering-Correlation-Id: 29c9f743-ddda-4cfe-e576-08df1d16d716
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|23010399003|36860700016|13003099007|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	hjPm8HDxR2U548x7qaUh8PxKTVBeQY7t1CcHs08p7swUB8CbVjXk3oFk1Nwr0xkLCnzh05iduG+BbTaS+r08Zpa+3qQgO2KJ0IGV2y85AQeW4lFeMAmZVeMgcTBULR6TakFgbVNmg/CmlXYFywrWQxFJBMH4oK0gQ6IE9BdPD7UBJXId8SbgeY84sSVtJSMFsSTX4rtJaU+w3Zq7ii/NeN4BT+WVB2Zbf+xA7P3DIQCCUCQ+bzY6Wkfa347AIKEof9HmH5WOnq7fWHoP7gAXnBHMNK30qrB3Ow27WmzZ9nU4GG0+Ze+2GWSO4Oj3/wDbSK3Q+9OeECIEa85DmitZbreL5exqti/yNF2zfKOkrGFxOY5PBSBCKVb/sq54XcHsVMefUSS51wIKgyprby5KId51jKVBfON2ErkxlaFoMZsAqDxur49AYDJjkLEOdIG3MpWeXX8y76bE59LrAIM00HH2YN2Z92zXI6UTCCjabd7X1RCCopYd5EWd9BqUn2krp4+AYTPTFKw/Q8u2EEs4sencqf3md/siCzwUd48KvWVkLvubCt03NUkcKPWL48B/WIGjpP7xysA+lkKJU8N4wbtcBNZSJmA+0Fq+Ap5pt5AEyOyHdcSAS4Cp4kZOrNNIhDOGU0/ey9LrS65FnaZPlqoA1Pg813CnIJwvap5t8HXLQKAxDxw0hxltWwbQatG1hHoWLMXp2nRlcRR3bTp3KA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(13003099007)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	FRtusxOZdi/JTCPgDON+fdOLIZwSGkyaagdOzY1ecw8MFEUhpLoDCndckQlv6M/zDVGEXv2HpaNYzzX3Zo3BfSbnRqgleHO1hlDb62zjpKgkhr6HTQedOvSn5ObJ4RVfcOTw+wI0mwaSnsCzk5pEYtOR3NFHQAROQXZ65E1BiOeLEPUmqcsWanwl7g+XeIDOmRmqrS5g6C3XlYVIX7LYLXMD0gJu5M6wLIvIzIGEtpz1nIOvACkzKvV7kbmJdKEowJAQTLmTxQN7Xf1TvoOdui2z9z7Dm+lC1MF1Hcu50WYYcjNRhSKDJbavihADcQzyh0cNUr6yDO0mMloqSKis8jqyMGgGj8V3K2JvVTnUCMvru9nn9i98yC6rheKB4es3UmYxUz22aHJKUpHm352tzNRt7ti/8RJj8auQ1aLGVTTlvkW/MEi82n0K+V2Kna/q
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 04:13:24.4236
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 29c9f743-ddda-4cfe-e576-08df1d16d716
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001EA.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7672
+X-Stat-Signature: j9o7uis1cqjbtdgerurnh954uwimt9gp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BFAAB40002
-X-Stat-Signature: kj89u6n8qs56kt6hfyheuhcntsjewwzb
-X-HE-Tag: 1790566700-121054
-X-HE-Meta: U2FsdGVkX18PYU29rhjZZ7MfU4zLTAkbelSvCd7Cq/adZHXUP4xb9cgDDak9PgAdRDp6fu4p97nBIey4GIw6Ts3Rs77wIeSSF8D95aOGfWrTlq8F6nnv0n/6SsBl/COeKdGsjDHARydj7VtYM5hRx8arDE1R3KDK1Jdi7X/pR6xmHI1WEW9tiQfZpKorrzdT5RjyyncaZ8/ggVycXtxChbHl2EAJyeB9ZJfmX+ZQFxNeU//pdSsCDN6/uh4Jv+uE4R0M/VsDrrWer03LeWcTJGWdnQgpK4D1ZJ1WoTWv0TYJyfFTiu4soWQpqqEgmDza6IAnjARJKk27zleJzl8co5OnCLz4Ge/jmu72EyvEwndoeDm+SdIJdtYYS655LS2vqCVXXu4few9PO+CX1PT/dz5HpKb7bJCdBdvbaHTSUKmSwHEB/3Y4wqbippao+hY/7NRzfJTEDyJSZ6IYVbqyRlGpckpr7vu2jNOyAI7EkcH93noUeDVCnYmx91Ax8TgGQ7WY0SOS9eJEmCwtMqzEwxLtmukuYMDe9KtUtAqYi1C7zo+sBy7AM1bXRCpMJNYASPUFhpdZ/XZRPXYiTPhGdqjwzxCcTnqrdRyourUELGqsY7V27AOeO2xZPiF/0guC3JJnXs5Cn1Sgi2UWpV4XdO9UZs4TOyPgGlA8s9642K0kA4h41NWebNqkZC+ORzQ5RoO+mjWFnYSnjFY/MdeAWdKzeDArCW6toZ0XJmj4L/vRbcR0n3ywPBRcwVyKPBUXcbGJYoxbZgTbuUpAQRCrrCdG7IkKX0kttroO4QJgA2AUDa1fZEW55bsuP7pmEM6Y3sRA3bsB0Wf2+nFrCnvSkg6AD0tqzLRbPZ5L23wWQB8cEt1pzasze/PndSDWLdj33eDWsJunigXyoPNIr5oaL03l8yTyeCOK7y0jzFNWSgipJaTT+OwsLMeqcG5CvJnAqS1L6RiDZUQShbBP/Mm
- c7AcQtxe
- fOsqQtyfagMEc9A1O0GeeJNb4fmWoCCa/EUXQijCAPJEgLaiLmjRp+VfNofKYhi83Tc0u1H4iMwTUYmqd5GGEwc2OH88TMH9aFaVIf2kRsikE5qCWtNa3PALBTwF7rQASZRc4/Ij1g/DNGcjD4T2/z/FOSSGXpGQ0VXB4dse61UVSxx+T6QEoK/UrEIPs0kYmE7RWlARuLpAiAf5c36TK6wd/Tmh7d2O0PfnNVTFl3aRgDlAMi1n4BBK6YcOZpJKSa5J6e/pyyux6xYjmc2nUjn2jasx+OQgRa7lGcap7EHdb4lGzf4z8tjwCUEMNTpqup8bt4I9wUf+4peGb4i5EmcipDcXZfHgnfjrVzG9D126phEn1gbohD5aMFF39EdQ9yWvhW1vIEtlcJGE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 31D7A8000A
+X-HE-Tag: 1790568814-430213
+X-HE-Meta: U2FsdGVkX1/fYcEqqtsFS84TLC39CPlPUzy3myvUUMx+wbmRWRuIrxb/h0Pez0Xe4dNPCa+tjRTmzxOAmfwN+mDRS4MFROLItrFb96AVEnKrjQaxQJYyVpQ1NWAQ0kawqS2FbSCx1qcf21/0qkNxGaTUeWFA9DNo9CWZXzqBVcGZuJeDkrVr2o9y6/zpPYdMlhJQHTMEBsi/XwrKqdltS2+8d2/FDr21t4qck0atNEuChNINix4I/ecrMcGfDe69+IJ4Y5dQg7Pzg3cuwqeGaLgm2jHJpvo3alUOwFSLwGZLpKJ3whwridNATP9LUDby7RIn41hqE8YslE0N2UTawPUE7fdAI40HITPoN97L8uLqO5ICUeJwkYNQfFoLApnLgRzak1zpm58pTA/pBFyxxj+g8w/t+vdT0FvcJZbDewexl8xCLpOH4M6XrvwdiyR2kDzkwoaiHuHl2m0H5bMl7mkVapAo6DXp4yuiIsG1xQ//fcXAf9sK5+Eq10+SCY0Z0PTtvbFhDlrPvde2bIAJ47JMv0WQCTFXtbp+RoG24WffN8a4qrkWbQ5cRP3qmETuNSAjBZ9wkMxsUP+FzsrCdhmBJCJsPTOOBEudX2A/u2VZ64QKfv4WvuzmH0MTAijYa9jVlnP0Q/h6va24kIKDcNxUfxUjGYbilZOS6ERL8cI9PDrzEi0XxC+QavUAwNePA3l6H0R5jLe2yEuN76iEnU/fKjcTnDvqhfDhrM5MheO3S1cFOruXzSUyZsP/Z9wBQK4mmEDgnRVM7BmoqaZmCbz2f/T1avB/P1Bufu4Pg7FBVRKzWARMJDaQiZQFz/latYyNSdMEopmd71bJaD52+46JJ6h/lGtL5P8cag90B2RTtETNACL8N/8Gu2jGTP0RWZaUnOD1y8m80wSRL9lwrT6gnf+2qdLNrP8XV2xK9gHivmIOu48obMeRWpG6co77w47ku1i0iCC8juU//9u
+ 8CaF9oPT
+ M96d2Rh+GVAnMKIH8Ikrr9+E/Yqth0NnM0KTeuvSkLKICdXC8UISylqUifPE/OoL7C40vbm5M/WyllX8sTSdN0H+poJLWtReqIREcnescB+r5QPIW7G3VkLGFsrRIf3TsM1IhLwlW+yQugwzIpGUGXzv0HNZCmnJe+0mlxEee2NdQCElZis9CGREAwne/TmSkPbbTdLmesbl9txQufndItCEun7ogFAA3T03CNWxFi5CxLJEqSdhMAzYACuw4mibaqYztCP2TQ0J0mphiJsrHEgkzqizLBlIUZXPlwfBCms9roOgrdJyEjqxtLZW4LMpAQzNFobkXpZ6a582yBxr/TV+7SLu56/xQBLtNQnOKO9OSMk5UOiHhff3Ga/DW4sTdi5ohZfvaxerXh2pOu3kRvjSk7b4iqgUMNzkR4RfSWK1f3Z5zhqzRWDuiBNE+OFC2XsK66nKuetsClKYkAJMXY0SVCb/BLJ1mcuqWxquUVyaRGB9uCIFQ8dKC+tdMhixYZ5/jexQAjUfBU6wKtjgOz/ip3xj45SVnbSlp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,21 +158,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 27 Sep 2026 23:26:31 -0400 Martin Cracauer <cracauer@cons.org> wrote:
-
-> Add a test that asserts that functionality needed for generational
-> garbage collection works.  Namely to implement a write barrier using
-> userfaultfd instead of using segmentation faults.  The planned target
-> is the GC in SBCL.
+On 28-Sep-26 4:51 AM, Davidlohr Bueso wrote:
+> On Wed, 16 Sep 2026, Bharata B Rao wrote:
 > 
-> The real GC will initially fill heap pages by using on-demand loading
-> of pages from an image file, either via mmap(2) or using userfaultfd
-> to decompress a page read from an image file made from individually
-> compressed blocks.  This test doesn't do that so that it needs no disk
-> I/O and no decompression library.  Instead, a fault will be filled by
-> copying page content from prepared pages in the heap.
+>> On 12-Sep-26 2:38 AM, Joshua Hahn wrote:
+>>> - I also found a bug where the kmigrated thread isn't created for nodes
+>>>   that are onlined later after boot, like CXL nodes that get onlined
+>>>   with memory later on. I've been using a small hack commit in
+>>>   pghot_memhp_callback that just checks for the MEM_ONLINE case and
+>>>   spawns a kmigrated thread.
+>>
+>> I will take care of this scenario (CXL node online after boot) in my next
+>> posting.
+> 
+> I was also running into this for chmu integration. I have been carrying the
+> below in my own testing, fwiw.
+> 
+> Thanks,
+> Davidlohr
+> 
+> -------------8<------------------------------------------
+> diff --git a/mm/pghot.c b/mm/pghot.c
+> index c7f523a61683..2f1e16e5091d 100644
+> --- a/mm/pghot.c
+> +++ b/mm/pghot.c
+> @@ -602,6 +609,18 @@ static int kmigrated_run(int nid)
+>      return 0;
+>  }
+>  
+> +static void kmigrated_stop(int nid)
+> +{
+> +    pg_data_t *pgdat = NODE_DATA(nid);
+> +    struct task_struct *t;
+> +
+> +    t = pgdat->kmigrated;
+> +    if (t) {
+> +        kthread_stop(t);
+> +        pgdat->kmigrated = NULL;
+> +    }
+> +}
+> +
+>  static void pghot_free_hot_map(struct mem_section *ms)
+>  {
+>      struct pghot_hot_map *hot_map;
+> @@ -707,6 +726,58 @@ static struct notifier_block pghot_mem_notifier = {
+>      .priority = DEFAULT_CALLBACK_PRI,
+>  };
+>  
+> +/*
+> + * The first memory block of a node is onlined before the node gets
+> + * assigned to a memory tier (memory tiers react to
+> + * NODE_ADDED_FIRST_MEMORY at MEMTIER_HOTPLUG_PRI), so at
+> + * MEM_GOING_ONLINE time for that block node_is_toptier() still
+> + * returns true and pghot_online_sec_hotmap() skips it. Backfill the
+> + * hot maps once the node tier is known.
+> + */
+> +static void pghot_alloc_node_hotmaps(int nid)
+> +{
+> +    unsigned long section_nr, s_begin, start_pfn;
+> +    struct mem_section *ms;
+> +    struct page *page;
+> +
+> +    s_begin = next_present_section_nr(-1);
+> +    for_each_present_section_nr(s_begin, section_nr) {
+> +        ms = __nr_to_section(section_nr);
+> +        start_pfn = section_nr_to_pfn(section_nr);
+> +
+> +        page = pfn_to_online_page(start_pfn);
+> +        if (!page || page_to_nid(page) != nid)
+> +            continue;
+> +
+> +        if (rcu_access_pointer(ms->hot_map))
+> +            continue;
+> +
+> +        if (pghot_alloc_hot_map(ms, nid))
+> +            pr_warn("pghot: no hot map for section %lu on node %d\n",
+> +                section_nr, nid);
+> +    }
+> +}
+> +
+> +static int pghot_node_callback(struct notifier_block *self,
+> +                   unsigned long action, void *arg)
+> +{
+> +    struct node_notify *nn = arg;
+> +
+> +    switch (action) {
+> +    case NODE_ADDED_FIRST_MEMORY:
+> +        if (node_is_toptier(nn->nid))
+> +            break;
+> +        pghot_alloc_node_hotmaps(nn->nid);
+> +        kmigrated_run(nn->nid);
+> +        break;
+> +    case NODE_REMOVED_LAST_MEMORY:
+> +        kmigrated_stop(nn->nid);
+> +        break;
+> +    }
+> +
+> +    return NOTIFY_OK;
+> +}
+> +
 
-Thanks.  Sashiko asked a couple of things:
-	https://sashiko.dev/#/patchset/arneZ-KkRWUNI0Ho@cons.org
+I don't think we should allocate section hotmaps from node hotplug notifier
+callback and let it get allocated from the already existing memory hotplug
+notifier callback.
 
+I have already taken care of node hotplug in my latest tree from which I posted
+only the IBS Memory Profiler part.
+
+https://github.com/AMDESE/linux-mm/tree/bharata/pghot-mprof-rfcv0
+
+Regards,
+Bharata.
 
