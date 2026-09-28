@@ -4,119 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E3DCA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E20CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:52:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A186D6B008A; Mon, 28 Sep 2026 11:46:50 -0400 (EDT)
+	id 05FCA6B0088; Mon, 28 Sep 2026 11:52:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F0446B008C; Mon, 28 Sep 2026 11:46:50 -0400 (EDT)
+	id F2BE16B008A; Mon, 28 Sep 2026 11:52:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 905D26B0092; Mon, 28 Sep 2026 11:46:50 -0400 (EDT)
+	id DF2E46B008C; Mon, 28 Sep 2026 11:52:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D0196B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:46:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02122A0266
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:46:49 +0000 (UTC)
-X-FDA: 85263598980.01.52DBC21
-Received: from mail-yx2-f13.google.com (mail-yx2-f13.google.com [74.125.224.141])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2D5254000A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:46:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jGf4hJRi;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B6AB16B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:52:13 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 31505C0244
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:52:13 +0000 (UTC)
+X-FDA: 85263612546.22.5E15D58
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 88E09A0002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:52:11 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FWW6e5TY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790610408;
+	s=arc-20220608; t=1790610731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L7d9v+dnfa33+IGduUY6om25xsOtSS5Ke8pK1c1zkhs=;
-	b=SzmImLWrBQYUBSfxkhSyldLrlhLRy6FJbWgVuhFUikeKG4XaXsH+Jp9rEHXtVSLKjM3jDG
-	/PteSx6A9oB/s83i5ZcfWPJbdZWj8ju818jb6WzuwnJks5oZcqUGEBmb90eeayvZwygWkK
-	zjT1psCgNwlWBKVy20xlDBv94/lkOHM=
+	bh=CA9+Khdny5X3PvtzSKfpyt/0TRJuMd+3QPdfNjaitb8=;
+	b=UnoIeE9/l/vGN+wYW1hcAgLxbeUM9iJuzHg1pnv5WoLeY86T9SW4R71MFT/VFR+tiCcv2a
+	E5uMPJiPwEttWnxTfBs5QqBl03Xy1qzg9SM7GTAU3UjihouILHmuLq9jXPX1T+fl+bHJZg
+	MQ1YXn+iXcPGmpmz1KY7XEYzb0Oe8fc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=jGf4hJRi;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf04.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.141 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FWW6e5TY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790610408;
-	b=ViFif+2B57WMHoD196t5c1CbrJ74Gln6S4cLMrmmpQ9yKSnk6XnkLNdcWkxXHLrO/b4bYx
-	O+yNnbzY/rUCh1yLq5JFyq3LUOJmx/nx3zFBxib+q5K8w2WE/m93+AsCxGfY1DIESkHsA+
-	VSZGDZ5IegH+8OllrvySFP4JegYP1pU=
-Received: by mail-yx2-f13.google.com with SMTP id 956f58d0204a3-66e4aa8d882so3376232d50.0
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:46:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1790610407; x=1791215207; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L7d9v+dnfa33+IGduUY6om25xsOtSS5Ke8pK1c1zkhs=;
-        b=jGf4hJRiFNj4gF4TsRn3tdVKPOsrwXnA+oP1LMDfNmFvw7uX9WswfBWHGx6tl0/FWS
-         tWgZmqQNja6EN1eUg35xlByprZnyD/tvX2xMknOu3P6SoCn8xrHDCDwZZiBsS8XZf6HJ
-         MYDIDGoZEmzx8GwvAhT2wWAyYjvdhFLDmwSP8wF09og1EAf4UNFzJGP1q9U5i4w8SZNG
-         1FAUPHRajdw9mU5mq8AA2GYTrKwBksJoFyymE8xmQ/yWGwBfwi5xwt7SaY/ohTCUJgJx
-         rIvLd7MLkihzn/WpLUDc6K3L6nJ/zyXBMKYoGWh/h8mw89rL4Q1rCsRsUSyS4sPyM5Vm
-         19Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790610407; x=1791215207;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L7d9v+dnfa33+IGduUY6om25xsOtSS5Ke8pK1c1zkhs=;
-        b=Bya5qhZa04FeP1XsGyFpeDPmawjjy+uSnmsvn86F2xy+BEVVrb+KS6wMTpGvONtZ+c
-         TI5TCPi17LdY/UPV6BS0eLI04w9NaK8eb4YcwYrLDhF3/BpRgf4Ma92tL+nysS/YBEDM
-         /FRquvtRvW3PvdmT348wk2LPoejPYs5aWJwA3wJPvQ/5kYcNNoB+ZRIPmK2Bh3mNcUVd
-         kr/93BQ1xtoaEWRQHP+F7jbwXMHRFxkEnruOzHWmM4WR1v9bLOsNp3/QjWcsQrKe9ODF
-         wG9YjNFUQmbLW9t5veK+XR5rHmEs57ZLQLUzvUlPN4nPrYTqorpUATyv82TfK8kAL8sQ
-         Cr2w==
-X-Forwarded-Encrypted: i=1; AKwUvBx0gTBbVMPQI3OR1xoo1UPE/MF96hahAOQ5jtPxV4SWzZnO01JuaDC5M+cxGgaAWu+cU3EYNlAG+w==@kvack.org
-X-Gm-Message-State: AFq9FYKdW2V8+Qt7B7CHxxbT57FVxWlfyCCVuva4O2ehtm3TSYEOFxj3
-	ooESudopG6Mb/HuVUd0q2HArcbt8e0mVUw70dgY0WuTt99oITnkxv38n9fSk1MaBn0Q=
-X-Gm-Gg: AYBFou10XU9KjVfbBrM+efBwAJ+hPJ94YcYZvEo5kaJREUMDXZ3HdNOBOoaE09y9Rs5
-	U6A5pdI8zkYH1pOei/lVQfDivJOKMqkHjjs+jFYkDBvLt1o0wIAKgpdSC4Mu/W62G6P85Gu6E8t
-	Vs3poLtm+Uuklh2heEoCM7MSiVn8OJJ7EeV+4JFTYG9rpvmGRQJXgfPudUtVm4YfCEK+inave5C
-	PQJwt3WFAwRM5mAAK5DOpCR18K1tHyl8XKe7XsYuJR+4K2+MwyvdZEX2F3rISMAWXYiVJhIWt4r
-	MnzJNFFM1zQ1dinunfqlNxgICIkNtMx5hxadcCgRp74GBQ6Wv2HLmqmvn8tR7+xAWwf/URKbZNX
-	4jEgIBrzIRUIqH+kPYXEYBZHRlUULYwPKeyEoODSYe5cAf+0k2+tC8jng61xa8pX91t9HYtJRBG
-	XUsD1KVc1tGCNd09YdWn/xCttmtwKcKBsRYO4hQwTCMfO+9sHAXoXCnAs3+0nUT2OauyAQ1Izq0
-	Rfu854g4MbfYXQqD2TvLOiSngi71lj8xtYb
-X-Received: by 2002:a05:690e:4093:b0:675:3247:9b40 with SMTP id 956f58d0204a3-6753247a525mr2940923d50.65.1790610407271;
-        Mon, 28 Sep 2026 08:46:47 -0700 (PDT)
-Received: from plex ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91430e281a8sm82875936d6.33.2026.09.28.08.46.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 08:46:46 -0700 (PDT)
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	David Matlack <dmatlack@google.com>
-Subject: Re: [PATCH v9 00/13] PCI: liveupdate: PCI core support for Live Update
-Date: Mon, 28 Sep 2026 15:46:43 +0000
-Message-ID: <179061032462.173069.6066907606098407222.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260918200640.887030-1-dmatlack@google.com>
-References: <20260918200640.887030-1-dmatlack@google.com>
+	t=1790610731;
+	b=KZfF/coI6qEsCy4MCqNDUzYlADKVZPVIoGLBr/+G30HPvuTo9Mbl4jfv9TAAmFlVl2iJii
+	WJ1O4EZF4IaznJIMibJTReB37x7szaHrFpDdyMJsU+nn9Rjn3qXRWTtZwXRNR3NaA9+8vn
+	lAD5I2C7kcf/tqw07V2lrD2yVdX+HVI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B3D2141195;
+	Mon, 28 Sep 2026 15:52:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265041F000FF;
+	Mon, 28 Sep 2026 15:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790610730;
+	bh=CA9+Khdny5X3PvtzSKfpyt/0TRJuMd+3QPdfNjaitb8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FWW6e5TYlYkD9F17qJd9niI1OEU1NX5IWz/mgl2P5fYxu1kSc1pYY8M6RmG2XOmvd
+	 ETFLUYunCFlwk7anJ1lZ2lJSwvPWjMIMBv8Dh9Ybcw6rf1MaOv2aFOxr6RTzlwsbhl
+	 b+7d/Xq/tAObx9d7TbdbzHp515pzww5pR+JvjSNPNhNfZ3/DQ0pCbULKm8Xg9/LNTW
+	 9du8kxBTLg0qJ3t1tkZCYFd0r/WnOm3Lf/D8RYE5GDx1YNCmDY99gMRK26nbGRHs50
+	 DitO1BDi1d2UGt/QB4vbtziHMCgiXP8MgbaOAZCb3VPRv9zXZuQ7Qi9PfyS/54oO5l
+	 j+tv6Mg87tfaw==
+Date: Mon, 28 Sep 2026 16:52:08 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Seongjun Hong <hsj0512@snu.ac.kr>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] tools/mm/slabinfo: refactor slab attribute reading
+Message-ID: <arqIzSPQVDky8jqc@thinkstation>
+References: <20260927-tools-mm-update-slabinfo-v1-0-a4ea0d4dc136@snu.ac.kr>
+ <20260927-tools-mm-update-slabinfo-v1-1-a4ea0d4dc136@snu.ac.kr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2D5254000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260927-tools-mm-update-slabinfo-v1-1-a4ea0d4dc136@snu.ac.kr>
+X-Rspamd-Queue-Id: 88E09A0002
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: y5hoojk6wmy33p8fxiw4frm8tuxnh6kk
-X-HE-Tag: 1790610408-256035
-X-HE-Meta: U2FsdGVkX18tD+hdY6VGL3LC/y2SOlH9tQbkG1j9Hw1fHdcEVc6AoZiDE3dCBYzILHNIfo7Hy6xozcfZOPHRTy84rj5SoWt+Hw9e61qX/prSPUhyZhS+wTzpv+g9+ByPXnVCQCHNi9owcxFWcILn2ZtkCWkH5PL5JPt+gfZPq0NOxZjBx+fR3yNHRmtHGusfnVGSP7Qv4oYgVMVtytEtJbKMA5bxfn/89d8EwugGJckXi98McSpUmnm+oFTAEcX/gSOjTwYWkgsDxfhscNjdNp27QNLerXjnhATjhDb0GKFmuw7sc+21DxoRzU99GAfKUjUeBpEWB1DLczGmHCS+M4n7QA7N3a6SrPulP4Yx0B61V0hfAXyo/glhmHm6fGxmQU/EdU1vWl1LnNU4waDCHS0XWFBzFNaS4v48ZpVulCQlWefCZrvngooEBy8X04i+ICfpwQDzCXiBmFeD/QzImUGQ37aS9UHzBWWLGt9X/Zds7Wud/S+15FukZBzM+xCG+TdOvc5E2YZPWutx2QnkRxCxJiBzgpgRzVbipSxFFQCLCLbhiAWVADRjApdugIm7xi5qDi0Zqabk82DzhgYIU/PjVxywG7L0RRTwNbNBpmDWAAqQ2x28ZehUluVWe61fRQGdAdVJwGBtkzegn2ZfQ01sn1K9IzHFDuj7fKArYzMhEHe2FwxuwZOCeBirW90SlpcQKLpwAAFCdFSWy0Bqb4T8yjSqTWTsU/9yq4D1MjZqnCGPnDd/G7wkgu0hsfBh3HWxMGvbW33dnS3gDdK+OB1p3ELuXbxEPfwgN3gfN+kuDoHr7e8KTB/uhQqpqljzNwf3bNPa+AAmR+xab5dgJgDb/w86VV7/UGTHk8AnI5/obsssI6lnAbkK0aJS4GXpXxy0iA7EbrIIWIyDz1fTkSi2b1NNF/JZg8EXzN4XL9wiuLYUd1bHb/5rgTVpy9fHxHqP87LAANFTS7yWcJ4
- pMItyGgR
- y71B2J6Q+h3z3hQtd3hBizOMPlp0/H16LL1a/Vk1uznAWb+8eq6vyGguvfXxw1ZQY/YYNEwRw5pdVSnWiCBp5KXCPX/iQ0APYgWIVzanw3WFdagrbkbnToOaR8wQUe7okY3e+oOHBMFN4Nw/o065LGne9Z9FFoXQfvmDHMLe4yzREuGwwW02QvDUqSRHPIw58J5TZnTpyoU1DEHUZo9NnXvRvrme7cnLFkxObLk0J72yD0Uc/v0SRcakPH7iIePL2LcENltWvT58s5DF+4N6RsG/hcSmKYXGejAQydXfPjb4CXoUqzUBfHmRxZ6qiHbvnhDxHExAsL8r4MuFqaETkm6+P39OZ/vE/NeefJ9O8M7gg9Mq4eUaomVieGzEUTmhE96Hk
+X-Stat-Signature: xzo86roen3hint8ggcbxrnht34onz8r5
+X-HE-Tag: 1790610731-433149
+X-HE-Meta: U2FsdGVkX1/VZfGwuTRVRty0mjEr5/jVK4O55U+Wd5Q9koUn2Kaws4BTWipvFcojTgkVR/RALcoYKvbYzrL5bk1qSzlb0e5taP1ubbeloGulUgtHQMZfiPEhPJ0xVHAj+3HHh0LAKVtgvJYFkLJaQx1O1k7IyU/4wdg4KKtZnwAaLYPULt8Tyxua6b0AZ7cT5LSWb+glZuwsAyvjz1dlIdXjTlhxvAWwrCIrCIKkGxBj5Cu0MddQ7wfavBXxZsplW6Q1aZaNByCasWsV2xTcOcod9KbJjty/nl7NLeZJk/dtCPi6emzijUmLIyEyvEEYIstV1tOjdkSEmVLNGtf01TzLJk96Z6HKYAp08+/2Xd/4qhvHsHSW+qoJNylqaigaeSFuoUsQdgoOkyqdOLBjjQTJTbeYmOc+GidTBfLpAyOMcv1yFS49DiPlbMmqVDdA9pkqpkbwzq3AqR31joqRgO3PRgoZLbeTG4CyDhuaTKHPPMG6znbzRjNkLFYUoLZFAMUx7izp84a8xlNMLBTRTbYtxzGONxOh+5+pF+KDv3BomlIaxPeVwMLxahsM7BWoDC0C0aE3LXN9Z7HN96O4E1VPtNxEQMnfHWBYkhfm7SC8n8QuLC8WP/qnMfKFGq923fdK+JPoiDkASH7JtBtVZbCvI21pfv8jXn8nBaQphW4vZXs5ZJze/5SzqQC3bLGwaXWiZr5pe8+uvg4i5rh3pR1aDcoQF3dDAcS6XfYMKuOHlVtBJMwsq7siIwcJ+pG77bXvtM/lvVeWkQt4A3r/0tROmGds3V5cY8MbvLVJP9KVlGn2HT+K9g+YY2hEIRaVY3BNqt8LBH4T8t9kG0o6eKyOHg9c3l3CUUxtWClIU905Vq4SXwX9rBkJZhlTY48q3lku4wEMGvY7mFrOUYV2q3eGNbTxPWPgwFZEW758mb3gMl4IlKxzinCHI8F7UaZsA48Y1BPEq4tP4OI02+s
+ NyAaH8me
+ 2YlHpUWtU9WEeA25uXnlBpyQHTni/FP6l/0luMbXRWexPgyFH/DMc66F35+KQQ2MM+hh7Mpm89HMm4nourd24LYt/ZRWpJJ7lkbwPTS5KATf4K6s4PFeUXrcpMkdhfKWLABkGse1jbu0PE5mmcUCQT9+XL8obM1Ek8Ni6UUPFFSq0BunKob4MJo7Sq4x5UIcVUcZfLtKxubJOVExgGL31NCvd1ENSDINfT0AcgXxOFM8DiB6cMDHc5085upZwC+BZBLUo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,53 +93,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Seongjun, thanks for working on tools/mm/slabinfo improvements!
+My comments inlined below.
 
-On Fri, 18 Sep 2026 20:06:26 +0000, David Matlack wrote:
-> This series can be found on GitHub:
+On Sun, Sep 27, 2026 at 05:57:27AM +0000, Seongjun Hong wrote:
+> The fields of struct slabinfo were mixed with deprecated sysfs files,
+> which looks complicated. Organize every field of struct slabinfo by
+> config option and the attribute order in mm/slub.c's slab_attrs[]. Because
+> slabinfo should be able to run on previous kernel releases, leave the
+> deprecated members for this time.
+>
+> read_slab_dir() had ~50 lines of attribute reads inlined. Move them to a
+> new fill_slabinfo() helper so that directory walk and per-cache
+> attribute reading are separated.
 > 
->   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v9
+> Fold get_obj_and_str() and decode_numa_list() into get_obj_and_decode()
+> to avoid unnecessary strdup() and leave only one member assignment in
+> fill_slabinfo() for each sysfs file.
 > 
-> This series introduces support in the PCI core for Live Update, enabling
-> drivers to preserve PCI devices across a kexec-based kernel update
-> without interrupting the device. This functionality is critical for
-> minimizing downtime in environments where PCI devices (e.g., those
-> assigned to VMs via VFIO) must continue operating or maintain state
-> across a host kernel upgrade.
+> Make broken statements into a single line for better readibility.
 > 
-> [...]
+> Remove alias field from struct slabinfo because it is initialized to 0
+> and never updated. The only usage of this field "if (slab->alias)" is dead.
 
-Applied, thanks!
+Would you please separate this patch into multiple patches?
+It's hard to review when multiple refactorings are done in a single
+patch.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=lu-pci-preservation
+> No functional change intended.
+> 
+> Signed-off-by: Seongjun Hong <hsj0512@snu.ac.kr>
+> ---
+>
+>  tools/mm/slabinfo.c | 245 ++++++++++++++++++++++++++++------------------------
+>  1 file changed, 131 insertions(+), 114 deletions(-)
+> 
+> diff --git a/tools/mm/slabinfo.c b/tools/mm/slabinfo.c
+> index 48d1ee8b0e81..84359d628f2e 100644
+> --- a/tools/mm/slabinfo.c
+> +++ b/tools/mm/slabinfo.c
+> @@ -27,25 +27,49 @@
+>  
+>  struct slabinfo {
+>  	char *name;
+> -	int alias;
+>  	int refs;
+> -	int aliases, align, cache_dma, cpu_slabs, destroy_by_rcu;
+> -	unsigned int hwcache_align, object_size, objs_per_slab;
+> -	unsigned int sanity_checks, slab_size, store_user, trace;
+> -	int order, poison, reclaim_account, red_zone;
+> -	unsigned long partial, objects, slabs, objects_partial, total_objects;
+> +	int numa_slabs[MAX_NODES];
+> +	int numa_partial[MAX_NODES];
+> +
+> +	unsigned int slab_size, object_size;
+> +	unsigned int objs_per_slab, order;
+> +	unsigned long objects_partial, partial;
+> +	int aliases;
+> +	unsigned int align;
+> +	int hwcache_align;
+> +	int reclaim_account;
+> +	int destroy_by_rcu;
+> +
+> +	/* CONFIG_SLUB_DEBUG */
+> +	unsigned long total_objects, objects, slabs;
+> +	int sanity_checks, trace, red_zone, poison, store_user;
+> +
+> +	/* CONFIG_ZONE_DMA */
+> +	int cache_dma;
+> +
+> +	/* CONFIG_SLUB_STATS */
+>  	unsigned long alloc_fastpath, alloc_slowpath;
+>  	unsigned long free_fastpath, free_slowpath;
+> -	unsigned long free_frozen, free_add_partial, free_remove_partial;
+> -	unsigned long alloc_from_partial, alloc_slab, free_slab, alloc_refill;
+> -	unsigned long cpuslab_flush, deactivate_full, deactivate_empty;
+> +	unsigned long free_add_partial, free_remove_partial;
+> +	unsigned long alloc_slab, alloc_node_mismatch, free_slab;
+> +	unsigned long order_fallback;
+> +	unsigned long cmpxchg_double_fail;
+> +
+> +	/*
+> +	 * Deprecated files:
+> +	 * No STAT_ATTR()/SLAB_ATTR() for these exists in mm/slub.c's
+> +	 * slab_attrs[] anymore.
 
-[01/13] PCI: liveupdate: Set up FLB handler for the PCI core
-        commit: b9affdf3de08c9e5fd8dca0c0bc9c54041362a10
-[02/13] PCI: liveupdate: Track outgoing preserved PCI devices
-        commit: b7163342c1d4090bdd3eace61580197b2372bd34
-[03/13] PCI: liveupdate: Track incoming preserved PCI devices
-        commit: 16c1ff9563333530f97888fca4e48548b22ce282
-[04/13] PCI: liveupdate: Document driver binding responsibilities
-        commit: c7c6bc42b3eebba0562d128b5a578bfbe6a56d31
-[05/13] PCI: liveupdate: Auto-preserve upstream bridges across Live Update
-        commit: 6f58dec26ea52b6451b3b427caa3326b407883a1
-[06/13] PCI: liveupdate: Preserve bus numbers during Live Update
-        commit: ec2f2f51120b9461db0e04a7fb1fcdd9747fd96f
-[07/13] PCI: Refactor matching logic for pci_dev_acs_ops
-        commit: 05d208bda0fd3ef41c3452d1c3f5b365c75b59ae
-[08/13] PCI: Save and restore the ACS Control register
-        commit: 9f2072fd93310487bf3f51bd61f73ed722be3cc0
-[09/13] PCI: liveupdate: Adopt ACS controls in incoming preserved devices
-        commit: 16709a37292e480a2d560242d88ba400e0793706
-[10/13] PCI: liveupdate: Adopt ARI Forwarding Enable on preserved bridges
-        commit: f20575f35fd9ae63f80bc672fc6b31e4de12d4f7
-[11/13] PCI: liveupdate: Freeze preservation status during shutdown
-        commit: f6590754926ecb0f9119f82a08ef073038ca3293
-[12/13] PCI: liveupdate: Do not disable bus mastering on preserved devices during kexec
-        commit: 25ff6ea537fa2c1258cb73d57f11d6af51ec7f8c
-[13/13] Documentation: PCI: Add documentation for Live Update
-        commit: 3b4d450a5bff74e36b4c9e864c0ba7d08288941d
+This part of the comment looks fine, but
 
-Best regards,
+> Although cpu_slabs remains as a file,
+> +	 * it is also outdated and always prints 0. Keep these for backward
+> +	 * compatibility, but they should be removed later.
+
+This doesn't seem useful information to put in the comment.
+
+We were able to remove some files when
+Documentation/ABI/testing/sysfs-kernel-slab says
+"Available when CONFIG_SLUB_STATS is enabled", because that implies that
+those files may not exist. 
+
+But it's not the case for files like cpu_slabs,
+and I don't think we're going to remove them in the future.
+
+Probably simply say something like
+
+"Deprecated files: the kernel does not create those files anymore or
+ always prints hardecoded "0" since they are deprecated" ?
+
+> +	 */
+> +	int cpu_slabs;
+> +	unsigned long free_frozen;
+>  	unsigned long deactivate_to_head, deactivate_to_tail;
+> -	unsigned long deactivate_remote_frees, order_fallback;
+> -	unsigned long cmpxchg_double_cpu_fail, cmpxchg_double_fail;
+> -	unsigned long alloc_node_mismatch, deactivate_bypass;
+> +	unsigned long alloc_from_partial, alloc_refill;
+> +	unsigned long cpuslab_flush, deactivate_full, deactivate_empty;
+> +	unsigned long deactivate_remote_frees, deactivate_bypass;
+> +	unsigned long cmpxchg_double_cpu_fail;
+>  	unsigned long cpu_partial_alloc, cpu_partial_free;
+> -	int numa[MAX_NODES];
+> -	int numa_partial[MAX_NODES];
+>  } slabinfo[MAX_SLABS];
+
 -- 
-Pasha Tatashin <pasha.tatashin@soleen.com>
+Cheers,
+Harry / Hyeonggon
 
