@@ -4,116 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6CCCA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:38:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98B87CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:41:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2BC6B0093; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
+	id B3DEB6B0098; Mon, 28 Sep 2026 13:41:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92E66B0096; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
+	id AEE026B0099; Mon, 28 Sep 2026 13:41:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B818F6B00A0; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
+	id 9DA3C6B009E; Mon, 28 Sep 2026 13:41:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F8306B0093
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:38:35 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EA3C01A02A4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:34 +0000 (UTC)
-X-FDA: 85263880548.21.86D175C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 407B0C0002
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:38:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3XNkJUM;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 77B036B0098
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:41:50 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1066A14028F
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:41:50 +0000 (UTC)
+X-FDA: 85263888780.29.F2C5647
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7E3501A0002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:41:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ji81w2P3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790617113;
+	s=arc-20220608; t=1790617308;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nU2fH54lTM/XVwJXQyjGLBeD3ZciwzAWp4eXcqDvdbM=;
-	b=Y6+oNUjFdJDs2Ta7PIxS20VXLqAQCL88eHMy6NfvhQBa/w4g6qchl71u7Djeno5hRKEU0s
-	/KPEx6otgVzEJeqZsbW3C229LvzxFMkdhrAkSAYo6ni6PiVnbwQlSST84ITgFOverKopdj
-	gRVMrO0Dz11nB2/TfW84TP/s6m0N/Tk=
+	bh=bio2Y9F5gf2JUjQfJ3HNyq0KHsAJNYGF0LSeTxxnRz8=;
+	b=xw+4/Wlnb8L8yxKXB0w3DtN6zttpyQIaCdIQPkdMWXqGq5+xUdln2SL9CF0dGMv+GKQVk0
+	e0wo+G+Z6cs3wUeamkBOo25RrPVy7jOt5BD1DZcxy/th2kDyXmBddzfAl/raoPx0F3cOvE
+	EvB8fFaVVg2gqXTwBbY8j6xR5rgbn7Y=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3XNkJUM;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ji81w2P3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790617113;
-	b=S1sKlGhDkVC/NZy8Oj5eTpEV3Asft8A9Eue+SYcVzKAL/hKK9BVSaI45AT44NZNJicfcLU
-	n23/MYi07W6tqu/sUU0jXrtswOWTZePw42s6qXDAyXjmkHT25V2BcQjPHW6IP3xwuJxjSW
-	NoB8+Lg4fvkGudLVMlXi2K+Qu2X7A1E=
+	t=1790617308;
+	b=7DnBg6BvYQSS1WVMHzxz8MNzkMOpLGsKfvBbA5Qeu4tzJsHpDMa9HAdxE8tSN7uOlLrL0B
+	m9HFqvIllyhoBsqbpB7HjUHmBx4OYbLyv+jcDn1hqJ+E7YgDY3XE/RABJnfnniehrbNUTb
+	miF1zvZdC8z2082Qhhb7fInuHr84j88=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 52E5B436EE;
-	Mon, 28 Sep 2026 17:38:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9521F00893;
-	Mon, 28 Sep 2026 17:38:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0C309600D1;
+	Mon, 28 Sep 2026 17:41:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864EC1F000FF;
+	Mon, 28 Sep 2026 17:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790617112;
-	bh=nU2fH54lTM/XVwJXQyjGLBeD3ZciwzAWp4eXcqDvdbM=;
+	s=k20260515; t=1790617307;
+	bh=bio2Y9F5gf2JUjQfJ3HNyq0KHsAJNYGF0LSeTxxnRz8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S3XNkJUMsfb4UVOiI5bqkQdMQxSrtSwJSk+zko+Kb8nyx1/fqNP+w7Q7XMX4d9LFS
-	 UpCy7pFlCeLa40OP6BXCxLJAzMBOd9S9sxWq8L8Jtt8orYI0l5uqfdJZROyth2vfib
-	 5uQjGgfd2Z1mVJgCwOGmsJxkE0gLFEG3SX22xLC77eFkOJMnQzLdB37T2NqjWpNoyp
-	 FTppfoE54PLRaqkGfhCai4quB2BGHu9vVrE9Ttd2f5wdvTQz58p7klVEjZDYk8ILzq
-	 0uWbZHan00HjovXjqsXB+ZjTvra2/JJk7Xr6L34CRAqtG/8M4oLEVkPLj0ZgwqrtyI
-	 1xxzJXt9dk+iA==
+	b=ji81w2P3OvwBwZ+SfBFlHppqHkwIgn8FNMqhUbCYfyrtsaGSgA9Y6NadfxtKqDtRc
+	 G4hk/u46xqtuPWC1WCpBVreTPBuXwixIjfMEu0mDHhK/yMVG/8eIF2HlGo0kMQffMf
+	 GqY3YbTg8UX/0lArRf2Amw2MEp9DpkyGyR7xex0Cuy3ZMS/5rMC6JADOdNgpWV4rFN
+	 kZuEXyrTKpE4uJ66bwwrBN31kdfBimpDoR6N//XUlwV7lAMzWVLvUYB/LTnxAzIL4w
+	 Ubs2S8JTCuzXg/VukK3Y+Ks57iOqlME4Epo1KIkexQOk3ASeJyXF0S49fZzlm8sR60
+	 LrxzI3InFhyvw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 12/12] kexec: Expose the crash memaction bitmap in
- debugfs
+Subject: Re: [PATCH v3 09/12] mm/rmap: Mark folios mapped into
+ crash_memaction-marked VMAs
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "David Hildenbrand" <david@kernel.org>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael
- J. Wysocki" <rafael@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Joshua
- Hahn" <joshua.hahnjy@gmail.com>, "Jann Horn" <jannh@google.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Will
- Deacon" <will@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Harry
- Yoo" <harry@kernel.org>, "Nico Pache" <nico.pache@linux.dev>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Peter
- Xu" <peterx@redhat.com>, "Mark Rutland" <mark.rutland@arm.com>, "Usama Arif" <usama.arif@linux.dev>, "Rik
- van Riel" <riel@surriel.com>, "Shuah Khan" <skhan@linuxfoundation.org>, "James
- Morris" <jmorris@namei.org>, "Dev Jain" <dev.jain@arm.com>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Paul Moore" <paul@paul-moore.com>, "Jarkko
- Sakkinen" <jarkko@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Baolin
- Wang" <baolin.wang@linux.alibaba.com>, "Ryan Roberts" <ryan.roberts@arm.com>, "Alasdair
- Kergon" <agk@redhat.com>, "Vlastimil Babka" <vbabka@kernel.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Rob Herring" <robh@kernel.org>, "Zi Yan" <ziy@nvidia.com>, "Mikulas
- Patocka" <mpatocka@redhat.com>, "Barry Song" <baohua@kernel.org>, "James
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Muchun
- Song" <muchun.song@linux.dev>, "Randy Dunlap" <rdunlap@infradead.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "David
- Howells" <dhowells@redhat.com>, "Saravana Kannan" <saravanak@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Benjamin Marzinski" <bmarzins@redhat.com>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Baoquan He" <baoquan.he@linux.dev>, "Dave
- Young" <ruirui.yang@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "Byungchul
- Park" <byungchul@sk.com>, "Alistair Popple" <apopple@nvidia.com>, "Lance
- Yang" <lance.yang@linux.dev>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Matthew
- Brost" <matthew.brost@intel.com>, "Suren Baghdasaryan" <surenb@google.com>, "Ying
- Huang" <ying.huang@linux.alibaba.com>, "Arnd Bergmann" <arnd@arndb.de>, "Jonathan
- Corbet" <corbet@lwn.net>, "Mimi Zohar" <zohar@linux.ibm.com>, "Danilo
- Krummrich" <dakr@kernel.org>, "Gregory Price" <gourry@gourry.net>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Mike Snitzer" <snitzer@kernel.org>,
- =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>
-Cc: linux-arm-kernel@lists.infradead.org, dm-devel@lists.linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, "Eric
- Biggers" <ebiggers@kernel.org>, devicetree@vger.kernel.org, linux-security-module@vger.kernel.org, kexec@lists.infradead.org, driver-core@lists.linux.dev, keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, conor+dt@kernel.org, linux-crypto@vger.kernel.org, robh@kernel.org
-In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
+To: "Serge E. Hallyn" <serge@hallyn.com>, "Suren Baghdasaryan" <surenb@google.com>,
+ =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>, "Baoquan He" <baoquan.he@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Mike Rapoport" <rppt@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Dev Jain" <dev.jain@arm.com>, "Zi Yan" <ziy@nvidia.com>, "David
+ Howells" <dhowells@redhat.com>, "Alasdair Kergon" <agk@redhat.com>, "Arnd
+ Bergmann" <arnd@arndb.de>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Dave Young" <ruirui.yang@linux.dev>, "Rik
+ van Riel" <riel@surriel.com>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Lance
+ Yang" <lance.yang@linux.dev>, "Nico Pache" <nico.pache@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Jann Horn" <jannh@google.com>, "Barry Song" <baohua@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Danilo
+ Krummrich" <dakr@kernel.org>, "Mike Snitzer" <snitzer@kernel.org>, "James
+ Morris" <jmorris@namei.org>, "Mark Rutland" <mark.rutland@arm.com>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Harry Yoo" <harry@kernel.org>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Matthew Brost" <matthew.brost@intel.com>, "Peter
+ Xu" <peterx@redhat.com>, "Benjamin Marzinski" <bmarzins@redhat.com>, "Muchun
+ Song" <muchun.song@linux.dev>, "Paul Moore" <paul@paul-moore.com>, "Baolin
+ Wang" <baolin.wang@linux.alibaba.com>, "Byungchul Park" <byungchul@sk.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Andrew Morton" <akpm@linux-foundation.org>, "Jarkko
+ Sakkinen" <jarkko@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Will Deacon" <will@kernel.org>, "Rob
+ Herring" <robh@kernel.org>, "Mikulas Patocka" <mpatocka@redhat.com>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Gregory Price" <gourry@gourry.net>, "Ying
+ Huang" <ying.huang@linux.alibaba.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Mimi
+ Zohar" <zohar@linux.ibm.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, "James Bottomley" <James.Bottomley@HansenPartnership.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Saravana Kannan" <saravanak@kernel.org>, "David
+ Hildenbrand" <david@kernel.org>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "Kiryl Shutsemau" <kas@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, "Eric Biggers" <ebiggers@kernel.org>, linux-integrity@vger.kernel.org, robh@kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-doc@vger.kernel.org, driver-core@lists.linux.dev, keyrings@vger.kernel.org, linux-security-module@vger.kernel.org, dm-devel@lists.linux.dev, devicetree@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-crypto@vger.kernel.org, conor+dt@kernel.org
+In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-9-e511e9ee2329@jaseg.de>
 References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
- <20260928-crash-memaction-upstream-20260921-v3-12-e511e9ee2329@jaseg.de>
+ <20260928-crash-memaction-upstream-20260921-v3-9-e511e9ee2329@jaseg.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 17:38:29 +0000
-Message-Id: <20260928173829.9E9521F00893@smtp.kernel.org>
-X-Stat-Signature: ceu7iqznszmq11dytq45q9xxcfedncpq
-X-Rspamd-Queue-Id: 407B0C0002
+Date: Mon, 28 Sep 2026 17:41:43 +0000
+Message-Id: <20260928174143.864EC1F000FF@smtp.kernel.org>
+X-Rspamd-Queue-Id: 7E3501A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790617113-536904
-X-HE-Meta: U2FsdGVkX18FYMAZtkorgkd9PNbIWbTYcbFL1fnSDiPrJyS08CqiJAsWYqpskFsZCe7bLFAPaGmcY0PvvsvDbz8SumXariJCBlzDaM5sEfFcwyWv4BPndO8mv+zKtaIgUMEGLu5B8W7w36fLV1iV0F0kB7IC85GhSV7PMfIQVK2Bm8nI3Y/ifO2guSb9LNo60m84XLYlHVdfu+PHySPRdb6exfAZgPw1GrQuadHFEmnC+aQZvkP475xmZ5jL99BoSA2o/6HHTEo0NQsMVgjIcecKxZ4AHBhp0ZpA1x8SAWWAYi2nzwQcIHpfLdsL+OMGlfTT8yEDhZjSCoXZX1h/4v5vmNlkVHP3V4Ptdm1SdYSZrm4tTZvMtRrBPtgtrSkQvtPo6WU2NQx75WuGy9QaefVD4X9K11rBe8+TVTSYBIGHdmY4UaVtpnbi66FZIoI0m5xga7xmNVXjxEkz3BNctEJzEuzTEizQ4zf1BCoYDAS3C2zf/CXIeLUOxGpZOwO4par/aO0YzrvvhzpyboOXz8rhcoxn8xVNRC2qVPz6xmxoSAiGQY42nq7l8F/Zmhm7jPRbe21PYXSrOUotFvSpB8aUaw8aeT3rVrbYyurBDQkutNLQjwKajlHep7gtEz8999JJ2n1E+Hwhvgsj06UjSFhg42SvonMG8k+/mkqbs9z6cpKo008S5jckZ/kc4xHGbmizNatMn4Jsl7FMMCmiWDTHFXAOLe1tmaYXeEx3rdfvG67zGXaKeFPHySXxc9uJDSSpchcp7OjBXvfx7O4IRBPsxr3xy/kAdrZ8VFyymYRpWuw1IvYTyW4u9WmsGZJzlcy6W8x+TojNsDTtS0oA6PPZP3niwtZDyYshh7KKLm6xev0A5Hnv4IiaaJLkuNnJ+Vj86rZOVLFfz2Bi6srdisaYK7tD7kwkqAPXoJ13Uq6wIHdoAvQ9exMqbiccXx8vjRSuVy8XhkTqPmA32y3
- Avh6dKCo
- 3JkX7L7MM7kfBvpJeBiwDnAVFqwenhDo3ZVyX1BYgO6mNOqnp6MhGssqpnpEJf9BK4KikP28UNKX/jeiCSTR6NTrHrqhIxjJ10b9WauwSoCQn+mzch/qHnYNEvX8vsCadJEBSVPSeR1qFv5/p7WM18En3TYZB17dipnptCcIkPdy8L+WKr7qYYJXkVbwfffACc92NihIfYQb/wpQJ3oZdyI7XlG2cHsF62Aq+qk+JDCKROaBI7PaPkw/nw09Bstzt2yIy/TDCNGPipLQvTCdi3Bm3Qo98K/pleCVQP2g8MSbu7Gst17FpR4cwmOZP7lgkyp+oHH8W9NkkpEyZtRlS77nYd4gryf4wI5boSdA2O+v+TWmA9jmrLk3xcN8DJXDsViRo9fR1oKcB/n4wNpxpHifHBbP/S5I4YjoAw7SemC6y7N3gWyuyGlWKKJ5xIKcgOkBqDswBBCJWE+RKWEuQnnTrwrDf1fhMK7eHhWheCF4vxBJPn4xwCkcMPgcGXZ9+W/Zh6XaELkuBRxwKSYLZIT1Vm0tAP02Elzu7LJpu+P7Xe9KRa30u7FtS9c1HbCr37GKD9PA8u7VAYOg0rVJLwwvY4rChlMYYkl3MS4WBRagUMroUq+zM7MwaFC3L4uLi3MDST2qa30kY9K6XUvBCx3A4kJTe0X/pw9NlKDRPBlu9hmo=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: deefs6anbq3yssokpim13aweehbe5qmo
+X-HE-Tag: 1790617308-444951
+X-HE-Meta: U2FsdGVkX1/Ujr8WwnAxjW4q4HQg63KssNOcRSK+zFi6HjxuMVLQhGbcDWn4HcbTwBqwi74nZhbU5Z3P/YHdFiT7HM+wcWLHQL8RZYbaH/hepqXxpylLO2ND3hROJIe9FW9jyOE4gPkU8BH8/rsD+3u+hvfR9nW9r9hvvD8cHVODOa71FFN/rKMROaQeEpazQk7UnXNw7mT07d/GSM+wz82MwSBQMfDYg9pI5s4BZ18xIsX5l3wIGs9nx/Jycr9+cNsg1wkqswt5wTYnZqt3i6lVuqzl2rugMfbxNzgHM2lQTp1FxomaC4LYJxIKBROIIUShJInEWMLzBa2MOGzUJsSCC0y4CvK67nfuJq6010gwlZKSqQ5cu3bJXQ2PiJj68IEe5KV90gyc5kam8gDZl6wS/sbBxfV8nsmTj6vBy1+it2mDnHN9kv3U4y4wD7nykQoGKUTiG1cAqe8wh07zXNLNOwXhR6gVbmSIQY3CG6JvWJ/FUn3yMtrCZDs7E/19UYdq4xNTTGyaaa0Szll6gPlHtn2CT26TUVFX/xg0+LXFpgAnKMBUVU+fTyajSzQDgoBuPMf+V5p3sLt993h+LEq8Kl+UxqfT7KyLYMHsN361hUKh8//QXFR7wUn+uP83A8UgifDmORclIPeDpb/+f+A2lYlQV+vlag7HgF5gOP2rRDZcuC3t7T2r0UbmL8qm3t0Gl6z6gKe1OLzk1XYL7NnZI5ZwyPwytIDSNxS4KLAXQDmOymko1qPv1DYNrKs3ENEjSN7O64QPiBMEv4ukTddDMXuyYxWR2Vp1Y+5O82aFpUMAYs+GELLVWsNIecaIijRmttmvERNhfxTuKVaDn7WyE7+ewYVX32KPcO9xbB5CnXN5crvPDO8nJ0mgk6iPzOaeZDVudp/6pF+my432YowQI7hot2/uXsShyPKqyTYx2NUWAo/3OvXAr2VYKQflTGENMhenaVSX6prlXgq
+ nwPjRcwp
+ w55Luj9hlXW0BvCBYwe9IgdN3fSrk3r+tqn/drcJl1LypVdWCQ1WTqoGBwpGNx7TYBxbkfyoAJLs5JmM/m9chsa+CeVcyaa5jeUQPt44O8nCBlRIn2y+oZfGNTslwvdFDuySGFiECcut/oWDW2YdysSIUGR7dQXVkJsAiSb1z+QJdlFxjln4WqqGz30mlut3/ZiECDIY8RCB/IvixerrOWiMt9fCwO/6tG59WB8FP0josI/82n6lE0Z96CUdTNO9mi+/pCIYtbcQO5zQyiO0UicGfe5dUVfiaSSKY836vivihiedbxUk+9qFrtsbKF+gZ7gGYlcviL0j9lLo4ocswwHksTIoNcCBnyRsPjGA4+y0o2wJncKjVPoa3s925zAAVb6zAPS1Da0jXCvah0RYsI37bvxcucVXPk2hgw/Ix3fIp8VJ3/fZLfQRXxKb/QO0uHgk5OuiWd7xsAx5a2F0JQ50gUQhNp4lkVMF9PQyeQcH+r3sJGs80oID9SjQ6FjrQvLu28CExNAmb7bl5Ky/FLRgGDxJRIZ2wD9KMU2KdyohfjYUF+RPrpBFDD1+7g45i55FDvaPlgQxTcZQkdTnJVjYsuGtL7sxj6CoCMSCSLQMs+qgbtmKp8D9nxw+xzNCEtR50vC+3w89jei5Q/cG3G58u3xOZePIsVV2xSdoi4HZb5+xhlCSuqtbE+VL2vIrgrdCJVybk261ZukgGuIRzyE/sTYOtGVA9lg6y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,60 +120,136 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Low] kconfig: syntax error due to insufficient indentation in help text
+- [Medium] mm/userfaultfd: UFFDIO_MOVE misses crash_memaction registration =
+for swap cache
+- [Medium] mm: stale crash_memaction marks when moving pages to unmarked VM=
+As
+- [Low] mm/rmap: data race on vma->vm_flags in crash_mark_pages()
 --
 
-commit d0f9200d03ebaf0ef39b9f78a15ab259102ed7e8
+commit 78115d9186907359bdb879efc1ef14d161aac39a
 Author: Jan Sebastian G=C3=B6tte <linux@jaseg.de>
+Subject: mm/rmap: Mark folios mapped into crash_memaction-marked VMAs
 
-kexec: Expose the crash memaction bitmap in debugfs
+This patch propagates crash_memaction marks set through madvise() to the
+crash_memaction registry. It registers folios of a VMA carrying VM_CRASH_MA=
+RK
+as they are mapped, and updates the registry when a folio moves. It also ho=
+oks
+into the free path to deregister pages and avoid tracking stale data.
 
-This commit adds debugfs support to expose the crash memaction bitmap by
-creating "regions" and "bitmap" files under /sys/kernel/debug/crash_memacti=
-on/.
-The feature is guarded by the new CONFIG_CRASH_MEMACTION_DEBUGFS option.
-
-> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-> index 3cdc8d459ac05..b5380e16bfafb 100644
-> --- a/kernel/Kconfig.kexec
-> +++ b/kernel/Kconfig.kexec
-> @@ -204,4 +204,18 @@ config CRASH_MEMACTION
-
+> diff --git a/include/linux/crash_memaction.h b/include/linux/crash_memact=
+ion.h
+> index 5f3e114c60ad7..2de60bc12dd9f 100644
+> --- a/include/linux/crash_memaction.h
+> +++ b/include/linux/crash_memaction.h
 [ ... ]
-
-> +config CRASH_MEMACTION_DEBUGFS
-> +	bool "Expose the crash memaction bitmap in debugfs"
-> +	depends on CRASH_MEMACTION && DEBUG_FS
-> +	help
-> +	  Allow reading the live crash_memaction bitmap through
-> +      /sys/kernel/debug/crash_memaction/. The bitmap is used when
+> @@ -50,6 +51,18 @@ static inline void crash_memaction_unmark_pfns(unsigne=
+d long pfn,
+>  		__crash_memaction_unmark_pfns(pfn, nr_pages);
+>  }
+> =20
+> +static inline void crash_mark_pages(struct page *page, int nr_pages,
+> +		struct vm_area_struct *vma)
+> +{
+> +	if (!static_branch_unlikely(&crash_memaction_active))
+> +		return;
+> +
+> +	if (likely(!(vma->vm_flags & VM_CRASH_MARK)))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 [Severity: Low]
-Does this indentation break the Kconfig help block?
+Should this lockless read of vma->vm_flags use READ_ONCE()?
 
-The first line of the help text is indented with 1 tab and 2 spaces (which
-is equivalent to 10 spaces in Kconfig), but this line starts with only 6
-spaces. The Kconfig lexer terminates a help block when it encounters an
-indentation level lower than the block's first line. This could cause the
-parser to interpret the rest of the text as an invalid Kconfig directive,
-potentially resulting in a syntax error and build failure during make confi=
-g.
+The crash_mark_pages() function is called via folio_add_anon_rmap_ptes()
+during migration (such as in remove_migration_pte()) holding only the
+anon_vma lock. At the same time, mprotect() can update vma->vm_flags
+while holding the VMA lock, but not the anon_vma lock.=20
 
-> +      CRASH_MEMACTION is set and when a crash_memaction cmdline param is=
- present
-> +      to tell an eventual kdump kernel about the use of certain memory p=
-ages.
+Could this concurrent modification lead to a data race or torn reads during
+migration?
+
+> +		return;
 > +
-> +      Note that this is a debug interface only that gives no guarantees
-> +      whatsoever on memory consistency.
+> +	__crash_memaction_mark_pfns(page_to_pfn(page), nr_pages);
+> +}
 > +
-> +	  If unsure, say N.
-> +
->  endmenu
+>  void crash_memaction_mark(void *addr, size_t size, int types);
+>  void crash_memaction_unmark(void *addr, size_t size);
+> =20
+[ ... ]
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 3fb9504dff7a9..adbda968d58ef 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -2966,6 +2966,8 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t=
+ *dst_pmd, pmd_t *src_pmd, pm
+> =20
+>  		folio_move_anon_rmap(src_folio, dst_vma);
+>  		src_folio->index =3D linear_anon_page_index(dst_vma, dst_addr);
+> +		/* No rmap add, and the two VMAs need not agree on the flag. */
+> +		crash_mark_pages(&src_folio->page, HPAGE_PMD_NR, dst_vma);
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Medium]
+How are stale crash_memaction marks handled when moving to an unmarked VMA?
+
+If a process marks a VMA with MADV_CRASH_CACHE, then moves an exclusive
+anonymous page to an unmarked VMA via mremap() here in
+move_pages_huge_pmd(), the destination VMA is checked but the source VMA
+is not unmarked.
+
+Because the new VMA lacks the mark, a subsequent madvise(MADV_CRASH_RESET)
+will short-circuit and fail to unmark the pages. Will these pages remain
+permanently marked and excluded from kdump dumps until freed, potentially
+risking data loss?
+
+> =20
+>  		_dst_pmd =3D folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
+>  		/* Follow mremap() behavior and treat the entry dirty after the move */
+[ ... ]
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index b242fa8b22c8c..bb0a35d59daa9 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -1326,6 +1326,7 @@ static long move_present_ptes(struct mm_struct *mm,
+> =20
+>  		folio_move_anon_rmap(src_folio, dst_vma);
+>  		src_folio->index =3D linear_anon_page_index(dst_vma, dst_addr);
+> +		crash_mark_pages(&src_folio->page, 1, dst_vma);
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Severity: Medium]
+Similar to the mremap() case above, does move_present_ptes() fail to unmark
+the PFN if the page came from a marked src_vma but is moving to an unmarked
+dst_vma?
+
+[Severity: Medium]
+Are we missing crash_memaction registration for swap cache folios during
+UFFDIO_MOVE?
+
+While the rmap is updated for present PTEs with a crash_mark_pages() call
+here, the parallel move_swap_pte() path in mm/userfaultfd.c seems to
+omit it:
+
+	if (src_folio) {
+		folio_move_anon_rmap(src_folio, dst_vma);
+		src_folio->index =3D linear_anon_page_index(dst_vma, dst_addr);
+	} else {
+
+If a process marks a VMA with MADV_CRASH_SECRET, and then uses UFFDIO_MOVE
+to move a swapped-out but swapcache-resident page into this VMA, the page
+registration is skipped. If the system crashes before the page is faulted
+in, is there a risk that the kdump kernel will dump the unmarked RAM and
+leak the secret data?
+
+> =20
+>  		orig_dst_pte =3D folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+>  		/* Set soft dirty bit so userspace can notice the pte was moved */
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-crash-mema=
-ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D12
+ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D9
 
