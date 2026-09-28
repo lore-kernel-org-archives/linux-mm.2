@@ -4,88 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 732DCCA5FA3
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:50:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB2C1C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:53:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CE146B0093; Mon, 28 Sep 2026 04:50:26 -0400 (EDT)
+	id DD37E6B0088; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 457306B009F; Mon, 28 Sep 2026 04:50:26 -0400 (EDT)
+	id D84446B008A; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F8376B00A0; Mon, 28 Sep 2026 04:50:26 -0400 (EDT)
+	id C4F416B0092; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A336B0093
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:50:25 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 282DA14014D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:50:25 +0000 (UTC)
-X-FDA: 85262549610.06.441FE38
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5DDCA140003
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:50:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iEK97vav;
+	by kanga.kvack.org (Postfix) with ESMTP id 9B55C6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20DA880148
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:19 +0000 (UTC)
+X-FDA: 85262556918.03.A6A89CB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6F85AA0005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:17 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ur5AWO7g;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790585597;
+	b=4WUqvfPl0ZsftuHUCZPDwuLM/ajNL7ZSa36lNKxxsmUVBgXXxYcQqGav9l/SYy8kG1LyaP
+	WPTK57/metkM14+cZvlq3RM3cFzZvtP5wC0SsC/Nko7hbq6H9CZoJsnIWdNByb4rE3TRz1
+	QdOx6AqYOdtTut+GScoYZ773D3slRAc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ur5AWO7g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790585423;
+	s=arc-20220608; t=1790585597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xux5ZPoLqrz1mbftErEicTW9loRDj4oR9SfIqryQVFI=;
-	b=pRFVtdqRDTp/f0mhlXeEe/mKP51DXzLg33yern9r2eDWYdU3V4GGx03+Avnmyk9wNEIJOQ
-	FHA0vE5nik34K9NqAaJe0XUyqamWVbg+GSDM1rMPuIM8tvR7f3WMhPOjyhxLo+LdUzT+Wl
-	WrWQEco8GyzAwiegsaAce//wtKYM8IQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iEK97vav;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790585423;
-	b=3+giGPp43MiLpxiGwQmP+AUyZGYSg+MzRjzzpRPXF/R031WSvbUSB8GGm98CQo0t//IHB0
-	dSzbmupX1WgV53Lj9fSxU4EDLcYguJRbPhAOzrwTmQUYir7zvN/nXjvLQJrpTzlj3DqeCU
-	zh3bOcyUr0VK2ql/Afx+wpr2Cfzqdjk=
+	bh=oMRlamwZOS6UGMnR7RRChBxeZocxPHKpOSIJpnFzjdg=;
+	b=8QqKdt0086gIgrFnfpy4wz0hxrbsDnlBT15G7axzHFqskYYkTRv6jizr1hYCCMUHl1aZ3l
+	xLy1K1L2csblnvLFrOeYukRlkwXOScxO7HUYdcl0ag6nglu9J8H/oW1kFvGM8Wuv74LREj
+	jaZIxBSvXFJsD71EAdGDhavCfv4Pmfk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8DE9A43C8E;
-	Mon, 28 Sep 2026 08:50:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EE51F000FF;
-	Mon, 28 Sep 2026 08:50:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B45B560052;
+	Mon, 28 Sep 2026 08:53:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667411F000FF;
+	Mon, 28 Sep 2026 08:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790585422;
-	bh=Xux5ZPoLqrz1mbftErEicTW9loRDj4oR9SfIqryQVFI=;
+	s=k20260515; t=1790585596;
+	bh=oMRlamwZOS6UGMnR7RRChBxeZocxPHKpOSIJpnFzjdg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=iEK97vavCrO6FGamvL6w7E2I1MX2GZCebpDkO0cMSJDvo5xQ2vNNjADjci6TP8N29
-	 b8f5WsNIuHiiAVePejbUiD2f14ejjCMal/GCUjIpIQcT74Gun81v7NHdK2Qm42IMCn
-	 7yrkD2JQqZC3M8VbYDcqxuGS8IbhDUEdbAyK4k0BgbhaG1CS5D+9XqaUVVL7X0I6o7
-	 fReqiFglUmaWiN2BlAbXClfp2HnuyMig/dz67ReP7rtvxpERkOiDkfJTJ/t/SPpeS1
-	 7uKDXsEYc3REZnADw9w8J+97lG7Kzs/sY9a6AjOEiFY2bkpohtKyBzjjxopxg2+1jP
-	 x6teGcrUOIaqg==
-Message-ID: <9009312f-0ffb-4425-ab82-1eb7e52a4646@kernel.org>
-Date: Mon, 28 Sep 2026 10:50:11 +0200
+	b=Ur5AWO7gR/EbdOkHyt0zSPjUSRWOvbKnLYxi2SIB6aa3Lw07eZbQcaaveO8dbyFIz
+	 DxgDdE8bYmMTQ4WUyFOsPLtcPgv8pFsJm0zacnNwDrh28AwA9Wg24MECYdP9hFx6UU
+	 GHMKZz50SFXq25g3V+T/EJTW5jrgDAkIXbHevcRV9nsvgJsPc/cenqrQXtcnrEhgRp
+	 6ISbEj8RRVQ1c7Nursl4ntsqbuRirELzECvjuVl2L32LrD2kcSOc56KipX1QBUb6QV
+	 kSrBHlPE93sJHrOgFH78l4HvnLJfZz4NsP+Ally3Sxvx2ml3kJBBgbEyDc6rB5NqHE
+	 5FLJsz2UFKDig==
+Message-ID: <cf0d7426-0838-42ea-b8b1-f694546ecc25@kernel.org>
+Date: Mon, 28 Sep 2026 10:53:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/13] mm/sparse: remove SECTION_MARKED_PRESENT
-To: Dave Young <ruirui.yang@linux.dev>
-Cc: David Carlier <devnexen@gmail.com>, akpm@linux-foundation.org,
- axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- baoquan.he@linux.dev, brendan.jackman@linux.dev, dakr@kernel.org,
- driver-core@lists.linux.dev, gregkh@linuxfoundation.org, hannes@cmpxchg.org,
- jan.kiszka@siemens.com, kasong@tencent.com, kbingham@kernel.org,
- liam@infradead.org, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, osalvador@suse.de,
- qi.zheng@linux.dev, rafael@kernel.org, rppt@kernel.org,
- shakeel.butt@linux.dev, surenb@google.com, vbabka@kernel.org,
- weixugc@google.com, yuanchu@google.com, ziy@nvidia.com,
- devel@lists.crash-utility.osci.io, kexec@lists.infradead.org,
- Baoquan He <baoquan.he@linux.dev>
-References: <20260921-b4-sparsemem_cleanups-v2-10-54d81d65e125@kernel.org>
- <20260927192013.144672-1-devnexen@gmail.com>
- <655c509e-318f-48bc-8183-2b1274dd05ac@kernel.org> <aroezLexo1WoeYI7@darkstar>
+Subject: Re: [PATCH] selftests/mm: uffd-missing-wp: add GC related
+ functionality test
+To: Martin Cracauer <cracauer@cons.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, shuah@kernel.org, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <arneZ-KkRWUNI0Ho@cons.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aroezLexo1WoeYI7@darkstar>
+In-Reply-To: <arneZ-KkRWUNI0Ho@cons.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qstxqwthe31c6457xz9g3fx4wbpgb8fx
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7wz154sdq1dzdgmxmkcdqpb3ka7o9pru
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5DDCA140003
-X-HE-Tag: 1790585423-929042
-X-HE-Meta: U2FsdGVkX19ZX6Iq7NcIeogZJa1fdKD0+2jnKb74W4mQfmvlYMgrBSUA8vzRufXmlDKpPKq8Hze8r+OUCRGP8nO5QOoapTDvkkQFrqvl12LGdiHUvfR5eJmYDKRFUoc1Vu1SXrfhistrmSrl/wVSXgFWC1hkcCp6j4+CdfRjdE7KQxPvCfLYOK352nuB2qrlf7d5b9tTw7Yw+7tKYOWn46Y1FMrxd+IG5ZpgYoyYZN66T5//PHjAy8bo0A4XxA8GC/urZq4jTPmpEL2PVklQZhyHXFR63ccdNMtH+2lBtro+w2L3/D2yyz6edW6Y7M8kU1UyLG1Nv5nh+3eseAtDyKQIMxWEGuxnM7eidewKzjVUaq9VLzbxuoLXDfnvAAejJVduVQRjbcVysCGiSPw+lkjPQQsFrw0b26F5BVhWpkygAAsdVAhXe8bimN3MbPU6WFhHcHq4n1STfS+m0fmCYx2n2wI/UMi3kAAAhJAAcx2QLiUQtVk7SvsDFsD45SPdCbHvnca1z/LEvBeK6Fp3OM+4ftPgFIENwpiaeDrodkt5ldpyg9bGWpsaq6Q0gh9Dw4iZwsAV8Q0NHm32qlTYeY05BqsQQLl8L0ttdlihvMEls2i+nT93jkQvukjgRTTo5zqZOCg2mUWkgp564LpLEPfg1razWRLZEOmrpg6ejTxihNk6r+ZVPewj5NDp1AzOxNXc8ejnY7KqI6AldBKRMCtMxLZBVGe0ype4bahODAMAhN+4fgz8yjabS7mpoMyR8SQ1Yzm+fEExu22PQGkRCoEEp59AmC9GSIptIlHYn5s7OrLtX2IjhFwbQtj9neGX6uGfySvRdTJ9ahfEOKSvoIHY0sMhLZqls93VJ9ee9baRujzqgocjGMUE2+Tz88n2+Rr+Tt12bDh7ff83CEs/o3q/G0OQavsWSCvDhvDzx6GDiwfBXGEHC/knPflW9syRFEJFLLVsvdExs3nHi+M
- E9inF2wn
- yGQGhHOk7+ZJHTZ3eU7Ci/uNhAa+e1yEHoBXuwWgsPc5vIDVkVcUdxLNZHg+on2XZpAEbFVPKUliqSMtU9CCjW+Zfpi19BRRowX+nJP5Ac6vxT/88xp1MX0YxnkLvKGN31gL4u8owR4lIQY9Pw87ldJRJqqeKKhjfkb+LKtcoL4pxqVsJCssTd0dXvErLc3qEOlip2ROqC2PbkZqpP0WvmUIuClDpFydTQGYR4zoGMUP2e5d6SczRkSRH4Qa891a1VbuW2njIrbsvaajoehacrRx0Ggx6POoiupRMtfo5Pz5TgWNszE7JSEbmB2x/p59HnrjvNPUXV61CjM95TysXmc7qKttmjANr+roG
+X-Rspamd-Queue-Id: 6F85AA0005
+X-HE-Tag: 1790585597-585517
+X-HE-Meta: U2FsdGVkX18h73OWzaUVpBhIIC7MydwvxGMMPdRDqHHC6POMvQ1AH72KqC9sQxuD+l91kgFkrMVe9yHWFO0Qfxp37Hk2lOI093jg0vaBrmOdCnOdcca6KArCVNnQSQ0yC0RUhhVbepNGP2vsIEvRCrwhu1pX49Jep1rhfzNZPbCiKe2JJ2L8773yJr52qjcNt/gyEE4wFw/OB7AbYTWUo9bpCulXDrgaq9yM6pt4Fn8YyZwknaGqi9r8AX0xxtEiPmXnu6fnUr8NC8UMHMCHJzHNrp8zplSDVFzTuxGh/YoGmY7NJqf6NMuMHIi88kMNEGUsTD1SOMbDDarc7g4XMZs9LqiQ99SpgJg8l36EQCcD7PxDoxBYGcW3qUf49yVYevwvgswIZsBFdYYMmmld0kLugyS0KLzev9vL9Idxfr2uSQqTvh5M3Pb1zILAO+QJPb6vn2mBddlXAJdVHeKKuhxrZadgbbNWK5RaZNjnOVP4LymPCB1mQWGcENlX24RcbOgh8x9q8nnL4mRQFfmxou6Hk42Cl+ZcjFqBWpqI2xy8gnNCopxg+cwXVdkRmCl7fnx99nZpGhF8OHDabBtsJNip4VMJGBKFhmQaSZYKB36zJ2ub/Tby979VNFwzdPSbPRSdBsnX86jQLoesqxSiTJgqVm4gFRSrntP1Fj4c1jqNEo48pM8moV1/6Gzmw6aIuO4F1lK5xuZx2G/3CpchTPT5m2mNN2/7UXS1T3YOr4uOBQneThE9WgnNgZBQqNNaoa397shsifI/h5FA+MkjRWx38tyGwOMaZTRcky9AKXbq39yaPJSBrGJbaqYvoTNONSV+EqzRPBe6cLjz0cWmz9vxFwmX7KFzFiUbPy1nUvldnWuqsN5Pk6Po0ZBUiQYXtGp8EDiHkW312rGQniUDSJYlWS7GKJzQKr1hFF+3jJjXWZ2v1I8hOX3r9a1PlVGYWAClFkA857e8nuJHQOb
+ lKfu5rJT
+ UL6CMTeFshFnCiS2JbSKPK1l+whqLgdFTktvUc2/UBZ/ltYiXcm/cvJSNpUDBwn+O2UXHPRM51xv5OsmSYkTW7D1PiJIVovW/HDWClXvVffoZynujUMMri2V8dgm2VH87dxfyF+upmW1dB9Zjb3umuXzlYFheDzyM/HjBmFA6Wsfo2u4BmnkeTQOuDOzqWMInL1UIgV/x8qU06Ln5tRF6Ngyn+Lymq1N5im2DVqQpCWi9NBYaKEYqdOUL4cWcFFw4Dtb1gtj/lEWPZaKJ2+WV50Y3BEgz+wAYWEveVbIhX2Baf8KbBRwz7FAJyf+FQtuE2wXw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,42 +140,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 10:01, Dave Young wrote:
-> Cced kexec list.
+On 9/28/26 05:26, Martin Cracauer wrote:
+> Add a test that asserts that functionality needed for generational
+> garbage collection works.  Namely to implement a write barrier using
+> userfaultfd instead of using segmentation faults.  The planned target
+> is the GC in SBCL.
 > 
-> On Mon, Sep 28, 2026 at 09:28:08AM +0200, David Hildenbrand (Arm) wrote:
->> On 9/27/26 21:20, David Carlier wrote:
->>>
->>> Hi David,
->>
->> Hi!
->>
->>>
->>> It seems dropping SECTION_MARKED_PRESENT_BIT shifts the other section flags down
->>> one bit. crash hardcodes SECTION_HAS_MEM_MAP as (1UL << 1) in
->>> pfn_to_map(), so it now tests SECTION_IS_ONLINE: offline and
->>> ZONE_DEVICE sections no longer resolve to a struct page. makedumpfile
->>> only checks bit 0 and is fine.
->>
->> Thanks. To be expected when relying on kernel internals.
->>
->> Which makes me wonder why makedumpfile
->> (https://github.com/makedumpfile/makedumpfile) not require any such information.
->>
->>>
->>> Keep bit 0 reserved, or export the bits via vmcoreinfo?
->> We could export it, or crash can simply detect the change based on the kernel
->> version. I remember the latter was done in makedumpfile in the past (although we
->> export it).
->>
->> I can send a separate patch to export it.
+> The real GC will initially fill heap pages by using on-demand loading
+> of pages from an image file, either via mmap(2) or using userfaultfd
+> to decompress a page read from an image file made from individually
+> compressed blocks.  This test doesn't do that so that it needs no disk
+> I/O and no decompression library.  Instead, a fault will be filled by
+> copying page content from prepared pages in the heap.
 > 
-> Thanks David.   Checking kernel internals via kernel version is not a good idea
-> due to the downstream kernels.
+> Assisted-by: Anthropic:Opus-5.5
+> Signed-off-by: Martin Cracauer <cracauer@cons.org>
+> ---
+>  tools/testing/selftests/mm/Makefile          |   1 +
+>  tools/testing/selftests/mm/uffd-missing-wp.c | 413 +++++++++++++++++++
+>  2 files changed, 414 insertions(+)
+>  create mode 100644 tools/testing/selftests/mm/uffd-missing-wp.c
 
-Patch at:
-
-https://lore.kernel.org/r/20260928-section_has_mem_map-v1-1-4129f6ba2838@kernel.org
+Isn't something like that a better fit for LTP?
 
 -- 
 Cheers,
