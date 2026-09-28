@@ -4,97 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6111CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 12:33:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62E86CA5FA5
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 12:34:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8869A6B0088; Mon, 28 Sep 2026 08:32:59 -0400 (EDT)
+	id 6DC716B008C; Mon, 28 Sep 2026 08:34:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 837776B008A; Mon, 28 Sep 2026 08:32:59 -0400 (EDT)
+	id 6B4366B0092; Mon, 28 Sep 2026 08:34:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74E1D6B008C; Mon, 28 Sep 2026 08:32:59 -0400 (EDT)
+	id 5C96C6B0093; Mon, 28 Sep 2026 08:34:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F7796B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:32:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2AA7C0190
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:32:58 +0000 (UTC)
-X-FDA: 85263110436.28.9B63718
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DB0E580008
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:32:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=V4ufFAq2;
-	spf=pass (imf02.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 3FE026B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:34:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CDAC7C01A7
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:34:24 +0000 (UTC)
+X-FDA: 85263114048.04.BF36104
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4452040007
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:34:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dSxO6JyX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790598777;
+	s=arc-20220608; t=1790598863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iya9wujgQEdqUfmH+V2H4et1ziGVCRoqLQ6GAz7eQu0=;
-	b=ZStANyMfEQ9tSldQWpR3MHPL1PIV26lHuIVBTfCAYI+ZSHA6ywJW62oNYqe4CRXlnAcqnp
-	/p7SCfvVBdYpcYUciUbzpPlCGIuqt6iIyWD4sACOB0sTVbtjTBIhqjopcf6RL4bn/DhtmD
-	oPdraF1U7p1LplWS7sxtqOwYXkH7mq4=
+	bh=02NkiLZ5Yl+geke3aOQBTOObyOxc3CSY0KX9P536iK4=;
+	b=wwh9Hr3ISdMH3wKZ99KefRPRgK4IpZQjUY9h3k1KXFXX0rbtBUO6Aj6rL+YhiqJ6+FthWA
+	aWj9HRa4SqCBBrtPciDcj5JTh/h0D7p+XmVPGbzbAoZ8jSVi+GoJvc2kauLsB3hCi3tAcm
+	5KUlBWE6GzO/jEirSEfjFqqOh0EkT0I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=V4ufFAq2;
-	spf=pass (imf02.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dSxO6JyX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of broonie@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=broonie@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790598777;
-	b=HUdEwRod/mgrSmKWPOHz91cvT4NEgCYrj+vF828qRxyeSYe9B6nATqIymSJ705kclub5pK
-	yQFDTyAUaDgt41Ak01DfHT/ENMHsmgzWc1ODbTqZxjl5Ld2s/5Dw86MWdgIL5b0PqbxPO6
-	rcAlC/kmnN+b68p94Sgi+GJ0+NnHXE0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Iya9wujgQEdqUfmH+V2H4et1ziGVCRoqLQ6GAz7eQu0=;
-	t=1790598776; x=1791808376; b=V4ufFAq2zbQRd4oAVh37zn3PzJr2yba2sbJ/bSIH7EVGTfO
-	4LLOLfGZGMMkm6p+2bWX3Yj+eqGDGwnno/+HtNNSGntoetcJdOcQtFFTXJ9LviA7TRt4ufd3p43yi
-	4M1pzbJTXc+Zh2qvEYox4P2ZXVME90oXtBJYvuBWXuKr46AJnsXWFYF8SvMlpWm0MDlG575Scp35Y
-	rybjdINrhp/9qy97We2HJCZbGnSMKs0UBs5i5oRAXlLrbTTpIGTn381JuCJKF1eI9rSp3I5KmHhGB
-	vRAfJ/sJ936YoGSRoFmwPiMrTJHiCzT5Sf9ORVad+KWt8mmJLvR2LorUG/Cjb9Sw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1xBAXM-0000000DXzf-0Rx8;
-	Mon, 28 Sep 2026 14:32:52 +0200
-Message-ID: <8dfc0ec9ed660e373451c96b6fcc352c35a6a004.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 2/3] selftests: run tests on nommu architecture
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Hajime Tazaki <thehajime@gmail.com>, linux-mm@kvack.org,
- liam@infradead.org, 	rbm@suse.com, akpm@linux-foundation.org,
- luto@amacapital.net, 	brendan.jackman@linux.dev, david@kernel.org,
- liuhangbin@gmail.com, corbet@lwn.net, 	kees@kernel.org, broonie@kernel.org,
- mhocko@suse.com, rppt@kernel.org, 	shuah@kernel.org, surenb@google.com,
- vbabka@kernel.org, wad@chromium.org, 	linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, 	linux-um@lists.infradead.org,
- geert@linux-m68k.org, daniel@thingy.jp
-Date: Mon, 28 Sep 2026 14:32:50 +0200
-In-Reply-To: <arpIi5QBG1_MuZzJ@gremlin>
+	t=1790598863;
+	b=InjT2xaSDZVzTfK/UG4BZTtU0swkkD6BXvS72su0bBaX44ASBuBY01ckcLoVc/NiJaa68M
+	TDPXrU6sGPbUA5loLn8fdNU0SPIPqgTJR0V7uOW0FUKUPcHOeb7aBs6Z7Ffh9T5s6u5+/N
+	BUbtLelfOM2DhXfGPuVy+ms/TR3OZQc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 89B9E600CB;
+	Mon, 28 Sep 2026 12:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A6C1F000FF;
+	Mon, 28 Sep 2026 12:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790598862;
+	bh=02NkiLZ5Yl+geke3aOQBTOObyOxc3CSY0KX9P536iK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dSxO6JyX9ewpqfSZ/qGL9qzm8jbvHsqhuYPo3dHyEMWQIhnJRvY4ShNwHpBRw8pSz
+	 QjOrySNheii0BYuwVrEomHYqkBDbKkeaoIWCP8ah0gX3atVajPT2xkVEVcZY7Y0Thw
+	 ydxzxmzbW7ZW8Sb/il6objzy+0mVgWCFdyhKlPlrKRMN1roMU/dVLpOfd7dtszs4LG
+	 PDxgQ8MiHla7CtLkxhFA0LdMtP/2amF0J+4RQfh/pR6vyqfug4SAYn51aE/5hzI81h
+	 X2hlYP7jETKF2ZNFVOQzpwKatli1h6ubPjMncCvFsBI+CN9UZRN3I5B3oxCvAwRHMU
+	 hWoPWx07CR9lg==
+Date: Mon, 28 Sep 2026 13:34:15 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com,
+	akpm@linux-foundation.org, luto@amacapital.net,
+	brendan.jackman@linux.dev, david@kernel.org, liuhangbin@gmail.com,
+	corbet@lwn.net, kees@kernel.org, ljs@kernel.org, mhocko@suse.com,
+	rppt@kernel.org, shuah@kernel.org, surenb@google.com,
+	vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org,
+	geert@linux-m68k.org, daniel@thingy.jp
+Subject: Re: [PATCH v3 3/3] selftests/nommu: add nommu mmap and mremap
+ behavior tests
+Message-ID: <1b2fb12b-a342-4ec5-ad24-14fc761e1e61@sirena.org.uk>
 References: <20260926010819.604346-1-thehajime@gmail.com>
-	 <20260926010819.604346-3-thehajime@gmail.com>
-	 <04259a99ed91f8a527b255951a6f626310728170.camel@sipsolutions.net>
-	 <arpIi5QBG1_MuZzJ@gremlin>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-2.fc44) 
+ <20260926010819.604346-4-thehajime@gmail.com>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DB0E580008
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FUgMlfZGbL2nwwkW"
+Content-Disposition: inline
+In-Reply-To: <20260926010819.604346-4-thehajime@gmail.com>
+X-Cookie: All is fear in love and war.
+X-Stat-Signature: y3hhyu89r3wd77iowtjor97bfjujgnci
 X-Rspam-User: 
-X-Stat-Signature: i7mpym4rkiu3c58e5fgwce1ftmapxwde
-X-HE-Tag: 1790598776-749592
-X-HE-Meta: U2FsdGVkX18Out5WkGpBNC/kDkZ0p+DYoezvWaqUSkEVFVPTi8TfistLV/Qa6JXXjHoCbqHTGPCV8BBTATr68iRvHyDdW3wwIP1UwOr+Dq1bLiGWrjhVVWZq6UUoRNvW5znh7i+yblAWmwjC3MILg9n2DzhqUCo7ZgHNrOKpQ+AdHldfTm5sfIX7hgiIVhwBE7sNNEUJKi+nBShpOjeDBXcoznH+RreiecscCg8CWQiKQ7gGZGZjixrJc5JoKDHEMyNuu4t+t5YHlW/Kn/8tdBw15yATdNY2L9wt4JJfE4+500U00m1BM87UaskSeg3uuvAgzvjle/jwo7BJFlzOd0jfcNsy/Ea5tZHb1N4HQxu0LkEGweWPWMAY2F51FnJt9zdqgNR8z/+W7YDDXs2Mih7rhiL1rXwfSW19vVpcSIsrpdgnjbng1/nfBBVovc4jERu+WeY/xSurqFRSxgaMXCn9mLGRqR8HwMI9P7Wbj8nc3K2infi097tPuYejDm4+N71KzwgzG6ScW19aypniTXk9anCJGiRSkedyIwCK0knsrCPfGnDAtovKujbq70DZ6Y6ra0HZcJsS+/TbNPsnB3Clgemb4EGgdiMjx2ML+/rGT/d8BUbex1ea3Pfdc3GKZbute+NN6YWQhL35hwvmZbrpR2GnbZj/4v2mj5qGQsNNfdyKnJmTUV7lmTXzw0FzWDj+5UkdPAoAEPqXwAG4kNcdu8evp0X3x2fyyQ5Le1ho9I/zF5Tnc8rslAvnIa2ciptWF449RIPDoyILQLhr4FOdvUv2aI0r6LBviwWe3A1Mve8LWeRGO4seA+VMgbcNY6l1LvyG/HJy69krgUUm33vv65FRq35X8Xq/pPydyoXnKX2zFANIVACvgZxq6eoVyfTaO0fIWncVGVs0ms0+KNjt3MLorMUtVqB+7J6z7486LGgbbxn91B30GY8B3Rz9J40hVXFcA7TXbXlh69Q
- Fql3dJGb
- 0rQsAFBkm22jJ18ZDgxZh4ywWkZ6LEZzKQ+fp7EgVxDSQvC/XRxMLk43o3qbTMDVWTVFMfpXCCDk5zJHDPsP7A3Wb4MxqqXQ+LIT4lGDlVx65uliDyWu0vqsT6i14rB7mqdtcEdAmiYuX3/7zALQbYBKtT+J6VKv9ZZatCT2wXMgBrKpZvsEZCzfAoYJJdYNGGY83Z5iDvakmJEUNbohTApsmi1XjAfxy6nc60OzIPEkUc3DcGV0QIgfQ1iPe2RD/VXfI
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4452040007
+X-HE-Tag: 1790598863-571374
+X-HE-Meta: U2FsdGVkX199mRtLCHlNSbTlhvdzj8AZgERXIb+ShEevmLxYiMoim9jCCdhPGoXVyTwqqXf0BkI0CFR33HYtf0FxPF7QoI/MW/Mc3H2iax3T4zB9Yp/lHN7fucK38mgLFpLq89QB3BKUVcDzWRKGKiLP7kZIt8NnIuBu3HOBUGm06gF5CTwGFQCNtQINU3XEoRfGKZTaaCqVWgyluj9eiSQ3nrCyAInuoFmIMxj3o934riRBF0u9/w0rsX/IFqwAEIxsRxIxc08O52iz9tbaYO8Y1pMcqnQTe+5fvkIqmXh2c03fODD+jaqeQNtrJf1rVjiyCyRNhzg/0Mj2arHic+zpPzcyxbLUk4F6GHT+t+p0+v3C5cm1a5AFntqFjLO1bOgNkD/5mMZ87gD5VAR/1Ycq2Q60ClYW5Bd8FxTKGMXIRvpef5mTLdHrfTKLw1rZr9SW0SxZvtIItv8m/dDaOUkj2+cX9kFnlAx0qzv8fO7aAnbasLSbvhygJQQswTJUB0yWIiML4Ad4dtEc1+5siWyvTP3WYpcR5KkWTkljaGMikWWmLXFDu+liFGu6aYoR80nZPsvFnrMrOHV9swg449Ka+CYBWP+ehOGzU5ysSnaKXR17zQzrtUSvBs0gX+9nuTzkU0PSfX4zPxacovyyoWraPd6G+CeXmIwjNOvNYKZbPOgA69/tH8xp5DheoT7jhoQ4Q6iW+Qj54PiZkwZwyBNnw2RN70dlpVREulOHy81qPdh1MSht66Mz5qsgyLtBfDh/D/HnwJRMJaR1Ltw4Hez2CRkmFryBTZ3QZKSfzLGXP0/T2+aepQM47NjXVgi5iX5Dag5K7Y8S+rn+MZ7MVvb0CEwiNvFOqZ6440H6yDg2kC1ScWxbLx59uH5UTMeASHLPdOeAEnX3bKhjm8NthedGnAj2Xz+OFHCuZwxSmFj+nV6wEefCOnjlD8OS2j1b4l/F/yLFRHB3lBZRil5
+ DJVdqgmA
+ 7YcaBDnEz9krRpVLXmQHQ5YHNUsN1NxMztiC5CWSBbjvIWF3LUb5mwgNq1NHeYhCij2lKbsDsaKZvonIND3/77hzCELzkTGocEyKG2DKwbvDLJMkLpq7mPF4DTAJkQ2sH+I6L0ipFMQfWyvZW3NE7wcQ06V2MECDzncBrAmx5+2TrVaNH5LyRnMKYy5LsobrPZvctkZr2VvUMZKJ6LEHP+byhJxcBcBgKci0mucnqTrErvurkDTf8ROU5J9j7FSozjySBXzs3LaksYP8JfGs7uiQ8Kv082BoT3UW8I84PqomMxkvSSSqV0omD1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,28 +100,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2026-09-28 at 12:00 +0100, Lorenzo Stoakes (ARM) wrote:
-> > Not sure where this should be merged? I guess selftests would make most
-> > sense, but you can't actually test it out before the UML nommu changes,
-> > so that doesn't work too well right now?
->=20
-> I seem to recall Hajime saying he tested this on an actual nommu
-> device/virtualised equivalent so nommu UML isn't strictly necessary (thou=
-gh very
-> nice to have!)
 
-Oh, I don't recall, but I guess that's plausibe.
+--FUgMlfZGbL2nwwkW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> I think I saw something fly by that implied it might be coming in 7.4 is =
-that
-> so? :)
+On Sat, Sep 26, 2026 at 10:08:19AM +0900, Hajime Tazaki wrote:
+> Introduce a kselftest utility to validate memory mapping capabilities
+> under nommu kernels, aligned with
+> Documentation/admin-guide/mm/nommu-mmap.rst.
 
-I did end up merging just about everything that was pending for
-uml/next, so if we don't forget to send a pull request in the merge
-window, or something equally catastrophic happens, yes ;-)
+> +static int run_mapping_matrix_test(struct test_case_t *tcase)
+> +{
+> +	int fd;
+> +	void *ptr;
+> +	char path_buf[PATH_MAX];
+> +	const char *path = tcase->pathname;
+> +	int rc = KSFT_PASS;
+> +	int expected_error;
+> +
+> +	ksft_print_msg("[RUN] Testing: %s\n", tcase->name);
 
-Sorry for the delay. The onslaught of LLMs means priority is elsewhere,
-sadly.
+> +		if (fd < 0) {
+> +			ksft_test_result_skip("Failed to setup temp node: %s\n",
+> +					      tcase->pathname);
 
-johannes
+Your test reports should use a consistant string when reporting the
+result for a given test, that way tooling can tie results together
+between different runs.  Report the diagnostic information with a
+separate print.
+
+> +	if (result == KSFT_PASS)
+> +		ksft_finished();
+> +
+> +	ksft_exit_fail();
+> +}
+
+Just unconditionally call ksft_finshed(), it will check the counts of
+reported tests and exit with an appropriate error code - you don't need
+to manually collate the results in your test code.
+
+--FUgMlfZGbL2nwwkW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmq6XsYACgkQJNaLcl1U
+h9DH+gf/XjlR+SgNi0hEPMZzdbbYcwqMMLD2xh8C2BKF4e664nTRvVFTUQ4QNNVC
+wWPQ+F7q4l0/ZvxPMtcHzH9cNRXNYfVC00Twjn4/rKB06CdAlnug1n1Segzf4nSe
+IW0YuguI4jeea+cNPiiG1pXEdH0xhEzS9KQZSByPqg/J10wYT5mki6T952vWEh5s
+6uf0QrxiIl8j7gE7buHHahG02LdSNZB9URNdEL7GaPsIN8R3IPLcWE+nvazafr0H
+f8k6hg7IRx+gOZ8r60kURDhpP6i8oE6zd/YIp3hqnGLvUEHG7Yl0XY7krzjWpAgI
+ylmZrCLJWgbyW+oCgK7db4EHIr7tPg==
+=LEi+
+-----END PGP SIGNATURE-----
+
+--FUgMlfZGbL2nwwkW--
 
