@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2373FC9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:16:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 203CAC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:19:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 302B36B0098; Mon, 28 Sep 2026 04:16:20 -0400 (EDT)
+	id 4197D6B0088; Mon, 28 Sep 2026 04:19:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB176B0099; Mon, 28 Sep 2026 04:16:20 -0400 (EDT)
+	id 3CA3B6B0093; Mon, 28 Sep 2026 04:19:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F0586B009B; Mon, 28 Sep 2026 04:16:20 -0400 (EDT)
+	id 2E15E6B009B; Mon, 28 Sep 2026 04:19:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8FF16B0098
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:16:19 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F33716011A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:16:19 +0000 (UTC)
-X-FDA: 85262463678.19.01D1ECE
-Received: from mta0.migadu.com (out-59.mta0.migadu.com [91.218.175.59])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 696AF40006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:16:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pDamGCxk;
-	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1113F6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:19:17 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 987B01C04C0
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:19:16 +0000 (UTC)
+X-FDA: 85262471112.28.C661EC8
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A75F0140003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:19:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790583377;
+	s=arc-20220608; t=1790583555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oVf1K+OodsGw2IagwVmR/pQfDUE65PGs3da7DlWeLBU=;
-	b=htTwULbpmUjwYEDRuZfjHffjdbDUbMDPnL0TjZ2wv460jlUU6f4aRa8cgrgIUSf86TH8cQ
-	5e3W7C47BEvwxH8dAvHTtFhdzT1jt7cH9JMYscqH+CcPWznnPnDpYCJs49+dgTz8VZogKV
-	fh9dUTVjAbM61Qs3XAPzM8dL6PIwLrU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790583377;
-	b=llltQzqite8ktHkifneHASzWSKOAsSFPcO8NzKqWH1bNPqzVavr+NeNiGzTifuO7a+NUtz
-	dkhOAoOWdfDTsENbKBzs1diTk9A683/X37otKeV76CrE9Jx1El4JbVrMIhm3beaxO25Xzn
-	UOe+OJyvJSdLBVW8onyv62lbY2aQpZ0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=d+cFRRQuCPtbfR9h4eG+ppCeD2oCzPsJpaeYcstlNeY=;
+	b=eLDT3I5Y4TTStGG/daSIoTPCYj+NJ+DaLksHfXHAK7sBq7NHrxRvZKCCtua1LMHZWK+D45
+	gx57buzURFPIzbFY6+CfAku5Q6BALMwH+mIdW6UYoysFdTcnOXHRtIvusi0L26BuJmdx0q
+	b07mIj7U5MBHVvuV5qzHsDKjpX/X098=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pDamGCxk;
-	spf=pass (imf01.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.59 as permitted sender) smtp.mailfrom=ye.liu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=K5Q3pCElJ1kYWoQWSMWmJuaeilGdZ97iIqv2nF2D+kg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790583376; v=1; x=1791188176;
- b=pDamGCxk5Ut/v2RRK9TMQllPrxJPqXYPyKesBGjPrlyOF7wT/tFvfgdTy27R2Qfx24TyfVrk
- ulGkkHhMk8J4fT41QFhPUjM1o2sVuRCI/MdLLOhOH/zzioiEY+KN9pfvc1L1G6WG2e+T3zoy24I
- 8s79t0dZiwRQWs8jmHvJayQ4=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ef3d12d70e3ed8e3;
-	Mon, 28 Sep 2026 08:16:15 +0000
-X-Mizu-Trace-ID: ef3d12d70e3ed8e3
-X-Migadu-Flow: FLOW_OUT
-From: Ye Liu <ye.liu@linux.dev>
-Date: Mon, 28 Sep 2026 16:15:55 +0800
-Subject: [PATCH v4 2/2] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
+	imf23.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790583555;
+	b=GojBuzCyVmQak2yJeQJj69X4lbMiwjeyk6CVlwO+B9NDItt1xUnc/FX1IlIUW6qDj8+1Hq
+	zPAwKo6eZ/Kqpzkw67MW9m7fZGxqfGSyvHOu+CaxOjJVvpOw8i9D5mNHB6/vlzAaf140Y/
+	43OUt2Oyo0G9CSAu/AiRkEKzFZGsv8o=
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0DE633E972;
+	Mon, 28 Sep 2026 08:19:08 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [RFC PATCH 0/4] mm/zswap: make shrinker writeback work with iocost
+Date: Mon, 28 Sep 2026 10:18:35 +0200
+Message-ID: <20260928081900.4187482-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-vmalloc_dump_obj-v4-2-6f288a431edc@linux.dev>
-References: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
-In-Reply-To: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-Cause: dmFkZTGDAZTY8FQdfIVgvulh8+Ontt0UHMbNx7VW+SvuP9n/VVpAc15RJUj4OtlP0SQbUn0HcGGGXbzBBp/gASYJS6oVdftruFjiFnihosDaklSoEd+62bXrJAa+/zYSAu4+cl39U0CVLr5WdN46E9L7/Q4tx8ccKm2agYzkHguBa9KkrBths7Yplh0gcXVyS/ngPeLDw2DIh5qJimb0bfwD/0AAsWD/yQvch5ezsNCOkJmyoS5Ic79ZDd4epkxJsioHDkWZtsqSMBR4l6eWELikjxrpKV1btwsNT0QmoHq2jaEkavqSkNYTANQPyP/F43M8V95d8uz5FKIpAMEzb+qV/E9dGOHIu6lbBID3PkMkIQV5fgazvuUzv/CoI1oXR4+kwQITGwxKOht1As2puZhGtjvctCEYLf8n0WF2BN02NFlSuIm7Ob81iipQvFD9c0tP8ElxA7CRRvK581ykoOTp6LX+oErRGuC5JM2LML+EvRXGmcK98f5pELREKePtj8Vgmh+LSRm/ycwcL8UvHQ2po8WykCFDm9GbWnsk8a3kjTw6raq8YKYK1lyUZHmgb6jjStz7q+NbcvKyvNwkbWwi6OzszuZRYfzsQE/tUNwsRLt/dvK7SJ2cUPLiJvDP0Hz8hU3fgPjueoU3fH1OPk894aWjFDSfAOcCZ9Mq8Uo/F8V2ig
+X-GND-State: clean
+X-GND-Score: -100
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A75F0140003
+X-Stat-Signature: z6e8xb5k6mik7pi844rt6y1b89d891xq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 696AF40006
-X-Stat-Signature: xpas8q6hporg1tb9saeyzgw8w7z9j4ex
-X-HE-Tag: 1790583377-347735
-X-HE-Meta: U2FsdGVkX1+3wUVdE3qnP55t04BZa0TOyuup9lbkuqHnqgW1SP8q6bQmupIrRxF5tscubDGY3PiiNAjRkcvj3D8pQgw3xG7ShYm5bYKLMIqIgz3by1HkS0eoULk3Z01o9phLu2CBnezlkIEgxES6BlQV7U6fP1IFym1iRNhOsrJe9FlJR3DLEv/pit3+7kxbXyroKpDWuG9CtFziOjhHMRr5eRg6Vg90vyiZ9jM8fg2yGrnKG54lKz8XhUDeRrRy0skXHzcMQ38p2uVmmIIF/sHztgQc3K7OpwZ3mZz0UgdciPLcLimiPEHCJ6x7gdqTXL+YmZN3Ojs7DVxcygRxwgZ+fSLR7mpw/AxHhhXhPzcjLPiICH0sEie/AOIU9AjjXrNgYiPnTQITGHAKQ0Og4zCYeVJp2KmItUad6pB/IsPZlJchZKi6t13C/eMjjKF/3frEGl0x3eivwmUfvqoEXPhQjVdJFh5HzZmpMpXn66QMEUOg34dwq3Ol6c5cyua38bhAyG8E+iRtWsGTdvnEOZ2qS3FZ5AvItsQ3X6P+Bl1AkYR6HH57S4it5WuWPou1dV7QonsATMXx6jiZh4oVbOJIehzf2cVztIrKOwz4gSRB0s0LyIe6MmxFhkPvZZd3RP13xB9ZxljMuBoyys+qebanKa40GvAUVlxrF9aTK838iuzSQKZqSXUMtH/2t9skMGoct5FwOa6JUGeKaHBV8mZjf03GLdPrS6skl6gO2SAfm3Coy1qz4ovxHPreM3QKXWNoI1ywKq5Vx4EEFKIpmeq3MzJrrXX38+Cc8d3gLPMCq9qpxaIkrp8h3iWQr0QbjHnUmHnSBhWfrJAN6WZTml6kSR3ki9mbBAqEVh2Xms2pEunV+I4pKkVaOeFHfVYLUf10vkfsHqfa8njgWBuPGVHfIUalFeEJSv13Q3x/3VnBDuJTf+C18nhABcAe7oX8GxKVqzbe6ZHWglfZnMT
- Y9tP6bIt
- h1fG02WA1pXVPxI20vjsYLHXM1gVNPfEFTUs7RD8mMS0Oh9C7ri7s0OqZ6UbEl1lO/IppaBtCrDopIGdtCyk1wZ+n5bBwElJTQrt440U7eOLuyzbf1ZhnDPqm4grnKVwP2jxLjeDALl/OC9DSFo4RZ8L84vCxqNoOLpQ3aLwpskqHHpSym40N5otZo4dMMfSC1rd7VRKeFFn20D/AcnnLTiPuMhAK2OrDih7PD1dZPfVyP9FTSQR2cwIH/WAOISpW2E/0HmlUIJqrKK2jJWjDMCdzRIgrh4prpFl0
+X-HE-Tag: 1790583554-22493
+X-HE-Meta: U2FsdGVkX18VlsLtjhb1ufwHbvFQGrG69MSwXSAZpsETkwtVgm3ecJf+TqGdoZ40w2aMAtIPGOXYMHyNp/qv+HH5w8er9kqrZAgUVASy/Wh0hLmKFJy46sLosA5cQMSOKFC/qae7AxG9Sch6tRuoE8QxEuhD6F13lOdXTgLNaNfCc3QQPHn+bQjRelsW+jjm7UET20pc4d5/8g+soR+3LvembWu4Q3/BOOIelIUlZcZfvHdtXfiVp9Kk1Pisdu/VDk5DvKhhsB2e9lA/Cw5MEeB5T/qH0mfPcONMUT06ovxcacgdcJcV2PQgthwINeGK0KgCPDqnpDm3qyF81sGsnLjNNk4ORsSxdSpf9d81yBIIo8hwSks0wD3aOXEEnCIE6wN+8DvOJLoNIj4K7ZWGyRDld14XV4DhD4XOSNPbHEXHzr7+m5eXiXhqVrTBHHRzvvjMiYMYYU+39zPDKcRcoiVw7PB60euiCu98hWTXP6DrafZ9OTE3di1ZTJ9YKWXirx2FbvLlSj2A7M82Y90RKYvSIJDgAINCuAY+mFZrdC2h0ompp3noOHiH3cgltAnq7MS2IKQHXZbPipbM1DX09bNTGW6sAEcqr37CudJUHhkHKmdS5N0/W5IbsgtNJ0dSLo08k2pVivUxHvEmSVilKyZPKsy56IaO43zeDGHd7bZsr6f8NycPntw+VGLnzXUtTGntmUDnYawehyqw2SQWJ9vKJVce0blIzXLRXTLwU9vcx0AEl9jGS1tsjXUQ5T2vgRhygQyp//4j1RYMXpd39c4xEYR5PygBTB82nmQkBNvOm2hymUqNUhu/9GQI5YwzUr5YvEIWY3wkM8WeabBaIGEHHtvguF4fEE8hTrqU5c3Meq346Qx0AE6zvVmbk5UCHgpeES9YCBK9acTSF/R4DWc2PUxm3pM8+NRDNosLc1FRKLbvD/J6iCUpUc2paFW/KSRO8MN3s2l/uMVf5f6
+ Jdp22bNn
+ H7mxF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,179 +93,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ye Liu <liuye@kylinos.cn>
+We want to enable the zswap shrinker on our fleet, which runs iocost,
+but with it on, a large production workload is slower than with it
+off. Two reasons:
 
-vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
-but a vmalloc allocation may span multiple vmap zones.  The VA is
-stored in only one node's rb-tree (addr_to_node(va_start)), so an
-object pointer in a different zone than va_start maps to a different
-node and the search misses.  This affects any allocation larger than
-vmap_zone_size (64 KiB) on multi-CPU systems.
+1. zswap writeback is REQ_SWAP, so the IO controllers issue it as root
+   and charge it to the cgroup afterwards, as debt. The workload pays it
+   back: its swapin and page cache reads wait, and iocost eventually
+   stalls its allocations, which in turn stalls the application.
+   Patches 1-3 let zswap writeback be throttled instead, by marking it
+   REQ_BACKGROUND.
 
-Extract find_vmap_area_lock() from find_vmap_area() to share the
-cross-node iteration logic.  The helper supports both spin_lock and
-spin_trylock, the latter for atomic dump contexts (OOM, KASAN, RCU).
+2. A throttled write sleeps in its submitter, which for the shrinker is
+   whoever entered reclaim, often an application thread in a page fault.
+   Patch 4 moves that writeback to a per-lruvec kworker.
 
-Signed-off-by: Ye Liu <liuye@kylinos.cn>
----
- mm/vmalloc.c | 108 ++++++++++++++++++++++++++++++++++++-----------------------
- 1 file changed, 66 insertions(+), 42 deletions(-)
+Large production workload, 10 hosts per arm, CPU matched, one 24h run
+per comparison. Change with this series:
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index df42d8a6f058..4f4d7453962f 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2517,67 +2517,94 @@ static void free_unmap_vmap_area(struct vmap_area *va)
- 	free_vmap_area_noflush(va);
- }
- 
--struct vmap_area *find_vmap_area(unsigned long addr)
-+static inline int next_vmap_node_id(int i)
-+{
-+	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
-+}
-+
-+enum vmap_lock_mode {
-+	VMAP_LOCK,
-+	VMAP_TRYLOCK,
-+};
-+
-+/*
-+ * Search for a vmap_area at @addr across all vmap nodes.  An
-+ * addr_to_node_id(addr) converts an address to a node index where
-+ * a VA is located. If VA spans several zones and passed addr is not
-+ * the same as va->va_start, what is not common, we may need to scan
-+ * extra nodes. See an example:
-+ *
-+ *      <----va---->
-+ * -|-----|-----|-----|-----|-
-+ *     1     2     0     1
-+ *
-+ * VA resides in node 1 whereas it spans 1, 2 an 0. If passed addr
-+ * is within 2 or 0 nodes we should do extra work.
-+ *
-+ * Returns the VA with @locked_vn->busy.lock held; the caller must
-+ * release it. If @mode is VMAP_TRYLOCK, nodes that cannot be locked
-+ * are skipped.
-+ */
-+static struct vmap_area *
-+find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
-+		enum vmap_lock_mode mode)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
- 	int i, j;
- 
-+	*locked_vn = NULL;
-+
- 	if (unlikely(!vmap_initialized))
- 		return NULL;
- 
--	/*
--	 * An addr_to_node_id(addr) converts an address to a node index
--	 * where a VA is located. If VA spans several zones and passed
--	 * addr is not the same as va->va_start, what is not common, we
--	 * may need to scan extra nodes. See an example:
--	 *
--	 *      <----va---->
--	 * -|-----|-----|-----|-----|-
--	 *     1     2     0     1
--	 *
--	 * VA resides in node 1 whereas it spans 1, 2 an 0. If passed
--	 * addr is within 2 or 0 nodes we should do extra work.
--	 */
- 	i = j = addr_to_node_id(addr);
- 	do {
- 		vn = &vmap_nodes[i];
- 
--		spin_lock(&vn->busy.lock);
--		va = __find_vmap_area(addr, &vn->busy.root);
--		spin_unlock(&vn->busy.lock);
-+		if (mode == VMAP_LOCK) {
-+			spin_lock(&vn->busy.lock);
-+		} else {
-+			if (!spin_trylock(&vn->busy.lock))
-+				continue;
-+		}
- 
--		if (va)
-+		va = __find_vmap_area(addr, &vn->busy.root);
-+		if (va) {
-+			*locked_vn = vn;
- 			return va;
--	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-+		}
-+
-+		spin_unlock(&vn->busy.lock);
-+	} while ((i = next_vmap_node_id(i)) != j);
- 
- 	return NULL;
- }
- 
--static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
-+struct vmap_area *find_vmap_area(unsigned long addr)
- {
- 	struct vmap_node *vn;
- 	struct vmap_area *va;
--	int i, j;
--
--	/*
--	 * Check the comment in the find_vmap_area() about the loop.
--	 */
--	i = j = addr_to_node_id(addr);
--	do {
--		vn = &vmap_nodes[i];
- 
--		spin_lock(&vn->busy.lock);
--		va = __find_vmap_area(addr, &vn->busy.root);
--		if (va)
--			unlink_va(va, &vn->busy.root);
-+	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-+	if (va)
- 		spin_unlock(&vn->busy.lock);
- 
--		if (va)
--			return va;
--	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-+	return va;
-+}
- 
--	return NULL;
-+static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
-+{
-+	struct vmap_node *vn;
-+	struct vmap_area *va;
-+
-+	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-+	if (va) {
-+		unlink_va(va, &vn->busy.root);
-+		spin_unlock(&vn->busy.lock);
-+	}
-+
-+	return va;
- }
- 
- /*** Per cpu kva allocator ***/
-@@ -5278,14 +5305,11 @@ bool vmalloc_dump_obj(void *object)
- 	unsigned long nr_pages;
- 
- 	addr = PAGE_ALIGN_DOWN((unsigned long) object);
--	vn = addr_to_node(addr);
--
--	if (!spin_trylock(&vn->busy.lock))
--		return false;
- 
--	va = __find_vmap_area(addr, &vn->busy.root);
-+	va = find_vmap_area_lock(addr, &vn, VMAP_TRYLOCK);
- 	if (!va || !va->vm) {
--		spin_unlock(&vn->busy.lock);
-+		if (va)
-+			spin_unlock(&vn->busy.lock);
- 		return false;
- 	}
- 
+                     vs shrinker off    vs stock shrinker
+  p50                    -0.7%               -5.8%
+  p99                    -0.2%               -6.5%
+  memory PSI full        -52%                -94%
+  zswap pool             -97%                +12%
 
+The benchmarks below run with iocost enabled, in a cgroup whose
+memory.max (the "cap") is smaller than their working set, so they are
+under constant memcg reclaim.
+
+UCacheBench, 12G cap, 5 runs:
+
+                     shrinker off    stock shrinker    this series
+  ops/s                  469k             280k             634k
+  errors                  0%               44%              0%
+  p99.9                 5.8 ms           16.6 ms          4.3 ms
+
+MySQL, sysbench OLTP, 256M cap, 5 runs per host:
+
+                     shrinker off    stock shrinker    this series
+  TPS, host 1            OOM               413              609
+  TPS, host 2            OOM               399              666
+  p99, host 1            OOM             334 ms            90 ms
+  p99, host 2            OOM             273 ms            44 ms
+
+FeedSim, 16G cap:
+
+                     shrinker off    stock shrinker    this series
+  QPS                    4.7              30.2             32.4
+  p95                  1306 ms           495 ms           494 ms
+
+kbuild, defconfig -j4, 600M cap, 3 runs per host:
+
+                     shrinker off    stock shrinker    this series
+  build time, host 1    784 s             788 s            778 s
+  build time, host 2    691 s             696 s            680 s
+
+Alexandre Ghiti (4):
+  block: do not issue background swap bios as root
+  mm/zswap: turn shrink_memcg_cb()'s argument into a flags word
+  mm/zswap: allow writeback to be throttled by the cgroup IO controllers
+  mm/zswap: move reclaim-driven writeback to a kworker
+
+ block/blk-cgroup.h       |   8 ++-
+ include/linux/swap_ops.h |   1 +
+ include/linux/zswap.h    |   4 ++
+ mm/page_io.c             |   7 +-
+ mm/zswap.c               | 148 ++++++++++++++++++++++++++++++++++-----
+ 5 files changed, 146 insertions(+), 22 deletions(-)
+
+
+base-commit: fe2ec83746e501645709761605c2464a44fd2929
 -- 
-2.25.1
+2.53.0-Meta
 
 
