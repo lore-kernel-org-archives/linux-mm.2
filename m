@@ -4,92 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F334FCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 21:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 844B5CA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 22:13:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D451C6B0088; Mon, 28 Sep 2026 17:59:30 -0400 (EDT)
+	id 2D6B96B0088; Mon, 28 Sep 2026 18:13:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5816B008A; Mon, 28 Sep 2026 17:59:30 -0400 (EDT)
+	id 2876D6B008A; Mon, 28 Sep 2026 18:13:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE5256B008C; Mon, 28 Sep 2026 17:59:30 -0400 (EDT)
+	id 176056B008C; Mon, 28 Sep 2026 18:13:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FE5B6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:59:30 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 185EB1C2758
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 21:59:30 +0000 (UTC)
-X-FDA: 85264538100.21.6DA38D1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 30CFC120004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 21:59:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XRFFKlye;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id C65FA6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 18:13:02 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54DDB160215
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:13:02 +0000 (UTC)
+X-FDA: 85264572204.25.05C5A30
+Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3A076160008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:13:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=GTYXhtrq;
+	spf=pass (imf08.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790632768;
+	s=arc-20220608; t=1790633580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4bptGM1fKGnl+cc8ny1xQF3hb7TIUTlchLwZhZ8N3zQ=;
-	b=iO1JtwRoiY6UvMljyP0bnVsWAu8B+sAfou5qaI93RvXizZxtFoisyz2azObUqtooxYqlmr
-	wKrYc55JinsZq687YMiVCRC/ptFl9wcve75YD2xcPofqr8YqLTZn6mcXas0IN0EisuSeSV
-	EbqxkVBVgBJ6RD6Mmi44xc6pgSwSts4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UBnD0y8kt2bsWncNoIGjUKY/sfGv28DPZ3wZNndFr0A=;
+	b=SGmdw25PeNc3G+NuhjDu8qPEe6gmqeVCgpIpbBRjRPBPBlfNp4fAf7MzpzKxk1sFCEz9kS
+	Q7KigwbpCbHrQY3ojluZayBrqjaus62+O6DUEvlkbEv/UqxDNvMcq5zU7SryLyJ2AKNIIz
+	F8iKfwYdAQAFEgu2oTX25rfAsyK3KN8=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XRFFKlye;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf08.hostedemail.com;
+	dkim=pass header.d=honeycomb.io header.s=s1 header.b=GTYXhtrq;
+	spf=pass (imf08.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
+	dmarc=pass (policy=quarantine) header.from=honeycomb.io
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790632768;
-	b=aWiVLcqgwwyOPCzeXeGExqxMi1BmUYKR6vEGA5B8JhMg1ePKcyycMSWwhij3Sq+36vHqQ2
-	YfEP6aPASIfSxrqMCblji9E8FMk8kjCVrxFlYUG86N1VI3kvmI0tkUYuKrKyi554Mp1aPO
-	FYqJzopkNfWusizqQ09wQk9BsbaMh0A=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A20641B03;
-	Mon, 28 Sep 2026 21:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFB21F000FF;
-	Mon, 28 Sep 2026 21:59:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1790632766;
-	bh=4bptGM1fKGnl+cc8ny1xQF3hb7TIUTlchLwZhZ8N3zQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=XRFFKlyepqyheX2Km7Q+XxEuES6Qp4HIv0rBVXX5feEGi4yb85+o2D6XgqDNIDXff
-	 0f6TvaFT7BZPgJYpoxnuBKac0FOkV6FaoGm5mxwj6wamzp11006xT6i3xyAXF/BtrU
-	 E3ZXU3P3d1Sp47V21HX2UOu2F+IgW3wf/nVIYnQ8=
-Date: Mon, 28 Sep 2026 14:59:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com, "Liam R. Howlett"
- <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
- <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn
- <jannh@google.com>
-Subject: Re: [PATCH v4 00/13] mm/collapse: separate a collapse from its
- callers
-Message-Id: <20260928145925.c2cdfd752099f137422e6ac2@linux-foundation.org>
-In-Reply-To: <20260928100630.21870-1-kirill@shutemov.name>
-References: <20260928100630.21870-1-kirill@shutemov.name>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	t=1790633580;
+	b=Mj1TFkapB3Ug6l1GUcZMa0frkqnMdCaUvDwCdysC42dhLHyqeGLXtH5PCxav2V/2rkADbY
+	ZaEg1A1WQge/NPMGzUXC0W8GYvyapoGh7M5WjKPEnwKK+b89nNsxW1/59L5HDtXsa2qNvY
+	AnkY64MOrA+vAYENEFvrl/nrLT6ylKs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
+	h=from:date:subject:mime-version:content-type:content-transfer-encoding:
+	to:cc:cc:content-type:date:from:subject:to;
+	s=s1; t=1790633579;
+	bh=UBnD0y8kt2bsWncNoIGjUKY/sfGv28DPZ3wZNndFr0A=;
+	b=GTYXhtrq7EyKXyjVCXIHyBPlVhN2fVEC+0mLZLeqr7jnV6fn0uF1uPUK7hP97ESeeLXA
+	HeHTGw/wuZY+jjlhK1wXd9UFEsqoaWFy5IotQIr3hak14NfiqBrctySOa5/ndT6PDmFkjP
+	pKRRjPWF1b9Serj/Om8yMKznJdAlSSG9Y+L2EQoHJ9hfqfn69Fmn9GmyiSAE4UvDfoSkJ8
+	2+3CrHe2PCT7aalrt/VRTyKZOAQTMKNT430M1+dAbgGXonkHYrN3ReYVzPU/gqxgyjGiKl
+	5Ny5esjNhgxEoxMACrr1U2aPjckhsf9zuoDn9F2BEmuzafEe71iZAGVnEzqNMdGA==
+Received: by recvd-57cdcfbc54-vvkzp with SMTP id recvd-57cdcfbc54-vvkzp-1-6ABAE66B-17
+	2026-09-28 22:12:59.132503961 +0000 UTC m=+353757.717913333
+Received: from [127.0.1.1] (unknown)
+	by geopod-ismtpd-4 (SG) with ESMTP
+	id NKh7AoO7Qq2zsEPDN0s8eQ
+	Mon, 28 Sep 2026 22:12:59.065 +0000 (UTC)
+From: Liz Fong-Jones <lizf@honeycomb.io>
+Date: Mon, 28 Sep 2026 22:12:59 +0000 (UTC)
+Subject: [PATCH v2] writeback: let foreign flushes reach dying cgwbs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260928-wb-dying-cgwb-flush-v2-1-56b54cda74f2@honeycomb.io>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Nyw6CMBBFf4XM2ppSIymu/A/Doo+BjtHWtFAlh
+ H+34N7dPbmvBRJGwgSXaoGImRIFX0AcKjBO+QEZ2cIguGh4Kxr21szO5AdmhiL7x5Qc4w0WF4X
+ SykJpviL29NlXb92P06TvaMZtaks4SmOI836b6y33/yHXrGZKWtlKLs/qpK4ueJxNeOojBejWd
+ f0C/uf/4MsAAAA=
+X-Change-ID: 20260926-wb-dying-cgwb-flush-06e260e2abad
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15963; i=lizf@honeycomb.io;
+ s=gpg; h=from:subject:message-id;
+ bh=ZyZ8sPdrhi5ZjKJwyFeVoLx+6dEC+1pAiqsYVIfiIe4=;
+ b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBquuZqTMpDTAn/GuVKKK+JeZM/JocHNAP/bSF9E
+ WJTPH8OyI2JATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCarrmagAKCRClztTjl62v
+ wjYpCACjugaluzdc296Z23x27FjnK1MpaarBaNl0W/bpd2/uAtJHl0BEkIlxNMvnDLQphWAzI5f
+ KAS/PxHz7HRw2XlV05fIm3VhEZw8KOi87glQTQTtOVopOWZaUwHkaKEZ7ZfYt7jLWNeUL7B6lSg
+ hRWhobUQhaUiBqvEbmSigqvhwdOgMd7APAQslxreRD6PDdP1gYm4a51JP2ndF/Bdi13QthTy4O4
+ N6U9P4yruEkrGUH+gWMJkjbFNQjHefZq5aswIPqf6DV7s+mKili+jK78Iyom3aabOg5kQzQb/DC
+ qCCL4rSGBs2qh42MfgDSXVJDrSyoG8CE5WNCdLvL8X9DFWxa
+X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
+ fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
+X-SG-EID: 
+ =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
+ =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmecQLCuNsHO2v?=
+ =?us-ascii?Q?trMkYvtFCGL=2F3zbSl8hP6SD0yS=2FRI9hkd5H176i?=
+ =?us-ascii?Q?UNUA4P6yIM72mE1ERVIbtALrAnl9cyurQGT8C85?=
+ =?us-ascii?Q?YXomr3gnjpwDoc3e6+KJvg0smqHVfsk2R=2F26Kwp?=
+ =?us-ascii?Q?nQGBMDn6EdWqKhNm6NWmQQ=3D?=
+To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
+	<tj@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
+	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
+	<lizf@honeycomb.io>
+X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 30CFC120004
-X-Stat-Signature: tzu5xets9pung5mo6ntjyu5opt9pzatf
-X-HE-Tag: 1790632768-156340
-X-HE-Meta: U2FsdGVkX18NB+mxM6aimIy0Nt10/YXldKUtwf9dtpG5ZJGn767lt3RcS6OST1ZGFqJB0k/7B8Qvka8mMHd+5NpRZR6sTOuXoqXTeTj0vMlL3FqaOot1xCmGb1ssMfkhSUOoz8W1TNVDOoZvoCHEGfWpDLZQFlJBacXXtmPzCjbREmhEw2y60q2t7X4uJxHuH5iHI2Kw29BMKYvvbzmFk4TJ9q/GlAHStygq2hpo53cSx03QsBUPholnd7RRHqkZM9s4nfMSjzCe/7Bnem1TI2RWBkV5ZN2gnc+gSuLRZVmlKDE4SyO1bJ4MHssFeN3jEF+r66846PwR2jXfmWr/94KH2lLj4IVksQOSP0YQV0csXRPcGnjO/p8V0j1eAkRPfm4ntvCa51+IoZTi1iMP8wVULrSnDWKeADW2+UC7p/EYD/Zgu5T+GCBlrllH3GdXPmaGAvpGpoFTi0JVVjrO3xntJpHjLpoXruE7nXlkcm3SePUjxAcDK5s6aOrl5Iog6KRsJCMlcXpQBgTYJJw+UEaP603mGmFQ0fC6tRfDfpF6Axf2G+pO9ex+U+tB9/Lz5uHNjXCddeU+0NkbORp2bSmxW4akeTRwXXv18Rq/FS7/6Eikqn6Qpn/OFESNhOJ1LYcbwuQg991Uj8FZA7T8X0gQgJmyreMj4EiAZJLILP85+lcVRJv00BAo1cJ70od6+wsFyUop0dDMU57m1XTbvQgi+Qe4DhqJaj6RYuFRt8tn9kmDlQno0KPq+gI69v88znGOOvVT01bVi63K2A+p6xacQkuHly/9pmbhTqq0slNGx0CbRublc1OYvCHSLEGF1iluCQTGo7Nn626llqW5DzWGnTRh/Qee9jSbSLeVhZCwnjzHK1YjrM66hytzov/C41rxleo/uNffhWk6dcgafBUb6q+bAKEF+syi8W8WeNKAhHnU6zUGM8510KWORltpPitlT/ZmB1F7t0OZ9uV
- CzQ5jWs0
- 4//drsdpwB770qowbluUhOeFj3s91Z8b0IOcVEyPcKi6VKZPLI2oq+L/U3n05iSO6pqamh9hyBMGIyqaeiHFx9sVCZWU+wry0pov/xji0MmgMxC+KIGOq5IwaWGhYsSj8Zl08emGk+n3XJXv9v4+pZR7vud2FqTbaXpJANG8uvQL0nK0AdsrLNp3rViMB4ZSWLqwOJdBE+0PJKmP1cr6WkHgNYGaTJvLvz1wB/ZnODTaWgKnE4y7mPKNfcZ7mzTq68CUmzvjEWKTIrf7oXauRQWat2A==
+X-Rspamd-Queue-Id: 3A076160008
+X-Stat-Signature: 7qbs6upyw849gn8wqpk5y9bzagjjuqna
+X-HE-Tag: 1790633580-906795
+X-HE-Meta: U2FsdGVkX18nmzIRKKMuM5eNhbwzUOZmYcrk9gJWx1K3vzu57/0tWSc6sOZtyVNxXO1C2jSlkt0C59YqrOFZhnOjwee45dPGqOve+rbPZJSkKHU1XhBjVQbE5GyGaeHon1Hphd8R+gz7Tg1lBEmZyUbk60+ZOHReIrcyp/9+kE7hBqJAnm5YPHON8WibVixukX+Hb70hZMRp0Nno093Zsvue7iECzGFT3Frmvl/9SS+HMkzmb5RPKLbZ1EXxlemNmJMJuR0HC7+juNS2VahiaviXME8smD0a0tY8KsSynNkZBL11hS5mW7G3e6+1rWO/ClNj9KTaTg3qrJFt9CIPsvmCo+OQPAQdWF0wXKyWeJ8j8pCveeaVapVkLHfGHzzFE30yM42WlZfG7zdyAEiWClNgR842grAiFmyf7WlCuLuGtLhB34JMnMYJGMnWwHoeuQmmu/K0WnVy7AAedoNDX/KtPJPa2Sfs/W9Q9QG5NMEJtzRjvPzvx3zPQeZZrUWFDVyBA6UnwloqzKhrNUEysTlLmMzDoW8Y0+atH87yW9wOC6tkFaVL/YVvrIW0ltS9mqLxJ8t6p0yB/vnup5H5az7wr+1DlcLbww/l3+CuqYjIvt4VsuQgIThqFeucZxWWx+HsQ2fcSOYzcX6l74B0c5CBuAYnHQSlyin7Mgx1heeCnYD8r9yqaVx23/WDuwnAoXYN+Qs0ItiD/ytAgUEs8LTEqHyYBsEy57OAgavVGZvjjBUEk9//HpOCwCq37jSw+Qv3xzyvx/Y4b7DP7NSr+/ULFPMxOlz2E73aDl772rArgB2yoWuyGI9+6yf3S2Yr9nyflgtDbJK8lM8TwmKpMEPjyp7+HBMRrWiYCNP37tXlxigmD/I7+otQ9iLbnN0oaHgG+XnOMvP7FRMsH7O9Y6fvyE676AeNdCKhM7uOHtlbfOnPrR446TKa83nkt0tMhFVOcb/qIXSp84U1GAT
+ xL5kcH4w
+ iLrrqdZS2nx5Gm76zHz1uQfgtL0EBo3ptWdWpnOlQ9vOlYfP6P+kBEU07qD1L49dCsJSslXxTU4kIVs8xCxTBaF1wCaHic3aOC6MEiFKmm9ETXvO2CJyWD8OoqgeBsOgqPsYcZXg58SjWhlsUFSJMmItGVXidM8+k8mXezZ7WfzPR7gwJLE74zYKuPfXjFYAGIhIudOG9gTd70AQExGJunHBqAEbpKW9aUMaXk04cb6UOYdKNizzuhS42e0cd/ZKu0GffC8Ki1xKDdjtNh3qdzPvMbBuqh0COCti50bx+2GVhvEJVaKN1eP5nlbEAjewTcg0vvZgqY2b0XEakfpzEEDODoRPKeN1yyyqLygL3e/IezInbJxV+SgBPcm36pN/UPhDK0TNmgV2j4pDwrSxOiyzYsgkiBThlar2xQ/WgMahJhmKJFTjah2fqZB4xnh9K9oAfuXKUccxykvBIhyAUrUcWKoaKYTK0pMKEB31enDuPeSzX5MStD2xV5WYIG4IO7t9/6pB7mqfS7Wjcx+ZwjBWXvb4PdHokk+53CGhCwqTGnS6m1LyNUoSovKQDpvmrzOnsNTcHqmGlzKveBAhsjbATmsD9RYplRh/5UOjUF1v2RpUBbTJDXZHNujMmQpqu+QbK+jn1nzBpfNU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,590 +121,379 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 28 Sep 2026 11:06:14 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+cgwb_kill() takes an offline memcg's wbs out of bdi->cgwb_tree, but
+inodes that are still being dirtied stay attached to them. When a
+replacement container keeps appending to those files, its foreign
+flushes fail with -ENOENT in wb_get_lookup(), and it sleeps in
+balance_dirty_pages() for seconds to minutes.
 
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> 
-> [ This is the first of the cleanups I said I would front-load ]
-> 
-> There is no line between the collapse engine and the callers that ask for
-> a collapse.  khugepaged.c holds both, and they reach into each other.
-> 
->  - Sixteen tests through the collapse path read cc->is_khugepaged to work
->    out what they are allowed to do, when every one of those decisions was
->    made by the caller before it asked.
-> 
->  - collapse_single_pmd() does both halves of a collapse behind one call and
->    drops mmap_lock somewhere in the middle.  Which of its paths dropped it
->    is not something a caller can see, so it hands back a bool and the
->    caller keeps track.
-> 
->  - MADV_COLLAPSE's implementation -- the walk over the user's range, the
->    per-PMD loop, the errno translation -- sits in khugepaged.c, which is
->    the daemon's file.
-> 
-> So: draw the line.  State what a caller allows in a policy, split the call
-> in two with the lock as the boundary, and move the syscall to madvise.c.
-> What the engine offers is then three calls, with the lock state written
-> down against each, and a policy the caller fills for itself:
-> 
->     collapse_control_init(cc)         once, before the first table
->     collapse_policy_*(&cc->policy)    what this caller allows
->     collapse_scan_pmd(vma, addr, ...) per table, under mmap_lock
->     collapse_run_pmd(mm, addr, ...)   when a scan found work, no mmap_lock
-> 
-> The engine stays in khugepaged.c for now; what changes is that it has an
-> interface, and that neither half has to ask about the other.  madvise.c
-> gains the operation it should have had all along.
+Keep killed wbs in bdi->cgwb_tree until they are released, so that
+cgroup_writeback_by_id() finds them through the regular lookup. The
+creation paths skip dying wbs, and a new wb takes over the slot of a
+dying one when a live memcg's blkcg association changes; release only
+removes a wb that still owns its slot. The blkcg association check
+moves from wb_get_lookup() to the creation side: once a memcg with io
+enabled is removed, cgroup_get_e_css() returns an ancestor's io css
+and its dying wb would not match.
 
-Thanks, I updated mm-unstable to this version.
+With commit 168a8c13159c ("writeback: size foreign flushes by target
+wb dirty pages"), the flush is then sized from the wb's own dirty
+pages and writes out what the replacement dirtied.
 
-I added a note in order to track David's v3 comment at
-https://lore.kernel.org/abd32250-6ba1-443b-b8e4-7772bcdd325a@kernel.org
+Test, on top of that commit: a cgroup appends to 1000 files at
+250MiB/s and is removed, then a second cgroup keeps appending to the
+same files under a 4G parent limit. Worst lag of the second writer
+behind schedule over 120s, in three runs:
 
-> Changes since v3
-> ================
-> 
->   https://lore.kernel.org/all/20260916093145.4022188-1-kirill@shutemov.name/
-> 
->  - Patch 5: the PTE limits come as two sets, struct collapse_limits for a
->    PMD-sized window and one for anything smaller, and the strict_sub_pmd
->    flag goes.  The warning for a max_ptes_none between 0 and the maximum
->    moves to where khugepaged fills its policy.  The fields only one side
->    reads are prefixed anon_ or file_.  collapse_policy_forced() is
->    collapse_policy_madvise() (David).
-> 
->  - Patch 8 is new: collapse_file() is called from collapse_single_pmd()
->    rather than from inside collapse_scan_file(), so the file scan stops at
->    the decision before the scan/run split.  The writeback retry and the
->    tracepoint change move into it, so patch 9 is only the split (David).
-> 
->  - Patch 9: no collapse_control_release().  It had nothing to release in
->    this series; it comes back with the engine, where init allocates.  The
->    check that the last scan was run stays at the top of collapse_scan_pmd()
->    (David).
-> 
->  - Patch 10: the changelog says why the lock boundary belongs to the
->    caller (David).
-> 
->  - Patch 11: both callers pass their TVA type as the literal it is rather
->    than reading it back from the policy (David).
-> 
->  - Patch 12: kerneldoc on every function collapse.h declares (David).
-> 
->  - Acked-by from David Hildenbrand on 1-4, 6 and 7; Reviewed-by from
->    Baolin Wang on 10.  Reviewed-by dropped from 5 and 9, which changed.
+  without this patch   85.3s  46.9s  52.1s
+  with this patch       1.0s   1.0s   1.4s
 
-Here's how v4 altered mm.git.  It's substantial:
+Suggested-by: Tejun Heo <tj@kernel.org>
+Assisted-by: Claude:claude-opus-5-5 checkpatch sparse
+Signed-off-by: Liz Fong-Jones <lizf@honeycomb.io>
+---
+At Honeycomb, a container that reads from Kafka and writes columnar
+files to a host volume stalls for 30-60s after each deploy replaces it
+(v6.18). We're increasingly confident this is the cause: the stall
+looks the same as in the reproducer (little CPU use, lag growing
+linearly and then recovering), and the mitigation it predicts, moving
+our final syncfs after the last write, worked in production (below).
+We haven't caught it with probes in production yet.
 
+Based on vfs-7.4.misc, next to Xin Yin's 168a8c13159c, which fixes the
+sizing but not the lookup of a removed cgroup's wb. Each helps without
+the other; this one also applies cleanly to mainline. On mainline
+(fd179f8a05be), without 168a8c13159c, the test from the changelog gave
+52.8s, 73.3s and 5.2s worst lag before this patch and 3.9s, 1.0s and
+1.0s after.
 
- mm/collapse.h   |   38 +++++---
- mm/khugepaged.c |  199 +++++++++++++++++++++++-----------------------
- mm/madvise.c    |   25 +++--
- 3 files changed, 139 insertions(+), 123 deletions(-)
+Trigger: a cgroup dirties files and is removed while they are still
+dirty; a sibling keeps appending to the same files under a parent memory
+limit. Symptom: cgroup_writeback_by_id() returns -ENOENT and the sibling
+stalls in balance_dirty_pages(). Minimal recipe below; the harness that
+produced the numbers (paced writer, lag per second, MODE=alive control)
+is at https://gist.github.com/lizthegrey/2209d831930588f63076bdc0ac7b78e2.
 
---- a/mm/collapse.h~b
-+++ a/mm/collapse.h
-@@ -45,27 +45,37 @@ enum scan_result {
- 	SCAN_PAGE_DIRTY_OR_WRITEBACK,
- };
- 
--/* What a collapse is allowed to do, decided by the caller that asks for it */
--struct collapse_policy {
--	/* Limits, stated per PMD; HPAGE_PMD_NR means "no limit" */
-+/* How many PTEs of a window may be missing, swapped out or shared */
-+struct collapse_limits {
-+	/* Counted over a PMD-sized window; HPAGE_PMD_NR means "no limit" */
- 	unsigned int max_ptes_none;
- 	unsigned int max_ptes_swap;
- 	unsigned int max_ptes_shared;
-+};
-+
-+/* What a collapse is allowed to do, decided by the caller that asks for it */
-+struct collapse_policy {
-+	/* Limits for a PMD-sized window */
-+	struct collapse_limits pmd;
- 
--	/* Take no swapped-out or shared PTE into a sub-PMD collapse */
--	bool strict_sub_pmd;
-+	/*
-+	 * Limits for a smaller window.  Its max_ptes_none is either 0 or
-+	 * COLLAPSE_MAX_PTES_LIMIT, the latter meaning all but one PTE of the
-+	 * window whatever its order; any other value counts as 0.
-+	 */
-+	struct collapse_limits sub_pmd;
- 
- 	/* Leave clean lazyfree folios to reclaim rather than collapse them */
--	bool skip_lazyfree;
-+	bool anon_skip_lazyfree;
- 
--	/* Refuse a range with no sign of use */
--	bool require_referenced;
-+	/* Refuse an anonymous range with no sign of use */
-+	bool anon_require_referenced;
- 
- 	/* Map the PMD over a file collapse instead of leaving it to a fault */
--	bool install_pmd;
-+	bool file_install_pmd;
- 
- 	/* Write dirty pages back and retry once instead of refusing them */
--	bool writeback_dirty;
-+	bool file_writeback_dirty;
- 
- 	/* How hard to try for a destination folio */
- 	gfp_t gfp;
-@@ -115,14 +125,13 @@ unsigned long collapse_possible_orders(s
-  *     collapse_control_init(cc)              once, before the first table
-  *     collapse_scan_pmd(vma, addr, ...)      per table
-  *     collapse_run_pmd(mm, addr, result, cc) when a scan found work
-- *     collapse_control_release(cc)           once, when done with the control
-  *
-  * The caller holds mmap_lock for reading over the scan and passes an address
-  * within @vma, aligned to the PTE table to scan.
-  *
-- * The scan returns with that lock still held.  It only reads, and almost every
-- * table it is offered has nothing to collapse, so a caller walks a whole VMA
-- * under the one lock it took to get there.  SCAN_SUCCEED means there is
-+ * The scan returns with that lock still held.  Almost every table it is
-+ * offered has nothing to collapse, so a caller walks a whole VMA under the one
-+ * lock it took to get there.  SCAN_SUCCEED means there is
-  * something to collapse.  SCAN_PTE_MAPPED_HUGEPAGE means the page cache
-  * already holds the PMD folio and only the PTE table is left to retract.
-  * Both are work for the run, which is handed what the scan returned; anything
-@@ -140,7 +149,6 @@ unsigned long collapse_possible_orders(s
-  * gives it back.
-  */
- void collapse_control_init(struct collapse_control *cc);
--void collapse_control_release(struct collapse_control *cc);
- enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
- 		unsigned long addr, struct collapse_control *cc,
- 		unsigned long orders);
---- a/mm/khugepaged.c~b
-+++ a/mm/khugepaged.c
-@@ -314,27 +314,17 @@ static bool pte_none_or_zero(pte_t pte)
- static unsigned int collapse_max_ptes_none(struct collapse_control *cc,
- 		struct vm_area_struct *vma, unsigned int order)
- {
--	const unsigned int max_ptes_none = cc->policy.max_ptes_none;
-+	unsigned int max_ptes_none;
- 
- 	if (vma && userfaultfd_armed(vma))
- 		return 0;
--	/* The limit as given, at the PMD order and wherever it is not capped */
--	if (is_pmd_order(order) || !cc->policy.strict_sub_pmd)
--		return max_ptes_none;
--	/*
--	 * for mTHP collapse with the sysctl value set to COLLAPSE_MAX_PTES_LIMIT,
--	 * scale the maximum number of PTEs to the order of the collapse.
--	 */
-+	if (is_pmd_order(order))
-+		return cc->policy.pmd.max_ptes_none;
-+
-+	/* Below PMD order: all but one PTE of the window, or none */
-+	max_ptes_none = cc->policy.sub_pmd.max_ptes_none;
- 	if (max_ptes_none == COLLAPSE_MAX_PTES_LIMIT)
- 		return (1 << order) - 1;
--	/*
--	 * For mTHP collapse of values other than 0 or COLLAPSE_MAX_PTES_LIMIT,
--	 * emit a warning and return 0.
--	 */
--	if (max_ptes_none)
--		pr_warn_once("mTHP collapse does not support max_ptes_none"
--		     " values other than 0 or %u, defaulting to 0.\n",
--		     COLLAPSE_MAX_PTES_LIMIT);
- 	return 0;
- }
- 
-@@ -350,13 +340,9 @@ static unsigned int collapse_max_ptes_no
- static unsigned int collapse_max_ptes_shared(struct collapse_control *cc,
- 		unsigned int order)
- {
--	/*
--	 * A sub-PMD window held to the strict rule takes no shared page at all:
--	 * an mTHP is not worth the CoW-breaking.
--	 */
--	if (!is_pmd_order(order) && cc->policy.strict_sub_pmd)
--		return 0;
--	return cc->policy.max_ptes_shared;
-+	if (is_pmd_order(order))
-+		return cc->policy.pmd.max_ptes_shared;
-+	return cc->policy.sub_pmd.max_ptes_shared;
- }
- 
- /**
-@@ -371,13 +357,9 @@ static unsigned int collapse_max_ptes_sh
- static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
- 		unsigned int order)
- {
--	/*
--	 * A sub-PMD window held to the strict rule takes nothing non-present:
--	 * reading pages back to build an mTHP is not worth the latency.
--	 */
--	if (!is_pmd_order(order) && cc->policy.strict_sub_pmd)
--		return 0;
--	return cc->policy.max_ptes_swap;
-+	if (is_pmd_order(order))
-+		return cc->policy.pmd.max_ptes_swap;
-+	return cc->policy.sub_pmd.max_ptes_swap;
- }
- 
- int hugepage_madvise(struct vm_area_struct *vma,
-@@ -494,9 +476,16 @@ void __khugepaged_enter(struct mm_struct
- 		wake_up_interruptible(&khugepaged_wait);
- }
- 
--/*
-- * Check what orders are possible based on the vma and collapse type.
-- * This is used to determine if mTHP collapse is a viable option.
-+/**
-+ * collapse_possible_orders - which orders a VMA may collapse to
-+ * @vma: the VMA
-+ * @vm_flags: its flags, passed separately where they are about to change
-+ * @tva_flags: who is asking, as thp_vma_allowable_orders() spells it
-+ *
-+ * khugepaged may collapse anonymous memory to any enabled order; everything
-+ * else collapses to PMD order only.
-+ *
-+ * Return: the orders as a bitmask, zero when the VMA may not collapse at all.
-  */
- unsigned long collapse_possible_orders(struct vm_area_struct *vma,
- 		vm_flags_t vm_flags, enum tva_type tva_flags)
-@@ -658,7 +647,7 @@ static enum scan_result __collapse_huge_
- 		 * If the vma has the VM_DROPPABLE flag, the collapse will
- 		 * preserve the lazyfree property without needing to skip.
- 		 */
--		if (cc->policy.skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-+		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
- 			goto out;
-@@ -747,12 +736,12 @@ static enum scan_result __collapse_huge_
- 		if (folio_test_large(folio))
- 			list_add_tail(&folio->lru, compound_pagelist);
- next:
--		if (cc->policy.require_referenced &&
-+		if (cc->policy.anon_require_referenced &&
- 		    folio_pte_referenced(folio, vma, addr, pteval))
- 			referenced++;
- 	}
- 
--	if (unlikely(cc->policy.require_referenced && !referenced)) {
-+	if (unlikely(cc->policy.anon_require_referenced && !referenced)) {
- 		result = SCAN_LACK_REFERENCED_PAGE;
- 	} else {
- 		result = SCAN_SUCCEED;
-@@ -957,14 +946,28 @@ static inline gfp_t alloc_hugepage_khuge
- /* khugepaged collapses on its own initiative, so it obeys its own settings */
- static void collapse_policy_khugepaged(struct collapse_policy *p)
- {
--	p->max_ptes_none = READ_ONCE(khugepaged_max_ptes_none);
--	p->max_ptes_swap = READ_ONCE(khugepaged_max_ptes_swap);
--	p->max_ptes_shared = READ_ONCE(khugepaged_max_ptes_shared);
--	p->strict_sub_pmd = true;
--	p->skip_lazyfree = true;
--	p->require_referenced = true;
--	p->install_pmd = false;
--	p->writeback_dirty = false;
-+	p->pmd.max_ptes_none = READ_ONCE(khugepaged_max_ptes_none);
-+	p->pmd.max_ptes_swap = READ_ONCE(khugepaged_max_ptes_swap);
-+	p->pmd.max_ptes_shared = READ_ONCE(khugepaged_max_ptes_shared);
-+
-+	/*
-+	 * A sub-PMD window takes no swapped-out and no shared PTE: reading
-+	 * pages back or breaking CoW is not worth it for an mTHP.  Empty PTEs
-+	 * it takes all or nothing, since anything in between would let one
-+	 * collapse feed the next.
-+	 */
-+	p->sub_pmd.max_ptes_none = p->pmd.max_ptes_none;
-+	if (p->sub_pmd.max_ptes_none &&
-+	    p->sub_pmd.max_ptes_none != COLLAPSE_MAX_PTES_LIMIT)
-+		pr_warn_once("mTHP collapse does not support max_ptes_none values other than 0 or %u, defaulting to 0.\n",
-+			     COLLAPSE_MAX_PTES_LIMIT);
-+	p->sub_pmd.max_ptes_swap = 0;
-+	p->sub_pmd.max_ptes_shared = 0;
-+
-+	p->anon_skip_lazyfree = true;
-+	p->anon_require_referenced = true;
-+	p->file_install_pmd = false;
-+	p->file_writeback_dirty = false;
- 	p->gfp = alloc_hugepage_khugepaged_gfpmask();
- 	p->tva_type = TVA_KHUGEPAGED;
- }
-@@ -995,11 +998,20 @@ static int collapse_find_target_node(str
- }
+Syncing before the removal isn't enough: cleanup_offline_cgwbs_workfn()
+skips a dying wb with any dirty inode and only retries on the next memcg
+offline. On ext4, syncfs can leave inodes I_DIRTY_SYNC: at 5000 files
+one syncfs still stalled in 7 of 9 runs (19-26s worst lag), a second
+syncfs avoided it in 5 of 5, and with this patch one syncfs lagged at
+most 1.5s in 3 of 3. On XFS one syncfs left the wb clean in 5 of 5 runs,
+but a single 4KiB append from the old cgroup after it stranded the wb
+again (15-28s worst lag, 5 of 5; 1.0-1.1s with this patch). In
+production, our writer synced after closing its data files but before
+writing its final Kafka offset to a small shutdown file, and moving the
+syncfs after that write mitigated the stall for us on XFS. In the
+reproducer, a 14-byte file written after the syncfs stranded the wb the
+same way, whether created directly or via a temp file and rename (16-29s
+worst lag, 7 of 7; 1.1-1.2s with this patch); an empty file did not.
+
+Harness settings for all numbers: MEM_MAX=max POD_MAX=4G RATE_MBPS=250,
+plus NFILES=5000 SYNC_OLD=1 (or 2) and DIRTY_AFTER=1 or
+SHUTDOWN_FILE=offset|offset_rename|empty for the syncfs runs and
+NFILES=500000 OLD_SECS=120 SYNC_OLD=1 POD_HOP=10 for the 500k-file runs.
+
+Also reproduced unpatched on bare-metal arm64 with Ubuntu's 7.0 kernel
+(ext4 on a loop device): 12.9s worst lag with the old cgroup removed,
+2.5s with it kept.
+
+Tested: arm64 KVM guests (virtme-ng), ext4 and XFS on virtio. No KASAN,
+lockdep, PROVE_RCU, DEBUG_LIST, DEBUG_OBJECTS_WORK, DEBUG_ATOMIC_SLEEP
+or DEBUG_PAGEALLOC reports, including a stress run toggling io on the
+parent of two writers 40 times so their wbs are killed and replaced in
+the same slot (160 takeovers, checked with temporary trace_printk()s).
+W=1 and checkpatch --strict clean, no new sparse warnings. All changes
+are under CONFIG_CGROUP_WRITEBACK; only arm64 builds with it enabled
+were done for v2.
+
+Not tested: x86 runtime, this patch in production, linux-next.
+
+Workaround until this lands: syncfs after the old container's last
+write (twice on ext4). Lowering vm.dirty_expire_centisecs from 3000 to
+500 cut the worst lag on unpatched mainline to 4.8s, 4.6s and 14.3s, but
+did not remove the stall.
+
+Related: without 168a8c13159c the flush is sized from the dead memcg's
+own dirty pages, so this only helps while it has some. f6988c90671e
+(mainline) also matters: on XFS with 500k synced inodes and the pod
+cgroup removed 10s later, the handover was slow enough without it that
+the replacement fell 21-22s behind (vfs-7.4.misc), against 1.0-1.2s
+with it (mainline).
+
+Not covered: when a live memcg's blkcg association changes, the new wb
+takes over the slot, and a killed wb with dirty inodes is unreachable
+again, as before this patch.
+
+Developed with Claude Opus 5.5, which wrote the code, the reproducers
+and first drafts of this text, and ran the builds and VM tests. I drove
+the investigation from the production symptoms, designed the
+experiments and controls (repeated runs, parent-commit baselines,
+testing this patch on its own), and reviewed the analysis, code and
+results.
+
+Minimal recipe:
+	#!/bin/bash
+	# As root, cgroup v2, in a directory on ext4/xfs/btrfs ($DIR).
+	cg=/sys/fs/cgroup/wbmini
+	mkdir $cg && echo +memory > $cg/cgroup.subtree_control
+	echo 4G > $cg/memory.max
+	mkdir $cg/old $cg/new
+	append() {  # append $1 blocks of $2 to each of 1000 files
+		for i in $(seq 1000); do
+			dd if=/dev/zero of=$DIR/f$i bs=$2 count=$1 \
+			   oflag=append conv=notrunc status=none
+		done
+	}
+	(echo $BASHPID > $cg/old/cgroup.procs
+	 append 8 1M            # old owner writes the files...
+	 append 1 64k)          # ...and exits with all of them dirty
+	rmdir $cg/old           # its cgroup goes away while they are dirty
+	bpftrace -e 'kretprobe:cgroup_writeback_by_id { @ret[(int32)retval] = count(); }' &
+	sleep 3
+	time (echo $BASHPID > $cg/new/cgroup.procs
+	      append 4 1M)      # replacement keeps appending to the same files
+	kill -INT $!; wait
+	rmdir $cg/new $cg
+	# Unpatched: many @ret[-2] (-ENOENT) and the append stalls.
+	# Patched: @ret[0] only.
+---
+Changes in v2:
+- Keep killed wbs in bdi->cgwb_tree until release instead of walking
+  bdi->wb_list (Tejun)
+- Drop Fixes: and Cc: stable (Tejun)
+- Link to v1: https://patch.msgid.link/20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io
+---
+ include/linux/backing-dev-defs.h | 13 +++++-
+ include/linux/backing-dev.h      |  2 +-
+ mm/backing-dev.c                 | 86 ++++++++++++++++++++++++++++++++--------
+ 3 files changed, 83 insertions(+), 18 deletions(-)
+
+diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+index 4f1084937315..035d25f5b81b 100644
+--- a/include/linux/backing-dev-defs.h
++++ b/include/linux/backing-dev-defs.h
+@@ -196,7 +196,7 @@ struct backing_dev_info {
+ 	struct bdi_writeback wb;  /* the root writeback info for this bdi */
+ 	struct list_head wb_list; /* list of all wbs */
+ #ifdef CONFIG_CGROUP_WRITEBACK
+-	struct radix_tree_root cgwb_tree; /* radix tree of active cgroup wbs */
++	struct radix_tree_root cgwb_tree; /* radix tree of cgroup wbs, incl. killed */
+ 	struct mutex cgwb_release_mutex;  /* protect shutdown of wb structs */
+ 	struct rw_semaphore wb_switch_rwsem; /* no cgwb switch while syncing */
  #endif
- 
--/*
-- * Find the VMA at @address again once mmap_lock has been given up and taken
-- * back, and check it still allows a collapse of @order there.  The VMA has to
-- * span the whole PMD whatever @order is; with @expect_anon it also has to be
-- * anonymous and have an anon_vma.  *@vmap is the VMA found, if any.
-+/**
-+ * collapse_vma_revalidate - look a VMA up again after mmap_lock was dropped
-+ * @mm: the mm
-+ * @address: an address within the PTE table being collapsed
-+ * @expect_anon: the collapse started on an anonymous VMA
-+ * @vmap: the VMA found, if any
-+ * @cc: the control, for the policy that says who is asking
-+ * @order: the order the collapse is going for
-+ *
-+ * Called with mmap_lock held, for reading or writing, once it has been given up
-+ * and taken back.  The VMA has to span the whole PMD whatever @order is; with
-+ * @expect_anon it also has to be anonymous and have an anon_vma.
-+ *
-+ * Return: SCAN_SUCCEED, or why a collapse of @order at @address is off.
-  */
- enum scan_result collapse_vma_revalidate(struct mm_struct *mm, unsigned long address,
- 		bool expect_anon, struct vm_area_struct **vmap,
-@@ -1667,7 +1679,7 @@ static enum scan_result collapse_scan_an
- 		 * If the vma has the VM_DROPPABLE flag, the collapse will
- 		 * preserve the lazyfree property without needing to skip.
- 		 */
--		if (cc->policy.skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-+		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
- 			failed_pfn = folio_pfn(folio);
-@@ -1733,11 +1745,11 @@ static enum scan_result collapse_scan_an
- 			goto out_unmap;
- 		}
- 
--		if (cc->policy.require_referenced &&
-+		if (cc->policy.anon_require_referenced &&
- 		    folio_pte_referenced(folio, vma, addr, pteval))
- 			referenced++;
- 	}
--	if (cc->policy.require_referenced &&
-+	if (cc->policy.anon_require_referenced &&
- 	    (!referenced ||
- 	     (unmapped && referenced < HPAGE_PMD_NR / 2))) {
- 		result = SCAN_LACK_REFERENCED_PAGE;
-@@ -2592,7 +2604,7 @@ immap_locked:
- 	 * caller that wants the PMD mapped now is told to go and do that.
- 	 */
- 	retract_page_tables(mapping, start);
--	if (cc->policy.install_pmd)
-+	if (cc->policy.file_install_pmd)
- 		result = SCAN_PTE_MAPPED_HUGEPAGE;
- 	folio_unlock(new_folio);
- 
-@@ -2749,44 +2761,34 @@ static enum scan_result collapse_scan_fi
- 	return result;
+@@ -229,6 +229,17 @@ static inline bool wb_tryget(struct bdi_writeback *wb)
+ 	return true;
  }
  
--/* Set up a control before its first scan; cc->policy is the caller's to fill */
 +/**
-+ * collapse_control_init - set up a control before its first scan
-+ * @cc: the control the caller carries across its scans
-+ *
-+ * cc->policy is the caller's to fill.
++ * wb_tryget_live - try to increment a wb's refcount if it hasn't been killed
++ * @wb: bdi_writeback to get
 + */
- void collapse_control_init(struct collapse_control *cc)
- {
- 	cc->progress = 0;
- 	cc->scan_file = NULL;
- }
- 
--/* A scan that took a file reference should have been run */
--static void collapse_put_scan_file(struct collapse_control *cc)
--{
--	if (WARN_ON_ONCE(cc->scan_file)) {
--		fput(cc->scan_file);
--		cc->scan_file = NULL;
--	}
--}
--
--/*
-- * Done with a control.  A scan that found something has to have been run by
-- * then: the file side takes a reference on the file while it still has the
-- * VMA to take it from, and the run is what gives it back.
-- */
--void collapse_control_release(struct collapse_control *cc)
--{
--	collapse_put_scan_file(cc);
--}
--
--/*
-- * Scan the PTE table of @vma at @addr for a collapse candidate.  @addr is
-- * aligned to the table; @orders is what the caller allows there.
-+/**
-+ * collapse_scan_pmd - scan one PTE table for a collapse candidate
-+ * @vma: the VMA the table belongs to
-+ * @addr: start of the table, PMD aligned
-+ * @cc: the caller's control
-+ * @orders: the orders the caller allows for @vma
-  *
-- * Called with mmap_lock held for reading and returns with it still held.  It
-- * only reads, and almost every table it is offered has nothing to collapse,
-- * so a caller walks a whole VMA under the one lock it took to get there.
-- *
-- * SCAN_SUCCEED means there is something to collapse.  SCAN_PTE_MAPPED_HUGEPAGE
-- * means the page cache already holds the PMD folio and only the PTE table is
-- * left to retract.  Both are work for collapse_run_pmd(), which is handed
-- * what the scan returned; anything else is why there is nothing to do.
-+ * Called with mmap_lock held for reading and returns with it still held.
-+ * Almost every table it is offered has nothing to collapse, so a caller walks
-+ * a whole VMA under the one lock it took to get there.
-+ *
-+ * Return: SCAN_SUCCEED when there is something to collapse;
-+ * SCAN_PTE_MAPPED_HUGEPAGE when the page cache already holds the PMD folio and
-+ * only the PTE table is left to retract.  Both are work for collapse_run_pmd(),
-+ * which is handed what the scan returned.  Anything else is why there is
-+ * nothing to do.
-  */
- enum scan_result collapse_scan_pmd(struct vm_area_struct *vma,
- 		unsigned long addr, struct collapse_control *cc,
-@@ -2797,7 +2799,10 @@ enum scan_result collapse_scan_pmd(struc
- 
- 	mmap_assert_locked(vma->vm_mm);
- 	/* Whatever the last scan found has to have been run by now */
--	collapse_put_scan_file(cc);
-+	if (WARN_ON_ONCE(cc->scan_file)) {
-+		fput(cc->scan_file);
-+		cc->scan_file = NULL;
-+	}
- 
- 	if (vma_is_anonymous(vma))
- 		return collapse_scan_anon_pmd(vma, addr, cc, orders);
-@@ -2820,15 +2825,20 @@ enum scan_result collapse_scan_pmd(struc
- 	return result;
- }
- 
--/*
-- * Collapse the table a scan found work in.  @result is what the scan
-- * returned.
-+/**
-+ * collapse_run_pmd - collapse the table a scan found work in
-+ * @mm: the mm
-+ * @addr: start of the table, as given to the scan
-+ * @result: what the scan returned
-+ * @cc: the control the scan ran with
-  *
-  * Called without mmap_lock and returns without it, taking what it needs in
-  * between: what it does -- allocate, isolate, copy, flush -- is slow enough
-  * that a writer would wait behind it.  The caller gives the lock up first,
-  * and with it the VMA and anything derived under it.  The run revalidates for
-  * itself rather than trusting what the scan saw.
-+ *
-+ * Return: what the collapse made of the table.
-  */
- enum scan_result collapse_run_pmd(struct mm_struct *mm, unsigned long addr,
- 		enum scan_result result, struct collapse_control *cc)
-@@ -2845,12 +2855,12 @@ enum scan_result collapse_run_pmd(struct
- 
- 	/* The scan found the PMD folio in place: nothing to collapse */
- 	if (result == SCAN_PTE_MAPPED_HUGEPAGE)
--		goto retract;
-+		goto put;
- retry:
- 	result = collapse_file(mm, addr, file, pgoff, cc);
- 
- 	/* Dirty pages are worth a writeback and one more try, if asked for */
--	if (cc->policy.writeback_dirty && result == SCAN_PAGE_DIRTY_OR_WRITEBACK &&
-+	if (cc->policy.file_writeback_dirty && result == SCAN_PAGE_DIRTY_OR_WRITEBACK &&
- 	    !triggered_wb && mapping_can_writeback(file->f_mapping)) {
- 		const loff_t lstart = (loff_t)pgoff << PAGE_SHIFT;
- 		const loff_t lend = lstart + HPAGE_PMD_SIZE - 1;
-@@ -2859,7 +2869,7 @@ retry:
- 		triggered_wb = true;
- 		goto retry;
- 	}
--retract:
-+put:
- 	fput(file);
- 
- 	/*
-@@ -2872,7 +2882,7 @@ retract:
- 			result = SCAN_ANY_PROCESS;
- 		else
- 			result = try_collapse_pte_mapped_thp(mm, addr,
--							cc->policy.install_pmd);
-+							cc->policy.file_install_pmd);
- 		if (result == SCAN_PMD_MAPPED)
- 			result = SCAN_SUCCEED;
- 		mmap_read_unlock(mm);
-@@ -2928,7 +2938,7 @@ static void collapse_scan_mm_slot(unsign
- 		}
- 		/* One mask for the whole VMA */
- 		orders = collapse_possible_orders(vma, vma->vm_flags,
--						  cc->policy.tva_type);
-+						  TVA_KHUGEPAGED);
- 		if (!orders) {
- 			cc->progress++;
- 			continue;
-@@ -3032,7 +3042,6 @@ static void khugepaged_do_scan(struct co
- 	lru_add_drain_all();
- 
- 	collapse_control_init(cc);
--	/* One policy for the whole pass, so every table is treated the same */
- 	collapse_policy_khugepaged(&cc->policy);
- 
- 	while (true) {
-@@ -3065,8 +3074,6 @@ static void khugepaged_do_scan(struct co
- 			khugepaged_alloc_sleep();
- 		}
- 	}
--
--	collapse_control_release(cc);
- }
- 
- static bool khugepaged_should_wakeup(void)
---- a/mm/madvise.c~b
-+++ a/mm/madvise.c
-@@ -910,16 +910,18 @@ bool madvise_dontneed_free_valid_vma(str
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 
- /* MADV_COLLAPSE was asked for explicitly, so it is not held to those */
--static void collapse_policy_forced(struct collapse_policy *p)
-+static void collapse_policy_madvise(struct collapse_policy *p)
- {
--	p->max_ptes_none = HPAGE_PMD_NR;
--	p->max_ptes_swap = HPAGE_PMD_NR;
--	p->max_ptes_shared = HPAGE_PMD_NR;
--	p->strict_sub_pmd = false;
--	p->skip_lazyfree = false;
--	p->require_referenced = false;
--	p->install_pmd = true;
--	p->writeback_dirty = true;
-+	p->pmd.max_ptes_none = HPAGE_PMD_NR;
-+	p->pmd.max_ptes_swap = HPAGE_PMD_NR;
-+	p->pmd.max_ptes_shared = HPAGE_PMD_NR;
-+	/* Never read: MADV_COLLAPSE collapses to PMD order only */
-+	p->sub_pmd = p->pmd;
++static inline bool wb_tryget_live(struct bdi_writeback *wb)
++{
++	if (wb != &wb->bdi->wb)
++		return percpu_ref_tryget_live(&wb->refcnt);
++	return true;
++}
 +
-+	p->anon_skip_lazyfree = false;
-+	p->anon_require_referenced = false;
-+	p->file_install_pmd = true;
-+	p->file_writeback_dirty = true;
- 	p->gfp = GFP_TRANSHUGE;
- 	p->tva_type = TVA_FORCED_COLLAPSE;
+ /**
+  * wb_get - increment a wb's refcount
+  * @wb: bdi_writeback to get
+diff --git a/include/linux/backing-dev.h b/include/linux/backing-dev.h
+index c2284466e7aa..f7ef5895625a 100644
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -222,7 +222,7 @@ wb_get_create_current(struct backing_dev_info *bdi, gfp_t gfp)
+ 
+ 	rcu_read_lock();
+ 	wb = wb_find_current(bdi);
+-	if (wb && unlikely(!wb_tryget(wb)))
++	if (wb && unlikely(!wb_tryget_live(wb)))
+ 		wb = NULL;
+ 	rcu_read_unlock();
+ 
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index cecbcf9060a6..a74caa5c348a 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -614,6 +614,11 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 						release_work);
+ 	struct backing_dev_info *bdi = wb->bdi;
+ 
++	/* a newer wb may have taken the slot, see cgwb_create() */
++	spin_lock_irq(&cgwb_lock);
++	radix_tree_delete_item(&bdi->cgwb_tree, wb->memcg_css->id, wb);
++	spin_unlock_irq(&cgwb_lock);
++
+ 	mutex_lock(&wb->bdi->cgwb_release_mutex);
+ 	wb_shutdown(wb);
+ 
+@@ -645,11 +650,23 @@ static void cgwb_release(struct percpu_ref *refcnt)
+ 	queue_work(cgwb_release_wq, &wb->release_work);
  }
-@@ -984,7 +986,7 @@ static int madvise_collapse(struct madvi
- 	if (!cc)
- 		return -ENOMEM;
- 	collapse_control_init(cc);
--	collapse_policy_forced(&cc->policy);
-+	collapse_policy_madvise(&cc->policy);
  
- 	lru_add_drain_all();
++static bool cgwb_dying(struct bdi_writeback *wb)
++{
++	lockdep_assert_held(&cgwb_lock);
++
++	return percpu_ref_is_dying(&wb->refcnt);
++}
++
++/*
++ * A killed wb stays in bdi->cgwb_tree until it is released, so that foreign
++ * flushes can still find it through wb_get_lookup().  Inodes attached to it
++ * can keep collecting dirty pages from other memcgs until they are written
++ * back and switched away.
++ */
+ static void cgwb_kill(struct bdi_writeback *wb)
+ {
+ 	lockdep_assert_held(&cgwb_lock);
  
-@@ -1010,7 +1012,7 @@ static int madvise_collapse(struct madvi
- 			vma = found;
- 			hend = min(hend, vma->vm_end & HPAGE_PMD_MASK);
- 			orders = collapse_possible_orders(vma, vma->vm_flags,
--							  cc->policy.tva_type);
-+							  TVA_FORCED_COLLAPSE);
- 		}
+-	WARN_ON(!radix_tree_delete(&wb->bdi->cgwb_tree, wb->memcg_css->id));
+ 	list_del(&wb->memcg_node);
+ 	list_del(&wb->blkcg_node);
+ 	list_add(&wb->offline_node, &offline_cgwbs);
+@@ -670,6 +687,7 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	struct cgroup_subsys_state *blkcg_css;
+ 	struct list_head *memcg_cgwb_list, *blkcg_cgwb_list;
+ 	struct bdi_writeback *wb;
++	void __rcu **slot;
+ 	unsigned long flags;
+ 	int ret = 0;
  
- 		result = collapse_scan_pmd(vma, addr, cc, orders);
-@@ -1056,7 +1058,6 @@ out:
- 		mmap_read_lock(mm);
- out_locked:
- 	mmap_assert_locked(mm);
--	collapse_control_release(cc);
- 	kfree(cc);
+@@ -681,10 +699,10 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	/* look up again under lock and discard on blkcg mismatch */
+ 	spin_lock_irqsave(&cgwb_lock, flags);
+ 	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
+-	if (wb && wb->blkcg_css != blkcg_css) {
++	if (wb && !cgwb_dying(wb) && wb->blkcg_css != blkcg_css)
+ 		cgwb_kill(wb);
++	if (wb && cgwb_dying(wb))
+ 		wb = NULL;
+-	}
+ 	spin_unlock_irqrestore(&cgwb_lock, flags);
+ 	if (wb)
+ 		goto out_put;
+@@ -727,8 +745,20 @@ static int cgwb_create(struct backing_dev_info *bdi,
+ 	spin_lock_irqsave(&cgwb_lock, flags);
+ 	if (test_bit(WB_registered, &bdi->wb.state) &&
+ 	    blkcg_cgwb_list->next && memcg_cgwb_list->next) {
+-		/* we might have raced another instance of this function */
+-		ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
++		/*
++		 * We might have raced another instance of this function.  A
++		 * dying wb keeps its slot until released; take it over.
++		 */
++		slot = radix_tree_lookup_slot(&bdi->cgwb_tree, memcg_css->id);
++		if (!slot) {
++			ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
++		} else if (cgwb_dying(radix_tree_deref_slot_protected(slot,
++								      &cgwb_lock))) {
++			radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
++			ret = 0;
++		} else {
++			ret = -EEXIST;
++		}
+ 		if (!ret) {
+ 			list_add_tail_rcu(&wb->bdi_node, &bdi->wb_list);
+ 			list_add(&wb->memcg_node, memcg_cgwb_list);
+@@ -768,10 +798,29 @@ static int cgwb_create(struct backing_dev_info *bdi,
+  * Try to get the wb for @memcg_css on @bdi.  The returned wb has its
+  * refcount incremented.
+  *
+- * This function uses css_get() on @memcg_css and thus expects its refcnt
+- * to be positive on invocation.  IOW, rcu_read_lock() protection on
+- * @memcg_css isn't enough.  try_get it before calling this function.
+- *
++ * The wb may have been killed and its blkcg association may be stale.  This
++ * is what foreign flushes want: they target the wb that owns the dirty
++ * inodes, which can be a killed one.  Use wb_get_create() to get a wb to
++ * attach inodes to.
++ */
++struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
++				    struct cgroup_subsys_state *memcg_css)
++{
++	struct bdi_writeback *wb;
++
++	if (!memcg_css->parent)
++		return &bdi->wb;
++
++	rcu_read_lock();
++	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
++	if (wb && !wb_tryget(wb))
++		wb = NULL;
++	rcu_read_unlock();
++
++	return wb;
++}
++
++/*
+  * A wb is keyed by its associated memcg.  As blkcg implicitly enables
+  * memcg on the default hierarchy, memcg association is guaranteed to be
+  * more specific (equal or descendant to the associated blkcg) and thus can
+@@ -782,9 +831,13 @@ static int cgwb_create(struct backing_dev_info *bdi,
+  * both the memcg and blkcg associated with it and verifies the blkcg on
+  * each lookup.  On mismatch, the existing wb is discarded and a new one is
+  * created.
++ *
++ * This function uses css_get() on @memcg_css and thus expects its refcnt
++ * to be positive on invocation.  IOW, rcu_read_lock() protection on
++ * @memcg_css isn't enough.  try_get it before calling this function.
+  */
+-struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+-				    struct cgroup_subsys_state *memcg_css)
++static struct bdi_writeback *cgwb_get_live(struct backing_dev_info *bdi,
++					   struct cgroup_subsys_state *memcg_css)
+ {
+ 	struct bdi_writeback *wb;
  
- 	return thps == ((hend - hstart) >> HPAGE_PMD_SHIFT) ? 0
-_
+@@ -798,7 +851,7 @@ struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+ 
+ 		/* see whether the blkcg association has changed */
+ 		blkcg_css = cgroup_get_e_css(memcg_css->cgroup, &io_cgrp_subsys);
+-		if (unlikely(wb->blkcg_css != blkcg_css || !wb_tryget(wb)))
++		if (unlikely(wb->blkcg_css != blkcg_css || !wb_tryget_live(wb)))
+ 			wb = NULL;
+ 		css_put(blkcg_css);
+ 	}
+@@ -813,8 +866,8 @@ struct bdi_writeback *wb_get_lookup(struct backing_dev_info *bdi,
+  * @memcg_css: cgroup_subsys_state of the target memcg (must have positive ref)
+  * @gfp: allocation mask to use
+  *
+- * Try to get the wb for @memcg_css on @bdi.  If it doesn't exist, try to
+- * create one.  See wb_get_lookup() for more details.
++ * Try to get the live wb for @memcg_css on @bdi.  If it doesn't exist, try
++ * to create one.  See cgwb_get_live() for more details.
+  */
+ struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
+ 				    struct cgroup_subsys_state *memcg_css,
+@@ -825,7 +878,7 @@ struct bdi_writeback *wb_get_create(struct backing_dev_info *bdi,
+ 	might_alloc(gfp);
+ 
+ 	do {
+-		wb = wb_get_lookup(bdi, memcg_css);
++		wb = cgwb_get_live(bdi, memcg_css);
+ 	} while (!wb && !cgwb_create(bdi, memcg_css, gfp));
+ 
+ 	return wb;
+@@ -859,7 +912,8 @@ static void cgwb_bdi_unregister(struct backing_dev_info *bdi)
+ 
+ 	spin_lock_irq(&cgwb_lock);
+ 	radix_tree_for_each_slot(slot, &bdi->cgwb_tree, &iter, 0)
+-		cgwb_kill(*slot);
++		if (!cgwb_dying(*slot))
++			cgwb_kill(*slot);
+ 	spin_unlock_irq(&cgwb_lock);
+ 
+ 	mutex_lock(&bdi->cgwb_release_mutex);
+
+---
+base-commit: 168a8c13159c6e3f0f08da6f8fa2f633a91ba9fd
+change-id: 20260926-wb-dying-cgwb-flush-06e260e2abad
+
+Best regards,
+--  
+Liz Fong-Jones <lizf@honeycomb.io>
 
 
