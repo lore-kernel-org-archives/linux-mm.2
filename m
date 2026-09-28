@@ -4,149 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 883A9C98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 03:24:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9BBFC98328
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 03:27:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DB676B0088; Sun, 27 Sep 2026 23:24:01 -0400 (EDT)
+	id 976F06B008C; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 48C596B008A; Sun, 27 Sep 2026 23:24:01 -0400 (EDT)
+	id 926C46B0092; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3542F6B008C; Sun, 27 Sep 2026 23:24:01 -0400 (EDT)
+	id 83E346B0093; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0545D6B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:24:00 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80F3DA73A8
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:24:00 +0000 (UTC)
-X-FDA: 85261727040.11.19235FC
-Received: from mail-yx2-f40.google.com (mail-yx2-f40.google.com [74.125.224.168])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 925D8A0007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:23:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SMso9FP6;
-	spf=pass (imf25.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.168 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790565838;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5672A6B008C
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:27:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CCE921A0AD8
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:27:10 +0000 (UTC)
+X-FDA: 85261735020.02.E2910FD
+Received: from knight.cons.org (knight.cons.org [212.12.50.241])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CB73D140004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 03:27:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cons.org header.s=default header.b=GxdBFs0+;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of cracauer@cons.org designates 212.12.50.241 as permitted sender) smtp.mailfrom=cracauer@cons.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790566029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t1IQEqIjCBwZZIxvdliQr/avoVNu2GRtPs5ChSnYCfg=;
-	b=KbSQZlFQXNacuzQEBVB2MufO/4aRxW1WvWwEVnZvp8zN9+i8EvDMrFcqAtf6dhoaHTauID
-	oIizpmjVfMiruF/yBq4EMmtdGFpaSXq6QeX66E/xlfOCv1jx0K5LU7rAgbCSTLsJwUH1yM
-	5QtzYAMoz7DyevGAnIC0K+gohdk1J8w=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790565838;
-	b=F5Ad06tXy/KDSlh9OU3Byw0yL1KrJCdlzEUm2BtDVb223TcMW6fum3j0a5xlMJ0zcrUTe6
-	jJpdFcBfpaJX5gAUr6XOr+spjOfyvzFiC1DXqtHuxp76bVffmdE/V0eTCXmeL7QNCAq0Wc
-	zqJPqIAE8eSs0w3Pf6lByKdDEFcVRzA=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SMso9FP6;
-	spf=pass (imf25.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.168 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-yx2-f40.google.com with SMTP id 00721157ae682-8a87fe69060so15798057b3.3
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 20:23:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790565837; cv=none;
-        d=google.com; s=arc-20260327;
-        b=nwadgOy4Fo62MI7/INGO8nw/ZTEXwwJ+NphFNkEz+jx59WYzbnVnTvzPEK39BVDzXz
-         QinIGvNOy3XsV/MQC+/LtvQ+zGW4U+xZq0bJEzrtOdjgj/YLDk8RkxEvgaMtQdUXRls3
-         Nyezu19KUqxXRirWN7Cwq2DXI2LSupy3W1TGXFIv7Hd4/nTu5cEeOQYnTnOBKW7sfS6S
-         ZguV6VqdYWPl6fpOqbm0MyYQA7im4FpufZbFVYdTrXzqybj+F43H3zGZFTKwAalvxtbS
-         e/ntGxrwBnWrUoRjkvbdBI0dfdGBdI8BFc8uMWZm/7JyUwgN9QUfAWniGtYPxM+PLcX8
-         zAgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t1IQEqIjCBwZZIxvdliQr/avoVNu2GRtPs5ChSnYCfg=;
-        fh=dSpQiI+wKK/qWIxwP7t+xiaQ89Fu5ZySYQYXZgXnzQU=;
-        b=MFKiajyTj1gucVChyN/EbVJWnQLVTN/lRewNRVvqBmKNVeEh7BkylZPzRXwNOol4ax
-         z6ApPtG/9GxZFgLiukhxUWSVOdGbCfHDqA/b3KH0dvjkbraMt7jON0teAvUULVhbnI1H
-         IVjAY+9hxpxRsFOKFe8E4aZaGAM05W/6BlJCsAwr5KAyeKMBmtWozvpddX1mB34e/jOj
-         CFh/fQn9L0BDSkw9+24GjyUOnTOkUlvrtvD3/zLF1pR+hKHwDQnUFKYVGz66WgCE3ibe
-         JdNQYxzeHKdKrgGRlyBuBgnWHLCaKAuirUY2MVD4hvG8CSBxiFub5V5UNaFHCXnxX90d
-         le/g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790565837; x=1791170637; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t1IQEqIjCBwZZIxvdliQr/avoVNu2GRtPs5ChSnYCfg=;
-        b=SMso9FP6K722Lyp69IQSdo9Q/Cocgi22u6vgcRaZaL2McJMhDrQY6SSrS/wNGTtKKE
-         y+2ISX5moXjZl0LdyFHMa7kt11sieb/mjXTvm7OQYoZUC8EEgcm+X+oww5Bc+Inblxaz
-         HSn1MePYFxhsbmWy7/WaOUDwdTA88EviWB9XNEGX/LXFICIabsdfd6R4uUQE7rBhIchJ
-         lmZY7iwB5NENFEsxjAmBPiezdbtsY8uO8WRaQUJmeqo6euM24ybSHme7tagIgHo4QPfu
-         ZUFB/yQiaEteHM66vzqN+2D3DIHFLGmUa5j45GteGPFP5BM/P9FYJ/Onveyf/vfSpuXR
-         aH+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790565837; x=1791170637;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t1IQEqIjCBwZZIxvdliQr/avoVNu2GRtPs5ChSnYCfg=;
-        b=Me0yvkZ1U/8kQEZM5UKFvNWp98IlsTogQq+pFk6hTJbrPODFRM+uAHubkMV3zA93iU
-         hYQC+aoRkjZzJnhjMT/2JVEihgGC1O0aozxqoXdL6ra9iO2ZFrgvKYXW79TCJ8/baH/7
-         E0qXowx3jVWH5WwyRC4IK3geTjlbHc23x0sMPmQIW/1W+bk22Q7Lh98QJBjn67c57KDS
-         rLxNwrZOpf74ekcaShQXIGlDJI3C2uzLKCwViYeQNMU6JZle1eQJD2NTJYUbe823oESo
-         Q5RsyWzSnF/v9noy9jG/OTr/B4UQ5SbexnqdHwxudljTl29j/bv58hfRoMJypnUCq92y
-         qE5Q==
-X-Forwarded-Encrypted: i=1; AKwUvBw+Awq1KlLGGtn/rfIjGdzDaQpyxn7okB4Lnk8q6wgHgOQAp1HSvKHH3EOLyHNHLtJqGaYpkbj/hg==@kvack.org
-X-Gm-Message-State: AFq9FYJOQpCU3Nqd3bMTnD4O370B3zgktlM6qaevG1/DCZpjykahazWX
-	/GgX/I8IOFbl0NfD6SyygtK4vQARXteqzbEluYPZJv1sBaoutvbdyGzhuST42HobO0M6isB5cg1
-	tTPAoYvZXlnO7srBm6HNSsCGnD1hcwbI=
-X-Gm-Gg: AYBFou2VZ+w9sYi9ExDbL8I050JDCeaW8S3K7Ux0Y5L+y7eZGtpcjhWUIyAdiwVocng
-	BSW+gc1mVnqNg1Z31T9vMP9CBEnM2vYc4368JauBBVp0zHvxEVWPFYuY8zfUKxZP8VJto7Ys278
-	zdF+56oobO+clsBA+VRzVTXKCoG55WxISa6qEknESN10g9uXoyXaVBsWM+usrgA+/KNY9CZiEkk
-	lvu2iM216UOt0ZJPgmPVKq5QfupUn0MvW3mQrOxudJRc8ixXIGXvYeBCkSQFxH+OHiRqz+l3Jlw
-	aT/jPzquPVN7MI9/DP8TtjjqO3l5b4SH9zhlL9jAQ3w81puvxuTtKKdezaX5QJqYlckzLpG5F1o
-	VAv3IojsBjCNDVYCFnzpcMg==
-X-Received: by 2002:a05:690c:c4e6:b0:8a8:4931:61b5 with SMTP id
- 00721157ae682-8a84940aad1mr42888027b3.30.1790565837502; Sun, 27 Sep 2026
- 20:23:57 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=N0J5HDZxc76uDFcd7IU9j6Jt+sdQub9jiX5ZAdngrhY=;
+	b=18asbmN3NGvAb8OJRV5joGQ/sOprMlHiaJ31vO2Myz4bVLNwIyT+a6Zr/EWKzqEQvYbgkL
+	nMa2h3toi7JA2dYsB+lKdbhh4LaRgeL5zxEqAjzU4wN1QcYACwUuIInoKiwjcsbhpVn28F
+	Y8fwiUApeoN6uYuq5Ii/Ekevm5c76ug=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cons.org header.s=default header.b=GxdBFs0+;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of cracauer@cons.org designates 212.12.50.241 as permitted sender) smtp.mailfrom=cracauer@cons.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790566029;
+	b=2WioFZUpOJ2pbgVacbMUacx0ec6z74FykF/e/MZWjErYhwxhjjMIKIYtL+GFewqZ1Q0104
+	Bf+KaceqmGZRrI4lRCS5Kl+SlWOrIhpANwfFUcBtSgJ0yL6L7XobfgGCFXZ3N3Xm5/0ouj
+	YVDwGaN+gowS2yPPyJNf4t8iWlmr9tc=
+Received: from knight.cons.org (localhost [127.0.0.1])
+	by 0ons.org (8.18.2/8.18.1) with ESMTP id 68S3QVTQ061396;
+	Mon, 28 Sep 2026 05:26:31 +0200 (CEST)
+	(envelope-from cracauer@knight.cons.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cons.org; s=default;
+	t=1790565992; bh=N0J5HDZxc76uDFcd7IU9j6Jt+sdQub9jiX5ZAdngrhY=;
+	h=Date:From:To:Cc:Subject;
+	b=GxdBFs0+wusUQ3Mpq7WQtNmwYoPco06mgQdglw2+7SctYTSxgPdZsnLcqIpeHFtTn
+	 dB0C5Bglmr8DORW8FrGI/0Ge8zx/LC9LnMY+3FmuzKidnsLb4QJ2dNyz2Lw4orNEZa
+	 GfBuphi3G5WNJHKaypNHFQ+hUK7PZbjeEOTdxB1w5kvEoiEXbUqQVTmJtACqqoFtnu
+	 QKXDNg2p61z7zfhMvSK84y/gUEFtAOHpNDYNT5Az1m5+wED7Nmmof6EPsOXU/8tWcC
+	 wgyHG399Qv+yy8cxJDkeK0MqtqaIjefNhiabfwrih2ymh+NNxxDVttwFE4yOaXAuN4
+	 dm11RdsTurTGA==
+Received: (from cracauer@localhost)
+	by knight.cons.org (8.18.2/8.18.1/Submit) id 68S3QVVe061395;
+	Sun, 27 Sep 2026 23:26:31 -0400 (EDT)
+	(envelope-from cracauer)
+Date: Sun, 27 Sep 2026 23:26:31 -0400
+From: Martin Cracauer <cracauer@cons.org>
+To: akpm@linux-foundation.org, linux-mm@kvack.org
+Cc: david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+        rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org,
+        peterx@redhat.com, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Subject: [PATCH] selftests/mm: uffd-missing-wp: add GC related functionality
+ test
+Message-ID: <arneZ-KkRWUNI0Ho@cons.org>
 MIME-Version: 1.0
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
- <CALOAHbA4EgGw_uWfbXD0Q87exP7ek=z9ENuU_ARgb+DgBgy1kQ@mail.gmail.com>
- <arPyspcEFNkqfNyr@linux.dev> <CALOAHbDKRw9cPN_GxOYbp9u50cvr7PzPyoGPsSwoPDPAwBCGbA@mail.gmail.com>
- <arWJBBOdvLsOSdCt@linux.dev>
-In-Reply-To: <arWJBBOdvLsOSdCt@linux.dev>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Mon, 28 Sep 2026 11:23:19 +0800
-X-Gm-Features: AclHuK_1E2YfKgYgZbd4tDw3yFNtrrBUY1yd8dRRWaf2ogOVKnaFSdEC5R5Nlks
-Message-ID: <CALOAHbCAtEixXTvRaF0qtGMjNwMHtYBL1eQU6GMgduRaWPGOmg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached struct_ops
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <jp.kobryn@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, Michal Koutny <mkoutny@suse.com>, 
-	Amery Hung <ameryhung@gmail.com>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Emil Tsalapatis <emil@etsalapatis.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	John Fastabend <john.fastabend@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev, 
-	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 925D8A0007
-X-Stat-Signature: cy1ij6a8rye6gyma513zpnfczambxp9x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-HE-Tag: 1790565838-40052
-X-HE-Meta: U2FsdGVkX1/Z/JvrcGHfOldExGttPSEwfwq8K8upB+mwaI0r0ZCqIzxDe5xYFHKtZb1n24pu8s++yvWdZA0EWJFfVGV6qsTwA78z63rYnTPaWbPIBWMevuz9psopTe8ntZKpmBZS4iDhDuqQ+s/jh125EcC3zv/jEmldNsGT1vz/aXs0JClY2OZfiHQiv2A6U9ajNwTAvu7wa/sqj+IZfcXz4X6LHxzJILzGXwFVe4n/F+4gng37kx/Mo9wIOlNZgRSsxVZLq6GylE9PLpx4PzgQcZVMjXnowZog8PrA30+2m9xOpfhteVoG3nV4QZQDJF3p/udJp8iitWwjE6jHg3d4dcmDs04ZFt+p32z3PXRM6dAQWkhlGh7NMCKPlWLc5aeKNjvx5Ocqd5ZcVeTK35meMo1Y7chWcyo8sCFgWjJ7ObnN5oqjuHKjDE9iA+hIt/Bl9SiTHWa8FmC2xKrL+Gfvk5bMUGwfMLcCxa3E/CXOsjf8JnyHiDHqqKHW7tKJ2N20w4xerEJJgD1HTz0uL1o81LEsJCGJH2YohmzE+ef1UINxUPlsBQafY53Mi0VySAv4eVF5+tIqQdtQzyku7//W/wJZ1/QKSYYCFqYmR131Ku/BMgLHSPkxcRYfPOrzoeWHbYxuaDydLV026Mzv6aTaMgWqYBGZGNfZmtQi86I1HQGQy8qmcax4ctm01B/6isY6u5dvwE4tuk75DSgTqS/NIJs0yHrLnR00aBok5qUWuaJxuFHLhWNgMWYZxEkkB+YRCaQ7AvVeExz5rshpNILxiHBH0cAu3U8Ocip7Fvm1EWPRA9deVoB54gj47tg7i0sxcqljS8klUtSKaiA5YLLrvOGq6W/TcO7rUuS2H3qWTdYYjJ9XDKKVfc35HOG2+8c+vpu9uueTP3jlUpnwbcZ+qXFhbMpAHaFlCiQfUXd7Wgwg0uM8VlXBUTUmj2N8cUd8xzbZwRfdsfDVM73
- cIA4l+ps
- yPg+t4Zv8r9n9y25CRgdUs8ZkMsXlnitc4Lm3GpiC2SFLaKz9eWyKgiLUE0TWHnWeEWJw3r47+JMJUMdybfKbDzWda22/Xaw9Q3uKp5rit2YYA+8Ps8zoBru0FLv7vteXYfl0dZq1PWhqhPhJLsqdoP54WkdZRaQ4/HWQJWCYl20Xyn3gDf9MuYOERS8RJzCHhCiEooG0qMTxBtKY6Zm5VrqAEqhoO8tk0IuC0/5SaoUX5xaC6hF1IYt/6ZMgDtt64sK7PgrbZP93Ibdonal6yRg+Dg4096YCR2VQOk48CVVuRDAO8hveDcv7LcFBGF3U5ypQUSaPjVXd18y6GstG/LWHTxIXTx2H1VCyH4XZyAE/YgE0CLFhNmPWokRkWvhWFGPSQJ1seyGBNFR0UQF4u0ChmX9qi7hqrbMOZ2IEvidKv3p4aU0KPhbmMekuLBg3EWr9l3QK9k6JWgF+ewNYLCSvxrQfNCxBHngmoPJ2xoBUcBZZwmYoFtbBd9iD/ExLhW+XMYrg9T0B01a8EzKLH9c9VlrUCAsjJffwYchafcXxsVxlOxFBP/v29MahQaoWlE7G8M7Vwupqx4c=
+X-Stat-Signature: yaozizop98c34c9nriqzfg38pnusnjye
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CB73D140004
+X-HE-Tag: 1790566028-244324
+X-HE-Meta: U2FsdGVkX18xcalrnJ8WNxObC6EmVptbK+F+w9iNAx32c1RfJ31oRT3dO7BJwOCeGDRitDUlZyyTTv3K/OVPFZYAw4fLL/2jC72rl4QPyQ7OfnmoRLm/LuKA3iz67KNjRQvQX5Nz5PMSFvXPJ5TMakn0NlODopdI5IVrW8XgrlWjRKkTfgPMWi+zobpxxxo/ro7sqDIHGISCI/Bv/3kF0mEUDuV9m/odz0PhMR8ZoAKNn2jzwZ7gV8IvsK3v9oqWjakNmYAybB9a9g+yKJLMR0dByxVdv+1RSrR8uVnNkxCUXvTFKKXLQ75MVm87P+aETJj61r7Y5xNwxuBXTwhl08lA35u6OefwOEPvJQpQyVPqhGHirBULIxMObkrKonD3SXV5ypbnaCd2RWGpS/ljhoKG8khHtY8++UN9BvBIKtqVR5UPwPlK5XnbGLOOPVohByWArU93lIXU/s3nNBUQqlcAeVAhkch6QZ3GWvX03NWitKe1sHZMp2gThQCC2waP/8ZWcquG/ADFw86TIswN2bI9+OFPDitSR/fLB287djxCDfpUci/uiUmQkmATZcMPVhmy6N/6t83fMBmvxGu3T6qERqJcAO722SLBac31/qaeMaTjSdYZF+ayvBEP77NsIdGfzPzuYCcCd/zgFuouHS+oUsiz5ZkqmeymcMDO5sy8OezDneMrbpjve5NPPWGAw7m1rzLHw+KYsQC/MFbo1vmtuwQApoj3U9Kqu0RMqj56PrDu6lvKWCCNmsyLkziU/wk8mqwWLpPiUEHsZ2XBMCAqGBrsrgnUYQudVx/Ny0AVnzi1BiddjxU8cnpDfxOax/Krq2l+U6BQI/ziHpaKY4ts4twXfqzqLkNYNNsVG2lLRhDAaZFz7eD36+6iHwpG67qhhtOUkObeTdHBrGso4r6o39poFy0xe50/9USq+5MJ3rHeJixf8aqIOsOGP+fMiUV1vLUBPlkg48p1qpD
+ ecTjV2cU
+ +ACgyZRh5t6Nv4Fen0Nn9oii2IpzzqnyoI5xMrkPGbKWGC3BJk+lK4mhugqzN2Zfitt92z7zbd40004wBESBcsazVSiAcgruEINj043r3teQWUp0UGrbDhkv0AuGtgNTyCFDK5IWqKgbAh+GDjTFfICxnilm8vfJL3alPlixcrheoman/sevqf8ANiZ5C4iU4fzpg+KyLj7OTu/GNwnvQTGx6qA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,73 +92,459 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 4:42=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> On Thu, Sep 24, 2026 at 06:01:27PM +0800, Yafang Shao wrote:
-> > On Wed, Sep 23, 2026 at 11:47=E2=80=AFPM Shakeel Butt <shakeel.butt@lin=
-ux.dev> wrote:
-> > >
-> > > Hi Yafang,
-> > >
-> > > On Wed, Sep 23, 2026 at 09:07:40PM +0800, Yafang Shao wrote:
-> > > > On Tue, Sep 22, 2026 at 3:30=E2=80=AFAM Shakeel Butt <shakeel.butt@=
-linux.dev> wrote:
-> > > > >
-> > > > Hello Shakeel,
-> > > >
-> > > > On the open question of how deferred debt eventually gets paid: wou=
-ld
-> > > > it make sense for the policy to also notify userspace (e.g. via
-> > > > ringbuf) when it defers,
-> > >
-> > > I think the notification through bpf programs is already possible and=
- a bpf
-> > > program deciding to bypass memory.high can already do notification vi=
-a ringbuf.
-> > >
-> > > > and have a userspace reclaimer do the reclaim
-> > > > through memory.reclaim?
-> > > >
-> > > > I understand one of the concerns for the async worker is CPU
-> > > > accounting. If the concern is that the kworker's CPU usage is not
-> > > > charged to the target cgroup, the userspace reclaimer could instead=
- be
-> > > > spawned with clone3(CLONE_INTO_CGROUP) so it runs inside the target
-> > > > cgroup, and both its CPU and memory usage get charged there.
-> > > >
-> > > > One caveat: intermediate cgroups with the no-internal-process
-> > > > constraint cannot take processes, so this would only work for leaf
-> > > > cgroups.
-> > > >
-> > > > What do you think?
-> > >
-> > > I think all of this is possible without additional code and with this=
- series.
-> > > With AI, should be very easy to prototype it. Please take a stab and =
-I will look
-> > > into it as well (time permitting).
-> >
-> > An LLM helped me quickly implement a userspace async memcg reclaimer
-> > based on your series, and it seems to work quite well.
->
-> That's awesome. Please do take a look at the code and provide feedback an=
-d if
-> you don't mind, a tested-by tag would be awesome.
+Add a test that asserts that functionality needed for generational
+garbage collection works.  Namely to implement a write barrier using
+userfaultfd instead of using segmentation faults.  The planned target
+is the GC in SBCL.
 
-For this series, feel free to add:
+The real GC will initially fill heap pages by using on-demand loading
+of pages from an image file, either via mmap(2) or using userfaultfd
+to decompress a page read from an image file made from individually
+compressed blocks.  This test doesn't do that so that it needs no disk
+I/O and no decompression library.  Instead, a fault will be filled by
+copying page content from prepared pages in the heap.
 
-Tested-by: Yafang Shao <laoar.shao@gmail.com>
+Assisted-by: Anthropic:Opus-5.5
+Signed-off-by: Martin Cracauer <cracauer@cons.org>
+---
+ tools/testing/selftests/mm/Makefile          |   1 +
+ tools/testing/selftests/mm/uffd-missing-wp.c | 413 +++++++++++++++++++
+ 2 files changed, 414 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/uffd-missing-wp.c
 
-One nit:
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index d3e9bd67904a..76176d62b3b3 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -92,6 +92,7 @@ TEST_GEN_FILES += transhuge-stress
+ TEST_GEN_FILES += uffd-stress
+ TEST_GEN_FILES += uffd-unit-tests
+ TEST_GEN_FILES += uffd-wp-mremap
++TEST_GEN_FILES += uffd-missing-wp
+ TEST_GEN_FILES += split_huge_page_test
+ TEST_GEN_FILES += ksm_tests
+ TEST_GEN_FILES += ksm_functional_tests
+diff --git a/tools/testing/selftests/mm/uffd-missing-wp.c b/tools/testing/selftests/mm/uffd-missing-wp.c
+new file mode 100644
+index 000000000000..481e7056cebd
+--- /dev/null
++++ b/tools/testing/selftests/mm/uffd-missing-wp.c
+@@ -0,0 +1,413 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * userfaultfd MISSING + WP test, modelled on a garbage collector.
++ *
++ * An anonymous region is registered with userfaultfd in both MISSING and
++ * WP modes.  A handler thread plays the part of the GC runtime:
++ *
++ *  - On a missing fault it fills the page from a backing store with
++ *    UFFDIO_COPY.  (A real GC might keep evicted pages compressed on disk;
++ *    here the backing store is an in-memory buffer with distinct contents
++ *    per page, so a page filled with the wrong data is detected.)
++ *
++ *  - On a write-protect fault it records the page as dirty and removes
++ *    write protection from that page only.  This is the userfaultfd
++ *    equivalent of mprotect(PROT_READ) plus bookkeeping in a SIGSEGV
++ *    handler, as used for GC write barriers.
++ *
++ * The main thread checks that:
++ *  - reads of missing pages are resolved with the right contents,
++ *  - a write to a missing page is resolved before the write lands,
++ *  - a write to a write-protected page is reported with the WP flag and
++ *    then completes,
++ *  - write protection is tracked and resolved per page,
++ *  - UFFDIO_UNREGISTER leaves populated contents intact and stops
++ *    delivering faults for the range.
++ *
++ * Like the GC it models, the handler assumes pages are only write-protected
++ * after they have been populated.
++ */
++#define _GNU_SOURCE
++#include <errno.h>
++#include <fcntl.h>
++#include <poll.h>
++#include <pthread.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/eventfd.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
++#include <linux/userfaultfd.h>
++
++#include "../kselftest.h"
++
++#define NR_PAGES 4
++#define NR_TESTS 7
++
++/* GC bookkeeping, updated by the handler thread. */
++struct page_stats {
++	unsigned int missing_faults;
++	unsigned int wp_faults;
++	uint64_t last_flags;
++};
++
++static size_t page_size;
++static size_t area_len;
++static int uffd;
++static int stop_fd;
++static char *area;
++static char *backing;/* what the handler fills missing pages from */
++static char *expected;/* what each page should contain right now */
++static struct page_stats stats[NR_PAGES];
++
++#define LOAD(x)__atomic_load_n(&(x), __ATOMIC_ACQUIRE)
++#define STORE(x, v)__atomic_store_n(&(x), (v), __ATOMIC_RELEASE)
++#define INC(x)__atomic_add_fetch(&(x), 1, __ATOMIC_RELEASE)
++
++static uint64_t pattern(unsigned long page, unsigned long word)
++{
++	return 0xdeadbeef00000000ULL | (page << 16) | word;
++}
++
++static uint64_t *page_ptr(unsigned long page)
++{
++	return (uint64_t *)(area + page * page_size);
++}
++
++/* Write a word in the region and record it in the expected image. */
++static void store(unsigned long page, unsigned long word, uint64_t val)
++{
++	page_ptr(page)[word] = val;
++	((uint64_t *)(expected + page * page_size))[word] = val;
++}
++
++static void handle_missing(unsigned long page)
++{
++	struct uffdio_copy copy = {
++		.dst = (unsigned long)area + page * page_size,
++		.src = (unsigned long)backing + page * page_size,
++		.len = page_size,
++		.mode = 0,
++	};
++	struct uffdio_range range = {
++		.start = copy.dst,
++		.len = page_size,
++	};
++
++	if (!ioctl(uffd, UFFDIO_COPY, &copy))
++		return;
++	if (errno != EEXIST)
++		ksft_exit_fail_msg("UFFDIO_COPY page %lu: %s\n",
++				   page, strerror(errno));
++	/* Populated concurrently; the faulting thread still needs a wake. */
++	if (ioctl(uffd, UFFDIO_WAKE, &range))
++		ksft_exit_fail_msg("UFFDIO_WAKE page %lu: %s\n",
++				   page, strerror(errno));
++}
++
++static void handle_wp(unsigned long page)
++{
++	struct uffdio_writeprotect wp = {
++		.range = {
++			.start = (unsigned long)area + page * page_size,
++			.len = page_size,
++		},
++		.mode = 0,/* clear WP; also wakes the faulting thread */
++	};
++
++	if (ioctl(uffd, UFFDIO_WRITEPROTECT, &wp))
++		ksft_exit_fail_msg("UFFDIO_WRITEPROTECT clear page %lu: %s\n",
++				   page, strerror(errno));
++}
++
++static void *fault_handler(void *arg)
++{
++	struct pollfd pfd[2] = {
++		{ .fd = uffd, .events = POLLIN },
++		{ .fd = stop_fd, .events = POLLIN },
++	};
++	struct uffd_msg msg;
++	unsigned long addr, page;
++	uint64_t flags;
++	ssize_t ret;
++
++	for (;;) {
++		if (poll(pfd, 2, -1) < 0) {
++			if (errno == EINTR)
++				continue;
++			ksft_exit_fail_msg("poll: %s\n", strerror(errno));
++		}
++		if (pfd[1].revents & POLLIN)
++			return NULL;
++		if (pfd[0].revents & POLLERR)
++			ksft_exit_fail_msg("POLLERR on userfaultfd\n");
++		if (!(pfd[0].revents & POLLIN))
++			continue;
++
++		ret = read(uffd, &msg, sizeof(msg));
++		if (ret < 0) {
++			if (errno == EAGAIN)
++				continue;
++			ksft_exit_fail_msg("read userfaultfd: %s\n",
++					   strerror(errno));
++		}
++		if (ret != sizeof(msg))
++			ksft_exit_fail_msg("short read from userfaultfd: %zd\n",
++					   ret);
++		if (msg.event != UFFD_EVENT_PAGEFAULT)
++			ksft_exit_fail_msg("unexpected userfaultfd event %u\n",
++					   msg.event);
++
++		addr = msg.arg.pagefault.address & ~(page_size - 1);
++		if (addr < (unsigned long)area ||
++		    addr >= (unsigned long)area + area_len)
++			ksft_exit_fail_msg("fault at %#lx outside region\n",
++					   addr);
++		page = (addr - (unsigned long)area) / page_size;
++		flags = msg.arg.pagefault.flags;
++
++		/* Record before resolving, so the faulter sees it on wake. */
++		STORE(stats[page].last_flags, flags);
++		if (flags & UFFD_PAGEFAULT_FLAG_WP) {
++			INC(stats[page].wp_faults);
++			handle_wp(page);
++		} else {
++			INC(stats[page].missing_faults);
++			handle_missing(page);
++		}
++	}
++}
++
++static bool check_stats(unsigned long page, unsigned int missing,
++			unsigned int wp)
++{
++	unsigned int m = LOAD(stats[page].missing_faults);
++	unsigned int w = LOAD(stats[page].wp_faults);
++
++	if (m == missing && w == wp)
++		return true;
++	ksft_print_msg("page %lu: %u missing / %u wp faults, expected %u / %u\n",
++		       page, m, w, missing, wp);
++	return false;
++}
++
++static bool check_flags(unsigned long page, uint64_t want)
++{
++	uint64_t mask = UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP;
++	uint64_t got = LOAD(stats[page].last_flags) & mask;
++
++	if (got == want)
++		return true;
++	ksft_print_msg("page %lu: fault flags %#llx, expected %#llx\n", page,
++		       (unsigned long long)got, (unsigned long long)want);
++	return false;
++}
++
++static bool check_page(unsigned long page)
++{
++	const uint64_t *want = (uint64_t *)(expected + page * page_size);
++	unsigned long i;
++	uint64_t got;
++
++	for (i = 0; i < page_size / sizeof(uint64_t); i++) {
++		got = page_ptr(page)[i];
++		if (got != want[i]) {
++			ksft_print_msg("page %lu word %lu: %#llx, expected %#llx\n",
++				       page, i, (unsigned long long)got,
++				       (unsigned long long)want[i]);
++			return false;
++		}
++	}
++	return true;
++}
++
++static void test_read_missing(unsigned long page)
++{
++	bool ok;
++
++	(void)page_ptr(page)[0];
++	ok = check_stats(page, 1, 0);
++	ok &= check_flags(page, 0);
++	ok &= check_page(page);
++	ksft_test_result(ok, "read fault fills missing page %lu\n", page);
++}
++
++static void test_write_missing(void)
++{
++	bool ok;
++
++	store(1, 0, 0x42);
++	ok = check_stats(1, 1, 0);
++	ok &= check_flags(1, UFFD_PAGEFAULT_FLAG_WRITE);
++	ok &= check_page(1);
++	ksft_test_result(ok, "write fault fills missing page 1 before the write\n");
++}
++
++static void test_write_protected(void)
++{
++	struct uffdio_writeprotect wp = {
++		.range = { .start = (unsigned long)area, .len = area_len },
++		.mode = UFFDIO_WRITEPROTECT_MODE_WP,
++	};
++	bool ok;
++
++	if (ioctl(uffd, UFFDIO_WRITEPROTECT, &wp))
++		ksft_exit_fail_msg("UFFDIO_WRITEPROTECT: %s\n", strerror(errno));
++
++	store(0, 0, 0x43);
++	ok = check_stats(0, 1, 1);
++	ok &= check_flags(0, UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP);
++	ok &= check_page(0);
++	ksft_test_result(ok, "write to write-protected page 0 is reported, then completes\n");
++}
++
++static void test_wp_per_page(void)
++{
++	bool ok;
++
++	store(0, 1, 0x45);/* page 0 already unprotected: no new fault */
++	store(1, 2, 0x44);/* page 1 still protected: its own fault */
++	ok = check_stats(0, 1, 1);
++	ok &= check_stats(1, 1, 1);
++	ok &= check_flags(1, UFFD_PAGEFAULT_FLAG_WRITE | UFFD_PAGEFAULT_FLAG_WP);
++	ok &= check_stats(2, 1, 0);/* never written: not dirty */
++	ok &= check_page(0);
++	ok &= check_page(1);
++	ksft_test_result(ok, "write protection is tracked and resolved per page\n");
++}
++
++static void test_unregister(void)
++{
++	struct uffdio_range range = {
++		.start = (unsigned long)area,
++		.len = area_len,
++	};
++	unsigned long page;
++	bool ok = true;
++
++	if (ioctl(uffd, UFFDIO_UNREGISTER, &range))
++		ksft_exit_fail_msg("UFFDIO_UNREGISTER: %s\n", strerror(errno));
++
++	for (page = 0; page < 3; page++)
++		ok &= check_page(page);
++	ksft_test_result(ok, "populated contents survive UFFDIO_UNREGISTER\n");
++}
++
++static void test_after_unregister(void)
++{
++	bool ok;
++
++	/*
++	 * Page 3 was never touched.  If the fault were still routed to us,
++	 * the handler would fill it from the backing store.
++	 */
++	ok = check_page(3);
++	ok &= check_stats(3, 0, 0);
++	ksft_test_result(ok, "untouched page is zero-filled after unregister\n");
++}
++
++static int uffd_open(uint64_t features, uint64_t *supported)
++{
++	struct uffdio_api api = { .api = UFFD_API, .features = features };
++	int fd;
++
++	fd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
++#ifdef UFFD_USER_MODE_ONLY
++	if (fd < 0 && errno == EPERM)
++		fd = syscall(__NR_userfaultfd,
++			     O_CLOEXEC | O_NONBLOCK | UFFD_USER_MODE_ONLY);
++#endif
++	if (fd < 0) {
++		if (errno == ENOSYS || errno == EPERM)
++			ksft_exit_skip("userfaultfd unavailable: %s\n",
++				       strerror(errno));
++		ksft_exit_fail_msg("userfaultfd: %s\n", strerror(errno));
++	}
++	if (ioctl(fd, UFFDIO_API, &api))
++		ksft_exit_fail_msg("UFFDIO_API: %s\n", strerror(errno));
++	if (supported)
++		*supported = api.features;
++	return fd;
++}
++
++int main(void)
++{
++	uint64_t required = (1ULL << _UFFDIO_COPY) | (1ULL << _UFFDIO_WAKE) |
++		(1ULL << _UFFDIO_WRITEPROTECT);
++	struct uffdio_register reg;
++	unsigned long page, i;
++	uint64_t features;
++	pthread_t thread;
++	int ret;
++
++	ksft_print_header();
++
++	page_size = sysconf(_SC_PAGESIZE);
++	area_len = NR_PAGES * page_size;
++
++	/* UFFDIO_API can only be issued once per fd: probe on a throwaway. */
++	close(uffd_open(0, &features));
++	if (!(features & UFFD_FEATURE_PAGEFAULT_FLAG_WP))
++		ksft_exit_skip("userfaultfd write-protect not supported\n");
++	uffd = uffd_open(UFFD_FEATURE_PAGEFAULT_FLAG_WP, NULL);
++
++	area = mmap(NULL, area_len, PROT_READ | PROT_WRITE,
++		    MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (area == MAP_FAILED)
++		ksft_exit_fail_msg("mmap: %s\n", strerror(errno));
++
++	backing = malloc(area_len);
++	expected = malloc(area_len);
++	if (!backing || !expected)
++		ksft_exit_fail_msg("malloc failed\n");
++	for (page = 0; page < NR_PAGES; page++)
++		for (i = 0; i < page_size / sizeof(uint64_t); i++)
++			((uint64_t *)(backing + page * page_size))[i] =
++				pattern(page, i);
++	memcpy(expected, backing, area_len);
++	/* Page 3 is only read after unregister: expect a fresh zero page. */
++	memset(expected + 3 * page_size, 0, page_size);
++
++	reg.range.start = (unsigned long)area;
++	reg.range.len = area_len;
++	reg.mode = UFFDIO_REGISTER_MODE_MISSING | UFFDIO_REGISTER_MODE_WP;
++	if (ioctl(uffd, UFFDIO_REGISTER, &reg))
++		ksft_exit_fail_msg("UFFDIO_REGISTER: %s\n", strerror(errno));
++	if ((reg.ioctls & required) != required)
++		ksft_exit_fail_msg("missing range ioctls: have %#llx, need %#llx\n",
++				   (unsigned long long)reg.ioctls,
++				   (unsigned long long)required);
++
++	stop_fd = eventfd(0, EFD_CLOEXEC);
++	if (stop_fd < 0)
++		ksft_exit_fail_msg("eventfd: %s\n", strerror(errno));
++	ret = pthread_create(&thread, NULL, fault_handler, NULL);
++	if (ret)
++		ksft_exit_fail_msg("pthread_create: %s\n", strerror(ret));
++
++	ksft_set_plan(NR_TESTS);
++
++	test_read_missing(0);
++	test_read_missing(2);
++	test_write_missing();
++	test_write_protected();
++	test_wp_per_page();
++	test_unregister();
++	test_after_unregister();
++
++	if (eventfd_write(stop_fd, 1))
++		ksft_exit_fail_msg("eventfd_write: %s\n", strerror(errno));
++	pthread_join(thread, NULL);
++
++	close(stop_fd);
++	close(uffd);
++	munmap(area, area_len);
++	free(backing);
++	free(expected);
++
++	ksft_finished();
++}
+-- 
+2.47.3
 
-Since we might extend the cgroup-ops to other subsystems, or even to
-the cgroup itself, could we define a more generic CGROUP_OPS instead
-of CGROUP_MEMCG_OPS, and also rename `struct bpf_memcg_ops` to `struct
-bpf_cgroup_ops`? This way, we attach to the `struct cgroup` itself
-rather than to a specific subsystem.
 
---=20
-Regards
-Yafang
 
