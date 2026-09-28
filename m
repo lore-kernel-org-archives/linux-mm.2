@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83899C9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:53:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A29CC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:54:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A3CB6B008A; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
+	id 76C8B6B008C; Mon, 28 Sep 2026 04:54:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 854816B0092; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
+	id 743D86B0092; Mon, 28 Sep 2026 04:54:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744046B00A0; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
+	id 633A26B0095; Mon, 28 Sep 2026 04:54:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 543856B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43D7D8014C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:23 +0000 (UTC)
-X-FDA: 85262557086.03.A695537
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E15D6B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:54:00 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F309C013E
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:59 +0000 (UTC)
+X-FDA: 85262558598.24.EC4235E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 771DE140003
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:21 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrFYJfwf;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id DD4E11C0002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Lc49o/Gj";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790585601;
+	s=arc-20220608; t=1790585638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5PVeGOJnaKCpJJY0+kbJzTfUxuIOeJRjTWg+Uf9bzrY=;
-	b=xGdFp3EuljQVzu6++7nWlLGLpHiGZvRhsX/hngf5/sw8ii9M6+vLtrEXWpsroUGca2HqDT
-	LGh0c5kHuPfKcERQuZM2eE3dGhwcN1oRwZHqIbqIWbNDjU2Ddr1ei22E8wfUhkorsfdwB9
-	w7MedvNsP+zJuzIJGWlJ7WGwRjh6Ezw=
+	bh=SoMUT2BwfJC5COzbHfnGci4NZdcVm+iQPUkVyhkFY0Y=;
+	b=cXYo0veBw3ehotNqeZskzLoJAinEAcT2yIaYQycquX0bE6lhL6yQsJwJoT84RpaGXD704V
+	Ysm8fJuU1EtUfdLBt2SG2ivqzP/gnchEg2s9r7qow3WRUNiwyIEchC6sgDT8viEvLvM5g+
+	DKYX9bryqtVBFfIT/venA+S6P2opz5c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrFYJfwf;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Lc49o/Gj";
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790585601;
-	b=N3BYsjttkDr25kO1JABzqGkvkwV3Zw6xDJrVKzWOh1VPerFytRKhE2oAGjPKGvJIsvL+RZ
-	r58hKCq2u2D+jvNscAaOgxZm+maLB1vx5R7MEzd4ywJV4DRyPvw7h3clMIvKjRRfYHMiT4
-	N1BSdCiD8BJ/vABhLLR3X0kvaylXKvk=
+	t=1790585638;
+	b=5SgHLrvmYr+sg8DZ/KINSJJVA3qkeEszm0LoRDhUhQ8nnk5vrSMPlPtLvgLwS4ZBazU57V
+	L49B93VeTlG5EV/lsi0DzDqkTjgHF+YvkPN3v0lqqIciLUAFnXxsrB01tx4fNEnVNxqln1
+	yLlq6lIiuod6iifsjrqvVI3eYVNrIt8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EFAD43BE2;
-	Mon, 28 Sep 2026 08:53:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110201F00893;
-	Mon, 28 Sep 2026 08:53:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 38FD8406D7;
+	Mon, 28 Sep 2026 08:53:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFC51F000FF;
+	Mon, 28 Sep 2026 08:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790585600;
-	bh=5PVeGOJnaKCpJJY0+kbJzTfUxuIOeJRjTWg+Uf9bzrY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hrFYJfwfCcGmTGKwfH4kA1bByopbzivdG95gwg9QPSMCGENY3BYLnIJuz03bHzn1m
-	 Auytg8u9pwWvX2XtvlywvDnrVK9KT2YmJWuYTRSbLMbIj+BWVo2ucIYvOYthdKZo94
-	 pvMD3pulkrFS7Hx+dQ29+b9K424ZJRXVXUIdZELDA+71CmEW2mr3AlD8jxMhNjScX8
-	 zoQBOjv3qbDWZPo0Fo8+qslY0f1ixzEYJj3rMOf4XlhTW8tyVOiwxfJmzpuI1Xq/xL
-	 hxqF2tmWBUKuwUZOBJuOxhfybAj4egnRehaLH8BOnjgHTWhDupwm49rZ/RDiMOUB0N
-	 YeqNkMD711OUw==
-Message-ID: <4e4223f4-dfec-4e82-97fe-25ae3a3b0f73@kernel.org>
-Date: Mon, 28 Sep 2026 10:53:10 +0200
+	s=k20260515; t=1790585637;
+	bh=SoMUT2BwfJC5COzbHfnGci4NZdcVm+iQPUkVyhkFY0Y=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=Lc49o/GjqegLQqj0XCZDeVz5FkD9g8IF9bKFYEUjp4Y3OB81Sw7NlOmJpVplTGR6e
+	 YFgr6CsScU19Q6DXfkHkm5D3S+C7znPTicVnirUwx2eG02C13dY2Nr8/mj5mxN2ue3
+	 BPlIybV2xEW0mqgJEyVuDpmtktYJ6wDfnObzWKEpyEQw+2hNjdkjHcZWO6hiE15GVx
+	 b6dj/Qoc0EKruxMHbjx9xilKEBDJWVStMT2koRkSebYcosSpP7WMw0vs8kPjcxRD31
+	 Z3rpvKi8lwtcxU3s/2WjY64ryo2hB91DOfvMq6GHoAM/DVawc1gIYfuFhAs+tfCdYM
+	 UbcNStzifoHkQ==
+Message-ID: <4facb8d8-2ccc-4337-bdbf-3e8c03351b7e@kernel.org>
+Date: Mon, 28 Sep 2026 10:53:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/2] selftests/mm: add tests for UFFDIO_MOVE of a
  uffd-protected swap entry
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
  rppt@kernel.org
 Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
@@ -78,7 +79,7 @@ Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
  linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
  <20260926124145.2878520-3-donggeunyoo.kernel@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <4e4223f4-dfec-4e82-97fe-25ae3a3b0f73@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -124,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260926124145.2878520-3-donggeunyoo.kernel@gmail.com>
+In-Reply-To: <4e4223f4-dfec-4e82-97fe-25ae3a3b0f73@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: f5knczib54ynoznwtbgzp58naurgs3zf
-X-Rspamd-Queue-Id: 771DE140003
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DD4E11C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790585601-206369
-X-HE-Meta: U2FsdGVkX1+lowH2dVUTANJX4VHpMAbOWbZHfny7dmCen1dI+giV4s84drE9juEdv5YOTTRhVj3CF3dtwJI+L3RuGwdt0lVJlTDwhOwRVxOCG23KdbHFN2mfrSABT8KHuWiorgn8l3fB6tQ3K10u93NGGOj7LKzhej/gOwNma+TUIlubhArWlLneNDWgzOyuS5UrQ+doiFBlheWnKxhdBYAhlah2iUTlNlXT/bf1JDORtpxZlwAu17tVUr2hSxa7q972eqPv7BX9z1vkfCtdJzOmAyoCubYFXBTXVP1yGUmzOsFbXeAJxRc13hsKCTom4/x93xchQVg9CH9YMVNfLWX3Y9f498Euc3JlBFKz2zSAP3zYnPCyYqsdcvqHWIZv66ijfag6IkMxbr95inElD0p4Ynb1xElDcLUfxJsRKkWlkakN1baxqt+Zc3AqQkQoZSX46fPKS4ojkXAAiyOD/hnzsaodrB6zgmOIRM/NWsACYQt97IuCdLEYHOonS1K+Kd0+1cRzQRINMwbQK455ZYkqilbv/fS2ynRE+Q8xPapgEhqBJWGTxyLUwvozmu5MU/0bK2MmFtwjvk+eYbNjl99Sgvtg20+L8i44D2ezqk8rbofKRknLDBQ3vvEeyBVIw9A2RUiMaDffi65X+t4Kf55FS9eXmKszfOS6pwcZHYuQPVBkAkP4ZdIIbeynbTP/oTZ6Bp+KC1UQUfh8nu9B2l/r0ViK1fpNTpVlFS5CWsP1iX0mwdzzWjs3cjeDAV4i8Ycn/d1GTyRaE7vGFxjJR+TNRiXSkZ3W4YSEqmJiTiVi/lvvwnDo/wWiI8IMNEW035sSfTa2ZksDqfId9ZQC9fgEU4rztxHhX+PLPF9StuNv9LHpXYvRvmJySmrYnB2XV+2CWflwH2Fqwq2xg7tXb47URcRXmnZZNns3Ztf8jfGb3f6xbNo5u0ZIQ4HVncKdx2Jcev3WxMh/QMzi6Mh
- q7oD3aBB
- 6aKzPYfn3pEglh/l8AOr92D6fh8c7u80h1casguOAJD3CeICmlcQtMuOlLJFW+mUGvBXYqjP1A7+ARO5E7IT+DgpLBTQ9sYMICMDJvyE08eGfjCSK5OkUDUB3Buh2xkhwBkctRW/CVhck/W3mnvNTI0EYTsAe4bbwLtbTnDxfK4xa7PwfS9VwtulmWn4THQT1fp+x4CNpfTuBnbxeZ6eKoTBDOcGLVpDUh9xmiRsOZPp+oM6nFfCM9Z12wy23P4Mu6Xajf1wL+VlEvUMDT53yNBtnevtpfSVV7xxy40U0IzIATMkderRM2HUWQkk+FqYq94dznUfgJePnqSh+JO68/2DaTmotdvrPAHTDyBAqTq5GIdqCrJgZg1ikBslgx1tmN+HRcJ6nOQ4dzjDM9FNBB6oB98JBj3bPnlt4
+X-Stat-Signature: exwu8tpoknsnj77xe5augfjj6thrredi
+X-HE-Tag: 1790585637-965886
+X-HE-Meta: U2FsdGVkX1+cSj/O/dQGIh13TgF8nxyip9TDrR7LY+o8bxgtT7qGdgwG/XMWoyjKg3or5rqWvev870TFe2bazJMJ73UTtwrdMsF3ecVe992PFzXBD8xFu9/yaV3EE2PZ53V5jP3RYwzHP4kGqLK2taOaCebaD9Q/zxZUQVh+F0jXY4MS0n049H7dC4SNgW48phGo0gTr86586+2kzhOa51LzhFJwr8NbrA+on3KWHfDhu+VxtrOVCaCE5fa8yc6QnM6L6ErMMNVs+NdcBaJejJfO/UGdBV6SU89JK1/KWSMKbCceithCSlMpMMbiyGz/1ZN0VU9/1pOMrFJ7QzZSDjLv3kHTVzl0UlhmysWHAAg+DZCP5e87Hh47epoYN+J+LUZ1lLs3EYyAGJakvIAF0bR0+kGcKYGLfiP36WBs2LNzsulvTnlQes7cmss0jIhAGE84sm9X73e+i755LehlcShhkL5XU8ivjyccRzLhRpTU5wbcbL07ll9AS5qfcofo1J1KXsmy91hxaOM91LXkEiDRfCgT7Qd/0GFGzQ/C7B1PfXGrGyx3xOizQIczB6s+HDcXz0yqFx+cMmzFQemqE1dHh9TFWXlw3yhsvmvHVmkFWzTH4OAKws8X12KTHEXNVWlMk3k3ST8xT3WF7YHyipwlxwyQsgTyRgDoZmar8RhfRIHN9PcSGhlCL1My5wgLuPe5lO2VnkFHqdWo87cz7QcZl1FOyWdgnnrLPKWngc07ICxVF6CliBL53TMSIGMJVls1Lc8+hEkGhzViXAPBqLkLC7UnE1K5cXOhwQvUS08DWyas8ol+CczMMA+2ydDiDx0dPCgeu02M1YwIgwycgskWNrhC8HgJtRPhs4KEybn/yNWLjd6zbnCF6bP3jZVBI7PKEyRLwsE2atCNoeMnoN7By0pM2v88bzGoUmfp/X3GBOwMs9iTOpBl6dNJbjpGWs45zA+pIAA/iGAcCbm
+ 2xL4MZkP
+ xpcjYzDIUe+JhhNc4KSCGmjEHrBBkuHsey1WXobyjlu9uCNiQ3bzs2IJoJEv+3ltI+Kya/ln21bZfU1KrYXmtQLH3DipnLyLBusKMzSrVt3ZSxuHH/MAMHAGRMIU4VdKbJ2D+vAupEncMtXxYHcKVSztMOzEFCxTmZNhvWAsunnBTxV8OP0zfAo5W4nCG8PWzeeJxvPbQApL1Bg1Yoq1/bNfWxPF/p8j8zeTyGnl8C/To0y3k168LbvVChdig2LPI6QJ/yTP9WlR+XBPEsC44txZcbkcGoHA4omizpd5QDg8k4mlBuMiCSxZNQVj55I9WpmemxSSfog62M82ZkHZrocJfHEcMCNi3XdbON6gwiGQkiJxJoWo1HLOe1izUToL11ZeKcwL/5gZcOAQJqPa3/N5hAg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,124 +143,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/26/26 14:41, Donggeun Yoo wrote:
-> Move a swapped-out page out of a write-protected or RWP-protected area into
-> a destination registered for missing faults only, and read pagemap bit 57
-> at the destination.  The destination was never protected, so the bit must
-> be clear.
+On 9/28/26 10:53, David Hildenbrand (Arm) wrote:
+> On 9/26/26 14:41, Donggeun Yoo wrote:
+>> Move a swapped-out page out of a write-protected or RWP-protected area into
+>> a destination registered for missing faults only, and read pagemap bit 57
+>> at the destination.  The destination was never protected, so the bit must
+>> be clear.
+>>
+>> Assisted-by: LLM
+>> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+>> ---
+>>  tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
+>>  1 file changed, 84 insertions(+)
+>>
+>> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+>> index ef9b3956bdcfd..580178630eded 100644
+>> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+>> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+>> @@ -2037,6 +2037,75 @@ static void uffd_move_pmd_split_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>>  			      uffd_move_pmd_handle_fault);
+>>  }
+>>  
+>> +/*
+>> + * Moving a swapped-out page out of a write-protected or RWP-protected area
+>> + * must not carry the uffd bit into a destination registered for missing
+>> + * faults only: such a bit is never cleared afterwards, so pagemap keeps
+>> + * reporting the page as uffd-tracked.
+>> + *
+>> + * Needs a swap device; skipped if MADV_PAGEOUT cannot evict the page.
+>> + */
+>> +static void uffd_move_swap_test_common(uffd_global_test_opts_t *gopts,
+>> +				       bool rwp)
+>> +{
+>> +	unsigned long page_size = gopts->page_size;
+>> +	struct uffdio_move move = { };
+>> +	int pagemap_fd;
+>> +
+>> +	if (rwp) {
+>> +		if (uffd_register_rwp(gopts->uffd, gopts->area_src, page_size))
+>> +			err("register src failure");
+>> +	} else if (uffd_register(gopts->uffd, gopts->area_src, page_size,
+>> +				 false, true, false)) {
+>> +		err("register src failure");
+>> +	}
 > 
-> Assisted-by: LLM
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-> ---
->  tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
->  1 file changed, 84 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-> index ef9b3956bdcfd..580178630eded 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -2037,6 +2037,75 @@ static void uffd_move_pmd_split_test(uffd_global_test_opts_t *gopts, uffd_test_a
->  			      uffd_move_pmd_handle_fault);
->  }
->  
-> +/*
-> + * Moving a swapped-out page out of a write-protected or RWP-protected area
-> + * must not carry the uffd bit into a destination registered for missing
-> + * faults only: such a bit is never cleared afterwards, so pagemap keeps
-> + * reporting the page as uffd-tracked.
-> + *
-> + * Needs a swap device; skipped if MADV_PAGEOUT cannot evict the page.
-> + */
-> +static void uffd_move_swap_test_common(uffd_global_test_opts_t *gopts,
-> +				       bool rwp)
-> +{
-> +	unsigned long page_size = gopts->page_size;
-> +	struct uffdio_move move = { };
-> +	int pagemap_fd;
-> +
-> +	if (rwp) {
-> +		if (uffd_register_rwp(gopts->uffd, gopts->area_src, page_size))
-> +			err("register src failure");
-> +	} else if (uffd_register(gopts->uffd, gopts->area_src, page_size,
-> +				 false, true, false)) {
-> +		err("register src failure");
-> +	}
+> if ()
 
-if ()
-
-> +	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
-> +			  true, false, false))
-> +		err("register dst failure");
-> +
-> +	if (rwp)
-> +		rwprotect_range(gopts->uffd, (unsigned long)gopts->area_src,
-> +				page_size, true);
-> +	else
-> +		wp_range(gopts->uffd, (unsigned long)gopts->area_src,
-> +			 page_size, true);
-> +
-> +	pagemap_fd = pagemap_open();
-> +	if (madvise(gopts->area_src, page_size, MADV_PAGEOUT))
-> +		err("MADV_PAGEOUT");
-> +	if (!pagemap_is_swapped(pagemap_fd, gopts->area_src)) {
-> +		uffd_test_skip("MADV_PAGEOUT did not swap the page; is swap enabled?");
-> +		goto out;
-> +	}
-> +
-> +	move.dst = (unsigned long)gopts->area_dst;
-> +	move.src = (unsigned long)gopts->area_src;
-> +	move.len = page_size;
-> +	if (ioctl(gopts->uffd, UFFDIO_MOVE, &move))
-> +		err("UFFDIO_MOVE");
-> +
-> +	if (pagemap_get_entry(pagemap_fd, gopts->area_dst) & PM_UFFD_WP)
-> +		uffd_test_fail("uffd bit moved into an area registered for missing faults only");
-> +	else
-> +		uffd_test_pass();
-> +out:
-> +	close(pagemap_fd);
-> +	uffd_unregister(gopts->uffd, gopts->area_src, page_size);
-> +	uffd_unregister(gopts->uffd, gopts->area_dst, page_size);
-> +}
-> +
-> +static void uffd_move_swap_wp_test(uffd_global_test_opts_t *gopts,
-> +				   uffd_test_args_t *targs)
-> +{
-> +	uffd_move_swap_test_common(gopts, false);
-> +}
-> +
-> +static void uffd_move_swap_rwp_test(uffd_global_test_opts_t *gopts,
-> +				    uffd_test_args_t *targs)
-> +{
-> +	uffd_move_swap_test_common(gopts, true);
-> +}
-> +
->  static bool
->  uffdio_verify_results(const char *name, int ret, int error, long result)
->  {
-> @@ -2359,6 +2428,21 @@ uffd_test_case_t uffd_tests[] = {
->  		.uffd_feature_required = UFFD_FEATURE_MOVE,
->  		.test_case_ops = &uffd_move_test_pmd_case_ops,
->  	},
-> +	{
-> +		.name = "move-swap-wp",
-> +		.uffd_fn = uffd_move_swap_wp_test,
-> +		.mem_targets = MEM_ANON,
-> +		.uffd_feature_required = UFFD_FEATURE_MOVE |
-> +		UFFD_FEATURE_PAGEFAULT_FLAG_WP,
-> +		.test_case_ops = &uffd_move_test_case_ops,
-> +	},
-> +	{
-> +		.name = "move-swap-rwp",
-> +		.uffd_fn = uffd_move_swap_rwp_test,
-> +		.mem_targets = MEM_ANON,
-> +		.uffd_feature_required = UFFD_FEATURE_MOVE | UFFD_FEATURE_RWP,
-> +		.test_case_ops = &uffd_move_test_case_ops,
-> +	},
->  	{
->  		.name = "wp-fork",
->  		.uffd_fn = uffd_wp_fork_test,
-
+Clicked sent by accident ... let me reply once more.
 
 -- 
 Cheers,
