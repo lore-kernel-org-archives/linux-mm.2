@@ -4,88 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34587CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E600DCA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:12:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 284DD6B0088; Mon, 28 Sep 2026 15:04:09 -0400 (EDT)
+	id 025286B008C; Mon, 28 Sep 2026 15:12:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20F526B0092; Mon, 28 Sep 2026 15:04:09 -0400 (EDT)
+	id F3F086B0092; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FEEF6B0093; Mon, 28 Sep 2026 15:04:09 -0400 (EDT)
+	id E570D6B0093; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DACD46B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:04:08 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C8BE14030C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:04:08 +0000 (UTC)
-X-FDA: 85264096176.06.BAD2970
+	by kanga.kvack.org (Postfix) with ESMTP id BE3D46B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5987BA6647
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:12:37 +0000 (UTC)
+X-FDA: 85264117554.21.F6D0B8B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 96B311C000B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:04:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVgcqhtw;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id A2B7EC0006
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:12:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF4S1Z78;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790622246;
+	s=arc-20220608; t=1790622755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F4YDqvwhL3vzhgg/xwM/ybmpDNeCBVhLQL6j+EFLn6I=;
-	b=mQpJ8ZmnAwP3YF8FrPnlXpTYO3dF5aupLoDD+pESEBcHrPCldG1Erz0s8EoJGA+42YEMBh
-	/+KXOft8pct7MLjGjZtgFcvVls4mOYlKshtCHG8V6wsKENXMMFh+QYPj8PpRKvoqnzArd1
-	SvsTiACZwzdCJn+zqZgnv9b3lt8IG2E=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fVgcqhtw;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=3+/0gNUnAEU8rNmsasP2G1qveGjqqxqRYFGhYDQK2wU=;
+	b=DSwmML5aAn15HOWsNgvsIK/yQuafQURSV+NIfjoI1GAKWKrMubL5OPpzWV+xHzmYECw6L6
+	JvGh2HDg2ZZ16JiYX6cW0hJDJAk3WKRxatkvLSQ7eNBtovL7ApD37wq0RjlcZvO3Nb5BvG
+	zYEiUu2KBUbLi8vIyY++8AJ2wW7QON8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790622246;
-	b=I6ykjh69c3kZYKql8NI7EStzq1HENYMyZsHKacwSqEi+YkOqCIgkYVScb2ObqwPzujlqlP
-	FQUyqXdWhYVNK7EFyDfADCvds30cvZC5G6RAbVXvd/s8XipaKYJyCT+/uhlfqjxR1wbpdy
-	z3ToZLl43s/J1pbwz2Cq3j5aKydbb38=
+	t=1790622755;
+	b=4E53t11a4Fh5o65ipldkQHg1Edfzvwu6FlhZo92o0LCEhmTTqqmiVrfFVPMyI8UPJ1aB3e
+	nlPqZo2GFccE1/B23+BXXKho20WPRcIzc11npLT2UW9OYLHMw/GvxheK3LlUDL+TaLdrqu
+	uV+Kz5TMR45TpqldWNuuUhB2ndszLbI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF4S1Z78;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5E7A601EF;
-	Mon, 28 Sep 2026 19:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EF11F00893;
-	Mon, 28 Sep 2026 19:04:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 363EB600D1;
+	Mon, 28 Sep 2026 19:12:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342441F000FF;
+	Mon, 28 Sep 2026 19:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790622245;
-	bh=F4YDqvwhL3vzhgg/xwM/ybmpDNeCBVhLQL6j+EFLn6I=;
+	s=k20260515; t=1790622754;
+	bh=3+/0gNUnAEU8rNmsasP2G1qveGjqqxqRYFGhYDQK2wU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fVgcqhtweOtwfYvkZOdYQ7qi8viute+9VAJk8LTZeI01KZeNI5ueFS7Xb4aROgo/M
-	 tO5PsY45//Ob7rRzeLURKndsIHICPBWMblUo8RzJMQF8bY7Btaa6+WfnuZikHsDBeE
-	 a7e9WgRf1mnCTa+E7z9TrzXeKDCknefGyzqQpmkS7ekPzht3IeWbzusU07aLXuKlFO
-	 J2c9UwBDl1TDIrhNnp1eezGnZs5xPwVedAMwjCBEqCmJ7mG+YchMudb3qC0VVkoP60
-	 8t27zEBwygphA72pHwRAjzOSKfUxzYBJnnmYQQg5A00khxp3PeZpoMrsIL+FS21smv
-	 6VVIbtpZKIuZg==
-Message-ID: <e36e8b24-81fc-45c7-8eb9-8b363e3d89be@kernel.org>
-Date: Mon, 28 Sep 2026 21:03:57 +0200
+	b=HF4S1Z78mScB4lUcYE6JWgmNHRRxIQxkpRj14G/OgV77GYc4NE9XRSxU/WrA7/o8T
+	 jHkuFt25YUOT+mG7iVW/hfP8bxMYMWq+WXAe+owB06S0SeE7wPQfrkwVXLE/DAcWtM
+	 ARw16ifk79EF7PM9ra6qxCAQxqKbrhfgbt8qls/bYL6rB77cjM4/+zlUULjLLBP+6h
+	 LFlEEaVZ0FA6vtFPLORpsHWqiw8cLu9tB3uLGAvnMpvEPc5eo9P2DMndfHhT7A5ikY
+	 TB/6cHvErfozrqwxtPPtJqT7/S6cCELTRktjxG3EPzSnTXaoCjxGwaMJKZBMkp8Q/E
+	 RSAYk6NBbI7bw==
+Message-ID: <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
+Date: Mon, 28 Sep 2026 21:12:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] mm: Unify device DAX and HugeTLB vmemmap
- population paths
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20260924075259.2013039-1-songmuchun@bytedance.com>
- <607759bf-59f2-4ad6-b95b-e780ed2acba3@kernel.org>
- <8385F749-0F72-494E-9CA2-2E433A066712@linux.dev>
- <se2tjmpk.ritesh.list@gmail.com>
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+To: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
+ <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <se2tjmpk.ritesh.list@gmail.com>
+In-Reply-To: <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 96B311C000B
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A2B7EC0006
+X-Stat-Signature: 4i8iteg5pkrj1ozgguioc5ydt94sg9ot
 X-Rspam-User: 
-X-Stat-Signature: qtcc7nowgmkdkhsqbipoyaex6zq6ongz
-X-HE-Tag: 1790622246-658823
-X-HE-Meta: U2FsdGVkX18b+/9Migt7WKgzG+vKLzyXfSr16zA0BiRucp8JvE4NhCyv/m9BbElakdgJY97D7t/lRRPKDyS+8ljKMlj3e2MEzSbF0sWipVdRur8sHzXlORTAujp/sG2CL/EtTO5oVXPIJRPm6zrRoE0PPW7fMNgI9e3IYzpjrW4gyTsy68uaLZEkiLo1JXjZiSIqQvghtf+t+G1NfYdAwRHeS2/70Ehs8zqnjBwPeBWgENcbLbiv5iJl/NjZ24EhANvhJvBqr2yEA180w6amUgAIEcqTNfQX3KIXcVCz0/St1TeJuPmLA1IH4EDj5ctAAtpG/XfRzuF1558TS0Rze2vJZBeiHBRqdzqst5s7lM26LPOu83QuVWEpHwD3UVDXQwXaduXlqH9/27E6zCf3xSCKowan5hrRUkyG4ipxLFNMnXDxuW5i7pdnX78zbQUxdkDVvsE6zpDL/zQKmLLvCTlj8MjMVALrij0guTV1UrFyX3ACNE0Z9l1PuxeYqE1mO09YghxZ5+mfk6+IRCp63p2jXXMrLnUCH4wr23OzdqD9ypRVxBRzwrZLwY1bOB5AMhQeWkeUtkhJFIGz7oZj7SfnUPrr6SpUvsgq8GkFL9sJtlBxhwFVHJVZeKeTYWaP4wSTSxypcUYTD7QDu4k5JXfdehtyIe59N3WuaSwyi6QSPq2EmRa7frGQRQ1m8L6rpkoy58d0WGEvNTPo1u0FVHnS7GxmOZUvaZgtPGoGxtShSupT0oSUHZZ7XTTdxOfDOqtLCDF9y6jWXu2rYVz8tAe7xwJYqBMvo0O88NfPXcDnKNLvV8DjpIIPm5d+a87i54CxB4Omp5ZdmCBCmGkkRsjNOU64g8uSNUVVGyP0a+0rHnh0ls3IdgD7vGCdjxGR6ea+nFWym5TDAX7cWjtGahOHnriDd7BPgNFoWbFc3qe55SK35X6da4TCtlgtGnExQIXb3xlBT7gs/Ywxhk3
- oCJV4d0e
- aiZXaWikUpR0CQUZiuKGoGMTl84R3w/+DpgkSUMUehp16JGmDhKqPJa3bFZIOkV38fNFhfRgUfLjGH+p4GTVd7KVmefxrdiu1Z9p+GaYDhOGn7wJaIzCKziZXycXQTYHot7q56pZEkS9aFiWWEU/ULPftycqnmS8KYnToDq7ArB4yW246l8DUFOBQPh3l3qb/BoLrGlaP0K4wIzYpCTBBy4bWzlOWw59jkHXPrYB6waoAJaRWCSrqOGfltzJu3yUHsWnxrHHzpnkb9Lo/O0Dgp5/VLADDVygYTsFopj4l91Iv/8VPiOjtnnVt22QoZaf+5baxi0cV++ldhr8=
+X-HE-Tag: 1790622755-226653
+X-HE-Meta: U2FsdGVkX19qmkRV1wJC/9eC8PbEmIJq81OX6BtZtbLV/JPGjb8Vp5ZaEe2S96FV4kqKRCAJLMQMDWcc+6panu4bq5recUaRqX/EpdFKaKBPXPn4Fy21GjU+lsyPYgEdPU+IELM+Zi+pg5sHHzgQvoBgjn4HJop9qwxpkdsoYmsGm+jSK7B/IvhXkcxX80iBhnY6b+VjBeqp2YFkM3vvfYhKqXzgC01FTI1wF6SCNtnddUkn20HDQJoLdJeYdKHAglH3jAcqgIpa6TopNbIaHNw4TbexGKjI6utH+p/9F8A/lchpyXxW5iGt63LPdzNaiiB85ohGCxvpI8Ooi9agSi7SiR2Tk3QrdOMaw9aaPCGy7f943ve3HYqZNuwA6iPtZ5tHi5R3CmqlW/VV5tM8863Oej799J7nRhoOGbkKoMOSMqOHqkdTs/Sp9eE2P8TQlP3af26h3jiPc783IS7sRmwFXoIv2O13YoRWkbC1SLgYiL8lZRCNHWVAeU6t1iTebkh3O01kgKkIy1cPSp1CP7ukaiV842aBX5LQweKsZPanD8gKmrwy7pYcwSNEwlVanhTl9AWgV5k7/uPQL4WltThlYKCLPcgkCIfPv9mjA2w4DbaX7o1bYDryKkf1+599ez8ZeouMXGCl5n8/r25zb4qpwHd1Wos1xxvtmUeOnVma0KdUn6sCiDXXKoIkw3Qkm7zxBaho1lXEadhfVi94xibq7jzrpMijNSM3TeQK94Z/BujgP3SBvLfqtJjDZsqkF49SiGtIM/NiXi/DX6oc53iCbL7i/JkLErqlP1lxe2pV0yaRdxl6h+JGOViqvdSfCD2UraLdY/rzg1qVrZasn1CxYTtTmhXC0v8rAXWa9N5YS0v2gun065+WgoqDzdMRlNMw043j9ihU3at3PZ0mK7/LFtjBvPJsi8XArFva4wLSQMh+dmD0ZT7JMgILvGbkjM0V/a/FTMy29F/dSlW
+ FGhu5J7G
+ eLnViZTSXrDAUJWNdNFl+UJVK1HTkWHbyaO+0x106h8eITnQjOfeFcvPohLE/vR2O/+uqbjuj11aYszK9OqYYXa5qpv4JJSxP30tBQJ5l4VeHVvf672xM0Ww90Mulr5NfWs92K/uD9nnCuUb9j2UqoYW+jO1ZRt3GyLkzsnmzrYn7VmbklD0z+hqJw3hYTr3EMQ0EzrVzsm4VdIW3bWVPu5pWH5rBd4jRe9e1tyYu22QizapXokc/0928wTZA7iuRAuvfZX7068RvHD2bJqkaQpGDew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,27 +142,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 19:43, Ritesh Harjani (IBM) wrote:
-> Muchun Song <muchun.song@linux.dev> writes:
-> 
->>
->> If you're planning to review this series, I'd suggest waiting for my rebased
->> version.
->>
-> 
-> Hello Muchun,
-> 
-> Thanks for taking care of powerpc side of the changes. Is it possible to
-> share your git/github tree somewhere? Sorry, but it's hard to follow
-> which series is based on which and the overall multi-series is based on
-> which upstream tree. If you could share your updated tree somewhere -
-> that would make my life simpler.
+On 9/28/26 15:09, 天狼 wrote:
+> Hi David,
 
-Yes, that usually helps. And next time better clearly spell out the current list
-of series, where they currently are (mm-new, mm-unstable, on list etc) and the
-dependencies.
+Hi,
 
-I was a bit confused :)
+> 
+> The use case is a concurrent, lock-free, relocatable data structure that
+> uses offsets rather than absolute pointers. It implements copy-on-write
+> at the data-structure level and is designed to remain recoverable after
+> a process crash. We therefore build it directly in a file-backed
+> MAP_SHARED mapping, so its state is not lost when the constructing
+> process exits unexpectedly.
+
+What is supposed to happen if the process crashes when updating the MAP_SHARED
+region halfway through?
+
+It would be helpful if the use case + data structure would be explained in a
+bit more detail.
+
+> 
+> Building it in anonymous memory and calling write() only after
+> construction would lose that state if the process crashed before the
+> write. It would also require copying the entire structure into the
+> file's page cache.
+
+Yes. Unless to would try to bypass the page cache of course (if possible for
+your use case).
+
+> 
+> During construction, writes are scattered throughout the mapping,
+> dirtying pages rapidly and repeatedly redirtying pages that may already
+> have been written back. The goal is to reduce writeback of these
+> intermediate states while retaining the same page-cache pages for
+> subsequent readers.
+
+What exactly is the poblem with writeback here? Unnecessary I/O? Is writeback
+the problem or actual reclaim after writeback?
+
+(I recall that in a fuse server you can in theory delay the writeback request.
+So maybe you could get something going by serving your file through fuse and
+enlightening the fuse server about it. Just a random idea.)
+
+> 
+> The hint would remain strictly best-effort: memory pressure and explicit
+> synchronization could override it. By "process crash," I mean termination
+> of the process while the kernel remains running; recovery after a system
+> crash or power loss is a separate durability concern.
+> 
+> Regarding the interface, madvise was only a suggestion. A file-level
+> advisory interface would also work for this use case: deferring background
+> writeback for the entire file, rather than individual mapped ranges, is
+> acceptable.
+
+So fadvise would be an option. However, this "defer mode" is really odd. It
+sounds more like you would want to have a custom policy there, instead of
+hardcoding something that really not a lot might want. Hmmm
 
 -- 
 Cheers,
