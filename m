@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B25EC9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 01:14:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFEFDC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 01:18:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82B876B0088; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
+	id AA2196B008C; Sun, 27 Sep 2026 21:18:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B5546B008A; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
+	id A538F6B0092; Sun, 27 Sep 2026 21:18:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 656A66B008C; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
+	id 968D96B0093; Sun, 27 Sep 2026 21:18:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3371A6B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 21:14:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 842EE160B12
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:33 +0000 (UTC)
-X-FDA: 85261400826.17.3C9AEB9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 996DCA0004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:31 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QLCw3fgG;
+	by kanga.kvack.org (Postfix) with ESMTP id 701CA6B008C
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 21:18:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F2E9A1C3A69
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:18:12 +0000 (UTC)
+X-FDA: 85261410024.01.ED15922
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 308E340008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:18:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMcGBYf7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790558071;
+	s=arc-20220608; t=1790558291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EyC72KWxqDJlbXy+hKU7j6uBzgNXP3yzZ3b3YBNMi7A=;
-	b=QXXQJxtxxuwH250K0LbScqtHmFrAxQiVIHEI9ddgrLLsegcPKE/pWkSI/toDSQsBKmigNU
-	YTZ7q6ANDjnLU+RoVDfdrutQxPe0LDTMbFoHVSr+KmIl3fqC9cgHQnTVNTgN5HGUNEWDyF
-	kF+KDmVBiJJOWsvGRnEh3lK6jrGAWw0=
+	bh=GeSgmECTKuaHk2+F7oGmV2w3CiTIst6U8AwDjonsHaI=;
+	b=Vc7XnhCWdsRFi2MDhjVh5cbB00wvJSFsd+poQ11aHcdpNcec2lFpOXXqy9v6vTl/MibHNW
+	modye9m86s1EXdqFZL+cvSVy/ZgX/RWL6jbN/BLkGKTws4YHUsqaoUXysyM0TUILr7sQdw
+	pT6vLCJeIQYV1mkhMMJSS0uZp58LOGc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QLCw3fgG;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMcGBYf7;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	spf=pass (imf17.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790558071;
-	b=oWWaOZvreswjjMZ96Lu1RipJqV6KivCCEWw+JSTNyOeuUTn1Vnw0J972zqCuy9dUpizDN0
-	NmKggi2dn9IztnrPW/cUFSU8l8+m8iRicV9r7Tk8tdE/damM/c1YLXK+gt86GBfoMxruDY
-	4pk+1YwzFGA8Of+ENDkXTMFuQFnTpCA=
+	t=1790558291;
+	b=fdhKakV+ZKTBgBAwhNGFQRwDxEgQBSAlfjp/r/60RWr1XIQMMFWxgZ0pqk8LIL+ro1qCau
+	+/xPEW4N8AVLSzgz0UpPklcuBu05uCgfEwH0mt+7dmBRKQBJlgsO0kFpJF0d3d6/JErdwD
+	QtNGDvrKSBddpkRZBHP5D2fOOiDAzpw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8AF6F4478B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709A51F008A3
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:14:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8BFA560052
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:18:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BDF1F00893
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790558070;
-	bh=EyC72KWxqDJlbXy+hKU7j6uBzgNXP3yzZ3b3YBNMi7A=;
+	s=k20260515; t=1790558290;
+	bh=GeSgmECTKuaHk2+F7oGmV2w3CiTIst6U8AwDjonsHaI=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=QLCw3fgG6q/kDHGYx4lHt+MrSUfstHkF0ztBYLEPnlZPSGbxTDekAXN+eXBnndUJL
-	 oW6HhlSsSNs5WiJPbnRCTizdTReW+4jgqebmckTMndCBIRpJu5laZ0bcH5q7h2FBIF
-	 Ae5gIHNxsZwYPAss4VjubqamHU4r+63w7W3OcvVi/fqEfLmtBkHVjVBJQSEJ7oqnj5
-	 BWLKlnf+jX6VhDxGWeTNO9A6mjGue66KL9IRwruaTm9itXuVoqwGddt6PjQFoEfroA
-	 A27kxghPj9WL1YYgjtZzrWYfYDVc5LL7MN+rk1uYi3DBf0fHCXuvH/qZsGS3ZyvLU9
-	 zG3qbj4jsWTLA==
-Received: by mail-ed2-f34.google.com with SMTP id 4fb4d7f45d1cf-6aaf688ebb0so2452375a12.0
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:14:30 -0700 (PDT)
-X-Gm-Message-State: AFq9FYI4NjrWLeF+NPv5gz0JrRe8WYbMY4msAh9VA8BaFyAGyQOYXmhE
-	xsxvpJ6NlFQvQwbAOo3p0yYyFu5E12ZZsQgHUKgVG6dV4mMOIKBLEfpuWRGLbyGVUrl1t7f59pT
-	4/Rr7IoGoRl9JK74IgzJHpA/VKMMhfdWym2z2L1ruoQ==
-X-Received: by 2002:a05:6402:a0ca:b0:6aa:9f93:e991 with SMTP id
- 4fb4d7f45d1cf-6aac8f40750mr7984598a12.3.1790558069240; Sun, 27 Sep 2026
- 18:14:29 -0700 (PDT)
+	b=cMcGBYf76yqYpZ9sQKYtcmVuUMn8uo6Zc7rHTHrTNOnyiLl8c6gBo4tqVCpOB/4XA
+	 6c4kDp5oY8dIfhTBNtXr+bKRNl83w+Y7wkaSDPYy+xDJHIBaaF3A2/wNIcTdajLjMc
+	 E/qIvUxcjFQtGVylSWr33Y1yINdYHQ1MxfSnaqAM82Bk8CepWzdafczOz71I0pd2i3
+	 FGrHWoMLAPw+joZR8C2gzOhgpEa9dEEUrSeeUZ85hSE4KDUKhoZALNv72yniZuqU44
+	 1dgownxL+7kNaYLONEbhxUHl88ij/LDI2mCScuGKvcipkFBq1jBgpHn0soX0jTctA6
+	 RIsG7xt/Z/N6w==
+Received: by mail-ed2-f34.google.com with SMTP id 4fb4d7f45d1cf-6aafe2a64efso2072400a12.2
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 18:18:10 -0700 (PDT)
+X-Gm-Message-State: AFq9FYI5rkLcQtFWrMrJ2MJEXi3o7bCNNnTZ28cYyydsH9/VWEHMXuo3
+	26Pu3gmaDqyC1rkAV3LzjgyFpHSQO0YWEg3WG+tKUbAAQQg2rdhjpvY7nd5LwUIyK2G9N6BBttK
+	inS5I9/Fd3YH9gGeSseRzHp8nNF9iWZi/ymP3LOLp+Q==
+X-Received: by 2002:a05:6402:535a:20b0:6aa:e9b6:411d with SMTP id
+ 4fb4d7f45d1cf-6aae9b643e6mr4835243a12.35.1790558289196; Sun, 27 Sep 2026
+ 18:18:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-2-hebaoquan@kylinos.cn>
-In-Reply-To: <20260916101929.149106-2-hebaoquan@kylinos.cn>
+References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-3-hebaoquan@kylinos.cn>
+In-Reply-To: <20260916101929.149106-3-hebaoquan@kylinos.cn>
 From: Chris Li <chrisl@kernel.org>
-Date: Sun, 27 Sep 2026 15:14:18 -1000
-X-Gmail-Original-Message-ID: <CACePvbVrd+e6FAK6m8PuoD_Lcen13SeYus=gbQxXCm10AZm1ZA@mail.gmail.com>
-X-Gm-Features: AclHuK-AO377KDisb_ZyQ54ljtndVAy04GqfAKOJ8KfE0jbtV5rzs_avyITVamQ
-Message-ID: <CACePvbVrd+e6FAK6m8PuoD_Lcen13SeYus=gbQxXCm10AZm1ZA@mail.gmail.com>
-Subject: Re: [PATCH v3 01/14] mm: xswap support for zswap
+Date: Sun, 27 Sep 2026 15:17:58 -1000
+X-Gmail-Original-Message-ID: <CACePvbUD7rQ1=638nzku7mdu08BK0cg1aEX+2jJT+WDJ4PUV0w@mail.gmail.com>
+X-Gm-Features: AclHuK9lbaxxfRu9uT3RykRdEUPVHrPVty2eqURRDIMaSXYeT4wqg8fVhgKsuec
+Message-ID: <CACePvbUD7rQ1=638nzku7mdu08BK0cg1aEX+2jJT+WDJ4PUV0w@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] mm, swap: add CONFIG_XSWAP and xswap fields to swap_info_struct
 To: Baoquan He <hebaoquan@kylinos.cn>
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
 	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, 
@@ -89,14 +89,14 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com,
 	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: d16jrw47qnj7sn46pq8i1e356ppfyn5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 996DCA0004
-X-HE-Tag: 1790558071-915491
-X-HE-Meta: U2FsdGVkX1/lk5LF1X204mt+uCNoOpOMCZ5VE3QTAnr5jxtzqykNbNPf/MZKQnFI3NOlYmPTJ48ovIo5GY16nK5eT8vgX8vyFwPR7t233WtetWeLkywxaKmpObx5rkq2iKEI/3CkQV6HbQ7wRuskeWNezz27XLRXrsn6VuUCT1ubqJEYW4a0MeiPGMp992gsFy7/Sy0Kcu2RWHxOpsIRR3EQ5j62ZL2qok0mAuH3y4JrKOY2tq43hsahSagfUboASKJAxtuWfm/YMoveGq6FV0wIcRDBclqzrNIPVdfSN3eghbLZNui5tk/0EH4yLCZep5iyCfblm8GIaJ+2hVGwUc5hCBWkogU6Iq8i1zKGYTNlgHFUzXOKqyeTlEwrmaCEKMJLavDg6fXZWnW63FBvWi9IXo+tXkUqA/KY99E2g4W/l5xQxNN70Mu3oRSsp/h4pqPfXh/EFJEmYFSVrgV8QeR44ZROYrnBMYWZGZzRWnRPfuPtPKGiidnFuXI/owVBdEErQdBpY/cgzCOJ/plTCVYa943g4mEvrZzyJN9/kIaofLuz3M+4jZFZSgZTxAE2Se3uJqS/ER5u84aQlODI0EgVo1Ys2dXJKpyKVYvytmh72tZEUz81HvbTzcpt5y7O5kzU7QNrC2dB9/TIEXgjpAsBielC2/2Zn2MDR3m0J/kXQYSEWSddenGvnSNUh2PnahYLMjVE72II6Jcm+Bgm+FOyIQZoDN3QJfXLjj8WKjOSQ/tRXCg+LSu6LtOvodLtCm5/Arbq3OKDqr8uqnLeyorn1seeouTCOFTysz1Y5ZSPGHitkJ3ECm0iEXdridgk7zcXncjDlCp08wAJVUtPgmuhUpEkak8Q9bceFCS3p6P8K3McdbaQu+QnlTfncULTHCDzW64BIwUIOnhoNR26pa36gehunBwaoZNCujQibXBmq8UaygbyzLWw59pNsfO4frkZUtEOKcNAYHmiBf1
- E4HmOQd3
- XUaQpLSmfu07VArk/sMUEvuf0rRYhYeTMrnuYt/x+EhjFPUaCERXlE2bIDHeiX6wvZfx7rmpfSRwbJZrWYyLHa82ZSLd3VVJf22xuSruuSSDWRYzgEfbyCPpndyZH4aEsC3D7mgMjlGo3U7ueLgrN4LmV6sgL7G33cCNZ7nf/v6awjBuQoU/5WjZvSrkXqmXBZ6r/z5cJg2aKPKnFad41lZBDwYMBQ44zvgBqx5PtUiTkumdpJD9xSwGDZ7DBPP0juwiaa2a0hc4SiHKYZzTEt1mVHxE2YrErRnx0OJDqccjGladX7MNZOB/jdXz/dCy6rNx14G4IVu9EgydLq0hqrHlsqPV87asHkIRELFY0VGa0DOpNiM2VDB860zWOfss8BhlPtrJDPaK2Bd1al0+Udt4AkTu+5HtIlRb5a7TSDswDxC/EJmyhNCajcXZjaxcCVIfw
+X-Stat-Signature: w4ms5ez7ozs878ra3ugqt31ifie1paux
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 308E340008
+X-HE-Tag: 1790558291-119871
+X-HE-Meta: U2FsdGVkX1+bkJA9DDCm26dkf4simkBJebOEN4F2XavRkZh+UNN6qe7L1XLI1T1owfFWe3cauRnHtMdStHbz9BNQnbvIaJO5hbnWuxAVH6ItxQfs8R6XAU9egCzNIjMfxpnuLyxt4qY010JWJeNmF31rPsh8/QdPsOBjXIoNK2V1JGj+yaN2hDuZj4MeZ32NrGmTUCySJpMcBcscpkmR9zcQ+gvLlA/E0jtG4r1proLSDDjkh1RHV1Ga/KQqj+nMs9lSL7NYlFTz/sJFWYA2KmJ4bouk5w0m7HmP3KDEXwO4mzJoL0gER6T2okOCrK9v15gpN6xizAVNOWOjWS+BAG2DKsbFO70Z3lQ8pg5MUNMsQbwz9swjUVe+byPTLZIeZw8jfFodMPFC71nJFWf9+GclvJuypuMEtRbeO/QU0Sq36sUvFizLaxyLYUneMbeD4ngWJY52r2B0o059bjupERtavxaqyblt3sF9ZE5e+2LaAdLff2WsYPhBV7TNEryJLllXnrJXkro//eyeFECz2+HNhM5xSgfH9Znp1dwCfiZE15pt+T9jRSwjatJFLEraeslS1xmj5QweSDQFM7iL6ZuD4FHATxXCRw/F8pzfPHQzRAHU1f+Z1QZh2nHcLY44zWnyqg2tTQqZl3f9ErkM8FmUON4A2mkGYbKC7T/BUmnjrYHcWCF8Ds/6RvUYmgvQ6/QseX84ha++/2Pvcgi05WLpobU9IgPVMPS6xTDLfwFbYdqW5OCOnHaG44PkCsmBSj/zZhJK3vDV8V9hHatcid/ykZzDGPZQOarVqlbA5IS4psCYZFdw97sbPe4+6nCY18C+ftUNZ+3KUcCfUHDzhc5S1VUQJY8YE5DGUmoPSy/2Ot1C2JWd1na/3xdv2XTkqSJlznqbqIAP8bRzGptR7FqIkFlZco/XbNT6xIikwSVz7ShYLYIb/tutVk1G0FuT62ZbGuOaEd9o4t670ZY
+ 3QNZZp2u
+ 0+XZKGhRwOcPGGPvJNJ/rtZjvfE6yahYs6vS/tlXqxG1IvT19aYaI2Y87Woyz91P/Wk45G6PTq+ipE4zcMfBe01GGoJAr2+2mAR8sHHandYKioebfUTuFtyLf/v2OUOFzx0nqPxNllkEA5QLJmu3J3Ng4fmKYlQ/6Om+GsyXXQ4XN7GGyjoK1FEk+HM8+R08cllOXllWIR0Qv6X34h8o0QXkALZ2LwtJmEncKmeAZkkOhEHU0d6DSk8fB6rbvhCcIv2wCeWqLlkjasZqcoxni93+9ZabsLAsRdicWJKV39vT+Op4/lroIFZ2t1yXrXEPqSWPW3JzDCPHA8lxZVfNVEIkYZr1lgNsXnVlc0JTxpWWBW83QNvGwC/iznIKcKDK/zdO/A1YbMIE03GjW7wki0lfLng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,236 +107,74 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Wed, Sep 16, 2026 at 12:19=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> =
 wrote:
 >
-> From: Chris Li <chrisl@kernel.org>
+> Add CONFIG_XSWAP Kconfig option for extendable swap device support.
+> It depends on SWAP && 64BIT && ZSWAP, since xswap devices are backed by
+> zswap, and on SYSFS, which is currently the only way to create one.
 >
-> Introduce extendable swap device support - xswap.
+> Add three fields to struct swap_info_struct under CONFIG_XSWAP:
+> - cluster_vm: the VM_SPARSE vm_struct backing the cluster_info array
+> - nr_clusters_max: total number of clusters in the xswap address space
+> - nr_clusters_mapped: number of clusters currently mapped (lazy grow)
+> These fields enable lazy vmalloc-based dynamic cluster management.
 >
-> An xswap device has no backing storage and no swap data section, so
-> it wastes no disk space. Creation is via a sysfs interface added in a
-> later patch.
->
-> Zswap writeback is gated on whether a real (non-xswap) swap device is
-> active. nr_real_swapfiles counts such devices and is maintained at
-> swapon/swapoff only, so the gate reflects "a device exists to write
-> back to" rather than "a device currently has free slots". This keeps
-> writeback working even when the real swap device is full, and avoids
-> a double decrement when a full device is swapped off.
->
-> Co-developed-by: Baoquan He <hebaoquan@kylinos.cn>
 > Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> Signed-off-by: Chris Li <chrisl@kernel.org>
 
-Reviewed-by: Chris Li <chrisl@chrisli.org>
+Can you fold this with the following patch? At least the struct
+members should go with the next patch.
+
+It seems nobody use those data structures in this patch anyway. So
+this patch alone has no visible value add, other than adding the
+config file.
 
 Chris
 
 > ---
->  include/linux/swap.h |  2 ++
->  mm/page_io.c         | 19 +++++++++++++++++++
->  mm/swap_state.c      |  4 ++++
->  mm/swapfile.c        | 28 ++++++++++++++++++++++++----
->  mm/zswap.c           |  7 ++++++-
->  5 files changed, 55 insertions(+), 5 deletions(-)
+>  include/linux/swap.h | 5 +++++
+>  mm/Kconfig           | 9 +++++++++
+>  2 files changed, 14 insertions(+)
 >
 > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 43155e122b5c..b4331ca4759a 100644
+> index b4331ca4759a..b7882aac1eab 100644
 > --- a/include/linux/swap.h
 > +++ b/include/linux/swap.h
-> @@ -201,6 +201,7 @@ enum {
->         SWP_STABLE_WRITES =3D (1 << 11),  /* no overwrite PG_writeback pa=
-ges */
->         SWP_SYNCHRONOUS_IO =3D (1 << 12), /* synchronous IO is efficient =
-*/
->         SWP_HIBERNATION =3D (1 << 13),    /* pinned for hibernation */
-> +       SWP_XSWAP       =3D (1 << 14),    /* extendable swap device */
->                                         /* add others here before... */
->  };
+> @@ -242,6 +242,11 @@ struct swap_info_struct {
+>         signed char     type;           /* strange name for an index */
+>         unsigned int    max;            /* size of this swap device */
+>         struct swap_cluster_info *cluster_info; /* array, one entry per c=
+luster */
+> +#ifdef CONFIG_XSWAP
+> +       struct vm_struct        *cluster_vm;    /* VM_SPARSE area for clu=
+ster_info */
+> +       unsigned long           nr_clusters_max;/* total clusters in the =
+xswap address space */
+> +       unsigned long           nr_clusters_mapped; /* currently mapped c=
+luster count */
+> +#endif
+>         struct list_head free_clusters; /* free clusters list */
+>         struct list_head full_clusters; /* full clusters list */
+>         struct list_head nonfull_clusters[SWAP_NR_ORDERS];
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index c180d40cd671..5d6c7845c422 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -122,6 +122,15 @@ config ZSWAP_COMPRESSOR_DEFAULT
+>         default "zstd" if ZSWAP_COMPRESSOR_DEFAULT_ZSTD
+>         default ""
 >
-> @@ -375,6 +376,7 @@ void free_folio_and_swap_cache(struct folio *folio);
->  void free_pages_and_swap_cache(struct encoded_page **, int);
->  /* linux/mm/swapfile.c */
->  extern atomic_long_t nr_swap_pages;
-> +extern atomic_t nr_real_swapfiles;
->  extern long total_swap_pages;
->  extern atomic_t nr_rotate_swap;
->
-> diff --git a/mm/page_io.c b/mm/page_io.c
-> index 1da4ff484f09..d685c2e2429a 100644
-> --- a/mm/page_io.c
-> +++ b/mm/page_io.c
-> @@ -248,6 +248,15 @@ int swap_writeout(struct swap_io_ctx *ctx, struct fo=
-lio *folio)
->         }
->         rcu_read_unlock();
->
-> +       /*
-> +        * xswap has no backing store: keep the folio.  ctx->sis is not s=
-et
-> +        * yet, so look the device up from the entry.
-> +        */
-> +       if (unlikely(__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP=
-)) {
-> +               folio_mark_dirty(folio);
-> +               return AOP_WRITEPAGE_ACTIVATE;
-> +       }
+> +config XSWAP
+> +       bool "Extendable (virtual) swap device"
+> +       depends on SWAP && 64BIT && ZSWAP && SYSFS
+> +       help
+> +         Adds support for extendable swap devices (xswap) that decouple
+> +         PTE swap entries from physical backing storage. The cluster_inf=
+o
+> +         array is backed by a sparse vmalloc area that grows and shrinks
+> +         on demand, avoiding static pre-allocation overhead.
 > +
->         __swap_writeout(ctx, folio);
->         return 0;
->  out_unlock:
-> @@ -482,6 +491,16 @@ void swap_read_folio(struct swap_io_ctx *ctx, struct=
- folio *folio)
->         if (zswap_load(folio) !=3D -ENOENT)
->                 goto finish;
+>  config ZSMALLOC
+>         tristate
 >
-> +       if (unlikely(sis->flags & SWP_XSWAP)) {
-> +               /*
-> +                * An xswap entry only ever lives in zswap, so zswap_load=
-()
-> +                * must have found it.  Unlock and let the caller retry.
-> +                */
-> +               WARN_ON_ONCE(1);
-> +               folio_unlock(folio);
-> +               goto finish;
-> +       }
-> +
->         /* We have to read from slower devices. Increase zswap protection=
-. */
->         zswap_folio_swapin(folio);
->         swap_add_folio(ctx, folio, READ);
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 625c185a1ca4..8bba3e533b28 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -837,6 +837,10 @@ struct folio *swap_cluster_readahead(swp_entry_t ent=
-ry, gfp_t gfp_mask,
->         struct blk_plug plug;
->         swp_entry_t ra_entry;
->
-> +       /* xswap entries live only in zswap; readahead does not help. */
-> +       if (si->flags & SWP_XSWAP)
-> +               goto skip;
-> +
->         mask =3D swapin_nr_pages(offset) - 1;
->         if (!mask)
->                 goto skip;
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 280dd906eb18..13ae681acf07 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -66,6 +66,7 @@ static void move_cluster(struct swap_info_struct *si,
->  static DEFINE_SPINLOCK(swap_lock);
->  static unsigned int nr_swapfiles;
->  atomic_long_t nr_swap_pages;
-> +atomic_t nr_real_swapfiles;
->  /*
->   * Some modules use swappable objects and may try to swap them out under
->   * memory pressure (via the shrinker). Before doing so, they may wish to
-> @@ -733,7 +734,8 @@ static void free_cluster(struct swap_info_struct *si,=
- struct swap_cluster_info *
->         /*
->          * If the swap is discardable, prepare discard the cluster
->          * instead of free it immediately. The cluster will be freed
-> -        * after discard.
-> +        * after discard.  xswap has no bdev and never sets
-> +        * SWP_PAGE_DISCARD, so it always takes the free path below.
->          */
->         if ((si->flags & (SWP_WRITEOK | SWP_PAGE_DISCARD)) =3D=3D
->             (SWP_WRITEOK | SWP_PAGE_DISCARD)) {
-> @@ -1216,6 +1218,9 @@ static void del_from_avail_list(struct swap_info_st=
-ruct *si, bool swapoff)
->                  */
->                 lockdep_assert_held(&si->lock);
->                 si->flags &=3D ~SWP_WRITEOK;
-> +               /* Count active devices, not merely those on the avail li=
-st. */
-> +               if (!(si->flags & SWP_XSWAP))
-> +                       atomic_sub(1, &nr_real_swapfiles);
->                 atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
->         } else {
->                 /*
-> @@ -1273,6 +1278,8 @@ static void add_to_avail_list(struct swap_info_stru=
-ct *si, bool swapon)
->         }
->
->         plist_add(&si->avail_list, &swap_avail_head);
-> +       if (swapon && !(si->flags & SWP_XSWAP))
-> +               atomic_add(1, &nr_real_swapfiles);
->
->  skip:
->         spin_unlock(&swap_avail_lock);
-> @@ -3266,7 +3273,8 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
-alfile)
->
->         destroy_swap_extents(p, p->swap_file);
->
-> -       if (!(p->flags & SWP_SOLIDSTATE))
-> +       if (!(p->flags & SWP_XSWAP) &&
-> +           !(p->flags & SWP_SOLIDSTATE))
->                 atomic_dec(&nr_rotate_swap);
->
->         mutex_lock(&swapon_mutex);
-> @@ -3376,6 +3384,19 @@ static void swap_stop(struct seq_file *swap, void =
-*v)
->         mutex_unlock(&swapon_mutex);
->  }
->
-> +static const char *swap_type_str(struct swap_info_struct *si)
-> +{
-> +       struct file *file =3D si->swap_file;
-> +
-> +       if (si->flags & SWP_XSWAP)
-> +               return "xswap\t";
-> +
-> +       if (S_ISBLK(file_inode(file)->i_mode))
-> +               return "partition";
-> +
-> +       return "file\t";
-> +}
-> +
->  static int swap_show(struct seq_file *swap, void *v)
->  {
->         struct swap_info_struct *si =3D v;
-> @@ -3395,8 +3416,7 @@ static int swap_show(struct seq_file *swap, void *v=
-)
->         len =3D seq_file_path(swap, file, " \t\n\\");
->         seq_printf(swap, "%*s%s\t%lu\t%s%lu\t%s%d\n",
->                         len < 40 ? 40 - len : 1, " ",
-> -                       S_ISBLK(file_inode(file)->i_mode) ?
-> -                               "partition" : "file\t",
-> +                       swap_type_str(si),
->                         bytes, bytes < 10000000 ? "\t" : "",
->                         inuse, inuse < 10000000 ? "\t" : "",
->                         si->prio);
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 507f2d19fd2a..96fb993d18cb 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1018,6 +1018,11 @@ static int zswap_writeback_entry(struct zswap_entr=
-y *entry,
->         if (IS_ERR_OR_NULL(si))
->                 return -ENOENT;
->
-> +       if (si->flags & SWP_XSWAP) {
-> +               put_swap_device(si);
-> +               return -EINVAL;
-> +       }
-> +
->         mpol =3D get_task_policy(current);
->         folio =3D swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NU=
-LL, mpol,
->                                        NO_INTERLEAVE_INDEX);
-> @@ -1567,7 +1572,7 @@ bool zswap_store(struct folio *folio)
->         zswap_pool_put(pool);
->  put_objcg:
->         obj_cgroup_put(objcg);
-> -       if (!ret && zswap_pool_reached_full)
-> +       if (!ret && zswap_pool_reached_full && atomic_read(&nr_real_swapf=
-iles))
->                 queue_work(shrink_wq, &zswap_shrink_work);
->  check_old:
->         /*
 > --
 > 2.54.0
->
 >
 
