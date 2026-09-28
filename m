@@ -4,144 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71812CA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2FE9CA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 18:17:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BAF46B009F; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
+	id BA3EC6B0088; Mon, 28 Sep 2026 14:17:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86BB86B00A0; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
+	id B54FD6B008A; Mon, 28 Sep 2026 14:17:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 782816B00A1; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
+	id A1BFB6B008C; Mon, 28 Sep 2026 14:17:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B6A36B009F
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E65D916029E
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:54:38 +0000 (UTC)
-X-FDA: 85263921036.29.20B86CC
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EB6F74000C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:54:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ln9JxC3r;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790618076;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CF2A6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 14:17:04 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03FF11202C1
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 18:17:03 +0000 (UTC)
+X-FDA: 85263977568.24.E4DFBFD
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id CBF22160007
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 18:17:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jsqBP4rH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Cob2+ThX;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DTqAC8Q/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="WQUk4VM/";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790619422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
-	b=LHIq2R69hSSCA309+poomzw7DXA/vBcTdGivc+MwKVkIY+9PT1jcIVimq8zhXAWIF/sEAq
-	88ANHv8kCuHGkF1zdD9Z4N8SSUU8gzVdqua+DHeF5KWgBKZVS8NurpnNKtOy5XRRrtuI2E
-	8ujzqrPVc0gqkGbNvvmMfqyELqTLXvI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ln9JxC3r;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790618076;
-	b=fb6CAeGg8a9RmKvMWHPziTwRR22VTrOK3o17eT9P3+HL1uV38GHT2Q4I5OFd+Laq2hBKOX
-	7iLrAAN5YJpodVUey9kjpo3fjgZlYVA7jeCJZ9FXsgCdEiXLa3T+D68T5PVskhotiZSMNo
-	keOaM8WjzfQVhQHRMt6ByEUWXX4oY6A=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533202fe429so32481cf.0
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:54:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790618076; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PiFFgzahn3/KO/inMoawuVguZAFNjK1flRnMLBFkzwQhsLktdr7zWo/SWt9QDsmRTW
-         0OXGwjWDwdxQMIZzbZpHA6xypI+vrSpbdiKvkvg4e17LOQr6wI73CHNI+LKzHoddVGK4
-         B7+j3D8ebcshNY9tc7o5mqHxM8huz/AdPYTVzNUGlokGjRb8cSQIPeJ2/qF9bjlengZ1
-         uXL8ZZfpubkGnBgoI885vYGtrVLs7TZToNKTFy1veze9vaxBT0spNHGsg13aO9Uh7j4a
-         X66N9QkdmoMreYKqCAME5GiGbaHVbeo6EZLYhx5LFJUCMM2EUPejrFoHZLzWVDipJtYB
-         ImtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
-        fh=m6W1h/k1Pb5oJGUboq/zdUmkx/054gw42JP+CStTQzc=;
-        b=fIZXDBI/uAu117Of0ZNRSg9b5gpL+6qvH3w3rCAaVzdf+hqQ9h8yz2j6EMVc6Sg3fi
-         LuHegkHf00WIkiXdsQ6eCh+/07V/p+HcudZGNKYfMJzSyyz9i+krBxnieV4qWOuKIoip
-         7Zv0cXz0M21184tbRTdMXzCbvNKGkpISNb577RuD9PCBn+0hawY7fKrHVffxIqQDfw+c
-         1lAeeh8SXve3Sa7RNgw6NYfACWzh1AMPOQz+f1MVmlEs1kbwmRoZ2R/hrCko/YtSqrA/
-         5B6ngEDWxa55JwcOVNIY7waw4OzDTXjfCZNzTk2ogL6ASklacLGSG//BD7CwE3yzziE+
-         67JA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790618076; x=1791222876; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
-        b=Ln9JxC3rWcTJ26VhMoTL4YodBHUNZ6iY/ooPht+cHycYd57onI98KYwRQvc/stSJJ8
-         RgMaBiyXXx5FELZVndx4Em60Qul/qfBy8y5QCDiq5u8WymEZp4q0pN2mSA4257Xj9VnK
-         EgfewaYU/IrTKTEaw+EKlytAFvl2y1ltXIlH33Y4cOUCiUIJ3zc55P5AefqXilr1UAXd
-         UVuvebHJqJhoyuyn+JdRGAyBl5chYM2Md3rTjSPY/z7vBzmgipX+4jXTiVqU+EfipEI8
-         8CEYbVUzRm8E/ROYfBLOfenBFqHrUAdxIB2/t+Z1vQOSIUqf6WQlRGxp7/poNdsYnCHL
-         QKfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790618076; x=1791222876;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
-        b=coP6f3zfKCDakJRN2M5nNdo634oq3/8v7wqEJZAa3xYZ6HXPb4Gke2wfaD+UGEzRCg
-         h6DmnWvEM09dT268vNgTnyzgSEjtVELmIjq8CCe/HM5VK7rWj+t+KJI7GaQ7KVVqDPW7
-         QqRUtioQwOYQjrdVNQ0mX8m5IRZS1bzmu0ER0NYFX8Y1MCyCNGBQhPu3UI9wkApSKRFZ
-         V2pzXFXFicgoVmmgrGue8xFscnPFxeo2JFpPlfMkvYYcXIMGEu//53kKU7dJLmPxuC4Q
-         Ti+WG94L6XGyu31NryDL35w/8jYr7vL5M/a+UJDZbzmg1gq+LlDx8izLJpNcjnGR/DTa
-         ujsw==
-X-Forwarded-Encrypted: i=1; AKwUvBz2hnTnzRDBCjBulsp6KFUFJc7Am5kiMsZiSybjQJNXV8TzDk0Zo9SRNMdU4DXbcFkU8h7qwjTejg==@kvack.org
-X-Gm-Message-State: AFuF++mj5F/u5M2dhYzxbIeMbpm8itjxin2QQCyUvCOusZWjRulSu6z4
-	WKieoevw6isJiVih+Cn5q+1w1j/l1RdzRAizQ9bGNH28ecBaT1Uac/a5huwPz8S7ihYZeBpfvQ7
-	7Urp0fzj53qOEnHDmwpjvTE5+0YEU8M8ptZXaPv7L
-X-Gm-Gg: AYBFou3f7SyWOZ4uBoBsgJqKPYzjyoAzBIYgA1LlQdJ2+uBWbcHHVvfPDjH2zb7gPF5
-	MsYsxNii8IjvYxBx4JD7qBP4OUGAl8CmlrP//qnVV2F4QAIEbYzB5iwzJQVa+mItxCI97jTVqkA
-	iTHyux+0f0R++p/kk8HkjfMxvaDWd31AhCeAEfMlJS+CoTWE64aXo3rre63nG4uHFpZPAXrU9As
-	OqF/vlQ0PIUEtw+O2KKgOtIE69mRS7KGZK7eBdPRyWWLQHhMBKf69p1bRHSh8LXrCEWemLqNuEg
-	LyXkYUp56s7VNnLJCmj7ThxHljHfaK0iND0zI1ZLKiGMYcW+9z4cGw==
-X-Received: by 2002:ac8:5c82:0:b0:532:d72d:3e9c with SMTP id
- d75a77b69052e-53320155bd4mr36219771cf.6.1790618074487; Mon, 28 Sep 2026
- 10:54:34 -0700 (PDT)
+	bh=QhzBhh+sX2UeU6n8oJoJHyQ8DgBeRZdBkkfTngNCVDs=;
+	b=USAcc+5VTS6+R/G6IioEnORcQg1PXuPQ4YyXSuCdeTJ7AJYAfjb6TdLqliRG8mfWzjBufQ
+	8EYudj6CjssQeyLdVOe9YoJjEcvbck/7rFd5SnZzuCrBDt6osxEMEwwfp+BdjtOI7uWAtx
+	J//O+kVsf8SPMYou4H0+W6cCp7Wu0/Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=jsqBP4rH;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Cob2+ThX;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DTqAC8Q/";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="WQUk4VM/";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf08.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790619422;
+	b=hiVU8iwjInvMxkvaLpYSQPNB2yH6qyTdSdgdFCttKSrR0pUuEeDbhnajxuZLMhmpwFB1kZ
+	h81XnWMjrFQZFdQE3CW5UVAl0vCT8aYdifelVeTdi5Vf6J2hxVXtaRsExDg27gu5gzshbp
+	AqrrGnfeyGQocSPS6n0ilKXHAFBgC14=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 06BE21F395;
+	Mon, 28 Sep 2026 18:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790619416; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QhzBhh+sX2UeU6n8oJoJHyQ8DgBeRZdBkkfTngNCVDs=;
+	b=jsqBP4rHDOMeIL+ouVMQQ0LO8ZYp8yC6NJGupeIFv4UwiHU/bX11QSinYhG6AH4K1TMCpd
+	AJL5likiRIyDJ00bu7yGw6sTjrQDQMfIFC6i2mXIH67SL58h6QWiBU3vT2EXIVWCJ4IfRf
+	Wc0ITgoNtn2n6K2wy+vdU2uTkpUrA9Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790619416;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QhzBhh+sX2UeU6n8oJoJHyQ8DgBeRZdBkkfTngNCVDs=;
+	b=Cob2+ThX0ZnhUeavgoYaEdZ4fkPqAhpnFpLQkaFYZ/WsBXfOtgoYmK5iYukw0JuNpmteBM
+	egk9vEOY4s91VFBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790619412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QhzBhh+sX2UeU6n8oJoJHyQ8DgBeRZdBkkfTngNCVDs=;
+	b=DTqAC8Q/5I651HSgcOyPutAJHDFqAdHIqNueDifk3hAzlEx8yvJdoV+glaoS0LYqzGSh70
+	egqInx7JMF/xpnJn0TZHnKLg2hKdJojbqIKRn0mBIm1TAx4z1cPi3H3vzC7dU7bbkliVsK
+	glbkoX5KUj36ocwzx2mzFH3w/5JjgTI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790619412;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QhzBhh+sX2UeU6n8oJoJHyQ8DgBeRZdBkkfTngNCVDs=;
+	b=WQUk4VM/WGEL3cU02YT2ORIz6Fe2zjOtlP5kI0ix/2Vw8prsay7hjX54RuJ/sh5GNZvxO2
+	3uUjaZnwKRsSEGBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 418F8133F1;
+	Mon, 28 Sep 2026 18:16:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IkdFAxKvumoMbAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 28 Sep 2026 18:16:50 +0000
+Date: Mon, 28 Sep 2026 19:16:48 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
+	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
+	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, ljs@kernel.org, 
+	broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
+	daniel@thingy.jp
+Subject: Re: [PATCH v3 1/3] selftests: kselftest: avoid cd - in runner
+Message-ID: <arqu1zdvMBXDziRX@pedro-suse.tail5790ac.ts.net>
+References: <20260926010819.604346-1-thehajime@gmail.com>
+ <20260926010819.604346-2-thehajime@gmail.com>
+ <arqi6iwLDDBlk6Tm@pedro-suse.tail5790ac.ts.net>
 MIME-Version: 1.0
-References: <20260915070001.113559-3-hao.ge@linux.dev> <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
- <60642a7f-2949-428a-8290-40d69c989a77@linux.dev> <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
- <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
- <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev> <b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev>
- <arpK2bQrrUMvEvTP@milan> <arqDHnBFGKQZm7VU@milan> <CAJuCfpHuTzFBUm2uAbkFsKF85GxcqFATmKgT50AQgWkLjf7NMw@mail.gmail.com>
- <arqoPs4ZplfcGmLo@milan>
-In-Reply-To: <arqoPs4ZplfcGmLo@milan>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 28 Sep 2026 10:54:23 -0700
-X-Gm-Features: AclHuK__aKkipvuCxqs46ykw_GUVX8SYwupmrIMIoqCWPlzVc6V7pkill3lm8U8
-Message-ID: <CAJuCfpFT=QKy_5G6GYQ1OHhvjXt807jn0pUq-eF9QonNKhx=aQ@mail.gmail.com>
-Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Hao Ge <hao.ge@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <arqi6iwLDDBlk6Tm@pedro-suse.tail5790ac.ts.net>
+X-Rspamd-Action: no action
+X-Stat-Signature: 1f1sswrkme4q7o3o7uw8skh6yw3pqnxe
 X-Rspam-User: 
-X-Stat-Signature: ahxztpmwy1otnexy1bu3fjq3p9fxq6rt
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: EB6F74000C
-X-HE-Tag: 1790618076-177839
-X-HE-Meta: U2FsdGVkX1+4W9FiE4qOOFvPnoqBT9EpaWoJ+SSdAo6Of67/Jz66O2jl7eoV0yQSBgzWkZfg6eFVeZHE+kAqg1B/cmeJxn2vatjCvMmgFHPYUKfF34xERj3RZKbWtMK8ETMUshUlPrsIYlVH1PxqkgF7cXnUKAaQPO6KuMe9+ku9O7Gr9VfXKwnrDgpAMlReoLP7ZJ+fzaAo/9gq7mzwP2JCyx6jISSONTq9wS479aD8Tkixdjr4gXMQWv1078/qSr4ci462XHOUqSpBjVNRx8o4ZU7lz79SdffSzyMYccKiwjERSb8xRqpaG0C7KuBwm7bDYkzQMGvUj4fTGvTLvqkFFG1BZRdmk1ZC0mDf58WIJTRXurBdi/mEiFyP77rlaexhukeFtDp3qV2afC/BbwgPXO32WkCF1gwvR9rZzX0qTbRVId8c74Md/WjInYSUie6LGOSGRTnhayaDbMGooVLdv6/8HmU506OeFqVynLROlqfyOxLu61u8VxDf7fOoa12neqac+cOEqu/79kjRK7P+DGCC9nt3h/DaCtjvGAoEqFnW1FcLHSk25FeQaJI3KnxNjN7OFwMdi0ssSfn/+3eS6GaLxHH9oh+T1/K5oHiYYvHi5Glm500r3RKUAsaBxfSjfVBDrrjwD8spsXE5WCVhn6Nm476AxOHMM/awIeGkOhDUv3DeatAsLGyBXcQYnRxau/ebRr16Nm96rQcNjgjQB/vvW2N0Z4/Sgf7JMj89+wkmScjKoTFnjmwyPBasXvQs1iPgYKeEmzbBlbk5Uf06jm3UxKt3ruUONAdJny2Ya+WwNK3aVeJ4ps5oscnnkF+ZvCWlP9ujRINO5ydltObGmIh/QP2pGmAf9LdY+cPbyvxLUz/1riVM8MWhhfaQdi0NyA5vB3OdV9aFQya4W1o6ooFvue1gtfrnvvE6TEz8fHeA7h17okJBX1PQp2JfbFkvClFsES70dgVio1X
- naHVOksZ
- rCku7L4KwE9y29sVX+Ykw/oOvGsM0g1J+ddYwvOfl4aaG2snSqkwIbIbi+JJl8Ct6QPcVk6/TLpaEvzr1UCghjA77mI4Mzl+rVNhOchG0cDENDGWp2dKC2mU0Rx/i14SA6hQ6IeQK8WHFVTzuQwXz/xwvNio/YtWPnltft4dNhWrsBanOsiPnlw2/6WY/9hvnAjbuaDi5AGSsavHnn2Y5HOJDfR2wdcx0VR8LXJKFf0pguqatksr2P159j1qS2ZqNUyzpiBY2V+KiS4jdTt7ODciD4PY9v2lPUXCDyXZh+M5UWikd8b6YrM4S5fbmVYNOzCryT6B0q1i7qmI9X93H3PcRKHi1Hbb6lb4at3CthAGobCCEhIdKK7YX3SVAQuW5JZMf+28eBZ7at/o9qkN7OI/l/g1j1ZZT1mpS
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CBF22160007
+X-HE-Tag: 1790619421-255997
+X-HE-Meta: U2FsdGVkX185zw6dfQTATghKOGiPv84/TnoI8Hftk6ivyjG+4sB79N4IDKX0/2a3SNWO60R2GZm0WkNKUoNIRjAhb5XNCnTcVx10oUymvO5ftP5Vf40G7sTferMpesO+MBFF4iXQ3VvJkl3QypJemA8uNT0t1n+JUdz1XPMlyqthMbpZ512IJr5SVQw6dVzeYWAI7JaQRg8z2B/jqOIEPYTNlUX5zM142LP9tX4Veht7NGZfBEauZSJoBLNrYPBRcGgU4e7ZaihAWFWimhdkh/hMk2NUrPo4nStHyXrh0SNCD604MeqFObudP3S736o5McuYUXpSUH0585CwB5S4ZWinI1ReVjthp+zq7H/TM7ggl70sUx6KByI1tbkqV20bCulSvjAfhqDLTSl3O/+VnKO6O2NVrQjagM5OOYjS6tullltthe3xqAyH5Bu4DnqJaDd2N7MWBuHk/si/YFNXUw8a4FE63rWF0L38QsFGswosZUzW2TtZLMJSV4z5nIlfa8FSiEZXLDOpY6eU5MmJs1xne8msfNowSaj3Fgmee2OXRiAxf3dBaxrpdazRztt2mTfBzlADRdkUzUExMSF8dscRgfrALl+BEGZJxYo238CdZ8tcZ/PL02L2ioP6Rag2sJOCFbxvUVxfO/hqxCR0juywTaG1ttOKmn5hd0Ak06c2xLZFkW6ucr1Rd/WevTb2C9CJdaXxiz7E9iD0OVUF0cccj3a3SuY+sYR8k+t8WbLPuJr1TxWbY/vj/zXc/xMZMxeUNspMO+tTNEcXeYtX8XpTGoWGJHtd6QX/SW9H0BYXpI4sraOCw4YSfTxqhsUJwh+F6sQJj+q2po7g6sVYii5PX2vGe6k55K0x+QGH0l9xVw7pJVFjTqS9Q52v60tFjKx1y3cjdQZnkUPNmYS64CHAx3zRe3evMIFYPLJ906a3LLI2EJ105D/uwhIB1xbjwN+yHn5hnTAVe1qHwNL
+ MK99CxuS
+ 4hiNcUyZa2bcDV1fNLj1cbKmxCqXMXQ07QhVHyqB+ifOHGbCYOVlk9nbgMy7s2EKLZtcKnG8xIr1qU1cahrXTOWkkrA+YkxagQzzCwfMh+Q1qlIrhI29rNg7e0+EcGMmJ1yLXrkmuAxPMuHOrnaMR6st8OWEKS6XAJTDmydoHVLb0R1QVET3XFoCqYmKjxruWoXeLevDvlZ0Plrg8stboJbQaRab3gdeXJzfy8TPFgvWJc2CloAtdgmmEwbtBpkSvqVV1vB47xmBbEEdDoAJNFF5M7hJKUql1GhTwJLkifjDFbUvbiuFlzC8c09XK24ZTT235KMQZtP3ZkkUVR1LznI0muVh9CpLMn7LrPAFHk946k0bkJADrVg3LyiL1or5j7hm1klJyouOIbPCGOkjhR45Pt96EsRAa8nI7kOY1rhbeM+tmJr1Q1helXkC1dHYc4zOxpGLBOeGIJ4BdgMD7JWgHuNyHklReIR8ycQKjq1DQ71sRzAm0t2Tq9fHyyiJaJxM8N00JNpyt899cp+fMtO4iRPaC5Z0VDd9aZjC/km85VmxwNKpu4DhU5up58i1mYuwtTiO4QwkSksH9VZV+i1XX+zzUchLi2sYeoO+naIrWVgm9QrjPjdVDRM5jKpEY2FVC0kXUbLUpPcEU+HN/BVoNpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,284 +137,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 10:47=E2=80=AFAM Uladzislau Rezki <urezki@gmail.com=
-> wrote:
->
-> On Mon, Sep 28, 2026 at 08:16:18AM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Sep 28, 2026 at 8:09=E2=80=AFAM Uladzislau Rezki <urezki@gmail.=
-com> wrote:
-> > >
-> > > On Mon, Sep 28, 2026 at 01:09:13PM +0200, Uladzislau Rezki wrote:
-> > > > On Thu, Sep 17, 2026 at 10:32:48AM +0800, Hao Ge wrote:
-> > > > > Hi Suren=E3=80=81David=E3=80=81Lorenzo
-> > > > >
-> > > > > On 2026/9/17 09:12, Hao Ge wrote:
-> > > > > > Hi Suren
-> > > > > >
-> > > > > > On 2026/9/17 03:07, Suren Baghdasaryan wrote:
-> > > > > >> On Wed, Sep 16, 2026 at 9:31=E2=80=AFAM Suren Baghdasaryan <su=
-renb@google.com> wrote:
-> > > > > >>>
-> > > > > >>> On Tue, Sep 15, 2026 at 11:00=E2=80=AFPM Hao Ge <hao.ge@linux=
-.dev> wrote:
-> > > > > >>>>
-> > > > > >>>> Hi Suren
-> > > > > >>>>
-> > > > > >>>> Thanks for you review.
-> > > > > >>>>
-> > > > > >>>> On 2026/9/16 05:09, Suren Baghdasaryan wrote:
-> > > > > >>>>> On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@lin=
-ux.dev> wrote:
-> > > > > >>>>>>
-> > > > > >>>>>> The reservation is already stored in the maple tree when
-> > > > > >>>>>> vm_module_tags_populate() fails. A failed load never unloa=
-ds the
-> > > > > >>>>>> module, so nothing releases the entry. Release it and roll
-> > > > > >>>>>> module_tags.size back. Without the rollback a concurrent l=
-oad that
-> > > > > >>>>>> already passed needs_section_mem() can reuse the freed gap=
-, skip
-> > > > > >>>>>> vm_module_tags_populate() and write to unmapped memory.
-> > > > > >>>>>>
-> > > > > >>>>>> vmap_pages_range() may have installed some PTEs before fai=
-ling. A
-> > > > > >>>>>> retry to populate the same range would BUG on them, so und=
-o them,
-> > > > > >>>>>> but only if vmap actually ran.
-> > > > > >>>>>>
-> > > > > >>>>>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocati=
-on tag compression")
-> > > > > >>>>>> Fixes: 0f9b685626da ("alloc_tag: populate memory for modul=
-e tags as needed")
-> > > > > >>>>>
-> > > > > >>>>> If a patch fixes two other patches, it likely needs to be s=
-plit so
-> > > > > >>>>> that each part fixes one patch only. But read on please. I'=
-m not sure
-> > > > > >>>>> if one of the fixes is correct.
-> > > > > >>>>>
-> > > > > >>>>
-> > > > > >>>> Kept them in one patch because they only make sense together=
-.
-> > > > > >>>>
-> > > > > >>>> After a failed populate the reservation is released and the
-> > > > > >>>> size rolled back, so the next load takes the same gap and ca=
-lls
-> > > > > >>>> vm_module_tags_populate() again, and that retry would trip o=
-ver
-> > > > > >>>> the PTEs the failed vmap left behind.
-> > > > > >>>>
-> > > > > >>>> Without the rollback a load that already passed needs_sectio=
-n_mem()
-> > > > > >>>> just reuses the gap, skips populate and writes to unmapped m=
-emory.
-> > > > > >>>> So splitting them leaves each half broken.
-> > > > > >>>
-> > > > > >>> Yeah, that's why I think vmap_pages_range() cleanup should be=
- a
-> > > > > >>> completely separate patch with vmap_pages_range() doing clean=
-up
-> > > > > >>> itself.
-> > > > > >>>
-> > > > > >
-> > > > > > I think I get where you're coming from now.
-> > > > > > Thanks for taking the time to explain.
-> > > > > >
-> > > > > >>>>
-> > > > > >>>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > > > > >>>>>> Cc: stable@vger.kernel.org
-> > > > > >>>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > > > > >>>>>> ---
-> > > > > >>>>>>  mm/alloc_tag.c | 10 ++++++++++
-> > > > > >>>>>>  1 file changed, 10 insertions(+)
-> > > > > >>>>>>
-> > > > > >>>>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> > > > > >>>>>> index 2070e682fe10..95ddf5b743d0 100644
-> > > > > >>>>>> --- a/mm/alloc_tag.c
-> > > > > >>>>>> +++ b/mm/alloc_tag.c
-> > > > > >>>>>> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(vo=
-id)
-> > > > > >>>>>>                                      next_page, PAGE_SHIFT=
-) < 0) {
-> > > > > >>>>>>                         release_pages_arg arg =3D { .pages=
- =3D next_page };
-> > > > > >>>>>>
-> > > > > >>>>>> +                       /*
-> > > > > >>>>>> +                        * vmap_pages_range() only runs on=
-ce all pages were
-> > > > > >>>>>> +                        * allocated, and it may have inst=
-alled some mappings
-> > > > > >>>>>> +                        * before failing. Undo them.
-> > > > > >>>>>
-> > > > > >>>>> If vmap_pages_range() failed to map the range, why should w=
-e need to
-> > > > > >>>>> undo it? If it indeed leaves some partial mapping when fail=
-ing then I
-> > > > > >>>>> would argue that vmap_pages_range() should be undoing these=
- partial
-> > > > > >>>>> mappings itself before returning the error.
-> > > > > >>>>>
-> > > > > >>>> Yeah it does - none of the paths under vmap_pages_range() un=
-do themselves on error.
-> > > > > >>>
-> > > > > >>> Hmm. I wonder if this behavior is intentional or requires a f=
-ix. The
-> > > > > >>> only possible reason I can think of is performance but I can'=
-t imagine
-> > > > > >>> a failure to map is a performance-critical case.
-> > > > > >>>
-> > > > > >>> +David Hildenbrand (Red Hat), +Lorenzo Stoakes (Oracle) what =
-do you
-> > > > > >>
-> > > > > >> Huh, my gmail thinks you are still at your previous companies =
-:)
-> > > > > >>
-> > > > > >
-> > > > > > I manually fixed it on the mailing list for this thread.
-> > > > > >
-> > > > > >>> guys think? Shouldn't vmap_pages_range() undo its possible pa=
-rtial
-> > > > > >>> mapping when it fails?
-> > > > > >>>
-> > > > > >>>
-> > > > > >>>> pcpu_map_pages does perform cleanup on its own as well. Ther=
-e may be other similar sites.
-> > > > > >>>> https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-v=
-m.c#L255
-> > > > > >>>> so I did the same here.
-> > > > > >>>>
-> > > > > >>>> If we really want vmap_pages_range() to handle this cleanup =
-internally, I believe that would
-> > > > > >>>> be a relatively large change, and we would need to consider =
-many more cases. So I think we keep
-> > > > > >>>> the current behaviour for now.
-> > > > > >>>
-> > > > > >>> Yeah, I understand it would require a deeper cut but if that'=
-s the
-> > > > > >>> right way to handle this we might as well do that. Let's see =
-what MM
-> > > > > >>> folks think.
-> > > > > >>>
-> > > > > >
-> > > > > > Sounds good to me. Let's wait and hear what the MM folks say.
-> > > > > >
-> > > > >
-> > > > > I just looked into the call sites for __vmap_pages_range.
-> > > > > And I found there's a bug in one vmalloc caller [1].
-> > > > > When gfp_mask has __GFP_NOFAIL, the code keeps retrying
-> > > > > __vmap_pages_range. If there are leftover PTE mappings,
-> > > > > this can trigger a BUG(); [2]
-> > > > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L39=
-46 [1]
-> > > > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L12=
-1  [2]
-> > > > >
-> > > > Indeed the below code is incomplete:
-> > > >
-> > > > <snip>
-> > > >       /*
-> > > >        * page tables allocations ignore external gfp mask, enforce =
-it
-> > > >        * by the scope API
-> > > >        */
-> > > >       flags =3D memalloc_apply_gfp_scope(gfp_mask);
-> > > >       do {
-> > > >               ret =3D __vmap_pages_range(addr, addr + size, prot, a=
-rea->pages,
-> > > >                               page_shift, nested_gfp);
-> > > >               if (nofail && (ret < 0))
-> > > >                       schedule_timeout_uninterruptible(1);
-> > > >       } while (nofail && (ret < 0));
-> > > >       memalloc_restore_scope(flags);
-> > > > <snip>
-> > > >
-> > > > and it should be fixed. As the __vmap_pages_range() can actually fa=
-il
-> > > > and leave some installed mappings, we have to perform some cleanups
-> > > > on failure or on repeat(if nofail is true).
-> > > >
-> > > > Below code:
-> > > >
-> > > > +                     /*
-> > > > +                      * vmap_pages_range() only runs once all page=
-s were
-> > > > +                      * allocated, and it may have installed some =
-mappings
-> > > > +                      * before failing. Undo them.
-> > > > +                      */
-> > > > +                     if (nr =3D=3D more_pages)
-> > > > +                             vunmap_range(phys_end, phys_end + (nr=
- << PAGE_SHIFT));
-> > > >
-> > > > we can use but we need to check if partially mapped space is not an
-> > > > issue for the vunmap_range(). And it looks like it is not.
-> > > >
-> > > > <snip>
-> > > > @@ -3953,8 +3990,15 @@ static void *__vmalloc_area_node(struct vm_s=
-truct *area, gfp_t gfp_mask,
-> > > >         do {
-> > > >                 ret =3D __vmap_pages_range(addr, addr + size, prot,=
- area->pages,
-> > > >                                 page_shift, nested_gfp);
-> > > > -               if (nofail && (ret < 0))
-> > > > -                       schedule_timeout_uninterruptible(1);
-> > > > +               if (ret < 0) {
-> > > > +                       /*
-> > > > +                        * __vmap_pages_range() may have installed =
-some mappings
-> > > > +                        * before failing. Undo them before returni=
-ng or retrying.
-> > > > +                        */
-> > > > +                       vunmap_range(addr, addr + size);
-> > > > +                       if (nofail)
-> > > > +                               schedule_timeout_uninterruptible(1)=
-;
-> > > > +               }
-> > > >         } while (nofail && (ret < 0));
-> > > >         memalloc_restore_scope(flags);
-> > > > <snip>
-> > > >
-> > > And looking further. If the __vmap_pages_range()/__vmap_pages_range_n=
-oflush()
-> > > and friends fail, a proper cleanups should be done inside, IMO.
-> >
-> > Sounds like we are in agreement.
-> >
-> > >
-> > > But i am checking callers and see that some do some not:
-> > >
-> > > <snip hooks.c>
-> > >         __vunmap_range_noflush(
-> > >                 vmalloc_shadow(start),
-> > >                 vmalloc_shadow(start + clean * PAGE_SIZE));
-> > >         __vunmap_range_noflush(
-> > >                 vmalloc_origin(start),
-> > >                 vmalloc_origin(start + clean * PAGE_SIZE));
-> > > <snip hooks.c>
-> > >
-> > > kmsan_ioremap_page_range() it does clean ups;
-> > > kmsan_vmap_pages_range_noflush() looks like does not care in shadow.c=
-;
-> > > __vmalloc_area_node() as noted, it is broken as there is a BUG() on n=
-ext try if nofail;
-> > > pcpu_map_pages() it does cleanups.
-> > > ...
-> > >
-> > > and so on.
-> >
-> > Yeah, the callers that do the cleanup should stop doing that once the
-> > vmap functions handle it themselves. I expect an overall reduction in
-> > code size.
-> >
-> Agree. If mapping API is called and it fails the caller should expect
-> the state as it was before calling that API function, IMO.
+On Mon, Sep 28, 2026 at 06:27:42PM +0100, Pedro Falcato wrote:
+> On Sat, Sep 26, 2026 at 10:08:17AM +0900, Hajime Tazaki wrote:
+> > The kselftest runner currently uses `cd -` to restore its working
+> > directory after running a test.
+> > 
+> > This is not supported by the minimal BusyBox hush shell used by some
+> > NOMMU targets. Store the original directory explicitly and restore it
+> > with a quoted path instead.
+> > 
+> > This also avoids printing the directory change performed by `cd -` and
+> > handles paths containing whitespace correctly.
+> > 
+> > Cc: Shuah Khan <shuah@kernel.org>
+> > Cc: Kees Cook <kees@kernel.org>
+> > Cc: Andy Lutomirski <luto@amacapital.net>
+> > Cc: Will Drewry <wad@chromium.org>
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Brendan Jackman <brendan.jackman@linux.dev>
+> > Cc: Hangbin Liu <liuhangbin@gmail.com>
+> > Cc: "Ricardo B. Marliere" <rbm@suse.com>
+> > Cc: linux-kselftest@vger.kernel.org
+> > Cc: linux-um@lists.infradead.org
+> > Cc: linux-mm@kvack.org
+> > Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+> 
+> NACK.
+> 
+> https://pubs.opengroup.org/onlinepubs/009695099/utilities/cd.html
+> 
+> -
+> When a hyphen is used as the operand, this shall be equivalent to the command:
+> cd "$OLDPWD" && pwd
+> 
+> which changes to the previous working directory and then writes its name.
+> 
+> 
+> If you're running selftests on !POSIX compliant shells, that's a
+> you-issue. Fix the shell, or use something decent.
 
-Thanks for confirmation!
+... I realize I was a bit too aggressive but seriously, lets not support
+broken software, please?
 
-Hao, do you need help with making the change in vmap functions to
-cleanup upon a failure?
-
->
-> --
-> Uladzislau Rezki
+-- 
+Pedro
 
