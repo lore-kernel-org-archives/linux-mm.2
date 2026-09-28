@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB21C9833F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:29:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64B2C9833F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:42:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8871F6B0088; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
+	id 93B3C6B0088; Mon, 28 Sep 2026 07:42:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 838786B008A; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
+	id 8EB826B008A; Mon, 28 Sep 2026 07:42:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727CF6B008C; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
+	id 7DA506B008C; Mon, 28 Sep 2026 07:42:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C2056B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAF7DC011D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:29:51 +0000 (UTC)
-X-FDA: 85262951382.26.F7AF96C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1F0FC4000B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:29:49 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqAdE900;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C0876B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:42:39 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8726FA0197
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:42:38 +0000 (UTC)
+X-FDA: 85262983596.12.593F2A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B2437C0008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:42:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ru89tl2Q;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790594990;
+	s=arc-20220608; t=1790595756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CJ5kjINHhTvLlIC4gUldiEPrQ0Od5Df/IMR+FjoeiVI=;
-	b=aulbp0vW0G+e2JRMeypXR1ctxbhKq0C3FjgV/kCW186SykhKpksSsDGCGl4u7YQNR0GZ9S
-	1ZYMtel9z/aDPABn1OmaZUDEzqZ+OHiN5V4Cbf84PBX0J/kR5RJ5OMLf06ds9Fjj6AsIBW
-	3saGcLio9oEfC/aiTobjXP9lNun3w9Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqAdE900;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=nyi2h4pBa6aCzJLG0YIuvLzyd1MNYWiHYXFs0BMepts=;
+	b=RU57KaVVFTk8cvYuh3wgKWMk1+KfEP5iMgFBLv7yqyNHSjlfyZkpBmMA3Qe5Q+7rM2v4mL
+	XmgG88qvwoKz/yD/KEhPUFNtpJFqpu2VZcgqRH7HGh2pAEB0UBdiQ2+zlC7IQYw+ap1jku
+	ffY6OtXEF47KpTq2tI4BIK0L3pjcX9o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790594990;
-	b=PyXWYNulqNdeP6jB2a7k63Y9xEYqbMsZvaVgICJm70ocMkY1BiE7fjNgBHLGaDL1DGwSUp
-	QgZA6QDS8wWovOSKiP4rsXotuVFPYEp67KRsc/ap23Ia9332/fbRxOQL5czUYOqbd5h486
-	bpTxFu5sfvqixTROG8x2qxjj+9txmyo=
+	t=1790595756;
+	b=U/ORQVvBA5FcSLQ63gVLg31p+GY7UFywxdXYQFiNuHm/N059icnzT2f7lVo0rSvz3AAWBU
+	BV7RrCw89WmCZg7dylnazXsxWOmR/qbDHwu9luXQ95i6MhlRmN1WC4YITI36zOLQnnKmcs
+	G+M7oby8tRCiIfIZIBwgqAY3mNAS7S8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ru89tl2Q;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 632CC600D1;
-	Mon, 28 Sep 2026 11:29:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4761F00893;
-	Mon, 28 Sep 2026 11:29:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 98F24432D0;
+	Mon, 28 Sep 2026 11:42:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731591F00893;
+	Mon, 28 Sep 2026 11:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790594989;
-	bh=CJ5kjINHhTvLlIC4gUldiEPrQ0Od5Df/IMR+FjoeiVI=;
+	s=k20260515; t=1790595755;
+	bh=nyi2h4pBa6aCzJLG0YIuvLzyd1MNYWiHYXFs0BMepts=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EqAdE900qssN5xhvsE5kU1fwGiZv1o0KIbKETkKrd3+I1Tyfgc1URQb7S/ef/Jo/i
-	 kSvCfqBYS1+uYNMMOTwRMJ3wsgo4piEcLKsDUNJFh/o1JFb3SEQ7PF0LNO3STqv6zJ
-	 VpEaTsyDB0EsOy+Vnv2ssm8aUbMYc5jXOvcbyynrxRyexqLCgxImcprt4hhv8X7Arg
-	 5T6DK2hjVkmBorT6UvpGIo83Td5UbQvJm0BQRMHsf5zusn0XdC5FvMuovC3LkR00km
-	 m2XnhFljMXw/YYnfdgmYOQvEH59y2JXCpiK+WizjKF73suR+8FyqWgxyaEHubD/7D0
-	 bh3TdJn8Sx9hQ==
-Message-ID: <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
-Date: Mon, 28 Sep 2026 13:29:43 +0200
+	b=Ru89tl2QGLKPM68mggJL9czQCpnCrSr+isKp3atpqRRcql6+o7opzpvFWSzcIDXPl
+	 JGByY9q8sjUYq9vWIS01Jc7lEgCJbIWajWkTl2390FTR+0mYhFnu5WaDSK3VtWUFHx
+	 9ho3EtniK5Gr/rRTNr0sooak9eJVV2rZ7/FzOkRT5auf/komgOjVdu5J4RFbAmh90D
+	 hw52plXyg9wNAt1IAWmWHFHoRrJYTU/6+hNz1W/jNPQUdhtUbLd3NpLC93/BbZaY/p
+	 TdtfnTpxgtNJWEUBC0p8b/zzqhisqyNT0eX2sMtoaaVePMxL20iqy6hGuGUjBu0NEg
+	 khg8Rm8cAnosw==
+Message-ID: <4a57b255-cb38-4e8e-908b-d32e55a1a326@kernel.org>
+Date: Mon, 28 Sep 2026 13:42:29 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
- mappings
-To: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>, linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+Subject: Re: [PATCH] vmcoreinfo: export SECTION_HAS_MEM_MAP
+To: Dave Young <ruirui.yang@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He
+ <baoquan.he@linux.dev>, David Carlier <devnexen@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kexec@lists.infradead.org
+References: <20260928-section_has_mem_map-v1-1-4129f6ba2838@kernel.org>
+ <9c47dad9-2716-4ae0-b6e2-9e6b5c718859@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+In-Reply-To: <9c47dad9-2716-4ae0-b6e2-9e6b5c718859@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1F0FC4000B
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: mzer5x8npshei36rke3qam9167mr469u
-X-HE-Tag: 1790594989-231266
-X-HE-Meta: U2FsdGVkX19AJAGdw9QbvkyZNiFoILKElvzgFppGfT8HFOzRmtvz9Dh+iwK0rJXPg9rZ3uuccFttErzcv1YsQzyfX/8QYRFyvjE4CMJlN6dlcMZF/417M36XrX4/ZcKeGiFAAxdocLszJBcEG3qZP9In2CkjBDF7BEX3q5lFbf8oLAErpZN74T15P9DZWYTGqbGn4ENvccH5CB/rGesSZahzElB2SXYt+AgrfBXNRfdk+rdUwMpRPi0qB703pYEwYX1kdGNLiBaz4k1UeX4N4oQYgibJsSna4+h2xIUhquQG6JCRRN1y1wm3U41aKmFDC+CnxnWX3+BaBbJpqd5R1tRzYPTIROfdJzD53N0WD8TzBH+eiPB3mjKbHZU9NqGtpaDbYEyU8tleFvuXFBxqk42e4VP49/O8oX2qMeRmPhY5S1BEAXB3e/m/VQCkIDrUYiLJOusVCbUciE2lRtviNJgXqeQOrxUsvexUNEnERm2RNNrfe8C85IRX9cQR3OLDZOE6Drngv7kkK3SshZhtKdjKSPf/Tpp08ji/cdRcTMSVDYmsJTcJhyQlbwJAssXqi1/WHs+wGfFKQAwJSyP+UmPZ+EP+mN1QT7e/ujFx6zpR2kDaMz0slD0hWjg5+x1XOpEb4gmhgVgrwT6wZbFgXgunOSy5bIzvKt4nFnGWfreeQGxiY3oJHyO3ErdtMGZ6AyPyWbKqESMajhzvNY9G4AV2US0jBcPFHrnuABqILe009KgcEoJzVlNO+p6xixEgeBN/capK3x1tUXeLN59F+bDEPScS7JvzUpuL8YkRkFrdk/HtFYeW32tRYsNj983VdIl7yU0ccNYzrgQuzdMmjkmQSrZNNmvgZLJQ11zevf7NMG6u/40lp39taBlSxEceFXv8L0YP43ApqLNJJ7gitKT01noQ7vo/4OspwUkgMaArX5JBUHsbo4l6HrEmqUHSC2/ez2IvI9DJQL9MNVW
- tpwWmk0w
- EEhS+ddKYQmUHFo18df7NuerhZb2Z3JFRNeExzFaKUjJNkEwhViA+IS2bGIcqTH2nwM9dshq/jgZashDp3XGFoYndyHNz3T2UCgsKLh9sYjFXNS7Y11h1IVFip6qd/DlFjPGKt4xmduMQ8kXIr0w3/60EBSjD+IcX83sDzXFPKFbx35gM+EpDADlHqnuxols3w5ThewaRzPshYRlKxkY2lu5CGQS5WSVM5uBMIzPL9QkPiM6W+UJHO7Ki+RsZaO8IpJ5AIhknPLyhAX4a5T16b8m9rg==
+X-Stat-Signature: 3b1aukaihp4fxdxwdh5m1c4dszibyty8
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B2437C0008
+X-HE-Tag: 1790595756-842741
+X-HE-Meta: U2FsdGVkX19iYF4T/10kLm6L3dpwt7a5mhaPoo+oYb52nTt45KlU0ft2qbU6Y+L9uSIkV+TCP5kZO6WxxWpM652gYKh8O8xsrfLlihPnWFDTy9cZSzSHFIkVjUfsLXOry/INcIqvPHALp7glTwBJMQsrP2Ijkgylh9wWrVbETCZuYsT6qh+E22E6OKPs5ZROMqEWayTQdgY2DV7FbCJg3pLmBfA4HE/eAl6VmJJVsQ+qELJ0wowgL9Uuy8DuBd5bXXfrHcUAApz7FmWYgBvKOz+uGaKRBZMrFcciBo8c4D0Ar6Qcb1EGtexLj6MEm8PzGCDL74r4HhYsdb+rJEWuNf8G5zmifO8DvB6DRqtL/B+cWUa6mKw19MP4aYkW7EHRODhsOr1owy/XY4uV2NN7QROyMlGuD/EBdvLfYr7WsEp9j4od+8X6FXTVF099pRb39wEgONlKJqfQ/o3Ne1IcwzbJS/GbgraDSyWXwtkigPiAVGHgOn4naiQSnr9k9PFgaMozpLCipjPfiMsBQlatdlYu35SobVgMFGZSpd6abi4xmfpAPAYeKfgRVsFw7TCLCePRwUG/LHlBNy70XI4hxMNU0k1G4dx8OXjyod2lxI4wAixWlUkZMUQjUwOasOKKhN9adsnyaNQJEIpeOz/GpAXT/BFIrNePpLsxG1X45ebn3loaOuDUuTEEtlVnGxotHwAHzCQVt3vEq0I6UefLurUeO7PgzGXvEcVN4iCWfMemIxLX0Ze+qMYDrWmWAS/O1QYMhNz6og7U0s89mYRlrxrNcUgZCFCBw5ncCQPBS4XlKJg8iVs1swhaCLquEQyfnZTPxkVL+c9ThoBzK/xYEiEphAouBuxMlb6ljN6Qjg4FhvkGp1cinOByerQMSBeDpCBat1cS4kBCEbmJwMqZMX4ePbxEE5UaZ7uUKk0xPiwSQ8F0z4exRzUYrxYdf7DGV7Q0QesGsjCdOlyyUry
+ 3K/rv28j
+ QYB2QpkRztmzkH6Y8nlBvzNjENnouAURQ5R8/QKMEnSuWYIIwvUpB/BaEQdr4cBpIVUPMo69ImQMY/aHYV9snIGPKVzkX7XDzbaxLN+ls2wlhZ5ZzTEU4mV/ijIok2nsfJGmPSDVht/BYl4V6yVaz1pRVZN8NJ/pvjMLhEdKPWX4a9CBHuiv1go7GKc3qFUtBIp9n/wReoh+G7dsL9gmLiZxXDcIkmPQ3NiPkdDhSLegaBtONMvfZUbR+QAXn7T2MzRMtNs+M1bjbA5ziyIvN+2wn+plTHDi6tOpc2P0v0uhtwPoZ2TLr4xN8RnjXVb+G5inMCJRdI21kMXQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,57 +140,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 09:07, 天狼 wrote:
-> Hello,
+On 9/28/26 12:23, Dave Young wrote:
+> On 9/28/26 4:48 PM, David Hildenbrand (Arm) wrote:
+>> The crash tool currently hardcodes SECTION_HAS_MEM_MAP, and makedumpfile
+>> needs similar information (although still relying on
+>> SECTION_MARKED_PRESENT, it should switch to SECTION_HAS_MEM_MAP).
+>>
+>> Let's just export the value instead, so tools that work on vmcoreinfo
+>> will not have to guess.
+>>
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>> Result of the discussion in reply to "[PATCH v2 00/13] mm/sparse: remove
+>> SECTION_MARKED_PRESENT and further cleanups" [1]
+>>
+>> This patch can go in independently. It would be preferable if both
+>> go into the same kernel release ;)
+>>
+>> [1] https://lore.kernel.org/r/20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org 
+>> ---
+>>  kernel/vmcore_info.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
+>> index 5a417f8a922a..7833a36064a8 100644
+>> --- a/kernel/vmcore_info.c
+>> +++ b/kernel/vmcore_info.c
+>> @@ -182,6 +182,7 @@ static int __init crash_save_vmcoreinfo_init(void)
+>>  	VMCOREINFO_STRUCT_SIZE(mem_section);
+>>  	VMCOREINFO_OFFSET(mem_section, section_mem_map);
+>>  	VMCOREINFO_NUMBER(SECTION_SIZE_BITS);
+>> +	VMCOREINFO_NUMBER(SECTION_HAS_MEM_MAP);
+>>  	VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
+>>  #endif
+>>  	VMCOREINFO_STRUCT_SIZE(page);
+> 
+> Current crash code looks below:
+> #define SECTION_MARKED_PRESENT          (1UL<<0)
+> #define SECTION_HAS_MEM_MAP             (1UL<<1)
+> #define SECTION_IS_ONLINE               (1UL<<2)
+> #define SECTION_IS_EARLY                (1UL<<3)
+> #define SECTION_TAINT_ZONE_DEVICE       (1UL<<4)
+> #define SECTION_MAP_LAST_BIT            (1UL<<5)
+> #define SECTION_MAP_MASK                (~(SECTION_MAP_LAST_BIT-1))
+> 
+> 
+> And it does not match the kernel for below chunk with ifdef
+> #ifdef CONFIG_ZONE_DEVICE
+>         SECTION_TAINT_ZONE_DEVICE_BIT,
+> #endif
+> #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
+>         SECTION_IS_VMEMMAP_PREINIT_BIT,
+> #endif
+> 
+> The last bit could be wrong in crash.  So all numbers should be exported in vmcoreinfo.
+> 
+> Thoughts?
 
-Hi,
-
-> 
-> I would like to request feedback on a mapping-scoped, best-effort hint
-> to defer background writeback while an application is still constructing
-> data in a writable MAP_SHARED mapping of a regular disk-backed file.
-> This is a feature request, not a patch submission or a benchmark report.
-> 
-> Motivation
-> ----------
-> 
-> Consider an application building a large data structure, for example
-> 10 GiB, through multiple passes that repeatedly modify the same pages.
-> After construction, it persists the file and publishes it for other
-> processes to mmap and read.
-
-Is it an option to just construct the data using anonymous memory and then
-write()'in it once ready in one operation?
-
-Why exactly are you using writable MAP_SHARED mappings?
-
-> 
-> Building directly in MAP_SHARED keeps the data in the file's page cache,
-> which also serves the consumers. However, background writeback can write
-> intermediate contents that subsequent construction passes dirty again.
-> The application knows when construction ends, but cannot express that
-> knowledge as a mapping-local writeback scheduling hint.
-> 
-> Building in private memory and then doing buffered writes adds a bulk
-> copy into the file's page cache. Direct I/O does not itself populate that
-> cache for subsequent file-mapped consumers. A memfd can share the build
-> buffer, but requires a separate object for persistence and changes the
-> consumer interface. Global dirty/writeback tuning is broader than this
-> particular mapping and construction phase.
-> 
-> Proposed interface and behavior
-> -------------------------------
-> 
-> Tentatively, a pair of madvise operations could express this:
-> 
->     madvise(addr, len, MADV_DEFER_WRITEBACK);
->     /* Construct and repeatedly update the shared file mapping. */
->     madvise(addr, len, MADV_ALLOW_WRITEBACK);
->     /* Use existing synchronization calls if durability is required. */
-> 
-> The names are placeholders for discussion, not existing constants.
-
-I don't think this behavior should be part of madvise. Way too specific.
+You know the crash code best, so likely ... it's time one of the crash people
+takes over this patch?
 
 -- 
 Cheers,
