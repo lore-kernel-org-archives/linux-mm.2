@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F2DDCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:42:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C499CA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:42:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD6D96B00B4; Mon, 28 Sep 2026 13:42:09 -0400 (EDT)
+	id 2884F6B00B5; Mon, 28 Sep 2026 13:42:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B872E6B00B5; Mon, 28 Sep 2026 13:42:09 -0400 (EDT)
+	id 238B36B00B6; Mon, 28 Sep 2026 13:42:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A50CE6B00B6; Mon, 28 Sep 2026 13:42:09 -0400 (EDT)
+	id 100D26B00B7; Mon, 28 Sep 2026 13:42:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DAA56B00B4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:42:09 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EE247C029D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DFBC86B00B5
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:42:10 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C00D140292
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:42:10 +0000 (UTC)
+X-FDA: 85263889620.22.95696E1
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	by imf28.hostedemail.com (Postfix) with ESMTP id BCF1CC000C
 	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:42:08 +0000 (UTC)
-X-FDA: 85263889536.27.E1781AA
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 30C2B180006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:42:07 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bqZXmGEY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 37aa6aggKCIIysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=37aa6aggKCIIysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TKq2akpQ;
+	spf=pass (imf28.hostedemail.com: domain of 376a6aggKCIQ0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=376a6aggKCIQ0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790617327;
+	s=arc-20220608; t=1790617328;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Nxfrq1oErs1k/vPJqSmHMRIqd6UamZQptG6IeTh3sVg=;
-	b=YAbBYFBREJFv1LSF1fvHPNr1s5NnmPfrvwlUmEY+LkLlIbYC70mwQU+Uoa5xkO3OJ6c3zr
-	Qqg4U0XeSjLOQbcNwsOPyvSUxcAsrgMTgGomdaUQFNWNcmKcWpccJw2VbzHnc1MuFwFQ7F
-	zSaM4oq2AWZi1WZ3am0rpBfHrj/UYZY=
+	bh=GvWsjS4kJdvoXcVGD6geTFWpf+d6azd0mBr60JzC1QM=;
+	b=riRANflZxxXdQcCIYtkRfw7e2dyzniCkWDS4fbdT9RoVtIBiWVqNrd/9QVysICNad4ICCy
+	jGzNfbc+aYU/Q9+O6YF90HWgT48IOILxCyTyvl/c3iDpZnjyfGaqDZ5ILTIg+mJhqLPyd2
+	jt5+pZamTHTXs4yOVNdlN0fcxJBhWlY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=bqZXmGEY;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf24.hostedemail.com: domain of 37aa6aggKCIIysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com designates 209.85.128.69 as permitted sender) smtp.mailfrom=37aa6aggKCIIysuyzglgmuumrk.iusrot03-ssq1giq.uxm@flex--smostafa.bounces.google.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TKq2akpQ;
+	spf=pass (imf28.hostedemail.com: domain of 376a6aggKCIQ0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com designates 209.85.128.70 as permitted sender) smtp.mailfrom=376a6aggKCIQ0uw01iniowwotm.kwutqv25-uus3iks.wzo@flex--smostafa.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790617327;
-	b=1G1jqpoMK2wJnLmSgm47O1gv4nD0p2R12x9SCHijVwCb0DhHOSOKWw7692m9FcV/At9uMZ
-	RVGAMx/Q4nKFe51E+SHTCJsl8ntXZ6yDSJ6ACYcb0z5aDkHhGKbBw6ZCqabG5BIW6voz3y
-	NFb/dkwpdd8E3tthvdTHdzNv5bF8VPQ=
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4a0032846d7so13805485e9.0
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:42:06 -0700 (PDT)
+	t=1790617328;
+	b=D1ahamHqBrgsZIoLGA5D2xWAhNRDJmVOfW9Lx9d3/5lnmNz4ioRm8TPvV+Ddy4hYr6kJiV
+	36vZW7oACf8SFVzBsXM9AAI7JJEcglVGkHTHie0aew3MfF/P7NGvABUzXI10Da3wzRBpA3
+	SB2XY4GyuFjMdJZBtv6FZHAiWf26H7o=
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49fff093efcso25655925e9.1
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:42:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790617326; x=1791222126; darn=kvack.org;
+        d=google.com; s=20251104; t=1790617327; x=1791222127; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Nxfrq1oErs1k/vPJqSmHMRIqd6UamZQptG6IeTh3sVg=;
-        b=bqZXmGEYI4lbeq10GBv++VBxELcUmL4UotNEFHIWE4/SzUMOAOlPi5kKwL6rqeLNa1
-         hTo14Dp0PzzGa50tfnKu8VkQbR/WzMu6nxrIlhy0FmPrrBZviaLkon03l6whQMpgp3AN
-         QqQ/zySh0+3o5wLu0DbR8ZAiRVFs5hAj05tIbtz4zY+NadZ8j8ZITdE7oMl7Par7Re70
-         PSb4tUUn5Bq2M5ToSmZISTH3Mtae6EQ1hDiuhZ84qy1B/jSygsar0xRnrA4Hl5QnhDtR
-         rDhH8UPfz0KXbzA1N8fhKs16kXj+PiwhT/ynawjSZJvsJJ0+ptjUnAnTq2j1h5Kr2j5R
-         1OFQ==
+        bh=GvWsjS4kJdvoXcVGD6geTFWpf+d6azd0mBr60JzC1QM=;
+        b=TKq2akpQN4bl7wi3njWjpwthuQ/0ZImSTChzVKbxwIwSWmdlqjlgb4By56h1SCGttd
+         FzwtjiP4hE0utxXa819iEi6uGAJmQ5uSIyIaleQul8IHPzL0KtAwBIdQMkRH2GSJtNdJ
+         k6LuAxD/BJC8tMsFR5Xp3iCkiFbKioTtqQtnIPy3W6CVf48eDl1w91DqpzCQU8cQ9fw/
+         dKm4fTP3Sm/5GERDQaCj43WHLRmEFoQFFIJ+5EFOa+GzoyUORYV/jgALTXrnxqe+YzdK
+         upH7Df2VO/v2UFuCep2PNTpPZrJ2avFH7v3G75YFHEruqG1e9slBTn9befrPYv3W8+y7
+         Oosw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790617326; x=1791222126;
+        d=1e100.net; s=20260707; t=1790617327; x=1791222127;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Nxfrq1oErs1k/vPJqSmHMRIqd6UamZQptG6IeTh3sVg=;
-        b=J4BtloIR8rFeM/KX3ye7F2DC8mFjM3EI4cXLC5lJve6ji+RjngVA5L72oOGsAzTnXI
-         PAOOILqzz6MTRZPUPTON0Hj1C3WtUQVug4hPSu7RvODbC+tHV+4H8xQC+RlYgi5Hg5ed
-         edaHQ6wKiEaMShyTeI8Btjb4oo4FjBbq21WNF00ZAdZmsYGPI1jut3bKD+GQWNB3B8+i
-         Zxm9PXO+CnlR0TOe+Qgd1B6lUpZ9oQVvi1FH4PxjdpXBQTzw7kj4EXNQ3CXnffsYfor3
-         x9+y3SnDHm5qCseM487LBcls8b05uarwFli5e2KAV2kcFuTIFgUNkovBvMnysOz33DVG
-         VwJA==
-X-Forwarded-Encrypted: i=1; AKwUvBz1KlzVI8HvbyqtYUEkWFcqZDwSC4qz7mmRSn/buT1QkFuB4xHXbuy1AD/DRxKTLnXghrAJQq61iA==@kvack.org
-X-Gm-Message-State: AFuF++n6pGc4XdKS4FLbjyYZcBJJAONi4NZHLVFueiILgw3haR74pNtd
-	IIw9YA5aDL3Form5fqyABaYFlLXrI1II0uAy6SM1zSTKI5pj48N4Dzb2l2DvR8VCqzBj6gAXxsA
-	WlqLdPadQJMwYMQ==
-X-Received: from wmpg37.prod.google.com ([2002:a05:600c:4ca5:b0:4a0:6b:ade5])
+        bh=GvWsjS4kJdvoXcVGD6geTFWpf+d6azd0mBr60JzC1QM=;
+        b=RCbwxEBiwPj2HK6Jbgin3F3Xh33Hvant+am5S9Whfl9mOT4coCat7ZyLNF0NMDRYwa
+         xSDB4gjSZEciEX5AUk3jKKEjGA1AqHTp4dHJHy+U66L4C5IjU5exmBgiUyZyYOElE78r
+         3ILlLIHXQQEF2AtVlAZEISvUh7mWYiyPLBTuoHwS3vxO15i5/hIn93zuVsGI1KvoPL9+
+         B658HDq43TYOY9HNc+bzNNpqKDp/ouBbSADHnwo0o8rC3rTv3pJ77lY2Ekge5Su0ifYW
+         pjk/XT5+m6kLd/syv14bPiXcgcE/lukby7wmZTxrVExKOf2M9O/Ih3r64cRtIXSowvj2
+         2IdA==
+X-Forwarded-Encrypted: i=1; AKwUvBwODVpC7ZM6P+ULsRLBg6SnRzrNqzv4+9g9cyof2se88Rycna7FNGzsumFaNAwWgIGt0wQKOfBKOg==@kvack.org
+X-Gm-Message-State: AFuF++mE/Gpx5isAbAxSY4QO1ZS1t56pN1f/JB8Hj0AlwRGF2ztNn/aE
+	YmwSihB3v97Ov7IMFzLmJJNittGALnPg2DkLU8rJiA/qHUKLlrP9s75TVI0KSjkawtE8LpSfDQv
+	n5HXxnNqE8nTIDA==
+X-Received: from wmpr40.prod.google.com ([2002:a05:600c:3228:b0:49f:fde6:649f])
  (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f12:b0:49f:ce78:356b with SMTP id 5b1f17b1804b1-49fe6700d0cmr271026815e9.28.1790617325440;
- Mon, 28 Sep 2026 10:42:05 -0700 (PDT)
-Date: Mon, 28 Sep 2026 17:41:21 +0000
+ 2002:a05:600c:6287:b0:49d:827:e5b6 with SMTP id 5b1f17b1804b1-49fe7babaadmr223084505e9.20.1790617327143;
+ Mon, 28 Sep 2026 10:42:07 -0700 (PDT)
+Date: Mon, 28 Sep 2026 17:41:22 +0000
 In-Reply-To: <20260928174122.3380703-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20260928174122.3380703-1-smostafa@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260928174122.3380703-15-smostafa@google.com>
-Subject: [RFC PATCH 14/15] arm64: mm: Relax kernel stack alignment
+Message-ID: <20260928174122.3380703-16-smostafa@google.com>
+Subject: [RFC PATCH 15/15] arm64: mm: Set stack size from the kernel command line
 From: Mostafa Saleh <smostafa@google.com>
 To: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, 
@@ -104,14 +104,14 @@ Cc: corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org,
 	bigeasy@linutronix.de, clrkwllms@kernel.org, 
 	Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 5ephx5ob3y1qc4mctc4fokxytdiockk7
+X-Rspamd-Queue-Id: BCF1CC000C
 X-Rspam-User: 
-X-Stat-Signature: r3zddnwuiudejwbp7u4u495occwg3iy7
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 30C2B180006
-X-HE-Tag: 1790617327-322177
-X-HE-Meta: U2FsdGVkX1+Msg4nlrISzlXhWBD2lyKQcbdiZrzkrh5kN3oQMN3aPMSrMpu1Y7VhdYUhgaboWNMF2mOyXYdhNjYbs/kHw9wF9oSpS9f7Um674DuXlB6+avnkP/NS9sfznbmlftX+JBU0l/ZCbe+7vyDFNaf62nCQ2XWieqj65Aw/VWC45G6/iNXh5zOGjSNo65eyx0O6FMfpCfItH3Ygk70nmis4ZH67Q39V60KQXlB6+Wc0XUiDfRD9Nd9AUf3XALEEg4JUlFyCbAhbGGjHvFQRdk60BoJj69EHX2fjngypifHTi2IqW3DxnNEucqTAbogyMWREAkdD1B63FRDu5gnGSMbNio2E+g9UNP16KOH1L60OHHx4HyktAlRqiOFoVui8lsnR324UqPL/hbQOZa7bho1b9e2wePM3dGBRcRIS+E2+JVjR/9Z8lvB3cIFmdvo1RtAw1ohiv4lh7NzoT2VMQj5jJSdbOTYE+4yM/ODzZwkSzqBtqJfZrNbDW7lp3MJmXyGkjB30yu5LrkKCQQ7Hf5QKMje0mUB2sDLIVoMcJXmPE9/JeLL3q0xgyFukj7kTA7GKachtjuzRAawKSqQKj/1q+uWP1gSoXfyBq+kLFvM9mI9K/tdofGw8PTEx6QWunkl20nI8Kds6yYixDh/xlw/w4jg3bmrPnFIzz9mzpd2/mM+YIeAdC+PjaaU1n1NDzuURqkEQSbSqohUUlWmAHoGz9gEg0E6uNBCFPhIEzIdrFSd+xAEEaYQ3WtOdKJ7lL67mP9xv2YugRuQHl7EAxKTGpPwUWBNvAJ4OXsYPOI3U4EL6I+dDbEBnAifTFufanRCMa8NrJrodTBPnwSWd+t8m9S7aqDqLTj+uxz6BQGOeSHYYRQly9fyhakNDwwFue3CS5U/1Xs0JlSYxaXlwuzlgPqfnOEz8WQZg9o1fxrRX+zla5sMa6YwHrlfVhwgxhLLtBvOE19myMj1
- ICpHV0pX
- OyBu6fmWiTiZfTRpfukRZwcv6B2Ml5d109wGQHx8wchPqBtMMC7sydgKyqo7ZrU6pB8EMwx4IM1wjMNrJO87cmCzdH124EZrDEWQSrjvQpcMwjsSShpcyyiu21R7Dldf22VZD/qRcRZnE/u+QUDi+4KraMOKSZStU1govUwmwrsoOqEo1pyf0buicTH20h2PWzDHIhe4ZelabAYvriqcHAIyll1Zh33vS6WwcQ4aJQIegUkFuLDex+zd5Rgmkt8VzdlFuWMT7ePjyQL0JD6sh6VUZZJZSHqvP0/g7fa9F9yuGMKYGSyugQEe7+eize2DrikCNoKkCGeDbHWCftPoBEW0Vi/acrvbKV6anDEnV4+plhmMyN51D9LxPzoYa8uxjzOQgLlBFcFDOuY0A5SBSy3kG0UjkD4eaaOBt65bfGgb8UooiXaxJz5MAibIhmt2914/ESTSC0oLiyOKWxC/2WswrbzU/ATm90+6WXf41EioXhpzIiWf4UvDsGw9rBbLesCgd4CiaC3PtSz0wlbecDiEIUNwkfXnMVjrR8GtlB9Fhpvn6qrCbmGXTL7gPF6D3JL7FonM4hC5McCOvFFFTgfnomNpHzFP7nHVs
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790617328-9112
+X-HE-Meta: U2FsdGVkX180p+kqOB1rycwUL+IHZAk8HwP+19w2WGU3oB1gUTT09WYgARfu+DW2vXl8CCyB9MJjj/CG3qjwlUZ3bcRerhFqIzXUg8r5r57kLIiv3C7vUdtcYjJwiIild2MShYH5GPFVslhMuCwI85ISmk10mvon5B3ZOqirR8tuiAyqKt8YR5ntv3Ip8aQxMKmxD2wPwhSGX7BCJYstgLtUww1b6rS9FC2IGRiRPLBrV06/pXIBCl0JJYcHXWHcz+beijGQm+IBB7jiDKxpUxrVDbo4MNS7jydaLF+nP7HFJsmXf/wHubjJ0lC3CMxGlULdS4t2qDKaK873MKitYN32GqRbgk5eOF0Sc5HbsiSkNKNOvlSKpCmheiGyIP0wTSoQGAwKwZhth2ebOrAS1ys/VWHICkfFEmRvgY5p4aHaj/PqMZ7IM5MQLNu3keMuvcCcVAYFc9prv19ZSg/d5z1yCo7kMR973F6TwO6EAfk7QjJyp41VyvFieT4AuPsWULm7eUEiqQ3t4a+LKgLdh1Z8dJFgeznYPcjm6uLhh/3umoo6tBwAXKgUk7Z7iX2Fp1fx3bQDpmG2TGAIamAnUR3F6bV9sxhkRD24CjWDDvhPpN9wWqJT10GX3BW1WNmUEgU83KxkddCGk6+jst3CBTK4QAsnQ0lv1xtMWjsaLTnCF827yWRaiDtQ+6imj3NONmdCBUsY9Wl9qmuH1AP/obaEPD4X8vRTLe3+T+phX/JC0t+T4MiFUnYR5eQ++KjjQhkHKA7Yck7KJbOz6KZY3zyu9/wT2Y/9AaIPuVcrFUOcYi5a2XjJPNKg7+Qgt6mbDNiedGmcgAlZlRx03L1+Raq6qlIL9F7JLxZge1wVNdXO47+LQHegMyBSPAL7VTfjHLbl4IjySNQMod2kJyx9LeIHh7px1RWYpSFZJxf5IoI0j3NooV9/DSc27V4w2ETXyP6mUIJ9jpdhoewhJM3
+ P4MgC5nu
+ jU6uH+VL/B9+yN7XQgH3X9WNN4znaE2q+fmeCNAn+LYYWVUuYdkRNrJ+K+HJD1LRg61LyZieDhJjJzU4wEOzJ0fVtPHWIIYIX/I/q438l5xKH1HH5euasUsWNqQxaz/PO6c45rGaew+X6fNRjvDdN0gjmaryGGcSs5TKF0ttOPfofCJRt2rYL2J2dY1KjVYqvFPZT6pdRhRURucfJSsTcZJ8coXr5NwOzTJu6AZeRBxb1yeUPUn3RZ0JOm4LhdbJgH9f6hawcM8ngaVScZ5bcdfNpdEQwvcWzyy3Op7X0H6fhAixqcclJsYLvV6M2YGbgyTLM3vgL1iRFHCp7NBOgEc9mt1gGiOY5MzbcHoFBrAog0RQ7+24LFw4DGa6tjlATIxotz430HhD/PlDm0maa11AV0xuybokB+919L/hE0j/FtV5h7Cr5vlooR3apBrjqV0CuUZEraUnfq9hsCqa7s7VgW8iMP392OBkniT+XBTSGOPoZYcggnGiPXY4h07Jl0rJPHaWyZmflWvuISSS/IbgP6yYa2q3zZoGYkbVouvFnyPfDu+HTTxNnETDJ5OYflZ2mE5MsvA+3qVPgPW/Xq8s8KDodRpexln7e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,152 +119,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On the kernel entry it was not possible to use the stack until it
-was checked for overflow which was done by a clever trick relying
-on aligning the kernel stack to double it's size, so if the
-bit at THREAD_SHIFT was set it means that the stack pointer has
-overflowed.
-
-Now, we can easily switch the sp to sp_el1 which is the overflow
-stack, push some registers and execute more complex flow.
-
-Rework the kernel entry code to eliminate the tbnz check and the
-alignment requirement.
+Select CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE for arm64 and override
+arch_vm_stack_pages() to a value set from the command line, this
+value have the following properties:
+- Aligned to page size (doesn't need to be a power of 2), so it can
+  be 12kB for example
+- Min value is chosen to be 8kB
+- Max value will be the default stack size on arm64 which is used to
+  allocate the VA range for the kernel stack.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- arch/arm64/include/asm/memory.h |  7 +--
- arch/arm64/kernel/entry.S       | 87 ++++++++++++++++++++++++++++-----
- 2 files changed, 77 insertions(+), 17 deletions(-)
+ .../admin-guide/kernel-parameters.txt         |  7 ++++++
+ arch/arm64/Kconfig                            |  1 +
+ arch/arm64/include/asm/memory.h               | 12 ++++++++++
+ arch/arm64/kernel/entry.S                     | 10 +++++---
+ arch/arm64/kernel/setup.c                     | 24 +++++++++++++++++++
+ 5 files changed, 51 insertions(+), 3 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 33cd30996e47..e6ef22f01e01 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2920,6 +2920,13 @@ Kernel parameters
+ 
+ 	keepinitrd	[HW,ARM] See retain_initrd.
+ 
++	kernel_stack_pages=
++			[ARM64,EARLY]
++			Format: <integer>
++			Number of pages mapped for each task kernel stack.
++			The virtual area stays THREAD_SIZE and only its top
++			pages are mapped.
++
+ 	kernelcore=	[KNL,X86,PPC,EARLY]
+ 			Format: nn[KMGTPE] | nn% | "mirror"
+ 			This parameter specifies the amount of memory usable by
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 020fcaf36b1b..5e09ae904e34 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -58,6 +58,7 @@ config ARM64
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_ZONE_DMA_SET if EXPERT
++	select ARCH_HAS_VARIABLE_STACK_SIZE
+ 	select ARCH_HAVE_ELF_PROT
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_HAVE_TRACE_MMIO_ACCESS
 diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memory.h
-index 93ce6ef65573..4545d9b39bd5 100644
+index 4545d9b39bd5..1d300b16032d 100644
 --- a/arch/arm64/include/asm/memory.h
 +++ b/arch/arm64/include/asm/memory.h
-@@ -130,12 +130,7 @@
+@@ -113,6 +113,13 @@
+ #define DIRECT_MAP_PHYSMEM_END	__pa(PAGE_END - 1)
+ 
+ #define MIN_THREAD_SHIFT	(14 + KASAN_THREAD_SHIFT)
++#define MIN_KERNEL_STACK_SHIFT	(13 + KASAN_THREAD_SHIFT)
++
++#if (MIN_KERNEL_STACK_SHIFT < PAGE_SHIFT)
++#define MIN_KERNEL_STACK_SIZE	PAGE_SIZE
++#else
++#define MIN_KERNEL_STACK_SIZE	(UL(1) << MIN_KERNEL_STACK_SHIFT)
++#endif
+ 
+ /*
+  * VMAP'd stacks are allocated at page granularity, so we must ensure that such
+@@ -130,6 +137,11 @@
  
  #define THREAD_SIZE		(UL(1) << THREAD_SHIFT)
  
--/*
-- * By aligning VMAP'd stacks to 2 * THREAD_SIZE, we can detect overflow by
-- * checking sp & (1 << THREAD_SHIFT), which we can do cheaply in the entry
-- * assembly.
-- */
--#define THREAD_ALIGN		(2 * THREAD_SIZE)
-+#define THREAD_ALIGN		THREAD_SIZE
++#ifndef __ASSEMBLY__
++extern unsigned long kernel_stack_pages;
++#define arch_vm_stack_pages()	(kernel_stack_pages)
++#endif
++
+ #define THREAD_ALIGN		THREAD_SIZE
  
  #define IRQ_STACK_SIZE		THREAD_SIZE
- 
 diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
-index a31ef890a2ee..ea733b673970 100644
+index ea733b673970..39e68aace0a6 100644
 --- a/arch/arm64/kernel/entry.S
 +++ b/arch/arm64/kernel/entry.S
-@@ -62,15 +62,33 @@
- 	sub	sp, sp, #PT_REGS_SIZE
+@@ -76,9 +76,13 @@
+ 	msr	spsel, #0
+ 	mov	x1, sp
+ 	msr	spsel, #1
+-	sub	x1, x1, x0
+-	cmp	x1, #THREAD_SIZE
+-	b.lo	.Lstack_ok\@
++
++	add	x0, x0, #THREAD_SIZE
++	sub	x1, x0, x1
++	adr_l	x0, kernel_stack_pages
++	ldr	x0, [x0]
++	cmp	x1, x0, lsl #PAGE_SHIFT
++	b.ls	.Lstack_ok\@
  
- 	/*
--	 * Test whether the SP has overflowed, without corrupting a GPR.
--	 * Task and IRQ stacks are aligned so that SP & (1 << THREAD_SHIFT)
--	 * should always be zero.
-+	 * Test whether the SP has overflowed, using the overflow stack.
-+	 * As we do not know if the CPU was in process or irq context, first
-+	 * check against the task stack if that failed it means it might have
-+	 * been an interrupt, so check against an interrupt stack, if both
-+	 * failed it means that at least one of the stacks overflowed.
- 	 */
--	add	sp, sp, x0			// sp' = sp + x0
--	sub	x0, sp, x0			// x0' = sp' - x0 = (sp + x0) - x0 = sp
--	tbnz	x0, #THREAD_SHIFT, __bad_stack
--	sub	x0, sp, x0			// x0'' = sp' - x0' = (sp + x0) - sp = x0
--	sub	sp, sp, x0			// sp'' = sp' - x0 = (sp + x0) - x0 = sp
-+	msr	spsel, #1
-+	stp	x0, x1, [sp, #-16]!
-+
-+	mrs	x0, tpidrro_el0
-+	ldr	x0, [x0, #TSK_STACK]
-+	msr	spsel, #0
-+	mov	x1, sp
-+	msr	spsel, #1
-+	sub	x1, x1, x0
-+	cmp	x1, #THREAD_SIZE
-+	b.lo	.Lstack_ok\@
-+
-+	/* Check whether we are on the IRQ, SDEI or EFI stacks. */
-+	stp	x2, x30, [sp, #-16]!
-+	bl	__check_ext_stacks
-+	ldp	x2, x30, [sp], #16
-+
-+.Lstack_ok\@:
-+	ldp	x0, x1, [sp], #16
-+	msr	spsel, #0
-+
- 	b	el1t_\regsize\()_\label
- 	.endm
+ 	/* Check whether we are on the IRQ, SDEI or EFI stacks. */
+ 	stp	x2, x30, [sp, #-16]!
+diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
+index 29c6100f0c50..34559048dcca 100644
+--- a/arch/arm64/kernel/setup.c
++++ b/arch/arm64/kernel/setup.c
+@@ -278,6 +278,30 @@ u64 cpu_logical_map(unsigned int cpu)
+ 	return __cpu_logical_map[cpu];
+ }
  
-@@ -528,13 +546,60 @@ SYM_CODE_START(vectors)
- 	kernel_ventry	0, t, 32, error		// Error 32-bit EL0
- SYM_CODE_END(vectors)
- 
++unsigned long kernel_stack_pages __ro_after_init = THREAD_SIZE / PAGE_SIZE;
 +
-+	.macro check_stack_overflow type, ptr, size
-+	.ifc \type, percpu
-+	ldr_this_cpu x1, \ptr, x0
-+	.else
-+	adr_l	x1, \ptr
-+	ldr	x1, [x1]
-+	.endif
-+	cbz	x1, 1f
-+	.ifc \type, top
-+	sub	x1, x1, #\size
-+	.endif
-+	msr	spsel, #0
-+	mov	x0, sp
-+	msr	spsel, #1
-+	sub	x0, x0, x1
-+	cmp	x0, #\size
-+	b.lo	2f
-+1:
-+	.endm
++static int __init setup_kernel_stack_pages(char *str)
++{
++	unsigned long min = MIN_KERNEL_STACK_SIZE / PAGE_SIZE;
++	unsigned long max = THREAD_SIZE / PAGE_SIZE;
++	unsigned long val;
 +
-+SYM_CODE_START_LOCAL(__check_ext_stacks)
-+	/* IRQ stack check */
-+	check_stack_overflow percpu, irq_stack_ptr, IRQ_STACK_SIZE
-+#ifdef CONFIG_ARM_SDE_INTERFACE
-+	/* SDEI normal stack check */
-+	check_stack_overflow percpu, sdei_stack_normal_ptr, IRQ_STACK_SIZE
-+	/* SDEI critical stack check */
-+	check_stack_overflow percpu, sdei_stack_critical_ptr, IRQ_STACK_SIZE
-+#endif
++	if (!str)
++		return -EINVAL;
 +
-+#ifdef CONFIG_EFI
-+	/* EFI runtime stack check */
-+	check_stack_overflow top, efi_rt_stack_top, THREAD_SIZE
-+#endif
++	if (kstrtoul(str, 10, &val) || val < min || val > max) {
++		pr_err("Invalid kernel_stack_pages=%s, should be between %lu and %lu\n",
++		       str, min, max);
++		return 0;
++	}
 +
-+	/* All checks failed => it's a real overflow */
-+	ldp	x2, x30, [sp], #16
-+	b	__bad_stack
++	kernel_stack_pages = val;
++	pr_info("Kernel stack size set to %lu KiB\n", (val * PAGE_SIZE) / SZ_1K);
 +
-+2:
-+	/* A check succeeded => return to kernel_ventry */
-+	ret
-+SYM_CODE_END(__check_ext_stacks)
++	return 0;
++}
++early_param("kernel_stack_pages", setup_kernel_stack_pages);
 +
- SYM_CODE_START_LOCAL(__bad_stack)
- 	/*
- 	 * We detected an overflow in kernel_ventry.
--	 * Restore SP and X0.
-+	 * Restore X0 and X1, and pop the overflow stack.
- 	 */
--	sub	x0, sp, x0
--	sub	sp, sp, x0
-+	ldp	x0, x1, [sp], #16
-+
-+	/* Restore SP_EL0 */
-+	msr	spsel, #0
- 	add	sp, sp, #PT_REGS_SIZE
- 
- 	/* Switch to the overflow stack */
+ void __init __no_sanitize_address setup_arch(char **cmdline_p)
+ {
+ 	setup_initial_init_mm(_text, _etext, _edata, _end);
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
