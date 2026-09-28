@@ -4,137 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E600DCA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:12:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCCD2CA5FA3
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 025286B008C; Mon, 28 Sep 2026 15:12:38 -0400 (EDT)
+	id 09AF86B0093; Mon, 28 Sep 2026 15:13:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3F086B0092; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
+	id 04B2F6B0095; Mon, 28 Sep 2026 15:13:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E570D6B0093; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
+	id EA4286B0096; Mon, 28 Sep 2026 15:13:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3D46B008C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:12:37 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5987BA6647
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:12:37 +0000 (UTC)
-X-FDA: 85264117554.21.F6D0B8B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A2B7EC0006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:12:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF4S1Z78;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C83B66B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:13:20 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6FD97A6558
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:13:20 +0000 (UTC)
+X-FDA: 85264119360.01.7887D06
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C5E65A0005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:13:18 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JDzc+Zir;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790622755;
+	s=arc-20220608; t=1790622798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3+/0gNUnAEU8rNmsasP2G1qveGjqqxqRYFGhYDQK2wU=;
-	b=DSwmML5aAn15HOWsNgvsIK/yQuafQURSV+NIfjoI1GAKWKrMubL5OPpzWV+xHzmYECw6L6
-	JvGh2HDg2ZZ16JiYX6cW0hJDJAk3WKRxatkvLSQ7eNBtovL7ApD37wq0RjlcZvO3Nb5BvG
-	zYEiUu2KBUbLi8vIyY++8AJ2wW7QON8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790622755;
-	b=4E53t11a4Fh5o65ipldkQHg1Edfzvwu6FlhZo92o0LCEhmTTqqmiVrfFVPMyI8UPJ1aB3e
-	nlPqZo2GFccE1/B23+BXXKho20WPRcIzc11npLT2UW9OYLHMw/GvxheK3LlUDL+TaLdrqu
-	uV+Kz5TMR45TpqldWNuuUhB2ndszLbI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pkU51f+1UpMIy8iBx8lVNiJZoAcmMG7LyZjfQO6BzzE=;
+	b=pqz1CquYd9BSb3EQunN7lPZ34ZYwW/WLWfWgVZstCCcc6EjNu0iSgw1FaOaBnt4KoIMOny
+	70eB4CIZvD28R3cMqNAI7CTi5mfyo6QbKs5nNY+anvoDUu6O9uHrva42APqtQSZV+auMkM
+	8OZaEMpazyY0oKCPa+HMlRRzu0IlqOk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HF4S1Z78;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 363EB600D1;
-	Mon, 28 Sep 2026 19:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342441F000FF;
-	Mon, 28 Sep 2026 19:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790622754;
-	bh=3+/0gNUnAEU8rNmsasP2G1qveGjqqxqRYFGhYDQK2wU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HF4S1Z78mScB4lUcYE6JWgmNHRRxIQxkpRj14G/OgV77GYc4NE9XRSxU/WrA7/o8T
-	 jHkuFt25YUOT+mG7iVW/hfP8bxMYMWq+WXAe+owB06S0SeE7wPQfrkwVXLE/DAcWtM
-	 ARw16ifk79EF7PM9ra6qxCAQxqKbrhfgbt8qls/bYL6rB77cjM4/+zlUULjLLBP+6h
-	 LFlEEaVZ0FA6vtFPLORpsHWqiw8cLu9tB3uLGAvnMpvEPc5eo9P2DMndfHhT7A5ikY
-	 TB/6cHvErfozrqwxtPPtJqT7/S6cCELTRktjxG3EPzSnTXaoCjxGwaMJKZBMkp8Q/E
-	 RSAYk6NBbI7bw==
-Message-ID: <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
-Date: Mon, 28 Sep 2026 21:12:30 +0200
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JDzc+Zir;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf15.hostedemail.com: domain of aethernet65535@gmail.com designates 74.125.228.43 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790622798;
+	b=zHBZbrfeQmUZnX5I7nkClple+TFIU6oVfYVfl/D89kN9w3WOiDYMwFynLnb/oGKCpKRQV1
+	bPnb803gsehQlFWN7pjaiON9n3RR9bWMy3KFEtySx9Z7xkiVI1bKwaQ3JOw20ARVXKsqaa
+	JAV7vCLt5DIKVebwFxxkunrJwG7UKm4=
+Received: by mail-pz2-f43.google.com with SMTP id 41be03b00d2f7-cc4aa0f1a94so1118638a12.2
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790622797; x=1791227597; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pkU51f+1UpMIy8iBx8lVNiJZoAcmMG7LyZjfQO6BzzE=;
+        b=JDzc+ZirTLBAc668Rtjozgu/D/SOUrLh5BdLR7q/Clf5CfjOmzTDWb8hbmjAuR0iFp
+         JyAuU4nHsIUnX7ejGkbaqhqgceIkdFjYLTfXpgcs0uHs06Z4Mr2VWkRb+I9FQNqs80J4
+         2RNCZHUOJNzGHvJT4PbW4OrVqLP0tdLqIAh1cysPLxlr6eMwe7A3Lf2TLsqOH+EwlBYP
+         OViYEGOG72XlSdUcipsUfpwC756dPeXS9Rmo8Sa8jhAWobj1Z+DSGhqdikNZKllgiotj
+         /5N1lmESLfpIBEI7In/wlNihTxAr64E8cBJxBwKAgSR/C26k/y3X/C6QVir5PboqGIdY
+         U+uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790622797; x=1791227597;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pkU51f+1UpMIy8iBx8lVNiJZoAcmMG7LyZjfQO6BzzE=;
+        b=Pz4guUOwyUF3Bof6ysE5paQ4umqfJlCqcZM+s4DAG1NvEqEytsrHnEPPyW3ghaCHsr
+         0drOstieX5rRuouNv5CcwbjK+1S31rBrY06SOwSQHpy+OZmOs5Pntwan0aePaJeJAvha
+         YE8f9KVojQk4MqVR7HVatwJoaktJKz4spBYM/QG5GEodcxrBuCP47CQA94lSvKcE87Qy
+         a7l8TtK5XwHFyiUfyEi9eutwaPtm0E/9D8w3/RMUL3YXNhHhNiNL01938uYW6WUIV4l2
+         r3DUaVfhVxd7pu1KE7YV+isWyLrE5Z+XdBVi/ilG8gqHDil95UOkcv1OjEy7bPeD+fa5
+         eWbw==
+X-Forwarded-Encrypted: i=1; AKwUvBzkUCa/TAFE0ohZcKDVZKzNSAms+OdX66oxRn3LxvcitYRuhX1/bt0DI6q83RtKIZXcqWk3F2ggwQ==@kvack.org
+X-Gm-Message-State: AFq9FYIi2hle+E4B10ekpoV6DxLEOXRWcGdWQmxV7UOppn7Jf8sHtnDn
+	9M8wlmfhypXm2kxg3v4UN52c6HN0MWRxRJEk7jdPyC/mrGLRotcPMHlp
+X-Gm-Gg: AYBFou24hx69pUsAX98ZW0eMG8HrnyN45zKgFTA0kgF0AFvPOkI4nHd+LG4Aump8sjh
+	wAa4yJzLpx+xZgTnve+jmsE8KP0pptkvwN5M02G+M6nkU4ZoXYyCTjzRUv5ktXBP2Ci1mKmD759
+	cDvi/cAn9rGrmFnZj3p5DxEPtqqD+1eXWerc2nqzwDsxjEY/NUPFTj92cFBvAeZQZm1pBHPmYrh
+	zOJPJJQeOxTubABjvBKBqn569q4plzaBh2xO5PfBgcU+ssm1P6n9inM5EhwY7NOq+RoJJKP/rbs
+	/zG0lbO0uGuBvRiTbFRMQyxo4QaQSdCm1yjTmQL3n73SrcMZ10GUqlsYpwET5w2yjRUfCeRnmQg
+	QD5+wJQ3XmHzs8MUsC//TL3M6YxwhPVESChUJu6qcpTWuVdo+tIGMShYUXkpdlmFCgI6ljxTidO
+	eNFXICcw98fgMjEipFCpTUyy0/WjzPy50H0N18LFlOJdeMUO4N1uJoAQYa5iDk3zVHORd27Eir
+X-Received: by 2002:a17:90b:4d81:b0:3a0:b50d:50ea with SMTP id 98e67ed59e1d1-3a0b50d527emr9363041a91.28.1790622797440;
+        Mon, 28 Sep 2026 12:13:17 -0700 (PDT)
+Received: from celestia ([2402:1980:867:387a:70b:38f1:a1dd:9303])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc78794f224sm5177965a12.25.2026.09.28.12.13.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 12:13:16 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: SJ Park <sj@kernel.org>
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: [RFC] mm/damon/damo: saving damon sysfs configuration
+Date: Tue, 29 Sep 2026 03:13:06 +0800
+Message-ID: <20260928191332.138511-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
- mappings
-To: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
- <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
- <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A2B7EC0006
-X-Stat-Signature: 4i8iteg5pkrj1ozgguioc5ydt94sg9ot
 X-Rspam-User: 
-X-HE-Tag: 1790622755-226653
-X-HE-Meta: U2FsdGVkX19qmkRV1wJC/9eC8PbEmIJq81OX6BtZtbLV/JPGjb8Vp5ZaEe2S96FV4kqKRCAJLMQMDWcc+6panu4bq5recUaRqX/EpdFKaKBPXPn4Fy21GjU+lsyPYgEdPU+IELM+Zi+pg5sHHzgQvoBgjn4HJop9qwxpkdsoYmsGm+jSK7B/IvhXkcxX80iBhnY6b+VjBeqp2YFkM3vvfYhKqXzgC01FTI1wF6SCNtnddUkn20HDQJoLdJeYdKHAglH3jAcqgIpa6TopNbIaHNw4TbexGKjI6utH+p/9F8A/lchpyXxW5iGt63LPdzNaiiB85ohGCxvpI8Ooi9agSi7SiR2Tk3QrdOMaw9aaPCGy7f943ve3HYqZNuwA6iPtZ5tHi5R3CmqlW/VV5tM8863Oej799J7nRhoOGbkKoMOSMqOHqkdTs/Sp9eE2P8TQlP3af26h3jiPc783IS7sRmwFXoIv2O13YoRWkbC1SLgYiL8lZRCNHWVAeU6t1iTebkh3O01kgKkIy1cPSp1CP7ukaiV842aBX5LQweKsZPanD8gKmrwy7pYcwSNEwlVanhTl9AWgV5k7/uPQL4WltThlYKCLPcgkCIfPv9mjA2w4DbaX7o1bYDryKkf1+599ez8ZeouMXGCl5n8/r25zb4qpwHd1Wos1xxvtmUeOnVma0KdUn6sCiDXXKoIkw3Qkm7zxBaho1lXEadhfVi94xibq7jzrpMijNSM3TeQK94Z/BujgP3SBvLfqtJjDZsqkF49SiGtIM/NiXi/DX6oc53iCbL7i/JkLErqlP1lxe2pV0yaRdxl6h+JGOViqvdSfCD2UraLdY/rzg1qVrZasn1CxYTtTmhXC0v8rAXWa9N5YS0v2gun065+WgoqDzdMRlNMw043j9ihU3at3PZ0mK7/LFtjBvPJsi8XArFva4wLSQMh+dmD0ZT7JMgILvGbkjM0V/a/FTMy29F/dSlW
- FGhu5J7G
- eLnViZTSXrDAUJWNdNFl+UJVK1HTkWHbyaO+0x106h8eITnQjOfeFcvPohLE/vR2O/+uqbjuj11aYszK9OqYYXa5qpv4JJSxP30tBQJ5l4VeHVvf672xM0Ww90Mulr5NfWs92K/uD9nnCuUb9j2UqoYW+jO1ZRt3GyLkzsnmzrYn7VmbklD0z+hqJw3hYTr3EMQ0EzrVzsm4VdIW3bWVPu5pWH5rBd4jRe9e1tyYu22QizapXokc/0928wTZA7iuRAuvfZX7068RvHD2bJqkaQpGDew==
+X-Stat-Signature: c4gyea33g7yp3u17e1xxjz8p48rt59et
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C5E65A0005
+X-HE-Tag: 1790622798-78637
+X-HE-Meta: U2FsdGVkX1859s2JxkR6lk8HsuJeEadobjHQ10aLKbNTvc6cBKWSmigepPCTxq9IJOWT4foU1IsklkGyn7CBz/S/Zc/rB+dmuP8pMFLWBwXFPqxeKyeS2x73dx56qFQG2lhhOgMUmgToJ9cu1JoQRK90/JjIFoOxkCikVtHRiavK5ZLq8m/A8or5Vd7Mwlma+nnH8m9XGYi5f/tFdyci+UP33TrDD7wUsN8+CEMh1xSyVyeXpJ4N8n2zbztXY2nCd4OwtChNUTooO8g/GZaKfuW3VS1sLYHLH497dEJXxE0vUKOTR7gyrEla93EaZk+aJliBv8br1m72tDVOKiHlDH7quqC1dh4xfGdHO//VW5ROQpYZJDBm0Vxyu+xC+tMfMNXK8NCdQJU08qiSttYwsGrGAbRV5RujD/hjyRf8pzPXQ386DGxA6DD+Z4hyGEsiXNe9grODn8VbgkTDTunUxTBzUX3KK4T43elmlsYZ5SPe14pG8NkGbAzNkSPdD/bDEcyJfRRlVg3VNlWW7AqkRFkxHk+y9uVmhuE+3sOxA+zWYJpRBb+jSLo5xJKZ8fTqmSQBtglwkShh7kKsTv/nYiFA0cKp33vf2Eaqqd5IFJLzJIc3Z/mZo7o75DRWq2IzEhGpHV/jESyBPLdETj1NGOUFliagi5jwtCEkJHonmvDc70uufoiJ6efd7KW2A/jJ1x4b50sShp8KBgGdoOjdiyiuKGvLkEzjkFnPTx8RnJTPG62NmmCG0d5CBUWkAe1PkjgHHjL/ILCckUYe9UBJu0kYtLDmcTmPir6IMwWq4VHVIuUQIqxbGmFAveEXezDcty7QBVrEmQrmtu9Ur1r133nHO6BWwLXa3Cx6OUDBhTx9fLObFmO5svcjgDRBh1WRGW/7VxCmvpZY8z5GAHmi6NstVsw/rwivZErs8Phi5EvY1rC9L+IQWf41iyWBbXJ5mRe8dglTRGHmqyTV9w7
+ 7apmQCev
+ W/JkAxfb1IJU1dlfbPG24mN36YzF52PHpZxFZP0mtiWll+vVLtOP9GnPbR91cWmi6gNlkVKE1/e5W2tU+4ASLZEkPUoCexsECHbFFpqGOOrg64ySuSdkpdRWWAVByDYLO3O19o3W8hPPw7Lgc3qgWOtf3a7FEEpXLCAt93yDrTbYvS7WNE0h2PKVzdNUfkgyLCpuJxim6V5ywLbsktFmMRiA0nhswDLKnaZMXYf9VSkK+X9jR+g4bwCs2r1bt7gvEjM93M/dDozEf0G/sdWyNogIOiyCmKIzZGldYLSmoLJInXZsiB9L9s9rAsSDyi7tXFue3ADeerFKx/KHbEbQRw1RKY+KvUt8vqEw90wYR8eNSVJVdt6m0dqZFv5Zco6/Z++tdVZmidGQFk7zV+9Q0M30vaZpoAADEIiEnk6Yde4N9NfnDT0JNw9eqHP63VRxk1ZJTH1OScP/t8T8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,65 +114,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 15:09, 天狼 wrote:
-> Hi David,
+Hi SJ and Community,
 
-Hi,
+I've noticed that damo [1] doesn't seem to have a feature for saving
+DAMON SYSFS configuration.  I tried 'damo args damon', but it doesn't
+save the DAMOS schemes information.  'damo report damon --json' provides
+more detailed information, but its output cannot be read by 'damo start
+--kdamonds'.
 
-> 
-> The use case is a concurrent, lock-free, relocatable data structure that
-> uses offsets rather than absolute pointers. It implements copy-on-write
-> at the data-structure level and is designed to remain recoverable after
-> a process crash. We therefore build it directly in a file-backed
-> MAP_SHARED mapping, so its state is not lost when the constructing
-> process exits unexpectedly.
+I'd like to know if there is currently any way in damo to save the DAMON
+SYSFS configuration that can be correctly read by 'damo start
+--kdamonds'.  If not, would it be worth adding one?
 
-What is supposed to happen if the process crashes when updating the MAP_SHARED
-region halfway through?
+[1] https://github.com/damonitor/damo
 
-It would be helpful if the use case + data structure would be explained in a
-bit more detail.
-
-> 
-> Building it in anonymous memory and calling write() only after
-> construction would lose that state if the process crashed before the
-> write. It would also require copying the entire structure into the
-> file's page cache.
-
-Yes. Unless to would try to bypass the page cache of course (if possible for
-your use case).
-
-> 
-> During construction, writes are scattered throughout the mapping,
-> dirtying pages rapidly and repeatedly redirtying pages that may already
-> have been written back. The goal is to reduce writeback of these
-> intermediate states while retaining the same page-cache pages for
-> subsequent readers.
-
-What exactly is the poblem with writeback here? Unnecessary I/O? Is writeback
-the problem or actual reclaim after writeback?
-
-(I recall that in a fuse server you can in theory delay the writeback request.
-So maybe you could get something going by serving your file through fuse and
-enlightening the fuse server about it. Just a random idea.)
-
-> 
-> The hint would remain strictly best-effort: memory pressure and explicit
-> synchronization could override it. By "process crash," I mean termination
-> of the process while the kernel remains running; recovery after a system
-> crash or power loss is a separate durability concern.
-> 
-> Regarding the interface, madvise was only a suggestion. A file-level
-> advisory interface would also work for this use case: deferring background
-> writeback for the entire file, rather than individual mapped ranges, is
-> acceptable.
-
-So fadvise would be an option. However, this "defer mode" is really odd. It
-sounds more like you would want to have a custom policy there, instead of
-hardcoding something that really not a lot might want. Hmmm
-
--- 
-Cheers,
-
-David
+Best regards,
+Rui Yan
 
