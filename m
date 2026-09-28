@@ -4,90 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909A3CA5FA5
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:10:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF9DCA5FA5
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:16:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EC806B009D; Mon, 28 Sep 2026 11:10:24 -0400 (EDT)
+	id 3C71E6B008C; Mon, 28 Sep 2026 11:16:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89C356B009E; Mon, 28 Sep 2026 11:10:24 -0400 (EDT)
+	id 39EC36B0095; Mon, 28 Sep 2026 11:16:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78D976B009F; Mon, 28 Sep 2026 11:10:24 -0400 (EDT)
+	id 28DDB6B009E; Mon, 28 Sep 2026 11:16:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 53E496B009D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:10:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0661C0204
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:10:23 +0000 (UTC)
-X-FDA: 85263507126.21.AADDC2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 03BB780012
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:10:21 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGo4Tp9F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790608222;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F29336B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:16:34 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98BC61A023A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:16:34 +0000 (UTC)
+X-FDA: 85263522708.01.17F8F40
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id A31FD120017
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:16:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i+V4+AFk;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790608592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+Lpc48c0OWZCSnpgp7hxgg6GPXtxYE50L2BN0lmMfs=;
-	b=Vk4lXd+xkc8pkB60EU+r8pDQla2Bkz8UswZQ4No+XUftcN9wOJMyEl/kpOp4vFdfM5pdIx
-	kUxNdbWMxcWsrFwQmDtk6Cog1wpH/VwvPLofoHLJ4MEQMYd+ostTNC4MrGhs+/PpmH20XN
-	sseFeQzPJWBk2Btwurz+t2lc+IW9454=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lGo4Tp9F;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790608222;
-	b=qNKoxx8vo39V/FC/F4sp9lAxDXJebjpjmhapibDQYb3wFQz27PzzWtvs2YwYNq0q3/rlWd
-	qJ3pyKPcqCfCpUgmeftGL1YQVqIzIzxe/cxFRirU9s6EPye4ARHqqZYVdCvRxZxq8TMEK9
-	O8uUs4/PRt8fc5uPiAHul21vgVCgFM0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5E410600CB;
-	Mon, 28 Sep 2026 15:10:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77C11F000FF;
-	Mon, 28 Sep 2026 15:10:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790608221;
-	bh=K+Lpc48c0OWZCSnpgp7hxgg6GPXtxYE50L2BN0lmMfs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lGo4Tp9FRGlvUVgLuT933IuIuniLtK6YyRajun0S12ByxMSIGvn3Y528MrZ6ZzmT1
-	 ru3irFQZNTKqaskfnY44uqGkdSsrR1omdJaLlvHmFeGlHhcwv3CNzzTKKSEIHux+PW
-	 b1aNLexHeozx2XB1wg47Pvdv7AanTr925NDQj5qVkfCIcQXIL89TcwChgO2fjJiijx
-	 YaQ8rZbd5YrNy7IfwIcm2myxcLbIzAM03STKAmum//mFxTPr7vXaP5NM4fgRnE5iy9
-	 ci/J1izZZMHI+tLq8bg9EsoAVmOWTYCYw9SVeQvE9XqRV+wB23+UYZq8bmry46Gbu7
-	 iiwY8RSTHYGyw==
-Date: Mon, 28 Sep 2026 16:10:15 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	Pedro Falcato <pfalcato@suse.de>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Pan Deng <pan.deng@intel.com>
-Subject: Re: [PATCH] mm/vma: don't remove VMA from rmap if pgoff unchanged
-Message-ID: <arqDFj6nOVh7-Ehu@gremlin>
-References: <20260925-speed-up-inplace-rmap-v1-1-babc48ce7c83@kernel.org>
+	bh=ZqIv1Sn/rDlr9SusC1OyVWgmKaxOZca4hJRLhV2M9zg=;
+	b=syuGbb7RUJ43Q7/CdqW0uFEhYuW+e+8hcKXcAGyBJww0gctdx3L/VUIqP6r8MgHMsNThAS
+	3mAw4USCfBicKRiZlQmLPRnE4qnCMg+jwx85qVPn4YWid1gkop3EjJ0iYSodGz7/IUcgEk
+	T+EqlhhVWPD4IPq7FJA6VFoMYZeB5AY=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=i+V4+AFk;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf29.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790608592;
+	b=wdTbnq/5dGCaUnAfBF5CuPFqRzXYegM8Y/awjiE/rNKv6OtPfvvj75HKLJAu1HrKslnJJE
+	It8Z7IpONMXo3VGgJaeB5NfCqsx+uGhPOv6hi1J12vCd3fhIzHfisUtBj2K6hs8WUe/jPC
+	Iw8MHqNeRHtJaclokVXvguL9EaVlLu4=
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-53328262efbso387021cf.0
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:16:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790608592; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cM+T81esnxoWjOJpCnz12lP3AEmtKfRcnV86Y8NXLP0AOqQjjtuQP4V2DN92a6mhWI
+         kvA9RM1b5hk/t/rB3IzHPhUVHrpKyfCiO4uaVMUgzstjAGb+zNLhNmt9pNw+HaV5+Goa
+         lqq+dFKlaYIMhp2rvHb9xKKaGy6AFi5nUS43sTqc+gjUWwFGEJwY66VbJBFhVRUc65pK
+         rRCXMsUgwYx6wrIXhZ6E5jKniIB1QWV1K/+g1rfR8hdBi/phPxLjxOIQMOsbyaMyAaQA
+         rvNH3mpUFxCA1kRUFYgPlffMXir84vFxEc1U3sWZ+gIt1sMI6H/xRNtCbZbq5mv1Ng64
+         +fxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZqIv1Sn/rDlr9SusC1OyVWgmKaxOZca4hJRLhV2M9zg=;
+        fh=dvBX5Y/HdXHHFai5ibjn5DYoPx+QA5BcU8vm3UoXI7A=;
+        b=ZWQdgOLANF6H52A4eaNWcr7GK8y1IAmaTpsbANv/fwj1Gz0TTm8DSF+bnkaxJDllHy
+         182HDAZdi/6uouW6sMYseVHfGr0Wm2g34YpnoN+ra5Qy1Mk5XuKFaBVLjDMjyMOqPXxZ
+         c2W/jj3yORGIF4GRpdMzCGtKqY3WlLjKeJNpebCUQGpD6+9kFox2sQ265WCczZ8qJm84
+         ptosumuCgJb+QJpcAWT+94hpCW5XSu/DvCzUk+PMQBqeeIcSUVwlLJPfNRpFuWDvFKSB
+         d7lk2Ka9ihsbm1DGDGijUkzTtHxNt5t4jvh+wiI4/kkZT5gQFW86OElp0U6q+kf5LqUj
+         Pfcw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790608592; x=1791213392; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ZqIv1Sn/rDlr9SusC1OyVWgmKaxOZca4hJRLhV2M9zg=;
+        b=i+V4+AFk2Z5cYnZ03VuTaNNybYQ5lj7mFyuSHsOXtFmzQnn1kPqAc4B38Q005KPCRh
+         cnPN3vQsb154Vl7CuIet4pU7d6EQlX2jmkrdK7fwJ0qSrtYdIcOD9Erd08FFMOjaAaSm
+         HZT+FB5SZts1RwAxVpDW6ePmQpMMtHXn7dEAil6QVnH7jGdbIJrS6rsj+9Xm8zATLezi
+         x28JLZBO+s5shL/TeF6GHrdynggOfhzhprfJ04sDx1lfmbdEJSIFlxWR++jKRx92sN7S
+         7mDC5Xc+L/HGaLo9EsNRTlqP7bM59Df3B52vm9XKP7gioQD91KsAQwSILDC/1nOnQabn
+         Fj4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790608592; x=1791213392;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ZqIv1Sn/rDlr9SusC1OyVWgmKaxOZca4hJRLhV2M9zg=;
+        b=QBjb4fe8BPZuOBKEq/zGV7HKkBq+9HQlJdfokB2Lwp31XwzZX9fmE4K+HlLgCuSJEI
+         Tu3EQGvYSM8/Nuvs2zVhT3tu506oefqoGbusgeTJE6x2eWp1gqxjldcPYb/839CEA30s
+         lOEJE0n5yRmrBvPxYNzD2CVuBqwu+BRZ/gEUsasx8Uqkxv+kKGrEtRH2dE5c+z5BYJTk
+         wCQKaUYuzFdSlUnhDd8FAVl1BtYBeNNMlyrGyecVU1lXlPVia0pt9M1AG/QJphrsz131
+         zHiLp8dZmcVYM6aenYZNGfBvLjWNXi9n/pil/wU3SyZc2GYPMpbSL9OqTjRtqpXAtQGt
+         deOw==
+X-Forwarded-Encrypted: i=1; AKwUvBxbWGCzxGItN2yarFd6yQqQWALgHrdLnohyPFNb604VlGTJpSLyFkTNK/7fLTYN6pUtaEhBH33LQw==@kvack.org
+X-Gm-Message-State: AFuF++nMs+a6qa91ngpP+0hJH8GzQCAh52Y7AojbI0xJhrCy67koGq75
+	/wJGac6ceBTHv671n+/0V7L4+gNRGDM5KmpUhc56HGEXY6iY2o+0NlRPkPhBY/iT8ylVcoWsZWz
+	+MxSbuk3aPWXa/wRttAK/D5KKw/sjaS2oRrG0ub7F
+X-Gm-Gg: AYBFou1TyQeMXqV83DuD7Tn4DZGTyge8I1s2hEiwmd0tAH/zyXNGxda3SrZI+HroJ4w
+	cIUNHDLVuy9DT6A6NKocJjcNSFEbw1eYvBnztv31I7aW5cSVmUtnYau0TyUAsRFnL8zVPWdnWSY
+	JdoyTOluXyduuO3KyAR49Q+yTI350CbcVCruz0t9dL7uiXoMqpFm0BhfHARHVzZvkHzpYagWjyw
+	IIGVNviCAEu8V2ZshLxJG7Jf1LV6hYfGn3JaD/rD7hdEb8W7W2L11jpI1+enouPSL3KIzLWKmtJ
+	J9tcnIntC00AliBEQUO2Bmt9jx+4pAlmMuLTnZVoy8CZ8RDaQR0JMd4=
+X-Received: by 2002:a05:622a:1a8f:b0:532:c8ca:5ae9 with SMTP id
+ d75a77b69052e-533226f9f89mr30441681cf.11.1790608590801; Mon, 28 Sep 2026
+ 08:16:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260925-speed-up-inplace-rmap-v1-1-babc48ce7c83@kernel.org>
-X-Stat-Signature: ozcdwicps4gq3sm78khdxfp17hdibory
+References: <20260915070001.113559-1-hao.ge@linux.dev> <20260915070001.113559-3-hao.ge@linux.dev>
+ <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
+ <60642a7f-2949-428a-8290-40d69c989a77@linux.dev> <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
+ <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
+ <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev> <b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev>
+ <arpK2bQrrUMvEvTP@milan> <arqDHnBFGKQZm7VU@milan>
+In-Reply-To: <arqDHnBFGKQZm7VU@milan>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 28 Sep 2026 08:16:18 -0700
+X-Gm-Features: AclHuK8H_rn91yL5MjXERW3wss1aaZb7EVDlHwDTppCbnSE6x5WvHEULyhM7Qvg
+Message-ID: <CAJuCfpHuTzFBUm2uAbkFsKF85GxcqFATmKgT50AQgWkLjf7NMw@mail.gmail.com>
+Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Hao Ge <hao.ge@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 54s6atrpy3mna3nfzm9qu4trze3ip7bt
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 03BB780012
-X-HE-Tag: 1790608221-580662
-X-HE-Meta: U2FsdGVkX18BE1RUsf2VELPbRRfvwnG8A4oJysKlxgtvgOCHSpanWWXr0/hJ/2pHgspTSoYEoT7yTcgqJBMOq2HAe05U1OHE1KW6xZ8ylorE2DY25BXSTH3TxcyyxTAnHV3vz50Bh1bqk08btwkwtLAD+7tatGX7TXihcwrJSYI9vi0v9UG4G1JWTpV8ixdgDSGJwzNtk/D4a1xL9wB+rVhOnsQiHKezmxOtPLeBNwDfO3ra+zE7LsGIAR+g4OHkvMNuef9AUzE6acXlB6ZQrGC0kzxVkD3TgaccTZLw5wAgYQRD3D1tEiWs1wuwuzowVbQ0+ycTaNGDjnDozGhCen+EquosV55CnEDRRPGEUCXLxudL7apZxmnPhoH4cFPKZglplPtCaUFO7d3QWt7v0KZYMlBToqp1HsHwWwnOMqd6aHnqFWuL+sV5KD5EajclxhKQwa3YYHEVuB7BN/faK+n5QhJJVGF0uDzc0rkJaU9fpdBoINylK1vUkIXvpprKlxpKnKQY5L85dvqaNDnGWB8RVSVWnEL8wisYoBjfqRjSVK2BfRmgLHhbins+UlGIb1R8jnfQnsQ8APOaUeU1s2T9t/ezE2HVAfmZQvlCRY4/sxRQXl9mxTnFX4GlnxsDN4tWAs/pu9s8YPL3WOnK/kI1Bat9+zbaH7Fdv+48lHR42FkTskh2CJO1j9xHXyMtGC/HlCs9ZdRmPKBiFtYivSFMte5xv94Cj9bbT1hqoWqBNuGkGm24H7Z8qMgm0ybkpw04fDKze21hmdkrW3/BVxBA/MTd5aZoEfOHvr8hrHB+w3wXgX66YJIfF+lDu+qQj7qzAblvL826CWK4li3DSlCq9DBHXzgY2dOjEPxu6hbgqune22ORFnQk2Wt2/eJejf3uFKzz+qEsPRC+Hl2sGFcHgpZIgFp3j/PDvCwgpHGjKSdzzakgHhs2zPvnl8x+dE1JK2rhYvlYXjxDuKV
- b63TLx/b
- uqeXIkT3mwW/zHAo+FcnWnQa7mUOAWiiDInWRSKxakVBxjgiBfw1ubgedGw2Te+UWs4trpLORuQSDf5XnXtUzb8Fu4p9M6Ui8JsqsUFkUuynZgKgcQ1AMg0H9C4fA2K+nvE3G8NgJQf7zko+3029ACNJ55DVCJxfpTCXVhIkusSCH/T1JuBqA0+yD9bX3Mj1Y+cFrhKBbLr7XoGk/XCtmQ5fK1KBi5sUT1wrBRQtkak88zmI5MvadqztLWRV0ec0XCI9d3ujyBqKqwGnIrPkSxAG4BfETAjEIoexafYIQ/wb3Nhc=
+X-Rspamd-Queue-Id: A31FD120017
+X-HE-Tag: 1790608592-328544
+X-HE-Meta: U2FsdGVkX1+X8XvuXPez6XNROWWQdbDpAloh8bBrylQbs3+EOEKA72mdi4dZiNoMex51szZ2+wxTgtLDD9Gdrk/jQa6CvUosbRKBnvUFbUIIboyVW01cLUXTr+qt1TUmORgKfIN2WHMDWa6YYlSebqyxEF2HWu31RLWDz7kwmof/bARH4CPOsEomiMqU2bKhNdkUBp8hUa2RyKgyKBSlOFA1mCw03vV8WE2IBG7mabH1P0rB8aHz28m6TqyTC0RG2PZ0pev4JYvAx1DLABLGYgujd8G44zpP3kAm8+BjkJIg7sgsgJfcZ0lOE5PR0vyrwcxqPXrPGEw7f+qA04oq5/DewCGnr5xpdWErrpPt4ez2QVZuaOxlDAZi9qjJ3VKNOR89qJw33pn6BQxZXqJW2WHOAa1vc8quhXA7AKHajQ+wTRDFOFREehcI7ab1mhAQlO6mG3VfLjRrj56f3gZDtfkHhXG9/DlR1VxD/qLyUfGznhSXg7v3Jn6juDNLbaXVi8vM0kFiyIuigj0od5pEOQDua51MS41Ia/t24JsZVQtFkdhmG9vrWeTEeQWzIdyV2WriRnpgJyevzgGTUNNRdr75ZyG7ymQ3vrMlN8YNgMdFfjz024oudSVLZmwBcgFb1njXlQerQuz2PHWJFYfUur1X3o6KmJ359MUpB5ZkDYRbvS3wpCncSZZXjKUmg3jwERIgXAaXfMOIajacLJ35O7zVphdVSlgItoJS/6Ovha0gVMeIBLoO188hvoUIbu5Y5J/cp6+TNaBGhm2bhCwf8chuh/FawObktXMXkiobkJHJVaNlB+WTbk5/vWeDntiVaEDPwBlPXTlP5wdTeGN0T8VbFMYj0wZEmZRR/K+CjNufGZJUttebtIjUHoCRD25c3LUlOcTMnqULw5wXQymbXH8yVbzje11uH+AeX25vudCULT3B4zPuvgoDWPJs1af6xbCMJlkou9df6X1tZz3
+ 3M4jlDMe
+ 5waDwQyxOjKXn4b4B7Fafg8/m0V/o9M84u0TDmFRR/BQy1JJFYvVPVf4oCztsqQ9tt7JAxr40TmqxFwpIAMGlHDNVZSF+pFzRQMkXPpxQsJr6ZOqxWhfdFyWtKzGNxwkijwowbbUivjmHhIt7OSbJwB1OkWov6zcTb5Qwj0q2pStHcIRc+3qTdRpHWsWCgoafu9u61uZdXI/KmoAIkB7VOLadnE0wWTxEspkWLT/vWnvpn7GIfMNkBrYnNej0pMrz4375G1nNnna6Myx/wQOiAquVdnYRpwRFQY16L23kYrfABBz055GiaJnmHlJypQR+MNLjGPoSEkSu83w00GHytrKzKrZqqdNWMURz8EXFOVZ9nA/t/P0LxenYFzhdc+8t0c6r0JP/YFM4AQdHTLYBBoXYutM6tdK4r8Xi6AJmSKTANN8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,290 +149,261 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 07:32:20PM +0100, Lorenzo Stoakes (ARM) wrote:
-> When updating a VMA, vma_prepare() unconditionally removes it from its rmap
-> interval trees under the rmap lock, and vma_complete() reinserts it before
-> releasing the lock.
+On Mon, Sep 28, 2026 at 8:09=E2=80=AFAM Uladzislau Rezki <urezki@gmail.com>=
+ wrote:
 >
-> This is wholly unnecessary if its page offset (file rmap) or anonymous page
-> offset (anon rmap) is unchanged.
->
-> So, track whether they will change in the newly introduced
-> vp->anon_pgoff_unchanged and vp->pgoff_unchanged fields, and use them to
-> determine whether to remove the VMA or not.
->
-> The rmap lock keeps things safe as no rmap walks can concurrently occur
-> during the operation.
->
-> Additionally, some architectures (arm, parisc, nios2, csky) have dcache
-> flush rmap walkers which take only flush_dcache_mmap_lock(), which is
-> likewise held across the operation.
->
-> It's also necessary to keep the rb_subtree_last field updated in the
-> interval tree so implement anon_rmap_tree_update_inplace() and
-> mapping_rmap_tree_update_inplace() to do that.
->
-> This is done in vma_complete(), after the VMA's range has been updated, so
-> in the interim the field may be invalid. However, given the locks described
-> above, this cannot be observed until after the state is corrected.
->
-> The anonymous rmap is keyed on anon_vma_chains not VMAs, so in those
-> instances anon_rmap_tree_update_vma_inplace() iterates over
-> vma->anon_vma_chain, invoking anon_rmap_tree_update_inplace() on each one.
->
-> For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc->cached_vma_last
-> is also updated in anon_rmap_tree_update_inplace().
->
-> When performing a VMA shrink or a split where the VMA is the lower one, the
-> page offset cannot change, so set the flags unconditionally in these cases.
->
-> When merging VMAs the page offset is unchanged only in some cases, so
-> update init_multi_vma_prep() to set the flags only if the page offsets
-> remain the same.
->
-> These changes ultimately result in less rmap lock contention.
->
-> Reported-by: Pan Deng <pan.deng@intel.com>
-> Closes: https://lore.kernel.org/linux-mm/20260924054301.2330822-1-pan.deng@intel.com/
+> On Mon, Sep 28, 2026 at 01:09:13PM +0200, Uladzislau Rezki wrote:
+> > On Thu, Sep 17, 2026 at 10:32:48AM +0800, Hao Ge wrote:
+> > > Hi Suren=E3=80=81David=E3=80=81Lorenzo
+> > >
+> > > On 2026/9/17 09:12, Hao Ge wrote:
+> > > > Hi Suren
+> > > >
+> > > > On 2026/9/17 03:07, Suren Baghdasaryan wrote:
+> > > >> On Wed, Sep 16, 2026 at 9:31=E2=80=AFAM Suren Baghdasaryan <surenb=
+@google.com> wrote:
+> > > >>>
+> > > >>> On Tue, Sep 15, 2026 at 11:00=E2=80=AFPM Hao Ge <hao.ge@linux.dev=
+> wrote:
+> > > >>>>
+> > > >>>> Hi Suren
+> > > >>>>
+> > > >>>> Thanks for you review.
+> > > >>>>
+> > > >>>> On 2026/9/16 05:09, Suren Baghdasaryan wrote:
+> > > >>>>> On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@linux.d=
+ev> wrote:
+> > > >>>>>>
+> > > >>>>>> The reservation is already stored in the maple tree when
+> > > >>>>>> vm_module_tags_populate() fails. A failed load never unloads t=
+he
+> > > >>>>>> module, so nothing releases the entry. Release it and roll
+> > > >>>>>> module_tags.size back. Without the rollback a concurrent load =
+that
+> > > >>>>>> already passed needs_section_mem() can reuse the freed gap, sk=
+ip
+> > > >>>>>> vm_module_tags_populate() and write to unmapped memory.
+> > > >>>>>>
+> > > >>>>>> vmap_pages_range() may have installed some PTEs before failing=
+. A
+> > > >>>>>> retry to populate the same range would BUG on them, so undo th=
+em,
+> > > >>>>>> but only if vmap actually ran.
+> > > >>>>>>
+> > > >>>>>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation t=
+ag compression")
+> > > >>>>>> Fixes: 0f9b685626da ("alloc_tag: populate memory for module ta=
+gs as needed")
+> > > >>>>>
+> > > >>>>> If a patch fixes two other patches, it likely needs to be split=
+ so
+> > > >>>>> that each part fixes one patch only. But read on please. I'm no=
+t sure
+> > > >>>>> if one of the fixes is correct.
+> > > >>>>>
+> > > >>>>
+> > > >>>> Kept them in one patch because they only make sense together.
+> > > >>>>
+> > > >>>> After a failed populate the reservation is released and the
+> > > >>>> size rolled back, so the next load takes the same gap and calls
+> > > >>>> vm_module_tags_populate() again, and that retry would trip over
+> > > >>>> the PTEs the failed vmap left behind.
+> > > >>>>
+> > > >>>> Without the rollback a load that already passed needs_section_me=
+m()
+> > > >>>> just reuses the gap, skips populate and writes to unmapped memor=
+y.
+> > > >>>> So splitting them leaves each half broken.
+> > > >>>
+> > > >>> Yeah, that's why I think vmap_pages_range() cleanup should be a
+> > > >>> completely separate patch with vmap_pages_range() doing cleanup
+> > > >>> itself.
+> > > >>>
+> > > >
+> > > > I think I get where you're coming from now.
+> > > > Thanks for taking the time to explain.
+> > > >
+> > > >>>>
+> > > >>>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > > >>>>>> Cc: stable@vger.kernel.org
+> > > >>>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> > > >>>>>> ---
+> > > >>>>>>  mm/alloc_tag.c | 10 ++++++++++
+> > > >>>>>>  1 file changed, 10 insertions(+)
+> > > >>>>>>
+> > > >>>>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> > > >>>>>> index 2070e682fe10..95ddf5b743d0 100644
+> > > >>>>>> --- a/mm/alloc_tag.c
+> > > >>>>>> +++ b/mm/alloc_tag.c
+> > > >>>>>> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(void)
+> > > >>>>>>                                      next_page, PAGE_SHIFT) < =
+0) {
+> > > >>>>>>                         release_pages_arg arg =3D { .pages =3D=
+ next_page };
+> > > >>>>>>
+> > > >>>>>> +                       /*
+> > > >>>>>> +                        * vmap_pages_range() only runs once a=
+ll pages were
+> > > >>>>>> +                        * allocated, and it may have installe=
+d some mappings
+> > > >>>>>> +                        * before failing. Undo them.
+> > > >>>>>
+> > > >>>>> If vmap_pages_range() failed to map the range, why should we ne=
+ed to
+> > > >>>>> undo it? If it indeed leaves some partial mapping when failing =
+then I
+> > > >>>>> would argue that vmap_pages_range() should be undoing these par=
+tial
+> > > >>>>> mappings itself before returning the error.
+> > > >>>>>
+> > > >>>> Yeah it does - none of the paths under vmap_pages_range() undo t=
+hemselves on error.
+> > > >>>
+> > > >>> Hmm. I wonder if this behavior is intentional or requires a fix. =
+The
+> > > >>> only possible reason I can think of is performance but I can't im=
+agine
+> > > >>> a failure to map is a performance-critical case.
+> > > >>>
+> > > >>> +David Hildenbrand (Red Hat), +Lorenzo Stoakes (Oracle) what do y=
+ou
+> > > >>
+> > > >> Huh, my gmail thinks you are still at your previous companies :)
+> > > >>
+> > > >
+> > > > I manually fixed it on the mailing list for this thread.
+> > > >
+> > > >>> guys think? Shouldn't vmap_pages_range() undo its possible partia=
+l
+> > > >>> mapping when it fails?
+> > > >>>
+> > > >>>
+> > > >>>> pcpu_map_pages does perform cleanup on its own as well. There ma=
+y be other similar sites.
+> > > >>>> https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-vm.c#=
+L255
+> > > >>>> so I did the same here.
+> > > >>>>
+> > > >>>> If we really want vmap_pages_range() to handle this cleanup inte=
+rnally, I believe that would
+> > > >>>> be a relatively large change, and we would need to consider many=
+ more cases. So I think we keep
+> > > >>>> the current behaviour for now.
+> > > >>>
+> > > >>> Yeah, I understand it would require a deeper cut but if that's th=
+e
+> > > >>> right way to handle this we might as well do that. Let's see what=
+ MM
+> > > >>> folks think.
+> > > >>>
+> > > >
+> > > > Sounds good to me. Let's wait and hear what the MM folks say.
+> > > >
+> > >
+> > > I just looked into the call sites for __vmap_pages_range.
+> > > And I found there's a bug in one vmalloc caller [1].
+> > > When gfp_mask has __GFP_NOFAIL, the code keeps retrying
+> > > __vmap_pages_range. If there are leftover PTE mappings,
+> > > this can trigger a BUG(); [2]
+> > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L3946 [=
+1]
+> > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L121  [=
+2]
+> > >
+> > Indeed the below code is incomplete:
+> >
+> > <snip>
+> >       /*
+> >        * page tables allocations ignore external gfp mask, enforce it
+> >        * by the scope API
+> >        */
+> >       flags =3D memalloc_apply_gfp_scope(gfp_mask);
+> >       do {
+> >               ret =3D __vmap_pages_range(addr, addr + size, prot, area-=
+>pages,
+> >                               page_shift, nested_gfp);
+> >               if (nofail && (ret < 0))
+> >                       schedule_timeout_uninterruptible(1);
+> >       } while (nofail && (ret < 0));
+> >       memalloc_restore_scope(flags);
+> > <snip>
+> >
+> > and it should be fixed. As the __vmap_pages_range() can actually fail
+> > and leave some installed mappings, we have to perform some cleanups
+> > on failure or on repeat(if nofail is true).
+> >
+> > Below code:
+> >
+> > +                     /*
+> > +                      * vmap_pages_range() only runs once all pages we=
+re
+> > +                      * allocated, and it may have installed some mapp=
+ings
+> > +                      * before failing. Undo them.
+> > +                      */
+> > +                     if (nr =3D=3D more_pages)
+> > +                             vunmap_range(phys_end, phys_end + (nr << =
+PAGE_SHIFT));
+> >
+> > we can use but we need to check if partially mapped space is not an
+> > issue for the vunmap_range(). And it looks like it is not.
+> >
+> > <snip>
+> > @@ -3953,8 +3990,15 @@ static void *__vmalloc_area_node(struct vm_struc=
+t *area, gfp_t gfp_mask,
+> >         do {
+> >                 ret =3D __vmap_pages_range(addr, addr + size, prot, are=
+a->pages,
+> >                                 page_shift, nested_gfp);
+> > -               if (nofail && (ret < 0))
+> > -                       schedule_timeout_uninterruptible(1);
+> > +               if (ret < 0) {
+> > +                       /*
+> > +                        * __vmap_pages_range() may have installed some=
+ mappings
+> > +                        * before failing. Undo them before returning o=
+r retrying.
+> > +                        */
+> > +                       vunmap_range(addr, addr + size);
+> > +                       if (nofail)
+> > +                               schedule_timeout_uninterruptible(1);
+> > +               }
+> >         } while (nofail && (ret < 0));
+> >         memalloc_restore_scope(flags);
+> > <snip>
+> >
+> And looking further. If the __vmap_pages_range()/__vmap_pages_range_noflu=
+sh()
+> and friends fail, a proper cleanups should be done inside, IMO.
 
-Andrew - Can you switch these 2 tags to:
+Sounds like we are in agreement.
 
-Suggested-by: Pan Deng <pan.deng@intel.com>
+>
+> But i am checking callers and see that some do some not:
+>
+> <snip hooks.c>
+>         __vunmap_range_noflush(
+>                 vmalloc_shadow(start),
+>                 vmalloc_shadow(start + clean * PAGE_SIZE));
+>         __vunmap_range_noflush(
+>                 vmalloc_origin(start),
+>                 vmalloc_origin(start + clean * PAGE_SIZE));
+> <snip hooks.c>
+>
+> kmsan_ioremap_page_range() it does clean ups;
+> kmsan_vmap_pages_range_noflush() looks like does not care in shadow.c;
+> __vmalloc_area_node() as noted, it is broken as there is a BUG() on next =
+try if nofail;
+> pcpu_map_pages() it does cleanups.
+> ...
+>
+> and so on.
 
-Please, thanks! :)
+Yeah, the callers that do the cleanup should stop doing that once the
+vmap functions handle it themselves. I expect an overall reduction in
+code size.
 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  include/linux/mm.h                |  3 +++
->  mm/interval_tree.c                | 33 ++++++++++++++++++++++++++++++++
->  mm/vma.c                          | 40 ++++++++++++++++++++++++++++++++++-----
->  mm/vma.h                          |  2 ++
->  tools/testing/vma/include/stubs.h |  8 ++++++++
->  5 files changed, 81 insertions(+), 5 deletions(-)
 >
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 6e71eaa4af3f..94c2eb055716 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4357,6 +4357,8 @@ void mapping_rmap_tree_insert_after(struct vm_area_struct *vma,
->  				    struct address_space *mapping);
->  void mapping_rmap_tree_remove(struct vm_area_struct *vma,
->  			      struct address_space *mapping);
-> +void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma);
-> +
->  struct vm_area_struct *
->  mapping_rmap_tree_iter_first(struct address_space *mapping,
->  			     pgoff_t pgoff_start, pgoff_t pgoff_last);
-> @@ -4374,6 +4376,7 @@ void anon_rmap_tree_insert(struct anon_vma_chain *avc,
->  			   struct anon_vma *anon_vma);
->  void anon_rmap_tree_remove(struct anon_vma_chain *avc,
->  			   struct anon_vma *anon_vma);
-> +void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc);
->  struct anon_vma_chain *
->  anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
->  			  pgoff_t pgoff_start, pgoff_t pgoff_last);
-> diff --git a/mm/interval_tree.c b/mm/interval_tree.c
-> index 7bbbf15cfbf0..eafde5d12ef5 100644
-> --- a/mm/interval_tree.c
-> +++ b/mm/interval_tree.c
-> @@ -64,6 +64,21 @@ void mapping_rmap_tree_remove(struct vm_area_struct *vma,
->  	__mapping_rmap_tree_remove(vma, &mapping->i_mmap);
->  }
->
-> +/**
-> + * mapping_rmap_tree_update_inplace() - Update file rmap tree to reflect an
-> + * in-place change in a VMA's size.
-> + * @vma: The VMA whose size has changed.
-> + *
-> + * The file rmap lock must be held.
-> + *
-> + * Invalid to do so if @vma->vm_pgoff has changed.
-> + */
-> +void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma)
-> +{
-> +	/* Propagate all the way up the tree. */
-> +	__mapping_rmap_tree_augment.propagate(&vma->shared.rb, NULL);
-> +}
-> +
->  struct vm_area_struct *
->  mapping_rmap_tree_iter_first(struct address_space *mapping,
->  			     pgoff_t pgoff_start, pgoff_t pgoff_last)
-> @@ -111,6 +126,24 @@ void anon_rmap_tree_remove(struct anon_vma_chain *avc,
->  	__anon_rmap_tree_remove(avc, &anon_vma->rb_root);
->  }
->
-> +/**
-> + * anon_rmap_tree_update_inplace() - Update anon rmap tree to reflect an
-> + * in-place change in the size of @avc's VMA.
-> + * @avc: The anon_vma_chain whose VMA's size has changed.
-> + *
-> + * The anon rmap root lock must be held.
-> + *
-> + * Invalid to do so if the VMA's anonymous pgoff has changed.
-> + */
-> +void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
-> +{
-> +#ifdef CONFIG_DEBUG_VM_RB
-> +	avc->cached_vma_last = avc_last_pgoff(avc);
-> +#endif
-> +	/* Propagate all the way up the tree. */
-> +	__anon_rmap_tree_augment.propagate(&avc->rb, NULL);
-> +}
-> +
->  struct anon_vma_chain *
->  anon_rmap_tree_iter_first(struct anon_vma *anon_vma,
->  			  pgoff_t pgoff_start, pgoff_t pgoff_last)
-> diff --git a/mm/vma.c b/mm/vma.c
-> index 077e23694143..8b333ec0c958 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -201,8 +201,15 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
->  	if (vp->file)
->  		vp->mapping = vma->vm_file->f_mapping;
->
-> -	if (vmg && vmg->skip_vma_uprobe)
-> +	if (!vmg)
-> +		return;
-> +
-> +	if (vmg->skip_vma_uprobe)
->  		vp->skip_vma_uprobe = true;
-> +	if (vma_start_pgoff(vma) == vmg_start_pgoff(vmg))
-> +		vp->pgoff_unchanged = true;
-> +	if (vma_start_anon_pgoff(vma) == vmg_start_anon_pgoff(vmg))
-> +		vp->anon_pgoff_unchanged = true;
->  }
->
->  /*
-> @@ -331,6 +338,15 @@ anon_rmap_tree_post_update_vma(struct vm_area_struct *vma)
->  		anon_rmap_tree_insert(avc, avc->anon_vma);
->  }
->
-> +static void
-> +anon_rmap_tree_update_vma_inplace(struct vm_area_struct *vma)
-> +{
-> +	struct anon_vma_chain *avc;
-> +
-> +	list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
-> +		anon_rmap_tree_update_inplace(avc);
-> +}
-> +
->  /*
->   * vma_prepare() - Helper function for handling locking VMAs prior to altering
->   * @vp: The initialized vma_prepare struct
-> @@ -359,14 +375,16 @@ static void vma_prepare(struct vma_prepare *vp)
->
->  	if (vp->anon_vma) {
->  		anon_vma_lock_write(vp->anon_vma);
-> -		anon_rmap_tree_pre_update_vma(vp->vma);
-> +		if (!vp->anon_pgoff_unchanged)
-> +			anon_rmap_tree_pre_update_vma(vp->vma);
->  		if (vp->adj_next)
->  			anon_rmap_tree_pre_update_vma(vp->adj_next);
->  	}
->
->  	if (vp->file) {
->  		flush_dcache_mmap_lock(vp->mapping);
-> -		mapping_rmap_tree_remove(vp->vma, vp->mapping);
-> +		if (!vp->pgoff_unchanged)
-> +			mapping_rmap_tree_remove(vp->vma, vp->mapping);
->  		if (vp->adj_next)
->  			mapping_rmap_tree_remove(vp->adj_next, vp->mapping);
->  	}
-> @@ -387,7 +405,11 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
->  	if (vp->file) {
->  		if (vp->adj_next)
->  			mapping_rmap_tree_insert(vp->adj_next, vp->mapping);
-> -		mapping_rmap_tree_insert(vp->vma, vp->mapping);
-> +		/* Need only propagate the change inplace. */
-> +		if (vp->pgoff_unchanged)
-> +			mapping_rmap_tree_update_inplace(vp->vma);
-> +		else
-> +			mapping_rmap_tree_insert(vp->vma, vp->mapping);
->  		flush_dcache_mmap_unlock(vp->mapping);
->  	}
->
-> @@ -406,7 +428,11 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
->  	}
->
->  	if (vp->anon_vma) {
-> -		anon_rmap_tree_post_update_vma(vp->vma);
-> +		/* Need only propagate the change inplace. */
-> +		if (vp->anon_pgoff_unchanged)
-> +			anon_rmap_tree_update_vma_inplace(vp->vma);
-> +		else
-> +			anon_rmap_tree_post_update_vma(vp->vma);
->  		if (vp->adj_next)
->  			anon_rmap_tree_post_update_vma(vp->adj_next);
->  		anon_vma_unlock_write(vp->anon_vma);
-> @@ -593,6 +619,8 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->
->  	init_vma_prep(&vp, vma);
->  	vp.insert = new;
-> +	vp.pgoff_unchanged = !new_below;
-> +	vp.anon_pgoff_unchanged = !new_below;
->  	vma_prepare(&vp);
->
->  	/*
-> @@ -1346,6 +1374,8 @@ int vma_shrink(struct vma_iterator *vmi, struct vm_area_struct *vma,
->  	vma_start_write(vma);
->
->  	init_vma_prep(&vp, vma);
-> +	vp.pgoff_unchanged = true;
-> +	vp.anon_pgoff_unchanged = true;
->  	vma_prepare(&vp);
->  	vma_adjust_trans_huge(vma, vma->vm_start, end, NULL);
->
-> diff --git a/mm/vma.h b/mm/vma.h
-> index 7a683272c0a8..336b4ced82c9 100644
-> --- a/mm/vma.h
-> +++ b/mm/vma.h
-> @@ -28,6 +28,8 @@ struct vma_prepare {
->  	struct vm_area_struct *remove2;
->
->  	bool skip_vma_uprobe :1;
-> +	bool pgoff_unchanged :1;
-> +	bool anon_pgoff_unchanged :1;
->  };
->
->  struct unlink_vma_file_batch {
-> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-> index e4acc6f1fe7b..f0a69393c02a 100644
-> --- a/tools/testing/vma/include/stubs.h
-> +++ b/tools/testing/vma/include/stubs.h
-> @@ -267,6 +267,10 @@ static inline void mapping_rmap_tree_remove(struct vm_area_struct *vma,
->  {
->  }
->
-> +static inline void mapping_rmap_tree_update_inplace(struct vm_area_struct *vma)
-> +{
-> +}
-> +
->  static inline void flush_dcache_mmap_unlock(struct address_space *mapping)
->  {
->  }
-> @@ -281,6 +285,10 @@ static inline void anon_rmap_tree_remove(struct anon_vma_chain *avc,
->  {
->  }
->
-> +static inline void anon_rmap_tree_update_inplace(struct anon_vma_chain *avc)
-> +{
-> +}
-> +
->  static inline void uprobe_mmap(struct vm_area_struct *vma)
->  {
->  }
->
-> ---
-> base-commit: e8d0f6a1b2a447d02845984fa6288787543cb03c
-> change-id: 20260925-speed-up-inplace-rmap-808fbb3848f5
->
-> Best regards,
 > --
-> Lorenzo Stoakes (ARM) <ljs@kernel.org>
->
-
---
-Cheers, Lorenzo
+> Uladzislau Rezki
 
