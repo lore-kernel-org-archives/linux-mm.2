@@ -4,102 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF2AFCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 16:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA9ECA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 16:55:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90C2D6B0088; Mon, 28 Sep 2026 12:32:31 -0400 (EDT)
+	id 00FDB6B0088; Mon, 28 Sep 2026 12:55:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 896D16B008A; Mon, 28 Sep 2026 12:32:31 -0400 (EDT)
+	id F02A26B008A; Mon, 28 Sep 2026 12:55:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75D806B008C; Mon, 28 Sep 2026 12:32:31 -0400 (EDT)
+	id DCCDB6B008C; Mon, 28 Sep 2026 12:55:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 51AB16B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:32:31 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C9D1E1A028A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:32:30 +0000 (UTC)
-X-FDA: 85263714060.02.FB3CF86
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1080F140010
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:32:27 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=az3cNpXQ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf09.hostedemail.com: domain of BATV+c280cb42f0170739f806+8436+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+c280cb42f0170739f806+8436+infradead.org+dwmw2@casper.srs.infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790613149;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A286A6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 12:55:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177821402B0
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:55:40 +0000 (UTC)
+X-FDA: 85263772440.23.865FC6E
+Received: from mail-dy2-f42.google.com (mail-dy2-f42.google.com [74.125.229.42])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1899B10000D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:55:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oObjyTMi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.42 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790614538;
+	b=PfKFL+4GKPeZKHxQHx+1jeMZhQFmhNSRq9ls6jYQYRtl1PKXPlRKjxnnyEd80r9MsEOK64
+	fv8tcbOoFCjHtPVakOYC4Sexqtum3g+wyiF66Bqkf202o36Lyu3ngUYWMKRb1HypEJ7wsG
+	RK6JuAN4SXIQSFymhPqcFm83rdpK7+g=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=oObjyTMi;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of dmytrokoziuk68@gmail.com designates 74.125.229.42 as permitted sender) smtp.mailfrom=dmytrokoziuk68@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790614538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99A5bAYIMPqVo4t3LQZlDEOj3q+XbxCkEDroCncS1uU=;
-	b=fg7MYLDaJlpsOUW+mUT8Zw4io6+TO7dNDnz2hbIhJj6MyJHuwmiyATcBT4bmNhnTJxqboR
-	k5FIng8qXvdqOD2yHgfx2VmVYBaqIl9wup6QAR8NO1O1FrRNj5Znd/l9fSRwP7sVE8mocr
-	1oLkdsVcYRcRigFSiWgvnJ46gmjTN7Q=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=az3cNpXQ;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf09.hostedemail.com: domain of BATV+c280cb42f0170739f806+8436+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+c280cb42f0170739f806+8436+infradead.org+dwmw2@casper.srs.infradead.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790613149;
-	b=Fe+GBU20xoLfHhUqSYqkehIKA8xiosQopAksTJWnaNP0asGsEIW4GsSFaZvbNDQBKDgbNJ
-	gag/Var5DjBdLfd4rhoHhGpq+XANKANDB8g68R4L3KH0K0buhWGOMzkQhAA9lzBllE+5/C
-	06BIlnAugjAilA1nlOHhxcdsxUM6P68=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=99A5bAYIMPqVo4t3LQZlDEOj3q+XbxCkEDroCncS1uU=; b=az3cNpXQgnT9mCZ9fjXr3ylYym
-	5iO6wIeXJ2BCAr1NbN1bqzpkRLJxj+XEV9qCja+J2NhDWEE+fjqMTc/819lh+pjcjGz7h3J5J6N5X
-	4r7u5eUe+KXpSS35jzSc7VFI7XjUurgl8Ery4G2ITjCyGBarQpCNcHd2VZ8ra32P5trxrucCQDxkZ
-	84x2wL5dzr64jh1q5BTvk+UD8847hGmyw4Q7+EPjQ4Hc9coc08fXWm4oV2SIDRQPDDZ0MeTM8HMVm
-	/EmuoNhjWsSaoHfH7/UWDONAfeJ2SHliJKX8m5upmguaqDSJ4ncbMHWbtyOvVwn/vitZRGCJzlvUj
-	x+z5oUrQ==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=edge-m3-r2-132.e-iad51.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBEGo-00000007iZL-0WG1;
-	Mon, 28 Sep 2026 16:32:02 +0000
-Message-ID: <d599627270c67a5334d2abced75d1d1711fb0af0.camel@infradead.org>
-Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
- resource (pool) fd
-From: David Woodhouse <dwmw2@infradead.org>
-To: ackerleytng@google.com, Hugh Dickins <hughd@google.com>, Baolin Wang	
- <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>,
-  Sean Christopherson	 <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, David Hildenbrand	 <david@kernel.org>, Jonathan
- Corbet <corbet@lwn.net>, Shuah Khan	 <skhan@linuxfoundation.org>, Randy
- Dunlap <rdunlap@infradead.org>, Shuah Khan	 <shuah@kernel.org>,
- vannapurve@google.com, erdemaktas@google.com, 	jxgao@google.com,
- rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
-	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, Gregory
- Price	 <gourry@gourry.net>, yan.y.zhao@intel.com, michael.roth@amd.com, 
-	suzuki.poulose@arm.com, Christian Brauner <brauner@kernel.org>, Jason
- Gunthorpe	 <jgg@ziepe.ca>, Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun	
- <yilun.xu@linux.intel.com>, aik@amd.com, aneesh.kumar@kernel.org, Vlastimil
- Babka	 <vbabka@kernel.org>, Connor Williamson <connordw@amazon.co.uk>, Fred
- Griffoul	 <fgriffo@amazon.co.uk>
-Cc: kernel-team@android.com, kernel-team@meta.com,
- linux-kernel@vger.kernel.org, 	linux-mm@kvack.org, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org, 	linux-kselftest@vger.kernel.org
-Date: Mon, 28 Sep 2026 17:32:00 +0100
-In-Reply-To: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
-References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-bTLrqMvO2SGb1ktb2wxC"
-User-Agent: Evolution 3.62.0-0ubuntu1~ppa1~24.04 
+	bh=Z6s4XNqPyMsAZrWg+mBHW7PCfGqW8dSbNXXOuFI+D+8=;
+	b=DoejOAdZ0Bp1ulT0MqqLKeedJB4EfzVDHR0WS8oyRtQwJiFOCiAwrCEn/YgnRLfP523/nv
+	BRGjji9p5EP/cHMnbTqL10yhuhlLPVJ5WFgTqE7d9BY8bqaU1s3yusru4/lNPjjeRjZTBt
+	FbpF5QAQHJ3CK1W+nLebwf3pBV8qJFM=
+Received: by mail-dy2-f42.google.com with SMTP id 5a478bee46e88-341d5303884so2267688eec.3
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:55:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790614537; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mIDy8YtauzrvnGH/+R39kS80OT9Gmbh+Lanb2yi7kijUMmhWLE0AoTSTleBoaa6Z0l
+         jHPAMrblfR+x9Vaw/DY+hTtFWVZqwLpGlJuaDgSywIsLOzCff/mOIfoklJl8G3ZaOxhM
+         2AKN6PH6tgFLCXSMuUEUAwZ9nLtdMWvBmCXNDqzjeDFAnF0YvDSzSuIGIvtJnGPDvblI
+         dc2875X574tshxto+KKaIr1VTEKTBu+WapJDnfN5+49xopakwpOkxJNEnl+du7nhP1Y+
+         1U8/3lXf4J7Xpgv1rTWVg90mZ1XZT0+aL9Xh6guJpji/Z8oBfuuxAwODtnioGVcClhcA
+         0BZg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Z6s4XNqPyMsAZrWg+mBHW7PCfGqW8dSbNXXOuFI+D+8=;
+        fh=BX0JIZCRy+s4xtD/I2WsB0wbNTztz8efuv1vSalhm3s=;
+        b=rnRy4BF2qEh6HkLWdkSKkt+xgu2rMrXoZYNZoCy+I0Crms2HgFZLpGWje9+wgsJIB7
+         9suL0kMZF8B3nh0RcUEmdlHdlFulviq9tPe1K+Qr1aoaBG3PgxREb34lZoLJ19CfyiRG
+         y4TchSajsb5SQ048RO/uZu1jnaMIC++hEb31JEjlzIsUyHtGshD/YfG+aeQ6ynGqCLsW
+         VKwVwLJGXKQGBC21FeZU8LzLZztsnQ4TQLdrM4Zhr/hqA5DfK4fkGv5Y4aHMuMYVrn+0
+         zaYVgHfelJ6B5AcjSvH4CuWSStK7CwPnM6LRvU6aG2cTv89/2OqaL+5U6+jYWL2Su0bF
+         oDxw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790614537; x=1791219337; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Z6s4XNqPyMsAZrWg+mBHW7PCfGqW8dSbNXXOuFI+D+8=;
+        b=oObjyTMi28QCgrMG70gwZNqXB6igqbeqdd7Q4xaY7oauOy0MnUrD29BfI7C1NidCLW
+         i1lf9qqYFcHCNHETFVvSvC9NM/OPGGBSeLAWTG3hJ+ZtXJGKBX5EcVqInXoJzOfDKWkB
+         8ODPPdGBZofJuGHZiKjnH59eF9Z/z5Xi2n5Z5HNWYKAuw7uhhrCEz2on9usuKze/kZ5/
+         qrH2MzqqeT1/4p6umJhtx8OgyzPveOJKlTr4Rcj92IkylKX3mGU1lIIMyP4dBx6IF8to
+         uWGV7Ep1KjyZFG9SxhkfQht76FBPAaIpmaPuySPUzqLe3CUyx/iSfjkMc9pm7JzpqpzZ
+         jCEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790614537; x=1791219337;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Z6s4XNqPyMsAZrWg+mBHW7PCfGqW8dSbNXXOuFI+D+8=;
+        b=QCA8O09kGXLRCBIHU4MkppkSu9TYgz2c+Kk83cVQmUE5zywCea+OnlU4d7BuEwIPWk
+         WGtENUwLArJQOlsBBbQ6bb7H9AoX9aFOPKG0um9eiImLjtDq5Jgvav4dTot8bv+HK02O
+         irYbpSjomzqWOX77vtOUh6Do+RZH4XdSK9eg13l62PImGC1cvOFHNcnnzk+jxYCwPzaB
+         19b3SDMTzVAePuT7BvGXnyXVimrA4p0nlM9zcAFFrVG6fFH+dZPQrJDqmPkQRFwUpdsk
+         Ij3zQvgrd3/s2BeSxpVgrAFt7YXxLhFdf6bkagOaCj9jPrx9DzV4WLTUxKv5VsrWODSP
+         b1OA==
+X-Forwarded-Encrypted: i=1; AKwUvByxmY5BqvpSOWpH8q0yGybuFwF8a7EeOf14NMogJTnw1/o0FCCU0RqxJIdHI/uAIBKIDLpSi+zllA==@kvack.org
+X-Gm-Message-State: AFq9FYJjuN+2VPPmsj4PbgzNhAukRjkBUFoaka/N5URa7mA6Oa85BZ7O
+	GDbfx2/54gsAni7Q25TyuCB+CjeK0DkbSFtahnbDUFNqyxYm594YvYLbcMcjHZ+5IIL8igGc1kx
+	1NaO0+uLy1EQzY9VcYGZsWllXMlZa35A=
+X-Gm-Gg: AYBFou0bX1B+3CtctnBxusbpyqjkiJEs7gdxRhPnOFszQ47TshIsefqZ+sioquJstqo
+	YKycEJnmbi9M4ePZPQhvQdYUMau4sQKNsSBU8QR2f5Ln0FmIIXVe768HoaxX3zkRn8DjVLaL8BB
+	WtCxmpOtW7FOK0Xi5QacKHFwOlbATh/bFVMslfU6pRAtdr1x/1eLyVl7IwDM7EER2uiQEtSomrD
+	VwuQJO8CBz0zPYRabduP5JBxJPOyzs1ZV6fwW2slo5cQEkEr+G0+KW74Y+ReVyXQ7wGS+1L56jb
+	QuQ0kjbHpjc8U0hA0HHpgDnS1VAh3nYFTiH8PpaWwWHcjXUkl3b2QJkFLmc91BsjIqHialAPMeU
+	HNF6bSUggG0FirGB6H2HF/Qy5CNGtiBSCZGpJq7J1tMVr7WdOXzQQM6keFQ==
+X-Received: by 2002:a05:7301:550e:b0:334:2bbe:ad6b with SMTP id
+ 5a478bee46e88-34271a8dd48mr10931201eec.22.1790614536711; Mon, 28 Sep 2026
+ 09:55:36 -0700 (PDT)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+References: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+ <20260915153542.3b9afbd00f7e6cea87a3350b@linux-foundation.org> <CAO63FDVJaRzwE_z4-Yd6Z8fZNEGQyx=YbeFatBN30d9X8SYLtw@mail.gmail.com>
+In-Reply-To: <CAO63FDVJaRzwE_z4-Yd6Z8fZNEGQyx=YbeFatBN30d9X8SYLtw@mail.gmail.com>
+From: Dmytro Koziuk <dmytrokoziuk68@gmail.com>
+Date: Mon, 28 Sep 2026 19:55:22 +0300
+X-Gm-Features: AclHuK8C0LQPHgVg0oAwvuYAM3nnvMC17hc19o0pmQNpDAVgyULxtsSzmjilem8
+Message-ID: <CAO63FDUNVzMss61+TUYCWSezo1K1PL94iAdt=kNUoWepU=nhMw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: kmsan: fix iounmap metadata teardown
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jujdt41m3855shi6urpu1fthtb9t5f1w
 X-Rspam-User: 
-X-Stat-Signature: s6gzb73cgprbspikhrfc17kgy81qh5wu
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1080F140010
-X-HE-Tag: 1790613147-542526
-X-HE-Meta: U2FsdGVkX18Mv3dGvClcA0rukQSwpMrUSkW9RZZ6lBb4+6gDL2/03oHovUbKuBlp0tZxJyKA3adjHoNUxkkH1s+ZAIxMLqThyuoJ2OXj4EVzMjRvXW2i/SXhmmJNf6nJ28hPBHGTFl8xrytn0pXBJIQ7xjpmr6PAh51UcHvkV4C6a8XvRy2LR9TZqRdTcvrD/YLxfIa9XA7/Buxs3uwR5sbB0CdRDYEjiFC+4Q4tUQEoc6FDu9oxiRlluoxzDSXgF1N6unvaYlv+B3PR0J3LiJJQqd8SLXlb8Jj6bIiao9gz+ClDQzrSDxBCuIQZK3RNxdakbeOOAgjtt3aq7Cisz6lxrSb5AaKjO1rUl0B/qM00B2rXmsfFFHEBUFOIvycXSqOTCw7kro5XZqsK6x3bF7M1mnASO7aF+tdRSUMBHrCigd2GfDt5o3L0a8T4IuQCyXDQwC7Jn64wdR0k1O+w+eykRfrTSRKE1auQfMfNM9nSOxVxP2ICC/UHXLgiGw7PeuXps4T5bh9sbh4x0ZSEH3fqaTQv6Wofh4zh3DeNUJsurGgzZRP6JV54WXyjbaJfjOx410NEjAu+XppwMJKtohNBKTEWmE3X+Cie8A4JTqOj9/YJr2LJiFLfD275JNW5VGllDOmvkNmL3DJNag/vz0UPNs7K8sipCcwmMsum66ud8pAp37MpENsCNhS7vj3ZLGFUVty8+O7dQ0uFWdJ2yK7VuCY9/dVz7igOApz5LKjKf94smf4vzZkpra9OVFIWa5cErwHCY9ugG0fo1DodbWELWL0cKm1w/O8CX54Pw/uEaDdr9eW6KLU2pT2Oagln8CM2EOUzVSmcKCYhkhOZ4Z1LBE6UEF7FzRxGUuxMiatAyyikW/jK1BpT4iGUTxrLkiZxdprzi1RnNmjBgmNI0vUUDW2cnlKCObk39oPh6y2OXcbqYrQVLkEvYziHjaQAuu2P0ccjQYC3sLLUCdg
- 5zBP6mDF
- 6ZppNlO8A39JYlD2h5WWxkrfTmvigKY4fUwzwtgR2OuiH28Uz9NrlGRJRQw5QNNhiddLyGAPtf3mwQykyD7isabLQ/Yu4CsnMNlgk0c0G+RwhsqRdAaUmbBqcOfaxMDU2jq74cTmr3VvCZHnBDIJVPOKNScZ7KLXpK0ImuoFS4Hu/HqAMI3ooSUNM6EH0NJPQZQMXY1e8ov9WezqDtHLXWyDC80wv0ErvryfLhXFf/J4OW2zUBzcDd5+hyvtU0MADwtMckbLIzC/ZHW5HrHNqpUgdfTeZXkzRrgf8G6rUFx33MM7wr0Eqmn3YMqkfV4GGoNe78EXorY5MtTpsxIB1OrNq8UNEuCHMUrrGCfTymU4pSgJCp2jHZ3I5juLDsmNyhHOwnrWYhn5KtSxlQXWhWitJrg35yPTdFjdsN9HUR173EvgtRxM02G051JLrn4nzQd7JomxekZPBFlc0N+Wpqa1khwe64FlU61cZWTNzEprkKbQuA1QaVilGzHFXM97RfzK/WAhUfUc1JFGFIpbzF1nK2dcAwTJ+7DzSXhohX+jnQpHFHEJmPC1GTB7wCRsTehl4iHrXEh2aq2K2kSj16JIwccvTmJ5C0EuTFG1YFSBirOY0havbXfsD+oz3ccOWX5BDAaXC9XtCtI9uGWqj8YyCKiiOa+aGbsJgthVUeiwWTw8iavti9kr+HGGuijXJ5wqWLjH0u/W7J6jSOKBxrJ7SMLhP/jvj/R3rCt3uzG+mX7o6cdfMk4WgaF8FtJ5k99bGPTqnI4acpGj/t+evE4VAp+TQXTm5VwNghhEzUCWeBa8JHyeH1MIoMqoo5svsx3gxOqAYHRmZPrvQW82Bg+pFbA==
+X-Rspamd-Queue-Id: 1899B10000D
+X-HE-Tag: 1790614537-591031
+X-HE-Meta: U2FsdGVkX1+45BBsalszyyguhWoG7lel65+69ciwhAW0CzxrfwWdx0V5pt6zoncYSrYt/fMK4FxXOH8vApgXUJ4eDt9SD1MwMnBVkCKbFoXD2xXTK/EUiU72Vus6TUei8jwq4jNaTTNaJKVARtfmla8zhlmvhZx32Ao4vHGgkffyNtod2AYBm9kczVg5FM2ttQLHCs3zHeu4f//wWZqKAFz0U1sVs15EFFOeGapmckdBVOvQppFyVFpwZ0glUiS+cZmPFGCKwrZwMsmL0tw89zLRFicDyi5Obw2yMaIvMFdpxKaeWRqMg21UWZeuD/VsnOvZzAorHQbjvx35DhfVaXufCQMDh5XoUD6wvYjcr74wiVjWTBj8bC6JT/11FqN2v2Ssxkj4Y8USwYWY9tz/pv/pnWogwrNusuPmyK0VwHd0ZE8YNtJY54/KFr8KjWzacL8YngHas4W7jtbYoPkHyQ/AdzmXOPUYgqu+REYVaoyANO+NN10DFEu/qbEyEj7yLW8L6yYfYxerBRQhZLUf6EphCk7stjyx02aXpfjxPNaiSAAPkrAU2Wtve6HOoQRR+hCg9YokG6kB5ROcYpmUGtM1Zz9VchPSS4JZW06KsFkpB25BmJWK4Z7NKXKj73bZ48DJFQwRBlt0tTdnUFAMvzNjvF1xi7/f2qQtIz8pemLFu4Jxm5XZjLNbdxF+1j+AavlT/y744aQq0aRnY1KbVVXBCFXyhHaqxgsrV+3U9IIdSlQKux03rJoK/Gw8pFjSBtQdT3vUmsITvCXK2nZWd+XFrQk4MdRxO8V/10QPqM6x+I5O5CC/EWnCYPC7hTJHRptyjRS5NdXBrXtY+65SdGfcOV/jG6ouH5AcXSN8OmxneVD8DIH5u0YZA3cxUPZBA5kWuOap6l81KH3xCoiQcsXNeabAuPD6JH5sxvTvtUDAKjLgppmQ36H9jFB+CpIfQ0vPtULPSot2lhn/MVS
+ YEkIkmi2
+ JlOtmeiDcXEdIxlTgZhu5OfsG+LHgsw54J3CFcTd57e/tBtSi8XGrsJi8rwWWfUaRAseFpspQUVfLAEKZYuvw4aMcwS6nlO0mX5zXsIInG6Wo5u0WB7SkJbffxTPd+hgNAnF16D/PJ4ohW3TQhVt71nXCWCUytpA8MogmIfiDwji49pqepAU1wIAdSNQVSYwZxM75OOOXTtHUo/Ir9l+nBFFQ2gn8NYLRR6phvBjVMXJK/0BfYH4khBMJRzEqtqWBgpHqQaSffhnbB1OVkjtZDM7wxtum8waWIQK/RAZJU2jjZXN+CyK6W8nV2OTd/oYu0zxxD9bTXmIfpTzVNqPLTomHtV5ofNpbRV2Tzh0K45uKQtdH5IOXWv7gkAndv6VjENBnPIXalNzsAZPedXp2Mfnnfcnch+27JS6R5d+Ol3ELLHp3Hk5AHI1MAhK8HSHgH71PBoMh2S4WmKAzKBrQVwGfluehipkjWikTFmEzsL2Qca6FLVJ0ezNl7F//FBnUB0f1e8epwGfQhgZIsd0cUuoaMfU58G7374PT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,161 +142,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Andrew,
 
---=-bTLrqMvO2SGb1ktb2wxC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Just a gentle ping on this. Is there anything else I should address?
 
-On Fri, 2026-09-25 at 17:50 -0700, Ackerley Tng via B4 Relay wrote:
->=20
-> =3D=3D=3D What if my provider doesn't deal with pages?
->=20
-> Frank and David Woodhouse [2] have use cases for providers that use
-> PFNs, and this is definitely something a generic interface must
-> support.
->=20
-> Here are some options I can think of:
->=20
-> 1. Don't define .alloc_folio(), instead define .alloc_pfn()
-> 2. Refactor .alloc_folio() to .alloc_pfn()
->=20
-> Either way, I think guest_memfd should still be the primary manager of
-> the memory.
+Thanks,
+Dima
 
-Thanks for working on this.
-
-I'm not sure what you mean by 'primary manager' here but my use case is
-for the provider to be the ultimate arbiter of who owns which PFN, and
-revocation of the same. Think of it like a filesystem backed by
-external memory. Each guest's memory is a file, and a guest can
-*donate* specific pages of its memory to other guests (which in the
-context of the *interface* only means that we need revocation).
-
-Should I be trying to rework parts of my series to live on top of this?
-Things I have working but which I don't see here include:
-
- =E2=80=A2 PFN support (which you mentioned).
- =E2=80=A2 IOMMUFD support via dma-buf.
- =E2=80=A2 Revocation (which I've tested correctly breaks down large pages =
-in
-   both EPT/NPT and IOMMU).
- =E2=80=A2 AsyncPF support for pages requested by KVM.
-
---=-bTLrqMvO2SGb1ktb2wxC
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCE8Ew
-ggWvMIIEl6ADAgECAhANkOKMSmGXhF5eMl0rsRhvMA0GCSqGSIb3DQEBDAUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBHMjAeFw0yNDAzMTMwMDAwMDBaFw0zNDAz
-MTIyMzU5NTlaMGIxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UE
-AxMxRGlnaUNlcnQgQXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTCCAiIw
-DQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBAOfSIeC0vv1xPQ+dgSxbIIrkaru6skAWJYaGFzmv
-q4Kq+2wU2jxhcWlJg/JeP5jEkq/LM3pn5aaLao79j+XRmS7J1ZpJKUODJVoM4s9MQJhTMvo4qS5Z
-S64g6QR7Obkz3I1Lr3aWeSBmDDEyzue+NKtuWZ1Cxy3RdXo/w5HgRc3l2AercOM3Gt1XonTzEtTb
-Z/Hwc0Sn9Gz8RmGRK6Ka4hVDl8q/2l110KaV233Kh5etP0csXS8MIMdVRfRu3sc5hp13DG7lCKzK
-72a2GEpI8Wpl26G6I1/LMzz/98T+FqjTqxsdquk7Cj7m2vKGLW1BorpQH7WFGPdJQXJe1hfbfiZA
-CcVdCtl4nAacFacmsiArZBfX7AQGL7isvHUwwYFEtcApyGW4p2Lt+t8nvU0CANA6BHOpOz1xOP8W
-mAESbUriIjyuTUf3fJ9oDNCurVqhASMJCDaWI3lYX/QAoiAzt6akqbbZxo2ujW7mGGqc0KxqE2cs
-h2T79v7pC8aUtHBfwNrTR19GnZVxE0eQ7ViIQhR6mpSaUQFA9sG+cmD2G8TnCgYsLa0q8De6F61a
-CBevQGHNzrbZ3JAMneveYg/Jy1XxQHDRcvrMfWKe0jjcWbdKYlaGVPm5V1ILwYz7Yv5ewo3NUrxI
-GJiywe9qPhuJSDZs7VehTuI0FxGIsgKzVjgbAgMBAAGjggFcMIIBWDASBgNVHRMBAf8ECDAGAQH/
-AgEAMB0GA1UdDgQWBBT3m6JO05fF9DQPQw6Bhc6RkzKv+TAfBgNVHSMEGDAWgBTOw0q5mVXyuNtg
-v6l+vVa1lzan1jAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
-MHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEMG
-CCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURS
-b290RzIuY3J0MEUGA1UdHwQ+MDwwOqA4oDaGNGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdp
-Q2VydEFzc3VyZWRJRFJvb3RHMi5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUA
-A4IBAQA+b8Uw53sDspdZgukU+qzLyyHkcjlxGGhHlP+zrmDLKm1wEFvCRS2pili3Hy67i8N4N5NU
-vw5Rg6kv3lxb9S9Rktxk43k+tvm68pl7OxQE55ZjVY87P0lUPGwEqOOwLLyH02ZQcsfq5p5LrOH9
-0JvmvZ1yy73HS+VpDAqOlytE0NSvTIRqFFkKQGQwfjvtql9YflujuNNvJztjBaHKYZsnNSg+J38o
-jYq4TP3pSg3UdVH0PncVjPQyqxC9xef5Xae92Kbkzol3x7Nel3A1bwAkalrDMspvTHvey6LfiBks
-FIqviTnoy7fgjaRAJgHS+RXx/cmuRd3rUAclSVVrYu8RMIIHAzCCBOugAwIBAgIQAzUotrsybJHx
-HTjKOIVdIDANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQs
-IEluYy4xOjA4BgNVBAMTMURpZ2lDZXJ0IEFzc3VyZWQgRzIgU01JTUUgUlNBNDA5NiBTSEEzODQg
-MjAyNCBDQTEwHhcNMjYwNzE4MDAwMDAwWhcNMjgwMTA0MjM1OTU5WjAeMRwwGgYDVQQDDBNkd213
-MkBpbmZyYWRlYWQub3JnMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA2pYux73kdbYX
-sWF8f1u6DJP91qcqaZetsyfPkZk0B+MmXmAEv0kVes5n15V2mbDThOnpoPFly0UugQO9JYqLfrtD
-tKD5yL58fgrDB9Dw+LQikgrHafl6YSCds5AvUu/8hw2J6noKrcOLJpKlKn9Fl/4IB9Q3JIdLx5aa
-EtTqMalIPqHFOlgrJ7s+aua8xbB8YQ9ahqYBXWRJNv3P/2b1DYtdrz1oqZPE3CcB8Pc6Gf2a1Tcm
-6TAgtEx7Cf1BFcrsrMz7TWHmGQITieNb2r9UYWSc2Gp+GtYFNJCgT0JJXKUBIauPMKBLteYrL8Fo
-ff/uY44dC/mDWjdCP/5x0qelPQjlBvWdHL5zvBTOj06rJ0m3HNI/hnIcDh0Qu2j9reb9rLVcdym6
-bWmBM4uDEB8Zv9Ph0KTBFSy1IosyakuD1j1Os30EzjGfbi0EUXIvnOcYbTBAbM5UAzrxEHMhBvoX
-Pvnx+OyvjJmc9tWxTX6AcSz+m40esbT17URBeZS18afgieiikm5TynlUYP1LciR3hSgGVzvGXnKO
-02VDFR5itGWdRKZ2W5wIShNfWfhSa0D0K5UdIDt5Qc7sjzwK1Yb1sY5Tu0uA5mhIS82q1ov83uxB
-sFkriNnhGv/M1NCDVLBiOMsHu73qUM+yKmgKLwF9Hfn9WI25glbAMI4S5r3hYzcCAwEAAaOCAfcw
-ggHzMB8GA1UdIwQYMBaAFPebok7Tl8X0NA9DDoGFzpGTMq/5MB0GA1UdDgQWBBRcYhqbcGzn1jrT
-JOZaB8O7qllDpzAwBgNVHREEKTAngRNkd213MkBpbmZyYWRlYWQub3JngRBkYXZpZEB3b29kaG91
-LnNlMBQGA1UdIAQNMAswCQYHZ4EMAQUBAjAOBgNVHQ8BAf8EBAMCBeAwHQYDVR0lBBYwFAYIKwYB
-BQUHAwIGCCsGAQUFBwMEMIGpBgNVHR8EgaEwgZ4wTaBLoEmGR2h0dHA6Ly9jcmwzLmRpZ2ljZXJ0
-LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsME2gS6BJ
-hkdodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZT
-SEEzODQyMDI0Q0ExLmNybDCBjQYIKwYBBQUHAQEEgYAwfjAkBggrBgEFBQcwAYYYaHR0cDovL29j
-c3AuZGlnaWNlcnQuY29tMFYGCCsGAQUFBzAChkpodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20v
-RGlnaUNlcnRBc3N1cmVkRzJTTUlNRVJTQTQwOTZTSEEzODQyMDI0Q0ExLmNydDANBgkqhkiG9w0B
-AQsFAAOCAgEAocabrh1cPd5s3vY5rnlBVQSTc7zs2ZWs67dAIltR+05WELrYClVzzUhMs/LOJPlr
-EUo45UDDomXq38DxFepaPd9+iNLjXfn33EX/IG44j04lU/oF/Rg9VeQILkYLbCZ/x9wOjNHZc4SN
-ydY7Dhvf/sT5aBz88u7D5+azZJ7Qf1U57wYseCH1Mt0nDrtr5y19IJ8D9xJJ33RFL6vfpHZBBAQ8
-+3RqkKNxLoV2aFvQhxdhjNLDqTv3LjUIdicwPraN7JkxEu7CV2Lka7eRqJgkWL7SK0YmBjGpRafs
-+icP/ON5RCCKTTb6VlX8eTG2sJJfsFhvJNCCt6xexbWzWtIrfP7NvPBvwBB737AyEGBZkS5aNizT
-McURJGTv9UKvBh1LF/+tNhYtLvPCN7oecGzhCHht9jcwSkygTo3Y6YlK3QgOu+ncmiBbfeuwlLZ1
-LxbYvG6hgNqXv7u6YyADbYajAQJXJ2OQen39pm3Q/AQSyLYG+B8lDglWsM8tYXPlEdrYJcksGK6F
-nqIX6Bumn43rBooLJdiZp4WmfWdL2pxe+LxRDjprmqu1WprixDxULSTOKJZoqTlugs6y3Bc+if+s
-gHnBBtz9WQ6MtPHkh7zONDAFIKcBmv8OqPQCx0F3Wv3OEybwMpXx0OsKgK8wLldaX1pXcMuyDgTL
-Sqs0AV0OHUgwggcDMIIE66ADAgECAhADNSi2uzJskfEdOMo4hV0gMA0GCSqGSIb3DQEBCwUAMGIx
-CzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE6MDgGA1UEAxMxRGlnaUNlcnQg
-QXNzdXJlZCBHMiBTTUlNRSBSU0E0MDk2IFNIQTM4NCAyMDI0IENBMTAeFw0yNjA3MTgwMDAwMDBa
-Fw0yODAxMDQyMzU5NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqG
-SIb3DQEBAQUAA4ICDwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZe
-YAS/SRV6zmfXlXaZsNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2z
-kC9S7/yHDYnqegqtw4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qG
-pgFdZEk2/c//ZvUNi12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41va
-v1RhZJzYan4a1gU0kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0c
-vnO8FM6PTqsnSbcc0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PW
-PU6zfQTOMZ9uLQRRci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXt
-REF5lLXxp+CJ6KKSblPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQr
-lR0gO3lBzuyPPArVhvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7Iq
-aAovAX0d+f1YjbmCVsAwjhLmveFjNwIDAQABo4IB9zCCAfMwHwYDVR0jBBgwFoAU95uiTtOXxfQ0
-D0MOgYXOkZMyr/kwHQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3
-bXcyQGluZnJhZGVhZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEC
-MA4GA1UdDwEB/wQEAwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwgakGA1UdHwSB
-oTCBnjBNoEugSYZHaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0QXNzdXJlZEcyU01J
-TUVSU0E0MDk2U0hBMzg0MjAyNENBMS5jcmwwTaBLoEmGR2h0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNv
-bS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNBNDA5NlNIQTM4NDIwMjRDQTEuY3JsMIGNBggrBgEF
-BQcBAQSBgDB+MCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wVgYIKwYBBQUH
-MAKGSmh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRHMlNNSU1FUlNB
-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
-/S+S/Ok3Z1BMN4LPBtLVzG8AAAAAAAA=
-
-
---=-bTLrqMvO2SGb1ktb2wxC--
+=D1=81=D1=80, 16 =D1=81=D0=B5=D0=BD=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 10:2=
+2, Dmytro Koziuk <dmytrokoziuk68@gmail.com>:
+>
+> >  AI review might have a found a couple of issues - please check?
+>
+> I don't think the patch needs to be changed for these issues. For
+> normal iounmap(), the
+> caller must ensure that the mapping is no longer in use. Also,
+> the x86 implementation keeps the virtual range reserved until after
+> kmsan_iounmap_page_range() returns and its TLB flush completes.
+>
+> For the kmsan_ioremap_page_range() error path, the mapping has not yet
+> been returned to the caller. Cleanup and the TLB flush complete before
+> the reserved virtual range is released.
+>
+>
+> =D1=81=D1=80, 16 =D1=81=D0=B5=D0=BD=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 01=
+:35, Andrew Morton <akpm@linux-foundation.org>:
+> >
+> > On Tue, 15 Sep 2026 19:02:06 +0300 Dima Koziuk <dmytrokoziuk68@gmail.co=
+m> wrote:
+> >
+> > > While studying the code, I noticed that kmsan_iounmap_page_range() ca=
+lls
+> > > __vunmap_range_noflush(v_shadow, vmalloc_shadow(end)) inside its per-=
+page
+> > > loop, and does the same for origin. The first iteration therefore unm=
+aps
+> > > the entire metadata range, removing the PTEs for later pages before t=
+he
+> > > loop can recover their backing pages.
+> >
+> > Thanks.
+> >
+> > AI review might have a found a couple of issues - please check?
+> >
+> > https://sashiko.dev/#/patchset/20260915160207.2952-1-dmytrokoziuk68@gma=
+il.com
 
