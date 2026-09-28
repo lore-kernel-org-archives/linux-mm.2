@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA04DC98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 233D2C98328
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:24:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCC8C6B008C; Mon, 28 Sep 2026 02:19:21 -0400 (EDT)
+	id 211B56B0088; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA3DA6B0093; Mon, 28 Sep 2026 02:19:21 -0400 (EDT)
+	id 19B236B0093; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE12C6B0095; Mon, 28 Sep 2026 02:19:21 -0400 (EDT)
+	id 08A576B0095; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 95A496B008C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:19:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B7181A0B18
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:19:21 +0000 (UTC)
-X-FDA: 85262168922.10.815EE16
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 446AA140003
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:19:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFN1+q95;
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D69A26B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:24:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6981680B28
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:24:09 +0000 (UTC)
+X-FDA: 85262181018.06.32BA4F9
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0EA0540004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:24:06 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=keukrEB2;
+	spf=none (imf07.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790576359;
+	s=arc-20220608; t=1790576647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P+Ketq9+++QF/K7tY+yWeVcoA9YiGM/e1Warfti0y6c=;
-	b=EQVzHJ5EFaIJD1e8k4VlLrBvnDMyll0ZTK+/0INkONdwyrMd17IozPGmOgQM5NFULquwXu
-	JbT3pmGV+vsEs4O0livdLo4+RqX8OUGBeOxjV38u41l7H/xnzwR5hBAV3UZ9Rc5J3mUooo
-	lmGXag4/obj9u/MgZgtrVD42R0FYvjw=
+	bh=DR/hwaEZILg/9rvVDgZU74EvXnZO71agIm5YgCpk650=;
+	b=SIpEJzchPkOLU/TgKycsWV4JD5FV1Kc4C7dPeZLNGwin8q+vtBPyiOMgGy7Nedhm3EPB9U
+	i3BcCIT+HKog9cbYA9r79mQ8wh305B/rDEWsPxprx4k1D0aUWZMVwbgz1EnAu9hk2YcKnb
+	Xh84h8e/Fas0nAZVhFliENq2cGhMdUw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hFN1+q95;
-	spf=pass (imf26.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=keukrEB2;
+	spf=none (imf07.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790576359;
-	b=IyBbd9vsv76OEAMxcUVogiqJUiv+SJoV3YHilsUYgAq4CkQaOjRr+kcvLwuoBmsKrJLP/0
-	OcjYsMASdpHvWBlY0QjeL9PHu2mnl+BmpX8xQyhsHlrW1ewo26phqXMdsEJx4SOFYx5ZCg
-	Pet5dJYeIrRqK0P9dkyJsNbwc0gM0Io=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8084244507
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683641F008A4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:19:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790576358;
-	bh=P+Ketq9+++QF/K7tY+yWeVcoA9YiGM/e1Warfti0y6c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=hFN1+q95+zKRDJujGn/4KF5W47EcA0+P2dzDTFpxB1AfBMrGkrnx+Sj5aDj5uTjk6
-	 PX/tk31iWZMy6IYADNID/W7fT7mfTT4lrySE/5j03o69EWTn8tDzUJJmg5oVA5ihuA
-	 8FaZnMV0Ix/4IILIS87IbDE8Y2z5FSqGav1kaJvXnhSC4+fMEvlujdFq88JHkL4Ntp
-	 6vBlI6YzhWvjxhtp3IA+LD3KgFB/WYSsKQxFIXtdRmZVXEVO6fwk8bNvmEinqi4Gsq
-	 vXOjBG74leR2IqU5V5YlHOOBHclqt8Es2ByC2EhbVWw/Oow8GMrvAO7RxhAMD57rbj
-	 UUGIHqOZJ+z3g==
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dc50c6edfso111496666b.1
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:19:18 -0700 (PDT)
-X-Gm-Message-State: AFuF++klPDLD3YOr+lECrXjz8l2YrjDGibQ++teOQyZN1hiuRzacbYR1
-	yCrONRXqaZjzzrkIISRZ2w1B5WqnxmQ2QTE0XBM5e8TAK9HVQ1jsOQLX0KzdE1TxIv2eJpKFBsL
-	GIyWqEDWsLuwtdl/SrW4eYy/bRbzfOE2AM/EDG0uScQ==
-X-Received: by 2002:a17:907:3e98:b0:c29:f5d5:5a98 with SMTP id
- a640c23a62f3a-c2ac241bd31mr1017028266b.34.1790576357244; Sun, 27 Sep 2026
- 23:19:17 -0700 (PDT)
+	t=1790576647;
+	b=xb8V2o6+jJZOHeJN8+pcUXjPrdKGLU07pLMeX4q9vNqBrtKswFzVnGiFfX2InGsojyVihJ
+	vvolxFpdFcKoMQoZuY0RP7TmbkaEuqQJbWFzJoEaXKB0xWD4sIXAVm2HiVJv0tFBDgRZxD
+	/SAcNBLfeUUL/MYz5ga/DbBkMD1h2/4=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=DR/hwaEZILg/9rvVDgZU74EvXnZO71agIm5YgCpk650=; b=keukrEB25vjEoqL/8zVNNWoGFM
+	2FBJRmD+w+My6XUr8jIFsV/2GBFZ2lG14Za7h23vhi1GJDZi9mMJtwcASd+HqE+mJ0ah8L66hc7a2
+	3HG8FJStZ8ItddZyxkLFDuerZh4rpvbjp1c1tGJPxKjpE4vdKHTtfjAVjF6/ffMIf4nMsWl+RYrmP
+	Sob/bxS39PhpKuYbIZThEFM2e9HyDBcLjN9dZQRNXoW6IBZ5BT5/AUvSsKnUvFbURriMxPPPd0P21
+	HOiTaTHd3KzuYOVj/wmFcvAK49SbIB3DqGqmi28XpaYDnZamfZNx8BgAoseyofHdpsGIvv/mnsAK5
+	Pog5nVMg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xB4mQ-0000000HRoj-1T7I;
+	Mon, 28 Sep 2026 06:24:02 +0000
+Date: Sun, 27 Sep 2026 23:24:02 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Julian Sun <sunjunchao@bytedance.com>, linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, willy@infradead.org, tj@kernel.org,
+	akpm@linux-foundation.org, Boris Burkov <boris@bur.io>
+Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
+Message-ID: <aroIAqoCNDBPlB2A@infradead.org>
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-2-sunjunchao@bytedance.com>
+ <arYaMbJUh6unvz_t@infradead.org>
+ <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-15-hebaoquan@kylinos.cn>
-In-Reply-To: <20260916101929.149106-15-hebaoquan@kylinos.cn>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 27 Sep 2026 20:19:05 -1000
-X-Gmail-Original-Message-ID: <CACePvbUdDWaWA_YZW4yZ_k0zyp3iF3RzusPKO2ZOyJONh0dCrg@mail.gmail.com>
-X-Gm-Features: AclHuK_T6ZaUqFOjQXs6aCMZvy5UZhShRk7BXR6yvGcUDbFTt35WUL9ktZOL7vs
-Message-ID: <CACePvbUdDWaWA_YZW4yZ_k0zyp3iF3RzusPKO2ZOyJONh0dCrg@mail.gmail.com>
-Subject: Re: [PATCH v3 14/14] mm, swap: shrink xswap to the ceiling when it drops
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: p1gxt1ktnyixyi7j4zup3mc7mcebdj3z
-X-Rspamd-Queue-Id: 446AA140003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: jow9emhqbyj7umamko1kcspk55pjt1zp
+X-Rspamd-Queue-Id: 0EA0540004
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790576359-17882
-X-HE-Meta: U2FsdGVkX193eT+Rbi94l5OfpNH/7R8cSriBqMcPkuEcnZfoxr3iY+Kqlp7FIjry4mw+i0Qk22PPFqPqwMJy8EEUTkw9EFVdh4BSLDZizMe+R5gki9bY3sMe0qjymGz/+JMp+A86g6julTfSFBf+b5T5QkYnUZQKWjcrsZe3+BBr4QuZOXD41r0jAyDTB9Q4cw+tFFNzmgA6kZEK8ySkZ7s1/ZY9OAAHMSMo5KDaDcLXCbBlD3rD2WIioVt3hG8xt58gxK8Cgdi32jEgY3qf3QU9kQJXWuDEkr5ueK3wWyY9CdRCj0FwqqXe0A9sMPJj4PKENk/gfXFFmTFEcnXy+07LdM55GEzBCjKUaiP3abnY7YuZBlSAactwbfE/SWbVP0HCrJ2rP+emGS94vqyFbJKvMsdJ+Ne57qTlhLwo7p0yj+UHO0BZYvYsZgW8wV/u3IPErnf57UHK5o97dELDCeIwTZnfaKFAX76Bw9H3TrBZNL/obmUkRDtOKaPm/0M5u5ITbR15aE+SSuwAg0imE7DD++Vm/84mFkB4ZUzvndAs/Io89NJZ7uXNPFGXUTW8wMAtMHP0l8fz6mi/5rsDZ6fF2seP8T3xfMouk1381SBr1iUr1sKQbzlJBD4Auehc8oGzGt1d/67DwwUlNQImh0fzKi5o1YDZSWlR3Bq20T4kGSr215mYRlG4ciY0WzT9L3LGdadr1sQK1P/PaSUAdwBfM6Vl0fsKYoncIvzv7iRIhkA2FC6SW37V6QW02xLIczzduL/6H7mhRULmP4gBjcV6c9X2u9WGVg5J3JNjTE8cTBKcHl7Trd00dVJbqvPl8wOJU7u3ymKXlIn7/UxHi8soeBENnO9upBsADhWYjl+tBcEdmVmDDOopvc7dNklhpJ8qyIjXO1b6jQOvq4tvPVK++O5dsZ3Gc9f61V/klMGsusR9kNosLY+XBQegvnhLHfXfyw72oTwQ+/BRnCv
- iooXz8Zt
- eaY478fXhCGWkunW4cfvyZrJ8xih0kniFHCxRdywBJcGa8+SgR2d2b2F/Hb9eVzu1nypIy7jSE6iVN6Rb2oWhCe0SMdVOA4H3OGV3GtIgpaFnqmTy/CSp3sGhfbyVroiQxTYjnLcbsXgw3NEpqA4dsY4VTBqGqucqRT9M3p8SwogOsE0lANUD2oemO8ZH55PPDy4fKCNjTZkQvQkAhWP1qJN9knp3dqmZhA3oqQD04adG2cfXg2XxaUoP1gciS7qsgjyaSBQaFDZhJqQCPJQB6k+LXll7RkwOI2gjgjG17bS26/45lrN1U65drO4FW2Yj8CZp04DThAhDKA/rvIuGQ016ev2z3WEaB8R47gaf7RrKe4s=
+X-HE-Tag: 1790576646-424044
+X-HE-Meta: U2FsdGVkX1+vizXO4puA3R1fwWQ38r0PrPR9HUHLsahQJCO9BSQXSrXujmXbT9HOf6S+ywvl7tEVshUxqcy7+IEc8TKrIvB7pMWQ8ehel0cwznPRxB+w2vrLo2KiB15gW5hfqUe6TcSrDNQUV5l2dALQy6xhXH8sHVe8gBNjHGXuga7lxtmWs5E2b40SbwDe+juad6jPv5PH9tguE/lPrRm8kjNSIL4XZYNZpS+PSRE5e3ttHivmWPP5xHzeMjKWrWBsrPBDnL53kV3p4xkUL7aWwv3ksWfHKwlKt0YuGs78Y2w5mJbJZqezI8nYCJHBTFI9/IX0BqbPnNBX5tgxxwGq6svreQip/0sgDCjuCFKn6ZBTDkFLfUykd+U5LRmQf6EQVQVwy37pJy2C0TKKjNRczBKH0cwwwBuM+7jyI6YgVnQZp9RTu/CzMq91Gc7oyXOvEPiqb+ia0Qzk//Sm14I+xeFawTNEkGZM3dg0Tm0zpuUWZGT4nD8MDIUgVNmcDzrLpYVaMQo22HZUVXjgOZyDm3sVBp5ngPtR3COVbmBlkYj2rC5JsWGKleJFXsfVeQKWHYACbTBC0TsmMvolKjOa1flkAjfA0KlTTXkYdUuU4vYtfRCI3WVxhDSAyInIe2W2H4Ekh0NbmZTgRipRClwZn9t77AyZCWPIwjV5ovBiBlbt9M/Z/Cn2oaXzOIiD/05asOweIXTiPKx9H0bPbjtDfl5noxjwgpYHpNKv/JOZhIswesV9A2MDds5cxYeLFCA24aVKul2SmzMN8PHX5hW7Fc93UfIszdqKGtJJE4JhW2GJUD1T1htpsz3iyDTrSLZtIt9VRDsKmDpF6XRT6ltfWUiTYaihXi73MwdQQHbWRd3/GqRaub19jDKCTdghUZEuGv1gvkZLf5Lre9gLgbzmcP/jPvz3NjgpCorviV8eLPoY3xRA16zDS8+EbXAPeo08cuFdHYbpKVBOvdq
+ AB9n63SH
+ 9QHiLNuwhRH9/F5ki5i2nPGJl/xXQgDnKlZ1G4LR+qfnosj/LUiepffUcuqugUD6STSCXYyFzGRTtgIwafvZA2GjGVo9kNlLglnb8viA1IUCe4avVl4uxdkkkXxXR8+ZpPsqREeJ3xijd0ifMf/fiHeaqPQkTC+8iJT38FlgpmL/rTtBwqUA8ZcoXDlBtQhht4jRVVaSkMRxsAYSmp63CPa3hzi1Kaj3siGybxIMWRiGh7McZ1i2TvRJArYJVT3208oEfPPl56CFTSZ45ToFYgX7CWtt28TXNtPG0rFlpp60wo3bsdOHgiYDzjctiYFQoaHrdVBR5BGeHOApZBNYN7K4epQiMIi0cY9LOyFe2+eDO4QFqM3oz+omnxSg+W4fWGEqHii7nfk4QcElgUjCB7euDXtHpYCoBVdgjrj4pEDXTv4Tivnbez1FNFFsLvh76i8TT3aUGlaXO8M9QBQ1ULAXHAY5LieMJ9LGbcPPFRqX/kilvUVf6NY9Gz3ZOXgkD9QVN3pU5EcaN8TBq3UJnDjWV7X9007C/rSkeMS8KWvCy7OoMquJ597hp1R3Xddwg7PQ4Pzh86SrCtbM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,130 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 12:21=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> =
-wrote:
->
-> Make xswap_try_shrink() shrink down to the ceiling when the ceiling is
-> lowered below the mapped range, and trigger the shrink directly from a
-> limit write instead of waiting for the next free cluster.
+On Fri, Sep 25, 2026 at 12:34:52PM +0200, Jan Kara wrote:
+> On Thu 24-09-26 23:52:33, Christoph Hellwig wrote:
+> > On Fri, Sep 25, 2026 at 02:44:42PM +0800, Julian Sun wrote:
+> > > Add bdev_flush_by_dev() to submit page-cache writeback for a device
+> > > identified by dev_t without requiring callers to hold a persistent
+> > > device reference.
+> > 
+> > This isn't really a flush is it?  This is writeback.
+> 
+> So bdev_writeback_by_dev()? Fine by me.
 
-Again, I suspect we can move the shrink into the later phase if needed
-so I have less code to review.
+Yes.
 
-Chris
+> Well, Julian is explaining that in the cover letter. We don't want memcgs
+> to hold bdev references just for foreign flush tracking. There's no easy
+> way to get rid of them so they could pin bdevs for a long time leading to
+> strange artifacts.
 
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  mm/swapfile.c | 59 ++++++++++++++++++++++++++++++++-------------------
->  1 file changed, 37 insertions(+), 22 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 0fcbaf1cf0e2..ab64bfc4e0f7 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -4190,8 +4190,9 @@ static void xswap_shrink_work_fn(struct work_struct=
- *work)
->   */
->  static void xswap_try_shrink(struct swap_info_struct *si)
->  {
-> +       unsigned long nr_mapped, nr_ceiling, nr_tail, nr_unmap;
-> +       unsigned long start_idx, i;
->         struct swap_cluster_info *ci;
-> -       unsigned long nr_mapped, nr_tail, nr_unmap, start_idx, i;
->
->         if (!(si->flags & SWP_XSWAP))
->                 return;
-> @@ -4203,35 +4204,45 @@ static void xswap_try_shrink(struct swap_info_str=
-uct *si)
->                 goto out_unlock;
->
->         nr_mapped =3D READ_ONCE(si->nr_clusters_mapped);
-> +       nr_ceiling =3D READ_ONCE(si->nr_clusters);
-> +
->         if (nr_mapped <=3D 1)     /* keep cluster 0 */
->                 goto out_unlock;
->
->         /*
-> -        * Reclaim on our own, but only once the mapped range is at most
-> -        * half in use: growth is demand driven, so reclaiming on a small=
-er
-> -        * dip would only map the same clusters again, and every unmap co=
-sts
-> -        * an RCU grace period.
-> +        * A cap below the mapped range shrinks on its own.  Otherwise wa=
-it
-> +        * until the range is at most half in use: growth follows demand,=
- so
-> +        * shrinking above that would only map the same clusters again.
->          */
-> -       if (swap_usage_in_pages(si) * 2 > nr_mapped * SWAPFILE_CLUSTER)
-> +       if (nr_ceiling >=3D nr_mapped &&
-> +           swap_usage_in_pages(si) * 2 > nr_mapped * SWAPFILE_CLUSTER)
->                 goto out_unlock;
->
-> -       /*
-> -        * Count the free clusters at the tail of the mapped range.  Scan=
-ned,
-> -        * not tracked: the count must be exact to size the unmap, and an
-> -        * incremental count falls behind on out-of-order frees.
-> -        */
-> -       nr_tail =3D 0;
-> -       while (nr_mapped - nr_tail > 1) {
-> -               ci =3D &si->cluster_info[nr_mapped - nr_tail - 1];
-> -               if (READ_ONCE(ci->count) ||
-> -                   READ_ONCE(ci->flags) !=3D CLUSTER_FLAG_FREE)
-> -                       break;
-> -               nr_tail++;
-> -       }
-> -       if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> -               goto out_unlock;
-> +       if (nr_ceiling < nr_mapped) {
-> +               /* Take the excess exactly; rounding could zero a small c=
-ap. */
-> +               nr_unmap =3D nr_mapped - nr_ceiling;
-> +               /*
-> +                * Keep cluster 0: it always holds the header slot, so it=
- is
-> +                * never free and must not be unmapped.
-> +                */
-> +               nr_unmap =3D min(nr_unmap, nr_mapped - 1);
-> +       } else {
-> +               /* Count the free tail; scanned, not tracked. */
-> +               nr_tail =3D 0;
-> +               while (nr_mapped - nr_tail > 1) {
-> +                       ci =3D &si->cluster_info[nr_mapped - nr_tail - 1]=
-;
-> +                       if (READ_ONCE(ci->count) ||
-> +                           READ_ONCE(ci->flags) !=3D CLUSTER_FLAG_FREE)
-> +                               break;
-> +                       nr_tail++;
-> +               }
->
-> -       nr_unmap =3D rounddown(nr_tail - XSWAP_SHRINK_SLACK, XSWAP_GROW_C=
-LUSTERS);
-> +               if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-> +                       goto out_unlock;
-> +
-> +               nr_unmap =3D rounddown(nr_tail - XSWAP_SHRINK_SLACK,
-> +                                    XSWAP_GROW_CLUSTERS);
-> +       }
->         if (!nr_unmap)
->                 goto out_unlock;
->         start_idx =3D nr_mapped - nr_unmap;
-> @@ -4507,6 +4518,10 @@ static ssize_t xswap_limit_store(struct kobject *k=
-obj,
->
->         spin_unlock(&swap_lock);
->
-> +       /* Enforce a lowered ceiling at once; raising needs no shrink. */
-> +       if (clusters < READ_ONCE(si->nr_clusters_mapped))
-> +               xswap_try_shrink(si);
-> +
->         return count;
->  }
->
-> --
-> 2.54.0
->
+I have to admit I didn't get it when flying over the cover letter.
+But this also really belongs into the patch where it is more obvious,
+or even better into code comments.
+
+> 
+> As you write, we could just hold a reference to the bdev inode. Those get
+> unhashed when the device dies (__del_gendisk()) so memcgs would be just
+> wasting some memory by holding these inodes alive. But still, transitioning
+> from inode to proper bdev reference verifying bdev is still alive will add
+> a bit of hairy code (essentially what blkdev_get_no_open() does plus
+> verification inode is still hashed). Plus when replacing foreign flush
+> entries you're under irqsafe xa_lock so doing iput() from there is kind of
+> a nogo.
+> 
+> So I think tracking devices by dev_t is a good way of dealing with these
+> problems. But then when flushing you have to transition from dev_t to
+> struct block_device and blkdev_get_no_open() is the canonical way of doing
+> that (and note this use is just internal to block/bdev.c).
+
+I'd really prefer not to grow more blkdev_get_no_open users.
+
+But the more I look at this I wonder why we even bother.  Trying to
+attribute individual bits of dirty metadata to cgroups is pretty much
+insane.  Why don't we bypass memcg accounting for buffer_heads like we
+always did for the XFS buffer cache, and what btrfs switched to last
+year? See commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
+btree_inode") for the btrfs side.
 
