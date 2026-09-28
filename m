@@ -4,88 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2579BC9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 10:25:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B0CC9833F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 10:45:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BAF06B0088; Mon, 28 Sep 2026 06:25:01 -0400 (EDT)
+	id D65216B0088; Mon, 28 Sep 2026 06:45:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06C4C6B008A; Mon, 28 Sep 2026 06:25:01 -0400 (EDT)
+	id D15F16B008A; Mon, 28 Sep 2026 06:45:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9C956B008C; Mon, 28 Sep 2026 06:25:00 -0400 (EDT)
+	id C2C1A6B008C; Mon, 28 Sep 2026 06:45:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C3FB76B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:25:00 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5964FA0167
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:25:00 +0000 (UTC)
-X-FDA: 85262787960.18.89B5EE9
-Received: from mta0.migadu.com (out-213.mta0.migadu.com [91.218.175.213])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 33E5640004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:24:57 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NswKtore;
-	spf=pass (imf27.hostedemail.com: domain of ruirui.yang@linux.dev designates 91.218.175.213 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F4DB6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:45:31 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 484A4A475A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:45:31 +0000 (UTC)
+X-FDA: 85262839662.05.29B7356
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5F7C72000A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:45:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKiPZMsi;
+	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790591098;
+	s=arc-20220608; t=1790592329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ksFkQeR/mSa3Mz1iwDhfUYANT9IVs/8bPwbPPKQtI4E=;
-	b=erHgF3tBdD/EwTcJpYmzUna7sRB2C3lLvE6RxN5MOqXBgunDCUy7Jo4TQ61rCrH8LeSw50
-	GTn22K+cI2/R8jwpdLZhsq3LJHvR28C4ACtbdUQqoCbD4OxB27Onrx6ae5yqxBtvzpyLvY
-	7tmvzClsB9fAmEybxjzLEmBkLoUVjsA=
+	bh=pkN3i1kfI7ou6rynJpVZcTVcqK4JP2ip7U/AkgCuNZg=;
+	b=Rm5wy/+MNYXNI6PYiobL1OuWHoy0E4x4kiwqbqzx7bD+iu7SbIz7VLmHcCxHMayWLPnkE0
+	9S1LJTLQzpvON3r7ZXynCQWi7mRtVlWcV/f1nAW+HcaiCOtFHVpwe3P6S3t9IfeHCiOlCZ
+	KFR1dyBWu+oVcOSZRCsm1ysaXu7LqcM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790591098;
-	b=VbFk5m8/sodiPH+nhLKzYOxR+EjUltPqOQKD/7TRquI9QsZf2ipFha3CYns4h6v8tB6dJK
-	GpadXIOQdBPDYjKDU8TnvwAynENPWraMgakp9vAz7rTrHRIDiJR+Cd8/GQf2pobvhHNO9K
-	tBulz1e7gTEnU0U65rJekvMeBEmUF6w=
+	t=1790592329;
+	b=cUhQjHCmuLWLq71M6wpYVhHSvZwYbv12LP/RapZcZrpw0JMQSesyiO4AeX3nOQMZOYlNDK
+	+m5LI0dGaEhxsDCvTfy9MZN23gfaMYrHQCRIGY6T0DDTcx1+bZbETqA35Q+0lRyzLYnhZS
+	FvilRWFteOsBJ8VQUlNJ5vF7glJ5FXQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NswKtore;
-	spf=pass (imf27.hostedemail.com: domain of ruirui.yang@linux.dev designates 91.218.175.213 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2qsLTZUYXNCuyy8IDZLxqiAQMXwe8wqDNcAp0qKJ77U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790591096; v=1; x=1791195896;
- b=NswKtore9qYVrR9vagccDrfbHyJJ8mLoexTlyQOOyX8nMj4mDLBKDtayUHTK03wcMnHqDgCM
- ZVCDSG5PnHjsONqAkaN6ghYKpdJ2i5doEGIlPAvGqf8fa8E9AEY0WMPLwQiy3WKspmMYcd8PTA2
- CWqwGR1xLv1bCr8zwYC9Yq1w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8692f2c2c9228f5e;
-	Mon, 28 Sep 2026 10:24:46 +0000
-X-Mizu-Trace-ID: 8692f2c2c9228f5e
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9c47dad9-2716-4ae0-b6e2-9e6b5c718859@linux.dev>
-Date: Mon, 28 Sep 2026 18:23:03 +0800
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WKiPZMsi;
+	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C0D9D60052;
+	Mon, 28 Sep 2026 10:45:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AD01F00898;
+	Mon, 28 Sep 2026 10:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790592328;
+	bh=pkN3i1kfI7ou6rynJpVZcTVcqK4JP2ip7U/AkgCuNZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WKiPZMsi7vwK/6Pna+7AiSU+ZoChJ/KeICr9iXiyPBnol6puKjOj1zFcKTK3NhjgF
+	 n5/SjtTXHi1vQG2DzeDoHT6zBs9tt3Fzc5ZLeh7/qV/uX6POrrmfYQNxNm+LUpRkQ4
+	 L6/zptJvf8KWKOwXbIpyqitNxUyfAysiWKpGbwcRL9eao8s3zynxJYo1gzQu/KOtDg
+	 qWXwqXGrUtPzU3FWRwJbu+/1Dnq3133sE0YbTtGkxKDICkfqyWuF0NL/pv1y/vGihK
+	 e7LywAQ2OhBklGy0ajFJlyFZDrKo0LAxV2FSY1lprg/iN3Aew/v2wXidkCLjXXcSj6
+	 TTR/NzXWR7ZFQ==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 0ADF0198003A;
+	Mon, 28 Sep 2026 06:45:23 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 06:45:25 -0400
+X-ME-Sender: <xms:Q0W6ame47D9MaXBY-G9oKtIF0u9qyGuMcWh-z2_zFY13ibi5h3FpMg>
+    <xme:Q0W6agrV11EYmJoOBxuq2ktzvOciho9MYMAFiT5kmXW78D2IBup33aLx_LoiIY49Y
+    1vueIlY5LRWfOPCmz7_8meHs3t6DihIw2c6hyVOvML_tBSSsFAU95pJ>
+X-ME-Received: <xmr:Q0W6as_0QqgphPDV6kZf_MxU08Xna30sVf_-eX80ZHpUMsQn7wO5WKIDVJU>
+X-ME-Proxy-Cause: dmFkZTEQ2M4Yss00TVpFpyzYKayTNLhSmxlk8jgjYdWRC8efZB9dhd1fhy51Ard/y+ZR52
+    mQzsiCa3phAmXiUEsipTMcJZKBtf9dU2wz0a/IwoLhZl3hUY9v5yn7wDMUjwGwyJmAh0XC
+    bjpflSyPRI5OmclTeYExGhZ5xy1PLjrywhAsS7laXNeXT5atgJLELAXGuiG6jFTyo89i8N
+    6QrLqf/9UpPfOJ2VRQ1pffV0SHdsTMeCSkgCgk8VYQb9KnDhpYc08nTyCMw2ppxi1TusCU
+    frbp1suLUW4f78RzbWO+LUGjoIyb5F/hrDuH1UVFGbQmOyOePFniGTBH5CX1x2U1eK0tTx
+    3CAj7Tq/ETMBGkHKCBBxSzxkd2hwtd2MP8GN1m1ZL8D3ztlRI0inQfX9YZexQE3LnePDsI
+    hLJiZrCPKPYIfvxLOJyUytXOdjKpzSmzMbkmjcyAqnkzbEPpf4SgGJawzEm0x0fdIwPwjL
+    WUDs8+RNftCaeTHljXiKAoiW0Drmk3JYLBXfpPOAuvxvbfywJHy07rCO+YQQtuk8MrN4hS
+    Gjdp+OMmA3A0b+SuFVP2TYpGnsTcGrcLzmgM22cbxKxmJJd4LToubqv0fB9JWIy+7mn9XT
+    MJz++EzRZD1yR1mm8QFaqg/rtlE61Yca4OhgDVTw1nD/DjU9h4xDSAVKht2A
+X-ME-Proxy: <xmx:Q0W6ah6NgBNPToTjNWoaDm7omAaGWgrC7ZsS_-8lm7O0g2QIPq8ncw>
+    <xmx:Q0W6amiC5N-CbhpZ6pkSN_tQeoY6Q9uScOkFbq1js8aBwq4he4mM_Q>
+    <xmx:Q0W6aor9HR-Btkv3EH984Ou_Fq34Qwvob97iB9gBtEPcIKifgNOT_Q>
+    <xmx:Q0W6aiLViP_tumx3rNT1HgsOVtVpqiNQYGxqh-3WA6npHFMkfpAzRA>
+    <xmx:Q0W6alvyKHocqgx1txQ50t5HDAyk0da1pYdclSxqTGrghaw21JLIPODy>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Sep 2026 06:45:22 -0400 (EDT)
+Date: Mon, 28 Sep 2026 11:45:21 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP
+ self-merge
+Message-ID: <arpEHIwTy8QxUjI2@thinkstation>
+References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
+ <20260920-fix-dontunmap-partial-self-merge-v1-1-6ffb556f8f8b@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vmcoreinfo: export SECTION_HAS_MEM_MAP
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Baoquan He
- <baoquan.he@linux.dev>, David Carlier <devnexen@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kexec@lists.infradead.org
-References: <20260928-section_has_mem_map-v1-1-4129f6ba2838@kernel.org>
-Content-Language: en-US, en-GB
-From: Dave Young <ruirui.yang@linux.dev>
-In-Reply-To: <20260928-section_has_mem_map-v1-1-4129f6ba2838@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260920-fix-dontunmap-partial-self-merge-v1-1-6ffb556f8f8b@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 33E5640004
-X-Stat-Signature: dge6pg3xajq443ad3nfkex17bc3ihtht
-X-HE-Tag: 1790591097-806413
-X-HE-Meta: U2FsdGVkX19/KXhAstG0hbNu7tCzGz7dW3lYp1eQ7pvMN1b2GdThTfznEk10lfwkTsiV75Hh+PR+ba5wAzghr9o5p56dFQfZj4wPN4iIP9VSBJFppTmslKFtXMcT6JcLTD2Cv4miR/S2s4VjN3VdPO4vdF6wq8dYCYQ/neJLasoLw+L150weFz+fYqa8qapK5uDLE0XVpT18u12cWXm1LF7wVkYz+X8IvGcmoDm019ug4cWUJ5kzZ3eJPKAysBzYmSfnGVmKdFRy2TNC4VrypXhHD3jTxRSxSM2qdSaJVBL0PGJIeTtiGgB+1B7UkU/gskgt708JC3lrKL3/dGtU9/GhzaOIWenUhDPYuq8z7Gm2CrOYnL7FvT+7WXGysy47F41YBYQZR/0c9LaSyGHTvuRKAY2Cs3agA10h5K4ZqY80IvFmj+DyakPcnFM5dS96Jk+Tn0NbV9pefaZj6H32sfbWDpasBWMgfhF3WNcIRV82/HXej0wYCzPT6oprAWSL7wghhhinhlCh0ba50j+ur28QT6FxNXHImfoDHZke1sSaAg9zcwRUOwH0BwUah4vBQ9ZhNR3+GjnJUYfy1osfNd/Dm5pcxNpuv6CEpYOUCzeZiFOr4BShECKbUh665OCG/psBmgfcqKYrkMMYOu5a7z0KqFfuiPs5gNJ9WHXD2FjXxYNCexAqrpti3omJBVsZQ1mP3P2fFKHy2o2NyAk6WZ+ZVfdzRdH80TPOtQYSf4VjkQ3yZ1+Kspfl3LuT3twCKT9af9iYdbQwXIEpkStrRwJXVNq1UxT76WPUZTUN2jtOW2oV6waFIOnk/N1V1pPM82snbCpXSXnKAXnUdieWK4MQU5yLwyJJ9Ee8+15CnZ4VdPz9pMgIDu1JeHeIbBeLH8C7BUJhN0v+hM2d82nT2pAJYHiPbllYUkS5VYV0TtIj3au0H9xBJLDGK7eQqmlcpZnyqOucErVlDqY9x2P
- yNB1BN60
- 0EZ5j3aCfNhuWXAZgemni0l4LZnrVqs1tYwiE0BlFV3BsEaiQQM7tntAFtNusZMcAsKNt1s59/d6e2rtGlJVAHk8cBEq1q9z0aEAazDlU7FwfaQgCJ4SzbKFEsT2ZWXr2OdbixASloyi28dDGVUe/1CqPb2nh45zPK9zB5Eq02XhnZxorEdCl5mKIovFduJLad7b/8TzZuYzCQvVLKAK7+5wBFSrKe4tjF5JfSnRAXZ2OF/Rw4aITrbvaZULX36znC7opr68qr07blKb02BZ1Oot9uKMYzvVNFJSs8N+k9qYeUTPFLCcyotEXi7kr5HV5oCrctoxH7ICJfsgAV20VZBp7uw==
+X-Stat-Signature: 5ynsn69ag6yb9c7ceymefhh35codfqk6
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5F7C72000A
+X-HE-Tag: 1790592329-534668
+X-HE-Meta: U2FsdGVkX1+HxIxtWXZ/5pJwTTmwwqvqgM2PtvhDoYfz+Fz4n++F99gojewhaiW0CiSxcwWvqFx/1agFk2n2nSLK64yeqnKe4bqYPj0/kXAf+veLpwJrfFh/aNT7KOUsvdoJ/Ftgu60SCropXVcuSn9J9cu9lV6seQWBzRFYk6TFz3qQyWCvu+HwR6S2khZzk+8H4DB7W+oIr1jj39AwJ6ev/7LhWUUMlXplCHBA6lw7LiUeJANgkEp2T6XGlp00LxJO9J8QOreEWXs2wGwOluAykot9PY01i6dltJkJCXZsMIRAGCWHCuXBN2QMQTJzvjIxA8afuaadCQhZPcUoK+iO9fFHDxqlMU5olImRpiRIQl0J5pmd07wtyDYqWuSqUbe/6EUBIXW6pVUyMvkbpPCZKv89qYyU7TKZT5GJHM6LxqmpRUYZDsfIwKVG3pPONcwcaZHeumjWKx+lAlBnMtZTjY2exAGzh8PAvGqei2ii7yOOMyg9MdBjulUsrf3tXGkMT223wCUYWOR1yvSFy/2ikuURpo1pt/oA2HqwItxwYyt6eG9nAnvyPA67+TJRz1FYPGgCZ6i3rj/CRwJzUbRicBruyf1e0K32eM/FPBiNJ+/WC2hVzdOxahIGvaORSoeLgqQ3dwxQPFGrdt+EocrV9kt1/KqR/5IzLPaZUHf+UMtD1jy+qaFchmvCZ/aJcTVVaA9LPlDfsLQw8LjLxXLyMLwjICqqr2yUwl9iaCSU0LAXvgOLU4QVtQd1sip/th8qapFl6aQW86P9rsU3Hawbl+FbRG7OZgMstlym6gV9V5XXH0TuGNE82Vol96ywhqjoNjvzMagFUC1Vs0kKy3uMHtZgE4VonfjMIupL/Vkrd8R9lnRHSL9R8LIj82XNxq3A6VlTWXwHhFbzvp0zeETpzrsKV0OktzQPOXQEB+Z3841TsgSCvkrCChdz3k+HI4UduYNNKxWfI69Ygs6
+ niscUNY6
+ oIaC7m9/7VyPuRtECXVAbwwKMYXQAqKp2p7t3DW7qGE1m4Y1cnFxARxYvKcnejb9mBCcyiWD+FVGUqz4eHWayT6QjyKGALqzS5SaFtOlzluX4T6/ELkuOfyAxE59tIhHVAmy/njHQAMaGDkN+XrSMSIq4Ezq0LFdJ5fauZ2NkFw44dMrEDeNwCZuTxaqCw9XbFyuud2rni7RImZqwMA7ROGjwY2lajpqdhil3gXVTpVszeSRNxU+vDOfL6n7h6wv0N3/CUGv8eJQX5KpzyuwfBr5EgWe1m6wv+0Q5eR+VJLiC+NcXshTXD/rCDjQoHUyYqH7u8bhFrCz6+Ya3Ne9icdywDxmM1QULpYOm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,62 +122,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 4:48 PM, David Hildenbrand (Arm) wrote:
-> The crash tool currently hardcodes SECTION_HAS_MEM_MAP, and makedumpfile
-> needs similar information (although still relying on
-> SECTION_MARKED_PRESENT, it should switch to SECTION_HAS_MEM_MAP).
+On Sun, Sep 20, 2026 at 03:13:10PM +0100, Lorenzo Stoakes (ARM) wrote:
+> The MREMAP_DONTUNMAP feature is highly unusual in that it permits mremap()
+> operations that keep the original VMA in place.
 > 
-> Let's just export the value instead, so tools that work on vmcoreinfo
-> will not have to guess.
+> Historically this has led to a lot of bugs where non-obvious interactions
+> occur between existing mremap() operations and the original VMA.
 > 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
-> Result of the discussion in reply to "[PATCH v2 00/13] mm/sparse: remove
-> SECTION_MARKED_PRESENT and further cleanups" [1]
+> Fix another of these - self-merge.
 > 
-> This patch can go in independently. It would be preferable if both
-> go into the same kernel release ;)
+> Self-merge occurs when a VMA is moved in front of or behind itself and the
+> attributes of the VMA permit such a merge.
 > 
-> [1] https://lore.kernel.org/r/20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org 
-> ---
->  kernel/vmcore_info.c | 1 +
->  1 file changed, 1 insertion(+)
+> Practically this can only happen for unfaulted anonymous VMAs due to the
+> page offset equality requirement for merge:
 > 
-> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
-> index 5a417f8a922a..7833a36064a8 100644
-> --- a/kernel/vmcore_info.c
-> +++ b/kernel/vmcore_info.c
-> @@ -182,6 +182,7 @@ static int __init crash_save_vmcoreinfo_init(void)
->  	VMCOREINFO_STRUCT_SIZE(mem_section);
->  	VMCOREINFO_OFFSET(mem_section, section_mem_map);
->  	VMCOREINFO_NUMBER(SECTION_SIZE_BITS);
-> +	VMCOREINFO_NUMBER(SECTION_HAS_MEM_MAP);
->  	VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
->  #endif
->  	VMCOREINFO_STRUCT_SIZE(page);
+>                            |------------|
+>                            |            |
+>                            |            v
+>         |...........||-----------||...........|
+>         |           || unfaulted ||           |
+>         |...........||-----------||...........|
+>               ^            |
+>               |            |
+>               |------------|
+> 
+> This becomes problematic if the VMA is configured by the user to
+> mlock-on-fault, i.e. the VMA_LOCKED_BIT, VMA_LOCKONFAULT_BIT VMA flags are
+> set.
+> 
+> MREMAP_DONTUNMAP clears mlock flags for the source VMA and maintains them
+> for the destination VMA.
+> 
+> Self-merge makes this impossible (there is only one VMA) and incorrectly
+> clears the destination VMA's mlock flags.
+> 
+> This causes a leak in mm->locked_vm as clearing this flag does not
+> decrement the counter and the VMA no longer has VMA_LOCKED_BIT set so it
+> is not decremented on unmap.
+> 
+> Resolve this by simply disallowing a self-merge in this case - the source
+> and destination VMAs are kept distinct and then are able to have distinct
+> mlock() flags.
+> 
+> Update dontunmap_complete() to make the now-redundant self-merge check a
+> VM_WARN_ON_ONCE() instead to guard against future regressions.
+> 
+> Also update the VMA userland tests to reflect the change.
+> 
+> Fixes: e346b3813067 ("mm/mremap: add MREMAP_DONTUNMAP to mremap()")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Current crash code looks below:
-#define SECTION_MARKED_PRESENT          (1UL<<0)
-#define SECTION_HAS_MEM_MAP             (1UL<<1)
-#define SECTION_IS_ONLINE               (1UL<<2)
-#define SECTION_IS_EARLY                (1UL<<3)
-#define SECTION_TAINT_ZONE_DEVICE       (1UL<<4)
-#define SECTION_MAP_LAST_BIT            (1UL<<5)
-#define SECTION_MAP_MASK                (~(SECTION_MAP_LAST_BIT-1))
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
+One thing: mlock semantics of MREMAP_DONTUNMAP are not documented in the
+man pages, only in the commit that added the flag. It can be surprising
+that the source gets munlocked. I am not even sure it is the right thing
+to do.
 
-And it does not match the kernel for below chunk with ifdef
-#ifdef CONFIG_ZONE_DEVICE
-        SECTION_TAINT_ZONE_DEVICE_BIT,
-#endif
-#ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
-        SECTION_IS_VMEMMAP_PREINIT_BIT,
-#endif
-
-The last bit could be wrong in crash.  So all numbers should be exported in vmcoreinfo.
-
-Thoughts?
-
-
-ThanksDave
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
