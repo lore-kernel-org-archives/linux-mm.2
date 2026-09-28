@@ -4,140 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E1CBC9830E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 02:42:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 581CDC9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 02:48:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F13016B0088; Sun, 27 Sep 2026 22:42:41 -0400 (EDT)
+	id 5CECB6B0088; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC40F6B008A; Sun, 27 Sep 2026 22:42:41 -0400 (EDT)
+	id 5A6F76B008A; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2486B008C; Sun, 27 Sep 2026 22:42:41 -0400 (EDT)
+	id 4BBD66B008C; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACDB36B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:42:41 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 296396B0088
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E43DA0B2B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:42:41 +0000 (UTC)
-X-FDA: 85261622922.06.45B47DD
-Received: from mail-wr2-f14.google.com (mail-wr2-f14.google.com [74.125.225.78])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 50E9740006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:42:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NRCEXwek;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.78 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790563359;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07C4DC0B04
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:03 +0000 (UTC)
+X-FDA: 85261636446.06.08078BB
+Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7236A1C0003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=l3T+cw5Z;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790563681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YZjJVun8xN7GDkHYEL3bXr/VlWpA2YfoNARMcoM9xVw=;
-	b=Z1oLUcnKFzrKUkMjuKDqWbvVDme+MsgXlV33rljzpp/N+wwA9dRxQPvY//ip2N8+a7jFHO
-	gn7kzq3z4fzAba+yl2n+TdgkU3PVwT9ZWORnAbcJNpkOR7SFvPEjRQfHSMnqHjfVgYW0H2
-	vgVasL3LnqSHw5KzwMHoRKm3lNCikkM=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NRCEXwek;
-	spf=pass (imf11.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.225.78 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790563359;
-	b=BNm64WoHxtkpC6xyL+ilsbqdtlYQ14Xlbs0Oa/jwRIx2kYmZOHh+jQxaITBCICialskTrG
-	R5d5o6tyAXVCwvFYb/a2Moci4MQXwTM8HXcc9RSdvYPKcXFOVBaAErONBNz2GL2jxq2z/q
-	m7rtjopbdnaa+TCbN8aOaPWxDriU9fA=
-Received: by mail-wr2-f14.google.com with SMTP id ffacd0b85a97d-4888598e4f9so1345593f8f.0
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:42:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790563358; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eJauYjG8wBvlC5O/vpo9lkE64iw/bhjMVuOdAPRE1y4wBuQ/MZbX+LErl0Ehmq5N/l
-         wfK6H4I+NTsUPnmF48miDihb5j+9vsvoIjNavSUU572TPjz5AhmythYfbtj5CzlIn2AB
-         2lStqWJJgWwWWca3MF218/Lh6vnh4eKp8mA116yqMJROoDXvc5v/tfORRW9HRIU4g1h7
-         RWnAYsnU7pt3DXBwpGGR5/N8c3UJFMaLrb7nA1O/nEik2mlxGewsO80tautea6znehUj
-         Fb6adRi1EgUm/szzmeIXctpavZEpects/uwxbzhoMWOjDSakXLeoFfVR5dByCeHcNnoU
-         o+xQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YZjJVun8xN7GDkHYEL3bXr/VlWpA2YfoNARMcoM9xVw=;
-        fh=w7Wzr4yF0Z0rs7UZv06hnlJTgW/xFl3zYeVpRpSkgtY=;
-        b=orhjFBEDCDKnKk5AR8pF2GC7gCmXBcnZlj+yltHWDFu840yF2IKDSqwtXdRqLMX4Ps
-         igBlZ1UfzTcQeoa2ji9vmcKUXXmV+AcytD+aZ0cnBP8uNnoKvveaEtYWB3tB+l0BHdqu
-         2fWEb0XM8XqQqpcUhqnjh3AsAFzifJcF3iIUGDkAN3/xUeZfF6eqeKPsHn6yFTZxqjex
-         6k9/499G7jyME8lVmSV3vmLeZ26qujHC0Vdm8EAKaPWqC3PGt9bHxQNiLR7JkycKu38d
-         NnyUMWIERoCDJ/+46z12sDwBPvM49oN8HFOBHUlgHOXHz2YLEZ+pARNMvCHjHKxohPxB
-         aLbw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790563358; x=1791168158; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=YZjJVun8xN7GDkHYEL3bXr/VlWpA2YfoNARMcoM9xVw=;
-        b=NRCEXwekwoLfr6JfK+u2taPDBwm5akWEm8pOMctnWFcH5CoHdvhYFDaGEbc6eV3pbW
-         k4Wn1fH5Ljd/v62nmm/cwTnW2sKQ+0AS6qrgprE33HSQqNjhuR93sOvfLYkKwPBwsqRI
-         +eIXnsbpCj/wiUN7Nrg/ZegMYlkwyDnVqDm4lKDBlOLUACRbCMqQMfxL8wRQPCGwmBU6
-         s0WK+ocMUSaJo+smeKhjhHWj0hIa7DbqZYV931TGHRSz190yTfKvVUM2TMzrRwa7pC2B
-         +lDjHeZtNXkEnKdsPZJ2rojy15F8KXa657ch+QVMOuZ376iZtksQv/rn0DbbJ7CLbU1a
-         pxXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790563358; x=1791168158;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=YZjJVun8xN7GDkHYEL3bXr/VlWpA2YfoNARMcoM9xVw=;
-        b=dmAwPTSFwnBcSpxdN5inkGNdJIoL3wsINhZ2hh+fcC1CZcq3WdCEG0s3RGSzBWVoO/
-         oE0vr3Lq/TbK/vAl3aZgVJ4C76bHG61+vliRhYAVjyl53G3yeBhoyrksD/eUB2etkTFs
-         t1G5fUe6R3an6nJxCC17hpDxuFHYRIrMhpQoMlWL01Nv5WkgMPq1ifgLgbyHy0kFHZSH
-         3Z8txCjYbse6hFIiAdNJp8HoM76/5yT2L3VDdMygD6WY/4muHLOIwkCaSppx52SBtkU8
-         U+MY4rXlx00/znjvrI93MZ3+cnzUYO9BeTSEozXm1jteRjY3T49rs7ui413C2yTky8PU
-         Uo6g==
-X-Forwarded-Encrypted: i=1; AKwUvBybDWyH9Z9OGNLGcnOz7s3RNtCVR6WUyz8xflazAuRZbRh+chHeRfAP0+DrOM/Um1GS12SIoDImgA==@kvack.org
-X-Gm-Message-State: AFq9FYLxC26s6DJizJX24+IScYAfnizKQ3oUPgVwUrfU87bfiwpvuLf0
-	vJVbnuJTaZidT0zQAPLEY/LcIGoKtVqjl+jiThPCP8fz0CnYs3PrmCojIJTvLPecLKVM/AKYlv4
-	jdrrk6ntvq89k4uO9oeVzGCMiCG+Xlro=
-X-Gm-Gg: AYBFou07sji5+X0smWnBAqYW/HqJ2WcRP2vkFWmglStQXjTfMaZLAt64DRuyFxhla5X
-	jQLwmDnrfFgix0f93inlZG88QRb68IT3bwKC1+GKg7xSCJbOn6FO1xZ+BN+hM+nO8RgvGlsLBR9
-	iNNMBKd/QFissgQVQJ2OZwmv1CLV6/VY1Tse/bDGEpa6J9k4yp1ie/+bhQJRtJJXxxVthDvZpWV
-	waXS2+g2NSGRcfA7u0uhPqgUmEzoIiQFPbhwJIC11Ub5kd2fKS0QBeCiQq41/7vociCI67R0mCR
-	lQ09eUBagxJlrd7NC1RJtEyAA8Ss84Ijs9MHtA7t4aIQvNzxEDhL3D8z
-X-Received: by 2002:a05:6000:385:b0:488:8cde:aaf5 with SMTP id
- ffacd0b85a97d-4888cdead77mr6051154f8f.2.1790563357707; Sun, 27 Sep 2026
- 19:42:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260923062832.479455-1-jiangwen6@xiaomi.com> <20260923062832.479455-2-jiangwen6@xiaomi.com>
- <CAGsJ_4xQhmRigaV_2G3pdOgk5mvC6HNzqCyUdRY3RSG8-QNC-Q@mail.gmail.com>
-In-Reply-To: <CAGsJ_4xQhmRigaV_2G3pdOgk5mvC6HNzqCyUdRY3RSG8-QNC-Q@mail.gmail.com>
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-Date: Mon, 28 Sep 2026 10:42:26 +0800
-X-Gm-Features: AclHuK-tj6RxDkR8fHhPZoG4i4S4CyEDCcJlFwKY4ZUdtlHJk_F2XqaylhywMI4
-Message-ID: <CAHKocdFUw3BDjKwGhE+gMxyVXmMWtX4pP8brY3dBOhYhYoCgdg@mail.gmail.com>
-Subject: Re: [PATCH v9 01/10] arm64/mm: add pte_set_huge() and pte_clear_huge()
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org, 
-	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com, 
-	ajd@linux.ibm.com, anshuman.khandual@arm.com, chleroy@kernel.org, 
-	david@kernel.org, dev.jain@arm.com, jiangwen6@xiaomi.com, leo.yan@arm.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au, 
-	npiggin@gmail.com, rppt@kernel.org, ryan.roberts@arm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 50E9740006
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=c136CmkpMKWU27leu2r2jlfnyev322esjkQHfnDrcXE=;
+	b=NpjMOpJWtQXXQaFjRZkW0vI7/a38zVNrRgq8nGsyWKPQPeivC/aiimF9ACYBPJ7m1oKUSy
+	CItzUszq1dyEKGJL+gTqASdgd9xxnuWm5QYQSkQn4eap0m6+/XYGXhEqkHwcnr+iRw/34H
+	tzlq+Z+xK2ZDcHmRxbTbGIU83HwHUNA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=l3T+cw5Z;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790563681;
+	b=0Lq6WVIwlT33LdzYXYYvTGz2emVEW7J6nyEJlfPqOE+e5t0NG0sr+hdmSEWfJXgvoC7Ij9
+	EVMKFd0PuO4powU5TkXoxqQ0+4ngmqpmex/r43uwYKtpdWZANwgoFRBPpAEUso6vIrsXA6
+	rlQTVjOpwH9zjfkkoz6qxyI5F61+vzA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1790563671; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=c136CmkpMKWU27leu2r2jlfnyev322esjkQHfnDrcXE=;
+ b=l3T+cw5ZpclThBxh3QFFvmpFZxTJFLGesK5EFVEk5MjxCR8KmC94rQ4eGmz08xz4u1qzy5
+ n5wi3HtgXtvadwLlpJyEhIiiszISFtxmS2jmgyqYtlOXt3Ps64Qonsp4F89dYHiCclcWgg
+ Lif+7ZwhPZlSTj9eHK0VK3twN6z0d2c7Hb1NcWG9Yj+M8M7ii2M22vjQaF+sVVN6kUWIqx
+ g9vNAy+Q1xkuTCV7F0z2p/Z+KTm6B7/o3AZIGClZpMnlP/oOdRNp5DH2pA3cPmuxMIwiPT
+ rgf8PbVxmO67DY77ZG2aPdzfbiB2H2/ZwtFeDq4IIQmxsw4cka9SFpuHu+xleQ==
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<aiqi.i7@bytedance.com>, <lizhe.67@bytedance.com>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Mon, 28 Sep 2026 10:47:23 +0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260928024723.87708-1-lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Subject: [PATCH v4] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
+X-Lms-Return-Path: <lba+26ab9d555+d7d993+kvack.org+lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+X-Stat-Signature: soirfpocya6k6bowacropndhz591fdre
 X-Rspam-User: 
-X-Stat-Signature: he457q8ywzab15hrckbrr5xef84brba6
-X-HE-Tag: 1790563359-357596
-X-HE-Meta: U2FsdGVkX1++s6QgTaWCRkDmZ9lS5pmh0yWj3ysp4cMjU+tW75ViJr954qYthp58vRcbPVYtinkp/x81hVg9j2KAeGpjZqJ+zlmamwISfruz6a5s1gZYZDpk7wLU7oTSankcDm+ftX9Of2gO3sILpRYCqQIKn3K3XTJlKgmRaNMxLgg1i8Mme6lqKwNo+KSVMAShkGWRpmulp4hjnXwQcvd6MqwwCW9mvJAooi3BGA9kUTyTSJkrkczg+v+dFX2bWzk0iuL7EzklFzhSw2HDS2WOsxpxOdx66MsCPQMwxwK1xmneomFzGgKLcZdY+hH2uQ4TN1XXu/3t7xKzc5Mib+Nmb2wRxtCXVeWYIHsar+Zpoyg+flVtrecjGzslnlE/cQYw0j7B+PXh83glTqTTYevqLUD0jyjjBbedoH5BQaKyJZrYzTHNtL3Bkst3ULUst1Om96Zah+iNipKG4U3UUclB15IM1+gR8aZ+WEE488nSVSr8NJunbLL8uVsoZyUmIIzChtXO1kCg6rZrpFo+8e9Bel6FSGCjGuPfl5BVcx/DTn/40GKKwnNWjn3gj6H+IHYKACLjXmbJwlPVmMvKke7R+/neaz1Y/2+nd0C9q+YIXWjkYRIVueGOTIFLynryPOzXtqu2XWn51xmb4xdWxhnSwPHoQ0RHuneutjp4C/qDJ/5djFY1V7kvpOUagnT8mHHhfoWaK45efhc4HOAOsaSNVdVNd6/pTpk4uF25Dre+3iec9OoZu+ioCrgJUZkZXirOR0KyGwVE2gqkHBCm/uFL0hRjKSTygDVrKRYLwTvCbsg6a8T8cplh2wykMuQswfFcSQKrYWU5JAleAayL758v0GuZDgwsTw+vnZCfwEmeTjW4BlYoTMDMn1ICQvjzNSTuTwEk/K8lpZiTJOQQEbk+jSOH8F6rasB3yyPbMSTzJDL39Toaca83K6izNjoXJBHHU7yqFEXNAiQlTdE
- HyNmRgVr
- a6n8Z+V0Jgx9LOCgEWmhnrPc71W572jMKVHJOXdp8nDnm9owsVYfASeiyF/tVFyTtoyz3CmYZJLrZM4NLWiigj1xvfG8YdsD5WUFM+6EZe1rCzBmPvbdP//u1OsoAm5kbvn1TbIkWCdeI2leBRR0SbZgeP2JEHAgWMyOha8H+IaoS1evYzv3xNqxUNPvYTawefQuIqiX/kPVk+kF745D7YGA/HXdVXtIX4c7b+z9sgHElve++TbhXECw7aJkvANDfQODIac9gFVh+rpbRoF9FavZkJkXQeoCbiGRWZJXBjxDiIPIFrdmJNlnjzuzUxizUh3MpnLi/4JpUtC7RnwMGiVqQkTOtv9U9vSDHELKedMir3oMRYc5uxXJEY8DkNKwPALrD9pUu7yuE6DYecQKMKCkZXrsg9obuQ+42jU0akL4M3IKlrkDL+DkotExZEwOmJVoqCwzsi+xqqzj5FzylPuTJVliDLkwz2OZvzD5CRq98oDDuaI4wRwoiwUXqJGjwz4iRLTAJwdtaIvHoGyPuqgOhAObmJCyOUMaJsz86IG5bnrK4iaSDvszRaqogJwLdIeiVyZ+xUDL3YzcjsaZ3Mex2bQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7236A1C0003
+X-HE-Tag: 1790563680-619045
+X-HE-Meta: U2FsdGVkX1/aoo0THbL5G7NsUhqfZ0/OiXL4FXMG/Ym8NN1OiCQiWR/P0dQCNgXH4HpSCkg3ICeHBqVIYBVpF03sZBi7hxfWCaET31ICLHRcDspD+/UeBM81fDRYDQ643pAlER/j3nfJrwK6cjh+skNWl8dKPE2+lqDJ74X1xEODlPcgUT/kycGztXKPxNaRNDUm0tcIj8GEE/+j2HgnZXk1fZ/e4gVqaNqbULhj1fdjQN6l+mfMKXG0gANyem5eUlOOd0AWoOjPQdab3+UaQZILc/2FQYzuXLGeOLisYlMBcNMp3FoW9hNSdjiXp2SSZtjfQAvXzTHU5YDhkzyDMDSjhrRixnw/KJ7PB2WT1KG6Jf9lG+KjEvsg49cvOuGhDSdkMCJGt/urPCV+v5T2vDbNXnN4tKnKIUSJJ23LLVuIzSSQmDijIuumK/dCO5OFHppsEdsMPsVETDhw45ksCTyaze5HQs1HV2TG3NRvbtxllRxToevPlJ05JQXOCC8iDf6w7rGwbnfZwh7a5fXDRu3Q7SmyBVF62opHJj51RsBqgLgZ9hHhrvTGVKxbfd0PUFnzTxFugdVsEgKptYBcJzb3iFrfmSZGIJnCRpPbkGoIyG6HpDPde9gJqRwy7LNMt04K8w5l0IquuNQQH/e2r+pQnW0iUN+Inxl1cBXcbxvMwu2/oFnjZb3HX0DgLXavgNFQiWfTCOXYGEYyV6v0PAPr522UrcHfMSrpOCqZe064YIYcMmk7+FJ5JoH8euOxBlSsLQeI49PruKUXUSL7MVrmHuW/zqruils12UVzwN4AUB11XVSY7ZOyBZV8zr5zlGE74PT79VUbLUW3lQJVa/On2z3tatgLUi4o5RQ0QmXqoqNhLnOKRkqApBpz0SutIlcX2KW4kerX3T9T9kR52r80RRM2kQwX5/x2DTKUVinv3HayBrR3vpa8dkZ+3XK8vL1Za1kuF1857cbtnSX
+ wH96WC3w
+ tZS0nSRcMi0PDaol8S4/rBi5Ly/gXUAexFX1niZG8RqoIR49aEmwjqiFe4BbUYgB6GZDWVG5ILTeT9KcmUTlE/1IJYPWs5hS4cTftx5HQhfJZuLsq0nfXlyYtJBQzOdtWb7L/nX6WcycgU29wdFFK6MXE1LJZQXfM3b2ZEFB7ziQ3PREu34ejFKPc2cfrYHZMq5A/zUFOq+mjrixZynfL1JZ6jKtua4gdDbLUxmEcrGG8ZnAhVGngGlV8ekhmiXgDX+OU8L4qvFc4xyZWUtaSbcaxxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,65 +87,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 24 Sept 2026 at 05:30, Barry Song <baohua@kernel.org> wrote:
->
-> On Wed, Sep 23, 2026 at 2:28=E2=80=AFPM Wen Jiang <jiangwenxiaomi@gmail.c=
-om> wrote:
-> >
-> > vmap installs PTE-level block mappings (PTE_CONT on arm64) by reusing
-> > set_huge_pte_at() and huge_ptep_get_and_clear(), which are HugeTLB
-> > helpers gated by CONFIG_HUGETLB_PAGE. This makes the feature silently
-> > unavailable on CONFIG_HUGETLB_PAGE=3Dn kernels and couples mm/vmalloc.c=
- to
-> > HugeTLB internals it does not otherwise need.
-> >
-> > Add pte_set_huge()/pte_clear_huge() to arm64, joining the existing
-> > pmd_set_huge()/pud_set_huge() family in mm/mmu.c. They build on
-> > __set_ptes() and __get_and_clear_full_ptes() directly, so they do not
-> > depend on CONFIG_HUGETLB_PAGE.
-> >
-> > There is no caller yet: mm/vmalloc.c is converted later in this series,
-> > once the generic fallbacks are in place.
-> >
-> > Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
->
-> LGTM. Please see the comment below.
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
->
-> [...]
->
-> > +void pte_set_huge(pte_t *ptep, unsigned long addr, phys_addr_t phys,
-> > +                 pgprot_t prot, unsigned long size)
-> > +{
-> > +       unsigned long pfn =3D __phys_to_pfn(phys);
-> > +       pte_t pte =3D pte_mkcont(pfn_pte(pfn, prot));
-> > +       unsigned int nr =3D size >> PAGE_SHIFT;
-> > +
-> > +       VM_WARN_ON(!IS_ALIGNED(size, CONT_PTE_SIZE));
-> > +       VM_WARN_ON(!IS_ALIGNED(addr, CONT_PTE_SIZE));
-> > +       VM_WARN_ON(!IS_ALIGNED(pfn, CONT_PTES));
-> > +
-> > +       __set_ptes(&init_mm, addr, ptep, pte, nr);
->
-> You have patch 4 to revert the `clear_flush()` modification from
-> 06fc959fcff ("arm64/mm: Support huge pte-mapped pages in vmap").
->
-> I guess you may still need to guard against the case I mentioned in my
-> reply to patch 4:
-> https://lore.kernel.org/linux-mm/CAGsJ_4xiLScr2PrPu7Eem73GvPCtsuYd3J05kW3=
-SC4QSs5Q4aQ@mail.gmail.com/
->
-> Something like this:
-> VM_WARN_ON (pte_valid(__ptep_get(ptep)));
->
+Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
+PMD sharing is possible. That is only needed when huge_pmd_unshare()
+actually detaches a shared PMD page table, because clearing the PUD
+invalidates the whole PUD-sized virtual address range.
 
-Hi Barry,
+For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
+a shared mapping can pass the "PMD sharing is possible" range test in
+adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
+not currently have any shared PMD page tables. KVM then receives a 1G
+invalidation for a 2M operation and zaps unrelated secondary mappings,
+so the guest has to fault them back in.
 
-Agreed. I'll add this. The vmap path should never see a valid=E2=86=92valid=
- transition,
-but an explicit assert makes that contract visible.
+Avoid this by tracking active PMD-sharing attachments per hugetlbfs
+inode. The count is incremented only after huge_pmd_share() successfully
+installs a shared PMD table, and decremented when __huge_pmd_unshare()
+actually detaches one. Since huge_pmd_share() can run concurrently under
+i_mmap_lock_read(), use a 64-bit atomic counter. A zero count is used to
+skip the conservative notifier range expansion only after excluding
+concurrent PMD sharing with the mapping write lock.
 
-Thanks,
-Wen.
+On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
+improves P99 QPS stability while punching pages, reducing the QPS
+degradation ratio from 7.09% to 1.45%.
+
+Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
+Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+---
+v3: https://lore.kernel.org/all/20260924082004.82450-1-lizhe.67@bytedance.com/
+v2: https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.com/
+v1: https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.com/
+
+Changelogs:
+v3->v4:
+- Use atomic64_t for the per-inode PMD-sharing attachment counter as
+  suggested by Muchun, avoiding the 32-bit wrap-to-zero case.
+
+v2->v3:
+- Rework the sticky state based on Andrew's feedback: use a per-inode
+  counter of active PMD-sharing attachments, so files can return to the
+  no-active-sharing state after PMD sharing ends.
+
+v1->v2:
+- Rework the implementation based on David's suggestion: remember
+  whether PMD sharing ever happened for a hugetlbfs file, and skip the
+  conservative notifier range expansion while it has not. This avoids
+  the per-unmap page-table walk.
+
+ fs/hugetlbfs/inode.c    |  1 +
+ include/linux/hugetlb.h | 37 +++++++++++++++++++++++++++++++++++++
+ mm/hugetlb.c            | 13 ++++++++++---
+ 3 files changed, 48 insertions(+), 3 deletions(-)
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 7611a8470ea26..78e27ce0a6f63 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
+ 		simple_inode_init_ts(inode);
+ 		info->resv_map = resv_map;
+ 		info->seals = F_SEAL_SEAL;
++		hugetlbfs_pmd_sharing_init(inode);
+ 		switch (mode & S_IFMT) {
+ 		default:
+ 			init_special_inode(inode, mode, dev);
+diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+index 16c4c4caa126c..2a227bfbec1e5 100644
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -12,6 +12,7 @@
+ #include <linux/page_ref.h>
+ #include <linux/list.h>
+ #include <linux/kref.h>
++#include <linux/atomic.h>
+ #include <linux/pgtable.h>
+ #include <linux/gfp.h>
+ #include <linux/userfaultfd_k.h>
+@@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
+ 	struct inode vfs_inode;
+ 	struct resv_map *resv_map;
+ 	unsigned int seals;
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++	atomic64_t pmd_sharing_count;
++#endif
+ };
+ 
+ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+@@ -516,6 +520,39 @@ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
+ 	return container_of(inode, struct hugetlbfs_inode_info, vfs_inode);
+ }
+ 
++#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
++static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
++{
++	atomic64_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0);
++}
++
++static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
++{
++	atomic64_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
++}
++
++static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
++{
++	atomic64_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
++}
++
++static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
++{
++	return atomic64_read(&HUGETLBFS_I(inode)->pmd_sharing_count) != 0;
++}
++#else
++static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
++
++static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
++
++static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
++
++static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
++{
++	return false;
++}
++#endif
++
+ extern const struct vm_operations_struct hugetlb_vm_ops;
+ struct file *hugetlb_file_setup(const char *name, size_t size, vma_flags_t acct,
+ 				int creat_flags, int page_size_log);
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 4f6f58bf3db6c..cb27c06d1f7a7 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
+ 	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
+ 		return;
+ 
+-	adjust_range_if_pmd_sharing_possible(vma, start, end);
+ 	hugetlb_vma_lock_write(vma);
+-	if (vma->vm_file)
++	if (vma->vm_file) {
+ 		i_mmap_lock_write(vma->vm_file->f_mapping);
++		if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
++			adjust_range_if_pmd_sharing_possible(vma, start, end);
++	}
+ }
+ 
+ void __hugetlb_zap_end(struct vm_area_struct *vma,
+@@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
+ 				start, end);
+-	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
++		adjust_range_if_pmd_sharing_possible(vma, &range.start,
++						     &range.end);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 	tlb_gather_mmu(&tlb, vma->vm_mm);
+ 
+@@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
+ 	if (pud_none(*pud)) {
+ 		pud_populate(mm, pud,
+ 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
++		hugetlbfs_pmd_sharing_inc(file_inode(vma->vm_file));
+ 		mm_inc_nr_pmds(mm);
+ 	} else {
+ 		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
+@@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather *tlb,
+ 	pud_clear(pud);
+ 
+ 	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
++	hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
+ 
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
+-- 
+2.20.1
 
