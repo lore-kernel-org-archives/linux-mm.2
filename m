@@ -4,99 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 771EDC98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EA6C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:18:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 70E786B008A; Mon, 28 Sep 2026 02:18:10 -0400 (EDT)
+	id C69F76B0088; Mon, 28 Sep 2026 02:18:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0776B0092; Mon, 28 Sep 2026 02:18:10 -0400 (EDT)
+	id C1A816B008C; Mon, 28 Sep 2026 02:18:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6646B0093; Mon, 28 Sep 2026 02:18:10 -0400 (EDT)
+	id B2DFF6B0093; Mon, 28 Sep 2026 02:18:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 39FBB6B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:18:10 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9802A6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:18:41 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 919A5140B3E
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:09 +0000 (UTC)
-X-FDA: 85262165898.03.C1CAEED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C5DEBA0005
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/Y25BkI";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790576287;
-	b=WQ6BHGKXUqw4L5v3Twp3+gWp1H+hmUfSegSL0z7R88inUmbZm1Yzy3Lc0ObjRwQ2CKnBwt
-	rFKj4qK0kOUGBdcyBwcbR1041SCnP8Z0dHzt6GG3xC1TPIiEJVbxTYykhd4ivCZqTnWyxH
-	M5xn+RaEmXvnyoHfDJZWRDk7Fvhtg6Y=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/Y25BkI";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10AFAC0B46
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:41 +0000 (UTC)
+X-FDA: 85262167242.03.4931E20
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A9B99100003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dXVNrCtP;
+	spf=none (imf05.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790576287;
+	s=arc-20220608; t=1790576319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TPA7WpGxVjb7j4LORzvG/vNPmhuOY1oBn/RwCUEkpmg=;
-	b=iqFy6iUFmS8d6L4AcKnEgGAdVFk5HVo0MdNiQcr89pJ9B3UVvAH+le3SuCAcpIl8fCc178
-	nDnK4aaQ0MQk1BojWjV4DIBfGiLpPZ4lTNgxhuW8nCjDwW6RpCyQ7GSakN7lN3BGIKpKU/
-	ryvKTsE8rIBqW2cj1X3VHvS0NNKNtwk=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DAF8601FF
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2FB71F00899
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:18:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790576287;
-	bh=TPA7WpGxVjb7j4LORzvG/vNPmhuOY1oBn/RwCUEkpmg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=W/Y25BkIz2asL3xouVisLP7tVaaTsk2KFBeQfzVNmBQOxz5UpHzqCrR+pxJeMTeFg
-	 O1f9E4z06ajicTiKQRIxl5y730ctLp4DxmOGfMZZ2Yjx7uu/j+t4zVClDGsig43U9L
-	 A7E2ula7RkUiB+XklRoN4pl/kL7v5CuJ7kRqfe06UovcPAhb7CRgGPdPy2CTMr9/CA
-	 88l/P94qIPnRKLro9/Db6A4rTUQnD33VnwY38827Gjk9sSgMI+xGzxkYCIIm1FarUb
-	 vCUm3rZ4eOEp6LYLC+GBdLGnX+GzH50liD9Mtm6l73WjQrBLaMZbzHwrarguxE7e3C
-	 ka4HtaW4twZDw==
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2aff2c45efso186007066b.3
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:18:06 -0700 (PDT)
-X-Gm-Message-State: AFuF++n+xnzPK62ItvyAZfHEYvWGWhaUqLUpcPNFhFk0YBI5CP3pHQ9G
-	3UNYZoTF+iVP/SSGRwwTT9+K/5E2H/5Qtx24hRHKvtInn44A0L0YajTOqQ3wixNrKTR2htOsdn2
-	ZevuZ0mboJ52uvf2pvce8OvxPbp2ZrBpn27g6wrhWVA==
-X-Received: by 2002:a17:907:ea7:b0:c25:afb6:2d91 with SMTP id
- a640c23a62f3a-c2ac230f4b2mr1019122966b.2.1790576285662; Sun, 27 Sep 2026
- 23:18:05 -0700 (PDT)
+	bh=m6JBH5OzCgBGbSotaYYctgten26WJi6XRQg5zFg6ET0=;
+	b=l5uuWyVwSuOMeea4QprwR5uOOHR2KUS3v/4rrT4PQQUjo+TEJxqlQae+Wt1mlEapMbZIg0
+	c1uFMiO2QvyJtXI46jeCW40pcrSFoq/HXmC4nsQzrYAqAWa2RwzTRW5/wBtRvF07WQeGmT
+	tAfsCYOJbm+ffeZ3s4F55QcoSzqxjzY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=dXVNrCtP;
+	spf=none (imf05.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790576319;
+	b=7yAAZlzJkfT6G5cKSVHKc8YnacxktQY0BjlX4EOEZOPFW80LF7KEpXtirf1VLcB9Io383K
+	i9sbrqec4WOPbdi1D8EcEtIWO+grAd3nl58NUeizc5TS3Klsr1czcw8pGNalq8qcjbsJ4z
+	N+c/Iu+QHEOZY34ZMKGctfLSIITvO1M=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=m6JBH5OzCgBGbSotaYYctgten26WJi6XRQg5zFg6ET0=; b=dXVNrCtPGbkF9j3ctYx+03RvEY
+	EwulYd4k5qcGz9GapQu8q18TbyaDo0GB/48MdJMmKRNeJhuKfmdsIxnuVtakJYak1cXrkE7Rf5wQY
+	CWRQ+sblT/4HTAM5d5I2VZvl0fQ9xt/XCOVCMld3ttwaaN5QcL5/KM48w6J1I3Exygz6bvBg2tdqT
+	GEqIlA5AvkQRr2rg9ENTdjlOexNOzMThHpjeFsHWMolXTOahdH+kPQ0fWWZ4MiESYtAjfpm93zQdc
+	Gx8zVu9NfUFq0ptaVi/niMV7BCc2W7lMXp1QJVoEkOvTPz49SG4rGNo7ld/zPUyFViWeDQ0Ty4O2M
+	oD76BipA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xB4hB-0000000HRZD-1bQF;
+	Mon, 28 Sep 2026 06:18:37 +0000
+Date: Sun, 27 Sep 2026 23:18:37 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Julian Sun <sunjunchao@bytedance.com>
+Cc: Christoph Hellwig <hch@infradead.org>, linux-block@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, willy@infradead.org, jack@suse.cz,
+	tj@kernel.org, akpm@linux-foundation.org
+Subject: Re: [PATCH v9 2/3] memcg,writeback: flush foreign bdev mappings
+ separately from owner wbs
+Message-ID: <aroGvQSFpj06a_to@infradead.org>
+References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
+ <20260925064444.3944820-3-sunjunchao@bytedance.com>
+ <arYa1DbKNeAN-PLl@infradead.org>
+ <87e10baa-13a8-4766-8d6d-9173a4b0c5c5@bytedance.com>
 MIME-Version: 1.0
-References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-14-hebaoquan@kylinos.cn>
-In-Reply-To: <20260916101929.149106-14-hebaoquan@kylinos.cn>
-From: Chris Li <chrisl@kernel.org>
-Date: Sun, 27 Sep 2026 20:17:54 -1000
-X-Gmail-Original-Message-ID: <CACePvbXDGx4jDu77nbO+G9RcOCcxc_710i4GL=b3wKaj_tF6Hw@mail.gmail.com>
-X-Gm-Features: AclHuK-4gyktcF-mynmQngo5LFPr4hqasXeJ5HhS3jMGq8tYhTdJeXtB5RbOJeM
-Message-ID: <CACePvbXDGx4jDu77nbO+G9RcOCcxc_710i4GL=b3wKaj_tF6Hw@mail.gmail.com>
-Subject: Re: [PATCH v3 13/14] mm, swap: add sysfs per-device size limit for xswap
-To: Baoquan He <hebaoquan@kylinos.cn>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
-	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, 
-	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
-	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
-	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5benyhcmuianqbdfs8hzdhjqfcdfmkxb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87e10baa-13a8-4766-8d6d-9173a4b0c5c5@bytedance.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5DEBA0005
-X-HE-Tag: 1790576287-127678
-X-HE-Meta: U2FsdGVkX1/Y7UCyLoLkYPwOQg9G8wjDbzS2ZW3STo4kMM3/CphPdFIJ0grDBmAC6heQkHMoJ7g5iij8pDTCyHduCh7FTr27JcRBpzh+9BZJpA7Ypzn4RnJTzeMKBgmkbpruNTH1BZCFY8WrU2zuZMwMGrLq8etgrM4i51sTx4RAHQhHotpfhdkp8QmjjxtKBlP6pKsSiHdQNotSfRV+Y8inSVsbWuL21XweteXbYJQ+xw8Vl8zRb3WSXQ8sFpJ+0KeeR8iX4Oemtk+1wuLbEeZIlQSFvDDoglJ2RJqX6llZ9vwPaNbHo0xsfwijPL9LDTSlk+38EHbfO9Kbd3K84x2TIzqlCo0sE4fIRucJi1MCSUnIBDzYHLUKDpkWf2EHYCdAE0Oh2hzBuDO0Ya4S/Cgbco2ZEsHc6p6WPAiDO0uBXrVQNYHrfBeWQ6SIAVoRYw3bKkETspr4sS0TvbttcfKIHpXhN+wGKfG5qp8CSiZdlv0RoMDH1DrZ7IDG7eppwmkxNVx2WRBXYO3J8CkCOAA/qlbBjwcU7mCWwT3BXnB7fYqDTUOfQ56TyPdTRfigVQ6lSbQX/0pwgT0esOOmXMnCzB9IVkaBeO21ZUCG1icidqbfGKv9wJht+ucJqIBueu0SBaDRuuuNjGsm5uXmGVtGOSdnViEwdTzUmH5M5Eif73XXedFUOj6giGue2qLQM3FSx11kPmVewU0tOB8Vw8YXXjo3Hn/axSyZH160KACS1RExIvc5ASxg0XXEgIlBBSmXxG5mGKsEbXrszzbDiAcRFEhtzF0BCdgCB3j9AeLheCugex0CoVr8fO6OIeApMYfHx4u/HGP41j2vNGPkY0O9GlUJHVkcty6Inb+8CQfdAjFfNNikaukRWIJndb6ulF+9a9ghoZtzCwkAhjEFC/joSVLmFbA7ZeXfWQpVMbbe1GcKvXKIw3Lky0oTnBSsDECVuq+dpf2loQNGCfI
- e0vm8LRs
- 81ibGGZq7pa2LtSFgcGxKT50SwO38JYJh7CgUakFHDGp4nzDjqWUcKGbZ60I94rsN50uRc36VtqmIivdbkWQXzOTQGUCb7z6RcTMQ0fYBbRNfOvn5KoQpgps8IQPvUMNOKEK4mHe8HDBsqfYaeG/YC1ehsd0xKSit7Y0q/MZz/mfP+Wznp0mqHb9gjX1tC8GDams/qAnqkomX3zjb7lZJJxqME6HewyXakGr7xr1njhRefNoLXXcnCIZholGxbxrHcM09XDkd7WYFLY14kdpZ/jTJ8MiA/9P259QlAatqC1BMjaA+4XqFkt73QXANyjGfJUNh7UjFK1BtzdXzsshqPdFQiXLiHubfNFklTlIFThPlZwg=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A9B99100003
+X-Stat-Signature: x6fkd3nz4gdxiepowi7xq8p4izg7g6pf
+X-HE-Tag: 1790576318-434948
+X-HE-Meta: U2FsdGVkX1+sh5aq7DJjFeSnCatDI0hOGtW/3bseWTiSy7QYZ6TvFezwNQGpYzU4UD8rPeC5oeye0YtURUYYWhAJNWQk/593+wI4ZAZxTrbyZePTBNQNs4gBSkirrogGpo34XIdOx+BojYJn/IExxpYiLEloS/oTj2+UzMY5E2PV4uPu6QNsidWJOD70i4Eyz5Dj2qQb88n9tMMLVeSWenywZoRAL2QMmcX2hLRdJ487KncKSZ6EeHrx265ZFM2AQeYwLD9gryScgykIBUzL13/YQ/y2JqxA0EQ/DyO9lJJWputckEddZ5v1WgmxzDP2XZgqSH6wTUry950E2q8J3vRXGsbZCsouylVPCRPk4IGD8FSv3KVXtdBhxs/62j73DzApOuhZaoNOjxIO3ykT3Nlbi6DkWmXQKXX2jDDGnGExV/FdzpMORIQeqz4nhshHkJXkJYGT0CrxeluPF7NImW2On4L6d041VCdcp9d0sGZKLS75STar9aA2eFOZgOU3E8y8vI2z4PkLKSya+K06KNneGW5ATrMt3Vwpq55PVcDMOygi8sqAvcEHUVQ3N2gSAxT9VoJn0EnCtleRiDQMc+20MzheEIfw/G1b7pyJXa4cBYnMLgY3y+jm0s9QbDcJPQ6I0myfFDt3ysfncNojlkEQHLvQ3xpGzvubS3x/vyEjrBCnZ2FVTgMIIioNunkcdQiI+fYlxqyOeR/d9cm8cltAqjYeMt03a1My5nMJxXkoCDGkjbHf6rreFTlXELi//+j4TNouUKBxZpoHExa6NFNarbh56akJ4AMW/coLMTbl6Ye4Ufjqq7oO3WBNNJGbmO6ggu8+NcJ2A3bxd2Vw5+H+6ApM5i86K9FGsrPtoXw6HXmwUhGBca/lAyKWILaUkzkgWlYfMNI0E6hXAyxWqV24DqHQ6iSa9Y2oScX2W2W4I4fz+4R52BOj2EXrknH9bE3U1NmuwZS8enMx1Mw
+ mjnQWEi1
+ Z1YBpHay3HGeohSZ4HHdwD4L2uPksofwwgwOleoG2L0BBtEZLJhHg5QiRQdOiGU5Vt9Knt8qDptWAV8HU0X+5ulJwRf5txykcxnBfvU4Kxjc9GzYR829s/vifCKVEp/HtkqU50assX0NliTwH1v/KeEXfGkFXWy0PKYYLGLdsxGxOgeM8sVJLxMY7lAuP6JtxAPVbeDP7opnQuD5ouVPet4R1cwfw4td/AkFoHy//wE/jCnAbny6emEXHe+xwcVkYKSYuRuFOkfoL+gKaXqjElFh2UK7SbsHbtZ6aFaSDHc0U7/yFRmHJRCRiQWI3YsySBni9nmljSMXZMs0DF/bGMBPp4wXgxb4dQ1PD2P053ZEIROhkjHkCLH2J0M4wkGrgqhcZnpDKkE960bUUvCdis09zeVi3DIRpex6ldH/FqzT+ezZvaLrYPA5+k3zbHC3FEttpnI/z8IAv7Qpof9Dfd7IsWYaHDN0vAitfcc2aEWg47mUk9JG/x/dZV1Z/tfCjVn9+dQp0WFiH5YakVa2p2RiwAqak9N8SNxYHO/N4JYcTFT1KSUD9/PODbqtwsI01o5m19xZZuhq4H9U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,435 +97,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 16, 2026 at 12:21=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> =
-wrote:
->
-> Add a per-device sysfs knob to limit the xswap usable size:
->
->   /sys/kernel/mm/xswap/type<N>/limit    read/write, in pages
->
-> Reading reports the current usable size; writing sets a new ceiling.
-> The ceiling is clamped to cover the pages in use, and enforcement is
-> best effort. The write requires CAP_SYS_ADMIN.
+On Fri, Sep 25, 2026 at 09:00:28PM +0800, Julian Sun wrote:
+> Yeah..Andrew and I discussed the naming in another thread. The idea was to stay 
+> consistent with the existing naming and keep this patchset focused on the functional
+> changes, leaving a broader naming cleanup to a separate patch.
+> 
+> https://lore.kernel.org/linux-fsdevel/20260917065759.2643940-1-sunjunchao@bytedance.com/T/#m0d196c3b8376c9b51276f6c5d26ab9f29e170169
 
-I am not sure this user interface is strictly needed.
+Let's not add more of this, even if fixing up the previous ones belongs
+into a separate thread.
 
-In my mind, xswap just has a max size at swapon. Then internally, the
-kernel just grows the useable part of cluster array as needed.
+> > 
+> > Instead please fail the boot.  If we can't alloc a workqueue at
+> > boot time, we're toast anyway.
+> I followed the existing memcg_wq allocation handling here, which also 
+> warns and continues. Would it make sense to change both allocations to
+> fail the boot in a separate patch, so the policy is consistent? 
+> If you prefer to address both in this series, I'll make that change
+> in the next revision.
 
-Chris
+Leaving dangling pointers during catastropic boot failures and then
+dealing with them at runtime isn't a good idea.  And yes, the code
+above should eventually be fixed up as well.
 
->
-> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
-> ---
->  include/linux/swap.h |  18 ++--
->  mm/swapfile.c        | 193 +++++++++++++++++++++++++++++++++++++------
->  2 files changed, 179 insertions(+), 32 deletions(-)
->
-> diff --git a/include/linux/swap.h b/include/linux/swap.h
-> index 9fe82d0f1740..804189b4b4eb 100644
-> --- a/include/linux/swap.h
-> +++ b/include/linux/swap.h
-> @@ -16,6 +16,8 @@
->  #include <uapi/linux/mempolicy.h>
->  #include <asm/page.h>
->
-> +struct kobject;
-> +
->  #define SWAP_FLAG_PREFER       0x8000  /* set if swap priority specified=
- */
->  #define SWAP_FLAG_PRIO_MASK    0x7fff
->  #define SWAP_FLAG_DISCARD      0x10000 /* enable discard for swap */
-> @@ -245,8 +247,9 @@ struct swap_info_struct {
->  #ifdef CONFIG_XSWAP
->         struct vm_struct        *cluster_vm;    /* VM_SPARSE area for clu=
-ster_info */
->         unsigned long           nr_clusters_max;/* total clusters in the =
-xswap address space */
-> -       unsigned long           nr_clusters;    /* how far the array may =
-grow */
-> +       unsigned long           nr_clusters;    /* growth ceiling, set by=
- type<N>/limit */
->         unsigned long           nr_clusters_mapped; /* currently mapped c=
-luster count */
-> +       struct kobject          *xswap_dev_kobj; /* sysfs: /sys/kernel/mm=
-/xswap/type<N>/ */
->         struct work_struct      xswap_shrink_work; /* deferred shrink tri=
-gger */
->         struct mutex            xswap_lock;     /* serialize map/unmap op=
-erations */
->  #endif
-> @@ -256,7 +259,7 @@ struct swap_info_struct {
->                                         /* list of cluster that contains =
-at least one free slot */
->         struct list_head frag_clusters[SWAP_NR_ORDERS];
->                                         /* list of cluster that are fragm=
-ented or contented */
-> -       unsigned int pages;             /* total of usable pages of swap =
-*/
-> +       unsigned int pages;             /* total of usable pages of swap;=
- mutable for xswap */
->         atomic_long_t inuse_pages;      /* number of those currently in u=
-se */
->         struct swap_sequential_cluster *global_cluster; /* Use one global=
- cluster for rotating device */
->         spinlock_t global_cluster_lock; /* Serialize usage of global clus=
-ter */
-> @@ -269,10 +272,13 @@ struct swap_info_struct {
->                                          * inuse_pages and all cluster li=
-sts.
->                                          * Other fields are only changed
->                                          * at swapon/swapoff, so are prot=
-ected
-> -                                        * by swap_lock. changing flags n=
-eed
-> -                                        * hold this lock and swap_lock. =
-If
-> -                                        * both locks need hold, hold swa=
-p_lock
-> -                                        * first.
-> +                                        * by swap_lock, except for pages=
-:
-> +                                        * xswap updates it at runtime fr=
-om
-> +                                        * type<N>/limit, and readers wit=
-hout
-> +                                        * swap_lock use READ_ONCE(). cha=
-nging
-> +                                        * flags need hold this lock and
-> +                                        * swap_lock. If both locks need =
-hold,
-> +                                        * hold swap_lock first.
->                                          */
->         struct work_struct discard_work; /* discard worker */
->         struct work_struct reclaim_work; /* reclaim worker */
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2cf6ba0bd0c0..0fcbaf1cf0e2 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -71,6 +71,8 @@ static int xswap_unmap_clusters(struct swap_info_struct=
- *si,
->                                 unsigned long start_idx, unsigned long nr=
-);
->  static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data);
->  static void xswap_try_shrink(struct swap_info_struct *si);
-> +static int xswap_dev_kobj_add(struct swap_info_struct *si);
-> +static void xswap_dev_kobj_del(struct swap_info_struct *si);
->
->  static int xswap_create(int prio);
->  static int xswap_destroy(int type);
-> @@ -1369,8 +1371,6 @@ static unsigned long cluster_alloc_swap_entry(struc=
-t swap_info_struct *si,
->  /* SWAP_USAGE_OFFLIST_BIT can only be set by this helper. */
->  static void del_from_avail_list(struct swap_info_struct *si, bool swapof=
-f)
->  {
-> -       unsigned long pages;
-> -
->         spin_lock(&swap_avail_lock);
->
->         if (swapoff) {
-> @@ -1388,15 +1388,19 @@ static void del_from_avail_list(struct swap_info_=
-struct *si, bool swapoff)
->                 atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
->         } else {
->                 /*
-> -                * If not called by swapoff, take it off-list only if it'=
-s
-> -                * full and SWAP_USAGE_OFFLIST_BIT is not set (strictly
-> -                * si->inuse_pages =3D=3D pages), any concurrent slot fre=
-eing,
-> -                * or device already removed from plist by someone else
-> -                * will make this return false.
-> +                * Take it off-list only if full and not already off.  Us=
-e >=3D
-> +                * and the current count: xswap can shrink si->pages at
-> +                * runtime, so a racing allocation can push inuse_pages p=
-ast
-> +                * it.
->                  */
-> -               pages =3D si->pages;
-> -               if (!atomic_long_try_cmpxchg(&si->inuse_pages, &pages,
-> -                                            pages | SWAP_USAGE_OFFLIST_B=
-IT))
-> +               long val =3D atomic_long_read(&si->inuse_pages);
-> +
-> +               if (val & SWAP_USAGE_OFFLIST_BIT)
-> +                       goto skip;
-> +               if (val < READ_ONCE(si->pages))
-> +                       goto skip;
-> +               if (!atomic_long_try_cmpxchg(&si->inuse_pages, &val,
-> +                                            val | SWAP_USAGE_OFFLIST_BIT=
-))
->                         goto skip;
->         }
->
-> @@ -1410,7 +1414,6 @@ static void del_from_avail_list(struct swap_info_st=
-ruct *si, bool swapoff)
->  static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
->  {
->         long val;
-> -       unsigned long pages;
->
->         spin_lock(&swap_avail_lock);
->
-> @@ -1429,15 +1432,14 @@ static void add_to_avail_list(struct swap_info_st=
-ruct *si, bool swapon)
->         val =3D atomic_long_fetch_and_relaxed(~SWAP_USAGE_OFFLIST_BIT, &s=
-i->inuse_pages);
->
->         /*
-> -        * When device is full and device is on the plist, only one updat=
-er will
-> -        * see (inuse_pages =3D=3D si->pages) and will call del_from_avai=
-l_list. If
-> -        * that updater happen to be here, just skip adding.
-> +        * Mask off the bit to get the count.  Keep the device off-list i=
-f
-> +        * it is still full; use >=3D because a runtime shrink of si->pag=
-es
-> +        * can leave it over the limit.
->          */
-> -       pages =3D si->pages;
-> -       if (val =3D=3D pages) {
-> -               /* Just like the cmpxchg in del_from_avail_list */
-> -               if (atomic_long_try_cmpxchg(&si->inuse_pages, &pages,
-> -                                           pages | SWAP_USAGE_OFFLIST_BI=
-T))
-> +       val &=3D ~SWAP_USAGE_OFFLIST_BIT;
-> +       if (val >=3D READ_ONCE(si->pages)) {
-> +               if (atomic_long_try_cmpxchg(&si->inuse_pages, &val,
-> +                                           val | SWAP_USAGE_OFFLIST_BIT)=
-)
->                         goto skip;
->         }
->
-> @@ -1462,7 +1464,8 @@ static bool swap_usage_add(struct swap_info_struct =
-*si, unsigned int nr_entries)
->          * If device is full, and SWAP_USAGE_OFFLIST_BIT is not set,
->          * remove it from the plist.
->          */
-> -       if (unlikely(val =3D=3D si->pages)) {
-> +       if (unlikely(!(val & SWAP_USAGE_OFFLIST_BIT) &&
-> +                    val >=3D READ_ONCE(si->pages))) {
->                 del_from_avail_list(si, false);
->                 return true;
->         }
-> @@ -3360,6 +3363,7 @@ static void free_swap_cluster_info(struct swap_info=
-_struct *si)
->         if (si->flags & SWP_XSWAP) {
->                 unsigned long nr_mapped;
->
-> +               xswap_dev_kobj_del(si);
->                 cancel_work_sync(&si->xswap_shrink_work);
->                 /*
->                  * Cluster 0 keeps the bad header slot, so it never empti=
-es
-> @@ -3690,7 +3694,7 @@ static int swap_show(struct seq_file *swap, void *v=
-)
->                 return 0;
->         }
->
-> -       bytes =3D K(si->pages);
-> +       bytes =3D K(READ_ONCE(si->pages));
->         inuse =3D K(swap_usage_in_pages(si));
->
->         file =3D si->swap_file;
-> @@ -4337,6 +4341,9 @@ static int setup_swap_clusters_info(struct swap_inf=
-o_struct *si,
->                 }
->
->                 INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
-> +               if (xswap_dev_kobj_add(si))
-> +                       pr_warn("xswap: failed to add sysfs interface for=
- type %d\n",
-> +                               si->type);
->                 return 0;
->
->  err_unmap:
-> @@ -4429,14 +4436,143 @@ static int setup_swap_clusters_info(struct swap_=
-info_struct *si,
->  }
->
->  #ifdef CONFIG_XSWAP
-> -/* Create a file-less xswap device.  si->max and the initial nr_clusters
-> - * ceiling are both twice RAM; the runtime size can be lowered afterward=
-s
-> - * via /sys/kernel/mm/xswap/type<N>/limit.
-> +struct xswap_sysfs_dev {
-> +       struct kobject kobj;
-> +       struct swap_info_struct *si;
-> +};
-> +
-> +static ssize_t xswap_limit_show(struct kobject *kobj,
-> +                               struct kobj_attribute *attr, char *buf)
-> +{
-> +       struct swap_info_struct *si =3D
-> +               container_of(kobj, struct xswap_sysfs_dev, kobj)->si;
-> +
-> +       return sysfs_emit(buf, "%u\n", READ_ONCE(si->pages));
-> +}
-> +
-> +static ssize_t xswap_limit_store(struct kobject *kobj,
-> +                                struct kobj_attribute *attr,
-> +                                const char *buf, size_t count)
-> +{
-> +       struct swap_info_struct *si =3D
-> +               container_of(kobj, struct xswap_sysfs_dev, kobj)->si;
-> +       unsigned long val, clusters, new_pages, used;
-> +       int err;
-> +
-> +       if (!capable(CAP_SYS_ADMIN))
-> +               return -EPERM;
-> +
-> +       err =3D kstrtoul(buf, 0, &val);
-> +       if (err)
-> +               return err;
-> +
-> +       spin_lock(&swap_lock);
-> +       if (!(si->flags & SWP_WRITEOK)) {
-> +               spin_unlock(&swap_lock);
-> +               return -ENODEV;
-> +       }
-> +
-> +       used =3D swap_usage_in_pages(si);
-> +
-> +       clusters =3D DIV_ROUND_UP(val, SWAPFILE_CLUSTER);
-> +       if (clusters > si->nr_clusters_max)
-> +               clusters =3D si->nr_clusters_max;
-> +       /*
-> +        * The ceiling can never be below the pages in use: the clusters
-> +        * covering them stay mapped, and si->pages is the ceiling
-> +        * capacity, so the free slots in the partially used top cluster
-> +        * are credited instead of being allocatable but unaccounted for.
-> +        */
-> +       clusters =3D max_t(unsigned long, clusters,
-> +                        DIV_ROUND_UP(used + 1, SWAPFILE_CLUSTER));
-> +
-> +       spin_lock(&si->lock);
-> +       si->nr_clusters =3D clusters;
-> +       spin_unlock(&si->lock);
-> +
-> +       new_pages =3D min_t(unsigned long, clusters * SWAPFILE_CLUSTER, s=
-i->max);
-> +       if (new_pages)
-> +               new_pages--;
-> +
-> +       if (new_pages < used)
-> +               new_pages =3D used;
-> +       if (new_pages !=3D si->pages) {
-> +               long delta =3D (long)new_pages - (long)si->pages;
-> +
-> +               si->pages =3D new_pages;
-> +               atomic_long_add(delta, &nr_swap_pages);
-> +               total_swap_pages +=3D delta;
-> +       }
-> +       add_to_avail_list(si, false);
-> +
-> +       spin_unlock(&swap_lock);
-> +
-> +       return count;
-> +}
-> +
-> +static struct kobj_attribute xswap_limit_attr =3D
-> +       __ATTR(limit, 0644, xswap_limit_show, xswap_limit_store);
-> +
-> +static void xswap_dev_release(struct kobject *kobj)
-> +{
-> +       kfree(container_of(kobj, struct xswap_sysfs_dev, kobj));
-> +}
-> +
-> +static const struct kobj_type xswap_dev_ktype =3D {
-> +       .sysfs_ops =3D &kobj_sysfs_ops,
-> +       .release =3D xswap_dev_release,
-> +};
-> +
-> +static int xswap_dev_kobj_add(struct swap_info_struct *si)
-> +{
-> +       struct xswap_sysfs_dev *dev;
-> +       int err;
-> +
-> +       if (!xswap_kobj)
-> +               return 0;
-> +
-> +       dev =3D kzalloc_obj(*dev, GFP_KERNEL);
-> +       if (!dev)
-> +               return -ENOMEM;
-> +       dev->si =3D si;
-> +
-> +       err =3D kobject_init_and_add(&dev->kobj, &xswap_dev_ktype, xswap_=
-kobj,
-> +                                  "type%d", si->type);
-> +       if (err) {
-> +               kobject_put(&dev->kobj);
-> +               return err;
-> +       }
-> +
-> +       err =3D sysfs_create_file(&dev->kobj, &xswap_limit_attr.attr);
-> +       if (err) {
-> +               kobject_del(&dev->kobj);
-> +               kobject_put(&dev->kobj);
-> +               return err;
-> +       }
-> +       si->xswap_dev_kobj =3D &dev->kobj;
-> +       return 0;
-> +}
-> +
-> +static void xswap_dev_kobj_del(struct swap_info_struct *si)
-> +{
-> +       struct kobject *kobj =3D si->xswap_dev_kobj;
-> +
-> +       if (!kobj)
-> +               return;
-> +       si->xswap_dev_kobj =3D NULL;
-> +       sysfs_remove_file(kobj, &xswap_limit_attr.attr);
-> +       kobject_del(kobj);
-> +       kobject_put(kobj);
-> +}
-> +
-> +/* Create a file-less xswap device.  The address space reaches twice RAM=
-;
-> + * the device is created capped at RAM, and type<N>/limit raises that ca=
-p
-> + * up to si->max.
->   */
->  static int xswap_create(int prio)
->  {
->         struct swap_info_struct *si;
-> -       unsigned long ram, maxpages;
-> +       unsigned long ram, maxpages, nr_clusters;
->         int error;
->
->         if (prio !=3D DEF_SWAP_PRIO && (prio < 0 || prio > SWAP_FLAG_PRIO=
-_MASK))
-> @@ -4464,10 +4600,13 @@ static int xswap_create(int prio)
->         if (maxpages < 2)
->                 maxpages =3D 2;
->
-> +       nr_clusters =3D DIV_ROUND_UP(ram, SWAPFILE_CLUSTER);
-> +
->         si->bdev =3D NULL;
->         si->flags |=3D SWP_XSWAP | SWP_SOLIDSTATE;
->         si->max =3D maxpages;
-> -       si->pages =3D maxpages - 1;
-> +       si->pages =3D min_t(unsigned long, nr_clusters * SWAPFILE_CLUSTER=
-,
-> +                         si->max) - 1;
->         /*
->          * No backing file: setup_swap_extents() is only reachable from t=
-he
->          * file-backed swapon() path, so set ops here.  Only ops->flags i=
-s
-> @@ -4480,6 +4619,8 @@ static int xswap_create(int prio)
->         if (error)
->                 goto bad_swap;
->
-> +       si->nr_clusters =3D min(nr_clusters, si->nr_clusters_max);
-> +
->         error =3D zswap_swapon(si->type, si->max);
->         if (error)
->                 goto bad_swap;
-> --
-> 2.54.0
->
 
