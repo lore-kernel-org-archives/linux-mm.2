@@ -4,141 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51138CA5FA3
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 19:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA06ACA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 20:37:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B6B86B00A0; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
+	id 7EDFE6B0088; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 767946B00A1; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
+	id 79DA06B008A; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 656A66B00A2; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
+	id 6902F6B008C; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EBAE6B00A0
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:26:13 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C7D4DA02F0
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:26:11 +0000 (UTC)
-X-FDA: 85264151742.15.ABD1364
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E98EBA0004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:26:09 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wcp7cHX6;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 460656B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 16:37:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9FC491202E3
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:37:43 +0000 (UTC)
+X-FDA: 85264332006.30.1523D14
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4A7D1140007
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:37:41 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wgwhPxy8;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf09.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790627861;
+	b=u1+6La6QVgmJwpX7/9HLNzE3mBE5u6CXp2Dt1O+rF0G4NhboRXMFU8m8GzMG1r+GpYbMZ6
+	WryHaoUaafvOCM7UEU1s7HdC37jS12LCwzxdgxFyTubxIw2uY1OoUvrU8OItzoqeOcWdQM
+	eAa/PywLBtHykrtPUDA7cXaU8CSOhw0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wgwhPxy8;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf09.hostedemail.com: domain of rdunlap@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=rdunlap@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790623570;
+	s=arc-20220608; t=1790627861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Y8OPyB+lH5YUHprZNR3SaW3cfSHre/dvyOuPKtpY6o=;
-	b=qdhsMpm0Nbawz308RrlxvQJGXdScjOxr+OBTcTcsG9JZnvJOXewoyb6qkNxda4Tk0VBZll
-	o85DJ0LVJ1PRQtnyJLjSsgR0/uPjcyouvUFxRaEIZq3FuhRyR4tSU5pM9nWUNCts8ZeY+Q
-	86D+FDmEjtnUVmH95RlOFwljmxG/Y4A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790623570;
-	b=EaKY0e7SZvarONnNM7v1/C5BUSK9FeVEifjQmppSBWmuZWxxPAgjxO2ytCvJqzul3GNG1L
-	6ADFohiSppaCFfVJU2c6FtfjJJc9r9+cJuyJXaU9bZcy4qTGzXvL+BE8SH44cB5eB4ENET
-	tOHzW5eWIuMPyqPGvH+npJ8L0BRYZCY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wcp7cHX6;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7E1C41831;
-	Mon, 28 Sep 2026 19:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0613A1F000FF;
-	Mon, 28 Sep 2026 19:26:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790623568;
-	bh=0Y8OPyB+lH5YUHprZNR3SaW3cfSHre/dvyOuPKtpY6o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Wcp7cHX6LWHGsQaR9T/tCd3pP+3Nwpky2kHzT10MTDkKhmA8MW27LMPfnHJWAK8YC
-	 +vXO4EQfwcr3lSIQ1GPZZy2+hy6VH23tqE8KfCjhgZAJ0QKIAdiG5J+t4BFI0+uLg9
-	 KO7aGLZ8hdbZ+QSsWx3hYZrL8/r5YM6CN+AB2mwngYdlvTUXfd15BksKOrruq9yvvZ
-	 TIefRcYgE8qu3JEYFQgUw57Mn63WPUXYwIrFppx3c6UIyOl7JZWzlGzLWob3PCk/+O
-	 EPLWWcNcONNuYqNUSC7tCX5D4iB/ual9oq/UXdC2DfBrj+FyQTBM1hX24JImxBGYY6
-	 wVpQ6xWYlCFPA==
-Message-ID: <335f5274-7174-4fe7-8d29-37a1ed26147b@kernel.org>
-Date: Mon, 28 Sep 2026 21:26:01 +0200
+	bh=4tAW3SlP431F7bjWdI4ygJqmG7YuYjWhSnR8WVAPb5Q=;
+	b=1HbR4zfNXXEnbnx+tU0d4q2B2W5K+aEiVYZ++5LS+5voHBJWAPITvaz7ZpvkNHWdL0uOe+
+	l6zkhwKhjXz4ar0hajd+JMDaByX8nMjnWuHa+O+GsNq71m/xJdMwLB6Zb3byRrgVYFdbLP
+	vYBbaE6aOLXob45dFh/PbtBHc9PpvFM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=4tAW3SlP431F7bjWdI4ygJqmG7YuYjWhSnR8WVAPb5Q=; b=wgwhPxy8Tk1YMJ1hy/Ypbhb4r1
+	xWswkSfytQMmBcdva/7O7JMfMNnKn4BMxHBGxKnDVBVaN6inyuo4O8W9t7K/emQ3H4FVgQvx47BeK
+	45m1cOLuYsZgllZRJogqRAsj1o8/kgw4f3p/kD/EkenWTlvSFbsEszvw8116pQrZbPpQUSto3TKzW
+	3DI53KR9Qznor5mfThIGGEwofi/PY1e5r2cuf9fb3mnv+mB3a4cXwisUnbN6DzLGbdGJZ2wsEFKiR
+	22UxwFKn/640pqKtmcR4GNZBvePNE78jqGV67ciq2cm/YHQY+80D2ZarNCPc1Inv+GEayJEt1La9H
+	FMfMCs2g==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBI6U-00000001aN3-2nto;
+	Mon, 28 Sep 2026 20:37:38 +0000
+Message-ID: <5c6edcfe-8332-4db6-b0fa-ca5d137a2075@infradead.org>
+Date: Mon, 28 Sep 2026 13:37:37 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/13] mm/collapse: state what a collapse may do in the
- policy
-To: Kiryl Shutsemau <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <20260928100630.21870-1-kirill@shutemov.name>
- <20260928100630.21870-6-kirill@shutemov.name>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [RFC PATCH 12/15] sched/task_stack: Introduce
+ ARCH_HAS_VARIABLE_STACK_SIZE
+To: Mostafa Saleh <smostafa@google.com>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, linux-hardening@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, catalin.marinas@arm.com,
+ will@kernel.org, mark.rutland@arm.com, akpm@linux-foundation.org,
+ urezki@gmail.com, mingo@redhat.com, peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+ rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+ vschneid@redhat.com, kprateek.nayak@amd.com, kees@kernel.org,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, gustavoars@kernel.org,
+ bigeasy@linutronix.de, clrkwllms@kernel.org
+References: <20260928174122.3380703-1-smostafa@google.com>
+ <20260928174122.3380703-13-smostafa@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260928100630.21870-6-kirill@shutemov.name>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260928174122.3380703-13-smostafa@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E98EBA0004
-X-Stat-Signature: y5d8pxs6mtfixt7i454rfzea8e68hgy6
+X-Rspamd-Server: rspam06
+X-Stat-Signature: cer5ya9pqfx5hd3qzryqy1beuxqfsjai
 X-Rspam-User: 
-X-HE-Tag: 1790623569-870604
-X-HE-Meta: U2FsdGVkX1+PT+elfjG4IGdQQgtvokdfQEvqvk5SsvD3Q02/7kR5FiJ6tZ+cmaAK+mSiSj/E/lB1lsK1YHtGxlUrPi7fZZd/4I2JnatmqN7GWhDYnbnCWYmmUWqYVgBBrUVj1lj47fFCrySDp05KN0ymfuiGf25MH0j754b6C+Flbmz8FHnJ8E1ZB5h5VeUzRhs7BrxjHLF3XJ7Y9cv4kLxAovkTja52K37HjTyN52NcOpK6smOXAOWUBiewsK1AaBhBqyDINZKdL2a/GG9mk2HZLMHGWgoUiAJzjXHvrHSqpGrruCYL39LsRHCREupYKPTuaoU1NTfIET3ETB9qNH20jlEcVBLfE18iDEEm3g40DhpG7P/zS/cn+qRkOXqFCeu3j4QOLBBsoLDDhvkVl9BlaGHtoQFk7E0vfjRTosvf7N+ApHMY2fD3BgvWQttBSpi2BXRtyA0NIhAHX96MYdSn4Fqbk5ZlxeisvsS15UlxGn/Qyv/BLFE4L55U5lakoyCgvgHYzxlr/HIkIqETqmZbcO9s68j8Muri0+ctF7t1uR3/pyxldcR7pnR1EzR0H6IjuCTMDp4ywueThjFYzWcCrQ7E1p2RofX3yADIuFRI6oR6D84H6yvSTpQzLvAaTg650AamLJU3VLFjFAm/PnyViFMHiqlpENxduoFsc18e+pcK68sFYoJ0rAiM5jcq6sHs3swac1fmdzGIALcq9J3vWzG+AgtEvqJajj+3F/Z2iJJkHZND2FT4ShnHsR348hH2yljRXIrBTq/4OXugYXETcExoFLJIItY1zzBeXSAhQO/+O2xmOVG9yivt9mC8WiiMrt3IkOc9hJVYP5laWzV2nt2Q8rbWtwymOQL8lZanuIOrOgzJi3vevXrwkVvr8p+00c1i8NK5yBp/47Fo1RFMZmibJZ3JWrt8swZsVJ0DVS0/LCWvpj4x6KEy9QftEHJLIDrPFpTzIpQQoI6
- qLMwjSBH
- BCcHgqJQ9MMI7i6E95m8wjNxhrYuIarmsZ+SC0MXLbzcSzfjD5zbPwRUCHuFPcnfwmRbNvDFMolCFdo9EPfHb3GkGxQdeGmHduS8EM8XVhcb05j7eb2hdoceoie2q9S6Sd3vg/ggk/DThGU5f8gKNOQmYkSbrhzezKUWKEU0ckGPYhH1VflzB347TKPy/pxEFAmFfMdnc4WaOodvhR+HkxvXDVVq/bDlAdjwtKZBeng1yvJMx8RIdjY0WDLT3DutlfaOIw4ZZHfdHDZJbzUyUET6cS8vwyMxaoRyB
+X-Rspamd-Queue-Id: 4A7D1140007
+X-HE-Tag: 1790627861-902030
+X-HE-Meta: U2FsdGVkX18l7m0sTgkg/VNisPMlZ5pElITm2XAHDIgbHWPCrbMBm2W2U1Vbp0u65RjSxHqQGwsIuIFqzWPbYDftjbc0nyzeUOcrTqG7BSpN2Et5J5EIX0lSWXqJa+qPhy1cDPvzqD7reGScrZFaBdlaB2IVR4O/5WO67tTKrtsK0jQ08f3cn2GwjbhlxKeoBZVpNikC86laU3sgyWUp3Pv17Ew5BU3m2ndCBbV1GMJTVbHUfOWkBJLgx09J59l6tuLanLVxDyD8qeRuSOKQsg4Ppf01aDWK/pc1WWarZLNVWPclv/yiuScH8nW/fb4VOZ3spgAodnr+48+KoOgq7yghUX3hsMIGT9iQoAymLML7bLy7Ur4geXt0f8V6yUL7KiUzQjyzeon9VPuTMNnejfr8kUAp/t8OxKJWEgVdcXRMnpOrfvKd+JuspVTRWdAvwI1VJcWilBc0XVYjCjRnkXRKWjTKWV1ELVuJZc6FW7WO6Dgdjs5CZeW2STkYmyD/8EBLZV9BD/XtIEPCVM1b5Fsitm0Lfw3EQWoOmnChk/liP+NkOP4U/lR5MApzMPgQbKmyDalyt+6XcLLFH1rjBWPr15JcKXEFxIAONIhT9/iCbf3yR4lUHxU4UHdkbVp5MwIjXkKOG/tBR0zO/FZ0kDuMPMYjWy0b7K/iZU9E8QIADIcXCiWyBSGkY4MDPhFM2Zb7i5hRAxWE7e0qs2283o7M1wGtf4N7atmIOuqBqN3DMDMNl01oSu/oKac65yIro8OMgWHHI1ws4vXGq5VmHxqxPfMVs5pFX2J376ryzoqUNTg8h/tEwJw5Pa++hjW/DjMDOZ8jbGzWMyCxI30RiPpj98UHjZ4B5YRIBeU5ARK8/cS4bgKu+s72P1lxCr+OuB7Y75eOC7yKEpGFqBWbC1TkW5q3SejFurPWErWjEXPkU7e+kH4KfQUADbpi2H1KZG/l29dWCrlJ2yy1jE6
+ xzs4oGAo
+ xAgos6e7jKgS90GTTb8czthut/vVRov/S3ziqRh23HQFUyo5EnR6jSTTi4YD84/bVXlui4X92dUHT99WUoK4Qk22LGAHkWuyomFT34kJMXj9tQa/fWHGg7AuaTvbEmfyRLhFdGwd3VqeqqmjvI3R/Mwp1udHGbaYHjUUeSElya7R6iVkQ/ydSjdWG9SntXTOMFBmp6ehUw9k4eaaGoN6bLK/nVhLRDXpwlzt5qS5lWd0sNXVgIWFv7QP8c4K4PEU63PJ1b/OcQXsNKsww207aQPgnmmpx6P++F20cNMaoQfWzbiotrSgtZPoVdnYOOnnzD6kPtHE87iUJJrkXjpGhmOQiMunBHj3rDntB/cYBcUYhLpK9ws2uJdQXDoBTZ4eWajlQkXvzZ5jTTXA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,92 +104,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 12:06, Kiryl Shutsemau wrote:
-> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+
+
+On 9/28/26 10:41 AM, Mostafa Saleh wrote:
+> When CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE is enabled, the kernel stack
+> may not be fully populated with the THREAD_SIZE virtual area.
 > 
-> Tests scattered through the collapse path decide what a collapse is
-> allowed to do by asking whether khugepaged started it.  Between them they
-> settle:
+> Teach task_stack_size() to return the size of the vm area and not a
+> fixed size.
 > 
->  - which VMAs are eligible, and how hard to try for a folio;
->  - how many empty, swapped-out or shared PTEs a window may contain, and
->    whether a sub-PMD window is held to a stricter rule than a PMD;
->  - whether a range has to look used, and whether a MADV_FREE'd page is
->    left alone;
->  - whether the PMD is mapped as part of the request, and whether dirty
->    pages are worth writing back and retrying.
+> This propagates to end_of_stack() which makes functions like
+> stack_not_used() and set_task_stack_end_magic() to use the lowest
+> valid stack address instead of THREAD_SIZE which would cause data
+> aborts.
 > 
-> None of those is a fact about khugepaged.  Each is something the caller
-> decided before asking, and the collapse code should not have to look up
-> who called to find out.
-> 
-> Add struct collapse_policy for the caller to fill: khugepaged from its
-> own settings, MADV_COLLAPSE from the fact that a user asked explicitly.
-> Every test becomes a read of a field, and cc->is_khugepaged goes, having
-> no reader left.
-> 
-> The PTE limits come as two sets, one for a PMD-sized window and one for
-> anything smaller, so that the helpers pick a set for the order and read
-> it.  khugepaged takes no swapped-out or shared PTE into a sub-PMD window,
-> and empty PTEs only when the knob says all or nothing; the warning for a
-> knob value in between moves to where khugepaged fills its policy.  The
-> fields only one side reads say which: anon_ or file_.  David Hildenbrand
-> asked for both.
-> 
-> khugepaged fills the policy once per scan pass, MADV_COLLAPSE once per
-> call.  That is the one change in behaviour.  The max_ptes_* limits and the
-> defrag setting behind the allocation mask are sampled once per pass rather
-> than on every table.  A table scanned early in a pass and one scanned late
-> are then treated alike.
-> 
-> collapse_file() also drops a NULL check on the collapse_control.  It has
-> one call site, reached only from collapse_single_pmd(), which dereferences
-> cc unconditionally, so the check was already dead.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Mostafa Saleh <smostafa@google.com>
 > ---
->  mm/collapse.h   |  41 +++++++++++++-
->  mm/khugepaged.c | 147 +++++++++++++++++++++++++-----------------------
->  2 files changed, 118 insertions(+), 70 deletions(-)
+>  arch/Kconfig                     | 10 ++++++++++
+>  include/linux/sched/task_stack.h |  5 +++++
+>  2 files changed, 15 insertions(+)
 > 
-> diff --git a/mm/collapse.h b/mm/collapse.h
-> index b115034d9018..dcd117071955 100644
-> --- a/mm/collapse.h
-> +++ b/mm/collapse.h
-> @@ -45,8 +45,47 @@ enum scan_result {
->  	SCAN_PAGE_DIRTY_OR_WRITEBACK,
->  };
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 45c657772362..d6fa2ccb0599 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -431,6 +431,16 @@ config HAVE_ASM_MODVERSIONS
+>  	  <asm/asm-prototypes.h> to support the module versioning for symbols
+>  	  exported from assembly code.
 >  
-> +/* How many PTEs of a window may be missing, swapped out or shared */
-> +struct collapse_limits {
-> +	/* Counted over a PMD-sized window; HPAGE_PMD_NR means "no limit" */
-> +	unsigned int max_ptes_none;
-> +	unsigned int max_ptes_swap;
-> +	unsigned int max_ptes_shared;
-> +};
-> +
-> +/* What a collapse is allowed to do, decided by the caller that asks for it */
-> +struct collapse_policy {
-> +	/* Limits for a PMD-sized window */
-> +	struct collapse_limits pmd;
-> +
-> +	/*
-> +	 * Limits for a smaller window.  Its max_ptes_none is either 0 or
-> +	 * COLLAPSE_MAX_PTES_LIMIT, the latter meaning all but one PTE of the
-> +	 * window whatever its order; any other value counts as 0.
-> +	 */
-> +	struct collapse_limits sub_pmd;
-> +
+> +config ARCH_HAS_VARIABLE_STACK_SIZE
+> +	bool
+> +	depends on VMAP_STACK
+> +	depends on !STACK_GROWSUP
+> +	depends on THREAD_INFO_IN_TASK
+> +	help
+> +	  An arch should select this if it supports dynamically configuring the
+> +	  kernel stack size.
+> +	  For example the kernel stack size can be from the command line.
 
-Yeah, this is cleaner.
+	                                    can be set from the command line.
+?
 
-Skimmed over the remaining stuff and nothing jumped at me
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> +
+>  config HAVE_REGS_AND_STACK_ACCESS_API
+>  	bool
+>  	help
+> diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+> index 4a808f9c4631..07d73adaecd1 100644
+> --- a/include/linux/sched/task_stack.h
+> +++ b/include/linux/sched/task_stack.h
+> @@ -10,6 +10,7 @@
+>  #include <linux/magic.h>
+>  #include <linux/refcount.h>
+>  #include <linux/kasan.h>
+> +#include <linux/vmalloc.h>
+>  
+>  #ifdef CONFIG_THREAD_INFO_IN_TASK
+>  
+> @@ -96,6 +97,10 @@ static inline unsigned long *end_of_stack(const struct task_struct *p)
+>   */
+>  static __always_inline unsigned long task_stack_size(const struct task_struct *task)
+>  {
+> +#ifdef CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE
+> +	if (task->stack_vm_area)
+> +		return task->stack_vm_area->nr_pages * PAGE_SIZE;
+> +#endif
+>  	return THREAD_SIZE;
+>  }
+>  
 
 -- 
-Cheers,
+~Randy
 
-David
 
