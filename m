@@ -4,78 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB2C1C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83899C9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:53:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD37E6B0088; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
+	id 8A3CB6B008A; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84446B008A; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
+	id 854816B0092; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4F416B0092; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
+	id 744046B00A0; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B55C6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:53:19 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 543856B008A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:53:25 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20DA880148
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:19 +0000 (UTC)
-X-FDA: 85262556918.03.A6A89CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6F85AA0005
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ur5AWO7g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790585597;
-	b=4WUqvfPl0ZsftuHUCZPDwuLM/ajNL7ZSa36lNKxxsmUVBgXXxYcQqGav9l/SYy8kG1LyaP
-	WPTK57/metkM14+cZvlq3RM3cFzZvtP5wC0SsC/Nko7hbq6H9CZoJsnIWdNByb4rE3TRz1
-	QdOx6AqYOdtTut+GScoYZ773D3slRAc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ur5AWO7g;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 43D7D8014C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:23 +0000 (UTC)
+X-FDA: 85262557086.03.A695537
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 771DE140003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:53:21 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrFYJfwf;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790585597;
+	s=arc-20220608; t=1790585601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oMRlamwZOS6UGMnR7RRChBxeZocxPHKpOSIJpnFzjdg=;
-	b=8QqKdt0086gIgrFnfpy4wz0hxrbsDnlBT15G7axzHFqskYYkTRv6jizr1hYCCMUHl1aZ3l
-	xLy1K1L2csblnvLFrOeYukRlkwXOScxO7HUYdcl0ag6nglu9J8H/oW1kFvGM8Wuv74LREj
-	jaZIxBSvXFJsD71EAdGDhavCfv4Pmfk=
+	bh=5PVeGOJnaKCpJJY0+kbJzTfUxuIOeJRjTWg+Uf9bzrY=;
+	b=xGdFp3EuljQVzu6++7nWlLGLpHiGZvRhsX/hngf5/sw8ii9M6+vLtrEXWpsroUGca2HqDT
+	LGh0c5kHuPfKcERQuZM2eE3dGhwcN1oRwZHqIbqIWbNDjU2Ddr1ei22E8wfUhkorsfdwB9
+	w7MedvNsP+zJuzIJGWlJ7WGwRjh6Ezw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hrFYJfwf;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790585601;
+	b=N3BYsjttkDr25kO1JABzqGkvkwV3Zw6xDJrVKzWOh1VPerFytRKhE2oAGjPKGvJIsvL+RZ
+	r58hKCq2u2D+jvNscAaOgxZm+maLB1vx5R7MEzd4ywJV4DRyPvw7h3clMIvKjRRfYHMiT4
+	N1BSdCiD8BJ/vABhLLR3X0kvaylXKvk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B45B560052;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9EFAD43BE2;
+	Mon, 28 Sep 2026 08:53:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110201F00893;
 	Mon, 28 Sep 2026 08:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667411F000FF;
-	Mon, 28 Sep 2026 08:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790585596;
-	bh=oMRlamwZOS6UGMnR7RRChBxeZocxPHKpOSIJpnFzjdg=;
+	s=k20260515; t=1790585600;
+	bh=5PVeGOJnaKCpJJY0+kbJzTfUxuIOeJRjTWg+Uf9bzrY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Ur5AWO7gR/EbdOkHyt0zSPjUSRWOvbKnLYxi2SIB6aa3Lw07eZbQcaaveO8dbyFIz
-	 DxgDdE8bYmMTQ4WUyFOsPLtcPgv8pFsJm0zacnNwDrh28AwA9Wg24MECYdP9hFx6UU
-	 GHMKZz50SFXq25g3V+T/EJTW5jrgDAkIXbHevcRV9nsvgJsPc/cenqrQXtcnrEhgRp
-	 6ISbEj8RRVQ1c7Nursl4ntsqbuRirELzECvjuVl2L32LrD2kcSOc56KipX1QBUb6QV
-	 kSrBHlPE93sJHrOgFH78l4HvnLJfZz4NsP+Ally3Sxvx2ml3kJBBgbEyDc6rB5NqHE
-	 5FLJsz2UFKDig==
-Message-ID: <cf0d7426-0838-42ea-b8b1-f694546ecc25@kernel.org>
-Date: Mon, 28 Sep 2026 10:53:09 +0200
+	b=hrFYJfwfCcGmTGKwfH4kA1bByopbzivdG95gwg9QPSMCGENY3BYLnIJuz03bHzn1m
+	 Auytg8u9pwWvX2XtvlywvDnrVK9KT2YmJWuYTRSbLMbIj+BWVo2ucIYvOYthdKZo94
+	 pvMD3pulkrFS7Hx+dQ29+b9K424ZJRXVXUIdZELDA+71CmEW2mr3AlD8jxMhNjScX8
+	 zoQBOjv3qbDWZPo0Fo8+qslY0f1ixzEYJj3rMOf4XlhTW8tyVOiwxfJmzpuI1Xq/xL
+	 hxqF2tmWBUKuwUZOBJuOxhfybAj4egnRehaLH8BOnjgHTWhDupwm49rZ/RDiMOUB0N
+	 YeqNkMD711OUw==
+Message-ID: <4e4223f4-dfec-4e82-97fe-25ae3a3b0f73@kernel.org>
+Date: Mon, 28 Sep 2026 10:53:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: uffd-missing-wp: add GC related
- functionality test
-To: Martin Cracauer <cracauer@cons.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org, peterx@redhat.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <arneZ-KkRWUNI0Ho@cons.org>
+Subject: Re: [PATCH v3 2/2] selftests/mm: add tests for UFFDIO_MOVE of a
+ uffd-protected swap entry
+To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>, akpm@linux-foundation.org,
+ rppt@kernel.org
+Cc: peterx@redhat.com, surenb@google.com, aarcange@redhat.com,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, mhocko@suse.com,
+ shuah@kernel.org, kirill@shutemov.name, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260926124145.2878520-1-donggeunyoo.kernel@gmail.com>
+ <20260926124145.2878520-3-donggeunyoo.kernel@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <arneZ-KkRWUNI0Ho@cons.org>
+In-Reply-To: <20260926124145.2878520-3-donggeunyoo.kernel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7wz154sdq1dzdgmxmkcdqpb3ka7o9pru
+X-Stat-Signature: f5knczib54ynoznwtbgzp58naurgs3zf
+X-Rspamd-Queue-Id: 771DE140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F85AA0005
-X-HE-Tag: 1790585597-585517
-X-HE-Meta: U2FsdGVkX18h73OWzaUVpBhIIC7MydwvxGMMPdRDqHHC6POMvQ1AH72KqC9sQxuD+l91kgFkrMVe9yHWFO0Qfxp37Hk2lOI093jg0vaBrmOdCnOdcca6KArCVNnQSQ0yC0RUhhVbepNGP2vsIEvRCrwhu1pX49Jep1rhfzNZPbCiKe2JJ2L8773yJr52qjcNt/gyEE4wFw/OB7AbYTWUo9bpCulXDrgaq9yM6pt4Fn8YyZwknaGqi9r8AX0xxtEiPmXnu6fnUr8NC8UMHMCHJzHNrp8zplSDVFzTuxGh/YoGmY7NJqf6NMuMHIi88kMNEGUsTD1SOMbDDarc7g4XMZs9LqiQ99SpgJg8l36EQCcD7PxDoxBYGcW3qUf49yVYevwvgswIZsBFdYYMmmld0kLugyS0KLzev9vL9Idxfr2uSQqTvh5M3Pb1zILAO+QJPb6vn2mBddlXAJdVHeKKuhxrZadgbbNWK5RaZNjnOVP4LymPCB1mQWGcENlX24RcbOgh8x9q8nnL4mRQFfmxou6Hk42Cl+ZcjFqBWpqI2xy8gnNCopxg+cwXVdkRmCl7fnx99nZpGhF8OHDabBtsJNip4VMJGBKFhmQaSZYKB36zJ2ub/Tby979VNFwzdPSbPRSdBsnX86jQLoesqxSiTJgqVm4gFRSrntP1Fj4c1jqNEo48pM8moV1/6Gzmw6aIuO4F1lK5xuZx2G/3CpchTPT5m2mNN2/7UXS1T3YOr4uOBQneThE9WgnNgZBQqNNaoa397shsifI/h5FA+MkjRWx38tyGwOMaZTRcky9AKXbq39yaPJSBrGJbaqYvoTNONSV+EqzRPBe6cLjz0cWmz9vxFwmX7KFzFiUbPy1nUvldnWuqsN5Pk6Po0ZBUiQYXtGp8EDiHkW312rGQniUDSJYlWS7GKJzQKr1hFF+3jJjXWZ2v1I8hOX3r9a1PlVGYWAClFkA857e8nuJHQOb
- lKfu5rJT
- UL6CMTeFshFnCiS2JbSKPK1l+whqLgdFTktvUc2/UBZ/ltYiXcm/cvJSNpUDBwn+O2UXHPRM51xv5OsmSYkTW7D1PiJIVovW/HDWClXvVffoZynujUMMri2V8dgm2VH87dxfyF+upmW1dB9Zjb3umuXzlYFheDzyM/HjBmFA6Wsfo2u4BmnkeTQOuDOzqWMInL1UIgV/x8qU06Ln5tRF6Ngyn+Lymq1N5im2DVqQpCWi9NBYaKEYqdOUL4cWcFFw4Dtb1gtj/lEWPZaKJ2+WV50Y3BEgz+wAYWEveVbIhX2Baf8KbBRwz7FAJyf+FQtuE2wXw
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790585601-206369
+X-HE-Meta: U2FsdGVkX1+lowH2dVUTANJX4VHpMAbOWbZHfny7dmCen1dI+giV4s84drE9juEdv5YOTTRhVj3CF3dtwJI+L3RuGwdt0lVJlTDwhOwRVxOCG23KdbHFN2mfrSABT8KHuWiorgn8l3fB6tQ3K10u93NGGOj7LKzhej/gOwNma+TUIlubhArWlLneNDWgzOyuS5UrQ+doiFBlheWnKxhdBYAhlah2iUTlNlXT/bf1JDORtpxZlwAu17tVUr2hSxa7q972eqPv7BX9z1vkfCtdJzOmAyoCubYFXBTXVP1yGUmzOsFbXeAJxRc13hsKCTom4/x93xchQVg9CH9YMVNfLWX3Y9f498Euc3JlBFKz2zSAP3zYnPCyYqsdcvqHWIZv66ijfag6IkMxbr95inElD0p4Ynb1xElDcLUfxJsRKkWlkakN1baxqt+Zc3AqQkQoZSX46fPKS4ojkXAAiyOD/hnzsaodrB6zgmOIRM/NWsACYQt97IuCdLEYHOonS1K+Kd0+1cRzQRINMwbQK455ZYkqilbv/fS2ynRE+Q8xPapgEhqBJWGTxyLUwvozmu5MU/0bK2MmFtwjvk+eYbNjl99Sgvtg20+L8i44D2ezqk8rbofKRknLDBQ3vvEeyBVIw9A2RUiMaDffi65X+t4Kf55FS9eXmKszfOS6pwcZHYuQPVBkAkP4ZdIIbeynbTP/oTZ6Bp+KC1UQUfh8nu9B2l/r0ViK1fpNTpVlFS5CWsP1iX0mwdzzWjs3cjeDAV4i8Ycn/d1GTyRaE7vGFxjJR+TNRiXSkZ3W4YSEqmJiTiVi/lvvwnDo/wWiI8IMNEW035sSfTa2ZksDqfId9ZQC9fgEU4rztxHhX+PLPF9StuNv9LHpXYvRvmJySmrYnB2XV+2CWflwH2Fqwq2xg7tXb47URcRXmnZZNns3Ztf8jfGb3f6xbNo5u0ZIQ4HVncKdx2Jcev3WxMh/QMzi6Mh
+ q7oD3aBB
+ 6aKzPYfn3pEglh/l8AOr92D6fh8c7u80h1casguOAJD3CeICmlcQtMuOlLJFW+mUGvBXYqjP1A7+ARO5E7IT+DgpLBTQ9sYMICMDJvyE08eGfjCSK5OkUDUB3Buh2xkhwBkctRW/CVhck/W3mnvNTI0EYTsAe4bbwLtbTnDxfK4xa7PwfS9VwtulmWn4THQT1fp+x4CNpfTuBnbxeZ6eKoTBDOcGLVpDUh9xmiRsOZPp+oM6nFfCM9Z12wy23P4Mu6Xajf1wL+VlEvUMDT53yNBtnevtpfSVV7xxy40U0IzIATMkderRM2HUWQkk+FqYq94dznUfgJePnqSh+JO68/2DaTmotdvrPAHTDyBAqTq5GIdqCrJgZg1ikBslgx1tmN+HRcJ6nOQ4dzjDM9FNBB6oB98JBj3bPnlt4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,28 +142,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 05:26, Martin Cracauer wrote:
-> Add a test that asserts that functionality needed for generational
-> garbage collection works.  Namely to implement a write barrier using
-> userfaultfd instead of using segmentation faults.  The planned target
-> is the GC in SBCL.
+On 9/26/26 14:41, Donggeun Yoo wrote:
+> Move a swapped-out page out of a write-protected or RWP-protected area into
+> a destination registered for missing faults only, and read pagemap bit 57
+> at the destination.  The destination was never protected, so the bit must
+> be clear.
 > 
-> The real GC will initially fill heap pages by using on-demand loading
-> of pages from an image file, either via mmap(2) or using userfaultfd
-> to decompress a page read from an image file made from individually
-> compressed blocks.  This test doesn't do that so that it needs no disk
-> I/O and no decompression library.  Instead, a fault will be filled by
-> copying page content from prepared pages in the heap.
-> 
-> Assisted-by: Anthropic:Opus-5.5
-> Signed-off-by: Martin Cracauer <cracauer@cons.org>
+> Assisted-by: LLM
+> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
 > ---
->  tools/testing/selftests/mm/Makefile          |   1 +
->  tools/testing/selftests/mm/uffd-missing-wp.c | 413 +++++++++++++++++++
->  2 files changed, 414 insertions(+)
->  create mode 100644 tools/testing/selftests/mm/uffd-missing-wp.c
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 84 ++++++++++++++++++++
+>  1 file changed, 84 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+> index ef9b3956bdcfd..580178630eded 100644
+> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
+> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+> @@ -2037,6 +2037,75 @@ static void uffd_move_pmd_split_test(uffd_global_test_opts_t *gopts, uffd_test_a
+>  			      uffd_move_pmd_handle_fault);
+>  }
+>  
+> +/*
+> + * Moving a swapped-out page out of a write-protected or RWP-protected area
+> + * must not carry the uffd bit into a destination registered for missing
+> + * faults only: such a bit is never cleared afterwards, so pagemap keeps
+> + * reporting the page as uffd-tracked.
+> + *
+> + * Needs a swap device; skipped if MADV_PAGEOUT cannot evict the page.
+> + */
+> +static void uffd_move_swap_test_common(uffd_global_test_opts_t *gopts,
+> +				       bool rwp)
+> +{
+> +	unsigned long page_size = gopts->page_size;
+> +	struct uffdio_move move = { };
+> +	int pagemap_fd;
+> +
+> +	if (rwp) {
+> +		if (uffd_register_rwp(gopts->uffd, gopts->area_src, page_size))
+> +			err("register src failure");
+> +	} else if (uffd_register(gopts->uffd, gopts->area_src, page_size,
+> +				 false, true, false)) {
+> +		err("register src failure");
+> +	}
 
-Isn't something like that a better fit for LTP?
+if ()
+
+> +	if (uffd_register(gopts->uffd, gopts->area_dst, page_size,
+> +			  true, false, false))
+> +		err("register dst failure");
+> +
+> +	if (rwp)
+> +		rwprotect_range(gopts->uffd, (unsigned long)gopts->area_src,
+> +				page_size, true);
+> +	else
+> +		wp_range(gopts->uffd, (unsigned long)gopts->area_src,
+> +			 page_size, true);
+> +
+> +	pagemap_fd = pagemap_open();
+> +	if (madvise(gopts->area_src, page_size, MADV_PAGEOUT))
+> +		err("MADV_PAGEOUT");
+> +	if (!pagemap_is_swapped(pagemap_fd, gopts->area_src)) {
+> +		uffd_test_skip("MADV_PAGEOUT did not swap the page; is swap enabled?");
+> +		goto out;
+> +	}
+> +
+> +	move.dst = (unsigned long)gopts->area_dst;
+> +	move.src = (unsigned long)gopts->area_src;
+> +	move.len = page_size;
+> +	if (ioctl(gopts->uffd, UFFDIO_MOVE, &move))
+> +		err("UFFDIO_MOVE");
+> +
+> +	if (pagemap_get_entry(pagemap_fd, gopts->area_dst) & PM_UFFD_WP)
+> +		uffd_test_fail("uffd bit moved into an area registered for missing faults only");
+> +	else
+> +		uffd_test_pass();
+> +out:
+> +	close(pagemap_fd);
+> +	uffd_unregister(gopts->uffd, gopts->area_src, page_size);
+> +	uffd_unregister(gopts->uffd, gopts->area_dst, page_size);
+> +}
+> +
+> +static void uffd_move_swap_wp_test(uffd_global_test_opts_t *gopts,
+> +				   uffd_test_args_t *targs)
+> +{
+> +	uffd_move_swap_test_common(gopts, false);
+> +}
+> +
+> +static void uffd_move_swap_rwp_test(uffd_global_test_opts_t *gopts,
+> +				    uffd_test_args_t *targs)
+> +{
+> +	uffd_move_swap_test_common(gopts, true);
+> +}
+> +
+>  static bool
+>  uffdio_verify_results(const char *name, int ret, int error, long result)
+>  {
+> @@ -2359,6 +2428,21 @@ uffd_test_case_t uffd_tests[] = {
+>  		.uffd_feature_required = UFFD_FEATURE_MOVE,
+>  		.test_case_ops = &uffd_move_test_pmd_case_ops,
+>  	},
+> +	{
+> +		.name = "move-swap-wp",
+> +		.uffd_fn = uffd_move_swap_wp_test,
+> +		.mem_targets = MEM_ANON,
+> +		.uffd_feature_required = UFFD_FEATURE_MOVE |
+> +		UFFD_FEATURE_PAGEFAULT_FLAG_WP,
+> +		.test_case_ops = &uffd_move_test_case_ops,
+> +	},
+> +	{
+> +		.name = "move-swap-rwp",
+> +		.uffd_fn = uffd_move_swap_rwp_test,
+> +		.mem_targets = MEM_ANON,
+> +		.uffd_feature_required = UFFD_FEATURE_MOVE | UFFD_FEATURE_RWP,
+> +		.test_case_ops = &uffd_move_test_case_ops,
+> +	},
+>  	{
+>  		.name = "wp-fork",
+>  		.uffd_fn = uffd_wp_fork_test,
+
 
 -- 
 Cheers,
