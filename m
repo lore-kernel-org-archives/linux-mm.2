@@ -4,96 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70482C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:06:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCE7CC9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:07:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 733BD6B00A6; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
+	id DEC6E6B008A; Mon, 28 Sep 2026 05:07:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E4226B00A7; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
+	id D9E026B0092; Mon, 28 Sep 2026 05:07:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D42F6B00A9; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
+	id CB3686B009B; Mon, 28 Sep 2026 05:07:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 333456B00A6
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:06:12 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A90A3A0154
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:06:11 +0000 (UTC)
-X-FDA: 85262589342.02.BEC35E4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A5F416B008A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:07:27 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 292F4C0130
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:07:27 +0000 (UTC)
+X-FDA: 85262592534.23.FB4229F
 Received: from mail-ej2-f41.google.com (mail-ej2-f41.google.com [74.125.228.169])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C594F160009
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:06:09 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EBLPgoDC;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by imf09.hostedemail.com (Postfix) with ESMTP id 43876140003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:07:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j6ZGtaRu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790586369;
+	s=arc-20220608; t=1790586445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
-	b=rRgxD+mtR/hEERuG76qC3/WHg8oNiTJOZwzrZerZy0+lOaCMYzz9zBup72PwPTUcuVHbn/
-	lWxHYn7cOYWXGTWwKYNhDZjGAacXBX9OMhCph7xcTuL6y0+uWBmO+k6yp+sZjxFV9nbWqN
-	mn7iYBeN4X3PUeVxD0aSc2bdWqsMGwU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790586369;
-	b=nYJTbs+p9AWl8JB6Z2EMQPWHdvCDo6RFleN2Calo/Jq872Z72qOlx430mBZutqyMz29mCs
-	gZCDkI7bai9R/kXJhyNGPqsEapkr6fThEL+vs43SEP4OYcZBufdtlEUTk5KhcBhLXWFD5d
-	FcH4vFsJOIMKNTs3eSnZAh3fxOpkhWc=
+	bh=rz4A9u2HwDkmyVBaHthqdE81Vhdpzal2brNiQu6Y4JM=;
+	b=1OHmBkiPGJPsDhxWBxUg1eXOajR8x6Ue3KMS0P6Iz3x1pxm9RO5/0ybdOr9e82mzFc/SnJ
+	y5AoQ3bveGZYL2ONG0t1aPyHTI+Nstxhb054bOYHR4HiGEVnvsskRkxnNL/axHfu7mfFLF
+	d9WOxViJF32+BMe5XHITMgVcthyDg5Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=EBLPgoDC;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dca989afcso146754666b.2
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:06:09 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j6ZGtaRu;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.169 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790586445;
+	b=dB0gfM6PponPYu8DrJUl2LqKsrv7bmmPkQpGqcc0IIhAubmTDXa1JzJNbCIGnrdgy7YYvQ
+	8pXSmn+ISW8XzzxKY+PHeZJ5uU3QLogh9P0zoQXmv3lFhTvhyaSsdscM2TnmeV5AkNk0eN
+	dDuYI0VKYmOnH32TO6Vjvrn7tXST0UI=
+Received: by mail-ej2-f41.google.com with SMTP id a640c23a62f3a-c2dca989afcso146892466b.2
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790586368; x=1791191168; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1790586444; x=1791191244; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
-        b=EBLPgoDCq87EIj24H1ZL1UqfrCQ2Pmtj45D1hL8AM009QdiwRTqtGzQCD5NLEsM+GG
-         qCxaRuPnF35uU5AGZOTREajuDu+VB8ol70sphuxbMymCUpg593XZIfzBv4N7JUjl05TG
-         aYUcDJgD4mpM1zQ96AzhnJkFm+5hzRFlIe/rbjMA0xuTu03LyaTAORav7EtmRaSc1VVe
-         dvefSHW9uNhRewgtrLg3ygk727e0SkJnNuMG+OsqS4HbHjSmRjzzCFjxjOZAS7dZuXFw
-         YNjq+3x62fthwClL88O5K/UmigvR3Hr+7I2DHHauo+6YqTqBLGhW0Y857mWXM3OM0XFv
-         yueA==
+        bh=rz4A9u2HwDkmyVBaHthqdE81Vhdpzal2brNiQu6Y4JM=;
+        b=j6ZGtaRuJMQEePjecYgDTBs55kkAZvHCBrrBXhPQRmigKyseh3sW5ttd8AWV+Qi9Xr
+         yrIa2aj8IItLAogoCu7LZs2qAER61iEAGxTOJJjtRMbd13jjZZgEII1eqQsGFfgOdnqQ
+         NkcwNXL/Da3O+gQGaUDPjxRiHLUlyJBU0uc4hTQWkMEoyaqzGfK14wXr8dQjlhSTBclG
+         /AMmo/mbnI7TUPT9GS29aEE7lpEqms1J7PKAiES0JpC8s9zNvtmoF2FA0Lqg23/fxGtF
+         ZNQo0oyzYOSd3N+Nm5UrRW6dGFP/yi0PJ6dalPm0tQLmqcVcmsbOmDWC/FFM5xGyuFnm
+         fB3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790586368; x=1791191168;
+        d=1e100.net; s=20260707; t=1790586444; x=1791191244;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=XtSlOLaW3Y5DkxUyXc5MQJfomo4EWRSttsNoIPMu1rQ=;
-        b=xDFo6J22W6Ivfw1Q1gALd/z7R06dkmKoGhIw1FuAT1PwmdCvgXUVFDgVdVGR1P7bxM
-         NqnmttNxDd6xAvv9zKbu9NuBqcoc3YCpSRqQQuez7lIDLh03TzbqzJUrWRjKkh/XZMhL
-         zJiDvetf2GpgSVJd7cNH1lOYeR7fq1ktU0fWEtX+feMp0H0uceweU2xVUaunJGlr0wU1
-         +fr3J5z7itJBQYE+h7qfE4ssfkoUMob0ojJcYzhbKSepVOeVtfyayvmvZaSeAdd50pm8
-         iX5r8qYm0J9CP2/rcJjVdQAYlTMz8TUxBlNldgObAbS4JZbkx6XTykSDUWTU34ypaFSJ
-         ftng==
-X-Forwarded-Encrypted: i=1; AKwUvBy2DmaL1NyQfxuk1I36bC8GSFJKwOVJV6R9N646jICV5/lchUgpplibxYEwGjBO1vlNEdAzXQSuYg==@kvack.org
-X-Gm-Message-State: AFuF++ldzmbD0fLw+BFEK3VuhG+3kqxU4FpgUcw3daJljm+ILf4mZ+Jm
-	gk/K7kdY16znmPNwKWFRuMnHc2Of+C+52gzYK4ofdnL9uJQY1sDWHRIt
-X-Gm-Gg: AYBFou1q24UeOIewHWwVU8ImtmaaOhDW9eHIhV8YGBqU44VqFmrgeR7yqwMH83PZx/w
-	LJ6qf4x/GxolLIERd7KrCukink2A/s1G3yvdVp0QVgD2aOXW/mO4h5SJPAVsnGcOEwmU2Pdzra6
-	YRsJW2Li2w6jpWgrenYY4IZDIvijMQqpCxPo71AV9EGdT8s0Gm96MhtAZ/eKOJ1iIyBxGpBzn7y
-	7jLlpVJ32oN+IeKMZ6fLGJjfgMU/TsdIiadJ1mSi4KR82aSUh8jSct+/k94UKPzHX7u28oYLr44
-	Qe/6wd5WeQNYX1ZDnBx8odhANYMaw+bmVwPOQrwPOfltVQMNPvDQvrl8wcgIGaE0kWvnk45Unsy
-	10/KYpTAAB++LCI5UNJHLPAr6yclBunnEKl9fevbeiz5q/STXRs80dUxn9pWfvrJSm9JgMj885m
-	we1x5rCQW2NXaPVWpKrzBg96xJeQhh8mp68+g=
-X-Received: by 2002:a17:907:9447:b0:c26:2eee:ffc7 with SMTP id a640c23a62f3a-c2ac250ec3emr1002093866b.35.1790586367856;
-        Mon, 28 Sep 2026 02:06:07 -0700 (PDT)
+        bh=rz4A9u2HwDkmyVBaHthqdE81Vhdpzal2brNiQu6Y4JM=;
+        b=etpBKVZi0gfkJWH8rjaAhvBGN8szwqNs8UtQg/b21p9PWkdwSkN/62kjGbNIWzv/Uh
+         44DhYr3SJzTvozZzn4n/zJuxzIP53l3oNjKbE5xWzDhLl+Lv21i/AzQbnmNU2ix04dDI
+         wobaMbKqukobDEGohB4P+BTLRfNPn5x/9c9K4KSoSNFNYChsiQG01gG35gXsBgR6Ci3f
+         upOayoMv4weVDTdT8MWSB5CWaF1bzq1Qeu5BJnBy+Iw5jw4FnlIcPF7hXBMRMZ789HQO
+         Dj759VI+63Q0ta0HXf8R6iMKkiwcqkdn1zj0Ir8ZBVlrLFzLAyL0Tc2THhdkfuTAS4e5
+         Xv0g==
+X-Forwarded-Encrypted: i=1; AKwUvBzzWPbEoaz71tZulS58ceR3wWuNg+PGQu2jzqG1XR5nAuPAEqeBJ6GGdcsga+j9FxcBh8oZXZgusA==@kvack.org
+X-Gm-Message-State: AFuF++mZDVI+Pps/m4wElU1friWy7IPuBR0cEdrawLpvpcbckoTAU6gg
+	/Ds29cpAPZnozEoQVaFTFiYp6bpIOrxQQKqvfbhnuYPQrbeXWEnwMvuA
+X-Gm-Gg: AYBFou3F1mUYFndEkqakuL0J7zRg2ME3lAcU97W29W30UHPRFQ4BMUjSHeJ4ZQcaVxv
+	J27QUl0zDMKnRImCtmvwrnzIDhykazuLH6BmBl0TKVeXjOygLBEFvEPu4238sxp3YWUG8tC5DOW
+	hWdY45Lg0LBMTdpwGGCsbLIg1zA4hgX1YdSr/WDkLr07PSKqMS+oPtBvp4ZkdHKtjoJbiwnH9yu
+	9/5OFb7Mtvy+iJgRRO9F6ogrTJygTytHVqDFbu/aQl1WhLRPswDXynMqGMqtxzmE5A9h3u9H2rT
+	u7ljmepDJ0XfHf8TQBCrZ+RkPufAWIdwUpVz1tfo5eMlGzVbYk4r7gQ9VVhqKae77S3nWv6P6Eq
+	+IEipkht8sVJn8qebiwfzKDoEEzzileVgVatr2Jr3Q0jYAuQrpLBBnuyOWjufwretbJkMetUISd
+	BQLqlYlpaaYKsQJd8/cRt/L1eu0UrITMRO9SU=
+X-Received: by 2002:a17:907:6091:b0:c16:4df6:176b with SMTP id a640c23a62f3a-c2ac23d6040mr1043044966b.20.1790586443621;
+        Mon, 28 Sep 2026 02:07:23 -0700 (PDT)
 Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae7356d1csm441929866b.18.2026.09.28.02.06.06
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757ac8dsm438371866b.25.2026.09.28.02.07.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 02:06:07 -0700 (PDT)
+        Mon, 28 Sep 2026 02:07:23 -0700 (PDT)
 From: Uladzislau Rezki <urezki@gmail.com>
 X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Mon, 28 Sep 2026 11:06:04 +0200
+Date: Mon, 28 Sep 2026 11:07:21 +0200
 To: Ye Liu <ye.liu@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>,
@@ -101,23 +101,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
-Subject: Re: [PATCH v4 2/2] mm/vmalloc: fix vmalloc_dump_obj cross-zone VA
- lookup
-Message-ID: <arot_MLB2tWwR7ue@milan>
+Subject: Re: [PATCH v4 0/2] mm/vmalloc: fix vmalloc_dump_obj VA lookup
+Message-ID: <arouSec6y9oVau10@milan>
 References: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
- <20260928-vmalloc_dump_obj-v4-2-6f288a431edc@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260928-vmalloc_dump_obj-v4-2-6f288a431edc@linux.dev>
+In-Reply-To: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
+X-Stat-Signature: 4ruwcypbnkwe1zo88pbnrwp14wprpkru
 X-Rspam-User: 
-X-Stat-Signature: xgrjxmxe3ua3chknknfkac44yfi84jw9
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C594F160009
-X-HE-Tag: 1790586369-315277
-X-HE-Meta: U2FsdGVkX1+OhX9/Q9GkhebKrzhbM3cOHiL9mT2h6QTV6ywbMYZVIW7lkBr43fx/quwLX82Wib1+5pn82hnUxRezql+nZugCjsMNpmqg66U7gOo7kvd+MWPUUYL9Nc90t+wN9qlldxeVyZAbevafeu3pBhqD6lmX0qYkrg8l4+GqcXihQBhLPkFCosNG246xMWmSN3QIHsb3EqLBHwn4O6Yjeo6igCFuIJ61i8o92OiUN/lk+N1FCYka7XxMXzAiQ1I2PIVgJtmoFYK0VSgrs0A6uj+I0Zk7A5ArlaqJ79G71B8By8zJJ6qUJ9TEnFRm7EDw1+N2uCA6IVlpz9ZsUbN+7Ie/tI8x5pzxonbQ5j9d/QBxe3UuPrTxyUYujKmdkMh6tnzaJ3RRDNKaAH6G/YeqrHS/5PptP5yXaRNzSg3iNDNNaPTk0rwVAp7cypnwJPmkbjchDN8lMDo56WT1LXSnm4U+mwH/iyB72r6gfSoltirpE1RoWV/ycQkMF3Zk5wicoeonJ4qRLNyoK+yKfUceeeeyZFItibPXr/uORQuQrazNzUE91WU7XfenVCIfuAv4J0P+KvEfw88E4s12qPEku/BPLC02mdVUkgimRhWlQcCat4Y08ISrC5v/OwnHFXxJFEfPuQ7n+EbL0MjxY1XvA/D7ob8mPLf5vDcer6NNrPx16/OFGViO96TwBNnuOMAhhM8RRWrm5Tg8AePFphAOIMMPNIkFbvwsQLLb2fQtrgw6+KxUOXvGgjlCoCQ+OCTElpnEtv2bK8DK8GhZrvq+nLOnlqRt6BxtbZ0i+HGHH9xqvbPevXi8zQfdCGIbgC5ouobepJn+RiMFjNHi9CYcaJ7QelYQ9Wzc13+ioaw7oILXYfKUeM8u0Pn+CPk4T700XwEEJKhFPhlROwEoe5kQ7U5y2FbKk74ILyHjFcGupl5rAJYsuW27mA2Fb97IVwltlSmgC1rk7Nk1Zye
- Dtro6F0q
- hTJWh+dQjrH51lKejesw4WlU4u2aXwM27PHhe3hlArwa4xsBPmnRowH9MXuFyRXaiyLCnfKMAH4AqrSws5VcOuh7IvxBKsUnudoFXodqNosmAZQ3i0Bcn+uh/cwz9Is8lmACMyB2KPQy577FONldfqRj+HOXWWJuEiUx2+Zi/UP2JpUa2fnnfH8xWVTzL1OAmHpirmSalWTqeT1SDeoKNcaAkaTkGHO1T8tL4+kbutvsq3muW5JDT6ZgJsFp/3AKeZi+tt2usv1f67tHHW4G/HfuCKhe/C4lYLFrBa2AFY4W2fYaOlPod+r5xxe89x7jbEzFV0NV7WXvFFPOmVlfxfbTgJsELoE4cC7Rb0BXQosG38FjYUm8hiNBKAbGksokImr5rHyPlbi0RZTX8quJYz1qk56bzrHEMaMJ5nhEsXgKOtIx/6FuwPbNJHDf4VofZx+N6cyhtNMzk2pcvbi2X7+DBFKbM59RfisCw+ShFi04b77HAw8SUMrZbz+qc4kDzwDqI
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 43876140003
+X-HE-Tag: 1790586445-467709
+X-HE-Meta: U2FsdGVkX19e+T5xeq8qK7RPfODcnNtqTyV6Umf3if4i3Qc8NXmvF280IyH8vBav2W09JOZkw7hb/z+16yDvxoMPq+TMETpqLFrjdC1Hcj33hd8MUMbHkA7r9txHGexWjmm7TLKSeFVR8CYGroKvP1DVvtQade1mL1psZmGUybdGzj7u/FYF9uDYSKCSrNiQ8bxo7w00F0gqxriJnbF5pR66JdrGBPSW5dyfuL+Icm8MNp7r541VRmzZC7qwokrmqAB+BytUt2jLeC22JeUVCSLPOo9hG9+m7sS9K8CptF1+gDtpu5cs9NlebDfjCy0T/HRfZsKENqkf7i/R2MkmCJhqdG93AVVt40KOSTIfnT3C4+iFM8lKqBlAamEIXEJnIdS469jdD7tdsgPbiLoDm5mjKu0TKgmIM3td0qjs6uKc3UxnCA77Mo6nd7tKCePN064JcUVFShAFVIPK1D6nbhR8zpI4O7f9SMMO/+Gpe44P+6wUT8ovVP9MMyQQ9UzJmUGSOu9h08j2kSIG6WwtjEWnfTFxBWn+2i4zZC/MmWCKp6V2BtVslNXuc0OVHNQlaFNNK80GwoYQkuk++2GUj0RNEcFlrQ82DBpKP8UbQKehkLbHSt6SwEfs3/zjzj+m3hSHoAikQrdMaTQVoh36ut934VSW34SrWRUXrf6XvNvkFuCwtX293iArYP452+IaW6LRPa9WpBGSYu4ZTKrqLfr9bOlfJSu+Om8SVOarI99lAnmLN2VEIIcyRazG6Zwklvq2QOdqobDUaSqAIdnOoDUoSh4iSbPAPadnliUBn+uwYBnmEHhLTi+YJZaDJMX6QVioqtlgL4FCglGCd5+lvHUuMj4foDThczklw6QQkV5+Bh+Y+HP24It4xobwWsb9VRWwg7EjP5+TWTGRjN7VqITl0Ix9dxJCxiEg6b3RnHWB/foXxQ+ftVdy1b7QvMzkEPp4NvSfMQgZEifwM1V
+ i5n7wGvj
+ QdQO5wkqPeRXFpnHEtgtVRyxZ4DRhFG4gpQAM2b4qBiiFXEmp3J7OFIkYuYy00ob306bq8KNny+6YsfU1dXRVV03hkkhuy2PM4z1gwkanN37dw13hbFfxGyJv2kK1dnjpzOFaEjUnlQUg2woCSzyof3XnCLLwWRnri+lwF4e1PXo/S8GCW3Bg33R06erhTA6ZvyDmkh+Eg4EwVe9VfQlGBXdP8SXKWMaQmctcoVsB0g5rjPnHFtEyXYu6c4j2cTvdO0QspnA7JUhq8sH2Cl+Hn+ckkRiy8Yur//9eDsId/5NC4yuKj/a1mLJed8eQwx2dqejyq1u4Hme+1aNyFvAkaa+Yck7iaK81Ra6+FaCouAbCdIK+ETD+/iPTS+xnmOEh5BYSU5/MULAyD8BW00YqnVHjON4abKSCavsQDB4svNBI264K2GenZLecQ4WMr/aRcF13aAHn98KDCoiOJz+Z1QqnJsF0VQzfa2fGgI4tNq88b0UMvuHMe2ISC3fuEM88Ssk4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,185 +123,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 04:15:55PM +0800, Ye Liu wrote:
-> From: Ye Liu <liuye@kylinos.cn>
+On Mon, Sep 28, 2026 at 04:15:53PM +0800, Ye Liu wrote:
+> vmalloc_dump_obj() has two bugs that cause it to miss vmalloc
+> allocations.
 > 
-> vmalloc_dump_obj() searches only one vmap node (addr_to_node(addr)),
-> but a vmalloc allocation may span multiple vmap zones.  The VA is
-> stored in only one node's rb-tree (addr_to_node(va_start)), so an
-> object pointer in a different zone than va_start maps to a different
-> node and the search misses.  This affects any allocation larger than
-> vmap_zone_size (64 KiB) on multi-CPU systems.
+>   1. PAGE_ALIGN() rounds up, pushing last-page addresses to va_end
+>      and outside the VA lookup range.
 > 
-> Extract find_vmap_area_lock() from find_vmap_area() to share the
-> cross-node iteration logic.  The helper supports both spin_lock and
-> spin_trylock, the latter for atomic dump contexts (OOM, KASAN, RCU).
+>   2. The function searches only one vmap node, but allocations
+>      larger than 64 KiB may span multiple vmap zones whose VA
+>      is stored in a different node's rb-tree.
+> 
+> Patch 1 fixes the alignment, patch 2 fixes the cross-zone search.
 > 
 > Signed-off-by: Ye Liu <liuye@kylinos.cn>
 > ---
->  mm/vmalloc.c | 108 ++++++++++++++++++++++++++++++++++++-----------------------
->  1 file changed, 66 insertions(+), 42 deletions(-)
+> Changes in v4:
+> - Patch2: Simplify find_vmap_area() to return va directly.
+> - Patch2: Simplify locked_vn initialization in find_vmap_area_lock().
+> - Link to v3: https://lore.kernel.org/r/20260924-vmalloc_dump_obj-v3-0-5bdee3da37b3@linux.dev
 > 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index df42d8a6f058..4f4d7453962f 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2517,67 +2517,94 @@ static void free_unmap_vmap_area(struct vmap_area *va)
->  	free_vmap_area_noflush(va);
->  }
->  
-> -struct vmap_area *find_vmap_area(unsigned long addr)
-> +static inline int next_vmap_node_id(int i)
-> +{
-> +	return (i + nr_vmap_nodes - 1) % nr_vmap_nodes;
-> +}
-> +
-> +enum vmap_lock_mode {
-> +	VMAP_LOCK,
-> +	VMAP_TRYLOCK,
-> +};
-> +
-> +/*
-> + * Search for a vmap_area at @addr across all vmap nodes.  An
-> + * addr_to_node_id(addr) converts an address to a node index where
-> + * a VA is located. If VA spans several zones and passed addr is not
-> + * the same as va->va_start, what is not common, we may need to scan
-> + * extra nodes. See an example:
-> + *
-> + *      <----va---->
-> + * -|-----|-----|-----|-----|-
-> + *     1     2     0     1
-> + *
-> + * VA resides in node 1 whereas it spans 1, 2 an 0. If passed addr
-> + * is within 2 or 0 nodes we should do extra work.
-> + *
-> + * Returns the VA with @locked_vn->busy.lock held; the caller must
-> + * release it. If @mode is VMAP_TRYLOCK, nodes that cannot be locked
-> + * are skipped.
-> + */
-> +static struct vmap_area *
-> +find_vmap_area_lock(unsigned long addr, struct vmap_node **locked_vn,
-> +		enum vmap_lock_mode mode)
->  {
->  	struct vmap_node *vn;
->  	struct vmap_area *va;
->  	int i, j;
->  
-> +	*locked_vn = NULL;
-> +
->  	if (unlikely(!vmap_initialized))
->  		return NULL;
->  
-> -	/*
-> -	 * An addr_to_node_id(addr) converts an address to a node index
-> -	 * where a VA is located. If VA spans several zones and passed
-> -	 * addr is not the same as va->va_start, what is not common, we
-> -	 * may need to scan extra nodes. See an example:
-> -	 *
-> -	 *      <----va---->
-> -	 * -|-----|-----|-----|-----|-
-> -	 *     1     2     0     1
-> -	 *
-> -	 * VA resides in node 1 whereas it spans 1, 2 an 0. If passed
-> -	 * addr is within 2 or 0 nodes we should do extra work.
-> -	 */
->  	i = j = addr_to_node_id(addr);
->  	do {
->  		vn = &vmap_nodes[i];
->  
-> -		spin_lock(&vn->busy.lock);
-> -		va = __find_vmap_area(addr, &vn->busy.root);
-> -		spin_unlock(&vn->busy.lock);
-> +		if (mode == VMAP_LOCK) {
-> +			spin_lock(&vn->busy.lock);
-> +		} else {
-> +			if (!spin_trylock(&vn->busy.lock))
-> +				continue;
-> +		}
->  
-> -		if (va)
-> +		va = __find_vmap_area(addr, &vn->busy.root);
-> +		if (va) {
-> +			*locked_vn = vn;
->  			return va;
-> -	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-> +		}
-> +
-> +		spin_unlock(&vn->busy.lock);
-> +	} while ((i = next_vmap_node_id(i)) != j);
->  
->  	return NULL;
->  }
->  
-> -static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
-> +struct vmap_area *find_vmap_area(unsigned long addr)
->  {
->  	struct vmap_node *vn;
->  	struct vmap_area *va;
-> -	int i, j;
-> -
-> -	/*
-> -	 * Check the comment in the find_vmap_area() about the loop.
-> -	 */
-> -	i = j = addr_to_node_id(addr);
-> -	do {
-> -		vn = &vmap_nodes[i];
->  
-> -		spin_lock(&vn->busy.lock);
-> -		va = __find_vmap_area(addr, &vn->busy.root);
-> -		if (va)
-> -			unlink_va(va, &vn->busy.root);
-> +	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-> +	if (va)
->  		spin_unlock(&vn->busy.lock);
->  
-> -		if (va)
-> -			return va;
-> -	} while ((i = (i + nr_vmap_nodes - 1) % nr_vmap_nodes) != j);
-> +	return va;
-> +}
->  
-> -	return NULL;
-> +static struct vmap_area *find_unlink_vmap_area(unsigned long addr)
-> +{
-> +	struct vmap_node *vn;
-> +	struct vmap_area *va;
-> +
-> +	va = find_vmap_area_lock(addr, &vn, VMAP_LOCK);
-> +	if (va) {
-> +		unlink_va(va, &vn->busy.root);
-> +		spin_unlock(&vn->busy.lock);
-> +	}
-> +
-> +	return va;
->  }
->  
->  /*** Per cpu kva allocator ***/
-> @@ -5278,14 +5305,11 @@ bool vmalloc_dump_obj(void *object)
->  	unsigned long nr_pages;
->  
->  	addr = PAGE_ALIGN_DOWN((unsigned long) object);
-> -	vn = addr_to_node(addr);
-> -
-> -	if (!spin_trylock(&vn->busy.lock))
-> -		return false;
->  
-> -	va = __find_vmap_area(addr, &vn->busy.root);
-> +	va = find_vmap_area_lock(addr, &vn, VMAP_TRYLOCK);
->  	if (!va || !va->vm) {
-> -		spin_unlock(&vn->busy.lock);
-> +		if (va)
-> +			spin_unlock(&vn->busy.lock);
->  		return false;
->  	}
->  
+> Changes in v3:
+> - Patch3 drop.
+> - Patch2 Extract find_vmap_area_lock as a helper to simplify the code.
+> - Link to v2: https://lore.kernel.org/r/20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev
 > 
-> -- 
-> 2.25.1
+> Changes in v2:
+> - Use is_vmalloc_or_module_addr() instead of is_vmalloc_addr() to
+>   avoid filtering module/BPF/execmem addresses. (sashiko-bot)
+> - Link to v1: https://lore.kernel.org/r/20260916-vmalloc_dump_obj-v1-0-7aa402d224df@linux.dev
 > 
-LGTM:
+> ---
+> Ye Liu (2):
+>       mm/vmalloc: fix vmalloc_dump_obj address alignment for last-page lookups
+>       mm/vmalloc: fix vmalloc_dump_obj cross-zone VA lookup
+> 
+Both look good to me.
 
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Thank you.
 
 --
 Uladzislau Rezki
