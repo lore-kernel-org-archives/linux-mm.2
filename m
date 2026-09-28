@@ -4,153 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEEF8C98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 04:14:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95392C9832F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 04:26:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9349D6B008A; Mon, 28 Sep 2026 00:14:41 -0400 (EDT)
+	id 504C66B0088; Mon, 28 Sep 2026 00:26:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5626B008C; Mon, 28 Sep 2026 00:14:41 -0400 (EDT)
+	id 4B5946B008A; Mon, 28 Sep 2026 00:26:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D4916B0092; Mon, 28 Sep 2026 00:14:41 -0400 (EDT)
+	id 3A47D6B008C; Mon, 28 Sep 2026 00:26:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AEA26B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:14:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D2B041C3856
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:14:40 +0000 (UTC)
-X-FDA: 85261854720.14.54B50B0
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012013.outbound.protection.outlook.com [52.101.53.13])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9A8A040002
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:14:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=JnrBTsP9;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf12.hostedemail.com: domain of bharata@amd.com designates 52.101.53.13 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790568877;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 06E5C6B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 00:26:22 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6386D140B0B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:26:22 +0000 (UTC)
+X-FDA: 85261884204.09.46E5EF8
+Received: from mta1.migadu.com (out-203.mta1.migadu.com [95.215.58.203])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2FF3BA0004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:26:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S8uNetnj;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.203 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790569580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J6Wtge4aHv4YHTLRi4EX8yLmUkelrhOp5ebQE4yjfJk=;
-	b=tzdanpcXrKQ2EguJtpNGpcJ439nNNWYyF1UILbuH3xNaCPGr+e+w2hqvX4rIXmGa1mPfme
-	haNzYkxWVFJHT62t6WA/rKrjDN7cBbXGvBDbiDqX0hpfNaxG7r6HsBlZecpo1LSXJPoeQR
-	LI0/+hApnz8zEb0zQEqewRl1Lqye0fA=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=JnrBTsP9;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf12.hostedemail.com: domain of bharata@amd.com designates 52.101.53.13 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790568877;
-	b=UsVxe3X10vG6d5pDD2a5kNS1bHdlwYf7iN4shgemIpcEVknTfS1nKZB7SXzgypJpcnPnsK
-	1Ay4QGAS+Q9BxQeXB4D5BsG2TjGDa1LgByGCHE9TMzrfhzhCGihzJ29EPE6zoS+y6py+VE
-	XK9zj1PKLv+n39IH5Rza/YI+UbGqvbA=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jnX5iY/WyIw/mful9uDOWwFW0c2J/1Gv7o6WVwPaGvfMiApmEX+bx6MIxteMFXwJk1p6fC7+R1II4qoj8vAdO+HpBDqfYBRSO56neixQsMK1mhPnb4OnGCd9mrWyURE/oq2XZc9sng2sQQPIjP5WFctiudy9NUJRtr/wBknWeIWkIT1exxN12LhQ7bCytju9U4xEhf7rAF0Y3Rx9VHZNX3QTbIas+bhrN3zT9yhvp2mEuyK3oQ6mvjO62xx9e2bjsDAYjbMNjcTTUDdKij+DtSzIIE0SwWuDmR3b9k2urCBMLqo+Lw4tBDdSCQI2X9GdHN/CSpsrUEHXIsXqzjIIbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J6Wtge4aHv4YHTLRi4EX8yLmUkelrhOp5ebQE4yjfJk=;
- b=ekJi0OPPSSAXNzeVotMtA3+S76Oj2IZp1pQ4PhTpGAblmc60Rd885OW4pq9C1JV08oLT7V7YTOrav+NCJK3/udwu/G8RJeF7UlG9ZUFDD+77o7NkL9ZQUuQdoQDZmI1eINhqw9/YeopSfc0ipxls5Gi7jS42G0FE1Qpan8BPXVPybCFO6z2/INq1t6TA3M5+DQMQwZ572L+DuXWSPwCmmTwkuag8SapGuMGU8JmPQ1fkvKPXpFP/c4CviIV5yoLlwkzOwjAfOHnVgW2NY786LYQQv8vjgvPbbPRAJqFSVlzhTWzRheiEh4xOs543hsHdoU9WAX/qIo3xqqXNOcwVSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=stgolabs.net smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J6Wtge4aHv4YHTLRi4EX8yLmUkelrhOp5ebQE4yjfJk=;
- b=JnrBTsP9PmAV9uzGlASeAdlsYhEQDGnaUAxnqIc2ByB7mqI/G8omcasCXVT5SS4JA96YjTPZJ9ITCLS09YpZ8kMphLyI93iqN8DqWv3FU4dlobcP27haDyBqFKnFrEMlvmArn4xy2lTuYTW/jEF8lEju+2d9Qe6vlVn6pB3u+eE=
-Received: from SJ0PR03CA0356.namprd03.prod.outlook.com (2603:10b6:a03:39c::31)
- by CY8PR12MB7097.namprd12.prod.outlook.com (2603:10b6:930:51::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Mon, 28 Sep
- 2026 04:14:32 +0000
-Received: from SJ5PEPF00000204.namprd05.prod.outlook.com
- (2603:10b6:a03:39c:cafe::91) by SJ0PR03CA0356.outlook.office365.com
- (2603:10b6:a03:39c::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.23 via Frontend Transport; Mon,
- 28 Sep 2026 04:14:32 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF00000204.mail.protection.outlook.com (10.167.244.37) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Mon, 28 Sep 2026 04:14:32 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Sun, 27 Sep
- 2026 23:14:31 -0500
-Received: from [192.168.0.152] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Sun, 27 Sep 2026 23:14:23 -0500
-Message-ID: <ed55b8ec-638a-4336-8530-7784721a76d9@amd.com>
-Date: Mon, 28 Sep 2026 09:44:17 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/8] mm: Hot page tracking and promotion - pghot
-To: Davidlohr Bueso <dave@stgolabs.net>
-CC: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>, <gourry@gourry.net>,
-	<mgorman@techsingularity.net>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<raghavendra.kt@amd.com>, <riel@surriel.com>, <rientjes@google.com>,
-	<sj@kernel.org>, <weixugc@google.com>, <willy@infradead.org>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>, <nifan.cxl@gmail.com>,
-	<xuezhengchu@huawei.com>, <yiannis@zptcorp.com>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <byungchul@sk.com>, <kinseyho@google.com>,
-	<joshua.hahnjy@gmail.com>, <yuanchu@google.com>, <balbirs@nvidia.com>,
-	<alok.rathore@samsung.com>, <shivankg@amd.com>, <donettom@linux.ibm.com>
-References: <20260728054356.291998-1-bharata@amd.com>
- <20260728054356.291998-4-bharata@amd.com>
- <20260927232552.u6iypdeadjf4nyla@offworld>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260927232552.u6iypdeadjf4nyla@offworld>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000204:EE_|CY8PR12MB7097:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29bc38ab-6a78-4b07-39e0-08df1d16ff9b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|23010399003|1800799024|7416014|376014|10067099003|22082099003|18002099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	z1m2f9bf6jR0n0IVlIEeqjGgInrzhx4F0Hh/xAfgflyuaxHvbhWYHl0QxKuAlB6U7t8sO6gw7mkd0DLeF47UuCjRvtnsZcTdOKdKiVAS02agizUYWNejZYPMw6jNyvqqqp4EZMh8gOTgzcZUJUwfRrp6NTJHWF47lprXXphSMeR9qXQ4g9vZkp1PnMBi/01ZmIXK3BzqX3zBLijjoatgqgB7xM8liOeaIgyvaTvoL2AHo0WacbOEtTHxDSMARfQn4qqQmcQDPhrLadcybeWu7IkNmaRW6Py3gTuibDDRTlfD8til9zauB+HsDuemIWDBRITkb2kWBqa4z6K2pauAp+I0I5KqjalsZkEV6JNPmNhlx2Zzrj1k1SYtvXMudD8jDrd2IMKJfm5e2TV993a1tJMx7rgSDMKfDRpGUv9VH1sDeXC3OfcPA5B8VEbdS+J6eQoIVC6eAfjyiZ3cK+aDSinGUc2O3PEKAYHacIU2zExruOgSyEC/eFTsHtb6Q7FlcxeIWYIGy3WEdoK+UWKWLxRzRxoLGz7+Ze+lSjpvUmaPCs4iBHm/guQLy460YgItM7m9/I+QaLn9db5egj/lSSOJn8OwFgdCJZyhKB+iVlKI0fiwZx7D8qj2CpumCrHKmn2nXzdWxotyRzDgAMxbOVN5rA407drMzQww843OMZUIjuMK1+KmSw+jJ3HM+FlO
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(23010399003)(1800799024)(7416014)(376014)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	tX2j93mJQvUaI84zyS4C10utpk+/CNk5/YUhDH6FqDOooG+AzZVnpnTY0174+6pztW23KBIdNCmb/H86XajaaTJjvAz4s4EOg8dsn5PEPlZsgbCYFxmq3PuCSWaAzRJdX63wEsKVWJwbdWk5fttEkUO4+pXRyo+w9TtrCO6KyLKhfnvpFRQPn9Me+gESmi3j7dbRaiBALh6DdeHTf7D/gPAyxx/0yGolY67W/yXxWI2dCOAEusZIYFw9BHfMn8VAA2k5tfmmYFO5ak9CxGXmLgqIqjZ4RmBzknETlIltrwrwiYvq5AoMFpc704oO1LFex1OLKEAdW7Ao/fgvXOQvyQ57L4Iz6TFUnyS3TbBsxnhh2ROusZaQDCbTbLq89kdoc4yB6f7Q/M7ZXZuEYMF5sZtOHml0FiqluUFzG9N853CwtYK5n4K7zR3qeF0QvSys
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2026 04:14:32.3482
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29bc38ab-6a78-4b07-39e0-08df1d16ff9b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000204.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7097
-X-Rspamd-Queue-Id: 9A8A040002
+	bh=lvrrRB8+u1GpJmkKNNkjZdTcO/STjIHCexl1gUK1au0=;
+	b=QoNF1rnFeM9VvlZVU0m9XOKRxOOcLs1YGwzZdEr7zeKR33hRWalgZi7IqQ4Pm+TGtABOz6
+	K5YQdIQVxvPmy3lA9yamBlGG9YDqkft27Lw93UDhiQZm/r8Oy3IU/Jz5dBcx9hHfCyOWEm
+	bGQ9UNxIIZLrmkhpSCWYZwMqPSLg6sc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=S8uNetnj;
+	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.203 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790569580;
+	b=LMqmtDq1HRxXLlHwLNIfdDEKAfvU73Pxe/ywi0S+iFGtno8DamdoUrRJq3gjkRPgErZHpk
+	xNJvkUG+IEmE9POcTfh34u+elluN5gF4zZqwDL2TvQ0ZGgFbROXsgy7pjixjEJhxcRMRca
+	zqXVjP8pVfrtaf1yiHAqeD2QRLZWYKw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Glpk8JbMYBC+fNyg6t+G4JCTtagtnxJN0ZLKBOnTQTs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790569578; v=1; x=1791174378;
+ b=S8uNetnjaT95Te3/CadF+V8u9Xec9I4jrluUa+Lx4fCtP0XIsZ0PcTQVycE5n9LQNZfJI8KL
+ KeUa75lfmzj1/lrB/hPDZ9saQITMgLzpb+lgh7lazP1DkkO0W+iMoNj0CkkNWmDUCSMw9agzt4z
+ w7v7g6CU4xq9hO4mNAa4UyWw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 061b4c85c7534b56;
+	Mon, 28 Sep 2026 04:26:18 +0000
+X-Mizu-Trace-ID: 061b4c85c7534b56
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v5 00/12] mm: Switch device DAX to section-based vmemmap
+ optimization
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260927125452.0c1ec382905482841a4faef7@linux-foundation.org>
+Date: Mon, 28 Sep 2026 12:25:58 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0E16642B-8180-4047-B846-40E3CC52E7D8@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260926225105.a56f29d76b2f496c8dc2dac0@linux-foundation.org>
+ <FB00943F-8DB1-4BEE-BF37-701785DE2DDE@linux.dev>
+ <20260927125452.0c1ec382905482841a4faef7@linux-foundation.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Stat-Signature: kg8qsu177zfjuyuxok5w33f9zb7uys39
+X-Rspamd-Queue-Id: 2FF3BA0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: aet6k87wp81k974hidc163ynethfmdy4
-X-HE-Tag: 1790568877-785845
-X-HE-Meta: U2FsdGVkX1+OdgLYclwNRJ4ZW1SKvml/ggb7+w21sfJu/jhoot4FoH38Q2xmJ2EliKQ4UndxT8v8LiYyktpFT392zSJOls0+DFxejK15Y6jZLYZ308Ed/lpnpwibhDBnUx4CIhFn7mK6b5ZQ7VTtKT8BRFi5BoqirIzL0G0I8KNruHVPjFVGeaFhnmKOjblhYnYSre640exXZiMTcT3PVt2sjTtjkNX+QeIoPCemt/MCEyipiXIW/GAt3ujvahmHs0YFkIRHMqkTglpZ/6wtbhk2XhennmEpWrp00s0S1G0zJ4n6nqHn7JQfeJVlLL01duWcKtCTkIllJwhb8+qMOFyn+5w1GFXTkE1cqxMI7RUx8FisiRT4eI452NJm9Hq6+yv7A4D+QXihWGuqhbmteHwgBLZKvc6ffyNllPHDyV7Rsqukhp4U8XeXddrwvDu+eVLfrkBjD/P6WPUf/K35BkSem2CX7Ggc+INa+SNMH0+MJqRUuaPBkSs+wb9xCFsCPIoQexLyGNYGr/K4pJ95HyBhbB+tNc2aPmh4pFLY8UqJe62bQLZkX+SZ5lNuda2s/82HgFf4Ue9JmQ2A9LdLSit8lpRgqG2/mczSi5hShM49yFshhF6sBAKTM2LqYCINMR9CgoLF0JCCbU9KpEQUzopHNeiS7e9L6bSqlhScRr9MakXO+51ieq8lBMSyhgou1c1yfdEzaS4dPmtozV+ufohO9/0qaPF63gancS5yLteGCCSexidrBg03n/AmHBUXIWtCA/0Y46Ar3SpRfYtOyw3kSVRB+/XRGZRep7iicN05I0KOrAv/g5d+ouOXatgZ9DZPqKflj/35zwmgVBV/TqJbjLeMFyC0gYQxJWB+WlNhlowd/vDEqEVqU2FnIOk4yUP+6vDaXvr+Z+77yTPEc9rrhL/poodiu6VGlSQivHpebQnX7YB9/tchMb6jXvN3w1ImqzRz2HmPus0Hv2N
- cJ32ptHU
- nmV0Xw7UXGcjUJ13W54vH9R5zsI5O/pVhgU9O3Lku5aHBHlmM+bjIC7caSaJdTuOKTe3knOMVAYH5YpAb3Es36enb3sQ+I7HOQ/YfVZonVk/YrvdovkP6wNKUMkLYyL0acZtUrd08NC0UoSn4Iv/MtwPDrJTJsK3V9QLhHKAoZcGEEAJeXquKHcthHthxhid6NGExMTSO6/ayB/+jQ69066WnsKmWHoO+J6A+GLDHZzViMXue9dWne9i8QC3uV//+OwR1GHmcgoynGfb5oBNV+vezf5Azb0fXXd30eQR32azv/HU0GNb8vz7L0PWzkDRIfPU8iXXWy4BJwHwlV/ad5hwMhfMSg2ZLawsMmol3wnG31D00W0f1LtaC16qSeTir9wIFprN1JC8p3i7mYgzGEYzjbl5f0IKU/57bSxqC/Pyu7wyV89Yr687LHkgP7hOITfL2xGIB4tsHmokVoAw572bxkIozG3InALbGMCaS2nf/f1Q=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790569579-621910
+X-HE-Meta: U2FsdGVkX19Eay5OOEcyYcMhek4OgxKxRSwSnDnTUbBw1ZbStnq6AwoMeU+yERc8eSsPMov+jGpcP8rr6li1toPWXgmRD+4m2tgaOrx0JGRGYWtX8Ay58x1wzPh9mlaZZ0X8Lhzkhkkxxq03X09som1kW122vcENhRoB9xzRvO3EEXJtspoYTQPcOhN8jn2ZhNcG7kprTuHfKUhVKMYRlpbMq0wM1HKfzRm1kAeS3qbm0ceSdeMxPDni1o2cGKONfYD86momlnbpdMMmDrSR1/6u52JrHtKAbIrXHajwbRR4X9TQeU8PzTia+zR/bOozKp8ORtqVUdlmWYqf0omIR+/JAXWsiAZDsnO9mpVrahXV8NtAcsD/ycKxwSh/RwhZ3WDI4Ffe0fK5d7Kt04Tu2QecfORyFujv78JNe0a94Dfe9Fosofx4sKWs+Ow/swSHe+6yh4sUWoP/y2An/BovjdACT5La2RITqxc8hVN1u683wKcjbAzKAFxsF3H9GOgSuwtQtYelO7X9Ov2B7Douv5VeH6l55TA1uuWmrrU3LcuzBDYwfASQPGWUDjyWt5zjye3JYmb85xAkjFMJNKBgfBIrET0yKYJlqYcvgPDjSOfdnAEVcymVZmkE1ulRY1q3VLBOfihhEw0MVv4uE1MroYgc11amg7oZjDOgkNzA6Dg1T8ua3S1f5i/Cty0We/iInso8M80qcVZjcU94zHKAavNT/1HZXnmUGdRo3oZb/nmSSY29NtEHM/4b/iw4Yp9hqd9sRKtZgLFSF/TYSXeXVUWFJRs5CG/gDr3E1pJgJYNy3KIqy+E89N5Xk1DHIJwehTz73QMUe5qOHf+soQ4Txq1rR1ZZVyviRKs6jiKkoiPEGrnj0sVyPaUhFIiFdToKE/Blg8p7t/9hA8Ghr8OnuQ4J2r9KZi6WIg7M/BbZjUqP1g2bq1U3SN/kU25YYCoXziuK8LbeDahIeWxh8Zr
+ wCPHSdFd
+ eIySinWEl7bCmYRAhNYQ9ExmhuHOkMMI9feIlLrc0t8/pWCDDgG6p8JKpiCEJDeQx0q0SFc7wWDcHuoAVImw2PwCpN7jQAhHGANedb8sw5GH/2r5vDV4ETC89p88FVHMVzXrwIQz8SgPBE5N1olMQiqZXd9vwZtuapRCBF1fLJ29R+FYzRzA+7KLbkfLhwAAhtw+ObD/Qzyjm98nzuayQac3OJMi2eVMCSo91gfZniH1Z9zncepsfmCnzgjMDNhxYDNfr6/NSt/bg0wBWDd7cRWipfIlmR0j9EPYACOvXa3rsd1hKC7ean5pqcN8fHsQ95YI5YiPV40LCmnl+H6JFTwKFKfrFvn5vV1kJUaY1AgkAGDm2KRb1hb988xpfiHCnU7MaXiStxzB9tSLNYXlnmZfngg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,34 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28-Sep-26 4:55 AM, Davidlohr Bueso wrote:
-> On Tue, 28 Jul 2026, Bharata B Rao wrote:
-> 
->> +/**
->> + * pghot_record_access() - Record page accesses from lower tier memory
->> + * for the purpose of tracking page hotness and subsequent promotion.
->> + *
->> + * @pfn: PFN of the page
->> + * @nid: Unused
->> + * @src: The identifier of the sub-system that reports the access
->> + * @now: Access time in jiffies
->> + *
->> + * Updates the frequency and time of access and marks the page as
->> + * ready for migration if the frequency crosses a threshold. The pages
->> + * marked for migration are migrated by kmigrated kernel thread.
->> + *
->> + * Return: 0 on success and -EINVAL on failure to record the access.
->> + */
->> +int pghot_record_access(unsigned long pfn, int nid, int src, unsigned long now)
->> +{
-> [...]
->> +}
-> 
-> This needs a EXPORT_SYMBOL_GPL(pghot_record_access) for any module based
-> sources.
 
-Ah I didn't see that till now. CXL driver would need that. Thanks will add.
 
-Regards,
-Bharata.
+> On Sep 28, 2026, at 03:54, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>=20
+> On Sun, 27 Sep 2026 18:51:15 +0800 Muchun Song <muchun.song@linux.dev> =
+wrote:
+>=20
+>>=20
+>>=20
+>>> On Sep 27, 2026, at 13:51, Andrew Morton <akpm@linux-foundation.org> =
+wrote:
+>>>=20
+>>> On Sun, 27 Sep 2026 10:54:29 +0800 Muchun Song =
+<songmuchun@bytedance.com> wrote:
+>>>=20
+>>>> After the HugeTLB conversion, optimized vmemmap state is described =
+by
+>>>> the memory section and the sparse-vmemmap population path can =
+allocate or
+>>>> reuse shared tail vmemmap pages based on that metadata. Device DAX =
+still
+>>>> uses the older DAX-specific population model, including a separate =
+tail
+>>>> vmemmap page reservation and architecture-specific logic to locate =
+or
+>>>> populate reusable tail pages.
+>>>>=20
+>>>> This series makes device DAX use the same section-based model. =
+Device DAX
+>>>> records the compound page order from pgmap->vmemmap_shift in =
+section
+>>>> metadata before vmemmap population, uses the common per-zone shared =
+tail
+>>>> vmemmap page, and drops the extra reserved tail page. The powerpc =
+radix
+>>>> path is updated to use the same shared tail-page helper, so the =
+generic
+>>>> and powerpc DAX paths follow the same reservation model.
+>>>=20
+>>> Thanks, I've updated mm-unstable to this version.
+>>=20
+>> Thanks.
+>>=20
+>>>=20
+>>> Sashiko asked a thing:
+>>> =
+https://sashiko.dev/#/patchset/20260927025441.741633-1-songmuchun@bytedanc=
+e.com
+>>=20
+>> Sashiko said page->refcount can overflow by incrementing it over 2.14 =
+billion
+>> times when mapping more than **524 TB** of DEV-DAX memory on a single =
+NUMA
+>> node, where the pages share the same node, order, and zone.
+>>=20
+>> I am not aware of any practical hardware configuration approaching =
+this
+>> topology today.
+>>=20
+>> Handling that theoretical limit would add non-trivial lifetime or
+>> architecture-specific teardown complexity. Without a concrete =
+hardware
+>> requirement, I prefer not to over-engineer the current series. We can =
+revisit
+>> it when such a system or use case becomes realistic.
+>=20
+> OK.  Presumably it would be cheap to add a check for this craziness =
+and
+> return ENOSOMETHING?
+
+
+Sounds right =E2=80=94 I'll send a follow-up fixup patch shortly.
+
+Muchun,
+Thanks.
+
 
