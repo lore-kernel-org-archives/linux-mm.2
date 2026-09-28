@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35434C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 05:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D993C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 05:27:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDB326B0088; Mon, 28 Sep 2026 01:26:16 -0400 (EDT)
+	id 48D006B0093; Mon, 28 Sep 2026 01:27:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8D0A6B0093; Mon, 28 Sep 2026 01:26:16 -0400 (EDT)
+	id 43E426B0095; Mon, 28 Sep 2026 01:27:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7D626B0095; Mon, 28 Sep 2026 01:26:16 -0400 (EDT)
+	id 32DB36B0096; Mon, 28 Sep 2026 01:27:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9807B6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:26:16 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0444B160B5F
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:26:15 +0000 (UTC)
-X-FDA: 85262035152.12.3F33FED
-Received: from mail-qk2-f40.google.com (mail-qk2-f40.google.com [74.125.230.232])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0EFDD40006
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:26:13 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VZOKcxAd;
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790573174;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 020A86B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 01:27:05 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7B2BCA0B6D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:27:05 +0000 (UTC)
+X-FDA: 85262037210.21.12DF184
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 96E7240004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:27:03 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JWJGO6r5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790573223;
+	b=Q/7SsJAPIutf+DpXf9nkwCuQgV5NBIrYLUX0LsuqYVoT7LP+bnAT9deUdzlGht7a+R8oNB
+	mmT9Wd7czfu33exf9DiSKALp4mv1dWh1YLFIT0r9v3UlZyk/jRVaFZQ60CJvhACRSAMm3g
+	zJz9D5duEi2hwYdQTmegUxbOXXM6ASA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JWJGO6r5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790573223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=9uhJQMU9Md0aI6D1ejMKihBiU/dixd7kNMrT0BD86Fg=;
-	b=14VkkMP5nnXYLUVKHus3DNwZpc0TphJ6Bh60Ygs2eR54oO5BWyd4Kvfmg4/MKADhCw/K1d
-	LeWiqnvII/rtxSqMB+vkpU00Ywy8fFJabmVRTmLVgRPa5AtwPdAdIJ3m1tK9JQIBBa4tmR
-	O8IlXTGIZgEAVehrNQbB7o/4yGEfpNM=
-ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VZOKcxAd;
-	spf=pass (imf04.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.232 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790573174;
-	b=n8Z7/k2JPYwTHI9E0UsYHYHStkE9RlD/bSXaeK3KGRL5fbDqx1lLFEQ2pjurgHuL3tznFt
-	3x9f6dryaQyfeW5oLDhD0hEC2hdq8gIuPc810PAbzgTD7uyJTXEv8Xv5xp0Vd5GoebU/sv
-	jtot2Q5jTbitYse5C1a3jM7CWqSplhA=
-Received: by mail-qk2-f40.google.com with SMTP id af79cd13be357-93c5b166b8fso141480985a.0
-        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:26:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790573173; cv=none;
-        d=google.com; s=arc-20260327;
-        b=FrFEyhl/t3lGO8LiLQxD1FJTIVnw6PhEWW+Bvum8jH1vSSMSLo1v2pdB/rJt/NXFfw
-         K5F8n3Ij/xZtk/dMecelaQftY/iPlCZ7TSNwG/yTmsgxy4j3qByLieXMK0mqkXwfRLn/
-         Yi+YYIdMg+P+hsOCMKObz9LpAbicsVghE/sLBnMwaPFESMEX1DGbjpg0RibOaD8tz40N
-         4BY5XaPQJm0CZBhie3SJB5VquVzwlvlHLaEIjt7+doRzlG9aYP92vhSJJddpp2jLvf92
-         X+Eo1rqW7dAEnGbn1n1wl5iqF+3srTI0E+5cAcFMfOso86LkBjoTs6FjqnZCAtaHH4tT
-         8VCw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:in-reply-to:from
-         :dkim-signature;
-        bh=9uhJQMU9Md0aI6D1ejMKihBiU/dixd7kNMrT0BD86Fg=;
-        fh=JLxPeZg3KP/HY7RUO3xbtJ1cl6JeqECdXlUQ+CjjAs4=;
-        b=N/e02bbFAy8WunHt97WDvUnKc24IPVk5dZGrVDCNq8Na6uRh8z/IgHNqcU83Plu96E
-         /3fe0gD8dPfW4Huj8gI1FB6atgHJ20hcknwkrY89/YkCWKA7b1kVx/AV+B/2cRyHPdUI
-         LDc4JLRsFkFIBYWYMUDIzK3r088EmiOmYSNapOuj2n6XlIrthT50dp+fSu+XqfwVrvuz
-         0GjvGuKm3EZoK6oq30wf2PXlB/EbNQAvfHx1X8jU0OURGfTV8ZLkqJsEhZRR30w4dMkP
-         zQZEvWGIgPr8BZzqgTMBnv6UJnOUwS9zCDeVwLfpn/pkV6xYl3wCoq5XmmLn6Ok+gZ/S
-         OZVg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790573173; x=1791177973; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:mime-version:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9uhJQMU9Md0aI6D1ejMKihBiU/dixd7kNMrT0BD86Fg=;
-        b=VZOKcxAdOrdi0Bd9R66YfWuAaaJyLYGwMYW63gVV18To/6nVFf6CLESCNd+rf8mZD3
-         p0dgwuC1tHCNqMPFvhWH2Jz365O4ohIfwmKlnPpONp7R7nhEax+OhHb713UcFHEXMyqD
-         UTrHhJJOBMnvYmhiGO/Keiv7KkmbUdMqF2CPJu2ufrxbtxLSkAb4OFHcBg5fsnrgNg3Q
-         1xpLHEW1a2xRpJTZnqLm6WjNYT92e/FqXqkB73kJN3tg+zvPvWJyglydV6EdilYwbLeo
-         RKH2adoiHnJuaP0QlZ0LMdE/11yASyuxedX9+jSMJ6idPCMYvbqjKpm5vqszQLsRyy0M
-         G4CA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790573173; x=1791177973;
-        h=content-type:cc:to:subject:message-id:date:mime-version:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=9uhJQMU9Md0aI6D1ejMKihBiU/dixd7kNMrT0BD86Fg=;
-        b=pSodrypWoh1PUfUKtYdbri1plCzvOLZD6Cuw8Jw9V70PBv6nAYvHLR4LYuluQGsldY
-         4tsyRvSiVjfd7otQCi+JVr5GeuliX9+Xd0QXvGptmoqkXAyOC8jMWmnX8u4XTWubPowi
-         3wgrZNHkUB6ybjkt9OuS7Gj5AxlZf1TDrkowcMMAyv3PJ1MPEsdtYb9OqzPgVFgGYKcw
-         BBTAnNDsUNAmPSZGVgXU2miCZtCMnbgNG27mKkmGg1a0TlDJu9lPLfjAGm5mmoEqsYvh
-         dM4BdmVDkB8PwoIfWnOGbbSt/IwLjoG4lSpeZkvYFP3ZbdrWdPRHvxqtcXwWi1hFplBT
-         U/QA==
-X-Forwarded-Encrypted: i=1; AKwUvBwvnpwXwripDraXCY+EbL49XFP7L4SPgmaeeYK1Jr3AzIN446NwxlYi87DwAUVjRIMC1fdJfqAFpA==@kvack.org
-X-Gm-Message-State: AFq9FYJRXqbrIve1MdKCH+QvvnJTPMfKsxOsvQtrAfwpua2TmsIcodWL
-	gZjCtSnBUwf+cbIk+h8iaFr2HapNaYTdU/bH88SolnAJJlJ/t5ovID0Xusfe44PA8US5BG66woA
-	Wo7D38UFF/NwH3xmqF3RGTgBFDrG79PDi2wRxWUYJ
-X-Gm-Gg: AYBFou0numUxBMHPy4vnLmlT26jzPJdHSSqeHowfQnF1i9Mu6xswTNp5k0u/nq9Bw7W
-	LSdC7u+iBchMnEdzCuJWWbC1UMBDJFI1kPs8YQPqHhs6CFNTCshbDaNyImkrZw3ljr09yfessQ/
-	8l+2qmt0z84Bb452Nu2NJGhU8fTvIcNpqvNkvFGN6RRS+5msYDO9uUpi7JwUruDlBRg5asr14Do
-	pm8yndx6uWSZbddZHulJC2K9QMnaLUBqzWQ6Wf7AePEIHbLy/YlVgUNVODB3i8ULalHmyalcAk3
-	pkD1MBtYHnw5P8uj1fXePkTS/UH0+OyNOciPgcEL2ShWYFSsTHv7QfCsaxuUoCb68UYWbYModyV
-	RRkMGxNO39A==
-X-Received: by 2002:a05:6214:27c1:b0:90e:8dcc:4e5 with SMTP id
- 6a1803df08f44-9142f919107mr186704706d6.28.1790573172597; Sun, 27 Sep 2026
- 22:26:12 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 27 Sep 2026 22:26:11 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 27 Sep 2026 22:26:11 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260428113037.88766-2-enderaoelyther@gmail.com> (message from
- Zhao Li on Tue, 28 Apr 2026 19:30:38 +0800)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nbR4qOlYxUWlOFxZQwzq4H4GzfUZpkBGmCpDrZmQISY=;
+	b=CVaALII6dIYbjlt0UPI6/cDjSGy/9owUCec3t5YsfEygYgDo38JJxSYpzcYfjhGZfwbJDU
+	1Wxxg88o6j0JlA7r9VfLTK9/GhtC6wTEZPISaXXi3Ug+xvC32uipGwzPI3HkskvhPNAMr7
+	IoRLjNSUw2WMF3lkuV//70OwXzCSTns=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 92C4740AD1
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:27:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773341F00898
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790573222;
+	bh=nbR4qOlYxUWlOFxZQwzq4H4GzfUZpkBGmCpDrZmQISY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=JWJGO6r57luVC5SxyIky0wYBVV5pFUAcywvoOlCA7HCfVlFKL85EM3O05yACtrogm
+	 XJydYynPfBnUbkZs73yhwh2R6yFB2HjXxltXSICbTDK2zHFunAiKUoMrJRYg+A6Cmm
+	 yf4tldxuFfjnJ80fdnKhgcuSfJTPjGNFQ7/n4DOLXxqEbsn7Bp/tL8GYVec0AegFMd
+	 lpJi6l1FdcUVWHhwfngIQQnWAyyvaLw1Ivp95ZUpdvNkrOKkHi/cRCx0X4bLvI4QKD
+	 94M0wDypzcNleeiSrs1S80MSOXDZXS7Chb+LiE0SlEd+LJWeB/1rYf31xOueNJH6h6
+	 hE742EtfsHK3w==
+Received: by mail-ed2-f33.google.com with SMTP id 4fb4d7f45d1cf-6ab0d9260baso1523459a12.0
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:27:02 -0700 (PDT)
+X-Gm-Message-State: AFq9FYITEOHsmb75+bwjYoVU7WS8ZX9suiJ0KMeEwCrBGgMBDOSlsl3s
+	MTxFF2iGpS8EeKfdTb9vVQ1QoMafSddMPtcWOKTZYgqjwHTRBpI+022l1XdxGz7EQjccwByz94h
+	FidLFV7GF0mx+4fcp3dCdCHN3sFrn09U0yhnXyd6Bjw==
+X-Received: by 2002:a05:6402:2755:b0:6ab:7700:9360 with SMTP id
+ 4fb4d7f45d1cf-6ab77009470mr3252778a12.21.1790573221307; Sun, 27 Sep 2026
+ 22:27:01 -0700 (PDT)
 MIME-Version: 1.0
-Date: Sun, 27 Sep 2026 22:26:11 -0700
-X-Gm-Features: AclHuK8teF1_hnBMYASoAggcWTeG1bGk-jNppBGAEy7BhwDUpekXIrCo_Z7K6QQ
-Message-ID: <CAEvNRgEh9_cMQmiNLXumFLt7JtFy0VNNCNB=1mY71bz9JzUxtQ@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/hugetlb: fix max-only subpool accounting on
- alloc_hugetlb_folio failure
-To: Zhao Li <enderaoelyther@gmail.com>
-Cc: akpm@linux-foundation.org, mawupeng1@huawei.com, muchun.song@linux.dev, 
-	osalvador@suse.de, david@kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>
+References: <20260916101929.149106-1-hebaoquan@kylinos.cn> <20260916101929.149106-9-hebaoquan@kylinos.cn>
+In-Reply-To: <20260916101929.149106-9-hebaoquan@kylinos.cn>
+From: Chris Li <chrisl@kernel.org>
+Date: Sun, 27 Sep 2026 19:26:49 -1000
+X-Gmail-Original-Message-ID: <CACePvbX1ZMu=DJ5AU2fjkOT8Y1o=peetizr1uFag17D8_9_byg@mail.gmail.com>
+X-Gm-Features: AclHuK_8kcLS_r3xP2ZiQ5ZwO06a56MHUoBUWTKoqa7lnUBMRC86eB9HZgOK25E
+Message-ID: <CACePvbX1ZMu=DJ5AU2fjkOT8Y1o=peetizr1uFag17D8_9_byg@mail.gmail.com>
+Subject: Re: [PATCH v3 08/14] mm, swap: free backing pages in xswap_unmap_clusters
+To: Baoquan He <hebaoquan@kylinos.cn>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, kasong@tencent.com, 
+	nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, 
+	hannes@cmpxchg.org, yosry@kernel.org, shikemeng@huaweicloud.com, 
+	chengming.zhou@linux.dev, baoquan.he@linux.dev, david@kernel.org, 
+	linux-kernel@vger.kernel.org, kunwu.chan@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0EFDD40006
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9nzo5f1spjicja86q4ghcydepj7ojbch
 X-Rspam-User: 
-X-Stat-Signature: 14xmbybqtukz3yzekkb8j9awisiaaesw
-X-HE-Tag: 1790573173-336
-X-HE-Meta: U2FsdGVkX18pp6FzVjj3ZL+AfjZhr0sQr4UG1V3NEcgHUhakmwnA8T5I/D2wKaJLqvhcAajVe79BSwn8fIQt5IQO95fFpnXqrNLQPbDUgdE70bxgaYbI/06KUi4HHKNO3wbyI9jRQyr+S4hMGMq9oM13ymdhrQA6Yf/4oi+GQ4mWJ7YVfYQramgGnKFQGllBGMqK5ECI0UvvZamFW4DAJ5pmW9RWpoKNmohtJs/kKNaxWbFjeSDY77wPx8xmSgwBIiPhS2zYlZhfhz7i0IMSgVrNtpiwO9JnUl9yF1P/cqEpMyJM9cF2di0br+FqXPx9hkZiGA5LwxZ3PRe4LM9rWB4pk0k15gWSeVhKuO4oYZF2eEnYIkgiid3FCrGD4y1oexEByZ+njslW4RMLwy/dhL6Bizktst64uOS5JGVK01nRxoVzCFXUJQbXMrsS1KEmUHzVJiw48GYBs3/IqeXwLSgkn3Ja+vpmsQUJFeBrTVbpbzWmt0t22m2xi926gYWiZ74vPn40C5C0ZWpohEnaysvHu1jme08Vt8ffV3s++nuFQxy6qBJPaRg4DGIygK/+W8vM1EuaiZ2W3S0aO0CMi/wAG67r54muJNrM8KItAyXJRn8Pz2y9yAcdzgRbrPl/f5XVejonZHqA/l5sjd6kyolTaj7GIHizWTDguLs3lba4z4gHID4VbDSiJ7r7H5kHp4qmRw5zof49xkaV1Mvs7YDMiWHoLOBHv1r798T1aXzBhdK0EeGmKPMNh40PVWeCnI6RB1YRL2m7ZU1NKCKFcfyGhR8gBoPGJkUrxgqT2qKg50ZwECjp6r/WkTm8tJCDJFApjcCYOZV4Mz/wC2iyCFA1ZRplMkFx6YlGLLp4j83gqn1EBPi1wghiknPpMjBT7d/ECKLC2lJk4BMN7xAqZH0tkte533bM+axOHHAc6uwRKszgi37McRlrI6jEHdHdu51rOqGrzuZ7+dKq4HP
- eyS4YgAr
- cxnmOHcApbzkBBmr1AhhT7dKE0gcCsT4k9HgWdljK9F5tE3XIeH5iOljBS5pyHNJnfq2kYZkJz96mWOACfB8dxuEnMc0pqHPbQZL3kz2/vXUgGIqMpN+4J3AN0glIx77mhl0n2EAaKhxTs0UCdHlwVkJRw2srmPjEIuROJ3Us/LkqtknlF94oMEo1vsTjL7Rz+rUCqaE/tmagX81IBLdpeuN/xdxnt4aNJ0aKNZw6CDA3hdvOsghvL8U40UHbHiIFRLcOkUjtoj7JV9eASTiVAgmFpKjCmQlql3sUiVkRBcoyrwDBSvW/0+dE8As783lCX7Qtxdh769aFtoMDh5E9kmtFnIE6q4lKHndy/iZFUGykCtpicVfvhpoSk4Rdec51yCcW07x9X07NY2SBit9phDkXCjSBBN56ZN0/89JhRKaYbf147DMZVhIg3bsudaWyKxh9/jKJqBn31Zs=
+X-Rspamd-Queue-Id: 96E7240004
+X-HE-Tag: 1790573223-785483
+X-HE-Meta: U2FsdGVkX1826Y6ZOvs8PeKlfWz9G+f4FqkPx1EgxLyIAsoXv7othunvVnHxS2xZSNrQsYa1mKzQ40nOtN8ulAdxRQmB1MYn8CyATigUCnXyS1cZ+89y3IgtbsNRAEITsonrMWyZp5JR8XywF5s/vudGbzC9vEZbN1yqefXl0tABkjptL17iWybvp3I5ZpYRcaNx2OXHr6ogjAqF1EHDIbT8MVcUN6SmvwhGVZzvGjnDsHuRxdQuycy8my7Ke4enQO4gw4C56xMN6dCs+2ux90E3hFqCfjnJakPYUnLYWLOCEIkDLb/hgj/X9KzJ53VBcwNBraLWw/jO/6Yzz5gMI54z0ED7Cp1QH2eSzVIJNUpiySGk/kdMfm4svx5QcVLi+C2rGiRSFR49IDoI7qs8qERiNP4ACTDzu9cN0mPLjXk/VcSv3CnSSYZN48WoQwHwyd1aSieNw49SNdW6orGy3LwSzDUrqxHEe1Gck78Z9TLMfyYr7jsIhe8hTiYNZcuZzdg2yXBW+QticxRq62ZXNArrslZHSsexA5qFYEqAps+knWN6I8Kf4quHbPcEoLjZ7v/ItwuLbn/MPQzz4F4lAfzNfqeTN5/jY0KfXvgjoZixJ4G0O1GnZx+TbtDmqZqprjIbznFLPq0e0tz003DhHmksLBVhvuQ1z8kTuXV9KHZqsoqLv/ifxqkNnRtMqR3uorJy3PO1F1FOAFf92GEKfPcmsJJ2kHO9h2mllIyCve8kls3JlTmI3sjLXRfUJKHusYR0WgT0sTrBiTYS3/RVutMOoTb0LGyQ0GrcIQ56mtoB53DBJBE5TgcM6TDxc45AYOQj8wV+DpYKuFROWYG+S2KGxaJnriCunVUPn8W7E5x323ioN+mCf6asLMmqfrzt6ffB2a/6My0Tjn9iwMbG+k23klzFV85UUcxQzVXyLK4DbpC6glRdV4w6plIKUKy/hvuTsOyALVPMWhqPEGn
+ fM70sDZU
+ x6UgoZC+8GwDvqmu4ChQN2kziDdkhoVYTsCjmtkrWBjbtB77Q2cOV3iyvrQszAC9KJWePF0fJjqJ33eCo2djg18eHY7u5awFhJUKM6fYtxxEzONhxigT9PPuV2G7AEnVDwFNRPoYqtDQNEnU33szJgGJubMLAJP7h95ge1KSGbynV9TCRooUTBriK/VGJpNPp3gdvigg6qD2jwlQ+PpST+n2uGZcwIGkfwTYZf9p972ptlZtOaaNAnZ9DkYPE0J3gEeYh5lDYmWv6j5PiEWvwXb1vLWUb4HNdm90qnvhr8vAZ6fRyHZuHZB7m6FCfNMP12XrJ12m/TZZyvR+7TCTAdT7y1S+jDovcgKOnnUETiQCMmlRqSAZJzDaqnTzTx8J+IKF6V1yCHsYgAXO/jwTQX1xdnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,100 +104,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Zhao Li <enderaoelyther@gmail.com> writes:
+On Wed, Sep 16, 2026 at 12:20=E2=80=AFAM Baoquan He <hebaoquan@kylinos.cn> =
+wrote:
+>
+> vm_area_unmap_pages() does not free the backing pages that
+> xswap_map_clusters() allocated, so they leaked on every unmap.
+>
+> Collect the backing pages from the PTEs before unmapping and free them
+> after the PTEs are cleared. The collection array is allocated under
+> memalloc_noreclaim_save(); on failure, return -ENOMEM without unmapping.
+>
+> Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 
-> alloc_hugetlb_folio() calls hugepage_subpool_get_pages() when map_chg
-> is set.  For a subpool with max_hpages != -1, that bumps used_hpages
-> regardless of whether it returns gbl_chg = 0 (rsv slot consumed) or
-> gbl_chg > 0 (used_hpages slot only).  If the allocation later fails
-> before a folio is returned, the unwind must undo the used_hpages
-> bump.  The old cleanup only ran for !gbl_chg, leaking used_hpages on
-> the gbl_chg > 0 path.
->
-> For gbl_chg > 0 on max-only subpools (max_hpages != -1, min_hpages
-> == -1), hugepage_subpool_get_pages() took only a speculative
-> used_hpages slot.  Drop that slot directly under spool->lock.  In
-> that configuration hugepage_subpool_put_pages() cannot restore
-> rsv_hpages, so the direct decrement is the exact inverse and is
-> race-free against concurrent puts.  This matches the used_hpages-only
-> part of hugetlb_reserve_pages()'s out_put_pages cleanup, but
-> restricts it to the max-only case where no rsv_hpages restoration is
-> possible.
->
-> Mounts with min_hpages != -1 are left unchanged for now.  v2's
-> approach (hugepage_subpool_put_pages() + h->resv_huge_pages++ to
-> back a restored rsv_hpages slot) double-counts global backing under
-> concurrent free_huge_folio() and creates phantom reservations under
-> concurrent hugetlb_unreserve_pages().  Safe cleanup of that quadrant
-> needs a coordinated fix across multiple call sites.
->
-> Reproduced on size=20M hugetlbfs with the faulting task in a hugetlb
-> cgroup whose limit is exceeded.  Vanilla leaks 6/8 hugepages of
-> subpool quota; this patch leaks 0/8.  Verified under QEMU.
->
-> Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-> Cc: stable@vger.kernel.org # v6.15+
-> Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+Will this patch still be needed if you don't do the shrinking?
+
+Chris
+
 > ---
-> Changes in v3:
-> - Replace v2's hugepage_subpool_put_pages() + h->resv_huge_pages++ on
->   the gbl_chg > 0 branch with a direct used_hpages-- under spool->lock.
-> - Restrict the cleanup to (max_hpages != -1, min_hpages == -1) where
->   the direct decrement is the exact inverse of the speculative bump.
+>  mm/swapfile.c | 76 +++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 65 insertions(+), 11 deletions(-)
 >
-> Changes in v2:
-> - Skip the gbl_chg > 0 cleanup when max_hpages is unset.
-> - Add hugepage_subpool_put_pages() + h->resv_huge_pages++ on the
->   gbl_chg > 0 branch.
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 2a03b13c0ed2..5b31aacb3ec5 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -67,8 +67,8 @@
 >
->  mm/hugetlb.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
+>  static int xswap_map_clusters(struct swap_info_struct *si,
+>                               unsigned long start_idx, unsigned long nr);
+> -static void xswap_unmap_clusters(struct swap_info_struct *si,
+> -                                unsigned long start_idx, unsigned long n=
+r);
+> +static int xswap_unmap_clusters(struct swap_info_struct *si,
+> +                               unsigned long start_idx, unsigned long nr=
+);
+>  static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data);
+>  static void xswap_try_shrink(struct swap_info_struct *si);
 >
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index f24bf49be047e..cfdeaf6394c5b 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3025,13 +3025,24 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
->  		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
->  						    h_cg);
->  out_subpool_put:
-> -	/*
-> -	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-> -	 * during hugepage_subpool_get_pages.
-> -	 */
-> -	if (map_chg && !gbl_chg) {
-> -		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-> -		hugetlb_acct_memory(h, -gbl_reserve);
-> +	if (map_chg) {
-> +		if (!gbl_chg) {
-> +			/* Full inverse when subpool_get_pages() consumed rsv_hpages. */
-> +			gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-> +			hugetlb_acct_memory(h, -gbl_reserve);
-> +		} else if (gbl_chg > 0 && spool && spool->min_hpages == -1 &&
-> +			   spool->max_hpages != -1) {
-> +			unsigned long flags;
+> @@ -3343,9 +3343,14 @@ static void free_swap_cluster_info(struct swap_inf=
+o_struct *si)
+>                         }
+>                         spin_unlock(&ci->lock);
+>                 }
+> -               /* Unmap all mapped clusters and free the VM_SPARSE area =
+*/
+> -               if (si->nr_clusters_mapped > 0)
+> -                       xswap_unmap_clusters(si, 0, si->nr_clusters_mappe=
+d);
+> +               /*
+> +                * free_vm_area() drops the mapping without freeing the p=
+ages,
+> +                * so the unmap has to succeed first.  Retry; its only fa=
+ilure
+> +                * is a transient -ENOMEM while collecting the backing pa=
+ges.
+> +                */
+> +               while (si->nr_clusters_mapped > 0 &&
+> +                      xswap_unmap_clusters(si, 0, si->nr_clusters_mapped=
+))
+> +                       cond_resched();
+>                 free_vm_area(si->cluster_vm);
+>                 si->cluster_vm =3D NULL;
+>                 si->cluster_info =3D NULL;
+> @@ -3988,21 +3993,44 @@ static int xswap_map_clusters(struct swap_info_st=
+ruct *si,
+>         return -ENOMEM;
+>  }
+>
+> -static void xswap_unmap_clusters(struct swap_info_struct *si,
+> -                                unsigned long start_idx, unsigned long n=
+r)
+> +struct xswap_page_data {
+> +       struct page **pages;
+> +       int nr;
+> +       int max;
+> +};
 > +
-> +			/*
-> +			 * For max-only subpools, subpool_get_pages() took only a
-> +			 * speculative used_hpages slot. Drop that slot directly.
-> +			 */
-> +			spin_lock_irqsave(&spool->lock, flags);
-> +			if (spool->used_hpages > 0)
-> +				spool->used_hpages--;
-> +			unlock_or_release_subpool(spool, flags);
-> +		}
->  	}
+> +static int xswap_collect_page(pte_t *pte, unsigned long addr, void *data=
+)
+> +{
+> +       struct xswap_page_data *xpd =3D data;
+> +       pte_t pteval =3D ptep_get(pte);
+> +
+> +       if (!pte_present(pteval))
+> +               return 0;
+> +       if (xpd->nr < xpd->max)
+> +               xpd->pages[xpd->nr++] =3D pte_page(pteval);
+> +       return 0;
+> +}
+> +
+> +static int xswap_unmap_clusters(struct swap_info_struct *si,
+> +                               unsigned long start_idx, unsigned long nr=
+)
+>  {
+>         unsigned long start_addr =3D (unsigned long)si->cluster_info +
+>                                    (size_t)start_idx * sizeof(struct swap=
+_cluster_info);
+>         unsigned long end_addr =3D start_addr + (size_t)nr * sizeof(struc=
+t swap_cluster_info);
+>         unsigned long vm_start =3D PAGE_ALIGN(start_addr);
+>         unsigned long vm_end =3D PAGE_ALIGN(end_addr);
+> +       unsigned long size;
+> +       unsigned long npages;
+> +       struct xswap_page_data xpd;
+> +       unsigned int noreclaim_flags;
+> +       int i;
 >
+>         mutex_lock(&si->xswap_lock);
 >
+>         if (vm_start >=3D vm_end) {
+>                 WRITE_ONCE(si->nr_clusters_mapped, start_idx);
+>                 mutex_unlock(&si->xswap_lock);
+> -               return;
+> +               return 0;
+>         }
+>
+>         /*
+> @@ -4014,12 +4042,32 @@ static void xswap_unmap_clusters(struct swap_info=
+_struct *si,
+>         flush_percpu_swap_cluster(si);
+>         synchronize_rcu();
+>
+> +       size =3D vm_end - vm_start;
+> +       npages =3D size >> PAGE_SHIFT;
+> +
+> +       noreclaim_flags =3D memalloc_noreclaim_save();
+> +       xpd.pages =3D kmalloc_array(npages, sizeof(*xpd.pages),
+> +                                 __GFP_HIGH | __GFP_NOMEMALLOC | GFP_KER=
+NEL);
+> +       memalloc_noreclaim_restore(noreclaim_flags);
+> +       if (!xpd.pages) {
+> +               mutex_unlock(&si->xswap_lock);
+> +               return -ENOMEM;
+> +       }
+> +
+> +       xpd.nr =3D 0;
+> +       xpd.max =3D npages;
+> +       apply_to_existing_page_range(&init_mm, vm_start, size,
+> +                                    xswap_collect_page, &xpd);
+> +
+>         vm_area_unmap_pages(si->cluster_vm, vm_start, vm_end);
+> -       /* vm_area_unmap_pages() clears PTEs but does not free pages. */
+> -       /* TODO: free backing pages via page table walk or tracking bitma=
+p */
+> +
+> +       for (i =3D 0; i < xpd.nr; i++)
+> +               __free_page(xpd.pages[i]);
+> +       kfree(xpd.pages);
+>
+>         WRITE_ONCE(si->nr_clusters_mapped, start_idx);
+>         mutex_unlock(&si->xswap_lock);
+> +       return 0;
+>  }
+>
+>  /* Track the end of the run of pages that is already mapped. */
+> @@ -4152,7 +4200,13 @@ static int setup_swap_clusters_info(struct swap_in=
+fo_struct *si,
+>                 return 0;
+>
+>  err_unmap:
+> -               xswap_unmap_clusters(si, 0, si->nr_clusters_mapped);
+> +               /*
+> +                * Retry until the unmap succeeds.  Its only failure is a=
+ transient
+> +                * -ENOMEM while collecting the backing pages.
+> +                */
+> +               while (si->nr_clusters_mapped > 0 &&
+> +                      xswap_unmap_clusters(si, 0, si->nr_clusters_mapped=
+))
+> +                       cond_resched();
+>  err_free_vm:
+>                 free_vm_area(si->cluster_vm);
+>                 si->cluster_vm =3D NULL;
 > --
-> 2.50.1 (Apple Git-155)
-
-This fixes out_subpool_put in alloc_hugetlb_folio() on a mount that
-specifies max_size only, and does not introduce any further bugs AFAICT.
-
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-
-Further details at [1].
-
-[1] https://lore.kernel.org/all/CAEvNRgHQLifmcD1NO6cd7EVcCiQb6gJgNUo4HkFhZAvzuwMq0w@mail.gmail.com/
+> 2.54.0
+>
 
