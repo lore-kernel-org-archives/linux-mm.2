@@ -4,108 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27B3AC9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:37:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA23EC9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:51:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A0166B0088; Mon, 28 Sep 2026 02:37:48 -0400 (EDT)
+	id BB9366B0088; Mon, 28 Sep 2026 02:51:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 277CA6B008A; Mon, 28 Sep 2026 02:37:48 -0400 (EDT)
+	id B6A216B008A; Mon, 28 Sep 2026 02:51:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18EF66B008C; Mon, 28 Sep 2026 02:37:48 -0400 (EDT)
+	id A58F16B008C; Mon, 28 Sep 2026 02:51:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E4DFF6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:37:47 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD93840B2D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:37:45 +0000 (UTC)
-X-FDA: 85262215290.07.1EEDB27
-Received: from mta0.migadu.com (out-72.mta0.migadu.com [91.218.175.72])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 30F2FC0007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:37:41 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 86EB46B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:51:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0EF5E40B30
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:51:12 +0000 (UTC)
+X-FDA: 85262249184.22.3AFDCB7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 17081C0007
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:51:09 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mqm6sYcZ;
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRahg4cA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790577464;
+	s=arc-20220608; t=1790578270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=oqwJtwha25xsU9qThmWxhQZg0t+G7v7ZP+aTfYSjdpg=;
-	b=lfI3BWFNEkUJQl04UA9UQkR7iuJOZqhSu6GPI2NMLUVUnROQCvHmZRPGdnXhXHd63Na/h5
-	ygcrqjTpN9TXIjrZvSoWrtYf+oE2y8rRSB4DoTTKgtKrxqtjLZS/L8Lhor8q5/2vSyORqZ
-	HlpLezhGGL/sja1ugb4YEiwU96lh0rc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s5UI4Wy+eGiErrBzR7b2VedGpOFJDsN75qbhAxc0yzs=;
+	b=EPQ+ceUwqeGuVpbYj8RhndadpwcoNgQ/4RkveCxeUcGeUMqKRBO5k1SkGahcQrs2iC0nUR
+	ms54O5lKKwBzAVqey/fw19ZVwW6yxHGRwGAsSFYKKYdObGY8mYw2r5kzJexd4MbFaoqeeM
+	GeeWVlogpZdUclgvUhzU1xNcWiVmxos=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mqm6sYcZ;
-	spf=pass (imf28.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.72 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRahg4cA;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790577464;
-	b=Wpez2LPVtYqTge38L7j7FDAG/VPDCacKKgS12tQkdbC6Idyp9YIQAI+oR57gXUc/OARaKf
-	q20dW2SRqpt3iUQieNvDDIANYNRQqjiz5rBxVjp28pjePORXnTqUJ/XBUuuXpBZop9v+9S
-	PCBcG8UptRNysmpBMH/nam5nl3YNaEc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=hUT/auhZhasn1dAsICGATUHjPsDMpF0qXhUrLgaODL0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790577460; v=1; x=1791182260;
- b=mqm6sYcZZxdI07RCjmEa4jjwz/ayN9ZVbZYuI/6DzdGXqHKXfsmcdaOYRz9jSsKAmNzdIVU4
- svOuCUTnClNx2eHCbf22qH1Es5FXrLg5ONzdOyddse1gNWYYSh4jumPlGKc8G0ktWVooXkQcMPu
- W+n10sO6qefzlqFwO7aebrkk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 10f09c6742e8c7e8;
-	Mon, 28 Sep 2026 06:37:40 +0000
-X-Mizu-Trace-ID: 10f09c6742e8c7e8
-X-Migadu-Flow: FLOW_OUT
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Shuah Khan <shuah@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH bpf-next v2] selftests/bpf: Add bpf_proactive_reclaim test
-Date: Mon, 28 Sep 2026 14:37:24 +0800
-Message-ID: <20260928063724.24008-1-hui.zhu@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	t=1790578270;
+	b=WGnLNdCul6jlaAaZZAtsmm1WXUXjFKpvKY37cM1TUpXA5OVF3lLtB0j5kYZQEeVBtWZD01
+	klsDn91IIOI8uLZiHmiJf/nOc3QYo6U0NbbcO/6mSI41aQcRlv5Z5iknWwUJEmkLoUAAyj
+	OFTuG6Hw4IzSeXjUaNutit9m3UVZmpY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 96A32447BE
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:51:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A01F008A1
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790578268;
+	bh=s5UI4Wy+eGiErrBzR7b2VedGpOFJDsN75qbhAxc0yzs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jRahg4cAxN6Tle2r15oJe/vmxLHt/LqsTmTxt34l9F+NJ+DReohvk6pR5vCHz2B3O
+	 pcJWUAQ6QH4Lp0CuwBlUfYDuo8LRITlBQkrUs+FWRkmUazrwaGqVihIh4IqyqQnhho
+	 SzyMTgwzEgMUZNVh1F/Zj0azGL+N+c5Ip34weRdyBiQruy5eAGdfDQpOqcJy0xC9If
+	 XninYxyuXj034C3GWnRU/6CjCPxeYVDzZ7UFgT6+ITXDEVEQGj43lpS/oBRFluKgN6
+	 GcObbZtLOxjCr5AeIQf/biJ0/q1/t08Vi+9JBBBQYwnZtkEnOC4gB+89RwY77H8Rzi
+	 ckorlts8LfjXQ==
+Received: by mail-qk2-f39.google.com with SMTP id af79cd13be357-93c65d5e6f8so59937185a.0
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:51:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy+2hs4ybLjfr/bZ4jDq/fer4FA9PVZDiyy4sd5jEBGKao5BRRiABl0cZvkEjFPrzd8ajgRVbbI6w==@kvack.org
+X-Gm-Message-State: AFuF++ko02fn8+rNq/SDzUOxSLiZkkXDC9mBLrvhZz9sjTi1c37MCz9c
+	HwgUA6Mey8E0aIjuRKeRAuHfLa/S42/1exZRiSGk3A16IfLINDjulVTAqANlMDllYL8BdNsztj6
+	7MUsD/yIkzBDv+mELgjCuJVRdW69KTZU=
+X-Received: by 2002:a05:620a:6486:b0:93c:6925:dfeb with SMTP id
+ af79cd13be357-93c6925e8a2mr834739185a.56.1790578267654; Sun, 27 Sep 2026
+ 23:51:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cn8b6b7imqxij11xxxm1is9ocqucd7e1
-X-Rspamd-Queue-Id: 30F2FC0007
+References: <20260928063724.24008-1-hui.zhu@linux.dev>
+In-Reply-To: <20260928063724.24008-1-hui.zhu@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 28 Sep 2026 14:50:55 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wrWdw+4B10K3J+sDCSjVoBs2=LtObb6MKehuYsx9pXMg@mail.gmail.com>
+X-Gm-Features: AclHuK-c7GpN5AyOOlaUnzGeJcdZoBH-1EyfOLTse_68UQXS73MXqF_7DQKjthA
+Message-ID: <CAGsJ_4wrWdw+4B10K3J+sDCSjVoBs2=LtObb6MKehuYsx9pXMg@mail.gmail.com>
+Subject: Re: [PATCH bpf-next v2] selftests/bpf: Add bpf_proactive_reclaim test
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Shuah Khan <shuah@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, 
+	Stanislav Fomichev <sdf@fomichev.me>, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: a8jxkd6spe7geoxc48r9bhxxqqfj13s8
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790577461-852856
-X-HE-Meta: U2FsdGVkX19BAWdCq+gyBl4kNQ+4dTzh4NDysoqah40Lm1jTJ4GrhF5h7tJGWwvuK9tEHkYLOBm8HmtvdmmdFbNafKxK9XCnL7vwKOA0hdkicccR43YQaBHdC8NuQwYbW4fqoie43AcrAi4vvr6uAMGceuiv3YPS9QLgLHT3oCLKIMcTamd04DQ9QlfvM9GSENnik/de52MSdu7OeDAkKEe8VHf94WGMNfgvLbgjhozwLtcGjvHMFMAaTufLa2AhUUhkAB9TCxfrt7+6T6LtRAQtTCFiqQ3ZXv1w6HccQHd/6lUPUy6QJrKblb/wJokWlmjxC1Z4z8IRufq+UYbBmJnCh71M/Vlei75WGaMv6Z89XFSNgLRoY2g+G3pwRZ8FzUs0+yqOa0vwityvvuQ7XY/dXQuQh43qzLNbE8WCh6xAWf4f6IJXX9NPZUDWUIBAo1N7BVSvVSc8JI+I7HJeFnZUO0cI0k15ZUUd5CBHaBHYQKcTuEiaxg0TXQZwOGXdxhm0KndnLoq3iSPN2z/6IVcEP6S12qzcW4XXg0uKpkoUxrL4ca7dzI94zS5OGQZDP1JpOkKOGNeOFXqSAM1QUAFkfkx/DsvD8y/lE7r4IjTZMJou1d03mRr7kNVLKR++IYMOUeM6C5dHFHHD7yl+ju4EVoHbs57e8gLvesXpHXwlQQJe/n2gV7ma5QszEPyMDLvP6a+RDXs+lpPgEIteI/3YGExIoC1skhAswESk6JLoKvvBKEkligjqX6sFCvKh+LeT4QH496TxLh4Dy7TjVPxL9emRnqE4RhwyhdQiIw5Nch4iLtzYRS7pvrK9ZXrU7kZNfQcpwxbuogNnJodaskv+JPkEejIUA7oTQQJ1Z3PdcKJjzVcnzfAZzL6RACMOBiJY0BFKzgOZOwzvReEL73RExNK85jULqIMP7JKJRv6ZrlvyHjouReESOlqeVJZ8NutwVIH9KRjBGrj2u65
- 4QNANG/O
- YFPD0mLggL9b+p56aZ3pepxKanLp07SN7Z0qw/MggnQjG8397V2L5Uqw2l9rte9TiT/0GEWXlzuf2TqOfallFWSQ8BxiMrYT1i4IYy7PH8eBjBEzlUDojkMYd13BiJhil2ERAO2ySXrFWwNYCvRJmLjdPzvexp6WtS1pW3IuwiUNZ6fw6rqWC9cCj+1HXZXHH/au8WAvSXUMeWzs3UAKEKZLMiRnYpVEbeKmC0exza9gPx+M49YOv2I4BkW9M9/wp3CPiEo2ucRRJ4ZxiqBexMTsv1agEZDbyz4XcRKUgDuZtc7jh0OOAMH7+2nlVI+C1I7bHk77otLQ+KAVAL0nVsPr9LSmH0RVqFQJLdf7QtKhpjkpsVy6N7ZRvOQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 17081C0007
+X-HE-Tag: 1790578269-756056
+X-HE-Meta: U2FsdGVkX19+xqOSm4m1Nfta/UzBPZnhhhB++eof4kxP7n8Glfhtx1QITciGDywcAFan3dgzeqfMZJMj7EixjxEIgTwaPcmD+bnu0q7Nn5LHVN9j/xhG7KoDzfJqfleNK1xNxQEQ7V8UWQz2/7rAF3clZxFt6lW1Dev+EDrYugo8JSSuXgqAVo9Iw85QT945E54ackWjNSClC9pJl7PMm4vR3PJlZ7gtJ9fr2HLRqy7vvsMk9W5raMFwgaAQyDd5lpzJHUiDayFmyY1Tj37D1NdFoDKQDLP1OIz3kDMoMPLNE1UgA3L8vueqtoGkBuiR2BTVkzv7DcubMn1X9faN5rnxYKEJoOoaWoGoXE7rRLjfdWI+IlpArySwpkj8QvXcKjPFmU8pbAZSyxX9u/WWq1FBf7igjlhCdzwUdrtve/brZ/mn4M2YV3tvZZwrn0+k3hGaFQUaL1ILTUDWtBQBfY3prAaRO8bQVXlsflkk/A7SsiUzw6wAVc/WRd6wKk1vx9P2mzvWEpUQ8r77HVepJBcgq3zD81d4MrpXZcRAfpDNdcHZlE8EEivXdVauo4VLV/DmsKzn5MtDtjoBtBFHnmcsADW/vGxtbX7rMOK49nDX7Z5LwPK0GJpi+ZZZ5bK5luXU+zjtXhtRe8W8v6XUXCRyUZzp9OdALqcSkLLhOLebqPOMnSH4yLY0jteG1qy4Rel4mdJQrj7rIsfrbqgJKspTcHBxdmlVY+cN6+QPbcquAi0foTo7YYqakhxxDE+lIw1dF4HyQ8/tAT/t85v+w9EMCHLg7wfP6Ju7S0Nkx8aIA80pkWC07VeICsG/pxIIHTTcMtQNmLrgxt/Hcgu0jRUuZb/kqvRX0JxFK9+qmGn+dgOdkzCvVycWpS9gpDiFFeVoEUEGPImG/q73eCmrS6/YT4hBFGH6CvQFUEh3YogHFRMuXFuO8CtCZr1yNQPtaHovzItveOG0K/RDJTG
+ at1LGSzb
+ yGlsOJ2+7pTuvDzaTdsBeiHIGzZssmVz6ryur8nmTx2t8KinVJRDjH1WuMUuCDHMyFvxVim4pcI2K5C7ZmI1KjewADo+XIpm41RTcc9rsXDDeYKH5Ls1YMCht1tQ3I7EpEx6eP0ebCcYBPAaXq8sTt4C7Syxs19zYFWV59gCnIQ6PvnHCqLmwo5SlMjqNnorQMox4ckvBZIPipAh8CJ5/9rpdMTOZTWsd7uiqifN/otBASrFgqAu0ovxvU0X+Kg7a4YYlpmFDOEFSsOTzl5qG9moEivkkntwK7HbEF6YosL1o73Ts3brEQtU0JzRYPLEFA2kcCstT37XmA+0KI+lmp2BbgLWW5Kl31jE9B8zTtUP02cYTJIWhdByGnarHuj2dbhYbrziTDE22WzxVElgpwQ13w49sqmT2r0oAltGa97YjhK12BawjLc/kmB8BNts/Xtzn5ELQ0K29b9+9hYv1J5wt0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,224 +114,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Mon, Sep 28, 2026 at 2:37=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
+>
+> From: Hui Zhu <zhuhui@kylinos.cn>
+>
+> bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
+> unlike a write to memory.reclaim, does not retry until the goal is
+> reached.
+>
+> Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
+> and check that the result is positive but well below the request: one
+> pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
+> 4K and 64K page kernels.
+>
+> The test deliberately covers only the kfunc itself. A full example of
+> the intended asynchronous use, where a BPF program watches one cgroup's
+> workingset refaults and reclaims another one from bpf_wq callbacks, is
+> maintained out of tree at [1], released under GPLv2.
+>
+> Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.=
+c
+> is not built at all.
+>
+> [1] https://github.com/teawater/memcg-async-reclaim
+>
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+[...]
+> +
+> +       /*
+> +        * Charge FILE_SIZE of page cache to the cgroup. Reading rather t=
+han
+> +        * writing keeps the pages clean, so reclaim does not have to sta=
+rt
+> +        * writeback before it can evict them.
+> +        */
+> +       if (!ASSERT_OK(ftruncate(data_fd, FILE_SIZE), "ftruncate"))
+> +               goto out;
+> +       for (off =3D 0; off < (off_t)FILE_SIZE; off +=3D sizeof(buf))
+> +               if (!ASSERT_GT(read(data_fd, buf, sizeof(buf)), 0, "read"=
+))
+> +                       goto out;
+> +
 
-bpf_proactive_reclaim() performs one bounded reclaim pass per call and,
-unlike a write to memory.reclaim, does not retry until the goal is
-reached.
+In case we might map file holes to the zero PFN someday (not sure when),
+this wouldn't necessarily give us page cache. So maybe write + fsync is
+more future-proof? In that case, you could also drop the two lines of
+comments.
 
-Charge 32 MiB of page cache to a cgroup, ask for all of it in one call,
-and check that the result is positive but well below the request: one
-pass is capped at MEMCG_CHARGE_BATCH pages, far short of 32 MiB on both
-4K and 64K page kernels.
-
-The test deliberately covers only the kfunc itself. A full example of
-the intended asynchronous use, where a BPF program watches one cgroup's
-workingset refaults and reclaims another one from bpf_wq callbacks, is
-maintained out of tree at [1], released under GPLv2.
-
-Add CONFIG_MEMCG to the config fragment, without which mm/bpf_memcontrol.c
-is not built at all.
-
-[1] https://github.com/teawater/memcg-async-reclaim
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v2:
-According to the comment of Alexei, remove the samples/bpf sample patch.
-Ship it out-of-tree as a standalone project.
-
- tools/testing/selftests/bpf/config            |   1 +
- .../bpf/prog_tests/memcg_proactive_reclaim.c  | 124 ++++++++++++++++++
- .../bpf/progs/memcg_proactive_reclaim.c       |  34 +++++
- 3 files changed, 159 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
- create mode 100644 tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index d292cb60a5a4..21bb0d4a37cb 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -57,6 +57,7 @@ CONFIG_LIRC=y
- CONFIG_LIVEPATCH=y
- CONFIG_LWTUNNEL=y
- CONFIG_LWTUNNEL_BPF=y
-+CONFIG_MEMCG=y
- CONFIG_MODULE_SIG=y
- CONFIG_MODULE_SRCVERSION_ALL=y
- CONFIG_MODULE_UNLOAD=y
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..d642658a2198
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_proactive_reclaim.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <limits.h>
-+#include <linux/magic.h>
-+#include <sys/statfs.h>
-+#include <unistd.h>
-+
-+#include "cgroup_helpers.h"
-+#include "memcg_proactive_reclaim.skel.h"
-+
-+#define CG_PATH "/memcg_proactive_reclaim"
-+
-+/*
-+ * Large enough that a single reclaim pass cannot come close to it, so that
-+ * "reclaimed less than was asked for" is not page-size noise: one pass is
-+ * capped at MEMCG_CHARGE_BATCH pages, which is 256 KiB on 4K pages but 4 MiB
-+ * on 64K pages.
-+ */
-+#define FILE_SIZE (32 * 1024 * 1024UL)
-+#define BUF_SIZE (64 * 1024)
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/*
-+ * The data file has to sit on a regular filesystem: tmpfs pages are charged
-+ * as shmem, so whether they can be reclaimed at all depends on swap being
-+ * available. /tmp is tmpfs on many systems, and test_progs is routinely run
-+ * from a tmpfs working directory, so both candidates need the check.
-+ */
-+static const char *workload_dir(void)
-+{
-+	static const char * const dirs[] = { "/tmp", "." };
-+	struct statfs st;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dirs); i++)
-+		if (!statfs(dirs[i], &st) && st.f_type != TMPFS_MAGIC &&
-+		    st.f_type != RAMFS_MAGIC)
-+			return dirs[i];
-+
-+	return NULL;
-+}
-+
-+void test_memcg_proactive_reclaim(void)
-+{
-+	struct memcg_proactive_reclaim *skel = NULL;
-+	struct reclaim_args args = {};
-+
-+	LIBBPF_OPTS(bpf_test_run_opts, opts,
-+		    .ctx_in = &args,
-+		    .ctx_size_in = sizeof(args));
-+
-+	char data_file[PATH_MAX];
-+	static char buf[BUF_SIZE];
-+	__u64 cgroup_id;
-+	const char *dir;
-+	off_t off;
-+	int cg_fd = -1, data_fd = -1, err;
-+
-+	dir = workload_dir();
-+	if (!ASSERT_OK_PTR(dir, "workload dir on a regular filesystem"))
-+		return;
-+
-+	snprintf(data_file, sizeof(data_file),
-+		 "%s/memcg_proactive_reclaim_XXXXXX", dir);
-+	data_fd = mkstemp(data_file);
-+	if (!ASSERT_GE(data_fd, 0, "mkstemp"))
-+		return;
-+
-+	cg_fd = cgroup_setup_and_join(CG_PATH);
-+	if (!ASSERT_OK_FD(cg_fd, "cgroup_setup_and_join"))
-+		goto out;
-+
-+	cgroup_id = get_cgroup_id(CG_PATH);
-+	if (!ASSERT_GT(cgroup_id, 0, "get_cgroup_id"))
-+		goto out;
-+
-+	skel = memcg_proactive_reclaim__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open_and_load"))
-+		goto out;
-+
-+	/*
-+	 * Charge FILE_SIZE of page cache to the cgroup. Reading rather than
-+	 * writing keeps the pages clean, so reclaim does not have to start
-+	 * writeback before it can evict them.
-+	 */
-+	if (!ASSERT_OK(ftruncate(data_fd, FILE_SIZE), "ftruncate"))
-+		goto out;
-+	for (off = 0; off < (off_t)FILE_SIZE; off += sizeof(buf))
-+		if (!ASSERT_GT(read(data_fd, buf, sizeof(buf)), 0, "read"))
-+			goto out;
-+
-+	args.cgroup_id = cgroup_id;
-+	args.size = FILE_SIZE;
-+	skel->bss->reclaimed = 0;
-+	err = bpf_prog_test_run_opts(bpf_program__fd(skel->progs.memcg_proactive_reclaim),
-+				     &opts);
-+	if (!ASSERT_OK(err, "test_run"))
-+		goto out;
-+	if (!ASSERT_EQ(opts.retval, 0, "retval"))
-+		goto out;
-+
-+	/*
-+	 * A single call is a single bounded pass: it reclaims something, but
-+	 * stops well short of the requested size instead of retrying until the
-+	 * goal is reached the way a write to memory.reclaim does.
-+	 */
-+	ASSERT_GT(skel->bss->reclaimed, 0, "reclaimed");
-+	ASSERT_LT(skel->bss->reclaimed, (__s64)FILE_SIZE, "single pass");
-+
-+out:
-+	if (skel)
-+		memcg_proactive_reclaim__destroy(skel);
-+	if (cg_fd >= 0)
-+		close(cg_fd);
-+	if (data_fd >= 0) {
-+		close(data_fd);
-+		unlink(data_file);
-+	}
-+	cleanup_cgroup_environment();
-+}
-diff --git a/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-new file mode 100644
-index 000000000000..b551192526fc
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/memcg_proactive_reclaim.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+struct reclaim_args {
-+	__u64 cgroup_id;
-+	__u64 size;
-+};
-+
-+/* Signed, because bpf_test_run_opts.retval is a __u32. */
-+__s64 reclaimed;
-+
-+SEC("syscall")
-+int memcg_proactive_reclaim(struct reclaim_args *ctx)
-+{
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgrp;
-+
-+	cgrp = bpf_cgroup_from_id(ctx->cgroup_id);
-+	if (!cgrp)
-+		return 0;
-+
-+	memcg = bpf_get_mem_cgroup(&cgrp->self);
-+	if (memcg) {
-+		reclaimed = bpf_proactive_reclaim(memcg, ctx->size, -1);
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_cgroup_release(cgrp);
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.43.0
-
+Best Regards
+Barry
 
