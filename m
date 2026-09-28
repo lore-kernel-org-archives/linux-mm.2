@@ -4,96 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12AC6CA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 23:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8619CA5FAB
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 23:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0A8C6B0088; Mon, 28 Sep 2026 19:30:10 -0400 (EDT)
+	id BBA936B0088; Mon, 28 Sep 2026 19:40:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABB8C6B008A; Mon, 28 Sep 2026 19:30:10 -0400 (EDT)
+	id B6B426B008A; Mon, 28 Sep 2026 19:40:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AAB16B008C; Mon, 28 Sep 2026 19:30:10 -0400 (EDT)
+	id A81536B008C; Mon, 28 Sep 2026 19:40:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C6A76B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:30:10 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88B211C2898
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:30:07 +0000 (UTC)
-X-FDA: 85264766454.29.8A5E082
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 867636B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 19:40:02 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0C0381A034D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:40:02 +0000 (UTC)
+X-FDA: 85264791444.11.4E8C743
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DCDABA0008
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:30:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mp2k2TBP;
-	spf=pass (imf15.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 298D240004
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:39:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YbM3qQSO;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790638800;
+	b=khFqP4cHwua588c/dm3Kg0tARMiheMbsAw0gafC3QRvx3m6IbmUiVCNEmPpK51mHjv5NsL
+	fBvFXwDNqcp08vxkhwA+GpZx8+j5BOCYDLpp2FDEwPTXJ6fEkTx3HjSrNWGziteidRwmCE
+	v/V9V1hJqBus/xrg5qAOsQMiy6tqWY0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YbM3qQSO;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790638205;
+	s=arc-20220608; t=1790638800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H0XE7IoMyItwyaCzzcE2PkwcpGvCdLwnkryM7cP8W2E=;
-	b=23osdvV2E1rtSxd5zzDuxr9HD9OQ4EhKLcn3A3cnSKix1Lk4gs8YDMytK7Hren2jTlCH/q
-	KrSOnPxwDGTuceglXRoQNsxlHt79hZn03M0uFuEAmLIi8m13CLlMDe0RVKZW+er/9FUyTS
-	LZnpwGKd7s1XYaP1jDGZPYxcv4sTIeo=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mp2k2TBP;
-	spf=pass (imf15.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790638206;
-	b=poPdXfXlMfOkIHJVO/wB5PpucCdZonvEYqT0uOUSrl2DKiYKp7QKcQsHULZnpsxa7HjQdn
-	piKJ0NzG4e8jC+7YLKR67q9WMNcrZd/f1NtcdxqclKXG4MpcTNoUWoa7sQOO6oXkWEiMNY
-	fx0iofjy69puQAj7R5pF1BLVRhs9odI=
+	bh=1HFLO5rBdRNtlKvRCci2EuPZ1UPk8TFVkIuVr0KdXBc=;
+	b=VO/q61NmNiOxkhXEdrxK8E/Jg4c/vGE8JSh+u3lf7SW1pKlIuPbPlZecl8OrfQNjgHmGkz
+	zGEGiqVU1HD0d+zVccwDDKwSA1cOF5zWff2lMQH2pmRiftNA1qsDjQp73cMUtKMoq1xJ6P
+	ozE8e9UhJvcgqmoOK3/CS9tPstwEpPo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15F4640A0B;
-	Mon, 28 Sep 2026 23:30:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C308E1F000FF;
-	Mon, 28 Sep 2026 23:30:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790638205;
-	bh=H0XE7IoMyItwyaCzzcE2PkwcpGvCdLwnkryM7cP8W2E=;
+	by sea.source.kernel.org (Postfix) with ESMTP id EDB9F402E2;
+	Mon, 28 Sep 2026 23:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391A51F000FF;
+	Mon, 28 Sep 2026 23:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790638798;
+	bh=1HFLO5rBdRNtlKvRCci2EuPZ1UPk8TFVkIuVr0KdXBc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=mp2k2TBPVaaa0oxas9pidANxg0LgDSy5BpcWNRKUDZ2xfRnQMMIHH1Qe8npsm2EwZ
-	 JQvL7o+ufYOIqkwRDBmD2qLfMkSW0hBKvMr28f3rNeL3uSw/vNuK9gPPyMXPS75ITO
-	 dwgzwWjZY7IfJp1M4npH9DnI3l+UKPmhlO1KI+8FASh/ZgwvfeKPI0DYvfXtqQ0GLf
-	 uS4VM5KEsvr1YvvJ4k+4lYQ3eRehbzxv/1jz1tCe/IVj/FmY+H7Le3yVGYVorc5yE8
-	 ypt8nmUXeDxZYuzrfESvJ8/kDeRIh+ZBI8yo2vIfJByvMHdHRNCS4IggAjf/zsEGpv
-	 8Q1ZH0jViPjeg==
-Date: Mon, 28 Sep 2026 13:30:04 -1000
-Message-ID: <6d0542fc07639c8df7672b12f4ecd906@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Xin Yin <yinxin.x@bytedance.com>,
- linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- ian@honeycomb.io
-Subject: Re: [PATCH v2] writeback: let foreign flushes reach dying cgwbs
-In-Reply-To: <20260928-wb-dying-cgwb-flush-v2-1-56b54cda74f2@honeycomb.io>
-References: <20260928-wb-dying-cgwb-flush-v2-1-56b54cda74f2@honeycomb.io>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Stat-Signature: smjghbaz54wo3www3r5s7ewuudo1j854
-X-Rspamd-Queue-Id: DCDABA0008
+	b=YbM3qQSOZprYyJJo1LOb+4d+Unzi6Iot229rfqkh1ZIpP15t4Xir0u6Ip6jr0ONa1
+	 W32A/o6ob8UZY2av8Rs4ZiZzDO14UDp3WmYDpngemwMM5JwE5Lo9QT8cA9uKHVYhR7
+	 gCT5kHe5AejMLxykgr9gbhIZ/9JtumReda/umMW0=
+Date: Mon, 28 Sep 2026 16:39:57 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, David Hildenbrand <david@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v3 0/6] mm: make MAP_PRIVATE-/dev/zero mappings truly
+ anonymous
+Message-Id: <20260928163957.832a27ee9596a25a282c2707@linux-foundation.org>
+In-Reply-To: <20260926-map-private-dev-zero-v3-0-d4781e84ccfc@kernel.org>
+References: <20260926-map-private-dev-zero-v3-0-d4781e84ccfc@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hckudforxihkn5egcm7soh7pr8zxsgka
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790638205-118794
-X-HE-Meta: U2FsdGVkX19hfXw+a3T8YLN2MaopPi8IAKPpVh7ygYdzV4Y+kg0T352Culdw33u71gwbdWvtJNY2Tb/ktnsximxc5d/Gfb6euXZaoX7i574jHIcRn50plKrsSK9V7PW2dBQRAlMsmkxSwz+pW6519OciaCtA9cjsF0zw9Muaet2OW82FisSSGKDlyhL+/iQ4IUmz9fWDevnsgURD4uLy0J8tGA1pUUCZATNB8TnjaqCc28GJtT4C9WLwebAZ6c67rgvN8lv2/x2FbiKxYVaJvCnbgCwMuj2o0EAZDZMk0LaGuwFHAb65amR2EV4nEmI4GebxzOg1ySEf/I3mxxnKvkncC9sEL4j/27BIqcA5jNvCYdP6UUq1kccU6W+q/yJ/BUmwGYltW3S+HB3KhPg6yJqZxSatsofNQ6DK1W6ZVfS4DwurBn4RvMDm4XctRRgVIxY+EDs2SYTEVFYEH6IUrreBibb9q2bmAz2Z9TK+h2FNVrVzw1ac1VI3whosyt//DLag8SZuKGIbYGgFyKIRCFMlRjhMNYXXHu6MJk9zRmEIRMj4shLrwkFadxMF25+eKjOPxX7kkWnqAAYn6sBJzrSEbLszKXWCk0QcuEroFgf4Z5398+UPaD+HN3Zx3klSx3yi+q5ad0xDLzNt2fu1tE6VCodT1VIZtf6qCi/8QCVXb0SAWALF+8OYrax3M2xhHNAu+OLzL6R3dAMLYyjM1LqfQGyWsd1tpcov3ACvOo0zFpJIWpopzl2oVQuTvyU8dEyAYimEi3RbF759jA5Jky/ujukSATrQUZzS2pmo7qKt/ExBx3CmXC+LSW7tWGU6Q4+WhEnL850zl48fQLRSKjFCTMfsmNqUVEoo/eHKkeKmiq5cydsft4DboChJkII1zjWqmosA/lsHcyYW+DpdGTQ53qFrtQrXAe17xHdgJWpwiWQKmX/vGUwPk/0SgH4iiFle8m0bnLrQHW3SrjP
- zYDfWmKd
- Osz3CIxGOiwqjFtp/udhWcB1eCw0PsY9jsTb/pMt4/G7zOmfwJBL4u4rZScbk6rA1OerrvVaPDMToP70Q6xo4LcooRdLib9U49aC40CL7yWwCG84ugPMY2rf1yAfPzFGKN3AXoJy6Ez4KIxM3BNF11WgIH2pXoso6i6wNONHbLuNeDGHaQOgGgzlq5ChrpUXfpbjBl+ZZMJW7k/BWzE/yMUfS/tr7EAzEtAHkmF24gudMuSrnqe3o6m3cPACFJ4ILKmIE
+X-Rspamd-Queue-Id: 298D240004
+X-HE-Tag: 1790638799-229851
+X-HE-Meta: U2FsdGVkX1+avn/w11Y0ZQXwHi7ZNva2Ei16rnctZbEGW4mIac/zRFrDEGW7ahGtdIxxh8xHiL7ahrCbCkH77wGm8hxYDAS+QeMxTx7Hn+W/WOb7yQ+li6iE7OR+2lfqSVZehrVsv9zCU7z/qfgsYDcVhfPDrkH0iBg1Inu7ksWXBuOSlELxE4pNWspjKGDYuShXIlwC8gfJHhZ+p3gsYVqnfzH9A75Hu/61hS+0B27Nzj+IWRzSUeIvRr1sEDBdxTo47kKEGYeUGYu3A8HKd4lNLRiiXmZk1RkbitxU8uvvv9imsy6Jyp+jlxbdK/2gskrN+OLLc6cy3P8F0HQOek1QBiiC+hdr8XcEGp6ld728ThrXaDcaiRA3K03c+B0SMbggOdgjsdY5MbCDEmgdyXlh8pyHU2KN8WYKJsyhv6+M0ytz5XPwANTF+xXEVcA7HNUFbyG+aNn7Mp7sLQcyc5HfaXtS3esT7a8bhVW2y/JC7TYcYWUg75Gcm8lrzn1cK7G0JcM+v3IXyJlS8rP3pl5XznQJGJhQrzWkEMeKwXVZ7Pf+aGFipVrzQUA8KHKOOodLOfZ0hXziLkJgcZ+Kabml6afoehdvIjN2TUonhXAN2LmZZQc+QSGyNW2N+b7CE9irMCQtySQ0/FvANThVRtLqwE6UMZ7e56H/jQRc4OqX9b4QxYRj6pvapisBGyzal+86DqzSXpeG7JQA8r8lzp4CeT5r/OA+3zAoMF9XxD3qZMbHfo6waGROxuy20Y5oALucMjG91OZI6mfjNgBGCFEgxji6b1gaHZq+SivKpDHY/vBoWItIsLr0DuhcZTUyCEwn2uLO01CmwQpEKI91CWZrLavIhSBrFTJwx2oySv/m/HVpIShPN/fWbf7M3jk3hq7Tstt6mAFsDfnftXFTvMKf7qUg4bmlGAwpqTQccKYfs+6pleApW+UFX4pwaJPazZc3LgWCGE2EfKlcfkg
+ RdDrpQZz
+ qkrlaNPyB2RgtzAcYS6wzvqOCq1vsK3qATBHc29c7t5eCfwjKrSJb1SbqsjPWprqLT6AAJDQN7HUZD4qbg/UAkdFgjuXCaZZ+WIBUcTyWbeT5lc7BY2T7HLpRudqUnWUFl9EhZY5ruxrv5B8nCcONBoIVvAslYMUxJinN2xzb52ftTzQH7yvQNUMdbDd9uTMM0oofxvXnzawg4g10UR8x/P3gFf/G9aTRQhkKQDoqIXObyMLymfxgJburHIr9miUXVijIOtZn7qJyWeZgy3eDb772r5petRnq8Sj+HcXQDrP3Dwit1WMfijNdZrm373ivI4x6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,71 +98,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Liz.
+On Sat, 26 Sep 2026 11:41:05 +0100 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
 
-On Mon, Sep 28, 2026 at 10:12:59PM +0000, Liz Fong-Jones wrote:
-> +	/* a newer wb may have taken the slot, see cgwb_create() */
-> +	spin_lock_irq(&cgwb_lock);
-> +	radix_tree_delete_item(&bdi->cgwb_tree, wb->memcg_css->id, wb);
-> +	spin_unlock_irq(&cgwb_lock);
+> Historically anonymous memory was obtained in linux by MAP_PRIVATE-mapping
+> /dev/zero.
+> 
+> The canonical way of doing these now is mmap() specifying MAP_PRIVATE |
+> MAP_ANON, but we must continue to support the legacy means of obtaining these
+> mappings.
+> 
+> As-is these mappings are an unusual edge-case - they satisfy
+> vma_is_anonymous() but have non-NULL vma->vm_file, and their page offset is
+> the offset into the /dev/zero file.
+> 
+> Commit 93c0c8dc87f6 ("mm/rmap: use anon pgoff to track MAP_PRIVATE
+> file-backed anon folios") causes all other anonymous folios to be tracked
+> by their anon index (vma->vm_start >> PAGE_SHIFT at the point of first
+> fault), leaving MAP_PRIVATE-/dev/zero as the outlier.
+> 
+> This series remedies the situation by making MAP_PRIVATE-/dev/zero mappings
+> truly anonymous with !vma->vm_file and correct anonymous page offset.
+> 
+> It starts by bringing the memory character driver into mm/ - this file
+> implements /dev/zero, /dev/mem among other things and is already (as
+> clearly indicated by its name) within the remit of memory management.
+> 
+> By doing this, the file_is_dev_zero() function can be provided, internal to
+> mm, which allows for positive identification of these mappings.
+> 
+> Using this, first prevent any other mappings from mapping memory
+> anonymously, then make these mappings truly anonymous and eliminate all
+> code in the kernel that previously had to account for these strange beasts.
+> 
+> Finally, it adds userland VMA tests to assert the behaviour and selftests
+> to assert expected merge behaviour.
 
-Maybe use scoped_guard() here and move list_del(&wb->offline_node) from
-further down into the same block?
+Thanks, I've updated mm-unstable to this version.
 
-> +static bool cgwb_dying(struct bdi_writeback *wb)
-> +{
-> +	lockdep_assert_held(&cgwb_lock);
-> +
-> +	return percpu_ref_is_dying(&wb->refcnt);
-> +}
+> v3:
+> * Added tags (thanks David! :)
+> * Moved the reworked mmap_prepare vm_ops comment to 3/6 where it is introduced
+>   and fixed a typo in it, as per David.
 
-Can you drop this and use wb_dying() instead? Requiring lockdep for testing
-an atomic state is a bit odd.
+Here's how v3 altered mm.git.  Includes a merge fix for the
+recently-added hotfix "mm/vma: predicate setting mmap_prepare VMA
+fields on new vma alloc", per yourself.
 
-> +/*
-> + * A killed wb stays in bdi->cgwb_tree until it is released, so that foreign
-> + * flushes can still find it through wb_get_lookup().  Inodes attached to it
+And...  really?  I already had David's tags so we did a full resend for
+a single comment typo?  Little -fixes had their role...
 
-"until it is released or replaced in cgwb_create()"?
 
->  	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
-> -	if (wb && wb->blkcg_css != blkcg_css) {
-> +	if (wb && !cgwb_dying(wb) && wb->blkcg_css != blkcg_css)
->  		cgwb_kill(wb);
-> +	if (wb && cgwb_dying(wb))
->  		wb = NULL;
-> -	}
 
-Maybe filter out dying wbs right after the lookup and leave the mismatch
-block as-is?
+ mm/vma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-	wb = radix_tree_lookup(&bdi->cgwb_tree, memcg_css->id);
-	if (wb && wb_dying(wb))
-		wb = NULL;
-	if (wb && wb->blkcg_css != blkcg_css) {
-		cgwb_kill(wb);
-		wb = NULL;
-	}
+--- a/mm/vma.c~b
++++ a/mm/vma.c
+@@ -2816,7 +2816,7 @@ static int call_mmap_prepare(struct mmap
+ 	if (err)
+ 		return err;
+ 
+-	/* It's invalid for mmap_preprare hooks to clear vm_ops. */
++	/* It's invalid for mmap_prepare hooks to clear vm_ops. */
+ 	if (!desc->vm_ops)
+ 		return -EINVAL;
+ 
+@@ -2932,7 +2932,7 @@ static unsigned long __mmap_region(struc
+ 		allocated_new = true;
+ 	}
+ 
+-	if (have_mmap_prepare && allocated_new)
++	if (have_mmap_prepare && !map_is_anon(&map) && allocated_new)
+ 		set_vma_user_defined_fields(vma, &map);
+ 
+ 	__mmap_complete(&map, vma);
+_
 
-> +		} else if (cgwb_dying(radix_tree_deref_slot_protected(slot,
-> +								      &cgwb_lock))) {
-> +			radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
-> +			ret = 0;
-
-After the takeover, the old wb is out of foreign flushes' reach while its
-inodes may still be dirty. Kicking writeback on it would move them over to
-the new wb as they get written back. Can you add that as a separate patch
-when posting the next version?
-
->  	radix_tree_for_each_slot(slot, &bdi->cgwb_tree, &iter, 0)
-> -		cgwb_kill(*slot);
-> +		if (!cgwb_dying(*slot))
-> +			cgwb_kill(*slot);
-
-Can you add {} around the loop body?
-
-Thanks.
-
--- 
-tejun
 
