@@ -4,94 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50198CA5FA6
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF5D8CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:35:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9816E6B00A6; Mon, 28 Sep 2026 13:34:35 -0400 (EDT)
+	id DC7596B0098; Mon, 28 Sep 2026 13:35:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E1806B009B; Mon, 28 Sep 2026 13:34:35 -0400 (EDT)
+	id D9EB06B009B; Mon, 28 Sep 2026 13:35:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 734946B00A6; Mon, 28 Sep 2026 13:34:35 -0400 (EDT)
+	id CB53A6B00A7; Mon, 28 Sep 2026 13:35:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5368B6B0098
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:34:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2CA6A4D19
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:34:34 +0000 (UTC)
-X-FDA: 85263870468.01.6047554
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2299720007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:34:32 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZsTmcLgE;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF08C6B0098
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:35:24 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4013D1602BC
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:35:24 +0000 (UTC)
+X-FDA: 85263872568.11.BE5523E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 8BCFA14000D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:35:22 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVFu0Pkk;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790616873;
+	s=arc-20220608; t=1790616922;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=56BxWF8z/reF8ypYDw5KpTL0l2aDGF9pTpnE6xZCNrs=;
-	b=NEKekS4wbyMd+IkLeX6Wc+VpUgTzNSnGFD/jWN+p9tvYhSxgU1IYESekrATMuZkEnhJSRr
-	z65kDcxTL5Pqw+D1/nvA5w8BBBnf/Bk8Ldjoyql1oXQdsioXuVorw/Bb0f1llXEwf1MxE1
-	1uKhOBnwEMsT54bCXngdkZX+2uCaPmY=
+	bh=QVeyl5juHc9NJdeD8w2LctoRHYEP7jkGYs5FqZyrwKE=;
+	b=aZPuAdTebbKMJjzgFm/mvD11sWgeEZWx/u05Ho+qbOoHMCHxgHJUbMbxIdgEc88tY1dTdU
+	zBOs/iZNqamAkPH9D1dS41QqKaPOD5X+v2rCm4/5A73hDTN4FyBd4d14KJtmJiT5WCtJ4U
+	4EKFVVzdgp568bn/TjgKrdQ2pxjuAwo=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZsTmcLgE;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVFu0Pkk;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790616873;
-	b=zBAYycSDYy7l47d3iurxqPAEtvWn6aNJsyzT4TqgbRiQ0ni1YFLmNWFmqfW/DBZJ+aLSII
-	0s+TGJ5SeBL59oKUimB17NeP9/rirDUxRURzXQdtwfweg2ezN7pyyAHjd5asm9mmXrflVU
-	+/e+WXx51NyJi2gRn/SK/20VHftXSIw=
+	t=1790616922;
+	b=7KldtQmMplOovtIc9OPSTriIUV4liFYoPV7PgugyP8dKrD/WBvq7C55qqt/mjwsGM+PVlc
+	GOMMrlfBfC3OIaVlH6akJNLp2eZTx480/wAqEVySFaALcihzu2M1VD2evawwN/038DAlCk
+	9tSHiOfKE/T0LztBmgqAHK0qydSlQ9Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 90F89601FF;
-	Mon, 28 Sep 2026 17:34:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC311F00893;
-	Mon, 28 Sep 2026 17:34:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A3304451C;
+	Mon, 28 Sep 2026 17:35:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC3E1F000FF;
+	Mon, 28 Sep 2026 17:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790616872;
-	bh=56BxWF8z/reF8ypYDw5KpTL0l2aDGF9pTpnE6xZCNrs=;
+	s=k20260515; t=1790616921;
+	bh=QVeyl5juHc9NJdeD8w2LctoRHYEP7jkGYs5FqZyrwKE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ZsTmcLgE2/ZooJgOsZcL7H3uFx363nXNblOsqsLrv9KBo5qclY8yqU/RGP9ph1cay
-	 D4qe/gVrzVxzSGY/rJn76bN1oyx64b32IVcL82LLVALwybXed2fn3B9YrKUfvXCzKn
-	 msmVgZOSrFNny3hQzgTgj4AxKsxHvxyhf9QbvW1AnxwbtV6xOan9MNFsoczC7mYUZd
-	 b8xqU7WZyVxBhKSrQOSwqAJ3MniYckmJ9LyHVOPnmEHv/tFNcg6jUjqViK7nIjUajt
-	 /V1swvrD/XLn6hx3M1ck2lQxR5MTFg31cASPRsnAgK6C4OfELwmgUYzZ6OYovJB300
-	 9G7shR8rJAhCw==
+	b=EVFu0PkkUr8RV9mJRyKpyqQI0KLTl3eJ7cm3rD0eHUOrJFg12gdP4hTIhrBrQLcqx
+	 DbGbKJ9Pqs/CzWQkWJdwqFfS+uxZ7QMpVc+1ei7HjNk0Y/WemxWbLjnkULJ4JUT+De
+	 CQRCq6zo9B7dF6dK67pIoay6PE4C8hWugtefNItCljakS0O50fVoIIu3Hu/+Drl81P
+	 48KDHKDvUXHIVv5sle+bfB9fb2uOvwiWutpb2mamcMMiXF3zon9LfAts50zpG22279
+	 eqlSNWYkYSL02mUPtY3yW819sweAPRaC0NtyWCu3rqUbN4JJhqMoUI7sjSowtv712Q
+	 g/nBMfMVK1Bpw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] kbuild: Move gen_init_cpio and gen_initramfs.sh
- to scripts/
+Subject: Re: [PATCH v3 04/12] arm64: Enable the crash memaction registry
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nicolas Schier" <nsc@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Luis Augenstein" <luis.augenstein@tngtech.com>,
- =?utf-8?b?VGhvbWFzIFdlacOfc2NodWg=?= <linux@weissschuh.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Alexander Graf" <graf@amazon.com>, "Nathan
- Chancellor" <nathan@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Willy Tarreau" <w@1wt.eu>, "Maximilian
- Huber" <maximilian.huber@tngtech.com>
-Cc: linux-kselftest@vger.kernel.org, linux-kbuild@vger.kernel.org, "Askar
- Safin" <safinaskar@gmail.com>, kexec@lists.infradead.org, =?utf-8?b?VGhv?=
- =?utf-8?b?bWFzIFdlacOfc2NodWg=?= <thomas.weissschuh@linutronix.de>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-In-Reply-To: <20260928-move-gen_init_cpio-to-scripts-v4-2-f437a33c40ac@kernel.org>
-References: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
- <20260928-move-gen_init_cpio-to-scripts-v4-2-f437a33c40ac@kernel.org>
+To: "Peter Xu" <peterx@redhat.com>, "Mark Rutland" <mark.rutland@arm.com>, "Mike
+ Snitzer" <snitzer@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Serge E. Hallyn" <serge@hallyn.com>, "Gregory
+ Price" <gourry@gourry.net>, "Kiryl Shutsemau" <kas@kernel.org>, "Harry Yoo" <harry@kernel.org>, "Oscar
+ Salvador" <osalvador@suse.de>, "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Will
+ Deacon" <will@kernel.org>, "Usama Arif" <usama.arif@linux.dev>, "Paul Moore" <paul@paul-moore.com>, "Saravana
+ Kannan" <saravanak@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Dev Jain" <dev.jain@arm.com>, "David S. Miller" <davem@davemloft.net>, "Rik
+ van Riel" <riel@surriel.com>, "Pratyush Yadav" <pratyush@kernel.org>, "Mikulas
+ Patocka" <mpatocka@redhat.com>, "Danilo Krummrich" <dakr@kernel.org>, "Jann
+ Horn" <jannh@google.com>, =?utf-8?b?SmFuIFNlYmFzdGlhbiBHw7Z0dGU=?= <linux@jaseg.de>, "Pedro
+ Falcato" <pfalcato@suse.de>, "Randy Dunlap" <rdunlap@infradead.org>, "Jarkko
+ Sakkinen" <jarkko@kernel.org>, "Herbert Xu" <herbert@gondor.apana.org.au>, "Muchun
+ Song" <muchun.song@linux.dev>, "Benjamin Marzinski" <bmarzins@redhat.com>, "Lance
+ Yang" <lance.yang@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "Byungchul Park" <byungchul@sk.com>, "Brendan
+ Jackman" <brendan.jackman@linux.dev>, "Jonathan Corbet" <corbet@lwn.net>, "Alasdair
+ Kergon" <agk@redhat.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Baoquan
+ He" <baoquan.he@linux.dev>, "Zi Yan" <ziy@nvidia.com>, "Ryan Roberts" <ryan.roberts@arm.com>, "David
+ Hildenbrand" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, "Barry Song" <baohua@kernel.org>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, "Alistair Popple" <apopple@nvidia.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Nico
+ Pache" <nico.pache@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "David Howells" <dhowells@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, "Arnd Bergmann" <arnd@arndb.de>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, "James Morris" <jmorris@namei.org>, "Dave
+ Young" <ruirui.yang@linux.dev>, "Mimi Zohar" <zohar@linux.ibm.com>
+Cc: driver-core@lists.linux.dev, linux-crypto@vger.kernel.org, kexec@lists.infradead.org, linux-doc@vger.kernel.org, conor+dt@kernel.org, linux-security-module@vger.kernel.org, devicetree@vger.kernel.org, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, "Eric
+ Biggers" <ebiggers@kernel.org>, robh@kernel.org, dm-devel@lists.linux.dev, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-4-e511e9ee2329@jaseg.de>
+References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
+ <20260928-crash-memaction-upstream-20260921-v3-4-e511e9ee2329@jaseg.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 28 Sep 2026 17:34:31 +0000
-Message-Id: <20260928173431.8FC311F00893@smtp.kernel.org>
+Date: Mon, 28 Sep 2026 17:35:17 +0000
+Message-Id: <20260928173517.CDC3E1F000FF@smtp.kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 2299720007
-X-Stat-Signature: hkogno3bndqpf1ab9x4r16auasy136wa
-X-HE-Tag: 1790616872-611101
-X-HE-Meta: U2FsdGVkX1/a9WzQKvLZgqIvEOcc1lbu5E4lqelHCZ1fHKervdC0/iBSOG1O9DmQTkEkS8ejzbI0XJcI+XGLbbtaWlfWiM+CU6zWbMwxUlmgzt1fZKcBkyS5Ei9QM8OxhL6Xc+olMsvFHDfLmK1CzwJPrdWBmGCPQYqS8T/TLeVK5Av3OY6sgHp0mQqNBtF+xpESCiGGfrjhtvWzn4PVWEF1g1QoD6CZIh9Y+TPLSrwtfpbSSzh9SokRZAoHgmOIG9K1eik03jzBKdxkrByUpKXTtusOjBHukP2Kigdxtd1hJzmG5VEFCxxuxImIOBXFhU3jqsPFcuiGjom2o/JiUITQsiQ7jwPJxglAa5le1fQbg5iJ2ZEG/rcAQE8TUcRabIw0GKW8+Oe4+wwz/2vqxOB0K+uWmkJ3vurAg0TdcAoFYJE7ZfS312U7jqNUKqyDFy0VWwjtzAZNF8hxIqarOw8EUL+1BfoSE3k7ZFbrvzwnW10Pxidj664yB/tH3jfEmESCSpILX4lhdEQ4I9vXJkhvxS8W6VsguKESGvgD+geUc2bhOAnM2VsuO7cPufXGrx7iYfkIgBUk6F/y9nxOd2vAL2bBIyzLbVtDegTOkmiD9im4/X/W2Q1eDkS97B93F8qntVMuPOINfsgN7DXSNsGRgZ1K1YVzW1oMfV7rWqbas89jdrio9jxGPRScRdCHQv43W3yJzR3MgYMCEpePkCmVqVOs19hgQ3YEotygwyK/agTuyM+P63NcNvLXOcSF3ZrVVVBbXh5e6yKzlXKuI6cnWnZ0BR9bt8s1X1E5qGz9JS0AdsFviEzKV5ayql8qq/h4fqdRToGdLlvoJFbEsm2ni7MUBkiERAnsOGKy0MDYTDaU0gjOpzL/8+DdyIp7+50+TW9kDG57IBnguIjbA2AjEKel0nERmwixF+t5HEaVkv6k1UAUeshvhvIhO3W5geXDz418smpGyOipL4H
- 8J+Rqebw
- 4t1VGTYbFL7WVaJLpatlObi9R28mATvmsheZeBVZ9qY1tlqmH2m15c44EBcnVJKE/OsdlBnW027aAHifrXg2ADVk93ZMnKgZFgXiJSslkdtNUHuWiDOYR+vMazkcdvtJymEnhlj+YFUCCudvU/Ai1f78OASOliIXO8Lk0DYbeC3/VVH10DB6yKyqVBWDYS6LnckDFZQzLWd8AgNuJEQZx8XSk0Af8dabAEi9Me7xOd+BL/udTjRJZBNTO2v2D2SOt8c4xIVUGWRF2DbytU2tmdRnIQ9C6OeLKKVS3sWRIDw0shsLgRBOYmhYDuWzWWs+Mj+rps8hSKMZBZUHzhG4USZKtV6jSJW2hvBS0te3hYKxNAeOGJRLhIiq8TgjCY0Ib6TWLvksXjsjPpz/hRsB97MWN3O4XjrGtgD3EiudQKOyVs42PPL2Hd2mfozqnBSYd1NInWI6d2b/MFMqYMTaQiRptM1MEANMivbZ/XJBpaPMqvyuASS6cy76373Na6FFEbQwqhwhvJz0jz5J5QxcdDOTHztRroxjEDjwULMNikDZz3y6tVeJ4Oz9C6ZUENwrlbs39Z/Z9R4pJYuCoh1F5NkpKxcfUedyImp5P/TbEAgSOTj6En14suHM4b5q57RZEei6zCJnlu8ymTaA=
+X-Rspamd-Queue-Id: 8BCFA14000D
+X-Stat-Signature: u94f4hmc36yw95qdnrahyu8ni4nfzox5
+X-HE-Tag: 1790616922-661239
+X-HE-Meta: U2FsdGVkX19GnJnKRyVf42lo3G3h4p0UYPTEKuzNpT/cE150KkbzYm57JQ4at1EMd1Xq6owEoW4kJ9cUS+eUks5nPcOcZ/5sZVoKUsZ/wnorpbUUVDdFajfOlfwKuImjCleL6kzccin8/RvQLO2GT81qqkxx6YbXXoukMqlVxyZ10/bukwcltvTMBq/1LDjunepDGhn5ezNJauaJ/QjSXrzS+VVPQfVyKkJFy6JvXLYDimhNG9t0nPuC0fhanwAnXTC9waAm9ul8hHlo21XG7p/kDGQJ/P9ydho/H862z6pPtk45YS2j6LJBhg4lls36ZWfCnx8U8II3Ll0Vg33HG8nfHjX8bP/qFeFD/7+hEVFT1iouYu8RL3y57N21rtKRVGCPvT+g8rwcaDkkC1RjCpaDIQ2uypMcn9mV+6NCYsVlHlEIpx9cZrkWuOXbNJ37s/W1zfeIZZHechE2sB8JEAsOWsHPbwtqVzm2HR2wb9h1uA7hQhGIBixT5iArbra8UWoTv5onrmdHtqInARSfJKiRZKNWmfluP0CXmJn0Vds+GWXYUOxnMSgnpfhgCwk1Qf5x66NsmrPOPqK5vwUgjPXBVlcaQPrignqIXhfBnBb+Xdq5hofVoWAs5ziJQCLjGqStMi/3Rbu3RFoleOyB1IWFdzuS68MeYzSAInN3h5ByDREIPwCVAXz+kLc4y+swGLDLnkiz3TEGz038XuhUnrtm9trYViQPSIHMObUxd84LIp4gti3AYOzGxez+nTkyBSLmmKIwsCRfj63hoy2IwqLh0ISEOtAvzEa7fJaYwpuLT1EVRyLY1uC0nCd5TZXuHrGRD9RZHogQJIIASCJrAM8OLaU8xCnm7IU5AOWWnGLJBExFfVI9eKvO07CG0Uh3/HDYYWztpjJy0bI4WuJfAvIf13PKdUzPXBhuXW2BLIDs+OrXi2Lhq1nuHNTkeKCXbW9HyQmFXSR9xuAzJY7
+ EJd0BTSu
+ uMKcSKSS1cSC3koPiMwlKdAystyX8DxTst97sT4edgy3xQBFEDBrMZQvY6d1ns1kdpLbgECpsqR7YMmQlp7xeP8sa01dXcbY5LKz33ytk0DOOWb6VlZaTv2sGvmEWuUEuRYpRDXwORi2pfFneTbWd83Y02I/9Y7ZBgITyBI70FBPa+c+lpXnTf0tsO7UxotcE+8rv638tLPEHIUi0CJHdDsw1EjbQWeaD061IREltrqTfptb0btQSjUUR4vPHqdspYrBDSoDDXDBk803k1wbjW4L8YEzzdlZ+y6Z+ppGjFYnaIn8XDY3nD3P1jGdzIuoTkbYOeGOgVtDbi0DbNjFKga/ecKGxUEsxSO7YhG2eyXCC0PtJyvcE7YuMSc/XqYnC+ZB4+Vw67XIm9gybUOh4aKVDQqPHed3NDqtvyo5VYkuAL1LKdarmrA3Ynwv0oPIUFu2GpgXd3svAwALd9N1Ki4W7CW2VMCwrmAlHhfphYVBDXDGzgYqLGWTWz+u5lzL0JJw8q/usrGs4i8lTAjTxvBeLdhahRYuING0MgQQzCi7fStdlCBHUQsDMWEqh5vdFlPjoZUD3eEdUhBj/FD77iK3LjOzu3wygEH/UU6KyW22MHsLU3acLO7Vi5s4CaY9QSN7Qw5jXg6Nm0233B+W5sFkBerHlsOSdxgXEPUMffHM/qOUMnVk1KIQJZ99BaN28xyUYs0C5Dq+X0ukLTGhu6OicketKtEdx/d8PmzTLH5GDMCo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,19 +119,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> gen_init_cpio and gen_initramfs.sh are part of kbuild and required for
-> all kernel builds w/ CONFIG_BLK_DEV_INITRD.  Move both to scripts/ to be
-> more clear about their importance.
+> Select ARCH_SUPPORTS_CRASH_MEMACTION on arm64.
 >=20
-> Link: https://lore.kernel.org/all/aSdrCFkUQup3qb-q@derry.ads.avm.de/
-> Reviewed-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: Nicolas Schier <nsc@kernel.org>
+> Signed-off-by: Jan Sebastian G=C3=B6tte <linux@jaseg.de>
 
 Sashiko has reviewed this patch and found no issues. It looks great!
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-move-gen_i=
-nit_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260928-crash-mema=
+ction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de?part=3D4
 
 
