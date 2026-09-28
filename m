@@ -4,173 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03854CA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:19:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D1FCA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:19:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03BB06B0095; Mon, 28 Sep 2026 13:19:06 -0400 (EDT)
+	id 9B0AF6B0096; Mon, 28 Sep 2026 13:19:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2E6C6B0096; Mon, 28 Sep 2026 13:19:05 -0400 (EDT)
+	id 961596B0098; Mon, 28 Sep 2026 13:19:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCF626B0098; Mon, 28 Sep 2026 13:19:05 -0400 (EDT)
+	id 84FAC6B0099; Mon, 28 Sep 2026 13:19:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B7BA56B0095
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:19:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3AC1B1602AC
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:19:05 +0000 (UTC)
-X-FDA: 85263831450.28.D86BA39
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2B864180002
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:19:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=Q086wdPd;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="a DzSMFZ";
-	spf=pass (imf16.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 650846B0096
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:19:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 00EA91602AB
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:19:11 +0000 (UTC)
+X-FDA: 85263831744.13.10EADD0
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 35AAF10000D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:19:10 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vjlecmoE;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790615943;
+	s=arc-20220608; t=1790615950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qb+DMhDeJ8ctMrQDexBGyo2lF6FDBF9wGMJ9M72kVDk=;
-	b=L0wKZGKP19j4AOk2uXEu+IlkYY6LyLXa5D6kQObRBt9QE59UthtV440NVbczeL1qBd5K34
-	RaOlNTVIDrSlfH/U6ShzLv5R4AZ7uUFsktlpAf39Wxi/fueO6bItpJ9gwZIiqzwmu1J+Bg
-	yLy2drkfX0Fftc5jJs+IrHnzp9uAsng=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790615943;
-	b=tMnCVsGrd5U0iMU1kXtZdph5FcP/J0IbYeShVk7kZj4wHY7rpgACN6qT8Ei9S4tBiMFwnK
-	DSrcDxDYQ68Y3DBVaI3c1E4Pcnv1Fz9OB0Jp0OrhRebw2+PVu6q6hyhGPDQqB0Bm1paxjr
-	i+q30H5M/MQDn6uYMaThfH7Bjq4BiRM=
+	bh=qGfj2Y/eKe1ZG7o5pFOTvuJbhKG8WlfCFzo9fqTzU3o=;
+	b=uoJWsz2EMqSAdO/zI640Ajqh6G4RAFujBsY7ad1TTfod1dVJdlvW6RUDA7sDw5kv1FUy6p
+	XaDGbxsu1qRaYbBTaBeBTBU+5WeGiHJAwaqBgjnwneCU+LAaUtoNTN3vl/aPy5wJ7D1q3t
+	BPUAqVeZh1PwbHv8HaAmFbm/JEGAbEc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=Q086wdPd;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="a DzSMFZ";
-	spf=pass (imf16.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
-	dmarc=none
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailflow.phl.internal (Postfix) with ESMTP id AD33013804F5;
-	Mon, 28 Sep 2026 13:19:02 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 28 Sep 2026 13:19:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790615942;
-	 x=1790623142; bh=qb+DMhDeJ8ctMrQDexBGyo2lF6FDBF9wGMJ9M72kVDk=; b=
-	Q086wdPdPofyYqOd6CCUgyN/t8mpJMMP/HIX8oP64Zj5das0e/ptd+qP/oIBR5Mb
-	bSSletBqJYrsa1QoJg9+DRa40EOW8Bz7fFfT+JPOUNG3p4cbBKjM9ezoEeMOhm8k
-	hY1Sk36qMxifAag37sVgXy+u7vM7JQAmF0OsgbdRLfxNnlUnqkVv7sYOsM6/InhX
-	pHqyZABhdzHMb5OCZNAHlV5sxl7ExPt+Sd7AzhUK3yhVliCeYCeShOyDY3m7FLSy
-	WNWpidTfbcK8AEy/8PA6g+FNQ44pTni5eODz5GFG0U3Q5sN97imskEAAQnLouI+w
-	YRcLgaM4RSNDoy0xlR9aeg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790615942; x=
-	1790623142; bh=qb+DMhDeJ8ctMrQDexBGyo2lF6FDBF9wGMJ9M72kVDk=; b=a
-	DzSMFZPIVCqGZA1xbK69h1yNlARU4T0F4w8pywsoDcSkWFgFWIJAPpRSmCj7hwU5
-	iiuiTVbOAomCFtRJz6M6ceA1amvZsf0iqNrXs8SqbRrrpxdaUhI2qE1njVLKz8Hs
-	DXQetu0p98p5SizHy3Sf1p/1lKhUblthxt3a3MdoA1sA/V8kGlF+sCFJI2HLY2Db
-	PBWdQA3DxcnTbMZuvNEj5S8kNRcWMKogbOAtXycIaSZU+wDgb1EIib8T2qdWqvVZ
-	WjvLvzBxxfVe1l86skhGJIBT6qFT0br0l69Fq8VQ4M0Z6jfW5Gla5mD0mQmFMBdC
-	Jxpsh7/a8bn87pndxf0RQ==
-X-ME-Sender: <xms:haG6alhcHtVpFxOcMYo9n7uQAaDEdH6pTvr92hds5jj6I_IIzXwecg>
-    <xme:haG6agI-1xMGY9FvHYkLoQb5aORpkQY7EKUVJOFYQQ6UU5zGIaO4nC0WR-6PQX_0v
-    jYauO9sPAX99QgqvMKjCVOm9uPV7jkiQ0qEbhOxEHw-RmFF1-Oq8zU>
-X-ME-Received: <xmr:haG6ah3igJ8cyzNmVLUVotsuSTywoOje2f8xkAlZcy1CpQmLnFNgUnjsfAwEbcZ->
-X-ME-Proxy-Cause: dmFkZTE/22e7clbyNdHwn0HCBx+H3lsiFyo6QkPV6dpSn20/QyCOxtHNd7QTmx6b7eJ6RH
-    b7MD0YK3xmhVFW7pHJl/jJiaLCtzwYaWJ6VBcJNMtYB/lM8rXCQqoyXJAKc1Q+3NTJHLRu
-    Q+616RIwRjK3mn/tprgeZTxr9VaE0UGr12rr0RgYUziHPYN8WsIu22gnQm98Dq7NFgLEYb
-    bOn/3mv6ye0r5zsmXTZhHlWNyOVRZl7FwJjAmuaSy3Z2MGyz8Xby78ZPjGLjvAF+o1XCsp
-    YM5+7QijkJtemWRQaETyS2I23TsNHUOR4KF7C0sS19NgtEnCYopA0Qb1idGIqDD/y3bARJ
-    55TM2AUKDHkh3p2LJROf48L6qUKidKUf4FEmoaVrGC4BtePF1n4kQ/m8WMyNVrFYVliewq
-    dRS1Y4N3HwhoW3IXajbctY0m6YFjInaMQqGsF+0XxDoGs/X/shiYh8etw6bVnh78U7lhY5
-    szx7kaZUC6MoPnbZ48BDrm232jeMvKPGycpJAvfpGTGfOL+XzNv7JzJ2JsQZaz1R5t12c+
-    xYYM5pcB1L1B0EzIKqkqE6GPShoGEd7zO6/R0O4maSUQ6gpHRmZDQFJXWcr6ZOTHseBEgU
-    Mtz29FmBfsKN9cmGj5+5Q17gXknZhjm6ZUmWo0RbqMjw1Ly/hkmYCDe1Kajw
-X-ME-Proxy: <xmx:haG6agL6TL1VrGy04BGifmRplHIpmxSdIKWGI6-UKYT_fwpPZPdTrA>
-    <xmx:haG6anD0mj02oO8BLZk0_jzwJUYAw-qjgB_q9bIjdVUWvATeNYfeEw>
-    <xmx:haG6aqZF_ZIfNFShTzDipDR2qQhxmZ39ydWfCm15MEvUhhbTc2keUw>
-    <xmx:haG6ahX12vCFirqr5BnB2wgscdBu-oNGUDUG2Rw_U_Ap7614Ykkj6Q>
-    <xmx:hqG6anhkNZna4tijWomazQ1rmPyFeQAnHZDb6oYfzgRBiTCfNwSWgqRj>
-Feedback-ID: i60a14417:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 13:18:47 -0400 (EDT)
-From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Mon, 28 Sep 2026 19:17:50 +0200
-Subject: [PATCH v3 02/12] lib, kexec: Add a secret pool for key material
+	imf05.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=vjlecmoE;
+	spf=pass (imf05.hostedemail.com: domain of praan@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=praan@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790615950;
+	b=mZpMXcdigOOpyVEqgRSAqsMwlJBfS6qQhZpUjZFN9n//kg6qdBWW6J/OiVAz7PNCqJvtlv
+	I2JtHtfDOLa/FZw+c1OPLjuw2SPMXXTLuKHTACdx2IBIAnnjBB1O+XA8QsKGYmCC/W6NRt
+	G8mcJsrNe/dLZ2+e+0IIT2VQ4HPeo/Q=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2d8fd7a3f38so3215ad.1
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790615949; x=1791220749; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=qGfj2Y/eKe1ZG7o5pFOTvuJbhKG8WlfCFzo9fqTzU3o=;
+        b=vjlecmoEy2iUi1nknmZwN5haskXQRBeSH3uxcfYVdvMzb5uDwBM/WGCdKHmHHAr8ge
+         1rZP+0uYgLjCEh6PcatI4xoIQI44dFV8ue5xSW4UDmR8JdFfqkzdYQIi4Tz89urtYgS9
+         XgLp15BmQFdPreQDcRsYTPXtf9BiKTT0B4kYOkuz2cUlQrkuxk7EZxrHh8BSTXp3Jv+d
+         EwdheYksSYvajNoLmtCe523v+u3krnOdjsXT4z3m2E0/UvPcEmarDrzKtlUOwUtu6e8I
+         i0NFkkfsY0yzbc9XqBwu1tTJV6YCCMLvQLuWCXP0tEucKPInFXLT4S6Vk35/pyyZlD16
+         F4aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790615949; x=1791220749;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=qGfj2Y/eKe1ZG7o5pFOTvuJbhKG8WlfCFzo9fqTzU3o=;
+        b=jG0r5iik2GvL2t6Hocsih4pH8VSjXCoB8gic2lT9aHsugyS8WoDjPmb3EGBTKyWi8p
+         yZoGXrzQWZc04oIsZ//k1y3p+5wdJ6Ahmc6xrxCVlU317bIvHYTliFJJONoJfIBODrER
+         EZuYEUuymuwBjD+DVocAlxiJ4gG8vYCt3ll9mAPrCjobqmfhRylsVpgv+T045uGfj5W/
+         V+D0lpelHW89DI8HEbW1pj9hgs4KNcRyRxq70YHnL4XOocmb6M+XsDMtO8C83spsJzY8
+         NboVAJYXAjh3OwRk3XqAp7gkihptlMJpr93WXddVY/Zw+tiAV/SVWM3o8zVV/bqr3xtO
+         1AQA==
+X-Forwarded-Encrypted: i=1; AKwUvBxmZSo1zr4qoJcS4/aUEk1tbIX8G06NUkCE8N5F7IkF3yQ8pS91iCCmCC/xI9VqdAkxpGQcyO01Bg==@kvack.org
+X-Gm-Message-State: AFq9FYI9wKwKXbgnXmbGhViuT54QWqeAd163fdZmeuYM4n9zg1XDH032
+	aBsMrqzTtjRfmCptyI/aeyxkgrvcDdYMJsUgL4PrmwzPBU4P8ty44m+Zg3vaFUWtkg==
+X-Gm-Gg: AYBFou1/IbqjrWFBVbl2fclej0gp5SMfhbrFV2rkhzSa/WB3znSjW2hvdv9KkT9YwYP
+	JR9nEov6DIdgd4AkEYqj8vAdQsUEiALu8vZJBHNNghF1fybLb9pp5vwQgpVSENuj21SRJassUoG
+	zJt+vobYVzhyw8Hb5pu6OlaoxwOefuKT4jqKSMmJXq//tsBOMdqHVaMeVRkg+sIgTkGx7laApsZ
+	V0ncZ6cWhQVT3SC+1jOD571hzNxdqbSap0JPeILfdZ1p07VivjfkTrYp6B7mnVqSlMcnSxXn0HV
+	Nq5pIXothbJ0Mbl0I0hqoQpmEe3coW5pDaWQMEFqZTtzDPOWCrwxSGWfKdGRAyKC8Unk0gPOcZr
+	r8fBbaQK0S9jG4Cx0eVE0B3+Guuq41ahYSU87ueZbavGPFqQu8V/EINCxH/2hYC2MwPZFyQoxWi
+	VCu+DZdAkH8VWDp6m5V+fiPa9lHX32Wv+a676qlvrxZXCxDvqfcpixRqwNmMEr8RrSxGb/yWzHM
+	noF6CGPWBWBCmVVHnon6QvdyhjHUD4v4aK+
+X-Received: by 2002:a17:902:f70b:b0:2df:8e89:3bff with SMTP id d9443c01a7336-2dfa9795c44mr8307715ad.17.1790615948122;
+        Mon, 28 Sep 2026 10:19:08 -0700 (PDT)
+Received: from google.com (105.211.142.34.bc.googleusercontent.com. [34.142.211.105])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc7a4b03082sm2784007a12.11.2026.09.28.10.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Sep 2026 10:19:07 -0700 (PDT)
+Date: Mon, 28 Sep 2026 17:18:58 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
+	Josh Hilke <jrhilke@google.com>,
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v9 08/13] PCI: Save and restore the ACS Control register
+Message-ID: <arqhghssNc4fIu_9@google.com>
+References: <20260918200640.887030-1-dmatlack@google.com>
+ <20260918200640.887030-9-dmatlack@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260928-crash-memaction-upstream-20260921-v3-2-e511e9ee2329@jaseg.de>
-References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
-In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
-To: Jonathan Corbet <corbet@lwn.net>,
-  Shuah Khan <skhan@linuxfoundation.org>,
-  Randy Dunlap <rdunlap@infradead.org>, Rob Herring <robh@kernel.org>,
-  Saravana Kannan <saravanak@kernel.org>,
-  Andrew Morton <akpm@linux-foundation.org>,
-  Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,
-  Pratyush Yadav <pratyush@kernel.org>,
- Dave Young <ruirui.yang@linux.dev>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  "Rafael J. Wysocki" <rafael@kernel.org>,
- Danilo Krummrich <dakr@kernel.org>,  Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>,
-  David Hildenbrand <david@kernel.org>,
- Vlastimil Babka <vbabka@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-  Brendan Jackman <brendan.jackman@linux.dev>,
-  Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-  Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>,  Mark Rutland <mark.rutland@arm.com>,
- Alasdair Kergon <agk@redhat.com>,  Mike Snitzer <snitzer@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>,
-  Benjamin Marzinski <bmarzins@redhat.com>,
-  Herbert Xu <herbert@gondor.apana.org.au>,
-  "David S. Miller" <davem@davemloft.net>,
- Mimi Zohar <zohar@linux.ibm.com>,  David Howells <dhowells@redhat.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,  Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
-  James Bottomley <James.Bottomley@HansenPartnership.com>,
-  "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>,  Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>,  Rik van Riel <riel@surriel.com>,
- Harry Yoo <harry@kernel.org>,  Lance Yang <lance.yang@linux.dev>,
-  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
-  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-  Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-  Matthew Brost <matthew.brost@intel.com>,
-  Joshua Hahn <joshua.hahnjy@gmail.com>,
- Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
-  Ying Huang <ying.huang@linux.alibaba.com>,
-  Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
-  Arnd Bergmann <arnd@arndb.de>
-Cc: Eric Biggers <ebiggers@kernel.org>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- kexec@lists.infradead.org, driver-core@lists.linux.dev, linux-mm@kvack.org, 
- linux-arm-kernel@lists.infradead.org, dm-devel@lists.linux.dev, 
- linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org, 
- keyrings@vger.kernel.org, linux-security-module@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
- =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-X-Mailer: b4 0.15.2
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 2B864180002
-X-Stat-Signature: nccdfdhnyry4in4ygypaop64mwgd1gzm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260918200640.887030-9-dmatlack@google.com>
+X-Stat-Signature: eeamah595pemnuapy3a7ifnm3xiycnxs
+X-Rspamd-Queue-Id: 35AAF10000D
 X-Rspam-User: 
-X-HE-Tag: 1790615942-645557
-X-HE-Meta: U2FsdGVkX1/t73Xj+lNu/GtSWpDKHtYzUTS0uy5CQj/tRQm1QY+OPsqzuwzj0CE74d26Z36n8zBlYfPAKAB6/ShwfLB/w27+33xmJkPwrTV9e1PLo6PXzEgybx+zgip4SsCBLygEUDVyWCLCTYYq6IvrJEs+vfFTPOy5eOsMeUWHyk+unKVz/+rJwg8eWqa1145Xt2Y0/x0aO1cKlLB4Oa9KZD6TAYQEdqHI6M1MnndVo4Kduzz4OpvKm+/4Q71pu1z26owS1PNVSLLEfC3Fh37TDwPyyqI37Rrsk4NdRe+Zc0aGNhul2hOwxTpxPuPFifEXqKT/wPf4xsoACv7/l1qtabUXvp/lycHFVu5b6VcmgDdUI5jJLhDffaIaGpOQWp9Ef+lnZ2/S6a8Vjwr84WB8YURmtoUjNMxSNh/DvmsjWJ26iKf344goGDGllqKF0xntfSppY0eat+qBvn64eH3UPNzLN0S5/Npde5l2C5U5Ys9wEWyYiDDxEN1S2hKo2q8KAsXDBmq29dxoxO6s0WVM7a1mj4xpH+0k+Xdgghfs2FGl0xlrm1URuYGPq7u/XR86EwQP/dFhgOZrr2rIvCbtQdzUG3/DkrbmdSYZHrRLjfeocR2X23Y00i3GP3Lh4vvyW3hHOKC+U55BFnrCJhAxXZOQyDyQjv6/pyKLvjf1eG+deitOp1S5Zb2BVMG4KrIQ1usgazgW7HVTdH7kEWPBPPqhdj5daOG37L5+DoIuMnNxtltRxqe/GBAXGlSJKte7VJIAAyu/g3FAiBSoQxI7UkYRdmIyQ2PxURbkI+8CZDWHf6C8YDY3LqdchnyPS4PHy+WBuR/AZeH6qQ6p0ysUmWtWYqvBLrfXrvHBIhxWmL+qPF8OMa80oefZ1Trg29vx1Wknz593/HAHzX1YiXllKRUlEgm2SxJRzCuCjwk9h8oDtRFl78d96PS+IZEy8TMLF2xpvMpmWtv7qEC
- I0v4VJDr
- Del+aUN6aBj/g379sg9Iknc6u6OdfYzhiuDphHjR5YvPexJIluoKt7IQL5r2KeHGZebcTjLDXV4xS/wsn8sXqW2ljhkHoVk2wkJM/bXomImqf/ihbEFTLGjT2dQTwGmbTUPd3pZ1vngHkLITwAqAigNMW1H9KmvbD8rkiAnz6TgcJ0swCxZo4n7TrOVb7doHbQBqDn8BM8sWKwWrxXbMzRAoKxtqjmY0yRRst6WR/6gbRDOmvLNLIfDKjICmKJsWiO//hv/gXgFu65OCFkKKZSEb8X1GwPAtmcQJA2cySP4XrUd2Fm4g2a+uIq5xbHyg2//YUF4Q9oKtw7cAKk54j8hi70Gi5o63bBNgDstciEdnZWgBt/sG62FmsPL9vlK3kQQWh8DUYy0tGdXVPgcTOnbA3khKTIHvg4l4dw5ef7qOqSuNPmjrGB77DwXV52coj1U8AwOUs43x13SXHe6o2wDW4ja26OWB0D4saBjTWa5PcCwALpNSsarI1y4tbqVdV+3wW
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790615950-32224
+X-HE-Meta: U2FsdGVkX1+9rVRFQa5iQO+GmR6B8WCFin9tvIxuxGqPcwhDsD3EOIDF5pdwzdj2dUQIpJTnBRqcJsEs0g7r951dtxIC4Y7oQV/ohGRELI3QTLwdRwpzyyUltrF8M7WIcCIk8sGqZXTHAmsS4i1KEI2riaIN/zimpM84+ssYRO3NuqUOIlEvfWg6d1xozy3ycd0y4bM1fxpnFWx+XkmwH1xyEpUbrxcro0DpefsdkTHSRnvQPeAMSaZp490IQsnXEBpyCcbWTz5lduV0gP0wgOEh9vAoXR9XOKIwbHIyWTWB62eDmLfhv5XD8qAM5U/RN/lkFZ6mMY1Kt+uGeOtcNuB3jXWlQ5Q4IL1c2aMj2SEWpIllGfuotPEppFfoFkCTjyHsOTjd6j8EZAOPCYAdskMRWo0+LODBaGLJ3YNKFOnhgrRRtbfZwJjb7NHbhAFLEFvp79+bSIOQLmO/2Jxgha9PgZBBjxoa7GTNl8otAKPI08ZtL3dHVYmopSQG+T58XDuWBATTZjWKbpIN0BI6Rd8v69TsY5Ctxuf8cLtUfJKJAQp81G7/5sz2vr2uCj1Sgr07LvKQek2bCWhn/BqtxmXSYyfFgmhR/asbixckK5edRVBWWDKUmaESuB08eCFpf1OO/BMtWLLMQ6gjpguVqYk9YA1sgjvkc5z7O5qJhAgiBIAkXnUGmecZXz0/TtaQKR4zFDGvObtKmYfaJMNg0W3/pbzzuZ7UtF7O2iirKBn4dj/6t9+WsO76qXyZKWw6V6aLJHklS++9TFqf4U9dsItattmA8IKUH5etDQA+KGD0ta2vslE9lYelbvpUqzFsfE3JRA1hPTEhdgNE8InOaGaIsTwmXSGPDWaFZAcYqL9+2reekflU4MMy/P8gpS1h/rd56PD+zax51SC8cZjbg7bi1v+SzDCTFU/ZXgzMNk6wCD3NTtQ1eSyhDAiRnM4GBJNGJe2GHknGBygboWN
+ mkjZHH4y
+ eB0UuoLObgldrP2Bno9gnz04Zp804LiwIN0pzwJZ3SiuvpERSdIpDdjrDp+2JmjmARMcQ6WvHleGnLhTefQ6d14G+Tzt29NP7k4cv/iPeHNflPtaxjNSHKPo6Gc6YXh8dRCfmeKh080z64jYIXO+RrAjAlsiZfl866Vd//WZaA44oCjVQj4CZRv/kOKjrR2dCTghYYFZTbroMSFwKb6UrLXCjJoWSY4GzssVd6ulsK64OFqmDQ00T80M0/yOudl73s3FGuNRpSFyJkXJbiZSEax1yRqhvTB85FiO7p0lprQ5XwduHd4EgCSMNe9nidEIBXMuzbV56iPnv7TweYQUsw0MS8+XTl9vaoUNc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,171 +139,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Key material allocated with kmalloc() shares its slab pages with
-unrelated allocations. crash_memaction marks memory at page granularity,
-so smaller objects in shared slab pages can't cleanly be marked or
-unmarked. This commit adds a secret pool built on kmem_buckets to
-hold such keys in marked pages.
+On Fri, Sep 18, 2026 at 08:06:34PM +0000, David Matlack wrote:
+> Save the ACS Control register in pci_save_state() and write it back
+> in pci_restore_state(), instead of recomputing the ACS controls from
+> scratch with pci_enable_acs().
+> 
+> This makes ACS symmetric with the rest of a device's saved state. Today
+> pci_save_state() ignores ACS entirely and pci_restore_state() re-enables
+> the ACS controls from the kernel's current ACS policy. As a result, a
+> device can come out of a reset with different ACS controls than it went
+> in with, e.g. any controls programmed outside of pci_enable_acs() are
+> silently dropped.
+> 
+> pci_enable_acs() runs when a driver binds to a device
+> (pci_dma_configure()), i.e. after pci_bus_add_device() has already saved
+> the device's state. Refresh the saved ACS Control register there as
+> well, otherwise a subsequent reset would revert ACS back to the
+> configuration left behind by firmware.
+> 
+> Devices that rely on device-specific quirks to enable an ACS equivalent
+> keep that configuration outside of the ACS Control register, so keep
+> configuring ACS from scratch for them. Do the same for devices that have
+> no saved ACS state at all.
+> 
+> Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: David Matlack <dmatlack@google.com>
 
-Allocations from the pool are marked CRASH_MEMACTION_SECRET. The
-marking compiles to nothing without CONFIG_CRASH_MEMACTION, and stays
-a no-op at runtime unless "secret" is among the types enabled on the
-kernel command line.
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
-The pool requires SLAB_BUCKETS, which in turn depends on !SLUB_TINY,
-hence the new dependency for CRASH_MEMACTION. Without SLAB_BUCKETS,
-allocations fall back to ordinary kmalloc allocations. The pool
-likewise falls back to the ordinary kmalloc caches when it is used
-before its initcall runs, or after pool creation failed.
-
-Markings are set on object allocation since there's no clean way to hook
-page allocation in kmem_buckets. This comes at a small per-allocation
-overhead. Markings are cleared implicitly by the page allocator in
-post_alloc_hook() when it hands out a reclaimed page to its next owner.
-
-Using this pool for secrets has a useful side effect from a
-defense-in-depth perspective. Where SLAB_BUCKETS is enabled, it keeps
-secrets away from other kernel data, which makes UAF or out-of-bounds
-read vulnerabilities less likely to reach secrets.
-
-Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
-Assisted-by: Claude Opus 5 <noreply@anthropic.com>
----
- MAINTAINERS                 |  2 ++
- include/linux/secret_pool.h | 47 +++++++++++++++++++++++++++++++++++++++++++++
- kernel/Kconfig.kexec        |  2 ++
- lib/Makefile                |  1 +
- lib/secret_pool.c           | 27 ++++++++++++++++++++++++++
- 5 files changed, 79 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c6350fd34f4c..bcb11c2138bc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14260,8 +14260,10 @@ F:	fs/proc/vmcore.c
- F:	include/linux/crash_core.h
- F:	include/linux/crash_dump.h
- F:	include/linux/crash_memaction.h
-+F:	include/linux/secret_pool.h
- F:	include/uapi/linux/vmcore.h
- F:	kernel/crash_*.c
-+F:	lib/secret_pool.c
- 
- KEENE FM RADIO TRANSMITTER DRIVER
- M:	Hans Verkuil <hverkuil@kernel.org>
-diff --git a/include/linux/secret_pool.h b/include/linux/secret_pool.h
-new file mode 100644
-index 000000000000..aa9296c981c5
---- /dev/null
-+++ b/include/linux/secret_pool.h
-@@ -0,0 +1,47 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_SECRET_POOL_H
-+#define _LINUX_SECRET_POOL_H
-+
-+#include <linux/gfp.h>
-+#include <linux/numa.h>
-+#include <linux/slab.h>
-+#include <linux/types.h>
-+
-+void *secret_pool_alloc_node(size_t size, gfp_t flags, int node)
-+	__alloc_size(1);
-+
-+static inline __alloc_size(1) void *secret_pool_alloc(size_t size, gfp_t flags)
-+{
-+	return secret_pool_alloc_node(size, flags, NUMA_NO_NODE);
-+}
-+
-+static inline __alloc_size(1) void *secret_pool_zalloc_node(size_t size,
-+							    gfp_t flags,
-+							    int node)
-+{
-+	return secret_pool_alloc_node(size, flags | __GFP_ZERO, node);
-+}
-+
-+static inline __alloc_size(1) void *secret_pool_zalloc(size_t size,
-+						       gfp_t flags)
-+{
-+	return secret_pool_alloc_node(size, flags | __GFP_ZERO, NUMA_NO_NODE);
-+}
-+
-+static inline void secret_pool_free(const void *objp)
-+{
-+	kfree_sensitive(objp);
-+}
-+
-+#define secret_pool_alloc_obj(P, ...) \
-+	__alloc_objs(secret_pool_alloc, default_gfp(__VA_ARGS__), typeof(P), 1)
-+#define secret_pool_zalloc_obj(P, ...) \
-+	__alloc_objs(secret_pool_zalloc, default_gfp(__VA_ARGS__), typeof(P), 1)
-+#define secret_pool_alloc_flex(P, FAM, COUNT, ...) \
-+	__alloc_flex(secret_pool_alloc, default_gfp(__VA_ARGS__), typeof(P), \
-+		     FAM, COUNT)
-+#define secret_pool_zalloc_flex(P, FAM, COUNT, ...) \
-+	__alloc_flex(secret_pool_zalloc, default_gfp(__VA_ARGS__), typeof(P), \
-+		     FAM, COUNT)
-+
-+#endif /* _LINUX_SECRET_POOL_H */
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index f7326fa6476b..890c35199bea 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -186,6 +186,8 @@ config CRASH_MEMACTION
- 	bool "Register kdump actions for certain memory ranges"
- 	depends on CRASH_DUMP
- 	depends on KEXEC_FILE
-+	depends on !SLUB_TINY
-+	select SLAB_BUCKETS
- 	depends on ARCH_SUPPORTS_CRASH_MEMACTION
- 	help
- 	  Track pages that may require special handling by the kdump kernel:
-diff --git a/lib/Makefile b/lib/Makefile
-index 43421c39d21b..0e69633bd79f 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -60,6 +60,7 @@ obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
- 	 once.o refcount.o rcuref.o usercopy.o errseq.o bucket_locks.o \
- 	 generic-radix-tree.o bitmap-str.o
- obj-y += string_helpers.o
-+obj-y += secret_pool.o
- obj-y += hexdump.o
- obj-$(CONFIG_TEST_HEXDUMP) += test_hexdump.o
- obj-y += kstrtox.o
-diff --git a/lib/secret_pool.c b/lib/secret_pool.c
-new file mode 100644
-index 000000000000..62954847091a
---- /dev/null
-+++ b/lib/secret_pool.c
-@@ -0,0 +1,27 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/crash_memaction.h>
-+#include <linux/export.h>
-+#include <linux/init.h>
-+#include <linux/secret_pool.h>
-+#include <linux/slab.h>
-+
-+static kmem_buckets * secret_pool __ro_after_init;
-+
-+static int __init secret_pool_init(void)
-+{
-+	secret_pool = kmem_buckets_create("secret", 0, 0, 0, NULL);
-+
-+	return 0;
-+}
-+core_initcall(secret_pool_init);
-+
-+void *secret_pool_alloc_node(size_t size, gfp_t flags, int node)
-+{
-+	void *p = kmem_buckets_alloc_node_track_caller(secret_pool, size,
-+						       flags, node);
-+
-+	crash_memaction_mark(p, size, CRASH_MEMACTION_SECRET);
-+
-+	return p;
-+}
-+EXPORT_SYMBOL_GPL(secret_pool_alloc_node);
-
--- 
-2.55.0
+Thanks,
+Praan
 
 
