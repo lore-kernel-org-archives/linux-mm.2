@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99D97CA5FA9
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6226CA5FA5
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 15:08:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 871B06B0092; Mon, 28 Sep 2026 11:07:52 -0400 (EDT)
+	id E40266B0095; Mon, 28 Sep 2026 11:08:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8494C6B0093; Mon, 28 Sep 2026 11:07:52 -0400 (EDT)
+	id E16F96B0096; Mon, 28 Sep 2026 11:08:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 787466B0095; Mon, 28 Sep 2026 11:07:52 -0400 (EDT)
+	id D2DDC6B0098; Mon, 28 Sep 2026 11:08:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 603A76B0092
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:07:52 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DDD24120255
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:07:51 +0000 (UTC)
-X-FDA: 85263500742.01.2E2F8DB
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B6A236B0095
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:08:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C92DC024B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:08:36 +0000 (UTC)
+X-FDA: 85263502632.23.D539098
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 428BF140003
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:07:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xlu3LGbo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 65BBA160010
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 15:08:34 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKxoin8P;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790608070;
+	s=arc-20220608; t=1790608114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/s2mZEHt2DGwlnz660WM5+D7f5eRSUtCP1K9EZuyQM=;
-	b=Rjxw0S5uzc2XyuQzdzoqnp1ph9JlxILuRAdQ5f8/pA5ze7c6BO5D6yh4HW2HJQU2AgHY3c
-	G7Wyn1TYezieDeMpzTFU2ZcKbbbXSBRpl53wVfD4yXlZXjrkYseuc9MyVIol8/FpcgkVJZ
-	h+GVftOpF7MqKBRMzA+7p9rmEO5PGyw=
+	bh=e6DwsvvgsaDQmnbhantbUxZ9adg5ZslBN1QuZ3zF8q0=;
+	b=nm8z8ryu+dHGw/oDu9mkV4QbOwy7nYLS4b7BDZNA5MseiPJzeNLK0RxYBPTtOEGBs3yWXv
+	pIaO184ulODPJF3FyjSuyh5SRMUqNYGuGNoAzQbBUv5n8C9wOiWzOVL8l3l0xIK0HXrsqQ
+	+ymDq02Q0BXLvX30QKRGaXA1RdGuZWY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xlu3LGbo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EKxoin8P;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790608070;
-	b=DRgmVHfckny9iQRLPKHQH7kpfhcDUyNwglXpV7KK/yARofi3n8ElsK6vkE0pz4AqZDp0Ni
-	Bs+DKg148DH865FCyujX04bY3u6yx2SO8CcDcjYoEBV5HyKMYrzelNwfKq+EwTOVA4mmFF
-	Hhd1DAEkpXNDg4F/rnuhqc0P8YoYbLM=
+	t=1790608114;
+	b=jfpcwmtmSWYbPFYCJn/GRSbO22YxX41cCGiNxLzCTDjAwNnxZwkEUJUu9XjgZ4T016XEp3
+	Sjh90W48f+RYKxLhkIUq+fUsi0/cdAdI9/mVVj2Lwets1JPFEOxkZ6NKmUJrc+llVkAAKp
+	0MILJA83yaALgIeZRm70d0h04PE7zVM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 88EFD42E9A;
-	Mon, 28 Sep 2026 15:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDB71F00898;
-	Mon, 28 Sep 2026 15:07:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8D26D405FA;
+	Mon, 28 Sep 2026 15:08:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C0F1F000FF;
+	Mon, 28 Sep 2026 15:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790608069;
-	bh=q/s2mZEHt2DGwlnz660WM5+D7f5eRSUtCP1K9EZuyQM=;
+	s=k20260515; t=1790608113;
+	bh=e6DwsvvgsaDQmnbhantbUxZ9adg5ZslBN1QuZ3zF8q0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Xlu3LGboDX64NscvV/kv5RDmDKtw5hFkym4749XW0rB76t0MhOY6zIXf3/kEjIzti
-	 7/zdSJ8qF2n2Z9Gk3d8RJXa8QPgAvTKP793Aqqw5DkuuWE3cb+U5JT8yAxzkHaGAt6
-	 2K2YNPm2oeJTnEg1+MbNTF8ykHGi9FrliXYk0msRzhrjh6+kYjEk0/PCkhC84RYYrs
-	 PyQPUrRsiljA9gItcD165EnmnYScUzzxuLDg0a3duJUImfG+UfmwhsNICpY94vIyhh
-	 S8UrqFmwdmqxizKbb/CaWz415A7DQg225fWAXMsbmir9ddCUwlS6EzTbv05G+muDKS
-	 OZniCI9+0cvRw==
-Date: Mon, 28 Sep 2026 16:07:44 +0100
+	b=EKxoin8PPODyfh/+t1dEKhIOvPYbQUuxM1+0JjWv2KdshkWycY0WkfIGE20B85m+q
+	 m/+RCaPAa7v36i3if+Tky1ISXuAlTL0/iDIhY9dTvF5ZhyUBr0AmenYNYv2J5h2BVJ
+	 hp7Rz9HSD87ksYOCrN5t0/a2qxOs+d9d1TAPerSzvQpsK4OEO/Qm1HfObwjIeqQVPp
+	 JrVeF/gLebjqaRCqLskIyRNBI/nuZx8dECkpWS5Wuq+uSnWxokDaOMOh+m6OyU75tQ
+	 SC3ZU3ZYvNfK7nsE0daX1ha4pxP0QUK8ne6ezf3s/2iDVSktSN8G1nFhkxdMYv3Poj
+	 heP+1IyR+gWuA==
+Date: Mon, 28 Sep 2026 16:08:27 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Cc: akpm@linux-foundation.org, bpf@vger.kernel.org, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/nommu: Reject wrapping ranges in access_remote_vm()
-Message-ID: <arqCtS_MB2Ee3-44@gremlin>
-References: <arZzn0bwWqp7xTE5@gremlin>
- <20260928150446.36873-1-tasos.papagiannnis@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Lance Yang <lance.yang@linux.dev>, syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
+Subject: Re: [PATCH] drivers/char/mem: mmap readonly MAP_SHARED-/dev/zero
+ correctly
+Message-ID: <arqC3n_o-Xdu3xYO@gremlin>
+References: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
+ <9efc7bc1-8d9d-49ac-b856-003e81558411@kernel.org>
+ <20260924195826.70a87d6fb78d754bc73892cd@linux-foundation.org>
+ <95e91b4a-ca16-49a3-9a1a-5b38afa6f08d@kernel.org>
+ <arYnXJHW-Rh4eNzt@gremlin>
+ <f78d2f52-1135-425c-a3e8-460a6e80e19b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260928150446.36873-1-tasos.papagiannnis@gmail.com>
-X-Stat-Signature: 19hj8hzbzfb8c164dwfp9t97a3rm9cb5
+In-Reply-To: <f78d2f52-1135-425c-a3e8-460a6e80e19b@kernel.org>
+X-Stat-Signature: azund6c71787uy9y5j7p1sn13s5tcn9x
+X-Rspamd-Queue-Id: 65BBA160010
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 428BF140003
-X-HE-Tag: 1790608070-26367
-X-HE-Meta: U2FsdGVkX1/ckKU8XSlck6q6u+Da6xQ2Rg7ViA2+BoePVOx6u/h4QWtC9qffwOt2G4/J3bBC7drO2TSDjhNJZOw7nKMWXK+6IqWPy6ZU/pNc37DhxNQbITnxkRY1dbroI8Rjs2AXg6Jw0AXJ3zrvR5aKY1BDCaaRMzQSKSBWZez10F/urQ2Rwk1iQm/Q3M1/rYv/t2m7cP26Su/rQ0Uzp+iuBiTkMcQ2JjvBZ9nX2O+8TAb62UtntpzLgaspct3gyrY7ARzDpMhNGiyXscsMWISU5k0/YKnKt00eFiO9dVcnwEALm11zY9R+Sxt5GtoRhPHJg/aDz5d1E35rcv4bRlrZq0NKZTthdh5USdRl+80sZMxCLvVSAdTb2Ab9HGTeip+89Crdw2i7LrudHfh6NbwqbhNifrsNkChFjTMabt7yf0yks+I9o/3V09betts/5eBOR0XKmjCilCQXQ+Tm5DIh41FOIRemsQcFT73ZfAIKUTuveVY9MbB7ikU5KRgA7sK9AVLdD7YsP6RDhWfy55hdiYDH9Q74dlzO9dnnufTjbEybGfRNQBLoNVizkoo0f4nXlswc0hfr2E2dGIvcDrWFDJZbQTPYVnebzkdR5KEFme4J06cqk4m2SC1EGkk9I0udw9TdIQE19pl6paid/0C1PfzPAGxlaJ049R8sHQa5kKa3Fp6MyumtKJ2LEI33yZw7a/4xZduosKZEh7eKn+3zPopSys9qe38ApVKuMJ+lg6k70deZTyc4kfGtItktEo+zXhPrkmoCTB6sQKptne4DOeC7/VcztKnEcdpr9o3ysuVN6c5bu06Y4usLL8hEmibrEgYjHYEWrgs/yzpTfPa65kLWA2gXwnK9sFtnipE5sCf9zbmzd+w3UilDEvRuJL3u3eGyCGLXFln7pQYIjkRzp0BqhyyHr6vh5FWcFK4v/dz3AJCZN9y08UOdudvCkSx0sv9e/zCvMhyx/zM
- 4a/EZekl
- naAa2d65P/Gi6Bc3PMoOOAvBpJz8Q25INCZjMKxzHWkIMNKw4UUDk+p02Lqfjq2fRP+Aff1Mt7tGKLsTpFlStmqL/OAT7C8D3tpWmBPh6urgOkdB+AJY15WWSE8/f/EXnxbeIdqQFq1wA4qnzqIQ3zNSViXVnE+1g14Kj6k3+7GXWlulwv2Rl07j/lGJ8qHDf/bBXquloD9JUxoqHW6xyuDmiZ0TzdrXPslxEcIpAsK03qIr6ARoJr2cXEoZHTB9JKMzg9tBJ7HQasY3/RezcFFMjhDUiy2aqxnceblhXG8F3Wkk3eVM57/6xFc6g+RWjg+Qh2ypceW2jeKfi7p+u2swzSl85dpZ0tdyomQyQL/vNGAWBK501QdGzDXLVzyWv7Ou46PDh9YsQ4CE=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790608114-516233
+X-HE-Meta: U2FsdGVkX18PPIsI9pKsiEa7zGESflFYItl4NdhVW2vFdA1DeXHt2GsbDbtPViIbs5fTomIFXFwaspN//yEH7JSs9BX8QADFLnAC8MPXVAUraQuYx78ka+iCp295n7G8i/mDy/of7WP9rZDoi3ELzBlbPvucuPnNps9Tt8LIgWETlKR174lr9dbhznizOxVHuccOYtKwnYgG3pSFoXYfU3jn9o5p7qaunC8aUFEzfANnXKEgbeTWltWEEcbDIlI5JUhRO98c1qAH2QnRAvJYnzxp6jE5Pg3ikpa8IoQgwsVdUFTB0TuuaPn+tFBKKnDGpF6U+T2Sz5WvnQGk18esEC+z/PSXPVUSztM/qzyTC3cN8f8Y+aC//PUkd6x4xiOdgkLpLcXjZBab34Mq4/Lkc/ylYJputjwpwXFpIugnY5feFVGGkJwLyffZ7XiXE0T14+W5B8I4L2Ybjy5ZpIJHd+KIjfnYyzwpZNeMsjnvl6rlONC0EalqHFKSQ0Z+Odqa2DOHC3wRiMF7tNpj6+Q6dND73dbkx3jNWQdWKf6UoUdZ61LwB14GgnFyAVtD5YOP4yFupP5jZpXvNpuIWC4ky8y5HrAEoKKSlIsTjjciDLJFbwe098aKWAH9J9OrDtXpfc3xkamrjA/D+jY6T/VilsnTBAhd3ujkmw8Cg5r1HXSHdc5wOyoAkarSoANL+7ZkNAJDCQUGMUgZ5kjBOChel2cm5lhUirS/ojC0tSAiqjpY4mZmnmAphCJKeoXubQ5eIuFtFhFKXEtt32H4A9L5nqYx4XT/FR0XTwFm3Oib+Y7+A3dznG/MjF0+6PhnejjM3ZXplU+GCy60O/IfRlMxDxz0AjIUABl42L5WcoJwq5qBiWC4VZffy8ExPKcGGQSLt1N+6NvhR7BISg70aCMztzRuTCMD+a7qcRNX4HligniFDWoZspKdTy0wByjnjXxmrkSEv0EcX0UHQYZmUZW
+ YI7euopZ
+ Ul/FNIOjsR9pzK2r7hY7nfErbXQFEubNK4Y+1y8A7NFLCGWWxMkiEOvkBTPaWmUim6eBp+51sznQ685OytnNmyGiHixQXE+FI+rjMPgD7s4DxZ2ZRWLgTLYbO2/qxhSAkUOFg6AYGWUeYiZjrOwlAT5jCUnvXaDNH1ZgeoL3hgpOxcP5+/fgh6G7xRADnquU89aNcLQxGeskJrDRPrEUkK7SsUXcsgDSLJCyQXR0EkqBbdDBYbYAEZeXFCNGlkPsM+w+tzJTyO3jK0vRY4Gr+Sk8w0Gc98WYHenbAEcDupmycseNo28QPWDG2NO1tXPeh2QWrhGbAgpyVbb1HGBi/AGauhTavPVbVXNKJJH9pc+FsM8fhppknjnVexAqOmT11LH28DW9fCtxTlWxmq8+lEjUNrAwkiwxtw/+nmRhjztfc9PAghH1Hy/QCcl0B8SOH6j/3ZIXUyAIlshQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,30 +101,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 05:04:46PM +0200, Anastasios Papagiannis wrote:
-> > BTW always feel free to nag if you're not getting review! Something things
-> > get missed. (Though I'd say wait at least a couple weeks before doing
-> > that!)
+On Mon, Sep 28, 2026 at 01:59:47PM +0200, David Hildenbrand (Arm) wrote:
 >
-> Thanks! To be honest, it wasn't clear to me that I should take any futher action
-> after I received an email that this patch was added to mm-new. But after reading
-> that email again, this seems to be the case. The patch is still open for reviews.
-> (Sorry, still learning how the process works..)
+> >
+> > It then becomes a question about how to get readonly memory.
+> >
+> >>
+> >> We can
+> >>
+> >> a) Disallow allocating an anon_vma and fail gracefully. So only a shared
+> >>    zeropage could ever get mapped there. Might break the s390x
+> >>    mm_forbids_zeropage(). But given that's only used in hypervisors like QEMU,
+> >>    unlikely.
+> >
+> > Something like:
+> >
+> > 	/* about to maybe prep anon_vma */
+> >
+> > 	if (!vma_cow_mapping(vma) && vma_test(vma, VMA_MAYSHARE_BIT)) {
+> > 		/* don't prep anon give zero page */
+> > 	}
+> >
+> > ?
 >
-> [...]
+> Something like that, but really just failing directly from anon-vma preparation
+> in a !vma_cow_mapping(vma), maybe using a special error code.
 >
-> > Seems reasonable to me! So:
+> But the less we have to hack around this special case, the better.
 >
-> > Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >
+> > I think though it's surely the only case (I hope!) where you can possibly be
+> > both anon (as in missing vm_ops) and !CoW? I hope? :)
+> >
+> > So it feels better to fix it at the source.
+> >
+> > OTOH maybe it's worth special-casing so we don't allocate on read.
+> >
+> > But that brings me to c)...
+> >
+> >
+> >>
+> >> b) Do what Lorenzo proposes. This will allocate real memory. Someone decided to
+> >>    use MAP_SHARED, for unknown reasons, so I'd assume it's unlikely that
+> >>    something breaks, but you have a point.
+> >
+> > I would say this patch is the right fix for the moment to fix the assert, and we
+> > can chase up with other approaches afterwards.
 >
-> Should I now send a v2 with those changes? It seems that these are already applied
-> in https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git/commit/?id=1b721712d07e831686de53efc667561985897956.
+> It will get backported, so we better be careful.
+>
+> IIUC, the real change is only for /dev/zero users that
+>
+> fd = open("/dev/zero", O_RDONLY);
+> mmap(fd, MAP_SHARED, PROT_READ);
+>
+> Which is rather something odd to do indeed.
+>
+> Letting AI do some digging ... it says there are not known users (I don't trust
+> it, but I suspect at least there are no prominent users, which makes sense ...).
+>
+>
+> Getting shared memory when requesting MAP_SHARED does sound like the right thing
+> to do ...
+>
+> So let's try this:
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
-No need, Andrew['s scripts] already fixed up thanks! :)
+Thanks!
+
+Yeah let's revisit this one later more broadly.
 
 >
-> Thanks,
-> Anastasios
+> --
+> Cheers,
+>
+> David
 
 --
 Cheers, Lorenzo
