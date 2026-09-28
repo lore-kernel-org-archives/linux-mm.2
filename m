@@ -4,80 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DC3BC9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:05:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D2A6C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 08:16:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E3156B0096; Mon, 28 Sep 2026 04:05:23 -0400 (EDT)
+	id E9AF46B008C; Mon, 28 Sep 2026 04:16:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 893CA6B0098; Mon, 28 Sep 2026 04:05:23 -0400 (EDT)
+	id E4B0B6B0092; Mon, 28 Sep 2026 04:16:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D0FD6B0099; Mon, 28 Sep 2026 04:05:23 -0400 (EDT)
+	id D88676B0095; Mon, 28 Sep 2026 04:16:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 619886B0096
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:05:23 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EE2481A012B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:05:22 +0000 (UTC)
-X-FDA: 85262436084.14.66B4C5E
-Received: from mail-43102.protonmail.ch (mail-43102.protonmail.ch [185.70.43.102])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3FC4CC0007
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:05:21 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=UqOERltV;
-	spf=pass (imf28.hostedemail.com: domain of clkernel@pm.me designates 185.70.43.102 as permitted sender) smtp.mailfrom=clkernel@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AF5186B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:16:07 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A0EAC012E
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:16:07 +0000 (UTC)
+X-FDA: 85262463174.12.27BA3B1
+Received: from mta1.migadu.com (out-231.mta1.migadu.com [95.215.58.231])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0D02040002
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 08:16:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T37fRs8f;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790582721;
+	s=arc-20220608; t=1790583365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=3M8BPv/p9dM+qPIYdIkmizLgsmL/s/qhobeuo3NeTSM=;
-	b=7I6d+IFhSx2PfJRm9sKoFh+T7OnjlxnyaL1NvbYHrLP6n0eYFqgxwVpcghVmQg6C6/+OiQ
-	Hh8wy6PvW89e6h13YU3w2Or5WgERVFHzqND7CvxuJsLkYTlgJF5E8OVv8ql4A807/oayWB
-	4RDDJkgN4DxHx6wnBAMllKA/oVfFPW4=
+	 references:dkim-signature; bh=80PPjy013Wvr5+t5uRxRGRvw8ld2EmP1xVRy6kvWZ7U=;
+	b=KTgemcMkBllziXfFRUcdqO0pnt1RQzm6hWc0yTLb4Ur40tTmdI6Y7TUxdk+6FF5dz2vpCS
+	iKbYm+KatwZ8HFPQ6BpekA84xl35L1QvZWncuq8DEF33FMgXEHnrHWkisorgsjDVT4feie
+	F68p6gGDTat+ZF7NVHXrh/lbnSLOqBk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=UqOERltV;
-	spf=pass (imf28.hostedemail.com: domain of clkernel@pm.me designates 185.70.43.102 as permitted sender) smtp.mailfrom=clkernel@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=T37fRs8f;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf07.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.231 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790582721;
-	b=fneEqX28N+8rk+GhxoWU763QQ3BbeGthxuutzyVyS3ConEmMTs0xH/DAUr+s5VQLyu1JfB
-	O3ycLRK5GKp5pbWwTA1Tf7hskeY+pyle8o/mdYP4pC2Yl0FFzj3UlrqjOE2v6gvgJXpoks
-	M0WHljIayXgImeWIAOFHbMpgRrevyfk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1790582718; x=1790841918;
-	bh=3M8BPv/p9dM+qPIYdIkmizLgsmL/s/qhobeuo3NeTSM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=UqOERltVcMd2g1ZVy25hZwT9exWp+EqFJOwoVf8fXUDabC6AVVUezsZmAIgXd0Ar+
-	 Pw9gThUIp7pFh3SOo653tHotzP63hXOKSjjsPztIM4s+qPbdIfm9S8eD0axEfeA1fa
-	 0JvmxjMX5LFyH6W/nYvtqNgNN7LiIBOjO0Ft12U5prsknszc2gQsjRsQt3RsDwkPwq
-	 M0uYeRPbuydEls4MhAlU/bUgzgpfyRLTLP0/Cvi4+a+Oz1rS3BsvFqIuKDS6PUzq8g
-	 M4G/PCk60zDyEU3iRxx3kHCcYMqhUBn3MLnrwcZ94dIE+7DajPMR8uVQGOZ1b+S9LD
-	 45dka1h3ekHqg==
-Date: Mon, 28 Sep 2026 08:05:13 +0000
-To: linux-mm@kvack.org
-From: clkernel@pm.me
-Cc: axboe@kernel.dk
-Subject: [PATCH] mm/filemap: queue non-exclusive folio waiters ahead of exclusive
-Message-ID: <67a11eea-e0a3-49c3-a823-b5a488625293@pm.me>
-Feedback-ID: 224698563:user:proton
-X-Pm-Message-ID: b9d07f5cbf723acdc678724508bfefae6e0ef896
+	t=1790583365;
+	b=WEWDpzhJn1skjmrQyFYZ8jIGvQVYNXMIho2P9WPZlEdmz7osNLr5un8O17kq+aMIBqXS/9
+	j4aHTzv9ISuxlS9Ffh2cDubR6VZ7PvBNkJkPbsgBsUtwS2n+qx79QB4THdhe25h952hul2
+	5c/hYp1YrRzbnbLUmtce18qZ3NfcZ/4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4nfGVGrts9wIIS/qPwNM+5g6z35RooC5Zn4qvOag/3E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790583363; v=1; x=1791188163;
+ b=T37fRs8fq5/mX5gQRy7x6R6/ukmUf93gbnnc8xX4WuTmamR7NTFykLhfLqExMYKJlhYgYXHf
+ 7fpqpd6r6co0iXOP/S3X7dct847lSuq29LqVNxD1LZKR7qhdnuoDF2xwRdmBx2NUZQArmNEDLge
+ 546e3wfINp2bvP4Rk0MHHMPY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e3fae377f424b059;
+	Mon, 28 Sep 2026 08:16:03 +0000
+X-Mizu-Trace-ID: e3fae377f424b059
+X-Migadu-Flow: FLOW_OUT
+From: Ye Liu <ye.liu@linux.dev>
+Subject: [PATCH v4 0/2] mm/vmalloc: fix vmalloc_dump_obj VA lookup
+Date: Mon, 28 Sep 2026 16:15:53 +0800
+Message-Id: <20260928-vmalloc_dump_obj-v4-0-6f288a431edc@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3FC4CC0007
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADkiumoC/33OywrCMBAF0F+RrI3kZR+u/A+RkmSmNlJbSTQop
+ f9uIghFxOWFuefORAJ6h4HsVhPxGF1w45CCWq+I7fRwQuogZSKYKFjNCxovuu9H28D9cm1Gc6Z
+ QsZpVSpWyqEmqXT227vEmD8eUjQ5IjdeD7TL06XvUkM87F26jf74fiDyX/mxFThkttVZMgBAK2
+ n3vhvtjAxhJ3opiAQj+AxAZkK1FIxG4rb4BuQTUD0AmYGsAUYKWpZFLYJ7nF/ZNjz1RAQAA
+X-Change-ID: 20260916-vmalloc_dump_obj-d80908447369
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, Ye Liu <liuye@kylinos.cn>
+X-Mailer: b4 0.14.3
+X-Rspamd-Queue-Id: 0D02040002
 X-Rspam-User: 
-X-Stat-Signature: 43dh1s9bgdys7wi8cdhozetq43nz4wam
-X-HE-Tag: 1790582721-710634
-X-HE-Meta: U2FsdGVkX18rT/to3tBpiKl1cQkcza8DWGurLGAbBhsDmRX5AWW+cDha9BFlFz3ayd9XHuyoP/j5BjvcbcenEF46eYB4hm5k/KqDWnl8GP+4jC5+p9tgwJIRH5NMX2Ft7kDtiiAvH2SjpcJZ58wZyKzRNeZA82KqTdQuPwJ9HuiK+4e8EOFjkOZv3noNwW0wDcLvW74B3RaDaPPiEUxru9X2eRVX3rXnqp0Ps9Wa4Xpm8SP16rtCyzeoTcPsnD75eaYev/ts69LcVif/96txoqFgIVaBN3JN6tE/z08Dhn12wLUyztkMK93LG7R0T66vgSvfrB6Q1bYhNkkLlBTz18GyCktRvew/LGFbWvdz+19mT/ca64TtkeOIEq+xGLCFLSuTAyYBaAJGO0ExH8Co5mdM0hm1cvCUhVIVfaqmYU68H/oBcNTCsHvQ3xsl9bbXcUDWbNUFa9WA8Qm41G9Hc6NPfa24hbq8B4fQVbLYRYoySRS92m5OQXcrt2Z+KbcN5Jp+kanw/uT4ENKMu/tcPRZFaV2PpXZhJuO6XtQrQF01y/FLuRGHeElv1BBWHkRQgtaxC4/zJ2SzXU3/zURqfAoiS1yIeIDRW/BGOBFXWXo2QzeDjlLxYq/TdyRkFekIbP3XMqP55ziHHC8meVCa3zr0OpCfXbGWmk2exYe7mjJxo3eaqy5Z8BLBIfERRiX1GM4NLF1ZTyvuvNq/X1rJsWsucHr8/oyLxyJaNEVvprN/gA+IQ1HgYWOc7kcbChy78u70F3KMFSCmEoDeAOY2p5Y8YzdW5r9kx7yNxXk8P5BujAvoTVk3WTEoFU4osClO/jpXdi8PPCimmNxLPL2ilHzZG237l0eO5WwbLXutm1tjEKSJqo9nN/pfUM2fgCUDKZWKf6R4w3ss+o3bfyEZ+BBtoAFFVipVck3vyg7M8L9GhCc35c+7RDEFvKATWlh5lse64H8GPXeyJPZMUBc
- 0fiWTix7
- p4t87gg3zliEq7WLd0VcSlrXqS+pxdYJgwlkuyM20OQ5Qu6eT0vL+GtqgLpFI607ljxUJNjcszRMGhv32KQ2Ckg+khR1i1eccgjvfwvtNpN8alS4X913Kxe0JzJVRCQMqBus5g+0mTEkzhWrSUd9IHsgrBqKTNc/01bvXL7dsn2h0vawfmgdCxtqWZFal10qdolp6GI+HGJtAEs6EPDaVmS6yKP9k1v8xeaJddq64QhVHMOprlrsXfh7I/IIHp3PIqEBz
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8oo9p9jzx63q6nkgd1thuo8x5b397g9m
+X-HE-Tag: 1790583364-951364
+X-HE-Meta: U2FsdGVkX18+MRoYuBuHbICW8XjL1t7BaTGwQqPn1EKOQXf0LynAhc6M3UWukOkNIYQqgG5aKWWuBfI7TTuXRy0JOPlMUt6WtvJ/9wRF1S8THltF3LcpVN1OtAKSvZCIkBobs+l4KFqBO7RUApuYqaINp5kTXyMZh9Jaj9hrlGTrjm0iUOlZ5Xcimby2VGsAv1cYzJwP6Bi/MCiunCFN8ogIP6xUg5oyF44O5O71HqEu1qN4Hx+vPXTd+iH/1bP2pLuUBLM+sPJHMtA19iiNKT0mRTUIwiaLyCuMusdH0MdkDBg6Z5y6Hd1A4UP21Mc7o8F+9/E/P9x9cp9p8nUfWhMNItsF2pQ+crcYkdEqNsmOjgCEzl4zcIlK1clIdssX2uea0kGSvSebgjc+nne3HSfCeWdSBPicq7LJZWksWBbItNDQuqnupG+W/rrnLoW+ZI+2FzQKBRzxPZCObL5ztpXclYXX0KiEH281gthvuGG0RN4CgQAtZ1217/ZLAly+OJTihUtkZEzLw92jPhbvCTeaj5qkMCvMGI9CvMMfvRs5ak3QI0og2NnNm/D8SOKP/ZrEiVHDjahNrEBi7BwQZnhtsO6xsJ+RUUSRTDlBAJ+WkmZbxpotjfFHZvesqoyWthwuvhCmFGBLP3Cz2MqrX6YyFywEHYiZnvJiVJNnTdAmSQStC0DYAbON2a1frAo6ZQnq1auCcxXRg6RAk0iQhFYHvQET7zhKhuSJFUdK0LAEN9ltpLcPTP8NKYrklRnjZIGTU+Z803Jpw2hrFL5CiSH2pDGn1+1Ju6mnkDMvhV44NgSrLNDAn/BU8uPoKAvT0PU9cbTeAm/EeheW2EdmwTRqP4LxFhhiIbwgaumDcWYx9FUhbjjjSmIogo6VjPrfarVj65vIXYCDZ4CyPRya05Zwzm3cyWZ14L3xY0bFcRSG1Kpy7UoOJnfJBHnI+HBYNF8O//NeN/AnBtPcW5x
+ 71AyK+B6
+ w4oHvFbrB4iarYgDiR1WitdD7afW2suvibJhBXVzd69R8le9WfDv/ciI1iPgUJ2B/N/p0lbodrE0+Kln64LlGjDlTRhPXVh2vkZSxyiKbC6HU62R6b/R7FAdX3wkTt3wEZt7APOcMu0BIR1rjDwGPj6qban9CypxdCzRxbUtSjkebdy66ulvLGxYE2sfTP1WfHhsi39JV/INYWo8sj2IcePIYCUdASVG2j8X1uP0+Oi1D7aRaRdoy3zPQABZgxh0+2rcqFkNxQ8Qg6N7t+dHzNxo34/B/EjC5h6B8VS9N75VXRcLFjPi8WPy9UQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,59 +95,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A folio waiter queued behind an exclusive folio_lock() waiter on the=20
-same folio is skipped by folio_wake_bit()'s nr_exclusive=3D1 walk, so a=20
-shared/DROP sleeper (folio_put_wait_locked from do_read_cache_folio)=20
-never receives WQ_FLAG_WOKEN even though its wake ran: readers hang=20
-D-state in folio_wait_bit_common, fresh reads of the same page answer=20
-instantly, and the sleeper wakes only with each later lock/unlock of=20
-that address, one page at a time. Numbers from a queue-walk instrument:=20
-363 skipped waiters per 10-minute run before the change, 0 after.
+vmalloc_dump_obj() has two bugs that cause it to miss vmalloc
+allocations.
 
-https://lore.kernel.org/all/6a4763e3.9dc7bc9d.3d5df4.0007.GAE@google.com/T/
+  1. PAGE_ALIGN() rounds up, pushing last-page addresses to va_end
+     and outside the VA lookup range.
 
-The same change cherry-picks clean onto v7.2.6 (mm/filemap.o builds). It=20
-only reorders the enqueue side: non-exclusive waiters use wait.h's=20
-default head-side insert, exclusive folio_lock waiters keep the tail, so=20
-wake-one fairness for lockers is unchanged.
+  2. The function searches only one vmap node, but allocations
+     larger than 64 KiB may span multiple vmap zones whose VA
+     is stored in a different node's rb-tree.
+
+Patch 1 fixes the alignment, patch 2 fixes the cross-zone search.
+
+Signed-off-by: Ye Liu <liuye@kylinos.cn>
+---
+Changes in v4:
+- Patch2: Simplify find_vmap_area() to return va directly.
+- Patch2: Simplify locked_vn initialization in find_vmap_area_lock().
+- Link to v3: https://lore.kernel.org/r/20260924-vmalloc_dump_obj-v3-0-5bdee3da37b3@linux.dev
+
+Changes in v3:
+- Patch3 drop.
+- Patch2 Extract find_vmap_area_lock as a helper to simplify the code.
+- Link to v2: https://lore.kernel.org/r/20260921-vmalloc_dump_obj-v2-0-73fceb3ed1c8@linux.dev
+
+Changes in v2:
+- Use is_vmalloc_or_module_addr() instead of is_vmalloc_addr() to
+  avoid filtering module/BPF/execmem addresses. (sashiko-bot)
+- Link to v1: https://lore.kernel.org/r/20260916-vmalloc_dump_obj-v1-0-7aa402d224df@linux.dev
 
 ---
-  mm/filemap.c | 16 +++++++++++++---
-  1 file changed, 13 insertions(+), 3 deletions(-)
+Ye Liu (2):
+      mm/vmalloc: fix vmalloc_dump_obj address alignment for last-page lookups
+      mm/vmalloc: fix vmalloc_dump_obj cross-zone VA lookup
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index d721986d5f46..48994aa81320 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1294,8 +1294,18 @@ static inline int folio_wait_bit_common(struct=20
-folio *folio, int bit_nr,
-  =09 */
-  =09spin_lock_irq(&q->lock);
-  =09folio_set_waiters(folio);
--=09if (!folio_trylock_flag(folio, bit_nr, wait))
--=09=09__add_wait_queue_entry_tail(q, wait);
-+=09if (!folio_trylock_flag(folio, bit_nr, wait)) {
-+=09=09/*
-+=09=09 * A non-exclusive (shared/DROP) waiter must queue ahead of
-+=09=09 * exclusive folio_lock waiters: the nr_exclusive=3D1 wake walk
-+=09=09 * stops at the first exclusive match, so a non-exclusive
-+=09=09 * waiter behind one is never visited and never woken.
-+=09=09 */
-+=09=09if (behavior =3D=3D EXCLUSIVE)
-+=09=09=09__add_wait_queue_entry_tail(q, wait);
-+=09=09else
-+=09=09=09__add_wait_queue(q, wait);
-+=09}
-  =09spin_unlock_irq(&q->lock);
-   =09/*
-@@ -1429,7 +1439,7 @@ void softleaf_entry_wait_on_locked(softleaf_t=20
-entry, spinlock_t *ptl)
-  =09spin_lock_irq(&q->lock);
-  =09folio_set_waiters(folio);
-  =09if (!folio_trylock_flag(folio, PG_locked, wait))
--=09=09__add_wait_queue_entry_tail(q, wait);
-+=09=09__add_wait_queue(q, wait);
-  =09spin_unlock_irq(&q->lock);
-   =09/*
+ mm/vmalloc.c | 110 ++++++++++++++++++++++++++++++++++++-----------------------
+ 1 file changed, 67 insertions(+), 43 deletions(-)
+---
+base-commit: e6e35979777d646fe3c7c94dca7dd32fb25d45f4
+change-id: 20260916-vmalloc_dump_obj-d80908447369
+
+Best regards,
+-- 
+Ye Liu <ye.liu@linux.dev>
 
 
