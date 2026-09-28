@@ -4,118 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE1BCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:27:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58417CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:27:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FA1B6B0092; Mon, 28 Sep 2026 13:27:42 -0400 (EDT)
+	id 7283B6B0099; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15B786B0093; Mon, 28 Sep 2026 13:27:42 -0400 (EDT)
+	id 6D9E06B009E; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 021E26B0095; Mon, 28 Sep 2026 13:27:41 -0400 (EDT)
+	id 5F07C6B009F; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C45886B0092
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:27:41 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 53B50802B8
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:41 +0000 (UTC)
-X-FDA: 85263853122.11.68A8C32
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6A521C000C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:39 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ML2QdkCS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 37D746B0099
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:27:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BF9F1C22D7
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:54 +0000 (UTC)
+X-FDA: 85263853668.14.6580D52
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 56B0510000D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W5ZR3y/U";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCI6kHOT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XzOmBuHn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rixRATj3;
+	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790616459;
+	s=arc-20220608; t=1790616472;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9TV9CZp7F6pGowVYUJzJ4N6Q8t1cPGPvHxtYWak4BOo=;
-	b=wtmtN5vtFJh73dc2pnEcPzq9yRysDt6fyg0B0oJdqwnlAGYvFlcuuxtaFy+jdL1SyLZmpV
-	3IOzW7zZE3rI7chlzoUyNNJuQ9eUjUT6d9AdeQmO6utz1Nrde8qOLo6bDykBtlXG5wIz/L
-	cFQF/NstFifc8F9arqIUToY6ZiKmCUs=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
+	b=Stb/7WtiLAqTT2mbGTNz0WHn2vz+6O3l1TdCJ3MQujvVKuLCX6KH1/pp8HkIlBLG6YwjD+
+	u+K5s2VLLNAr9z8rELNLSNLUKMgKY0n2AjefrzEATy4UBgf72q7/i9q1AcP4CXpUqV2/oB
+	mQtj0+1pKDi3wuwJPkmxfVT/fqJ2fwk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ML2QdkCS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of nsc@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=nsc@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="W5ZR3y/U";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oCI6kHOT;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=XzOmBuHn;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rixRATj3;
+	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790616459;
-	b=3ni8PF8mcHVZErXVxAUfOvtcyFKKTx80z9wqNKpExi9AgHnRdk07VzcxQQ6rXGBnVwGTUG
-	F6CLse11sAHEyGsrXC6tqc6YHuyWNA8g2bYhk/wWzoNAUqQ1wao46ZbkcwCQBS6ehIxZjI
-	DRSo/dEYNRPEszQ/xiZFj2NcUqmQrBI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with UTF8SMTP id 99D0D43B2F;
-	Mon, 28 Sep 2026 17:27:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with UTF8SMTPSA id 0B9CD1F00893;
-	Mon, 28 Sep 2026 17:27:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790616458;
-	bh=9TV9CZp7F6pGowVYUJzJ4N6Q8t1cPGPvHxtYWak4BOo=;
-	h=From:Subject:Date:To:Cc;
-	b=ML2QdkCS3OlmsKQFbRneo/Dlnm8gkGcBAJgnibAb7/PJa0WxDM9XNJv8kL5KqiL6t
-	 7z/7Tkm1ZnURsXPB3nXojxLLZzPXiQ1mq4IXis0jZYFfttjVG4b+nKFlz8h6Iz2BBv
-	 /wXXvB0zyoX9KJy7Uz43TV5kxt/eZUI4i2s3oUJdzEEer5tgUK55Xt6xUCSXtPoyW3
-	 9VHz2rq7lyb2ERXoBToE4x/4iVBmX4e+IBvDSJqiTyltIGP//E4SHOsBO4tdd5mZUM
-	 G/0WhFcUBKkyeoRCTvMXgORvgbGczTvTiJACqSc4N7zazKWAMld/JZUOA6Y0savHQk
-	 uxDgyLuCI25Lw==
-From: Nicolas Schier <nsc@kernel.org>
-Subject: [PATCH v4 0/2] Move tool for generating initramfs cpio to scripts/
-Date: Mon, 28 Sep 2026 19:26:56 +0200
-Message-Id: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
+	t=1790616472;
+	b=aXzPZVhPrFFSYbkqpS/56+poJenE6gQScc0Xx7wK7VTSb3DmLgfNc/8F/b3JKV4XOYcMlf
+	9aph6Dsu+cLsgCwt2wk0fUt0G3JGGbNQKK/zmBu1QUv6Ec/xkfGzFB0FKKkRK/y7pCQWTT
+	tVgB6LmL/huDHNzRrL+rjxFlkuxGxEk=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 875281F395;
+	Mon, 28 Sep 2026 17:27:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790616466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
+	b=W5ZR3y/UdcRpQS0PZCZkghVkuVElx097d0aBev8USfGNMFEOF1irnZ3mpys7Jpy+ua6u46
+	fFiwPlP1+UmFrv1VNWUFtrmJEZe+DUm9Z0mtWEy+Ro0PFpACmPpEjaZ76lifgX3MqDgSbM
+	j0aAALaaVB1Bb7UPeijkYMSosi+06Vs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790616466;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
+	b=oCI6kHOTjkdfX5dInGF9/hhrbb52rZEnpDE/YdrUihhwn2jmvkDZhCvK22BTpmyrJgyCc2
+	nhA8BGCzFI7ie7BA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1790616462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
+	b=XzOmBuHnz1Ot5O5sEILn+MWugqpyAKKA/PCh+EhcwYncrpZBRTmTLjZC5OQgF/1Ev3/Gso
+	+/PeGzxhdsQ2KG3N4y/CBO2u98VcOxUU70gWnUDbvR6kCt25UO5W3EZ+KnQrfX6zwMDTVB
+	R7x6Ugt8TMIJYoLCqBYnZfs8JfefT5Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1790616462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=guBIp/MekqgsDqeDd2Xw/zLYREGmvAdkTYR9qnoypqI=;
+	b=rixRATj3Rna+JImNWmorIAkHsvgLdkUUJALiBEPJGYOCI0ojzzukqp+GnrKpBOBDwJuYu8
+	Y3WUojCV7JVeMmCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D0DA1133F1;
+	Mon, 28 Sep 2026 17:27:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id nfsNJoyjumpmOQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 28 Sep 2026 17:27:40 +0000
+Date: Mon, 28 Sep 2026 18:27:39 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Hajime Tazaki <thehajime@gmail.com>
+Cc: linux-mm@kvack.org, liam@infradead.org, rbm@suse.com, 
+	akpm@linux-foundation.org, luto@amacapital.net, brendan.jackman@linux.dev, david@kernel.org, 
+	liuhangbin@gmail.com, corbet@lwn.net, kees@kernel.org, ljs@kernel.org, 
+	broonie@kernel.org, mhocko@suse.com, rppt@kernel.org, shuah@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, wad@chromium.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-um@lists.infradead.org, geert@linux-m68k.org, 
+	daniel@thingy.jp
+Subject: Re: [PATCH v3 1/3] selftests: kselftest: avoid cd - in runner
+Message-ID: <arqi6iwLDDBlk6Tm@pedro-suse.tail5790ac.ts.net>
+References: <20260926010819.604346-1-thehajime@gmail.com>
+ <20260926010819.604346-2-thehajime@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAGGjumoC/4XPQW7CMBCF4asgr2tkj3Hc6ar3QAgRMwmjFjuyI
- wuEcnecsEBVF1n+s/ie5iEyJaYsvjYPkahw5hhq7D42wl9OoSfJ59oCFDQKwMprLCR7CkcOPB7
- 9wFGOUWafeBizRPpE6hDJ6pOoxpCo49vi7w+1L5zHmO7LXNHz9SUbhSty0VJJ5a2y2Grytv3+o
- RTodxtTL2a6wJtzoNY4qBw0rSNtvdPG/OPMm8PVv4upHKLfoelc4wD+cNM0PQGCR+iCaQEAAA=
- =
-X-Change-ID: 20260225-move-gen_init_cpio-to-scripts-9e89ef99e51a
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Luis Augenstein <luis.augenstein@tngtech.com>, 
- Maximilian Huber <maximilian.huber@tngtech.com>, 
- Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
- Willy Tarreau <w@1wt.eu>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Askar Safin <safinaskar@gmail.com>, linux-doc@vger.kernel.org, 
- kexec@lists.infradead.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3530; i=nsc@kernel.org;
- s=20250924; h=from:subject:message-id;
- bh=AHw6WcgdVZgKfWGs8wYDEg+b2spe6e8gjU2uAAY/cLc=;
- b=owEBbQKS/ZANAwAKAQdSCnAWJhJpAcsmYgBquqNngpRwJH7gtezweBGwAnX75e2BjKoR7HKmD
- +sDP+kdN+2JAjMEAAEKAB0WIQSHQTenhzckp4G+wsYHUgpwFiYSaQUCarqjZwAKCRAHUgpwFiYS
- aURsEACSbagu8wpV2hI77TKfpUyKYeiN6C1f9X3Ib3qZeypiAv7bCFlW0vHuECGboSOccAcPG0j
- kO4zYR7Rd2P09QyWjep2b9RMx9ebQZa3Pkw7CkNJRvRYdzaXqfOrZKNVyycf6cswhNzYg/MvFNC
- 2mq3S456NmxFP+tBpQDzRRXE8cR3tWgOdMPgzeFpskkcloyPWmme31LFMmQc4uG2QAVIvJCP3ru
- Vjc1+U5ZVyJnci53Ndu3IiOzfNOGu45RzYNsVXZ8WJd81QHVcJP+utNDpOAQAlVbpRBiLXcs9Pv
- LNILfhKuAgtV0Hbq2cEN54Tn225iFOmgJU3u1JhIhGHnFT7dlPfhP3i0tCvRLBjurAjAMic51aB
- O8oInBBP2YTcR3eVNlHacd9ookbdHuYODSEcLrCfT/ZOfsnYKFSkZYuYievOivk7sxG/NBLJzJ3
- XnMnh7m9UN8/dDaur9qQoVyNdfZSlWIPauVTtp29cD51mfY5TNU4KQKYMaaCJrXme2Sl/+J0f4Q
- +Z5Mxr6NJ1JKBrnHlYDtjxNe1VABRnfxKsLH3bhhe/cF5Ucum3QgTr+pXiGTA2OsF11Y+x5T7l5
- N6wI1iHm82VVYP9Px+ogjtFrfdcjwerLMNMLtctbbgc0MSYcSZO57QmfOk1eVPI0TiVUoIl7lea
- uO06Fu8x9SVY80A==
-X-Developer-Key: i=nsc@kernel.org; a=openpgp;
- fpr=18ED52DBE34F860EE9FBC82B7D97093255A0CE7F
-X-Stat-Signature: 9puhweht87w9h9jymmdo7zknp1y1nnzf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260926010819.604346-2-thehajime@gmail.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 56B0510000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6A521C000C
-X-HE-Tag: 1790616459-678958
-X-HE-Meta: U2FsdGVkX19hyLIK0DOyQHXHBl2Q9l1Hm0Nm8uTKZ0Es6TVT7IDqjXs1Fmmqgh5SJOoC3inMNdSpM+hllJXUM8hSH2JAw39NLTc9PqBn7tK/q2q/2atjukTTkhCb9fOpQm7P90XyaBZv0uRqhGIeBnt3WYr9jYyazE2M27zRCRSk6Jp/cvVMPwTDGbLJwSj+wHyHXewVrs1u+Mc126iS8qAE3OBtS9XEqLviXVVlyo3+3Zu7+ygvyIv9PaSZ9hYzmPJlMAjDo4vBtCg66oIcv9uW0ZrdV4HBTtsiNl8qN4MbPX4tOBAj9JOQiJs+j+A0+nth6B8Sj30EVjEvp5Z4zTNHYxFQwuVFaXaPJ+CLPG3nBzQoJvS8CiOzrgATLD3c8vBRNA+tsDq22k4v9DzkOlCYiSbkhiPjAfRK4wp3+69F2KD+uOQu5yK++7/Km3QbAu+VYSA2pP9dURBpytrcwJWg4l3uYc7r/JKojqyoP5AmQUoaCNc4MX2w/JwIrgEPGl/B/sveDo1f4crLqng1feRHhm/1LISaclKStOjNXTmzRUgD9EvUheDnydtN0zoOeid5GywUxTQ7b6yqL17EQfAwypl5I/+znUVxFcwXimmSCGlhrOQyRM02/uJQvZTmCCBVp8c4vwYWh5VC0reh/fFYoO9Os5TQIG0AHNvfCGWrz1dKuKd5h3ALsxqzQYHbETn8SbBHrX1evsmPWfPRgGyFkqHIYtdo5asFvPlvrcjnxrLBQ3WKP61dubd+rQ8mwlKUpUm8beFXUWx8DI++uIBLyBqvotZbTeqMpbyLrvjde/Es8SPXqBXALWU2wKWJdDaDhME+MxWXOJLQ4eUrzmRAbB3MTjJdcsvhNgran1X1D+PmAGNF3j0MTrpzA2enqkqSfNx8565UtjxxXRoCdL+tCM0ouvoeWRaAwFLLtTziSDktESxecak2Luxmrc73RpQF8sNHyaCDD1GdWYx
- JAuFKizh
- BboUWY2634fREJjOWqGd3wXIv91dIpW40lfSZPjKkc2grPVbm3VtBRfBHGrn/Dg/JwGc5NRSca5AbXjQpwLfFP6Y4tmq2X9rtpGnoc4r4XbMjpJw4Br0UlE6ng5eGt9cfaYUCJGgcv/Hj4kUFfKa4RYfeh72AQ7cYuFhSH9YjIbvL5bFNKeLMEnvyfiLZ/gXt7KshacLbQWmz/sPAmlnWA5m2vyPI7k//UsdRhNS+Y5z9/tAix632MyJtCL1vQcxILMcdQFY7P/OcFb4aYczDlKEHjYUZMEiY6uGoGIq6Qy16AWmwf9G3X3+eH9pN+4+sELJzcDZW9sAA9UXRqJS3tSFrux0Of2Twwinb4VrOs3Gj+Cz3DtECkWXnSJfViWxCxihoq/sdk0bVkQhMqgMz2+yQFmJFM0ceXvnukMUFWx2dJgekhvmZkvKXAOiIGxpXvhn8vckQAB/QqdDUsZfoq5KjgZdVPk1v7QxN0JDZmDRSQOMWUfu+KdWkjKI0LoKD/MZml/2lro3jBm14g4A08NuIusrbkt4jO1T0qCrfF+Wa9mPLsRk0uZTK7TO0T8j9CRBWKkbHXPqzkHyNOz0hCHvyZLO11qDYKgddA0Wpkw4Ro+rey1FmjMTpKXK9u+J0ZufWlr4+kjv2c+tmPG1FCFJJPC78HVUZgCCC3Dsn4M2miFfKNDK9KumaBaT3u7leErqIoispyxMSUdD7iMFpuX+zUREqHnFDQkGBP0cGlEUxgfPXUEq9CTkwMO7tc2FsYxWAmYdMVV4Vdvr5/b8KsngG3Xe9fC2ana4oDywdCcr15hT6T/tKtidhKsiUbQwHMEOV4MJDQPjHt4U=
+X-Stat-Signature: 8zz5i85fky8zhru759y8ha9cu9fmfqt1
+X-HE-Tag: 1790616472-123705
+X-HE-Meta: U2FsdGVkX1/SYTsI9/uLCP604D/akg3DyaFy9tCfjAo7RW6beSYTXsf6X5IZ9QMTNr7220LdkFhqOzc9YQmvMLcXCD1O9eLAIooYpmZewujy7rbYPSrtVAP+69jQ6BsFO+VO4SyLg0ZR2TdvHlqH5FGrfu6igpqLBDV89cO36b3sgYuYEHo+uDfyt5vVBYfaLKjhivdLqAboosRh6yV1vBbtZbIbd3LinKAAI8W1fr5xV4+45JIKSywLKvBCwnmmx3Ro7Qx+xEh12cctkPP2M/1vxv6D0RmuDNg+/A1LlCc/JWntf2lRMrQxuKGNOtLAe60UbCOepRMO1c/Ikx26AbWZpG5s0fXIqL3Mai1yxlQ6HW4jU/Rm22a/wZK7ZBfQRbQZ9PxTUBQ3Z5rz1FEHuVl3RWO+lfWsEkOdymRl+gMqv55Z4LHa/C4YVsd8RvPGLOal52l6w3q8FZ+TRzto7vp2hyEKkRFSGKO8UbalONsx6xy+5Q9h8s/KBQz37kZxwPMSClq5PSzlXY3a7OoiuJOgbEMqpBlwoQK7MkXYwoZozBtDOejY1ONZUc6f27TWLX9Qg6LxUb4m2jsi7G6xIiwrbL7WoNq6lSvRK/+hoiLhI1MIxaqWjXMBss0XPsmdfqkNkTHpthsoIoo0FEvvx9aNgDyWsKO60lGMujydwxHc611BQ/ZP8Dnv2OI/r09RjOoMWBSNmPBQn3eT+gHLgQDCvEfSeAuQIgGgMFsIWU4a1p21fE7Onfofj+9HbjwRCesJCYEJlm+11cOL2J3gARj9XW9/3MEyIfIPtYeW7Q+fKoXM8V/Gy0YFR4Cb6gTNPNl+O/EiBF9whZ3t8XCbTfgGLwNYJVPz/Pk+t0WWWSXjp0/ldh1+BmJnbZM9h1EL3Czhta+jwYczNp7JTLIeblSdrLZ8meqxLNmdrdGHsNSQ/PLakt2aKQ6jSkRgiU4X31AAKW6jrclCJN1r/ru
+ pMmOAUZE
+ Ok5xZpl7v6klQcjm503uWJsF5goYMZMpMH5fi4ZvHS+uyW8XFwlbw3uFWgIFYGchzP7l/WIaaDJY8kTw952OOCwymhvfgNiPdtOh58XCw+VvzAj4Sq1fqfnWT7oe5k4s5n/+gxLpvvtgtnypMPRHYCiwh34ffyDuFLqp5r2IfPHul8AJur8+TlJXONIz5NeUWn/z60CGstIO1IV5d2fM3sdvkG4PjZS5kKT/wR7CgKBl/col6bTmREqDpDOh4UBYBWKATCP7qqIoFU+CsGMCPnY9Q+c0XNuLpStmp9IjrFV/ZoWnlci0kt4txsA2fuovlwRWEnQk6Zn1VOvGbZG3MdnpcVr5EADb1UmooBcp+T65VdSlgBQOWMoUZ9gx4FI2SSxVUWZbX8z1/vffPxGQig+eOunDmSzpL4EVbIqjLRZmOmnl1LJn3pKGQknEv0tchnuu98Jujn4Q0dTwHp81BVhzFWadPleMVLBQ9deW3tGMTEisD/8bo/yq1LS4/89OdKFo2LqszV858hJFf1HUiirk8JP+F6zozh6PkLyheH15Sj7V8E4eCJ2DWvl19fJvOEoNMsDMb2RMmc1NlQPzhZJjZO9qCTnL1EUgJFPsdiWs6pXSfwAZaKSVse0o7Anju4lDF6aSMrdF0rssyrRBTYsKnXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,80 +136,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-initramfs cpio tools had been subject of several recent discussions on
-linux-kbuild.  Let's get two minor steps forward by enabling a
-top-level target for building gen_init_cpio w/o the need of a valid
-kbuild configuration [1] and move the tools for generating the built-in
-initramfs from usr/ to scripts/ [2].
+On Sat, Sep 26, 2026 at 10:08:17AM +0900, Hajime Tazaki wrote:
+> The kselftest runner currently uses `cd -` to restore its working
+> directory after running a test.
+> 
+> This is not supported by the minimal BusyBox hush shell used by some
+> NOMMU targets. Store the original directory explicitly and restore it
+> with a quoted path instead.
+> 
+> This also avoids printing the directory change performed by `cd -` and
+> handles paths containing whitespace correctly.
+> 
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Kees Cook <kees@kernel.org>
+> Cc: Andy Lutomirski <luto@amacapital.net>
+> Cc: Will Drewry <wad@chromium.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Brendan Jackman <brendan.jackman@linux.dev>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: "Ricardo B. Marliere" <rbm@suse.com>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: linux-um@lists.infradead.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
 
-Link: https://lore.kernel.org/all/20260220191150.244006-1-safinaskar@gmail.com # [1]
-Link: https://lore.kernel.org/all/aSdrCFkUQup3qb-q@derry.ads.avm.de/ # [2]
----
-Changes in v4:
-  * Update tools/testing/selftests/liveupdate/vmtest.sh to new path of
-    gen_init_cpio (Mike Rapoport)
-  * Update stale comment in gen_initramfs.sh (sashiko)
-  * Link to v3: https://patch.msgid.link/20260925-move-gen_init_cpio-to-scripts-v3-0-99c493f76722@kernel.org
+NACK.
 
-Changes in v3:
-  * Update various remaining usr/gen_init* references treewide (Nathan)
-  * Link to v2: https://patch.msgid.link/20260720-move-gen_init_cpio-to-scripts-v2-0-26b7e15c7133@kernel.org
+https://pubs.opengroup.org/onlinepubs/009695099/utilities/cd.html
 
-Changes in v2:
-  * Build gen_init_cpio only if CONFIG_BLK_DEV_INITRD (Thomas)
-  * Keep underscore top-level target name (scripts_gen_init_cpio)
-    (Thomas)
-  * Link to v1: https://patch.msgid.link/20260309-move-gen_init_cpio-to-scripts-v1-0-0c5059b1ec5b@kernel.org
+-
+When a hyphen is used as the operand, this shall be equivalent to the command:
+cd "$OLDPWD" && pwd
 
-To: Nathan Chancellor <nathan@kernel.org>
-To: Nicolas Schier <nsc@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-To: Shuah Khan <skhan@linuxfoundation.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-To: Luis Augenstein <luis.augenstein@tngtech.com>
-To: Maximilian Huber <maximilian.huber@tngtech.com>
-To: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-To: Alexander Graf <graf@amazon.com>
-To: Willy Tarreau <w@1wt.eu>
-To: Thomas Weißschuh <linux@weissschuh.net>
-Cc: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-doc@vger.kernel.org
-Cc: kexec@lists.infradead.org
-Cc: linux-mm@kvack.org
-Cc: linux-kselftest@vger.kernel.org
+which changes to the previous working directory and then writes its name.
 
----
-Nicolas Schier (2):
-      kbuild: Mark usr_gen_init_cpio as no-dot-config-target
-      kbuild: Move gen_init_cpio and gen_initramfs.sh to scripts/
 
- .../early-userspace/early_userspace_support.rst          | 16 ++++++++--------
- Documentation/filesystems/ramfs-rootfs-initramfs.rst     | 10 +++++-----
- MAINTAINERS                                              |  1 +
- Makefile                                                 |  9 +++++----
- scripts/.gitignore                                       |  1 +
- scripts/Makefile                                         |  3 +++
- scripts/Makefile.package                                 |  2 +-
- {usr => scripts}/gen_init_cpio.c                         |  0
- {usr => scripts}/gen_initramfs.sh                        |  4 ++--
- scripts/remove-stale-files                               |  2 ++
- scripts/sbom/tests/cmd_graph/test_savedcmd_parser.py     |  2 +-
- tools/testing/selftests/kho/vmtest.sh                    |  2 +-
- tools/testing/selftests/liveupdate/vmtest.sh             |  4 ++--
- tools/testing/selftests/nolibc/Makefile.nolibc           |  2 +-
- usr/.gitignore                                           |  4 +++-
- usr/Kconfig                                              |  2 +-
- usr/Makefile                                             |  4 +---
- 17 files changed, 38 insertions(+), 30 deletions(-)
----
-base-commit: 93f51579e7df248780214094418f205253383cc5
-change-id: 20260225-move-gen_init_cpio-to-scripts-9e89ef99e51a
+If you're running selftests on !POSIX compliant shells, that's a
+you-issue. Fix the shell, or use something decent.
 
-Best regards,
+
 -- 
-Nicolas
-
+Pedro
 
