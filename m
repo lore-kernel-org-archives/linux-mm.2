@@ -4,137 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02291C9833E
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:35:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C53C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 09:39:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 174766B00A4; Mon, 28 Sep 2026 05:35:10 -0400 (EDT)
+	id AEFE66B00A6; Mon, 28 Sep 2026 05:39:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14AF56B00A5; Mon, 28 Sep 2026 05:35:10 -0400 (EDT)
+	id AA10A6B00A7; Mon, 28 Sep 2026 05:39:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0136C6B00A6; Mon, 28 Sep 2026 05:35:09 -0400 (EDT)
+	id 98FE76B00A9; Mon, 28 Sep 2026 05:39:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA6CA6B00A4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:35:09 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E21A3C012C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:35:08 +0000 (UTC)
-X-FDA: 85262662296.22.22E58A0
-Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0CCA920004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:35:06 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VMSob60v;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790588107;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 57B446B00A6
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 05:39:14 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2763A0135
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:39:13 +0000 (UTC)
+X-FDA: 85262672586.09.BD5C367
+Received: from mailgw1.hygon.cn (unknown [101.204.27.37])
+	by imf08.hostedemail.com (Postfix) with ESMTP id F39B9160006
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 09:39:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf08.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790588352;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J7NixjEGofgkN3CS5IP+1OrrpCKUq/nSVKpFmSD6AB0=;
-	b=HttwqlIfM/Bwm6gmBzteVdbVmAG9xH0GH4wMsqkXSxyt+9mRytimWzxdZbpy9stYWQtXLi
-	LsYtd0XC4vEuHlSkuLSIPoBwh6LMqEkAALl5BGbzJmUVU2EBqc3iamdqKDN3lu0EyGbj80
-	0WyqP8bqfntn9pC9o92O7LxgZ+oE8mg=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=VMSob60v;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf31.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790588107;
-	b=RPzq+D+NgC5xTyrgXJQo/YIE6hseagB6hcHfEVsTNHN5enAlH05fAsWwFHH12iQODHy6Gw
-	fi7/I8aWrVwSaxPCGjfD5lzWTs5oPC2UzZvkX1lA5C8XaAdV7WfNSmMALVEjGadG717lsM
-	BRvW3ws/5tk6+0mz1JeaE+JiWya59Vg=
-Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2db9cc3b45so167159566b.1
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:35:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790588106; cv=none;
-        d=google.com; s=arc-20260327;
-        b=VPMYMh7D3/HuDX4sY43GwjmcQwkXyf2+Mbn9S4HbwkOrq3v791CDM0xj/+lJCTENNA
-         kJAq0A0jtgUbCzS8N1UYnHTCNoGR5wI+GJtm0CLNR6DUapR6lC7yZeQfPdDrfJs4rhD8
-         6Jb2e/LHqi9W/ZJGC5XvYKMMtKmDDEz12xV3TURxFyLp5tpGPlNsSwRYSGmbrE/QykzO
-         sLaaNxY7+4IMntvdIv1iZUPxYEdRDjw9vZdrHqUZ8paQxs6dB9gxFIyhwwZajPa3VMkP
-         RZcuN6WRUxzZj0iObwbGvH5qx8wWO91Iel13J6bSzMs2ngRwOiCUc95pkrhhYGVgtg0S
-         HSrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=J7NixjEGofgkN3CS5IP+1OrrpCKUq/nSVKpFmSD6AB0=;
-        fh=ctgwL9ShqoxzD/fzs8d25fMUvP5sS5DKG/5RdOsaRg0=;
-        b=QxifxvtR9NOf3iWJskrnJdtOLFb4Seg7MYIwC51li3FQ308EbNp2mXFcSpm5YWpWGR
-         SSoXj5HqX3JPkE98kaKBlHcm+odIzxkvrW2EXJCs4GWoMX7HRI7dnsc9Km3IwT5IwPbK
-         7S42r8YtksJwy5YqR+r9yZtDY51e3R+Pd+R3Dtnr/y158iOXquWAxR8ZUSvxTRHTmGYP
-         Kg9WTd8Imoz4kemvxjq6Rg4+lmyz4yuQ/zJiUwqmDI3G+ckVcirN9lZhhoKCqcz5xCzE
-         AhbOQVEN1llobkiZS5Iqx0zZKt945h0fKR4vrnPu1YVryYiLMzObVo5NGyzZ4Z4en/M5
-         Qs6g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790588105; x=1791192905; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=J7NixjEGofgkN3CS5IP+1OrrpCKUq/nSVKpFmSD6AB0=;
-        b=VMSob60vCd7uqF3U9WvxTrvuy0P1Y8jXbJIgI/1B+2EaQoARgGcq5gFWr7E+RMg9Se
-         fJPCvLrDfzqjZIrf9PRIlG7v0MKheuStINyXTiF8K159NBvguJQN0pzT84a6fBn9jh/1
-         BV1k1n+PQyJPW0PolF5pBc2z1+/UlVG2CCTfK6PpJopKJYT/PrlEMTjh0H+pGF5o/ukh
-         7DmPM3H/SU8MyKliSlvziPu5ou5enwvf1oiTq5Qu2gsxS0f/iQ6QQ0sIboOsug5Whw8l
-         EJMhZiEwcp7adELEmBv2ji/Lj27oT0PKW70q6BH7l2z0HS2PYIGdpGuS7WsDtR6wQuQU
-         R6qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790588106; x=1791192906;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=J7NixjEGofgkN3CS5IP+1OrrpCKUq/nSVKpFmSD6AB0=;
-        b=XEeec/9pAU9cRvZkfM4n1ssUKKueE1+Z6KqF9MBD/hn4uTi0Rg2DyjDuViwv3n76Kb
-         4icE7PIhjMZCemowr0i5FFyu0UCO1Gw3Gsv1pDWUfEaSCsoHfixobupQaFah1fEEVDYA
-         2pmy35GDKZzpoSoxKV7HwIn2p7Qbm8alduvV3x3tE0uww0B5MNvnzT3nlGXt2m994rsW
-         hbE+vXOdXsYrRT135yzRu6wVkxHmvj/MTNwBcEO7XLN+HnoIujntLGM3MeWfjCw4iP2v
-         eLDnRj6opqn3W8UTgagKwlyeXUQINdNMmpeOaepz2iL1ahN5fhS2gNUyjWDi6c1wCceJ
-         cdNQ==
-X-Gm-Message-State: AFuF++kfFCirMNFstfYnovmCoRfLcCq8tFeDBd/KDU01XGWlIYRWs8TX
-	+Y1KsVH5P29EuKbDgrFCt34/P5oBRv9eEN39QIrq/vknCp0sZQlIxO/lbC5MsBSSXW98SRhO550
-	r1wXEpU3AJn5zwH6IGdWJu7oWP7c74bc=
-X-Gm-Gg: AYBFou105c/quLBG6eGI79bqVUhdUl4FBmLfF4U0N8R3GqBGWCKCzTc76oRWd8hS5MJ
-	EmEdTcxcRW45ySWVD7k8mPggO/YUEVRfSLLdFYobaPydBT/d7AeGw6syyCHFnIFy90FgnXJT2Oh
-	FUPKHrZ+6wG6/YPtPjLSEu8MajTSSNhmgpHgE2p7DLKdUXy2kdpMbbDBeZE2R1lH7C2T4TLhYE3
-	08Vtgfa+iUtLZpVefUQcanhhgvDCjdwwSrT5lbvxqLVT5bwzgBZ2pKTwACh+x2ZdNJx6/5RUerD
-	SieF718XmNRkvSFCwdN0iFq1MNJXd/ZHxNcdnVDpC9Bw+1ScQ74c1ivsOibNCkqPQihhQIzGQTz
-	btPVURfiJPGQ=
-X-Received: by 2002:a17:907:9445:b0:c26:19de:9adb with SMTP id
- a640c23a62f3a-c2ac259cee2mr1036666866b.26.1790588105420; Mon, 28 Sep 2026
- 02:35:05 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references;
+	bh=ut7dlloj69/dVoLWAm3JxF6MJAL0uPzeXaemq8848jQ=;
+	b=I0Vm9MpdKL/VbsbTeZqcVGvy/trJZWHeksG/Ahss/MCsZA7RJYMR2U0685zuWAojvsegiV
+	0dsanFWOZfbVcoDq7SvJDnw+ijDr2oxKoNoHFnoczXS2J7rX7mkRM3G96yh9Qo0z/yrxh/
+	3ujxsH1CXt7woPSeCo3F99DZPAokVMQ=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf08.hostedemail.com: domain of wujianyong@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=wujianyong@hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790588352;
+	b=LI8GWfH3jyehHwAul0aDYsdZr0A2mVCAWJjoHaaADGEPW867fejRwnTL3ueJPCbxvTVouB
+	jtu5Nm6j1atHhS2Wl4Ir0swvojRw0l6yK0DNWILp7/ChSCp+44t3Cl1kvwbTjMxzTZYEAU
+	+UDnn5SIcelAjvICEsxrMWyPOocV8bY=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4htbqC2phlzVbqV;
+	Mon, 28 Sep 2026 17:39:03 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by mailgw1.hygon.cn (Postfix) with ESMTP id 4htbq86RdHzVbqV;
+	Mon, 28 Sep 2026 17:39:00 +0800 (CST)
+Received: from cncheex05.Hygon.cn (unknown [172.23.18.115])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 9770D30004D0;
+	Mon, 28 Sep 2026 17:34:21 +0800 (CST)
+Received: from cncheex04.Hygon.cn (172.23.18.114) by cncheex05.Hygon.cn
+ (172.23.18.115) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Mon, 28 Sep
+ 2026 17:39:01 +0800
+Received: from cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d]) by
+ cncheex04.Hygon.cn ([fe80::1b6f:6c58:58a4:430d%10]) with mapi id
+ 15.02.1544.036; Mon, 28 Sep 2026 17:39:01 +0800
+From: Jianyong Wu <wujianyong@hygon.cn>
+To: Tim Chen <tim.c.chen@linux.intel.com>, Peter Zijlstra
+	<peterz@infradead.org>
+CC: Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Chen Yu <yu.c.chen@intel.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt
+	<rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman
+	<mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Shrikanth Hegde <sshegde@linux.ibm.com>, Phil Auld
+	<pauld@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"jianyong.wu@outlook.com" <jianyong.wu@outlook.com>, Yuan Zhong
+	<zhongyuan@hygon.cn>, Huangsj <huangsj@hygon.cn>, Fengyu Wang
+	<wangfengyu@hygon.cn>, Zhiwei Ying <yingzhiwei@hygon.cn>, "justin.he@arm.com"
+	<justin.he@arm.com>
+Subject: RE: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Thread-Topic: [RFC PATCH v2 02/23] sched/topology: Introduce a NUMA distance
+ matrix with unique distance values
+Thread-Index: AQHdNiA3jheQVPdvikWpN4gB9aTKG7a3i1wAgCMFioCAAQKWYIAAjPiAgADjB/CAAIHNgIAF/bTA
+Date: Mon, 28 Sep 2026 09:39:01 +0000
+Message-ID: <8a0c239b5bdf40c99b645087dec8fd18@hygon.cn>
+References: <20260827122816.756234-1-wujianyong@hygon.cn>
+			 <20260827122816.756234-3-wujianyong@hygon.cn>
+			 <20260831115004.GF776954@noisy.programming.kicks-ass.net>
+		 <da32ba66d95fd88869ba052f97698b9a4d6c3dc6.camel@linux.intel.com>
+		 <09261c8222994a41a04ace5f342475df@hygon.cn>
+	 <ce95ec57af9dfaf4d9ed604ad7337441a543f538.camel@linux.intel.com>
+	 <f6ebab3d0e44412dad17ac64a3b93339@hygon.cn>
+ <112e526b4013e23c70adf5b8883db8e75358b473.camel@linux.intel.com>
+In-Reply-To: <112e526b4013e23c70adf5b8883db8e75358b473.camel@linux.intel.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [172.19.20.45]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20260911-mglru-fg-v2-0-f26e5cb26da7@tencent.com> <20260928091144.818739-1-liuxiang.277@bytedance.com>
-In-Reply-To: <20260928091144.818739-1-liuxiang.277@bytedance.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 28 Sep 2026 17:34:27 +0800
-X-Gm-Features: AclHuK-2Am0IrJwrtO2WIF-9sUUaEeJonX73QRQrUzGpc-JcUfmwQN43Q37uOAk
-Message-ID: <CAMgjq7Agqr1FLcG3HqT_M_1s8cHc21qQKTM-JS67-3gfQ6azPQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 00/15] mm/mglru: frequency guided promotion
- (MGLRU-FG) and flag cleanup
-To: Xiang Liu <liuxiang.277@bytedance.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yu Zhao <yuzhao@google.com>, Barry Song <baohua@kernel.org>, Baoquan He <baoquan.he@linux.dev>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0CCA920004
-X-Stat-Signature: ex931yxdj4fp8ty1unek7nmq18hqia71
+X-Rspamd-Queue-Id: F39B9160006
+X-Stat-Signature: 79hxqi7ziobae9ecjndrr6aabceneggr
 X-Rspam-User: 
-X-HE-Tag: 1790588106-317735
-X-HE-Meta: U2FsdGVkX1/aVqPF5joTPDy3XSZsfQNLs2HcCOEdFdokuL7r5hlAt4Fr3pNlNCii+TghdYwqaloSl+icesO9v/XKo8w/B4TqJk3bkcoD8lLhRsqK4FBGKQAAW1fIgcHgx5a6x/9GjpkcYd8swtKQR0GjtaAdA5PcEOqmHq9nnDUYm/AJ8m/WcITq0peWsLcmLgNaUu9+Efbkml6IDKenQA+mkUej4dJ0IqxJuVzQgAW7MhsuEhTZ1fO7G/cdqYKx0tyShOytB4KBNA15l/CYLI0MdJqzevGXgHudRc3ncp438iwuvkEsXp4XBT8GCDpQiIH20Hv3BFkn2utZPIukjJLOJn1ckv5vvXyCgGKSFO4zfnMVcdDz91EPX40MgId9IVIx58fC1z/zua6syTUUdBRHUwKdufLQAforhN2IXCGYI+QHgB7NIgEYd+V8RRi9BFvMOSrn09dkeLS7AXEgBLCN8PYLZ06AxcT3WAP+sMoKn647TcypUjOJeICfe+abwRHF5EihkjHB9D/6/ZqZ+NEdDZIDu+sIWQsWbCl4IKghMXMt8mrcQ3xi5+Cia+Zczhg6BloXMD8ogTUhoHKBtx02CztXdK1ttSPPXY6IftgjzcrbFoG0yGoE2Jk9GupQISLP/OB/ySdcejYXEx9IyYKjAg3CEtVn/tEME4pkTkRWlNzB+TFANx9sP4VPOqjUxwEJ5HdMtGUFdaGPDRJ+3LulSQC2LlwfQ5aEOCVH3Zr2rI6B3JdnGempGqOBpt8Xht+yurRUpVOHZUCirZEEm1m9/O25XRjLhKgZABMeriv1a/BFIeFbuypBgvy8bsVvb2Rlu6rDOGav5UAby550wP74XY6nqv2tTNso96EifLvNoxLAvYJsyO2nviB5FWW7ofs5C/4nNWJtHDTq3B64JM73NeCLt1bABRkjK0Cmmr4mbg/TtQuh80w+fFyZI2wp6hS3DsbeS3YlWt+PJoc
- gQyOQ9gJ
- WksC/c2MtIhuQhGUlSG+Xspgvwv2BkRxSFnSR0KNjwEZApSjw/BZx8+GjQ17wnxEejFP2f2gLvv7YQh7Yh2J63ytzPBLyhPEmjPjQaWa86LBaYno3FXbjLcIn3A2Mn62Q78Elr1vTXVYkRgHM55mwZadppczVVyQTcNfe53GLJ9qaJcVd3REumNlVsIo6FOWlAwbzZy5tl0c47Eo55GbtUttWS5iMF9v94GYJ2SY20gOfkO9pBu/tlrhg5ia6NsxVSkbSqi51jPgYcPoigg7aluz7QDJ5si+PHossVPC7HfJjYf19QvopJMdcmiLn5wi1il1tRz8oFr7s6JM8hlrrCTxwVxrcm1sIucbPb/4R2BeAeY7uZFQtNhc6MJFyZfI8xKPc0j3acGc+mAeaMVvPTUvZqtJHS1dUxVeivV/Zx9zLW6rcWRugJGJ44P7BzMX9+qFcOLQqNie/Lf0wfpfpkGR3aKkbsjnfABXWndSGN3KVp5E=
+X-HE-Tag: 1790588349-998184
+X-HE-Meta: U2FsdGVkX1/dE6IqxBVVYhUrLss+mXpC/GIztsYPdfJvO2mGVvWSD0Dbil29RPg1QM9fJRhMiRWFRD//hA+cRT9YZ20Gf0rdmRTnzAjJ4G0bF0URQHWsWZR92cR4dkTqvwVJzaZo35GQEnUrLExtrdyaL8nz/g1ZzaQ1kZ/lzPvsKSSu7I2Kd2N1Wj8gqQguU1aFOYPfen43mtDndx8yPYKU7p4pTjXHHhIEIy4g6fwhL02VKYkBpoE4cVvs0AimdhlUF94DBy28g/2cfjGp3R2EHh4uwLe3wb87FKcsSZDHxgGSr+9Vad8cK+d1oyOcWie9S6bk0/QIVYVz6jlMqm3QzOtmQJNdGR4lCracM+UNGgPmpKTj+6EoPsPlkMbMm0FzCoqSGpXEC/PtyabCmgQo6JTcOJeb79C3oLAFhzHhnThImr8gXbfvxiIjGH77AVdgspu3aSB5UYFd1xYM7Z+GlMsjcXlDS+qdtvTsqcMLwr6H3tkVI4TvbPV8oxAUrl406vLr4v8U9ddEI10ZSekY1IpEMX5HSttuZioM0ooUEd324/etCnlXG4K2jjtzY8Oe1IyPD3S5USO7g0XeCdmxhBORfkm9v4RmDVnOEtG8sDC6gBs5M+yv8V+IUVXp0ipnzAY1AtUizCNav6vNX7zOaf1fgi+G2l87lp0bbHTj4/1zEr/VK6K5+Ars2DagaD8r6dS9zVqs3l5GqX9QmJAdQHVx8EQ5Q2J99WzXlTc6g5h05Ntav/+JNkO7XLW9NxIdHNThgdayoKzD8pzG5l1ecqIkWMYpka4P0ZJ2ghUJd0fSzLpeJUdm9CV8z3pishgLTQSDoO/6TmxmDuS7l+9djZoFT8WuorFB8UgX3xcg9+qk2H2Md0SfanGG+/8Ip/ijhvgK0QqnAxicrXfkOmOXKwxWxweNF5PO4ArkYS+fQN2Lc2csLS1i9z+05gyUCmI4eMFHXxTqwB6TXSg
+ ZbjD7eAc
+ YMp6cg8lfOGiBaVujA1e+iWCeUIGYvfsdkMvQS/FKX00VlxIajsksDgXzLOCxvirvCZTNc/To919Wk1SDmV3n+zQ3SjwqfYu9J9t44VJTki3F8ZP4lXRolLo/IDv/LjSeu31Oe20d4lsuzVIwk3+HdSXJYWXIQVEhkUaOhXEyYG+LF5MdOJjVGU8LqSA5Vh74Zqsj5M8TuM7DL1g34zqwb2dIz91xnzd7rmHYfEX5XhacgY6tfFM7PLjcAz35A6mzY1RglWDCNvnqyrMGqfx15x4QxeIE4HQWscY5DCeaPGSE1ueVK0MHxpZOXA4CJGJnXEVi0IM7e6LVrngMSa+idQ7Eq/4Cmxgrdm3NUw4l4eSPS95wq4KAUbOBQt4maNkliux99NwVe5lFyUg/RQLpvT7NXcxOAiOIgz68/DBWmNo8Wd1BpGQsNKa1aFxRtcuTZdLjhJTg6AUrIy4lD1neJHssG8fYCzMnfAfuH+47GaUBND9ZDV1BkUBZccXCJ3hjcCkd1MVXe0WTN5sgpn4F6AtvvlT5g0iIrVS3NDRA49ic1Ia8iCL4CRt54ZGkJ/97xBlTyQrAWMLqlLZEwTl1lEBssusqomjC5W5AfhsZWVeVUY8pMSXFH7t1u5S+ThHccG/qhq+rwXFVrLJnUxvvBH960wpn1m7I+4xNmPr0aNXbl5cO14kgSdqpk+ox/21fijP7drnWa+kv/zwTTjTCcghtRBKjN0WMV7QoxfcuFGAC/ydmTtjnoqqvu2US6co3a8lbT8fXCPBYnwrKTFvOpwEsza72lwhDjJIzRWbp7eX53wjEgSqhrtjJf8rNfLmFS6TspemN/HkI0SS/Gx2AxI7Ny9q8mv/sGX8+bK60O3A/szQNBTYCvVHGvHFjTbG9nIpi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,183 +120,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 5:12=E2=80=AFPM Xiang Liu <liuxiang.277@bytedance.c=
-om> wrote:
->
-> Hi Kairui,
->
-> I tested the complete MGLRU-FG RFC v2 series on an x86_64 machine with
-> a SATA SSD. I found that the LevelDB Scan/Get result changes with the
-> relative intensity of GET and SCAN.
->
-> Setup: base commit 9958290885035431e2494159f555e332c3c14906, about
-> 28 GiB LevelDB, 2.5 GiB memcg, swap off, Zipf 0.99, SCAN length 10000,
-> 240 seconds warm-up plus 240 seconds measurement. Each untraced ABBA
-> sample used a fresh database copy, page-cache drop, reboot and cooldown.
->
-> Untraced ABBA results
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Workload                  GET/SCAN   Baseline       FG     Delta
-> 1 SCAN + 3 GET                92.5    4688.62  4425.82    -5.61%
-> 4 mixed workers, 99.5/0.5    195.2    6200.60  6385.57    +2.98%
-> 1 SCAN + 7 GET               237.2    9574.97  9831.70    +2.68%
->
-> The first workload is the original four-thread layout: one continuous
-> SCAN thread and three GET threads. The second is a custom workload in
-> which every worker chooses 99.5% GET or 0.5% SCAN per request. The third
-> keeps one continuous SCAN thread and increases GET threads to seven.
->
-> In the original workload, FG changed GET throughput by -5.74% and SCAN
-> throughput by +6.91%. The two ABBA position pairs were -6.21% and
-> -5.00%. A separate 5 GiB memcg repeat was also negative: -9.07% and
-> -7.67%.
->
-> Traced results
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> I ran one fresh-boot baseline/FG pair for each workload. To limit probe
-> overhead, I selected about 1/1024 of file offsets using a stable hash of
-> inode and page index.
->
-> Initial placement of newly loaded GET folios
-> --------------------------------------------
->
-> We tracked new file pages loaded by GET requests and recorded where
-> MGLRU initially placed each page: the oldest generation or the
-> second-oldest generation.
->
-> Workload / kernel       Sampled   Oldest        Second-oldest
-> 1S+3G / baseline           1452    186 (12.8%)   1266 (87.2%)
-> 1S+3G / FG                 1371   1052 (76.7%)    319 (23.3%)
-> Mixed / baseline           1782    199 (11.2%)   1583 (88.8%)
-> Mixed / FG                 1662   1312 (78.9%)    350 (21.1%)
-> 1S+7G / baseline           2719    469 (17.2%)   2250 (82.8%)
-> 1S+7G / FG                 2677   2107 (78.7%)    570 (21.3%)
->
-> For example, the original 1-SCAN/3-GET baseline run sampled 1452 newly
-> loaded GET folios. Of these, 1266 entered the second-oldest generation
-> and 186 entered the oldest. With FG, 1052 of 1371 sampled folios entered
-> the oldest generation.
->
-> The same change appears in all three workloads: mainline places most
-> new GET folios in the second-oldest generation, whereas FG places most
-> of them in the oldest generation.
->
-> FG promotion was active in all three workloads:
->
-> Workload              Later GET       Moved to the promoted generation
->                       changed gen     during reclaim scan
-> 1 SCAN + 3 GET              38              548
-> 4 mixed workers             32              558
-> 1 SCAN + 7 GET              70              936
->
-> However, FG also removed more sampled GET folios before another GET
-> reused the same in-memory folio:
->
->                          Removed after one GET      Later reloaded
-> 1 SCAN + 3 GET            81.5% -> 88.4%           44.7% -> 48.6%
-> 4 mixed workers           73.4% -> 90.2%           48.3% -> 52.7%
-> 1 SCAN + 7 GET            84.5% -> 88.2%           56.2% -> 61.1%
->
-> The arrows show baseline -> FG. "Later reloaded" means a later GET
-> demanded the same file offset after it had been removed from page cache.
->
-> The request-level counters explain why the final results differ:
->
-> FG change per request       GET cache miss   GET I/O wait   SCAN cache mi=
-ss
-> 1 SCAN + 3 GET                    +2.29%          +6.87%           -15.97=
-%
-> 4 mixed workers                   -5.68%          -4.19%            -6.93=
-%
-> 1 SCAN + 7 GET                    -2.89%          -0.32%            -8.26=
-%
->
-> FG improved the SCAN side in every workload. In the original workload,
-> the GET miss and I/O increases were larger than the SCAN gain, producing
-> the 5.61% total regression. When GET was denser relative to SCAN, GET
-> misses also decreased and FG became a net win.
->
-> My interpretation is that FG introduces a cold-start window for a new
-> GET folio:
->
->   first GET -> oldest generation
->             -> a later GET promotes it, if it is still present
->             -> otherwise reclaim removes it first
->
-> The outcome depends on whether GET reuse arrives before the continuous
-> SCAN stream consumes the oldest generation. The trace shows that both
-> promotion and early removal occur in practice.
->
-> This machine uses SATA, while the positive results in the cover letter
-> used NVMe. Storage latency may also change the timing among page-cache
-> insertion, LRU drain, the next GET and reclaim.
->
-> Is this cold-start window an expected trade-off of the current design?
-> Would limited initial protection for refs=3D1 folios, or a decision based
-> on observed refault/reuse distance, be worth testing?
+SGkgVGltLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IFRpbSBDaGVu
+IDx0aW0uYy5jaGVuQGxpbnV4LmludGVsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIFNlcHRlbWJl
+ciAyNCwgMjAyNiAxMTo0NiBQTQ0KPiBUbzogSmlhbnlvbmcgV3UgPHd1amlhbnlvbmdAaHlnb24u
+Y24+OyBQZXRlciBaaWpsc3RyYQ0KPiA8cGV0ZXJ6QGluZnJhZGVhZC5vcmc+DQo+IENjOiBJbmdv
+IE1vbG5hciA8bWluZ29AcmVkaGF0LmNvbT47IEp1cmkgTGVsbGkgPGp1cmkubGVsbGlAcmVkaGF0
+LmNvbT47DQo+IFZpbmNlbnQgR3VpdHRvdCA8dmluY2VudC5ndWl0dG90QGxpbmFyby5vcmc+OyBD
+aGVuIFl1DQo+IDx5dS5jLmNoZW5AaW50ZWwuY29tPjsgRGlldG1hciBFZ2dlbWFubg0KPiA8ZGll
+dG1hci5lZ2dlbWFubkBhcm0uY29tPjsgU3RldmVuIFJvc3RlZHQgPHJvc3RlZHRAZ29vZG1pcy5v
+cmc+Ow0KPiBCZW4gU2VnYWxsIDxic2VnYWxsQGdvb2dsZS5jb20+OyBNZWwgR29ybWFuIDxtZ29y
+bWFuQHN1c2UuZGU+Ow0KPiBWYWxlbnRpbiBTY2huZWlkZXIgPHZzY2huZWlkQHJlZGhhdC5jb20+
+OyBLIFByYXRlZWsgTmF5YWsNCj4gPGtwcmF0ZWVrLm5heWFrQGFtZC5jb20+OyBTaHJpa2FudGgg
+SGVnZGUgPHNzaGVnZGVAbGludXguaWJtLmNvbT47DQo+IFBoaWwgQXVsZCA8cGF1bGRAcmVkaGF0
+LmNvbT47IEFuZHJldyBNb3J0b24NCj4gPGFrcG1AbGludXgtZm91bmRhdGlvbi5vcmc+OyBEYXZp
+ZCBIaWxkZW5icmFuZCA8ZGF2aWRAa2VybmVsLm9yZz47DQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtl
+cm5lbC5vcmc7IGxpbnV4LW1tQGt2YWNrLm9yZzsNCj4gamlhbnlvbmcud3VAb3V0bG9vay5jb207
+IFl1YW4gWmhvbmcgPHpob25neXVhbkBoeWdvbi5jbj47IEh1YW5nc2oNCj4gPGh1YW5nc2pAaHln
+b24uY24+OyBGZW5neXUgV2FuZyA8d2FuZ2Zlbmd5dUBoeWdvbi5jbj47IFpoaXdlaSBZaW5nDQo+
+IDx5aW5nemhpd2VpQGh5Z29uLmNuPjsganVzdGluLmhlQGFybS5jb20NCj4gU3ViamVjdDogUmU6
+IFtSRkMgUEFUQ0ggdjIgMDIvMjNdIHNjaGVkL3RvcG9sb2d5OiBJbnRyb2R1Y2UgYSBOVU1BDQo+
+IGRpc3RhbmNlIG1hdHJpeCB3aXRoIHVuaXF1ZSBkaXN0YW5jZSB2YWx1ZXMNCj4gDQo+IE9uIFRo
+dSwgMjAyNi0wOS0yNCBhdCAwNTo0MSArMDAwMCwgSmlhbnlvbmcgV3Ugd3JvdGU6DQo+ID4gPg0K
+PiA+ID4gT24gV2VkLCAyMDI2LTA5LTIzIGF0IDAzOjE0ICswMDAwLCBKaWFueW9uZyBXdSB3cm90
+ZToNCj4gPiA+DQo+ID4gPiBbc25pcF0NCj4gPiA+DQo+ID4gPiA+ID4gPg0KPiA+ID4gPiA+DQo+
+ID4gPiA+IEhvdyBzaG91bGQgdGhlIG5leHQgY2xvc2VzdCBOVU1BIG5vZGUgYmUgc2VsZWN0ZWQg
+d2hlbiBtdWx0aXBsZQ0KPiA+ID4gbm9kZXMNCj4gPiA+ID4gaGF2ZSB0aGUgc2FtZSBkaXN0YW5j
+ZSBmcm9tIHRoZSBjdXJyZW50IG5vZGU/DQo+ID4gPg0KPiA+ID4gWW91IGNvdWxkIHVzZSBzb21l
+IG90aGVyIG1lYW5zIGxpa2Ugbm9kZSBpZCBvciBsb2FkIGluIHRoZSBub2RlDQo+ID4gPiBpZiB0
+aGVyZSdzIGEgdGllIGluIGRpc3RhbmNlLg0KPiA+ID4NCj4gPiA+ID4NCj4gPiA+ID4gVGhhdCBp
+cyB0aGUgYW1iaWd1aXR5IHRoaXMgcGF0Y2ggaXMgaW50ZW5kZWQgdG8gcmVzb2x2ZS4gRm9yIGVh
+Y2gNCj4gPiA+ID4gc291cmNlIG5vZGUsIGl0IGRpc2FtYmlndWF0ZXMgZXF1YWwgTlVNQSBkaXN0
+YW5jZXMgYW5kIHByb2R1Y2VzIGENCj4gPiA+ID4gdW5pcXVlIG5vZGUtbGV2ZWwgYWZmaW5pdHkg
+b3JkZXJpbmcuIEFuIGxsY19uZXh0IGFycmF5IGNhbiBkZXNjcmliZQ0KPiA+ID4gPiB0aGUgdHJh
+dmVyc2FsIG9mIExMQ3Mgd2l0aGluIGEgbm9kZSwgYnV0IGl0IGRvZXMgbm90IGRldGVybWluZSB3
+aGljaA0KPiA+ID4gPiBlcXVpZGlzdGFudCBOVU1BIG5vZGUgc2hvdWxkIGJlIHZpc2l0ZWQgbmV4
+dC4NCj4gPiA+ID4NCj4gPiA+DQo+ID4gPiBBZ3JlZWQgdGhhdCBsbGNfbmV4dCBvbmx5IGNvdmVy
+cyBpbnRyYS1ub2RlIHRyYXZlcnNhbCBhbmQgdGhhdCB5b3Ugc3RpbGwNCj4gPiA+IG5lZWQgYW4g
+aW50ZXItbm9kZSBvcmRlciBmb3IgdGhlIGVxdWlkaXN0YW50IGNhc2UuIEJ1dCBJIHRoaW5rDQo+
+ID4gPiBzb3J0aW5nIGVhY2ggc291cmNlIG5vZGUncyByb3cgYnkgKGRpc3RhbmNlLCBub2RlX2lk
+KQ0KPiA+ID4gYWxyZWFkeSBnaXZlcyBhIHN0YWJsZSB0b3RhbCBvcmRlcjsgdGhlIG5vZGUgaWQg
+YnJlYWtzIHRoZSB0aWUuIFlvdSBjYW4NCj4gPiA+IGFsc28gYnJlYWsgaXQgYnkgbm9kZSBsb2Fk
+IGlmIHlvdSdkIHJhdGhlciBiYWxhbmNlIHRoYW4gcGluLiBFaXRoZXIgd2F5DQo+ID4gPiBubyBu
+ZXcgZGlzdGFuY2UgdmFsdWUgaGFzIHRvIGJlIGludmVudGVkLg0KPiA+ID4NCj4gPg0KPiA+IFll
+cywgdXNpbmcgKGRpc3RhbmNlLCBub2RlX2lkKSBwYWlycyBpcyBhIHN0cmFpZ2h0Zm9yd2FyZCB3
+YXkgdG8gb3JkZXINCj4gbm9kZXMsDQo+ID4gc2ltaWxhciB0byB0aGUgbWVtb3J5IHpvbmVsaXN0
+IGZhbGxiYWNrIG5vZGUgc2VxdWVuY2UuIEkgb25jZQ0KPiBjb25zaWRlcmVkDQo+ID4gYWRvcHRp
+bmcgdGhpcyBhcHByb2FjaCwgYnV0IGRyb3BwZWQgdGhlIGlkZWEgYWZ0ZXIgcmVhbGl6aW5nIGl0
+IGxhY2tzDQo+ID4gc3ltbWV0cnkuDQo+ID4NCj4gDQo+IE9yZGVyaW5nIHN5bW1ldHJ5IGNhbiBi
+ZSByZXNvbHZlZCBieSBsb29raW5nIGF0IChkaXN0YW5jZSwgYWJzKG5vZGVfaWRfaSAtDQo+IG5v
+ZGVfaWRfaikpLg0KPiANCg0KPiA+IEZvciBpbnN0YW5jZSwgbm9kZV9hZmZpbml0eV9kaXN0YW5j
+ZShBLCBCKSBpcyBub3QgZ3VhcmFudGVlZCB0byBlcXVhbA0KPiA+IG5vZGVfYWZmaW5pdHlfZGlz
+dGFuY2UoQiwgQSkuDQo+IA0KPiBub2RlIGRpc3RhbmNlIGlzIHN5bW1ldHJpYyBpZiB5b3UgZG9u
+J3QgbW9kaWZ5IGl0Lg0KPiANCg0KT0ssIFNvLCBXaGF0IGFib3V0IHVzaW5nIGEgdHJpcGxlIChk
+aXN0YW5jZSwgYWJzKG5vZGVfaWRfaSAtIG5vZGVfaWRfaiksIG1pbihpLCBqKSkNCnRvIHJhbmsg
+bm9kZS1hZmZpbml0eSBzZXF1ZW5jZXM/IFRoZSB0aGlyZCBjb21wb25lbnQgaXMgd2hhdCBtYWtl
+cyBpdCBhIHRvdGFsDQpvcmRlciAtIGdpdmVuIHRoZSBkaXN0YW5jZSwgdGhlIGdhcCBhbmQgdGhl
+IHNtYWxsZXIgbm9kZSBpZCwgdGhlIHBhaXIgaXMNCmRldGVybWluZWQgLSBzbyBpdCBndWFyYW50
+ZWVzIGRlZHVwbGljYXRpb24gYW5kIHN5bW1ldHJ5IHdpdGhvdXQgaW52ZW50aW5nIGFueQ0KbmV3
+IGRpc3RhbmNlIHZhbHVlLg0KDQo+ID4NCj4gPiBUaGUgZGVkdXAgYWxnb3JpdGhtIGNhbiBlbmZv
+cmNlIHRoaXMgc3ltbWV0cnkgcHJvcGVydHkgZm9yIHRoZQ0KPiByZXN1bHRpbmcNCj4gPiBub2Rl
+4oCRZGlzdGFuY2UgbWF0cml4Lg0KPiA+DQo+ID4gPiA+ID4gVGhpcyB3aWxsIGJlIHN0b3JhZ2Ug
+ZWZmaWNpZW50IGFuZCBtb3JlIHN0cmFpZ2h0IGZvcndhcmQNCj4gPiA+ID4gPiB0byB1c2UgdGhh
+biBtYWludGFpbmluZyBhbiBhcnRpZmljaWFsIGNhY2hlIGRpc3RhbmNlIG1hdHJpeC4NCj4gPiA+
+ID4gPg0KPiA+ID4gPiA+IEkgZGlzbGlrZSB0aGUgYXJ0aWZpY2lhbCBkaXN0YW5jZSBtYXRyaXgg
+YWxzbyBmb3IgdGhlDQo+ID4gPiA+ID4gcmVhc29uIHRoYXQgdGhlcmUgaXMgbm8gZ3VhcmFudGVl
+IHRoYXQgdGhlcmUgYXJlIGVub3VnaA0KPiA+ID4gPiA+IGF2YWlsYWJsZSBkaXN0YW5jZSBzbG90
+cyBiZXR3ZWVuIHR3byBub2Rlcy4gIFNheSBpZiBJDQo+ID4gPiA+ID4gc3RhcnQgd2l0aA0KPiA+
+ID4gPiA+DQo+ID4gPiA+ID4gICAgICAgICBOT0RFMCAgTk9ERTEgIE5PREUyICBOT0RFMw0KPiA+
+ID4gPiA+IE5PREUwICAgMTAgICAgIDIwICAgICAyMCAgICAgMzANCj4gPiA+ID4gPiBOT0RFMSAg
+IDIwICAgICAxMCAgICAgMjAgICAgIDI1DQo+ID4gPiA+ID4gTk9ERTIgICAyMCAgICAgMjAgICAg
+IDEwICAgICAyMA0KPiA+ID4gPiA+IE5PREUzICAgMzAgICAgIDI1ICAgICAyMCAgICAgMTANCj4g
+PiA+ID4gPg0KPiA+ID4gPiA+IGFuZCB0aGVyZSBhcmUgMTYgTExDcyBpbiBOT0RFIDEsIEkgd2ls
+bCBydW4NCj4gPiA+ID4gPiBvdXQgb2Ygc2xvdHMgd2hlbiBJIHRyeSB0byBkZWR1cGxpY2F0ZSBh
+cw0KPiA+ID4gPiA+IG9ubHkgMTAgc2xvdHMgYXJlIGF2YWlsYWJsZSB0byBmaXQgMTYgTExDcy4N
+Cj4gPiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiBUaGVyZSBpcyBubyBzeXN0ZW0td2lkZSBMTEMg
+ZGlzdGFuY2UgbWF0cml4IGluIHRoaXMgc2VyaWVzLiBUaGUNCj4gPiA+ID4gZGUtZHVwbGljYXRp
+b24gaXMgYXBwbGllZCBvbmx5IHRvIHRoZSBOVU1BLW5vZGUgZGlzdGFuY2UgbWF0cml4Lg0KPiA+
+ID4gPiBDb25zZXF1ZW50bHksIHRoZSBudW1iZXIgb2YgTExDcyBpbiBOT0RFMSBkb2VzIG5vdCBh
+ZmZlY3QgdGhlDQo+IG51bWJlcg0KPiA+ID4gPiBvZiBkaXN0YW5jZSB2YWx1ZXMgcmVxdWlyZWQg
+YnkgdGhpcyBwYXRjaC4NCj4gPiA+ID4NCj4gPiA+ID4gVGhlIGFsZ29yaXRobSBhbHNvIHRha2Vz
+IHRoZSBhdmFpbGFibGUgZGlzdGFuY2Ugc3BhY2UgaW50byBhY2NvdW50DQo+ID4gPiA+IHdoZW4g
+YXNzaWduaW5nIHRoZSByZWZpbmVkIG5vZGUgZGlzdGFuY2VzLiBJdCBkb2VzIG5vdCBzaW1wbHkg
+aW5zZXJ0DQo+ID4gPiA+IG9uZSB2YWx1ZSBmb3IgZWFjaCBkdXBsaWNhdGUgaW50byB0aGUgZXhp
+c3RpbmcgZ2FwIGJldHdlZW4gdHdvDQo+ID4gPiA+IG9yaWdpbmFsIGRpc3RhbmNlIGxldmVscy4g
+VGhlIGRpc3RhbmNlIHZhbHVlcyBhcmUgYWRqdXN0ZWQgYXMNCj4gPiA+ID4gbmVjZXNzYXJ5IHRv
+IHJlc2VydmUgZW5vdWdoIHNwYWNlIGJlZm9yZSB0aGUgZHVwbGljYXRlcyBhcmUNCj4gYXNzaWdu
+ZWQuDQo+ID4gPiA+IFRoZXJlZm9yZSwgdGhlIGFsZ29yaXRobSBjYW5ub3QgcnVuIG91dCBvZiBh
+dmFpbGFibGUgZGlzdGFuY2UgdmFsdWVzLA0KPiA+ID4gPiByZWdhcmRsZXNzIG9mIHRoZSBudW1i
+ZXIgb2Ygbm9kZXMgc2hhcmluZyB0aGUgc2FtZSBvcmlnaW5hbA0KPiBkaXN0YW5jZS4NCj4gPiA+
+ID4NCj4gPiA+DQo+ID4gPiBGYWlyIC0geW91J3JlIHJpZ2h0IHRoYXQgdGhlIGRlZHVwIGlzIG5v
+ZGUtZ3JhbnVsYXJpdHksIHNvIG15IDE2LUxMQw0KPiA+ID4gZXhhbXBsZSBkb2Vzbid0IGFwcGx5
+IGFzIEkgc3RhdGVkIGl0LCBhbmQgSSdsbCBkcm9wIHRoYXQgb2JqZWN0aW9uLiBJdCdzDQo+ID4g
+PiBtb290IGFueXdheSB1bmRlciB0aGUgYXJndW1lbnQgYmVsb3c6IGlmIHRoZSBvcmRlcmluZyB1
+c2VzIHJhdw0KPiBkaXN0YW5jZQ0KPiA+ID4gcGx1cyBhIHRpZS1icmVhaywgYW5kIHRoZSBzY29y
+ZSB1c2VzIHJhdyBkaXN0YW5jZSwgdGhlbiB0aGVyZSdzIG5vDQo+IG1hdHJpeA0KPiA+ID4gdG8g
+cGFjayBpbiB0aGUgZmlyc3QgcGxhY2UgYW5kIHRoZSAiZW5vdWdoIHNsb3RzIiBxdWVzdGlvbiBk
+aXNhcHBlYXJzLg0KPiA+ID4NCj4gPiA+ID4gSW4gYWRkaXRpb24gdG8gcHJvdmlkaW5nIHRoZSBu
+b2RlLWxldmVsIGNvbXBvbmVudCBvZiB0aGUgTExDIGFmZmluaXR5DQo+ID4gPiA+IG9yZGVyaW5n
+LCB0aGUgcmVmaW5lZCBub2RlIGRpc3RhbmNlcyBhcmUgdXNlZCB0byBjYWxjdWxhdGUgdGhlDQo+
+ID4gPiA+IGFmZmluaXR5IGltcHJvdmVtZW50IHNjb3JlIHdoZW4gc2VsZWN0aW5nIGEgc291cmNl
+IHNjaGVkdWxpbmcgZ3JvdXANCj4gPiA+ID4gb3IgcnVucXVldWUgZHVyaW5nIGxvYWQgYmFsYW5j
+aW5nLiBQbGVhc2Ugc2VlIHBhdGNoIDEyIGZvciB0aGF0DQo+IHVzYWdlLg0KPiA+ID4NCj4gPiA+
+IFRoaXMgYWZmaW5pdHkgY29tcHV0YXRpb24gaXMgd2hlcmUgSSB0aGluayB0aGUgZGVkdXAgYWN0
+dWFsbHkgaHVydHMNCj4gcmF0aGVyDQo+ID4gPiB0aGFuDQo+ID4gPiBoZWxwcy4gVGhlIHNjb3Jl
+IGluIHBhdGNoIDEyIGlzDQo+ID4gPg0KPiA+ID4gICAgIERpID0gZGlzdChzcmNfbm9kZSwgaSkg
+LSBkaXN0KGRzdF9ub2RlLCBpKSAgIChrZXB0IG9ubHkgaWYgRGkgPiAwKQ0KPiA+ID4gICAgIHAg
+ID0gc3VtX2kgIG51bWFfY291bnRzW2ldICogY2xhbXAoRGksIDQsIDEwMjQpDQo+ID4gPg0KPiA+
+ID4gc28gaXQgcmVhZHMgdGhlIGRpc3RhbmNlICptYWduaXR1ZGUqLCBub3QganVzdCB0aGUgb3Jk
+ZXIuIEZlZWRpbmcgaXQgdGhlDQo+ID4gPiByZWZpbmVkIHZhbHVlcyBtYW51ZmFjdHVyZXMgZ2Fp
+bnMgb24gZXhhY3RseSB0aGUgbm9kZSBwYWlycyB0aGUgZGVkdXANCj4gPiA+IHBlcnR1cmJlZCAt
+IHRoZSBlcXVpZGlzdGFudCBvbmVzLiBVc2luZyB5b3VyIG5vZGUgbWF0cmljZXM6DQo+ID4gPg0K
+PiA+ID4gICAgIHJhdzogICAgICAgICAgICAgICAgICAgICAgICAgIHJlZmluZWQ6DQo+ID4gPiAg
+ICAgICAgICAgTjAgIE4xICBOMiAgTjMgICAgICAgICAgICAgICAgIE4wICBOMSAgTjIgIE4zDQo+
+ID4gPiAgICAgTjAgICAgMTAgIDIwICAyMCAgMzAgICAgICAgICAgIE4wICAgIDEwICAxNSAgMjAg
+IDMwDQo+ID4gPiAgICAgTjEgICAgMjAgIDEwICAyMCAgMjUgICAgICAgICAgIE4xICAgIDE1ICAx
+MCAgMTIgIDI1DQo+ID4gPiAgICAgTjIgICAgMjAgIDIwICAxMCAgMjAgICAgICAgICAgIE4yICAg
+IDIwICAxMiAgMTAgIDE1DQo+ID4gPiAgICAgTjMgICAgMzAgIDI1ICAyMCAgMTAgICAgICAgICAg
+IE4zICAgIDMwICAyNSAgMTUgIDEwDQo+ID4gPg0KPiA+ID4gU2NlbmFyaW8gQSAtIGEgbG9jYWxp
+dHktbmV1dHJhbCBwdWxsIGdldHMgYSBmYWJyaWNhdGVkIGdhaW4uDQo+ID4gPiBEZXN0IENQVSBv
+biBOMSwgc291cmNlIHJxIG9uIE4wLCA1IHRhc2tzIHByZWZlcnJpbmcgTjI6DQo+ID4gPg0KPiA+
+ID4gICAgICAgICAgICAgICAgICAgZGlzdChOMCxOMikgIGRpc3QoTjEsTjIpICBEaSAgIGNvbnRy
+aWJ1dGlvbg0KPiA+ID4gICAgIHJhdyAgICAgICAgICAgMjAgICAgICAgICAgIDIwICAgICAgICAg
+ICAgMCAgIDUgKiAwID0gIDANCj4gPiA+ICAgICByZWZpbmVkICAgICAgIDIwICAgICAgICAgICAx
+MiAgICAgICAgICAgIDggICA1ICogOCA9IDQwDQo+ID4gPg0KPiA+ID4gTjAgYW5kIE4xIGFyZSBw
+aHlzaWNhbGx5IGVxdWlkaXN0YW50IGZyb20gTjIgKGJvdGggMjApLCBzbyBwdWxsaW5nDQo+IHRo
+b3NlDQo+ID4gPiB0YXNrcyB0byBOMSBidXlzIHplcm8gbG9jYWxpdHkgLSByYXcgY29ycmVjdGx5
+IGdpdmVzIDAuIFJlZmluZWQgc2NvcmVzIGl0DQo+ID4gPiA0MCBhbmQgdGhlIGJhbGFuY2VyIG1h
+eSBkcmFnIGFsbCA1IG92ZXIgY2hhc2luZyBhIGdhaW4gdGhhdCBpc24ndCB0aGVyZS4NCj4gPiA+
+DQo+ID4gPiBTY2VuYXJpbyBCIC0gdHdvIHBoeXNpY2FsbHkgaWRlbnRpY2FsIG9wdGlvbnMgZ2V0
+IGZha2UtcmFua2VkLiBEZXN0IG9uDQo+ID4gPiBOMTsgY2FuZGlkYXRlIHNvdXJjZXMgTjAgYW5k
+IE4zLCBlYWNoIGhvbGRpbmcgb25seSBOMi1wcmVmZXJyaW5nDQo+IHRhc2tzOg0KPiA+ID4NCj4g
+PiA+ICAgICAgICAgICAgICAgICAgIHJhdyBEaSAgIHJlZmluZWQgRGkgICBhZnRlciBjbGFtcCgu
+LDQsMTAyNCkNCj4gPiA+ICAgICBYIChOMCkgICAgICAgIDIwLTIwPTAgIDIwLTEyPTggICAgICA4
+DQo+ID4gPiAgICAgWSAoTjMpICAgICAgICAyMC0yMD0wICAxNS0xMj0zICAgICAgNA0KPiA+ID4N
+Cj4gPiA+IFJhdyBEaSBzYXlzIGJvdGggYXJlIDAsIGkuZS4gbG9jYWxpdHktZXF1aXZhbGVudCwg
+YW5kIGxvYWQgc2hvdWxkIGRlY2lkZS4NCj4gPiA+IFJlZmluZWQgcmFua3MgWCBvdmVyIFkgcHVy
+ZWx5IGZyb20gaW52ZW50ZWQgZGVsdGFzIC0gYW5kIHRoZSBjbGFtcA0KPiBmbG9vcg0KPiA+ID4g
+ZXZlbiBwcm9tb3RlcyBZJ3MgZmFicmljYXRlZCAzIHVwIHRvIDQuDQo+ID4gPg0KPiA+ID4gTm90
+ZSB0aGUgZGVkdXAgb25seSBldmVyIHBlcnR1cmJzIHRpZXMsIHNvIHRoZSBza2V3IGlzIGNvbmZp
+bmVkIHRvDQo+ID4gPiBlcXVpZGlzdGFudCBwYWlycyAtIHdoaWNoIGlzIGV4YWN0bHkgdGhlIGNh
+c2Ugd2hlcmUgdGhlcmUgaXMgbm8gcmVhbA0KPiA+ID4gbG9jYWxpdHkgZGlmZmVyZW5jZSBhbmQg
+bG9hZCBzaG91bGQgaGF2ZSBiZWVuIHRoZSB0aWVicmVha2VyLg0KPiA+ID4NCj4gPg0KPiA+IE15
+IGludGVudGlvbiBpcyB0byBkaXN0aW5ndWlzaCBlcXVhbCBub2RlIGRpc3RhbmNlcyBhbmQgZ2l2
+ZSBhIGRlZmluaXRlbHkNCj4gPiB0YXNrIG1vdmUgZGlyZWN0aW9uLg0KPiA+IFdoYXQgd2Ugd2Fu
+dCB0byBkbyBpcyBhZ2dyZWdhdGUgdGFzayB0byBhcyBzbWFsbCBhcmVhIGFzIHBvc3NpYmxlLiBJ
+ZiBOMg0KPiBpcw0KPiA+IFByZWZlcnJlZCBub2RlLCBhbmQgTjIgaXMgc2F0dXJhdGUsIE4xIGlz
+IHRoZSBuZXh0IG5vZGUgb2YgTjIgaW4gdGhlDQo+ID4gYWZmaW5pdHkgbm9kZSBvcmRlciwgaXQn
+cyBuYXR1cmFsIHRoYXQgcHJlZmVyIE4xIHRoYW4gTjAgZm9yIHRhc2sNCj4gYWdncmVnYXRpb24s
+DQo+ID4gcmlnaHQ/IFRodXMsIHdlIHNob3VsZCBnaXZlIHdlaWdodCBmb3IgdGFzayBpbiBOMC4g
+U28gTjAgaXMgbW9yZSBsaWtlbHkgdG8NCj4gYmUNCj4gPiBjaG9zZW4gYW5kIG1pZ3JhdGUgdGFz
+ayB0byBOMS4gQ29uc2VxdWVudGx5LCB0aGUgdGFzayBjYW4gbW9yZSBsaWtlbHkNCj4gPiBhZ2dy
+ZWdhdGUgdG8gTjEgYW5kIG5vdCBldmVubHkgc3ByZWFkIGluIHRoZSB0d28gbm9kZXMuDQo+IA0K
+PiBJIHRoaW5rIHlvdSBzaG91bGQgZ2V0IHRydWUgYWZmaW5pdHkgbWV0cmljIGJhc2VkIG9uIHJl
+YWwgZGlzdGFuY2UuIEJpYXMNCj4gYmFzZWQgb24gbm9kZQ0KPiBwcm9wZXJ0eSBjYW4gYmUgYXBw
+bGllZCBzZXBhcmF0ZWx5IGFuZCBhIGVhc2lseSBjb250cm9sbGVkIG1hbm5lci4gwqBUaGF0DQo+
+IGhhcyB0aGUgYWR2YW50YWdlDQo+IG9mIHNldHRpbmcgdGhlIGJpYXMgYmFzZWQgb24gZmFjdG9y
+cyBsaWtlIGxvYWQgb3Igb3RoZXJzLg0KPiANCg0KPiBJdCBpcyBhIGJhZCBkZXNpZ24gdG8gaGF2
+ZSB0byB0dW5lIGEgaGFja2VkIHVwDQo+IGRpc3RhbmNlIHRvIGNoYW5nZSB0aGUgYmlhcy4gIEl0
+IGlzIGhhcmQgdG8gY29udHJvbA0KPiB0aGUgbWFnbml0dWRlIG9mIHRoZSBiaWFzIGFuZCB1c2Ug
+YSBzaW1pbGFyIGFuZCBjb25zaXN0ZW50DQo+IGJpYXMgd2l0aCB0aGUgY3VycmVudCBhcHByb2Fj
+aC4gVGhlIGRpc3RhbmNlIHlvdSBpbmplY3QgdG8NCj4gZGlzYW1iaWd1YXRlIGlzIG5vdCB0aGUg
+c2FtZSBmcm9tIG5vZGUgdG8gbm9kZS4NCj4gDQoNCk1ha2VzIHNlbnNlLiBTbywgd2hhdCBhYm91
+dCB0aGUgZm9sbG93aW5nIHNvbHV0aW9uPyANCkdpdmVuIGEgbm9kZSBhZmZpbml0eSBzZXF1ZW5j
+ZSwgYSBtb3ZlIGZyb20gc3JjIHRvIGRzdCBpbXByb3ZlcyB0aGUNCmFmZmluaXR5IG9mIGV2ZXJ5
+IHRhc2sgd2hvc2UgcHJlZmVycmVkIG5vZGUgaSByYW5rcyBkc3QgYmV0dGVyIHRoYW4gc3JjLiBU
+aGUgc2NvcmUNCmlzIHRoZW4NCg0KRGkgPSByYXdfZGlzdChzcmMsIGkpIC0gcmF3X2Rpc3QoZHN0
+LCBpKQ0KYWZmaW5pdHlfYmlhc19pID0gcG9zaXRpb24gb2Ygc3JjIG1pbnVzIHBvc2l0aW9uIG9m
+IGRzdCBpbiBub2RlIGkncyBhZmZpbml0eQ0KICAgICAgICAgICAgIHNlcXVlbmNlLCBjb3VudGVk
+IGFtb25nIHRoZSBub2RlcyBhdCB0aGUgc2FtZSBkaXN0YW5jZSBmcm9tDQogICAgICAgICAgICAg
+aSAoemVybyB3aGVuIERpIGlzIG5vdCB6ZXJvKQ0KcCA9IHN1bV9pIHtudW1hX2NvdW50c1tpXSAq
+IChEaSArIGFmZmluaXR5X2JpYXNfaSl9LCBrZXB0IG9ubHkgaWYgKERpICsgYWZmaW5pdHlfYmlh
+c19pKSA+IDANCg0KV2hlbiByYXdfZGlzdChzcmMsIGkpIGVxdWFscyByYXdfZGlzdChkc3QsIGkp
+LCBEaSBpcyB6ZXJvIGFuZCB0aGUgY2FuZGlkYXRlIGlzDQpzZWxlY3RlZCBwdXJlbHkgYnkgdGhl
+IGFmZmluaXR5IGJpYXMuDQoNCkkgd291bGQgcmF0aGVyIGtlZXAgaXQgZml4ZWQgdGhhbiBsZXQg
+bG9hZCBkZWNpZGUuIExvYWQgY2hhbmdlcyBiZXR3ZWVuIHBhc3NlcywNCnNvIHRoZSBjaG9pY2Ug
+Y2FuIGZsaXAgYW5kIHRoZSBzYW1lIHRhc2tzIGNhbiBiZSBwdWxsZWQgYmFjayAtIG5vdCBldmVy
+eSB0aW1lLCBidXQNCml0IGlzIHRoZSBkaXJlY3Rpb24gdGhlIGFnZ3JlZ2F0aW9uIGlzIGZpZ2h0
+aW5nIGFnYWluc3QuIEF0IHRoZSBub2RlIGxldmVsLA0KZXF1aWRpc3RhbnQgbm9kZXMgYXJlIGlu
+ZGlzdGluZ3Vpc2hhYmxlIHRvIHRoZSBtZXRyaWMsIHNvIHRoZSBvcmRlciBiZXR3ZWVuIHRoZW0g
+aXMNCmEgY29udmVudGlvbiBpbiBhbnkgY2FzZTsgSSB3b3VsZCBqdXN0IHJhdGhlciBpdCBiZSBh
+IGZpeGVkIG9uZS4NCg0KPiA+DQo+ID4gQWxzbywgZ2l2ZSBhIHByZWZlcmVuY2UgYmV0d2VlbiBO
+MCBhbmQgTjEgY2FuIGxpbWl0IHRoZSB0YXNrIG1pZ3JhdGlvbg0KPiBmcm9tDQo+ID4gTjEgdG8g
+TjAuIEJ5IHRoaXMgd2F5LCB3ZSBjYW4gYWNoaWV2ZSB0aGUgZ29hbCB0aGF0IGtlZXAgdGFza3Mg
+aW5zaWRlIE4xLg0KPiA+DQo+ID4gPiBTdGVwcGluZyBiYWNrLCB0aGUgbWF0cml4IGlzIGJlaW5n
+IGFza2VkIHRvIGRvIHR3byBqb2JzIGF0IG9uY2U6DQo+ID4gPg0KPiA+ID4gICAgIC0gb3JkZXJp
+bmc6IG9ubHkgbmVlZHMgYSBkZXRlcm1pbmlzdGljIHRvdGFsIG9yZGVyLCB3aGljaA0KPiA+ID4g
+ICAgICAgcmF3IGRpc3RhbmNlICsgbm9kZS1pZCB0aWUtYnJlYWsgYWxyZWFkeSBwcm92aWRlczsN
+Cj4gPiA+ICAgICAtIHNjb3Jpbmc6IHdhbnRzIHRydWUgbWFnbml0dWRlcywgd2hpY2ggcmF3IGRp
+c3RhbmNlIGFsc28NCj4gcHJvdmlkZXMNCj4gPiA+ICAgICAgIChlcXVpZGlzdGFudCA9PiBEaSA9
+IDApLg0KPiA+ID4NCj4gPiA+IFRoZSBkZWR1cCBpcyBvbmx5IG5lY2Vzc2FyeSBpZiBvbmUgbWF0
+cml4IGhhcyB0byBzZXJ2ZSBib3RoIC0gYW5kIHRoYXQNCj4gPiA+IGNvdXBsaW5nIGlzIHByZWNp
+c2VseSB3aGF0IGluamVjdHMgdGhlIGZha2UgRGkuIFNvIGlmIHlvdSBuZWVkIGEgbm9kZQ0KPiA+
+ID4gb3JkZXJpbmcsIEknZCB1c2UgdGhlIHVuYWx0ZXJlZCBkaXN0YW5jZSBhbmQgYnJlYWsgdGll
+cyBieSBzb21lIG90aGVyDQo+ID4gPiBtZWFucyAobm9kZSBpZCwgb3IgbG9hZCksIGFuZCBmZWVk
+IHRoZSBzY29yZSB0aGUgcmF3IGRpc3RhbmNlIHRvby4NCj4gPiA+DQo+ID4NCj4gPiBZZXMsIHRo
+ZSByZWZpbmVkIG5vZGUgZGlzdGFuY2Ugc2VydmVzIGJvdGggcHVycG9zZXMgbWVudGlvbmVkIGFi
+b3ZlLg0KPiBIZW5jZSwNCj4gPiBkZWR1cCBpcyBuZWNlc3NhcnkgZm9yIHRoaXMgcGF0Y2ggc2Vy
+aWVzLg0KPiA+DQo+ID4gQm90aCBhZmZpbml0eeKAkXNjb3JlIGNhbGN1bGF0aW9uIGFuZCBtaWdy
+YXRpb24gY29udHJvbCByZWx5IG9uIGEgY29uc2lzdGVudA0KPiA+IHJlZmluZWQgbm9kZSBkaXN0
+YW5jZSBtYXRyaXguIFRvIGtlZXAgdGhpcyBjb25zaXN0ZW50LCB3ZSBzaG91bGQgYXZvaWQNCj4g
+dXNpbmcNCj4gPiB0aGUgZGVmYXVsdCBub2RlIGRpc3RhbmNlIGZvciBvbmUgb2JqZWN0aXZlIHdo
+aWxlIGFkb3B0aW5nIGEgZGlmZmVyZW50DQo+ID4gdmFyaWFudCBmb3IgYW5vdGhlciBwdXJwb3Nl
+Lg0KPiA+DQo+ID4gVGhlIG9ubHkgb3BlbiBkZXNpZ24gcXVlc3Rpb24gaXMgd2hldGhlciBzeW1t
+ZXRyaWMgbm9kZSBkaXN0YW5jZXMgYXJlDQo+ID4gc3RyaWN0bHkgcmVxdWlyZWQuIFN5bW1ldHJ5
+IGlzIHByZWZlcmFibGUgYnV0IGFkZHMgaW1wbGVtZW50YXRpb24NCj4gPiBjb21wbGV4aXR5LCBz
+byB0aGlzIHJlcHJlc2VudHMgYSB0cmFkZeKAkW9mZi4gSWYgc3ltbWV0cnkgaXMgdW5uZWNlc3Nh
+cnksDQo+ID4gSSBjYW4gY29uc3RydWN0IHRoZSBub2RlIG9yZGVyIGZvbGxvd2luZyB5b3VyIGFw
+cHJvYWNoIHVzaW5nIHRoZQ0KPiA+IChub2RlX2Rpc3RhbmNlLCBub2RlX2lkKSBwYWlyLCB3aGlj
+aCBpcyBzaWduaWZpY2FudGx5IHNpbXBsZXIgdGhhbiBteQ0KPiA+IGN1cnJlbnQgaW1wbGVtZW50
+YXRpb24uDQo+ID4NCj4gPiBZb3VyIHF1ZXN0aW9uIHRvdWNoZXMgb24gdGhlIHRyaWNraWVzdCBw
+YXJ0IG9mIHRoaXMgcGF0Y2ggc2VyaWVzLg0KPiA+DQo+IA0KPiBJIHRoaW5rIHRoZSBkZXNpZ24g
+Y2FuIGJlIG11Y2ggc2ltcGxpZmllZCBpZiB5b3UgZG9uJ3QgaGF2ZSB0byBpbnZlbnQgYSBuZXcN
+Cj4gZGlzdGFuY2UgbWF0cml4Lg0KPiANCg0KT0ssIGxldCBtZSB0cnkgdG8gcmVtb3ZlIHRoaXMg
+YXJ0aWZpY2lhbCBub2RlIGRpc3RhbmNlLg0KDQpUaGFua3MNCkppYW55b25nDQo=
 
-Hi Xiang, thanks for testing:
-
-Well I mentioned this in the cover letter:
-
-=3D=3D=3D
-
-Interestingly, mainline MGLRU already beats CLRU on this one after a
-recent change in lru_gen_folio_seq that bumps new folios with refs =3D=3D 1
-to the second-oldest generation. That change accidentally gave random
-reads a higher hotness level while making sequential reads much colder:
-sequential reads involve many readahead hits, and readahead folios start
-with refs =3D=3D 0, so they're already in the oldest generation, and
-folio_mark_accessed() on a readahead hit has almost no effect on generation=
-s
-in mainline MGLRU. Meanwhile, all direct-hit (random read) folios start
-with refs =3D=3D 1 in the second-oldest generation. As a result, the scan-g=
-et
-test natively protects the "get" part and sacrifices the "scan" part.
-That's not the best solution though. It's unreliable because it depends
-on LRU drain timing, and it hurts workloads where the sequential part is
-actually hotter (any workload involving a hotter large file and many
-small cold files will be affected).
-
-=3D=3D=3D
-
-That actually mentions commit 6cbdd9726fb50. Before that commit, as I
-mentioned in an earlier RFC, the LevelDB test is doing a lot worse in
-mainline, which also matches what Tal tested in that cache_ext paper:
-https://lore.kernel.org/linux-mm/20260502-mglru-fg-v1-0-913619b014d9@tencen=
-t.com/
-
-It was like this:
-GET/SCAN LevelDB [2]:
-Classical LRU: throughput_avg: 993.64 Ops/s
-MGLRU before:  throughput_avg: 951.12 Ops/s
-MGLRU after:   throughput_avg: 1344.72 Ops/s (+41% faster)
-
-After that commit, MGLRU beats CLRU for this test, but that's a side
-effect. (And also I made the test run much longer to let both CLRU /
-MGLRU to learn the hotness info more so in V2 RFC the ops/s is higher,
-also reduced the RA window as RA window dramatically effects the
-result).
-
-6cbdd9726fb50 strongly favors the GET part, because of scan readahead:
-non-readahead random folios (GET) will not use too many RA so they
-mostly start with refs =3D=3D 1 before landing in LRU (stay in percpu
-folio batch, so also due to a time window and unstable) so they are
-put in 2nd oldest gen. Sequential reads, however, use RA heavily and
-start with refs =3D=3D 0, landing in the oldest part. This creates a
-strong bias toward reclaiming the scan part, which coincidentally
-suits that benchmark. But it is just not right, assuming sequential
-read is colder than non-sequential reads makes no sense. And it does
-caused regressions for many other tests, e.g. some data base like
-SQLite, and for example a recent report for other people:
-https://lore.kernel.org/all/20260901180704.168106-1-ehab.ababneh@intel.com/
-
-With FG, however, it will actually learn the hotness. If you check
-Tal's paper and code there is also warmup phase for any algorithm to
-take effect, so I'm already glad that with NVMe, where the warmup
-window is shorter, FG is already doing great, and even if the window
-is long, there isn't significant regression, and more like a balance
-issue. I believe this way will lead to better long-term performance.
 
