@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B7ECA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB48CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D8F36B009E; Mon, 28 Sep 2026 07:48:18 -0400 (EDT)
+	id 143126B0088; Mon, 28 Sep 2026 07:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AFB16B009F; Mon, 28 Sep 2026 07:48:18 -0400 (EDT)
+	id 0CDAB6B008A; Mon, 28 Sep 2026 07:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ED036B00A0; Mon, 28 Sep 2026 07:48:18 -0400 (EDT)
+	id EAF8E6B008C; Mon, 28 Sep 2026 07:59:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FC9D6B009E
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:48:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B42A91C18C7
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:48:17 +0000 (UTC)
-X-FDA: 85262997834.22.5AC875E
-Received: from mta0.migadu.com (out-35.mta0.migadu.com [91.218.175.35])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BF3951A000A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:48:15 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UDtqHTvX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BD0D66B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:59:57 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4687C1A01A1
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:59:57 +0000 (UTC)
+X-FDA: 85263027234.08.2174FF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8FD524000C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:59:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dF+dytpe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790596096;
+	s=arc-20220608; t=1790596795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bls8dZPU7VPWANSW+YvTvDSY6apZOii86OTWBR5aMOc=;
-	b=Wl3XKylWm2eYPQOF6EWj/oTHneyGV92iVQIB5fBtaqpLykNJFe03HY0JnyHta6rAwTKKfP
-	09YMPd6P4qRbPo2970zvn9pQhtqMuF5T4FHf58lkU0GoU480OnAtr1CHzA1yqSVrkDPyHl
-	JUCJW02cv/qPeHQOOwX6M0GGPKmzkvE=
+	bh=4ubrCI8w3ULvr+Wy09kxqTTxIzrAZwKTgk0GvfF5I+Q=;
+	b=u1YQFpoFK7JfpCOOmi+0OsgnhJunCdk1eXruZG7KoCYRaep/wO0qa2QBBxp/frnrzJdPQ8
+	hrhBd1vGwzVve+6JC3rw0a3DYpUDO8wbuhdRZRUt94TR9sfSu61IlGEmqP1y0xoWG+FXS/
+	z2ajiXlwh7Dg6/CBAvbk3jg455N4Y8Q=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UDtqHTvX;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.35 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dF+dytpe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790596096;
-	b=jmCAMOSmywmvUh01XpxuzZFPdYpw+LDRWSUt91kzVimIDWe5+pOaxufxOGbpciwy6gkbWy
-	TEPLcGQiy9BXdA+d2tiXsUUkTY/4jGgaORwuIsTFW1zdxaJNv0KdfTd8Jwt+jcstgMA9rH
-	nd9LGrjqfoyczWyUQ7GbAyWyEdCqNwQ=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=tt7LGshuqhNxDtoKCH/LZTI4ttNHcJzRhKME5HBY9Uw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790596094; v=1; x=1791200894;
- b=UDtqHTvX165RknbB241mgGwmNCIveH0xUbj48b0WW73B2ZkDKd3SIGsgEgK5BowKVUYYgJJ7
- WtkOKGkzXhYGt2JlGwPlkBAiRhNcMxoApEgwYHA/Wrga7cwyKhqjrh6pgQDfpxO/ogch5XIVfIX
- pTImSctQcfExyTUv9LQDPXRk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cc434b568fabe6dc;
-	Mon, 28 Sep 2026 11:48:14 +0000
-X-Mizu-Trace-ID: cc434b568fabe6dc
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	linux-mm@kvack.org (open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)),
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [PATCH RFC v2 7/7] mm/vmscan: pass scan_control to mm_vmscan_balance_pgdat_end
-Date: Mon, 28 Sep 2026 19:46:24 +0800
-Message-Id: <20260928114625.3609130-8-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260928114625.3609130-1-ridong.chen@linux.dev>
-References: <20260928114625.3609130-1-ridong.chen@linux.dev>
+	t=1790596795;
+	b=I8OI7MCTAYKvhzsr50B/wxNKQOgNQLtthD3OcWte+BDRUWbRfWSTpoawCjY9M1al4XeL6Y
+	9TAXMIXFLzhBaLTcn4s7KORkSYpKxlwXxfBOcFlqlTP6c2+KAmrHXz+HXt1DxNtvzfWx+5
+	9LrKFrQrl/Vt/3VwO+vFiqYABDokCXE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E4159600D1;
+	Mon, 28 Sep 2026 11:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A5A1F000FF;
+	Mon, 28 Sep 2026 11:59:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790596794;
+	bh=4ubrCI8w3ULvr+Wy09kxqTTxIzrAZwKTgk0GvfF5I+Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dF+dytpedS8KF5VBOfaLwmweRWPyyB2yUP/FU4ARxQTSZ4wof0/uc3jPh/GWMyzRP
+	 +ygCwX5AHG6drGme6nPQ+Fh6dc7Sv120IAEYYBoQ38X/FVNR5ik5gPBvXQiJtLfUmv
+	 iIC784eQhwnZNYNoO6RFtg6HiwaHONlXgjWQYf5rSk0+DVMnxb4N2LFORK8C3KYGM+
+	 07PhIU4G+EwdqFZFehWixioe4APhhqEQAjfRZEu9sPx2mpYger/suHTL+UNVb5thRI
+	 1LhCH6YrFiDV8i6uGitd/mxWUaPJwbqw9f+pVrhJ33SdqNto7D8NVsDa00mzQHD7Ke
+	 Q6c+corn9bKuA==
+Message-ID: <f78d2f52-1135-425c-a3e8-460a6e80e19b@kernel.org>
+Date: Mon, 28 Sep 2026 13:59:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BF3951A000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drivers/char/mem: mmap readonly MAP_SHARED-/dev/zero
+ correctly
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lance Yang <lance.yang@linux.dev>,
+ syzbot+c181d3198e98f8aef8b9@syzkaller.appspotmail.com
+References: <20260924-fix-dev-zero-readonly-shared-v1-1-153c2111e323@kernel.org>
+ <9efc7bc1-8d9d-49ac-b856-003e81558411@kernel.org>
+ <20260924195826.70a87d6fb78d754bc73892cd@linux-foundation.org>
+ <95e91b4a-ca16-49a3-9a1a-5b38afa6f08d@kernel.org> <arYnXJHW-Rh4eNzt@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <arYnXJHW-Rh4eNzt@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: s7uqhjtrtagejc76ahgyqrcny5j81r16
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: kwjca1thmig5bweyw5mshpm4mkre8ynq
-X-HE-Tag: 1790596095-883130
-X-HE-Meta: U2FsdGVkX19bIoRD7cdtOizMVCF/TX54ggkxdwbcZWa0bvSZlX56WNh354raXgufNhXkYMvFOtpNNHgLqb7VKlMkQxmyZ5nG1ChA6yyuJvDoXGC4a2YNu+We+c0/bp8/StCrhJZMnJZiJdlMHA7372Sbs22WP/oTMp3aNqxxLcF5OhaCJIq7xFWtPG2/71fLUK4CGszp0fcXV50FPIz63oXhC0BNnOOHbPCD0PiBOAvg+i8cIZrD/UtQ8RM7oq8k7NLgBPedqntUrXUNUzDAHkvXU13i5M/7j3vMaw0RtEA1PCRDWK9OWK1w5/EYWPeeZGsXcp2KLFVMn/thh2Del0g6XIQy7ej63pAo0QHXx3s/n65XxMFhctbuwc6NmnKvvKjZIP3l+8NcqMXQ3zCWbxI5L87xmnLg3JRJer9rpyR7rextm+BP4fXo5bdfkzwxWY7et6YdXORsOsWCi4625d7+i6c9M9pttuVemE1CUpjSc8ETCvNYr6aa9kv/z9FR8tsfkKorLC7lq7MbYQAxDhLFpKeYGRcKt53u9R0MjyrWbi8xvLWuVx9MKdSA3rgvvHXlqTsSgB2aSzR3UHRc9rK+KVwfuyfi9+Jxnuo8m6OvRrr4Sj0aGokcdXYZPa8A+/LUT1vEb6Q1ZVsnctjduzeXJQu63/ETjHPErDdZY1yTTiLuLfesAiZsgtDywrsQFupXMQjSz9DgunM16IszlKTzQFT2XUtV87K2GF7yHLkTjhZUJO7NGXH1152+XWCFvLvwaupnN/NtothcbvDKeg7nT5zSsz85/yDDdmdDM+/J+yxeozvp85rHvrk6CzNPjo5N1Zh0DXt1JTD5WsBCzCyoolVL6E2/WpfIyxRsVGZxnQXq5UVxe/QXhT5lSZ9xBotn1R+79XEYHgQkU1NZiq22LJsUf4ijeu1otxTTT+PxhZ+3LCVWyh51mzClTT5KIARgC6KAwBqkz5EhWUP
- P2g06e1c
- zVAe96cde8u3ZY67UfUiOXPpGTtCE0B4150CrYY/fa4mZyfd89CfediMIb1CEmnCrbUKbjLaRZo+/PFg0wSt5YIdWSeMUovxfFafQoZkCEQklDpqEbfxcThOqj7hgXfOiYNjqoxC7nBSONPufnRwJ4x6pk8dzzCkqYQxc3QBirTdJN8DTJLlVUxs6tzEBc5b9ZQRsE4Z5Vdm9GLRPePkQ0zSrLLicbchNUzPrYjz6GknEwra3Cf/5Mr9S6wPcYbp6v7S1W676NMVQVETe+UHPt6b3+7MknK1OXH1SI/iljxLzxuPuMcyXW9hXh0CwqIMF0qMgQ4Z20t5I462MNU9YsXhMOlAvGng80vFMnhrr/4IIPbLYEk6/2uXlytunyB7LmjNx43svuEWytawQXFQIa+F0XY/be3tJ9w2nrpzMy4GN2ytQViGef19YUhfgjTAB1gCvTX5jLO3a/MDlmQG/som7qU9WM1DxpGMUivFZ78qcN7+Q9YhnTL/ewG3mViK6mIzp+NfNL7oeJGR+j9kmCYTWob8EsOFeCeDlVaoKsqbStrI6Byx7wXhmV/bUfuzY3aHuW2RX7KRUTZqCS3SNmhw3CbPYvNPOEjjkBEtT2sBrQl42cA3RR8Rlin6ygO4uNgkSkrSVlgmOTB3dGhyYFmLp0hNuIH9vgRutlbOakWyq822B+tLL6ybrW/xMQzJMd/1c2ChrQvvkFYw/l+aYpqzahc91sQbj+nvh/KQbFyIqdok5zfTNzaek2aFOaAdZRba3y1tcaF/D2XfoCo4SXeC4Oe/q8Idgo6euBqd6YtRiXd1G9di5KyMaaTjJClLGiO5gJXgCROa4OFB+7XcT2xZeJL3dOXYFAjC/xmZ5Zefa/qIJAXpTG5BagvPhZ7kbiy8bKNhtQ2tdIJbYHyjJMdtGECmSBlzQYD/eyZfxNaruh8L2oHN+rWDPfVhLBSuvjksQq5KKfboL/mhrARGJqSQ9L5m1
- EHaoxA+D
- U9soJBMHRA1gawZje8jXNqR2bvT6u917BBTsk/RBrynzl9qCncv3s/brPK3FEMTZl55CJvzltxo=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8FD524000C
+X-HE-Tag: 1790596795-497061
+X-HE-Meta: U2FsdGVkX18fkc1g65QnHNiBB2vHnTUkOTqYG9nS1MQbHM2smmtAZKnZa0qg5/aew7wXKvjtK0Nd7lmK7r25znf76LxAkz2PALvDhPTzLe0unBAyF3a0rt3nAnImZin4YTXFZkeGe23nh5CTyVR05GhtezDlq+PQwP//2SwyjFDWKl0XT7J8YMlNWa+LdmVSDJC0Yz8bFOHPCP2iS45Qb4tchLOqvlWstnBvYvAEnOsS6O1vwMn5gIVi2S52VOAFSCOBANdarVvXEMO4vl5gsuTIksChHmDFmDvRZgtxnpZ3hBSWshdhL5C+PnXjZE56MfM/XPfH1bHx/zBFmZQqjvBBSwluy9lS0EuVcvNopkPF7zpGn2Y2bz/C5s8NuRCDtwQiyVLnp1bPmpGHKgpNQkfnQy+G18+HIvMcX4XOfzta7fwCttojHfT0xzw4dS/ptChub43ZTB4HlzVvZvTx88lZehbNPP42ygP8vRpFz3FpGgOU4mtvlcoNtXNiPJOame5P6bZVzfbkFIlA85F4/lRzSaMzvEp/SpEsxYGKmgGELtgUAq3gUz6chJQJo9+n/aPzg4HcaYXE/tofZf4QOi54kLJGIi00S1yh4CZ1jobZuKcipMpeAeWFA+8Vn6DjaRU74S16ekf2kAQ6Clhdv+mWIw0m4bmOmBonOZHKtGuycnQi67Cpu51HxHj71M0SRUx3p0TKsIegdA+t+sTEeMIScBrwiCynZzo+kySRiTnPMZ+RPAqwLvCnLwiBAEzcOQBtSjIIxH7gSv6txmuK2IQdgiuxERn3xLGpvGT0TFz3P3l7CBgErFeQigvzkml6YaHufXVMWcxRCGU56Wh0zXemPrGCiUherv70922y8LgC2qByrclrk04V1cxgY2dTtVI2BT952CvoPwgdFlHirf104Uk/225hz/qGhgtC11qREKExacAKcu5A66QM7GlAIP8O2xvveFjIucMNJMa
+ B17paCux
+ t2DkVIVLXqhC/rEdy38VH4GdyAvWuzRgGUedElXSXW4U5JlxC5DN/E4nFwLhYzLEnK1AiYVNC62EX3YbGvntfQ1wVXJr4zHzsQEvBRSmy/9dH7BUmoklO7h/oiExEFnGT95wCYoImeFEe3O4oSbudYoIXdR5BQ+vWnBtM7+T96/b54Ofvjs9MMo10s6x+hEi+YwdlUXiprBAGsaXY/HKshQAsTYZS3FjjEAf8mkJKYVj/pybCeGTmgxjfXnd1PKrJB9NG42uRGxd+4UmOplqPdAAhdILeeopQEEoMfPdc9EJw5EmHSHQyWZyvKwHoQez98en4gTMknKBQ1LbEJ1m2PFdb3I3c4asZ6+2pCsZYOMDB4HHxk8DGULtC9gew/h+Y8JKblyIZV/UZU4gT9xlIyAYHNy6tI0ty5H+fS0nJ+coFcQODEuQNVuF2xAVoNUBsuVnomHaYm//77nYDHPEuVdn7pA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,70 +147,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ridong Chen <chenridong@xiaomi.com>
 
-balance_pgdat() passes sc.order and sc.nr_reclaimed to
-mm_vmscan_balance_pgdat_end as bare arguments. Pass the enclosing
-struct scan_control instead and read the fields out in TP_fast_assign,
-mirroring mm_vmscan_balance_pgdat_begin. highest_zoneidx stays a
-separate argument as it is a local of balance_pgdat() rather than a
-scan_control field.
+> 
+> It then becomes a question about how to get readonly memory.
+> 
+>>
+>> We can
+>>
+>> a) Disallow allocating an anon_vma and fail gracefully. So only a shared
+>>    zeropage could ever get mapped there. Might break the s390x
+>>    mm_forbids_zeropage(). But given that's only used in hypervisors like QEMU,
+>>    unlikely.
+> 
+> Something like:
+> 
+> 	/* about to maybe prep anon_vma */
+> 
+> 	if (!vma_cow_mapping(vma) && vma_test(vma, VMA_MAYSHARE_BIT)) {
+> 		/* don't prep anon give zero page */
+> 	}
+> 
+> ?
 
-The exported event format is unchanged.
+Something like that, but really just failing directly from anon-vma preparation
+in a !vma_cow_mapping(vma), maybe using a special error code.
 
-No functional change.
+But the less we have to hack around this special case, the better.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- mm/trace_vmscan.h | 9 ++++-----
- mm/vmscan.c       | 3 +--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+> 
+> I think though it's surely the only case (I hope!) where you can possibly be
+> both anon (as in missing vm_ops) and !CoW? I hope? :)
+> 
+> So it feels better to fix it at the source.
+> 
+> OTOH maybe it's worth special-casing so we don't allocate on read.
+> 
+> But that brings me to c)...
+> 
+> 
+>>
+>> b) Do what Lorenzo proposes. This will allocate real memory. Someone decided to
+>>    use MAP_SHARED, for unknown reasons, so I'd assume it's unlikely that
+>>    something breaks, but you have a point.
+> 
+> I would say this patch is the right fix for the moment to fix the assert, and we
+> can chase up with other approaches afterwards.
 
-diff --git a/mm/trace_vmscan.h b/mm/trace_vmscan.h
-index 04f285e77659..c27bc7cc6063 100644
---- a/mm/trace_vmscan.h
-+++ b/mm/trace_vmscan.h
-@@ -124,10 +124,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_begin,
- 
- TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
--	TP_PROTO(int nid, int order, int highest_zoneidx,
--		 unsigned long nr_reclaimed),
-+	TP_PROTO(int nid, struct scan_control *sc, int highest_zoneidx),
- 
--	TP_ARGS(nid, order, highest_zoneidx, nr_reclaimed),
-+	TP_ARGS(nid, sc, highest_zoneidx),
- 
- 	TP_STRUCT__entry(
- 		__field(int, nid)
-@@ -138,9 +137,9 @@ TRACE_EVENT(mm_vmscan_balance_pgdat_end,
- 
- 	TP_fast_assign(
- 		__entry->nid = nid;
--		__entry->order = order;
-+		__entry->order = sc->order;
- 		__entry->highest_zoneidx = highest_zoneidx;
--		__entry->nr_reclaimed = nr_reclaimed;
-+		__entry->nr_reclaimed = sc->nr_reclaimed;
- 	),
- 
- 	TP_printk("nid=%d order=%d highest_zoneidx=%-8s nr_reclaimed=%lu",
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 6ec84390ee2a..52d90a32091e 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7403,8 +7403,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
- 	psi_memstall_leave(&pflags);
- 	set_task_reclaim_state(current, NULL);
- 
--	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, sc.order,
--					  highest_zoneidx, sc.nr_reclaimed);
-+	trace_mm_vmscan_balance_pgdat_end(pgdat->node_id, &sc, highest_zoneidx);
- 
- 	/*
- 	 * Return the order kswapd stopped reclaiming at as
+It will get backported, so we better be careful.
+
+IIUC, the real change is only for /dev/zero users that
+
+fd = open("/dev/zero", O_RDONLY);
+mmap(fd, MAP_SHARED, PROT_READ);
+
+Which is rather something odd to do indeed.
+
+Letting AI do some digging ... it says there are not known users (I don't trust
+it, but I suspect at least there are no prominent users, which makes sense ...).
+
+
+Getting shared memory when requesting MAP_SHARED does sound like the right thing
+to do ...
+
+So let's try this:
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
-2.34.1
+Cheers,
 
+David
 
