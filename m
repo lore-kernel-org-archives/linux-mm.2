@@ -4,108 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F27CA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71812CA5FA2
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:54:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C6736B009B; Mon, 28 Sep 2026 13:53:55 -0400 (EDT)
+	id 8BAF46B009F; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2764B6B009D; Mon, 28 Sep 2026 13:53:55 -0400 (EDT)
+	id 86BB86B00A0; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18C3A6B009F; Mon, 28 Sep 2026 13:53:55 -0400 (EDT)
+	id 782816B00A1; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F1B896B009B
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:53:54 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 77A501202C1
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:53:54 +0000 (UTC)
-X-FDA: 85263919188.21.FF65EC6
-Received: from mail-dy2-f43.google.com (mail-dy2-f43.google.com [74.125.229.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C0946C000E
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:53:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D21Bc0hu;
-	spf=pass (imf28.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.229.43 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790618032;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B6A36B009F
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:54:39 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E65D916029E
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:54:38 +0000 (UTC)
+X-FDA: 85263921036.29.20B86CC
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf01.hostedemail.com (Postfix) with ESMTP id EB6F74000C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:54:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ln9JxC3r;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790618076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=Ry9723u1VCONEYNULtfqjmkGkxac0FV34z/xJBvJ25M=;
-	b=NiK4JFfkZqzfICbpqvfMqtyeuxJNFFuqoKABTZzum+++DEEd+z6zZKk1p59vFP9ByhbwaA
-	M0+wRE/J/i4jXT+sADMBDSMo9F7/XG0kO7igt40MMLy+KBy2SJHvActl44V/CFwcnu0dxy
-	LoHqfTxXxC1ZOBq5NgB/jjXAkQCZ+ZU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790618032;
-	b=UsPnNz3Pf4sfJyawZ+kn3ZiA8rmxc8VIsyv7cH712L1zL+C+vLWaS7UPWxLzs5OVbEfhlr
-	poy6FOPQCVW5OMAP7bXhX6aLX2/hCaXqUz+qHV5nujF/HnmpfNr9ykRCOhInlQDbN4T68c
-	GXt6px5KNr/e4+3InMXYVgMa76h26RQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=D21Bc0hu;
-	spf=pass (imf28.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.229.43 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy2-f43.google.com with SMTP id 5a478bee46e88-33c0d931083so1222988eec.1
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:53:52 -0700 (PDT)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
+	b=LHIq2R69hSSCA309+poomzw7DXA/vBcTdGivc+MwKVkIY+9PT1jcIVimq8zhXAWIF/sEAq
+	88ANHv8kCuHGkF1zdD9Z4N8SSUU8gzVdqua+DHeF5KWgBKZVS8NurpnNKtOy5XRRrtuI2E
+	8ujzqrPVc0gqkGbNvvmMfqyELqTLXvI=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Ln9JxC3r;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf01.hostedemail.com: domain of surenb@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790618076;
+	b=fb6CAeGg8a9RmKvMWHPziTwRR22VTrOK3o17eT9P3+HL1uV38GHT2Q4I5OFd+Laq2hBKOX
+	7iLrAAN5YJpodVUey9kjpo3fjgZlYVA7jeCJZ9FXsgCdEiXLa3T+D68T5PVskhotiZSMNo
+	keOaM8WjzfQVhQHRMt6ByEUWXX4oY6A=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533202fe429so32481cf.0
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:54:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790618076; cv=none;
+        d=google.com; s=arc-20260327;
+        b=PiFFgzahn3/KO/inMoawuVguZAFNjK1flRnMLBFkzwQhsLktdr7zWo/SWt9QDsmRTW
+         0OXGwjWDwdxQMIZzbZpHA6xypI+vrSpbdiKvkvg4e17LOQr6wI73CHNI+LKzHoddVGK4
+         B7+j3D8ebcshNY9tc7o5mqHxM8huz/AdPYTVzNUGlokGjRb8cSQIPeJ2/qF9bjlengZ1
+         uXL8ZZfpubkGnBgoI885vYGtrVLs7TZToNKTFy1veze9vaxBT0spNHGsg13aO9Uh7j4a
+         X66N9QkdmoMreYKqCAME5GiGbaHVbeo6EZLYhx5LFJUCMM2EUPejrFoHZLzWVDipJtYB
+         ImtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
+        fh=m6W1h/k1Pb5oJGUboq/zdUmkx/054gw42JP+CStTQzc=;
+        b=fIZXDBI/uAu117Of0ZNRSg9b5gpL+6qvH3w3rCAaVzdf+hqQ9h8yz2j6EMVc6Sg3fi
+         LuHegkHf00WIkiXdsQ6eCh+/07V/p+HcudZGNKYfMJzSyyz9i+krBxnieV4qWOuKIoip
+         7Zv0cXz0M21184tbRTdMXzCbvNKGkpISNb577RuD9PCBn+0hawY7fKrHVffxIqQDfw+c
+         1lAeeh8SXve3Sa7RNgw6NYfACWzh1AMPOQz+f1MVmlEs1kbwmRoZ2R/hrCko/YtSqrA/
+         5B6ngEDWxa55JwcOVNIY7waw4OzDTXjfCZNzTk2ogL6ASklacLGSG//BD7CwE3yzziE+
+         67JA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790618031; x=1791222831; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=Ry9723u1VCONEYNULtfqjmkGkxac0FV34z/xJBvJ25M=;
-        b=D21Bc0huFrrPsAhbfiKMZxnqoRYMOhcupYBpBw0eO2xJ+ZakJWE19Qw9ty3FpOwJb6
-         gHqBGk2dEVE+Vvy+WnKgSxh6Y002BsqpZolockhK2UdqBqFLJrxOeUpUHJ+WpDCCpoPk
-         /Q0sXf9u2RxMj1FCCGBTMMwRUV9PlbbKmr/AKQRs8A1OrkelYPmGtoWahTYRHjoPZtBV
-         rlvWMMMu6B1f8nRXWSxB8RXdjD79pfQkZ3EJ9XmPYVyX7gFWDNwN46jhz5Mh5UcGAhgb
-         ipkxAsV2qdd52e3Rza+D5F1qPZGud88mjdlqWHO0XhPv0J+MApfX6xhOG5BUfOzOUuGj
-         5bvg==
+        d=google.com; s=20251104; t=1790618076; x=1791222876; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
+        b=Ln9JxC3rWcTJ26VhMoTL4YodBHUNZ6iY/ooPht+cHycYd57onI98KYwRQvc/stSJJ8
+         RgMaBiyXXx5FELZVndx4Em60Qul/qfBy8y5QCDiq5u8WymEZp4q0pN2mSA4257Xj9VnK
+         EgfewaYU/IrTKTEaw+EKlytAFvl2y1ltXIlH33Y4cOUCiUIJ3zc55P5AefqXilr1UAXd
+         UVuvebHJqJhoyuyn+JdRGAyBl5chYM2Md3rTjSPY/z7vBzmgipX+4jXTiVqU+EfipEI8
+         8CEYbVUzRm8E/ROYfBLOfenBFqHrUAdxIB2/t+Z1vQOSIUqf6WQlRGxp7/poNdsYnCHL
+         QKfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790618031; x=1791222831;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20260707; t=1790618076; x=1791222876;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Ry9723u1VCONEYNULtfqjmkGkxac0FV34z/xJBvJ25M=;
-        b=aHcoMUM6s6RujG37sWI+8hNnoo5LZXkjIYtrEtCSwf+b9zy2lEKyqjbSWJuUNnSWA6
-         bvU1Xjf6jSGm9Bxo8+AYl6Ujih1/iqNNHAOlF3nHtIaw8mjbZmTM9L1FxdrcZv8gHA9V
-         YDXttArEJWEhF7WVFYRE0WRmjpQ28sAgNNPJrepSqCHFrPZIYI6CikDFFqlCMKKSjb81
-         v4RKEJfSaFOggUcvAYtl331erxy2RNyvfdYEgbwT0pEbLxAby+iD2ekzxb+ukrVIzFsB
-         kXtfHtEbLn2grCzOeTMO0wWoe5LPGEvD8RIPKn7QW9Y/sDd/120c33tAPIRoJHB+n9GJ
-         iFuQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzW4h2jhr2cnaDKuLSK6Zninv5FJGyZ7OhxgcbZPZWidUgU1Tlq3ZmDtrWKjzW/IbLvbhJIHfMeLw==@kvack.org
-X-Gm-Message-State: AFuF++l17shfVDUeLKxMCiZKjk02E4CJDyroI1GkeZwOXZwwHES6orl/
-	nvF4Uu5gKfd8qrjiRpPe8FU7dtxz8XmXrcPYp/sg3MJSA5F/Ns9LfDBcOoYDMhSw
-X-Gm-Gg: AYBFou3jnR0uhUOcwLCE3FEoysP/wNBnFA8gfkMfGTGPi8yJiZuif6vMonLSLVdvrnI
-	v4cZXTJkyo8RmBMClZQHnGxQH5M9EYnaJNlS4S1KffXTfmiagJyB4aRjRL0vqMnuFJOmyuY29Gd
-	FvJ1n16EuHN8oh6pdfmBm8FTSLxaTL5k995IlfvhaH2UMWafjaSPrvMmqr/8ybvqrhhhcn9QZg3
-	thRgV0DvtlAL6/OyxlOg0vQ/SNTGmx+42ZkRj6ol/5PKm4vlfdDsfqF5lzbgD8f+YaRYLkffeT5
-	6yAIoWtFMrqKU96daPFPEc8JmW0OE+WYbEekDoBChzn4e0gEC1omuXLDV1caoaR+4pueaM9mT8P
-	CDE4WxhC67fZCbMLGXafcYoBLghj5DFnfxCbUiUlTwe/G2VUrrk/C7tzX3rb+nFA2vuBq9O8fMb
-	Nnch67hIfTgLJDmHbIIXhqo0ebvERHoPROpa+jHRYx30sbwsh2uWuFhA9ErhaB8+0p+F0GANs8o
-	n6QCQYKsKqktMwXohz6IxYVMWCI0ar1cP7ZBbH5mQJCv/s/Hopr6g==
-X-Received: by 2002:a05:701b:2210:b0:144:fb71:dbd8 with SMTP id a92af1059eb24-14b2b6bd4dfmr165181c88.8.1790618030705;
-        Mon, 28 Sep 2026 10:53:50 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-145aa0cb6b9sm24285377c88.1.2026.09.28.10.53.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 10:53:49 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Muchun Song <songmuchun@bytedance.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 0/6] mm: Unify device DAX and HugeTLB vmemmap population paths
-In-Reply-To: <8385F749-0F72-494E-9CA2-2E433A066712@linux.dev>
-Date: Mon, 28 Sep 2026 23:13:35 +0530
-Message-ID: <se2tjmpk.ritesh.list@gmail.com>
-References: <20260924075259.2013039-1-songmuchun@bytedance.com> <607759bf-59f2-4ad6-b95b-e780ed2acba3@kernel.org> <8385F749-0F72-494E-9CA2-2E433A066712@linux.dev>
+        bh=9+DHK8X7Eh0ZP6ILe/dSKNORYLgHg/uYsEc/MlUEQt0=;
+        b=coP6f3zfKCDakJRN2M5nNdo634oq3/8v7wqEJZAa3xYZ6HXPb4Gke2wfaD+UGEzRCg
+         h6DmnWvEM09dT268vNgTnyzgSEjtVELmIjq8CCe/HM5VK7rWj+t+KJI7GaQ7KVVqDPW7
+         QqRUtioQwOYQjrdVNQ0mX8m5IRZS1bzmu0ER0NYFX8Y1MCyCNGBQhPu3UI9wkApSKRFZ
+         V2pzXFXFicgoVmmgrGue8xFscnPFxeo2JFpPlfMkvYYcXIMGEu//53kKU7dJLmPxuC4Q
+         Ti+WG94L6XGyu31NryDL35w/8jYr7vL5M/a+UJDZbzmg1gq+LlDx8izLJpNcjnGR/DTa
+         ujsw==
+X-Forwarded-Encrypted: i=1; AKwUvBz2hnTnzRDBCjBulsp6KFUFJc7Am5kiMsZiSybjQJNXV8TzDk0Zo9SRNMdU4DXbcFkU8h7qwjTejg==@kvack.org
+X-Gm-Message-State: AFuF++mj5F/u5M2dhYzxbIeMbpm8itjxin2QQCyUvCOusZWjRulSu6z4
+	WKieoevw6isJiVih+Cn5q+1w1j/l1RdzRAizQ9bGNH28ecBaT1Uac/a5huwPz8S7ihYZeBpfvQ7
+	7Urp0fzj53qOEnHDmwpjvTE5+0YEU8M8ptZXaPv7L
+X-Gm-Gg: AYBFou3f7SyWOZ4uBoBsgJqKPYzjyoAzBIYgA1LlQdJ2+uBWbcHHVvfPDjH2zb7gPF5
+	MsYsxNii8IjvYxBx4JD7qBP4OUGAl8CmlrP//qnVV2F4QAIEbYzB5iwzJQVa+mItxCI97jTVqkA
+	iTHyux+0f0R++p/kk8HkjfMxvaDWd31AhCeAEfMlJS+CoTWE64aXo3rre63nG4uHFpZPAXrU9As
+	OqF/vlQ0PIUEtw+O2KKgOtIE69mRS7KGZK7eBdPRyWWLQHhMBKf69p1bRHSh8LXrCEWemLqNuEg
+	LyXkYUp56s7VNnLJCmj7ThxHljHfaK0iND0zI1ZLKiGMYcW+9z4cGw==
+X-Received: by 2002:ac8:5c82:0:b0:532:d72d:3e9c with SMTP id
+ d75a77b69052e-53320155bd4mr36219771cf.6.1790618074487; Mon, 28 Sep 2026
+ 10:54:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260915070001.113559-3-hao.ge@linux.dev> <CAJuCfpHJSwNhgotMVpmjVvdv=m52_7Kvzpztf0WcN0AaoSeGGw@mail.gmail.com>
+ <60642a7f-2949-428a-8290-40d69c989a77@linux.dev> <CAJuCfpG3d7n=z5WnUQYZsqvrt1pemF8TFvGiGyZGLO7ykVvqAQ@mail.gmail.com>
+ <CAJuCfpGeRdFY6UPF-vXxwHvP2+tN=BKgRkmLR3PMLuWhxgzPRA@mail.gmail.com>
+ <1dff448c-9cbe-4276-bca1-d91283b0c7b4@linux.dev> <b8005c24-ecac-45c4-840a-fd282f9693b5@linux.dev>
+ <arpK2bQrrUMvEvTP@milan> <arqDHnBFGKQZm7VU@milan> <CAJuCfpHuTzFBUm2uAbkFsKF85GxcqFATmKgT50AQgWkLjf7NMw@mail.gmail.com>
+ <arqoPs4ZplfcGmLo@milan>
+In-Reply-To: <arqoPs4ZplfcGmLo@milan>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 28 Sep 2026 10:54:23 -0700
+X-Gm-Features: AclHuK__aKkipvuCxqs46ykw_GUVX8SYwupmrIMIoqCWPlzVc6V7pkill3lm8U8
+Message-ID: <CAJuCfpFT=QKy_5G6GYQ1OHhvjXt807jn0pUq-eF9QonNKhx=aQ@mail.gmail.com>
+Subject: Re: [PATCH v10 2/6] alloc_tag: clean up the populate failure path
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Hao Ge <hao.ge@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	Aaron Tomlin <atomlin@atomlin.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-modules@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C0946C000E
-X-Stat-Signature: 11bmjp4dnnbbcouwbzy4dzqy3m4g64yx
-X-HE-Tag: 1790618032-690017
-X-HE-Meta: U2FsdGVkX195q0vu2pQ5U3B4tILFoZela+mhdiT0nr+egihF4eLUqYeTg104Z59dFzk0UG3Wb3QxApdJJXV5WWmDWT7TXi+nCXcEJ5r5527X30iSS1suubOSRNq55AaQVyECUu2mnABXNe1tDYOKBIbXYqcPeYidVSrHOuUDNHT9LIzYjga6buxeVirMlgYBJlbtwr4OCzFovMU+CCiKSirLocgbbhbVmhJ3BskoKN6Ev5X0C6BwhUJet8/BvM/MTo0/otqEQNAn007zPIJS3a4VcCPlUfaze8xBdYYBxrUYQqSfJiQSasL4gypf5/ifmD43q8rseCrWJM59/kXa52YLe7k1faMepwgQqkJVM53T9+KoMfjMTNi79jy7p7MttSJg9MnCMYwv7s3z/L2Qrji6ealte7qNK+I1YtKmpgeyc7NkiBSY2sYrn5OiBLCbBDfhJPgn975m+evkqSMLL8QRpNeWvnXY+0x00YJR83x+nRBHee9Zswq+Tjdv+vHWQg/bOuEcMZ4/tX64Rwfwz15GMfDmSv8gZJLNbhltqvmQQisE6NTDL5TDlS2QavPyOfK4SDuOYVSE1qihLswbD6/oKB2RHq0mmini5HwTvNpztCCLKC52GvdKh1ZAbjcKrDtdoB9Bq23nhXhZCyqg99kU1/k+o7cdiAA3pnvJ5mu7RikOtFu5C37N92mU5bj8UiPAnnIH+8ZUlsc9XyGYmrCBom9FD8QfrKNm4nMlJoKEwut1GG+bvrcSILgs1sC+xRtsgQVsAXEm1lnUaQNdI8w9WOfP3qxeKHWmbHA08W9l77b++gkVbPjsVDOqRmfmoQpCW7fsNWnBkxPM1qddeIwbfPBgsEcUSXFvLDPqRwSrEJaa4rVErf8eK0WFR52H8kdj3HjDclCbvHx8axf4TJnCHH/e++aOAvvYWfu7p0OPoaqD5hGo9UhJslLgovl5M5z8V9jxpiTneYEOIkx
- pXAdcxHB
- 6sjBkNDyZRp5ig4VA9aKMiw+krAABFlFgGxt4c1zwdyaC7d/wx9Rya2lRSzgRnwhB1i5g7o5I49phFx1sqp1w3H6QhzFnVBn98KTAN3nSzDQfP50wVbSKUJExpTfG5m4ZTRvR1dDm317TmA3hLnvMdPojP74akzQFTUvZSAxvtwPTCe8dHzXRrmBFP39Ls5Fwh7woFLG/Bv2NZZSux6izSZfin2LaDixI3jDEp46Pyy/z9SZ1jKBuUdfoCc4bMuxiz8zVicvYECyV1oPxXxTt8PVPVB1LV19hj2C+/dTnJZXQ1S+G6DPXW/8zUMEVIhNpCQuPM34HI+g0QFgo7vlqU/IX7Fyysv7i3PMbKWolvxqsAvy2O8HfAT45EbNBByP+7wzY26P+Fyeu6AB16at0xSUZxpT76rI87rnL8QBitLtI07CIvHC2GOo1OakUt/3m8TIEHyfuVfjtpAeXFiYrwS6HAsA0lVVLObo7ElOYyp2UNdg=
+X-Stat-Signature: ahxztpmwy1otnexy1bu3fjq3p9fxq6rt
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EB6F74000C
+X-HE-Tag: 1790618076-177839
+X-HE-Meta: U2FsdGVkX1+4W9FiE4qOOFvPnoqBT9EpaWoJ+SSdAo6Of67/Jz66O2jl7eoV0yQSBgzWkZfg6eFVeZHE+kAqg1B/cmeJxn2vatjCvMmgFHPYUKfF34xERj3RZKbWtMK8ETMUshUlPrsIYlVH1PxqkgF7cXnUKAaQPO6KuMe9+ku9O7Gr9VfXKwnrDgpAMlReoLP7ZJ+fzaAo/9gq7mzwP2JCyx6jISSONTq9wS479aD8Tkixdjr4gXMQWv1078/qSr4ci462XHOUqSpBjVNRx8o4ZU7lz79SdffSzyMYccKiwjERSb8xRqpaG0C7KuBwm7bDYkzQMGvUj4fTGvTLvqkFFG1BZRdmk1ZC0mDf58WIJTRXurBdi/mEiFyP77rlaexhukeFtDp3qV2afC/BbwgPXO32WkCF1gwvR9rZzX0qTbRVId8c74Md/WjInYSUie6LGOSGRTnhayaDbMGooVLdv6/8HmU506OeFqVynLROlqfyOxLu61u8VxDf7fOoa12neqac+cOEqu/79kjRK7P+DGCC9nt3h/DaCtjvGAoEqFnW1FcLHSk25FeQaJI3KnxNjN7OFwMdi0ssSfn/+3eS6GaLxHH9oh+T1/K5oHiYYvHi5Glm500r3RKUAsaBxfSjfVBDrrjwD8spsXE5WCVhn6Nm476AxOHMM/awIeGkOhDUv3DeatAsLGyBXcQYnRxau/ebRr16Nm96rQcNjgjQB/vvW2N0Z4/Sgf7JMj89+wkmScjKoTFnjmwyPBasXvQs1iPgYKeEmzbBlbk5Uf06jm3UxKt3ruUONAdJny2Ya+WwNK3aVeJ4ps5oscnnkF+ZvCWlP9ujRINO5ydltObGmIh/QP2pGmAf9LdY+cPbyvxLUz/1riVM8MWhhfaQdi0NyA5vB3OdV9aFQya4W1o6ooFvue1gtfrnvvE6TEz8fHeA7h17okJBX1PQp2JfbFkvClFsES70dgVio1X
+ naHVOksZ
+ rCku7L4KwE9y29sVX+Ykw/oOvGsM0g1J+ddYwvOfl4aaG2snSqkwIbIbi+JJl8Ct6QPcVk6/TLpaEvzr1UCghjA77mI4Mzl+rVNhOchG0cDENDGWp2dKC2mU0Rx/i14SA6hQ6IeQK8WHFVTzuQwXz/xwvNio/YtWPnltft4dNhWrsBanOsiPnlw2/6WY/9hvnAjbuaDi5AGSsavHnn2Y5HOJDfR2wdcx0VR8LXJKFf0pguqatksr2P159j1qS2ZqNUyzpiBY2V+KiS4jdTt7ODciD4PY9v2lPUXCDyXZh+M5UWikd8b6YrM4S5fbmVYNOzCryT6B0q1i7qmI9X93H3PcRKHi1Hbb6lb4at3CthAGobCCEhIdKK7YX3SVAQuW5JZMf+28eBZ7at/o9qkN7OI/l/g1j1ZZT1mpS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,21 +149,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Muchun Song <muchun.song@linux.dev> writes:
+On Mon, Sep 28, 2026 at 10:47=E2=80=AFAM Uladzislau Rezki <urezki@gmail.com=
+> wrote:
+>
+> On Mon, Sep 28, 2026 at 08:16:18AM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Sep 28, 2026 at 8:09=E2=80=AFAM Uladzislau Rezki <urezki@gmail.=
+com> wrote:
+> > >
+> > > On Mon, Sep 28, 2026 at 01:09:13PM +0200, Uladzislau Rezki wrote:
+> > > > On Thu, Sep 17, 2026 at 10:32:48AM +0800, Hao Ge wrote:
+> > > > > Hi Suren=E3=80=81David=E3=80=81Lorenzo
+> > > > >
+> > > > > On 2026/9/17 09:12, Hao Ge wrote:
+> > > > > > Hi Suren
+> > > > > >
+> > > > > > On 2026/9/17 03:07, Suren Baghdasaryan wrote:
+> > > > > >> On Wed, Sep 16, 2026 at 9:31=E2=80=AFAM Suren Baghdasaryan <su=
+renb@google.com> wrote:
+> > > > > >>>
+> > > > > >>> On Tue, Sep 15, 2026 at 11:00=E2=80=AFPM Hao Ge <hao.ge@linux=
+.dev> wrote:
+> > > > > >>>>
+> > > > > >>>> Hi Suren
+> > > > > >>>>
+> > > > > >>>> Thanks for you review.
+> > > > > >>>>
+> > > > > >>>> On 2026/9/16 05:09, Suren Baghdasaryan wrote:
+> > > > > >>>>> On Mon, Sep 14, 2026 at 11:59=E2=80=AFPM Hao Ge <hao.ge@lin=
+ux.dev> wrote:
+> > > > > >>>>>>
+> > > > > >>>>>> The reservation is already stored in the maple tree when
+> > > > > >>>>>> vm_module_tags_populate() fails. A failed load never unloa=
+ds the
+> > > > > >>>>>> module, so nothing releases the entry. Release it and roll
+> > > > > >>>>>> module_tags.size back. Without the rollback a concurrent l=
+oad that
+> > > > > >>>>>> already passed needs_section_mem() can reuse the freed gap=
+, skip
+> > > > > >>>>>> vm_module_tags_populate() and write to unmapped memory.
+> > > > > >>>>>>
+> > > > > >>>>>> vmap_pages_range() may have installed some PTEs before fai=
+ling. A
+> > > > > >>>>>> retry to populate the same range would BUG on them, so und=
+o them,
+> > > > > >>>>>> but only if vmap actually ran.
+> > > > > >>>>>>
+> > > > > >>>>>> Fixes: 4835f747d3ed ("alloc_tag: support for page allocati=
+on tag compression")
+> > > > > >>>>>> Fixes: 0f9b685626da ("alloc_tag: populate memory for modul=
+e tags as needed")
+> > > > > >>>>>
+> > > > > >>>>> If a patch fixes two other patches, it likely needs to be s=
+plit so
+> > > > > >>>>> that each part fixes one patch only. But read on please. I'=
+m not sure
+> > > > > >>>>> if one of the fixes is correct.
+> > > > > >>>>>
+> > > > > >>>>
+> > > > > >>>> Kept them in one patch because they only make sense together=
+.
+> > > > > >>>>
+> > > > > >>>> After a failed populate the reservation is released and the
+> > > > > >>>> size rolled back, so the next load takes the same gap and ca=
+lls
+> > > > > >>>> vm_module_tags_populate() again, and that retry would trip o=
+ver
+> > > > > >>>> the PTEs the failed vmap left behind.
+> > > > > >>>>
+> > > > > >>>> Without the rollback a load that already passed needs_sectio=
+n_mem()
+> > > > > >>>> just reuses the gap, skips populate and writes to unmapped m=
+emory.
+> > > > > >>>> So splitting them leaves each half broken.
+> > > > > >>>
+> > > > > >>> Yeah, that's why I think vmap_pages_range() cleanup should be=
+ a
+> > > > > >>> completely separate patch with vmap_pages_range() doing clean=
+up
+> > > > > >>> itself.
+> > > > > >>>
+> > > > > >
+> > > > > > I think I get where you're coming from now.
+> > > > > > Thanks for taking the time to explain.
+> > > > > >
+> > > > > >>>>
+> > > > > >>>>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> > > > > >>>>>> Cc: stable@vger.kernel.org
+> > > > > >>>>>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> > > > > >>>>>> ---
+> > > > > >>>>>>  mm/alloc_tag.c | 10 ++++++++++
+> > > > > >>>>>>  1 file changed, 10 insertions(+)
+> > > > > >>>>>>
+> > > > > >>>>>> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> > > > > >>>>>> index 2070e682fe10..95ddf5b743d0 100644
+> > > > > >>>>>> --- a/mm/alloc_tag.c
+> > > > > >>>>>> +++ b/mm/alloc_tag.c
+> > > > > >>>>>> @@ -804,6 +804,13 @@ static int vm_module_tags_populate(vo=
+id)
+> > > > > >>>>>>                                      next_page, PAGE_SHIFT=
+) < 0) {
+> > > > > >>>>>>                         release_pages_arg arg =3D { .pages=
+ =3D next_page };
+> > > > > >>>>>>
+> > > > > >>>>>> +                       /*
+> > > > > >>>>>> +                        * vmap_pages_range() only runs on=
+ce all pages were
+> > > > > >>>>>> +                        * allocated, and it may have inst=
+alled some mappings
+> > > > > >>>>>> +                        * before failing. Undo them.
+> > > > > >>>>>
+> > > > > >>>>> If vmap_pages_range() failed to map the range, why should w=
+e need to
+> > > > > >>>>> undo it? If it indeed leaves some partial mapping when fail=
+ing then I
+> > > > > >>>>> would argue that vmap_pages_range() should be undoing these=
+ partial
+> > > > > >>>>> mappings itself before returning the error.
+> > > > > >>>>>
+> > > > > >>>> Yeah it does - none of the paths under vmap_pages_range() un=
+do themselves on error.
+> > > > > >>>
+> > > > > >>> Hmm. I wonder if this behavior is intentional or requires a f=
+ix. The
+> > > > > >>> only possible reason I can think of is performance but I can'=
+t imagine
+> > > > > >>> a failure to map is a performance-critical case.
+> > > > > >>>
+> > > > > >>> +David Hildenbrand (Red Hat), +Lorenzo Stoakes (Oracle) what =
+do you
+> > > > > >>
+> > > > > >> Huh, my gmail thinks you are still at your previous companies =
+:)
+> > > > > >>
+> > > > > >
+> > > > > > I manually fixed it on the mailing list for this thread.
+> > > > > >
+> > > > > >>> guys think? Shouldn't vmap_pages_range() undo its possible pa=
+rtial
+> > > > > >>> mapping when it fails?
+> > > > > >>>
+> > > > > >>>
+> > > > > >>>> pcpu_map_pages does perform cleanup on its own as well. Ther=
+e may be other similar sites.
+> > > > > >>>> https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/percpu-v=
+m.c#L255
+> > > > > >>>> so I did the same here.
+> > > > > >>>>
+> > > > > >>>> If we really want vmap_pages_range() to handle this cleanup =
+internally, I believe that would
+> > > > > >>>> be a relatively large change, and we would need to consider =
+many more cases. So I think we keep
+> > > > > >>>> the current behaviour for now.
+> > > > > >>>
+> > > > > >>> Yeah, I understand it would require a deeper cut but if that'=
+s the
+> > > > > >>> right way to handle this we might as well do that. Let's see =
+what MM
+> > > > > >>> folks think.
+> > > > > >>>
+> > > > > >
+> > > > > > Sounds good to me. Let's wait and hear what the MM folks say.
+> > > > > >
+> > > > >
+> > > > > I just looked into the call sites for __vmap_pages_range.
+> > > > > And I found there's a bug in one vmalloc caller [1].
+> > > > > When gfp_mask has __GFP_NOFAIL, the code keeps retrying
+> > > > > __vmap_pages_range. If there are leftover PTE mappings,
+> > > > > this can trigger a BUG(); [2]
+> > > > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L39=
+46 [1]
+> > > > > https://elixir.bootlin.com/linux/v7.3-rc3/source/mm/vmalloc.c#L12=
+1  [2]
+> > > > >
+> > > > Indeed the below code is incomplete:
+> > > >
+> > > > <snip>
+> > > >       /*
+> > > >        * page tables allocations ignore external gfp mask, enforce =
+it
+> > > >        * by the scope API
+> > > >        */
+> > > >       flags =3D memalloc_apply_gfp_scope(gfp_mask);
+> > > >       do {
+> > > >               ret =3D __vmap_pages_range(addr, addr + size, prot, a=
+rea->pages,
+> > > >                               page_shift, nested_gfp);
+> > > >               if (nofail && (ret < 0))
+> > > >                       schedule_timeout_uninterruptible(1);
+> > > >       } while (nofail && (ret < 0));
+> > > >       memalloc_restore_scope(flags);
+> > > > <snip>
+> > > >
+> > > > and it should be fixed. As the __vmap_pages_range() can actually fa=
+il
+> > > > and leave some installed mappings, we have to perform some cleanups
+> > > > on failure or on repeat(if nofail is true).
+> > > >
+> > > > Below code:
+> > > >
+> > > > +                     /*
+> > > > +                      * vmap_pages_range() only runs once all page=
+s were
+> > > > +                      * allocated, and it may have installed some =
+mappings
+> > > > +                      * before failing. Undo them.
+> > > > +                      */
+> > > > +                     if (nr =3D=3D more_pages)
+> > > > +                             vunmap_range(phys_end, phys_end + (nr=
+ << PAGE_SHIFT));
+> > > >
+> > > > we can use but we need to check if partially mapped space is not an
+> > > > issue for the vunmap_range(). And it looks like it is not.
+> > > >
+> > > > <snip>
+> > > > @@ -3953,8 +3990,15 @@ static void *__vmalloc_area_node(struct vm_s=
+truct *area, gfp_t gfp_mask,
+> > > >         do {
+> > > >                 ret =3D __vmap_pages_range(addr, addr + size, prot,=
+ area->pages,
+> > > >                                 page_shift, nested_gfp);
+> > > > -               if (nofail && (ret < 0))
+> > > > -                       schedule_timeout_uninterruptible(1);
+> > > > +               if (ret < 0) {
+> > > > +                       /*
+> > > > +                        * __vmap_pages_range() may have installed =
+some mappings
+> > > > +                        * before failing. Undo them before returni=
+ng or retrying.
+> > > > +                        */
+> > > > +                       vunmap_range(addr, addr + size);
+> > > > +                       if (nofail)
+> > > > +                               schedule_timeout_uninterruptible(1)=
+;
+> > > > +               }
+> > > >         } while (nofail && (ret < 0));
+> > > >         memalloc_restore_scope(flags);
+> > > > <snip>
+> > > >
+> > > And looking further. If the __vmap_pages_range()/__vmap_pages_range_n=
+oflush()
+> > > and friends fail, a proper cleanups should be done inside, IMO.
+> >
+> > Sounds like we are in agreement.
+> >
+> > >
+> > > But i am checking callers and see that some do some not:
+> > >
+> > > <snip hooks.c>
+> > >         __vunmap_range_noflush(
+> > >                 vmalloc_shadow(start),
+> > >                 vmalloc_shadow(start + clean * PAGE_SIZE));
+> > >         __vunmap_range_noflush(
+> > >                 vmalloc_origin(start),
+> > >                 vmalloc_origin(start + clean * PAGE_SIZE));
+> > > <snip hooks.c>
+> > >
+> > > kmsan_ioremap_page_range() it does clean ups;
+> > > kmsan_vmap_pages_range_noflush() looks like does not care in shadow.c=
+;
+> > > __vmalloc_area_node() as noted, it is broken as there is a BUG() on n=
+ext try if nofail;
+> > > pcpu_map_pages() it does cleanups.
+> > > ...
+> > >
+> > > and so on.
+> >
+> > Yeah, the callers that do the cleanup should stop doing that once the
+> > vmap functions handle it themselves. I expect an overall reduction in
+> > code size.
+> >
+> Agree. If mapping API is called and it fails the caller should expect
+> the state as it was before calling that API function, IMO.
+
+Thanks for confirmation!
+
+Hao, do you need help with making the change in vmap functions to
+cleanup upon a failure?
 
 >
-> If you're planning to review this series, I'd suggest waiting for my rebased
-> version.
->
-
-Hello Muchun,
-
-Thanks for taking care of powerpc side of the changes. Is it possible to
-share your git/github tree somewhere? Sorry, but it's hard to follow
-which series is based on which and the overall multi-series is based on
-which upstream tree. If you could share your updated tree somewhere -
-that would make my life simpler.
-
-Thanks!
--ritesh
+> --
+> Uladzislau Rezki
 
