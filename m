@@ -4,119 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6907ECA5FA2
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFB21C9833F
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 11:29:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CC7C6B009D; Mon, 28 Sep 2026 07:11:05 -0400 (EDT)
+	id 8871F6B0088; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A8596B009E; Mon, 28 Sep 2026 07:11:05 -0400 (EDT)
+	id 838786B008A; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BA5A6B009F; Mon, 28 Sep 2026 07:11:05 -0400 (EDT)
+	id 727CF6B008C; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 26E4C6B009D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:11:05 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B0BA3A010A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:11:04 +0000 (UTC)
-X-FDA: 85262904048.12.9123AA7
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	by imf01.hostedemail.com (Postfix) with ESMTP id EDB7540004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:11:02 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SP1cdk+m;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C2056B0088
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 07:29:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CAF7DC011D
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:29:51 +0000 (UTC)
+X-FDA: 85262951382.26.F7AF96C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1F0FC4000B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 11:29:49 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqAdE900;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790593862;
+	s=arc-20220608; t=1790594990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Gr6RdF6V1I6p9W/aP+8aNb8DjQUp/6U5Pbv2mZN+P3w=;
-	b=kPIwbGKgXqEkyDB0hYQMa0sc+Qu+x0Jd5XW2bPvqCmU4C/AsnBZ8DhXrkzjmQ6IfUMjs3Z
-	BZY2ZD9sYGRZAqcIRvuWs5782UbUTzRdlsvRIHVWv9FeZ4TI/dNzd9fwMmQjjYSj7BWE4W
-	BNNHu693qB2m2Z/zoHoNE/JKokFh+Io=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CJ5kjINHhTvLlIC4gUldiEPrQ0Od5Df/IMR+FjoeiVI=;
+	b=aulbp0vW0G+e2JRMeypXR1ctxbhKq0C3FjgV/kCW186SykhKpksSsDGCGl4u7YQNR0GZ9S
+	1ZYMtel9z/aDPABn1OmaZUDEzqZ+OHiN5V4Cbf84PBX0J/kR5RJ5OMLf06ds9Fjj6AsIBW
+	3saGcLio9oEfC/aiTobjXP9lNun3w9Y=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=SP1cdk+m;
-	spf=pass (imf01.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqAdE900;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790593862;
-	b=bK3pDBl0ZBi30cM8XnhG6h6iXfNXjvmGt6IJjoAY/1LUVGwV9WnHwa++WVgTRaizY0WbOP
-	/Tqj2yvFblxIwOLxyuq0/gJ1/IaopZbi8gaJi4dccneUjOLMJkXk1gyHxMsMl+AUItpMAz
-	lYkFYRRdKLeOp3K0BozLYlYlfFx3wrY=
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-486e1a044c5so2434425f8f.3
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 04:11:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790593862; x=1791198662; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Gr6RdF6V1I6p9W/aP+8aNb8DjQUp/6U5Pbv2mZN+P3w=;
-        b=SP1cdk+mE2fknvmOWiRhPeC2th1skcpTi19VYjHShYWC5uQ//VD3lt2ZUprz6L9HXQ
-         WB4Rhno4JXXw77WYdannm5hvJN9WR/avgByheR2Y1jicbIi28lfvTSHaS8RO9I/IfLay
-         oYQQTs+PDqhiZynKkVBwAIp5C+YL1kpApOT4Gz6PGB8wUFf4oIJ6sIjxVNRmcKC7hkkZ
-         jNs5pTFWIzGthS+0+WpHcIcWTbJCeuXVQnYcr7/QldR9QUXz71gev4HtAWSC4DDnxoUG
-         m2Kik1lRgdnb9wMuhX3evjUF6FApMPr87zkV/PzwOCIijFiTunn10z+kYb3a43FGzmzd
-         hSbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790593862; x=1791198662;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Gr6RdF6V1I6p9W/aP+8aNb8DjQUp/6U5Pbv2mZN+P3w=;
-        b=qa0gEffW8QLcIk0OVmKZZKZvhfr0klSEtFW5VEfTEbRAcesAqwXgm8tMaGpvR4AUmB
-         jSLxRJkS9yFvqchfPZkSHtXcI9xfHKRwr2k8WILqFpB5CLECEiLQvVSCAvHBaVOrGfqY
-         GMmOeE80nNH6deCsTC71ex5MMuG+9uCpXHJolQqXHt/WFSphENz4aiVfVxGhx3zT5N6l
-         FFpaqe6c3thFos1tLJ7nExY5B5/UIYp2PaPpYkjnvMOC87CMgNU7l1gFlSmr3go5bRS7
-         uOHAlJy9/yS+xCWavwjhhyJKQicehl620sALCpjRkVNQ7QnFmt5n/c6T27se2WvDnBv/
-         7DNw==
-X-Forwarded-Encrypted: i=1; AKwUvByFyhcc4MJa0Q6lyiBttrQJgMc4h72Z4PpsnVF3cRAjcDR3WLRjb8hyZ4wOXdRuwZoT/WXpxhnq2Q==@kvack.org
-X-Gm-Message-State: AFq9FYIOGIKG7lhCLacqYiXhYs7eWBTGVuEtQLKyB19TXJx4i7nddUMi
-	JcuCCzGsK6MxakAPTb1gwDbnRQ8qK2r7g6xHn1cC+HvxXvsubMkVh4qs
-X-Gm-Gg: AYBFou3BDsYM9aqv2xmr/0KUdilb8nUGeDWGMp6GzDEZkRYIK1O6gRZ261rTjOX5T50
-	6FokKD78vrLPKVG+Nf9f+gPUIwHs+fV8b6B8RIT7E69b/vjiyS0jNLUshaDupKAXoXwqrpbIlHk
-	Vu8qqz/rOJ6i0YOJSGAl5ft/tQKbk38YIULgl9eisCK87vTP/lEdfImk2iQle2fCJux7+9lxkCq
-	BVN7FxDQV/7Pq1xjdmmqU70bjeY4VZfi0gS2Blg1P490FOUtV8hD/rNtgqJu7gJQCB9Ew4ucD5a
-	cTanLGhWpwlONfe+hF0WHtWKQrdeR7yw0xb30nXWovV3diQrSm+C03JkumIka1RdNuVzZ7uf/b5
-	vBnP8gcBSKsX4RKjgve4SCfYmQ6nPhDzMJTPSk71bXquatWo6ygM7mFG/VPUVgtJS1St3W6Ognf
-	X8ew++37c2031tZe+15jSl/1ckvv2y34bxlvWs8SIJ+43UX2PTAe0D+ZI=
-X-Received: by 2002:a05:6000:2204:b0:487:2387:7c9 with SMTP id ffacd0b85a97d-488717202f9mr23496795f8f.14.1790593861393;
-        Mon, 28 Sep 2026 04:11:01 -0700 (PDT)
-Received: from nobara ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64ed6esm29371081f8f.29.2026.09.28.04.11.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 04:11:00 -0700 (PDT)
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Shuah Khan <shuah@kernel.org>
-Cc: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] selftests/mm: check MREMAP_DONTUNMAP mlock accounting
-Date: Mon, 28 Sep 2026 13:10:42 +0200
-Message-ID: <20260928111055.482136-1-azpijr@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	t=1790594990;
+	b=PyXWYNulqNdeP6jB2a7k63Y9xEYqbMsZvaVgICJm70ocMkY1BiE7fjNgBHLGaDL1DGwSUp
+	QgZA6QDS8wWovOSKiP4rsXotuVFPYEp67KRsc/ap23Ia9332/fbRxOQL5czUYOqbd5h486
+	bpTxFu5sfvqixTROG8x2qxjj+9txmyo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 632CC600D1;
+	Mon, 28 Sep 2026 11:29:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC4761F00893;
+	Mon, 28 Sep 2026 11:29:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790594989;
+	bh=CJ5kjINHhTvLlIC4gUldiEPrQ0Od5Df/IMR+FjoeiVI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EqAdE900qssN5xhvsE5kU1fwGiZv1o0KIbKETkKrd3+I1Tyfgc1URQb7S/ef/Jo/i
+	 kSvCfqBYS1+uYNMMOTwRMJ3wsgo4piEcLKsDUNJFh/o1JFb3SEQ7PF0LNO3STqv6zJ
+	 VpEaTsyDB0EsOy+Vnv2ssm8aUbMYc5jXOvcbyynrxRyexqLCgxImcprt4hhv8X7Arg
+	 5T6DK2hjVkmBorT6UvpGIo83Td5UbQvJm0BQRMHsf5zusn0XdC5FvMuovC3LkR00km
+	 m2XnhFljMXw/YYnfdgmYOQvEH59y2JXCpiK+WizjKF73suR+8FyqWgxyaEHubD/7D0
+	 bh3TdJn8Sx9hQ==
+Message-ID: <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
+Date: Mon, 28 Sep 2026 13:29:43 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+To: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>, linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: EDB7540004
+X-Rspamd-Queue-Id: 1F0FC4000B
 X-Rspam-User: 
-X-Stat-Signature: 5mfpk6ej7ang7oy4kshkcms1wbt6qa6c
-X-HE-Tag: 1790593862-765236
-X-HE-Meta: U2FsdGVkX19MvV/hCdx7SOFYJW0drRgXqX40IIP91rWxHzoLrnFQgMG3y3M4k1NS5vQSU0kTG53cxN2bcfQ/LXBm7lSsHRy4QqUqS+GcJO7Rsy/z5XEtrH+3+BVGdhEXtDNhtRZCzmwmJveQsBalxI/vcWPYR4Ez2z+tupi9tRCbOWWeGUGaaM0MRykkbTfYh6pZyAmQFOcrzGFvvs7C6+MXZltMBwjxy//Qv2iGnq3JtCKpeS4StrmfkJB6JvwTd3Ck79mXD0xOZsMT12xrGsLsaFf+9TPX5MGCLPI/5CPSE2fY/RUZdzhWAdVHHyiOSZWfLrjsfdF4uKkjW/5WvkEQN2mEnqe2sEY0qJ10I8TvUzq5pH1AC8sBFrNDSfyuRXV2VL72L1zLjHdegLVjOTOiLnUT38eXcM2FRZSKfNP5Kdyh4+3XNkQccM3ajXSptiIbCuJtnrfKSVwy8kD+Zyp6VbJCQiT1VYXDLJoJww1iHFOcj7naIisLVyGgUa4JC6JP1ejsfzXAxdWVKAjRKAVj360VOwEbwMIN/BNjfGJJimu50suISWY5JiJfsW1+O+stGufTbcmCBEYMZnnzm8IG0rqlOq3eEyjRxSfH8oD27j/cxPdjaYYtasleCsy/LpfdCQA6qPZL8pVnqQmb0T+aqck2s23Iyf0uziKH0LdGehTIczH5WLFF0ENpOmRbvrH3tCAwlTx9CyBp8QPLkoSRdIrFfR7Y/ES2yMopYKLZpbictFdeLe00UpfXlhnUrD7YJ6cnt3FAfkvCJrT/Qq23ZUDcwnpm6a41mGTTuqE18SC1myI2LeLg5yn5sEqdpcSViwqOeGtWwKxeMZuL4YmpPHgFbWUh/4YuFcL9vh3c+rmy03bEBB/jcnkQMrMSPoamsipCv5bOvnbh/+ZY3/DnPF9lPyZRThtOwIxZemR+NqdT0j9UtbZ74Svx+hNfcZVT2VRZVofuJLllxjZ
- qa2RVADk
- AkSXGZH3jytBHSzjgJzCbQb/tB+OC/YWzThbWxfthE+4vH4ZONb7L5QlZ2Q6+aDSlLoyF1mjlPnnK3KQU3JV6SzBD/+NeftCeBBXK3NQDKeuNdvtR9hdkVKl6F+DFbUr8rukrvI4OA4AKZogJk3tHlEW/9h7kYxV+bEEytXkSHjxndFSpXS2+AdYhkW92Nwai21zhzhams9wQhlQOjBUIHZ+Z6lvF1/tgMyfklp560M69682Mb0eE8p0dIM4fANM9wjjoyY+venWYPAcZgSdQpITDOE8gjKFfnnjDNHd4DZ3bZeFLqhLteF9RkmnpyI5dSTWFrQN8XRq/O9p5FD8nQ+85A+y0HqTPyqjcMdx0hHuxDlpQsviQzsQsF3Zr5LTMysV1DjUMJHUiVGyc99/gf43QYJpbkDsyKIdKjUgPpQF/gvZLhwXY+rB2hJTwbUxIdO6/ELvlHyzwn1Q=
+X-Stat-Signature: mzer5x8npshei36rke3qam9167mr469u
+X-HE-Tag: 1790594989-231266
+X-HE-Meta: U2FsdGVkX19AJAGdw9QbvkyZNiFoILKElvzgFppGfT8HFOzRmtvz9Dh+iwK0rJXPg9rZ3uuccFttErzcv1YsQzyfX/8QYRFyvjE4CMJlN6dlcMZF/417M36XrX4/ZcKeGiFAAxdocLszJBcEG3qZP9In2CkjBDF7BEX3q5lFbf8oLAErpZN74T15P9DZWYTGqbGn4ENvccH5CB/rGesSZahzElB2SXYt+AgrfBXNRfdk+rdUwMpRPi0qB703pYEwYX1kdGNLiBaz4k1UeX4N4oQYgibJsSna4+h2xIUhquQG6JCRRN1y1wm3U41aKmFDC+CnxnWX3+BaBbJpqd5R1tRzYPTIROfdJzD53N0WD8TzBH+eiPB3mjKbHZU9NqGtpaDbYEyU8tleFvuXFBxqk42e4VP49/O8oX2qMeRmPhY5S1BEAXB3e/m/VQCkIDrUYiLJOusVCbUciE2lRtviNJgXqeQOrxUsvexUNEnERm2RNNrfe8C85IRX9cQR3OLDZOE6Drngv7kkK3SshZhtKdjKSPf/Tpp08ji/cdRcTMSVDYmsJTcJhyQlbwJAssXqi1/WHs+wGfFKQAwJSyP+UmPZ+EP+mN1QT7e/ujFx6zpR2kDaMz0slD0hWjg5+x1XOpEb4gmhgVgrwT6wZbFgXgunOSy5bIzvKt4nFnGWfreeQGxiY3oJHyO3ErdtMGZ6AyPyWbKqESMajhzvNY9G4AV2US0jBcPFHrnuABqILe009KgcEoJzVlNO+p6xixEgeBN/capK3x1tUXeLN59F+bDEPScS7JvzUpuL8YkRkFrdk/HtFYeW32tRYsNj983VdIl7yU0ccNYzrgQuzdMmjkmQSrZNNmvgZLJQ11zevf7NMG6u/40lp39taBlSxEceFXv8L0YP43ApqLNJJ7gitKT01noQ7vo/4OspwUkgMaArX5JBUHsbo4l6HrEmqUHSC2/ez2IvI9DJQL9MNVW
+ tpwWmk0w
+ EEhS+ddKYQmUHFo18df7NuerhZb2Z3JFRNeExzFaKUjJNkEwhViA+IS2bGIcqTH2nwM9dshq/jgZashDp3XGFoYndyHNz3T2UCgsKLh9sYjFXNS7Y11h1IVFip6qd/DlFjPGKt4xmduMQ8kXIr0w3/60EBSjD+IcX83sDzXFPKFbx35gM+EpDADlHqnuxols3w5ThewaRzPshYRlKxkY2lu5CGQS5WSVM5uBMIzPL9QkPiM6W+UJHO7Ki+RsZaO8IpJ5AIhknPLyhAX4a5T16b8m9rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,345 +139,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-MREMAP_DONTUNMAP keeps the source VMA in place, but clears its mlock flags
-for the whole VMA while setting them on the destination VMA.  Two cases
-leak mm->locked_vm as a result:
+On 9/28/26 09:07, 天狼 wrote:
+> Hello,
 
- - an unfaulted mlock-on-fault VMA moved behind itself self-merges, so the
-   single resulting VMA loses the flags without the accounting being
-   dropped;
+Hi,
 
- - a partial mremap() moves only part of the range, leaving the pages which
-   are not moved accounted as locked in a VMA whose flags were cleared.
+> 
+> I would like to request feedback on a mapping-scoped, best-effort hint
+> to defer background writeback while an application is still constructing
+> data in a writable MAP_SHARED mapping of a regular disk-backed file.
+> This is a feature request, not a patch submission or a benchmark report.
+> 
+> Motivation
+> ----------
+> 
+> Consider an application building a large data structure, for example
+> 10 GiB, through multiple passes that repeatedly modify the same pages.
+> After construction, it persists the file and publishes it for other
+> processes to mmap and read.
 
-Add three cases to the MREMAP_DONTUNMAP selftest which mlock() the source
-VMA, with and without MLOCK_ONFAULT, perform the operation and check that
-VmLck comes back to zero once everything is unmapped.  Each case runs in
-its own process, so it starts from a clean mm with VmLck at zero and a
-failure cannot propagate to the cases which follow.
+Is it an option to just construct the data using anonymous memory and then
+write()'in it once ready in one operation?
 
-Verified on x86_64: the three cases fail on v7.3-rc5 and pass on
-mm-unstable with the fixes from the "mm/mremap: fix two issues with
-MREMAP_DONTUNMAP" series applied.
+Why exactly are you using writable MAP_SHARED mappings?
 
-Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
----
- tools/testing/selftests/mm/mremap_dontunmap.c | 273 +++++++++++++++++-
- 1 file changed, 272 insertions(+), 1 deletion(-)
+> 
+> Building directly in MAP_SHARED keeps the data in the file's page cache,
+> which also serves the consumers. However, background writeback can write
+> intermediate contents that subsequent construction passes dirty again.
+> The application knows when construction ends, but cannot express that
+> knowledge as a mapping-local writeback scheduling hint.
+> 
+> Building in private memory and then doing buffered writes adds a bulk
+> copy into the file's page cache. Direct I/O does not itself populate that
+> cache for subsequent file-mapped consumers. A memfd can share the build
+> buffer, but requires a separate object for persistence and changes the
+> consumer interface. Global dirty/writeback tuning is broader than this
+> particular mapping and construction phase.
+> 
+> Proposed interface and behavior
+> -------------------------------
+> 
+> Tentatively, a pair of madvise operations could express this:
+> 
+>     madvise(addr, len, MADV_DEFER_WRITEBACK);
+>     /* Construct and repeatedly update the shared file mapping. */
+>     madvise(addr, len, MADV_ALLOW_WRITEBACK);
+>     /* Use existing synchronization calls if durability is required. */
+> 
+> The names are placeholders for discussion, not existing constants.
 
-diff --git a/tools/testing/selftests/mm/mremap_dontunmap.c b/tools/testing/selftests/mm/mremap_dontunmap.c
-index 96ba537facf7..2ec58b6cdc9f 100644
---- a/tools/testing/selftests/mm/mremap_dontunmap.c
-+++ b/tools/testing/selftests/mm/mremap_dontunmap.c
-@@ -7,6 +7,8 @@
-  */
- #define _GNU_SOURCE
- #include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
- #include <linux/mman.h>
- #include <errno.h>
- #include <stdio.h>
-@@ -37,6 +39,61 @@ static void dump_maps(void)
- 		}								\
- 	} while (0)
+I don't think this behavior should be part of madvise. Way too specific.
 
-+/*
-+ * Same as mlock2.h's, plus an ENOSYS fallback for libc headers without
-+ * __NR_mlock2.  It is not taken from the header because that also defines
-+ * seek_to_smaps_entry(), which nothing here uses and which then warns
-+ * (-Wunused-function).
-+ */
-+static int mlock2_(void *start, size_t len, int flags)
-+{
-+#ifdef __NR_mlock2
-+	return syscall(__NR_mlock2, start, len, flags);
-+#else
-+	errno = ENOSYS;
-+	return -1;
-+#endif
-+}
-+
-+/*
-+ * Locked memory size in kB, as reported by /proc/self/status, which is
-+ * mm->locked_vm accounted in kB.  Used to check that the mlock() accounting
-+ * balances across a MREMAP_DONTUNMAP operation.
-+ *
-+ * Returns LOCKED_VM_UNKNOWN if it cannot be read: the callers run in a child
-+ * whose exit status is the test result, so this must not exit the process or
-+ * print anything the TAP output parser would act on.
-+ */
-+#define LOCKED_VM_UNKNOWN	((unsigned long)-1)
-+
-+static unsigned long get_proc_locked_vm_size(void)
-+{
-+	unsigned long lock_size;
-+	char *line = NULL;
-+	size_t size = 0;
-+	FILE *f;
-+
-+	f = fopen("/proc/self/status", "r");
-+	if (!f) {
-+		fprintf(stderr, "cannot open /proc/self/status: %s\n",
-+			strerror(errno));
-+		return LOCKED_VM_UNKNOWN;
-+	}
-+
-+	while (getline(&line, &size, f) != -1) {
-+		if (sscanf(line, "VmLck:\t%8lu kB", &lock_size) == 1) {
-+			free(line);
-+			fclose(f);
-+			return lock_size;
-+		}
-+	}
-+
-+	free(line);
-+	fclose(f);
-+	fprintf(stderr, "cannot parse VmLck in /proc/self/status\n");
-+	return LOCKED_VM_UNKNOWN;
-+}
-+
- // Try a simple operation for to "test" for kernel support this prevents
- // reporting tests as failed when it's run on an older kernel.
- static int kernel_support_for_mremap_dontunmap()
-@@ -335,6 +392,216 @@ static void mremap_dontunmap_partial_mapping_overwrite(void)
- 	ksft_test_result_pass("%s\n", __func__);
- }
+-- 
+Cheers,
 
-+/*
-+ * Child exit codes for the accounting cases: any other exit code, and any
-+ * signal, is reported as an error rather than mistaken for a leak.
-+ */
-+#define CASE_LEAK		2
-+#define CASE_SKIP		77
-+#define CASE_SKIP_ENOSYS	78
-+#define CASE_SETUP_ERROR	79
-+
-+/* Report a setup failure from a case: the child's exit status carries it back. */
-+static int case_failed(const char *where, const char *what)
-+{
-+	fprintf(stderr, "%s: %s: %s\n", where, what, strerror(errno));
-+	return CASE_SETUP_ERROR;
-+}
-+
-+/* Report a check which failed for a reason errno does not describe. */
-+static int case_unexpected(const char *where, const char *what)
-+{
-+	fprintf(stderr, "%s: unexpected %s\n", where, what);
-+	return CASE_SETUP_ERROR;
-+}
-+
-+/*
-+ * Only EPERM/ENOMEM are expected with a small RLIMIT_MEMLOCK, and ENOSYS means
-+ * the kernel has no mlock2(); anything else is a genuine setup failure.
-+ */
-+static int lock_failed(const char *where, const char *call)
-+{
-+	if (errno == EPERM || errno == ENOMEM)
-+		return CASE_SKIP;
-+	if (errno == ENOSYS)
-+		return CASE_SKIP_ENOSYS;
-+
-+	return case_failed(where, call);
-+}
-+
-+/*
-+ * Run one accounting case in a child, so that it starts with a clean mm and an
-+ * empty VmLck, and report its outcome.
-+ */
-+static void run_locked_case(const char *label, int (*fn)(void))
-+{
-+	int status;
-+	pid_t pid;
-+
-+	/* do not let the child flush a copy of our TAP output */
-+	fflush(NULL);
-+
-+	pid = fork();
-+	if (pid < 0) {
-+		ksft_test_result_error("%s: fork: %s\n", label,
-+				       strerror(errno));
-+		return;
-+	}
-+	if (!pid)
-+		_exit(fn());
-+
-+	if (waitpid(pid, &status, 0) == -1) {
-+		ksft_test_result_error("%s: waitpid: %s\n", label,
-+				       strerror(errno));
-+		return;
-+	}
-+
-+	if (WIFSIGNALED(status)) {
-+		ksft_test_result_error("%s: killed by signal %d\n", label,
-+				       WTERMSIG(status));
-+		return;
-+	}
-+
-+	if (!WIFEXITED(status)) {
-+		ksft_test_result_error("%s: child did not exit\n", label);
-+		return;
-+	}
-+
-+	switch (WEXITSTATUS(status)) {
-+	case 0:
-+		ksft_test_result_pass("%s: locked memory released\n", label);
-+		break;
-+	case CASE_LEAK:
-+		ksft_test_result_fail("%s: locked memory leaked\n", label);
-+		break;
-+	case CASE_SKIP:
-+		ksft_test_result_skip("%s: mlock not permitted\n", label);
-+		break;
-+	case CASE_SKIP_ENOSYS:
-+		ksft_test_result_skip("%s: mlock2 not supported\n", label);
-+		break;
-+	default:
-+		ksft_test_result_error("%s: child exited with %d (see stderr)\n",
-+				       label, WEXITSTATUS(status));
-+		break;
-+	}
-+}
-+
-+/*
-+ * An unfaulted mlock-on-fault VMA moved behind itself: the source and
-+ * destination VMAs are adjacent and mergeable, and merging them clears the
-+ * mlock flags of the single resulting VMA, leaking mm->locked_vm.
-+ */
-+static int case_mlock_onfault_self_merge(void)
-+{
-+	unsigned long locked;
-+	void *source, *dest, *reserve;
-+
-+	/*
-+	 * Two adjacent pages: the source VMA goes in the first, the
-+	 * destination in the second, so the two are mergeable.
-+	 */
-+	reserve = mmap(NULL, 2 * page_size, PROT_NONE,
-+		       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (reserve == MAP_FAILED)
-+		return case_failed(__func__, "mmap reserve");
-+	if (munmap(reserve, 2 * page_size) == -1)
-+		return case_failed(__func__, "munmap reserve");
-+
-+	source = mmap(reserve, page_size, PROT_READ | PROT_WRITE,
-+		      MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
-+	if (source != reserve)
-+		return case_unexpected(__func__, "source address");
-+
-+	/* Locked on fault, but deliberately left unfaulted. */
-+	if (mlock2_(source, page_size, MLOCK_ONFAULT))
-+		return lock_failed(__func__, "mlock2");
-+
-+	dest = mremap(source, page_size, page_size,
-+		      MREMAP_DONTUNMAP | MREMAP_MAYMOVE | MREMAP_FIXED,
-+		      source + page_size);
-+	if (dest == MAP_FAILED)
-+		return case_failed(__func__, "mremap");
-+
-+	if (munmap(dest, page_size) == -1)
-+		return case_failed(__func__, "munmap destination");
-+	if (munmap(source, page_size) == -1)
-+		return case_failed(__func__, "munmap source");
-+
-+	locked = get_proc_locked_vm_size();
-+	if (locked == LOCKED_VM_UNKNOWN)
-+		return CASE_SETUP_ERROR;
-+
-+	return locked ? CASE_LEAK : 0;
-+}
-+
-+/*
-+ * A partial MREMAP_DONTUNMAP of a locked VMA: all but the last page is moved,
-+ * leaving the source VMA mapped.  Both the moved pages and the VMA left
-+ * behind must give up their mlock accounting.
-+ *
-+ * The destination goes into a window with a guard page on either side, so that
-+ * it is not adjacent to and cannot merge with the source VMA: this case must
-+ * exercise the partial-copy accounting on its own.  The window's hole is
-+ * smaller than the source mapping, so the source cannot land in it.
-+ */
-+static int case_locked_partial(int onfault)
-+{
-+	unsigned long num_pages = 3;
-+	unsigned long span = (num_pages - 1) * page_size;
-+	unsigned long locked;
-+	void *source, *guard, *dest, *moved;
-+
-+	guard = mmap(NULL, span + 2 * page_size, PROT_NONE,
-+		     MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (guard == MAP_FAILED)
-+		return case_failed(__func__, "mmap guard");
-+	dest = guard + page_size;
-+	if (munmap(dest, span) == -1)
-+		return case_failed(__func__, "munmap destination window");
-+
-+	source = mmap(NULL, num_pages * page_size, PROT_READ | PROT_WRITE,
-+		      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	if (source == MAP_FAILED)
-+		return case_failed(__func__, "mmap");
-+
-+	if (onfault) {
-+		if (mlock2_(source, num_pages * page_size, MLOCK_ONFAULT))
-+			return lock_failed(__func__, "mlock2");
-+	} else if (mlock(source, num_pages * page_size)) {
-+		return lock_failed(__func__, "mlock");
-+	}
-+
-+	/* Move all but the last page, leaving the source partially mapped. */
-+	moved = mremap(source, span, span,
-+		       MREMAP_DONTUNMAP | MREMAP_MAYMOVE | MREMAP_FIXED, dest);
-+	if (moved == MAP_FAILED)
-+		return case_failed(__func__, "mremap");
-+	if (moved != dest)
-+		return case_unexpected(__func__, "destination address");
-+
-+	if (munmap(dest, span) == -1)
-+		return case_failed(__func__, "munmap destination");
-+	if (munmap(source, num_pages * page_size) == -1)
-+		return case_failed(__func__, "munmap source");
-+
-+	locked = get_proc_locked_vm_size();
-+	if (locked == LOCKED_VM_UNKNOWN)
-+		return CASE_SETUP_ERROR;
-+
-+	return locked ? CASE_LEAK : 0;
-+}
-+
-+static int case_locked_partial_mlock(void)
-+{
-+	return case_locked_partial(0);
-+}
-+
-+static int case_locked_partial_onfault(void)
-+{
-+	return case_locked_partial(1);
-+}
-+
- int main(void)
- {
- 	ksft_print_header();
-@@ -348,7 +615,7 @@ int main(void)
- 		ksft_finished();
- 	}
-
--	ksft_set_plan(5);
-+	ksft_set_plan(8);
-
- 	// Keep a page sized buffer around for when we need it.
- 	page_buffer =
-@@ -361,6 +628,10 @@ int main(void)
- 	mremap_dontunmap_simple_fixed();
- 	mremap_dontunmap_partial_mapping();
- 	mremap_dontunmap_partial_mapping_overwrite();
-+	run_locked_case("mlock-onfault self-merge",
-+			case_mlock_onfault_self_merge);
-+	run_locked_case("mlock partial", case_locked_partial_mlock);
-+	run_locked_case("mlock2 onfault partial", case_locked_partial_onfault);
-
- 	BUG_ON(munmap(page_buffer, page_size) == -1,
- 	       "unable to unmap page buffer");
---
-2.55.0
-
+David
 
