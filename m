@@ -4,92 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 233D2C98328
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:24:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8473C9833E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 06:28:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 211B56B0088; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
+	id D8BA46B008A; Mon, 28 Sep 2026 02:28:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19B236B0093; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
+	id D3D006B008C; Mon, 28 Sep 2026 02:28:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A576B0095; Mon, 28 Sep 2026 02:24:10 -0400 (EDT)
+	id C2B5B6B0092; Mon, 28 Sep 2026 02:28:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D69A26B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:24:09 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6981680B28
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:24:09 +0000 (UTC)
-X-FDA: 85262181018.06.32BA4F9
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0EA0540004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:24:06 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=keukrEB2;
-	spf=none (imf07.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 919A26B008A
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:28:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 94BF8140B41
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:28:50 +0000 (UTC)
+X-FDA: 85262192820.30.ECAD292
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C0F1380005
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 06:28:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sHmZQBf+;
+	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790576647;
+	s=arc-20220608; t=1790576928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DR/hwaEZILg/9rvVDgZU74EvXnZO71agIm5YgCpk650=;
-	b=SIpEJzchPkOLU/TgKycsWV4JD5FV1Kc4C7dPeZLNGwin8q+vtBPyiOMgGy7Nedhm3EPB9U
-	i3BcCIT+HKog9cbYA9r79mQ8wh305B/rDEWsPxprx4k1D0aUWZMVwbgz1EnAu9hk2YcKnb
-	Xh84h8e/Fas0nAZVhFliENq2cGhMdUw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=keukrEB2;
-	spf=none (imf07.hostedemail.com: domain of BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+d672529c310eaa635cdb+8436+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	bh=mlTeCabh7BYu07oJry0uYVnPTkXCqqBZzgHeANLiL5M=;
+	b=wBj+/04SJ1dvNNEVsxOIu9MY9ytA3srQI00zhCsxXJPt8sV+9+p0zsg9YXEdizq3mGK5j9
+	YTSyqb8Uv6l5sloMItcPy6g+tBB7MVUoI2WY6IIomyErso2k2D6KUag3r/QyTxrgoaAbVm
+	NS23KF8gLI2LimN5SmBCNyNCnG/XqOM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790576647;
-	b=xb8V2o6+jJZOHeJN8+pcUXjPrdKGLU07pLMeX4q9vNqBrtKswFzVnGiFfX2InGsojyVihJ
-	vvolxFpdFcKoMQoZuY0RP7TmbkaEuqQJbWFzJoEaXKB0xWD4sIXAVm2HiVJv0tFBDgRZxD
-	/SAcNBLfeUUL/MYz5ga/DbBkMD1h2/4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=DR/hwaEZILg/9rvVDgZU74EvXnZO71agIm5YgCpk650=; b=keukrEB25vjEoqL/8zVNNWoGFM
-	2FBJRmD+w+My6XUr8jIFsV/2GBFZ2lG14Za7h23vhi1GJDZi9mMJtwcASd+HqE+mJ0ah8L66hc7a2
-	3HG8FJStZ8ItddZyxkLFDuerZh4rpvbjp1c1tGJPxKjpE4vdKHTtfjAVjF6/ffMIf4nMsWl+RYrmP
-	Sob/bxS39PhpKuYbIZThEFM2e9HyDBcLjN9dZQRNXoW6IBZ5BT5/AUvSsKnUvFbURriMxPPPd0P21
-	HOiTaTHd3KzuYOVj/wmFcvAK49SbIB3DqGqmi28XpaYDnZamfZNx8BgAoseyofHdpsGIvv/mnsAK5
-	Pog5nVMg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB4mQ-0000000HRoj-1T7I;
-	Mon, 28 Sep 2026 06:24:02 +0000
-Date: Sun, 27 Sep 2026 23:24:02 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Christoph Hellwig <hch@infradead.org>,
-	Julian Sun <sunjunchao@bytedance.com>, linux-block@vger.kernel.org,
-	cgroups@vger.kernel.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, axboe@kernel.dk, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, willy@infradead.org, tj@kernel.org,
-	akpm@linux-foundation.org, Boris Burkov <boris@bur.io>
-Subject: Re: [PATCH v9 1/3] block: introduce bdev_flush_by_dev()
-Message-ID: <aroIAqoCNDBPlB2A@infradead.org>
-References: <20260925064444.3944820-1-sunjunchao@bytedance.com>
- <20260925064444.3944820-2-sunjunchao@bytedance.com>
- <arYaMbJUh6unvz_t@infradead.org>
- <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
+	t=1790576928;
+	b=TbHcwRUCDFY09oL4Px+xObW4ROKnoyAqQpUjiDSoJfOedwXFIB0app3fGdSI0VbxpQt2cx
+	5HIIyOJLbnjwhGHtGWVNKFWHPi5R3LrQN5v8vKbhuy81cZdlP2jUFeJJ1VcCvrt9Re532+
+	shtG1CXVcaFyoM3M7e+vRqnZgnrEG44=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sHmZQBf+;
+	spf=pass (imf02.hostedemail.com: domain of kmehltretter@gmail.com designates 74.125.225.76 as permitted sender) smtp.mailfrom=kmehltretter@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-482f635552aso2056063f8f.2
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 23:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790576927; x=1791181727; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mlTeCabh7BYu07oJry0uYVnPTkXCqqBZzgHeANLiL5M=;
+        b=sHmZQBf+RFzowYWn63QupXBaKB1ryo8pHKq5Izq+w/6Kc7mV+SFizWCdiPmwhL7Yoc
+         ExBhRGCmvE8ptDW9J2a/wWqq+JmgdSjfv9YpVv/RMADujvWBy5R82DFpvMY1VF19TRfO
+         UqFwZ12U+qZ55dmIJ77cyIBLUKhB+WRxzPDPqU8PIRRAzpqaNVplKwtYEThc/9dc31LP
+         mdUSONUF+8tO4PG0nmguSerc5IFaXvgrzXnyeIpWJxIU2mDjwhNHDXQxIbb1WyHpmKmz
+         42kp+EPISmH1PMKl8jMA8ZzT53nW4RQxBgHHJ8ATcbHkSILHudJP2+HpFsfBLtKvkKmg
+         IkvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790576927; x=1791181727;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mlTeCabh7BYu07oJry0uYVnPTkXCqqBZzgHeANLiL5M=;
+        b=s/GP+pARA8+OLNPxTVgbD1jj84wyfzG7Yojgx6eXoeYGvRmnAlqqCvCHhv0wZP91GF
+         LiFCymzajkopcK0SIFGVux0ynxn2oZukJHdERcVulOKZtletQuj3sAAq3y4Q8vyJSy33
+         D5PSkCX7x2mvRbVBExzLrb7P32ruhOBv5FTP95nDCIInpQHUsjynwE+ESPpr0K2wPS5M
+         bkwQL6LZ1k6HDjh7vUxBTTkIin8xy2T2NEU0668rwZewIQBTFDgD0+XjmwZdiO0eEokf
+         6+Qgl82BIgQwPgSHodqWWemTU5m3iQpMCUUMGkZzABEpFgOgvRKxjKh28fXCnXoVMnhG
+         Vvhg==
+X-Forwarded-Encrypted: i=1; AKwUvByDGD3/R7rtyXNzK/M9eApdr8fbJrZbbJsA3c1tF+ioub45YuWXW5HoQPawymu+9EzkyX2KJ8huNA==@kvack.org
+X-Gm-Message-State: AFq9FYLaTMTDqblIa1HOs4ysfZ0g+uCGRJK5FrE980mOtBzSKDj396hh
+	qK31yuaF20Oc50A9NwE2Hp7R81M8M+yxKwTWUKMP62n4cNEFKu7/3g1n
+X-Gm-Gg: AYBFou28yNq3v5+akc3pe9y5EYECkst9bwpLPoc1+BOC4BEYVbBaEqatDNmHgIqnjwX
+	/R8gXSYtCUiPpQhl3S+b0wsT64Zw6LQF5vOK2uRxJ11EfNcv5PXAwxifJq2hqe7hQdi6JRsPuiR
+	aoqXkmnjLKzWTG167+nyLp+7/kQZ9qvjwQLL0pvDjTOFQqqAc9z0xVocbgkxBhES5Xx/Ax6dwgW
+	86YajT6PP5Nb5UDVp/iCcQwn560OAPW2fidEHr5Sa0zZoxhJShYJqv4b65Em9C0/ggKoZSyHUzF
+	kqjTVpf3V3H/eIvS4hPDOA3HDg6Eu1vUvzM7x4lKRIB0HQkb5Am1J5PuChT0UDKSaR8KD8peR0q
+	WHoLb9k+VTHt71/BjNtScCujENAwHulMJBq+mpONL9WUjgylBAbx0CWzdGp3jZayzCTHBKiMXoO
+	td1+WMZ4jfLHMr+b9iJAyro4sIhhoN8sRxyJko5s+BN6qBaLPcn8rsojLfq2ToZSy7ExefI9W6O
+	x8bs1u92MaQyZZZgoIvqAkvKIN2qoMZAlBpLRAZyaSmITqZJEXzPIGLPDi+pvWzC3RnDCfEAY4c
+	c6tV33rT+JC+GnhcSAUNu9CPLqiRkb/C9WxHXab6JKfhUHFSuwSSWlURbLoFH59QSQX0a3SuW4u
+	h7+k=
+X-Received: by 2002:a05:6000:4908:b0:487:2805:6834 with SMTP id ffacd0b85a97d-48872ac763amr22046956f8f.42.1790576927074;
+        Sun, 27 Sep 2026 23:28:47 -0700 (PDT)
+Received: from unknown748F3CBA5068 (dynamic-2a02-3100-acba-a601-4494-3582-465b-0eab.310.pool.telefonica.de. [2a02:3100:acba:a601:4494:3582:465b:eab])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4887a64ef3asm25338956f8f.30.2026.09.27.23.28.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Sep 2026 23:28:46 -0700 (PDT)
+Date: Mon, 28 Sep 2026 08:28:43 +0200
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Zhao Li <enderaoelyther@gmail.com>, 
+	Jinmeng Zhou <zhoujinmeng@bytedance.com>, Alex Shi <alexs@kernel.org>, 
+	David Hildenbrand <david@kernel.org>, Dongliang Mu <dzm91@hust.edu.cn>, 
+	Hongxiang Lou <louhongxiang@huawei.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Michal Hocko <mhocko@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>, 
+	Nhat Pham <nphamcs@gmail.com>, Oscar Salvador <osalvador@suse.de>, Peter Xu <peterx@redhat.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>, 
+	Vlastimil Babka <vbabka@kernel.org>, Wupeng Ma <mawupeng1@huawei.com>, 
+	Yanteng Si <si.yanteng@linux.dev>, Naoya Horiguchi <nao.horiguchi@gmail.com>, fvdl@google.com, 
+	jthoughton@google.com, rientjes@google.com, vannapurve@google.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/4] mm: hugetlb: Fix subpool usage leak on allocation
+ failure
+Message-ID: <aroH94a5F4Mzuqgd@gmail.com>
+References: <20260916-hugetlb-subpool-always-track-used-v3-0-38aae9b5ccdd@google.com>
+ <20260916-hugetlb-subpool-always-track-used-v3-3-38aae9b5ccdd@google.com>
+ <20260927170426.2467-1-kmehltretter@gmail.com>
+ <CAEvNRgHQLifmcD1NO6cd7EVcCiQb6gJgNUo4HkFhZAvzuwMq0w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3w6vfwfkojmfqy2qs5j4q2s2366ajqiwmqf624lyn3odrv42v2@va2r7a6ngfz6>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: jow9emhqbyj7umamko1kcspk55pjt1zp
-X-Rspamd-Queue-Id: 0EA0540004
+In-Reply-To: <CAEvNRgHQLifmcD1NO6cd7EVcCiQb6gJgNUo4HkFhZAvzuwMq0w@mail.gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790576646-424044
-X-HE-Meta: U2FsdGVkX1+vizXO4puA3R1fwWQ38r0PrPR9HUHLsahQJCO9BSQXSrXujmXbT9HOf6S+ywvl7tEVshUxqcy7+IEc8TKrIvB7pMWQ8ehel0cwznPRxB+w2vrLo2KiB15gW5hfqUe6TcSrDNQUV5l2dALQy6xhXH8sHVe8gBNjHGXuga7lxtmWs5E2b40SbwDe+juad6jPv5PH9tguE/lPrRm8kjNSIL4XZYNZpS+PSRE5e3ttHivmWPP5xHzeMjKWrWBsrPBDnL53kV3p4xkUL7aWwv3ksWfHKwlKt0YuGs78Y2w5mJbJZqezI8nYCJHBTFI9/IX0BqbPnNBX5tgxxwGq6svreQip/0sgDCjuCFKn6ZBTDkFLfUykd+U5LRmQf6EQVQVwy37pJy2C0TKKjNRczBKH0cwwwBuM+7jyI6YgVnQZp9RTu/CzMq91Gc7oyXOvEPiqb+ia0Qzk//Sm14I+xeFawTNEkGZM3dg0Tm0zpuUWZGT4nD8MDIUgVNmcDzrLpYVaMQo22HZUVXjgOZyDm3sVBp5ngPtR3COVbmBlkYj2rC5JsWGKleJFXsfVeQKWHYACbTBC0TsmMvolKjOa1flkAjfA0KlTTXkYdUuU4vYtfRCI3WVxhDSAyInIe2W2H4Ekh0NbmZTgRipRClwZn9t77AyZCWPIwjV5ovBiBlbt9M/Z/Cn2oaXzOIiD/05asOweIXTiPKx9H0bPbjtDfl5noxjwgpYHpNKv/JOZhIswesV9A2MDds5cxYeLFCA24aVKul2SmzMN8PHX5hW7Fc93UfIszdqKGtJJE4JhW2GJUD1T1htpsz3iyDTrSLZtIt9VRDsKmDpF6XRT6ltfWUiTYaihXi73MwdQQHbWRd3/GqRaub19jDKCTdghUZEuGv1gvkZLf5Lre9gLgbzmcP/jPvz3NjgpCorviV8eLPoY3xRA16zDS8+EbXAPeo08cuFdHYbpKVBOvdq
- AB9n63SH
- 9QHiLNuwhRH9/F5ki5i2nPGJl/xXQgDnKlZ1G4LR+qfnosj/LUiepffUcuqugUD6STSCXYyFzGRTtgIwafvZA2GjGVo9kNlLglnb8viA1IUCe4avVl4uxdkkkXxXR8+ZpPsqREeJ3xijd0ifMf/fiHeaqPQkTC+8iJT38FlgpmL/rTtBwqUA8ZcoXDlBtQhht4jRVVaSkMRxsAYSmp63CPa3hzi1Kaj3siGybxIMWRiGh7McZ1i2TvRJArYJVT3208oEfPPl56CFTSZ45ToFYgX7CWtt28TXNtPG0rFlpp60wo3bsdOHgiYDzjctiYFQoaHrdVBR5BGeHOApZBNYN7K4epQiMIi0cY9LOyFe2+eDO4QFqM3oz+omnxSg+W4fWGEqHii7nfk4QcElgUjCB7euDXtHpYCoBVdgjrj4pEDXTv4Tivnbez1FNFFsLvh76i8TT3aUGlaXO8M9QBQ1ULAXHAY5LieMJ9LGbcPPFRqX/kilvUVf6NY9Gz3ZOXgkD9QVN3pU5EcaN8TBq3UJnDjWV7X9007C/rSkeMS8KWvCy7OoMquJ597hp1R3Xddwg7PQ4Pzh86SrCtbM=
+X-Stat-Signature: 3x87c46w6nxgsz7mr159c7rfm7at7jwj
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C0F1380005
+X-HE-Tag: 1790576928-607212
+X-HE-Meta: U2FsdGVkX1+t2cmv1Bmvsfm+cYupH2BgEP1ugUOGDlg0ENQeDmBOikVzxwoMQQ4l4gu6oo3n/t2UXKlW93eUhzxD/C67MEYknHYn3s9muP0mkA63tX8L2upfeucBb7+6JuTN3pe3GpY86XN9U4qTARAA7mPKD8FvXBoiVAMmDQ034Ge0c0LfGOMzwJX1djeUzHibUdp2WnLxKx4cn0hz0nsKXtBqtYp4CUuK3AHrcP0k/COuuUKt/uSzZ+T4jK3FH8slFM0w1woUYimuGAGBJ5nIpk2fI6Scwr20zC90sL3+MuWHA0vqruBSNLGO0r6RfvAEbmnkWy2iMKR/AndUI6tcBAJFNYJjOUv5ScQ24aG62/R8UJRRw2yVR9ZWuUGXynUQZS1qM51dV/ROEdYKYDeup09GXME5YCzawa2UICHdngGWVOcPLYTNbKw9OcpZdXhiC96dqu5e9ZF76EwFaLl+QSaHPzhgD/Xy7d6iFw4/tM82TQM5b6Tz1zViBgzlvnuQsaFXcblkwzzTJv/gjoes+1IqnQD/CYEaJKFnDMp4HSu4rDLB34sI/DFGYrhY24ZgyuJ9rWkomWuaDfYpXzodFJVD14u/XD1fFa0JrS8w37b3xjggP+hk3TspyvV4NZOpq7OhGaA7oMOXPaM5fAZ4UEBFrQeHuE8jZ39dbZW0v0N034T58Y6dLgVw1IErnmCiuXZHHA9fGa71slOWs3gTw1CfCz5vVetlJwgU13ln2S//Fz5uniPRB2+xwvUuGbLiZwLQvrHi4RpMO7VlHxsW4Tog+sQLe6C/d+hrm/YIWHAlVKc4X5y5opTvgQxHy6cCZSVOOby0NP16845QyoTEjzpQ/9vMbMLmy832TXtqv6LoII4twaVaGoWDvUzoDCo5hS/uRHlMD4blCLqvcbxS+p3vR2L/ui2AY6/smLGCGJiKcdOVsaL9J7KcZFyADiLT6CwWA1qobsdh6uv
+ gZh6khjH
+ Bqf1JO2X+QIl5JEjZmLM8fLGm2gco3q6EaOpS3sr6FaOEw7765wNlvA01LkJ81dtxgirZngZbMJ6tAzWD5GpJGU8iBc9A1s/BBfLecWpQLvFml6lRXPQpO2apm/PA2FXvhWnpCRi88La8TzYwuHltqXMXPLNydukRAAIPsVGjy0JFjCwkX+8kjqX1M06qkyI+pxmoBK8uCzY+tWe00lII5ndkVAddlfFj8nL0bKq7ihJzeFJ9H2K0D7TW+zEUzgXW+w6EH8sHbU6M6A4b4KylJJO0jMNWJY8BBws+N9vHvrdWkHTWHYT01ruV4NFAUrYwBhA8T42GuFcb2O9z+2TY0avIVDyU8rFxJAzuipTZua9e2GNK5xS25kPvi0S3kZI0mOYDPSUyTCVmioNpMSmF36jp0oQTPv7n92rmGsV5SKK1ZMPL7Ge8WB8fKpjPcL3NpD7kDTyWbyjSN1cLP4yIAjZW100kgqSRfZwYCnF0Q+Zq9znADe5HhBYvLOMrw4KeX5J3co4DVs6+33eENiPFcLLRHZyQzR9UJAHNHMu3Zwf46IBJodMilGg9L2/DN8BBd5SW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,49 +140,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 25, 2026 at 12:34:52PM +0200, Jan Kara wrote:
-> On Thu 24-09-26 23:52:33, Christoph Hellwig wrote:
-> > On Fri, Sep 25, 2026 at 02:44:42PM +0800, Julian Sun wrote:
-> > > Add bdev_flush_by_dev() to submit page-cache writeback for a device
-> > > identified by dev_t without requiring callers to hold a persistent
-> > > device reference.
-> > 
-> > This isn't really a flush is it?  This is writeback.
+On Sun, Sep 27, 2026 at 10:19:08PM +0100, Ackerley Tng wrote:
+> == Questions for Karl
 > 
-> So bdev_writeback_by_dev()? Fine by me.
-
-Yes.
-
-> Well, Julian is explaining that in the cover letter. We don't want memcgs
-> to hold bdev references just for foreign flush tracking. There's no easy
-> way to get rid of them so they could pin bdevs for a long time leading to
-> strange artifacts.
-
-I have to admit I didn't get it when flying over the cover letter.
-But this also really belongs into the patch where it is more obvious,
-or even better into code comments.
-
+> (Independent of the "Path forward for 7.3/7.4")
 > 
-> As you write, we could just hold a reference to the bdev inode. Those get
-> unhashed when the device dies (__del_gendisk()) so memcgs would be just
-> wasting some memory by holding these inodes alive. But still, transitioning
-> from inode to proper bdev reference verifying bdev is still alive will add
-> a bit of hairy code (essentially what blkdev_get_no_open() does plus
-> verification inode is still hashed). Plus when replacing foreign flush
-> entries you're under irqsafe xa_lock so doing iput() from there is kind of
-> a nogo.
+> 1. Does squashing patch [4/4] of this series into [2/4] [3/4] resolve
+>    any of what you found?
+> 2. Does patch [1/4] introduce new issues, or does it just not fully fix
+>    all the issues? At this point I think we have so many bugs, it's more
+>    about fixing bugs progressively (not regressing) than finding a
+>    complete fix.
+> 3. Would it be ok if you integrate your findings across your two replies
+>    on [2/4] and [3/4]? They're similar yet slightly different so it's
+>    kind of confusing. If you have reproducers, it would help to share
+>    them! :)
 > 
-> So I think tracking devices by dev_t is a good way of dealing with these
-> problems. But then when flushing you have to transition from dev_t to
-> struct block_device and blkdev_get_no_open() is the canonical way of doing
-> that (and note this use is just internal to block/bdev.c).
 
-I'd really prefer not to grow more blkdev_get_no_open users.
+1. Squashing the unchanged patches does not fix it. Full v3 already includes
+4/4, and both controlled tests still fail:
 
-But the more I look at this I wonder why we even bother.  Trying to
-attribute individual bits of dirty metadata to cgroups is pretty much
-insane.  Why don't we bypass memcg accounting for buffer_heads like we
-always did for the XFS buffer cache, and what btrfs switched to last
-year? See commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode") for the btrfs side.
+  Path                     Cleanup       After files / after unmount
+  -----------------------  ------------  ---------------------------
+  hugetlb_reserve_pages()  +2, -ENOMEM   2 / ULONG_MAX-1
+  alloc_hugetlb_folio()    +1, -ENOMEM   3 / ULONG_MAX
+
+Both should end at 4 / 0. I got the same result with one and four vCPUs.
+
+Patch 4 fixes the later region_add() failure path, where the global
+reservations have already been acquired. These two failures happen earlier,
+after global accounting or folio allocation has failed, so 4/4 does not
+cover them.
+
+2. The exact v3 patch 1 does introduce regressions as an intermediate
+commit. It starts tracking used_hpages on min_size-only mounts, but the old
+failure paths do not undo the new charge. In the ordinary tests, with or
+without the two queued fixes below it:
+
+  - after the SIGBUS test with no files, HugePages_Rsvd is 0 instead of 2;
+  - after the failed mmap and unmount, it is 3 instead of 0.
+
+This does not mean always tracking used_hpages is wrong, but 1/4 is not safe
+on its own. A reworked series on top of Zhao's and Jinmeng's fixes will need
+new testing.
+
+3. In both races, hugepage_subpool_get_pages() first changes the local
+subpool state. The later global charge or folio allocation fails. Another
+operation then releases capacity and a separate mount consumes it before
+rollback. Rollback restores the local minimum, but its positive global
+correction fails with -ENOMEM and the error is ignored.
+
+I put the exact test hooks, both userspace controllers, QEMU helpers and
+validators in this test-only commit:
+
+  https://github.com/kmehltretter82/linux/commit/3ed79d756dc3845b9af9dc1dec3daa8cb141a500
+
+I support merging Zhao's max-only fix and Jinmeng's combined min/max fix
+now. They are useful, narrower improvements and do not try to cover these
+min-only races.
+
+Karl
 
