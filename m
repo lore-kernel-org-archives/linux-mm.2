@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357FBCA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BACDCA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BF496B00A0; Mon, 28 Sep 2026 13:20:09 -0400 (EDT)
+	id 4AA726B00A2; Mon, 28 Sep 2026 13:20:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 370D76B00A1; Mon, 28 Sep 2026 13:20:09 -0400 (EDT)
+	id 45AB56B00A4; Mon, 28 Sep 2026 13:20:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 238006B00A2; Mon, 28 Sep 2026 13:20:09 -0400 (EDT)
+	id 323106B00A5; Mon, 28 Sep 2026 13:20:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 034116B00A0
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:20:08 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AB1C21602A8
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:07 +0000 (UTC)
-X-FDA: 85263834054.28.AB9FB2B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03EE86B00A2
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:20:28 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87B59C01E7
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:28 +0000 (UTC)
+X-FDA: 85263834936.25.494A5D2
 Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A144720008
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=pG9rJP3C;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="o tTvXp/";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7DDD710000C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:20:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=arzilkyI;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="P iAcHME";
+	spf=pass (imf05.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790616005;
+	s=arc-20220608; t=1790616026;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vxkdii9Ix7VQo4OS5s53AyOtwZsAqIdchYLS+D7XBiA=;
-	b=NEwzsJYDlcQG3jUCApGe/DdE4VtmvQJmWzt6TX9V2cYlCCpiJW3Q/3jj/N+dpH/c0gOUOB
-	zUztiDFCg6JUHwG/hbn70KzjzYBKrqnCGz+PxsmcIY843rsvTT18lh0PVP/YqosvMlxZ4U
-	1W/BwrCtSEvAuDAJcGwdeM/TbI9fCfQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=jaseg.de header.s=fm1 header.b=pG9rJP3C;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="o tTvXp/";
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de
+	bh=uGRShz7/CEgnybR8rXKhuxR+uSCSKOTb4RA8UBLfDNI=;
+	b=GrXA7us8MZTFJKx/lHSlxefTtNaryI63XYmreHoOyhHcRk0pGbd1E13hvRT2QdReWZJ87l
+	s6WBiQoB7gmL961yAIXQIvGP5o0sLESngSpkbs+BMaR07DGFIWh+NsxP7GGwEffH0sv58M
+	Xnq9H3xY4Tn7KA8LhPrtrdWRXTUUmaw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790616005;
-	b=c4RMABhFrPDwOGcyfebYvcfkp7T/PNVr+FHVF7gsqh8tGhKjvAOc0se0j6sEXk1T3oLZD+
-	dSsgF6K9kfkNleQpaJLS21WjnE8tfLvl9UuklgLpthoq5hsmPWL2vey4deUPT6eOeekL0w
-	8YqKimGlXNUfrbFrTDod8v2BfIJrQA0=
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailflow.phl.internal (Postfix) with ESMTP id 1D7F2138050F;
-	Mon, 28 Sep 2026 13:20:05 -0400 (EDT)
+	t=1790616026;
+	b=jLSV6AI4M47eTvh0hbYnjWbTsDTwfZmX4etqKoC9jori052JsfCdB1Fxfp/RqkKBiEF8jt
+	MYxs7f+pblbY+q89uFExtAMx6VHhMOJtuyW3lqnJfTTFBc++XgSaZ/7FiXwzTYdQ5cFt+f
+	u+9jzG/IV5A49l1GI2L+geHsmSUjfCU=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=arzilkyI;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="P iAcHME";
+	spf=pass (imf05.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de;
+	dmarc=none
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 1030F13804CE;
+	Mon, 28 Sep 2026 13:20:26 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Mon, 28 Sep 2026 13:20:05 -0400
+  by phl-compute-05.internal (MEProxy); Mon, 28 Sep 2026 13:20:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1790616005;
-	 x=1790623205; bh=vxkdii9Ix7VQo4OS5s53AyOtwZsAqIdchYLS+D7XBiA=; b=
-	pG9rJP3CoV3aXiT7wA6mzdqxQqmkzT7NTyjBjONOARIJelIMyKwdLznkkRoa+Yse
-	sZTWvdAvwXkK5CYFVSVtZf+p/wcVWS/uEliMy6yNeSO4lLFcgRAUTkrd8BFkhQPi
-	/t0MqzM3GdhIuAEQDlKGEmLCOqKCi+QO645Ojno3fGAfDhHZKH3ZmidS7NMTXMKy
-	IW7G1zzAGtriVCG9nvZx7u0x1fJTB4FEuugh+cjdYjjUWOvG4mPbAlb6DQOz0gDt
-	xAGwKiXnhesunA8zf662WJVv8uCqRzSfe3tuNcBcQZ6EkAULjA8DUuWq6Eh00v0U
-	nD2o+js/r2jXJpVEkAFgcA==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1790616026;
+	 x=1790623226; bh=uGRShz7/CEgnybR8rXKhuxR+uSCSKOTb4RA8UBLfDNI=; b=
+	arzilkyIlW8ydVRfrZ7Z1ABeXWx8pvbGCpbldO7pfpRcEQqogVBIiQ4x0OC01K2A
+	4/RKj96Cgn8FC50Cv875HSBU3LV1BlYs570QTRpbJn2p78bWyMBvnkQX45Tmwxxr
+	qMjE8s3OibcIsx4LQHbUpsqlOfE1m8lUs2Z0BZhVi4/zacIhFdTJtcWneDH4v229
+	tDwmr4EVMQvAAeQ92EzvrPo8HjOWzEiLKK4BI725+lYVATFJnOVuzopwaZVI8C1o
+	eZc7D5jxpd+oSQgPGqeJotNekMM+5OOAWW/vr12boU7zBszoZw4TeHvuUd4b+1Jf
+	traQzQw7Xr0CIA9Umiu88A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790616005; x=
-	1790623205; bh=vxkdii9Ix7VQo4OS5s53AyOtwZsAqIdchYLS+D7XBiA=; b=o
-	tTvXp/PC9AMJdNTCJXnAQ5GNkj4ePWloawyqrk60GzmEkdMINzhEN3HNlysRj9pF
-	KLkK+F1m2FeQsZMHtgFVQAfKPrWu4UQeXx5LWL4vanSM2taUh01f1M2Cmqg+q1li
-	VdVfbgjtJ0vkSFwxMu9fb6pFwXatcbmf5Y8znHFQdAOtOdnOvpnpdx4pcCt0j/Z2
-	+yVuI/BgJDJybauMgktVm2QCbAYGMf64EJMayQcvNLNOcN8Fdq5fYWvw5w1vZNzf
-	7cXGlJaz5WxlljAscF2k8fOg+N0I6DBuZuk5Hco38BsP9U7hrKnazOh2kYoT1DLV
-	/IUCPm6N9hx4Q/QZEn2Ug==
-X-ME-Sender: <xms:xKG6arU-NFZAUfVOSAzA7XUgD5lRZPtRFGW-7wnS1jouhjjE9chVvw>
-    <xme:xKG6anCvUp4CGAEq_uMSAE14Ayn4L6fh_2NK_Raiq_HrHbH6uwqxn-2Yq0nPvBpzf
-    Ir0guJvZ8JMGakcB4WOim-5Hzw-FFfCotwGLQz9nSvHyhKCfrQBbk4>
-X-ME-Received: <xmr:xKG6ajov5itGvlrpOIUWU0S3H2Fd6IIsAEea0FFVdkAlJBWFJ4HPbGUuczxbIHfl>
-X-ME-Proxy-Cause: dmFkZTE/22e7clbyNdHwn0HCBx+H3lsiFyo6QkPV6dpSn20/QyCOxtHNd7QTmx6b7eJ6RH
-    b7MD0YK3xmhVFW7pHJl/jJiaLCtzwYaWJ6VBcJNMtYB/lM8rXCQqoyXJAKc1Q+3NTJHLRu
-    Q+616RIwRjK3mn/tprgeZTxr9VaE0UGr12rr0RgYUziHPYN8WsIu22gnQm98Dq7NFgLEYb
-    bOn/3mv6ye0r5zsmXTZhHlWNyOVRZl7FwJjAmuaSy3Z2MGyz8Xby78ZPjGLjvAF+o1XCsp
-    YM5+7QijkJtemWRQaETyS2I23TsNHUOR4KF7C0sS19NgtEnCYopA0Qb1idGIqDD/y3bAYa
-    uYGsTDtUPqVICbQ41pUlOjImyF2mYxv7H7gXJYfr+UUv6rve/u4aNMTBiDT8EwdXsk9Mx2
-    TXQmTq1D7W7WpUpu8G+qst/ms9fDu//AR5HSo2XpBx/CwCnd8+mWeB21rTZjXb5LIE/uRa
-    QrHQ3n9NKfOfq44WCCaHP+Bx+f13ffxua18Crb1sbm6QoQgc5rOgtZKAnWd6u/PMAqYt7H
-    AMpT0cbBjxy6q1k4Zqo9kWKY6YhgCARYSauXvd43jgaGpXW4PkYONpj0EunNZHFanC+HCT
-    S92pn8bzcE29X+u1falzlomjIS3saU7TcTttaYKC/oXAb3tYP8+RWOwIeqKA
-X-ME-Proxy: <xmx:xKG6avXmNToMkzrPAVdGb1C9RDHakOzTvBWakh4jtiDxxyzr8gMj5A>
-    <xmx:xKG6avoZ2gXUh_oqH0bmQUC7JHgdTPfdG-5lyjnU5cRaRmhSsso_Ig>
-    <xmx:xKG6aghhCnUwCnQXjXjqzm14anG5jLvOmuDua_FSpsZlSsK4emYYIA>
-    <xmx:xKG6al4SHzW0IpZ6a4D737SKcPYf7P-hagcFXB1laCZk-31ETaFqjg>
-    <xmx:xaG6alArW58l36_-BMc7T96Cu8HyG9HAQSyWQhmfP9l37WNBz8SyPlkG>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1790616026; x=
+	1790623226; bh=uGRShz7/CEgnybR8rXKhuxR+uSCSKOTb4RA8UBLfDNI=; b=P
+	iAcHMEn+/4usa1LG2ibAaKOKWn/fA+fxFMPOx+esfcVqmlLhkv0k+//JJGhDcyHT
+	jrl7h/Wc/4dg+g36Fe37F9aWZWsUp3uV0njJ9fKSBDv0zkIgy77lvV7yloblOfd2
+	YNyHgZrzC/pByOlZXOpPAS6vu5EqMsIwWVjWDmcgFnrFY035C5A3xDQjCSNnz49O
+	R5l9pl2+pDERs60d4i22q57SDhPo6niP4U+ROCZHOa1J61jHtEgV3jAHlWSSeQRG
+	bC0HOkUZ1GlnhOJM6W58WWuc9ed7ONsVn/N+oPTvc5hFvkdQ+hjzB1vreVvkQisX
+	wThm12jHp8ufnIFx2Gqyw==
+X-ME-Sender: <xms:2aG6ank5INbcEm76LgUiJa_7amBMFQJPpijJVBOsHuKegzlDwNDBSg>
+    <xme:2aG6auSMyD23cRSMQMUeLT-oFOZidPgDmmlzJV8TKF44EQNlsExhTLiWs2U6SNuCq
+    0s9ynw-R0Q1_MTg_pfwjzB7N4UuzSF5hT3DWsONomX18LXMtcqpJQ>
+X-ME-Received: <xmr:2aG6ap6x-7SLa931p2AR7S_B4HfG3ohEGVgbIa5xnIChl50rGI-VV5siVd4U8nOn>
+X-ME-Proxy-Cause: dmFkZTE3Dtw6IjhE/poi/CDPb5VXEYPNUPEe3rZRr1/3vnluvSNGZwYnc7Od0VEEqw6V8C
+    kWRAMYAJAJV5aq+CNT4OFQyy1fVW8k3upxKlO9V7Rt5yUqYEIYE/wijeDPsE7H4gglp/5v
+    F6D384IbY5FCBCgoXmGheBdMQQxOBU4ICiAnYejBlRLhJ/CKeqEcgPSAZh68CS/pdW/x+j
+    oysMrjjAyGFH6oDZSV+ReHQBDpEH3XjCRs+r4WEsyv+LCLa1ZQRyjrSR6cKgS0Pi5Ve0FP
+    CSaf3rI2+ul2/rPFwdCO88CC3NXOaOC07b4Jq2/gPXxONS3ydc229KCVcj4zNvzLHbXFmN
+    tBNIm7Z2RGei8KhHv2/TVTjH/o3X6NcTdHfo/OnAnrCWFAdogiHhZv31ci62SFGn/MozHg
+    ABFRFFqGcbYxwLJeBJe4thYz1QT/N2uIUUJISSciTjn0WOlAm66WEsgPEv1RiMJweOZJbb
+    SfejPaQ8ew6C7iElvtdyY04hwiudB3AnHM/jMyQgRgIdd/3GiwlFd3CgNvt79rvJGPr5LL
+    vUK49+VNc3WivjBgMS11aqb4NeGw7ZYL/+n9sZT1/Gd9crV6FI9XFlJC8rQJ8m5u45BSWu
+    GYyBHKfGc6WsRSsPQcp69nDAt9SFXMQafmUXJ1d6aZbKipcG2AoGuQkbtxqQ
+X-ME-Proxy: <xmx:2aG6aolDtNcrwXT8NDL02k8dwsWNBASyL3S2SiEoEH7HL-Ur3tBRgg>
+    <xmx:2aG6av58REzBnqo_kdilb5gAYIPYXyV9spbMCjex0PgWyRk2Q4gesA>
+    <xmx:2aG6arwh_MSV3vYAr5ruXFNT2JkekEX5e6BSRPlvoZCJB67IiAu2SQ>
+    <xmx:2aG6agLXHzA0c74M-yXItjXap2gS0MNg8qnG83XifTwUIxfHS3vDFw>
+    <xmx:2qG6apWQ6jTiBW-4_lAA-6X2as2dO4UXKo4yzSzVesqB_A0-IcHjOO3P>
 Feedback-ID: i60a14417:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 13:19:46 -0400 (EDT)
+ 28 Sep 2026 13:20:05 -0400 (EDT)
 From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
-Date: Mon, 28 Sep 2026 19:17:54 +0200
-Subject: [PATCH v3 06/12] crypto: api - Allocate tfms from the secret pool
+Date: Mon, 28 Sep 2026 19:17:55 +0200
+Subject: [PATCH v3 07/12] security/keys: Allocate key payloads from the
+ secret pool
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260928-crash-memaction-upstream-20260921-v3-6-e511e9ee2329@jaseg.de>
+Message-Id: <20260928-crash-memaction-upstream-20260921-v3-7-e511e9ee2329@jaseg.de>
 References: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
 In-Reply-To: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -163,14 +164,14 @@ Cc: Eric Biggers <ebiggers@kernel.org>, linux-doc@vger.kernel.org,
  linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
  =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
 X-Mailer: b4 0.15.2
-X-Stat-Signature: p8tgxnhbpwu16iq38q5siu4465mp6xbi
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 7DDD710000C
+X-Stat-Signature: 1yyiejf5iz6d8bpp9otx5d8zopcg3w66
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A144720008
-X-HE-Tag: 1790616005-964630
-X-HE-Meta: U2FsdGVkX1+aV2U1y1v+JIMrt6FVtMfeCaozkmg/OoFRw8XRZ52IM41Y00BqLKizF1w6WqlYuyxxLel8xA+TudWH5o6mPyfj+7imMJnSeJ2FSC+vR+6NMW0xa9lCIdsstqHyz6tBHdbjUtoE9pFWI0pXfmwWlIU5uG40QUj5IhGCWByTOw/00CoeYm1ix34y1Hg4g5IPmEC1LaugONps1srdim4sbefZSLYwtv9xIlQn+NZzO8NeSCNiv1lDWhnGR4jV2M3+UW1fdpynrIgc7rGc5EsAL6GQV1Hhf2V8dwf+GkNLlrDRFkN3IuH8ZjqZ3YunCiexUMAjZgYaWYXEbiyfDjoJXXVikuWoM2qkDJ1tcvEIa+a7Vvbuns+tRh1HvRret1lAY5/kxq68jshOzSgAm46NLc/ilhq+jxisCYu6SrG6qpNu4eC9pF1sx7PDxjpWdnmo60dtkH+mZfRPh9/D/ASmAlnfJj0HWJ1I6dgCIuDxoHvglzIPqTB5CmThptXceBSpVcfvwjLeMKqHJfq8TF+jG8PJMWQs1CukjOytS4Lcl7gvSH+nzszZicmzLHKlcECkMIU71XDnT0hPfOWtywCUsjCGpDTnE5Otqj5dBPazfKeG/S7PfXwhtlvfXgSVyTjmFH8aG2FCUx43f0n1JF6cYJTxmb33BPpdUbyvt6/IiCjwOV9SuaiaxStCiwndn66VkAbdUbuN66izTekDz52u5Dsq19Jpd/Tw4CQoQvlynHhcqOXsKO7LZyvoyu6/aqfkjkpLYa14+0ndTrSD3VHXMxwU/xTSwF1MUltX8Mo1PJiY5dRiYAU/Q+5eYybZb7OqoLzMr3koUA1Kb32JEetJ7EJDiCitXdTzI8530Yn2DkyFacmpokxQgvU1Evce5iE6WTPX5nbGd1SfocpmuZc1afDte4HlVwZV8HsRFU0UFJMpn6T9vkd6Gh1IW4BrUJWJcKQ9UUjK9tE
- m1IcdwJ2
- 7vIEOo4Z1SNDxjERUbw5XRnxmDZ766PXh0EonmEq7ax1qPLDx80YF9wVAsNU94gV+yeej+o9ktX3zkTSoWQrox17sbqgUE25HkAyGhXVK2yFSqVhC/10dMF+y19Id8gK2+0BpXXvtJew7t/gEOyg2+FDr1JFu/ttBBnMHCh2liErco0yhAxci4oSMjIoEcB0BmETGcby7lIrTXwbdYrLrYJJSj+R4VbecT3sz07QDNHwWQ/enGBv1zo14VeqDmcMV6dWhSf1W0MkgOAinuPZBQ/fWm+/jQZEouIw3J+snLxor85P01rZuCri72uzlugH0wwK3SfSvHMUIBOJ4CgK8KBv/j7COxpiA9OTpCsFlI1I4NbY4leVEmMhDDf2WPAhMR45X8Yy5eG2EF+rs6awWpHBx4qcDoh1qUJQWiH/newno5O9rFSXByd7ptFgBqFmyzqPjqaIEJVc9nZ70PlaWlXXiDRl8Sc0Fs2vnsTuMailGXYZsz9iNR6QYNhl4CPixBqkG35QQNRAifgA=
+X-HE-Tag: 1790616026-488189
+X-HE-Meta: U2FsdGVkX181Kmc5CW8I/6/M/hVrpOiw/GvUhbxuPWQzQOuMgf1Q8tFzKEa/9QEeX8apFIIuBcGuAu/zyABhAOx+LpchYMk2hila0TiP2xTyHE8eTLk1NfjFgVG/b9joeyAPWyFb7fEcYT+sO84DudB7DIUvUngnAnm3gEC0S+IT8n71vnPrTHoq1wTbR+UW2gXuoVXcg3codeT/ElxxnBwh0lQtuvAUYCJJklGbqszBrD/a1gEdfCsAYWcuaOPe848/7sO2oJVcfzvuNFGtJARqTk7wrgVTxatp1q7qEJSXHLSgMQBqwN76g//jfTfNAgPzNiLQCoXnyNis4nh1eLw2hKaZvBy+DguaxUHCmxnocmviTHDoMA8NbxieMABjhpz+HWbUrw4Rjkaj91ObXxIl4yk+4YQyR1ezDPvCJbhe8CcjSfEJ0NKC6B2Z6e3D4W69lpX8931OMJkppODZQLuMd9HbXV8gVoXXryCclI7t1lB/OFzvm038qbgpatT6JblrVw12C+X4+DNLn9hqsgEhQED7CT+r3L/VzHDH18tm6coDyYpwx2SjBfdqe3d74tD6YqrRPPL4eYRhU4zmjxMkXQmFwHwYePT63V+JSqYAo8+/w6XbwcuYZL/diJSuueY5PrSm2FZF5U13B9Uhe28iOIIx1nphkEkjA50PpTT+F6nA+ZmQJLlKCNF47hIYnXap6wqRILIhAwPmeFs/ZVMZf9dreg2NWJ5/XrrEn18aw2Ngz/rBFXzVvl8IdSaDfCNwH9dUGG8hHQWMEzhCJGusrPf1O+tnTF77F8m1AkUV7X82lGsQvnfZXwfIxksLg8JQk62BYV6PsQSFCT7YjTKTex1NA+SHSsEIdBQkRul858IjGCppCjn/RspbUB+php7BpHlRIVtcHbWfxXcUOrXEanOwRGKHLIHr9tYr7ODhmwMVMsT9GMUnNxCXpCZkHRI6LYdaNDWzsqy/9JO
+ FqSMnyqL
+ /3eRqNyStULr53KuW7RIzDw/ICl9zsBEI1LizlJZWongci0Tgo6tpVHoDSEE+9nMeitMfJ8tSaChn5uzlqW0T5KR7RFh9WnCj1+f/NG5hulYloxFiZraQPqYNVjXMV8EAdTa16M41O8JJRvebXcv/5C24wGQbTzlT+NJdu9CswQvvPYaqpGZgB/024WfzncXczcFl0wqA6Au44R+9JHXYaB2RstRjx51uD9AOn5vLtQ1RVAo/CG/3V+t6/JKs3b1mZb7oeIfrC/z1a561NP4/y1o+I6dBQX0no0Nbco+5cvwYPfnM8dJmd6FmThD5FzeeLclCVQQMEPYXqIuOxtLRw4OzMQuxLsUwcenfRnfKePzfJz1/5kj+SfVSkc+MwNrNDWBmf6D7CPDyRZbF2/S/GMTb3eLlBb434Ft/prqvdKEnnWBUAIb8d6TVtePFH1pVPQjR2H/VOtqobHFC9gva/R6EtxA0eBEuf/sLpDtySUBwzew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -178,72 +179,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A tfm's context holds the expanded key schedule, which a crash dump
-would capture.
+Key payloads sit in memory in plain text for as long as the key exists,
+and a kdump crash dump captures them along with everything else.
 
-Allocate tfms from the secret pool, so that their backing pages are
-marked by crash_memaction for the kdump kernel to wipe.
-The context is a flexible array at the end of struct crypto_tfm and the
-frontend's private data sits in front of the struct, so the whole
-allocation moves into the pool.
+Allocate the payloads of the user-defined, trusted and encrypted key
+types from the new secret pool, so that their backing pages are marked
+by crash_memaction for the kdump kernel to wipe.
 
-Allocation cost increases by a bucket lookup in crash_memaction. Freeing
-is unchanged.
+This commit covers the key types used by dm-crypt/cryptsetup. Additional
+key types can be added if needed in future commits.
 
 Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
 Assisted-by: Claude Opus 5 <noreply@anthropic.com>
 ---
- crypto/api.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ security/keys/encrypted-keys/encrypted.c  | 5 +++--
+ security/keys/trusted-keys/trusted_core.c | 3 ++-
+ security/keys/user_defined.c              | 3 ++-
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/api.c b/crypto/api.c
-index 24227582cfcf..eba310f128dc 100644
---- a/crypto/api.c
-+++ b/crypto/api.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/param.h>
- #include <linux/sched/signal.h>
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index e07092ea301a..633f31131867 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -27,6 +27,7 @@
+ #include <linux/random.h>
+ #include <linux/rcupdate.h>
+ #include <linux/scatterlist.h>
 +#include <linux/secret_pool.h>
- #include <linux/slab.h>
- #include <linux/string.h>
- #include <linux/completion.h>
-@@ -413,7 +414,7 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
- 	int err = -ENOMEM;
+ #include <linux/ctype.h>
+ #include <crypto/aes.h>
+ #include <crypto/sha2.h>
+@@ -648,8 +649,8 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
+ 	if (ret < 0)
+ 		return ERR_PTR(ret);
  
- 	tfm_size = sizeof(*tfm) + crypto_ctxsize(alg, type, mask);
--	tfm = kzalloc(tfm_size, GFP_KERNEL);
-+	tfm = secret_pool_zalloc(tfm_size, GFP_KERNEL);
- 	if (tfm == NULL)
- 		goto out_err;
- 
-@@ -428,7 +429,7 @@ struct crypto_tfm *__crypto_alloc_tfm(struct crypto_alg *alg, u32 type,
- 	crypto_exit_ops(tfm);
- 	if (err == -EAGAIN)
- 		crypto_shoot_alg(alg);
--	kfree(tfm);
-+	kfree_sensitive(tfm);
- out_err:
- 	tfm = ERR_PTR(err);
- out:
-@@ -502,7 +503,7 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- 	int err;
- 
- 	size = frontend->tfmsize + sizeof(*tfm) + frontend->extsize(alg);
--	mem = kzalloc_node(size, GFP_KERNEL, node);
-+	mem = secret_pool_zalloc_node(size, GFP_KERNEL, node);
- 	if (!mem)
+-	epayload = kzalloc_flex(*epayload, payload_data, payload_totallen,
+-				GFP_KERNEL);
++	epayload = secret_pool_zalloc_flex(*epayload, payload_data,
++					   payload_totallen, GFP_KERNEL);
+ 	if (!epayload)
  		return ERR_PTR(-ENOMEM);
  
-@@ -525,7 +526,7 @@ void *crypto_create_tfm_node(struct crypto_alg *alg,
- out_free_tfm:
- 	if (err == -EAGAIN)
- 		crypto_shoot_alg(alg);
--	kfree(mem);
-+	kfree_sensitive(mem);
- 	mem = ERR_PTR(err);
- out:
- 	return mem;
+diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
+index 0509d9955f2a..5f209c5f3f14 100644
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -22,6 +22,7 @@
+ #include <linux/parser.h>
+ #include <linux/random.h>
+ #include <linux/rcupdate.h>
++#include <linux/secret_pool.h>
+ #include <linux/slab.h>
+ #include <linux/static_call.h>
+ #include <linux/string.h>
+@@ -140,7 +141,7 @@ static struct trusted_key_payload *trusted_payload_alloc(struct key *key)
+ 	ret = key_payload_reserve(key, sizeof(*p));
+ 	if (ret < 0)
+ 		goto err;
+-	p = kzalloc_obj(*p);
++	p = secret_pool_zalloc_obj(*p);
+ 	if (!p)
+ 		goto err;
+ 
+diff --git a/security/keys/user_defined.c b/security/keys/user_defined.c
+index 6f88b507f927..dce2508587df 100644
+--- a/security/keys/user_defined.c
++++ b/security/keys/user_defined.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/export.h>
+ #include <linux/init.h>
++#include <linux/secret_pool.h>
+ #include <linux/slab.h>
+ #include <linux/seq_file.h>
+ #include <linux/err.h>
+@@ -64,7 +65,7 @@ int user_preparse(struct key_preparsed_payload *prep)
+ 	if (datalen == 0 || datalen > 32767 || !prep->data)
+ 		return -EINVAL;
+ 
+-	upayload = kmalloc_flex(*upayload, data, datalen);
++	upayload = secret_pool_alloc_flex(*upayload, data, datalen);
+ 	if (!upayload)
+ 		return -ENOMEM;
+ 
 
 -- 
 2.55.0
