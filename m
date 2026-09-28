@@ -4,135 +4,177 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C0F3CA5FA1
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13269CA5FA1
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 17:18:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AC0A6B0088; Mon, 28 Sep 2026 13:16:51 -0400 (EDT)
+	id 199AC6B008C; Mon, 28 Sep 2026 13:18:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 035116B008A; Mon, 28 Sep 2026 13:16:50 -0400 (EDT)
+	id 1239A6B0092; Mon, 28 Sep 2026 13:18:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E409A6B008C; Mon, 28 Sep 2026 13:16:50 -0400 (EDT)
+	id F05D66B0093; Mon, 28 Sep 2026 13:18:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5EB6B0088
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:16:50 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C38486B008C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 13:18:32 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 386DD1A02A1
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:16:50 +0000 (UTC)
-X-FDA: 85263825780.29.74D36A6
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 644FF140004
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:16:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QLYHetPy;
-	spf=pass (imf09.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3C422A648B
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:18:32 +0000 (UTC)
+X-FDA: 85263830064.29.93FE6F4
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 177421C0008
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:18:29 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=PDW96tMY;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=rP7VwLU+;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790615808;
+	s=arc-20220608; t=1790615910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nVlRP8UBi3QSgtgc/PjPsjRl9sO+VgQnXuH3S8lXm6s=;
-	b=BGdK+oBCr8KrSFN4sI8MrV342D9oZrfS2E6CN0202Ea7QEP9R6ohjYxFl5n/T4Q0yB6ZOg
-	cYR9wbT04pDLAovsFtol48y/sPFiKpB1dzrKsDWE4J76EGjApfIIxw420AL9HebeFQewEk
-	MCkdhJqKyPXmxaOWEInFxFl+tfn/vvE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790615808;
-	b=b7Wef6nOK9dV9LBLVEkTLQlEUsy0znGw3k/nvefXgJRZET/qjO9LQzIBbhu7nCof9lTHyV
-	OFTQsyNz2vOJeHrx1lHxWAL1hFZizgR3xHc0Sh5HUVZ5A6jcJh6aWIKRSp7Ccxci9vq1QW
-	avn1UIYjuluFmIvyvTlOtfsXDH8SLoA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=bVg0AFXfRcn0kYVBIO4bfsJw3vxA/g/QL37izKwnfQA=;
+	b=jB44okUpnCGkSVNpDR96koH08nI51SrRfv6o5VcwP9GH4kIF5uWJKb32IhTSD9+d6XsUsn
+	Wy7qwv97oN2Up+jIQiocNYgyJNL4PlEixEI3pOOcOm3VFpjTLEZJp+Bj6bkxFcl5HI9H3b
+	MInjjsdWoN+xwp41+In3Dx0LjBTpxBY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QLYHetPy;
-	spf=pass (imf09.hostedemail.com: domain of praan@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=praan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d3b445a84fso2805ad.1
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 10:16:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790615807; x=1791220607; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nVlRP8UBi3QSgtgc/PjPsjRl9sO+VgQnXuH3S8lXm6s=;
-        b=QLYHetPyPGu1XhsW7uOKO1jhSdzqoe2erx/20UTr+MG3vXAxMAmBoY7Y+Vf2l4w2jm
-         hY55vEDx7O7bG47LXBBbGDZJeDomRN7K04rjhdvaj7c9P24h5WOOT3RPlahF9NM39LSe
-         VJ8hlVaIglcvAtJ4pi5Dh71YxUwuz80DZ2jt7sAIcMLnXKiBCCiQ27+uFB+dAYnXpB2H
-         XYHlmEJrnkMoQO8GOjv3iUBoF1wIrurUgRUdm94hMsB+IeBjvIutPPt4RYrHFkI8VMKW
-         QZz8PftVsSo76szYk9edBsMSL/30GH3HJ9mjCXpbxg5eFH7TdcFslb00oMchWY0O6OHn
-         dtsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790615807; x=1791220607;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nVlRP8UBi3QSgtgc/PjPsjRl9sO+VgQnXuH3S8lXm6s=;
-        b=jtx0wMwPhjH7RcMvBqXKN6IFHhxJBS3sqq3QsWK/3ja3ELZ22STQVq12Pi3NqAG1IW
-         Gvx8mLEqzmTQQEoESqN4FkSP8z8oGnBBcryWuWVmIF2oZs159/By0DcGjsEzpfjgPowv
-         ZVab4/0W1KPmUN27ExC7HDT/ZbndCTqn5uze7mSRkze4FIsK3NLUvz+NJJB3X4WvMIWp
-         Ec1O/sYUGOpFjlsBbetmUW3w3mKrgD9PQeFX895yQMZ1LpXFnwH6tQxIsspc9TIYMGzr
-         5zso8+yM1ZSyLNC8rAvKnPYXwnhI9feasTpNJWx6gjDR8HV17yXHNoaYdA1PX2JM0Vou
-         onng==
-X-Forwarded-Encrypted: i=1; AKwUvBxsfUT/HitBLUpM143FXOEyqqFzHFDTYz+GSuXBZVAIWWbc6LI60j1iKEv+jYIuoN7q25m32XieSg==@kvack.org
-X-Gm-Message-State: AFq9FYL0Xa/sbzjng9EIGckHCCO5REbM53xA1QIYtiSn97oo23mBBs9k
-	ty2CMQaJSmGXfrkuQCTXjE1CSX6oZnq9a8YvE329ZOrsU2PU+Xoe03fzP4J7Z+xbqQ==
-X-Gm-Gg: AYBFou0nQxR0uX9tpXUQljJqvo1pj2tXWBEcvaL+LK7+lr7tvx5C+dyXb7MJdO6M6DB
-	Pxs+e5H5Xf3GaT3aOV1vW9P9yJWWyhO8ix7WJF1Fl+c/AaxdHCDByUKzQlWdrrSOaQdlIC6ibXo
-	rmek5Vl9/fbHyHN+xYzr8ywyFDEb4CajhX17AWLnENlG7LPYmKUSuMoIQ+W9aHOUhXo6f84vYmN
-	LeTeAQtMY+E4ZgdMchs7ShhfZ86aUqQXeI5NcBoCZ7ALA3d+9aT/SKN1Yq3vdIUKGnNSwGCZ+G5
-	JfGaZ8ZrhsMfxmLRJHhKBKAkqtZpsNMXisMn4oUGpnCv5rfOiFg3ZTcS9TxegBM4O4JVGox4qOb
-	Rt6z4INLF+LBDohuVb9jLXeDTR9T0GWLo6CqOKb+IPg8ES9Hd5K02LplxqrMFa9NkSnzVL5fKuS
-	DpsMrLnZupB2n8omIOOGTwMumXwA48YgvrKPA0LvPWfGUcn7jbKY0ajHYqBHqEYFhv+6J5e/sD4
-	SxGtrpvlsIJqtXhzEtw054mqs7tKSKjc8W5
-X-Received: by 2002:a17:903:b48:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2dfa6194d00mr7813665ad.2.1790615806244;
-        Mon, 28 Sep 2026 10:16:46 -0700 (PDT)
-Received: from google.com (105.211.142.34.bc.googleusercontent.com. [34.142.211.105])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a497edd76dsm520284a91.7.2026.09.28.10.16.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Sep 2026 10:16:45 -0700 (PDT)
-Date: Mon, 28 Sep 2026 17:16:36 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v9 06/13] PCI: liveupdate: Preserve bus numbers during
- Live Update
-Message-ID: <arqg9G8pXKPX8WCe@google.com>
-References: <20260918200640.887030-1-dmatlack@google.com>
- <20260918200640.887030-7-dmatlack@google.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=jaseg.de header.s=fm1 header.b=PDW96tMY;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=rP7VwLU+;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of linux@jaseg.de designates 103.168.172.137 as permitted sender) smtp.mailfrom=linux@jaseg.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790615910;
+	b=Wm01stweoEX/pBLIwvrl1d5LkJ4Xi5GELB5b+P0sKPKE4BC0v78ArYa4ICQEUv0e8H9OJ9
+	AOG9C6H2njPl9g/+lAb6Wo5p9wecCGFpNNTpFNaaL/kgFAYQQpr5oB8ab3Mtg9Zg8UQhpA
+	1GYvb58FM48iGXD5Wce8XCprcrV4cAM=
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5F29B13804CF;
+	Mon, 28 Sep 2026 13:18:29 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Mon, 28 Sep 2026 13:18:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaseg.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1790615909; x=1790623109; bh=bV
+	g0AFXfRcn0kYVBIO4bfsJw3vxA/g/QL37izKwnfQA=; b=PDW96tMYg4rbGYdKku
+	0EJCPNI36r4B2hUwhfR3GlFGPvu014j8MQbAmAu/jDt3apTosy9kl2lONm7ZW0tM
+	WC4dSMUV+DZI/8WakXXy5rvWgEkGpzOScmSGb3IPOjsBrUN8LkjH/Ha/MT9arhrj
+	lV5WTyTu5QzeR2yKg40VcC6BtfLWYxr0LyUY5BGoYDxszYqxkqeq1WOd58jjird1
+	0fglY81og4AL3IOrAAj7x5sfsCKjH667Jl5IVYoZIlLo1qFx44vMQ/d8KNsxXLVQ
+	te3Wx/YozKKpZTJTzDde316FvaArpyqNf3tYolcTAtev5GeHOKL7zDSQW4uXXnx+
+	4Stw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1790615909; x=1790623109; bh=bVg0AFXfRcn0kYVBIO4bfsJw3vxA
+	/g/QL37izKwnfQA=; b=rP7VwLU+g5w5kgoZE/Ygfqp4O9SaMC2M+jdmk9pJscEl
+	bgmxy1pqsyLyypPy/teiX1wg0jXQ0nPfuIwXjq7cUEIAaTJcjGO6UtUMfk3GOpgU
+	GaOjwK1OyDrIS9OX4Y1TV59vKf7VSnORwDlqJraYMK2QlLsBNY9hYFndgoTVNxfh
+	vyCKI6ejywyPLgEjUW6+Pb04S7gVk5iKib7E09GD3L7/daSIm3D4AM307v44m2bR
+	SeamX+Tm+3Nvlp/aNOv1nfTHTGSkvpcrQBOJr8lxReqrA/SSML+H471MoZh6RYuM
+	JMo72E3ICD3MLbyjniYyWV9zP3MEDkginbxbVtTKqA==
+X-ME-Sender: <xms:YaG6akR6zEUWWm5zOtptcC5g5i5w2qNblqYpBtRBWKX05DcEkDNT_w>
+    <xme:YaG6alOFelEG63JQmHEZMaF-e4O7ggLjwK0VvoRAwxO-8RIN98lg_2lp5CIaMUa7R
+    W6iT7JUfZfhiE29ZEi5ZgAq-xs1FljwChczQM_LN_PCP9886HB2Pas>
+X-ME-Received: <xmr:YaG6auEySkVu0oVYOEBOMDlnLc03H5U-j1rY_MXACx-1l3Zx97auzd4rkzBPJVDq>
+X-ME-Proxy-Cause: dmFkZTF0iCUIjHjLkwYyqUzkXaYeY8zBVzbYdKa9uLqQTqMZv99nAR+IiEJPZL8+SJzKiZ
+    B7K3UjPIiWFyTiV33TJp2Iu3+otBrZpR7GdRG7oEWKpQxhAYRys/bIgWVjAFO+ttb48/Iu
+    vqtTDVO6beSYfb8DehSXxRdciBkpTkKn6DftQ8bRlXa4NWwGLAN1zR3yNWg1JGuJyO2wz/
+    IIAW+S+/FbyS/i0Qc8pWib5DM/WcYqRedoxaD58VxZCKYewFPrkCfWlpRLwPx+CCMijei6
+    NYqaXMB3pIqrRZsvEgwz9iXvEg7oTndNrsTGOSQoCalXtITSIECGB5COlgHV3BetS9pdNk
+    Mi2BWMxCxErt8z5rhQ8RzJjuSNmMDsZ13mfP2K5O4G/XtKP4GwUlbMqf2G/eDIzZTe7Ddf
+    W8g6pT8RqKP0+eIeSfmPFa6lY+sN4EB3i8gbBuTkoF0K64vyoMVtJhiICB7+CPi6u5Rqjk
+    Hx+lJhTi44brC6/RpmQR8K1/0vQ+VbXWiIsYI0Tajw97tGq1WtKJHin2gLVyZQXOghUoHC
+    iF9Q8Rkrf9hrCgBCVxZdi4r8n08voOTzj01FOEXwmMjJYyw/N0x0PZuaB8Z+VCCg0Vd3EA
+    qwVKuKkmhlJ7CaWDTzA2u9vCQbBGkZI7hdOPcs/SXlyoX3Q7/RgMG4GELV2Q
+X-ME-Proxy: <xmx:YaG6ahB_BxV8xWTFhKnQ-hpdBQ-bjdKKSLoNBOcCL1FzH_JkIOQyfQ>
+    <xmx:YaG6ankfpCLXapt1GM8R3UNIjgB_PVs2fW6PYF7Pk1XTmowCMoZQjA>
+    <xmx:YaG6ahvSEmutTft2TiccZxTYsTwsCXnVsrxvWvOoTJB2T9GVDW8Snw>
+    <xmx:YaG6anVJ0kMtsUB9aikmSQQRzu1NRpBUPJB1FlMUDlFX-eAuWy3grQ>
+    <xmx:ZaG6ahiI1MV-bxXkvIHv1w2c4MwhADANsDKMFiU-VHH_QQ7gj6gVuWzt>
+Feedback-ID: i60a14417:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 28 Sep 2026 13:18:08 -0400 (EDT)
+From: =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
+Subject: [PATCH v3 00/12] CRASH_MEMACTION: describe pages to a kdump kernel
+ (was: CRASH_WIPE_SECRETS)
+Date: Mon, 28 Sep 2026 19:17:48 +0200
+Message-Id: <20260928-crash-memaction-upstream-20260921-v3-0-e511e9ee2329@jaseg.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260918200640.887030-7-dmatlack@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2Oyw6CMBBFf4V07RjaCgFX/odhUcsAxUDJtKBC+
+ HfLY3mSk3vuwhySQcfu0cIIJ+OM7QPIS8R0o/oawZSBmYhFGuciAU3KNdBhp7QPLoyD84Sqg9P
+ gkKLUldKJklnOws5AWJnv3ngWB7vx1aL22/BmNMZ5S7/9xCQ37+hlnJ+9GcmaGYHwY+kNk4AY8
+ iTlJZdayFv8aJXD+loiK9Z1/QMbbXc71gAAAA==
+X-Change-ID: 20260925-crash-memaction-upstream-20260921-6e3cfac5a389
+To: Jonathan Corbet <corbet@lwn.net>,
+  Shuah Khan <skhan@linuxfoundation.org>,
+  Randy Dunlap <rdunlap@infradead.org>, Rob Herring <robh@kernel.org>,
+  Saravana Kannan <saravanak@kernel.org>,
+  Andrew Morton <akpm@linux-foundation.org>,
+  Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  Pratyush Yadav <pratyush@kernel.org>,
+ Dave Young <ruirui.yang@linux.dev>,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>,  Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>,
+  David Hildenbrand <david@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+  Brendan Jackman <brendan.jackman@linux.dev>,
+  Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+  Catalin Marinas <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>,  Mark Rutland <mark.rutland@arm.com>,
+ Alasdair Kergon <agk@redhat.com>,  Mike Snitzer <snitzer@kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>,
+  Benjamin Marzinski <bmarzins@redhat.com>,
+  Herbert Xu <herbert@gondor.apana.org.au>,
+  "David S. Miller" <davem@davemloft.net>,
+ Mimi Zohar <zohar@linux.ibm.com>,  David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>,  Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
+  James Bottomley <James.Bottomley@HansenPartnership.com>,
+  "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,  Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>,  Rik van Riel <riel@surriel.com>,
+ Harry Yoo <harry@kernel.org>,  Lance Yang <lance.yang@linux.dev>,
+  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+  Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+  Matthew Brost <matthew.brost@intel.com>,
+  Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Ying Huang <ying.huang@linux.alibaba.com>,
+  Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
+  Arnd Bergmann <arnd@arndb.de>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ kexec@lists.infradead.org, driver-core@lists.linux.dev, linux-mm@kvack.org, 
+ linux-arm-kernel@lists.infradead.org, dm-devel@lists.linux.dev, 
+ linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org, 
+ keyrings@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ =?utf-8?q?Jan_Sebastian_G=C3=B6tte?= <linux@jaseg.de>
+X-Mailer: b4 0.15.2
+X-Rspamd-Queue-Id: 177421C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 644FF140004
-X-Stat-Signature: gs1gr3roi9f6qopi5hscqbexwbwtj15b
-X-HE-Tag: 1790615808-110424
-X-HE-Meta: U2FsdGVkX1/8NSBjugU4MAvdto78RaVCXlC0IgKTTNoc8t5fsaen0Op8AKMJHGW+JMykGzkBIljBk0T8pj3pvCyLltjt4/tM8IizeZWxThxiMGvTPi8S+O8rNr8BMpql/REdBF5empWdx61DEx531w+pnyD0d5uM9hBPCUZhbnYYeQL6gW0UTBRQ5D3LfrtVf9Jai6KNsgbp7wNRbA36jSw2RhZTRAMwek9Hyx1jrjiTVJYtbO5dg82e7q9Mucycath/RNb6mXn9YDSDmiCVGRIIgSrVEnDi6Xj4IoyrGA0OephlpkL/Ck6WgsZaNEnkVkxoEANWPX51xRSjYutUmVXjS96z+FyrQxoPEErUWnrRXM31qq9AM7siFiD2Hz0fciOcfzenpW04aRXYf7RqBBqRmIL1nx1RrLBixx98FKuR15Gc7awTfxCIjjV+CSiTBHKANLoLZvNdrQf6wt3pzvaSG/DxmUzIKbASnZVbgkc2lUB+b7u0eJl85EKT/9Xy3SyImmSZz9mMP4exTN/lJSphvRFyy1JP4kkmPAWMrNns9l5JZL1x1C0R77QbcjFhW31lPG4XVRc3WeP4Q/xiWS8pgN5uq+n68LTjA39xroV88huKvOh1clrhzmW6TQBIHPbkLsCaKUMAFtOwGL/jBWbeKKcQJOffeizwqjRpFX8+oFpBbyHBLN3rRmiyymfGV/L69Kwo6LinPm4AdOL+4zA7CCvNg5T7/1icwgyIsyyJIlfBoLV+g4I4Dnq9llCogbrjQvADOTQaAgX5yNKWggbhUgT9wVPGNiloQxStYIpyP6wLxcBc4m0kMAgYF+bYH0lDdmDOG5EpgeqnuyTNgGxq+qMiUHVJWnR90JUeIQnQPwFdgHWGh4LvF4hX7dxEsRMhSYQW38uf+Z5RgnIMyrHSnfiddrarkZeKx9KzPkWCn+HcYLCMD7S5e7sbI5rM2DnCs5l7cv/HalNwOoH
- WZeTZYXs
- PJlua74N001d39is+qNeHf6LxU2Fd9yxHLF42831LPCgLE0jLx+cHfof1xc7rI87AT9T0h7Rgja+mtkweOq6O0C2VWzVQEfqSoZ02d9ITWtGFoTLcFFH9+h89S/QaAGz1m8Wq46QiX3rGyOe218x0JUaXruAP/hSh5hGQUxxgiS+rnvynymj//ajBFU9A8OlGzQiZspGQd+Fy/xsLtVSHv8tiNhICMaltPU5RUuyU0+QxqZWKEjApDBoFIUhknyhoGRQ9g8z77IHlmt0MRgS+HT3ZlK+On45HQnfZe64O22xOBMYqgCV3a0jGK7JVxCFueYGQeoFm02m7AmjG5+S1/LgCp1mx1+8yLAhS
+X-Rspamd-Server: rspam07
+X-Stat-Signature: i5mg3reztzdzgy3magm71uinang4mf9x
+X-HE-Tag: 1790615909-369160
+X-HE-Meta: U2FsdGVkX1+RPNSZxbfZ3+CVRqKcs3i/xw/lqnDMz6B+jaJ2fhFKxFSQDHA9TxXesEVKSdN2pC2QgUsyWmCHU0sFWfkEZlO6gdCvkP0FchnAnZb0KuRy+J3QICnExnFp+70Xt8E70lHGlq2lrvPY00Fl3hIY/ARoL1qVcR2FBqMsc1PstYjs6Uc45w+YrZ2WquGfFJnCsJDf+3ACLytCC/n5ddSd/GIClAr7x9nGPRZcDbokHmVNT27Obab6bwkQUfJSMJoPzTbC1K6hI7io8CDioAcyQOz7NTE5pH4g2DNwvFLd39o3yuMp1KPzHoI8ax9I++KpRVzPKQ7J23q8g0XM5NolfMeIP1GFmHAfJDM41iela4fyF5JMlFuGy1pSVtjzLMwjKIJoLNgOXUk7Or0D5tiNdwRDckX3QpZNMEVvxKxL2ZrWrJ6jkoMjLksNFvG3hggovBar2NXvTgjKo99MmlJcX9nB/DVyQPHQzSp4wMrzeWhPZLaTJfeMPEb5f5y/+XnNwqCBrz3rSAy+hZ670hEC69vcKKds0j5h+RBTVN/zGlQAH8whcarbyFleNNEvERRvdbaEyrX7Y5S9zxEupFAOP/8OKKicYs1RRU3D3wjBgOmJiK61GtCdNJh2izuV7nzITpmfm2LeoEPSRKJOTOHyDau4nNrulESOJf7K4ckORb6Cz22Ndpl1GXTpWix3GU2uy8NBSltFe4HVmQGhygKx586kHt2DiWPB6avi+cBEDsAPfH8GkbG1S53nNuReYm7R7w3jjy7dBbz/hqwfLoGpyUI4fd+IQsy790csn0k3CXW6ZkAvKoZD3eO/DE5+WQCgSBQjKeePernSaZo2800ttPiBtgcpizeWojasoMVglyeI6H/cwmBIw1mx0OUlundrfnOFIHqvWMVPrA5wnkkFKLJHsJTpg6s0KgYbuRPSp61mcqqJGIZciWDe8c1ty/zENqsPydePj4i
+ 3ayC+fC7
+ q1/cjQmnDuvMtF1fhOyj2v4jHRzEiwrslZX5xQ0I/IHytHiJUZYlSrl+4OoGRLjNOtm6vbqgk23r3HgOrsn7irLDn7Rz14ezfmpPacxV+AagWk0wbbBEFLtvnMPLBSM7kO1Kuhi+dlU3HZ/zwys/yx7XiOZ2RQtrN+19QpdIh5rMVjkEJqB9kaVkpVPE0nqx263uZMpAPP1w+XmDSiQlvwb1ZmMiTdbof3BiqyrbFpJv76SczHhTybB9o/QrPgYOCLbsbcquonEYU70NQMxFakNS5llQP9N1rn8dyLrreg6yxfloYurEpisoiXKR7aW69s0qftzAwUOuPAe233Sg3eq021jKpbFs5VPxTc1gmsph5wUuge/ZYRVg/SCOVLlx5Azgn75a3ZrUXXTrTLOM5VvrydvlM8GxSJFUJAihPf6ipKZgOSQhvTgNGJKcSMYDkuQAWAjXm1U52omLG/kD+d04WxUP9Peh4NBwmNc7WpwdlkTGF++H4b9chifpOfr5b5GWVpC797LJgmoV6HtzVIc9Jidm2VBPzh6bLhq/be5DCbdXzeMG9ZFJCdXBaf3/lQvlEabd4SGzua6PzPlBXxXYTiIjBWmuNkqtUwe5KrK4NkK3klUwEenMvGcVPs9Qi8CDv0QsvzYIx0HZYDOsmy3r8TtCTxFnb1haosaBR3mSErJDQkU3mdmYZgpcKn85R5zLfQ9VN55IExhIG0bySVmzp/VeKHwJ2p4ocw3Y5bKfSfFN65r2a2Ou16sVlwp32hwlX9OssYT2Bmnan/OVs6mhcDADmgpeKnHiEBALvbN2c/JGR3KwADahdhx9s7I7HEW/dH5Tm23GBUTGaVhU9I0Vvoa6m0McnWdAecZ+zK39eBxSwTfxKfRt2zaweBlNP6pgK7bbpayXl/ZZoIll/RqfYx3+W4yTYrw2lJU4kL2l2D44Vt1dXl/J7LDMfc1XLOJk/GwRi3vIJqhMmHLKOPx7viZ4I
+ byibAqd/
+ F+7E6Vfe7v9IyHE57znv+xDOxEBLbxgu04BL2tC3OIEx8NPuGmGP0Xd7+GzXNBuuF2WpiicFflrk5/vK8/MkQqc8zmpEmEGWAnoLzYDkuinIeZ1YWPn0hZpb1N2thk0ZHlqcEk+osaM3NBEY6SzJjDgGNbEb2rtuOOJC48vsiPzGCCPX8QfALilaXwUA2GB3AD7K+6BcWohtCvVlq36sgVgN5AM5v/KWaFLEyJffP99HHLjMbEYUu6I+DNv26RI6KCX/Vpu+MkxDmhJin7UyGC6Q3d1+FMwR6iNa/a/yuPHFMDMHUiGj6+3b2spdxDjwF20RZ4MtI5JfSv/L3tdcydtcY4jIYGwl4+TP6gG9iU2GTrqw8g38qcBW8HqEiWj0QF7g4N2Cb6mCv5mmQ5oHEENJe//QVZMT953VF36P/mySk3m3LqAzqqCGYnvbO7Q8tGc7ITSPFoFaiUenzCD6KCCPGvplfsHWCDIVbZbmYA+dt8oVBl6MulOaMhWUa/R/nFb2g6+rbwyNRQBUA9cNLAX640m0ehrBcJL0fMWS0QmzwHYYHPIvDtxOjXo4MfwFAmCLUDmfTBzu72n2eX6ne47J4Cl0xxodmUyZe+KEp/wU/oVvmrpKYGKYyGMKzjgiMBI56QcHm9zYT1GjBOI/1VlphqE1bLeSuojATFo2pGdjQ/QGjfV3gtQtOLFWb9cuqsX2gmIY76RTWSCv60KZMplWnBgFJF/h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,48 +182,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Sep 18, 2026 at 08:06:32PM +0000, David Matlack wrote:
-> Keep the secondary and subordinate bus numbers that the previous kernel
-> programmed into bridges, rather than assigning new ones, if the previous
-> kernel preserved any device across a Live Update. Do this even on
-> architectures that would otherwise always assign bus numbers themselves,
-> e.g. when pci=assign-busses is passed.
-> 
-> Preserved devices must be allowed to continue performing memory
-> transactions across a Live Update, so the kernel cannot change the
-> fabric topology. Changing the bus numbers of a bridge changes the
-> RequesterIDs of the devices below it, which would require disabling and
-> flushing any in-flight memory transactions first.
-> 
-> Apply the policy globally rather than only to the paths that contain
-> preserved devices. Bus numbers have to be preserved above a preserved
-> device anyway, since an upstream bridge cannot expand its window. A
-> global policy matches the scope of pcibios_assign_all_busses(), and
-> gives an answer that cannot change part way through the two passes of a
-> bridge scan.
-> 
-> Bridges that do not have bus numbers are still assigned new ones, so
-> hot-adding a bridge keeps working, both during and after a Live Update.
-> The two-pass bridge scan guarantees such bridges are only assigned bus
-> numbers above those already claimed by preserved bridges.
-> 
-> The exception is a bridge that was preserved but comes up without a
-> valid bus number configuration, e.g. because it was reset during kexec.
-> Refuse to assign it new bus numbers, since that would silently change
-> the BDF of every preserved device in its hierarchy. Also refuse to
-> assign bus numbers to the other bridges on the same bus, since the bus
-> numbers of the failed bridge can no longer be read from hardware and
-> handing them out would let an unrelated device inherit the BDF of a
-> preserved device.
-> 
-> Require that CONFIG_CARDBUS is not enabled to enable
-> CONFIG_PCI_LIVEUPDATE since preserving bus numbers on PCI-to-CardBus
-> bridges requires additional work but is not a priority at the moment.
-> 
-> Signed-off-by: David Matlack <dmatlack@google.com>
+I'm using linux on an embedded target in a Hardware Security Module-like
+application. One requirement is that I want the system to be able to
+quickly erase its memory when it detects physical tampering. I'm
+approaching that by using kdump to load into a small payload that
+instead of dumping RAM, erases RAM frmo start to end. However, writing
+all of RAM, especially on an embedded target, is rather slow. For this
+reason, I propose a new crash_memaction mechanism that lets the old
+kernel indicate marked memory areas to the kdump kernel at page
+granularity.
 
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
+I will be using this mechanism to indicate "secret" memory ranges for
+early wiping by my kdump payload. After discussion with Baoquan He early
+August, the patchset includes a second flag that can be used to indicate
+"cache" memory that the kdump kernel may want to skip when creating the
+dumpfile.
 
-Thanks,
-Praan
+The record is a bitmap with one bit per page, allocated at boot. It
+reaches the kdump kernel as a PT_NOTE named MEMACTION. Marking is a
+lock-free atomic bitmap update with no allocation, so it is safe in any
+context.
+
+The feature is gated by a static key that is patched in only when the
+kernel is booted with a crash_memaction= parameter indicating which
+flags to pass to the kdump kernel. The parameter sets the meaning of the
+bitmap bits to both kernels.
+
+Marking Memory
+==============
+
+Theres both a kernel and a userspace interface to mark memory.
+
+In-kernel, crash_memaction_mark() takes a virtual address range and a
+type. Marking has page granularity. To support smaller objects,
+patch 2 adds a "secret pool" kmem_buckets instance whose backing pages
+are marked SECRET. Patches 5 to 7 move dm-crypt volume keys and IV
+seeds, crypto tfm contexts, and the payloads of the user, trusted, and
+encrypted key types into this pool. Keeping keys in dedicated slab
+caches also provides some defence in depth against use-after-free and
+out-of-bounds reads, independently of what I'm doing here with kdump.
+
+For userspace mappings, madvise() with MADV_CRASH_SECRET or
+MADV_CRASH_CACHE sets a new VMA flag, VM_CRASH_MARK. Folios mapped into
+a marked VMA are registered as they arrive in rmap.
+
+A mark lasts until the page frame is allocated again, so it is cleared
+in post_alloc_hook() rather than when freed to account for leftover
+data. Hugetlb folios reused from the pool bypass post_alloc_hook(), so
+their marks are cleared on dequeue instead.
+
+Overhead
+========
+
+Measured on arm64 (QRB2210, 4x Cortex-A53, 3.6G) at next-20260922, three
+boots of the same tree:
+
+    k0  CONFIG_CRASH_MEMACTION=n
+    k1  CONFIG_CRASH_MEMACTION=y, no crash_memaction=
+    k2  CONFIG_CRASH_MEMACTION=y, crash_memaction=secret
+
+k1 and k2 are the same kernel image. The workload rebuilds mm/ of a
+kernel tree a few times with make -j4.
+
+    k0  157.05 s median (n=8, range 156.51-157.77)
+    k1  158.23 s median (n=8, range 157.96-159.69)
+    k2  157.42 s median (n=8, range 156.97-163.24)
+
+Against k0 that is +0.75% for k1 and +0.24% for k2, both within
+measurement noise.
+
+Out of scope here
+=================
+
+This series only records the page types in the note. The secret type is
+wired up with some kernel users related to disk encryption. The cache
+type is not wired up with any kernel users (but can be used from
+userspace).
+
+The bitmap is sized from the memblock memory map at boot and is never
+resized. Memory added by hotplug is therefore not covered by a bitmap
+and cannot be marked. I'm focused on embedded targets that don't support
+hotplug anyway.
+
+Signed-off-by: Jan Sebastian Götte <linux@jaseg.de>
+---
+Changes in v3:
+- Use page bitmap instead of range-based registry
+- Move smaller allocations into secret_pool buckets
+- Link to v3: https://patch.msgid.link/20260811-crash-zeroize-rework-v2-0-9561d13c2340@jaseg.de
+
+To: Jonathan Corbet <corbet@lwn.net>
+To: Shuah Khan <skhan@linuxfoundation.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+To: Rob Herring <robh@kernel.org>
+To: Saravana Kannan <saravanak@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Baoquan He <baoquan.he@linux.dev>
+To: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+To: Dave Young <ruirui.yang@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+To: Oscar Salvador <osalvador@suse.de>
+To: David Hildenbrand <david@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Brendan Jackman <brendan.jackman@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+To: Zi Yan <ziy@nvidia.com>
+To: Catalin Marinas <catalin.marinas@arm.com>
+To: Will Deacon <will@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+To: Alasdair Kergon <agk@redhat.com>
+To: Mike Snitzer <snitzer@kernel.org>
+To: Mikulas Patocka <mpatocka@redhat.com>
+To: Benjamin Marzinski <bmarzins@redhat.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+To: "David S. Miller" <davem@davemloft.net>
+To: Mimi Zohar <zohar@linux.ibm.com>
+To: David Howells <dhowells@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+To: James Morris <jmorris@namei.org>
+To: "Serge E. Hallyn" <serge@hallyn.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: Jann Horn <jannh@google.com>
+To: Pedro Falcato <pfalcato@suse.de>
+To: Rik van Riel <riel@surriel.com>
+To: Harry Yoo <harry@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+To: Nico Pache <nico.pache@linux.dev>
+To: Ryan Roberts <ryan.roberts@arm.com>
+To: Dev Jain <dev.jain@arm.com>
+To: Barry Song <baohua@kernel.org>
+To: Usama Arif <usama.arif@linux.dev>
+To: Kiryl Shutsemau <kas@kernel.org>
+To: Matthew Brost <matthew.brost@intel.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Byungchul Park <byungchul@sk.com>
+To: Gregory Price <gourry@gourry.net>
+To: Ying Huang <ying.huang@linux.alibaba.com>
+To: Alistair Popple <apopple@nvidia.com>
+To: Peter Xu <peterx@redhat.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: kexec@lists.infradead.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-mm@kvack.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: dm-devel@lists.linux.dev
+Cc: linux-crypto@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+
+---
+Jan Sebastian Götte (12):
+      kexec: Add a crash memaction registry
+      lib, kexec: Add a secret pool for key material
+      mm: Wire up the crash memaction registry
+      arm64: Enable the crash memaction registry
+      dm crypt: Allocate key material from the secret pool
+      crypto: api - Allocate tfms from the secret pool
+      security/keys: Allocate key payloads from the secret pool
+      mm: Add VM_CRASH_MARK
+      mm/rmap: Mark folios mapped into crash_memaction-marked VMAs
+      mm/madvise: Add MADV_CRASH_SECRET, MADV_CRASH_CACHE and MADV_CRASH_RESET
+      Documentation/mm: Document the crash memaction registry
+      kexec: Expose the crash memaction bitmap in debugfs
+
+ Documentation/admin-guide/kernel-parameters.txt |   9 +
+ Documentation/mm/crash_memaction.rst            |  68 ++++
+ Documentation/mm/index.rst                      |   1 +
+ MAINTAINERS                                     |   4 +
+ arch/arm64/Kconfig                              |   3 +
+ crypto/api.c                                    |   9 +-
+ drivers/md/dm-crypt.c                           |  19 +-
+ drivers/of/kexec.c                              |   7 +
+ fs/proc/task_mmu.c                              |   3 +
+ include/linux/crash_memaction.h                 |  86 +++++
+ include/linux/kexec.h                           |   6 +
+ include/linux/mm.h                              |   9 +
+ include/linux/rmap.h                            |   5 +-
+ include/linux/secret_pool.h                     |  47 +++
+ include/uapi/asm-generic/mman-common.h          |   4 +
+ kernel/Kconfig.kexec                            |  39 ++
+ kernel/crash_core.c                             | 475 ++++++++++++++++++++++++
+ kernel/kexec_core.c                             |   4 +
+ kernel/kexec_file.c                             |  10 +
+ kernel/ksysfs.c                                 |  15 +
+ lib/Makefile                                    |   1 +
+ lib/secret_pool.c                               |  27 ++
+ mm/huge_memory.c                                |   2 +
+ mm/hugetlb.c                                    |  10 +-
+ mm/madvise.c                                    | 132 +++++++
+ mm/migrate.c                                    |   2 +-
+ mm/mm_init.c                                    |   3 +
+ mm/page_alloc.c                                 |   6 +
+ mm/rmap.c                                       |   8 +
+ mm/userfaultfd.c                                |   1 +
+ security/keys/encrypted-keys/encrypted.c        |   5 +-
+ security/keys/trusted-keys/trusted_core.c       |   3 +-
+ security/keys/user_defined.c                    |   3 +-
+ 33 files changed, 1006 insertions(+), 20 deletions(-)
+---
+base-commit: a8c591ed6b672915e0be57843f943a2a723aff40
+change-id: 20260925-crash-memaction-upstream-20260921-6e3cfac5a389
+
+Best regards,
+--  
+Jan Sebastian Götte <linux@jaseg.de>
+
 
