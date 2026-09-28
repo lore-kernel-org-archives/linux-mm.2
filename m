@@ -4,82 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 581CDC9832F
-	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 02:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7219C9830E
+	for <linux-mm@archiver.kernel.org>; Mon, 28 Sep 2026 02:48:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CECB6B0088; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
+	id 0C6FA6B008A; Sun, 27 Sep 2026 22:48:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A6F76B008A; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
+	id 09F296B008C; Sun, 27 Sep 2026 22:48:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4BBD66B008C; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
+	id EF7836B0092; Sun, 27 Sep 2026 22:48:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 296396B0088
-	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:48:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07C4DC0B04
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:03 +0000 (UTC)
-X-FDA: 85261636446.06.08078BB
-Received: from va-1-111.ptr.blmpb.com (va-1-111.ptr.blmpb.com [209.127.230.111])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7236A1C0003
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:00 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=l3T+cw5Z;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BAC746B008A
+	for <linux-mm@kvack.org>; Sun, 27 Sep 2026 22:48:57 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E93F9A739C
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:56 +0000 (UTC)
+X-FDA: 85261638672.30.BF0670A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EC891180003
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O25pkvFH;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790563681;
+	s=arc-20220608; t=1790563735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=c136CmkpMKWU27leu2r2jlfnyev322esjkQHfnDrcXE=;
-	b=NpjMOpJWtQXXQaFjRZkW0vI7/a38zVNrRgq8nGsyWKPQPeivC/aiimF9ACYBPJ7m1oKUSy
-	CItzUszq1dyEKGJL+gTqASdgd9xxnuWm5QYQSkQn4eap0m6+/XYGXhEqkHwcnr+iRw/34H
-	tzlq+Z+xK2ZDcHmRxbTbGIU83HwHUNA=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=YZXmNamni8YTdkgj3WsVi9gU+V406f6mQymnA8E88y0=;
+	b=atON+GfX75nWZajgNNcJEGrdyWPb9gN8kUwipEgwui8oqL58b1fyQU1hIuxyDKjWygi9C+
+	A+stZRKprAP49B9SThumPS0VuFWW2vS+xW04aHAV5aXA4beHcKYfOWaSXFYSWcC79ZSksl
+	puLB6dL5uurT+BlsgtggfUPwj43v4AY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=l3T+cw5Z;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.111 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O25pkvFH;
+	spf=pass (imf16.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790563681;
-	b=0Lq6WVIwlT33LdzYXYYvTGz2emVEW7J6nyEJlfPqOE+e5t0NG0sr+hdmSEWfJXgvoC7Ij9
-	EVMKFd0PuO4powU5TkXoxqQ0+4ngmqpmex/r43uwYKtpdWZANwgoFRBPpAEUso6vIrsXA6
-	rlQTVjOpwH9zjfkkoz6qxyI5F61+vzA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1790563671; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=c136CmkpMKWU27leu2r2jlfnyev322esjkQHfnDrcXE=;
- b=l3T+cw5ZpclThBxh3QFFvmpFZxTJFLGesK5EFVEk5MjxCR8KmC94rQ4eGmz08xz4u1qzy5
- n5wi3HtgXtvadwLlpJyEhIiiszISFtxmS2jmgyqYtlOXt3Ps64Qonsp4F89dYHiCclcWgg
- Lif+7ZwhPZlSTj9eHK0VK3twN6z0d2c7Hb1NcWG9Yj+M8M7ii2M22vjQaF+sVVN6kUWIqx
- g9vNAy+Q1xkuTCV7F0z2p/Z+KTm6B7/o3AZIGClZpMnlP/oOdRNp5DH2pA3cPmuxMIwiPT
- rgf8PbVxmO67DY77ZG2aPdzfbiB2H2/ZwtFeDq4IIQmxsw4cka9SFpuHu+xleQ==
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>
-Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<aiqi.i7@bytedance.com>, <lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Date: Mon, 28 Sep 2026 10:47:23 +0800
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260928024723.87708-1-lizhe.67@bytedance.com>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Subject: [PATCH v4] mm/hugetlb: fix overbroad MMU notifiers for unshared PMDs
-X-Lms-Return-Path: <lba+26ab9d555+d7d993+kvack.org+lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-X-Stat-Signature: soirfpocya6k6bowacropndhz591fdre
+	t=1790563735;
+	b=OctLVed5DCDxz8baWYxvm5AR/Z8JzycP2x6NUs4I4vdPQl6af0+bM5TwJIOrHruXrzsXqh
+	PdBsCrwZTNpt+59G+eu/BSV+8Vd8kmoO0XqJtZmQLbXK/y4tQRiKRSINMqqVZn6yTtxjqy
+	wswlmwplJRUYcK7AECp7bH1iRgs1QiY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D7B10447BD
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7F91F00893
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 02:48:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790563733;
+	bh=YZXmNamni8YTdkgj3WsVi9gU+V406f6mQymnA8E88y0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=O25pkvFHPnrIrFqD4jTGb58pzeF/yYdz+xqlud6LvYLra40cEEfQW5YVOGDAi1+yq
+	 WtTq52ls8MYgjOKyFspGXIbInelB+hKEBDO5TT0OWe6OZGinzQp6HhGD4F67v+hvqY
+	 ppriEstVjVqnmzJeKR0y48f9O0JuR6ACyGsS0llxzK9xjAUnxKguffRUk1P4tc/dp/
+	 wCimEJYqg5qIHscksIE7jZ3a1BOFofxmNWSzDrcFKKWrM7NJWA6eTM089/fvoaCIEX
+	 Qp6vJhZJ97UA9xb1WCxQ+x8+nm2t4+LeXDylaENFl4AjkT438bc5izWWWaXpPHyYoQ
+	 1/ewTcsMuEi6A==
+Received: by mail-qk2-f39.google.com with SMTP id af79cd13be357-93c65d5e6f8so52703185a.0
+        for <linux-mm@kvack.org>; Sun, 27 Sep 2026 19:48:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwzOn06fX6GNzzHpEHHi3hZ5dgA8iN8Ket0boLVUfZvGI81bCWtXwR2Stan+9lqMrf0qwkHVk0Pxg==@kvack.org
+X-Gm-Message-State: AFuF++l82npAr3PZaype2HijjUUPSQlc61BLE5s3Kl/KlrSY1a1CiJOo
+	Oe4/1LD4gilqNWRPQSPSt+RqRZvLCQTZwOSz7udOsF5MBJ+x8EcMXUY8qpbrJ3dCpxSSQqcJJkE
+	qB9WqjcNj9Xt18z1tfUs5gRzcOSGn30U=
+X-Received: by 2002:a05:620a:2614:b0:93a:2bdc:cd57 with SMTP id
+ af79cd13be357-93c43b7f72amr1824335585a.2.1790563732750; Sun, 27 Sep 2026
+ 19:48:52 -0700 (PDT)
+MIME-Version: 1.0
+References: <20260911025613.1220845-1-zhanghongru@xiaomi.com>
+ <arFYRAa-i7CIwmHL@gremlin> <arF-E3Nsw9ZliH0t@casper.infradead.org>
+ <arI_w2wTfA00Mgy9@gremlin> <armexcXDiG8ryZd6@casper.infradead.org>
+In-Reply-To: <armexcXDiG8ryZd6@casper.infradead.org>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 28 Sep 2026 10:48:41 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+X-Gm-Features: AclHuK-KBiQtm0KE630BoXAk92dmhRT-WqzJYFoYV9V1f9Qw5fyAD0u8MfblD04
+Message-ID: <CAGsJ_4xuFi7K+crAcFQ998SxXS0xPM6QeA34JV+6+Sy005rXLg@mail.gmail.com>
+Subject: Re: [PATCH v6] mm: retry page faults once under the per-VMA lock
+To: Matthew Wilcox <willy@infradead.org>
+Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Hongru Zhang <zhanghongru06@gmail.com>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, surenb@google.com, 
+	david@kernel.org, liam@infradead.org, mhocko@suse.com, rppt@kernel.org, 
+	shakeel.butt@linux.dev, vbabka@kernel.org, zhaonanzhe@xiaomi.com, 
+	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org, 
+	chenhuacai@kernel.org, kernel@xen0n.name, loongarch@lists.linux.dev, 
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, linuxppc-dev@lists.ozlabs.org, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, 
+	linux-riscv@lists.infradead.org, agordeev@linux.ibm.com, 
+	gerald.schaefer@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, linux-s390@vger.kernel.org, 
+	dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org, 
+	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
+	hpa@zytor.com, Hongru Zhang <zhanghongru@xiaomi.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7236A1C0003
-X-HE-Tag: 1790563680-619045
-X-HE-Meta: U2FsdGVkX1/aoo0THbL5G7NsUhqfZ0/OiXL4FXMG/Ym8NN1OiCQiWR/P0dQCNgXH4HpSCkg3ICeHBqVIYBVpF03sZBi7hxfWCaET31ICLHRcDspD+/UeBM81fDRYDQ643pAlER/j3nfJrwK6cjh+skNWl8dKPE2+lqDJ74X1xEODlPcgUT/kycGztXKPxNaRNDUm0tcIj8GEE/+j2HgnZXk1fZ/e4gVqaNqbULhj1fdjQN6l+mfMKXG0gANyem5eUlOOd0AWoOjPQdab3+UaQZILc/2FQYzuXLGeOLisYlMBcNMp3FoW9hNSdjiXp2SSZtjfQAvXzTHU5YDhkzyDMDSjhrRixnw/KJ7PB2WT1KG6Jf9lG+KjEvsg49cvOuGhDSdkMCJGt/urPCV+v5T2vDbNXnN4tKnKIUSJJ23LLVuIzSSQmDijIuumK/dCO5OFHppsEdsMPsVETDhw45ksCTyaze5HQs1HV2TG3NRvbtxllRxToevPlJ05JQXOCC8iDf6w7rGwbnfZwh7a5fXDRu3Q7SmyBVF62opHJj51RsBqgLgZ9hHhrvTGVKxbfd0PUFnzTxFugdVsEgKptYBcJzb3iFrfmSZGIJnCRpPbkGoIyG6HpDPde9gJqRwy7LNMt04K8w5l0IquuNQQH/e2r+pQnW0iUN+Inxl1cBXcbxvMwu2/oFnjZb3HX0DgLXavgNFQiWfTCOXYGEYyV6v0PAPr522UrcHfMSrpOCqZe064YIYcMmk7+FJ5JoH8euOxBlSsLQeI49PruKUXUSL7MVrmHuW/zqruils12UVzwN4AUB11XVSY7ZOyBZV8zr5zlGE74PT79VUbLUW3lQJVa/On2z3tatgLUi4o5RQ0QmXqoqNhLnOKRkqApBpz0SutIlcX2KW4kerX3T9T9kR52r80RRM2kQwX5/x2DTKUVinv3HayBrR3vpa8dkZ+3XK8vL1Za1kuF1857cbtnSX
- wH96WC3w
- tZS0nSRcMi0PDaol8S4/rBi5Ly/gXUAexFX1niZG8RqoIR49aEmwjqiFe4BbUYgB6GZDWVG5ILTeT9KcmUTlE/1IJYPWs5hS4cTftx5HQhfJZuLsq0nfXlyYtJBQzOdtWb7L/nX6WcycgU29wdFFK6MXE1LJZQXfM3b2ZEFB7ziQ3PREu34ejFKPc2cfrYHZMq5A/zUFOq+mjrixZynfL1JZ6jKtua4gdDbLUxmEcrGG8ZnAhVGngGlV8ekhmiXgDX+OU8L4qvFc4xyZWUtaSbcaxxA==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EC891180003
+X-Stat-Signature: mxrdnap5pkucaoare1wmh44eqoh6od5u
+X-HE-Tag: 1790563734-548296
+X-HE-Meta: U2FsdGVkX1+ezMj8mV2g1Ymgi7panzD7ZgmmItGdO27z5QwhyDVBfNAtEQr+b4iG7bOn3o10CdOcs97WAeAtw8qiTmfTOcHgoginw477Py/iQeBoz2rYwDSwK7NM4G8pAmaBLOCG1B3ym9aq+SruhMQVP3J3qN2aNhT/yb1q3QN/xjcS0J61BZUdymNVI/q+rp3g1nIJ8Z+0VDgm9T0fnhGVNb5MWK0rlmF8J2sXwRJc2iPSTtNfJ37OsV6/M+MLldjBjoYVeDfEidvYzwVh+3hV5k24QC5k0n0hTFY7zpyFk/MV8ZrjbNdOW4C4xD+4qjxEigcDM77FyfeX/VYppbrRFJPTt9DDBZWOyqMwmE3X03+RYbSQJHUjlrnS9G/94Vz92JTCDTE8ZAX0zVFULfmgCJJ4aWM+f08e9gUXd0fx4DzT1ymFRBaJOITcms3BtBh/aLRJmYRgE/bAK/727dURogig9UVR6ByqO6elJ8lJod5iVrOMyLASY5j/PYiaBprbSUTufCZm9p3t2AkU/sx1YTMLaBO0Jcekp6mxQXUm5/NbtwoFy9yJJV7NGAmTkMvKJBExgbu+QCBoc1xxIQVLLGI43v3MznHON2ZfegNyZWFTKNimkGED51yJhdCE9keWnqrKP6nC48DoF4W0TK3K5Xy6djli+buMHrsvz4tSpFrtQIpUHEZ1rIRzpIxIM91Q4xQkwfzXm4+GY1kJbjNgTWbsZhrqEumnBiGvhQfS+WYVZ9RzLuWJmMSXVDR1bRwLKEcTIjyZ7vyR9oaCtlYbnsuvwTLJZW5yoQ1LW3OBYpStXJPNMG/d3sw2m4JFgWwkK3i8t51NluyBnFjB+Uxr+85kzQ8dPCvByT0FikmrWl53t2p4hGSfs8kkmM7X/MsWXEqfRwqJr+OusztcQVVSz8P7xekw+/cxojQAYLJD6Yf4U2djaub1/vtopLkb3avE1nKCgW1adMVRPCd
+ HM9+Tza8
+ QDfhH0IllM7HS1FuShWjhA8fesNA+XnDeNDVj1/24cBZRG9eSi7rl2m90zUJ19zfA/KWzg8g1lxtBMcdYzzx8dyoUluApmiaSpD69t0TCocJH8vuw7qyjGr/tA17sznodT50Q08JmIWJlfgDuyyApSPcR/TSAdf2zt/BYtCoLbwldmsyqvC3UkSQ2sbO39F5F1QsUh3u89lw5zXSGI9LgvcZI4KPxPcLZIm6OjZfTtbU8SQ09XJ66XZHLSfGq7DUsNGSLPuLNhiM3Wv8HyvwqHNND53WD9H+VlAmhTxzjqnkG3PCeEyjEUfkyGN+Um4USA5GPG6KSlquMQffBITVlqq0a53+RcEXU0azkI0QnRMX1v+NaQ0WKbuKslIFyLnBFw9dc6PL8tHyZGdJ2HPoJP5pwxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,179 +118,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hugetlb currently expands MMU notifier ranges to PUD boundaries whenever
-PMD sharing is possible. That is only needed when huge_pmd_unshare()
-actually detaches a shared PMD page table, because clearing the PUD
-invalidates the whole PUD-sized virtual address range.
+On Mon, Sep 28, 2026 at 6:55=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
+>
+> On Tue, Sep 22, 2026 at 09:55:23AM +0100, Lorenzo Stoakes (ARM) wrote:
+> > On Mon, Sep 21, 2026 at 07:57:23PM +0100, Matthew Wilcox wrote:
+> > > more to say on this in two weeks at Plumbers.
+> >
+> > I look forward to it :)
+>
+> So while doing my slides, I realised that what we need to avoid doing
+> is (a) sleeping while holding the mmap_lock (b) returning RETRY while
+> holding the VMA lock
+>
+> And that turns out to be as simple as this patch:
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index dd09c438fa23..94ed2333f8d8 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -723,6 +723,8 @@ enum {
+>   */
+>  static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
+>  {
+> +       if (flags & FAULT_FLAG_VMA_LOCK)
+> +               return false;
+>         return (flags & FAULT_FLAG_ALLOW_RETRY) &&
+>             (!(flags & FAULT_FLAG_TRIED));
+>  }
+>
+> OK, this is a hack.  The function is spectacularly badly named, and
+> needs to be renamed before a patch can go upstream.  But this should
+> fix the contention on mmap_lock.
 
-For hugetlbfs hole punch, and similarly for other hugetlb unmap paths,
-a shared mapping can pass the "PMD sharing is possible" range test in
-adjust_range_if_pmd_sharing_possible() even when the hugetlbfs file does
-not currently have any shared PMD page tables. KVM then receives a 1G
-invalidation for a 2M operation and zaps unrelated secondary mappings,
-so the guest has to fault them back in.
+Thanks for your suggestion.
+This is exactly what we did in Android Common Kernel before we had
+Lorenzo's proposal (bypassing `fault_flag_allow_retry_first()`):
 
-Avoid this by tracking active PMD-sharing attachments per hugetlbfs
-inode. The count is incremented only after huge_pmd_share() successfully
-installs a shared PMD table, and decremented when __huge_pmd_unshare()
-actually detaches one. Since huge_pmd_share() can run concurrently under
-i_mmap_lock_read(), use a 64-bit atomic counter. A zero count is used to
-skip the conservative notifier range expansion only after excluding
-concurrent PMD sharing with the mapping write lock.
+https://android.googlesource.com/kernel/common/+/1b9b045a586245cc1c29b2747c=
+6586234c7f5bad%5E%21/#F2
 
-On a Redis-in-VM workload that punches cold 2M hugetlb pages, this patch
-improves P99 QPS stability while punching pages, reducing the QPS
-degradation ratio from 7.09% to 1.45%.
+At that time, we couldn't modify ACK with a GKI hook that introduced
+a new flag. All previous versions of this patchset introduced new
+flags, which would have broken the KMI.
+So we had to choose between two evils:
+1. mmap_lock contention
+2. VMA lock contention
+We chose the lesser evil =E2=80=94 no. 2 =E2=80=94 and sent the Android hoo=
+k for
+merging into ACK.
 
-Reported-by: aiqi.i7 <aiqi.i7@bytedance.com>
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
-v3: https://lore.kernel.org/all/20260924082004.82450-1-lizhe.67@bytedance.com/
-v2: https://lore.kernel.org/all/20260922090749.24905-1-lizhe.67@bytedance.com/
-v1: https://lore.kernel.org/all/20260831091023.66581-1-lizhe.67@bytedance.com/
+Now that we have Lorenzo's proposal, which doesn't require any new
+flag, we are adding a new Android hook just to mimic what Lorenzo's
+proposal already does:
+https://android-review.googlesource.com/c/kernel/common/+/4307957/3/arch/ar=
+m64/mm/fault.c
 
-Changelogs:
-v3->v4:
-- Use atomic64_t for the per-inode PMD-sharing attachment counter as
-  suggested by Muchun, avoiding the 32-bit wrap-to-zero case.
+Note that Lorenzo's proposal avoids mmap_lock contention without
+introducing any new VMA lock contention. It also doesn't require a new
+flag that would break KMI. So this is clearly the preferred approach.
 
-v2->v3:
-- Rework the sticky state based on Andrew's feedback: use a per-inode
-  counter of active PMD-sharing attachments, so files can return to the
-  no-active-sharing state after PMD sharing ends.
+>
+> Could somebody try it?  I've verified it boots and runs some userspace
+> fine, but I don't have the workload to test the contention.
 
-v1->v2:
-- Rework the implementation based on David's suggestion: remember
-  whether PMD sharing ever happened for a hugetlbfs file, and skip the
-  conservative notifier range expansion while it has not. This avoids
-  the per-unmap page-table walk.
+Both Nanzhe and Hongru tested it before and reported the fork issue.
 
- fs/hugetlbfs/inode.c    |  1 +
- include/linux/hugetlb.h | 37 +++++++++++++++++++++++++++++++++++++
- mm/hugetlb.c            | 13 ++++++++++---
- 3 files changed, 48 insertions(+), 3 deletions(-)
-
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 7611a8470ea26..78e27ce0a6f63 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -921,6 +921,7 @@ static struct inode *hugetlbfs_get_inode(struct super_block *sb,
- 		simple_inode_init_ts(inode);
- 		info->resv_map = resv_map;
- 		info->seals = F_SEAL_SEAL;
-+		hugetlbfs_pmd_sharing_init(inode);
- 		switch (mode & S_IFMT) {
- 		default:
- 			init_special_inode(inode, mode, dev);
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 16c4c4caa126c..2a227bfbec1e5 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -12,6 +12,7 @@
- #include <linux/page_ref.h>
- #include <linux/list.h>
- #include <linux/kref.h>
-+#include <linux/atomic.h>
- #include <linux/pgtable.h>
- #include <linux/gfp.h>
- #include <linux/userfaultfd_k.h>
-@@ -509,6 +510,9 @@ struct hugetlbfs_inode_info {
- 	struct inode vfs_inode;
- 	struct resv_map *resv_map;
- 	unsigned int seals;
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+	atomic64_t pmd_sharing_count;
-+#endif
- };
- 
- static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
-@@ -516,6 +520,39 @@ static inline struct hugetlbfs_inode_info *HUGETLBFS_I(struct inode *inode)
- 	return container_of(inode, struct hugetlbfs_inode_info, vfs_inode);
- }
- 
-+#ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
-+static inline void hugetlbfs_pmd_sharing_init(struct inode *inode)
-+{
-+	atomic64_set(&HUGETLBFS_I(inode)->pmd_sharing_count, 0);
-+}
-+
-+static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode)
-+{
-+	atomic64_inc(&HUGETLBFS_I(inode)->pmd_sharing_count);
-+}
-+
-+static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode)
-+{
-+	atomic64_dec(&HUGETLBFS_I(inode)->pmd_sharing_count);
-+}
-+
-+static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
-+{
-+	return atomic64_read(&HUGETLBFS_I(inode)->pmd_sharing_count) != 0;
-+}
-+#else
-+static inline void hugetlbfs_pmd_sharing_init(struct inode *inode) {}
-+
-+static inline void hugetlbfs_pmd_sharing_inc(struct inode *inode) {}
-+
-+static inline void hugetlbfs_pmd_sharing_dec(struct inode *inode) {}
-+
-+static inline bool hugetlbfs_pmd_sharing_active(struct inode *inode)
-+{
-+	return false;
-+}
-+#endif
-+
- extern const struct vm_operations_struct hugetlb_vm_ops;
- struct file *hugetlb_file_setup(const char *name, size_t size, vma_flags_t acct,
- 				int creat_flags, int page_size_log);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4f6f58bf3db6c..cb27c06d1f7a7 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5361,10 +5361,12 @@ void __hugetlb_zap_begin(struct vm_area_struct *vma,
- 	if (!vma->vm_file)	/* hugetlbfs_file_mmap error */
- 		return;
- 
--	adjust_range_if_pmd_sharing_possible(vma, start, end);
- 	hugetlb_vma_lock_write(vma);
--	if (vma->vm_file)
-+	if (vma->vm_file) {
- 		i_mmap_lock_write(vma->vm_file->f_mapping);
-+		if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
-+			adjust_range_if_pmd_sharing_possible(vma, start, end);
-+	}
- }
- 
- void __hugetlb_zap_end(struct vm_area_struct *vma,
-@@ -5403,7 +5405,10 @@ void unmap_hugepage_range(struct vm_area_struct *vma, unsigned long start,
- 
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				start, end);
--	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	if (hugetlbfs_pmd_sharing_active(file_inode(vma->vm_file)))
-+		adjust_range_if_pmd_sharing_possible(vma, &range.start,
-+						     &range.end);
- 	mmu_notifier_invalidate_range_start(&range);
- 	tlb_gather_mmu(&tlb, vma->vm_mm);
- 
-@@ -7006,6 +7011,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	if (pud_none(*pud)) {
- 		pud_populate(mm, pud,
- 				(pmd_t *)((unsigned long)spte & PAGE_MASK));
-+		hugetlbfs_pmd_sharing_inc(file_inode(vma->vm_file));
- 		mm_inc_nr_pmds(mm);
- 	} else {
- 		ptdesc_pmd_pts_dec(virt_to_ptdesc(spte));
-@@ -7037,6 +7043,7 @@ static int __huge_pmd_unshare(struct mmu_gather *tlb,
- 	pud_clear(pud);
- 
- 	tlb_unshare_pmd_ptdesc(tlb, virt_to_ptdesc(ptep), addr);
-+	hugetlbfs_pmd_sharing_dec(file_inode(vma->vm_file));
- 
- 	mm_dec_nr_pmds(mm);
- 	return 1;
--- 
-2.20.1
+Best Regards
+Barry
 
