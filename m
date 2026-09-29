@@ -4,128 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7C1DCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:38:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3E1BCA5FAC
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 11:12:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6ED76B0093; Tue, 29 Sep 2026 06:38:09 -0400 (EDT)
+	id 6E5376B0088; Tue, 29 Sep 2026 07:12:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1F666B0096; Tue, 29 Sep 2026 06:38:09 -0400 (EDT)
+	id 66F9E6B008A; Tue, 29 Sep 2026 07:12:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0E756B0098; Tue, 29 Sep 2026 06:38:09 -0400 (EDT)
+	id 53C906B008C; Tue, 29 Sep 2026 07:12:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A4EED6B0093
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:38:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2303E1604A2
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:38:09 +0000 (UTC)
-X-FDA: 85266449898.24.77B3935
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BDF3140004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:38:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GyRdH2US;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xfr4CAhk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="SKB8A/72";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3lFcBPR3;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E5076B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:12:21 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A78A3A048E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:12:20 +0000 (UTC)
+X-FDA: 85266536040.25.7B97041
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 15E83C000B
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:12:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BV88qyIr;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790678287;
+	s=arc-20220608; t=1790680339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3kx3aUxxfT1+0stFtzxC2Kua9DU5Q56H9l9MHd9/TI=;
-	b=KFwd655g7zGPFO3nuLhc9ERhjd0mDuyDwGWpfkLmGG1nUikrrus6mwCFA49V5pBVFt+HoV
-	0N8ykmBqqnibdkgZkLRzWLjKNWitHaxCv+52bBwsNduhTc66TP6nyIncuOEW7xuclAHpS9
-	Fgpo1EX/OhwmtGufpFWrR/8pHgp8wZs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790678287;
-	b=l0d25d8IeNKj0kTn2KiwgRqoTGAeCdXDoOIusMJRpW+xuMPa6oz4Mc9Ankyzru+KtJ97O6
-	8ycX4QEcoU63YWJXueJHzIiXqPbRH8BXbG1HxN0uzhrCoMaw18Riitwt7Oif2mM4ZH97H7
-	O52HMsVvV7xKWDzyE67HI8yl3iYmZCw=
+	bh=OtKLzSVjKPRZshz2AefRxKxu1viQOmmc/Cl7ueutcPM=;
+	b=tIZnaWFnLsK/FH11Slqj9uR11YUjRzQqYqPZ8cJsxlIHipC2gF0upSCjTjB8ZS63bPdN2Y
+	ZaM8vUGnqfd+fBTc/ilpttlYOX98LQcR0pn0kR9VBqV0NmlBl7GKH9RCG4RTdMej2buoQh
+	6/i19NGrRd0ssjg1+qBqUWUd9ToYTrA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GyRdH2US;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xfr4CAhk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="SKB8A/72";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3lFcBPR3;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D1CB021BF6;
-	Tue, 29 Sep 2026 10:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790678281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G3kx3aUxxfT1+0stFtzxC2Kua9DU5Q56H9l9MHd9/TI=;
-	b=GyRdH2US9jOkxJWDH3nyD8AxxpX8qEVO9JAzNDrod7NIrqv0VHYBADf58mXldggRI2Hypc
-	35HoSWMqNIc96vU8LFweWFE0rWq/LdLDwoAaVF3+zJA8qOZNFp1jucrIKYJxKhGzWW+E04
-	jOQT0r0fH6RNbp14XlBxNvi+jnTbe4M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790678281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G3kx3aUxxfT1+0stFtzxC2Kua9DU5Q56H9l9MHd9/TI=;
-	b=xfr4CAhk9IoMoE9bKdv3PZOq8cXQ2KGSp1Tr+BWFz8UA0b36AJvqtvPw4+2Yy8/Qk/HDB/
-	HjVjU+Dy4CnNvxAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1790678276; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G3kx3aUxxfT1+0stFtzxC2Kua9DU5Q56H9l9MHd9/TI=;
-	b=SKB8A/72t+jDiG7Ei0pxRSq3F3khsAZGIrHKtb3x4FOVyWW8KPoa0BoDtKh65iKjOvilAz
-	SwK+PBuj/qMk49hXAlnToEr6aY5Dxg0ijAVqXcSOCBsUmeLyisKbljKD7FB83Q6caY9cgT
-	zn3ZBb47NOwJO6jo0bFnblF69NbY8LQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1790678276;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G3kx3aUxxfT1+0stFtzxC2Kua9DU5Q56H9l9MHd9/TI=;
-	b=3lFcBPR3mHLv1HMJUeXokuQxSiSdeLubn5Sn5jei3nq36hGaK62B+bp+4kPFwDkR8d0kZ8
-	c/71CrT4dGhU2vCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 74AA7136D1;
-	Tue, 29 Sep 2026 10:37:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TfxEFASVu2pHXQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 29 Sep 2026 10:37:56 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id EC50BA132A; Tue, 29 Sep 2026 12:37:55 +0200 (CEST)
-Date: Tue, 29 Sep 2026 12:37:55 +0200
-From: Jan Kara <jack@suse.cz>
-To: Matthias Goergens <matthias.goergens@gmail.com>
-Cc: jack@suse.cz, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	brauner@kernel.org, hch@infradead.org, xyzzy@yandex-team.ru, tytso@mit.edu, 
-	djwong@kernel.org, agruenba@redhat.com, Amir Goldstein <amir73il@gmail.com>
-Subject: Re: [PATCH v2 0/5] fs: Deferred inode reclaim
-Message-ID: <cxgitt74gb6d42l4mdiztrz42xuaykfggsxoussgdmo3h2qur7@injom55qowrs>
-References: <20260911081309.14137-1-jack@suse.cz>
- <20260926024829.3051410-1-matthias.goergens@gmail.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BV88qyIr;
+	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790680339;
+	b=vp5GFEJDklr7UKyQArpxpIDgeetqd+DKUb0QPwHsK+mAVYJW1qXYsu/7DKr8Q97VuMFu3A
+	WU83UAoW/AGgckpFDpZ3hzrJXa+8Fbyw9GLzdKYKdQd7vGJgzXyU+6EjzFwWsekwHXjg+G
+	f7EvOQp2LfuQ0+fMlsQYUIgpMpZVJAE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 289D460008;
+	Tue, 29 Sep 2026 11:12:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0241F000FF;
+	Tue, 29 Sep 2026 11:11:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790680337;
+	bh=OtKLzSVjKPRZshz2AefRxKxu1viQOmmc/Cl7ueutcPM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BV88qyIrUdemgCTc7/Nc1a5HencKOCtUUeQF/4yuDOy+E9lTQJTXaqexwwEa+KENc
+	 IHnvm++5OlPA7wQp78zpEfhb13SxfqeGtE8x0Tr4lJuOODJoVnitMUth71d8TyI8FL
+	 qF9QPvRMYORpyuleZ9gBZ9acR1tOtNY6T0V0l2wM3DCoWKv97l9wnJfOLBz3QVXNcf
+	 zuCeflofP0AyEaKrVdS0ufY5NE8KthdOm5n6A3n0TzkRrDI50QFp3WVuF5iK4VLw/2
+	 /u7yd0WDEAicCMf2zjaEZ1eoZuTrAugZMtLq/8C7LYHaANp8hLzVqESeam3NBy6sPL
+	 fqbmJ7n5T9GCg==
+Date: Tue, 29 Sep 2026 12:11:42 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Doug Gilbert <dgilbert@interlog.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen" <mkp@kernel.org>, 
+	Jaya Kumar <jayalk@intworks.biz>, Simona Vetter <simona@ffwll.ch>, Helge Deller <deller@gmx.de>, 
+	Sebastian Reichel <sre@kernel.org>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oupton@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Xu Xin <xu.xin@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, selinux@vger.kernel.org, linux-sound@vger.kernel.org, 
+	bpf@vger.kernel.org, linux-scsi@vger.kernel.org, linux-fbdev@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org, fuse-devel@lists.linux.dev
+Subject: Re: [PATCH v3 08/40] mm: add mmap action for discontiguous kernel
+ page mapping
+Message-ID: <aruboNztyLjlrXiG@gremlin>
+References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org>
+ <20260917-b4-mmap-prepare-vma-flag-sanify-v3-8-4583d8a23bca@kernel.org>
+ <CAJuCfpEawD2NUO9EoqKnR6YR59XMdYrtUrj8KEwJVwO8AOk8Lw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260926024829.3051410-1-matthias.goergens@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BDF3140004
-X-Stat-Signature: 5j88f966cjjijko1odki36cng935iift
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpEawD2NUO9EoqKnR6YR59XMdYrtUrj8KEwJVwO8AOk8Lw@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1790678286-517583
-X-HE-Meta: U2FsdGVkX19Vdh8b+IJPqyCUrA+YTb/Vjn3bU879j4G43/HV/qU/0AirNPYK/OpCnm8f3t1svJWGCHxTJURLoXAxn0xByx29TJxkBWSMKX2kZgl30envf4tafTnvff32xQiW0D4kRvfpCX2XFKsN7TE72XhWWPacwDacrvJkv1k9H6LW12uMH1ruA+d6cdhcQ8BpoLA8IGBGjvy/rgApd0YKapeCeyA0qo+YlQjeykWrRUIp3OL6SX1Y0wod7zyZ1LGnC4/RU/+htdVzzV8/gQwlW4zt+xwkC34isCwc2gfC/gLgNbVAHVsvw/IoroZDWMpBiyI0GEWmSeHoQN9TKxd4ax3zbUS7KAPHDrmYbviOKADqRpWdj77aZyFVWsYpzjz7cuTqMb2l9G0Fl+bdBm3lQeiN2Fq6ya9cFV4QSkmstdJFB6ThzQDnFXzjl1hJhYPhmYxSIcdPsevhtKNeHfO7a1EMFUZmbkx+lWfZiJ1e6qbM9pun5KoCLgFwBvE74jd2IeCM4hFVdjvy1uTCmsU886vh1Y3qu1GKnKJWdLstG6diRuuWTisDjHUp/R3DEkXBlwybw0JmDMrgvk8mXz7ekb8gmVDMzEy4xz4cqWgtGcf/Zezk0qiMEAzXbHHCiNV1e6nV+nhUI8XyxzBQObCHr/iVohUdJwM9M85ym0Eo4n95t8qg+vCZQzDtUyuCjjovL4ZK4YVqIAUuT7yLueqXnv988cJ/sliA0ZnztLU9K4HA4pqQbVdjfCkRCFpyPQltL8Okrt5JFmoYGQHMFC9fzChUI4ZFiivix0wCioRUzXllod6cVda7moGVrpUrYYltXyi7ggyZZFmuVNj3x6Ag6ByYGVj4Zft1KGOCsOxYVho35hks+mSZGfMQYsIJJcSYsHuiFtYbLhpFZv4tlNrmFu0QFcujqIz/YqeDNu55Rk6FSw/RWM8cM4KdaUorXzDnVpd8AnTW/ZEh+2a
- u9PT0ZcQ
- rYvII8X0+9iYvkx5vd/RA/EyX+bSfxfwWsZNyWGcDYUTjckkRvBCuFSebEgGrM0rCBf4QG4Q+DhyNzUjROs0K6TiJQnL/VbE2vF5a7+BIkKGBdsyww98bcx2WBQwt5TJC5BP1s8e9FruA2wjBRaivZ0PubDNNweDioCarFlkFh/k43AheIsoY/xUwYoI2nV7P2+kr2ZZ3LqLOYrpX2LOIH0UETTqQrpgxWX+judYqgBXd0D+4ehGoYtpdhIUqCE1kB09hQ82Thdprskfq8fsowe5KqhzjUVWX5MgPSewjkykUfuf3K0R77kCZO3OiIXKDdqgTIB4/VPdMWYkLIkg0XTjdFpbMrKIQvZmWa+1vrDEJMUl71W4sWdeAN+E2uB/cFLwdkZ4MQFg60RvuEtInXi8jgwd0cCtx6lrTqVjSaW3b2yZuYvJMPMKsMfpFdC9t7Q9cWIetwzOwLqs5/YafMIJUmGf0O+LHMQNyuAPLuUYlr8JZ/JETJOcp8vCvNc2UvliOmAnPxxM6lE0FA5i+eyp3cSnjzb10e4J1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 15E83C000B
+X-Stat-Signature: 369d9w3cbkyzezpk88f64ujt7st9wms5
+X-HE-Tag: 1790680338-178054
+X-HE-Meta: U2FsdGVkX18oLjTEVqogprMoissFSS0igw7TN8QnfjZa4PJmPiS5Ad7+scDY4kDuXnwn2A1qsXV3Ws/tGYaOvpr4crGytx0/YZQ02hK7LZXe+tjXJcTVEzf2wkz3BbmVcfITyPB0XP99yMSbNjxIsixS4CBifZg2sCyqIRrpfHfkYmEZ2cQSBDicbzhRLosIw69XKP/HkJOVXYtCBClAQrq35GRr6iz5eOTkKxiJwoCAYK2KWo61S7MJHv5pOgp1A4ribjb97x93C7tBaXJk08ojGjGFFEOswDw9w5P3e5qOXfTQD5zhhgXKTKoa0uUifo5A78skauAmhYqMqC8LDU1uJ1lkF45blO/WEWVOji0uMJDymQrg25D+oqVOrpuDf2hoJ8aCioJFg9ecBAuMyu1rE65BIAI1sg4eC6P935wPeAaUp1Bv7oMk8X2Wjl4laLN4mY9Jp1dkoALPTwjfEccxUbl+wLnm/Z6Yl/Hyp1Egz91bNh2zFxH7LJZj6pJYU0DnyXbHCQwmiSTHaVZcue+Mx82k1nff1g7FBpROY9nBeiZfDnmg2xPscQmKHC3gIfr707cf/byM2EojvZsMYdYJ0it0YudhjfslYvW3+a7DcHGggCf2lu4GlYMtreo5UlrKY3GAVZruG3NXyJKaHTYwPHO5yBSixdepMAI2qZ73gxGMNWONMdxa3jYfm13jpw7lPHvh/wygPtQ3E7RL8zS2fGuYPrppRbnnvOBmik137SF/RPjzmAdF6j/Pig3lcSjk/8Zs6CGJtOv+7rEbH+sCHn/TeykZSbJqqXxVgVIQenInexrOiCXp+emUxY/3hiiuMJlj/GAQYhh9JJdVmrrFsdOyq75qXk7/K+21482+rlJm8mfAHB8N2TfdFGiJXaXh7zucz84CUFVWuhcmWZx/Ulk5NZ6J/kY6RA/lPY6rXV5YMYXqMSOrnITBrNpB1p10fmtM70gp4JrBUm0
+ u3LHBbfG
+ DXcPnjEwsXZxt1i8iaZcapD9v8ISk6L9NU/Ate3/YqRF2dsDWsweKa/lwFXtbae+6FdDtjmu0iEoo09L7APvRniZe/D+Z7Unl12SduVIQOtZwbWeFxs7Jrah6Hkwt3k5U0G61kOh0iiDk1mu0oH00O1bUvhkHEGg4VbVUQ6bBP3RbeSCUPKmjmZzcTxaHcz78TeWjLHm916cw1RHWKBZ4v5OcE49kp5qBq+ZdK1m/bJi3urpUVoF2kR+zDV3SKccfJqiEfMYtURT6q6vAZHBMao7AwNxkMRUPIuoedy8QE1tSsc11HGB2dSaIsGduKCOd8FvfkYxN0tj0icqcv4ouYZp1G8PSHqj2fRhrGjrRGglMCC66bdraVqMu1fXHRSvIlWLbozGzsh6yAHrwwPDnL3B/PdSoxLBpkFI0BShS2ego4P2rgjYBRFBuDtqTcVzdJvuMWDC/PdQrhBjpt6pcbqxTUA0fPr7y5K193Tz6GnCdhluAqW6hs96dstPTs1rK85SdE4k6srCPEaG/cLBt3tQUeXJqWseQCgCl+mQaQwJBgQioIR0Y0uNSV533k/n5YCT0RYHLmzjHjKM7jXGwEIoKgfIWLmqV8zvfX6R3Seo7WXtWo5Ck43J2ia46GE1kdv8nxP9MsInmJcTuMD/5w64SO9v6/LlCpxR0gwJGKcNOtVeDLLHdwCqR2tKrY+UGRvJSUDy5Iv8gt9yCrPx3usoNqAsrUvCImERfpSbPm5TNXicLQwOTOYvlP3lAgmGUi5XwsWR6P4ETmFLkaWnGftxc52RAa9W2Mz8TzUSNMMDbAnH23iVyR68TC4I1hLZeXfK7taOT3uhQzmmDbVdiv7nMtC2TfNA3Fqu5QByLKMz5IyqZqihO9UfVAsJJq88TvYqWlZIL/xT01dF0CoRInwri+dMqLhXoThgKb2knNSd1ANFUXLjVzKSUJUuaQi5HOvsxp4wcjFgQTBms5rrNc/CQ6fvW
+ garJjyQC
+ C7FDX3YXpF14rI3EimnNwaK1JCZ2lDFLFngS6JPO+h+d9FGymkSjJtYr7E+5lI9CwFZpzLNGtKF1sDa9o+qseRpLrZq8uzums8QD3UAixwEQhXuGVmd/WXJeePg5A9XUl1DHZtY6OTGK3efgrtFKlg6ePWOGhkNFNTRMqnLRMtd5vMSXfRxiP3+YSywLDepg5EmLf9lPobUTmauRMwKxcTidUnod6Qkg16pxdg3GxnAATrOl3ER+tEjvFjrabic7nG+I0IjPbqUQ+KKNvbb8BHP2zGPt3vEXZpu1c9YVmNwkED/L9GOXv2N5049e+W/c5/F8uY0NIxOxxHO2XDHeJdvnc3bbQPf1OE/5p6BddN9l0CoewuZ59CG+BQlCDf8fmReHYRJohpp+mNFnaPkdBMsHLOh7i9Ag1QpCEyG51tbGuN9RX9wWcVMlaCeEsMCcQ2fbv0E/5ktUJp7TW9cKMt+TcKC+MMwADzIaI7dRiTDDuU8bc82Rwa+jQicxQ1OzsylxlF5LZc5sTqM5Vt4F4iopYRGb3Zc5/M93IjqcWKvU2qFRtMsoXb3Ga2BHuZ8IHWpvXLrJkF0NnoyNgOGJpDjtZikowTv/p7lQecCVOtxjsQxVMqUQZ11YJHTONiUY4C+nv94HiMNe/wJsUFGy0jPCV+wDSENYMim9zDexix1IQMWew6QiMBXXvGgxdtwyiB+oanEIif1r5ntkgsaRCm3b7FyIfJz3i9G0pAxHVeJALfvrq9/TBhWkWH4MT+UEmW2MYTm9b5YhKVmxfMnzWptqfgLswjAEusy0DF9TxUFAUjvu57K+xFJcKYnMS5FZFsWGQlBzPXcuTJn48cDiHxvw69l0MvBes3rCQk+4cuBz+w5vxZMWoLWsYqyrjiJL+JNcVIafIbvnqQ7Ff2zPfGOF+IdCpN5HDBqMqvqHQheNqmFe7n5La6lP86sdneBSSKLkoImdVeU7XHmEQi7isiX1Izp2Z
+ vdwV+VDR
+ e/eWs5EBUAJ2eASjOR6uJin1ro/6DKVwWLTkiQL6lKee17YeL4rdyUPqqHmdtBM4LeV1rN61BC1b1yC0ugoDC2FEgLB91pe/1YV+AyTmdnJXp9H4D1sY6BpZYB0eXAKf5+ix2UEebvBy9kBeJbcR5fauWcC3t3i12rsfi7bFJOCz1WcI5MfFLfsqjDkdZnczmVcbl3gGjY6QOfN+tGdZ6vM5Y3qcxAKtTfn9/XgNYDzrJySood925G5TrAkE0k2t5cStLEV79q6md9Lp4C0BH8GU5oycOafRC3QBlxh5QyEBZVauQMkthKapsgvq3uWZsYChnNnGYm6iZp4ibBC0EVeUkdJAl+wkWbt4HJ2MpXfIPhatWOvWnJbK4m8tjiSJorAfcxeb3Aex8/twQwi37Sw9jyy6aL8iVn06VjrGWDJG8KLSuyII6/wdCzQTID7ofV2LBJAhmSiMyNHYOzXWS6WWCBXj2UGmdEEdk9LGGy9FoABHYqesXCll6+gSf7KIXYRjp7LO3Vj96dCD50VM9FAepRIqye7zKj0goUvaPWU/APUHsrAUNPygXDSZMyy/FoAsL8SiQhnfZ0QCdCW2twxU2DzOda1CxqHrHmvSeZuXopvIorl3cvUcBi51uSz9Pfx3mp9HLkoU3onX48PnVlMxN0AS8u26jhKaeA276HiS1OcYBDsKBStQ46lYfzb4y8RR8pZCU9WbclCF0hoei+dDxqP8bYWOkWm5GoO+l/o0ioVv14KzY7Lh9NL2vkrCawMCJ68iYfQv8HgaeAxrek0uq1DZzQB6W3lsLf9+oSLMITr6gXcVExjY8l8Fsj5zzycCpzx7Ei4i/FT0GABLKTcbXvOMScqR0snt52TMmgOyzLTd6qx5L7OCSM8OR8krhzHWhTtVD2SXInmKech286sCFaOQM1y1ZCOGjh4hqBI3GcUOylSnXj4zxZKBKTgzc98X4M7H8KdZb6pii1QVUguzE3Q9b
+ XqPNyaX3
+ vZWB6mFKLlK7EVC5y41mG1BfMMd93QvdTTzdP+S7+d4vizSGfmeAjNPqLijSu8lC2V/c9lHIFA+meJD5W7R/hOYtyzv0jGdwq9l06OTOyOPFWKc6cj8l/KoYcdeG3JMciw7WKufCnC1yP2WLiOcuvf2Fx6/JjJ9ZYNvazpKuSua1+mi4ZGLWwUlDXFV83aie47txU/wKHQJxgRp/jU6XP6Lkb7iGtvwRfIzxAWeGU9g1+j3xpNDDUIsybg8ZNQl1nSqbY2CRdB2Gp8Wg2KNuMUuDmpKnzh2MGfB+ZhS0khWQE3ALRme6q8Yc9X44nUuYQ3gJtWR/i1YKxR2fUhlq5l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,131 +155,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthias!
+On Sun, Sep 27, 2026 at 02:44:18PM -0700, Suren Baghdasaryan wrote:
+> On Thu, Sep 17, 2026 at 9:27 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
 
-On Sat 26-09-26 10:48:29, Matthias Goergens wrote:
-> I ran v2 against its base in QEMU, on syzbot's disk image with a config
-> close to syzbot's (KASAN, lockdep):
-> 
-> - Lazytime churn on ext4 under memory pressure: the PF_MEMALLOC warning
->   fired with the sync_lazytime() stack in all 5 base runs, four times
->   from kswapd, and in none of 5 runs with the series, which evicted as
->   many inodes in reclaim context without reading ext4 metadata there.
->   The workload also runs drop_caches=2 under memalloc_noreclaim_save()
->   from a debug patch.
-> 
-> - Hibernation cycles with /sys/power/pm_test set to devices under that
->   load, with inodes that 5/5 defers queued in each cycle, and with
->   freeze_filesystems 0 and 1: no freezer timeouts and no hang involving
->   the queue.  The stalls in throttle_direct_reclaim() from
->   hibernate_preallocate_memory(), and lockdep's warning in
->   __set_task_frozen() with freeze_filesystems=1, happen on the base
->   kernel too.
-> 
-> - One path the series does not cover, see below: with the series
->   applied, unlinked ext4 inodes under an overlay are still deleted in
->   reclaim context, and the warning fired in 2 of 3 runs, as without it.
-> 
-> The reproducers and the debug patch are at
-> https://github.com/matthiasgoergens/linux/tree/deferred-reclaim-repro
-> and I can post them here if you prefer.  The Tested-by below covers the
-> lazytime and hibernation runs.
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index a1f2d375cf7d..2a92193ac6a5 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
 
-Thanks for testing!
+> > +static inline void
+> > +discontig_kernel_map_page_range(struct discontig_kernel_page_state *state,
+> > +                               struct page **page_arr, unsigned long nr_pages)
+> > +{
+> > +       state->action = DISCONTIG_KERNEL_PAGE_MAP_PAGE_RANGE;
+> > +       state->__page_arr = page_arr;
+> > +       state->__nr_pages = nr_pages;
+>
+> Shouldn't we cap state->__nr_pages at state->nr_pages_remain like you
+> do in discontig_kernel_map_page()?
 
-> > @@ -988,13 +1013,27 @@ static enum lru_status inode_lru_isolate(struct list_head *item,
-> >  	inode_state_set(inode, I_FREEING);
-> > -	list_lru_isolate_move(lru, &inode->i_lru, freeable);
-> > +	/* Inode will take long time to cleanup. Offload that to worker. */
-> > +	if (inode_state_read(inode) & I_DEFER_RECLAIM) {
-> > +		list_lru_isolate_move(lru, &inode->i_lru, &lists->deferred);
-> 
-> This is the only place I_DEFER_RECLAIM queues an inode, also with
-> Andreas's simplification folded in.  An inode that ->drop_inode() drops
-> on its last iput(), which for ext4 means every unlinked inode, never
-> gets here: iput_final() calls evict() directly, in whatever context the
-> iput() came from.
-> 
-> syzbot hits that under reclaim with overlayfs on top of ext4, in the
-> same bug as the lazytime trace in your 2/5:
-> 
->   https://syzkaller.appspot.com/bug?extid=7f94fe3ce0f6613e12b8
->   https://syzkaller.appspot.com/text?tag=CrashReport&x=12764a15580000
->   https://syzkaller.appspot.com/text?tag=CrashReport&x=13530905580000
-> 
-> Direct reclaim prunes overlayfs dentries, and dropping the overlay inode
-> puts the last reference to an unlinked lower ext4 inode, so
-> ext4_evict_inode() runs its deletion path under PF_MEMALLOC.  My
-> reproducer above does the same: stat files through an overlay on ext4,
-> unlink them in the lower or upper directory, then apply memory pressure.
+Ack yeah good point, will do!
 
-This is an interesting case. When I was writing the patch set I was
-thinking whether unlinked inodes should be marked for deferred reclaim and
-decided for "no" - unlink or file close should be happening from context
-where synchronous ->evict() should be possible (and is desirable!
-Offloading to async context always has these inconvenient questions about
-throttling associated with it and space being freed later than userspace
-expects it etc.). But I didn't think of overlayfs - I assume syzkaller
-unlinked upper layer inode under the overlayfs' hands - which can indeed
-lead to overlayfs dentry being effectively the last holder of inode
-reference and thus responsible for inode deletion.
-
-Inherently it is kind of nasty that overlayfs dentries can be the last
-thing protecting the inode from deletion but at the same time I don't see
-an easy way around it. Amir, maybe you have an idea?
-
-Anyway, if we cannot change how overlayfs behaves, what we could do is to
-mark unlinked inodes for deferred reclaim but offload the reclaim from
-iput_final() only if PF_MEMALLOC is set in VFS. At least then we know we
-are in async context anyway so nobody can be relying on when exactly the
-inode gets deleted when somebody left it to memory reclaim.
-
-> Is that path meant to be covered?  Handing such inodes to the queue from
-> iput_final() under PF_MEMALLOC, as gfs2_drop_inode() does for gfs2,
-> mostly just delays things: blocks and quota come back later, lookups by
-> inode number wait in __wait_on_freeing_inode(), and umount would need
-> the inode counted in s_deferred_reclaim_count, as 3/5 does for its own.
-> But it does not work as is with freezing: ext4_evict_inode() takes
-> sb_start_intwrite() on the deletion path, so a worker evicting an
-> unlinked inode of a frozen filesystem sleeps until the thaw, holding a
-> batch of up to 16 inodes taken from any queue, and enough of those stop
-> the queue.  XFS keeps inodegc per mount and stops it in xfs_fs_sync_fs()
-> before SB_FREEZE_FS; this queue would need something like that before it
-> could take unlinked inodes.
-> 
-> On Ted's question (https://lore.kernel.org/r/aqQV6Uwma_KjUH0O@mit.edu):
-> with this WQ_FREEZABLE queue I would not wait either.  A non-freezable
-> queue would need draining before anything is frozen, because an eviction
-> after the hibernation snapshot writes to disk behind the image, and
-> draining later can wait on kjournald2 or on sb_start_intwrite().
-> Freezing the workers with the kernel threads avoids both.
-> 
-> One catch: a work item already blocked on something frozen earlier keeps
-> freeze_workqueues_busy() true until the freezer times out, and the
-> suspend or hibernation is aborted.  With /sys/power/freeze_filesystems=1
-> the filesystems are frozen before the freezer runs, so an eviction
-> waiting in sb_start_intwrite() is enough.  ext4 only takes that on the
-> deletion path, so 5/5 is not affected, but unlinked inodes routed
-> through the queue would be.
-
-You (and Ted) have a good point here that if ->evict() is going to write to
-the filesystem (and currently ext4 doesn't offload such case but I
-would like the mechanism to be usable in such situations since e.g. XFS
-needs it even if we solve the overlayfs case differently) we need to
-be careful about interactions with filesystem freezing / system suspend.
-Also in that case Sashiko's concern about possible deadlocks of throttling
-with ext4 transaction machinery becomes real.
-
-So as the patch set currently is, it is correct but I think we need to
-somehow deal with the overlayfs issues you reported as well. At this point
-I don't have a clear picture in my mind how to cleanly deal with the
-lockups that would be created by it. I'll think about it more and also
-maybe Amir will come up with some clever idea from overlayfs side :).
-
-> Tested-by: Matthias Goergens <matthias.goergens@gmail.com>
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+--
+Cheers, Lorenzo
 
