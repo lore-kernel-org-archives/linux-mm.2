@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 946A4C9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:21:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB231C9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:24:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8291E6B0098; Tue, 29 Sep 2026 03:21:37 -0400 (EDT)
+	id C4CDC6B0088; Tue, 29 Sep 2026 03:24:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D9FF6B0099; Tue, 29 Sep 2026 03:21:37 -0400 (EDT)
+	id C248F6B008A; Tue, 29 Sep 2026 03:24:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A1EE6B009B; Tue, 29 Sep 2026 03:21:37 -0400 (EDT)
+	id AEB9A6B0095; Tue, 29 Sep 2026 03:24:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 37DBE6B0098
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:21:37 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C8F67A67CB
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:21:36 +0000 (UTC)
-X-FDA: 85265954592.10.41EF6D3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1D06040005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:21:34 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Grj63Eom;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 76FA56B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:24:15 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EF3328042A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:24:14 +0000 (UTC)
+X-FDA: 85265961228.08.EACA04A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 280361C0006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:24:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ibkey2yU;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790666495;
+	s=arc-20220608; t=1790666653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVzH9135wJ4QdeRKwEGZjDTmaDD7x+M+UkwMS7ATjN4=;
-	b=IbdibUGLSI1dx6RCeQ77mz1/lGxIH7XY5CIb6j+ehZ25IjpYor7RIy4SBNKNh7EtHyPb5w
-	db2t7ffGwqTt2vO0bAUVQX32C5fDELfNuAF4lGS3CK2GYEZGzhG8rah93CRJko5ogaAT1V
-	dgXP6wdUMAWd6S/1vDu1ESw4l6B65MM=
+	bh=yvxJPj3k2vjV6D8HUDd8QkKGWeBMIhXhJhVwkCPhP3Q=;
+	b=WWUE/F1MQPNmCCHePGo8E1h5PlZv1YTpCwtLbarDysrxmDIXqwPaIxuJvs7tLOHuZXDAm4
+	jbabajZWR2sOmltFK+ciO1NadJQsMPGvIiCyYN42ljTV9K7fOt9zTbH4ZY/diryvTlDCtY
+	k0bQKPmzIs7/UuZBFd9He1ubDu41Pok=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Grj63Eom;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ibkey2yU;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790666495;
-	b=ixCZ/EOfe9aoqAsrKWeYTAYlmlA1oVcL48pQhriaSQNwx8OEQizv74sCiA+bvy/QSTh0dI
-	1j+5PEWu+6uvBn4kkoT/9PRhUjYTd1jx2PlDMfBq4/dMhmCm0f8YwdPL9IYyDQKs9Ru0I7
-	1WkFL5MsZ/Sd9Ijid4QjxQKgtgz6HDw=
+	t=1790666653;
+	b=ZyMfxjt2m7LnEaMBYADZYC7tTiniVA0EF72XbCSrxv/QAdrOgp9lCwnseR1nyG5PKTbvs4
+	3iw5ki7tsrNWm4CVnPkTW2bmLlhACFuSyDyc3eSJu5UDyrHRJonrLgNvTgElYqAcVQU0Dc
+	iue3rEDOrK/jHOgOfQe36EDUeFT4HxE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 93CAB60A62;
-	Tue, 29 Sep 2026 07:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C591F000FF;
-	Tue, 29 Sep 2026 07:21:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57E5A41840;
+	Tue, 29 Sep 2026 07:24:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE16C1F000FF;
+	Tue, 29 Sep 2026 07:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790666494;
-	bh=jVzH9135wJ4QdeRKwEGZjDTmaDD7x+M+UkwMS7ATjN4=;
+	s=k20260515; t=1790666652;
+	bh=yvxJPj3k2vjV6D8HUDd8QkKGWeBMIhXhJhVwkCPhP3Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Grj63EomMmOFpWGNtNOisS3ON2mRVEMypsHP3ZZRNfWxdN61pkoauFTDOjgQFK62T
-	 eVxgpKP6dJISPZQvvWkHjQjDrqp69WceyTkNA5XrrQS50WllfO+zpfgoFWdMOtZuWb
-	 d5R/t1WHiQDDneBjPc9UbC4gnlkI2KYlcHF4WA631f8AsuQLZJ6HxJQm+8GiTIzHHb
-	 5amDF0CEQLBDkIgdXW+xtT3ivF4XOvfTRKRCyLBbhSTR/49/vPbD3EmPEzu8cWK4pr
-	 8yuR0p6ti1+jWnCDofwE/zlRGcdP2GUvWSIBzKnvVcEZyZlykkkTz+EO8c2NU9AaIy
-	 7x0EbKwjy/qzA==
-Message-ID: <36a93f95-2fb4-4310-bef2-88c12dbe7971@kernel.org>
-Date: Tue, 29 Sep 2026 09:21:28 +0200
+	b=ibkey2yUqqbiVM76d/2jZTGyjIdUdz2aZM6YaiTOTz9joywkD+nsB2wdU5GPHSSHW
+	 Uxe6UNjvfBnxPaLAJiLIH+gsRzsY2K3p6sj1jwCatttOSR5PmQJWeYyMS7R0gTipDx
+	 91toSUwKUs91yGhn4NOpNTCFOAR4QjdipsKpKZKrVdgP4YFHgv2ipVUjpAgmvec1Sg
+	 nwUgjtnXkrBuf1mAFgFG+g0dFlvx/XpzAYRP1+O1d6y22DmRT+IkA3jEDVM8r9eqqu
+	 gWm26joLY6CvegjTpmEF/XdyrAUPtvOP2B8YcOfRZfiDX7H+Xr/UGrRS9OQkV2HyLu
+	 Y9EqZQaCIOopw==
+Message-ID: <deecea10-589f-4e2c-9c17-5e5dd4e81250@kernel.org>
+Date: Tue, 29 Sep 2026 09:24:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 02/12] mm/sparse-vmemmap: allocate shared tail page
- array dynamically
+Subject: Re: [PATCH v5 05/12] mm/sparse-vmemmap: prepare DAX vmemmap
+ population for compound page orders
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
  <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -81,7 +81,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
  Randy Dunlap <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
 References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-3-songmuchun@bytedance.com>
+ <20260927025441.741633-6-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260927025441.741633-3-songmuchun@bytedance.com>
+In-Reply-To: <20260927025441.741633-6-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1D06040005
+X-Stat-Signature: qsca96ak8w1f1gemds7mkr5ndgfgmznh
+X-Rspamd-Queue-Id: 280361C0006
 X-Rspam-User: 
-X-Stat-Signature: n6m9aime1hpj77n6p6pas7cm8fj3qd78
-X-HE-Tag: 1790666494-973145
-X-HE-Meta: U2FsdGVkX1/BRHNTl+zcr1CtIyFCGyphkETv6QGTp/71oIbzPt6Y0GlKd7csNGB02uNB72PULTYy3h+Lml/fu3C+o30YrKUAzuvZmEhpTW0Bd4i0RL0VLSe+XJNP0Ubwckr9MRXwWl2YGgQv6dCvJbhSMHfnO85jMHbYgsRQDRosJFjDNpsTPD4YYiv2CMe8gX/AifAfv877pKJtZrFAuEQZnWKUtOOpKhhQ1prVhUkM/h3M9/TDs7cabB+z5VepHEy0g0J89WdmTuQskmuvoovei0hXj2kGwgPY9kS/3Z9sXnkgtoitSOs8hj0eXlkVwEoGO528lwEq9jSfgbYd9iNqWYsWzRmIsCPq3lN8Wg8nL/mQa2IzY9HKUX15PMmexcHgNkAUXcAGe/6iCJd68SEL3btTJ04UWpdaDxf/L5PdDErNDDsrxItvZOHTEVjYeiAQWBsmCyO0SpHkqFEPi/dbsVNd/TBcFe5dG5+TZlU0DPgzHc0gxlHWfnSs8JuTZnwAYaJsmqXCtCYBnzNbtY0BkvVpi3XrnNJkX3cv1mwfNupRE0lX1MPgYi+WhLXtwMzC5wGFFi3Pat1jHFtFNwvvTF/A2rCGgVi178GPwbAtQCbvWXUW67bbgKPhKgsLBVvVJ2o5ddSMj0KSfyoat+db7T/AXYvvrYiMemmK/AZE9Vv2YZRfjZShfly9+UaKGEIqDfkn0LkYjSj2F++A134mbYOLwrBuw/FVVfSKV14hWg+n6y11qFOs03oCuW1fdJyZilcNS78X9Q3sltlA6mFNNj7m+jnsiy/rFpxlU3L2K3CBLlsBZ6VPQ0aK4ys/z4M0/bt6B1tJxx8RjU+WAiZv5OlrJ2ad6kHdicvebvZLsoEIqQG/8udlWSBY2GYMvP/n0j7WRZJa2GdbEy8v8Hw76i5UGVsB+Z4tOw7L0Ea5EZSiPX2pIKyrLnZwbTBzoZ5p8YWhZKH6lelaKk2
- j9LmeAo1
- 0B8L/5ZR9qsZZcY9qHy7jJ49G+NxVDCUjYyomGWbULZVk3snjiac40oRCrXp6in2a74rMkP/R4HaxgUTaRWUfa2wP3h8C0aJnowuLrmdk+a553PuQOKwymK9eTmX8FSeDlOm0qTyXmSoe3tJsOAyP3fP3zJ1lzyEzbRXR/VcRy5VgHE1VJqrWepAVZuY+5Os4dvBazkx0bkCYbNj1L9SP2avzPVoKonIBEEEQrGG/QyzwVe8pEQffAPUqFrMEcGAmpp3FVozISf8GzKJyBJYWi5D8yXqMQN1uLP/q
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790666653-517752
+X-HE-Meta: U2FsdGVkX19tWW03Zg14P/lpUajtJEdIvJBo/caAgRO4GsQ5sWW0KCWCAk4t8vmILWzRy0m5XlAp2zodvKq6KIRyRqnVw5j6LcQICB8VGeKBz22AezFcdW0N2UFfY9aoQvnKoKm8YmD95bliH7dJi9Lgvvqqk4JKGeE6VhI1pJVhmv13Lcm1gZRaxFns7zEIM/8lj2d3MgXkD3L3K3Jld95lwB+BZMKSY8jQUSO4KyZwKOACADoEork7Vy28iO2eAJa1hfipcqRcDoM/umtesuhV5PwLVgO/8rvYcrZcrvTnC1k10K4ZZC5o8qCnCJPBnOC+V7NdfIn8XpwrpCFugidZSlAvNFuz7c/+Hp97DrAcey3BFxJDDYICm8HZNAqxDxoaia+57F/gcZ6HZYCJ8FofHPPLgxud+wS+cypm/2y1ejnApk47nn4Y93TGG/k5+EWk5FaRbIu2gtqrgsKxGU+NnvSNN1oMFUvbyaD+4c0Qup+Cylr4dRHCQhKJeMxLjx1eeIVaOFetoYqxp4NMYZ3cm/Klaa9aARHd5XGCNcpeU97keP3dzMqCn0brR258yW7fe8uLlKy86Tzm52Ebndpvru6wvUKMZL1bYL9nTeQ/mVmJsk7V0dDEJUFwCXtghqt52CNy16S0fC6lbU2Occt+ssWTQYY2avj01UfRP9UwVrZwKb+sC4B43FxJXW7vUOp0D2ndI7gR90sghAtZUcyqZlpcXTUNX8ovxLVgwoZ4cQNgv+a+HozBgficzMUkAsqt7mWtu7tmkhX0lgUyCcOs2gBYdHIpnFedELTzs87dVh9sEu9vBio3J+UGxQcwmQsWDT1RbOSrjqbivNPwB9ojNZ/eBSGRQjXp63a5iuS619N09duoR6OHJrN1dPJCm9+P7ayX8EctoqqTYqiCCh4PyaCT8Il8jX9ILoTMxWaFmIrNCZRtvT4cCRmasPbw+gt6HA0O92bpLxqopCf
+ Sh4AIRg2
+ E4yRvZLeyPcZY2fsDHrF3TV5LtQ/q6tY/VSuFE58PAp7dvf0sHdHFfxqrpGsXe3u1O8mFocMrRdp+q5YfdQqlakBAMm37wCmKlTC/EPVfeuiEXIYhFw7N1tPQtnXh6y18kCtL5KaIPx29UXlWWiS4GXuewpqD2w7Pz8FjlKPaWNhpQDkdF4kkfzDWSgzjR05z3et4mS2MvFfJNtp2TdlP3XV/Ix40tNMKLX+6V8tpYKbNoxTdLENdYzQh7VYJ35Q9QLQ55SCdpaR9GZM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,101 +147,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/27/26 04:54, Muchun Song wrote:
-> Commit 622026e87c40 ("mm/hugetlb: remove fake head pages") added the
-> per-zone vmemmap_tails array. Its size depends on MAX_FOLIO_ORDER, which
-> had been moved to mmzone.h in preparation for the array.
+> Device DAX still uses vmemmap_populate_compound_pages() to populate its
+> compound-page vmemmap mappings. That helper allocates the head and first
+> tail vmemmap pages explicitly, then reuses the first tail page for the
+> remaining tail page mappings.
 > 
-> PUD_ORDER is defined by linux/pgtable.h, which cannot be included from
-> mmzone.h without creating an include cycle. It was therefore open-coded
-> as PUD_SHIFT - PAGE_SHIFT.
+> Device DAX is being moved to the section-based vmemmap optimization
+> infrastructure, but it cannot switch to the generic section-based
+> population path yet. Once a later patch records the DAX compound page
+> order in section metadata, DAX head and first-tail PFNs can look
+> optimizable to the generic helpers as well.
 > 
-> This removed the dependency on PUD_ORDER, but not the underlying
-> dependency on architecture page-table definitions. PUD_SHIFT is
-> generally provided by architecture page-table headers, which are not
-> guaranteed to have been included when mmzone.h is parsed.
-> 
-> The dependency remained hidden because vmemmap_tails was originally
-> guarded by CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP. Under that condition,
-> MAX_FOLIO_ORDER resolves to either MAX_PAGE_ORDER or the fixed HugeTLB
-> limit, rather than the PUD_SHIFT-based definition.
-> 
-> Device DAX, however, does not require CONFIG_HUGETLB_PAGE. When it is
-> converted to use section-based vmemmap optimization, MAX_FOLIO_ORDER can
-> resolve to PUD_SHIFT - PAGE_SHIFT while it is being used to size
-> vmemmap_tails. This would make struct zone depend on architecture
-> page-table definitions being available when mmzone.h is parsed.
-> 
-> Replace the embedded array with a pointer and allocate it on first use.
-> This moves the order-count evaluation into sparse-vmemmap.c, after the
-> architecture page-table definitions are available, and removes the
-> dependency from mmzone.h.
-> 
-> Removing the compile-time array also removes the original reason for
-> keeping MAX_FOLIO_ORDER and the vmemmap optimization sizing definitions
-> in mmzone.h. Follow-up cleanups can place each definition in the header
-> owned by its respective subsystem.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> ---
-> v5:
-> - Add this patch to fix the RISC-V build failure under the configuration
->   reported by the kernel test robot
-> ---
->  include/linux/mmzone.h |  7 +------
->  mm/sparse-vmemmap.c    | 35 +++++++++++++++++++++++++++++++----
->  2 files changed, 32 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index acd94cecc0d3..68807ff7f946 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -113,11 +113,6 @@
->  	(VMEMMAP_OPTIMIZATION_PAGES * PAGE_SIZE / sizeof(struct page))
->  #define VMEMMAP_OPTIMIZATION_MIN_ORDER		(ilog2(VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES) + 1)
->  
-> -#define __VMEMMAP_OPTIMIZATION_NR_ORDERS	\
-> -	(MAX_FOLIO_ORDER - VMEMMAP_OPTIMIZATION_MIN_ORDER + 1)
-> -#define VMEMMAP_OPTIMIZATION_NR_ORDERS		\
-> -	(__VMEMMAP_OPTIMIZATION_NR_ORDERS > 0 ? __VMEMMAP_OPTIMIZATION_NR_ORDERS : 0)
-> -
->  enum migratetype {
->  	MIGRATE_UNMOVABLE,
->  	MIGRATE_MOVABLE,
-> @@ -1156,7 +1151,7 @@ struct zone {
->  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
->  	atomic_long_t		vm_numa_event[NR_VM_NUMA_EVENT_ITEMS];
->  #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> -	struct page *vmemmap_tails[VMEMMAP_OPTIMIZATION_NR_ORDERS];
-> +	struct page **vmemmap_tails;
->  #endif
->  } ____cacheline_internodealigned_in_smp;
->  
+> Add a DAX-specific population flag for this transition. It keeps DAX
 
+Well, you're not adding flag, your reusing an existing one and renaming it?
+
+And then you're specifying it on more paths.
 
 [...]
 
->  struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zone)
+>  mm/sparse-vmemmap.c | 27 +++++++++++++++------------
+>  1 file changed, 15 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+> index e4dae98ba7f8..2457ea2c6dca 100644
+> --- a/mm/sparse-vmemmap.c
+> +++ b/mm/sparse-vmemmap.c
+> @@ -35,8 +35,8 @@
+>  /*
+>   * Flags for vmemmap_populate_range and friends.
+>   */
+> -/* Get a ref on the head page struct page, for ZONE_DEVICE compound pages */
+> -#define VMEMMAP_POPULATE_PAGEREF	0x0001
+> +/* Vmemmap population for ZONE_DEVICE compound pages */
+> +#define VMEMMAP_POPULATE_DAX		0x0001
+
+Cleaner.
+
+>  
+>  #include "internal.h"
+>  #include "mm_init.h"
+> @@ -243,13 +243,17 @@ static inline struct page *vmemmap_shared_tail_page(unsigned int order,
+>  #endif
+>  
+>  static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
+> -					 struct vmem_altmap *altmap)
+> +		struct vmem_altmap *altmap, unsigned long flags)
 >  {
->  	void *addr;
-> -	struct page *page;
-> +	struct page *page, **pages;
->  	const unsigned int idx = order - VMEMMAP_OPTIMIZATION_MIN_ORDER;
+>  	struct zone *zone;
+>  	struct page *page;
+>  	const unsigned int order = pfn_to_section_compound_order(pfn);
 >  
->  	if (WARN_ON_ONCE(idx >= VMEMMAP_OPTIMIZATION_NR_ORDERS))
->  		return NULL;
+> -	if (!vmemmap_optimizable_pfn(pfn))
+> +	/*
+> +	 * Device DAX still relies on vmemmap_populate_compound_pages() for
+> +	 * head/first-tail allocation and tail-page reuse.
+> +	 */
+> +	if (!vmemmap_optimizable_pfn(pfn) || flags & VMEMMAP_POPULATE_DAX)
+>  		return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
 >  
-> -	page = READ_ONCE(zone->vmemmap_tails[idx]);
-> +	pages = READ_ONCE(zone->vmemmap_tails) ? : vmemmap_tails_alloc(zone);
+>  	zone = pfn_to_zone(pfn, node);
+> @@ -271,7 +275,7 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>  		pte_t entry;
+>  
+>  		if (ptpfn == (unsigned long)-1) {
+> -			void *p = vmemmap_alloc_pte(pfn, node, altmap);
+> +			void *p = vmemmap_alloc_pte(pfn, node, altmap, flags);
+>  
+>  			if (!p)
+>  				return NULL;
+> @@ -286,7 +290,7 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
+>  			 * and through vmemmap_populate_compound_pages() when
+>  			 * slab is available.
+>  			 */
+> -			if (flags & VMEMMAP_POPULATE_PAGEREF)
+> +			if (flags & VMEMMAP_POPULATE_DAX)
+>  				get_page(pfn_to_page(ptpfn));
+>  		}
+>  		entry = pfn_pte(ptpfn, PAGE_KERNEL);
+> @@ -546,6 +550,7 @@ static int __meminit vmemmap_populate_compound_pages(unsigned long start_pfn,
+>  	unsigned long size, addr;
+>  	pte_t *pte;
+>  	int rc;
+> +	unsigned long flags = VMEMMAP_POPULATE_DAX;
 
-This reads much nicer if you handle the  READ_ONCE(zone->vmemmap_tails) inside
-the function.
-
-pages = vmemmap_tails(zone);
-
-So just place the entire logic of obtaining the array in there.
-
-
-Apart from that LGTM.
+const and at the top?
 
 -- 
 Cheers,
