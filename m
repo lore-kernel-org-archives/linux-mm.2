@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5245FCA5FAB
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 00:27:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3DC7CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 00:27:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4266F6B008C; Mon, 28 Sep 2026 20:27:20 -0400 (EDT)
+	id E39986B0093; Mon, 28 Sep 2026 20:27:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FDE66B0092; Mon, 28 Sep 2026 20:27:20 -0400 (EDT)
+	id E114C6B0095; Mon, 28 Sep 2026 20:27:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33B8F6B0093; Mon, 28 Sep 2026 20:27:20 -0400 (EDT)
+	id D02E16B0096; Mon, 28 Sep 2026 20:27:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 12FDC6B008C
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:27:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 95D231C293D
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:19 +0000 (UTC)
-X-FDA: 85264910598.24.5BB6214
-Received: from mta1.migadu.com (out-207.mta1.migadu.com [95.215.58.207])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 2E03F180002
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M4U/OkMI";
-	spf=pass (imf16.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A3FE96B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 20:27:49 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37BC116037A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:49 +0000 (UTC)
+X-FDA: 85264911858.10.261985A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 44B9BA0009
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESq97FFa;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790641637;
+	s=arc-20220608; t=1790641667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/y7v+SCp59Xm7LWoMBFV6n7GtotDVpeBZst7IFV6LyY=;
-	b=uD1Aci7Wuq199gvtikLCyB5dy1AACBpiTos4VL7gl90xpteGuZ1XO/jmso/59rA5LgKSpV
-	5nV8XFVzn/v0ESkRv9edhBZEuFvZonSN5OROdAeGTJhySnLBKtMJHOTaygpDH0uiwl42/t
-	dTpuSwtxkyEJOKNvWMlCFvXMzkIrrZE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="M4U/OkMI";
-	spf=pass (imf16.hostedemail.com: domain of ruirui.yang@linux.dev designates 95.215.58.207 as permitted sender) smtp.mailfrom=ruirui.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=APJhL/UXcBCjjwICTLFT+qLin1KDXiRR0y2N5bPp8T8=;
+	b=rhEvCOGBS9ZrUfytA0BJcQjeRmu6QNhyCUko/t3L+y53E0ApXTtt757eKJQwxuw4Icp2Dp
+	h6DMAgkbO3dMfy0TLBslrYqGglzcv9xQL2IL7P1orr0nXk9oi/KsysuVqSaDQGq7D5LsyT
+	M9CxMXfr2ykR/0TJhuOc5R7jmxyaj2g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790641637;
-	b=l58WlA9oot3sAmDH2SN3NUOoYVK86zcUJIVIYYtSBGlnkruPQ12nYMVogh8qXq10o/T8Tj
-	BbHBoKYcY3DEJ6eORj1Wi8FwlBaq6lY0840tuYLUKKKZ/ouaYdhMBt4nVgXL0IjCokwfSf
-	QhvoGXt0OFIkL3QIlsYHF18e+XvMyCY=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bpMYWBp/sPJNiQHEYw1MOd5uAxCLyuUtVHzuC15+pHA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790641635; v=1; x=1791246435;
- b=M4U/OkMI2b8ylZ9gZAaoGSa5muprJ8ikog70F9ltHHBXhn1lBPHHEJ7gNE6p8zeqyvBu2qMY
- 1yKuI5FCX9A1NPlDHOuCRVNgP95FGdwyPf8sb6WmMpHcCOlnQhihnbBX3hCbThtkCoEV9wTqObp
- 9wJYL3/DP4qInZw4hpT2Vs68=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 27dc7108c083eaec;
-	Tue, 29 Sep 2026 00:27:15 +0000
-X-Mizu-Trace-ID: 27dc7108c083eaec
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <a13c01e1-def0-4aa5-b54f-18e523082b29@linux.dev>
-Date: Tue, 29 Sep 2026 08:25:34 +0800
+	t=1790641667;
+	b=Z81rq7fTTddy/ZDVQ0kTk2SbaEnNsPEsWigKKUx+EZRhZBSqkHO5PcqVm/EFkCeSSIv9gp
+	VYRwXJYxbqBNsYPsi+j9I0KD+8gcdkg70FPDB7JdXrOtdEgJ+goZWfWWbKbYQPv2BHQJfu
+	AUyioeosvo9H1fcP5RUlIFZLby8q5uQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESq97FFa;
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77C0D42DF6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEC21F00899
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:27:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790641666;
+	bh=APJhL/UXcBCjjwICTLFT+qLin1KDXiRR0y2N5bPp8T8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ESq97FFaS8q6O+WGq8mTMUSToYKUb+XzvsNnBGTw4Yfq//3liXu2B3bAv7bcygdli
+	 EcHwpI4uM9pG+PUVngoWR6FzLO0tgC/0cKz935SPY0E8pLtZbxVA2GkK9LZprUpqw2
+	 kp586WFL9UgLZZQwTNyhbLUWzYUgkY8T2hW91Gxa2Jj7QLSxcnI/egjRJOFsyE6zTH
+	 MQitmOsQu/01PuHkjjIBs3OQA+lJn8aPHg151owirTWk+5lo2DtlA/4bwfsWrrPey4
+	 MOb1YDPRUwN4TweCY78GvrHPfK0ZNR7urK4fizgTgf4M+q8ttD/pIntwgzWSW9hTmc
+	 eAfxlQdMmxqdg==
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af9270c53so346517366b.1
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 17:27:46 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBy1YH3nYQL9zSoyuBhUhvL914IW91RB8bEwUNtmKx0UfuEZZcfdyspVE3limFyOKUiQxG3eUBP2Iw==@kvack.org
+X-Gm-Message-State: AFuF++kkkS67/MBhE+oi/PmUQQ+V8SP58L7K6aJ/dEfvV11tIv9NoDxT
+	LVoOCfKO2nkNiT3GXlXsQBMwN/YmOeJ7csv+fKKM/sMvVWCCR2TqSN15kNEfSv4XBDR49J1WezN
+	GM1Hf8dPedtWEMphgdZONW/mkWJgXpNt4Sgha3IH5nQ==
+X-Received: by 2002:a17:907:a909:b0:c26:1649:47b4 with SMTP id
+ a640c23a62f3a-c2ac53fbdb4mr1170576266b.42.1790641665270; Mon, 28 Sep 2026
+ 17:27:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vmcoreinfo: export SECTION_HAS_MEM_MAP
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Baoquan He
- <baoquan.he@linux.dev>, David Carlier <devnexen@gmail.com>,
- Tao Liu <ltao@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kexec@lists.infradead.org
-References: <20260928-section_has_mem_map-v1-1-4129f6ba2838@kernel.org>
- <9c47dad9-2716-4ae0-b6e2-9e6b5c718859@linux.dev>
- <4a57b255-cb38-4e8e-908b-d32e55a1a326@kernel.org>
-Content-Language: en-US, en-GB
-From: Dave Young <ruirui.yang@linux.dev>
-In-Reply-To: <4a57b255-cb38-4e8e-908b-d32e55a1a326@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: c7ugeo1oesuehzb15pqbpuhbakegyrf5
-X-Rspamd-Queue-Id: 2E03F180002
+References: <20260926045517.3458413-1-matthias.goergens@gmail.com>
+ <CACePvbWM8kMjtJbH4vc6Qt=TBZQ-0d-Yj9NOtkepZmtNN3wd9w@mail.gmail.com> <20260928151924.2686290-1-matthias.goergens@gmail.com>
+In-Reply-To: <20260928151924.2686290-1-matthias.goergens@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 28 Sep 2026 14:27:33 -1000
+X-Gmail-Original-Message-ID: <CACePvbW=fZ3G1JwnbiRo+_qsteN2smbbf3jX0UPFmhVyWA5_6A@mail.gmail.com>
+X-Gm-Features: AclHuK_oifA42INPrgsCc_iqlMTCQtFcDVPMyqJSWfGYorE6tGAaJtv8iXHRTRc
+Message-ID: <CACePvbW=fZ3G1JwnbiRo+_qsteN2smbbf3jX0UPFmhVyWA5_6A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/4] mm/swap: reserve swap areas for deliberate offload
+To: Matthias Goergens <matthias.goergens@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Barry Song <baohua@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-api@vger.kernel.org, 
+	Alejandro Colomar <alx@kernel.org>, linux-man@vger.kernel.org, Karel Zak <kzak@redhat.com>, 
+	util-linux@vger.kernel.org, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Pavel Machek <pavel@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, linux-pm@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, Shuah Khan <shuah@kernel.org>, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790641636-533745
-X-HE-Meta: U2FsdGVkX1+SZlwqDrLLmwBvcH/FKWZelc3wQPlCNPtnv8A1QepKeFbUN4H5TGK3tSOjY5eS46fciC+2IU5dGaKDYlHckq+tWOhcaYET8z6g87nH6eexW8ZEx7DhgUvHz4+AtwVAYpp5Bh+pSBUw/H4ZIr5zOFfOWRMK131LWff6bTvQ8d9UB8fvqY2CvxiO5jYc0nqLKWGLxamIhjx5Uft22iYAN22UvWkbpZOvrRB/PhpFCai87W6TeHUmZM9v4B593oLPTfAwIS/lkdGoKIQNlCt+wzMwk90h+WbzPFcoqF6ysmacYPd2GMgGnnQ15kd8BK7DZ9jiGcjcDV+c1NS+NUvvLaql8yZ8RftlJ3j90ncfWOHMRO+hfY/TgBBXWnwon+5pHVjbCMh9Gka9KkepXr29WASmwDv3HbO2Sr004Mru9hzukj8epyRuxOYbU4RvbGnWeuKM3BEc8krCjf4RPWe323HwvoXWmoCzaFMnc7HeZnRGvl1IF+hie0KuCMA9AOwqApnfjkb3X6CTBvLeb3Jd1LgVxsV8MyjPtqjIC4inbZxMFHFtddn5z5nNGCwcfcQ4k9CC0yvpQ0g4q2vVDegakFr3knRyCVDYeQ+QbzT4BnwdcC90SWZ8xctWaONwODpdrLFKK7FJZd92KANhO44w8H9TxrpANNH0qHKQV3lM51FHGGvs6D5oI1X7jOn4VtjHo1dF0rRAOXhQL4VTS4PomPm7cs1JL8ihDO4brDk6avy27kyRt4ShHG3fnwxDerd7VeaX8FDr+yVXzUsu3O5cl3xkg/k6KkJWK9jXQMYDAxjhBd58mNLvaLz3qcfLZ+onuEwiP2D+gAXSTp50IqcKrvpe0Nk9lsDqkdanN+gio4etMqjbpITc9RLOigNJ/4pV4DordjoHNJaN5dekp96L/k+i1mZYmDj9j6J1ng2zlYNVjTNHb2YR8dLhr0LVqhjSCVchPEZqwWW
- t5ZYqiT+
- Nm/+hsdnH8UDEaTCMdAjW2iy7zWXms0apVke++wVhoz8ISw/InOSzAwio+2VvECQQbi8c6cOnnRSw3E/7XbcE4LJP3GfYdqmyLFjj0GqJxTxBt7z9Qj+h+N4mAj2O0kybfZXvZkYhuXfFPSoq+itXhXwoPMA0KTfPjC9O5vgiOgd1OVmsSn++KfCDOgJJwkVmb82O/dVAI2y0ukgeN4GmZY0FCcrVgD3oq4ldPio28E4vj4sNs0dbuWXO317hPoWShpcUZP9fcQGDfZTyV3y1BU4zvj5hZdjfcy71CFBFRpkmsB7gO3i3rQPsetnFLRMpp9crCSdJzZj/doeVwpUMXaXCmw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 44B9BA0009
+X-Stat-Signature: r8t4b9bgp9oekuk39ukfps6akr6ysmpt
+X-HE-Tag: 1790641667-805832
+X-HE-Meta: U2FsdGVkX1/1xv2uO1egF4KKjeOTm7/C6YX+e952WgXVU4G1/UApWthFzJ7O+Oh9QeSyKvIqJYAtueU61ITn7gzUxhuAvmcDziiIglfNV9AVlSSc3ILPq/qDm6yUDI/tEWo9/rnnA/85HiVSwKSiI+D5GV+mzZjEWUxDsCazBmWpu0ewaIgWgVSIZDfQTiAHQ3vYPvpyii158Y9akoGayIgrE0Gumt4q/IpF2Py6KBQm/kjeAOxd3mgaUdstFYnzRlLOo6mBB/UNkgXm8QXeGV584vsyPE9KkHx94s1tMPRBkhYqdrtW3ritq6aULar5OIJ0wGUYoCzqO0eyDfgO0biK9M1i6oiWMKyRbRf6Mupm6n9osMuw2dWRmv5bTQWy/Ze58dTrL7FkZbRGBrV85VOcvOQgL/UUthOInQJ6UWXIqymGMeR8gVC6SXQgsSoB41+4JQ8hC7b3ceVlBhR5LzIkFuVRSxXxD6stSRtmMkxcphDq8U6uUg67Ni3J4pdZFD1WDKdau++rzwoEBJoaMbAbu+QSMrwqlCO2YV2V5J1MChbbUr7EQ0Te5lUeaR/XzVN+m8l9CZ7AYKWrCAI5Kzff3p4Vv39wf9jpNlHNzfzpZfiW7ZjkIZjxAfS3n4eruZXQJWKjtRSjV7jjugAOhOhIfiyp1qP5rW8Bxcmzk5+RVUMbi9CLadza+t0QDMqjzHg4jdpH6PS6Blnf80eRqLr+BnmqlVqt750GxwKW9FchzBM646oUSlyY5nfav3crfr+zQQcNRZ79ykMgBHSuei/9/qxiex/0pbLQIc1Ds0JL2qzZGBI+JhWKyqI0YdStyEuCXduaVzSz/Tk7L5ZhI8yOMI6xpfb79zcBiflk0hU9ZUXpNdFNedhrUWbvGzTppJMBcWgC064hq3dbiWlRdyGtbEiI72A/w13WetFZEDayjP5MKZcbvYVgIRH+QJCodsWw+C41Vrj0tKPyR9i
+ Cn0nVSwF
+ DqZV07WKhD5cvIvqxU0XMOp9LN99QDK6MwLsXUWk32x8dttOFedTXsUWgB+y9dOd5h8VWORB0C+96I93qtRNXy8ePkKaVT8kS8cALDkh5f/nehuGB3Yhwp33LkmhNgRbqS+wqPyI/X2L9NngPBSYtSsgvoXZddCpvajZL19CV7I5GXLusPaZvb9igSyrlk2y9VNzbq4f78ZfpUEOWH6eg5rTw3Y66EuBup2hwtWZXWvUeEqB71uRiHcDW9IePTeU6dCnff1ZnSNdXalEHrc7g1JuHWdNUeyn/G3Asv3UFPy30HxE1XFcRKFbmf2GKRnF1J9jCB0jVx4mNHExrfRvcwMz4Bgs11rXQaIMwT1WDNPwuDEGSD2M9PcSGNtv7HEJ5tyyL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,69 +118,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/28/26 7:42 PM, David Hildenbrand (Arm) wrote:
-> On 9/28/26 12:23, Dave Young wrote:
->> On 9/28/26 4:48 PM, David Hildenbrand (Arm) wrote:
->>> The crash tool currently hardcodes SECTION_HAS_MEM_MAP, and makedumpfile
->>> needs similar information (although still relying on
->>> SECTION_MARKED_PRESENT, it should switch to SECTION_HAS_MEM_MAP).
->>>
->>> Let's just export the value instead, so tools that work on vmcoreinfo
->>> will not have to guess.
->>>
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>> Result of the discussion in reply to "[PATCH v2 00/13] mm/sparse: remove
->>> SECTION_MARKED_PRESENT and further cleanups" [1]
->>>
->>> This patch can go in independently. It would be preferable if both
->>> go into the same kernel release ;)
->>>
->>> [1] https://lore.kernel.org/r/20260921-b4-sparsemem_cleanups-v2-0-54d81d65e125@kernel.org 
->>> ---
->>>  kernel/vmcore_info.c | 1 +
->>>  1 file changed, 1 insertion(+)
->>>
->>> diff --git a/kernel/vmcore_info.c b/kernel/vmcore_info.c
->>> index 5a417f8a922a..7833a36064a8 100644
->>> --- a/kernel/vmcore_info.c
->>> +++ b/kernel/vmcore_info.c
->>> @@ -182,6 +182,7 @@ static int __init crash_save_vmcoreinfo_init(void)
->>>  	VMCOREINFO_STRUCT_SIZE(mem_section);
->>>  	VMCOREINFO_OFFSET(mem_section, section_mem_map);
->>>  	VMCOREINFO_NUMBER(SECTION_SIZE_BITS);
->>> +	VMCOREINFO_NUMBER(SECTION_HAS_MEM_MAP);
->>>  	VMCOREINFO_NUMBER(MAX_PHYSMEM_BITS);
->>>  #endif
->>>  	VMCOREINFO_STRUCT_SIZE(page);
->>
->> Current crash code looks below:
->> #define SECTION_MARKED_PRESENT          (1UL<<0)
->> #define SECTION_HAS_MEM_MAP             (1UL<<1)
->> #define SECTION_IS_ONLINE               (1UL<<2)
->> #define SECTION_IS_EARLY                (1UL<<3)
->> #define SECTION_TAINT_ZONE_DEVICE       (1UL<<4)
->> #define SECTION_MAP_LAST_BIT            (1UL<<5)
->> #define SECTION_MAP_MASK                (~(SECTION_MAP_LAST_BIT-1))
->>
->>
->> And it does not match the kernel for below chunk with ifdef
->> #ifdef CONFIG_ZONE_DEVICE
->>         SECTION_TAINT_ZONE_DEVICE_BIT,
->> #endif
->> #ifdef CONFIG_SPARSEMEM_VMEMMAP_PREINIT
->>         SECTION_IS_VMEMMAP_PREINIT_BIT,
->> #endif
->>
->> The last bit could be wrong in crash.  So all numbers should be exported in vmcoreinfo.
->>
->> Thoughts?
-> 
-> You know the crash code best, so likely ... it's time one of the crash people
-> takes over this patch?
+On Mon, Sep 28, 2026 at 5:19=E2=80=AFAM Matthias Goergens
+<matthias.goergens@gmail.com> wrote:
+>
+> Hi Chris,
+>
+> Thanks for resolving the conflicts yourself and reviewing it.
+>
+> > What is the high-level user-visible impact of this series?
+>
+> Being able to use more interesting swap backends and logic when the
+> machine is not under memory pressure.  It is much easier to write a
+> swap backend that may occasionally allocate memory than one that is
+> guaranteed never to, so today such backends are either unsafe as swap
 
-Rethinking about it I'm hesitating to add many more to vmcoreinfo although it is reasonable,  about the #ifdef things, there are other places other than mm, crash can not depend on the /proc/config.gz which is not reliable in the old kernel memory, maybe it will be helpful to export another elf note for old kernel's kconfig.  So I'd like to support to use your patch for the time being as the first bit is always needed and leave the remaining concerns a follow up item.
+I actually don't know of a swap backend that absolutely will not
+allocate memory on swap out yet. Some backends allocate more than
+others. Because the proactive reclaim can write to the non-offloaded
+swap backend. That brings me back to my original question, in what way
+this series helps.
 
-Thanks
-Dave
+So the answer seems to be that previously, some backends were unusable
+by swap, due to possible memory allocation. With this series, those
+back ends are usable for the proactive reclaim now. It is a 0 to 0.5
+improvement because direct reclaim can't use it yet.
+
+
+> or ruled out (btrfs, for example, refuses swapfiles that are
+> copy-on-write, checksummed or compressed).
+>
+> > I am curious: if we never run out of swap file space on the
+> > non-offload swap area, does that mean we don't need this patch series?
+>
+> No: running out of conventional swap isn't the point.  Without the
+> series, any active swap area may be written under pressure, so a
+> backend that may allocate can't be used as swap at all, however much
+> conventional swap there is next to it.
+
+But proactive reclaim can also use the non-offload swap area. So if we
+have plenty of non-offload swap area, both proactive reclaim and
+direct reclaim can use that non-offload area. The value of this series
+isn't apparent. If you don't have a traditional swap-capable backend,
+then your non-offload area is zero.  That is considered a special case
+of running out of non-offload swap area: never having a traditional
+swap area in the first place.
+
+>
+> > However, direct reclaim can use both types of swap areas.
+>
+> In v2 it can't: only memory.reclaim, per-node reclaim and MGLRU's
+
+Sorry I meant proactive reclaim can use both types, nothing constrains
+proactive reclaim.
+
+> debugfs eviction may write new data to an offload-only area; direct
+> reclaim, kswapd, MADV_PAGEOUT and DAMON reclaim may not.  But I think
+> your suggestion to flip it round is closer to what I want: mark the
+
+Flipping it around might provide additional benefit. I know some users
+maintain off tree patches to turn off zswap on the direct reclaim path
+exactly because zswap might allocate more memory before it can free
+some. If the kernel can be smart about it. It provides additional
+value to the status quo.
+
+> areas whose writes may allocate, and keep pressure reclaim away from
+> those, rather than tying it to what started the reclaim.  I'll work
+> that into v3, together with Kairui's suggestion to build on the swap
+> tiers work.
+
+Yes, I feel that cluster-level marking might not be needed, you can
+remember which si has the offload flag. However the per cpu cache
+needs to know which context might require using a different cached
+cluster. That is the trickiest part. The rest of the patch is just
+enough plumbing to preserve whether the swap-out context is proactive
+or not.
+
+Chris
 
