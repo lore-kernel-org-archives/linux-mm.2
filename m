@@ -4,95 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87440CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96ED2CA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:05:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7842F6B0088; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
+	id 786526B008C; Tue, 29 Sep 2026 05:05:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70F2B6B008A; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
+	id 736616B0092; Tue, 29 Sep 2026 05:05:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1026B008C; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
+	id 626776B0096; Tue, 29 Sep 2026 05:05:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27D836B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B47DC1A0432
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:17 +0000 (UTC)
-X-FDA: 85266215874.03.DD40DB9
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9B5AC140004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AEVzYGRL;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 349C06B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:05:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3790CC040E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:51 +0000 (UTC)
+X-FDA: 85266217302.18.A3E7590
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 73504140008
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mnZeqLuQ;
+	spf=pass (imf09.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790672716;
+	s=arc-20220608; t=1790672749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=puBoSkem55NRrg57AHsTm87RSJr9X0KrnQHt5dcEHjQ=;
-	b=ceOQE80D40plDh4adm0c79djA6aMCVu1wfswHmyLFY/VVMBkv3UL/K7PvzDRFa4Nvud20z
-	0kvx013OVkUFyqEPBlM6imOEPiV4tB/ILUf0eASwI2kaG5ZozBsj2uYaS59yuxPhxp3275
-	pxHA13zmGOcJ0cZLl17FoqBWhZYIpHU=
+	bh=7TExyK8zIEMku3wrghEduJ+4wDucgiERD4p9sT26jE8=;
+	b=ABsHDACwEWmm56Hyw4XZXi1IdbimMMtNHt+i59wrG0D3ztlCZT+TfaglpQyui3wN6jS2GC
+	Q/mQOEbB2oS4/pqWFq71jFo4/lVdnq7vRkEstkCk220mfd3ELTZZpE/46EqcHEqEGpy4Bb
+	82JioBjTYp/z2I3soR/puDjX1w5FFy4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AEVzYGRL;
-	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=mnZeqLuQ;
+	spf=pass (imf09.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790672716;
-	b=0p2yj5RJrmixpKRvqNRymNGXd/8/NOR9uF0ighbja3Do5ZNQ52EdIL3sbFlS2dRiqAZsQN
-	GgxFL3sTGzXUT9nNQn+Gahuw38MHD/RwBrVKrJaeFquYRQ5pS4t12smxu+esPFHZIWyudy
-	uVZpaEcl6EBmIrxaWX2el3rLMbGx5j8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED58A1516;
-	Tue, 29 Sep 2026 02:05:10 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D9993F85F;
-	Tue, 29 Sep 2026 02:05:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790672714; bh=wxmwOLxAhQpBe7UtMnjFcrSEnz/kEIYY9IPLyMGptV4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AEVzYGRLbEG6f0HWOgDUWAZxT88uI/fydL6u0G2bJG0cxIal7ePkx+TDFllEwLf/Y
-	 TaT96+nTqZn119qDOq0Pr91rb+pZLZdEHWZqX4Krvm/iEgMIqAn51gHZDd+ZK+srBW
-	 5UrQuhsQfxmLVqGLkg6OaCm2Ypzhxxo1rp6jQsgk=
-Message-ID: <7edcf2a8-0dc4-456d-98c8-730ade633df5@arm.com>
-Date: Tue, 29 Sep 2026 14:35:07 +0530
+	t=1790672749;
+	b=zGGwWC6+cE1akURLU95Nh3bJ8xVMw2rN2dytjN6d5pgRdK1bVpEQXxpJAKYK/QKzhkNfaX
+	f9LeS0xyfcZStp8j5upQG9c9w32qfyelq/LqbsJbOo1kF2cTVmi26gmg1L00FcmsGXIBMn
+	iv0Ad6abyspSsixjFMJgiedtiDmmJ9s=
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-4a006bb267eso9183965e9.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:05:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790672748; x=1791277548; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7TExyK8zIEMku3wrghEduJ+4wDucgiERD4p9sT26jE8=;
+        b=mnZeqLuQleaIwKRcOocZ5FMQgaYoBDhK8hu9AqKdFw0KDj2omx2i0OohAKpgJENdQg
+         VhYfM2WLnFKoJn96YS2SrbOVLeam0QXbIb9hsy41Mdax8t43+JBH9UihNgw8MOEpqgEr
+         QMVLaFb9N3cTBdib6+Om23fEDEt+tbY1/Ec4o2NTJ2VjvvRCJ76lHfh34D10EyJZc1rO
+         c/nC7BIKcy0YlTjYjMwV5Ffkw9jt2T4lSZv4+1tWmSov1ny6GrAIFPf8zfNurq9Z97wZ
+         wTKegHvrHQSsLsX5pvtOpfinD5FKGur3SIQ7YDMPgFHVtzn6pjDWuExEy/UOkULv3fNk
+         axYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790672748; x=1791277548;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7TExyK8zIEMku3wrghEduJ+4wDucgiERD4p9sT26jE8=;
+        b=P6MQ114ART9e6S2wBZJthxCXjcxuBaJrxBvhhCdpQznXfDeYBeIIKv+YN3acBFLBL5
+         YTaNXkec++4tRju57JkSpwif9gl7a4WYRK0lfP7vfdIZYOdUb5LGHVFoIS4S/9NlZ1qS
+         kB7vkhYgCKMaO4/KPtAg23XJ7U24Vb6gOYn0B9pkmMWtGEiA0kS/m2FP5Vu2kZHX/kYv
+         GMlhqY7M+hef/eVY8BzzjW/VIQxDhWIFmk0M8bqy1TohXGVk7GktgHrKJVh6+v2V5pzk
+         2HOZPS94NAFYZyU1reCxTeL08gLp5a5UDNztoMwxxIh9ZoRf7PYteAR/6ow8ce9zn+aV
+         bCZA==
+X-Forwarded-Encrypted: i=1; AKwUvByrAH3mhWbIWgfxkUQpg8GrRjq9TUNh8EOFgTo9L34CxDY8e2MMZo4DIyX0B4hHJhFbXuCxqqN1aA==@kvack.org
+X-Gm-Message-State: AFuF++nwi0GXheDpjuosfGN0Ltk3SbxUka6VGBtFfyUoYSV2IMrA8ZMx
+	NNjlun6jbZax8FaHebohEFCwC6L8HHncpbQdzL7UkYG4ZuNq0rYBYFQG
+X-Gm-Gg: AYBFou2v1GjOoYsXfKF+jjHlATbYb9pKIVWwOAP7XgDktmnXcdCbDcUNKmPTPYvNB5y
+	z/l291CDu8dunKapE5MIRMJLXqk1dPsEsqWrpcwdTwnQKFIuRVs6/yoOgyksVDDTKdq7LQOnqLt
+	+hbJazJKDkjEMrR37qYdQM5XRpFycYhZDl8k+Vti7lvmz2n/4ksqA1SPniatdjiyOc2MhQ+mJDW
+	8/ztQNl5Twf/n2NzABpv+wWcKa7ahhifemwq+kkXfCq7wmztoaTTSvZMqf7zOTutYEKwmINq+Zl
+	SK+ZTDnnAtM7wgohgIaCR5gLvOhAMnDw84c2ZjSc6gL/L2TVaO/SA553oczxX6+y9ssB3/z523L
+	+rsCCs09eMuo3BUsPT7ge5F3Jgs9Y0TuTJcg2/SpXFGrw0C9+DAa4SdK8iGQQ5QalF9Jrhznwc2
+	6HZY/0YEXEWefBWSzTFZrcJdjc1pT3b0OvyyyoW+V8TSO9zo541N9rvEQuJNI=
+X-Received: by 2002:a05:600c:4f45:b0:49f:fed0:fc47 with SMTP id 5b1f17b1804b1-49ffed0fe54mr144940245e9.1.1790672747833;
+        Tue, 29 Sep 2026 02:05:47 -0700 (PDT)
+Received: from gmail.com ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00cf868b5sm90738705e9.1.2026.09.29.02.05.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 02:05:47 -0700 (PDT)
+Date: Tue, 29 Sep 2026 11:05:44 +0200
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: check MREMAP_DONTUNMAP mlock accounting
+Message-ID: <art-TQZISqp3frvp@gmail.com>
+References: <20260928111055.482136-1-azpijr@gmail.com>
+ <ae606df5-7d14-47b4-8569-fe47321bfac7@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 0/9] selftests/mm: improve mremap_test
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Kalesh Singh <kaleshsingh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
- <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924050009.19974-1-sarthak.sharma@arm.com>
- <b8da4a73-296b-47f9-95dd-b8a74f3a0984@arm.com>
- <CAC_TJvexEaehZno0P=xsoCbLw7wgfz+22iV4fwzcuGCiu3vAAw@mail.gmail.com>
- <92ec3966-e68c-4dda-9d8b-9462f22c9e93@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <92ec3966-e68c-4dda-9d8b-9462f22c9e93@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9B5AC140004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ae606df5-7d14-47b4-8569-fe47321bfac7@kernel.org>
+X-Stat-Signature: 5btnqxudau5xz6hhn9qdb91hsazgywrr
+X-Rspamd-Queue-Id: 73504140008
 X-Rspam-User: 
-X-Stat-Signature: dnshypo6na6ucnxq5755475eiht6kc6r
-X-HE-Tag: 1790672715-222333
-X-HE-Meta: U2FsdGVkX19DkACCwFmeQzFkjh3sgLWIWU7OihbwLJ+n7/9JVZfYYZZqeg6tuSHtOgC8o6cHynR5cy0T28faOZ3hpibcLW/9gVOJx9xZWEKVWHKI24ytoGRGndHzL/rRQy/bL+BMJi41Hq/y8NIPux4mbDUF4OkykmwZGusDLLodE2fpDEauTByhPgStFW5FxqrA0axdc0uZqk0ChZXvXy/0lYnAYTSjJDp/7MzRuYqVEhq22dP/GNt+6QH/CF+ccgbiXjizepmPFyJDpn2FcxMTr6ZqMPZ1KxT6jeF0VKaTBpp5xCzJwvI7FWKYd63XTl0MwmaziGtbwNirOUxmWwQalNwHZeFEuaDpCQxKlCBBAcItX25cT1D//VypDB+K64DRIXvbAx9pKAa1RyUBa0d5SRIX94mc41QoRWU7fsJsBuRHGSKl51n2xom2i2gt+0tqiAr4HpijnWItXVONFBCNxeXUSv3gZ0wqub3sUQBm/MFCGWKq/zucr1mXpRp5TckPfg5N1QRm2gX8sVdE6w5fd5/VlSp2iCmoRG+OeCWqgxr/qvBQ/js8DGYJDq5icVrXepMr2l56uvFTA/rUyGoW0oETYWowgF7CEwcKEt/TOAhMNd2sLwGU1wP7ygo3CmTSgiGsUZQ4AqXF6J0AMY17A68K4PvvItOodvP/BtePwYkvTjSqf3EBUdalJOThD491nNKZ18gck5Vl78bJyeaZNAP4MyJp9qgcrpAu0cDTzYejAU1PuvvqzlCobonvXsy827jfblM2SyKsat1jSO+bwohvufZubQ8+yagJ27cBU1yJjcCvCfk7uH1jew9OmPHXWDHTQu9XzPAqPJGAbEuozTByo6lsS9J4PyY0mUDe88En3gJLT+nE0i56FoQmUpjDqm8JM96qxJsHUy+XOjpLOPUWP3TIQXodQTreAQ2BLH8gpDzGChiqAQ1qD0jog02ZBAqQ5cmNSxNhLe9
- Ts8ZYNjG
- 9lxd5k16iYfeSd/Ajw/uZNb+NmPYT99/TWNDY1rNGSWrFjNfLgLc61ZYkoIMb6PNij71uWoYlt6gsKkMKUEVy2wH7EIyqjy7I5GDa++L84OsNM+STfxtx/c2Jg2zpMON2a4fL/dl7pIU0HDN9CGB4f2+ydq32kVDtUbEGo8vQeatBiBFxAMipm3Bnwg+hY7CWGUHcEBXPJhfVHXljFdKZJhNF0R7m4WTFdc22pNLc5V1WaFwMV96LsMk3zKmZ//s0j2GA9tzIzVdq8XBTGXM/2slXPszAFWwAicD4GWsUqQGoVZ9yW3mkRUhWgBDVugT4bYg2Gk9NX8U0CbAJkPBTMtiPyqu4aPFGcKhfsCvwc+/iZfx3lF0ZZ6/34Q==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790672749-617587
+X-HE-Meta: U2FsdGVkX18Ivk2/XAp3kuD/znMOuJHtm+nkrk3UUNFYe8S0MCK/PsuW3NfA+OPFSNUDpmf/5hsapiQa8cO3tdxJ2QLwoeKc7NgFvwF4ts68PfFLP/Wam5nuBhKXQgRGHYQg2dj/bTDyKosrPb1an3X/aB3KbwBZZpd7OfNPGApwBH+8D4AF1S+aKN8BERtQOsFpxHEqz/RnZ5kN2Ful7vuKFJ/CEMiYgHKyZSG4T/WoMh7J662Ttof/NsZFWPPxz6ViTh6EITG1+/CgBhmNApqY6RDDACJfSHe7v+Jgzu0lb15V5j+JSq8toZhcAqtubMzpD8YovjREjWPW+E+CH4q7m5dpqcA1CUj3LcBR7aX3Nz/10WP62NRClQQGEbOrzIHEayTEf/dS3y1fLC4V8rSRODRBWHuwomvc3tMnoQxcHydTvOH4H2d67ANnMCv12QJT7tevY7qMG3Sa5oamqKqx3W5/2atOc0j4gdgxdd8ARQY2UCFC4Lf/TVrSzirj9GcGNqvBi1iWUMLCF6fzqn+w3d5unlp1Kq8cDKU7qFa54HpPvvuTM1kSxqqhVDmysIT5KMIfphp17fMXBfZiIIgPMByKleTdKYn5dgYITle29h+ozRDrtXjTxHCOr7woGxKcJodjDV5iPhyoe9nc2mTXYGSjKO+rBl1I3WbPDiA3J1Rjz1OKD8fRMQCD1752gIKMUwZBK8jLStQK+ZjkzATzwXoN0hjP2WEWZbTUW1r4V3l9DIszEs9TVtGWNV58Xzo3IIHHXqFpRbkV8HNorjn1JR/2u6VYEzagyz0exVFKL/Ecdf/u8ArRmJZ35zVWWSXmdIYY9zi9mB9SwA8cGWQzTZvZOmHDlU3H1q4BuexlZSfJ5p6NSoXMdDXyQYeVbbFN0BDH7oFlokFO7MI8lqgSW63CUfbId3WjY/jjXSByfIGdwSCQr+FlhH+N/+6yHs3ibQyrjEenkBPUqIr
+ mruNitlE
+ u9HJSxiZCB4Q2jGku/oKudOD735hGbfc62lMbH517JZ+HSFbl5zvfQHBJ3kaJZjNoTcv3JpEOCEnB4vpGgnc2QwNJ9nw1pVdcD0DpfXvbuNeq2fHmGbjLtYg2soqE5P1/5QvCq/Cx79UVmYrj/52qYI1dl0H9nUgDiDKn9xZqIKRxEiQW8kvSqDlxUxm6W2DCNOKEu+Qjd1gO90s9dV+CwIPR3jryJPINwLt0KtinARte9450QuL65jEP1IoGrAHB8iDzdxs/OGTw3Glp8i4mvnNN9TNk2Ceag0RmKjIK5pHDrOtrK5x3OkSJC1TxMS4xs3P0chDVf9Darr0Zmi2ZP+eHEQpWWNdlJBIC+U49W8rbFPw4dTjVt1lytN7KpdQXKHOl6oOuqAvrWV0Asat2BHZEZ4G4TZucW4hv/jHpVAoXeOOTJG9R40+1GvgS2FAF8x85qwbaVWQbNVFXMu76J0l+zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,87 +123,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kalesh and David!
+On Mon, Sep 28, 2026 at 02:08:51PM +0200, David Hildenbrand (Arm) wrote:
+> On 9/28/26 13:10, Jose A. Perez de Azpillaga wrote:
+> > MREMAP_DONTUNMAP keeps the source VMA in place, but clears its mlock flags
+> > for the whole VMA while setting them on the destination VMA.  Two cases
+> > leak mm->locked_vm as a result:
+> >
+> >  - an unfaulted mlock-on-fault VMA moved behind itself self-merges, so the
+> >    single resulting VMA loses the flags without the accounting being
+> >    dropped;
+> >
+> >  - a partial mremap() moves only part of the range, leaving the pages which
+> >    are not moved accounted as locked in a VMA whose flags were cleared.
+> >
+> > Add three cases to the MREMAP_DONTUNMAP selftest which mlock() the source
+> > VMA, with and without MLOCK_ONFAULT, perform the operation and check that
+> > VmLck comes back to zero once everything is unmapped.  Each case runs in
+> > its own process, so it starts from a clean mm with VmLck at zero and a
+> > failure cannot propagate to the cases which follow.
+> >
+> > Verified on x86_64: the three cases fail on v7.3-rc5 and pass on
+> > mm-unstable with the fixes from the "mm/mremap: fix two issues with
+> > MREMAP_DONTUNMAP" series applied.
+> >
+> > Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+> > ---
+> >  tools/testing/selftests/mm/mremap_dontunmap.c | 273 +++++++++++++++++-
+>
+> @Lorenzo, could something like this also be implemented (maybe with less churn)
+> in the vma.c selftests?
 
-On 9/29/26 1:17 PM, David Hildenbrand (Arm) wrote:
-> On 9/29/26 09:32, Kalesh Singh wrote:
->> On Mon, Sep 28, 2026 at 10:54 PM Sarthak Sharma <sarthak.sharma@arm.com> wrote:
->>>
->>>
->>>
->>> On 9/24/26 10:30 AM, Sarthak Sharma wrote:
->>>> This series fixes several correctness issues in mremap_test and
->>>> simplifies and strengthens its data validation.
->>>>
->>>> Patch 1 converts the mremap_test to use kselftest helpers, removes
->>>> manual tracking of failed tests and corrects some spelling errors.
->>>>
->>>> Patches 2 to 5 fix userfaultfd skipping, unexpected mremap success
->>>> handling, multi-VMA data validation and failure reporting when data
->>>> corruption is detected.
->>>>
->>>> Patch 6 removes the randomization and uses a simple pattern based approach.
->>>>
->>>> Patch 7 removes perf tests and timing infrastructure.
->>>>
->>>> Patch 8 removes validation threshold and always validates complete mappings.
->>>>
->>>> Patch 9 strengthens the multi VMA validation by also checking the
->>>> mapping state of holes after remapping.
->>>
->>> Hello everyone! Just wanted to check if someone has had a chance to look
->>> at the series.
->>>
->>> Also, Sashiko has a concern [1], and I had the same while posting the
->>> series. I hope I can get some opinion from the community.
->>>
->>> Currently, for PUD remap tests, we allocate a source mapping of 2GB. We
->>> only fault in the first threshold_mb amount of memory, remap the whole
->>> region, and validate the already faulted threshold_mb amount of memory,
->>> which is, by default, equal to 4MB and can be changed by the user by
->>> supplying a command line option.
->>>
->>> Since we plan to remove all command line options from teh selftests, I
->>> removed threshold_mb altogether, following some discussion on the list
->>> [2]. This would now cause a 2GB source mapping, and its contents copied
->>> from another 2GB buffer. This causes the process to have a 4GB RSS.
-> 
-> Yeah, that's a lot for small CI systems indeed.
-> 
->>> Sashiko says that this can cause OOM killing in small CI machines.
->>>
->>> Would it be okay to keep a 4GB RSS in this case, or should we find some
->>> other way of validating a part of the whole range instead?
->>
->> Hi Sarthak,
->>
->> IIRC when I initially introduced the test, John was concerned that
->> validating the whole range would significantly increase the duration
->> of the mm selftests; this is why the threshold was introduced. Please
->> check how much it increases if we validate the full range (with
->> David's suggestions) and if it's no longer a concern from other folks.
->> I am fine with removing the threshold.
+if the size is the concern, most of it is the per case process and error
+handling, and I could try folding that into one helper if you would
+prefer a smaller patch.
 
-I tested on an Orion O6. Here's the difference before and after removing
-the threshold right now.
-
-Before:
-0.02user 0.07system 0:00.10elapsed 98%CPU (0avgtext+0avgdata
-87332maxresident)k
-0inputs+0outputs (0major+21133minor)pagefaults 0swaps
-
-After:
-1.67user 4.91system 0:06.63elapsed 99%CPU (0avgtext+0avgdata
-4195564maxresident)k
-0inputs+0outputs (0major+2225058minor)pagefaults 0swaps
-
-I think instead of the time taken, the more concerning thing here is RSS
-(85MB vs 4GB).
-
-> 
-> As discussed off-list, I guess it makes more sense to validate a couple of pages
-> at the beginning, the middle and the end?
-
-Yup, makes sense. I will implement this then.
-
+--
+cheers,
+jose a. p-a
 
