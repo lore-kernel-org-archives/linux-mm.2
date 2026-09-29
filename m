@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF928CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 12:32:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10AEECA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 12:42:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F05F6B0088; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
+	id 087626B0088; Tue, 29 Sep 2026 08:42:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A0936B008A; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
+	id 037606B008A; Tue, 29 Sep 2026 08:42:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6466B008C; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
+	id E8F3C6B008C; Tue, 29 Sep 2026 08:42:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E42D6B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5F0214046F
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:32:53 +0000 (UTC)
-X-FDA: 85266739026.18.45F892A
-Received: from mail-m1602365232.xmail.ntesmail.com (mail-m1602365232.xmail.ntesmail.com [160.236.52.32])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D7F278000B
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:32:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=deepseek.com header.s=default header.b=gzhKioD1;
-	spf=pass (imf30.hostedemail.com: domain of huang-jl@deepseek.com designates 160.236.52.32 as permitted sender) smtp.mailfrom=huang-jl@deepseek.com;
-	dmarc=pass (policy=quarantine) header.from=deepseek.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C238E6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:42:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 596301C3275
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:42:05 +0000 (UTC)
+X-FDA: 85266762210.25.CABC786
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BAC2840009
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:42:03 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lCS/AK5K";
+	spf=pass (imf04.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790685172;
+	s=arc-20220608; t=1790685723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O0SVgsWU1lSvWpVjmKROD9e89ZMTCMvum3N438FqEq8=;
-	b=ZJvf2nqRCcKDCkyhAMgX4aJjatQ0DybeZozl3ufz2GdipWL2oRonNRb8LfMJx+0VEIuAgX
-	G5aoN6caSHxmJ75gNCQ60SP0rpzGTPyEsightqisJqVkPJIW6yhoo7t0A6iwqcKEwPH8gc
-	oUOJAiAwfW+8R21B1HBCKGV3LBMgH/g=
+	bh=+5qKJBvL/vGEVpTlmAaiJVS2DeSeFABrj9kSripxmHQ=;
+	b=4t7L/5oIp4xLbW/byM4fjRs+C+SRVJE/MlF48sf4IXlwBMN9G7FEhadjexWKjOFGAQZSIv
+	p2kSwU5yvbUQw87M0FfLxFOmX6vdzXYWO3I+ICKQ9KlapILOv6UE7LeaUQKDRHaSmpDLS+
+	OBrRdjaOME1smTPMYO9AcDpI6PwmNL8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790685172;
-	b=gFLm8Vpk3zPJKiRz9FpXAlUEycKxPul025Ua57fBFPcV+TZyFUPLY0NH1rjVnl1ABpTKEs
-	3VjtiMdCByBmzxNDQPbnjB6BVz7tLKYC1PtL7M8Ln/WeCqszTsUpFj/ius3oERK1Q9UZ8A
-	9jR2rSpl7l+E/abd+J3zxXqEROf2/j0=
+	t=1790685723;
+	b=FCVhF+PoqWLvzuOEaTUiB4FnSGwgeg34mSMXTpXBqvE5MGG4/mGtNzy1UTRhiJdsyzaCdk
+	+js3sOkCR+e1SVEftDxGJ8KudNWNLhuE3Z6+YH+uBsImzSfApVuWdS7PAouZe6QJGRGNZl
+	vdNel72TtFVOVpjd9I8b7Ou3LfOqWKk=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=deepseek.com header.s=default header.b=gzhKioD1;
-	spf=pass (imf30.hostedemail.com: domain of huang-jl@deepseek.com designates 160.236.52.32 as permitted sender) smtp.mailfrom=huang-jl@deepseek.com;
-	dmarc=pass (policy=quarantine) header.from=deepseek.com
-Received: from deepseek.com (unknown [61.164.44.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 4f821470c;
-	Tue, 29 Sep 2026 20:32:42 +0800 (GMT+08:00)
-From: Jialiang Huang <huang-jl@deepseek.com>
-To: lance.yang@linux.dev
-Cc: baohua@kernel.org,
-	damon@lists.linux.dev,
-	david@kernel.org,
-	kunwu.chan@gmail.com,
-	lianux.mm@gmail.com,
-	linux-mm@kvack.org,
-	mst@redhat.com,
-	ryncsn@gmail.com,
-	sj@kernel.org,
-	virtualization@lists.linux.dev,
-	xueyuan.chen21@gmail.com,
-	huang-jl@deepseek.com,
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lCS/AK5K";
+	spf=pass (imf04.hostedemail.com: domain of xiang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=xiang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E835642202;
+	Tue, 29 Sep 2026 12:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAF51F000FF;
+	Tue, 29 Sep 2026 12:41:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790685722;
+	bh=+5qKJBvL/vGEVpTlmAaiJVS2DeSeFABrj9kSripxmHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=lCS/AK5KZzNI93Rs6dsarMtPm/dSSopx9xP+oI1XF63w2ZX6aGxPaa85OYa2488QB
+	 IJoB5BbUPQudDT4crDX5YMO8dIA0x7qgxBgC6hv62yyG5ehq1X7L5o6BSf53uCAd7S
+	 Mtj/09anZZbpdFSSbTjxONc0I6o0IQUl7TvIc++zYGXnAbk0PKD2ZNTX1SGlWPHpYm
+	 lzvGkzIdvB+KXdPSTcqYS9FJD/SSElF7kZYINGXULAyRPCBVxClYpOvlDIxU1UlJlo
+	 g2FwQ5GH0x6BIBTsIYS0LYdxdKSFiX/dv3EiQGQHMF4kgl9yzKUiYm4DJD0fXwmE7c
+	 5r+BUWzyc1gEQ==
+Date: Tue, 29 Sep 2026 14:41:56 +0200
+From: Gao Xiang <xiang@kernel.org>
+To: Jialiang Huang <huang-jl@deepseek.com>
+Cc: lance.yang@linux.dev, baohua@kernel.org, damon@lists.linux.dev,
+	david@kernel.org, kunwu.chan@gmail.com, lianux.mm@gmail.com,
+	linux-mm@kvack.org, mst@redhat.com, ryncsn@gmail.com, sj@kernel.org,
+	virtualization@lists.linux.dev, xueyuan.chen21@gmail.com,
 	xiang@kernel.org
 Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Date: Tue, 29 Sep 2026 20:32:41 +0800
-Message-ID: <20260929123241.1408414-1-huang-jl@deepseek.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260925054408.10431-1-lance.yang@linux.dev>
+Message-ID: <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
 References: <20260925054408.10431-1-lance.yang@linux.dev>
+ <20260929123241.1408414-1-huang-jl@deepseek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0aa0ed272b5009cekunm228468aa65c5b2
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSEpDVkJNGEJITUtNQ0xJGlYVFA
-	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTU9VT09VSk1JWVdZFhoPEhUdFFlBWUtVS1VLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=gzhKioD1B1uZQpMFbOo3brtYlrSTQQuk4RhuZu76oYFOEoxNc+2X0r83h+DMn8d0wDnVxAUyFWufPZPvawOvTRF0WwSWL//a40fpZzwYpaDzfSRnoMiDU/mIhuKP0h+ZpRi0wpdTIoXpnEsWJsZZ1n/Xo3pTBUOA1UoFtNrs4JA=; s=default; c=relaxed/relaxed; d=deepseek.com; v=1;
-	bh=O0SVgsWU1lSvWpVjmKROD9e89ZMTCMvum3N438FqEq8=;
-	h=date:mime-version:subject:message-id:from;
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: D7F278000B
-X-Stat-Signature: riai3s6wqk553popct1mpwdtykrue4kf
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260929123241.1408414-1-huang-jl@deepseek.com>
 X-Rspam-User: 
-X-HE-Tag: 1790685170-600825
-X-HE-Meta: U2FsdGVkX19mvQkJHnJfsaNVZnDe95NvsjQGq3NOup2uXn0i8dZvX+J9onkfMeKfj/2W11MoOTP71Q8VLNEt7Dff8NEEbheGfL3JJlkXuYlqu7QGcyvpZ32xNGYmDTLVxRubsb4CmpjhoBBASQstIl1fSe1O2Q4J8bVuRjAaM9yZFvd6WIL/t2zghLRjBycGKr5q2Utah6xwSSTcZnkVAROnAwH009L1YbBnqZZFxH8Qg3bXJfXMy1NsGiF0pbIzeELJbvN1kIzE5N8k4l0RME/pFYhtBy+DlqvZPTtd5Ka4xPdS/ACY77361XyxWFE+Xxb5+rL+uuF1XD/2e98fghLMnqBIIR4mbPpVFjzmwx3ZohXUXDWSqKDdFCLvuH+HJhFk2RhuKfRX+2b7RGeh4/kK5ElTfhy4TvORhMkWA+Q9cswnb/cshjMjnS0O4CTZI82IhKgfPeoXV9XFW2WJrTLG8kgcKS0fmi6QOTHNC726Z4mj47jO1CD2WmS1kN1jiCiFXxc3HxxZU1OZrt9i+B7dFj74QyUz4A0L8wD/wu107L8ss4LbVSAc0M7/Y6PPSVOAaYEDzaIjY9AuetVHUT4u4DE8O2cFn0lincedPQde0N4RV/hYgxXo5AnxH6m90/nKxxkkP088lFyRNSM+HB447YXYfzaJRFB/1W5B26G/aIEFnQKbjLk0RsnEIM3gI5RESTFIdrqtDKmLFb+rAyHYRVfPpPuux1GloLUI5HujFpwcjDux0rPyPOFXE/YV4b5JFSsQdu6hPCdFrss6rMDBUafg6uV6opBnxPjNn98HLMYrmLpu+flz4gbDE/a8DRhBiPEjx9hT6bDlta8DUUgwyBfKMWCnQJbwLuA0h3C0gsuOGXQfolPVfwhOl6drl5X9Y50UjBrJddUUkD+pqzJ9Kxcf7lbzMGCRSmz69EB71lyylQ1amGygDsItR9Uqh1kkwepoiHd2ATfP/En
- dUhcbCcb
- 6AVmKDosTOPxGH1rHNnCCel8s805HeIO88OYN0UW88pignBVHxaBAFCCZwv3U0c7vNyzHYEFHzqcG5vLymSkDwoks2TsMT58kUx665RUxV+a4KNF04OkMY2xHLjMBBXn0GwnKc37iRTZ/wtTrq9b9IA9qoJWkqhBXmlxS8dJUoiapGadEGl+ZwLdEy59EzliYAHeD5CcVsCmh/VoRzI7wcH8/kak6k10rdnTVXHg3FfLDLmkxN8mVCLRBSw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BAC2840009
+X-Stat-Signature: kzdb49ptcs1hjrn599b5khiwk9srjjeh
+X-HE-Tag: 1790685723-466906
+X-HE-Meta: U2FsdGVkX18thCiDXsGgkxnm5FqfIKjfRHO3J2aE3GaEYvYbe/Keg2DPu46mj4SJZOGB7BgYLKQKgiXJKrHDh2OqBblrr/dRCH570jVK8y4MkYGxK2je9ksUcRFP9naLy+cb8SHCsmK3sE8fkTaA5SCS6VqTSX0s+WaQdNmANneR/2lYii4IsPvCkYuV5dWSJAc5/aAlBR3Ajf/KMxCGAtPqbEmMYZKu7BmDkpCxQk7BDE7CFFAUhzL2ROGhC1Ng9QrqQkUmzbC6iqivUYC6SuQZDQ3iIV/3InQw3jDnBW5YTjOAg7LF4Qm830zp7BWI+EK7SPOW9UHdN2e4uFMOLtJ3Vf1EIADR0S6O6sAJe8JSoWsTbRlxRHWgbRXqntvD00c+nQDxA8jlzh+oJbgkXM/I5l2GaoL1QWUtCcl/VjAw0U9vVOnyXUjVjqkykiQ5Dm2fYb9A+MW/khLw8vE01OUxirgBckV5b99rOIIsMQEkw7FWOjQ0hY83Sp8au2j24GawA+sYPcw0Q1a6474JYiOy+Kl3ZbVdGvkSvDVVHFeygQypwKAe/OU61G7XhwIl1sUmYGALCs/NBKRjOMvSNIR5B1qKRnyBUCqnBOs5IMlcp+R7BnEzCE2LThsMBOh50wMaSVMSUIq/kyVhN5VIYl8s/szJd8ZbhA/qNAwsSPRNGvfy6jf5J8Oe05R7IXpd/FqcIEB5NDSrzrM2tWhYlXEqayRlu1riXPsCWBKtbvF3sqbCGaLIQD2Sc0FhjDPYoG+b2LcL+d2L7foSsYZOo8wOP26sit+rT6i3gcu3ScUTYnaguRKOWl/Mvw/70WyUEKSgSJbVOVSCeoRQZpAU07Mh7y6HYR6iCdZlUzQByyWjt/q/mXrIT37G70goEEcnG0NWwmYyaM+A4ojtgmuqguI+vhWzjM1hKhu+c5A725Rh0+djIat9+5IZCPjVu4IR3gNY2SYbNyTWBO561oy
+ fny2EsF3
+ 0TDflrmIb7ivZ6PFy+mU1opMLe6kVJtrTVG4zQiH8W8gcz1Td6VWyx26cWwft/JcFQhR4u2IqExt1yKG1Y3L4oHhcFiHMl5hPekFKVYYkMNojfP7NMhUTIqC6xSiZ0Dqff/FzkD27HksoscgEiWlu43Ms45qQPMKMHfNbEl9D6OIq/YKWHB+DlzSvCRZXEqbTKHu2Ar/qN1Iu3XuRKEMwd33vigYG8oCwg+fCq5jNnYuAvJ0UdXw/A8zlN5j5xscE5xeV34yMar9rhPcEDADpKTaX2bfygNnEUzNebMfv35w+Et4gAgtzFyFEYi2wCHJWYZVALMKWrEnccew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,39 +94,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On Tue, Sep 29, 2026 at 08:32:41PM +0800, Jialiang Huang wrote:
+> Hi all,
+> 
+> I'm an engineer at DeepSeek. Thanks for the discussion, and thanks
+> to everyone working on DAMON and virtio-balloon free-page reporting.
+> They have been very useful for our workloads.
+> 
+> Gao Xiang wrote:
+> > It can cause sync 4K faults on the host in the worst case
+> 
+> This is one of our concerns with virtio-pmem as well: moving I/O onto
+> the page-fault path can introduce performance trade-offs. The other
+> concern is the substantial struct page overhead for large images.
+> 
+> For now, we enable virtio-pmem only for moderately sized, frequently
+> used read-only images, where there is more opportunity to share the
+> same host page cache across sandboxes, as Gao pointed out.
+> 
+> Muchun's vmemmap work is also interesting to us. My understanding is
+> that it allocates private backing for struct page metadata on demand,
+> which could help reduce the upfront memory overhead for large images.
 
-I'm an engineer at DeepSeek. Thanks for the discussion, and thanks
-to everyone working on DAMON and virtio-balloon free-page reporting.
-They have been very useful for our workloads.
+Although I haven't had a chance and time to look into that, the main
+concern from me is that mmap() access will call
+"dax_fault_iter->vmemmap_materialize_page()", and malicious sandbox
+workloads (or not malicious, just valid mmap workloads) can cause guest
+memory OOMs due to "struct page balloon" for large rootfs in the worst
+cases and cause the follow-up mmap access failure, because the guest
+memory size may not even fulfill "struct page" for large rootfs.
 
-Gao Xiang wrote:
-> It can cause sync 4K faults on the host in the worst case
+Thanks,
+Gao Xiang
 
-This is one of our concerns with virtio-pmem as well: moving I/O onto
-the page-fault path can introduce performance trade-offs. The other
-concern is the substantial struct page overhead for large images.
-
-For now, we enable virtio-pmem only for moderately sized, frequently
-used read-only images, where there is more opportunity to share the
-same host page cache across sandboxes, as Gao pointed out.
-
-Muchun's vmemmap work is also interesting to us. My understanding is
-that it allocates private backing for struct page metadata on demand,
-which could help reduce the upfront memory overhead for large images.
-
-For disks without virtio-pmem, DAMON with virtio-balloon free-page
-reporting lets us reclaim cold guest page-cache pages and return
-the memory to the host, without those virtio-pmem-specific issues.
-The two approaches complement each other in our setup.
-
-We have not yet fully explored how best to tune the DAMON and free-page
-reporting parameters for our workloads. For example, the kernel's default
-free-page reporting granularity is 2 MiB, which is fairly coarse:
-reclaiming cold pages does not necessarily produce free blocks of that
-size. We still need to evaluate how finer reporting granularity and
-different DAMON settings affect memory savings and workload performance.
-
-Best,
-Jialiang Huang
+> 
+> For disks without virtio-pmem, DAMON with virtio-balloon free-page
+> reporting lets us reclaim cold guest page-cache pages and return
+> the memory to the host, without those virtio-pmem-specific issues.
+> The two approaches complement each other in our setup.
+> 
+> We have not yet fully explored how best to tune the DAMON and free-page
+> reporting parameters for our workloads. For example, the kernel's default
+> free-page reporting granularity is 2 MiB, which is fairly coarse:
+> reclaiming cold pages does not necessarily produce free blocks of that
+> size. We still need to evaluate how finer reporting granularity and
+> different DAMON settings affect memory savings and workload performance.
+> 
+> Best,
+> Jialiang Huang
 
