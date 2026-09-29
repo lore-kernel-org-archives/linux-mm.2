@@ -4,94 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C635C9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:08:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97975CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:15:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3988C6B0088; Tue, 29 Sep 2026 10:08:22 -0400 (EDT)
+	id 79E5F6B0088; Tue, 29 Sep 2026 10:15:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 349B66B0096; Tue, 29 Sep 2026 10:08:22 -0400 (EDT)
+	id 776F56B0095; Tue, 29 Sep 2026 10:15:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25FEF6B0098; Tue, 29 Sep 2026 10:08:22 -0400 (EDT)
+	id 665596B0096; Tue, 29 Sep 2026 10:15:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEE936B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:08:21 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84D571604FD
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:08:21 +0000 (UTC)
-X-FDA: 85266979602.12.C506D14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DD7BA40002
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:08:19 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVewW5Qn;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790690900;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3847C6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:15:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 57BA8804EC
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:15:19 +0000 (UTC)
+X-FDA: 85266997158.02.F419145
+Received: from mail-ed2-f33.google.com (mail-ed2-f33.google.com [74.125.228.97])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5CC83140005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:15:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bsJGvAWE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of amir73il@gmail.com designates 74.125.228.97 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790691317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jlNOYHiT07K2az/l+2y4AGC9fafFmKTrBoDd4N5U5z8=;
-	b=3h+sEoLiMNCaW5JwVUSOw5903drkYW6ysl8EN14r+EU8uJu0x0Tkg1UJ5jWxyHalVHWmaJ
-	QS+mRKEGI7Bja3KCIa2u+OdlKyfh0GXvzxkIfGhMv3yVb7Lc0+JIEzE2DH82dzKKh+ggvf
-	ckfCI+Sk5iTUGuMKV1HV2xkOOKyIvmQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mVewW5Qn;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790690900;
-	b=tT1WU7ieeNeScok/DuydlaWjLWId11mDwiD4mK/FHz8AAX19NJphJafuJRv9HVyteltmkE
-	kQ11keIxFS7mPus7/o+yi49d9vbGVRsHDDKk785wrYyDzDWafGO+LblwqY24p3C4R9XQl2
-	rPRYbOYB4JtEUqpJw2Cz2c/vdNHtwGs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1493741A2B;
-	Tue, 29 Sep 2026 14:08:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684D01F00899;
-	Tue, 29 Sep 2026 14:08:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790690899;
-	bh=jlNOYHiT07K2az/l+2y4AGC9fafFmKTrBoDd4N5U5z8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mVewW5Qn2qAmgjkDHrm7h9ImBLizby8aLuxf2ZTi8kNSecxlc9kpgDODMBKmTYCjw
-	 dNLgsxol+gnQyNk8YPciyWzgpMPTtzYl0ZqWF2CrR+HvUn5tvJUT6R3GhQdk7pM6Gj
-	 aWETMcRzoLIrFr85P7qlcdkYgSo9X+lf17RWX2QbzvvIiw0+rBy2vXTI+uyooN95zp
-	 bTtivmEZSjOPyXvBPNdLnfaEheHIB2jbaJfy63pMIYZo8OREkTw7ofwEdFcu2U3y6g
-	 beLHIDKMXzCH5xXoz2cKjHf/g0IcvsPaGKXbV4uO6WafJVG3ds1Z8T+GNcDv9SaJD9
-	 CJulhZMBVU0HA==
-Date: Tue, 29 Sep 2026 15:08:11 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "Deng, Pan" <pan.deng@intel.com>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	Barry Song <baohua@kernel.org>
-Subject: Re: [PATCH] mm/vma: don't remove VMA from rmap if pgoff unchanged
-Message-ID: <arvEs8PNXNkJJYfe@gremlin>
-References: <20260925-speed-up-inplace-rmap-v1-1-babc48ce7c83@kernel.org>
- <arqI5QB5tUr8dd_r@pedro-suse.tail5790ac.ts.net>
- <arqczL8K39qBoqgV@gremlin>
- <SA1PR11MB6824A3768F22AA274860809A968C2@SA1PR11MB6824.namprd11.prod.outlook.com>
+	bh=trsZq/IgHnE0dFOaiSMsY9WGT+wIu9sqLXFKuCxoh54=;
+	b=nlPGIS10Ftft+VQGFaMmag6k9wVl4x+4xCNRntp1lsAUr4jxNS2PoCPA3NPZH0oxW/jwDq
+	d/7UZle20XCBsDFyh/SWq2qKixJD6EQWyRZBZWgBvQpPpNZqcBjy/slSISKfN3B5yJOomX
+	g/EICXJo6YXxWbpvSH4FcEbBLTcJFVk=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=bsJGvAWE;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of amir73il@gmail.com designates 74.125.228.97 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790691317;
+	b=GiK74cOBDo6TIdItTIrW44e4bB29k4GvuufW2B58JzTro+rPWnPsn93kc8Rra6kCiu/2ot
+	MDOnrvcXa/dT+YAMxkRdA1EdEPfnoQxp9hsJBB/A7ahsz0A0/4bYjvg3XQelIfxGb6Qb1e
+	B4eq7g9f69780Qt9dtadnurNxDVIlFA=
+Received: by mail-ed2-f33.google.com with SMTP id 4fb4d7f45d1cf-6abc27842b6so4558346a12.3
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:15:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790691316; cv=none;
+        d=google.com; s=arc-20260327;
+        b=oCUqXpBPe1LWstBwIv7I/43oL2MHiYxxFfolcTAYNp15GoPhoBYSWjlpEABJXVBGEp
+         7Pk3Tq2INWRFEODN3VHXV5+RC2W2WvITmu2aAp5/Ot8vH2O+uczlG4OAvVxbNjCiApNp
+         lrwZLgNYF110TVVjzBFl9k1r2w9IAI47FZsTmlzg/upaLDoy15BnOnpKS5wMu0zADh/k
+         fN4ozRYiA6W+OsC3sA9Vc/q67+R6ALTdkveW5LNghJU5QgyBP6DOCJvo/eX9qkrp9BRP
+         PVYMzqVT2cw/Ne0YKIAukfLlAT1B1SG1VswAkeY4EiL/jVR7kgxjfnDuEEr85coca+/c
+         0puA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=trsZq/IgHnE0dFOaiSMsY9WGT+wIu9sqLXFKuCxoh54=;
+        fh=oiS2FYAWTw43DJgrOQ7CducWTerbZ2yIJ3iw3z9t49Y=;
+        b=Yjf85gpwP6ar4Y5RI99VFRgVGzQPOY+gx/f68uRYpEKilMwOZy1UuQkqc0PcTOtFQD
+         7AuH0toBm+dUtYj6+gRF9TZuXp8Izrm7EomdmlfNYKhmwL3WWPP1zoQdSINIsNsoXfqF
+         9stMrevXBh1u76XEXkDjbYM19OKGtfO3GdnZzyULh9d7iEHYPAmdxyumXWzVKkXrV9gJ
+         cVxvezFUl97XeVbh7aWPrJm5dPQIICNcIGYqS9KzyM4krVTtZclbUz7YJXuGqfVwvYeG
+         trMk8CXVyqc9c7ItyIJc/2X0ziqBdXqyFx9yBuggrup6yKz0kUx3D2rOoC85MulH/OQ5
+         KkrQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790691316; x=1791296116; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=trsZq/IgHnE0dFOaiSMsY9WGT+wIu9sqLXFKuCxoh54=;
+        b=bsJGvAWE+CsNUeAt5s9A2M5irx9e+UJc20Wqj/XyHxYXzPhNvR3YtrSL24lhzDx+iW
+         SKs0WFbcJCduwFh5vu2/bjSbk2QWJtSalfNkdflHsW4WgWj7da8r8UwBSyeMrSe4ACyq
+         qFPR4DD2PTAOV0eBF2aVq+z7ohXlRMI1gEGC8QVfQvpTiw14IKDzfHebcMnqIGIswlwl
+         MzFEXT1IFx384jEnZiUw6L6a1gKIyCXWKVhE8PNqKe1LTqniP/oKapuuOC8Bh+ZUElyL
+         f6dySzDt3FDzyYsNaO8uBRTE/cRwk3HMTtuFpnTZvmTnwibUNmWUqM5vm+iJZDrwsGop
+         3GJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790691316; x=1791296116;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=trsZq/IgHnE0dFOaiSMsY9WGT+wIu9sqLXFKuCxoh54=;
+        b=0p/PEXNb91Vtt0+ecgqtMgS9Gd35IXWHU76JybQiKBl/Fx/sJTatQudaNIobVeQKiW
+         5RPuyRyJWtRrwSlfOrEr/9vWGMWoG6vDCRMsYgb92h6ZfiiIjb36NVu9G8qpAV9KRuxI
+         xxs7x9Zya9cts+dIGxx2SQhnj0tFlCJSkO03IoMN3qXMKv+56wL+qPRP+Jn/Ahr1YtEn
+         35yzh9n9oxeDd1c59+8PnprmG7t36/uh2juqko5k1mnxoLPxLL7FsztVyoczyyxxglgf
+         EYCjuGnfLHxSBfs+NXNMHEhViqhwOYEbaYX+gHkfjyy07cJQ0dyX/dZZ3Gk+iULnq0ti
+         y9Ww==
+X-Forwarded-Encrypted: i=1; AKwUvBy1ErLhAvZmOesGEiaCjNO3P9YVqIRf4dPH6GQ6FXktAHUpHfJYKo4j5GPc6XKllrshPom9EdZM2Q==@kvack.org
+X-Gm-Message-State: AFq9FYJvzoY8ajTJ+wejCD3Mo4THJtY4BxnMpdDwekT6VqMe1qVeH4/W
+	QP0amp0nKU6g392tqB9NmDPQkQ8+xhrIne41gyJMvKODohEjr5i1gWkvamOJgiR77HM331pr4Z5
+	eXWTmGgpQ5DiU+1mrC0GADIZLyQ8Y/rQ=
+X-Gm-Gg: AYBFou3zpwFbmD/Y7A3T2t0VdDAIegfNIl6W8vafmDrRBIGBKOK9PdsbLP4jhtayUMj
+	iJ2cPXuDM2bNmkBxe57EQZSgnU7p6Y9f5jHCIik7sVUQp5KyW7HLf4Sg6lU6bl24U0SjQK2vNqk
+	WHc5pRmrWu7iNGuD0xLX9AMgtJiBI0Yf7CKiMOMuswbw2Obf6Q325l0Tc2IK3iShCsiSzK0i+gM
+	dHNNyr3KioZQmYs/6Cs2kAiRkXPnxKhY9DxYvPd8gxpNkQaVURlE9HdImLbJOCwGol3AglVN/dp
+	EU/bpzjxmDJMmwa0YpZqQ51E8TF6I7Rw8dyLyKls8HL9TZPYJP3dtbAp
+X-Received: by 2002:a05:6402:380a:b0:6ac:bd84:2b84 with SMTP id
+ 4fb4d7f45d1cf-6acbd843b1fmr1090820a12.34.1790691315590; Tue, 29 Sep 2026
+ 07:15:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR11MB6824A3768F22AA274860809A968C2@SA1PR11MB6824.namprd11.prod.outlook.com>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DD7BA40002
+References: <20260928213155.2612039-1-krisman@suse.de> <20260928213155.2612039-5-krisman@suse.de>
+In-Reply-To: <20260928213155.2612039-5-krisman@suse.de>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Tue, 29 Sep 2026 16:15:04 +0200
+X-Gm-Features: AclHuK8ytKjl4O38jVPReRqXBMm8kcLwbRELyjNeXdrdxLC7F0LMOcN0dvJ9ryk
+Message-ID: <CAOQ4uxj7Vx-UGvgGGr9hPC0qUgJZ_WRAv1ZLi=gJ6r=ZJW0QAQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] ovl: Expose the filesystem encoding through sysfs
+To: Gabriel Krisman Bertazi <krisman@suse.de>
+Cc: linux-fsdevel@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Jan Kara <jack@suse.cz>, "Theodore Ts'o" <tytso@mit.edu>, Hugh Dickins <hughd@google.com>, 
+	Daniel Tang <danielzgtg.opensource@gmail.com>, linux-ext4@vger.kernel.org, 
+	Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org, linux-mm@kvack.org, 
+	Chuck Lever <cel@kernel.org>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 4961wekf87qwnjjga4ffaifjz1xi8j9n
 X-Rspam-User: 
-X-Stat-Signature: h5fzd4xs81sn3dyc4yasmg3a15u5y5o1
-X-HE-Tag: 1790690899-836934
-X-HE-Meta: U2FsdGVkX1/Xd/Hp3Pmqdylp1o60LgdcrpJZz7ckDigfCQU3ktuuZ7jzoHjgHUPxoqgSO6CvbRbkxfP5IxIs59WN+iV6FfJl9ydMYn1rYMfGtBfgZUkhghMbx6dMDi1hTjoV60+cYOA6vgSJH8Qs+KYgwSwLPNoNDv4cVJuJNqZH5eWBLJRM+SvvMfvP71cb+JyXnoP5vwBz//LvzHa4rg9M5t0yuNbNoeOAjs88dWbMz65Cvtx4f7NjZtmFGuDK9tW1fi1W7lNHatJUVfK/4UR4F/Rz3ZkXoHoglO9y2jtNPBFD84qk9y9hC5NHcMdGQkPqpugVpG18eyYntbNQIpj1dfMKFbFRaQJd/v2oXiFGW2YQdAqJokdLxHBkTLpn1LINRDp+FotyVQd2ei52x/uOc0HFjZLik3qOdzUe/BmDUbsAWTljWNbx2dKxO8Tkx2DrgLF8//7F/8NNLAdVsUKOc1p4TdDdNcUC3vTyPj+wBGGIZTl7C0sf0vKQp0viyjacnduxBRNGjZHbmBPHPwk3aCC1+fqVASketmoFLmJx4iyZQUUPRuYXZnvCXCeLTZJeXoy3ItAESNjhnt9NiEET/SyNwKNEChGYK+V0+yAtbaWMHHFA9CXLSDcWAyEpwj6U4cPP5O1JQZjNhTlIxF8ZpkxYM1TT/EK62MrgQImoR9A/vTTA5SjNSBoR1oRJvXl60Z44M3doVAq7FedsZEvghGNkVcTEdx50hOF3g//1AJOQv0Pg5Jg5jTn7Sl8TgQUddBnhF5PFnHgUw10PaO/2QwV1yrHmJLMIU+THN6coZ9CWTe7p5vQOYEZHoMBvzm0PB6BhKuI5PJ8jYa89Sb9f/c26Hi9W3yzvP/I7rVdb0bH5y3dn0J4V6fyJSH/MR2IavaPtBWMFQLbymzwLd7yeDGW036EXtXuIT0qI09F46pOO9l6wIrkBzySnR9CY04Kcwt4OecBSSmFkAcD
- ZsMGpDu9
- zdtuPxJSWagkxXD+LHzNOVV4WReLKZVqxbWNyF/i+7y323SEv4wnFG/T0C+rrYmcwRPha2wov9Y5lezreQUjkPVWuaMYPEGpo2D5j1RhCtKURpKJsZOavIFbQ/E2oMvsat+fOVPCRPtr3EoI/M6xW+zJGkeDVrTt4Mn1BNe4lx9+lKvOnjQf6wtbfdR9mMURIZfWUnUuXLmqBAtVOrJlIrdoBsb8oBojupr/VeTYczLonT29HOMxY6Ss4pPrdV1WHP7/u7V72fTjNEUyhqqQvJjTtlQ+NOugCw0v2NfuRoT4fe58=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5CC83140005
+X-HE-Tag: 1790691317-604121
+X-HE-Meta: U2FsdGVkX1+ay/1L7pWbcVuM2gGYePoyz/AZ1zW09GptZUZ7RrwukDHfeTZIPvOLlRkQU6eRZjUCDuOfqHROzh7sEuJqyixNiN3Se+nke/X4m+K1h72iA4j98BO5NNeI5fHF1aGfKFqTZ2zsQvw3pr7olr7hweFjIlBT11fWnkUxy630qtWvYQGDogfnPEqYtnrpS8JTBV9KYm/fbTfdcXnuqYU+wPYqp4Xt7+cLCfRQEGiSDiwpukY8PRPIPtMnOc3pWKXL/T2ggANCogeaOYK3jqN5d89Pngi25zVxeqD2EcYw1CqDQoUljH1swLuLgWn3E+YIW5y4snl25tivT6Yr7y/BKigDlJEn/4QtDLT9hwXO202iDRfkhRlRa4Dmz3wAxHP0cCM+pOWPj5V0BF8DAV1dnSNLaaf3B2ZDSgHdZ5aMHeOMsE5skE5tX01LuoQ+QV30pj+Nw0dRk5EhfgRN6orWDzFtQb7Athtq2bscoYdATEPpg0+vVhkfWA+FXdgJ1Ctjkj/o+y9cTDmUCm4Hb40g7piWU1CKg6gIX9zUKtRsAMaGf8GwxTZtFPRPZF+SLiam5HoeAHxciempujTWz0pj9FZX5XDXXqhhGqY/cTUd4nG5VrBL28fB+WFK1Zdx3JYnezgzOODDDscWGevOKsIopqDnAQtEXmHqyk45oM2GTSxAw6tQDTm3r8wXziTVywgb+eeZ4iT4PvaSmncRDPoK0KgeN0B3eF4XlWD15Lg5U10UxzdyqKSBvHD8im1/u+k+6TTpKnPgjP6XmK0k/JClJ60hcGhttw40ayn5Fn/7FBb0O6BMNF/gAzCsibngOGUG2LFlH+6HlCpUUHAMfdgKEuF7KJZChgmccNculJRiNM/nZmRaCHIZlMdqDwbS7yVnwYGRrflpFf4BAb2x14dDtMoGqU+RcjUTCFY9xO3inR3lHvovzzOX8ccHSz1kQ0/0Sj3T0yIKE35
+ LCIohT3G
+ O0iq9s6MzYY1iZqTjyon4uVuRXOdCzb9eQX6kXh5bYfaEDx39O0wLiMDZZjpfyoez+4mPCmSaHSCqE4uAUB3hgk88ttOR7dI77zWSTZ4IPdBnb3qkYCYTE7mogzEh4N0cWHPKQduuLiQcwEo0BkLP4AuJwBkxFUG73VPalCErFyjHMqbPi4uJvLnndCah5J5TJNSpb0BN0CfYfwRq/W/ZT2/cyleyoK/4b6+1rEtYi9cEIL92Kfvofx2vXM3VApJXwcoizOJ/EYRbFK0m9VMNWU3RsxdVMK4hQEJaxGEO7Bskk+18M/hKqZpQ0upoDovT/S743ISbMq02dlWehOmgMfP1D3ErjmxzOHwN3GZ7qwWRO3uAc0obqYl8ucO8wKI1jhPBh3rW0Ke61V8BGJ5xAbcxgztrqaJXOgNRRoTHULDBQzkB8tovgCJJsGtvUQFClvv0zY5weJSIp07Gq+iV3xR1bw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,93 +142,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Barry for anon question below
-
-On Tue, Sep 29, 2026 at 01:45:48PM +0000, Deng, Pan wrote:
-> > > > The anonymous rmap is keyed on anon_vma_chains not VMAs, so in those
-> > > > instances anon_rmap_tree_update_vma_inplace() iterates over
-> > > > vma->anon_vma_chain, invoking anon_rmap_tree_update_inplace() on
-> > each one.
-> > > >
-> > > > For the anon rmap case, with CONFIG_DEBUG_VM_RB set, avc-
-> > >cached_vma_last
-> > > > is also updated in anon_rmap_tree_update_inplace().
-> > > >
-> > > > When performing a VMA shrink or a split where the VMA is the lower one,
-> > the
-> > > > page offset cannot change, so set the flags unconditionally in these cases.
-> > > >
-> > > > When merging VMAs the page offset is unchanged only in some cases, so
-> > > > update init_multi_vma_prep() to set the flags only if the page offsets
-> > > > remain the same.
-> > > >
-> > > > These changes ultimately result in less rmap lock contention.
-> > >
-> > > I think this asks for numbers?
-> >
-> > Well I don't have any :)
-> >
-> > It logically reduces the contention, and that can only be a good thing.
-> >
-> > Pan had some numbers, I've asked him to re-run against this one.
-> >
+On Mon, Sep 28, 2026 at 11:32=E2=80=AFPM Gabriel Krisman Bertazi
+<krisman@suse.de> wrote:
 >
-> Yes, UnixBench/execl case, measured on my 2-socket, 192 core / 384
-> Thread x86-64 system, on v7.3-rc4 with and without this patch, built
-> from an identical kernel .config.
->
-> Configuration, re-applied after each boot:
->   - cpufreq governor "performance"
->   - uncore frequency pinned to max
->
-> Run rule: 10 runs per kernel, 30s cool-down in between, cmd:
->   $ ./Run execl -c 384
->
-> Result: Execl Throughput, index score:
->
->                               avg    %stdev         min        max
->   v7.3-rc4        3511.5     0.44%    3494.5    3543.4
->   + patch         4069.0     0.48%    4047.4    4109.5
->
-> The speedup is +15.9%.
->
-> In addition, I also profiled lock contention data ~10s in the
-> middle of one iteration, cmd:
->   $ sudo perf lock contention -ab -l -S vma_prepare -E 8
->
-> The dominant lock is i_mmap_rwsem
->
-> Result: avg wait on that lock in ms, 5 runs per kernel:
->
->                         avg    %stdev        min       max
->   v7.3-rc4    9.470     2.91%     9.070     9.820
->   + patch     8.420     3.34%     8.100     8.770
->
-> avg wait is ~11.1% reduction.
->
-> Note: under the i_mmap_rwsem write lock, this case only exercises the
-> split path, for both the file and the anon rmap, while  merge and shrink
-> are not reached when the lock is held.
-
-Thanks Peng! Much appreciated.
-
-I'll fold this into the commit message on respin, should get that out today
-(some trivial renaming, etc. functionality will be identical).
-
-Be interesting to look at anon also, there could be impact for android
-specifically given zygote.
-
-Suren - do you have any bandwidth for checking whether this patch impacts anon
-rmap lock contention?
-
-Barry - I know you've looked at this in the past, are you able to assess whether
-this has impact for your workloads?
-
->
-> Best Regards
-> Pan
+> This patch reproduces the same interface from ext4/f2fs to have feature
+> parity, so users don't need to rely on parsing dmesg or trying +F on a
+> temporary directory just to check for support.  Note there is no
+> encoding_flags file, as none are supported by ovl.
 >
 
---
-Cheers, Lorenzo
+Gabriel,
+
+I am not ok with this API.
+It is wrong in several ways.
+It is not generic, we have already file_getattr() to get casefold status.
+There was a suggestion by Pali [1] to get the supported xflags - statx styl=
+e,
+which can be a way to say if a fs could return FS_XFLAG_CASEFOLD.
+In Chuck's v2 [2] FILEATTR_CASEFOLD_TYPE was already suggested
+as an extension to file_getattr(). I think we can still do that if we inclu=
+de
+proper versioning in the casefold type.
+
+TBH, I don't think anyone requested this - you only mentioned
+the need to know if tmpfs was mounted with casefold on and that
+doesn't mean that etx4/ovl patches are justified, but ext4 can decide
+for themselves.
+
+The point is that this sysfs is not going to be the standard for all the
+fs that can return the FS_XFLAG_CASEFOLD, so I see no reason
+to add this sysfs interface to ovl.
+
+Thanks,
+Amir.
+
+[1] https://lore.kernel.org/linux-fsdevel/20250216164029.20673-4-pali@kerne=
+l.org/
+[2] https://lore.kernel.org/linux-fsdevel/20251211152116.480799-2-cel@kerne=
+l.org/
 
