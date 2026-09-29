@@ -4,105 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9323CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:53:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C600FCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:54:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B229B6B009F; Tue, 29 Sep 2026 17:53:34 -0400 (EDT)
+	id 6B8E36B00A0; Tue, 29 Sep 2026 17:53:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFAA26B00A0; Tue, 29 Sep 2026 17:53:34 -0400 (EDT)
+	id 667256B00A1; Tue, 29 Sep 2026 17:53:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A12B16B00A1; Tue, 29 Sep 2026 17:53:34 -0400 (EDT)
+	id 507F16B00A2; Tue, 29 Sep 2026 17:53:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C06D6B009F
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:34 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 077A140645
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:34 +0000 (UTC)
-X-FDA: 85268151948.11.8851756
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 382F24000A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aoNAB+87;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F6936B00A0
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:36 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9FBFE1C3415
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:35 +0000 (UTC)
+X-FDA: 85268151990.24.ED547B8
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DA946160006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:33 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=H5fCSGYU;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3WjO8agoKCA82x0pDApx7wv33v0t.r310x29C-11zAprz.36v@flex--nilayvaish.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3WjO8agoKCA82x0pDApx7wv33v0t.r310x29C-11zAprz.36v@flex--nilayvaish.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790718812;
-	b=iB4GQT6ZGmQBfJE4PqT6w1O+JJowvUHkgVvOoQ2CwX2wdJMPw1K+Q2gvpjH9Kd8sfxOBL6
-	wrya3W6yTdSnQrTuWx2Df3ItmQTUcxvLopATNt4Ul72lTk4MJ2yfOEYj/E+BVi5XtNR4Hz
-	KbJwub83PrN1Q5B+pdzjas+owFavWqQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=aoNAB+87;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf12.hostedemail.com: domain of 3WjO8agoKCA82x0pDApx7wv33v0t.r310x29C-11zAprz.36v@flex--nilayvaish.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3WjO8agoKCA82x0pDApx7wv33v0t.r310x29C-11zAprz.36v@flex--nilayvaish.bounces.google.com
+	spf=pass (imf08.hostedemail.com: domain of 3XDO8agoKCBE4z2rFCrz9yx55x2v.t532z4BE-331Crt1.58x@flex--nilayvaish.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3XDO8agoKCBE4z2rFCrz9yx55x2v.t532z4BE-331Crt1.58x@flex--nilayvaish.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790718812;
+	s=arc-20220608; t=1790718813;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nuLNuJ1Z55MoJniNmyjLk+CRKY+iECn17Vw6UvtIrSs=;
-	b=8gzl15WLw+YuS6t+FHf3xS3+PHYV+rZyGDfN6BzTTzDnmmX1spTkPHtQetn2fqm9HnNUL8
-	u1RWRLNmHL9GD64aBj4auJbxEbS8k8BZui4iretxEdjf0oR3uiDRLGYWhgdX7w9jriu8tA
-	Uc8NbabkVzWqRHT3bj4lK/85tJXFBU4=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-33713e5e6daso6925154eec.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:53:31 -0700 (PDT)
+	bh=pAMB3W3KRBdsKi3TzRfB6ZNmdd0wTycBXYPw/qJaC3E=;
+	b=l1eDrxjYKecuvYkowRQ7g6uM/R1b/738kBUu97aWKHIozl/ZxR3F2UgyQlf2NATWHKZiWa
+	NMD2yun/LyxwlRJdoGszhxJPebHUr70T6T5tOIQdfqWFD9fG4dZP9YKS2Po66zDN0bumgt
+	hP/tfVZczRBC92AW8Ty7t2sHoyao8mU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=H5fCSGYU;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf08.hostedemail.com: domain of 3XDO8agoKCBE4z2rFCrz9yx55x2v.t532z4BE-331Crt1.58x@flex--nilayvaish.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3XDO8agoKCBE4z2rFCrz9yx55x2v.t532z4BE-331Crt1.58x@flex--nilayvaish.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790718813;
+	b=qf0XIqsokr8eSPkBfD/CDZ3GohwqRX9xrvgpFzr/WC+hhbdSdT07XHmTL4w20Q6xvSof6q
+	wTck7CIMncVBqa4jZftRO31CidSKVZAjpmvJvJRaArXb9nJ8OASEyQgmR2SsdtDQ++lmiG
+	iD9r0MIrxtBmTSb2m/R/bqA2S0Et3JY=
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-34afa104860so1779462eec.1
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:53:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790718811; x=1791323611; darn=kvack.org;
+        d=google.com; s=20251104; t=1790718813; x=1791323613; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nuLNuJ1Z55MoJniNmyjLk+CRKY+iECn17Vw6UvtIrSs=;
-        b=aoNAB+87usv21B3g6C5k33ibcjV8Xc1vCDkm+DLFQ9kfYJuN1Fk4wiap+QIsp8pv9+
-         itUEikjp2qI4/gGBVufK25OLWjM7603F2+/qq2nxInIT3Xyyw7AJdyA/Bs0ZS+iWBLRf
-         yjCWIpuxyAqeFYWxOdgNC3t8vTEu3ebdzg0jHoPlPanmclVqBo8RC/07fZd08g0QRW1f
-         Hxb9KuET/wih2GMTIwdz30D1YOxvlowAH+PslTXKEgTliGvQy2y9Z0NpXFHS7ozATvEc
-         /D9/P+sXgGzp+BZXHPpcYnDGDJy6F9D8sKk1aU+zTZZidhme4HnMDjAvbXlSX61uDSQs
-         6xvw==
+        bh=pAMB3W3KRBdsKi3TzRfB6ZNmdd0wTycBXYPw/qJaC3E=;
+        b=H5fCSGYUIBByHj6TNzXPbzkXRACaU3fpJW6eOJ2UA39VFaJnK7ffZF/Mvtd4h+4gJe
+         h0NC1Zpyn4s4+iZpOqyOezTB7qjnYV5w2ifkq/RQ7rdXxiVLoPHX22W6mbjzlZtX0lKO
+         KVsVabSPkjsNuH1tw1M2EAcZVGcc0amf3rblqYiAw2tfNJx2T22B/o50opuH6oBkRha+
+         RTL5bDlJhZaibOIP2AZ5hcZpS8sQb+/Qbavp5zNtMjzVSsDM/XO72W/hT2h+w59Bc4ij
+         lanA8vEk16j9svukW8nunQciL3A2A/MkT6oL7vQR/LooU6sfcH5yqFN/nQkgZYDKZoTW
+         MIwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790718811; x=1791323611;
+        d=1e100.net; s=20260707; t=1790718813; x=1791323613;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nuLNuJ1Z55MoJniNmyjLk+CRKY+iECn17Vw6UvtIrSs=;
-        b=QHT/tBF+/qFVhLTbS4NMkz5MDtpHcwzHUUyZaiDzg9fQNqdfKeb7S7ctt4vEmbQVhF
-         y9SdENGd/3B4aC1nVSiqVqY0KxYg3n2oqUmpmXgrqtCZjVJMh/C62nsbuZDlHC5X2Z5T
-         gy8uoQOtpUnPfUHJAAHLm3Rg1hmQWS6x/ZjcfsxmbmcgQJgB6924e9TuJ8xemNlNju+H
-         mIb6oJKkjVjaMspiN+A5Rxe9brj1msMdY0M+lWvfTjM6TuEmYnT8ps/7Hr0Y7kBGuPGS
-         mQMz1pqHZ5Ski4NyiyFgXmhxUfBMWrKPUjAQeKeUPM999VJSQKQX/UUE6gcTS8oK1Ocg
-         uY0Q==
-X-Forwarded-Encrypted: i=1; AKwUvBywFBrb88S/3qKcD7XZgHjvjV3iIYqI/Ii8jfyd0sOhmsONnYC392Q0luvOURxNb+3K8eFgszj/Og==@kvack.org
-X-Gm-Message-State: AFuF++kJm7yPED28S1MZyFE8qD3X9acdZdf7cUmAjbD+L+yKpofNBp/S
-	2j9eXhUW7VkS1+pMj3rZvqj6PyyDV2GNNx5IGB28HogqHVV+mBc0+xWwzQUNLegyNz+R+6wMsMx
-	Hw2lX7RJL08BryHmFD5VnOA==
-X-Received: from dlbui24.prod.google.com ([2002:a05:7022:3d18:b0:149:cd53:8931])
+        bh=pAMB3W3KRBdsKi3TzRfB6ZNmdd0wTycBXYPw/qJaC3E=;
+        b=XZ9VZxtNiOcbD7LwGCcjUlTPEFLylQgKoJQVWaHEfG92sv0TvNhtDZrosFaYKclTXH
+         mPsVaZTeNHdAs4HMZcTdLN6BEbxH5/M9xlVXAjOD2d5dN5gjTTlP1XS5wvmPKYl+Url2
+         2xwMdspjU3Xh4QvB2BXJwXefNO8tGbph2v0qNZBApOpV1Y2ZyTI4JJqU58tYA8yYT0go
+         weEIjda5dGwAEk0PADPe36CYSJB7M7z1JynKIjFkOei17ATinMsUWw0jTZG6RlE4OkoX
+         2JqeJuVnk/NHjKu/uHROFY4E8978fjUQgKC2H680tkxS7b5Bbff9FyQ7M10+sDl/tjTT
+         11Ow==
+X-Forwarded-Encrypted: i=1; AKwUvBy4Oz6Ij7yAnQk//PvrbMfgIBApxbJZoDF86PxB3pQu0g+W+TEahhO7NWHn/IVBv+NUAoufZOpIPg==@kvack.org
+X-Gm-Message-State: AFq9FYISzUyev4dhT86+66PQg4yIO6ENtsFL6smisA1nUUFoxNWe3FRM
+	aThx1h7S65LN97m3aNCYcjH+cEGjToBVo6lrI9anB4NMI1FPPEH8bMB1sirsNxkFJgZdDriAVMo
+	jCxpkYlIN1gyzCWq4PC11nA==
+X-Received: from dybhi53.prod.google.com ([2002:a05:7301:29b5:b0:33e:4e3a:51a8])
  (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:f693:b0:149:cad3:302b with SMTP id a92af1059eb24-14c9feb75f3mr759810c88.34.1790718810620;
- Tue, 29 Sep 2026 14:53:30 -0700 (PDT)
-Date: Tue, 29 Sep 2026 14:52:01 -0700
+ 2002:a05:7301:18aa:b0:342:5098:a983 with SMTP id 5a478bee46e88-34c6370d985mr650471eec.11.1790718812376;
+ Tue, 29 Sep 2026 14:53:32 -0700 (PDT)
+Date: Tue, 29 Sep 2026 14:52:02 -0700
 In-Reply-To: <20260929215206.516490-1-nilayvaish@google.com>
 Mime-Version: 1.0
 References: <20260929215206.516490-1-nilayvaish@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260929215206.516490-11-nilayvaish@google.com>
-Subject: [PATCH 10/15] mm/memory: use folio_page() in fault and CoW paths
+Message-ID: <20260929215206.516490-12-nilayvaish@google.com>
+Subject: [PATCH 11/15] mm/rmap, gup: use folio_page() for PageAnonExclusive
+ and gup_must_unshare
 From: Nilay Vaish <nilayvaish@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
 	Greg Thelen <gthelen@google.com>, Roman Gushchin <kfree@google.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qs5hr57gtyk3c6ofdq8fqxncwegz7arq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 382F24000A
-X-HE-Tag: 1790718812-760391
-X-HE-Meta: U2FsdGVkX1+UyUEZ8zm3wxCTW2zX0qVOn/Q4nGMRwdsm5j6H3ApwUhZU9brmgfiDIpF9y56RQ8pCxxe5NhYF8QUhAXqcJ6N/ddHtSYXkPfclFAqs+W+M1QoOlVCVYrjKH5i1wD++Hqfi1Fx0XD0M0fRo1K3RoOMhw5x9ukNyngOXKj41O1xl94++pPPPsDb6e1UPWfD6btnkhJEjRiiSITOQSmCbmfdNa3+p2PFBmJI0msQ0YomGxtxLTLAyN0UHJDxMZB28ZkFcvWipTty4G0clDzQMgZtxcyzNcvs8ubpjzvU2FstxvdNykst2Z0oy6hm/Q7nHit6aht9RYU8fWBMnXP5Yga0DCl4iGH92SmWEHaP49ziI/QEFuZ0TncUvbOG6DFZXQ0ScHxSUTwo5/SLqVpVNx/5KXDMsKXYjarKsDzHVp9FPrEkepOZj+btBbRE9hOapaWqhbQXTjZjvriGMOSE07qViUwXpeQh663UZZi+JXhDHAiAbThGdkGxWNVBUedrkKc1HpfBkB/8ZlgQBWi+eCjK8pLdd+dnfvsCFGsXXfyCKPIoYYTwGDNOB3ENMyQZ2ShAcTbLOJnli6auLDXdQbBxUa6aQyshvZUSox1ct0tPsVsp5yPq8JC3IbFIkqAiZ2frcXF7VqWo/JMThcks4R6tS7DE4kfB4j26dxartj2wQRI5b1g+HNTPw3UMJxEB7FFOCHOD/ZCrK6yHvm7wX27uJ5A4f1AjJ/HbeHKLSRNxKT4reChAW+lrOunpAf6bAnVdEIDD2rIsRt9gP98YS4pticqvB/Lxz3Lk1I/bQvUk3LZhXDXAMzEpA0ZNmDCy5/soDE3wQq4q9T2+e7cZKVEoTpxRvD55+0mSB4swCs7W56SW+sb/06447aRISFjnVgftnQiRi9sdHkFblgI+yaWsBAqE/XDND+1br0vrVIlcp70puf3rFkhqzlVGfEauCyy/2CQdnkcn
- IHkGOjjM
- TRgBqqKhrJ7++RjA4L5IEK5MNDo6vzjPxUGvaQ4JLrkgFBjiwKYqCzbeHoupnU3Zy4Idf/l5jC+EIg56hermBo1aOwuCZ7rvKj0BmgKfOgizM0em1/JHqOnHz6vN3ioS8003SoQbPWIYVfSiGGJ/D5ZjzUUPdWOetyLbj/1uglZ+ccXYAhnf2zW+g4zo70wtBaFvYaf0Eq3n9dugA0WLl4tOAOwpdbamSuswsv5FTcF6mLKBEDCX421fC6IIQh6kPClmn/LBo+rii8J0s0QC7kz0dJLb2sDygCXMnEpbaXtG2a/CKYbY0aoYTgWU4WJa2tf/PIT89IW/Akb/KgPLkqHBXJlC2efd6JPguOnVkNh/98wyPHD7jFudfIDGE5KtH1IWMbPiWPR+AdFFTyP4nyZrc1IXypkaZmps1dRzTXvqlHbS2J2y8onNWNnrHDo/q10avLCN2F/6QBD1CzyRzwtL7pDBYDvZ9QHZ0Q0HEVpNdrKjHU6+VcRlUJJN7rE0UuDeOnI0ykv1bAOLZMzNs3Tz2nmdPinh7Vl2jWEZbqzzyV/L3wstjYWfRFZrXXu8Lb5J5SoJ+ab2SqVIM90mrPl9SPtDFiIVyQRzvww6W0Y7GVvfaQQ+bJUVUGcgxnYBHEmLaT6pjhxKjcS72PI6D0B97vA==
+X-Stat-Signature: 1uo5ccbareb197sj71sob6o73byshwsp
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DA946160006
+X-HE-Tag: 1790718813-721020
+X-HE-Meta: U2FsdGVkX19mnSyKV0p7N7GeWZXv/UVn6HalWMnaXywh3wQf1yxwEkXmhQbrWsBexb5KmpF611OlGLg6b3SW8ae1j5NrC/+o+EYxbD7brQ71WmVqIeBHJu2fusL/1/A7JF/XUpiuZclD0AO62rOw10BEKL4hjwKvo+2IR/NIsjL8ggLFVWzoyDfPTEhCfmSy6HTrGkjJtZQN81p0LobHt6cCanWg5sQaJTRgbcQQnzkOG9MAyFTEgFCVpFqyTSOzPwP6fceUzfS1U+qO2BUY1Ju4xNs7qZxH6P/qzhZeZ8QBOjQIeEKR5TdYlxSPfTqqNahQUdYvIZvO6hSNcIucpnZU0OSs2nElOHYzJEcdNihgRFVOYgdV5wC639MmrCPlgYrnTHAr9YHuQNPwMfv2R6meaptwezDLc64WSALPYWEYVGA306OETCPebj6nQ/l8loL4wWpOEcgql23XtPooIBXr/cb8dw4hTmUjx+jWIKZkIw4qHvSRZQ1l67WxJsHb4izM9PJV5On/3GxlGsDuXoVo/3XTCi3Tu8J+LRAyslBxjWliJykLmhFTQ1fwGTg3NP/cHlxaHcMuMxE1pFOprVS5mkwDPwL+AWJOjvxBiXrmkF45uhEGXiUXchQOQVz9oq7qzqQVUX+PILtbDxFy6uAtxSnDg8ZDaefG7Lc3AsMX86/T/NJkGixZc4SvKZPtjvS0gPpdhfTpu/IbC0pw4T8U3VFD1oN7WTHrMIhau9OAFNNX6bj6ytl/rVy6HR0moYTHb2sMXAz33Rq/3z+NOxJ/GF0jUDJrnCwhNQaoHnS8zYIaz1kPzapvrzpzdryennJ9T6dqeoBhOI+XILhmP5hHZ4izJb1Co9sNcJM71m0Snhd1EuK688Sm0fxUFoZe85tYyI4jJGZgpO2twRzNUKKfHnFlCsPQRNS7TCWxHjMYPFytgJtEzQa9n51iiHcjKIhCaYRZFTQM33NimZq
+ g9+34FPa
+ MmYeMb1/bCxblSbJu+RE1WZdoTg26WyycF/6+NMjic9urNUeeY2EptLRsVzO5mcHJUZWJM3SzzoCH5KmzNvWYEGHTMvDYN/wCPCTTMlN0HNgoELehxwEGcUdgcCMwtFJfYL06PHs9bYPdhmoDcR70scil7KcvbER/z1zPHfI8Vws1SWU6BlFMVy/bH8gsPZ1Zw2zHmoxHmvljH13a7NV5qRn9jim2wQXH/t2dEerhoRq3GRgd+QBdHCxeLrWiqcMa7FIMVShichZ1izNWkTYkq9hJeFjibuzVA69LIPo1mRjNteDID5UweEgIi8csT3xB9JMO/KUR2Gu/iXyljIUpobYjLDSvDNm7oXsy/v88Ig6MF/9XZIMJWK6wsoTcrzOJfdglQvk3hSLWtPsmBp0Yw1pYvhvTL0dMO9S+QVwXf+huWeJJdIpodludOWw7WMsv0f9/CH+vldw9nDFkFrCDgX6nfI5Co83x56C8arA+W0AJsAuqnh4gFwMpuwj/t20Bp7z4lo2x+2yvEbNltwSWfnbP9wF9PXE1vur/suZ/RDXdpC2DSABLYiySmoNvg0AFfCf4ku0RK2jlLvS/6xI4GZjRiP3RYNhHysn4fSFW81g8SkB2QLxb//fXdZbHlEzE8SYPNqHbd3EgoExTQPXttzWrOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,87 +114,101 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 As part of the memdescs effort, struct folio will be allocated
 separately from struct page and will no longer overlay the head page.
 
-Replace direct &folio->page and &new_folio->page uses with
-folio_page(..., 0) across copy_present_page(), wp_page_copy(),
-do_swap_page(), do_set_pmd(), finish_fault(), and do_cow_fault().
+Replace &folio->page with folio_page(folio, 0) when checking or setting
+PageAnonExclusive() in folio_add_new_anon_rmap(),
+hugetlb_add_anon_rmap(), hugetlb_add_new_anon_rmap(), and
+sanity_check_pinned_pages(), and when calling gup_must_unshare() in
+gup_fast_pmd_leaf() and gup_fast_pud_leaf().
 
 No functional change intended.
 
 Assisted-by: LLM
 Signed-off-by: Nilay Vaish <nilayvaish@google.com>
 ---
- mm/memory.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ mm/gup.c  | 11 +++++++----
+ mm/rmap.c | 10 +++++-----
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 330cde31bf8b..9252ba338112 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1098,7 +1098,8 @@ copy_present_page(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 	 * over and copy the page & arm it.
- 	 */
- 
--	if (copy_mc_user_highpage(&new_folio->page, page, addr, src_vma))
-+	if (copy_mc_user_highpage(folio_page(new_folio, 0), page, addr,
-+				  src_vma))
- 		return -EHWPOISON;
- 
- 	*prealloc = NULL;
-@@ -4073,7 +4074,8 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 	if (!pfn_is_zero) {
- 		int err;
- 
--		err = __wp_page_copy_user(&new_folio->page, vmf->page, vmf);
-+		err = __wp_page_copy_user(folio_page(new_folio, 0), vmf->page,
-+					  vmf);
- 		if (err) {
- 			/*
- 			 * COW failed, if the fault was solved by other,
-@@ -4089,7 +4091,7 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 			delayacct_wpcopy_end();
- 			return err == -EHWPOISON ? VM_FAULT_HWPOISON : 0;
- 		}
--		kmsan_copy_page_meta(&new_folio->page, vmf->page);
-+		kmsan_copy_page_meta(folio_page(new_folio, 0), vmf->page);
+diff --git a/mm/gup.c b/mm/gup.c
+index 8e9ef5ee7498..1ce7ea5e7abb 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -59,10 +59,11 @@ static inline void sanity_check_pinned_pages(struct page **pages,
+ 		    !folio_test_anon(folio))
+ 			continue;
+ 		if (!folio_test_large(folio) || folio_test_hugetlb(folio))
+-			VM_WARN_ON_ONCE_FOLIO(!PageAnonExclusive(&folio->page), folio);
++			VM_WARN_ON_ONCE_FOLIO(!PageAnonExclusive(folio_page(folio, 0)),
++					      folio);
+ 		else
+ 			/* Either a PTE-mapped or a PMD-mapped THP. */
+-			VM_WARN_ON_ONCE_PAGE(!PageAnonExclusive(&folio->page) &&
++			VM_WARN_ON_ONCE_PAGE(!PageAnonExclusive(folio_page(folio, 0)) &&
+ 					     !PageAnonExclusive(page), page);
+ 	}
+ }
+@@ -2957,7 +2958,8 @@ static unsigned long gup_fast_pmd_leaf(pmd_t orig, pmd_t *pmdp,
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+-	if (!pmd_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
++	if (!pmd_write(orig) &&
++	    gup_must_unshare(NULL, flags, folio_page(folio, 0))) {
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+@@ -2999,7 +3001,8 @@ static unsigned long gup_fast_pud_leaf(pud_t orig, pud_t *pudp,
+ 		return 0;
  	}
  
- 	__folio_mark_uptodate(new_folio);
-@@ -5143,7 +5145,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
- 		ptep = folio_ptep;
- 		nr_pages = nr;
- 		entry = folio->swap;
--		page = &folio->page;
-+		page = folio_page(folio, 0);
+-	if (!pud_write(orig) && gup_must_unshare(NULL, flags, &folio->page)) {
++	if (!pud_write(orig) &&
++	    gup_must_unshare(NULL, flags, folio_page(folio, 0))) {
+ 		gup_put_folio(folio, nr_pages, flags);
+ 		return 0;
+ 	}
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fbd66a2823b7..cd1cf570c770 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1668,7 +1668,7 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 		/* increment count (starts at -1) */
+ 		atomic_set(&folio->_mapcount, 0);
+ 		if (exclusive)
+-			SetPageAnonExclusive(&folio->page);
++			SetPageAnonExclusive(folio_page(folio, 0));
+ 	} else if (!folio_test_pmd_mappable(folio)) {
+ 		int i;
+ 
+@@ -1694,7 +1694,7 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 		if (IS_ENABLED(CONFIG_PAGE_MAPCOUNT))
+ 			atomic_set(&folio->_nr_pages_mapped, ENTIRELY_MAPPED);
+ 		if (exclusive)
+-			SetPageAnonExclusive(&folio->page);
++			SetPageAnonExclusive(folio_page(folio, 0));
+ 		nr_pmdmapped = nr;
  	}
  
- check_folio:
-@@ -5697,7 +5699,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+@@ -3187,9 +3187,9 @@ void hugetlb_add_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+ 	atomic_inc(&folio->_entire_mapcount);
+ 	atomic_inc(&folio->_large_mapcount);
+ 	if (flags & RMAP_EXCLUSIVE)
+-		SetPageAnonExclusive(&folio->page);
++		SetPageAnonExclusive(folio_page(folio, 0));
+ 	VM_WARN_ON_FOLIO(folio_entire_mapcount(folio) > 1 &&
+-			 PageAnonExclusive(&folio->page), folio);
++			 PageAnonExclusive(folio_page(folio, 0)), folio);
+ }
  
- 	if (!is_pmd_order(folio_order(folio)))
- 		return ret;
--	page = &folio->page;
-+	page = folio_page(folio, 0);
- 
- 	/*
- 	 * Just backoff if any subpage of a THP is corrupted otherwise
-@@ -5908,7 +5910,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		} else {
- 			/* Now we can set mappings for the whole large folio. */
- 			addr = vmf->address - idx * PAGE_SIZE;
--			page = &folio->page;
-+			page = folio_page(folio, 0);
- 		}
- 	}
- 
-@@ -6093,7 +6095,7 @@ static vm_fault_t do_cow_fault(struct vm_fault *vmf)
- 	if (!folio)
- 		return VM_FAULT_OOM;
- 
--	vmf->cow_page = &folio->page;
-+	vmf->cow_page = folio_page(folio, 0);
- 
- 	ret = __do_fault(vmf);
- 	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY)))
+ void hugetlb_add_new_anon_rmap(struct folio *folio,
+@@ -3203,6 +3203,6 @@ void hugetlb_add_new_anon_rmap(struct folio *folio,
+ 	atomic_set(&folio->_large_mapcount, 0);
+ 	folio_clear_hugetlb_restore_reserve(folio);
+ 	__folio_set_anon(folio, vma, address, true);
+-	SetPageAnonExclusive(&folio->page);
++	SetPageAnonExclusive(folio_page(folio, 0));
+ }
+ #endif /* CONFIG_HUGETLB_PAGE */
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
