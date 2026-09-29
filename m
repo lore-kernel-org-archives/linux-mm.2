@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B2DAC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:20:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15B93C9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:20:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 425766B0099; Tue, 29 Sep 2026 04:20:46 -0400 (EDT)
+	id 13FFF6B00B1; Tue, 29 Sep 2026 04:20:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D6096B00AF; Tue, 29 Sep 2026 04:20:46 -0400 (EDT)
+	id 117616B00B2; Tue, 29 Sep 2026 04:20:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 313176B00B0; Tue, 29 Sep 2026 04:20:46 -0400 (EDT)
+	id 054296B00B3; Tue, 29 Sep 2026 04:20:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D82F6B0099
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:20:46 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 72099A0435
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:45 +0000 (UTC)
-X-FDA: 85266103650.08.13C427E
-Received: from mta1.migadu.com (out-164.mta1.migadu.com [95.215.58.164])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 68213C0006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:43 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wY8aVxj4;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.164 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CEAFA6B00B1
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:20:52 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6546B1A0435
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:52 +0000 (UTC)
+X-FDA: 85266103944.06.5F3FCE0
+Received: from mta0.migadu.com (out-208.mta0.migadu.com [91.218.175.208])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7AD351C0002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:50 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=glyp3+EF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.208 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670043;
+	s=arc-20220608; t=1790670050;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NnkkSoCDZx7e9L0+1+h4Kj3/KMdToCJJbb3nnzNl684=;
-	b=G4zytmT4x1I0S17AVur8eEz2zCFu1//hojICz8UQBoGmtdePlkw6ytmcon8DZCvkmJuXzD
-	6SH/HJv2/9v6xllprc1RIhx4LJj70mpRyTjRwFc/hH6ZzLI29P8XTlGuyZNtAQiWc+1JHQ
-	g0qTKnmD9huXogVQPZ2Qfh4asx/p/TA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670043;
-	b=5YImWCJK48k1wGbQ59blm+8rt1ga+iAXIfOAT24gs38P2Iv+Kvb1Bos4JnAzyrvcfDtRX/
-	ji31kRHc4X7OBG4EnrYXXBjmldXxnAoOyAW2DRZ0q44LCwCf6APFl+Vw168XbEjaieNltv
-	nb3+FgDEBTZCI0xLrY3IzroUAibgGYw=
+	bh=V29ad4x/WAIi1Mgv7OdMw0FrCocgUTy3KoT/uQuUj6U=;
+	b=5N9OoRPSgTUKljyHQNbGCwsaISUhRCcelu2HnqRsYI621XiHZs3wLcGmyrmXN0AOeBiQMd
+	WPHeQRjLIX8EYdIDvC5TbDBk6iMGIL2qtG+FD/PWEF987hiBpAt49OXD1BQGYJBzvmwUXB
+	9jZulEqU6lfPO1TscIT4pwe71aq6Ai4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wY8aVxj4;
-	spf=pass (imf10.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.164 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=glyp3+EF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.208 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790670050;
+	b=lPB7Bd6RmjYe0m7rQe7a6DjvXUpCA9hBC2YnE/LX5TAWkRftkUK122lKEyRXLKAnS9HZfb
+	qNx91kfIN54x/oTwG56ECAwzsiI+qxHGOfK30zN223IzVHbsU3VrbLpnwcnJXBRRf/Qirj
+	KNER9NMSuSafOp9rTRdwWTjPCPhOTww=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=N0ff/iGVp+b52+6AW1hzofKLKiwU3Q/JuQflNfL6tR8=;
+DKIM-Signature: a=rsa-sha256; bh=fpRNa2I+DmBqaF8ZhHQ4c09SGKG5OLX8LlAhVqaV/kE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790670042; v=1; x=1791274842;
- b=wY8aVxj4JpcVF/SXqQM/e3Qda2pFi+YyPDKB71tB4ZiJmKwjBK7a+hBExwF0kO4h0BWcNbgq
- APjmev3X1DDydKKguV84f63chjw6jKx3YOGRXy0aljHZ6WX57Z1vgjlBtVfrn11RalqAGhcQnhK
- dG2PKVfF4aEqZZL491SUYIls=
+ t=1790670049; v=1; x=1791274849;
+ b=glyp3+EFt2xA249QLipx0o4Z7hV5tkYJbIBdAt3wUA7AmaMta84VUzxn3uWJQmcuNqyYB5TP
+ Sp2N8yIBjLj4t8glm3zfxX6R3890/CfZzvCRX7o+AMe7NFp9tf+PP+iHmuwV8akdU0mRqeO9idp
+ uPgJTUrEupOLubAdSgOYaN/I=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b8917535a4169c27;
-	Tue, 29 Sep 2026 08:20:41 +0000
-X-Mizu-Trace-ID: b8917535a4169c27
+Received: by smtp.migadu.com with ESMTPS id 9af9c7f7ec312c14;
+	Tue, 29 Sep 2026 08:20:49 +0000
+X-Mizu-Trace-ID: 9af9c7f7ec312c14
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
@@ -86,22 +86,22 @@ Cc: linux-mm@kvack.org,
 	Hao Ge <hao.ge@linux.dev>,
 	Sashiko <sashiko-bot@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v11 6/7] alloc_tag: skip percpu counter allocation when profiling is disabled
-Date: Tue, 29 Sep 2026 16:20:13 +0800
-Message-Id: <20260929082014.160587-7-hao.ge@linux.dev>
+Subject: [PATCH v11 7/7] alloc_tag: fix the /proc/allocinfo lifecycle
+Date: Tue, 29 Sep 2026 16:20:14 +0800
+Message-Id: <20260929082014.160587-8-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260929082014.160587-1-hao.ge@linux.dev>
 References: <20260929082014.160587-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 68213C0006
-X-Stat-Signature: q3xgefpwxy7isa11hc3q9fjc7ndbbb4j
+X-Stat-Signature: cknajdsm9e96bp9o6zh8emmuf48yhqe8
 X-Rspam-User: 
-X-HE-Tag: 1790670043-361648
-X-HE-Meta: U2FsdGVkX18k8FHG7aYNPC5oa6Y73uf549NBRRjiubbnf9pWFOcwFEwVdksS/MoJcEvNy4uA6Qt7wSIeb351N/vQh0CS//HTqj7SISAdrTQD6lX2oLk7MyLfGP3noPDs+ESAGe/IiSs1hyhuxObEN8Is9eVezVH9MpHi87k9BKAYFSLY2ocnr1se6nn1Tsk4kUGAeTbVoOSDcFlSLtUAJgWBOOwDo7mpMYbcjwWpGMtSx3OKvvponOKd1ykhZlC6nYfr5t5w3E7fsHwF6bHYYHiypj2t5z6cIs6OWfG2KTSzgpCfioPt3PuWJcxoCRFXGImqNsxDSleRQcLRErmjY1KqDG9Uv9AdoLexAqEGIxcBUB7/BqFOCjklL+MNbqmLhjFhY66ZD6i3jNiZL/SE2CfPCLhRAgJdL81Whvxs71U0j9iXOHFH2d73kppt1PiMtfn5FqBJofDIS/oQIYP8j22gvguuphpeyl7QFLGz9Lkto0iuhstqnQ4p7eQzIKiwgmCNNt7NxCAkzwlI3woGZvVvGGcK7OUtC9uFqSM54kcAtxDJt8z0iAAKoVL3oBY2Sgkkh68iA683B+Ppv6aj5pWA8Y9EhlKp7CvSlWQaTnbnB9CPrlE936xEFsFZbAIlzemoA2lAr/wiBYgkLhDMn79LmI9XzQwiGV67enqPMOflyw7UQrjP0Xr5TbHlpxSs8r3fFcRCr8HjCwWCjmLREqfhdQL+NSmDw1sA+f+yK+e1rI0+1BlrOxgObc+A/JPCmRbydSeUB38NdnzAUr4pg7icFV+X6Ik/zL1KScyFnTxo40K2adVU0B1VU5NB42orjEF8VTuytIAOgPZGtt63PT5NroQPS4cWHRIu0PkiysBmd5Vc2ABllTVCbZ6ozPOJP1cTzMkUjXmog6Xh048mu1lgUtjEgQHB4kDLhxUANMNWO7VnMBrm0e0tZbsS4tHnmMoyHYg9hDpVYtOE0gC
- 9qt5fjjO
- +7mYC/hGJV456QV58dNlvd2AAG3TWthcjMIJ6yoy8rVNwVajPnEDjVukX/XWlQRZDr7Jj+0p0yTXRQEvP64n3drRoKAFOK/wmvezZ4XSwobmFdbiwS7waPxt2yWqPj1zdYLAlG5O3rIcYCcSYhmfOz3kHd008ujXfnZPFFlRBAAtxBa6LxMMlEb+felSmGCcn/R3F5nFfqw/bEZWOFTFkh7A4EHDnfVIXf3Z594tCQWHRAV23vRdVTB1MKgegARGdgyye/s6e78XXeIn/jxaXAqd0sSJbuz/7/lLhx5MZhI9lszegYkRu5jVvwXQJwwKOfsuP
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7AD351C0002
+X-HE-Tag: 1790670050-784003
+X-HE-Meta: U2FsdGVkX190MYibaXtVLO1HfRvAzjWKvFh1h1vknHND8U22DQiNKQGtjr9d2MQi1vHqfBBqH8pmCz5zBGyuVUUz5vG7i7/rmitF4eYuMaVV7n4kYvxTJ9N3Yzj2Z2qEFIajY+QirPlSUWvLfKiQnXsBGrGHjKExVUZ9OQxLxerXpUaeHy7T10PHo4MEWesdXkTEJwWvUquPOvXXdVrv6ui/yATq5DonLpzP6otk3NzuCGKRBMTpGC/HwLyo13PBuwkP9T5roBCmsVeZwLtRVXbd/2h6IvNaPb7Q3attIPfgI3B+I+UZLoKgnGtVdwJtJMd3wiZaR73nhbge000zFpTcnRqosdtX2pI48pTThCKJt+1t88i72ReEnLBQbZLzDt2wYCdXI0XhqgA9g6ivVdJS3noehZi9Z6NvfqFsCkBzELmxtwal+YXNjF9e0yKxh9h7Pr42sMhHeiWECQyatHVwcbbzKlcIXkY9Tm1YGX609Z53alro5UCaUbNH+WRd/h3xuPXouSTHpsnbzcymqBXf4aBnIb+qnxp4DhWuYyYOsdctIlDC4BW3fcM6KZf6ObvbMANxovD21l7iA9aN0Th4qd3tEyMgGRbNQn48LoN0jvNX0Pansecv/M03mcW05f4IA8hbWhYbJtqHuF/TcUkHrg48jPJwwww9CF1guCVywN/q3MuNevSjXXMWvgsRn2udDSbxk0dYmSEYONazCh9hM66jz9mrAVwjLR1Rw8nVLuBqZbfbw66y0IllWnV7deiNQV7Xwn8MZwBpvvC6CX2kPuq2bEyBgdxg5+CCHW8H3S/YkfUhI8qgImc+HFhjIotVOJy0gvltTIeC9bHclg//GvnBNQsXnVN/YXtj9+ClD56aw2JMUGLZIeqeiMjslCQebDV+LBtypf9La13zKpxeB39mjMU/RvFXPioV+NXAzBbJ2nDfk5mSrKQZDpT6VzYIH/mYxe7OhfWcj7P
+ Y/3hP2sp
+ myKZkcn0Rl9NA8SGby8VpHV+tI5KY3jXhlx/NxIor+xC2lML/3JBq8ErcwsU5Ko3zJvdo1prqtE+XnmLIRuBP3z/j2XuHhPD3OaQqbvUfI1BEYoUvuHa2Ic+CCgIYGKJEF2bKKB5PR03LPlZ0PZmw1fOotsxXo8jFdlfRkiR1Q8LYqF18kyY6F92QabFEj4Vzysz/wEnOKj4c0NRApChO2w9HxiponGH8Ae81Q8tACUzY+V5oLDEJsgxlez28t2XzIvdj3QsiEc11S2nEGtsU2BMWLFhhwdvSSZwIFin1wRauOPY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,73 +109,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After shutdown_mem_profiling() clears mem_profiling_support,
-needs_section_mem() returns false, so later modules have their codetag
-section placed as regular data and never enter the alloc_tag maple tree.
-codetag_load_module() still called load_module(), which allocated a percpu
-counter for every tag; release_module_tags() could not find these modules
-on unload, so the counters leaked.
+shutdown_mem_profiling() calls remove_proc_entry() from
+reserve_module_tags(), which runs under mod_lock held for write.
+remove_proc_entry() waits for readers, and a reader takes mod_lock for
+read in allocinfo_start():
 
-Return -EOPNOTSUPP from load_module() when profiling is off:
-codetag_module_init() drops the module's cmod, no counters are allocated
-and the module loads without its tags. codetag_unload_module() now always
-calls free_section_mem(), since a module whose module_load() returned
--EOPNOTSUPP is not in the idr but may still hold a reserved section.
+  CPU0 (insmod)                      CPU1 (read /proc/allocinfo)
+  ----------------                   ----------------------------
+  reserve_module_tags()
+    down_write(&mod_lock)  [held]
+                                     use_pde()            [in_use++]
+                                     allocinfo_start()
+                                       down_read(&mod_lock)  <- blocks
+    shutdown_mem_profiling()
+      remove_proc_entry()
+        wait for in_use == 0         <- blocks
+
+Move remove_proc_entry() to a workqueue.
+
+The deferred removal also affects alloc_tag_init(). The file is
+created before the type, so on a failure it is still there with
+alloc_tag_cttype NULL or an error pointer, and a reader panics in
+allocinfo_start(). Create the file at the end of alloc_tag_init()
+instead, a failed init leaves nothing behind.
+
+If proc_create() fails, the codetag type and the module tags memory
+leak. Call codetag_unregister_type() and free the memory.
+
+alloc_tag_cttype can now be freed at runtime. alloc_tag_top_users()
+reads it from __show_mem() without locks, read the pointer under
+rcu_read_lock() and take mod_lock before dropping the RCU lock, the
+type stays alive until then. The only caller never sleeps, drop the
+can_sleep argument.
 
 Reported-by: Sashiko <sashiko-bot@kernel.org>
 Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
 Cc: stable@vger.kernel.org
-Suggested-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- lib/codetag.c  | 10 ++++++++--
- mm/alloc_tag.c |  4 ++++
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ include/linux/alloc_tag.h |  2 +-
+ include/linux/codetag.h   |  2 ++
+ lib/codetag.c             | 26 ++++++++++++++++++++
+ mm/alloc_tag.c            | 52 +++++++++++++++++++++++++++------------
+ mm/show_mem.c             |  2 +-
+ 5 files changed, 66 insertions(+), 18 deletions(-)
 
+diff --git a/include/linux/alloc_tag.h b/include/linux/alloc_tag.h
+index 7f2d80a59792..852dc10c00ee 100644
+--- a/include/linux/alloc_tag.h
++++ b/include/linux/alloc_tag.h
+@@ -81,7 +81,7 @@ struct codetag_bytes {
+ 	s64 bytes;
+ };
+ 
+-size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep);
++size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count);
+ 
+ static inline struct alloc_tag *ct_to_alloc_tag(struct codetag *ct)
+ {
+diff --git a/include/linux/codetag.h b/include/linux/codetag.h
+index a25a085c2df1..0c4e0337b474 100644
+--- a/include/linux/codetag.h
++++ b/include/linux/codetag.h
+@@ -87,6 +87,8 @@ void codetag_to_text(struct seq_buf *out, struct codetag *ct);
+ struct codetag_type *
+ codetag_register_type(const struct codetag_type_desc *desc);
+ 
++void codetag_unregister_type(struct codetag_type *cttype);
++
+ #if defined(CONFIG_CODE_TAGGING) && defined(CONFIG_MODULES)
+ 
+ bool codetag_needs_module_section(struct module *mod, const char *name,
 diff --git a/lib/codetag.c b/lib/codetag.c
-index a9cda4c962a3..a0b600720afc 100644
+index a0b600720afc..46d0904b08b3 100644
 --- a/lib/codetag.c
 +++ b/lib/codetag.c
-@@ -240,7 +240,9 @@ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
+@@ -429,3 +429,29 @@ codetag_register_type(const struct codetag_type_desc *desc)
  
- 	if (err < 0) {
- 		kfree(cmod);
--		return err;
-+		/* -EOPNOTSUPP means we can load the module without its tag. */
-+		if (err != -EOPNOTSUPP)
-+			return err;
- 	}
- 
- 	return 0;
-@@ -388,7 +390,11 @@ void codetag_unload_module(struct module *mod)
- 			++cttype->content_id;
- 		}
- 		up_write(&cttype->mod_lock);
--		if (found && cttype->desc.free_section_mem)
-+		/*
-+		 * A module whose module_load() returned -EOPNOTSUPP is not
-+		 * in the idr but may still hold reserved section memory.
-+		 */
-+		if (cttype->desc.free_section_mem)
- 			cttype->desc.free_section_mem(mod, true);
- 	}
- 	mutex_unlock(&codetag_lock);
+ 	return cttype;
+ }
++
++/**
++ * codetag_unregister_type - unregister a codetag type
++ * @cttype: the codetag type to unregister
++ *
++ * Undo codetag_register_type() and free @cttype. The caller must make
++ * sure no lockless reader still uses @cttype, e.g. clear the pointer
++ * to it and wait for an RCU grace period first.
++ */
++void __init codetag_unregister_type(struct codetag_type *cttype)
++{
++	struct codetag_module *cmod;
++	unsigned long id, tmp;
++
++	mutex_lock(&codetag_lock);
++	list_del(&cttype->link);
++	mutex_unlock(&codetag_lock);
++
++	down_write(&cttype->mod_lock);
++	idr_for_each_entry_ul(&cttype->mod_idr, cmod, tmp, id)
++		kfree(cmod);
++	idr_destroy(&cttype->mod_idr);
++	up_write(&cttype->mod_lock);
++
++	kfree(cttype);
++}
 diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 605c0016f646..ba8a651769e3 100644
+index ba8a651769e3..b9af5fe5bba2 100644
 --- a/mm/alloc_tag.c
 +++ b/mm/alloc_tag.c
-@@ -981,6 +981,10 @@ static int load_module(struct module *mod, struct codetag *start, struct codetag
- 	struct alloc_tag *stop_tag;
- 	struct alloc_tag *tag;
+@@ -15,6 +15,7 @@
+ #include <linux/seq_file.h>
+ #include <linux/string_choices.h>
+ #include <linux/vmalloc.h>
++#include <linux/workqueue.h>
+ #include <linux/kmemleak.h>
+ #include <uapi/linux/alloc_tag.h>
  
-+	/* Profiling disabled: load the module without its tags. */
-+	if (!mem_profiling_support)
-+		return -EOPNOTSUPP;
-+
- 	/* percpu counters for core allocations are already statically allocated */
- 	if (!mod)
+@@ -484,22 +485,28 @@ static const struct proc_ops allocinfo_proc_ops = {
+ #endif
+ };
+ 
+-size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
++size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count)
+ {
+ 	struct codetag_iterator iter;
++	struct codetag_type *cttype;
+ 	struct codetag *ct;
+ 	struct codetag_bytes n;
+ 	unsigned int i, nr = 0;
++	bool locked;
+ 
+-	if (IS_ERR_OR_NULL(alloc_tag_cttype))
++	rcu_read_lock();
++	cttype = READ_ONCE(alloc_tag_cttype);
++	if (IS_ERR_OR_NULL(cttype)) {
++		rcu_read_unlock();
  		return 0;
++	}
+ 
+-	if (can_sleep)
+-		codetag_lock_module_list(alloc_tag_cttype);
+-	else if (!codetag_trylock_module_list(alloc_tag_cttype))
++	locked = codetag_trylock_module_list(cttype);
++	rcu_read_unlock();
++	if (!locked)
+ 		return 0;
+ 
+-	iter = codetag_get_ct_iter(alloc_tag_cttype);
++	iter = codetag_get_ct_iter(cttype);
+ 	while ((ct = codetag_next_ct(&iter))) {
+ 		struct alloc_tag_counters counter = alloc_tag_read(ct_to_alloc_tag(ct));
+ 
+@@ -520,7 +527,7 @@ size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sl
+ 		}
+ 	}
+ 
+-	codetag_unlock_module_list(alloc_tag_cttype);
++	codetag_unlock_module_list(cttype);
+ 
+ 	return nr;
+ }
+@@ -591,6 +598,13 @@ void pgalloc_tag_swap(struct folio *new, struct folio *old)
+ 	put_page_tag_ref(handle_new);
+ }
+ 
++static void remove_allocinfo_file(struct work_struct *work)
++{
++	remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
++}
++
++static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
++
+ static void shutdown_mem_profiling(bool remove_file)
+ {
+ 	if (mem_alloc_profiling_enabled())
+@@ -600,7 +614,7 @@ static void shutdown_mem_profiling(bool remove_file)
+ 		return;
+ 
+ 	if (remove_file)
+-		remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
++		schedule_work(&remove_allocinfo_work);
+ 	mem_profiling_support = false;
+ }
+ 
+@@ -1351,16 +1365,10 @@ static int __init alloc_tag_init(void)
+ 		return 0;
+ 	}
+ 
+-	if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
+-		pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
+-		shutdown_mem_profiling(false);
+-		return -ENOMEM;
+-	}
+-
+ 	res = alloc_mod_tags_mem();
+ 	if (res) {
+ 		pr_err("Failed to reserve address space for module tags, errno = %d\n", res);
+-		shutdown_mem_profiling(true);
++		shutdown_mem_profiling(false);
+ 		return res;
+ 	}
+ 
+@@ -1368,10 +1376,22 @@ static int __init alloc_tag_init(void)
+ 	if (IS_ERR(alloc_tag_cttype)) {
+ 		pr_err("Allocation tags registration failed, errno = %pe\n", alloc_tag_cttype);
+ 		free_mod_tags_mem();
+-		shutdown_mem_profiling(true);
++		shutdown_mem_profiling(false);
+ 		return PTR_ERR(alloc_tag_cttype);
+ 	}
+ 
++	if (!proc_create(ALLOCINFO_FILE_NAME, 0400, NULL, &allocinfo_proc_ops)) {
++		struct codetag_type *cttype = alloc_tag_cttype;
++
++		pr_err("Failed to create %s file\n", ALLOCINFO_FILE_NAME);
++		shutdown_mem_profiling(false);
++		WRITE_ONCE(alloc_tag_cttype, NULL);
++		synchronize_rcu();
++		codetag_unregister_type(cttype);
++		free_mod_tags_mem();
++		return -ENOMEM;
++	}
++
+ 	return 0;
+ }
+ module_init(alloc_tag_init);
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index b938cbcd774a..a2e710404a48 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -439,7 +439,7 @@ void __show_mem(unsigned int filter, const nodemask_t *nodemask,
+ 		struct codetag_bytes tags[10];
+ 		size_t i, nr;
+ 
+-		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags), false);
++		nr = alloc_tag_top_users(tags, ARRAY_SIZE(tags));
+ 		if (nr) {
+ 			pr_notice("Memory allocations (profiling is currently turned %s):\n",
+ 				mem_alloc_profiling_enabled() ? "on" : "off");
 -- 
 2.25.1
 
