@@ -4,95 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900CFCA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:59:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87440CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:05:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EC506B0095; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
+	id 7842F6B0088; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99C296B0096; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
+	id 70F2B6B008A; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B3916B0098; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
+	id 5B1026B008C; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DAD46B0095
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 27D836B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:05:18 -0400 (EDT)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA36F120458
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:59:34 +0000 (UTC)
-X-FDA: 85266201468.03.B5BF8BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 09C4F1C0008
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:59:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sauccq4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B47DC1A0432
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:17 +0000 (UTC)
+X-FDA: 85266215874.03.DD40DB9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9B5AC140004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:05:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AEVzYGRL;
+	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790672373;
+	s=arc-20220608; t=1790672716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RH6NqdFwbzWFb6zeZpuetJKrjnA6GtjWSMB/X9fu530=;
-	b=MHlsM6qQ+U2+KU1htGtXlbDmryvpXL8TvjmNHzLiCloko0I6bNd91gL8NanBvOgyG1ZjYx
-	F+9SrI30TRHrPzApljnfqERMid4tQMux73XaihGvFK/1SmKxdjb7MEabvcI6M/SPSwBMFy
-	eGus8bNfy+RykPx71b5hzJT/q19zNNo=
+	bh=puBoSkem55NRrg57AHsTm87RSJr9X0KrnQHt5dcEHjQ=;
+	b=ceOQE80D40plDh4adm0c79djA6aMCVu1wfswHmyLFY/VVMBkv3UL/K7PvzDRFa4Nvud20z
+	0kvx013OVkUFyqEPBlM6imOEPiV4tB/ILUf0eASwI2kaG5ZozBsj2uYaS59yuxPhxp3275
+	pxHA13zmGOcJ0cZLl17FoqBWhZYIpHU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sauccq4n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=AEVzYGRL;
+	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790672373;
-	b=n5bSXXr0Iyai8gyS1MALClgi+/27Wkf+MoxFo2IyrBhQrDf3knTHN/uG7aa0NbG/A3PMox
-	c0V/GBcB/4sU8vOomJ/0oEq6sjhSJclfcNnUZYNQQ5Pw6AZVOdFdpF7mV5A6tjq+GKWil3
-	NsuC1sKM1wIlPpPi11Dw0GhhYdU1tK8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78C6241977;
-	Tue, 29 Sep 2026 08:59:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6116E1F000FF;
-	Tue, 29 Sep 2026 08:59:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790672371;
-	bh=RH6NqdFwbzWFb6zeZpuetJKrjnA6GtjWSMB/X9fu530=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Sauccq4nD1vS3R16bUqBJT3/gYHACi8YrQHkU6oyBUDgw+nTiGTFSmsTM0HOTzFxw
-	 Ax8SsGH4ZeXvg6DUNr6bvTghN232LZ1keVbNh57zCOyk+IS7ItPXBoJLUkd1L2eyoI
-	 drv9e4bnoVjU9RaCLcKMXFuETAdWsBrDZwX3wTy0j5hQYwSdQ/rHdcxPv6oT/XP9l0
-	 +ca/RwwEiP79iQR83eW1RLRsRJ4TBKAxdcSC6Cb0nebZX7iD4ow7QRJJDi/tG5PyIn
-	 Z+2DfrFg1FiOTkMkTF9P7xVRwvmEuaXc2lUUkpM16GNnaMVS3COBblO36eYihk8yFi
-	 oovdCF9gp7OkQ==
-Date: Tue, 29 Sep 2026 09:59:25 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: =?utf-8?B?5aSp54u8?= <rockeet@gmail.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
- mappings
-Message-ID: <art8EKRKMdwSDCkr@gremlin>
-References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
- <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
- <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
- <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
- <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
- <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
+	t=1790672716;
+	b=0p2yj5RJrmixpKRvqNRymNGXd/8/NOR9uF0ighbja3Do5ZNQ52EdIL3sbFlS2dRiqAZsQN
+	GgxFL3sTGzXUT9nNQn+Gahuw38MHD/RwBrVKrJaeFquYRQ5pS4t12smxu+esPFHZIWyudy
+	uVZpaEcl6EBmIrxaWX2el3rLMbGx5j8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED58A1516;
+	Tue, 29 Sep 2026 02:05:10 -0700 (PDT)
+Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D9993F85F;
+	Tue, 29 Sep 2026 02:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790672714; bh=wxmwOLxAhQpBe7UtMnjFcrSEnz/kEIYY9IPLyMGptV4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=AEVzYGRLbEG6f0HWOgDUWAZxT88uI/fydL6u0G2bJG0cxIal7ePkx+TDFllEwLf/Y
+	 TaT96+nTqZn119qDOq0Pr91rb+pZLZdEHWZqX4Krvm/iEgMIqAn51gHZDd+ZK+srBW
+	 5UrQuhsQfxmLVqGLkg6OaCm2Ypzhxxo1rp6jQsgk=
+Message-ID: <7edcf2a8-0dc4-456d-98c8-730ade633df5@arm.com>
+Date: Tue, 29 Sep 2026 14:35:07 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND 0/9] selftests/mm: improve mremap_test
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Kalesh Singh <kaleshsingh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
+ <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+ <b8da4a73-296b-47f9-95dd-b8a74f3a0984@arm.com>
+ <CAC_TJvexEaehZno0P=xsoCbLw7wgfz+22iV4fwzcuGCiu3vAAw@mail.gmail.com>
+ <92ec3966-e68c-4dda-9d8b-9462f22c9e93@kernel.org>
+Content-Language: en-US
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+In-Reply-To: <92ec3966-e68c-4dda-9d8b-9462f22c9e93@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
-X-Rspamd-Queue-Id: 09C4F1C0008
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9B5AC140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: d8rjx39g8hifak9abieuiokjtix1ds76
-X-HE-Tag: 1790672372-415766
-X-HE-Meta: U2FsdGVkX18h/Cxmuch9rZp1tTLW43a+HS5abw5C688uY3UPiToaAiEa06LvmB/oOE/dlMr5ttQKlrleUj0AwHaiNauitKtdjhCneZFW4YfN5RlUbaTg8JqVSDhEOWT73IRsDVXAnGzpf+Mn8ookHrYHvJfa1E3FtvEArdHyX22G8nq/EDKazcX6NwM8Bffa007uKGhMR0C1qQ9pGczOMMOSZ0wrMmXgmIE1HkOfZUbsFuxqYUYt8fX76ZstBQkF/Q5ZCbKG3jSMgtiZ6YXi4PYVvsLhrD3ty0THsc+ha7pxKt4+g/kw8jwaFl0KirePRBaFdtS83pZAkNfAgdizEylDpdIbbc28ZZQwhm0Whh20C69W1ocZ842sBA95950ylPTHuI7Y/fFVWSqVcyZqt3+tSPhBrO0ninbNy0UNq6dCAVbUIaAaN0Kz9/Ak56B45vLWUScgANIoPPWA69a7ZVz1htUm8GvA4UwgUHMPbPTfCkDc3Dp6IvMCHFJrf0WjfbGhpCXqtfXG7ylav1X0SFse/TyI7/aLOn9e4MjbyBFZj20v5R2dlSTd9LtVm+GGkhX+x88knudnGrwyeyhjCfWfQrXmamAfO6oGh5dZAGKd5GjnXT72Yoj/r7yLXH9ONwrcbKZZ9b+lH262jad2GTzm37nSTf0ZGQpoP4DyOogcJPSugFmyoI52z1/S0NcBlY7Gn4KjR8joAdx696uOyKuwj6ToodP/6+r3GZV1MRn9ZrfGKC0QIKA2dfFRx2w/5b4SlMGrggNu9qNTGrW0BQ8Z/5FgbbnVL4NKb3ag3nbOspUWGZvE3zetqSRl0bsVcy+vRj6VJ172vvPbZ4CLvB8EQWbhAkOj2heHZ5nTK8pMIfxYX6hSAmUmi6c8m7cBuzoJCDBnGx6PCYvLpk0NfcEgfO1hGv0ll/fkBlaWAyXOWgfHP7H2PP/W2wXseJfFuTWoquejilHlbhVfQKY
- uACg33r+
- GB/fnvYKO0JrLMXunIPdmMAc8lmlweowovYfh02+nFwYAqlK8M9oy94T/lZ6gpDv4vZpUbEmkGHU547fMIsVKeKtB012zkjTEzAKKo5e/uY+LipLRXEBosgqix2rvPNcLmrlHgzDwyD2Z4K2S5Xv4G6ZIBBkmZLqjF7+jXDH1fR74W6r2cNqdeaz+PtEmEE6lwRC+DJt3QDUwLyhXXw+bOGjZOVrkO12hlhbDv5VK/ehSKfRcecZ5683wojtqwRtcEpsPJNBOAUjgw9wzMFQ60KFw9Q==
+X-Stat-Signature: dnshypo6na6ucnxq5755475eiht6kc6r
+X-HE-Tag: 1790672715-222333
+X-HE-Meta: U2FsdGVkX19DkACCwFmeQzFkjh3sgLWIWU7OihbwLJ+n7/9JVZfYYZZqeg6tuSHtOgC8o6cHynR5cy0T28faOZ3hpibcLW/9gVOJx9xZWEKVWHKI24ytoGRGndHzL/rRQy/bL+BMJi41Hq/y8NIPux4mbDUF4OkykmwZGusDLLodE2fpDEauTByhPgStFW5FxqrA0axdc0uZqk0ChZXvXy/0lYnAYTSjJDp/7MzRuYqVEhq22dP/GNt+6QH/CF+ccgbiXjizepmPFyJDpn2FcxMTr6ZqMPZ1KxT6jeF0VKaTBpp5xCzJwvI7FWKYd63XTl0MwmaziGtbwNirOUxmWwQalNwHZeFEuaDpCQxKlCBBAcItX25cT1D//VypDB+K64DRIXvbAx9pKAa1RyUBa0d5SRIX94mc41QoRWU7fsJsBuRHGSKl51n2xom2i2gt+0tqiAr4HpijnWItXVONFBCNxeXUSv3gZ0wqub3sUQBm/MFCGWKq/zucr1mXpRp5TckPfg5N1QRm2gX8sVdE6w5fd5/VlSp2iCmoRG+OeCWqgxr/qvBQ/js8DGYJDq5icVrXepMr2l56uvFTA/rUyGoW0oETYWowgF7CEwcKEt/TOAhMNd2sLwGU1wP7ygo3CmTSgiGsUZQ4AqXF6J0AMY17A68K4PvvItOodvP/BtePwYkvTjSqf3EBUdalJOThD491nNKZ18gck5Vl78bJyeaZNAP4MyJp9qgcrpAu0cDTzYejAU1PuvvqzlCobonvXsy827jfblM2SyKsat1jSO+bwohvufZubQ8+yagJ27cBU1yJjcCvCfk7uH1jew9OmPHXWDHTQu9XzPAqPJGAbEuozTByo6lsS9J4PyY0mUDe88En3gJLT+nE0i56FoQmUpjDqm8JM96qxJsHUy+XOjpLOPUWP3TIQXodQTreAQ2BLH8gpDzGChiqAQ1qD0jog02ZBAqQ5cmNSxNhLe9
+ Ts8ZYNjG
+ 9lxd5k16iYfeSd/Ajw/uZNb+NmPYT99/TWNDY1rNGSWrFjNfLgLc61ZYkoIMb6PNij71uWoYlt6gsKkMKUEVy2wH7EIyqjy7I5GDa++L84OsNM+STfxtx/c2Jg2zpMON2a4fL/dl7pIU0HDN9CGB4f2+ydq32kVDtUbEGo8vQeatBiBFxAMipm3Bnwg+hY7CWGUHcEBXPJhfVHXljFdKZJhNF0R7m4WTFdc22pNLc5V1WaFwMV96LsMk3zKmZ//s0j2GA9tzIzVdq8XBTGXM/2slXPszAFWwAicD4GWsUqQGoVZ9yW3mkRUhWgBDVugT4bYg2Gk9NX8U0CbAJkPBTMtiPyqu4aPFGcKhfsCvwc+/iZfx3lF0ZZ6/34Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,122 +100,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 08:59:57AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/29/26 06:06, 天狼 wrote:
-> > Hi David,
-> >
->
-> Hi,
->
-> >> What is supposed to happen if the process crashes when updating the
-> >> MAP_SHARED region halfway through?
-> >
-> > The data structure survives an interrupted update through its
-> > application-level copy-on-write and lock-free concurrency design. A
-> > file-backed MAP_SHARED mapping preserves the latest userspace writes after
-> > the process dies, even if they have not yet reached disk, provided the
-> > kernel remains running.
-> >
-> > This does not depend on preventing writeback. Deferring writeback is purely
-> > a performance optimization, not a correctness requirement.
-> >
-> >> It would be helpful if the use case + data structure would be explained
-> >> in a bit more detail.
-> >
-> > The data structure originally used uint32_t offsets instead of pointers to
-> > reduce pointer overhead. On that basis, we implemented lock-free concurrent
-> > reads and writes, obtaining crash safety for free at the same time. We use
-> > a file-backed MAP_SHARED mapping to turn that capability into an actual
-> > feature that survives process crashes.
->
-> Ok, thanks. Just be sure: you really need an actual file on disk. Shared memory
-> / shmem / memfd is not sufficient?
->
+Hi Kalesh and David!
 
-I also assume MAP_PRIVATE mapping the file so it's anon CoW'd is not sufficient
-either?
+On 9/29/26 1:17 PM, David Hildenbrand (Arm) wrote:
+> On 9/29/26 09:32, Kalesh Singh wrote:
+>> On Mon, Sep 28, 2026 at 10:54 PM Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+>>>
+>>>
+>>>
+>>> On 9/24/26 10:30 AM, Sarthak Sharma wrote:
+>>>> This series fixes several correctness issues in mremap_test and
+>>>> simplifies and strengthens its data validation.
+>>>>
+>>>> Patch 1 converts the mremap_test to use kselftest helpers, removes
+>>>> manual tracking of failed tests and corrects some spelling errors.
+>>>>
+>>>> Patches 2 to 5 fix userfaultfd skipping, unexpected mremap success
+>>>> handling, multi-VMA data validation and failure reporting when data
+>>>> corruption is detected.
+>>>>
+>>>> Patch 6 removes the randomization and uses a simple pattern based approach.
+>>>>
+>>>> Patch 7 removes perf tests and timing infrastructure.
+>>>>
+>>>> Patch 8 removes validation threshold and always validates complete mappings.
+>>>>
+>>>> Patch 9 strengthens the multi VMA validation by also checking the
+>>>> mapping state of holes after remapping.
+>>>
+>>> Hello everyone! Just wanted to check if someone has had a chance to look
+>>> at the series.
+>>>
+>>> Also, Sashiko has a concern [1], and I had the same while posting the
+>>> series. I hope I can get some opinion from the community.
+>>>
+>>> Currently, for PUD remap tests, we allocate a source mapping of 2GB. We
+>>> only fault in the first threshold_mb amount of memory, remap the whole
+>>> region, and validate the already faulted threshold_mb amount of memory,
+>>> which is, by default, equal to 4MB and can be changed by the user by
+>>> supplying a command line option.
+>>>
+>>> Since we plan to remove all command line options from teh selftests, I
+>>> removed threshold_mb altogether, following some discussion on the list
+>>> [2]. This would now cause a 2GB source mapping, and its contents copied
+>>> from another 2GB buffer. This causes the process to have a 4GB RSS.
+> 
+> Yeah, that's a lot for small CI systems indeed.
+> 
+>>> Sashiko says that this can cause OOM killing in small CI machines.
+>>>
+>>> Would it be okay to keep a 4GB RSS in this case, or should we find some
+>>> other way of validating a part of the whole range instead?
+>>
+>> Hi Sarthak,
+>>
+>> IIRC when I initially introduced the test, John was concerned that
+>> validating the whole range would significantly increase the duration
+>> of the mm selftests; this is why the threshold was introduced. Please
+>> check how much it increases if we validate the full range (with
+>> David's suggestions) and if it's no longer a concern from other folks.
+>> I am fine with removing the threshold.
 
-> >> What exactly is the problem with writeback here? Unnecessary I/O? Is
-> >> writeback the problem or actual reclaim after writeback?
-> >
-> > Unnecessary I/O. Reclaim after writeback is not the problem I am trying to
-> > address.
->
-> Ok.
+I tested on an Orion O6. Here's the difference before and after removing
+the threshold right now.
 
-I mean if you're mmap'ing it you're literally mapping the page cache folio and
-dirtying that folio.
+Before:
+0.02user 0.07system 0:00.10elapsed 98%CPU (0avgtext+0avgdata
+87332maxresident)k
+0inputs+0outputs (0major+21133minor)pagefaults 0swaps
 
-So the kernel really does have to do writeback and it might be quite problematic
-trying to prevent the writeback algorithm from doing its work on a specific
-range.
+After:
+1.67user 4.91system 0:06.63elapsed 99%CPU (0avgtext+0avgdata
+4195564maxresident)k
+0inputs+0outputs (0major+2225058minor)pagefaults 0swaps
 
-I think the shape of a viable solution really is either MAP_PRIVATE-mapping it
-or using some anon shmem/memfd as David suggests.
+I think instead of the time taken, the more concerning thing here is RSS
+(85MB vs 4GB).
 
-I think it'd be problematic to effectively corrupt the page cache by saying 'hey
-this is dirty but just clear dirty state and pretend this is what the disk has'
-or something.
+> 
+> As discussed off-list, I guess it makes more sense to validate a couple of pages
+> at the beginning, the middle and the end?
 
+Yup, makes sense. I will implement this then.
 
->
-> >
-> > During construction, background writeback can write intermediate contents
-> > that the application will soon overwrite. Those repeated writes waste disk
-> > bandwidth. Delaying writeback would avoid that waste where possible; it is
-> > not required for correctness.
->
-> Understood.
-
-Yeah again delaying writeback could interfere with the writeback balancing logic
-which tries to keep dirty page levels sane and is fair and balanced so processes
-that writeback a lot get delayed in doing so under heavy dirtying.
-
-I think anything like this would interfere with that.
-
->
-> >
-> >> In a fuse server you can in theory delay the writeback request.
-> >
-> > Thanks for the suggestion. That sounds like a possible way to experiment
-> > with delayed writeback. The feature I am requesting would make this
-> > advisory behavior available to applications using ordinary file-backed
-> > shared mappings.
-> >
-> >> So fadvise would be an option. However, this "defer mode" is really odd.
-> >> It sounds more like you would want to have a custom policy there [...]
-> >
-> > madvise is not the only option, deferring writeback for the entire file
-> > would also be acceptable.
-> >
-> > The application only wants to indicate that it is still modifying the data
-> > and would prefer background writeback to happen later. The kernel would
-> > retain control over the actual timing. Memory pressure could override the
-> > hint, and explicit synchronization would keep its normal semantics.
-> >
-> > The hint should also expire automatically when the owning mapping or handle
-> > is released, including on process exit.
->
-> Ok, so while you are updating the large mmap'ed file concurrently, you don't
-> want writeback to go crazy, because you know that you will modify the memory
-> immediately anyway.
-
-Yeah see above, I really think the only sensible solution is a MAP_PRIVATE CoW'd
-mapping or memfd etc.
-
->
-> Let me CC some more people.
-
-Christian and probably Willy also? But I'm not so sure there's anything sensible
-to do here other than something-anon.
-
->
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
 
