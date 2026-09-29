@@ -4,141 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E6FAC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:16:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F995CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:20:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 38B9C6B0092; Tue, 29 Sep 2026 03:16:46 -0400 (EDT)
+	id 6526A6B008C; Tue, 29 Sep 2026 03:20:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33CA36B0093; Tue, 29 Sep 2026 03:16:46 -0400 (EDT)
+	id 5DB366B0096; Tue, 29 Sep 2026 03:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22BC56B0095; Tue, 29 Sep 2026 03:16:46 -0400 (EDT)
+	id 47FD76B0098; Tue, 29 Sep 2026 03:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 00E9A6B0092
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:16:45 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8D1D5A0419
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:16:45 +0000 (UTC)
-X-FDA: 85265942370.01.9E63A43
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D9AEE1A0003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:16:43 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPvIhzZV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C88C6B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:20:21 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6ABEE40442
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:20:21 +0000 (UTC)
+X-FDA: 85265951442.23.78754F0
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A95D640011
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:20:19 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mDbXSF52;
+	spf=pass (imf17.hostedemail.com: domain of 3sWa7agUKCMg025p2u22uzs.q20zw18B-00y9oqy.25u@flex--morbo.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3sWa7agUKCMg025p2u22uzs.q20zw18B-00y9oqy.25u@flex--morbo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790666203;
+	s=arc-20220608; t=1790666419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lAgsxeuo1uwHONfqh8pxHditw8tVE9dP/mYZuc/xVh8=;
-	b=2sPnJhtaoTW550G9DXgBRhVm4idiy/pyJWnF0xxC2FMCNAbbcnCrLf/DQ8T8PTTBJKzWk6
-	ypHlcR8UxSMVTJMBjO0KHPWQJFQ120dX5w9J5++yH8fTnnTuVcf/um1e3uLUMwzca62/0Z
-	tzewse4CBkQm6Vj7/x0W6KH4ZrShIVk=
+	bh=NWPIKm0R00qZrqpqFbbPuyKWkI2RzsxoZ6cWRG3D+E8=;
+	b=klnyS7Tq+mo7oiMnuMwdzgKpAjrmvoHFCG13ZDAlecIomnG7IiAOPpLzAbEXsFQ77qpz1i
+	LAwaAnWvn99CQWWm+BBY/JzX3tNsNWSkx+RI0XTZ1XG3IZ55iN/0tQ1poizil1ahQNNR3F
+	+v0sb34SC3dT3RvDgt5R69EY4zLteK0=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XPvIhzZV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mDbXSF52;
+	spf=pass (imf17.hostedemail.com: domain of 3sWa7agUKCMg025p2u22uzs.q20zw18B-00y9oqy.25u@flex--morbo.bounces.google.com designates 209.85.210.199 as permitted sender) smtp.mailfrom=3sWa7agUKCMg025p2u22uzs.q20zw18B-00y9oqy.25u@flex--morbo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790666203;
-	b=T8pn1rE845FllyMgAoRwlwCG6aoZH7rTDhQo1Ei4qu3lB02y+7T+0bzLe+VbShJ7QF//Dv
-	asBw5m52eLlDRParNwQbd1FiJ0nxzI+ocXgqz9SuR2ic0m8d25IeOzu2QqVg/+Ku/rO80+
-	dH0ZM4N5x7zX/w8Bc8jD1gGNmu2wMhc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 312A260A59;
-	Tue, 29 Sep 2026 07:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BBB1F00898;
-	Tue, 29 Sep 2026 07:16:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790666202;
-	bh=lAgsxeuo1uwHONfqh8pxHditw8tVE9dP/mYZuc/xVh8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XPvIhzZVscw0/cIG0nNlyQJokQTnSAf2sVHgbX/GtyrbGyCa9VYZCF03+80v4yyBe
-	 T6BnIW4SEgx/0905eYA6L0YqyQfMPD4ZxPieJLrEijDAEAK1QXGh2PQodJ2iPg7ip+
-	 bsF4tNu9o+DEnz08puq3XIu8kQWM8gWwa7fBeI3tUGiSs7JNuq0lfJ+Rkk2sqFpf2e
-	 2i0w1njrIONG0cBXMFQbOWvlDJiCkgblfTEAQyKEIBYTNyIqkx2fZGFwsaSuNM73Rk
-	 22v9ZCodwNJwGKjsqEBxrY8hP38UnJAbvN/N1sdidyje7sTphU6cS6JCCQWoO4USUA
-	 LqQKah1HtBqBw==
-Message-ID: <5c73e3b9-4eca-4b84-ba3d-85bb7d6f77dc@kernel.org>
-Date: Tue, 29 Sep 2026 09:16:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/12] mm/sparse-vmemmap: factor out shared vmemmap
- tail page allocation
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
-References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-2-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260927025441.741633-2-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D9AEE1A0003
+	t=1790666419;
+	b=tmM/0izijtcptv2FA05Xfh7s3T4M6C6wqKapo/MiP05PvIBoHc52JC14OmzpdXcwbnotHn
+	3pFlw4gr9/DxJ3kunpzva69+UTOlx4ee6qjsRGTCCG/t292kf8gR7K7+u3cJ4qKgzI5/AA
+	7L7OfxjEWn+XS2qWA60Zzq8w3iH6HhU=
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-86917d18880so2927560b3a.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:20:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790666418; x=1791271218; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NWPIKm0R00qZrqpqFbbPuyKWkI2RzsxoZ6cWRG3D+E8=;
+        b=mDbXSF529ChUuq4IG3bxM9KfwY12ZuDcBSkbOKjh/ptx7zyw5k1jxhkYYvUMKQCGoe
+         iLp7/GcRVwqpv/Ykqn4rRvgL/4h9tFadn4qK6urrUMkUzTQkS1uoFhKj7LloVS6ESBl9
+         l3LQdczAFGwZTbJxKx1QAdHALeTfRdgjc5TL0clx7u+wOJ/Pmt0ORw9An4Cva0WnSZ7b
+         0j0os9M1PWpLlu4DMSMG4G1uRACvX9R/LiD0p0ZtajlsRMuf49EB4YAskVHcRWDexSL3
+         9GAseKHFjglYFeSj4Hb4BTGKHYWPm/DqNyyPT4Nh0FapE7krvrzhse8YiQXQ34Y6QCPg
+         U2mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790666418; x=1791271218;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=NWPIKm0R00qZrqpqFbbPuyKWkI2RzsxoZ6cWRG3D+E8=;
+        b=ua1l8fYdOb52unWqJUCt/S0OhGMJN8N7V2lgjaJVKCzPEfjbbXiE1BOwkdoLBKPCUe
+         hxyXxQK7wcBa6Jz6i//xhyMDZOiq9kv5pSXvIzQeRbMkqJnchrcjOqiGQC3DusYTd6In
+         YIJWjmdph6SQtYNBfmj/F4wdr7O9TUcKzUNw8QefJmXZfdN4HpLpB+F2t4nsbSq2is2P
+         kaGDotmnWVCPdt9u+dq56qGl9t40vkLWFmFWH/Vklj343iGNpN2vOyFARGDxNTsUN7Tc
+         ZI5CaVbJT+F5S5Y+AlWnGx6YtiA/9JsLIMoe8PZjAe0m05+91HPgqtWbzXC2oBwLB5mo
+         /uKA==
+X-Forwarded-Encrypted: i=1; AKwUvByTvFVX+HaCZ7a0yu3WAFxKfnPMzMcg37MX/uCWFIlzMiMZ60rSOBFZFMc3TQSKQNMrd7Rjh5BVtA==@kvack.org
+X-Gm-Message-State: AFuF++nM7rkdyKguNfZdjJibIN5zgggnnzCjCOxs1ztHCk3Owcqmh2Zi
+	5qt4jBUTbQs0CgyPn0hST++WQV+shVKoOhntxyti7mAsivn0+x3R6rJeCL1eUaP4yIc44PBmdsz
+	i
+X-Received: from pfri23.prod.google.com ([2002:aa7:8d97:0:b0:880:ce97:3519])
+ (user=morbo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4fce:b0:884:db57:2d5c
+ with SMTP id d2e1a72fcca58-884db575d22mr2732742b3a.41.1790666417974; Tue, 29
+ Sep 2026 00:20:17 -0700 (PDT)
+Date: Tue, 29 Sep 2026 07:20:16 +0000
+In-Reply-To: <20260929010031.2186255-1-morbo@google.com>
+Mime-Version: 1.0
+References: <20260929010031.2186255-1-morbo@google.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260929072016.2360806-1-morbo@google.com>
+Subject: [PATCH v3] fortify: add KUnit tests for __counted_by and __counted_by_ptr
+From: Bill Wendling <morbo@google.com>
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, kasan-dev@googlegroups.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, thomas.weissschuh@linutronix.de, 
+	Bill Wendling <morbo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A95D640011
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: bhy1kr8bh8m6qbfuhtaro1ky9cugaa1b
-X-HE-Tag: 1790666203-592943
-X-HE-Meta: U2FsdGVkX19h/qtWI9GziQryi4Z+mSQdJdqxduU+V+hBnGQyAnGIKRsAP3RH/FywgGdphcaJCcrttXysezjdnTO+8usXv/b8BuC0obQ1QD1KEt8P6OdzFwuNppZItMhjMmiZh6bT5FN2AWFaVZRi9wT+bqksVUIqJ0DLUf/IlCf1UbYMhATdI49umEyaBTmVYJM3Jjgi5UGBEzUfivD0lP/fUda1DUR5EYP1KFOFNUkIWZobtTf11LwB7fTKsSVQSplfQcDCxRaNCfBCcodG84xFKLNi3HHLgAd+4DzCBEwBIYTmzWMydnU+KvQBkhNRTG9w3q+ZK8Ah0L9/LsA5kpdrsremnoagI8rIq6QjjZQUzZP4BlqUlc9RlghOXNVf/8wluEulHloTDJil7VZ3QGXoqgC+ve72NRwFFky3PqI6CaAxWsKjc0nsDEhew7s3vCezG1/lO57HIQNKhJvfFreZYgwTup/iUBXPO/0mGfygISxmqjSkV8InG6x4lJii0Bx9/6X2wrVw5ppD5NrWQSD4/ElEoo6P8duCx1kXXxZK5JRYxDKVCU5hm++vpc0DUffiEE1g0oHZ3wnNdoz1jA2wTMKbQDHk02ti/OF2Z7eIi6+ffkiTcI4VdNmuloglEQftGNX/MbgsKrDpPzqFvvSZ59keVqQWpSdwqokcatRt6DNuHueh14Iro/z/GCzATX0qLQVjgTJR7Xs4n0mkXw2I2651BP3ygfSLYVG1afemk8pK7KVa3m/uOidtS7zaKMC6foW+hI1CZLVrMoxluZod0H1IrehqudMilce+fNeW8Z7FSCyAnTeMy7qQQkTcifCcngAkHBh1JCI7Ar/csytVWXKeeaQacKKOvWSLme14wkmVSumYioagTc9lYUxBr7VtiatRzGVS1KwJQJaLGOj6cdIICXSCavhDbqAJR+yPORCtQIvmIYii2NSQxoD/fI91f2fEV3htQO2WBfi
- r1nUR8TQ
- xpq9JbbuolDNYjmoWywqn/YaPke4ekaTqyYla63pUzE4LlsLcv8xsCQ6mdMZb/zmsE6FaTWVJOjXjYyZrbpnJeVJjFfMTRMSsK49/sp34yUk78FqlynPJ5Vum95ixCJygCU/UpAUuFnhMRKcDv16CdzPEiXuUg/CIrmjWSLdJND6ammSp8h3ONfbkvKV6Imx4Mtdle9FFUVp07+3E0wIl4YkZ9ty4iEBhnWM9Zg5dc0sLukzupTTMTEQ93wMrH5BitJIMnRMXC4kJ9f7PoymfDXUiPS8udc25CyXv+xu41g4IfYbSyNB6hX0wRA==
+X-Stat-Signature: 69r35nqhycr3wozb6pktiahcf14iwjzs
+X-HE-Tag: 1790666419-515958
+X-HE-Meta: U2FsdGVkX1+MkXcoyBpsqQpah4rRvze4WyE48Wv+YAKhw6rz4qw04XTTod8k4Udurvd8X2q8CVG5bp/Zuo0YGxRM1+zKZqqdy9b4D5sSAfMaccU3QKoNKJPZtnse+b1lc+EJ/zN/AQ7Oesyab6vmgOFj5SF1qJa+y8x1kIUlLGkG+WWFdfNS7blIo6yjQg4XHe5oTUFJXmyW8UbZTLLg4+f5w93yxWHCl35rkz1tyeQ4emMKSojsxgRKek5H+/HvQiDnxSnJDNPFCDb0M3/7BM2zeb+dr3sHbrYJxR1OHj3wftUIXYEWodZhPxp+15EjcUWqpiFx+ihmiQGb78dV41AoBLqvUwgjeq6HzElQjSujUloA/lpC+X8DqO2bYT20hv6j+lmlpHdsJBGaw7gD2/TKY6C3zceySrtEEVzsnfq+5AeEkrvBbNPw51JJOmFbQAtvwauYLZzaXEGkuSoODxA2c9G9dSZygN9RjA2gie1mEpMNrDzWiXy28LJ4v6V9F3Y4oKGf9IR6XKesRPD6JrRX1pfJ8o1rFwcBHZz9E+aQowBbJSx+8qDHa4Evucc9Pk94o8f4Vt3iyFuKMbU5ybrBlbM3j0JvsFG1ncGzuTDBJw7S9l6mZwCY00/wHJ2XGE/vwa88jRgVLpNJ74X8A/xgNJrbiny6XSD/YmAaeRNSwjAwyUj1e3fRdqyi/Wzeu9NLx9kUp5mQ4/rgWk4oGOdeSePn7gPB1iT3hiBngMF0xY9wwwjowHgD9NPS6mfZ08N88zC8JT6A1p4tHIRrfj+pdXW4wNo9cCuDxVUYZjDz+anXYZZ/A5NNbOsMvy21pl8XmBCxwgnnV4Z3qkyDCCTAJjnD/HhYD+yyTNEV+vRbVooxEOv+c9aGJhzAJvCKfqlcFb+BFVyy0KAN13Echpcbpti/7mM2Lr9X5T+uKfuFOCqULwL2Ke+qcyE/3IdoihOGxy5mznBHdvfbylO
+ RNRuEYm1
+ ZGoYCEWAY2mmhErxFB8VRPdjdmVnV+o0O+x6pGGc/IDU8Y2xq3nBHi79ittlAZBFI0kV3SdhSr/B/zfnkuj2XkyWjnYVXcsmRzKxXMhZsF1ZzHBd60kDIwZgpdWAQPE5PNkkek7w8lcuydeCRzBchxDzbKMMfulr0S28LWGNNwmcFfSe1Frv0mwIJNjthR1tRQSHNKJXHlZW3h7wwlpHmSqBnlALeBscvd7vrAuXHFJ6if8VeB7phldpwBt2BBPLWT3hz1qjllyN02XWg+vXLMqnstuuByhnj9ALiQDFmAbeCpgUwqSEsjIvIasohbTPTtnWv39Du9d4YCL31H0hC82+SaMXPnZk1LSxZub/p8rvf797OZ4TBGl06toVFdSAs+zthOg6V0ALv9czfWFyj0EHt/AQpPU1+qsopfe0zebgjmD324PsmGj8hxvP0G6iQQf517SnY2ILeHWP4crf+19uaBQyMhsmmi3DKmSKWhwnsJTtKJ+eZQc+tgGICiZxxyH/Ex+RwgPKbUmnoDaJ8stJrgCj2X8WiFkGF+Ocb3LdvQlIG+OCiyzbDLx3SQ/k2T0iGkSA91ScFSkBDZ7UYQX7Jad+dvC4KUmpKKBGOrGPSLaeEh9lMD4GNdvHW/URK/tCRt/ffqojDe/Zvpf19bPFTrOkXrDSRtlEN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,53 +113,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/27/26 04:54, Muchun Song wrote:
-> HugeTLB and sparse-vmemmap each have their own helper to allocate the
-> shared vmemmap tail page used by vmemmap optimization.
-> 
-> Factor that logic into a common vmemmap_shared_tail_page() helper. It
-> allocates the page through vmemmap_alloc_block(), initializes the tail
-> struct pages, and uses cmpxchg() to install the per-zone shared page.
-> 
-> This removes duplicate allocation logic while handling both early boot
-> and runtime allocation through the same helper.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-> v5:
-> - Move this patch before CONFIG_VMEMMAP_OPTIMIZATION is introduced
-> 
-> v4:
-> - Update the commit message for the renamed VMEMMAP_OPTIMIZATION config
-> - Collect Acked-by from Mike Rapoport
-> 
-> v2:
-> - Collect Acked-by from Qi Zheng
-> ---
+The '__counted_by' and '__counted_by_ptr' attributes associate a
+flexible array member or pointer member with a struct field that holds
+its element count. Supporting compilers use these annotations to
+compute dynamic object sizes via '__builtin_dynamic_object_size()' for
+runtime bounds checking with CONFIG_FORTIFY_SOURCE.
 
-[...]
+Add KUnit tests ('fortify_test_counted_by_flex' and
+'fortify_test_counted_by_ptr', guarded by CONFIG_CC_HAS_COUNTED_BY and
+CONFIG_CC_HAS_COUNTED_BY_PTR respectively) to verify that:
 
->  
->  #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
-> -static __meminit struct page *vmemmap_get_tail(unsigned int order, struct zone *zone)
-> +struct page __ref *vmemmap_shared_tail_page(unsigned int order, struct zone *zone)
->  {
-> -	struct page *p, *tail;
-> -	unsigned int idx;
-> -	int node = zone_to_nid(zone);
-> +	void *addr;
-> +	struct page *page;
-> +	const unsigned int idx = order - VMEMMAP_OPTIMIZATION_MIN_ORDER;
+ - '__builtin_dynamic_object_size()', if available, returns the expected
+   logical byte size for annotated flexible array and pointer members.
+ - Fortified operations ('memset()' and 'memchr()') succeed within the
+   logical bounds and detect out-of-bounds read and write accesses
+   beyond the annotated count.
 
-Nit: constants read much nicer all the way at the top.
+Allocate the test buffers with extra physical capacity (2 * size) in
+'noinline' helpers and hide the returned pointers with
+OPTIMIZER_HIDE_VAR() so allocation-size attributes, physical slab
+bounds, and compiler optimizations do not mask the '__counted_by' and
+'__counted_by_ptr' checks.
 
+Signed-off-by: Bill Wendling <morbo@google.com>
+---
+v3: - Use "IS_ENABLED(CONFIG...)" instead of "#ifdefs". It's a lot cleaner
+      and documents better when skipped.
+    - Use "kunit_kzalloc" and "struct_size" for the flexible array member.
+    - Use KUNIT_EXPECT_BDOS which skips the test if BDOS isn't available.
+v2: - Move tests to the 'fortify' KUnit tests. It uses UBSAN, which is
+      what gets triggered by 'counted_by'.
+---
+ lib/tests/fortify_kunit.c | 114 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 114 insertions(+)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
+diff --git a/lib/tests/fortify_kunit.c b/lib/tests/fortify_kunit.c
+index 413cdbf3dc0d..8baf6dc96bab 100644
+--- a/lib/tests/fortify_kunit.c
++++ b/lib/tests/fortify_kunit.c
+@@ -1011,6 +1011,118 @@ static void fortify_test_kmemdup(struct kunit *test)
+ 	kfree(copy);
+ }
+ 
++struct counted_by_flex_struct {
++	size_t size;
++	int array[] __counted_by(size);
++};
++
++/*
++ * Allocate the struct out-of-line with extra physical capacity so that
++ * __alloc_size() and physical slab bounds do not mask the __counted_by()
++ * logical bounds check.
++ */
++static noinline struct counted_by_flex_struct *
++alloc_counted_by_flex_struct(struct kunit *test, size_t size)
++{
++	struct counted_by_flex_struct *s;
++
++	s = kunit_kzalloc(test, struct_size(s, array, 2 * size), GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s);
++
++	/* Intentionally fake the size so that we can trigger a trap. */
++	s->size = size;
++	return s;
++}
++
++static void fortify_test_counted_by_flex(struct kunit *test)
++{
++	size_t size = 128;
++	struct counted_by_flex_struct *s;
++	size_t elem_bytes = size * sizeof(s->array[0]);
++
++	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY))
++		kunit_skip(test, "requires CONFIG_CC_HAS_COUNTED_BY");
++
++	s = alloc_counted_by_flex_struct(test, size);
++
++	OPTIMIZER_HIDE_VAR(s);
++	OPTIMIZER_HIDE_VAR(elem_bytes);
++
++	/* __builtin_dynamic_object_size() should return the logical length. */
++	KUNIT_EXPECT_BDOS(test, s->array, elem_bytes,
++			  "struct counted_by_flex_struct");
++
++	/* Within-bounds write and read succeed. */
++	memset(s->array, 0x42, elem_bytes);
++	KUNIT_EXPECT_EQ(test, fortify_write_overflows, 0);
++	KUNIT_EXPECT_NOT_NULL(test, memchr(s->array, 0x42, elem_bytes));
++	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 0);
++
++	/* Out-of-bounds write and read past logical size are caught. */
++	memset(s->array, 0x42, elem_bytes + 1);
++	KUNIT_EXPECT_EQ(test, fortify_write_overflows, 1);
++	KUNIT_EXPECT_NULL(test, memchr(s->array, 0x42, elem_bytes + 1));
++	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 1);
++}
++
++struct counted_by_ptr_struct {
++	char *ptr __counted_by_ptr(size);
++	size_t size;
++};
++
++/*
++ * Allocate the struct out-of-line with extra physical capacity so that
++ * __alloc_size() and physical slab bounds do not mask the __counted_by_ptr()
++ * logical bounds check.
++ */
++static noinline struct counted_by_ptr_struct *
++alloc_counted_by_ptr_struct(struct kunit *test, size_t size)
++{
++	struct counted_by_ptr_struct *s;
++
++	s = kmalloc_obj(struct counted_by_ptr_struct);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s);
++
++	/* Intentionally fake the size so that we can trigger a trap. */
++	s->size = size;
++	s->ptr = kzalloc(2 * size, GFP_KERNEL);
++	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s->ptr);
++
++	return s;
++}
++
++static void fortify_test_counted_by_ptr(struct kunit *test)
++{
++	size_t size = 128;
++	struct counted_by_ptr_struct *s;
++
++	if (!IS_ENABLED(CONFIG_CC_HAS_COUNTED_BY_PTR))
++		kunit_skip(test, "requires CONFIG_CC_HAS_COUNTED_BY_PTR");
++
++	s = alloc_counted_by_ptr_struct(test, size);
++
++	OPTIMIZER_HIDE_VAR(s);
++	OPTIMIZER_HIDE_VAR(size);
++
++	/* __builtin_dynamic_object_size() should return the logical length. */
++	KUNIT_EXPECT_BDOS(test, s->ptr, size, "struct counted_by_ptr_struct");
++
++	/* Within-bounds write and read succeed. */
++	memset(s->ptr, 0x42, size);
++	KUNIT_EXPECT_EQ(test, fortify_write_overflows, 0);
++	KUNIT_EXPECT_NOT_NULL(test, memchr(s->ptr, 0x42, size));
++	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 0);
++
++	/* Out-of-bounds write and read past logical size are caught. */
++	memset(s->ptr, 0x42, size + 1);
++	KUNIT_EXPECT_EQ(test, fortify_write_overflows, 1);
++	KUNIT_EXPECT_NULL(test, memchr(s->ptr, 0x42, size + 1));
++	KUNIT_EXPECT_EQ(test, fortify_read_overflows, 1);
++
++	kfree(s->ptr);
++	kfree(s);
++}
++
+ static int fortify_test_init(struct kunit *test)
+ {
+ 	if (!IS_ENABLED(CONFIG_FORTIFY_SOURCE))
+@@ -1054,6 +1166,8 @@ static struct kunit_case fortify_test_cases[] = {
+ 	KUNIT_CASE(fortify_test_memchr_inv),
+ 	KUNIT_CASE(fortify_test_memcmp),
+ 	KUNIT_CASE(fortify_test_kmemdup),
++	KUNIT_CASE(fortify_test_counted_by_flex),
++	KUNIT_CASE(fortify_test_counted_by_ptr),
+ 	{}
+ };
+ 
 -- 
-Cheers,
+2.56.0.rc1.315.gc6ed9934b7-goog
 
-David
 
