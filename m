@@ -4,95 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69CA8CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:18:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E314CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:21:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EA626B0092; Tue, 29 Sep 2026 05:17:59 -0400 (EDT)
+	id 8B4C76B0088; Tue, 29 Sep 2026 05:21:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C23A6B0099; Tue, 29 Sep 2026 05:17:59 -0400 (EDT)
+	id 88BA36B008A; Tue, 29 Sep 2026 05:21:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FEF86B009B; Tue, 29 Sep 2026 05:17:59 -0400 (EDT)
+	id 7A29D6B0098; Tue, 29 Sep 2026 05:21:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E0F06B0092
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:17:59 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C232D1A0441
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:17:58 +0000 (UTC)
-X-FDA: 85266247836.28.668B028
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AF0F580005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:17:56 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q8KFZd3B;
-	spf=pass (imf02.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790673477;
+	by kanga.kvack.org (Postfix) with ESMTP id 4DEAB6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:21:21 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B995A1A0441
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:21:20 +0000 (UTC)
+X-FDA: 85266256320.19.A87D9DC
+Received: from mail-ej2-f42.google.com (mail-ej2-f42.google.com [74.125.228.170])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CC69C100007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:21:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H37lMM75;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790673678;
+	b=cs/Z+xHBL9Q5ub6L6Gmadiajc7YL3Txqu0IJIKc0wKLx8EjBplcSvD3hnW14b26LYLQb/Q
+	MCbhqbht8UeVuvpSkhrLygpDxkPcN0ds/gZQxIzazZQmcGWIU6E+E+Hda9h28tkbZO32X1
+	7jOdg/c4OZGWbwpgSPNE/Qs/C0Up9t8=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H37lMM75;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 74.125.228.170 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790673678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WIkLs8Lre027DxI25z4j8VsEXz4zyZK/rBShGxIBDCo=;
-	b=L9k1cUzAHVcTAR6RCY63cvmt3Xnx1v4yyhWtaFScNnEscopWSNViphDUoiGAUASd2ffYQ/
-	dDDIn9YuR6g0fYhFpoc/SCh+xV0sYjTv5d3PZ3TLiSSduavxyVnQ++FiWhkL537XDvaiJ4
-	HnczcLEg36PhOoD02OHx/3WTd99ngaA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790673477;
-	b=1VZDGtH9mjndHpmoJVv//mHE0awJO3R2vtMkUxrlYx+oB+GRKBGtJdZMBLRVPgB6Sq3f1t
-	kX+ddFIfIuzw4i7nlWT/cuDqx5SS06niUJ9MUyUWzt11iRm2SsZlo8Wcq7pS1x7/ZTyGT1
-	0VUutLskgfhAQLG7ceHSG7kY8hdDA2A=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=q8KFZd3B;
-	spf=pass (imf02.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1CC601516;
-	Tue, 29 Sep 2026 02:17:52 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 60D093F85F;
-	Tue, 29 Sep 2026 02:17:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790673475; bh=nOSEEl79eSk48PAKP3/2NBE1Ft2bwBsVgVFfWHWUJic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q8KFZd3BBRBMJlgeMlWCKTfZDXQpc/UYxzhqcGtJ3aV/FDT5ME+QXAg3YCkZlL6Rq
-	 AUMJUmTWDbftCUh2+hDIII0FpkYzmhCqwziZkSilBbPkuW4/3qguitLTadWAhQdEYx
-	 Y3ll8F4B24bnf4hQfC8CHD0dtxvi5f0VmKw/xEmo=
-Message-ID: <62fc6a5b-2eaf-462b-af90-ecdc52673f4a@arm.com>
-Date: Tue, 29 Sep 2026 14:47:48 +0530
+	bh=GhqndOhozIw40kNwzku+lND3i27hg00jPoEVizKt1rI=;
+	b=kN2wSQpxC8rUW+2qjFPiIV3JAi7suCsFOjfrN+TIjjvW2deKx5q+D6DvPWaVrFWQ6snXBg
+	YLFIeSsr8Y5GN2QzjQihLisBoXwgG7LtPFhpIf0dU3o7oIT8G3u6dBZ3vCNIpmJiO4Y5so
+	TvG4jbnUDWoOPsaMPqaub+kOaS3VdNo=
+Received: by mail-ej2-f42.google.com with SMTP id a640c23a62f3a-c2c570a3030so354574266b.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:21:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790673677; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XM/+voSV8WTX9j120wR0fVA+UFB29oaIC2+TPzeS86BYGJgJGD2T6g5yEZJCD7F+9O
+         +WlIwQUdb11t5Ja2s931wxbRdTf+ToGNZ3LBwApmkTZWwr6H+x1MhlwLCkeIr9i90jHa
+         4ecHOsY07Jyu9rye0AcaOd0p37nfY1S8jUHJ9YL93rqVQk6upIeqGRn+AwgTMIuufNJo
+         f4uZU+D/Ouc0aOQjYjIchf55o18F5MPT6SNCfD6jw/MkhIR72GUa5O+WxVh8iYXxcHvp
+         OilqPE/aFgYX59a10oAjT13vAsfc2r63x5oWl8ihEVfiQMb/gcvtSuS64790b4pyEl+f
+         zNEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GhqndOhozIw40kNwzku+lND3i27hg00jPoEVizKt1rI=;
+        fh=oY7hdysDMdOL+AIMpbjByyTN5z1fOfKN3ES4/iOGGRo=;
+        b=NNtwwSLL/0JVkwUwbgDabyBMJWgYlusvvuyS4AFVljPUachglwGLwowXdF5QkudPs1
+         V1FRWFS3siRwf46i6yIi0/IKLsnhAhM7IMAxMn45+E3kHFMJjlEjqFvMyt51glw3ESJn
+         Wykr2sTKrdrV5tQQ8tZKsLKafr8PZEtH4z2dfRYtmNTxvh2DaOdpqDktAtnGFaCCVvyd
+         fAvOnczmUW6tTZdvSIq7A+/XMr0xw43KU7onPLOSiFEuFhAYKoDlVkw8Qc5bLk8XJevV
+         mPgYBYrrv2Z5WA+Yqzx6kB45/z65eZ2AMTndKLhdwsy8vcA6f7/6EjgqlJ0Cs05Q0uPg
+         h3Iw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790673677; x=1791278477; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GhqndOhozIw40kNwzku+lND3i27hg00jPoEVizKt1rI=;
+        b=H37lMM75yNvCPDcAjU3uSqcKNO7/8cby8ynphmbgMlpplcLVaG+BfOmFbqZZgupKCk
+         73B0bwcB91c517+qcZbA3GW3493CAncAYdbbiI3DbTTi++8KU2z6INJxTcx38e2bAw/+
+         z4j0mUsBrfPMey7ZJrQ2ukDJkRK5HhzE2PXvsfbCggNrB/OcDtC4RmJ3KauHaH6AWI2x
+         Hf/shEUoTExHGfQyjjENIT61zsedL5BG/q9yT4s4SSwCq4Y3F85ceVMV+NczTubUBKER
+         S4rQ99nI+u3ENnAoag9joFTkizkOCFxCCOwJWzdO3YDb7vCX4pz11diI2E3I++8OAYVV
+         LW5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790673677; x=1791278477;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GhqndOhozIw40kNwzku+lND3i27hg00jPoEVizKt1rI=;
+        b=dL/n5cmhOnffPM1HHkTk8Ru1OiTp6Z3l5Jo59nNZWl8v+W58FxoLCJW2oLzv802JoC
+         UxioD/e32wPdUVCzjRqSyzSy9CI6OwkwhnVN+VLV2OkyNViRU7CKbt/PsIO9T1pFM4Qy
+         pXfEIzJoivPX86KY2sv73n0HTaMVoxKmzDRqSzJ+9QrWZRM20lnZc+QdLiLjvYHi1DKi
+         GlSZQT6LHu/O6BAshy4ycWkr6OiaW2ZQHLnT6WUyW7Wl9PLQF2L1DXv2pw3WhhKU08pz
+         kZI3bneaST+7eWdxercwH1mr5jBq/hwjGLyUWEpjVHhP4I+3Uc5NYAW1qFODJ2hY5fgz
+         hyLQ==
+X-Forwarded-Encrypted: i=1; AKwUvByuUpBaU6nCaWkvmr/2OpSH/DIF5xgZNR88SISUnuo/L8IZcZ0w+VCs59gB6cQ4hQ7WtHi+UwU+YA==@kvack.org
+X-Gm-Message-State: AFuF++mJ7P0/w6fLgRFSjzYu3SUhqwWCXAZNiaBsUmur3Z+Nou0z8m0p
+	5jSp5veSwUWimXjee4SjPcW9NdTx+yE6ql5k+4X3PTFWxDVS9M2yzZaRy6OOJ/BLJEAT092ICv8
+	3hfQX2hNAwYI023zKprJSk7ZqUCd2DPc=
+X-Gm-Gg: AYBFou2h6KHzyEFn996W/rElDNibGNe8wOpRY8oEdZtLNU94LVjB/MkZAFaqcs+FcBs
+	O7UPtg7zdj7lp3auH2gqg+wthTVjh5m1FE2qs2Lc+ns9TbR5hKDkNiK2oYz6j1P3shJsxf4xy5c
+	Py63zyd+juCyLdVmC0HDyNCqizzTORoqy1u1U9BdoWKyTXjW7KmlrxVnPEfAklq7ioXA4/ixq+b
+	m5hK3XJmR2aoHZmI5ImaNlXQeqSgEH21hF5haDnHr0yoX/jNGDOAnL/OBbq0cj2a0pUp7Nay/WC
+	0jPqm5YhNbJfRme3qyHUTgeWhCZ/UVW6XNnRugEXDmamXTS4TRmPD5aMjLee0o8OXpf5WVkecuX
+	3qWbUzK7nXvU=
+X-Received: by 2002:a17:907:c80d:b0:c2b:f3d5:2090 with SMTP id
+ a640c23a62f3a-c2bf3d52cd4mr701192866b.27.1790673677038; Tue, 29 Sep 2026
+ 02:21:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 2/9] selftests/mm: mremap_test: skip test when
- userfaultfd is unavailable
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
- <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924050009.19974-1-sarthak.sharma@arm.com>
- <20260924050009.19974-3-sarthak.sharma@arm.com>
- <49b0b8c5-4605-41af-9a83-26ec6a07bb96@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <49b0b8c5-4605-41af-9a83-26ec6a07bb96@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AF0F580005
-X-Stat-Signature: ctcyqcnkzb5r9mo45uknqrxexrx14x65
+References: <20260924131106.1730494-1-dev.jain@arm.com> <20260924131106.1730494-2-dev.jain@arm.com>
+In-Reply-To: <20260924131106.1730494-2-dev.jain@arm.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Tue, 29 Sep 2026 17:20:40 +0800
+X-Gm-Features: AclHuK9lxCbTSA0mjXTjQjkfbiHSsXqGwiLHzR329M81OQsBZnsP4Ya5LuEJfD8
+Message-ID: <CAMgjq7CWom3pwZa5j=gmtb57Y+1+QfAkmkLVcgKnJVsZi+Fi3w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/9] mm/swapfile: add batched version of folio_dup_swap
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	hughd@google.com, chrisl@kernel.org, davem@davemloft.net, andreas@gaisler.com, 
+	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
+	jannh@google.com, lance.yang@linux.dev, baolin.wang@linux.alibaba.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, 
+	baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, pfalcato@suse.de, jgg@ziepe.ca, thuth@redhat.com, 
+	sparclinux@vger.kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Stat-Signature: yod9we1b99sk8pj1qyfo34h3nf1jxzhu
 X-Rspam-User: 
-X-HE-Tag: 1790673476-821808
-X-HE-Meta: U2FsdGVkX1+LTjNiMTrVQS5aYxQx6T3rYHmMVQCGxjTbU2VcuW35Rj2A+FETQYjaAcKAsEoxFHoj1xQmSNRqHsLQeD6czOUUokX0VuSD/oMK6kIFFuTYxmknvYeRHIIXJ8rn8C7hNDT3PJp0Fq4vu+Cfj+xQGqqePSXQ3rtIeUiHJdf/j/HN5awRtC5mG0h1/0zPkgdwWd0atZZlHndot+HYmb3Gdf7EE5H49qfI6zJs5cUuTa6bNG/S1dpL8XrhlYQkdtLkkJKV+kb0M7ocHAin9h0TnsW7BLr35pXBeIo0LiAPcYmjlpxF60glTBvFPKlQ9bCX68oxJtDjy2ai+ECmCE5dqNlMWZTF+lGGSATDKxT/69k8iZokaSDDCE+U2BXStwup4yS3fCDpTeoUAGBL8aRWRaFfOsG4b3hsGUDvTdyWH3yzPy8S+K9cHdkISb/oTTeBHcX2m9Y1h57+pLWeIk73m9TBNFRS+GEdSQli33zTQROvQ+pNCUL5cKqrxTbXXV+6DC9emoAG2OJ6XzCFFH0nejHwcFUv6mMSLyV8vfGZu96uFSAG/NTVWzQrcb7Eg4NfMxkpxSqJ8SPI3e2oGF3FcDwKnXPgAbuGbt3uhAFrEqmKiBhIfSDVGYFN+kAYIQo5AHAo5Nrare64MUtN27LBbY7IFrEIuLa5+eXZrQNE/ZhJaOVyFGaie+PHunURFq45+Qvip/V9yNPgLn7AaXu/168uG5yeNgc3dj7hf0NYLl1tM/rxAOEiowFMO6nvlI0t8hcqS4pqU9SBtA4tsS8r6AiP8Y3MvqoMqInu+/KspsRUKzNSj5KzxIbB76Z1Vad5rcBXp7qvgtPDs7ox/zWmWOB7jbsHmPgzhJZ4ovGZgaRV32MHIZyvUpfugHfvVdS0uVag//q7SWjw7OlQRrJ9xcNSByPevAZmAc5L2L09EHrLtk5oTgzMpa2JUC6rl+2W2jsfZNp5kqU
- 0j8PwHOS
- CQl0FBNb2yLUXZkbxX1J+ZXPT5QU/D1UO5ToOWSoKMyzmHDkTw2kRJ1AwtSX4j9GnFBFDrp+9EIvF6X+y/8vsLKVf+4tPhm/wt/U6Cq0X8P8t7OE032U/G0d0u7z/vW+2JG1K2QRMxaKS1DSTW4MdpVW4fOH0JUXmWGCG9MejCVev4pM08K7jg7eZLBX198MNv1eof2ZyrahaFD4eRQL5DufWXGEONC3N/uCHL1U86OKVLFkCz4B4Q9PpqqkfHKCmsyFxUD5HpKGt0PAj6FbhEf4LDYrwYyeptgfBWQe9qN3RxQoVmmqHbDJ0LSfdXgwh/+JjAVd7vvDocqpmrhgVkEQNUxXq7l5KJAyHGsIvnlhMH6fTAe2ZMcgwug==
+X-Rspamd-Queue-Id: CC69C100007
+X-HE-Tag: 1790673678-118897
+X-HE-Meta: U2FsdGVkX187leXzoLYcTRmWpKGR88eqY0krlVeKOoMKqLWujRVXZEu5pK818sUg5JYp475h7FxirzaxskCp8eZRNep0kkZ+614tISVlI0pIFaV7CFEkN0dolAyzYOM6vvynQfFxfHMCnAsb/NhrnkP9aS/ysBDaHezj4hG+oRsjMjnHZ4J8TA9Z9ZShhRWDLr0EFhccii+K3jLo5ZtPog2Jxqusmr/f1ysVHSZ3ZzQYp/LEhZYIOKOUxW18PxhKZBAYf7yIePkMyCYSN1V6vuv6E6CdQblTY/fglGdDHszzsyKD1XlVx9M5fwPxy1jbNrqDWFgY4trx/vnyFQ5HtMIIlYtiiJ+Zq18Dp9BbpSXhiizJ4JVjhn0ruYQz26tpP6r0QUb1F3tF9bT9QaXnQvfiib5Gq9uNyH6QzYFojQthvLGnfPICeI8vZmOMp6TcWOUutMIUrz9ZOiipjLQvAvBuLUgW1vYFaCj+XruSugcLlEfS9JLiMhD6la5z9S3Klv+wmyU5r/+QRZaDPAiI771QMSeFHwS3enYz1UvBqAkDKmImxHIPqhcRvn1rj7BHWMt59RIFmj1T/qez/Splj/O4yKAl/Nu1OxxuwESXZTlX4lYYd/K5hUId6GRVqYe1BT3Y8zD5vwR9LHzzTOTgyH5D+jVffe2bZhibtzf01bJz1dakva1BDBtS0g9A3nDTAF0q+OHxxouN1lcKQ7HsXP0IDsybccw3SPI/BoM8Z1luUsBEU8ZpXGWqvleSlyKpGJ5pMqd5R5cGMiT3QfZTaCL1g4wtlHLAQbUKjPmkB4qONpDNFHddPCeLKBkPdUOe4ntqvtr4ZI8iUbIoD7NZsD/vjsshuDq0vHm5p8UVoduMqcPtIIvkEPH96BbhRJuK2/tIK9YavudfdiEeWkTFcAMeWCiV2wL7KEEKpPwRf9LEXZRuTh1c2oUNmzkd/1+ED9FLkruK9kfS0zKaKCe
+ bcIWzCKr
+ QrKJE6JPugEjV8nxiqtSWmYMBLq2fpgTqe1UisgA7gOkv1BI1bFIQM5RdttMd64eR3vZh5In0qEf+EEBcTfMJTrOADD2bw0PRbSRA7v5Y/vw01iu0t/XP3M4m3vQ/BpnC5NrWgqnZxtzIy9ITG9O3q34NRzXHs8v70TkF2+Hj029v5rjQO87G0ScA2rPQBOSivHRcgEpzxuo82GJ4R5NG/uN7e3TnLPbdAp0Uso5p6Rv3wR4S6X2UprGIs7HtNrHiohZZgo3m79Drrz5XiE2zJqLfpxXz/dITtf6/MTsTXg78HByI8tS33ODTJqCX2Au9RC7htotZSruYFq7OOicm3c4erAh7H3nQrHApfVubgh37i96fsj7y6P5IpPzouxJXP1b0KaD5dzf5bryiZGJj7TFpu/uNtpxK4HiqQX6RjqegCkjxNUZI4KR59OqeHueKMke3Xa+Y7roQp4JvVe69id6d5swqFRkpsRksclTG3olsjBAxmAkYAsMmY+fpfb5UwVN6ezr2lZqdQ5GvmJwt/wNt56ldE0mE9MP9QMa/9eq7MnI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,55 +147,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David!
-
-On 9/29/26 1:30 PM, David Hildenbrand (Arm) wrote:
-> On 9/24/26 07:00, Sarthak Sharma wrote:
->> The userfaultfd syscall can return ENOSYS even when __NR_userfaultfd is
->> defined by the architecture headers, for example when the kernel is
->> built without CONFIG_USERFAULTFD. The test currently skips for EPERM
->> when the caller lacks permission to use userfaultfd but treats
->> ENOSYS as a failure.
->>
->> Handle ENOSYS like EPERM and skip the mremap_move_multi_invalid_vmas()
->> test when userfaultfd syscall is not implemented.
->>
->> Fixes: 742d3663a577 ("selftests/mm: add test for invalid multi VMA operations")
->> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> ---
->>  tools/testing/selftests/mm/mremap_test.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
->> index 5532d3151ed0..a5813a5e8f5b 100644
->> --- a/tools/testing/selftests/mm/mremap_test.c
->> +++ b/tools/testing/selftests/mm/mremap_test.c
->> @@ -721,7 +721,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp,
->>  	if (uffd == -1) {
->>  		err = errno;
->>  		ksft_perror("userfaultfd");
-> 
-> Should we rather move that below the if? Doesn't quite make sense to print the
-> error if we are skipping and printing a proper message.
-
-Yes, I'll put it below the if block.
-
-> 
-> Maybe that should go into the previous patch?
-
-Yes, will include in the ksft conversion patch.
-
-> 
->> -		if (err == EPERM) {
->> +		if (err == EPERM || err == ENOSYS) {
->>  			ksft_test_result_skip("%s - missing uffd\n", test_name);
->>  			return;
->>  		}
-> 
-> Apart from that LGTM.
-> 
+On Thu, Sep 24, 2026 at 9:15=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> Add folio_dup_swap_pages to handle a batch of consecutive pages. Note
+> that folio_dup_swap already can handle a subset of this: nr_pages =3D=3D =
+1 and
+> nr_pages =3D=3D folio_nr_pages(folio). Generalize this to any nr_pages.
+>
+> Currently we have a not-so-nice logic of passing in subpage =3D=3D NULL i=
+f
+> we mean to exercise the logic on the entire folio, and subpage !=3D NULL =
+if
+> we want to exercise the logic on only that subpage. Remove this
+> indirection: the caller invokes folio_dup_swap_pages() if it wants to
+> operate on a range of pages in the folio (i.e nr_pages may be anything
+> between 1 and folio_nr_pages()), and invokes folio_dup_swap() if it
+> wants to operate on the entire folio.
+>
 > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/rmap.c     |  2 +-
+>  mm/shmem.c    |  2 +-
+>  mm/swap.h     | 18 ++++++++++++++++--
+>  mm/swapfile.c | 18 ++++++++----------
+>  4 files changed, 26 insertions(+), 14 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 6661bc11ce658..a70dbc8d544e1 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2150,7 +2150,7 @@ static bool ttu_anon_swapbacked_folio(struct vm_are=
+a_struct *vma,
+>         swp_entry_t entry =3D folio_page_swap_entry(folio, page);
+>         struct mm_struct *mm =3D vma->vm_mm;
+>
+> -       if (folio_dup_swap(folio, page) < 0)
+> +       if (folio_dup_swap_pages(folio, page, 1) < 0)
+>                 return false;
+>
+>         /*
+> diff --git a/mm/shmem.c b/mm/shmem.c
+> index b572c60f2af85..d5bd9506ce500 100644
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -1914,7 +1914,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct =
+folio *folio,
+>                         spin_unlock(&shmem_swaplist_lock);
+>                 }
+>
+> -               folio_dup_swap(folio, NULL);
+> +               folio_dup_swap(folio);
+>                 shmem_delete_from_page_cache(folio, swp_to_radix_entry(fo=
+lio->swap));
+>
+>                 BUG_ON(folio_mapped(folio));
+> diff --git a/mm/swap.h b/mm/swap.h
+> index b3b54c28929a1..47290510de264 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -244,7 +244,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, =
+gfp_t gfp);
+>   * folio_put_swap(): does the opposite thing of folio_dup_swap().
+>   */
+>  int folio_alloc_swap(struct folio *folio);
+> -int folio_dup_swap(struct folio *folio, struct page *page);
+> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
+> +               unsigned long nr_pages);
+>  void folio_put_swap(struct folio *folio, struct page *page);
+>
+>  /* For internal use */
+> @@ -368,7 +369,8 @@ static inline int folio_alloc_swap(struct folio *foli=
+o)
+>         return -EINVAL;
+>  }
+>
+> -static inline int folio_dup_swap(struct folio *folio, struct page *page)
+> +static inline int folio_dup_swap_pages(struct folio *folio, struct page =
+*page,
+> +               unsigned long nr_pages)
+>  {
+>         return -EINVAL;
+>  }
+> @@ -464,6 +466,18 @@ static inline void __swap_cache_replace_folio(struct=
+ swap_cluster_info *ci,
+>  }
+>  #endif /* CONFIG_SWAP */
+>
+> +/**
+> + * folio_dup_swap() - Increase swap count of all swap entries of a folio=
+.
+> + * @folio: folio with swap entries bound.
+> + *
+> + * See folio_dup_swap_pages() for more information.
+> + */
+> +static inline int folio_dup_swap(struct folio *folio)
+> +{
+> +       return folio_dup_swap_pages(folio, folio_page(folio, 0),
+> +                                   folio_nr_pages(folio));
+> +}
+> +
+>  extern const struct swap_ops swap_bdev_ops;
+>
+>  int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c1c5fbb3c909d..75167b8580cc0 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1799,9 +1799,10 @@ int folio_alloc_swap(struct folio *folio)
+>  }
+>
+>  /**
+> - * folio_dup_swap() - Increase swap count of swap entries of a folio.
+> + * folio_dup_swap_pages() - Increase swap count of swap entries of a fol=
+io.
+>   * @folio: folio with swap entries bounded.
+> - * @page: if not NULL, only increase the swap count of this page.
+> + * @page: the first page in the folio to increase the swap count for.
+> + * @nr_pages: the number of pages in the folio to increase the swap coun=
+t for.
+>   *
+>   * Typically called when the folio is unmapped and have its swap entry t=
+o
+>   * take its place: Swap entries allocated to a folio has count =3D=3D 0 =
+and pinned
+> @@ -1815,18 +1816,15 @@ int folio_alloc_swap(struct folio *folio)
+>   * swap_put_entries_direct on its swap entry before this helper returns,=
+ or
+>   * the swap count may underflow.
+>   */
+> -int folio_dup_swap(struct folio *folio, struct page *page)
+> +int folio_dup_swap_pages(struct folio *folio, struct page *page,
+> +               unsigned long nr_pages)
+>  {
+> -       swp_entry_t entry =3D folio->swap;
+> -       unsigned long nr_pages =3D folio_nr_pages(folio);
+> +       swp_entry_t entry =3D folio_page_swap_entry(folio, page);
+> +       unsigned long idx =3D folio_page_idx(folio, page);
+>
+>         VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+>         VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
+> -
+> -       if (page) {
+> -               entry =3D folio_page_swap_entry(folio, page);
+> -               nr_pages =3D 1;
+> -       }
+> +       VM_WARN_ON_FOLIO(idx + nr_pages > folio_nr_pages(folio), folio);
+>
+>         return swap_dup_entries_cluster(swap_entry_to_info(entry),
+>                                         swp_offset(entry), nr_pages);
+> --
+> 2.43.0
 
-Thanks!
+Looks good to me.
 
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
