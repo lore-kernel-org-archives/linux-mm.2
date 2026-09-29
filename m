@@ -4,116 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA188C9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:17:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18809CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:18:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 755C46B008A; Tue, 29 Sep 2026 10:17:50 -0400 (EDT)
+	id 2749B6B0092; Tue, 29 Sep 2026 10:18:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707116B008C; Tue, 29 Sep 2026 10:17:50 -0400 (EDT)
+	id 24C616B0093; Tue, 29 Sep 2026 10:18:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61C766B0092; Tue, 29 Sep 2026 10:17:50 -0400 (EDT)
+	id 1638A6B0095; Tue, 29 Sep 2026 10:18:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 410786B008A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:17:50 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BCFC5A6DE4
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:17:49 +0000 (UTC)
-X-FDA: 85267003458.14.BBAFAB3
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EF8B440004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:17:47 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ngK0fnmK;
-	spf=pass (imf04.hostedemail.com: domain of med08elkadiri@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id D605B6B0092
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:18:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 56579A6DDA
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:18:29 +0000 (UTC)
+X-FDA: 85267005138.18.A690F11
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9FE0F2000D
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:18:26 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CBJ23xMd;
+	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790691467;
+	s=arc-20220608; t=1790691507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Yh0Dtvko0nZONYoMl+zPVKAif82Q3nxAXjZ3IYlXSQ=;
-	b=Vw4t/Ld7hRdTaBTr29B+oAZ+IEngchWVPw7H9o33fgi8SrDhHL/6Ua5dwPALut9f1EamAd
-	Y47F6e/lPfPDkAE5WVzsl/7VkqGpmgUfMrf++tNFnaTx4ZwXu59kOEc8hgl+0KDwtE0HkJ
-	q4GJOIOd2ZI9xZvRdm51hyWqszQjNUI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ngK0fnmK;
-	spf=pass (imf04.hostedemail.com: domain of med08elkadiri@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=GbXDTdZnaMARV0PaqG68M0h00pQ3SsjxJmf4zOowgA4=;
+	b=2pRhkSs3Haj8SIQWytW46h5T7HiiBFnv+MuyRvx0sn9SBVW0ZMi2PtBvhGuq01RVG/ek06
+	JvmTF2aYMpysafhPmRQGo+ss98N+BHGPSiwhCKLBcPi1u2U4ukRHk51NYp4dVPeCg8F7PT
+	dZiUv1ZoUHljJL7K6vTvEmfaAKpXBZc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790691468;
-	b=lIFIRTzSH7pvkc2iKvIBp2tHETBFArJLEEwe2zIhs3Ru27vHAL+2XPzt2mfQF/AG8UFiPw
-	PPRyt+RSB2eIHiU1kIxR/ivDai0otb/FV1WdpEVJ5N/9BLM5HdB492SEAzlQEWUTH/AKZV
-	sz2HxBYUT64wJbvc5lI86Q0OMsBcacY=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912d3931so32308355e9.3
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:17:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790691466; x=1791296266; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4Yh0Dtvko0nZONYoMl+zPVKAif82Q3nxAXjZ3IYlXSQ=;
-        b=ngK0fnmK93ipe8sAAZGLp2f/ibEHJaDG6OylV9K4jJiU4ZXdcJqMaj04DloV+TjwEW
-         sNf7x+U4YPtkkv+g0AafkuNi2ooBGheNgCAx4BQlSAZ0UQ0bKG+7u6OBH0FN7t0qpAex
-         twXqaeK0n4lHDaPKPBvATwTqtMAMVN+1b0brkBKB3/ZU4Esdxc7Gx7dn5ON1leORvxON
-         Yboo6AdLgDESexa+sSoMpjQA0sfsLP9cEbdoSsfqs5ngEAD/6RFIWDQhRq866KqohxIl
-         6y+ZV5f/s+n+t6BJ0EmYZKtYSjfsS4UWuA6lR/6tKKlfMdAIEuToGMTGkwUus5rK12hi
-         ZaAw==
+	t=1790691507;
+	b=41hbKhZll+IKrTFloTDL7yB22cdEvXhgDIvlYA4To1b/6tTPYEgwOk42EkqWhDTjUTv+e5
+	S1SZInrjuNs2KSfvOzj5tFa4uEV43fSL73cfXz493uqp5vstv76NcNDCHE1SPB1M65E8KZ
+	6vaSf/5aPyfrXS/pWMmVGjepsnDy0fY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CBJ23xMd;
+	spf=pass (imf03.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790691506;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GbXDTdZnaMARV0PaqG68M0h00pQ3SsjxJmf4zOowgA4=;
+	b=CBJ23xMdQo8bc38di2tTw9U6gvu6mi584ndVh+mXCaiiK0xcyU4jDF+VHxVcvJbzrKqTaf
+	9VHuX2HCS3jLDLaOmJvsug99vfq5AlHF6W39xWkQcQ+JygYsy14DeOUPHGIfD7UtJwBVM6
+	X99fB5DhbRhPBAK5A7iZbuWHAxYg+nc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-135-toa3jmJxNeizIQGzlOuiXw-1; Tue, 29 Sep 2026 10:18:24 -0400
+X-MC-Unique: toa3jmJxNeizIQGzlOuiXw-1
+X-Mimecast-MFC-AGG-ID: toa3jmJxNeizIQGzlOuiXw_1790691504
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-93a05d645acso906754285a.2
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:18:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790691466; x=1791296266;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4Yh0Dtvko0nZONYoMl+zPVKAif82Q3nxAXjZ3IYlXSQ=;
-        b=SP8AoC3FcMZdXnT9ht93psJa+1zfGiKuv13OfgtvEeONin4WNeDUWoDZsd3eXG63P/
-         XzTQ9mvUZjI36eETEfQSpQ8vnAj902o3ok8ecAJ+Fqs4mDvZWTmOdLC1X9+BGikAYsxm
-         R+pggX76nDcl3+WYZVPz8dYI90YEAVGjZ1yLZnhx122V71ParPEUF9ZoojXFcj4w0vNl
-         cY4VKJueHH/oaQIkbkcSH5+BbmCZq2PedVJ9mjy0UlsP4uZ5mBGd/6D6lOkBZBmjTXQx
-         Mk6sBNqqt7Gj/5/5yt3bdREmEasawbTy0mqiGC3jYJUstQsUaUI5CVjoPX0mraROsoGs
-         yJRg==
-X-Gm-Message-State: AFuF++lndfTJndbupNuwTSDMaJtiY5smI/5n+M/GCNic7VjiYMzHvRIF
-	F5t7zDdfpZ3bk2QnvDsw06gyySGCLuLHfTCIKV4TGbdYzpe7r9wng+GMJosj4tiP8EM6
-X-Gm-Gg: AYBFou3gICDGvtO2GUsFO8iPU2AfSkpNjFN40BK4tGNrOZ/WuMCwydK9fmd9lK4jGcu
-	1V75UiigTuB9g6zVRadO49+ctmAZaEt9qsAH12fqD6AZmvQT9u/TT8TXCy0/+MsjHJa1SVF674Z
-	6SdBeJCVzuMeX4Z5hkuhN6ntrDuGQgktEbqV6z4XZNnuEgmYLcZq2qlQrcpWiacDzaGY62zi101
-	7d83Q5FaKNb7D7ow9SlMM8XRl0uw4V4l1hitTCE6loIDfC7Vxt1VKGHJqqWd5wtLvrt8dP0v+oR
-	fG1tbTTxhj13hGi+R9iHSJn3tlpOpth2HeCP1Zc6jumka48S9IGql9o4xGUSSVct2zgY6OZR3Ct
-	Y8ZViHst8Gxg9dqfdlPZ7PKbh77l1Robm3kr+38ATh8MxPZyLIVQCRpFPs1OG+iGWUqCC7zPr9v
-	ML1Wdor2qFdKuaZqkVecHEr6STINAyJxGJssCveXn2rbVtImT3pomtHtVgw83mqbDrPacJ+CHrD
-	bq9VdQhjkhf2rl4YIM74jXBgK9xEmcL4LtnhYG226yUdRG/+cHM7Pudx2D6hcxrKFlXcOpeMMVS
-	5XZjGHYhbTu1SQQM0Q==
-X-Received: by 2002:a05:600c:3511:b0:49d:17d4:d6ad with SMTP id 5b1f17b1804b1-49fe66fca74mr266280215e9.23.1790691466237;
-        Tue, 29 Sep 2026 07:17:46 -0700 (PDT)
-Received: from Ubuntu-2604-resolute-amd64-base ([2a01:4f8:13b:86d::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a013d05647sm5702365e9.2.2026.09.29.07.17.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:17:45 -0700 (PDT)
-From: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-To: hughd@google.com,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	andrealmeid@igalia.com
-Subject: Re: [PATCH 1/1] shmem: fix unicode_map leak on remount with casefold=
-Date: Tue, 29 Sep 2026 16:17:45 +0200
-Message-ID: <20260929141745.211878-1-med08elkadiri@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
-References: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
+        d=1e100.net; s=20260707; t=1790691504; x=1791296304;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=GbXDTdZnaMARV0PaqG68M0h00pQ3SsjxJmf4zOowgA4=;
+        b=eEx1ifh9EZYixChsfT5zkFU51frXNN8lKDGXSkk5x16Q/+i8p2L/DpIHGfQR2xlALB
+         sGd3tS44rODc2tjDtVbyrnrxw+U87EnGiT4xh+fk9WpR8EWk1UFV/WdP4mBzB2ihOjmk
+         AjBBFqMlOw4bxztmsdlXg/yHa5bl2G8gNNF/xgudko7You+hhwYF8UFsyEieAfXRg3xJ
+         sQwCmm6sUWudhJqvmFd9zl1B56dndPPqgO+lzwo5jX5dFp/k6XTGgchG5/b+DWSweEdq
+         doB1Vp/tKQo0STGoxvER05bE2LvWiJ70oczLeyC97qFiK7DYhFl0kgt9tgw9CKaVBq5L
+         hT+g==
+X-Forwarded-Encrypted: i=1; AKwUvByl/byRskmotyKfUuL8F7uoEjLVH6WdAh9k56KySmSsrJa6oGi7+7MU6fdQxUlIUXVKhrpbZq3zjQ==@kvack.org
+X-Gm-Message-State: AFuF++k5/NJp4U4txq/lVQ/GS15O5vz1XAIwEYmY11xmPeXixTu6n6mq
+	DniOaPCnvFVCieROT8MGDeP7EexvmZkGcFY1npMiV/G5QI4/9DquAHSvxnlahv8M37Dbdh5eigR
+	2JKCYSVSWisqdxU4mP4q4Hm3I8Gq8iodoMUlRrvVHdEc8uQk1dHGo
+X-Gm-Gg: AYBFou1oTDYbOI+vrVgKqk1XQvs9bitgUkYfhiFvp4r1j/+VulkwgSUay+Zf6hshMUH
+	aUOoYdzWKb2EF/vS+/OPPMgpEDbDFH1Um+DmCl7Ps0vKok6eUoHjKlXwLgH1QBvgIBJl2hOJJAA
+	1DxywP0NeLcbu6NFqcY9PyyzXGktcJmr7qTuv2OfrGkg9BzxmYy5UVhHqr1qQ3DfSsZ39HduI7v
+	1xV3KQIVFavjPf0PdDDAR+4gU+bB8H+jMjIjTexjJ2pc09Oo8Fe7he4IMXXG83sV0PRFfLHMgXc
+	StAH+ZrYuLSc2BZjzFBZc14kK9FOGleoSd1qGL3nbBBUvKj9hdNlb5okDABSJRkQxgDAxtZQlnk
+	bUi8=
+X-Received: by 2002:a05:620a:404c:b0:939:31b5:4e08 with SMTP id af79cd13be357-93c439c33fbmr2664002085a.0.1790691503753;
+        Tue, 29 Sep 2026 07:18:23 -0700 (PDT)
+X-Received: by 2002:a05:620a:404c:b0:939:31b5:4e08 with SMTP id af79cd13be357-93c439c33fbmr2663993785a.0.1790691503101;
+        Tue, 29 Sep 2026 07:18:23 -0700 (PDT)
+Received: from [192.168.2.110] ([142.172.30.162])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93c813a4587sm400548285a.7.2026.09.29.07.18.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 07:18:22 -0700 (PDT)
+Message-ID: <cd4c16d1-d23e-4321-8f2a-6754294b74b1@redhat.com>
+Date: Tue, 29 Sep 2026 10:18:21 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xt6mx1e4z6d7rqubget7zwg8kxgn7i8j
-X-Rspamd-Queue-Id: EF8B440004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6.18.y v2] selftests/mm: hugepage-mremap: fix mapping
+ alignment
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: rppt@kernel.org, sayalip@linux.ibm.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260928130916.231112-1-luizcap@redhat.com>
+ <2026-09-28-2-daily-reply-0006-re-hugepage-mremap-alignment-6-18-v3@kernel.org>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <2026-09-28-2-daily-reply-0006-re-hugepage-mremap-alignment-6-18-v3@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: fpXhVOtudJARqBJmzxRJ_1eP9PNbBmJ5oinkJHb1PdQ_1790691504
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 9FE0F2000D
+X-Stat-Signature: w8nzu1z1uuqc5a481t9uehgcwzf6fba3
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790691467-727601
-X-HE-Meta: U2FsdGVkX1/PIca6TNobuG0StbGWfFH70h9ZYiyCz1nZ9irZ0BuymHukQoW3rvI4nCldG7jiSFbjn79fGMvwVI7u917tji20wwPvaEdqfjcVyzncKK9KTV4CHV3CQb3lb++4c3bQoXksqmGLt+YSAbGnwwx1BPnC8GZSN39vrDPyYuGM78q9KeH8VL9DvR+/yW/+YV2DLbBZ5n0MxynAar0yArMUCQG0n4sXoqOzHLJmgskMJbn7JeeYwpUE8Z5Dk8S0v+8X0E3Gn29aXpVSwm4FLD/tIPfkBCh8++6Wk0CLfAWSplEdp3UZxald0ICHLnIFEmbmu0Xvswz2ymy8owenMYsfbON6N6HFaMtQISqjjwGtr7iHtsok8EZcpiKZ+ewvphRxvT/pQSI4hwKZI8FOBjIreQl7VU6S+76FX5OCLZd9sSTiGBIo4h0FqRM5II2ADFgAyTjMt3h2bQylDBfKBEtq7Blbj01PKQztt3yVtxiBIprbNvdwLmYZ+m+UG7L4T0MZTeCLO/str/QmA/ty06+Hbm1CdJa5yqtzFY5BWu0xfB/L/TnczE90bZf3cTJ5PbDRIcRlnrTirQDwRu/3sVpeT9b6NCSQQ7iGX4jMdpG+K5jPYOE72jMhTv4NfKii3yZcb9Fsm5dhGUPCY/+gpoZoAeHd3a+PwGf8DgF9KQezo6Hz31vWb2tKi1uPWdDi+ptHY3rI0pV0nM/y6qfmYQxxmzoUc1gtyPBwRkPC7biNB4Q9puPldcY6Zb9d5toHgm9KbDHQWT6bmaJ7ToU1Bk3srafbS4kNyeNAU9zEU9IwYrrxbCAM0wFCGwvshI72aOBvHKfHWHFbGzoNf+DTJ5ag6fzLw/BngaWpFsLfrv6c2zKAWARr9XC8r3CAo59IDHjpmtu6eNFyz1Q2XuoEiEvHu1KIuqA82TRsbjMD1ef5unDvhqIs83cI44rZwD+ClRgLIlAVUUQqMQf
- hpe0UdYu
- G0uS/UdIJZ/3MdRr4m5kovCTqtcaQ0LljNjerOXTUkjoN8P6/5SPoFzBeet1GcXX9n/0sldbX67SdmCVlwZCBs3jgqz492sFogahSoAqUJAFhiUYyQQET24Oz9hW3O4C2JV5gmcZPyIoNTurWglpgu1L5S2sbHlA2639GxFBdqYbq9+RH4z/3UIvBvzum6TQVBa9sUK0Al41tkb2TGef0XYM65G1eh88eJOJwdHu5pR3NiGdvn6ZzjTwxheSl0iMaQ1bDyNZ/MwUDe9vbnI2U8SHjLpsZJSDDa400e4iytcCALP9AemG6804b4XJefctFh1AUeyw2bDMCgmjwWW+4Y3cmXsHVtod16Z2jdeo9H1GhYCTHxOgbagsCaFte8zdH6ALgdP7da04lJfEzHrNlDYYCXwZFqnipADYB2oSleZZ8tj+23+gYQfjOtJRLD19By/4zsnYYMH96MtWd75AenpPluev3mTTh0bQze4qdfC0ohpe4d+AANql6Qxiaj8AtKwDD5cgnLdkLNp0=
+X-HE-Tag: 1790691506-988377
+X-HE-Meta: U2FsdGVkX19q42GZ3iFf1eZlNIAA6gaXru17RBOgpKpo8/QmnMjR1jdOyR1dikcecIx9Yy7OSnVC7F8QNS11tNCN9pLnNEeFnCq1knlh+cS2n2dsl9LuwN5LFIynLnpwevYR/jzTM214bPVv9qlSv0KyCj5GJo5F0yezLVfynDkRKnJ9JCVb55z20CSuSJeeP0EXFYkM/uZNlcrdNovvIhscqLMtJLl2so7zSWBCtB2+NBOiIQIC9KVEjXUObD/INM14vZI0aeE/DHqZZaFUm8ky1Oxd5vbDpnz7b1y1K3exehJQgza70M/mQxgECz93wdd7QZSF5LlhY5m4KEr6o0G4Plg7U0dCD7Cr3LQKNac1VKKKqExKlvqn4Q6HtIqdyz8lUwWBlYd5s8MLH14xsFtOExfaOEtsiqlq4hQzUcuMPzGfTEhxgwS6+XkjPrMtMqamDTFuqrf3LJX8ph/6SQtO3l8YaI//m7j3lFZWQl4wWm0pjIWy8LN4mz99MjfNkBvSMB7EfOeM4/qa5WH7yZOCbBgmoppRQa872oVRsdwS/E+Pui5YDzBUjdyxQekQTpz3LlHS7I3rEr9U6PRhD9816SBV4UDMygA+dmDLfaddScbXzOcO28aoOyDWfSzHjfIg8yPWQBroU9FPfDsXaUbro1bJ4XubVcMKKyT/cfY13SQBW+YZ5s6cxi82rRULB+UT/jmM/YYvDx3SjzvTdce7ePZDPqupe/U2ItZ2XgRwzevyNZ/d225sGa72H5sCvzofvZr1oowfoHPX9mTj9gPgCST1b6X2MNm5ta6C52OkOpz0XoxYM9GaYlow2Rc2yo/0f48iYXu65NzcfN6c7lE5wBQZjiAHXnI2/54oTD5aQG5CMYNLAB+T3XR4hVb/YPwzUCFADUQ4ARQ/oVVlODJ3nZSS7HkV30LbxflEiJ0Uo4nR8I5sfIMzuoUFt3Fb5x6hsy60j8X/soQg5m/
+ BnaXAIgk
+ YEXFk4kDKZD07/HlY316p2+cC6Zwcls5xuHYVY2uHlfb0Uyk7lMvx8cZeBmQ2XFsuIDPdzSODtmW4mUnbdS9jrWCu55k0Z9b8U1YvGchVfhiGff1/7MEhwPEC1D1ca+vXjrATmmMc9X7WyyFa/3e8m3uF3u3zYYqwQGeM8jLK3FQGj7dAI433YRYeckV0jjHgOfXKKx//FwGeFJZ6pSmB5GqB5DTpChLvy1EPRXNeRGaEY4tIma5WLHPOg3R4mq25wIN5/1P44MZSEX+HA/mheSIwGY4W7p6qcFdbqc5ZVOiw4mZ9nDZJKhGvAKYbzMyk15YtaYIwrmW64z/uE9phXORCDco+/bO1FrPhldzcImGgaxU2VwD2LtzvcTEWcGPANdXRFGv8SyLPHnv43B2A2vuXJhm43FQWxG5ZSsnhAXk6FSOwMuqAWR1IOXGuEyFBVcc3IH0kdvU186rDshZ0XnVX4t2GLjDg27fQS8b//U1bJvaK76HE61l0KdAYwQGcr0ZULFwXNIHPzXGy+jfyNY+llZMXh6mz4tsstiCmaDZWo6zAMNSVW8wdI3N+mADvMBWBcMiVJEtdfcsqSMggE9Tl0+p+YMqDXjjp9dr96zomGT5xq8mvsKitupfIzA/im1yQ6VTgV325CyIEF0zmFQOevXsGf/mUeFkvTsEHUdzgee7CE/hyexrXoI5vZtnuE0fpJ8Gd71UWn+t6KHyX4jfg3Ml1Ww23VSdhF5yoBtFzw8MX1iN/E18Ss4pus9HbB1LH8ymwHX0C5oViVKGX2mWzGCvW4yWsiyAz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,7 +132,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Missing tag:
 
-Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
+
+On 9/28/26 6:39 PM, Sasha Levin wrote:
+>> commit a914785f6349da754e1226420bf4e51961956769 upstream.
+> 
+> a914785f6349 ("selftests/mm: hugetlb-mremap: add setup of HugeTLB pages") is
+> Mike's commit, but this patch has you as the author with only your
+> Signed-off-by. Could you send a v3 that keeps Mike as the author with his
+> Signed-off-by, followed by yours, or otherwise makes the provenance explicit?
+> 
+> The same applies to the 6.12.y posting.
+
+My intent was to explain what was being fixed and why and, as it's a
+partial backport, I decided to author the change. But I'm keeping Mike's
+original changelog & authorship now, can you review it before I post?
+Note that the subject will change as a result.
+
+"""
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Date: Mon, 11 May 2026 19:28:25 +0300
+Subject: [PATCH v6.18.y v3] selftests/mm: hugetlb-mremap: add setup of HugeTLB pages
+
+commit a914785f6349da754e1226420bf4e51961956769 upstream.
+
+hugetlb-mremap test fails if there are no free huge pages prepared by a
+wrapper script.
+
+Add setup of HugeTLB pages to the test and make sure that the original
+settings are restored on the test exit.
+
+Link: https://lore.kernel.org/20260511162840.375890-42-rppt@kernel.org
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Tested-by: Luiz Capitulino <luizcap@redhat.com>
+Tested-by: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Donet Tom <donettom@linux.ibm.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam@infradead.org>
+Cc: Li Wang <li.wang@linux.dev>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+[ Backport-notes: this is a partial backport containing only the aligning
+of 'length' to the hugepage size. The hugepage_settings.h include line and
+the hugetlb_setup_default() call are omitted. Without this fix, the
+uffd_register() call always fails on arm64 with 64K base pages and 512 MiB
+default HugeTLB page size causing the test to fail with the error below as
+'length' is 10 MiB and not aligned to the HugeTLB page size.
+
+   # -------------------------
+   # running ./hugepage-mremap
+   # -------------------------
+   # TAP version 13
+   # 1..1
+   # # Map haddr: Returned address is 0x7eaa40000000
+   # # Map daddr: Returned address is 0x7daa40000000
+   # # Map vaddr: Returned address is 0x7faa40000000
+   # Bail out! ioctl-UFFDIO_REGISTER: Invalid argument
+   # # Planned tests != run tests (1 != 0)
+   # # Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+   # [FAIL]
+   not ok 1 hugepage-mremap # exit=1
+   # NOTE: These hugetlb tests provide minimal coverage.  Use
+   #       https://github.com/libhugetlbfs/libhugetlbfs.git for
+   #       hugetlb regression testing.
+   # SKIP ./uffd-wp-mremap
+]
+Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+"""
+
 
