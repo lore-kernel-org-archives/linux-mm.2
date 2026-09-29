@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2867CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87621CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C40BB6B008A; Tue, 29 Sep 2026 03:40:02 -0400 (EDT)
+	id 36ABB6B0098; Tue, 29 Sep 2026 03:41:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1CE6B0092; Tue, 29 Sep 2026 03:40:02 -0400 (EDT)
+	id 2F3EE6B0099; Tue, 29 Sep 2026 03:41:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADFE56B0096; Tue, 29 Sep 2026 03:40:02 -0400 (EDT)
+	id 1C3E76B009B; Tue, 29 Sep 2026 03:41:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 918026B008A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:40:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E6ECA0412
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:40:02 +0000 (UTC)
-X-FDA: 85266001044.12.9F86CD6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DE5EC6B0098
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:41:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5BCCF1A041F
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:41:54 +0000 (UTC)
+X-FDA: 85266005748.18.FE568EB
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 51FC21C0003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:40:00 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIPigIjl;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8BD9940004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:41:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eP7n9A61;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790667600;
+	s=arc-20220608; t=1790667712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G3EVKaVLylqb9RWBjtjzgElhNbiD4VmAvFVDm8rDfD4=;
-	b=jEhKVf8EiAgcL7Xece1p4VXVLJQzTUhJ9QXLeSLqIKQM7+cLEq7pqB8GgQpJfleQFrvYt9
-	X/5XpQRAGnyR6HtYpVNIQU2aghC0LEpCotOC9IT25/aaGRSVRb2ARNaIdURAwzSEYeyQxi
-	aTFF0iz+A8FZFY3U51xtmrXdWnNfzx4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790667600;
-	b=zybKwCxyaObzXiDaSDi1q/NkQNQ4yQq876OwnZYrXtWuSJzfG2GgInBqtGi0rLQMDb7BDW
-	0iPnMtyMljzTF1+V0Ho03xV3m/vWegK/E43OlUTAfysBbwymbjadQxqgnMFCdg2vTx9pNz
-	hdEotY5ZAxoS6C+tSH1JUzfZ6geFUOI=
+	bh=GSrpAC8UMMB0qYiMQ+1O1rlIqHLeQMas3ZsG4eip2jw=;
+	b=2qs4Ew66GbBBP/msLliKIub7UKFRrUd3C6wzOtU3g80S/lS37I/i50xVH/OOP7B7GcxxYG
+	6jr4dZ/VKbx+Vf7ur4bCBlP7PKxq18AWKOcKVKY8xX0DP1Z3q6+/ndu5tCExMQiTW53NDJ
+	uFCSE7klUwP3gzoOL2nP8mJ+7fOXOjI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HIPigIjl;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eP7n9A61;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790667712;
+	b=7+kej3wNLtM0dYXsDOIVHZJ9D3MUY24b8z9eK2pzl/4suM3M7GR8GHj31EtVF/vzkUO89/
+	7fh+AYOdr7oBBWZbLrfBw1jlYVK5MdSe3g90VO6bAZ4kyslm+SdlLjqeegucBPCDsxoPX8
+	MRwP22rmOk/PxSJuKUI6IafDH5oY4TQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 876B543942;
-	Tue, 29 Sep 2026 07:39:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3991F000FF;
-	Tue, 29 Sep 2026 07:39:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BAFD84048D;
+	Tue, 29 Sep 2026 07:41:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530681F000FF;
+	Tue, 29 Sep 2026 07:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790667599;
-	bh=G3EVKaVLylqb9RWBjtjzgElhNbiD4VmAvFVDm8rDfD4=;
+	s=k20260515; t=1790667711;
+	bh=GSrpAC8UMMB0qYiMQ+1O1rlIqHLeQMas3ZsG4eip2jw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=HIPigIjlsAUgH2jHDO9FkW0Y8+CWBqCvft5W6cCrP5+fYqW/khvQic3GSlV0DZDGd
-	 Yzxjn0LLsdXvtpNd1OTY8YAjKFv1ThHYFUTY0cM0DUJj2GDhA0iExCdDLfIw2hT6HR
-	 SsdBTLb4xeYO76hMr6zhJ0D94UZqpa4yqeLSG28mS0hX257UBTf4CbWYeYD9/WYbP4
-	 Er7hHht/rArymYXeCoIyQfCNorypWHmHtzLTXYC+Ey4jV9Xf/p61MdSJNTdMCwKkT/
-	 RZhSbxga5O0aBiH4/K0wTR6ycSjijqr8blTJtnk7AwRyX5LwzY2hWpI5gI0Y+LVRvy
-	 QzEXoBo+iTp+w==
-Message-ID: <a31cc06a-c22f-41c2-851e-4827869e9df1@kernel.org>
-Date: Tue, 29 Sep 2026 09:39:54 +0200
+	b=eP7n9A61yORmIgSnGkP5IduRoT3Pxx/cEH/DRB7RVfEi8dF1bIIY5M4VjQsthEAok
+	 8oHF7RjRB9ZVbIujX9nDZmMaVuumAKVIIvbBKU5S2hrN2cjuxpbmDaK5oaQnUlnxAE
+	 uvZFGbDo2RnyCoXrSKld3VA+q1qHSLOGJ3owCB6I0TMZI/a7IAGmDkyC0kS1M/kOUc
+	 wlqr3pNEykCphZXz9UBWTvMAb1y7RRi6z/tDYn/GrC/iWVJchybK/fMhqOcs0TSN9x
+	 2Ae0wYiBEJ9oHFeVJ/Ci1XcVKGMJ6IQYY8FJ1YZZ8cZ9NgChCMgUMi+Csr8ShsgMMv
+	 tAYqOW9+dNNXw==
+Message-ID: <3ae67ab0-ec42-4594-bebc-3c06d4c53eda@kernel.org>
+Date: Tue, 29 Sep 2026 09:41:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 08/12] mm/sparse-vmemmap: move vmemmap optimization
- helpers to a public header
+Subject: Re: [PATCH v5 11/12] mm/sparse-vmemmap: drop unused
+ section_nr_vmemmap_pages() arguments
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
  <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -81,7 +81,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
  Randy Dunlap <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
 References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-9-songmuchun@bytedance.com>
+ <20260927025441.741633-12-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260927025441.741633-9-songmuchun@bytedance.com>
+In-Reply-To: <20260927025441.741633-12-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8BD9940004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 51FC21C0003
-X-Stat-Signature: d3si1pjn668hhztcsia411fowbne1red
-X-HE-Tag: 1790667600-409616
-X-HE-Meta: U2FsdGVkX18u6eQDEOWLoTzfAEz2e2nTOdAVxwphMIVsM4QhaqniTW8jz5eMErgwi5vDPkUJ3O7puaRyGkv5XdtM+ZCxbo9lNYRVV2PLWDDndPi2+5rWUMsWnTJC/NG9c9j4UmzQp5UQKo//6O2+fiwbcTtQXW5GSYLs2SpPNbhWtmz9hSatdvGtek40ajovOR+7zmae37QFs7X0ARzPIgWy7RqWgHN2j5GSB64DvZuA+XUR/0rBcWtLeugTy5ptxZhVLHD4XyWjp/aereg7aGbuEnp+iXDS+kRQ/7Xq8qh1zJhXp3ihSwPiK3zc5T4IGS1HVMCoYFKSBoTDb5bxeso9Wvj1UyCS2LnrvQQ57ztng7gkj/73blUTyEMyDPhwr2EYWAXnph5B+TZDZXNScKy65Lflmm2ht6K1t6kHoGt4X2ernZuFdtqjPe/b/5wiZJ7ZgMGA9+EDz+syKfZ7GhlaGoNhEzlukSVwi9OtaVYVVTkGfLmPo3IZlQOxx5fdN5LM2QYVJCr9k/lOP1q8GcPEhkQ1A8Lrhw03Q8tjL9k6hPsYK0In+7Oam3vxopGxLhg7z+8eRYT3lVIUuOtSTai/9tViSaf+6uxHOnCrpMxdZSBgADlVpapePzsmbF46Xc5NfkeI1VzMU0JSY785LcqNV49CJWxqChlusqv0g+19R8ahNFgpSkU3/pK+wFn5pdIguOuZvzEkiWPlvAzYLvgZCe1Aqpf4i3x4XFYCb2KFXsZ+OWxoOkZKtCzTbdUQy7U5LNnIHDJZYV4dF3v7BNEWHVwCTbX5RoSN2QAGgpSb4eLl2EaazUYuXVKmSLE0YgPTvaBKt7eCwLDQwAwTn+10wXq8Zm1ElmAgFOHA/VCjvyE9pKlomad7TWmhsw6nKN4p43uaVAqvV7OyzqSLGaoqkGcYQo4+QabV6vmm29sOZk0F7PZ72kV4cSvAubdHC25VM1WNF5+/MEgWNDg
- MkLXI4dp
- SiKabCreLGnYsjMyOJ3KGGBj0cKbOTtRMaY01TgfAoJIskmwVMew87hTmcdUNYMCYHNGeyjUbd1v2BU6ySjmOuy5xhjwGzv30pkCJpwdfX+h1JeetVGxdui1PQfvwe5AWRoNWJDaKZfW5/Ib8JQMPW2SwfD/OCqdXM2ACoaGML856NEXsFF0w12/+WaTr6hmHJF+oz16LQKqu99JzTsP1VEcYMuOXtFhSM3yLH/9XAyO/Jsx7gYk5jJWJHasEnBwY/wMWDnL0TnWmomcR+INzd1r26BEEesESXOpw
+X-Stat-Signature: g1s7wwnz55zfqtunig5yxq191k9581rt
+X-HE-Tag: 1790667712-514050
+X-HE-Meta: U2FsdGVkX19pQjrUJC2QChNeS+3mjt3JbTHNMS8l6xyZjCbkYw4eUles9nbdukigGVlHkQUaph7wXk1u8CC8aBmmGvgBa4300xsmqUiX4uB+xbaWy/3r8qRoxbVSwtGW9eCpb9f0YpiFL3+LwcXM0SQY0F7+lY5muyYLX/RujdFfvjT/uz+jMXFeTlKIQWvWh+9ZMPR4RuxHhBFtAYWCni6dIJEKkfiVm/9M0DEJH7lMB4nGIuf3x4PwxLoObkDmdk5vuNBrsdwFlZuAAxCn9sJFNvY4JhYSbAd7gdJect9aZeBqMY9hq63XUbhqKDYLy/a1vhvgiwKpzwV4lF5nBsllG5zU8l814fTmr8je6ITocq6Wfd9oGk3SrmEaY3Bt+USYIrHG/HhoKbCJ/q2vXTl0i55M6e6M9aLbpAHxKifZQARuwQc2xKO35nz3StdvpFsvWK/+jynvWZJTO+KvXupAI7F03qiaAsSYIh/X8eF+fGJxVSyBPu/LMrtFMwf5BzIyOvzmPs+gugoZA1BVkb0DxPCra1bykdqE0Yh8C2mmI7cuXFxc029s5uWIy6tBEXLsvir3V5Ce3zp9dxHNFjdFrUxL/C0GjZIo4OFYiN4gjkxQeDLkfK7mspUQqFpLTG+22mmYWIxxCSab2kXYSclMMFLfGqf9df3x2xS/b6OalX59HolCYc/gA7ars37hv2U6dHOjhsBqFWw+IAz5D0QjzSVox1k4cd1XIlFr1nd1akS1JCg/a2HXdKvo1kMobFhMxm0LVgm54uss2pA4pZTtTjq5yGNxHYwzmEyU3QzLUsI+7KM0iUw5KAwY4h0TCIT97ZiUweIS2GVkE8rdvsxcUKrsu8XgstUZ3PF7EGyvQC7nH6xyyggXRHQjxTqI7/+2nBLk/CXc1tP172YqZp/vzzI3/LL9cRvSnnuZ4Z+yPXioi6gN6tcHmxp20pTK7sk/+Pk22ez5HdrEgNA
+ I42vdkzL
+ 2OAF8e+KE/r7VVa2eCGN/pSPsK067CKY9t4VVAsxu9x1bBi/tJgEFIaIoMKEvCNsQEAg//w8bXgpYIDIFfnB6ySLJ1UNHoCnvMmuCex6Ti/TVVopsfwfpk28PMyS6Nt0Yo8EM/JnRsva5beWPPwrON46lzdbA2QrKJY12+AMJl4ejP7+dLXLuaHNO5PVXDpWY9HoNXGQsb8ycKJBdF/LI4Qd1rOSi6Lx8DrmZARmE44WrR28QRxjEmcxCqLeYnDE2Y+bwdKnghFAfCulb3ybteobpijqaXKPmDYMV+t4Dp7cquiM8LRoXFolPrumQ7Z/IrR/N//sExIuTsi+luyDW7d1d+kaUtq6q4mL6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,20 +147,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/27/26 04:54, Muchun Song wrote:
-> The vmemmap optimization helpers currently live in mm/sparse.h,
-> which is an internal MM header. That works for MM code, but
-> prevents powerpc from using the same interfaces without including a
-> private header.
+> section_nr_vmemmap_pages() no longer uses the altmap or pgmap
+> arguments, so drop them from the helper and its callers.
 > 
-> Move the declarations and inline helpers to vmemmap-optimization.h.
-> This is a preparatory change for powerpc, which has its own vmemmap
-> optimization implementation and needs to use the common vmemmap
-> optimization interfaces from architecture code.
-
-Which raises the question why powerpc was special and will remain special. Wha's
-the big problem here that powerpc must do special things?
-
-Change itself looks good.
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+> ---
+> v3:
+> - Collect Acked-by from Qi Zheng
+> ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
