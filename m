@@ -4,115 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35D8FCA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:54:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DAB1CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 531246B00A4; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
+	id A13006B00A5; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46D0A6B00A5; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
+	id 9C25A6B00A6; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 333886B00A6; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
+	id 8B1356B00A7; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EC4D96B00A4
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:39 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 77BB3140619
+	by kanga.kvack.org (Postfix) with ESMTP id 538AC6B00A6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:40 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C36E0140618
 	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:39 +0000 (UTC)
-X-FDA: 85268152158.13.A2AEAC6
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9FE9E10000F
+X-FDA: 85268152158.03.5FC2A72
+Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0397F4000A
 	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JMNYrNey;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790718817;
-	b=uu3M8TjM5Im8+Ewr3UGM61x4bHKmJfI1KRBw150+Xl7cfl+2wVXKLodVr0AyD+jGE0Be9d
-	4exuKzjD31UgnyjyYl/Go6IGLbPMl+Ik01h+tFiu3jYXOGoUKnK88nFtlgZ38xLrwQGGoN
-	67dW910KqxF2fu2MX9LcHnIrltLT5Xc=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=JMNYrNey;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf14.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.140 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=R132M7+h;
+	spf=pass (imf27.hostedemail.com: domain of 3YDO8agoKCBU836vJGv3D219916z.x97638FI-775Gvx5.9C1@flex--nilayvaish.bounces.google.com designates 74.125.82.198 as permitted sender) smtp.mailfrom=3YDO8agoKCBU836vJGv3D219916z.x97638FI-775Gvx5.9C1@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790718817;
+	s=arc-20220608; t=1790718818;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SgKrYRp1LUFL5AjUxrX6ynT54MDLIAH2HK7aof3Aabc=;
-	b=JbCAtMvu4q2EJm2lu7/+jMnZhyNDqGluOP8GL6qjE3zcURe+KUw6apgzWVZzyugib7W9OF
-	z/hO2C3zABnLcI+oDN6pb40AjqZPDOlLK+fUNLNA4FEfA524UcCWp76vK2jNwXtIHzNLef
-	9+IxW77u3o5VWpM9W/4GSwlt/tOc5CE=
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49fff6f0f87so22089025e9.3
+	bh=1Wm1IURbc0+vf3diG/SgSb6OtcSfp4vt1b6dn62K85s=;
+	b=6c8e3Hz+m/h/ggXqMyAMK+5t5xOfbIsKsa/Cm4s9IqfkhZZOYL2ifFMW65yUfL9kKWJpqt
+	r4HPITZQwutkfv0lKacYIblX0VUPi8/a/tb8socH43b3STWEDKRjm1WQtjMWfOp1RdW/MH
+	4++z7frMDWxBu/50VJnaYSRD/uXwwA4=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=R132M7+h;
+	spf=pass (imf27.hostedemail.com: domain of 3YDO8agoKCBU836vJGv3D219916z.x97638FI-775Gvx5.9C1@flex--nilayvaish.bounces.google.com designates 74.125.82.198 as permitted sender) smtp.mailfrom=3YDO8agoKCBU836vJGv3D219916z.x97638FI-775Gvx5.9C1@flex--nilayvaish.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790718818;
+	b=R0dCJPYOTuhOvJjL/bPvFFXvhukWlUVP17etuu/r15wymlkeon0qw8fB867+SPXKrN/lTF
+	bATcXvpKsQN6wS08M9J01NkycoI2/aB6Laysr5LHWf7PrfbU+dnItgB4e2CxV+8x6xGjYB
+	waJ1BUfeAjfuEiTpXWI7MH4WF5s6dEI=
+Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-33713e5e6daso6925254eec.0
         for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:53:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790718816; x=1791323616; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=SgKrYRp1LUFL5AjUxrX6ynT54MDLIAH2HK7aof3Aabc=;
-        b=JMNYrNeyry6brsK0ryKzEFvbljhdsMMU6uUHqyDLq1ZToXkZkBb5KQ9Vm/FH14Ij6D
-         MBAMeaK9WKeXnDAerShH0djHDUuvaqCi+n6wKeyuQ8HwBlHPmtbM9bCsgA+25FdTtsAf
-         hovilr4TP6Btyup7ZEy8A26gFTmLEJufrjuzkHreNyO/Uf6p/1DrsNRdM/vqvPQJ0OO7
-         eeaG+DH58CFIUoAeHmo0t8RQQ/6PxvyluTVQOvht3mEg0Na0cH6K2A+lZMzpl/fCmYCp
-         M6Qb4I+d5qZq0V4P6YK5BzE41++mWE2W32d3ROev/caKYH8QNH0vJyHvyLy60qlnaolr
-         SQ/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790718816; x=1791323616;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790718817; x=1791323617; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SgKrYRp1LUFL5AjUxrX6ynT54MDLIAH2HK7aof3Aabc=;
-        b=TrP7tpLTLkrsDrhy6spNO0l5/9k8olB+8h5TSwxkgsromFjqAb06jmVpa+smEsMvZq
-         wLDWZwhYeWXnrMRRQILKr9HoBlvU9JgbQyurPfmeeoHrdKEDrt05Z2gM/CX/Ci7jV4/j
-         AX6Ey91cDjdeOLWbPjrjmlpcdqkL6zHPrrIc5+2ee5bod1WtJNmCboSh/KxmiWaEZnJB
-         bivOUuqnenOMSDs02eoqD2+7DtnLHT8JdJsnzbCi8sgzPMmcFtEzU1YgpPmdTQIxU/Oc
-         1dHsbqMW84IsdMc9tOWg0Ufv8/yhC8vjstywZNMYqaePeqb+SONFkTMxzTM0NmeEq0k+
-         o9hg==
-X-Forwarded-Encrypted: i=1; AKwUvBz7OmIsyuDOrhgDiOAzUwI+uOu37BiKKFNgfgcZ6QyDBUYrBm2cxwJZhoGdULtQkgoQQERktqYGvQ==@kvack.org
-X-Gm-Message-State: AFuF++mtAPT8u9fKwCkNYoEOkVQaBgN+uKmnmYAhaRZYHp9WgPPw1XQl
-	1eWICJK+jz9Nt7cMfAIU1w7lHod1YKBTVGbRMIQVYLPDNzXnWZFtTyS+
-X-Gm-Gg: AYBFou0fhf1Oe69r5291O8GvQbo8EJ5Cq40R2zdvlOMYORZW+r0rGhN+vLqH7ZiFRmg
-	7gqB1fjHX6HJDmqW7aCKGrAA3E1t/s+ze5SUTlkVt5fbOQXsU9FpCjVk2fPTPqUy6fWXPEaVnSZ
-	5lQQAlV1BRsOKWEMCVFmW2dV0LQWGJtvVtowBVZvwKOzZLZCZdEUmIXPgmhNTCVk1Jz5SfKZQV0
-	F5AGGw8MDLFueX+JHkv+YkIO9Y/23qFcBr7sebC2EJ4wM0oNVjqmmQMwSfWOCYS76wwmu/PgSkh
-	2mPZJOEfokW2xtkdXNJQG6PfAcFdk13/gTIn+b30fWWraenNaxHaKcvfpePrJqOICU5kRIRzJb5
-	B0vBQP1LBdn9iQvRDTXtq9svSBcHv4/UcL6zRviW2X0trQi44PG0eubUegOVqEJQOBju0fHWqHt
-	jImiEW8ZB2lAlpqyi4/sazNTbRCogvF7TzgArJvtPkx1VTQM/5I6SMEw7hQrTYHKIKtp4uJA==
-X-Received: by 2002:a05:600c:3e0a:b0:4a0:bc9:28c6 with SMTP id 5b1f17b1804b1-4a01515947dmr6697455e9.34.1790718815951;
-        Tue, 29 Sep 2026 14:53:35 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48afe61c982sm1850885f8f.5.2026.09.29.14.53.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 14:53:35 -0700 (PDT)
-Date: Tue, 29 Sep 2026 23:53:33 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, 
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH] mm/memory: remove unused vmf_insert_mixed_mkwrite()
-Message-ID: <arwuOBkR_VpZZ7fI@gmail.com>
-References: <20260929143707.450805-1-ekffu200098@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929143707.450805-1-ekffu200098@gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pqemu3h9gqin7j7uk7kf5j7yor7sqf6a
+        bh=1Wm1IURbc0+vf3diG/SgSb6OtcSfp4vt1b6dn62K85s=;
+        b=R132M7+h+VS3WHc1SFaDh/yaRKqMpKLBXYgt5PXUZjk512j1RkJZG0V3R/ly/EXRyA
+         +FX6Fu0aw1+S7dCKqCT9mZVJoFFvgv+tPOjxWa4f6SvRTBmnU5pj4t2mRgZ6FBoHwe1E
+         BWIZlYJXhhb+7K9iV9kdrhSNsWf85QssFlyQ7NpbXo1nKR5vjc9871TF6DHFd/spc+K1
+         Y1p9pSgnI3juUJmlO7mFlkfkkbBvNlz0quNPmCVr+jlESwdF+3ghjj7vxN+v+iYiDLWP
+         j2mg079NsaQDZBdWCiFaqzO7Pws2XXGBKBKuy+vpuPo1QzGyHsuKd8Cs7gFyqxtDs70U
+         sB5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790718817; x=1791323617;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1Wm1IURbc0+vf3diG/SgSb6OtcSfp4vt1b6dn62K85s=;
+        b=a9rnrFTSVrSeFCH2b6zIagsBkjcl9v6OAjL01o4MwXm93dV/vmJLWkoEmOwRsZn0ei
+         I4QL2FsF3CuELPCvjekli7+XuWcc1p9uBV9i1QH40He2I2ZjTfWyQJIbV9s3Brh81hVs
+         Atm1F3J5jhyQrDZax1ydx8EYV5xe11LW+w3H7/fpSIrCUrXuQNGGxnbtDIuE19lBDtUn
+         MnSSEA9gLvja5z36UsmXJnyQF4NBVQtAcmHzm2mTxVI+EpjzNlmfXRXN/OxBBPT13nEe
+         VB8z7bZ5Wy9hZVdnAaf/7D5F4XXYtcJ+JJT0LU0CDBoU+bQVPyo6Rchp5QZinKA9Wfd1
+         Yeyw==
+X-Forwarded-Encrypted: i=1; AKwUvBxp2uXFb9LZonyYAXKRJL2Nl50XLrk1u7rLKGp/nV1N1bPPlkJBPbKDcZkrhrH8PkddtsVcva04/A==@kvack.org
+X-Gm-Message-State: AFuF++kqD31zisoxEHYtcE/JW6G3OfZmi7YieXkYU1C0uMj9iLZlKWzw
+	DLytWBjV6qwPM/4jGfpBOyowPSnjetkaSDF0qI5QDqYau2uYkfNXP/r9QfZ0a9asiKwz9rsYJNS
+	+CGw4GjwXVP9uJL1qHRVLDg==
+X-Received: from dlbef6.prod.google.com ([2002:a05:7022:f46:b0:14a:9017:9767])
+ (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:ed09:b0:14c:1f57:3e86 with SMTP id a92af1059eb24-14ca066e61fmr545721c88.47.1790718816389;
+ Tue, 29 Sep 2026 14:53:36 -0700 (PDT)
+Date: Tue, 29 Sep 2026 14:52:04 -0700
+In-Reply-To: <20260929215206.516490-1-nilayvaish@google.com>
+Mime-Version: 1.0
+References: <20260929215206.516490-1-nilayvaish@google.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260929215206.516490-14-nilayvaish@google.com>
+Subject: [PATCH 13/15] mm/page_alloc, folio: use folio_page() when freeing folios
+From: Nilay Vaish <nilayvaish@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Greg Thelen <gthelen@google.com>, Roman Gushchin <kfree@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0397F4000A
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9FE9E10000F
-X-HE-Tag: 1790718817-929800
-X-HE-Meta: U2FsdGVkX186WSwT4GvlRPs+vcZSS1bk/QKT2Y45ZAkHQqZVlpdu7pkBY/NqKF9OAwZ3P+OVci6oL54ivD9E9EjHephvWyUwjNSxSuB18PfU7CMRj8320ejUUP7UA0wIkwmDtH6mfE3a5VfkJhwldgXHITgoa96wxMANfTZihBer0Gplbbt7d1+1iX83F02Nd1sDIuvrVwoG+3TT6i2X/85kH+joCfuLKNRoIW/BWW2XHzMrFjxa2oDlurjwasbJF59Sjtz9k+wxBe0+cBlyq24Y+Pw7DpOhQQb2p1ooMvFHzUEb/QoUKPkirLPtCSWP9HbHUDbT2pqukHlKUMbbn6I/J26sjpXD+c5g1TeQiCVsQgppGkNyW+bMbCRwHk4wYtWB+yb2OxWBeRqBhd0AzzRRNULJF27AHXZAxMMgUn8BYvo8uwDSy9bZ/QboYKaF2/bJQ9fxcY9i5la3iCuQkqZvF2dE1XfXohe3LTBVDgwtrAW+msfk110U7eaUAAuYFcVHmUIB3VE91DZs50ViaihC+0CSEP2WT7d2ObBsGpmwIozF6jBmJ6lHC/92ko5D3TGoPl1lREhTD6bt+Vys9ypj1A5lpXvQDu7MhTCRn5pahtqBQgMmBoN8PYOXQAznVuG6krOqtSeWZ4gFo2+10lnrX8oRYwlr36X/8yyb5ZaTUV6v6aQxABT7OeSZ5PHfu5mBQdtPZhemTew2LqZWTHKWZ2I8OjRP/Ab1ERLTWr2FvWKn/7Ltqu1xrmATiI/+kd5HaIbEIeyjmbxuTK8T57Z2AtyD2L2gAiffH/KF6gijx+1QFGHvIML/cSEz0/SOxqwDpEuLNOz4bJXXw6Q/YMgETzXT8038uxEGcTcpaUJQrQwnkNA0SCEqg4fcchCjB0oP8gdmLOTuEIALlLdqS8pAO9ViqY8EWDkfwLYeU0igw3uT1VScUoq7JaCTw6S8fyLus99Qdgz/oJ2+SKp
- d5cdf5dT
- ibdJtvRJNBSHgOCoQkTuIQySt/LbacdOSTTZRraJWPvqC06qyhgFu8KOBcF9UBUzPuphC9NizIHYfI6VnDACtiWRLt0uT3HkwhJ8M0RScFfbyo2WMew2BHidQIdi8UoIuXpALmVrKWpvkelGM/iMHUtWv0FGhqsGWSrCfKEO/DIG6sjmhBOrpZ16S6W58iBiNFq8vAFr0u6Ya97K9pUG1l+QK1Cl5zXVDIe5LVUUdHeckc7GhRd/0ltcw/3QkmGeiDDHLSXw/V2bnB0mylOzT9XAoPzWm+r7vjnmqkhZ0yuxvUo6iMCGA3S313T3gOlMSugK07S39BmbaJHx10Rl5BTTpt9OLfCQ5mcJL1wxWWp0XKFAwMLHxzY57f1jlwLoyZFWaG92Eo+IHgv3OLZBnckDt3BSn8qak8GyhT/Xr9zajHIzs/aiS0ic/gf52OX5XjGSCYrxFcmUKQhAi2L6UR8FcHA==
+X-Stat-Signature: 8afgha6sny8ge1ftq66ceojb1a83ampw
+X-HE-Tag: 1790718817-841839
+X-HE-Meta: U2FsdGVkX183AFmLgfgGmBlAHsZwPSkDTSJURf0CG5zPEfPYT2LIZAASd8I1gX0JUU1z1J5TCwVLGOxQb5/3IjXDPG8aftYaPlV/Z0r6S6JbUeXBtN/nPik98CkFC+Op6Eee1TDlrXe9v8c1mz0mSrKtgAi6nd+Qda+XDYX0l8x5xm2G9zk6gHKT6kT8fspL6LUi8Q0Iy9iD/Vb2HxkJI0ZksWxySuSqG/ZmKhcxmG/kdj3wqR01d5HObEEVDut191bMJL6uuFSAorNy7ZeWEExZDMp/N6VtCsGnBflO/eU0SEeaCp3Lht6eqQn5dqmh+Qlt0EoM0tD0lNIBV7VaPfloGQ+Jxp/CtIJezbv0AuinYd4bi/htyGumD2xlVWGw2y4ZCy7UC/aqY62PkJj4tcFOfpNbjfj3a6NR//JZM141ozYixhS4K4e1AMJO27iNrLkrYFekXAFascN4wU7s42uXq+ExvUpyvaq/kOwkbdmUT2sH+hPCp3hMMD050p/begytfCU+4Z2e5kjR2ieXQnV+67iEYk4XKyAkTI2H/M0sFgV1sRZ3TYzkMMoQ9zUDasbilot5NZ3LYz4BqjiSzLteJ4GQhyeU+vj1hy5EB2SgnAbb/nCXx/SbHnqeAL2iujBG1adUG+tMyAkszoMxTGsZwFHOoNzplw4C1YMvHeXxAS5ZvCOG5PcDF7CWKtweLkTdNTXgAOVn7o8md1SHYZZBnaQHDuHrb930LWBmbar9ruR6YLg9LwuTK66b7RiZJcvJIqBBEDxXBR/C3N/Xb8MUKZq3SsElnknkiO+l0s0G11pKRHfcbelf1GvMe0iTzOs/rpfBSP7YctzMja14UcU+Ia8s2uDF9MnijQA115Ry8PNiE/3RmYFe/HnvybzWlZyXwOO8G9HD3OSAk5+ipql3UTrcGPZXpCJFkF6ANqp0kuNYCJ96qKqg0hso4WjzLWb9UeEynUCU983BvIf
+ q25CJoYx
+ DD2sgQcr1QepG8KEGH2mg+cCyXI3Osym/AJsMVLBReueXVV4b/p32RdGBeqh3wPfCCyl8/ULNXXcClHCGdCewDLqSKmrv15jUPrZsf59EQdXsEAQd7g/HYZr0RwT7LgM9qZewu3V7k/H7F5xH8paqwwv4svCpngRRRfI15P1ou9kaeyqfN7EpMWykXUxOzzYVg5ypp5Qjvn47Me7GDoi+IBdH8917EIc6anC5U2+TpAMZHa1tewvaoxGnuN3qLwX8ThjoNO5AtBjkQ8lIX4MkgnMfUxEt9vgycNfQn7w9NaKpbQHiQwGH40O7hYdxjfnShsNri5MoQWe/vGL+jk4eGiivL19XQI7dnM9+E00xISu7zc+7fA+axv0RKh7WU3IBgpUq0bKVwwZYakyVh+19jxoY2AMIkDV94pSJHXmnvjQOKzxHncOm36rOj5Ux3i2C8zsw0Xt1pZQTJFgGMXRMqT6IyiDbWGDNeg10OEt48t2EpDIm08QO7JfonOpvrcx2+qQVc82sHRqPDTe1gB6p6HHIitO9Dwxkniha5qeD6y9ZuRBTG4Exd9cQdWYKjvxW3d6DP4FZ77Wz883O9DB0WENvyvC6J/J80ReeZNBAIfoCjmMa5o4OAosB92DfTB9w9A1pPm/uAdUfJLxjTyjAnEcupA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,209 +110,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 11:37:06PM +0900, Sang-Heon Jeon wrote:
-> Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
-> vmf_insert_mixed_mkwrite() has no callers, so the mkwrite argument of
-> __vm_insert_mixed() and insert_pfn() is always false.
->
-> So remove the function, the mkwrite argument and the unreachable
-> mkwrite branches. Also merge __vm_insert_mixed() into vmf_insert_mixed().
->
-> No functional change.
->
-> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-> ---
->  include/linux/mm.h |  2 --
->  mm/memory.c        | 76 ++++++++++++----------------------------------
->  2 files changed, 19 insertions(+), 59 deletions(-)
->
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index c038d06825c3..2ac734efd4ec 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn, pgprot_t pgprot);
->  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
->  			unsigned long pfn);
-> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn);
->  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
->
->  static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 330cde31bf8b..1f83a26f8733 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
->  		if (!mkwrite)
->  			return -EBUSY;
->
-> -		/* see insert_pfn(). */
-> +		/*
-> +		 * For read faults on private mappings the PFN passed in may
-> +		 * not match the PFN we have mapped if the mapped PFN is a
-> +		 * writeable COW page.  In the mkwrite case we are creating a
-> +		 * writable PTE for a shared mapping and we expect the PFNs to
-> +		 * match. If they don't match, we are likely racing with block
-> +		 * allocation and mapping invalidation.
-> +		 */
->  		if (pte_pfn(pteval) != page_to_pfn(page)) {
->  			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
->  			return -EFAULT;
-> @@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
->  EXPORT_SYMBOL(vm_map_pages_zero);
->
->  static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
-> -			unsigned long pfn, pgprot_t prot, bool mkwrite)
-> +			unsigned long pfn, pgprot_t prot)
->  {
->  	struct mm_struct *mm = vma->vm_mm;
->  	pte_t *pte, entry;
-> @@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  	if (!pte)
->  		return VM_FAULT_OOM;
->  	entry = ptep_get(pte);
-> -	if (!pte_none(entry)) {
-> -		if (mkwrite) {
-> -			/*
-> -			 * For read faults on private mappings the PFN passed
-> -			 * in may not match the PFN we have mapped if the
-> -			 * mapped PFN is a writeable COW page.  In the mkwrite
-> -			 * case we are creating a writable PTE for a shared
-> -			 * mapping and we expect the PFNs to match. If they
-> -			 * don't match, we are likely racing with block
-> -			 * allocation and mapping invalidation so just skip the
-> -			 * update.
-> -			 */
-> -			if (pte_pfn(entry) != pfn) {
-> -				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
-> -				goto out_unlock;
-> -			}
-> -			entry = pte_mkyoung(entry);
-> -			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> -			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
-> -				update_mmu_cache(vma, addr, pte);
-> -		}
-> +	if (!pte_none(entry))
->  		goto out_unlock;
-> -	}
->
->  	/* Ok, finally just insert the thing.. */
->  	entry = pte_mkspecial(pfn_pte(pfn, prot));
->
-> -	if (mkwrite) {
-> -		entry = pte_mkyoung(entry);
-> -		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> -	}
-> -
->  	set_pte_at(mm, addr, pte, entry);
->  	update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page? */
->
-> @@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
->
->  	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
->
-> -	return insert_pfn(vma, addr, pfn, pgprot, false);
-> +	return insert_pfn(vma, addr, pfn, pgprot);
->  }
->  EXPORT_SYMBOL(vmf_insert_pfn_prot);
->
-> @@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
->  }
->  EXPORT_SYMBOL(vmf_insert_pfn);
->
-> -static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
-> -			bool mkwrite)
-> +static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
->  {
-> -	if (unlikely(is_zero_pfn(pfn)) &&
-> -	    (mkwrite || !vm_mixed_zeropage_allowed(vma)))
-> +	if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma))
->  		return false;
->  	/* these checks mirror the abort conditions in vm_normal_page */
->  	if (vma->vm_flags & VM_MIXEDMAP)
-> @@ -3012,13 +2991,13 @@ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
->  	return false;
->  }
->
-> -static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn, bool mkwrite)
-> +vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
-> +		unsigned long pfn)
->  {
->  	pgprot_t pgprot = vma->vm_page_prot;
->  	int err;
->
-> -	if (!vm_mixed_ok(vma, pfn, mkwrite))
-> +	if (!vm_mixed_ok(vma, pfn))
->  		return VM_FAULT_SIGBUS;
->
->  	if (addr < vma->vm_start || addr >= vma->vm_end)
-> @@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
->  		 * result in pfn_t_has_page() == false.
->  		 */
->  		page = pfn_to_page(pfn);
-> -		err = insert_page(vma, addr, page, pgprot, mkwrite);
-> +		err = insert_page(vma, addr, page, pgprot, false);
->  	} else {
-> -		return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
-> +		return insert_pfn(vma, addr, pfn, pgprot);
->  	}
->
->  	if (err == -ENOMEM)
-> @@ -3057,6 +3036,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
->
->  	return VM_FAULT_NOPAGE;
->  }
-> +EXPORT_SYMBOL(vmf_insert_mixed);
->
->  vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
->  			bool write)
-> @@ -3078,24 +3058,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
->  }
->  EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
->
-> -vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
-> -		unsigned long pfn)
-> -{
-> -	return __vm_insert_mixed(vma, addr, pfn, false);
-> -}
-> -EXPORT_SYMBOL(vmf_insert_mixed);
-> -
-> -/*
-> - *  If the insertion of PTE failed because someone else already added a
-> - *  different entry in the mean time, we treat that as success as we assume
-> - *  the same entry was actually inserted.
-> - */
+As part of the memdescs effort, struct folio will be allocated
+separately from struct page and will no longer overlay the head page.
 
-it reads to me like it describes the -EBUSY handling rather than
-vmf_insert_mixed_mkwrite() itself, and that handling is still there in
-__vm_insert_mixed(), which this patch renames to vmf_insert_mixed(). so
-I would have expected it to move above the "if (err < 0 && err != -EBUSY)"
-there rather than go away with the wrapper.
+Replace &folio->page with folio_page(folio, 0) in __folio_put() and
+free_unref_folios().
 
-am I missing a reason to drop it? because, if not, moving it would keep
-one explanation we have for why -EBUSY is not treated as an error there.
+No functional change intended.
 
-> -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
-> -		unsigned long addr, unsigned long pfn)
-> -{
-> -	return __vm_insert_mixed(vma, addr, pfn, true);
-> -}
-> -
->  /*
->   * maps a range of physical memory into the requested pages. the old
->   * mappings are removed. any references to nonexistent pages results
->
-> base-commit: 1c2b8d2725f84b43fabe3b3e9628c91db8ca6c65
-> --
-> 2.43.0
->
->
+Assisted-by: LLM
+Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+---
+ mm/folio.c      |  2 +-
+ mm/page_alloc.c | 18 ++++++++++--------
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
-overall, looks good to me. but I want to know about the comment.
+diff --git a/mm/folio.c b/mm/folio.c
+index 35e242b48870..978565add078 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -103,7 +103,7 @@ void __folio_put(struct folio *folio)
+ 	page_cache_release(folio);
+ 	folio_unqueue_deferred_split(folio);
+ 	mem_cgroup_uncharge(folio);
+-	free_frozen_pages(&folio->page, folio_order(folio));
++	free_frozen_pages(folio_page(folio, 0), folio_order(folio));
+ }
+ EXPORT_SYMBOL(__folio_put);
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 07e03c7c7771..2f8cd3da199d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3006,17 +3006,18 @@ void free_unref_folios(struct folio_batch *folios)
+ 	/* Prepare folios for freeing */
+ 	for (i = 0, j = 0; i < folios->nr; i++) {
+ 		struct folio *folio = folios->folios[i];
++		struct page *page = folio_page(folio, 0);
+ 		unsigned long pfn = folio_pfn(folio);
+ 		unsigned int order = folio_order(folio);
+ 
+-		if (!__free_pages_prepare(&folio->page, order, FPI_NONE))
++		if (!__free_pages_prepare(page, order, FPI_NONE))
+ 			continue;
+ 		/*
+ 		 * Free orders not handled on the PCP directly to the
+ 		 * allocator.
+ 		 */
+ 		if (!pcp_allowed_order(order)) {
+-			free_one_page(folio_zone(folio), &folio->page,
++			free_one_page(folio_zone(folio), page,
+ 				      pfn, order, FPI_NONE);
+ 			continue;
+ 		}
+@@ -3029,13 +3030,14 @@ void free_unref_folios(struct folio_batch *folios)
+ 
+ 	for (i = 0; i < folios->nr; i++) {
+ 		struct folio *folio = folios->folios[i];
++		struct page *page = folio_page(folio, 0);
+ 		struct zone *zone = folio_zone(folio);
+ 		unsigned long pfn = folio_pfn(folio);
+ 		unsigned int order = (unsigned long)folio->private;
+ 		int migratetype;
+ 
+ 		folio->private = NULL;
+-		migratetype = get_pfnblock_migratetype(&folio->page, pfn);
++		migratetype = get_pfnblock_migratetype(page, pfn);
+ 
+ 		/* Different zone requires a different pcp lock */
+ 		if (zone != locked_zone ||
+@@ -3051,7 +3053,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 			 * allocator, see comment in free_frozen_pages.
+ 			 */
+ 			if (is_migrate_isolate(migratetype)) {
+-				free_one_page(zone, &folio->page, pfn,
++				free_one_page(zone, page, pfn,
+ 					      order, FPI_NONE);
+ 				continue;
+ 			}
+@@ -3062,7 +3064,7 @@ void free_unref_folios(struct folio_batch *folios)
+ 			 */
+ 			pcp = pcp_spin_trylock(zone->per_cpu_pageset);
+ 			if (unlikely(!pcp)) {
+-				free_one_page(zone, &folio->page, pfn,
++				free_one_page(zone, page, pfn,
+ 					      order, FPI_NONE);
+ 				continue;
+ 			}
+@@ -3076,9 +3078,9 @@ void free_unref_folios(struct folio_batch *folios)
+ 		if (unlikely(migratetype >= MIGRATE_PCPTYPES))
+ 			migratetype = MIGRATE_MOVABLE;
+ 
+-		trace_mm_page_free_batched(&folio->page);
+-		if (!free_frozen_page_commit(zone, pcp, &folio->page,
+-				migratetype, order, FPI_NONE)) {
++		trace_mm_page_free_batched(page);
++		if (!free_frozen_page_commit(zone, pcp, page,
++					     migratetype, order, FPI_NONE)) {
+ 			pcp = NULL;
+ 			locked_zone = NULL;
+ 		}
+-- 
+2.56.0.rc1.315.gc6ed9934b7-goog
 
---
-cheers,
-jose a. p-a
 
