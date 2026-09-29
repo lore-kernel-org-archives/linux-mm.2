@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0261CA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E2EC9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF7FE6B0096; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
+	id 65A456B0098; Tue, 29 Sep 2026 03:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA8EF6B009D; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
+	id 633256B0099; Tue, 29 Sep 2026 03:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBF276B009E; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
+	id 549046B009E; Tue, 29 Sep 2026 03:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A31636B0096
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20979C03AD
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:45:13 +0000 (UTC)
-X-FDA: 85266014106.01.94FB972
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D7936B0098
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:47:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AD7FE1C2CE4
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:47:44 +0000 (UTC)
+X-FDA: 85266020448.21.80D58C5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 56FC5180003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:45:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eryQFDsK;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id E0E8480002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:47:42 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gg5xZePM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790668063;
+	b=Twd3mQA5l79mvvAyZKQ+U+75JkQed/Vl4LV4hG87TVICvEh3G8nUM2laJ43roDMYsktgc6
+	anDfPFQK6zq9WeVWob5+EP2EtaFw8hVGnw7+zq/ekdmtquJk1/FwacIEdQsS4wopFFKPq/
+	4op5FYlrF8TXRknnUoMNgnTjgIIcoJQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gg5xZePM;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790667911;
+	s=arc-20220608; t=1790668063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VY1SkJGQDmauz4sN7eRcCfUeQO+i8Q4S7HsIT43oUN8=;
-	b=D2sZlVFoALUGrC7RJDZT5eZRjQqcDW4rsl/QeSFL6t2syeCpkslu9PdxW4AtcL0cOLpZiT
-	5NV4z6Kq+G4Dik1ZH7Ot5QEJit9kV7yl9YF4sOVz62EWrxCvMnKJTBxXRaW3M4aK6a218M
-	brMVE7xpUHYb7acy5JgbhkS2pSZJwb4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eryQFDsK;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790667911;
-	b=OpQInkAlGJXMWlCVmRcGGH23QzW8vO7DCoBuel6LirYdEp97ydlzYI1GXc3Hu2sjM/+iuN
-	xsbKwKmzTHxB0hn+stRbVJOkNAfXo3bXWGj3LA1SjmHlioDz+CDolGu3lmBzetk1OYLILZ
-	wf5IPM4JvYcIYd7sk+S7ljADqWD/CCI=
+	bh=mLNdmFrM1t3FQWmwFYe8TkIte1jls2u/1QCzj1F20EY=;
+	b=M2nj/D5Bh2rro/k7nmGTHG9s9MRbCbS/sUuc36/W85ffXspA8n7dscjxHfqAt5KEPgCc5g
+	qKR5FQHvxHvnpRlMXEG1MGb4sWa76YH6Cu7VZhfNwfxANgcl2jcKi/5heHzZxIhUjJl2nu
+	fw6Ksx7rMPbUrI3PyuYKlLYY3BdL1Bk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8468D411B4;
-	Tue, 29 Sep 2026 07:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFF41F000FF;
-	Tue, 29 Sep 2026 07:45:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 139CF401F4;
+	Tue, 29 Sep 2026 07:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269FF1F000FF;
+	Tue, 29 Sep 2026 07:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790667910;
-	bh=VY1SkJGQDmauz4sN7eRcCfUeQO+i8Q4S7HsIT43oUN8=;
+	s=k20260515; t=1790668062;
+	bh=mLNdmFrM1t3FQWmwFYe8TkIte1jls2u/1QCzj1F20EY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eryQFDsK8XbiERSwR84WHNpDMzE5PzW2Ardhk9RRQOYTsF5ZNYAsYUTNwxnrO8IJs
-	 4pF3o24oJ+dNKTsPvIBFa7CvmvfCowlF+wh5oBUBDLz4duFK9AGVH8JT/ueUbqsnF7
-	 ZQnN9vpmWzdMu2UbSL9dh0S7xy4SEdCFP0/lBfMYZisKxJkVQFa8adh90Jsp+Hdsdf
-	 grXSyKGdotmj1TjbtLy7memifkUshjvj+fwdD5gII7wv7AEeK82aEZfO0aX8u+5fRk
-	 kHOknkEF+u5bV6GGr3ZC91nkB1aXFNs2e5o4TGWrX/02jSXQmkMK3/Bj+DRvMSofpX
-	 Fgok4KIaAKVaQ==
-Message-ID: <29717e90-4b4c-4ee4-8a17-20a7b1792000@kernel.org>
-Date: Tue, 29 Sep 2026 09:45:04 +0200
+	b=gg5xZePM0dIkrhC1PdGvJcGV+oFHBPWdh25qEyGA/kv1arZLYUnlWIg8wYuuY2JMv
+	 0Cv8TB0Q443gxxo1iT1HdyRBGyaNgNImagvoVmhbTl97GAVsPW/gCeBReirTK6Gmc+
+	 z3/aCs5FelgEO1RJ+5g49VeJ9Q3KDuYnWzfwdptnkL5L2UOkvG0UaHfpj2mWcFAdG+
+	 oNsbmTfZzPB+ZYrpR8qZJGzzptj+mMD4CC2TNVZItnO3Lx9qH4U4ku3moBnlZ4Y5v3
+	 to3Ypf7+EnuF3CDkDuLWSVKxqoXh4n7einnw7diI2GmBZ5IcyjK67gW42MUdXYEI+i
+	 N0JNy58OXWQtg==
+Message-ID: <92ec3966-e68c-4dda-9d8b-9462f22c9e93@kernel.org>
+Date: Tue, 29 Sep 2026 09:47:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 10/12] mm/sparse-vmemmap: drop the extra tail page from
- device DAX reservation
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
- Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
-References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-11-songmuchun@bytedance.com>
+Subject: Re: [PATCH RESEND 0/9] selftests/mm: improve mremap_test
+To: Kalesh Singh <kaleshsingh@google.com>,
+ Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, John Hubbard <jhubbard@nvidia.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
+ <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+ <b8da4a73-296b-47f9-95dd-b8a74f3a0984@arm.com>
+ <CAC_TJvexEaehZno0P=xsoCbLw7wgfz+22iV4fwzcuGCiu3vAAw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260927025441.741633-11-songmuchun@bytedance.com>
+In-Reply-To: <CAC_TJvexEaehZno0P=xsoCbLw7wgfz+22iV4fwzcuGCiu3vAAw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: udyiksa67h54ijwppamrc4duu8xeadhn
-X-Rspamd-Queue-Id: 56FC5180003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 33rjitidrj8zkrgj6wiq1hyxuh6jkpnz
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790667911-855686
-X-HE-Meta: U2FsdGVkX1/+zf4ek4Td/KZdBRwr3vWy/xWrQTsjjBj9FsHjZQ7UokV48t+TVM5HEUzN4SIqanmRcIz081qfYiR3IQNJFP+IkAuImic+7kR42ZAfNgGQkoK99Xl7Rej+q7JLToorPjWNEPCQjsyGJ3KqYvCLMjYvFMgfXcVqNFO5sT5E/QIYYojJ16NMXSssTpe9lulmOrIdlnJTi1bMvgL/XkhMWFVTeq0FTqdnwgbUKtxv/Jlp0+kljnL+m+hdaocf53dxKIwvqAWl/3Tl3AzTf+sXjr2wonIYKN4yO/pSgzj0k0GxzwOYuwwKz059XbK5fiSgTyHqz3QF3kcEa5sTRSdMnVgbQxkrQlMQDdBbCA7WoRHdSOydnM+/f3ehhJkp42Ul8TFpTTsCAGJZ34Jv95Uv9qeVe36M7B2IzkillnIrfyY/kvqzj0TWbSuXi9xUpZuR2ijQy6sEwMyuyhlSWv9Rnr1kKYhoZVCRoB6xdvUVz370VyU9ghWJaSP6EHkxueDweJx928Rmv0b9i8LhKPT89187EPqyRaJlMMt9ZVkpgYH1Kv/7GkV371GxNNCOOl4+cyXPWjF0fJXYXPiNjOYjp/AexDHzR+lGBYaVUYK7xA7s2WPvVP9IXPbARI9YrLj3F0sytEg+bQZq/Evlp+7INadda4gUNyDK7Jun/kNall6qqCdokaV29mbm1ULfGG7OopIVCu15dQI9tYLJTCH+7hciF5maQGnmFs0dbRQgGDXw3ue/E9mx9WPbWi8hnP6LyLIyI431oRB+wHgRMyEXSajUN6oz1CIVqFHIZg1qwNsloK0Td+AYY+yV+Ajm+XIVW28cVjy4XlSpzsRR4uuIStPfcHzaVvm2QOnEiI9AoP0RvTYC/rHSabr2uwDof2a+kaYFTVxDhBG2rOLaDbMxCnlpdnEIDzSkqWGQOPCoA1fed9qtW1ZHKPMlDFB9+Iz2xzcZZC4Ogsa
- HSMfy0ki
- fAFKHvIKb8Nt0BQR3WrEyNZvOdekjgwz21yOxGLa1e4/bSmrEXro9eLo2HJhIawcZN+xqiS3w0Bn9cUFaMRh2wo9BPaEM05zgVJ93qWbs9hSbZ2gT+Vy7FXHzq/rr5kps7beufpO/ucx9U3+6V+SGXZp0MRiT8lC8bRlpe1p4G5xGc0lo65Sb3a5lVkLzsGM6EGktJh0jEQX8qH1iMZ8uCT3T2/EfRE24qw2EdJQ5PZ05To7hor/3R2vkxdzQRpKg82J5ucI0bIRgcGNJ0q4F2U8qFd04GL2I7lguvfDU8j8EncnfLJ3XRjVwmQ==
+X-Rspamd-Queue-Id: E0E8480002
+X-HE-Tag: 1790668062-959184
+X-HE-Meta: U2FsdGVkX19tIhb/PNN8G9ilMGX9kYTCrev2/abK39pB4Ac+gjDWJ1BKr3HTwxuJJ+3w27RHA0tRjMZWZPAzr1lpWbDlcq+r6qRtMZaUgZ38PkOv8yFLAWEWpbcFSwboYoQajUqJfLo8m2IdosnqMgV3iZX03kzF75xdKTI7+XUdOM3tiwaBCDiF59Hq+O8/srgnDhpkB4djKB/q+MkMC0W3KUMy+moJ7osJwGfRP0dHh2VDYqK/W4GTWsJVYYTjH3jK2gFCy75Q5IyeQLzs4wwIMy+0Ox+HfHzvJhqGrn6wkBgoUYeDEJ3UP260W1diiV72EgmaNZ4oJ1cRMHEC0GETqNy+33fkB1M3BcLrn+HYX8tBeFS0zrm41WwpObsMLTBVt/4Vz+420E7fCdK/RS40WtdHb2+JdiOxXmmXsXyZjmzQ6vqiMgFqdgvFG6DGP1rWNRuJJi6lsKmf41spGxAlOPe2Ayue4gE22QFRNb2y7WP5WRCoww7V5Wpheo2MwxQRkltyadWq2owZ9EWM238HvXb568/73sY+6JzIGkn+vJk0VeDBXBpBXfzgBhBvC7G4kHNqXD95TaWmL7F8ANNGphojI+5cZMxWBD2XzXgmS/O+jkq2lSOg6JhCaHVWK+KshDaHsyMN1mmFz4ppf73T6zECwPJhkHQ8uv55CZzRY+nbIkY5p5HoeTc4uz+3bhYgJVDBNNrUgrqN0tcybJaDABqRKp8SvsFeqfg/CXYtlhadqDvPUXnPdaiHF1zdxjrnf1N7X4pvyTIYVOvzBLvw4qch7JXzjbsNGP7qYmwQC7MRm5oiZLrFNlu5JKgDcEvgtTqQclyScM4lxd6kjf04kK1spylBVq+DaclbSOUHyBwLNcdkWwii1NYWA22IUjXaBROzHZR9fz19dvwlxmMyqzxCOFKo3C4aGlx1nDg2x3chw9ExYHYljucqzQK7cJIapEr1yP28XJmJJuL
+ aFSUEkPA
+ gnRDg/DBifpVKM+56D+YbO9IRAZjun2RbkCrJQOZvqBr+LmGicDdeddd6S7+IERcv1EvUWZ0anoj+/T7mix6lykdCgrc34SrKQFchwG4FIgylPVPu7ODxQuEYJzBA1Bb1wg9EPcUXxEocoAD16h5H0tvBp5N0IRVrKd1nb/bLFSWQh/kgD3tQqZleXe7t5Hao46yRHpjhyldjBMzFRX+T2WhWUAHYSRYFEJMJyNwtYtrD+V60ATNNkMXQU3/E0bRqL7/PxA/2IWCGLuN27uSe6i9QQ9mbGq4pyQGKBpWRxZrk1b8Fv3mBrNCK7dIRQOo9lpIvTUmaT/Q3Zm1HPApZ7G+Hpv2qMGF5EvTOAnsX5HlCnJ7ECmy4M1vdd84AcN6sD2tuwBWcipfJouU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,23 +146,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/27/26 04:54, Muchun Song wrote:
-> The device DAX vmemmap population still reserves one extra tail vmemmap
-> page after the head page.
-> 
-> Drop that extra reservation and let the shared tail page cover all tail
-> vmemmap pages after the head page, so DAX follows the same reservation
-> model as HugeTLB.
-> 
-> This reduces the reserved vmemmap pages for optimized DAX mappings to
-> one and removes the now-unneeded first-tail population from the generic
-> and powerpc paths to simplify the code as well.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> ---
+On 9/29/26 09:32, Kalesh Singh wrote:
+> On Mon, Sep 28, 2026 at 10:54 PM Sarthak Sharma <sarthak.sharma@arm.com> wrote:
+>>
+>>
+>>
+>> On 9/24/26 10:30 AM, Sarthak Sharma wrote:
+>>> This series fixes several correctness issues in mremap_test and
+>>> simplifies and strengthens its data validation.
+>>>
+>>> Patch 1 converts the mremap_test to use kselftest helpers, removes
+>>> manual tracking of failed tests and corrects some spelling errors.
+>>>
+>>> Patches 2 to 5 fix userfaultfd skipping, unexpected mremap success
+>>> handling, multi-VMA data validation and failure reporting when data
+>>> corruption is detected.
+>>>
+>>> Patch 6 removes the randomization and uses a simple pattern based approach.
+>>>
+>>> Patch 7 removes perf tests and timing infrastructure.
+>>>
+>>> Patch 8 removes validation threshold and always validates complete mappings.
+>>>
+>>> Patch 9 strengthens the multi VMA validation by also checking the
+>>> mapping state of holes after remapping.
+>>
+>> Hello everyone! Just wanted to check if someone has had a chance to look
+>> at the series.
+>>
+>> Also, Sashiko has a concern [1], and I had the same while posting the
+>> series. I hope I can get some opinion from the community.
+>>
+>> Currently, for PUD remap tests, we allocate a source mapping of 2GB. We
+>> only fault in the first threshold_mb amount of memory, remap the whole
+>> region, and validate the already faulted threshold_mb amount of memory,
+>> which is, by default, equal to 4MB and can be changed by the user by
+>> supplying a command line option.
+>>
+>> Since we plan to remove all command line options from teh selftests, I
+>> removed threshold_mb altogether, following some discussion on the list
+>> [2]. This would now cause a 2GB source mapping, and its contents copied
+>> from another 2GB buffer. This causes the process to have a 4GB RSS.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Yeah, that's a lot for small CI systems indeed.
+
+>> Sashiko says that this can cause OOM killing in small CI machines.
+>>
+>> Would it be okay to keep a 4GB RSS in this case, or should we find some
+>> other way of validating a part of the whole range instead?
+> 
+> Hi Sarthak,
+> 
+> IIRC when I initially introduced the test, John was concerned that
+> validating the whole range would significantly increase the duration
+> of the mm selftests; this is why the threshold was introduced. Please
+> check how much it increases if we validate the full range (with
+> David's suggestions) and if it's no longer a concern from other folks.
+> I am fine with removing the threshold.
+
+As discussed off-list, I guess it makes more sense to validate a couple of pages
+at the beginning, the middle and the end?
 
 -- 
 Cheers,
