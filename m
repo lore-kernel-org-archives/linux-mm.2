@@ -4,116 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED3E0CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 01:41:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38CD8CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 01:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C078C6B008C; Mon, 28 Sep 2026 21:40:53 -0400 (EDT)
+	id 2E12D6B0093; Mon, 28 Sep 2026 21:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6B2A6B0093; Mon, 28 Sep 2026 21:40:53 -0400 (EDT)
+	id 2B8CC6B0095; Mon, 28 Sep 2026 21:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 995D26B008C; Mon, 28 Sep 2026 21:40:53 -0400 (EDT)
+	id 1CF2F6B0096; Mon, 28 Sep 2026 21:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6161B6B008A
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 21:40:53 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6BEE40386
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:40:52 +0000 (UTC)
-X-FDA: 85265095944.12.2A44453
-Received: from o1.ptr9745.em.honeycomb.io (o1.ptr9745.em.honeycomb.io [149.72.141.136])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D4968120004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:40:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=J+anqOgE;
-	spf=pass (imf29.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790646051;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E0F4F6B0093
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 21:41:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E7411403A3
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:41:28 +0000 (UTC)
+X-FDA: 85265097456.22.3A7A029
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011070.outbound.protection.outlook.com [52.101.52.70])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5DDB220004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:41:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hRTOz3FF;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790646085;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=FYidPasWaXjAPYk3Dy/s1s1Hir2o/n5IvqOLUGZZbIc=;
-	b=SqRvhzh5zJ4NvAS1TpY9LvH7MKlH+us7GOHcwsFlnSVZnasvd1609bm+KUGjEWfrVmBcT1
-	l/rc6UFbIQnGaVj27e3RGUJXQMNHiGPixNzbZAzhZw0mnoq7El6kdM7AQcuxLXHfZCV4it
-	ARUAXfRV6UYj7g9zI5U+ZNjAnEzwB18=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790646051;
-	b=tKXhNWAeibrCTB5YV5ovlBaE/QfHTLwtrb+lop7dSOMn9bOIkAHfCWOVs5GZpzt3Ac30Mk
-	mHz7HrAd6IEORMLIP73MOzNOxZdGb0giiC6SvFiQZiIz4sT3h4Ec51vMmzkGsiPS+BPCmF
-	kctJztgFyYXlY9YcKzpAsxQIZ2jwJhE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=honeycomb.io header.s=s1 header.b=J+anqOgE;
-	spf=pass (imf29.hostedemail.com: domain of "bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io" designates 149.72.141.136 as permitted sender) smtp.mailfrom="bounces+3311449-c6d3-linux-mm=kvack.org@em.honeycomb.io";
-	dmarc=pass (policy=quarantine) header.from=honeycomb.io
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=honeycomb.io;
-	h=from:subject:date:mime-version:content-type:content-transfer-encoding:
-	to:cc:cc:content-type:date:from:subject:to;
-	s=s1; t=1790646049;
-	bh=FYidPasWaXjAPYk3Dy/s1s1Hir2o/n5IvqOLUGZZbIc=;
-	b=J+anqOgEgKf3SgYTGZMbymkbe3g2Zb21pR/ACzhWPMEm+/a64Q9ht5EJJclcqr0WSnh2
-	ntk9846l1dpTLfME59LrRAOrIEQOXEKrgE5DUv2LYbrtdou4AlhNta/9CibvJCwIkMGIe3
-	efOxOIV9xbiKP/8Jtx3DugPUyqcEsKXT+8+vzFUfopJ/xuJd6gOYEvToW0am21CVISerPw
-	1W4qc9bBIvu9cxidoQTRlwfPiOSWfsQTIu0xDD5bL5XGD0D17WiuwGU9bOnFaTleY9492q
-	pkmLVPZBV37T8wV7aRqOWxAogQJ7ie52eNLJ57N40g1Uh9VBE6dnTyoKfhoc9Esg==
-Received: by recvd-597f69d6cf-jpxxc with SMTP id recvd-597f69d6cf-jpxxc-1-6ABB1721-33
-	2026-09-29 01:40:49.573398085 +0000 UTC m=+366791.762543163
-Received: from [127.0.1.1] (unknown)
-	by geopod-ismtpd-10 (SG) with ESMTP
-	id m1IBuXr5Q0qLjTPFBMUn4Q
-	Tue, 29 Sep 2026 01:40:49.537 +0000 (UTC)
-From: Liz Fong-Jones <lizf@honeycomb.io>
-Subject: [PATCH v3 0/2] writeback: let foreign flushes reach dying cgwbs
-Date: Tue, 29 Sep 2026 01:40:49 +0000 (UTC)
-Message-Id: <20260928-wb-dying-cgwb-flush-v3-0-e35374884667@honeycomb.io>
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SuBMatndbDU95iys7SeuFwHaDdkYK5FhQrMAFuOIAT0=;
+	b=GWLKbsuobqPC139PSGTuGTpzL/dofZ1MJbb4ye6DrSBnWADK+jv9cY1efUETaTf5vSKuMF
+	jsSdydyP8q2/fxfLKLpvqxD5oUnWmJR3/5LHH9/ihNyBSMFvzFJ/5euWX4rt6H0bss2TEA
+	cGeNECx+6k8mbtlCMqYO0mB1RWm67Dc=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790646085;
+	b=H5qIKiZtf7ibDN+phgl+ZXVbmba4XwDsBT3y8miMGTayHShPDQGY6dXtdHEsnmz7mrZamA
+	fA8qfZc+SBBFvHA4uzTBCWf+49ZrTupHpyjDoPneUZb36HHRdaQHY3Q7+5+xoOmUzOiPJq
+	x+yp4i3q6nFbbZjvJ8AedEW4t9g2WnY=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=hRTOz3FF;
+	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.52.70 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=RVRubF/IV/DQyXoV2F/mnXhdq3iFHV+kgN9WGI16dT1Yna/zAG9IDbmMtLWIZdKZOIOpLgYN0X+sIW9cb31sqse8e09pykB/BfkKbjAxTs79Dl+kchAVN2CUVNsdhrDIUTj9JnLBe/yVNpHSdp/b+RN6XkRY3CClADthd6SJvgvLXUz7yYz16O4gvLh/Jc1icTP0IMNODOxOqR74MZCJVtFmn2jrNkZs2iVDD8phBCo4yIypIQVSzK/66FRfkzWBdPYdRk51Kd5Wjx/pCdG6+5e3ZxQ/ebsvjIEiNzlB9NXmt6tp8+0jKd0FAoV98aPkoIiJ/fHwqB3NV5+fvdMZGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SuBMatndbDU95iys7SeuFwHaDdkYK5FhQrMAFuOIAT0=;
+ b=XXEkkLqddoPGzaapku2WEphKpbPwCKdNpENwtwahKp/Mnf6dpcoV4lATkbOV6UhPFXKgKPKaLXfKS66z1+/PTWWsyHcgnkkc14eeW+zmfBYoF8NUtiV0tAEPUjEGjWsXx5FJBjRTuqbtxX3lWZ8Z9X4dl4RVpaISoyIfL/6O5A+tH/fu58R4TMyhjYhrJbTURfX7omDX1p+9VxSjtlqETuESB8bq3795zC1sBEUdSMK6RMviMrnSO5hDnm2hb42c221+WKlxHtmAr6pt/vUb9UjL+rIMjZJvAoBjyP1+5/WmH5VerUDhh22/WImE3mQdVR7C3a/KvrqIYJ5GnfGIcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SuBMatndbDU95iys7SeuFwHaDdkYK5FhQrMAFuOIAT0=;
+ b=hRTOz3FFs2Xp7LM+YggFcjUSWs2UpREqhMcXasf3/2yxEaRzMKdJBmcEjAcignH7vyBjvKIkecDDZIBPK3Zcua/aXqzc+jo9Qo2Q5/RVV7AQNhw7vwUsdz1vk5s14g2Q4rM3Xo2IoP1VQ9RpEwDddX5moALDqaTSrCiUBtLR4LnCirLEZHiAWM2/jlhh9PVfG+HfG9ALLINh0CvWfUuFbFonESshCk8THSsvBa3OPyzjxf0nLg5p2ZapzzAu+wj+Bx0oyRHMI2nl5tUt6mukbBpXegPReAwGzJuGHr/VIJN214o8n9hTZgKgfUVTU8ZX2ii2ZjcGZ/WA/50IrcfwUA==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by CH3PR12MB9078.namprd12.prod.outlook.com (2603:10b6:610:196::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
+ 2026 01:41:20 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 01:41:20 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 28 Sep 2026 21:41:18 -0400
+Message-Id: <DLRF245BL299.14P8UWBF8SAJJ@nvidia.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v4 08/13] mm/collapse: call collapse_file() from
+ collapse_single_pmd()
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>, "Liam R. Howlett"
+ <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
+ <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
+ <usama.arif@linux.dev>, "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn"
+ <jannh@google.com>
+To: "Kiryl Shutsemau" <kirill@shutemov.name>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand" <david@kernel.org>,
+ "Lorenzo Stoakes" <ljs@kernel.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>
+X-Mailer: aerc 0.22.0
+References: <20260928100630.21870-1-kirill@shutemov.name>
+ <20260928100630.21870-9-kirill@shutemov.name>
+In-Reply-To: <20260928100630.21870-9-kirill@shutemov.name>
+X-ClientProxiedBy: YQZPR01CA0153.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:8c::14) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/32Nyw7CIBBFf8WwFkNpi9SV/2Fc8Ji2GAUDLdo0/
- Xehbowx7uZk7j13RgG8gYAOmxl5iCYYZxOU2w1SvbAdYKMTI0ooIw1l+CGxnoztsOrS2V7H0GP
- CIH2BCik0Ss27h9Y8V+vp/OYwyguoIatyojdhcH5aZ2ORc/8XYoELLLjmDSe8FqU49s7CpNxN7
- oxDeSTSTw3/raFJUzNZV0qLfdXSL82yLC8X6YTWEgEAAA==
-X-Change-ID: 20260926-wb-dying-cgwb-flush-06e260e2abad
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7614; i=lizf@honeycomb.io;
- s=gpg; h=from:subject:message-id;
- bh=FlSwq10fpwOe+rVjk1KVSJzK0NCyqkRnCyVrGOzUL5U=;
- b=owEBbQGS/pANAwAKAaXO1OOXra/CAcsmYgBquxcgCNQTKBqqaROAmubisWey8LURlR3t3Uk81
- QoQ5ynDQPiJATMEAAEKAB0WIQSfW1LPQ0gyJmoTHwelztTjl62vwgUCarsXIAAKCRClztTjl62v
- wnE/B/9xS9/3l0UZ1Frv9AiJ4R5roP9rUyvfVtLKkdqgHUJhDlKi2vUPkybPMvVXVICTQ/BxXGT
- tPkziLPhide98bf8vsCu5l6YqXr+87/nFGQEi/2dctn58IvPbRAsWXAx5LUrp/QQ5LpNL2N/Vjv
- 7Csoi0VKqBgKRcZt21wccReBeaxrfx1Zf6V+IbVfTHjORvOkjHRy4fkg6MkTy6S6cCyGaZjs7TB
- gb7TTCCgxmR+VDQC5aRyMXOEunCqQUkJKEGqOlfhWvwSTdezV1ofzE7BGZE0A1D1kaYp1PN1ow+
- ePVomy7G99qqYrTjUu6IEcp3FAFEY2u2elINcamzy4pph7dV
-X-Developer-Key: i=lizf@honeycomb.io; a=openpgp;
- fpr=1F7714D7EC3441D2CECC24606A3F8B00FBDDD2A4
-X-SG-EID: 
- =?us-ascii?Q?u001=2ECuH7N2XAoeMR1zrzr=2F6NZrhli2vbKPOHff5fJuZuba6ZIE8QPyIf9mn4Y?=
- =?us-ascii?Q?ezqeFFjUkh=2FeROy4LtnO7KN9jZmed6EibRi2Q90?=
- =?us-ascii?Q?BqbUnLdfs45F6CAlvn1dTuFM2bHIDJj14zXYAXu?=
- =?us-ascii?Q?YEqmNTN3Oy1ldXwXRvDuRO3y+Tv9lTdiuwM8tv4?=
- =?us-ascii?Q?p2mBM6IaL99m+XY0sjLLJC73DV=2Fyh5VU4sEPupS?=
- =?us-ascii?Q?e174O68YpaDg042ky1n+K8=3D?=
-To: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Tejun Heo
-	<tj@kernel.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Xin Yin <yinxin.x@bytedance.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ian@honeycomb.io, Liz Fong-Jones
-	<lizf@honeycomb.io>
-X-Entity-ID: u001.GRlkmHQ+Ka/CKxmoC/CxTw==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CH3PR12MB9078:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a6e2098-2085-46b0-ebd6-08df1dcac2d9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|366016|1800799024|7416014|10067099003|11063799006|56012099006|22082099003|18002099003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	xcG8eLa9emT/mxy5c0Pex5HQhb6nf2Jpteg19Lw/N62nrFCOLT2BFT5Net68Dp2znZnFPdxtlP1hcQnoUtGdOsUT0PnqAk5TPR4uPkl/953xUW2O0qzhdku30udN2PLUus1T6OMIV+NeqXpp4gr4ElpgzsinR5oGSP6oGK0qbXJ85TdHTE/w8CEEF+joQzCSDWrZDGEhGkfpGQpnGJxJarpqewrtXnbJDbWu/Tj7wZ6ohZov3XZaaCqcKsTap/xjC5FYUKTnmTg+xQOQmC/v5c7ha7pbPuJmw8fGDL8z4VZr5ozA7SXn5IOpHX9B08BRKZfuPioS10OUrUnExFGkjnboyPk945FcsILUf03NHcshVTiATrSrNvXUnvKoCkd3xZSyt+SfNClw3b5LJ/9fcXhEEEAudXQZPTxuIqN+mUsb+LPjPcXyveeMg12g2xXsmrwElYtbydxIZRE/FfXEEy0XF83BAQAb5CKm4qrQRADJfx8fcOPOf+h7aDGGe1X79jS0tOuU0NYByLGpEAMUUX+q1taMg8VoGHv3Jp3ysRs87KWI2JnlqEQL4pKZRhCKJemp3dtyPDbEykZrS1qiaoN0wnpWBZmvejre+92zKsxjiv0vbtAJW7I9+fr4EiDX22yAFjy4/p/Az6PvxC5x4caw+kH59NmzbDHncfW/JDk=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(7416014)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZlNlSnI5UHIvR3ZyZUE0eGtMcDUwT1lkazJsUlhxK1N0djNGZnZsaEdmd2dr?=
+ =?utf-8?B?dWtnbjU5MWVpODgwTkVWcUF5SE5UWTRCaFhiRS9yNlZOYmdLWVpmOGRHdmtP?=
+ =?utf-8?B?bEVjZE9wb1JtMUFTTHpsWDlpRkRVM0JidENuVzdNVzB2NmExM0I1a055S1lq?=
+ =?utf-8?B?NS9FU29Pd0hPdzFvblFHVmZNemlRSFBSN3JCYmJPYTlEdEV1SGFNME91Z2RY?=
+ =?utf-8?B?TURFVEJCYnFzVEtjVXJ2enduK2d0aUo4SHk1eThGSDY2NjFDdnFORWVLbkI1?=
+ =?utf-8?B?TWZGakdIR0tkdUkwa1ZPVHozNWRINE1jSTR5ejhud0Fjb24xQit6Sk43VWJi?=
+ =?utf-8?B?eE1ERXhaM0FJMnVDQk85Wm1TU2JNa0JnK1g2c0xHR0lCc2lCZ3lyMEtFVDgv?=
+ =?utf-8?B?SkhNUDlDUWJ4djNVcHF1djRSVkxXMTJFYy9TcTZVbVZrMFgwNlRLa1BMWW1U?=
+ =?utf-8?B?QUdHUkkvRXBLdkwyWnZYYm1ZMDZNNTA2MzVjRDE1T3FhcXNSNURsNDYyZ1Mr?=
+ =?utf-8?B?eVhGUFBCQ3kyd0l1eVcrWTdkcW5mTG1aRU0xQm5EOG4ya0JuRjFacnNRSFcz?=
+ =?utf-8?B?SHNoRFphWEx0eVhNUjh6Tnp0ckFzRnQ3WHNqS0k5VUlyM0NWVlBML1JWUlVi?=
+ =?utf-8?B?Q2J6WU5aMG1SK3NmcGhvWitwNzU0SWg0ZGR1d254N28yUHhNVXlWcXJ1NlVq?=
+ =?utf-8?B?Y3YwZnBQenkzZVpDTUEwbytqSzIwVUcrQkZhVlBlekxDMXZLbG5kNElKSTJX?=
+ =?utf-8?B?UldFS0FNRlRROWliU3haclAxNzN5WCtIWkNCMHlaSjZXRkVoRmp1L3h6Mk5I?=
+ =?utf-8?B?dFh5YkszcnlvU2c5QktmeU9Rc0dEL2UrOXJ6QkluZE82dHFlV1lrVUwxUmVW?=
+ =?utf-8?B?bGZxNmdwMG1aN1czelRsWHo5cmlCRVM2U2w4eElxWWlrQ3BLTE1HUFdMUDU1?=
+ =?utf-8?B?aTFxbjZUM3laSCt3NXRCQ1FTbVBmOHlGeE9rMElkaC9vOENlRVBka3FhMlFE?=
+ =?utf-8?B?Y3dyTnkxMFNmK2FST3VndFErSVpSa0pNWWkwbkYzaERLeGg5MjN1YzhJd09D?=
+ =?utf-8?B?K1EwZzhRcDJxYkRoNzdrUDhsdjR6T1dReHQ1bWpEaDhhbWdzNmE2UUZzaS9a?=
+ =?utf-8?B?S2tLaWNweUFyVXViOXZuWXBKa1VxZjRDYVI2dndpbStNSkR0UTF5dURQSzcy?=
+ =?utf-8?B?WDJwVmo3TThoNDJvSXNkazlQdy9kY3dpazk4SkNCYnFsaEQrNlBVSTFnak53?=
+ =?utf-8?B?d05USnVZMFY4TVVkY1I4MlZEY1dKZkxpTkNaNS9sMmRRT2FsZ0ErWlFZckxm?=
+ =?utf-8?B?U2dVSW55Zmk1NTNnVnVrN0ozREM4eHFrbkZaN1Z2Tm01YUovTkEwNFA0N1lR?=
+ =?utf-8?B?RlFFRzNhaktmK1lLMGVndGZBdDVDTEZFNFYvbzJXVjNlTG5kbWV0UVMwREJz?=
+ =?utf-8?B?VUplQ1ZDQzhYdlhYbGJWS05HazdmWENtS0h6VHhyZXg3VHg4TzNvODhKZ0xJ?=
+ =?utf-8?B?eUVzWTRKcTAxeDc4eXBQWE1rNld5QXpXSTg5U3g1L0l0STdEMXRpaTVDWWhM?=
+ =?utf-8?B?blVDOTdWU09nK0ZYMW00dEVtcUlPU0dkQzQyaGVmMDdSWWlJL29ldGhHMFF1?=
+ =?utf-8?B?Z1pQeW5ZUCtJZDNpZ3EwelNnbmJJMUZUU3lDeGVyck02THRUYTA3NFEyZUk4?=
+ =?utf-8?B?K3QwSG9WMEV2YkVQbmI3LzUxR3djd1VSdSs5R2xsVjVreGVrZGRMOThNdXd1?=
+ =?utf-8?B?em5COEpWSXZVK1N0d3FaZlduUlBYTlZieDJVd1FCSWtQKzlHUGR2ZjQ5b2ZI?=
+ =?utf-8?B?NTNRajZObDNNTTl5YXlPb3hDK2lVWkQ1V2ZmTFNrSzB5YlAwaDl2KzJVdUZF?=
+ =?utf-8?B?VVJGQ2VEOExPYUNIQkpoM3FQRXJlUjkrcGFLWmpkTlBCQTFnbUt3RVFMVFhy?=
+ =?utf-8?B?UWJQTmV1dEhiYW94cmIvcDJMeVdvalg1Z0s0czkrc1VwL1hFSHAvbnZWLzYx?=
+ =?utf-8?B?d3ZGa1doZC8vejg2VDFneUp6c3JvQWxCNkZBaTd1dlBmMmlMNDNIWHNHbE9Q?=
+ =?utf-8?B?eWwxdlNCMzNMQXpQMmtVVG5XMlljaGU4dXE1dUlxOWdld29VQUhIM0lNcldV?=
+ =?utf-8?B?MENsaGRDb0VMeHlIUUE5TkRubDdpU3BlblRzaGl0NE9SamRSZitQaGtzZGdI?=
+ =?utf-8?B?Y2pFcDlMcVdwMDJUVmw1ZXBOb1pFd1VYN2wyT3pvSVE4T1o2NHEydWRsWEtz?=
+ =?utf-8?B?aHJWRW5YQmx5azhuVnJLTGRWY3NHNE5xQWNzUk1EQnRVa1V0ZWg2K29YNXMx?=
+ =?utf-8?Q?QPhg7OkckX/j4rm7Ko?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a6e2098-2085-46b0-ebd6-08df1dcac2d9
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 01:41:20.0394
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iCHX9Bc2pL7HJ/6pMtX1haRaZnVN5Yles+eu+qErLiEJR6g6PddGgLjrxv3XzdQf
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9078
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D4968120004
-X-Stat-Signature: ci9qwe54otix9pwk1ahoan4r3o5db19g
-X-HE-Tag: 1790646050-144788
-X-HE-Meta: U2FsdGVkX1+ULU9FCWR9oxCP5i6ini4q1SoNH29muyVr0/7E+dcz76T4ZyU+Igswgfa+uaqjFI2DR1TrdaCnL4U3CF7dTAzW7lgOdlvn8vMCHgj8d9SblVUrBP1yVmOPIwuJodkZ5YK7CLC/JF7uVYOAgMKs+KlJTfv2zWBBdJ9gkxK8D+/vdw3RnlduJakS1BbFBae/yvTlKfmhFpGVTrhG9QiqcOtAd+ZArA6LxYca1JzPZDT3W4ItHGlAfF8tVdNUM++47dvA9VEGX1glJNqvFKL2ln5+V6JSnSBZhyaKY6DGiLxx7yaaCMtd7w4zUeEibULkz6Oc2Y5xC7QqgJeG0f24/So9ZFqbfHY0is4ECW1Qa9eIwa40p72H9CbNhvyAp+lkPo8GrpQYdGpLKjhcc/ivz3SwaF2x1fEp17qUeP2yzR+W3IQ9D52ZqE4C/D83/kijqCAWtC35UZ7jwAREw3W6xiBBdWpMqTbi2v1brfL1PyNNNrCUKuTrmEUqq2kMQX/W02Ld+STg0rS5jNJLMissdVjH+49wYs7TZvf9fGm21TzShu0ZPV2cr15Y10LKSRE6vYCNBk5Mf7qRdU34GVtzS6AbHKqOzSlga5Vjjad41B7M2ryUfPtSSGHVbcZDSPwI5qkQTYqATTglKi6J5UM+xBntgNMZVHSn+Dia0MaBRDByfJQ+5gZmA8AkcOG7J2hjV+8xLvYW5xP9kmlzVuVKXYS7PDvOuEATxnXS23yCr8PH88Iftf0eke1Ev7DkIi/+mpbs7xGoxnTLHURfFjiZQc3oh1vy0M8Hm9fpSLqS4scLDSepf1fACSJ0bnVXCpzn6vzUzuPEtgJWiK2v6bMQE3IvKFvAD8t8qsWtfe7zNM4yve3TAvedkO43DQ2nm+IWS0eORoWtpqDLr0Wj0U3S/R7shuApA1vDDzBc4cd5Vh45RAi9/3kYmte27zGAjYeFtXjeTK4F3Gu
- h1ODOe3v
- jwtuV2VxodAYpZOpiLpK3sZei/LjGiCrCoDCPpKKonmPc2RIx1oTefZCO6sxFUCI65EFS6Q5WMVnlv2jkN/k4h3b4eQMXU+sdJxXBH4N/IHpd1zMixtfUTwj//tEHwRqvgKaD2zaafIJ71pUZgyTUEHUvcSR/9P5qBUvGiCcyNftssVFZarqv/e3rZ5caCbMIz9r7HunKDy8taW7ZhDDQkZ3sQP5yMJIZn0ar5bUAt5H9PxykFFQWx7p5u0IxLPCuH3Ho31PUqq0aauHETzjLEyl4tDgdjVrlVLkCl+np5X1JOa5/7OxNZvY6nzr+IQqf9rZLnZWrgE8XTtuBJaCPdT7bLjgIHnKMDtMW1mVLRxRpoWid3CfG5UgT6ljzjfkH3r9QdGTTizU2Xm3yIG2euSoDap89dUzKe14zt5Wp1PpAPLO+IJYTnSKh9NUaQexG0/Pi/E84l7+h2foO5NZ6Q7hCUParx3ytxLNNnkfdSfWShFaYDEJQCCUx3YzIWYDLyDdPXwzaH7SpaBvMbMVFyCE4vsP44CfJN9v2BWS8MObrLeUGmwfJJ2WaFuc4i3Yijok86FZwzwIklAUr6pz0Ol5txhNVBp7TQA6ICHw712ch4cQ+1gXP8zzYnw==
+X-Rspamd-Queue-Id: 5DDB220004
+X-Stat-Signature: 9nkeb8dq4fzjm5gjsoywk1m9m9xwcpbh
+X-HE-Tag: 1790646085-282224
+X-HE-Meta: U2FsdGVkX1/qUgM5KGBOWXa63UOdxeq+ByGxu76LWkald9j9SetQUjRDTGZJLmiOS/t+i9K/Wgs4iKjOuCtP0xjRyRbkzWrtvFO1SvlKR9HsSEjglsGAFaDOly8llxcdEewo1J9EnWjYMRrd+V6J54kLYVkrox+6q33r9RsLUI7y+PvnrQwCy/hAOqd09/dasWavvPJ5IhYLTlLKbwJ0QA3VTp0BmzlMQnTc9mIMkqBBjd+5viZsAQSH2QGX21m3MOGyVCr+hhis9/BhDRCepuDslTFw2OuEogGFSL+XusK9gMay6YL+u5t4RcOVIHuy8O5D4hMGj01y6MHoPVCK04Q9/MCQadbXXdQOE1kAXNgoyIkIMpYwcw4bOdsq07eoZO5VwxnQpEe8RS9K5+8lMg8c9gLYr5HXSBLAp4SCzX1JmVmBh35NE5FbRlgEQCsKoaVKyqNocgHvQ0MLljTQzW8E5+FeOxT4zWahxW6xos0LQopf1SRsjFPE1w0E9AiYDIeJTHk2AIKkBi/aHTP4zJCDEzwtmKSbWYhOELryaN9htFqdXdJEiUMfvOOaQaReLOjb2lZFZ86pcTT4Co2BRVB9pPwNZ5ijADiaeWSvRYGwdGJm620P3S/MLyVJinWXpmQSzHuWFsCvNaRszGvCy1yanLXv2R+HH5J8k8RSwkjOpRjrHiPiI9QOXCCgsqre46DH3afksE6qEVXcr/dqNKziRwZeaAw9NTheYfzq7zr0mTcUq9Qe4fJ4hpoq9mCfEHs+WlKL6GJbUxrOkiJE598mOo1YFmYy4EpbAejxwuS5k3QH3lU/Mpb9djI4ooR/dKDYjn0bZ7Ih/xOA1WgXZGwnKBsRYyizVl+UOU9GuseNzTg2d01LkfLzX1lS87kjMuttQM1qTrmWg13Xfr1mbfbVTIO8wZxtnH80Xy/7wo2ckJO9yFr4JAEjDK3Rv7RTrRz9JKVU36BmNtWu+0a
+ G1EMrna6
+ STB6PvmJ+yE3g6ahge9baKW81wLgQ8MCyM0zuiVwP+BE8OlIe7AIuBeyg5FJQdZ4NqDHVeNYeC2SbmOmb5X2BGQBt8xDD9GkR7P2QdW3UZN83FkBuKs5exVKN6DwPHElgWaeRcKsJ3rwYLxPlh/bVW/DSXuIacVHBk+qS8oAdD3wQXgubZ12u7J9yaQKfZrngCRZOcIDVCB/yc5HP1TDC+acWsarhbh9fST1U35iA4XNPJDZN1KodrKQG3QNN4m3CgqKyjazU3AYRpi9WaHgpgfFcTR/iKCoD8gjJrWCdJImoJGKo4N5MlhzbVcDkCOI1TLYV49LP5zzs3uXDLfuzMblkLL7QkUULKoOAK8ATEzUII7XRz57/FWOoAR2iYJoPyAnw+ukF4hv7HTmwv/h5vl43/8oQfH4DlScO7vaDr3ZyNpdngWW8L/itClNaeLMAWHCSnYpCHvVoRdItF8ZU+JcyOw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,157 +179,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-At Honeycomb, a container that reads from Kafka and writes columnar
-files to a host volume stalls for 30-60s after each deploy replaces it
-(v6.18). We're increasingly confident this is the cause: the stall
-looks the same as in the reproducer (little CPU use, lag growing
-linearly and then recovering), and the mitigation it predicts, moving
-our final syncfs after the last write, worked in production (below).
-We haven't caught it with probes in production yet.
+On Mon Sep 28, 2026 at 6:06 AM EDT, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+>
+> collapse_scan_file() reads the page cache to decide whether a table is
+> worth collapsing and, when it is, calls collapse_file() itself.  The
+> caller cannot get between the decision and the collapse.
+>
+> Move the collapse_file() call up into collapse_single_pmd(), so the scan
+> stops at the decision.
+>
+> Two things change with it.  The writeback retry re-runs collapse_file()
+> alone instead of rescanning first; collapse_file() repeats the scan's
+> checks under the page cache lock anyway.  And mm_khugepaged_scan_file
 
-Patch 1 keeps killed wbs in bdi->cgwb_tree until they are released, so
-foreign flushes can still reach them. Patch 2 kicks writeback on a
-killed wb that a live memcg's new wb replaces after a blkcg association
-change, which patch 1 leaves out of reach.
+So the new version is a little faster by saving a file scan?
 
-Based on vfs-7.4.misc, next to Xin Yin's 168a8c13159c, which fixes the
-sizing but not the lookup of a removed cgroup's wb. Each helps without
-the other; this series also applies to mainline. On mainline
-(fd179f8a05be), without 168a8c13159c, the test from the changelog gave
-52.8s, 73.3s and 5.2s worst lag before this series and 1.4s, 1.0s and
-1.0s with it.
+> fires before the collapse, so for an accepted table its status reads
+> SCAN_SUCCEED; what the collapse made of the table is for
+> mm_khugepaged_collapse_file to report.
+>
+> Preparation for splitting a collapse into a scan under mmap_lock and a
+> run without it.  The file scan has to stop where the anonymous one will.
+>
+> Assisted-by: LLM
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/khugepaged.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+>
+LGTM.
 
-Syncing before the removal isn't enough: cleanup_offline_cgwbs_workfn()
-skips a dying wb with any dirty inode and only retries on the next memcg
-offline. On ext4, syncfs can leave inodes I_DIRTY_SYNC: at 5000 files
-one syncfs still stalled in 7 of 9 runs (19-26s worst lag), a second
-syncfs avoided it in 5 of 5, and with this series one syncfs lagged at
-most 1.3s in 2 of 2. On XFS one syncfs left the wb clean in 5 of 5 runs,
-but a single 4KiB append from the old cgroup after it stranded the wb
-again (15-28s worst lag, 5 of 5; 1.0s in 2 of 2 with this series). In
-production, our writer synced after closing its data files but before
-writing its final Kafka offset to a small shutdown file, and moving the
-syncfs after that write mitigated the stall for us on XFS. In the
-reproducer, a 14-byte file written after the syncfs stranded the wb the
-same way, whether created directly or via a temp file and rename (16-29s
-worst lag, 7 of 7; with this series, 1.0-1.2s in 2 of 2 created
-directly); an empty file did not.
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-The harness that produced the numbers (paced writer, lag per second,
-MODE=alive control) is at
-https://gist.github.com/lizthegrey/2209d831930588f63076bdc0ac7b78e2, and
-a minimal recipe is below. Settings for all numbers: MEM_MAX=max
-POD_MAX=4G RATE_MBPS=250, plus NFILES=5000 SYNC_OLD=1 (or 2) and
-DIRTY_AFTER=1 or SHUTDOWN_FILE=offset|offset_rename|empty for the syncfs
-runs and NFILES=500000 OLD_SECS=120 SYNC_OLD=1 POD_HOP=10 for the
-500k-file runs.
-
-Also reproduced unpatched on bare-metal arm64 with Ubuntu's 7.0 kernel
-(ext4 on a loop device): 12.9s worst lag with the old cgroup removed,
-2.5s with it kept.
-
-Tested: arm64 KVM guests (virtme-ng), ext4 and XFS on virtio. No KASAN,
-lockdep, PROVE_RCU, DEBUG_LIST, DEBUG_OBJECTS_WORK, DEBUG_ATOMIC_SLEEP
-or DEBUG_PAGEALLOC reports, including a stress run toggling io on the
-parent of two writers 40 times so their wbs are killed and replaced in
-the same slot (160 takeovers, each followed by patch 2's kick, counted
-with bpftrace). W=1 and checkpatch --strict clean, no new sparse
-warnings. Patch 1 is under CONFIG_CGROUP_WRITEBACK; patch 2's
-wb_wakeup() and wb_start_writeback() changes are not, so v3 was also
-built with it disabled (arm64 defconfig without BLK_CGROUP, W=1 on the
-touched files, no new warnings).
-
-Not tested: x86 runtime, this series in production, linux-next.
-
-Workaround until this lands: syncfs after the old container's last
-write (twice on ext4). Lowering vm.dirty_expire_centisecs from 3000 to
-500 cut the worst lag on unpatched mainline to 4.8s, 4.6s and 14.3s, but
-did not remove the stall.
-
-Related: without 168a8c13159c the flush is sized from the dead memcg's
-own dirty pages, so this only helps while it has some. f6988c90671e
-(mainline) also matters: on XFS with 500k synced inodes and the pod
-cgroup removed 10s later, the handover was slow enough without it that
-the replacement fell 21-22s behind (vfs-7.4.misc), against 1.0-1.2s
-with it (mainline).
-
-Patch 2 was tested with a live cgroup whose io controller is disabled on
-its parent (its wb is killed and replaced) while a sibling keeps
-appending to its files, on XFS with 5000 files. With the kick, the
-replaced wb's inodes start moving over right at the takeover; without
-it, they started 12s late in one of three instrumented runs. The sibling
-still stalled in most of six runs either way (worst lag 20.3s, 1.2s,
-10.8s, 28.5s, 3.8s and 17.0s without patch 2; 2.8s, 22.3s, 25.7s, 17.3s,
-1.5s and 19.5s with it), because writing back the old wb's backlog took
-up to 27s and the sibling's foreign flushes reached the new wb in the
-meantime. Should foreign flushes also reach a replaced wb until it is
-clean, or is that not worth it for this case?
-
-Developed with Claude Opus 5.5, which wrote the code, the reproducers
-and first drafts of this text, and ran the builds and VM tests. Claude
-Fable 5.1 reviewed the code and the claims in this text before v2 and v3
-were posted. I drove the investigation from the production symptoms,
-designed the experiments and controls (repeated runs, parent-commit
-baselines, testing this patch on its own), and reviewed the analysis,
-code and results.
-
-Minimal recipe:
-	#!/bin/bash
-	# As root, cgroup v2, in a directory on ext4/xfs/btrfs ($DIR).
-	cg=/sys/fs/cgroup/wbmini
-	mkdir $cg && echo +memory > $cg/cgroup.subtree_control
-	echo 4G > $cg/memory.max
-	mkdir $cg/old $cg/new
-	append() {  # append $1 blocks of $2 to each of 1000 files
-		for i in $(seq 1000); do
-			dd if=/dev/zero of=$DIR/f$i bs=$2 count=$1 \
-			   oflag=append conv=notrunc status=none
-		done
-	}
-	(echo $BASHPID > $cg/old/cgroup.procs
-	 append 8 1M            # old owner writes the files...
-	 append 1 64k)          # ...and exits with all of them dirty
-	rmdir $cg/old           # its cgroup goes away while they are dirty
-	bpftrace -e 'kretprobe:cgroup_writeback_by_id { @ret[(int32)retval] = count(); }' &
-	sleep 3
-	time (echo $BASHPID > $cg/new/cgroup.procs
-	      append 4 1M)      # replacement keeps appending to the same files
-	kill -INT $!; wait
-	rmdir $cg/new $cg
-	# Unpatched: many @ret[-2] (-ENOENT) and the append stalls.
-	# Patched: @ret[0] only.
-
----
-Changes in v3:
-- Use wb_dying(), scoped_guard() with the offline_node list_del moved
-  into it, and {}; filter dying wbs right after the lookup in
-  cgwb_create(); comment wording (Tejun)
-- New patch 2: kick writeback on a wb replaced in cgwb_create() (Tejun)
-- Lead patch 1's changelog with the problem and its trigger (Andrew)
-- Link to v2: https://patch.msgid.link/20260928-wb-dying-cgwb-flush-v2-1-56b54cda74f2@honeycomb.io
-
-Changes in v2:
-- Keep killed wbs in bdi->cgwb_tree until release instead of walking
-  bdi->wb_list (Tejun)
-- Drop Fixes: and Cc: stable (Tejun)
-- Link to v1: https://patch.msgid.link/20260926-wb-dying-cgwb-flush-v1-1-a8d898085a3a@honeycomb.io
-
----
-Liz Fong-Jones (2):
-      writeback: let foreign flushes reach dying cgwbs
-      writeback: kick writeback on a cgwb replaced in cgwb_create()
-
- fs/fs-writeback.c                |   8 +--
- include/linux/backing-dev-defs.h |  13 ++++-
- include/linux/backing-dev.h      |   3 +-
- mm/backing-dev.c                 | 102 +++++++++++++++++++++++++++++++--------
- 4 files changed, 101 insertions(+), 25 deletions(-)
----
-base-commit: 168a8c13159c6e3f0f08da6f8fa2f633a91ba9fd
-change-id: 20260926-wb-dying-cgwb-flush-06e260e2abad
-
-Best regards,
---  
-Liz Fong-Jones <lizf@honeycomb.io>
+--=20
+Best Regards,
+Yan, Zi
 
 
