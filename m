@@ -4,97 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D83ECA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:21:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D3BBCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:39:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06CF46B0088; Tue, 29 Sep 2026 14:21:10 -0400 (EDT)
+	id 7E2B36B0088; Tue, 29 Sep 2026 14:39:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 042E06B008A; Tue, 29 Sep 2026 14:21:09 -0400 (EDT)
+	id 7923C6B008A; Tue, 29 Sep 2026 14:39:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9B306B008C; Tue, 29 Sep 2026 14:21:09 -0400 (EDT)
+	id 680856B008C; Tue, 29 Sep 2026 14:39:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD02C6B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:21:09 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34CEA1C3472
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:21:09 +0000 (UTC)
-X-FDA: 85267616658.25.6CBA55E
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B513B120004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:21:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kFi2h+Jj;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B61B6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:39:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3EDCF1A05E7
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:39:46 +0000 (UTC)
+X-FDA: 85267663572.24.EB9080D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8C1B72000E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:39:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsq+MtNW;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790706067;
+	s=arc-20220608; t=1790707184;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=9n0hzC0x8+atkCkPjmB/mDhSBqzGUWw3Sm2TyrM2wQg=;
-	b=K3YTnG3Qu648H5AuEUwLWAvApQ7nEpEFWQ8GZ0pI9U7tTdrJEHSVgvR9oG071fbB563eqH
-	nyRQD+QMeWmrdnRuzDhEKgGXj2KDeoquStKtewXgKQZ880F3S09HEMv6qaCLpdCQmokhhd
-	3fMe5j6Iv2TPPBghakwp8wLqLQ4Z1ys=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kFi2h+Jj;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eoY6gHtBmU6a534BKFQNg6hiDEc/4mQhGdZ4OCtJxeQ=;
+	b=3AKLnvbZ4FUM8OnfVYhtdq98DygXdUxCt9TL45a6wGD9Np4g/oNQgeFe/KIcisj0EFANAO
+	scRNz0EzEyVLGMyYD0bwTe4XqdDsPSbrso3+GV7Y+piPiFhgS2EXrDQeY/xmn+vZ5pY3pq
+	C0nEVs56MWb6v6P8jsI1GXPfKxqtc2Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790706067;
-	b=yOboHq2HOrCuP3yGFg5NfoOFmdabNaa1i+06j5uaLG+aA7UmqMeYYfQt5UT6j4K8hbSs0P
-	lJ8gXWTveAKZbRnjAba7LveVPLKtRqIYqkUxuglayR2sZUidL/1jhNQFRf2hfDThBjnWqC
-	spr2aa8FKetrxJZpLATfKEKj0f5QORE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790706067; x=1822242067;
-  h=date:from:to:cc:subject:message-id;
-  bh=5Zhe6pSCykayvbP3WxtEWQGiqMdJ6/ZBjKyH03H2vJs=;
-  b=kFi2h+JjRc43GDU+PMq4fg9TjM23t9CEREN8/mxWgPt2XQsD+4Cebe/u
-   /U8ONGwe4ZehSplhyjYaInq3CjTn0h6CwhoZJ2CT89S9wCewWoO1KTA+R
-   JNCYhqRdraNWE7+IJ4BbaGrAniGgUV3SY5Bl08V3iASDYlLuMh4xxaaj5
-   8Yk2qx4EbtTDxtbj8yZJ1YghUcb8JxXqAnbo6EWBB6yYInOTUkv1YovC6
-   BeOFDbaHuEE5i+pbVW4uwju2CLuGqG+InplGT+vhdP6XfmlpDR34Jxlzr
-   8gPc47tJ1FWr7FkHk7RnrXCv1FhGJ1PE8FpnoHgA0Vg8PaTgwuzjFZujR
-   w==;
-X-CSE-ConnectionGUID: s1lkhu/PTpa4gP866rGnxg==
-X-CSE-MsgGUID: q7qWUz+1R4OOaL30edNo+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90653443"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="90653443"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 11:21:06 -0700
-X-CSE-ConnectionGUID: L+kQrC2yQPusIgmQqrS7pQ==
-X-CSE-MsgGUID: CTTgUhqrSL2N2j3EAGeF2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; 
-   d="scan'208";a="313386737"
-Received: from lkp-server01.sh.intel.com (HELO 462990a40a85) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 29 Sep 2026 11:21:04 -0700
-Received: from kbuild by 462990a40a85 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xBcRp-00000000Pf3-2dBD;
-	Tue, 29 Sep 2026 18:21:01 +0000
-Date: Wed, 30 Sep 2026 02:20:46 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD REGRESSION
- 2ddb90ee544ae97215afc4698dc223293997cc43
-Message-ID: <202609300242.tMg440iL-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: cm8y8gcpbxzp84t59mkr9p7gtgc93q3u
+	t=1790707184;
+	b=kwNmXhTnPmuKjhniZ5y+dbYpdq69DnrftxpadU8Xqa0WMddAEACpin0IVw77MA7PHfcvrs
+	SlLQ2mwEaTLHfvf5+oIKmYSvBzBAdVKPf7reIShmz3hIF7UYCeuVV5acN0tr6P9YcQLt/Z
+	V0KUnPg0IJfjFv4o5Ovma0cyIG9NWNE=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsq+MtNW;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 797AA40841;
+	Tue, 29 Sep 2026 18:39:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10C51F000FF;
+	Tue, 29 Sep 2026 18:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790707183;
+	bh=eoY6gHtBmU6a534BKFQNg6hiDEc/4mQhGdZ4OCtJxeQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bsq+MtNWtOdA2aq+jJuJnDVkljsirbp93Y5SrZcHi14dt0uaKoWpyhZ/rbbQBd7vt
+	 XVyIEV0VOlNgIor4uAWUz/xisoDqPgJJPxHNmWSBSgyAn50jJwS3oy8atqrVH2Nuai
+	 XaIk6M37xjlp6hWy61bSibBbRVBiljmy6yQTzmcrEMaa5eMjcZGMamnFDKNM+9s+5Z
+	 N2DfxO52obWbANfCpTuRhA2brNAZ7RLFiWIGMuOdPYBeG+1WnCtb1uSIsEgcSkPaOY
+	 ChyUj47kxyIld535jBIctREbkI6Dj5g0tymHTgh+L1cVoDtftXbdRcmb3bcxQgBKAW
+	 dAYoJMRNTM1vA==
+Date: Tue, 29 Sep 2026 19:39:41 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-ID: <arv8J7ysrdazJmfY@thinkstation>
+References: <20260929174553.175333-1-kirill@shutemov.name>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929174553.175333-1-kirill@shutemov.name>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B513B120004
-X-HE-Tag: 1790706066-868745
-X-HE-Meta: U2FsdGVkX18oQJSj8NtIoyxPxGMLW2wZMa7s9JJJ7QREn0lBdQ3ZpQmdFYlG6PnpITKyD2cWB1Xa/M/lWo/yx5IeVH8NU9iC/j+okw6Yrb+/vi3Jp89+k1Wv7T9w9Uh93/N4YwvwqHB6lzv4v6uM8bzpA5sHWXOzLhcyvNP4tLG6JbKQvdBKVYw4pfWRQufg7KueyfWddoeAxSO0k43hZ1lAY5o84SES5TTypCnu/e2Tihv2kBK7Y6hJJ4j8BMEjI0QWvHtGhYESoRvWOcJ5OnRX/JZhZCOeYFUV2nkImpUs5pwIUqctG78jlDY6Nm0c+ddm7D6mzVl8TlTSmGrfmP048hY6AuEZNkrNi9ZX1FL9fcRSoOigX1CgkMcwpmxD4kWt4ejSSmV3PTbLAS3RFORA7UeslJ+nM9G+NpyrhRYrybgqZMFHoIfGfcUMjdFKPOjROSDU0w207L/wksT+9pqZ2joNqHyHaQcr8QAefal7xkIOTSWi7bXuPDXjh4Wjjq7EquhL6aU1IcVyjPtPzFru1LsKDl+VHPYGJAVIlN2Z1A+JO1FSDgOicCR0su84uTfWPcpZ/lLioKxWT8bZwfG8CQuOESTKrwnYPUNe5EAoiZ+cA8sLYGYDKNUHw4GT6gtYUkH0EfyvDFNXa41dA8Jb9O2M4n9anBQwEx510Wzf0RhQqPjHH6q8yr7RtPGf+k/ohYBwxSB5V/H3AR/+ZBOdT+m8SmAFfFiMO6q+DdHuH95RrX5fkZOo9M6y2IXI9pAU3oJxLXV42ZwSR/TgtLQfoY0SidVirq20eyn4qFthArr86DzKMgkn8AocMStc+tQaQZAaYyii4YIy/Zn3TFdjzVyY2TYclFo0ZU7HNcl6U4FoLhAwOStlGS+KRlPMDKbAyDq1sc5mHTkJdNt0Np5FulC+/78r4UB6GunhMl2Vglv/J6w7C5IcN48KSiaCnyTaoqCmcw60QQnNVJw
- AkIxpSGV
- k8RVTrjiuAMewt7o3lamImLpHHObiLzwd1yDOu1IvqISPxzgvhLEe5d4FjhJ8KyXBmSUlIhi0zIsTVJ0Uc/qXhU2tk6lsx8hHG+YbJg+1e7BGCnDPdCXxmJBhbnFQmSSeHymnUeSjZszygQBEVJaNKM7CUHmnbSU41iLju+cGui1s9JyHc+I86ZVJU0J4mWnL3Z4m94nXcO8xtHivZwnCsdwqlpYsTSeePgZV
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C1B72000E
+X-Stat-Signature: b9hykcbtbrxanzzyua89nukuie4883p9
+X-HE-Tag: 1790707184-777761
+X-HE-Meta: U2FsdGVkX18pvSXt/nHq2EwoSbvCJAYnHgf5Qa5IsOUomKu4i64HGWi5bB2yDiNLuudayR5cxeyZbRjwoU30Ax+Ae/cMfYFtF3V0V/AutCd73ojkYw/zUP4AzQ1wjLd+bIA9u1lg7+Kw8BHHWiiT/DFoqx5NHPvglO8EOaEb8LzvcBuHwyGKrHmmRxYMHCgZZiV0PXCjx0lslFxGVKhAAbxdn55puPGWNpxyOZ+K6D0IXxbKuuo8+MeuLDNVxnnVvR7mGHmRAMobG6rMqKK1fNvFsZKsp0XZr0A1vDlnt7tryXUK/moFVoeNRWulfS5aiwp7nuzd4wlzRY4TPJduv5dL/T/elyLL9YgASsS3DDGWTSn1Nd1/7O6rzJlKEZEXpJaxgp0zbfBL6voUAQ+/Ij+1mnitcixfctAVgtaToe0gbAXNlgI699wwSFZSt+9dlSmMwHI9qATJNHecekYbfR3jVRp1kAnJQquInQAMTzKnp1NELzOFwZpqvUT9pNYF6lL1b6GhtgH9FqhqRYTqcfujs0yLuOELTsF/EYyIjag48arcyHsBgdt6tP3ayzO2qzav/bGDYldT4BWeepCoacY5T73lPkgV+kvcZK1r8rw6wMF2qOU/D+zE2DqrB4N6zlM+oniznvAAQduejaxnhbCNW8cRRSuqFbPRLdcG9GXQzKawWWE/+eK1zmpd/+5AdOLU3kXD1oaR0eEcHMG9klSmMhC52ddJy2cnWNqi8vpAOaOyfcHRL1inJujZ4XN2sB2kV09IZaBC6gJYMRnEa0h12jHfMiHShdAYqO6kxIURDfRgIFjcqPyknE/f/ZN29zmSi4Cmyb5A8/wRmAfSaTRcaLIAPyE9UfInf2OJARIC5okmAGWdzR6r7+BxX2xxq76Nh6w9s3qGNJOYLYx3kY40BY8QP4ZJq6HKzYtQTxW2r0IJ522SJA62dejv69tILXUsdeWEoWqYdRaMr0S
+ PLqxghPy
+ tCgWhdQOWoYI+shb4gxDAeAae3smYex2FgMGIDAUloubsqRf9O0fB9Y1VFP7Sh5kTTcrJhNBqZTkg+0LP/UZivdADeg0Pkayg6URR+AJJqtNJQcEAea6RNwRcp5WQ/0kN8YN++SrpZjEN4dvNGZnsaLcFDPBcpA22/ukecaWCGXZZrkDhKQuEVbUO9QL8Rp7yZlm6aoeezWpuIRbUcvEhTI80RQhgVeQom07S3PRTNlL7lazXCSgPO13lFYFTbb/SYUbB+ZV4GiTp9C5oE/fZ5SXq5HXoqkq2X0cS0fecaWfcUp+W8hg9HOr58e1+oLNczQG7ENkKEMKSWDs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,315 +96,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 2ddb90ee544ae97215afc4698dc223293997cc43  mm/swap, PM: hibernate: atomically replace hibernation pin
+On Tue, Sep 29, 2026 at 06:45:51PM +0100, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> 
+> Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+> storm in defrag_mode"), direct reclaim and compaction for non-movable
+> requests under defrag_mode run at pageblock_order, to produce the whole
+> blocks that ALLOC_NOFRAGMENT needs.
 
-Unverified Error/Warning (likely false positive, kindly check if interested):
+> The retry decisions that follow still use the request order.
 
-    https://lore.kernel.org/oe-kbuild/202609121707.Hya5cxAX-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202609151628.hydefVEV-lkp@intel.com
+Indeed, good catch!
 
-    drivers/scsi/sg.c:294:1-17: ERROR: sg_fops: .read() can deadlock .write(); change nonseekable_open -> stream_open to fix.
-    fs/proc/task_mmu.c:1427 show_smaps_rollup() warn: 'vma' is an error pointer or valid
+> An order-0 request can therefore retry
+> indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
+> 
+> - Reclaim at pageblock_order gives up after one pass as soon as a zone
+>   looks compaction_ready(), and do_try_to_free_pages() then returns 1
+>   even though nothing was reclaimed. It returns before the retry that
+>   would reclaim memory.low-protected cgroups, so when most memory is
+>   protected, the pass that did run finds next to nothing.
+>
+> - Compaction at pageblock_order fails or is deferred.
+> 
+> - should_reclaim_retry() takes the reported progress as progress for
+>   the order-0 request and resets no_progress_loops. The request
+>   retries.
 
-Error/Warning ids grouped by kconfigs:
+Makes sense to me.
 
-recent_errors
-|-- alpha-randconfig-r2100-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- hexagon-randconfig-r2105-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- i386-randconfig-2102-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- i386-randconfig-2103-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- i386-randconfig-2200-20260929
-|   `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
-|-- m68k-randconfig-r2102-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- x86_64-randconfig-2101-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-|-- x86_64-randconfig-2103-20260929
-|   `-- drivers-scsi-sg.c:ERROR:sg_fops:read()-can-deadlock-write()-change-nonseekable_open-stream_open-to-fix.
-`-- x86_64-randconfig-2200-20260929
-    `-- fs-proc-task_mmu.c-show_smaps_rollup()-warn:vma-is-an-error-pointer-or-valid
+> Order 1-3 requests loop the same way, and should_compact_retry() also
+> checks their pageblock_order compaction result against the request
+> order.
+> 
+> On a production host (64G, defrag_mode, memory.low covering most of the
+> workload), 95% of direct reclaim runs were order-9 runs that returned 1
+> with nothing reclaimed, at up to 60k runs per second. Across ~200M
+> should_reclaim_retry() calls in a day, no_progress_loops never left 0.
+> The spinning allocations were SLUB slab refills for inode and dentry
+> caches. The time spent registers as memory pressure, and pressure-based
+> OOM killing takes down both workloads and system services.
+> 
+> Treat promoted requests like costly orders:
+> 
+> - Reclaim progress does not reset no_progress_loops for them.
+> 
+> - should_compact_retry() checks the compaction result at the promoted
+>   order. It does not retry COMPACT_SKIPPED, since the request can fall
+>   back, and it does not escalate compaction to COMPACT_PRIO_SYNC_FULL.
+> 
+> When the fallback is taken, reset the retry counters, so that the
+> fallback attempt gets a full retry budget before the OOM killer is
+> considered.
+> 
+> In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
+> 
+>                                         before    after
+>     should_reclaim_retry() calls           63M     293k
+>     peak memory pressure (PSI some avg10)  99%      12%
+> 
+> File creation runs 5.7x faster.
+> 
+> Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
+> Cc: <stable@vger.kernel.org>
+> Assisted-by: LLM
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/page_alloc.c | 85 ++++++++++++++++++++++++++++++++-----------------
+>  1 file changed, 56 insertions(+), 29 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 12fac9084c48..608487672d93 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4127,6 +4127,31 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+>  	return page;
+>  }
+>  
+> +/*
+> + * If fallbacks are not permitted (defrag_mode), we either need to
+> + * reclaim space in a block of matching type, or clear out an entire
+> + * block to allow __rmqueue_claim() to convert.
+> + *
+> + * Reclaim by itself is primarily freeing space in movable blocks,
+> + * since that's where the LRU pages live. So this works for movable
+> + * requests, but not for others.
+> + *
+> + * For those, promote the order of reclaim and compaction to help make
+> + * blocks, instead of spinning in reclaim alone unproductively. Retry
+> + * decisions based on the outcome of that work - reclaim progress and
+> + * compaction results - must account for the promotion as well, see
+> + * should_reclaim_retry() and should_compact_retry().
+> + */
+> +static inline unsigned int nofrag_promote_order(unsigned int order,
+> +						unsigned int alloc_flags,
+> +						const struct alloc_context *ac)
+> +{
+> +	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+> +		return max(order, pageblock_order);
+> +
+> +	return order;
+> +}
 
-elapsed time: 963m
+I think we should start distinguishing order and compact/reclaim_order
+in __alloc_pages_slowpath(). Silently overriding it makes it harder to
+follow and easy to make a mistake.
 
-configs tested: 268
-configs skipped: 8
+>  /*
+>   * Maximum number of compaction retries with a progress before OOM
+>   * killer is consider as the only way to move forward.
+> @@ -4256,8 +4266,11 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+>  	bool ret = false;
+>  	int retries = *compaction_retries;
+>  	enum compact_priority priority = *compact_priority;
+> +	unsigned int compact_order;
+>  
+> -	if (!order)
+> +	/* Check the compaction result at the order compaction ran at */
+> +	compact_order = nofrag_promote_order(order, alloc_flags, ac);
+> +	if (!compact_order)
+>  		return false;
+>  
+>  	if (fatal_signal_pending(current))
+> @@ -4299,7 +4316,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+>  	/*
+>  	 * Compaction failed. Retry with increasing priority.
+>  	 */
+> -	min_priority = (order > PAGE_ALLOC_COSTLY_ORDER) ?
+> +	min_priority = (compact_order > PAGE_ALLOC_COSTLY_ORDER) ?
+>  			MIN_COMPACT_COSTLY_PRIORITY : MIN_COMPACT_PRIORITY;
 
-tested configs:
-alpha                              allnoconfig    gcc-16.1.0
-alpha                                defconfig    gcc-16.1.0
-alpha                randconfig-r2100-20260929    gcc-10.5.0 cocci
-alpha                randconfig-r2107-20260929    gcc-15.2.0 cocci
-arc                               allmodconfig    gcc-16.1.0
-arc                                allnoconfig    gcc-16.1.0
-arc                               allyesconfig    gcc-16.1.0
-arc                                  defconfig    gcc-16.1.0
-arc                      nsimosci_hs_defconfig    gcc-16.1.0
-arc                   randconfig-1000-20260929    gcc-13.4.0
-arc                   randconfig-1001-20260929    gcc-8.5.0
-arc                  randconfig-r2103-20260929    clang-22   cocci
-arc                  randconfig-r2202-20260929    gcc-16.1.0 smatch
-arc                  randconfig-r2309-20260929    clang-24   sparse
-arm                                allnoconfig    clang-17
-arm                               allyesconfig    gcc-16.1.0
-arm                                  defconfig    clang-24
-arm                           gemini_defconfig    clang-24
-arm                   randconfig-1000-20260929    gcc-11.5.0
-arm                   randconfig-1001-20260929    clang-17
-arm                   randconfig-1002-20260929    clang-24
-arm                   randconfig-1003-20260929    gcc-10.5.0
-arm64                              allnoconfig    gcc-16.1.0
-arm64                                defconfig    gcc-16.1.0
-arm64                 randconfig-1000-20260929    clang-24
-arm64                 randconfig-1001-20260929    clang-24
-arm64                 randconfig-1002-20260929    clang-24
-arm64                 randconfig-1003-20260929    clang-22
-arm64                randconfig-r2308-20260929    clang-17   sparse
-csky                              allmodconfig    gcc-16.1.0
-csky                               allnoconfig    gcc-16.1.0
-csky                                 defconfig    gcc-16.1.0
-csky                  randconfig-1000-20260929    gcc-16.1.0
-csky                  randconfig-1001-20260929    gcc-15.2.0
-csky                 randconfig-r2105-20260929    gcc-16.1.0 cocci
-csky                 randconfig-r2107-20260929    gcc-16.1.0 cocci
-csky                 randconfig-r2309-20260929    gcc-11.5.0 sparse
-hexagon                            allnoconfig    clang-24
-hexagon                              defconfig    clang-24
-hexagon               randconfig-1000-20260929    clang-24
-hexagon               randconfig-1001-20260929    clang-17
-hexagon              randconfig-r2105-20260929    clang-24   cocci
-i386                              allmodconfig    gcc-14
-i386                               allnoconfig    gcc-14
-i386                              allyesconfig    gcc-14
-i386        buildonly-randconfig-1000-20260929    clang-22
-i386        buildonly-randconfig-1001-20260929    gcc-14
-i386        buildonly-randconfig-1002-20260929    gcc-14
-i386        buildonly-randconfig-1003-20260929    clang-22
-i386        buildonly-randconfig-1004-20260929    clang-22
-i386        buildonly-randconfig-1005-20260929    clang-22
-i386                                 defconfig    clang-22
-i386                  randconfig-1000-20260929    clang-22
-i386                  randconfig-1001-20260929    clang-22
-i386                  randconfig-1002-20260929    gcc-13
-i386                  randconfig-1003-20260929    gcc-14
-i386                  randconfig-1004-20260929    gcc-14
-i386                  randconfig-1005-20260929    clang-22
-i386                  randconfig-1006-20260929    clang-22
-i386                  randconfig-1007-20260929    gcc-14
-i386                  randconfig-1008-20260929    gcc-14
-i386                  randconfig-1009-20260929    gcc-14
-i386                  randconfig-1010-20260929    gcc-14
-i386                  randconfig-1011-20260929    gcc-14
-i386                  randconfig-1012-20260929    gcc-14
-i386                  randconfig-1013-20260929    gcc-14
-i386                  randconfig-2100-20260929    clang-22   cocci
-i386                  randconfig-2100-20260929    gcc-13     cocci
-i386                  randconfig-2101-20260929    clang-22   cocci
-i386                  randconfig-2102-20260929    clang-22   cocci
-i386                  randconfig-2103-20260929    clang-22   cocci
-i386                  randconfig-2200-20260929    gcc-14     smatch
-i386                  randconfig-2300-20260929    clang-22   sparse
-i386                  randconfig-2301-20260929    gcc-14     sparse
-i386                 randconfig-r2106-20260929    gcc-16.1.0 cocci
-i386                 randconfig-r2305-20260929    gcc-14     sparse
-loongarch                          allnoconfig    clang-20
-loongarch                            defconfig    clang-24
-loongarch             randconfig-1000-20260929    clang-24
-loongarch             randconfig-1001-20260929    clang-24
-loongarch            randconfig-r2101-20260929    gcc-16.1.0 cocci
-loongarch            randconfig-r2102-20260929    clang-24   cocci
-loongarch            randconfig-r2107-20260929    clang-22   cocci
-loongarch            randconfig-r2201-20260929    clang-24   smatch
-m68k                              allmodconfig    gcc-16.1.0
-m68k                               allnoconfig    gcc-16.1.0
-m68k                              allyesconfig    gcc-16.1.0
-m68k                                 defconfig    gcc-16.1.0
-m68k                 randconfig-r2102-20260929    gcc-8.5.0  cocci
-m68k                 randconfig-r2104-20260929    clang-22   cocci
-m68k                 randconfig-r2105-20260929    clang-22   cocci
-m68k                 randconfig-r2304-20260929    gcc-16.1.0 sparse
-microblaze                         allnoconfig    gcc-16.1.0
-microblaze                        allyesconfig    gcc-16.1.0
-microblaze                           defconfig    gcc-16.1.0
-microblaze           randconfig-r2303-20260929    gcc-14.3.0 sparse
-microblaze           randconfig-r2306-20260929    clang-24   sparse
-mips                              allmodconfig    gcc-16.1.0
-mips                               allnoconfig    gcc-16.1.0
-mips                              allyesconfig    gcc-16.1.0
-mips                 randconfig-r2100-20260929    clang-22   cocci
-mips                 randconfig-r2103-20260929    clang-24   cocci
-mips                 randconfig-r2106-20260929    gcc-13.4.0 cocci
-mips                 randconfig-r2107-20260929    gcc-11.5.0 cocci
-mips                 randconfig-r2200-20260929    gcc-12.5.0 smatch
-mips                 randconfig-r2301-20260929    gcc-9.5.0  sparse
-mips                         vocore2_defconfig    clang-20
-nios2                          10m50_defconfig    gcc-11.5.0
-nios2                             allmodconfig    gcc-11.5.0
-nios2                              allnoconfig    gcc-11.5.0
-nios2                                defconfig    gcc-11.5.0
-nios2                 randconfig-1000-20260929    gcc-8.5.0
-nios2                 randconfig-1001-20260929    gcc-8.5.0
-nios2                randconfig-r2200-20260929    gcc-11.5.0 smatch
-nios2                randconfig-r2306-20260929    gcc-11.5.0 sparse
-nios2                randconfig-r2307-20260929    gcc-11.5.0 sparse
-openrisc                          allmodconfig    gcc-16.1.0
-openrisc                           allnoconfig    gcc-16.1.0
-openrisc                             defconfig    gcc-16.1.0
-parisc                            allmodconfig    gcc-16.1.0
-parisc                             allnoconfig    gcc-16.1.0
-parisc                            allyesconfig    gcc-16.1.0
-parisc                               defconfig    gcc-16.1.0
-parisc                randconfig-1000-20260929    gcc-15.2.0
-parisc                randconfig-1001-20260929    gcc-13.4.0
-parisc               randconfig-r2200-20260929    gcc-14.3.0 smatch
-parisc64                             defconfig    gcc-16.1.0
-powerpc                           allmodconfig    gcc-16.1.0
-powerpc                            allnoconfig    gcc-16.1.0
-powerpc                     ge_imp3a_defconfig    gcc-16.1.0
-powerpc                        ppc64_defconfig    clang-17
-powerpc               randconfig-1000-20260929    clang-17
-powerpc               randconfig-1001-20260929    gcc-14.3.0
-powerpc              randconfig-r2104-20260929    gcc-16.1.0 cocci
-powerpc              randconfig-r2202-20260929    clang-24   smatch
-powerpc              randconfig-r2300-20260929    clang-24   sparse
-powerpc64             randconfig-1000-20260929    gcc-8.5.0
-powerpc64             randconfig-1001-20260929    gcc-12.5.0
-powerpc64            randconfig-r2104-20260929    gcc-15.2.0 cocci
-powerpc64            randconfig-r2106-20260929    gcc-15.2.0 cocci
-powerpc64            randconfig-r2307-20260929    clang-24   sparse
-powerpc64            randconfig-r2309-20260929    clang-24   sparse
-riscv                             allmodconfig    clang-24
-riscv                              allnoconfig    gcc-16.1.0
-riscv                             allyesconfig    clang-24
-riscv                                defconfig    clang-24
-riscv                 randconfig-1000-20260929    clang-17
-riscv                 randconfig-1001-20260929    clang-24
-riscv                 randconfig-2000-20260929    gcc-11.5.0
-riscv                 randconfig-2001-20260929    gcc-11.5.0
-riscv                 randconfig-2001-20260929    gcc-9.5.0
-riscv                randconfig-r2100-20260929    clang-24   cocci
-s390                              allmodconfig    clang-24
-s390                               allnoconfig    clang-24
-s390                              allyesconfig    gcc-16.1.0
-s390                                 defconfig    clang-18
-s390                  randconfig-1000-20260929    clang-17
-s390                  randconfig-1001-20260929    gcc-10.5.0
-s390                  randconfig-2000-20260929    clang-24
-s390                  randconfig-2000-20260929    gcc-11.5.0
-s390                  randconfig-2001-20260929    gcc-11.5.0
-s390                  randconfig-2001-20260929    gcc-8.5.0
-s390                 randconfig-r2103-20260929    gcc-9.5.0  cocci
-sh                                allmodconfig    gcc-16.1.0
-sh                                 allnoconfig    gcc-16.1.0
-sh                                allyesconfig    gcc-16.1.0
-sh                                   defconfig    gcc-16.1.0
-sh                    randconfig-1000-20260929    gcc-9.5.0
-sh                    randconfig-1001-20260929    gcc-16.1.0
-sh                    randconfig-2000-20260929    gcc-11.5.0
-sh                    randconfig-2000-20260929    gcc-14.3.0
-sh                    randconfig-2001-20260929    gcc-11.5.0
-sh                    randconfig-2001-20260929    gcc-16.1.0
-sh                   randconfig-r2302-20260929    gcc-16.1.0 sparse
-sh                      sh7710voipgw_defconfig    gcc-16.1.0
-sparc                              allnoconfig    gcc-16.1.0
-sparc                                defconfig    gcc-16.1.0
-sparc                 randconfig-1000-20260929    gcc-8.5.0
-sparc                 randconfig-1001-20260929    gcc-15.2.0
-sparc                 randconfig-2000-20260929    gcc-12.5.0
-sparc                 randconfig-2000-20260929    gcc-14.3.0
-sparc                 randconfig-2001-20260929    gcc-12.5.0
-sparc                randconfig-r2306-20260929    gcc-12.5.0 sparse
-sparc64                           allmodconfig    clang-20
-sparc64                              defconfig    clang-24
-sparc64               randconfig-1000-20260929    clang-20
-sparc64               randconfig-1001-20260929    clang-24
-sparc64               randconfig-2000-20260929    gcc-12.5.0
-sparc64               randconfig-2000-20260929    gcc-8.5.0
-sparc64               randconfig-2001-20260929    clang-24
-sparc64               randconfig-2001-20260929    gcc-12.5.0
-sparc64              randconfig-r2104-20260929    clang-24   cocci
-sparc64              randconfig-r2307-20260929    clang-24   sparse
-um                                allmodconfig    clang-17
-um                                 allnoconfig    clang-17
-um                                   defconfig    clang-24
-um                              i386_defconfig    gcc-14
-um                    randconfig-1000-20260929    gcc-14
-um                    randconfig-1001-20260929    gcc-14
-um                    randconfig-2000-20260929    clang-17
-um                    randconfig-2000-20260929    gcc-12.5.0
-um                    randconfig-2001-20260929    gcc-12.5.0
-um                    randconfig-2001-20260929    gcc-14
-um                   randconfig-r2201-20260929    gcc-14     smatch
-um                   randconfig-r2202-20260929    clang-24   smatch
-um                   randconfig-r2308-20260929    clang-24   sparse
-um                            x86_64_defconfig    clang-24
-x86_64                            allmodconfig    clang-22
-x86_64                             allnoconfig    clang-22
-x86_64                            allyesconfig    clang-22
-x86_64      buildonly-randconfig-1000-20260929    clang-22
-x86_64      buildonly-randconfig-1001-20260929    clang-22
-x86_64      buildonly-randconfig-1002-20260929    gcc-14
-x86_64      buildonly-randconfig-1003-20260929    gcc-14
-x86_64      buildonly-randconfig-1004-20260929    clang-22
-x86_64      buildonly-randconfig-1005-20260929    clang-22
-x86_64                               defconfig    gcc-14
-x86_64                                   kexec    clang-22
-x86_64                randconfig-1000-20260929    gcc-13
-x86_64                randconfig-1001-20260929    clang-22
-x86_64                randconfig-1002-20260929    gcc-14
-x86_64                randconfig-1003-20260929    clang-22
-x86_64                randconfig-1004-20260929    clang-22
-x86_64                randconfig-1005-20260929    clang-22
-x86_64                randconfig-1006-20260929    clang-22
-x86_64                randconfig-1007-20260929    gcc-13
-x86_64                randconfig-1008-20260929    clang-22
-x86_64                randconfig-1009-20260929    gcc-13
-x86_64                randconfig-1010-20260929    gcc-14
-x86_64                randconfig-1011-20260929    gcc-14
-x86_64                randconfig-1012-20260929    gcc-14
-x86_64                randconfig-1013-20260929    gcc-14
-x86_64                randconfig-1014-20260929    clang-22
-x86_64                randconfig-1015-20260929    gcc-14
-x86_64                randconfig-1016-20260929    gcc-14
-x86_64                randconfig-1017-20260929    clang-22
-x86_64                randconfig-2100-20260929    clang-22   cocci
-x86_64                randconfig-2101-20260929    clang-22   cocci
-x86_64                randconfig-2101-20260929    gcc-14     cocci
-x86_64                randconfig-2102-20260929    clang-22   cocci
-x86_64                randconfig-2102-20260929    gcc-14     cocci
-x86_64                randconfig-2103-20260929    clang-22   cocci
-x86_64                randconfig-2200-20260929    clang-22   smatch
-x86_64                randconfig-2300-20260929    clang-22   sparse
-x86_64                randconfig-2301-20260929    clang-22   sparse
-x86_64                randconfig-2302-20260929    clang-22   sparse
-x86_64               randconfig-r2101-20260929    clang-24   cocci
-x86_64               randconfig-r2102-20260929    clang-22   cocci
-x86_64               randconfig-r2106-20260929    clang-22   cocci
-x86_64                                rhel-9.4    clang-22
-x86_64                            rhel-9.4-bpf    clang-22
-x86_64                           rhel-9.4-func    clang-22
-x86_64                     rhel-9.4-kselftests    clang-22
-x86_64                          rhel-9.4-kunit    clang-22
-x86_64                            rhel-9.4-ltp    clang-22
-x86_64                           rhel-9.4-rust    clang-22
-x86_64                           rhel-9.4-rust    clang-22
-xtensa                             allnoconfig    gcc-16.1.0
-xtensa                            allyesconfig    gcc-16.1.0
-xtensa                randconfig-1000-20260929    gcc-15.2.0
-xtensa                randconfig-1001-20260929    gcc-9.5.0
-xtensa                randconfig-2000-20260929    gcc-12.5.0
-xtensa                randconfig-2000-20260929    gcc-16.1.0
-xtensa                randconfig-2001-20260929    gcc-10.5.0
-xtensa                randconfig-2001-20260929    gcc-12.5.0
-xtensa               randconfig-r2101-20260929    clang-22   cocci
-xtensa               randconfig-r2105-20260929    gcc-15.2.0 cocci
-xtensa               randconfig-r2308-20260929    gcc-11.5.0 sparse
+This would change how hard we try to compact with defrag_mode in direct
+compaction as it won't try compaction with MIN_COMPACT_PRIORITY anymore.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+It doesn't make much sense to change that as part of this fix?
+
+>  
+>  	if (*compact_priority > min_priority) {
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
