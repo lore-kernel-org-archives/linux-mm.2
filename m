@@ -4,128 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BCA2CA5FB1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83498CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 189F96B0096; Tue, 29 Sep 2026 06:27:35 -0400 (EDT)
+	id 937386B0088; Tue, 29 Sep 2026 06:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1611A6B0098; Tue, 29 Sep 2026 06:27:35 -0400 (EDT)
+	id 8E7C46B008A; Tue, 29 Sep 2026 06:33:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09ED46B0099; Tue, 29 Sep 2026 06:27:35 -0400 (EDT)
+	id 7D8986B008C; Tue, 29 Sep 2026 06:33:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CFB446B0096
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:27:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 458181C30EA
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:27:34 +0000 (UTC)
-X-FDA: 85266423228.14.1F48359
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 794F2A000A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:27:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ANSMJgtv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=smostafa@google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 511466B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:33:52 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5893140487
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:33:51 +0000 (UTC)
+X-FDA: 85266439062.30.1F8DA0F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A3F961C0004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:33:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lYe1EwY8;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790677652;
+	s=arc-20220608; t=1790678030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f5Y1Bj47kFdGtgtMUGRUSsPhxIRB2mIpZUPvY4e79ZM=;
-	b=zMcznn2bw4wX5z3ptXA+6GGybv8XRBmg1z+kl87FAE5MZ1fI132thyUSD8KJ1z3GAD/C0E
-	ojyXnLd2WgdHfJ4o4V0Cq1GjMGJck+jRFGWo8ovZCDVeCBZAr0qWk471JYW5fC67ofb8TN
-	+0WO+tD5kYUZOw2A2s74mIl9LurHSUg=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=YRtSwT7DxMXKYJO0wSAUy4nj5QmZCbCVMb/MIlcAvf8=;
+	b=g06UU0k9DmHEFMuUhc9CPgk/A98Y3+6zaQ1SWsDecKnIhHVFuQAgvk1KRnyWJNV8IGmA9K
+	D4bUvSquXTCtaoaPJSqdG39P+XquUMw87jCk+ULFhCSyZQDJfS41S7f2w/m5HVpSNVdOhh
+	KEWLzZUKbPqKdhzLIkZ28jJ3F0k98wY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ANSMJgtv;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of smostafa@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=smostafa@google.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=lYe1EwY8;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790677652;
-	b=VbkyGeJcuvy2ShFbLbd6LvTUGAdc3Y2o7ebgK/hzmZH59n2ReTpkNLQU1+6JuOR0r/DiXs
-	VzE+5np8zw7oNDJEk6vfClpzbRZIze1qyslN06j0jC0zJUoncA/PNhrn/wrvTy9VUf8BIi
-	gXWuDA3vPmlUFsBtJz0Sd9kEPzZGfMw=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a0061bf0d3so33495e9.1
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:27:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790677651; x=1791282451; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=f5Y1Bj47kFdGtgtMUGRUSsPhxIRB2mIpZUPvY4e79ZM=;
-        b=ANSMJgtvihsr3lZ736V17mlv3mzVT5OEH2JyaINPo8Rdy/HEdDAEyU4ojDAT1VQjoF
-         WYwDJBPA7EMd9NI8NVCNBSSVw7LQnq/prqOtQvHeeT82QhvQsuGrjrtHk7CuDsDdvn7X
-         36C85yo1/wKYRFPo721s3kgf15TdrcOoJGcP8qz57U6DUnzPuZmPJvzyjnx1Atg3RZfA
-         uwR1CoZb6loyxFo9/rMNDJI3n5ojVGGIB/i3s6WksFxmLxtVtgSoRxYL59pEW6H8b+9T
-         rRYLUHIOiturmD7C+yBPk/7gSaYR1lguXsdPk9ayOZwUScE9tzjMU6UOQBqChMzXiIuZ
-         EZ4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790677651; x=1791282451;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=f5Y1Bj47kFdGtgtMUGRUSsPhxIRB2mIpZUPvY4e79ZM=;
-        b=ODtdDS9UVWJwuJR4Ftzf36KF+7dGnzje4hsF5FSQCuzmm3NTvOVz04sEvMJJcY9OFc
-         9v/lPsk+hBLwic5pVPbpr/PBifb3gqKW1bLOOxISZGrw0AAxhvog9guHD/0e1aLez4Ac
-         6gppaiWJ+dE/UGa0I4iPIQd2W2p0Q9mkbhS5+7aVcNdA4phVqEgiBZXRsjo7vLjHhreO
-         WJ+GLiIk/qSrPsuRAHMB4GUYCkN4F8JE7GMK01Z+4qeXc39fwbhhupTh9o/5HnjVadoK
-         KlkLtAL2d21H2oKyxf64+RPVZQ4Isxgu5Ag426vU+0Pzs0dEn1YtlqJvxxqqZ1V0ODCL
-         jygw==
-X-Forwarded-Encrypted: i=1; AKwUvBzAzz5teGUcydMhdrUjSAQ1oSyzbWOdgdlO3lJUIA0tNWT3I/D86rubrhiGE/KKvWaodjEdXVSzjg==@kvack.org
-X-Gm-Message-State: AFuF++mCXHuklSoufSqXel9kHrVhkoq73QTbVfNf+mbfxplz7GIn3fOX
-	0/4UgFzYgt/0t9Qlgz313g5naM7cH7Tul5sgykGaELZ4MuedDaSQMIn6ge/xN/s6IA==
-X-Gm-Gg: AYBFou2uBTMqIzSBx8DPXGT6kfiB+La6uyGZfKgy7W1EqWDGzugmUoImR6202p1ZLkH
-	gRvh3NTQQh049OLlJ/ie0DepZllWcBA/0/rXBaqOn5FAmcdT+OjyPiimnh9r8LrM9QZUWJjSHzP
-	jU0OHhKfd7uPvpzDc1b4K34a7Au3UDRuyyz4XxCR/0aJmeakPHaVCCbE3r2Run1MRsvpkQX5QtO
-	eQ4722wwSu2IOze679SmkrmKTCxvV9PWLuQKd5n0x7v19hcBBjU5YlGx8IvPrOIyfdiyqEHHVzq
-	RFRytZ3tSaHeherdgNobCYDoQvKXRlVp+dvBbT6tlVbTqEAkf/rblu0PG1u8duxHXyWSCT+tecY
-	q09+WTp81+X55cjd1hMDG+fR9DMkxXCuECxBsv6Yjvx1y4ARISdK94gsU5jSZOC2q1GLqAWbcCk
-	+TMVjllmUoGY2qQtT0e2Xr6hjFI8z5B+4eGXkX8HWGAoMv1kqea+aE1MSr09e2a5BzrExFAnHuZ
-	eeuUKGYy843XksFa6IvaRpEMyBVTez1JeAIbs3u
-X-Received: by 2002:a7b:c7d0:0:b0:49f:e312:54ea with SMTP id 5b1f17b1804b1-4a00f46d761mr379975e9.12.1790677650115;
-        Tue, 29 Sep 2026 03:27:30 -0700 (PDT)
-Received: from google.com (250.192.189.35.bc.googleusercontent.com. [35.189.192.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a00c10c656sm103565205e9.2.2026.09.29.03.27.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 03:27:29 -0700 (PDT)
-Date: Tue, 29 Sep 2026 10:27:19 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linux-hardening@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	corbet@lwn.net, skhan@linuxfoundation.org, catalin.marinas@arm.com,
-	will@kernel.org, mark.rutland@arm.com, akpm@linux-foundation.org,
-	urezki@gmail.com, mingo@redhat.com, peterz@infradead.org,
-	juri.lelli@redhat.com, vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-	mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
-	kees@kernel.org, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, gustavoars@kernel.org,
-	bigeasy@linutronix.de, clrkwllms@kernel.org
-Subject: Re: [RFC PATCH 12/15] sched/task_stack: Introduce
- ARCH_HAS_VARIABLE_STACK_SIZE
-Message-ID: <aruShxHCUWEHr4i1@google.com>
-References: <20260928174122.3380703-1-smostafa@google.com>
- <20260928174122.3380703-13-smostafa@google.com>
- <5c6edcfe-8332-4db6-b0fa-ca5d137a2075@infradead.org>
+	t=1790678030;
+	b=VKuFMMimMlXR5gb7yb+Qt7ID52OvNwt67CdclHREUIUYNS7nikAYvcamZmM2yDkZvUGM2k
+	Xne5yPQzFTCoPba3hXQ1yP11N/n2JIdFdciMgpqBSycEpyX1y/IEIVurCvEPb8d89UxGnD
+	86tFwwlH/TeaC03NKCublRyPDDftL/o=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 13284497;
+	Tue, 29 Sep 2026 03:33:44 -0700 (PDT)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 546643F86F;
+	Tue, 29 Sep 2026 03:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790678027; bh=eV5lqS2npUIZnoSAYX7UiQBLBDCa+eZARi2ceYOyVCw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=lYe1EwY8DwO7+J7j52MD7A/TQLzikpNOO11GzjKqoGFprZGEn00qaYDu/Z9fTlGw5
+	 SoOml5LaeyA0YGyacrf9uinXHhW3RmZS/im82Mw+MuR3QkApsQWAEnFA6IZtj6bXlJ
+	 Sjl4jLVxIji4Vq5ZxGwdm2PuOqGgjq9Zk5euWGOk=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v4 0/2] kselftest: mm: fix intermittent failure khugepaged
+ test
+Date: Tue, 29 Sep 2026 11:33:17 +0100
+Message-Id: <20260929-fix_khugepagd_fail-v4-0-2169c18f2576@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c6edcfe-8332-4db6-b0fa-ca5d137a2075@infradead.org>
-X-Rspamd-Queue-Id: 794F2A000A
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAO6Tu2oC/32NWw7CIBREt9LcbzEtaCn9ch+mabBc4Eb7CCjRN
+ N272AX4eSYzZ1aIGAgjtMUKARNFmqcMp0MBg9eTQ0YmM/CS16Xigll693f/crhoZ3qr6cEqyUX
+ N7bkxlYQ8XALm1i69dpk9xeccPvtHEr/0ry4JVrKbaCQqbrHS6qLDeBzmEbpt276fF3sfsgAAA
+ A==
+To: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+ "Gregory Price (Meta)" <gourry@gourry.net>, 
+ Yeoreum Yun <yeoreum.yun@arm.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3274; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=eV5lqS2npUIZnoSAYX7UiQBLBDCa+eZARi2ceYOyVCw=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBqu5QGVeBBp6tar+v8bI+fW5DKxbPrbgKzSblUm
+ I/EQ3fxmZqJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCaruUBgAKCRBt1cPRWsUx
+ M3MNDADG5woL0VLW+Y+vfB0vU+OeGg+Curv1eH15X0CF0c38pqdDED7OE0AX4zbl7xsJASMnX4n
+ IlaS3Cj8OL1jhOXwcWwELevqc3cQ7FBDgFpHGSTk+ClyxBWpZ04lBm6OpEyufOo281yW5U5b92z
+ zCvv9y0NdCU+IDf5rVSu8ikwGj50sjN/vkOAkssuj7KOmFp6G6tzXl9xwht8eAPdGx3rSFni82E
+ hfrBORSxbHJBFCIcRQdqYqMEJ/rWX2iT7kTJtNkefOuNyKILoPZ8u5zvZiTNYlKO7J+YkYYCUMP
+ qJBG9eSYXu46yJ9hwozKBG+PndvcsDeHUwE+dEyOvQ31qMD6yNzCKe9e2OiDdFCOh/qDHOBXcmg
+ ICDN0PTtK5AF86RQKI/jVWauWbIGAia40zYcHbOe5J6ectuM8elwS3u3qhFG00eFfb/1pfbKE5S
+ Si3s++y9Y4EvVCQKi7c7y59mhVPNMXWb9zaJcM7chgBJ2EHEpv+AZTD67BBanes32esUU=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: 5zdsfp1fpg38zw5xmpddjgai6hmuasou
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: m4gtwrtgks4wr1k5od68c9hz8qn4cqjy
-X-HE-Tag: 1790677652-596656
-X-HE-Meta: U2FsdGVkX18RyNVsvdnkQE91vCRZHdfAt6jW7OH3ABUOgWio2FBXMtEPCa1vbuS7cVskNoT+5kFhL1KcZPd9spunf5Fqx/bm0ToV39rpYRsP2LYhq6bHvvrvDLpKMK/TVDjeLmrrKbqr2GveyFdaszBPyHdWqqsAeVgQ/MDP68oIlgAhlme20ePYJuKt5VzKp5Q/e7hPIHqSHH6F7bjURyicJ7UfiI9SfG5r3m5J5OXF3YNcG/bm8zC9x3E0MCAj0WTiSy9WU0+jVvCmAOqLCmKbt2mM6FgdEdtd2PjvwHysRVPolWdCBOqqGSn8f+GL8fMfWtMQ32EBhQqfH0D4CgDdotpvghVvJHQJ4/f9hu6V5pKhIVZhhRwhMDuYqwfnuMc3lxo18ImLPfNdo7p/VpLHWSFw+pCC3QaUg4G78ngkNdn/HWO8yaV3X+X2/46nop6YrQ+zJop21o5GJU9LDolmBqe5N+HsDnGcM5S8XDT0a9u/t4aZoGl2gIvQBvGEZDKStIBAbqNeUbEMDV/4MGl2uvgkey3L+3D8pObG8RRYqyBogAVByA+M/uA1tHTpHpIrjMvbxtHdDqvZObktwKFA+vUHuDgcdIFye5XWMS98wqORtjYRwpAPEQjAIOM4hH6N0ctGTYaBGa9crI2t+/o7jGKXXNv/7xR0+UvFvEMmGuN5KKHth5rIKglxCPBrEtlUsroAnUTSX6k7EE7h8c1yuoeGg5gB/xxtrRuvmCwsu08BT0I3avEnos9xKFuQgOP4At9KkZxce82ZOthsUy3JkZIXo0qbZLsGph/C8FPhG9HqXR3h8t7hdBQn1S1ymOyVSBSFbr8RD550CXttdE8wduzNKkKF5oy+FQ38iaQtvTQE9Sb18HeSVc6TNoUVbW2qcisTKR/UsthCMTAxWvEVkkfUYj6vn9H5a9SKMdIpEt0oL8lvK42GCixPgOaxiKy/bpdWTRUFh9qjG4q
- 3lOUH47D
- KxXO6tkZUCMmcCS0YZhnbv3S140NMZUb1hpvZVr9TqN9nRH1CkwwU9+EBNb/nS5drroal39Jigdn0RbPsM+mZOCbrhN/znVwMxFPN7K4EKN9oqctZ8z8++bwhLvKQVFHuF/GLLXQdBVmMeAC+qc2tRTqV09zd9eh+jY3kjwR5scwiqOCPBKkFrFo5nz6LlYUNrZTd7MZEU3GRam0I8pygBlW5qEXyA9wkOF9a+DkZ9O+LwuG/EOWfeBD8uKg7kNZiDZJ58NTwIwwss46aihHYvI7cNkvZrC1BNMr96oxNwcvuwSvgFrE8IMGp5uyxknkwSOBJtlAIdm3hm74Xm7r5Ju5kCr7QNkSavBYImje0fBWTG4EYMeswkAdsbaH1RFBB1LSLUHfhHO/ZlYDhSwj/uZJFvBw2zWYKIr7N85t0b3Lm90BptWvH96N5/w==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A3F961C0004
+X-HE-Tag: 1790678029-98895
+X-HE-Meta: U2FsdGVkX1++T0Jk8iOdvFkjnUkSghqQfV3lO7LzzLwYCsflumFoTDEeOc010bUBxZ2kSyUgPs+FKx+n7x2JEByuwOZvLieP/Lm9nQhxuqqH3wGpu0vcs/YRJQIlzFZjK57xloQ4BIWohwmhPqeuzK+yxsfc0pAaOCq31MtN0luFhBdtbkOfAf48MC9LRFszcyJ2wpAuf2WIjRRF0f5B1rr0rMaKfhTSspFVG/fQ4AKTki7Pjjf/l1Yofj+wwVBq2djNXYKJIShJ0wV8R4JWBsBYFMxE8kRX1SVIKRHi1KVL8FATU5ENVTCEW3v5mq3QMcO/HzUw8HWOXtyUblaDsCugQDM5yVSyTa9FsfQNalzXTB6usX8MtqgVk4AO2yvHkAIWanw9gs57o0VPEMYSMWAPPvoP8n2yRHSxJ8cLvSiWVr16zcT8McOkQifHnU0MVQXfZK9LzsYxZQiqm33VRPke6nmRk3YXwqkWRQNsRlhM7IayoDBSr7gGKMIzXWzBenJ36UsiJpQXreCg/1vsSagHHez4KZhRzgIbdJZFlV7VrkhH9tBDG0WY7kX8g6VP2ZVhf5USKlFxyvP2i5jMmgrRL9n+bDK+tBIsELMIcWSkWAq4ArwrIN5LymCssu3T3R+DKzB9OJ+deGrEgHsvvfl2x9gDLqE4f2yZu6hG6BBXXGMOXn4zKL+y+Fb/e3+fp4KcqL+8woIuw/Bf4WZlf1a+ZLv1E6wxC+j2RnodPiIxoEjien0uOmuvA9ypmnMGwReGQHR9rD6+DF3+EmgwW0dTpL8eZ9PTP+p6H2RQ8NYw0wetpoCnceQl9TLZJwEeizbQTeVQbdr3nTJWMGWotreYP/gX0wCs+6wgVxgIy4dSnDXZ9kjJmPd1I/n3yciEN7zHZg+GErBxjV7LfuaPs2bQHYQXcfBdcpCxRnpGDlGBA4qq/a2f0NEjaBJV+TLTwXijwwzjmU0GZ4yXtZ1
+ wat+mF3n
+ UbwLJwvCK3rBEo8j6WK200yWg9xkxoD5/Vd3ucRmcHEwHcCAUR7I0ypx3itFbAEArAG9KxPAa+01Mf/6zARGzdl6WZp2wF1GEOkwBdiToJq0wtP0dh/odhoyDNNGMxXz8YZcJQMXIz+igFTvZBkcmpRY50uYs3HZGYQQWKNZAVfPYI19Z7WvneFoO2czMakLjTPvhAhHJzSElfMlYIU7BQ7zeOBpMZDMHalZrSgxjUyz0HAvS3pmJWgCayzcbWAeGWuNAhpldkgQ30W78lZL7uRM2Lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,83 +114,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 01:37:37PM -0700, Randy Dunlap wrote:
-> 
-> 
-> On 9/28/26 10:41 AM, Mostafa Saleh wrote:
-> > When CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE is enabled, the kernel stack
-> > may not be fully populated with the THREAD_SIZE virtual area.
-> > 
-> > Teach task_stack_size() to return the size of the vm area and not a
-> > fixed size.
-> > 
-> > This propagates to end_of_stack() which makes functions like
-> > stack_not_used() and set_task_stack_end_magic() to use the lowest
-> > valid stack address instead of THREAD_SIZE which would cause data
-> > aborts.
-> > 
-> > Signed-off-by: Mostafa Saleh <smostafa@google.com>
-> > ---
-> >  arch/Kconfig                     | 10 ++++++++++
-> >  include/linux/sched/task_stack.h |  5 +++++
-> >  2 files changed, 15 insertions(+)
-> > 
-> > diff --git a/arch/Kconfig b/arch/Kconfig
-> > index 45c657772362..d6fa2ccb0599 100644
-> > --- a/arch/Kconfig
-> > +++ b/arch/Kconfig
-> > @@ -431,6 +431,16 @@ config HAVE_ASM_MODVERSIONS
-> >  	  <asm/asm-prototypes.h> to support the module versioning for symbols
-> >  	  exported from assembly code.
-> >  
-> > +config ARCH_HAS_VARIABLE_STACK_SIZE
-> > +	bool
-> > +	depends on VMAP_STACK
-> > +	depends on !STACK_GROWSUP
-> > +	depends on THREAD_INFO_IN_TASK
-> > +	help
-> > +	  An arch should select this if it supports dynamically configuring the
-> > +	  kernel stack size.
-> > +	  For example the kernel stack size can be from the command line.
-> 
-> 	                                    can be set from the command line.
-> ?
-> 
+There are intermittent failures in collapse_max_ptes_swap() and
+collapse_max_ptes_shared() when using the khugepaged_context:
 
-I will fix it in v2.
+  # Run test: collapse_max_ptes_shared (khugepaged:anon)
+  # Allocate huge page... OK
+  # Share huge page over fork()... OK
+  # Trigger CoW on page 1023 of 2048... OK
+  # Maybe collapse with max_ptes_shared exceeded.... OK
+  # Trigger CoW on page 1024 of 2048... Fail
+  Bail out! Unexpected huge page
+  # Planned tests != run tests (26 != 23)
+  # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-Thanks,
-Mostafa
+  # Run test: collapse_max_ptes_swap (khugepaged:anon)
+  # Swapout 257 of 2048 pages... OK
+  # Maybe collapse with max_ptes_swap exceeded.... OK
+  # Swapout 256 of 2048 pages... OK
+  Bail out! Unexpected huge page
+  # Planned tests != run tests (26 != 17)
+  # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-> > +
-> >  config HAVE_REGS_AND_STACK_ACCESS_API
-> >  	bool
-> >  	help
-> > diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-> > index 4a808f9c4631..07d73adaecd1 100644
-> > --- a/include/linux/sched/task_stack.h
-> > +++ b/include/linux/sched/task_stack.h
-> > @@ -10,6 +10,7 @@
-> >  #include <linux/magic.h>
-> >  #include <linux/refcount.h>
-> >  #include <linux/kasan.h>
-> > +#include <linux/vmalloc.h>
-> >  
-> >  #ifdef CONFIG_THREAD_INFO_IN_TASK
-> >  
-> > @@ -96,6 +97,10 @@ static inline unsigned long *end_of_stack(const struct task_struct *p)
-> >   */
-> >  static __always_inline unsigned long task_stack_size(const struct task_struct *task)
-> >  {
-> > +#ifdef CONFIG_ARCH_HAS_VARIABLE_STACK_SIZE
-> > +	if (task->stack_vm_area)
-> > +		return task->stack_vm_area->nr_pages * PAGE_SIZE;
-> > +#endif
-> >  	return THREAD_SIZE;
-> >  }
-> >  
-> 
-> -- 
-> ~Randy
-> 
+This happens because khugepaged may collapse the pages before wait_for_scan()
+is called, causing a sanity check that expects uncollapsed pages to fail.
+
+For example, in collapse_max_ptes_swap(), after faulting the pages back in
+and paging out up to max_ptes_swap pages, khugepaged may collapse them again
+before c->collapse() is called.
+
+To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
+collapsed by wait_for_scan() for anon. This prevents khugepaged from
+collapsing it again before c->collapse() is called.
+
+Also, fix false-positive results when a child process fails in tests
+such as collapse_fork*() or collapse_max_ptes_shared():
+
+  # -------------------------
+  # running ./khugepaged -s 2
+  # -------------------------
+  #
+  # Run test: collapse_max_ptes_shared (khugepaged:anon)
+  # Allocate huge page... OK
+  # Share huge page over fork()... OK
+  # Trigger CoW on page 1023 of 2048... OK
+  # Maybe collapse with max_ptes_shared exceeded.... OK
+  # Trigger CoW on page 1024 of 2048... Fail
+  Bail out! Unexpected huge page
+  # Planned tests != run tests (26 != 23)
+  # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
+  # Check if parent still has huge page... OK              // parent hpage success
+  ok 24 collapse_max_ptes_shared                           // considered as success
+  ...
+  # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+This failure was observed on NVIDIA Spark with 16KB page.
+
+---
+Changes in v4:
+- add comments.
+- add r-b tag.
+- Link to v3: https://lore.kernel.org/r/20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com
+
+Changes in v3:
+- using is_anon() instead of comparing name of mem_ops
+- add r-b tag.
+- Link to v2: https://lore.kernel.org/all/20260921-fix_khugepagd_fail-v2-0-3c2877beef61@arm.com/
+
+Changes in v2:
+- remove temporary enabled setup.
+- Link to v1: https://lore.kernel.org/r/20260915-fix_khugepagd_fail-v1-0-bb6f04c8759f@arm.com
+
+---
+Yeoreum Yun (2):
+      kselftest: mm: return fail when child test result is fail in khugepaged
+      kselftest: mm: fix intermittent failure khugepaged test
+
+ tools/testing/selftests/mm/khugepaged.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+---
+base-commit: 685086170033a6ab334f0068cd25dae90fd1bb4e
+change-id: 20260923-fix_khugepagd_fail-172362f58d17
+
+Best regards,
+-- 
+Sincerely,
+Yeoreum Yun
+
 
