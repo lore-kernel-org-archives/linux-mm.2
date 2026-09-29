@@ -4,124 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF83BCA5FAD
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 22:46:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 369C8CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 23:41:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB0066B0088; Tue, 29 Sep 2026 18:46:01 -0400 (EDT)
+	id D526B6B0088; Tue, 29 Sep 2026 19:41:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B609E6B008A; Tue, 29 Sep 2026 18:46:01 -0400 (EDT)
+	id D03A66B008A; Tue, 29 Sep 2026 19:41:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A76B56B008C; Tue, 29 Sep 2026 18:46:01 -0400 (EDT)
+	id BCB606B008C; Tue, 29 Sep 2026 19:41:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F4E86B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:46:01 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 09D5C1A0352
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 22:46:01 +0000 (UTC)
-X-FDA: 85268284122.27.0DE8FDC
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4067E140004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 22:45:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nctD0v4y;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790721959;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C0E76B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 19:41:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19121A0505
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 23:41:46 +0000 (UTC)
+X-FDA: 85268424612.22.37FC7F7
+Received: from mail-qv2-f43.google.com (mail-qv2-f43.google.com [74.125.230.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 132901A0002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 23:41:43 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M0U3zP3+;
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.171 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790725304;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KJpn1LLVw4O01H0xs9gRR2we3Er9QCOaDBy2tAq0mzk=;
-	b=kcxvt8BHFQBxmZJB6684+yuSbeaTmZzy8xxzYo1XS98O4KpIvEE6TjFulNU0ZcWQoK6X5y
-	nA0xssjOIAzuIjvlE247PL5z8UkZjBDJbU7TIao4p9v8h32cQbQCA9VgBMoaORhIgvo0S6
-	DzihthRxkPKwXh181SSfK3eADB4Ykss=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=nctD0v4y;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of aa9736195201@gmail.com designates 74.125.227.140 as permitted sender) smtp.mailfrom=aa9736195201@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790721959;
-	b=ZT+43M8Ix3+R2g4FtXTPwcTFUbrJYa7nNibb4uDLwsKZNynpz/5jiwT8TkeBWC+O3gsEv3
-	h2KK62mm7upqaeLyWWxr6S6b1qiQvcyu1Bo73/Wrl9pcMka17dLVSTBhNAkUMTGdArtwoY
-	sGz9G9FNFKgorTDWstcMgFVFmweh5c4=
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747f01363so27784375ad.2
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 15:45:59 -0700 (PDT)
+	bh=+Xrgsv7RmptoTEWMbXsE4AaL7NQQ9ZRcJ/lLOBbn/ZM=;
+	b=5E0fLDzw/qMMNz8ZhypvCc5mXLBFj6VDJB0yPMNtbqk5/GRZf9BHOw4CJNC59xbbo1z8/z
+	1eLn2hY/beyC1eyH++Wa1lKYFig7FsyEkSGF5vbUF0VjfePADRbgOUKTAn6ftznOSgw5/K
+	rTUShADgkObMNosGm3ZxsRRMk6sGIUo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790725304;
+	b=wNepYO2re246JkM5Z5EnPJchphqAsA84dwzgTykBv0Yu4U5ylcLsRxVoxdRc/D03n4XjEj
+	p1DuCO3qWK+IVDNkwPjGd0pyWSL8JqTmIm6jbiR4KFOAT4uYNLA3nYcvjezAMKYi22RJVz
+	oLyheATLYy/WCYeJav0sGC0WTrZOyCw=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=M0U3zP3+;
+	spf=pass (imf19.hostedemail.com: domain of ackerleytng@google.com designates 74.125.230.171 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qv2-f43.google.com with SMTP id 6a1803df08f44-914446005e8so37794946d6.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 16:41:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790725303; cv=none;
+        d=google.com; s=arc-20260327;
+        b=FClKi4515M1t240xoPTm6iSv1jNgeVRn8LHMPahf7adeCZJJZCaxC0oRut+HsyvDKk
+         j5xN1KRbK/FP/l4xvNF+0rbKfKfd8c5ubgxRbUVM69ukwOq3QEbTMP4xUASnFzKXGUQN
+         PnP7C8EYiWUdAsCH87U+IIfpbzDDDI1cenhy08ox/JaoJ+g/PEPVuDXNG6+ur0bpscKv
+         PXdJUN+tPYNLNr0pMV3WocKdI1GWiJK6yxeLvxvjmr1SgdHpey/VzMrAyw09gt6K5cDN
+         M3L6l0jwXrweC3V5D89hcldh45bZlSrM7c5ZisFaEa5M1VwMi52U2jcg/1yt4P1rXp20
+         rYGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date
+         :mime-version:references:in-reply-to:from:dkim-signature;
+        bh=+Xrgsv7RmptoTEWMbXsE4AaL7NQQ9ZRcJ/lLOBbn/ZM=;
+        fh=GGQrcjWZPBDDaqh9VVc8eihNNMIVLvLlZWduy4ffaWQ=;
+        b=N6pkdP8q8QmFgzkwlZheKcrOVqO6FyEr2u6bnwW0AWXm4WBfdjFHyUejpy+r6uKIxU
+         cVBJQ2jDClkd/QJpJ6kADjV3tYkvSu6vC/n4rHBZ9/rbYaARF5MjU2gS1ULYX0gVGuCt
+         AmERsD+b8M043XcZGyO8N8z2/nFUYOEf5WHYi8/4mTjtacBFS+25Xfl/IDGmL/PyQjgF
+         YjY1NMGf//PRv1B06p5zWb/za2uBasOF57P+YJnFvhfGqXK0CyKMV6JUHYlUIUX3oaVj
+         dr81HxKnB4wpW0oac3oXJ/axURcJpddr/ZRddXBtWeBBeyx48y61Am3430h1SXZ6xDhH
+         vg9Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790721958; x=1791326758; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=KJpn1LLVw4O01H0xs9gRR2we3Er9QCOaDBy2tAq0mzk=;
-        b=nctD0v4ye5PGazmagLVRHBV+W3zBxT7TpEXJfZ0+l0bK58J4JoA3QMFR6bzLdRjMGt
-         mXYjL0uW9utevJ0rqzsYOGg9LXCOGDaDRgudCNO4W+H145b2KLdB4ujGBIi6mPLp+rTb
-         TfZPaVtjJ3i3u+sBo4Jq+bnUGy9oDlh0NggJF8v6aqZX3WrzFT+tWWqE+mAnhALse18B
-         Tp30nNMR7ANLZSuZGpLvmBgOeoPlQ9AD8B6NOFc8mf1xVvyLIHcChosQS9ICltjjOE1Q
-         eVsUslmh7IwjLqToS6MkeGC0QEezHWOgbqbUeB5Nv8VRKVwgAmcJPKTB2recITLhMtIR
-         59cQ==
+        d=google.com; s=20251104; t=1790725303; x=1791330103; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=+Xrgsv7RmptoTEWMbXsE4AaL7NQQ9ZRcJ/lLOBbn/ZM=;
+        b=M0U3zP3+SWNHxuEmdL5WR6oaAOTeaCMGk9zYh6qUca+U32NlEOgLDmISl8R0rXueUd
+         lSLxAEuMnPQenaDbBrw5ZDt2jSx5PvdIVJBm6jMZiVawJbsTrtiXomsqy0OPHWxOL9ks
+         BJFxLXjanUNQj1d6zP0apUEj5zoWIdyLtOCu+iTFJpZqmOGpiD2x7w4YNBjbDfSMpQJq
+         9PKRw17vlkZ/C3AmAQX/zCS4az/DaKkX8qF7JjjyaesHpaHn3UlvUu04w4IYV9x/yzNS
+         OGbNob3bfzu7uU+XB73e5f65moysa5c0A/PrpeSfB5Xxt6KN5H8JyfW9vlebH4rjalGa
+         Hrtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790721958; x=1791326758;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KJpn1LLVw4O01H0xs9gRR2we3Er9QCOaDBy2tAq0mzk=;
-        b=GB0GSQN2l+RrsD86O7w/kwgLznpi9+bkuAMKDl/L7ZyhlZVn7IsaW4EiEPH52sMR3+
-         Yx+n0e7qGk4G9mEruEVEAJPQM/ceu6xoCMUawu1e8LFKxIy6fW9IhMuAYSLtoUwDUSUv
-         bna0AL6z+ZZvRmGbF9xNDxu5WAEyYEYcq9teUiDFEyvfs6+Xpw8R7HwJ0/e1W1RJB3js
-         SUZzgDzvz4W75P63xuGIExLnhjtfYFLS9070m0YDtYWaRNDQ/Hr913ArsVQmq37fgb6+
-         pRQc2sY/pYUppiJcnIfUgdl5WK+2G+4LJGtPUPbTkEwBI10EboKsD8Nu/M/HQr9Zl+z+
-         EEZw==
-X-Forwarded-Encrypted: i=1; AKwUvBxMVl3Nv7CDE0JAMZy/e3MRM6Ht/EAha+aW7XTftom+ps4fmOgW9UPyRHJaFsfEmizklBDsegdFIQ==@kvack.org
-X-Gm-Message-State: AFq9FYKvl0VfXVoilm/L95rRju9AB3jp/IDa8Jhs/PSs/Fk4UUlpLVft
-	LQ6v5ocCUwAxLeTlipd7vuQRWrPXHjO0UeHIcgxETZWZwe84mWn/Scqy
-X-Gm-Gg: AYBFou1HYf0/cXtd8BprnhaM3JYfhwueqP9GPSQJzuh5ip73qlnkIxHL+oYjy29VbS9
-	CAP0ZJhvtx454Zhx2rjdd3n3fFUjYpjuojw/J0rzYEESFi0ZZLh9GdnD3kMg+uUvhP0Qb3CpDNO
-	iMNPehQu87Bvc6BhYkd/YTeCvi+CW1TpSE+LaX8Zkf25GBMVkLsAcC+7SPGbwKwc1WVre5YkBGH
-	2KBKCTPnmvBYVsGpgm4y8/P7n/tw7PbcZ9e/X36HNQjLD8KzFIqekNRCfRFbdqnMZ4qLdwOx5h7
-	ZogLyI+g+fatbjr2xy37QqlnvvVnyurmXbt6ns0meXFF6x5NQCm1qTa4UeJOFk5r9U1uXyoqoo0
-	IDCqcHPqjFyfCRGQ3FnSOSF4Up+PhmGNYFksWE6SEXrwTxJ8iQnUWDE4LaLQspdIWrgdDR7O42L
-	TWCuP5oaYwgBQMkzHij3R7l3dz3hLdpG3AU4h7mnytJGJLqSTQvKW/tuTwlk/k/r1Q8erNF901x
-	C7LNhBZm1uoE6uSIvdGw55qWqUPyzGMyWPvzGW61ZYDSHekgUgzgPzVARBluqVzmTrHWue9PgOf
-	GmQ1UUh/jNgMD7aM1m5b
-X-Received: by 2002:a17:903:3847:b0:2d9:2149:57c0 with SMTP id d9443c01a7336-2e2de5278dcmr4178115ad.22.1790721957951;
-        Tue, 29 Sep 2026 15:45:57 -0700 (PDT)
-Received: from DESKTOP-TJS95SS.tail460ce2.ts.net (36-232-241-4.dynamic-ip.hinet.net. [36.232.241.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2e2dd859988sm1759625ad.61.2026.09.29.15.45.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 15:45:57 -0700 (PDT)
-From: Yuan-Hao Hsu <aa9736195201@gmail.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	liam@infradead.org,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Barry Song <baohua@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/memory: reuse 16 PTEs of an exclusive large folio on a write fault
-Date: Wed, 30 Sep 2026 06:45:52 +0800
-Message-ID: <20260929224552.467-1-aa9736195201@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <82738d2b-9c2c-474e-b90a-60a1140b5bd6@kernel.org>
-References: <82738d2b-9c2c-474e-b90a-60a1140b5bd6@kernel.org>
+        d=1e100.net; s=20260707; t=1790725303; x=1791330103;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:mime-version:references:in-reply-to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=+Xrgsv7RmptoTEWMbXsE4AaL7NQQ9ZRcJ/lLOBbn/ZM=;
+        b=Gdq+fCk4JAcVMeQdvdCgAb0oNa2/YkSohqni00MW82/63oMDWaLsFyCaHNN0X53tux
+         gd96rQ6lo1RAray6VYXHG1aT2HHCalduH6k33D2x53ZIR6lRfBmCRilRqvxwuqUa/XDv
+         z7PyOWnupg0ky9LAuGujPfpTcHDmJzWhCMRsD4Ah/35xGRXRiIJN+uBCBdJUwpklvlJ7
+         zJJwvOsntfmy/2HaZqS2UTJBu/Btk6yEBch2jz0REFuhoJjk8cI3aL9FuFeCQV+mnhJT
+         889IOEuiN6K+rZsiJAKwUJDK3Jgq2DFYelhaYoalrdZ8yQKASnmfYI8L3h5Q5Xtkvvzv
+         wwug==
+X-Forwarded-Encrypted: i=1; AKwUvByhX7GPfzck5oqTwysXY4j+zYc8btdt8g30eGd59IN/IjR2+RlU1BGEkbJBLoGC7NKDVo/4/c97mw==@kvack.org
+X-Gm-Message-State: AFuF++lrKnslz/nOuMdCoa9hoSmiXEUc9qc6Yor5V7IxdaRQpFBcUM2y
+	1BC1U9ayNAHlzfjg9zGrrwFXjD+H9MFDFyN8lYDsP8DCEmD/6qA0CoKd/qezFr0vdL6XLev5i3t
+	Xrj9Y+Uc48Bd9HCUiKfUzgFoKkvW5/buLdRqA68On
+X-Gm-Gg: AYBFou2QCrGYTEdF/8P/9DddfuMLuFtZCz9gtBi4jGusXzYwtuHj2tDBGOR/enJcEeV
+	6Ndnqo5GU6nWkEzLGTwD1UBTqNXgFO6RAS9GulXYUs7Uy13iaUweS9jqbgRj3eJn2VFxNmwzlx8
+	HmRRj71L450dvxWMUHLx0wAUSqMnlhc4ik7iEmmfjCDK0nZ1s6NrCHLyaJ6dZGflk83lgZtCoXF
+	uoHGPS4LcTmQpxbLYtx3OcLr3l8SD5INWEQiVvsNbVT8B8ohKmF3MHJhLdjBGufWRajN0ZfGFzx
+	ZQ8dPmu7cg2jHBYx/4zOuarB32gX4Sfi5hV9K1CwEUVrTX4Jyk1hvt3PW/qSw90E8Obb92zUSiy
+	rYT+bg3vPeehwp1V1Fgs6GyDLxxfoOOUOw6YUqG/z
+X-Received: by 2002:a05:6214:3f86:b0:912:1f7a:3e96 with SMTP id
+ 6a1803df08f44-91799b6f1cbmr14363076d6.7.1790725302155; Tue, 29 Sep 2026
+ 16:41:42 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 29 Sep 2026 16:41:41 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Tue, 29 Sep 2026 16:41:41 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ecab388213245df81815e42246db3b13b2d43e2b.camel@infradead.org>
+References: <20260925-gmem-tmpfs-backend-v1-0-d36159822d18@google.com>
+ <d599627270c67a5334d2abced75d1d1711fb0af0.camel@infradead.org>
+ <CAEvNRgGw_RjiGs_bbVnoRAvq49Qukm4h8XhkBd0DXxn1ZzLrQg@mail.gmail.com> <ecab388213245df81815e42246db3b13b2d43e2b.camel@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4067E140004
+Date: Tue, 29 Sep 2026 16:41:41 -0700
+X-Gm-Features: AclHuK-XLbcvCXV4wApQJel8RTlaN3ncBGEcJbP_UmWcTs4Jcx4bthsfg-DyB4A
+Message-ID: <CAEvNRgEU47Xag6S4mJNxZCjEf9AetHO_kvMQ033Vaz4jpwcrcg@mail.gmail.com>
+Subject: Re: [PATCH RFC 00/17] Allow guest_memfd to be created using a
+ resource (pool) fd
+To: David Woodhouse <dwmw2@infradead.org>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	David Hildenbrand <david@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Shuah Khan <shuah@kernel.org>, vannapurve@google.com, erdemaktas@google.com, 
+	jxgao@google.com, rientjes@google.com, fvdl@google.com, jthoughton@google.com, 
+	tarunsahu@google.com, pratyush@kernel.org, fuad.tabba@linux.dev, 
+	Gregory Price <gourry@gourry.net>, yan.y.zhao@intel.com, michael.roth@amd.com, 
+	suzuki.poulose@arm.com, Christian Brauner <brauner@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Nicolin Chen <nicolinc@nvidia.com>, Xu Yilun <yilun.xu@linux.intel.com>, aik@amd.com, 
+	aneesh.kumar@kernel.org, Vlastimil Babka <vbabka@kernel.org>, 
+	Connor Williamson <connordw@amazon.co.uk>, Fred Griffoul <fgriffo@amazon.co.uk>
+Cc: kernel-team@android.com, kernel-team@meta.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hu3yjqdnjngtfmj7uots8qumkf4hecm1
-X-HE-Tag: 1790721959-838757
-X-HE-Meta: U2FsdGVkX1/a0Q1+dDehFeUaX6o2Pl6C3yOZCJFUiYUu/DA2vAG5z0ZFInUGsidono/PEEqnXN2Vk73td56WQHNAOETSbu+CE7GzPGo/5kVMdYZOuLNWk2zRldmcdJ0RtQ4q8gp6Zu7btshJr6z5nByJPjtftFt30CFRmlpD1p46qzX+zDn4EEklfXePoLHIwmUGj9kcBWsOFGX2xhqVb157La5DYoN5GEcirmrAG1ZP9TLNuWwfaewm68LouFvQw6ni5mzL3+2NoEw1g1JyDL+5/Yn/FdhF9YVQNm51pn+i+PQQlsqzhP49aGwkk4P/iUC9yCBXPa7Ps0mCu28p4FUpTUQ15H3cNvKH0pe5mlW8km7sL6hBLfEJrN3EK4NAb/hHHOPMuWs65X7cd7/h6Kbod2XeuHfIoYJUDwZocYyeW2o82QO4K4IZkoCRBwaMkHSf0GVIYVdrWMbVoXM2iSIhpsKTggBhWxDXQbwldr70EAgIsuOR7y6cEjbPPdYsldODSlixZsserGIC2agrtJ5tIhPpLdpl3ylKhmEhSEqx8ADm8pbDet45cOQaS6PHkEGpFNtKh/dpt4mxnVq86VvJuMpSKfRnWQdIWc1xO28s84p8VFWb92FWMAybgbdrM5hNHnABcg8N8t8uW0llq2SGQKULLdKUaBPIKbwdmjWG/DGg+mEnrg6h+8UmJkzUP5PA8XhiTJ2Sch3Ah1DPNAdO6TTk/QAATPPccxF+Jpm1RCuH+M9aXIupoCKYE9WocthMRr8ucRHQiGkw7tACV7CjQ48FCVQkhrgLpCg8DTDxl1xs7F4oB0AIA0S6tLVv1uT6PgXdLup5KAeiO8zn+aAvSoyGG1z5PFPc6EFGFX8hHamLRmh+0lUTxceuW43UjrPEgorPsMDvRlhRdo5d42Yrj5t4YJzEvs+AaB6773fh7Z2755gnRhf4Hb4RoHrTv5uU9wdy1O3XBRn0eHf
- iaJyLFD2
- vOKdFQ9tpKVZdqJuQk3l9HDoo+H9UtGz6FN+tflF6gb/H4z1ttYaQFf/NS3WT3hDLUZHKFol3Od5chJhcpJGwFGXSxmoe6ywApbZLOphde0hSehICo6v/rh1RXB7ILTaZQHZIRvW3pg4NshN8Bj4F1VIx0MpY1OvmHl3HxcOrQvXL0IfgTTo6ELfW50T2KA+gyLcu5KGkroPz4CxYjAEXMztg9U5Wk2B+DQNF3/L/ozW43bKsX3qaUvD0G+ZMPBME2D3CwVgZQCcNPHTBI7xwq9y0h9JEpOD4TvyAUSvL36GzTNzLo9k3rrCTkQ5JkHVIB/XY+hS4zuQmoI+fbb5UnPfOi4OiQt9Jknm/0PuPS4/AzVAcfYLzxbZqAWXhu2tnptLW
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 132901A0002
+X-Stat-Signature: 6a4rr9zi8zh9q78nd6ugi45eups63fs3
+X-HE-Tag: 1790725303-630654
+X-HE-Meta: U2FsdGVkX19ATBxym05ESCXVOkbyXwjIKdGWWRAAb/w7UdHC10dvQ8xxCX6VrsH2nR2Obbm0vr1W9URyJi/Oqx8o64mkCFkZEbQfWfd1zYPSg65/zZVWMSTnrB9VbEjdHNBANVDpa/h1WqVwxWUT+BS2Cc1cL8cQlhMoiqWmzOFc8mLFQ4b1BSoRNPeATfaYFl4N9nxJdfxYdZAVF2YmNpgQXct7nMqPyo5kgUWTaIiRZa3VcrjInsGzUC+0CX4UefBBOSji7X1BXNjPjfnsHWzohePwLEA4czPS3D1DlXpSKvx0k7OMni0LgD2EWn2NRO0Md6mkjIEXYaCzqBqLDZIe+fPkCWFcdzuTbgqemlZDOG4AKKrggLy1Mr3s86eFYTO9E3eQu5TQnvs6WTED4CrzMPb9U0+fdvTx66Q/egaM7o3tq2mpEXdWFkuqrBEQxnRAnDSaY07jxIFzcuHoNhIxT33POjkPxjaz0FL5kq1FuSQgP+iJyQPeaIp/hLMDYVGe6VlH+hqgN4r/XghAn0LbRFuDWqPH9iur/1irzMKKZHPbBxCkcpQgxErO4+i6ueiJrSoM+DQWGyCcDE8N1D/os6eKvfU3Y54OY4jqt9q6yD0XhidSs2i61rPSG23hz1z6zFTARx2somcl1ZYtUn1GNXGGwjt0ly4RaioCMw6k9Yb5rdLJv9VDDOG7K5KZ9JflHazBJBrteSjL+pGTWab8WsYZGtGpcEDdZN9at9tmTDFkgDGrHc+moqvabtE6z3heDSv/Vp1d82L1OjV/DrRxlZKAy+wl15yoL05dWNpCYEY3fynu96ytjNpNtoMvXBKTm0yCnb6o+HV7lf7U7OE2bMUCFhkhbiuCy/Pum+MXaOT0g5H6qFfItUZC8FtnNEC8LvstH2X0ojFlPBdblGmmHWyNnxAxUP/v/QuX1mkMz9V7R+2EdDcOAOHvmFkq7AKi4xqXivTIjCbRKsn
+ XAbLEp/U
+ 2CeIpjm8CGJgEmVAqF1J1PC2rsDFygwOMd555eqgZrgICHDoUwGjUDXxzRXDBZrfQ79n6YAOZoHszcRbbSsQMbYU5YTvTEyTf2Z6XvLbLb6vwPHfOoVRJW5SCLCgRISuAgnRHaKRoV9M5eqpRR1v6WtNvlTB8sF7ezBjeROks8K8BjEdrEuakuqSAu4zHTw4L/YHxO67sHn+YyFmH7eV0YpniB9Yhd7aLF/eO1NQELcgg3yAeZ475xnBrMwjFWsnQj7CZhHU2rwL9lFjURxy8hvN/jkrsQN4nBPcjQFAeo6dAa0ARGAuJtHa6tN8ebwExrpHJ+c5VYXK10j/teGm+8KN19rwOp8qvgGsEO2NW+ok6QQ6ZPesS7YAxZ3eiCGKCIiWo1CGY3tNUhlilBcVldTOQE16Hc29DiXDVMJ0c+4EDM+/J5tzKxw0PywxcZ0K5I3S7ntK9WmUhNSkG+9MJsdHd5INDuMcb362G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,76 +160,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 24 Sep 2026 20:46:06 +0200, David Hildenbrand (Arm) wrote:
-> The patch needs work. I disagree with various decisions
-> either you or the LLM came up with like
-[...]
-> I tried to see how to implement it cleaner. I think we should definitely
-> start with:
-[...]
-> Entirely untested:
+David Woodhouse <dwmw2@infradead.org> writes:
 
-Thanks for writing it out.  I took your two patches as they are, on
-238650ef6c7c, and ran them through what I had for v1/v2.  Nothing
-broke:
+> On Mon, 2026-09-28 at 15:59 -0700, Ackerley Tng wrote:
+>> David Woodhouse <dwmw2@infradead.org> writes:
+>>
+>> > On Fri, 2026-09-25 at 17:50 -0700, Ackerley Tng via B4 Relay wrote:
+>> > >
+>> > > =3D=3D=3D What if my provider doesn't deal with pages?
+>> > >
+>> > > Frank and David Woodhouse [2] have use cases for providers that use
+>> > > PFNs, and this is definitely something a generic interface must
+>> > > support.
+>> > >
+>> > > Here are some options I can think of:
+>> > >
+>> > > 1. Don't define .alloc_folio(), instead define .alloc_pfn()
+>> > > 2. Refactor .alloc_folio() to .alloc_pfn()
+>> > >
+>> > > Either way, I think guest_memfd should still be the primary manager =
+of
+>> > > the memory.
+>> >
+>> > Thanks for working on this.
+>> >
+>>
+>> Thanks for the quick reply!
+>>
+>> > I'm not sure what you mean by 'primary manager' here but my use case i=
+s
+>>
+>> Naming is hard! See comment on revocation below.
+>>
+>> > for the provider to be the ultimate arbiter of who owns which PFN, and
+>> > revocation of the same. Think of it like a filesystem backed by
+>> > external memory. Each guest's memory is a file, and a guest can
+>> > *donate* specific pages of its memory to other guests (which in the
+>>
+>> Putting donation aside first - I don't have a good picture of how a
+>> guest would tell the host that it's willing to share a page - can't
+>> comment. Would love to find out more.
+>>
+>> > context of the *interface* only means that we need revocation).
+>
+> That's implementation-specific. Think of things like Nitro Enclaves
+> where a guest 'donates' its memory back to the hypervisor to be used by
+> another microvm. But that interface isn't the guest_memfd concern; as I
+> said, in the context of the guest_memfd interface, there is only
+> revocation: that page went away, whatever the reason.
+>
 
-- builds on x86-64, arm64 4K/16K/64K, i386 (+PAE), x86 without THP,
-  arm, arm nommu, riscv64, powerpc64le, s390x; sparse and W=1 clean
-- DEBUG_VM + DEBUG_VM_PGTABLE + PROVE_LOCKING + PAGE_TABLE_CHECK_ENFORCED,
-  with the mm selftests, my 12 COW scenarios (vmsplice, PROT_READ VMA
-  inside the folio, soft-dirty/uffd-wp counts, mremap, holes, pageout,
-  FOLL_FORCE) and a fork/pageout/mprotect/vmsplice stress: no warnings
-- arm64 under QEMU: 64K folios go from 8,200 to 520 faults per pass,
-  contpte_convert() from 512 to 0, and contpte_ptep_set_access_flags()
-  from 512 to 0
-- x86-64 (i7-12700KF): same fault counts and pass times as my 16-PTE
-  version; the fault that handles the block takes 720-730 ns instead
-  of 740-750
-- Redis on 64K mTHP (BGSAVE, then 1M SETs): faults 262,100 -> 18,900,
-  CPU 1.53 -> 1.38 s, 640k -> 715k req/s; THP-off control unchanged
+Okay we're on the same page then. :) guest_memfd only needs to know that
+the page went away, guest_memfd cannot say no.
 
-> * Hardcoding WP_REUSE_MAX_NR_PTES, likely should be determine differently.
+>> Going with this revocation part, beginning with a more basic use case:
+>> I'm thinking that the provider can notify guest_memfd that the page or
+>> PFN is going away.
+>
+> Right. That part I have working in what I was posting.
+> [5] https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;h=
+=3Dee95ed5aaf06
+>
 
-Same patch, only the constant changed; 256 MiB of PTE-mapped 2M
-folios after fork() + child exit:
+That is similar to what I had in mind except the parameters, I was
+thinking inode, offset, size.
 
-  WP_REUSE_MAX_NR_PTES          16     32     64    128    512
-  one byte per page (seq)
-    faults                   4,161  2,113  1,089    577    193
-    ms                         5.6    4.7    4.2    4.1    3.9
-  one byte per page, random    7.0    6.0    5.4    5.2    5.0
-  one store per 64K            3.2    2.3    1.9    1.7    1.6
-  one store per 2M: the fault
-    that walks the block (us)  0.84   1.13   1.71   3.01  10.32
+kvm_gmem_invalidate_range() in your patch [5] does have a kvm_gmem
+prefix, but it's really a direct call to tell KVM MMU to zap the gfn
+range, guest_memfd doesn't get to update its own state.
 
-So roughly 0.35 us per block plus 20 ns per PTE, and the gain is flat
-from 64 on.  For where the number could come from: arm64's CONT_PTES
-is 16/128/32 for 4K/16K/64K pages, and fault_around_pages defaults to
-64K worth, which is 16 on 4K pages but 4 and 1 on the larger ones.  An
-arch-overridable default of 16, with arm64 using CONT_PTES, would fit
-the numbers.  Your call.
+>> guest_memfd cannot say no, but it does have to tell KVM to zap the page
+>> from stage 2, and for CoCo it may need to do more stuff.
+>>
+>> The notification needs some pointer, so I was thinking that on .attach()
+>> the provider would also note down which guest_memfd instance the
+>> provider should notify.
+>>
+>> The notifier could tell guest_memfd that some (offset, size) is going
+>> away, and breaking down mappings in the EPT/NPT should be something
+>> guest_memfd tells KVM to do, I think. Are you thinking that the provider
+>> would directly break the mappings down in the EPT/NPT?
+>
+> I think telling KVM is the right thing to do.
+>
 
-> * Marking all 16 PTEs young+dirty. It's somewhat the same thing as we do in
->   map_anon_folio_pte_pf(). On arm64 it's already fuzzy with cont-pte. With
->   transparent coalescing we'd actually allow it directly. So it does feel like the right thing.
+Glad to hear that :)
 
-I think it's right, and for a simpler reason: nothing looks at young
-or dirty per PTE within a folio.  try_to_unmap_one() marks the folio
-dirty from the merged pteval of the batch, ttu_anon_lazyfree_folio()
-checks folio_test_dirty(), folio_referenced_one() adds the young bits
-up.  The faulting PTE is young+dirty anyway, so the other 15 can't
-change any decision.  I tried the most sensitive case I could think
-of, a MADV_FREE'd folio with one store per folio after fork(): two
-MADV_PAGEOUT passes keep and swap the whole 64K/2M folio on today's
-kernel exactly as with your patch.
+>> Does this notification mechanism work for you? IIUC regular DAX would
+>> need it too, like if the device is unplugged for example.
+>
+> Sure. As long as it works and efficiently covers everyone's use cases,
+> I'm not going to be overly opinionated a priori about *how* it works.
+>
+> All such bets are off once we see the code, of course :)
+>
+>> > Should I be trying to rework parts of my series to live on top of this=
+?
+>>
+>> I hope to gather more feedback at LPC. It'd be nice to get early
+>> feedback if you think it can work for you! The overall design still
+>> needs feedback though, don't take this as the final direction.
+>>
+>> > Things I have working but which I don't see here include:
+>> >
+>>
+>> This sounds like 4 or more different features! I think they do work with
+>> this resource fd proposal.
+>>
+>> > =C2=A0=E2=80=A2 PFN support (which you mentioned).
+>>
+>> Yup, guest_memfd needs some way to track PFNs in addition to folios. I
+>> think for tracking we can reference DAX, the part I haven't looked at is
+>> how to let guest_memfd handle events. Like if there's memory failure on
+>> a PFN, how do we let guest_memfd handle it?
+>
+> Telling the guest about correctable and uncorrectable errors, you mean?
+> I would have thought that's up to the VMM, until the point where (see
+> revocation)?
+>
 
-> I also wonder whether some part of the function could be factored out as helpers for
-> other code to use in the future. I also suspect that there are more cleanups to be had.
+Informing the guest is definitely the userspace VMM's action to
+take.
 
-One candidate: numa_rebuild_large_mapping() does the same
-folio/VMA/page-table bounded walk by hand, so a "batch around this
-PTE within the folio" helper could serve both.
+guest_memfd's role here is updating it's own tracking, and perhaps
+splitting folios. When guest_memfd supports huge pages, one thing high
+on the wishlist is to split the huge folio and zap only the page where
+there was an error and not the huge page.
 
-Thanks,
-Yuan-Hao
+Advantage of splitting: If the failure happened in the last 4K, the
+first 1G - 4K can continue to be used by the guest. If the guest never
+touches the last 4K, it doesn't have to know about the failure at all.
+
+>> guest_memfd needs to at least be notified, so that it can handle the KVM
+>> stuff: zapping and special stuff for CoCo. Whether the provider or
+>> guest_memfd gets to handle it first can be worked out :)
+>>
+>> > =C2=A0=E2=80=A2 IOMMUFD support via dma-buf.
+>>
+>> Is this about having guest_memfd work with dmabuf fds?
+>
+> It's about having the provider of memory (again, think of it as a daxfs
+> if you will) able to tell *both* KVM and IOMMU which pages are where =E2=
+=80=94
+> and revoke them at will.
+>
+> The *implementation* involved dmabuf fds, and we already discussed
+> which wraps which, on the first posting of my series. But maybe we'll
+> conclude that the right answer is for IOMMUFD to recognise this
+> guest_memfd 'provider' as a first-class citizen, and we won't need to
+> masquerade as dmabuf?
+>
+>> Fuad also brought up that Android uses dmabuf as an interface for CMA
+>> memory. [3] IIUC the dmabuf fd is mmap()ed, then the userspace address
+>> is set up in a memslot for the guest. To make this CMA memory
+>> CoCo-friendly, we want to use it with guest_memfd.
+>>
+>> Jason response was that guest_memfd should probably just directly get
+>> memory from CMA [3].
+>>
+>> I'm not super familiar with CMA or dmabufs, would either have a suitable
+>> "resource fd" to pass to guest_memfd like how HugeTLBfs has a mount fd?
+>> The "resource fd" should ideally have no way to mmap or read/write the
+>> memory directly.
+>>
+>> [3] https://lore.kernel.org/all/CA+EHjTxZ0N3Tfnid404B4tkb_E+Z8mODTHTgBPi=
+F6=3DbwZp7Hjw@mail.gmail.com/
+>
+> I think where the memory comes *from* is an implementation detail for
+> the provider. It provides a PFN (or folio, if you must). All else is
+> not the business of KVM or IOMMUFD.
+>
+
+So we already have
+
+  dmabuf --wraps--> CMA (and others)
+
+We could have
+
+  [a] guest_memfd --wraps--> dmabuf --wraps--> CMA
+
+or
+
+  [b] guest_memfd --wraps--> CMA
+
+I agree guest_memfd shouldn't care where the PFN comes from, but this
+does impact where the provider_ops code is implemented though.
+
+If we go with [b], CMA needs to find a non-dmabuf way for userspace to
+get some resource fd. If we go with [a], dmabuf folks need to support
+this :)
+
+>> Or is this about letting IOMMUFD get pages to map in IOMMU page tables
+>> via an fd+offset instead of via mmap()-ed userspace addresses as in
+>> IOMMU_IOAS_MAP_FILE, and that guest_memfd isn't a supported kind of fd
+>> (yet)?
+>>
+>> I think guest_memfd should support IOMMU_IOAS_MAP_FILE. One use case is
+>> Confidential IO [4], where SNP would need to have private memory
+>> (guest_memfd) mapped in the IO page tables.
+>
+> Right, I think that's what I meant with 'first class citizen' above?
+>
+
+I agree, yes, I would like guest_memfd to be first class alongside other
+memory providers.
+
+>> The missing parts here are that guest_memfd and iommufd need to
+>> cooperate for conversions (or some other coordination in userspace). If
+>> private memory gets converted to shared, iommufd needs to know to remap
+>> the pages as shared in the IO page tables.
+>>
+>> [4] https://lore.kernel.org/all/20260225075211.3353194-1-aik@amd.com/
+>>
+>> > =C2=A0=E2=80=A2 Revocation (which I've tested correctly breaks down la=
+rge pages in
+>> > =C2=A0=C2=A0 both EPT/NPT and IOMMU).
+>>
+>> See above.
+>>
+
+I missed considering breaking down huge pages (the folios). guest_memfd
+will definitely need to cooperate with the provider to break down the
+pages.
+
+I'll need to prototype support with HugeTLBfs, probably after LPC. There
+I'll need to split pages on conversion to shared and merge on conversion
+to private.
+
+I think you meant breaking down the mappings for the large pages in
+stage 2? guest_memfd tells KVM to do that in one of the earlier
+prototypes for guest_memfd HugeTLB pages.
+
+>> > =C2=A0=E2=80=A2 AsyncPF support for pages requested by KVM.
+>>
+>> Is this kind of orthogonal? IIUC today KVM MMU handles the async-ness.
+>> KVM MMU checks that the page is not there, then since async was
+>> configured, KVM tells the guest to schedule in something else.
+>>
+>> guest_memfd doesn't have support for async #PFs now. I imagine it would
+>> be something like KVM MMU firing off a kvm_gmem_get_pfn() request
+>> asynchronously, and then guest_memfd gets the page or PFN and inserts it
+>> in guest_memfd filemap, and then notifies KVM MMU?
+>>
+>> Within kvm_gmem_get_pfn(), guest_memfd should get the page or PFN from
+>> the provider.
+>>
+>> I think it's orthogonal because guest_memfd could
+>> have gotten a PAGE_SIZE page (existing functionality) or gotten a page
+>> from the provider.
+>
+> Kind of, but I'm focusing on the guest_memfd provider interface, and
+> that needs to support the asychronous mode: asked for a PFN for a given
+> guest address, it returns -EAGAIN and then provides it later, and the
+> guest gets the right asyncpf behaviour:
+> https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;h=3D8=
+94dd0fcb34f
+
+I thought the same .alloc_folio would be used, except for an async #PF
+the entire kvm_gmem_get_folio(), which calls .alloc_folio() would be
+done in some background thread, so the provider doesn't have to have a
+different .alloc_folio_async().
+
+If the provider does need to know, then the corresponding thing in this
+series could be:
+
+  struct guest_memfd_provider_operations {
+	  void *(*attach)(struct file *resource_file);
+	  void (*release)(void *provider);
+	  struct folio *(*alloc_folio)(void *provider, pgoff_t index,
+-				       struct mempolicy *mpol);
++				       struct mempolicy *mpol, bool nowait);
+	  void (*invalidate_folio)(void *provider, struct folio *folio);
+  };
+
+something like that?
+
+Either way I think it would have to be a later series after the first
+one (for upstreaming).
 
