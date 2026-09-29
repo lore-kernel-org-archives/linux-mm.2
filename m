@@ -4,147 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F440CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 13:35:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5738BC9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 13:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F69A6B0092; Tue, 29 Sep 2026 09:35:06 -0400 (EDT)
+	id 3867F6B008C; Tue, 29 Sep 2026 09:37:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A76E6B0093; Tue, 29 Sep 2026 09:35:06 -0400 (EDT)
+	id 3378E6B0095; Tue, 29 Sep 2026 09:37:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26F266B0095; Tue, 29 Sep 2026 09:35:06 -0400 (EDT)
+	id 225B86B0096; Tue, 29 Sep 2026 09:37:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EAC5D6B0092
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:35:05 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7F1C31C32A8
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:35:05 +0000 (UTC)
-X-FDA: 85266895770.25.FE35E81
-Received: from mail-yx2-f39.google.com (mail-yx2-f39.google.com [74.125.224.167])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7E7934000C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:35:03 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=oU+LGYeX;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 02C106B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:37:37 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8B9981A04F6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:37:37 +0000 (UTC)
+X-FDA: 85266902154.02.3AA0AC2
+Received: from mail-dl2-f33.google.com (mail-dl2-f33.google.com [74.125.229.161])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 92DC7C0002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:37:35 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AK6jv3d0;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of tarunsahu@google.com designates 74.125.224.167 as permitted sender) smtp.mailfrom=tarunsahu@google.com;
+	spf=pass (imf10.hostedemail.com: domain of glider@google.com designates 74.125.229.161 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790688903;
+	s=arc-20220608; t=1790689055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-	b=2b2bU/OO5bCGTwyfV2K6a8TTAEqSVMH+IB2a2MBi+LfDKkbRyx3ooqwEiWzHyGR+0/Z05U
-	wG5MX/qDXbIoqFM+WclZ6AXEYByhVZVo7hShh1XMIvbDLuJ58MoifoBQ47r7Rm9VkuG89g
-	KVcslYm3xUXVZouxLT8azb+HDlx16pU=
+	bh=H1gd2gwEvh9R3nMhqTwmiYx3C+mNAyQraQhhd36JlyE=;
+	b=hcKYZITbdaRW1wm9X+XSp79678aHNSw1jUlJT+Cmg69fpEZQJGARnyVDdk24Fkj31Y32Nc
+	SGGIaDnUv5Ih/fo1hqXFfCv1sJUPI+438KumZIsOTyXaiPf+6gpmWE541n7olJPHGL37wN
+	tVbGo9PdtL/mdk2XzzZXyWOXd6tCPKM=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=oU+LGYeX;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=AK6jv3d0;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf17.hostedemail.com: domain of tarunsahu@google.com designates 74.125.224.167 as permitted sender) smtp.mailfrom=tarunsahu@google.com;
+	spf=pass (imf10.hostedemail.com: domain of glider@google.com designates 74.125.229.161 as permitted sender) smtp.mailfrom=glider@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790688903;
-	b=g5QuymsTSAGlrOzIDsIUHgS5JaS9HCElgn6qrCOLDsWMlTQu2sEuRlkryY/x4ALmuP2FVw
-	mHyRsgxF4jAH2Bd9Ja/Ar4JGJRiX6wDP0OYVHrnJ/ZiConeYHe1tUBKILshHWAPgr/eKcH
-	6GcEo96uc+hOjliaTJoPAyV16scfxjI=
-Received: by mail-yx2-f39.google.com with SMTP id 956f58d0204a3-66f7a9afe43so3553116d50.1
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:35:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790688902; cv=none;
+	t=1790689055;
+	b=1VPt/aLvPd2g+W7+ewMkS5IPxNqR9XeP/m6s4SearbTclHu6SvAUyQlkvXnkTu4KT7ffnO
+	mDYSIRVS2j4U47rJoWtUaS0Yl0GPJWX1cL6yUT4TzBEaRj3Gik4wxg+TCAAeRwwfDpzlZb
+	zfD7akWYIdwepP2501g5JNRoMuO7ZQQ=
+Received: by mail-dl2-f33.google.com with SMTP id a92af1059eb24-1438e88300cso3985601c88.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:37:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790689054; cv=none;
         d=google.com; s=arc-20260327;
-        b=MMxtkCPZpkIpkjnfnshnSrCjsP9wKS3+8wg0nOBtNNVsgwfnky47Tpl1yENBGR8F2L
-         QwDBFcPWBU2zgTyRQwXRiBP6ks+3gZVdL8XAhii3BdA8ae/GrlpVEX09BiGFxxLheum0
-         71gTcQFz+8U8HrMhEtZWZ18AMd36hZ0uVPGBGu539/hszGbOA6LQaYzEndpcynxzj95Y
-         0mRGibW0SlCxPrDdScF6Hgvp1N+9DZ3tPxSs4AGCTDNvilBkL1B4ED4fnSRzTgQvSnad
-         YX2bdeNp4FVjCI0e+9FYUgIDcYkLvQtzrx3j8VoBIqDuMVEGl1yd9KYGvH+8QXbPo+JQ
-         k9Cw==
+        b=s8UOUHWo3QXw0N9Sam8DD9ZyORQT/ofXSu400+3C0rKOAwX4F8h5e8brNx9nHTflGr
+         eXYFv5Ngq53DLHzu3cnPF4Lw8EPGhxZvYM1fUpkqGV4Ppv1BA/pMItyq1XT3n/0wezcN
+         caEW3Bm4apaANTh6b4Tk/vqabVRpwJ94Zor18UKBJ51EEnM5j9uy9cJw05a5jFXZrnA0
+         HEI/pC7h19TxV2slF+eEFfP9+JYtvJv4lmYMJUapaXpwIGqs+L0sbg+DPSLgFJaiIMMD
+         VdsEChmKTPsv1CiXXs98XF5x0E0uZPt1hoSnvscue1bSIc9peDgXzy7qL8aqw32IoEUH
+         GwJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        fh=y6Bf5CgMD+mMud4V57Wtwp9M+OEKjke+S/eNuAP1iNE=;
-        b=LmzgpXucKTrgbhJ3x8Q7k5hZ6+4CWcTODnSSZEiEu+trPHV9rdVSyqWQBSwhJqByMT
-         QcPxmoI/LaLefl3rNrJCJtgsR1a6DiUpnftuE+6OW+yD/ktfhLzvw19lCCiDssjB0OUD
-         hFjxVu4CxZAkPyvLAs7fQgKwXH9i7lUvSb727t4pJNFnEx0ChUT3om2BJmOIMBmePID7
-         QH+CZLTo/H3sY7CFpsvtXKrgt7+wdK/NasM0e4VZWf0O2cjs/2usd+SUN3w8fjtW34B6
-         l1I1x0c92O4WjQD0PEDUSsGvdbbep0+tJEMsuxJhlxycinFrj1v4yQsa/WGuT5rncoyP
-         xJ6Q==;
+        bh=H1gd2gwEvh9R3nMhqTwmiYx3C+mNAyQraQhhd36JlyE=;
+        fh=SJUills0KI1yVkMf+G4miK0DO+gc05ptT6gerZH+YRg=;
+        b=JKWZ3gifC2EXgzEzkP5BICoQd+s+rf4viJScWybVEY3/AUtpTcNZ5AnjDSS6flFctD
+         rvlK7bcMJeeP09ta4YPu3F4x3r4/DdK8cwJNGZt/7nDgaXj1yEN13dfV9jTohNmtVkEr
+         aKm+NEjRszVXYhoZfdgD/XW6MLgfzO6c71Od3x+yS8tK3dU7eEK3+oFWJclM3tAczpbr
+         eJY6suruJ76/ar0hcbJrB20hGhHU5aF6pC/l0zjI0FGK04vPhnK5EdHpSBQhvrOA/ad5
+         pBBh2iTKgKL5ImCb6n0GT9ZL6/FLikeDOHeEXd0EtWh3Zr8bWnE1MHDDU5xzNYkaVYTg
+         IhUQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790688902; x=1791293702; darn=kvack.org;
+        d=google.com; s=20251104; t=1790689054; x=1791293854; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        b=oU+LGYeXSShx/4NoB8Kakiudi5mYtqEg1X+sQ/UmaYBuu/7jHRJo64PwFy2zTpDJxC
-         9MnLQuATtoWlryQn43oupoXvn9YdI2TSj1rduchAbl8qClL1owD1XgTtpzkQtD5KjA0R
-         UR7tnRbpd2xPJNvp+QjCN/Mpr/WM87OVlnJiOs76bV3kGnlaVHXZ2eG/3auhB8GJr0dk
-         P8RT4V2ikSZk8qjDoUCsbK1pp1i9zc4Yg87IZJu8tGeMM3BpmNbhko37KpZb0qPOtOuY
-         CKvgpGUx8gSxjLINzdivtcmvmpTrXB88SP03AWeRbVZVZPtFMhOM47qCTQHlnS39CvQX
-         oRzg==
+        bh=H1gd2gwEvh9R3nMhqTwmiYx3C+mNAyQraQhhd36JlyE=;
+        b=AK6jv3d04CaC0WQSXgNZt9pCVKBKxj4+hJLV2BZU0jf9DZrPbgRvv6hq2OO6mingDG
+         4TPBuCCWkSKRhFolMmAX8i74mfRqEzBziAA9zFOEm9ISR68wXuujbmrJa5VbVTZe0pZp
+         4+w+wLjKlmbnKSVRt3Dg0fjD+lTutb6bON24xj6ZzbZ0PuYfkV7+zwF4lh5A/3TBeXNw
+         z1/2NROuu2mjbYuXaQ2d1ja2p0swJORMCSz0JElB/SH46NZqpm1JX5NTGiXvKs/xTDeU
+         4zA5R/6ExdIOZdX892b6xZgR7bWJf+RaXc2ieqfSw0VtyHpYBwTV03vuDo2BwlHkz8iV
+         xFaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790688902; x=1791293702;
+        d=1e100.net; s=20260707; t=1790689054; x=1791293854;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CMqmTdvAS89k83oYXVNW5NcZm+vCN1W6BXXzB1vwMug=;
-        b=arCrUJMnW7GmUpsQvegCIU916PEUpwo0VvjZxBgGD2BcSeYnWO6KWOFzsoGyAxfokp
-         sgkxkj3uJow2jqOX7eZ5CqnSRak7zekbH2/Bp917itaPriBhxyxC6x5dkez+zyP75Tpa
-         Lm2U2Xq6sYEwOd0FEcaPuHDPNRVImQ4t5CntiG9aZ9mCYuPN7onwunFEliqGjhc4stzy
-         gIdFXKVQpxyaVLjQ7eT9j5vC/2pofv+qTermt2CuYhY8992pqrxPdGQhPNamqLKUqI4F
-         T/NC1V2JM1uGW8HAOtiTrsVf4ruhRtIx4MPkYSVXa0cuBACNdojx32Ofmf36tnhNUi6z
-         jMiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz5ht4wIAdvzVe7mXr0L/GvVdgMhs21fKtEPfMSU+9uryx1yTMBafBVf7znBOfcc/jEipLzNV9w3A==@kvack.org
-X-Gm-Message-State: AFq9FYIq9xQsty/Owu51zDmfqGbVXCvIGoSNYSNJmb6aN0+lNZrvn1Ic
-	WXqZCoelf+jJJQuxYm6GvBqKBN2eiE2vurVxMCC+1a/54+5MqPZ/MyUOM52lkuDnSldALvzvI/O
-	uS+Nhp7F/Rz7hTME4wVFxt2AgK0R3veXj3Kx0wass
-X-Gm-Gg: AYBFou3QziJ/7vuQEFi2MR/vUG2IQ4i3iSzwrx7PO9f28M4Kap43XpYQB7tBx6/iXiN
-	oMbcz29qPIfwT4Dx0dLAsejzQVGQJfwLEtvRTClZ3If0nWbK7vuHaHAC5jVTwufYqAClw/6OUmo
-	a9ZI5XEjRd/jhRCVJFujwM3hQQOMU4ZdfqHPFw7392bQI946QhRRQijt2GTlmhDEih+zYN/Y3Dh
-	791WUZOHCQxfyFYJ0lo6G+VD4ouzUkfgrrj390hnysPJvs5od2Rs+WHGigg83RBe/hFacF124ZE
-	y4n8PSkwcedNnFqXvIQ0TWA5u6SNsbK90jTKKEVnaFVVYvAffRERlDzQaxS93rVQIIgy2HNKq0t
-	dU/P49JwUZ3gd7BTqoBerwSlELiibTSbIyGKgeitvmbyRexJuEBNzf3AyRC30vR3XZH+YGjKZez
-	E5WZteZRkM1Q==
-X-Received: by 2002:a05:690e:806:10b0:671:8e1:2386 with SMTP id
- 956f58d0204a3-672ed2d1ef2mr4268077d50.44.1790688901718; Tue, 29 Sep 2026
- 06:35:01 -0700 (PDT)
+        bh=H1gd2gwEvh9R3nMhqTwmiYx3C+mNAyQraQhhd36JlyE=;
+        b=hTu+yaQizhFG1CKmRpaFBCup7gRTHaxvXefG3Ad3+lWHGp4kdlJlZjy4VN9gS4low9
+         HcWj9XVRkQpo05dLsDUHo9MPjt2iw5+SMrqb+qwyBpjNDUvNO5zptpxpJ3AdraB8Ae0f
+         gni+HKGTK5LeV+1BlmAGSnF1fwLOeEH1+at/GmJn913OXT4zrzSGeni2YdT+69YZN+Sl
+         KP3zlOvWLhI8Uo5rbgRqje53VdEYzHeMIVCMAgLKqywUolscQ3WSTuBTqQy0y7cX7XDc
+         B7wxPtLRQAfFLiToct9rbiA4gtATwC2umehigzDPrxYsUcV5O8Y0NBICAdHap0KjOwou
+         CjAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxkFATjvBLEpLUah6I8WPybAGTRQofhCJ582mvmS7uwqtFEVBJAQk09IGAGREMXuz0hLhTOWcrkwA==@kvack.org
+X-Gm-Message-State: AFuF++kjscIxmcr8rg9jGzWYTS26GqK3SUDHqP6Cj65x2AcOQ98ULaB7
+	idsAW3nBnDLpjm2vUSRa/THBYJi/4OA5YE2hzwemOkS5FH9o86vwTyVTX7C8MM4wUn763W9uBG9
+	9ym9f2d7nRan3e8Lf70v8Lu3S51xoG6eEggdYtSjk
+X-Gm-Gg: AYBFou1o7HQrGQKhQFtPHZGQnujS8d7T9yqlvIWNheS0rVJ9q+6XJUdxR+eP0McbZEU
+	kJgPaBuQWk3HqIZUMmfq7thEAuBL4zviSwqBR5mLGR+aFTnPO+ldEI7tVOGtYx18IVNYZlYhYVM
+	0mAuwczvCM+Q00o2rnQMyXOTwSIDnatwP1o+UaY69F+JUE2qk1wTJvPKqDzTr6fM39w6LqYjUsk
+	lLNK7+JC6m7tAn86d3yF9HseOaLhobRPbA9whhj50TBVy04sECAYiVjAnNcsGETAu7W2qRu18RF
+	a8rujqxk5zw2SE6le9o2dLWXWqsi2vNLHsPL8NzIfwctlUSc5dN/sUdxWV17TZDxalfeucwsGYX
+	80MJhhhqV4FlKv5zGb9+z
+X-Received: by 2002:a05:701b:4314:b0:144:c90f:256a with SMTP id
+ a92af1059eb24-146cdebd363mr13589594c88.5.1790689053295; Tue, 29 Sep 2026
+ 06:37:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260728121138.1103610-1-tarunsahu@google.com>
-In-Reply-To: <20260728121138.1103610-1-tarunsahu@google.com>
-From: Tarun Sahu <tarunsahu@google.com>
-Date: Tue, 29 Sep 2026 15:34:49 +0200
-X-Gm-Features: AclHuK-iNXjjkSWmw5QuOGuFFhmaybIp8bRIbWdcOO220zD0oN-VSK2-cXwF8Q0
-Message-ID: <CALe+6DyB-6ShgC3GFA7Htw6YOyke6jC5iQd_a+PH83M85Y=gkQ@mail.gmail.com>
-Subject: Re: [PATCH v4 00/11] liveupdate: kvm: Guest_memfd preservation
-To: ackerleytng@google.com, fuad.tabba@linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, seanjc@google.com, dmatlack@google.com, 
-	Shuah Khan <skhan@linuxfoundation.org>, Jonathan Corbet <corbet@lwn.net>, david@redhat.com, 
-	Tarun Sahu <tarunsahu@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, sagis@google.com, Paolo Bonzini <pbonzini@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>
-Cc: linux-kselftest@vger.kernel.org, andre.przywara@arm.com, 
-	michael.roth@amd.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	will@kernel.org, vannapurve@google.com, maz@kernel.org, fvdl@google.com, 
-	kvm@vger.kernel.org, oliver.upton@linux.dev, kvmarm@lists.linux.dev, 
-	alexandru.elisei@arm.com, skhawaja@google.com, aneesh.kumar@kernel.org, 
-	linux-doc@vger.kernel.org, David Hildenbrand <david@kernel.org>, yan.y.zhao@intel.com, 
-	kexec@lists.infradead.org, suzuki.poulose@arm.com, 
-	Logan Odell <loganodell@google.com>, Jason Gunthorpe <jgg@nvidia.com>
+References: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+In-Reply-To: <20260915160207.2952-1-dmytrokoziuk68@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 29 Sep 2026 15:36:56 +0200
+X-Gm-Features: AclHuK9CoiMQVngJtj4D1_HG-SY1tsnE6dhOHICgB6kvknxlkNRvieBJ03LZumE
+Message-ID: <CAG_fn=V9XMhQT=uz8zCbr=nFZU2bC+Cp6uKRyi6V+LhMpeugEg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: kmsan: fix iounmap metadata teardown
+To: Dima Koziuk <dmytrokoziuk68@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7E7934000C
-X-Stat-Signature: 83gmpxn6yftftjcchq11d3oj3hphsek7
 X-Rspam-User: 
-X-HE-Tag: 1790688903-668974
-X-HE-Meta: U2FsdGVkX1/6DEjbIRhU7r8xLZ3Xpq66kevgevCCsXd1lg0TqqIOORZA0VKhSda6iH2K/RoqhI5rvCxW6925kviBR6NF9f/s5AXCjezoQmOEYeXXHadyPmc+EALFtwGdHQZkkLfn/5S2Z2iYtenlLU3mq9HDaT1HWkfX0r1icBotIrfCC9GBmukpPJaqjWINsedGm+pPhikh4vz24w6o8BNeel/HTDZfxRRSsH4daw2G0QKSqPNtcpBIPKNVMXfCzxa3Xi9yymhSQYr5HnkhmaiL3XF3N/09OhrLBYMnpbs9Q2H9/iDPCNKFcTC4+RTB31kKzG96/G9W0SNzkLAjmO7eBH0m1A/kFo2cH5gXqjMJb1NVgB/c7mhhoQAZNdn0UogyvFWjLfmokImgCf6tmKQtEtRBiVvLmpoNKSKGxLOhr3QurggldYUIm7XcVDdaNM/zBuZ/wmGhRW7uQkUy5BREwNAkQAoOFmCeAkO4+BERWd76yJkD8a/b0ekhMAhvXhAqQUpk+rT/4eJsQtWFmGK0iAWusvr6TFcRh11uaEmunh41MRIEQe3nXhrD/36SU0VoBGqqo/OfrgdJllDL82tdtIYSHznBF7CT1aaUHNuwEuxi2XwUHdeubi+mC/ORcjzcV3YbDrnSkGyfHPiB3maFkYlQgJqd68wSUm6JWnknEoJVHHr12d8kWiSfSLIt8RNeAKqyEu6/hon7ho0KflLeQI8S1cFvGFkMY2l/HISo4w4cnAcdQyRFeodZDgdE26KOXzVkZoctiTjhDXW7HcK0p2yyupCLwjGiOHI66oqcxjcyIuqUTlNF3XLk1brrP14dDx5LXk1jPNp5efyIL5lSnanMMXk5tc9Wjl0Z+1oewmkqvGlvxsOsPvVgNrzOFxeE3Jr4sscmJNGEXY2lkrAE1UMs3uuppi3W7QjDkGJY/6n2755VBVhiT0e/L3Wz7g521fKJR74Z0LGi2qz
- MBiCszwa
- U+ScVE0bIRwN5O9qrOgxsxvSBc8M5ZI81957pCQJcgh8plIkaGEwyhjJ4O5b/hp+c8bk+7pTpwc7DexaJaoKLWUMky9T/p5KJ076nlCvYzT19m+nJCaR5W6mZwB+cwwzSbSwK1zmztrZY86JSl3SLF4fjePfWka1hp8k+zOEWdWzoytcwDOEqDVrF3l0Nk+JCHm9DGlLkGodb1yjufaGg/d7iFDlW6tCLwB8DMXO0ifhNdLZzNgN0L4KrQfgnwcoEtPW21q/nsmkrRELvBf5fno5mTXt6CpWlaIZr2dHvpjiizKTIlxol22ZjjszvJyUgg9laEXRFAd/AglZxx3M9KNxWdqKbZC01e0/1aNZC2C0FbRrt5wIf0BKQ2qMOi6v/jmZbrm2gxJhZ+RRBy1si1+O8Hov9wOGObirHpJEmsOPcHlKjWbEGz1P/ohmnrc6riQ3JKG9tSQlfy1YYPzfOnr+x2X86ERPqrA26rwt3nKqtOCZpjgUV6IAbV65bCRY+qr9LyVqxYCfRid7mIWrF/n8tS8MYoREq/4s12kwotLG+Qd4=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 92DC7C0002
+X-Stat-Signature: a7pc5equxf8e8tpd8c6u8q195gqj5e5t
+X-HE-Tag: 1790689055-839208
+X-HE-Meta: U2FsdGVkX1/wjY3w5eIvQHEPgVFL7KnogsTjs4gVOViM+UDnmmSQiZdvVSp7vHmOP2Ybe7l4gfrWjUP5wBBsHErhBeFbZQm6QamvYLXm/kHCpx64o4mUNwv0fHzvos+Y6KV1E7rRKpH5fQKWuNiHwBvPCp/729TMuOUnakBXamlFGwN7/bbUau0rPlIJk9JUU2ff1s/lnt8YEjgo12m26v1HNvbpfL4vvnlTzDRoMYIuj+rvkqoLJmkL7WHYeehb/UoqgD+lxP0hGWpYuf+JGIGxQHdAGxSdqNWEh211lb5w18AC1Lot06vXHwtEZ8vS0WIkTOB2km5MNftGuUVtJcZNQX9fAtZURdJXFxYuNmjtmPfrQhtACG7x4qgSDpp31z9MZikkcxAwyrXt6CUWTjsVBiTV16d1eSzSf1KFX5U8cvtdt8s8JgiBFr2r49m9dTcPgOXlRpWnmwbNHcfpIwEBSogGKp36A5bYrPGQrxhaWuS03HSUL3D71fEnh2tNM7deWM7i6yhZvc/I12hYeVxT/SnS4tw652gBbhrmCZDMvs0wDjMWX9JsudqLiYKBk00511Yba6XF7iR2xQTYTDPSjO1ZeXzIdShg/MVxfibi53m6LAmwWyDpU07wmsGtMzhFHG6dqpQFjc/PXen9ZdxnNm0OlpYRhWuv9VdthpUU8McN6d0KA1NGjYKEoZd6b+0pCa/FPWZeWMxZOj003R3Pv8GcdlwAshnKmHRaxErj41ND3iinctm23cDZdvJiu4NUNW4ZyWLqXssIsJHGrAQfPv8d9o5xqITZ03985Yho6rn4yYG/xPZkheRYktFNTacHKvQh4th9577T6eOdAzgVbpkVifTk17gzoVVKVl4+peHC3xUFl+xJtd/FoGGMe3swBNYW4sKUU/UfFBXQJE1cMXhM6OsHiFq2SkXjEe+I2jP1j2bBEn30sZSPbKUEXjri/hRMFxMnSS5TRVr
+ eMkFudG/
+ kkU2txVWWsoOW7QT+53ofwVJNCNiZqqVlNUoQH36jf2YZ285e93igPFNVHimQPlsry4h8ed2Ocnrf7JHTzLQ8j9XsvDWc6BWHJMer4G14ZEYPBQNQOij14WbgpnRTz5SkJ3D2nkGlhnCGXOI7uAiE+ViQpQ6B93q+PhOteqNPuWyslDH3MQN23RObfKwSau9vwtGebIAPxtwESdgQaUSffw7wi90lv7Ut/miYUS+NMPt28nmS0tN397CnqxAbmZVOuUPe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,380 +141,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Sep 15, 2026 at 9:02=E2=80=AFPM Dima Koziuk <dmytrokoziuk68@gmail.c=
+om> wrote:
 
-As per the discussion on the series, I will try to layout the future
-plan of guest_memfd preservation and VM preservation via LUO. Though
-guest_memfd itself is in development phase, Deducing the exact plan and
-ABI beforehand is quite impossible. So I will propose tentative plan as
-per my current understanding.
+Hi, sorry for this taking so long.
 
-Introduction:
-        Guest_memfd was developed only for CocoVM use-case, But now its
-        target is to unify guest memory for cocoVM and non-cocoVM.
-        Though not all user will be onboarded on using guest_memfd with
-        non-CocoVM, I see current development in guest_memfd for e.g
-        multiple backends will provide its usefulness for non-CocoVM
-        (Maybe get rid of hugetlbfs - traditional PITA).
+>
+> While studying the code, I noticed that kmsan_iounmap_page_range() calls
+> __vunmap_range_noflush(v_shadow, vmalloc_shadow(end)) inside its per-page
+> loop, and does the same for origin. The first iteration therefore unmaps
+> the entire metadata range, removing the PTEs for later pages before the
+> loop can recover their backing pages.
+>
+> Looking at the page lookup, I found another problem. The only callers of
+> kmsan_vmalloc_to_page_or_null() pass shadow and origin addresses, but the
+> helper accepts only regular vmalloc and module addresses. KMSAN metadata
+> lies outside those ranges, so the helper returns NULL and the backing
+> blocks are never freed.
 
-        This preservation series and future development targets the
-        preservation for both cocoVM and non-cocoVM.
+My bad, kmsan_vmalloc_to_page_or_null() is indeed bogus.
+But what if we factor out the page walking part of vmalloc_to_page()
+into a separate helper, so that it looks like:
 
-Tentative Plan (Overview):
-        I plan on supporting the guest_memfd preservation on incremental
-        steps. This series builds the foundation for it and only support
-        fully shared guest_memfd backed by PAGE_SIZE pages. Currently,
-        For this base series, Only potential user would be non-CocoVM.
-        But due to performance reasons, at this stage it can not be used
-        (as it is backed by PAGE_SIZE).
+struct page *vmalloc_to_page(const void *vmalloc_addr)
+{
+        /*
+         * XXX we might need to change this if we add VIRTUAL_BUG_ON for
+         * architectures that do not vmalloc module space
+         */
+        VIRTUAL_BUG_ON(!is_vmalloc_or_module_addr(vmalloc_addr));
+        return __vmalloc_to_page(vmalloc_addr);
+}
+EXPORT_SYMBOL(vmalloc_to_page);
 
-        Incremental Steps:
-                    A. This base foundation series (Fully shared backed
-                    by PAGE_SIZE pages) also require VM preservation
-                    [1]. but currently preserving single field
-                    only (VM_TYPE).
-                    This sets the foundation for VM preservation via
-                    LUO as well. Present KVM uAPIs can support
-                    preservation for non-CocoVM backed by
-                    non-guest_memfd memory. But they are not sufficient to
-                    preserve the cocoVM [2].
+Then kmsan_vmalloc_to_page_or_null() will start working:
 
-                    B. Next Step, Private guest_memfd preservation on top o=
-f
-                    in-place conversion series (merged in KVM x86
-                    cocoVM tree) again backed by PAGE_SIZE pages. This
-                    will also include VM preservation, for example the
-                    data structures that are TDX protected can not be
-                    preserved with current KVM uAPIs [2].
+struct page *kmsan_vmalloc_to_page_or_null(void *vaddr)
+{
+        struct page *page;
 
-                    C. Parallel to B, guest_memfd preservation for
-                    non-CocoVM backed by hugetlb. This work will be on
-                    top of guest_memfd support for hugetlb backend [3][4].
-                    Currently, How this support will be developed is in
-                    upstream discussion. But The work on preservation
-                    will pick it as soon as hugetlb support is integrated.
+        page =3D __vmalloc_to_page(vaddr);
+        if (page && pfn_valid(page_to_pfn(page)))
+                return page;
+        else
+                return NULL;
+}
 
-                    D. On Top of C, Extends guest_memfd preservation for hu=
-getlb
-                    backend for cocoVM (Integrating private guest_memfd sup=
-port)
+, and we'll only need to fix kmsan_iounmap_pages() to vunmap the pages once=
+:
 
-                    E. Preservation for any other backend that will be
-                    supported in future.
+static void kmsan_iounmap_pages(unsigned long start, unsigned long end)
+{
+        unsigned long shadow_start =3D vmalloc_shadow(start),
+                      shadow_end =3D vmalloc_shadow(end);
+        unsigned long origin_start =3D vmalloc_origin(start),
+                      origin_end =3D vmalloc_origin(end);
+        unsigned long v_shadow, v_origin;
+        struct page *shadow, *origin;
+        int nr;
 
-VM Preservation:
-        Guest_memfd preservation can not be supported alone, it needs VM
-        preservation as well [1][2]. Even though there are no current
-        user, But there are users who want guest_memfd preservation for
-        non-cocoVM and cocoVM both. And that opens the door for VM
-        preservation as well because present KVM uAPIs are not
-        sufficient (for cocoVM case [2]). This will unify preservation
-        mechanism for VM (and its memory) in linux.
+        nr =3D (end - start) / PAGE_SIZE;
+        v_shadow =3D shadow_start;
+        v_origin =3D origin_start;
+        for (int i =3D 0; i < nr;
+             i++, v_shadow +=3D PAGE_SIZE, v_origin +=3D PAGE_SIZE) {
+                shadow =3D kmsan_vmalloc_to_page_or_null((void *)v_shadow);
+                origin =3D kmsan_vmalloc_to_page_or_null((void *)v_origin);
+                if (shadow)
+                        __free_pages(shadow, KMSAN_IOREMAP_META_ORDER);
+                if (origin)
+                        __free_pages(origin, KMSAN_IOREMAP_META_ORDER);
+        }
+        __vunmap_range_noflush(shadow_start, shadow_end);
+        __vunmap_range_noflush(origin_start, origin_end);
+        flush_tlb_kernel_range(shadow_start, shadow_end);
+        flush_tlb_kernel_range(origin_start, origin_end);
+}
 
-        Presently, for non-CocoVM, KVM provides uAPIs to preserve the
-        state of the VM for e.g. vCPU + device state through the
-        (KVM_GET/SET_REGS, SREGS2, XSAVE, MSRS, LAPIC,
-        VCPU_EVENTS, MP_STATE, NESTED_STATE, CLOCK, ...))
-
-        Now, for cocoVM, we need to preserve the TD state of the VM and
-        global TDX module state. For which preservation of the following
-        will be needed (Not everything included, it is as much I could
-        think at this time, Also I am not expert on TDX, I will try)
-
-        **Global State (Will use LUO FLB objects)**:
-        1. TDMRs + PAMT locations
-        2. In-use HKID bitmap
-
-        **Per-TD/VM (part of per-VM preservation, It can open door to unify
-        the place of preservation for other fields as well. But again
-        open for discussion)**
-        3. VM_TYPE (already preserved)
-        4. TDR Page
-        5. TDCS Page
-        6. HKID
-        7. S-EPT non-leaf pages
-        8. S-EPT leaf maps
-        9. per VM memory attributes (unrelated to TDX)
-
-        **per-vCPUs (preserved via vCPU fd)**
-        10. vCPU ID
-        11. TDVPR page
-        12. TDCX page
-        etc.
-        Note: Also, why not extends
-        the support for full preservation of vCPUs ignoring existing KVM
-        uAPIs to unify everything at one place: Open to discussion and
-        can be discussed thoroughly once RFC for TDX preservation will be
-        sent.
-
-Guest_memfd Preservation:
-        1. per gmem memory attributes
-        2. folios preservation (size/number of pages per folio, index etc)
-        3. State of hugetlb preservation (again LUO FLB object will be
-        needed to preserve system shared pool information)
-        4. SPLIT information for hugetlb for shared pages
-        5. backing type of guest_memfd
-        6. gmem related flags
-        7. mem policy
-        etc.
-
-The above plan is currently based on my current understanding which can
-be changed as guest_memfd evolve and new findings come to the light while
-during the work/review of RFC of individual features.
-
-[1]: https://lore.kernel.org/all/9huzo6ezv288.fsf@tarunix.c.googlers.com/#:=
-~:text=3DGuest_memfd%20can%27t%20be,KVM%20side%20preservation.
-[2]
-KVM uAPI fetch data to userspace and restore it back in new kernel. for
-TDX case, that is not possible becuase of 2 major reasons:
-    A. all control data structures are protected and encrypted,
-       Host cannot access them if they do not belong to host.
-       While LUO just have to handover the PFN to new kernel,
-       So LUO does not access the underlying data.
-    B. TDX module can not be freshly initialized, it will lose
-       the state of the protected VMs and their relation data.
-       So preserving using KVM uAPIs and reinitializing it and
-       populating it via userspace is not an option. It has to be
-       done from kernel. and kexec handover/LUO can handle it very
-       well by updating TDX initializing sequence in kernel (This
-       is one of the Idea currently in my mind, topic is open for
-       exploration).
-
-[3]: https://lore.kernel.org/all/20260720111259.122911-1-dwmw2@infradead.or=
-g/
-[4]: https://lore.kernel.org/all/20260925-gmem-tmpfs-backend-v1-0-d36159822=
-d18@google.com/
-
-I wanted to send this before LPC so that we can pick up this for
-discussion on Tues in either KVM MC (13:00 KVM and Live Update) Slot [5]
-or Live Update (16:10 Guest_Memfd Preservation For Live Update) Slot [6]
-or for general discussion on liveupdate ABI (15:50 Live Update
-Compatibility) Slot [7].
-
-
-[5]: https://lpc.events/event/20/contributions/2632/
-[6]: https://lpc.events/event/20/contributions/2610/
-[7]: https://lpc.events/event/20/contributions/2613/
-
-[5] is before [6] & [7], So, We can also have any other slots as per [8]
-on wed.
-
-[8]: https://lore.kernel.org/all/2vxzse2x46ol.fsf@kernel.org/#r
-
-~Tarun
-
-
-On Tue, Jul 28, 2026 at 2:11=E2=80=AFPM Tarun Sahu <tarunsahu@google.com> w=
-rote:
->
-> Hello,
->
-> This is v4 of guest_memfd preservation during liveupdate. As per
-> the discussion from bi-weekly guest-memfd meeting, This series
-> will be go to linux via kvm tree. And Planning to get it merged
-> in upcoming merge window. (7.2-rc1 for release in 7.3)
->
-> The changes are rebased on:
->         kvm/next + liveupdate/next (merge) + [4] + [5]
->         Where,
->         [4]: luo: APIs to retrieve file internally from session
->         [5]: selftests: liveupdate sefltests library
-> Here is the github repo:
->         https://github.com/tar-unix/linux/tree/gmem-pre
->
-> Patches [4] and [5] are prequisite of this series and they are
-> rebased/merged on liveupdate/next. kvm/next is behind few patches
-> from liveupdate/next, hence direct cherry-pick of [4] and [5] is
-> not possible. On Linux 7.2 they will be aligned. If we
-> succeed in merging it before I can request liveupdate maintainer
-> to provide the tag.
->
-> Steps to test:
-> 1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=3Dy
-> 2. boot kernel with command line: kho=3Don liveupdate=3Don
-> 3. run the following kselftest
->         $ .selftests/kvm/guest_memfd_preservation_test --s 1
->         $ <kexec> --reuse-cmdline
->         $ .selftests/kvm/guest_memfd_preservation_test --s 2
->
-> NOTE: Assert the following:
->         $ ls /dev/liveupdate
->         $ ls /dev/kvm
->         $ dmesg | grep liveupdate # (should have kvm_vm_luo &&
->                 # guest_memfd_luo handler registered)
->
-> V4 <- V3
-> 1. Split the refactoring patch into multiple patches [2, 3, 4]
-> 2. Updated commits msg as per the kvm documentation and suggestions
-> 3. Removed KHOSER_PTR and using raw pointer, as series [3] not yet
->    decided to go in the next cycle
-> 4. Implemented more tests in guest_memfd_preservation_test
->    allocation during frozen gmem_inode, non-guest_memfd preservation
-> 5. Moved the vm_create_from_fd to kvm_util.c from the
->    guest_memfd_preservation_test.c
-> 5. Minor updates as per the suggestions
->
-> V3 <- RFC V2 [2]
-> 1. Finalize the design
-> 2. resolve sashiko reported bugs
-> 3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
->
-> RFC V2 [2] <- RFC V1 [1]
-> 1. Removed mem_attr_array as it is not needed for fully-shared
-> 2. Removed pre-faulted condition
-> 3. Added vm_type preservation for ARM64.
-> 4. Removed liveupdate_get_file_incoming api patch as it is sent
->    separately [4] by Samiullah.
->
->
-> **GUEST MEMFD PRESERVATION**
-> Below is the cover letter of the series which explains the design.
->
-> SCOPE:
-> 1. Fully Shared Guest_memfd
-> 2. Guest_memfd backed by PAGE_SIZE pages
->
-> Any VM whose memory is backed by such guest_memfd and satisfy the
-> above conditions can be preserved across liveupdate.
->
-> To Add support for liveupdate of any subsystem, we need to implement
-> the following calls: (e.g: subsystem: guest_memfd)
->
-> guest_memfd_luo_can_preserve: used by luo subsystem to filter the
->                               guest_memfd files
-> guest_memfd_luo_preserve: triggered from userspace by PRESERVE ioctl
->                           If can_preserve says the file is preservable
->                           by guest_memfd_luo_preserve
-> guest_memfd_luo_retrieve: triggered from userspace by RETRIEVE ioctl,
->                           recognised by the passed token from userspace.
->                           Used in new kernel after kexec.
-> guest_memfd_luo_unpreserve: triggered from userspace when a session is
->                             closed, which inherently calls unpreserve of
->                             all preserved files.
-> guest_memfd_luo_freeze: triggered just before kexec automatically in
->                         kernel. no userspace involvement.
-> guest_memfd_luo_finish: triggered by userspace when all files are
->                         retrieved and want to finish the session
->                         retrieval.
->
-> *PART A: KVM VM preservation*
-> Introdcued the kvm_luo.c to preserve the vm_file during liveupdate.
-> Currently it only preserve vm_type. This can be expanded to preserve
-> more details in future as need arises for example data related to
-> cocoVM (SEPT etc.).
->
->         int kvm_fd =3D open("/dev/kvm", O_RDWR);
->         int vm_fd =3D ioctl(kvm_fd, KVM_CREATE_VM, 0);
->         preserve_arg =3D {
->         .size =3D sizeof(preserve_arg),
->             .fd =3D vm_fd,
->             .token =3D VM_TOKEN,
->         };
->         ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &preserve_arg);
->
-> This VM_TOKEN is used by guest_memfd preservation. guest_memfd
-> preservation save this token (fetched internally by luo apis [4]) to
-> associates the guest_memfd with its vm_file. On retrieval, guest_memfd
-> retrieves the vm_file using this token and use its struct kvm to
-> retrieve itself.
->
-> PART B: Guest_memfd preservation
-> Introduce guest_memfd_luo.c to preserve the guest_memfd file during
-> liveupdate. Currently it only preserve guest_memfd files that have:
->
-> 1. INIT_SHARED flag ensures intially all the memory is shared
-> 2. !kvm_arch_has_private_mem() which ensures no shared pages can be
->    converted to private after [6] lands.
->
-> Preservation first freezes the gmem_inode introduced in PATCH [07/11]
-> and preserve each allocated folios from guest_memfd page_cache using
-> KHO.
->
-> luo_freeze (not the gmem_inode freeze PATCH[07/11]) call update the
-> vm_token which is preserved across kexec.
->
-> Retrieval retrieves the vm_file using vm_token and create the
-> guest_memfd with vm_file->kvm and populate the preserved folios
-> to guest_memfd page_cache.
->
-> Added the Documentation for VMM on guest_memfd preservation guidelines
-> To know more about, PATCH[10/11] can be referred which has the more
-> detailed documentation.
->
-> Future Plan:
->         1. Make preservation immune to new allocation and fallocate
->         calls so that we can remove freeze call
->         2. In future, When IOMMU will use guest_memfd and can allocate
->         page tables for DMA in that area, Later it will be a problem if
->         other user of guest_memfd do punch hole before preservation,
->         that will make the pages to be lost after preservation. This
->         will be taken care of when IOMMU will add support for
->         guest_memfd.
->         3. guest_memfd preservation for private pages + in-place
->         conversion.
->         4. In future, when guest_memfd will have hugetlb page support,
->         add support its preservation.
->
-> [1]: https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.co=
-m/
-> [2]: https://lore.kernel.org/all/cover.1780667929.git.tarunsahu@google.co=
-m/
->      https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905=
-.1780676742.git.tarunsahu@google.com/
-> [3]: https://lore.kernel.org/all/20260622184851.2309827-1-tarunsahu@googl=
-e.com/
-> [4]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3Df4d2e4f0d12d88155cd1128ed3294f7827bf4c5d
-> [5]: https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3D2f3f53a3735a7e67bbe9e580cb49372bf9261967
->      https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git=
-/commit/?h=3Dnext&id=3Ddf1a0d068d481b7d175c5af3970043206409a062
-> [6]: https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-0-9d=
-2959357853@google.com/
->
-> Tarun Sahu (11):
->   liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
->   KVM: Introduce kvm_create_vm_file() helper
->   KVM: Export kvm_uevent_notify_vm_create()
->   KVM: Track weak reference to vm_file in struct kvm
->   KVM: LUO: Support VM preservation across live updates
->   KVM: guest_memfd: Move internal definitions to internal header
->   KVM: guest_memfd: Add support for freezing mappings
->   KVM: guest_memfd: Add support for preservation via LUO
->   docs: liveupdate: Add documentation for VM and guest_memfd
->     preservation
->   KVM: selftests: Split ____vm_create() and add vm_create_from_fd()
->   KVM: selftests: Add guest_memfd_preservation_test
->
->  Documentation/core-api/liveupdate.rst         |   1 +
->  Documentation/liveupdate/vmm.rst              | 107 ++++
->  MAINTAINERS                                   |  14 +
->  include/linux/kho/abi/kvm.h                   | 106 ++++
->  include/linux/kvm_host.h                      |  14 +
->  kernel/liveupdate/Kconfig                     |  15 +
->  tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
->  .../kvm/guest_memfd_preservation_test.c       | 357 ++++++++++++
->  .../testing/selftests/kvm/include/kvm_util.h  |   3 +
->  tools/testing/selftests/kvm/lib/kvm_util.c    |  49 +-
->  virt/kvm/Makefile.kvm                         |   1 +
->  virt/kvm/guest_memfd.c                        | 185 +++++--
->  virt/kvm/guest_memfd.h                        |  44 ++
->  virt/kvm/guest_memfd_luo.c                    | 515 ++++++++++++++++++
->  virt/kvm/kvm_luo.c                            | 195 +++++++
->  virt/kvm/kvm_main.c                           |  94 +++-
->  virt/kvm/kvm_mm.h                             |  15 +
->  17 files changed, 1640 insertions(+), 81 deletions(-)
->  create mode 100644 Documentation/liveupdate/vmm.rst
->  create mode 100644 include/linux/kho/abi/kvm.h
->  create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_=
-test.c
->  create mode 100644 virt/kvm/guest_memfd.h
->  create mode 100644 virt/kvm/guest_memfd_luo.c
->  create mode 100644 virt/kvm/kvm_luo.c
->
->
-> base-commit: a204badd8432f93b7e862e7dac6db0fe3d65f370
-> --
-> 2.55.0.229.g6434b31f56-goog
->
+I think this is cleaner than reimplementing the page walk exclusively for K=
+MSAN.
 
