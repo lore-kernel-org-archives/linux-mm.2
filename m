@@ -4,80 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910BDCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:40:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2296CA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:43:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B00606B0088; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
+	id E87F66B0093; Tue, 29 Sep 2026 04:43:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB1286B0092; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
+	id E602A6B0095; Tue, 29 Sep 2026 04:43:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99F6E6B0096; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
+	id D754A6B0096; Tue, 29 Sep 2026 04:43:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72D826B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F5631A0445
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:40:21 +0000 (UTC)
-X-FDA: 85266153042.10.9FFB2AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 367024000B
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:40:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A83386B0093
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:43:11 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E60E880438
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:43:09 +0000 (UTC)
+X-FDA: 85266160098.20.95676F1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0FCB54000B
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:43:07 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8RCx2A6;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGwxpnBE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790671219;
-	b=BNvZzwYYSfeu8Az021Gru8KX07MIFYw74I8XrG1Ldu0oCPKUSMkhPlGfLJvqsZUjHe3cag
-	o6swXhbRAc2xXa4k6uzCvacyhlF64ZvNvXNP6KATVdPdxtWpvP1BnPDjFe1TKQZZGsmUor
-	yKEdxi8yJwFyMpfm8rz/4B9QhFRTNDY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8RCx2A6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790671219;
+	s=arc-20220608; t=1790671388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NRmGo/s3yk59uOXehGVPyIu3WF3s3uiccw2ABWNFy+Y=;
-	b=vbjP/oDq/ERef2iIRySpFMRcTCJ4ZCDNokh/plMMmSO6yNNyoPS4eGCDag5DXiFDsrtkT9
-	OjJ4S0GmZ3odtiEkMl76RaSVYUdcFqRxaMXThRiGztdHRpSviaYQHf30ZUqt8O70vAKvIv
-	q/+U2mV1wbzW99S+Ad6V+DbTAQQJHHw=
+	bh=L5o5nxIGaf1ad5zEI4GVn6mSMEnb1Lm3br5oDnecbdc=;
+	b=PzhoaTBassCYVDh5jqGRSyQVtPW+j8XYcrmWNCqhQGjvu9vpALm3cK/Fc6U5pnzf8J4Dxf
+	L9Ki7ihpxBiomvIDkC1x6lbMtKA9XQB/IVsIltZGugZT26jxJSDpMVzrdShpFPzEerSxTT
+	sG8YTDEkJ+dsMbaAKMSJKjJv6zxdnO0=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CGwxpnBE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790671388;
+	b=QKSfzzHdkTZWDNt7tErU8y86BaV1Ti3nSCN1HMkAwTvMtlkulesMRK+YsDQ5KuTDVObJgz
+	lLz4nHOm3IgXubGEkZZid0jogBE6KE7B35eNmg+VDUVc54tbXYB+QGJz9P2XNd2BVz9EYj
+	8YNOZibNW0eO6ATcZgg5ZEylX2GHsJo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B714160210;
-	Tue, 29 Sep 2026 08:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A841F000FF;
-	Tue, 29 Sep 2026 08:40:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BBCB41425;
+	Tue, 29 Sep 2026 08:43:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF371F00893;
+	Tue, 29 Sep 2026 08:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790671218;
-	bh=NRmGo/s3yk59uOXehGVPyIu3WF3s3uiccw2ABWNFy+Y=;
+	s=k20260515; t=1790671387;
+	bh=L5o5nxIGaf1ad5zEI4GVn6mSMEnb1Lm3br5oDnecbdc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=J8RCx2A62TDnaTbtiOzwUGzOs/DtFljh4PB4C9JQMt9SQup+lbXC+eZs7X2HWUBnt
-	 H8e0kNbLpjrZRKnY8dR1k3GZit7rPtW01boZqWO4PBI4tWYL1ScQzzrBFwDmZyKec3
-	 XPqRat24jksIghm4MurKmraBFbcVxOkrpo/Ql2yin0sHvXmZrOSayPvZisZ70YVZZw
-	 DJihOGOJfhQS6LkyITjQU/YIUwy+RWGxskKfhA7IcgrOhwWLGfwSMKj4uNyMOs7iFU
-	 qRekMgmB3L3BPaXavkjvXbp72MmRlsoE/U54Kx4lrCWsUT3fU+1WzXrI8y0zmo5wgd
-	 THQnu6YKhBWHA==
-Message-ID: <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org>
-Date: Tue, 29 Sep 2026 10:40:13 +0200
+	b=CGwxpnBELT2SBdYqTWoImYAwOQE6VH3Z/GK/BjARDqL1OwqOg0mgW0LKYZbEz6KG/
+	 SAEdW0C3XoQlNf/Suzav0R/znaJUw+Zx9A2mbHr2oOXegJenEJuYHoxqO8iDkDY1Z9
+	 1biQcQdcVJCtdUNP3yYInn6yCqUpVeK7z7C2EAovrzfdZBjcL/JFpIALGaFmJaradQ
+	 K2j9jnOfTmkKmmk84SVrHosCBrgboNIbijZzR8QL5Fqh44ddhSMmY5yz0y1urmxGHS
+	 6q7CoSukBqGFsgY4TVNW9UMehwhIHeIFxPbMVn2h2JoaMn82yQAVpHyoBvs8ilNbAC
+	 LQ/yguM0me+uQ==
+Message-ID: <73625017-b944-446b-95b6-6c586c304f35@kernel.org>
+Date: Tue, 29 Sep 2026 10:43:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-To: Park Tae-sun <ts930@dgu.ac.kr>, Andrew Morton
- <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- Lorenzo Stoakes <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
+Subject: Re: [PATCH v5 03/12] mm/sparse-vmemmap: introduce
+ CONFIG_VMEMMAP_OPTIMIZATION
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
+ <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260927025441.741633-4-songmuchun@bytedance.com>
+ <d7a75c99-3021-495f-ae34-883d047370f3@kernel.org>
+ <D0B0A406-100C-437D-8AA8-D276E8DA8278@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <179066531783.50175.13377521828379196177@dgu.ac.kr>
+In-Reply-To: <D0B0A406-100C-437D-8AA8-D276E8DA8278@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sfxtrtqpmxepnwenbp7ucatiizngthkx
+X-Rspamd-Queue-Id: 0FCB54000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 367024000B
-X-HE-Tag: 1790671219-855291
-X-HE-Meta: U2FsdGVkX19Q/PMvFy9+ZEK4ygBFBZLxceXXZ0s2zclXlmDKHVk1z+/IVnjrg5dLST4e0DZqo56S5073yryhdvAweKZfXeB3zPgU5Z9dbImI4Fl1UvX03OJ/yAB3qdccE7JFHSzwMVlqJfbdGvs2Mf184PYMXCSOBHNIej8ho2J4BdgPa5ijj6GYeSE2+JoJ+VnlVkiB2DvPPYCJxIpPa7IJ39uEtNrE7Y5adn324/lAbH5gUDbIous3tfQCNtHvYaRNWVk+Odrady0mP314bvjswzl24Nozd0D1MvsvLdpekw3/zBVX6M5rXlfQZqTbCqj/d7iWI5+ZSFN+6d9C/3A2+BOfXbShjylQLeiu0lelzbdnX8/WRb4vKGbWqzChg8aPYZHtLvlhN+cgT+Fzr9LhIlf3sSSDUiO8Mmd+g7GaEBmm9VAABMo8X9PCDihwIeoAjUVb3hx192mQIhiS54zAf/J7QtWnxcYV9w7IL7/3jqUW828lZv0s4mpc00tAfILw3ZBILvS/cB/j02o5vBc3SV1vLJSMyBORiUhWLzf4AYBmntC4/IS5p8vpVjFKeEDV+S4DLUVIS2txZusNvTueA3p67+NZioAlP6Oavv6nV00OhKvp5zMAbH77tVYmxJmHWdc8jU3z03/POJZNcH5Fz3BxjuOu5423+yuLjpfc196PaWbYVnNHRyvzx66sUGFQYSrMNuqJ+E1z2ztcQmsof5vGcY1s43LReOQzxvxG0PYLAJPoCczofuTDtfxNhhGPU8Y/C2RCsa1IGt1FJ5qb6uaW3AfA/cs8zhfigopEydoEb6GhhVhlygZVRrgMljYRd/KMBAA9wVhL5YHXMl5T4EH2rqR0QLotITMldUEPUEQ07zQBHw7FL1GzNyBggDD2tPy7T9szq0V02abPN24bgCC53VN+1PkTymLNPW8BjbAqh0tzacvHyd2jVkHuJJVafd9W2UqjD541gWw
- d6a9Kt1C
- oPO1pYariybQK8wppr3Bl+r7mf5nM8xr5PEyUZYoemm+blRbYfF/9Fu3CNBEStB5QRshI7BKFCVKkeRhTKDPYsznA9e+oMPevsy69YXJ1rGmfqjGa3Kf72nxRjr2wUgQoqV/ZGkZZMSQJLMUVcQlji0YWXv966XDe7DT1fFoGcJL85p9xelWtn7jVWetf0NgHkIE/SZTkG3VVDdSEzTiJSijv10urs2Fcta6jgGkpQCHUsFFWsDbHNQb4K5mezXi/CNKt
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ojxxjg6nc3rzw38wyqabb5prwaxc46wu
+X-HE-Tag: 1790671387-610022
+X-HE-Meta: U2FsdGVkX196E+BJJNOPCoK6Hfq4uhNKY2hYBdJ0JSQTkzKv9kNl+Fb1JvchQyw8Dih8h51UO31bJds9K19kucEtBCguyVzWLCV4sHk76wQMjOEre6dQSda/Xc5XCSE1Zf9EaFiQuUD0hKV9R884PEr7Gnqsvn9A1IZB/OWBlIbTH9BMkpB54Z7m0374QMdIQ8saXgK7O/0LoBER01jQeeSOmeaTs2uXH6Rqn+jepw03NcfUATYb/CVQ7kgKZExItLYxKuCysmK2JOq5cHzUtLm+ikT/1IKWnF7jCAF0i3Qk6vcL4IAAmshjIZSJD+O3RXN2dT2toxpfeSE+DBFP2QDavQGjY24WKbaWax8LLTvDNOuMub4VYy4pFdUqzyhJf+5P9XkQzXHgEb3XBvjjwYbVz2xFm4w/mrOKMfvKlz7xlZpj9KpMElhOCx+hrDs2u7yJPK3MQlOZFvZ0HMP8+EMdRyHaT012Kd7nR6L+0/gOWXp/iVKWYSceklsmYwe5CExGA52J6HtkVrHmtT3LtM6h4jyoCOSCNsxpuYtLhjjn8Ls4YS1BKpKAr8vB/dzBZstsiu+SbY+cGefmgDHNBMs5kjsDyZ3yJ5z4CRabWWBn4Ep7W2oALzRhqKjfTvfoW+6/MxOcI/5oeMyNQRjtbQhAik333VuLVMODonpH1L4iI8O6MVJr8mftv1m8vNEmLExJHWbVfa9aNRiA+Nyv0vywf/b/lJZiCKUUB3Wk+eF+AurH0pghLI0O6TW7KfDA+IhxrSMh13lwx8CqZoBDomBeVsWkY+FICE43pXWJLR7MR3L+AJj6IhDV5j2btuooCoPRRHSRzRqzHYrWC1a0PPjd5WxX/oxt402xXp8qIZEJsszc6h49f4duvnlp1259vNttFbGC1kXsTYptxYqnt7lhTt/4dpC3ffNiK4jftSX853V1L/NE3WK53LEmK8VCtzShDqkfYzLi+12K1Dj
+ k4gruKFS
+ TX46Kk63YtCp36vqkgzEskj/I7Yt+4/Lqcbb0d0FrNtgyKSSrNOyv0n44Zl3f07O+JEhf7cpszQZsr0hNR+5KbkakAQ9nwaOjSevOlWBG6WTvQ0b7OXq50/MtCm9NsqKymeRRzBye8FzKislkWlyRU253l0BaletBdkAUjJI0WP0exAO5JxJ/pbAlfryM4TMYj56UiklattiBKK9k9yc146MgMQyNMW4u5xZKoHpC3P1KB42WX1BI11bMt+vlbQqHNdHL5qirvCGQAlBT1UGHGQMtZelAm7CKoitHOHlCmQedHnCkhEJE7Gl+PosBjjAK2V70+IB/Tkjxg54HcXLp1MnGXdyRgjYqhtVF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,73 +149,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/26 07:56, Park Tae-sun wrote:
-> mlock() and munlock() currently normalize the requested address range
-> using:
+On 9/29/26 09:53, Muchun Song wrote:
 > 
->     len = PAGE_ALIGN(len + offset_in_page(start));
->     start &= PAGE_MASK;
 > 
-> This performs multiple arithmetic operations on user-provided values
-> without validating intermediate overflows.
+>> On Sep 29, 2026, at 15:11, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>> On 9/27/26 04:54, Muchun Song wrote:
+>>> The section-based vmemmap optimization infrastructure is guarded by
+>>> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, but it can also be used by
+>>> ZONE_DEVICE users that set dev_pagemap::vmemmap_shift. Introduce
+>>> CONFIG_VMEMMAP_OPTIMIZATION as a common config for the shared
+>>> infrastructure.
+>>>
+>>> Select the new option from HUGETLB_PAGE_OPTIMIZE_VMEMMAP and from
+>>> ZONE_DEVICE when the architecture opts in to DAX vmemmap optimization,
+>>> and use it to guard the generic sparse-vmemmap state and helpers.
+>>>
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>>> ---
+>>> v5:
+>>> - Move this patch after the shared tail-page factoring.
+>>> - Select VMEMMAP_OPTIMIZATION from ZONE_DEVICE instead of DEV_DAX,
+>>>  covering all users of dev_pagemap::vmemmap_shift, reported by
+>>>  Sashiko.
+>>>
+>>> v4:
+>>> - Rename SPARSEMEM_VMEMMAP_OPTIMIZATION to VMEMMAP_OPTIMIZATION
+>>>  (suggested by Mike Rapoport)
+>>> - Collect Acked-by from Mike Rapoport
+>>>
+>>> v2:
+>>> - Fix SPARSEMEM_VMEMMAP_OPTIMIZATION being selected without SPARSEMEM_VMEMMAP
+>>>  reported by Sashiko.
+>>> - Add an explicit DEV_DAX dependency on ZONE_DEVICE
+>>> - Collect Acked-by from Qi Zheng
+>>> ---
+>>> arch/x86/entry/vdso/vdso32/fake_32bit_build.h |  2 +-
+>>> fs/Kconfig                                    |  1 +
+>>> include/linux/mm.h                            |  3 +++
+>>> include/linux/mmzone.h                        | 10 +++++-----
+>>> include/linux/page-flags.h                    |  5 ++---
+>>> mm/Kconfig                                    |  5 +++++
+>>> mm/sparse-vmemmap.c                           |  2 +-
+>>> mm/sparse.h                                   |  6 +++---
+>>> 8 files changed, 21 insertions(+), 13 deletions(-)
+>>>
+>>> diff --git a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>>> index bc3e549795c3..72a92cb9b53d 100644
+>>> --- a/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>>> +++ b/arch/x86/entry/vdso/vdso32/fake_32bit_build.h
+>>> @@ -11,7 +11,7 @@
+>>> #undef CONFIG_PGTABLE_LEVELS
+>>> #undef CONFIG_ILLEGAL_POINTER_VALUE
+>>> #undef CONFIG_SPARSEMEM_VMEMMAP
+>>> -#undef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>>> +#undef CONFIG_VMEMMAP_OPTIMIZATION
+>>> #undef CONFIG_NR_CPUS
+>>> #undef CONFIG_PARAVIRT_XXL
+>>>
+>>> diff --git a/fs/Kconfig b/fs/Kconfig
+>>> index d1c210c6508f..1454b7fe9641 100644
+>>> --- a/fs/Kconfig
+>>> +++ b/fs/Kconfig
+>>> @@ -278,6 +278,7 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>>> def_bool HUGETLB_PAGE
+>>> 	depends on ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
+>>> 	depends on SPARSEMEM_VMEMMAP
+>>> + 	select VMEMMAP_OPTIMIZATION
+>>
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
-> First, a zero-length request with an unaligned address is incorrectly
-> converted into a non-zero page range. Because
-> PAGE_ALIGN(offset_in_page(start)) rounds any non-zero offset up to a
-> full page, a request such as mlock(0x1005, 0) falsely locks an entire
-> 4KB page (or fails with ENOMEM if unmapped), and munlock(0x1005, 0)
-> silently unlocks memory that should remain locked. Conversely, an
-> aligned mlock(0x1000, 0) is a no-op. Zero-length behavior should be a
-> consistent no-op regardless of address alignment.
+> Thanks.
 > 
-> Second, a sufficiently large length wraps around to zero during page
-> alignment (e.g., len = ULONG_MAX). Because PAGE_ALIGN(x) is defined as:
+>>
+>> Is there a path to remove HUGETLB_PAGE_OPTIMIZE_VMEMMAP, and to merge
+>> ARCH_WANT_OPTIMIZE_DAX_VMEMMAP+ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP into a
+>> ARCH_SUPPORTS_VMEMMAP_OPTIMIZATION?
 > 
->     (((x) + PAGE_SIZE - 1) & PAGE_MASK)
+> These are actually two completely different capabilities.
 > 
-> when len is close to ULONG_MAX, adding (PAGE_SIZE - 1) wraps around:
-> on a 64-bit system with 4KB pages, ULONG_MAX + 4095 wraps to 4094, and
-> masking with PAGE_MASK clears the lower 12 bits, producing 0.
-> When len becomes 0, the subsequent check in apply_vma_lock_flags():
+> ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP requires the architecture
+> to support dynamic updates to vmemmap page tables, meaning a
+> PTE entry can be changed from one valid entry to another
+> valid entry. This does not meet the requirements on arm64,
+> because arm64 requires page table operations to satisfy BBM
+> (there is, of course, a series [1] attempting to do this).
 > 
->     end = start + len;
->     if (end == start)
->         return 0;
-> 
-> evaluates to true and immediately returns 0 (success) without locking or
-> unlocking the requested memory range. Similar wrap-around issues have
-> previously been addressed in mincore() and madvise() by checking for
-> zero length after PAGE_ALIGN().
-> 
-> Finally, address addition overflow (start + len < start) is currently
-> detected only inside apply_vma_lock_flags(), after mmap_write_lock has
-> already been acquired and memlock rlimits checked, improperly returning
-> -ENOMEM instead of -EINVAL. Per POSIX.1-2024 and man 2 mlock, arithmetic
-> overflow of the requested range represents an invalid argument and must
-> fail with -EINVAL before modifying VMAs or acquiring locks. Note that
-> apply_vma_lock_flags() already contains:
-> 
->     if (end < start)
->         return -EINVAL;
-> 
-> but this was obscured because rlimit accounting preceded it.
-> 
-> Introduce a common check_mlock_range() helper to:
-> 1. Return 0 immediately for zero-length requests without taking mmap_lock.
-> 2. Validate intermediate and final arithmetic additions using
->    check_add_overflow().
-> 3. Reject lengths that wrap to zero under PAGE_ALIGN() with -EINVAL.
-> 4. Detect start + len address overflow before taking mmap_write_lock.
-> 
-> Signed-off-by: Park Tae-sun <ts930@dgu.ac.kr>
-> ---
->  mm/mlock.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 47 insertions(+), 8 deletions(-)
+> However, for ARCH_WANT_OPTIMIZE_DAX_VMEMMAP, the vmemmap page
+> tables do not involve dynamic updates, so the BBM requirement
+> can be satisfied. Therefore, arm64 can enable
+> ARCH_WANT_OPTIMIZE_DAX_VMEMMAP, but cannot enable
+> ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP. To make the naming clearer,
+> I have another patch [2] that renames it for greater clarity.
 
-You call it "fix" but then I see no Fixes: tag.
+Ah, perfect. Too many patches floating around :)
 
-Which of the problems described above have reproducers (IOW can be triggered)
-and what is the user-visible problem?
+I thought there is a patch set to avoid the BBM requirement on arm64 from James,
+though. So not sure if both things will always stay separate.
+
+> 
+> As for ARCH_WANT_OPTIMIZE_DAX_VMEMMAP, I plan to remove it
+> entirely in the future, because architectures that do not support
+> it can simply choose to disable it, as can be seen in patch [3].
+> 
+> So in my plan, ultimately only one config will remain:
+> ARCH_SUPPORTS_VMEMMAP_REMAP.
+> 
+> I hope this clarifies the plan. Let me know what you think.
+
+Yes, thanks.
 
 -- 
 Cheers,
