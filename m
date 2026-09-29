@@ -4,122 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2E7CCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DBECA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:32:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0AC26B008C; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
+	id D95B46B0088; Tue, 29 Sep 2026 17:32:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBACE6B0092; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
+	id D444D6B008A; Tue, 29 Sep 2026 17:32:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAA1D6B0093; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
+	id C5AB56B008C; Tue, 29 Sep 2026 17:32:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9ACD66B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3363BA69DB
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:11:05 +0000 (UTC)
-X-FDA: 85268044890.29.1377C0C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C37F2100007
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:11:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKEReLvl;
-	spf=pass (imf14.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A1DDD6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:32:19 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3B9B6A044E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:32:19 +0000 (UTC)
+X-FDA: 85268098398.01.FF2452E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6440120007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:32:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D3vyCbxH;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790716263;
+	s=arc-20220608; t=1790717537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
-	b=dEY0Z0LNUhw/V4r8VzjSDIhaCLHI/fv1EqwleflvKXV3B2tuE06UhKXEv2EY+1bp2YV50j
-	cR6CdxH3Y0wd2LSu3ctFend4Fu131PTbElmih5UqfwXlnwLRiPFZ3D4GR7sgU03HHUh2Sr
-	kVlr+k4jSIdI36MS0BEnXX5CH+iX9Fk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790716263;
-	b=scTMWzFuWbG1yW9xD8U8C73qQ5xkdMQ4VCAAePNRDeguIXFxUS5WfMumuNSTl1vztzQjq1
-	yjZ/hae3G1EBx7JS7l+Fk1oRO+BO92emWR51nt9OTwKPgVGOpeaNrgmxyBhAc8J8I2JbmT
-	BrqATfSnJtVV81o5RgylYd3t9RNANtI=
+	bh=bV1wlokKdVHLqPHNGwe/7vIopeMXy+gYUFpopQWEIt4=;
+	b=AE33CuDMG+WNPUtcuoW8+AbDqmhcMXoIVLSh5hVsQn1eXYjBcuKdl47onLDru7S0m2i4FK
+	TkTVIpFBgSkNz9rFIh+sMusQLuAtR/nQjXwnP1jgluQB1lMFyXAkHxjoPT710FE9LM9ksY
+	m/C6y3V8IbewXlv9SnOu7ziXxjpB6eM=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKEReLvl;
-	spf=pass (imf14.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1790716262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
-	b=BKEReLvl79+HZLdXykWRpzMod/vL9QvFWFTBdtMIKLgpQkFb9J67FglMkPvLW4K6l6nM66
-	Gbr/5O8x+uxsBBTj6B1r/YEG4HXhku9Bc7cMVJkdqYo8iJR3JOxtOdTpTGnQ0iTnVBSyQs
-	wRL0jg/Khe8XiR5oL7xgcyh4/XyR1aE=
-Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
- [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-BObc1XV2Ngigpn4T02PZGA-1; Tue, 29 Sep 2026 17:11:00 -0400
-X-MC-Unique: BObc1XV2Ngigpn4T02PZGA-1
-X-Mimecast-MFC-AGG-ID: BObc1XV2Ngigpn4T02PZGA_1790716260
-Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-8914aeaa16aso75957347b3.1
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:11:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790716260; x=1791321060;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
-        b=GKs+XqHEn7ux5d8cOt8l1D77w4KDZwP7CdwPmeCxcjPreoIZmmK1pMf4rYNXhH7J8A
-         VwAjd5yOcWhdIW286MMXMtG81Ph4+lNvO18NP10p78RU9UXhAnzBt02bsXUZIVOyvVrw
-         6qsvp5a54FHvZVrOi1eZxCtC3cgmSjfyIF42vqrcsr36OoJGtZC0Nd/43kNvfb+VdQTm
-         Zm8ToD+ENdzARtrZmsFSXZ0CmumFYdZYeIcFam6Hkg1Re4//OS1qX/DaJO4BE7IAZvq/
-         KFx6J1iVJRxkDDlqbVL+ZZpvm0yWcCxRe19Ap3hkW6uKc5Wc77a/mx+GRBxAxqltIPUk
-         0Ojw==
-X-Forwarded-Encrypted: i=1; AKwUvBzALCtpjQi4De32TOq0KH1SfPEDfaOhX45GtIuZDRMDwH7l4r8rgjRCUw0rfdBqvi+QVFSks155Uw==@kvack.org
-X-Gm-Message-State: AFq9FYKSp5Ey016Fvd7eod11BkSpQwF7YKe0RkArBJsTLy4jta9zsmew
-	YjIpRkxI0HXyOTrc88KRme9ZRtvZ7dME6NFztx9KypcEdmAHYtFV/ikqk61d86mwSqi2QNNpAKr
-	mexfaawE61fLsJAiKyzcHDWUHAyFU2EzKhDsepFfow78HpiUnoYN2XXnEN7xDCmBw05aTLI01oK
-	S7qFvPbZz7o7zKgU6I7FQEKSfVX96xRPWcZxxSxeCd
-X-Gm-Gg: AYBFou059htiXemn/wjBiDtSWX+XoDxQGENu2XNQpwSYeVLYRhdnTARHGhL0kQdQ6lt
-	CO8tSyPNzfrynHGVrtNe5ZHPeKSJwlLavP8Y4PI0nnWzuduqTV07hnn8YGHLb8Rhai9/BodHVG1
-	01xrL+9Xim1chQ0u5UndAIlFbPsL9ntxOYvPjNixrDvfG/CnRbpaeTU4EBAT0uheg/teOhMFZDP
-	u6vdb9OU8NJUFClK63xLe9xeiFxsRS6loihQ3d28fbpTg==
-X-Received: by 2002:a53:d886:0:b0:675:5f54:9e75 with SMTP id 956f58d0204a3-67644171349mr158631d50.79.1790716259997;
-        Tue, 29 Sep 2026 14:10:59 -0700 (PDT)
-X-Received: by 2002:a53:d886:0:b0:675:5f54:9e75 with SMTP id
- 956f58d0204a3-67644171349mr158620d50.79.1790716259511; Tue, 29 Sep 2026
- 14:10:59 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260911081309.14137-1-jack@suse.cz> <20260911085142.1774803-9-jack@suse.cz>
- <CAHc6FU6YT4EzM8VDX8V0+dhfRJtSrtWxbuwht+b8HG5yzyq7Lw@mail.gmail.com> <kgxyhbgbewpch7pc3auxthhbcfelq7lgi7mxazdo5wvg2ael3b@hilsbf4622sh>
-In-Reply-To: <kgxyhbgbewpch7pc3auxthhbcfelq7lgi7mxazdo5wvg2ael3b@hilsbf4622sh>
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Date: Tue, 29 Sep 2026 23:10:48 +0200
-X-Gm-Features: AclHuK9UqhWpM6SAUINx6rl63wXociZVUKWztTN75qMxxHCVsEZdA2U1AApCAYM
-Message-ID: <CAHc6FU5uXnjhL9SgOX06xVdTXFP7DtWikwa0bn=bEW__is9bWw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] fs: Add throttling to deferred inode reclaim
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
-	Mikhail Rudenko <xyzzy@yandex-team.ru>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: v2PQtXSrPNvtUFr3mVj4aHBJsI9d2ZgKa8XP1ShF2eQ_1790716260
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D3vyCbxH;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790717537;
+	b=JZ74fNtOqR7UeKUhiY8Ln/Gv/AvriuRV7ukr8bMAabMLtzWOPvGCVE8OelryhUYsGyYC31
+	mGLAm/D5J0rt4i1F+noz1Vmex8Tkk08fr2/sOYlHS9LngjX2c79tEs/X5tgDkbDAIMTarS
+	qtzykkZ346lZpBgdYwQkFLBB2Mn0crU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B8DB043D33;
+	Tue, 29 Sep 2026 21:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068751F000FF;
+	Tue, 29 Sep 2026 21:32:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790717535;
+	bh=bV1wlokKdVHLqPHNGwe/7vIopeMXy+gYUFpopQWEIt4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=D3vyCbxHxJQ+aX1/mUxGlNGRXygGdhx3UDqmwRpHjeF9SrqNpUku1TQDoU18Eju+A
+	 Uvj+PN6PuV8lgvO1Uo60ys6S+sVxEDTN6T7mEYU3V9canHRrMkOUhO9Qkzk7wqeFeb
+	 v6vUPVcDn5zBCzMO6qK/hPO0ApMIFdNMFlbEMsgk=
+Date: Tue, 29 Sep 2026 14:32:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Mike Rapoport
+ <rppt@kernel.org>, David Hildenbrand <david@kernel.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <chleroy@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, Shrikanth
+ Hegde <sshegde@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, muchun.song@linux.dev
+Subject: Re: [PATCH v3 0/6] mm: Unify device DAX and HugeTLB vmemmap
+ population paths
+Message-Id: <20260929143214.9061bcf284369163192968d1@linux-foundation.org>
+In-Reply-To: <20260929053231.66085-1-songmuchun@bytedance.com>
+References: <20260929053231.66085-1-songmuchun@bytedance.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hw9mtfcif7cmaqhmj87tox6387wppqe6
 X-Rspam-User: 
-X-Stat-Signature: mudupmouhz756zzoixtkbugarndx3thg
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C37F2100007
-X-HE-Tag: 1790716262-46306
-X-HE-Meta: U2FsdGVkX1+wFLIggWr7AuESls2lvjVyLwJk+mA5jBaReb9smxnb6IUpS0qlq4mYT6bW02nc0tX/d7rPJ4W69UEs+uyRFJKWkEugZ6Bh96LKcXgIGMCNzMNAWU0VHLWo7pzL0PDdyZgjD7QSgiEI1vkRWQChDPJ7/sq9CDcAzXIgVqB0FZ3qtGI63PaRA64xtUCw7J6X5ri8TzilPWrVcd3uLuQTizKguFJOtQMelsiEoOVjhuwhKEpFhZtLBblkTAt6IId7xmBRF5NNPyQaX5/LxWbVYYBOwo4MTMB9vesXsEOX+pV6dcZfdoa10gKhH9ZAIMlhDRMfIKrZw1q5vX7+abzfGqks/uF//S9oowG+uEko8iVe0e3tAedBU0/IwKzcAMEMUY4uSwm44WfwE8lgcktBtmEZYFjipfP8PW0JxlMdhc/FPqJxfBbZ4NlhgX0uJKThOxjvLWHr4i3xio7mImjxtzUs5xcYRbBfUqBC0n7Njfmj9TocMTWVZWNXm1RpYtwwzJqgawxE/dCkbKC9JdcDdMVojUiiXVlhmw0+A6LUurPL3QqQvGRkijseBqVn0IL6dkPtD54nU7g/u9/svXz/x3jTsqYG2I5xmm0yJpQc8YESwsAEl7MZuSvdwmjtF+xtxJgbwkokyg2D/MB+ovrqdVVhVxk2ec7gXzCC96x7/pwkxWMR7JVSrDIF+9+ztf9t5GScrXkUY+H1VBu59OOs+EOlkl24d+NyL37TkNWTjxJXrdmzVyKX9m7kPcI7SRY1BLXd7+eql3b5le05w/DvdusKcjZAIgCjW+WWURO3QvMYxj2A1TsskL99w5HFYtEOA06heweC7l45RgV1qAob7UFTaIQj3f65CfnYIUIOeefJOosDfFRmOsQea0SYYT6EF519xJdyoraUarmIf8+D6lWx2jjKPMOi4ErZ5SNYmEfv9rJEV7CPUFvNE9Og7cVNmP5CWvJQxIX
- EYGQGWIz
- BDPzu49KAhSECCIioiHPVqF0vfdPWCo1Z9PW6VMGW4hrMSgxAYv4Utqpl9Z7K7tBzowboxMF8TUX3RxDj5PZtH0pw2EMZnljruozfvCfPwlrezQQnZ9gYFTIu47ELPPy6EBEt0qUdReg1R+DEJ7BWjhPGVapBIZZaJc5rrDTVII4crwVmoSgJWGce34aPB52IIRQ/aeXPIQqTQ3Lt/eQsbYiJsGiRP5LzPEAmOBhBEzmamSxmzFjvx7Y7SACzWdhG8NXC
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6440120007
+X-HE-Tag: 1790717537-334080
+X-HE-Meta: U2FsdGVkX18JpnImWXx/udl9cn2mVMXSVbHwVxLZF2ObUJOf+KbzfYTlNilSIPjYX9E2lUVW6w5TuoNk3RjQNS3hnWZIprdRoMiOf9i2AlzoNy4IBzIx7SShEmx78z4zIVWpqPhQPMIK9utEU/BIbUyvYy7cMdHz7h2HDZY4ju2JsPo/x1KwcACDua5l4bzLFYxyWspTimYeuAzLy1z805iN+GdBTHWy/PqvLOO9LfBec7Hk0sQ4gNRnif1LReHrRl+nyr4N88cFpEuuW0bFS8+AQ9zruL+3NpKzqQzlrLWdOb6GfQSRDLXTmc3QvdS4NiDzIQYaBscVxqWTg3RwAYfIcz/U6BoTJYgcaZQSYicI11Ol2jKkFINZ9WCszje36ZDpU481J6vHRVKIfVT+EJU4Y98/jvxRF/9AA++50/WEE0OGJCj+hk6TqVbqbIrQJQyfNGv8bO0/Otu6WLzPk8N4P0LjELGEmz3wRJr2c5Vhzzg9c/C4GbjBhAduEc1XnH5YmvKgMqGvybuHLd3NhaA/kj0inx0MEfQ5cJkgPVV+odAnpkG4huVHCysC52KBgOlNXvAlnos0f3wrehdHwPhDqGR7Km8MnzyUGO9P7+hgYf4mtX50LWbZoFnTu0v1FdyOZs/bS+h7PqbBNp8ML4x5aicLUJcLJ4oVpslJZ/ZwK7tlBoDEipzTYBr5BRQdxCJk7qvKBD5FSTM7qCL55zQ8oZmKRHRsrPZXUOTmEYbKoQWjpfB77MKVMXT9XOM3SZZMdNsNYvg4h5K+pREga4tCHI4VmOd1r0eHc5de98Ct4iEO+rHVOSg87/8Ax0ppqXIIkjV97CXkZygM7MqPFcr1wLYONLsMTXOiv/OoObci0iCCWAMCbz7CU15pNQxqd1c4FofZGLsldMxq1wg6BZAU3HXoq4VXqK2Iy3RQ2TpzJY5bfAeOt7D75R/MNwAcxm/3UFdjFsqW290GFA1
+ gI37uUbf
+ KRt+KOei13H8g+iiuba6VEDJJxq4QuQuG9TJ/fqgG3RqwtZEbAb5FnwZKzwaFa4mHHAz4z80zCLLJkHKL/nUTMgu1ijs2bzvh7TJqNK+jusEdGyXbc799qwE8v7HLGQTdK17c+5OR7FI54nQDhLdcFbWF9h5FkEJuKv2sXLiuyJiaQ4b0qUwd2UcRqe01om7fNSD+1qerOOHSMTouoCet4gJVgBAQAeXBNGJT6K2P2lpQaL2MvFnKyFfuQt2nyzzizwwkU+aZKKQffyhXIMjcYNF4Xx9XXbSUHjK+wGXXq56DHEcSG2cHX0bKeBaFdYQ+/vrSAGYVfBFwouf7QPqmDx4AJXYP4MoQvZa2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,79 +98,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Sep 24, 2026 at 7:09=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
-> On Wed 23-09-26 23:24:48, Andreas Gruenbacher wrote:
-> > On Fri, Sep 11, 2026 at 10:51=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
-> > > Deferring difficult inode reclaim from prune_icache_sb() to a workque=
-ue
-> > > removes the natural feedback loop of blocking tasks in direct reclaim
-> > > until they make space for new allocations. This can result in the lis=
-t
-> > > of deferred inodes to grow beyond any bounds and possibly push the
-> > > machine to a reclaim storm or OOM.
-> > >
-> > > Add a throttling mechanism slowing down tasks in
-> > > mark_inode_reclaim_deferred() if the number of deferred inodes to
-> > > reclaim for a superblock grows over limit. We measure average time it
-> > > takes to reclaim inode on deferred list for a superblock and block ta=
-sks
-> > > proportionally to that.
-> > >
-> > > Signed-off-by: Jan Kara <jack@suse.cz>
-> ...
-> > >  void mark_inode_reclaim_deferred(struct inode *inode)
-> > >  {
-> > > +       bool throttle =3D false;
-> > > +
-> > >         if (inode_state_read_once(inode) & I_DEFER_RECLAIM)
-> > >                 return;
-> > >
-> > >         spin_lock(&inode->i_lock);
-> > > -       inode_state_set(inode, I_DEFER_RECLAIM);
-> > > +       if (!(inode_state_read(inode) & I_DEFER_RECLAIM)) {
-> > > +               inode_state_set(inode, I_DEFER_RECLAIM);
-> > > +               throttle =3D true;
-> > > +       }
-> > >         spin_unlock(&inode->i_lock);
-> > > +
-> > > +       if (throttle)
-> > > +               throttle_inode_deferred_reclaim(inode);
-> >
-> > I would expect the throttling to happen when too many inodes marked
-> > I_DEFER_RECLAIM are evicted, but not here. In my use case [*], inodes
-> > would only require deferred reclaim intermittently, while they have
-> > outstanding revokes. Once there are no more outstanding revokes, those
-> > inodes can just be evicted directly.
-> >
-> > [*] https://lore.kernel.org/linux-fsdevel/CAHc6FU4Rf9-r8m8SSb=3De0k0zyo=
-FhQAdjupHMWvT6rStBshntug@mail.gmail.com/T/#t
->
-> Throttling during eviction doesn't make sense - you are punishing the wro=
-ng
-> task (the one trying to free memory, not the one actually making that
-> memory hard to reclaim).
->
-> Also note that the throttling kicks in only when the queue of inodes that
-> we want to reclaim but worker didn't get to them yet grows above threshol=
-d.
-> This means there's significant memory pressure, significant amount of
-> deferred inodes, *and* workers cannot keep up. Throttling marking of inod=
-es
-> for deferred reclaim is the best thing I was able to come up with to
-> eventually reduce the pressure on the cleanup workers. But I'm open to
-> better ideas.
+On Tue, 29 Sep 2026 13:32:25 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
 
-Alright, I guess this should work. But the change from throttling in
-prune_icache_sb() to trottling in mark_inode_reclaim_deferred() should
-be rationalized in the commit message of this patch.
+> This v3 is based on mm-new commit 2ddb90ee544a, which contains v5 of
+> "mm: Switch device DAX to section-based vmemmap optimization" [1].
+> 
+> This series is split out from the earlier, larger series "mm: Generalize
+> HVO for HugeTLB and device DAX" [2]. While the parent series generalizes
+> vmemmap optimization across HugeTLB and device DAX, this subset addresses
+> a single, self-contained step: unifying their vmemmap population paths.
+> 
+> After the preceding Device DAX conversion, both HugeTLB and Device DAX
+> describe optimized vmemmap mappings through memory-section metadata and
+> use per-zone shared tail vmemmap pages. The generic code, however, still
+> carries a Device DAX-specific population flag and compound-page population
+> path, along with arguments and helpers needed only by that path.
+> 
+> This series first removes VMEMMAP_POPULATE_DAX and moves selection and
+> reference handling for the shared tail page into the common vmemmap
+> population path. It then removes the generic Device DAX-specific
+> compound-page population path and routes section vmemmap population
+> through vmemmap_populate(). The powerpc radix path continues to use its
+> architecture-specific compound-page population implementation for
+> optimizable sections.
+> 
+> The remaining patches remove the unused ptpfn argument, open-code
+> vmemmap_populate_address() now that no caller needs its returned PTE, and
+> add a warning for inconsistent zone initialization of shared tail vmemmap
+> pages.
+> 
+> This is the fourth smaller step toward the broader HVO generalization.
+> After this series, HugeTLB and Device DAX use the same population model
+> instead of parallel generic paths, while powerpc keeps its
+> architecture-specific implementation.
 
-> I understand your objection about the need for deferal being only tempora=
-ry
-> but let's keep that discussion to the other thread.
+afaict the whole series is "no functional changes intended".  Apart
+from [6/6]'s new WARN_ON.
 
-Maybe we can get away without it.
+And [3/6] is the one which could cause unintended fuctional changes!
 
-Thanks,
-Andreas
+Thanks.  I'll queue it.  Reluctantly.  We're up to 688 MM patches this
+cycle and it's time to stop.
 
 
