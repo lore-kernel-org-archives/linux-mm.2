@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A00B2CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0261CA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:45:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5816B0095; Tue, 29 Sep 2026 03:43:19 -0400 (EDT)
+	id DF7FE6B0096; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95F0F6B009B; Tue, 29 Sep 2026 03:43:19 -0400 (EDT)
+	id DA8EF6B009D; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84DE46B009D; Tue, 29 Sep 2026 03:43:19 -0400 (EDT)
+	id CBF276B009E; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C7056B0095
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:19 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D4815A6AB6
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:43:18 +0000 (UTC)
-X-FDA: 85266009276.22.EBAF6A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2A18680009
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:43:17 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJschNlB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A31636B0096
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:45:13 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20979C03AD
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:45:13 +0000 (UTC)
+X-FDA: 85266014106.01.94FB972
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 56FC5180003
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:45:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eryQFDsK;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790667797;
+	s=arc-20220608; t=1790667911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l3uGJBgDueAYQpQ6UNN5wXxoFfi297uAcZttSK4/i90=;
-	b=QMNmp9zM/lzoqf03y4IvjobYknowyLoPXCIJLbIwPs/gBWKQkAQNy0LugEqgVNsjd7pu1i
-	rRjDkcERzZsdT8VltFqF3lahchAtVLTaJawegcPktQthEJ30y5Qx/pXprrX0uI8EW6Ik5Y
-	B/Nk975opPSb/202C/04me/kJ2J6/Wg=
+	bh=VY1SkJGQDmauz4sN7eRcCfUeQO+i8Q4S7HsIT43oUN8=;
+	b=D2sZlVFoALUGrC7RJDZT5eZRjQqcDW4rsl/QeSFL6t2syeCpkslu9PdxW4AtcL0cOLpZiT
+	5NV4z6Kq+G4Dik1ZH7Ot5QEJit9kV7yl9YF4sOVz62EWrxCvMnKJTBxXRaW3M4aK6a218M
+	brMVE7xpUHYb7acy5JgbhkS2pSZJwb4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mJschNlB;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eryQFDsK;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790667797;
-	b=6svk83dgV202mQZJM8ihqR6SoQkOgyeGHpvamEsxAFEYRO9/nzH2yF2eHosblbpP5TbfrL
-	jOERIsu1Q2nPM9fStaggaEG+GI2+QXs9DNIx7RVb15OEq0U2JuSPs+QT2+rtVqniXo9oHt
-	wxmXGnHPGCJtVyidU/z9nJ/TCn7t6Uo=
+	t=1790667911;
+	b=OpQInkAlGJXMWlCVmRcGGH23QzW8vO7DCoBuel6LirYdEp97ydlzYI1GXc3Hu2sjM/+iuN
+	xsbKwKmzTHxB0hn+stRbVJOkNAfXo3bXWGj3LA1SjmHlioDz+CDolGu3lmBzetk1OYLILZ
+	wf5IPM4JvYcIYd7sk+S7ljADqWD/CCI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BB8DF60210;
-	Tue, 29 Sep 2026 07:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2393E1F000FF;
-	Tue, 29 Sep 2026 07:43:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8468D411B4;
+	Tue, 29 Sep 2026 07:45:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFF41F000FF;
+	Tue, 29 Sep 2026 07:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790667796;
-	bh=l3uGJBgDueAYQpQ6UNN5wXxoFfi297uAcZttSK4/i90=;
+	s=k20260515; t=1790667910;
+	bh=VY1SkJGQDmauz4sN7eRcCfUeQO+i8Q4S7HsIT43oUN8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mJschNlBhoq9JKJyXT7dxafC1SkgQ74/itXQ7YwoOf11UukAMavZEzlz8PtWHfAno
-	 SYhiTLj5jpURd1SowXyoIu2+Gwvol8zbHo91ZzqUSOsgnxKYa6ELES9UWm/7/P5tkA
-	 zdDL0MswCGxbxULsDOWRMheevjty+5eUD4shlcnarGIbO+XJpSDYVd4c2TDUdw3vfb
-	 FPX8+F1xS5SUJBU5R4Cg2hiqlUT6ia6fW/NQenc+kUfadGKMWypBlvGiJxGuvDKqsV
-	 4MEB0Z8KPhQkF0PC3/501YPQrx5JRUtNETEuL77Yd7cB/n7vryd4mFKMkofjhhQIfL
-	 OTqFoxUtsHukA==
-Message-ID: <118caa06-71cf-432a-a7d4-d721e86cd905@kernel.org>
-Date: Tue, 29 Sep 2026 09:43:10 +0200
+	b=eryQFDsK8XbiERSwR84WHNpDMzE5PzW2Ardhk9RRQOYTsF5ZNYAsYUTNwxnrO8IJs
+	 4pF3o24oJ+dNKTsPvIBFa7CvmvfCowlF+wh5oBUBDLz4duFK9AGVH8JT/ueUbqsnF7
+	 ZQnN9vpmWzdMu2UbSL9dh0S7xy4SEdCFP0/lBfMYZisKxJkVQFa8adh90Jsp+Hdsdf
+	 grXSyKGdotmj1TjbtLy7memifkUshjvj+fwdD5gII7wv7AEeK82aEZfO0aX8u+5fRk
+	 kHOknkEF+u5bV6GGr3ZC91nkB1aXFNs2e5o4TGWrX/02jSXQmkMK3/Bj+DRvMSofpX
+	 Fgok4KIaAKVaQ==
+Message-ID: <29717e90-4b4c-4ee4-8a17-20a7b1792000@kernel.org>
+Date: Tue, 29 Sep 2026 09:45:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 12/12] Documentation/mm: update DAX vmemmap
- deduplication docs
+Subject: Re: [PATCH v5 10/12] mm/sparse-vmemmap: drop the extra tail page from
+ device DAX reservation
 To: Muchun Song <songmuchun@bytedance.com>,
  Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
  <osalvador@suse.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -81,7 +81,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
  Randy Dunlap <rdunlap@infradead.org>, Lance Yang <lance.yang@linux.dev>
 References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-13-songmuchun@bytedance.com>
+ <20260927025441.741633-11-songmuchun@bytedance.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260927025441.741633-13-songmuchun@bytedance.com>
+In-Reply-To: <20260927025441.741633-11-songmuchun@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xib7uf3bbman4dqyhh3kc3ousr6bqne4
+X-Stat-Signature: udyiksa67h54ijwppamrc4duu8xeadhn
+X-Rspamd-Queue-Id: 56FC5180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2A18680009
-X-HE-Tag: 1790667797-993369
-X-HE-Meta: U2FsdGVkX18nrdwthiLaYmVO/kWAaZGpOWQr7nkpIvQ+IgJth/LlPLWOtJ0HFE9QAoYHuwhYgLckMXpVcNKXkprRB1iui7rD1Qgn7cwlUhU3adqDFElQ1Zj02q80A0qWnMtozIYgMGjv70XbGFL1pze8IJcrnTxZdJ1osmLSExzME4vtTaf2a2/M/RKS45bR5rztl0QoCV8sP4PaX8YmElzEvOBRmBSQGY+txjOaCSTKT4D/mYE+8uk650EIddiA5ZBF9B35G7eDBZ0upITvmHe/dUNKuLgmk+7gZTiCIPZSu4qzWeC1dQQKhmoB0la6GDx1tv+AmmyLj6Kk9lRqJd00/3dgGRVRTBT5gbbYXTRcXiEmYqkW3GEeOq2QxetsX6skuLzVDx7rck15YPCXjlg/qB5vJPpzsn2VwhEn+LmFE60hkv18HCW8VnHKaxruKPNnLJFg02k9dCtbShPmi2OXP7oK/48RSXKkrHe3SVOM2PkwCt6ElmXxRjHnzugOsLMsHcLr5Sp27OY0WSWlFDd8hbBQLgg0bB2oagccJEB7RumWYIUqyemQdkRFtcFb4m9SvbAHD2fNzOz0h9YWbIEdLJJ/PHjcGO1sj/KjwyraTTfKVQJ+tR3diYnMNtNFSnctctfcBr9OY8Otk3BVBG8EPk+TOQWGfIE59N/bRVFg0hYgTTZxMHgZ4Z6rhx+7yZ9gW+v3W6RaU/h5xJhvWxUTZgwkOK3TRf0MvRKfKUlBVAW+HHmIp7wFZejxSCbEsH5acEvwbPQ/0nDuwYf3r/eylLvoEyMtGN6fL+xf6TwDenHO6kmZ2ZhTXhMaR7rjYL123TEi9eaPfVDU5Y8AF6eGmA9cVGCPHPBzDHek4vKHSBGdE3Agy3guNy9SvjvwmunCKPw1KaMa5+LMHT9hq6QDtbQC0B+9ErdqhqoedjYy68w0LgmicV4Txf/u/ghPN5Bd/zzOGXkfD2tGK1E
- TBORDYKa
- suAx/w9Tv6mbhCpkYZXjoT0tHK1tuVQZ+/m398PCY3Ls2dVMdtEej8rqcMmWVpfp12Flc5DBaQYeYUMoiv1L9TQCKZVGIWdtexS/CYjp5LNw625WlTl0cKBodmXBto+dpbPYh+JJs32e7yB6kptxWigOOxcJXyfMmSnDaxMR9hDDyIaKQScgN37DZEHGq6K+gxu/SWGuOrNly1GTxDA3z/inyv39mHNIHG3uFLk4lUrHuYRjB9umvXtnScmZtoraKEk/VZyOc3DGLw+E6224YkGBR+xtM3yT8ISP6/ywd71eTky8bQqNrP9TLIuo7XSST+cVIwNVrY8brGE0=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790667911-855686
+X-HE-Meta: U2FsdGVkX1/+zf4ek4Td/KZdBRwr3vWy/xWrQTsjjBj9FsHjZQ7UokV48t+TVM5HEUzN4SIqanmRcIz081qfYiR3IQNJFP+IkAuImic+7kR42ZAfNgGQkoK99Xl7Rej+q7JLToorPjWNEPCQjsyGJ3KqYvCLMjYvFMgfXcVqNFO5sT5E/QIYYojJ16NMXSssTpe9lulmOrIdlnJTi1bMvgL/XkhMWFVTeq0FTqdnwgbUKtxv/Jlp0+kljnL+m+hdaocf53dxKIwvqAWl/3Tl3AzTf+sXjr2wonIYKN4yO/pSgzj0k0GxzwOYuwwKz059XbK5fiSgTyHqz3QF3kcEa5sTRSdMnVgbQxkrQlMQDdBbCA7WoRHdSOydnM+/f3ehhJkp42Ul8TFpTTsCAGJZ34Jv95Uv9qeVe36M7B2IzkillnIrfyY/kvqzj0TWbSuXi9xUpZuR2ijQy6sEwMyuyhlSWv9Rnr1kKYhoZVCRoB6xdvUVz370VyU9ghWJaSP6EHkxueDweJx928Rmv0b9i8LhKPT89187EPqyRaJlMMt9ZVkpgYH1Kv/7GkV371GxNNCOOl4+cyXPWjF0fJXYXPiNjOYjp/AexDHzR+lGBYaVUYK7xA7s2WPvVP9IXPbARI9YrLj3F0sytEg+bQZq/Evlp+7INadda4gUNyDK7Jun/kNall6qqCdokaV29mbm1ULfGG7OopIVCu15dQI9tYLJTCH+7hciF5maQGnmFs0dbRQgGDXw3ue/E9mx9WPbWi8hnP6LyLIyI431oRB+wHgRMyEXSajUN6oz1CIVqFHIZg1qwNsloK0Td+AYY+yV+Ajm+XIVW28cVjy4XlSpzsRR4uuIStPfcHzaVvm2QOnEiI9AoP0RvTYC/rHSabr2uwDof2a+kaYFTVxDhBG2rOLaDbMxCnlpdnEIDzSkqWGQOPCoA1fed9qtW1ZHKPMlDFB9+Iz2xzcZZC4Ogsa
+ HSMfy0ki
+ fAFKHvIKb8Nt0BQR3WrEyNZvOdekjgwz21yOxGLa1e4/bSmrEXro9eLo2HJhIawcZN+xqiS3w0Bn9cUFaMRh2wo9BPaEM05zgVJ93qWbs9hSbZ2gT+Vy7FXHzq/rr5kps7beufpO/ucx9U3+6V+SGXZp0MRiT8lC8bRlpe1p4G5xGc0lo65Sb3a5lVkLzsGM6EGktJh0jEQX8qH1iMZ8uCT3T2/EfRE24qw2EdJQ5PZ05To7hor/3R2vkxdzQRpKg82J5ucI0bIRgcGNJ0q4F2U8qFd04GL2I7lguvfDU8j8EncnfLJ3XRjVwmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,15 +147,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 9/27/26 04:54, Muchun Song wrote:
-> Device DAX now uses the common per-zone shared tail page for vmemmap
-> deduplication. The old documentation still described a DAX-specific
-> layout with a separately populated tail vmemmap page and half the HugeTLB
-> savings.
+> The device DAX vmemmap population still reserves one extra tail vmemmap
+> page after the head page.
 > 
-> Update the generic and powerpc documentation to describe the shared layout.
-> In the powerpc document, keep the radix and 64K-specific details, drop the
-> duplicated 4K PUD arithmetic, and replace the repeated device-dax diagrams
-> with a single parameterized PMD/PUD diagram.
+> Drop that extra reservation and let the shared tail page cover all tail
+> vmemmap pages after the head page, so DAX follows the same reservation
+> model as HugeTLB.
+> 
+> This reduces the reserved vmemmap pages for optimized DAX mappings to
+> one and removes the now-unneeded first-tail population from the generic
+> and powerpc paths to simplify the code as well.
 > 
 > Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 > Acked-by: Qi Zheng <qi.zheng@linux.dev>
