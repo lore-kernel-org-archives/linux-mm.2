@@ -4,137 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F4D8CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 04:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E9F3CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 04:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D6CC6B00A6; Tue, 29 Sep 2026 00:06:31 -0400 (EDT)
+	id DD5E06B008C; Tue, 29 Sep 2026 00:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 687B66B00A7; Tue, 29 Sep 2026 00:06:31 -0400 (EDT)
+	id D5FAA6B0092; Tue, 29 Sep 2026 00:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54FBE6B00A9; Tue, 29 Sep 2026 00:06:31 -0400 (EDT)
+	id C76116B0096; Tue, 29 Sep 2026 00:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 223D86B00A6
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:06:31 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E0A0C038D
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:06:30 +0000 (UTC)
-X-FDA: 85265462940.06.539AF22
-Received: from mail-qk2-f42.google.com (mail-qk2-f42.google.com [74.125.230.234])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 81598C0005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:06:28 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pthdOyaF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.234 as permitted sender) smtp.mailfrom=rockeet@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790654788;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EB116B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 00:23:37 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 25E5C1C26E2
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:23:37 +0000 (UTC)
+X-FDA: 85265506074.26.8DE2451
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id F19BA180005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:23:34 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WaEAiyFO;
+	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790655815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OUqW22UO8+f58aBt4HLAJFHAQ6hQs2WZWeoUhs/jE28=;
-	b=bKHetNtWfoxm7uvmrFB0n4smtsDPc8RS8K+f2tMJbSCaMDsmj/ALiOWhJHljhWgF23KJHz
-	cOijovGbQaKxxtJJMedzZP3fh9hoYM6IiMqscdHF6m6bJerDXTtN9wSSU37/RkthHGrAdz
-	eG5T76eOoNZFy5Nuzt/kvJESQtvop78=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pthdOyaF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf10.hostedemail.com: domain of rockeet@gmail.com designates 74.125.230.234 as permitted sender) smtp.mailfrom=rockeet@gmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790654788;
-	b=aUtQs8UebHECC1XjzE8tvYV6nafWeKHBev4yghFqd2VvE07f7IUrdrjgznDsuOU+HxXMTf
-	zqaPUto6wDS02m0/e3qhw3LWOqU9IgFLFqy+gcBj4wdtgv9tmIF6oOEI68PcpMPrRj0ZsH
-	8c+CLbjOhtEgGvPPYqWQhwlNpMmBXxw=
-Received: by mail-qk2-f42.google.com with SMTP id d75a77b69052e-52fb769ca17so32129471cf.2
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 21:06:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790654788; cv=none;
-        d=google.com; s=arc-20260327;
-        b=aqtxjDaViFHSQ5l5GqBDjs83hGjMk01s0genMD+goaOLccGM06T9uyARw+W/BkWwvy
-         1N04P3G8it8O4V1G6TMTF9CSvKPTOYEz+YGZ+Pg4C9mX08VtCE3rpF3T2T7U9x4Wp4GD
-         kKz8WI+kX8n/0TqGWwSMTsfIcM6RF5iItcKzrFpZVfuFwQ8n1Tju+xeCuNRh+we3yHsM
-         gNET0l1gsoeJxKGBIdAldD/RyvEL4YPOE12JhiaVSAH1cJL7XfKXLT+rIgshEQFtIHM+
-         kCEZrQJrFDfHazdEl1h9kMmlmSa1IWKNe6RM2NlZxJpD0D/IeOLnPsVpffAOXBTU1htD
-         v9jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OUqW22UO8+f58aBt4HLAJFHAQ6hQs2WZWeoUhs/jE28=;
-        fh=hAmEF9MMl/NXy2UsU6eKXWD0uElAYz1278QmfXBJrSI=;
-        b=RG4SdkdNz6TuC2yQvpfGSRv0LEU7K8Z8fSFKu5i9g4/kfEtYtXnLzHsPgnICXRm7ws
-         jq9PUOuC175KIa5z28BCyVyyhdHeEG6ZEvwD+znNGWdIyZbbwo0WtTSMLbbTqcx7yacF
-         JgZfaBmMrA/SqMTFwol5Mo4lmaENHsEr+T+sPkS/eZu10j8oXW7LmbZZxjepyIYA0Kbt
-         l/CBvze+wt4oayWHvVIoCp1WotDcBQnfIA8PdXnK+hr8yOvjh+8BN/nQhkfUspnDANxe
-         J+M56JeT/C9OPq0HtaptFeE4iuL8oVrVMyDqH3xIzerSe4WffcRHFuA0SplaoJbNP840
-         py+Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790654788; x=1791259588; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=OUqW22UO8+f58aBt4HLAJFHAQ6hQs2WZWeoUhs/jE28=;
-        b=pthdOyaFohrjqU38hke8jkbgExKUaFk8dR8QpsqlyFR6KGvI9payeT8nQXrML4BVq1
-         59OtNw8rFgx9goUoGF3EEwf266vs9RJLIj34p+WXIfPtHaAutEGB6efwmy4K1L1J0yJz
-         OYYz5qelDJJPBfZm+v9ISG7ZKjee+6KFlUMNuvPMU7MNJ8l4Rh6WGVg43Rdu3qqWXF4y
-         /ahVXlaurzaqh5xshcIlBjfavDXGjf/Q4IElHLD+H15X2Q40sr8R1ZPjZEVKSds/GXmP
-         tDJzcx+VBug2FD41X/Ftk6vLy/sWGhAKGR63B/24SGkh0T8aH2nLR/O7jbwGkogAHuLz
-         Un2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790654788; x=1791259588;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=OUqW22UO8+f58aBt4HLAJFHAQ6hQs2WZWeoUhs/jE28=;
-        b=L8TYksxRI0r5Jr9TMS8/Gjtcupn7tbpwIbuMIkgejjmkJhn/a5Tv4dDi2qdU2eHVCk
-         GFqtDYxE1jebwpv9JTVg+igggpz6QANXbLejV1kN/g4JST1G+6MxPBN+HvLJH61yI7ws
-         h6ErGhgULdBXfnJNvESp6Wthc7ZulFBIwNgILJ0oGCJWbLCGaZ1dGeyxL9tcuS34aDdB
-         hC/mMjt+MJpE6htRfAWwU3abd5DoxHZVNKFW1nmOY/3kc+j8enVR9+CAkSfFlaEmCh7I
-         X8cvOgxa0j9AYa1QxGnUrQ7qesLQ0sqaVYY9q1bZu/t6/lhS7MsNc+430gRiCVKhcyhW
-         SIvA==
-X-Gm-Message-State: AFuF++mqifwMhDX8ONe0o0Ny81C04zcthbbBA+XZnkxi04UDMRt2GAIJ
-	vy2gy61v3JZ7yUAwf/lU7nnJVSD/TN8yRXnxkrxkw9vSvqz+ijjOhCvX7VNnrEy/Mksf5lYokKu
-	+mI/KyY1SZhISnDBG77lMuner3lUnH1c=
-X-Gm-Gg: AYBFou2ND1PtW3EeK2zQ0c66A7eYxQmecipdixgeyHiTOVjC8PXshSp09OUj7Wft/yl
-	61/GFXP8oIWUYaHGeB8kZ/g/PBqZkSAs9ZpBdvMGM+QpmKc9Bkpj6iOmG9VekWQHu39Wybtfc9s
-	0ly1tjTE8hYlAiYgTRGlyzxvcZ3u+tGq5c3ZqAG5BYKYQcNHy7BQr0kkx/ABfh0l8ceCwdeSrzA
-	d42g3WsFNR1MwqsFaMWXdiWl0VPekAbAUU0itzwx/DVeDrKzz0bDEOHhSQcQBWsQ6n9gq1VPCPw
-	8+rEH5W1NhvnTiDsxeUJ2s1U586913pu4ehUFf2f+ULDpQ/OD46N7gO3q+H/cexGTwFn1yIPZTG
-	rpzFGRPYW2TpcXptkE/BL9/T0ECKAq7pZycFcvg==
-X-Received: by 2002:a05:622a:4d9a:b0:533:33c6:e636 with SMTP id
- d75a77b69052e-53333c6feb6mr144083901cf.6.1790654787333; Mon, 28 Sep 2026
- 21:06:27 -0700 (PDT)
+	bh=7GWvSOOqVTAz3Wcu5avR6xu8eL6h5B0Xus2IHL6Dce0=;
+	b=nmJcKNnPruNhiJPpatolSimOgnifP4GJ0rIGieYb/qIPuOoOnfDwYcUDo1yhh/TXtPh7KT
+	920uh3xwxDYgJ/EbhTehZznMnuflx8xivaPBWj1cUQt2azRQaOKzTzxIRPQjN3wwkJFbPG
+	ngi5st4TsAFFOHRdZciP6zCSJK3ZLcI=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=WaEAiyFO;
+	spf=pass (imf24.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790655815;
+	b=SyhLUo4R3zqRlaH9835h7UYeHEV3ApFaCYUQydqBHgDIytfhjKiEfvfmBuEO9opU7w7B8H
+	u4mh7K7tV0c70ruLz5ipns43Gyuceng9H/YfXgUhGyVfjOBlyqjVEwHKRV2KjNRq8EsTjG
+	2Bv3LylRfGMB7GPRxX3RVev9m2kVnSM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69FF21655;
+	Mon, 28 Sep 2026 21:23:30 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1A5863F85F;
+	Mon, 28 Sep 2026 21:23:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790655813; bh=38gpMZNPpqnqqQ/VxkZAtTNQl9I02Z0TkAk9crVDC7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WaEAiyFOIeFJRacHEmYjHfBnHDEOzs7PI85OKuaWjrFXIMlpxg8+Y+RmB/WUJrD7T
+	 MBU0eEE4JPAlCGYAb4X/quWV+Ho5soGIiCoiMPD3Q1XG0N/1mH7XUIFRTTHfyYlJ30
+	 n5N+50XwZD8f/U9/xZe6UEVOZniNRPvY2c3FPlmE=
+Date: Tue, 29 Sep 2026 09:53:30 +0530
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: David Rientjes <rientjes@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Christoph Lameter <cl@gentwo.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: Re: [patch v4] mm: vmstat_kunit: add synthetic benchmark for vm stats
+Message-ID: <sknjqkoobsbq6xljd63pon6ohksrdd4kco3tatxueqk2g2boj7@ocuy23vkghai>
+References: <cfc1edae-8aaa-8fd0-95de-af3d4774c6dd@google.com>
 MIME-Version: 1.0
-References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
- <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org> <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
- <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
-In-Reply-To: <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
-From: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
-Date: Tue, 29 Sep 2026 12:06:16 +0800
-X-Gm-Features: AclHuK9HdKWxBr-sSsUZ5a8tjbRFwN_-vuhBxXzXtHCDYVNfVrksHL5LNaPEO2I
-Message-ID: <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
-Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file mappings
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-	"Lorenzo Stoakes (Arm)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cfc1edae-8aaa-8fd0-95de-af3d4774c6dd@google.com>
+X-Stat-Signature: d7s54hs6jxhifm9pi9eogu1cggfoff8o
+X-Rspamd-Queue-Id: F19BA180005
 X-Rspam-User: 
-X-Stat-Signature: q1sk4ayg3d6ni1wzkpyywdjajaikomu8
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 81598C0005
-X-HE-Tag: 1790654788-335539
-X-HE-Meta: U2FsdGVkX1972jEDTJAQVhf43V6mRjXxO5Xvy0yeUqCEEgsijA3cU0eJH5K2s/55FNbOw55ZQpTOApWixZKt72Go02mc8mDJ115IKw78/Qnm2U0YwwyFdOjUv2XF75dGXJ1Zbpm5vfYwuae+BZzKh/qrCVlgHC30dGJrlm24E8vcYkRVzMcay/NCmNXkNt/Y9cI844cHmMsfVFwEeH1AHNkkptrGWfCssecyST7wnfaHlpfrN8av6aMNGYFcOFE7NmnVJYFODyJ/9xoVI9fXI47tQTHB2it6q/vfCLBNBiol8vznL0CQRwgkNeEZ7CnPJEORDTap2IG7u96zAvohtCp/K0J18Q0Nt8XpKcfYuRhPUhEFZc8DKNXhAukAbpTf+YeL9bln9TyW7/ZBhDwh4wD95pnY1yd1Cy4aNcSGTiTRywLgYjJGURB//iv9t770vm3PsLJmUYxJzIhuZnJSZmNw38g8/o35ida7IR2mUBKgFHGJ3rIg1BbJvNyunAAlpRH2TldKIGoA7ac6MBATp7Ugs44AKmfXA4ryu2y8QNNkQS43+gSOt7zepttqdHc/WMNk2d2wX28Jub8Syf3y5XTMZRx0Xq3nCSHJlZywzZD+9oBrZ5q9CpFH6TZ1ootAO3eWYJUYx2lfH4yKjGw3xmBN6w/jqqrF4B7Eezicf6D5+7s/1Uqm+jlq63fdOsd3uL1jbB6/T+z5MAMJGqC4RuA7RwjRyHLPCbpw/7QxczSiWxJwx/c7g/KjdLN5qvYopUVg8M3yqf+UylnORRWSOUazfUAClmEzZ4Q+MTXIpoU1TtpxhKLEecwyBG/WzIYvsQoIjObb7q3o9qv1q2BZpsjmo0xbgX7hyuQSeoNzyKrJ15Vp92n7ZxrqUXlOucNmuaJVY477WvgsiCy0uJ3qUeaC39YGhvScC7fgnoIvrt+ZtWg2q90jdlzf3IM8h+Ih4trMr4aOk9EMXyfERYl
- gs34SVC/
- qr+9d3rCRcGbvjJb+GiV8J/douIGXhAcerkINhRGta/NGlmU2DHG5eJyia/noLrE6JqL40gpRAmHPCAbAFziU3GYmx734qpdIayFl/9FY7t/O4KeMTL2Zf5gqLycHvMEC9ZrleYwlCW/Q/cvsh0uDgLtF6ROkzTksg5CnPbsT/+f05vLPIL1RQuGKD1G4eDbccc//8wOIgRbec3NOCCCJ4rODg+QQ31Ow+c5ofrMhLI4sjG3HnOuHByOjFrxYsXQ/Aw5ZpdOeOXbo7YRVhviv7HpehlZURcT1ToA3xFIY4A2rjXapI0tKnT7k/DgS1cq/CSLUZreD5E2Ns1s1Bq/S3d6XPGZnfa9w9j7jm7/dn2veMHiCVki2eqio09PJfK8g5aU/kqvjyq45wngowwaarPwbaZYdGvEBkKDTDK2IsSE8NqD3XwFgWtM9PCbtiU1Zf/NW
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790655814-807339
+X-HE-Meta: U2FsdGVkX18S8vsZzIxjWbaHJhRmkT7tbQqiDPEBcgno96rtfdtweStbaoPDiHl6BWNRMal7VekihbhGPa+staAW5s3FGKUABx7RknoTOlyrkztI1Zrvd3NIFMLzhbRADMC4wHD68ca4aBd0WD8vd13P4rDQKWcQ9yU/16PATu5IXkqKmaoaQwgqh2SeGk1IUoYVtbqiHxaNn5LCt/yW3ISy9zdm+UonZY781JEge9uhXPJ4Drmz9pBhW1AP+Q6OT0bRZvU2Iv0mTOG7tkbK/zWeZrD5nyd0kbb77Slc4rOF6PkdgJetJV/mgFILDwmfnqCqhwYR7J3ecIPbx2Y8/K0UIRuHzqY7U9hvjKRaVQzvy8nZwTpMxc9iiqD/K5mUye5CGfUMAD58JideDupzzkGDbDv/dXbuUBgA//g+Fo7e9h7R3fk3cbXe+gUl9z9vRtU1M2j2g4J3Jtv/KWp4IK5eyNbRSF61nyfpCVXY7ZRzQYT7Be6cmaPV7UIdZmkIcPsdQLRJmU/jnval5vicDUtOzqflpWRjCxalrmVWW4OstcuyfR8ykch2AQ281IkWiZbT4sWkp3RXru1MFiIG+ySCd5PJ77nHk7lEZuiF7NWaH0/8E6hklAtLqLoj2WsKmBuh9FMY8C5VcSEcKdFfwN2XhPttuupiBDW8KIKzwcS/CoqwEkYdQhb0MCXg4kH21KhDcAmL1eIcA7J1d9n0KthI/P4y4TTNhonccyAfilBSx0cUqsmXf5SBFGECXWRGWYq7EgegyrYBACl3zMY8RecgTy57lILXhZtwqUPYuO3yk3fH/x3VKCxQ9+iOx782iLqPUNCTniugelG/eE4mCOaxleX/djk7MfOKb7cQOlNMqQzoF22EYxSMgpBpemjTNXdotNK6KCWwcwH8s9f4gFfvQImFUO0d6zrlicLC2TzWkfMpoywaoBtkUf1YwVmWcPFnFzOyWj6/zky7vR4
+ Hgi7geW0
+ 1YddfxGBPeO6iH4xCETJIPcl5Hw4+C8s7K7rSVBbI1eDsmgGqAVQA3LyrTYp+SJbtkIyo0aRDFwSBvp5NzRYUo+EJ61fU4bDcpVZCtAInH8VW0FezoRMXkVowjQ6BQCKn4/Nh+o7Nbbk7hsezu/yU+gwevKRG8Uj0h6nzYu09o29pORI7+yKvrObTEuenYgK8kLk1Q5V7d4WLixs68SElrQgeOJ1rXEzRbP1ILDiPE+xn3YHFUQKoLzyI7vFRuWhEQP/B9YXuALYdRBZdJrHrGEeSRLJw6FzurimptpmwELXMLBHEG1+Iir4pnMTJ+OvfOZljqq/siKQqTpQs/MuDIpVs2Slst9IBU6/kW0InF5rlwRgySejGAnFqjhCfzgU3TaBvY2a+PNDMIIH5DIRO1KYzNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,152 +90,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Fri, Sep 18, 2026 at 01:39:52PM -0700, David Rientjes wrote:
+> From: Christoph Lameter <cl@gentwo.org>
+> 
+> Add a synthetic benchmark that can be used to measure performance of VM
+> statistics.  This is used to analyze any improvements or regressions in
+> functions that are frequently used in hot code paths.
+> 
+> The test is run by KUnit or doing modprobe vmstat_kunit directly.
+> 
+> Sample output:
+>  KTAP version 1
+>  1..1
+>  KTAP version 1
+>  # Subtest: vmstat
+>  # module: vmstat_kunit
+>       1..3
+>       # vmstat_test_inc_dec_zone_page_state: 10000 ops: inc_zone_page_state -> 8 cycles (4 ns/op), dec_zone_page_state -> 9 cycles (4 ns/op)
+>       ok 1 vmstat_test_inc_dec_zone_page_state
+>       # vmstat_test_interleaved_zone_page_state: 10000 ops: inc/dec pair -> 17 cycles (8 ns/op)
+>       ok 2 vmstat_test_interleaved_zone_page_state
+>       # vmstat_test_count_vm_event: 10000 ops: count_vm_event -> 4 cycles (2 ns/op)
+>       ok 3 vmstat_test_count_vm_event
+>  # vmstat: pass:3 fail:0 skip:0 total:3
+>  # Totals: pass:3 fail:0 skip:0 total:3
 
-> What is supposed to happen if the process crashes when updating the
-> MAP_SHARED region halfway through?
+Is not "pass:3" misleading ? KUNIT tests here dump performance numbers,
+hence how they could be treated as pass or fail ? What's the objective
+for these tests ?
 
-The data structure survives an interrupted update through its
-application-level copy-on-write and lock-free concurrency design. A
-file-backed MAP_SHARED mapping preserves the latest userspace writes after
-the process dies, even if they have not yet reached disk, provided the
-kernel remains running.
+>  ok 1 vmstat
+> 
+> Assisted-by: Gemini:gemini-3.8-flash
+> Signed-off-by: Christoph Lameter <cl@gentwo.org>
+> Signed-off-by: David Rientjes <rientjes@google.com>
+> ---
+> v4:
+>  - included sample output in the commit description
+>  - switched to NR_MLOCK which is display only so no side effects
+>  - remove unnecessary "rem" variable
+> 
+> Once we're happy with this change, I'll apply the same treatment to the
+> proposed pgalloc and slab tests.
+> 
+>  MAINTAINERS             |   1 +
+>  mm/Kconfig              |  11 +++
+>  mm/Makefile             |   1 +
+>  mm/tests/vmstat_kunit.c | 157 ++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 170 insertions(+)
+>  create mode 100644 mm/tests/vmstat_kunit.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3b2eb2a7a89a..de09076d91b9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17161,6 +17161,7 @@ F:	mm/ptdump.c
+>  F:	mm/sparse-vmemmap.c
+>  F:	mm/sparse.c
+>  F:	mm/sparse.h
+> +F:	mm/tests/vmstat_kunit.c
+>  F:	mm/util.c
+>  F:	mm/vmpressure.c
+>  F:	mm/vmstat.c
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 604c58199acb..2d021fb5ace6 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -1511,6 +1511,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
+>  
+>  	  If unsure, say N.
+>  
+> +config VMSTAT_KUNIT_TEST
+> +	tristate "KUnit test for VM statistics" if !KUNIT_ALL_TESTS
+> +	depends on KUNIT
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  Enable this option to test and benchmark the performance of VM
+> +	  statistics updates (zone page state and VM event counters), which
+> +	  are used frequently in hot memory management code paths.
+> +
+> +	  If unsure, say N.
+> +
+>  source "mm/damon/Kconfig"
+>  
+>  endmenu
+> diff --git a/mm/Makefile b/mm/Makefile
+> index e7245cb88c66..3d4f2c43b8d3 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+>  obj-$(CONFIG_EXECMEM) += execmem.o
+>  obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+>  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+> +obj-$(CONFIG_VMSTAT_KUNIT_TEST) += tests/vmstat_kunit.o
+>  obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+> diff --git a/mm/tests/vmstat_kunit.c b/mm/tests/vmstat_kunit.c
+> new file mode 100644
+> index 000000000000..899c957091d1
+> --- /dev/null
+> +++ b/mm/tests/vmstat_kunit.c
+> @@ -0,0 +1,157 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * KUnit synthetic performance benchmark for VM statistics.
+> + *
+> + * (C) 2009 Linux Foundation, Christoph Lameter <cl@gentwo.org>
+> + * (C) 2026 Google LLC, David Rientjes <rientjes@google.com>
+> + */
+> +#include <kunit/test.h>
+> +#include <linux/mm.h>
+> +#include <linux/vmstat.h>
+> +#include <linux/timex.h>
+> +#include <linux/ktime.h>
+> +#include <linux/math64.h>
+> +
+> +#define TEST_COUNT 10000
+> +
+> +static void vmstat_test_free_page(void *arg)
+> +{
+> +	__free_page((struct page *)arg);
+> +}
+> +
+> +/*
+> + * Test 1: Sequential inc_zone_page_state() followed by dec_zone_page_state().
+> + * Net change to zone counters is 0.
+> + */
+> +static void vmstat_test_inc_dec_zone_page_state(struct kunit *test)
+> +{
+> +	struct page *page;
+> +	cycles_t time1, time2, time;
+> +	u64 t1_ns, t2_ns;
+> +	u64 inc_cycles, dec_cycles;
+> +	u64 inc_ns, dec_ns;
+> +	unsigned int i;
+> +
+> +	page = alloc_page(GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, page);
+> +	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, vmstat_test_free_page, page), 0);
+> +
+> +	/* Benchmark inc_zone_page_state() */
+> +	time1 = get_cycles();
+> +	t1_ns = ktime_get_ns();
+> +	for (i = 0; i < TEST_COUNT; i++)
+> +		inc_zone_page_state(page, NR_MLOCK);
+> +	t2_ns = ktime_get_ns();
+> +	time2 = get_cycles();
 
-This does not depend on preventing writeback. Deferring writeback is purely
-a performance optimization, not a correctness requirement.
+get_cycles() will count for both ktime_get_ns() in the above code block.
+Is not the goal here to characterize just inc_zone_page_state() ?
 
-> It would be helpful if the use case + data structure would be explained
-> in a bit more detail.
-
-The data structure originally used uint32_t offsets instead of pointers to
-reduce pointer overhead. On that basis, we implemented lock-free concurrent
-reads and writes, obtaining crash safety for free at the same time. We use
-a file-backed MAP_SHARED mapping to turn that capability into an actual
-feature that survives process crashes.
-
-A concurrent skiplist using offsets as pointers is a simple example of such
-a data structure.
-
-During construction, writes are scattered throughout a large mapping,
-dirtying pages rapidly and repeatedly modifying pages.
-
-> Unless you would try to bypass the page cache of course (if possible for
-> your use case).
-
-The page cache is useful here: it preserves the latest shared-mapping
-writes across a process crash, and subsequent consumer processes can map
-the file and read the same pages. Building directly in MAP_SHARED gives us
-both properties without a separate copy of the completed structure.
-
-> What exactly is the problem with writeback here? Unnecessary I/O? Is
-> writeback the problem or actual reclaim after writeback?
-
-Unnecessary I/O. Reclaim after writeback is not the problem I am trying to
-address.
-
-During construction, background writeback can write intermediate contents
-that the application will soon overwrite. Those repeated writes waste disk
-bandwidth. Delaying writeback would avoid that waste where possible; it is
-not required for correctness.
-
-> In a fuse server you can in theory delay the writeback request.
-
-Thanks for the suggestion. That sounds like a possible way to experiment
-with delayed writeback. The feature I am requesting would make this
-advisory behavior available to applications using ordinary file-backed
-shared mappings.
-
-> So fadvise would be an option. However, this "defer mode" is really odd.
-> It sounds more like you would want to have a custom policy there [...]
-
-madvise is not the only option, deferring writeback for the entire file
-would also be acceptable.
-
-The application only wants to indicate that it is still modifying the data
-and would prefer background writeback to happen later. The kernel would
-retain control over the actual timing. Memory pressure could override the
-hint, and explicit synchronization would keep its normal semantics.
-
-The hint should also expire automatically when the owning mapping or handle
-is released, including on process exit.
-
-Thanks,
-Peng
-
-David Hildenbrand (Arm) <david@kernel.org> =E4=BA=8E2026=E5=B9=B49=E6=9C=88=
-29=E6=97=A5=E5=91=A8=E4=BA=8C 03:12=E5=86=99=E9=81=93=EF=BC=9A
->
-> On 9/28/26 15:09, =E5=A4=A9=E7=8B=BC wrote:
-> > Hi David,
->
-> Hi,
->
-> >
-> > The use case is a concurrent, lock-free, relocatable data structure tha=
-t
-> > uses offsets rather than absolute pointers. It implements copy-on-write
-> > at the data-structure level and is designed to remain recoverable after
-> > a process crash. We therefore build it directly in a file-backed
-> > MAP_SHARED mapping, so its state is not lost when the constructing
-> > process exits unexpectedly.
->
-> What is supposed to happen if the process crashes when updating the MAP_S=
-HARED
-> region halfway through?
->
-> It would be helpful if the use case + data structure would be explained i=
-n a
-> bit more detail.
->
-> >
-> > Building it in anonymous memory and calling write() only after
-> > construction would lose that state if the process crashed before the
-> > write. It would also require copying the entire structure into the
-> > file's page cache.
->
-> Yes. Unless to would try to bypass the page cache of course (if possible =
-for
-> your use case).
->
-> >
-> > During construction, writes are scattered throughout the mapping,
-> > dirtying pages rapidly and repeatedly redirtying pages that may already
-> > have been written back. The goal is to reduce writeback of these
-> > intermediate states while retaining the same page-cache pages for
-> > subsequent readers.
->
-> What exactly is the poblem with writeback here? Unnecessary I/O? Is write=
-back
-> the problem or actual reclaim after writeback?
->
-> (I recall that in a fuse server you can in theory delay the writeback req=
-uest.
-> So maybe you could get something going by serving your file through fuse =
-and
-> enlightening the fuse server about it. Just a random idea.)
->
-> >
-> > The hint would remain strictly best-effort: memory pressure and explici=
-t
-> > synchronization could override it. By "process crash," I mean terminati=
-on
-> > of the process while the kernel remains running; recovery after a syste=
-m
-> > crash or power loss is a separate durability concern.
-> >
-> > Regarding the interface, madvise was only a suggestion. A file-level
-> > advisory interface would also work for this use case: deferring backgro=
-und
-> > writeback for the entire file, rather than individual mapped ranges, is
-> > acceptable.
->
-> So fadvise would be an option. However, this "defer mode" is really odd. =
-It
-> sounds more like you would want to have a custom policy there, instead of
-> hardcoding something that really not a lot might want. Hmmm
->
-> --
-> Cheers,
->
-> David
+> +
+> +	time = time2 - time1;
+> +	inc_cycles = div_u64(time, TEST_COUNT);
+> +	inc_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
+> +
+> +	/* Benchmark dec_zone_page_state() */
+> +	time1 = get_cycles();
+> +	t1_ns = ktime_get_ns();
+> +	for (i = 0; i < TEST_COUNT; i++)
+> +		dec_zone_page_state(page, NR_MLOCK);
+> +	t2_ns = ktime_get_ns();
+> +	time2 = get_cycles();
+> +
+> +	time = time2 - time1;
+> +	dec_cycles = div_u64(time, TEST_COUNT);
+> +	dec_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
+> +
+> +	if (inc_cycles || dec_cycles)
+> +		kunit_info(test, "%u ops: inc_zone_page_state -> %llu cycles (%llu ns/op), dec_zone_page_state -> %llu cycles (%llu ns/op)\n",
+> +			   TEST_COUNT, inc_cycles, inc_ns, dec_cycles, dec_ns);
+> +	else
+> +		kunit_info(test, "%u ops: inc_zone_page_state -> %llu ns/op, dec_zone_page_state -> %llu ns/op\n",
+> +			   TEST_COUNT, inc_ns, dec_ns);
+> +}
+> +
+> +/*
+> + * Test 2: Paired inc_zone_page_state() and dec_zone_page_state().
+> + * Net change to zone counters is 0.
+> + */
+> +static void vmstat_test_interleaved_zone_page_state(struct kunit *test)
+> +{
+> +	struct page *page;
+> +	cycles_t time1, time2, time;
+> +	u64 t1_ns, t2_ns;
+> +	u64 avg_cycles, avg_ns;
+> +	unsigned int i;
+> +
+> +	page = alloc_page(GFP_KERNEL);
+> +	KUNIT_ASSERT_NOT_NULL(test, page);
+> +	KUNIT_ASSERT_EQ(test, kunit_add_action_or_reset(test, vmstat_test_free_page, page), 0);
+> +
+> +	time1 = get_cycles();
+> +	t1_ns = ktime_get_ns();
+> +	for (i = 0; i < TEST_COUNT; i++) {
+> +		inc_zone_page_state(page, NR_MLOCK);
+> +		dec_zone_page_state(page, NR_MLOCK);
+> +	}
+> +	t2_ns = ktime_get_ns();
+> +	time2 = get_cycles();
+> +
+> +	time = time2 - time1;
+> +	avg_cycles = div_u64(time, TEST_COUNT);
+> +	avg_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
+> +
+> +	if (avg_cycles)
+> +		kunit_info(test, "%u ops: inc/dec pair -> %llu cycles (%llu ns/op)\n",
+> +			   TEST_COUNT, avg_cycles, avg_ns);
+> +	else
+> +		kunit_info(test, "%u ops: inc/dec pair -> %llu ns/op\n",
+> +			   TEST_COUNT, avg_ns);
+> +}
+> +
+> +/*
+> + * Test 3: count_vm_event() benchmark.
+> + * Restores counter balance with count_vm_events(item, -TEST_COUNT).
+> + */
+> +static void vmstat_test_count_vm_event(struct kunit *test)
+> +{
+> +	cycles_t time1, time2, time;
+> +	u64 t1_ns, t2_ns;
+> +	u64 avg_cycles, avg_ns;
+> +	unsigned int i;
+> +
+> +	time1 = get_cycles();
+> +	t1_ns = ktime_get_ns();
+> +	for (i = 0; i < TEST_COUNT; i++)
+> +		count_vm_event(SLABS_SCANNED);
+> +	t2_ns = ktime_get_ns();
+> +	time2 = get_cycles();
+> +
+> +	/* Restore balance */
+> +	count_vm_events(SLABS_SCANNED, -TEST_COUNT);
+> +
+> +	time = time2 - time1;
+> +	avg_cycles = div_u64(time, TEST_COUNT);
+> +	avg_ns = div_u64(t2_ns - t1_ns, TEST_COUNT);
+> +
+> +	if (avg_cycles)
+> +		kunit_info(test, "%u ops: count_vm_event -> %llu cycles (%llu ns/op)\n",
+> +			   TEST_COUNT, avg_cycles, avg_ns);
+> +	else
+> +		kunit_info(test, "%u ops: count_vm_event -> %llu ns/op\n",
+> +			   TEST_COUNT, avg_ns);
+> +}
+> +
+> +static struct kunit_case vmstat_test_cases[] = {
+> +	KUNIT_CASE(vmstat_test_inc_dec_zone_page_state),
+> +	KUNIT_CASE(vmstat_test_interleaved_zone_page_state),
+> +	KUNIT_CASE(vmstat_test_count_vm_event),
+> +	{}
+> +};
+> +
+> +static struct kunit_suite vmstat_test_suite = {
+> +	.name = "vmstat",
+> +	.test_cases = vmstat_test_cases,
+> +};
+> +kunit_test_suite(vmstat_test_suite);
+> +
+> +MODULE_LICENSE("GPL");
+> +MODULE_AUTHOR("Christoph Lameter <cl@gentwo.org>");
+> +MODULE_AUTHOR("David Rientjes <rientjes@google.com>");
+> +MODULE_DESCRIPTION("KUnit benchmark test for VM statistics");
 
