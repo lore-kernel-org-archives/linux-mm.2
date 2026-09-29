@@ -4,96 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A71A3CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:01:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B174CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 996426B0088; Tue, 29 Sep 2026 06:01:48 -0400 (EDT)
+	id BD4896B0092; Tue, 29 Sep 2026 06:03:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 947B66B008A; Tue, 29 Sep 2026 06:01:48 -0400 (EDT)
+	id B6EEC6B0093; Tue, 29 Sep 2026 06:03:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85D5D6B008C; Tue, 29 Sep 2026 06:01:48 -0400 (EDT)
+	id A847B6B0095; Tue, 29 Sep 2026 06:03:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 657186B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:01:48 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A9E3C043A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:01:47 +0000 (UTC)
-X-FDA: 85266358254.06.F4E4925
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 5226B20010
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:01:45 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JjsM4U0d;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85BCA6B0092
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:03:58 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D45B1A047F
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:03:58 +0000 (UTC)
+X-FDA: 85266363756.24.AB6B522
+Received: from mta0.migadu.com (out-100.mta0.migadu.com [91.218.175.100])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DAE7940002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:03:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xV2UfU0t;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790676105;
+	s=arc-20220608; t=1790676236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kxVG9RZSOCy22oyakJbbNe+tJkEu36iCtj00c/iAIZk=;
-	b=EZYQYhAORwbqWuLZTqBReqlFy723B05sA1H2sqd4ERaekSjDoISK1dYT80Thgt5gakeoi7
-	VEMm3tDoDq9gWBOJy0H1FZf7By8fct7eX3ZirFZjdrX1/BcrtqFPjyCaRXPLi+cMERp8bw
-	vxU+eBJTAHQysgdVJbyBnmHj7aHUOgI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790676105;
-	b=VkDLeF12if14KiuKl+TdwL0zs2tNzLUDiIcX+j5ZtRp5ELepHaLK9I3joDLsQ6JhzVF2+l
-	gj4HGRTdgMsV8PY59YJdn+8rNBzFWDSxRXKyHgbjKT22cu2u3LhrLFE00wnITG1LNKWaxJ
-	fqby1tt/8sET27HIxPttx7S7Jw8Yz9w=
+	bh=4nbqrJ878FZWi0rZ57VBSYZymeJkYo6GGL1ScKrDJ8E=;
+	b=3I+qjAe1rlkAOG7uq7vHdGqnj7UujebGE3I2kqKMYwBIQA00/K39uA5NNp4iR/bjah8vgK
+	ui4cvpKAufqxxi57uz14gvyw0tR4WjH28T7fXC6cdVEjYGTzfQVRhbr//y0A/SNCPhylA7
+	g7FGgMkfkLAmgUrNQKprq3I5HYCohk4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=JjsM4U0d;
-	spf=pass (imf31.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 134DD1516;
-	Tue, 29 Sep 2026 03:01:41 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 57C053F85F;
-	Tue, 29 Sep 2026 03:01:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790676104; bh=sOf1yxpICIHQ0diMdP7xrm0ukUMRWepHeq2vSRPG4qQ=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=JjsM4U0dCWQiwBxbACDJ3APXp7SAAY6WZjEcCJGR+fkF0lJD+DKExuMsMdh+XnBDu
-	 i0z/7aw1bFIIV5rVltVcodA/qy/Z73WE/sqRztwIokaAaVcrTjcm6DLx8c/CDtsnYi
-	 fzYfg2Y59P6spKNrcItxhEh8ew13b7ZcHr9keCoA=
-Date: Tue, 29 Sep 2026 11:01:38 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
-Message-ID: <aruMgm8UZ_t2V_wh@e129823.arm.com>
-References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
- <20260924-fix_split-v8-3-cba7359d882a@arm.com>
- <16f16e77-05ab-418e-ad06-8f48fb29375a@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16f16e77-05ab-418e-ad06-8f48fb29375a@kernel.org>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xV2UfU0t;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.100 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790676236;
+	b=kF79qsSo1LKfE7l6zGjJ060PPqry7fnNGMSFMYS9Kle5EpQm3afvRsjvgD9cvU2fx0dQpj
+	8gGTGiBC5UadwqquHKLRKMu4dHiwH/kRNwa73r3UrTl2jJ/6nc9z2InQ3VVjy95UdVkM3E
+	g5oB7P3qp6wQkO1Gj9mdEtrZ2F+pIL4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4nbqrJ878FZWi0rZ57VBSYZymeJkYo6GGL1ScKrDJ8E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790676234; v=1; x=1791281034;
+ b=xV2UfU0tuDjs+vAM8lHyWi44dQsA17pn5uztKuFBNlIe6GwRd2PYsqtyA2scJz1Wj0qol/xS
+ fKpCR7C1jmJ0APctIQOMpjalPubX6UCh/TA/Lraz91AVO/LOzU2BBNPDGNjjfJz18B63MgEH4kn
+ de+vftwvanmq04h+NbE07hdQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 00c772cd190c1b5f;
+	Tue, 29 Sep 2026 10:03:44 +0000
+X-Mizu-Trace-ID: 00c772cd190c1b5f
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v5 08/12] mm/sparse-vmemmap: move vmemmap optimization
+ helpers to a public header
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0481F7BE-F912-4E83-80F1-6E7990B447C1@linux.dev>
+Date: Tue, 29 Sep 2026 18:03:20 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9720986C-2DE2-4968-9CA6-7823B1F978C5@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260927025441.741633-9-songmuchun@bytedance.com>
+ <a31cc06a-c22f-41c2-851e-4827869e9df1@kernel.org>
+ <0481F7BE-F912-4E83-80F1-6E7990B447C1@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DAE7940002
 X-Rspam-User: 
-X-Stat-Signature: ohki63yoma4rnzgiicsggot91f7gno17
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5226B20010
-X-HE-Tag: 1790676105-421587
-X-HE-Meta: U2FsdGVkX1+QQhNpGZi3ZMu4/iRAAA8EOJzUgqtF0p7b8u9PAWhHa6aJ1QmFroaGuFfgF5vVRCXcb9z5dB7pAvRykzmdxOuUKlM5kcpeMrfJsNJ0dMurtKOMpf5xuce41kvZQjjaJ8pAsAPqfV+Bx0gREBITOV50sk4Z/T8FixCDqLFXSzwyMOrbpp9ZC39kNwndBEUlfvo0QSCMqpZL+ETyv1LjFDhYKO9pJrrjObgHlg9qCUKU3/6K4QQQwReTtLbgqwQuA7mqZgmcdY25b5yJCcFCUygPyB14eydm+2wnppxjDwh6ySXFpyaazbqnxaZhL8p10YwEx0QvMKckDbOVgvq0qswG0j3keQKaAbJr+mzucl7eYIsaKWU381YUXJjV9fGkFf1OpGhoBb1kgedmQmX/4CSRhuw4J70B8HsF7knsNhnB5E2b1pHfk0uFFca6Q0yd4CvtFNSLpJmb5S5z0dkYCwlA1Z+w8tUgNBsuD8bYj6Rlvz8qUWBQ8kVszpaWyKrvgn8xOH4Yu57l3P737/CdfPVPVAy4+Mi+AUJYzAgBQEGMt0K6qpKKBxrKcVp+lsM6tSo3AIzUaYGJT69Xm+EzRveEOQCSkjrhqSbtU+W9iMGwlO2lIe0fCYKJvqpyC+Kk9yPgLPIX+tiYg+PQHFZoQveHORQG+Nf16dYReSxGRlzgAzKnwJdpOd1HiE+j40yxmVJLNZ2SNq6aZLntGn/HNhNW97kFypPu+/Vna98lJ0uTLuFODfmI/6wh0FweUeJg4aK1XqRBKcQcqgWcbIqrKc9CEVQR2JSO4Pw7QjtkUHKuiu7aiRDh6ZFmmRD8JSU248li/dTlWJlkAgqHbci7tfGvfKkqOubYVbG7IYdDD/R4a4mIXDXmu6H94DU+RyS4XSV1yikZilk4TK2MUu3YX242sZlUV5G6l1sCTgjLm4ucNDM2k5y47l6oyJs4lRQEyOIBP0n8p6w
- bpEoSjHj
- f1GQjqB/0iqdwLll2Z6h0SF+19ncKuhSwKzR1Bo3YNH+kbNeu29V2fB1Ql7qkD0Xp3mJMO8AOGOWE2Ntem1ao/pDwzHlYhgqCR9UJ4uCl0+HWoOwSvUPBYQraGswIPtgh8TMltW7SJBD1hDQZ1lFtOwRnQUgyZ5Ua1s9BIf4GLeBirm11EMMBA32GAhGFEYfuGE3KBzMjzpA4x2HLnveRdb5idpJd87POkmfM3BRnpfyZYyAUB/7Yqq6s+6cIPNKmcdrfx/1UviIQ3yMdFvLtcOPvVNFpfKH/M46r5L/l2qEHtrKRqZ+eB2THqTNarIHfSqDWNycgljAGYW23RUkopPGopg==
+X-Stat-Signature: yw3jm49jy9ebmknt6857hmnz84jjtrd8
+X-HE-Tag: 1790676235-109397
+X-HE-Meta: U2FsdGVkX18Uzi3JTQT3e9yMQEoZiiVeHYDfbVgkpjsHcac2lfhb5TpNZT4wHcMnA2BhHLyT0wd1Gi13AFK88LtrFutxuDpOHAhCaXtj0P3QRDtOFTV8J5VL7kThqVv7ercddUsQU57Ot2XMy0PoYFVzCpj4VRQE/uxCVoZhzdcNQHC1vDMG7YHaHlpCOhl7hV7ONC3eO49/cYSNVUk2eGdC5tM2j8OaJ+Fsar+MXKGDaRtwdHr37Yy9F5rXO8udQs09MQtoH/A9R5HgYO1xY8UalEyWLZmnd2mKnSRD+hIeoLoR7OwC1Ce49yWqHHwz/+11N4xywl+CUhoRchIh4E6ZIrTe+rmpIW0VoRXmQLx4tcEm5O5VTgGKQ/Oif3SHvb8wRxcwERwTJWDypaoNR44167mCBWAoe3FR0mlB4xRc/XsFnMtyIcD9BXLWHiuToqmBYSnkYXo39qTeM8SF/sjEi2xX/UfuAUgVZBCS9nFh1t+0lp/Mz1oQ8xyvmsCGaleaSW4ok87cDOHKvczAoLtcJoG1teVCo4F+EcTc+NhmWvV81w3v/o7LrDqIbfI+1oQjE+HPEhnz2i4JoYd6eTdlrBtCS4mMwaWAmmw5sNEE8XxCk4aJ90ZcAcyny1NkclEB6PDeA/4EKjG8X1/mNLgGJOxVnC3J5vHTHezmlladB7gN/W+WZHaLCeCK4//KZtzL/U0Trc9tmXSO9SN39WbYWpSUd6rXVSa87WPEkGJDO/AiPg4wsniC2hm3Nwh3OAFpIC2RbdpTNYkO1NXIF2W59TvewcgvnrSAKSmhekZ5tCLcHR/qHRJbl0iufzYHjpwAlYylL6juwLrNPwJ0E/nRGehEMSHtYd9urK8T4e95ZGhB96v22Y6Sq/okFFc7cttBQuBui8R9g19gPjmRbh6DNoyoJDSDGjgxGMLZ1igFeZDT5mNkAx1ne0+JaCua3lUsLXJKDjAJVUMlbgM
+ yeziMpih
+ XD5+FLNwwGIFE4e5cOeX1IfHmiDCXKxrbHzE5NExlAJPLuJJO5evHPlwnhMla5Rz9y6AmSqKVpN3ScevlhgZU0sXU4de2NOGpkln1iIoE0HKH7sFBrKu3zIGcFH1NfuD03Ee2K1ON56ZWrd4//TyBvE+dihU4jl71AhlAqL6bkyCnA14C7tcM3RQq6c1ZwZJwfjNeMcMSPAaMm+tg66b38/lWD4xFgNG9ji9ZQ4WlxpjQq0Jq+6qQqYTITQipWLgh8Q2F9I4o2fp6IV8Owppvu19pmmXtkqS9syfO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,116 +110,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 10:07:37AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/24/26 21:11, Yeoreum Yun wrote:
-> > check_large_folios() only checks for large folios without distinguishing
-> > between anonymous and file-backed huge pages.
-> > 
-> > To add huge page type checking, integrate the huge page checks into
-> > __check_huge():
-> > 
-> >   1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
-> >      check_large_folios(), since only the mapping type matters. This
-> >      identifies PMD-mapped huge pages.
-> > 
-> >   2. Otherwise, use check_large_folios() to detect large folios. This
-> >      covers mTHP cases.
-> > 
-> >   3. Check the folio flags according to the huge page type.
-> > 
-> > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> > Suggested-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
-> 
-> Instead of merging both things (detecting mapping vs. detecting anon vs. file),
-> could we simply perform the anon vs. file change separately?
-> 
-> Doing another pagemap walk that focuses on that should end up with something
-> that is easier to read.
 
-Okay. I'll change like below in next-spin:
 
--------&<-------
+> On Sep 29, 2026, at 16:44, Muchun Song <muchun.song@linux.dev> wrote:
+>=20
+>=20
+>=20
+>> On Sep 29, 2026, at 15:39, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>>=20
+>> On 9/27/26 04:54, Muchun Song wrote:
+>>> The vmemmap optimization helpers currently live in mm/sparse.h,
+>>> which is an internal MM header. That works for MM code, but
+>>> prevents powerpc from using the same interfaces without including a
+>>> private header.
+>>>=20
+>>> Move the declarations and inline helpers to vmemmap-optimization.h.
+>>> This is a preparatory change for powerpc, which has its own vmemmap
+>>> optimization implementation and needs to use the common vmemmap
+>>> optimization interfaces from architecture code.
+>>=20
+>> Which raises the question why powerpc was special and will remain =
+special. Wha's
+>> the big problem here that powerpc must do special things?
+>=20
+> Good question. I also don't think PowerPC needs special handling,
+> but when HVO logic was introduced for PowerPC, it handled HVO on
+> its own. =46rom my preliminary analysis, the reason it didn't reuse
+> the generic logic initially may be related to the fact that
+> PowerPC's section size is 16M. With a 64k base page, a single page
+> can cover the vmemmap range of multiple sections, and the current
+> generic logic doesn't cover this case.
 
-@@ -411,57 +400,78 @@ static bool check_huge_type(uint64_t categories, enum check_huge_type type)
-        return false;
- }
+I looked at the code in my local branch for removing the PowerPC
+vmemmap optimization handling, and I found another issue that needs
+to be addressed.
 
--static bool __check_pmd_huge(void *addr, size_t len, int nr_hpages,
--                 uint64_t hpage_size, enum check_huge_type type)
-+static bool __check_huge(void *addr, size_t len, int nr_hpages,
-+               uint64_t hpage_size, enum check_huge_type type)
- {
- {
--       int pagemap_fd;
-+       bool ret = false;
-+       int pagemap_fd, kpageflags_fd;
-        int nr_pmd_mappings = 0;
-+       uint64_t pmd_pagesize, scan_mapping_size;
-        uint64_t categories;
-+       unsigned long pfn;
-+       bool check_pmd_mapping, allow_nonpresent;
-        char *start = addr;
-        char *end = start + len;
+Since PowerPC vmemmap optimization is restricted to Radix, this only
+needs to cover the Radix page-table implementation.
 
-+       pmd_pagesize = read_pmd_pagesize();
-+       if (!pmd_pagesize)
-+               ksft_exit_fail_msg("reading PMD pagesize failed\n");
-+
-+       check_pmd_mapping = hpage_size == pmd_pagesize;
-+       scan_mapping_size = (nr_hpages > 0) ? hpage_size : psize();
-+       /* Some mTHP tests check a partially populated PMD-sized range. */
-+       allow_nonpresent = (uint64_t)nr_hpages * hpage_size < len;
-+
-        pagemap_fd = open(PAGEMAP_PATH, O_RDONLY);
-        if (pagemap_fd < 0)
-                ksft_exit_fail_perror("open pagemap");
+The generic vmemmap path currently allocates intermediate page-table
+pages with vmemmap_alloc_block_zero(). This bypasses the normal
+page-table constructors.
 
--       for (; start < end; start += hpage_size) {
-+       kpageflags_fd = open(KPAGEFLAGS_PATH, O_RDONLY);
-+       if (kpageflags_fd < 0)
-+               ksft_exit_fail_perror("open kpageflags");
-+
-+       for (; start < end; start += scan_mapping_size) {
-                categories = pagemap_scan_get_categories(pagemap_fd, start);
--               if (!(categories & PAGE_IS_HUGE))
-+               pfn = pagemap_get_pfn(pagemap_fd, start);
-+               if (pfn == -1UL) {
-+                       if (!allow_nonpresent)
-+                               goto out;
-                        continue;
--               if (check_huge_type(categories, type))
-+               }
-+               if (!check_huge_type(categories, type))
-+                       goto out;
-+       }
-+
-+       if (!check_pmd_mapping) {
-+               ret = check_large_folios(pagemap_fd, kpageflags_fd,
-+                               addr, len, nr_hpages, hpage_size);
-+               goto out;
-+       }
-+
-+       for (start = addr; start < end; start += scan_mapping_size) {
-+               categories = pagemap_scan_get_categories(pagemap_fd, start);
-+               if (categories & PAGE_IS_HUGE)
-                        nr_pmd_mappings++;
-        }
--       close(pagemap_fd);
+PowerPC Radix uses early_alloc_pgtable() before slab is available. For
+runtime population, it uses pud_alloc(), pmd_alloc(), and
+pte_alloc_kernel(). These helpers initialize the page-table metadata
+and fragment reference counts expected by pud_free(), pmd_free(), and
+pte_free_kernel() during hot-remove.
 
--       return nr_hpages == nr_pmd_mappings;
-+       if (nr_pmd_mappings != nr_hpages)
-+               goto out;
-+       ret = true;
-+
-+out:
-+       close(pagemap_fd);
-+       close(kpageflags_fd);
-+       return ret;
- }
+To address this, I plan to update the generic path so that it uses
+the normal page-table helpers once slab is available, while retaining
+memblock-backed allocations during early boot. Once allocation and
+teardown are correctly paired, PowerPC Radix should be able to call
+vmemmap_populate_hugepages() directly and remove its duplicate HVO
+page-table walk.
 
--- 
-Sincerely,
-Yeoreum Yun
+Thanks,
+Muchun
+
+>=20
+> However, completely removing PowerPC's special handling is already
+> in my follow-up plan. We need to wait for the current series to enter
+> the mainline, and then we can proceed gradually.
+>=20
+>>=20
+>> Change itself looks good.
+>>=20
+>> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>=20
+> Thanks for your review.
+>=20
+> Muchun,
+> Thanks
+>=20
+>>=20
+>> --=20
+>> Cheers,
+>>=20
+>> David
+
+
 
