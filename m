@@ -4,102 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B22E6CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 05:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B378ECA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 05:33:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 664B36B008C; Tue, 29 Sep 2026 01:08:06 -0400 (EDT)
+	id 620836B0088; Tue, 29 Sep 2026 01:33:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 615CD6B0092; Tue, 29 Sep 2026 01:08:06 -0400 (EDT)
+	id 5D1BB6B008A; Tue, 29 Sep 2026 01:33:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52AD96B0093; Tue, 29 Sep 2026 01:08:06 -0400 (EDT)
+	id 4E7496B008C; Tue, 29 Sep 2026 01:33:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E14F6B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:08:06 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2BB3DA69DD
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:08:05 +0000 (UTC)
-X-FDA: 85265618130.18.271599A
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6325E1A0006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:08:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Vt8Wl6v9;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DAF66B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:33:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C89011A03E6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:33:10 +0000 (UTC)
+X-FDA: 85265681340.07.990A842
+Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5711E40006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:33:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PkLJ81Wc;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790658483;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1790659989;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ql48WTI1DDC42vkQ5aONYMMkjcdFwpalboLPZ35vz1E=;
-	b=jGcN74mlb5S+YR6UHdIWAs2mEXdcH0HIuD6ekovaS5ZioHbIs0upk+/49MN29W9lMse0EP
-	yeBL+hGlxgVkj76wdgI0+1QxLK04IJik80urgZicuQMWgauD09AvEPeLw7oFlGTKzOmf1R
-	fKDC2rLs3M2vaR2nP6L6QZ/s89DMCs0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=utwCr7dhiJhH+7zfFzlq+sGzsmDUrkDOgCiJgBfnXiw=;
+	b=pXwLdLoqx095spslI0K6FmJDDG7WpJ9LSSXUjXrMx+cT8YtaEu1ygWrlwoP0vA98/1sxcK
+	i+2Sjzq7ekk/e24+djIdyCV5whD1Shk2LKSYMTJ4t8chXyEflWyNeRpVMVoLL1cnMJ9kxF
+	rPpM6icjOnn7mNV6hD0fTfStP8+g8kg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790658483;
-	b=zRaw9uX514u+ZIJYsNXa8OF3hGibzaOpqqCVgDyR/9kPC6ek7vJ17CCzDA0v6i9RszlEHa
-	G3dAANmarYXclduj8GgTzr06FW5sgtD3VDqyTWGGw4nMq9z/hL5ziDjED6AvasaVaVS7V7
-	A3qWqmRFXu1RmImh7RaiZriJyX8SMp0=
+	t=1790659989;
+	b=oo48h9zW5gwOHVhIkz4+rnsz9y1JFfESDwlKFSYCTRqBfOn4LdxT4zjbRXuO/cjwVml6rl
+	8bO9RPsbEYutjHotbDcIXaVjbDvVnjcsdvRzWRcxQgQug7MC1Sy4JRy9NAn9z+J45PlIMt
+	CGGb/pmZbux1Y2jJ5TIqn3vDPqchZwY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Vt8Wl6v9;
-	spf=none (imf19.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ql48WTI1DDC42vkQ5aONYMMkjcdFwpalboLPZ35vz1E=; b=Vt8Wl6v9GXqlPdcfnYCxm8QiYp
-	IjYDbFvkRSA9EwCbUBHheJvuYZdpImQ8ElWTyxGfzBNWSOW2pO6W+4J4Y1tks26kT+/1ZOyOUbTV2
-	LxknNqO7/ieWoGqNfhU/6OiIm+u03J7GX8QRDAzb//I2WHU4oI0/7on5fhJYoFcx/TY3YdWmGFgOj
-	4/WzgK4OYYFLnJJZ1H6/D8CD8OvFCYz5m/CT5EO8CcQq6t3LkWaAWZ3HXS+H7Eiz8dY3BcMEfr7b2
-	xJxllWNFBc/BuTHZelPBr7MOyE8q5XDulXQDCXIxkADODbw48afqLDdAfkvjLTsbKv4uPDjyQv6ee
-	sAjeP0QA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xBQ43-00000002j2z-3GyS;
-	Tue, 29 Sep 2026 05:07:40 +0000
-Date: Tue, 29 Sep 2026 06:07:39 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: NeilBrown <neil@brown.name>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Breno Leitao <leitao@debian.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Jan Harkes <jaharkes@cs.cmu.edu>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Hyunchul Lee <hyc.lee@gmail.com>, Carlos Maiolino <cem@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>, Jan Kara <jack@suse.cz>,
-	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-unionfs@vger.kernel.org,
-	linux-um@lists.infradead.org, codalist@coda.cs.cmu.edu,
-	coda@cs.cmu.edu, linux-mm@kvack.org, ntfs@lists.linux.dev,
-	linux-xfs@vger.kernel.org
-Subject: Re: [PATCH 4/7] configfs: remove d_add() calls before
- configfs_attach_group()
-Message-ID: <20260929050739.GB3909609@ZenIV>
-References: <20260929034158.1455429-1-neilb@ownmail.net>
- <20260929034158.1455429-5-neilb@ownmail.net>
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=PkLJ81Wc;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj2-f41.google.com with SMTP id d9443c01a7336-2df9754484aso18284325ad.0
+        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:33:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1790659987; x=1791264787; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=utwCr7dhiJhH+7zfFzlq+sGzsmDUrkDOgCiJgBfnXiw=;
+        b=PkLJ81WcbtDvmvYTIWQUdvH5JPCmBV6gYDCA05BIyMDh16T/QfhvSVlbdSPbARJwyb
+         O3ESSVWm1PkkfClM9BkE4aGw9kyBL9tomM6KqCl/ePZwQffQWlmy4/zFzU8nlt8jnthX
+         baWRPoxllNV04XgRvtZ7363S/WKgDv2IiPu0ci+UrMJcain3pesdXUfm0qzrsKC7i3sS
+         oC4YMVD4jE4yAuqYBMdYLck1bqhIgHnVHic3s+9DrPhVVoIk6T7EbOHGiEzyG5Lny7WS
+         BXJUNXdPfLwer0G9oypRPsD35xlF0VYbjAxH0zzi90+eR0b7z/KCnkZJ2Pb/UUDLusZi
+         0npg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790659987; x=1791264787;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=utwCr7dhiJhH+7zfFzlq+sGzsmDUrkDOgCiJgBfnXiw=;
+        b=jgbKX3qoSxkUh29nxuV4Hz7ih5bMQtYqFE9eBRzUzGyDsxfipyOV65cb9UIXn9Go9G
+         NeVjp7PCXxSfZ08LmOKfknAEahUmd3pUXhobO+6aSKhAwcAuhB0WCnnFTaIM+imjq3Ch
+         tE92uF0Vk8YjkeClCJdvK1slCcoKIr2PBIZBt+YxZAJIqF7//ZSS6R/Efrqj+n37qcZh
+         3A5QskTjjig5t0CvNoTq5hgE7u5K/RiGK1rS9ypbJr5CAdeZg9EeI7xo6594FQEVPrvO
+         OqVKnHd9ON2PWLIvHALVNLi7GS/0wfphg/KO/quFTdsAfVYmQCHPom6uwjoptOc0rCcU
+         GBqg==
+X-Forwarded-Encrypted: i=1; AKwUvBx6BJUNgVL11OqT9Ap3oFqaGBQuiTeZHV+xTCvbmNzVn/FAn/fykJQSZFeU7qidML3qMVeL76E/ow==@kvack.org
+X-Gm-Message-State: AFq9FYLplNyLcQF1rNUdBYmcriVUtMhW4yZEZ4JQ4L1+u8fypeXORQEM
+	yDVxlS4W8R6tF6zQYKW7iNlz70jMq7o/B5sV1lAFBHZD8E838fYCfYeO9O8u1Z12Kxo=
+X-Gm-Gg: AYBFou16yUU1/Yzb0y/SE8MPOKiMMUuLNfS6XsSSNtzcihZQyhYTwwOP48aVj1HUpDN
+	jzfC+lp2IWDCn6MJeAqYrVvD3Bv+EaZA1aVfo+kLGrdXahuJzCHTg+nELvxZOjg1NGCaHAaU68H
+	ZYneJnUGFf8nAakV1iGBGxJzHgSha89qfmbLIbK7+JkxACiDIyPglrjbb9SVX99eQQXTd4+NmkJ
+	H4LXtZ6wM+B5d7i3MJ94Eu7rI66r9jgtYMBeiagLVJ8j3dpFjgKbex3Q6cvX0W7B9LMrvxnpbRs
+	72sOcS3Va79EeSQYpOFDHauUtXfytAUgemY95T/61upB1ye3sbm80D3WpQkh0uxfVeeCOD0D7LK
+	/fpdWeuKw4akA5sdr15meJG1n+Xa1GcQerSE+bETKB6SsWEwW3xUL35P+8j9DT5te5fVwWJEsc9
+	yRwjdUe7O+HoQfP9i2VNK4XO+Fj94YJwsIaJkilrtezt75WCSocWTc8+3PrtUD+WwQDeAaUudVp
+	j/GtN9g2RnX85sMNWY=
+X-Received: by 2002:a17:903:1447:b0:2dd:c0ff:e737 with SMTP id d9443c01a7336-2df7e11e8d9mr118705625ad.73.1790659986929;
+        Mon, 28 Sep 2026 22:33:06 -0700 (PDT)
+Received: from G6L4RL2QG9 ([139.177.225.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2df9142bafesm49251765ad.51.2026.09.28.22.32.58
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 28 Sep 2026 22:33:06 -0700 (PDT)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Muchun Song <songmuchun@bytedance.com>,
+	muchun.song@linux.dev
+Subject: [PATCH v3 0/6] mm: Unify device DAX and HugeTLB vmemmap population paths
+Date: Tue, 29 Sep 2026 13:32:25 +0800
+Message-ID: <20260929053231.66085-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929034158.1455429-5-neilb@ownmail.net>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6325E1A0006
-X-Stat-Signature: 5fhoom8wzxm8zcur56xufo5td9fh5q3n
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1790658483-301095
-X-HE-Meta: U2FsdGVkX1/RvFO0CqKiRM8QEJPp/MCoLniKPeY4ioh5poDT7E8uIv6dKvOMh7X0RQ0/V2p7EUuI8r710sl5v5fSi4d3d0JQ5NbzSvoie2H3GXrglP6NtiXEzkFjcO9Rttx5TPeBc7poqHF9WXpAlFM3Kv04bHjOeKg8l1FTlJL4uYmR658HHGZk/kpcYc3DBvmFu7EVgFDaq5hiWb4EA7Cpver5LN5frST9ASiOgmX6kZkw5VNt7g76nQH3Wgz1EobUC73tNHKP/wu+HQ8N/0AkOegoLDzn4cRC8CT/sWp/R66U08HBgGYM2sj6u1fqf3g/XuzVFAl1UNrQEG2q0sqKBgLFxhhhELjwIUjw1qgOoNn5+DgQb0KoG1DV+3OAFCSBzKgznO6Hre+OFysUqAQn+S6Y0+rsCS1s19pGticEUZ8zOuEc2pg3Gt8utfVFrBAuZXmhpYQEE9NPEIHm92Q8BXZnCRsyJ4CENQgTKn2lv0o5cpSj7mA+wTdvnITtqHEPdYFGL76TPQlECG7u1y2fkskkynD5AP9VPuJVm/vQi5yRbOBPmiXNmWJtHJ6l4rHf2hkis1ZAwmln5GsGlQByjcHXhwNqZlo4s8bDLcNysjR/5c+CIEFSpbdBqf1wRhOlYONxF5fhB/TZYwJRBSzMQTvFj0VWSFryIncaKsGtmcqVZa1bJyZTOLgMLBbe4K0ziLh2MKvVzR8MEFBS52N2RjaMojrrKFqhwNNepbLjpo9qftuqy/sTqSSXn54hQNUjEm2ijYgsya7Ay175GHhYhamrtOdSSDBEpbt9vmq+v7/hADFtZRw70U4mY/QVyt1DDydrxSEvI6yyWHNECEPfYyquWS/RBjkWQlGE8llFU5P2Jp35c33UaDCcW07FUNte94BW7IUqmuoiEqCqIorCClo+ZKcbN384I1SgL/sUgvQMb/0Q8NvvFPyalf+Ul/P0mktL+a8rJL/divL
- IdzZCQDy
- la7xtZNpO9TCS+tuM48YW/y1ebwurb7+GAWePt1JRllAkgoiL47shTEsNVGmqvCUMZZacfrc9F0m1sgncWhsAkJ50+/DnFV2uMlsiULl+cSjxGNid7S6mzYlhiCJBAvnSH1yLN6MDXv+A6pHGSvWqAh3PtFBaR438CxghICSTu04twHb9GVX1/GqKPoL3t5k7So9eJIopBydhcnMsPSFpFFhPv8rC4otCmDRJJioJmPqdAvXwJ+4jgCYfr0o9idZRrLmU6YVWbevFo65J0NUm9E9jH51b4Z405ILIsPdVfGD73zize3JIT4Ji0QZXRTxTAscgcYFh3LYVLljblJHsCXe8BmHEotXQwcFgNAompcmxwzFjpjW2rH2RQCZFwNNQocZPvoUZacALxp60J1Akbl+9E1krQKrfwfb6+o7ExS1Y33jiaLBccjo+r7SgjTQwk+C5hrMY/AtlqMB17zorHq1IH/Ds6IpSdVWVDG646lY2SXb033cW/l/8f6wWReuvhG+GFUNkf99E4pPXurP36f4TvGR/s8KinJxrouLL6755yyTR7nRCF6P3Aw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5711E40006
+X-Stat-Signature: am7ofywipyfy7pksdqw19kiu4uq9jgfd
+X-HE-Tag: 1790659988-478902
+X-HE-Meta: U2FsdGVkX1/s/87h+D1EGRANG2rKXfmneTfOIp/Jc5FTqZeAWQgM9IGfHx4v4MkggYeoKocXw385qPGBCm1/m52+t3udfDkbIpQ0+TerLMh61pgk3pkJimtWoxMzRY7YnWMiIgMSEnQHEzk2qzF0oqrRE2o9a/TGDNCHjG5z+abwFWoaxHUfm6y2mbL5NdAdO0pkL/iZuhEVsohpo1Zbe0fNFUK2KwuyTfzpMGZrrZjcW66RTqvrbdI6tffxx3YKQcuaeBgsN1gAQ75Xp+T3W2loHCB10mwwRF2XrIxCtABLVkIj58vJRfn9qIJuiOpIw6dlbdEO+05zdfA2/LGI860WpuZly4tS+0hJ1DEzawacTsO9/gMv5aJgEWUdiVqcJdX1QqGcht1DPFaRzy8OUCkoOEpg6ub4NLV4BM158d7eceZHzLzJzL8TgHWngdhLmzPvfpdk3qmkrVkzOEJqJf/SQBy+U+FGWT8O9Jw+4kM/OjCIlBIAOcSNsLbhidD5xGAN+E1BTaXs0IgxM/8fa32TCl+SDaa5Sc8XfidyIBNn13KNep6QXW2Vq8O/bIvDBR5HNIYuwOndKZHfnwxbzaMHn5WfLX43A8LaBsGkA7ntkhzv5OMwtgMkoWtahirb7x9zefZkekFJUot9oR6rO/2gGnKs6jniMOws9myH6DknbgRDWQ1NS6WRZGN/AtzCVWvK8f3RnKqIzz2d+zdyGdaQRXC63/bN5sOICoW1Xa5I2XmApUB69vv2o3ap5dOFE5Gedw0ksOfZUmqmoEiUnCCRWlwxsQC+doL/gnSILU3mWTwEiVZh6b+iAY/CF6O5mZreXeOcc8aBjc8puQLhScMHY1199lGkC7iQ6rhM+45LYb5nvadnq50ijz+h4yn7PUZvAohBu/rigwa653pb3+Nx2egxK8UeO/4ofEzQLoAzMFtIynpdlIPaiLThEdhrQreWsN2BkN4Sf38zA4t
+ QDYG29bP
+ t0P45tqqfkananuQaJYBTZ1ruBFs8A5dY5e8DOkBmqMU/PWyFbMZe/Lj9fCdGNPO+UNDHUkggzgVFrjQhL4GpwKf38C/TdLNk9bMAV9d9nodDZ2LU7rtxlr0gkXibc5JIwBKnt+Mxq+zcWgpnH6CSKdJ209XYUwHyfmImShazaHuLkaDkfWr5fP8a6LS4bMtfpVBJBHeF8hvq4GhombrOIPDHDcGx6sH7MdokJf1w47roAYryLSkXeGNhH+6aTxGUt+lz7t57BpEmke9hG11WMDnaqhJKI7DFv/YUeXtqmsK4zOb9fJ8dA2ouhpn2NYcsRaKnBhw+SGmC8ld5lUlF9pXl4EZbqYRwMljjLD3UWZHx29Ceisvs23u4gzAA9jTND+nyOJi3kpEWI2xyGdcJq+KzzQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,23 +132,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 01:36:04PM +1000, NeilBrown wrote:
-> From: NeilBrown <neil@brown.name>
-> 
-> These d_add() calls cannot be necessary.  The inode given is NULL so all
-> they do is attach the dentry to the hash table.
-> 
-> If configfs_attach_group() fails, then d_drop() is called so the dentry
-> will be detached.
-> If configfs_attach_group() succeeds, then
->  configfs_attach_group -> configfs_attach_item ->configfs_create_dir
-> must have succeeded, so d_instantiate() will have been called and the
-> dentry hashed there.
+This v3 is based on mm-new commit 2ddb90ee544a, which contains v5 of
+"mm: Switch device DAX to section-based vmemmap optimization" [1].
 
-Neither in mainline, nor in -next...
+This series is split out from the earlier, larger series "mm: Generalize
+HVO for HugeTLB and device DAX" [2]. While the parent series generalizes
+vmemmap optimization across HugeTLB and device DAX, this subset addresses
+a single, self-contained step: unifying their vmemmap population paths.
 
-d_add() _is_ wrong there, but this is not the right solution.  What
-we really ought to do is build the subtree first, then either dissolve
-it (without any pathname resolution having ever seen it) or move it
-in place once we are sure that everything worked.
+After the preceding Device DAX conversion, both HugeTLB and Device DAX
+describe optimized vmemmap mappings through memory-section metadata and
+use per-zone shared tail vmemmap pages. The generic code, however, still
+carries a Device DAX-specific population flag and compound-page population
+path, along with arguments and helpers needed only by that path.
+
+This series first removes VMEMMAP_POPULATE_DAX and moves selection and
+reference handling for the shared tail page into the common vmemmap
+population path. It then removes the generic Device DAX-specific
+compound-page population path and routes section vmemmap population
+through vmemmap_populate(). The powerpc radix path continues to use its
+architecture-specific compound-page population implementation for
+optimizable sections.
+
+The remaining patches remove the unused ptpfn argument, open-code
+vmemmap_populate_address() now that no caller needs its returned PTE, and
+add a warning for inconsistent zone initialization of shared tail vmemmap
+pages.
+
+This is the fourth smaller step toward the broader HVO generalization.
+After this series, HugeTLB and Device DAX use the same population model
+instead of parallel generic paths, while powerpc keeps its
+architecture-specific implementation.
+
+[1] https://lore.kernel.org/20260927025441.741633-1-songmuchun@bytedance.com/
+[2] https://lore.kernel.org/20260513130542.35604-1-songmuchun@bytedance.com/
+
+v3:
+- Rebase onto mm-new commit 2ddb90ee544a, which contains v5 of the Device
+  DAX section-based vmemmap series.
+- Document the exact dependency order as suggested by David Hildenbrand
+  and Ritesh Harjani.
+- Use the public order-based optimization predicate in the powerpc path.
+- Collect Acked-by tags from Qi Zheng.
+
+v2: https://lore.kernel.org/20260924075259.2013039-1-songmuchun@bytedance.com/
+- Expand the comments around the slab initialization boundary as suggested
+  by Qi Zheng.
+- Collect Acked-by tags from Qi Zheng.
+- Defer the patch making vmemmap_populate_compound_pages() static to a
+  follow-up series that cleans up the powerpc vmemmap population code.
+- Add a new patch to warn about mismatched zone IDs between a page and its
+  shared tail vmemmap page.
+
+v1: https://lore.kernel.org/20260913083734.86802-1-songmuchun@bytedance.com/
+
+Muchun Song (6):
+  mm/sparse-vmemmap: drop VMEMMAP_POPULATE_DAX
+  mm/sparse-vmemmap: support device DAX in common vmemmap path
+  mm/sparse-vmemmap: drop Device DAX-specific population path
+  mm/sparse-vmemmap: remove the unused ptpfn argument
+  mm/sparse-vmemmap: open-code vmemmap_populate_address()
+  mm/mm_init: add zone mismatch warning during page init
+
+ arch/powerpc/mm/book3s64/radix_pgtable.c |   3 +
+ mm/mm_init.c                             |   5 +-
+ mm/sparse-vmemmap.c                      | 208 ++++++-----------------
+ 3 files changed, 63 insertions(+), 153 deletions(-)
+
+
+base-commit: 2ddb90ee544ae97215afc4698dc223293997cc43
+-- 
+2.54.0
+
 
