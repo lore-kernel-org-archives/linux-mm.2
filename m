@@ -4,89 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18125CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2E7CCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:11:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 099E46B0088; Tue, 29 Sep 2026 17:09:46 -0400 (EDT)
+	id E0AC26B008C; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04ABB6B008A; Tue, 29 Sep 2026 17:09:45 -0400 (EDT)
+	id DBACE6B0092; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA38D6B008C; Tue, 29 Sep 2026 17:09:45 -0400 (EDT)
+	id CAA1D6B0093; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B01026B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:09:45 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 34A201205C2
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:09:44 +0000 (UTC)
-X-FDA: 85268041488.09.5C9CF36
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
-	by imf02.hostedemail.com (Postfix) with ESMTP id ECD4780008
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:09:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=VOcC2k3+;
-	dmarc=pass (policy=none) header.from=krisman.be;
-	spf=pass (imf02.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.152 as permitted sender) smtp.mailfrom=gabriel@krisman.be
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9ACD66B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:11:05 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3363BA69DB
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:11:05 +0000 (UTC)
+X-FDA: 85268044890.29.1377C0C
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C37F2100007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:11:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKEReLvl;
+	spf=pass (imf14.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790716182;
+	s=arc-20220608; t=1790716263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oiLYfNLi9fHUv/AIARCPOZejdDUsvSdtLFBSFLvIThk=;
-	b=rqKqSOYKZu5XVNSLl7A3axzvqujdDrpmv5R6cYhxIVCPrJFgKbqXTr0KwBKUSy4r2BySD8
-	D0xQ6d8oamf76cRIoAHwuzAGwGcfHAal4VYTdQZOImkGmWtxM8UQYSHMnOhVD1BJG9bjnx
-	LrfLgrtsCG+rtPgYfqmT2T+qK20dVUg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=VOcC2k3+;
-	dmarc=pass (policy=none) header.from=krisman.be;
-	spf=pass (imf02.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.152 as permitted sender) smtp.mailfrom=gabriel@krisman.be
+	bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
+	b=dEY0Z0LNUhw/V4r8VzjSDIhaCLHI/fv1EqwleflvKXV3B2tuE06UhKXEv2EY+1bp2YV50j
+	cR6CdxH3Y0wd2LSu3ctFend4Fu131PTbElmih5UqfwXlnwLRiPFZ3D4GR7sgU03HHUh2Sr
+	kVlr+k4jSIdI36MS0BEnXX5CH+iX9Fk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790716182;
-	b=xBqGE/L65l8EvdwJi5MiCCF/vGJU+iGN+5lkR/6vfmDnIcFTcdig683o0wQDcyNsY1OV3i
-	BNZ2XhOGRzJuS1jnc9ObEIWtdp2FPiWuHvDZr1sMN/wHy60u7tfEUuLWr+0ebE6TZUPfsX
-	iqNXQwTLaAqR4dKTveqPGmGJ0nmCsb0=
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4hvW5Z603DzKp6M;
-	Tue, 29 Sep 2026 23:09:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=MBO0001;
-	t=1790716178;
+	t=1790716263;
+	b=scTMWzFuWbG1yW9xD8U8C73qQ5xkdMQ4VCAAePNRDeguIXFxUS5WfMumuNSTl1vztzQjq1
+	yjZ/hae3G1EBx7JS7l+Fk1oRO+BO92emWR51nt9OTwKPgVGOpeaNrgmxyBhAc8J8I2JbmT
+	BrqATfSnJtVV81o5RgylYd3t9RNANtI=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BKEReLvl;
+	spf=pass (imf14.hostedemail.com: domain of agruenba@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=agruenba@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1790716262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oiLYfNLi9fHUv/AIARCPOZejdDUsvSdtLFBSFLvIThk=;
-	b=VOcC2k3+l9mwIjlQmluaLAMj3QcSsEaHRsJCDEDf/X6QqEOr/Cup/qfRLOpiG6HEFPsfD4
-	mOfdToOqRiPUn6IpXLxZAMZRMgBmmxGqdRKKUAakHzrGjAZS5yiULaMBvtMyLE+Ycd/XG9
-	OplZoxE+fXU+4+z6M29312v0ZyO4pxqH2eY/hOnP4bqC4Kyhqhjd/ellBnlI+WTAhOx8CO
-	iHhpkSQlDGlVHlvdJCwPORM4W2VUoItohk+YX+wgHixx4oUgYo85m3XhdBb/E2PIkkApgI
-	VamztEsMrppgs+aR6E7mdQDLiZ9Jz5ziSvtX69zdcClghz/lWFdkb578D0puSg==
-From: Gabriel Krisman Bertazi <gabriel@krisman.be>
-To: Kazuki Hanai <hnkz.64@gmail.com>, hughd@google.com
-Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Kazuki Hanai <hnkz.64@gmail.com>
-Subject: Re: [PATCH v2] tmpfs: fix unicode_map leaks in casefold option
- handling
-In-Reply-To: <20260827152516.805622-1-hnkz.64@gmail.com>
-References: <20260827151426.796843-1-hnkz.64@gmail.com>
- <20260827152516.805622-1-hnkz.64@gmail.com>
-Date: Tue, 29 Sep 2026 17:09:34 -0400
-Message-ID: <874if7ydbl.fsf@mailhost.krisman.be>
+	bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
+	b=BKEReLvl79+HZLdXykWRpzMod/vL9QvFWFTBdtMIKLgpQkFb9J67FglMkPvLW4K6l6nM66
+	Gbr/5O8x+uxsBBTj6B1r/YEG4HXhku9Bc7cMVJkdqYo8iJR3JOxtOdTpTGnQ0iTnVBSyQs
+	wRL0jg/Khe8XiR5oL7xgcyh4/XyR1aE=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-BObc1XV2Ngigpn4T02PZGA-1; Tue, 29 Sep 2026 17:11:00 -0400
+X-MC-Unique: BObc1XV2Ngigpn4T02PZGA-1
+X-Mimecast-MFC-AGG-ID: BObc1XV2Ngigpn4T02PZGA_1790716260
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-8914aeaa16aso75957347b3.1
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:11:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790716260; x=1791321060;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0avdwGRUerzew4pppHC0Kroikq1W4RaEB726c/pnxQs=;
+        b=GKs+XqHEn7ux5d8cOt8l1D77w4KDZwP7CdwPmeCxcjPreoIZmmK1pMf4rYNXhH7J8A
+         VwAjd5yOcWhdIW286MMXMtG81Ph4+lNvO18NP10p78RU9UXhAnzBt02bsXUZIVOyvVrw
+         6qsvp5a54FHvZVrOi1eZxCtC3cgmSjfyIF42vqrcsr36OoJGtZC0Nd/43kNvfb+VdQTm
+         Zm8ToD+ENdzARtrZmsFSXZ0CmumFYdZYeIcFam6Hkg1Re4//OS1qX/DaJO4BE7IAZvq/
+         KFx6J1iVJRxkDDlqbVL+ZZpvm0yWcCxRe19Ap3hkW6uKc5Wc77a/mx+GRBxAxqltIPUk
+         0Ojw==
+X-Forwarded-Encrypted: i=1; AKwUvBzALCtpjQi4De32TOq0KH1SfPEDfaOhX45GtIuZDRMDwH7l4r8rgjRCUw0rfdBqvi+QVFSks155Uw==@kvack.org
+X-Gm-Message-State: AFq9FYKSp5Ey016Fvd7eod11BkSpQwF7YKe0RkArBJsTLy4jta9zsmew
+	YjIpRkxI0HXyOTrc88KRme9ZRtvZ7dME6NFztx9KypcEdmAHYtFV/ikqk61d86mwSqi2QNNpAKr
+	mexfaawE61fLsJAiKyzcHDWUHAyFU2EzKhDsepFfow78HpiUnoYN2XXnEN7xDCmBw05aTLI01oK
+	S7qFvPbZz7o7zKgU6I7FQEKSfVX96xRPWcZxxSxeCd
+X-Gm-Gg: AYBFou059htiXemn/wjBiDtSWX+XoDxQGENu2XNQpwSYeVLYRhdnTARHGhL0kQdQ6lt
+	CO8tSyPNzfrynHGVrtNe5ZHPeKSJwlLavP8Y4PI0nnWzuduqTV07hnn8YGHLb8Rhai9/BodHVG1
+	01xrL+9Xim1chQ0u5UndAIlFbPsL9ntxOYvPjNixrDvfG/CnRbpaeTU4EBAT0uheg/teOhMFZDP
+	u6vdb9OU8NJUFClK63xLe9xeiFxsRS6loihQ3d28fbpTg==
+X-Received: by 2002:a53:d886:0:b0:675:5f54:9e75 with SMTP id 956f58d0204a3-67644171349mr158631d50.79.1790716259997;
+        Tue, 29 Sep 2026 14:10:59 -0700 (PDT)
+X-Received: by 2002:a53:d886:0:b0:675:5f54:9e75 with SMTP id
+ 956f58d0204a3-67644171349mr158620d50.79.1790716259511; Tue, 29 Sep 2026
+ 14:10:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260911081309.14137-1-jack@suse.cz> <20260911085142.1774803-9-jack@suse.cz>
+ <CAHc6FU6YT4EzM8VDX8V0+dhfRJtSrtWxbuwht+b8HG5yzyq7Lw@mail.gmail.com> <kgxyhbgbewpch7pc3auxthhbcfelq7lgi7mxazdo5wvg2ael3b@hilsbf4622sh>
+In-Reply-To: <kgxyhbgbewpch7pc3auxthhbcfelq7lgi7mxazdo5wvg2ael3b@hilsbf4622sh>
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Date: Tue, 29 Sep 2026 23:10:48 +0200
+X-Gm-Features: AclHuK9UqhWpM6SAUINx6rl63wXociZVUKWztTN75qMxxHCVsEZdA2U1AApCAYM
+Message-ID: <CAHc6FU5uXnjhL9SgOX06xVdTXFP7DtWikwa0bn=bEW__is9bWw@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] fs: Add throttling to deferred inode reclaim
+To: Jan Kara <jack@suse.cz>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	Christian Brauner <brauner@kernel.org>, Christoph Hellwig <hch@infradead.org>, 
+	Mikhail Rudenko <xyzzy@yandex-team.ru>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: v2PQtXSrPNvtUFr3mVj4aHBJsI9d2ZgKa8XP1ShF2eQ_1790716260
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ugicih3ustmatygutqz943syiyzr4kwg
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: ECD4780008
-X-HE-Tag: 1790716181-952672
-X-HE-Meta: U2FsdGVkX19zIyR62oH39YZOOYzKgxww5zalXtjztrUa/pqGIjFyBHNlwfL4hCNoPkng4yG1AMuO2Pvg72DeTBHzwv5PKamKVVmE3UsaK7tqZMUro8IHZ16AUfLdoAGjrM1i3FfDeAFgWOBLGTPEeXTsAvphJgDanVDhd/PTVfgPibh7gJS2sEyIoW8MqVam/outNOcpsuGm/vYODDQDdnmZPJxDeqdJAEFGj0HQuAXYP43zPHY6j1kNb9eBzw4ZGw8Ho72c5tBo3L3MakqWDzqwYH1x4ufmLL+uuTD7CLDTDnYSvSI7Mojk5BY3FmTvazvRYa2ec6aTb5u8ZI/+HJsjJ0BTH58eNriK6krlfMZOZBVxJP0fJbNX2fkFQzhr+qP+0bh+ucIBx4r8cEZUzlTEzNF0u/aQGM9QrJ35tWL8Wucm+ap4XY/3fDnDl+NEzU4AuT7aOsfKFuPvwo/TCC59sJDbmTyxa2ppj6/8OicDWWAdzZIyrFAjjI4BKgThmixRxp4Q7xl04wrhizowKYN7fEnPCsyCas3x0AwbOO5TIqSi79lp2JwAEk/G9akUnPdhSBhXjNGTPad6KCwtfJJIgd3TkT0GuyQA5FEHeccHtor1cBfBfcDjYf/wuP7HDW8j1NHVYkQ+SR/0HHBuZk+4BMgOGhcYD3ga4j6KLJwgKY+T7Dkq4zgvKHluYEjPybHkZTeKY3ky5Yql0ERdB9HaLKO67ryZasgNgA5xlf96ji+49Y6d87Y0bJQ45j7ACqwMcQ8Gw4pdWOBZtrPZVrGWNZ5Myc5c+OlMzRlNguPgxAlWjCatIMEvOXSPYhw5R/JA+5yB9jckZbxfk20Kst9bSzXmvhNK2TBkLJYV/pKF9kjG052CYc4M5WRJmj5CQ+Lg6OWi756SIWbCNt8VmNL5SBpVg3jiEiLC/ASEY9+JDzjOsGN/3cHl5k7EQ9AhNP5V8Ut0w3nIBzcZ6/I
- /Xl1I/fj
- Yn8UIF4SDn9j2Avnzhwy64zYYK2lReHcDrK0DoIj/31KgsJU6P8++cmcxPd9wW5KW/ygm7sfiO2s79KSKVmW1fS6UVqqKfRZMUgpkPc22sXv5Jb6LnGBeRxifEYKrIn7hxJZt/rykfAnwvhw//wyXWXNEgx/wp7eZjrWpHv/TyXLDD45Kzr4Gp9J7zk0oi4b/AnpZ3WXe4K24HlTg3YTBDNpeI4kb5NlutZdN5WTiMKxH0bJKIT3I2LeN8RIKZYnT8JX1Znk/xXfQiiM1wj9afFFfAWCk3C4dw962JG7gF823BvgrPNISyx+iUzRnzwoVOhHmiC23Owh1P0QAN3wLgC2+99JbcdqTHsDshBd/WtWoDfQL1Vrxa27n7hcDWbZ35qvkHt7XkCMHrZloH/KMNJinslld2Ka+E5kZciVNjxf7xTtjJMZ4SaYceoE2Tz+wYnFbVyT+qf69he2COJo2WE5LDbZb4WRqaZKJZQHhJVaxBHhaaJ+Qmo30H41ejdz+ftmDZruMeLgWTyFkGvKeFxOrQzhIcLhTTRovOgAGgNPBDmk=
+X-Stat-Signature: mudupmouhz756zzoixtkbugarndx3thg
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C37F2100007
+X-HE-Tag: 1790716262-46306
+X-HE-Meta: U2FsdGVkX1+wFLIggWr7AuESls2lvjVyLwJk+mA5jBaReb9smxnb6IUpS0qlq4mYT6bW02nc0tX/d7rPJ4W69UEs+uyRFJKWkEugZ6Bh96LKcXgIGMCNzMNAWU0VHLWo7pzL0PDdyZgjD7QSgiEI1vkRWQChDPJ7/sq9CDcAzXIgVqB0FZ3qtGI63PaRA64xtUCw7J6X5ri8TzilPWrVcd3uLuQTizKguFJOtQMelsiEoOVjhuwhKEpFhZtLBblkTAt6IId7xmBRF5NNPyQaX5/LxWbVYYBOwo4MTMB9vesXsEOX+pV6dcZfdoa10gKhH9ZAIMlhDRMfIKrZw1q5vX7+abzfGqks/uF//S9oowG+uEko8iVe0e3tAedBU0/IwKzcAMEMUY4uSwm44WfwE8lgcktBtmEZYFjipfP8PW0JxlMdhc/FPqJxfBbZ4NlhgX0uJKThOxjvLWHr4i3xio7mImjxtzUs5xcYRbBfUqBC0n7Njfmj9TocMTWVZWNXm1RpYtwwzJqgawxE/dCkbKC9JdcDdMVojUiiXVlhmw0+A6LUurPL3QqQvGRkijseBqVn0IL6dkPtD54nU7g/u9/svXz/x3jTsqYG2I5xmm0yJpQc8YESwsAEl7MZuSvdwmjtF+xtxJgbwkokyg2D/MB+ovrqdVVhVxk2ec7gXzCC96x7/pwkxWMR7JVSrDIF+9+ztf9t5GScrXkUY+H1VBu59OOs+EOlkl24d+NyL37TkNWTjxJXrdmzVyKX9m7kPcI7SRY1BLXd7+eql3b5le05w/DvdusKcjZAIgCjW+WWURO3QvMYxj2A1TsskL99w5HFYtEOA06heweC7l45RgV1qAob7UFTaIQj3f65CfnYIUIOeefJOosDfFRmOsQea0SYYT6EF519xJdyoraUarmIf8+D6lWx2jjKPMOi4ErZ5SNYmEfv9rJEV7CPUFvNE9Og7cVNmP5CWvJQxIX
+ EYGQGWIz
+ BDPzu49KAhSECCIioiHPVqF0vfdPWCo1Z9PW6VMGW4hrMSgxAYv4Utqpl9Z7K7tBzowboxMF8TUX3RxDj5PZtH0pw2EMZnljruozfvCfPwlrezQQnZ9gYFTIu47ELPPy6EBEt0qUdReg1R+DEJ7BWjhPGVapBIZZaJc5rrDTVII4crwVmoSgJWGce34aPB52IIRQ/aeXPIQqTQ3Lt/eQsbYiJsGiRP5LzPEAmOBhBEzmamSxmzFjvx7Y7SACzWdhG8NXC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,99 +127,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kazuki Hanai <hnkz.64@gmail.com> writes:
-
-> shmem_parse_opt_casefold() stores the unicode_map returned by
-> utf8_load() in ctx->encoding. The casefold parameter can be supplied
-> more than once for the same filesystem context, but replacing the
-> stored map does not release the previous reference.
+On Thu, Sep 24, 2026 at 7:09=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
+> On Wed 23-09-26 23:24:48, Andreas Gruenbacher wrote:
+> > On Fri, Sep 11, 2026 at 10:51=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
+> > > Deferring difficult inode reclaim from prune_icache_sb() to a workque=
+ue
+> > > removes the natural feedback loop of blocking tasks in direct reclaim
+> > > until they make space for new allocations. This can result in the lis=
+t
+> > > of deferred inodes to grow beyond any bounds and possibly push the
+> > > machine to a reclaim storm or OOM.
+> > >
+> > > Add a throttling mechanism slowing down tasks in
+> > > mark_inode_reclaim_deferred() if the number of deferred inodes to
+> > > reclaim for a superblock grows over limit. We measure average time it
+> > > takes to reclaim inode on deferred list for a superblock and block ta=
+sks
+> > > proportionally to that.
+> > >
+> > > Signed-off-by: Jan Kara <jack@suse.cz>
+> ...
+> > >  void mark_inode_reclaim_deferred(struct inode *inode)
+> > >  {
+> > > +       bool throttle =3D false;
+> > > +
+> > >         if (inode_state_read_once(inode) & I_DEFER_RECLAIM)
+> > >                 return;
+> > >
+> > >         spin_lock(&inode->i_lock);
+> > > -       inode_state_set(inode, I_DEFER_RECLAIM);
+> > > +       if (!(inode_state_read(inode) & I_DEFER_RECLAIM)) {
+> > > +               inode_state_set(inode, I_DEFER_RECLAIM);
+> > > +               throttle =3D true;
+> > > +       }
+> > >         spin_unlock(&inode->i_lock);
+> > > +
+> > > +       if (throttle)
+> > > +               throttle_inode_deferred_reclaim(inode);
+> >
+> > I would expect the throttling to happen when too many inodes marked
+> > I_DEFER_RECLAIM are evicted, but not here. In my use case [*], inodes
+> > would only require deferred reclaim intermittently, while they have
+> > outstanding revokes. Once there are no more outstanding revokes, those
+> > inodes can just be evicted directly.
+> >
+> > [*] https://lore.kernel.org/linux-fsdevel/CAHc6FU4Rf9-r8m8SSb=3De0k0zyo=
+FhQAdjupHMWvT6rStBshntug@mail.gmail.com/T/#t
 >
-> The final reference is also leaked when an unmounted filesystem
-> context is freed.
+> Throttling during eviction doesn't make sense - you are punishing the wro=
+ng
+> task (the one trying to free memory, not the one actually making that
+> memory hard to reclaim).
 >
-> Release the previous map before replacing it, clear ctx->encoding
-> after transferring ownership to the superblock, and release any
-> remaining reference from shmem_free_fc().
->
-> An unprivileged user can repeatedly set the casefold parameter on a
-> tmpfs filesystem context from a user namespace. This causes
-> unbounded kernel memory consumption and can result in a local denial
-> of service.
->
-> Fixes: 58e55efd6c72 ("tmpfs: Add casefold lookup support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kazuki Hanai <hnkz.64@gmail.com>
-> ---
-> Changes in v2:
-> - Keep Fixes, Cc, and Signed-off-by in a single trailer block.
->
->  mm/shmem.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 89a1495e55f7..62440caf2df5 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -4508,6 +4508,7 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
->  	pr_info("tmpfs: Using encoding : utf8-%u.%u.%u\n",
->  		unicode_major(version), unicode_minor(version), unicode_rev(version));
->  
-> +	utf8_unload(ctx->encoding);
->  	ctx->encoding = encoding;
+> Also note that the throttling kicks in only when the queue of inodes that
+> we want to reclaim but worker didn't get to them yet grows above threshol=
+d.
+> This means there's significant memory pressure, significant amount of
+> deferred inodes, *and* workers cannot keep up. Throttling marking of inod=
+es
+> for deferred reclaim is the best thing I was able to come up with to
+> eventually reduce the pressure on the cleanup workers. But I'm open to
+> better ideas.
 
-This patch fixes two bugs at once, as shown by the other patchset that
-does it separately. One is the leak during 'mount -o remount', fixed by
-the second hunk, which is fine.  The other is when multiple casefold=
-parameters are passed at once.  I think that fix is wrong.
+Alright, I guess this should work. But the change from throttling in
+prune_icache_sb() to trottling in mark_inode_reclaim_deferred() should
+be rationalized in the commit message of this patch.
 
-I can't think of a real case where it makes sense to pass multiple
-casefold parameters, besides user error.  even if you are trying to
-outsmart the kernel and handle cases where a new encoding might not be
-available, giving it a fallback version, a failure in the first
-utf8_load will back off the mount.  IMO, we should just reject the mount
-right away instead of silently swallowing the first table here.
+> I understand your objection about the need for deferal being only tempora=
+ry
+> but let's keep that discussion to the other thread.
 
-This hunk should have been something like this instead:
+Maybe we can get away without it.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index e46bd4fc7e41..06503858dae4 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -4506,6 +4506,9 @@ static int shmem_parse_opt_casefold(struct fs_context *fc, struct fs_parameter *
- 	struct unicode_map *encoding;
- 	char *version_str = param->string + 5;
- 
-+	if (ctx->encoding)
-+		return invalfc(fc, "casefold parameter cannot be specified twice\n");
-+
- 	if (!latest_version) {
- 		if (strncmp(param->string, "utf8-", 5))
- 			return invalfc(fc, "Only UTF-8 encodings are supported "
+Thanks,
+Andreas
 
-> @@ -4976,6 +4977,7 @@ static int shmem_fill_super(struct super_block *sb, struct fs_context *fc)
->  
->  	if (ctx->encoding) {
->  		sb->s_encoding = ctx->encoding;
-> +		ctx->encoding = NULL;
->  		set_default_d_op(sb, &shmem_ci_dentry_ops);
->  		if (ctx->strict_encoding)
->  			sb->s_encoding_flags = SB_ENC_STRICT_MODE_FL;
-> @@ -5073,6 +5075,9 @@ static void shmem_free_fc(struct fs_context *fc)
->  	struct shmem_options *ctx = fc->fs_private;
->  
->  	if (ctx) {
-> +#if IS_ENABLED(CONFIG_UNICODE)
-> +		utf8_unload(ctx->encoding);
-> +#endif
->  		mpol_put(ctx->mpol);
->  		kfree(ctx);
->  	}
-> -- 
-> 2.53.0
-
-This part looks fine.
-
-
--- 
-Gabriel Krisman Bertazi
 
