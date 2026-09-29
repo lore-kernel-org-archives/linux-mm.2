@@ -4,140 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA0EEC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 06:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50944CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:00:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A173E6B008C; Tue, 29 Sep 2026 02:53:28 -0400 (EDT)
+	id 4F3F16B0088; Tue, 29 Sep 2026 03:00:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C8B06B0092; Tue, 29 Sep 2026 02:53:28 -0400 (EDT)
+	id 4A46E6B008A; Tue, 29 Sep 2026 03:00:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B7696B0093; Tue, 29 Sep 2026 02:53:28 -0400 (EDT)
+	id 36D586B0093; Tue, 29 Sep 2026 03:00:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 612E36B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:53:28 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDCFC140427
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:53:27 +0000 (UTC)
-X-FDA: 85265883654.14.860B0A3
-Received: from mail-vs2-f43.google.com (mail-vs2-f43.google.com [74.125.227.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D8A124000B
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:53:25 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VrGOeNHM;
-	spf=pass (imf17.hostedemail.com: domain of morbo@google.com designates 74.125.227.43 as permitted sender) smtp.mailfrom=morbo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790664805;
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9816B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:00:07 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 02960A69C1
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:00:04 +0000 (UTC)
+X-FDA: 85265900370.16.816070B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 28E40C0005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:00:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRzXyvGm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790665203;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXZNNhcaPyXqA+zSRw2siBSAi+AcqonBzV+S3T5CpzY=;
-	b=ny1VHo91c3+dQA4n++ErB8x9+uxU6TgXXPlkuuCIwWrS5VYOaHNtLRz0g06AIOCM8UB+UG
-	1d74wX+b6rOZR3XlNzvc2+7R+AYxmgL42LKVZVfc1mHAdOdzvPirMcTdX0H1/pP5mUcGLG
-	titKbCcP21g9L3Y0LwODgzbaCgzdvHU=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=VrGOeNHM;
-	spf=pass (imf17.hostedemail.com: domain of morbo@google.com designates 74.125.227.43 as permitted sender) smtp.mailfrom=morbo@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790664805;
-	b=bnxqNGKnk2fKo0QvnP3q5+3KZyvFquJt/e5a3ItL7dts5y4igbiJRucLPbpEtEyf0/v0XI
-	EYNrX2npQeHqIGPmaZFYpUWt+bEvOCZCWvZtbH+FcbSVjqvkGYnfHwhffxsDAQB767roQQ
-	04RjKj8NyR2lYUtYUUG82xYjjtk6cUg=
-Received: by mail-vs2-f43.google.com with SMTP id 71dfb90a1353d-5d3de1dda8dso16958e0c.0
-        for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:53:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1790664805; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bJXz8LLfSUcldKI4Gu6ZMrkEmRbxWdHZrbMZIX5zvyRgbZCmkGeF914VE0WskVCJ1J
-         5d79Ic3tsjBraj+TwhgpKAHV1JWx5CG5x1nh7uzbjl+hc22WXvKKo521QotmKNnXGyVC
-         SNKSgAHAxbFj8rIVddQym09wMvZ9wnGbJg9cF/krRiRkC1i5cIHMRvh9MDLamQJuFlGL
-         WruTnkQ9VR+Q+t8vp8GwlXkHOK9bY8fs3t5KlSvUI2r3Nn9E4uZgvX+gNDx4JtzlR6uF
-         JuxMMwXi4yZcaExtTZeyFmiqj16XsA+6JoE3Sh5kUTi+IwXXIh8ZEhFgJt6ieHphht4b
-         otxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dXZNNhcaPyXqA+zSRw2siBSAi+AcqonBzV+S3T5CpzY=;
-        fh=7xqz7zKKxRBSmnShQ3XpX2nNb8gG0R8czIz1/xiygWs=;
-        b=OxKL7XsdRImyWbVowK1XhUC4i9Iw7oZaVqJ6wnYLqvZQL4TDjeFyNcuEfLUAXXLDya
-         wRDY2JG/WNepnmdJVe0mhAc3ABAykLo/FerPTN3wu7vVCt5pc82WD31ZsWIuGrTbtZjg
-         h5uaa7sHnvZtrlRi2tedZT0ZIMr+JTPD4R9xkN3+Cr69ZNQwmNVChdhp2kphWIegpHY9
-         /ZZslq8XXxjPj7mtWZxv3QNBPqpjP85ENAB9jOIesWsgOIcOuHOgGLN0AIu+uaDDtbGU
-         nktcSo5AhibSisds4OYIDLVlNJOn7BKI6tzwmXenqcASRkKgOBrBwYO0EHHpl0vO9KLG
-         HIPw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790664805; x=1791269605; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=dXZNNhcaPyXqA+zSRw2siBSAi+AcqonBzV+S3T5CpzY=;
-        b=VrGOeNHMWQk+UyNM+x/V388SVpObI7/MTEKtvp0yXmJNdTFD7f41eisaflLy8VPDbn
-         Qzp5f16AepnojFSPEwk05ApANw/6PfYM3B93VkMPGhLEOC1oS0QKIg0BpRYXGg4CSUcO
-         beQ4UWKwU0R18lfBmYxiLnOCj4Hai9NS4XV68i1oOs/RYibjZPj/RkmDGXnOfvCuE4+j
-         w0XuFaSCYQsW1HYr8zENeQxNvlOOe1cMgvmKX4KNUGBsM6K+hHbN4mUOXS6ib1/8iVA3
-         uioHI6Jw+FZKIyDeIZ2iuF35LhpuCQ5aentN76gn55sMA1AHs80Nf6wUY/5heJK9XpCS
-         cQrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790664805; x=1791269605;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dXZNNhcaPyXqA+zSRw2siBSAi+AcqonBzV+S3T5CpzY=;
-        b=NJDRdkxs4bJAQ6NSmXcb9j5hbK9bEfyt/9WpdYid3muc6i6I1gTJlDyIfcdfsYLwH+
-         4a+mCEzlItMRmjsK6n3iMQ7y9OfeUCCTTUFgEAtctHj12rEG1/tyhdNeVapW9PvULfrS
-         HTdvwO+K4YHIWuNbGsMw1zpI3xwWTV8uLoHRW/dcvPYoyO+RzJsO9Tsw7KvSSg7gi60K
-         x1cxR4+NC8PxnfPy3ZRlQDmAF7qpwTAVpFlpiiP8FCCnRyXtSKXrvNFUm1BuMUnFfbkb
-         jhBiPRSGVzYczki7gz6aAV78RlIXwHSo0tzVTq5N7Qux5ArIKiSqUx/10b1RzFrd2xbB
-         stOg==
-X-Forwarded-Encrypted: i=1; AKwUvBxo8SVW1hAuMZJAe/eHN6r9/GVdR2fKwvFLFzE+tjFwR0X4553hPEcJTa8uqETjquOOHWk3PLdSbA==@kvack.org
-X-Gm-Message-State: AFq9FYICMXImKavCdjT6hkXtJuaVbmxu88VwT09SV6ftqy0Vm0alKVxY
-	wy5mRNKrLUhjv2j3XrbQFK1awfSRRyJtMoT8pV8pvGkhvS5Qv6DlDI5y1YUxXhYDlXPPykmj3Ik
-	arjxQ4mPWwlesd93PZycHImUvb/9+drdzfVqEBN4=
-X-Gm-Gg: AYBFou0pfvoBQCdaCbAwFkTPC7MBdEMbbASJFp2Npu9/Ty7fsum/YwoKmfe8POcN488
-	B6riA5vzY42Ri/WKDf4fwyEcv3eY4OJ4w9kXG8F3n1h2Ctjh++f4bghDIxaoaTJE6NtmVP24Y31
-	JozrZYSAtnhYd1a5U61Kno0/75DVHpal+1/u92G7qQ8pMM8Yz9vq0RDHrK4JVYrYWGxUd/yR64b
-	GxDpB3IAekXUZEru5swHvukm+LihOJ9tjHje8HAKTixFYMptomRzrtuT7lTr20ntXD5cDc51Dn1
-	zjfTor3nMMyFlJSCcSMXCdvXkf+kCN23JLv5eiEDMHcbmlJZAxKVqETyoVUmVGavdOj/8MDwOY3
-	gqWMl4V3d9FGp53p6Rmpv
-X-Received: by 2002:a05:6102:5346:b0:79b:f57e:ea17 with SMTP id
- ada2fe7eead31-7af1c6921f0mr6195643137.3.1790664804262; Mon, 28 Sep 2026
- 23:53:24 -0700 (PDT)
+	bh=garVLKILVisEciTz6na9cNM+VbCJ4C79fMTVEKB5BtM=;
+	b=Ig7NahUX31BJlvfo0zEqtcOL3aOTp8hwaYsOuGGRqBiQnke3HCDKOyfeOQ3iOPwccSjd5Y
+	7oEzG/lxuZ79M/aKMEapkDq4AljD5xVpY+69q2Q61DlA2oaN+QtL1WvXlhp9K1sX+yHTu7
+	vmW2iMWLe7KPwiw6lCQaYzVPtY/qHvE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRzXyvGm;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790665203;
+	b=8ip7oi3nrKmZvLOo0cQnMEdvuYot2gPOocVlXuKp9yqK5QhFucJYvPZk5ZQSmql8aQZ5bw
+	BwTFrqnhAeCjY+1CmCEpvUxOWeJ6ZOXkzcPH07F8E7oeVI7/vx3VXRy+CWyY0nR+o6ZDpc
+	IhRPMbKxn0+D9lMV3lZmfyZplqzCLSw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8402441373;
+	Tue, 29 Sep 2026 07:00:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719341F000FF;
+	Tue, 29 Sep 2026 06:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790665201;
+	bh=garVLKILVisEciTz6na9cNM+VbCJ4C79fMTVEKB5BtM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cRzXyvGmCyBIYI0SWfYTtYfVhD8T1cQV3c//l2q0FGGQDafbemFaxom7MsPZwsP10
+	 y8ANSdigNd5CFFR9DdsLAImMKs5+yhX+HxfZe6kljUCLEVYvh0318w1AYSHfSvEaQu
+	 O5cHlwhQevGMNMw4iBwtyxfr8Rd3KqkX3maoYbvhYsaAdYcTw8tyTfNVVZBQ0pvDFp
+	 3nzaSX8z1lqQL0QPYdaR48zfLUNcmwaMxAzsv1cPuUAYMsnng+t4naDWVMqsHl7wMT
+	 4JbWrFGlj+K1NlX/Yp2UUyZ/P913Bqy3odkr4GxUGCOYbmodwrMs5c+VsmLcBv79dG
+	 /t75QpYItogPg==
+Message-ID: <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
+Date: Tue, 29 Sep 2026 08:59:57 +0200
 MIME-Version: 1.0
-References: <20260928231737.2092716-1-morbo@google.com> <20260929010031.2186255-1-morbo@google.com>
- <20260929074930-f1e4add2-f8ca-43db-85fd-83be0e40c676@linutronix.de>
-In-Reply-To: <20260929074930-f1e4add2-f8ca-43db-85fd-83be0e40c676@linutronix.de>
-From: Bill Wendling <morbo@google.com>
-Date: Mon, 28 Sep 2026 23:53:08 -0700
-X-Gm-Features: AclHuK95_Ji_ujgZlHwbCN-2G8mT4XgLFj2k80q5CXF5eM05CshEFI-U1oGuQxM
-Message-ID: <CAGG=3QXAb954ib3eGqci5NNs7pE3VEFgUBocRObqRSa4Z8sn_A@mail.gmail.com>
-Subject: Re: [PATCH] fortify: add KUnit tests for __counted_by and __counted_by_ptr
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D8A124000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+To: =?UTF-8?B?5aSp54u8?= <rockeet@gmail.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ "Lorenzo Stoakes (Arm)" <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Jann Horn <jannh@google.com>, Matthew Wilcox <willy@infradead.org>,
+ Jan Kara <jack@suse.cz>
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
+ <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
+ <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4cojpy59g513e75p6witqeem9ofaeq7t
 X-Rspam-User: 
-X-Stat-Signature: c6ni3mtmsm3kqm5s1m63qjgs6z73wmdb
-X-HE-Tag: 1790664805-352730
-X-HE-Meta: U2FsdGVkX19X+LmOCLRvchF+C4J09lQ2rf9s5Q5SgL4jON/GyEc2K2TgjkiLifX1Sv9fMmkxM/8Mu+soQwTWj+7C1iBhl8VT9XDuWD3Ay9NuRKgmMhjz76OU/WCK1KqE4gb8yM+O4YWbpnFeyPQ+GFh0NLGYJ5CUihWXcaR/hAqePPrtbry83wHDkXFavVdWE/gQKYTiUS07aY156RZz5i6eURn4oCwQRAB2Z4nV3i9NmHJwsVjcPoA6KfoInoUpMQvyNDwBjXkCrjSS1dXDhPf/Jmp9i7Sn1qfnSn6WS19v34GMN6/WLsl0uJ98/KxMloyRI+U/Xk1ce5q+LPJLuWXwu0XghK3cShuLguI7BU3vdAh0mtBzJMMx2fbmr+SJvdXNl/1Mmsrbriepg42WKoHgaOudTtK079vHMS0xZuCVp9wdkvK5VPoZCs0xr41RS1QiuVCecRUOgc0+KEQl7yXn4tiFgZ1zLTk/iCI3LCSKwrRim5Xm8TsOARljNLcByrltyfZAzvJM0EAx2vFVBbVtTe7SRpE1NMi0avseN1j08XArqPTHdYeYDgqP+uxoHpddBW78ExjmMTLK0Ym4k9Cv7L7/d88H2Wx7cQPp9NyTbgTdKbsQf1iPg8TKiqvJ/VZzCjzGb9TgxKTZ46KeodVG3xr+X2snpPkawwru1RxfAa/NC/W9/+7LXLw6ZtEr9vbky5OI1eVg80GQI+NNbGolqI9bbjgQ+mm8Dv7eXTw1gGVBDFUc1xNH2x2S0eIVdsQWHwGmf/17IM3muP4CLe/UPKHdAMjBxjlqn1BC0MQV1kaqwqrscy8tX+ZI9jUqjBGTdPz0cjlCbPD0ZbUoOO1X0X2ZQSwhnCyr+6IOnV2KBF3R6cafB6IdxSmUSjaGaOp21voQsMAw2TYPuePOsGz9aVSKSRPO9Snorg2fpT0PvyVdbPlQfU1Er4cwm2lSPJLMKckNp31bHIkbTGl
- PIQg1t/2
- cK3/CLbxn9TS5ZPuVWe06w4j4MfC65aJM1sJtvVvcfVN6+siVFBrMMlmx25L8JuJ23bbRustW9RNrj28Ig//TzoWhkTIF8+yditq4VCzN3W+DmuybtEWNrTg/oIdzULADJJzPu/Y8Rg0vSRpru0vl/4twaqY3NETZdpZM+dsI25TQV+rNkfOTNh3VqdtA0Qy5L+wCpqSN0GnjdcUZqfCVCLcZXDQL7bDsvsKABYIIedGwKFfTosF1Bo5QaiAsuBgtVbx/6zFMVQTwvQsqqiXNp33raBFupWSHlcA38LMZ/qbIrUqnnRb27LidNLi5bWHXofvlRm23ysq3SKaoYhd1vOzLaQI6n0EJhJBcWKipAD6I5WsvrAMn8jLhUgzi4vCkvaRd
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 28E40C0005
+X-HE-Tag: 1790665202-234690
+X-HE-Meta: U2FsdGVkX19W9KO+/Co7/T7Prfbm+cHTkfeFJ1UbOoUiaB5w2kfOt4aAMp1asGqDc8+Z/kIXvgy0q8sKUqE7QuRvjCROsTD12yfjPQQpiyvF3G81+eZytsLyStebnrga+AUR1XDl+lUkE09Shx9gnseGKV4aMUvgaIBMmpT7+g/NCMAeWBwkUN1vHcIAjZl4V/cuCgLr21JhpdYcZ6cxKoi4AoHaf1FL/B+Aq0DR6FzW5pcED+bsM/sVkNcJe5ck9Hi6aeOXS0bGRrOTzrDszUoJlkHUZxh+I+SVSXVWh09j+aXgOR5qPHCDtWyqfEnLTL6QMwnV/jluhibt1kMqf0jQ7Fooiiy8kggdanAxBD4fa5NxtYRY/EOqIaqwEe5NpV+Z2Ye30G+FqPm5BNoVyCJ27+Jv0H1w5vFhzp/u3ukThBvQRupDgCoHXppWGv2GjgBh1RN0ueVW7+VJzz5SgqsUnpXmJ5pYHn6WilRwFwMTNNj3yba8B29ciLBIc35jDPIiac1bV1oaJ+5EdCZ/dDK2tbmtTiYATIMdmiBMPKNsQRNsL/8EofvaH3j9lWKtRoece4VlsOY6zPTzL+s8Qt6gFbfo0OmugewqWtn7wC7Y8TNzmrU9kjwDL69bSlldv7CfPCnAV1eP/TOInkdy/eM2Ll3KI0dXyjhMiGNcEWxWokklkIh1fsh1+IjjrTaAxMP1BSdhJ83+IpORyzVOdbDw/bRc5CLm2Kt9ck2+DqTRB0z6e/qGaiVCL+gh9xZXeD2veiUrA137m9+Lcxroykx1F6fUf72QROVbHV7zfNSmt5d4Bk7si6a+mWk9LMqywwI+KEogT4ga0Fgczw7O4hfzz6ZU8ZktRhm5BTuwbXEMIF3hLVGSZr3TQuJPyHdOQEJof2tFG8v16V4NxvX/XQ9Fc3MEkIZemtVySbr2GYHHCDYcGk59zCecc1UUHUCDUo0tr/bLH9yyCoz0NHa
+ u50i/VlX
+ nmlmM2zH1p4H/jVdrGKZOA51eWjWR9UbvFqrRCt3ZFeLzTSnWi2HgWZvOyip23QyKLhctDgpEzMAhVS/+H0znqbZ5UE1T68CWKgybKcTYjvQCFswF8VYqRVna/3LtZO2qpeEmq/4bJCzvNz75DYgAeIuUYE8qJ/FYP5+Az0tajaWJTsQQvHuiX6U1SgV7kZuTkmMUhXvAllmyPxb5S0xiuMkk7GSAeG0ccc/3ScO1Pond9G5W3Che5Nvb43+mT+5F6OEwSpic6fX8N00Ey/D92RSLLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,239 +145,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Thomas,
+On 9/29/26 06:06, 天狼 wrote:
+> Hi David,
+> 
 
-On Mon, Sep 28, 2026 at 11:23=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> Hi Bill,
->
-> this looks much better. Thanks for the rework.
->
-> On Tue, Sep 29, 2026 at 01:00:31AM +0000, Bill Wendling wrote:
-> > The '__counted_by' and '__counted_by_ptr' attributes associate a
-> > flexible array member or pointer member with a struct field that holds
-> > its element count. Supporting compilers use these annotations to
-> > compute dynamic object sizes via '__builtin_dynamic_object_size()' for
-> > runtime bounds checking with CONFIG_FORTIFY_SOURCE.
-> >
-> > Add KUnit tests ('fortify_test_counted_by_flex' and
-> > 'fortify_test_counted_by_ptr', guarded by CONFIG_CC_HAS_COUNTED_BY and
-> > CONFIG_CC_HAS_COUNTED_BY_PTR respectively) to verify that:
-> >
-> >  - '__builtin_dynamic_object_size()' (both types 0 and 1) returns the
-> >    expected logical byte size for annotated flexible array and pointer
-> >    members.
-> >  - Fortified operations ('memset()' and 'memchr()') succeed within the
-> >    logical bounds and detect out-of-bounds read and write accesses
-> >    beyond the annotated count.
-> >
-> > Allocate the test buffers with extra physical capacity (2 * size) in
-> > 'noinline' helpers and hide the returned pointers with
-> > OPTIMIZER_HIDE_VAR() so allocation-size attributes, physical slab
-> > bounds, and compiler optimizations do not mask the '__counted_by' and
-> > '__counted_by_ptr' checks.
-> >
-> > Signed-off-by: Bill Wendling <morbo@google.com>
-> > ---
-> > v2: Move tests to the 'fortify' KUnit tests. It uses UBSAN, which is
-> >     what gets triggered by 'counted_by'.
->
-> v2 is missing in subject.
->
-Doh!
+Hi,
 
-> > ---
-> >  lib/tests/fortify_kunit.c | 119 ++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 119 insertions(+)
-> >
-> > diff --git a/lib/tests/fortify_kunit.c b/lib/tests/fortify_kunit.c
-> > index 413cdbf3dc0d..2335171f84d8 100644
-> > --- a/lib/tests/fortify_kunit.c
-> > +++ b/lib/tests/fortify_kunit.c
-> > @@ -1011,6 +1011,119 @@ static void fortify_test_kmemdup(struct kunit *=
-test)
-> >       kfree(copy);
-> >  }
-> >
-> > +#ifdef CONFIG_CC_HAS_COUNTED_BY
->
-> The ugly ifdeffery can be replaced by IS_ENABLED():
->
-> if (!IS_ENABLED(CONFIG_FOO))
->         kunit_skip(test, "Not built with CONFIG_FOO=3Dy");
->
-> It makes the code cleaner and gives some useful feedback at runtime.
->
-Ah yes! This is much nicer. It'll also fix up the #ifdef stuff at the
-end as well.
+>> What is supposed to happen if the process crashes when updating the
+>> MAP_SHARED region halfway through?
+> 
+> The data structure survives an interrupted update through its
+> application-level copy-on-write and lock-free concurrency design. A
+> file-backed MAP_SHARED mapping preserves the latest userspace writes after
+> the process dies, even if they have not yet reached disk, provided the
+> kernel remains running.
+> 
+> This does not depend on preventing writeback. Deferring writeback is purely
+> a performance optimization, not a correctness requirement.
+> 
+>> It would be helpful if the use case + data structure would be explained
+>> in a bit more detail.
+> 
+> The data structure originally used uint32_t offsets instead of pointers to
+> reduce pointer overhead. On that basis, we implemented lock-free concurrent
+> reads and writes, obtaining crash safety for free at the same time. We use
+> a file-backed MAP_SHARED mapping to turn that capability into an actual
+> feature that survives process crashes.
 
-> > +struct counted_by_flex_struct {
-> > +     size_t size;
-> > +     int array[] __counted_by(size);
-> > +};
-> > +
-> > +/*
-> > + * Allocate the struct out-of-line with extra physical capacity so tha=
-t
-> > + * __alloc_size() and physical slab bounds do not mask the __counted_b=
-y()
-> > + * logical bounds check.
-> > + */
-> > +static noinline struct counted_by_flex_struct *
-> > +alloc_counted_by_flex_struct(struct kunit *test, size_t size)
-> > +{
-> > +     struct counted_by_flex_struct *s;
-> > +
-> > +     s =3D kzalloc(sizeof(*s) + 2 * size * sizeof(s->array[0]), GFP_KE=
-RNEL);
->
-> kunit_kzalloc() to automatically free the allocation again.
-> struct_size() for the size calculation.
->
-Oh cool! done.
+Ok, thanks. Just be sure: you really need an actual file on disk. Shared memory
+/ shmem / memfd is not sufficient?
 
-> > +     KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s);
-> > +
-> > +     s->size =3D size;
-> > +     return s;
-> > +}
-> > +
-> > +static void fortify_test_counted_by_flex(struct kunit *test)
-> > +{
-> > +     size_t size =3D 128;
-> > +     struct counted_by_flex_struct *s;
-> > +     size_t elem_bytes =3D size * sizeof(s->array[0]);
-> > +
-> > +     s =3D alloc_counted_by_flex_struct(test, size);
-> > +
-> > +     OPTIMIZER_HIDE_VAR(s);
-> > +     OPTIMIZER_HIDE_VAR(elem_bytes);
-> > +
-> > +     /* __builtin_dynamic_object_size() should return the logical leng=
-th. */
-> > +     KUNIT_EXPECT_EQ(test, elem_bytes,
-> > +                     __builtin_dynamic_object_size(s->array, 0));
-> > +     KUNIT_EXPECT_EQ(test, elem_bytes,
-> > +                     __builtin_dynamic_object_size(s->array, 1));
-> > +
-> > +     /* Within-bounds write and read succeed. */
-> > +     memset(s->array, 0x42, elem_bytes);
-> > +     KUNIT_EXPECT_EQ(test, fortify_write_overflows, 0);
-> > +     KUNIT_EXPECT_NOT_NULL(test, memchr(s->array, 0x42, elem_bytes));
-> > +     KUNIT_EXPECT_EQ(test, fortify_read_overflows, 0);
-> > +
-> > +     /* Out-of-bounds write and read past logical size are caught. */
-> > +     memset(s->array, 0x42, elem_bytes + 1);
-> > +     KUNIT_EXPECT_EQ(test, fortify_write_overflows, 1);
-> > +     KUNIT_EXPECT_NULL(test, memchr(s->array, 0x42, elem_bytes + 1));
-> > +     KUNIT_EXPECT_EQ(test, fortify_read_overflows, 1);
-> > +
-> > +     kfree(s);
-> > +}
-> > +
-> > +#ifdef CONFIG_CC_HAS_COUNTED_BY_PTR
-> > +struct counted_by_ptr_struct {
-> > +     char *ptr __counted_by_ptr(size);
-> > +     size_t size;
-> > +};
->
-> In the other structure the arguments where swapped, intentional?
->
-Yes. It's a minor test to make sure that the attribute can refer to a
-field that's defined after the pointer.
+>> What exactly is the problem with writeback here? Unnecessary I/O? Is
+>> writeback the problem or actual reclaim after writeback?
+> 
+> Unnecessary I/O. Reclaim after writeback is not the problem I am trying to
+> address.
 
-> > +
-> > +/*
-> > + * Allocate the struct out-of-line with extra physical capacity so tha=
-t
-> > + * __alloc_size() and physical slab bounds do not mask the __counted_b=
-y_ptr()
-> > + * logical bounds check.
-> > + */
-> > +static noinline struct counted_by_ptr_struct *
-> > +alloc_counted_by_ptr_struct(struct kunit *test, size_t size)
-> > +{
-> > +     struct counted_by_ptr_struct *s;
-> > +
-> > +     s =3D kmalloc_obj(struct counted_by_ptr_struct);
->
-> We should probably also get kunit_kmalloc_obj() at some point.
->
-> > +     KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s);
-> > +
-> > +     s->size =3D size;
-> > +     s->ptr =3D kzalloc(2 * size, GFP_KERNEL);
-> > +     KUNIT_ASSERT_NOT_ERR_OR_NULL(test, s->ptr);
-> > +
-> > +     return s;
-> > +}
-> > +
-> > +static void fortify_test_counted_by_ptr(struct kunit *test)
-> > +{
-> > +     size_t size =3D 128;
-> > +     struct counted_by_ptr_struct *s;
-> > +
-> > +     s =3D alloc_counted_by_ptr_struct(test, size);
-> > +
-> > +     OPTIMIZER_HIDE_VAR(s);
-> > +     OPTIMIZER_HIDE_VAR(size);
-> > +
-> > +     /* __builtin_dynamic_object_size() should return the logical leng=
-th. */
-> > +     KUNIT_EXPECT_EQ(test, size, __builtin_dynamic_object_size(s->ptr,=
- 0));
-> > +     KUNIT_EXPECT_EQ(test, size, __builtin_dynamic_object_size(s->ptr,=
- 1));
->
-> Is this builtin guaranteed to be available?
-> We have a wrapper KUNIT_EXPECT_BDOS() above.
->
-I suppose not. I'll use the macros instead.
+Ok.
 
-> > +
-> > +     /* Within-bounds write and read succeed. */
-> > +     memset(s->ptr, 0x42, size);
-> > +     KUNIT_EXPECT_EQ(test, fortify_write_overflows, 0);
-> > +     KUNIT_EXPECT_NOT_NULL(test, memchr(s->ptr, 0x42, size));
-> > +     KUNIT_EXPECT_EQ(test, fortify_read_overflows, 0);
-> > +
-> > +     /* Out-of-bounds write and read past logical size are caught. */
-> > +     memset(s->ptr, 0x42, size + 1);
-> > +     KUNIT_EXPECT_EQ(test, fortify_write_overflows, 1);
-> > +     KUNIT_EXPECT_NULL(test, memchr(s->ptr, 0x42, size + 1));
-> > +     KUNIT_EXPECT_EQ(test, fortify_read_overflows, 1);
-> > +
-> > +     kfree(s->ptr);
-> > +     kfree(s);
-> > +}
-> > +#endif /* CONFIG_CC_HAS_COUNTED_BY_PTR */
-> > +#endif /* CONFIG_CC_HAS_COUNTED_BY */
-> > +
-> >  static int fortify_test_init(struct kunit *test)
-> >  {
-> >       if (!IS_ENABLED(CONFIG_FORTIFY_SOURCE))
-> > @@ -1054,6 +1167,12 @@ static struct kunit_case fortify_test_cases[] =
-=3D {
-> >       KUNIT_CASE(fortify_test_memchr_inv),
-> >       KUNIT_CASE(fortify_test_memcmp),
-> >       KUNIT_CASE(fortify_test_kmemdup),
-> > +#ifdef CONFIG_CC_HAS_COUNTED_BY
-> > +     KUNIT_CASE(fortify_test_counted_by_flex),
-> > +#ifdef CONFIG_CC_HAS_COUNTED_BY_PTR
->
-> The nesting of these conditionals looks unnecessary.
->
+> 
+> During construction, background writeback can write intermediate contents
+> that the application will soon overwrite. Those repeated writes waste disk
+> bandwidth. Delaying writeback would avoid that waste where possible; it is
+> not required for correctness.
 
--bw
+Understood.
 
-> > +     KUNIT_CASE(fortify_test_counted_by_ptr),
-> > +#endif /* CONFIG_CC_HAS_COUNTED_BY_PTR */
-> > +#endif /* CONFIG_CC_HAS_COUNTED_BY */
-> >       {}
-> >  };
-> >
-> > --
-> > 2.56.0.rc1.315.gc6ed9934b7-goog
-> >
+> 
+>> In a fuse server you can in theory delay the writeback request.
+> 
+> Thanks for the suggestion. That sounds like a possible way to experiment
+> with delayed writeback. The feature I am requesting would make this
+> advisory behavior available to applications using ordinary file-backed
+> shared mappings.
+> 
+>> So fadvise would be an option. However, this "defer mode" is really odd.
+>> It sounds more like you would want to have a custom policy there [...]
+> 
+> madvise is not the only option, deferring writeback for the entire file
+> would also be acceptable.
+> 
+> The application only wants to indicate that it is still modifying the data
+> and would prefer background writeback to happen later. The kernel would
+> retain control over the actual timing. Memory pressure could override the
+> hint, and explicit synchronization would keep its normal semantics.
+> 
+> The hint should also expire automatically when the owning mapping or handle
+> is released, including on process exit.
+
+Ok, so while you are updating the large mmap'ed file concurrently, you don't
+want writeback to go crazy, because you know that you will modify the memory
+immediately anyway.
+
+Let me CC some more people.
+
+
+-- 
+Cheers,
+
+David
 
