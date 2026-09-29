@@ -4,142 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B48CC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:22:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C830CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:22:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5125D6B00B4; Tue, 29 Sep 2026 04:22:02 -0400 (EDT)
+	id 7FAA26B0095; Tue, 29 Sep 2026 04:22:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E95C6B00B5; Tue, 29 Sep 2026 04:22:02 -0400 (EDT)
+	id 7D20C6B00B6; Tue, 29 Sep 2026 04:22:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FFFD6B00B6; Tue, 29 Sep 2026 04:22:02 -0400 (EDT)
+	id 712626B00B7; Tue, 29 Sep 2026 04:22:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 246776B00B4
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:22:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 96DF0C03E7
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:22:01 +0000 (UTC)
-X-FDA: 85266106842.14.ED7E7DA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DDD3A1C0003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:21:59 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3HPnUQ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CB106B0095
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:22:54 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C9A8F80432
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:22:53 +0000 (UTC)
+X-FDA: 85266109026.13.6D81FFE
+Received: from mta0.migadu.com (out-243.mta0.migadu.com [91.218.175.243])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CEA8180007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:22:51 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Sz0RinNF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670119;
+	s=arc-20220608; t=1790670172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dudcfgQ+U80HosFEMLniY29B8GpEpDKgVLsTf9hVEyM=;
-	b=Jm1uXCEoaNZAyVCV+BRgbyCUP9k60Yp44Qj40GjDMT/u0ZBN3ah0rfMWxZ/Q2ODp2tNFVU
-	WfNM7s1DY+cjNsCBA54/dUjdQ1JVTDZsvShIzdW5BHJ3vakmKJhgP2UXRcKiiAeel2I4kK
-	vZHy1bHz+ZlJQ8lOscRIxGCuVR0umz0=
+	bh=3zBg+5VBkyp2Y1TWNPP7zQmgWetEBkn4yYW+Phr6HGI=;
+	b=TtuS+0L/HRCVhrS0kwN2r/4emEION6KrN3SdTTJYm7sNS5q54u7M9K+CIl8dspwpv8vWt3
+	CqnWNBaoNAaIPMlM24x6G4McHyZcnrBLet+2RKiGvfBlEIrs+BYF1PCiDVbrLrIwc0Qh1S
+	aFjXT5qR+HBqE69UnvSXe4i7obHvrP0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c3HPnUQ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Sz0RinNF;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.243 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670119;
-	b=k+WZpUwt6In3vkAQ3JONd/O8vj0vE3jKI/BcXn4+SaRn7znmwAQ6CWfKjPIZ05+NvILvcM
-	Ka98qcd9ZOq4jWrkH/Ov+O+hmNLjpc3klce5d9vL/H2j9XTVQkUIUVucHZBJtD4jQ5/dBi
-	ACnGz2c0sJ2VUrBeh5f1THY/G+au7NE=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D8B060A5E;
-	Tue, 29 Sep 2026 08:21:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DC31F000FF;
-	Tue, 29 Sep 2026 08:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790670119;
-	bh=dudcfgQ+U80HosFEMLniY29B8GpEpDKgVLsTf9hVEyM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=c3HPnUQ4tusSpEue14ve0rl76w3siWOCOiPWcL5/FLV4AFdvpjYu0xXJ5NNCZD7pD
-	 NYQWOH1kgMNMMMRLg8Mv6PmGN8gJgFDkFDDZUuuKp6mQeN7V3wTuXHqd4bNX0Fz79b
-	 k8iolFPyxXtwFm7OBUOqWKE7eZdpa7mNpU4cgBMcby4Z1e9nUp1dV+90Pv5Gbu1TW7
-	 j76Mg9ZmkTq2qx3fVifjWqDWHJaUbJGs1xiT9nCR+SWSoSfixkzSIsfirRGNJ94pJ8
-	 9g2JfDfcpb2kYeb8dhz1GWWSdU3syuePnM7IhaYRbGbW1R/PKedQyROCaA0n9gnARH
-	 OFczK3zNATd3g==
-Message-ID: <1246dd4e-b2a1-42e6-8fcf-7e6b2514cb87@kernel.org>
-Date: Tue, 29 Sep 2026 10:21:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] kselftest: mm: return fail when child test result
- is fail in khugepaged
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-References: <20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com>
- <20260923-fix_khugepagd_fail-v3-1-b387e92fe1a9@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260923-fix_khugepagd_fail-v3-1-b387e92fe1a9@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DDD3A1C0003
+	t=1790670172;
+	b=Rc4W5PZVn4nAbMydGsZp4xORoAiBFe/liC+qC1pb1KVMjh9NefCKdZ1uc5+EZ7zuENhk5t
+	rfXmNcTb8ZpTI2cyp1A1rHixktrUaMcxz+TsqcXINcByAtmsBWfdAeYEBg9ByH9UCggplt
+	LePr+qEzSA8L85ciQzI3ylrdg9RWs08=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=on/JchLIm7ReTjkHsHsqt/RBkZgWaTOn8Aj08/8SF5A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790670170; v=1; x=1791274970;
+ b=Sz0RinNFmiKdVAVddhMu3kIoX3ZxK28AKwddLyOdiX0cJJEgwsz5utrXn+KgFlmzUsIAn9fq
+ U1KrdVB11KZb3o0NopaqAyq0Jhw0NupOCTn3A4ZP2TeSRUL66baUVhN4r8YkD0kk0egDPyTPW1B
+ 4sX9wI16Le8m2jpiqJti63M8=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 94a06a54ff95dd08;
+	Tue, 29 Sep 2026 08:22:50 +0000
+X-Mizu-Trace-ID: 94a06a54ff95dd08
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v5 06/12] mm/sparse-vmemmap: set compound page order for
+ device DAX
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <751f6586-625b-4485-9f27-409fdf38bf3e@kernel.org>
+Date: Tue, 29 Sep 2026 16:22:29 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A77F22EE-0C10-483E-83D6-CC88D8485E88@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260927025441.741633-7-songmuchun@bytedance.com>
+ <751f6586-625b-4485-9f27-409fdf38bf3e@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Rspamd-Queue-Id: CEA8180007
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: x5zraanaug37joxghx9myfwf3imcag4d
-X-HE-Tag: 1790670119-289970
-X-HE-Meta: U2FsdGVkX188n3qrTkJkYnvwrcfkCH9EUYyAiXhEcjj8F2u360O5qnV5i2z/U5GGA1A+Sm43oemjKxIk+ZNsN5oErw9A/09uJunb59jrB8KQHlWuH664+OjWdkyAAPewMjHJJ8jmVIHm1idUMhqp/h7fZc4Fcqr2tXXPcz+5n9vNC1lhSJsortdrZfq2f81X8wDc2O4qnZY5hb1dT33wXBtaykVyYg6cFnh6LJp68OKpDYTEgOv0xtfff1j4USjL7I5lWySlcKJAM11cq8JJU62Cng7W6KaDzDDEREzuoHepM02FrMBzY3zFL/DvnaRz05nwXZaHLil8s4ksaEOuy5SnA5iM1RFgWPSX0+u+/9U0xuxHrzanLdaeBQCOHRQ8ME48FCtTg4Z+l9LxjzwVtW/zerbTriAtHc8hY71SSDmdoZEV0oMt/hMrxj4cUVJ827FzOBmbszF+s6xlsEM9oN69QT7L19w4my3jMXZ2yLRM628GXj1ToYArqPAJDSKiL5DdK0wjxQS4/5CXMunHQsRbyJTXPGaiLb9e26cafm8nGrXPAGHaJYIrLxEAwAVbcuMILNJjNEPCQmYIKqB0KbgLNnNKcQamOYG+71Ti4MQ9SjlRIlTVBsH0miXsEDgdPwVSwDfdPXZ0pkwrHQTT80hz8w8BDUKPLqliDFUC5Dfm9ATbsB34awtDBo26NKHlV0gkC/OoKb01BqauZXo76Yb3y1aXvSXWcGIR7qrsfgDbpvJh9xarFEaEebqW56NG5j1K1huXagxe4A6Lf/GnUixxrN/Bl5eIT6pOhjKfBp/C29+ijiCZcKBsdJZECFhiPv36vlkK9mva2SDU4g+mJxscfqQ729b2iEpOz66TLAkEPrplnoMj1tlA3ZaVaqgWDGWQycALyaCV9NT3D/TcHgWLl0uaUlnFAhyHs3CB0CSSDcWqmgQVP2h5Y/PbxocngRb4xiod41nKePZIcx7
- PSb2XReo
- jE2apJM1O1ytgLNvsm8HkfX/GT9w+SANnd5IxkeKXMRnIxhWQEm+zvNOm3U/2lqcGil4uyCL4XzVABpWgZtdK9vUISCpH+24bdg8kp2OoSfnO24oB/tWsYq3ddifO69Zlodeqw8JgHw70dOZDxFL9lP095cSdsspI5nF23tsPUDhqTrm7qc/Lp1am5mi/1QZlMBh9bAE8bn/Q6/1ZYMkNsM1O3csIqjqfYs7/nc8aPvqHIExe8qVGqxu3nyPhzv25zwWqX9Tz+CGUe2K3hgwK7lgKBE+Y3ctmPrSYy440IV5E/6NR+EX8ZOpdkBapK5rXHpFrfUWtxBPgFTc8zPymGxI1kV2a8Hqb2ZygEwF0FZPNGxxoccJv7T+MYmfNU64w4yJoWV270gnJkzI=
+X-Stat-Signature: zffn9axg8cbqha6wnp483pnzcdgqobw3
+X-HE-Tag: 1790670171-352754
+X-HE-Meta: U2FsdGVkX186bZ0a6Yl1X9CWTv3bH/Thn09z2qdwMSCvSNH6/v7qGKl+kMBQf4ZpRXZifthoSHm+XtZBDIJ6zVUT1oZVC3AwOFmLg1raH0hXb1Bc2kJv8J8YPJeO6pY/fUy0D9ojeYcb8jr7n6bMSKgIbFSfvnmmzVEmN78c5FykCRm9WCCtjvEcaT+IsOfLHiEjYbJ6g1wpSvxOnDkju5v0EqqrKvDh8IIE/RiFYfB9Nzvgb0wz6MdkSw7XSjvRbkpn2f7FprDTj3k/fWaFyM+g7pTDEJgtNv+ITCLJYMHvziCV8gWIkcwQ6p4ylI7j3puI85S0XRaGH2k5doDPgjBorCB656NWo2fDFrhBWDt8eIIDsaTcLuZVsdqD0PO7g0QiIgSaefDsHYeKH/vIshrGyuGNly+zVULISFCOZ2cZoO3J/Wb/qfFMwvAsUH3wF/PIiVAJAmoufmvqRbQbPdltBjVto+dvHGMSPxkmIxNaVh+WqK1heWCkskd712UzTycAMTAbHBnBtrXHTeqXZK6hVP1ssFGbmldNX60PAQDsEAFUO/TXfzjSKSpHAdwSQtV0v2y4eYFRC6Bn6mBZQkzhgj40gNhAHV9Jj5CPz1N34s5BXGJSDnuWB69AS6/mVr/roKvTJVoEzFT/sUQ1IpIlgl2Y47zradqDiVgo/pK6oa+KG6PRk7qrfP15VSiX0rW8IhmDuxhUDzAM8J73SHpysg7J9BQXxxqDmovT+lqUkGNxWVmDFQSw4hSGF5UL8x4a2JBW711AB04aIPFIZz+uRUvb0aJCEsKvuZ9SQ8FWFVDnJe/Z+DBKW/+5CBDKpWgP57oHfrjxepMghv1EFNbiOReHw0SHNcgetQBFuAYFihbcNp2VuFCMdKB/JSoBw2s0cRT+L3nX7HdIhxm7dOw9vsyX7EU7bJPkN1DSISLYyGDAYCQQvbPs+PgKi3Z5UO6wqTDmOozzMCpwvTc
+ /ClMzfqe
+ cSiWxgvntp0WO0vvejvpZQqttynSAiiVFY4zKl3/JDBpeWh6j/35n14Hn1bDWtn9YSwIBDlhLWh8tiqynGGLEKaHcp2DnJl2qepTESXi/ojZf42Ay2+LVOVI4K4vp62V0kLOeu2mBsvndoo0qmcJGjHN58V0Go80VxysZiEeimZWgCTtLq8Asm78HgzNoIJz4ZTGH4vdKDWknAzHaZllK+n1TslU7mkRsXUs7wFA6OOQyzwS5ssTtXFGycbuTTup4tBOEoUCdlIaTi3ZcxzgxHvZYbHm1Ry4dVFzql06miYz38E9Rvho0jjJrew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,42 +109,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 17:29, Yeoreum Yun wrote:
-> Although the child process in collapse_fork*() or collapse_max_ptes_shared()
-> reports `KSFT_FAIL`, the result is ignored because the test only checks
-> whether the parent’s page was collapsed into a huge page.
-> 
-> As a result, the test is considered successful whenever the parent’s page
-> is a huge page, even if the child test fails, as shown below:
-> 
->   #
->   # Run test: collapse_max_ptes_shared (khugepaged:anon)
->   # Allocate huge page... OK
->   # Share huge page over fork()... OK
->   # Trigger CoW on page 1023 of 2048... OK
->   # Maybe collapse with max_ptes_shared exceeded.... OK
->   # Trigger CoW on page 1024 of 2048... Fail
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 23)
->   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
->   # Check if parent still has huge page... OK              // parent hpage success
->   ok 24 collapse_max_ptes_shared                           // considered as success
->   ...
->   # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
-> 
-> To address this, propagate the child’s failure and skip the subsequent
-> check in the parent.
-> 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> ---
 
-That test implementation is rather messy ... :)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> On Sep 29, 2026, at 15:30, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 9/27/26 04:54, Muchun Song wrote:
+>> Device DAX can use vmemmap optimization only when a full section is
+>> populated with a compound-page geometry. Record that geometry as the
+>> compound page order in section metadata before populating the =
+section, so
+>> later vmemmap accounting and population decisions can use the section =
+state
+>> directly.
+>>=20
+>> Clear the compound page order when the section becomes empty again. =
+Also
+>> reject partial additions to a section that already has optimized =
+vmemmap
+>> mappings. compound_nr_pages() determines how many struct pages to
+>> initialize with a section as the smallest granularity. A section =
+therefore
+>> cannot safely mix optimized and ordinary vmemmap layouts.
+>>=20
+>> Partial additions continue to use ordinary vmemmap population, so =
+they do
+>> not save vmemmap memory. Such additions are uncommon, and the lost =
+saving
+>> is negligible.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v3:
+>> - Update the subject and commit message to use compound page order
+>>  terminology
+>> - Use EOPNOTSUPP instead of ENOTSUPP
+>>=20
+>> v2:
+>> - Explain why optimized and ordinary layouts cannot share a section
+>>  (suggested by Qi Zheng)
+>> - Collect Acked-by from Qi Zheng
+>> ---
+>=20
+> [...]>
+>> static struct page * __meminit section_activate(int nid, unsigned =
+long pfn,
+>> @@ -838,8 +840,13 @@ static struct page * __meminit =
+section_activate(int nid, unsigned long pfn,
+>> 	struct mem_section *ms =3D __pfn_to_section(pfn);
+>> 	struct mem_section_usage *usage =3D NULL;
+>> 	struct page *memmap;
+>> + 	unsigned int order;
+>> 	int rc;
+>>=20
+>> + 	order =3D vmemmap_can_optimize(altmap, pgmap) ? =
+pgmap->vmemmap_shift : 0;
+>> + 	if (nr_pages < PAGES_PER_SECTION && section_compound_order(ms))
+>> + 		return ERR_PTR(-EOPNOTSUPP);
+>=20
+> Hm. Why should we support optimizing the vmemmap in case we fall into =
+the same
+> memory section as boot memory?
+>=20
+> In that case, there already is a memmap allocated during boot for the =
+entire
+> section. IOW, we really shouldn't mess with the vmemmap in case we =
+have an early
+> section.
+>=20
+> But maybe I am missing something and this is already disallowed?
 
--- 
-Cheers,
+Yes, this is already handled.
 
-David
+For a partial addition to a normal early section, after updating the
+subsection map we return the existing boot-time memmap here:
+
+	if (nr_pages < PAGES_PER_SECTION && early_section(ms))
+		return pfn_to_page(pfn);
+
+Therefore, neither section_set_compound_order_range() nor
+populate_section_memmap() is called. The fully populated boot memmap is
+simply reused, and no vmemmap optimization is attempted.
+
+The check above handles the other case: if the section already has an
+optimized vmemmap layout, as indicated by section_compound_order(ms),
+a partial addition is rejected because we cannot mix optimized and
+ordinary vmemmap layouts within one section. This also covers an early
+section whose vmemmap was already optimized during boot.
+
+Thanks,
+Muchun
+
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
