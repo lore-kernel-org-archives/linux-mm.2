@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B04AC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 03:43:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FF59C9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 03:43:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2664C6B009D; Mon, 28 Sep 2026 23:43:00 -0400 (EDT)
+	id 4B0786B00A0; Mon, 28 Sep 2026 23:43:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23DF26B009E; Mon, 28 Sep 2026 23:43:00 -0400 (EDT)
+	id 488D46B00A1; Mon, 28 Sep 2026 23:43:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1537E6B009F; Mon, 28 Sep 2026 23:43:00 -0400 (EDT)
+	id 3A0296B00A2; Mon, 28 Sep 2026 23:43:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E19C66B009D
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:42:59 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52415803C9
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:42:59 +0000 (UTC)
-X-FDA: 85265403678.23.3451B61
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FA9A6B00A0
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:43:11 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7FCB5C0383
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:10 +0000 (UTC)
+X-FDA: 85265404140.07.768F4A0
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 481DF20004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:42:57 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=IO9CGq0n;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BUefSLyP;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9571A160004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b="m/bjmYXV";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Pxstf1lI;
 	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf03.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+	spf=pass (imf08.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790653377;
-	b=43o6keixCYb/RGYzXE6jWct0eHYLi+U6zkjFWYfMmoJHI3AcnmIpmrZ5KYW17viY8lHk7S
-	Uowkyio0hbsj1hEtKFyrKmDlHyb9T3KUdJFH04dwLcRvt6WyLJCPs4xrhuK4DAHO58B+aa
-	IJ/jYd4EOlBa74N8i7m224De81nUAyU=
+	t=1790653388;
+	b=v1x20SvamxpAi4FuIaeK1nZHABU/JK4czx3bOEedw0inPQ8Sdr3JA+eJ/i7FEEWSbZLdLT
+	5BnWGjJFtnAcdmQN2rEb0rqiBiGE705rgQahcL4bXyYgmnTtxgv4/FKCkRQ4XNZg9HHWwb
+	v16oRzLN/BWWE3DSfGw9k4GDmcez+B4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=IO9CGq0n;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=BUefSLyP;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b="m/bjmYXV";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Pxstf1lI;
 	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf03.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+	spf=pass (imf08.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790653377;
+	s=arc-20220608; t=1790653388;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2O/60FCivWhWCVVOfomZmHHuRxTPAq2UvXz2LKlNcDs=;
-	b=8J71Q/nnPLkneQs70LZSFtPOylru2wCIwVy69ajVk2qK+BGwrl7Z5X7Er3KpB94TQQ87v0
-	8xQQ//Atf0dwQ1BPMWQpcyqXzRf+27LCdfUb6IbHcu6fKlAtTl7a1BeGRiReSmzLtmDjhe
-	esjHjbq2a9AdEUEOcVO9cBwCb2vDsRc=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 06FC41301935;
-	Mon, 28 Sep 2026 23:42:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 23:42:56 -0400
+	bh=mN/2SSV8bIw24exSybjBxan284YWLD0YYt6t0Umtf4c=;
+	b=RumZiSn5Lf5u2Gt99Nu5LVhQSoctQyE2QSq4rQSOL9tqRbdcu2x8rwQyumnQ5PNugqXNpR
+	I+WCiuP52GniwMbM8NB1WeUIPzNKGKAlu2B8p/xvPJIuXoecj3IAqHI1IkCFGunLrMt3jJ
+	pxbvVdDPeHAXKqFm2WSSVbIiVt6w3HI=
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id 51A15130193A;
+	Mon, 28 Sep 2026 23:43:07 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 28 Sep 2026 23:43:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1790653375;
-	 x=1790660575; bh=2O/60FCivWhWCVVOfomZmHHuRxTPAq2UvXz2LKlNcDs=; b=
-	IO9CGq0nVjFm8570ZyKM27IXYcKPj24uoV5oacziNQ3brhdDmFbxyT0nT2TVWOjV
-	9U0LCv7x960dMNNFT2ZwoTfLJEtsb1b7WYfmjuny8+MJX3nhvfNZ5XAZrPPa7bjM
-	cEmgOjmTYfjLoSTVWSROU1ABqE0dAu5U+eBwOt25CdVk0JsXX/MEHWa80YYGJydK
-	Zlyxd4ROsv7AuTCMTefhDLOvS2kMIb/yw5Zkf0L13qd+X9MNrm5qrwlQZYwo/SED
-	FegfyydBZa1ZriG9IpSMVPUehQop+SbMYFjR9q/UMK3bRec4tBNnpzx0VZQ1jtQY
-	Z7A+zY5fpKZ6+eCJxaeTDg==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1790653387;
+	 x=1790660587; bh=mN/2SSV8bIw24exSybjBxan284YWLD0YYt6t0Umtf4c=; b=
+	m/bjmYXVAasRh0xyF47KEJG7Zmxn+6bI3gtqt6ip5j8TEoMZ9giVbJuvHbF32LqQ
+	J1gB7diA96j64dY9ryX7i43LR5NE/GXc6xeEHLMIUsXaApdieqrSshs1tGV7eGIN
+	cBUfQXA+T6z0cao/bSPqATRc0x9EDT8ldEERb05yMPmFLsMlN+L72e9O680wJRJZ
+	zK7L9yLeSEqtGdum6RwlFdBIeS66RVKw4AAvBo6WoY8CFdqTosftV2pKqhxPvgit
+	x2WTD0Y/SNSJJTWkGVgXjDNZ/Wzano1HkG4RwF+n94lSOkPGDOYxUrtjK2wxrbGE
+	B8ypvNrW2u15OJmYsv/n/A==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790653375; x=1790660575; bh=2
-	O/60FCivWhWCVVOfomZmHHuRxTPAq2UvXz2LKlNcDs=; b=BUefSLyP/rkSO/ut2
-	7b2if0LHKCGOmNT2Xrqx1RQrDE0UrwT6mWotfuWdE371Vs6k/5eTJlVORtjUlRl4
-	vDen87HLen3IwDO9NWQhNqwuHPiWhKMvaf2Tms+/BFR49++jjfQ+tzdM07JJjfL/
-	6oT3tCkzAmtZ6ZWnEHYXPPQEaMsDOlwjC6Ts9pUn1fSUrVTdah5aMI1Wgws/dKKk
-	zTG5Fkn4lfcVp02IwhDdvy0x/99xU7QSWd9sgavNtpkQ2A39TP9Lldy6MhZJCfWD
-	VG3kl0qc75kSEK8T0gEQiz8KV9SkL8SD3ZHTEeODVFecUaXNMXR0SSdRn52rKyc3
-	bqBqw==
-X-ME-Sender: <xms:vzO7apxeKOwB8960HYdX2wEZWf8hG0-b0MbfQJ0aurUbwjvyI0HzFA>
-    <xme:vzO7asOOAWJcXkwvlKVQXpREg9_qmIKZzWHOIvgEjnwXoG7B1i31JKALzdI4yj5Oo
-    1bbCdGocJhKM-AcU6pYzkAKXcLqLliFiCc7zRfmjVJeLeUVrGHD>
-X-ME-Received: <xmr:vzO7arhPeTMucOaOkGJaNMh7xWd1QqaIqlSfiSJZLYmqsVNY5ZHy6VIrkdBhPOm0xbLK6cTecsAUGGrmVT4Rvqux0QyHwfI>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790653387; x=1790660587; bh=m
+	N/2SSV8bIw24exSybjBxan284YWLD0YYt6t0Umtf4c=; b=Pxstf1lIaYJ6It2Dt
+	XYl09MKu5wXe6DyBDfDoIngstyuriZxvJ66IXljztAMGQlQaTTz8Wzp6hPdCF8bb
+	+h2Py2iXvqZ3nuMfdPLVhtcxaefT9HM9QXlb4zifQPYLblx1Zo8b+xcBl4kW/7nt
+	xsspas6tl2BRodH/Dz6SRFhmXjGiGpwVJPUrPxRshJibVDKdao9wBMfufPkOCJl8
+	HEkWPmseCLuMoKx5AHjwkTeocSsqSAaVRicS/nEjoxk9yj3XlxsQg5q+0cF1F+Hz
+	z3eVrnBAdkaSXew2JYNo9t8EW2OdRoRhPvgdaoA9HuZsIIVeu3BDFuWC6a8PCAhQ
+	5E41g==
+X-ME-Sender: <xms:yjO7ajkdZZgG_2FOAMT9VTx-gp96HOvHEGBSL12mminnsd-upM17rQ>
+    <xme:yjO7apzF2ykKaWLA8Y41NVuT9lPJ2l3nvV2vICX5BP8s-bJT_YH6sRa3gc4JqrQcB
+    N0bdEmnCNJf8HvNfuO76KNHNEgYu-xC-rjWq54fQ2KnAgXS6Cw>
+X-ME-Received: <xmr:yjO7ah2gtRaeh_TqjyDFtWhQyl-uwEL1TCwk8RLpVcQb7_44HnpYW7Nw4nlhQaJ-BF6VLQljZa9aHL9AdC59N5IVaTebT4s>
 X-ME-Proxy-Cause: dmFkZTGoJB+17Zq7ThrEPjmxn4ZGYu519RzWwVi/88aejzKjstMboztaed73ef7D6avpE+
     +4ud1a3y7i3orjwLfnXoctNyz4isc8MlqqkCj9w/LgYTxltRiENCW6GCIqrBIGfd6BoOtn
     3U4T9DnMQq0t334tHmkLT0tBGbfhvTaaBwaOBKtxwtl6WpY46qwankbHLMumQlIvXZxJZX
     MK4M+NdZABlSsm1lFGpu8Zoavf0+po6/QQ3FmqOSdXOPNwreWLw4U6EONlQdAFPuoTNGlS
-    rFYPmLdcGE1rV4M0fAMpJKofG+st3+8PfQ+b7I9sMwGW86B3jq8HWH1QNmIbUmtd6GqsIx
-    3DVTTK3c2J4I5ksQ7YyAt2ucbNF9r0AlsngiXh1ZkIv7thtpYXLNnTUIfCDQfndn444S46
-    l1dh51qZhsKVnaNR6bMarDeu5tNsrUujIGjUBidPSanYSk6e7/kUoJs+bjRxMxsvdwHgj6
-    HKnMlgAbD24F8kSuVHwT2UZSNIiB+cS4WDZI9tUzhwFoGRd2lPAtPEJSXm1Pe2LV9JNLFp
-    GZDEgrMbCuznyjBU1tR9RO271343XCEitk5ltMl9yuFi2TNY/8BLoMaBLR3qdeiu/TBDeh
-    6iPoZ0/BmrQucexrf8RUmMuStwUqtHfY0fumNrXcrDExj9+GXZGQyED/sRAQ
-X-ME-Proxy: <xmx:vzO7aqXl35KyDtNVZqU_B_sQXFLoZTfUk79lE_WKdImBnUegDQoaFQ>
-    <xmx:vzO7apxilpgaIJQYhGoMG4yYHtVRxYaJH9kAPyhtX_q4bwPNHp2G6g>
-    <xmx:vzO7alM6nb3XkoPNmncM9IB5zYXVqe-DMzfNyLu93kgkQQBmjM6Low>
-    <xmx:vzO7amaEbVoai8n90Tg8O8x-BOqC1HBtSTvCGT1QDh-AkxtgxloLIg>
-    <xmx:vzO7aqpmPFgEKPq0kHh564-Ucrq4-XCv4BztJZdZfouHRpbhNK6oprBI>
+    rFYPmLdcGE1rV4M0fAMpJKofG+st3+8PfQ+b7I9sMwGW86B3jq8HWH1QNmIbUmtd6GqseK
+    WXBUUBpFFgHeK9liDg6OqtGpj503qSZRpKFKN80ywKozzDLGfTIpNSRIpB0J7X9j9kdDFo
+    NfP0M85lsYUf++BKyCpxcDEiYTPrJoAH8DW5zTa5+tEaGnTn6IQGdE5otaXfk/OhUSHo+d
+    QtS1DlHqPu5wnj79Rv5/H8vkxZKWrTFKnHex9Nm3oRCq/HyRSwEmRvgSr1/p+Cr6f7cDut
+    lLam5cR2VTzEn2u/ohPNQCHnE/CPKmlmMgCBKphlenALV49psp5KqhSOhI3YnTVHwZ8CPq
+    nywlxVlrO0ModMzqKT8z8ZRgDn5Mr5lMOd5yuzk4bhk/SVJdYTVGY/z5TZwQ
+X-ME-Proxy: <xmx:yjO7aqbe5DZ8VxR2MCiDyHlEgTOcZIGl1vO_C7cku3RsL4dsa-hY7A>
+    <xmx:yjO7aglOV1FYf8Ar4JRQeL1p1eSJDh2_lHjeA5rZ1-qC73jVVm0xnQ>
+    <xmx:yjO7arxlwUmw6RkQ7TkEf7ADdVOl3hHllm94VCEYOBw80dbS6Ojbcw>
+    <xmx:yjO7ahtWoJe1UDGp4lXvnGnpsSzrSZDqPvF8q4COOagGVNGE_IqCDA>
+    <xmx:yzO7as8EEG9-dULRWNj307nfRVakTfkCssSFq__PckHsvznEEqvj2UFg>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 23:42:47 -0400 (EDT)
+ 28 Sep 2026 23:42:59 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Miklos Szeredi <miklos@szeredi.hu>,
 	Amir Goldstein <amir73il@gmail.com>,
@@ -131,9 +131,9 @@ Cc: Jeff Layton <jlayton@kernel.org>,
 	linux-mm@kvack.org,
 	ntfs@lists.linux.dev,
 	linux-xfs@vger.kernel.org
-Subject: [PATCH 3/7] coda: don't d_drop() early.
-Date: Tue, 29 Sep 2026 13:36:03 +1000
-Message-ID: <20260929034158.1455429-4-neilb@ownmail.net>
+Subject: [PATCH 4/7] configfs: remove d_add() calls before configfs_attach_group()
+Date: Tue, 29 Sep 2026 13:36:04 +1000
+Message-ID: <20260929034158.1455429-5-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260929034158.1455429-1-neilb@ownmail.net>
 References: <20260929034158.1455429-1-neilb@ownmail.net>
@@ -141,13 +141,13 @@ Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: kf1cm5hwxufp64nrs4cceg4wndxp55fz
+X-Stat-Signature: o5b65oc47m47xw7ktn151jo1wibro3nu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 481DF20004
-X-HE-Tag: 1790653377-371376
-X-HE-Meta: U2FsdGVkX19CIjd2KlnlL0NEJ2MwW8E1yVfj/RE5xxCaTqr1NsjYQ5G6/uegPHKi3fsg0lr+jcv/KeKQ+lLf9dn46ZmRJUj0Wpmlve0Ukyz02iXFUUo7zfEOajGGJe37muTNnhv4COfzYdTGUvW/KkOR++X0cpdtPTokPSQYdCbNfOrvP1sP//EO6eCj5VAsX3mFGElg71Iaef22OsMov/Vv6EkakP6wXi97WWrRdx2JIr3D4si9p/S2bTponxgJ9rgqOzLc5LsdmWEF32gt7B2gxJQ8EEvkKAeQxZiwZNdUZEeA/QsBc6uEMqOVJSwgVACVkCKOXI30sq/+BayNrSReW4DBJKi7h/Y+trCTlNshsel9uXCo9l0iG+gdM4orvnE98RSJpXvKxsn6vMMEbDWthUnu+UKyMnXDVaqmDnieYKXMYOQnbiZW7i0ml8DWaFvDrAfiv+SwuEzzu30AMU0VERS6Wk4qwUKK3W0QO1r3dn2NShoKUo2m4LwXAcjdXtgUFfS6KGT9I8mkvb3TpwbihdjavxDu4+ykfcRaT8bfvW3ooMDAHzxSlSvCuGH6+qYnKU+JrQGB6tMNbVz/bAwCQhsuEBitH9RYRS3v7wep9nH/MqxV+jq5SB8v4VgmYSME62F2p6z91dI7KrcfVcgPdh4AbQf3tF31UNXCWy0TvTxcM7J7k2OUD6A2XUnu8QJs7SsydsDHU/uRTsHz1g34ylWmHNE+tnGlgcyTKvGF6P9Qk0lHHThMTZyMcSOdRTeXfgG7Jz0TAnL4Htpyp1IV01o7sSmpCnyu479DGWbDRrn8euieqWrBFvKOthR2QAkIbPCVcw7fk6OuVkqf/7YIuLsOpmM9nfmTQZ7N5qaImBGDx2ZCxmqu5FoIHwquEEqEF4zZHiD5wQAqgTPxD9SeuG/GyCzoVSqi3TXt2V1zaLMDJuIvE0JLKcNS2ro2ZW5HdIhulpnp8iT6l6e
- 1Gef64YD
- Qn/inBLIDpmD60sU90V9GMX4wPzWBFfDkgTfU3eRF0hKUFev4BlDOHJiDEZpbHMXKAX2fgO67fN/ird1DNTjquNPR/tVYb/v1Z30bnzklEUNFzWTZQP7A1d98Tx3XhDoR8SoH0mw2Bg/X4tIklXpHtpU35VwCVeveBYxzqCctFqPLitQzPDbQE+8Jfn54LvOsOMVU8RNe5A2n7DAAhpcyn0bnpmO/LUWcXWwlQUddn8YV+sMNrKnzZPNvmXOFu6o53OiN2U46sF1aqVlnCaWePbjXEr6PgV1bSFT2D+T3MIF8blwvqOLe7Iyf/ySEJStl/SWPwKJ83c9IJFuWyd773EJU73kaPBsBYiMn6PjhtSzSbj0KkdQC5q8bfWwaY/iAjfcCTc7qSvDtLzCophNfXzIjBwHDaEjFr65MjOHk3lCsWwcGUeXiqEXybVKnbez62gJrVgmch4mkRJzLfWjwbdIWm39HhJ0XFA7v4iJtSOf7hakhvmxHH+0BK3B+B3Xw5Lt64+m/t5KiJ2W1qY2scgTJHXZoqCu/dT8b8u79eKjDUaA/x485TsP0AGpo+Qx0SvUvYTHCShJgk0ZoiF25UIUnCLqLMuhq22zAY4IV7d/1KkWQklGnilpTwLBybrueYE7SQSFbnK1S4+ikD94dKGMGypSEEapT7pbrf/WT8703t5VeLIO+rvnLn2jui6hNDOJmq1B0DrK211ZsGcdbZ7z+Qg==
+X-Rspamd-Queue-Id: 9571A160004
+X-HE-Tag: 1790653388-878872
+X-HE-Meta: U2FsdGVkX19vgYXMbwV4jK9ioQYxIQIxyP8807ziLGvgSD9pJ2PtJnXFwNmH28xAoEjuuQxwCWW6cRwC/Z+lE1XHImQHa5v7Qgk9TKt5uKqIluzsGbu+CTHaE8ulGbyNjhsw+3aVntQzT45cw/rfLGVZ5dFh1dd89BJhA+99uNej8K8VFBlXxs55zJq6T30ZRCk0ufBFgGMAqjEV0KcbcZO2jcPTMTihtF3cG6HiasIOx0Routmf4sl0TTy5tUVUKasEd023/A8K1TsAbefBiWh8bozIcP/Qhfkruova0IvRYTxh59t8sTJC9OUzrZFafYQCoN3KyskF2FJAa6S86b2QLnt7OXLQlW/eRQE2AUkIm2LHxucxWxxEUhXrA+OX2luetPK8y5D3xUKxJolSQow099NwG7WJwTiz5gpXhpvhssCW8xDtTfsEjjzsGFisLdE4ZyZEECNd//xMpIQiIMW3NyIMx/f7EEaFsIi5IYNT/Z9hGBJt2+IsCHwVGxqGEpZzTW6syAcn+rtlxwZEXOiLum0ktnbaMLY2+VrDb5cPUUzxX2QJTNDP5xfQP4S+YUngfvjMzzHzszZS+Tz7WHt7daDXURTWQ0e682c6RyfWktf9E81rNLPrueU384EGD3n6wahsw07l+BtvTNGWIp8DqZzmhi17ynVEbBLPRvMYeQqK29jltEVrawrZ38dco9xllyYgVG0Jxw/fUjhFqODNxBelc33jboanZtqG9V0wugz0Rt4FoDVRU+0g0ANIE6hkEOJDC1QQ69ZQHE87Nb8Q68qiRX5xMhiuV9eSp9zPLUeqDreJFpWjzi9jtBWOhtLlhgpJaarbPG+r2jO3Dv1L20Of81+UnfjZXV3YruugZq33HHkfdkx9lYjbe2mivxotG8NcR9xkfVgEQgGHQ9NZtUqN95mFJM00lgbayt48bF98R269wgk6GIsJO0WProoSTr6GTE5s8SxQtrp
+ OGXw8uYp
+ WUclEndBzPTv3TsY/MLhQBVx/EETvmMvm+172T+otTD8HgGqnaG+ENiZXx+5CdrCSEEoeTRHhhfhFKg14+XQSXLHQ3TLs1qdSiASXzZQdZAemLi9JvDqpuZMifXVYQKuABMHG+4DUzZJnXg9SWwysTM9S1mhKjBl7fEkjDxdVypjUucBgkurtaU6sinfX1xqfQ43pvEOewe90gwIoCJx6Bog18wcIogIDdswLy07q0xNbHXPMNSkZvUIOk0pNFgXXD3JS8z11zU7hQHjBW7K35bqoXxjJXTvt1Ngtzl2s77RTxl0z7WFhXNaHJ1Hg4Im5aup5hdM9RUdV7v/sHKd5ij1GQ7q8uCBKTU3EbebQ8Lr+alqWz8QWzafu9TYzOiorLnc5Yjd2nGsABp2GKePbTgi+40LKlNsRjFrSPxrs1la4eEuSXd6HHxEbfA0At8OfzUr/yDXmPTMjGi11JBO0Z37bDd08iclt+6hJ9oB5IVud/Fas0JrTuveR+GyaySm2x6HW7SzRZvO+IBiQTOr0ksOjrQBwOfT6E5Kb1q6g4ts+zQ2hXt6AwudPtyj7LUOKWAbNTESzH/rob7yvy46bLTskSq7UbT6a4ubn6lCzbR0RxPLo6dEXFDbuP74vBc4Q8CC1c/qjkZIurwpcvkrHcozOhYvJif3mUcExKVtts2uP2CtA+Hz4QaOI7yfC1MHGJBLiAL49YV7y+VymeMia/u4Qfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,39 +157,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-Proposed locking changes will mean that calling d_drop() could
-effectively unlock the name allowing a parallel lookup to proceed.
-For this reason it could only be called *after* the attempt to create a
-symlink (in this case) has completed (whether successfully or not).
+These d_add() calls cannot be necessary.  The inode given is NULL so all
+they do is attach the dentry to the hash table.
 
-So move the d_drop() to after the venus_symlink() call.
+If configfs_attach_group() fails, then d_drop() is called so the dentry
+will be detached.
+If configfs_attach_group() succeeds, then
+ configfs_attach_group -> configfs_attach_item ->configfs_create_dir
+must have succeeded, so d_instantiate() will have been called and the
+dentry hashed there.
+
+So the only effect is that the dentry will be hashed-negative for a
+short period which will allow a lookup to find nothing without waiting
+for the directory i_rwsem.  I can find no indication that this might be
+important.
+
+Adding a dentry as negative, and then later making it positive is an
+unusual pattern and appears to be unnecessary, so it is best avoided.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/coda/dir.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/configfs/dir.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/coda/dir.c b/fs/coda/dir.c
-index 67148edfadee..bcbc9d058303 100644
---- a/fs/coda/dir.c
-+++ b/fs/coda/dir.c
-@@ -249,13 +249,13 @@ static int coda_symlink(struct mnt_idmap *idmap,
- 	if (symlen > CODA_MAXPATHLEN)
- 		return -ENAMETOOLONG;
- 
-+	error = venus_symlink(dir_inode->i_sb, coda_i2f(dir_inode), name, len,
-+			      symname, symlen);
- 	/*
--	 * This entry is now negative. Since we do not create
-+	 * This entry is still negative. Since we did not create
- 	 * an inode for the entry we have to drop it.
- 	 */
- 	d_drop(de);
--	error = venus_symlink(dir_inode->i_sb, coda_i2f(dir_inode), name, len,
--			      symname, symlen);
- 
- 	/* mtime is no good anymore */
- 	if (!error)
+diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
+index 3c88f13f1ca2..145a092171fe 100644
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -715,8 +715,6 @@ static int create_default_group(struct dentry *parent,
+ 	ret = -ENOMEM;
+ 	child = d_alloc_name(parent, group->cg_item.ci_name);
+ 	if (child) {
+-		d_add(child, NULL);
+-
+ 		ret = configfs_attach_group(&group->cg_item, child, frag);
+ 		if (!ret) {
+ 			sd = child->d_fsdata;
+@@ -1901,8 +1899,6 @@ int configfs_register_subsystem(struct configfs_subsystem *subsys)
+ 	err = -ENOMEM;
+ 	dentry = d_alloc_name(root, group->cg_item.ci_name);
+ 	if (dentry) {
+-		d_add(dentry, NULL);
+-
+ 		err = configfs_dirent_exists(dentry);
+ 		if (!err)
+ 			err = configfs_attach_group(&group->cg_item,
 -- 
 2.50.0.107.gf914562f5916.dirty
 
