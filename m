@@ -4,123 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58802C9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:00:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C25ACA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 473906B008A; Tue, 29 Sep 2026 10:00:17 -0400 (EDT)
+	id 33D7A6B0092; Tue, 29 Sep 2026 10:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44C686B008C; Tue, 29 Sep 2026 10:00:17 -0400 (EDT)
+	id 29F236B0093; Tue, 29 Sep 2026 10:00:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38A146B0092; Tue, 29 Sep 2026 10:00:17 -0400 (EDT)
+	id 1901C6B0095; Tue, 29 Sep 2026 10:00:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E90F6B008A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:00:17 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9ADE9A04F2
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:00:16 +0000 (UTC)
-X-FDA: 85266959232.11.4D6CE06
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A0A9AA0007
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:00:14 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Frfm6UAD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of med08elkadiri@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790690414;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D8EA66B0092
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:00:46 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70002A6DB9
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:00:46 +0000 (UTC)
+X-FDA: 85266960492.28.2925A48
+Received: from mail-dl2-f12.google.com (mail-dl2-f12.google.com [74.125.229.140])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 611C82001C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:00:44 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z6LMQoEO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of glider@google.com designates 74.125.229.140 as permitted sender) smtp.mailfrom=glider@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790690444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x/srKavlgqYlrzFVROF7aG+7+UUAJd3JIGxu7I1XKtY=;
-	b=xlec6+uxQdixMHS+Wf02TdX/QyAb1qXSg24SQwRHdDa2iEerQZOoFv+KuCInTQ916Bo/Jv
-	Bbt7UpFTeHrC3czdP4IafQoimQy6z7Hv7URxddLhRtFlrSid0Q6pQR86/6/FT2GDlKAYHM
-	9epO3wbbEqZCO2vmkLziOy1iBUYTieI=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Frfm6UAD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf25.hostedemail.com: domain of med08elkadiri@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=med08elkadiri@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790690414;
-	b=LUAGJEfPxkbc/oJyMHBxLhK0b0ba3OmR3tgW2fSbvNOZMCEctKcESGRQivDNmLkxS5nNoe
-	RGWAGN/caTlVYbtLy/LKgrCxJS2WMUW4MVVmBTwl8i3AeUJiwLESd5o/uv26cTTaih+P3G
-	3RsjzrTYYnvwWNBfBYxoTvNAJCryL9Y=
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887f6cf16bso2662048f8f.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:00:14 -0700 (PDT)
+	bh=QU+DLzGOXpiAxMnq3rRvyxfpPq19yPNpjrIH/ZG4c7Y=;
+	b=4wGIF80KHSlfLdGOUWfQT5MYs59Q4MnXGstzVhjyoQ4pVoNBZGxL6+CML1jy7AzMg+ZjMo
+	Y8tJFzhYr2u9JmcGE8653zGuWFeJjBlvWbrVRxJVqLLxOPVaPp4wtMhPiFxuH6Nx4AYrLR
+	RrYK+N4sGmDmZpAMUDEsqd4Up6fsFeQ=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Z6LMQoEO;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf31.hostedemail.com: domain of glider@google.com designates 74.125.229.140 as permitted sender) smtp.mailfrom=glider@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790690444;
+	b=QfPSb8MtN/0mJQUlAkAZy+7G0u31R51Wue0pkdu9insDj6jG6oti/Wf47ZpB7e0VD8ye/Z
+	/Ew9g+oggbDR64f5mAxVChNPDeYDSekEBX3MCi7hsgNFHwiORsNae+NTqjYNFpTKPy7YGM
+	ASm74TpPZhaGS3mt1b97kXyeWS9fxQQ=
+Received: by mail-dl2-f12.google.com with SMTP id a92af1059eb24-142dd04f7f2so2970536c88.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:00:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790690443; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lw2YT7hlc4PmaPkHPKWtkyoDmGbJKMBcP3Omc5BlqxrkYZVtwjefgvjD9KDHUjK8eG
+         kkjcVgp5g0zbteSK6OBwBPEEeJSyCH3kuV6KceF5r6C4muG+hjMVjKByzJ817jyOErs/
+         6110HjaqlCWuYy4yOE6A7aeCB8elzVxQKQl+5jcQ6NMsCx60NOKHSQldszps4hFwvgGd
+         vRIM9vmojybcXqTUlqGS05tRlyoGorwbmFYsfayPj+9oUg4jIqgTIiZxuiPeZHPPBc9L
+         s7QFlkftojteze0R8Zz3GZZJhNWYSOoj9HDxk1Y6YgRBj2EhxhA5DtpjEHZQ2rd1AKJ8
+         qRqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QU+DLzGOXpiAxMnq3rRvyxfpPq19yPNpjrIH/ZG4c7Y=;
+        fh=spu2UWxJZkwwH8Ghs1g7GvCp9VoDoC2WEQp0SBTKwqI=;
+        b=gVzyK8QB/lTvoTalY9qMZVpYwxr0XmOCTOKhdf7BBv7QTETjzQDoucWtL/2TUAXl5t
+         kjYBEqzOvWGg5nNhWuAMI3DGey8eJ/HpvYTrHCoCz/q4NcdN6XWQCVo5DV1DsytDIIX5
+         /OYZ9A42rF/6F8ZHjTj4hbb0XnfgrzRut2GGyhwiubxZaCS7YmjS9PyXJdBOO7TBaWOm
+         h+xixdwqCpQ76QId3gRffSSJ7VEzOajqyPVMzhrwZoW+7BIGCx2wqXnC2B5EVzLuffqH
+         kvNOyDjnPwArgWiSgDAc95Q7gRDBpdzwkzqr22I3GScmNbxFBACNHKtB0Alq1j8wcBM7
+         ONlQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790690413; x=1791295213; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x/srKavlgqYlrzFVROF7aG+7+UUAJd3JIGxu7I1XKtY=;
-        b=Frfm6UADjp+VfTe+wCxPbSx5msr8c90KH7Ox107MTTwkTHE9Ynsq2vrHFNUQrD5meO
-         91L6vSMabps/+Ptt7Sek2dEJEBz/h51ZYzPz1t5eBA+aNE5Mak5bsohTvBVOfdi5g1tQ
-         BIul2sDF1qoqxUyu29+H0zYFUjMmlBMrgQ1ic2hFnbrL2Loe+eF2ZpiPaAt2vk1UWNjL
-         HXPSq0IkeBSzoxci+0ULppgmbKXwD8DCRDir8HwO+G3o1fHJd2rrIYTnRAqnlpJc/I7q
-         WIzJt/OoJkBVJry4wEfuwCIH/uK99mWsRFCcT1G2OnoE3tPzy/ExtG25yAjo7lf7kXTG
-         CsCQ==
+        d=google.com; s=20251104; t=1790690443; x=1791295243; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QU+DLzGOXpiAxMnq3rRvyxfpPq19yPNpjrIH/ZG4c7Y=;
+        b=Z6LMQoEOArx6LNbHtBzWmCOAEeyr9rTrUuEqCdO5u4Szw3RBvS+VjZT8D0vK6N0xm/
+         hXBuNJSNMoc04Tqt55Wfm4gf+Y+lXf6zyhSvHkyp4W4ZZYU9PxptSPu4r15ySSJ2Z0Ps
+         VrZk+NLgRumYoJBDGPxHQh8WpeuSj5DSGAAHSYngSKUOkwPbtgNQZk8Yr4sflcdCPS2W
+         ptHBrzZpqb0qrfmY48wODMFm30DToFsHbdfKsHEwu/sSMUdCHHusiSwCEcvmomWcgpF+
+         /thlqMlYn4K8xJ1xtTof26uNMWWXEnG3oIbAxF48YJXIG60MYaOstt2RdGrsBEfDbsW2
+         TE4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790690413; x=1791295213;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x/srKavlgqYlrzFVROF7aG+7+UUAJd3JIGxu7I1XKtY=;
-        b=vmzSEIWZJPIxjesXfPs3uXXsZM1R4rmhwLhQlqg26mz9rSoFjuN7PV5Cc3q/Scvrn9
-         eJIlilZFAJiqz+z28KhleypUvf/fL9ihYHKYsgYmqf5v8yds975KVPZObHpjddFswCOG
-         UlwMZNkoo8YG0Te1pfp0QwZkGQAudwN3uDb/6BMoRVz8Twe2f4auwQlYKzJHBn284Dw9
-         IGU1xAI5NSlQrTyo1q345AEwRd8MzfuLdOWqspsNxQb38Pbb8VrSGod1GEgSx8rQKgbs
-         DZkaBf/H4/vHpDlFINWNjon8sae6AyTwMjw7WGko/5ZxacnsvJcANziJMvs4qb9keOQS
-         GCFg==
-X-Forwarded-Encrypted: i=1; AKwUvByeelmJggG9aiwCLOs0UyYzeieW96NO7b8rsCgId+gQpA0cubEet/oZsKOBIXdsC2JTb9EJfpc9Cw==@kvack.org
-X-Gm-Message-State: AFuF++kmkO2TIJFi/d/uG2tzrSDcV5Uqeauo93p6ZkrMIfGVpsJc7BjN
-	8le9Ez6Dx833wos8PjFYHQ24cGcU373ZyW6H/jGq/FyeomJFzYKhs1c=
-X-Gm-Gg: AYBFou0GY9DVO0buKmlzbQ14T2+RoCn2YTKz+9FnzNqorjY8glFCEdfI6MU55Vum3UT
-	CfbsZocsSiZyDeHdtjlRGhhPrbOViK8dWtlhlb7d0LjvZKhfQ4j7Ozw1HuRt92vyokitg4cpYQF
-	/RqaD/tm3Cl57P3dlyHVZfDZpxJymTMjxL6do6Dc5wg/zKabzCYPAsiRK6T4QtMO/PdkRL9nWNr
-	XGa0w+wPm8+fPWXuCqLb378L5FTGtaerzCnICRm3TqMFXCD/lA9JGijr9641DTXQyNLguGLbVtP
-	20+jbB9pudIfFWFQRM13rQyQxi4P4Mvs0kmcy16HtTV21jQxk3IQ4oGH/5wCje2Agz14aB5EMZL
-	pHdIiCIdAyNtuJJFfwjbXYsn9xXvbtloYavIwtIbRhCiIHrkPUt4Tqu/l3CKdRfvkeYzAeSrfE4
-	nBQ5bD77uBDwr2AJNXzJkxgFm/LQ1m9UnFZ2/YFru+JzliOtUQ+qjGq0qdMkKcCpc029FDmlFur
-	WvSkbfIbzRyubypBnTXc/BLFlxGS/Zwz/At8E1oBOd6jyHncQR4Ki1YraEM1eJ0NmItips76TCA
-	xnJMha4=
-X-Received: by 2002:a05:600c:4695:b0:49e:7d74:7b7a with SMTP id 5b1f17b1804b1-49ff06b2c70mr225355595e9.6.1790690412769;
-        Tue, 29 Sep 2026 07:00:12 -0700 (PDT)
-Received: from Ubuntu-2604-resolute-amd64-base ([2a01:4f8:13b:86d::2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a013cc0255sm7184465e9.1.2026.09.29.07.00.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:00:12 -0700 (PDT)
-From: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-To: krisman@suse.de
-Cc: amir73il@gmail.com,
-	brauner@kernel.org,
-	danielzgtg.opensource@gmail.com,
-	hughd@google.com,
-	jack@suse.cz,
-	linux-ext4@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-unionfs@vger.kernel.org,
-	miklos@szeredi.hu,
-	tytso@mit.edu
-Subject: Re: [PATCH 1/4] shmem: Report casefold setting in mount options
-Date: Tue, 29 Sep 2026 16:00:11 +0200
-Message-ID: <20260929140011.211148-1-med08elkadiri@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260928213155.2612039-2-krisman@suse.de>
-References: <20260928213155.2612039-1-krisman@suse.de> <20260928213155.2612039-2-krisman@suse.de>
+        d=1e100.net; s=20260707; t=1790690443; x=1791295243;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QU+DLzGOXpiAxMnq3rRvyxfpPq19yPNpjrIH/ZG4c7Y=;
+        b=0Ik6xjnmFBa52HJnllhYH+rBeZn6TpF9KswTLKjD+RjtOfDrag5zO6xknvuplilNXb
+         byhUu4DOXKDl9jnXP49FDpGPUhJNYI9VZi46nVclM6RVFhvHoJpE1TAWj24sJ9CIVgB6
+         +O8BRvHCx3z8kt0j/DNsx470brJnpWVDlOn/QGQtaD4iDI+bwpOcRiHfDG8xauDbkp5K
+         QWQO7EivX6Tm3wI+l4ve1P2ZuIcZjbplVKY3RF199qT8gW7PsJRCKVSwihc+auJA2x3s
+         qxlJ1SYhFwRc8RmsxhWDrPr5zvCs7l2fqPwscvWkk8OtFn02RKEifeYzIRm7SaiwvzLA
+         awGw==
+X-Forwarded-Encrypted: i=1; AKwUvByG9Ks/CRukdxNxMQfEYpYHIt2c50rfxwoKwo5cX6ptCcrGZGb/EuWiXZ1BsWTCBaMLAtpoRHe/UA==@kvack.org
+X-Gm-Message-State: AFuF++lQ8mYhosicCqsqZsfE5tOw46Mf+8kxcYLR1TjwPTBU+JtfNPjt
+	Yo7GUD+FePrC2GNLl04CZB+oj+Zw1toZtkdhcyEVH4PeqcGA31WTBBWXU6DRCrDLku17T3pcO5b
+	iDpY/kBnPbeLahfrr89GqoTKtHNMPENH3vVlQrOrx
+X-Gm-Gg: AYBFou0u31eRyEgL1v81U0g15TY9VvTo4ceWLz8t4uKPK0j+ywU1nxEh0jvMrhyOIl5
+	S2mzgmarhBzw97zQgSb+VFiB42G/0QQ+6y75oSoBJfzM6IMz+lL3yqSJl1Ls7eA16Yp4JUjEnBg
+	xFOykBq1BAtpUNspq1Jeym0fphH526yRVFi6ygkCaxy7lIkjcoNcwwhU1qh8ynY7vBgzwhsK+hR
+	4f7ZW4J2GicGfCz2k6FgWKAt2aVf1j9DQJlxEHFZrObx3H7dFCApLMXNiPjpOkcmau0RZhxMxLS
+	Dfg6b3iCAePvU4/FwCODWQRIoyE9Y/d7BIWX2nLeQxCCahMQG5goZHvlCwk045MALifNLNP7Z0O
+	CWVLYavMJjg==
+X-Received: by 2002:a05:701b:4203:10b0:144:e246:a0b5 with SMTP id
+ a92af1059eb24-146d077bc5amr12816455c88.40.1790690441906; Tue, 29 Sep 2026
+ 07:00:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nxw5s6kingp5gp4kata75cc8txg9bzxn
+References: <20260915160207.2952-1-dmytrokoziuk68@gmail.com> <20260915160207.2952-2-dmytrokoziuk68@gmail.com>
+In-Reply-To: <20260915160207.2952-2-dmytrokoziuk68@gmail.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Tue, 29 Sep 2026 16:00:05 +0200
+X-Gm-Features: AclHuK-0nrksZ7YEGRoxYPzzxSAUz-0Dn6NeWJoWfkNhrjPIZe7YkKonvpSq2vA
+Message-ID: <CAG_fn=Wx-SPUH+wyTnihtjTKAp+4fF_H8LT-mbyj9kUCe1i1oQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm: kmsan: fix ioremap error cleanup
+To: Dima Koziuk <dmytrokoziuk68@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 8b6nh6ziqoaukhxb4h79sjnkosq5nhz7
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A0A9AA0007
-X-HE-Tag: 1790690414-541876
-X-HE-Meta: U2FsdGVkX1++ZveUh2Y7mdb8hniqwyKfV4iwPFrA25o8S6c/ftxBP5PnokkhkYkQEYeVwjOvfw/xjC2QKy1S0l2+y4K07HvItgWu0GOeeDO8t9SSOZju3JbUnFl3UYqDwAyP/6dx8LeP77NoHBJ8CINhT/6PwDVvUhFEtztThjXYz+SNQN2qA2HLFlRwLTca95FgcN11xEJSmQ9008P8H1/VzM+YifnzZ0FKOHEp077xGdPuxd4BrnVjhrdS6dNDaOIMvgU+BXx4NNO2RWjpqw5StRwD08Eb5OXESk6VCJnIdRW8HgqnC35YzPR0RU/ajg85r+p7roZ9vJPdiocQMNz7tybmN8KeDsh5z87HMXHa5VTFHm1Z0GF45Jncp0zgDfUw7mUp9BetPaUIfvtazldWtMHqql3vWtU3qYYCGF6auYVsFrVnGUHkK/ynEAXlP+2F21LQBA0yVtrE83AdesBGIsESc9FS0w/wsPW7l6qIuERXkeYvAoVCWx14Ul5EtquS4EyXVemSLmwFYDhzV3bo2wWzt5xlM182HuOMcB2rAkQemXxcK35wkTaagd35OCKDfJ09qX0kx/vxHM2dBt7D9TFBTGxPGAywwJjOPJK1immk/w0+86xvbmpdwMDJmSKLRYQVNxcEOIgwAK16uXDvvvRplJBArtj9sNA/u7lQrzd1tUdQovDENcePH5b2WQz4Lh2vc/ID9a2AuMDY00tRS4VfsV1+3NXbnmpBvHuoUq808StikUrusPEaOoUKKaHSgRWez4O0JJwwCGbGjVvbGvTQH43+YUGznynotg5t9MM2HWaDtbnB5LWUZp1JqxKUPgJq3B7gu9VUQ02p6lvvtkb4GEroW7KDdEp1v9MrdcGZzErlq8zF4RwybvGvbbQRcCQCBxyEX8gF8KZYGxT5WaCoDkNY5MfM0uX1Jezthr7iZ/oysudKTpmRvGTqrjBV3frq3DLU2L3KDJw
- hyI9UVFS
- zr5pXJKOmuP8y6j4uAuYe85GANLRYOu6jktMkkc8mqX/k1kJhQkwL9meAXYvaXf0ddxFBsA0pF+kRVvO/cUAaa1osFNvb8J1SGy0kkc2ZVFb57hob4QNGF/sPxYxI4nCAg7/dYfAbS16/8/v9v1JqMstRzyP3gdJZfWrcsmZ57tSnDppq/q75oxzn4Fr/RM0TvQeST+feW+ajRKL0PT5NnwPNZ4s2dD3SP4U4PVAssg4M7H+yRPIkVCczCkyMlD3OyHPGKpK4PBu8xA6swI8ONUf+SI7GXCK2+YxKMcezaPtOCxmsDzQ4bsNaluqZtGyR4bEYrM57/SwepSr03xhtUfwkQ5QcRXZx9lHojsTvoIcRjjjZ+Vuj9HO4EiH7QevIEwX5tmAFwCGlzapwLBDS/OpBbjxVShOMnPEOv+Owp5CBqnK5+60LKZwMbzM7jHa1oRikEvQ6mJzB2aNLhnFMDMo/PwcluaRW69X1XlSrjD5wlOeZq23mW7bJkPzVLMRaAie9/iTIjUKKWqtdFQD8XCzFX+6w8spsSaeNJcKHinoQFjmcPV3FgetsOg==
+X-Rspamd-Queue-Id: 611C82001C
+X-HE-Tag: 1790690444-796756
+X-HE-Meta: U2FsdGVkX196bGCPgCVxKial0NQ4mpGH22a7q9s62ZGV/9CMjPia2Mj8kxEQx8xxkP8BTWgwb1eVuo8ZZlN/ms3r14RHXJko5pCB/xnLqOkOIQxk8BGckKqSmoORNN7v/rVVfcx56bLFoczkaqh7dGNMueQQCGR1i7Bk6ckE7g0d4dp/p2sUoKuX11bOmfaxApnqPRO4DWU6/kxpSM7T2P2bajVQVgFLb5Va10ciR+xzdX1ogJ7ZzaxlTZKK2SCTVzdO6gJ5mLvr13AarU+pDTLEw3vDgZcsPYoximYIDkysbQ7OZiz0PqgJinRsJ+WreNDvnl8HDx8VBNqCZMWj4tFFkq/K/hjFV1CKQChfhor7mqv6R6ROW/RiClYEBXi4KYE9tkqSc1c5EIpOSKl27fmJQTMR40esyDr+DstH2HNNTkTEEfaBdl4bv2FWCf16jMOH7Fpc913HZOJ5j5LX9j1+XyoKwCYaSIEbaJCW15g4LD3Wj3HdTRl1rcfkg/9RbI6KGmMU4/ZGTStudttO2BEuxF7otUtDLN20XX7CeXMgTKIDSXiGPfEinAWgFBUB9H/AaSs2q9EO7hhirMd13osOuwmxGQLxs4CGuUIz6bQQSW7WzdBJiZve2CMZia8OmHbiTBYGMENI2RSf6FUEsRJeF3ptJ1DFqqZCSXfg+m+Cj/uay18L9Y2oYPrzfOfv2rKY35LJJu7ksHhthw/KYn+6dXHq2TxcnYl8IaiiwXYDAhGji6YH8VIzFhUAnLJ88vh4PpEVl6vs982wOPt0sQ9u1pLhni3C794xH0wLDHb6euVr6Xo3O2ErXs4e7bfVyLjZeSZTYW8uMIDoDczyZ6y4GFJKH/+1GOcRv0HznCWS1+rOyAvh37OqchyEC8nr4W5zYadV76FUhx6X4NzaIgxsLEUswS9f7ysLpdpJGKy/EfE9e6j54VcnRtkdAdZIeNnF8kTOnqm0YNTHjtM
+ ABlh9Wl9
+ YDaqq+OhXCRDKQdXu0ZBObY7DyhFc5c/so9vzgXIrHz5geCBBHqY0OZbJGycCxIt5Sy2Dacj138RAZt4CugW+ruvCOo3e8sSw/d06I2TRTJa1x6DhafgXcTAzmX3uTuOTBUGPHyJgJhHg5bXZb4MZXQs7Kso+g5UiI4T0nRE6UVxGLh3VU61xSOuV3QSh5amRX7nrueS0P+uyf6YIuRbyUFgfa/GDtEL2NRgC4WU7DS39sIy/6HmgiUSNgpLBMP1lmwnwHI2kKrksAnLCGwwtEZ1zcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,36 +141,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 05:31:52PM -0400, Gabriel Krisman Bertazi wrote:
-> For shmem, casefolding is a mount option.  Report the current encoding
-> and casefolding flags in /proc/mounts
+On Tue, Sep 15, 2026 at 9:02=E2=80=AFPM Dima Koziuk <dmytrokoziuk68@gmail.c=
+om> wrote:
+>
+> Looking further at kmsan_ioremap_page_range(), I found three cases where
+> error cleanup leaks metadata blocks. Fault-injection testing confirmed
+> all three:
+>
+> 1. If the first iteration fails, clean is zero and cleanup is skipped,
+>    leaking any allocations that succeeded in that iteration.
+>
+> 2. If shadow mapping succeeds but origin mapping fails, the shadow
+>    pointer has already been cleared. Removing its mapping loses the
+>    backing block.
+>
+> 3. On failures after completed iterations, cleanup removes the earlier
+>    metadata mappings without freeing their backing blocks.
+>
+> The cleanup needed here is the same as for iounmap, so it makes sense to
+> reuse kmsan_iounmap_pages(). Track the end of installed mappings with
+> mapped_end and advance it after each successful shadow mapping. This
+> includes the current shadow block if origin mapping subsequently fails,
+> while the PTE walk skips the missing origin mapping.
+>
+> Run cleanup whenever err is non-zero. Free allocations that have not been
+> mapped directly, and use the shared helper to unmap and free the installe=
+d
+> metadata, including blocks from completed iterations.
+>
+> Fixes: fdea03e12aa2 ("mm: kmsan: handle alloc failures in kmsan_ioremap_p=
+age_range()")
+> Signed-off-by: Dima Koziuk <dmytrokoziuk68@gmail.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
 
-This works for me, on 90ddfbd19636 (akpm/mm-unstable), x86_64,
-CONFIG_UNICODE=y:
-
-  # mount -t tmpfs -o casefold tmpfs /t
-  # grep /t /proc/mounts
-  tmpfs /t tmpfs rw,relatime,casefold=utf8-12.1.0 0 0
-
-Tested-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-
-Heads-up on one side effect, since mount(8) builds its remount options
-from /proc/mounts: once casefold= is listed there, it gets passed back on
-every remount.
-
-  # mount -t tmpfs -o casefold tmpfs /t
-  [  527.593309] tmpfs: Using encoding : utf8-12.1.0
-  # mount -o remount,size=64M /t
-  [  527.595716] tmpfs: Using encoding : utf8-12.1.0
-
-That second line is shmem_parse_opt_casefold() running on a remount that
-only asked to change size.  It calls utf8_load() each time, and nothing
-frees the result - shmem_reconfigure() doesn't look at ctx->encoding and
-shmem_free_fc() doesn't unload it.  50000 such remounts grew kmalloc-32 by
-~50000 objects; a tmpfs without casefold stays flat.
-
-The leak predates this patch - you can trigger it by passing casefold= on
-a remount by hand - so I sent the fix as a separate patch:
-
-https://lore.kernel.org/all/ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com/
+Note that I'd rework patch 1/2 to use a non-checked version of
+vmalloc_to_page() (see the other email)
 
