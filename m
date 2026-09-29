@@ -4,95 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65338CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:12:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760D3CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:16:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71E726B0093; Tue, 29 Sep 2026 05:12:58 -0400 (EDT)
+	id 8D2636B008C; Tue, 29 Sep 2026 05:16:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F5936B0095; Tue, 29 Sep 2026 05:12:58 -0400 (EDT)
+	id 88AA16B0096; Tue, 29 Sep 2026 05:16:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 635446B0098; Tue, 29 Sep 2026 05:12:58 -0400 (EDT)
+	id 723986B0099; Tue, 29 Sep 2026 05:16:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D1F16B0093
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:12:58 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F04BFA044C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:12:56 +0000 (UTC)
-X-FDA: 85266235152.18.041EA23
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0065740004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:12:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="js/r2/ns";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790673175;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DE796B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:16:20 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CD141140440
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:16:19 +0000 (UTC)
+X-FDA: 85266243678.30.ADBBB75
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 64C6F20004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:16:17 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=KWF2oOLW;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	spf=pass (imf31.hostedemail.com: domain of "prvs=8732277d27=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=8732277d27=alexghiti@meta.com";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790673377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ng+a4MUP0GHJFX92oLDnEZUQa684ogvE7SDjPsib84M=;
-	b=N5viRYwXwAVFUXs9M13vxAQ4QB1SpFZO0DUKZjGjCR46CoaGy0rbpxjOpAR5u47uGhlSTV
-	YY4DtlBUx+UXBd4w04x56AFWcQuaQkDGC102ufaoQeQS6ljCKeoLVuLLeHj/SCzGDwpZFZ
-	HbYYdDzbOh7PRjiKBSpZaLmrZ8lc84A=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b="js/r2/ns";
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790673175;
-	b=nBP00Jh+xyw3cRRV6UsL6EPXmb0ezh7esKlFAQ1zb/3ZuKQf1CFxwzYjUN0lxQ2QA4mv/M
-	+UZpw3/RJQJSEmEhv627D33VpZFny7w7x0V+gvYCFcyzoH/G9bMIp+/SgD0ApLo6vyaIxe
-	90OcqIk2kvw8uUzXCI7GTQIzmASt5IA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89B061516;
-	Tue, 29 Sep 2026 02:12:50 -0700 (PDT)
-Received: from [10.164.19.84] (a081061.arm.com [10.164.19.84])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EA4863F85F;
-	Tue, 29 Sep 2026 02:12:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790673174; bh=L+A+ki4F258ZbWCrWJlsH2ukcU/51HiXJ123/RCt0cQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=js/r2/nsA1DwL2WcPDO5OkJF7bZRGKScgjzgGMCwIST8iXOV5Sr5cJTpwJpzGiiBc
-	 bOT/l1RvLUkJ7ULIyZAgBvUYe75Sb5bsKniFMPIqa7ORqSb8KvMNJKm1iQxb8KyN/3
-	 7V/udeDnpU65E9tX4vXIHlIRSsmqc3tR3NzBZn88=
-Message-ID: <498b8fc3-ef39-424c-81b1-aa4bfdb7eac7@arm.com>
-Date: Tue, 29 Sep 2026 14:42:47 +0530
+	bh=UXOt0DR/qucJrjzcbWN633PqrJV6/4ZYqTTDG6UnQU4=;
+	b=WejucaV6HjMaKz7cJdvy26aGzFMaijGSm16X4MSk1bqgYexAyFR/Kd4PEs3MPmGPXBaYjs
+	mQytsRZWugCCvoG7zelm2DBnpkY3WaXe63AU/xnjIsEPbjSMMsZCZ45tE7BZbcR1ysKEZK
+	/DDSkZG6ARX62iFlzZaHdCGwl8X/x0w=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=pps82601-s2048-2026-q3 header.b=KWF2oOLW;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	spf=pass (imf31.hostedemail.com: domain of "prvs=8732277d27=alexghiti@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=8732277d27=alexghiti@meta.com";
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1790673377;
+	b=L+IDCPeuLOQA6qFWMtVs8/tVBoxDQAUkW4AkBhIhtTNk4S5VsuA3g4FR2v0zXq47n4utTi
+	PMNqnjwM2NHKE7wrOmUqfaxNZODPFOoKYPf5TrzPAhc7vC8q8pFupKDxu3yXnkSmr8StWw
+	+p+HHTZmvdaiv85f8x0JaJ8ctjylwCA=
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 68T7TVsh078085
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:16:16 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	pps82601-s2048-2026-q3; bh=UXOt0DR/qucJrjzcbWN633PqrJV6/4ZYqTTDG
+	6UnQU4=; b=KWF2oOLWZqV0qtVOV+RAoOj/bKInEHA2dCJiDhdsxUn/NCwq6IWJK
+	Tz9cgDhv3tNVxM3VJLUJOe4yxCcEK+JG2p7LZE30TQ6S+jz4iogQ/XPcGPCUoHpl
+	n2OZjxjDadiP4BLSbClNOosKwfwSyLfPFHvexb8nKGF1xK7HnOT/hpbdziidMu0V
+	eQXF2tvCjJaQ41VREWyRlkPJTDNG+C/OAxmLb/QCFg+CQzx5lSmaJozJIeLxDsN0
+	KEdLb0JNvn4tAmjuRaLLGTRdHr5jcwsnR4ZmzY89fKCoj2cdHLguRjp7XGPQw5D0
+	PTPMWHscS0t5Gai/UfjzDBFfpPbvpuoUA==
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4gx9q8ud2n-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:16:16 -0700 (PDT)
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c29c391bd2fso366218366b.2
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:16:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790673375; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XCjJMrRanTchFXYykAzszbj3J0e/JuBWvbEICNAVD9dZuQ3eth2ojyb9tU5+FEFrr6
+         J1RceddLpcn+htFZQ219vgZ1G97mzopkxRrDdRje7s7oRwgHObawCvT5iQqMTEB4sf0U
+         IBym5l1dtVlpawyQAuueBXhDHC9Qflls1sLqqadAlTV8HKEui/IV5uAnRwmAlmYvE8nm
+         EYZBIuwCeEwckIS5Ulr/YULOJqozwh8LuM5BhenLZ+NreCxP9OQYR/nZHjIO8lIdkDW3
+         kUmmY94UnRqbwbQBL0/I5jgwa5Vv8r2PYZdpGYc0arQx2T5Ddv01bR3MARRI729FfJPR
+         x/og==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=RutqN0XzeZ2DQTMI7Gduqm3yztWbS2+NpNwUibf3R/c=;
+        fh=juf+KRGqQZCRu991KI6+f3JrvoFsbypfflKJHdp8t/I=;
+        b=bh5bDp9GbtRdrI2EAp4EDUlz52weVbo3+C0TI5P/sWg4LmKh2M80yNxYj7LFAmrs+r
+         zQ/wzU7L4hTeZe/jysyNohktgZ7aT5aK0Qh+oyDcYtdoQiN/XJr0qH1APf7zfg6m6hEc
+         pzdf45URyHOmUQ5IHf00b8MfDYGN88MRhrB7JpSQSqKpNQ+QSPzx8IscTch3gnxG/Sno
+         Bn52O+kJmB19ZUP7ifV1fFPTxg1AX1VqihOtySYjT7vfnBm5Z99BjRySXqExb0KZhiWD
+         JvRd20h/Rtee//2mMV8SO+FUcpx2g7CCKsP6gdrolZ595pw2mKk9dNF2rbWhLp0jGp2B
+         LfsQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790673375; x=1791278175;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RutqN0XzeZ2DQTMI7Gduqm3yztWbS2+NpNwUibf3R/c=;
+        b=JK8+x9fXjoxgfXO4/WbkSWxuz5FbBZPBPID+HC1JryDZBoFp/4ciMETW3tC17ualCF
+         hB3KSF5fpWSaHeCOguXM++/08q6z+ASKzNpRqUQcHhe3j8iKJp8RV1A8OPsilURXRNk8
+         GUg0X4Lzc7ghXTSZI0Sard0U10N2qip9UEnPBn4Cc0hRcvB265Fr4Jwi+9PsNSFonWKU
+         kLLdTZze6VyoOSLeFMyFm8CAgvCZ/Vc11H53HEaj4flzco84u2MWuF+/hBs5HbMVoZb7
+         7dD2iP8HNXiWdphNuolVbJOM5PBCcLPBLUbvuibOaVuzbQ8w33JrDO6GzomLLV8WvJCe
+         8ilw==
+X-Forwarded-Encrypted: i=1; AKwUvBwTy5BXp3hIzG4e/IGVa2rPugPw9kRs5P+EZQUJvgIAJkQ0yN5Rutt7898gzhCxEzmlFnmWwsk8YA==@kvack.org
+X-Gm-Message-State: AFuF++mXmZyXd8eh+3wGxPbd9I2gYTGrt4BcXNHhwyCdx5tyOxvV0ARr
+	sqvtAdOZMwQjBJaeqUYLfCY3ZzPSPOKDbKwncuJTjPzJ2qKSCI80YFtOw4KLNtC+mnT9oVUgYo6
+	EiMTJvR7+mc89D9pCZ6yCansseI0jHo+gD/lfeQ1WmJnA3/WJsbodPXYPRB8TaUp5r7NDh53Wxe
+	dt9DShifWPL/3n26E9pI2KVLKq9g==
+X-Gm-Gg: AYBFou0dcjjSV9ruAdIMi4yPpAxruzruagWv2qknDp0IxrlqIal7CX42R7ta7WwwzE/
+	r1sBjN9e0Z7MbhKIk1lWP/wUCTSOky2P+vAL9FdSRw708g/RVrZ+Eml/cSGrFi98mq7NuNXvauE
+	dwjVqQfHQ1lCq9zxi9u8UjFLHYc8sUMz/069ZqGY7r/8C9/gz/kfL9ntEI/jtZfQ67aPJIaaCU9
+	lPdJE/DWwR8QW6RUg==
+X-Received: by 2002:a17:907:6ea3:b0:c26:1649:47af with SMTP id a640c23a62f3a-c2ac53cb0afmr1291012566b.37.1790673375163;
+        Tue, 29 Sep 2026 02:16:15 -0700 (PDT)
+X-Received: by 2002:a17:907:6ea3:b0:c26:1649:47af with SMTP id
+ a640c23a62f3a-c2ac53cb0afmr1291009966b.37.1790673374768; Tue, 29 Sep 2026
+ 02:16:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND 1/9] selftests/mm: mremap_test: use kselftest
- helpers
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun
- <ts930@dgu.ac.kr>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260924050009.19974-1-sarthak.sharma@arm.com>
- <20260924050009.19974-2-sarthak.sharma@arm.com>
- <6c349d10-2160-4166-8b63-3d60b42a5b69@kernel.org>
-Content-Language: en-US
-From: Sarthak Sharma <sarthak.sharma@arm.com>
-In-Reply-To: <6c349d10-2160-4166-8b63-3d60b42a5b69@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0065740004
+References: <20260928081900.4187482-1-alex@ghiti.fr> <20260928081900.4187482-2-alex@ghiti.fr>
+ <aro28ZGuYgmNg_n5@infradead.org>
+In-Reply-To: <aro28ZGuYgmNg_n5@infradead.org>
+From: Alexandre Ghiti <alexghiti@meta.com>
+Date: Tue, 29 Sep 2026 11:16:03 +0200
+X-Gm-Features: AclHuK-D9BofbMEsWSFPaoMRP_iu1F-Wj4thWHCh7PID9jFqkf7sbSb8Hc_0i2s
+Message-ID: <CAEmasaX-6v_EpwAxHtnhA5SXk=jGW8+Lm4m8zAC=+f0yXmiCxw@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/4] block: do not issue background swap bios as root
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        cgroups@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        david@kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+        Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+        Chengming Zhou <chengming.zhou@linux.dev>,
+        Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        Josef Bacik <josef@toxicpanda.com>, Chris Li <chrisl@kernel.org>,
+        Kairui Song <kasong@tencent.com>,
+        Kemeng Shi <shikemeng@huaweicloud.com>,
+        Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
+        Youngjun Park <youngjun.park@lge.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: oXks9cBiV84fK6s9Gpnm7Yfo_qx0qs-Q
+X-Authority-Analysis: v=2.4 cv=Oc0NnRTY c=1 sm=1 tr=0 ts=6abb81e0 cx=c_pps
+ a=Ak8bExYEjeps3Jj0Zi+cTQ==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
+ a=JfrnYn6hAAAA:8 a=gdocsb_8Clbhv9H3gegA:9 a=QEXdDO2ut3YA:10
+ a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTI5MDAzNiBTYWx0ZWRfX+r5uoqe9RjEd
+ AhIo/7s4CIs1bzQoF3PUEoUzmzkMOQeImm2UWghi930/Ct0AuQVwv0GNEgVmt8jPKjKHkXzsXrv
+ 89dfuW5dv/k5YRMAfhGc2CS+m6pOpsDLbULIqdKYLsjwE24v7HYgZevy670fDCZWHUmWsxjqERV
+ +/FkBmPH888+S7qtGfJhNQevIQyOWbWluD2XKGA7ju3li/Xmd7j9IcnGjkLfPn+jiZAWX62AAFO
+ XszPI4XtfP+9wx9vOHqJyY9FBzDYMJm1q/y3xoERYrMwd8EpS/TGd03J0UPZnEIlgi5P5G3v6od
+ mNWV38sUi7rYleWGE0BVVvSgWqqLyq7Kdo180AmDe25PlBCY2nbb82+Xpf+Hz92Qr6DU8ZeelKp
+ HUvwh6Y9IVybRPdd8zriVFGacF5AnbaBRAJbkkEmphyR9rv2TTj0Tpn+BdKiWadClWaI1JBZ5q8
+ ppjHS8h5qsj0jnw3Myg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTI5MDAzNiBTYWx0ZWRfX87jEwPT/ZHT/
+ 0SCFg44Ifh3o3iNfmjBsBFyNhwzOhzR4lG52ohiXTxZiYqXP31NFE6NGdsI0K51m5mA+gKphNNT
+ RehZYfbdCS5j4093CeQyt0m75gOLQ4k=
+X-Proofpoint-ORIG-GUID: oXks9cBiV84fK6s9Gpnm7Yfo_qx0qs-Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-29_03,2026-09-21_02,2025-10-01_01
+X-Stat-Signature: 87fbuut95x4c68nb7bximtm1tmgr5s3a
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: o15dp3a6n4kdeanp1pjzwyxwnhqdy7zs
-X-HE-Tag: 1790673174-930286
-X-HE-Meta: U2FsdGVkX1/If4AoFGpKkv1NuEkkZM7dGJwTLPvcV1mTqPmvMpwiGVHlf2StU4Smx7w5SHpsLCMdrBYK12AejlVL+Tjdqx+T1BkzfudUqOmq/s/v6d3o5YX2/ilFRCVvbD14vrWIN+JR6hs3tTt3tcjeBYGFwS8o2eYDA1qSO2F6MD5LmK8XFDqBwhamitlTmqpXH3QZwd7rnIs8FWKVrWP0phL80ib3pNVIMzmsYhZoz/2jRGVnDPu/ieZTF+LmFJDhgzzZ/swNj4gmtQnQXs910c97+yPbh2hm8v9szqkTr9Nij9Ykg0yGmsz4uNFrkh9Q9P7cc/DRMI/ccK5eoha9qVgWKjKGGhdbqpyWI/CVGgvtBS+T8vUrbKQ8FffYqFR+Xej0I15crlv32BDI4csaZHwNj2vZuiD5ManrdtkFOWarFZK10abVNBpzQxrBSQvwDlNepItZhsFZXx1pTAABkeB9+IZORIuSjilSXGzz3gLi+6eCQNpHzLln4dASweapJBVHAF25jIvExZCphXwBt9YbjAgq78ybOGtsu7ITq2OnBF3smlLh6MctgH49R6U+Tl+fNYvKL4ZUGoFrDin8IHSzqdlC5aTpnqtTE6kRKBtkuWTeFHQwI/1QhZpsEhF6aqa8kKTJh9h/B7Jn1L1YnK38YBx09lW5W0kZIFE6mP/FOTpf7Fht17K5ASPQUpmbxNar8VHDadgfhyX1BK+QQ9fhDVpU2xs3c83lWqUOuaHGybO0T5HG7ubZDo/nEMOFVfDK3WaShUfeby/QfzS0OK0Kbsog29/gnRNRbuZM/gDtfnp0m1wvlx24vPr4v8+V/S+2nHAKaSNkxPqsRy6m+uIef7s6oOk1YS562l5Ay13kzHhY+eYyZ4if8XT52CUAYNVVA3i5oZMP/iI5A3Yoyh1v9fbZwQ6wQXMDcmVgYtenPpV8n0nvTKbO8ezIA3IKVupSMlGoTrprhhL
- HWIPvgU2
- 6QS+/hMYJEkfGrK1iQV9L6drhGDTCSEbZhxnT0jP4Lvg2rLFrzfCMa8tBiy4Zh90vXT8UoVYeHM+ld9GwamrMG8pdzwTZw601nH3JO8r7BZQ5Z9tJ/4/2nx7TzVSDC+yKG+V064CAShn4i7foc9yaEcj2fVbi/MHJW9p+pWDPB41Pk+0/x75LOND9KZ2rAjKfTKLXzRfzw0rypq1EHAshAUzlXfBuPrprcRDGn8NdGkRg6puRhsBzuB+FnY1HX92HNIC7gt/sxKqZNCemQ12Hl45gmjPNC3rpacCOU292gSs9ckiWUUaE3hKoFgb9RrKfVi1S5ThZwNoy6OcjpFwQh0D5btKHbmve+4R5J7vXePWCLyWfUMTlrpvAuzqnfK1GLKOi
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 64C6F20004
+X-HE-Tag: 1790673377-508983
+X-HE-Meta: U2FsdGVkX1/qmRPVC24qyKsepG+sHrXRsUoam6ozpY2qVunPiX98jEwpyKAQWYDL5dRSUebJJcoT/4pCdFuvsR9CP9Vp66Z+7/8wEMDUYIaIxYNZhPT6HxDv3z/ah+zPPiLWXwT6ZdHQtgbTGngnBxxR/cCpzrbGXM7FOP6bJXdXQxUUmHwEUzEP6IihYeEjMPEBDEQGD6uztH9H6dnWIDUdlVyicTmT9kQ+pTAjUMv6vSCz9K95ZPSgwDNvjhhGktkMigI7ibePAWsKiezHrtyGfEjXGYI6TSCUi35dbbfofMt/y5CvMR99JvXn8blzNDeSUJSedOfBrb9RhXKCIi7k9Q3wA2fCrPXwBpHrm0H7EOy0kOD+I6uUAIdCx0ZFx7gcM0H4mhxsrGaH/Lq+3oA6yjhi5+vat0V4G7pSmsdXNIAeVxyj6yhwVlElSnI5Me1MvHlq7sksUs7kbpldsXuwKlS9v2cjOQCCzN807by0WSQ14iDMdkqdR5hsDA10jxHkRu9oiXUgPOXmvXcP2H7/vxiHa5jg0Rhd3jN9AZZ9I6m7BR+9VYT7hyQfTTOHEide0zl4Ys0W9ZusSUGJhmLLqXv9Fq/Ka+UVr7+3mFhNRU9dsg8G9x/w58gCLBcFUGfUlf+IqlmrFpvAvpjmdO3H6GRppw3LBPDALlDZCMYQoJ/NqTIIIHhPRmYoDkKCcBCANZO0W5Q0Ds7XSDm+xIfUu88ImLWa/QFJb4rh+aHkxfQBoI+AUyeQMLVcYhe/9oYhXY6zco8O2792LhCvO1jFI3WkchdmBKesnx1CDV+uWSIaI0Gf2rIVHJCOk6dd0bJqpyJOyq5GXXcAwBJK7e88HihT5zwqTV2OCH9nOXLF8TRXtUmlD7KyDniGi5FpGaePu1Rladdo5t2gw7/zCNRZgkOEtWR33Z612IorAneAzLa1iY1KS5knEdI9F4jmi5KHFbZ/e+Pi7rUAoUx
+ 6vGjIYh6
+ TJhnQaDluYsOcTcJQ64V3yvNHIFi/3d7KByyMCHBDcI9T/wOzr7IzUzPndXuLYRKPyLPfr5Lhc6A9eGwkPgIWs7Iza8nWQVPDj+gUs4XwdXfKQqFsRTPR/wFBSR749RSK5D7hR/21IcPOH3Lgvs29HUkQkdJfvONQ+gotNtUZTs0Q0i7bFRPLnfAD/oJwW88cNkvKcpFHBbVAAsoK3jv/NS53SOUld1+cfUQR1HGVqhUaKx7bMciNKmAb/IIQKFf/yowiIkP16lvGx8c2v8dquCLXcRe1KB+PoyLWzzR+njpC2hFH3a1zLP3jOfIEAuJTokW6N2BWRUwH+fuj/aa2YDJn3rjzG05FNyjKe16VDZeH8rGkYSLFzu9pLF2da6cs0YzoTtPQMocZIi+Us/noHLMKWxipaW71Blv8Oi/R1piu2gcJDC9Z/cMS8kZPFEuO4hlb2s9XgIexVY9cf3TuQQiOMaJSSXsGEHgDT6lf2EqLl9+dhn01ByYSaXplkI0Wslz9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,148 +178,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David!
+Hi Christoph,
 
-On 9/29/26 1:28 PM, David Hildenbrand (Arm) wrote:
-> On 9/24/26 07:00, Sarthak Sharma wrote:
->> mremap_test currently uses a lot of fprintf() and perror()
->> calls. It also uses a variable "failures" to track the number
->> of failed table driven tests.
->>
->> Use ksft_print_msg() and ksft_perror() for diagnostics.
->> Remove the variable "failures" and let kselftest counters
->> handle the final exit status. Use ksft_finished() at
->> the end instead of manually checking if failures > 0. Replace
->>
->> if (success)
->> 	ksft_test_result_pass(...);
->> else
->> 	ksft_test_result_fail(...);
->>
->> calls with ksft_test_result(success, ...);
->>
->> Also correct the duplicated "mremap" in "mremap move within
->> range" and the spelling of "dontunmap".
->>
->> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
->> ---
-> 
-> [...]
-> 
->>  #endif /* __NR_userfaultfd */
->>  
->> @@ -1124,7 +1096,7 @@ static void mremap_move_1mb_from_start(unsigned int pattern_seed,
->>  	void *new_ptr = mremap(src + SIZE_MB(1), SIZE_MB(1), SIZE_MB(1),
->>  						   MREMAP_MAYMOVE | MREMAP_FIXED, dest + SIZE_MB(1));
->>  	if (new_ptr == MAP_FAILED) {
->> -		perror("mremap");
->> +		ksft_perror("mremap");
->>  		success = 0;
->>  		goto out;
->>  	}
->> @@ -1145,59 +1117,49 @@ static void mremap_move_1mb_from_start(unsigned int pattern_seed,
->>  
->>  out:
->>  	if (src && munmap(src, c.region_size) == -1)
-> 
-> While at it ... why the comparison with -1. And why do we worry about munmap()
-> failing at all? We generally ignore these errors on the exit path, as it's
-> unlikely we would ever hit them, and there isn't a lot we can do.
-> 
-> So maybe just remove printing errors entirely?
-> 
-> if (src)
-> 	munmap(src, c.region_size)
+On Mon, Sep 28, 2026 at 11:44=E2=80=AFAM Christoph Hellwig <hch@infradead.o=
+rg> wrote:
+>
+> >
+> On Mon, Sep 28, 2026 at 10:18:36AM +0200, Alexandre Ghiti wrote:
+> > bio_issue_as_root_blkg() issues every REQ_SWAP bio as root, bypassing
+> > the cgroup IO controllers, because reclaim cannot stall indefinitely on
+> > swap writes. Some swap writes are not urgent though: zswap writeback is
+> > best effort.
+> >
+> > Such a bio cannot simply drop REQ_SWAP: dm-crypt and dm-thin rely on it
+> > for limit_swap_bios, which caps in-flight swap bios to avoid a memory
+> > deadlock, see commit a666e5c05e7c ("dm: fix deadlock when swapping to
+> > encrypted device").
+>
+> Is that true?  REQ_BACKGROUND very much implies the I/O can the throttled
+> and thus better not be foreground paging, and thus the caller should be
+> able to tolerate a failure.
+>
 
-Yup, this check is not supposed to be on the exit path. I'll fix this.
-
-> 
-> ...
-> 
->> -		perror("munmap src");
->> +		ksft_perror("munmap src");
->>  
->>  	if (dest && munmap(dest, c.region_size) == -1)
->> -		perror("munmap dest");
->> +		ksft_perror("munmap dest");
->>  
->> -	if (success)
->> -		ksft_test_result_pass("%s\n", test_name);
->> -	else
->> -		ksft_test_result_fail("%s\n", test_name);
->> +	ksft_test_result(success, "%s\n", test_name);
->>  }
-> 
-> [...]
-> 
->>  static void usage(const char *cmd)
->>  {
->> -	fprintf(stderr,
->> -		"Usage: %s [[-t <threshold_mb>] [-p <pattern_seed>]]\n"
->> -		"-t\t only validate threshold_mb of the remapped region\n"
->> -		"  \t if 0 is supplied no threshold is used; all tests\n"
->> -		"  \t are run and remapped regions validated fully.\n"
->> -		"  \t The default threshold used is 4MB.\n"
->> -		"-p\t provide a seed to generate the random pattern for\n"
->> -		"  \t validating the remapped region.\n", cmd);
->> +	ksft_print_msg("Usage: %s [[-t <threshold_mb>] [-p <pattern_seed>]]\n", cmd);
->> +	ksft_print_msg("-t\t only validate threshold_mb of the remapped region\n");
->> +	ksft_print_msg("  \t if 0 is supplied no threshold is used; all tests\n");
->> +	ksft_print_msg("  \t are run and remapped regions validated fully.\n");
->> +	ksft_print_msg("  \t The default threshold used is 4MB.\n");
->> +	ksft_print_msg("-p\t provide a seed to generate the random pattern for\n");
->> +	ksft_print_msg("  \t validating the remapped region.\n");
->>  }
-> 
-> That looks odd, as we will now print this as "# ". I would have assumed that
-> removing all parameters as the first patch would make things cleaner?
-> 
-> So as a first patch I think we should just remove the parameters entirely. They
-> are unused by our infrastrcture:
-> 
-> 	run_vmtests.sh:CATEGORY="mremap" run_test ./mremap_test
-> 
-> Does anything speak against that?
-
-Okay, I'd kept the 7th and 8th patch of the series for that. I'll make
-them the first and second ones then, this will remove all this churn.
-
-Or maybe remove all parameters altogether in the first patch itself.
-
-> 
->>  
->>  static int parse_args(int argc, char **argv, unsigned int *threshold_mb,
->> @@ -1232,7 +1194,6 @@ static int parse_args(int argc, char **argv, unsigned int *threshold_mb,
->>  #define MAX_PERF_TEST 3
->>  int main(int argc, char **argv)
->>  {
->> -	int failures = 0;
->>  	unsigned int i;
->>  	int run_perf_tests;
->>  	unsigned int threshold_mb = VALIDATION_DEFAULT_THRESHOLD;
->> @@ -1260,7 +1221,7 @@ int main(int argc, char **argv)
->>  	pattern_seed = (unsigned int) time(&t);
->>  
->>  	if (parse_args(argc, argv, &threshold_mb, &pattern_seed) < 0)
->> -		exit(EXIT_FAILURE);
->> +		ksft_exit_fail_msg("Invalid arguments\n");
->>  
->>  	ksft_print_msg("Test configs:\n");
->>  	ksft_print_msg("threshold_mb=%u\n", threshold_mb);
->> @@ -1282,7 +1243,7 @@ int main(int argc, char **argv)
->>  	rand_addr = (char *)mmap(NULL, rand_size, PROT_READ | PROT_WRITE,
->>  				 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->>  	if (rand_addr == MAP_FAILED) {
->> -		perror("mmap");
->> +		ksft_perror("mmap");
->>  		ksft_exit_fail_msg("cannot mmap rand_addr\n");
-> 
-> Would be better combined like:
-> 
-> ksft_exit_fail_msg("cannot mmap rand_addr: %s\n", strerror(errno));
-> 
-> ?
-
-Yup, or maybe with a ksft_exit_fail_perror() directly. Will change.
-
+Yes, I agree, zswap writebacks are only best effort and in case of
+failure, the compressed entry still lives. I don't see how
+REQ_BACKGROUND could be an issue there?
 
