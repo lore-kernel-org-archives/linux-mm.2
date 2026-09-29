@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885E6C9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:20:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85923CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:20:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CE476B00A5; Tue, 29 Sep 2026 04:20:01 -0400 (EDT)
+	id 81C016B00A9; Tue, 29 Sep 2026 04:20:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5DA6B00A6; Tue, 29 Sep 2026 04:20:01 -0400 (EDT)
+	id 7F3936B00AA; Tue, 29 Sep 2026 04:20:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E34C6B00A7; Tue, 29 Sep 2026 04:20:01 -0400 (EDT)
+	id 730A66B00AB; Tue, 29 Sep 2026 04:20:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A0626B00A5
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:20:01 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BD7311C2F2C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:00 +0000 (UTC)
-X-FDA: 85266101760.15.295266E
-Received: from mta0.migadu.com (out-161.mta0.migadu.com [91.218.175.161])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BE4E320004
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:19:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bCHkS0KB;
-	spf=pass (imf31.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDDB6B00A9
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:20:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9EB92C03FB
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:06 +0000 (UTC)
+X-FDA: 85266102012.14.0FE55D1
+Received: from mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A5F7580002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:20:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fUywBQfm;
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790669999;
+	s=arc-20220608; t=1790670004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5p0z35PLjDhxSJAJpFZa8+/NjJgc0b83OIM1TsDgbRo=;
-	b=s/PZh1imWflxMPBn8bRStGG1S4v+5SG23xuaBvFT0Z2ZwkO4J7K8J6eFdhHQVIe9krtL6G
-	QqYd8NNO/e3bGwDqfEXvJ6EAqVcj6duY3mKzKTe5st9tyi585ADZi9Wh1ZWNiVBXxJ5gfk
-	SvU7y1afebbO8/xb6H2P/rWiFXylkds=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bCHkS0KB;
-	spf=pass (imf31.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.161 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=c1j8wYUeavAheQqH3i69B3Vx14raVrATCv/xxEOsfdY=;
+	b=UfjlirwtjcXNd6thRghQF0cig0L8Szu1g/cAuCOeKRhO54tcovuuDsKrEQbyoEBVfNUrQ+
+	oTJfXCjtTFNYQZA/FI91FAFzaKKEHeIqdwquYEuklWT2sL4LrCJaGOJlTSwxdJgfdxs5E7
+	7XhBPpH0yUXgw07MGaso2Bbo68RqAUM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790669999;
-	b=Ts9t+Y2OwvDl7SWcR+QpvoS+m8ij6WThXxcTbEUWbfYrhGc+L9jPD+hAkkXD8zz4uYCZrT
-	OyPCGQIRCmnuodvlbuZv/60emoKGuwqyVCY4O11/xNkOrskEMMGvmbCxfsxWGW6j/AAdwr
-	9nA6u1TWydLDmB2j8uXUNIb8NLI6v/8=
+	t=1790670004;
+	b=pIU/CIv8X70ZgCUPVaT2zQny5AgLzvp5tpH+cq56JnXeEmnGLvVry+Nb782wugT0sg0Jw/
+	y9se7yOVrsHsvwPjzquYVBBlPWIwQst2z9KBtPV0/vTuGaqum2nn3fEJjLSJ6R5PTQVR23
+	LlZtvcaTl605OnFoXBWIJoTxiTMhcew=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fUywBQfm;
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GTNtvhQM0BkduvLf1bxHQQa2gN5nenib1TDzHr3/lk4=;
+DKIM-Signature: a=rsa-sha256; bh=mEWPvX1FdDCMegEZd4lktZpkSzG9+EQuZUeCnBEnrM8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790669997; v=1; x=1791274797;
- b=bCHkS0KBTqEhdz+P40C/mCNOxPFw545wTpDB1f73Qdn3UUAxchGURPR0qhch6Zf18DfY+W13
- 9Iw+LmGRmODyXVVNKWZHRUvGvQ308u8S07IgvY8vZkici3FhTd+vzrQSpMF2te3zp38jE+9X2jV
- Raw0yV5imOXmcP1APBq5YOJg=
+ t=1790670003; v=1; x=1791274803;
+ b=fUywBQfmVrIpnyOcm5zCU9r/hPSXUL6ztvivVbohT+mRDCS39o56y3hUSieZJcbyW2Hbgf9+
+ kSRfKgp19gzcrttVynEBgB2kxzHW7pjP3fC6OX1JxIh4/cBrKb0GfPlY5nwg9uoHowoCPTZC0tA
+ v+7bgBLuW+fIbyaGjk0dRlRo=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 89245958c046eafb;
-	Tue, 29 Sep 2026 08:19:57 +0000
-X-Mizu-Trace-ID: 89245958c046eafb
+Received: by smtp.migadu.com with ESMTPS id 343c75fff31967c5;
+	Tue, 29 Sep 2026 08:20:02 +0000
+X-Mizu-Trace-ID: 343c75fff31967c5
 X-Migadu-Flow: FLOW_OUT
 From: Hao Ge <hao.ge@linux.dev>
 To: Suren Baghdasaryan <surenb@google.com>,
@@ -86,22 +86,22 @@ Cc: linux-mm@kvack.org,
 	Hao Ge <hao.ge@linux.dev>,
 	Sashiko <sashiko-bot@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the mapping functions
-Date: Tue, 29 Sep 2026 16:20:09 +0800
-Message-Id: <20260929082014.160587-3-hao.ge@linux.dev>
+Subject: [PATCH v11 3/7] alloc_tag: clean up the populate failure path
+Date: Tue, 29 Sep 2026 16:20:10 +0800
+Message-Id: <20260929082014.160587-4-hao.ge@linux.dev>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260929082014.160587-1-hao.ge@linux.dev>
 References: <20260929082014.160587-1-hao.ge@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: BE4E320004
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A5F7580002
+X-Stat-Signature: f6cdxh93q9cpqxiii7ugi8s5tej4xp6b
 X-Rspam-User: 
-X-Stat-Signature: ktc14uyxjiqzt9dezrk7gaus8motab4o
-X-HE-Tag: 1790669998-474928
-X-HE-Meta: U2FsdGVkX1/bYDI8OHGS2EfpBsG419ZQVEaKq+HTJt+QE2xcY2MDIc5myYE0QS6qniss/bZP6GbTA+DhMtrrp0KdUqrisH7WhsAMk6DYcFQV5T7vegUAKQl7TH6qhsek0T2p1GE6/UO3J6Vq9xKIF7/DKXTiZqr5MVtGTkWsA6Af8PT6UNlbUWLfB9TZoSqthABUeOGZSxMmGB5Q258Y/TKgYhbOI+Sby8HcILO/bbEpdNBE93ftl0HAupWiBO6Lh//eGtAMi7l+cEx3NM8FaVp2jSYvDOSqcrqCoa7K6pPevkHk1+KtA9Bdmrixa1k5MCFK2ZHZCK4KwKe2IWT3AoL8RRiR6DSVmmcqkB2YNbpD6yORaCC/SLxciHuOuYTVtQwe9Gy7VDCJXd3xFJXBEl4+sluBvC9l0m87qSIq6Gs1eugzOy1dz4XlB4CS/h6+fnfSQCkwiY9yKJNLDvxlooIqj7Cid93v4htEJaFURm6q0nT1WXQ2JgmBwAsY2uPeNaE1qaegsd4W3B1NHSz+8a/dX/n+C2M+8eCuniHAJrMDPWwzBRQ6hD43js1FDjtjT9XzuxbiGvNC0L4mzmSk0zQVy0jo68ZaTkBKjUM9Vt3ZY/LRrdLkB2OsrHKE+SGsW8Uqjac+0XK6oKX1z4SnQ4MMJIHFm0CYKUlqfs6J1PPbEJk6fH++BE18yDXvbnb7vfEOnrJCeBdtQN5LVWVc/GxSiJXLl7gpXbyEm1eLyWKBfeGosT/isNTwv0ne2mDoklsRmAnbLbs5KzQrXu+YNlX5d/DkMo0UeFDMrSERduYLVmoxxU/flAOaacZx4ckmr75JlpEE/eqeV2GSgqjxZAae4Cx9nZsy1NFB+P0+KJktmo2DKPrpAo9I0vkOQj2iJEfDRtn/t5oB06F31/7kmekPSrhQg+zGy7r9I/YYYtfHcRtMpdoL5vhsfbr0sLbN1L/Pj9Y+d/I3ijs+xx1
- L4EXY4/M
- kKgCmYrKY9LORZKe/HBgOy4plcUOZefAy5lsZJmVSpmvfQ+MqDz9iTK6wtPbKjdErA78N3sk0TyqcFpheZ7HrtfMH2esHP4dkSNWFvDU8S7xjvQ+lvF8cPF2sd8QZbS121k6uUGFOT5bQ/xxyLyWyBCw7qCURJS2z5wdaJuoEdtm1lPFtEp9BBoXHp+YCz7jOUMEXboYFv6Nzq0+vUntbN0+GRnB52q1GLANFQPafaBg+B9MNnKHRVN98J2LkIkJze3Kz
+X-HE-Tag: 1790670004-860812
+X-HE-Meta: U2FsdGVkX19m9BZHPJy+z4be18gpypUwGVRrF6bDnjIwnXu6HJeRy+HI7xkhJUJxTEljw75htZhc4biHuNYSVfR1D3gvacMwfKlouRmY24zaV27uqL44L9Kju6Xg1i4RRj0hQoXOGAD92Rf2UDGFnqvgg1loO1FBwotIGrAOIJDXP8F/WjAmVR5nPq3l4XYtrr84vTsSfSkrFP+u72URnV0XABDbap2kxbJ/5yOT2t/26c01b1QRPC7rSwgB8B9Y5soKEgc5QaHVCfWvdx8gMYMmclFDHwU6+m/BcQOKWV718OAYtz8oh+5+d1UlQSgomPGigz3dpqlArdVwArSytsBGl6hMakpVcX+mBvhuUUtFVNxA7ZGLj0U2AXL8gtLM19WJX9oUPRN3Zy7sTWL9IElr8zitiFNCRwBbexJE4eYQi/BaZt/JxQfWOviZ+1VxtBwqlJzLiZUjeMIJN5wtn73rWVCU2CIcKylwIe0r8UWiBj4cywXw5/CIQnhab7glYWMAWURUXv+BxVrd7POhfUr8NNDmAep9/Y6zSkoVuZuMpkpSJzh3xdJWsH2C+mtxE01Wh3rQ7RZuPxX6s7iDusJfnS07yq7c4ahFxYc4BZVMUYP97egRJsBXNIdiWB3cWpM/WUGfKrbjQT4Iu8avgivEf/UbSJqevJ+LlQ2DDcq8VLVf0SN4xUMzRMZVjGTGn2kZumMK93ghTgtLgkpU1p/KHZdwdjpGUDIBhfXkPsjt6dILqFQGF3qjYAhH/GpE8zotZVCdVo/MIcCL/UjpTArCdSoifSqCZgSDmc+aFz2bJF+ZH7KkDssNqVuB+Co9SsoegofX8Ex++6ZhlSFJcCiIXpmP5Vawcj2vSoB2CH+QGSQCKxhWPk5+/2M1bDHx2yX9pNw2M7qMZOd4V+qfHYLe3+/MXlnbMA+AR7O33/WcgA4ZigIc8U1yQtT2f6vafu9r6zravGfL+zbMt3n
+ JmvhUIEP
+ BnODb4Jm8gyBhyemeEQcmlHbYt7DjhZnIlsMEZnuHhlnXT1PB/wPEeug6ObwVgbvtQawv7/WMs+6oTI7BkDUgLd6Y9Fju12sd+at6kNvlQnuIFFxbKRqQHUo4qgKSZUDadUzgnhCojVLSxMx54fInRKfu1kGZUG/i0IqMlXyFiqwUgyVV+GyGvlKHT7usxGdsRKuV0ORIP2tr+HDgbjMp8QOR7iL6fkdxmUzsrAX7pgFmzNgez9dpUaRQL7F5oDoodJh/+wTcnkvHD9rM49/W+RMlTLmG7wp6XoFs9lyccUHxutY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,132 +109,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-__vmap_pages_range_noflush() and friends can install some PTEs before
-failing and leave them mapped, and the kernel callers do not agree on
-who cleans them up. For example, pcpu_map_pages() and
-kmsan_ioremap_page_range() unmap the leftovers themselves, while
-vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
-__vmalloc_area_node() relied on the mapping functions cleaning up and
-did not call anything like vunmap_range() themselves. When the same
-range is mapped again, the attempt hits the leftovers and fails, with
-BUG() in vmap_pte_range() for huge mappings.
+The reservation is already stored in the maple tree when
+vm_module_tags_populate() fails. A failed load never unloads the
+module, so nothing releases the entry. Release it and roll
+module_tags.size back. Without the rollback a concurrent load that
+already passed needs_section_mem() can reuse the freed gap, skip
+vm_module_tags_populate() and write to unmapped memory.
 
-After discussing with Suren and Ulad, we decided the cleanup belongs
-to __vmap_pages_range_noflush() and friends, so the callers no longer
-need to unmap the partial mappings themselves. Each function now
-undoes the PTEs it installed itself.
-
-The rollback calls the low-level __vunmap_range_noflush(), it just
-clears the PTEs of the range it is given, which is all a rollback
-needs. It cannot use vunmap_range_noflush() because these mapping
-functions also map the KMSAN shadow and origin, and for a metadata
-range its hook would look up the metadata of the metadata, get 0
-and BUG() on addr >= end. The failed mappings were never accessed,
-no TLB flush needed.
-
-Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
 Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
 Reported-by: Sashiko <sashiko-bot@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Hao Ge <hao.ge@linux.dev>
 ---
- mm/kmsan/shadow.c |  4 ++++
- mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
- 2 files changed, 33 insertions(+), 2 deletions(-)
+ mm/alloc_tag.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-index 0c88d89bf0d6..2166086d3dc3 100644
---- a/mm/kmsan/shadow.c
-+++ b/mm/kmsan/shadow.c
-@@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
- 					    o_pages, page_shift);
- 	kmsan_leave_runtime();
- 	if (mapped) {
-+		/* Undo the shadow mapping set up above. */
-+		kmsan_enter_runtime();
-+		__vunmap_range_noflush(shadow_start, shadow_end);
-+		kmsan_leave_runtime();
- 		err = mapped;
- 		goto ret;
- 	}
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 859e6d2d57a3..9bbf75706627 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
- 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
- 		arch_sync_kernel_mappings(start, end);
- 
-+	/* Undo the PTEs installed before the failure. */
-+	if (err)
-+		__vunmap_range_noflush(start, end);
-+
- 	return err;
- }
- 
-@@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
- 	if (!err)
- 		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
- 					       ioremap_max_page_shift);
-+	if (err)
-+		__vunmap_range_noflush(addr, end);
-+
- 	return err;
- }
- 
-@@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
- 	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
- 		arch_sync_kernel_mappings(start, end);
- 
-+	/* Undo the PTEs installed before the failure. */
-+	if (err)
-+		__vunmap_range_noflush(start, end);
-+
- 	return err;
- }
- 
-@@ -683,6 +694,7 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		pgprot_t prot, struct page **pages, unsigned int page_shift)
- {
- 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
-+	unsigned long start = addr;
- 
- 	WARN_ON(page_shift < PAGE_SHIFT);
- 
-@@ -696,8 +708,14 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
- 					page_to_phys(pages[i]), prot,
- 					page_shift);
--		if (err)
-+		if (err) {
-+			/*
-+			 * vmap_range_noflush() undoes its own partial work,
-+			 * discard the chunks that already mapped.
-+			 */
-+			__vunmap_range_noflush(start, addr);
- 			return err;
-+		}
- 
- 		addr += 1UL << page_shift;
- 	}
-@@ -714,7 +732,16 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
- 
- 	if (ret)
+diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+index 2070e682fe10..3e6306ee0764 100644
+--- a/mm/alloc_tag.c
++++ b/mm/alloc_tag.c
+@@ -947,6 +947,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
  		return ret;
--	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-+
-+	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
-+	/*
-+	 * The page tables undo themselves on failure. Tear down the
-+	 * metadata that was fully set up before the mapping failed.
-+	 */
-+	if (ret)
-+		kmsan_vunmap_range_noflush(addr, end);
-+
-+	return ret;
- }
  
- static int __vmap_pages_range(unsigned long addr, unsigned long end,
+ 	if (module_tags.size < offset + size) {
++		unsigned long prev_size = module_tags.size;
+ 		int grow_res;
+ 
+ 		module_tags.size = offset + size;
+@@ -961,6 +962,8 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+ 			shutdown_mem_profiling(true);
+ 			pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
+ 			       mod->name);
++			release_module_tags(mod, false);
++			module_tags.size = prev_size;
+ 			return ERR_PTR(grow_res);
+ 		}
+ 	}
 -- 
 2.25.1
 
