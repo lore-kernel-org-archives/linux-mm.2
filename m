@@ -4,94 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C12DCC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:21:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA1BC9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF1926B0088; Tue, 29 Sep 2026 10:21:44 -0400 (EDT)
+	id 273266B0088; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA2D06B0095; Tue, 29 Sep 2026 10:21:44 -0400 (EDT)
+	id 24BFC6B008A; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A43366B0096; Tue, 29 Sep 2026 10:21:44 -0400 (EDT)
+	id 13B456B008C; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 745766B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:21:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 011F9120507
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:21:43 +0000 (UTC)
-X-FDA: 85267013328.12.737AF8E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 4DCCF40011
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:21:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ik499Jek;
-	spf=pass (imf17.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D58576B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:37:36 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F207804CF
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:37:36 +0000 (UTC)
+X-FDA: 85267053312.08.677EEA9
+Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7B7178000E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:37:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j2K5EQpy;
+	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790691702;
+	s=arc-20220608; t=1790692654;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1reho69nUF+kdSehk4siYojJssv+Dw0ygWX/hVVwBmc=;
-	b=embMaF2/tHlm0DxspssNsqp5bGfJWfLDAqbVGWscGF1AQhiEiBAdKkErsWjDQ2JWTNlm31
-	GJC/5ahEVA9pGh6LCjwS5WG8luDmf6Ej1DbHOhZNvM8y+okeomRVKntMnzGUIr0J5+/L3L
-	P8xBkeAnTzztejtwp1mXcQyJUc9Dcq8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790691702;
-	b=ZAVQ0Fbb8G/F860LHOkTq52Wn2OzclzwHDQYpySXfthhB4jeRKNVY5bSJU4jbSWjZiIqVv
-	kzBdQUPQpLDl7FpkXM+kROWO2EUHH6vfLN0gX95xDvIlDLmNZJdDOForz4GJ2a1pjSN3yJ
-	cfLH5byAjslt2TPEeJMpI6gNbuxORSo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
+	b=6KG1ED1zHc7N4XzLNZpJXHwwX3Z9KGK+XYglrJUcvmrLyLSG4q/dop231caqZB4FYQOCOh
+	1hICfjIM5fh6QNBFEbvsDK5v1OWf//z+aCSkzM97iw7aeK0XRAvPz16ZvSHVBgqUJXhAbz
+	/Qh8o/Xu9YsCz0N4GXsFmV5CfdTKAjc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ik499Jek;
-	spf=pass (imf17.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6F3844403F;
-	Tue, 29 Sep 2026 14:21:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A3271F000FF;
-	Tue, 29 Sep 2026 14:21:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790691701;
-	bh=1reho69nUF+kdSehk4siYojJssv+Dw0ygWX/hVVwBmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Ik499Jek/zqilrnYYC+EvqJwQBrSy6MYHjOwwTEhZvk9cxhOU0fVBL1jzHil2Ctmk
-	 ZXANQlTwLWcQH4Z7CBSf51lnzpoxWZkVRymSm3AR1zv6S4/kSruSIZ0aoJgnPd03Mg
-	 /sJOzDQo0hjKnq0dLUaQCleH+y6GnvJBa3YDHfMXWVncN/3Q63uEaYc49tssjC9MV4
-	 YrlGfnqNOQ1PA6Igd2zHZxrJ3MOr4XEbTsCqqlnRCK3S3rReRRbnsM78yR3gOeAiNk
-	 zzFE8erNTYp4rT9ItW9xbeljW1+o9Q4cNoPSAweosy34U2S6OnBIn2I7Nbd/ZmO+rl
-	 nKhYg9U4pW7Lg==
-Date: Tue, 29 Sep 2026 15:21:33 +0100
-From: Will Deacon <will@kernel.org>
-To: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
-	usama.arif@linux.dev, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	liam@infradead.org, nico.pache@linux.dev, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	kas@kernel.org, rppt@kernel.org, catalin.marinas@arm.com,
-	mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org,
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	luto@kernel.org, peterz@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 2/3] arm64/mm: add set_direct_map_ro()
-Message-ID: <arvJbQmr9GwToA8R@willie-the-truck>
-References: <20260901151818.3191443-1-xueyuan.chen21@gmail.com>
- <20260901151818.3191443-3-xueyuan.chen21@gmail.com>
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=j2K5EQpy;
+	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790692654;
+	b=OPzdgzemRvKvfgmWPdpdGApbs5gPEV8He5dL9Qos1Ly48ki4ovjPgeQ4y7+1+taCN8t2aO
+	h8Fry8sBBXncQXOuUd5p6FGFnhhMWnGjz/YSCoAUiUAY1EZgYI7PLUPUWQKla50GSKc5LM
+	BFQifFbcFg5WDz9f+z43pQxxZ6eJPBU=
+Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0aa9d356eso3369336a91.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790692653; x=1791297453; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
+        b=j2K5EQpyRIutlSSU9kbX3zojd+hWmJaytYTZjAmXFLuu5qtg6NldsvFW4R0yWDBn9X
+         /eN5QuxG7hcukjsJKoWve+MUB2xt9zgynxgFntmgc/k9OBadQGtGWd6NX2hXh9tqnn7N
+         AW3bWCCOY8iiejbKCFWLeEuNEirqjGyrxlb6rJ0mmipTiPyTV9iNYba3b3t6gVNV/p0p
+         aCNyt17T/HlZNyVvoRc36q92JKzflj2XBMNZKvZI6faDux+f6B4F8rUMZ5ZZsqmM+/Af
+         jTm+VPWbptmE5ZNRpduok52aTOFMr9K1LU9XiDDY/vVTdEE/aMaHTutRVIoHQ8ondIN7
+         CKIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790692653; x=1791297453;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
+        b=PTMqeeJLm7DTBvVnZA+I0MeAiOiYYt21tpUKFO1Yms57y1I1HOtRnSofm7x/xzXGCz
+         vh5ieSuXj2qj/wMle2fHFrAPeETSLPYb0WhzZh8YYQqXs1YlvkBn+Yep6/qn5kN48XEC
+         HEaeb6VMBlCANmcmqCI4tE40ZXKL/pUAn82NcCB9+wGJFZ36ao8JKXMUDz6UatYQBk7t
+         NSF8Sv3CsZz+PNCvGNe1E1uBeSf1vtAHSakvYYja+fftzXf7lNAm82oeKJvBwGo82ppO
+         M7iII+l1HqNO7Fk8tiGYJjxauzq4Ybh5bTX20NEm93nrCyWE7BsxYY3SVKYotj5vtIaS
+         V0tw==
+X-Forwarded-Encrypted: i=1; AKwUvBygQXPiI+dF7vG2ZscACMRdyTbiW772OEymmrLnbJj5R5GDYdy284lmrskpPy1TW5Ew/x3oBbWaIg==@kvack.org
+X-Gm-Message-State: AFq9FYI8dX56CtrHK49y0CMxFh3y7d9gBN9Xcx7NddgiKK4GKqzJwqNU
+	/z4oWsquhMqHRr6SIaqsC5QWgAYzY4FPDH3FbjiMTMMQc6zpwtgRuDfp
+X-Gm-Gg: AYBFou0vtwkJaZlCe6sZpWmhrc/at3ASVQbyxKOMOhqrqXuFk3vF+zDpTsw41lhlCzv
+	kszorMLFJC9st+EApQu/DLjbSR+rA9lk+JXdNvrqsoJlYE54HocObOoZ6MKYLAcZJMKVg9+bfd9
+	8IgMI/3t0TXFrWChXoWsR0wXtukt09FNDKqo6fmZ/RJdDp2KWRapqqCRToxrB4nHnE26j+7d5yd
+	/EcEeIuNfdY3GpcyFRbf4kTcZ2FmfQE2jwcYbL4eGgic3VqR7uGIITFKj6esSXaHvVMWROykT0C
+	k1uXV0uKFlYPZhdVOlKvF5vw6OSejCluDC6mIRVgVwH0kZJd+iWF3KPetOAiLzLsvxvGOmHcjBu
+	6WwjwVrCcH09LFuy+4mKwLNXw5bazxfhamoaOBb5S6YK8WOWGLx+eV6lOE2DtrTor2lhH4qfmwT
+	FO4/yRdyHe8DXqbxzUNMKqEJAmxnNgdB9RrhVinF+tj0m7WQmnhLYz8pZagAcWX4Fc
+X-Received: by 2002:a17:90b:5486:b0:39e:6a82:afd5 with SMTP id 98e67ed59e1d1-3a098fe75f0mr13422848a91.39.1790692653315;
+        Tue, 29 Sep 2026 07:37:33 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a49869b9fasm7333202a91.12.2026.09.29.07.37.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 29 Sep 2026 07:37:30 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: "Liam R. Howlett" <liam@infradead.org>,
+	linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: [PATCH] mm/memory: remove unused vmf_insert_mixed_mkwrite()
+Date: Tue, 29 Sep 2026 23:37:06 +0900
+Message-ID: <20260929143707.450805-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260901151818.3191443-3-xueyuan.chen21@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: emx5priusuwj1bq757mgtg6uwdmygbzn
+X-Rspamd-Queue-Id: 7B7178000E
 X-Rspam-User: 
-X-Stat-Signature: nsmh755zejjabjkdazbx44kkmjq54wr9
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4DCCF40011
-X-HE-Tag: 1790691702-114403
-X-HE-Meta: U2FsdGVkX1+6dpmnWA8v9w6M8Uo1DrNEv7OcM4KS3vnntG6wkj5cchi9lfOmQlfalQFtCjGFwlqjspK+AFwP/IqTCVPFhpEhmruM7h+4aVj5rGTAivYIbW5qRQW3p4NhsM0TvcDnDkFvcOoX+8fFbGDrOMz+cvXf6ydlXRs7vueCbe+A9q1AYm+TpyQwtpFr+QzWrnCttpbOD4TCSzVVd3rGbtSNuAqM/8lstqm7/yoCBs0zlk04E8reiB96mKE0OB5Fmf2cdRICvU0O4Z+4ZbGHWS15chwjTdSLdTm7YY3pTfa9J332m5rC+dAYhz0cOuESXufSka8JHgg2m+PTT6p7NKH7q+35TtgsuiGcG2e62wDXwgP52zVEC62fdP2/YDQ4j3Z5a7OaGlTUSt+Q7c91C8gI34ISD2CXlihrh7ZD9/ksL77o3d5wRDxDdRYp0R+DZG0230zG0Ry+CQPXHg499wsBdw3+Q3/fPITgCLAQUSpu/OCA8BfldVf5lg4yYhzhr+il2jmIZQEf4y6t7lXVomJeGTrweOZmYxZu510OlMc0+UEf6qBTMb3faSFvzKUmrVOE3xmwcgUJnKNBmB/l3FxudhJIra/8Rs4kkyu+g8hirhkafINVoya/Xw0har7Ey7HrCr5UT/OVkhK6okSYzvDYKqmbo3+wusOUAR+sq+2O4CAjhniVWksg+kVNTe8/Z+rSlEB3pOudx/hlbL7NdLSLMwX6AM6H8x/a+7UEwmh4CTTaR7RTu4Y8XoRjWRBOuqUIEgtZJBPCtFsTRKxK3Wrxip2kijSkJ82frKM2J3Ha9doyAS8SqyxQ1F3mLWxFjqMc5S7BusHTWI8HZ92xMHmk8fHzbVyZMgpqrOdXFB0qOO0Yg5QEzAx0YAaSp73UxVYASXdT8S5YjtrgPyPejSGihaHNKudoVbypXkn27aEiqDCOIZqNiDgC1tg0jfbGlhu7iURcNZfnoVA
- AqX2CsxM
- c9WgT/qzwtZru34tqKpELMGmaiuntxMgSPlkwLaoxLwSzM85gIW67Pw+O87t79fwXJIRET/Nqa3eod1pLrt0wWowOEpiMF6SaXERZzAFMM8ybh3MfUU60r4KswBohN1XA5ZRMjrSlVl/e5Wf7fsNeG7Rtpv49FyPrJreNubcRYzWmvoffRf0VUCs3yEYSr9lkYmIb3sVqB3pGk339Fh6fLoF/hhuMh6PRxLTHf+M13OOPbCIQ8O9P/a65r9T+N48lhxStqaHUpVwlGvsSYxPQLRi2u6XccAo0Uaa1ewRPsly0LbNAxoNox28Qk/faOzS2Sxuhas+ZRRoDd1MkfLRNswRO4xz9F2ZK00h2shlzJAJa2sziQ6RHjZBHJS7iHcmmDSsoaXBH+xhCWvfiYFvpL1SBoPmJDiR9pjAGLlLwTZdzeVI=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790692654-466901
+X-HE-Meta: U2FsdGVkX18rWl6KWvY2m7wwdJxUfrbSEAbyKeVLXfcsxY+ZfA309I1O0mbgLudFHO9LyFCwSPRFl94IwQD9gaa4uky+kPIqcz9uMIsvaZ+PXIVa4RIcQpvcGns7BFg4KvyHeDzICdAaaLHcanNRnUJDO8mHjonZdmZY1y6PbgX+DsnFEpcqKhxQdZorA6XfbO6ygsyYA/gZSLwM4KhfrrsaKQD175VePH7s9RpnA3YQp/6B0hJ+jjHrx9RoZTKlZ3r0uL7yed+Jw+AzcsF8ID2AxyBeb9oSMe6TOeLgFCoOd/VJaIAeirsi3evoabg2HvMrwjh/RDBu/bvwjM2WY4lZSgz7BgGp+F96IOEiJEZdtjsx5iwTMwc+6CRQEk9Y3HmfbHqWx811BSYdG3y1oeKy7AKYH09U6VDBbMmN4kAD1F0eRC7QUu8pzsBeF5MKijF4KqZou8ndjLueW1Qp6e5EC7r3afKTacpLKzemzc0gpFL3j+b8G8qJvaOfQ5x3Qpq+l2/F82o3SdhCSA1z/bFSbuLA+81ZW0Tm/8WI/10PLjBEGp15jf5A+oC1i9jlKfD8dVvKUqN4IVTYIqOliL2ASKUHNDmwalXnuyv9vm6eMKSkvTH/aFTLngYs21Xwy1ti1TOVrmAqSnqhqteR89sZyXkQPsrPrmQsmWNR9ZbUpG0jjgS8d9ozjSBQETDho1GVEGOODkJyXYFf/CTtU72Mq0tZUYFAN9OUHrStdmygaAkGJfvCYMQDsxrUxdpSLnnCUX6ibPYEVqVsdMs8UNRouBPcyRZS/+NNR5JBlTKBsPAHMQ9VCFZmB15XJaig81L8N2g4UoCalZKqfumrKVFsJHSWHpInPQs5Z86ljU1crxEWbjWGVcIkH3aDCc0e6Nz3C8rd2vVqQuvUDKKIBcmiU4qPfhsVVujCiAFJ7xCUq2S+pt3koRtryBR1iKgQWB+MYX0eAwXX1Xp7lSi
+ NBqXnxML
+ 8h3xfKp1H/e6arsV53b+CxQbaJl/C906bqAsgc6a45TMtmQW2fId3eb5CesnyQMnRdQ1yl3Fkc3yl5tnOz1iLOW3N+XJWtzWVFVfAtYjw66FOmuqsK2ohNKWZhWRFPbRpWW0URpaAVmVFDZQ+NkckpObQlMGV9iCXPl+BhMAwZB6QWCyyfQwKbNyQvuzfdE8t4b7foKDq1RkyqgCSdycvXGEdxeU12bWOLAKMY3Jy3EgeDjTF45ng9VEZbTHAoapLbnA8/Jl73MpMo5g6HtFEJPoEhlI5bOS8o2undP9R++xY2Vbpt00TJIpb1/vq2rq7OMTvaQcBYvXjsK5W1QQwgPigyttQtE+jWWgKyOior5ABNCohZ3ZGIfyUfvXuunqVwnQmy06jJGTWrXrc9nPMn/Zfe95rzxH+O230uKHofuJMNDYUdtTSW2WRgVy5Dmkxk+hw8F5AVtTuZGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,55 +120,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 01, 2026 at 11:18:17PM +0800, Xueyuan Chen wrote:
-> Implement set_direct_map_ro() for arm64 and flush the TLB internally.
-> 
-> Co-developed-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Lance Yang <lance.yang@linux.dev>
-> Signed-off-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> ---
->  arch/arm64/include/asm/set_memory.h |  2 ++
->  arch/arm64/mm/pageattr.c            | 12 ++++++++++++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/set_memory.h b/arch/arm64/include/asm/set_memory.h
-> index 0091ba12200e..1be86dc11543 100644
-> --- a/arch/arm64/include/asm/set_memory.h
-> +++ b/arch/arm64/include/asm/set_memory.h
-> @@ -13,6 +13,8 @@ int set_memory_valid(unsigned long addr, int numpages, int enable);
->  
->  int set_direct_map_invalid_noflush(struct page *page, unsigned int numpages);
->  int set_direct_map_default_noflush(struct page *page, unsigned int numpages);
-> +int set_direct_map_ro(struct page *page, unsigned int nr);
-> +#define set_direct_map_ro set_direct_map_ro
->  bool kernel_page_present(struct page *page);
->  
->  int set_memory_encrypted(unsigned long addr, int numpages);
-> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-> index 132938b32eb1..0e95cd904ccb 100644
-> --- a/arch/arm64/mm/pageattr.c
-> +++ b/arch/arm64/mm/pageattr.c
-> @@ -355,6 +355,18 @@ int realm_register_memory_enc_ops(void)
->  	return arm64_mem_crypt_ops_register(&realm_crypt_ops);
->  }
->  
-> +int set_direct_map_ro(struct page *page, unsigned int nr)
-> +{
-> +	unsigned long addr = (unsigned long)page_address(page);
-> +
-> +	if (!can_set_direct_map())
-> +		return 0;
-> +
-> +	return __change_memory_common(addr, PAGE_SIZE * nr,
-> +				      __pgprot(PTE_RDONLY),
-> +				      __pgprot(PTE_WRITE));
-> +}
+Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
+vmf_insert_mixed_mkwrite() has no callers, so the mkwrite argument of
+__vm_insert_mixed() and insert_pfn() is always false.
 
-I haven't quite followed whether or not you intend to send a v8
-making set_memory_ro() handle linear addresses, but fwiw the
-implementation you have here at least looks correct to me, so:
+So remove the function, the mkwrite argument and the unreachable
+mkwrite branches. Also merge __vm_insert_mixed() into vmf_insert_mixed().
 
-Acked-by: Will Deacon <will@kernel.org>
+No functional change.
 
-Will
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+---
+ include/linux/mm.h |  2 --
+ mm/memory.c        | 76 ++++++++++++----------------------------------
+ 2 files changed, 19 insertions(+), 59 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index c038d06825c3..2ac734efd4ec 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+ 			unsigned long pfn, pgprot_t pgprot);
+ vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+ 			unsigned long pfn);
+-vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long pfn);
+ int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
+ 
+ static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
+diff --git a/mm/memory.c b/mm/memory.c
+index 330cde31bf8b..1f83a26f8733 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+ 		if (!mkwrite)
+ 			return -EBUSY;
+ 
+-		/* see insert_pfn(). */
++		/*
++		 * For read faults on private mappings the PFN passed in may
++		 * not match the PFN we have mapped if the mapped PFN is a
++		 * writeable COW page.  In the mkwrite case we are creating a
++		 * writable PTE for a shared mapping and we expect the PFNs to
++		 * match. If they don't match, we are likely racing with block
++		 * allocation and mapping invalidation.
++		 */
+ 		if (pte_pfn(pteval) != page_to_pfn(page)) {
+ 			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
+ 			return -EFAULT;
+@@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
+ EXPORT_SYMBOL(vm_map_pages_zero);
+ 
+ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+-			unsigned long pfn, pgprot_t prot, bool mkwrite)
++			unsigned long pfn, pgprot_t prot)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *pte, entry;
+@@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+ 	if (!pte)
+ 		return VM_FAULT_OOM;
+ 	entry = ptep_get(pte);
+-	if (!pte_none(entry)) {
+-		if (mkwrite) {
+-			/*
+-			 * For read faults on private mappings the PFN passed
+-			 * in may not match the PFN we have mapped if the
+-			 * mapped PFN is a writeable COW page.  In the mkwrite
+-			 * case we are creating a writable PTE for a shared
+-			 * mapping and we expect the PFNs to match. If they
+-			 * don't match, we are likely racing with block
+-			 * allocation and mapping invalidation so just skip the
+-			 * update.
+-			 */
+-			if (pte_pfn(entry) != pfn) {
+-				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
+-				goto out_unlock;
+-			}
+-			entry = pte_mkyoung(entry);
+-			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+-			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
+-				update_mmu_cache(vma, addr, pte);
+-		}
++	if (!pte_none(entry))
+ 		goto out_unlock;
+-	}
+ 
+ 	/* Ok, finally just insert the thing.. */
+ 	entry = pte_mkspecial(pfn_pte(pfn, prot));
+ 
+-	if (mkwrite) {
+-		entry = pte_mkyoung(entry);
+-		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+-	}
+-
+ 	set_pte_at(mm, addr, pte, entry);
+ 	update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page? */
+ 
+@@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
+ 
+ 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+ 
+-	return insert_pfn(vma, addr, pfn, pgprot, false);
++	return insert_pfn(vma, addr, pfn, pgprot);
+ }
+ EXPORT_SYMBOL(vmf_insert_pfn_prot);
+ 
+@@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+ }
+ EXPORT_SYMBOL(vmf_insert_pfn);
+ 
+-static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
+-			bool mkwrite)
++static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
+ {
+-	if (unlikely(is_zero_pfn(pfn)) &&
+-	    (mkwrite || !vm_mixed_zeropage_allowed(vma)))
++	if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma))
+ 		return false;
+ 	/* these checks mirror the abort conditions in vm_normal_page */
+ 	if (vma->vm_flags & VM_MIXEDMAP)
+@@ -3012,13 +2991,13 @@ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
+ 	return false;
+ }
+ 
+-static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long pfn, bool mkwrite)
++vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn)
+ {
+ 	pgprot_t pgprot = vma->vm_page_prot;
+ 	int err;
+ 
+-	if (!vm_mixed_ok(vma, pfn, mkwrite))
++	if (!vm_mixed_ok(vma, pfn))
+ 		return VM_FAULT_SIGBUS;
+ 
+ 	if (addr < vma->vm_start || addr >= vma->vm_end)
+@@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+ 		 * result in pfn_t_has_page() == false.
+ 		 */
+ 		page = pfn_to_page(pfn);
+-		err = insert_page(vma, addr, page, pgprot, mkwrite);
++		err = insert_page(vma, addr, page, pgprot, false);
+ 	} else {
+-		return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
++		return insert_pfn(vma, addr, pfn, pgprot);
+ 	}
+ 
+ 	if (err == -ENOMEM)
+@@ -3057,6 +3036,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+ 
+ 	return VM_FAULT_NOPAGE;
+ }
++EXPORT_SYMBOL(vmf_insert_mixed);
+ 
+ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+ 			bool write)
+@@ -3078,24 +3058,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+ }
+ EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
+ 
+-vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
+-		unsigned long pfn)
+-{
+-	return __vm_insert_mixed(vma, addr, pfn, false);
+-}
+-EXPORT_SYMBOL(vmf_insert_mixed);
+-
+-/*
+- *  If the insertion of PTE failed because someone else already added a
+- *  different entry in the mean time, we treat that as success as we assume
+- *  the same entry was actually inserted.
+- */
+-vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long pfn)
+-{
+-	return __vm_insert_mixed(vma, addr, pfn, true);
+-}
+-
+ /*
+  * maps a range of physical memory into the requested pages. the old
+  * mappings are removed. any references to nonexistent pages results
+
+base-commit: 1c2b8d2725f84b43fabe3b3e9628c91db8ca6c65
+-- 
+2.43.0
+
 
