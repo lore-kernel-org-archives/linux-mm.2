@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC59CCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 12:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF928CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 12:32:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D64946B0088; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
+	id 7F05F6B0088; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D14FA6B008A; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
+	id 7A0936B008A; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2AA36B008C; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
+	id 6B6466B008C; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99F966B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B08E51204D3
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:05:37 +0000 (UTC)
-X-FDA: 85266670314.24.9C74D24
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BB644A0005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:05:35 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=g0qkdzdz;
-	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E42D6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:32:54 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5F0214046F
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:32:53 +0000 (UTC)
+X-FDA: 85266739026.18.45F892A
+Received: from mail-m1602365232.xmail.ntesmail.com (mail-m1602365232.xmail.ntesmail.com [160.236.52.32])
+	by imf30.hostedemail.com (Postfix) with ESMTP id D7F278000B
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:32:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=deepseek.com header.s=default header.b=gzhKioD1;
+	spf=pass (imf30.hostedemail.com: domain of huang-jl@deepseek.com designates 160.236.52.32 as permitted sender) smtp.mailfrom=huang-jl@deepseek.com;
+	dmarc=pass (policy=quarantine) header.from=deepseek.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790683536;
+	s=arc-20220608; t=1790685172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=IeJBDf1b417jy+i11l2wZ8S+9jPVVEPLf0gsDfp/frs=;
-	b=VA6fkWQ8+To7D3DblraaUtiYd3Gfr4tXeyUY/XsaSwZu+wsLkgrQT9h6Emyljtgi2vfCLZ
-	iqrOOUROl7wOrsJyJPBxEHNyPg1Qg+5JcfAY7NSogIWXvstgDowUm/6HQUsXdSZNGO6jMd
-	XPPcnUfqZlfO+uVJHbaAZKRYyQXJ9j4=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=g0qkdzdz;
-	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O0SVgsWU1lSvWpVjmKROD9e89ZMTCMvum3N438FqEq8=;
+	b=ZJvf2nqRCcKDCkyhAMgX4aJjatQ0DybeZozl3ufz2GdipWL2oRonNRb8LfMJx+0VEIuAgX
+	G5aoN6caSHxmJ75gNCQ60SP0rpzGTPyEsightqisJqVkPJIW6yhoo7t0A6iwqcKEwPH8gc
+	oUOJAiAwfW+8R21B1HBCKGV3LBMgH/g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790683536;
-	b=DYdcRPfa6jVsWRCzCf6AG2d+PTQOHhc5FVAsPpPJaRaCcwee3X5ZkNmOLGjzqRa/qLUtZl
-	1bgavHlRaRsUb9DpxKWwSwK5ZP9Da4b1mtJQHbhG530xeKw5QPDSdlwJDO+ooqV3doWIQx
-	SxkS5w83P1EII2Ccjk0adiTCt5RpOPw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17EEE1476;
-	Tue, 29 Sep 2026 05:05:31 -0700 (PDT)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D15D63F86F;
-	Tue, 29 Sep 2026 05:05:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790683534; bh=vUuie+qDqthHWW92rj4hGf4q1VZUQf2gLO+ErZoFFLg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=g0qkdzdzbsZeKr8noK/9BvgTQud9GeBvwH5RO9Gme6oQ8sI2NE6BsYFg8ZKPPBfci
-	 7mLGsbZeU4mu5SC8BFqCJcrOzw0OBVESwX8bzh4xrEb7iaqyU3gotcutZ8Q0cHMPSe
-	 m+WO6RXfTBZ3ySRefZOIAp1o2kNWXmR9FO6IBvNQ=
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC] mm: Add KUNIT test for ptval_bytes_to_hex_str()
-Date: Tue, 29 Sep 2026 17:35:30 +0530
-Message-ID: <20260929120530.3394073-1-anshuman.khandual@arm.com>
+	t=1790685172;
+	b=gFLm8Vpk3zPJKiRz9FpXAlUEycKxPul025Ua57fBFPcV+TZyFUPLY0NH1rjVnl1ABpTKEs
+	3VjtiMdCByBmzxNDQPbnjB6BVz7tLKYC1PtL7M8Ln/WeCqszTsUpFj/ius3oERK1Q9UZ8A
+	9jR2rSpl7l+E/abd+J3zxXqEROf2/j0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=deepseek.com header.s=default header.b=gzhKioD1;
+	spf=pass (imf30.hostedemail.com: domain of huang-jl@deepseek.com designates 160.236.52.32 as permitted sender) smtp.mailfrom=huang-jl@deepseek.com;
+	dmarc=pass (policy=quarantine) header.from=deepseek.com
+Received: from deepseek.com (unknown [61.164.44.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4f821470c;
+	Tue, 29 Sep 2026 20:32:42 +0800 (GMT+08:00)
+From: Jialiang Huang <huang-jl@deepseek.com>
+To: lance.yang@linux.dev
+Cc: baohua@kernel.org,
+	damon@lists.linux.dev,
+	david@kernel.org,
+	kunwu.chan@gmail.com,
+	lianux.mm@gmail.com,
+	linux-mm@kvack.org,
+	mst@redhat.com,
+	ryncsn@gmail.com,
+	sj@kernel.org,
+	virtualization@lists.linux.dev,
+	xueyuan.chen21@gmail.com,
+	huang-jl@deepseek.com,
+	xiang@kernel.org
+Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
+Date: Tue, 29 Sep 2026 20:32:41 +0800
+Message-ID: <20260929123241.1408414-1-huang-jl@deepseek.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260925054408.10431-1-lance.yang@linux.dev>
+References: <20260925054408.10431-1-lance.yang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa0ed272b5009cekunm228468aa65c5b2
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDSEpDVkJNGEJITUtNQ0xJGlYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlNSlVKTU9VT09VSk1JWVdZFhoPEhUdFFlBWUtVS1VLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=gzhKioD1B1uZQpMFbOo3brtYlrSTQQuk4RhuZu76oYFOEoxNc+2X0r83h+DMn8d0wDnVxAUyFWufPZPvawOvTRF0WwSWL//a40fpZzwYpaDzfSRnoMiDU/mIhuKP0h+ZpRi0wpdTIoXpnEsWJsZZ1n/Xo3pTBUOA1UoFtNrs4JA=; s=default; c=relaxed/relaxed; d=deepseek.com; v=1;
+	bh=O0SVgsWU1lSvWpVjmKROD9e89ZMTCMvum3N438FqEq8=;
+	h=date:mime-version:subject:message-id:from;
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D7F278000B
+X-Stat-Signature: riai3s6wqk553popct1mpwdtykrue4kf
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BB644A0005
-X-Stat-Signature: 8fpagfeec8c44585p66uwny1ax5eik17
-X-HE-Tag: 1790683535-140341
-X-HE-Meta: U2FsdGVkX1+5xMsVWIFsUk3HfhQHn5rtohFuYglEcgCuJ5Wim7R8L/+B0M9O6qepsfOGTjvrm9KXmzlstJXYoltbHElxgZKBf5L2ChQIimsCQLamXBFLGUSo9GMU/Me29FIo7kzKalvkwvRkNI7mgMxu/8hsC7cVJwufD3unOdzJ2jJP+gMWIidKzSi3O7GvRkp+q9ItRBMnWebALjzG2yEV5IPABC4v4mY9yao/Jnh3vNjmd1UaERfjzXmoegU4FI+HtfxDethD19Tc8uzC+WG0kTtS3D0iTzpSGTwQewhiez3OCXn1IQoY7PIZv3UaANznhziDKArFTPN7rJAoJl8oB6/PBRTubuHSI4oBgY3hMKXcKcZuklAipLHxENzdFbO//EUxFAku4tgU7AOxh5pnEfs+OMQZyhaqt6DEZ7oWREJuUe8qpzCObzo4m+8fsgiOwJR+eXuJYC8j0iHhbk5x/3PaPF3x37QpHn1v+e2xs0KqR7ibuNDuzGNwmMpVa3i2rCOlDSLJzP08aZZYUnS/YmoGQ9YBuiCLjav3Hse8EDWYZUCkkX0IXV6z3Groo43YoDL+fwN8JG7jhQjgonmNtYtIjPJnKT3f/yFPNGuw9T8Hk45hVmsbSfRrpLTq7LmZA5Takrzm/8T+HuZ3l27OYZGKEW6GwIZZy7Ku+ftNKmJvKi5zEsLcYJBqMTUFfCdbxrDNAlM20QaFLaTvCn5WUmlQU1vnN4cANOi/Gz90ntsy1A5RH9e4PbZB7f2xNMA3+T3cBPcj92Rv1Omws0SNJ1z4kSkQbbWDVoQ9EkMmkwYMWXUrT/sURAjQ0A9EiX1KSX4id/HKaeULcZitxAdhDjOMMpfnMuaCLudyeDilOUR6BS+QvL7k8zP6bMdgLJpH2iISPPLcSOacX3hZTtGywgTveUUffTwdUyB86i53yNDjW0swBSsJ76DY93/Bw+xu4cqs9nu/pP3GXXs
- Ktaste09
- PfSdpjQmjiOPIHbLoA3KzVpdgpLPPtPfkcMANl23bALzDk+nmC95WOoPHK083qZLdy44OQY3BmkEhPnod2oryh9OCqV62/UdWr4ymC2vbaphf8RtRVnOyB4lYxM08bhzjqepMOocGUGmlzB8+b7E3U5gntwgByK6Weiu4nA1hgf0fIT/Znf1fk/ksKALwtcCAyPFKpTVwqxeb58CQIvTnN/23kR/UYpRW+xK7DuJycZTOaWsIeUdSl0GgcZQwk0LKWRJ+uzjnCid27uQ5LVE9GeY7hrrm+jqItLaGwCCFobP4pAbLzr6V3ekraUvgm3OmLQathLMavPtISDenYHzECchnBlANImHwQGYbwli6U3Z1ZJoCR6WKQnJXKjmhQps4FOWCmF5gmFeQOyju0l+6X80ggbwb6TNmsFh44acCYEJHey5yw+pqdJuMm1SrEa4ZVu69DmMN+YPbIvQ8LN9HcAKh56pgsoumNZlI
+X-HE-Tag: 1790685170-600825
+X-HE-Meta: U2FsdGVkX19mvQkJHnJfsaNVZnDe95NvsjQGq3NOup2uXn0i8dZvX+J9onkfMeKfj/2W11MoOTP71Q8VLNEt7Dff8NEEbheGfL3JJlkXuYlqu7QGcyvpZ32xNGYmDTLVxRubsb4CmpjhoBBASQstIl1fSe1O2Q4J8bVuRjAaM9yZFvd6WIL/t2zghLRjBycGKr5q2Utah6xwSSTcZnkVAROnAwH009L1YbBnqZZFxH8Qg3bXJfXMy1NsGiF0pbIzeELJbvN1kIzE5N8k4l0RME/pFYhtBy+DlqvZPTtd5Ka4xPdS/ACY77361XyxWFE+Xxb5+rL+uuF1XD/2e98fghLMnqBIIR4mbPpVFjzmwx3ZohXUXDWSqKDdFCLvuH+HJhFk2RhuKfRX+2b7RGeh4/kK5ElTfhy4TvORhMkWA+Q9cswnb/cshjMjnS0O4CTZI82IhKgfPeoXV9XFW2WJrTLG8kgcKS0fmi6QOTHNC726Z4mj47jO1CD2WmS1kN1jiCiFXxc3HxxZU1OZrt9i+B7dFj74QyUz4A0L8wD/wu107L8ss4LbVSAc0M7/Y6PPSVOAaYEDzaIjY9AuetVHUT4u4DE8O2cFn0lincedPQde0N4RV/hYgxXo5AnxH6m90/nKxxkkP088lFyRNSM+HB447YXYfzaJRFB/1W5B26G/aIEFnQKbjLk0RsnEIM3gI5RESTFIdrqtDKmLFb+rAyHYRVfPpPuux1GloLUI5HujFpwcjDux0rPyPOFXE/YV4b5JFSsQdu6hPCdFrss6rMDBUafg6uV6opBnxPjNn98HLMYrmLpu+flz4gbDE/a8DRhBiPEjx9hT6bDlta8DUUgwyBfKMWCnQJbwLuA0h3C0gsuOGXQfolPVfwhOl6drl5X9Y50UjBrJddUUkD+pqzJ9Kxcf7lbzMGCRSmz69EB71lyylQ1amGygDsItR9Uqh1kkwepoiHd2ATfP/En
+ dUhcbCcb
+ 6AVmKDosTOPxGH1rHNnCCel8s805HeIO88OYN0UW88pignBVHxaBAFCCZwv3U0c7vNyzHYEFHzqcG5vLymSkDwoks2TsMT58kUx665RUxV+a4KNF04OkMY2xHLjMBBXn0GwnKc37iRTZ/wtTrq9b9IA9qoJWkqhBXmlxS8dJUoiapGadEGl+ZwLdEy59EzliYAHeD5CcVsCmh/VoRzI7wcH8/kak6k10rdnTVXHg3FfLDLmkxN8mVCLRBSw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,179 +99,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add KUnit tests for ptval_bytes_to_hex_str() to verify conversion of 32-bit
-64-bit, and 128-bit (when supported) page table entry values into printable
-hexadecimal strings.
+Hi all,
 
-Add a new PTVAL_HEX_STR_KUNIT_TEST option to enable the tests.
+I'm an engineer at DeepSeek. Thanks for the discussion, and thanks
+to everyone working on DAMON and virtio-balloon free-page reporting.
+They have been very useful for our workloads.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This patch applies on v7.3-rc5 after the following series
+Gao Xiang wrote:
+> It can cause sync 4K faults on the host in the worst case
 
-https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
+This is one of our concerns with virtio-pmem as well: moving I/O onto
+the page-fault path can introduce performance trade-offs. The other
+concern is the substantial struct page overhead for large images.
 
- mm/Kconfig                        |  11 +++
- mm/Makefile                       |   1 +
- mm/tests/ptval_hex_string_kunit.c | 111 ++++++++++++++++++++++++++++++
- 3 files changed, 123 insertions(+)
- create mode 100644 mm/tests/ptval_hex_string_kunit.c
+For now, we enable virtio-pmem only for moderately sized, frequently
+used read-only images, where there is more opportunity to share the
+same host page cache across sandboxes, as Gao pointed out.
 
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 604c58199acbf..f68bf26b98c83 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1511,6 +1511,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
- 
- 	  If unsure, say N.
- 
-+config PTVAL_HEX_STR_KUNIT_TEST
-+	bool "KUnit tests for pgtable entry string conversion" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Enable this option to check that ptval_bytes_to_hex_str() is able
-+	  convert given pgtable entry value in bytes into hex strings which
-+	  could be printed.
-+
-+	  If unsure, say N.
-+
- source "mm/damon/Kconfig"
- 
- endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index e7245cb88c665..d08b8bd01917b 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-+obj-$(CONFIG_PTVAL_HEX_STR_KUNIT_TEST) += tests/ptval_hex_string_kunit.o
- obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-diff --git a/mm/tests/ptval_hex_string_kunit.c b/mm/tests/ptval_hex_string_kunit.c
-new file mode 100644
-index 0000000000000..45c203cfb49ae
---- /dev/null
-+++ b/mm/tests/ptval_hex_string_kunit.c
-@@ -0,0 +1,111 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <kunit/test.h>
-+#include <linux/pgtable.h>
-+
-+struct ptval_str {
-+	u64 val;
-+	const char *str;
-+};
-+
-+static struct ptval_str ptval_u32_tests[] = {
-+	{ .val = 0x1234abcd,	.str = "1234abcd"},
-+	{ .val = 0x4455aabb,	.str = "4455aabb"},
-+	{ .val = 0xccddeeff,	.str = "ccddeeff"},
-+	{ .val = 0x12345678,	.str = "12345678"},
-+	{ .val = 0x87654321,	.str = "87654321"},
-+	{ .val = 0xaabbccdd,	.str = "aabbccdd"},
-+	{ .val = 0xaa44cc66,	.str = "aa44cc66"},
-+	{ .val = 0x11442266,	.str = "11442266"},
-+};
-+
-+static struct ptval_str ptval_u64_tests[] = {
-+	{ .val = 0x123456789abcdef0ULL,	.str = "123456789abcdef0"},
-+	{ .val = 0x113355779abcdef0ULL,	.str = "113355779abcdef0"},
-+	{ .val = 0xaabbccddeeffaabbULL,	.str = "aabbccddeeffaabb"},
-+	{ .val = 0x1234567812345678ULL,	.str = "1234567812345678"},
-+	{ .val = 0x0000000000000000ULL,	.str = "0000000000000000"},
-+	{ .val = 0xffffffffffffffffULL,	.str = "ffffffffffffffff"},
-+	{ .val = 0xaa00cc00ee00aa00ULL,	.str = "aa00cc00ee00aa00"},
-+	{ .val = 0xc0ffeec0ffeedeadULL,	.str = "c0ffeec0ffeedead"},
-+};
-+
-+static void ptval_hex_str_u32(struct kunit *test)
-+{
-+	char buf[PTVAL_STR_MAX];
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ptval_u32_tests); i++) {
-+		u32 val = ptval_u32_tests[i].val;
-+
-+		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
-+		KUNIT_EXPECT_STREQ(test, buf, ptval_u32_tests[i].str);
-+	}
-+}
-+
-+static void ptval_hex_str_u64(struct kunit *test)
-+{
-+	char buf[PTVAL_STR_MAX];
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ptval_u64_tests); i++) {
-+		u64 val = ptval_u64_tests[i].val;
-+
-+		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
-+		KUNIT_EXPECT_STREQ(test, buf, ptval_u64_tests[i].str);
-+	}
-+}
-+
-+#ifdef __SIZEOF_INT128__
-+struct ptval_128_str {
-+	u128 val;
-+	const char *str;
-+};
-+
-+static struct ptval_128_str ptval_u128_tests[] = {
-+	{ .val = (u128)0x1122334455667788 << 64 |
-+		 (u128)0x123456789abcdef0, .str = "1122334455667788123456789abcdef0"},
-+	{ .val = (u128)0xaabbccddeeffaabb << 64 |
-+		 (u128)0xaabbccddeeffaabb, .str = "aabbccddeeffaabbaabbccddeeffaabb"},
-+	{ .val = (u128)0x0000000000000000 << 64 |
-+		 (u128)0x0000000000000000, .str = "00000000000000000000000000000000"},
-+	{ .val = (u128)0xffffffffffffffff << 64 |
-+		 (u128)0xffffffffffffffff, .str = "ffffffffffffffffffffffffffffffff"},
-+	{ .val = (u128)0x1234123412341234 << 64 |
-+		 (u128)0xabcdabcdabcdabcd, .str = "1234123412341234abcdabcdabcdabcd"},
-+	{ .val = (u128)0xc0ffeec0ffeedead << 64 |
-+		 (u128)0xc0ffeec0ffeedead, .str = "c0ffeec0ffeedeadc0ffeec0ffeedead"},
-+	{ .val = (u128)0xa5a5a5a5a55a5a5a << 64 |
-+		 (u128)0xa5a5a5a55a5a5a5a, .str = "a5a5a5a5a55a5a5aa5a5a5a5a55a5a5a"},
-+	{ .val = (u128)0x4455445544554455 << 64 |
-+		 (u128)0x2233223322332233, .str = "44554455445544552233223322332233"},
-+};
-+
-+static void ptval_hex_str_u128(struct kunit *test)
-+{
-+	char buf[PTVAL_STR_MAX];
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(ptval_u128_tests); i++) {
-+		u128 val = ptval_u128_tests[i].val;
-+
-+		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
-+		KUNIT_EXPECT_STREQ(test, buf, ptval_u128_tests[i].str);
-+	}
-+}
-+#endif
-+
-+static struct kunit_case ptval_hex_str_tests[] = {
-+	KUNIT_CASE(ptval_hex_str_u32),
-+	KUNIT_CASE(ptval_hex_str_u64),
-+#ifdef __SIZEOF_INT128__
-+	KUNIT_CASE(ptval_hex_str_u128),
-+#endif
-+	{}
-+};
-+
-+static struct kunit_suite ptval_hex_str_test_suite = {
-+	.name = "ptval-hex-str",
-+	.test_cases = ptval_hex_str_tests,
-+};
-+kunit_test_suite(ptval_hex_str_test_suite);
--- 
-2.43.0
+Muchun's vmemmap work is also interesting to us. My understanding is
+that it allocates private backing for struct page metadata on demand,
+which could help reduce the upfront memory overhead for large images.
 
+For disks without virtio-pmem, DAMON with virtio-balloon free-page
+reporting lets us reclaim cold guest page-cache pages and return
+the memory to the host, without those virtio-pmem-specific issues.
+The two approaches complement each other in our setup.
+
+We have not yet fully explored how best to tune the DAMON and free-page
+reporting parameters for our workloads. For example, the kernel's default
+free-page reporting granularity is 2 MiB, which is fairly coarse:
+reclaiming cold pages does not necessarily produce free blocks of that
+size. We still need to evaluate how finer reporting granularity and
+different DAMON settings affect memory savings and workload performance.
+
+Best,
+Jialiang Huang
 
