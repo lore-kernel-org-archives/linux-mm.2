@@ -4,102 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E184BCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:08:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCC48CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 10:24:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D014A6B008C; Tue, 29 Sep 2026 06:08:37 -0400 (EDT)
+	id A5E026B0088; Tue, 29 Sep 2026 06:24:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C88E16B0095; Tue, 29 Sep 2026 06:08:37 -0400 (EDT)
+	id A0E3A6B008A; Tue, 29 Sep 2026 06:24:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B52A56B0096; Tue, 29 Sep 2026 06:08:37 -0400 (EDT)
+	id 8FD8D6B008C; Tue, 29 Sep 2026 06:24:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 810556B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:08:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 22734160498
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:08:36 +0000 (UTC)
-X-FDA: 85266375432.15.1632B74
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 44D86A0005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:08:34 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qAIyhHaP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 698DE6B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:24:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D46FE140483
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:24:30 +0000 (UTC)
+X-FDA: 85266415500.14.19E3B10
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C183A100007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:24:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b="BomE8Z/A";
+	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790676514;
+	s=arc-20220608; t=1790677467;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cFcejaZdsIYj9VhQK6+kEz42HX5926Klyw/4uu0/sNw=;
-	b=i149FIRmJkelufyAoAEVBzwEoHffvKj7LqdRLecNT8xcZLJoBEMJ2+vUGIUjPqmh0kjnjq
-	J1X6cMraYzdGn6ZxQ7oPj4uaka9YvdfsFRm8zRkZKdnbdEavpCPKiWdtJHGP7mkG5oKZQt
-	ZlutUDRxDyP8MzJ9u8p7nDBaC5mNDcs=
+	bh=zV15/2vXc2zmmCBC0wBRxIby3C3ggjhlTWNSwlGL0ro=;
+	b=22UL0BdlrGnZdrSwfawkCaHmefWR68/+cVde2vwVPmJ3fKYenH5KSJxBDwnYcWSFW7zCNy
+	9itFSaDjxFa+7kEiM1yoWfydFI9J1euIjl4nc++n9LQovyufmer+vwJgjL9ukrY7nj2Tvf
+	n7At37/mfolB8himk82TcWTaDa4LTHM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=qAIyhHaP;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf25.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+	imf05.hostedemail.com;
+	dkim=pass header.d=huawei-partners.com header.s=dkim header.b="BomE8Z/A";
+	spf=pass (imf05.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790676514;
-	b=o3jbsFlYItYmxVO4Ywq8kjLRaC0K6YQSc2ibRx/9Uo8fy8WVEFJXDDcuVMCEQFaJj8kpRy
-	xy+1+Td18ioT7OAa1PG/o5kQWRozU5jr6HNmtHodEezQTLKTPbEmI6YKfBkPY2pXtaBKlK
-	LYYczL1+/0CUehTq0gPCEPB9vWm11GA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BD8501516;
-	Tue, 29 Sep 2026 03:08:29 -0700 (PDT)
-Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 758093FA1F;
-	Tue, 29 Sep 2026 03:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790676513; bh=1CYkzAv1UTOgfjhP/3+i1axtbxG6zEvJxlpMfUNZI7M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qAIyhHaPe22UOjd0zvagXkjWWMEzDE+8CWsaIgPMqqvkJLe9g/mFhHaS6vmtvCgB/
-	 a4X+hXCZQKGxZlUxyYJqbOgDaFC5UaE9hpi5gd2HWgesheChZ/neID7JzTFSuRI5iN
-	 uAEBhOuuwow5j8+ay83HPaHCNneDHjFcbTHl9ins=
-Date: Tue, 29 Sep 2026 11:08:29 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v3 2/2] kselftest: mm: fix intermittent failure
- khugepaged test
-Message-ID: <aruOHat9wlu1H8la@e129823.arm.com>
-References: <20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com>
- <20260923-fix_khugepagd_fail-v3-2-b387e92fe1a9@arm.com>
- <447e0be9-836d-4324-9a36-77f8a0cbecf9@kernel.org>
- <84d3a9f5-4bfb-4f5e-86ad-ac8fb896d885@linux.alibaba.com>
- <dcf6fb14-7048-481b-83c6-9e8da6d874f5@kernel.org>
+	t=1790677467;
+	b=stcA4v2gdsAdp7feyBLBzvmHnQmMbkkZnDSURwpWapXEHdGZrRuheQxyPc6uNcs4/VAR4h
+	tGWAhXnSVMfuGhwDh52xFA6b6sELWVgqDlUYPYotujlOiemG62H8h0sTdwGmLJ3kU0hJLa
+	LVweNtJnDB3PE2l/ltPl3m05xPx61jo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=zV15/2vXc2zmmCBC0wBRxIby3C3ggjhlTWNSwlGL0ro=;
+	b=BomE8Z/Agr0yj3ehCeSYnRmn1e64OrhvSs/g1NC/W0zvjSqOBYpNDl8KaxE3XefivF9VN1jBj
+	r+XraTw0qNIDUXuOko8ijMpOqXyBBSb+fqu1faPa4dJXTHpL4d0npNsa0q3xkHitf4XVevIs0bE
+	cHYdkGcNMgCPtlHy0mPPOZg=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4hvDml6Y8jzJ46Xx;
+	Tue, 29 Sep 2026 18:24:07 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7CA0F4058B;
+	Tue, 29 Sep 2026 18:24:22 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 29 Sep 2026 13:24:21 +0300
+Message-ID: <9e07dbdd-3b02-4175-b343-c8cb6f9885e0@huawei-partners.com>
+Date: Tue, 29 Sep 2026 13:24:20 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dcf6fb14-7048-481b-83c6-9e8da6d874f5@kernel.org>
-X-Stat-Signature: kye817hbmdi8s1d9m5uwmqfz9swgo3o4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] mm/damon/core: introduce damos_quota_goal->complement
+To: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+CC: <damon@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20260929080113.41708-1-sj@kernel.org>
+ <20260929080113.41708-2-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260929080113.41708-2-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500004.china.huawei.com (7.188.26.250) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 44D86A0005
-X-HE-Tag: 1790676514-951625
-X-HE-Meta: U2FsdGVkX19GQRvgN7Uvj0lpp04AtbbOh/fjm0z+jKqogFE+u3lJGNYLzKGht6TN7JO115l72LdGzBNWY+kkSuvp5PhlyCgFFK2+X9uoOAUtlRsrB1tOab9rV2q35XUkAHHWIJuY5H5NuGJpjW+eizJXdUU6CZVbisG+X8TJuadDDiIelWzJp/ys+6HKbIf6WUOm16q4sIIzhC4MNREkQNUhxnWF8+l0kVPyowtDIP2mgwT71D80hL/Rw4OlSn9RBX3qCuhkxD5jMdmb84jOmlYVSTe5CLLp5LCgbg9fPfHs18VG2kH4OpFqqfiLC1nke+7kE3F+OnZgGkKZoawxOGAj+hpNb7DWH5ojNtw767Hi0bnOh5ekogkJJII5EnGWdCScLaxW4z822/TJ8CZgHstyivboF35VYlsw7dQ9if/8yk+xiEV4mwtFDDj80/wTXy8+w4IQ4sM3t0l7YPU1MCNtAa39cA9B9nJBpb7mDUbIivwF/c7pPNCNtX/6aSyM6bZb8lqRNBsgydyxMWBdX5z8j0fC4Rpf7jeKEaVEDfgPT72UMGpwrxmLCBLvmxG90ogipKKas0ycZYzkgF7mIuByUjH50Jxp/Ittma6JV3uT3CzXjSjVBpg/qejXl5+vut1tIB8N4dk61FLRbUdwNO59NePq+ROgWa4+y33uiUJ/VoM3LNuGZmSvADXodk5fDIwgUGrfm0SZwmoEAddATuHf/VXM48potEbf22aPTDGI+0SDKVl04p5AV7XrQKbz+udoFtGGjmEwFl8czfI4/picvJV+SlsI1v6pRbeHdCMZqO2ae+/DSPBAoptkrKlaAktjh7n/zZUkrP5JPf3edl0E7OkYJdzCuQegholG7urE3JEC8tLI6mg6olWOUMAjZ2ktNvwlX+PUBOQsKlk0aCDxgi7cvvUBcBYEm6AUrH1chkTSwC/wMKIBgcCutkV4jYjGpwc44kmbKPnxw82
- Rs33SE2o
- bnik2Ry3JauAkx3r5AcfmEwGl+VvjUgmS0rGyHbrwg0mTaPcy/YzFiWb3wBUyv/cQBoV04MdjcAVWyXJCpQQeqyEgG5R4C/oApOiFUJSRBPVzOEJwps2EDV+iLPu1VZ00nXJcYzlQ8M2Mmo5c32fZXttfqD1h5o2H1zD/qPSwsgYKHTe8H1CEVFoA72C1sqpF9bQXVEcU8COm7xQXBT7dO0b4lIn/QQHkBYuiKjGFc3eHIybcrzCzkm2FxldPD+rqSqzz5lQufgxs9R1oE3hdWUxfXvGaKrIvBnRH4ahLw/s3OlfFE/P+GUczQEWxsb+MlgwrenNJnvbdldVGaoItG3EVhg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C183A100007
+X-Stat-Signature: xfoprwm3ajw5dkc3x7dzp9qi19aywszf
+X-HE-Tag: 1790677466-385833
+X-HE-Meta: U2FsdGVkX19kcCnASLraVwA3BqCQMEie6R+hXPPzdi4LFMewjM0mFEB/1shnuSVo8KayqG+i9tTGmSJFyGaM3ezi7EclKGLW7eLa74BbeiQ3rjlR02s6HtXhbAYnZjCcNIXp1fDRzfCrkTfbuDCCnQJAYPMbEC5bhYlwW4HSYSgEOuMHCD+1gBn7hgvk+0TbT2GZTCoXYFqieHcusAyOg3aGRiVTwB5ufFwm+XVPsHTDpSlGQ43vNoPlcSgKTFquyMM3HbXE96faZyxN8vkRqpV0O+MH26oMtvwUop6g+oG2L/lSojzpwPUaeiOBSOMnGGWNtuHz6R79jxtwRDuVWd1NpRHhh9FFg+pkPN5OwSIrB1T424i3jo9esI3T//bZ+HvVKa5I/768EoYo7g4CZFXYvCz8dKZux9Ov4BUsjC5NmOIjAYZt5MQ8cVoH+tOvGt/68UOFVq8ws5AhrxtwXuA1ZvY23cQtJSVwuHsDUfCAadyr7O9vskNw+pALLJkwpUEGdNO6t3GScZbiAgyP96MpIqnjdSJ/Fc9Uo764I1Lq1MDCJoSLuIGCc5DfE4D9uZ9ALlI+DV2Tm6ehd/3pFsk0UzDn/5TnUk3/+OrwKf+w/wc5fC3UjUXhzhcsE9y5oUw65vV0tN1uhhp/AgvJHf+aIqeE6zcVWu5Gz/22rWFWIGFHQpYL5PEKpefoEGaysLCF586NWxxjnmI4l+SakO7vVYXURsoEk0UyxP41AkQDdcQZBtuYuyOkVloplxSkGgz9LxCPkkv3BTKoQjuBAW0eUZrIV5WCDECMK4FmJuEYoTZKcij5T4RdPcZzu11Na7L34vYuoEjQXPcOghYFXcgnIWdcPyUwt5BJPMM7pP7DsSAksGfyoRmloAmmRF087MGaKWEf3bsYw7cvirvO/HF0Ewrduz0megjCnQZIyQJRxmzN536144t7andfzb/df1j6ibAPW9eLhTTihPX
+ HgSkIv4x
+ DoiNPofG6jVyD+CvSshnOfs0EeHXOIIV3bw4CdRJyFF2ho5W54WOHoht9VGLM/WUERROIjf/jHIshMe3+LCuG5UUm45wjquxEILAArRU2uEg/Bax1cLsprSWM7vBdhTJWcM7nqasyd3tvNDvp23SCd6irZR87pGTWqdJFaINyMH0cwSHdvODUzar7fE7s3WZlnHDMJTKJxNL3eXFBBAhQQ2MtAqyRTjogl/gutiAYxdtBJmpIBFNgtp7tRP7sLuQIBoaOBpFWIpUhmVVSQIpvJqZ1tmaRHPJeeVVaDDJ1kib+JaHgj85w1nTbxfLB0PJwUkmHfB+c4nU2CWgyB4ctgyYruf2MulDzC4sBJF0vMRDWSGSTXpIb+5T9lHvyswdNeF/+qacSRHkF8XrH+Td85xI1Gz0nO6/0tT9x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,82 +99,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 10:46:50AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/29/26 10:43, Baolin Wang wrote:
-> > 
-> > 
-> > On 9/29/26 4:38 PM, David Hildenbrand (Arm) wrote:
-> >> On 9/23/26 17:29, Yeoreum Yun wrote:
-> >>> There are intermittent failures in collapse_max_ptes_swap() and
-> >>> collapse_max_ptes_shared() when using the khugepaged_context:
-> >>>
-> >>>    // while running ./khugepaged -s 2
-> >>>
-> >>>    # Run test: collapse_max_ptes_shared (khugepaged:anon)
-> >>>    # Allocate huge page... OK
-> >>>    # Share huge page over fork()... OK
-> >>>    # Trigger CoW on page 1023 of 2048... OK
-> >>>    # Maybe collapse with max_ptes_shared exceeded.... OK
-> >>>    # Trigger CoW on page 1024 of 2048... Fail
-> >>>    Bail out! Unexpected huge page
-> >>>    # Planned tests != run tests (26 != 23)
-> >>>    # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >>>
-> >>>    # Run test: collapse_max_ptes_swap (khugepaged:anon)
-> >>>    # Swapout 257 of 2048 pages... OK
-> >>>    # Maybe collapse with max_ptes_swap exceeded.... OK
-> >>>    # Swapout 256 of 2048 pages... OK
-> >>>    Bail out! Unexpected huge page
-> >>>    # Planned tests != run tests (26 != 17)
-> >>>    # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >>>
-> >>> This happens because khugepaged may collapse the pages before wait_for_scan()
-> >>> is called, causing a sanity check that expects uncollapsed pages to fail.
-> >>>
-> >>> For example, in collapse_max_ptes_swap(), after faulting the pages back in
-> >>> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-> >>> before c->collapse() is called.
-> >>>
-> >>> To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
-> >>> collapsed by wait_for_scan() for anon. This prevents khugepaged from
-> >>> collapsing it again before c->collapse() is called.
-> >>>
-> >>> This failure was observed on NVIDIA Spark with 16KB page.
-> >>>
-> >>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> >>> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> >>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> >>> ---
-> >>>   tools/testing/selftests/mm/khugepaged.c | 3 +++
-> >>>   1 file changed, 3 insertions(+)
-> >>>
-> >>> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/
-> >>> selftests/mm/khugepaged.c
-> >>> index 2aa7c9197158..b0cb02bf1a73 100644
-> >>> --- a/tools/testing/selftests/mm/khugepaged.c
-> >>> +++ b/tools/testing/selftests/mm/khugepaged.c
-> >>> @@ -618,6 +618,9 @@ static bool wait_for_scan(const char *msg, char *p,
-> >>> size_t len,
-> >>>           usleep(TICK);
-> >>>       }
-> >>>   +    if (is_anon(ops))
-> >>> +        madvise(p, len, MADV_NOHUGEPAGE);
-> >>> +
-> >>
-> >> Any reason we just do that unconditionally?
-> > 
-> > Although it's a bit messy, as I mentioned before [1], unconditionally setting
-> > MADV_NOHUGEPAGE will break shmem testing. Maybe add some comments.
-> 
-> Ah, thanks for clarifying. The problem really is that we cannot undo a
-> MADV_HUGEPAGE (give me hugepages) cleanly. We can only go to the other extreme
-> (no huge pages).
-> 
-> Yes, let's please add a comment describing why we limit it to anon.
+Hi SJ,
 
-Okay.
+On 9/29/2026 11:01 AM, SJ Park wrote:
+> Introduce damos_quota_goal->complement for specifying whether to use a
+> complemented value of the given goal target metric.  Add the field to
+> the data structure and implement essential core support.  Handle the
+> flag in the quota goal commit and current quota goal metric value
+> retrieval.
+> 
+> Signed-off-by: SJ Park <sj@kernel.org>
+> ---
+>  include/linux/damon.h |  2 ++
+>  mm/damon/core.c       | 26 +++++++++++++++++++++++++-
+>  2 files changed, 27 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/damon.h b/include/linux/damon.h
+> index 6a29dc2ac8db..42234839ce29 100644
+> --- a/include/linux/damon.h
+> +++ b/include/linux/damon.h
+> @@ -169,6 +169,7 @@ enum damos_quota_goal_metric {
+>  /**
+>   * struct damos_quota_goal - DAMOS scheme quota auto-tuning goal.
+>   * @metric:		Metric to be used for representing the goal.
+> + * @complement:		Use the complement of the metric.
+>   * @target_value:	Target value of @metric to achieve with the tuning.
+>   * @current_value:	Current value of @metric.
+>   * @nid:		Node id.
+> @@ -191,6 +192,7 @@ enum damos_quota_goal_metric {
+>   */
+>  struct damos_quota_goal {
+>  	enum damos_quota_goal_metric metric;
+> +	bool complement;
+>  	unsigned long target_value;
+>  	unsigned long current_value;
+>  	/* metric-dependent fields */
+> diff --git a/mm/damon/core.c b/mm/damon/core.c
+> index 5ecbea5d71e1..1ab5154511e6 100644
+> --- a/mm/damon/core.c
+> +++ b/mm/damon/core.c
+> @@ -1224,6 +1224,7 @@ static int damos_commit_quota_goal(
+>  	if (!src->target_value)
+>  		return  -EINVAL;
+>  	dst->metric = src->metric;
+> +	dst->complement = src->complement;
+>  	dst->target_value = src->target_value;
+>  	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+>  		dst->current_value = src->current_value;
+> @@ -2960,10 +2961,18 @@ static void damos_set_psi_current_val(u64 now_psi_total,
+>  		struct damos_quota_goal *goal, struct damos *s)
+>  {
+>  	u64 last_psi_total = goal->last_psi_total;
+> +	unsigned long val;
+>  
+>  	goal->last_psi_total = now_psi_total;
+>  	if (last_psi_total != U64_MAX) {
+> -		goal->current_value = now_psi_total - last_psi_total;
+> +		val = now_psi_total - last_psi_total;
+> +		if (goal->complement) {
+> +			if (val < s->quota.reset_interval * 1000)
+> +				val = s->quota.reset_interval * 1000 - val;
+> +			else
+> +				val = 0;
+> +		}
+> +		goal->current_value = val;
+>  		return;
+>  	}
+>  	/* uninitialized last_psi_total; make no effect this round */
+> @@ -3255,6 +3264,21 @@ static void damos_set_quota_goal_current_value(struct damon_ctx *c,
+>  	default:
+>  		break;
+>  	}
+> +	if (!goal->complement)
+> +		return;
+> +
+> +	/* updte current_value to complemented value */
+There is a typo there. It should be "update". Also, what is the 
+purpose of this comment? It doesn't explain anything, which may
+not be obvious.> +
+> +	/* for user_input, users set complemented value on their own */
+> +	if (goal->metric == DAMOS_QUOTA_USER_INPUT)
+> +		return;
+> +	/* damos_set_psi_current_val() handles complement flag itself */
+> +	if (goal->metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
+> +		return;
+> +	if (goal->current_value < 10000)
+> +		goal->current_value = 10000 - goal->current_value;
+> +	else
+> +		goal->current_value = 0;
+>  }
+>  
+>  /* Return the highest score since it makes schemes least aggressive */
 
 -- 
-Sincerely,
-Yeoreum Yun
+Asier Gutierrez
+Huawei
+
 
