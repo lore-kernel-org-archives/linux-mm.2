@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CE0CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 03:43:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32340C9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 03:43:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 352716B00A4; Mon, 28 Sep 2026 23:43:22 -0400 (EDT)
+	id 48AC56B00A6; Mon, 28 Sep 2026 23:43:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 329B56B00A5; Mon, 28 Sep 2026 23:43:22 -0400 (EDT)
+	id 462266B00A7; Mon, 28 Sep 2026 23:43:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2178F6B00A6; Mon, 28 Sep 2026 23:43:22 -0400 (EDT)
+	id 3777B6B00A9; Mon, 28 Sep 2026 23:43:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F2BC36B00A4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:43:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8ACD8160383
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:21 +0000 (UTC)
-X-FDA: 85265404602.30.285FF2B
+	by kanga.kvack.org (Postfix) with ESMTP id 185466B00A6
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 23:43:33 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AEBF8160383
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:32 +0000 (UTC)
+X-FDA: 85265405064.16.8734839
 Received: from flow-b2-smtp.messagingengine.com (flow-b2-smtp.messagingengine.com [202.12.124.137])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9A89C40005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:19 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=LxQem3Ae;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OyuSYWck;
+	by imf27.hostedemail.com (Postfix) with ESMTP id B99C840003
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:43:30 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=Cwxa84pJ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="S/0V/WsE";
 	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf11.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790653399;
-	b=XvFIxmosAgXXfaz71nDhj7qVv+gcjiCq+fiK2go/VASalI+2lr3rj5VCh/WljzRM4dNfkZ
-	kgxXRbkoDl9oJz6BaCV0jGOFGY1kIfgvQR67EjqMqNp1W0VMdr4F0CLNfgzBzJ5c/Ci2Ea
-	jzcTyawLcW9CirsJ61MEK7r8bihBTWo=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=ownmail.net header.s=fm1 header.b=LxQem3Ae;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=OyuSYWck;
-	dmarc=pass (policy=none) header.from=ownmail.net;
-	spf=pass (imf11.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790653399;
+	s=arc-20220608; t=1790653410;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EqEhO7Cozx+p7o/41OHsqkMCNNwlRf46rdwfInGgzf4=;
-	b=XF8DYbFwL5m1r5lW5E24qkncilVIP9oQbNDFHxz+aVkwdtQqj1XCK+KwOdYJJR8teKIrN/
-	exx0XrwIod3wHSGOpp2NejK9tDmhrRtYpnp5VaYSMs5PLxxlwTym6qR7psaDjwAjCRb+AX
-	6MbkX/A8pTGFhdDEqbz6d2Uk09qwnIQ=
+	bh=lsKfDwVY/s9QOcVsVfQ184vGtQP89p1qx6OKonmdfWY=;
+	b=j3ej3AbdjGppRLIFJgAvCL1+lTp5rXBIfoxCBtXXq978EPpfQERUXoEhsTaewGwjRm4Asq
+	NzSfdpetxH1MebC5NkR8pDkNZ73xw6DcbzSY55mmiNcLzMEIYGL1vDSJYgc/W+gMDx8+2q
+	yewLWqg33di4rob9sl7vSa323T8yXek=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm1 header.b=Cwxa84pJ;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="S/0V/WsE";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf27.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.137 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790653410;
+	b=YTCcWxP8RurunrMHtiXd7AHOWbPcYZCw1OielOTRf36uZ6s+Des0+BO3b2uALXdx3GIVD2
+	d3Pida+uNvqt5nkDekdf1qqtNpIrT4vb1cbk7eqiCg1oId2Y9nKbtaMWdM4AZczl3LfAGO
+	mS0h8GX8YMFEW/0KotRRD08W/9Ap6mg=
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.stl.internal (Postfix) with ESMTP id 5395B1301946;
-	Mon, 28 Sep 2026 23:43:18 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 23:43:19 -0400
+	by mailflow.stl.internal (Postfix) with ESMTP id 6CE321301954;
+	Mon, 28 Sep 2026 23:43:29 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Mon, 28 Sep 2026 23:43:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
 	cc:cc:content-transfer-encoding:content-type:date:date:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1790653398;
-	 x=1790660598; bh=EqEhO7Cozx+p7o/41OHsqkMCNNwlRf46rdwfInGgzf4=; b=
-	LxQem3AeAIdgW2wUGqeNqnqkgRWQaHq9wDkFmB/9zLcZ+iIHT9dt/v7t/iXup9VP
-	6WqyTwy+LxqGATI1WezGc9fEy0t37fqldUDR7Qxu5ZoGktwIwCThOQhQicvHKG2u
-	y8Y6VjtkHIMYKrMcF2SyZ1aPQIYO6YBfDTJy/qXd4mYs8rj2o9d0Gm4WHs3+gjwP
-	JJ/fUspMc585l2jVWewvTZl1cuyuc/rU0KjCRvIkWscG+pMvoSBmkHhI5fz4pg+j
-	eCXomriAlE4tH7QNo6Ka4/FOyaYNrduP2jBP/JCmJPJ+kmfw88KtgIH0PhgI5wm4
-	rh6ONHizGQvqayX4K/Kq9g==
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1790653409;
+	 x=1790660609; bh=lsKfDwVY/s9QOcVsVfQ184vGtQP89p1qx6OKonmdfWY=; b=
+	Cwxa84pJo7NCVKIxjS98cnuf1G3GApyKdhkfpdCq5ZzQjtwWmtz9R9kx30GoUKRn
+	2OspMv6mBz7OqfH30W718sZmL/HlhpLOqI9HOvBwqDcCTZaOx8tr6RRim54NFAal
+	+xngEmAQvOPO25Wd66fPvmgxg0AM8F3ml5Q+/FI0Fi8rAyj+z3raP/CkOkkAyhJa
+	oQnVL/1xQ3XXGhnhkrn49i2AuOmrQlnSGtfE4iEMwaAZ3ipeILIK6D2kH4BQ/vcH
+	+5LCtiM6PPaJ0J669zzSrESTa5VCLsqLBuAxkDRMeKC+jNfQxHZPr5KcLCOiojIK
+	MYZquKLRB9H231fg1x6o/w==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:date:date:feedback-id:feedback-id:from:from
 	:in-reply-to:in-reply-to:message-id:mime-version:references
 	:reply-to:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm1; t=1790653398; x=1790660598; bh=E
-	qEhO7Cozx+p7o/41OHsqkMCNNwlRf46rdwfInGgzf4=; b=OyuSYWckGaG5itR4y
-	yumxTNLaNORsdFn6ZpTXNr7EzBKq1Fgvk5YIAseZ9B77cCpZ0fHHpMB7SMgqOCyb
-	xgq2y2I3ypWTHMlc7TBx94ABArNzK770/ALVIUMygT4d8eDv8r1/D1p81Yed3SO7
-	YhL1fQbyfM9i9YeTvjYwImi1x036LhGJIOlpEdSVgJSY5fX0Pq5BE5T6JzTlraXc
-	qyUkv4LkWXam6canynD0fWqIf0Pz1wPK4Vncr/hTAtB9YwZtCvznDcB5T5TlUo3c
-	Htdd8pjyt0grv7cCU1oVx+NbBn/Vj+Vceubx/K64SUOn5OJIBN3N3yHBR/BOa03B
-	Y42Kg==
-X-ME-Sender: <xms:1jO7aqMq7p3Zqr9vjkwi-VJLeM1c8_hyJXeIOa67iBIQWM05HaBqoQ>
-    <xme:1jO7ar63-_CA0BHZTA5SIKPaHXedcRWSvqSvoDST3uv3nGp4YDWYrWqxqNAjnOJvF
-    Z0OMDy_OqWGH25KXKjgTmc7gDJtiNN2N2elho8f3MJcqYwM6qw>
-X-ME-Received: <xmr:1jO7apdEMkaiJ8bXRBvFD_mBedPOLWBa2fPqv5q4yNRLABm3K56iFDr_v_DlZLmpZD4BdTx3QmnzNSL1dbWLjpJNLBGjgGA>
-X-ME-Proxy-Cause: dmFkZTGTB6wQwJMDK2BlhP9ieoZtexL1tb4zR3ndzWyJLLylmMRFItDY6TtE2FJJnT+n9Q
-    EA6CVH8Q6gG2q0z9eQymFQCCGXw2+bPKorNcLTcHtn6fe93ZdKVlCNeXpSVxjpIWPnE0uc
-    R4cSRx11BDHvcVwwLSaXZYcSNN4uv+OrH4LpadiDCk6Bcm4w9Hs9AKTMCbQiCTdXMUg6Ak
-    Qm5fUt4YyHFWpJ/BrTyArilq7pXWfKlpAWul2kfKNjb82sfwswf0FjscN0S8HtzC9tCLhj
-    LmdhZ13ZxXliGQ357j0bxUi4bFw4qlzJKWjuFAMisvE+iZjOO7jJZKzba9DBfSYpFlPNOA
-    e7Nud6FLGM7w4sQZ9NqRHWDmmgNYAVTeqgj4feEgxkJuOL85YTQjtF+sEG/hpsGZpQEr0C
-    6fNwYiRIdTWwxl6Auq1tq/6V4UGQAgvvvv7bs+DIVng73Pik9D4GP8E2Xrl1pSUY2JlfZG
-    9tMmUGoLeAdhujjliX8jHGXWu7ZDXH9JxWG+Ggl5G1RCx1eoucDH8rcJOlHS7CcQxhkcun
-    Vl8fFThOqBBea7hViAzR0UEHyokxUj9S+gRoS6w2PEZ03b2rZMqiNeU4h0DdgyZkkNGOP4
-    vmYWYEukgUzkG/UMKaNGTuWxomMedSbXOObNTsEz42yCdPoLy0jDcfyrkGOw
-X-ME-Proxy: <xmx:1jO7apiCNNccNouf7FQ9ebSiPg-rqpwEvL5bd_nBziRrkuI-veAv2w>
-    <xmx:1jO7ahOIox_9WR4YTsctfrwOoHRpnOu_7CacKaBJaZeHvLK2D2IcgQ>
-    <xmx:1jO7av4Xk8lAkrSTk0l0Ivny-v5OJ0SQrDf0T6DWriTEywgtmBuhZw>
-    <xmx:1jO7ajWI6PpVoWR-e92dkdiE00V_a950P9kUulmr7mCjsXfd9txZ9Q>
-    <xmx:1jO7atSd86_VZbzI0WOPyxULG3ZiL725tkxqi4MkA-uVixsDjwIjV-z1>
+	:x-me-sender:x-sasl-enc; s=fm1; t=1790653409; x=1790660609; bh=l
+	sKfDwVY/s9QOcVsVfQ184vGtQP89p1qx6OKonmdfWY=; b=S/0V/WsEs99kvFZu9
+	+XY1gSZ64yHrE8DRbyGS7oncnDgnGWU65Nnk9sgIOsHF7Gf5DPQfQx8wbcSc0cWn
+	KoX5NG+ehEgC4ZAt3x2oZssi5VLUe96H6HTVJ+Kt1pCTZo9rd4iGWsqx5R9KrhcC
+	OG4+qHClD8AmAap2VEL7kbYD5PKz1t/cZOCv2zmUReugjc43scHQhrdowkvjJLfJ
+	t2Zpd/Uxqsfh79tRNG2EAON3mvm3hMA7b4/JT1Ppil5kfcSg+UE91qbtBqIOMlqk
+	ku2rR87f20g1y2l70AEQu8E3HB76ajzT86zboxcXCWOmbAe/RYo4E6/8WV1ZhlRa
+	Dv13g==
+X-ME-Sender: <xms:4TO7arolaOHFwXK56Qa6xykR14IrzwemNkzpFDIguv5nMRRVhZPPJw>
+    <xme:4TO7aolKtq65vDScMy5_UMgBYjif_VbWjcmJnooQ7HXQlfB1b_DERWRxQZt3xh-8L
+    um53PFynUa8tZvjyLgjH_FWDUD7j0vaq0jktY2ivXSDQFKOxK8>
+X-ME-Received: <xmr:4TO7agYnqQtKbVg8TnfAvT7BFKR0QCBoNSjKwjELgz_U_mRFyq8CTREX8QhPabar8zn2mF9plyA2VopTwFdFCwMFYygBP7g>
+X-ME-Proxy-Cause: dmFkZTFf22swud/kgH+7IFCsdfS5PKwRmLOVVMPsMM0oPEJSrxXomK5MGA2HpoM/4Fayjy
+    8t4bbaFpw2j2uTWWtWZZBpnJUdMuyskk1hWd9qXGF45eabe2keg8OPLCDZxOgY/dlPK4Uf
+    QMGNQJm9P9MUeaNZkZs6ns50gsKFwCc8XWol2sagqa5lM1ggO/E+N7weoZuVf58v2SDU1z
+    oJNwy/LJrQkxx961Dkry0BeNl+v6sGxsoTx0ccz/AOIQhh4NsfwUFrJwksoVGSAcoAhOYU
+    GWH6kx36jaIyiQRhXdfFML1Yw6upasUkEITsWtrtlu14hKvTsqzmkbnDRYufVwBOwNEZQo
+    T1B4oFJSiHfE5i9loHVwvhK+O2Y5BVb3Dv0iGvqbzQqA9qN7MAhuRpy7uZ8AMY3dfP2DLq
+    nvbhs207NBSaa5MDvoBmSdevJXJtKK5Hlt0NVJSsIpNU0NopecJXOW0MfIAOhZU4+jqsip
+    x4Wljyqn/g9FYR38Rjhm7LMDLFmhlY1lNIcxOONWExp8BUma7cICS8hD3tc+nEgnqBg/Or
+    nNxADsnPDnuyJLFgOdrItdzIYZlwJ+9r4jPnl2FGAjhzcmOtPLr3fcGSTnvIZ5qEsLqmit
+    nguUxdpJLF5/eSu32nMJ+qQkmH76GJPJzO/qTwuHVsJN3RUSfT1BjKRxMs8Q
+X-ME-Proxy: <xmx:4TO7atullrr627O3cusaGrNIKgU85qn6rncQsX3LDWoUzed2yCE3KQ>
+    <xmx:4TO7apq93rdUjA9jN49DV3ARwlkMmify2m0Web5YX443O54h9L8H7g>
+    <xmx:4TO7anksVDf-DVzjhpOiOg2FzstokCT-dspNpyK47SNuUo4Zl0X_6A>
+    <xmx:4TO7apTC6Lml8eeXrajxP0WH1_weLxIDimYZ4JBuvSDCiB2Sc_DFwQ>
+    <xmx:4TO7angk9EneeKswcti_o90s6_OLRNXOoyoRMO4fzAp9wIlIomwtE6OU>
 Feedback-ID: i9d664b8f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Sep 2026 23:43:10 -0400 (EDT)
+ 28 Sep 2026 23:43:21 -0400 (EDT)
 From: NeilBrown <neilb@ownmail.net>
 To: Miklos Szeredi <miklos@szeredi.hu>,
 	Amir Goldstein <amir73il@gmail.com>,
@@ -131,23 +131,23 @@ Cc: Jeff Layton <jlayton@kernel.org>,
 	linux-mm@kvack.org,
 	ntfs@lists.linux.dev,
 	linux-xfs@vger.kernel.org
-Subject: [PATCH 5/7] hostfs: don't d_drop() before d_splice_alias() in hostfs_mkdir()
-Date: Tue, 29 Sep 2026 13:36:05 +1000
-Message-ID: <20260929034158.1455429-6-neilb@ownmail.net>
+Subject: [PATCH 6/7] procfs: drop parent lock for d_alloc_parallel() in iterate_shared()
+Date: Tue, 29 Sep 2026 13:36:06 +1000
+Message-ID: <20260929034158.1455429-7-neilb@ownmail.net>
 X-Mailer: git-send-email 2.50.0.107.gf914562f5916.dirty
 In-Reply-To: <20260929034158.1455429-1-neilb@ownmail.net>
 References: <20260929034158.1455429-1-neilb@ownmail.net>
 Reply-To: NeilBrown <neil@brown.name>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: upyrugihgty56m9xd9o883nwzbxg4bj9
+X-Rspamd-Queue-Id: B99C840003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A89C40005
-X-HE-Tag: 1790653399-598121
-X-HE-Meta: U2FsdGVkX1+Q13I2iXfqlF/ROpsuFPswxCLMRXpwBY3Yjt8mjDdaSrCzjunr+lqZ0d22Wry4XyLTr33s8BPzxn+N+0LeC0ZR/VGtzy0Yy3IuLtHwg6fCksbSb0ydU8AFAYKyI4Xs8CAKIspBCH+5l/i8Ke1oSFWbtvZYuFm9j2tQwKE4Z6cDHfT/5Q6dy8RFqaBEZei3fqJPJgQvgAYlw5b23FgT5NedsLsTuhMC+csqOPePFaS1GFTReb225cTrH5WmDpoOHIqk+uAMQeeRwHAhhkCGyqlIYj569ByyitSJ17fYQUzw1LitjIHyJBcFSdDi4mgog02V9M+V5Ok7SBoFh/FXV5LSX6llpok5YhYwEd618KeuV6iHgORYPDscTHHvjWW0e9WoVNXlEb2iMU88zXHyijxkzElPio7rb9VP/CAiPfPJLtXT/vRQgmITQrbKugwawylPbF4/R+MtAwkeuot7qieAQZSEi80TpuFuMy212u29cwaEAh59/gi21ymEEAqQ3P+LYw8tcSGQCHg8Ynz7iwM/GstEASgBG/+w3j3oBphfJi64Wus7f/aTvTcPXKrLnJqlfVmkxas3HqagAJz8ZbKI/OqS6fwZPCHTq21lLALcbFEkT7sszXBL6thf1DZ1juuhb4xGpN2qeC46OJ83Zpzqm1jxVxaboeikYCrgUWMl+xcJszT/BoiqU8FEPo7mG3na+NU/yWjDLwr8TP46qQO23ktsxbpn1zxXGZLQl1uF8RXC7aIuuq8GaRdGjIKOpzuoDfTmOBKv1Nqvm+Shy+JFpwN1fS0PR13h07pGzRTPWZSDZj8LaFVrRoHeGze0boCIICn8G47+pQtknT4QHiRz/Jq1HyYR6J+Uw6gCQdA2N65o46HvFUIlKeMesQwO+cVb0OyGFHEbpq48uxMfMti+grhRRmXgzr1YpT8AHoGDLvgylAqwbOODuihgjrBAOG0tlHsAMRf
- 1NmC7K/g
- RqWr1PC81JFYe9k5x2Q10qHlTxhyo3NrpL1HX8Ca9a4OzL/F9M6CHElNlJRtLlS4wffzncX7CbHi1f1ks6XrPo7ME3BgvjOIfFEiIG1FmfwU7CVX5piTuVb7Kr/1qHqZczSdvtDNbST5A3Q1uJ93RNU7n43L+cF+KmtABnZUuGm6LLDK0ZW0Hwi7heCiuzCrLEyKa6BV1peint57n9nB4NXjC9xf55VJWrG55H11QhpdZbaxbRf3UzcGNagx9LKWy7O5vmnens0nDxWp+S8bnCtuyp9HtERnL1JlLNAqSPt1133jpE2wzmF29aDmUQhnJ2+zQUkgHOK/xAY1FaeQDdzKnS2K5EKfFpQduEBFxW6wCvwb8ABtVCeGqgcvNIwRvbJjfvcG/ZemMX+fD9S7HWXhmW832j4pW67jF5ygElkvSnezvBtcn8y2zMmQajnx9Mj95i+ost6AVlYQT2ujIOb9HP1JM3ZbZX+5OBK9QtjitakNKw6KaJuO+JH8IiyNUQPqtFwZa9fZdn9nkYW9dRD2oyWG+fEGZXzqe7m5UvHuOMUiLdmaoRNj+j4esywgkKCnEVasvQPexmfHsO2TNvRK85yBNwjJev05TZkgKC2gqlYeUIPDM61IZwHhJYkiG5eA4tqhbxiUNzQj/wEJXa/CAyqsM/tDhzncBF5/vKIiVsOqADAsSSmfjLN6bOOZFF8Kn1iMRy63cpZqNJlSKUu3jXw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hrdu58fabe84q99t7whxyb3ufhnxf6sw
+X-HE-Tag: 1790653410-328355
+X-HE-Meta: U2FsdGVkX1+P9T6iOijyh9m0NUWoNUbOQCE+akXBLlud46+hCVN6K8cOVp7fdrsfkAer9TKH+/RppV10qXAGy2ZaSO+tMXP4pFhEepjU8hcEGj7ThcpwLOAQxIoRmPkFpWEDROC2d/t50U4Qtkiinsk9ZDBrkoRBDoimf7tWkLNXh+4HiOEUw/xduQAup74hKN+9KRvqk3V/QrKu/gPHh9cfyQBCwjj82vtfe/RXdALPDOGkXRCQIDBr8NiWVtPqZzg8PoXusnOUxuF3NMR0yLEoOroshpInH2oA0wZDVd7Hs617cO0KeZcn9P0YPduxRN6rrkjePoQwYyzWE0Lji1T/pGaRcDi13j+qhxQYIysjcH9oz18urekC1rFsej2uTMnFhMcwJMYAnDQB8dMkqofAVeMg9XKnrRsp6V0CIrGzkjl/q0vqg7EYjnBSpr6rxq08L/Gn0whgui2jmHVpb9J5SiSyf6/4DY4HbhV2gJetCqKTxFq76LFqyMzttRl/+A8h0RjGd5aiOZEY9ZZrfJhiH+07xURltqMUy2WUBcYU2ivSHqQJI+8JwkvcS9KT2/4wjjrk4jPKcr3rsFOrCWqx3afJ9PTnnC5V/sq7KM01Miri6FtgWL9EbZlLEKKqZj0hhLWAG6FKd2lRbzH7UMmXegSu/niuJKr2mXuAO2XCZMMdvKOPu6P4OwCcnZFQfZh21oO4dAJBvtQSI+0OsDBgdDrchbIFN+czf5tayP2kly6OpfB3PBfe00xlTTEFBfJn0pPhMZOSzM3dvQF2ZC0c/YYCtfesxy6dJOpqERWZmVu0cO0iaNS+tiuI9Hy1XrcEMurjVHf0vwMCR+toq/A+xUnVLkvBDtFZUNlJeKtH1Ga022eP8nMSzCY0Zd3CdcVmuUiNkQyvOZH2tG2+25SzFDS1eLI6Ns9rB3KYLhXDyQLdaj5Ab/+blAz5w3FIOjjH/xYGQIKoqo+aHS5
+ vrun7sV6
+ Wvxd/rAjFexxg1I4ssraYVr1aavExEH+aOYU8T5UIHLcplhNFRvPJ4KICwrVNhN3ZNlS9JSZM7JNNvQFiZJW8Ouu2fBFHJ6ccJT5oXazjKlnkBu5xxb4BWTdo/rrjNf0spCd6GVmvHX9XYhuvPHQdbf7FRBGopt/MM6aOZq9RVUFV4H3n3HOAMzKOTAhJXyAus/Vl2raeniiPMKrLiOI9nw2/H8g4L7zg5NgKBQWtQ4WW89ZIEt8fo8P2K4UneD7v1Fps6B0DwO3pL1Tujfl/QiNOwlbS6xbwdBHi+Rftd9vlcIFa+sfmT4GQEpV/dvlOSJ3zTogXGxTEi1CjL9uKDSk92RXySSEAmjVdPqhTNy8V9qs+rkH34KyEfiRWfrRe3orENjgp5noNUiTCpl8WpgBQMrWTrHFY6iOmGsmL4AkqyMUg44TwnoDruF+IP6Fmk33d2XZuR3FIYLbRoIG8YrfdYETcvsxOXv8r7tPjG9gvzHuaj0eBOsYI0pYQjCiBcJWTXEIfbmzhmmPJHqkiBPtjyq35BvDC6rnm12ofsYz/a2q5EFRdoggotH+eNMY6he6pPgv2m/GC28XTeEJaI/xcvQODyB3Mm0B4/3dzsmITc3AFfa80R1zOmRnClJptpIZ3+xYHMwz/QZgqrTnh80nd2NJ+j8HElv7cMYtX74rsbStO0Lj3yoTb+r0LI6cRCA/wG2wJrhUATlcjp4JV8tkNTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,28 +157,149 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: NeilBrown <neil@brown.name>
 
-hostfs_mkdir() uses d_drop() and d_splice_alias() to ensure it has the
-right dentry after a mkdir.
-d_drop() is no longer needed here and will cause problem for future
-changes to directory locking.  So remove the d_drop().
+When procfs finds a name in iterate_shared() that isn't in the dcache it
+*must* add it so that it can have a stable inode number to report
+(inodes are only accessible from the dcache in procfs).
+
+It uses d_alloc_parallel().  A planned change to locking will make it
+unsafe to call d_alloc_parallel() while holding the directory lock.
+
+Other filesystems which prime the dcache in iterate_shared() use
+d_alloc_trylock() which is safe but can fail if it races with ->lookup.
+As procfs cannot handle failure we need something better.
+
+procfs doesn't *need* the parent to be locked.  There are no shared data
+structures accessed that don't have their own locking.  So it is safe to
+drop and re-take the parent lock.  We could do this around the whole
+iteration, but as failure of d_alloc_trylock() is rare it is more
+efficient to drop and retake it just around a call of d_alloc_parallel()
+when d_alloc_trylock does fail.
+
+Other code that drops and retakes the lock in iterate_shared needs to
+be careful to check S_DEAD which could be set while the lock is
+dropped.  This is not needed in procfs as the flag is never set.
+
+As d_alloc_trylock() calls try_lookup_noperm(), we can skip that call
+and simplify the code.
 
 Signed-off-by: NeilBrown <neil@brown.name>
 ---
- fs/hostfs/hostfs_kern.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/proc/base.c        | 36 ++++++++++++++++++-------------
+ fs/proc/proc_sysctl.c | 49 ++++++++++++++++++++++++-------------------
+ 2 files changed, 49 insertions(+), 36 deletions(-)
 
-diff --git a/fs/hostfs/hostfs_kern.c b/fs/hostfs/hostfs_kern.c
-index 7add056d47d8..f68e75981436 100644
---- a/fs/hostfs/hostfs_kern.c
-+++ b/fs/hostfs/hostfs_kern.c
-@@ -700,7 +700,6 @@ static struct dentry *hostfs_mkdir(struct mnt_idmap *idmap, struct inode *ino,
- 		dentry = ERR_PTR(err);
- 	} else {
- 		inode = hostfs_iget(dentry->d_sb, file);
--		d_drop(dentry);
- 		dentry = d_splice_alias(inode, dentry);
+diff --git a/fs/proc/base.c b/fs/proc/base.c
+index 6a39de424f62..49939527763d 100644
+--- a/fs/proc/base.c
++++ b/fs/proc/base.c
+@@ -2106,24 +2106,32 @@ bool proc_fill_cache(struct file *file, struct dir_context *ctx,
+ 	unsigned type = DT_UNKNOWN;
+ 	ino_t ino = 1;
+ 
+-	child = try_lookup_noperm(&qname, dir);
++	child = d_alloc_trylock(dir, &qname);
+ 	if (IS_ERR(child))
+ 		goto end_instantiate;
+ 
+-	if (!child) {
++	if (child == ERR_PTR(-EWOULDBLOCK)) {
++		/*
++		 * Need to drop directory lock, which isn't really
++		 * needed here anyway.  As rmdir never happens in procfs
++		 * we don't need to be concerned about S_DEAD being set
++		 * while unlocked.
++		 */
++		inode_unlock_shared(dir->d_inode);
+ 		child = d_alloc_parallel(dir, &qname);
+-		if (IS_ERR(child))
+-			goto end_instantiate;
+-		if (d_in_lookup(child)) {
+-			struct dentry *res;
+-			res = instantiate(child, task, ptr);
+-			d_lookup_done(child);
+-			if (unlikely(res)) {
+-				dput(child);
+-				child = res;
+-				if (IS_ERR(child))
+-					goto end_instantiate;
+-			}
++		inode_lock_shared(dir->d_inode);
++	}
++	if (IS_ERR(child))
++		goto end_instantiate;
++	if (d_in_lookup(child)) {
++		struct dentry *res;
++		res = instantiate(child, task, ptr);
++		d_lookup_done(child);
++		if (unlikely(res)) {
++			dput(child);
++			child = res;
++			if (IS_ERR(child))
++				goto end_instantiate;
+ 		}
  	}
- 	__putname(file);
+ 	inode = d_inode(child);
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 04a382178c65..de96a08a1e64 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -686,29 +686,34 @@ static bool proc_sys_fill_cache(struct file *file,
+ 	ino_t ino = 0;
+ 	unsigned type = DT_UNKNOWN;
+ 
+-	qname.name = table->procname;
+-	qname.len  = strlen(table->procname);
+-	qname.hash = full_name_hash(dir, qname.name, qname.len);
+-
+-	child = d_lookup(dir, &qname);
+-	if (!child) {
++	qname = QSTR(table->procname);
++	child = d_alloc_trylock(dir, &qname);
++	if (child == ERR_PTR(-EWOULDBLOCK)) {
++		/*
++		 * Need to drop directory lock, which isn't really
++		 * needed here anyway.  As rmdir never happens in procfs
++		 * we don't need to be concerned about S_DEAD being set
++		 * while unlocked.
++		 */
++		inode_unlock_shared(dir->d_inode);
+ 		child = d_alloc_parallel(dir, &qname);
+-		if (IS_ERR(child))
+-			return false;
+-		if (d_in_lookup(child)) {
+-			struct dentry *res;
+-			inode = proc_sys_make_inode(dir->d_sb, head, table);
+-			res = d_splice_alias_ops(inode, child,
+-						 &proc_sys_dentry_operations);
+-			d_lookup_done(child);
+-			if (unlikely(res)) {
+-				dput(child);
+-
+-				if (IS_ERR(res))
+-					return false;
+-
+-				child = res;
+-			}
++		inode_lock_shared(dir->d_inode);
++	}
++	if (IS_ERR(child))
++		return false;
++	if (d_in_lookup(child)) {
++		struct dentry *res;
++		inode = proc_sys_make_inode(dir->d_sb, head, table);
++		res = d_splice_alias_ops(inode, child,
++					 &proc_sys_dentry_operations);
++		d_lookup_done(child);
++		if (unlikely(res)) {
++			dput(child);
++
++			if (IS_ERR(res))
++				return false;
++
++			child = res;
+ 		}
+ 	}
+ 	inode = d_inode(child);
 -- 
 2.50.0.107.gf914562f5916.dirty
 
