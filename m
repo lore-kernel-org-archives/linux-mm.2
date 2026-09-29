@@ -4,111 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E867FCA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:54:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDF2CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6C756B0096; Tue, 29 Sep 2026 03:54:47 -0400 (EDT)
+	id AD6696B0099; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1E116B0098; Tue, 29 Sep 2026 03:54:47 -0400 (EDT)
+	id A87C26B009B; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5A566B0099; Tue, 29 Sep 2026 03:54:47 -0400 (EDT)
+	id 99E776B009D; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A3BCB6B0096
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:54:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C4684040B
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:54:46 +0000 (UTC)
-X-FDA: 85266038172.02.DD52EDE
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EFFE240003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:54:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=bmQLzw4r;
-	spf=pass (imf12.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 79BED6B0099
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 119DBA0429
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:55:51 +0000 (UTC)
+X-FDA: 85266040902.07.D640D86
+Received: from mta0.migadu.com (out-166.mta0.migadu.com [91.218.175.166])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DBE17C000B
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:55:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="NDrUg/Ro";
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790668485;
+	s=arc-20220608; t=1790668549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zT6GlfQft/QJeAy0pckXvrIl9KIiBoLg2QYNryNymLU=;
-	b=NEfn29wFIIIXU3YxoQH1DjwGhCM2mHMR4KSrN49RbSNCyLx74SCz/iVbHNH1xtJHi+Iqzp
-	iktsqkB/R2nJpzYY5A3/4ziS4obie94hHJiuI3TU0xUYf3t3/7iCcdZtmFBzkiI6x9HECt
-	WNOtDfGEHveU/2GABNZLsPtv8GJMWVA=
+	bh=jMi3M1iULFUfuMEEhHz4Tqsh151CRH++Ayaby/JxpbM=;
+	b=R6M9INa0j8LkfBsULYAMySRSYw6dFVz9sylmgi3K9p+BE4OGeNiEmdn0O33L4wCZ5RAihe
+	RRqOAAqkzGDBbyc7aM9CJX4AwT7x6uIIatkCjF/7UbBg32dxXcyFFYA3dxVhKI9fyNZ92J
+	pg5ebFv4GErcn1cKc/3LStBC2C802GQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=bmQLzw4r;
-	spf=pass (imf12.hostedemail.com: domain of peterz@infradead.org designates 90.155.92.199 as permitted sender) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="NDrUg/Ro";
+	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790668485;
-	b=emrXUaLQQp5wn8geUVKGSMuh1Sgnr1ekJJ6y45oKSqIi28DvRqpPa7vD0/gAT+dV168HKJ
-	OvlwyBJ1sUMBsZsX3cucBw+yeyxa+k+sWNrnq+kGBMHLUI/rfeTU6hlZmfGkhtkU/c2JYI
-	2RAa77PVL9x1t7Qk/N65vI4zUqPjJmo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zT6GlfQft/QJeAy0pckXvrIl9KIiBoLg2QYNryNymLU=; b=bmQLzw4rqkY4fV8qO1gp2+zRk4
-	nhnwFpj7IgIbEV0UNBL0AOnauwbzBlCrL0ajhvhUVi+pNnh8SIZRzeefsOeh2Kr+NSn2B/sAIj7Vh
-	Cx4AjbKvt+mRby1KlKqiNENB9NvJZhwvbf7gm1HC3bSiE/zr2kOf2x6WRKTNv+D2/KJS9G+aCQfJy
-	toxyW81SwYmF7/bHp3ab0R0jpaRE1WptNnL1lIFsaUvgJvNpq1mWDNvoRc/z4pdNqCh2Tcmi+TgDy
-	hVZUhCFgMIoSgF2tN4jnyl9609fBdFBT+W9F9gzKS5Fe2LmAP+mdiNLql6o3NqdHV3RMF1f+4q+yR
-	ZPnsshtw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1xBSfV-00000002Jcc-0zm7;
-	Tue, 29 Sep 2026 07:54:30 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id F1E06300446; Tue, 29 Sep 2026 09:54:26 +0200 (CEST)
-Date: Tue, 29 Sep 2026 09:54:26 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
-	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
-	Christoph Lameter <cl@gentwo.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
-	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Ashish Kalra <ashish.kalra@amd.com>
-Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
- encrypted guests
-Message-ID: <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
-References: <20260929040256.543767-1-zack.rusin@broadcom.com>
- <20260929040256.543767-3-zack.rusin@broadcom.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260929040256.543767-3-zack.rusin@broadcom.com>
-X-Stat-Signature: 4iireyiz47bmz74xg1me4igk3fsnx6t5
-X-Rspamd-Queue-Id: EFFE240003
+	t=1790668549;
+	b=GgV/KSAuPZlx3ErTCcEWPDlMpb4F6sGEEQd05sDWTtt14RIoqZL1CO3cmKpRbeUMF5D9W/
+	xt7qYEmoP4T4XlYWqQS1vW6xqaZjnXectL6yuJaUFlUCgHYh991XGjOMSB4GY7gbWEdd1J
+	2wNhZm4HmTv/8bvdOXHIoqHgIPHjyqk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nj3wtQVl7vcnhMbNppV9t0dGEHcungOiAb7gmBQ9b+o=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790668547; v=1; x=1791273347;
+ b=NDrUg/RoF1bPvVighGofc9LgFh5CsV8P86ekZ3WhxBT7oEPsv2EaiQEbUnovbXjLyRji/zXp
+ zu1s05qQAaWgnEjHbV11T2RK/fszFU/20H8cgPwE/HMRnaKxGC/qzDC7+I+Z6jOgfFoZRyMwaa0
+ RyucxV3hUsLBqVNRW5VdkRs0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 06442dbddb022582;
+	Tue, 29 Sep 2026 07:55:38 +0000
+X-Mizu-Trace-ID: 06442dbddb022582
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v5 01/12] mm/sparse-vmemmap: factor out shared vmemmap
+ tail page allocation
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <5c73e3b9-4eca-4b84-ba3d-85bb7d6f77dc@kernel.org>
+Date: Tue, 29 Sep 2026 15:55:21 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6BA39A32-5851-42B2-8822-F427D08577D8@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260927025441.741633-2-songmuchun@bytedance.com>
+ <5c73e3b9-4eca-4b84-ba3d-85bb7d6f77dc@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Stat-Signature: xoo3ahco8fumnkmxppkfa3h46bzuo4n7
+X-Rspamd-Queue-Id: DBE17C000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1790668483-393433
-X-HE-Meta: U2FsdGVkX18+E2M7jbH4dBrYOmJrUzm4zuN9X49/dNueURsoTHn56qDjfS0rHX4sGjtnSH+oaBhPHBGvYYABcfvvrfdMFm0vLowrHGkAjLadiIV5hj3CshoadcdVgz73ldRGiM7odZEv79KUzrV9j7vyO8jrylCch5MvkTiw1+gOnEf6o7X2Mr6KitJPlHLa0v3GShVTn9PGORPtuY1O7ioujyFLeiJJB+h3VT2iW0ZR6HADaCZO6Tw12FNPTkxFvZiExIN4F9rWFw3QhKJu39AjB5jVuh4nuNjX1E5Xq4tMUd4W6aJWeu7UXg4Ezqj8mVckghpJKm4nh3wGpcHvYyAYkUdyXyeN6Dc0Okb2gOpi0guMB9yedm98kUWh8ybXWyl6yeM2YyAPApwxSCH1ScayUxa4TJiB/2zMaUxbYsId64wb8b+HtCEdMrkRwyvqJsGAPswyKH3S1yV55Xs7LPGRvRCXhbPdqUl/2sbu2Tda0BbHeQ9TwFWQ/nhN+Dj7QSfMTZIt2ASRQHgsobM8lYo54DdE5JXtFXurvKNO0H569iFOOk6IlPPfboIkBuARo2EqVGyNoa+Z0Bf6syaw3/fFyRuZ1PZOtZTrVqLSfQrisOpn8VBZrGjDY2R47LhE9rnrkSkZwuHhZhM/8VXdor5/e5pYsaFcRvTHONShgKHXd6cFpdkxNauQZPj9qhEkAeVIsXVEVHLYmMRTpiubO9dmfje0E4R5Fq422DcWpljd+hBtsDfKhwc+S5PWxaCSyl4TAyfOzKkWA916wgPQIu28TRn62JspAHyDAr6YQLseqYQqC1jVtVtp86EpRgjdZAL/skItwQDVxx2GxZP9elIOesvjzWVLId4qIjeYFNVMZNVK0RKcSE5S3xzLL1OdFQIpKDIS5WEZwT0wqlk4EFIg7LMVS79rVH3cnywP6L6+Dz6kUN0a4z3iSwTwIAU3h5rpgvswfIEMOQI1AQd
- uV5gbE3w
- uqS6BjXfdVVx3WDW8j6GncdEXmFTuZ0AXSyDTFStP7bEqaocfzt/ejlbbSFvj8gm3h8Omgtfh39RPJYXXgl+tkc9iGG+nOV+wxn0gDIVe4utcMsjczsq/LsB/tjEzJ9GYq1YLFuHW1Y5DtvXZhX5JjSRiAxWcA+DGmPNH/hb3NXZDC/feViiUfPIzWcoTP5m6DaQaNTtulgg3XgNmVGIR67fWIRWQQfpGoR6M0AMOLO7Lno6eioaPe6UEakr23OcZd8lu+veQtH7ijFrfNZOynvHjcg==
+X-HE-Tag: 1790668548-889688
+X-HE-Meta: U2FsdGVkX1/g2DtaqZowpOnAvuPBUrMxIIS1KbDOeIgfOx9am1LyaDMPFUWxtS+j58jIgzN3YyHvJn4P0sFOJsDyCdgS4wSqHOf50CMdMFw71O7KgSU1s8o1CoGHj2BHgf4xg15Vf9gfTGOz07HZSoxfvPysrDd118hvkKBMH7V66EgxCtcSNq3pHBbkunvE+y3MybKs6B3Qi0MPCYuWre8KvNZRu8yIof41ZrWGGikPm3VYwyE2W6Y98KOL6oarVOvzYEoLw3bOzYvLAUXaUNaOOsbD3umd0DZ1K01DSqt1sUjpcwgXqABuQTVyH3T8OSRNQogQKBrIhJEMa7rFy88ZebR5TcwolgHYiSEX8V+tS2sRg0Lzo+wT+skOvB4eHMLJyJnMh6M/pZ764mfTDMVBiRIIejGKGvaXNkP0CWTUHnMIANw9sIGMAnKidhxsaYHyvQr88+N0q4CvwcgWaXkT3692Xfi17Iqi1PD+/aCSXpxA9aTqO80/aFfT8Tkn97ZlIzR4YvbOlADDdIk+pOlWnilGb6CQC/F/Gtr2s5jKfI56hd/PzLLHYCv49DuzrrLEwaAHO86qKObt2QrRvo/RYHpw20YSgtyIMIPqp4KxlvWIFIJY6XLuVkZoPQmsn7K+cpqdnQ01uELfsatDLjW0fPVfgsrCQdFUMTA7zoiLJxU2+JKWvsfUUwm8DLoEUx9lS3OopncFeP1Lsh7jj9zcvKpDVnOMR2wa/Djnpx+4Pa9KdA7Ckhiy2lUX1X6wMTmxu5npiaK+aSfrs97r205Hckpbl2mifx8mfmAK/IhFRtshB5Ren5oOay2Q6B4VArX/GRPLVeRrDaWWLDRObDOAhTpTxHxbuVXXDbCQBElPmfxhhIc1itlYOXcuhQP6HafVNVDdk3RJlw2IPa2Lk19ThytS9ACqei9VaqXUvCEccP2JlbqV4aCkRki5ym8DGM6aowK2JeIpzzanZJw
+ esiHc2fk
+ y5grJxL8mEz14F93d3yhqfk9N4ekag7xRqyqPohsUYmAbqmPR1dPZy9UC6+Htc/1UupWbvQ/s+SNLEFqbOmEWhTVC1iBLE8gvctxsRKwm6CefwQKm09e+E4lFvD/DstLGGol+d3AtTV3e54XJdOOHzCC+xFpWRfIEpSCaHB4ytpoWuUo+4Q9kzA9LxP2Ad0U7EYPHeA2FLGFrXl73jZwDPTvql/ka+C/Up2K1GisHjAs8g3hpo1aZNZl7rH66HeBpuvA8qQrK0hoyreY3vGX7XJIJFHde037SKCREw8x9RdOfp2/5BGygUGl1PyPMMCnd5g1a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,46 +109,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
-> TDX also needs shared per-CPU buffers. Use X86_MEM_ENCRYPT for their
-> definition and placement, and provide page-aligned boundaries so the
-> architecture can convert each CPU's whole section before registration.
-> 
-> Define the boundaries in the SMP template or UP data as appropriate.
-> Drop the unused DECLARE_PER_CPU_DECRYPTED() macro.
-> 
-> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
-> Link: https://lore.kernel.org/r/aqqGUAX65s4LdJkr@thinkstation
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> ---
->  include/asm-generic/vmlinux.lds.h | 12 ++++++++----
->  include/linux/percpu-defs.h       |  7 ++-----
->  2 files changed, 10 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-> index 64bc2bfdd2ec..145fcdbbe9db 100644
-> --- a/include/asm-generic/vmlinux.lds.h
-> +++ b/include/asm-generic/vmlinux.lds.h
 
-> @@ -1022,11 +1024,13 @@
->   * Note: We use a separate section so that only this section gets
->   * decrypted to avoid exposing more than we wish.
->   */
-> -#ifdef CONFIG_AMD_MEM_ENCRYPT
-> +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
->  #define PERCPU_DECRYPTED_SECTION					\
->  	. = ALIGN(PAGE_SIZE);						\
-> +	__start_percpu_decrypted = .;					\
->  	*(.data..percpu..decrypted)					\
-> -	. = ALIGN(PAGE_SIZE);
-> +	. = ALIGN(PAGE_SIZE);						\
-> +	__end_percpu_decrypted = .;
->  #else
->  #define PERCPU_DECRYPTED_SECTION
->  #endif
 
-So you're page aligning something that will get different protection and
-will thus shatter large pages?
+> On Sep 29, 2026, at 15:16, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 9/27/26 04:54, Muchun Song wrote:
+>> HugeTLB and sparse-vmemmap each have their own helper to allocate the
+>> shared vmemmap tail page used by vmemmap optimization.
+>>=20
+>> Factor that logic into a common vmemmap_shared_tail_page() helper. It
+>> allocates the page through vmemmap_alloc_block(), initializes the =
+tail
+>> struct pages, and uses cmpxchg() to install the per-zone shared page.
+>>=20
+>> This removes duplicate allocation logic while handling both early =
+boot
+>> and runtime allocation through the same helper.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> ---
+>> v5:
+>> - Move this patch before CONFIG_VMEMMAP_OPTIMIZATION is introduced
+>>=20
+>> v4:
+>> - Update the commit message for the renamed VMEMMAP_OPTIMIZATION =
+config
+>> - Collect Acked-by from Mike Rapoport
+>>=20
+>> v2:
+>> - Collect Acked-by from Qi Zheng
+>> ---
+>=20
+> [...]
+>=20
+>>=20
+>> #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>> -static __meminit struct page *vmemmap_get_tail(unsigned int order, =
+struct zone *zone)
+>> +struct page __ref *vmemmap_shared_tail_page(unsigned int order, =
+struct zone *zone)
+>> {
+>> - 	struct page *p, *tail;
+>> - 	unsigned int idx;
+>> - 	int node =3D zone_to_nid(zone);
+>> + 	void *addr;
+>> + 	struct page *page;
+>> + 	const unsigned int idx =3D order - =
+VMEMMAP_OPTIMIZATION_MIN_ORDER;
+>=20
+> Nit: constants read much nicer all the way at the top.
 
-That is somewhat uncool. We like large pages, large pages are good.
+I can update to this next version.
+
+>=20
+>=20
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
