@@ -4,100 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DE48CA5FAD
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:40:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FFECA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:49:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FC156B008C; Tue, 29 Sep 2026 14:40:35 -0400 (EDT)
+	id 536966B0088; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D41F6B0092; Tue, 29 Sep 2026 14:40:35 -0400 (EDT)
+	id 4E70E6B008A; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EAAE6B0093; Tue, 29 Sep 2026 14:40:35 -0400 (EDT)
+	id 3FBBA6B008C; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 211736B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:40:35 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B6A90A05B2
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:40:34 +0000 (UTC)
-X-FDA: 85267665588.20.21CEB4C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1E1A6180011
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:40:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsFqP6x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E2D26B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AF22A6E69
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:49:34 +0000 (UTC)
+X-FDA: 85267688268.19.932F92E
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 857DE140002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:49:32 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=Lf7mNpHr;
+	dmarc=pass (policy=none) header.from=krisman.be;
+	spf=pass (imf23.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.172 as permitted sender) smtp.mailfrom=gabriel@krisman.be
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790707233;
+	s=arc-20220608; t=1790707773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yDA+pcL7IQYIQQjtqHB088yezWAUg1S+dUpzwe1IcXE=;
-	b=FXmm16kRkNwY698nthdC3tA0X2OdypICYWbZHR2xp7ot4tmLeMWi9AGMs4CsPBv71HkcIF
-	eZDuCTIsvYWTuEJBe8RbnTL7rUYmOPw1JOjRoH6EElSlMVKwCIKb2PC0izQWBCHJ1IJNrd
-	o/sODy8xhuXvHhWIuQrhx5vbwbET8tQ=
+	bh=YxGsR26vdUt0dLRkmfJ6DMuoIFvZS7PYUYqwNoaoH98=;
+	b=t6kS7xNYYcjUwAP29qt/N8AqcJqo1kfPb4JRPq0RP6zbYR1w/D71OFqaC6ibpUtKqwYcu2
+	xAUiQ8e8Kj855tDAoKEu6MrsVm1B/CYb8EXooLLWaT7Q6a7Enj8CRsQmznaq9rEkX+0fnO
+	bh5PCL2rFisuA8r7Adzuwab6x0/bBwg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=atsFqP6x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=Lf7mNpHr;
+	dmarc=pass (policy=none) header.from=krisman.be;
+	spf=pass (imf23.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.172 as permitted sender) smtp.mailfrom=gabriel@krisman.be
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790707233;
-	b=qvuB3hCjItKJ7Nvu95Zuvdu8r70kXRoQGtx5n7VCCBFXby1Q6eALpqzZaXc8UjtKXr8KdR
-	40MwknoIUutbxyJFj77OgnxFu7W9r7W2TbIPCLkJvr2n2Jlqs8Fp4DoDzUGfEqRlpZSnEi
-	gFM9a7OF/ZqgvTHZORmBGV16l4oWHac=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6BA08409F5;
-	Tue, 29 Sep 2026 18:40:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA7B1F000FF;
-	Tue, 29 Sep 2026 18:40:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790707232;
-	bh=yDA+pcL7IQYIQQjtqHB088yezWAUg1S+dUpzwe1IcXE=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To;
-	b=atsFqP6xdrngdjq/FqsLK5lxp5gYUSMSDrKWFJXXMcabyxDn+FSFmeK/E4zfjwlAJ
-	 zOjhQ+UigNp5RblAtNIJs+Z/dwwEdt1A4Ky40K45Y8sP+MdyeTH0hsRwPrXm0co5MT
-	 4/f5Gj/L9e3IVLtxh9YVYJDZs4/UHw9HL1Y+MCeeD4yaXDTPHHNWNEqLcygzwtEoLD
-	 VjfoyWEbfDQliIH3ulLZuRVJtSFJpJQ4df2gGQRhGSSC4UstvZ28htfaPod2zYULg0
-	 iASas7W75GDszMGgNadKO6AcYVRGy4bTpQqPCVjCJVhs/QMkQAtqCnxAAPuZXmBxQ8
-	 xFOxALfiFcuTA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Sep 2026 20:40:25 +0200
-Message-Id: <DLS0QEPJKOPZ.1MX607W2OQ0RI@kernel.org>
-Subject: Re: [PATCH v3 09/11] rust: device: expose dma_coherent()
-Cc: <sunke@kylinos.cn>, "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng"
- <boqun@kernel.org>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <lossin@kernel.org>, "Andreas Hindborg" <a.hindborg@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Daniel
- Almeida" <daniel.almeida@collabora.com>, "Tamir Duberstein"
- <tamird@kernel.org>, "Alexandre Courbot" <acourbot@nvidia.com>,
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Lyude Paul"
- <lyude@redhat.com>, "David Airlie" <airlied@gmail.com>, "Simona Vetter"
- <simona@ffwll.ch>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Sami Tolvanen"
- <samitolvanen@google.com>, <rust-for-linux@vger.kernel.org>,
- <linux-mm@kvack.org>, <dri-devel@lists.freedesktop.org>,
- <driver-core@lists.linux.dev>, "Alvin Sun" <alvin.sun@linux.dev>
-To: "Ke Sun via B4 Relay" <devnull+sunke.kylinos.cn@kernel.org>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
- <20260929-tyr-ioctls-v3-9-26955fb111d5@kylinos.cn>
-In-Reply-To: <20260929-tyr-ioctls-v3-9-26955fb111d5@kylinos.cn>
-X-Stat-Signature: d6hsgtz1j8budypr3g33hqhn654aftun
+	t=1790707773;
+	b=uhpCsLXnIAcrCzl11U7kG/FtvKS8XwnEZR8yLwDM0uGyRH+b2Zb48tiuGohgFXfrrPu0Al
+	r5CkNQOqXdfvtZpZE/ZaOveVgdCIHfCZSt+XFJdLnfUVgTl+En+YqLE3nbW73SMX1yT9Br
+	x6ZzQ94rF4GI3CFCqKWT9QNh7264uUY=
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hvRzq2BXGzMlqp;
+	Tue, 29 Sep 2026 20:49:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=MBO0001;
+	t=1790707767;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YxGsR26vdUt0dLRkmfJ6DMuoIFvZS7PYUYqwNoaoH98=;
+	b=Lf7mNpHrmJCDzUQ1Pu05FeBsEVuBRTKcVPbPcpRAPXhM68QIJX1zUjasn6/lynR1as4TSc
+	7NrBSum9bRai3btPiutAh6Ln9az/p+pmN+2o5OyNXBBF/MCYhlLnSsMqUM6OiQXvif3hzD
+	zE7WljtLdQ5Rx2v2XCnrSnM2UJnYC6/+CrTW+TOL1Dvu9/KP4UMCHDOrIMJdS6XCVBaXpj
+	kHxiBmTMOcso5Z4s3scPGsTF8FqAYqU8BHs0dm5m8Yki4sgmvOMbfqvUx2ChfbPYprMN8z
+	wEcuz+OZgudiNmPoWy65BhaCicnFz2lhATrCJCaFvUYny/YBKq4vuXegXPbRdA==
+From: Gabriel Krisman Bertazi <gabriel@krisman.be>
+To: Mohammed EL Kadiri <med08elkadiri@gmail.com>, hughd@google.com,
+ baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/1] shmem: fix unicode_map leak on remount with casefold=
+In-Reply-To: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
+References: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
+Date: Tue, 29 Sep 2026 14:49:21 -0400
+Message-ID: <87h5j7yjta.fsf@mailhost.krisman.be>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Stat-Signature: 9atqpskushf8jnfyt64aawmm1d1i45ic
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1E1A6180011
-X-HE-Tag: 1790707232-363744
-X-HE-Meta: U2FsdGVkX1/q5e6BG9bP37SMpfOYps+AeBRYmjHKX7DPlCp48kv4x6Egom84+iJZlFNr4a3850ziv5JaMCtq6BN6C+9zK58ZLrtt7gT1oYBS1Uv33HHzdvWVz+Dugtj5g3XuhN7m2G5PV0cNcX8Oas0aZPnKdm7cuLMl4iQBHfH6xcGVbi8M9MbYqmiKBlosa+b/l8ZzOajz5evU4ZX8Cw6H485SDqOd/Jop9BRbedmV5IaOud/Zt9vBvw/tly72ds7ycBsVCYgIxzuoWzmYKwrSZDp5VrlSHjBC8iQychTa23AMKEJ++TQ0EE80p71p/jPUXXc1eXeK8nVI3YadmHKYl5EpcL6M2+iPcSny4TJ7vt10u2rWI3SY/hANUrZH9k2T+b2IpIuEaL7hykr2rstNq5znYx4alPM8pjPGVsC7ssXnPgKncn/viIZ6ZgF1kjVQaECp/Ue7KLkyexHozY73IRkAmTWVX4fFVTl9hPhxtU5SCfP5m1rgur6NBSnrwCxoj9GTZa3hLWvrEbaKvsrJT5raifoHEqZfTUoEZEQYON/n1bhgSxdn7U0BH6ODCJdg8q1r48KWltuTDW9eODGZsHaj8Hb1sm9wFPIiE1E/UX13ugtqY3JREVRe3/3fhuByxS1BeQ2UjMycx0DQnOb1XzOWWmR+1gToA63/OhuO/tdF5NVAVReTaJlhh1LM6N6Ombdw5cnZR6a93e+ygYYtR0DJmEtb4Bbr+EcGVX2Uv/U+UDrzCOsq0lSblWqLQgeKUuKSbv2zCa3ykYE+B7zRMPYgYAh+vhzcHC/Q9Ouf01Jt6o2bivLCpB2iItrliEluhScVD8sXSucTc6voriRrZJfQAobFf1u4fglfFf4KNeg3iFPCdMmHB65gtlTDQJGQDohZpCoUyDSHh/FJvvh2IYp7BknXoBcIFIZ7586vTZB+44sybsUObrkkIRzcBFnZlCJP3oLetaI82Qk
- PPruVCyO
- zrzHqY/zDZ07GDo6BHt9Xtyg+nSjiHWKG5QYowsqVJg/wynYKD3XcF4dZxkpJ7YqhxwzeZMfnfWjc3zjkOuQrJooTEOemwzq9IBze+SonTWnfHGf4mLCd95rcv79zJbHQhLIcEDlQwfoZwV9V3nfbzYUXiBDJMX3hXdOEYy0jMpvsi1lP3+gWw0mVQAl4DFQC2IaTfIc/wFih1xSP2E1nJ8vecAAt9or67SZ63tH1cWFMCxqr5mn9rF5ZtUHMfpT4IPqcVweQxcnoN0LufDW8oVnlkVYaglpW4/lz1egsPRXOFt26hwAgP0sLQlKELaykpd5Rwt03kHSRu4HhMdZ3+j/Rg0dr2mtfLwi9RuaUCLW+lfIk6J8Zb14CYl9caa0I/cDZu8NtHNTLF1N0Nwe1SwXq6bByhmWVYacmYlHICnnK2pK6qoGPr6QAmr2WumroanvdhOfMTMUmd+s=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 857DE140002
+X-HE-Tag: 1790707772-538774
+X-HE-Meta: U2FsdGVkX193mIXsVRmtGEve0XP/OINpBYLqR5iVTaOkxJqcMhHbyIomQEbnaT4QyR8qfHoSOrjddfC76t6cHjJz8KqBpxTtReTs6QiPXtrn9c4w0aCZtWfLk5u4Q08EVAZLx7atfwZFplwnWMdDmLfMraf+fdO6yp7q67XllBKxSYer/ZtX31dmC1tENjyiPrLKhLBqv/XMufyFxk4rFUTpbhYTGQkcKQlJzMvEm6zq+BFn356+Y9CLMt/LrlDfo8NUJ2qWiPsv5pX7RNq6k3rPC5RMVodApvMfBwUWzFIZB2hqNJz3VPAb2D4BOR1utyG64VR/FdF3L86duiB/Meb41IFMwDin+7S0yUVNtyRnNkPqzXVML7J2LIlK1lAkM7fjQFE6tDjp5afD2CfC2sirdlFnH2yntJW+RtsqVdheNpw8wrbt8EeH5Mzpv6S2g3fkZy1i/TW/dUdKt3T5+MTN9MHNfJq8vhZvJ/KaakIqHKE9irr/36lodBdqwDUysqhzJ0BfcmhIfNy+4aLC1TQncadi8JNYZ0DjtEY9BB10DqIuMa5SDAae4+c6XoF1z2RWy4lBC6/FPVdRtqYBUigj1geTnVCRTFJjLt2u9jX6xt6AVG/E4fssY2UCHdVZ1Bacv0XYD2JecHaL2wDYhiGY4EKEom4FKjhhj9uzvRqhtzPsjuRnFQgh5S/KM8KEUX1p8Dz5TmPdkT92PuaEu6zKDUhFnIxL7TKAudh2Q1gPBVmVjLj5AYwRPR3X4AMYxJgSID+V78WyqNrGFEI8UQY7Xy/1WbTkFeo6+t858Dlr/GX3Gs5PY3ZoCb8xScyX+sw+ABXvtvnNAuhdUIjhbPwfvQGGbeJ4UQHwpVUUWoHtr6XsPMW7zs3VGTIhbrlTrfTz38lv1ZVLBOet0ZrU/Sqyt3CisaTDntwjL9l1cp3LkHVzNrHPgmIexUImDnDHxrqFJ0d7aum08eQqBsv
+ nhCaHfWd
+ MuzkLPZovEbbaVzi37lZP+xTb0oVpAtw/d3jy7Ibs46ClJ5I18e7EFBXYX4bFrTVB3yur/r0I6DsaBOqe9JfzFZCLulYYIAG+dYcpTyx6ZjRQGYWuy9E2l5xFVa2iG/mWGrizHq+i7RQA3l0xKlh2JPWIa0zaxV3Mi6ObFLjdWMGSBN3YuOz6rEL1IYspWwIWNJdpsQeAtbEBb91g4L5qQJ/Ae1fLiTxELBtWlGzmnIXHp/F4mtMdmdgtEn9ZT7XzfmP4aXFKbVEyip9swDrbdmeK+RR9E4TIAJA/CY7Qsc9VPqp58Tm0Fl5SHu7HEfvQCzG8mzqXX0ogjjkNh6myoR+BKxtimRtGs0/ful05jryxr4y2Eg0VyNp3PvmXcU0TS/WSdY2+IBf7E7aKv+mYkPtfi00+nRHC8jDYdNfTMwtdJHC4b014SmMPT5q2apAkdyj5N3+KhseIDu4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,12 +91,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Sep 29, 2026 at 4:15 AM CEST, Ke Sun via B4 Relay wrote:
-> Add a thin accessor on Device<Bound> that wraps device_get_dma_attr()
-> and returns true only for DEV_DMA_COHERENT. The other attribute values
-> (unset, non-coherent) are treated as non-coherent.
+Mohammed EL Kadiri <med08elkadiri@gmail.com> writes:
 
-Why not return a transparent wrapper around enum dev_dma_attr so we have al=
-l
-cases covered?
+> shmem_parse_opt_casefold() calls utf8_load(), which allocates a fresh
+> struct unicode_map, and stores it in ctx->encoding.
+>
+> On mount, shmem_fill_super() takes ownership of it via sb->s_encoding,
+> and shmem_put_super() frees it with utf8_unload().  On remount nothing
+> takes ownership: shmem_reconfigure() never looks at ctx->encoding, and
+> shmem_free_fc() only frees ctx itself.  The map is leaked.
+>
+> 50000 x "mount -o remount,casefold=utf8-12.1.0 /t" on a casefolded tmpfs
+> grows kmalloc-32 from 660 to 50574 active objects, and nothing is
+> reclaimed on umount.  A tmpfs mounted without casefold stays flat.  With
+> this patch kmalloc-32 stays flat too.
+>
+> Clearing ctx->encoding after the transfer is what makes the unload in
+> shmem_free_fc() safe: otherwise a failure later in mount would free the
+> same map twice, once via put_super and once via fc->free.  This mirrors
+> what shmem_reconfigure() already does with ctx->mpol.
+>
+> This is easy to hit once casefold= is reported in /proc/mounts, since
+> mount(8) then passes it back on every remount of a casefolded tmpfs.
+>
+> Signed-off-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
+
+Thanks,
+
+I gave this a spin as well and it looks good.  Feel free to add:
+
+
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+
+Thanks,
+
+-- 
+Gabriel Krisman Bertazi
 
