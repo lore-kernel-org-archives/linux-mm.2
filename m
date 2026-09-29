@@ -4,118 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E82CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 849CACA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:33:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD61C6B0093; Tue, 29 Sep 2026 04:30:52 -0400 (EDT)
+	id 6382A6B0088; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D86D06B009E; Tue, 29 Sep 2026 04:30:52 -0400 (EDT)
+	id 5E8E16B0092; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9D326B00A1; Tue, 29 Sep 2026 04:30:52 -0400 (EDT)
+	id 4FEFD6B0098; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9391F6B0093
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:30:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 95441A03E4
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:30:50 +0000 (UTC)
-X-FDA: 85266129060.03.86594F3
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com [74.125.225.99])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C70A0180006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:30:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DBVQQSQT;
-	spf=pass (imf16.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F9546B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C69640445
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:33:01 +0000 (UTC)
+X-FDA: 85266134562.24.8CE54D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0D75F40006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:32:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omxEZyzD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670648;
+	s=arc-20220608; t=1790670780;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9l3xBeUfZcvuHoQo1mSle+mTZ9sk+73Aje40erUwh40=;
-	b=K2628diwiS/J0gVem9So3VW1s/d3lUGKlGQkCW19LPPulZ7J99H0b4hAqUZCwDFUgffGNP
-	LdWzkyh66pGAD58uUTOqogk2GoiS8agma3zaFV8FkjHBI1gZKZmThTrit4HAPk6GKwoIfR
-	sHuFfke3zLaqwID8QfPqsnn0d8wFTSU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670648;
-	b=DE9LXPw636P4zcSpG5d3ZbHvj0GwiZXFjON4erDZuPZox+PWIcLMWqycEq5/yrhfFEA2GN
-	yotu+otO2b+mPjThMqUDxpzTQBWqDxllilMYNSW5vttLvNOb7QneIxAk4cfaosCcJO0oq5
-	G2MrHZdDhxazI1F84E8qNlIXrrbrTl4=
+	bh=kWgQ7PY++KZOODIaGPn/6f7fWLLF6eJjFXK1cuplJqI=;
+	b=3znNdlMxGuCp0SNLalQKnvTWtPbN+igrP0sk1142uROKk5tq5AregD4aWSTLkX/YByB0sT
+	pCoVN/iexOubtv6iHKZUs9YDDSV/56JQwwMwqLI1f75B7h9pXXRza4ykmkpXemtkwYaILQ
+	+RwEYcT2lUPvWOMO6u/K0vFelvxtXfg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DBVQQSQT;
-	spf=pass (imf16.hostedemail.com: domain of azpijr@gmail.com designates 74.125.225.99 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr2-f35.google.com with SMTP id ffacd0b85a97d-4887f690df6so2762316f8f.1
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 01:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790670647; x=1791275447; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9l3xBeUfZcvuHoQo1mSle+mTZ9sk+73Aje40erUwh40=;
-        b=DBVQQSQTy+j1NiiQ6h9BhJLrIs1GfzIo8XnyvwdjuealYfLDkRd4B+sY8RJHvIvrGe
-         b0oBnKzta9OX2NXTiSITdwiNtEvqoP14l5bLgTRZ1uyo0EaQ2UDEInRP8QeK69FLSnkX
-         OQmApGXCakRLmktxc4MCM25zexbVaNiZtFUvdDsbw3imNwn1YPLgOX9QeMAm+d0DOChD
-         i+sSbvbgq4KQSj5xc0KzhFw02GS2ujEVanxcA/b9qJukZJkVmHNraSjIFFWwEbwPP8D9
-         /W/tZd+k3nYiCjGZLFmmnVD+Jx+EFuYFLQUBpBzPohEkwHnB091TJjnxCfd+i1IKqkQB
-         M5rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790670647; x=1791275447;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9l3xBeUfZcvuHoQo1mSle+mTZ9sk+73Aje40erUwh40=;
-        b=XRsK1HfHp0Eu4uehgnHcJXupZivCZ7MD3Kh5bTfK9fOdYsqjFw5CcLfOTChMbPHjkJ
-         VmKlKeCMMdMWHiA61CTwGx4U4cW1iQPuHva30QIZMjA13we+WMxFrxWIOx24H56upRBC
-         2nB+YYp4DVGupz5BD34QFqyWdpzJqdQq5z7rVdV69EpIj7NKr1PlKAsKXakUkmAu2+yT
-         00bm0llatiSr2fRKIRtszWOK9mcfz6POK2QlpRb0lRacZIhaiqb9PnhJyoM+QH1buQSX
-         lMkveWHEAPhpHqZkQ0cBiY8eClN04QR5AIXOs9hPwp9ctnszyg6L8+ilGVTEBYWD8pyb
-         zdnw==
-X-Forwarded-Encrypted: i=1; AKwUvBxBI4tDredGGCVqJ/42CT2c+OqGT5t+sDc4KwMYZVI3WrYoioXJ/vojPDfAigW1F2+CCrlwmmIZ7Q==@kvack.org
-X-Gm-Message-State: AFq9FYLyvAQoBx+DZ2oBOsjvEsIRyk9DzZUm4jPzybaZJ6OyF1/LUVWK
-	sMN9RnF/2grjHmAYc9k0LsgzzfPo1iZcEO7NOLdjX1zDRyBVNSzXtoPH
-X-Gm-Gg: AYBFou01XXZmHJXfEoSjrPZAMOJeTtiuo/IEFGRcqDwQrt90Pfvwl3G2SGaORYL1yee
-	7MgdpxKEC69dyu5c4ra5wxulUtOWHlrRQeEi7afRmnho0BIaVOTgwmFQbidiITzNfTQPEpXcaCI
-	vQ3RIYGPcb/+s7DkPFj4+uxjuXTGQcyuUEabdG+GLr9STbZjWhY1adSbib/tXBp4ywa3bNofiFa
-	Uh2romvzJhuiuBmNvyIT1NmM4hrGOvEe0BNhaOcOB/lS2aC1NLIywfjQMJUTyaYRe0FA4aQQIFw
-	MMJd5td1wlI5C+HwQKDzxhIgs+Rjdby1MtFfJxjhPhyBwhURiSdX9YxMI4syu0bEBKTPIeF9RYy
-	MEUK/zdEHv0DZubU2SRtowo0taXd2An9aG70XfFG4l4XPjS5D65A1W0Mp2KukZFk9l3MrYJbJEh
-	uoyQg+guYeOjyOPGXu0bEOjH2pIMVBnAD9CgyDpxN6v3jtVdA8Rebm+Q3f6KI=
-X-Received: by 2002:a05:6000:616:b0:487:27f6:a4d9 with SMTP id ffacd0b85a97d-488716b041dmr31201008f8f.41.1790670642082;
-        Tue, 29 Sep 2026 01:30:42 -0700 (PDT)
-Received: from gmail.com ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48af508b13fsm1987719f8f.27.2026.09.29.01.30.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 01:30:41 -0700 (PDT)
-Date: Tue, 29 Sep 2026 10:30:39 +0200
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Park Tae-sun <ts930@dgu.ac.kr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-Message-ID: <artu7tGV5yiwErx8@gmail.com>
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omxEZyzD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790670780;
+	b=ZAnxvRmI05S4wCIIb4Dghvlaqj3c36y2gt9Gv0OifqnigytE4ilWoLNN2SrQwKGZ2mLE/j
+	xyXjrNJhxjUmSCaMoy2JyMpc+OvhQ+5Y6EVfiHSECO+3rX/EjK3E14g7OGO28lUoMlW4Wp
+	7kAjY52uvaAATydRxdd4wBb0echKDTU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 93B8660A59;
+	Tue, 29 Sep 2026 08:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544F41F00893;
+	Tue, 29 Sep 2026 08:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790670779;
+	bh=kWgQ7PY++KZOODIaGPn/6f7fWLLF6eJjFXK1cuplJqI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=omxEZyzDwbTL1f+vpJPwUGu5x3lHd9zjhTmd0ryL+3e6loQf5WiX5DwS1z7MMgsyv
+	 fTrf3/ndS/R0PA14bGgvxLxv0SbwcZNsewFfrnwsrqYHBqy4W7DgI2jh+g+Z2sBENM
+	 WSDsjjnimLufz3POC8dGk49KDEzfFrokBGbTqCXS/ue9RoO2fs0X5vM5rD+7AgxmWo
+	 3+vGXK6ZoYpXJjs2G+5U7ZsfALTGTteeIsNzul6a9ZRdahZMLHcs8lXurzwnHnBx7U
+	 frDhAgEr6gdZO7mpoYJEyxvtlDGjveQPqybu+3A8RzsoRKomv8UXAycN5tiftu2R9D
+	 iPbBIn2flF0Ww==
+Date: Tue, 29 Sep 2026 09:32:50 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
+Subject: Re: [PATCH v3 1/2] kselftest: mm: return fail when child test result
+ is fail in khugepaged
+Message-ID: <art3m_g5OLBTrE4W@gremlin>
+References: <20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com>
+ <20260923-fix_khugepagd_fail-v3-1-b387e92fe1a9@arm.com>
+ <1246dd4e-b2a1-42e6-8fcf-7e6b2514cb87@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179066531783.50175.13377521828379196177@dgu.ac.kr>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1246dd4e-b2a1-42e6-8fcf-7e6b2514cb87@kernel.org>
+X-Rspamd-Queue-Id: 0D75F40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C70A0180006
-X-Stat-Signature: b1cg4nd5ue87mmyhwjjj3eiaihq5qusi
-X-HE-Tag: 1790670648-688772
-X-HE-Meta: U2FsdGVkX188YeEq4L8jFL5KRGIG6aoYzDCfhP3btFleJLUzk4P+k8vXX8VoaArMl8UJM5ZxMcfivUOZsfvrjOydGO/kOqj2o2KlQweiQOR/3wMzL2ePfqK7UTdv1aMDLdWbCb2PmLXqOmkbEPKrc8MnwDR1G9A04fyC5VqGamhL12C/bh5iAncf34wtUxK4GQlb1OM3pNeDGcE1y0FE8/NXVvKG+GnUdIla9g4lzzsK16YzhYXw6I7/XiF0cJRMP/03f/jJWcELJQYS4agRDwT4dXxSTcgN/xrVPXGLPmgEsbCIC3GojxHm2kuUZSseINnZpLkENZferLtEFQXnVx9T+QxQZl7mZ/2KACrjG+mTlYc7JPd4yW7CqUWxN8sKTXUqzBM/QDYRDk0WkG4bLGYNRsBk/h36EC2JUijQEqXhbr7dIJqEcAOXi855Ztijjo4oZPKZSY1XVezuLGvd4b3xz/MQ1mqIF0c6uN+v7ODHLlBgvQGGWibh2P8qSReLKTzRR6hNosA19OuHHipKYDcPQ07Ha+T9Q7Zd6+/pv04Z/wfGiMlBb9bw2n1SMjvxd+XPcSivq3nYpsTbequI4eIxKPfdjzSLG+18V2z/LmotuDlfzJsnHcDHIdAZPif2mC8pHhAJoysyMJGirsg/aj0fbJ/LY58MpkxkYQsH78tGlI+iaJcXPHLl6/W7e9iJDYfzMRltrGgxF0fzvspNv+g6NJsXminTVkc1u9BQWLuA0NF7paec2TGI9dWEyLvMlfC47gV5bYfn14jnqduDnRPT7d+bndt5SPNyl5RhWQpigJxf6ql2fflXOW+rL/JbqO086fmWMNCxIMryLVxL0W6OEmGtjnjfbDi7ekUFBykz/umNABFCyCNShjQ5XrKyY8B/fvCQsvdkTPNDclGgZvVrLp7lcbOXye0ubriJhvVnKxYIRJHkCyI7sGTglfZMBtsKaTIIW5FYZgq0xCt
- vxy+e7Dr
- y9cgeLCF1G51BueThzrg+uWSF5kSy7S4psh8i7MTNc6eXqGrphFJHGdOGxqdgyoU8iaC44d7efBbP9ZtvJrhFCMcb+S0BQINwTFxQ1qeK6zyWyt0zXHWPzqDxSlBJZBDPIKtaU2DH+0u6TN703vB6khaxKvWQgJmUqudNbqNmMbSjxkoBrLxkne2KOInzxjhGyBDoEo3zA6tulmgUrldOTZ2Ig2ZbFnJeypD7P50a0XIvhHs+UwvGVvCN6zAj7wfgZ0LSxWzIiyhtnnzkQUFuET/RuIwkURbp7kAEciYwEOlThmlDm5nKhs2hRTtGs4CCkG+6Y39Y12rxjQBJ73qiFJCUWlA+u2t9fLE285XbYsJ3MX3I8lqdydX2iNjwFnz89IsCe0enF5SMQWY=
+X-Rspamd-Server: rspam07
+X-Stat-Signature: da8o7wjnbr8a7xo4cf1a99t63t6fx8ye
+X-HE-Tag: 1790670779-39385
+X-HE-Meta: U2FsdGVkX19Y2gQLJysHL2qzCAusLBc+Kij4tWGdrlm1xE+ZV5ld8NlxmJAywHc6iO/iO8JvCeAkXrSBqYPH4KxeGURf/K+gfychkg7UZpHjfNcMensfEYUHbii1r8fJURQicIPJ4ZMifUhmjvln/uUha5qR4H8d+PoMG72NIXckPk0nATxWEQcCyoSjMNiVu+SrdD7f7g+dnwusjV7loqeQS+fbgja+7KEP/i5J5mbfFvduJ2XMChuNj9GxUwdplaLUtixzmWd+B+ZVgi1oMZgn4ACf/1QWmd4ntmGF+dxH2J8DT8ibakN6RRMuE4YAZenTL8Fl9LaImiTbh9LhFhuVfbRWekSiLCi8IU5pnypq1kCqIVtuH5vZrMSTmNAaVDIMrp1yl21pwWO/3PP4GER7NHA+e8sCoErf9MjPiJGQOcqA5/9xQirQ1KEcSAEayJP1eJUOpj/fIVjRA4GHyof0DAmTP5+X27/IRhX2cAn8MTz1LFl8datQagl6vOzNN9kHD4a/x/3GnUK7W4i4CeIIZHNmu3jjgTdxKhowSA3FQ8A+0SHEHS0+i5jkJfltX5Hdahj8OEM77Ahy+XcG8yM+2TrAbJa5vIYKOHkL7dGuWuNsrPrp2m8VUsIxapVSlzD7D8Hu949GK4O5u+/rhB7R2XzY/mBMuxzz+Ds7tmOXOEPtViH8Ojl4pNrSRQhI05X6lAqvH4zUxyBmjBRYItL6O7LCaeAJvNAxhOnxlRprC05ydJD5/nKGIM7+fZqPteWFhix+iurjQ9c0JJ54V8o3kuwrTAA8NPyq0MPvzPUK9xnDucsOEadxiKPCNaZ7EjGNFEAa6nubej8kjHzJKwO08k7kyv2wsKgdE3xN9MQ8qetKoC4BVG2dEQhZdUUpIaPpLgz7bEoqlckaDqALyyKUHatJXpngPV7fX/ExPrWUSXcjyoOTROonLtsFzrm4fUDP1wSF1j4WDNghFf0
+ O9vBOctx
+ PQhJXeg+iJ+i82h35GHYy/o9k+NvrOfAJF7nJX0ahsxtg3Yp770zW+sn5uFLoX2zakdXYQEj/Het8CAVKVYPapmP0RXTdgBMEqaJYUskzGsT8slVHpBf5ljNygDakM/YYFj53sY+wHbi2Gq0EmcpvmS/v/yLEsMsu2Q0G0NTIR41NmhZYLZ3JFMoTKydWoxZlLFA/GieZGNHvbm4aCtiJam+uh5kRShawE2zWQMTu0q9SeEmanAKbXE4BUl0bBtQVCxdqDo9SntWt69ocEv3DTU35XgMF77bR8JtkD/fymz9tS50fZ/E1/biP+GySPvL2I2yYBzu6F7Avwj831yVAKAdVdmUQvWVcXp02aKaSVmKTA8YDuq+ahKTd/fcvaEa+N4K0
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,97 +102,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 02:56:34PM +0900, Park Tae-sun wrote:
-> mlock() and munlock() currently normalize the requested address range
-> using:
+On Tue, Sep 29, 2026 at 10:21:53AM +0200, David Hildenbrand (Arm) wrote:
+> On 9/23/26 17:29, Yeoreum Yun wrote:
+> > Although the child process in collapse_fork*() or collapse_max_ptes_shared()
+> > reports `KSFT_FAIL`, the result is ignored because the test only checks
+> > whether the parent’s page was collapsed into a huge page.
+> >
+> > As a result, the test is considered successful whenever the parent’s page
+> > is a huge page, even if the child test fails, as shown below:
+> >
+> >   #
+> >   # Run test: collapse_max_ptes_shared (khugepaged:anon)
+> >   # Allocate huge page... OK
+> >   # Share huge page over fork()... OK
+> >   # Trigger CoW on page 1023 of 2048... OK
+> >   # Maybe collapse with max_ptes_shared exceeded.... OK
+> >   # Trigger CoW on page 1024 of 2048... Fail
+> >   Bail out! Unexpected huge page
+> >   # Planned tests != run tests (26 != 23)
+> >   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
+> >   # Check if parent still has huge page... OK              // parent hpage success
+> >   ok 24 collapse_max_ptes_shared                           // considered as success
+> >   ...
+> >   # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
+> >
+> > To address this, propagate the child’s failure and skip the subsequent
+> > check in the parent.
+> >
+> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> > ---
 >
->     len = PAGE_ALIGN(len + offset_in_page(start));
->     start &= PAGE_MASK;
+> That test implementation is rather messy ... :)
+
+Yeah, I wish we could just convert more and more tests to the harness. Makes
+everything easier...!
+
 >
-> This performs multiple arithmetic operations on user-provided values
-> without validating intermediate overflows.
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Patch LGTM so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 >
-> First, a zero-length request with an unaligned address is incorrectly
-> converted into a non-zero page range. Because
-> PAGE_ALIGN(offset_in_page(start)) rounds any non-zero offset up to a
-> full page, a request such as mlock(0x1005, 0) falsely locks an entire
-> 4KB page (or fails with ENOMEM if unmapped), and munlock(0x1005, 0)
-> silently unlocks memory that should remain locked. Conversely, an
-> aligned mlock(0x1000, 0) is a no-op. Zero-length behavior should be a
-> consistent no-op regardless of address alignment.
-
-I think can_do_mlock() runs before the early return, so mlock(addr, 0)
-still returns EPERM in the RLIMIT_MEMLOCK=0 case without CAP_IPC_LOCK,
-while munlock(addr, 0) returns 0. should the zero length check move above
-it?
-
-moving it up also changes the aligned case, mlock(0x1000, 0) goes from
-EPERM to 0 for such a task, so that is a uapi change and the changelog
-should say so.
-
-> Second, a sufficiently large length wraps around to zero during page
-> alignment (e.g., len = ULONG_MAX). Because PAGE_ALIGN(x) is defined as:
+> --
+> Cheers,
 >
->     (((x) + PAGE_SIZE - 1) & PAGE_MASK)
->
-> when len is close to ULONG_MAX, adding (PAGE_SIZE - 1) wraps around:
-> on a 64-bit system with 4KB pages, ULONG_MAX + 4095 wraps to 4094, and
-> masking with PAGE_MASK clears the lower 12 bits, producing 0.
-> When len becomes 0, the subsequent check in apply_vma_lock_flags():
->
->     end = start + len;
->     if (end == start)
->         return 0;
->
-> evaluates to true and immediately returns 0 (success) without locking or
-> unlocking the requested memory range. Similar wrap-around issues have
-> previously been addressed in mincore() and madvise() by checking for
-> zero length after PAGE_ALIGN().
-
-I could not find that check in mincore. as far as I can see it avoids
-PAGE_ALIGN rather than looking at the result for zero. madvise's
-check_input_range() in mm/madvise.c looks like the one that does what you
-describe, and there a zero length is a no op. am I reading that wrong?
-
-> Finally, address addition overflow (start + len < start) is currently
-> detected only inside apply_vma_lock_flags(), after mmap_write_lock has
-> already been acquired and memlock rlimits checked, improperly returning
-> -ENOMEM instead of -EINVAL. Per POSIX.1-2024 and man 2 mlock, arithmetic
-> overflow of the requested range represents an invalid argument and must
-> fail with -EINVAL before modifying VMAs or acquiring locks. Note that
-> apply_vma_lock_flags() already contains:
->
->     if (end < start)
->         return -EINVAL;
->
-> but this was obscured because rlimit accounting preceded it.
-
-I think the errno also depends on the capability today, ENOMEM without
-CAP_IPC_LOCK and EINVAL with it, so maybe the changelog should say that.
-
-I also wonder if the wrap around part should be its own patch. the
-silent success goes back to at least 2.6.12, so there is no commit to
-point a Fixes tag at, but it looks like a bug, and the zero length
-change is a separate behavior change that should not ride along with
-it. a Cc stable would be reasonable for that part. if there is a POSIX
-reference saying zero length is a valid no op it would help, or a
-statement that POSIX leaves it unspecified, since EINVAL would be the
-other defensible answer.
-
-a test would help for that, len 0 with aligned and unaligned start,
-ULONG_MAX, and a start plus len overflow, with and without CAP_IPC_LOCK,
-without it the errno matrix can regress quietly.
-
-the rest of the helper looked fine to me.
-
-> Introduce a common check_mlock_range() helper to:
-> 1. Return 0 immediately for zero-length requests without taking mmap_lock.
-> 2. Validate intermediate and final arithmetic additions using
->    check_add_overflow().
-> 3. Reject lengths that wrap to zero under PAGE_ALIGN() with -EINVAL.
-> 4. Detect start + len address overflow before taking mmap_write_lock.
+> David
 
 --
-cheers,
-jose a. p-a
+Cheers, Lorenzo
 
