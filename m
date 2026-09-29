@@ -4,98 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E80D3CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:40:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7462FC9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:47:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CC246B008C; Tue, 29 Sep 2026 10:40:46 -0400 (EDT)
+	id 6A6276B0093; Tue, 29 Sep 2026 10:47:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0A4F86B0092; Tue, 29 Sep 2026 10:40:46 -0400 (EDT)
+	id 656896B0095; Tue, 29 Sep 2026 10:47:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFD0D6B0093; Tue, 29 Sep 2026 10:40:45 -0400 (EDT)
+	id 544826B0096; Tue, 29 Sep 2026 10:47:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D116A6B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:40:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46AF1A0503
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:40:45 +0000 (UTC)
-X-FDA: 85267061250.25.EB438EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 7A91E2000C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:40:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxZmXfC8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pali@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pali@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 19CC76B0093
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:47:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 784D9C04BB
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:47:22 +0000 (UTC)
+X-FDA: 85267077924.07.8523644
+Received: from mail-ej2-f31.google.com (mail-ej2-f31.google.com [74.125.228.159])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 4DC974000F
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:47:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Tp1e9g06;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.159 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790692843;
+	s=arc-20220608; t=1790693240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a5cHwHJWG+PdvObG6mgULv2DV2MwXG2ifabqUSsYM9g=;
-	b=xAmflsgVHoKkEg5kv1CGASFCAk9MbqmVgyS5viL3NXws84Rf5K+eVAYyFlrOc16DwXDQmL
-	HASHjRxl0p3/hPzF5IwNBNKR/guPzqcMoWZXLH+nzlM9fy99OYAMq9SqGoWpkAFd2ydL1f
-	ZCLC0rvJpd+n2pO+p/j8X00OpC85RuQ=
+	bh=IP+IFTLJhHPOzVgLZORkj6YpvpTLDjx8asIrhC/8Liw=;
+	b=W5R4L2XtUsMClFU/9OB5VUuZp7P2JrcLJQb2tX/Senh0H84lzkupcS17hSwz+BlHSYsURQ
+	NTSCH2ZyraCugcCtjl6stVIvpF0+ARQJw9iNk0rFh/4QbGtB3cAKXwnz5TkjGk/YU2oYWZ
+	1g6Pj8rKIAiCBoYoSyT9wHaqUHOms4s=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxZmXfC8;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of pali@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pali@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=google header.b=Tp1e9g06;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of torvalds@linuxfoundation.org designates 74.125.228.159 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790692843;
-	b=TQDUTjZ3w5fI7e1FbxlFH+c7gyR5DNbEp92qpsjM65tuPOXkB1wFPhvJtt2NzJ8uDkoBRG
-	8Ur/T09yqlpuBz42B2kAczW2F0IxrorWARq1wwKPq9+UG/aSM5eL+kGAk1FIm6RFKP3daJ
-	ij7aEn5t7xl6hu951zSvXMkZkrKSrHc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B72F600D1;
-	Tue, 29 Sep 2026 14:40:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915A41F000FF;
-	Tue, 29 Sep 2026 14:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790692841;
-	bh=a5cHwHJWG+PdvObG6mgULv2DV2MwXG2ifabqUSsYM9g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PxZmXfC8YqsppmyjCnfb95WGea1J5Ah6N6sQjZWQXl/5JzSDueg34gZDFv7g3ur2h
-	 1CmLjdRUdmbpi0euwALi+zBhQSH9VAeLqHEPb4R0TawXcdwix0M9MAwKZmMeyUu7M3
-	 aKD7+yipa6i9FzKrAmi5lZelkEcHC50IC6JorSHnGcsE2OOswpeNV3m9l8TrxmxtGK
-	 shWYRf06U05ReKL3CjR1G1goxX7VXGSZlbyaNjAXMK9/t9eCxPTR/VLbP4JAWiOmRd
-	 cQBCY789a33BoVd4deCWQglUV0mTgTQoHnjvahwb3xyjR/zEg8esHSJgWi6QDhoAYl
-	 sC1Gf/urvDITw==
-Received: by pali.im (Postfix)
-	id 9882A5F9; Tue, 29 Sep 2026 16:40:43 +0200 (CEST)
-Date: Tue, 29 Sep 2026 16:40:43 +0200
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Theodore Ts'o <tytso@mit.edu>, Hugh Dickins <hughd@google.com>,
-	Daniel Tang <danielzgtg.opensource@gmail.com>,
-	linux-ext4@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
-	linux-unionfs@vger.kernel.org, linux-mm@kvack.org,
-	Chuck Lever <cel@kernel.org>
-Subject: Re: [PATCH 4/4] ovl: Expose the filesystem encoding through sysfs
-Message-ID: <20260929144043.5rg4zf7uth333qke@pali>
-References: <20260928213155.2612039-1-krisman@suse.de>
- <20260928213155.2612039-5-krisman@suse.de>
- <CAOQ4uxj7Vx-UGvgGGr9hPC0qUgJZ_WRAv1ZLi=gJ6r=ZJW0QAQ@mail.gmail.com>
+	t=1790693240;
+	b=M2p+MLiBhBQruOCsrP2z56YdctO8mTVEwZM8deiDvc71oA/MwECLy/7v+zeTTeyvIbVohe
+	TG7G6cX9i4zFJXiar5i8pJJtyAPh7vbusJIqfQk6AMfCWRUuzMCa7Sjptrcu5vZ5zczZ3l
+	D26DqsBzuHHqOo+2m0IgSDnKRUdAkAg=
+Received: by mail-ej2-f31.google.com with SMTP id a640c23a62f3a-c29703cb796so604013766b.2
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:47:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1790693239; x=1791298039; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IP+IFTLJhHPOzVgLZORkj6YpvpTLDjx8asIrhC/8Liw=;
+        b=Tp1e9g06+oJVRJtlpYp+Ewy3Q0WDb2MIPaqTagMPOzm7HUqXLYznPS4ddyBiKM7Oh6
+         lnf3RAJaOR2xp/A+S0QOxaBAby5DU/QZp8Jp6lM5iWCf6Vr0uoG+jzLpKC/tC4irouLj
+         Px4N3MqS9/TZCqO/dIWZ5fsyNWxUbIiJubHe4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790693239; x=1791298039;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IP+IFTLJhHPOzVgLZORkj6YpvpTLDjx8asIrhC/8Liw=;
+        b=Y67oa/gqAFR4o57UzqLpPkySNYm0xDq9JHLa02CaSGp5j0Q7KsZCqkzhX/ECWiG0EQ
+         soB6c193NjkEzoCZP4+lWJIw3ZXze8aKmDrXH82V5+Aa6ODQEtTjay3QadkLl2rG2Epr
+         dvma/n4n1e8iB+dc4qU2vvljx/p7rXLvu9sjH+2ijG/ZbY+IowyxKYZUPq1eUNJZDr+F
+         cUnyoMAcMjURG6MHFRJ0pYsvv8lCM/Cwsme7la0G+piJCPq/GiF9EdrziIh3o92jflGZ
+         DCpIbQnfjuBrl3Wy+ylkmZ7xRgGAT9bpzDBU0KGm1HW/3HwDrr6JVEVmMn6vANnXoqGo
+         7eNg==
+X-Forwarded-Encrypted: i=1; AKwUvByhToun3aTXK+rUrH0yR9dGcIouEFjhxy4Z8nzTxc6EI1pKMARvvStPRA+nZsCveNPPF3vq+4s8jg==@kvack.org
+X-Gm-Message-State: AFuF++lJfdOI3ik5YTVGJ4cIuhtNHobtGeMcFbpb9mJm1V/TwPD/ik0h
+	duqeCMDhBizRcaz2QkLM01KrAaQd3XwSlPoWuLd/CgjB49YFMJbEG4OrQQtvg5FZZete0gkhb2W
+	fQFHSl38=
+X-Gm-Gg: AYBFou1y2Z2s9vwkr8XOgJgW/UcU20GeZqlxfD6mY28p2fA3qzv8jb7JB2lKRCUBWtE
+	Wf38EQN+b2vQSkbdQjIdr0F6L25cbPQNkd9cbslVF3hpm3puEmcm0lGEcehxOaOnHDr2lgeSGUN
+	s7SL2TSxePfzpcH897VJ8wxbvPXiQuEwDJt0axoW8/A4U/ImR8jJvCnqyv28IPM6WH9zFYztila
+	sdudeL7et3DDJ9bCOlblxOMVMv1E4CK5OuEblTjg2QWag32FWBagxdnhChEr0WipMif/8UouDRU
+	6KqpWVD8acQbJa5JnuhrVB1uIGNqIeWEBudinmntTH27Rq55/ZoUcU5EAlnddRzrVLSoD4B3+i9
+	fy3nTjL4o9kBZ9XXNVso4bcQ6aFOFSK9d4S/xlAieCCPpCNXCbAeQiGAF/danhihtWpIXTiippN
+	THBLcXDKSir4/sxFvqRFTgyfMc+SbTo8PfFsdhGEIQIBtnrXFruVLD4Gtsv0sQZodc6dAre6uvA
+	bnAOSNqKamNkurnHzIcxsI7P8vOTnnVn5zt72GAu8Q8WqIUaA==
+X-Received: by 2002:a17:907:6d25:b0:c26:1648:a06a with SMTP id a640c23a62f3a-c2ac25125aemr1331868866b.37.1790693238403;
+        Tue, 29 Sep 2026 07:47:18 -0700 (PDT)
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com. [74.125.228.171])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2dbd3bca9dsm456512866b.71.2026.09.29.07.47.17
+        for <linux-mm@kvack.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 29 Sep 2026 07:47:17 -0700 (PDT)
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2af43c5b0cso553575266b.1
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:47:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBwYZcmx0y824K48OdIW6Fj0zhlqPl5NU5Op0x7Vx6BXqOA7tEnLAI1azBGOzTZ8ddeHNaNLzeF9Dg==@kvack.org
+X-Received: by 2002:a17:907:c491:b0:c26:1648:a06f with SMTP id
+ a640c23a62f3a-c2ac253fd57mr1427153166b.42.1790693237251; Tue, 29 Sep 2026
+ 07:47:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxj7Vx-UGvgGGr9hPC0qUgJZ_WRAv1ZLi=gJ6r=ZJW0QAQ@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Stat-Signature: x3t83fnruhrpu1d664xno1wymxh3wmwn
+References: <20260927155134.4740-1-mathieu.desnoyers@efficios.com> <20260927155134.4740-3-mathieu.desnoyers@efficios.com>
+In-Reply-To: <20260927155134.4740-3-mathieu.desnoyers@efficios.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Tue, 29 Sep 2026 07:47:00 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgQyCdrWH3ZuSajOxZqiups6jYbPtqY8JR8OeS7yi49Mg@mail.gmail.com>
+X-Gm-Features: AclHuK-hIyKMMCYq0m6RbVGEdDaE41y87jUOezwgP_JOLXBYBmnHdH3WXkY-n-A
+Message-ID: <CAHk-=wgQyCdrWH3ZuSajOxZqiups6jYbPtqY8JR8OeS7yi49Mg@mail.gmail.com>
+Subject: Re: [PATCH hazptr 2/4] compiler.h: Introduce ptr_eq() to preserve
+ address dependency
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: "Paul E . McKenney" <paulmck@kernel.org>, linux-kernel@vger.kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, John Stultz <jstultz@google.com>, 
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>, Frederic Weisbecker <frederic@kernel.org>, 
+	Josh Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Lai Jiangshan <jiangshanlai@gmail.com>, 
+	Zqiang <qiang.zhang1211@gmail.com>, Ingo Molnar <mingo@redhat.com>, 
+	Waiman Long <longman@redhat.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, maged.michael@gmail.com, 
+	Mateusz Guzik <mjguzik@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>, rcu@vger.kernel.org, linux-mm@kvack.org, 
+	lkmm@lists.linux.dev, Nikita Popov <github@npopov.com>, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 4DC974000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7A91E2000C
-X-HE-Tag: 1790692843-326553
-X-HE-Meta: U2FsdGVkX1/k3PQlfLZmQnYahUhGU7XECdDoNGtsSviQFCold58rFomNuj4+ixeII8elBlbQKLxqOtHN5t3nVKyNekpQVTXe+gc+Y1nHYGfS3pwdmEn8KKcCY4N7oOdbU0gTmtCYI7otqFT9G4VyMExhbBnycUrOXHUjFoPmObT2oLdRRBN6iVO6l5v9vTzFZzAd0e2grGu9Ml45tOn6EYkWowLAD7/7amlwJH6RD1xiWJg73UE99Pak4KEsnx/LZNJB1jwVGgBuCDBfFUpqcy4cJZR/5KluwwXE74beby9FJ6SCs57XAqxC8OgNkC99m5gs73VGkWYrOKz7MGRg1LwdkxA6ScP4T5pi8ZtIHVKfAa13D1RIeVMe/Rllbntv2dJZV8TyI4AH4vPtpeFd264rPyF896B833wrHEDxWIy7eUPiX4PLTchGnYLO26DtWJ0WdyEdvi6ZY93qXxCdNvtmARdThs4ruawLtl2bwOqM0eGsfUrMBaGIcp+chVJVCY0C34gLiJ2ZfAbjUHMNH5BFHwd4lBTlIXxrMP4qSO5ZBVjdDnrmLPVML6MdbI5V3CsSk5loPk4BUuEFWixjLgKPPTLRY5bk9ZzkzysTjqMy56+JUBXVJBFFvRiBJWpOzZqXPtNJcZhuQlT+ikebPvrPaHGjmcvQI5WjZmZQ8mfp+M4fBQKtbv7qqhlc/De+BaHRbebLS7v8oTq1qhE6hATCvvHW2YBTUDj8HRl+m04mIkouYHxcrxcgFar039AYLwZtZkpmICXnLZ2RnFjMr5Qo9wh6JO7evtRUhrxFLlOnGe0yc+b2ids93ghixv1Qp9AkUQLv00ePE5l6ek58oNceCKZJnzy4beWX6gxNAtsomvK9KNWGfUhwxGi/BGMoTvdl+Tl+tKL3oUfw3ArepxTzIL6SezlDqMqa6+bWCkrL94xD+ZuESE3nAcxG3zMkTUB7JkGiKY3CA0o/3ir
- czgX9XQ9
- nc6IPM1GIvym4/vLVt2tnPWE2xQoeYGYYFyKryJzYBA7ITY2dHPRYcjsHqlEPzNn4s5l1u8ENnQ3eg5BtBkbklrPzu+AZpPLq7fQexeq5Y89xWmdGYYELaPRyst6P/J9wX2a74SAhNK8UjQZJXCNvQSMe6LXuoY7Ki6PidrmiNSz4iRdW8Fmd6nGagA3eUTjsTo6j0c1ZADh4L2B4wowxu09I6/CVEz7Bir8eN64+6oCQFkdvrI7qn73bTuGEWPyGJpn8dc5Z4FLpnTindrDFgbQsLojpVP0vHcJBa8LCejRtRBAJ+obhkg7zX09SwUqUAanHg2Zz+YifwafJJSUFC6Re5AaYm7lOerlZlHE4pnWd21TmDZr2iYb1Wlr3qg5I6LGmI5TOyJYloHMMTK4iCcvlskMT5kXKLHvG
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bs5u3mrdnn7z1j1445pz56ecdz94ng7s
+X-HE-Tag: 1790693240-142211
+X-HE-Meta: U2FsdGVkX18vSr0bQUPEfj5AyjTcvAK8F77wF785gkmG9uXeUMTUCZ4+C1nF8HqryU4rSBDtm7L1uxryZzfoQC7hXGH7a6Auj2fX86wLnsLoeLO8r2GEYz37epszmPIqJqCMOaOBct3aiUjCteSh34iwWe5onyIBdIBRIkXtkspt3z5nFWZ2AiabjTCSXyN5p1xkBGZKdSrWVzSo6H+GeyUAMN0GJvLw3q3FqE/Q4LdHZYl2JEwwncl+bmwPzKf8pioT2Vm2UAV28t/k66iH7ZKZhIOct9AoF31j6SMAtJf+++EqH0ODRHmFKAh5yU9J29s9xZ69S3s6v92RVn8lJ2gue7TlFa87ZS79lVVodp3HzI+CRWfx8/X9VEwX1rJ2n6DMvrg2dtY7oYx2aO+18dwolScNLE4xe6idsEJSuhQML5D7i+3QpCZNEmWFUTPbyFZwumbWpaGIHDPpp0CdFVK6F/KPxm5+thU3lDIPt3qaM/jpeHTg1+2Pq3q3iDvWMc/CWHcIKF7nRoBUbaupNkCAEXK1kImKm3aOgOIjVys6oaF12HTSFTI4I2XB6EnIzqewzXj/PT58KDpnGbdy3+Vq8gtBmG6r6w+Y6vd3kN5wx29omeJnJirpspLrGL27T65BAtdxa0JS6Z02JFu18Vm1cUJHRTUeWMluu0IFKUYmjaDq1h9OdcGW4pO4v+iv/JX7Cbg7Yf6EXAm3gkqzaP9pUPW5Fm2bhuaPmVoCAVp1+2+UQkIX6MmK+Uxxgu12hnJJylZmeNBbpzxuu0jImt6pcOXIELJ0lKowTNxNke9655+9iXj74tcOssdlQo3YXynWV6IXsqOud/tCgv8+Tqrw4f+Kn3IYdqmHHZUETHdiBZk5qdE1WJlIFuUbeljoNOTrT0LMVsD99EPLyvsZ1ev2t31ddhlQSVr3ca6DTj+c9UrwTRoDcBfF1IAQJUPTXs0z/eX2XvHabF+iXnd
+ /IGXPtsn
+ cVgNiCcv5aFsuOJ+VlRiaMBf4ZHWfDotd4uLv8XErSYcK1jAE0m0QNPG7ZE+oFqqIeSHWH+xEAr6ZmhjgXYn0dscNUcH2SSA0oszT43RdTMke/7jjIybt8YnSeTAYhLr5xwiOCGmfT3DODQzlo2PfIgytT6b2l5jdYjm5PHkLL4HuEkJmVhNHur31uClrovIfArLBXc0Be5Aourei7UbB89f80EjPjEbWlG8mEQU0o6imL4y/qnZZ0NJXJdgH1S9dEcNleWtXAhrumH+TtNbEDKIIZbf7vB7SWYl2WImevkfTG+gPoaUeFtu7e++m2q1wHU5/dKoxc/mgEa45b82YCQWx0E6yn5i9g8Eklu/Q+EKfSMU86HyTNa/vbAHA7WMD/3+MLN8As8W7ZQAx8RcXPqcFCYY56ayUm9apELqNCCBMam2buizBrZttw1cQJAsZR0KD8RZO5SIptt2YoTh0ckaoLBBjBHYybsYxg2bkLgLLj8b4et2Z5HqvomuSWMAB2G/wR2DgyZKH2TZAjqa8blQpLi4isD0/ljKZH/j+xpaM5AcCtUc82251ZJ8+nN4/++zvSs+YiAz/5qXFPrqM98zkaELj9nsgxtn8DrgDaN2oRYmtYFtrgUnT5e8FxDvrHvfejaAmrV4XEQv9RphHW2+7jXlbLt8xwzYIZHX7ieLSmeDGGysJkPXqpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,43 +137,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tuesday 29 September 2026 16:15:04 Amir Goldstein wrote:
-> On Mon, Sep 28, 2026 at 11:32 PM Gabriel Krisman Bertazi
-> <krisman@suse.de> wrote:
-> >
-> > This patch reproduces the same interface from ext4/f2fs to have feature
-> > parity, so users don't need to rely on parsing dmesg or trying +F on a
-> > temporary directory just to check for support.  Note there is no
-> > encoding_flags file, as none are supported by ovl.
-> >
-> 
-> Gabriel,
-> 
-> I am not ok with this API.
-> It is wrong in several ways.
-> It is not generic, we have already file_getattr() to get casefold status.
-> There was a suggestion by Pali [1] to get the supported xflags - statx style,
-> which can be a way to say if a fs could return FS_XFLAG_CASEFOLD.
+On Sun, 27 Sept 2026 at 08:51, Mathieu Desnoyers
+<mathieu.desnoyers@efficios.com> wrote:
+>
+> +static __always_inline
+> +int ptr_eq(const volatile void *a, const volatile void *b)
+> +{
+> +       OPTIMIZER_HIDE_VAR(a);
+> +       OPTIMIZER_HIDE_VAR(b);
+> +       return a == b;
+> +}
 
-Yea, sorry for that. I have not finished it, I did not have time. But I
-would like to address this as this is something was was asked more times...
+I had to think about why I hate this so much.
 
-> In Chuck's v2 [2] FILEATTR_CASEFOLD_TYPE was already suggested
-> as an extension to file_getattr(). I think we can still do that if we include
-> proper versioning in the casefold type.
-> 
-> TBH, I don't think anyone requested this - you only mentioned
-> the need to know if tmpfs was mounted with casefold on and that
-> doesn't mean that etx4/ovl patches are justified, but ext4 can decide
-> for themselves.
-> 
-> The point is that this sysfs is not going to be the standard for all the
-> fs that can return the FS_XFLAG_CASEFOLD, so I see no reason
-> to add this sysfs interface to ovl.
-> 
-> Thanks,
-> Amir.
-> 
-> [1] https://lore.kernel.org/linux-fsdevel/20250216164029.20673-4-pali@kernel.org/
-> [2] https://lore.kernel.org/linux-fsdevel/20251211152116.480799-2-cel@kernel.org/
+It's probably entirely senseless, but this just rubs me the wrong way.
+Those OPTIMIZER_HIDE_VAR() statements are hiding the wrong thing. They
+are telling the compiler to treat valid information (the pointers) as
+if they had changed, so then the compiler will have to just reload
+those pointers when they are used later (and "used later" is part of
+the whole *point* of this, after all).
+
+But it was never the pointer values that needed hiding from the
+compiler. It's always just the comparison. And while the "optimal"
+thing would be to just do something like
+
+  static __always_inline bool ptr_eq(const volatile void *a, const
+volatile void *b)
+  {
+        bool ret;
+        asm("cmpq %0,%1":"=@ccz" (ret):"r" (a),"r"(b))
+        return ret;
+  }
+
+that is an architecture-specific thing - and then have that
+OPTIMIZER_HIDE_VAR() available as a fallback.
+
+I don't know if it's really worth it, but I really do despise that
+"hide the wrong values" thing that generates two new values just to
+compare them and throw them away, and adds register pressure for no
+good reason.
+
+               Linus
 
