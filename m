@@ -4,86 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FFECA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EBF4CA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 536966B0088; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
+	id 0CA0C6B008C; Tue, 29 Sep 2026 14:50:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E70E6B008A; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
+	id 0A2776B0092; Tue, 29 Sep 2026 14:50:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FBBA6B008C; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
+	id EFA4E6B0093; Tue, 29 Sep 2026 14:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E2D26B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:49:35 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8AF22A6E69
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:49:34 +0000 (UTC)
-X-FDA: 85267688268.19.932F92E
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 857DE140002
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:49:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=Lf7mNpHr;
-	dmarc=pass (policy=none) header.from=krisman.be;
-	spf=pass (imf23.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.172 as permitted sender) smtp.mailfrom=gabriel@krisman.be
+	by kanga.kvack.org (Postfix) with ESMTP id CC87C6B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:50:21 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 528B1805B7
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:50:21 +0000 (UTC)
+X-FDA: 85267690242.27.0198DF6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AB66510000C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:50:19 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AKL/NQJo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790707819;
+	b=AIEJibx3XtCb2R4T79Ie5EiUqC46yOfqvTGS1IVnvCg2zy9TV5/KH/lcLCO2sDByZynU3n
+	0WTnr1FK3YbYOpmasTrZiyPqAwxFLz86FOqhK60RzQKBJBHA2dgTyaawY5hgXRpnJojQWO
+	NXdH0RtKb4dQFfc+lFyEgQpjCEiN8W8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AKL/NQJo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790707773;
+	s=arc-20220608; t=1790707819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YxGsR26vdUt0dLRkmfJ6DMuoIFvZS7PYUYqwNoaoH98=;
-	b=t6kS7xNYYcjUwAP29qt/N8AqcJqo1kfPb4JRPq0RP6zbYR1w/D71OFqaC6ibpUtKqwYcu2
-	xAUiQ8e8Kj855tDAoKEu6MrsVm1B/CYb8EXooLLWaT7Q6a7Enj8CRsQmznaq9rEkX+0fnO
-	bh5PCL2rFisuA8r7Adzuwab6x0/bBwg=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=krisman.be header.s=MBO0001 header.b=Lf7mNpHr;
-	dmarc=pass (policy=none) header.from=krisman.be;
-	spf=pass (imf23.hostedemail.com: domain of gabriel@krisman.be designates 80.241.56.172 as permitted sender) smtp.mailfrom=gabriel@krisman.be
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790707773;
-	b=uhpCsLXnIAcrCzl11U7kG/FtvKS8XwnEZR8yLwDM0uGyRH+b2Zb48tiuGohgFXfrrPu0Al
-	r5CkNQOqXdfvtZpZE/ZaOveVgdCIHfCZSt+XFJdLnfUVgTl+En+YqLE3nbW73SMX1yT9Br
-	x6ZzQ94rF4GI3CFCqKWT9QNh7264uUY=
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4hvRzq2BXGzMlqp;
-	Tue, 29 Sep 2026 20:49:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=krisman.be; s=MBO0001;
-	t=1790707767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YxGsR26vdUt0dLRkmfJ6DMuoIFvZS7PYUYqwNoaoH98=;
-	b=Lf7mNpHrmJCDzUQ1Pu05FeBsEVuBRTKcVPbPcpRAPXhM68QIJX1zUjasn6/lynR1as4TSc
-	7NrBSum9bRai3btPiutAh6Ln9az/p+pmN+2o5OyNXBBF/MCYhlLnSsMqUM6OiQXvif3hzD
-	zE7WljtLdQ5Rx2v2XCnrSnM2UJnYC6/+CrTW+TOL1Dvu9/KP4UMCHDOrIMJdS6XCVBaXpj
-	kHxiBmTMOcso5Z4s3scPGsTF8FqAYqU8BHs0dm5m8Yki4sgmvOMbfqvUx2ChfbPYprMN8z
-	wEcuz+OZgudiNmPoWy65BhaCicnFz2lhATrCJCaFvUYny/YBKq4vuXegXPbRdA==
-From: Gabriel Krisman Bertazi <gabriel@krisman.be>
-To: Mohammed EL Kadiri <med08elkadiri@gmail.com>, hughd@google.com,
- baolin.wang@linux.alibaba.com, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] shmem: fix unicode_map leak on remount with casefold=
-In-Reply-To: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
-References: <ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com>
-Date: Tue, 29 Sep 2026 14:49:21 -0400
-Message-ID: <87h5j7yjta.fsf@mailhost.krisman.be>
+	bh=a0j9ZYPE0kpuxcGqfOeJqb1F8DjbAgg+aDr2TDXJr2k=;
+	b=CYuI+aCvfgScsLzNGFTiXHKNSko+QEkr8hOOeJHqa1nxJceVGWRRgaki8PFrE/kNDqcIll
+	BC/lSFFGlM4iPim+98Lw5stkxb5hDhyQpga24XuPfgkyaN7T0/BiAk3u2sV8/tn8cwTzdL
+	lCgN+H4oHfwJEmfmE4TFUA9P9F6wzaE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DA7F040252;
+	Tue, 29 Sep 2026 18:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12C211F000FF;
+	Tue, 29 Sep 2026 18:50:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790707818;
+	bh=a0j9ZYPE0kpuxcGqfOeJqb1F8DjbAgg+aDr2TDXJr2k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=AKL/NQJoQyB/VbLk21OaTs+Mad4FePYdN1yez5LipKrQ8ppXndkJ5NvSAie+kvhQ7
+	 Yqyl0+b/kdqogNgUALIq95bXiZ9mFnXgC+4UviSh6lZef0lMj6jNLORKe9IN31zuNT
+	 Vu8/t9RdpxSVVjF9Al3+GYkpLpqdUtRfCxKhcz0Wriu/JQRqpMn8u5EoboVp/bfF4C
+	 cAB0XC1Pnny4KkDArsPRqCbt9dFO62WiZa9rNGDOdAyit5ChZkRHAy8b14ZbocdFUt
+	 CA+EzLSqc4y19uaW8WZ9YTKy0iq3H/SVKVhdX4xUFyS1KmdYw5GkoFZzzmgjoSkYbO
+	 7CDUOnBLTgKsA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Yury Norov <ynorov@nvidia.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Matthew Wilcox
+ <willy@infradead.org>, Peter Zijlstra <peterz@infradead.org>, Ingo Molnar
+ <mingo@redhat.com>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Dennis Zhou
+ <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+ <cl@gentwo.org>, "Paul E. McKenney" <paulmck@kernel.org>, Frederic
+ Weisbecker <frederic@kernel.org>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Uladzislau Rezki <urezki@gmail.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Lai Jiangshan <jiangshanlai@gmail.com>,
+ Zqiang <qiang.zhang@linux.dev>, Onur =?utf-8?Q?=C3=96zkan?=
+ <work@onurozkan.dev>, Kees Cook
+ <kees@kernel.org>, Joel Granados <joel.granados@kernel.org>, Anna-Maria
+ Behnsen <anna-maria@linutronix.de>, Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann
+ <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, Mel Gorman
+ <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, K Prateek
+ Nayak <kprateek.nayak@amd.com>, Mike Rapoport <rppt@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
+ Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang
+ <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?utf-8?Q?P=C3=A9rez?= <eperezma@redhat.com>, Sebastian Andrzej Siewior
+ <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, Nathan
+ Chancellor <nathan@kernel.org>, Nick Desaulniers
+ <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
+ <justinstitt@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, wireguard@lists.zx2c4.com,
+ netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ rcu@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-rt-devel@lists.linux.dev, llvm@lists.linux.dev, Yury Norov
+ <yury.norov@gmail.com>
+Subject: Re: [PATCH 12/17] timers: assert static storage for DEFINE_TIMER()
+In-Reply-To: <20260915031334.1194975-7-ynorov@nvidia.com>
+References: <20260915030336.1192299-1-ynorov@nvidia.com>
+ <20260915031334.1194975-7-ynorov@nvidia.com>
+Date: Tue, 29 Sep 2026 20:50:15 +0200
+Message-ID: <87o6dfj3iw.ffs@fw13>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Stat-Signature: 9atqpskushf8jnfyt64aawmm1d1i45ic
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hyjtd8tbn1z9ic8pma4cmnucrzir5khs
 X-Rspam-User: 
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 857DE140002
-X-HE-Tag: 1790707772-538774
-X-HE-Meta: U2FsdGVkX193mIXsVRmtGEve0XP/OINpBYLqR5iVTaOkxJqcMhHbyIomQEbnaT4QyR8qfHoSOrjddfC76t6cHjJz8KqBpxTtReTs6QiPXtrn9c4w0aCZtWfLk5u4Q08EVAZLx7atfwZFplwnWMdDmLfMraf+fdO6yp7q67XllBKxSYer/ZtX31dmC1tENjyiPrLKhLBqv/XMufyFxk4rFUTpbhYTGQkcKQlJzMvEm6zq+BFn356+Y9CLMt/LrlDfo8NUJ2qWiPsv5pX7RNq6k3rPC5RMVodApvMfBwUWzFIZB2hqNJz3VPAb2D4BOR1utyG64VR/FdF3L86duiB/Meb41IFMwDin+7S0yUVNtyRnNkPqzXVML7J2LIlK1lAkM7fjQFE6tDjp5afD2CfC2sirdlFnH2yntJW+RtsqVdheNpw8wrbt8EeH5Mzpv6S2g3fkZy1i/TW/dUdKt3T5+MTN9MHNfJq8vhZvJ/KaakIqHKE9irr/36lodBdqwDUysqhzJ0BfcmhIfNy+4aLC1TQncadi8JNYZ0DjtEY9BB10DqIuMa5SDAae4+c6XoF1z2RWy4lBC6/FPVdRtqYBUigj1geTnVCRTFJjLt2u9jX6xt6AVG/E4fssY2UCHdVZ1Bacv0XYD2JecHaL2wDYhiGY4EKEom4FKjhhj9uzvRqhtzPsjuRnFQgh5S/KM8KEUX1p8Dz5TmPdkT92PuaEu6zKDUhFnIxL7TKAudh2Q1gPBVmVjLj5AYwRPR3X4AMYxJgSID+V78WyqNrGFEI8UQY7Xy/1WbTkFeo6+t858Dlr/GX3Gs5PY3ZoCb8xScyX+sw+ABXvtvnNAuhdUIjhbPwfvQGGbeJ4UQHwpVUUWoHtr6XsPMW7zs3VGTIhbrlTrfTz38lv1ZVLBOet0ZrU/Sqyt3CisaTDntwjL9l1cp3LkHVzNrHPgmIexUImDnDHxrqFJ0d7aum08eQqBsv
- nhCaHfWd
- MuzkLPZovEbbaVzi37lZP+xTb0oVpAtw/d3jy7Ibs46ClJ5I18e7EFBXYX4bFrTVB3yur/r0I6DsaBOqe9JfzFZCLulYYIAG+dYcpTyx6ZjRQGYWuy9E2l5xFVa2iG/mWGrizHq+i7RQA3l0xKlh2JPWIa0zaxV3Mi6ObFLjdWMGSBN3YuOz6rEL1IYspWwIWNJdpsQeAtbEBb91g4L5qQJ/Ae1fLiTxELBtWlGzmnIXHp/F4mtMdmdgtEn9ZT7XzfmP4aXFKbVEyip9swDrbdmeK+RR9E4TIAJA/CY7Qsc9VPqp58Tm0Fl5SHu7HEfvQCzG8mzqXX0ogjjkNh6myoR+BKxtimRtGs0/ful05jryxr4y2Eg0VyNp3PvmXcU0TS/WSdY2+IBf7E7aKv+mYkPtfi00+nRHC8jDYdNfTMwtdJHC4b014SmMPT5q2apAkdyj5N3+KhseIDu4=
+X-Rspamd-Queue-Id: AB66510000C
+X-HE-Tag: 1790707819-57281
+X-HE-Meta: U2FsdGVkX19z4MVbyz0nzpbJ1EFEYuy4QV1WgcHbfIXKgOAI+SqhIm72JFP2o5jfF/qXEnQ/SiFRus9ZASMVuF25+B4gUhHcUwV2WBkgP3OOLAncqMv0eOGWGTbIsp/Oawa30mCNB3XoizQUp7emUSsL33/GC1N1gqZf77E7CtM3GH7Ii+x2SRpMi4J+fvstjCIhFK8CT+EngIsP2hnVdZuJD8C9SmQI47nHYqxjnyhv2gTphd0SzAdmUpZfl8rp8G8pDcB0bZMFY/axrkUCN8sVfeuNHvlrJzFrpV3H4iz+qvxtn76GsFvEStRgxYtFfOSvmqWmaUbj8Fy58zV9r48+72unv2SKF71RINczjs4tYHnQ84SO8UuZ9x7OQ0EGlfzZy3laPI8H/kMhjWr2zPaaYfZfOHf6nhdkPiF9KxGwWUhtC9AagXPj3odmcnTHUSto8RiJjpI6uqrPgZqIlFsu08o3EsUTVLpfjx0Z5zGaTLnG5+s0jElNzVFvNFfDmU89a/7qeZ0WErkMeiN8PHg5gIKrkfb9GE00OMxI9R8tquVHgFjODdxlFwX3IGE/dATa0gmU/x57v3X7nIIXOybolvJ57jUT0KMw1NKul/gK5HAfkb9aHI3HJcODTq44uViTyUU0R5MZZNdXltsh49KpcPywFB/lFG7nPdQ0Rrw9Nj56qGmQ1u5V6fji+8C5S6wkugLZk3J4Ty7p4WCE+9BxYP2KSz2EMxoC/9iAp2vT04KkxNMY3BNr8bIz9PUdH57YJ+IbNFaA6qYC164WQnPEQx9f30SyotxqwHVqsVsOLwF/LAwJzNHhfurR4+DeUFVccLaCL5mUXGfVCd44lYU2M4+vDhIb8G2Ho3O2yIbbfnPgaXb5zX4BjzF9vB4Widobr69dtGNm1wxr455r7C0liqTilftThgYyRSk9z7ZU/WYiw7vJFUbEhNK0ljN4fSmtVAlWYis6YZ1BSzH
+ cZF/QFhL
+ n7du3YkLwuldDozljEKkriMJ8zk+7cFlO4jkVKjxaPSZkyK+DfS0ZydTyIV6gnwpXYYOUg8zOysOkbDjfoX3GjjI4HEqCciGQPckScPBOzvAUaBpMG5t4Xz4GBv6viRnqSZPCmKzlvF4cFIccvoTNWHpjfAaaNZRljxKSuuuD5HoduvTiCZmDdfdNBU5OcNBPHIVI9Mp1XYRWX+G5kFTxeeuoHFLmk0ktKUXQhpbqcp6rT9dYK962Vf0RZCLrLfmBtQAQPw5+kC+14AK3fha2lQE5znupgynTHmY5cJ35I1WajHDwudYMgMEk4JHNACWnu6Ix0DkeZjmesbYyv4/3zSFRINepGaGDfnUjEwMB2DhtpIpP/BN4b+cfLDXiQbb0x8WK38eAYCUzLWsoFJs2zxbVZrntvxkwAfDFOXxq0JAitzSZ8hqQPInGMoaM8V6lt6iM/BK6iW7QgdI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,40 +124,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mohammed EL Kadiri <med08elkadiri@gmail.com> writes:
-
-> shmem_parse_opt_casefold() calls utf8_load(), which allocates a fresh
-> struct unicode_map, and stores it in ctx->encoding.
+On Mon, Sep 14 2026 at 23:13, Yury Norov wrote:
+> DEFINE_TIMER() marks a timer as statically initialized for debugobjects.
+> An automatic local timer instead needs timer_setup_on_stack() and the
+> corresponding on-stack destruction before leaving scope.
 >
-> On mount, shmem_fill_super() takes ownership of it via sb->s_encoding,
-> and shmem_put_super() frees it with utf8_unload().  On remount nothing
-> takes ownership: shmem_reconfigure() never looks at ctx->encoding, and
-> shmem_free_fc() only frees ctx itself.  The map is leaked.
+> Add ASSERT_STATIC_STORAGE() to catch automatic declarations at compile
+> time. The timer lockdep key is already static; this check enforces the
+> debugobjects storage contract. Leave __TIMER_INITIALIZER() unchanged.
 >
-> 50000 x "mount -o remount,casefold=utf8-12.1.0 /t" on a casefolded tmpfs
-> grows kmalloc-32 from 660 to 50574 active objects, and nothing is
-> reclaimed on umount.  A tmpfs mounted without casefold stays flat.  With
-> this patch kmalloc-32 stays flat too.
->
-> Clearing ctx->encoding after the transfer is what makes the unload in
-> shmem_free_fc() safe: otherwise a failure later in mount would free the
-> same map twice, once via put_super and once via fc->free.  This mirrors
-> what shmem_reconfigure() already does with ctx->mpol.
->
-> This is easy to hit once casefold= is reported in /proc/mounts, since
-> mount(8) then passes it back on every remount of a casefolded tmpfs.
->
-> Signed-off-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
+> Assisted-by: OpenAI Codex
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
 
-Thanks,
-
-I gave this a spin as well and it looks good.  Feel free to add:
-
-
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-
-Thanks,
-
--- 
-Gabriel Krisman Bertazi
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
 
