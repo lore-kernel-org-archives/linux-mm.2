@@ -4,140 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA3DCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 17:33:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A2CECA5FAC
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 17:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE2096B0095; Tue, 29 Sep 2026 13:33:42 -0400 (EDT)
+	id A87CB6B0092; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C923D6B0096; Tue, 29 Sep 2026 13:33:42 -0400 (EDT)
+	id A5FE46B0093; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5BF46B0098; Tue, 29 Sep 2026 13:33:42 -0400 (EDT)
+	id 9752C6B0096; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C57C6B0095
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:33:42 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1F5B71205CD
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:33:42 +0000 (UTC)
-X-FDA: 85267497084.29.A8C3AD2
-Received: from mail-yw1-f226.google.com (mail-yw1-f226.google.com [209.85.128.226])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AE06A1C000E
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:33:39 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Y5mWt+d0;
-	spf=pass (imf18.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.128.226 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com;
-	dmarc=pass (policy=reject) header.from=broadcom.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 60E096B0092
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE57CA0482
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:46:04 +0000 (UTC)
+X-FDA: 85267528248.28.34CF5B2
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D9040140002
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:46:02 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=mEZrM0ru;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pibGmYNj;
+	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790703219;
+	s=arc-20220608; t=1790703963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i+B7DqXhhvj+xVqXComGurkMjL1zY7LiXD8G593LXtY=;
-	b=wwAdMIuA32svIcBX0Dj7M7zko+cVGY4KYQ2KqqGMFvG6BR5vwFXdwtqfELOpc+b2xV+Scj
-	na0In4nQ22z2SiV9MDXuLOF4XrykPWQ+hoFlCFyntG7O4sTQ1/OqlGrZF/+ViIogBQ1CtH
-	1b/R8A3pHg4JQeQPET/iusR/l29uucQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xYaDr73/bc2x48KiPGkBt/LUYLtm5CQPKTJdXW+o7xI=;
+	b=ztxMVGUILhGVpEzYEt3iOm1TY2Fmo0vfOliIW9Bqt2p6OMTsIxo0eJe1ump0JROJXHY4yJ
+	xSNE97NG6HSg2MhMFt0koWPCJr2YPB87W/OeWYSzuHpNoGRDtvaScZl+B/mJvorJS7FGBA
+	f76b1w8S9Q9klsW+2TEFeatrnFM1ZHE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=broadcom.com header.s=google header.b=Y5mWt+d0;
-	spf=pass (imf18.hostedemail.com: domain of zack.rusin@broadcom.com designates 209.85.128.226 as permitted sender) smtp.mailfrom=zack.rusin@broadcom.com;
-	dmarc=pass (policy=reject) header.from=broadcom.com
+	imf23.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b=mEZrM0ru;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pibGmYNj;
+	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790703219;
-	b=ZnWTyAm7swTuOWbxEBWvFkU5SmlOj7audG0LSxNtlj2AzuWyry+r3ryt05xJEQCGfnvAJp
-	j5gKHlowKEsiY2CsVu6pZCQRES5KcySBVPYoqtdZt1OCdIHZyLTLeBErWzviMVzu8Sp6Sr
-	f4K5ciATrHh1XhEE8LoHmSg53HDig1w=
-Received: by mail-yw1-f226.google.com with SMTP id 00721157ae682-8abd68b3937so429027b3.2
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:33:39 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790703219; x=1791308019;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:dkim-signature:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=i+B7DqXhhvj+xVqXComGurkMjL1zY7LiXD8G593LXtY=;
-        b=iBVMdpee0PnobbETsHyv+rHdRfXcgtfy79wob8kbIMNtv+h1ksl4+Y5HEy43aKHmy8
-         LTTmh5toDjIjMv3enBqdydtpx5KoZ0VcITHgMShLvWU1DW7PqePy9FjBXrSq3Enlk/fj
-         +Wp3/tqvz5WTtNU81Qtv+VDISqVMtkNGPvRnswcsdXwPMWc12WRy9Pj76eev8YbnVvTJ
-         OjKcWT3bwCHeRKx7IHH6qNXAR+wtMGpV8mO+d59Ld4Ok4kXG0TfEc/3DyjHi1yLNKBxJ
-         bh3R0fjQvSFC4O15TVHj629WgWMnq0lSZrU2iw4QUR6IWxq1HyFwZlPbI9afbQu7sQmX
-         1p6g==
-X-Forwarded-Encrypted: i=1; AKwUvBzN+Ocx+SpI8FFmBiSjdiPDJ4mSL5vOst1zf25Ao6Ffcn3rlTkQZtZ8NMw3NKd1FWb0dJftmiLiAQ==@kvack.org
-X-Gm-Message-State: AFq9FYLJpBkU0GgvwW2zJOQCfhkIaE0y3cYsI3VA4Bxl7SzrIFxOZBLX
-	9zmvV47IfwWpVLowtZSYI8QtfW/cSY/gKCtQIJthgdvkc/ysNxqmpUHtHDuIA4M3c/Fpw9KNScn
-	sa0nmGc51NHhSvbMjLE5QM8MkxqCoD5UHnelQ/dt4omw4DmdbU2Wg9G7Izl3i+9OeDXgLiDXa9c
-	AZtzIdTC8P1A+Zg2xZUleQSW+dsDfM5oysiBfqBcjj5Wpsq/gXW9HdX3iCfikCio9BuNpJIsPke
-	k0=
-X-Gm-Gg: AYBFou0V13B2+Onz6BuMyyQ2fpGnp7nAKReiuoDgWJ4RMIRYG28EDxvEhUEbKTQKX+N
-	NyOA6+r/6hQ8BTcs29oUAnv1FJ9cx1nXGxN1ffLQ4kpcr6/jsv7ZWKfo3pKvdZag6tx2e310XF4
-	8o3g2A1CbX52xDlsFDdVNxYpoQaU/tTEOCx1zMwMmnm/XoiDcRkBmRJaWH2REuqVVKFXSVQGFvh
-	zrPD8IA2oc4gtZcGTCN8j8w1r9S+usz48DUW0ta3EUFMo4cs5+HW3oTvVWrff6JFOOVO+d6fIx5
-	Qym1KfI0So1zTqCTGtMtgMXsYo0x8d3s3EMlr+5mKIji8voHdBu6PJgtdoOLbDvNdGMNcyGzOtV
-	sVPfGl94zXf+Zo705SHiXzS64Gjw5j5eW+xWtXkleETTyUMVCOFd66aYR9XdgnSGBjjt+nZh1gH
-	dBDLinYzMGnVUHM3zYYPwKOcYo4oyi2ude
-X-Received: by 2002:a53:a042:0:b0:669:586a:8673 with SMTP id 956f58d0204a3-672ed27bc88mr5759942d50.21.1790703218456;
-        Tue, 29 Sep 2026 10:33:38 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
-        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-675b2800376sm94391d50.7.2026.09.29.10.33.37
-        for <linux-mm@kvack.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 29 Sep 2026 10:33:38 -0700 (PDT)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-6aafdd5a5f6so4063442a12.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:33:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1790703217; x=1791308017; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=i+B7DqXhhvj+xVqXComGurkMjL1zY7LiXD8G593LXtY=;
-        b=Y5mWt+d0DqA0MRIISNYOsm9UZsogjmezN0Gv7xMZ6JOSFbvM/JCDpXQ15qaeBr28fm
-         GHeZ+8Tfn70Eqip81bWSs+g6vj3fLauaNQPRmoG1VbHu8ppN8TqwgJ94em8bkvMBzQtn
-         Xbk0nCeBwflirDf2Dc/EH14iajsTCd7AP/4dA=
-X-Forwarded-Encrypted: i=1; AKwUvBzIUdphqU4y2y/oqmOXnJo7a99qsC0tKgXNx8Wh7ZkrhDAqrb+jxpyb1nNEWfH57G+qOJNTVV5z+g==@kvack.org
-X-Received: by 2002:a2e:beab:0:b0:3a1:9562:732 with SMTP id 38308e7fff4ca-3a7716e854emr518971fa.1.1790702723821;
-        Tue, 29 Sep 2026 10:25:23 -0700 (PDT)
-X-Received: by 2002:a2e:beab:0:b0:3a1:9562:732 with SMTP id
- 38308e7fff4ca-3a7716e854emr518621fa.1.1790702723256; Tue, 29 Sep 2026
- 10:25:23 -0700 (PDT)
+	t=1790703963;
+	b=JLBLDz/btP8aG4w8ggAMRbglM9W3MahJn57RkNT67S7D7WqZHqXUrdkdZPmdSSVuXA2p+V
+	BcvDU9Vr1SnykVnEKXmwr4XeKusPdZa4G+N71r+I2K2wDRTHLFTC3cPXepEvxg/xn+6aKT
+	lxvs/pfK4GYq9mGb+HlYtLyVZ51qHTQ=
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfout.phl.internal (Postfix) with ESMTP id 396F5EC00C1;
+	Tue, 29 Sep 2026 13:46:02 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Tue, 29 Sep 2026 13:46:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to; s=fm3; t=1790703962; x=1790790362; bh=xYaDr73/bc
+	2x48KiPGkBt/LUYLtm5CQPKTJdXW+o7xI=; b=mEZrM0ruycxhlwLj+2yfqbYPLl
+	umGiRkpqti5NVkMR2RdiN4NI2hsba4dgZm/flgi2Tgr40ANMsrXIHXPBtGol43ZW
+	9nRGVXjsIYs87sIXXjM9hLJkvv3eMgHVOi7BnKnLVxfu1smyEUB7C8RHYCWa5C0c
+	r1S7nC8z49rKNprbMX5sWmnFvqA+S4MMaM47tPo6c1Is59rEuhTRPvHNLbXuTd2M
+	7izoBfTA3iouNBVAqdOZkXxmxIuNfBht9jlrDq72cVRAnloGCYvsGC/eo1npXl/p
+	CCV15UybttM9+QlcsI2nR786EahPm/VSIvtEmAQ5g49DJ1wc1gkPPSevpudw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1790703962; x=1790790362; bh=xYaDr73/bc2x48KiPGkBt/LUYLtm5CQPKTJ
+	dXW+o7xI=; b=pibGmYNjFlEvYoM5Bw/2eQjTERwdLG1aItEvFeIccLHEgvlyAnM
+	2Olm7XLfP2ITgJtDGKNqrrXeIWm5/QGitRjygcyFEI0gV81CnfW0idyy9vUbv095
+	EIpm7NncEm/Yep3fKiLfWfC0CDyo4KUSZKc8kAuZ4QrVyCA37tili+NlsSNP/yzy
+	wBgrCWSC4jrmaGaraBmzdJJOcFe3KXYvvOiruqkh2HzAiFsDQNnFV92vyK9STzdg
+	RsdzNDOFX9K4+TCG0iowPscIuH9lMNfVjYWk4JxHwl9ApRA6dUtLP7DOTxqlECQH
+	S2LlTanbXynIt/p8HvFVmRFClow983kaXuw==
+X-ME-Sender: <xms:Wfm7akmvqM8f7uMXwu25MjG-zGXs6OjSGbK8dkg9aejmkEVb6GINRw>
+    <xme:Wfm7arYHLDT_jEuJEdWmgbDFAS5qhawQTqVqy5gdxlRoNmURX1AnWTDhbg7FVS2Ln
+    RIv0sPrXg63LjdcOIzmCR9cIvh4IqwvWDQMhBoPjx0pTXy5mu2RBgUa>
+X-ME-Received: <xmr:Wfm7aiTXH9AldnlpXMpmWTFNCklFiaW-rux58Vi1uUpLsi66iS2TEiBCRe4>
+X-ME-Proxy-Cause: dmFkZTGiQXNYL99eKp3SE9l0ZmfYVDc8zNcb7fYURtN05SMtW87zJPRiXYMgfK3YXBP7y6
+    5mB1C8IBWC9LPSTMYrf8YIxqDXfWziidvhiE/e/3blg1pvqimIho4NENtkLREEAC+FOwsr
+    i8G5AwzNUfxCwcaE4TyADpVUbdQPFphcZJrDj+Ii2/HcWzS3oWsUSny9h3kmYKW3QAllKC
+    4Cw+aKk8h3bUryonN3OyJXnwGOKVu1FQTEFiJA1FTlwbcn8rWRs71H4c0ecYvB7rqhXo2i
+    px5EH9WhAbCs/cRtQCYi13IMfsZ3eyQHBtDtGlmxilWV/V/EYdDUratAsGr3CqZXkxPogj
+    wnM7W9tgXMkSMPo4zz4y3lG3psiWCYqS1uAjbtr/kB2D5madNlT8RtCflwUQeOi5CjETsa
+    Ww337jDauXLFzHzX7piHtOFDBOx03a6h1TkhZhctqgwD20AO7GIvvFd+kgGa7Ru5d2S18m
+    ogmDMWcDa6LnolxwW3golItdIEr3bjpG/SWYziaZHXdzvcqQAJgKQWoW+AEuPcuxBXVJOS
+    sZX+IbzsUS++i3wgNYMgICEwIiZ+sBLKObekrMuSse4f3meuiZ+m5/qwFL8THIOUD3pZNw
+    MNhUJfEX4HZsfIqbU9EzCfEFCkLb6kyjxjAvxtTLvYv4IiGqm1pNdMSVKFng
+X-ME-Proxy: <xmx:Wfm7atVRvHmpoRlfL05Q4Njd0gIlzZZcUNU0b6a6cMhQxd1hibN9Fw>
+    <xmx:Wfm7apa9YUGjyCjGMWC83wFv6mRtIE_ZqULt1tex_GveSI5_dc0Mzw>
+    <xmx:Wfm7au66wGCMX7R7J08vNupF6BrsCJvYZKyQ2lGHVI1xDsbsOQ855Q>
+    <xmx:Wfm7aiyHZYfSr6ARV9cJ4KqpXMMDwW4Jwi7UcLA2Gw2CI6LhXbq4fw>
+    <xmx:Wvm7an0XWb_JRFaZFzxGv2Bt14oTQWPWYFSy0TaFPwAtxdhUh53G3kGz>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 29 Sep 2026 13:46:00 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Harry Yoo <harry@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH] mm: page_alloc: make defrag_mode retries follow the promoted order
+Date: Tue, 29 Sep 2026 18:45:51 +0100
+Message-ID: <20260929174553.175333-1-kirill@shutemov.name>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-References: <20260929040256.543767-1-zack.rusin@broadcom.com> <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local>
-In-Reply-To: <20260929053930.GEartPEjbZMpBVSvSk@fat_crate.local>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Tue, 29 Sep 2026 13:25:09 -0400
-X-Gm-Features: AclHuK9MtIFPSxXHWZMv2V63rPUuOwDojaWOanbSwfqwCxHPzt-TuhSiHt6biCo
-Message-ID: <CABQX2QNmza+=i1FXgDtFS3e3O5oXxPZppRbRrL54P1LmrB2gBw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] x86/percpu: Share decrypted storage before guest setup
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org, Dennis Zhou <dennis@kernel.org>, 
-	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	virtualization@lists.linux.dev, bcm-kernel-feedback-list@broadcom.com, 
-	linux-kernel@vger.kernel.org, Christoph Lameter <cl@gentwo.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org, 
-	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	Jonathan Corbet <corbet@lwn.net>, "K. Y. Srinivasan" <kys@microsoft.com>, 
-	Haiyang Zhang <haiyangz@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, linux-doc@vger.kernel.org, 
-	linux-hyperv@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000272b7a065ca295cf"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AE06A1C000E
-X-Stat-Signature: uc96gnpqfhnw67up6gu1hidqkueqrxxr
+X-Rspamd-Queue-Id: D9040140002
+X-Stat-Signature: bhyg4o8ko51mrndrcryxineodd8hzzb5
 X-Rspam-User: 
-X-HE-Tag: 1790703219-425674
-X-HE-Meta: U2FsdGVkX1/tnEPX81Lubhf2v6ITj/TOTMfHcM4fK0j+l/UH1KerIrU5lFYb9HzLIvk3W38AVAuRqPfKR0ylGEihdZ84x+Nog+xmmDJqddPPfVm7xaxSNMEJQGjXsA6f6jEPtXekR9hduJU1Os6r5Qdq3FlvbJeuEQ6IeIYPg5nZTFqmXE9AQ7nR3o53MVqMAGicrRC79teTYbEHX+d5xZmaFyT3lmFnoUgDonp1fMhgazTmOihiQC3sBpshnaw7WrU1gOVGTFADcDSdgHt7i+WtsMqnlgYFwlMnQdNwyDO94UihWJMKC0HZc5wJcKAkAjRm+/yQ9GWZ46Tj0a8O4hF1knFD6rktB5Ed205swyU/GdzP+lIdMDkJGssRJUBjlcabqIzvaqAsstBNJYbaEKCR2HEpfNl/rxMdLUbfocthtsLy5N+i5pvMBH37kDfun7bVgFgxkWROA9NGSCNpifCSnhg5vfsRqcNN59GvpqgJIecucYLRN0G5D/ebbwhIjNjzNrC6uXWpl7BDgEbJUpWxMRSAyAw1Zp7UpHj5ip2Lqvw2JjZVVpikBd8Dbp7mwcMvdSyYyQ9qL2//WXhBbf/3X1oJ13ac1Hm5gcC95rn1upkzBDxdmHLZazFz1n2Xgzpzs/Ff9KSWXJO+zy9QosXHt/uVky81ylz31vXfSMVWZrBCVultYy9c2d7QyW2nUVWTk34PAV8lO/m6RSsKjqlKtix60ddgasVTxlFXtKROmUnwqLUXyR8sIk00dykXwn59M5vw71qlCYPUm4EzgZo9jgCFjNCNnGqkdfnrCk0vD2TARdMOFATQmmAQFjdB/L0UXggrUqHUjxLsl7uvSghmQvj61NpooF6zv18fdOcTDoTJzFup9o+C3LU2pHwlqtb9YNuhYAW5Q6nbxAr2D+jwQMl5Wt7bGBkWxhZz7XpkXPtOqwlpjFTC4xVSTtNVedhguZjbD2H0W0I8T9O
- 1Fk7E9Y3
- BIxpjUH7yFmyITiJi8V2HnX/fGX1O59cefpZEL1MyWSBR7f5ooOgVvLn0ZxRPrYr9BouAyvsrMNZkH0c1H0QiDET6yroL8HiXZyDCn8eXBXsa7huCNx2C/W9Rn85FYfGml7iCAfBD01C+X1j5sx/sfFISwOvOo9HA2lvI1QHs1JGi11FvB9hf9mNH4Fqqint72RvfOuY/TcH7whoIYGv6AeRtPsHd4UeJ8ErkfIZf2C1O0p5g9ILdyjN4Fnd3KYXCBmCfTONq4tn977GpxKUwhq0osKoXiRUWKGjBBiJk7bzVj/D1Wty9XUB4tbz3UbD6G3a6fQ3lDV8ZCn8lFvG2HV6Icpt8Q16pc4Q72dxVVEYqu8sGAF/RY8ZEGND+Gw/fjBMjBAbjKOCnF7vBY5/Mg9WVqc/z9e4l+CpfNjN33CZ6OfuXRsbkaREIBz327fAKG84kKtd722wc/vy6AqJG1MwFPcrlQesbXCN2f7KOF00z0ESV8UwZBjblAqfVo+bT7rXzAT+Kr3X1Y60ck5k+Vex3HA==
+X-HE-Tag: 1790703962-969578
+X-HE-Meta: U2FsdGVkX1+w3QbhMQMnfwg0h0DbjCLdl4TvFs5OWZ7BTYKZJnxArED4N4DXzbKrWvGf80vsISlO2tk0i+RfGIXuK/AG/loSoeoktbaoM4niaVfaTXWgHSL0vIxCc3anQhWajdDK6ZzGX6uJUoPQqAU50VcIKA20wL01tliWHgL5OhU8xJP4iTjTyf+iqKpc2TyYap/XdD9glQ0a3CBFob98u3ogvVyHfmwVKUMBtx9hf04ty+SnZI+HG2B38w/vMncLsdN0xFMG+NBpL0wnw3yOBaZb6tJc1QPWrSjMiOJ9ewYm4+QJHmHHmHWhDWWs8H61bsVRu6Zy3vXzPzMTwdJpSlvWa6NjZNroJLAGAcjwjaQOciEZLP5bfBcLucBfJYOhy+ejCr7bBNJPDb4aX8iS/PrDfdzkVZx5LC5UIbTTsLHBhYzBpj+/5OAFYuuo8mUwXaj1pL9kbIWjsvy5pTLv7GuIaMZovOPgZ1mLdHdcnH/vqUYpl8NnP8shjkzwtQwKW3h8c3tEEE8WrtFhHWbhGp4ALDrKaNpYS0qH0R3riesHvFiKsj0ZS3q1cqcGP/UndDvgwYvXIHwGjabSsRktb8VhSqrVLTmi+bX5fWDE1I/OYA70qNuNGlQqtILPZGmwnGo6xYtnkcg9i/YGZSeV55F7L7Ube27u1Uvt9+h8KfxileWhTKWl5RasbNTgkOutHg1K6mlqQNgqfTM8S8bKE4TBQWcpxx4KPa/uLcLpl/6xADSs0aGRVN7Un6LvbZjFWspMdw4dzImO4bNoUe+8J1TJjlEtpKIiMsq6c8jSSKhjEYQsVqPiY/7MvS2omsqfrE+VDOWy03syFfGcd2OzTwAD9X5838DzM0mYavNXO5zH0H9h5FlFHS8253cbgo8TfmwhXqa7N4spNg5qP+VIiHzsGsTU/VGdnWRTgz6WUTM9UAEd1meqElND+SHXxkWzp3pwOJtPh2QRyv1
+ qLJl1L6a
+ QMdpGPHRaXE1vqz5UMtYa6mmpQtAOlkEqnt8TPl8LMJ+Dau1Zf1D1TO60xq8bwV3oAl8KlaZ8ImZl3c9g68UnmqS7eLosk2GT325EuQUX5YrDsT5bNsiMjOCMwMPxUppqcM9jlYJoW1waPZMBPxmF3bN+ot0K4tjUKEjBAffkkXyFF2aTs/IaXPQUzKIqcAMb+2TPPi8znUNQW179SlvKRbKS+56x2F49oI7lFlfxzCeuPREgtl/MxkcVNbnKF3HQ20znCGDA5iXrFDAJfdPKLkWr1eABoZxbj+wJGqtul2xtrZrToUYn5sy6kG78oE2upYquy9vOSYGjPyYB+5r12Uv/K5rDIN3gzw38rjNAtNAhr/wRp22x1q1WC7sSlbHBCLCF1McNLWAhIMEwxxLHm8gtpOqSCgVmmz7elW47JFvQ3eljB34Q+RWKhfWjD8cCOJ9QwyxpShZRPrAcv4l5+yJoLPHzt2saM6teyoTGHTVM+hBw4tGqNg580g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,204 +137,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000272b7a065ca295cf
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-Hi, Boris.
+Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+storm in defrag_mode"), direct reclaim and compaction for non-movable
+requests under defrag_mode run at pageblock_order, to produce the whole
+blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
+still use the request order. An order-0 request can therefore retry
+indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
 
-On Tue, Sep 29, 2026 at 1:40=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
-e:
-> On Tue, Sep 29, 2026 at 12:02:49AM -0400, Zack Rusin wrote:
-> > VMware publishes its per-CPU steal-time GPA without first sharing the
-> > storage in encrypted guests.
->
-> So this one liner is the only explanation why this patchset exists, AFAIC=
-T. So
-> I asked AI. I'm pasting what it said below, at the end.
->
-> Is any of it true?
+- Reclaim at pageblock_order gives up after one pass as soon as a zone
+  looks compaction_ready(), and do_try_to_free_pages() then returns 1
+  even though nothing was reclaimed. It returns before the retry that
+  would reclaim memory.low-protected cgroups, so when most memory is
+  protected, the pass that did run finds next to nothing.
 
-Partly. So steal time tells Linux how much time a virtual CPU spent
-ready to run but waiting for the hypervisor to schedule it.
+- Compaction at pageblock_order fails or is deferred.
 
-For example, during a 100 ms interval, the vCPU might execute for 70
-ms and wait for a physical CPU for 30 ms. Reporting those 30 ms helps
-kernel:
-- account for CPU usage accurately: avoid charging applications for
-time when the hypervisor wasn't running their vCPU.
-- make fairer scheduling decisions: base task execution accounting on
-the CPU time tasks actually received.
-- expose host contention: the st field in top and counters in
-/proc/stat help explain why a VM is slow even though its applications
-don't appear to consume all available CPU time.
+- should_reclaim_retry() takes the reported progress as progress for
+  the order-0 request and resets no_progress_loops. The request
+  retries.
 
-The benefit is greatest on busy or overcommitted hosts. On a host
-where vCPUs rarely wait, steal time stays near zero.
+Order 1-3 requests loop the same way, and should_compact_retry() also
+checks their pageblock_order compaction result against the request
+order.
 
-To make this work the hypervisor writes a running total into a small
-per-CPU buffer in guest memory, and the guest kernel reads it. More
-below...
+On a production host (64G, defrag_mode, memory.low covering most of the
+workload), 95% of direct reclaim runs were order-9 runs that returned 1
+with nothing reclaimed, at up to 60k runs per second. Across ~200M
+should_reclaim_retry() calls in a day, no_progress_loops never left 0.
+The spinning allocations were SLUB slab refills for inode and dentry
+caches. The time spent registers as memory pressure, and pressure-based
+OOM killing takes down both workloads and system services.
 
-> If so, how much and is that the reason this patchset exists?
->
-> I.e., you want for vmware monitoring tools to work with CoCo guests.
->
-> Yes, no? Anything else?
+Treat promoted requests like costly orders:
 
-If options are binary then "no" :) It's not for monitoring tools, it's
-for the kernel's own steal-time accounting above, which currently
-doesn't work in confidential VMware guests. So the issue is that in a
-confidential guest (AMD SEV SNP, Intel TDX) memory is private by
-default, so the hypervisor can't read or write it. Any page the
-hypervisor has to write must first be converted to shared by the
-guest. Linux gives us the address of the steal-time buffer without
-converting it. The hypervisor then tries to write into a private page,
-which doesn't work. Currently ESXi deliberately powers off the VM when
-that happens. That only affects VMs with the steal clock enabled,
-which ESXi leaves off by default except for Photon guests. I'll
-probably change ESXi to just disable steal time when a guest gives us
-a private page, but that only avoids the power-off; steal time still
-won't work in these guests without this series.
+- Reclaim progress does not reset no_progress_loops for them.
 
-KVM has the same need for three of its per-CPU buffers (steal time,
-async page faults and PV EOI). It already converts them, but only on
-AMD and in its own loop. Kiryl asked on v1 for one common place that
-converts all such per CPU buffers early, on both AMD and Intel,
-instead of each hypervisor driver doing it. That's patches 2-6.
+- should_compact_retry() checks the compaction result at the promoted
+  order. It does not retry COMPACT_SKIPPED, since the request can fall
+  back, and it does not escalate compaction to COMPACT_PRIO_SYNC_FULL.
 
-Patch 1 fixes an old layout bug in uniprocessor kernels, where these
-buffers can share a page with unrelated data. The series also fixes
-SEV and SEV-SNP guests on KVM running kernels built with CONFIG_SMP=3Dn,
-which currently hang at boot (we reproduced the hang).
+When the fallback is taken, reset the retry counters, so that the
+fallback attempt gets a full retry budget before the OOM killer is
+considered.
 
-> And looking at your commit messages, they don't really talk about why the
-> patches exist.
->
-> And I don't think you know your audience - you're sending a bunch of patc=
-hes
-> touching arch/x86/ and you throw all that virt gibberish around like it a=
-in't
-> no tomorrow and you're thinking that tip people can follow. And I think w=
-e can
-> follow only bits and pieces but all of us will be mostly head-scratching =
-here
-> and probably ignore the whole set.
->
-> So perhaps you should lay off your virt hat for a minute and try to expla=
-in in
-> an approachable way what you're trying to do so that even non-virt people=
- can
-> follow.
+In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
 
-Fair enough. I'll rework the cover letter and the commit messages so
-each one starts with the problem. The series originally wasn't really
-touching x86 core parts and I haven't updated it for a larger crowd.
-Would you like an explanation of steal time, like the above, in the
-cover as well?
+                                        before    after
+    should_reclaim_retry() calls           63M     293k
+    peak memory pressure (PSI some avg10)  99%      12%
 
-z
+File creation runs 5.7x faster.
 
---000000000000272b7a065ca295cf
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
+Cc: <stable@vger.kernel.org>
+Assisted-by: LLM
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ mm/page_alloc.c | 85 ++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 56 insertions(+), 29 deletions(-)
 
-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
-6U6qgI8F5eiKsQyE0HgYrQJx/sDs9LLVZlaNiA3U8M8CgEnb8VhuH3BN/yXphhEQdJXb1TyaJA60
-SmHcZdEQZbl4EjwUcs3UIowmI/Mhi7ADQB7VNsO/BaOVBEQk53xH+4djY/cg7jvqTTeliY05j2Yx
-uwwXcDC4mWjGzxAT5DVqC8fKQvon1uc2heorHb555+sLdwYxAgMBAAGjggHYMIIB1DAOBgNVHQ8B
-Af8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJlLmds
-b2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzABhi1o
-dHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4wXDAJ
-BgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0dHBz
-Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDowODA2
-oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3JsMCIG
-A1UdEQQbMBmBF3phY2sucnVzaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUFBwMEMB8G
-A1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQNDn2m/OLuDx9YjEqPLCDB
-s/VKNTANBgkqhkiG9w0BAQsFAAOCAgEAF463syOLTQkWZmEyyR60W1sM3J1cbnMRrBFUBt3S2NTY
-SJ2NAvkTAxbPoOhK6IQdaTyrWi8xdg2tftr5FC1bOSUdxudY6dipq2txe7mEoUE6VlpJid/56Mo4
-QJRb6YiykQeIfoJiYMKsyuXWsTB1rhQxlxfnaFxi8Xy3+xKAeX68DcsHG3ZU0h1beBURA44tXcz6
-fFDNPQ2k6rWDFz+XNN2YOPqfse2wEm3DXpqNT79ycU7Uva7e51b8XdbmJ6XVzUFmWzhjXy5hvV8z
-iF+DvP+KT1/bjO6aNL2/3PWiy1u6xjnWvobHuAYVrXxQ5wzk8aPOnED9Q8pt2nqk/UIzw2f67Cn9
-3CxrVqXUKm93J+rupyKVTGgKO9T1ODVPo665aIbM72RxSI9Wsofatm2fo8DWOkrfs29pYfy6eECl
-91qfFMl+IzIVfDgIrEX6gSngJ2ZLaG6L+/iNrUxHxxsaUmyDwBbTfjYwr10H6NKES3JaxVRslnpF
-06HTTciJNx2wowbYF1c+BFY4r/19LHygijIVa+hZEgNuMrVLyAamaAKZ1AWxTdv8Q/eeNN3Myq61
-b1ykTSPCXjBq/03CMF/wT1wly16jYjLDXZ6II/HYyJt34QeqnBENU9zXTc9RopqcuHD2g+ROT7lI
-VLi5ffzC8rVliltTltbYPc7F0lAvGKAxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJFMRkwFwYD
-VQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBTTUlNRSBD
-QSAyMDIzAgxhPxw+eieHWB40hPkwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIJNP
-S6jDImrUmlay9QeGHdRpWRIu9sjbDlG7nS4YLZLtMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEw
-HAYJKoZIhvcNAQkFMQ8XDTI2MDkyOTE3MzMzN1owXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQME
-ASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJ
-YIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBAA8zCWNhaEpuWRYMKXdPmschVWKCn6WVYNOpiS0J
-NcjhQyOZmzj+fewFY9z8KHh47UemODMYpjaFYGH1xpOf7STFPyzkaqyyqJU042DjODdRMRgNhZ0D
-ovSNnkqdM9qk9/sXA4NuOVedrTIrMn6iuLkhnHDOhQSHcZ4hT13qSK9ic+no5Z9GN7mrE02e6wTV
-4Sr/h/vgwpboKIy2aTD+OkYtCE1OKMyTrpA8DLUJg7mgrpwJKxSe9XWmQ2UkCRSdTPo0+UKlmxBW
-ZVYUSlBEwDm+6GKsfEGieDgU0f4xG1T8jL3OlgLTLSx7Nf59uYYciCEwgSwWtmEgD7UyEtzTfno=
---000000000000272b7a065ca295cf--
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 12fac9084c48..608487672d93 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4127,6 +4127,31 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
+ 	return page;
+ }
+ 
++/*
++ * If fallbacks are not permitted (defrag_mode), we either need to
++ * reclaim space in a block of matching type, or clear out an entire
++ * block to allow __rmqueue_claim() to convert.
++ *
++ * Reclaim by itself is primarily freeing space in movable blocks,
++ * since that's where the LRU pages live. So this works for movable
++ * requests, but not for others.
++ *
++ * For those, promote the order of reclaim and compaction to help make
++ * blocks, instead of spinning in reclaim alone unproductively. Retry
++ * decisions based on the outcome of that work - reclaim progress and
++ * compaction results - must account for the promotion as well, see
++ * should_reclaim_retry() and should_compact_retry().
++ */
++static inline unsigned int nofrag_promote_order(unsigned int order,
++						unsigned int alloc_flags,
++						const struct alloc_context *ac)
++{
++	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
++		return max(order, pageblock_order);
++
++	return order;
++}
++
+ /*
+  * Maximum number of compaction retries with a progress before OOM
+  * killer is consider as the only way to move forward.
+@@ -4149,22 +4174,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ 		.order = order,
+ 		.page = NULL,
+ 	};
+-	int compact_order = order;
+-
+-	/*
+-	 * If fallbacks are not permitted (defrag_mode), we either
+-	 * need to reclaim space in a block of matching type, or clear
+-	 * out an entire block to allow __rmqueue_claim() to convert.
+-	 *
+-	 * Reclaim by itself is primarily freeing space in movable
+-	 * blocks, since that's where the LRU pages live. So this
+-	 * works for movable requests, but not for others.
+-	 *
+-	 * For those, promote the order to help make blocks, instead
+-	 * of spinning in reclaim alone unproductively.
+-	 */
+-	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+-		compact_order = max(order, pageblock_order);
++	unsigned int compact_order = nofrag_promote_order(order, alloc_flags, ac);
+ 
+ 	if (!compact_order)
+ 		return NULL;
+@@ -4256,8 +4266,11 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+ 	bool ret = false;
+ 	int retries = *compaction_retries;
+ 	enum compact_priority priority = *compact_priority;
++	unsigned int compact_order;
+ 
+-	if (!order)
++	/* Check the compaction result at the order compaction ran at */
++	compact_order = nofrag_promote_order(order, alloc_flags, ac);
++	if (!compact_order)
+ 		return false;
+ 
+ 	if (fatal_signal_pending(current))
+@@ -4266,10 +4279,14 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+ 	/*
+ 	 * Compaction was skipped due to a lack of free order-0
+ 	 * migration targets. Continue if reclaim can help.
++	 *
++	 * Promoted requests have exhausted their reclaim retries at
++	 * this point, and they can fall back instead.
+ 	 */
+ 	if (compact_result == COMPACT_SKIPPED) {
+-		ret = compaction_zonelist_suitable(ac, order, alloc_flags,
+-						   gfp_mask);
++		if (compact_order == order)
++			ret = compaction_zonelist_suitable(ac, order, alloc_flags,
++							   gfp_mask);
+ 		goto out;
+ 	}
+ 
+@@ -4287,7 +4304,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+ 		 * need much more detailed feedback from compaction to
+ 		 * make a better decision.
+ 		 */
+-		if (order > PAGE_ALLOC_COSTLY_ORDER)
++		if (compact_order > PAGE_ALLOC_COSTLY_ORDER)
+ 			max_retries /= 4;
+ 
+ 		if (++(*compaction_retries) <= max_retries) {
+@@ -4299,7 +4316,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
+ 	/*
+ 	 * Compaction failed. Retry with increasing priority.
+ 	 */
+-	min_priority = (order > PAGE_ALLOC_COSTLY_ORDER) ?
++	min_priority = (compact_order > PAGE_ALLOC_COSTLY_ORDER) ?
+ 			MIN_COMPACT_COSTLY_PRIORITY : MIN_COMPACT_PRIORITY;
+ 
+ 	if (*compact_priority > min_priority) {
+@@ -4468,11 +4485,7 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
+ 	struct page *page = NULL;
+ 	unsigned long pflags;
+ 	bool drained = false;
+-	int reclaim_order = order;
+-
+-	/* Match the slowpath compaction promotion in __alloc_pages_direct_compact */
+-	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
+-		reclaim_order = max(order, pageblock_order);
++	unsigned int reclaim_order = nofrag_promote_order(order, alloc_flags, ac);
+ 
+ 	psi_memstall_enter(&pflags);
+ 	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
+@@ -4648,9 +4661,17 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
+ 	/*
+ 	 * Costly allocations might have made a progress but this doesn't mean
+ 	 * their order will become available due to high fragmentation so
+-	 * always increment the no progress counter for them
++	 * always increment the no progress counter for them.
++	 *
++	 * The same goes for requests whose reclaim is promoted to make whole
++	 * blocks. At that order, reclaim also reports progress when it backs
++	 * off for compaction without freeing anything.
++	 *
++	 * The watermark check below stays at the request order: it asks
++	 * whether the request itself could succeed after reclaim.
+ 	 */
+-	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER)
++	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
++	    nofrag_promote_order(order, alloc_flags, ac) == order)
+ 		*no_progress_loops = 0;
+ 	else
+ 		(*no_progress_loops)++;
+@@ -5012,9 +5033,15 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 				 &compaction_retries))
+ 		goto retry;
+ 
+-	/* Reclaim/compaction failed to prevent the fallback */
++	/*
++	 * Reclaim/compaction failed to prevent the fallback. The retry
++	 * budget was spent on making blocks, not on the request itself;
++	 * give the fallback a fresh one before considering OOM.
++	 */
+ 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
+ 		alloc_flags &= ~ALLOC_NOFRAGMENT;
++		no_progress_loops = 0;
++		compaction_retries = 0;
+ 		goto retry;
+ 	}
+ 
+-- 
+2.54.0
+
 
