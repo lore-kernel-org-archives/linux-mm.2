@@ -4,112 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77E1ECA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:30:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53647CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 09:39:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5CEA66B0095; Tue, 29 Sep 2026 05:30:21 -0400 (EDT)
+	id 4DFA36B008A; Tue, 29 Sep 2026 05:39:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 568476B0096; Tue, 29 Sep 2026 05:30:21 -0400 (EDT)
+	id 4B6CD6B008C; Tue, 29 Sep 2026 05:39:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457856B0098; Tue, 29 Sep 2026 05:30:21 -0400 (EDT)
+	id 3A6346B0092; Tue, 29 Sep 2026 05:39:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 236446B0095
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:30:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E62340448
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:30:20 +0000 (UTC)
-X-FDA: 85266279000.10.8E6D42D
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.43])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 08AA3140005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:30:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=w4ro3lsx;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf09.hostedemail.com: domain of leizongkun@qq.com designates 43.163.128.43 as permitted sender) smtp.mailfrom=leizongkun@qq.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790674218;
-	b=FP3wK0TOrjz+qogai0uaSIwidjkwLqdYO5M3zhtMGlbPWQZolBINCTQtJMXtudMGAOMmHd
-	h7JK7O+pyhy+q3VDh9oh3YfFNnfRmIFKWywtRgH/1cF8lVC20eTAJJx2+BTa5UM2h7ZXHI
-	X3LeCk/ExdowNmpV+OFw0q5RF3GTkgM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=w4ro3lsx;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf09.hostedemail.com: domain of leizongkun@qq.com designates 43.163.128.43 as permitted sender) smtp.mailfrom=leizongkun@qq.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790674218;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15FF76B008A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 05:39:52 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8B1A6140453
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:39:51 +0000 (UTC)
+X-FDA: 85266302982.15.FE5A7FB
+Received: from mail-qv2-f41.google.com (mail-qv2-f41.google.com [74.125.230.169])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 81343A0004
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:39:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b=oZhLoesJ;
+	spf=pass (imf15.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.230.169 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=none
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790674789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rP1Kjv8k98xwAfYx7eMTbq7vYEhGH14gXrZgLKEr/R4=;
-	b=eWd0xXU2MZ2DOeLimr5QXL42eBA7jlk2dByFT4Fi5N9PRqSQLmK9LHY1e4tPUORBsvf+fk
-	kFoY++oIP6kzBWfJcueyZ7m3qNcBRX/mMR3vVLZkIumQD63abmLgl+8NYTin8SYiVHDphz
-	I1LgQtQPMTayGiALOweVai+D613dTxQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1790674215; bh=rP1Kjv8k98xwAfYx7eMTbq7vYEhGH14gXrZgLKEr/R4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=w4ro3lsx3BceRAoOlNQlwLp9n6J9nDN4TRbA568WpttNS3dt46cbR1OUnaM/P30DY
-	 vT5rDceNNygdQiTugINiqARFUgTBWjZlybN6mqIgcZyZFrDoEQMavSoC37mxiSw6gU
-	 K0/0FnZrz5FI4BGNIMlBMHfvPw0untgJ7wT1kViw=
-Received: from lzk-B860M-AORUS-PRO-WIFI7 ([2409:8a28:a83:5ba1:514f:5353:e14b:594e])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id 7899AE10; Tue, 29 Sep 2026 17:30:09 +0800
-X-QQ-mid: xmsmtpt1790674209td0i7yvm2
-Message-ID: <tencent_736FFBB76DA2EA0BF5E60B9BCFAAE9692707@qq.com>
-X-QQ-XMAILINFO: NwU6Bou9okj/siVb1eHQhL+Vspf7kVKi/MRFyz3JXUqc7UvJIWn92IwBYZKOlZ
-	 vriojD8PB13ppx8glRZC0ssNjXyPj/+KlsHJn50UEGxhYy3Wgz883kRXY+bIOavBkypbHqFwuLsZ
-	 Yn/G8E2MhepRLEKjzA7A4ZD/d2hw8hvr3C/Ok56voS3MpjvfaBfQx12ab9oBFVNq0dgWhta/rH5G
-	 o84eR/z5t9mvWXSfCX43vHCqxnmYTWCA2WhPU7N2wcvuHeGo50sAeByxfTWkbY5hhOLhA+QiLnhq
-	 xh8szW5ddQJTAMkTzz81xIlVAfw4435of7BruPztSOjAU47Sz0I8iJUCVH0jO1i7QaVezh6HTpuN
-	 BHbqAKgRvUL1AFjrJ5mbsekDd5Ed9kN66SHD7DzwWqi4zLvWbqilf/q4B80IJDgLkz5rmFQiO6r0
-	 cZdLtO6lOlNksuoNFpRIFq9qwnUMtlRVs9FYGXozZDnp5YhGn/aBvKgUaMk+BwXJcUyKsjoMRumx
-	 jesC51ki41DsmwdUGe+SKfM6KqN4EjZay880cl+FTbnqA/LvwG2rzCADij+Q1tCgejPGE95XEocM
-	 itc4HLpqT8HQ7buRSDjqyDslryCJLZaPZSnnNgodM1BcanQ/i1EXBBpUL6XVP+gbF2CMLFgKycQS
-	 GJJXuZfM2tRcZsfaAfcJnHp3AhGkTIRxBrr2HiqpJ57PJPidYJ02WKmmud6uV3EadcmU3pIF0+OO
-	 dDpAmSIaSNjyq+ELUIw3LWwGjVpobwFyQRctooFL9EcrlvjAx37tV+sJDY1ajT2JSSrmPvXJxaUZ
-	 4awGWdjyo5p5bltlCLgONS2IG/hiYz/9m4KMZDDUVhGxmZX6Cj0hk+25Jn6YUoKcgYlcz7WNYrTc
-	 RDCCn6rbYLvC8KMUfWmp8OByp060MK8kf9jQY2g/6bDdsSN/85MM18Vgp8mGI9H/qz9SPgzf1/wL
-	 FWPO+g/p1BnE7dTjXvk/CWRl2YvLAaKO5IDwry1Z53zhNdG1AqH/eJhmBTKXSnvVaxTFaW1NvgVf
-	 X+WXqLPha1UxuzIY3I2IMr2Y9fJo35HES7ZcFsXMh6EpY3lfIK3+UgCa8nYljO8hC8xtsDu4/LI/
-	 /WGBp5f2CVofzjGHlBu0iB3m6M550LCLoHen/PKDHNKgBpkCu/69aJeYQwBb9fnCnjE/cQ6yp6AN
-	 VcChw=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: Zongkun Lei <leizongkun@qq.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zongkun Lei <leizongkun@qq.com>,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Kairui Song <kasong@tencent.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Hugh Dickins <hughd@google.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/6] mm: swap support for hugetlb folios
-Date: Tue, 29 Sep 2026 17:30:04 +0800
-X-OQ-MSGID: <20260929093007.555388-1-leizongkun@qq.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <art0PItp9LoUXIcd@gremlin>
-References: <tencent_501F9D3CED07B66BAA97D5352FB63EE1A709@qq.com> <art0PItp9LoUXIcd@gremlin>
+	bh=O6zidI4zTNOj0TGHNQTaUW2cJSlvWPwFzk8EpxAP9bc=;
+	b=clPbauUEXvLmesN8vEeuTrqtKYpdKgtJ7EdX7jgX8gFoOqMlTmM8yENSonkEdt/YF0YVA8
+	j/BNAliQFHxKAvWhdyF3h4BFlKIF/WIZgxbbReGoAKuWMbFClJyzEugT9vqm8uL/3SGGfc
+	ozu6/x35+ZyessbAFcrlznkVeEjAWnY=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=dgu-ac-kr.20251104.gappssmtp.com header.s=20251104 header.b=oZhLoesJ;
+	spf=pass (imf15.hostedemail.com: domain of ts930@dgu.ac.kr designates 74.125.230.169 as permitted sender) smtp.mailfrom=ts930@dgu.ac.kr;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=none
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790674789;
+	b=v3sbQQ5ZBUk2AMRCFkgHlja9skbwaYV/bUGA078zzlYbEFLc4I/PviQxO+btd9NVzVcU/q
+	4RpKhfdHTOVbc33cgHarVBxi5VnfoPef5pDh8B0EgIyL6tJbSrYi31sTc3Se0fyk+OWxaj
+	uuEyWVTXZa19KCyeBdr4IvB6EcwE0pc=
+Received: by mail-qv2-f41.google.com with SMTP id 6a1803df08f44-91782a91a3aso9627466d6.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:39:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790674786; cv=none;
+        d=google.com; s=arc-20260327;
+        b=M6VNCw1MA+4694mz0UcUzsZ6CK1X0DyN5GPZYmdkNE6IH9YA/mr5hV7DIkVaUT6BCr
+         jUzs1PtfI/dcO9hIfN/icalAEFjMP1homegDectTEVNvwStl49uCJEzzq+A5BcS46cDC
+         P/CVOmRrWrQaKDmaUb1sKQ3M2zsQuo0g7LdUglRSj4vAfX6400U+qhDwUh7JT0tn6qM1
+         5Hkw7BmMvdHSrTS9dzWal1mf215yLeNQ5RQV5x/pDGFLmFEjYSl1h3wLfvdMcQzBD+65
+         HSFyt8ly7OiY52FxWKoNGmQleuaLaA0mwr7+m4w2AupOH3lddncpIiJCJtsqvR6VzN6V
+         APsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=O6zidI4zTNOj0TGHNQTaUW2cJSlvWPwFzk8EpxAP9bc=;
+        fh=YtM/PmgZ+qLXU+Vk/+zgv7qTzbKUkKcnY6kmsA5JP4U=;
+        b=bNrWzoKq3spjsZYRF9E6/xMS0MZ8nMNDdUXoux8sQxXiqb/PTAhI8LOkkSyZFOAiU/
+         uBcBJL1dczIROkBneYhgf3tWI/JowgTwnV3Dj/crMmrKKr+h2ui+fhg3idYQq/S6i488
+         UxxO39agGoUtRIHwgB2W4Omi6OFQtFBSeqeAN/rljD5kQCBqkCIFvVchJ+oFhjDUvewR
+         QM4GViMQf08tgkqogBSZY9L45yJEgtgIxKcAHJ68jOojDfMJOMqiyrLp3bWp9NoMcWo3
+         p0w3Gt7aPkT0jNHZHhkG/5A0g4co9VO86w7jbFKQ9t5KwTFm0zxeLRNI2ESsUDiY5wR4
+         x/PA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dgu-ac-kr.20251104.gappssmtp.com; s=20251104; t=1790674786; x=1791279586; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=O6zidI4zTNOj0TGHNQTaUW2cJSlvWPwFzk8EpxAP9bc=;
+        b=oZhLoesJa2BKBinC3S8p55ZrSEais2svPLRONuCszbmJxfwZBavA91v6bkSu0K+9+S
+         kPlgqeWcoPRCkLhaYJtsbml/BXusO1AMuZuQino7lUYiz+dnxx6hZY38kw45TAbIkkbt
+         mkaabCNql3N7Wi8tZjIasxxJM65uL9RM2ro4aKUgVUEKgImevrEmzzOQNBWmyUCArtWP
+         qKWPywbMUZtpCIDOSEvUT3l+rnR3rLzCdJqQWnGeP7dlbuuqZ6+wJK068VzOBCj13Kjo
+         sJav9Lr+/qZF/rA4VcZB5J2aC+O1r/EGSwGjBeSWMax12Uum5MbriaQph3vEG4Xg7mJ0
+         II1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790674786; x=1791279586;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=O6zidI4zTNOj0TGHNQTaUW2cJSlvWPwFzk8EpxAP9bc=;
+        b=E8qfLjNCMuEQUi3nsMr8SOyGfb6bWWZrg3rjaGWQAZqxGZg1yMZz/L4Kq2aAve1Yep
+         8092Uxu9jU/5cyYr6jcTg85AomETVirQFzR464VO2IYXH4wQfbQRCtDHBMe9wZg0biZj
+         ayZZ9d8Y8Dda/4OJu+LqFPJQcrIrMQbXavNuYaKmxQMkRYvcUsQDBZlcqEf24vPj8VRu
+         MSl0IJnSJyEF5wc72m4BWu12VaZPxyBGyNgLX1kx1/Of+XuMtTN8nqPGrCSYhTQ70UyG
+         HL1/C9LpXA/wVgXx644GvPW0vGBX8LLbApzi7a9IssIfTvmX4+VA9NgYU39TvC+495pS
+         s2/A==
+X-Forwarded-Encrypted: i=1; AKwUvBziDTKhSpSqQzt4RUa4TUEoPi898wau/7ohVyj+nltkDxWEi4wu0VGfcxuv+bkhLReCjzrRqb0G+w==@kvack.org
+X-Gm-Message-State: AFq9FYJbbcLmd19nw7Tmb+g29Mom7lZz/Fkasb1HYcyVw3h4F/PQem4N
+	RZ3mHcIzqzmt5LWlqwW/kNyjFZKtRbE8pVOBM+ovwR9HHyheto1bOPrxWteCNEfr4Hdjx8PqgAj
+	5gxYDKgIoyDl6D9C3wHkgkx1ijyf0YJFiDRsP76HR8g==
+X-Gm-Gg: AYBFou0QXoKrIztwhbJBo7sI+B0Xq4Jxt8EB+sgciDq7MNA6SjPpi4+J6KNbLZc/jcA
+	6+Cgz9HNvQJ7QVsFnJaH4pMUCgVZRr1f+b7WRANdVM5EewvJjLAiTXsbFlG951DWWbyGgq372vO
+	GkRsGpn9FqGtRSzjm66eLB5/wjbM9vW16UTdixn3/jbK5diDqe7kWn6srfZkvFOhtsKWePKbIbp
+	/m7FjcamarxiP7/DrFriGuzg7tzO5eYEME799RhRtLiOb/LmJ5inyaxcY4NJKO6z45UPAvXhBBE
+	2aIw/ae/KHizjsSZ7zQoM+ZmpVvXNI/a0ZncNmE6R9+kzOldhK2mJ3KEoA==
+X-Received: by 2002:a05:6214:4a88:b0:910:345a:f453 with SMTP id
+ 6a1803df08f44-91432483830mr243057896d6.36.1790674786553; Tue, 29 Sep 2026
+ 02:39:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ggksdf8rx8iayqpaj1787eoikqrm74bd
+References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
+ <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org> <art6x0XpWcT2aUyy@gremlin>
+In-Reply-To: <art6x0XpWcT2aUyy@gremlin>
+From: =?UTF-8?B?67CV7YOc7ISgL+y7tO2TqO2EsMK3QUntlZnrtoA=?= <ts930@dgu.ac.kr>
+Date: Tue, 29 Sep 2026 18:39:35 +0900
+X-Gm-Features: AclHuK-TKGufm6-Y2TQLaPocUQkmdwuwTHOz-rtMMxexWAdTwmo5Rynwnpmf1gk
+Message-ID: <CAFPGN2jPGhcWVqa3k16RWMaMR3TwKyhFbYYF4D3L6L85T8E96g@mail.gmail.com>
+Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
+ integer overflows
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 81343A0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 08AA3140005
-X-HE-Tag: 1790674217-323859
-X-HE-Meta: U2FsdGVkX1+SBlKrIKVqwJi26QmK4cTpdv2EsgpL/BZixuu1oyLmRgeJo76YKEE8eC4nWRrUFpGBW3nOP9VDXCjDmgqztOqTLXzueRfWXMnqzxuk5ArMPP8OvBEB7aRCCcbWEk6UPq6l22qBUioVeSSCxLW5UCoWRfdtqgq9s84ucI8XJnqEw6hL0HiXWjZPcNN8USKUjD49y2JAZYzaWCn6ChFn4F5PYHReTtwqTwrGzZ1fEpiZSKC2NLmZGiQNYl+VG7SBzAOCpZov6tBqzZeAizVVNEHrkXHP0nINqnNYxYAOSttLgJUvl0pCi1TWLxdMq0k0HTc5ca2rHY64kF1GGSCj1Bt7oB2Og44PLkzA08/NjlmqX1Uxvg4Zxq52nCJqQVII2TW3yzFUhojtyy5obuz4kI+igHyhPPtVa2NqAgxGdgppVqiOwGKZyHwkNFg6d9el0/1KzqDjdcY9efYOe6FppAtWfNlWxOWO3yfPOa/ZXuI3Dw5964iwKOl5Ir/91eopEi9ZCQXCubNZ3Vhn96TMMy8bjt+5wHOLEfAMTYfFHX5c+XFYiHmw7B/h8/6a6225oEkIIz2/CjYVxlpmoxEgqEH0Yi1nnPsOLFLyIDjD+3hOQK0J5jHh97oDucX34UevWK2hqeKZ+qbksK5XqgiLLhSzBkFYthHcnT3ttq0kLw2GqSI4GooHLLAZaC8seui00quuSGknfghqQOoi6eze8wH/Fg7vRGtg80H3BR5Rlr4Kgsz+eMGgH9XpidwI578+ZQ0IFulTg2zs7F/P4Wramqq6SqSm4cufgwfLHCgZQcIUvmubdYD3y7x+euc6z8A98HbYEfRHXHt6+oqq440KbJwFB0/m/oil15kcf2rj22MHSthow5DlYM7FeXsd96NtMptiB+W1WBnPi3ObZwWNqSiCq8tNA71PvH4ZQRWZoUSfv9InSgrS0JeDbSeb/Fsm7B6rhC7sJgi
- Is/Ggcq2
- sspy2CPHJH/gQ/uNpoCF9tPZuNjgcmGqOo527fgnp2vxGq0Cl+O5gsgC7UBp4sBIgnVlrCHzaH7+ErWRTPwLeWT8Gl2qDPRejrB0SPkelAHyU7ADHI4c0GLEn7Y+iUVWK8YEf7Xou75F+cOK5embpIURQpRJ16HePKwkQGSXgrmTN9gUR4DfOYXoPPkRErzWoPJweUBlkngwKQnHruM7kaCRNuVzlCFe829vddg317UNHSnw3vwDlHnNSqw67AD7yGf7JJwTqc4Crb5BfmRm2JWtTJ9M6ruB3rP4njEoA/6agu/k=
+X-Stat-Signature: fzmomd1zxw4fxqbwirw75b7w8qckqo1d
+X-HE-Tag: 1790674787-201739
+X-HE-Meta: U2FsdGVkX18p4x1QgjLOU4Lg0fNVPYfRTFdbT2sTfle2MzVAvHAhVjkBshatO3HPmluLipOVszqmhP7TN8K/ULYMr1bKlnfidKUbtKevHNlvMgI7emR5PR9Os/wm3UrEjuCBMc4ZeEFbUEZ2faEcB5xNzQgULL4vNyG+y49iRi+9aS1REutovjjvLIZNXjSj7Xa72D6yPWK4qck5Z5X/JC0zqL7NtvrnvcuMjisfTL2miusr9FbOKuooidyxlncQDHp2jg84vInQPddWbsF950khDD1XBPsYhHG2nBld8upjZ0UhVlMZ9o5Z8X+HqGJYHbU0e5aRnf1Z5qSYsI+cQ85h+r9+3iPtP7uOU+HNQX4LNtIF0ydlrTcAdcLoJHI+nkOFzSdibUXme3DuPbRyryX13/7eHch2gonPgEJjHOWwSy4E77+PDzIXn56QGgtT1xNSkAVRqAuNJLoE6lU5Sw33UFz7+cUEpz49aohnHAeiFA5zkslUCvcbx0pOwADV6Quu3c52hJe4/Mgtkhm+mVdCSY/ahxHVm3+wcOLv3IMerwdEGrwLxGbGVT7EXbkkehqSZA2MszfQMfMkQgOASPN7ZSoAoGXzcEsD3oXHeisWxa/LfO3W2YzWVlze6ygwQTifQRT1hAIGRGy0brAqlvDRogAfZxkgPyRB2iaQb8yKcyfvSF6b9S23374UCnI4h08SOBB4JSy40Eg1iH8F/xyBMcjcBxcnwLrgTm6IHs9cyJ+xVdtB7qwYXwJ1nQIBWSnUD8sCW7rhRfKlK70guJZk5nqxg9bWHuAYG7BO592zy8KrJkSJDOw8c+L9jitS5CcjvPJ8eJZCK6alk5KnxwAaP56U8viPachAc3r8tBXG+s+pSzSEQo0hHtTqDbiN0Tbs4kemWo1dj9YJgOCy+IkBaVXfam0Is867hGkMgA5iJhBjNcyuI8iJoWQt2HoU/MSFX6Y+wGiSB9vjNFK
+ xJmJH3q3
+ flrCD7mdPck6aZ6lKxMkx8AUzrVNI7Sa5mNQEtPBXernSnpH7gUCCSc+YJHQDL85UvdutEffDCZJnoEGBMi06n50Tw2WQY6bbwuZ5AsC8dsLhIol33R7auN6inS0FRpYPEWsBNVNqrmJBEvXq7PBZO9RHDq15KTqfx886JH2pKwMUJgJbumiRCfXACHIvG3FgGv/rzIda0PRk9CO5cj/KAimEqculI+A2F/qG7osfDsrHimCBYeJiRz9u2hCA6JvR+DsMwPM4lOVsEdwiqHOlVQ++3TT58wanXCGu0wUQnWXy/nkpM20jlVIJfgYpjK3xGZE7pT38ONOcFyi6fwZ/V8EloiQwd4ec8O4smhJRnxEi7f9J1I7rBDnw18QZpj0DiYhJyfz2OemUB7dpm6mgaWSiYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,44 +140,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 29 Sep 2026 09:18:51 +0100, Lorenzo Stoakes wrote:
-> What David said - hugetlb is in freeze so we're unfortunately not
-> interested in such a big change.
+Understood, and thank you for the feedback.
 
-Understood -- my mistake was misreading the subsystem's direction:
-from earlier list discussions I had concluded that keeping hugetlb's
-reservation semantics intact was the bar, and designed the series
-around that; I see now that the actual position is a broader feature
-freeze.  Thank you both for the straight answer.
+I sincerely apologize for the poor code quality and flawed helper
+design. I will be much more careful with commenting and ensure future
+contributions strictly adhere to kernel guidelines.
 
-> Also you somehow sent the cover letter and the patches separately.
+I will drop this patch.
 
-My apologies for the mess.  My SMTP provider (QQ) rewrites the
-Message-ID header of outgoing mail but leaves In-Reply-To untouched,
-so the patches reference a cover Message-ID that never reached the
-list.
+For David's question regarding reproducers and user-visible issues, in
+case it is helpful if the core team addresses this later,
+here is what is observed from a small test program wrote checking
+/proc/self/smaps on an unpatched kernel:
 
-> ... triggered an AI detector script ...
+$ ./test_mlock
+mlock(p, -1UL)    : ret=0, locked=0  (silent success without actually locking)
+mlock(p + 5, 0)   : ret=0, locked=1  (0-length request falsely locks 4KB page)
+munlock(p + 5, 0) : ret=0, locked=0  (0-length request falsely unlocks 4KB page)
 
-Fair, and thank you for raising it openly.  Full disclosure: I used
-an LLM to help organise and polish the English of the cover letter
-and the per-patch commit messages.  It also reviewed the code, and
-some fixes found during those reviews were applied with its help.
-That said, I understand every line of the final code and can defend
-all of it in as much detail as anyone wants.  Going forward, any
-submission from me will carry the disclosure tag that
-Documentation/process/coding-assistants.html requires.
-
-> ... we expect you to do smaller work before moving on to larger
-> changes ...
-
-Point taken, and it is fair.  I will look for smaller mm work to
-build that track record -- pointers to a good entry point are
-welcome.
-
-Thanks for the detailed reply, and for pointing me in the right
-direction.
-
-Zongkun
-
+Thank you all for your time and the review.
 
