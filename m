@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 447B9CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 06:37:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FE15CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 06:45:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53516B0088; Tue, 29 Sep 2026 02:37:04 -0400 (EDT)
+	id 5E9C66B008A; Tue, 29 Sep 2026 02:45:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D04166B008A; Tue, 29 Sep 2026 02:37:04 -0400 (EDT)
+	id 5C1AE6B008C; Tue, 29 Sep 2026 02:45:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C19846B008C; Tue, 29 Sep 2026 02:37:04 -0400 (EDT)
+	id 4FEFF6B0092; Tue, 29 Sep 2026 02:45:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A45C86B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:37:04 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 398B64028C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:37:04 +0000 (UTC)
-X-FDA: 85265842368.16.499AA9E
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4D35D120006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:37:00 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QFMxmYSo;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 2C8266B008A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:45:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9BA474028C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:45:36 +0000 (UTC)
+X-FDA: 85265863872.01.2E40331
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C77E940005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 06:45:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LlyhGwgu;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790663822;
+	s=arc-20220608; t=1790664334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nHGoHv8Lq74Dy6sjVbuTyE2Azn0gGlPCXjF0DUVDx64=;
-	b=mFke6in27hg9fu7auCY+ZMBV4/skVBnxFELKMqmL92Rz/KCLIcJpAWbtAtpSfQ66P9J+dU
-	cc++JS1oQA7hEify41acJcV41ETrtWXN2UHStze4rWpNgwKwaMe83fhrqVAfLHr0vd2JCZ
-	bZv04PmiLayYQUSa3LnIrmfFptkyluM=
+	bh=2hovsts/EP2rMWjzeBEfd5QEScwbOvRyI+VdMh5XzkE=;
+	b=sqSwglxiDBhMBOcJ/dx5qLJvuvvIvVcUZ8zm7GaDTFCeNKD6Rlt9LbV/DbYguX70oL+767
+	vhmQbSsP7ZaIqprqJfjaxNaSZVNW1ebO3lEVU4F6bSSdgR0+KBz8swo6o4GneafYy8p+cy
+	f1CdzhPRPuuXvlSFeaKqr6glEBm5FIo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QFMxmYSo;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LlyhGwgu;
+	spf=pass (imf11.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790663822;
-	b=2fW1QrVxlJbEpS0duzcqUp+96WWr+raihzzMtFc46M09xajgZxcXchpSnYlVlxBidlgBDw
-	Cw/whau3svw7PRnkKK2Dz8foNOsgkDgMpXWGifbZFjCU3L1Okv1RxBXKxLAQNjmUlAy/7v
-	UaUFh0QGDPoEtkoiEfUfi/MretX2oRU=
+	t=1790664334;
+	b=7yXR4aEtXjVSghNTLKdEBDRhb9sw6g6cbx4gnchVTI7MnDTQopX1FZvAUYK8HBluKVRU8H
+	A3Htj2JMccHl7X7oV2Ocl7u2A/HW8TVqY+Emw0OJKDvVeS1VGnUuFOa/m5oudbYXX4B88Y
+	7vRksd8a6cBxPARMHvjK4BC1iyUQG94=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1790663818; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=nHGoHv8Lq74Dy6sjVbuTyE2Azn0gGlPCXjF0DUVDx64=;
-	b=QFMxmYSogrdLuUHdGzaxMcsH4BLBiLPe8IegtXmOEdmmvdHAUXzhbpmx1yJbrIsS/mZ8tdmNm9zPf1qbR9D4lO1zuWW4Xc5TRkLX0WPSnF3WutxY2+di2PZGzpBDZSk5jGHbbwxEOqRu92Gllb5W/AFI7UsgIOwUys2SkdyrWnI=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R751e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XBsKUCx_1790663816;
-Received: from 30.74.144.142(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBsKUCx_1790663816 cluster:ay36)
+	t=1790664331; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=2hovsts/EP2rMWjzeBEfd5QEScwbOvRyI+VdMh5XzkE=;
+	b=LlyhGwguM3CMKRPgnocv1HdOkuELkVewa+gf6m7XHO++nC6d9utTU4CUg9NR8JP44azh7+wxtf7iprxrkWnLpxhHSzqAYgndrL7Fa6LVm9VEc5RPSFrlHot0e4TzRgJr2DqTK6Ns4hr+GrqQQCXEXT3LROHoaOrX1X699zQ755g=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=21;SR=0;TI=SMTPD_---0XBsIIbV_1790664329;
+Received: from 30.74.144.142(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XBsIIbV_1790664329 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 29 Sep 2026 14:36:57 +0800
-Message-ID: <c324eab6-aaae-47c8-bc89-d2dbf4b0a1ad@linux.alibaba.com>
-Date: Tue, 29 Sep 2026 14:36:55 +0800
+          Tue, 29 Sep 2026 14:45:30 +0800
+Message-ID: <3c14bfb1-1c0c-42c7-b202-7647e71252f5@linux.alibaba.com>
+Date: Tue, 29 Sep 2026 14:45:28 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 2/4] kselftest: mm: replace usage of /proc/self/smaps
- for __check_pmd_huge()
+Subject: Re: [PATCH v8 3/4] kselftest: mm: integrate huge page checks
 To: Yeoreum Yun <yeoreum.yun@arm.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
@@ -77,19 +76,19 @@ To: Yeoreum Yun <yeoreum.yun@arm.com>,
 Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
- <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-3-cba7359d882a@arm.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+In-Reply-To: <20260924-fix_split-v8-3-cba7359d882a@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C77E940005
+X-Stat-Signature: xkgwgyg33ykc1c3e76duwk3u1ge3zzdt
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4D35D120006
-X-Stat-Signature: qc5er1syi793oujwmq7zmfxoxkkd365z
-X-HE-Tag: 1790663820-178327
-X-HE-Meta: U2FsdGVkX1+LuU65nOgz934SNvmK052dW7CvXK2Wju77r6OsawlUfjz/oWyrPz0DZFgcGTeyY+cNkW3KLDh1Vaq56Jqq7D260cHG1V8wtWHglxxDkofZ6vcOo9Oii/yt6IgIYlHvknt1lsT7TbwBrjnXE7wdSi781oo2w+2+/8uuzjkgiVFWlnwlAdLvatH4aa52qf8HwlsgkHtVWCxTgRGUx2AMO6BtH6nNOH+omLImm2N1MDU6gBWouzczh9Z9o9A5+iy5BpJnwipPEYqbOgyTMGzMHm8pDa3xWPvx+biAkG+MwtJe0lD3YiL2H2vABiM5Bh6NEXgJE9npSemqLRvMoBtiN678u0llpL204UGvmUe163Lewb3sEZDSMDKjBaqjbiD3VtuQLwX0yGdTHflpMMwSasswTglOdeV/uU2RtVDE7P96KFI6NZFyiH0Q9p8qCB4UU55395lUO8X0Q+vKB5hcd6bJ2mgZ9SPJouY+jmnGCC5ikLwILt4ha1d9zQ6llMQ2QI4CouzaPcDoKuYb+TReYKgPUrPn8YjovtIvD3stT1WqgJ1x0itsrwzNmyTY28xJd0hRUB/mjhhox4eIKdNEoaFNr9VRLng8/yXoLsVpi05qFp/Nb+ZZk1NKNRnHXo9/efFkfUIw1FnAT/GFfK3AfBpU0zzHRIe8iNa4GHjznGgePfUG3EKq5nPSzakW3F4iyLEz06KBeeskafGfUYaspCTFrsTzoScJNGdcs11H2v4JVpFvn4X7SI55aY+rOwaOIW7+ZDpQVM0JLoTxBlQssj8JPKAQoTGlZ0fY4jyb4iT4q3JOYZxFw46lQAHJDAZsiG01/WDWEEJg6Ycq/khkaNKnxbuJKuulvPXOoqOLAh/ukLRM8Pu4lBTcgz759dgV70lZ3B4DD+kg9W8H4vb9CLVOQVn+smcNUxAu+K4hCzzKyooBZrvN3Z1CBpFRSIKsxeKZD9aYGhG
- tGo5Qp2K
- UGRL2sAaPY6EYgxDOgAqK41movxqyxhtGABvy0wQrloi3jQFYZaRyGhPP/pp7y48EPq6vZGjhcDwIiAuR0TMGG4Bb0jlxk38wWA1l7pepFG+1vPUPCXIuj72ZfqidFN+x7XhvfkjOCoc00GBPLlVo5LyPMhP+CXzh8tvidIGvwFY1vvG+C0PWGz4SqMVEMKMwnoVf/az/FihFQd65dJvzbPdtPVPtEh03OsE66o7C7vmhqSPi5cGclYrjIwSa2g3KexhJ0J7AZxA7DAoaP1SW0mgyNLovEmNUTG+x1Wn6W9cVS7ZD1lZg7GxbD8Dt0+6m68OX4H0/eXPKYW70KYuERPAoRplpUTsi++ZYLrPa7/AJQrzzJ4kPUZVrofLRDqoCQXwsiz3gZFUssJhqpyfFssMPb+XPeYTruZLThjFUQVUubrfxivrsDJEV1MdtW0ZcXWvsOAdHqEIZx9w=
+X-HE-Tag: 1790664333-246043
+X-HE-Meta: U2FsdGVkX1/mqgodKGcnPNqxEbb/Wngq6sMQ4hQ3q1WlA7wUeFU3YSK5mOCLLY56ZpAiC+Sv3douQh6+BjE0Es5pWAXw9oZlDTPrAEz5HFvwvDvesJKK6AaX4voLg7kaCFjDe01x6CAcQFlncfhJhZ2qii5CUhN7FHhJsyC8d7xdcBNOdfNvr93Icg1520lS6rnWPWVp148BWl3fhbDPc7OH0WaveufCdPZxzv4ufNKurhy1TbpaC019UT8bznnGY9mMvalruAm3rXj9BMhOMBXBoErCgI//Gch0+aWMg0eaLkcl1LsHu1bqzA/XQfZpmf3KumOftSi7SSLQnuvniNCiHKhmC5iTCL8jV8bm3TfHY88vWfz5bcipLaywz9GzXRUNIdskr8ULhd9X8Tr7Upr0m5YhYyKdKHtCy72Rabr1hf17pshFxs73w2MCVe/IYxIZv41UkjIEwcgN9bKtAoVWdoIjIxW70c4Cl5InHmeOTtUTqSuyAznA55GPrNIFqRhjExqiza2fSRuWbWCMV8WD+6xfprhrGSCrv2S2DLXCquJjlBMhtTO4ecVz9c8L2N4MpevjewFRHTv51jSNbqY8Yyqvt3avmrFQx81C/HtEpnQgcQnrW2J2fcFheO55opu9fCO5QWy+1a32sINqS/0qPCvFpIxnoWDfvOaIFttoPOskIfDxqxeFVjwLG8f6AhT6MriV68CpD6dHVQpLZJGwG3Ux4OnXioRa8QtqtYUafSj7/AqVOIlsvofqFFdxackOMCSJum69UNVZNdT3DhYEN/OURxYgx+mpgTXk0tpkIFGn2p4jDaBz+zMh5Bppwq6JnGxJucgAcVCttA0ppU+CdFxOyCyf0KdEiJeA4Ddm72zeF6Wa9nCuPdH+RX9ilf7UXMNfoPPB6NaM3zlRng6wiIQbNvIrqMEglKoyr5hTVu5ve8+IamxzQkiBGKB6RfkV7WoYAobkiXPvhQ7
+ mwpEJwZy
+ QUs7XDBTcCHWG56vyckMZSeDH3n1O6Ktm9Y/S7N8GeLxMvVyDf5YyhkeD5w+d9eE8fG6HpPE59ciGf58PURRkDMV9o8/3QUi8RTgQiTyqhEKloBt9Z994BKgXs6E6k69srnYpgGt6acvBc/aUPHtYpH8fNBiP2rdGgk3WW24Hb1pEhAN0VxPQKzEKaL50fdqn0gRpC5p5NhKL5wuMcvAzdG/hnyfD3aMn5P6E/yDj5wwXXJzRHjPg3Fagmfto/E+NJ0GRaZC8pcJdTj/tR3U9Gry4lrsdgwyzt+5Wn4Slba23iaGzxyIVsCflswG09AK7KtF/khIOy3idHJxIB3aJXuDiPFn1Im+MVZvAlr7L2pTwpYCEi128lQk/B25eIWarVOEKgeHeRMm2hftD8AVWi5YctFFyhzxV0wSjHllgsVzTYJa4LxuuNJDwaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,32 +99,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 9/25/26 3:11 AM, Yeoreum Yun wrote:
-> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
-> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
-> made by memalign().
+> check_large_folios() only checks for large folios without distinguishing
+> between anonymous and file-backed huge pages.
 > 
-> The underlying VMA may start at a different address from the aligned
-> address returned by memalign(). Furthermore, a subsequent
-> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
-> already set.
+> To add huge page type checking, integrate the huge page checks into
+> __check_huge():
 > 
-> This causes split_huge_page_test to fail because the check_pmd_huge()
-> helpers incorrectly require the address returned by memalign() to
-> match the VMA start address reported in /proc/self/smaps.
+>    1. If hpage_size == pmd_pagesize, check PAGE_IS_HUGE instead of using
+>       check_large_folios(), since only the mapping type matters. This
+>       identifies PMD-mapped huge pages.
 > 
-> Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
-> /proc/kpageflags to detect huge-page mappings checking PAGE_IS_HUGE
-> and PAGE_IS_FILE accroding to type of huge page.
+>    2. Otherwise, use check_large_folios() to detect large folios. This
+>       covers mTHP cases.
 > 
-> Since shmem pages are also file-backed, simply check whether the page
-> is file-backed.
+>    3. Check the folio flags according to the huge page type.
 > 
-> Fixes: 642bc52aed9 ("selftests: vm: bring common functions to a new file")
 > Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Suggested-by: Zi Yan <ziy@nvidia.com>
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
 
-With comments from Sarthak addressed,
+LGTM, with nits from Sarthak addressed,
 Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
