@@ -4,129 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63D5BCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 15:18:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD93C9832A
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 15:22:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E7E26B008C; Tue, 29 Sep 2026 11:18:04 -0400 (EDT)
+	id D78C76B0093; Tue, 29 Sep 2026 11:22:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 299736B0092; Tue, 29 Sep 2026 11:18:04 -0400 (EDT)
+	id D29AD6B0095; Tue, 29 Sep 2026 11:22:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 188EB6B0093; Tue, 29 Sep 2026 11:18:04 -0400 (EDT)
+	id C185B6B0096; Tue, 29 Sep 2026 11:22:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E12CF6B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:18:03 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A111A0530
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 15:18:02 +0000 (UTC)
-X-FDA: 85267155204.23.2F4A21B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5AE6140006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 15:18:00 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FhmKD1uZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OPus6TxJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="kxes/HB8";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="rjsr+u//";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf27.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790695080;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 902196B0093
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:22:44 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A58C1C32C6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 15:22:44 +0000 (UTC)
+X-FDA: 85267167048.25.B4AF1D0
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013040.outbound.protection.outlook.com [40.107.201.40])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1402C1C0007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 15:22:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gWa4Yq+4;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790695361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dqE/tOpPrIzgQZLhm+Z18s/mfusUAgnOtaHMUgYsSYI=;
-	b=iTrA+EzHHieuKJAAD4GRS4CcseVFM7+4DW3Z24+r6QI1C9TVv69s5nYyDvhMXcZgbUz2LA
-	F7eraNQXxw8epc5+83thFDC3ouAEOkFMqzUAXr992/IQsZuswnBxPqKGgxm3Nnv5jqnS0I
-	UH49Gap04smAkU68SPeOCY/QjsAsMUU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FhmKD1uZ;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OPus6TxJ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="kxes/HB8";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="rjsr+u//";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf27.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790695080;
-	b=yRp0eXEfEauB1zZNnO6mMCxXVseuT1CNq6xW+7aC2Nu3KSxqhgH0axdFRR/9iWFPfGvUtj
-	490sBWsD+2FxOuB99LrJbIXlaT2Rtbn0GQR5TJDZB7mlHum2/12JmI36xPdaqEe35tbnzV
-	RYFjXt3z39og5/Y+ZJXulCqAB1vmFXg=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B377C1F456;
-	Tue, 29 Sep 2026 15:17:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790695074; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dqE/tOpPrIzgQZLhm+Z18s/mfusUAgnOtaHMUgYsSYI=;
-	b=FhmKD1uZ+D1tKU0bH1FjxjvYxpijB0xvxeMTJEQPhxHMPCLL8KP/ie37FxVToB2WoFg7wZ
-	/XNDaKmgwRre+HChcMbXS+RqmxESJNlDvLDq1Lbax5VkPQWWEOomwn4mS27Oauq6xYGAPX
-	fEn6pSeszUs/2VvKL3j5+IE7Np7gYXk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790695074;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dqE/tOpPrIzgQZLhm+Z18s/mfusUAgnOtaHMUgYsSYI=;
-	b=OPus6TxJiV1lnxy+HcUOdE3RaGJOkzLa4lCz7H+KB5MPJhXNqq6ku+YF8oXC0PuqnPkwuZ
-	bcQzVDvQHKT4GIDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1790695070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dqE/tOpPrIzgQZLhm+Z18s/mfusUAgnOtaHMUgYsSYI=;
-	b=kxes/HB886QxNRlbafjLvkinCh/oM+qExAPu2izP/lplup8KjYOC3+shmurmNZ2Goz2we7
-	9oJuKtQipIUmFPMJ52LdfdNXtaw0PaTVqu/K3eN9q0JgHPB9HVup5OvuepiheKDaGCN7+n
-	BvZqKXQqlRWk7QwbKmmR9MZ3rc9Ovp4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1790695070;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dqE/tOpPrIzgQZLhm+Z18s/mfusUAgnOtaHMUgYsSYI=;
-	b=rjsr+u//fdqi5GbZtrGiYWKNlkkmAmD2w/rjyRRJMSf/HKbh45tR23pUY5zna8YPLovxL0
-	MDYAsrlwjrBy+IDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 45047136E4;
-	Tue, 29 Sep 2026 15:17:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9oqPA57Wu2qXFQAAD6G6ig
-	(envelope-from <krisman@suse.de>); Tue, 29 Sep 2026 15:17:50 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-Cc: amir73il@gmail.com, brauner@kernel.org, danielzgtg.opensource@gmail.com,
- hughd@google.com, jack@suse.cz, linux-ext4@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-unionfs@vger.kernel.org, miklos@szeredi.hu, tytso@mit.edu
-Subject: Re: [PATCH 1/4] shmem: Report casefold setting in mount options
-In-Reply-To: <20260929140011.211148-1-med08elkadiri@gmail.com>
-Organization: SUSE
-References: <20260928213155.2612039-1-krisman@suse.de>
- <20260928213155.2612039-2-krisman@suse.de>
- <20260929140011.211148-1-med08elkadiri@gmail.com>
-Date: Tue, 29 Sep 2026 11:17:48 -0400
-Message-ID: <87pkxwxf1f.fsf@mailhost.krisman.be>
+	bh=6TINRGfvZyvFmmuFms0s2dyeatvDt4vnhKf9+D+fWVU=;
+	b=yPzmEa1cpMS2gX2HKw6qFDWsSmdcnaLi0M4fFp/CmmTtoNMVvWv9lPKu6qOsKtJbt9mrQE
+	phxnAEWbPNBxacGIHeI4oDnRvnQlu0SHt3EGiH+yYSSmv8FsctEhAAJwdTHumfqFc7zm0C
+	oFcMneL7dQqBYM1+5h3hE6gRalLti7g=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=gWa4Yq+4;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.40 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790695361;
+	b=4rbiZT9pbnmwnKS2qrEmQamoH088EY/W2BXUvnmUVp6vLz94aamkMBuZ/d3vmJtpILyUME
+	dzIRb/p+Z5QLKg+6gyzwhvb761Jnm7qqU8w1k5AtFQI+oE24DfdwT8zhRUu8kt2Ta5FXBE
+	ZhiPwwF2cEmN62idpH3bTRhGpXJdg+o=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vCyM3+Jf249x8+9alMpK9mlKjIsR93bKCMcZkVzeQabGLS/hsdNlXt/1cG8ee4n16SO/tEj5W2OZgPF+j9LWJLtJG/99C56jnDu5eWPcLjij4ZvljG9yFQhMW5+ss4csZlwFHA/UKtp/jQ482IKUOFINYLtNZFPNNpc2CoD17pE9cSm8VNxrdmScV2IOZ4CmfDyBT7z1vyp3LHEFiixfabFuKe5c7LeKPbevLs9uiHU/KaKCIywP3CuNtx3d7WPDrEyMBvIUAS1A7B04wWAIQdf1YfuY3+J9QdyCfo3CbH4sigG1cJybfQCT+rf1NT0YJKTAkBNoEyCNrUEY7MI+Aw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6TINRGfvZyvFmmuFms0s2dyeatvDt4vnhKf9+D+fWVU=;
+ b=PwqciTUMU3o8w2ki0gJmQTAZd+jf4fUbc8I/yFFribtxHScfFRFXLklOTy918EDesnMfP9cpwS17pd+HNLrrLGXWcbKhkx/gmY/tZNyKHWpb6YLd9xU5dQYszY1D5Zo0w9ttsAGQaxjP1O2mAfULXWHw7lfou3z2FgCSezspnn6Qwl47sAi6E0NFKv9RFjydvs5HDsA90/4JGg+RqzOtli4Q9bfAcUABj3eE7BF17J3/8xUc0JYnPlCGipe3hUAOsJUYWwr6/vKNaOq3eaRUxmeXk7ZHcP3otFb5iviOwhcyj6cG7wz/WH3QEL8ahdGEZGIf8Fl3/pfAOdYPlnv4ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6TINRGfvZyvFmmuFms0s2dyeatvDt4vnhKf9+D+fWVU=;
+ b=gWa4Yq+4UuAt1szt0jv0tGIghFQzyNd3HZbfEGromCZr5ZKBOy2/UB4xSoygtks7I88Z7fyDRE8NNcCbqR3+ybhZmnXFtF6roTTcC+Eei+rT99XPwvGoYhRIjBla38raSj7AUMU5iUa0l/8/t5WE2m+8S4fN+4HhfL6Y8c11RU10dCYhGsRbqXMhlHJD1HN0Fb8UMXMk4k1Ht0/SdgONkF6aQahY3oouHlYsbK11sThkY1vixWcuYqrVU0lYUu9kkWj3bPql5dfI2d2RE7s/WQ+yu1NP+VKDXKbiPI4HIx/WYLLpK+ZEUQ4QOZ13/ooEgSbp6ER599KfyltSQNj1Uw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by IA1PR12MB6113.namprd12.prod.outlook.com (2603:10b6:208:3eb::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.22; Tue, 29 Sep
+ 2026 15:20:34 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
+ 15:20:34 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/4] kselftest: mm: replace usage of /proc/self/smaps
+ for __check_pmd_huge()
+Date: Tue, 29 Sep 2026 11:20:31 -0400
+X-Mailer: MailMate (3.0r7032)
+Message-ID: <45251B39-898B-4628-9EDF-4346D91399F2@nvidia.com>
+In-Reply-To: <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+References: <20260924-fix_split-v8-0-cba7359d882a@arm.com>
+ <20260924-fix_split-v8-2-cba7359d882a@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-MS-Reactions: disallow
+X-ClientProxiedBy: CH0PR04CA0108.namprd04.prod.outlook.com
+ (2603:10b6:610:75::23) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Action: no action
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|IA1PR12MB6113:EE_
+X-MS-Office365-Filtering-Correlation-Id: 739d2a42-7a2a-4320-ed45-08df1e3d353f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|23010399003|7416014|1800799024|6133799003|10067099003|56012099006|11063799006|4143699003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	j8mIbJ2yJu0QobijChGXuLDi7AIPISys+yXwDb47KV0H8LIxRElIj4tSjaToINTEWPyUnxmTEm+16D26ItJRh6vNeMAJNLp3upYZ+NZTAx11maOCBD+gzde3OMORuYNufs4ZeT9vVRON8k2xESiHFwUK+sxtgkmHGBDo6pz9OZbJERRGx+okrMdR0AQKYE4TnSTrfxuCc6jIGVM0R1CFtuUc45L1YDW4ytQwz3pjBmoO6bz3RKrJmmmk9oYiMm7IqgnPk0PfQhwdBdTq2oepOXXKOLdiBntGVM4wo4eqqvqwGaFmW3pla8uIMK6bBcKI70ZfeC+u/3qf6jEa+AWBn+SbkxWYm/he/XFi4O5ldJ47rIGzQcDgcDFaJoPZHzelUSrjmtFqXX1SzLMHcJl3l/MsxPUudZ7itMcsL9AzFLlW4fSCYs6tOJI85Md76Ev/GaDs8KVEWiAXEAztGSlcPRcmbBLQOHFHh3xVwYMVhW4miKyce2W18rlQ4DGXWrrkqhxJAVIe7mi553cadH9JvKhsWYyBove+VDTEByUcv2zE01PeMhC7J4JKID9XtrIIyjMao1BnY9FeJxEI9Lv7MziKg21LftVT47AvrQn7kf3vvIpa3A+z5be1Xd2N1l3u98oFiKOBKNSaZGHf8KjgzPu6N33JQ4FMcQzWxM63eLU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(23010399003)(7416014)(1800799024)(6133799003)(10067099003)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?K3EwVUtKQ2JtZGtpTVE3Mlora0plZzFsTGNaS2ppTm8zQWpKZ3doaElrNGFa?=
+ =?utf-8?B?bWI0ZmxNUTlFQnhXVW41T0lIM1BBWFNOUHNyZFYyZ1haNUwrSDdKUTkrazAx?=
+ =?utf-8?B?dkpHV0lwU0NGRFlBTzZPNE9pRmROQWxRck5JbVpESmFIcFZUYkM4K0xuL0hp?=
+ =?utf-8?B?NDFKUXhkeEJVcGRVQ0tmWTc3cGJ2ODZDc1l6czIzUjVTLzRiNWd3SzUxOExL?=
+ =?utf-8?B?MHROQVhYdGZPbWVQMjFFcTFvVm1CWjJHTW1EaDFIclZuN21GeDdudUJYK2U2?=
+ =?utf-8?B?cC80ZHNCTlRPMko4N1QvTFJJRnl0N0ZNZTMwSjVwRWdvOFlVQ1JhbXFIcGEw?=
+ =?utf-8?B?N250K2RhWTBaSmtpNGNmb211Rkg1UFNKaE10WXpjVUh6ZU9iMWlVSWtyZTRw?=
+ =?utf-8?B?L2FNajJJcGs3QWxQY3IwaCtkTG01OVV3cGo0TExJSGoyOVJjSTErOVdDVVRr?=
+ =?utf-8?B?ZVRIS3pWNGpNc3JpUWxQM1pUdFdnZHQ5UDUzZVJ0VTd0VSthU2lxb1FpYUZR?=
+ =?utf-8?B?WjA4bnIrRkt1akpnaHRReU5jM08rQk9YbkRwaDJ3bk53MDd1ZXBDb1dmOEtv?=
+ =?utf-8?B?OU80VC9GbUZ2dmtnVi9LSDhlRUp1ODUydVJnU3dEcEhtVjlwQnlSTDVBcWhX?=
+ =?utf-8?B?Z05ROTFWNEhtRWhzMkpib0xlMFZleGJjMXlLeGpJM3hiRjBOcUYvcURlK1h1?=
+ =?utf-8?B?T0IydTJ0YmZDU21QaHFVWGFrdXc0ZkZGL2pVbkU4cWRyZG5RQm5KaTNTc3p4?=
+ =?utf-8?B?VTJBYXQrUUd0M0lxRllCekxoaUlyTEtOS1dqYXVOeE1qdldGTDQ2Z1VQU05S?=
+ =?utf-8?B?dUcwUmo4OXJ4QllRWWpxR3ZmamEzYkZ3SCtraEVGK3NYOWdMR2hWT0lTaU5a?=
+ =?utf-8?B?RUhZc2dCTWlLTHpVbUxKNXVOa05lUGQ2akF0S0l2Q1czaEl1b1l5MndpOVds?=
+ =?utf-8?B?V3pFWDBURU90VjE2bFJzZzBrdzRRUEFCNXpudHErRG1CSDZyMHBQNlVMV2Rm?=
+ =?utf-8?B?RENleVN1bHdHd01CcDlzYmJTcDlMVFVqSXFiQXMrajd6VjY3bXZwZVdGeGgx?=
+ =?utf-8?B?UG9OQWFjL0FIbUdMNkJKaHpaRi9QY21LbTduZlpHRExaK28wMGhnNm0rVXpP?=
+ =?utf-8?B?Y2lsZzgyTUxwZ3VyaUxwZEtMbGxNOWsxdVNDWDRDcmVCU2VacU03VXhrbGl2?=
+ =?utf-8?B?NGxwTEVwQlR4MnI4cTJ4VCtkVjh0aHg1dmg5YnVtQU9vZzFmRDljV3hnd3E5?=
+ =?utf-8?B?aTFibC8vOTQwRW9HczQyajBVRlpmbFlUMlRWaHh6dkFWbGVEOEYxUVNGTWtD?=
+ =?utf-8?B?Vk43Y1laNzAyWXdqb05rTXltWWFyTmd6cFh3cFp5YmZCYms0V0tPK2dSL2xz?=
+ =?utf-8?B?WHRzQlJoVVUwU0hKbGU4ZUJDWnVDMVJvY1NGU0t0bmJybTFwQU1iMWF5ZWlM?=
+ =?utf-8?B?RlJjWThaL05JbG9VNzdMSEhQNkphWHBnUmFQYzVvMEtKLyt5dVJIUk03R2Nz?=
+ =?utf-8?B?d0c3MDRPemNsZTk0dS9JQitHZFlZM2I1R3A5OVRROVd3UEN2RXd5b2FwYzdz?=
+ =?utf-8?B?L1dCYjNCRks3V20yTU9nZHYwY0p2OUd5R000SENZRWcrS0NQcTI4WlYyM295?=
+ =?utf-8?B?ODVUQnZCOStrd1JwQ3hFdnBSVDRWdmJFWnFkZmtFZ0ZKWFAvWlBZOUpLNnkz?=
+ =?utf-8?B?MkRnTHF2Zk81OExocGJJKzZDL3hGVVpoQ21qcGVPUnhobFlnSXdtRXBJSXk4?=
+ =?utf-8?B?NjRMdDh1WGdMbzRtc2phcm01bGhYc3psdFZONWVKaUFkZTFWejJpWjNzbWts?=
+ =?utf-8?B?N2VRRnY5QnJBL3JVV1FKYjJwcUE5L0ZPU2lub0d3K29kaDZaMmVmV09WQTlQ?=
+ =?utf-8?B?TWthZzBRS1c1M0I5UkRyL3kyeldoSUl0SmxPdllYUCtJM2pnWENpQWNuUmtY?=
+ =?utf-8?B?eFBaekhqVVhjZ3ZZWGhqdnI1L1Nnb00wUmx6YldCandEM2JKdkdqdFZHS1dO?=
+ =?utf-8?B?akJsaklXSUxlaWY3bkFpTmVmNHhDT1hwRU9kaUFBcXZFLzR4Zit3ZTg1bmFQ?=
+ =?utf-8?B?UkkycUtQVEJFQ3Q0MldRT1RKVm5BQzBGSFVjZzI5RXJqalIvMVczYlRZK2Fm?=
+ =?utf-8?B?MmdmUkVmajc2NU8yanEzTVlSYllDY2V4bTM4ODYwUHpRVyt0SzBhUWR4RFJk?=
+ =?utf-8?B?SXRiNThQbXBLcGc4MGRrVHBENFhiU0xUblBIRms2WDdoaFBmY1ZZTVdQUC9w?=
+ =?utf-8?B?OTAzK3lSdDdkdmYvQm1keDJxblU0OHdkUjFsN0ppUlQ5ckJKem9Mb3JkZmV2?=
+ =?utf-8?Q?ojGap6rC+FuAnj4Btt?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 739d2a42-7a2a-4320-ed45-08df1e3d353f
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:20:34.6953
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Rd5YdIwlBXjdy9K/Hk8vBpE3fSxUnyorL3Z1aCnCFyds47vnyL1kESKZNdPDlMq2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6113
+X-Rspamd-Queue-Id: 1402C1C0007
 X-Rspam-User: 
-X-Stat-Signature: tb6gckijbabxjzzgz5ue5ukfismwdnoz
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5AE6140006
-X-HE-Tag: 1790695080-632768
-X-HE-Meta: U2FsdGVkX194pXrv/CCl8iWMcgkoMNuJ/vtTorG89WlDGg+QHbc7jlVhImFxfsWRiZ43G5aVuRmA1DqJemrYDB8aDvhXCr94E8Xp1bjYni89I2a5YudvLEMGKL/5KX6ePdyqU9TlbaeYfa610jXeOWoqoEg/GmBFeelLCYpGILAO1kUxHVvXSHQHvheVn6tpZT8b6tX3B23qaguJGrszn5Ma+BvCZ+EVsE+mLIlt/uPe3Wvo7z/mza5f+0jDivecB+/t9tPSj3zKLrcchTPM0NM/3LZIxPJU1sKVRjMBP23fxXLyIy1ow6wcIclWxajUyxKVgQhv9WU9HGTOrAwtn+8MH02KUXdnxglodlTlxdYt75dvDLpZX3moJz7/p2fVrm5sgjGFj0E3KSUR15UtIqta3zBEj801oQpvw3q3RBaaxLxqmZn0SPgX0ZX/PPb1B8g5jX+whvtRdkNKiu+2Un188+Twy8B2vdsc9DutYWWuUvUbgYmRULDoSm/qOzrrFYVqala3EZSHaiQ69CbtmMOWrmq9bNr6gQ2L1xgs2uVJn/lqn/uZlJMFwKZhEoeX8WWDooZWqI7hl3fYIXHrbkMvF4UHRvzfNgwpmuG8tfjFYVG812diET/O04iaxMXKfkADkKw6HfmLN+LrrZlWQvjQew1dQ81A7To+OjMi0LocGeLT9ilmWubLGlyEulEphp2mlr4jmZTT1CvN/4cOxcU/+M8tnDEBm70T7230+XoFh/Y45rciqNAjLoVboZD92eiPLHtmwnKSn1ptVU6OvQHq7bYsVAKYM/dk2pW153qrfBnjCBiQEw5OkGJrf+iH/xGvPAgWafrJ8ri/Zu88Ne2xSnMhwunR5wpy7Spq0rHjiRXm0hq7b3BaiZlGKg/VgS1JNiPmKaNCxzqhLfgx160WENmU72j8d+Gi00G2X0rqd5wDC1h77ykgej+g+c6hb6Rpi76esJ1x2HKbGEf
- +vRgtT3J
- jvvCY7Wg1Ig7G+BeXRvt7RKPzMozPcEqQM1hLzsjf/3uTpg57uQuSZ3iyQhY0hDYIAaRS5JKGRnQWMucGj09Jb6wvutZ2SBWpNIIGYAectyQVIdfs8x+42Ycx9oHDBnUD9NMXcqaFy1RlrMnAVogoDUW3rVe5dk5b9oADfv1DDcESFxWh20kMLY6KKsRohfLKBqewGNmOlR1OC6xud+gneVEWRwT+u4WjB1dnbujpBY0qVEg8RG3Tv8ZA09zsjdVjYfwx+In9GYpg86cXfw69am/ZErcoUVkJO7HKdUV/64Bw8r2uA9wjBZ/yqvtOc+V41RZ56FtDH6nyvt8Ty9zLbDmKX1OlmU9oh2s3kZIPX9MnMMHmY5Mjo2XC6xwZdcf3dAp1UqtLYKNtpTuuRESMSCfk2FrFvUTEIVo1WSrxpms0s8f2XWkJz7GWXw==
+X-Rspamd-Server: rspam07
+X-Stat-Signature: wbqwkgzpoz1gfgnaxs7muurr6csws5tx
+X-HE-Tag: 1790695360-89098
+X-HE-Meta: U2FsdGVkX19a6bNKC+kJo1RKSh7JqO5vB+6LKodw6hHgWSG3xgciBtxUHeZBspmgGk4/3o/AupaI6hjxUxxsLYCdCgtLIDInkNEs/Xntm7clnQDD+Lr6v/PLLCJ19VVSfUGVU6keDXNYMKQq/CqJhw9JtvYG8k6jw4b7cZlutM8IK0XsmDnP/W9Cd7sZLmBlJjQjo0NcVoo96APIQlAjbhrbTrhTOIvQ9JR01nP+g5LdFYJTdU/epbuxXDOW9Z/hJU5N6CyRTN+3393sLYltRRu1rmIUpIYOhppKQfWgNly/eXUZanI2xD9QsriOXmzXKzSiD44snfZWj0/fWiJNg2N+y9l8rH254S38G4uZWDabIPD22jmfpaT3Wvhj+bXYSsUZ3Y7Y4n3Vi4WpYi99vPJO6x41oSusTXe630F1rXtoPTFl3S0RbMUGn1HFpcYMKHr2/zpAkNxRdyN03nCRMnyG8/qFVoWlINfO0f0jRdEpntRbzvNIROJv7XuMWUrh2jVw+2QUl1UGITOOHLLdfIk9EN2xHH+y7Grfy83t4VpKrSiZu0uXbi8/qRqx+dEhAFRGhUlN0kJdSczc4jxgXKkBnHTEd6JQRKzLkXeyYIGMQ+L9/GF955C5ln+MuxXBDVAt9G+KF2W4cuu2kMBL/j+KxQjEe06I3VKFeBYlgGYaKQX77O5OQPynvz5wHHddin2J58xffGU81tJ/FSjSCdAzjhp+bfEiSMLRYbdhoCVVjKhCtqtaOooKRwIk52YxQOp3yfRqJF+yAYKsu5zBpNRnW/D6rDKTeTBTRvv3k+n4OPj2tWanwUmvpZw3ykQjqUfNuUg7zzCyToxOHqsJX7L8F6MNZUJMpQwnOIkPyK8IeWP/YeNvyX+s+xuZ2SJMxQZlwlwPgAVCx4ouroKJZvJPoh7Yjed7jk7iHCtfVODtZ0+btoxjhHXmAgsF4bKNkYrfbm2Wu1iF8lKvMkJ
+ Ra9ABc2d
+ Gjs42GxcCKif/upI4y/4iaxztwr39AyzWMeszBDDmfFj3VAeAavcOdEekck6u82edrzdEMbRxSsB/Y7HWkRkIOT8J7f48DlpiuRAOxR4JjTLmPamFjOroGnhot3gyAJJliZU8TpOvvxmNps5ZOK1GIiLLmHFJRJJsKQqmp3fWQSLxZ1KxN5HRlK8DBXWqr6UlA8Lkc0RJeGyU0GxOqp2HRlx0KxJGkUX8kPdEJrmS6dlNc2H0lcsvt+KFzY1H92STQ8gm9yLXAQ7MUzTDLN+2t1kOOYGj62uD1i8Uuj3EWnqlRfjnZ3ZVbg2hh6CmZq2Xe2QmB3nWenlcIhDwDO2te4eJgfBUzEg2sKSd0D1kTKMNc8hsF4faW0qnF8azMmTEn1BwnDfP17ca+fpbdtUi/bamV80BAu38zUNY+krLs/EOW7Dwj3abb3F8ppu7xQei5iIV9h+04OK9ttU9ba6t2njWcIxD7dZjpdhxRtZPek0MJVZ2VHzNiqgi34wkpZIvnk70u5M9dfe5Jcy9q50GG1wMSmyA+UighikcgNsbMU2fsyM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,54 +181,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mohammed EL Kadiri <med08elkadiri@gmail.com> writes:
+On 24 Sep 2026, at 15:11, Yeoreum Yun wrote:
 
-> On Mon, Sep 28, 2026 at 05:31:52PM -0400, Gabriel Krisman Bertazi wrote:
->> For shmem, casefolding is a mount option.  Report the current encoding
->> and casefolding flags in /proc/mounts
+> Since glibc commit 321e1fc73f (“malloc: Enable 2MB THP by default on AArch64”),
+> glibc may call madvise(MADV_HUGEPAGE) for sufficiently large allocations
+> made by memalign().
 >
-> This works for me, on 90ddfbd19636 (akpm/mm-unstable), x86_64,
-> CONFIG_UNICODE=y:
+> The underlying VMA may start at a different address from the aligned
+> address returned by memalign(). Furthermore, a subsequent
+> madvise(MADV_HUGEPAGE) call does not split the VMA because the flag is
+> already set.
 >
->   # mount -t tmpfs -o casefold tmpfs /t
->   # grep /t /proc/mounts
->   tmpfs /t tmpfs rw,relatime,casefold=utf8-12.1.0 0 0
+> This causes split_huge_page_test to fail because the check_pmd_huge()
+> helpers incorrectly require the address returned by memalign() to
+> match the VMA start address reported in /proc/self/smaps.
 >
-> Tested-by: Mohammed EL Kadiri <med08elkadiri@gmail.com>
-
-Thanks!
-
+> Instead of relying on /proc/self/smaps, use /proc/self/pagemap and
+> /proc/kpageflags to detect huge-page mappings checking PAGE_IS_HUGE
+> and PAGE_IS_FILE accroding to type of huge page.
 >
-> Heads-up on one side effect, since mount(8) builds its remount options
-> from /proc/mounts: once casefold= is listed there, it gets passed back on
-> every remount.
+> Since shmem pages are also file-backed, simply check whether the page
+> is file-backed.
 >
->   # mount -t tmpfs -o casefold tmpfs /t
->   [  527.593309] tmpfs: Using encoding : utf8-12.1.0
->   # mount -o remount,size=64M /t
->   [  527.595716] tmpfs: Using encoding : utf8-12.1.0
-
-This is desired behavior, IMO.  You should not lose casefold during a
-remount, at risk of botching your data/splitting unrelated files. Also
-this is the reason why I didn't expose it directly in /proc/mounts for
-ovl, it would be easier but break the remount.
-
-> That second line is shmem_parse_opt_casefold() running on a remount that
-> only asked to change size.  It calls utf8_load() each time, and nothing
-> frees the result - shmem_reconfigure() doesn't look at ctx->encoding and
-> shmem_free_fc() doesn't unload it.  50000 such remounts grew kmalloc-32 by
-> ~50000 objects; a tmpfs without casefold stays flat.
+> Fixes: 642bc52aed9 ("selftests: vm: bring common functions to a new file")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> ---
+>  tools/testing/selftests/mm/vm_util.c | 78 ++++++++++++++++++++++--------------
+>  1 file changed, 49 insertions(+), 29 deletions(-)
 >
-> The leak predates this patch - you can trigger it by passing casefold= on
-> a remount by hand - so I sent the fix as a separate patch:
->
-> https://lore.kernel.org/all/ba38f80f629fd093c77f3a49fdab7b71ee7bbc5f.1790687276.git.med08elkadiri@gmail.com/
+LGTM.
 
-Thanks for reporting and fixing this.  feel free to cc me on further
-unicode stuff.  Will review it right now.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-Thanks,
 
--- 
-Gabriel Krisman Bertazi
+Best Regards,
+Yan, Zi
 
