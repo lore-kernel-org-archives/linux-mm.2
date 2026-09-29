@@ -4,101 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55A21CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 11:55:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC59CCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 12:05:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E645F6B0088; Tue, 29 Sep 2026 07:54:59 -0400 (EDT)
+	id D64946B0088; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13326B008A; Tue, 29 Sep 2026 07:54:59 -0400 (EDT)
+	id D14FA6B008A; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDB766B008C; Tue, 29 Sep 2026 07:54:59 -0400 (EDT)
+	id C2AA36B008C; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A03006B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:54:59 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 134CBA040A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:54:59 +0000 (UTC)
-X-FDA: 85266643518.30.4A73712
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 279D9180003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:54:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M10x7lp6;
-	spf=pass (imf16.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 99F966B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:05:38 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B08E51204D3
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:05:37 +0000 (UTC)
+X-FDA: 85266670314.24.9C74D24
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BB644A0005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 12:05:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=g0qkdzdz;
+	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790682897;
+	s=arc-20220608; t=1790683536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S0aLT5GhtdTKzc7SEqO4ZKrTggwJ/hbn3y4IvvHxkXI=;
-	b=Trg8es1ql/g1nknT3k9R1SKPfw3mfJP2kPoMnTfm077aUyx0VwEqTJFpH+kFWvb9BDYTbq
-	PYp8NW7jJL3sAsnPpr5w87T+BKHpTYnq/UzNMiciOiWoZhjFYIfF0F0YkwKtafq4fw6T97
-	Lut/fH+XQpOiJFImCg/NKjSSVpmHHHs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790682897;
-	b=nirJB4DLyzCt0TJWb2FiiSb7MtZpuplQgcda2PNZfVuWSq67cNy8vYs2zRA8jlyC/2va7/
-	ga1s6PKlYUauaao7ZMhaAMEpg/sF5feWWCoYbob4pgl9pvTFLi/L5Jh1K+JdmU+op/BTJ2
-	c4l5OIpozpms0jzu7Lr+KJq60pCqvOo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=IeJBDf1b417jy+i11l2wZ8S+9jPVVEPLf0gsDfp/frs=;
+	b=VA6fkWQ8+To7D3DblraaUtiYd3Gfr4tXeyUY/XsaSwZu+wsLkgrQT9h6Emyljtgi2vfCLZ
+	iqrOOUROl7wOrsJyJPBxEHNyPg1Qg+5JcfAY7NSogIWXvstgDowUm/6HQUsXdSZNGO6jMd
+	XPPcnUfqZlfO+uVJHbaAZKRYyQXJ9j4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M10x7lp6;
-	spf=pass (imf16.hostedemail.com: domain of rafael@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rafael@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BC3344780
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:54:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DED1F0089E
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:54:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790682896;
-	bh=S0aLT5GhtdTKzc7SEqO4ZKrTggwJ/hbn3y4IvvHxkXI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=M10x7lp6AAYxWfozwpiVSaz6eD3KM81OR+04WgSLlTBECqAaypzptuVVr8yosWEDS
-	 ysNwVNr7mvaJ4uRDRfYhP2nJpm+FR8kRBGI5aNKmMyixKmNf2Zx6v2ubfui7W5ggQT
-	 0W/7fSnHaTOMKR4aeJOXCuPLtP8nes9Hd+/+OK2D/PVMnaBRjwNVio8/L7h2yt659S
-	 +i3oBvdUaAHrRJd6mWR4UNMJj6lqokowPKaOdpfN3C68PiDXt096AudJXDMbogb/Fj
-	 IJ0A2+h6fAtUeFHSPCehtQOykZQeTdD+mnX5gGStYdT0X1efVJV7D5iHkn0ONeOKpt
-	 CBPnhLvi3Jubg==
-Received: by mail-lr2-f34.google.com with SMTP id 38308e7fff4ca-3a6502af787so30203691fa.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:54:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBy1pVXqbAHZ2t01ra/GgxpvtvBbrkuQGnpDl1g3Sp+nSWB4Yfz1y3Wx0FQNnFvxD1Sni2d4+lpP4w==@kvack.org
-X-Gm-Message-State: AFq9FYJWNYhx8BEhPAFO5QYZalpsvCJsAh6z1Vwradmv38SkzDwRIMQO
-	NUoKZh/edmXHiy8nNRyiqcDIRZKkN8uTB3K8OhsbyFlgjuGsBvlSHR6DcnTJkeeIskICh4kSYr6
-	eLuebr39sSp3nnDPOL3Yq8id8SvnTJm4=
-X-Received: by 2002:a05:6512:3401:b0:5b6:184c:7d99 with SMTP id
- 2adb3069b0e04-5b8df093114mr5498654e87.34.1790682894230; Tue, 29 Sep 2026
- 04:54:54 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=g0qkdzdz;
+	spf=pass (imf15.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790683536;
+	b=DYdcRPfa6jVsWRCzCf6AG2d+PTQOHhc5FVAsPpPJaRaCcwee3X5ZkNmOLGjzqRa/qLUtZl
+	1bgavHlRaRsUb9DpxKWwSwK5ZP9Da4b1mtJQHbhG530xeKw5QPDSdlwJDO+ooqV3doWIQx
+	SxkS5w83P1EII2Ccjk0adiTCt5RpOPw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17EEE1476;
+	Tue, 29 Sep 2026 05:05:31 -0700 (PDT)
+Received: from localhost (a085714.arm.com [10.164.19.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D15D63F86F;
+	Tue, 29 Sep 2026 05:05:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1790683534; bh=vUuie+qDqthHWW92rj4hGf4q1VZUQf2gLO+ErZoFFLg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=g0qkdzdzbsZeKr8noK/9BvgTQud9GeBvwH5RO9Gme6oQ8sI2NE6BsYFg8ZKPPBfci
+	 7mLGsbZeU4mu5SC8BFqCJcrOzw0OBVESwX8bzh4xrEb7iaqyU3gotcutZ8Q0cHMPSe
+	 m+WO6RXfTBZ3ySRefZOIAp1o2kNWXmR9FO6IBvNQ=
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC] mm: Add KUNIT test for ptval_bytes_to_hex_str()
+Date: Tue, 29 Sep 2026 17:35:30 +0530
+Message-ID: <20260929120530.3394073-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260926-hibernation-v2-0-235f69f3ab2a@kernel.org> <20260927150257.c9558f807114f2ce9c6675e0@linux-foundation.org>
-In-Reply-To: <20260927150257.c9558f807114f2ce9c6675e0@linux-foundation.org>
-From: "Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Date: Tue, 29 Sep 2026 13:53:10 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jZnGzUOf6xsu-J-4cFOeY8yaLivNNUoBCnR4VJQisqHg@mail.gmail.com>
-X-Gm-Features: AclHuK8pzzjTvTId2wLoBf-9vLWfrBr9lHS8pLDp-rGJYqJfLaSLwRr15r-Wayo
-Message-ID: <CAJZ5v0jZnGzUOf6xsu-J-4cFOeY8yaLivNNUoBCnR4VJQisqHg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] hibernation: make safe_copy_page more robust and
- remove debug_pagealloc support
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Alexander Potapenko <glider@google.com>, 
-	David Hildenbrand <david@kernel.org>, Marco Elver <elver@google.com>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Dmitry Vyukov <dvyukov@google.com>, Len Brown <lenb@kernel.org>, 
-	Pavel Machek <pavel@kernel.org>, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 279D9180003
-X-Stat-Signature: 3gtm6ztkyqh589mwk8uch8j6k4gppy51
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1790682897-250747
-X-HE-Meta: U2FsdGVkX19Pfkjyn5Yb2tVQumYyPxLj1VWJHf9iN968BUp0E4UmUcaPUogB/ODySkSSPUbEs6KyigW92N3XsGVKVgXAvAbBBdPvM1IyUwOnbL0Hho6nthx5xGOo0SXRnzpfGfv4IiFqib63jL01M/tEf2XgvsX9o6uJ8qyUytwEl7UdZ8tyBf7QT1vqaZsHFT1y06tuGC5UbBQ65N1ldzrqOkk8rlFSloAhmjCavvemaLX44LBmFLA/aJReiT9TJUd5elvPow+z9juOU8gv1/SytaGj3H6EvRW8IYcOl9kVqY7Nbq9NPJsfoQ80fKUJqLBfxigUl2wfcVCpvcjT4ikjr2J8K8yjN8S4ealGgNYU1qeTxCfdmsc5OrV4MyPE6OSG8Rd8AB+95Y+kJc5Hdri3g8fDTNZwBQM0pTCDMZJfFgkaWTsNY2Pt6hprcNXHmwA9AjIgzm30fk3CNxhfCJQKo33nSmkeWB6iOeL0cxttBxn3JPMdtS9m2vCL9AAz28EHpJERfFPmyYV4kb7xb5kBNjRVSMt+Fy/UM1ZxCTvO7I+MyN+pP8RvJPF01TOVGUkuRbvUJQG2pDOpPYssEREZyXR6V5ZhbXll5WkmkBY9ZJz53PH9j2P6c1CsbCbYzY8TN1l9VhznEN9lG6WHEUd3mFwftLIaR7V6Er+UCDAeoYlzVCUsPDxm36OjnjLx6FZsyxqoLHsxo6/mmBiXj8OlvnqDfsjFjdZ2UBZBFDAhRIgppiGAl1LlluzrYW3zgWRPoYtwfsHz6tX1G+l4AtJ8X8myTb7EEz4apEzkw1LqsQXYqCT5uB/Yenor8ae3o0UZxlo3yJM/fBYXCIcnTaGYA9Y8h/Uo9MubKv5W27ShLYjMMstpo0p5GZRFH7o8fL5J5/KHTvVtPrikEnY1/FNZMq7zPEP4bJ2Z303x478d72HCvDtKsfUOPCb9L4ngUeNRPRpdvNBfVF7b/wo
- 032yq4ab
- /6lTaWtFdliCsa1Lc3B9H/BP990cNKOhjEQLH6o82PpiUE/07v2253BRgrxZk0SfRWX862snmDc+BQonQw7goQE7vEYYmHuX4GUo/trBRUOrz3sWPj/vCyK1vABkfKfryWHKsUKLyC86ZMYisxyPTdTScPQWMhqvkWjOyFsPz97rKIp7BrHFpXDuf9/mKHvMjYsUvdIFursb+dsypxbODKYyrk1Of2WEBLVcsoVI6X3GOsUv1cCBXWv8Wz1ckm/Skc/dBcmXOu6g3IzxamErT1fqhAdNyJuPV97v6VdLtnRjH/b/whOe2W5Mc1BMcsjIdFRB7Q7GhyFLm4GXvOAkB+sgDJrP/9Ie2HUrNOz7DNe8cgSsVxcSi0TDIc4OVa2xZiJyoi1O8CFOKeC4R+eDHccAb3LQ7qYzqGKvi
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BB644A0005
+X-Stat-Signature: 8fpagfeec8c44585p66uwny1ax5eik17
+X-HE-Tag: 1790683535-140341
+X-HE-Meta: U2FsdGVkX1+5xMsVWIFsUk3HfhQHn5rtohFuYglEcgCuJ5Wim7R8L/+B0M9O6qepsfOGTjvrm9KXmzlstJXYoltbHElxgZKBf5L2ChQIimsCQLamXBFLGUSo9GMU/Me29FIo7kzKalvkwvRkNI7mgMxu/8hsC7cVJwufD3unOdzJ2jJP+gMWIidKzSi3O7GvRkp+q9ItRBMnWebALjzG2yEV5IPABC4v4mY9yao/Jnh3vNjmd1UaERfjzXmoegU4FI+HtfxDethD19Tc8uzC+WG0kTtS3D0iTzpSGTwQewhiez3OCXn1IQoY7PIZv3UaANznhziDKArFTPN7rJAoJl8oB6/PBRTubuHSI4oBgY3hMKXcKcZuklAipLHxENzdFbO//EUxFAku4tgU7AOxh5pnEfs+OMQZyhaqt6DEZ7oWREJuUe8qpzCObzo4m+8fsgiOwJR+eXuJYC8j0iHhbk5x/3PaPF3x37QpHn1v+e2xs0KqR7ibuNDuzGNwmMpVa3i2rCOlDSLJzP08aZZYUnS/YmoGQ9YBuiCLjav3Hse8EDWYZUCkkX0IXV6z3Groo43YoDL+fwN8JG7jhQjgonmNtYtIjPJnKT3f/yFPNGuw9T8Hk45hVmsbSfRrpLTq7LmZA5Takrzm/8T+HuZ3l27OYZGKEW6GwIZZy7Ku+ftNKmJvKi5zEsLcYJBqMTUFfCdbxrDNAlM20QaFLaTvCn5WUmlQU1vnN4cANOi/Gz90ntsy1A5RH9e4PbZB7f2xNMA3+T3cBPcj92Rv1Omws0SNJ1z4kSkQbbWDVoQ9EkMmkwYMWXUrT/sURAjQ0A9EiX1KSX4id/HKaeULcZitxAdhDjOMMpfnMuaCLudyeDilOUR6BS+QvL7k8zP6bMdgLJpH2iISPPLcSOacX3hZTtGywgTveUUffTwdUyB86i53yNDjW0swBSsJ76DY93/Bw+xu4cqs9nu/pP3GXXs
+ Ktaste09
+ PfSdpjQmjiOPIHbLoA3KzVpdgpLPPtPfkcMANl23bALzDk+nmC95WOoPHK083qZLdy44OQY3BmkEhPnod2oryh9OCqV62/UdWr4ymC2vbaphf8RtRVnOyB4lYxM08bhzjqepMOocGUGmlzB8+b7E3U5gntwgByK6Weiu4nA1hgf0fIT/Znf1fk/ksKALwtcCAyPFKpTVwqxeb58CQIvTnN/23kR/UYpRW+xK7DuJycZTOaWsIeUdSl0GgcZQwk0LKWRJ+uzjnCid27uQ5LVE9GeY7hrrm+jqItLaGwCCFobP4pAbLzr6V3ekraUvgm3OmLQathLMavPtISDenYHzECchnBlANImHwQGYbwli6U3Z1ZJoCR6WKQnJXKjmhQps4FOWCmF5gmFeQOyju0l+6X80ggbwb6TNmsFh44acCYEJHey5yw+pqdJuMm1SrEa4ZVu69DmMN+YPbIvQ8LN9HcAKh56pgsoumNZlI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,78 +88,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Sep 28, 2026 at 12:02=E2=80=AFAM Andrew Morton
-<akpm@linux-foundation.org> wrote:
->
-> On Sat, 26 Sep 2026 12:26:29 +0300 "Mike Rapoport (Microsoft)" <rppt@kern=
-el.org> wrote:
->
-> > When hibernation creates a memory image, it uses set_direct_map() APIs =
-to
-> > temporarily map pages that are marked as not present in the kernel page
-> > tables.
-> >
-> > Initially, this was intended to support debug_pagealloc along with
-> > hibernation on x86.
-> >
-> > With the increasing desire to use set_direct_map APIs for hardening
-> > features and with their inconsistent implementations across architectur=
-es,
-> > using kernel_page_present() + set_direct_map_valid_noflush() to save
-> > non-present pages in the hibernation image is not very safe, to say the
-> > least.
-> >
-> > Worse, some combinations of debug features, such as debug_pagealloc and
-> > PAGE_POISON cause a crash during restore.
-> >
-> > Keeping debug_pagealloc compatible with hibernation requires a complex
-> > infrastructure for tracking free unmapped pages with a page flag/page t=
-ype,
-> > verifying that it is actually a free page that hibernate_map_page() tri=
-es
-> > to remap and making sure there are no stale or failed page table update=
-s.
-> > With init_on_{alloc,free} and/or PAGE_POISON on top, this also requires=
- the
-> > ability to map and initialize these free pages on restore.
-> >
-> > This complexity does not seem justified for a somewhat niche debugging
-> > scenario.
-> >
-> > Instead of a complex fix to support hibernation with debug_pagealloc, m=
-ake
-> > sure that copy_data_pages() and its helpers properly handle errors that=
- may
-> > happen during page table updates, explicitly enable saving of KFENCE pa=
-ges
-> > and disallow hibernation when debug_pagealloc is enabled.
->
-> Thanks.
->
-> > Mike Rapoport (Microsoft) (5):
-> >       hibernation: make swsusp_page helpers static
-> >       hibernation: ensure secretmem pages don't reach a snapshot
-> >       hibernate: handle potential errors in hibernate_{map,unmap}_page(=
-)
-> >       hibernation, KFENCE: explicitly map/unmap KFENCE pages
-> >       hibernation: make hibernation unavailable when debug_pagealloc is=
- on
-> >
-> >  include/linux/kfence.h   |  29 ++++++++++
-> >  include/linux/suspend.h  |   6 ---
-> >  kernel/power/hibernate.c |   6 +++
-> >  kernel/power/snapshot.c  | 137 +++++++++++++++++++++++++--------------=
---------
-> >  mm/kfence/core.c         |  52 +++++++++++++++++-
-> >  5 files changed, 159 insertions(+), 71 deletions(-)
->
-> I'm not sure how to route this.  Rafael, wdyt?
+Add KUnit tests for ptval_bytes_to_hex_str() to verify conversion of 32-bit
+64-bit, and 128-bit (when supported) page table entry values into printable
+hexadecimal strings.
 
-I don't have a strong preference.
+Add a new PTVAL_HEX_STR_KUNIT_TEST option to enable the tests.
 
-If you decide to pick it up, please feel free to add my ACK to the
-patches.  Or if you prefer it to be picked up by me, please let me
-know.
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+This patch applies on v7.3-rc5 after the following series
 
-Thanks!
+https://lore.kernel.org/linux-mm/20260831054331.625505-1-anshuman.khandual@arm.com/
+
+ mm/Kconfig                        |  11 +++
+ mm/Makefile                       |   1 +
+ mm/tests/ptval_hex_string_kunit.c | 111 ++++++++++++++++++++++++++++++
+ 3 files changed, 123 insertions(+)
+ create mode 100644 mm/tests/ptval_hex_string_kunit.c
+
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 604c58199acbf..f68bf26b98c83 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1511,6 +1511,17 @@ config LAZY_MMU_MODE_KUNIT_TEST
+ 
+ 	  If unsure, say N.
+ 
++config PTVAL_HEX_STR_KUNIT_TEST
++	bool "KUnit tests for pgtable entry string conversion" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to check that ptval_bytes_to_hex_str() is able
++	  convert given pgtable entry value in bytes into hex strings which
++	  could be printed.
++
++	  If unsure, say N.
++
+ source "mm/damon/Kconfig"
+ 
+ endmenu
+diff --git a/mm/Makefile b/mm/Makefile
+index e7245cb88c665..d08b8bd01917b 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -147,4 +147,5 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+ obj-$(CONFIG_EXECMEM) += execmem.o
+ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
++obj-$(CONFIG_PTVAL_HEX_STR_KUNIT_TEST) += tests/ptval_hex_string_kunit.o
+ obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+diff --git a/mm/tests/ptval_hex_string_kunit.c b/mm/tests/ptval_hex_string_kunit.c
+new file mode 100644
+index 0000000000000..45c203cfb49ae
+--- /dev/null
++++ b/mm/tests/ptval_hex_string_kunit.c
+@@ -0,0 +1,111 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <kunit/test.h>
++#include <linux/pgtable.h>
++
++struct ptval_str {
++	u64 val;
++	const char *str;
++};
++
++static struct ptval_str ptval_u32_tests[] = {
++	{ .val = 0x1234abcd,	.str = "1234abcd"},
++	{ .val = 0x4455aabb,	.str = "4455aabb"},
++	{ .val = 0xccddeeff,	.str = "ccddeeff"},
++	{ .val = 0x12345678,	.str = "12345678"},
++	{ .val = 0x87654321,	.str = "87654321"},
++	{ .val = 0xaabbccdd,	.str = "aabbccdd"},
++	{ .val = 0xaa44cc66,	.str = "aa44cc66"},
++	{ .val = 0x11442266,	.str = "11442266"},
++};
++
++static struct ptval_str ptval_u64_tests[] = {
++	{ .val = 0x123456789abcdef0ULL,	.str = "123456789abcdef0"},
++	{ .val = 0x113355779abcdef0ULL,	.str = "113355779abcdef0"},
++	{ .val = 0xaabbccddeeffaabbULL,	.str = "aabbccddeeffaabb"},
++	{ .val = 0x1234567812345678ULL,	.str = "1234567812345678"},
++	{ .val = 0x0000000000000000ULL,	.str = "0000000000000000"},
++	{ .val = 0xffffffffffffffffULL,	.str = "ffffffffffffffff"},
++	{ .val = 0xaa00cc00ee00aa00ULL,	.str = "aa00cc00ee00aa00"},
++	{ .val = 0xc0ffeec0ffeedeadULL,	.str = "c0ffeec0ffeedead"},
++};
++
++static void ptval_hex_str_u32(struct kunit *test)
++{
++	char buf[PTVAL_STR_MAX];
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ptval_u32_tests); i++) {
++		u32 val = ptval_u32_tests[i].val;
++
++		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
++		KUNIT_EXPECT_STREQ(test, buf, ptval_u32_tests[i].str);
++	}
++}
++
++static void ptval_hex_str_u64(struct kunit *test)
++{
++	char buf[PTVAL_STR_MAX];
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ptval_u64_tests); i++) {
++		u64 val = ptval_u64_tests[i].val;
++
++		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
++		KUNIT_EXPECT_STREQ(test, buf, ptval_u64_tests[i].str);
++	}
++}
++
++#ifdef __SIZEOF_INT128__
++struct ptval_128_str {
++	u128 val;
++	const char *str;
++};
++
++static struct ptval_128_str ptval_u128_tests[] = {
++	{ .val = (u128)0x1122334455667788 << 64 |
++		 (u128)0x123456789abcdef0, .str = "1122334455667788123456789abcdef0"},
++	{ .val = (u128)0xaabbccddeeffaabb << 64 |
++		 (u128)0xaabbccddeeffaabb, .str = "aabbccddeeffaabbaabbccddeeffaabb"},
++	{ .val = (u128)0x0000000000000000 << 64 |
++		 (u128)0x0000000000000000, .str = "00000000000000000000000000000000"},
++	{ .val = (u128)0xffffffffffffffff << 64 |
++		 (u128)0xffffffffffffffff, .str = "ffffffffffffffffffffffffffffffff"},
++	{ .val = (u128)0x1234123412341234 << 64 |
++		 (u128)0xabcdabcdabcdabcd, .str = "1234123412341234abcdabcdabcdabcd"},
++	{ .val = (u128)0xc0ffeec0ffeedead << 64 |
++		 (u128)0xc0ffeec0ffeedead, .str = "c0ffeec0ffeedeadc0ffeec0ffeedead"},
++	{ .val = (u128)0xa5a5a5a5a55a5a5a << 64 |
++		 (u128)0xa5a5a5a55a5a5a5a, .str = "a5a5a5a5a55a5a5aa5a5a5a5a55a5a5a"},
++	{ .val = (u128)0x4455445544554455 << 64 |
++		 (u128)0x2233223322332233, .str = "44554455445544552233223322332233"},
++};
++
++static void ptval_hex_str_u128(struct kunit *test)
++{
++	char buf[PTVAL_STR_MAX];
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(ptval_u128_tests); i++) {
++		u128 val = ptval_u128_tests[i].val;
++
++		ptval_bytes_to_hex_str(buf, sizeof(buf), &val, sizeof(val));
++		KUNIT_EXPECT_STREQ(test, buf, ptval_u128_tests[i].str);
++	}
++}
++#endif
++
++static struct kunit_case ptval_hex_str_tests[] = {
++	KUNIT_CASE(ptval_hex_str_u32),
++	KUNIT_CASE(ptval_hex_str_u64),
++#ifdef __SIZEOF_INT128__
++	KUNIT_CASE(ptval_hex_str_u128),
++#endif
++	{}
++};
++
++static struct kunit_suite ptval_hex_str_test_suite = {
++	.name = "ptval-hex-str",
++	.test_cases = ptval_hex_str_tests,
++};
++kunit_test_suite(ptval_hex_str_test_suite);
+-- 
+2.43.0
+
 
