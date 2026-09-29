@@ -4,104 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEDF2CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88589CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 07:58:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD6696B0099; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
+	id 47A596B009D; Tue, 29 Sep 2026 03:58:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A87C26B009B; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
+	id 423776B009E; Tue, 29 Sep 2026 03:58:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99E776B009D; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
+	id 3117E6B009F; Tue, 29 Sep 2026 03:58:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 79BED6B0099
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:55:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 119DBA0429
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:55:51 +0000 (UTC)
-X-FDA: 85266040902.07.D640D86
-Received: from mta0.migadu.com (out-166.mta0.migadu.com [91.218.175.166])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DBE17C000B
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:55:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="NDrUg/Ro";
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0CADD6B009D
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 03:58:26 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 79F5D1402C6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:58:25 +0000 (UTC)
+X-FDA: 85266047370.11.233F5E5
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.49])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B034340006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:58:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=vzY4+W+j;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf27.hostedemail.com: domain of leizongkun@qq.com designates 43.163.128.49 as permitted sender) smtp.mailfrom=leizongkun@qq.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790668549;
+	s=arc-20220608; t=1790668703;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jMi3M1iULFUfuMEEhHz4Tqsh151CRH++Ayaby/JxpbM=;
-	b=R6M9INa0j8LkfBsULYAMySRSYw6dFVz9sylmgi3K9p+BE4OGeNiEmdn0O33L4wCZ5RAihe
-	RRqOAAqkzGDBbyc7aM9CJX4AwT7x6uIIatkCjF/7UbBg32dxXcyFFYA3dxVhKI9fyNZ92J
-	pg5ebFv4GErcn1cKc/3LStBC2C802GQ=
+	bh=Xn8817W6WZLyNDDxORqo2E02dJXTlQdjYOBndTvvTdM=;
+	b=acVq9Ak/uUJYDTjacXKtkRPAYsYAvNDSqMIATLSAvO0IIsBPrnsZKl8RMCU9Sf2Zp/IVed
+	D728HCO4+mnmSjy19hvn2INaoBZzL/NTFmOHFWoHRJmzmP7Acg5JtPQgcBUqKjUN0/FQVk
+	wa85qdGr11QCD0YU/EDtd6Bm45w2xLc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="NDrUg/Ro";
-	spf=pass (imf28.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.166 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=vzY4+W+j;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf27.hostedemail.com: domain of leizongkun@qq.com designates 43.163.128.49 as permitted sender) smtp.mailfrom=leizongkun@qq.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790668549;
-	b=GgV/KSAuPZlx3ErTCcEWPDlMpb4F6sGEEQd05sDWTtt14RIoqZL1CO3cmKpRbeUMF5D9W/
-	xt7qYEmoP4T4XlYWqQS1vW6xqaZjnXectL6yuJaUFlUCgHYh991XGjOMSB4GY7gbWEdd1J
-	2wNhZm4HmTv/8bvdOXHIoqHgIPHjyqk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=nj3wtQVl7vcnhMbNppV9t0dGEHcungOiAb7gmBQ9b+o=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790668547; v=1; x=1791273347;
- b=NDrUg/RoF1bPvVighGofc9LgFh5CsV8P86ekZ3WhxBT7oEPsv2EaiQEbUnovbXjLyRji/zXp
- zu1s05qQAaWgnEjHbV11T2RK/fszFU/20H8cgPwE/HMRnaKxGC/qzDC7+I+Z6jOgfFoZRyMwaa0
- RyucxV3hUsLBqVNRW5VdkRs0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 06442dbddb022582;
-	Tue, 29 Sep 2026 07:55:38 +0000
-X-Mizu-Trace-ID: 06442dbddb022582
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v5 01/12] mm/sparse-vmemmap: factor out shared vmemmap
- tail page allocation
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <5c73e3b9-4eca-4b84-ba3d-85bb7d6f77dc@kernel.org>
-Date: Tue, 29 Sep 2026 15:55:21 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Jonathan Corbet <corbet@lwn.net>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Lance Yang <lance.yang@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <6BA39A32-5851-42B2-8822-F427D08577D8@linux.dev>
-References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-2-songmuchun@bytedance.com>
- <5c73e3b9-4eca-4b84-ba3d-85bb7d6f77dc@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-Stat-Signature: xoo3ahco8fumnkmxppkfa3h46bzuo4n7
-X-Rspamd-Queue-Id: DBE17C000B
+	t=1790668703;
+	b=5/jfAoMFJ7ATJzVMjVB/BZYz+CHXhXZQ0o6jGRgBB/EJV4Tu4UNSN49lgit/NCucQvXJVk
+	zqAD9QDuhy0gr+b8+wdsi6u5LxGp3qU9ZaxWMBucl/v9LvYkUrzWgLW6UJwDX0V930hSZ2
+	GOqKpILZlOQBRB8WTu5pu9NjBW7kXtc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1790668700; bh=Xn8817W6WZLyNDDxORqo2E02dJXTlQdjYOBndTvvTdM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=vzY4+W+j0HJiw08znqCBt9L6bhsXWgqG2MjkXVnY7x76CfD/3JsNm6345NCy85zVp
+	 JX1MjTzkyf5VMUOYBt82E48GlfwnhWJKj6ZgLnzyIXU6Dxlz1nPDYOs4nV9DwXuAfC
+	 A4bWil807IwaE8KSjDIXCvHZPwsI8g4DWN/mVcKI=
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-XMAILINFO: OKoAQJjbfIk1tS+VZ1Rs+qY2zD5c7hIYdSuTS57fjOuC/B6lyqjsCvapPW9fDk
+	 dXTwRVvj9p0GKpbvLQuC4sPMQNN/nV0TAob12/MrDX4ip5k7EU4hibGHS2ayUZlhlptwPRyDzj7LX
+	 QNZzIDqFJad0lGyoi4CJGzI8e4gdSkyJuXGQAVS9MJl4NRpfsWPoFOHnGjGdDIy36jb2GQ4KAMZ8g
+	 pBmfNv1tAGDx3OnorbtwDryii0h7oWSsrX1plTVEjFLoHRbGdXJnCEu5Lyj1LgcMQFPhIXkVlQnmZ
+	 xPpfRYh8MPQ/gzkhqR6Ji/yVWT4idxgV2/G+L4pr9Xi5btbrAof4+Suyq0vY0u+pe9Cnu/ioYfCN0
+	 SIDkA8JfwEV/uGTU1fq4CyzdPTdBBiHQCIIo/L0Xn0JA4pnqpFhLwK7dAJAVMa5I+u4pJXKhijmte
+	 YkATrHLZb8SQkqrGM4rTEalbPNz7uz8WUZg0viFvBiOXg1Jb13qqw5jTsD3BMAOGJ118FgiIyjHog
+	 NPqLxUtef8aDm5pyjWNOrmOL3cVVfDoGtnhc6+yFe20peDsWy59kCpV16dBfc0tvSz/oz/7HYAjJE
+	 2Vx/2Rbcvh+nW/arGq4pC4JCI+1wjwKfSgwOrIAAT8nxO3JPOC41luc+puAtIWr4f8SgqlMwcHSCs
+	 QnYagjR4+Y/lg92t5qz1PplIJIWY807tyA7l6MLj6+3I6AOyNN1RpzmiRh6sCiEukXca4MkeW8ux9
+	 ULWlYS2BaVRRs3zCY8PRqdU7a9yo8SGeSLknFXUm0HAByDQjfJxmhyE8vm2XEUaY6W9wUMFl1pWwd
+	 +LeaUKheAxgY1cB8EkgbSmZ9nuzsa13fILqHnPzGnLzlMCcKgiX996guwsAOWROIuKMYFx69xs1HI
+	 LsRhhbCIZGAwaN4M1VgRyQngVudye6HB62MQYLtAtvkmiPW5A4d8OayIsprQ9niVKfXKZe39gMOVu
+	 GlDd3wFp5DPD7ARKY2F8NwHDMjNb/bwTODVbcfKppRY8VH6MEpEoAaaGg4iXkHi/uiqQXXQK1jyBe
+	 D33aLmvjJ5UDIdIHS1fIHG6/ACQnEoYho/60f89lwQs8Y6mAUjpLHAY6BfwIsW9/jaLiX9OWyBLgA
+	 ErpBcunslAucUpHndggUafq6eKjkmdpNB51ne7PPZ1w4wyhtehCjP/ke6WM4nRpBWezuryFMZ6Z0r
+	 L3e1BQiWiXz
+Received: from lzk-B860M-AORUS-PRO-WIFI7 ([2409:8a28:a83:5ba1:514f:5353:e14b:594e])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id E8B0DEDA; Tue, 29 Sep 2026 15:58:11 +0800
+X-QQ-mid: xmsmtpt1790668691tyx2ud429
+Message-ID: <tencent_9C2F003FC5A7E19CB8ED71B63FAB29D41309@qq.com>
+From: Zongkun Lei <leizongkun@qq.com>
+To: linux-mm@kvack.org
+Cc: Zongkun Lei <leizongkun@qq.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Hugh Dickins <hughd@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org
+Subject: [RFC PATCH 1/6] mm/swap: introduce folio_swap_entry() and convert all folio->swap readers
+Date: Tue, 29 Sep 2026 15:58:07 +0800
+X-OQ-MSGID: <4b4ab491e15fc75cdfac8d32a78c4a048529ff01.1790663399.git.leizongkun@qq.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <cover.1790663399.git.leizongkun@qq.com>
+References: <cover.1790663399.git.leizongkun@qq.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B034340006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790668548-889688
-X-HE-Meta: U2FsdGVkX1/g2DtaqZowpOnAvuPBUrMxIIS1KbDOeIgfOx9am1LyaDMPFUWxtS+j58jIgzN3YyHvJn4P0sFOJsDyCdgS4wSqHOf50CMdMFw71O7KgSU1s8o1CoGHj2BHgf4xg15Vf9gfTGOz07HZSoxfvPysrDd118hvkKBMH7V66EgxCtcSNq3pHBbkunvE+y3MybKs6B3Qi0MPCYuWre8KvNZRu8yIof41ZrWGGikPm3VYwyE2W6Y98KOL6oarVOvzYEoLw3bOzYvLAUXaUNaOOsbD3umd0DZ1K01DSqt1sUjpcwgXqABuQTVyH3T8OSRNQogQKBrIhJEMa7rFy88ZebR5TcwolgHYiSEX8V+tS2sRg0Lzo+wT+skOvB4eHMLJyJnMh6M/pZ764mfTDMVBiRIIejGKGvaXNkP0CWTUHnMIANw9sIGMAnKidhxsaYHyvQr88+N0q4CvwcgWaXkT3692Xfi17Iqi1PD+/aCSXpxA9aTqO80/aFfT8Tkn97ZlIzR4YvbOlADDdIk+pOlWnilGb6CQC/F/Gtr2s5jKfI56hd/PzLLHYCv49DuzrrLEwaAHO86qKObt2QrRvo/RYHpw20YSgtyIMIPqp4KxlvWIFIJY6XLuVkZoPQmsn7K+cpqdnQ01uELfsatDLjW0fPVfgsrCQdFUMTA7zoiLJxU2+JKWvsfUUwm8DLoEUx9lS3OopncFeP1Lsh7jj9zcvKpDVnOMR2wa/Djnpx+4Pa9KdA7Ckhiy2lUX1X6wMTmxu5npiaK+aSfrs97r205Hckpbl2mifx8mfmAK/IhFRtshB5Ren5oOay2Q6B4VArX/GRPLVeRrDaWWLDRObDOAhTpTxHxbuVXXDbCQBElPmfxhhIc1itlYOXcuhQP6HafVNVDdk3RJlw2IPa2Lk19ThytS9ACqei9VaqXUvCEccP2JlbqV4aCkRki5ym8DGM6aowK2JeIpzzanZJw
- esiHc2fk
- y5grJxL8mEz14F93d3yhqfk9N4ekag7xRqyqPohsUYmAbqmPR1dPZy9UC6+Htc/1UupWbvQ/s+SNLEFqbOmEWhTVC1iBLE8gvctxsRKwm6CefwQKm09e+E4lFvD/DstLGGol+d3AtTV3e54XJdOOHzCC+xFpWRfIEpSCaHB4ytpoWuUo+4Q9kzA9LxP2Ad0U7EYPHeA2FLGFrXl73jZwDPTvql/ka+C/Up2K1GisHjAs8g3hpo1aZNZl7rH66HeBpuvA8qQrK0hoyreY3vGX7XJIJFHde037SKCREw8x9RdOfp2/5BGygUGl1PyPMMCnd5g1a
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3jyt9k88r7xc5p8jrjgetw1ndermceyx
+X-HE-Tag: 1790668702-432751
+X-HE-Meta: U2FsdGVkX181oSceSDGCDdSTakmUcV3M40xXyHoCoeL6PIWFAo6GLQdkBklcRPq17AMqVQxBESoqA/rRBRmdE+DV+PS3k2hauT4xnnRutlxg6QZncOenhOvxLXynJ/u1XOFM/k439MDiHOQkRMvbpZnqBBuzJN54PvJJ/9p5fZ7emTs/PuK2jVTkuPC8leDmyXOYIjTNbBfDo6SHFkvuCu/bIWCIpfnlzzf4BJCJexN1dm+ui3yAyFg2QlWfefq6D2Yy5Jk12ZpROjAuwZreEVKoouLFQzWNT0bSKP41r5MhccZ8rygArp8Yg+csXERoqZNv8Y51WqfewS9kqBKgx+CqJXdjJY013aYuSZaRTaZ0rwfwK8y4OUJJdYqnIa4yvphJK+0VmKXVeIOf7+kxEd3uEjEPJpySPPjjU16IBD94zLZOGgioStr8djCaZHlp6ZewNviCwGmlTq2ZmP7RanOQLKHST7sYa51Vt8qVDSX10gSqLAFEGPzBihiWQAlxxLiTPye9KyzSEUlxk+iHvLKzMHueEGsMcAh4k2WiAOTTEYCJA0ktm+X4tvdxyM2dUUYvnDY8WqlsEz5PUFWbbcL10x2JJzQIxk1Ys4cnT2OBwJTruNyVHBJZJkiwHli9APbU7yqqZrZXyMSPjBm40ptDDGDg78NHfvjsarNo+U9aJfBlGjf1TgMoYQZ7oCVU68q8OPE4eq8R0DjBTO5ulI2xEXdIE0ufbp2Ty3PneJGCS+iZZVMfwCUFxw79DEMt2wZxqFh2aw1jHsAYZH8nftOXM4eFOTYjnbcQ/azPswQkZfhtcHAhrZn9krxTk9hVXBEVHkASY/OeAbDpW+esDTZgTwO5I6KMlMVehfXfD/VvZW9iaqTzKM0GdyKfDB9XIw385OeADFjOsNQw4n4JY59lcE8q61mOQE1JlhcghAaINdfFGqE8RAkO+T3ebbo5S1Gty/QPZPMIFIp+IJD
+ ltxGM+A+
+ 6qf8N3ylcyzeLbwRs4/43EIl1ZMa08Dh0MnbbGumPXjuxg7YGoioQWfCO1hStdbLpFRScvEu/oC6VGjFrfq8LbBBTA9kkj27oBvDAUVwzUSM/RZ+FkEQXxRrxFxa27HIYsYYamIv0/WJWdl5lxGYyZQN/CsiX64pBtgKvGLKL9FgGsE28C8cVVlFdJ37QljZQI4o9ZEQPEC0/0yjNgqkBfoTm/hZq9Pk8QdEDKLjkB3s77zrjQgsrtUBc24FVT9Y3lzmnc5WtT39MkIy2u+UVTrFz0InbAP/dPvfle9Kvudv5yrI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,72 +140,476 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hugetlb folios keep their per-folio flags in folio->private, which
+shares a union with folio->swap.  While such a folio sits in the swap
+cache, the low bits of folio->swap.val can therefore carry flag bits
+rather than zeroes - with HVO enabled, HPG_vmemmap_optimized (bit 4)
+is set on virtually every hugetlb folio.  Any naked read of
+folio->swap on a swap-cached hugetlb folio would hand a corrupted
+swap entry to the swap table, zswap, the memcg accounting or the I/O
+paths.
 
+Swap entries are always allocated aligned to the folio size, so
+rounding the raw value down to folio_nr_pages() recovers the real
+entry.  Wrap that in folio_swap_entry() and convert every reader of
+folio->swap in the tree to use it.  For all non-hugetlb folios the
+low bits are always zero (order-0 folios trivially, large folios
+because the alignment leaves them clear), so the helper is an
+identity transform and this patch changes no behaviour on any
+existing path; reviewing it only requires auditing the helper itself
+plus the single invariant "swap entries are folio-size aligned".
 
-> On Sep 29, 2026, at 15:16, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 9/27/26 04:54, Muchun Song wrote:
->> HugeTLB and sparse-vmemmap each have their own helper to allocate the
->> shared vmemmap tail page used by vmemmap optimization.
->>=20
->> Factor that logic into a common vmemmap_shared_tail_page() helper. It
->> allocates the page through vmemmap_alloc_block(), initializes the =
-tail
->> struct pages, and uses cmpxchg() to install the per-zone shared page.
->>=20
->> This removes duplicate allocation logic while handling both early =
-boot
->> and runtime allocation through the same helper.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> ---
->> v5:
->> - Move this patch before CONFIG_VMEMMAP_OPTIMIZATION is introduced
->>=20
->> v4:
->> - Update the commit message for the renamed VMEMMAP_OPTIMIZATION =
-config
->> - Collect Acked-by from Mike Rapoport
->>=20
->> v2:
->> - Collect Acked-by from Qi Zheng
->> ---
->=20
-> [...]
->=20
->>=20
->> #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->> -static __meminit struct page *vmemmap_get_tail(unsigned int order, =
-struct zone *zone)
->> +struct page __ref *vmemmap_shared_tail_page(unsigned int order, =
-struct zone *zone)
->> {
->> - 	struct page *p, *tail;
->> - 	unsigned int idx;
->> - 	int node =3D zone_to_nid(zone);
->> + 	void *addr;
->> + 	struct page *page;
->> + 	const unsigned int idx =3D order - =
-VMEMMAP_OPTIMIZATION_MIN_ORDER;
->=20
-> Nit: constants read much nicer all the way at the top.
+The write side keeps raw access deliberately:
+__swap_cache_do_add_folio() now preserves the low flag bits when
+installing the entry, and __swap_cache_do_del_folio() clears the
+entry while keeping the flags, rounding the passed entry down so an
+unaligned value can never leak into the swap table.
 
-I can update to this next version.
+This is preparation for swap support of hugetlb folios; hugetlb
+folios too small for all HPAGEFLAG bits to fit below the swap offset
+will be kept out of the swap cache by the feature's size gate.
 
->=20
->=20
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Zongkun Lei <leizongkun@qq.com>
+---
+ include/linux/swap.h | 22 +++++++++++++++++++++-
+ mm/huge_memory.c     |  2 +-
+ mm/memcontrol-v1.c   |  4 ++--
+ mm/memcontrol.c      |  2 +-
+ mm/memory.c          |  2 +-
+ mm/page_io.c         | 18 +++++++++---------
+ mm/shmem.c           |  6 +++---
+ mm/swap.h            |  8 +++++---
+ mm/swap_state.c      | 15 ++++++++++-----
+ mm/swapfile.c        | 14 ++++++++------
+ mm/userfaultfd.c     |  2 +-
+ mm/util.c            |  2 +-
+ mm/vmscan.c          |  4 ++--
+ mm/zswap.c           |  4 ++--
+ 14 files changed, 67 insertions(+), 38 deletions(-)
 
-Thanks.
-
->=20
-> --=20
-> Cheers,
->=20
-> David
-
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 5658a1634b85..677081238811 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -278,10 +278,30 @@ struct swap_info_struct {
+ 	const struct swap_ops *ops;
+ };
+ 
++/**
++ * folio_swap_entry - Get the swap entry recorded in a swap cache folio.
++ * @folio: The folio, must be in the swap cache.
++ *
++ * Hugetlb folios keep their per-folio flags in folio->private, which aliases
++ * folio->swap, so the low bits of folio->swap.val may carry flag bits while
++ * the folio is swap cached.  Swap entries are always aligned to the folio
++ * size, so rounding down recovers the entry.  Hugetlb folios too small for
++ * all flag bits to fit below the swap offset never enter the swap cache;
++ * see hugetlb_folio_swap_supported().
++ *
++ * For all other folios the low bits are always zero, so this is an identity
++ * transform; always use it instead of reading folio->swap directly.
++ */
++static inline swp_entry_t folio_swap_entry(const struct folio *folio)
++{
++	return (swp_entry_t) { .val = round_down(folio->swap.val,
++						 folio_nr_pages(folio)) };
++}
++
+ static inline swp_entry_t page_swap_entry(struct page *page)
+ {
+ 	struct folio *folio = page_folio(page);
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 
+ 	entry.val += folio_page_idx(folio, page);
+ 	return entry;
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 54494c3fa983..18824e298cff 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3760,7 +3760,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+ 		VM_WARN_ON_ONCE_PAGE(new_folio->private, new_head);
+ 
+ 		if (folio_test_swapcache(folio))
+-			new_folio->swap.val = folio->swap.val + i;
++			new_folio->swap.val = folio_swap_entry(folio).val + i;
+ 
+ 		/* Page flags must be visible before we make the page non-compound. */
+ 		smp_wmb();
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index bf2c7d53b01b..2186523f3f0e 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -299,7 +299,7 @@ void __memcg1_swapout(struct folio *folio, struct swap_cluster_info *ci)
+ 	swap_memcg = mem_cgroup_private_id_get_online(memcg, nr_entries);
+ 	mod_memcg_state(swap_memcg, MEMCG_SWAP, nr_entries);
+ 
+-	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_entries,
++	__swap_cgroup_set(ci, swp_cluster_offset(folio_swap_entry(folio)), nr_entries,
+ 			  mem_cgroup_private_id(swap_memcg));
+ 
+ 	folio_unqueue_deferred_split(folio);
+@@ -369,7 +369,7 @@ void memcg1_swapin(struct folio *folio)
+ 	 */
+ 	nr_pages = folio_nr_pages(folio);
+ 	ci = swap_cluster_get_and_lock(folio);
+-	id = __swap_cgroup_clear(ci, swp_cluster_offset(folio->swap),
++	id = __swap_cgroup_clear(ci, swp_cluster_offset(folio_swap_entry(folio)),
+ 				 nr_pages);
+ 	swap_cluster_unlock(ci);
+ 	mem_cgroup_uncharge_swap(id, nr_pages);
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 256b68ffca70..0ae9e3176479 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -5781,7 +5781,7 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
+ 	mod_memcg_state(memcg, MEMCG_SWAP, nr_pages);
+ 
+ 	ci = swap_cluster_get_and_lock(folio);
+-	__swap_cgroup_set(ci, swp_cluster_offset(folio->swap), nr_pages,
++	__swap_cgroup_set(ci, swp_cluster_offset(folio_swap_entry(folio)), nr_pages,
+ 			  mem_cgroup_private_id(memcg));
+ 	swap_cluster_unlock(ci);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index bc14cae3c49d..4dcc8d73e3ee 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5056,7 +5056,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		address = folio_start;
+ 		ptep = folio_ptep;
+ 		nr_pages = nr;
+-		entry = folio->swap;
++		entry = folio_swap_entry(folio);
+ 		page = &folio->page;
+ 	}
+ 
+diff --git a/mm/page_io.c b/mm/page_io.c
+index 1da4ff484f09..e1ec577d5759 100644
+--- a/mm/page_io.c
++++ b/mm/page_io.c
+@@ -160,7 +160,7 @@ static void swap_zeromap_folio_set(struct folio *folio)
+ 	struct obj_cgroup *objcg = get_obj_cgroup_from_folio(folio);
+ 	int nr_pages = folio_nr_pages(folio);
+ 	struct swap_cluster_info *ci;
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	unsigned int i;
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+@@ -183,7 +183,7 @@ static void swap_zeromap_folio_set(struct folio *folio)
+ static void swap_zeromap_folio_clear(struct folio *folio)
+ {
+ 	struct swap_cluster_info *ci;
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	unsigned int i;
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+@@ -321,7 +321,7 @@ int sio_pool_init(void)
+ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+ 		int rw)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
++	struct swap_info_struct *sis = __swap_entry_to_info(folio_swap_entry(folio));
+ 	struct bio_vec *last_bv = &ctx->sio->bvecs[ctx->sio->nr_bvecs - 1];
+ 	struct folio *prev_folio = bvec_folio(last_bv);
+ 	size_t prev_folio_size = folio_size(prev_folio);
+@@ -333,7 +333,7 @@ static bool swap_can_merge(struct swap_io_ctx *ctx, struct folio *folio,
+ 
+ static void swap_add_folio(struct swap_io_ctx *ctx, struct folio *folio, int rw)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
++	struct swap_info_struct *sis = __swap_entry_to_info(folio_swap_entry(folio));
+ 	struct swap_iocb *sio = ctx->sio;
+ 
+ 	if (sio && !swap_can_merge(ctx, folio, rw)) {
+@@ -432,7 +432,7 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+ 	 * that an IO error is emitted (e.g. do_swap_page() will sigbus).
+ 	 * Folio lock stabilizes the cluster and map, so the check is safe.
+ 	 */
+-	if (WARN_ON_ONCE(swap_zeromap_batch(folio->swap, nr_pages,
++	if (WARN_ON_ONCE(swap_zeromap_batch(folio_swap_entry(folio), nr_pages,
+ 			 &is_zeromap) != nr_pages))
+ 		return true;
+ 
+@@ -453,7 +453,7 @@ static bool swap_read_folio_zeromap(struct folio *folio)
+ 
+ void swap_read_folio(struct swap_io_ctx *ctx, struct folio *folio)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
++	struct swap_info_struct *sis = __swap_entry_to_info(folio_swap_entry(folio));
+ 	bool synchronous = sis->flags & SWP_SYNCHRONOUS_IO;
+ 	bool workingset = folio_test_workingset(folio);
+ 	unsigned long pflags;
+@@ -525,7 +525,7 @@ static void swap_fs_write_complete(struct kiocb *iocb, long ret)
+ 		 * folio_rotate_reclaimable but rate-limit the messages.
+ 		 */
+ 		pr_err_ratelimited("Write error %ld on dio swapfile (%llu)\n",
+-				   ret, swap_dev_pos(folio->swap));
++				   ret, swap_dev_pos(folio_swap_entry(folio)));
+ 	}
+ 
+ 	swap_write_end(sio, failed);
+@@ -671,8 +671,8 @@ EXPORT_SYMBOL_GPL(swap_fs_prepare_rw);
+ bool swap_fs_can_merge(struct folio *folio, struct folio *prev_folio,
+ 		size_t prev_folio_size, int rw)
+ {
+-	return swap_dev_pos(folio->swap) ==
+-		swap_dev_pos(prev_folio->swap) + prev_folio_size;
++	return swap_dev_pos(folio_swap_entry(folio)) ==
++		swap_dev_pos(folio_swap_entry(prev_folio)) + prev_folio_size;
+ }
+ EXPORT_SYMBOL_GPL(swap_fs_can_merge);
+ 
+diff --git a/mm/shmem.c b/mm/shmem.c
+index eeb9a78c125a..284d6d5d8b94 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1914,7 +1914,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+ 		}
+ 
+ 		folio_dup_swap(folio, NULL);
+-		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
++		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio_swap_entry(folio)));
+ 
+ 		BUG_ON(folio_mapped(folio));
+ 		error = swap_writeout(ctx, folio);
+@@ -1929,7 +1929,7 @@ int shmem_writeout(struct swap_io_ctx *ctx, struct folio *folio,
+ 		 * it will be appropriate if other reactivate cases are added.
+ 		 */
+ 		error = shmem_add_to_page_cache(folio, mapping, index,
+-				swp_to_radix_entry(folio->swap),
++				swp_to_radix_entry(folio_swap_entry(folio)),
+ 				__GFP_HIGH | __GFP_NOMEMALLOC | __GFP_NOWARN);
+ 		/* Swap entry might be erased by racing shmem_free_swap() */
+ 		if (!error) {
+@@ -2293,7 +2293,7 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
+ {
+ 	struct swap_cluster_info *ci;
+ 	struct folio *new, *old = *foliop;
+-	swp_entry_t entry = old->swap;
++	swp_entry_t entry = folio_swap_entry(old);
+ 	int nr_pages = folio_nr_pages(old);
+ 	int error = 0;
+ 
+diff --git a/mm/swap.h b/mm/swap.h
+index 0b5d507739bc..19c260353e08 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -173,10 +173,12 @@ static inline struct swap_cluster_info *swap_cluster_lock(
+ static inline struct swap_cluster_info *__swap_cluster_get_and_lock(
+ 		const struct folio *folio, bool irq)
+ {
++	swp_entry_t entry = folio_swap_entry(folio);
++
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+-	return __swap_cluster_lock(__swap_entry_to_info(folio->swap),
+-				   swp_offset(folio->swap), irq);
++	return __swap_cluster_lock(__swap_entry_to_info(entry),
++				   swp_offset(entry), irq);
+ }
+ 
+ /*
+@@ -287,7 +289,7 @@ static inline loff_t swap_dev_pos(swp_entry_t entry)
+ static inline bool folio_matches_swap_entry(const struct folio *folio,
+ 					    swp_entry_t entry)
+ {
+-	swp_entry_t folio_entry = folio->swap;
++	swp_entry_t folio_entry = folio_swap_entry(folio);
+ 	long nr_pages = folio_nr_pages(folio);
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 305877e1f4d7..516052efbf62 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -227,7 +227,11 @@ static void __swap_cache_do_add_folio(struct swap_cluster_info *ci,
+ 
+ 	folio_ref_add(folio, nr_pages);
+ 	folio_set_swapcache(folio);
+-	folio->swap = entry;
++	/*
++	 * Keep the low bits, they may carry hugetlb specific flags that
++	 * share folio->private with folio->swap (see folio_swap_entry()).
++	 */
++	folio->swap.val = entry.val | (folio->swap.val & (nr_pages - 1));
+ }
+ 
+ /**
+@@ -269,6 +273,7 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapcache(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(folio_test_writeback(folio), folio);
+ 
++	entry.val = round_down(entry.val, nr_pages);
+ 	si = __swap_entry_to_info(entry);
+ 	ci_start = swp_cluster_offset(entry);
+ 	ci_end = ci_start + nr_pages;
+@@ -286,7 +291,7 @@ static void __swap_cache_do_del_folio(struct swap_cluster_info *ci,
+ 				 __swp_tb_get_flags(old_tb)));
+ 	} while (++ci_off < ci_end);
+ 
+-	folio->swap.val = 0;
++	folio->swap.val &= nr_pages - 1;
+ 	folio_clear_swapcache(folio);
+ 
+ 	if (!folio_swapped) {
+@@ -336,7 +341,7 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ void swap_cache_del_folio(struct folio *folio)
+ {
+ 	struct swap_cluster_info *ci;
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 
+ 	ci = swap_cluster_lock(__swap_entry_to_info(entry), swp_offset(entry));
+ 	__swap_cache_del_folio(ci, folio, entry, NULL);
+@@ -362,7 +367,7 @@ void swap_cache_del_folio(struct folio *folio)
+ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 				struct folio *old, struct folio *new)
+ {
+-	swp_entry_t entry = new->swap;
++	swp_entry_t entry = folio_swap_entry(new);
+ 	unsigned long nr_pages = folio_nr_pages(new);
+ 	unsigned int ci_off = swp_cluster_offset(entry);
+ 	unsigned int ci_end = ci_off + nr_pages;
+@@ -387,7 +392,7 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 	 */
+ 	if (IS_ENABLED(CONFIG_DEBUG_VM) &&
+ 	    folio_order(old) != folio_order(new)) {
+-		ci_off = swp_cluster_offset(old->swap);
++		ci_off = swp_cluster_offset(folio_swap_entry(old));
+ 		ci_end = ci_off + folio_nr_pages(old);
+ 		while (ci_off++ < ci_end)
+ 			WARN_ON_ONCE(swp_tb_to_folio(__swap_table_get(ci, ci_off)) != old);
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 408f6c72fb5a..c01bb490f4fc 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -230,7 +230,7 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+ 		folio_put(folio);
+ 		goto again;
+ 	}
+-	offset = swp_offset(folio->swap);
++	offset = swp_offset(folio_swap_entry(folio));
+ 
+ 	need_reclaim = ((flags & TTRS_ANYWAY) ||
+ 			((flags & TTRS_UNMAPPED) && !folio_mapped(folio)) ||
+@@ -330,12 +330,14 @@ offset_to_swap_extent(struct swap_info_struct *sis, unsigned long offset)
+ 
+ sector_t swap_folio_sector(struct folio *folio)
+ {
+-	struct swap_info_struct *sis = __swap_entry_to_info(folio->swap);
++	struct swap_info_struct *sis;
+ 	struct swap_extent *se;
+ 	sector_t sector;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	pgoff_t offset;
+ 
+-	offset = swp_offset(folio->swap);
++	sis = __swap_entry_to_info(entry);
++	offset = swp_offset(entry);
+ 	se = offset_to_swap_extent(sis, offset);
+ 	sector = se->start_block + (offset - se->start_page);
+ 	return sector << (PAGE_SHIFT - 9);
+@@ -1803,7 +1805,7 @@ int folio_alloc_swap(struct folio *folio)
+  */
+ int folio_dup_swap(struct folio *folio, struct page *page)
+ {
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+ 
+ 	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -1829,7 +1831,7 @@ int folio_dup_swap(struct folio *folio, struct page *page)
+  */
+ void folio_put_swap(struct folio *folio, struct page *page)
+ {
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+ 	struct swap_info_struct *si = __swap_entry_to_info(entry);
+ 
+@@ -2033,7 +2035,7 @@ int swp_swapcount(swp_entry_t entry)
+  */
+ static bool folio_maybe_swapped(struct folio *folio)
+ {
+-	swp_entry_t entry = folio->swap;
++	swp_entry_t entry = folio_swap_entry(folio);
+ 	struct swap_cluster_info *ci;
+ 	unsigned int ci_off, ci_end;
+ 	bool ret = false;
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 79cc7b546f13..a774877a919a 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1383,7 +1383,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	 * not locked.
+ 	 */
+ 	if (src_folio && unlikely(!folio_test_swapcache(src_folio) ||
+-				  entry.val != src_folio->swap.val))
++				  entry.val != folio_swap_entry(src_folio).val))
+ 		return -EAGAIN;
+ 
+ 	double_pt_lock(dst_ptl, src_ptl);
+diff --git a/mm/util.c b/mm/util.c
+index bf0513d1d3d0..1209f85251a3 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -727,7 +727,7 @@ struct address_space *folio_mapping(const struct folio *folio)
+ 		return NULL;
+ 
+ 	if (unlikely(folio_test_swapcache(folio)))
+-		return swap_address_space(folio->swap);
++		return swap_address_space(folio_swap_entry(folio));
+ 
+ 	mapping = folio->mapping;
+ 	if ((unsigned long)mapping & FOLIO_MAPPING_FLAGS)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index b4c9b8f3dfe9..9a0c8815fb69 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -731,7 +731,7 @@ static int __remove_mapping(struct address_space *mapping, struct folio *folio,
+ 	}
+ 
+ 	if (folio_test_swapcache(folio)) {
+-		swp_entry_t swap = folio->swap;
++		swp_entry_t swap = folio_swap_entry(folio);
+ 
+ 		if (reclaimed && !mapping_exiting(mapping))
+ 			shadow = workingset_eviction(folio, target_memcg);
+@@ -1049,7 +1049,7 @@ static bool may_enter_fs(struct folio *folio, gfp_t gfp_mask)
+ 	 * a swapfile that requires GFP_NOFS I/O.
+ 	 */
+ 	if (folio_test_swapcache(folio) && (gfp_mask & __GFP_IO) &&
+-	    !(__swap_entry_to_info(folio->swap)->ops->flags &
++	    !(__swap_entry_to_info(folio_swap_entry(folio))->ops->flags &
+ 			SWAP_OPS_F_REQUIRE_NOFS))
+ 		return true;
+ 	return false;
+diff --git a/mm/zswap.c b/mm/zswap.c
+index f3ae3c81e48e..6ff2cda52b9e 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1475,7 +1475,7 @@ static bool zswap_store_page(struct page *page,
+ bool zswap_store(struct folio *folio)
+ {
+ 	long nr_pages = folio_nr_pages(folio);
+-	swp_entry_t swp = folio->swap;
++	swp_entry_t swp = folio_swap_entry(folio);
+ 	struct obj_cgroup *objcg = NULL;
+ 	struct mem_cgroup *memcg = NULL;
+ 	struct zswap_pool *pool;
+@@ -1580,7 +1580,7 @@ bool zswap_store(struct folio *folio)
+  */
+ int zswap_load(struct folio *folio)
+ {
+-	swp_entry_t swp = folio->swap;
++	swp_entry_t swp = folio_swap_entry(folio);
+ 	pgoff_t offset = swp_offset(swp);
+ 	struct xarray *tree = swap_zswap_tree(swp);
+ 	struct zswap_entry *entry;
+-- 
+2.53.0
 
 
