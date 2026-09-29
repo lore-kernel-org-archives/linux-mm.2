@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E999CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 11:33:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B18CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 11:44:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 400AB6B0088; Tue, 29 Sep 2026 07:33:18 -0400 (EDT)
+	id BB5236B0088; Tue, 29 Sep 2026 07:44:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38A4C6B008A; Tue, 29 Sep 2026 07:33:18 -0400 (EDT)
+	id B66546B008A; Tue, 29 Sep 2026 07:44:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22AB06B008C; Tue, 29 Sep 2026 07:33:18 -0400 (EDT)
+	id A7C5C6B008C; Tue, 29 Sep 2026 07:44:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1A6D6B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:33:17 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 878776B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:44:09 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 693A78049E
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:33:17 +0000 (UTC)
-X-FDA: 85266588834.20.6EA707E
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F5F51A0493
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:44:09 +0000 (UTC)
+X-FDA: 85266616218.20.05323A5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CC4BFC0005
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:33:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDfq3ESV;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 86684100005
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:44:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fj4X+yZ5;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790681595;
+	s=arc-20220608; t=1790682247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+gknYVW9XCp81xeC0RXx9vcOUHAJigZEtqY/xe8b6c=;
-	b=0L2FmijKb/GXtbKaqn/D6TO9B2ThTerlKdG4wtPRCqvz2ZXXgUWvMEGZxJeQEKqtFh7dDL
-	VxP5Jb7nV18XhVxH9dWXwGWk1ILOD7E6gnuTTdcv3ZODw52L8JKUl48umtbjq0hS27cfZa
-	w6WdjTZNpsPK7qPRq+JObAb5BzYsUVE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDfq3ESV;
-	spf=pass (imf22.hostedemail.com: domain of will@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=will@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=JupBWX5Dgm/XapolKaVNX89w3aaQEMjgcwgvyhJcaKU=;
+	b=OmAjDnyuHXBsAdeXghJQQcV1Z+mxnnpd3KyVGwASx6sxoqmyvEpgBxQgf7idT2zgbwLQaG
+	dcTT8JxOjYWQKgdwHTYV0McnoxZNn1eROHghGXOVXgxtF7Pa2xN8dfHpQ3RRXHWogstMoj
+	waeEugEnXb8KEq+IXi7bdMDDm0CLhfM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790681595;
-	b=b42ECiHNGTGsCYuPbmKh6II1I0yGOOD763zRFs7fzf2hxrDdnYmnvUHFfWLIQuFqIBxqff
-	ktsVBQ3gYGKD3qDWTbONThK537C097ROT5RN5+9R5wN22nVeTM01XUi/YAS4h0M+hgjNEU
-	kbota1JTV8tHTLO820KDZlUO1xeExq0=
+	t=1790682247;
+	b=Y1JZpp6lriUF/NCQOALoM6YUrNsk1n+grI0aHh0ocLVhYV/wHYn0zEzpe+k7yoiyd+p9aW
+	c43kFS7aqGnGntWnhGNeWCk8leuWSDSw53sILGy4Wmiymf12n9aORZ41UkVmZqZqghPLwK
+	2+kooDQdC4EbqqMsVDy6QUt6++SaM90=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fj4X+yZ5;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5955860008;
-	Tue, 29 Sep 2026 11:33:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 998C31F000FF;
-	Tue, 29 Sep 2026 11:33:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 46D7F60216;
+	Tue, 29 Sep 2026 11:44:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400A61F00899;
+	Tue, 29 Sep 2026 11:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790681595;
-	bh=e+gknYVW9XCp81xeC0RXx9vcOUHAJigZEtqY/xe8b6c=;
+	s=k20260515; t=1790682246;
+	bh=JupBWX5Dgm/XapolKaVNX89w3aaQEMjgcwgvyhJcaKU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=eDfq3ESVa10xLkpSv+CeI5FF1JUQktUhny83NdvHPN+F/Gsl0SORQ8nYLanhlRObL
-	 3rtdxQBVjPAYI6hiVUnHd2NqzqZjFK+DdiO30XeURd23enxO2BENrhbozvNTo5RMYo
-	 MYRqeYSyedXYG4xB4W19ElcDnoU1dp5FvngYHL6+vLcL7hF3RwBnN7qcbNHBTDS8zJ
-	 G4jFmbmUNbbCax96iFWSepuDD2HCv4SUjvmjwVLpy5ix5REIGjVm+psvkgOeJbOSOT
-	 dtC2VTT9NqBZqFMgmDJbtzbdP8r2tD9CXrS2Vf0OI6pkF21ISs5ROETw/aW89lfLlc
-	 xH4NbBNe8Tgjg==
-Date: Tue, 29 Sep 2026 12:33:07 +0100
-From: Will Deacon <will@kernel.org>
-To: sumit.garg@kernel.org
-Cc: brendan.jackman@linux.dev, Vincent Donnefort <vdonnefort@google.com>,
-	catalin.marinas@arm.com, rppt@kernel.org, akpm@linux-foundation.org,
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
-	mark.rutland@arm.com, ardb@kernel.org, thierry.reding@kernel.org,
-	david@kernel.org, danielmentz@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <aruh86rd5FMv2i9G@willie-the-truck>
-References: <20260921110050.3977591-1-vdonnefort@google.com>
- <arIYtjmSKCs14SqO@sumit-xelite>
- <arKW_91EeKA-w96m@willie-the-truck>
- <are21BjeS1O3RYE3@sumit-xelite>
+	b=fj4X+yZ5nn4k+cLEiL2kKRq/ZLId3xzZ1TtrXnvnz6oyTRR9SiGtndisyhUv7Gahn
+	 oSt2r4vbBBpQ1RgLMsnp8Z2Zgu8L0XHxhZv/rJXenox8fk2ey39U+H37ranOlf2oZo
+	 aJmzPDhKOG5FYTh6+v+hhrFJTl7Y8MTT1FlNrCNFjh6KsMu9GgjKxrDSpuZwTG2MCJ
+	 94QxjRJ7A5JMXzBAzZ8U9sjI/nyYST6jM9t7OWW6vF4tlITQnWQSxEZTKpuCyG9yV5
+	 ItVM8X3RCemKdMqwHRGmDhoAs3fj/+OTrqUN+pyJdgT1RZL0TdAXXkbHUxoQfQ0O9l
+	 /kPEIRUoMZxOA==
+Date: Tue, 29 Sep 2026 12:43:57 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	"Gregory Price (Meta)" <gourry@gourry.net>
+Subject: Re: [PATCH v4 2/2] kselftest: mm: fix intermittent failure
+ khugepaged test
+Message-ID: <arukdavnogCNfrzm@gremlin>
+References: <20260929-fix_khugepagd_fail-v4-0-2169c18f2576@arm.com>
+ <20260929-fix_khugepagd_fail-v4-2-2169c18f2576@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <are21BjeS1O3RYE3@sumit-xelite>
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: CC4BFC0005
+In-Reply-To: <20260929-fix_khugepagd_fail-v4-2-2169c18f2576@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: w3g6dw8g7wakx3z5nt9w6b9917o8nzm1
-X-HE-Tag: 1790681595-244894
-X-HE-Meta: U2FsdGVkX1+2TSXpIcWD6lDTcvWQdZgKj4cKzqF4cMG82X+cUxC6EtFPe0qa19IVkmJIBe1mwIvChGZwECa/prbCElBpvjecWPXdLpK+f8s/z4+C5EybD41v3b/ySoVnk9eWDLNZmYg3bn7L48Qf4sXK33NQgT4Ni8oMLlqL49sZB5IagyXQjoAwMCk04I6RCN3lOE3JCxh7jDPJNJs+2rexhreuNgpNl7N7Y+IO1R7N+qDDP8z593YjglSLn2bn1mRaDi+3oWAMnIJ0XVgqopMpf7jvfkLAwGJKk/qTKFMhFJQFRE/QDMNdkttCKR6nM+9slRZJoqLZrYI2kV2KgQLQrgQxVFdFPZ9N0B9E/MPmD2HSp3MaGESXPSo/wCAV3Kd65rb/M3oR1mUZ/2vpgZrXgsKBLZLxAublPFQGVKfcu+oCgsj/WPXcQDYGw5qt3vI43FQtzjmeXU/Pnyb7MHOPPSdJWoYvxou0aFwywXqdXqP+jsXYB+/i2AlwNgEMvnl3ATrfphPtfmPAGz+DlYIw7WCVG/dDs2a2O0N793RXJXjRGbriujmfkZtEKt4bhnEK/LDf5czk023yA6SIzo5uDKMsqt6IF7G5FfTTc1tRf3cfQngH7NWH5zaI8Z15ekuyJxs0h7zQ+T8gS9Av10BHyw4/RHqKonTE8pjgRmUUR4t5Dn/xkdFqxfSb0S3LgqiJ4cnbBCqUFubOFVMrNJR9KFfb/cwsV06om0AEeakV4cl7cOfwXIlOark9vwjQz/FdbtsINId+VDQSkrXsytmro4Tn9p3ZXzEeZ3YOW587MFzEPBaPJ0PrqW82SJ32Kld7PtVBVnIyigUsb5CWFyKI9lbofA/QAcgOK1oPp60tqDc3ptEFNq9KhIBwxMjIfg7eO5QcBiLHA6PrAxbfQWcK6Ot75wb/8JP6Xd+2K83gq99GZeyvb9PkmlvIw5yhi8cRm0WvzzfjpM5qEtb
- OcGN9tlj
- 2ieWtQivTdkG8NuFaOrokVRK/XETOUz3zQqlFYc2DaL5Yz4S6F74p3ytt+Xpzg7vAoGvOoeToGY5y00EznMQ+gA084OWJfAPCo3792jE1VWG6DymgRbiqaEjY5pFy7JNBYahDBzmZbxl73DILsUwU0flE4IBQ+1+l79Q1WSutpuCPibVrtSGDurT4rIfgbw45NbN4Ce6i/HgmzESYDzro9aFY0Ipa11bfQdHNxVYIW5IX06kzgF3saFQASeZLJcQnFGixO2O0w7org+cNJbJr0oajnQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 86684100005
+X-Stat-Signature: 4pcq1ob4nyw67tcbhrdywi77fu8k9ru8
+X-HE-Tag: 1790682247-375713
+X-HE-Meta: U2FsdGVkX1/kPS9HAfW693DO49NlGhe3FIQJ5ijzRRKNu3sXIXsMKyEMf78m5F5A0DOr11W0tntzGFAnQvWk0sA3or9veM9CT8g4fawk/jzbrMJsj94RxKS7Bs2HZzmkEkhXjPoV/NkUpdUmL+zJX401D4L39Gh9Vgl6RXhVLr0H3fUpifC0WFoVH1bTYXWOS2g13YLAT/6zgf6WMEmfrLBiq7CUnnVzjxu06OyVuu14UwKtrl8V4YsJ4GeUcNftVuD1TKAyQQjFJaiE5NnTj1jNzdrv2mX+zt4zM9qBg6GD4qhxw9Whz1XhlpdMc1M5o5ATDWMZ5a7vw0RFfXu4FZYsfAvAwlbaFjH5qOmXU69uLWzyh1rUenYqmNsWg2qlSCsPTNFdayQjQKQOARyOcIKpShu1XhDR3jOs3FJmdQHbYrVB48HVglH0s3QRvPdelswR/Df+mNrOBmXV+ASIkru/TcwR7OIXU2REH3Ei7qcUSM6LgdSn/4jBERliyag19cEPNcYyND0AGWB1Fx3nXalXeJWrQMenif+mqSHqVoX6GAC3GKmqg/9yHTdsHdUfrRuMCl43YcSbwghPb5AxyvWma1vPcYVooily38QhB6YbCyl1xTdW/R960DzO52+UcGuTpuzOSBJBE+5JjMmSYZBJw4fkbfFD6uZSuxD+/xGA7sSnxe0ME+//+x8QD7KY6VfKTF0C5dmVu2ywNHYKZeN1Q2GcZXO4b3GnCaZ8pt2xBLlvXQCmF7hLzIFf92C861Z+Q+cbub8WuvQuhrJzE3rBs7Z+0kohZsl7SjO2AEjLD0xqkCOapvq31A9UWHIpLEhQBso4ay7Hd216rXfs9AD8KKEe9Q1mMKcpaOWUysC6QV5eC9xrJjqyWiknsYiHTf8DUUlpzdiuxPnEwafEzSmoGzEv7EPrElIvNGbkELeZNLDzMsD4B+Ja0HhYF3yVH9jUXr2GyZVaqBENq9k
+ oguiLf/V
+ 4p41Uhs2tIyDkL5m2Qd28fup1W1PFoSS2ASVyOlOiq7of7LYe6ybefUGqIJGO83VarD0HU3ffnHDhcCM1eu0mhNwrpSDXUgI3+CxM1ZIdI8UXTEi4//dE7G3KH2zVAhOVNFPzx7TfFHNOjvEWCpA7QMPMJiDtSs4yZjEDRVav0pBbrTEEWKejcYHfuZHHhH3VcaKy+dQw+5Gfysjj04bYTlljUdvgvl/nwqC31YrYGZJocgS/daPllwSfidtt9uQpUCGifgSjdHPBeIBfrEkG5ER93OKiAVuyLgaAdf3t8OeGOWubzTZuoiMW1e2vPS0u2bN1WeKf3WeTiD0R8xfwMhfjYJbBFKdF4XFuvd7h8CElY4Rh2iesQ+RNVI4v7JS1XL0EmmAWgyonT8LjVwoeJaIsR89Xl90DLJyZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,57 +100,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Sep 26, 2026 at 05:43:08PM +0530, Sumit Garg wrote:
-> Looks like you dropped me from your reply.
+On Tue, Sep 29, 2026 at 11:33:19AM +0100, Yeoreum Yun wrote:
+> There are intermittent failures in collapse_max_ptes_swap() and
+> collapse_max_ptes_shared() when using the khugepaged_context:
+>
+>   // while running ./khugepaged -s 2
+>
+>   # Run test: collapse_max_ptes_shared (khugepaged:anon)
+>   # Allocate huge page... OK
+>   # Share huge page over fork()... OK
+>   # Trigger CoW on page 1023 of 2048... OK
+>   # Maybe collapse with max_ptes_shared exceeded.... OK
+>   # Trigger CoW on page 1024 of 2048... Fail
+>   Bail out! Unexpected huge page
+>   # Planned tests != run tests (26 != 23)
+>   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+>   # Run test: collapse_max_ptes_swap (khugepaged:anon)
+>   # Swapout 257 of 2048 pages... OK
+>   # Maybe collapse with max_ptes_swap exceeded.... OK
+>   # Swapout 256 of 2048 pages... OK
+>   Bail out! Unexpected huge page
+>   # Planned tests != run tests (26 != 17)
+>   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
+>
+> This happens because khugepaged may collapse the pages before wait_for_scan()
+> is called, causing a sanity check that expects uncollapsed pages to fail.
+>
+> For example, in collapse_max_ptes_swap(), after faulting the pages back in
+> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
+> before c->collapse() is called.
+>
+> To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
+> collapsed by wait_for_scan() for anon. This prevents khugepaged from
+> collapsing it again before c->collapse() is called.
+>
+> This failure was observed on NVIDIA Spark with 16KB page.
+>
+> Reviewed-by: Gregory Price (Meta) <gourry@gourry.net>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 
-Huh, that's weird. If I hit reply-all ('g') in mutt, it moves the entire
-CC list to To: and drops you. I suspect the same thing happened to Thierry
-when he replied here:
+Looks sensible to me so:
 
-https://lore.kernel.org/all/arJcN60nagFKXj2Q@orome/
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-I can't figure out why that's happening :/
-I manually tried to fix the To: and Cc: lines in this message.
+> ---
+>  tools/testing/selftests/mm/khugepaged.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
+> index 2aa7c9197158..4e888b7bf310 100644
+> --- a/tools/testing/selftests/mm/khugepaged.c
+> +++ b/tools/testing/selftests/mm/khugepaged.c
+> @@ -618,6 +618,16 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
+>  		usleep(TICK);
+>  	}
+>
+> +	/*
+> +	 * The file and shmem tests rely on refaults to install PMD mappings
+> +	 * after collapse. MADV_NOHUGEPAGE would prevent those mappings.
+> +	 *
+> +	 * Apply MADV_NOHUGEPAGE only to anonymous VMAs to prevent khugepaged
+> +	 * from unexpectedly collapsing pages during the test.
+> +	 */
+> +	if (is_anon(ops))
+> +		madvise(p, len, MADV_NOHUGEPAGE);
+> +
+>  	return timeout == -1;
+>  }
+>
+>
+> --
+> 2.43.0
+>
 
-> On Tue, 22 Sep 2026 at 15:55:59 +0100, Will Deacon wrote:
-> > I spoke to Brendan at LPC (?) last year but this doesn't really work
-> > for arm64 because it relies on being able to unmap arbitrary parts of
-> > the linear map, which isn't generally possible unless you force pte-level
-> > mappings for everything, which is prohibitive for perf/power.
-> 
-> As per the cover letter it's about allocating pages that are not present
-> in the direct map. This essentially fits the protected DMABufs use-case
-> where we don't want any kernel mapping to exist at any time. Bufers
-> allocated from protected DMABufs are only meant to be accessed by the
-> TEE implementation or HW accelerators like in the secure media pipeline.
-
-That sounds like it should probably build on top of this series, then.
-You could allocate the DMABufs from a CMA region that has no linear alias.
-
-> > Vincent's series tackles that by using a pool so that only that part of
-> > memory requires the pte-level mappings in the linear map. That's the
-> > whole point of it, so I don't think it makes sense to drop it in favour
-> > of Brendan's approach (which doesn't work).
-> > 
-> 
-> For protected DMABufs, we even don't require any pte-level mappings in
-> linear map. The whole idea of mapping and unmapping is just a bottleneck
-> for performance sensitive secure media pipeline use-cases. That's why if
-> we can support __GFP_UNMAPPED with the memory allocator on arm64 would
-> be the best fit for this use-case.
-
-The point is that you will require pte-level mappings for the linear map
-if you want to unmap from it at runtime on arm64. If you don't, then you
-can end up needing to split a block mapping (e.g. pmd-level) when you
-decide to unmap only part of it and there isn't a safe way to do that on
-arm64 without transiently unmapping the entire block, which can lead to
-fatal translation faults during that window.
-
-> Now the question is why arm64 can't support __GFP_UNMAPPED similar to
-> how Brendan is doing it for x86?
-
-Because arm64 != x86? Presumably x86 doesn't have the strict
-break-before-make requirements we have on arm64.
-
-Will
+--
+Cheers, Lorenzo
 
