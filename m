@@ -4,97 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 849CACA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:33:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C48CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:35:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6382A6B0088; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
+	id 68BC96B008A; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8E16B0092; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
+	id 63B7E6B008C; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FEFD6B0098; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
+	id 579186B0095; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F9546B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:33:02 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C69640445
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:33:01 +0000 (UTC)
-X-FDA: 85266134562.24.8CE54D5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D75F40006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:32:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omxEZyzD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A9736B008A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99557140441
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:35:32 +0000 (UTC)
+X-FDA: 85266140904.28.0ECEC2C
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 272904000A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:35:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670780;
+	s=arc-20220608; t=1790670930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kWgQ7PY++KZOODIaGPn/6f7fWLLF6eJjFXK1cuplJqI=;
-	b=3znNdlMxGuCp0SNLalQKnvTWtPbN+igrP0sk1142uROKk5tq5AregD4aWSTLkX/YByB0sT
-	pCoVN/iexOubtv6iHKZUs9YDDSV/56JQwwMwqLI1f75B7h9pXXRza4ykmkpXemtkwYaILQ
-	+RwEYcT2lUPvWOMO6u/K0vFelvxtXfg=
+	 in-reply-to:in-reply-to:references:references;
+	bh=0UsD9hpMiIm/RIAtugV78aZWAfXesb7Suqvu53gqeMs=;
+	b=YXkUdcti1C3u53lQr+7zoZPRkgfx8SCVgxtDnRGQFFRuPEhqgNMVu0LxT7ZB6TRRMbuaRM
+	pqoFgOr3Ho4BvNPczZsW6gVk69X7Px/yldIr+wi6kKqe5ce+aIjEzojZR5pBXZ9xIsYqAV
+	kofhP9O0iyNAAvyNufCZCJwC9Yhetzk=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=omxEZyzD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670780;
-	b=ZAnxvRmI05S4wCIIb4Dghvlaqj3c36y2gt9Gv0OifqnigytE4ilWoLNN2SrQwKGZ2mLE/j
-	xyXjrNJhxjUmSCaMoy2JyMpc+OvhQ+5Y6EVfiHSECO+3rX/EjK3E14g7OGO28lUoMlW4Wp
-	7kAjY52uvaAATydRxdd4wBb0echKDTU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 93B8660A59;
-	Tue, 29 Sep 2026 08:32:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544F41F00893;
-	Tue, 29 Sep 2026 08:32:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790670779;
-	bh=kWgQ7PY++KZOODIaGPn/6f7fWLLF6eJjFXK1cuplJqI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=omxEZyzDwbTL1f+vpJPwUGu5x3lHd9zjhTmd0ryL+3e6loQf5WiX5DwS1z7MMgsyv
-	 fTrf3/ndS/R0PA14bGgvxLxv0SbwcZNsewFfrnwsrqYHBqy4W7DgI2jh+g+Z2sBENM
-	 WSDsjjnimLufz3POC8dGk49KDEzfFrokBGbTqCXS/ue9RoO2fs0X5vM5rD+7AgxmWo
-	 3+vGXK6ZoYpXJjs2G+5U7ZsfALTGTteeIsNzul6a9ZRdahZMLHcs8lXurzwnHnBx7U
-	 frDhAgEr6gdZO7mpoYJEyxvtlDGjveQPqybu+3A8RzsoRKomv8UXAycN5tiftu2R9D
-	 iPbBIn2flF0Ww==
-Date: Tue, 29 Sep 2026 09:32:50 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v3 1/2] kselftest: mm: return fail when child test result
- is fail in khugepaged
-Message-ID: <art3m_g5OLBTrE4W@gremlin>
-References: <20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com>
- <20260923-fix_khugepagd_fail-v3-1-b387e92fe1a9@arm.com>
- <1246dd4e-b2a1-42e6-8fcf-7e6b2514cb87@kernel.org>
+	t=1790670930;
+	b=kAgRT4IQS4FFjzF+YslbuBiZ4DpTy+PAUFUHYJLIMuWXSdyufvu8RMpDVWXesx7UdeduY5
+	leV4DydpvSBRFp3qVcczoVlYZ7oAZndyuLTHVyxUDdx2NSxbVZGXRsP68UIPs/qMfz5L3l
+	RKjUIZjBnaFEsmfNSH6jVAEGGukRDMg=
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hvBLj71dtzYQv1c
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 16:34:53 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E1B7140579
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 16:35:20 +0800 (CST)
+Received: from [10.174.178.176] (unknown [10.174.178.176])
+	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgBXdCdGeLtqQxpoCA--.31456S3;
+	Tue, 29 Sep 2026 16:35:20 +0800 (CST)
+Message-ID: <f05f6de8-121e-4897-9a0f-f9bf9edaae4e@huaweicloud.com>
+Date: Tue, 29 Sep 2026 16:35:17 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1246dd4e-b2a1-42e6-8fcf-7e6b2514cb87@kernel.org>
-X-Rspamd-Queue-Id: 0D75F40006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/4] mm/truncate: fix data loss when truncating
+ straddling large folios
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, david@kernel.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, hughd@google.com,
+ baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
+ ziy@nvidia.com, bfoster@redhat.com, joannelkoong@gmail.com,
+ djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
+ yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
+ yukuai@fnnas.com
+References: <20260928120833.3440834-1-yi.zhang@huaweicloud.com>
+ <20260928144901.83cc90357c9a488e94fd6785@linux-foundation.org>
+Content-Language: en-US
+From: Zhang Yi <yi.zhang@huaweicloud.com>
+In-Reply-To: <20260928144901.83cc90357c9a488e94fd6785@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgBXdCdGeLtqQxpoCA--.31456S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxWw4xXF1xXFW5Jr15Kr1DGFg_yoW5ZF1rpF
+	W3Was8Kr4kGws7Cr1xZF4UWw1rtay3XrWDAFy5G3Z7CFsagr1IkFWftw10gFWUGrs7Cw10
+	9r4jv398u3Z8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7
+	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
+	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
+	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_
+	WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	jxCztUUUUU=
+X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+X-Stat-Signature: ku57ngpaypo9qmmfo1epgp5j1q35qgew
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Stat-Signature: da8o7wjnbr8a7xo4cf1a99t63t6fx8ye
-X-HE-Tag: 1790670779-39385
-X-HE-Meta: U2FsdGVkX19Y2gQLJysHL2qzCAusLBc+Kij4tWGdrlm1xE+ZV5ld8NlxmJAywHc6iO/iO8JvCeAkXrSBqYPH4KxeGURf/K+gfychkg7UZpHjfNcMensfEYUHbii1r8fJURQicIPJ4ZMifUhmjvln/uUha5qR4H8d+PoMG72NIXckPk0nATxWEQcCyoSjMNiVu+SrdD7f7g+dnwusjV7loqeQS+fbgja+7KEP/i5J5mbfFvduJ2XMChuNj9GxUwdplaLUtixzmWd+B+ZVgi1oMZgn4ACf/1QWmd4ntmGF+dxH2J8DT8ibakN6RRMuE4YAZenTL8Fl9LaImiTbh9LhFhuVfbRWekSiLCi8IU5pnypq1kCqIVtuH5vZrMSTmNAaVDIMrp1yl21pwWO/3PP4GER7NHA+e8sCoErf9MjPiJGQOcqA5/9xQirQ1KEcSAEayJP1eJUOpj/fIVjRA4GHyof0DAmTP5+X27/IRhX2cAn8MTz1LFl8datQagl6vOzNN9kHD4a/x/3GnUK7W4i4CeIIZHNmu3jjgTdxKhowSA3FQ8A+0SHEHS0+i5jkJfltX5Hdahj8OEM77Ahy+XcG8yM+2TrAbJa5vIYKOHkL7dGuWuNsrPrp2m8VUsIxapVSlzD7D8Hu949GK4O5u+/rhB7R2XzY/mBMuxzz+Ds7tmOXOEPtViH8Ojl4pNrSRQhI05X6lAqvH4zUxyBmjBRYItL6O7LCaeAJvNAxhOnxlRprC05ydJD5/nKGIM7+fZqPteWFhix+iurjQ9c0JJ54V8o3kuwrTAA8NPyq0MPvzPUK9xnDucsOEadxiKPCNaZ7EjGNFEAa6nubej8kjHzJKwO08k7kyv2wsKgdE3xN9MQ8qetKoC4BVG2dEQhZdUUpIaPpLgz7bEoqlckaDqALyyKUHatJXpngPV7fX/ExPrWUSXcjyoOTROonLtsFzrm4fUDP1wSF1j4WDNghFf0
- O9vBOctx
- PQhJXeg+iJ+i82h35GHYy/o9k+NvrOfAJF7nJX0ahsxtg3Yp770zW+sn5uFLoX2zakdXYQEj/Het8CAVKVYPapmP0RXTdgBMEqaJYUskzGsT8slVHpBf5ljNygDakM/YYFj53sY+wHbi2Gq0EmcpvmS/v/yLEsMsu2Q0G0NTIR41NmhZYLZ3JFMoTKydWoxZlLFA/GieZGNHvbm4aCtiJam+uh5kRShawE2zWQMTu0q9SeEmanAKbXE4BUl0bBtQVCxdqDo9SntWt69ocEv3DTU35XgMF77bR8JtkD/fymz9tS50fZ/E1/biP+GySPvL2I2yYBzu6F7Avwj831yVAKAdVdmUQvWVcXp02aKaSVmKTA8YDuq+ahKTd/fcvaEa+N4K0
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 272904000A
+X-HE-Tag: 1790670928-94363
+X-HE-Meta: U2FsdGVkX19cE3oeeXATAZUpUjmrzwVeRuWNCn6IQTdGxRs2by3dQKuPdXlkcw5WluMiaxLyPgNV8cblH3eJvsLVZ+drnmtzq2mCcdE1yQZOFIo9Ycsw9DfH78NFJ0RHsCH62c44OvbHtCixBxDWu/XxTGDn+ZIX5/tkS3cE63MO6p2jwBr4RnYcKD2j8qA5hhN84xLOEVjbvB26n2LD4UNnYUCkXXMeqnhC8AtelFLhthIEzIo1ljdPPyrKki/Pv9fhbbkw25KHpWyna/HRaOJKjrSZ7fZfesQy4kk2aSlMSwU2UtkyofiBVHvQ4b+kGu3aPkQ25RBZPByEGeOpjfLm6s2pPOYj9nOii/OpelnhJ0RV6CzI2QtYsOety3s255VJsyjz56JOG0JyKJBb8cQEMa0PmQ+OvDd434xrXAqO+VD9fSYgcE2pxEtT1Dpa4i4vxA0CanP3q7dF4jA9CATEiCF7ExHbjsaDinopM8KCSK28aY7Cc+dKL69rmldqmRuECC5p+eTunEJkbLEGo6NN7gX2UkmSdTaK5jJ/BMY/dmDci+h5tyUz+wS+DbGFpFyc0/YTTDPR/l/nn7Wh6+DJZoFqM1OfCtNxNLG30KEyOBy3V50VlJU9Qw4D6Cf3OQCsidY4nsq80nJfV0OhuhOwFqM/EFrzMdigvD+Y0Z4BfXE05W9JN2r5imwdHIXPikknmAEVd4HbFDRRNEDRfEteRftOpCSKfdrhAhYhILJUdlsncPztPetSMqmy09hpjJ5IeVkjhX6h8LV/YEZhsnHNmJTkEDDJAWBUYf/ZNl/fTFhNu+fuAo3S/wncyPkqweEdzWuss0N+GqGtbOiJhmrhf4gtub+TGbdHWfnW2Q/m2N1s7Y6dhxQY4XJ015izueWz5sedEgE6AgeYX0CNzWPQZrvi78/rf1x646ki2OHmbYnnWG8CL8McsH5Sn3Q5kxkOUFygQlQpFXRue6I
+ wcN4ecGs
+ yZZzUCjRuXPEcRDx0WUMN4SslSlAnHB7mOuBm+aqOXUbgFAjeGNpINSioU5/k66kNZAnHCQo5Acw86CrwVnXtm46QE1DotUW/NzUhuvNYBILGwNLChYPqiITu6HXwlP9RaczX+CdmSpwf/ISiI/ebqgSm0JWUI2wnmIqXl2GUrmynRBE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,55 +112,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 10:21:53AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/23/26 17:29, Yeoreum Yun wrote:
-> > Although the child process in collapse_fork*() or collapse_max_ptes_shared()
-> > reports `KSFT_FAIL`, the result is ignored because the test only checks
-> > whether the parent’s page was collapsed into a huge page.
-> >
-> > As a result, the test is considered successful whenever the parent’s page
-> > is a huge page, even if the child test fails, as shown below:
-> >
-> >   #
-> >   # Run test: collapse_max_ptes_shared (khugepaged:anon)
-> >   # Allocate huge page... OK
-> >   # Share huge page over fork()... OK
-> >   # Trigger CoW on page 1023 of 2048... OK
-> >   # Maybe collapse with max_ptes_shared exceeded.... OK
-> >   # Trigger CoW on page 1024 of 2048... Fail
-> >   Bail out! Unexpected huge page
-> >   # Planned tests != run tests (26 != 23)
-> >   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0  // child failed.
-> >   # Check if parent still has huge page... OK              // parent hpage success
-> >   ok 24 collapse_max_ptes_shared                           // considered as success
-> >   ...
-> >   # Totals: pass:26 fail:0 xfail:0 xpass:0 skip:0 error:0
-> >
-> > To address this, propagate the child’s failure and skip the subsequent
-> > check in the parent.
-> >
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-> > ---
->
-> That test implementation is rather messy ... :)
+On 9/29/2026 5:49 AM, Andrew Morton wrote:
+> On Mon, 28 Sep 2026 20:08:29 +0800 Zhang Yi <yi.zhang@huaweicloud.com> wrote:
+> 
+>> From: Zhang Yi <yi.zhang@huawei.com>
+>>
+>> Hello,
+>>
+>> This is the fifth version fixing data loss when truncating straddling
+>> large folios caught on the upcomming ext4 + iomap buffered I/O
+>> conversion.
+> 
+> Thanks.
+> 
+>> When truncate_inode_pages_range() punches a hole or truncates a file,
+>> truncate_inode_partial_folio() splits a large folio so that the caller
+>> can drop the in-range sub-folios while keeping the out-of-range tail
+>> intact.  This series fixes three distinct problems in that path that
+>> can each lose the valid out-of-range tail of a straddling folio, plus a
+>> follow-up that clarifies the return value semantics.
+>>
+>> Patch 01 aligns the truncation boundaries inwards to the mapping minimum
+>> folio order in truncate_inode_pages_range().  With a non-zero min_order,
+>> folio_split() stops at min_order instead of order 0, so a boundary
+>> computed at page granularity can land inside a min-order-aligned
+>> sub-folio and the truncate loop drops that whole chunk, valid tail
+>> included, causing data loss.
+>>
+>> Patch 02 looks the end-edge straddler up by its page index through
+>> __filemap_get_folio() in truncate_inode_partial_folio().  After the
+>> first split the straddler is unlocked and only transiently ref'd in the
+>> page cache, so the page pointer derived from the original folio can be
+>> freed and reallocated as a different folio in the same mapping, and the
+>> mapping check cannot catch it, which may cause incorrect splitting and
+>> potential data loss.
+>>
+>> Patch 03 reworks the contract between truncate_inode_partial_folio() and
+>> its callers.  If the second split of the straddler fails, the function
+>> reported success unconditionally, and the leftover incorrect end
+>> position could cause the truncate loop to drop that valid tail.  After
+>> rework, it tells the caller the exact page range safe to discard via new
+>> pstart/pend out-parameters, so the truncate loop never touches a
+>> straddling folio that still holds valid out-of-range data.
+>>
+>> Patch 04 clarifies the return value semantics to "at least one split
+>> succeeded", which is all the shmem caller needs to decide whether to
+>> reset its scan loop.
+>>
+>> The second patch fixes a pre-existing race issue that is reachable
+>> today, so it is Cc'd to stable.  Patches 01 and 03 require a dirty large
+>> folio that carries no filesystem private data, so they are not reachable
+>> on current filesystems.  They were found while developing the upcoming
+>> ext4 iomap buffered I/O path. [1]
+> 
+> Can you confirm that [2/4] will work correctly when backported into
+> -stable kernels?  That is has no dependency on the other three?
+> 
 
-Yeah, I wish we could just convert more and more tests to the harness. Makes
-everything easier...!
+I confirmed the 6.18 and 7.2 versions that need to be backport. The 7.2
+version applies cleanly, and the 6.18 version also applies smoothly with
+only minor adaptation.
 
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+From a code analysis perspective, I did not find any obvious issues.
+After merging both versions, I ran local xfstests on ext4, LTP, and mm
+self tests, and did not find any regressions, so I believe it works
+correctly.
 
-Patch LGTM so:
+Cheers,
+Yi.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
->
-> --
-> Cheers,
->
-> David
-
---
-Cheers, Lorenzo
 
