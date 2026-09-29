@@ -4,105 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD06CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 13:02:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06E38CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 13:03:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B29D6B0093; Tue, 29 Sep 2026 09:02:17 -0400 (EDT)
+	id 1E5E86B0099; Tue, 29 Sep 2026 09:03:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73BC66B008C; Tue, 29 Sep 2026 09:02:17 -0400 (EDT)
+	id 197046B009B; Tue, 29 Sep 2026 09:03:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B3116B0096; Tue, 29 Sep 2026 09:02:17 -0400 (EDT)
+	id 05DB66B009D; Tue, 29 Sep 2026 09:03:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 141596B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:02:17 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6BA3C1204EB
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:02:11 +0000 (UTC)
-X-FDA: 85266812862.11.878F7E2
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8B368140007
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:02:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VFCnV2kg;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790686929;
-	b=F/2q2N3qIBpjJXoBwyvDF/TKA2TIPzBB29Wn5oB9J9MFwWooHhw56Lhxj49IWKHCvFze0B
-	2524kq5SkakiNbuNK+qvRcvkhz0evv1CjwrT4B4H8G6TU5NLRCGMC768XYne1f5lnItQu+
-	d0eYeLmeFCekPkdkU9UaynsQeGvAtjA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VFCnV2kg;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790686929;
+	by kanga.kvack.org (Postfix) with ESMTP id D82196B0099
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 09:03:07 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7FF641204F6
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:03:07 +0000 (UTC)
+X-FDA: 85266815214.07.0511D56
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012020.outbound.protection.outlook.com [40.107.200.20])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5865D40003
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:03:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=LyIi5Iph;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.200.20 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790686984;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qqS7a9MwZbdqkkqEe8Dg53UzLbjTTNtbenRt5JmZLaQ=;
-	b=t11yJ/MFIwjeOD4VkrRGvWpizk3KaUpMLk27r3VVSEEmCfVGA9b5e4FHp3zaVTMyBz1ttw
-	8cuVcGtSaEN3CuAi6SO4Oro9U9ff6fFXn8hub9HGIrC9o4ZUsVPzPaJRs28YXEm+Fbb9xM
-	pKpTYpjwKYBkXn2YvEyboEsoOy0ZiJ8=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=qqS7a9MwZbdqkkqEe8Dg53UzLbjTTNtbenRt5JmZLaQ=;
-	b=VFCnV2kgxBl6apxhR7or5eplhLI46uWy7dZVbOpdKTqohSpxqRXYh3LGVrJYkZiHOoFnFZHY9
-	MYNoKNB5gJPuaCZG+yrw50uvhR2u0qi1XRiViXLbQtsoM+AWRHkv4qDIBnXUPZ0cB8IjCc41YUc
-	/HvqyNawaVja64Qch8kGdJs=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4hvJ0y2Mj0zmV7C;
-	Tue, 29 Sep 2026 20:49:54 +0800 (CST)
-Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id A60C54056C;
-	Tue, 29 Sep 2026 21:02:02 +0800 (CST)
-Received: from huawei.com (10.90.53.73) by kwepemk200008.china.huawei.com
- (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 29 Sep
- 2026 21:02:01 +0800
-From: Jinjie Ruan <ruanjinjie@huawei.com>
-To: <serge@hallyn.com>, <kees@kernel.org>, <akpm@linux-foundation.org>,
-	<david@kernel.org>, <ljs@kernel.org>, <liam@infradead.org>,
-	<vbabka@kernel.org>, <rppt@kernel.org>, <surenb@google.com>,
-	<mhocko@suse.com>, <mingo@redhat.com>, <peterz@infradead.org>,
-	<juri.lelli@redhat.com>, <vincent.guittot@linaro.org>,
-	<dietmar.eggemann@arm.com>, <rostedt@goodmis.org>, <bsegall@google.com>,
-	<mgorman@suse.de>, <vschneid@redhat.com>, <kprateek.nayak@amd.com>,
-	<paul@paul-moore.com>, <jmorris@namei.org>, <shuah@kernel.org>,
-	<oleg@redhat.com>, <brauner@kernel.org>, <alexjlzheng@tencent.com>,
-	<jannh@google.com>, <jaime.saguillo@gmail.com>, <elver@google.com>,
-	<blbllhy@gmail.com>, <bvanassche@acm.org>, <pjw@kernel.org>,
-	<broonie@kernel.org>, <debug@rivosinc.com>, <tglx@kernel.org>,
-	<aleksey.oladko@virtuozzo.com>, <linux-kernel@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>, <morgan@kernel.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v2 3/3] selftests: prctl: add process-wide bounding-set drop tests
-Date: Tue, 29 Sep 2026 21:02:00 +0800
-Message-ID: <20260929130200.1638343-4-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260929130200.1638343-1-ruanjinjie@huawei.com>
-References: <20260929130200.1638343-1-ruanjinjie@huawei.com>
+	bh=EnSdzzN2KtF34pEHk0SHXphMi0ngC3E/N96I0h1J5v0=;
+	b=5o6RWA5nGr0O+dEVfEXhDPj6pSIQoQ5wyAGs5oCmUn+s6EiNaKrt5TGw2xX1O/3FHmynY/
+	OJnyp0V5LcfI7Zk+q6Jmkmq3ZVU+zngvbDhe7JdCszOIpAX3P3oPF9CTg7qVcI6powUU+u
+	8WFdy+av7LsrCrJOzWdXne5qp9evy5o=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=LyIi5Iph;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf27.hostedemail.com: domain of Michael.Roth@amd.com designates 40.107.200.20 as permitted sender) smtp.mailfrom=Michael.Roth@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790686984;
+	b=fcxSinS1P5gEbbvvdKP1f95pV6tmgZJZsh26NExws6JngamARiuH2dlA8i8J4NldaWn1CZ
+	yOwihlyhjGF+OKLkNVwyeAvmbD40rKY+P2CltUoPA+NbK+R6aE4ULJyk1BM3t+xQx52htR
+	K7Ni9z0oDyqb4301D7M44uy4BEoTFx4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XwmsI7nkYU0EbY7fR9vh3X2nOY8uHbs94pepgvSMqjKkMVmYHe0IFSK4uM17cMTEUBW4Z30y5WUkGMzy9OOlNWwvD3aqdSSS/xc5OPavqG9nvdoHQ8+JSfBm4qS7M6usmYtJBDlFwvlybMN0HwoA5NW8hu4rb64roFLOVZn1RhXUrpT1DBcxD+HO8RHutBk43H1fqdff57m6A2uCR5P1U43ePygM+J3d5/CemM4Cdk1c4DYAMxGUn6RFfL1vMVffLBUYRm0PU15kuF764VEt3UdUyxghW7272vqCewrV/ju0EtQs9/Q8wfnnc6w9Uyl2bjyurhxSXNkv5XuAoE0FUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EnSdzzN2KtF34pEHk0SHXphMi0ngC3E/N96I0h1J5v0=;
+ b=M63B+6VzUQonXALtWkdWhcemgZ7EDPHv0kTOMvpJostPqsFJS9pYlPe0AS+N5wAVkzww55DHRtDWh17XzXhrsyRrB38OJxhtLj1t58K8Y04ZvTW5iPd29n007RND3i1S+0pw8dNV4cpChVgeQMQ/4YOgLqfK1xbZffh7OtR1VqkbU7Q3mXgBVV+AdYW5i4xyYP83CDJZyvjOt8obKUz58M5zcdTL5oq1eRffuhvpcvYQFyj7QjZcJSNCBw3P7NBr9VFRa1ot3KUmI8xxXBhuRV2aMR5i4wjNCapxTc9COMdoYWhoty00hKUtsmdpLFt7LP/axnAdPZG6WuGR7MBASA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EnSdzzN2KtF34pEHk0SHXphMi0ngC3E/N96I0h1J5v0=;
+ b=LyIi5IphMxmsTSIX0pmkU1h6YHu20rqcnbjZ9Zzd4ZrORPX2p1v8+BR14nCd3etjaGKDYXYdNoWEru4N3AWS/e7vEHE5znjURRlMQsYHGSXwAog1KNnTmntJ0sbDywZ9qSRE+TjFAkBEdcGp12o32ycm/+GeumfXFfMl1cJTYZw=
+Received: from SA9PR13CA0156.namprd13.prod.outlook.com (2603:10b6:806:28::11)
+ by PH7PR12MB6695.namprd12.prod.outlook.com (2603:10b6:510:1b2::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.23; Tue, 29 Sep
+ 2026 13:02:44 +0000
+Received: from SA2PEPF00003AEA.namprd02.prod.outlook.com
+ (2603:10b6:806:28:cafe::54) by SA9PR13CA0156.outlook.office365.com
+ (2603:10b6:806:28::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.19 via Frontend Transport; Tue,
+ 29 Sep 2026 13:02:44 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF00003AEA.mail.protection.outlook.com (10.167.248.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 13:02:43 +0000
+Received: from localhost (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
+ 2026 08:02:42 -0500
+Date: Tue, 29 Sep 2026 08:01:45 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Naveen N Rao <naveen@kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Ackerley Tng
+	<ackerleytng@google.com>, <aik@amd.com>, <andrew.jones@linux.dev>,
+	<binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <oupton@kernel.org>, <pankaj.gupta@amd.com>,
+	<qperret@google.com>, <rick.p.edgecombe@intel.com>, <rientjes@google.com>,
+	<shivankg@amd.com>, <steven.price@arm.com>, <willy@infradead.org>,
+	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
+	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
+	<liam@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, "Vishal
+ Annapurve" <vannapurve@google.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
+	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+	<nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu
+	<peterx@redhat.com>, <tarunsahu@google.com>, Fuad Tabba
+	<fuad.tabba@linux.dev>, Vlastimil Babka <vbabka@kernel.org>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v11 15/46] KVM: guest_memfd: Call arch make_shared
+ callback for to-shared conversion
+Message-ID: <gqybhgtzeufmbohckesirsbu3ftn4s4i3uhjhaestphuppvth5@zx7lqsldosbc>
+References: <20260826-gmem-inplace-conversion-v11-0-0a15d8a799aa@google.com>
+ <20260826-gmem-inplace-conversion-v11-15-0a15d8a799aa@google.com>
+ <ao9CKMXAX-hScRSa@google.com>
+ <art6ARechyK0iytK@blrnaveerao1>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.90.53.73]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk200008.china.huawei.com (7.202.194.74)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ojmz64yodg545zyugxtrinq8je8z9mfk
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <art6ARechyK0iytK@blrnaveerao1>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AEA:EE_|PH7PR12MB6695:EE_
+X-MS-Office365-Filtering-Correlation-Id: e671748e-6ee7-452b-8aa1-08df1e29f37f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016|23010399003|7416014|6133799003|4143699003|10067099003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	DJtHg4PFlipWrHbxcdFUSMHqx7Ma1/j+fW+CyNEsBUrhHuZYSa7axyVNY5SR7wDJDDLLkscqhh27rOW0pVoIaQlM2kI+/MBLbe6PNNkBhfiAJ7XtiUtk7P3sQCNAO9auhk7an4zN7+IU8p5mpk2r++/tMdOBQmj1TUczl8sG2Nvg5d2lsyFKO+xPZLBhGHKid4yWkvWD8q7TxYvMO2khCY8RJhejLcL95yrdmbrOQwoXB2mc2zyRFBuhy195IIMkbppwIJwoecTgk28WQZKRDFWgxB165+N16lE7WmN4sSB8h+hZoo9JGQQnSNsPInVDM492dq3oDlZdzmnSbNjit5lxtZRTaiQ+eLUYVhPF9GIzf5SBMB2zD+xIoYwXlk+OnST9tqD7f7yIyiPrgqbB6ESucsnep2bMtd0G5yYU4BwUh5D/A1hTgrglwTZNY8lpBhi56tGslpCb4dBC4y0LdBC9vpoPBZ9TjrbbDiAZFKiQ9oQn47uw/0EiWgHwrT5KemhvXl72/2BG73qyekOUpIg+UZoYfJleNniTOZXf7R3ccPd3wj61FAAaZfmGV6Ufor0poz/8H/EZcwTpxmTsgIxMJRHGfNsKHjoHKQOS2kGmD69AG40mnoEI75Ft2inNcP5xwM8FnVSRpsFwbalZsI59yOzbXpRN2nvNvfbe4K6Q+F5q1cJ654waXA/hK6RwhKhq9roGZ6kY2nCFbfyHDA==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016)(23010399003)(7416014)(6133799003)(4143699003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	UWlox5Y/EVZy1WWCuGEaAcWf56XUyzgX2z8LRuO/TxyEqqs8ezTuT8ci0SrxvyPdQj0d60xAHRmZSR1axWhhE1brf2mTKMFL7Ss7tW/0ggzIX8o8yGwgFMH2zS0zUN79PPhSbfDst7drXMtaXd2KDXkhOFiwsj35qFbP+/TmE/O4jpnAOFZDZlB8ejpkNiNc32oruly1QmLpa2csBbARw9P1RdSNSpteFttfctszfFgPDbTgxgdlkXLqdWZ/E+YoY4ZLoBfH2jEdl3vzoMeF+3qU0hc9fXRyQ2SRwAfhADlbdOFnvHDL5sZPGCJPkXMa0fgsCITi866q94UsWHAmDjmbMa7rwVSzqAgiRgNYsRGbYZVA5Kc0YzcX683JJtMV62aKJN79Di1PKwpBcUDcBXlXJL3/liDQaZpNQ+UStvbBwng1X4vXUjY1qdXCE0Ed
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 13:02:43.6921
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e671748e-6ee7-452b-8aa1-08df1e29f37f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003AEA.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6695
+X-Stat-Signature: jbkoh7u4hi5znobtfyrudg9mxtr17bun
+X-Rspamd-Queue-Id: 5865D40003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B368140007
-X-HE-Tag: 1790686927-590717
-X-HE-Meta: U2FsdGVkX19S5vmp5myPw+cPwd3VYLhWpSiQTECeX+Sjgg84/NN4JI6AVk3cSNl80FVw2ALcGOOQUyaxEBFK7vs2Yw4Wd8lYSzi2HmFfSjrAq3fvA1EW2ClxCYkXPbdqyEGzl+jeX1BDkXTF3tS9y2NHl/4VyNUfDIpbq0awaNrjQVGh+e1DqygaztS+lDkrHUPIz0b1ijyfAsIHNO/+QZgbMoGxxpC7PMq76OApWBqa0dWKmopvgvmQp5a1AbLbsDlwjUJQ0kcwmlTf8WrrOb27PrRev0lrnlveqSIqbzKtGIJxj5pBMnSmXAAD0t0yhVwM/RwfLUtU39TapQHw2zUfalYqhUOBP/blaVLBhHMpaeJfiVUUAOgGPKC+O42AQHVwiGF7NZDtgvil4WxW2rQ4EIjU+O3gLwYsSkMkZw0d5vIpk4xGO44tmuif/Iutav3Fndb2AlCbpQHM6HhNua/csX5iAwMuixPMcotzC0IQgKbfMAh1yZu8FDfxZqXyzso2lEhKK0HHUBdTZzBNU8gWnXovvCrU93ITwaanxyh8HSX1XO4GUOxeUwOPbxMPEddbn5gTD4OlgSU7bt5+8/JiwGFO8XskGDvuPi8VT8EZ7jFxy0C0u9xr01Z9IN31DwgR7RQzMy2mFrER/Ngj1aB0f3yRrgHgYgkxjhCL6TkZP8T3znapux/hh4tvI1tbRuzqIvy+6TC4fuBjwqppc2sWJZChiaLPpUAd4xgDFgoZHcSdK/nDihRU3csPlIIwFf3/yIjZkfDHKGWyKXGOE9tnwkaGZ6ZV6ndhgmFe7rc7hagjrosiYDolKdfPgaOo1trkeRvGHOUthzn58OEUR6aJLZwQoiIsBumi+rG9LdsM4YMEsGvAns8/cnO4MuTlTHeDR1D1Tp39E5+V6O8GmbOM6ULbyhzVuqKRUJ2gS45ceDK5rsP8605E6+0KOWmoC/ZIKpiW57voH+a64UX
- 6Gii05Yw
- W0XIj9fwQxfHbO/IFkk4CvGGTXgUnqsdAadNe1M2WbIlMl+bXMS5m3BLeKKev/ZmMFaP6EcEz5S6ibjvETaUJ/0tJ7/Pf0Ncm6bveSAwNRIONP/NfWDOFP43kxM5fzM0LnuTBbRBnuI2uAO4fXaQZnq8J3WA5jziwY47Dy1khHLvAGE7O29beAl05Jdsj19njz+ArxVwzuD2S/MkR8zvo1aheKF4gNmlXWyYKa0ONe1R2z7uSMrGFmxL8Cm46RWesDYoPQHYDmDaMSHyQcwvGb9acQUPUqiM8nC6VvDHMAW3S0uPUI2pH12iKBdHJpvDGc+bQINOL0ti2JaiMl30JKtFxZ/YEgGYf9c5gwTsJ2zhaOMp5aOZxbKrADA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790686984-520370
+X-HE-Meta: U2FsdGVkX19Zys8iJHjodUGHzTIj2x5mBfDTVqC1Vo077V7Xq1R9BJ86UfPfvWrTFkCF/aka80QwCHzGx5wTxyYjnqmJaOjlfbd5uy0y3XC4tUvf41nPpUfXhVhSPyiwt1GSLzwQ5QVPq9JJNTRZgrJFOuM0gH9+KkzrZY4TavMBQYm3KKs5+PnRISuTaCEdcl2MKUJWVWy0nvUaUn+R4j+x5erKbBnVh4idcEKjyT/c1R6aF/AQWmri2dBP4Y/fXW8KxMkUovncxvXKXxqYr2me1VD+Aedx3mjvFSUsoD4St0B/rze2Qh+aeFK+oMX/M5BJwsOs/NAPkjl6QO4c8fMbFykhGHm9zTx9ksgnes1lwsgdMKUsLHi+MIy8Dh6NjwMORQ37hWxS5sxbh66mFIVco3GmIcwZLN3K136ZLeowJEx+dKILlEDfJJaZBfjWNQ8vpHhuPvBvk/k8Jdui4tDbpjmYpBKHhL6WAcD9HjT8/xtqMe7GFXOirRSkkam+qNp2vvbeiaS1UFGjRWJpii+742SIIJd9QmxoBFDpRZ/tzpieedcvo4mGi1Ix9gBfoOVBSdc8+v1IoTVoqnQVmvR3WMsUghDw7z2v6JmPWAJLGTi/HO4Oxyz89VpTZr42RWHQmEfD7DRfmCNM4jL+0ztA5GcW13UfEDu8hELdXudktsqy1QBET/tjPDF9CE5UqWPEnmU2oO+hgeqfpPOEHOZzDrIfcenQlIxSCAixSOU92+eH6JYG2YREOgoMpNAIh2+rnQHm/H+efHZbjdu4yME4IhsSD5EkYNYdL+RL8O38cwXtCXtEmxPW1/RIcdH/t3QQeff0mRL35Mucin9dVXd6zAx/WCdvLCvFhDkctj/4ZZL8S17Atr1ERsCC+QAGV8dtsXfk3T7KnKXRlgecMv9m56HbrarMhkp9goDvXXAhJdVCAepNrXK3mpWITQJA6vd10dBEQ4ms+bBOP6Q
+ Eu7Rzph/
+ XZGvOBE2rvMFJbx44mMIG0saJzUt8219Lrr3vaRdD6GH0+6TDgF9QDTMml0qCPM3Lfzm0YFdM+/trJp17JJYjuAllhmvgKKtgQCvP+eN3xxuirEAeRv0dhtX/1f+1AA8XFtRWYe+9/1RXOyt8ksQ/pWcqSIWurHoqrRDtFz532yYWWRbnmOJoDrSMkfY1SB8MHLHEbU/tuv2cmQOeQr2V7S15uHrUgEoWFdT/+1UtwFBlAX5koH4J0DDRCoGH7MU4Q1a+IK7mhfkDUli8VAsePcKGO0wNYo4D6JFWuupX/zjvHCw+5PdUC8RxMKFnI69kWXfSgDxlXqEl4reYAO7Q9BSqFPSRB3kNYPMoE9M1qmMquzgH5u6+xwJTKQQxLm818fI3XrzRW+TW20u83QLNKIHZ6cbnqyjUiPSs6pl40L7swT6Lm8eVdyz7FvwaZz7HXZf/YRJxf615J9O/nKEKB6zlAPG3I0LmNVA89eDxiC8VLRpoRmQOouHbUbH/OrrOGPXwt5SxiSP7PyUtzPJBtKgRCZ/q7a7JLZt7kKY0xIqZISUG5OSHFmq5rCrIwqTNSjBp92WUNTK4ePizBGhV2PmivvanjlGOSeozR+6ZZauHVx8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,702 +178,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add tests for PR_CAPBSET_DROP_MASK covering:
-- Argument validation
-- Permission checking
-- Process-wide application of the drop, including:
-  - The calling thread
-  - Blocked sibling threads
-  - Threads created afterwards
-  - Children forked by a sibling that has not materialized the drop yet
-- Concurrent thread creation (clone() races)
-- Concurrent callers with different masks and both words
-  of the capability mask
-- Ignore behavior for bits representing capabilities unknown to the kernel
+On Tue, Sep 29, 2026 at 03:10:41PM +0530, Naveen N Rao wrote:
+> On Wed, Aug 26, 2026 at 12:44:40PM -0700, Sean Christopherson wrote:
+> > On Wed, Aug 26, 2026, Ackerley Tng wrote:
+> > > +
+> > >  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > >  				     size_t nr_pages, uint64_t attrs,
+> > >  				     pgoff_t *err_index)
+> > > @@ -624,7 +661,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+> > >  
+> > >  	filter = to_private ? KVM_FILTER_SHARED : KVM_FILTER_PRIVATE;
+> > >  	kvm_gmem_invalidate_start(inode, start, end, filter);
+> > > +
+> > > +	if (!to_private && kvm_arch_has_gmem_convert())
+> > > +		kvm_gmem_make_shared(inode, start, end);
+> > > +
+> > >  	mas_store_prealloc(&mas, xa_mk_value(attrs));
+> > > +
+> > >  	kvm_gmem_invalidate_end(inode, start, end);
+> > 
+> > The real reason I responded...
+> > 
+> > Thinking about the Secure AVIC mess made me realize zapping NPTs for SNP VMs isn't
+> > strictly necessary in this path.  The PFN isn't changing, just the attributes, and
+> > that's (obviously) tracked in the RMP.  KVM doesn't need to zap SPTEs to induce a
+> > fault, because the mismatched C-bit vs. RMP status will cause an #NPF(RMP), and
+> > AFAICT kvm_mmu_page_fault() will do the right thing.  A misbehaving guest could
+> > continue to access the shared data (assuming we stick with lazy conversions), but
+> > that should be fine?  E.g. it's not really any different than implicit conversions.
+> 
+> Brilliant idea!
+> 
+> > 
+> > In other words, couldn't we do this (as an on-top optimization)?  The only wrinkle
+> > I can think of is that it could delay reconstituion of a hugepage, especially if
+> > we opted for eager conversion (because the guest wouldn't hit #NPFs to trigger the
+> > hugepage promotion).
 
-Assisted-by: DeepSeek:DeepSeek-v4 flash
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
----
- tools/testing/selftests/prctl/Makefile        |  12 +-
- .../selftests/prctl/cap-bset-drop-test.c      | 641 ++++++++++++++++++
- 2 files changed, 649 insertions(+), 4 deletions(-)
- create mode 100644 tools/testing/selftests/prctl/cap-bset-drop-test.c
+I suppose gmem could selectively zap if a range switches from mixed to
+all-private. For non-confidential guests, it might even make sense for
+mixed to all-shared if there's some way to avoid the forced
+hugetlb-splitting in that scenario.
 
-diff --git a/tools/testing/selftests/prctl/Makefile b/tools/testing/selftests/prctl/Makefile
-index e770e86fad9a..583e8775be1f 100644
---- a/tools/testing/selftests/prctl/Makefile
-+++ b/tools/testing/selftests/prctl/Makefile
-@@ -1,14 +1,18 @@
- # SPDX-License-Identifier: GPL-2.0
--ifndef CROSS_COMPILE
- ARCH ?= $(shell uname -m 2>/dev/null || echo not)
- override ARCH := $(shell echo $(ARCH) | sed -e s/i.86/x86/ -e s/x86_64/x86/)
- 
-+TEST_GEN_PROGS := cap-bset-drop-test
-+LDLIBS += -lpthread
-+
-+# The tests below are x86-only and embed x86 assembly, so they can only be
-+# built when not cross-compiling.
-+ifndef CROSS_COMPILE
- ifeq ($(ARCH),x86)
- TEST_PROGS := disable-tsc-ctxt-sw-stress-test disable-tsc-on-off-stress-test \
- 		disable-tsc-test set-anon-vma-name-test set-process-name
- all: $(TEST_PROGS)
--
--include ../lib.mk
--
- endif
- endif
-+
-+include ../lib.mk
-diff --git a/tools/testing/selftests/prctl/cap-bset-drop-test.c b/tools/testing/selftests/prctl/cap-bset-drop-test.c
-new file mode 100644
-index 000000000000..d0432f9b5837
---- /dev/null
-+++ b/tools/testing/selftests/prctl/cap-bset-drop-test.c
-@@ -0,0 +1,641 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Tests for PR_CAPBSET_DROP_MASK: argument validation, permission checking,
-+ * and process-wide application of the bounding set drop to sibling threads
-+ * and to threads created afterwards.
-+ */
-+
-+#define _GNU_SOURCE
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <pthread.h>
-+#include <sched.h>
-+#include <stdatomic.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/prctl.h>
-+#include <sys/syscall.h>
-+#include <sys/types.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#include <linux/capability.h>
-+
-+#include "../kselftest.h"
-+
-+#ifndef PR_CAPBSET_DROP_MASK
-+#define PR_CAPBSET_DROP_MASK 82
-+#endif
-+
-+#define N_THREADS 4
-+
-+#define CHILD_PASS	0
-+#define CHILD_FAIL	1
-+#define CHILD_SKIP	2
-+
-+static int pipe_fd[2];
-+static atomic_int threads_ready;
-+static atomic_int threads_ok;
-+static unsigned long dropped_cap;
-+
-+static atomic_int fork_go;
-+static atomic_int fork_ok;
-+
-+static atomic_int conc_stop;
-+static atomic_int conc_dropped;
-+static atomic_int conc_bad;
-+
-+#define MULTI_DROP 8
-+static int multi_caps[MULTI_DROP];
-+static int multi_n;
-+static pthread_barrier_t multi_start;
-+static atomic_int multi_done;
-+static atomic_int multi_bad;
-+
-+static int last_cap;
-+
-+static int read_last_cap(void)
-+{
-+	char buf[32];
-+	int fd, n, v = -1;
-+
-+	fd = open("/proc/sys/kernel/cap_last_cap", O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+	n = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	if (n <= 0)
-+		return -1;
-+	buf[n] = '\0';
-+	v = atoi(buf);
-+	return v;
-+}
-+
-+static int bset_has(unsigned long cap)
-+{
-+	return prctl(PR_CAPBSET_READ, cap, 0, 0, 0) > 0;
-+}
-+
-+static int drop_cap(unsigned long cap)
-+{
-+	unsigned long low = cap < 32 ? 1UL << cap : 0;
-+	unsigned long high = cap < 32 ? 0 : 1UL << (cap - 32);
-+
-+	return prctl(PR_CAPBSET_DROP_MASK, low, high, 0, 0);
-+}
-+
-+static int run_child(int (*fn)(void))
-+{
-+	pid_t pid;
-+	int status;
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return CHILD_FAIL;
-+	if (pid == 0)
-+		_exit(fn());
-+	if (waitpid(pid, &status, 0) < 0 || !WIFEXITED(status))
-+		return CHILD_FAIL;
-+	return WEXITSTATUS(status);
-+}
-+
-+static void report_child(int ret, const char *name)
-+{
-+	if (ret == CHILD_PASS)
-+		ksft_test_result_pass("%s\n", name);
-+	else if (ret == CHILD_SKIP)
-+		ksft_test_result_skip("%s\n", name);
-+	else
-+		ksft_test_result_fail("%s\n", name);
-+}
-+
-+static void run_test(int cond, int (*fn)(void), const char *name)
-+{
-+	if (!cond) {
-+		ksft_test_result_skip("%s\n", name);
-+		return;
-+	}
-+	report_child(run_child(fn), name);
-+}
-+
-+/*
-+ * Return the first capability in [lo, hi] that is set in the bounding set,
-+ * or -1 if there is none.
-+ */
-+static int pick_cap(int lo, int hi)
-+{
-+	int cap;
-+
-+	for (cap = lo; cap <= hi; cap++)
-+		if (bset_has(cap))
-+			return cap;
-+	return -1;
-+}
-+
-+static int have_cap_setpcap(void)
-+{
-+	struct __user_cap_header_struct hdr = {
-+		.version = _LINUX_CAPABILITY_VERSION_3,
-+	};
-+	struct __user_cap_data_struct data[2];
-+
-+	if (syscall(SYS_capget, &hdr, data))
-+		return 0;
-+	return !!(data[0].effective & (1U << CAP_SETPCAP));
-+}
-+
-+static int drop_effective_cap_setpcap(void)
-+{
-+	struct __user_cap_header_struct hdr = {
-+		.version = _LINUX_CAPABILITY_VERSION_3,
-+	};
-+	struct __user_cap_data_struct data[2];
-+
-+	if (syscall(SYS_capget, &hdr, data))
-+		return -1;
-+	data[0].effective &= ~(1U << CAP_SETPCAP);
-+	return syscall(SYS_capset, &hdr, data);
-+}
-+
-+static void *blocked_worker(void *arg)
-+{
-+	char c;
-+
-+	(void)arg;
-+
-+	atomic_fetch_add(&threads_ready, 1);
-+
-+	/*
-+	 * Block until the main thread has issued the drop.  The drop is made
-+	 * effective for the whole group through the thread group's pending
-+	 * mask, so it must be visible here once we run again.
-+	 */
-+	for (;;) {
-+		ssize_t n = read(pipe_fd[0], &c, 1);
-+
-+		if (n == 1)
-+			break;
-+		if (n < 0 && errno == EINTR)
-+			continue;
-+		return NULL;
-+	}
-+
-+	if (prctl(PR_CAPBSET_READ, dropped_cap, 0, 0, 0) == 0)
-+		atomic_fetch_add(&threads_ok, 1);
-+	return NULL;
-+}
-+
-+static void *late_worker(void *arg)
-+{
-+	(void)arg;
-+
-+	/* Must inherit the reduced bounding set of the parent thread. */
-+	if (prctl(PR_CAPBSET_READ, dropped_cap, 0, 0, 0) == 0)
-+		atomic_fetch_add(&threads_ok, 1);
-+	return NULL;
-+}
-+
-+/*
-+ * Child for the functional tests: drop @cap with PR_CAPBSET_DROP_MASK and
-+ * verify that the calling thread, all blocked sibling threads and a thread
-+ * created afterwards lose it from their bounding sets.
-+ */
-+static int drop_test_child(void)
-+{
-+	unsigned long cap = dropped_cap;
-+	pthread_t t[N_THREADS], late;
-+	char c = 'x';
-+	int i, ret;
-+
-+	atomic_store(&threads_ready, 0);
-+	atomic_store(&threads_ok, 0);
-+
-+	if (pipe(pipe_fd))
-+		return CHILD_FAIL;
-+
-+	for (i = 0; i < N_THREADS; i++) {
-+		if (pthread_create(&t[i], NULL, blocked_worker, NULL)) {
-+			close(pipe_fd[0]);
-+			close(pipe_fd[1]);
-+			return CHILD_FAIL;
-+		}
-+	}
-+	while (atomic_load(&threads_ready) < N_THREADS)
-+		sched_yield();
-+
-+	ret = drop_cap(cap);
-+	if (ret) {
-+		ksft_print_msg("PR_CAPBSET_DROP_MASK(cap %lu) failed: %s\n",
-+			       cap, strerror(errno));
-+		ret = CHILD_FAIL;
-+		goto out;
-+	}
-+
-+	for (i = 0; i < N_THREADS; i++) {
-+		if (write(pipe_fd[1], &c, 1) != 1) {
-+			ksft_print_msg("pipe write failed: %s\n",
-+				       strerror(errno));
-+			/* Close the write end so the workers see EOF. */
-+			close(pipe_fd[1]);
-+			pipe_fd[1] = -1;
-+			ret = CHILD_FAIL;
-+			goto out_join;
-+		}
-+	}
-+out_join:
-+	for (i = 0; i < N_THREADS; i++)
-+		pthread_join(t[i], NULL);
-+
-+	if (atomic_load(&threads_ok) != N_THREADS) {
-+		ksft_print_msg("only %d of %d sibling threads saw the drop\n",
-+			       atomic_load(&threads_ok), N_THREADS);
-+		ret = CHILD_FAIL;
-+		goto out;
-+	}
-+
-+	/* The calling thread must have dropped it synchronously. */
-+	if (bset_has(cap)) {
-+		ksft_print_msg("calling thread still has capability %lu\n",
-+			       cap);
-+		ret = CHILD_FAIL;
-+		goto out;
-+	}
-+
-+	/* A thread created afterwards must inherit the reduced set. */
-+	if (pthread_create(&late, NULL, late_worker, NULL))
-+		goto out_ok;
-+	pthread_join(late, NULL);
-+	if (atomic_load(&threads_ok) != N_THREADS + 1) {
-+		ksft_print_msg("late thread did not inherit the drop\n");
-+		ret = CHILD_FAIL;
-+		goto out;
-+	}
-+
-+out_ok:
-+	ret = CHILD_PASS;
-+out:
-+	if (pipe_fd[1] >= 0)
-+		close(pipe_fd[1]);
-+	close(pipe_fd[0]);
-+	return ret;
-+}
-+
-+/*
-+ * A sibling thread that did not call PR_CAPBSET_DROP_MASK has not had its own
-+ * cred updated, but it must still observe the drop and must pass the reduced
-+ * bounding set to any child it forks.
-+ */
-+static void *fork_sibling(void *arg)
-+{
-+	pid_t pid;
-+	int status;
-+
-+	(void)arg;
-+
-+	while (!atomic_load(&fork_go))
-+		sched_yield();
-+
-+	if (bset_has(dropped_cap))
-+		atomic_store(&fork_ok, 0);
-+
-+	pid = fork();
-+	if (pid == 0)
-+		_exit(bset_has(dropped_cap) ? 1 : 0);
-+	if (pid < 0) {
-+		atomic_store(&fork_ok, 0);
-+		return NULL;
-+	}
-+	if (waitpid(pid, &status, 0) < 0 || !WIFEXITED(status) ||
-+	    WEXITSTATUS(status) != 0)
-+		atomic_store(&fork_ok, 0);
-+	return NULL;
-+}
-+
-+static int fork_test_child(void)
-+{
-+	pthread_t sib;
-+
-+	atomic_store(&fork_go, 0);
-+	atomic_store(&fork_ok, 1);
-+
-+	if (pthread_create(&sib, NULL, fork_sibling, NULL))
-+		return CHILD_FAIL;
-+
-+	if (drop_cap(dropped_cap)) {
-+		atomic_store(&fork_go, 1);
-+		pthread_join(sib, NULL);
-+		return CHILD_FAIL;
-+	}
-+	atomic_store(&fork_go, 1);
-+	pthread_join(sib, NULL);
-+
-+	return atomic_load(&fork_ok) ? CHILD_PASS : CHILD_FAIL;
-+}
-+
-+/*
-+ * Threads created while the drop is in flight (or immediately after) must all
-+ * observe it: the pending mask is shared by the whole group, so a thread can
-+ * never be born with a capability that a concurrent drop removed.
-+ */
-+static void *conc_worker(void *arg)
-+{
-+	(void)arg;
-+
-+	while (!atomic_load(&conc_dropped))
-+		sched_yield();
-+	if (bset_has(dropped_cap))
-+		atomic_fetch_add(&conc_bad, 1);
-+	return NULL;
-+}
-+
-+static void *conc_spawner(void *arg)
-+{
-+	(void)arg;
-+
-+	while (!atomic_load(&conc_stop)) {
-+		pthread_t t;
-+
-+		if (pthread_create(&t, NULL, conc_worker, NULL) == 0)
-+			pthread_join(t, NULL);
-+	}
-+	return NULL;
-+}
-+
-+static int conc_test_child(void)
-+{
-+	pthread_t sp[4];
-+	int i;
-+
-+	atomic_store(&conc_stop, 0);
-+	atomic_store(&conc_dropped, 0);
-+	atomic_store(&conc_bad, 0);
-+
-+	for (i = 0; i < 4; i++) {
-+		if (pthread_create(&sp[i], NULL, conc_spawner, NULL))
-+			return CHILD_FAIL;
-+	}
-+
-+	if (drop_cap(dropped_cap)) {
-+		atomic_store(&conc_stop, 1);
-+		for (i = 0; i < 4; i++)
-+			pthread_join(sp[i], NULL);
-+		return CHILD_FAIL;
-+	}
-+	atomic_store(&conc_dropped, 1);
-+	usleep(20000);
-+	atomic_store(&conc_stop, 1);
-+	for (i = 0; i < 4; i++)
-+		pthread_join(sp[i], NULL);
-+
-+	return atomic_load(&conc_bad) ? CHILD_FAIL : CHILD_PASS;
-+}
-+
-+/*
-+ * Several threads invoke PR_CAPBSET_DROP_MASK concurrently with different
-+ * masks while other threads are cloning.  The primitive is drop-only, so
-+ * concurrent calls commute and the result is always the union of the requested
-+ * drops, regardless of who "wins"; every thread, including ones created during
-+ * the race, must end up without any of them.
-+ */
-+static int multi_bset_has_any(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < multi_n; i++)
-+		if (bset_has(multi_caps[i]))
-+			return 1;
-+	return 0;
-+}
-+
-+static void *multi_reader(void *arg)
-+{
-+	(void)arg;
-+
-+	while (!atomic_load(&multi_done))
-+		sched_yield();
-+	if (multi_bset_has_any())
-+		atomic_fetch_add(&multi_bad, 1);
-+	return NULL;
-+}
-+
-+static void *multi_spawner(void *arg)
-+{
-+	(void)arg;
-+
-+	while (!atomic_load(&multi_done)) {
-+		pthread_t t;
-+
-+		if (pthread_create(&t, NULL, multi_reader, NULL) == 0)
-+			pthread_join(t, NULL);
-+	}
-+	return NULL;
-+}
-+
-+static void *multi_dropper(void *arg)
-+{
-+	long i = (long)arg;
-+
-+	pthread_barrier_wait(&multi_start);
-+	/* Drop its own cap, then immediately race a second time. */
-+	drop_cap(multi_caps[i]);
-+	drop_cap(multi_caps[(i + 1) % multi_n]);
-+	return NULL;
-+}
-+
-+static int multi_drop_test_child(void)
-+{
-+	pthread_t dr[MULTI_DROP], sp[4], late;
-+	int i;
-+
-+	multi_n = 0;
-+	for (i = 0; i <= last_cap && multi_n < MULTI_DROP; i++) {
-+		if (i == CAP_SETPCAP)
-+			continue;
-+		if (bset_has(i))
-+			multi_caps[multi_n++] = i;
-+	}
-+	if (multi_n < 2)
-+		return CHILD_SKIP;
-+
-+	atomic_store(&multi_done, 0);
-+	atomic_store(&multi_bad, 0);
-+	pthread_barrier_init(&multi_start, NULL, multi_n + 1);
-+
-+	for (i = 0; i < 4; i++) {
-+		if (pthread_create(&sp[i], NULL, multi_spawner, NULL))
-+			return CHILD_FAIL;
-+	}
-+	for (i = 0; i < multi_n; i++) {
-+		if (pthread_create(&dr[i], NULL, multi_dropper,
-+				   (void *)(long)i))
-+			return CHILD_FAIL;
-+	}
-+	pthread_barrier_wait(&multi_start);
-+	for (i = 0; i < multi_n; i++)
-+		pthread_join(dr[i], NULL);
-+	atomic_store(&multi_done, 1);
-+	for (i = 0; i < 4; i++)
-+		pthread_join(sp[i], NULL);
-+
-+	if (multi_bset_has_any()) /* the calling thread itself */
-+		return CHILD_FAIL;
-+	if (atomic_load(&multi_bad))
-+		return CHILD_FAIL;
-+
-+	pthread_create(&late, NULL, multi_reader, NULL);
-+	pthread_join(late, NULL);
-+	if (atomic_load(&multi_bad))
-+		return CHILD_FAIL;
-+
-+	return CHILD_PASS;
-+}
-+
-+/*
-+ * With CAP_SETPCAP dropped from the effective set, a non-empty mask must be
-+ * rejected with EPERM.
-+ */
-+static int eperm_child(void)
-+{
-+	if (drop_effective_cap_setpcap()) {
-+		ksft_print_msg("capset failed: %s\n", strerror(errno));
-+		return CHILD_FAIL;
-+	}
-+
-+	if (prctl(PR_CAPBSET_DROP_MASK, 1, 0, 0, 0) == 0 ||
-+	    errno != EPERM) {
-+		ksft_print_msg("PR_CAPBSET_DROP_MASK without CAP_SETPCAP: %s\n",
-+			       strerror(errno));
-+		return CHILD_FAIL;
-+	}
-+	return CHILD_PASS;
-+}
-+
-+/*
-+ * An empty mask is a no-op and must succeed even without CAP_SETPCAP: the
-+ * "nothing to drop" check precedes the permission check.
-+ */
-+static int empty_child(void)
-+{
-+	if (drop_effective_cap_setpcap()) {
-+		ksft_print_msg("capset failed: %s\n", strerror(errno));
-+		return CHILD_FAIL;
-+	}
-+
-+	if (prctl(PR_CAPBSET_DROP_MASK, 0, 0, 0, 0) != 0) {
-+		ksft_print_msg("empty mask without CAP_SETPCAP: %s\n",
-+			       strerror(errno));
-+		return CHILD_FAIL;
-+	}
-+	return CHILD_PASS;
-+}
-+
-+int main(void)
-+{
-+	int privileged = have_cap_setpcap();
-+	int cap_lo, cap_hi;
-+	unsigned long long unknown;
-+
-+	last_cap = read_last_cap();
-+
-+	ksft_print_header();
-+	ksft_set_plan(10);
-+
-+	/* Argument validation, independent of privileges. */
-+	if (prctl(PR_CAPBSET_DROP_MASK, 0, 0, 1, 0) == 0 ||
-+	    errno != EINVAL)
-+		ksft_test_result_fail("PR_CAPBSET_DROP_MASK nonzero arg4\n");
-+	else
-+		ksft_test_result_pass("PR_CAPBSET_DROP_MASK nonzero arg4\n");
-+
-+	if (prctl(PR_CAPBSET_DROP_MASK, 0, 0, 0, 1) == 0 ||
-+	    errno != EINVAL)
-+		ksft_test_result_fail("PR_CAPBSET_DROP_MASK nonzero arg5\n");
-+	else
-+		ksft_test_result_pass("PR_CAPBSET_DROP_MASK nonzero arg5\n");
-+
-+	/*
-+	 * An empty mask is a no-op and succeeds even without CAP_SETPCAP,
-+	 * because the emptiness check comes before the permission check.
-+	 */
-+	if (privileged) {
-+		ksft_test_result(run_child(empty_child) == CHILD_PASS,
-+				 "empty mask without CAP_SETPCAP\n");
-+	} else if (prctl(PR_CAPBSET_DROP_MASK, 0, 0, 0, 0) != 0) {
-+		ksft_test_result_fail("empty mask without CAP_SETPCAP (errno=%d, old kernel?)\n",
-+				      errno);
-+	} else {
-+		ksft_test_result_pass("empty mask without CAP_SETPCAP\n");
-+	}
-+
-+	/* A non-empty mask without CAP_SETPCAP must fail with EPERM. */
-+	if (privileged) {
-+		ksft_test_result(run_child(eperm_child) == CHILD_PASS,
-+				 "EPERM without CAP_SETPCAP\n");
-+	} else if (prctl(PR_CAPBSET_DROP_MASK, 1, 0, 0, 0) == 0 ||
-+		   errno != EPERM) {
-+		ksft_test_result_fail("EPERM without CAP_SETPCAP (errno=%d, old kernel?)\n",
-+				      errno);
-+	} else {
-+		ksft_test_result_pass("EPERM without CAP_SETPCAP\n");
-+	}
-+
-+	/* Bits for capabilities unknown to the kernel are silently ignored. */
-+	unknown = (last_cap >= 0 && last_cap < 63) ? (~0ULL << (last_cap + 1)) : 0;
-+	if (unknown) {
-+		unsigned long low = (unsigned int)unknown;
-+		unsigned long high = (unsigned int)(unknown >> 32);
-+
-+		if (!privileged) {
-+			ksft_test_result_skip("unknown capabilities ignored (needs CAP_SETPCAP)\n");
-+		} else if (prctl(PR_CAPBSET_DROP_MASK, low, high, 0, 0)) {
-+			ksft_test_result_fail("unknown capabilities ignored (errno=%d)\n",
-+					      errno);
-+		} else {
-+			ksft_test_result_pass("unknown capabilities ignored\n");
-+		}
-+	} else {
-+		ksft_test_result_skip("unknown capabilities ignored\n");
-+	}
-+
-+	/*
-+	 * Functional tests, each in a child so the parent keeps its own
-+	 * bounding set.  A low-word and a high-word capability cover the
-+	 * arg2/arg3 split.
-+	 */
-+	cap_lo = last_cap >= 0 ? pick_cap(0, last_cap < 31 ? last_cap : 31) : -1;
-+	cap_hi = last_cap > 31 ? pick_cap(32, last_cap) : -1;
-+
-+	dropped_cap = cap_lo;
-+	run_test(privileged && cap_lo >= 0, drop_test_child,
-+		 "PR_CAPBSET_DROP_MASK drops all threads");
-+
-+	dropped_cap = cap_hi;
-+	run_test(privileged && cap_hi >= 0, drop_test_child,
-+		 "PR_CAPBSET_DROP_MASK high word");
-+
-+	dropped_cap = cap_lo;
-+
-+	/*
-+	 * A child forked by a sibling thread that has not materialized the
-+	 * drop into its own cred must still inherit the reduced bounding set.
-+	 */
-+	run_test(privileged && cap_lo >= 0, fork_test_child,
-+		 "PR_CAPBSET_DROP_MASK inherited by forked child");
-+
-+	/*
-+	 * Threads created concurrently with the drop must all observe it.
-+	 */
-+	run_test(privileged && cap_lo >= 0, conc_test_child,
-+		 "PR_CAPBSET_DROP_MASK concurrent threads");
-+
-+	/*
-+	 * Concurrent callers with different masks, racing with thread
-+	 * creation: the drop-only primitive must commute and the union of all
-+	 * requested drops must be enforced on every thread.
-+	 */
-+	run_test(privileged, multi_drop_test_child,
-+		 "PR_CAPBSET_DROP_MASK concurrent masks");
-+
-+	ksft_finished();
-+}
--- 
-2.34.1
+> > 
+> > diff --git arch/x86/kvm/mmu/mmu.c arch/x86/kvm/mmu/mmu.c
+> > index 62f751952ad8..61f3e270ab61 100644
+> > --- arch/x86/kvm/mmu/mmu.c
+> > +++ arch/x86/kvm/mmu/mmu.c
+> > @@ -1670,6 +1670,7 @@ static bool __kvm_rmap_zap_gfn_range(struct kvm *kvm,
+> >  
+> >  bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> >  {
+> > +       unsigned long shared_private =  KVM_FILTER_SHARED | KVM_FILTER_PRIVATE;
+> >         bool flush = false;
+> >  
+> >         /*
+> > @@ -1683,6 +1684,10 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
+> >         lockdep_assert_once(kvm->mmu_invalidate_in_progress ||
+> >                             lockdep_is_held(&kvm->slots_lock));
+> >  
+> > +       if (gmem_in_place_conversion && !kvm_has_mirrored_tdp(kvm) &&
+> > +           ((range->attr_filter & shared_private) != shared_private))
+> > +               return false;
+> > +
+> >         if (kvm_memslots_have_rmaps(kvm))
+> >                 flush = __kvm_rmap_zap_gfn_range(kvm, range->slot,
+> >                                                  range->start, range->end,
+> 
+> Can this be a problem with gmem hugepages? Not sure how that is going to 
+> look like, so this may be covered in other ways.
+> 
+> But, as it exists today, if the guest converts part of a 2M page to 
+> shared, then this skips zapping the SPTEs from the call in 
+> kvm_gmem_invalidate_start(). sev_gmem_make_shared() then issues PSMASH 
+> to convert RMP entry to 4k entries and we end up with 2M NPT+4K RMP. If 
+> the guest then writes to any private page in that range, 
+> page_fault_can_be_fast() returns true, fast_page_fault() only checks 
+> permissions with spte_permission_fault() and does not do anything.  
+> sev_handle_rmp_fault() also does not issue a zap since it finds that the 
+> RMP entry is already 4k, and we end up in a loop.
 
+In Ackerley's hugetlb series, gmem will split the underlying folio to 4K in
+that case. I assume, if we end up adopting Sean's proposed optimization, we'd
+update the attr_filter to force a zap if there's a demotion, similarly to how
+kvm_gmem_punch_hole() handles it in this series.
+
+I think as a general rule of thumb though we'd decided that guessing
+too hard at what hugepages will need is best left to hugepage series
+itself (TDX prep work aside), because it always ends up different than
+expected :)
+
+Thanks,
+
+Mike
+
+> 
+> 
+> - Naveen
+> 
 
