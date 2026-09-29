@@ -4,107 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C48CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:35:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FA9CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:36:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68BC96B008A; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
+	id 46A8E6B0099; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63B7E6B008C; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
+	id 4415C6B009B; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 579186B0095; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
+	id 3583C6B009D; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A9736B008A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:35:33 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99557140441
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:35:32 +0000 (UTC)
-X-FDA: 85266140904.28.0ECEC2C
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 272904000A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:35:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A73D6B0099
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69051C03B3
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:34 +0000 (UTC)
+X-FDA: 85266143508.06.1177A90
+Received: from mta1.migadu.com (out-73.mta1.migadu.com [95.215.58.73])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6001340007
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WMXbedJM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670930;
+	s=arc-20220608; t=1790670992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0UsD9hpMiIm/RIAtugV78aZWAfXesb7Suqvu53gqeMs=;
-	b=YXkUdcti1C3u53lQr+7zoZPRkgfx8SCVgxtDnRGQFFRuPEhqgNMVu0LxT7ZB6TRRMbuaRM
-	pqoFgOr3Ho4BvNPczZsW6gVk69X7Px/yldIr+wi6kKqe5ce+aIjEzojZR5pBXZ9xIsYqAV
-	kofhP9O0iyNAAvyNufCZCJwC9Yhetzk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7gl7Dbkf6zYEyNTSd0tfJx7Wb2qDhRetsdKvP0HB4MA=;
+	b=Gei8eWfmAYMaCKb5OM0zUHblhbWQuLxgYxQzuh+af0VmrXi41bD871D4LUKgThcoZfSCdX
+	2YEW9Bu9P9hKN6ZJLx93wBKxi9qutECC70DkFjXNwsdzw9VyzVA117Oj39MC0hHDNPwkhJ
+	O+Oax6A5nwKGZBXQwtewOxV4JlX4cWg=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WMXbedJM;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670930;
-	b=kAgRT4IQS4FFjzF+YslbuBiZ4DpTy+PAUFUHYJLIMuWXSdyufvu8RMpDVWXesx7UdeduY5
-	leV4DydpvSBRFp3qVcczoVlYZ7oAZndyuLTHVyxUDdx2NSxbVZGXRsP68UIPs/qMfz5L3l
-	RKjUIZjBnaFEsmfNSH6jVAEGGukRDMg=
-Received: from mail.maildlp.com (unknown [172.19.163.198])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4hvBLj71dtzYQv1c
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 16:34:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id E1B7140579
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 16:35:20 +0800 (CST)
-Received: from [10.174.178.176] (unknown [10.174.178.176])
-	by APP4 (Coremail) with UTF8SMTPSA id gCh0CgBXdCdGeLtqQxpoCA--.31456S3;
-	Tue, 29 Sep 2026 16:35:20 +0800 (CST)
-Message-ID: <f05f6de8-121e-4897-9a0f-f9bf9edaae4e@huaweicloud.com>
-Date: Tue, 29 Sep 2026 16:35:17 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/4] mm/truncate: fix data loss when truncating
- straddling large folios
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-ext4@vger.kernel.org, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, hughd@google.com,
- baolin.wang@linux.alibaba.com, willy@infradead.org, jack@suse.cz,
- ziy@nvidia.com, bfoster@redhat.com, joannelkoong@gmail.com,
- djwong@kernel.org, yi.zhang@huawei.com, yizhang089@gmail.com,
- yangerkun@huawei.com, chengzhihao1@huawei.com, wangkefeng.wang@huawei.com,
- yukuai@fnnas.com
-References: <20260928120833.3440834-1-yi.zhang@huaweicloud.com>
- <20260928144901.83cc90357c9a488e94fd6785@linux-foundation.org>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <20260928144901.83cc90357c9a488e94fd6785@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgBXdCdGeLtqQxpoCA--.31456S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxWw4xXF1xXFW5Jr15Kr1DGFg_yoW5ZF1rpF
-	W3Was8Kr4kGws7Cr1xZF4UWw1rtay3XrWDAFy5G3Z7CFsagr1IkFWftw10gFWUGrs7Cw10
-	9r4jv398u3Z8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7
-	CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kK
-	e7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c
-	02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_
-	WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
-	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jxCztUUUUU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: ku57ngpaypo9qmmfo1epgp5j1q35qgew
+	t=1790670992;
+	b=TgO2N2Yz45Zj7ZXu0jNiJqRmrd5qcCkS1qK2dtNnIuL/BXGMjBywLnv6mJmALkgMS6eOCL
+	NZrLcOX22VKaDgSNxmv8sSFp6jIuPYbV7vD8UIwxRZxCVygj4D3Xpo6d1aTFckam4vrye7
+	FE5bVHOEqg2dOa8x8+QozgqOJLt2+rE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=8vfz9yom+ls/aQov6CVfDaBZr7Ko9IZV3QMRLqEpVmM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790670991; v=1; x=1791275791;
+ b=WMXbedJMmbqaftd1IpCIhlKKzGIzCRayG9NJsx7HkivNiVYX7SV3JIweXkHE+jmSxSGZGFY8
+ cOpVlP8jKib3bYDO45TF0mzuc9vNN19kzoQfIv0Dl7DmxdKGdmnTYmyYPURpDDWxQSCsyxwG715
+ JozrFQ1Ypj7BSyJi0O8Z7r2w=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 7b4496e5929f9e79;
+	Tue, 29 Sep 2026 08:36:29 +0000
+X-Mizu-Trace-ID: 7b4496e5929f9e79
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
+Subject: Re: [PATCH v5 07/12] mm/sparse-vmemmap: switch device DAX to shared
+ tail vmemmap pages
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <1b542015-8e5a-41af-9e98-9810333e6725@kernel.org>
+Date: Tue, 29 Sep 2026 16:36:07 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Jonathan Corbet <corbet@lwn.net>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Lance Yang <lance.yang@linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <53A73178-93E5-414D-8ECE-96B3082384C4@linux.dev>
+References: <20260927025441.741633-1-songmuchun@bytedance.com>
+ <20260927025441.741633-8-songmuchun@bytedance.com>
+ <1b542015-8e5a-41af-9e98-9810333e6725@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.100.1.1.11)
+X-Stat-Signature: o5iycbjiox95cqkroebnyr35gsk9i5kw
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 272904000A
-X-HE-Tag: 1790670928-94363
-X-HE-Meta: U2FsdGVkX19cE3oeeXATAZUpUjmrzwVeRuWNCn6IQTdGxRs2by3dQKuPdXlkcw5WluMiaxLyPgNV8cblH3eJvsLVZ+drnmtzq2mCcdE1yQZOFIo9Ycsw9DfH78NFJ0RHsCH62c44OvbHtCixBxDWu/XxTGDn+ZIX5/tkS3cE63MO6p2jwBr4RnYcKD2j8qA5hhN84xLOEVjbvB26n2LD4UNnYUCkXXMeqnhC8AtelFLhthIEzIo1ljdPPyrKki/Pv9fhbbkw25KHpWyna/HRaOJKjrSZ7fZfesQy4kk2aSlMSwU2UtkyofiBVHvQ4b+kGu3aPkQ25RBZPByEGeOpjfLm6s2pPOYj9nOii/OpelnhJ0RV6CzI2QtYsOety3s255VJsyjz56JOG0JyKJBb8cQEMa0PmQ+OvDd434xrXAqO+VD9fSYgcE2pxEtT1Dpa4i4vxA0CanP3q7dF4jA9CATEiCF7ExHbjsaDinopM8KCSK28aY7Cc+dKL69rmldqmRuECC5p+eTunEJkbLEGo6NN7gX2UkmSdTaK5jJ/BMY/dmDci+h5tyUz+wS+DbGFpFyc0/YTTDPR/l/nn7Wh6+DJZoFqM1OfCtNxNLG30KEyOBy3V50VlJU9Qw4D6Cf3OQCsidY4nsq80nJfV0OhuhOwFqM/EFrzMdigvD+Y0Z4BfXE05W9JN2r5imwdHIXPikknmAEVd4HbFDRRNEDRfEteRftOpCSKfdrhAhYhILJUdlsncPztPetSMqmy09hpjJ5IeVkjhX6h8LV/YEZhsnHNmJTkEDDJAWBUYf/ZNl/fTFhNu+fuAo3S/wncyPkqweEdzWuss0N+GqGtbOiJhmrhf4gtub+TGbdHWfnW2Q/m2N1s7Y6dhxQY4XJ015izueWz5sedEgE6AgeYX0CNzWPQZrvi78/rf1x646ki2OHmbYnnWG8CL8McsH5Sn3Q5kxkOUFygQlQpFXRue6I
- wcN4ecGs
- yZZzUCjRuXPEcRDx0WUMN4SslSlAnHB7mOuBm+aqOXUbgFAjeGNpINSioU5/k66kNZAnHCQo5Acw86CrwVnXtm46QE1DotUW/NzUhuvNYBILGwNLChYPqiITu6HXwlP9RaczX+CdmSpwf/ISiI/ebqgSm0JWUI2wnmIqXl2GUrmynRBE=
+X-Rspamd-Queue-Id: 6001340007
+X-HE-Tag: 1790670992-894189
+X-HE-Meta: U2FsdGVkX1+fIE0jKkwFPVoKdU8njgX8R1gRhdS/fdo2REVZF4Ca1PHP/iE6of/okUHWL5bz9PITsM3xIASgyYiYL+fCV72oLIlhkIbALojI8EKHUY+hv2AecxYrBzkmxyWznFHa5v78RvJrzEU0GDjTE6gbfuhgzFLpX8qNPO6vioT/6l8E+KrFgtWqg+s51TKFLQGoTdvp1CNYM4370DAo8U9kjJpdDq0ygpBfBlZYuxKUlt17h2G+PAnJp4SdAXAEywthUkPUWpUstsAOK3npyfLK1mYJN0o7Gi4ejC2+oaS9s1mYy6d4lPy+eWlIDCVUNxf9nEQoBoH6jZTPUba7EeSZuT7HmPEcz5fGuFXBWbBVbdW4ZSAuszU4OnyU0Z6ieiWYwF16NDE0HuE6Q6xzNs5HkvxWCt4Cbfm5rBCRUweDp93Z2S0enFIdCv4TAEK6sghoOm6QbEsznSStnrF1taAhXN5xcl9P1Kw6KoM5XK9Sj5DYizWmTcf9Lv2GJL2FgjV7jAr5L9zPU1DmGelnydfLdOvEcrnZYXZ12txLaAnWXsMTVBKrZE2BBJfNPYr8r762o6oRJKCFfhjwEIgDatdUgNomVmQm8wTOH+zQX543jttiMrKeNRwFJ0C5usVE0WGRk8LdsBDR8g7zwaRk6reopo7pfhGnuRmvdKs4m8ncghqa+FeSybgU/EiQQfrM4kUp1A7TRfnQClDewSKyYClYzoqT9TUOP1iIdmsvo3C7hzM8fp0I/LB/V3mg4qNuFYmaUV35P+5mCmOO+ZGm4VMYPZyaudFh+XL6mcd6GfZPMFYGMSIW6XbOBIiB4Whhe+eH1xL/nxph56x3dUefhE1ZJTKCuWLV+rUM/xJAUO+jRY5U8gaVGV0K3NtSYJ6HRwPAhVSXhMdmuM0HDIJDhsFhp/AbeY2iCGkXV2VE5MWNR4hM9zHU8/LZ293Mh6MeGH8oSTkxJz0qwxG
+ wZjx6FoV
+ VB+y1yLA2lGrLpaS0P3NS3tQyYfMDVvbnw/2WzlSxcETtdW7R2cdby5JzGbqzEDee50JEmMSlnFe5uKso+yh1N7htOEfBY0xEhudthQaEqaEREgYBaWYvqSR9fOpndNMeHj2TH+dJWiV1Zv2Gq82MmfBnQ10IEXAZFIBhgsK52gPfIwhGg2mVPH8qzBu557bJMgECCwAev3Fdo89RWi+XcV5xncZPhkPYaAlWFKYbCSgRKi6A8gIdEG7wwKVhAFco6gw85VTlLojUWvroCO0NnqupcRtygR8wbFsZbLMuOwN3PegT1+4SrxSwMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,74 +109,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/29/2026 5:49 AM, Andrew Morton wrote:
-> On Mon, 28 Sep 2026 20:08:29 +0800 Zhang Yi <yi.zhang@huaweicloud.com> wrote:
-> 
->> From: Zhang Yi <yi.zhang@huawei.com>
->>
->> Hello,
->>
->> This is the fifth version fixing data loss when truncating straddling
->> large folios caught on the upcomming ext4 + iomap buffered I/O
->> conversion.
-> 
-> Thanks.
-> 
->> When truncate_inode_pages_range() punches a hole or truncates a file,
->> truncate_inode_partial_folio() splits a large folio so that the caller
->> can drop the in-range sub-folios while keeping the out-of-range tail
->> intact.  This series fixes three distinct problems in that path that
->> can each lose the valid out-of-range tail of a straddling folio, plus a
->> follow-up that clarifies the return value semantics.
->>
->> Patch 01 aligns the truncation boundaries inwards to the mapping minimum
->> folio order in truncate_inode_pages_range().  With a non-zero min_order,
->> folio_split() stops at min_order instead of order 0, so a boundary
->> computed at page granularity can land inside a min-order-aligned
->> sub-folio and the truncate loop drops that whole chunk, valid tail
->> included, causing data loss.
->>
->> Patch 02 looks the end-edge straddler up by its page index through
->> __filemap_get_folio() in truncate_inode_partial_folio().  After the
->> first split the straddler is unlocked and only transiently ref'd in the
->> page cache, so the page pointer derived from the original folio can be
->> freed and reallocated as a different folio in the same mapping, and the
->> mapping check cannot catch it, which may cause incorrect splitting and
->> potential data loss.
->>
->> Patch 03 reworks the contract between truncate_inode_partial_folio() and
->> its callers.  If the second split of the straddler fails, the function
->> reported success unconditionally, and the leftover incorrect end
->> position could cause the truncate loop to drop that valid tail.  After
->> rework, it tells the caller the exact page range safe to discard via new
->> pstart/pend out-parameters, so the truncate loop never touches a
->> straddling folio that still holds valid out-of-range data.
->>
->> Patch 04 clarifies the return value semantics to "at least one split
->> succeeded", which is all the shmem caller needs to decide whether to
->> reset its scan loop.
->>
->> The second patch fixes a pre-existing race issue that is reachable
->> today, so it is Cc'd to stable.  Patches 01 and 03 require a dirty large
->> folio that carries no filesystem private data, so they are not reachable
->> on current filesystems.  They were found while developing the upcoming
->> ext4 iomap buffered I/O path. [1]
-> 
-> Can you confirm that [2/4] will work correctly when backported into
-> -stable kernels?  That is has no dependency on the other three?
-> 
 
-I confirmed the 6.18 and 7.2 versions that need to be backport. The 7.2
-version applies cleanly, and the 6.18 version also applies smoothly with
-only minor adaptation.
 
-From a code analysis perspective, I did not find any obvious issues.
-After merging both versions, I ran local xfstests on ext4, LTP, and mm
-self tests, and did not find any regressions, so I believe it works
-correctly.
+> On Sep 29, 2026, at 15:36, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 9/27/26 04:54, Muchun Song wrote:
+>> HugeTLB vmemmap optimization now uses per-zone shared tail vmemmap =
+pages.
+>> Device DAX has not been switched to that mechanism yet.
+>>=20
+>> Switch device DAX to vmemmap_shared_tail_page() as well. This aligns =
+DAX
+>> with HugeTLB by using the common per-zone shared tail vmemmap page.
+>>=20
+>> The optimization is enabled only for DEV-DAX through =
+pgmap->vmemmap_shift,
+>> which supplies the compound page order recorded in section metadata =
+before
+>> vmemmap population. Unlike FS-DAX, DEV-DAX does not modify tail =
+struct
+>> pages, so sharing them is safe.
+>>=20
+>> Since the shared tail page can now back ZONE_DEVICE vmemmap mappings,
+>> initialize its entries with PG_reserved for device zones. Also skip
+>> poisoning vmemmap-optimizable sections while their struct pages may =
+be
+>> shared.
+>>=20
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Qi Zheng <qi.zheng@linux.dev>
+>> ---
+>> v3:
+>> - Move device_zone() after the definition of NODE_DATA() to fix
+>>  non-NUMA builds.
+>> - Update the commit message to describe the compound page order =
+stored
+>>  in section metadata
+>> - Collect Acked-by from Qi Zheng
+>>=20
+>> v2:
+>> - Explain why sharing tail vmemmap pages is safe for DEV-DAX
+>>  (suggested by Qi Zheng)
+>> ---
+>=20
+> [...]
+>=20
+>> -
+>> static int __meminit vmemmap_populate_compound_pages(unsigned long =
+start_pfn,
+>>      unsigned long start,
+>>      unsigned long end, int node,
+>> @@ -551,21 +536,18 @@ static int __meminit =
+vmemmap_populate_compound_pages(unsigned long start_pfn,
+>> pte_t *pte;
+>> int rc;
+>> 	unsigned long flags =3D VMEMMAP_POPULATE_DAX;
+>> + 	struct page *page;
+>> + 	unsigned int order =3D pfn_to_section_compound_order(start_pfn);
+>=20
+> const and all the way to the top.
 
-Cheers,
-Yi.
+OK.
+
+>=20
+>=20
+> I did wonder about the poisoning change ... because the memmap usually =
+gets
+> initialized once the memory section gets moved to a zone.
+>=20
+> SO now I'm a bit confused about the ordering of events :)
+
+Yes, the normal memmap entries are initialized later when the range is
+moved into the zone. The shared tail entries are the exception, though.
+
+The ordering for device DAX is:
+
+1. sparse_add_section() sets the section compound order and populates
+   the vmemmap.
+2. During vmemmap population, optimizable tail entries are mapped to
+   the per-zone shared tail page, which is initialized by
+   vmemmap_shared_tail_page().
+3. page_init_poison() is reached after that population.
+4. Later, move_pfn_range_to_zone() calls memmap_init_range(), but the
+   latter deliberately skips vmemmap_optimizable_pfn() because those
+   entries have already been initialized.
+
+Therefore, an unconditional poison here would overwrite the initialized
+shared tail page, and the later zone initialization would not restore =
+it.
+The non-shared entries are still initialized later as usual.
+
+I agree that this ordering is not obvious. I will update the comment to
+make it clearer, for example:
+
+  /*
+   * Poison uninitialized struct pages to catch invalid flag =
+combinations.
+   *
+   * Tail struct pages in a vmemmap-optimized section are initialized =
+and
+   * shared during vmemmap population, so they must not be overwritten =
+here.
+   */
+
+Thanks,
+Muchun
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
 
 
