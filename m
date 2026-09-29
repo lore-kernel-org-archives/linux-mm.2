@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F03E3CA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900CFCA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:59:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 038AE6B009F; Tue, 29 Sep 2026 04:47:44 -0400 (EDT)
+	id 9EC506B0095; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2C646B00A1; Tue, 29 Sep 2026 04:47:43 -0400 (EDT)
+	id 99C296B0096; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1C966B00A2; Tue, 29 Sep 2026 04:47:43 -0400 (EDT)
+	id 8B3916B0098; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BE88B6B009F
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:47:43 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 580F112045A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:47:43 +0000 (UTC)
-X-FDA: 85266171606.08.A170B27
+	by kanga.kvack.org (Postfix) with ESMTP id 6DAD46B0095
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:59:35 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BA36F120458
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:59:34 +0000 (UTC)
+X-FDA: 85266201468.03.B5BF8BA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id ADE41A0006
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:47:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OKK35Bh8;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 09C4F1C0008
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:59:32 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sauccq4n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790671661;
+	s=arc-20220608; t=1790672373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iXU9WKYyz2HshOVhT6ETdZXfSguTHd4IIQU9aRF/ioU=;
-	b=jJCkhlBYF19kyv7ZCG6AA7wCcR6Zop1LsmiaUporf3Zb3tIGJpPrDT3KnDZ+3Kr3M+oCSA
-	1Uajl0no7MyS7P+A+Fe2AYE9gPcSDPv2O400LMJDDCnWaLYOJiYwckfe/7SC5VwFcKTCkv
-	4z3vLU3ZXLj501onGpHNDqvdcHhCnYQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790671661;
-	b=u7xrifbxFkKlQbPk21n8+o9u02/DFhd3YWfNViD82S/llmJJ9GdQ35j2LvAeLCe2YYSLx0
-	14rPsGzLE5Qa1FIDP1Fl00fVO6s5Gai+tzZcEqO1NU+JUP2TdQ4ZLpJJ7K5JKmqeyE/84j
-	AOuDW8/Wayz2GMq1l9+calFwBBpIjX4=
+	bh=RH6NqdFwbzWFb6zeZpuetJKrjnA6GtjWSMB/X9fu530=;
+	b=MHlsM6qQ+U2+KU1htGtXlbDmryvpXL8TvjmNHzLiCloko0I6bNd91gL8NanBvOgyG1ZjYx
+	F+9SrI30TRHrPzApljnfqERMid4tQMux73XaihGvFK/1SmKxdjb7MEabvcI6M/SPSwBMFy
+	eGus8bNfy+RykPx71b5hzJT/q19zNNo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OKK35Bh8;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sauccq4n;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790672373;
+	b=n5bSXXr0Iyai8gyS1MALClgi+/27Wkf+MoxFo2IyrBhQrDf3knTHN/uG7aa0NbG/A3PMox
+	c0V/GBcB/4sU8vOomJ/0oEq6sjhSJclfcNnUZYNQQ5Pw6AZVOdFdpF7mV5A6tjq+GKWil3
+	NsuC1sKM1wIlPpPi11Dw0GhhYdU1tK8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E7ECC43958;
-	Tue, 29 Sep 2026 08:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6799F1F00893;
-	Tue, 29 Sep 2026 08:47:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 78C6241977;
+	Tue, 29 Sep 2026 08:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6116E1F000FF;
+	Tue, 29 Sep 2026 08:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790671660;
-	bh=iXU9WKYyz2HshOVhT6ETdZXfSguTHd4IIQU9aRF/ioU=;
+	s=k20260515; t=1790672371;
+	bh=RH6NqdFwbzWFb6zeZpuetJKrjnA6GtjWSMB/X9fu530=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OKK35Bh8R/0RgBY8cs1ma82GYgIamBoCqyPdGcJ85FQDOijyspUN8TODjqODl7P9S
-	 k0fEZTwTCmITfKXU02h0CS4pQ4YFIknAv1EQ/6TDYsjAOn+jgjdskCVy+O362T6Iby
-	 LsSndhImXG4OWhp3hDTUpHc08QPULUA6Hl5zr9mPyjKuvyztTwAcNK/DSeuYQHnRCt
-	 TRhV12bFfG7viOh7n7iiH932ibV6sxSAEuu0+xzY1blj9rtexUcgJfccnV+0cSqiF6
-	 ASnqmAVMei+FLy5MIDpi7PMPzy2gcZ1ouVS0ihtKUTnCX+fKkHullHXqNFAN1EiGkj
-	 p7IlWX4BHFRug==
-Date: Tue, 29 Sep 2026 09:47:34 +0100
+	b=Sauccq4nD1vS3R16bUqBJT3/gYHACi8YrQHkU6oyBUDgw+nTiGTFSmsTM0HOTzFxw
+	 Ax8SsGH4ZeXvg6DUNr6bvTghN232LZ1keVbNh57zCOyk+IS7ItPXBoJLUkd1L2eyoI
+	 drv9e4bnoVjU9RaCLcKMXFuETAdWsBrDZwX3wTy0j5hQYwSdQ/rHdcxPv6oT/XP9l0
+	 +ca/RwwEiP79iQR83eW1RLRsRJ4TBKAxdcSC6Cb0nebZX7iD4ow7QRJJDi/tG5PyIn
+	 Z+2DfrFg1FiOTkMkTF9P7xVRwvmEuaXc2lUUkpM16GNnaMVS3COBblO36eYihk8yFi
+	 oovdCF9gp7OkQ==
+Date: Tue, 29 Sep 2026 09:59:25 +0100
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Park Tae-sun <ts930@dgu.ac.kr>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-Message-ID: <art6x0XpWcT2aUyy@gremlin>
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
- <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org>
+Cc: =?utf-8?B?5aSp54u8?= <rockeet@gmail.com>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+Message-ID: <art8EKRKMdwSDCkr@gremlin>
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
+ <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
+ <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+ <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
+X-Rspamd-Queue-Id: 09C4F1C0008
 X-Rspam-User: 
-X-Stat-Signature: 7eog97fwubd98ny3sf8nii9kad47fdzx
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: ADE41A0006
-X-HE-Tag: 1790671661-956903
-X-HE-Meta: U2FsdGVkX18ccqOW2NsuyRLCSYijfjHN7FPN2eVWiC5FrXvcCD+Sacya4GHNQ1fP5OmWlCYOq5Zpf7NGm1jZDfZ+lsGemAb+piWZgrb3gvausTOzgUuU0bAM0NBGpwvLTno12/Y8hnYS1+mb0tMZ6DUV+X8LZYnVOVQhcrIOhT45zaxktmtUrb9YZ3ruKkBO5t8Suzsde1mD4fmOIqb7+cgJFvw2Izx5bhJfsF435ICDbayYt4zg3BqG/bASWSIuED/Laserw/pPaoRCKlN8fi21a5wtXZTETmdfnQMVA6bZKWxJdt0wh1vGjFScGUJ8EdDnpn9WbsNGNy/vommOQFx5Nwo1pnIniVUos4HCLbK/RHBX3PYz3soNawmU172fgGCBR1T1rlrKhJB43alxA8yX+51fN8elC9/914AIdKMTr/NP4abEw3oNhr6opj1amAEgmZtmnJE5ZIERWi10Ldc/amlEex8Vx+2ImHQlUJYsxAcMC4q14UMknb64JYrcBusrJiNfa59s7znnfcS//LV3qA6xbPFs+gV+yuXAqS3fli0dlfcCCKBq7QDWq72eEMDdowoYWDdsZVXDcChOSagnXamMiwJKp/2cv9MdN+dzwz1YgbeDL23OX2Ir4MC4+iuHqvKWBHBOYICOwFetkyVYgFfel9wNhw7FNOrjrLitn+AYrM/TH8PKUNc2dwgEliivq1VTkIQVEKNBSuGKZ/dXujnZTBIt2LDpN94QTM8rEnqRE0yMIFjPjo9ct1SKNMRIEC5ZsFjFomrFmOcI1b9dbno9fZH+hBLOuzrX3Lk+C3A1R/IeCpcQWhxARbfXVXClU+Bvwxd2B53Bov0Dqlua/xOP0BB2Ns9ro8jACafhgCSgTUjcb43uDFO4Qx+JILg9XyW9sxIiqMbJIuDJyqwqxiA2abeOwlI+hR+FXVPVvC466UczWqHXck+C8aHkKtj01GmPJ90WG2DlCNS
- 2fhHYoPS
- FbKs/1mgdwZ+Oh0VKrdciM+/3K87Qn0rgwmo4W0trx5LKtkhE+yj1Mm0q9fd1tbCq4z3nYocm6P4tYf8AKHdEKqhEwa/YHrzdm/xB4eSIc0PEsTyD5s7kZEDESB6ueMpUmqCrVDV4kPfk84Tbsrix72fxbNIiCmvjJHNJGBdoYKpWYIad/phFTYUBcbkN9xs/o5dg0Ldd4B4Ae8iWcp0JipGNvYme7BVeb/C38RiCKAzwpdTTDRo5IerSwPs6WAR8j9R8
+X-Rspamd-Server: rspam07
+X-Stat-Signature: d8rjx39g8hifak9abieuiokjtix1ds76
+X-HE-Tag: 1790672372-415766
+X-HE-Meta: U2FsdGVkX18h/Cxmuch9rZp1tTLW43a+HS5abw5C688uY3UPiToaAiEa06LvmB/oOE/dlMr5ttQKlrleUj0AwHaiNauitKtdjhCneZFW4YfN5RlUbaTg8JqVSDhEOWT73IRsDVXAnGzpf+Mn8ookHrYHvJfa1E3FtvEArdHyX22G8nq/EDKazcX6NwM8Bffa007uKGhMR0C1qQ9pGczOMMOSZ0wrMmXgmIE1HkOfZUbsFuxqYUYt8fX76ZstBQkF/Q5ZCbKG3jSMgtiZ6YXi4PYVvsLhrD3ty0THsc+ha7pxKt4+g/kw8jwaFl0KirePRBaFdtS83pZAkNfAgdizEylDpdIbbc28ZZQwhm0Whh20C69W1ocZ842sBA95950ylPTHuI7Y/fFVWSqVcyZqt3+tSPhBrO0ninbNy0UNq6dCAVbUIaAaN0Kz9/Ak56B45vLWUScgANIoPPWA69a7ZVz1htUm8GvA4UwgUHMPbPTfCkDc3Dp6IvMCHFJrf0WjfbGhpCXqtfXG7ylav1X0SFse/TyI7/aLOn9e4MjbyBFZj20v5R2dlSTd9LtVm+GGkhX+x88knudnGrwyeyhjCfWfQrXmamAfO6oGh5dZAGKd5GjnXT72Yoj/r7yLXH9ONwrcbKZZ9b+lH262jad2GTzm37nSTf0ZGQpoP4DyOogcJPSugFmyoI52z1/S0NcBlY7Gn4KjR8joAdx696uOyKuwj6ToodP/6+r3GZV1MRn9ZrfGKC0QIKA2dfFRx2w/5b4SlMGrggNu9qNTGrW0BQ8Z/5FgbbnVL4NKb3ag3nbOspUWGZvE3zetqSRl0bsVcy+vRj6VJ172vvPbZ4CLvB8EQWbhAkOj2heHZ5nTK8pMIfxYX6hSAmUmi6c8m7cBuzoJCDBnGx6PCYvLpk0NfcEgfO1hGv0ll/fkBlaWAyXOWgfHP7H2PP/W2wXseJfFuTWoquejilHlbhVfQKY
+ uACg33r+
+ GB/fnvYKO0JrLMXunIPdmMAc8lmlweowovYfh02+nFwYAqlK8M9oy94T/lZ6gpDv4vZpUbEmkGHU547fMIsVKeKtB012zkjTEzAKKo5e/uY+LipLRXEBosgqix2rvPNcLmrlHgzDwyD2Z4K2S5Xv4G6ZIBBkmZLqjF7+jXDH1fR74W6r2cNqdeaz+PtEmEE6lwRC+DJt3QDUwLyhXXw+bOGjZOVrkO12hlhbDv5VK/ehSKfRcecZ5683wojtqwRtcEpsPJNBOAUjgw9wzMFQ60KFw9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,91 +100,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 10:40:13AM +0200, David Hildenbrand (Arm) wrote:
-> On 9/29/26 07:56, Park Tae-sun wrote:
-> > mlock() and munlock() currently normalize the requested address range
-> > using:
+On Tue, Sep 29, 2026 at 08:59:57AM +0200, David Hildenbrand (Arm) wrote:
+> On 9/29/26 06:06, 天狼 wrote:
+> > Hi David,
 > >
-> >     len = PAGE_ALIGN(len + offset_in_page(start));
-> >     start &= PAGE_MASK;
-> >
-> > This performs multiple arithmetic operations on user-provided values
-> > without validating intermediate overflows.
-> >
-> > First, a zero-length request with an unaligned address is incorrectly
-> > converted into a non-zero page range. Because
-> > PAGE_ALIGN(offset_in_page(start)) rounds any non-zero offset up to a
-> > full page, a request such as mlock(0x1005, 0) falsely locks an entire
-> > 4KB page (or fails with ENOMEM if unmapped), and munlock(0x1005, 0)
-> > silently unlocks memory that should remain locked. Conversely, an
-> > aligned mlock(0x1000, 0) is a no-op. Zero-length behavior should be a
-> > consistent no-op regardless of address alignment.
-> >
-> > Second, a sufficiently large length wraps around to zero during page
-> > alignment (e.g., len = ULONG_MAX). Because PAGE_ALIGN(x) is defined as:
-> >
-> >     (((x) + PAGE_SIZE - 1) & PAGE_MASK)
-> >
-> > when len is close to ULONG_MAX, adding (PAGE_SIZE - 1) wraps around:
-> > on a 64-bit system with 4KB pages, ULONG_MAX + 4095 wraps to 4094, and
-> > masking with PAGE_MASK clears the lower 12 bits, producing 0.
-> > When len becomes 0, the subsequent check in apply_vma_lock_flags():
-> >
-> >     end = start + len;
-> >     if (end == start)
-> >         return 0;
-> >
-> > evaluates to true and immediately returns 0 (success) without locking or
-> > unlocking the requested memory range. Similar wrap-around issues have
-> > previously been addressed in mincore() and madvise() by checking for
-> > zero length after PAGE_ALIGN().
-> >
-> > Finally, address addition overflow (start + len < start) is currently
-> > detected only inside apply_vma_lock_flags(), after mmap_write_lock has
-> > already been acquired and memlock rlimits checked, improperly returning
-> > -ENOMEM instead of -EINVAL. Per POSIX.1-2024 and man 2 mlock, arithmetic
-> > overflow of the requested range represents an invalid argument and must
-> > fail with -EINVAL before modifying VMAs or acquiring locks. Note that
-> > apply_vma_lock_flags() already contains:
-> >
-> >     if (end < start)
-> >         return -EINVAL;
-> >
-> > but this was obscured because rlimit accounting preceded it.
-> >
-> > Introduce a common check_mlock_range() helper to:
-> > 1. Return 0 immediately for zero-length requests without taking mmap_lock.
-> > 2. Validate intermediate and final arithmetic additions using
-> >    check_add_overflow().
-> > 3. Reject lengths that wrap to zero under PAGE_ALIGN() with -EINVAL.
-> > 4. Detect start + len address overflow before taking mmap_write_lock.
-> >
-> > Signed-off-by: Park Tae-sun <ts930@dgu.ac.kr>
-> > ---
-> >  mm/mlock.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++--------
-> >  1 file changed, 47 insertions(+), 8 deletions(-)
 >
-> You call it "fix" but then I see no Fixes: tag.
+> Hi,
+>
+> >> What is supposed to happen if the process crashes when updating the
+> >> MAP_SHARED region halfway through?
+> >
+> > The data structure survives an interrupted update through its
+> > application-level copy-on-write and lock-free concurrency design. A
+> > file-backed MAP_SHARED mapping preserves the latest userspace writes after
+> > the process dies, even if they have not yet reached disk, provided the
+> > kernel remains running.
+> >
+> > This does not depend on preventing writeback. Deferring writeback is purely
+> > a performance optimization, not a correctness requirement.
+> >
+> >> It would be helpful if the use case + data structure would be explained
+> >> in a bit more detail.
+> >
+> > The data structure originally used uint32_t offsets instead of pointers to
+> > reduce pointer overhead. On that basis, we implemented lock-free concurrent
+> > reads and writes, obtaining crash safety for free at the same time. We use
+> > a file-backed MAP_SHARED mapping to turn that capability into an actual
+> > feature that survives process crashes.
+>
+> Ok, thanks. Just be sure: you really need an actual file on disk. Shared memory
+> / shmem / memfd is not sufficient?
+>
 
-Or an Assisted-by tag :)
+I also assume MAP_PRIVATE mapping the file so it's anon CoW'd is not sufficient
+either?
+
+> >> What exactly is the problem with writeback here? Unnecessary I/O? Is
+> >> writeback the problem or actual reclaim after writeback?
+> >
+> > Unnecessary I/O. Reclaim after writeback is not the problem I am trying to
+> > address.
+>
+> Ok.
+
+I mean if you're mmap'ing it you're literally mapping the page cache folio and
+dirtying that folio.
+
+So the kernel really does have to do writeback and it might be quite problematic
+trying to prevent the writeback algorithm from doing its work on a specific
+range.
+
+I think the shape of a viable solution really is either MAP_PRIVATE-mapping it
+or using some anon shmem/memfd as David suggests.
+
+I think it'd be problematic to effectively corrupt the page cache by saying 'hey
+this is dirty but just clear dirty state and pretend this is what the disk has'
+or something.
+
 
 >
-> Which of the problems described above have reproducers (IOW can be triggered)
-> and what is the user-visible problem?
+> >
+> > During construction, background writeback can write intermediate contents
+> > that the application will soon overwrite. Those repeated writes waste disk
+> > bandwidth. Delaying writeback would avoid that waste where possible; it is
+> > not required for correctness.
+>
+> Understood.
 
-Good question!
+Yeah again delaying writeback could interfere with the writeback balancing logic
+which tries to keep dirty page levels sane and is fair and balanced so processes
+that writeback a lot get delayed in doing so under heavy dirtying.
 
-Also note that the code is just horrible - 2 output parameters into a function
-called 'check' but mutates all of its input, deref of the input parameters
-throughout the function, useless comments, etc.
+I think anything like this would interfere with that.
 
-This patch is not upstreamable, and if it's LLM-generated I'd rather that
-somebody from the core team did the work if we wanted it.
+>
+> >
+> >> In a fuse server you can in theory delay the writeback request.
+> >
+> > Thanks for the suggestion. That sounds like a possible way to experiment
+> > with delayed writeback. The feature I am requesting would make this
+> > advisory behavior available to applications using ordinary file-backed
+> > shared mappings.
+> >
+> >> So fadvise would be an option. However, this "defer mode" is really odd.
+> >> It sounds more like you would want to have a custom policy there [...]
+> >
+> > madvise is not the only option, deferring writeback for the entire file
+> > would also be acceptable.
+> >
+> > The application only wants to indicate that it is still modifying the data
+> > and would prefer background writeback to happen later. The kernel would
+> > retain control over the actual timing. Memory pressure could override the
+> > hint, and explicit synchronization would keep its normal semantics.
+> >
+> > The hint should also expire automatically when the owning mapping or handle
+> > is released, including on process exit.
+>
+> Ok, so while you are updating the large mmap'ed file concurrently, you don't
+> want writeback to go crazy, because you know that you will modify the memory
+> immediately anyway.
 
-In general, I think it might be helpful to have a general 'check for overflow
-stuff' function that various syscalls could use, but I'd want to see that
-developed by an experienced mm person.
+Yeah see above, I really think the only sensible solution is a MAP_PRIVATE CoW'd
+mapping or memfd etc.
 
+>
+> Let me CC some more people.
+
+Christian and probably Willy also? But I'm not so sure there's anything sensible
+to do here other than something-anon.
+
+>
 >
 > --
 > Cheers,
