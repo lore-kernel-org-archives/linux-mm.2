@@ -4,101 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5696CA5FA7
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A37CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 21:53:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 752C46B0088; Tue, 29 Sep 2026 17:53:15 -0400 (EDT)
+	id B9EB56B008A; Tue, 29 Sep 2026 17:53:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 703B46B008A; Tue, 29 Sep 2026 17:53:15 -0400 (EDT)
+	id B6EF76B008C; Tue, 29 Sep 2026 17:53:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F13D6B008C; Tue, 29 Sep 2026 17:53:15 -0400 (EDT)
+	id A109D6B0092; Tue, 29 Sep 2026 17:53:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 323A56B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B29784063F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7063A6B008A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:53:18 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 59FF316065F
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:16 +0000 (UTC)
+X-FDA: 85268151192.22.D5CD806
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8C3CD40007
 	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:14 +0000 (UTC)
-X-FDA: 85268151108.10.D346B4C
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 16D9440009
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 21:53:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g7QZfmqS;
-	spf=pass (imf27.hostedemail.com: domain of 3RzO8agoKCPopknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3RzO8agoKCPopknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=chM3BYZX;
+	spf=pass (imf01.hostedemail.com: domain of 3SDO8agoKCPsqlod1ydlvkjrrjoh.frpolqx0-ppnydfn.ruj@flex--nilayvaish.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3SDO8agoKCPsqlod1ydlvkjrrjoh.frpolqx0-ppnydfn.ruj@flex--nilayvaish.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790718793;
+	s=arc-20220608; t=1790718794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CyTriPACuulD8PSeUOBZRvdda3vwGDvZO2NnK49TgBc=;
-	b=n3COjRXIexTIzSJV9WDI67BKrHVZCmC/JLULMc/K2pn7Y08XUhkv/D1mdtYdajUjcIDRE9
-	8Spd8igFoi0TRJFLx7QfTkhvOnt0O24QDYRJpjB5AAYWlVAU7yAh/UQU/M+qmuuskKvwrT
-	rkYPqEAj/NdBbZ9SQFp4OrQhgUygBHY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=O8S1L9thUbDBOo5IvvqirVWz8KUgkebaENmH325jJXM=;
+	b=Jqdjd5Nbsqd+Yagupqyzvv44v96D7brpd3pZEvyIv/PkS8oZIm8HCjxNXitADLd+YnnWCt
+	euNSvVQrawMK25NAAiL9oNrMfawwh5PLQnlb435G0VXdanY0lj20Rxx6Mol0nggTMG/jl4
+	4d1cyJtVhhQCFcBqMcao0JiCkpLAuYk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=g7QZfmqS;
-	spf=pass (imf27.hostedemail.com: domain of 3RzO8agoKCPopknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com designates 74.125.82.200 as permitted sender) smtp.mailfrom=3RzO8agoKCPopknc0xckujiqqing.eqonkpwz-oomxcem.qti@flex--nilayvaish.bounces.google.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=chM3BYZX;
+	spf=pass (imf01.hostedemail.com: domain of 3SDO8agoKCPsqlod1ydlvkjrrjoh.frpolqx0-ppnydfn.ruj@flex--nilayvaish.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=3SDO8agoKCPsqlod1ydlvkjrrjoh.frpolqx0-ppnydfn.ruj@flex--nilayvaish.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790718793;
-	b=FpQAKtwXGAJPdVyQpTwZkD+jCy4IFYrf6I5nhibt0JhYtv5gBFwGzirMFNCQkAIIipHE7q
-	7r8jd0rfXLM2WU7N5Tf7I60DH5UFG9s6mMr4yu1SYpy6Mm5IrbzA6+Up5Kg7Poy/KKoykm
-	p3kTsC151LIgjC5bocHWhsTczab1sDQ=
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-30f1b904861so6404721eec.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:53:12 -0700 (PDT)
+	t=1790718794;
+	b=FNELwE69En45pStsmNPfd5v5UDu76F5fAy6V+z3l+TijHzVNqhlQHNsQaXJWSBZDgnIgub
+	GRN5otQxVLFIinqkoQ6eCzaYMK1CJlkjVh0eT18iSbZBdTM4wIzyJllb3nhArd06eogALq
+	LG5CDdCwrJhDQJwr8yzqJ4o+qEteBO4=
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-341eff9e381so4825038eec.1
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1790718792; x=1791323592; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CyTriPACuulD8PSeUOBZRvdda3vwGDvZO2NnK49TgBc=;
-        b=g7QZfmqSMVWjaOXoy4oSxaMt97cfeMioixTgzshKnbkVihmqTg7s68RfofFwOoXjG8
-         F8YzI+vIRuBqgKLkThvp1JqAHinafDxAoLvA2mLY1FDUbA2ShqW7MQDKcfLSyeanSxdy
-         RMY05NOhwujM/XDVb5pjHoRmdI+475h2+tFnJKUg85cgwAkqDgocWyG1JDFUcWtMGBxS
-         iKZUMJixGhPBywCk2r6IIeI0TvIwUuMy+0RmBCmFeXQL5aJ22/8c6xVX0prTte6GfTbG
-         tA0okP53Su0JDZP7bcLbg0cCExFIb2yA6HuYvDIydJXFu4YoHjDqEAMpKpMEMvBnb36D
-         MdGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790718792; x=1791323592;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1790718793; x=1791323593; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=CyTriPACuulD8PSeUOBZRvdda3vwGDvZO2NnK49TgBc=;
-        b=EGAvg5YvGmRo9gTkE8aNqGA4G0scR6/nIVJStB5kZDFYYvay6Dfe39LTGBDTq0W4pQ
-         +TowNCMPGypeOAEbnSbP+r+Bb0GY8bpPHWUpIpYCXuPhtCMEhkKdkyIThQKkh6/cls82
-         phv8wc++9DT5XYGlsxQnpbPCEOarN1hmzSRuC2+6aeJn3UJHocUGqzL5cFT4WL2EholH
-         xEePr3eCtFIEX+IqSlYx5h22is+RQLoYsAyI1l2gKbgS634xV8Eroa6fdDhjU3dmUQNI
-         gDJzc1m46/1gq4TjZIRJHm0C1g7kZImu+SIW0s3rpijBqF/IZ/7PtiTKnXmhQ+bbDRei
-         Hy6w==
-X-Forwarded-Encrypted: i=1; AKwUvBwow21oG/Kj02E0X64OAqEjh85tZib/jMBNuzufhn8i79S6pHMwjHYJwd4gq+Iy6GGtnNv1E1uhcg==@kvack.org
-X-Gm-Message-State: AFuF++moR0vsfOpuCboBP5+iUyNq151EETZ84x6MzvpKngVVstb6mOsL
-	pgSRD4DkuAOUB151mwXelR4EQreFaxfSEvR2g3zExAoIJqwcX/asjR4EKVnSoZRUmp/HfSi87DN
-	gtnSE7U0J1yLNi0J+W1Cj+Q==
-X-Received: from dlbuu7.prod.google.com ([2002:a05:7022:7e87:b0:13f:c1b7:470])
+        bh=O8S1L9thUbDBOo5IvvqirVWz8KUgkebaENmH325jJXM=;
+        b=chM3BYZXOBI10iAcoxIzvajP1qUDLNAil7FuYQ7gwqIGC9RLyj6ST5DPjNOb1CXzyY
+         s3l76qtWm/m3gxCl3U9hFyd79TZi/oowzkQxzoLB9mvu9apNlj2q4V1NlmO26U9PMupM
+         iwRmJRfHNNSZ1lEf7QkGXj73Q8MY8PEhXVn05OKn+Sv64aMuzbTonGFE9wr384L52MOB
+         4OIwYTSuuWKd0uj0KslVEZbcYMthewZm/fHrQwp47IgypdERH42fFL91CyXvIZDSW4Qq
+         TfSfZNb8kVA+oi0M4euKz621sxUfM+jcJx2U94Mp5uzurZUGiQbtj7MJ4sV7doz7jzYl
+         /GXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790718793; x=1791323593;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=O8S1L9thUbDBOo5IvvqirVWz8KUgkebaENmH325jJXM=;
+        b=A4RRMBW+L/f8qIii8zbzGMCmZkAH2BqsfyEsnlMxhQlXRvGJx5xpQiBP5WnUzzjD4w
+         bWLOF1BMID0t/79zTTVizIXxdlFr/ewjcaneQABAqi3dtLDISpuyHzQmDFKy2hxaoB4H
+         BQC8/cNY0cxGT5mu0DEKHbzGgPGkNl0sUGzNCiEB6ufLAaepOuOBd860958LOW/t6NPH
+         xM9nI2iO4tkrRe+2Aqt1PEp0tcXDvaRohmSA8sW6gfH0QwXeqUdkEhTzFa64n8gqPxRB
+         SReiAbz3rxWoVjT8312ND30YSeXHMuS4px5eq0ZFB/Qrz4v57tUBg+yIRqQ5r5au9Bic
+         Hp7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzoaRcNlPTJVvNUPdLQzMvnkMDzCiCz9AVKbsp8kYXMvHupK827ukg6qvE2uQsFX53MukdHZh6fBw==@kvack.org
+X-Gm-Message-State: AFuF++mdlrfBcvUsZtyF5h4FWCy2f3nD/hxYzQXgrngCr62Qh8qdKGzv
+	f4QSDJWWkexnabYV599AQj6c/7/mw1v4SWfzePX8ZRI6cKipdKE3A2Qr7GY8Xn7rjb8IfXhb0sR
+	LcXmK2U38s2rTFYIZdoZ3yA==
+X-Received: from dlx9.prod.google.com ([2002:a05:7022:89:b0:144:d025:68b5])
  (user=nilayvaish job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:b889:b0:14a:c6cf:1449 with SMTP id a92af1059eb24-14c9dccf066mr568034c88.32.1790718791005;
- Tue, 29 Sep 2026 14:53:11 -0700 (PDT)
-Date: Tue, 29 Sep 2026 14:51:51 -0700
+ 2002:a05:701b:2706:b0:146:6755:ff08 with SMTP id a92af1059eb24-14c9d60e402mr605303c88.9.1790718792863;
+ Tue, 29 Sep 2026 14:53:12 -0700 (PDT)
+Date: Tue, 29 Sep 2026 14:51:52 -0700
+In-Reply-To: <20260929215206.516490-1-nilayvaish@google.com>
 Mime-Version: 1.0
+References: <20260929215206.516490-1-nilayvaish@google.com>
 X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
-Message-ID: <20260929215206.516490-1-nilayvaish@google.com>
-Subject: [PATCH 00/15] mm: eliminate &folio->page references in mm/
+Message-ID: <20260929215206.516490-2-nilayvaish@google.com>
+Subject: [PATCH 01/15] mm/khugepaged: drop redundant page parameter from set_huge_pmd()
 From: Nilay Vaish <nilayvaish@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Matthew Wilcox <willy@infradead.org>, David Hildenbrand <david@kernel.org>, 
 	Greg Thelen <gthelen@google.com>, Roman Gushchin <kfree@google.com>, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, Nilay Vaish <nilayvaish@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 16D9440009
-X-Stat-Signature: nix7pdzospdmgkbk99u3iu15ycepbdrm
+X-Stat-Signature: i5znrfx86ywr5g5ut1yqjcj35krgt6m6
+X-Rspamd-Queue-Id: 8C3CD40007
 X-Rspam-User: 
-X-HE-Tag: 1790718792-640643
-X-HE-Meta: U2FsdGVkX1/yB2EqrxahVWSRmP0U3WUbERcXZl2IF4JM1iqVQdU4oh7kDqrf5rb0tFy2CQ8olzSNsudlD+l1RHWj7QeKkRPfVIvnbxCUI2CscrYOJX8JvCs13rs5tIMfGLGPlYDYR3cs8O0TTbe53Z6RUpU8DogvpKJXS2P/HKy5cFGqiJK9kbUoYQo+kjASBf7MJ6/SAwN4nfoXAB4DAWjaqWB28SHYxMtGSghm/0rgURo3LNs6DTdevvUcxXxiY5ombt5+p8BSRTtZVjtgxv+sx08yxMDfCc70wQYQyL8udiQGghF1HyIAc+ijK59tIxSkFDTKSqoiGYHYX9VLJe605WgAnQcf/YdFNq721GcqvufKImNSXb9iCuimwkkUAgS5FtIIgsN99BisWyt6OCxjU694j0ZWjpTz31S6zipvca7Pt94qs0XKo/jAhBNcygeyWDWXpamHiub/TMJmcLqxVVc8cEJWpTKi6MLSXdtRjfDbCf8A46eg1YMtKPP16Q7aNhnW3PsURecQDWZxIXwYDzF0P1EkapInYp+cvzwmSJFHmT0VmMM+LeYlw1AaQ4ne4CVvpvkdAAPKcMZcq9aydy/XurI4ChazjDfDTa7+hwYacus7sMtI1wXkjlFd/R1qzVsVvkArs03UuA17yn0cn8WR5gcrGL+2ZdxdarO1QouV4c9gaDEhL0ky9gOxpsuGo2rOBDsm3FERxyxxJeuYYRq4NeHyYK46Zbm11bR1L/s0yu8n9wEsGF8NP26AyeBKc+BiJrWuUJtITTdY40aogu/teuc50OJLll7xSj9cRxTwXXGulH3wSkvto967Z+aGhwQK7HteUlLXgoJUsQu41ZJBOc8+LNet3eZzQtBsQoMCM7LHrgzVxd/Aky+K/Tnl3nY65nAAeZ3mabeFsjblfHNKDlXcwXIJqExS11HUq6PSKC7iSk6IY4kKQsmKbc42DOct+BL+iI0iFcp
- e1m+JpQ6
- l2wDObnQUf8nJbXiuC0D/2kQe5+3SHYzWC58v4GVYyeltNIE+IQy+kAsx4AwVAowW09X2GLV4xFwkU3P5aT9oPBqyZ48xLRWX67fhkajXKOdzOc6+gYqs26wkHwC0Zieom5vsCvq4BNwZqtcJO4X+ufEPu7yQyiV4ZvSHS4EHkHsyUHqPq3s5skZJZT6UAdrGSeFtA+5S6pmdurX5CPyhdUSvQMIfZtrv5b+/Pi35ca0/Xm6RvjTLXrqQHr175HBjdCqUeKTD6ZX3q8EQL5x4iwyAL+O6jZ6ftgNwiNzA1rVpGExgcV5fg0T5WC9A+92hy8nNyygAwIcl5ZuJ5O+X++8WuhoBbfcVcbZ0p6dh5/8KP5jKuR6B4HtNhjMaHuxE4tOcb/kjsGs7DkU2oK8d4+uWZJ3zK7BUgY36c2J3wvfiPJ2jxnTVGgtJfNnT44TuSvGBmX0PWpInDjUs80i7TkjdnWQAV7zAlhTlbV7Rgqrv9rvDXgEjUBnEDNQKXjFF0ZYvAapkA94Inw41MBo3DnhdMpskBThlFh+4qvM1xpU/MOSkpiEVj0DX3MXEaYEd3IWbPD0Wm0qLNZSOkcZ7yqtNMbze2IhADtyk9Z64kQ2Xlm7foAplW2s5Q/HZ0POEycPnkKD3XrLnO1RtRBPnl8/JwauajOCSKoJMGxEzx8E5Nd0=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790718794-544312
+X-HE-Meta: U2FsdGVkX1/HgvOk9ndacQtTDK/MmkPIlkV2WN9UwRlva1iRzvIXsvfUaJMKUEkJKX7OYjzE2nxvyQRnRW/jf7+VyzJqPdvnYOA2LGc3U5DOWJSoLS1ef/KkxB94TMtV98+SOPXC+SelGYKtF2qegP8wQdyrjEbeWDIZUYLChhZaPyDffz7LUtg046OFfHTosMH7xYBlBuTfF9WBeO8UDF4QD/sGCCMd7AXmgKUkS7Ut9M3SjueGKIhhVyQesbknrnQnW2LDQC0bgbIVkBxXR9C75LpcXGI+eSiSxxKONkyQzptCjneXhc/b/GT+0d4ddIbMHfSHe7JbFRi8Qm37SL9FswNz1NcgCXcdpqlUz+Q5cpr4uplRPPecug7b+jU7m4c6H+xEfbcQEdlCR6f+t2C8ChmtnjyMjrbRFxHL7Qw4jX2KKg/JtpWhpOC9NwZA6vBPUtMyFuEh5yj6dCJ/lHdnk7rQWASBUVzl4XrAlOMm7l5kieLfrwQXf3V/lUDXCPT2446f7aQYRVwoUkU1sGgbXA17xKoNxD3ksu0nGuvX5KW5om9+AAkbpkBj8B5buSVZGvx2yiZ14dLivt6GDAaltojvr/ui/YwIgeLvK4JY7/NrzUJPZe+qmD76XgYE+T0Tl9W7p7nUGodInvK6LSwhY50WaqMr4/Ds7Osvvy9jNp+etYfucRTI1gpQu5dmCwtiSiXZo62OsOQHFxvC7grgKUgHsG6tclGWI3tbzGzxSrzR9Nv+1gnoK8kJ3Jc/emnkwBqG7xw/1CHTcSlYEYCnOor6+WJh3MVVL5FlUHnL6NC39x3JIpC1RD3mkfdwcFP82DdlNUDPmhRScyHlrM9I0wb0qf+jC6JLPRXOqm6dzxRm9OsuFGbPz1+M3W3s9QOcuvFNdO/QAIO28VUaF5N2MAD8fGLf7j5Zq0BL5o/Jibuql2drb7i4Wk267ai1HJoS5YfifAhAQlXgxVy
+ I8f9mlLf
+ +gS942Ch+FayILVyxyii2qv6kSHOL8xVDI2Qelfknv823M4Ev09iUtfpCs5AvtWeJwISrqhuOqTrqKCKDU6vvfB2LbK8+oXxsNl/CRtdIKKCYApyIpqpmEocQBdpY90h4QGQsTrrk3Gy/bWdIphXoIPpCryAjIvQa2hmTogt/UPSj84yqqFlB6S+IQYm7/sWgA2n18kSNFgFS94qH0Xcdurvdg0G8UdIgn25xKDCgYBuS5v7xwn7dAJskRowmL1ZqpUp5d9qN5umkH4XV4iblI4pu2aDAptyUnCdQaR2wgHCT4mPI0o8qFqrNdvpwR20st+gLZYJiIY85B/MMtpdSDlO8rE59yf9sdpcDJQ08AQasrS+jwjM46rr3NxXp5O6+SFrsSHmBhzeZtu/ymxRvtMZhxcSU46Uhw/Hd/XS8HDAHrygTI4SvTm457RBjYMcUmUOmk9ffztlKg/1FCO4W2Mx0FbZGHjzSfnkjhUx0vwp/UHCU7f3o2eMg5VpB+qTvm8iI2ymIkNmoSL0ZgA9gt+nTHuRaGPACRuznaawIjGoBuvEG+KdVx87EUh5ZCBIctdXkwRW6hZmc0NQJuND2boXT7wruL0PaWX98ZDMHN8NUvgDw8e6zGG9GE8vlXmOrI5bNWETClRWLC38bPHwDK35ETw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,97 +110,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As part of the memdescs effort to separate struct folio from struct page
-and allocate struct folio dynamically [1], struct folio will no longer
-embed a struct page member (folio->page), and the address of a struct
-folio will no longer equal the address of its head struct page in
-vmemmap.
+As part of the memdescs effort, struct folio will be allocated
+separately from struct page and will no longer overlay the head page.
 
-This series eliminates all but one of the remaining &folio->page
-references across mm/*.c (25 files) by converting them to:
+set_huge_pmd() is a static helper with a single caller that passes both
+'folio' and '&folio->page'. Drop the redundant struct page parameter and
+pass folio_page(folio, 0) to do_set_pmd() so khugepaged no longer
+references folio->page directly.
 
-- folio_page(folio, 0) (or folio_page(folio, i) where indexing a
-  subpage) when passing a folio's head/subpage struct page * to
-  page-based helpers (PageAnonExclusive, SetPageAnonExclusive,
-  rmap/split helpers, movable_ops helpers, HugeTLB Vmemmap Optimization
-  (HVO) address calculations, page_ext, alloc_tag, etc.);
-- VM_BUG_ON_FOLIO(..., old_folio) in place of
-  VM_BUG_ON_PAGE(..., &old_folio->page) in hugetlb_wp(), and
-  folio_set_hwpoison(folio) in place of SetPageHWPoison(&folio->page) in
-  mf_generic_kill_procs();
-- ERR_CAST(folio) in place of returning &folio->page on IS_ERR(folio)
-  paths in do_read_cache_page() and shmem_read_mapping_page_gfp();
-- Operating on struct page * directly in compaction_alloc_noprof()
-  before calling page_rmappable_folio(), and adding &page->lru to
-  cc->freepages[order] in compaction_free().
+No functional change intended.
 
-The remaining folio->page uses in mm/debug.c (__dump_folio(), which has
-three lines: page_has_type(&folio->page) and two reads of
-folio->page.page_type) are intentionally left untouched because
-__dump_folio() operates on a stack snapshot (&ps.folio_snapshot) rather
-than a live struct folio.  Those are the only folio->page uses left in
-mm/*.c after this series.
+Assisted-by: LLM
+Signed-off-by: Nilay Vaish <nilayvaish@google.com>
+---
+ mm/khugepaged.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-This series is based on the mm-unstable branch of Andrew Morton's mm
-tree.  It has been build- and boot-tested on x86_64 under KVM with
-CONFIG_TRANSPARENT_HUGEPAGE, CONFIG_HUGETLBFS,
-CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP, CONFIG_CMA, CONFIG_KSM,
-CONFIG_USERFAULTFD, CONFIG_MEMORY_FAILURE, CONFIG_PAGE_OWNER,
-CONFIG_MEM_ALLOC_PROFILING, and CONFIG_DEBUG_VM enabled.
-
-No functional change is intended while struct folio overlays struct
-page.
-
-[1] https://kernelnewbies.org/MatthewWilcox/Memdescs
-
-Nilay Vaish (15):
-  mm/khugepaged: drop redundant page parameter from set_huge_pmd()
-  mm/huge_memory: use folio_page() in PMD/PUD rmap, zap, and migration
-  mm/huge_memory: use folio_page() in THP split paths
-  mm/hugetlb_vmemmap: use folio_page() for vmemmap address arithmetic
-  mm/hugetlb_cma: use folio_page() in hugetlb_cma_free_frozen_folio()
-  mm/hugetlb: replace &folio->page with folio_page() and
-    VM_BUG_ON_FOLIO()
-  mm/page_isolation: use folio_page() in page_is_unmovable()
-  mm/compaction: stop casting free pages to struct folio
-  mm/migrate, vmscan: use folio_page() for movable_ops helpers
-  mm/memory: use folio_page() in fault and CoW paths
-  mm/rmap, gup: use folio_page() for PageAnonExclusive and
-    gup_must_unshare
-  mm/ksm, userfaultfd: replace &folio->page with folio_page()
-  mm/page_alloc, folio: use folio_page() when freeing folios
-  mm/page_owner, alloc_tag: use folio_page() for page_ext and codetag
-  mm: replace remaining &folio->page uses with folio_page() and helpers
-
- mm/alloc_tag.c       | 10 +++++-----
- mm/compaction.c      | 15 ++++++---------
- mm/filemap.c         |  6 +++---
- mm/folio.c           |  2 +-
- mm/gup.c             | 11 +++++++----
- mm/gup_test.c        |  6 ++++--
- mm/huge_memory.c     | 37 ++++++++++++++++++++-----------------
- mm/hugetlb.c         | 21 +++++++++++----------
- mm/hugetlb_cma.c     |  3 ++-
- mm/hugetlb_vmemmap.c | 10 +++++-----
- mm/hwpoison-inject.c |  2 +-
- mm/khugepaged.c      |  6 +++---
- mm/ksm.c             | 16 ++++++++++------
- mm/memory-failure.c  |  8 ++++----
- mm/memory.c          | 16 +++++++++-------
- mm/memory_hotplug.c  |  2 +-
- mm/memremap.c        |  2 +-
- mm/migrate.c         | 20 +++++++++++---------
- mm/page_alloc.c      | 18 ++++++++++--------
- mm/page_isolation.c  |  2 +-
- mm/page_owner.c      | 15 +++++++++------
- mm/rmap.c            | 10 +++++-----
- mm/shmem.c           |  2 +-
- mm/userfaultfd.c     | 14 ++++++++------
- mm/vmscan.c          |  2 +-
- 25 files changed, 139 insertions(+), 117 deletions(-)
-
-
-base-commit: 90ddfbd1963659ca4a5d3d7f20717a4222682a8e
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 913086eaf17b..63acb13f24eb 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1793,7 +1793,7 @@ static void collect_mm_slot(struct mm_slot *slot)
+ 
+ /* folio must be locked, and mmap_lock must be held */
+ static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long addr,
+-		pmd_t *pmdp, struct folio *folio, struct page *page)
++		pmd_t *pmdp, struct folio *folio)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	struct vm_fault vmf = {
+@@ -1821,7 +1821,7 @@ static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long a
+ 	}
+ 
+ 	vmf.pmd = pmdp;
+-	if (do_set_pmd(&vmf, folio, page))
++	if (do_set_pmd(&vmf, folio, folio_page(folio, 0)))
+ 		return SCAN_FAIL;
+ 
+ 	folio_get(folio);
+@@ -2032,7 +2032,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ maybe_install_pmd:
+ 	/* step 5: install pmd entry */
+ 	result = install_pmd
+-			? set_huge_pmd(vma, haddr, pmd, folio, &folio->page)
++			? set_huge_pmd(vma, haddr, pmd, folio)
+ 			: SCAN_SUCCEED;
+ 	goto drop_folio;
+ abort:
 -- 
 2.56.0.rc1.315.gc6ed9934b7-goog
 
