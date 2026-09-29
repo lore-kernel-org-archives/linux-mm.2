@@ -4,115 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA1BC9832A
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:37:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E80D3CA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 14:40:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 273266B0088; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
+	id 0CC246B008C; Tue, 29 Sep 2026 10:40:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24BFC6B008A; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
+	id 0A4F86B0092; Tue, 29 Sep 2026 10:40:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13B456B008C; Tue, 29 Sep 2026 10:37:37 -0400 (EDT)
+	id EFD0D6B0093; Tue, 29 Sep 2026 10:40:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D58576B0088
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:37:36 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F207804CF
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:37:36 +0000 (UTC)
-X-FDA: 85267053312.08.677EEA9
-Received: from mail-pj2-f41.google.com (mail-pj2-f41.google.com [74.125.227.169])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7B7178000E
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:37:34 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j2K5EQpy;
-	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D116A6B008C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 10:40:45 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46AF1A0503
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:40:45 +0000 (UTC)
+X-FDA: 85267061250.25.EB438EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7A91E2000C
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:40:43 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxZmXfC8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pali@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pali@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790692654;
+	s=arc-20220608; t=1790692843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
-	b=6KG1ED1zHc7N4XzLNZpJXHwwX3Z9KGK+XYglrJUcvmrLyLSG4q/dop231caqZB4FYQOCOh
-	1hICfjIM5fh6QNBFEbvsDK5v1OWf//z+aCSkzM97iw7aeK0XRAvPz16ZvSHVBgqUJXhAbz
-	/Qh8o/Xu9YsCz0N4GXsFmV5CfdTKAjc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=a5cHwHJWG+PdvObG6mgULv2DV2MwXG2ifabqUSsYM9g=;
+	b=xAmflsgVHoKkEg5kv1CGASFCAk9MbqmVgyS5viL3NXws84Rf5K+eVAYyFlrOc16DwXDQmL
+	HASHjRxl0p3/hPzF5IwNBNKR/guPzqcMoWZXLH+nzlM9fy99OYAMq9SqGoWpkAFd2ydL1f
+	ZCLC0rvJpd+n2pO+p/j8X00OpC85RuQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=j2K5EQpy;
-	spf=pass (imf02.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.227.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxZmXfC8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of pali@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pali@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790692654;
-	b=OPzdgzemRvKvfgmWPdpdGApbs5gPEV8He5dL9Qos1Ly48ki4ovjPgeQ4y7+1+taCN8t2aO
-	h8Fry8sBBXncQXOuUd5p6FGFnhhMWnGjz/YSCoAUiUAY1EZgYI7PLUPUWQKla50GSKc5LM
-	BFQifFbcFg5WDz9f+z43pQxxZ6eJPBU=
-Received: by mail-pj2-f41.google.com with SMTP id 98e67ed59e1d1-3a0aa9d356eso3369336a91.0
-        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 07:37:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1790692653; x=1791297453; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
-        b=j2K5EQpyRIutlSSU9kbX3zojd+hWmJaytYTZjAmXFLuu5qtg6NldsvFW4R0yWDBn9X
-         /eN5QuxG7hcukjsJKoWve+MUB2xt9zgynxgFntmgc/k9OBadQGtGWd6NX2hXh9tqnn7N
-         AW3bWCCOY8iiejbKCFWLeEuNEirqjGyrxlb6rJ0mmipTiPyTV9iNYba3b3t6gVNV/p0p
-         aCNyt17T/HlZNyVvoRc36q92JKzflj2XBMNZKvZI6faDux+f6B4F8rUMZ5ZZsqmM+/Af
-         jTm+VPWbptmE5ZNRpduok52aTOFMr9K1LU9XiDDY/vVTdEE/aMaHTutRVIoHQ8ondIN7
-         CKIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790692653; x=1791297453;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4/xAz1VLOygf8+tsZJo6ClhlMvD4eb5AgBj+xphaabs=;
-        b=PTMqeeJLm7DTBvVnZA+I0MeAiOiYYt21tpUKFO1Yms57y1I1HOtRnSofm7x/xzXGCz
-         vh5ieSuXj2qj/wMle2fHFrAPeETSLPYb0WhzZh8YYQqXs1YlvkBn+Yep6/qn5kN48XEC
-         HEaeb6VMBlCANmcmqCI4tE40ZXKL/pUAn82NcCB9+wGJFZ36ao8JKXMUDz6UatYQBk7t
-         NSF8Sv3CsZz+PNCvGNe1E1uBeSf1vtAHSakvYYja+fftzXf7lNAm82oeKJvBwGo82ppO
-         M7iII+l1HqNO7Fk8tiGYJjxauzq4Ybh5bTX20NEm93nrCyWE7BsxYY3SVKYotj5vtIaS
-         V0tw==
-X-Forwarded-Encrypted: i=1; AKwUvBygQXPiI+dF7vG2ZscACMRdyTbiW772OEymmrLnbJj5R5GDYdy284lmrskpPy1TW5Ew/x3oBbWaIg==@kvack.org
-X-Gm-Message-State: AFq9FYI8dX56CtrHK49y0CMxFh3y7d9gBN9Xcx7NddgiKK4GKqzJwqNU
-	/z4oWsquhMqHRr6SIaqsC5QWgAYzY4FPDH3FbjiMTMMQc6zpwtgRuDfp
-X-Gm-Gg: AYBFou0vtwkJaZlCe6sZpWmhrc/at3ASVQbyxKOMOhqrqXuFk3vF+zDpTsw41lhlCzv
-	kszorMLFJC9st+EApQu/DLjbSR+rA9lk+JXdNvrqsoJlYE54HocObOoZ6MKYLAcZJMKVg9+bfd9
-	8IgMI/3t0TXFrWChXoWsR0wXtukt09FNDKqo6fmZ/RJdDp2KWRapqqCRToxrB4nHnE26j+7d5yd
-	/EcEeIuNfdY3GpcyFRbf4kTcZ2FmfQE2jwcYbL4eGgic3VqR7uGIITFKj6esSXaHvVMWROykT0C
-	k1uXV0uKFlYPZhdVOlKvF5vw6OSejCluDC6mIRVgVwH0kZJd+iWF3KPetOAiLzLsvxvGOmHcjBu
-	6WwjwVrCcH09LFuy+4mKwLNXw5bazxfhamoaOBb5S6YK8WOWGLx+eV6lOE2DtrTor2lhH4qfmwT
-	FO4/yRdyHe8DXqbxzUNMKqEJAmxnNgdB9RrhVinF+tj0m7WQmnhLYz8pZagAcWX4Fc
-X-Received: by 2002:a17:90b:5486:b0:39e:6a82:afd5 with SMTP id 98e67ed59e1d1-3a098fe75f0mr13422848a91.39.1790692653315;
-        Tue, 29 Sep 2026 07:37:33 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3a49869b9fasm7333202a91.12.2026.09.29.07.37.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Sep 2026 07:37:30 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>,
-	linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: [PATCH] mm/memory: remove unused vmf_insert_mixed_mkwrite()
-Date: Tue, 29 Sep 2026 23:37:06 +0900
-Message-ID: <20260929143707.450805-1-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	t=1790692843;
+	b=TQDUTjZ3w5fI7e1FbxlFH+c7gyR5DNbEp92qpsjM65tuPOXkB1wFPhvJtt2NzJ8uDkoBRG
+	8Ur/T09yqlpuBz42B2kAczW2F0IxrorWARq1wwKPq9+UG/aSM5eL+kGAk1FIm6RFKP3daJ
+	ij7aEn5t7xl6hu951zSvXMkZkrKSrHc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0B72F600D1;
+	Tue, 29 Sep 2026 14:40:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915A41F000FF;
+	Tue, 29 Sep 2026 14:40:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790692841;
+	bh=a5cHwHJWG+PdvObG6mgULv2DV2MwXG2ifabqUSsYM9g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PxZmXfC8YqsppmyjCnfb95WGea1J5Ah6N6sQjZWQXl/5JzSDueg34gZDFv7g3ur2h
+	 1CmLjdRUdmbpi0euwALi+zBhQSH9VAeLqHEPb4R0TawXcdwix0M9MAwKZmMeyUu7M3
+	 aKD7+yipa6i9FzKrAmi5lZelkEcHC50IC6JorSHnGcsE2OOswpeNV3m9l8TrxmxtGK
+	 shWYRf06U05ReKL3CjR1G1goxX7VXGSZlbyaNjAXMK9/t9eCxPTR/VLbP4JAWiOmRd
+	 cQBCY789a33BoVd4deCWQglUV0mTgTQoHnjvahwb3xyjR/zEg8esHSJgWi6QDhoAYl
+	 sC1Gf/urvDITw==
+Received: by pali.im (Postfix)
+	id 9882A5F9; Tue, 29 Sep 2026 16:40:43 +0200 (CEST)
+Date: Tue, 29 Sep 2026 16:40:43 +0200
+From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Gabriel Krisman Bertazi <krisman@suse.de>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>, Hugh Dickins <hughd@google.com>,
+	Daniel Tang <danielzgtg.opensource@gmail.com>,
+	linux-ext4@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
+	linux-unionfs@vger.kernel.org, linux-mm@kvack.org,
+	Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH 4/4] ovl: Expose the filesystem encoding through sysfs
+Message-ID: <20260929144043.5rg4zf7uth333qke@pali>
+References: <20260928213155.2612039-1-krisman@suse.de>
+ <20260928213155.2612039-5-krisman@suse.de>
+ <CAOQ4uxj7Vx-UGvgGGr9hPC0qUgJZ_WRAv1ZLi=gJ6r=ZJW0QAQ@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: emx5priusuwj1bq757mgtg6uwdmygbzn
-X-Rspamd-Queue-Id: 7B7178000E
+In-Reply-To: <CAOQ4uxj7Vx-UGvgGGr9hPC0qUgJZ_WRAv1ZLi=gJ6r=ZJW0QAQ@mail.gmail.com>
+User-Agent: NeoMutt/20180716
+X-Stat-Signature: x3t83fnruhrpu1d664xno1wymxh3wmwn
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790692654-466901
-X-HE-Meta: U2FsdGVkX18rWl6KWvY2m7wwdJxUfrbSEAbyKeVLXfcsxY+ZfA309I1O0mbgLudFHO9LyFCwSPRFl94IwQD9gaa4uky+kPIqcz9uMIsvaZ+PXIVa4RIcQpvcGns7BFg4KvyHeDzICdAaaLHcanNRnUJDO8mHjonZdmZY1y6PbgX+DsnFEpcqKhxQdZorA6XfbO6ygsyYA/gZSLwM4KhfrrsaKQD175VePH7s9RpnA3YQp/6B0hJ+jjHrx9RoZTKlZ3r0uL7yed+Jw+AzcsF8ID2AxyBeb9oSMe6TOeLgFCoOd/VJaIAeirsi3evoabg2HvMrwjh/RDBu/bvwjM2WY4lZSgz7BgGp+F96IOEiJEZdtjsx5iwTMwc+6CRQEk9Y3HmfbHqWx811BSYdG3y1oeKy7AKYH09U6VDBbMmN4kAD1F0eRC7QUu8pzsBeF5MKijF4KqZou8ndjLueW1Qp6e5EC7r3afKTacpLKzemzc0gpFL3j+b8G8qJvaOfQ5x3Qpq+l2/F82o3SdhCSA1z/bFSbuLA+81ZW0Tm/8WI/10PLjBEGp15jf5A+oC1i9jlKfD8dVvKUqN4IVTYIqOliL2ASKUHNDmwalXnuyv9vm6eMKSkvTH/aFTLngYs21Xwy1ti1TOVrmAqSnqhqteR89sZyXkQPsrPrmQsmWNR9ZbUpG0jjgS8d9ozjSBQETDho1GVEGOODkJyXYFf/CTtU72Mq0tZUYFAN9OUHrStdmygaAkGJfvCYMQDsxrUxdpSLnnCUX6ibPYEVqVsdMs8UNRouBPcyRZS/+NNR5JBlTKBsPAHMQ9VCFZmB15XJaig81L8N2g4UoCalZKqfumrKVFsJHSWHpInPQs5Z86ljU1crxEWbjWGVcIkH3aDCc0e6Nz3C8rd2vVqQuvUDKKIBcmiU4qPfhsVVujCiAFJ7xCUq2S+pt3koRtryBR1iKgQWB+MYX0eAwXX1Xp7lSi
- NBqXnxML
- 8h3xfKp1H/e6arsV53b+CxQbaJl/C906bqAsgc6a45TMtmQW2fId3eb5CesnyQMnRdQ1yl3Fkc3yl5tnOz1iLOW3N+XJWtzWVFVfAtYjw66FOmuqsK2ohNKWZhWRFPbRpWW0URpaAVmVFDZQ+NkckpObQlMGV9iCXPl+BhMAwZB6QWCyyfQwKbNyQvuzfdE8t4b7foKDq1RkyqgCSdycvXGEdxeU12bWOLAKMY3Jy3EgeDjTF45ng9VEZbTHAoapLbnA8/Jl73MpMo5g6HtFEJPoEhlI5bOS8o2undP9R++xY2Vbpt00TJIpb1/vq2rq7OMTvaQcBYvXjsK5W1QQwgPigyttQtE+jWWgKyOior5ABNCohZ3ZGIfyUfvXuunqVwnQmy06jJGTWrXrc9nPMn/Zfe95rzxH+O230uKHofuJMNDYUdtTSW2WRgVy5Dmkxk+hw8F5AVtTuZGE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7A91E2000C
+X-HE-Tag: 1790692843-326553
+X-HE-Meta: U2FsdGVkX1/k3PQlfLZmQnYahUhGU7XECdDoNGtsSviQFCold58rFomNuj4+ixeII8elBlbQKLxqOtHN5t3nVKyNekpQVTXe+gc+Y1nHYGfS3pwdmEn8KKcCY4N7oOdbU0gTmtCYI7otqFT9G4VyMExhbBnycUrOXHUjFoPmObT2oLdRRBN6iVO6l5v9vTzFZzAd0e2grGu9Ml45tOn6EYkWowLAD7/7amlwJH6RD1xiWJg73UE99Pak4KEsnx/LZNJB1jwVGgBuCDBfFUpqcy4cJZR/5KluwwXE74beby9FJ6SCs57XAqxC8OgNkC99m5gs73VGkWYrOKz7MGRg1LwdkxA6ScP4T5pi8ZtIHVKfAa13D1RIeVMe/Rllbntv2dJZV8TyI4AH4vPtpeFd264rPyF896B833wrHEDxWIy7eUPiX4PLTchGnYLO26DtWJ0WdyEdvi6ZY93qXxCdNvtmARdThs4ruawLtl2bwOqM0eGsfUrMBaGIcp+chVJVCY0C34gLiJ2ZfAbjUHMNH5BFHwd4lBTlIXxrMP4qSO5ZBVjdDnrmLPVML6MdbI5V3CsSk5loPk4BUuEFWixjLgKPPTLRY5bk9ZzkzysTjqMy56+JUBXVJBFFvRiBJWpOzZqXPtNJcZhuQlT+ikebPvrPaHGjmcvQI5WjZmZQ8mfp+M4fBQKtbv7qqhlc/De+BaHRbebLS7v8oTq1qhE6hATCvvHW2YBTUDj8HRl+m04mIkouYHxcrxcgFar039AYLwZtZkpmICXnLZ2RnFjMr5Qo9wh6JO7evtRUhrxFLlOnGe0yc+b2ids93ghixv1Qp9AkUQLv00ePE5l6ek58oNceCKZJnzy4beWX6gxNAtsomvK9KNWGfUhwxGi/BGMoTvdl+Tl+tKL3oUfw3ArepxTzIL6SezlDqMqa6+bWCkrL94xD+ZuESE3nAcxG3zMkTUB7JkGiKY3CA0o/3ir
+ czgX9XQ9
+ nc6IPM1GIvym4/vLVt2tnPWE2xQoeYGYYFyKryJzYBA7ITY2dHPRYcjsHqlEPzNn4s5l1u8ENnQ3eg5BtBkbklrPzu+AZpPLq7fQexeq5Y89xWmdGYYELaPRyst6P/J9wX2a74SAhNK8UjQZJXCNvQSMe6LXuoY7Ki6PidrmiNSz4iRdW8Fmd6nGagA3eUTjsTo6j0c1ZADh4L2B4wowxu09I6/CVEz7Bir8eN64+6oCQFkdvrI7qn73bTuGEWPyGJpn8dc5Z4FLpnTindrDFgbQsLojpVP0vHcJBa8LCejRtRBAJ+obhkg7zX09SwUqUAanHg2Zz+YifwafJJSUFC6Re5AaYm7lOerlZlHE4pnWd21TmDZr2iYb1Wlr3qg5I6LGmI5TOyJYloHMMTK4iCcvlskMT5kXKLHvG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,191 +103,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
-vmf_insert_mixed_mkwrite() has no callers, so the mkwrite argument of
-__vm_insert_mixed() and insert_pfn() is always false.
+On Tuesday 29 September 2026 16:15:04 Amir Goldstein wrote:
+> On Mon, Sep 28, 2026 at 11:32 PM Gabriel Krisman Bertazi
+> <krisman@suse.de> wrote:
+> >
+> > This patch reproduces the same interface from ext4/f2fs to have feature
+> > parity, so users don't need to rely on parsing dmesg or trying +F on a
+> > temporary directory just to check for support.  Note there is no
+> > encoding_flags file, as none are supported by ovl.
+> >
+> 
+> Gabriel,
+> 
+> I am not ok with this API.
+> It is wrong in several ways.
+> It is not generic, we have already file_getattr() to get casefold status.
+> There was a suggestion by Pali [1] to get the supported xflags - statx style,
+> which can be a way to say if a fs could return FS_XFLAG_CASEFOLD.
 
-So remove the function, the mkwrite argument and the unreachable
-mkwrite branches. Also merge __vm_insert_mixed() into vmf_insert_mixed().
+Yea, sorry for that. I have not finished it, I did not have time. But I
+would like to address this as this is something was was asked more times...
 
-No functional change.
-
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
----
- include/linux/mm.h |  2 --
- mm/memory.c        | 76 ++++++++++++----------------------------------
- 2 files changed, 19 insertions(+), 59 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c038d06825c3..2ac734efd4ec 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
- 			unsigned long pfn, pgprot_t pgprot);
- vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
- 			unsigned long pfn);
--vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
--		unsigned long addr, unsigned long pfn);
- int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, unsigned long len);
- 
- static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
-diff --git a/mm/memory.c b/mm/memory.c
-index 330cde31bf8b..1f83a26f8733 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
- 		if (!mkwrite)
- 			return -EBUSY;
- 
--		/* see insert_pfn(). */
-+		/*
-+		 * For read faults on private mappings the PFN passed in may
-+		 * not match the PFN we have mapped if the mapped PFN is a
-+		 * writeable COW page.  In the mkwrite case we are creating a
-+		 * writable PTE for a shared mapping and we expect the PFNs to
-+		 * match. If they don't match, we are likely racing with block
-+		 * allocation and mapping invalidation.
-+		 */
- 		if (pte_pfn(pteval) != page_to_pfn(page)) {
- 			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
- 			return -EFAULT;
-@@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
- EXPORT_SYMBOL(vm_map_pages_zero);
- 
- static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
--			unsigned long pfn, pgprot_t prot, bool mkwrite)
-+			unsigned long pfn, pgprot_t prot)
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	pte_t *pte, entry;
-@@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long addr,
- 	if (!pte)
- 		return VM_FAULT_OOM;
- 	entry = ptep_get(pte);
--	if (!pte_none(entry)) {
--		if (mkwrite) {
--			/*
--			 * For read faults on private mappings the PFN passed
--			 * in may not match the PFN we have mapped if the
--			 * mapped PFN is a writeable COW page.  In the mkwrite
--			 * case we are creating a writable PTE for a shared
--			 * mapping and we expect the PFNs to match. If they
--			 * don't match, we are likely racing with block
--			 * allocation and mapping invalidation so just skip the
--			 * update.
--			 */
--			if (pte_pfn(entry) != pfn) {
--				WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
--				goto out_unlock;
--			}
--			entry = pte_mkyoung(entry);
--			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
--			if (ptep_set_access_flags(vma, addr, pte, entry, 1))
--				update_mmu_cache(vma, addr, pte);
--		}
-+	if (!pte_none(entry))
- 		goto out_unlock;
--	}
- 
- 	/* Ok, finally just insert the thing.. */
- 	entry = pte_mkspecial(pfn_pte(pfn, prot));
- 
--	if (mkwrite) {
--		entry = pte_mkyoung(entry);
--		entry = maybe_mkwrite(pte_mkdirty(entry), vma);
--	}
--
- 	set_pte_at(mm, addr, pte, entry);
- 	update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page? */
- 
-@@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
- 
- 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
- 
--	return insert_pfn(vma, addr, pfn, pgprot, false);
-+	return insert_pfn(vma, addr, pfn, pgprot);
- }
- EXPORT_SYMBOL(vmf_insert_pfn_prot);
- 
-@@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
- }
- EXPORT_SYMBOL(vmf_insert_pfn);
- 
--static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
--			bool mkwrite)
-+static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
- {
--	if (unlikely(is_zero_pfn(pfn)) &&
--	    (mkwrite || !vm_mixed_zeropage_allowed(vma)))
-+	if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma))
- 		return false;
- 	/* these checks mirror the abort conditions in vm_normal_page */
- 	if (vma->vm_flags & VM_MIXEDMAP)
-@@ -3012,13 +2991,13 @@ static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
- 	return false;
- }
- 
--static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
--		unsigned long addr, unsigned long pfn, bool mkwrite)
-+vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn)
- {
- 	pgprot_t pgprot = vma->vm_page_prot;
- 	int err;
- 
--	if (!vm_mixed_ok(vma, pfn, mkwrite))
-+	if (!vm_mixed_ok(vma, pfn))
- 		return VM_FAULT_SIGBUS;
- 
- 	if (addr < vma->vm_start || addr >= vma->vm_end)
-@@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
- 		 * result in pfn_t_has_page() == false.
- 		 */
- 		page = pfn_to_page(pfn);
--		err = insert_page(vma, addr, page, pgprot, mkwrite);
-+		err = insert_page(vma, addr, page, pgprot, false);
- 	} else {
--		return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
-+		return insert_pfn(vma, addr, pfn, pgprot);
- 	}
- 
- 	if (err == -ENOMEM)
-@@ -3057,6 +3036,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
- 
- 	return VM_FAULT_NOPAGE;
- }
-+EXPORT_SYMBOL(vmf_insert_mixed);
- 
- vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
- 			bool write)
-@@ -3078,24 +3058,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
- }
- EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
- 
--vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
--		unsigned long pfn)
--{
--	return __vm_insert_mixed(vma, addr, pfn, false);
--}
--EXPORT_SYMBOL(vmf_insert_mixed);
--
--/*
-- *  If the insertion of PTE failed because someone else already added a
-- *  different entry in the mean time, we treat that as success as we assume
-- *  the same entry was actually inserted.
-- */
--vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
--		unsigned long addr, unsigned long pfn)
--{
--	return __vm_insert_mixed(vma, addr, pfn, true);
--}
--
- /*
-  * maps a range of physical memory into the requested pages. the old
-  * mappings are removed. any references to nonexistent pages results
-
-base-commit: 1c2b8d2725f84b43fabe3b3e9628c91db8ca6c65
--- 
-2.43.0
-
+> In Chuck's v2 [2] FILEATTR_CASEFOLD_TYPE was already suggested
+> as an extension to file_getattr(). I think we can still do that if we include
+> proper versioning in the casefold type.
+> 
+> TBH, I don't think anyone requested this - you only mentioned
+> the need to know if tmpfs was mounted with casefold on and that
+> doesn't mean that etx4/ovl patches are justified, but ext4 can decide
+> for themselves.
+> 
+> The point is that this sysfs is not going to be the standard for all the
+> fs that can return the FS_XFLAG_CASEFOLD, so I see no reason
+> to add this sysfs interface to ovl.
+> 
+> Thanks,
+> Amir.
+> 
+> [1] https://lore.kernel.org/linux-fsdevel/20250216164029.20673-4-pali@kernel.org/
+> [2] https://lore.kernel.org/linux-fsdevel/20251211152116.480799-2-cel@kernel.org/
 
