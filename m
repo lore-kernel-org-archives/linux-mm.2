@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D68DCA5FA5
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 02:16:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D1E6CA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 02:16:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B86266B00A2; Mon, 28 Sep 2026 22:16:01 -0400 (EDT)
+	id 397366B00A4; Mon, 28 Sep 2026 22:16:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B373E6B00A4; Mon, 28 Sep 2026 22:16:01 -0400 (EDT)
+	id 322686B00AC; Mon, 28 Sep 2026 22:16:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 914606B00A6; Mon, 28 Sep 2026 22:16:01 -0400 (EDT)
+	id 14E516B00AB; Mon, 28 Sep 2026 22:16:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 62CA06B00A4
-	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:16:01 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01AC21203A5
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:15:59 +0000 (UTC)
-X-FDA: 85265184480.15.A0289F2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E12A36B00A5
+	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:16:02 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 711401403B8
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:16:02 +0000 (UTC)
+X-FDA: 85265184564.01.4A78867
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 00301100003
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:15:57 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N0zA444o;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7E0FF100003
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:16:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nAeARBmw;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790648160;
+	b=rZhmTehXSZkm3RuGuEI6rQTHMOxAB2HVWDEAkhUbDSYFl3RMWzc2eLnRWxg1Qoa36JOY8L
+	kQCjwsZmjPwvklAWtOqY9IH6THjzzQyg3tyMnXcEcl1oIWGa/4Yqe5X2/40TYhIQTo/i7S
+	aVYwT32r05Am7IxWmWu5TeuEbhb8/VY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nAeARBmw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790648158;
+	s=arc-20220608; t=1790648160;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZQYBEW5BOVeGSKg1JSm+Jbu0MaO/aDw0qcHTWXicndE=;
-	b=gVoFEw+QvrLorTBnmGM04ZXOqj1I4+Z6zbcZ0fYY7XNf+7InW9jiT3r+oWMzSZfu7U4PKq
-	+gkEIPXfRCNHbvod6p1G/LR7z9qqcSrnt+v5ONHOQ4bXJNfj2OJNsj4ARpIz4EBwBcZCOV
-	V5OyUeuMoRPt3lqvtZw6F7BpJa0A5Y8=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=N0zA444o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790648158;
-	b=3xHTCZqn4vcG/gaXmJm6LlPM3qIoDOHrHrXTyRav3A4TcFeA3sT0uMY5PwM2cO9HBFlhrb
-	6Nuzc5d+fx+WwDW9c0p5zwxZdk7jQh1aZsbcdfsR2Rxfb6Dt6JQbcLMnxU+M6lSPT5NNC3
-	3maszUAplQi7SrJHqWTHkYyEuNjEYzg=
+	bh=0ydcpE6RkWOfCMJJ3NwCWE6J6D/QMeF5iVEGBlh1hEA=;
+	b=MYhT07TMYD3pT+CzKoam+iQClO1QbYuHANmpJSBOFNe6BloatI8hrmYOricQrXta7vtIVG
+	oYTb2HOGjpmQp/4h/ZEIWeXl5y7fXcn1sNIy2srBOyF53SWeRoRIbJgFaktsLSOB6/f7t2
+	T7vtc42k+l2QI7vgSusGo/fizlTb/cE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82643447A5;
+	by sea.source.kernel.org (Postfix) with ESMTP id D7C7E43DEC;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B1E9C4AF15;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B4C22C2BCB3;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790648156;
-	bh=KcRjclGxWWucAqNsmHW4CsL7AkQm1OZEgwKhM/93SCI=;
+	bh=GGbamOQ+HlpG790iODVm8xKYRwitufeQaNNIdHIRajA=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N0zA444oJE/c3+6D/NwuEebtUgg7rR0rjI8mi1w7os0cZLCFi4dTKXNOm54VMHzhO
-	 iwsTmDBo6jWwxrLXA3oCUsJZEFthsPU7AT7RhexEXOh2w53BEa0IYkJgBbcFxIu73s
-	 YwFVqWcg9k0Qb/j7LL0nJHIvDu20EX2+sBjhL+IKUYNOcwSpL098I4iTv76t2AL6W9
-	 D+tyyM8AkUuCSqzCJfcBdnAGweMvuTKNVhTnv0+Z90KI51CjqeJwhbDX3vqyiealUr
-	 /2DQQO0RgkvShAlVxb5lzR9RED2xCvCsfl3oev5jAuvWp7T061Y4WaxcSvyTm4Zyer
-	 tZASUWQVZiI3g==
+	b=nAeARBmwf6BKNwvkkTYayaq9BwggQKMRFuadBGBocmwL6FwmQuGWcTt/ygj7KXhU3
+	 2IYmQJJfZyfSyZ2WSAXox7nGi3yKdFf4Ddm7G0y0XWmsA1+im5fftaHEp6uZDn9D2j
+	 8iuoo2jaKQAI227PORBCkKAdxizwMXmjT61/Lol7/+apYKlhXZ1DmkhKu8AenwMQUK
+	 lK30tiuOOgDX+K47wm+ZPD8nc77tNU6N3HwgifaTWa9vX1d0AAnAa2nU6LyKkKoVLY
+	 mVfJYN0wTXR9XwnI9hGxKtLY7E17RUvF+0xZDlTBcjLP0u+yPiq+P6K+XWdnPDroD1
+	 vKpF4yf+A1smQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41701CA5FAD;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DB00CA5FA5;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 29 Sep 2026 10:15:54 +0800
-Subject: [PATCH v3 04/11] drm/tyr: add per-file VM pool
+Date: Tue, 29 Sep 2026 10:15:59 +0800
+Subject: [PATCH v3 09/11] rust: device: expose dma_coherent()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-tyr-ioctls-v3-4-26955fb111d5@kylinos.cn>
+Message-Id: <20260929-tyr-ioctls-v3-9-26955fb111d5@kylinos.cn>
 References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 In-Reply-To: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -96,25 +96,25 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=4466;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=1677;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=2k4Kro5Nu9GP4ZaXjA3FSWjNswGDeb0O0Mq0nSMnSeU=;
- b=kDfugSFGH7eKdA5+2sLu99cdt5TWEtYM8IV+0Y/ncOgm/ISOJ7zGt4CcRwbDNwVbxi0+yDxxa
- QuLPwX8bPXRD4aVNIF2NbenIspWPdfUYSapQ+0AOrEb7nAotBZKCqu0
+ bh=XfO2LPkTwSiEqM7hoqHCFQ6seVfT+uG3TPffKXpZyws=;
+ b=dlpNSCMDn8r/2tfOALYXZiv/AaY/jqC+xKDE9iLPr5YqZoce/oETuwi7HSo5W03jtXpN3XtbH
+ Km/IKZIqgLWBW2YiTLEF/VwGN4M6hFlGcgepPAdJlqvcXNJoV3Hp+Hu
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
-X-Stat-Signature: p3jeh4uh6pkxdyaoxmad3n61qdyu1wox
+X-Rspamd-Server: rspam06
+X-Stat-Signature: hhyex9ckt83f7k4ji7n1ah4tnzsuadem
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 00301100003
-X-HE-Tag: 1790648157-641715
-X-HE-Meta: U2FsdGVkX19A7UvfFgL80vbTxM/c5rQL7afd4YaTwr5FUIoFprN6+otVlMAWKi/Dt4RMOjPSfh7WA/KXkDPSZRFiUQoiDQSDK506dRKqnvpuv2AVMC+jwj1FO3hqy5wxo1ePE28AHYI27dutSs0LirJCzMhuj91fpr9nuXpqx8ZyRucfliPJUZYlMhkPUXCbcgXLe+Retz6dZM5i/Jls17enofvOVVHzB+FaQpTmY9yJstFQcj8uN9SUP6xGNy8aRoDvFbLliu4m7YBcTeDEFJYkaRSM6v1PgLCKLtf0cq5x6wvVXNkG0lxHX0Di/EIaMipFp2X8U0+oiqOz/3hx9+cnzKL/ItRosOVe2t3kz2VL+TrxLr9JEVebnr6ixpKLvjXXlpWFxTUdYuksCaIr5NS51UE33hcyl9ZynXIQ4XTSkK2rpt/D0eyTTQbIdla38pmFbYHaZ+RMTqz73+7oI6n9OzFnp84IG28SPnn/PwzR/20ERwifcuGSGD/jMsfYfPtGZCxu3sfAPQD6I49fe9l7wu60NGdX0YPut29sJHUbtjvPJelmV0wFAo3yTIoKcP2FK7Ab09qjyi8UvmPZjbVbSxgjEPt5RBozotjiT0EwEhebjgJFbdzAvzAO3ZXwdkSQWq1WtO1lyMYdLVENcKyHJ7/VCiVHwyoScQ4E2AjtRv0jBPHWLdJOj5XuvdaGhBQ2AQkiSGmUSMI34ycdNTho1bktUvAb4yYwL6WyRvFNDpXHlKRcQPrDu+gPCJHXyMbZtpfpu8Co97+VY2NJMAMPtf/mm9YWPaDMFN/k4fj1pK6SVWNq7brN6G8RfZ2uykuBsEg/czgP7N1XUg21uG0kLyy6dje+AK2nIMiPFCowjg0aq1sFLSAylmDKxzdNvgqEx8s9vZV1O/521jPLHD2x9CDE+nMU9J3n9lvYA1EMJm547eSJSTctA/RIfMkVENGXch48DiiQJXZXB4w
- XlT858Gb
- It4hUSQOsRyNObJY7rpUuFA2ZFQ/9WDpXnrBWdrjqcXAyWcQB1vniC9VOKQBxHi30iE9UZOWUFm3mN3JHb4Dp9itKqYAExr4dCC8zk/lxtI2nYcCkFvvaFXXgL1dET7mUs/KOOIQNuy98lyZgfuMFAvvOuPvZHdJgF6kaEqftO+qepwMvKA66gCU6UgBPI0z518m/3rODZUVoXl4QPLS+R2HEsP+3ihK9GdjlLrnVLoMDCrrpYkGbYlcWuMkgBPXE5Hd/hXqnRNbtPaEmO0kABkWnHzR1cFGXfergwB9pD1gna1LhEuewQtyA4DMS0FdyXEy5Wq/ZQlgw/wwLAV+HbI0bZNcpCmQu8xboNeEN1Wik00ebkzfFbpieIuw+c0fzIohi
+X-Rspamd-Queue-Id: 7E0FF100003
+X-HE-Tag: 1790648160-542581
+X-HE-Meta: U2FsdGVkX18vnyu37tyLq2+CTQVY2oXAn5bm8Ps7BOOsasg+pskfc/wW6XpBC2wQu5ALVTUCjCQbAT5iCYBlOEmJwYwiLcLzcCUZFDw8P+pHyhrcD3zoN2hGNzxa5J5T4U6mkTbh4YhWMNR3B3eexqyE5uV1AQYJoAI436Xh40ao/ocYEvG547fqem2BuLHj321vCn0cW8J8EUTsZet+wCrilL/yANcZLlwLUeC+V2tknLu8qGxNdygSk5KEEBxU5ynDY/6DtGDoOENnNO2pPeAPP7OjdEALYme8g6MkBmugMhyXpmuMgSDdl0pfP/+anlPjNaaFY4OvJgr7InXUpBSL8GyoGH3ubdtgnSFPI/SNEildnCDePVvWxjWWf94eiPnLboUHtpErKLNbzcqk33heSu9pzAV8Cm/1BmKr3AU4Xtkx/EfjqxXJGmY/9BzZ9wiuuWSqXZ25YwjJJxJ0+qHxRMeLX6wzU2msWOapjqke6RXCSHIV8K7HsNoXVjm66jPq8RvMwMLq7YdbWWYc9dpsuiNL4m8u9Vnf8eGTlec43nVpZeDlEwmTDhOjOAjTgB4kuB3gOVDy+n/px0O6G5/gDSDwVu4mkYKrXIGdmAp9VRzVr+D5IBhS6f1R9xEAt6fVYGRAopcwiBkX3XUmgMiz6bFNdph+0tTX9Ah19ku9b1LjR4yJtVQm5P1b1etpvtlJXQHGAabe6l73Qo5GH9i4jWFtyvhH/vbuMmp/3X9SFF9OnfTZEGPrcYK0fwAZX10o72kUUyQyLPwFS8iVYXulz9Au7sRJJfPlLcdx2+IMDGwCzo4snNsovhy1I5r5N+m933MVs+YApqGmBgAMwlrrEfeEQdBtZPuRWtbji1oNdBq+Ls3v+cp0mkYRQasEW2DfBvws4aB7udw32KxkbR642nKxCyYIiGTVGQ0jptIV1lI2lEFsZLYnobnkqkImIv0yjAGaOaEJy3utvME
+ QcCMzNIX
+ xo/wESjXgjpA8ZwlZaNE3JfBTYXTosPScbzDK3Z2DNYaTRGEIdWXBrPuV2umsASV9uNSK0LecXzwWR2wvYcVRQ0TGw6C/uCGlyWew3u+6AwjFBoN09Eea+RDIfHXZDOve/7RqKF2/Lpr7QUhh9YZjfQG7Zr9XCT8YUTf7ZhONEZlow8vPSIDOZRwIdE73qP8fSA0ztajMvESvvz/VXPlQAMoIr9p/A1Z381u69UAkaU15I2ffHgeE2aI82KX+GSOwp42kEx5Z5/mebMSO4nETPmchVMCieC5fnJRP1z/QfhyiRXQTLmW50v3yc7kOT33tUYPr115S45AEX6Dll0wQGYXDaAMYcyCAkJNzuwSLG+uYTcdSN2U1w/eVbQ0BdOf7cZBBymHJV4yBnaHi1lvShXGwDTIHzMtxNi4+0uU9Lgl8NvNUGCdl967xvp7g+m/fE/5jxeQnofMffmMbzv+cCEnRfHSuWC9qbQCwHqRkeKDRLDc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,147 +122,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Alvin Sun <alvin.sun@linux.dev>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-Userspace needs multiple independent GPU address spaces per file,
-addressed by ID through the VM ioctls as in panthor. Store them in an
-IdPool (capped at 32 for panthor parity) plus an XArray. A failed
-insertion kills the VM before returning the error, and the pool kills
-every VM still stored when the file closes.
+A driver may need to know whether its device is DMA-coherent, but
+rust/kernel exposes no accessor for the attribute today.
 
+Add a thin accessor on Device<Bound> that wraps device_get_dma_attr()
+and returns true only for DEV_DMA_COHERENT. The other attribute values
+(unset, non-coherent) are treated as non-coherent.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 ---
- drivers/gpu/drm/tyr/vm.rs | 106 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 105 insertions(+), 1 deletion(-)
+ rust/kernel/device.rs | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/gpu/drm/tyr/vm.rs b/drivers/gpu/drm/tyr/vm.rs
-index c5e307b1e2416..a2857820570cf 100644
---- a/drivers/gpu/drm/tyr/vm.rs
-+++ b/drivers/gpu/drm/tyr/vm.rs
-@@ -33,6 +33,7 @@
-         }, //
-     },
-     fmt,
-+    id_pool::IdPool,
-     impl_flags,
-     io::PhysAddr,
-     iommu::pgtable::{
-@@ -53,7 +54,11 @@
-         ArcBorrow,
-         Mutex, //
-     },
--    uapi, //
-+    uapi,
-+    xarray::{
-+        AllocKind,
-+        XArray, //
-+    }, //
- };
- 
- use crate::{
-@@ -948,3 +953,102 @@ fn pt_unmap(dev: &Device, pt: &IoPageTable<'_, ARM64LPAES1>, range: Range<u64>)
- 
-     Ok(())
+diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+index 2291d85b6849e..57950aa71f33e 100644
+--- a/rust/kernel/device.rs
++++ b/rust/kernel/device.rs
+@@ -260,6 +260,22 @@ pub unsafe fn drvdata_borrow<T>(&self) -> Pin<&T> {
+     }
  }
-+
-+/// Maximum number of VMs a single file may hold, matching panthor's
-+/// `PANTHOR_MAX_VMS_PER_FILE`.
-+const MAX_VMS_PER_FILE: usize = 32;
-+
-+/// Per-open-file pool of VMs.
-+#[pin_data(PinnedDrop)]
-+pub(crate) struct VmPool<'drm> {
-+    #[pin]
-+    ids: Mutex<IdPool>,
-+    #[pin]
-+    vms: XArray<Arc<Vm<'drm>>>,
-+}
-+
-+impl<'drm> VmPool<'drm> {
-+    /// Creates a new [`VmPool`].
-+    #[expect(dead_code)]
-+    pub(crate) fn new() -> impl PinInit<Self> {
-+        let ids = IdPool::new();
-+        pin_init!(Self {
-+            ids <- new_mutex!(ids),
-+            vms <- XArray::new(AllocKind::Alloc),
-+        })
-+    }
-+
-+    /// Stores the VM and returns the allocated ID.
+ 
++impl Device<Bound> {
++    /// Returns `true` if the device is reported as DMA-coherent by firmware.
 +    ///
-+    /// On failure - ID space exhausted or store failure - the VM is killed
-+    /// here and only the error is returned.
-+    // TODO: allocate IDs with the XArray directly (once it grows range
-+    // allocation, the equivalent of C's `XA_LIMIT`) and drop the IdPool.
-+    #[expect(dead_code)]
-+    pub(crate) fn add(&self, vm: Arc<Vm<'drm>>) -> Result<u32> {
-+        let id = {
-+            let mut ids = self.ids.lock();
-+            let unused = ids.find_unused_id(1).ok_or(ENOSPC)?;
-+            if unused.as_usize() > MAX_VMS_PER_FILE {
-+                return Err(ENOSPC);
-+            }
-+            unused.acquire()
-+        };
-+
-+        let mut vms = self.vms.lock();
-+        match vms.store(id, vm, GFP_KERNEL) {
-+            Ok(prev_vm) => {
-+                drop(prev_vm);
-+                Ok(id as u32)
-+            }
-+            Err(err) => {
-+                // Drop the XArray spinlock before acquiring the `ids` mutex.
-+                drop(vms);
-+                // Kill the VM and release the pooled id before returning.
-+                err.value.kill();
-+                self.ids.lock().release_id(id);
-+                Err(err.error)
-+            }
-+        }
-+    }
-+
-+    /// Removes the VM with the given ID.
-+    ///
-+    /// The caller is responsible for killing the returned VM.
-+    #[expect(dead_code)]
-+    pub(crate) fn remove(&self, id: u32) -> Result<Arc<Vm<'drm>>> {
-+        let mut vms = self.vms.lock();
-+        match vms.remove(id as usize) {
-+            Some(vm) => {
-+                drop(vms);
-+                self.ids.lock().release_id(id as usize);
-+                Ok(vm)
-+            }
-+            None => Err(EINVAL),
-+        }
-+    }
-+
-+    /// Gets a shared reference to the VM with the given ID.
-+    #[expect(dead_code)]
-+    pub(crate) fn get(&self, id: u32) -> Option<Arc<Vm<'drm>>> {
-+        let vms = self.vms.lock();
-+        let borrow = vms.get(id as usize)?;
-+        Some(Arc::from(borrow))
++    /// This wraps `device_get_dma_attr()` and only returns `true` for the
++    /// `DEV_DMA_COHERENT` attribute. Devices for which no DMA attribute is
++    /// reported (`DEV_DMA_NOT_SUPPORTED`) or which are explicitly flagged as
++    /// non-coherent (`DEV_DMA_NON_COHERENT`) are treated as non-coherent.
++    #[inline]
++    pub fn dma_coherent(&self) -> bool {
++        // SAFETY: By the type invariants, `self.as_raw()` is a valid pointer
++        // to a `struct device`.
++        let attr = unsafe { bindings::device_get_dma_attr(self.as_raw()) };
++        attr == bindings::dev_dma_attr_DEV_DMA_COHERENT
 +    }
 +}
 +
-+#[pinned_drop]
-+impl PinnedDrop for VmPool<'_> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let this = self.project();
-+        // Kill every VM left in the pool. The ID range is bounded by
-+        // `MAX_VMS_PER_FILE`, so this loop is cheap and runs at file close.
-+        for id in 1..=MAX_VMS_PER_FILE {
-+            // Release the XArray lock guard before killing: `kill()` may sleep.
-+            let vm = this.vms.lock().remove(id);
-+            if let Some(vm) = vm {
-+                vm.kill();
-+            }
-+        }
-+    }
-+}
+ impl<Ctx: DeviceContext> Device<Ctx> {
+     /// Obtain the raw `struct device *`.
+     pub(crate) fn as_raw(&self) -> *mut bindings::device {
 
 -- 
 2.43.0
