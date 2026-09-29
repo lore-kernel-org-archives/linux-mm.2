@@ -4,85 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222C8CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910BDCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:40:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09DE56B00A5; Tue, 29 Sep 2026 04:38:44 -0400 (EDT)
+	id B00606B0088; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 075866B00A6; Tue, 29 Sep 2026 04:38:44 -0400 (EDT)
+	id AB1286B0092; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECD356B00A7; Tue, 29 Sep 2026 04:38:43 -0400 (EDT)
+	id 99F6E6B0096; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C24596B00A5
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:38:43 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C90B7A03D3
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:38:42 +0000 (UTC)
-X-FDA: 85266148884.28.D253976
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 72D826B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:40:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F5631A0445
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:40:21 +0000 (UTC)
+X-FDA: 85266153042.10.9FFB2AE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 19921140009
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:38:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YuvrMQGR;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 367024000B
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:40:19 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8RCx2A6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790671219;
+	b=BNvZzwYYSfeu8Az021Gru8KX07MIFYw74I8XrG1Ldu0oCPKUSMkhPlGfLJvqsZUjHe3cag
+	o6swXhbRAc2xXa4k6uzCvacyhlF64ZvNvXNP6KATVdPdxtWpvP1BnPDjFe1TKQZZGsmUor
+	yKEdxi8yJwFyMpfm8rz/4B9QhFRTNDY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J8RCx2A6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790671121;
+	s=arc-20220608; t=1790671219;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VVg9tIviq7YUO40JFcy0O8SZzEsGUatvPj+P4Q6Op00=;
-	b=rTzScx69M4g3Dim+l+RAz1qO+xSUrlMg6JTryn6KYKkGqcEljc6fATZ+tvjqh7cCilhp2O
-	sDIu6KuUYDk/J3peiHvZjnwSsIUcNivoQNgXaolFg0SkqsF30E1MpJNo0kMjin5ifd1L/E
-	J8aZdbWFlciFjGWw6p6AN2Nzwjflkf0=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YuvrMQGR;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790671121;
-	b=OYvtfbGLnpjcMfdXpviWMt7YufcbQgaZyfHG8RtmiJQvlkftt8QF0DsbmzOmXRksJ1bayN
-	sE48PLwLxqQHg0Q/H8eVJEdyUcTcDkSXuH7FpkMHQ+7VqDSyWcpp/ibY1uDjrYZ26yPgld
-	jtbxWZO9JqmIyC9WPWnYz4Fa1onc7ts=
+	bh=NRmGo/s3yk59uOXehGVPyIu3WF3s3uiccw2ABWNFy+Y=;
+	b=vbjP/oDq/ERef2iIRySpFMRcTCJ4ZCDNokh/plMMmSO6yNNyoPS4eGCDag5DXiFDsrtkT9
+	OjJ4S0GmZ3odtiEkMl76RaSVYUdcFqRxaMXThRiGztdHRpSviaYQHf30ZUqt8O70vAKvIv
+	q/+U2mV1wbzW99S+Ad6V+DbTAQQJHHw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A313E60A5A;
-	Tue, 29 Sep 2026 08:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DB81F000FF;
-	Tue, 29 Sep 2026 08:38:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B714160210;
+	Tue, 29 Sep 2026 08:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A841F000FF;
+	Tue, 29 Sep 2026 08:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790671120;
-	bh=VVg9tIviq7YUO40JFcy0O8SZzEsGUatvPj+P4Q6Op00=;
+	s=k20260515; t=1790671218;
+	bh=NRmGo/s3yk59uOXehGVPyIu3WF3s3uiccw2ABWNFy+Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YuvrMQGR50vF5/C2Pg7JH9fh8I3EySZ3ClfQ0UCUAC/lb+wXF83p+bET0Xjy49Ztq
-	 qLbOXalNS++fdnEy1tIhAyF+NhGI2w17UPRdB5Z8Tdh/uauwHCrBpCeZCNyt72qQvO
-	 JnJSe3aaq7goVO8r2GtwMB7zipImZqkUulC/maBWAUmfmxc3udncoocfG5yH+c3Wtk
-	 HkdiDBY1VRaSt4lhe//G/ybXxW+IbR7XtROxlnGFy8t6pR8299AtpvzgxB4MOr2ELA
-	 csROmrqXiJhvw7kiNnpNobHnbwwou/qWJ0F5LRqxaphudXR7ZaCzlbbxTU102XQDvp
-	 uJLqoNbJF+CEQ==
-Message-ID: <447e0be9-836d-4324-9a36-77f8a0cbecf9@kernel.org>
-Date: Tue, 29 Sep 2026 10:38:33 +0200
+	b=J8RCx2A62TDnaTbtiOzwUGzOs/DtFljh4PB4C9JQMt9SQup+lbXC+eZs7X2HWUBnt
+	 H8e0kNbLpjrZRKnY8dR1k3GZit7rPtW01boZqWO4PBI4tWYL1ScQzzrBFwDmZyKec3
+	 XPqRat24jksIghm4MurKmraBFbcVxOkrpo/Ql2yin0sHvXmZrOSayPvZisZ70YVZZw
+	 DJihOGOJfhQS6LkyITjQU/YIUwy+RWGxskKfhA7IcgrOhwWLGfwSMKj4uNyMOs7iFU
+	 qRekMgmB3L3BPaXavkjvXbp72MmRlsoE/U54Kx4lrCWsUT3fU+1WzXrI8y0zmo5wgd
+	 THQnu6YKhBWHA==
+Message-ID: <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org>
+Date: Tue, 29 Sep 2026 10:40:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] kselftest: mm: fix intermittent failure khugepaged
- test
-To: Yeoreum Yun <yeoreum.yun@arm.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
+ integer overflows
+To: Park Tae-sun <ts930@dgu.ac.kr>, Andrew Morton
+ <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Lorenzo Stoakes <ljs@kernel.org>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Michal Hocko <mhocko@suse.com>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>
-References: <20260923-fix_khugepagd_fail-v3-0-b387e92fe1a9@arm.com>
- <20260923-fix_khugepagd_fail-v3-2-b387e92fe1a9@arm.com>
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260923-fix_khugepagd_fail-v3-2-b387e92fe1a9@arm.com>
+In-Reply-To: <179066531783.50175.13377521828379196177@dgu.ac.kr>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19921140009
+X-Rspamd-Server: rspam06
+X-Stat-Signature: sfxtrtqpmxepnwenbp7ucatiizngthkx
 X-Rspam-User: 
-X-Stat-Signature: ixu33wweonstkdsrydrmmupjotrp7bkx
-X-HE-Tag: 1790671120-929584
-X-HE-Meta: U2FsdGVkX19VgwwGtKG1oTMF2yRrYKPyS/uA8aRO/vrYuPlOnQjnY2xM9U5RQb2wgTosotokggAEZtKxbndw7GfD8swz5ACpzjv5WcWm3SLSFlPVgEhcsaeWvqiQS336vqCXBkKzjC1fdkf51cPXIXFSpHFn/glA3qnoVIfSc9ecM41n/WEDE9kDFIXjPJTbgC06VWwisnBsLWMrxCHLC10newudILZ0dJaHGUEbSjNDbZ0oBgLzdwuClRz3zH1rHPo4uihX7P6gsU2sUYJ/pgaEDKVunvR/R7Xdf5aEb826kecTeNtGXPqqmaeTuCjYJO5troVsnv79r9YSxPgtDhylQ3XdelAF3UEzhATVnPIrH+YiElzbWHiedwqiF4rMaLlPjsXAYhSbFbrShO/VraVV8mSKhHDDaCFy5zaJ15SfOA+/xjYJfHLwhgvACNwcBgby5WMcDN0FTcw/wDYkeXzK2xeijMiUgtC5htoaON3c7ea64jadvNlO3lWe+zTJt8L+kTatzjJqlDU+dNuXHaFk5iF+AoZFoi50Tnp8UnDdm+7qnGlpeycFnom/mbX23j3VtHVUnXyq5DSTzmSm50R/4NqMvvdrbEE+aQQE2uCNRMRKRltd7oJHxQuyOhKIFaaoR8aPiCKWfAgYmW+ydt7U9Hf6l479saeOzGZKkQWLo6g98QzqfouorthSco70w12BOV+dIBaC/0n5wSZSmKz+NsOxFjp255rF9DKVVuPZCMStNI5xa1PqMWhkrKT6kou7LUr4xK2lnzng/RnSVhFDTrFFa5ns66ooGR35iRKPq5Micx0bSGm/xhFHsF3iUo0MEebVJTzq46NjVTO+yNEmV+p5PG9GxMNX9hfJmFpGLpveCIKH1hDT6js654yVjB+u3ZlX86lCBdmFrYVg7B2ToTluOTsoaMQy8nbzTVn1Wlfl49cizk/PVtOKvgXD288ZOvSuhET15pJ6IQI
- 19aKr8Gk
- obw7X43Aig+5wSPDxvbKHc2l6fsba2dbafBUNH9FHx8sLOcFnO4dNew/qYs7TC0f7KNsw+H3ou4xoDeivOZIQmiBda5wKIDz+FyyQ+eToAZSlTOWiAgtkLWYMu19oR8O1zv2wZjUc8NpWUBWs/B2wsf2zWAw/8aI6/s/4O2EYc/tpEtBm0S4YrIUZPsUKd0rKNmcMkx1Edkzlndb7XQS3j76sAh8mMIARF6ZyVTHoNwilY92SuKbsnB7I/KI2TtYpllNuBFo2Y/WpZ7dtsHAf9kia9KRIdDzfRQNP0NwLTYFxvn/YniYH/hXuNmB8oCCdrYU5nufVxs3jkipSCs2WS1nzDA==
+X-Rspamd-Queue-Id: 367024000B
+X-HE-Tag: 1790671219-855291
+X-HE-Meta: U2FsdGVkX19Q/PMvFy9+ZEK4ygBFBZLxceXXZ0s2zclXlmDKHVk1z+/IVnjrg5dLST4e0DZqo56S5073yryhdvAweKZfXeB3zPgU5Z9dbImI4Fl1UvX03OJ/yAB3qdccE7JFHSzwMVlqJfbdGvs2Mf184PYMXCSOBHNIej8ho2J4BdgPa5ijj6GYeSE2+JoJ+VnlVkiB2DvPPYCJxIpPa7IJ39uEtNrE7Y5adn324/lAbH5gUDbIous3tfQCNtHvYaRNWVk+Odrady0mP314bvjswzl24Nozd0D1MvsvLdpekw3/zBVX6M5rXlfQZqTbCqj/d7iWI5+ZSFN+6d9C/3A2+BOfXbShjylQLeiu0lelzbdnX8/WRb4vKGbWqzChg8aPYZHtLvlhN+cgT+Fzr9LhIlf3sSSDUiO8Mmd+g7GaEBmm9VAABMo8X9PCDihwIeoAjUVb3hx192mQIhiS54zAf/J7QtWnxcYV9w7IL7/3jqUW828lZv0s4mpc00tAfILw3ZBILvS/cB/j02o5vBc3SV1vLJSMyBORiUhWLzf4AYBmntC4/IS5p8vpVjFKeEDV+S4DLUVIS2txZusNvTueA3p67+NZioAlP6Oavv6nV00OhKvp5zMAbH77tVYmxJmHWdc8jU3z03/POJZNcH5Fz3BxjuOu5423+yuLjpfc196PaWbYVnNHRyvzx66sUGFQYSrMNuqJ+E1z2ztcQmsof5vGcY1s43LReOQzxvxG0PYLAJPoCczofuTDtfxNhhGPU8Y/C2RCsa1IGt1FJ5qb6uaW3AfA/cs8zhfigopEydoEb6GhhVhlygZVRrgMljYRd/KMBAA9wVhL5YHXMl5T4EH2rqR0QLotITMldUEPUEQ07zQBHw7FL1GzNyBggDD2tPy7T9szq0V02abPN24bgCC53VN+1PkTymLNPW8BjbAqh0tzacvHyd2jVkHuJJVafd9W2UqjD541gWw
+ d6a9Kt1C
+ oPO1pYariybQK8wppr3Bl+r7mf5nM8xr5PEyUZYoemm+blRbYfF/9Fu3CNBEStB5QRshI7BKFCVKkeRhTKDPYsznA9e+oMPevsy69YXJ1rGmfqjGa3Kf72nxRjr2wUgQoqV/ZGkZZMSQJLMUVcQlji0YWXv966XDe7DT1fFoGcJL85p9xelWtn7jVWetf0NgHkIE/SZTkG3VVDdSEzTiJSijv10urs2Fcta6jgGkpQCHUsFFWsDbHNQb4K5mezXi/CNKt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,70 +142,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 9/23/26 17:29, Yeoreum Yun wrote:
-> There are intermittent failures in collapse_max_ptes_swap() and
-> collapse_max_ptes_shared() when using the khugepaged_context:
+On 9/29/26 07:56, Park Tae-sun wrote:
+> mlock() and munlock() currently normalize the requested address range
+> using:
 > 
->   // while running ./khugepaged -s 2
+>     len = PAGE_ALIGN(len + offset_in_page(start));
+>     start &= PAGE_MASK;
 > 
->   # Run test: collapse_max_ptes_shared (khugepaged:anon)
->   # Allocate huge page... OK
->   # Share huge page over fork()... OK
->   # Trigger CoW on page 1023 of 2048... OK
->   # Maybe collapse with max_ptes_shared exceeded.... OK
->   # Trigger CoW on page 1024 of 2048... Fail
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 23)
->   # Totals: pass:23 fail:0 xfail:0 xpass:0 skip:0 error:0
+> This performs multiple arithmetic operations on user-provided values
+> without validating intermediate overflows.
 > 
->   # Run test: collapse_max_ptes_swap (khugepaged:anon)
->   # Swapout 257 of 2048 pages... OK
->   # Maybe collapse with max_ptes_swap exceeded.... OK
->   # Swapout 256 of 2048 pages... OK
->   Bail out! Unexpected huge page
->   # Planned tests != run tests (26 != 17)
->   # Totals: pass:17 fail:0 xfail:0 xpass:0 skip:0 error:0
+> First, a zero-length request with an unaligned address is incorrectly
+> converted into a non-zero page range. Because
+> PAGE_ALIGN(offset_in_page(start)) rounds any non-zero offset up to a
+> full page, a request such as mlock(0x1005, 0) falsely locks an entire
+> 4KB page (or fails with ENOMEM if unmapped), and munlock(0x1005, 0)
+> silently unlocks memory that should remain locked. Conversely, an
+> aligned mlock(0x1000, 0) is a no-op. Zero-length behavior should be a
+> consistent no-op regardless of address alignment.
 > 
-> This happens because khugepaged may collapse the pages before wait_for_scan()
-> is called, causing a sanity check that expects uncollapsed pages to fail.
+> Second, a sufficiently large length wraps around to zero during page
+> alignment (e.g., len = ULONG_MAX). Because PAGE_ALIGN(x) is defined as:
 > 
-> For example, in collapse_max_ptes_swap(), after faulting the pages back in
-> and paging out up to max_ptes_swap pages, khugepaged may collapse them again
-> before c->collapse() is called.
+>     (((x) + PAGE_SIZE - 1) & PAGE_MASK)
 > 
-> To prevent this, mark the VMA with MADV_NOHUGEPAGE after it has been
-> collapsed by wait_for_scan() for anon. This prevents khugepaged from
-> collapsing it again before c->collapse() is called.
+> when len is close to ULONG_MAX, adding (PAGE_SIZE - 1) wraps around:
+> on a 64-bit system with 4KB pages, ULONG_MAX + 4095 wraps to 4094, and
+> masking with PAGE_MASK clears the lower 12 bits, producing 0.
+> When len becomes 0, the subsequent check in apply_vma_lock_flags():
 > 
-> This failure was observed on NVIDIA Spark with 16KB page.
+>     end = start + len;
+>     if (end == start)
+>         return 0;
 > 
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+> evaluates to true and immediately returns 0 (success) without locking or
+> unlocking the requested memory range. Similar wrap-around issues have
+> previously been addressed in mincore() and madvise() by checking for
+> zero length after PAGE_ALIGN().
+> 
+> Finally, address addition overflow (start + len < start) is currently
+> detected only inside apply_vma_lock_flags(), after mmap_write_lock has
+> already been acquired and memlock rlimits checked, improperly returning
+> -ENOMEM instead of -EINVAL. Per POSIX.1-2024 and man 2 mlock, arithmetic
+> overflow of the requested range represents an invalid argument and must
+> fail with -EINVAL before modifying VMAs or acquiring locks. Note that
+> apply_vma_lock_flags() already contains:
+> 
+>     if (end < start)
+>         return -EINVAL;
+> 
+> but this was obscured because rlimit accounting preceded it.
+> 
+> Introduce a common check_mlock_range() helper to:
+> 1. Return 0 immediately for zero-length requests without taking mmap_lock.
+> 2. Validate intermediate and final arithmetic additions using
+>    check_add_overflow().
+> 3. Reject lengths that wrap to zero under PAGE_ALIGN() with -EINVAL.
+> 4. Detect start + len address overflow before taking mmap_write_lock.
+> 
+> Signed-off-by: Park Tae-sun <ts930@dgu.ac.kr>
 > ---
->  tools/testing/selftests/mm/khugepaged.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/mm/khugepaged.c b/tools/testing/selftests/mm/khugepaged.c
-> index 2aa7c9197158..b0cb02bf1a73 100644
-> --- a/tools/testing/selftests/mm/khugepaged.c
-> +++ b/tools/testing/selftests/mm/khugepaged.c
-> @@ -618,6 +618,9 @@ static bool wait_for_scan(const char *msg, char *p, size_t len,
->  		usleep(TICK);
->  	}
->  
-> +	if (is_anon(ops))
-> +		madvise(p, len, MADV_NOHUGEPAGE);
-> +
+>  mm/mlock.c | 55 ++++++++++++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 47 insertions(+), 8 deletions(-)
 
-Any reason we just do that unconditionally?
+You call it "fix" but then I see no Fixes: tag.
 
-After all, we set the
-
-	madvise(p, len, MADV_HUGEPAGE);
-
-unconditionally?
-
+Which of the problems described above have reproducers (IOW can be triggered)
+and what is the user-visible problem?
 
 -- 
 Cheers,
