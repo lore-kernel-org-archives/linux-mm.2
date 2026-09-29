@@ -4,104 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57FA9CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B772ECA5FA7
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 08:36:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46A8E6B0099; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
+	id A86026B009D; Tue, 29 Sep 2026 04:36:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4415C6B009B; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
+	id A5CA76B009F; Tue, 29 Sep 2026 04:36:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3583C6B009D; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
+	id 99A7D6B00A0; Tue, 29 Sep 2026 04:36:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A73D6B0099
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:36:35 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 69051C03B3
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:34 +0000 (UTC)
-X-FDA: 85266143508.06.1177A90
-Received: from mta1.migadu.com (out-73.mta1.migadu.com [95.215.58.73])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6001340007
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WMXbedJM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 771BC6B009D
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 04:36:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09E3C14043E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:55 +0000 (UTC)
+X-FDA: 85266144390.27.0ECF7B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 68E5340006
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 08:36:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtaQjHCo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790670992;
+	s=arc-20220608; t=1790671013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7gl7Dbkf6zYEyNTSd0tfJx7Wb2qDhRetsdKvP0HB4MA=;
-	b=Gei8eWfmAYMaCKb5OM0zUHblhbWQuLxgYxQzuh+af0VmrXi41bD871D4LUKgThcoZfSCdX
-	2YEW9Bu9P9hKN6ZJLx93wBKxi9qutECC70DkFjXNwsdzw9VyzVA117Oj39MC0hHDNPwkhJ
-	O+Oax6A5nwKGZBXQwtewOxV4JlX4cWg=
+	bh=Rs1CkTi+9r9PKxnWBlU9VchKWdbkwnHkDzwKExg5G04=;
+	b=GCB4glPQcF/1rPpf/KxDhIOE61lC28V7Bf9Yppx3a+YTb7SEgod+4UbYJ3IdXlr+xRbZeQ
+	vXi71K6wFvNkBeAFkKm4YR8B3Gg1bUeLWCt7j1Fj9nAnvLybM8DwP8I6k+71RumrE+Wir4
+	Dghutfp1PLZUy/KxgR+FjJlMy/8iaDc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WMXbedJM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.73 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dtaQjHCo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790670992;
-	b=TgO2N2Yz45Zj7ZXu0jNiJqRmrd5qcCkS1qK2dtNnIuL/BXGMjBywLnv6mJmALkgMS6eOCL
-	NZrLcOX22VKaDgSNxmv8sSFp6jIuPYbV7vD8UIwxRZxCVygj4D3Xpo6d1aTFckam4vrye7
-	FE5bVHOEqg2dOa8x8+QozgqOJLt2+rE=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=8vfz9yom+ls/aQov6CVfDaBZr7Ko9IZV3QMRLqEpVmM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790670991; v=1; x=1791275791;
- b=WMXbedJMmbqaftd1IpCIhlKKzGIzCRayG9NJsx7HkivNiVYX7SV3JIweXkHE+jmSxSGZGFY8
- cOpVlP8jKib3bYDO45TF0mzuc9vNN19kzoQfIv0Dl7DmxdKGdmnTYmyYPURpDDWxQSCsyxwG715
- JozrFQ1Ypj7BSyJi0O8Z7r2w=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 7b4496e5929f9e79;
-	Tue, 29 Sep 2026 08:36:29 +0000
-X-Mizu-Trace-ID: 7b4496e5929f9e79
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v5 07/12] mm/sparse-vmemmap: switch device DAX to shared
- tail vmemmap pages
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <1b542015-8e5a-41af-9e98-9810333e6725@kernel.org>
-Date: Tue, 29 Sep 2026 16:36:07 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Jonathan Corbet <corbet@lwn.net>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-doc@vger.kernel.org,
- Lorenzo Stoakes <ljs@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Lance Yang <lance.yang@linux.dev>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <53A73178-93E5-414D-8ECE-96B3082384C4@linux.dev>
-References: <20260927025441.741633-1-songmuchun@bytedance.com>
- <20260927025441.741633-8-songmuchun@bytedance.com>
- <1b542015-8e5a-41af-9e98-9810333e6725@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
-X-Stat-Signature: o5iycbjiox95cqkroebnyr35gsk9i5kw
+	t=1790671013;
+	b=06HmSl05m36i/8JNYT81evWTkR2/jxNw+PUreZANAatHjRrdTFAUTq4r2nIkV9/+AnP9am
+	sh96M5pDMNo9ty7nw4BSqnsB1b0srKkkOIJLrqhnvYQqvnbQGVm2Rg/MKWttCsOJs/Ymzm
+	jY84iSDDfp3MjPyzKIw8OmpZC/P5L1I=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8E05D40162;
+	Tue, 29 Sep 2026 08:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157F11F000FF;
+	Tue, 29 Sep 2026 08:36:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790671012;
+	bh=Rs1CkTi+9r9PKxnWBlU9VchKWdbkwnHkDzwKExg5G04=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=dtaQjHCoL6wBCn3MwhzhQH0mBfkWaEv+gB3h/hMz8cLIo5a/sS9dmEGaW6dVX3vtf
+	 D3KntZXSQ5UXPp9KoW/6dhulUn1hkeEekIITvia14D7NYUWPojxwHixV7cd+dAKfjT
+	 1mcJqJG8N2mvNFN3VZc8U8IZkpL3e4oLxreL4Xlhws5tB1oGrzbGv98KMAWiYzFo2l
+	 /TocQ0CXgEfBi4/rPYp8roSSYHRd9V/BzHuKOp0CJ6wfGbelpPlq+WqOf9QD/ywKIs
+	 jqocYNSTAx1f+W+KqvdF+15rJX6M4P/swKM8sb4JIiqiqL6z7g3oAE7ArS/7Zq8NcI
+	 seoj9aWR+ESVg==
+Date: Tue, 29 Sep 2026 09:36:45 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Sarthak Sharma <sarthak.sharma@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Park Tae-sun <ts930@dgu.ac.kr>, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND 0/9] selftests/mm: improve mremap_test
+Message-ID: <art4dfRkyu5OCwvd@gremlin>
+References: <20260924050009.19974-1-sarthak.sharma@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260924050009.19974-1-sarthak.sharma@arm.com>
+X-Stat-Signature: yigg741ce7sie1oepz8amsn1su5en4hg
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6001340007
-X-HE-Tag: 1790670992-894189
-X-HE-Meta: U2FsdGVkX1+fIE0jKkwFPVoKdU8njgX8R1gRhdS/fdo2REVZF4Ca1PHP/iE6of/okUHWL5bz9PITsM3xIASgyYiYL+fCV72oLIlhkIbALojI8EKHUY+hv2AecxYrBzkmxyWznFHa5v78RvJrzEU0GDjTE6gbfuhgzFLpX8qNPO6vioT/6l8E+KrFgtWqg+s51TKFLQGoTdvp1CNYM4370DAo8U9kjJpdDq0ygpBfBlZYuxKUlt17h2G+PAnJp4SdAXAEywthUkPUWpUstsAOK3npyfLK1mYJN0o7Gi4ejC2+oaS9s1mYy6d4lPy+eWlIDCVUNxf9nEQoBoH6jZTPUba7EeSZuT7HmPEcz5fGuFXBWbBVbdW4ZSAuszU4OnyU0Z6ieiWYwF16NDE0HuE6Q6xzNs5HkvxWCt4Cbfm5rBCRUweDp93Z2S0enFIdCv4TAEK6sghoOm6QbEsznSStnrF1taAhXN5xcl9P1Kw6KoM5XK9Sj5DYizWmTcf9Lv2GJL2FgjV7jAr5L9zPU1DmGelnydfLdOvEcrnZYXZ12txLaAnWXsMTVBKrZE2BBJfNPYr8r762o6oRJKCFfhjwEIgDatdUgNomVmQm8wTOH+zQX543jttiMrKeNRwFJ0C5usVE0WGRk8LdsBDR8g7zwaRk6reopo7pfhGnuRmvdKs4m8ncghqa+FeSybgU/EiQQfrM4kUp1A7TRfnQClDewSKyYClYzoqT9TUOP1iIdmsvo3C7hzM8fp0I/LB/V3mg4qNuFYmaUV35P+5mCmOO+ZGm4VMYPZyaudFh+XL6mcd6GfZPMFYGMSIW6XbOBIiB4Whhe+eH1xL/nxph56x3dUefhE1ZJTKCuWLV+rUM/xJAUO+jRY5U8gaVGV0K3NtSYJ6HRwPAhVSXhMdmuM0HDIJDhsFhp/AbeY2iCGkXV2VE5MWNR4hM9zHU8/LZ293Mh6MeGH8oSTkxJz0qwxG
- wZjx6FoV
- VB+y1yLA2lGrLpaS0P3NS3tQyYfMDVvbnw/2WzlSxcETtdW7R2cdby5JzGbqzEDee50JEmMSlnFe5uKso+yh1N7htOEfBY0xEhudthQaEqaEREgYBaWYvqSR9fOpndNMeHj2TH+dJWiV1Zv2Gq82MmfBnQ10IEXAZFIBhgsK52gPfIwhGg2mVPH8qzBu557bJMgECCwAev3Fdo89RWi+XcV5xncZPhkPYaAlWFKYbCSgRKi6A8gIdEG7wwKVhAFco6gw85VTlLojUWvroCO0NnqupcRtygR8wbFsZbLMuOwN3PegT1+4SrxSwMQ==
+X-Rspamd-Queue-Id: 68E5340006
+X-HE-Tag: 1790671013-815380
+X-HE-Meta: U2FsdGVkX19Incv73pnLyfGBdnmO5OYBq4qB4d9K/uNTIwTNc3Vin+nVYBuCOXv3LZoG0741yJuUZvD6dqlIjU9xKqGroA3FICVNjswh8ulbq0y5nKMkwlXR2NehW+AvWxCtS+Vpd/Idbdb5NQRwN7O9s92Jce6vL+npIVsBHDEe6lyjNCmyS4O1ryVrxknJ0y4t2Mj6JwojdgAZ+V3/yGaWKiU17Q0XvQ37vNpwPthLcbTmI1r/KNukHo8A0e1I/p7FiSDO4EqmloQzuaZzQ4Ke/MYYi3x6butZyeOngmNCe6lVZhPqagthHaivn9kGSBMXFwOMiWTrqYRQo4iGzajSMCmXeq7B0iTqgoh7cHWyHKuRWBJqvhi6OE0VxDHrvrmy8b+swsTbHliZRqjxPdnE9/oBPmV/YJXjnTbhiE7jPNx1VNW/5E5Wedxfeo7v9TE6SyRGJZk5OQCb+X63rv0SkliUtQQCgRdWfokrVe3wj4EmN9W43GdjGV0nrTjTQMx6K3IYMYdj/ltSntjg4+hMYWoOcEslcqK++FymAoVllSvC1IxOWQDXb4t4Y4uVDcwPRTKHeCyHBKQDrFOqqcPHcQBT6mnEbpj8LbJrK+hmiG94mO4KVYsYpaKpiaV+JJg0/doFPzsgcxrZygX/kXdbmSGMhQjLtzOg7wT5aNGxUwlmB3aedvpIaHWNZeY+KVZE1Spnxkc/byX5savHzT9flwssvyJTFnl2Uh6W1/7KicOcGbiHzrbq0mOpnKcW/U2DsAF5ZP4mD0XDjaJT3XAvSrmMuzpbqR49cP64pUoLJ5Kiq9PhM8ba7otlruqY8Yf6ng5NBKiUICld2jK45wJyH7eFfQ6PHMzujtGSdDymGE2+5zSf+TrtjHB1OyM1qcRw6PPEYaGFxmkSD0piLy5QX5nk74KsI8TAWc3vjmE6yVJDfmQkJa+W5JnwgaA4krldlJPBdJbqkDfnoAY
+ dF/ADYue
+ 2B1VjoVw7sHSSEqL9FoRkuJ06wH3c6wyR9a6awzwfPqHnE1+XpaBJ5Cyl8jbm8lJnz4aZ3BVm52crTEhyNiWakw7Bz/dvaMd8WOAd5WZvhreLlhpvnANpn1NPHrpmItasAUgD0ZO/7L4VUkIMUiTRNz5UthS3TgEC9YLjzeJzFB8zSXSuS62xjVZeLkcbichZlZGk+0nnWXFWF+LzOBHWwXGUqnnOyJNb1kOJOMP+0Cxj6bmLrC7dUokpyjXsCjXd54IS471R70D67XtEk4HCA+SkH7DjLL09sjQYIy5NVWSvf0g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,118 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Sep 24, 2026 at 10:30:00AM +0530, Sarthak Sharma wrote:
+> This series fixes several correctness issues in mremap_test and
+> simplifies and strengthens its data validation.
+>
+> Patch 1 converts the mremap_test to use kselftest helpers, removes
+> manual tracking of failed tests and corrects some spelling errors.
+>
+> Patches 2 to 5 fix userfaultfd skipping, unexpected mremap success
+> handling, multi-VMA data validation and failure reporting when data
+> corruption is detected.
+>
+> Patch 6 removes the randomization and uses a simple pattern based approach.
+>
+> Patch 7 removes perf tests and timing infrastructure.
+>
+> Patch 8 removes validation threshold and always validates complete mappings.
+>
+> Patch 9 strengthens the multi VMA validation by also checking the
+> mapping state of holes after remapping.
 
+Even if I don't get a chance to look through this, just want to say thanks for
+taking a look at this! The mremap tests have always been hairy, when I added
+extra tests there I didn't love what I saw so it's great to see it get some
+attention! :)
 
-> On Sep 29, 2026, at 15:36, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 9/27/26 04:54, Muchun Song wrote:
->> HugeTLB vmemmap optimization now uses per-zone shared tail vmemmap =
-pages.
->> Device DAX has not been switched to that mechanism yet.
->>=20
->> Switch device DAX to vmemmap_shared_tail_page() as well. This aligns =
-DAX
->> with HugeTLB by using the common per-zone shared tail vmemmap page.
->>=20
->> The optimization is enabled only for DEV-DAX through =
-pgmap->vmemmap_shift,
->> which supplies the compound page order recorded in section metadata =
-before
->> vmemmap population. Unlike FS-DAX, DEV-DAX does not modify tail =
-struct
->> pages, so sharing them is safe.
->>=20
->> Since the shared tail page can now back ZONE_DEVICE vmemmap mappings,
->> initialize its entries with PG_reserved for device zones. Also skip
->> poisoning vmemmap-optimizable sections while their struct pages may =
-be
->> shared.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v3:
->> - Move device_zone() after the definition of NODE_DATA() to fix
->>  non-NUMA builds.
->> - Update the commit message to describe the compound page order =
-stored
->>  in section metadata
->> - Collect Acked-by from Qi Zheng
->>=20
->> v2:
->> - Explain why sharing tail vmemmap pages is safe for DEV-DAX
->>  (suggested by Qi Zheng)
->> ---
->=20
-> [...]
->=20
->> -
->> static int __meminit vmemmap_populate_compound_pages(unsigned long =
-start_pfn,
->>      unsigned long start,
->>      unsigned long end, int node,
->> @@ -551,21 +536,18 @@ static int __meminit =
-vmemmap_populate_compound_pages(unsigned long start_pfn,
->> pte_t *pte;
->> int rc;
->> 	unsigned long flags =3D VMEMMAP_POPULATE_DAX;
->> + 	struct page *page;
->> + 	unsigned int order =3D pfn_to_section_compound_order(start_pfn);
->=20
-> const and all the way to the top.
+>
+> ---
+> Sarthak Sharma (9):
+>   selftests/mm: mremap_test: use kselftest helpers
+>   selftests/mm: mremap_test: skip test when userfaultfd is unavailable
+>   selftests/mm: mremap_test: fail unexpected mremap successes
+>   selftests/mm: mremap_test: correct multiple VMA range size
+>   selftests/mm: mremap_test: fail on data corruption
+>   selftests/mm: mremap_test: replace random data with deterministic
+>     pattern
+>   selftests/mm: mremap_test: remove perf tests and timing
+>   selftests/mm: mremap_test: remove validation threshold
+>   selftests/mm: mremap_test: strengthen multi VMA validation
+>
+>  tools/testing/selftests/mm/mremap_test.c | 600 +++++++++--------------
+>  1 file changed, 220 insertions(+), 380 deletions(-)
+>
+> --
+> 2.53.0
+>
 
-OK.
-
->=20
->=20
-> I did wonder about the poisoning change ... because the memmap usually =
-gets
-> initialized once the memory section gets moved to a zone.
->=20
-> SO now I'm a bit confused about the ordering of events :)
-
-Yes, the normal memmap entries are initialized later when the range is
-moved into the zone. The shared tail entries are the exception, though.
-
-The ordering for device DAX is:
-
-1. sparse_add_section() sets the section compound order and populates
-   the vmemmap.
-2. During vmemmap population, optimizable tail entries are mapped to
-   the per-zone shared tail page, which is initialized by
-   vmemmap_shared_tail_page().
-3. page_init_poison() is reached after that population.
-4. Later, move_pfn_range_to_zone() calls memmap_init_range(), but the
-   latter deliberately skips vmemmap_optimizable_pfn() because those
-   entries have already been initialized.
-
-Therefore, an unconditional poison here would overwrite the initialized
-shared tail page, and the later zone initialization would not restore =
-it.
-The non-shared entries are still initialized later as usual.
-
-I agree that this ordering is not obvious. I will update the comment to
-make it clearer, for example:
-
-  /*
-   * Poison uninitialized struct pages to catch invalid flag =
-combinations.
-   *
-   * Tail struct pages in a vmemmap-optimized section are initialized =
-and
-   * shared during vmemmap population, so they must not be overwritten =
-here.
-   */
-
-Thanks,
-Muchun
-
->=20
-> --=20
-> Cheers,
->=20
-> David
-
-
+--
+Cheers, Lorenzo
 
