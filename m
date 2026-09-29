@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4B4CA5FA1
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 02:16:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAB2CCA5FA1
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 02:16:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBEE66B009E; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
+	id E0D2C6B009F; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6F906B009F; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
+	id DD0456B00A4; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC13D6B00A2; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
+	id B373E6B00A0; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 722A86B009F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BFE26B009E
 	for <linux-mm@kvack.org>; Mon, 28 Sep 2026 22:16:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DA7ED1403B9
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id F010B1C2A99
 	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:15:59 +0000 (UTC)
-X-FDA: 85265184438.14.ECB50BE
+X-FDA: 85265184438.16.2A8BFFC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E7FE520008
+	by imf12.hostedemail.com (Postfix) with ESMTP id EBD1740002
 	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 02:15:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OUntmLjX;
-	spf=pass (imf13.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PknU8s14;
+	spf=pass (imf12.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790648158;
@@ -35,45 +35,46 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XH3G2A7GvTP/8THrs95qFRMJKqXgEWRG0Nu2DxafnUo=;
-	b=NwtXF+jUi/SydyPgA/cq8PILwzmizZte/KSWyshCKO/Y1uMzjmNnisgAIZ9mdbuSpIC8d6
-	+26jWMut91Nl8nMclnd+7x25wmKtoxY7uORYlEsfW4dUBLfUgHmTWEMmWAeVseX31+fH0T
-	2tjhE3aTgGtWpRK1u6kxcndXiiBnre4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OUntmLjX;
-	spf=pass (imf13.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=jPxyRVxUkD8Td+9QwNyvaWaSg+CRoePkY9b5UHxne8c=;
+	b=zRVuSQjwpSrhPfNmm/MWVDf11HejhcT9/1vxN2wmcHzDTEPfikEiA2z+CXDjCntQXjNG1W
+	+cxzTNVy6zKDGeVnNxqcI2XIRq8AH1CcGnmD3KkBIsBuNeH125xK7UNAYeXIqth20+dJku
+	mmbDCRLQO/Mtwhs6skQ/QNq+N9z6+jU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790648158;
-	b=tDCzkAJwDT1E9dxEyhIGkrJQlqUnKgXKk95pGfNzpZ3G9P59JB4LKat7n/9rqV1QRwuuH0
-	iGN5vEHN/wliAh2HSrvKIRTlvBhdDyJbSx4eCGRlW7+bXRwlTiZHUOqZ8EyJy0aAcT/cb5
-	SETl5wtbJUpwZq+iojsz03eHDz68Qik=
+	b=aglJgfoGMdn3cipkHdpk4gDRL+cYwrtUIP8fyhhmObEQ4+G/WsWa4k+7EmTAeyvD1gRxM4
+	1dvrklqj+jZwgpt/LF88PbyeUZRKg6VX82LPzAJwwP6ADPDylTfKbvxIxpjGqniIxj/ta6
+	mU2P2gqloMSZb4AL3mOlrA/tDo2qH6k=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PknU8s14;
+	spf=pass (imf12.hostedemail.com: domain of devnull+sunke.kylinos.cn@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+sunke.kylinos.cn@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71C12440B8;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E0C1447A3;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 41C2EC2BCC7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4E099C4AF1D;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1790648156;
-	bh=tAJEHSAuTRx0EwppaN+WcZOoNCdsIpUxUwps4sDokJQ=;
+	bh=SWfJYfIhU0ceNaMeMrQOIvNiAm90QJeCPkReTr2kGwU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OUntmLjXkQkD5gqD/fAnaZhEjU35i3NdeD0MDKAt5qMfvjV8dgzKTn9oIERB2ri1w
-	 T2TRxaOaxqM7EjMJ8UCcBzqirn2hhBT3nO9P54VKxxnMgFcXcU4NtHfEWmoGtvQuAc
-	 kTgHXBPwIDkObGcAtgBPsOOEQiKyj65zPCEzAwNZF5fLbFzlH8D2y3SRnE1pSt2BGP
-	 uYfWcF9ZwzcGo2B6z/ZfTg0VtJziwq4RIoQiS2MMLHGYfdWpscZ1AuB1KpKFaaCHX/
-	 SpXlzsWg7KY5lJC6HpZFQ/aQh3tORGPFPAJi/cHpI5JYirQOGWwZL9e47Mwi5bhEo5
-	 bQblDfhWr2YOw==
+	b=PknU8s14fcei++6tRffW0OFoKPk/CGnBTTfyjpYoKPuLanizHP0M/VxswI400k5hK
+	 oj6jDSh6tmp61i6rDAG8aJmAbIdR55DNiMghsGP40Obf6eSnpD8aMDNWQsv7PoW0HE
+	 3WxiXGoqypkXthROl8blpQy7OD1U/mGJuvM5E619+QjezE6GtJ+urkhHUnQNnUWWl+
+	 v85dZP81grTIXfTJ/ryv+ZQUrfcIOvmGMZyInZGI5nf4q2/muUzO0lJ7CDsextcwCt
+	 Lq2PZxQpim8DaMP6kZYSNgQauGIW8NyZ5kskFLocO45QlrAhbYhQG63RWFOblrahQB
+	 6pcWU6lHJG+Bw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2096DCA5FA1;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 31115CA5FAE;
 	Tue, 29 Sep 2026 02:15:56 +0000 (UTC)
 From: Ke Sun via B4 Relay <devnull+sunke.kylinos.cn@kernel.org>
-Date: Tue, 29 Sep 2026 10:15:52 +0800
-Subject: [PATCH v3 02/11] rust: mm: add `task_size` helper
+Date: Tue, 29 Sep 2026 10:15:53 +0800
+Subject: [PATCH v3 03/11] rust: sync: arc: relax `ForeignOwnable` for
+ `Arc<T>`
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260929-tyr-ioctls-v3-2-26955fb111d5@kylinos.cn>
+Message-Id: <20260929-tyr-ioctls-v3-3-26955fb111d5@kylinos.cn>
 References: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 In-Reply-To: <20260929-tyr-ioctls-v3-0-26955fb111d5@kylinos.cn>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
@@ -96,25 +97,25 @@ Cc: Sami Tolvanen <samitolvanen@google.com>, rust-for-linux@vger.kernel.org,
  driver-core@lists.linux.dev, Ke Sun <sunke@kylinos.cn>, 
  Alvin Sun <alvin.sun@linux.dev>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=951;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1790648153; l=1389;
  i=sunke@kylinos.cn; s=20260317; h=from:subject:message-id;
- bh=JO+2MVB8/0ZEX96oFL0eP1mAOKrIibNCaD5F9FcB8NY=;
- b=4hJQWHlONdWWEYIBfTzQKm2FojtHl4B5GKRGXQ2cctUARsgYvoM5Bxw0nyFeRQMcltOUvr9di
- VOrWnAmOxmNBqTQMrnCvfAvmWk2XdvzQ4gQZIJzQ/NQjBo78LbPkID2
+ bh=E65clxOu/qjNbqNDrRBBfaWHB/W/gvw7JStoVkgnAT4=;
+ b=oJFnuxY+wm2TofFGyh+923zn8gVxU3T30QNNCDbfLO3AvpyY9RdvRRZu/O77US4y5OgA+x76B
+ x9aJfoqpCD2BYz1U5apadhb5wm1qteXBA+TUC/bvVSXLzU6hF5tMD/d
 X-Developer-Key: i=sunke@kylinos.cn; a=ed25519;
  pk=CHcwQp8GSoj25V/L1ZWNSQjWp9eSIb0s9LKr0Nm3WuE=
 X-Endpoint-Received: by B4 Relay for sunke@kylinos.cn/20260317 with
  auth_id=950
 X-Original-From: Ke Sun <sunke@kylinos.cn>
 Reply-To: sunke@kylinos.cn
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E7FE520008
 X-Rspam-User: 
-X-Stat-Signature: ebwps1sxxiungr7o19prbfksd3znjj5b
-X-HE-Tag: 1790648157-553684
-X-HE-Meta: U2FsdGVkX18Xy7LJEjwihKKh8JXH6TCue+7tIQGtjfal1OIT4Zm7KshACHrLm0JCdkGiWpGGQ1Um1AEyQvQPTKsFaRQdS7RcXvR9ncPaXeR2y8L2js/mRHPCsBM6Cbxhol1Jht6TXoV+Zwh0zZCwmI9sokMmAVGbSlPzYHXqippNQ7BIltaQC4VUTPapwitjVRORdwR0zwCTdbvcz+zGggFvyA+HULoLZpYWIVXCYNVThX8iN665FTZG7NAL1hHy1tOuc39Xv+1rQfTOW1+ShP/0CIEhoOHXONKlpQg6XRRyBesdpaFRdRsuN92Ig2+8iueKy39Lw8Tu59QHxo35UjZ44DWZJtRxYCqjCFHonVsGkTGiByPMl3mWs/yOMAuoSnbf9rZiFCbLo8FzqK7f/QqysDpR3v+CYtmehsJ+b0ZXaWWc6DhXyv9QgmJ7l/bnN9I4IBoVB5nonsTmDMkuAZyrNI2VqfA5R7HjSrytGhHhNJaOTmn55VLDOQrSMESXxv+WLDIaq+SgRJZL27ZyysQ88O/Wvi0b7xmFZhqfKubFpjemOj3qJ4WOeKFFyCqDKMwq1mWiTs6rmDy2N04x+5wvtHBxu+lnDhCHwKkE3vKEy+75Mj8o1bjDpkxFCtnvWYE0MdOrQh+0LYHprJexRsBioIgq1uscCPDFj5rsn2bjkMeoKLpPqw0Vh6yLMC9u8LWyGgbDOjGE1to8ZpBMrWcptDPZLvmJ+77bs/g/vJ8iSHR90kEO3NSXh6vLdIE9L8F0ZQUFAvHzrS8zHhih/a+wq0ZH6XMIZMpC2w7xi01fES+qYgNCGUKAU5S90Jc6rxdswghZbsjDJeN1N/LKU50o5jrErM7E2HDyTsw0sKWUs0etNUp9Ae4Rk1iLjbMgyJ4LNR/GPnvT7NpwPiq+1+EkBubHFyS7pilRC97Pn6AZqetqXXgHHftZl0poKWdMwwV7k+OX9g15gCfybzC
- tVBQOhqg
- 6RoNCi2im/x4sPE6umO6BdF+MtT2fTwY7CQ2RqVfm1jXKr14H60z9ZBYVytfM/VUOEUQqTkHkgVJTehnbgKFEEPqmmlHJvXpI7GnZxWx6XqCzDoYMnbOOvBWkjuz239tejgPkiWcOfhagnhkUr561FXwYujoibyPj0fL05zDeAf+Nr+B+mO0oCsDTpHjS2P7a2wYkghZgr9B/cujw3H7VjwvzWobmcPmMFo/Bm3EdCo/y7q+aUeFty6a7G/ASkwgQSaOeWIz7sUDTQREwexnGemQpVzcyUEJeN2NP59CzpB7OhL1GNPRFoU9gq7juhOG3gSXubRLLuNAOR5fSVOwxRKLxAD/SJ97piAGnLPoXHnX6hei9fsatdFGeQoOIzGjRgHg1bwyOLLTgFy5n6VpgXPQp0NKs/P0BmCd6LXtFbikT6VMYecnk1SKFN5V/QT/lk0N2LnnM2xeFoRh2oyhMPvCvHIuSqmMttehEP2g2YgCrOWA=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EBD1740002
+X-Stat-Signature: bze546pomfzoo8e1cxreohh6e7wt1o5p
+X-HE-Tag: 1790648157-675040
+X-HE-Meta: U2FsdGVkX1+druYYM6VVNA0FY1hZSBvaZ/F6cVM4KyWPhWED1WsiNsQ/q8XH8AcT4ALs3WyPIdi9+cNHXemzRHe6dRtMfbDo/Axupylxdu3VM68I5vW3M5MHIUYMI1ZP+MF5o6eLeKahCGT0wTTOzccGPdpLijCB18J7+bLzXEE5kPp31uhX4HJTTUCNSKmhVb7lWUZxKOUPHV7wGE35LIGZM3E1Yztb+1dIRABDntrPnckqTyd6OQGI99S9syElu7+o2DNnoSjlQYzkz3d7tkwIzYGkAk+EnvvQYUsQrPL9clN0SWrM6BLf6RL3HnLpju2aZuM93SJxLDKs4ilSHzPSLENsc/NuUgDKl2FL71CJArf9FNZlKDrYmWncyGlXQWhDeiovfS5O8621sLdGiS9AQWEE2WO+opZcw1QhNxVz7IjFg75MkwX8TEZiDiUWvPgoTfIVDqTFZXca/pvz4SGl336DVIo3Vg1Ai4nIseBYcVl9VuawxbU5eGDn9N+ifuiv/L73utOLzPb6+bnEYh5IB0jtV5/Aq1cR3dEcbkcHFRSwYxFwk8imAdgt1VHw2j/hRr8swfnA5InANU21aHXD+O8qujqxl9omumAyUqoTTdL9liF0IpdF805QAT2ti6riHz+LUHd3+l+2Nz+UdeWV+V9CAjsS5EjSzOGKdJR7tyPAh+aaZZeNJNXqXWDYdeyaCrHtIc52YiNmIgg9bt8PDszLgT5jLlzP5ZUcaBARpobmJuI0xlZQVnEM09efn+wRKU2VsdC8c9eWIjqHTMz5HnNLE0bAtrio4xa85W+xyEp/8Y71YEDc6J23QUufEdrqS3jA6Fj3A/tr1PfogULx/aG0hwAYIJ/3q5DPHEa0jUYB7L+XnfmYrMFzRSPlOqSo/oZ2YmiNrLGxkLZcn/jSG+vQD4Zl34hUgQ44KZD9vqBz5Sv7zhEJWW0qkWYWzJK3Lt12d3F9ccrcCHc
+ +sMpVXUK
+ A+J9wrUXCLJY3uINoRlwCavC03GgWJzo3itczQD5GR2lNP3CTlXvwRGtumyqDMD23CAkoszAK6xd1KGgcYFPt/2BJm3qv4aAT3ROoQ0RB1zGnBQlcV3aRSESi8A1xegy8OIXU16LqC6grwqIpYBKwMYYs0kY3aRkQ49jMA3MnzBjds9Y1Rwd2aCHQrldo5hffWQw5ma85+/dUQRngiXeKko1q7VV2QiHMRdrqWZrYJ8AbtTIa1DRYfapn0VGeBtT5ME+welYxyY1uoh7Wz93JH9ZCRmkJIjNbDNiyZm8VcbaJaf/4hlTdoZ6jngFQZ8unVnsl1RgkBRXIzCVYQ0bELwlPTuz+GYIQHsBQ6zl2MRUl8GAkILa+k7YLnjNxK2TlyI10gGJ20NA00hFz7I3pvq/39UKPh+9YKtLQKhgPa+1ih1KPiK71X+8RgMDvWHRO3rrSpn9sDAqn1j+W6ue3UOQ7fJ/Xh78pqSbxP+tBN4YdCds7nKrhJCHCoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,33 +125,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Alvin Sun <alvin.sun@linux.dev>
 
-Expose the task's address space size. It is used by the Tyr driver
-for splitting a VM's GPU address space into user and kernel regions.
+Drop the `'static` bound so that refcounted values borrowing from a
+driver registration scope can be foreign-owned by the XArray
+abstraction.
 
 Signed-off-by: Alvin Sun <alvin.sun@linux.dev>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
 ---
- rust/kernel/mm.rs | 7 +++++++
- 1 file changed, 7 insertions(+)
+ rust/kernel/sync/arc.rs | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
-index 4764d7b68f2a7..d2dfbb7d43972 100644
---- a/rust/kernel/mm.rs
-+++ b/rust/kernel/mm.rs
-@@ -149,6 +149,13 @@ pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
-             None
-         }
-     }
-+
-+    /// The size of the process virtual address space.
-+    #[inline]
-+    pub fn task_size(&self) -> usize {
-+        // SAFETY: `self.as_raw()` is a valid pointer to an `mm_struct` per the type invariants.
-+        unsafe { (*self.as_raw()).__bindgen_anon_1.task_size }
-+    }
- }
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 8ae0fe6f19ec0..9b582a815f888 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -363,11 +363,17 @@ pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
  
- // These methods require `mm_users` to be non-zero.
+ // SAFETY: The pointer returned by `into_foreign` was originally allocated as an
+ // `KBox<ArcInner<T>>`, so that type is what determines the alignment.
+-unsafe impl<T: 'static> ForeignOwnable for Arc<T> {
++unsafe impl<T> ForeignOwnable for Arc<T> {
+     const FOREIGN_ALIGN: usize = <KBox<ArcInner<T>> as ForeignOwnable>::FOREIGN_ALIGN;
+ 
+-    type Borrowed<'a> = ArcBorrow<'a, T>;
+-    type BorrowedMut<'a> = Self::Borrowed<'a>;
++    type Borrowed<'a>
++        = ArcBorrow<'a, T>
++    where
++        T: 'a;
++    type BorrowedMut<'a>
++        = Self::Borrowed<'a>
++    where
++        T: 'a;
+ 
+     fn into_foreign(self) -> *mut c_void {
+         ManuallyDrop::new(self).ptr.as_ptr().cast()
 
 -- 
 2.43.0
