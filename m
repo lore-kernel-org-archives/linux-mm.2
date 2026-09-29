@@ -4,97 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7BFCA5FAD
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 17:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6311CCA5FA5
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 18:14:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9A656B008A; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
+	id EB59B6B0088; Tue, 29 Sep 2026 14:14:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6FC46B008C; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
+	id E18A06B008A; Tue, 29 Sep 2026 14:14:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D85546B0092; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
+	id CE0216B008C; Tue, 29 Sep 2026 14:14:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B03D66B008A
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 189D21C346E
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:59:00 +0000 (UTC)
-X-FDA: 85267560840.16.573500B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 8637A1C0008
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:58:58 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWIEExcf;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EC576B0088
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 14:14:07 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 046A91205E8
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:14:06 +0000 (UTC)
+X-FDA: 85267598934.21.AD5B6EF
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 2A1E51C0008
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 18:14:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cKl1WrG9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 36_-7agcKCDgjlUngUfaiiafY.Wigfchor-ggepUWe.ila@flex--pratmal.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=36_-7agcKCDgjlUngUfaiiafY.Wigfchor-ggepUWe.ila@flex--pratmal.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790704738;
+	s=arc-20220608; t=1790705645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8IsblU8nmE28Btv5b/ZkJyD4K5wSxbscAgK5JZqxKw=;
-	b=fPb4B2Jr8ERjkc7ebfm5rGhMns2yoOfT2t3WTgTGTZSi2JQNGHN5AARKAZUfRI5T/KDwfH
-	35qprTIa1PsVIIc2GmdudjTrx3gYU1RmSf41yUG9gIEPtObrPe2xMbf66U4xibhv88wSdO
-	dairyrgiw5iMSdVhiQWchcPDVLbWx4U=
+	bh=mZh9La+paKQR4zf/FQmxkRWHM4xhm7VufrGTHjDBftg=;
+	b=0bcmRKRASBYPr0ttOKoK3ELpd7sOZUyA26TTDh7qqfzodiILiFz+fdcuoeEz3dkicyObqc
+	xK7ea1K1PFbEGq2PaH+A3ToUKQOq8XBVdIMTIljP6lmpNFWTtN+atO/gB9ayc10jDHxISh
+	7HGPSdLJ0pUCPm8LvYi39crBpe52NtY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWIEExcf;
-	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=cKl1WrG9;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 36_-7agcKCDgjlUngUfaiiafY.Wigfchor-ggepUWe.ila@flex--pratmal.bounces.google.com designates 74.125.82.197 as permitted sender) smtp.mailfrom=36_-7agcKCDgjlUngUfaiiafY.Wigfchor-ggepUWe.ila@flex--pratmal.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790704738;
-	b=pQyx8o0c0CO6M3dUN/hdIy9d2iCoknxl04GcpDkTs3KbN/llMbWeD6QpAPk2feJxQOoOmZ
-	tnS95lX86F6M1+BJGHKDAWuvfIt9/f8+fjeuq67MB74qBEg5zkbS/a2wciOHOx3rqFbEWb
-	zGB+ZntRfipQyquKNcUUdF5l9l4ogDY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DCFEC60239;
-	Tue, 29 Sep 2026 17:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E7B1F000FF;
-	Tue, 29 Sep 2026 17:58:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790704737;
-	bh=D8IsblU8nmE28Btv5b/ZkJyD4K5wSxbscAgK5JZqxKw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UWIEExcfN6jUovdJmatCAMu5OMD6YHLVKZLm4cwex0sANOgJ6vPEjlkalfQRzeyk1
-	 HIAuV12wZ9IO9kr8cpQEcoScoW432HEkDlXR4y5ZpNlxQaXm/jw05ouD1qd1CsVN9m
-	 3Gt001PNnIvK6A0HEBpRnJ5EDl9PT4w/lSUe+3be5PkkjdYNbwA4nUkHZ3J7G6mZls
-	 CUuSPXxVNpzgnTJkJyx6pcWtIwMHe0a7gvAeVwu2ddCGSxiFyMqDXJvS8qYjYDgJt9
-	 1HW3sDhHDfkJPJqJ4beFmeBW+7KVeMURYf+f7sveglgtD2EZmYctQc2ubNmGnhu3D2
-	 TGhaDjjZy1qTw==
-Date: Tue, 29 Sep 2026 07:58:56 -1000
-Message-ID: <d594ecb783f0f6838a52099fdba3de8e@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Liz Fong-Jones <lizf@honeycomb.io>
-Cc: Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Xin Yin <yinxin.x@bytedance.com>,
- linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org,
- cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- ian@honeycomb.io
-Subject: Re: [PATCH v3 1/2] writeback: let foreign flushes reach dying cgwbs
-In-Reply-To: <20260928-wb-dying-cgwb-flush-v3-1-e35374884667@honeycomb.io>
-References: <20260928-wb-dying-cgwb-flush-v3-0-e35374884667@honeycomb.io>
- <20260928-wb-dying-cgwb-flush-v3-1-e35374884667@honeycomb.io>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8637A1C0008
+	t=1790705645;
+	b=b38+k1qqLKTYdNXVgr0jkp+X9dzBWUkvLAXKwTvF3G16JrPhmSWRtCB/Fi/fG62C+ls1Yc
+	155t0a9iSyaU1YeTFXtLnnJLB7eX57f267ljHVFhteWTc/jvOonY8reog/+enG6ZUPNHoB
+	cxkn78y0BXTGJKfga3oQNYcl4R8rI58=
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-33baaba6371so16767586eec.1
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 11:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1790705644; x=1791310444; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mZh9La+paKQR4zf/FQmxkRWHM4xhm7VufrGTHjDBftg=;
+        b=cKl1WrG9NTdt00BvaWX0xBq5MLtYz+Vbd22tUS4qqZdKYpRBfH0MKdZLOb7eh9pNTL
+         2enUdEfWLzSdCN/gzEjUT/QtHglv2zOZMfML8bOc4ubObTQobPvQkj+Wov4hvaGO93TP
+         zhAif4778OPz1L54zp6yADlSM3fscYwkyOxbr3jNzvMaBHQXsduqujKz4Y1AUk/6wsep
+         f+n3uT5HIviYDYTtnUNcpwpgnX2jejC6Nvah+2nMPg+OrAe/9e0/p9hemsECc+SMw4nj
+         gH1Tj7urcY0ALUvMknzELewLfDDJiBqCdnl/5jj/BrL3ht8tqZnaPqtGz3dHHJpHc2HL
+         kgwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790705644; x=1791310444;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mZh9La+paKQR4zf/FQmxkRWHM4xhm7VufrGTHjDBftg=;
+        b=tV4FFv8YEzomMAaDwG/QvKYEsdO4KBI9uuXWh4cJWkS0PsNBPZwFIUwUiodrgqfqtG
+         EVFCYvBA+c8z4Y0xn3LoPT2GfIitNqZbIanUQSCRL2WhO077J7wHRpm49dEf2KAktCgz
+         3IuuDDhvbeasWq6xRqwO90t5eLKncDgWZ/hwu41yKMrkoN7bztZpznsien+3YoGQNHRH
+         eJbCdpyJ7MRFbI+l5JOz+7HF2PUab0oow5nMDxPAf1UaQk+B65EtIW+jGtw842Pz2LXo
+         8UuSBHrIrLvD67Q6rNTXSLADkCYzg/nmxDjISV1MLO9xNx4oULwtz7fR2v/JanOerMj7
+         m6Ag==
+X-Forwarded-Encrypted: i=1; AKwUvBwpFcGuSY8GV2efMnLgdmFLoYwOtE7KeiRCbYJty/AzfjSSv9JB/YSeg9uC6wMPKdWbf5Jv62NC7A==@kvack.org
+X-Gm-Message-State: AFq9FYJeBdgRwnLptHxssyXj5bvUhKMm9Z8VzqQdh8W28+v7RVoOL/li
+	srpCzYT39FjnK2mV1n0mOmUsmhvywNn1uM2eoxZLGRFW/Jc4xLCaER/YkTzIY/kZZ6hy2Ik8Eur
+	gejuARNf5NA==
+X-Received: from dybme43.prod.google.com ([2002:a05:7301:18ab:b0:34a:10b2:be3d])
+ (user=pratmal job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:c8c8:b0:33c:e61:e201
+ with SMTP id 5a478bee46e88-34c647d537fmr196806eec.22.1790705643313; Tue, 29
+ Sep 2026 11:14:03 -0700 (PDT)
+Date: Tue, 29 Sep 2026 18:14:02 +0000
+In-Reply-To: <20260929123241.1408414-1-huang-jl@deepseek.com>
+Mime-Version: 1.0
+References: <20260929123241.1408414-1-huang-jl@deepseek.com>
+X-Mailer: git-send-email 2.56.0.rc1.315.gc6ed9934b7-goog
+Message-ID: <20260929181402.44684-1-pratmal@google.com>
+Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
+From: Pratyush Mallick <pratmal@google.com>
+To: huang-jl@deepseek.com
+Cc: baohua@kernel.org, damon@lists.linux.dev, david@kernel.org, 
+	kunwu.chan@gmail.com, lance.yang@linux.dev, lianux.mm@gmail.com, 
+	linux-mm@kvack.org, mst@redhat.com, ryncsn@gmail.com, sj@kernel.org, 
+	virtualization@lists.linux.dev, xiang@kernel.org, xueyuan.chen21@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2A1E51C0008
 X-Rspam-User: 
-X-Stat-Signature: xk3uandequifnsmfrow9ruj77ay71iim
-X-HE-Tag: 1790704738-759801
-X-HE-Meta: U2FsdGVkX1+M1fe17nQe1j6RNuRTZhr+KqCKFlxd6uv/xsBzieefet9KJqiD5pYj9/JveJQV/DYsSlSDeQFcPCFk0ILyHHU12obNdoxqk5TWwYWcuBdpnTYNqYjwiMxc5gy2ZugB5Ap+iqFi9H0UhBlAbHsVeko2+u0VyFYLv60fri63vRppfbteAP3c5+YITPrZGY+G+hiWdKJlslp4Ak8pw02THHiyNOs8K6E9hM3Em6QdCKR07ucG2Y9lqljnMLQwAPXEhFbSAT4bT1uevIRY33Gt2eC25zKsWQhYMfLLWvacV2uWQceBYfdj1ykq5SOK7Mqs+0h28FjVvlA/vCfocr5efvmMhann7Mn8XHY5mszzjPP+steCKmkYwvqeNkGUSgbVnOOG3XzOJGvSvwPkvbnIRZHNVd3+1D0Jea7+VC+mYkfrOPWfmNKqRbdztwhh1KXc2j2RKIVBDZbUlhrsDfWzji7v0QglMY2zSr16a1SgpOLN8EMuzkFpMOjlxZQZHWmJYQTXoNLA4T9VqBDWgbyvdjJiNAiperY4zuDk8Tr1ZnSayTJNbgAlzc24XDEwYPM/XrppTwrbtzr+z15Q4KroSbZUCCYG/c9Va0P2WLkhk+IYcUc3/GXGZhogJ+MZDubw5BK3B3/DCYcznRCvDmXtW6UgzpGMNHFQuNbWGqlw+ObdGj7eEeTttZakTFlW1D9QGShUsmw7rBVYNQDs1a933O0b/hbtqvXW42s15fald1tMuzlSbjAJK8lZZxniWSaYR5RIRce8Asa4hSEvejKMwSUVOSw2C2T9X4Q2PWf9VDm4YTijTITdfd5Pdq5zVKRi9hSpmlo4vIhmZeIjy3AswF2bpMkrJJ541N07muI7iDnJum2aXsmPgezND2FYNeKJgu/GJHMCsXDW1SUPq4AeXvdkqL442OW3oHW6Gt0ZAFfPVlyci/iJEjPnJ9TVL7HzGHNM+T9IyAU
- Iv1VCTTC
- ESa9sSl25tR0/vEPQc+O0MOQ86KRzUxdhlvIzStrHVCAqALB/sxfViHorxq479W1m6LLmHiDwJs9Wn4vkPgMP1zKim/jzLCxqtdiYjn15JIcsELSfJ2McOSg72u1jrSlE+IypOBOrDYxBdzZ40K69sAVnuAgPyvXEpGqmlFId6Utl2qqV2w3EJ9HJP2dad8ZNjHQ7cYssvL5WP94rlck8f8NTna587ex6wc1mZRQjUqdbVeDaHiUEij6DZJ0VB8UqeO30
+X-Rspamd-Server: rspam07
+X-Stat-Signature: jxb15yuudty965c8tkqtdkxwnr6inedk
+X-HE-Tag: 1790705645-758278
+X-HE-Meta: U2FsdGVkX1964KID/QV4BrUckrxUrJfR6+CR09PFjffmb6louulSJ/db4fuF0hBNUZQZzRO9nSFnA/UFSTZyYYmb0WGDCWvnXYgqo/9vPPLQxuVcgHXDdcpDsEcNLR67qNWviYNJs4MK1UU0QaGGvk5pQicsYoTDB1nqvbLomZxnBWNVx6wLK3JMNdD575NQAYzu5yEMz3fyFCm+TSrZ3BTqRp8ftOrSB34vJUj+6H1tLxHTuSU51V+f4Y2zFUJPWnakwZBNGhRNjWtnx2SoxK083IKmZOveb/qWL1RmEVcVaTQb2XHJEG/0JWryxO4cUworF/rUdqokpYJtOeqjVTNjmGfghjO6WgHy49F/xyJ+ho43yAYS4Rf1rA1CK4+dzNXTqFEKCoeQ1yULKmFLTXaVNKdeQaWMGG/3Odkq6Jobuazfn6MvUhWLxu81ulCyXAb7xRTy45SObbLQlYyuIP2yD0cMPJBz/sqU5eoi+PJ17y2Uf5+X47S21iAQRb/Nr5d66gtF2ws9CqGlhFbel51h+1joNjldzHb6rXBAa0EKeE2sJlVsN5uIOxaDAoADj4q7uXuH5nuOOBdEAHBTWnx3IHz1NGPOfDo5+ABML//x1zMxW1dK6td5mykgU9X5A1hIbT90r8hJxt4Nj69uS2KyWH0gk4sWcHm1NsErRGS0zZuno7nktHYhgu2Po/bQM6zi5yTI33kY/+ok8EswfClszERX/2IAZbTAbd+as1IczXl2Nx60RiM3YHLgne/ea9EbnCMZnI1B7kWUBkX9VFvv7qxFkCB86o8rZcBzVc2u2eyWw/xJotOyCDIaw7lZFpM+KlwDcHWJDOK3CCJ3KwuedbaYnUgfgL9ROGEWyCvpJZ+reHMurA/c+yXm0A+lDz8NmgY0XFx3KxoFkC98HwgnKGWDQ6K0bshJ7+WYTyEHrdSENBOuvfTb6U3bR0kXs66ikFK1UBJybkiU+RG
+ Sq9WgS59
+ VTI2oswX2T164ftab7CHUagNhkhHFDp+Pp60zD5Ddl5Fwiw35kAG8oWxRG9DwJw4PdFTcsDpvatJx7OdTxruWqRCofam+c1lQ7HtUu5BZdmUqrGwqjvCjFtT7SsqAgI+ST7EnO0B6mitEMyZgECCxJgtXBVagc9bl7j+RdFhwsutxTWUcOr5/6hkdAXUCwV6pN5I3QnMK/9BtDY4ecMANQM9GyL7cC/uoLPCMzWsqmLqv0sniXJUSdQTgWprdzDMZWQTa8dhpWMliZY9D/d34m2xO5ctuasAQdj7kYLkeq1kGWMmfEmMl9InDLCP4UtqZUwo6boQwRNwg9GeJh+P0QSmT+B0KnTcC6eDRIoSD2SKlqqV5rZx0PkdST5736o5bQzT5Wfxp0CG0w3sAKQQ2MhvgziuX/chrMkbrLaTo9ZlDt4GMEsmEN85bG4J2u20avbZ8OxN5Mpfn6dXJ+gmA1g8fc6O/HMzh6OvrdBQZHNHDLZ8vuyqOQYrkumcAuY7bwTktZ9mtldBhsY2xqJMNYvhK82257g9JR+XMr0xBa7oyyDWgGBJ1JpAoe7+H2KnFTsbd8eWKUSYmcrEM5HX5rRCqTnrQtD8LstVaQsixoZsVwul1PNSy47H9t97aVSgG48qCsg7yKhGfuSg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,52 +111,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Liz.
+> We have not yet fully explored how best to tune the DAMON and free-page
+> reporting parameters for our workloads.
 
-On Tue, Sep 29, 2026 at 01:40:49AM +0000, Liz Fong-Jones wrote:
->  	if (test_bit(WB_registered, &bdi->wb.state) &&
->  	    blkcg_cgwb_list->next && memcg_cgwb_list->next) {
-> -		/* we might have raced another instance of this function */
-> -		ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
-> +		/*
-> +		 * We might have raced another instance of this function.  A
-> +		 * dying wb keeps its slot until released; take it over.
-> +		 */
-> +		slot = radix_tree_lookup_slot(&bdi->cgwb_tree, memcg_css->id);
-> +		if (!slot) {
-> +			ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
-> +		} else {
-> +			old_wb = radix_tree_deref_slot_protected(slot, &cgwb_lock);
-> +			if (wb_dying(old_wb)) {
-> +				radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
+You can also try tuning page_reporting_delay_ms, which can help you with
+saving time-integrated host memory.
 
-This can also replace the wb of a removed memcg:
+[1] https://lore.kernel.org/20260731193705.2902728-1-pratmal@google.com
 
-1. A cgroup with io enabled is removed. Killing its io css makes
-   cgroup_get_e_css() return the parent's right away, but
-   memcg_cgwb_list->next stays set until wb_memcg_offline().
-
-2. In between, wb_get_create() for the memcg, e.g. from
-   __inode_attach_wb() or inode_switch_wbs(), kills the dirty wb on
-   blkcg mismatch and a new wb takes over its slot.
-
-3. wb_memcg_offline() kills the new wb. Foreign flushes for the memcg
-   now find the new wb while the dirty inodes stay on the old one, as
-   css_is_dying() keeps wbc_attach_and_unlock_inode() from switching
-   them, so the stall comes back.
-
-Can you also fail the link when the memcg is dying?
-
-	if (test_bit(WB_registered, &bdi->wb.state) &&
-	    blkcg_cgwb_list->next && memcg_cgwb_list->next &&
-	    !css_is_dying(memcg_css)) {
-
-CSS_DYING is set before the io css is killed. Testing it here, after
-the blkcg lookup and under cgwb_lock, catches every removal that could
-have made the old wb replaceable.
-
-Thanks.
-
---
-tejun
+Thanks,
+Pratyush
 
