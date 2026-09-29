@@ -4,132 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A2CECA5FAC
-	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 17:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7BFCA5FAD
+	for <linux-mm@archiver.kernel.org>; Tue, 29 Sep 2026 17:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A87CB6B0092; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
+	id E9A656B008A; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5FE46B0093; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
+	id E6FC46B008C; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9752C6B0096; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
+	id D85546B0092; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E096B0092
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:46:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE57CA0482
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:46:04 +0000 (UTC)
-X-FDA: 85267528248.28.34CF5B2
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D9040140002
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:46:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=mEZrM0ru;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pibGmYNj;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B03D66B008A
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 13:59:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 189D21C346E
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:59:00 +0000 (UTC)
+X-FDA: 85267560840.16.573500B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 8637A1C0008
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 17:58:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWIEExcf;
+	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790703963;
+	s=arc-20220608; t=1790704738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xYaDr73/bc2x48KiPGkBt/LUYLtm5CQPKTJdXW+o7xI=;
-	b=ztxMVGUILhGVpEzYEt3iOm1TY2Fmo0vfOliIW9Bqt2p6OMTsIxo0eJe1ump0JROJXHY4yJ
-	xSNE97NG6HSg2MhMFt0koWPCJr2YPB87W/OeWYSzuHpNoGRDtvaScZl+B/mJvorJS7FGBA
-	f76b1w8S9Q9klsW+2TEFeatrnFM1ZHE=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=D8IsblU8nmE28Btv5b/ZkJyD4K5wSxbscAgK5JZqxKw=;
+	b=fPb4B2Jr8ERjkc7ebfm5rGhMns2yoOfT2t3WTgTGTZSi2JQNGHN5AARKAZUfRI5T/KDwfH
+	35qprTIa1PsVIIc2GmdudjTrx3gYU1RmSf41yUG9gIEPtObrPe2xMbf66U4xibhv88wSdO
+	dairyrgiw5iMSdVhiQWchcPDVLbWx4U=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=mEZrM0ru;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=pibGmYNj;
-	spf=pass (imf23.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.145 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UWIEExcf;
+	spf=pass (imf18.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790703963;
-	b=JLBLDz/btP8aG4w8ggAMRbglM9W3MahJn57RkNT67S7D7WqZHqXUrdkdZPmdSSVuXA2p+V
-	BcvDU9Vr1SnykVnEKXmwr4XeKusPdZa4G+N71r+I2K2wDRTHLFTC3cPXepEvxg/xn+6aKT
-	lxvs/pfK4GYq9mGb+HlYtLyVZ51qHTQ=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 396F5EC00C1;
-	Tue, 29 Sep 2026 13:46:02 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Tue, 29 Sep 2026 13:46:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm3; t=1790703962; x=1790790362; bh=xYaDr73/bc
-	2x48KiPGkBt/LUYLtm5CQPKTJdXW+o7xI=; b=mEZrM0ruycxhlwLj+2yfqbYPLl
-	umGiRkpqti5NVkMR2RdiN4NI2hsba4dgZm/flgi2Tgr40ANMsrXIHXPBtGol43ZW
-	9nRGVXjsIYs87sIXXjM9hLJkvv3eMgHVOi7BnKnLVxfu1smyEUB7C8RHYCWa5C0c
-	r1S7nC8z49rKNprbMX5sWmnFvqA+S4MMaM47tPo6c1Is59rEuhTRPvHNLbXuTd2M
-	7izoBfTA3iouNBVAqdOZkXxmxIuNfBht9jlrDq72cVRAnloGCYvsGC/eo1npXl/p
-	CCV15UybttM9+QlcsI2nR786EahPm/VSIvtEmAQ5g49DJ1wc1gkPPSevpudw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1790703962; x=1790790362; bh=xYaDr73/bc2x48KiPGkBt/LUYLtm5CQPKTJ
-	dXW+o7xI=; b=pibGmYNjFlEvYoM5Bw/2eQjTERwdLG1aItEvFeIccLHEgvlyAnM
-	2Olm7XLfP2ITgJtDGKNqrrXeIWm5/QGitRjygcyFEI0gV81CnfW0idyy9vUbv095
-	EIpm7NncEm/Yep3fKiLfWfC0CDyo4KUSZKc8kAuZ4QrVyCA37tili+NlsSNP/yzy
-	wBgrCWSC4jrmaGaraBmzdJJOcFe3KXYvvOiruqkh2HzAiFsDQNnFV92vyK9STzdg
-	RsdzNDOFX9K4+TCG0iowPscIuH9lMNfVjYWk4JxHwl9ApRA6dUtLP7DOTxqlECQH
-	S2LlTanbXynIt/p8HvFVmRFClow983kaXuw==
-X-ME-Sender: <xms:Wfm7akmvqM8f7uMXwu25MjG-zGXs6OjSGbK8dkg9aejmkEVb6GINRw>
-    <xme:Wfm7arYHLDT_jEuJEdWmgbDFAS5qhawQTqVqy5gdxlRoNmURX1AnWTDhbg7FVS2Ln
-    RIv0sPrXg63LjdcOIzmCR9cIvh4IqwvWDQMhBoPjx0pTXy5mu2RBgUa>
-X-ME-Received: <xmr:Wfm7aiTXH9AldnlpXMpmWTFNCklFiaW-rux58Vi1uUpLsi66iS2TEiBCRe4>
-X-ME-Proxy-Cause: dmFkZTGiQXNYL99eKp3SE9l0ZmfYVDc8zNcb7fYURtN05SMtW87zJPRiXYMgfK3YXBP7y6
-    5mB1C8IBWC9LPSTMYrf8YIxqDXfWziidvhiE/e/3blg1pvqimIho4NENtkLREEAC+FOwsr
-    i8G5AwzNUfxCwcaE4TyADpVUbdQPFphcZJrDj+Ii2/HcWzS3oWsUSny9h3kmYKW3QAllKC
-    4Cw+aKk8h3bUryonN3OyJXnwGOKVu1FQTEFiJA1FTlwbcn8rWRs71H4c0ecYvB7rqhXo2i
-    px5EH9WhAbCs/cRtQCYi13IMfsZ3eyQHBtDtGlmxilWV/V/EYdDUratAsGr3CqZXkxPogj
-    wnM7W9tgXMkSMPo4zz4y3lG3psiWCYqS1uAjbtr/kB2D5madNlT8RtCflwUQeOi5CjETsa
-    Ww337jDauXLFzHzX7piHtOFDBOx03a6h1TkhZhctqgwD20AO7GIvvFd+kgGa7Ru5d2S18m
-    ogmDMWcDa6LnolxwW3golItdIEr3bjpG/SWYziaZHXdzvcqQAJgKQWoW+AEuPcuxBXVJOS
-    sZX+IbzsUS++i3wgNYMgICEwIiZ+sBLKObekrMuSse4f3meuiZ+m5/qwFL8THIOUD3pZNw
-    MNhUJfEX4HZsfIqbU9EzCfEFCkLb6kyjxjAvxtTLvYv4IiGqm1pNdMSVKFng
-X-ME-Proxy: <xmx:Wfm7atVRvHmpoRlfL05Q4Njd0gIlzZZcUNU0b6a6cMhQxd1hibN9Fw>
-    <xmx:Wfm7apa9YUGjyCjGMWC83wFv6mRtIE_ZqULt1tex_GveSI5_dc0Mzw>
-    <xmx:Wfm7au66wGCMX7R7J08vNupF6BrsCJvYZKyQ2lGHVI1xDsbsOQ855Q>
-    <xmx:Wfm7aiyHZYfSr6ARV9cJ4KqpXMMDwW4Jwi7UcLA2Gw2CI6LhXbq4fw>
-    <xmx:Wvm7an0XWb_JRFaZFzxGv2Bt14oTQWPWYFSy0TaFPwAtxdhUh53G3kGz>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 29 Sep 2026 13:46:00 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Harry Yoo <harry@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm: page_alloc: make defrag_mode retries follow the promoted order
-Date: Tue, 29 Sep 2026 18:45:51 +0100
-Message-ID: <20260929174553.175333-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.55.0
+	t=1790704738;
+	b=pQyx8o0c0CO6M3dUN/hdIy9d2iCoknxl04GcpDkTs3KbN/llMbWeD6QpAPk2feJxQOoOmZ
+	tnS95lX86F6M1+BJGHKDAWuvfIt9/f8+fjeuq67MB74qBEg5zkbS/a2wciOHOx3rqFbEWb
+	zGB+ZntRfipQyquKNcUUdF5l9l4ogDY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DCFEC60239;
+	Tue, 29 Sep 2026 17:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E7B1F000FF;
+	Tue, 29 Sep 2026 17:58:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790704737;
+	bh=D8IsblU8nmE28Btv5b/ZkJyD4K5wSxbscAgK5JZqxKw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=UWIEExcfN6jUovdJmatCAMu5OMD6YHLVKZLm4cwex0sANOgJ6vPEjlkalfQRzeyk1
+	 HIAuV12wZ9IO9kr8cpQEcoScoW432HEkDlXR4y5ZpNlxQaXm/jw05ouD1qd1CsVN9m
+	 3Gt001PNnIvK6A0HEBpRnJ5EDl9PT4w/lSUe+3be5PkkjdYNbwA4nUkHZ3J7G6mZls
+	 CUuSPXxVNpzgnTJkJyx6pcWtIwMHe0a7gvAeVwu2ddCGSxiFyMqDXJvS8qYjYDgJt9
+	 1HW3sDhHDfkJPJqJ4beFmeBW+7KVeMURYf+f7sveglgtD2EZmYctQc2ubNmGnhu3D2
+	 TGhaDjjZy1qTw==
+Date: Tue, 29 Sep 2026 07:58:56 -1000
+Message-ID: <d594ecb783f0f6838a52099fdba3de8e@kernel.org>
+From: Tejun Heo <tj@kernel.org>
+To: Liz Fong-Jones <lizf@honeycomb.io>
+Cc: Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jens Axboe <axboe@kernel.dk>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Xin Yin <yinxin.x@bytedance.com>,
+ linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org,
+ cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ ian@honeycomb.io
+Subject: Re: [PATCH v3 1/2] writeback: let foreign flushes reach dying cgwbs
+In-Reply-To: <20260928-wb-dying-cgwb-flush-v3-1-e35374884667@honeycomb.io>
+References: <20260928-wb-dying-cgwb-flush-v3-0-e35374884667@honeycomb.io>
+ <20260928-wb-dying-cgwb-flush-v3-1-e35374884667@honeycomb.io>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D9040140002
-X-Stat-Signature: bhyg4o8ko51mrndrcryxineodd8hzzb5
+Content-Type: text/plain; charset=us-ascii
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8637A1C0008
 X-Rspam-User: 
-X-HE-Tag: 1790703962-969578
-X-HE-Meta: U2FsdGVkX1+w3QbhMQMnfwg0h0DbjCLdl4TvFs5OWZ7BTYKZJnxArED4N4DXzbKrWvGf80vsISlO2tk0i+RfGIXuK/AG/loSoeoktbaoM4niaVfaTXWgHSL0vIxCc3anQhWajdDK6ZzGX6uJUoPQqAU50VcIKA20wL01tliWHgL5OhU8xJP4iTjTyf+iqKpc2TyYap/XdD9glQ0a3CBFob98u3ogvVyHfmwVKUMBtx9hf04ty+SnZI+HG2B38w/vMncLsdN0xFMG+NBpL0wnw3yOBaZb6tJc1QPWrSjMiOJ9ewYm4+QJHmHHmHWhDWWs8H61bsVRu6Zy3vXzPzMTwdJpSlvWa6NjZNroJLAGAcjwjaQOciEZLP5bfBcLucBfJYOhy+ejCr7bBNJPDb4aX8iS/PrDfdzkVZx5LC5UIbTTsLHBhYzBpj+/5OAFYuuo8mUwXaj1pL9kbIWjsvy5pTLv7GuIaMZovOPgZ1mLdHdcnH/vqUYpl8NnP8shjkzwtQwKW3h8c3tEEE8WrtFhHWbhGp4ALDrKaNpYS0qH0R3riesHvFiKsj0ZS3q1cqcGP/UndDvgwYvXIHwGjabSsRktb8VhSqrVLTmi+bX5fWDE1I/OYA70qNuNGlQqtILPZGmwnGo6xYtnkcg9i/YGZSeV55F7L7Ube27u1Uvt9+h8KfxileWhTKWl5RasbNTgkOutHg1K6mlqQNgqfTM8S8bKE4TBQWcpxx4KPa/uLcLpl/6xADSs0aGRVN7Un6LvbZjFWspMdw4dzImO4bNoUe+8J1TJjlEtpKIiMsq6c8jSSKhjEYQsVqPiY/7MvS2omsqfrE+VDOWy03syFfGcd2OzTwAD9X5838DzM0mYavNXO5zH0H9h5FlFHS8253cbgo8TfmwhXqa7N4spNg5qP+VIiHzsGsTU/VGdnWRTgz6WUTM9UAEd1meqElND+SHXxkWzp3pwOJtPh2QRyv1
- qLJl1L6a
- QMdpGPHRaXE1vqz5UMtYa6mmpQtAOlkEqnt8TPl8LMJ+Dau1Zf1D1TO60xq8bwV3oAl8KlaZ8ImZl3c9g68UnmqS7eLosk2GT325EuQUX5YrDsT5bNsiMjOCMwMPxUppqcM9jlYJoW1waPZMBPxmF3bN+ot0K4tjUKEjBAffkkXyFF2aTs/IaXPQUzKIqcAMb+2TPPi8znUNQW179SlvKRbKS+56x2F49oI7lFlfxzCeuPREgtl/MxkcVNbnKF3HQ20znCGDA5iXrFDAJfdPKLkWr1eABoZxbj+wJGqtul2xtrZrToUYn5sy6kG78oE2upYquy9vOSYGjPyYB+5r12Uv/K5rDIN3gzw38rjNAtNAhr/wRp22x1q1WC7sSlbHBCLCF1McNLWAhIMEwxxLHm8gtpOqSCgVmmz7elW47JFvQ3eljB34Q+RWKhfWjD8cCOJ9QwyxpShZRPrAcv4l5+yJoLPHzt2saM6teyoTGHTVM+hBw4tGqNg580g==
+X-Stat-Signature: xk3uandequifnsmfrow9ruj77ay71iim
+X-HE-Tag: 1790704738-759801
+X-HE-Meta: U2FsdGVkX1+M1fe17nQe1j6RNuRTZhr+KqCKFlxd6uv/xsBzieefet9KJqiD5pYj9/JveJQV/DYsSlSDeQFcPCFk0ILyHHU12obNdoxqk5TWwYWcuBdpnTYNqYjwiMxc5gy2ZugB5Ap+iqFi9H0UhBlAbHsVeko2+u0VyFYLv60fri63vRppfbteAP3c5+YITPrZGY+G+hiWdKJlslp4Ak8pw02THHiyNOs8K6E9hM3Em6QdCKR07ucG2Y9lqljnMLQwAPXEhFbSAT4bT1uevIRY33Gt2eC25zKsWQhYMfLLWvacV2uWQceBYfdj1ykq5SOK7Mqs+0h28FjVvlA/vCfocr5efvmMhann7Mn8XHY5mszzjPP+steCKmkYwvqeNkGUSgbVnOOG3XzOJGvSvwPkvbnIRZHNVd3+1D0Jea7+VC+mYkfrOPWfmNKqRbdztwhh1KXc2j2RKIVBDZbUlhrsDfWzji7v0QglMY2zSr16a1SgpOLN8EMuzkFpMOjlxZQZHWmJYQTXoNLA4T9VqBDWgbyvdjJiNAiperY4zuDk8Tr1ZnSayTJNbgAlzc24XDEwYPM/XrppTwrbtzr+z15Q4KroSbZUCCYG/c9Va0P2WLkhk+IYcUc3/GXGZhogJ+MZDubw5BK3B3/DCYcznRCvDmXtW6UgzpGMNHFQuNbWGqlw+ObdGj7eEeTttZakTFlW1D9QGShUsmw7rBVYNQDs1a933O0b/hbtqvXW42s15fald1tMuzlSbjAJK8lZZxniWSaYR5RIRce8Asa4hSEvejKMwSUVOSw2C2T9X4Q2PWf9VDm4YTijTITdfd5Pdq5zVKRi9hSpmlo4vIhmZeIjy3AswF2bpMkrJJ541N07muI7iDnJum2aXsmPgezND2FYNeKJgu/GJHMCsXDW1SUPq4AeXvdkqL442OW3oHW6Gt0ZAFfPVlyci/iJEjPnJ9TVL7HzGHNM+T9IyAU
+ Iv1VCTTC
+ ESa9sSl25tR0/vEPQc+O0MOQ86KRzUxdhlvIzStrHVCAqALB/sxfViHorxq479W1m6LLmHiDwJs9Wn4vkPgMP1zKim/jzLCxqtdiYjn15JIcsELSfJ2McOSg72u1jrSlE+IypOBOrDYxBdzZ40K69sAVnuAgPyvXEpGqmlFId6Utl2qqV2w3EJ9HJP2dad8ZNjHQ7cYssvL5WP94rlck8f8NTna587ex6wc1mZRQjUqdbVeDaHiUEij6DZJ0VB8UqeO30
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,226 +102,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Hello, Liz.
 
-Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
-storm in defrag_mode"), direct reclaim and compaction for non-movable
-requests under defrag_mode run at pageblock_order, to produce the whole
-blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
-still use the request order. An order-0 request can therefore retry
-indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
+On Tue, Sep 29, 2026 at 01:40:49AM +0000, Liz Fong-Jones wrote:
+>  	if (test_bit(WB_registered, &bdi->wb.state) &&
+>  	    blkcg_cgwb_list->next && memcg_cgwb_list->next) {
+> -		/* we might have raced another instance of this function */
+> -		ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
+> +		/*
+> +		 * We might have raced another instance of this function.  A
+> +		 * dying wb keeps its slot until released; take it over.
+> +		 */
+> +		slot = radix_tree_lookup_slot(&bdi->cgwb_tree, memcg_css->id);
+> +		if (!slot) {
+> +			ret = radix_tree_insert(&bdi->cgwb_tree, memcg_css->id, wb);
+> +		} else {
+> +			old_wb = radix_tree_deref_slot_protected(slot, &cgwb_lock);
+> +			if (wb_dying(old_wb)) {
+> +				radix_tree_replace_slot(&bdi->cgwb_tree, slot, wb);
 
-- Reclaim at pageblock_order gives up after one pass as soon as a zone
-  looks compaction_ready(), and do_try_to_free_pages() then returns 1
-  even though nothing was reclaimed. It returns before the retry that
-  would reclaim memory.low-protected cgroups, so when most memory is
-  protected, the pass that did run finds next to nothing.
+This can also replace the wb of a removed memcg:
 
-- Compaction at pageblock_order fails or is deferred.
+1. A cgroup with io enabled is removed. Killing its io css makes
+   cgroup_get_e_css() return the parent's right away, but
+   memcg_cgwb_list->next stays set until wb_memcg_offline().
 
-- should_reclaim_retry() takes the reported progress as progress for
-  the order-0 request and resets no_progress_loops. The request
-  retries.
+2. In between, wb_get_create() for the memcg, e.g. from
+   __inode_attach_wb() or inode_switch_wbs(), kills the dirty wb on
+   blkcg mismatch and a new wb takes over its slot.
 
-Order 1-3 requests loop the same way, and should_compact_retry() also
-checks their pageblock_order compaction result against the request
-order.
+3. wb_memcg_offline() kills the new wb. Foreign flushes for the memcg
+   now find the new wb while the dirty inodes stay on the old one, as
+   css_is_dying() keeps wbc_attach_and_unlock_inode() from switching
+   them, so the stall comes back.
 
-On a production host (64G, defrag_mode, memory.low covering most of the
-workload), 95% of direct reclaim runs were order-9 runs that returned 1
-with nothing reclaimed, at up to 60k runs per second. Across ~200M
-should_reclaim_retry() calls in a day, no_progress_loops never left 0.
-The spinning allocations were SLUB slab refills for inode and dentry
-caches. The time spent registers as memory pressure, and pressure-based
-OOM killing takes down both workloads and system services.
+Can you also fail the link when the memcg is dying?
 
-Treat promoted requests like costly orders:
+	if (test_bit(WB_registered, &bdi->wb.state) &&
+	    blkcg_cgwb_list->next && memcg_cgwb_list->next &&
+	    !css_is_dying(memcg_css)) {
 
-- Reclaim progress does not reset no_progress_loops for them.
+CSS_DYING is set before the io css is killed. Testing it here, after
+the blkcg lookup and under cgwb_lock, catches every removal that could
+have made the old wb replaceable.
 
-- should_compact_retry() checks the compaction result at the promoted
-  order. It does not retry COMPACT_SKIPPED, since the request can fall
-  back, and it does not escalate compaction to COMPACT_PRIO_SYNC_FULL.
+Thanks.
 
-When the fallback is taken, reset the retry counters, so that the
-fallback attempt gets a full retry budget before the OOM killer is
-considered.
-
-In a VM reproducer (32G, defrag_mode, inode churn under memory.low):
-
-                                        before    after
-    should_reclaim_retry() calls           63M     293k
-    peak memory pressure (PSI some avg10)  99%      12%
-
-File creation runs 5.7x faster.
-
-Fixes: 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim storm in defrag_mode")
-Cc: <stable@vger.kernel.org>
-Assisted-by: LLM
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/page_alloc.c | 85 ++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 56 insertions(+), 29 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 12fac9084c48..608487672d93 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4127,6 +4127,31 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
- 	return page;
- }
- 
-+/*
-+ * If fallbacks are not permitted (defrag_mode), we either need to
-+ * reclaim space in a block of matching type, or clear out an entire
-+ * block to allow __rmqueue_claim() to convert.
-+ *
-+ * Reclaim by itself is primarily freeing space in movable blocks,
-+ * since that's where the LRU pages live. So this works for movable
-+ * requests, but not for others.
-+ *
-+ * For those, promote the order of reclaim and compaction to help make
-+ * blocks, instead of spinning in reclaim alone unproductively. Retry
-+ * decisions based on the outcome of that work - reclaim progress and
-+ * compaction results - must account for the promotion as well, see
-+ * should_reclaim_retry() and should_compact_retry().
-+ */
-+static inline unsigned int nofrag_promote_order(unsigned int order,
-+						unsigned int alloc_flags,
-+						const struct alloc_context *ac)
-+{
-+	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
-+		return max(order, pageblock_order);
-+
-+	return order;
-+}
-+
- /*
-  * Maximum number of compaction retries with a progress before OOM
-  * killer is consider as the only way to move forward.
-@@ -4149,22 +4174,7 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
- 		.order = order,
- 		.page = NULL,
- 	};
--	int compact_order = order;
--
--	/*
--	 * If fallbacks are not permitted (defrag_mode), we either
--	 * need to reclaim space in a block of matching type, or clear
--	 * out an entire block to allow __rmqueue_claim() to convert.
--	 *
--	 * Reclaim by itself is primarily freeing space in movable
--	 * blocks, since that's where the LRU pages live. So this
--	 * works for movable requests, but not for others.
--	 *
--	 * For those, promote the order to help make blocks, instead
--	 * of spinning in reclaim alone unproductively.
--	 */
--	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
--		compact_order = max(order, pageblock_order);
-+	unsigned int compact_order = nofrag_promote_order(order, alloc_flags, ac);
- 
- 	if (!compact_order)
- 		return NULL;
-@@ -4256,8 +4266,11 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
- 	bool ret = false;
- 	int retries = *compaction_retries;
- 	enum compact_priority priority = *compact_priority;
-+	unsigned int compact_order;
- 
--	if (!order)
-+	/* Check the compaction result at the order compaction ran at */
-+	compact_order = nofrag_promote_order(order, alloc_flags, ac);
-+	if (!compact_order)
- 		return false;
- 
- 	if (fatal_signal_pending(current))
-@@ -4266,10 +4279,14 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
- 	/*
- 	 * Compaction was skipped due to a lack of free order-0
- 	 * migration targets. Continue if reclaim can help.
-+	 *
-+	 * Promoted requests have exhausted their reclaim retries at
-+	 * this point, and they can fall back instead.
- 	 */
- 	if (compact_result == COMPACT_SKIPPED) {
--		ret = compaction_zonelist_suitable(ac, order, alloc_flags,
--						   gfp_mask);
-+		if (compact_order == order)
-+			ret = compaction_zonelist_suitable(ac, order, alloc_flags,
-+							   gfp_mask);
- 		goto out;
- 	}
- 
-@@ -4287,7 +4304,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
- 		 * need much more detailed feedback from compaction to
- 		 * make a better decision.
- 		 */
--		if (order > PAGE_ALLOC_COSTLY_ORDER)
-+		if (compact_order > PAGE_ALLOC_COSTLY_ORDER)
- 			max_retries /= 4;
- 
- 		if (++(*compaction_retries) <= max_retries) {
-@@ -4299,7 +4316,7 @@ should_compact_retry(gfp_t gfp_mask, struct alloc_context *ac, int order,
- 	/*
- 	 * Compaction failed. Retry with increasing priority.
- 	 */
--	min_priority = (order > PAGE_ALLOC_COSTLY_ORDER) ?
-+	min_priority = (compact_order > PAGE_ALLOC_COSTLY_ORDER) ?
- 			MIN_COMPACT_COSTLY_PRIORITY : MIN_COMPACT_PRIORITY;
- 
- 	if (*compact_priority > min_priority) {
-@@ -4468,11 +4485,7 @@ __alloc_pages_direct_reclaim(gfp_t gfp_mask, unsigned int order,
- 	struct page *page = NULL;
- 	unsigned long pflags;
- 	bool drained = false;
--	int reclaim_order = order;
--
--	/* Match the slowpath compaction promotion in __alloc_pages_direct_compact */
--	if ((alloc_flags & ALLOC_NOFRAGMENT) && ac->migratetype != MIGRATE_MOVABLE)
--		reclaim_order = max(order, pageblock_order);
-+	unsigned int reclaim_order = nofrag_promote_order(order, alloc_flags, ac);
- 
- 	psi_memstall_enter(&pflags);
- 	*did_some_progress = __perform_reclaim(gfp_mask, reclaim_order, ac);
-@@ -4648,9 +4661,17 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned order,
- 	/*
- 	 * Costly allocations might have made a progress but this doesn't mean
- 	 * their order will become available due to high fragmentation so
--	 * always increment the no progress counter for them
-+	 * always increment the no progress counter for them.
-+	 *
-+	 * The same goes for requests whose reclaim is promoted to make whole
-+	 * blocks. At that order, reclaim also reports progress when it backs
-+	 * off for compaction without freeing anything.
-+	 *
-+	 * The watermark check below stays at the request order: it asks
-+	 * whether the request itself could succeed after reclaim.
- 	 */
--	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER)
-+	if (did_some_progress && order <= PAGE_ALLOC_COSTLY_ORDER &&
-+	    nofrag_promote_order(order, alloc_flags, ac) == order)
- 		*no_progress_loops = 0;
- 	else
- 		(*no_progress_loops)++;
-@@ -5012,9 +5033,15 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 				 &compaction_retries))
- 		goto retry;
- 
--	/* Reclaim/compaction failed to prevent the fallback */
-+	/*
-+	 * Reclaim/compaction failed to prevent the fallback. The retry
-+	 * budget was spent on making blocks, not on the request itself;
-+	 * give the fallback a fresh one before considering OOM.
-+	 */
- 	if (defrag_mode && (alloc_flags & ALLOC_NOFRAGMENT)) {
- 		alloc_flags &= ~ALLOC_NOFRAGMENT;
-+		no_progress_loops = 0;
-+		compaction_retries = 0;
- 		goto retry;
- 	}
- 
--- 
-2.54.0
-
+--
+tejun
 
