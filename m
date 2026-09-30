@@ -4,95 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B48CA5FC7
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 16:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CAC0CA5FC7
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 16:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4DA76B0088; Wed, 30 Sep 2026 12:09:35 -0400 (EDT)
+	id 4BC986B0088; Wed, 30 Sep 2026 12:37:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEE5C6B008A; Wed, 30 Sep 2026 12:09:35 -0400 (EDT)
+	id 46E196B008A; Wed, 30 Sep 2026 12:37:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E13A6B0096; Wed, 30 Sep 2026 12:09:35 -0400 (EDT)
+	id 3837C6B008C; Wed, 30 Sep 2026 12:37:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7746D6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:09:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0BBAA3EA0
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:09:34 +0000 (UTC)
-X-FDA: 85270913868.03.B7A1FBB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 423B1140008
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:09:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IGpAu3/b";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 169F16B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:37:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 82A42C0151
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:37:54 +0000 (UTC)
+X-FDA: 85270985268.09.AA5CB20
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8ED8E18000D
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:37:51 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HBPo7vnE;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790784573;
+	s=arc-20220608; t=1790786272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=egkKq7DBcopH/CfP7k5cRPLfBK4xdy300HzFpQQxnAc=;
-	b=1dUgh7QxJq1RnvG9mZSaLPkd7pbM6tr+o6wp9s/o2SjZjmiIE+el0DSi45dprDd4eWZRW+
-	jbLaHOrVPNHdh8KrSTiQtd3TGr5aXQ7hq3DN7Mqs0BOCK/Y1edgeA8+rIVkckJPxLCJszH
-	Cd4ua7J2P7DU+YTWOcDobFyYXfo+hJ8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=ftrtKkrzNTj8q1Q9dj1uybZPmbewW9e00JMjgxKT3Jo=;
+	b=sujJgcnzK7AI6CrdGkAT9bVho0OUBDksRtZsL1+HtGGZx4PV2mKaxPZ0kZ1xLqZHE3GxV0
+	qb41vP0c/xdkWZxfYJUK/KZRRuKUI+evmtxleTF+n6/5dJtpf46mAiwHxUZ5gTJNsEODJt
+	5tAYLy6VkJCiVNHM6FLo0DVrZcqP3oI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790784573;
-	b=YD3chBG35e6tAFJovUldyDZ3uw8yKZYjDjgfNRWO1B6qOu/bNeTCYhpl4Y6ZXiEt/jsDtw
-	TpNWHda1bpViSrOmS9ZzkhC6Nv4AwoshxhYUnhajlZC88JQFrQVVdzONbPmqREM9+PKVVM
-	dfO2ues2TH6JW8nBMJF8Q7Kx3A8w7wM=
+	t=1790786272;
+	b=Hm4zEZLLUEbPL5mBqe9QUJ95SHL+p4m88Dtsrz5FTWdaIhKlkl6jxkZy2lA0QlEzVi+DXG
+	rDCrFyfPyAT7teG04qHBHTc2rClnFJUK57Uhw6RidkPNMHmY5lPGizFYjQz56PvWHp1mUL
+	PsQR/JA+lGgaRkqQU/hhKBSO709QMxE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IGpAu3/b";
-	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6B51D413E1;
-	Wed, 30 Sep 2026 16:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753191F008A0;
-	Wed, 30 Sep 2026 16:09:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790784572;
-	bh=egkKq7DBcopH/CfP7k5cRPLfBK4xdy300HzFpQQxnAc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IGpAu3/bbz/wXi01745K8+qCWOILcLoMAtMht7XGkjTS7fMKDt15jBiRczG7jgq5B
-	 oluFc2ExDATT8nfGzvmyKaqmTlNbttYn0nwo98fGD1W+LvMTk6WF0VvVjjdJjisghN
-	 QVu+vwX3XGw8ss3Fn/C97lREaTK3NGDQGWQNkym58NOE/ZvRS33VdLVNu5lbuyRb8V
-	 RgRG1OcJsycDVVqDdByDvIQ/WwBilRFxvL+3EiBT14nvx8yufnS4VfSeN4RWEz9FTg
-	 OnCrY7+XCCL0/TGGvPoZZjcg+7hKEVVyxUB67RIx+yy+JdJxzk2MajUY9iQ471N9uq
-	 XzzEsfwLvK7Aw==
-Date: Wed, 30 Sep 2026 17:09:26 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: =?utf-8?B?67CV7YOc7ISgL+y7tO2TqO2EsMK3QUntlZnrtoA=?= <ts930@dgu.ac.kr>, 
-	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/mlock: fix zero-length request normalization and
- integer overflows
-Message-ID: <ar00Lx1xB5rvKOdu@gremlin>
-References: <179066531783.50175.13377521828379196177@dgu.ac.kr>
- <3a95d0e5-7969-4b0d-988a-ead62b06b6f5@kernel.org>
- <art6x0XpWcT2aUyy@gremlin>
- <CAFPGN2jPGhcWVqa3k16RWMaMR3TwKyhFbYYF4D3L6L85T8E96g@mail.gmail.com>
- <7d120555-0c31-474f-893b-e5ee3466ead4@kernel.org>
- <arz82IHw4MqGTb6l@gremlin>
- <091706d4-96cf-4dbd-8f9f-97ebd3f8d81b@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <091706d4-96cf-4dbd-8f9f-97ebd3f8d81b@kernel.org>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 423B1140008
-X-Stat-Signature: mw4pcc87dqn9j58mzum5mz85xp9hfkzy
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HBPo7vnE;
+	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1790786271; x=1822322271;
+  h=date:from:to:cc:subject:message-id;
+  bh=NHGLmzgTqg+atFlfLjNFgrrVr9jXYipGErdXaLGp0Ms=;
+  b=HBPo7vnECx2p3UGXsvoJTAhTTiqqy6dukkV2XC+q2SnGS06HmcQAho3o
+   Ib3huKH1acsZAxBcwNJmcUa1HZwMWIOU4JP7pKo8AbuWwU8FtfGzVRl6i
+   tVhYwzz+73s/AmaQGVPUHMS+Qxg0hmB3l//TV9DCYcJWRw7T4nAptMkTE
+   9oE25xhK0QoGj6KacVbdiv/g8VjBCPQ0pAOVVP5J7o4CjD+Dr8O8NLC34
+   c6eUB33aUDzzdlJFKuCBqAOwze9lP2p5udtDPxEGQ11a1H3iKIYJJm8Bc
+   ggWsuv4AJwuB/O71jzfZ85a1XKu95DCm01qmCN0JGyW60Y0wUNNFts5KX
+   Q==;
+X-CSE-ConnectionGUID: Fb0Mx3DOQUeCJPBQNTVe4Q==
+X-CSE-MsgGUID: N2YYt5MkRUup8nsGSy8OQw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="90584911"
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="90584911"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 09:37:50 -0700
+X-CSE-ConnectionGUID: Rnnulm6HRriijV502SoCMg==
+X-CSE-MsgGUID: xJMbo8jrTE6yK3ml1AZxag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
+   d="scan'208";a="280499999"
+Received: from igk-lkp-server01.igk.intel.com (HELO 04362d00df5a) ([10.211.93.152])
+  by fmviesa004.fm.intel.com with ESMTP; 30 Sep 2026 09:37:48 -0700
+Received: from kbuild by 04362d00df5a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xBxJS-000000001vv-0vfY;
+	Wed, 30 Sep 2026 16:37:46 +0000
+Date: Wed, 30 Sep 2026 18:36:50 +0200
+From: kernel test robot <lkp@intel.com>
+To: Josh Law <objecting@objecting.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: arch/mips/boot/compressed/decompress.c:undefined reference
+ to `__ashldi3'
+Message-ID: <202609301826.MFaFMsmd-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1790784573-990957
-X-HE-Meta: U2FsdGVkX1/QvASsclR62kfai6vDDNIwPRU59YZw/ykcW9z8rNZ/n9ZOcvPBhLqKs+dxXusTbGvKQ7P0shsyVOGNNfVQgjfZzAo7Pwcl/Yr9rYunEHqgRKZFMX5n2YTReXUBNdUXdWbY3pNteLMLZMTcSLlPSyk9ALq1JmyQDJYuyhUURcNSJ6duL2HzYwYAGhawAXO/FeWBMfOJYluysLKtNqCAKXj333a6JFXm+vBlGoEv2zwyOlAi9v0hjZscpAXvoAIimc+OalfNoArINtC3S5zOPLm5HHICZ1rOzZMgoa7EOrtzS2XfCYLxQdd+BABYYre9CUl6uDjdNM4e1iZ/m+U5ieCZk0NJP45qpuMa5dxpA7MHChWpvPbbB3A5hkQQMu8fz9WhA/Dqiagl+BGwJ9QUSoqaWppcj02EMnDLYP1EU/hNV+fYP8lFzzEzoH9TgKPF0yvt7Zgj6xm2BGevUEqEQmr2wa1PAKM0PiXj3W7a4dVhlX8aTkS+7u3MqFm5NXjlf0ejdN8c+FFYQqVWrFJ/Y0LRFCZMjAYgfKO5FEYCRrEtd7Hop8OLHR9TJI8w6I3zw5QTw73UsCi6pD4gDhX39CFleU5kWsXFcPq7SmZVzuNYox+YcXXAQGa/4s179KKk5ReBLKbntJyjghrqypfN4ymhBkL/MjMmqXe+3CrBIBfMoHdI78KUhqfgj2KkX0TThdORYzwV/woZunGtqK5pKCd/4IcdIlsAwLh6XFC33wWnybNJbVQ5TomUkcxRukmxkC1Nknc7grRhhFxCIaEXl4Bi8yLCrD9wLv5GZews0wedmXoTnyDPtXRxKzdPiWk8E59gz7nIBDdEpS8OvrTkBT5fzY80Zncfu3Ej49xINatu1yf7PoBpdIeoMgtwLltk1R/jQcWKJFl9bUrr7tWNFefKzWErSY4s2rtiVLKzks88YW2/s05O3zKKk6+6tUoGhIpuBp3dbsM
- vDiRQhY2
- CwtsQx5j4qPxIs1uyy023ba/OTYaZUyd7LVGBGEr5VDIypa8VUOFeAjR/hL6R0fmAXJqpmm/CDBrqW6PY9tsDurl1lVM18C3DPAnWWxXR9YX6eUxQa9Wdw3BwJ14MienD6c++jW376YMj+Hh609MwYPDb+9H8KVXmAASv87uXX29Z5KUcJdWPisfLueOREWf+LBxKT1itD1wjBpkj7GQpgYAJzYNj6lvktpnhZynkE4Er5NBSjiyZsqQ7Q1OzrRqAJxRk
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8ED8E18000D
+X-Stat-Signature: onyqmyq3g6o3y1hes18djus8bi8pcj34
+X-HE-Tag: 1790786271-829443
+X-HE-Meta: U2FsdGVkX1/YF4M+YY/QrZgVIY0b3A6KKwXur6FoUPtfxSvwSylFomrARJPfAww/RKKOUq0JohVbn71V1JqF6EXTTAfatysODRhmR6XQ8Y9Df3ZIiFN3eLZ2BpeZ4sSdMiHsPd/qJI6QsC8U2ToMX10BgY4+5KGSAcUCJOD85tDN1OCsBfJ7xtKDiGwzia3f7qOhngxBWVKkMZqZE1VE37aN5Kanrn2sTqwtphYo4rxaggZZ448/dgzcKGuJTga5SeFE45XUmNLkXKro2dQLdEncyQc0CvNoQvteT9tIUwl7nqmok566UX3KOCXek7HxoI0y1aLwCQU5ZLihVPu1WUN7a8O6r2yVfhuAwZrG2ePA16Y1v+h0QoOlmdZZCkoxM7CJ4a+Yw2kqNHMId9IWcyvtoGgmi/JB/PAjL9hmpd/XAQgOwqp25bHLHUvLio+BPgebTq7xnWUPiHi9auPiHEABFe9Sl/VKJ0cQNB168elArse8YALtq4wrkbUG+WBEdjtUK57SdDYJTXvjI+DlgBtfZfzwoNNymOIEyDAV42DArDYcmej4fjD5xCcw+GHiQLQCdaL5NfdoRI4n46wRGDHt2OvmuBRfT+pHB2hnBoSXUI6bmDDyW9XLMpJ+5e0XWbFtEUIzViQqUW+zUmyjuoyfwplzSkpqcgAH9PYuQMHFh3gOQZ99qKp3WMk8MqNCC4VBfJ0J0oto0Ebv+mRjslkNskRMPajxgkcU7bNK1D6s2m7950bt++XecV3kA1xHHXLaETlUkuBt1ypZCELvgqSt4yM2hy8OXh6mYvF+/Ro9kbUH3lCIEx6c/+0TG1zHoMoanFf91IJuAc0MfwmY4WgwEHTs7EBljsJWME0QL+sgHsHhmlqzSplYjOfNAlrNX6xdEYA2Qp48C1yz7oZ4jzFA0Xl80nILPsqr11b2SgG8opK+UnboV/3h0eetorONPjAC0N4NZx8BXfEtgrc
+ +Y9uEBTo
+ aNDERflS6cqOpZ+rQq2mfaMTZzvD9on8hV6Ni7A9Isl1eSAA/hQglgWa0GQbr92tQUiiM2X7o3XgXbBNOJAeov9unak/jF12VpxNb2srp+u7Z4dfWRlUuzeLWDGnUHPf132NxiDKTKwtOiK6hORlDB/NZGwOW7Iaj+A+toE9eSepO7oZr4tStif+ItJBaMdtWap0e4NRo/whCfK0Ka7yPiPCvos6Xa3iqNqF1nBSq29Y3SC2gUe04tyZa4LbABD3/x1+wZRBAoKwhYRUQkEMkBZLLKUoFdKoBTFSZSs56H+FMFxcrxHnux+J0/bW/hUR/4gv2padNoL7/yUrF+ZO9ESWvPNSVKVV2r2bF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,24 +102,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 06:08:15PM +0200, David Hildenbrand (Arm) wrote:
-> >> So is this patch doing more harm than good?
-> >
-> > As above, I think the submitter has decided to drop this patch?
->
-> Sure, but I still got CI noise because the patch was apparently not even
-> properly tested?
->
-> So I really want people that send "fixes" to test stuff first.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   551c722f40809618230001baccf219193e22fc5a
+commit: d4dba3b9c03a326cfa73833d6b166aeb442f82b5 lib: decompress_bunzip2: fix 32-bit shift undefined behavior
+date:   6 months ago
+config: mips-randconfig-r2300-20260930 (https://download.01.org/0day-ci/archive/20260930/202609301826.MFaFMsmd-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 15.2.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260930/202609301826.MFaFMsmd-lkp@intel.com/reproduce)
 
-Entirely agreed!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: d4dba3b9c03a ("lib: decompress_bunzip2: fix 32-bit shift undefined behavior")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202609301826.MFaFMsmd-lkp@intel.com/
 
->
-> --
-> Cheers,
->
-> David
+All errors (new ones prefixed by >>):
+
+   mips-linux-ld: arch/mips/boot/compressed/decompress.o: in function `get_bits':
+>> arch/mips/boot/compressed/decompress.c:(.text+0xf4): undefined reference to `__ashldi3'
+>> mips-linux-ld: arch/mips/boot/compressed/decompress.c:(.text+0x168): undefined reference to `__ashldi3'
 
 --
-Cheers, Lorenzo
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
