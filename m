@@ -4,96 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E973ACA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 08:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C86F7CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 08:19:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B9F56B0088; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
+	id 8BCFC6B008C; Wed, 30 Sep 2026 04:19:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96AB16B008A; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
+	id 846F26B0092; Wed, 30 Sep 2026 04:19:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 880286B008C; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
+	id 6E88E6B0093; Wed, 30 Sep 2026 04:19:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 52CED6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:08:50 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 315C9140600
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:48 +0000 (UTC)
-X-FDA: 85269702336.07.50B189F
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4426F6B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:19:48 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 903AEA06D8
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:19:47 +0000 (UTC)
+X-FDA: 85269730014.18.6719F9A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 88CF5C0007
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XggV0HEx;
+	by imf16.hostedemail.com (Postfix) with ESMTP id CDDE818000A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:19:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVHiiujR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790755726;
-	b=ajhe7W7o2OTX1aOeektOu3VPdz4HQoN0rtdPWOZXURrVEjKWq9mwc8jtu4Qht5RMovngeq
-	EdjUjRXWzr/N2lgHChUF0NP28T9rBsfXNgtuWLUbSELYXNf+KQUirwHFkfBteiR3lU8/NE
-	lfihrsEIa0Ew6xK95CaPw30pQKM7nG0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XggV0HEx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf16.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790755726;
+	s=arc-20220608; t=1790756385;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EgiI2zzwe8TB/ZW7XItAedr7ZYnB5/cnPC/QFupZv60=;
-	b=yLXYPf/59tT+DrCGtdqckCeAMKyvdUlvSEL31A2MvVKTy+nhCym/oYrqCwtUbutalDOiJ5
-	C13Xyn40LpORIWSF63nKppoKqKKEQOMi0BxaGxy/cmqYQgIDlfbu+/bhDcDOpbpM3lbLiZ
-	1M3nmwRPNkvuHocMcvg5rIEXNvHGhJ8=
+	bh=JDjw+45ZNrtvu5F2t9lQCEebxqfaUjTzsJjMtfW+q48=;
+	b=YjnEwZWbi0QJlW6CAT035zUFUwg6KLopaZzNWEQrf81PSEqJ1PD7D1ywr49FeWyl6LykgW
+	QTF3APFT2NVssvsF4clOms2+28SroRs4X8NhRBflbvwRaS/Zg+sYIqenKEDlos6+HrvINE
+	Jk1NXbg/2hf+p4vcUQVaAIFoAiTmvzc=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BVHiiujR;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of chao@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chao@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790756385;
+	b=vZrzmbExazq+9FDGjL2HFuG+sdN0aTzg2Ilk/WiEajDrE6UdT7gUAYQnQ6LT1orSGJPGo7
+	Wt7IYucwL6039QS1sexe5162ksqTL05lGoFstT03p3B8iOfAhYaUMTcTIG01ZtkKOJEt7V
+	UnpqSIBMVwhApf+WoQPpQI3hJub6cVE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BC9DE436E6;
-	Wed, 30 Sep 2026 08:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652C11F000FF;
-	Wed, 30 Sep 2026 08:08:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1A71143824;
+	Wed, 30 Sep 2026 08:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA55D1F000FF;
+	Wed, 30 Sep 2026 08:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790755725;
-	bh=EgiI2zzwe8TB/ZW7XItAedr7ZYnB5/cnPC/QFupZv60=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XggV0HEx4iFhJNOcs0B7+qgnbnzi6NXR5MD9WbJ7i65myhUAHSTmNy6Ac7ZhgF93d
-	 2vR5/dLU6+PjoDXGP0wPigAZTRWnD4cYe93FRgqToAC/9KtR1TRCOPpUfK1jTaFzcg
-	 3QSk8SN+ocw23C9X3rs/lQqj5dU9+xFAZcjAq0qKugUCSA5GX3Lg/OQCQNttM5ycih
-	 yIRoFMzfv495BHVUK4a4Mbe5MWHkXqbu779h24yeOclupcxVOTD6VmFgL9EsiFqOtM
-	 VrzmxBcdP4ebr6Sk9sQI/LUDhMnozE4r0E2FYr9xxMez6HkxaAA5nDEzc8expHpxR2
-	 P8GOR9B/XDPtA==
-From: SJ Park <sj@kernel.org>
-To: Lian Wang <lianux.mm@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	Jialiang Huang <huang-jl@deepseek.com>,
-	lance.yang@linux.dev,
-	KunWu Chan <kunwu.chan@gmail.com>,
-	baohua@kernel.org,
-	damon@lists.linux.dev,
-	david@kernel.org,
-	linux-mm@kvack.org,
-	mst@redhat.com,
-	ryncsn@gmail.com,
-	virtualization@lists.linux.dev,
-	xueyuan.chen21@gmail.com,
-	xiang@kernel.org
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Date: Wed, 30 Sep 2026 01:08:38 -0700
-Message-ID: <20260930080838.10887-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260930030747.47294-1-lianux.mm@gmail.com>
-References: 
+	s=k20260515; t=1790756385;
+	bh=JDjw+45ZNrtvu5F2t9lQCEebxqfaUjTzsJjMtfW+q48=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To;
+	b=BVHiiujRfXo4lkjG0Xe27sjzAAibGxO1GEfBaiQC06ZMGsL8CPZg4SEawGP7ZnC3h
+	 A3kTawXNUNP30NfDDI/GqHIDxsAcFHJtmHZPtjc2piUEzzjlQ3N4gKcgXfJ7F6EqXh
+	 7XNLIgPea2BU/uhD8VweCZ5Iq2RIQU41dnsfyl54ftq3pIIlKPD4WFL4y/6avNA3DQ
+	 E+4vcx8Loii9VnezNjNp/WkWzGVROkHzKBj1uSsL8j6VUEd0izqh0y8L0irwoDgHhI
+	 LeTijnJwrwMy5Jn4xz1cIS9lSPOLbIbPDknxvbD3lLnis0Nhuoj2nHyFqAbYamJs7T
+	 bt1AV2Y9qgNdw==
+Message-ID: <95029d2e-4cea-4c2b-a253-9b7efd989028@kernel.org>
+Date: Wed, 30 Sep 2026 16:19:36 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: rh9a5z46tumieffbgwxpdzzpummi9znh
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Tal Zussman <tz2294@columbia.edu>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [PATCH v5 07/17] f2fs: convert the ->private flag helpers to
+ folio-only
+To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>
+References: <20260920-remove-pg_private-v5-0-bb68b6a21869@nvidia.com>
+ <20260920-remove-pg_private-v5-7-bb68b6a21869@nvidia.com>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <20260920-remove-pg_private-v5-7-bb68b6a21869@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 88CF5C0007
-X-HE-Tag: 1790755726-969041
-X-HE-Meta: U2FsdGVkX1/liABhBKFs13jSYItXnC02pbbR77sSkilwo8czoxTnRcid/GwVClKOJh7F+SydqxT20YVYoGEb2Xj2pChz3gxnX4woYyuImrCYCrQj3Qrar4LT3q0pU5HTw/aV6SYfA1TmwLX+g1+VF9YeeoQKwcu3rfLm1kFc5wdLqLd14yteLul0QYPp8PMzudlUmcSxZjrKBzC3hwzCh+DFtY9U0JRVg+JjstASCbyVC7rV1pOTGywdWHv5HjMbAwXI7EMsGlNzuDMiQ4mPZAz4Fl3j6SM6nbRX29z2FB4/PSmqUq9zEbK7NtXnvpT+9PR04imkmHqf9a/DvL+coIJzegIfjS/dCuzXbyd+vFeLyUNF+O/ohFol0ee9eKygsN1qBWY/m3vtwQwJyvjZxAqqiDi5msMB55WUiAnB828K7l/wCXXOBGm5jb3FBvTsM/co7GWrmd6rVvvLGY7VByE1Y3c+8VZs6Sw+GMPuSpsVPMrhy0fYb7pYUUIlhCwCcygvVcz2Ylmq7jwdrx2dEKNz0+wMdRWf53LedM4npKeuI7I2QZfkiZaQEwcYMeqqSDirc0tk3ukFuzI2rlsHKobMMrDSd3ge4FaJw9ttHS0bt9HhhS1F183WtkGOuotGhKoIrM+VKysMelpWy7klWCsFSMenL0vP7sinDlpr9MKwXPpgC/G1IkAPyD4JAjgk1BjFD0QdOIHMQxRGjgSzVOmcmS9dXhOlkq/e+XGtSte0+GbrHeAOQscG4yARcUNEH9J+ePVli3PBXgyxsjAwJHE2iMNyl9rmjEl6o/85VjjrDLK36+0CTlt5QKe0GmBjQk/7lQ091ueKziFQeJSd+bbWu7rret52qsKYZkhvcspGIbxFOJEeciOegSXuZvSClILThE/Vucc/G7GQsCVDZluWv8wtMs7pWm+DExM+Ydsa/OGYGZx04VzZ/LhbKcZOgxJkrPRXNslvYEgquwl
- nrBMdRL9
- hUeqT4JyDBW8/wO24nrXVc/rYGU+3fDDMf+Tp73mo9kv/uxuoag033Z0H9r6EDYPbs/Lr7o1mP5Izyt8kcF05hCL/kd74ctOai6sTA4grV/6Ngsmr1T2SJA69olOkxMmgR/vlnFNBGta8L+rE7/aYig47d0JTmleSa77VYmlFOQ7rQ+sg7m3sdOIwr+huLCY1/zOQ4zI3MtssSCWpGah8x7BhOr29vx6Ytx5QTytmKAkIb7880U7dSmYSpp01wjQSse+PdSmQAcg5kzlRrc3bJwqgYOdIDaPQCaQaYYiaRrFFKzPMxnudn/OocG90wr+t9Enz6tugl3plTsY=
+X-Stat-Signature: 6dr57j79eah91c3bfn9fzmmczria3ubn
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CDDE818000A
+X-HE-Tag: 1790756385-203218
+X-HE-Meta: U2FsdGVkX1+yYzoFKfd0ZCrD/9E1Q//ZvT1IiJY3dGvWWYNgdniygxCFkzlkbcpXq4BDf/YJ8jhyIxcUHjAPed0Nh/9DVYfnX734TJHzie4pbwe8wOPYk+qvpvTe6RjLDpUH44ZmYRJlDLqaaQ6IGEp9mPvIaBqDpt/2SnF0VU75+VEmmH0Xv1631Fv9LbPJLFrmVRmfEytVYQIKcqi3vEqFoA/3E8JMXCX4/k9xCAFAXL3eTtsQokgguQ+1tB+ZP3BFrePX54ao5tPvpibEgqYTWXYdgjJe3Sh0df7MVW5oyOorm+DcB99tNAMHt15RbqyA7VspMiL9TFlHajaXX0Vwmhl3MNzLpu2YSSgVZ6LSGxDxfZjgxCm4DQIQqmAY1oEELNFn03IFnMN6IwSAhroStcz1IJehWer5Tp51yrGuYHqkt6Y2aXClQSnYdY/CGpoUxAr0wbTnodtM3ur2G94j+k3uqgIl3Dor69bb4m8vCp47+4eVwpAScDZeyW8fQ7eZEjNwcC5VwNAzx1ZTffAB2IhKucw9foQIRlvCX/TKQmNlM//5vSAQGhC9tfdAo0/T+OXdsjodePPjaOop9mbHnLz8OMvoTHLp537g+dQK5dzB5Mf0v53eH5VtBl0JxOmRx6cDhNWak/deLiRPhnITugwxwHWrd0Qoug8p9EwQx6yGIzK/R2V10FR7JerXzodLVMcd0C8cAhAxZOSjYe9iEVC/VBdWOx1MKWApNVhd2TLGXW8aHTD8M+MT0ylCgL0mL6/Vm1cmkuSbepzTNWHE4rug5TnqXhxvNYCuQzr9ZkZ1rMunMy924w9ZgpdXm1pR/BC264qwA0sniLrRi3BDW6eH73x8+HnVARLjYAzqJ4IhSu398RMTC4toThc+BmIb4cbWjmSsOTWGQFWO3Fq3BPYfU6BUrtmyBEGcSOtAm5HcRwmsEcfjwG9BfV9iX0+xSNmaWpoaL8S47Bs
+ 7G+UyKSv
+ tM8vzQq8660+GF6bDF7v8PuDmv6AoSQ2C8RSCVbx27c5GR0ezKFK4WycvLdM6aEGQ1a/eL60IxhLgSuXx4M4ckIsx0TVXJa6x0X1wsBow2xg3KD74iAj4bmDGryvwdxAZLdhYCi0gNy+ytFBdgm00qUzx9LIKLe2pzk71A98plEGf1Q9fQDjdH2v2Q4ajAbieYyL2/aAqexvr35TpWYziXXP1QQlPZ3RM9+eoJqKaH04jhC7WCEiBM/3aYkeR9HfDQthIMfQ63SeDa+RswMrYBAyMNvOUd9K9hD3dL4dZlbZRf/xDv+pJzpOzUu68MlDpLbwWsRrLxaMAlYM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,106 +109,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lian,
-
-On Wed, 30 Sep 2026 11:07:29 +0800 Lian Wang <lianux.mm@gmail.com> wrote:
-
-> Hi SJ,
+On 9/21/26 10:28, Zi Yan wrote:
+> page-based ->private flag helpers are used in the compression path, where
+> large folios are not enabled. They can use folio versions with
+> page_folio(). The two remaining users in data.c and segment.c can use
+> fio->folio instead of fio->page (two are in a union).
 > 
-> On Tue, 29 Sep 2026 09:56:03 -0700 SJ Park <sj@kernel.org> wrote:
+> Drop page-based helpers after the conversion and rename
+> PAGE_PRIVATE_{GET,SET,CLEAR}_FUNC() and the PAGE_PRIVATE_* flags to
+> F2FS_FOLIO_PRIVATE_* to match. Convert the folio/page union from
+> f2fs_io_info union to folio only, since no page user is left.
 > 
-> > I agree the reclaim-reporting granularity mismatch could be a room to improve.
+> The folio helpers do a plain read-modify-write where the page ones used
+> set_bit()/clear_bit(). It is fine because the converted code either holds
+> folio lock or, in f2fs_compress_write_end_io(), matches what the
+> non-compressed code does in f2fs_write_end_bio().
 > 
-> Thanks for pointing us back to the Access/Contiguity-aware Memory
-> Autoscaling proposal. Jialiang's description gives us a useful deployment
-> context and a concrete problem to investigate.
-> 
-> The guest reclaim/reporting case and our host-side THP/tiering case are
-> different, but both raise questions about how workload behaviour and
-> monitoring granularity should guide kernel actions.
-> 
-> KunWu and I would like to help move this work forward together, alongside
-> the existing DAMON roadmap. For now, I would like to share a few possible
-> areas for discussion:
-> 
-> 1. Workloads, DAMON policies, and tiering. My current work includes
->    improving masim-based experiments and studying TPP-inspired memory
->    tiering. We would like to make the workloads more representative and
->    better understand how DAMON's observations and policy settings affect
->    placement decisions. The aim is to understand where configuration
->    changes are sufficient and where code changes, if any, would help.
-> 
-> 2. Testing and contributing to the existing PMU work. Our initial focus
->    would be on helping with the Arm SPE integration and testing the IBS
->    and PEBS work on x86, in coordination with the people already working
->    on these. The experiments could evaluate whether finer-grained
->    sampling provides useful additional information, and at what CPU
->    cost. We could leave huge-page-specific mechanisms for a later
->    discussion, guided by the results.
-> 
-> 3. Following up on the DeepSeek workload. If the team is interested, we
->    could learn more about the workloads and tuning questions they can
->    share, and study the path from workload behaviour and monitoring
->    parameters through reclaim and free-page reporting. Pratyush's
->    reporting-delay suggestion adds another useful dimension. This may
->    provide a practical starting point for revisiting parts of the
->    access/contiguity-aware autoscaling work and evaluating their
->    relevance to the reported workload.
-> 
-> Could we discuss whether some of these could become follow-up milestones
-> in the DAMON discussions at LPC, or here on the mailing list?
+> Assisted-by: LLM
+> Suggested-by: Tal Zussman <tz2294@columbia.edu>
+> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> To: Jaegeuk Kim <jaegeuk@kernel.org>
+> To: Chao Yu <chao@kernel.org>
+> Cc: linux-f2fs-devel@lists.sourceforge.net
+> Cc: linux-kernel@vger.kernel.org
+> Reviewed-by: Tal Zussman <tz2294@columbia.edu>
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-Thank you for adding topics to discuss.
-
-Of course we could disucss anywhere anytime.  I think Access/Contituity-aware
-Memory Autoscaling (ACMA) could be just a parallel project.  It doens't need to
-be an extension of, or blocked by "beyond-page table access bit" project, in my
-humble opinion.
-
-ACMA is still on my TODO list.  It is mainly a matter of prioritization.  As it
-becomes clear it requires more attention, I could allocate more time for the
-project.  There was a user showing interest recently.  I'm planning to
-prioritize it more.  If DeepSeek could confirm their interest, it could help me
-prioritizing it further.
-
-As always, coding may not be that difficult and take that long time.  Testing
-might be the biggest challenge.  I don't have good test infrastructure now.
-Actually the lack of good test infrastructure is one of my biggest DAMON
-maintenance concerns nowadays.  Others' help on testing or test infra would be
-super helpful.
-
-If someone wants to implement and contribute it based on the proposed idea, it
-would also be nice.
-
-> We would be
-> happy to help organise the discussion and take on agreed pieces of
-> testing or development. We would also welcome closer collaboration with
-> DeepSeek and other interested MM developers, including Muchun, where our
-> work overlaps.
-
-Sounds great.  That would be super productive collaborations.
-
-> 
-> This is only a brief outline for now. I plan to bring the experimental
-> results and remaining questions to LPC. After discussing and aligning on
-> the details there, we plan to share a more detailed proposal with the
-> community and write up the planned work and experimental findings in
-> blog posts.
-
-We could keep discussing in mailing list, but of course in person discussions
-are always helpful.  I'm eagerly looking forward to the next week :)
-
-> 
-> I appreciate how much is already on your schedule. We hope to support
-> the existing plans and help with agreed tasks as the scope becomes
-> clearer. There is no urgency to reply; we can discuss these ideas
-> whenever it fits your schedule.
-
-Appreciate your continued and grateful contributions, Lian.
-
+Reviewed-by: Chao Yu <chao@kernel.org>
 
 Thanks,
-SJ
-
-[...]
 
