@@ -4,172 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC52DCA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4874CA5FC5
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 15:16:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B44E06B0093; Wed, 30 Sep 2026 11:10:35 -0400 (EDT)
+	id BC3FB6B0088; Wed, 30 Sep 2026 11:16:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1CD16B0095; Wed, 30 Sep 2026 11:10:35 -0400 (EDT)
+	id B9BC96B008A; Wed, 30 Sep 2026 11:16:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0C106B0096; Wed, 30 Sep 2026 11:10:35 -0400 (EDT)
+	id A8A1B6B0096; Wed, 30 Sep 2026 11:16:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C1F96B0093
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:10:35 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 03AD5160809
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:10:34 +0000 (UTC)
-X-FDA: 85270765230.05.D5AF499
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010019.outbound.protection.outlook.com [52.101.193.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0EABF4000F
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:10:31 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rF3LMWFF;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790781032;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8216B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 11:16:16 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 213AC1A006F
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:16:15 +0000 (UTC)
+X-FDA: 85270779510.17.D10F98D
+Received: from mail-ej2-f43.google.com (mail-ej2-f43.google.com [74.125.228.171])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 33818180007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:16:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cW5uEKiB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790781373;
+	b=YdD4+aLciXabtxKvgLhwpB6760nAfBSv68ECNInmG0j4bO2j97s+ODkqYzJRlh/1FAIfYw
+	QkMemOA2XlRxwY4qWlG52c+GX0lLG1tthEdYkL5qjXOSJPfYvy7lwcHv+4eyHA3L0H2a3p
+	IdjodJ0avoERJHNXF8wUWTG2RrxbZ+0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cW5uEKiB;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.171 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790781373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZIpEnQqeJD67Yt0sOkVklXGfQh7eSPXOnniolBK2wog=;
-	b=x9W/QXpmPE1RDpzzTFdZn3mugX2PeUOJE2N0Ls2i6oG58uPxwQgrX+wvPfzH8IxTtwuVkI
-	62HjKqvlbpklHEsmxFPeNNManOSaHFec9aJeFfFt+7gE8o90Az6WFwpnyCkW7nzXU0A3GE
-	aNvQX2KvMd8f5jD31Lyw5W65u+uAdXc=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rF3LMWFF;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.19 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790781032;
-	b=0K8z8KCXgYq0aVIAaKzp6nmHL/GcfTh47juIZm9rc5Y6/cXyL/hp4SrCGfDXpfBDQ1eNaB
-	XS09GLcx/PPHoRuNQm1BOjoF+TvrT9yG0ciInm9c/BIWkXzIP4aUspYUfYd51ByBqOg3XZ
-	HClcAVIxysKH5M5wnekB2ZK41r0Ct0o=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gLIB8JH3yvTItiBD/G0K5CkvyrflWKpHFG6rdtRwiB7jdRdxuC9Jjn2vWRmukR6oPQI77UTIVmkR24dGEQe6dWIz7dnB7vOWdcK1VXR+BAhW87dGCdqipML+dP1U346IjGixSAT4/iS5GaUUH7li31A6elTd6f7tMNaiuQDeVBRBrgQxJsA2jXHdUG8itUmkfKqwcdUMCQDGz6kp+053U0CTTqjzvex81DansGkf5Ik2SzT1/0XKRKo0qz0wGOMWwflC6eX+1aOjTX8quQsHkQteZlUcgU5+QJUcQjG4qPLAcAj8/E3sDb3aWgASUzS3GVES6IG8mYxhcvX1/GMbbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZIpEnQqeJD67Yt0sOkVklXGfQh7eSPXOnniolBK2wog=;
- b=NFwD6GF4ywwUoSGJwVjKRZi1+kvyvyOtXhHl1hgzeiqM5E8HjqoEmR01mvfBptxB+pH4RYRCI/ChAtQJnFSQ+G+U0CWQ/h7wlIy3ZPnw4dE7roApuvxWCs6jRF6zUVOT/vFXtyok04vl/Sdsb5MWZgtFTl7TRAW+yJe4WSJZjmSaY0FgbiXxWNwyQU0afTN9OMH+MdcTDzob8Hri09XcEo4W7IuyK969C/BwGZbub3HaPCyH6u3D6+1+dpfRRYNy+F9HK3+/sIhOpQO+NNkipixw8vYoyIk/nBQegHGGGwV8vS4WEi/tUyIUlOP3M2zxP5lAxkTCERk9+k4PnjFWnQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ZIpEnQqeJD67Yt0sOkVklXGfQh7eSPXOnniolBK2wog=;
- b=rF3LMWFFYLaGqtyqSPTkSZSyYgkR0WVIfiMn158Aj6PlPZM+QRLQxMYvKm3URQQ1b+22S1ciDg1Cf09JRw9IjLk/uTqrWyupyCYvUgqQLCimhvHAhV5Lxo84zsbz3ZtWKgOuj7z19/rbXgcruHsPXQnKDk1hqx/n/R12UDqYI9kMxKhng5WfPqJgyffSHRS1kVUuF1r9BO9tQ/z+fYhiAHqH2Fx+kWF69w9bqy3zK7Fuwxhaxf1QBl8Lyraf/Di/q/qFFoAxK87XZcdVbvxcFO2p5fvE1hQgEGV1JgtXji6trH46I7ZqJukclwCDg++9WHrQH8GnRIT8VOWfhkL2qg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SA1PR12MB6824.namprd12.prod.outlook.com (2603:10b6:806:25f::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Wed, 30 Sep
- 2026 15:10:21 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
- 15:10:15 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Gregory Price <gourry@gourry.net>, Li Zhe <lizhe.67@bytedance.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, rppt@kernel.org, mhocko@suse.com,
- corbet@lwn.net, skhan@linuxfoundation.org, ying.huang@linux.alibaba.com,
- apopple@nvidia.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
- with MPOL_WEIGHTED_INTERLEAVE policy
-Date: Wed, 30 Sep 2026 11:10:13 -0400
-X-Mailer: MailMate (3.0r7032)
-Message-ID: <A005B05D-A85C-4153-A65D-0BDF9D8500DF@nvidia.com>
-In-Reply-To: <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
-References: <20260930121154.687586-1-joshua.hahnjy@gmail.com>
- <2e3f12b7-0dac-428c-b70b-07e1f63de028@bytedance.com>
- <ar0fURbLDPrphYMY@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BN9PR03CA0870.namprd03.prod.outlook.com
- (2603:10b6:408:13d::35) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=q9dGLqKNBlMrHbdqAQfcvM1eXGcLD/Xmv99laXST3Cc=;
+	b=VbiKY9WfzbKfUUK+ZVIX6gykfm6KcCs70btLCOGk8g9tswaDpvfGMDPbPkRY7QIsB31zA6
+	YUnu+G8fPaf/UhaUFr2vrlCFReYIpB9084Nlq/zxgMOPcUmAdGNZIvN02g46CbSCHtB2PY
+	L+rwXAZREb9dwAfuQlE0coKFrYIHeTU=
+Received: by mail-ej2-f43.google.com with SMTP id a640c23a62f3a-c2e20bb4583so108406666b.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:16:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790781372; x=1791386172; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=q9dGLqKNBlMrHbdqAQfcvM1eXGcLD/Xmv99laXST3Cc=;
+        b=cW5uEKiBQxdNhpj07tboVNjebppg4ojJ9chOaM0r0xNxW2cgN2cpBJfT7OChf1Ev3K
+         3WdjpF2k/9VZ9e14C39j0TG8oPyMgf2vQGB762GAevc0n2u7iRYQsV+GFItEy2Uthr11
+         jIFUaphyIrP4pwwIseZlrpi8yFlpaQPpmSJWFTE82DShszKhqkvtPRs8OetyDRmuqBtD
+         hNTLHaQMTX/w5aVd/Aqxuq7QHwdSSQZiKfxoNar8OFxg9WODpHxbO5B8cPH9B7IzQ3rU
+         bDnG+3pY9eIsX81Qx0MXVwU4XKetrIcAxekDQdREUU4iNwFN6q9vZOryeDMZq8QFAp1p
+         EgAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790781372; x=1791386172;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=q9dGLqKNBlMrHbdqAQfcvM1eXGcLD/Xmv99laXST3Cc=;
+        b=h+hyTTB+bONA5Kum9vtbzpgmLGP02jqOe1UCTJX+LB/WtQpCuLBNraZC8kmzSgf7zi
+         YP8C/7SlbHdRu83Jslj4yNvOTXIHpp+O5NS9qzb7Ja2QX0ALraSZ/Zv+bL93ac8xsrLq
+         unCWwmP/MnohTT3L2HNVl5dD4/GMV3xKZ6QM/6QwhPCpbaorPl64geLg6c4s/mpGsagF
+         TSeDPVavjIe0gB4TmNPQIElnj7gmPuPwsfOMNk7JgdNYy6X5D2E4jKxKiVqc1eveKja1
+         L5l/sKow47+e+QiMr03JO5B8fzuy8i+BxLfgD81YSqHIEI9b/B5rm0khBfgHPC6XUBZX
+         UkYw==
+X-Forwarded-Encrypted: i=1; AKwUvBw1gtRF7LMJsfaNoDymrh1bK3warSyxa/om9ey6vT6zhKnLfK2bD5D1jQacMxRZ4/yFKZGlK52SEQ==@kvack.org
+X-Gm-Message-State: AFuF++nZ3T+k90PcScZ/mkdXz/2MoTFiek+Qv+/Rp1jcxwbswITLE87T
+	5yCrOpFzePSEhwY482Ih4m0DtZXI9fPMG03xTX2SnEd8pNK8DW0LufYk
+X-Gm-Gg: AYBFou2hMopP5tzEf9lpwuB/+2HRELMFT0sBXD3ogXOIufkawrAXPcM83nKNaIJEG7X
+	u3fKVDdMWFVHg1BRnPRpoS+PRc5KSG/9wFkcFe7xkflWw+h/8AWoCB+H/mwm9b8zjg5q5Shl0Jq
+	R0UoFYau37hxnQlPBIfx8WSbEQftz9xz/g2Wv7Q6zjvXL1Mf0Rumin3yc9H0dJz3Qr3kmpOfcWS
+	g7t5RSZDYYq2cgs2HgVk9wVvaSm0DTOckrWpN0JxSYTcVzR2hx9Dwlgtyme9sMmGyuInYtFA4pQ
+	jJ+CZwKikuBWI42nxTQyO6rk2I2SP/YOdah/lDgZc3sBTXkrbfAFifh1/SxwzmBF8SwjDodVh+2
+	7Oysz7gtKUzUoqjRnxgjmdsA4Ek3NhwLvhvzAS8U8d2ZpVc+hV+y6l6he93yk0R18/g2nGH/3Ad
+	ftbUpctWuHluFZz7OvcQOiSMCieFgJD7Os01o=
+X-Received: by 2002:a17:907:d1e:b0:c29:cf4b:5cac with SMTP id a640c23a62f3a-c2e23749268mr150465666b.5.1790781371662;
+        Wed, 30 Sep 2026 08:16:11 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2e31ce9e4fsm21985066b.31.2026.09.30.08.16.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 08:16:11 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 30 Sep 2026 17:16:08 +0200
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, linux-mm@kvack.org,
+	urezki@gmail.com, will@kernel.org, Xueyuan.chen21@gmail.com,
+	ajd@linux.ibm.com, anshuman.khandual@arm.com, baohua@kernel.org,
+	chleroy@kernel.org, david@kernel.org, dev.jain@arm.com,
+	jiangwen6@xiaomi.com, leo.yan@arm.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, rppt@kernel.org,
+	ryan.roberts@arm.com
+Subject: Re: [PATCH v9 07/10] mm/vmalloc: extend page table walk to support
+ larger page_shift sizes and eliminate page table rewalk
+Message-ID: <ar0nuJ7ocTMgbiMu@milan>
+References: <20260923062832.479455-1-jiangwen6@xiaomi.com>
+ <20260923062832.479455-8-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SA1PR12MB6824:EE_
-X-MS-Office365-Filtering-Correlation-Id: 82bb16d7-1086-41b3-54bf-08df1f04ee54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|18002099003|22082099003|11063799006|4143699003|3023799007|10067099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	HKHZAYxG6ZbyjpFSLEAIU/ynIXNb+x3YvFHwJgGgy3oddFitj/PYqYDEq5STEARUrWtSp15i45tMEBF3UVS6bKIan5By3MEm280XQwiFieZP5vpKrl6Y+UxnYhTzTN8dWus8UzquREPdOJQNILcsZI4yuZKNrvtPM5BS3esGekjSFAxc7yV22yxa/LiW3GYDAA6hwf4egl2/19h8oJjfkC/FtFXpZp0hcp5d9qMxTXkk1ZweLlXIsqDMLZfKLwaKcT3dv97UZlneNU1tUXtShgrf2pX7UHgOnEiD5+HftzIdck6uTIPlEDGajv+V1eIzlVHFa5pphLzczr2Z8JWqRfTykiystLAkLUiQ5wo8HuP05TKVA2+aMQcsoGiBAPDdm/xJD0i7kQKZPF/O2hY+UJIH7rN3GN+c7626CP5CdRNwOs8fFR4gjCKenYprDFAdSPYppTGW7SP7Kuwn2ZZDhbQABpyR6zWiHWLxlL0C6oj+wcIAsjGBllxXz1fUpNF4zw6lFDNkiaCEnGkxx5NztWopI88bmqRBRa36H08JlgpI6sn/HEBQHhRfmSz0DP0ymrCMKU/1NpEkx8Ou8Cvwf7q/3gHi+M7XBh1BYxo06fhrmqJxb9EHLdlyqCS5pogY2IjHt3FJetazbhs2qkXvYXhMLqf/yETBGeRDuLpPjA8=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(18002099003)(22082099003)(11063799006)(4143699003)(3023799007)(10067099003)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?d0xhcnJxQjhZamdEb1BBaU5aTjdwNmI1MmViOTMvcDZZbUhZOHRPSDhsV1hQ?=
- =?utf-8?B?cUEyb3RMMFJYS25mOXVwcFZWbTlaU3B3Nk5XL1UzWGx4bHY1T3o3TmxaN2Vh?=
- =?utf-8?B?ZEhNRG5LakFxT2RGMy8rbDYySFpGYmUwVnJGK1F4TjVhWjZteWcybHJCT0ZP?=
- =?utf-8?B?OXZFZTU2UE14REF4SWhJVy90WDZmMFpXM3Nub1k1UG13S2ZBYmEzcm9mcGFE?=
- =?utf-8?B?Q2pwVDZGOHlPVW0zaC9mMCtnZENnOVczT2ROR0dseWtMdHZ3N2hRQlVjRUpY?=
- =?utf-8?B?YkNzZ2hTaFR1TmJ4ZEZhc2NUWDhBempYMmtHSU1sd3RCayt1YjR6Zm9iNEZx?=
- =?utf-8?B?dVorYThLSzR2VW41Vm1PVDY0R05GVDM5bFRmSkxUQStEMmpmWVhqR2V2M0ZC?=
- =?utf-8?B?VUdCWDNaZHpjRzhZSEpNbUlsU2dsVTV1aUx3eDZLNVdab0lGV2R4Q2tCNnlK?=
- =?utf-8?B?b2FycnBtQm9QVVkwQzdaR3ppelJKckdCVnk1MGdoakFCcXpza08ybHk3bU56?=
- =?utf-8?B?ZUFhSE8xcWI3VVEySmRIUC9YdVU4VDRvUXoxTTZqb2xRdVRwaUpWdWs4djY3?=
- =?utf-8?B?aXBUTjgxK05SejdaNWExTHJUS0U3MzNuMTVIWkl6bnh3dktZS2UybXNieUlQ?=
- =?utf-8?B?Mm5ENmQzdmR4clpPenJka2dDbGU1RjVOOXlaKyt3ZEIwc1hZRWIvWEt3a2Ew?=
- =?utf-8?B?LzRaTitNR0Nwc2JaZlpCc1BnNnVjL2pSRTA4VlBJUkVtUVNyUDFsaTRIMVRX?=
- =?utf-8?B?OWlJaUZOczJvWTdlVThWNGFWL2JLVUlIMmdta21RZXJobHJjWk0ycDlhRDVN?=
- =?utf-8?B?MmI5UnpldlRhZnRzSnNEaSswMzNMWkthZjFIR0xPazA2cEtycHdnRHNRZktq?=
- =?utf-8?B?ejV6QXJtUGRxaVJ6dWZZdjNHVnZ5eVBLd3hValZJYXVkZjg2WUMyMGIzdkl1?=
- =?utf-8?B?U0ZNNmRJZ1ZYcjJLSWlaVkM3L0lOc3RvYnNaQnZTL2JrajhhOVRuUDZQenhI?=
- =?utf-8?B?ZlgrOEJWUmxIZG9tRUZCbHp5cFVwcmkrSXlDK2xnMGt2M2lUbXc5QmFrbzNq?=
- =?utf-8?B?MFN4MkxKQW95UFA3T1dxcmN0aFd6amt4VTdHSjF4RDQ4eEkxSGNxNW9la0lL?=
- =?utf-8?B?ZVcxR3hDMUlySXNId0RGVkVrTjd4SnNFNk1TV2h5ditmM0JHV3ZTMkxCa1FL?=
- =?utf-8?B?dFloMWZhL2dWS0paSHBVZi9hcVhTc003Y0lyUGQrd1IzZWZpcXJDOE1EalFn?=
- =?utf-8?B?b3JydUkrUitlYnI2SnB4ajdaZklub0QrV1kzRkE4M2Zza1JNVm5JRExwaVND?=
- =?utf-8?B?UE4vNmtFL2gyTkZ0MWpoelNKUnhtZzlGbXVwRnJhdTh4WnptODgxcE11QTJF?=
- =?utf-8?B?dkFqTmJ3S054aDBZMTE0Qkd2b0dMZXEwYzRiZ3pIcFNkQ0habWV5Vmt1MjhM?=
- =?utf-8?B?djRLQmFBQmVqdFlhcklnbkJqVk1PcnY2eWs2a0NTYUI1M1NxZjdCQWZxSGF5?=
- =?utf-8?B?dG1kdXdFOEN2bldieno5RkRZdnVtL25JUmkrQkZuT2xsQmptZ0c4dTN5RmdT?=
- =?utf-8?B?ckdCN1FQc09nb2lvTVN2SXkrYXNHd0w3R01FUDRjL0YraXQxTUNPbzVLQkpR?=
- =?utf-8?B?bjRSdjk4RHZzRjNiR0QwSkJuL2pvM3p4ZWdjY1pxRzBkUXdVZ0MvMndQaHo3?=
- =?utf-8?B?c3RIQytPdHloOEp6WXJaQVI4bTZUREZVR3NXSkhMZGJaZ1YxOW5FU0FsckpW?=
- =?utf-8?B?QVFNYnRuMGxuUWVuL3BiNXV6dmw3QStta2k5anBwMFdTVE1Td1lrcXZzN0pq?=
- =?utf-8?B?dkYvbGhuazVJVmQ4SlJUazFaV3F4SlNpclNQajBkKzB1bFVndXVsYzcybGJj?=
- =?utf-8?B?SGdsNVQrUVNNcFMxdG5WeEt4ZGxJcFFpWHhzeWF6azRIdUFwbFRrQWh1WDR1?=
- =?utf-8?B?RjNta1R0WkE0REVZRUtvTjhIL3BVak5JVndxbXZ5TGdLWHRMMHNZc2pQRVlW?=
- =?utf-8?B?dWVjdXZQOG1jcWxrRWtWK0VJeDdpRmZXbXpncWZkU2tJdTRvOGVZT3lHM3V4?=
- =?utf-8?B?THd3QUFFQW1jWm5kWmdoK1dTeDFiaGRlZ1ZZWkwvTkhEL1Jmc3pDbzdDOHVV?=
- =?utf-8?B?SDFPVTUyWmVNUTc2WTN6UkZaOXpOWGVmUVJSOXRPNXlqMVN5VGNvRUF1a0Mz?=
- =?utf-8?B?QVZQWmNKVzQ5RlhuanFlV3ZTZ2ppUStKNm52L1dNall3eno3ZjVxRnU2OWl1?=
- =?utf-8?B?U3JVNGh0M0MwV01mcHBFZHNqYnRYWmhGZkx6NHVQYVV2cHd4ZUhNcWFxTFo1?=
- =?utf-8?Q?RpnfkmSsUxwuTAYROD?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 82bb16d7-1086-41b3-54bf-08df1f04ee54
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 15:10:15.0193
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0gzCwtjpwZGTxKGjIjmnIfR18/MFmOlrOprL7uQvWipOwecyze9odJfZHDZ3bkLm
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6824
-X-Stat-Signature: m5yaq7rt7tacej99yrjzjk4qy9hfgd45
-X-Rspamd-Queue-Id: 0EABF4000F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260923062832.479455-8-jiangwen6@xiaomi.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rs3gwepp3i67p3e9k6gi7rnczzitrhfi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790781031-392349
-X-HE-Meta: U2FsdGVkX18JemtjedJ/E73u0REK1m9udLMQ/6ob1lAcWX4me5l2D4Sh54wrBLH606e1xO/kRcEEjUPlU9+SCDRSKaRUdTZjaAdjERi2kIJLnSGhiQYkpcTMT1dHk807ZV8R0rQL2i4lNzMd61tlu5r/WPQa2jxk2gSaYkiskZBB1Ey0Zxc0+bae1myeswkwUO5CXQZh5m7fX/SnMZ+mBtlH28N9WA3sfAVL2Z3XrZgaLMlhknmrjqmhcR+m18nvzTaZ6XduOuCzyBBR3b8D0IdwyN+Jt7SzdmOm3y2euMf963uqkRzzsrpMdR1ljarwI5VQ3X3kro4Eguuc78AsKfTMVyFSRHOUAYotGQL2ZEbrwAKOqLNItEFeTohZ5yhwb6YdympuSppyRTYk990Ru8iUuGGGAyy2rKvnWjTrhEMZ5yAKQLzgxuNWzKcRfiBiPeh6VZHj+eRABvwteIPzw4n12yAnBy/IaftGndm957xrKs1Z2pkQGiZ38ogcUsa469OwV5s08f3bQKSb3cXUlx68wT2yc8OHv/cAk0RhRdqncVnFcX66B9ZiC3caO+LaaDFkejaS7CAWBRQ1YYURnnzcqCZ2f2fE9oLdeuJcC5+23uv1AsO6LScaoreCDx1vF4qFApXN3OPX7WZBN8U+qeUSA/BcP5rv5bMW82N2fvlk2vYV2lIfmdYCviyyspIrA5YsERngGyKJlyBGsptXO9SOMwezlv85q06uJkV+4lE9DV+6SeVu428fp6nKtVm5NgPjrCc1DGGHdeaUwbaMTI0cR6qDYdpOK+egGeI2+au/OTgAPjJIyFSZ8vMxubGoagXf9qyH3RQjCfLtvdfz3NMuvJD3aFf+rs0xOMEd1yfIY5nuEWx7QbCx/G6WFlD8qoeMulcbPixo+EywDJZ4vGlkknED5rANDmJzW7Yf1zL9BBzIvbaquL3ujOlVLk6ntjGL/6ZQYsnFOMTz1eL
- Iv+2+CRj
- whNi2aB9+ML0iy+SBdnAH4GCgKsa8l8ypogA0U8GbpeZb2hev5NyeG3tH2VY34gdbZ6y3/6+t5DQsDhBmwYLF3du4ek8D6tBGYExLaCHCxBD75vUZz3U6j3ZzwUtGZ1IR83Ey9tWcLKoFdytfvtXPG77d6JRXrVUP85NrH/9JsIsaUx7wl5mvdZZwH+KnMHbwXhim1VDUUOF4xbSBp/F2kr2+GMNXOpgqFQH1TxcsH3sVP5XVk7uqCip8DO1b8XosrZtLHKWNZHeGc8T72h/OJMFezGqpdxRYdhKQdPQp05s8n40EoXvgNf3afgussdtN8ucOejrbJsJs6goA0HNpaWDqPjUwpGPMW9cYosIQ8jr0Yzq+WaIlNQrurL4oqhiAgSZv3xlFeVhL8J5TvEmE74AW5HrPOOHb1Qnmf0dOudu9vig/XOlnsF4mWBCiF79m4IyUMiOKAZnjiLF13el1S7og2/uigjRVyBv9xL2Lqbema6N3UIKCpbdeQxLrcoviPlqcT/Vpk52/i4M=
+X-Rspamd-Queue-Id: 33818180007
+X-HE-Tag: 1790781373-323094
+X-HE-Meta: U2FsdGVkX19edDUBEOICDlfYAWIjTTAWPBX0036DKpf7GcActRXTpz2maLSn4mmqtV2YOXf0XknaQj3KVTbicpRrufFflTKFBJLZtbgpQj8lmJB9k9JK2WOV2T0X/HUjEBtJjOiia0rqeu4ICkFvFcPQiXzuH3ZMlrcIBOcWbQGsUsLnWBwxaPj1kHCMTEfcTY/WIDLWixMuI6juF00Ht4QyF1hdAJoIqBhCHPrN1hjMrNxDTm0lzEusnDkGrimGtkui74iRzH1ba1uBpgkikCatuF/wejb16Ey+FNZla210otidh9Dh1GWPSYOch+LcPitSJDJevEogZrClRGkPqYMSfNqYdCJLo9WS91zTh9KblWE2bc/9/NvFzK+eW14srFihZDXAK1rxcRBo2Ag1+cixXslLgnxNGgIzWU1z2kooXTscs3BtmQn62sb2uhEVLMjgoww0y4sN93KAt+EmGGnXRMOhWFnFTJ63GbplBxjIYmLFlF+i1u45RE4NdJxyTEyHZhHhzYF+fftA045n/7baKBMxX7XCHvAMi9YQMa4Z7bd34HdevrliPP3ReYwj+9ZTBh68vMkFZmQ6S2SZIqdbArMHhtayX66s85DQCTtKSYphZlVUql+8Ag+hIX0f+eoZZTctY+P4wvdV2ABIS7lJySJ7l0FEpFespF6vlggTudByiPBZljS5FhfJU6wQQt8Wj2CGA1zmh2Sryml4mSTepdaM6STx4x9lquUEWX8Cq+TsRhjj/zDduJ3sGokJ+cLOk754zxNcUtTjR/xKyRYM3bsOpm/+kKORy4PbabsPsaTl94ekCDjZOpBalqxtIL+u28z4DVmSxRLt0ymXlygFxtct+ZE+tY4Z8X8kCxDhdbSmWWl479pSpDgzAJQk2wwmTWfC3Dllq82kBsRdGmpkRkFYgmc6pTdghppR8IgATcpaeLNI1OIwf/PAPAmTN4+XTfNce8p7TMnzA+e
+ Ew8dqYvQ
+ UocwKZhPFDflbKYGOGc2zAkH+vzTTXihO4LZ35M4GRC4pBw7R7Q+iPavhooM8QFeG6yKCOkbHuNhAPiOsg8QNsPuTrDovo2D+O4GDvz6rkvYzKl5amlQrLvBZmJEPmwLoNL3OWxU5NCxO9y9Ub/cgQUF3+Jd6eV6P0r+8noqMG/1A5WUw19BVOyqnB/qd8DhPYqZFHL8YN5dmHeyMaA/JjKAwbNfUXcUlGPfsQhuK90NjFr5D07efGHmfGsbya2tccVWQIbZvhLi4dBuBPwdBCOBjF3+EPN9CKaSIFYTRjilAJzRHkoVioi1WTvjW2cXW7VtS2FjS/aU6CkR7kCbC7B8JrqkPxc16MPJ0uwtjl3uv0+OLAcWSqbSM1zL2A4ycXjn1XHjWkGzB0vvcL3KnkVJGzj0Qw+qmsYB1cJref5RVYzxY2Nal/qLCVijbPODFEeT3Uf3jZ73FvxG7WcLSlsNmAKBMEXw4YUjsLZLtyBvbJJN1Q1ct8BqWndKhZ6Lnuo1B32IMoNpRWN4UF/sIgIJogOorwwVitV5dTrH7+hFGfSVvfwOdpnUDQ/o2OZisxrE06Dsl6GuRaf+KjHX7GxHusVFrVNS2ZzFTajpxc5/9g3Ly/iw0rvbP2OAqC2fgtXk8ddPFjgqbxbtNv7pangu46Mj+YwJX8y+YtIJP2vYFn9UcbyxURbseDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,65 +128,191 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Sep 2026, at 10:50, Gregory Price wrote:
+On Wed, Sep 23, 2026 at 02:28:29PM +0800, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> 
+> vmap_pages_range_noflush_walk() (formerly vmap_small_pages_range_noflush())
+> provides a clean interface by taking struct page **pages and mapping them
+> via direct PTE iteration. This avoids the page table rewalk seen when
+> using vmap_range_noflush() for page_shift values other than PAGE_SHIFT.
+> 
+> Extend it to support larger page_shift values, and add PMD- and
+> contiguous-PTE mappings as well.
+> 
+> Rename it to vmap_pages_range_noflush_walk() since it now handles
+> more than just small pages.
+> 
+> For vmalloc() allocations with VM_ALLOW_HUGE_VMAP, we no longer need to
+> iterate over pages one by one via vmap_range_noflush(), which would
+> otherwise lead to page table rewalk. The code is now unified with the
+> PAGE_SHIFT case by simply calling vmap_pages_range_noflush_walk().
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Tested-by: Leo Yan <leo.yan@arm.com>
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> ---
+>  mm/vmalloc.c | 84 +++++++++++++++++++++++++++++++---------------------
+>  1 file changed, 50 insertions(+), 34 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index d475e52110e4a..6e0dec73107a7 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -558,8 +558,10 @@ void vunmap_range(unsigned long addr, unsigned long end)
+>  
+>  static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+> +	unsigned long pfn, size;
+> +	unsigned int steps;
+>  	int err = 0;
+>  	pte_t *pte;
+>  
+> @@ -590,9 +592,10 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  			break;
+>  		}
+>  
+> -		set_pte_at(&init_mm, addr, pte, mk_pte(page, prot));
+> -		(*nr)++;
+> -	} while (pte++, addr += PAGE_SIZE, addr != end);
+> +		pfn = page_to_pfn(page);
+> +		size = vmap_set_ptes(pte, addr, end, pfn, prot, shift);
+> +		steps = PFN_DOWN(size);
+> +	} while (pte += steps, *nr += steps, addr += size, addr != end);
+>
+nr_mapped_pages?
 
-> On Wed, Sep 30, 2026 at 10:02:23PM +0800, Li Zhe wrote:
->> The use case is closer to the second one, but the main motivation is not
->> only startup-time performance.  The more important point is that each
->> workload has its own DDR/CXL budget assigned by the workload manager.
->>
+>  
+>  	lazy_mmu_mode_disable();
+>  	*mask |= PGTBL_PTE_MODIFIED;
+> @@ -602,60 +605,88 @@ static int vmap_pages_pte_range(pmd_t *pmd, unsigned long addr,
+>  
+>  static int vmap_pages_pmd_range(pud_t *pud, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	pmd_t *pmd;
+>  	unsigned long next;
+> +	int err;
+>  
+>  	pmd = pmd_alloc_track(&init_mm, pud, addr, mask);
+>  	if (!pmd)
+>  		return -ENOMEM;
+>  	do {
+>  		next = pmd_addr_end(addr, end);
+> -		if (vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +
+> +		if (shift >= PMD_SHIFT) {
+> +			struct page *page = pages[*nr];
+> +			phys_addr_t phys_addr;
+> +
+> +			if (WARN_ON(!page))
+> +				return -ENOMEM;
+> +			if (WARN_ON(!pfn_valid(page_to_pfn(page))))
+> +				return -EINVAL;
+> +
+> +			phys_addr = page_to_phys(page);
+> +
+> +			if (vmap_try_huge_pmd(pmd, addr, next, phys_addr, prot, shift)) {
+> +				*mask |= PGTBL_PMD_MODIFIED;
+> +				*nr += 1 << (PMD_SHIFT - PAGE_SHIFT);
 >
-> mempolicy is the wrong interface to do budget policy, you'd be better
-> off looking at Joshua's memcg tiered node solutions for that.
->
->> MPOL_WEIGHTED_INTERLEAVE is useful because it lets new allocations
->> follow that per-workload budget from the beginning, instead of placing
->> everything on one tier first and correcting the placement later. This is
->> important for workload orchestration because the workload starts from a
->> placement close to its assigned DDR/CXL ratio.
->>
->
-> This however is reasonable to me - you'd prefer to spread out the cost
-> of initial faulting placement explicitly, rather than simply take
-> fallbacks when the top-tier budget becomes pressured.
->
-> i.e. w/o interleave:
->
-> [node 0       ]
-> ^^^^^^^^^^^^^^ alloc until full
->                 vvvvvvvvv fallback
->                 [node 1          ]
->
-> in this scenario you end up with considerable hot memory
-> on the remote node consolidated in time-space (everything
-> allocated after node0 becomes full skews heavily toward
-> node1)
->
-> Tiering then likely takes many faults to rebalance after
-> you've already reached node0 limits.
->
-> w/ interleave
->
-> [node 0                                      ]
->  ^^^vv^^^vv^^^vv^^^vv^^^vv^^^vv....
-> [node 1                                      ]
->
-> In this scenario you do an initial fill distributed by weight
-> and then let tiering figure it out without consolidating all
-> of the pressure to the point where node0 has no space left.
->
-> That said - this seems like mostly an initial-fill problem, after
-> you initially fill your memory, a new allocation largely implies
-> the memory is hot - and you probably prefer that to be local.
+*nr += 1 << (PMD_SHIFT - PAGE_SHIFT); --->  *nr += 1U << (PMD_SHIFT - PAGE_SHIFT);
+as it used to be?
 
-If this is a initial-fill problem, can userspace set weighted interleave
-initially? The program or harness can observe memory usage of the program
-or related NUMA nodes and switch the policy to numa balancing via
-set_mempolicy() or mbind() without MPOL_MF_MOVE after certain threshold
-is met?
+> +				continue;
+> +			}
+> +		}
+> +		err = vmap_pages_pte_range(pmd, addr, next, prot, pages, nr, mask, shift);
+> +		if (err)
+> +			return err;
+>  	} while (pmd++, addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+>  static int vmap_pages_pud_range(p4d_t *p4d, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	pud_t *pud;
+>  	unsigned long next;
+> +	int err;
+>  
+>  	pud = pud_alloc_track(&init_mm, p4d, addr, mask);
+>  	if (!pud)
+>  		return -ENOMEM;
+>  	do {
+>  		next = pud_addr_end(addr, end);
+> -		if (vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +		err = vmap_pages_pmd_range(pud, addr, next, prot, pages, nr, mask, shift);
+> +		if (err)
+> +			return err;
+>  	} while (pud++, addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+>  static int vmap_pages_p4d_range(pgd_t *pgd, unsigned long addr,
+>  		unsigned long end, pgprot_t prot, struct page **pages, int *nr,
+> -		pgtbl_mod_mask *mask)
+> +		pgtbl_mod_mask *mask, unsigned int shift)
+>  {
+>  	p4d_t *p4d;
+>  	unsigned long next;
+> +	int err;
+>  
+>  	p4d = p4d_alloc_track(&init_mm, pgd, addr, mask);
+>  	if (!p4d)
+>  		return -ENOMEM;
+>  	do {
+>  		next = p4d_addr_end(addr, end);
+> -		if (vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask))
+> -			return -ENOMEM;
+> +		err = vmap_pages_pud_range(p4d, addr, next, prot, pages, nr, mask, shift);
+> +		if (err)
+> +			return err;
+>  	} while (p4d++, addr = next, addr != end);
+>  	return 0;
+>  }
+>  
+> -static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+> -		pgprot_t prot, struct page **pages)
+> +/*
+> + * It can take an array of pages which are not all contiguous, but it
+> + * may have contiguous chunks, as hinted by @shift.
+> + */
+> +static int vmap_pages_range_noflush_walk(unsigned long addr, unsigned long end,
+> +		pgprot_t prot, struct page **pages, unsigned int shift)
+>  {
+>  	unsigned long start = addr;
+>  	pgd_t *pgd;
+> @@ -670,7 +701,7 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		next = pgd_addr_end(addr, end);
+>  		if (pgd_bad(*pgd))
+>  			mask |= PGTBL_PGD_MODIFIED;
+> -		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask);
+> +		err = vmap_pages_p4d_range(pgd, addr, next, prot, pages, &nr, &mask, shift);
+>  		if (err)
+>  			break;
+>  	} while (pgd++, addr = next, addr != end);
+> @@ -693,27 +724,12 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+>  		pgprot_t prot, struct page **pages, unsigned int page_shift)
+>  {
+> -	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
+> -
+>  	WARN_ON(page_shift < PAGE_SHIFT);
+>
+This is not about this patch but probably on that WARN_ON we should bail out
+early.
 
-
-
-Best Regards,
-Yan, Zi
+--
+Uladzislau Rezki
 
