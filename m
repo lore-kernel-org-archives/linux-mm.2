@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85DC4CA5FCB
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 16:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B2F5CA5FC7
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 16:04:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62C306B008C; Wed, 30 Sep 2026 12:04:47 -0400 (EDT)
+	id 0FBCC6B0092; Wed, 30 Sep 2026 12:04:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B5946B0092; Wed, 30 Sep 2026 12:04:47 -0400 (EDT)
+	id 0AC396B0093; Wed, 30 Sep 2026 12:04:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480986B0093; Wed, 30 Sep 2026 12:04:47 -0400 (EDT)
+	id E8F1C6B0095; Wed, 30 Sep 2026 12:04:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 209BE6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:04:47 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 99D9A140134
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:04:46 +0000 (UTC)
-X-FDA: 85270901772.19.18E7159
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E9DC1160012
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C17556B0092
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:04:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4F5F01C00D2
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:04:48 +0000 (UTC)
+X-FDA: 85270901856.23.3FDD3F6
+Received: from mta1.migadu.com (out-159.mta1.migadu.com [95.215.58.159])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 04E32140017
 	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:04:44 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lz4HZ+iO;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uG+xLlU4;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1790784285;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xsjJ24tQ5ljmlVOO2mMMeo31KPYZe+omuEvM50E0/m0=;
-	b=ROGYCy9mtykktZZBTOIRQvA2fhYtcop7NtHMrsDCgZ1V1i5Slbfj67+TNEAmC0DtNexuuu
-	obnMjsjiH81ryi3s2y8gcOCMR2Cg+qr12iumptiB3Zx2kOjHypfl7EC4ZchR8wJc6c1wnT
-	sL9NBBsahuPrcmS7DMZBZr5Cy2H5E/k=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XnLGPnxPup1Qwuu3VAeNT5u6KyZXRlv3vCyavwbVWFs=;
+	b=6RPWeEzkSsRWqAlmws0xKsXDk3bn3viO9pGPfHVQaPDoC4ww2QodlatwdWLFTvAE7n0PIr
+	zlbYDYwkoR0/c8RvdtLZ51r/tCC9hf8PWpCujQqcxCF05s54An2FJs5N/h1Eg2+7zfNcYH
+	QRVYLdYUb10oLywuyZ+XTTMS+o324Is=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uG+xLlU4;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.159 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1790784285;
-	b=ScR2D+E8cEKfpFY8eeuKQ8Hi+mfqGHy4Hs06Cza789Bq9ZfI+cMkeEg8frBiX13X2+AHIK
-	MHE/L80mnLC0XhTHEdTXDh41BD8WUtzxSfBsCgIoidPxH+7UxpKX+UloK45xLf9kYMFlU2
-	IPaV9uBJrA0e3iDBWjGzXd2ZDGPQunw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lz4HZ+iO;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2149243E17;
-	Wed, 30 Sep 2026 16:04:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E811F1F000FF;
-	Wed, 30 Sep 2026 16:04:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790784284;
-	bh=xsjJ24tQ5ljmlVOO2mMMeo31KPYZe+omuEvM50E0/m0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Lz4HZ+iOkiVr5Au/6X2Mo17Q9HAJmzL7pxvLZmt8HEeXd+Z9M8/qIXkT/P+Ns6+2E
-	 JDjFBNsAyUOFmpRRwxYmSQbEYiXcf5xdpuTTcjn8ivc7tipt1xq3YsIPa9tPD9r0hj
-	 /bgtiFlQieMYRiqSfrRXUVy/3U5kQgTRV2iUOVXYKJbo7p/3PMcJOJf0xnBNaw+K0d
-	 7GjLJFMwJ/XI1+XbUGrnrqKCwmoc1F0YhhXG9wZ1ArbLMW5I01xvS6dyKUrA3/ppIy
-	 lt6A0kln3CgAjcM1gzHI9LJPjvPx1b1Dn1Z/75PbC3WLCA7gka1AVow9iv0BDKF4hQ
-	 bxJaEtq2tiDcQ==
-Date: Wed, 30 Sep 2026 17:04:38 +0100
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Anirudh Srinivasan <asrinivasan@oss.tenstorrent.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm/mremap: fix two issues with MREMAP_DONTUNMAP
-Message-ID: <ar0y2odPFkCLMKk6@gremlin>
-References: <20260920-fix-dontunmap-partial-self-merge-v1-0-6ffb556f8f8b@kernel.org>
- <ux7od2uydetgsu3dpy6mmilhqm5phhnk2ioxn54w3nb3feohxf@2jqovoqzfs4n>
+	b=5HBXtY2Mfo8Z8TZPySoxmR8nL7k32uep+JixmBeDiAX0HdlaoMGwoM7yEJ5Iks5hEEJgL0
+	J3YogRuUKtzaCn5tJXlgmRmhnugJFLSASe9SwZTj2nAs7md/v+lh9JNyybS/9JF3bLKUhY
+	KbAEoolkNNy2M+TE02dYwKBBQvmUnIk=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=+vcczYRy1rNmcGvWO3RhaCJIFdsbwMwez0v32TjbTB8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1790784283; v=1; x=1791389083;
+ b=uG+xLlU4sGw7EqoBVo99T2gQsThTMjyQzYGcTJupxalP3wan7nQJNGc3Kx3jLbr1Jj1KXb7J
+ aUmILtDc3r40i/GSBkxKy2+mfCgIsFiPylGlM2EsYPy+ONMcHX+nkytYqN6LA1+qtWfOgXOpubS
+ J8KWlbHKtkaDBVN4srGkn2m0=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 6e927973fa05e775;
+	Wed, 30 Sep 2026 16:04:42 +0000
+X-Mizu-Trace-ID: 6e927973fa05e775
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	osalvador@suse.de
+Cc: akpm@linux-foundation.org,
+	muchun.song@linux.dev,
+	linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 1/1] mm/memory_hotplug: fix missing rollback in __add_pages()
+Date: Thu,  1 Oct 2026 00:04:32 +0800
+Message-ID: <20260930160432.5564-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ux7od2uydetgsu3dpy6mmilhqm5phhnk2ioxn54w3nb3feohxf@2jqovoqzfs4n>
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 04E32140017
+X-Stat-Signature: 4pghg7x1epaw4u6w68339z1eb9eapqtp
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E9DC1160012
-X-Stat-Signature: ix5yte8spq81k4fxp1p11x695a81jb4m
-X-HE-Tag: 1790784284-636107
-X-HE-Meta: U2FsdGVkX1+7ekQXl54QDU+71FrP6KP9Pdpw1XL+lVExOGrdSlXWMSgtO+WRfETIXmw0hD8gt7xYsMF9UADlcuy3ZJkRfq7t+Z/XczwfkQHajkQeVk0QfY1sgf8Ui1B2ZWB8bSpcG7oaSD3zUHJCpwXywbL3xWresf0apjm0OBIyw5+Ti9AMl5yXPOnMilY5JXZRXtU2fQ+p3pmuy20mIMf7yZ+c8ipAFrFZqB/U6pI+1gThesRpABcPJ+Y2jTZtRSznPLLASoLF4rDb8Zb+YprO+lZMGXWNFQnVZF43n8fZKZo6IZsipukv8FI7q0zXH3hmgGG9oI6e07wTvQDOawC8uwTRmS1syDveXVm8WkmD+t+MG+aD9+TOtmNTaR4cQiruIIlD/0fq4VNXH5nAxylkydvh8wWwhU4TOBGzeEljGzfMzVpQeOxwPLYT3qIjhS1ZFUONdjizUXE8XXOYfPstXRbBjTK/rq6OYWCm9eLo5+vdYGYiw879PZ9Ykg34D7+pn/ngtNDcCUIw8GcR8tk0XBPOPHXsOmuDkHfuMHeBjn6ZUxp7S3pp29nShWlgvUlDHVFEHmzMtlcU4tmFJn2Ce5W/2GxZR4JE8qveA75xDpWvAl4xqjjRaUp1o1qCaSQ1grv0Hmm/4lmE0aerzF6bIbSdedWEaDz3D1iD6IWHB8tfz+jqacJY5iye1ttl7z0LYMviuAtqsBMBRTq7DZfLl5yOHTMykFJL1/wdAxqdCaUPL58Lxs2FrrrJ9wz1NfH6HmVZeHUb8YeezxjdmWEfDE47sWy8Peih2eUPeIjrObXzT72JGUEjVddv7bOgPhG247bCDiwnXG7EDR9L6quoPzrtYfgwfssos48nY79t07l0qqdjIH8aPH4QIkLE/OuDutQI8gMsCCbdCZeNmoZt/mO4euuHEWFwPfuFFhSTBJu4XWs6H2624LpuWcd68hMKshV2JVoim46EYLW
- gEaypIIr
- t9uX55pvgxJYoSPChFK6D+XnuYDfDGq7DEWvj7xi1oU2MNcfFKLfInQljMKm/aFPLaPwbgoKYS5JJXB4UWKsv6nwI0kNXWZQHTGc01GIY7plsFDdtFn2shAPNUXrMpl+GHJbObexImGJF8P1IXDXOijyTm4/+Mu9NodHvC/qXtpVQ+ZFqFCY1GJLctfkdz7SeHAdy6fWg8/bExeSZwzk5dXkrlTxr3UXuzN+HrE6to/kwHyi60+rzg+xSVdldqL+bzITM1JcvQjRcENkJ7sGrdA1o0rtgY9dAcRhWbCbdqYXums9HdvBa211/7VzOT/Uc86xU
+X-HE-Tag: 1790784284-76183
+X-HE-Meta: U2FsdGVkX1/z2+66tcV14ECLA2au6lyVBH0bgSxmr+hfklNw4vZSdH755sRgaYJprIgZi+Gb2h3Fo/PH/lKZf2UxSJ0BULdMpvbKwc8z5vlAsN992rQ5G5G8x/CZ3BvI1tUVdcap1CCZxNtzxV9pRxouXfctKMtUVV4PHvWIBnguhh9BYAfZOc0n5wr+EH0FIJzUVe9AeU9RRzkB2GcRsMVkIG1QBBfjAAhXAUKRrl9AMnYugqN3cbj5GE5yEkEExIPpM1TIdwmcu9SZYAUNnDiGvyz0bD5vRh8M3Jwg1oK0P0ghciMIIs70B1xLJXVQqt1F6VCfKxvpSoNXT2zS1pY7sFanOSTSKlVITwMw23YQSG5RxOPB+/so7KeMrOVNk//PZT99V62rUNpzCG3uCGuR2eFtp+kiHXonLL64GV+im+M+HPupAfQVUZLD+Cr/Ne+0bi6QlWCEaCwbSY+DHXDLouCXFnnAGGKu6X/Iyws9wNfqJHoz47MpoDh4QZKvaErsPoGwhXYMPENqkHGw0K9ObL5i2IuWkkwF+UhyL/g/QvDn7l3S37vplO1Q7QNVyQxv7a2KB0gCBGDQjGCLXN+Qs7EscNmY2JpOyBT6ZIt2cS+yyjnjDfrc1utFtG/YN4S1KKL8Gqj+4KTGlHZsEnFm2wJlDfJa0NBci4CNifbP5KiEp1eTnH7KKPWBJLK9YwxaB5xfNUtDpxqfjtMbQb5EQx/pE+Ll2bu3/2w9THdvvh65bpKBHX18xkwsxjKCbnhGpTy4cycaiivpg3fQqQWVrx5OtLDO6fxO2OMdGsEhDAETFZ/5Knvs9D6lw25dvSWSSeZSgv8INoODfR+fgvq2mt2ldyIbsrVThHnyHybMoSrAimjUgGKFftMWfjf/+WIpfY210AfwSJYy92l2oD9yKbxy75DpLrU+0kmZtHvUfU2b1mbZN9w+HZ4LZ4Y/IkF6CqL2Y2Cmu9F9pDX
+ RpyUcKwc
+ BzEuu/sLHKJ+FFg9hhoiCfsCi6WV07TN93YomA3Cg6Qd5JgGNKcteVy+W7+mB4S3bXur7XKZ4V2bxOJLuI18XVPWid2KhOg706RrVlrSiW83MzDidAXUU1SBfnrfkHWMNtvX6N+rzRQZyEae8s9nVDsLOHXwi1tmjtw108AHXyqgoDcNd5YerApu/cox77NTvi6+qsGZ4ESFTPkkYLyBUwZOYD3jsh/AHFSb4VJLiI74jYiCmuHhLb9+sNeR+eTYxDp1mbLb7USR6LTNsHLPm0gmf4s77YW9em0P6h9gSXSMdQho=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,29 +91,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 10:59:50AM -0500, Anirudh Srinivasan wrote:
-> On Sun, Sep 20, 2026 at 03:13:09PM +0100, Lorenzo Stoakes (ARM) wrote:
+__add_pages() returns on a sparse_add_section() failure without removing
+the sections already added in the same request.
 
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> > Lorenzo Stoakes (ARM) (2):
-> >       mm/mremap: fix locked_vm leak from MREMAP_DONTUNMAP self-merge
-> >       mm/mremap: fix locked_vm leak by splitting VMA for MREMAP_DONTUNMAP
->
-> Hello,
->
-> Apologies for the double mail. I did not hit reply all first time.
->
-> I am seeing some failures in the proc_maps_race kselftests after
-> this patch was added to linux-next. The failures are in
-> test_maps_tearing_from_remap and test_maps_tearing_from_resize. I have
-> attached some logs below
+For memremap_pages(), the failed range is not counted in pgmap->nr_range,
+so memunmap_pages() skips it. The sections already added in that range
+retain their vmemmap mappings and subsection bits. Retrying a
+section-aligned range can then fail with -EEXIST.
 
-Ack thanks for the report. I'll dig into this and get back to you!
+Save the initial PFN and remove [start_pfn, pfn) on failure. For a vmemmap
+population failure, section_activate() already cleans up the current
+section, so the rollback excludes it. If the first section fails,
+__remove_pages() receives an empty range and does nothing.
 
-Instinctively I suspect the tests are making assumptions they shouldn't be,
-given this series has the MREMAP_DONTUNMAP case split in advance.
+Link: https://lore.kernel.org/all/BAD58999-1EDD-4A37-ABA0-DB1BD8AB3453@linux.dev/
+Suggested-by: Muchun Song <muchun.song@linux.dev>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+No Fixes tag, as I couldn't identify the commit that introduced this issue.
 
---
-Cheers, Lorenzo
+ mm/memory_hotplug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 796af1028ee2..ca4656698148 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
+ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+ 		struct mhp_params *params)
+ {
++	const unsigned long start_pfn = pfn;
+ 	const unsigned long end_pfn = pfn + nr_pages;
+ 	unsigned long cur_nr_pages;
+ 	int err;
+@@ -413,8 +414,11 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
+ 				   SECTION_ALIGN_UP(pfn + 1) - pfn);
+ 		err = sparse_add_section(nid, pfn, cur_nr_pages, altmap,
+ 					 params->pgmap);
+-		if (err)
++		if (err) {
++			__remove_pages(start_pfn, pfn - start_pfn, altmap,
++				       params->pgmap);
+ 			break;
++		}
+ 		cond_resched();
+ 	}
+ 	vmemmap_populate_print_last();
+-- 
+2.39.3
+
 
