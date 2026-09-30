@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC62AC9830E
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 04:13:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 653ACCA5FAB
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 04:21:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 317786B0088; Wed, 30 Sep 2026 00:13:46 -0400 (EDT)
+	id 373166B0088; Wed, 30 Sep 2026 00:21:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A1836B008A; Wed, 30 Sep 2026 00:13:46 -0400 (EDT)
+	id 324146B008A; Wed, 30 Sep 2026 00:21:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16AF66B008C; Wed, 30 Sep 2026 00:13:46 -0400 (EDT)
+	id 214326B008C; Wed, 30 Sep 2026 00:21:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DA8986B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 00:13:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D7FAF1606B3
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:13:44 +0000 (UTC)
-X-FDA: 85269109968.03.DD1B2AA
+	by kanga.kvack.org (Postfix) with ESMTP id 007646B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 00:21:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 74FD41C35B3
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:21:02 +0000 (UTC)
+X-FDA: 85269128364.15.C35C17C
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id C2AB1180009
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:13:42 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uUMCfJku;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf25.hostedemail.com (Postfix) with ESMTP id 67135A0009
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:21:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iiXj3sGk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790741623;
+	s=arc-20220608; t=1790742060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KzSyv304nNTDrWlmEG0BUkcSorjmJHM36xZnGj7rWvY=;
-	b=nNI//HY/NG0NJ5QEw5NL8Cz40LhXX3rOS966SvzBEmlGz5UOVKTfcRmznS7ncdafEMRclM
-	/YnUJ0/nHdoRs5F2+FgdFbP/bPEsC57PuK/lui1WN2aLNg8FnoDx7HNaD3110BMt6Wr3bo
-	k62YcR344yCUqCrtXsPgZmO4VsLPvXI=
+	bh=M2RPfhCjNlALyua9QpRHDl+ZkSpamWE69sPFTq6H6Ig=;
+	b=ljVG3QBPZhcjcB871Yh1s68aY2rZvojtZBLZdZIHgz5V0gofb3e8FDd58hq7pQ60/WqVgI
+	gMY31NsDF64iAfMV6/eo0uplLzuN+kG4z+1GVWNDi2c9cpe9m7VraNCyRPXfbTtCz6vUcT
+	6DKZLP63recYenwP1jjDtxAa0OZWNdA=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=uUMCfJku;
-	spf=pass (imf16.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf25.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iiXj3sGk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf25.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790741623;
-	b=p4cSyas56kp5eEC1hsBG58Jheh/GTGvgS1f/oW8md2wCyJq37lSW7qhlffKBxbEF1SNYPe
-	k/1WXlpVZLZdBJXS4jZactNMxwqiaVAwr2VR8jORjDfxT0Wlocnn9y8AQTJLcDbqm/tT0s
-	H6D7WQ6u94+DPc0c26jFSmh3ZqKtzVw=
+	t=1790742060;
+	b=IM9FCQTD5yfQakMh/ga1/uA8cH3/7LLxvBpeU46CRBvgAN9JE9QQoL0b+UOZNdH7iTUukt
+	HO5C6B//3ponhWxfPUpuV+9L0n7fjzpXG5tav8CgXDGF9zLBZFHNO9h/fx2di1pLCeXrwx
+	BrATvsvj34n4oDxsC7rxANhHwkhHrbo=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 115331516;
-	Tue, 29 Sep 2026 21:13:38 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D8D941516;
+	Tue, 29 Sep 2026 21:20:55 -0700 (PDT)
 Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 068A63F85F;
-	Tue, 29 Sep 2026 21:13:40 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D13163F85F;
+	Tue, 29 Sep 2026 21:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1790741621; bh=Eo9CdH+0TtRSX/QNTJHDXco4iCbdFaKjgbzXmhi+d+w=;
+	t=1790742059; bh=UxlHUYv22rgyq7ZVxruY0QE2y0GtfTw2R9yOES+jmXc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uUMCfJkuCo0kl9BpIml6ya6QFhzuY6ScFyN2rrI9OZskXRGAAufEdzszI/qQTPqg9
-	 Iguh/DHAQ4gijcI8is1MZGmQg8kO5mj99Gmt6zNO4sTw9mweCAqyNbvOWOTaW5gjPd
-	 8DmLSRkJE2jM29CtfSFlUOWDSiSDxl4euASIJUXk=
-Date: Wed, 30 Sep 2026 09:43:37 +0530
+	b=iiXj3sGkrhMAurjVuvisN1wyrF4L5DGjA9KvALcFVE4OmoxhVrf+/REwA/xaRN5Yk
+	 5me6wieFhJOwAoyLIoLbXtSHLf2oRy3WVoldA0+46lHll1bRbjR+OrUDdKJOwbDcUR
+	 LpuyMIJJwxFQf9usQsgGIu9RHfEsZZyZAGi0LfSg=
+Date: Wed, 30 Sep 2026 09:50:55 +0530
 From: Anshuman Khandual <anshuman.khandual@arm.com>
 To: Muhammad Usama Anjum <usama.anjum@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -112,28 +112,29 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, 
 	linux-perf-users@vger.kernel.org, damon@lists.linux.dev, kasan-dev@googlegroups.com, 
 	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 1/9] mm: introduce hw_pte_t for PTE table storage
-Message-ID: <snzkwnnubrx27tkroyql77iziuws3ku34dkclevfen5edef33b@wc3df3hbeuly>
+Subject: Re: [PATCH v3 2/9] mm: rename pointers to software PTE values as
+ ptentp
+Message-ID: <ch63uaxr36anablz2sra57huiud2gxjtpmilwk4je2qkm5hb7j@eiun5t4erg2l>
 References: <20260922-pte0-v3-0-5670b8cb9059@arm.com>
- <20260922-pte0-v3-1-5670b8cb9059@arm.com>
+ <20260922-pte0-v3-2-5670b8cb9059@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260922-pte0-v3-1-5670b8cb9059@arm.com>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C2AB1180009
-X-Stat-Signature: 3rq3cx4h5kz4jof8ms3n6gtmtynxea1s
+In-Reply-To: <20260922-pte0-v3-2-5670b8cb9059@arm.com>
 X-Rspam-User: 
-X-HE-Tag: 1790741622-397383
-X-HE-Meta: U2FsdGVkX19FJ8U93WCuWONY0KDWLEl7w8fOntIl/+tfcvsw5wdIS+IJdH9pO0ZDoBKqDOzBvTha4CGhirzpDRRj+VjRAcAMYcDPvHQTTPrrY2TYR8NqwJF2LmGS+QVYBfXTC7X0Y+2dLoZCilm4ISX3nAAbArqhFjC82L6TA91Cgri4IghksMzHLoZf2omlKSvr2+YNNi5MllJ9z7dsLi/SEE1uHuIxHS8rdfw+5rcAh6U/eNbvDCJjzUE6bqD2Wta0LGb+B7dziJ74u862EmHgC17heItbmnQbbP2tA/Y2BozWGnChAKJaMADpSpV/u4pN4VlqYd9eCS/46MEXut5ydRMmqcWgZ1FB4a6bm85UBz4fYuFa86/+hP9vK/RWJlMGOSlApqvYWoPsgnOrtcgh690VJiDWV5KrcDM4qbMNHGRorCg1tswVSlyZpkHgSz6+69xzm8b31W8cBoGpIkN5ca3hFB2c+wF13Nghi6Kn+2cahjWQ23jhaQgW+MNZ+EdISxS6QrgbchN7desA49Upj3lcrcQx3QpabaZKDhvHMVosdF8rLFMauyMGJOAhdWshJiACEYGW89hhMixPvlsjimwYFXkg3qyA/Hzysb7469BSsUJ5TDQVFwpElNPaQ0//tC9TxNRzrCqLr1irZZSGGakyvqvjEm3ZM3tNcBJy49qW5w1krXt0GyOss6RFS2KKM3qIZdIrBPxlwh0J4c112Ysjv2g1FYyowV90OtZQbrjLkH97VJ/zOx2B6x1f4+Mz06s5KDln+YXVnx63KpGUbDoNo4ug8r/lE4rND6oF9jmkXs0hfVkh0QhfoUE9DYeGBLtJfF72zBylaoQmdDESzd2aJIIh53CiV8UsDxOzOh7DYsaUMxx4+0wC1wdJxfwEgiJzVcxNTB0qOiu+PdWEN/Y49mZqcUSAI/wbfvTe7S1zuRHRtVqekWCwJn9BPrmonJ37W2AxgeTE/X+
- 4Py3CW42
- DUgGUR/L7aknEf67D0HlNIquCweBPGrOOY+bFJ71GSijW7qDNS+SPdh8p9GakSm3CTv4/gqT2h3Q9zoXBEYULRSIi/gG5+bUfjdO63p+h1t4MXoS9XSElqnZ3dw6D15wr8Z3stN0xsWWyHF397Q06Zvpdj5xktDQOMyb8+A3PVxEnD7NKHkhGJ6eiE4vm0Z7IIM8kTMaQx4dw6bm/tnI+xnV21/IDv3UBE+qXy1Z33LTeJPkTDIEAH8/qfU0/dUsxsl8WPHB2+RQ0nw869Bv/LAHpio4tyY2m988LAzXKeSo1lWJ4W93C4CCmnw02dXSXi9NZ70atIAz2/JXHCLnvIrnEEU68yKFF1BheBzCIeKBK5wjUKSnv2s88t8VfMN1+sst1XVOK7UmJhIAiutZqk8Bg2uQjWAiX/jchJa/xfyosw7nASJ++c77BpmqS/bIcvLV3RM/uWlfK8kRTZUbvDqdkg9WsWXaXAczZ6U6CtkFVQfMLpq6BlMVj4bl3LtRDbx4+oVLD645Ohf5Yn1Q4I+/iysExk9gYXhTaptsDtwTCQz2vfjE2nevzj9G2Ti9I9QpQYJOHjwZ/H9+fTndIS5h8XME9AqfXxjHy/ww4qkrIpp2VjtXqjlr9JhZguuMm8noauj5K1GjRQazJH3webv9sYwrwXE3pMjOACSnfaG3dyoLodiQl3Y9s+G6FWv/ZpRinSBc3Xl2o2s+W6aPOQKqjSjd4zrmqHRSSt4S/JaWstpXcs4mGOOI4PYPU8u85AUF6uyhUINFMmmDVw1w8+F0X3gKheEqOrHed7hTOrepW/SreRVa++mVtkAk8eQvGlkr4hzdeLgdWjw2W34JKeH7Yh2nIGoeYVPDT5enlkLcx0PbcXZ6/Y278wBN8Z4AXmP3AyNKyc/c2O2Hb7K331yr6ZHWTCf9Ews11vdmldmR6z9FRiM3ugc/Zn7WlqqAdhYGrOMfriDDw6Z36BHSlvMc+OqCn
- Q9bdehT7
- qyltEang4XfgZNglFCUXHwh0ptXqBLOeeU3GaowSZldL+06+SG6j8wlkTy+cFUFsWZMXc4rfSrzBNnpZt8OIbIGjc+o1wos2BaijqO3Kt2og5Dm1mCjc7GnlE0zxoVRgDdtlhODcAMOFqLDYEvheKrm7EiLBd5U3ygpcDHLMdn3nJOxCT5ApWglTAP+Kf1FV3sCN6J8AuI47awduaT9V0RPVkj+kW42NlyuAhSCltsd2NAtWTjzZPAllxg8upXEV63oAQWpEgj9C5uzZgLWvZYv6LQb4AtvqidCU/ZgOC/rkLkCail5P7ZyQ7uR4gYq2z+v8lZZ1JTozBgt8Qmy2/0tGAJ+mEyMWOmPdTGOReam0xc1wYYp+15sgVmlF0JPMhKO/DkCLxiQNs3/xF9Rb2nul4/4T2sKF/BpT4H59CMPG0ubPjDLI8+84+cPFwtZw71OnvT9WxzDyULXBWcBnUDCwOLfuZBrk9LCkQX83iihixtZ91uqFDKBN8zkpVREX5+6H6GlSztDWjE1bNOJNNoqmgSFCoxI7c/dTlxlO0f5UaenpEMAgYEsWzRWFx4jwvv0lNQkD0+9Lsh48LwWRwxxpvtr6U9+8AWKlDiMItkVM6N+r3awX6uXMrB8/GVjThLOcOnvH3VQ/WpqQhu1eC/bPt8+nfKWbZt6NpQWHK6xGVC2AFO3KCasQ3jsAKNybLdUvxtLHr4IHLSdRHmO1cUOIk5j6dtsJq/v2PL5GweL8NxKRp8GZdpJMmzfyX2P+esX4EhnNDKcK2+QsuYNxpmYsSh1aElNtufxlkqI0lIuIunYic9RBV9Gmw7YW/e6hkz6P5XV1orOuQKWNAYarglzEFKVZFOTsqx+V+qe+scVJZ4Zivic/BtcLMxD2DuqMeg9mQJhQGsDczAR7YKjFKe4h3wn03McxEA+qjotLQej4Fn9xqc9Jfqg2fL11IRwL/lSVylbucClW8g1BU836f7ffz9tZE
- al9k6k8h
- x2Vwdv2paKI8xG4zNAi2L8Gx3YHIDZ9ydby43LqX8YLO7q5pQT8euS5QQ1bdUgZz/I+9U+7rGfLPQir74qbiP9HIANluTaUCml+Iop445Vfy+TeswLgEXdR2MP+Bi7cS46kC2VY5FnMar/QFFvyshALwamIZSW/I0sTLhiSoRLyAXrmfCkVX3iG/UAhdgjy7mnnJoChfkbfGu8IYANd61IxPp84rCMEpomd8fCQn2B1vtMUAU31wwOtChp7B1TZcFWMO7dGrAoGYyEnda2hG0nqi0fP4jk9+Cga76AeZUXg1uRvqjw8eYkN2N/TanwmMb7ap9/Zoxjq3YXISvJyVSvizS6p1ATuZTRooYXyUIj3PnlFPEayCh3R/lm0aIC71f9peSSNjTRJgQD5ZJPKH2FznRt538rVJw2imp5COBvmldBBNFUHvaoyNPIe2gNbE1xc+AVrCFv6KUXUR5HdHBHhtiL5mxIYWj2MCm0FCvg9bKTcbs8PBwj/XFIDUOhKmdRBMvQcp0RemyN/tVI0MVDO5ACuT8qnUDbx4EaF6/wIJNVzSZmPGZwgJd23EMJeWpe7QEZGQuAcpMGXrnnOOYh8NEQPlC3qiVaYWBZa28m116jlua+iRwNpRkwMDX1q0FfgaFGhVH/2q4oJOiggHF3TaK/80sNp8ZYmpJHzABCcgzd9nXHM5XbsCDXNDAt22x9xMOns29qfkF+hrVPWyh/hcFv+3TNXHbXRDITJQfCZCD6Lm8jvSPYp1bVjzPLMDRYH1a02WY/DDIpK5hpiM+l33cUsma4p4SXFmZ4MQChPr4aNzsZo9MX3ht/HF1R4ljiVUDCVezVr40VwyFmBHfP1hQBvez52kclhkleayYO3QKmGpwMnPTGHzf3rzJfGg9Cgq3CWH/AWQRcr0Azw2Gk9+xBFAJ4IOXhKC51kIaj7Tk6iRwXTki1K79zQgcx5hMS7Fxt/pWB6A6RrWAaX1CV7akyBs3
- 0Mm6gGZi
- s/r4KUFn5hiWiucTd/jcjDWrvlo8yKrDYx6AnqGX/LpCeL+0r1GnbkdwM58sGd6qOWDUO2tDhLIuOHkBX8Ogwt+GLhUNadDz9X+Uw9zvfrg6GQ65r/L3Z1nLCB8mY3v3V03sS4LEjshTU9Xhl5CNBwlFLa6uJ3brbn1Nk6TUkP8aTndkrkiUs8bxNZHvLPsLmEhg1XlvlqGrC//qvpGOU4Mhjts0VHdt/TPdjM0WoVSKRl+zWw0OZ+9vARvD8p0i3mYbhJ0Jq+4I2YROSvXmZJuvSuj/uIe5wyF3MfJMprdYSmEr72KiKf+/2XdHcm2gPBtt3CMkcCECFZSQHj38aT8loqWTJZyxfGeR6sAEOSCwtyVQr5ylO4UC6Fou+Aa9tNJl/8RisgSkn0v/iSsRM/k9to+A8XzvipvoCR2EdrcZQgmJOMcwYh6qB47Eq+o1W104W2whF8JA==
+X-Stat-Signature: rxdbn334ujq9runcnedi3pz9yujwht5p
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 67135A0009
+X-HE-Tag: 1790742060-469380
+X-HE-Meta: U2FsdGVkX18IfeGpOHztxWo6lNN3Sm3AxtFIXLakr89Z6JpGI82TDRCVTy2vciLsivTOPbrSlRkNAUgpiVCbIJzOea04klxeSuZV0aTcuXZfqPKWMI/gB7pHOctvwhVxH0WZONlqAiyOdpttAHNMrHPeLX2MQXukHfz7N/vks2OemJktUlyOQVUEjYXm9A/JD5kE66alr/8sNHiQ/yDpMww0SkOYXGz7Is7fnh2fYX3DTmKkGY781R1Ekr+LoVBrbcIdSTgH4ja7p35hTfPL7JwwqEiLuqKvLwBXpjZynZRSiedIS4+1qeLUkGlvL8QSyOdRvYYl0TDa1xmHa0l1lYnZBH4MIkY4yrF3YiaAcM6Ol4s/4e3nCyzmtc1PcJjuaVhRx3aroQHUjbNEqjINuSa1gw1xNFR0BfJ1s5UM9VsddS93HlWinD7I7rFrXF48DuuJm+HFw4GMAW7PRK0fI+E2s1dMaukHSUVLJlS6hzaoi2DPb2b9CAZe7u8C5b+OHaT9mNpRPRzaUW4fedWjXNkg1fYGTwyBHw1r/LuaJl9PpiiuQ7Zg7Xm+uEyHaD+XXjd4idDrGmr2JzH+qC8qYOsFWYc4LKt5tAfCdsVFXHPPeRuMwNBbzrnhmKmDZ9F6ECtyfhkzpH6DwEoYuhnoqUjN4ICI092gFpBE9J1ajrwSCqq83XgnDvIfC1388FZkR4090LDEXfTTXP1SRjqvO8j1LijuxNkDvg6r8YPFanxJCugiIod5iGSUENrZYqLV27iEtYueYYcRUgc+QHifG/v2wqcc1TtZ28JPt/X/HCY22I7xiOJE3e4Mhz0635xVPfEL3cq45CPgt3sBfkeq63EwL+kSfZWFdEl18Z0ApOg4Fp31n3+eOiJPSETgHZ7id6BloS08iSXCVIRaPzNgdwAlnPpoZQ3g1t0gkoWyXVCEd3vMtGvEcNOWiDXVBU2EvXEFe/ZL6jwzerVtetZ
+ Gzupz/PW
+ Hy/Tk5X1YRpF5qHp8OGcbDZPDesTLBSXXHS1YY7Ko18rNSCW2xBe3BWtzitDTHPJyJK9e1xmgZ+kQHTfwdEK4276PfNHvn/TNHcWa8OkN1TFBrgJJH+v6BtME56s5YDgGpdaQHcJEiG0hExz8xRVLtm8vFKbv+1+vGKaDnNDMKpY7F3e8UeqbcDISCnYBSCFe4LEYb9fPhKxqt8K5PSJF/faYZIez+Q6IgABcMQxuhGNckBgngfKdfSeIFUnBfiPmX3FvtQukBNnr8LI2gKgDheth0qJnWnKzdIqHg6nQsDqoyhUgzYKSYxSKT2uLaR8zrIWAk8dlQdhQxf5emMixbhnOBA2YgXw7N5WA2p6IGLTovOIvMK4RGF5Jniiy7/NMbmY2YsVUy9kEEpbcPFeNSvbNIlpyojxbQLphA3wAlyJNcxQW4CMkZJ6u2yXLtW/eDkZ9UKRCEZnRaERdtSZiF5a+T1PK0OGCtAFKMMkHO+w7jHllljK2KRS0ONXAoqDyivMD5iZlWiIEGpZp5PoEY5gqekHy9hpY30BvlIXdxJg37RyaZtD7DPDop3poY4T5wY2nHUxujV/HL1d+GiKm9YYRxj0iHTT3ddNnWQ/xyGUxYKvBPuBpv6Ja56zJc6Fu6f/P3VzAsSRWdVUOJ1DiqIBya/tU9BXEGca91wmNnB3c4hx2iVuQDXy6lOfO8OZsLxamzLNEzrH+iDzd62QQaBUKqnz4hk5043zizs255lwPkg6XDAyoUg+Qz0JCBnYLGW4BLxwsuWVEp/a8FSFDQWpU+0rpPYnowpWEOQrp7a2BrMfzVeXMFd1Wq61c6fLVdYS+G6Jpgi6ctF0lefonBN4QibBIAFkiob1lceEeYaXj+Jn2Z5xY+s4/mQRQt1gwKp5EOxMKv491M8JK55NUAU8+p5pbrEnozXGMs6HX4GH+PCGlU0Ib0TcL27mqBFjzSOc9jk99HSeKx8RPusw39E/O1xjL
+ Bm8Id2BW
+ 1JNQHwkyaBCTZQvJhEI5cIVEuKBxwK+bcF3jYzzL6VJhuglt1Xya9Ayv9Sts7CTbjU6jxbpUz7mLOt6P2+iKuXqMYopdvHbSC0HTOa0XDYBd7QbrYzJeK696WN/4A3kOqy8kubXDrXJMCSWAt9ILjaVUqHHd0pbjJQW8ba0dODp7wReEqS3EWy1QewFd93oML/y/EGJHx8m0jwPtscDZ/qKSzsYrBkwA10UXtmuZqa9HQbXXYzXmRQqa5bgyY5/rk30wLyNgv+qHd6bOTXSA7uPuIdz1/3jHF7uCkZ3jKy048TydUVJ5oOS3LMU0fUZZG3mIUuceQBdHQsBT1sO5TqJ89tD6gTo5ee2Hl9bMaajFO8jVUrS0l8M9KN+A5iCEG6GyLqMwIgf8B8hwDgZPXU9Xsz7tly+MKC2DkbXuhnYeK9G3X2dqBVF5wuFKq1xRgV7JPugC24KBxHkb3Vrb3EvzcQL9s6eyCkM1IXXf9Y2sLx5Tfor7A9aSdRObJ9m5RBIgVcTsew2dbMkCc85aYrEjR71QsOgpfskDGl3dMyZzfzaVv40JpGkITc8XLVo0vIe++qGrvRf0z0F5vAb57qlPOOXFvrOfVmNYQzH0a5JDmdqWE+80k+Lbmkbn/dqdLbigr1Sx0/AFBGYwKadmgDgzNanNoZ9Pfb1V0IgBzBKMGluwg93+NHSDWwCudcPgjTOHWaFqghx6CipvCmO3y0LB/eMRDPHimoVUN2gY1nHEyPb9ODupGn3cKZcNJVU+v+lgnxzEpWglQk6rFgKImhWCFQqDt3Gk4JiA5XaP43DOUtzF/e6l+4W/wZP5sYOzUL9fRAJunxN0lfGCCtgZ7zlV64LpORjTyhbnmGiTusSvMfEGe/zosBiJDAGWbgr/tjmxhWJTYEJXjG+KSnpMK3WYUKuN/tFGH1fqd9TG4V4ILg8pLc/xyyVYw8s+HCZ1F0DD8iUrf0cCKzTn0sEIxrwqCi6aP
+ Z6JA6ltV
+ BlZ1CoZp7Ups/cec7v+BHlxy2Lloy+ZpUp2AKKvPLTjHN9f6x5fk1JQxjzM0OIKQMJeH3iZC0vnqtuq/LQrlaE7EmVaaRPlzbt2RrQTpFC2nG/4NOHkyup662aoS2NUyEE2PAX1wfknBqvYDAgtqfK5KkkiRODn10LM39hSvqk67lmt7phKP0vlmRHK/8Rw2bWSu1q5bYSE2wXr23xK4nTvdl2zyDkHB/zqsZvlfj6gC4Y7p+eplsQl+IyKbx2HLOxGlpJmVkEZU3oMyGw9icHGcDKJKkUe3UrI86PEEQk4A82Fxir8Vx6kFbR1FJGA7yFDR9QGGPB2U2Gw/oE+0nMcGi8lbeQv2eWMYM8EqNTz4sSRfWrY07mTESE/75DJmFChvjAV1r53rK5PDYEecUU4fh3gkYTyMDqg6xNrN09XMuFvGVKbC21lpOY28g8r04S4nETbu8fyVsZUARhkawGhWtnfwyrln12f2p84mIERrRWEB4sPMgsrppqEKvyhRBO94gNqBFLWNodn/hhQ/x23S+adTRA4TorQW6cR3pUukrnNzCZ1QbZyc+SgTjHpgkb6jaw1BMatthi42UkBX5J4WjiZY/VS4WCp6KZetyTMkepJv4Njbb9D9QCp9r4jMtwWjenxs++4TS+tWv3+ztdEiVexDDrlR+Rfl2NI+70BW9x1N+/Ag7DJf8+vPv9cvt3/XcV+zRX0462meNX3UA78VqfscXcAAmONOrA8Jwhl/VBYaOhneiMrgrpgdnWGnC5tZVcZLC2C6G2gcT/ZsZrauUG6+PY4jOVWqsF++6sklFmRwEWFQizC79aP+bJWWxwbTF9R202HMoHydHtOYg+Pv2v72x5JFIeTg7veN1B9C5kzxUzGHbr93/9+amdjq/pp0YP3nZets/cfAIE58lq7DMVr3Illcx7ESzh+jXXvtNhazL0iwEkboup+b6munswcDKCWwsd2cG2iyg0c11xykGWkei
+ bDPDBhxO
+ aNbv3jXrUaHs6WqoRg/FOADpwfptGAyxrEd5u8+rjcJSU8NkKeVzMy+EZVYo/sjAc8wvnkvRBSUGMdX5Rno30vndYj8qXw1ugsjcRx5tl5kFP6bZnhZLpyI7L3gQ2Ou5l9stFFDvbdunzQXke/bnzQ2A3jquEcXEmEACVDBmj9A2DpPtxD7Ul2W29gpvwwNmXnnj4wLaTmDIFHbfBrndgYZjY1HOLvK0CnLwYzX85Z5ao3ZJP7i+6wVoSaL8mkw0+RV7OL2fKaot3ETLqI8z0nRqL7WMBPPEBccUNFNkDQnMvk2nrcVlxD8FOqv3FEOzVkkqZrmYtxjZqmtNukcRDZYIDjS9QQXyEh+Gvy3UYOaAQjlK5Zsl/WWZ0ltPxqxsOgZU1lhcj8OpPpsIhd16ecyMog5ENCwIQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,98 +142,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 22, 2026 at 06:12:29PM +0100, Muhammad Usama Anjum wrote:
-> pte_t is used both for software PTE values and for entries stored in a PTE
-> table, so pte_t * does not distinguish a pointer to a software PTE
-> value from a pointer to table storage.
+On Tue, Sep 22, 2026 at 06:12:30PM +0100, Muhammad Usama Anjum wrote:
+> Some interfaces use pte_t * for a software PTE value rather than for an
+> entry stored in a PTE table. These pointers must remain pte_t * when
+> pointers to PTE table storage are converted to hw_pte_t *.
 > 
-> Introduce hw_pte_t as the generic name for a PTE table element. Define it
-> as a macro alias of pte_t by default. When an architecture selects
-> ARCH_HAS_HW_PTE_T, define it as a structure containing a pte_t instead.
-> This preserves the representation while allowing converted architectures
-> to enforce the distinction at compile time.
+> Rename these parameters in the install_pte callback,
+> write_protect_page(), and guard_install_set_pte() to ptentp. The later
+> Coccinelle conversion skips pointers named ptentp, allowing it to convert
+> the remaining PTE table pointers without changing these interfaces.
 > 
-> Name the generic wrapper structure __hw_pte_t so architectures can
-> forward-declare it when pgtable_t must be defined before the generic
-> hw_pte_t typedef is visible. This avoids header-order dependencies.
+> Some functions already use ptentp for such pointers, including:
+> - madvise_folio_pte_batch()
+> - folio_pte_batch_flags()
+> No need to rename them.
 > 
-> Keep the C type definitions behind an __ASSEMBLY__ check because
-> architecture assembly sources can include this header indirectly. Include
-> asm/page.h so consumers such as linux/vmalloc.h retain the page definitions
-> they previously obtained from that header.
+> This patch only renames parameters and makes no functional change.
 > 
 > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Muhammad Usama Anjum <usama.anjum@arm.com>
-
-LGTM
 
 Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
 > ---
 > Changes since v1:
-> - Name the generic wrapper structure __hw_pte_t so architectures can
->   forward-declare it, and explain why this is required.
-> - Use software PTE value terminology.
+> - Rewrite the subject and description to distinguish software PTE
+>   values from PTE table storage.
 > 
 > Changes since RFC v1:
-> - Add the ARCH_HAS_HW_PTE_T opt-in and generic wrapper definition.
-> - Exclude the C type definitions from assembly sources.
-> - Update the description for the new opt-in model.
+> - Update the description for the architecture opt-in conversion.
 > ---
->  MAINTAINERS                   |  1 +
->  include/linux/pgtable_types.h | 17 +++++++++++++++++
->  mm/Kconfig                    |  3 +++
->  3 files changed, 21 insertions(+)
+>  include/linux/pagewalk.h | 2 +-
+>  mm/ksm.c                 | 4 ++--
+>  mm/madvise.c             | 4 ++--
+>  3 files changed, 5 insertions(+), 5 deletions(-)
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2133aec4a2004..da60a8bdcddb5 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17140,6 +17140,7 @@ F:	include/linux/mmu_notifier.h
->  F:	include/linux/pagewalk.h
->  F:	include/linux/pgalloc.h
->  F:	include/linux/pgtable.h
-> +F:	include/linux/pgtable_types.h
->  F:	include/linux/ptdump.h
->  F:	include/linux/vmpressure.h
->  F:	include/linux/vmstat.h
-> diff --git a/include/linux/pgtable_types.h b/include/linux/pgtable_types.h
-> new file mode 100644
-> index 0000000000000..07da05d375c2c
-> --- /dev/null
-> +++ b/include/linux/pgtable_types.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PGTABLE_TYPES_H
-> +#define _LINUX_PGTABLE_TYPES_H
-> +
-> +#include <asm/page.h>
-> +
-> +#ifndef __ASSEMBLY__
-> +
-> +#ifdef CONFIG_ARCH_HAS_HW_PTE_T
-> +typedef struct __hw_pte_t { pte_t __pte; } hw_pte_t;
-> +#else
-> +#define hw_pte_t pte_t
-> +#endif
-> +
-> +#endif /* !__ASSEMBLY__ */
-> +
-> +#endif /* _LINUX_PGTABLE_TYPES_H */
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index c1ddf59c0d71a..5f462ec6fa5e5 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1312,6 +1312,9 @@ comment "GUP_TEST needs to have DEBUG_FS enabled"
->  config GUP_GET_PXX_LOW_HIGH
->  	bool
+> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+> index b41d7265c01bc..c34d826c5e4a2 100644
+> --- a/include/linux/pagewalk.h
+> +++ b/include/linux/pagewalk.h
+> @@ -89,7 +89,7 @@ struct mm_walk_ops {
+>  		       struct mm_walk *walk);
+>  	void (*post_vma)(struct mm_walk *walk);
+>  	int (*install_pte)(unsigned long addr, unsigned long next,
+> -			   pte_t *ptep, struct mm_walk *walk);
+> +			   pte_t *ptentp, struct mm_walk *walk);
+>  	enum page_walk_lock walk_lock;
+>  };
 >  
-> +config ARCH_HAS_HW_PTE_T
-> +	bool
-> +
->  config DMAPOOL_TEST
->  	tristate "Enable a module to run time tests on dma_pool"
->  	depends on HAS_DMA
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 624f37975e129..2a4f19fe0f696 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -1292,7 +1292,7 @@ static u32 calc_checksum(struct page *page)
+>  }
+>  
+>  static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+> -			      pte_t *orig_pte)
+> +			      pte_t *ptentp)
+>  {
+>  	struct mm_struct *mm = vma->vm_mm;
+>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, 0, 0);
+> @@ -1371,7 +1371,7 @@ static int write_protect_page(struct vm_area_struct *vma, struct folio *folio,
+>  
+>  		set_pte_at(mm, pvmw.address, pvmw.pte, entry);
+>  	}
+> -	*orig_pte = entry;
+> +	*ptentp = entry;
+>  	err = 0;
+>  
+>  out_unlock:
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index 73c2901b9adbf..dd75a673e108f 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+> @@ -1113,12 +1113,12 @@ static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+>  }
+>  
+>  static int guard_install_set_pte(unsigned long addr, unsigned long next,
+> -				 pte_t *ptep, struct mm_walk *walk)
+> +				 pte_t *ptentp, struct mm_walk *walk)
+>  {
+>  	unsigned long *nr_pages = (unsigned long *)walk->private;
+>  
+>  	/* Simply install a PTE marker, this causes segfault on access. */
+> -	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+> +	*ptentp = make_pte_marker(PTE_MARKER_GUARD);
+>  	(*nr_pages)++;
+>  
+>  	return 0;
 > 
 > -- 
 > 2.47.3
