@@ -4,103 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F6BECA5FC1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 08:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FEBDCA5FC1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 08:54:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF48D6B0088; Wed, 30 Sep 2026 04:53:46 -0400 (EDT)
+	id 04C6B6B008C; Wed, 30 Sep 2026 04:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA5CB6B008A; Wed, 30 Sep 2026 04:53:46 -0400 (EDT)
+	id 023E96B0092; Wed, 30 Sep 2026 04:54:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBBC06B008C; Wed, 30 Sep 2026 04:53:46 -0400 (EDT)
+	id EA91C6B0093; Wed, 30 Sep 2026 04:54:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 857A56B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:53:46 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E032E1A0642
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:53:45 +0000 (UTC)
-X-FDA: 85269815610.09.C272DF2
-Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 18FA010000A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:53:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=chNeUyIU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C37B96B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 04:54:25 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D87A61606E5
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:54:24 +0000 (UTC)
+X-FDA: 85269817248.11.2E3EBC5
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 445384000C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:54:22 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aJzc5jIL;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf01.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790758424;
+	s=arc-20220608; t=1790758463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ASh1LR56EfBikA9krZgbBpC09kFpBHQaRZVce4w2D60=;
-	b=iMb7El0d1MwPUtdZy7yieaSSwtsJTXVyhiv5fR6FxK6jcIQFC9t/hGiwE+TUuIJb8/zKG5
-	mtrbcE5V+/+Sx7B1n3MIXOQOETKDQraWnRYpb2CqWCNqwxJ1rw7vm/L46e7ObjYL8Qo3u6
-	EhETXeUj0PMK/KUFVXExkhhEqdp9ZSo=
+	bh=0UFYYKBUewXLJbGJZ9BEDna7/dDF99emZQefLuG6AWg=;
+	b=zfN8pVaPn3TXk+ycaRwj8On9ZyGbGBq0xA/3//2Rqnu6Uv3cofr18GN3zMJd55kq9qAZvB
+	plRxLrohoGp/nlEbXbBVZSPzeJ56E/OLBOfhrI4WB+UiUdv278LtVCvuMSScCrEd5WMwxk
+	7Zzb28M0GpOrbJUE75yulbG5MIYZOXU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=chNeUyIU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=aJzc5jIL;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf01.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790758424;
-	b=t2RVjtzjDufk8uBXWoBf4bHZiHKnCdo7FfjEVh9k59GazB1lM41YOxC+zyV7kDtFzGJCaB
-	oweqDZdcqHZgEqEfo8X5E8Ny41mMxvNz4zxMgq/KHEGqB/QcgNIIKmtQicLWebSusO8at7
-	xNHojgyGOA7aWKwNfFd0aQguIeaggRc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=x3C9eFMj4s4C+4L8a6ck2RX+0F5Vx+DLli30NnboIh4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790758418; v=1; x=1791363218;
- b=chNeUyIUcRJiEYe/HzjokB4VaM4k1Frk2WTry5hanTEkS2tnrOXiHZfITnCCETi2CMJOaiMO
- a9onNnLbzGsVFzfoiyTFg60d1ZrM5Cu4ff3Nybfa2HFrZRe8xX0droNFettjFw8mGlH/4wzy2hu
- qR9xeDShk5xtbFQHMl2IcyM0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id d8889dd78a97ab2f;
-	Wed, 30 Sep 2026 08:53:38 +0000
-X-Mizu-Trace-ID: d8889dd78a97ab2f
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: songmuchun@bytedance.com
-Cc: maddy@linux.ibm.com,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	chleroy@kernel.org,
-	ritesh.list@gmail.com,
-	sshegde@linux.ibm.com,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	qi.zheng@linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	muchun.song@linux.dev,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common vmemmap path
-Date: Wed, 30 Sep 2026 16:53:29 +0800
-Message-ID: <20260930085329.17337-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260929053231.66085-3-songmuchun@bytedance.com>
-References: <20260929053231.66085-3-songmuchun@bytedance.com>
+	t=1790758463;
+	b=NZcTF2Rqxcm4OleL+42+/rmApUSa7e1J7zfZmYC6OfWj0FoJ5O1lV7uF4XbC940JyK+/AO
+	9lXX7DtY4Md3EWJWFBqTlP0jY0RwNDjzuo6JaBDBKOFu2akzhTt4nmjODiD2aH82naglC0
+	9y8hp2Qtg4ZAWo5yKIwafd3xZFlYL60=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=0UFYYKBUewXLJbGJZ9BEDna7/dDF99emZQefLuG6AWg=; b=aJzc5jIL6ZEo+riFOwoxR1oSNm
+	C2hf1HPOb9+KTK8px2ooi5YPLIeRFxTZoinR6pVkeYDaZKn09QeR00yhVqRRjAPKdAPRJkoIrT7S/
+	hRxVygx6bLPrPlKZSnQKreIhSWLLbwZnFvcJlIoRpu0zHhaZDBm7i980rS/vK3fK3nujDtN/6z8l8
+	fLgOlnTOkOldZJL6u6dcGPuFYD8IOAfYYLYx7hVPjXkwkJJiUSDbMGWUxsizvsvnVwzDCw78nf0AV
+	IzzNDXK6Hdr8Iec9g2P2seZ7jfrgAs9zrZtJEFt/4RzEbuMhSVTPiYHQJ3yrkx4qqkpIjr6CULMaD
+	pmozWVDw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xBq4s-0000000B7se-1SQm;
+	Wed, 30 Sep 2026 08:54:14 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D9DFA300673; Wed, 30 Sep 2026 10:54:13 +0200 (CEST)
+Date: Wed, 30 Sep 2026 10:54:13 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, virtualization@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com, linux-kernel@vger.kernel.org,
+	Christoph Lameter <cl@gentwo.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bo Gan <bo.gan@broadcom.com>, linux-mm@kvack.org,
+	linux-arch@vger.kernel.org, linux-coco@lists.linux.dev,
+	kvm@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>, Andy Lutomirski <luto@kernel.org>,
+	linux-doc@vger.kernel.org, linux-hyperv@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>
+Subject: Re: [PATCH v2 2/6] percpu: Bound decrypted storage for all x86
+ encrypted guests
+Message-ID: <20260930085413.GH88198@noisy.programming.kicks-ass.net>
+References: <20260929040256.543767-1-zack.rusin@broadcom.com>
+ <20260929040256.543767-3-zack.rusin@broadcom.com>
+ <20260929075426.GQ4120091@noisy.programming.kicks-ass.net>
+ <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 18FA010000A
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CABQX2QP0+Jr6gG0nZkDggvyGWCSHMNVKPPavZTYBqH+wg7rdMg@mail.gmail.com>
+X-Rspamd-Queue-Id: 445384000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Stat-Signature: rkqmip5fz3dnqemstircgwmjuq4jb8gz
-X-HE-Tag: 1790758421-192348
-X-HE-Meta: U2FsdGVkX18paTpqcK0NhzgRr29WJN770N6EdBG9nAV8RNQBksp82mQCHMNqG7EPTqmWByO5JNh9LVad6byazHpAP8syK2u5cQPmeRcoN+nP5j5CkeW2YJpCmZVkKbIZkp1bICuLD218m00geNsVFypvCbQVj6qdcY9JufsGEt0G5DUIX3taCnMum4EEeSyx8XwNa0SaRTgzLkVTFEP1Qo5U75eXlXkZHOujieyB5u4HIoVQzDY/LahAbYHgmgabd5/Zy/QfNIQ6qB/RiK+GkqO945/QMcpvCBIRtajZbL8d9pnVO+UliUw/YhfXs17IZ+tkOZvC1u1MW7iZ5rcGwyBg5t0HWul09gOZ7oLVv6Gktphi/cgbxVT9Hxtt+PwM5ok76q5w7a0LRtd6/5PVSCsFpUjI9CmFOGHi5mQEwBdLg+cdG8aD7gUNds72RK/BU7ac+46DB+3hGABOW3dWgTU8fFFwYooJ3BEwT8zn6Rufd0kUi5HmRtljr7iHzBMnROlCwHz56YGn6DsgBvwDozxX4DXRhu9Aa42jxzsvbpGjySUjZ1xnJUssC2ukNLwI5jfALvfgQzw2AweyhQ+NWluCUJOQOd95bzgNIyekQu55tDmjfA8UJQwudUggeVBNdYoUJnfoD5Jn7Em+hfBSY7MWkci0hdaxS3dNBHlpr9k1n6YuuZBkynzc5pfkdBNbQT33x1MFOx5UuaSKFUOQrCKxqm2ixp223fBiV3PWcByv4NeCRfVvhxduemoNoBev2L/TiomKb8zl9kGgJ1gboQZwEXoBebXp9REax18O3JBVsYWLwCYSWbKQfutACRWFOKUDDpjVEIPkJ5rH+mvJlbL7fojI0dcAfWrodPkbKZOM1X5nMNcAzpbY5pKDfaa5NpFIc2wpfToPhkPd8jqc5LMDwlY2UIWA9RW1IULSbDHUy2xhoczgdQJtgV+ij15w/y9rvGUZipGphP48Lr2
- zK1NGA9t
- G5OrB8kSPr0bBmyQPIw+KWPJhxXV7DPgN7KCsa7+J4+0+PLwwphGBVbxvjeBm/JEwEdvR/eVX4Srdkep3mBIjtIokQwFHj45W1qyLLHvaUuGe3xMjc5WgbxFkBDJAbMbf2RObsvrzV1yfWWZaxNMTegDamAy+9TraF4zzbu9EXZI18C++iNYpn5hKJquu+87tBjmN8ibooyQns8JSpYgi2/ASwF2wt4dCcYCrxr7uNKp1P7UCY0DhJsqx+hvq4Y8UkdimfxJsQb3h7UruuuTF1uCC844KUlxJWqCIxQpIb9JPPUD48dpkOjKs9YQe+1Kcy4XJMz7JunWscoo=
+X-Stat-Signature: 8gb5jcym6bcg6mjdo4y41dtr7ahgdx9x
+X-HE-Tag: 1790758462-142948
+X-HE-Meta: U2FsdGVkX19uIppiVhvdoX4dSTQ4mUFKMd/re4gkb6/ZHHYhWBiUYUln5Im15gTZNq0RwceEndiyNVBPtVjEa88RlvklTaunlsm+w0lCUIOufjrAD60CeHC+1frsU+YZlHbi3X+/NqgJaurqB6bn0X2v0MhTMLblaTIKSSHcWQLTPmlRHr7MztCoCUXFgEfgPXJkXf4DcIsaLQ5wZrJJhcpZppgHHohyWoWC7lq+x5QzXu+kVAXT5eqdQKW90dVLZ/E8BhzCl5CJXIDZL/XWbfedxIlRZWuP67vOsGRhmEt/J2JTwyB1X/N203C0zh4jwkki/NZoh8HhN7N555Q8i3Kcglxd8GJRD6g8IW6AzUpZV0+ZCl1cZ9ZHfmT4g55KEDZzli+oCyOTcbnukNHa8juJdwic/i518+i9bqO382YELhDxXV2E5vBqp2LjBf+8UmjxifbjGfpcCFSI6JxTdMm5Je82XCYH3zFckU5HFMfP023PuY70Xc85P565lOyF6XObEWPCoCHkwjhwpQah4sMwiRSM4UImd/yQCPZIgkkZFu8DFXs9dA0ZZz5SXthI65GR4ZzgPpdRYZ1F5kO5fRvBQjVChejwlcNYz7u9G6VNdy9MKpq7ET/wAKKAyv0PPq+0uf5d5pxyVVNqIK3UMJBiw790cwRdrsZ0Yd5ggHI/xfS7qGqIP/6yN4sJCRj50bK5TdxRsF9W+/0ueXZgU5wrOnuncG/tyLeFkY3rtJr36/vQYsXvDJmokiA2Bl+ZzipR9qUoGeXWBSuvPo+CdXHwbg4G1VfhlZ0YD4Y/cVBbnHrHX2hQRyswQq8tU9obi9F6HweZFiPZIgP2ce0nh5qiVJvU/9mIeGi6s6nfTfnvMfp0fcAjSr1ikR0JpStUJwIPTtXws5tFjwqt52f+9lweCXd3V2CzPY/z7rasSclgLmmAu3gO40wmSV3n/3irWOjhzqVy3e6lF3W9mOM
+ 8rUDQBbE
+ steO5khLulm8l1nOPl/DMnTARpBCOOvPeaxdhBiY7p95sfC94yAPvoFztRzhSUBTwDD1SDEaQKu28i2tkEcOnGvbKHLwblXVujw1FLvcp22f9mn78tfLik0XwfuEcXqtxDtUMAk0SH4itLWt7xV1q38rUmQcj0AwHNWVh0IEQgN7kbPYrG8AKM2coOK7iA0UBC38ukPiIV5+qcR+2nEpgflQbB7JIX55WdsHaz/2V5P3G4erPEkQ7MJBplQnLMKpigl/wMS7+jZa2n631NIH9cCPF3OwiCIhDG0K5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,194 +120,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 29, 2026 at 01:12:45PM -0400, Zack Rusin wrote:
+> On Tue, Sep 29, 2026 at 3:54=E2=80=AFAM Peter Zijlstra <peterz@infradead.=
+org> wrote:
+> > On Tue, Sep 29, 2026 at 12:02:51AM -0400, Zack Rusin wrote:
+> > > @@ -1022,11 +1024,13 @@
+> > >   * Note: We use a separate section so that only this section gets
+> > >   * decrypted to avoid exposing more than we wish.
+> > >   */
+> > > -#ifdef CONFIG_AMD_MEM_ENCRYPT
+> > > +#if defined(CONFIG_X86_MEM_ENCRYPT) && defined(CONFIG_SMP)
+> > >  #define PERCPU_DECRYPTED_SECTION                                    =
+ \
+> > >       . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __start_percpu_decrypted =3D .;                                =
+   \
+> > >       *(.data..percpu..decrypted)                                    =
+ \
+> > > -     . =3D ALIGN(PAGE_SIZE);
+> > > +     . =3D ALIGN(PAGE_SIZE);                                        =
+   \
+> > > +     __end_percpu_decrypted =3D .;
+> > >  #else
+> > >  #define PERCPU_DECRYPTED_SECTION
+> > >  #endif
+> >
+> > So you're page aligning something that will get different protection and
+> > will thus shatter large pages?
+> >
+> > That is somewhat uncool. We like large pages, large pages are good.
+>=20
+> I'm a huge large pages fan too. I have a poster in my office and
+> everything... And I never do things that are uncool. I have a wwcdd
+> (what would cool dude do) bracelet and I look at it every time I make
+> a decision, which given that I'm old gets on my wife's nerves a lot.
+> That is to say I'm handsome and innocent.
 
-On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
->The common vmemmap population path cannot yet handle optimized Device DAX
->mappings on its own. It uses pfn_to_zone() to find the shared tail page,
->but Device DAX populates its vmemmap at runtime before the ZONE_DEVICE span
->is initialized.
->
->Teach the common path to use device_zone() for runtime optimized vmemmap
->population while retaining pfn_to_zone() for early boot. This allows the
->same path to support both early boot mappings and Device DAX.
->
->The backing PFN supplied by the Device DAX-specific population path is no
->longer used, allowing the redundant lookup and population code to be
->removed later.
->
->Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->Acked-by: Qi Zheng <qi.zheng@linux.dev>
->---
->v3:
->- Collect Acked-by from Qi Zheng
->
->v2:
->- Expand comments around slab initialization to explain zone lookup and
->  page refcounting (suggested by Qi Zheng)
->---
-> mm/sparse-vmemmap.c | 64 +++++++++++++++++++++++++--------------------
-> 1 file changed, 35 insertions(+), 29 deletions(-)
->
->diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->index 8219abc6c3e5..ee4c113ca938 100644
->--- a/mm/sparse-vmemmap.c
->+++ b/mm/sparse-vmemmap.c
->@@ -237,18 +237,43 @@ static __meminit void *vmemmap_alloc_pte(unsigned long pfn, int node,
-> 	struct page *page;
-> 	const unsigned int order = pfn_to_section_compound_order(pfn);
-> 
->-	/*
->-	 * Device DAX still relies on vmemmap_populate_compound_pages() for
->-	 * head/first-tail allocation and tail-page reuse.
->-	 */
-> 	if (!vmemmap_optimizable_pfn(pfn))
-> 		return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
-> 
->-	zone = pfn_to_zone(pfn, node);
->+	/*
->+	 * Before slab is available, vmemmap optimization is used for early
->+	 * system RAM, whose zone can be determined from the PFN.
->+	 *
->+	 * Once slab is available, only ZONE_DEVICE memory reaches this
->+	 * optimized population path. Its zone span has not been initialized
->+	 * while its vmemmap is being populated, so pfn_to_zone() cannot be
->+	 * used. Obtain ZONE_DEVICE directly from the node instead.
->+	 */
->+	zone = slab_is_available() ? device_zone(node) : pfn_to_zone(pfn, node);
-> 	page = vmemmap_shared_tail_page(order, zone);
-> 	if (!page)
-> 		return NULL;
-> 
->+	/*
->+	 * During early vmemmap population, the shared tail vmemmap backing
->+	 * page is allocated from memblock before its struct page can safely
->+	 * participate in page refcounting. Therefore, no reference can be
->+	 * held for each shared PTE mapping, and the mappings must be unshared
->+	 * before the vmemmap is depopulated.
->+	 *
->+	 * Once slab is available, the shared backing page is allocated from
->+	 * the buddy allocator and can be refcounted. Hold one reference for
->+	 * each shared PTE mapping. The architecture vmemmap teardown drops
->+	 * the reference through __free_pages() when removing the mapping,
->+	 * preventing the backing page from being freed while it is shared.
->+	 *
->+	 * The backing page may be shared by enough PTE mappings to exhaust
->+	 * the positive range of its reference count. Stop populating the
->+	 * vmemmap if another reference cannot be acquired.
->+	 */
->+	if (slab_is_available() && !try_get_page(page))
->+		return NULL;
+:-)
 
-BTW, shouldn't __add_pages() undo the earlier sections on a population
-failure? Say the first section is added successfully, but populating the
-next one fails, e.g. due to an allocation failure:
+> The alignment isn't new. It has been there since ac26963a1175
+> ("percpu: Introduce DEFINE_PER_CPU_DECRYPTED") under AMD_MEM_ENCRYPT,
+> which common distro kernels enable. This patch extends it to TDX-only
+> builds and adds the boundary symbols. On bare metal and in ordinary
+> guests nothing changes protection, so no large pages are split.
 
-void *memremap_pages(struct dev_pagemap *pgmap, int nid)
-{
-...
-	const int nr_range = pgmap->nr_range;
-	int error, i;
-...
-	pgmap->nr_range = 0;
-	error = 0;
-	for (i = 0; i < nr_range; i++) {
-		error = pagemap_range(pgmap, &params, i, nid);
-		if (error)
-			break;
-		pgmap->nr_range++;
-	}
+Right, I saw it is pre-existing, but you made me notice ;-)
 
-	if (i < nr_range) {
-		memunmap_pages(pgmap);
-		pgmap->nr_range = nr_range;
-		return ERR_PTR(error);
-	}
-...
-}
+Anyway, the thing that wasn't immediately obvious was that we only
+really change the protection for (sekjoer) guests. This means I mostly
+don't care.
 
-We still need to undo the sections already added in the failed range,
-though ... memunmap_pages() won't touch those, since it only removes
-completed ranges.
+> In confidential guests, yes, converting each CPU's page splits the
+> direct map around it. The alignment doesn't cause that: a large
 
-If the range starts at a section boundary, we'd hit -EEXIST in
-fill_subsection_map() on retry while those subsection bits are still set.
+Nit you could 2M align, so alignment is somewhat related.
 
-The old DAX path had this issue too. Could we roll back [start_pfn, pfn)
-in __add_pages() as a separate fix? Something like this:
+> mapping can't be part private and part shared, so a converted page
+> can't stay inside one. The alignment only keeps unrelated per-CPU data
+> out of the shared page. Because that page sits in every CPU's per-CPU
+> unit, each 2M mapping that holds one of them becomes 4K mappings,
+> including the ordinary per-CPU data around it. In the layouts we've
+> tested that's most of the first per-CPU chunk.
 
----8<---
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 796af1028ee2..16a0a2c885bc 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
- int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
- 		struct mhp_params *params)
- {
-+	const unsigned long start_pfn = pfn;
- 	const unsigned long end_pfn = pfn + nr_pages;
- 	unsigned long cur_nr_pages;
- 	int err;
-@@ -417,6 +418,10 @@ int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
- 			break;
- 		cond_resched();
- 	}
-+
-+	/* Roll back the sections added before the failure. */
-+	if (err && pfn != start_pfn)
-+		__remove_pages(start_pfn, pfn - start_pfn, altmap, params->pgmap);
- 	vmemmap_populate_print_last();
- 	return err;
- }
---
+So perhaps a little more invasive would be poking at the per-cpu
+allocator and having a whole 'decrypted' pcpu_chunk which is 2M aligned
+or something.
 
-Hope I haven't missed anything :)
 
-Cheers, Lance
-
->+
-> 	return page_address(page);
-> }
-> 
->@@ -260,31 +285,12 @@ static pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, in
-> 
-> 	if (pte_none(ptep_get(pte))) {
-> 		pte_t entry;
->+		void *p = vmemmap_alloc_pte(pfn, node, altmap);
-> 
->-		if (ptpfn == (unsigned long)-1) {
->-			void *p = vmemmap_alloc_pte(pfn, node, altmap);
->-
->-			if (!p)
->-				return NULL;
->-			ptpfn = PHYS_PFN(__pa(p));
->-		} else {
->-			/*
->-			 * When a PTE/PMD entry is freed from the init_mm
->-			 * there's a free_pages() call to this page allocated
->-			 * above. Thus this try_get_page() is paired with the
->-			 * put_page_testzero() on the freeing path.
->-			 * This can only called by certain ZONE_DEVICE path,
->-			 * and through vmemmap_populate_compound_pages() when
->-			 * slab is available.
->-			 *
->-			 * Use try_get_page() to prevent the shared page refcount
->-			 * from overflowing.
->-			 */
->-			if (slab_is_available() &&
->-			    !try_get_page(pfn_to_page(ptpfn)))
->-				return NULL;
->-		}
->-		entry = pfn_pte(ptpfn, PAGE_KERNEL);
->+		if (!p)
->+			return NULL;
->+
->+		entry = pfn_pte(PHYS_PFN(__pa(p)), PAGE_KERNEL);
-> 		set_pte_at(&init_mm, addr, pte, entry);
-> 	} else if (WARN_ON_ONCE(vmemmap_optimizable_pfn(pfn)))
-> 		return NULL;
->-- 
->2.54.0
->
->
+Anyway, as long as this is sekjoer guests only, I really could not be
+bothered much. Proceed, but perhaps put on a comment in the
+vmlinux.lds.h to clarify this, for those of us who do not live in
+coconut land?
 
