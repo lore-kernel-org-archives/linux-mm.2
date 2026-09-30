@@ -4,94 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 809C3CA5FBA
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:33:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D95ACA5FBA
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 11:00:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 774586B0088; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
+	id 422986B0088; Wed, 30 Sep 2026 07:00:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 725476B0092; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
+	id 3D3096B008A; Wed, 30 Sep 2026 07:00:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63B926B0096; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
+	id 2C1BD6B008C; Wed, 30 Sep 2026 07:00:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 40AA96B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:33:43 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA2E5A7290
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:33:42 +0000 (UTC)
-X-FDA: 85270067484.02.E2CFA38
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 3F483A0005
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:33:41 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mFYtGKpD;
-	spf=pass (imf25.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 028D26B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:59:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54CE1C0711
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:59:59 +0000 (UTC)
+X-FDA: 85270133718.14.98B19DB
+Received: from mail-oo2-f36.google.com (mail-oo2-f36.google.com [74.125.231.164])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 8749340002
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:59:57 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="P5eoR8/w";
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.164 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790764421;
+	s=arc-20220608; t=1790765997;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+DHevYFtTq9LXip3P6yx2LmGPrDIe2gZf1mJcG2SySg=;
-	b=kgyxG6vp+beZf4kc/RBR708WcG46IlMH7oQhpqXwwIYjD100sFLelXi2YiDI4d3KhhIb3l
-	roZ/6D+e3aUku1z20TlDNO23+cFH0OVaKUez5AZk2VXeB54BH/5HMMplc9oS/f3p1zfN31
-	a9/HQeaZOn3NflNH5jGgRcen8CQ9Vi0=
+	bh=Woc7loh+3fAfJUM+qt0sDz2j23/UUVhg4Uqbsoe5iBY=;
+	b=F4Lw9cFN/KUl5hIL3z3dE2z7oPHhJfNkEAJiQqAbqssYXVXWg6ScjKJQGXwjhhqTq3rci9
+	hN025+zN83hLl0MGfZT9Yb2H0mrQvBuvMu0Cl58Vw4MVoE4gHfdVA45av76Ns6Nu0PbxvN
+	CXUyDpJI4tTEoIiDgkKqkIxPR5TL0os=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790764421;
-	b=C8GD8RqyGaQUQxG0j9quJit0LjgWi6nT75S4hIKaPwBVDOZEMqNqlkLTlu0fBYU3gGTm0F
-	qt49fGNOXfHw7TLx/n1eaFSXwvBgkGfzyOyimrneC3j1FYo8YkiECGudhJg+zKi21X0FOR
-	oS553CkrDPzZWiT+tstAHycpi3J4EQY=
+	t=1790765997;
+	b=2fvRHnMZqJQndSNCwhqdkqG8pxvm8jyH7wYiCGu24bHNHPlPr+JvbMSCBOU9mI+VTcggPx
+	IF1CE4xXqcwwoQsO+rLuVt+b6MamCUxUS7aJtzwFEhbupMzNl6Wl9zk0PP5+orN+TDaRLc
+	1qv7VQBqwZeck9lkgMhtXHivEdu2zqM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mFYtGKpD;
-	spf=pass (imf25.hostedemail.com: domain of xiang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=xiang@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BAA5A60236;
-	Wed, 30 Sep 2026 10:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7321F000FF;
-	Wed, 30 Sep 2026 10:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790764420;
-	bh=+DHevYFtTq9LXip3P6yx2LmGPrDIe2gZf1mJcG2SySg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mFYtGKpDX0b9KjPmZS692yinOoPah6ZGGq0I1FramSDyXTiA7QYBhBVI/JblfVCfr
-	 N57pJP5APLX6fXbpxyr4r/3q72ud866zC8eDGWyH95Sy2BrvvNZpGW4WAW356UJ/JG
-	 2laHbLBfqLu/EvUNG2afTr6QYgcVIXFJbCDhQPubqAf4Xr9zPpZTfwQE0QkvsuIxxp
-	 ssMKDyL6dwhgqaxlnvnJncyNWYTqjTfBsEJt9lkDJG/HxtXSOhga4P2W0xTW9w7BHZ
-	 w8N1xYJZYAKmabHd63kHkYjxZWrJ6NxdQ2MMo6qBPV5Q2IRZSkmtg9EhMo8PyVPQcV
-	 e0e4IPAjn50vA==
-Date: Wed, 30 Sep 2026 12:33:33 +0200
-From: Gao Xiang <xiang@kernel.org>
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Gao Xiang <xiang@kernel.org>, Jialiang Huang <huang-jl@deepseek.com>,
-	lance.yang@linux.dev, baohua@kernel.org, damon@lists.linux.dev,
-	david@kernel.org, kunwu.chan@gmail.com, lianux.mm@gmail.com,
-	linux-mm@kvack.org, mst@redhat.com, ryncsn@gmail.com, sj@kernel.org,
-	virtualization@lists.linux.dev, xueyuan.chen21@gmail.com,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [FYI] DAMON and virtio-balloon in DeepSeek's DSec paper
-Message-ID: <arzlfSOgtC-CLoZt@MacBookPro>
-References: <20260925054408.10431-1-lance.yang@linux.dev>
- <20260929123241.1408414-1-huang-jl@deepseek.com>
- <aruyFPzEe3pS_Qzx@XiangdeMacBook-Pro.local>
- <AA71E56E-F29A-44B2-B5A0-7806CD684B21@linux.dev>
- <ary5Nn9le4xG7_-N@MacBookPro>
- <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="P5eoR8/w";
+	spf=pass (imf27.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 74.125.231.164 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo2-f36.google.com with SMTP id 46e09a7af769-82067e86a89so171076a34.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790765996; x=1791370796; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Woc7loh+3fAfJUM+qt0sDz2j23/UUVhg4Uqbsoe5iBY=;
+        b=P5eoR8/wpw88nIImO7zItU6Ly0txAbWMSCIR7XBX/CUQKV9zTShWgVJp4MoLvn/ioC
+         H1XqUzOUXwnhlM1IoFUDMyG3b+1Z+cubTORx4/E7hXYdQZCJCZPoCU/e+GmlpCbBk9La
+         SGemreosdoGygbP6Mge34KgYwbfoFUc1EKfzFB/6pbzAsFLta48RRk2GeC1DzELbQ77C
+         hVSFCZZLB6/XYtKwqZhXf+APGUX9WQ2E1olVTxpubujJJZ+nRROFSEEN58jzm4oKsjIf
+         z5bHLs9SABC6LD+peaxXi0AV4l4CSKmRlu69fq55rirtqnRtDpgiBfXfx0DIYgBIvhXW
+         Wv3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790765996; x=1791370796;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Woc7loh+3fAfJUM+qt0sDz2j23/UUVhg4Uqbsoe5iBY=;
+        b=M6zA2whbtyn+0944bF3E6LQbPFxvLVmnXnG89NOvsNyVfjJ9IMS6tZnfj1j0+QBRwG
+         ZbxFg0yn8r9yxrKL9vc/vFxlm//QnzAAhxxto2ZNGavgU99gD8iYJkzxr1r4LAeu2wli
+         E/8kNEb3EBNmidLiDjhk4zJx//8oj0qRlBxjYmRjcjBGGGi/tcFJJHpOL63Bp9jsn5UF
+         nJCsyl+uwFIFQruWSEKonpoCnsBs8O9xw2Dlg9EDfpbPjbhvY5a14ebmLsPP2PKBDUTg
+         mwA/lDp84vkrEN1OjIhEx5q124jFAYil4LXHitIyv4HEAMejdVqoSPeKN2UTl75tZub2
+         luyQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwba8KOXaB6XfzyxAuo8HdhY6ZTqd5esMXZdSBFazFaGusZbcoe8JsGNk+JXK6wowGHXJBa2rKQMw==@kvack.org
+X-Gm-Message-State: AFuF++l5vquw1gV/PQs7+qh3sWB4KP2g6qcP0GPpuICnhQ4aXBFNqp7L
+	o900J1FsEE78GmdZ6vCG+iP2fCNVsADpzC1qcFrmQ3ysC53ggrP+6c/Z
+X-Gm-Gg: AYBFou1M1UXETRf2ABBPzYOyDex1bJnFR7XT3L1ABxJiE8Focm7r33464fGMenyjtBo
+	km1JkJc+jnbGcUlfyAqXie3wTU37H2OSlFu6M7si3p+sKELHhLleCqKUvI2jeCqP/SSheltxzlz
+	LajRjPWwuK3710sjmU5YWb9OxVfjMnP/ZluhPX3GWGWexh3AjI0Gv7539CfvbPXADBDUL5p3ih2
+	485YSTfD0zax4/fDyIeNmiZNneLwYCMWpY/nzHBcw96TjIbgEELrPDksGLtO1h6U43e42kHciN/
+	neWUP+1HGd/+1mWWKp++mJOnQuoQ8Mdf0VKgNlnkgs3x7ph5+AY9sXtsSt+//ktZ8+ley/DgafY
+	yzytTinqtDt/g46nO7DOcY8mgeCbrwQz3PMNvRu1Ci1+SEGmUNiDNA/vtICP3FFMzrBz0HiPX1y
+	q8bbTAtMt/fMppBQ3Vq1apzFT/9HAG+85ufMUXzhcilvoWEL+5dq60kGT+FwfDqwytQflHU309a
+	QT//HBtcqxGlKvGH+LS5CAKaU9h0g==
+X-Received: by 2002:a4a:ee14:0:b0:6d8:e140:66d1 with SMTP id 006d021491bc7-6dcf4b6698amr692225eaf.23.1790765996325;
+        Wed, 30 Sep 2026 03:59:56 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:48::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6dcce85d9bcsm1045955eaf.6.2026.09.30.03.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 03:59:55 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: Li Zhe <lizhe.67@bytedance.com>,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	ziy@nvidia.com,
+	joshua.hahnjy@gmail.com,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference with MPOL_WEIGHTED_INTERLEAVE policy
+Date: Wed, 30 Sep 2026 03:59:52 -0700
+Message-ID: <20260930105953.3956219-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <arzR_QtoMPtM5kUB@gourry-fedora-PF4VCD3F>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CEE47F27-874B-486A-995F-E223249659FE@linux.dev>
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jatszfcje9j6557hqxrqqcgh4xhknhxx
+X-Stat-Signature: 5xn479r6ma145ruhwzwy9j3wuyf3u13d
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3F483A0005
-X-HE-Tag: 1790764421-512836
-X-HE-Meta: U2FsdGVkX1+zbtj5hg74Wg/EyazgAaZm7eNZp1ox72WdG/Jr2ME/JiRds0Z4sj2YYW6pY2slJ/hSkOLUwytLPDtbMz/CR0eXNgnCaec49bkp2Z/UWL2c/WjXoAiD/9qrblYKhfZ+/pd+0fVebwNztDtMvaMttZW0BQynEWrCIdj12GhgZop2+JAotB1cQ8+6xTiSTEGdS6EkKP7QEODwgr0t99EuHU3AP7ma42ZV75zU73niKmcLX5eJIm8OjgMPWMPh3Ccps/Z9+P/sLypVwW59gBioab9uI0FqFxv8l02khftANYmfOuZx8FQlt9Wh/Zon10ZomDmYqxuBdlwseQCluYg+/U5KN8IYTXlSrVYO+GAW7glsn8D2mrKqjv99BzIb0m6QkbVTUIeGDNQFmTjIFWT1tGGM2sWufOyUTGkDsYdbMukXu8kd+P2mFYiL9XyfulKHcDMi2a08vLTuSa7EhFcN1/1N9Jc+NIAPvehq2Bf8AsHsop04ZzLNeR5CqZ3dChThT8b/jCHQ1nHX9D9B0VK791rSyGO2NQsnJ5U0wVY4ndNnuh1pJH2DE5z3zH/uw27eAq7ptkC7kBnsDlCawx8vCA6zQSbylGBiRCM2lo/vkziyjgcbebTRn6zOupCXcDc6MaAVicyklIinPP2bNC1jziN5IJu75VI1+gu3VlGr2braABXWStewLzKuyJ7F8jc90G/23u1qkX8biNYE0QSZb0mRiJPStG/terEv0aj8AMakehgaAord+YZM+gQ3wmbqnmq92ngMwh8eHqEyWhlM3EN+WcNzDqmKyoumgKMyAZk4sgixzkNh3HABEPdgPRB+jG0ElnDraSQx5HNFH8i2mwcCGSiUydc+wiOhtM1a7/OxeVLlbZ3wkgaozExFs0FxP6zWHZCsSGuszfN1xzhjqpYepFwMFON/RIo0r3DMJEP3ID+TVfHnz29NN7xqT5Werl6DGUorh4O
- 04hfGRFp
- A0ltF0HHHVJSEC6VEWxQq3av+c56Pi7peSuHZrIZkN28FMUr28nTEWEwCRPs6OT5/ui7X1LS5nFG72wzwtmcx/iVh5ZVJYHWY3SH/R+3wcWajRi8dpu5AF3yoLFyWZMWt0HpD0UkJY+wE6lLwk+xq/qJ1J+tjA3F98gITQVCjCb2AgEsKt0apM789UvrkBCm72i2sYYJ50NrooXDKez2vktkzwkohSBk+G1s03oCGITC5Xs9Q8ujWkwTt3nnuugqX0085y390x+V1zsk4z758zEvLCCS883QkOC4QJ+AqkII2treFeHyhdZKVZnGvupGM6uKIy52xSJ6M7WRfXtotmfeuMmEX4Fxv0mS3hQ3fkqrfC6jVUnMUiiTNrQ==
+X-Rspamd-Queue-Id: 8749340002
+X-HE-Tag: 1790765997-99939
+X-HE-Meta: U2FsdGVkX18Lbl9zCscKip+/wl9XKiaISTRftnyPf+hl+y6lS8h8Ae8W/mymm0Aoqv5DtMNsCGMl6rcKpnisk8KbAEXVJBjSEqBaHjWPcvUnb9DAXUWt95WRmh7GL5+1H1vRr0Mi0XqZ03YZ2zZn2Bengr2mxTi+FYX/9qTgDhSxL6NYg81HdWtN58FcILcPQdMPjOzTkGYq5pU3LGHARGk4FkKON0D6uEOWrWdxicCemBSFJV6zPwb1mupH1M5//Tn9ouZL/CxETpBHDBIjjexBUujpza7DSzN0AZuKSQuy/faJ6hkEg5DOAAxPOmdUbQFK8lJDcZBQt9lNct5/mSBO0gtkPwXh4v7lCPsd5nwg3ver7gpFHgR0eOQH5gXxdXIFyk5VmHI1Yod5N64ikwtdWqXd0kWXBLcS9PMgjcarlMaIO4Nqc5hAATy5zOl49b9OAl0MgvdWcaSTrsue8rDdo0aIfI3bDCZjjgfEsvGmRxYFS91JPLhYwVtPgO5i4oHRDMVYv0tG2GiVAo7TqMfFbBm7uZbQPAejsH/d0fSQgz5lclaxJXttinNEchcrUeaHE2fKtLnhZVw5xLEF+mpCLcUYfsquFcwq6IzP8oP6ZmrLb3AWT6rKiSfhABIzZfgz61csuBcNlNFnpDYq4i6qDeqtiYvs3cCkOAZW4+ZkTrlEvAY4uRK5tO6k65WBvdYaZ9c9RB3TGgnjw1X9lJGGM7UJg0fzGz9grJq4WE3k6UgSfdF+05Gi6WZmdhHtfKQ31VaJTD/uvqVY/6528FeLb99+CpRo/+Z//wJaiode28OnL/a/pKers8ne5/V7e3tY3BbrEmRwdKZC2zR6su4P1piqwJNCWLwNdqJmT8CZKIahZ6DQ1PhQnQ1AiFSr7AdM9Zut95zG0tjuveRtbejw7GQP1widQbzOvtlf9txWGnlE9sCxd08XWXPM/fTItVFwJhmZzJ395YTBfGf
+ DFDk84Gq
+ D6CgnGDzf6Eh+IWBLgpWYYb9vlSZZYYxUbFzErIKlbMH7D9ohjkBeJaoKrZZpE4FLnzMKqZwXoJ9zCYGdHLwkwaVEjMBIArAo/YCgsKQfgWyijeUHFtjVfXEq7XPguF254Qn6q2jfBT8p1Il1wBBRD1iBSvFYs5MEotiCgsjsbegGEpfwpcVyd513mSJ9STkBywbUkt175p8wo0R3+PtxYomM5o8sYtlOLbLxYm40dqid07+Tw8LmoAGnvrKvQSYD0dGoe4wZEzp9/jM/tr4s1KkSFRcOPGCRdhkRJEwbRiGseetIQUkgVXRtmJCOzc/moZcu2BpXqhoEbqdmdVSL1T4KB2Uw9+BIUAjHLjRtJUrHr4jcF2eRhQJrzCIeoQYWbc+dSJU9qWkpa1ptJduSt0oSq5IEA0zMlO8IzJRAnYq7OhAbanWAQuYCozSJSRa1RgnaSGCF/IEHPBsKOMoSH13D94vEiXeAWmaOoePVEyDUpNopZYvZHxIIIGCh/Oe983xequcuttdWejHM4PBLVfUDR4FkwutyXm5lMn4VhXALTQcJr57zFfuOeROWb7onV5jkQpPaP6dJl0nO2AEuS76krYbmWa/uKJOwEi1nDxbyKt44Ddr9Y0z2pLVebVPJyzREkgvisHSfLix6zw1RH0DTZg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,48 +132,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Sep 30, 2026 at 05:37:11PM +0800, Muchun Song wrote:
-> 
+On Wed, 30 Sep 2026 05:11:28 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-...
-
-> 
+> On Wed, Sep 30, 2026 at 04:59:50PM +0800, Li Zhe wrote:
+> > On 9/30/26 4:43 PM, Gregory Price wrote:
+> > > On Wed, Sep 30, 2026 at 03:26:17PM +0800, Li Zhe wrote:
+> > >> Allow MPOL_F_NUMA_BALANCING for MPOL_WEIGHTED_INTERLEAVE.  As with
+> > >> MPOL_BIND and MPOL_PREFERRED_MANY, keep migration constrained by the
+> > >> policy nodemask: if the CPU's node is outside the nodemask, do not
+> > >> migrate the folio there.
+> > >>
+> > > Why for WEIGHTED_INTERLEAVE and not INTERLEAVE as well?
 > > 
-> > Anyway, it'd be better to get some numbers with RL or agent workloads
-> > (especially the host memory is under reasonable pressure) before
-> > landing all these new infras upstream if proceeding in this way.
-> 
-> At least for now, as far as I'm concerned, I don't intend to land all the
-> features mentioned here. The first thing I want to address is on-demand
-> allocation of struct page.
-
-From my point of view, on-demend allocation of `struct page` for FSDAX
-is indeed useful and can be landed upstream, mainly because `struct page`
-initialization takes much long time for large FSDAX devices even a small
-range is used, that impacts the guest startup time a lot.
-
-But in order to make it safe for production, I suggest reserve the
-guest memory in advance for the worst cases of `struct page` at the first
-stage, otherwise it could cause unexpected issues for many guest workloads:
-it's hard to perdict if the guest memory is still enough, it's unfriendly
-to system designers as well (that would completely based on their
-experience and hard to ensure the service quality beforehand.)
-
-Since the guest memory for `struct page` is touched on-demand, the memory
-over-committing on the host is still workable, the memory reservation
-can be removed after the reclaim path is done.
-
-Thanks,
-Gao Xiang
-
-
-> 
-> Thanks,
-> Muchun
-> 
 > > 
-> > Thanks,
-> > Gao Xiang
+> > Thanks for pointing this out.
+> > 
+> > I focused on MPOL_WEIGHTED_INTERLEAVE in v1 because the motivating use
+> > case is to seed memory across tiers with a configurable ratio at
+> > allocation time, and then let NUMA balancing/memory tiering adjust the
+> > placement based on access patterns. With equal weights,
+> > MPOL_WEIGHTED_INTERLEAVE can also cover the regular interleave
+> > allocation pattern.
+> > 
+> > That said, I agree that MPOL_INTERLEAVE can be handled consistently as
+> > well. Since this is still an explicit opt-in via MPOL_F_NUMA_BALANCING,
+> > unless others see a reason to keep MPOL_INTERLEAVE out, I will extend
+> > this in v2 to cover both MPOL_INTERLEAVE and MPOL_WEIGHTED_INTERLEAVE
+> > with the same nodemask constraint.
+> > 
 > 
+> Looking at it, is there an actual reason to limit F_MORON at all? Or
+> should we just lift
 > 
+>                 if (pol->flags & MPOL_F_MORON) {
+>                         /*
+>                          * Optimize placement among multiple nodes
+>                          * via NUMA balancing
+>                          */
+>                         if (node_isset(thisnid, pol->nodes))
+>                                 break;
+>                         goto out;
+>                 }
+> 
+> Out ahead of everything?
+
++1, I like this idea, especialy since the switch-case break case already
+leads to an MPOL_F_MORON check at the bottom. It would be nice to just
+consolidate this into one generic path at the top and simplify the
+exit path as well.
 
