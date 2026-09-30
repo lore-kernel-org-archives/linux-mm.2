@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B655ECA5FC4
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 19:52:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7934CA5FC1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 20:03:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C4BC6B008A; Wed, 30 Sep 2026 15:52:19 -0400 (EDT)
+	id AA6396B0088; Wed, 30 Sep 2026 16:03:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49C046B0092; Wed, 30 Sep 2026 15:52:19 -0400 (EDT)
+	id A7CA96B008A; Wed, 30 Sep 2026 16:03:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D8A66B0093; Wed, 30 Sep 2026 15:52:19 -0400 (EDT)
+	id 9BD316B008C; Wed, 30 Sep 2026 16:03:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AAE56B008A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 15:52:19 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A626A1A0101
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:52:18 +0000 (UTC)
-X-FDA: 85271475156.18.64A0EFB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 08A2E80010
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:52:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxHcC5Wt;
-	spf=pass (imf02.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70FAE6B0088
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 16:03:06 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 47B1CC0196
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 20:03:04 +0000 (UTC)
+X-FDA: 85271502288.06.342B3A6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 584A5160006
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 20:03:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ExlvIxdb;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790797937;
+	s=arc-20220608; t=1790798582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YWrKUyDQfGPBFB++iIVHEuhs9Rh+LXrjwZ4LQ5+swnM=;
-	b=LEewgkYjAoB0foA39dajSIqZ1qsCzcG6ScR/B80wdYo12L8nPXzbQkSYd2o+Flle/SVb3M
-	bOcSJUm04/J4ofFMmjq0X2dsFJ/n13Kd334VcK5Ox7yZ/9x4UA7TIu1n2p5BENktHTuJFb
-	L40EyHwpvA8q3Flt4lJG5W5aRJ245vk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=u08t18FaZZ/JoItkaTytwkoDNv5W489UK9Ej3SaW7sM=;
+	b=m395YzsHCjgLYDui+O9htpLaBRDgcLVJFOYNy2zphF7sXqPzlZ3lPSxEUqUpdsbTaBcFJu
+	ejfo5DmsL722hB/N3PXO1QOEgRP8zowzzzt32NdCPq6sjqxOPePSzKoglGMziXlWpDmAEr
+	jI5R4RBnDkXJ/q9rXYhzerBfFzcBtuE=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxHcC5Wt;
-	spf=pass (imf02.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ExlvIxdb;
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790797937;
-	b=pD1ReWtXor96Zmdqtp0iRDe5R5qciMWAuXsgchsjKwDgyP83H0o0YD0TLFjIvYyiyh7cyz
-	x5BVNsdiyhErBbvJxuuBnlmqBNNXm1y0/2wv3xxo7kYA879v0Knue4U45dHNS5oUInDK5r
-	zXCBrZ32XZPfVrIQ1ehVrYEocE2IS7A=
+	t=1790798582;
+	b=m8GEeZ2AzsqS9rCEiIoBs8ePOzWzhwvV6y9hd6/9pB9t3QhK/TJwSSyOIoOHcSpcJW26AF
+	M48KccnBZagaYn9Uh8cVY5+RacvUigCbaEenF9BoypW5Xd+O0vrEZM7yZ2ZXBSdhz3jAr5
+	KmQuKv7fgEzmsoVMvq+54rl2QgmpPpw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA29843356;
-	Wed, 30 Sep 2026 19:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E7A1F00898;
-	Wed, 30 Sep 2026 19:52:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790797935;
-	bh=YWrKUyDQfGPBFB++iIVHEuhs9Rh+LXrjwZ4LQ5+swnM=;
-	h=From:To:Cc:Subject:Date;
-	b=CxHcC5WtExILPkw1rNFX+85Dp0tqI5hLryNGXGobIt651WEBvh++61jlHJacRjW4z
-	 OzwWXinJxpRZLc9sTLIvQyhk/jcfGmpaduajvRhmtKWTPd4kKY/e66JjwL4cC95ckA
-	 r8gNP2z8EMJT0yIcCRofVEcdbJSOLjpxK30s1Yju7OBenQoIvRnI4lE5gESFI5XXxh
-	 /aClYn4/8X49KyTAPqDiCOBbMmT3kNEqVLJDSuWr0kfSup/SzZ3qDAwKf1Mv16BiOn
-	 xD8y/aATxfsFyGTgyT/q0VVBvunyytRDx4e/NHET6PT3+O5gnjn7uvWgZvXzeiQga+
-	 V7hYcqoV6fAUA==
-From: Imre Kaloz <kaloz@kernel.org>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Jann Horn <jannh@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/slab: sample slab_state once in kmem_cache_destroy()
-Date: Wed, 30 Sep 2026 21:51:09 +0200
-Message-ID: <20260930195110.13296-1-kaloz@kernel.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 1CF7D601F0;
+	Wed, 30 Sep 2026 20:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1381F000FF;
+	Wed, 30 Sep 2026 20:03:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790798580;
+	bh=u08t18FaZZ/JoItkaTytwkoDNv5W489UK9Ej3SaW7sM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=ExlvIxdbN8JjqNmq7VsmSrsVUc6pxFiLPpW5EV0yT5cQhwrumhMEM2DrYiSKwxFRB
+	 V0Ji2JQN3kuDi4RDUu8ZXgrmY/sbD74AO6RjhEG3qSGzjUDpJ5VTWQMmcxmI6c07ZZ
+	 uQFr429+DI/V4CQzuFxFOwzlTC6jfTnwaB51VOlE=
+Date: Wed, 30 Sep 2026 13:02:59 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner
+ <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan
+ Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Usama Arif <usama.arif@linux.dev>, Harry Yoo
+ <harry@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: page_alloc: make defrag_mode retries follow the
+ promoted order
+Message-Id: <20260930130259.8d7d967f4a38afa34e051145@linux-foundation.org>
+In-Reply-To: <ar0AiPWwfcZtksPu@thinkstation>
+References: <20260929174553.175333-1-kirill@shutemov.name>
+	<20260929125816.5a846a62943eeaf63725b525@linux-foundation.org>
+	<ar0AiPWwfcZtksPu@thinkstation>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: f8jk8idqndw6w47h77qxjt4bxyxj3ske
+X-Rspamd-Queue-Id: 584A5160006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 08A2E80010
-X-Stat-Signature: sjajni94e97ay5obg6aekow3y3wjp4mk
-X-HE-Tag: 1790797936-206106
-X-HE-Meta: U2FsdGVkX1+6uqlrFuIsIRLuDPergLzc1BphguVd3Np9y3LU/aSbRDTuoHBx3RzRgisaNPLvmxBJS9hefzaHKcVRehlUyfm3XOT1iMeqfaEqlS3QzgN6iKE44VrNfvmb8TdZgV+ti2kaeo8IGk3LRe10N+HWa0jqq3F9fKjQqUxl3IGLbM92t/7WcDXpAfM9ylUVNHqYRQEcpAIf2l26IgbqpivI02V77cR7p+m/axzKhxW3XcH+sESRU8KiadiNb7I30mPYeByciWWKl8e+7p/EKlxpD9U33D5UcM7SrXZfYzxBgDTCaK8Af+ucBGcUp6WkcLY9klLNkC0ZyxCCaB4ornSc/WYAqEiJWyDug/CYoczqp/Q4eTuKEuzjU0qJkCea3PiWwrHn+H3+dCk1wks6MVpAfQpeJvL+2O8t2RqbZC12zr6OGDmcqh1DLF97n83h/53NAMhO26CVou3+dbL+ORvB/kAp+Ai8LiyxRSvyUODnkXrBm9Aq8ccpNNKoJgZTFu84QA8Sa5idHBAWPoMTBXb8pjT7cSp0846xJxeJmbJOldIVram4y5qRvL46W+avude/FNx4RYiFk5jPWxAximxDXacu5iGXi7bx1D//Ve3jdj3gCJrI6rjoSy70WhGQmyXi3lM6dc5TOXHcvNCr14+N4zAXElBJ7rqbEQDq9o7G52B3v0m+4T01dAwNZ4eGzwBy1LL2Nfi4e+3RzBuY1LxHjzgYuoykeUkSJ+aIBFgI/WxLgREISRRXCR6aMW9oasnFNetRSfaFVyp0KEC7Y001j6FXcQ8CyxZPERCZoMQ+LbIVaKB/8BlKyXRmMyAIkHQAhU5ABm80RIU++KnsUznmFnxhI1hgiyRl35F+CpPoBhG8V7L1yIHwCdiBM31rrRJ0nnaJy7PGbInlcx6r/o+jo9SFFGH1ozFkvLMXkXqqxv3A25ZdW6Qoqr3VfBx/cjXmBeukj969uFs
- gokdGFDM
- 86AaaiazihJkO7F4XcAwkANdMxC6bCfF1Y9bkwLpNinvWuvwD7RksMTFFHrJXwu220EMMdBXAW5SLtqC4Z68zELF1XsIOUnrQYON8F75NLx94MxEjQIxB8Fi549sjjQupU88tdKoeIAqxHWfXZwgey+bH0xoEjXj9QUPJWPr5V/tpOgPmPRewI0WY0PzKq+OA0Q9Cpiv9lHuJ6IsVKJ4FFVh1Q9vH5JTdrCn2RVNjG+WocxdgxnLR/65GEQjfeOiJowvnqSo0OQitIiuUSfultLhB6Q==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790798582-38563
+X-HE-Meta: U2FsdGVkX1+d1Bt0nK+0ctZhn7jpRIr78OviTqj4QsVgCPayQpRs5Fd4ZyYiRLDFY82T72LxyFZhN8JP1ml5u+Fy7hXa0jaF1C0WDCqaJbvPV63FEDCj0d7S3jqTVpun7eo9tAsWkUJ5swZIx5iAKLQd5UN2Cz6W+u42pMr/T+swUeKCTJ0sKas3fK6YS93EJ0axgHEnGJ2gEga4unY4mtMNzh90Dr2GCrCByyjpT2bXaQDCieTbB2kU+9ClR1kVGdrv0aX6534gtblLVtzkorE4TS4tZfArf2W9xRrvgNdivFYdRqqgR/9WWyjjDvOsl62jKKy/DChSbG3GFE5Fd//zfak2FTne8Ni7p6N/IgmlI/nUGg5gXZ2L2ACAQ/pJdeKYkNbixBB/CIU1cbtRnVKIRLExoqFYxaIppgWt1ryCmj3T4uSeuUU5kK9wXmIjl8Ky23QYQ6J3nT63Dt+ooYy7TGadYTxBfpTfTGRgWtuuS/i/3c8vHpIuaZcS7qurLsXP0ltjijLJhO8Cs5spp8eOHLjc+EA06cFdhVwsJNXR8Ld36lGMg2PAxOmWouDEEk4XGht/q1d8arIWgsYnPZdEp8wV/IOYlC8ZRNAU2GnuuCWWeAXMf0zpzcGvLLTddfLaHYYMuIBinhb40EpcNRT9S/63FnyAQsxIGRM2vLHrZLgkfW3Nui9Ln3S2NIy0QEGSdX2uJAvvAzQJEBLUhi5YSAg9UeBbIYRa+Su7PUFQbLiyzmoerTErpQ8pjqCSnh5K+Ye6FXZfPzFkbpSeUUR//E6CCcEhDMNnFIZLmZqi6vJNhtHBS5boDJN76cSaTA7I58UGngmFs3iWiUNi+2c+ERn6E0IgkHTXI7jVElWjfn54PNY3dnuB2o/F0NEuGzs6NtqvlkVJSv53SiwUtEHlS1gCjLowoHeqFam2FBXmFAju664Ims0NhH7rob2an1XerqbtbGcaY1cNOQt
+ iUoHADuL
+ y3AL14FKAxURBb1fRa+NopntbRcb/2uhv4d0DWAQODvs/M2y9b4FUu+Qz3G6BVXZcjXUlEHYQ+KxUBCcyujsvBj8/BZa//8qH6gQBMcSFrOo+c0Bn3/5kcG/ePAgbvO1tBbVQUiJ8jb/VOEUYvCqCB+MB93j8adPdf4eRikqMXOzuq9OAbz6OLbfNJpkRI2GWLyxXZrT5dQmTZ/7DQf+ZQzz/d+QoBt+d+YAkBllRwFNx+Q7GY7tbmGO5AWG/DGyF3NJTvREXC1cLNx3UsTKJnBScTJoTAlkDD2MXHu2d1uoqbXQ7+KbrFrYo6XQuCke4/rgV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,100 +97,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmem_cache_destroy() tests slab_state >= FULL for sysfs_slab_unlink()
-and again in kmem_cache_release() for sysfs_slab_release(), with the
-cache already off slab_caches in between. If slab_late_init() runs in
-that gap it sets slab_state to FULL but never calls sysfs_slab_add() for
-the unlinked cache, so kmem_cache_release() ends up in kobject_put() on
-a kobject that was never initialized:
+On Wed, 30 Sep 2026 13:35:01 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-  WARNING: lib/kobject.c:734 at kobject_put+0x64/0x2c0, CPU#1: kworker/u8:3/55
-  kobject: '(null)' ((____ptrval____)): is not initialized, yet kobject_put() is being called.
-  refcount_t: underflow; use-after-free.
-  kobject_put+0x64/0x2c0
-  sysfs_slab_release+0xc/0x20
-  kmem_cache_destroy+0x104/0x1e0
-  bioset_exit+0x13c/0x1e0
-  disk_release+0x54/0x140
-  put_disk+0x18/0x40
-  floppy_async_init+0xbec/0xd10
+> On Tue, Sep 29, 2026 at 12:58:16PM -0700, Andrew Morton wrote:
+> > On Tue, 29 Sep 2026 18:45:51 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> > 
+> > > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+> > > 
+> > > Since commit 7e8756d7ad22 ("mm: page_alloc: fix non-movable reclaim
+> > > storm in defrag_mode"), direct reclaim and compaction for non-movable
+> > > requests under defrag_mode run at pageblock_order, to produce the whole
+> > > blocks that ALLOC_NOFRAGMENT needs. The retry decisions that follow
+> > > still use the request order. An order-0 request can therefore retry
+> > > indefinitely without ever reaching the ALLOC_NOFRAGMENT fallback:
+> > 
+> > 7e8756d7ad22 is new in 7.3-rcX, so no cc:stable needed.
+> 
+> The commit itself has cc:stable. And it is in 6.18.50 and 7.2.4.
+> The fix needs to follow it there.
 
-Seen on sparc64 at boot, where the asynchronous floppy init tears down
-its bio slab while the late initcalls are running.
+doh.
 
-Read slab_state once, under slab_mutex which slab_late_init() holds when
-it sets FULL, and use the result for both the unlink and the release.
-The kobject flags (state_initialized, state_in_sysfs) were considered as
-the key instead, but slab_state is what cache creation and
-slab_late_init() decide on.
+> We are running 7.1 with 7e8756d7ad22 backported. We found defrag mode
+> crucial if we want to use large folios in page cache.
+> 
+> But nobody besides us seems to test it :/
+> 
+> Can we make it default pretty please? :P
 
-debugfs_slab_release() is not part of the race: it only looks the cache
-up by name in the debugfs root and does nothing before that root exists.
-
-Fixes: 4ec10268ed98 ("mm, slab: unlink slabinfo, sysfs and debugfs immediately")
-Cc: stable@vger.kernel.org
-Signed-off-by: Imre Kaloz <kaloz@kernel.org>
----
- mm/slab_common.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 7223a7596dab..de11edfd1a0b 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -515,10 +515,10 @@ EXPORT_SYMBOL(kmem_buckets_create);
-  * and release of the kobject does not need slab_mutex or cpu_hotplug_lock
-  * protection. So they are now done without holding those locks.
-  */
--static void kmem_cache_release(struct kmem_cache *s)
-+static void kmem_cache_release(struct kmem_cache *s, bool sysfs_ready)
- {
- 	kfence_shutdown_cache(s);
--	if (__is_defined(SLAB_SUPPORTS_SYSFS) && slab_state >= FULL)
-+	if (__is_defined(SLAB_SUPPORTS_SYSFS) && sysfs_ready)
- 		sysfs_slab_release(s);
- 	else
- 		slab_kmem_cache_release(s);
-@@ -533,6 +533,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
- 
- void kmem_cache_destroy(struct kmem_cache *s)
- {
-+	bool sysfs_ready;
- 	int err;
- 
- 	if (unlikely(!s) || !kasan_check_byte(s))
-@@ -580,10 +581,18 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 
- 	list_del(&s->list);
- 
-+	/*
-+	 * slab_late_init() sets slab_state to FULL under slab_mutex and adds
-+	 * sysfs entries only for caches still on the list. Sample the state
-+	 * here, so that a cache unlinked before that point is not handed to
-+	 * sysfs_slab_release() with an uninitialized kobject.
-+	 */
-+	sysfs_ready = slab_state >= FULL;
-+
- 	mutex_unlock(&slab_mutex);
- 	cpus_read_unlock();
- 
--	if (slab_state >= FULL)
-+	if (sysfs_ready)
- 		sysfs_slab_unlink(s);
- 	debugfs_slab_release(s);
- 
-@@ -593,7 +602,7 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 	if (s->flags & SLAB_TYPESAFE_BY_RCU)
- 		rcu_barrier();
- 
--	kmem_cache_release(s);
-+	kmem_cache_release(s, sysfs_ready);
- }
- EXPORT_SYMBOL(kmem_cache_destroy);
- 
-
-base-commit: 72d3fcf802c45d00b300f25b848a93c3a2bd7c7e
--- 
-2.47.3
-
+Send a patch ;)
 
