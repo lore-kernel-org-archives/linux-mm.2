@@ -4,103 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 657D4CA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 23:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62521CA5FC4
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 23:46:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DE3886B0088; Wed, 30 Sep 2026 19:35:37 -0400 (EDT)
+	id 2DC236B008C; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D94D16B008A; Wed, 30 Sep 2026 19:35:37 -0400 (EDT)
+	id 25EF26B0092; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C85816B008C; Wed, 30 Sep 2026 19:35:37 -0400 (EDT)
+	id 12A7A6B0093; Wed, 30 Sep 2026 19:46:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A83586B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:35:37 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1D2761A026C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:35:37 +0000 (UTC)
-X-FDA: 85272037914.19.83EA5E4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9B2B48000B
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:35:35 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BK5TJkB5;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E244A6B008C
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 19:46:35 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 71AB7A55F1
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:46:35 +0000 (UTC)
+X-FDA: 85272065550.21.245D0C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9F8FF1C0006
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 23:46:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCl3evOG;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790811335;
+	s=arc-20220608; t=1790811993;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=9wZLP+oTbknfbp3RkP0l6m3e4bL5ylavJVKS1T8of90=;
-	b=1JI0Rk32WfndCWetgMVK2H29vA6K3Ya9wBRXKDsMwJJb1aP+tLpsUK4BK/ddMHRagkLSII
-	wJ4ulTXG91S5hHeSTNCfXBIiOSdiBAEuPqnwk5F3vgUlyCdYTf4pE3ZljNqlkxLJy/Dym9
-	dHxkcXNkHr5teqWapXHiU68YXLoYexE=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DhQGe+RD+fiFkRmm1C/pXVjw/6OQ02jTbbVvy16bHsU=;
+	b=moD5qAKG01z1gO/ylgOp1DsW5r7dKz5kGbY64Hi7J5eyt8EeODCCA5WqqS+56H3tmDLt6C
+	2TBmcEJ9w7xB/xNmlm7thwuP6Mouv7RzTRomVu8k40YvTPKbAPddxW5xhH1WC0YEsh+x16
+	GKNwTom1rhXp96MGx6IOoOHUKLySvec=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BK5TJkB5;
-	spf=pass (imf02.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dCl3evOG;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790811335;
-	b=Q8IOzpYs7vKfz7ChkOPOk5wvuzYMco33vQzQ+kxu1UslN5DbJvU8yMDMEV4twx2ISuI6dU
-	o+qQZy/FxCqvSiAsrHn4V0qG2ExI+Ao7hqV4raBtXcLT7uVxNe60JRxr8EuLt62qpYRqre
-	8kQTudsXVFxkOXaBuoxpzxJcevnyeZw=
+	t=1790811993;
+	b=wjcJVL/TegpUoG/pAMWnkraobtzkPz4iqNJNSyzc+TGrFPLrsfsLTPxnAWO4XysaFPsl/d
+	CNDKzkm3KjVvuhYR8/wEsxESBnP84yu6HDdXsihRbZ2ML2Pd8RQGlzj0oaDGYfN4R7TsiQ
+	duVwF6kdZrfXrY3oqvYp8Nh4DPCP0OM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 752DE43EFE;
-	Wed, 30 Sep 2026 23:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEC01F000FF;
-	Wed, 30 Sep 2026 23:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790811334;
-	bh=9wZLP+oTbknfbp3RkP0l6m3e4bL5ylavJVKS1T8of90=;
+	by tor.source.kernel.org (Postfix) with ESMTP id AD1FE601FF;
+	Wed, 30 Sep 2026 23:46:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7AA1F000FF;
+	Wed, 30 Sep 2026 23:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1790811992;
+	bh=DhQGe+RD+fiFkRmm1C/pXVjw/6OQ02jTbbVvy16bHsU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BK5TJkB5IGftgeaJG2HDjs70RD5rQUlw/q8Zy3kOYU7qzv2veRbSVTI40FpoNTzwh
-	 dPjjOpLvz1br9YDpP8ERDUHMbsRdHkkb817QzqOnIYUb0JThqETFLTlRiLliZjQeCc
-	 JGS99kjehaBbgpznAfRDksfYKJqK99oipg4DMesZmkBoZiv35Nrm2bnnea1HjpDW9T
-	 oUZgcv2IqGpYWW54uJZvq/6i6bvVqVbDiqs+dIszJpjGAeATbqknggpIeu+2BNi/g2
-	 Qy1AKBdzJVu+nSqbDz8ijZ2Sq2NaDb/CaSLe1GpucNf3ZylyWxKhzQbx8ldUwrzQEo
-	 0KuKBok25v6RQ==
-Date: Wed, 30 Sep 2026 13:35:33 -1000
-Message-ID: <bc6815954b8d08e75deadd43e1a2192c@kernel.org>
-From: Tejun Heo <tj@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	JP Kobryn <jp.kobryn@linux.dev>, Muchun Song <muchun.song@linux.dev>,
-	Michal Koutny <mkoutny@suse.com>, Amery Hung <ameryhung@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Emil Tsalapatis <emil@etsalapatis.com>, Jiri Olsa <jolsa@kernel.org>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>, hui.zhu@linux.dev,
-	Donet Tom <donettom@linux.ibm.com>, Greg Thelen <gthelen@google.com>,
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
-	bpf@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/4] memcg_ext: memcg policy through cgroup-attached
- struct_ops
-In-Reply-To: <arw4rjVkm2ob9ioL@linux.dev>
-References: <20260921192559.2619635-1-shakeel.butt@linux.dev>
-	<bda525506b3fb3e61da28a112f28abba@kernel.org>
-	<arw4rjVkm2ob9ioL@linux.dev>
-X-Stat-Signature: c4oys7ruuc7nbopjuqcujfddxi5utofk
-X-Rspamd-Queue-Id: 9B2B48000B
+	b=dCl3evOGSEmQqqbpP8nVEYUZD57g8vXRpyjRb742VDor14VGCaX3XxbgTizPHqgeU
+	 9S4l6sLZSg6Rqqf7bz867wLT9RqO6NUwsgwIBbrxSm7ve0Gex1suI4GVzThhE1wUD+
+	 fnrAhjq9ziMf6pPpkWADQ0xTF3JfRCjS7wvJwoQU=
+Date: Wed, 30 Sep 2026 16:46:31 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Chris Down <chris@chrisdown.name>
+Cc: Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, Kairui Song
+ <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
+ <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Barry Song
+ <baohua@kernel.org>, Youngjun Park <youngjun.park@lge.com>, Ying Huang
+ <huang.ying.caritas@gmail.com>, Kelley Nielsen <kelleynnn@gmail.com>,
+ Vineeth Pillai <vineeth@bitbyteword.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com, "Rafael J. Wysocki"
+ <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH] mm: Make swapoff interruptible when unusing mms/shmem
+Message-Id: <20260930164631.0468fb0caa7e47f60c9a1a9d@linux-foundation.org>
+In-Reply-To: <ar2YlFYjYUZ49ZA5@chrisdown.name>
+References: <ar2YlFYjYUZ49ZA5@chrisdown.name>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1790811335-226883
-X-HE-Meta: U2FsdGVkX1/WBJHvU7z6Q4Qq31Gz6FJCfzMP2Kqvm7Q+EgzNx3vCGwyGQN/rSp9qA9/OHopqTXSqqshFa30Mth/ByuzvfBAXuCIrS/YdE+hlYGd/FpFBl3F0pW7d4UtHyNVzb+5MlsqGWClttMMScVgF6phZ2ANZNVWGy4WsCwOzSzn2wnSfBKRVy+gmaWpd8ikT0+B6J5LhE66Q8KkZzHhFvOi6+bhLg3oZO6WWQn/grRX3INc/CwPirxyipYxVWKwvQzvGLsaxiV/+FBvSjxzlspasDQy3LO9Weag8eTkBkEQne2nd3nt0rCT9X0K8tr3SlyeumBqI+/M6/PKzrjsPI/lHG3yqzaGDZPJltRPlua+f1QvsVvUzJaMkWU/49BdSZ8tzBXe1jKJaA9wiO3SdZo/Ol6z9IxepMmxMDUiyaM5rX3JZZ2LXf3CDexZG3amQRSFODCTOXTRQ46GJe1Sm71aQ74yZPXxuRYUF68G9zrX4uKIp+Y2SL4HDTTdroug2lL83NwMhTldKdUtqADKDTqpGdgc2dlihv4gG1AXjxKbStec8fgQYFNyfwIK57v+kC2/5GhoKLbcGQ/Nbpx6wc4cm1RZCnuYt24Gu44rvHdECeiDnMSdHOlmJnSN3iH2ROX5SVq+VpB97zgFhWBej/gyFsK9zIF8uDhnrnyJMGr1A7ydJEMYN3TZY2Q1CHbv3ww5FLQSHyjZ5+lAg/d7p84U7biRPJ5XylPRPrczmHY7Q4inPh1eIZCtEu7YacuwrQOBNhGv3qqD9X+xnBlXYg88GhrM78rIQRU2p6kT6oScpAxqBhx9aRJk9MKRT1bIUuSl+c+X2Cv2JkGYhyPdUlK0TwJd9GXPYiwu2Rf9itc49bHNJJ1Rn66B/rGwtxvGUlgjptA5xCc6Z/wbd079H1Cc3Tvf6Z3DB5UsO26Vmm6coFnjcceyBiwk3V0JH1k8NADTOUO8H4Zku9pj
- ZZ319s1z
- cLfJLvYY/TA4kigq8fV4+wH2Bgp/vfP2YHDpLsWmIRGlF2FDnRWilMFGeasJy1+1nEYkRIsxJ7IdPLv2Evg9AvnV1z32spFnRNtN3W3eGZ+VVZsXL5QZguxUQg/Wfs/rYZuzeTcGmuMkTcjj1JJBVV3Iy5KyhpqByjySBOdO4mmLQYN10UcjqCzLF+neB6tmDQQzBYyVOdWNa1sWoWaEOTZCWhXsjIdiuczyZMw/iXJnc/ppcGOhk0Ij5QGjY8JqymwPQr++zkmwF1CqxLYJzil0lF6A2wNCLTPACOJo01PgLAldIcOuY8GrUUnc8GOWm2f38zXfLBI8WD6IBLP9huMSCkoJ8qTUj2pxs0JZx+5VCgNvdDJ/PgBALxw==
+X-Stat-Signature: tbmob3pkzh73yxx3w5p1ffsccnapgsk8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9F8FF1C0006
+X-HE-Tag: 1790811993-859734
+X-HE-Meta: U2FsdGVkX1+UEdqM+s61+2e/wbhAY9P5Nx6+FYR1qKjafJ/RskYT33eUImXSHFKgDL9s8/RV7qxxMOHGJP+bcKwqmX2wYoQM5VNm2GC6+lMj1fDklDXN8/M6oum5FL+TLTX2D0KKoKthTtDDZfC7EBy1YGw13RdIGdukG57hx1r1oETEXdmJZ0z2/bbYPOH1mykqK5nQZmNavWzmI1hk2QULKhyT4Z5Qqw02yTasMNahuKdYBgy4NgQFrkL+x65yg7yP1504sAA/Cgbi90PFoPPXI9RAV5zWn4hgaJ6fSGQIZnIXNSvTHvnhDqPfhObGf2Of8tLpuOj+QwwiwJiaf9BeoZi9S3CavhFUDqnkD33OZXeZhCDGbqmg5yT2l5NxfXxL5NcWCqjVNQP4undcmjQrMaVpmarafR6PT6nMAqlvdkZBwpZIPyf1ZwPzO9y4bdALF+LC5yKNgtneZyOCrGukbSfatCeHKp5enxvfahSWVhP2A77QBedshg3Lp1uGNoiTCFiv68ElbQYsqmFNk1tc1fgNILiSrCEmY62wJ/+boaiaCSiMX6bJZL4/apHJPs5WqTJkvPe2Y3vHtois8vEgpGfJZfkdPsRrkscc7DMf66QQyL96adwcGZoTtxY3vZ4ABHmg5f3ewiR1PmLK9ko4We4AfkeDMA3DJ38SZ5hM/lM8uXEDve3Va28jQh2ezHkM7odWjTURmwKX2MzLQEqcEWzT6RtAeKiesFd2OYnvNpLahN/g0YnEzPpeqSek823EZm3j7jG1SXY02xs/2eNvOnVfF/DKowEOsy2Kfrqlr26+QxxGJmlcfSomwwyLhTXzIk05n0Hdmlzkc/uSUdSeEHVc4KjhmdGpzFF4QGT9rdmZ5bgpxA8hLHUPJ/cOMGBgXyQHeMat/bSA5lWZHmITQuMJ8pcFE5ZIWn9f7kHDOvgpKp16uxBgwM6Yt/mqcsgCUT+ycojrbaXXTVL
+ poIAmlIy
+ SE+1qHHV0vLV1qv5F2uhGEErHqhridMRRYuJIlvS4k+3GZ1B3yBGmFWPyNM11jX4GzUB4rGVnP4LRRcLBgkL10OMbkXpI2e9rmP/zl6JIhQAKCM8bDDCkTbnulCRbUqJ6X2ePkWtZUNyOZBrsD3G9ieveaP/McEVLjONPQAcamCOHado6Ao3kKkewRo7k/ldEWJJTcWjpnIVNkYPEeoy+BfBb5cYaAzPryERW+erODnJV3tQUBXdUCPxlscXrXLuZxkeSu3ttbG9kgYCXa8+l36W0jQ2GOFoKNJMZXOJWjSn7YR6ehTh8gziHZfmH3+w9fMd+0WLZ7pOU+P0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,32 +96,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello, Shakeel.
+On Thu, 1 Oct 2026 01:17:40 +0200 Chris Down <chris@chrisdown.name> wrote:
 
-On Wed, Sep 30, 2026 at 06:28:21AM -0700, Shakeel Butt wrote:
-> I am fine with changing the default behavior. Actually, I have been
-> contemplating whether I should propose a revert of commit c9afe31ec443e
-> ("memcg: synchronously enforce memory.high for large overcharges") because
-> it has introduced more problems than it has solved, but that is a separate
-> topic. The initial commit already mentioned that MEMCG_CHARGE_BATCH was used
-> arbitrarily, so replacing it with something big might be acceptable. I want
-> to keep that decision separate.
+> try_to_unuse() only checks for a pending signal between mms, and
+> shmem_unuse() doesn't check at all. That means that once swapoff gets to
+> a process or a shmem file with a lot swapped out, nothing can interrupt
+> it until every last page of it has been read back in.
+> 
+> Just as one example of where this can concretely show up, freezing tasks
+> for suspend or hibernation has to wait for swapoff to notice the
+> freezer's fake signal, and gives up after freeze_timeout_msecs (20
+> seconds by default).
 
-Which kernel paths allocate enough for this to matter? Can you give specific
-examples where the in-kernel synchronous enforcement helps?
+(cc Rafael)
 
-> Returning to the actual proposal, my plan was to start small with a narrow,
-> specific use case. However, my long-term plan is to provide a mechanism to
-> change the default behavior for custom use cases. For example, for
-> memory.high, I will provide a way for users to specify what behavior they
-> want, i.e., whether or not they want more synchronous throttling.
+> Here's a facetious example where one swaps out 2GiB of one process to a
+> swap file on ext4, starts swapoff, and half a second later tries to
+> freeze with pm_test=freezer. Writing to /sys/power/state then fails with
+> EBUSY and this in dmesg:
+> 
+>     Freezing user space processes failed after 20.003 seconds (1 tasks refusing to freeze, wq_busy=0):
+>     task:swapoff         state:D stack:0     pid:3175  tgid:3175  ppid:2955   task_flags:0x400100 flags:0x00000419
+>     Call trace:
+>      [...]
+>      io_schedule+0x44/0x70
+>      folio_wait_bit_common+0x1ec/0x3d0
+>      __folio_lock+0x24/0x40
+>      unuse_pte_range+0x2d0/0x348
+>      unuse_vma+0x158/0x248
+>      unuse_mm+0xfc/0x150
+>      try_to_unuse+0x104/0x3f8
+>      __do_sys_swapoff+0x220/0x5d8
+>      [...]
 
-This doesn't seem like a policy problem. It feels like a problem that should
-be and can reasonably be solved for everybody, so I'm not sure whether BPF is
-the right call for this specific purpose.
+ugh.
 
-Thanks.
+> The same goes for anything else that wants swapoff to stop, like an
+> admin hitting ^C in a panic, of course.
+> 
+> Prior to commit b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+> try_to_unuse() was driven by find_next_to_unuse() which checks for a
+> signal before every entry, so let's restore that behaviour.
 
---
-tejun
+So things were all good before that change?
+
+> Just as an example of the improvements, here's how long freezing takes
+> in the same test while swapoff is happening on my computer:
+> 
+>                       before                  after
+>     400MiB anon       8.925s                  0.028s
+>     400MiB shmem      1.639s                  0.003s
+>     2GiB anon         failed after 20.003s    0.011s
+> 
+> Fixes: b56a2d8af914 ("mm: rid swapoff of quadratic complexity")
+> Signed-off-by: Chris Down <chris@chrisdown.name>
+
+This sounds like a significant usability regression.  Should we
+backport this?
+
+otoh, it's been this way since 2019, so presumably nobody cares much?
 
