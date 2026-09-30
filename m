@@ -4,105 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA956CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:10:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3EB3CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 10:12:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2A7F6B0088; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
+	id 80FBC6B0093; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C027B6B008C; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
+	id 7C0F66B0095; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19D46B0095; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
+	id 6B05F6B0096; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 86DEA6B0088
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:10:11 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 07B8F40730
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:10:11 +0000 (UTC)
-X-FDA: 85270008222.13.90655F8
-Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6284BA000E
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:10:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A+9Lx1hl;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 32E546B0093
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:12:56 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 91DA9A7267
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:12:55 +0000 (UTC)
+X-FDA: 85270015110.21.78DA951
+Received: from mail-ed2-f32.google.com (mail-ed2-f32.google.com [74.125.228.96])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BAD7420004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 10:12:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JAsBKsW9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790763009;
+	s=arc-20220608; t=1790763173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8TdMHuVObPqzYZTfk2DxdvouGjhEk2R8v52SYa0+5A=;
-	b=M/i18dX/1n8ydrRFjRajRdc3XSv3UuI5999RDarNPqXmuWje4O0ByPo3ZwpVHztTuTFpWV
-	i5KWNmQfh+M9tBePTpyJ8yoJ/fv0BU/1etA7Bi3j70/0aNlypQ+GnAhDt4ytjydBxLLU81
-	rVMBzdot/R2YaMXZBMWU76x7jGskTO0=
+	bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
+	b=NGxP4HmncxJN/z57D+SijhKp/ul8v076u9HjEtHUfB6YrsD5fc3W6xox/xU7F17e/LhWeQ
+	61HFkeNO2aI4dpqWz85BX6VblSErEhArCJqWkfoeYhn1zJGAtsRmrF9p9rn4F1BBgIJX1a
+	ma0X8en/Ty8XjW9s85NhD/0Hl+A1fEY=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=A+9Lx1hl;
-	spf=pass (imf25.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=JAsBKsW9;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of urezki@gmail.com designates 74.125.228.96 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790763009;
-	b=WVfMYzUsKhdxs813vaR6HAbk7QqcDFR3zVvHb2OOSzkhOgQW6gScMecEPdkmQpf3rmt8RJ
-	OdkpTvQyG+t1yuCUF4nFPXim8GFEKCCYk1pc1Rqnb68cdHOc0VoqglI2B1jpOirH7YgMS8
-	e3I1S9NtfCIFrnGkuwYVH7ArAiBDA3o=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=2chB+6TPhVuRnOZXELhxZytj9BOYBqeVPMdvplCJobM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790763003; v=1; x=1791367803;
- b=A+9Lx1hllhbzQT0VcT76xVSjE63/J/iCHuwgomiIP1JGBQNX+bpmZLL2rdN+38KNTMew03mM
- l8n0gaq+4699FSU5oBbhM3iQEkFbfdOye5D9JJ3wb0pPTLKQEvySj56HTgFuuX85wysCVmBbazy
- t+6HjsWq0gX/oLU7H1YGW9dQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id e1901c4a5a410c4d;
-	Wed, 30 Sep 2026 10:10:01 +0000
-X-Mizu-Trace-ID: e1901c4a5a410c4d
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.100.1.1.11\))
-Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common
- vmemmap path
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260930085329.17337-1-lance.yang@linux.dev>
-Date: Wed, 30 Sep 2026 18:09:41 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- maddy@linux.ibm.com,
- rppt@kernel.org,
- akpm@linux-foundation.org,
- david@kernel.org,
- mpe@ellerman.id.au,
- npiggin@gmail.com,
- chleroy@kernel.org,
- ritesh.list@gmail.com,
- sshegde@linux.ibm.com,
- ljs@kernel.org,
- liam@infradead.org,
- vbabka@kernel.org,
- surenb@google.com,
- mhocko@suse.com,
- qi.zheng@linux.dev,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BAD58999-1EDD-4A37-ABA0-DB1BD8AB3453@linux.dev>
-References: <20260929053231.66085-3-songmuchun@bytedance.com>
- <20260930085329.17337-1-lance.yang@linux.dev>
-To: Lance Yang <lance.yang@linux.dev>
-X-Mailer: Apple Mail (2.3901.100.1.1.11)
+	t=1790763173;
+	b=6p5pdmOyjnEEge/5ucOw/y67YN3flGuM/NsLymx1bPp9Z9vL6AbefYyiDTkasZljtp5iQs
+	EHNbec48OnMgZ2dUxZI1rh3tlNKxRiuvhotvX7DsBBGA2yPjBBJU9YYR67K2Laa62C67U7
+	t9A3yFMCoyxcUFhKjv0cprAtdMbmVd4=
+Received: by mail-ed2-f32.google.com with SMTP id 4fb4d7f45d1cf-6acae8342d2so2942533a12.3
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 03:12:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790763172; x=1791367972; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
+        b=JAsBKsW9xoCvZPdcFtiRTDvWI9YSghfFujEfKH1iApZPs8IxTDEZLfffHNoq5aOk5B
+         OmktfZ/Igym1xDf1XGlouGf7IA9p6syYt46LRwh+8udvFlKmGf3bZpGsR+Ix/GtW+zlM
+         CRr4UH0j331ZF+HVZi5RSeGGZi05ru13Ip14RH/2M/SWpka9OF//sABab6rF+lnO3d+n
+         TTDdLRO8p74W01c23biNXyverWglNREEs6plkFnnZLheerL43BcvQZ00ofCJXD+DXMGt
+         r3t/M1QuPI4xF3Pa7At/hWREd2E83p5HYU5yVxJptCgY9lLTywSdiiAlsAm3fLEErnmz
+         N77w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790763172; x=1791367972;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VNZxYOPgHhHVtE3mtugzmk7TyFgX/vhP/aUVA52RJRU=;
+        b=jnkD9ZA4qzksl1YNri6SJSt2oTi3L7mKqJblMZ/zAtvy0IoZXliYGGfnwARk83b9D5
+         UT6Hvx01RY5PUbQ2gOErQlyulPDsZ6yuekKP/YBcKzyRyZ9SFIOC/6ECgJoZUJTHWP2Z
+         X/ejliIGCIv2WDOEYi7gUWEIXm6hUiIqOY0gDCUl4ibRtq61kkK9h4YoBUrUt4IAnKJx
+         a6NVLw8q1mbgmjZ4n8n5QFYrOAlqGiCWTI0fjSM4Dn+XCfn8PoOPqI3WCnEdZVo/gVQU
+         LxrgASTimIiRlC2H88i+GmApbon2pq94N/JCfm3OKYXVU27s37fIAh4EbjJq2Xb6d3jJ
+         BO7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxN41Vnbvc7kMawl87Awe6n5GOfr0t99hpofhlZIL41KIZ26MbBbR+cyVsgn+moO4dIE6ZU5L8bkg==@kvack.org
+X-Gm-Message-State: AFq9FYITFIuTiM3qQ0/ZI718eZRz4EJXJz18sXSceWQdbIMvgFOZ3doo
+	/tEk60OUk94ZsWhbzhlaxqa9gSafPcnFIo2z7F5XAVx7/OPUdnWCJMjO
+X-Gm-Gg: AYBFou2GK7Uo1D0c/OYV0koZanZc7ZmKCkS3Rxg8QAzQgHTbTko1GGEghU9BWdPdU8c
+	OzKVgEo2v3iGjmgR5DM81V7U52z9Xg+EDtYTLzrTJ3hrMKbYMQv6tQK8cuY7R9hQSTZ4WrsNtMr
+	GzKNOqWCd8xllSkLTSiGubbBPpi9QLWXzUtEyC+1FeZWDErjDtfFgzarWjxAFGHCNU3fRTdApTp
+	VwSJED2YG/VUjtSvpvfqWeNvxYjTvlYxuSqB5iEjv+KStJ8z/AIEPWwbOovuxc970IBlrN7Ba2L
+	3W3WfxP94bdneKm7Gc8+idymRSizXrIIBUsBmc3DXM9ZIh5VXQIJ+lvz2q2TYHldN0qowKQaRlf
+	ulolTRK42ynJwV+a/8NPCbGJ0YSlqaW16O7gD5Xu1myWnRQZ15w0xmTsuWLV20n4hJfoV4tf0Zb
+	ALWICAFUB03dRRuMgmrbZ7KpcjQ7PHk/qHcl0=
+X-Received: by 2002:a05:6402:324e:b0:6a9:dc6a:689c with SMTP id 4fb4d7f45d1cf-6ae199462e8mr462834a12.22.1790763172073;
+        Wed, 30 Sep 2026 03:12:52 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6ae15898cf4sm532500a12.36.2026.09.30.03.12.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 03:12:51 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Wed, 30 Sep 2026 12:12:49 +0200
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>,
+	=Kent Overstreet <kent.overstreet@linux.dev>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Aaron Tomlin <atomlin@atomlin.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	kasan-dev@googlegroups.com, Sashiko <sashiko-bot@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v11 2/7] mm/vmalloc: undo partial mappings inside the
+ mapping functions
+Message-ID: <arzgoe-bXAz1poAt@milan>
+References: <20260929082014.160587-1-hao.ge@linux.dev>
+ <20260929082014.160587-3-hao.ge@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260929082014.160587-3-hao.ge@linux.dev>
+X-Stat-Signature: cfykbb6ukfezmg7bi4p9mqbofssqtgs3
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6284BA000E
-X-Stat-Signature: fg4gcibyx659qypsg3pzcfwds1jya9qh
-X-HE-Tag: 1790763007-5787
-X-HE-Meta: U2FsdGVkX18ZiWe3Vwc7vJkByTzf9kcgiORF2VrrEzjGSn+YPgfVN0Xj5qZcnZjCfMCglWmOTiG8YzZp+Kj35KyBv3V6+HGXfD2RRs3+N5y0HQoxnwBJcqGo+zQTzCkMAT4BPUabDx2cMaTJfL/r9CgqptWg21IUymlQXztGmoyBfJXxihqLXvHf2xdQiNhRirN9Nnch69wvEhZMpL9mNUfi/HPa4NSbLunzdCXimNn8JOPJnPizdzie+pylYanG3toSYK53zQpXyubaVJMcFrJV0gvfZ+VABX6SC5gwMihj1nTmsXcV6I0svnSKgsHaRnxGvBKQh19juGy079A3SN4+iv0opobEs6TjBcEEsUzuuP2NDqPvUWy/6eE3/h4a18U8ZxXRBof57OTR8HfV7/RplZdt1tI8OcjIyZNDAIKiFujDpvxA7gT/1YeVeoHSuHEDIURhoe/uBSWorsc7a31bQcHzOWazhF7M8SrURfabt4NI6BDaq1+NZeO1mDkiQKv1Pke0IfkSZVav5v4qNCNQnHCzURi0c50aBKqYZ3WQGRM9+sts09oGtIwuo7xiGrc5sB6VPq3E4Zel714NPQ+FI6DQJIevfYnLW2dJ5wCEGwdn1pGFm4g5/Bh0DCpre/4MhGwtTw+Nlx++MQY5RQ2ULCL2yTI9oE/68MHYr7zrPBqQz8dqzZk9tgCqcWXINbmcBwSMCDei1QUOkTEaVFwYKhgr+v2FFXbCxsHY3RfwHh29QNFlueeztMbkWkRVRQdEeDGx1B7Lvv6qoEhJ3XqkalNsv6ckZbH/Vy+X7kv7vU2PdM05i5v1UGkpit3I9dU35JehOi5fQl/umUZMsE7xCFLkpIOU4fEcz0RkaJ8TJREdZy1LAI6f6+dlrjZ6hlIGPdgK0CXEB9akV4tvmRTQBK4xApqXeD9tuucngjRocarrr7EdJADauLJAjV+C88XoawdQCat+RPNCdLf
- wLJjWbzk
- wOdwCMoeA1+oOFuYIM3HYkgfAJ47t7N1zjXxGzU9refUtsaLwWD7IbRXxelLbmx937ycM2jMr2OLTpKzAJhES12ad4Eah3IxMmPA4+XWgtegrZHBnVzn6PepbdHjEukB4OaKGPzIdNxxLj9NNQRccTeynML7M408pFqWZtcZYxeM/Ukj+8DQsnsJCZZBqICRJcwJFOyniwe2Td0mY/MkOfgkPVWyaCCzEE0Qw08vtbzwbYfoi68Cc2iX9TWkFJhgpMiItP81i+KAMG2SfU1efgkFj5SbhZl6QU0lgrp/3WuiJsRhZ3G1otJeeM1IjjH3wIJm15C1BwPR0T97YMpJ1NglKkUUm6D7V+X9Sjz6pli5eD+dFnnUj1yQBtQp5bOqxtlvP7LKwSbUDilKw9eihwPSSPQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BAD7420004
+X-HE-Tag: 1790763173-167032
+X-HE-Meta: U2FsdGVkX1+mQoCuHxvXMmwlphqCwzFFy/UL/mEAP4wl4F/VmgT3hiF4t+T7oJKPKE2kkR9ItAl6boNXwHT5wKbcPCprKmQkn8lKMo/R3WR/t0EBrc9SVDIRpJcrR5qV6gNFYeu0ij9T3xDWZBiikdzsUxP9lfGtVl23NNMi0nwNv/BFuaAAdGXsGVNATHDQw/FGLqttZ/+rrf/AJb9CQ2yGdv4saYz6WeoEHPGk/twjjLaWPC4wgB5536xFvVvflZlh58X+fuyqCY7Me8IdHnv0jUapRtNiqzdF5B4/KYeW++c9ikxk1Cpjjke2utuoW0nfhs8QyH0IR9derJi1f903gN8qMss+GMs5kVm3pTj0/h4V1Ltsa4CdoQhGhMZCYJcW6kNr0REzZ3BzGpdoElEV0BDFVeSVQ2vnZZFUjh2YXIUfZ+M8JYtSPOvVIu6JzUH8L8CI8DnuxO7/w3P77dsp64CE2XbS2pTirc6DMCGIFEcE3scM4x5CSQukWyqki5jywFM02sSYOpiUGHnB6hWlRRGXbH/0Q83gG7iNVD/O1yFnr26N70Rn4sqY1EeR3pMmrMWJoZKFS9Ys9ElBASV4ErKU7arOh8q1wi62Aq0h1kXF4c5EdKmUvjs+HU+d0qBl78qa5AZ8mXsdZkJSd0y8Nq4xB+pPtepTotC+jFsfTaFJkMiuel09FpWpy6j1EavJirqJWIsmDvLcdZF6k0JbRdvYxPzEFt3GXBmS0anINQr4KNOXFQSeE3gQpZoAG+nKeHvefhQxWV7rmoPuIYjtnuP+DkNhvrxI8IwPbKxC59h6j8r6SIB7hjt/PAhzLebPnIqd6yCQllGtX8X0kZObZphcb+QWeQSGAjdtXN+BNlze7Vzo4h7oFpq0WznUJxQxp8OUhcnmnbEKpDx++FypaTF8WoGwItxN2G6e+uc3lrOALCuayB3alG7vbnppA5FtP8OPCjUdhjfR+AS
+ k27b1XWt
+ ITX7Ov7lnHSHjbsBlbW5f5b68YyD/XNdT/baH4Y5dOagkto9cFRQkUwxwv86sPDR+wBe37GRiOSx7ksl+lBlqcLkRiDTrTp1H+BKuPy/WKM78mGVSSB/F/QDoVB9Bith3CoKbSEz52oROYYhJ6XbjltuS622d2yifa13frJdpNjWkv+xqmsXzVo8CMpR8AVuCyZGMg02M4Td4PfOWYok2shlrY3mh7Qb0b6rxewt+D6i1lzFqBF9AkX9V14PMV5B+RIekh624QnM/K0v/mqh/luw/5x2AvxHTqp0dIqg+q/Wh749E9XQICWcjly/RLCqGsYucniYHfv6nnzwUAl7XxeITz1Cflk0kbiygB76iLbYlg3y8E7kvPF4e2nMHLZpVwOsHt4IS9CrKH/z797MNVoXAFbuQdgrZakgL47M53nFBp8r67GXsDqoKSLGXynmITfuMcSKXezNJbVlUtawclB2dWgOZnEp10U0qPbnow7PGo7mpZaXPej3lYA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,195 +136,198 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Sep 29, 2026 at 04:20:09PM +0800, Hao Ge wrote:
+> __vmap_pages_range_noflush() and friends can install some PTEs before
+> failing and leave them mapped, and the kernel callers do not agree on
+> who cleans them up. For example, pcpu_map_pages() and
+> kmsan_ioremap_page_range() unmap the leftovers themselves, while
+> vm_module_tags_populate() and the __GFP_NOFAIL retry loop in
+> __vmalloc_area_node() relied on the mapping functions cleaning up and
+> did not call anything like vunmap_range() themselves. When the same
+> range is mapped again, the attempt hits the leftovers and fails, with
+> BUG() in vmap_pte_range() for huge mappings.
+> 
+> After discussing with Suren and Ulad, we decided the cleanup belongs
+> to __vmap_pages_range_noflush() and friends, so the callers no longer
+> need to unmap the partial mappings themselves. Each function now
+> undoes the PTEs it installed itself.
+> 
+> The rollback calls the low-level __vunmap_range_noflush(), it just
+> clears the PTEs of the range it is given, which is all a rollback
+> needs. It cannot use vunmap_range_noflush() because these mapping
+> functions also map the KMSAN shadow and origin, and for a metadata
+> range its hook would look up the metadata of the metadata, get 0
+> and BUG() on addr >= end. The failed mappings were never accessed,
+> no TLB flush needed.
+> 
+> Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+> Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+>  mm/kmsan/shadow.c |  4 ++++
+>  mm/vmalloc.c      | 31 +++++++++++++++++++++++++++++--
+>  2 files changed, 33 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+> index 0c88d89bf0d6..2166086d3dc3 100644
+> --- a/mm/kmsan/shadow.c
+> +++ b/mm/kmsan/shadow.c
+> @@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
+>  					    o_pages, page_shift);
+>  	kmsan_leave_runtime();
+>  	if (mapped) {
+> +		/* Undo the shadow mapping set up above. */
+> +		kmsan_enter_runtime();
+> +		__vunmap_range_noflush(shadow_start, shadow_end);
+> +		kmsan_leave_runtime();
+>  		err = mapped;
+>  		goto ret;
+>  	}
+>
+Can we just do that inside the vmalloc? For example in the
+__vmap_pages_range_noflush() as entry function for all(?) helpers?
+So we do not need do it manually?
 
-
-> On Sep 30, 2026, at 16:53, Lance Yang <lance.yang@linux.dev> wrote:
->=20
->=20
-> On Tue, Sep 29, 2026 at 01:32:27PM +0800, Muchun Song wrote:
->> The common vmemmap population path cannot yet handle optimized Device =
-DAX
->> mappings on its own. It uses pfn_to_zone() to find the shared tail =
-page,
->> but Device DAX populates its vmemmap at runtime before the =
-ZONE_DEVICE span
->> is initialized.
->>=20
->> Teach the common path to use device_zone() for runtime optimized =
-vmemmap
->> population while retaining pfn_to_zone() for early boot. This allows =
-the
->> same path to support both early boot mappings and Device DAX.
->>=20
->> The backing PFN supplied by the Device DAX-specific population path =
-is no
->> longer used, allowing the redundant lookup and population code to be
->> removed later.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Qi Zheng <qi.zheng@linux.dev>
->> ---
->> v3:
->> - Collect Acked-by from Qi Zheng
->>=20
->> v2:
->> - Expand comments around slab initialization to explain zone lookup =
-and
->> page refcounting (suggested by Qi Zheng)
->> ---
->> mm/sparse-vmemmap.c | 64 =
-+++++++++++++++++++++++++--------------------
->> 1 file changed, 35 insertions(+), 29 deletions(-)
->>=20
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 8219abc6c3e5..ee4c113ca938 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -237,18 +237,43 @@ static __meminit void =
-*vmemmap_alloc_pte(unsigned long pfn, int node,
->> struct page *page;
->> const unsigned int order =3D pfn_to_section_compound_order(pfn);
->>=20
->> - /*
->> -  * Device DAX still relies on vmemmap_populate_compound_pages() for
->> -  * head/first-tail allocation and tail-page reuse.
->> -  */
->> if (!vmemmap_optimizable_pfn(pfn))
->> return vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap);
->>=20
->> - zone =3D pfn_to_zone(pfn, node);
->> + /*
->> +  * Before slab is available, vmemmap optimization is used for early
->> +  * system RAM, whose zone can be determined from the PFN.
->> +  *
->> +  * Once slab is available, only ZONE_DEVICE memory reaches this
->> +  * optimized population path. Its zone span has not been =
-initialized
->> +  * while its vmemmap is being populated, so pfn_to_zone() cannot be
->> +  * used. Obtain ZONE_DEVICE directly from the node instead.
->> +  */
->> + zone =3D slab_is_available() ? device_zone(node) : pfn_to_zone(pfn, =
-node);
->> page =3D vmemmap_shared_tail_page(order, zone);
->> if (!page)
->> return NULL;
->>=20
->> + /*
->> +  * During early vmemmap population, the shared tail vmemmap backing
->> +  * page is allocated from memblock before its struct page can =
-safely
->> +  * participate in page refcounting. Therefore, no reference can be
->> +  * held for each shared PTE mapping, and the mappings must be =
-unshared
->> +  * before the vmemmap is depopulated.
->> +  *
->> +  * Once slab is available, the shared backing page is allocated =
-from
->> +  * the buddy allocator and can be refcounted. Hold one reference =
-for
->> +  * each shared PTE mapping. The architecture vmemmap teardown drops
->> +  * the reference through __free_pages() when removing the mapping,
->> +  * preventing the backing page from being freed while it is shared.
->> +  *
->> +  * The backing page may be shared by enough PTE mappings to exhaust
->> +  * the positive range of its reference count. Stop populating the
->> +  * vmemmap if another reference cannot be acquired.
->> +  */
->> + if (slab_is_available() && !try_get_page(page))
->> + return NULL;
->=20
-> BTW, shouldn't __add_pages() undo the earlier sections on a population
-> failure? Say the first section is added successfully, but populating =
-the
-> next one fails, e.g. due to an allocation failure:
->=20
-> void *memremap_pages(struct dev_pagemap *pgmap, int nid)
-> {
-> 	...
-> 	const int nr_range =3D pgmap->nr_range;
-> 	int error, i;
-> 	...
-> 	pgmap->nr_range =3D 0;
-> 	error =3D 0;
-> 	for (i =3D 0; i < nr_range; i++) {
-> 		error =3D pagemap_range(pgmap, &params, i, nid);
-> 		if (error)
-> 			break;
-> 		pgmap->nr_range++;
-> 	}
->=20
-> 	if (i < nr_range) {
-> 		memunmap_pages(pgmap);
-> 		pgmap->nr_range =3D nr_range;
-> 		return ERR_PTR(error);
-> 	}
-> ...
-> }
->=20
-> We still need to undo the sections already added in the failed range,
-> though ... memunmap_pages() won't touch those, since it only removes
-> completed ranges.
->=20
-> If the range starts at a section boundary, we'd hit -EEXIST in
-> fill_subsection_map() on retry while those subsection bits are still =
-set.
->=20
-> The old DAX path had this issue too. Could we roll back [start_pfn, =
-pfn)
-> in __add_pages() as a separate fix? Something like this:
->=20
-> ---8<---
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 796af1028ee2..16a0a2c885bc 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -380,6 +380,7 @@ EXPORT_SYMBOL_GPL(pfn_to_online_page);
-> int __add_pages(int nid, unsigned long pfn, unsigned long nr_pages,
-> struct mhp_params *params)
-> {
-> + 	const unsigned long start_pfn =3D pfn;
-> 	const unsigned long end_pfn =3D pfn + nr_pages;
-> 	unsigned long cur_nr_pages;
-> 	int err;
-> @@ -417,6 +418,10 @@ int __add_pages(int nid, unsigned long pfn, =
-unsigned long nr_pages,
-> 			break;
-> 		cond_resched();
-> }
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 859e6d2d57a3..9bbf75706627 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -349,6 +349,10 @@ static int vmap_range_noflush(unsigned long addr, unsigned long end,
+>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+>  		arch_sync_kernel_mappings(start, end);
+>  
+> +	/* Undo the PTEs installed before the failure. */
+> +	if (err)
+> +		__vunmap_range_noflush(start, end);
 > +
-> + 	/* Roll back the sections added before the failure. */
-> + 	if (err && pfn !=3D start_pfn)
-> + 		__remove_pages(start_pfn, pfn - start_pfn, altmap, =
-params->pgmap);
-> 	vmemmap_populate_print_last();
-> 	return err;
-> }
-> --
->=20
-> Hope I haven't missed anything :)
+>  	return err;
+>  }
+>  
+> @@ -363,6 +367,9 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+>  	if (!err)
+>  		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+>  					       ioremap_max_page_shift);
+> +	if (err)
+> +		__vunmap_range_noflush(addr, end);
+> +
+>  	return err;
+>  }
+>  
+> @@ -667,6 +674,10 @@ static int vmap_small_pages_range_noflush(unsigned long addr, unsigned long end,
+>  	if (mask & ARCH_PAGE_TABLE_SYNC_MASK)
+>  		arch_sync_kernel_mappings(start, end);
+>  
+> +	/* Undo the PTEs installed before the failure. */
+> +	if (err)
+> +		__vunmap_range_noflush(start, end);
+> +
+>  	return err;
+>  }
+>  
+The only one user of that function is __vmap_pages_range_noflush()
+so we can cover both cases there small and huge path.
 
-Good catch. This is indeed a pre-existing issue, and the old DAX path =
-was
-affected as well.
+Is that enough just to do unroll in the below:
 
-Your proposed fix looks correct to me. I would slightly prefer keeping =
-the
-rollback close to the failure:
+__vmap_pages_range_noflush()
+vmap_page_range()
 
-            err =3D sparse_add_section(nid, pfn, cur_nr_pages, altmap,
-                                     params->pgmap);
-            if (err) {
-                    __remove_pages(start_pfn, pfn - start_pfn, altmap,
-                                   params->pgmap);
-                    break;
-            }
+functions? It will also fix NOFAIL case:
 
-If the first section fails, this simply calls __remove_pages() with an
-empty range, which is a harmless no-op.
+<snip>
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 89c327a6ce7d..fa1f357ecf3f 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -359,10 +359,19 @@ int vmap_page_range(unsigned long addr, unsigned long end,
+ 
+ 	err = vmap_range_noflush(addr, end, phys_addr, pgprot_nx(prot),
+ 				 ioremap_max_page_shift);
++	if (err)
++		goto error_cleanup_range;
++
+ 	flush_cache_vmap(addr, end);
+-	if (!err)
+-		err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
++	err = kmsan_ioremap_page_range(addr, end, phys_addr, prot,
+ 					       ioremap_max_page_shift);
++	if (err)
++		goto error_cleanup_range;
++
++	return 0;
++
++error_cleanup_range:
++	__vunmap_range_noflush(addr, end);
+ 	return err;
+ }
+ 
+@@ -683,26 +692,35 @@ int __vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+ 		pgprot_t prot, struct page **pages, unsigned int page_shift)
+ {
+ 	unsigned int i, nr = (end - addr) >> PAGE_SHIFT;
++	unsigned long start = addr;
++	int err;
+ 
+-	WARN_ON(page_shift < PAGE_SHIFT);
+-
+-	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
+-			page_shift == PAGE_SHIFT)
+-		return vmap_small_pages_range_noflush(addr, end, prot, pages);
++	if (WARN_ON(addr >= end))
++		return -EINVAL;
+ 
+-	for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
+-		int err;
++	if (WARN_ON(page_shift < PAGE_SHIFT))
++		return -EINVAL;
+ 
+-		err = vmap_range_noflush(addr, addr + (1UL << page_shift),
++	if (!IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMALLOC) ||
++		page_shift == PAGE_SHIFT) {
++		err = vmap_small_pages_range_noflush(addr, end, prot, pages);
++	} else {
++		for (i = 0; i < nr; i += 1U << (page_shift - PAGE_SHIFT)) {
++			err = vmap_range_noflush(addr, addr + (1UL << page_shift),
+ 					page_to_phys(pages[i]), prot,
+ 					page_shift);
+-		if (err)
+-			return err;
++			if (err)
++				break;
+ 
+-		addr += 1UL << page_shift;
++			addr += 1UL << page_shift;
++		}
+ 	}
+ 
+-	return 0;
++	if (err)
++		__vunmap_range_noflush(start, end);
++
++	/* 0 on success. */
++	return err;
+ }
+ 
+ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+@@ -714,7 +732,13 @@ int vmap_pages_range_noflush(unsigned long addr, unsigned long end,
+ 
+ 	if (ret)
+ 		return ret;
+-	return __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
++
++	ret = __vmap_pages_range_noflush(addr, end, prot, pages, page_shift);
++	if (ret)
++		/* Cleanup KMSAN metadata. */
++		kmsan_vunmap_range_noflush(addr, end);
++
++	return ret;
+ }
+ 
+ static int __vmap_pages_range(unsigned long addr, unsigned long end,
+<snip>
 
-Would you mind sending this as a separate bug fix? I will ACK it.
-
-Thanks,
-Muchun
-
+--
+Uladzislau Rezki
 
