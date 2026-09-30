@@ -4,187 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14DE2CA5FB1
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 12:07:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BBB2CA5FB1
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 12:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED016B008C; Wed, 30 Sep 2026 08:07:49 -0400 (EDT)
+	id 4005C6B0092; Wed, 30 Sep 2026 08:08:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C5126B0092; Wed, 30 Sep 2026 08:07:49 -0400 (EDT)
+	id 3D82A6B0096; Wed, 30 Sep 2026 08:08:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B4386B0096; Wed, 30 Sep 2026 08:07:49 -0400 (EDT)
+	id 3149F6B0098; Wed, 30 Sep 2026 08:08:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EF0BC6B008C
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:07:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7F3141207C1
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:07:48 +0000 (UTC)
-X-FDA: 85270304616.04.4B2EF48
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf12.hostedemail.com (Postfix) with ESMTP id AFCC440008
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:07:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BbkGfO+C;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of philip.li@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=philip.li@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790770065;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F1DB56B0092
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 08:08:41 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7B16114078A
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:08:41 +0000 (UTC)
+X-FDA: 85270306842.06.320E531
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B2E44100007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 12:08:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5ufWsKr;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1790770119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BsywyyffG4q1NIRnHQi8EB2aSrTnpwVjGXq8b/DCV8A=;
-	b=v116vH+n6rNMymvNswsK2l0iCOciQsm7njl6KVf4lN/cBrW9ttqycXsf1uaas7OUYxRF3q
-	HXV2xJ++9d3hKVKr9gqtDfXYgajJkSwjSD+VnuaYXWgUz5caHH5iFfIX3hUUmHYK1ZY0Hp
-	au1kl6hOwn7M7LCLQhksy135fIHx3HA=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=BbkGfO+C;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf12.hostedemail.com: domain of philip.li@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=philip.li@intel.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
-	t=1790770065;
-	b=Zg1326EUd7rq96pRBPcAT2Pph+qrht4Yt3gtMJ97KxtY/YXyP+bJrdFp99jD6HQB1g+MDL
-	oEF+4pAzQIwlCWRkVHRleESmocqrrl+JPRtd1GT7pP4bfbYpFWWL7jFzHJeC7n5LCcNfI0
-	+f47V1842Ga4auHhasIobf7gZzurqmM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1790770064; x=1822306064;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=OOgpiqKWpIg46xmlwlckN/5oX4CsvqMDjAuzmLSrLCU=;
-  b=BbkGfO+CgXeMAEwonVYWAdK7ThXsmJHtQjzzKnHSUTVbXAdZMeai3lwv
-   ltz357Is3QT9UzwaGunuk3zC5+viFFqa/Oosh1MX5ZQwo0yquelWC1eB/
-   2MO2T5xuuMyUlia8HCex+49emYWNI34VsqFogGdqF4OtnG9Q6J5naO1iQ
-   B9boW8pNZENXVTu6Ck4kBKBkUdcxXPGF472Ao1ZE4ob3HLQCE8gWuC1Gx
-   09TPgI9jfaioSviHM6CkxXhkTE9Sfc23qV4vLOsPWgDHowdifA8TNfCXI
-   jUDmv0rl1IvIKdFBx4hx/Mp6fZpIbnVqwLHX2BJ+5BOjmUincEtMHi/kf
-   A==;
-X-CSE-ConnectionGUID: IbFBpAVmQMqI/ovMOgZlzQ==
-X-CSE-MsgGUID: e/x+DUh/R8OvsgUTpWEaGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="102076923"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="102076923"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 05:07:43 -0700
-X-CSE-ConnectionGUID: tYkqbIDHR+WDlhcj9lVsGw==
-X-CSE-MsgGUID: DGzKVbuCQs2qX52tkEBDPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; 
-   d="scan'208";a="272132910"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2026 05:07:42 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 05:07:42 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 05:07:42 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.9) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 30 Sep 2026 05:07:41 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dzBJOrTAG0JJktKqIvcHnXvKmCQqaCD1PafN4WmnJ7t+Masmsj4PVW0NDdOueb6lg8Auxw74IWNGkeua6PG+IJdf5U0RMI3CsvddlGZQzQKTcagcqKeEOP7RQi/gGvJnUVO7CoqjL5B2VPUzLMKN4yvLljVoM0OZflHLVLg+Q43cDHSHrOYBE7v94vFS/tlJn6tNqJ87P3pZ+F44j+HQmoocptntubqSRl00m0oOyVB9KEYlectyJuUTL2M1kVTTksTb1b2eF7ZVaZZFr7D9YxPumLTTtkgD1aEUedW1izSUOO5ptiKxLU3Lg3j44JhkRSuoDYKIuW7iGQKnFQXIhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BsywyyffG4q1NIRnHQi8EB2aSrTnpwVjGXq8b/DCV8A=;
- b=PqUSQxgw3JGD0gz61m7iJFqgPWjCB6Zu8BTAB1VDSIZCAalCuZYe0QCxBGiVSACYUc4grcufN3h8PnjTCYHnv6dkuO8ledlmGuk95T4zU1QNwonAinE/AcdbrGHhikN+bVVGzbS5FOpQcM6W9w9iFI49CRUwK8ovJaSkgRF1wTzpYVlWWM+pouPB3p49P7pGscZaIeRdf7iHCQJ434NvERFgDJw+Od6N7e7SLy2XMXSqSU5EnGBHC1BE5/lKbZRsmWW4YCiNNm6hL0t3yVIkRtnZJcZLaOUhUg41rOdHW5ScbR+Wz6afFUyca/nzX5BSGDGHRKCRgKjXypCG31hh6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com (2603:10b6:8:4c4::14)
- by MW5PR11MB5907.namprd11.prod.outlook.com (2603:10b6:303:1a1::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Wed, 30 Sep
- 2026 12:07:39 +0000
-Received: from DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a]) by DS6PR11MB362586.namprd11.prod.outlook.com
- ([fe80::71a6:38f9:43ed:8f8a%6]) with mapi id 15.21.0451.026; Wed, 30 Sep 2026
- 12:07:39 +0000
-Date: Wed, 30 Sep 2026 20:07:31 +0800
-From: Philip Li <philip.li@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-CC: kernel test robot <lkp@intel.com>, Linux Memory Management List
-	<linux-mm@kvack.org>, Mark Brown <broonie@kernel.org>,
-	<dri-devel@lists.freedesktop.org>
-Subject: Re: [linux-next:master] BUILD REGRESSION
- 6375e61c01e93e35ee7acd336a689ac1fae4b509
-Message-ID: <arz7g8MbwpU5XImO@rli9-mobl>
-References: <202609300341.XNENLUI0-lkp@intel.com>
- <20260929144213.94ba64f93121887c2a599d9f@linux-foundation.org>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260929144213.94ba64f93121887c2a599d9f@linux-foundation.org>
-X-ClientProxiedBy: TY6P301CA0013.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:405:3be::11) To DS6PR11MB362586.namprd11.prod.outlook.com
- (2603:10b6:8:4c4::14)
+	bh=TcPo3OnPL6RO7WwH35+drtHu3m/6Ime40gJXU1+/524=;
+	b=Qn6v5G4V/doktQRojKFWIWsKuDMmkjPvuD6TI/eyfhpEaKkaQTQ0EPr/NNDiCSV/0STVvj
+	jBWtmVSSnHZnR+E3twKIeO2USiW1pi+XwNbjI88oaCjn1h1Drkb1S9am2P2RH4mhtzoZmJ
+	cJhU7i8vRbgqipKS76k+4CI792DCPEg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a5ufWsKr;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1790770119;
+	b=Zz+KyqOUKHtbQhN978/cooa3Ym7OCpSatGCuarCU/kChkyNDZpjqu6f9gYwfSnFA39FbY8
+	bXGthw0eg2Vk4ajs1Lt+GU4TOOzbcrO3bPvYUFKyV3PdTnF0Chn09k7z/w5FxxaXD+T59V
+	BfYnVACdkc/3bogM9GKB9t0EAUtoijA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CE81540B6E;
+	Wed, 30 Sep 2026 12:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743031F00893;
+	Wed, 30 Sep 2026 12:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790770118;
+	bh=TcPo3OnPL6RO7WwH35+drtHu3m/6Ime40gJXU1+/524=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=a5ufWsKrcz4aVVeiS2LCppb3IIMjw1/skgfG51rMMiuR1Cwsaqgwk5mBKeB7BU7sn
+	 efotMRaP2USZwSZxh4AvS3COM1aJMENH8ObZc/PcRWd44rW3MGcTSsu67+WWqASVZI
+	 IkfgiZYJc89rCjz7ReygeiX/oIO5DurXn8JyRfh2oMw345y83H0tfgjrdsYdTGvpIR
+	 Dxi6fZmytbZzlR6eiTMKDEabXT4REPyJlqYkwTbZyY+ymKqMrkxaHpEI/FS+7Zvjlq
+	 8P5+Z21mddvvuiul9gM6O0XF5NLZqmCc+OBmtwllbUnjvUCiAzXkzd1YGscHYljHQo
+	 YaO/H9TXZJbfg==
+Date: Wed, 30 Sep 2026 13:08:33 +0100
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: =?utf-8?B?5aSp54u8?= <rockeet@gmail.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Subject: Re: [RFC] madvise: best-effort deferred writeback for shared file
+ mappings
+Message-ID: <arz0auULA33fqoWu@gremlin>
+References: <CAAE3jtcL_CZJdcattCwe0RraKnHcZO=UknxEUQVG858ouZCUQA@mail.gmail.com>
+ <7ebe4591-2306-4b5c-b83e-6a2e34b52bd8@kernel.org>
+ <CAAE3jtfeKJLSypScqRAEEgvO8En5kJfpbcFn5X+LQ2YL+xz_vA@mail.gmail.com>
+ <85aff663-2131-47da-ac04-8f0799a49b91@kernel.org>
+ <CAAE3jtcRQ407P9LTbg=JOwhABQRViSaq2XBefnDdNWiD7PxvUg@mail.gmail.com>
+ <1ce9cf3a-15dc-4815-ba29-2e22b05206fb@kernel.org>
+ <art8EKRKMdwSDCkr@gremlin>
+ <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB362586:EE_|MW5PR11MB5907:EE_
-X-MS-Office365-Filtering-Correlation-Id: e5e07e81-5d94-433d-8c80-08df1eeb6c53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: N2BTtAa0nonWyD9BFSC1W0VeLyOgM9oj5wVRol3zSwpk9hr130GbiNdPspJfICbSCK4tKjhgQCzTc1XZo2u8Wjw41oFwPokaVIhmr3TQLYhk+cqQodAM6Cdfb5s2kmXgHwkihhllQWvzx+9b6yN7JXqksUoem58BqZrKsEziXAaC8EiWhC2udZeITGTdGvrQ4zHbXQx0MQWEscghbkvP/AqB53vUDDonIaw1+qrkmVGeqY4K6a8nwUyRjcUirgfz1tj4WwgRnL7lVy2X/4lwVyCudK95M1b4SoKOMZx9ZKFCBIyVmrUPSdKdBhZjRHwDmbaKq5Y9yIH1Kzc0mGOnr2cCC1dqtCailTZJ4T3Xn7t0Dins5QOfKbz2+F0oOS045GaKj3+AenAwz0DjUlRVc19Dkdh44bqItSEMKpVJjTvmxl6haYmkbhTamHChp1YstB1HHpYy3zkdGOic9R104Fs90hAxwt3dizdPC4XkI/nwiItUbH0IOUVtdOI2U51QAuc3CoGGUL3bS8svcfdKOy3ppEEmo35EiDi7madav9wnx6p15p39ToBeVNSL3eOu13LJmjGEtn+PseqC/Ri9GC3oYy3lxnH3NNw/hffKTEbRVtD2ASOn0V3AMn/0rua3
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS6PR11MB362586.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?82BmIBX9p4TcwFmHVxOTuEiWRhpxfGwu752Z60Zpr6DfbFk+9FNb0a1UOJbr?=
- =?us-ascii?Q?ZZnnAO8Sv+26o5+eho/XL4ZOmXrFDNcBSAgUb1oN8OREv15459Cc6uMVAYg5?=
- =?us-ascii?Q?scDa42n1DBUssbUba0xlfqhrBskLs1I2/9gg0mEBW9tg9T/eTJsBjaHxkNdi?=
- =?us-ascii?Q?xUrXQMPRfoDVpDA5vTkUHXz931nNTmCeyy79hbeVqW3PfIhogeJ5el209uq5?=
- =?us-ascii?Q?y1Xg6M6UuY+mDtUtqEoe0FmBvplGo+Bl0CoZhY7AbStKk3JDeTKW2oNix75H?=
- =?us-ascii?Q?93IiTQlORBBvB/F5K/eVmuJVeiMfLH6jnOCenIsDLt2+OQt9pyMIdv8cGCmJ?=
- =?us-ascii?Q?SEL8/fGnv47mvyrPoRVu5qoshyx7TJSdLdIjRqLDRKUr5BQxm+/H+aK49MON?=
- =?us-ascii?Q?EEL4FpoqXgtvViZm783j0Ql98PqOXabAzPSqXv1E9CMF10et17pCyJDYTaQw?=
- =?us-ascii?Q?+aYWbJO5Z1fuRQC/cAxWJoN8QlhV0LwiPF9Bwwj3OAkmS28eMfaxwHz4cvZV?=
- =?us-ascii?Q?ND/NLv6ATdTE4ZtADFX4UrSX54QBesilddFU+lQFuLu/zgIbZj4I4aYX4TI/?=
- =?us-ascii?Q?dsAco6KrcbJHzLkCpMZJxnO0M65oZT0kGVkQO23VRLZSxhF3mZN3R/MBH9uw?=
- =?us-ascii?Q?b1WtcqOShAPWUyyjBVAlC68agnsTqOm6D2eIZr3cSZ7w10608N5UrTENMOv3?=
- =?us-ascii?Q?6sEHE5AniL3s1TK+VjHj9gtB8tUKp1gk+5sKMDWjQw/wqykf3mAk5yu8KbnX?=
- =?us-ascii?Q?hAJ7NWxGYhMig2hpMd71u7QZzWOFeOlSC9S8s0ub9XslJb9iaNC5DiN8Cmzk?=
- =?us-ascii?Q?/oolEIiW3ly4dSfJm5C4CxQDh3v+j96PJicpdN8qN6ZNt79iToxAzlvlsSgh?=
- =?us-ascii?Q?y637C+dJGkfAlscxC4KdvEDjik5b5wDWPegkLhtAkRk8fOjk3flagsloGYiK?=
- =?us-ascii?Q?g0gCLXwb3y8Ut6BCTi9jeLL1AZ64hIiXoOR6BW5PEDeeAFviIaNm+U3fe7aW?=
- =?us-ascii?Q?5NI87Ax6jaBSx/7RKhJ9u5VxsfSVR3KCGleO2vnXiMJ81g1xmJ/zFsCollXD?=
- =?us-ascii?Q?Hg4ec4c08BE73Y2fOFawlxV7BO84cLYRGtjMgZ7Rho0H40eZIcAdzfTFs6gs?=
- =?us-ascii?Q?O7eNSRzgnuRc4BdKcZGOC3iBpgryW/oWAZLorZA7I/xHHsdijzntUgyFQxso?=
- =?us-ascii?Q?j8rz0c8fHc4+1Vn+2E4m+Sng+XVq4q3CmfNCXasU+BTAM0R4ql1FYZZabnUn?=
- =?us-ascii?Q?dkxNXoOlY8iJnMUYaVJthLg5CjjURPox2jRnhLVrhHRGFPawxPPPUogFMAFO?=
- =?us-ascii?Q?GOJd86XKBi4dlfxtQvNJxi/i6nT+xVAAJLuBY4hqyrKp+dQRwFqrJibaPYix?=
- =?us-ascii?Q?uyJKhkLlVF7B3JYD3oG/YnIvWFaOAAqDW2G4kp6mP+wenrd3ctYeAh3Kt4j9?=
- =?us-ascii?Q?jVG9L+NX6rJpmaYe8joD9BRAxUSuosPKnSPV4dTQXZPlxVhifgTHtIABBqZO?=
- =?us-ascii?Q?MY4KAa3henTKhmnf5Iaa41IGf5qr/Tz8+0IpBD6t9rfkB4K73B82jL11Lg2o?=
- =?us-ascii?Q?m9+AXJ2JjvBERWP1CWUwj+NcSsjLUngSlt5gSBXZrxY2WNtSDfK4kYpLHlC0?=
- =?us-ascii?Q?cCEH6IrRK+jxPgEXeIIFW9cZputKp/xacCv/BT/MLcJYCOwOJJE2s+Hasg1u?=
- =?us-ascii?Q?jxTOQsbrFxzFdTNe/RXm3SsIFn6OP0gQpG8t7vpIFZ85Bp94EKKIzcA+DIm1?=
- =?us-ascii?Q?GR+7qI7wSw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: OWOye91UEFk+hZlbVlrTBEUsGzeDwASoeNLZKDu0N2/hworSwJBc54Fgx65jCwxAdE9saPOFPk7EzdbJ8nfg4CcbYCXiziPjUhtX3SNInKBYBiFEmI2RiA0X/GEnfZervBB5GtgBEYuWGfzMaUBixJBGxirLT4V0IkN6lnra/rpZLIQRvV9pH3llzmKkEHV1IHUptHdJLxa/V3RLwwWc+80pGb53hVN/Yz+8cRfbPG7n5xQmfe7VdfiO3AQzo1KGsn5eCn54kiTBJFiDmfBLluDAKvxmoMIsAt9VRESwgrg3MAQqDq5vbfd+ztJWeXSJT0hG/mvxlZYug2yHgNt9Cw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: e5e07e81-5d94-433d-8c80-08df1eeb6c53
-X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB362586.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 12:07:39.5515
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xw4cPT2sruMGRhsotUIZ/blVeI5EKG6+qqHDr18cHhTHXm0DfvEHFF7I7sSAFdI660EDG25DN/TKTE05hN+SYQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR11MB5907
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAE3jtftxMkCfWJ77W-xvV2x7jdAN8C8kyofYC3fEivM-Cq6UQ@mail.gmail.com>
+X-Stat-Signature: u4t6gy1xo6j5dwu1usawage7xzifjyoo
+X-Rspamd-Queue-Id: B2E44100007
 X-Rspam-User: 
-X-Stat-Signature: s5uyamy1yjz5as1k5y6cgmm1p9kmerzn
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: AFCC440008
-X-HE-Tag: 1790770063-464254
-X-HE-Meta: U2FsdGVkX19l34hGLuk9pmzV8NFRIz6fB6TH5+1FnOFtSUn7S/CTPnVXKgBy/ZvtGMTnma++zmQrCBw2WWsEiqd5YggzxbaUgsXZNAiBN17VXHfSa3oOP/5OG0Vz1I1cjhfbjFgVdOxSHHUChD1SLlKJrFeu6KwV03tGIApW/Oif2QzqFh2SqZd5oc5lA4AOyEm51HDBXRJatuzar1ZGtjBj4dpZU5mi2usL7PiVEFPPVAFdxgE80wQw7mnLamJYmhJf+1IGtuQf1+AqVbccozTB0/JJzwORGLHz0NFMNREM8BZu1nZ/WU3N2od5rDfSb72o2PAx8V+Z4v+stdNZWHcgT3+dE4Ibws9RW6avlORPWG1OPJjZqeibcz6tloxadqFqazPyEj1fq6G/Mp7QFqLRGc7pgcCY/MXXDXr7dnZ3htZm+SFxu19Sonce6mgV2ov0RWMIzGIvboORA/sJ5DmFoG9PbCt+YkYBLe0/R8TynMcFfpb8rDrMnORxz1CE2PdT//7Ja0K6zzyIU3Hu6QSxsiQcv2kqw+mkM4+9iiNEfyrsyNnz1V/G3AliIqlR9S23k4k6+LpXQeZPOXBiSED9KwP9maw1ciBt6l+SqOkfMNXE/me1LtfqMntCDC1y5q2/2salhXJjyy9aWbPJiQjR6X3VYiC1qAkMZJzii5htUVg2zG6lFHhuewNhyCMrU/IzYBE1wK3wQkQa241L3O1erQ7efJIbUa23bwstjXS8H96vuiHQ1Er2QgQC/Yzap2OralE9Rm3+CmjEXTimQAmYIY6TnqjPiTj9+4TTvkEYgx4coyI9xqs9yEx7lTfobRhBomhzQnGTIzW4IlNJTCNRxUQe+6OK3NZlF9GZRjqVX6bBZfhbJr0whDeorBSAMkvxrsneI3VgOpdnoqmBUAJmkY19iK/uQwPeK3a3IS/GxVpHaxZ/ZYZ1e3yH7YkZhhwZ213Z+dtOyWVgdHM
- wsIrKg1u
- C4rBOVEAz+ezmPnX4e1qOth5bsYYEYBjP9Qx7c8bJ7/qo7p1aMvqEIJhv/RbvgHyEejEj+t8Z0aHE2Of6fq8JFjORTi6LQT1767FRzAKG+Rx8quMjB74DUaLaMIFKkZI5QwglrDjgAp09bUrHLYhVCz70koK3D2bU2j9eAT+k8MCCv+SEMcKb8ep/GYUaJ+nyxK/EWDzjo3nxfYiKppE+Ru3AURdyD7fFH9KfkNoTg2C31liycsLBHXRc1VIS5YoHiPhlOBm4bXPzzp+xLD2tEDLHDL769gPntotLmMzCxK1G4L5B9RnIOI9sY1An/oz/SciMslSawA1uBHMX4ZolHnyKmGJZ/eGMoweGX5k7qFgTUwXZ4epEf7McZgCCVT2pMJfl5VbGcNQ6VmpUrgBbBdYeqWYmpq3qbg6x//J7A4Fk5QSTyLpjfsvPzYljeA539BipnffQL73fFl4bO7/Xpd8htUPFt+2VhfAuKlugQE6iIE0xKptuw3KqeQg8/8mCk85CqhWws3/GtgM=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1790770119-484226
+X-HE-Meta: U2FsdGVkX18DPvt/t2NFSOF2EkHYueteIVvz4NWab8WWOdj0hM+lxe6umofLQ/f4dXgOUqP5ztbVMiFp6c6/8u3SDcM9jXIxbh5hzrpD6OGW13E+3hSUCUvUbiJkrZlDZB4j53wWEHsdcJVOEgMIVtZyYUyNGjaHb2aBfWFI9lVXGALNchNUbdTaJPaGX1bZ6UpMrc4HPWa+vdrzMTOamhBtlfdh38rnPe+xQxpXdHygmxiLSQTXgP8PVy1CcW8uKb64kVeiNbrW1kZBlKnwla01IM2cmG5ObC+GoVz49ffQ2vGxUpR5NGIOk6zE3/NT9z+fmwlRH2K38T8tK05BtPrFGx0mJoOIwTKgf8d8mkUQhpXMgyG5bCunUDYTSuassZTOKVDkywYg+M7rJq4HyrzNSt/XkdCA5Asa5tUAlUv7Vk0b9y2oq0MnlMCVYdMx3QWg8XAhBOC9prUvvVE6LFVkpDLSA4cteg32Jq9tZSvmUz0RqZm5ZdI8KtzYFcUE/vTiJatF4y4rbxo++i9L4TTBtcLlWl0zqPRscr5l4x+cSZZ/J2KB4csZyWWsMD5Gtdqx51I8dhgZIbLHS/Kb/GgA2Eo9pwK/IxtJADiehN6aD3SR1lUW2xj6B/ab9yGUxYmh14PY/HkCH8Oc+Zc/zO0JbuYK6MxJDR4ijBJQkGSiGzrJDbxMEwb4XvCM+n4C03g+Umu6XN4kmWFVk175pjeQFRC4U1fxu773wcgm3tf82jvMJ+yHZHlNzCg8HbqNLbDj0m+nx4+SXRrxL+c/9bsq5nnAQ1QzSdA0LDgVZfFC4qhnyUGMSga+L1t6xX5nP9fUjuhBNyqL3ZMBaVh+jIMtalEth8iZn3z1aFvMKSYdagusTR3aWV9M7N1WcVbKpile0xmdMQ260YAMYJ+LbSSXnmRA0G/V8XUZB7zWLp2cd/D7P0tmAVXfcf4zW2otdUS5u/+BynjQt5Am5e4
+ xrVlN7lr
+ WFIqV2ZG6e8hLl3XgZYdvKCMM8p2Jdve0SThL6LuESBBd8n4q+H9dJ+FRQX/BAleIitYhBOOyf5JMUWF6YWfsQqr8R/kRlPLSyQjgvDduL1JCPizrY3Wrh+CDPJeRpO5lIOBlMsJfw8w3Dlw5YMWKvXGQjG3igGe+3ddTFY8pSBrzMfVqN28rS2+TUNAnrseMrZdKg0NY1Ybr/hMRy0EfceLhq15li4FT1lg60v/Fi1RQGD8/G8RLd6WWA9ALbp48ej8j97FNoNNEQaW41VqPxdF8tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,46 +102,147 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Sep 29, 2026 at 02:42:13PM -0700, Andrew Morton wrote:
-> On Wed, 30 Sep 2026 03:09:45 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
-> > tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> > branch HEAD: 6375e61c01e93e35ee7acd336a689ac1fae4b509  Add linux-next specific files for 20260928
-> > 
-> > Error/Warning (recently discovered and may have been fixed):
-> > 
-> >     https://lore.kernel.org/oe-kbuild-all/202609290155.PQiaOalK-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild-all/202609290349.4ad3d90o-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild-all/202609290408.BOs7sk55-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild-all/202609291109.9RGna4XZ-lkp@intel.com
-> >     https://lore.kernel.org/oe-kbuild-all/202609291109.OIsGTysr-lkp@intel.com
-> > 
-> >     Documentation/filesystems/api-summary:20: ./fs/dcache.c:2010: WARNING: Block quote ends without a blank line; unexpected unindent. [docutils]
-> >     arch/arm64/boot/dts/qcom/sdm670-google-bonito-tianma.dtb: clock-controller@100000 (qcom,gcc-sdm670): 'power-domains' is a required property
-> >     arch/arm64/boot/dts/qcom/sdm670-google-sargo.dtb: clock-controller@100000 (qcom,gcc-sdm670): 'power-domains' is a required property
-> >     drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c:336:11: error: call to undeclared function 'devm_drm_of_get_bridge'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-> >     drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c:336:16: error: assignment to 'struct drm_bridge *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-> >     drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c:336:18: error: implicit declaration of function 'devm_drm_of_get_bridge'; did you mean 'devm_drm_put_bridge'? [-Wimplicit-function-declaration]
-> >     drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c:336:9: error: incompatible integer to pointer conversion assigning to 'struct drm_bridge *' from 'int' [-Wint-conversion]
-> >     drivers/gpu/drm/verisilicon/vs_bridge.c:306:14: error: assignment to 'struct drm_bridge *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-> >     drivers/gpu/drm/verisilicon/vs_bridge.c:306:16: error: implicit declaration of function 'devm_drm_of_get_bridge'; did you mean 'devm_drm_put_bridge'? [-Wimplicit-function-declaration]
-> >     drivers/gpu/drm/verisilicon/vs_bridge.c:306:7: error: incompatible integer to pointer conversion assigning to 'struct drm_bridge *' from 'int' [-Wint-conversion]
-> >     drivers/gpu/drm/verisilicon/vs_bridge.c:306:9: error: call to undeclared function 'devm_drm_of_get_bridge'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-> 
-> (cc dri-devel for the above)
-> 
-> > Unverified Error/Warning (likely false positive, kindly check if interested):
-> > 
-> >     drivers/gpu/drm/xe/xe_guc_pc.c:1400:17: sparse: sparse: Trying to use reserved word 'break' as identifier
-> >     drivers/gpu/drm/xe/xe_guc_pc.c:1400:17: sparse: sparse: Trying to use reserved word 'switch' as identifier
-> 
-> I can't find any code in there which could cause this.  Using the correct HEAD.
+On Wed, Sep 30, 2026 at 06:27:14PM +0800, 天狼 wrote:
 
-Sorry for confusion, the initial unverifed report is at [1], and it should be a false
-positive from sparse. But this report fails to include the link of [1] and causes
-confusion.
+> > You really need an actual file on disk. Shared memory / shmem / memfd is
+> > not sufficient?
+>
+> Yes, an ordinary disk-backed file is the intended output, and subsequent
+> consumers access it through mmap.
+>
+> Shared memory can preserve state across a process crash if the shared
+> object remains alive. However, using shmem/memfd would introduce a separate
+> staging and transfer step to put the data into the final file. Building
+> directly in a file-backed MAP_SHARED mapping lets us preserve the latest
+> userspace writes across process crashes and retain the same file-cache
+> pages for subsequent consumers.
 
-[1] https://lore.kernel.org/oe-kbuild/202609250044.R601n2jg-lkp@intel.com/
+In general, writing to files through MAP_SHARED mappings is discouraged.
 
-Thanks
+>
+> > I also assume MAP_PRIVATE mapping the file so it's anon CoW'd is not
+> > sufficient either?
+>
+> Correct. With MAP_PRIVATE, modifications remain private and are not carried
+> through to the underlying file. If the constructing process crashes before
+> transferring those modifications to the file, another process reopening the
+> file cannot access them. That would lose the process-crash survival
+> property we obtain from MAP_SHARED.
+
+But you can solve that with a memfd?
+
+>
+> > It'd be problematic to effectively corrupt the page cache by saying "hey
+> > this is dirty but just clear dirty state and pretend this is what the
+> > disk has".
+>
+> To clarify, the proposal does not involve clearing dirty state or
+> pretending that memory and disk contents match. The pages would remain
+> dirty and continue to count toward the existing dirty-page limits.
+>
+> The requested hint only expresses that the application expects to modify
+> the data again soon and would prefer background writeback to happen later.
+
+But that's the same as saying 'don't writeback'?
+
+When there's a lot of dirtied pages on disk writes are delayed in proportion to
+how dirtied with various other heuristics taken into account.
+
+I don't see how this requested feature wouldn't just give programs a way to work
+around that, meanwhile everything else doing dirty writeback are _impacted by
+the dirtying that the requesting process has done_.
+
+That seems really problematic.
+
+>
+> > Delaying writeback could interfere with the writeback balancing logic.
+>
+> I understand that concern. The hint should not exempt the application from
+> dirty-page limits or throttling. If writeback is needed for balancing,
+> memory pressure, or explicit synchronization, the kernel should override
+> the hint.
+
+Hmm.
+
+The delay before background writeback happens is, by default, quite long,
+until you have a lot of dirtied pages.
+
+dirty_expire_centisecs defaults to 3000, i.e. 30s before it is considered
+for writeback.
+
+And then that only happens every dirty_writeback_centisecs, defaults to
+500, i.e. every 5 seconds.
+
+If you're not writing to the mapping within 5 seconds even, let alone 30
+seconds then that seems like an issue with your program.
+
+I guess you are re-dirtying again with later changes, but the _triggering_
+of writeback is at an inode granularity on dirtying - so you want to delay
+writing back some pages because later pages are not meaningful?
+
+All the while you are adding to the total dirty pages but not paying the
+price anywhere, nor allowing the dirty page count to reduce.
+
+Unfortunately there's no real way to avoid the per-inode thing, and
+delaying valid writeback there because SOME of it isn't 'valid' is not
+really sensible.
+
+Either that, or you are actually concerned when there are enough
+dirty pages to trigger background writeback i.e. dirty_background_ratio is
+exceeded (where the above limits don't apply).
+
+But later you say you don't want the proposed change to impact how that
+behaves (the balance_dirty_pages() logic), which contradicts that.
+
+So are you taking ~35s to actually write to this properly?
+
+And is it that you're wanting the _triggering_ of writeback to be
+per-folio? That isn't really sensible.
+
+And nor is it really to delay writeback for dirty folios because later ones
+are 'invalid'.
+>
+> The intended benefit is to avoid writing intermediate versions when the
+> kernel has room to defer that work. There is no requirement to prevent
+> writeback until construction finishes.
+>
+> madvise is not the only option, deferring writeback for the entire file
+> would also be acceptable.
+>
+> Could such an advisory preference be accommodated within the existing
+> writeback balancing policy while retaining its limits and fairness?
+
+I think the fundamental friction here is that you're charging a cost to a
+global limit then doing something that prevents that cost being paid (you
+can't writeback), and meanwhile the process can wait for arbitrary time
+before having to write to it.
+
+And the fact that it is taking you so long to actually write what is
+intended there that this matters suggests to me there's something wrong
+with what you're doing here.
+
+I'd say in general the shape of the solution would be something
+cgroups-ish, but since all of this is global stuff and the knobs are all
+global I think you need to think about your design a little more.
+
+Having a process that is kept around maybe with an appropriate OOM score
+that issues a memfd would get you the sharing even if process dies stuff,
+and then it can periodically write to a file when necessary.
+
+I think that'd work a lot better, and I don't really see a kernel change
+here that would make sense.
+
+All in all my intuition is that you're looking for a kernel solution to
+something that should be implemented differently in userland.
+
+And in general we've seen a pattern of 'writes to MAP_SHARED, experiences
+problems' before.
+
+And the solution is generally - use something like memfd, have a process
+that does writebacks manually for you as you need.
+
+So I strongly suggest you do that! :)
+
+--
+Cheers, Lorenzo
 
