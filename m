@@ -4,94 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6100CA5FC5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 13:38:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1028FCA5FAC
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 13:40:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 851136B0093; Wed, 30 Sep 2026 09:38:42 -0400 (EDT)
+	id 14EEA6B0095; Wed, 30 Sep 2026 09:40:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 802016B0095; Wed, 30 Sep 2026 09:38:42 -0400 (EDT)
+	id 100D66B0096; Wed, 30 Sep 2026 09:40:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7188D6B0096; Wed, 30 Sep 2026 09:38:42 -0400 (EDT)
+	id F31936B0098; Wed, 30 Sep 2026 09:40:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 506916B0093
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:38:42 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC6121407D3
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:38:41 +0000 (UTC)
-X-FDA: 85270533642.14.31B40CC
-Received: from mta1.migadu.com (out-122.mta1.migadu.com [95.215.58.122])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 84F2F80007
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:38:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xEyPHhsk;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.122 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CDAEB6B0095
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:40:23 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A2B0A0786
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:23 +0000 (UTC)
+X-FDA: 85270537926.07.3ECA512
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8E4661C0009
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XKtt4/A5";
+	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790775520;
+	s=arc-20220608; t=1790775621;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P00NcZdXkR2XuhFtH4v6JbA7ANad/OjoIJXR7zjLsGk=;
-	b=avHFWGILkS5+XhLAkbqdZFSXsC92feujhPTY8JdelRAoJD9YQ1tRU2DhoRTDeI1iYDRGeQ
-	M1YZVjxullyPb2RtqGZrh01SvGV7oOsSCD54kav1Pwxa4xlihA5DmG5FRUcSbMGhXqVJwH
-	Va3+jlTcAPbmJuPMJOxt+nHEnSmIQ6s=
+	bh=zbkUDNwMgnqGHrbog0cra0S8SRCtAdGfYKEuqQ54rHU=;
+	b=JevzpQz/lxcFHVGtZ0MIcsM1AkDIow0z2F8lrtFiLek9zRdrMxuuIwB/ZP3jsQcJPx92hL
+	0A+/vWEYKkOL12YpyXu8byHGkGgDi9z2USZHXtmne+KR8HrTov1HLtWxevVrnY9XPQaRut
+	l8fUDHY1FWYzSGgkcCewNleSXYTFX+M=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xEyPHhsk;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.122 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XKtt4/A5";
+	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790775520;
-	b=KWUNbdY3/cxGe9+aOBAl3zUks2H61x+w0ThlFMY7HHuCy8oi8F1lo8YTBjj2+T5GjX0Gc4
-	3PQ6MtMX6xd02tT3AI8RxNCcKrX9vHxkYeo9TDI1qGUOY7aDUcnxjtDMybIHDVNRfX1/XP
-	vfM//llyV3ih1rFHU2YfRUDxOphYoOk=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lcQuluWqoElHRHUpdffs+zz1mzqDGPOpnACMggFGdo0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1790775518; v=1; x=1791380318;
- b=xEyPHhskqY+zKro0V3No4XYRdbC4c0j8qfiMjyxWmC7/KEcRAjzXGl17mTOIQ4Xk+L0xmwx6
- NCA52a4KCQ6dVj19nYnWKubqmVZ6MyBphh+XDZqinMF2AQy3maHBEMSW7fOIOSGGVEGRM70IHPn
- 7lFd30bUgDrVUC8fO9w2Acio=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 441b9db43c699605;
-	Wed, 30 Sep 2026 13:38:37 +0000
-X-Mizu-Trace-ID: 441b9db43c699605
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <aa39ec65-a2c2-4396-b20e-4e4e7447df26@linux.dev>
-Date: Wed, 30 Sep 2026 21:38:27 +0800
+	t=1790775621;
+	b=vZWInueM23GlTWqdklDZVo9+BWX4obsQc2fKCPp1rRAdcUu00S82mWc4wsf3juudATG4cW
+	DW/N+z1VvoEog3DVwz7GUH961VMim/XH+2pZ0nfXkudnBDhaV9dol/xpsBbYGKx6ILqTrw
+	7g2RTITDCbLHqmdd9njq4R3+pV4rDeU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 68EF160252;
+	Wed, 30 Sep 2026 13:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607161F000FF;
+	Wed, 30 Sep 2026 13:40:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1790775620;
+	bh=zbkUDNwMgnqGHrbog0cra0S8SRCtAdGfYKEuqQ54rHU=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=XKtt4/A5r/NkfGSvjGsvCW5EFKALT4VUt/RHVBjfHu+gJmFaF8/SWNcnrhlmbywAS
+	 ifcqRGWYrmSjygRyyrsTfwOoN2bR2RY4k37nRTO86Fe/6ZQMJmouyYQepITjzW/tLt
+	 an92bB88qaT5hqoqilJyvJmu9fzkThXkvwq+yIw2k0S/X/1iXOxZ7uRrI2+wOdRlWG
+	 gg5IBr0eTLWXVU78MxgA3y+//L0MbFHibkUIsEBDi1XKQOlJjPlbCAIAprCWNyzfu2
+	 N4dBImdVO92xInyLowtE5Vy0a5O3aWxh1xfY0cTW7PyFmz5QQNqBm+piNDE9yfYwhg
+	 ZZSNukz9/nwOQ==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Luis Augenstein <luis.augenstein@tngtech.com>, 
+ Maximilian Huber <maximilian.huber@tngtech.com>, 
+ Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Willy Tarreau <w@1wt.eu>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+ Nicolas Schier <nsc@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Askar Safin <safinaskar@gmail.com>, linux-doc@vger.kernel.org, 
+ kexec@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kselftest@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+In-Reply-To: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
+References: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
+Subject: Re: [PATCH v4 0/2] Move tool for generating initramfs cpio to
+ scripts/
+Message-Id: <179077560598.3184845.8880862675609960141.b4-ty@b4>
+Date: Wed, 30 Sep 2026 15:40:05 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] mm/sparse-vmemmap: support device DAX in common
- vmemmap path
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>, maddy@linux.ibm.com,
- rppt@kernel.org, akpm@linux-foundation.org, david@kernel.org,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
- ritesh.list@gmail.com, sshegde@linux.ibm.com, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- qi.zheng@linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260929053231.66085-3-songmuchun@bytedance.com>
- <20260930085329.17337-1-lance.yang@linux.dev>
- <62E3517E-517D-4C23-A04A-F5BEB0A84C60@linux.dev>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <62E3517E-517D-4C23-A04A-F5BEB0A84C60@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1195; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=uzHGM/3maVkIGwCJuKvC/PNaFcYXYyU6EAt9CwiwkGY=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDFl7BS33Hd+UGvve0kZKZXb3b+nkhL8/ZL9esLiXa6xya
+ v0x49U3O0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEPioy/NNPOlPA9cZP+FZm
+ WdDsvrtCQplpXb/C83d5LD07//GadGVGhqs7v7rem/Z96nyOPVe/fK5Nf7Jo0d+HUju3xd+vdmE
+ 8H8wIAA==
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 84F2F80007
-X-Stat-Signature: 5whqa93mdhj8ti9p5rxs1g91bhf3b9fq
+X-Rspamd-Queue-Id: 8E4661C0009
+X-Stat-Signature: z6waomjwqz6a6kjuiac5n68u846ypipj
 X-Rspam-User: 
-X-HE-Tag: 1790775519-288522
-X-HE-Meta: U2FsdGVkX1+FJoMTrU7b2D2jJA4lqlUQZTrwUjXfsuxIWRIh7nJX7zQOQBa8HZsQZtE0r06NRsFaRpmrsqYJe8ZfqUdtAVdycxj6QOt7NuWriaHQ6+/7sC7EP9QjkhCwba9hsszPelN0w+vXC4sfGDibbsPYG2SgA8hW/5gzFD3ufivG1BhUohiRox1g6jOmMm9jxw7Ky3o2K5lXLAyUsufj2fAqidVK5zmZU3TkYSOomEDAAYRf7Voz0t1CGp1VF687TV4Ktn8euLemkmiDfYP6B2cKYUTtjr+mBYNHtIAlRbD+WHLwzufMlRGtTgamsREwHVfsci296oQyORjxHG+rJM7MxSEaljxw6z/OBdi3xTXNQj3eaZHE4KlvoypYN/vpuqizdzpcCD5IR9cYiBGb2gf51F2a491sDc3RxxJdIrUGbudTYd/HqtgWYYBf60JDL8pffV+sjh3xQfbHLzE8t6+44zDxwGL81k32NzLAOZxm0ZRYb83VYYzL7wvnhCyWYYVNTtt1PEsm0kPpy+iyTAr/Apz+/UH7y4I02WbB7kcN6Uyl91nN9Vh1kmqjR361RCx9du0ygNFlmv3B3aSydLl2k5tQX3+HfU2WPE/yfQkbZTZ5dHhmwQFQIhET1tCcenpsBrB5mdaAiHiALwIo1AvXnHmTUMOAeNIWztOekiUp6LPMGm9Zs9r46/slRQvE4jtf3jph3d5SnlDm0QuaSbciKInDZaE+Xi3w1OTFxEnA7ZFix5ZQhw7HjKhsA2ug9S43KpYWZ30rls0WeCTHkvwfsJwCGgMo4rY8OL4dYzlcvLeKPQsUEPJHkWCDeDGR4X7OKdbOq7b/InZ4fAEysskx81Gpwo6jTZNQijlfvhym30eg5xemzt0nsEU9vTyi7IfKf2Fq23cY+v5BHC1oLCjudSfZL9oPgdJe9uwcu8XxsNMThyePydpQ0D5DpgVKEEnCaIBkzeam2ig
- 0HwJJO+X
- RR1/tSRuOohHqgtytFX3UZTrynQxP0jN8wzD8KmFkJdfXS2himEbyf9sg5tcR/XfqrHiQXBOnDtb4sRK3qoMsSqrwzE+nuKrVvuPNpDhYYdB74xZEg/XJkX7gODFVOHhhvT4T9RDdhltdiY3TuQW1cDqMxofDbcz7fkM5df4tso9ir7dOIWvRED+SPmJpeoNQ30GF5gyfj/z6m6osjhh4uKAUg+LYUO0PYxdGdMM0lVlpnOT7q7yAFcSaXH5pk/KNhMLxwy2g8eCsGxl8cKg+VB98jiqVNlDhil2SOr5Rgi2KLc8zFa8YzHoGHiSqvJMCtH3iGPj0RuvCr3ilWBsta0pt0Y1AuocnqTug
+X-HE-Tag: 1790775621-22581
+X-HE-Meta: U2FsdGVkX1++nb8umvN7FehNqXjzCJenjySVxx6QxlhAZeOoTxJetIqIAFEHBdgCw4LyFGLP5cq6t0CkGTbQC6rGw0uxN3dWV20AqdyIJ7WrxQhvOpTmT8IsIyKmPZHQYLidE+GRleJBOLT2S+JxIi3EZ7Xn9pq/fcjLuR5dx93fVGOSk5mLqE7dXOb9CrUwVoeQjyOaXivrWB2vAYvvFeJwMkdmUja/Bd1VyMpe8S3v3INbk+/JtQre3gzOTNr72tnNAjOoH2r1VFjMOZLU82cEVhXcx5P+N9OIFsO8uxquXsz2pOXdU9wcXjYuHo0bXAP+5iIzIROGrkSOfoPmRIAYEYundvCXmdapRn5p6eaya3m+9zL2zsaejrvJ5wcBgCGZG7ZSMdPA7Cy4FgNH+l3di2hJ3XE3beoGqKA71OdkRVYgfe6/lKAdeQHB/JGhAo8hK8L2iqbc+9nMf/Zn6TpEj2HWc4oscgLPg3boRHYZ4QJqz4xWXj2lqETqC5PKgJaMvV9jVMVaE/6/qGp4CFyUiljYhOMxj9bSyUkV4MTb+ozK4sa3NufAShHfkm+Btfy2i1CeiYe33FbEO+MJWGdau7muSdDsMzFCwHIe9N9fK9hen6mHvK9BvwrJXrGKOg+utuDoJwPDLs2djj9CmQ7rKsyDr3zXOyGNgLw16ggVH7s1uv++ZbXuujjgZs7ZDUg68ykWCS76xhx22qQf2BYLoyEoqcnCrEVAG1oNRLLn2wYjPV458OKzxKr/Eur15s4Ac6m8PLqOdhJ2Q/c/3gVsgEq20H8gvQ7hjPPSQAwMdHpYu0iSxO4Pe4b3ZVMOoWvm/CBP3nExQDIkidVURY+vHqmax7t88VAPlctur/rsHonpaorlANwmPteQxZZdFm6uxNPwRHumkFNKS2bJzSjS6hC+zN6lxbPp32COfnmHwA7jnCcKNQ/l/s9y0Pl3HOstLGCuwo+zw9/spaZ
+ MRvxGUzy
+ f/zHa42QiLzJ4rYdU6rhcNJneo5ggvQt28P7k9oLqez+7LxunPy0tHyDVBHveCQqMRCGVrFjtFWEHFgYvJHWSl38tvCi9n/cwO3t5OdBWhwdQrnH8ximxx+/BPU2k2gmRVqZ2qSWA5gLTtjFe4JJivF5kj3rxbVZGFTQIQU/UgFikPV8VL2bM//Alo8+Jg4Zlki0vnk6atkNfSu/sJi/J0ISWgVi7U6novX81893kY7Ootl4Gs/MBjpG1mQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,29 +113,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/9/30 19:11, Muchun Song wrote:
-[...]
+On Mon, 28 Sep 2026 19:26:56 +0200, Nicolas Schier wrote:
+> Move tool for generating initramfs cpio to scripts/
 > 
-> Your proposed fix looks correct to me. I would slightly prefer keeping the
-> rollback close to the failure:
+> initramfs cpio tools had been subject of several recent discussions on
+> linux-kbuild.  Let's get two minor steps forward by enabling a
+> top-level target for building gen_init_cpio w/o the need of a valid
+> kbuild configuration [1] and move the tools for generating the built-in
+> initramfs from usr/ to scripts/ [2].
 > 
->             err = sparse_add_section(nid, pfn, cur_nr_pages, altmap,
->                                      params->pgmap);
->             if (err) {
->                     __remove_pages(start_pfn, pfn - start_pfn, altmap,
->                                    params->pgmap);
->                     break;
->             }
-> 
+> [...]
 
-Cool. Will shamelessly steal this approach :D
+Applied to
 
-> If the first section fails, this simply calls __remove_pages() with an
-> empty range, which is a harmless no-op.
-> 
-> Would you mind sending this as a separate bug fix? I will ACK it.
+  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-next-unstable
 
-Certainly! Lance
+Thanks!
+
+[1/2] kbuild: Mark usr_gen_init_cpio as no-dot-config-target
+      https://git.kernel.org/kbuild/c/14e2c1f5431a0
+[2/2] kbuild: Move gen_init_cpio and gen_initramfs.sh to scripts/
+      https://git.kernel.org/kbuild/c/33bef82263082
+
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped or
+reverted. Patches applied to an "unstable" branch are accepted pending
+wider testing in -next and any post-commit review; they will generally
+be moved to the main branch in a week if no issues are found.
+
+Best regards,
+-- 
+Cheers,
+Nathan
+
+
 
