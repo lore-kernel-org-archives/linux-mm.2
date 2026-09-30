@@ -4,108 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1028FCA5FAC
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 13:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D67CA5FAC
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 13:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14EEA6B0095; Wed, 30 Sep 2026 09:40:24 -0400 (EDT)
+	id 5BD9A6B0096; Wed, 30 Sep 2026 09:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100D66B0096; Wed, 30 Sep 2026 09:40:24 -0400 (EDT)
+	id 5950E6B0098; Wed, 30 Sep 2026 09:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F31936B0098; Wed, 30 Sep 2026 09:40:23 -0400 (EDT)
+	id 4AB716B0099; Wed, 30 Sep 2026 09:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CDAEB6B0095
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:40:23 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A2B0A0786
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:23 +0000 (UTC)
-X-FDA: 85270537926.07.3ECA512
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8E4661C0009
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XKtt4/A5";
-	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21C6F6B0096
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 09:40:44 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B4586A734D
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:43 +0000 (UTC)
+X-FDA: 85270538766.19.9BEBFF8
+Received: from mail-wm2-f13.google.com (mail-wm2-f13.google.com [74.125.225.141])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C88C21C0007
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 13:40:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NC0NCsWy;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790775621;
+	s=arc-20220608; t=1790775641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zbkUDNwMgnqGHrbog0cra0S8SRCtAdGfYKEuqQ54rHU=;
-	b=JevzpQz/lxcFHVGtZ0MIcsM1AkDIow0z2F8lrtFiLek9zRdrMxuuIwB/ZP3jsQcJPx92hL
-	0A+/vWEYKkOL12YpyXu8byHGkGgDi9z2USZHXtmne+KR8HrTov1HLtWxevVrnY9XPQaRut
-	l8fUDHY1FWYzSGgkcCewNleSXYTFX+M=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="XKtt4/A5";
-	spf=pass (imf20.hostedemail.com: domain of nathan@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=nathan@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=eojcGFVlS5R1p8FpQbuCoxDLXSD0EodVKDy7T+pbRu8=;
+	b=njcSO+vsQwuEqiPMKDFcMAcfP0YSequCmawuAl1KdvAy+xBHlUtwzjm6FFC+pUW+TCl38s
+	epZzOy39YbbstxxLcpBEd/8lOKcXCwIPrdZmfOXfO4Fz7MfVF3OdCRlCtAnUTJQNWB+er8
+	vHYfr/7pTgZw6UOU5YWXDeVxzeUrH78=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1790775621;
-	b=vZWInueM23GlTWqdklDZVo9+BWX4obsQc2fKCPp1rRAdcUu00S82mWc4wsf3juudATG4cW
-	DW/N+z1VvoEog3DVwz7GUH961VMim/XH+2pZ0nfXkudnBDhaV9dol/xpsBbYGKx6ILqTrw
-	7g2RTITDCbLHqmdd9njq4R3+pV4rDeU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68EF160252;
-	Wed, 30 Sep 2026 13:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607161F000FF;
-	Wed, 30 Sep 2026 13:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1790775620;
-	bh=zbkUDNwMgnqGHrbog0cra0S8SRCtAdGfYKEuqQ54rHU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=XKtt4/A5r/NkfGSvjGsvCW5EFKALT4VUt/RHVBjfHu+gJmFaF8/SWNcnrhlmbywAS
-	 ifcqRGWYrmSjygRyyrsTfwOoN2bR2RY4k37nRTO86Fe/6ZQMJmouyYQepITjzW/tLt
-	 an92bB88qaT5hqoqilJyvJmu9fzkThXkvwq+yIw2k0S/X/1iXOxZ7uRrI2+wOdRlWG
-	 gg5IBr0eTLWXVU78MxgA3y+//L0MbFHibkUIsEBDi1XKQOlJjPlbCAIAprCWNyzfu2
-	 N4dBImdVO92xInyLowtE5Vy0a5O3aWxh1xfY0cTW7PyFmz5QQNqBm+piNDE9yfYwhg
-	 ZZSNukz9/nwOQ==
-From: Nathan Chancellor <nathan@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, 
- Randy Dunlap <rdunlap@infradead.org>, 
- Luis Augenstein <luis.augenstein@tngtech.com>, 
- Maximilian Huber <maximilian.huber@tngtech.com>, 
- Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
- Willy Tarreau <w@1wt.eu>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
- Nicolas Schier <nsc@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Askar Safin <safinaskar@gmail.com>, linux-doc@vger.kernel.org, 
- kexec@lists.infradead.org, linux-mm@kvack.org, 
- linux-kselftest@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-In-Reply-To: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
-References: <20260928-move-gen_init_cpio-to-scripts-v4-0-f437a33c40ac@kernel.org>
-Subject: Re: [PATCH v4 0/2] Move tool for generating initramfs cpio to
- scripts/
-Message-Id: <179077560598.3184845.8880862675609960141.b4-ty@b4>
-Date: Wed, 30 Sep 2026 15:40:05 +0200
+	t=1790775641;
+	b=kqfQ8zDZAcakJuBmjIm3xyT4cIpXXiDToJLIrlxDs9onDDObAIFinwSjii2ooz0CgRbj6u
+	i14VGfrxIszDOdIdtIr6InrXFE48uKolsrHtUWG8+t255FwjRfmYoQgq3SIhztrpmXb8pG
+	twrmX2GgqM4cCkGzSEej9HQ/DKU2M40=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=NC0NCsWy;
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.225.141 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-wm2-f13.google.com with SMTP id 5b1f17b1804b1-49cd5462b69so30336725e9.1
+        for <linux-mm@kvack.org>; Wed, 30 Sep 2026 06:40:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1790775640; x=1791380440; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=eojcGFVlS5R1p8FpQbuCoxDLXSD0EodVKDy7T+pbRu8=;
+        b=NC0NCsWyvID+PllmrpPZa7U8rRhSG6uvsfyWz1SwUUkjf0rgxX5PFG9vhQHJZ5iQIZ
+         65L1rSewgkeVQlp99Q4rq32fI5CP5vzvlxsaYAYYXaIEyaO8+iVnG/W8gnqGcEnBzPdG
+         xbXOPsHGoyjnxCuQ/hVcn3W9mn2NilzIRtmTstiOVA08zC6Igw30NBnvBbIMCRMLIwxi
+         FfaSSc2zC1hzy8FSags28rl0olVnxS76WN/QZ6tc5r+kO9Eq0x0aTebZ1zYtqkZYGEaF
+         QWbvW02tnrDSkZw1x8h2waNkyFZP5UFFedhPx/j2jo+tyhZNDKMqjEVQkO0oKGnQJPxb
+         rs6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790775640; x=1791380440;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=eojcGFVlS5R1p8FpQbuCoxDLXSD0EodVKDy7T+pbRu8=;
+        b=1m/vMbIl3PliBZtvQRNe+5tj9CPci+awGuqFW3UXCjiY7F+g8LNRf6MUvG/9EG6sXJ
+         osqX7rmLV9KLLluPeD+shMFefLnTaAwGnFor7a/2y+HULTh4PiqB1ThGpQ+3uKpaIwCg
+         8qUv+0ryFQd9loOGnZz3JJahmhiBXdrkS2vfwaOKV4Vb0dZg9Bqq4eksEIMHLZdtoB69
+         KcE+g84zsuK4fm8L51tUgLGHHbZkmDqLlD6b/tro7z8/kQQxspZUrNUhx28QkxV63rkq
+         2U/mKIEus+KYHzz4FtK8jjRab7jOGsVmOi5KskqpRxLzknYvI7VXSwN9KIjtMhDq2zhZ
+         f3cg==
+X-Forwarded-Encrypted: i=1; AKwUvBwx0mFvFlbPfzrca5/ygomkFjgx9rUrILpEICrn/unw0uOTApOdPgYFp9sOxkcwnLE1hZBeDcBI0A==@kvack.org
+X-Gm-Message-State: AFuF++n9LNJW62fACuDtRDm9OtL8xyAR+YI0r4UJOeh/Kk5R6909e/yn
+	MLBpQ32OSaYXUHIlZX8+kVpXCqWdXws8b56zT1cRyQNl/xZMoFjyzl6MTJyIjhbiP7g=
+X-Gm-Gg: AYBFou1rFUjf+gWwsXbZHZLlRvCWuaRrlp8VJS2ZTJWGjv4R0xev+S3erMi+JqLzn7u
+	86Ppk2h3rKpvrTy9LTrZnZ+DnT2juHylgB1uN0Q5u65YIImMgzHOPDfFi4xLi6PhlB3Ckm9CNAD
+	We1N5frETKDMSjr8uoYUDXxy3E0KwEg6OF+y0r40TPSZNsybC00UF+WnfDQ2fuNIrniMs/3I1TW
+	WyPURE3fwnJHqDHpCWfcCaaItrRrRzUJR8epZgrCWhS2PCOC/7mx/dl+CMVXdJscln6c5xAHYqk
+	ZLI8GBQMLWDT4QY8Ae/Yt2YHFOc+rt1Ag5EuX4fqGncO+d0mw7V4G8SxAjgANVhW+Ud5BtP7ppI
+	gD/zxoa6BDyz/6eQquzf79QKcbBhiM8ge73ext+aXtKrVmItndXFbMjj2IEHY/BZHpMwYYweTbv
+	mKvykfSxzMGqHRJqAcbIt6z5Zk8Re7K2Hht4iKK68oNciEXJ8KDaTF2xVZHfeJQnnVvsk=
+X-Received: by 2002:a05:600c:45d3:b0:49f:fe39:5bc8 with SMTP id 5b1f17b1804b1-4a01aff9b3dmr20989845e9.12.1790775640194;
+        Wed, 30 Sep 2026 06:40:40 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F ([2620:10d:c092:500::6:13b8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4a01e662409sm125005e9.5.2026.09.30.06.40.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Sep 2026 06:40:39 -0700 (PDT)
+Date: Wed, 30 Sep 2026 09:40:37 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Li Zhe <lizhe.67@bytedance.com>, akpm@linux-foundation.org, 
+	ljs@kernel.org, liam@infradead.org, rppt@kernel.org, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, ziy@nvidia.com, 
+	joshua.hahnjy@gmail.com, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/numa_balancing: allow migrate on protnone reference
+ with MPOL_WEIGHTED_INTERLEAVE policy
+Message-ID: <ar0LqjO3-cwU6-Jy@gourry-fedora-PF4VCD3F>
+References: <20260930072617.64665-1-lizhe.67@bytedance.com>
+ <cfdcaaa3-a9e7-4352-ab01-4922ebb8e0c9@kernel.org>
+ <arz56nVu8TzSjqlg@gourry-fedora-PF4VCD3F>
+ <ca35c989-9aa1-491f-a247-ed36724f10a0@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1195; i=nathan@kernel.org;
- h=from:subject:message-id; bh=uzHGM/3maVkIGwCJuKvC/PNaFcYXYyU6EAt9CwiwkGY=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDFl7BS33Hd+UGvve0kZKZXb3b+nkhL8/ZL9esLiXa6xya
- v0x49U3O0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEPioy/NNPOlPA9cZP+FZm
- WdDsvrtCQplpXb/C83d5LD07//GadGVGhqs7v7rem/Z96nyOPVe/fK5Nf7Jo0d+HUju3xd+vdmE
- 8H8wIAA==
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8E4661C0009
-X-Stat-Signature: z6waomjwqz6a6kjuiac5n68u846ypipj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca35c989-9aa1-491f-a247-ed36724f10a0@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1790775621-22581
-X-HE-Meta: U2FsdGVkX1++nb8umvN7FehNqXjzCJenjySVxx6QxlhAZeOoTxJetIqIAFEHBdgCw4LyFGLP5cq6t0CkGTbQC6rGw0uxN3dWV20AqdyIJ7WrxQhvOpTmT8IsIyKmPZHQYLidE+GRleJBOLT2S+JxIi3EZ7Xn9pq/fcjLuR5dx93fVGOSk5mLqE7dXOb9CrUwVoeQjyOaXivrWB2vAYvvFeJwMkdmUja/Bd1VyMpe8S3v3INbk+/JtQre3gzOTNr72tnNAjOoH2r1VFjMOZLU82cEVhXcx5P+N9OIFsO8uxquXsz2pOXdU9wcXjYuHo0bXAP+5iIzIROGrkSOfoPmRIAYEYundvCXmdapRn5p6eaya3m+9zL2zsaejrvJ5wcBgCGZG7ZSMdPA7Cy4FgNH+l3di2hJ3XE3beoGqKA71OdkRVYgfe6/lKAdeQHB/JGhAo8hK8L2iqbc+9nMf/Zn6TpEj2HWc4oscgLPg3boRHYZ4QJqz4xWXj2lqETqC5PKgJaMvV9jVMVaE/6/qGp4CFyUiljYhOMxj9bSyUkV4MTb+ozK4sa3NufAShHfkm+Btfy2i1CeiYe33FbEO+MJWGdau7muSdDsMzFCwHIe9N9fK9hen6mHvK9BvwrJXrGKOg+utuDoJwPDLs2djj9CmQ7rKsyDr3zXOyGNgLw16ggVH7s1uv++ZbXuujjgZs7ZDUg68ykWCS76xhx22qQf2BYLoyEoqcnCrEVAG1oNRLLn2wYjPV458OKzxKr/Eur15s4Ac6m8PLqOdhJ2Q/c/3gVsgEq20H8gvQ7hjPPSQAwMdHpYu0iSxO4Pe4b3ZVMOoWvm/CBP3nExQDIkidVURY+vHqmax7t88VAPlctur/rsHonpaorlANwmPteQxZZdFm6uxNPwRHumkFNKS2bJzSjS6hC+zN6lxbPp32COfnmHwA7jnCcKNQ/l/s9y0Pl3HOstLGCuwo+zw9/spaZ
- MRvxGUzy
- f/zHa42QiLzJ4rYdU6rhcNJneo5ggvQt28P7k9oLqez+7LxunPy0tHyDVBHveCQqMRCGVrFjtFWEHFgYvJHWSl38tvCi9n/cwO3t5OdBWhwdQrnH8ximxx+/BPU2k2gmRVqZ2qSWA5gLTtjFe4JJivF5kj3rxbVZGFTQIQU/UgFikPV8VL2bM//Alo8+Jg4Zlki0vnk6atkNfSu/sJi/J0ISWgVi7U6novX81893kY7Ootl4Gs/MBjpG1mQ==
+X-Stat-Signature: tk1pwghb9775g7xrumasb5foigism1so
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C88C21C0007
+X-HE-Tag: 1790775641-533626
+X-HE-Meta: U2FsdGVkX18nNdgteWb8sLGeXQpLeVIy+Zo9j8G4XiVpRo647F9yZlLqxYPN/QES54wyFwwqn1cmP98Yw6vxP7SSd7sAfBWzQfY2caJxpazy+ggRzz7mm+yn7+d2vDLIl1FuspiNab6hnKZoxi20nsTts35JrnBMzV8UPEVoWoS7KqDyKbSUDjOpS6cLLxzFeetojEMBun5PFJx/93cRuXgZc3Dwkl7c3SnO3B6tRttwNdlwoSCBmEehJVkox3aef2ieXMIiVIUKhNRnaKwcqWSukL6gEUXgbctxhx/VLvLsVZ76fiu848oyNd0X3LuE4vrVt6F1SjFeih9u7i+Kx1P1uklnEQQaQDPtXduFEIVIGnPyr/RDEavw/L25OGEKLNiLcLce5uwZcmUKvizknn8Vp/TOmvwXWyTUmOM/7bLN1bSnxUMFkM3CSmHV3MEAvL8W11tF6RXPC/Tt2xUwDxjui2F+D43xAq+Q3XTly7ywWwB+kZWXZDcOOVJZxXecdICgT4lTQ59Pd2/WW6PrAy2MjrUk4uWnlxPenC/c8JVOMSb6carIFrfnY6kl8ti6Ymg6s+Kg+ahfTS+0Xy+VEUVSW/ylaat+LuUW2Bm9YNt6tMPKqnKgQ+Ak7lNKljsBlI7/SJYdJkUPLWFSz+W3zBMaC/gJcjgozsC08Vfb9ljNVClFEQYfA8sIg+oVaJ4gFO9pbDPOBSD1CRGlcMvJgljUAKyYzgDEOGL0d58vo1p/e1RfElkxIfYcQRZaGYNlQ3/v/HQrBDBTeo7IBcZwA5xllyDsvEQiIpQKlhh/pSq83tZSxPNlJfUL4HkwcToao6Ve4r86ptAA/HUVlYvfXdc8oO5Lrd5GRRVE/B00sA5mJkoOeyRsF2sQTR8hGNbZijxqqOpFXm7c5484Lw3T/qHIO3VTSgoUkoISv8mKrQAoHF1d3OKQTlaQERz9gOaLAszqMF+2R25mEhqUpvO
+ pg97ltGf
+ rMOXX72qPXZA0IykkvgdNY/+JnlcQGT8mYwHtcfsYe+T8qf/NehYQIPYdnI+bZmIy5owVpu32/icnMYQSJYO0laJC0pFodkCz+IM+ZnEYOU9iwOjZIAH9RwXJxH8pFuG/6g4eZTBUuePq7mNosqlhpOSxKBhuQkrQEzXpU6yyazBd2AJArWI/OeUiT9wYFH50K9Bm1W0J/tgfOMfOeOLAJfz0KsHrUr0UXSyln2dgI20lJNJHCS5sLMbhPN1ugSMlIDWBl7J95oYTl5RRperBwSSdpOGSseyKw9qGFUUluUiE1+qviM5kk5HHS6mP3dIIhJ5kVuOSH8YnJNmrvzzLbr/XLeVwjxSv2ZUxR/e9WvCFwnq1RSZ2KjjW7hR9Qp/4UOXSGUptrLBdDKmt4dbMo70XeUNPQMr9JouBCalEvAJG5sy8hyTJa3ZaXUfxAw6WCEOZ0v19vr9ad0HfWa4w6EPh9VqAAmFQzhmgTXBI/SRCY8w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,38 +125,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 28 Sep 2026 19:26:56 +0200, Nicolas Schier wrote:
-> Move tool for generating initramfs cpio to scripts/
+On Wed, Sep 30, 2026 at 02:32:16PM +0200, David Hildenbrand (Arm) wrote:
+> > 
+> > Right, but you're requesting this configuration.  If you didn't set
+> > F_NUMA_BALANCING then you get the existing semantics.
+> > 
+> > In the existing semantics, if we're INTERLEAVE and WEIGHTED_INTERLEAVE
+> > we just always say "no tiering for you".
+> > 
+> > But as an opt-in option?  I don't quite see the argument for saying
+> > interleaved regions (or tasks) to be opted-out if the user asks for it -
+> > that just seems like an arbitrary limitation.
 > 
-> initramfs cpio tools had been subject of several recent discussions on
-> linux-kbuild.  Let's get two minor steps forward by enabling a
-> top-level target for building gen_init_cpio w/o the need of a valid
-> kbuild configuration [1] and move the tools for generating the built-in
-> initramfs from usr/ to scripts/ [2].
+> Just to be clear, what I am saying is: the proposed semantics are inconsistent
+> (weighted when mechanism A honors them and mechanism B doesn't honor them), but
+> once we set these semantics in stone like that, we cannot easily change them
+> later because some user might depend on that behavior.
 > 
-> [...]
+> So you'll need yet another flag to say "NUMA balancing really also honors the
+> weights". And that's where it all gets ugly.
+> 
 
-Applied to
+I would agree with you if demotion didn't entirely ignoring mempolicy.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/kbuild/linux.git kbuild-next-unstable
+On a tiered system, mempolicy *only* applies to initial (or fault-in)
+placement, and otherwise is more or less entirely ignored.  This is
+a case where it's not ignored - which is actually inconsistent with
+the rest of the tiering tools (demotion, damon).
 
-Thanks!
+This is why I said this distinction may only make sense in TIERING
+mode, while in NORMAL mode you likely just want to fault it back to
+its original interleave location.
 
-[1/2] kbuild: Mark usr_gen_init_cpio as no-dot-config-target
-      https://git.kernel.org/kbuild/c/14e2c1f5431a0
-[2/2] kbuild: Move gen_init_cpio and gen_initramfs.sh to scripts/
-      https://git.kernel.org/kbuild/c/33bef82263082
+Also file interleave (indexed by offset) vs task (counter-incremented)
+policies are affected by these changes very differently, which I asked
+for some thought on.
 
-Please look out for regression or issue reports or other follow up
-comments, as they may result in the patch/series getting dropped or
-reverted. Patches applied to an "unstable" branch are accepted pending
-wider testing in -next and any post-commit review; they will generally
-be moved to the main branch in a week if no issues are found.
+As tiering develops, the less I think task-mempolicy as a whole makes
+much sense (because it's at-best advisory).
 
-Best regards,
--- 
-Cheers,
-Nathan
-
-
+~Gregory
 
