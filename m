@@ -4,237 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 287C4CA5FA5
-	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 02:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35C1CA5FAD
+	for <linux-mm@archiver.kernel.org>; Wed, 30 Sep 2026 02:07:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C9436B008C; Tue, 29 Sep 2026 22:02:56 -0400 (EDT)
+	id 69C736B0093; Tue, 29 Sep 2026 22:07:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24D096B0092; Tue, 29 Sep 2026 22:02:56 -0400 (EDT)
+	id 64D8E6B0095; Tue, 29 Sep 2026 22:07:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C6876B0093; Tue, 29 Sep 2026 22:02:56 -0400 (EDT)
+	id 53C846B0096; Tue, 29 Sep 2026 22:07:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D24EF6B008C
-	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 22:02:55 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 642458066A
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:02:55 +0000 (UTC)
-X-FDA: 85268780310.14.600F0B5
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011068.outbound.protection.outlook.com [40.93.194.68])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9F40F20002
-	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:02:52 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nK8O2w2e;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by kanga.kvack.org (Postfix) with ESMTP id 0B6406B0093
+	for <linux-mm@kvack.org>; Tue, 29 Sep 2026 22:07:37 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7140BA70BB
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:07:36 +0000 (UTC)
+X-FDA: 85268792112.27.A613550
+Received: from mail-yx2-f42.google.com (mail-yx2-f42.google.com [74.125.224.170])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7F5E21A0004
+	for <linux-mm@kvack.org>; Wed, 30 Sep 2026 02:07:34 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A291hCAa;
+	spf=pass (imf19.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1790733772;
+	s=arc-20220608; t=1790734054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fNz4KX5x3JP5qBoqaaiqCUiqJ6fuLgUy1aCccPGn4p8=;
-	b=GvRm6Iq3lxOak0/CJbL/sblB5qTCJgknwaYEBadl0s34D6jXXgVr5I9XSe/mOdjfhEXmp6
-	no3ACQ9tO2bz2m4oiki65UH/WRDKj/oa2eeCbu9ptMUXRshI9WEzC1Eu1Qa9K23J2W476N
-	GzqpsB0MY6Wosv/XRc4vojGufGuw8gc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1790733772;
-	b=hvyyTfuZvzRQBjQGJen51UNRfWpxp7PsALHf1IFJFEhsHOHZI+4CNkW5auczBgewipH4Mn
-	Un7aOTM1hd6iS0CpXQiG3xSMPCGmdZYjGy2as5n0EbNBk70QRJc6t0M0UYu6AASy+h/cxl
-	2cFgkmHhHJ324kj9qHUyAIY1FLEEXPE=
+	bh=1YIukAMEz2ohSrvRnv+nP5qr963OkcMZXbPN8dwVNfg=;
+	b=RjFvPqenQJiLGXJLCTPdTjZNq8f36Wi4+Y5wtBLIoXfhzFnBedaYJ9u4wubiJs/6Eu9MUe
+	Qny2AWRQuWYe3T3KNGsfM57S9P2d8k/tLb0rx7NT7r1WxuItLi7f+0GpqF7hhDoiZIadVw
+	YjVUlqTzl5L5vKU+gDKCXpd+aWe+EEA=
 ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nK8O2w2e;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 40.93.194.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ra6vhoQtMCDyJzolJQFbRWWvPfPl6vaSj/4fglohTOI7M2QG7mvN8hh90kSRRK+ygXNV8v88mlLpozyfwPGrFiTc+8NqI2btAYLD7OHq8w2yoPqLQk6XR0qjOPiZs3duGhbG/QcOmPXz7t9ST/2j9zyZ2+8Y6OXgjQHh8XvOPbub3xHTJpqYoxMSvdaIxtukKgrbADjqPOQ6oy56PYOjYZkqHKXfQ1ZnNZsb0kZoSl25W2TvvdjfS4PPAtAhLItAdJkYAykleZb0gqjDRZrPOSnBk7i5HmzKdILDNspJZtyo1qpqmiujpDHFLYEbPjJyMoo8i0rb6CHiPRqCcjf7Xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fNz4KX5x3JP5qBoqaaiqCUiqJ6fuLgUy1aCccPGn4p8=;
- b=Pqg12jwFdHI7M7HVRLWSQBJYj2RPhrzeAXGMAP8WKHebs50DTZ1i/GkunRbhcoXhrNZLLRR5RC6ysr5hb+MtRg0gvKNMF05U/H90qVKNpLuwSyC3hODBTWfzRMAWt6jsRpXLrr7fDh4zepMxgbohh2+KHCu0D4sLkHl+LU8i4TXp18QGis3ppUMwCyHzea1cWMy2ctXlyCnt3xSt76+I9Hf05LQNjOTQ1aMwvxIGdmolTkqmvw6mqxPYA2fUPmabz3AWSe9VIPvgxsKuekPk68KviW/OIG2BomYJJS8jd+caAKNlA0R+wMgLXbOYeAw04eVrzxyKtruTQrjmVeJ4aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fNz4KX5x3JP5qBoqaaiqCUiqJ6fuLgUy1aCccPGn4p8=;
- b=nK8O2w2eRE7lPwkNWj1GjtIuYllkJy3kfUfAtdRz8U1oykQC72QI8lK0d0SOV5FeKBIMpo357+s88I1ngDwqlVHzvdZA9E7hGNBsWuwef3TQcVAVnPlZH0BH/eX28ZCXq8Vxv2cebhd3UqWGiYNngloDgwwLE+nIIKXs5zPXvngEKR/SDbMoVDGaUhWt7yHeFUpNetXdOivFWF23OC3JqMnvoAWxFgzzq+MFSAwUm5Qg4xk++TcGjQcEaV31EbBiENhrawS2LJoYbuDErJ/KvsZpRhBYaj8OEKx3fYY+6lbLvmW4Z3ynePHuBu1xCXw65jGQii/lWv24fE2u9wvK7A==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by BY5PR12MB4307.namprd12.prod.outlook.com (2603:10b6:a03:20c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
- 2026 02:02:44 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 02:02:44 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 29 Sep 2026 22:02:37 -0400
-Message-Id: <DLSA4ZBMVWWY.1GNXN8HFJLR9L@nvidia.com>
-Subject: Re: [PATCH v3 32/40] mm/uffd: use predicates for userfaultfd checks
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-usb@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, <selinux@vger.kernel.org>,
- <linux-sound@vger.kernel.org>, <bpf@vger.kernel.org>,
- <linux-scsi@vger.kernel.org>, <linux-fbdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-trace-kernel@vger.kernel.org>,
- <linux-perf-users@vger.kernel.org>, <linux-arch@vger.kernel.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <kvmarm@lists.linux.dev>, <linuxppc-dev@lists.ozlabs.org>,
- <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
- <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
- <sparclinux@vger.kernel.org>, <fuse-devel@lists.linux.dev>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>,
- "Vlastimil Babka" <vbabka@kernel.org>, "Jann Horn" <jannh@google.com>,
- "Pedro Falcato" <pfalcato@suse.de>, "David Hildenbrand" <david@kernel.org>,
- "Mike Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan"
- <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jonathan Corbet"
- <corbet@lwn.net>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Dennis Dalessandro" <dennis.dalessandro@cornelisnetworks.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>, "Paul
- Moore" <paul@paul-moore.com>, "Stephen Smalley"
- <stephen.smalley.work@gmail.com>, "Jaroslav Kysela" <perex@perex.cz>,
- "Takashi Iwai" <tiwai@suse.com>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Kumar
- Kartikeya Dwivedi" <memxor@gmail.com>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
- Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
- Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Doug
- Gilbert" <dgilbert@interlog.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <mkp@kernel.org>, "Jaya Kumar" <jayalk@intworks.biz>, "Simona Vetter"
- <simona@ffwll.ch>, "Helge Deller" <deller@gmx.de>, "Sebastian Reichel"
- <sre@kernel.org>, "John Hubbard" <jhubbard@nvidia.com>, "Peter Xu"
- <peterx@redhat.com>, "Masami Hiramatsu" <mhiramat@kernel.org>, "Oleg
- Nesterov" <oleg@redhat.com>, "Peter Zijlstra" <peterz@infradead.org>,
- "Thomas Gleixner" <tglx@kernel.org>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>, "Dave Hansen"
- <dave.hansen@linux.intel.com>, <x86@kernel.org>, "Arnaldo Carvalho de Melo"
- <acme@kernel.org>, "Namhyung Kim" <namhyung@kernel.org>, "Mark Rutland"
- <mark.rutland@arm.com>, "Rik van Riel" <riel@surriel.com>, "Harry Yoo"
- <harry@kernel.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent Guittot"
- <vincent.guittot@linaro.org>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Will Deacon" <will@kernel.org>, "Aneesh Kumar K.V"
- <aneesh.kumar@kernel.org>, "Nick Piggin" <npiggin@gmail.com>, "Arnd
- Bergmann" <arnd@arndb.de>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
- Salvador" <osalvador@suse.de>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Marc Zyngier"
- <maz@kernel.org>, "Oliver Upton" <oupton@kernel.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Anup Patel" <anup@brainfault.org>, "Paul Walmsley" <pjw@kernel.org>,
- "Palmer Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>,
- "Christian Borntraeger" <borntraeger@linux.ibm.com>, "Janosch Frank"
- <frankja@linux.ibm.com>, "Claudio Imbrenda" <imbrenda@linux.ibm.com>,
- "Alexander Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer"
- <gerald.schaefer@linux.ibm.com>, "Heiko Carstens" <hca@linux.ibm.com>,
- "Vasily Gorbik" <gor@linux.ibm.com>, "David S. Miller"
- <davem@davemloft.net>, "Andreas Larsson" <andreas@gaisler.com>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
- <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
- <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>, "Ying Huang"
- <ying.huang@linux.alibaba.com>, "Alistair Popple" <apopple@nvidia.com>,
- "Chris Li" <chrisl@kernel.org>, "Kairui Song" <kasong@tencent.com>, "Kemeng
- Shi" <shikemeng@huaweicloud.com>, "Nhat Pham" <nphamcs@gmail.com>, "Baoquan
- He" <baoquan.he@linux.dev>, "Youngjun Park" <youngjun.park@lge.com>,
- "Johannes Weiner" <hannes@cmpxchg.org>, "Qi Zheng" <qi.zheng@linux.dev>,
- "Shakeel Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, "Chengming Zhou" <chengming.zhou@linux.dev>, "Michal
- Hocko" <mhocko@kernel.org>, "Miklos Szeredi" <miklos@szeredi.hu>, "Xu Xin"
- <xu.xin@linux.dev>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.22.0
-References: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-0-4583d8a23bca@kernel.org> <20260917-b4-mmap-prepare-vma-flag-sanify-v3-32-4583d8a23bca@kernel.org>
-In-Reply-To: <20260917-b4-mmap-prepare-vma-flag-sanify-v3-32-4583d8a23bca@kernel.org>
-X-ClientProxiedBy: YQBPR0101CA0115.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:5::18) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=A291hCAa;
+	spf=pass (imf19.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.170 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1790734054;
+	b=GkfgiRnj9Vr3Rha+JNr54O3POKjoC94vILLT9CQe+ezpDV3QXN6zzHM3vp5GboWnKvYwuY
+	bH7+sWEiKjtO7VKwoCzX+RFXPUNtO+nxXA5lRRlEkqKogqnBtUvAwoqHh6mTRru1Wc2ykO
+	+hL4ifAq/8+SOp0jGK97sil90+lqXLA=
+Received: by mail-yx2-f42.google.com with SMTP id 956f58d0204a3-672f4b7091dso2545953d50.0
+        for <linux-mm@kvack.org>; Tue, 29 Sep 2026 19:07:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1790734053; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jh3IDiA/rn4e3mg8uv/PiDlkO5a28p5hOxgmZUlTOR/vLb+baYSAo24lbuiTUZANdU
+         ghWptnJnR6LZMsRxyez2fU5YZ5IxYVB90hoc7qnzaC2kkroWq4KIXrvmQiltsQJdh3Xy
+         XovcxQO0VNpfiHIMRBBzB+7OZ0F/zfCWWDWOuHEdZE3c7gSlosPo1J29/SXJpZB2/ruE
+         saAVanYaci7Ad+F3ePDNN9r5Yctqwb3Q+Iu/7Qr3r/rWA4/5U/F9+IyJfPk7/92ArMqL
+         3VwwCS6HiC/fo2qrl7+fZAeyfwEh5enJiaK87LwAcFeHpqKHjGW7+PbBXy+TUrZa1OUx
+         DcZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1YIukAMEz2ohSrvRnv+nP5qr963OkcMZXbPN8dwVNfg=;
+        fh=tMPNvcQWDOVP5uaJMsEn7aSynALDhlGsIzkhvyaouc8=;
+        b=KHTNTcBIw3/DOT4HwpSXEqEZ9JqqFUNbKKiq/p78ms7daBsjFn5l6MnG87zdtgCM57
+         1/Z8GEMtz/SJyC0QKpj0Wy3A9FhlT4KJHzQzH8OLIkORxcMYOuHh7ELzxc8elmTcDW4Q
+         v1KSUXZhQYa9LogxEhTck11IBpOBkYglb5oZBqyy844t9dxFBxRaMwWkd0z1GLN9Dnxe
+         UpQJ99XO38cBfI0EAVkUJ0HmZJvArkkDGCDBPTiPrqm4px0yK45ypHimaTQ3s4l+wZG9
+         HRXR2vmoUb2irbPgd9dk8rFCD5n2Tq2BQ9n/nNJo8JTc1OTe3u//LIG8wZaO3qIrObws
+         1PsQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1790734053; x=1791338853; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1YIukAMEz2ohSrvRnv+nP5qr963OkcMZXbPN8dwVNfg=;
+        b=A291hCAabqkNPLtV+Fr0+9HmTFjEvzEOv0FLIhiUhJ8GFmgUnK+zE0aLOB2NtyBlFX
+         nh6M/VdjxrIpYci8CkIdqhWCVJvPkNOwO+gt+Nk4nhTPFul7e1UaPT4Vd5GuKeDOIDw9
+         GkzydtsbDXdTzwwrq7BNXdH+fdv9vXw6rw7tC3L+LaYnLEAUfby8e9xvX2Ul+HKoU6ao
+         5S2o1pCvtIrGlWoGsxcbkFcamn9/ZjLON3NAAOqj26qeM4iawxzNCsEjjwSa8QBG/wwB
+         8ILHFYko8Y8a6h+OYLYJPeyVVJ2E+TVxqSruoFTSPyfvDUWPBLH/cxNwCvgBuN6yXcUk
+         IbEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1790734053; x=1791338853;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1YIukAMEz2ohSrvRnv+nP5qr963OkcMZXbPN8dwVNfg=;
+        b=IxXJEJ8FL8uBwaSE3dDSzJjYgp5J5N+pPvC07DGrqlDIPvLIRIdCpnKtfukcvHNK67
+         WDPfvkClgLSftx0fHA3rWGfwCScErijsIGye2iXHQpNjX49/AAbPxEm3QYw3ZfFMcv/+
+         u5B/S1H6ELysGgJInwd6aaZIg0n7tgltBYLtyA90Znvk596uW+yqnuE8Zo+OLqbKPKNn
+         4/uN0b1pcYAVLgop9ky9T2WUikX3Bwb2NY20j1NXtf2nB/5VRIsI3CnuDzI98V2/wWOW
+         jJByJAYMjypYdKb050MR68O4HK6JAcWed2f06g0sTCYdkjIyMWrFzJPtIux4TteUrHlq
+         DXqQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxIm5g0i34MCpPoPWSl8eCKqJDb+PQGvRAEGMAWkW/wqTyztbmbEWrSHcP0JaQ+vqyGunLQA20EMQ==@kvack.org
+X-Gm-Message-State: AFq9FYL9F3XJsxMaW3FZhSJLWSY5XZoGbrBrbFZ/rj/Sa3fyLVjVE/gA
+	tlEbb7HY7/3WyAbqbEdiptzCo8BYXzyzIwnI1qVf2GLL5ocmel1zG+DiOKhEpUICRhmlkJ2l3XS
+	AkOG5evmrH1JcgItY9ck6jiUkV3pYIqc=
+X-Gm-Gg: AYBFou0S+I6DPBdZhJFBujtOXdbravs8Z9tXChSa0xPc3eNNk3haZiuvbvRNsjb6lJs
+	V6Bi6sPmPnkKPYzPsjrQd4ELVOF1oPBewwxQy6wi0RUSJIZ3Z/Li2/G4wV1ezLxasOjlBiYyFwS
+	YY6QHz6DTGHwyv2PqLFsj64f4xYe4GyqvLlef76Feu1f8eZksk3TwWAJh8n2oIit0HO/VphBYLp
+	DHFqNUBax8h9MFNkTsfmLBwmIziT6eP++G9OsdCHcYbJekO52zSYTB9J2IfTTED26o6gh5/z+rf
+	H4vLE9oXuC4FHdF7oZDMqMu8jREmzED3I3rtxYNC//s2ojOcJROj
+X-Received: by 2002:a05:690e:140a:b0:66f:c1bc:4052 with SMTP id
+ 956f58d0204a3-676839284d3mr2660d50.51.1790734053546; Tue, 29 Sep 2026
+ 19:07:33 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BY5PR12MB4307:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9596d6c8-7b3a-4def-c039-08df1e96eaaa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|7416014|921020|4143699003|10067099003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	CoRbAwFIpSNQsXZf5zrbpS6IBA54J4thOkVJNn4E1itVLW7ectwGZY+GrjpMIY4cMI8tZVHPC3Te58a6LBg+S3YHt81+OcKnbI++k0QnNyVdCbE/kf4oA75RWkUuzQntLd9bHGmLIx2Vifuzp2F3ewjngYvhNOJaswxbCLIsspr/FSG2tQFRhR5RVI4hhBi0En412o4i5MXcuYePIBBTdSP0jQIh4vqfO3EpXxpqwjwiJnDVFS76LQrXkkkQ5/jGwAhBPJZhH4haP1kDx1V0rRJUe+y74xo+CWPZ4U5rjdue9FAUyAauNsxck7M0GVqMJkabGSEXW+sCajmcufK4Bm5jtv8iG/xhKyReEl59SFgthd2rRhyenKvH1TWHjB6nESMoyzMC2kuJ4QyW7uMo0RyG4omkRY3PQuXjRIsrLsnny+aQ+VEt+S+gXNoI3r5wYczvddV4/oTnRoplq/Kzh1Rg6p+q7q/+gC3X+vG2z7x4aYkVVmAI+ds9U15faH95hKIbXEpKxRo+1Egq6YYqm3u1/qUB+J4e6WPyNdaMLB0eYrMtogYEpnZWgWEBTZU8OGpW1KuPXsNcuHy4QwDhwlBb8qUwRSnQnQlqVDp0Mf4OKY5pQQs2gZiOR4x5UFpppTVlsUBIdXkgOylqSoe9E8ywTFetqICpwzz2nOanEoKit51sskTANsJxjWtnhkyG3w1axGqhBx/D4BgM/JhGIA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(7416014)(921020)(4143699003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUlMUlFlWThpeU5oRWJlMUFqMGVKOVltMzB2NDRkMkVldUFURHk3VldkbitP?=
- =?utf-8?B?bzNCL0N5aHd4Q04xSXNoc25YMm9zNi9vcTQ3ajQ4RW9oRHRxb0R5WFVzSFN4?=
- =?utf-8?B?cVgwZUk5T3hCSjlETS8ybExoY2JWWERWOHNkbk9oOWxJeEFJcmxHS2Q3allP?=
- =?utf-8?B?OHNDWEZ1Vm9WWXlLT0hPdFNuU2RJakRtc2wwRXdDcHMyM1o3TTV2ZFpqSTBJ?=
- =?utf-8?B?WVFOWjlScVIybU55SFpYUkEybjl4V3duTktLeTJIU3FJUFNoVk1NSkdVQXl5?=
- =?utf-8?B?UmpOZnhhQnFIWE5VNllMRDhCQU5rNmFoYkt3K2hJbHNxOXpGKzhkaFA5cjE2?=
- =?utf-8?B?V1lkU0VmRXJnVW5vbEdKVmx0NFQ3NnRLb2VyMm9La21GTmJsNkY5NmN4cnV6?=
- =?utf-8?B?amV6RWxIZFZZK1VQY29FRnNqeTJqTUpwbHd6bGlTOEJyS0JVNG81UHY5WTJv?=
- =?utf-8?B?T1prYmlNbVpHbXhhZXlWaWRhVGh5WlVKQUQ0YmZ5dlFyWTRkTDZtV2FqVnhW?=
- =?utf-8?B?Q3VVK3gyb2dwVUdiTExTbXlpaUpyejR4TWFweVR0MWJlUjIvNzVyekpBa2dk?=
- =?utf-8?B?QzRWQVRyRDNUQ0NIa3hzTEJZb0taNXlhY2RkU3dTUWhwa0ttemhEeGV2ZTF1?=
- =?utf-8?B?clV6em9MV2FBVXJHbWdiTS80N1prUEFScStraTRhMXMxWWJJT1VOSmJWMHpU?=
- =?utf-8?B?OVg4Y2Z5R0dwYlIza1NGNnNxS1IxWitwNEM2Q2FrcnpyVEYxbjBtOVVwejNH?=
- =?utf-8?B?L2dFcXNpUHlYblQ1dnRCbTlnNnd3RXBjbXJyTmhnaElGb0xKWEVqeGJwVCtJ?=
- =?utf-8?B?ZUZsU1U1NUgwNHlSNmIzUFZGeVgwUS9rTjllNkR1TmpHWXRoZGhVOWN0UVV3?=
- =?utf-8?B?WUM0OWlqYURnUDhFZDU3M2d2bnBVK213ZUhreW5yTzFhTUZ6TkNhQU5IS293?=
- =?utf-8?B?eHRpcnpENlJQcEx3Tlc1ekV4NXhoZnk2ckFrODM2cklKMnd5OTFQbklYU1dP?=
- =?utf-8?B?QlJwblBSdlRtNGpHSEw0Qzh5Zk9zazI4d0xVVUNFdStpK1dvdkkzZTdjeTMw?=
- =?utf-8?B?dHpiY1o2bVFrRm9vUW9VTWhjcnQxY2hXOUFJWCt3Q3I3MnRzN0dZUVdGZTg2?=
- =?utf-8?B?bFRidXFJWE9VOW5LQ2Jod1NZUTJBVGFGNlJJM1oydHVJSVBUREhScmVrOTNn?=
- =?utf-8?B?bFBkQkxVb1R1UmltSDltVUh6ZjBXYURUQ0lLTVRBVzBPNjdMUitJWHdRcmh3?=
- =?utf-8?B?aDR2VHk1QzAvM3BvUnlJMmhNOXRXSjN4WTRsWFhjOWdBYkFrTThLVXFmMXY0?=
- =?utf-8?B?R0RMRnJpNlhLWkd5SDJ4aEZheCtPSlJSLzlleDZ2U3Zncm94T2diSVpoaFUz?=
- =?utf-8?B?bVFjRlFzczVFTndtSVpBNHZRNndTNlRMb29ubjExallYZEgwcktWZmNoSVNI?=
- =?utf-8?B?aWVoRDZxSFlaNk0vaDVWRXlIMFlreTNiUVVxd0p4SVpJQndnTEJRb0d5ME40?=
- =?utf-8?B?RTUyaUIwcXRSQ1p5RWVPK0RwTHh1bWY2T25objZTVGMxMkZuVXo0ODJZMnVm?=
- =?utf-8?B?TnJ6c2NjUWZnVTVLd2xOZlo3VVBmQlo2a2ZkTEdCcCtSTm9qNGZmSlVPSSts?=
- =?utf-8?B?R0U4NHQ1QlVta2I1Q0RmeVVaSDNQT0RNOEd5bWhnMnNjeGdmWlZWczZjTXRy?=
- =?utf-8?B?MnJyQjY5ZGNTNisxNk1LVnQwenZDYWlDQXQvSWZ2SjNVTmlmN1dTUGUwSHJR?=
- =?utf-8?B?WFBJRVVLOUplQW9IektXS2FCbFVsVzkxMkNadGt3RDFEa3hESGg1UnVSZ1J1?=
- =?utf-8?B?Y3M5LzdDVlVic0VmdXJteGNnYjNaNzRUYTFwNzNrZDVxcXU2NzlzMGs3cWJE?=
- =?utf-8?B?Qjg4WWFKUHFieDBpTS96MHpUS2hjaDBaSG5QYkVPcE5SYm1hM3ZiWFZHRENa?=
- =?utf-8?B?dm91M0NZUWNEQ2ppZU1Wd1JGbC81S05Pd2hQTXVLTVIxRGhRYTZGaFUzeWVo?=
- =?utf-8?B?aU9ubGpmU1hUb0NzRTN4WitkS0FOOUV1Szk4N3NNeitYdjNFcVZlQjZFSmh6?=
- =?utf-8?B?UisvTkNUMlk3Z0tEYjV2a1c1ZnhJakxvc2dRL3FiTGNVblc5ckxsQURlTG4y?=
- =?utf-8?B?T1NiYWtsNkhCYzdWeHZ0ZWRSVDVSakN6VTJrdnAzYXp1eXpLejd1S3A3S3pk?=
- =?utf-8?B?blRhbW9mY2w1eTVnOGpJZlF6T1dMSUhWcks3Zm9kVjdPMEJQOUtSdG55bTUv?=
- =?utf-8?B?WmIvcEEyYkFPL0J0NWdERHdzdDNoREpEdkFCNVNJUmFJQ3lPM2dPS3p3dUZk?=
- =?utf-8?Q?FMfbmHv+ZQ9f8Nh6K/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9596d6c8-7b3a-4def-c039-08df1e96eaaa
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 02:02:44.2949
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iIOR3RMj/s85xPp0+cgzSDI4TZlx0bntJ+e2ft0MDWOBFUCmQWYYL+RGKqzKsyO0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4307
+References: <20260929143707.450805-1-ekffu200098@gmail.com> <arwuOBkR_VpZZ7fI@gmail.com>
+In-Reply-To: <arwuOBkR_VpZZ7fI@gmail.com>
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Date: Wed, 30 Sep 2026 11:07:21 +0900
+X-Gm-Features: AclHuK9Et28a_tY21I97g5vqPPRV4DcB0pgaxOgeSAZTvHdQ-HecAWOCmd5ifUI
+Message-ID: <CABFDxMGOi7+ziTB4s3K6wMyBSE34dvBXTR6wVg-BiZ5=NiPPTw@mail.gmail.com>
+Subject: Re: [PATCH] mm/memory: remove unused vmf_insert_mixed_mkwrite()
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7F5E21A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9F40F20002
-X-Stat-Signature: a94iohqjwigzpin6ioy358kfazgousng
-X-HE-Tag: 1790733772-51378
-X-HE-Meta: U2FsdGVkX1+GbbjgT1SFHItWiXKNMAbKA0awSSA0LyrxUIJqeg93+q8+j3fuS2yn1gkx9g8RXlBygOQ7J3bylh0+q0YfNtFs+9PTyauo2Qkgc3xVk25YWT/ZafCLDyGsj+qsdJEnhslma12O4VCp4w8Jvu0iNtuIz9PLgxsqKibFjIngECwixWDKELhfDzNUV9rIkkSsWqVPb1cS5nmAZc2wbz3dCcvUDs5wPzPRLxndJICphZY+DJmtIhYIYlWR7J/BYj9zV4WpKgbKxZ1iZg5Q+2sixuoPT7N5P7GpSR6P9lgnOFU9lu5op1PFcmqMMEDC9tIY0D6g/+Joh97WLzdziop+i02J52yO/qA+InBL68rmEWgHJGLp4HJ65LkGVCfKgYHXRNY2gGIIQ98BzgZvceKn4QdxTI8b5MP3NAXBEjLDLNLRJC4Cfqp152C+7R/aggdLiZUvjFPq/dkTAHTrIbdzxMQIyznneT6p4a7mwnZl8+ZnxMy4PxPGxSx8zRoPxdaV5W1uYuFJbejYDZLk2mxqIOP7FX3SxMEAvliwhty/NSjkMt1HXYFbSeTimPWj4Yb7v7bE9x81Vd3s82zgfOAIp165ddey2VX3JtjvdUcpcX80bJOj9v2YSG7Y935cvsuxVQahMsQ1VA9tnEeBABn+ZFK2cFxOrny2aiwL4zbNABAFvtPsWZtC9iI0uk7GROADO0bFQZpFf2wPPo/FcVM5PC0ePOrScSAi7/m9dt+OT4M9aGzx7mmfBlOOTgH2g9hUgLbsP3babYGkhn9wAy0QxTM3h/ikMnwTa+XvfzivpFFAho504d/uY9idK9UnG2b3aRujUFeCHEyqAsXW8DWHLplluiZoqM5aDlJqiRCz0n8ehkfbsGKLrNOVp7/Bq/Q+IBvUxw5qI98IJ/ZslHGVBygqRtaoK1tfgP2Fe2dXhtpH0znUFNxFisnwAaMFDPnv97ZXzN7CB84
- t3dNDDNo
- wLnk5BkMxXd01cVLcf30fgSiuU6mAXd+NzmS8ojT/CL4xG8IzaO/UJbRpGsx698NUrnDf7eKkUPGmj3xkDsaPAR9Ew7zOeRxZrlBvEF31J/1bp/kIHjjJR3x/1CSi5zshO+b6ajOIp5SbR3Z4udDa3UIe/f8PJsY/mgJ+4H9owxYBaI5hr+CMD3mXJiBvrdGV12Cu5rORP8SO2BFdJlouwZbhGOdKlh6xpRjSqM3JbWazofVevIIX043WcyEXYOWZLCL1m8UQPCKRgHQ+s0nsjB2surQGASiFZS5JM4Z/Nd/rIeX0MEP1SlEeVz7InsI3R2gMO6lZTgAQd2StM/qfL+IsjI/6T2AM3kZnZ88KXtRYEEPpGqzYGn4T3b5w3GrUdrj0OIc8tVzuCdVisUpYRuK54Fe+KeLIDoB8ylHMHgxBBO9My7/WNDNXl8z5YAF9BifcQzTq3EG/3WcBd+aOijlOZ3SspxzledxHUoW+ICEWyjMGE50utBB0uvsjGOElIqmavpyWkdp0M04=
+X-Stat-Signature: w9jj7g8hi1shmds3wupj85wek1wpur9f
+X-HE-Tag: 1790734054-778241
+X-HE-Meta: U2FsdGVkX199t15AoPUC9kvaRrBBzDGOnSfwGD2QAdQffvQ2OCT/DORWMl2duZ52Zy2DCuC7++0yGar4gJQ8dHNAYk68xE3i6G/7tMnbdQwVLe4lBqoeYaRhl0HIUvKlBvMWS3C1tpPJ8vF+QhKxssuHPHVYmTso/iohf8JD7GolbUcfH2kKR1mA++zPtNJG/8d67uViOZbwdIZ/qHEw1GEwO3bLzaQpBRS5U5Mz4EqhfABd+sr50uuQkVXPeHmtycNR0yp9KYsxBDvS+zqwJpBZTS+BC2En9ahN0hfMK6MvLSr0WyVDtlUFfyfWfa/OL69K3g20zq9CDC0FbQgBYWTDgU95hF9fvUU11MbvdApINrVrRZmKK7Ib8ez6kEIISQ7khxaIvHXjXA1Psu2oUgbXoKXm1KUXbgYgle5/0MzJcPbaXPppx2CxMgUcTQvB+XM5WdHhbhD0qDfDeLXJqtCrsB4ux5Ycby66uU6LOttLhN0gDzuFZw7RiL3SIJbrn5VHO0TeIG76nfQg6KjiNdhDRSE2LTnr5DxEiDGovjIHFMNdjMfrpYbndYNSd0vy9iFA+ik9uvXfOtqT5E97fx3PtxqEjLylmoq2p8gYB2jT+LmxHfeYm5qt9SCC5BeO/JOqBA/aynqbf28R0f5W6cGipxgxLb8LiPrl2R+v7yUr5TTztSPtZB0EpYAoLYtXtdup9v+gsDKWBnDcZdLQB2dK3wjiD/fab+QnG8/xa9NBJYSKq+YRdazu0kKK6MzswCwIdBYvQkciyLwI6kOCd7+DNujuJEEWNUMkzGn2X2qdwCmA54KzqqwQ0Gfj2xD1noBPmHETVa4BcTQ1Hop5E1GfAUyiBeU8O+GcCtWkmP3c693f8JJcxIsfITE2moKwsc38MT+xIn9PuMpB2R6QuTpxqZOSXEemoUtAmuZ6bFDwebDoJtP3qsRDuri/sqU0cNxYNlmp7m26nXc+v8K
+ 0YMC+F9U
+ fwhkYbdiHc7p2arl4JP9a9afV3Ck1lS+UyUN0wVc/WEAnxCQ6/vFTaS7tFSweC3kru0n5T4yc4o8SJB9/iK3LjNM+VoMYknFSL3dMZ5iwopxakL4M2ix6Jy30SBN5rhMvS8sBed5QbyyNOA78HLtHxRdHukBv5jp9rz9ta8GdklGQ3VJ+5Ey0ReHK8m373+D6JmWsv+TbXb3Q4KgB7KFj8aCSd/9IvvlpqNJsNtIlwFmP4bsEnvWt+APDPzFiN5MASgxA2yR83h1Xolqb9IE12kMvlQr48yK+njuDg53ofGheL0pkUmOrg6d+cfgHd/t05by0fYgoklFUV6OE8sn3vxDvAgPN+X0ttlhGLO/E3PjLDNv+rLIdgiQSamzGhb4g8ANSok5wmFF4P3y34DLjvYxLkQLx+FMmHsiox4ushCcQY0ILX21W3DW+nqWjmBQXN74aZyHcPqI4SK72k5fnrxDwfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -242,33 +141,257 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Sep 17, 2026 at 12:22 PM EDT, Lorenzo Stoakes (ARM) wrote:
-> Rather than directly checking VMA flags, use the newly introduced
-> vma_is_kernel_owned() and vma_is_persistent() helpers in userfaultfd when
-> assessing VMA suitability for userfaultfd and UFFDIO_MOVE.
->
-> Update vma_move_compatible() so it's expressed in terms of VMA
-> characteristics rather than arbitrary flags.
->
-> Additionally, update the use of the deprecated VMA flag API when checking
-> VMA_SHADOW_STACK_BIT.
->
-> A VMA_IO_BIT check is no longer required but that is fine as a hard
-> invariant has been established that only kernel-owned mappings may set
-> VMA_IO_BIT so the check is now redundant.
->
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/userfaultfd.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
->
-LGTM.
+Hi, Jose
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+2026=EB=85=84 9=EC=9B=94 30=EC=9D=BC (=EC=88=98) =EC=98=A4=EC=A0=84 6:53, J=
+ose A. Perez de Azpillaga <azpijr@gmail.com>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=
+=84=B1:
+>
+> On Tue, Sep 29, 2026 at 11:37:06PM +0900, Sang-Heon Jeon wrote:
+> > Since commit 38607c62b34b ("fs/dax: properly refcount fs dax pages"),
+> > vmf_insert_mixed_mkwrite() has no callers, so the mkwrite argument of
+> > __vm_insert_mixed() and insert_pfn() is always false.
+> >
+> > So remove the function, the mkwrite argument and the unreachable
+> > mkwrite branches. Also merge __vm_insert_mixed() into vmf_insert_mixed(=
+).
+> >
+> > No functional change.
+> >
+> > Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> > ---
+> >  include/linux/mm.h |  2 --
+> >  mm/memory.c        | 76 ++++++++++++----------------------------------
+> >  2 files changed, 19 insertions(+), 59 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index c038d06825c3..2ac734efd4ec 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -5008,8 +5008,6 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_str=
+uct *vma, unsigned long addr,
+> >                       unsigned long pfn, pgprot_t pgprot);
+> >  vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
+addr,
+> >                       unsigned long pfn);
+> > -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> > -             unsigned long addr, unsigned long pfn);
+> >  int vm_iomap_memory(struct vm_area_struct *vma, phys_addr_t start, uns=
+igned long len);
+> >
+> >  static inline vm_fault_t vmf_insert_page(struct vm_area_struct *vma,
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 330cde31bf8b..1f83a26f8733 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -2453,7 +2453,14 @@ static int insert_page_into_pte_locked(struct vm=
+_area_struct *vma, pte_t *pte,
+> >               if (!mkwrite)
+> >                       return -EBUSY;
+> >
+> > -             /* see insert_pfn(). */
+> > +             /*
+> > +              * For read faults on private mappings the PFN passed in =
+may
+> > +              * not match the PFN we have mapped if the mapped PFN is =
+a
+> > +              * writeable COW page.  In the mkwrite case we are creati=
+ng a
+> > +              * writable PTE for a shared mapping and we expect the PF=
+Ns to
+> > +              * match. If they don't match, we are likely racing with =
+block
+> > +              * allocation and mapping invalidation.
+> > +              */
+> >               if (pte_pfn(pteval) !=3D page_to_pfn(page)) {
+> >                       WARN_ON_ONCE(!is_zero_pfn(pte_pfn(pteval)));
+> >                       return -EFAULT;
+> > @@ -2858,7 +2865,7 @@ int vm_map_pages_zero(struct vm_area_struct *vma,=
+ struct page **pages,
+> >  EXPORT_SYMBOL(vm_map_pages_zero);
+> >
+> >  static vm_fault_t insert_pfn(struct vm_area_struct *vma, unsigned long=
+ addr,
+> > -                     unsigned long pfn, pgprot_t prot, bool mkwrite)
+> > +                     unsigned long pfn, pgprot_t prot)
+> >  {
+> >       struct mm_struct *mm =3D vma->vm_mm;
+> >       pte_t *pte, entry;
+> > @@ -2868,38 +2875,12 @@ static vm_fault_t insert_pfn(struct vm_area_str=
+uct *vma, unsigned long addr,
+> >       if (!pte)
+> >               return VM_FAULT_OOM;
+> >       entry =3D ptep_get(pte);
+> > -     if (!pte_none(entry)) {
+> > -             if (mkwrite) {
+> > -                     /*
+> > -                      * For read faults on private mappings the PFN pa=
+ssed
+> > -                      * in may not match the PFN we have mapped if the
+> > -                      * mapped PFN is a writeable COW page.  In the mk=
+write
+> > -                      * case we are creating a writable PTE for a shar=
+ed
+> > -                      * mapping and we expect the PFNs to match. If th=
+ey
+> > -                      * don't match, we are likely racing with block
+> > -                      * allocation and mapping invalidation so just sk=
+ip the
+> > -                      * update.
+> > -                      */
+> > -                     if (pte_pfn(entry) !=3D pfn) {
+> > -                             WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry))=
+);
+> > -                             goto out_unlock;
+> > -                     }
+> > -                     entry =3D pte_mkyoung(entry);
+> > -                     entry =3D maybe_mkwrite(pte_mkdirty(entry), vma);
+> > -                     if (ptep_set_access_flags(vma, addr, pte, entry, =
+1))
+> > -                             update_mmu_cache(vma, addr, pte);
+> > -             }
+> > +     if (!pte_none(entry))
+> >               goto out_unlock;
+> > -     }
+> >
+> >       /* Ok, finally just insert the thing.. */
+> >       entry =3D pte_mkspecial(pfn_pte(pfn, prot));
+> >
+> > -     if (mkwrite) {
+> > -             entry =3D pte_mkyoung(entry);
+> > -             entry =3D maybe_mkwrite(pte_mkdirty(entry), vma);
+> > -     }
+> > -
+> >       set_pte_at(mm, addr, pte, entry);
+> >       update_mmu_cache(vma, addr, pte); /* XXX: why not for insert_page=
+? */
+> >
+> > @@ -2967,7 +2948,7 @@ vm_fault_t vmf_insert_pfn_prot(struct vm_area_str=
+uct *vma, unsigned long addr,
+> >
+> >       pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+> >
+> > -     return insert_pfn(vma, addr, pfn, pgprot, false);
+> > +     return insert_pfn(vma, addr, pfn, pgprot);
+> >  }
+> >  EXPORT_SYMBOL(vmf_insert_pfn_prot);
+> >
+> > @@ -2998,11 +2979,9 @@ vm_fault_t vmf_insert_pfn(struct vm_area_struct =
+*vma, unsigned long addr,
+> >  }
+> >  EXPORT_SYMBOL(vmf_insert_pfn);
+> >
+> > -static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn,
+> > -                     bool mkwrite)
+> > +static bool vm_mixed_ok(struct vm_area_struct *vma, unsigned long pfn)
+> >  {
+> > -     if (unlikely(is_zero_pfn(pfn)) &&
+> > -         (mkwrite || !vm_mixed_zeropage_allowed(vma)))
+> > +     if (unlikely(is_zero_pfn(pfn)) && !vm_mixed_zeropage_allowed(vma)=
+)
+> >               return false;
+> >       /* these checks mirror the abort conditions in vm_normal_page */
+> >       if (vma->vm_flags & VM_MIXEDMAP)
+> > @@ -3012,13 +2991,13 @@ static bool vm_mixed_ok(struct vm_area_struct *=
+vma, unsigned long pfn,
+> >       return false;
+> >  }
+> >
+> > -static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+> > -             unsigned long addr, unsigned long pfn, bool mkwrite)
+> > +vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
+addr,
+> > +             unsigned long pfn)
+> >  {
+> >       pgprot_t pgprot =3D vma->vm_page_prot;
+> >       int err;
+> >
+> > -     if (!vm_mixed_ok(vma, pfn, mkwrite))
+> > +     if (!vm_mixed_ok(vma, pfn))
+> >               return VM_FAULT_SIGBUS;
+> >
+> >       if (addr < vma->vm_start || addr >=3D vma->vm_end)
+> > @@ -3045,9 +3024,9 @@ static vm_fault_t __vm_insert_mixed(struct vm_are=
+a_struct *vma,
+> >                * result in pfn_t_has_page() =3D=3D false.
+> >                */
+> >               page =3D pfn_to_page(pfn);
+> > -             err =3D insert_page(vma, addr, page, pgprot, mkwrite);
+> > +             err =3D insert_page(vma, addr, page, pgprot, false);
+> >       } else {
+> > -             return insert_pfn(vma, addr, pfn, pgprot, mkwrite);
+> > +             return insert_pfn(vma, addr, pfn, pgprot);
+> >       }
+> >
+> >       if (err =3D=3D -ENOMEM)
+> > @@ -3057,6 +3036,7 @@ static vm_fault_t __vm_insert_mixed(struct vm_are=
+a_struct *vma,
+> >
+> >       return VM_FAULT_NOPAGE;
+> >  }
+> > +EXPORT_SYMBOL(vmf_insert_mixed);
+> >
+> >  vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *=
+page,
+> >                       bool write)
+> > @@ -3078,24 +3058,6 @@ vm_fault_t vmf_insert_page_mkwrite(struct vm_fau=
+lt *vmf, struct page *page,
+> >  }
+> >  EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
+> >
+> > -vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long =
+addr,
+> > -             unsigned long pfn)
+> > -{
+> > -     return __vm_insert_mixed(vma, addr, pfn, false);
+> > -}
+> > -EXPORT_SYMBOL(vmf_insert_mixed);
+> > -
+> > -/*
+> > - *  If the insertion of PTE failed because someone else already added =
+a
+> > - *  different entry in the mean time, we treat that as success as we a=
+ssume
+> > - *  the same entry was actually inserted.
+> > - */
+>
+> it reads to me like it describes the -EBUSY handling rather than
+> vmf_insert_mixed_mkwrite() itself, and that handling is still there in
+> __vm_insert_mixed(), which this patch renames to vmf_insert_mixed(). so
+> I would have expected it to move above the "if (err < 0 && err !=3D -EBUS=
+Y)"
+> there rather than go away with the wrapper.
+>
+> am I missing a reason to drop it? because, if not, moving it would keep
+> one explanation we have for why -EBUSY is not treated as an error there.
 
+No, I just missed it. Moving the comment above the -EBUSY check looks
+good to me as well. I'll address it in v2.
 
---=20
-Best Regards,
-Yan, Zi
+> > -vm_fault_t vmf_insert_mixed_mkwrite(struct vm_area_struct *vma,
+> > -             unsigned long addr, unsigned long pfn)
+> > -{
+> > -     return __vm_insert_mixed(vma, addr, pfn, true);
+> > -}
+> > -
+> >  /*
+> >   * maps a range of physical memory into the requested pages. the old
+> >   * mappings are removed. any references to nonexistent pages results
+> >
+> > base-commit: 1c2b8d2725f84b43fabe3b3e9628c91db8ca6c65
+> > --
+> > 2.43.0
+> >
+> >
+>
+> overall, looks good to me. but I want to know about the comment.
 
+Thanks for the review :)
+
+> --
+> cheers,
+> jose a. p-a
+
+Best regards,
+Sang-Heon Jeon
 
